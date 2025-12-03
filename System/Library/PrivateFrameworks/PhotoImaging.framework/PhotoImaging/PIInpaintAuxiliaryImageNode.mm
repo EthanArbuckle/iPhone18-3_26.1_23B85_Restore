@@ -1,57 +1,57 @@
 @interface PIInpaintAuxiliaryImageNode
-+ (id)styleTransferSettingsForGeometry:(id)a3;
++ (id)styleTransferSettingsForGeometry:(id)geometry;
 - (NURenderNode)inputNode;
 - (NURenderNode)retouchNode;
-- (PIInpaintAuxiliaryImageNode)initWithInputs:(id)a3 retouchNode:(id)a4 settings:(id)a5;
-- (PIInpaintAuxiliaryImageNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (PIInpaintAuxiliaryImageNode)initWithInputs:(id)inputs retouchNode:(id)node settings:(id)settings;
+- (PIInpaintAuxiliaryImageNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PIInpaintAuxiliaryImageNode
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = PIInpaintAuxiliaryImageNode;
-  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v58[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v9 evaluationMode])
+  cacheCopy = cache;
+  stateCopy = state;
+  if ([stateCopy evaluationMode])
   {
-    v10 = [(PIInpaintAuxiliaryImageNode *)self inputNode];
-    v11 = [(PIInpaintAuxiliaryImageNode *)self retouchNode];
-    v12 = [(NURenderNode *)self inputs];
-    v13 = [v12 mutableCopy];
+    inputNode = [(PIInpaintAuxiliaryImageNode *)self inputNode];
+    retouchNode = [(PIInpaintAuxiliaryImageNode *)self retouchNode];
+    inputs = [(NURenderNode *)self inputs];
+    v13 = [inputs mutableCopy];
 
     [v13 setObject:0 forKeyedSubscript:@"retouch"];
-    v54 = a5;
-    v55 = v8;
-    if ([v9 auxiliaryImageType] == 7)
+    errorCopy = error;
+    v55 = cacheCopy;
+    if ([stateCopy auxiliaryImageType] == 7)
     {
       v53 = v13;
-      v14 = [v10 outputImageGeometry:a5];
+      v14 = [inputNode outputImageGeometry:error];
       v15 = [v14 size];
       [v14 size];
       v51 = v16;
       v52 = v15;
       if (v15 < v16)
       {
-        v17 = [objc_alloc(MEMORY[0x1E69B3BC8]) initWithOrientation:6 input:v10];
+        v17 = [objc_alloc(MEMORY[0x1E69B3BC8]) initWithOrientation:6 input:inputNode];
 
-        v18 = [v17 outputImageGeometry:a5];
+        v18 = [v17 outputImageGeometry:error];
 
-        v19 = [objc_alloc(MEMORY[0x1E69B3BC8]) initWithOrientation:6 input:v11];
+        v19 = [objc_alloc(MEMORY[0x1E69B3BC8]) initWithOrientation:6 input:retouchNode];
         v14 = v18;
-        v11 = v19;
-        v10 = v17;
+        retouchNode = v19;
+        inputNode = v17;
       }
 
       v57[0] = @"inputPreserveColor";
@@ -64,61 +64,61 @@
       v58[1] = v22;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:v57 count:2];
 
-      v24 = [MEMORY[0x1E69B3C40] lightMapFromGainMap:v10 settings:v23];
+      v24 = [MEMORY[0x1E69B3C40] lightMapFromGainMap:inputNode settings:v23];
       v25 = [objc_opt_class() styleTransferSettingsForGeometry:v14];
       v50 = v24;
-      v49 = [MEMORY[0x1E69B3C40] styleTransferLearnNodeWithInput:v10 target:v24 settings:v25];
-      v26 = [MEMORY[0x1E69B3C40] styleTransferApplyNodeWithInput:v11 thumbnail:0 target:? settings:?];
-      v27 = [MEMORY[0x1E69B3C40] gainMapFromLightMap:v26 base:v11 settings:v23];
+      v49 = [MEMORY[0x1E69B3C40] styleTransferLearnNodeWithInput:inputNode target:v24 settings:v25];
+      v26 = [MEMORY[0x1E69B3C40] styleTransferApplyNodeWithInput:retouchNode thumbnail:0 target:? settings:?];
+      v27 = [MEMORY[0x1E69B3C40] gainMapFromLightMap:v26 base:retouchNode settings:v23];
 
       if (v52 < v51)
       {
         v28 = [objc_alloc(MEMORY[0x1E69B3BC8]) initWithOrientation:8 input:v27];
 
-        v29 = [objc_alloc(MEMORY[0x1E69B3BC8]) initWithOrientation:8 input:v10];
+        v29 = [objc_alloc(MEMORY[0x1E69B3BC8]) initWithOrientation:8 input:inputNode];
         v27 = v28;
-        v10 = v29;
+        inputNode = v29;
       }
 
       v30 = v53;
       v31 = [PIInpaintCombinedMaskNode alloc];
-      v32 = [(NURenderNode *)self settings];
-      v33 = [(PIInpaintCombinedMaskNode *)v31 initWithSettings:v32 inputs:v53 mode:11];
+      settings = [(NURenderNode *)self settings];
+      v33 = [(PIInpaintCombinedMaskNode *)v31 initWithSettings:settings inputs:v53 mode:11];
 
-      v34 = [[PIInfillCompositeNode alloc] initWithInput:v27 background:v10 matte:v33 settings:&unk_1F471FED8];
+      v34 = [[PIInfillCompositeNode alloc] initWithInput:v27 background:inputNode matte:v33 settings:&unk_1F471FED8];
     }
 
     else
     {
       v36 = [PIInpaintCombinedMaskNode alloc];
-      v37 = [(NURenderNode *)self settings];
-      v38 = [(PIInpaintCombinedMaskNode *)v36 initWithSettings:v37 inputs:v13 mode:5];
+      settings2 = [(NURenderNode *)self settings];
+      v38 = [(PIInpaintCombinedMaskNode *)v36 initWithSettings:settings2 inputs:v13 mode:5];
 
-      v39 = [[PIInfillFilterNode alloc] initWithInputImage:v10 inputMatte:v38 infillAlgorithm:4];
+      v39 = [[PIInfillFilterNode alloc] initWithInputImage:inputNode inputMatte:v38 infillAlgorithm:4];
       v40 = [PIInpaintCombinedMaskNode alloc];
-      v41 = [(NURenderNode *)self settings];
-      v42 = [(PIInpaintCombinedMaskNode *)v40 initWithSettings:v41 inputs:v13 mode:9];
+      settings3 = [(NURenderNode *)self settings];
+      v42 = [(PIInpaintCombinedMaskNode *)v40 initWithSettings:settings3 inputs:v13 mode:9];
 
       v43 = [PIInfillCompositeNode alloc];
-      v44 = [(PIInfillCompositeNode *)v43 initWithInput:v39 background:v10 matte:v42 settings:MEMORY[0x1E695E0F8]];
+      v44 = [(PIInfillCompositeNode *)v43 initWithInput:v39 background:inputNode matte:v42 settings:MEMORY[0x1E695E0F8]];
 
       v45 = [PIInpaintCombinedMaskNode alloc];
-      v46 = [(NURenderNode *)self settings];
-      v47 = [(PIInpaintCombinedMaskNode *)v45 initWithSettings:v46 inputs:v13 mode:2];
+      settings4 = [(NURenderNode *)self settings];
+      v47 = [(PIInpaintCombinedMaskNode *)v45 initWithSettings:settings4 inputs:v13 mode:2];
 
       v34 = [[PIInfillFilterNode alloc] initWithInputImage:v44 inputMatte:v47 infillAlgorithm:4];
       v30 = v13;
     }
 
-    v8 = v55;
-    v35 = [(NURenderNode *)v34 nodeByReplayingAgainstCache:v55 pipelineState:v9 error:v54];
+    cacheCopy = v55;
+    v35 = [(NURenderNode *)v34 nodeByReplayingAgainstCache:v55 pipelineState:stateCopy error:errorCopy];
   }
 
   else
   {
     v56.receiver = self;
     v56.super_class = PIInpaintAuxiliaryImageNode;
-    v35 = [(NURenderNode *)&v56 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+    v35 = [(NURenderNode *)&v56 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
   }
 
   return v35;
@@ -126,27 +126,27 @@
 
 - (NURenderNode)retouchNode
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:@"retouch"];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:@"retouch"];
 
   return v3;
 }
 
 - (NURenderNode)inputNode
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:@"input"];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:@"input"];
 
   return v3;
 }
 
-- (PIInpaintAuxiliaryImageNode)initWithInputs:(id)a3 retouchNode:(id)a4 settings:(id)a5
+- (PIInpaintAuxiliaryImageNode)initWithInputs:(id)inputs retouchNode:(id)node settings:(id)settings
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  inputsCopy = inputs;
+  nodeCopy = node;
+  settingsCopy = settings;
+  if (!inputsCopy)
   {
     v16 = NUAssertLogger_6299();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -157,7 +157,7 @@
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v18 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v20 = NUAssertLogger_6299();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
@@ -165,11 +165,11 @@
     {
       if (v21)
       {
-        v34 = dispatch_get_specific(*v18);
+        v34 = dispatch_get_specific(*callStackSymbols);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v18 = [v35 callStackSymbols];
-        v37 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v49 = v34;
         v50 = 2114;
@@ -180,10 +180,10 @@
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v49 = v18;
+      v49 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -191,8 +191,8 @@
     goto LABEL_23;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = settingsCopy;
+  if (!settingsCopy)
   {
     v23 = NUAssertLogger_6299();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -203,7 +203,7 @@
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v18 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v25 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v20 = NUAssertLogger_6299();
     v26 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
@@ -211,10 +211,10 @@
     {
       if (v26)
       {
-        v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v18 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v49 = v18;
+        v49 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -227,11 +227,11 @@ LABEL_25:
 LABEL_23:
     if (v26)
     {
-      v38 = dispatch_get_specific(*v18);
+      v38 = dispatch_get_specific(*callStackSymbols);
       v39 = MEMORY[0x1E696AF00];
       v40 = v38;
-      v18 = [v39 callStackSymbols];
-      v41 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v39 callStackSymbols];
+      v41 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v49 = v38;
       v50 = 2114;
@@ -242,7 +242,7 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  if (!v9)
+  if (!nodeCopy)
   {
     v28 = NUAssertLogger_6299();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -253,7 +253,7 @@ LABEL_23:
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v18 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v30 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v20 = NUAssertLogger_6299();
     v31 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
@@ -261,8 +261,8 @@ LABEL_23:
     {
       if (v31)
       {
-        v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v33 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v49 = v33;
         _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -274,11 +274,11 @@ LABEL_23:
 LABEL_26:
     if (v31)
     {
-      v42 = dispatch_get_specific(*v18);
+      v42 = dispatch_get_specific(*callStackSymbols);
       v43 = MEMORY[0x1E696AF00];
       v44 = v42;
-      v45 = [v43 callStackSymbols];
-      v46 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v43 callStackSymbols];
+      v46 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v49 = v42;
       v50 = 2114;
@@ -291,8 +291,8 @@ LABEL_28:
     _NUAssertFailHandler();
   }
 
-  v12 = [v8 mutableCopy];
-  [v12 setObject:v9 forKeyedSubscript:@"retouch"];
+  v12 = [inputsCopy mutableCopy];
+  [v12 setObject:nodeCopy forKeyedSubscript:@"retouch"];
   v13 = [v11 mutableCopy];
   [v13 setObject:@"input" forKeyedSubscript:@"__dominantInputSettingsKey"];
   v47.receiver = self;
@@ -302,11 +302,11 @@ LABEL_28:
   return v14;
 }
 
-- (PIInpaintAuxiliaryImageNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PIInpaintAuxiliaryImageNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -345,8 +345,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -373,8 +373,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -392,7 +392,7 @@ LABEL_14:
   }
 }
 
-+ (id)styleTransferSettingsForGeometry:(id)a3
++ (id)styleTransferSettingsForGeometry:(id)geometry
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E69B3CD8] defaultImageSettingsForScale:{*MEMORY[0x1E69B3918], *(MEMORY[0x1E69B3918] + 8)}];

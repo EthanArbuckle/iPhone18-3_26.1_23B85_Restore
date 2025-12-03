@@ -1,26 +1,26 @@
 @interface IFTSchemaIFTActionParameterContext
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTActionParameterContext)initWithDictionary:(id)a3;
-- (IFTSchemaIFTActionParameterContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTActionParameterContext)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTActionParameterContext)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTActionParameterContext
 
-- (IFTSchemaIFTActionParameterContext)initWithDictionary:(id)a3
+- (IFTSchemaIFTActionParameterContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTActionParameterContext;
   v5 = [(IFTSchemaIFTActionParameterContext *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"statementId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"statementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(IFTSchemaIFTActionParameterContext *)v5 setStatementId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"toolId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"toolId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(IFTSchemaIFTActionParameterContext *)v5 setToolId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"actionClass"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"actionClass"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTActionParameterContext)initWithJSON:(id)a3
+- (IFTSchemaIFTActionParameterContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTActionParameterContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTActionParameterContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTActionParameterContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,7 +85,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(IFTSchemaIFTActionParameterContext *)self actionClass]- 1;
@@ -99,35 +99,35 @@
       v5 = off_1E78D81C0[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"actionClass"];
+    [dictionary setObject:v5 forKeyedSubscript:@"actionClass"];
   }
 
   if (self->_statementId)
   {
-    v6 = [(IFTSchemaIFTActionParameterContext *)self statementId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    statementId = [(IFTSchemaIFTActionParameterContext *)self statementId];
+    dictionaryRepresentation = [statementId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"statementId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"statementId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"statementId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"statementId"];
     }
   }
 
   if (self->_toolId)
   {
-    v9 = [(IFTSchemaIFTActionParameterContext *)self toolId];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"toolId"];
+    toolId = [(IFTSchemaIFTActionParameterContext *)self toolId];
+    v10 = [toolId copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"toolId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,28 +147,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(IFTSchemaIFTActionParameterContext *)self statementId];
-  v6 = [v4 statementId];
-  if ((v5 != 0) == (v6 == 0))
+  statementId = [(IFTSchemaIFTActionParameterContext *)self statementId];
+  statementId2 = [equalCopy statementId];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(IFTSchemaIFTActionParameterContext *)self statementId];
-  if (v7)
+  statementId3 = [(IFTSchemaIFTActionParameterContext *)self statementId];
+  if (statementId3)
   {
-    v8 = v7;
-    v9 = [(IFTSchemaIFTActionParameterContext *)self statementId];
-    v10 = [v4 statementId];
-    v11 = [v9 isEqual:v10];
+    v8 = statementId3;
+    statementId4 = [(IFTSchemaIFTActionParameterContext *)self statementId];
+    statementId5 = [equalCopy statementId];
+    v11 = [statementId4 isEqual:statementId5];
 
     if (!v11)
     {
@@ -180,22 +180,22 @@
   {
   }
 
-  v5 = [(IFTSchemaIFTActionParameterContext *)self toolId];
-  v6 = [v4 toolId];
-  if ((v5 != 0) == (v6 == 0))
+  statementId = [(IFTSchemaIFTActionParameterContext *)self toolId];
+  statementId2 = [equalCopy toolId];
+  if ((statementId != 0) == (statementId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(IFTSchemaIFTActionParameterContext *)self toolId];
-  if (v12)
+  toolId = [(IFTSchemaIFTActionParameterContext *)self toolId];
+  if (toolId)
   {
-    v13 = v12;
-    v14 = [(IFTSchemaIFTActionParameterContext *)self toolId];
-    v15 = [v4 toolId];
-    v16 = [v14 isEqual:v15];
+    v13 = toolId;
+    toolId2 = [(IFTSchemaIFTActionParameterContext *)self toolId];
+    toolId3 = [equalCopy toolId];
+    v16 = [toolId2 isEqual:toolId3];
 
     if (!v16)
     {
@@ -207,9 +207,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (actionClass = self->_actionClass, actionClass == [v4 actionClass]))
+    if ((*&self->_has & 1) == 0 || (actionClass = self->_actionClass, actionClass == [equalCopy actionClass]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -223,48 +223,48 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(IFTSchemaIFTActionParameterContext *)self statementId];
+  toCopy = to;
+  statementId = [(IFTSchemaIFTActionParameterContext *)self statementId];
 
-  if (v4)
+  if (statementId)
   {
-    v5 = [(IFTSchemaIFTActionParameterContext *)self statementId];
+    statementId2 = [(IFTSchemaIFTActionParameterContext *)self statementId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTActionParameterContext *)self toolId];
+  toolId = [(IFTSchemaIFTActionParameterContext *)self toolId];
 
-  if (v6)
+  if (toolId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = IFTSchemaIFTActionParameterContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(IFTSchemaIFTActionParameterContext *)self deleteToolId];
   }
 
-  v6 = [(IFTSchemaIFTActionParameterContext *)self statementId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  statementId = [(IFTSchemaIFTActionParameterContext *)self statementId];
+  v7 = [statementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTActionParameterContext *)self deleteStatementId];
   }

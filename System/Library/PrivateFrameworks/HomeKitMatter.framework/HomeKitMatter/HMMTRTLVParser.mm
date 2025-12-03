@@ -1,7 +1,7 @@
 @interface HMMTRTLVParser
-+ (id)csrFromNOCSRElements:(id)a3;
-+ (id)fabricIndicesFromTLV:(id)a3;
-+ (id)keyPairDataFromTLV:(id)a3;
++ (id)csrFromNOCSRElements:(id)elements;
++ (id)fabricIndicesFromTLV:(id)v;
++ (id)keyPairDataFromTLV:(id)v;
 + (id)logCategory;
 @end
 
@@ -29,20 +29,20 @@ uint64_t __29__HMMTRTLVParser_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)keyPairDataFromTLV:(id)a3
++ (id)keyPairDataFromTLV:(id)v
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 bytes];
-  v6 = [v4 length];
-  if (!v6 || *v5 != 21)
+  vCopy = v;
+  bytes = [vCopy bytes];
+  v6 = [vCopy length];
+  if (!v6 || *bytes != 21)
   {
     goto LABEL_17;
   }
 
   v7 = 0;
   v28 = v6 - 1;
-  v29 = v5 + 1;
+  v29 = bytes + 1;
   v8 = 1;
   while (1)
   {
@@ -61,7 +61,7 @@ uint64_t __29__HMMTRTLVParser_logCategory__block_invoke()
     if (!ReadOctetStringWithContextSpecificTag(&v29, &v28, &v27, &v26))
     {
       v19 = objc_autoreleasePoolPush();
-      v14 = a1;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -95,7 +95,7 @@ LABEL_9:
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = a1;
+  selfCopy2 = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
@@ -123,17 +123,17 @@ LABEL_18:
   return v7;
 }
 
-+ (id)fabricIndicesFromTLV:(id)a3
++ (id)fabricIndicesFromTLV:(id)v
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
-  if (v5 && *v4 == 21)
+  vCopy = v;
+  bytes = [vCopy bytes];
+  v5 = [vCopy length];
+  if (v5 && *bytes == 21)
   {
     v6 = v5 - 1;
     v34 = v5 - 1;
-    v35 = v4 + 1;
+    v35 = bytes + 1;
     for (i = 1; ; i = 0)
     {
       v8 = v6 - 2;
@@ -154,7 +154,7 @@ LABEL_18:
       v6 = v34;
     }
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (v8 >= 1)
     {
       v15 = 0;
@@ -209,9 +209,9 @@ LABEL_29:
                   break;
                 }
 
-                v23 = v14;
+                v23 = array;
 
-                v24 = v14;
+                v24 = array;
                 v30 = 0u;
                 v31 = 0u;
                 v32 = 0u;
@@ -277,7 +277,7 @@ LABEL_38:
         if (v17 > v20)
         {
           v21 = LittleEndianNumberFromBytes(&v16[v15 + 1], v20, v19);
-          [v14 addObject:v21];
+          [array addObject:v21];
 
           v15 += v20 + 1;
           v17 = v8 - v15;
@@ -308,16 +308,16 @@ LABEL_12:
   return v11;
 }
 
-+ (id)csrFromNOCSRElements:(id)a3
++ (id)csrFromNOCSRElements:(id)elements
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  elementsCopy = elements;
+  bytes = [elementsCopy bytes];
+  v5 = [elementsCopy length];
 
-  if (v5 && *v4 == 21)
+  if (v5 && *bytes == 21)
   {
     v11 = v5 - 1;
-    v12 = v4 + 1;
+    v12 = bytes + 1;
     v9 = 0;
     v10 = 0;
     v6 = ReadOctetStringWithContextSpecificTag(&v12, &v11, &v10, &v9);

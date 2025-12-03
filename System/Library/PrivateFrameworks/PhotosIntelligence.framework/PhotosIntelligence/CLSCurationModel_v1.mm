@@ -1,56 +1,56 @@
 @interface CLSCurationModel_v1
-+ (id)baseSpecificationWithSpecification:(id)a3;
-- (BOOL)asset:(id)a3 isAestheticallyAwesomeWithContext:(id)a4;
-- (BOOL)assetIsJunkWithSceneClassifications:(id)a3 confidenceThresholdBySceneIdentifierForScenesPreventingJunking:(id)a4 confidenceThresholdBySceneIdentifierForJunkingScenes:(id)a5 confidenceThresholdBySceneIdentifierForScenesPreventingSceneBasedJunking:(id)a6 forMemories:(BOOL)a7;
-- (BOOL)avoidIfPossibleForKeyAssetWithAsset:(id)a3 statistics:(id *)a4;
-- (BOOL)hasInterestingScenesWithAsset:(id)a3;
-- (BOOL)hasPoorResolutionWithAsset:(id)a3;
-- (BOOL)imageAssetIsJunkForMemoriesFromSceneAndJunkClassifications:(id)a3 forKeyAsset:(BOOL)a4 forMemories:(BOOL)a5;
-- (BOOL)imageAssetIsJunkFromSceneAndJunkClassifications:(id)a3;
-- (BOOL)isAestheticallyAwesomeWithAsset:(id)a3;
-- (BOOL)isAestheticallyPrettyGoodWithAsset:(id)a3;
-- (BOOL)isBadQualityForImageKeyAssetWithAsset:(id)a3 statistics:(id *)a4;
-- (BOOL)isBlurryWithAsset:(id)a3;
-- (BOOL)isInhabitedWithAsset:(id)a3;
-- (BOOL)isInterestingLivePhotoWithAsset:(id)a3;
-- (BOOL)isInterestingVideoWithAsset:(id)a3;
-- (BOOL)isJunkWithJunkClassification:(id)a3;
-- (BOOL)isJunkWithSignal:(id)a3 isReliable:(BOOL *)a4;
-- (BOOL)isNonMemorableWithAsset:(id)a3;
-- (BOOL)isTragicFailureWithImageAsset:(id)a3;
-- (BOOL)isUtilityForImageAsset:(id)a3;
-- (BOOL)isUtilityForMemoriesForImageAsset:(id)a3;
-- (BOOL)isUtilityForMemoriesWithAsset:(id)a3 userFeedbackCalculator:(id)a4;
-- (BOOL)isUtilityForVideoAsset:(id)a3;
-- (BOOL)isUtilityWithAsset:(id)a3;
-- (CLSCurationModel_v1)initWithCurationModelSpecification:(id)a3;
-- (double)scoreWithAsset:(id)a3 inContext:(id)a4;
-- (id)faceInformationSummaryWithFaces:(id)a3 detectionTraitsByFaceLocalIdentifier:(id)a4 verifiedPersonUUIDs:(id)a5 hiddenPersonUUIDs:(id)a6 personUUIDByMergeCandidateUUID:(id)a7 userFeedbackCalculator:(id)a8 assetUUID:(id)a9;
++ (id)baseSpecificationWithSpecification:(id)specification;
+- (BOOL)asset:(id)asset isAestheticallyAwesomeWithContext:(id)context;
+- (BOOL)assetIsJunkWithSceneClassifications:(id)classifications confidenceThresholdBySceneIdentifierForScenesPreventingJunking:(id)junking confidenceThresholdBySceneIdentifierForJunkingScenes:(id)scenes confidenceThresholdBySceneIdentifierForScenesPreventingSceneBasedJunking:(id)basedJunking forMemories:(BOOL)memories;
+- (BOOL)avoidIfPossibleForKeyAssetWithAsset:(id)asset statistics:(id *)statistics;
+- (BOOL)hasInterestingScenesWithAsset:(id)asset;
+- (BOOL)hasPoorResolutionWithAsset:(id)asset;
+- (BOOL)imageAssetIsJunkForMemoriesFromSceneAndJunkClassifications:(id)classifications forKeyAsset:(BOOL)asset forMemories:(BOOL)memories;
+- (BOOL)imageAssetIsJunkFromSceneAndJunkClassifications:(id)classifications;
+- (BOOL)isAestheticallyAwesomeWithAsset:(id)asset;
+- (BOOL)isAestheticallyPrettyGoodWithAsset:(id)asset;
+- (BOOL)isBadQualityForImageKeyAssetWithAsset:(id)asset statistics:(id *)statistics;
+- (BOOL)isBlurryWithAsset:(id)asset;
+- (BOOL)isInhabitedWithAsset:(id)asset;
+- (BOOL)isInterestingLivePhotoWithAsset:(id)asset;
+- (BOOL)isInterestingVideoWithAsset:(id)asset;
+- (BOOL)isJunkWithJunkClassification:(id)classification;
+- (BOOL)isJunkWithSignal:(id)signal isReliable:(BOOL *)reliable;
+- (BOOL)isNonMemorableWithAsset:(id)asset;
+- (BOOL)isTragicFailureWithImageAsset:(id)asset;
+- (BOOL)isUtilityForImageAsset:(id)asset;
+- (BOOL)isUtilityForMemoriesForImageAsset:(id)asset;
+- (BOOL)isUtilityForMemoriesWithAsset:(id)asset userFeedbackCalculator:(id)calculator;
+- (BOOL)isUtilityForVideoAsset:(id)asset;
+- (BOOL)isUtilityWithAsset:(id)asset;
+- (CLSCurationModel_v1)initWithCurationModelSpecification:(id)specification;
+- (double)scoreWithAsset:(id)asset inContext:(id)context;
+- (id)faceInformationSummaryWithFaces:(id)faces detectionTraitsByFaceLocalIdentifier:(id)identifier verifiedPersonUUIDs:(id)ds hiddenPersonUUIDs:(id)iDs personUUIDByMergeCandidateUUID:(id)d userFeedbackCalculator:(id)calculator assetUUID:(id)iD;
 - (id)initForTesting;
-- (signed)interestingAudioClassificationsWithAsset:(id)a3;
-- (void)enumerateClassificationBasedSignalModelsUsingBlock:(id)a3;
-- (void)enumerateSignalModelsUsingBlock:(id)a3;
+- (signed)interestingAudioClassificationsWithAsset:(id)asset;
+- (void)enumerateClassificationBasedSignalModelsUsingBlock:(id)block;
+- (void)enumerateSignalModelsUsingBlock:(id)block;
 @end
 
 @implementation CLSCurationModel_v1
 
-- (void)enumerateClassificationBasedSignalModelsUsingBlock:(id)a3
+- (void)enumerateClassificationBasedSignalModelsUsingBlock:(id)block
 {
   v4 = 0;
   junkClassificationModel = self->_junkClassificationModel;
   if (junkClassificationModel)
   {
-    (*(a3 + 2))(a3, junkClassificationModel, &v4);
+    (*(block + 2))(block, junkClassificationModel, &v4);
   }
 }
 
-- (void)enumerateSignalModelsUsingBlock:(id)a3
+- (void)enumerateSignalModelsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   v11 = 0;
   mediaPreAnalysisModel = self->_mediaPreAnalysisModel;
-  if (!mediaPreAnalysisModel || ((*(v4 + 2))(v4, mediaPreAnalysisModel, &v11), (v11 & 1) == 0))
+  if (!mediaPreAnalysisModel || ((*(blockCopy + 2))(blockCopy, mediaPreAnalysisModel, &v11), (v11 & 1) == 0))
   {
     mediaAnalysisModel = self->_mediaAnalysisModel;
     if (!mediaAnalysisModel || ((v5)[2](v5, mediaAnalysisModel, &v11), (v11 & 1) == 0))
@@ -72,13 +72,13 @@
   }
 }
 
-- (id)faceInformationSummaryWithFaces:(id)a3 detectionTraitsByFaceLocalIdentifier:(id)a4 verifiedPersonUUIDs:(id)a5 hiddenPersonUUIDs:(id)a6 personUUIDByMergeCandidateUUID:(id)a7 userFeedbackCalculator:(id)a8 assetUUID:(id)a9
+- (id)faceInformationSummaryWithFaces:(id)faces detectionTraitsByFaceLocalIdentifier:(id)identifier verifiedPersonUUIDs:(id)ds hiddenPersonUUIDs:(id)iDs personUUIDByMergeCandidateUUID:(id)d userFeedbackCalculator:(id)calculator assetUUID:(id)iD
 {
   v63 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v50 = a5;
-  v54 = a6;
-  v13 = [v12 count];
+  facesCopy = faces;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  v13 = [facesCopy count];
   v14 = MEMORY[0x1E695E0F8];
   if (!v13)
   {
@@ -93,12 +93,12 @@
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v51 = [(CLSFaceModel *)self->_faceModel qualityNode];
+  qualityNode = [(CLSFaceModel *)self->_faceModel qualityNode];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v16 = v12;
+  v16 = facesCopy;
   v17 = [v16 countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (!v17)
   {
@@ -112,7 +112,7 @@
   }
 
   v46 = v13;
-  v47 = v12;
+  v47 = facesCopy;
   v48 = 0;
   v49 = 0;
   v56 = v15;
@@ -136,13 +136,13 @@
       v23 = v22;
       [v21 quality];
       v25 = v24;
-      v26 = [v21 eyesState];
+      eyesState = [v21 eyesState];
       v27 = v23 >= self->_faceSizeLowerLimit && v23 <= self->_faceSizeUpperLimit;
-      if (v26 == 2)
+      if (eyesState == 2)
       {
-        v28 = [v51 passesHighPrecisionWithConfidence:v25] & v27;
+        v28 = [qualityNode passesHighPrecisionWithConfidence:v25] & v27;
         v57 += v28 & 1;
-        v29 = [v51 passesWithConfidence:v25] & v27;
+        v29 = [qualityNode passesWithConfidence:v25] & v27;
       }
 
       else
@@ -151,12 +151,12 @@
         v29 = 0;
       }
 
-      v30 = [v21 personLocalIdentifier];
-      v31 = [MEMORY[0x1E6978980] uuidFromLocalIdentifier:v30];
-      if (!v30)
+      personLocalIdentifier = [v21 personLocalIdentifier];
+      v31 = [MEMORY[0x1E6978980] uuidFromLocalIdentifier:personLocalIdentifier];
+      if (!personLocalIdentifier)
       {
-        v35 = [MEMORY[0x1E696AFB0] UUID];
-        v30 = [v35 UUIDString];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        personLocalIdentifier = [uUID UUIDString];
 
 LABEL_20:
         v38 = [CLSFaceInformation alloc];
@@ -165,7 +165,7 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      if ([v54 containsObject:v31])
+      if ([iDsCopy containsObject:v31])
       {
         ++v53;
         v32 = [CLSFaceInformation alloc];
@@ -176,7 +176,7 @@ LABEL_20:
         goto LABEL_22;
       }
 
-      if (!v31 || ![v50 containsObject:v31])
+      if (!v31 || ![dsCopy containsObject:v31])
       {
         goto LABEL_20;
       }
@@ -191,7 +191,7 @@ LABEL_21:
       v34 = v37;
       v15 = v56;
 LABEL_22:
-      [v15 setObject:v34 forKeyedSubscript:v30];
+      [v15 setObject:v34 forKeyedSubscript:personLocalIdentifier];
       v19 = v19 + v25;
     }
 
@@ -201,7 +201,7 @@ LABEL_22:
   while (v17);
 
   v13 = v46;
-  v12 = v47;
+  facesCopy = v47;
   v39 = v19 / v46;
   v40 = v49;
   if (v48)
@@ -235,18 +235,18 @@ LABEL_34:
   return v44;
 }
 
-- (BOOL)assetIsJunkWithSceneClassifications:(id)a3 confidenceThresholdBySceneIdentifierForScenesPreventingJunking:(id)a4 confidenceThresholdBySceneIdentifierForJunkingScenes:(id)a5 confidenceThresholdBySceneIdentifierForScenesPreventingSceneBasedJunking:(id)a6 forMemories:(BOOL)a7
+- (BOOL)assetIsJunkWithSceneClassifications:(id)classifications confidenceThresholdBySceneIdentifierForScenesPreventingJunking:(id)junking confidenceThresholdBySceneIdentifierForJunkingScenes:(id)scenes confidenceThresholdBySceneIdentifierForScenesPreventingSceneBasedJunking:(id)basedJunking forMemories:(BOOL)memories
 {
   v49 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v37 = a5;
-  v40 = a6;
+  classificationsCopy = classifications;
+  junkingCopy = junking;
+  scenesCopy = scenes;
+  basedJunkingCopy = basedJunking;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v13 = v11;
+  v13 = classificationsCopy;
   v14 = [v13 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v14)
   {
@@ -256,7 +256,7 @@ LABEL_34:
     v16 = 0;
     v17 = 0;
     v18 = *v45;
-    v39 = v12;
+    v39 = junkingCopy;
     while (1)
     {
       for (i = 0; i != v15; ++i)
@@ -267,14 +267,14 @@ LABEL_34:
         }
 
         v20 = *(*(&v44 + 1) + 8 * i);
-        v21 = [v20 extendedSceneIdentifier];
+        extendedSceneIdentifier = [v20 extendedSceneIdentifier];
         [v20 confidence];
         v23 = v22;
         junkClassificationModel = self->_junkClassificationModel;
-        if (!junkClassificationModel || ![(CLSJunkClassificationModel *)junkClassificationModel isResponsibleForSignalIdentifier:v21])
+        if (!junkClassificationModel || ![(CLSJunkClassificationModel *)junkClassificationModel isResponsibleForSignalIdentifier:extendedSceneIdentifier])
         {
-          v26 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v21];
-          v27 = [v12 objectForKeyedSubscript:v26];
+          v26 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:extendedSceneIdentifier];
+          v27 = [junkingCopy objectForKeyedSubscript:v26];
           v28 = v27;
           if (v27)
           {
@@ -291,7 +291,7 @@ LABEL_34:
           if (((v16 | v41) & 1) == 0)
           {
             v30 = v13;
-            v31 = [v40 objectForKeyedSubscript:v26];
+            v31 = [basedJunkingCopy objectForKeyedSubscript:v26];
             v32 = v31;
             if (v31)
             {
@@ -311,7 +311,7 @@ LABEL_29:
             {
               if ((v38 & 1) == 0)
               {
-                v34 = [v37 objectForKeyedSubscript:v26];
+                v34 = [scenesCopy objectForKeyedSubscript:v26];
                 if (v34)
                 {
                   v42 = v34;
@@ -345,7 +345,7 @@ LABEL_29:
 LABEL_30:
 
             v13 = v30;
-            v12 = v39;
+            junkingCopy = v39;
           }
 
 LABEL_31:
@@ -383,14 +383,14 @@ LABEL_36:
   return v17 & 1;
 }
 
-- (BOOL)isJunkWithSignal:(id)a3 isReliable:(BOOL *)a4
+- (BOOL)isJunkWithSignal:(id)signal isReliable:(BOOL *)reliable
 {
-  v6 = a3;
+  signalCopy = signal;
   junkClassificationModel = self->_junkClassificationModel;
-  if (junkClassificationModel && ((-[CLSJunkClassificationModel negativeNode](junkClassificationModel, "negativeNode"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 passesHighPrecisionWithSignal:v6], v8, (v9 & 1) != 0) || (-[CLSJunkClassificationModel nonMemorableNode](self->_junkClassificationModel, "nonMemorableNode"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "passesWithSignal:", v6), v10, (v11 & 1) != 0) || (-[CLSJunkClassificationModel poorQualityNode](self->_junkClassificationModel, "poorQualityNode"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "passesWithSignal:", v6), v12, (v13 & 1) != 0) || (-[CLSJunkClassificationModel legacyNode](self->_junkClassificationModel, "legacyNode"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "passesWithSignal:", v6), v14, v15)))
+  if (junkClassificationModel && ((-[CLSJunkClassificationModel negativeNode](junkClassificationModel, "negativeNode"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 passesHighPrecisionWithSignal:signalCopy], v8, (v9 & 1) != 0) || (-[CLSJunkClassificationModel nonMemorableNode](self->_junkClassificationModel, "nonMemorableNode"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "passesWithSignal:", signalCopy), v10, (v11 & 1) != 0) || (-[CLSJunkClassificationModel poorQualityNode](self->_junkClassificationModel, "poorQualityNode"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "passesWithSignal:", signalCopy), v12, (v13 & 1) != 0) || (-[CLSJunkClassificationModel legacyNode](self->_junkClassificationModel, "legacyNode"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "passesWithSignal:", signalCopy), v14, v15)))
   {
     v16 = v9 ^ 1;
-    *a4 = 1;
+    *reliable = 1;
   }
 
   else
@@ -401,24 +401,24 @@ LABEL_36:
   return v16;
 }
 
-- (BOOL)isUtilityForMemoriesWithAsset:(id)a3 userFeedbackCalculator:(id)a4
+- (BOOL)isUtilityForMemoriesWithAsset:(id)asset userFeedbackCalculator:(id)calculator
 {
-  v5 = a3;
-  if ([v5 isAudio] & 1) != 0 || (objc_msgSend(v5, "isTrashed") & 1) != 0 || (objc_msgSend(v5, "isHidden") & 1) != 0 || (objc_msgSend(v5, "clsIsScreenshotOrScreenRecording"))
+  assetCopy = asset;
+  if ([assetCopy isAudio] & 1) != 0 || (objc_msgSend(assetCopy, "isTrashed") & 1) != 0 || (objc_msgSend(assetCopy, "isHidden") & 1) != 0 || (objc_msgSend(assetCopy, "clsIsScreenshotOrScreenRecording"))
   {
     v6 = 1;
   }
 
   else
   {
-    if ([v5 isVideo])
+    if ([assetCopy isVideo])
     {
-      v8 = [(CLSCurationModel_v1 *)self isUtilityForMemoriesWithVideoAsset:v5];
+      v8 = [(CLSCurationModel_v1 *)self isUtilityForMemoriesWithVideoAsset:assetCopy];
     }
 
     else
     {
-      v8 = [(CLSCurationModel_v1 *)self isUtilityForMemoriesForImageAsset:v5];
+      v8 = [(CLSCurationModel_v1 *)self isUtilityForMemoriesForImageAsset:assetCopy];
     }
 
     v6 = v8;
@@ -427,24 +427,24 @@ LABEL_36:
   return v6;
 }
 
-- (BOOL)isUtilityWithAsset:(id)a3
+- (BOOL)isUtilityWithAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 isAudio] & 1) != 0 || (objc_msgSend(v4, "isTrashed") & 1) != 0 || (objc_msgSend(v4, "isHidden") & 1) != 0 || (objc_msgSend(v4, "clsIsScreenshotOrScreenRecording"))
+  assetCopy = asset;
+  if ([assetCopy isAudio] & 1) != 0 || (objc_msgSend(assetCopy, "isTrashed") & 1) != 0 || (objc_msgSend(assetCopy, "isHidden") & 1) != 0 || (objc_msgSend(assetCopy, "clsIsScreenshotOrScreenRecording"))
   {
     v5 = 1;
   }
 
   else
   {
-    if ([v4 isVideo])
+    if ([assetCopy isVideo])
     {
-      v7 = [(CLSCurationModel_v1 *)self isUtilityForVideoAsset:v4];
+      v7 = [(CLSCurationModel_v1 *)self isUtilityForVideoAsset:assetCopy];
     }
 
     else
     {
-      v7 = [(CLSCurationModel_v1 *)self isUtilityForImageAsset:v4];
+      v7 = [(CLSCurationModel_v1 *)self isUtilityForImageAsset:assetCopy];
     }
 
     v5 = v7;
@@ -453,25 +453,25 @@ LABEL_36:
   return v5;
 }
 
-- (BOOL)isUtilityForMemoriesForImageAsset:(id)a3
+- (BOOL)isUtilityForMemoriesForImageAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 clsHasCustomPlaybackVariation])
+  assetCopy = asset;
+  if ([assetCopy clsHasCustomPlaybackVariation])
   {
     goto LABEL_5;
   }
 
-  if (([v4 clsIsTragicFailure] & 1) == 0)
+  if (([assetCopy clsIsTragicFailure] & 1) == 0)
   {
-    if (![v4 clsPeopleCount])
+    if (![assetCopy clsPeopleCount])
     {
-      v7 = [v4 clsSceneClassifications];
-      v8 = [(CLSCurationModel_v1 *)self imageAssetIsJunkFromSceneAndJunkClassifications:v7];
+      clsSceneClassifications = [assetCopy clsSceneClassifications];
+      v8 = [(CLSCurationModel_v1 *)self imageAssetIsJunkFromSceneAndJunkClassifications:clsSceneClassifications];
 
       if (!v8)
       {
-        v9 = [v4 clsSceneClassifications];
-        v5 = [(CLSCurationModel_v1 *)self imageAssetIsJunkForMemoriesFromSceneAndJunkClassifications:v9 forKeyAsset:0 forMemories:1];
+        clsSceneClassifications2 = [assetCopy clsSceneClassifications];
+        v5 = [(CLSCurationModel_v1 *)self imageAssetIsJunkForMemoriesFromSceneAndJunkClassifications:clsSceneClassifications2 forKeyAsset:0 forMemories:1];
 
         goto LABEL_6;
       }
@@ -491,22 +491,22 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isUtilityForImageAsset:(id)a3
+- (BOOL)isUtilityForImageAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 clsHasCustomPlaybackVariation])
+  assetCopy = asset;
+  if ([assetCopy clsHasCustomPlaybackVariation])
   {
 LABEL_5:
     v5 = 0;
     goto LABEL_6;
   }
 
-  if (([v4 clsIsTragicFailure] & 1) == 0)
+  if (([assetCopy clsIsTragicFailure] & 1) == 0)
   {
-    if (![v4 clsPeopleCount])
+    if (![assetCopy clsPeopleCount])
     {
-      v7 = [v4 clsSceneClassifications];
-      v5 = [(CLSCurationModel_v1 *)self imageAssetIsJunkFromSceneAndJunkClassifications:v7];
+      clsSceneClassifications = [assetCopy clsSceneClassifications];
+      v5 = [(CLSCurationModel_v1 *)self imageAssetIsJunkFromSceneAndJunkClassifications:clsSceneClassifications];
 
       goto LABEL_6;
     }
@@ -520,10 +520,10 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)imageAssetIsJunkForMemoriesFromSceneAndJunkClassifications:(id)a3 forKeyAsset:(BOOL)a4 forMemories:(BOOL)a5
+- (BOOL)imageAssetIsJunkForMemoriesFromSceneAndJunkClassifications:(id)classifications forKeyAsset:(BOOL)asset forMemories:(BOOL)memories
 {
-  v5 = a5;
-  if (a4)
+  memoriesCopy = memories;
+  if (asset)
   {
     confidenceThresholdBySceneIdentifierForBabyChildTeenAdultAndPetScenes = MEMORY[0x1E695E0F8];
   }
@@ -535,22 +535,22 @@ LABEL_6:
 
   confidenceThresholdBySceneIdentifierForUtilityScenes = self->_confidenceThresholdBySceneIdentifierForUtilityScenes;
   v10 = confidenceThresholdBySceneIdentifierForBabyChildTeenAdultAndPetScenes;
-  v11 = [(CLSCurationModel_v1 *)self assetIsJunkWithSceneClassifications:a3 confidenceThresholdBySceneIdentifierForScenesPreventingJunking:v10 confidenceThresholdBySceneIdentifierForJunkingScenes:confidenceThresholdBySceneIdentifierForUtilityScenes confidenceThresholdBySceneIdentifierForScenesPreventingSceneBasedJunking:v10 forMemories:v5];
+  v11 = [(CLSCurationModel_v1 *)self assetIsJunkWithSceneClassifications:classifications confidenceThresholdBySceneIdentifierForScenesPreventingJunking:v10 confidenceThresholdBySceneIdentifierForJunkingScenes:confidenceThresholdBySceneIdentifierForUtilityScenes confidenceThresholdBySceneIdentifierForScenesPreventingSceneBasedJunking:v10 forMemories:memoriesCopy];
 
   return v11;
 }
 
-- (BOOL)imageAssetIsJunkFromSceneAndJunkClassifications:(id)a3
+- (BOOL)imageAssetIsJunkFromSceneAndJunkClassifications:(id)classifications
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  classificationsCopy = classifications;
   v30 = self->_confidenceThresholdBySceneIdentifierForBabyChildTeenAdultAndPetScenes;
   v29 = self->_confidenceThresholdBySceneIdentifierForWhiteboardScenes;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = v4;
+  v5 = classificationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v6)
   {
@@ -572,8 +572,8 @@ LABEL_3:
       junkClassificationModel = self->_junkClassificationModel;
       if (junkClassificationModel)
       {
-        v14 = [(CLSJunkClassificationModel *)junkClassificationModel negativeNode];
-        v15 = [v14 passesHighPrecisionWithSignal:v12];
+        negativeNode = [(CLSJunkClassificationModel *)junkClassificationModel negativeNode];
+        v15 = [negativeNode passesHighPrecisionWithSignal:v12];
 
         if (v15)
         {
@@ -588,13 +588,13 @@ LABEL_3:
 
       else
       {
-        v16 = [v12 extendedSceneIdentifier];
+        extendedSceneIdentifier = [v12 extendedSceneIdentifier];
         v17 = self->_junkClassificationModel;
-        if (!v17 || ![(CLSJunkClassificationModel *)v17 isResponsibleForSignalIdentifier:v16])
+        if (!v17 || ![(CLSJunkClassificationModel *)v17 isResponsibleForSignalIdentifier:extendedSceneIdentifier])
         {
           [v12 confidence];
           v19 = v18;
-          v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v16];
+          v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:extendedSceneIdentifier];
           v21 = [(NSDictionary *)v30 objectForKeyedSubscript:v20];
 
           if (v21)
@@ -611,7 +611,7 @@ LABEL_21:
 
           else
           {
-            v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v16];
+            v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:extendedSceneIdentifier];
             v24 = [(NSDictionary *)v29 objectForKeyedSubscript:v23];
 
             if (v24)
@@ -653,24 +653,24 @@ LABEL_26:
   return v26;
 }
 
-- (BOOL)isJunkWithJunkClassification:(id)a3
+- (BOOL)isJunkWithJunkClassification:(id)classification
 {
-  v4 = a3;
+  classificationCopy = classification;
   junkClassificationModel = self->_junkClassificationModel;
   if (junkClassificationModel)
   {
-    v6 = [(CLSJunkClassificationModel *)junkClassificationModel receiptOrDocumentNode];
-    v7 = [v6 passesWithSignal:v4];
+    receiptOrDocumentNode = [(CLSJunkClassificationModel *)junkClassificationModel receiptOrDocumentNode];
+    v7 = [receiptOrDocumentNode passesWithSignal:classificationCopy];
 
-    if (v7 & 1) != 0 || (-[CLSJunkClassificationModel screenshotNode](self->_junkClassificationModel, "screenshotNode"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 passesWithSignal:v4], v8, (v9))
+    if (v7 & 1) != 0 || (-[CLSJunkClassificationModel screenshotNode](self->_junkClassificationModel, "screenshotNode"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 passesWithSignal:classificationCopy], v8, (v9))
     {
       v10 = 1;
     }
 
     else
     {
-      v11 = [(CLSJunkClassificationModel *)self->_junkClassificationModel tragicFailureNode];
-      v10 = [v11 passesWithSignal:v4];
+      tragicFailureNode = [(CLSJunkClassificationModel *)self->_junkClassificationModel tragicFailureNode];
+      v10 = [tragicFailureNode passesWithSignal:classificationCopy];
     }
   }
 
@@ -682,32 +682,32 @@ LABEL_26:
   return v10;
 }
 
-- (BOOL)isTragicFailureWithImageAsset:(id)a3
+- (BOOL)isTragicFailureWithImageAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 clsIsBlurry] & 1) != 0 || (v5 = self->_aestheticsModel) != 0 && (-[CLSAestheticsModel overallAestheticScoreNode](v5, "overallAestheticScoreNode"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "clsAestheticScore"), v7 = objc_msgSend(v6, "failsHighRecallWithConfidence:"), v6, (v7))
+  assetCopy = asset;
+  if ([assetCopy clsIsBlurry] & 1) != 0 || (v5 = self->_aestheticsModel) != 0 && (-[CLSAestheticsModel overallAestheticScoreNode](v5, "overallAestheticScoreNode"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(assetCopy, "clsAestheticScore"), v7 = objc_msgSend(v6, "failsHighRecallWithConfidence:"), v6, (v7))
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v4 aestheticProperties];
+    aestheticProperties = [assetCopy aestheticProperties];
     aestheticsModel = self->_aestheticsModel;
     if (aestheticsModel)
     {
-      v11 = [(CLSAestheticsModel *)aestheticsModel failureScoreNode];
-      [v9 failureScore];
-      if ([v11 failsHighRecallWithConfidence:v12])
+      failureScoreNode = [(CLSAestheticsModel *)aestheticsModel failureScoreNode];
+      [aestheticProperties failureScore];
+      if ([failureScoreNode failsHighRecallWithConfidence:v12])
       {
         v8 = 1;
       }
 
       else
       {
-        v13 = [(CLSAestheticsModel *)self->_aestheticsModel tastefullyBlurredScoreNode];
-        [v9 tastefullyBlurredScore];
-        v8 = [v13 failsHighRecallWithConfidence:v14];
+        tastefullyBlurredScoreNode = [(CLSAestheticsModel *)self->_aestheticsModel tastefullyBlurredScoreNode];
+        [aestheticProperties tastefullyBlurredScore];
+        v8 = [tastefullyBlurredScoreNode failsHighRecallWithConfidence:v14];
       }
     }
 
@@ -720,11 +720,11 @@ LABEL_26:
   return v8;
 }
 
-- (BOOL)isBadQualityForImageKeyAssetWithAsset:(id)a3 statistics:(id *)a4
+- (BOOL)isBadQualityForImageKeyAssetWithAsset:(id)asset statistics:(id *)statistics
 {
-  v6 = a3;
+  assetCopy = asset;
   mediaPreAnalysisModel = self->_mediaPreAnalysisModel;
-  if (!mediaPreAnalysisModel || (-[CLSMediaPreAnalysisModel sharpnessNode](mediaPreAnalysisModel, "sharpnessNode"), v8 = objc_claimAutoreleasedReturnValue(), [v6 clsSharpnessScore], v9 = objc_msgSend(v8, "failsHighPrecisionWithConfidence:"), v8, !v9))
+  if (!mediaPreAnalysisModel || (-[CLSMediaPreAnalysisModel sharpnessNode](mediaPreAnalysisModel, "sharpnessNode"), v8 = objc_claimAutoreleasedReturnValue(), [assetCopy clsSharpnessScore], v9 = objc_msgSend(v8, "failsHighPrecisionWithConfidence:"), v8, !v9))
   {
     aestheticsModel = self->_aestheticsModel;
     if (!aestheticsModel)
@@ -733,20 +733,20 @@ LABEL_26:
       goto LABEL_17;
     }
 
-    v11 = [(CLSAestheticsModel *)aestheticsModel overallAestheticScoreNode];
-    [v6 clsAestheticScore];
-    v12 = [v11 failsHighPrecisionWithConfidence:?];
+    overallAestheticScoreNode = [(CLSAestheticsModel *)aestheticsModel overallAestheticScoreNode];
+    [assetCopy clsAestheticScore];
+    v12 = [overallAestheticScoreNode failsHighPrecisionWithConfidence:?];
 
     if (v12)
     {
-      ++a4->var1;
+      ++statistics->var1;
       goto LABEL_7;
     }
 
-    v14 = [v6 aestheticProperties];
-    v15 = [(CLSAestheticsModel *)self->_aestheticsModel failureScoreNode];
-    [v14 failureScore];
-    v17 = [v15 failsHighPrecisionWithConfidence:v16];
+    aestheticProperties = [assetCopy aestheticProperties];
+    failureScoreNode = [(CLSAestheticsModel *)self->_aestheticsModel failureScoreNode];
+    [aestheticProperties failureScore];
+    v17 = [failureScoreNode failsHighPrecisionWithConfidence:v16];
 
     if (v17)
     {
@@ -755,9 +755,9 @@ LABEL_26:
 
     else
     {
-      v19 = [(CLSAestheticsModel *)self->_aestheticsModel tastefullyBlurredScoreNode];
-      [v14 tastefullyBlurredScore];
-      v21 = [v19 failsHighPrecisionWithConfidence:v20];
+      tastefullyBlurredScoreNode = [(CLSAestheticsModel *)self->_aestheticsModel tastefullyBlurredScoreNode];
+      [aestheticProperties tastefullyBlurredScore];
+      v21 = [tastefullyBlurredScoreNode failsHighPrecisionWithConfidence:v20];
 
       if (v21)
       {
@@ -766,9 +766,9 @@ LABEL_26:
 
       else
       {
-        v22 = [(CLSAestheticsModel *)self->_aestheticsModel pleasantLightingScoreNode];
-        [v14 pleasantLightingScore];
-        v24 = [v22 failsHighPrecisionWithConfidence:v23];
+        pleasantLightingScoreNode = [(CLSAestheticsModel *)self->_aestheticsModel pleasantLightingScoreNode];
+        [aestheticProperties pleasantLightingScore];
+        v24 = [pleasantLightingScoreNode failsHighPrecisionWithConfidence:v23];
 
         if (!v24)
         {
@@ -780,14 +780,14 @@ LABEL_26:
       }
     }
 
-    ++*(&a4->var0 + v18);
+    ++*(&statistics->var0 + v18);
     v13 = 1;
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  ++a4->var0;
+  ++statistics->var0;
 LABEL_7:
   v13 = 1;
 LABEL_17:
@@ -795,19 +795,19 @@ LABEL_17:
   return v13;
 }
 
-- (BOOL)isUtilityForVideoAsset:(id)a3
+- (BOOL)isUtilityForVideoAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   [(CLSCurationModel_v1 *)self minimumDurationForVideoToNotBeJunk];
   v6 = v5;
-  if ([v4 isSubtype:0x20000])
+  if ([assetCopy isSubtype:0x20000])
   {
     [(CLSCurationModel_v1 *)self minimumDurationForHighFramerateVideoToNotBeJunk];
   }
 
   else
   {
-    if (![v4 isSubtype:0x40000])
+    if (![assetCopy isSubtype:0x40000])
     {
       goto LABEL_6;
     }
@@ -817,12 +817,12 @@ LABEL_17:
 
   v6 = v7;
 LABEL_6:
-  [v4 duration];
+  [assetCopy duration];
   if (v8 >= v6)
   {
     if (self->_mediaAnalysisModel)
     {
-      [v4 clsVideoScore];
+      [assetCopy clsVideoScore];
       v11 = v10;
       [(CLSMediaAnalysisModel *)self->_mediaAnalysisModel videoScoreThresholdToNotBeJunk];
       v9 = v11 < v12;
@@ -842,21 +842,21 @@ LABEL_6:
   return v9;
 }
 
-- (double)scoreWithAsset:(id)a3 inContext:(id)a4
+- (double)scoreWithAsset:(id)asset inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 clsIsUtility] || (v8 = 0.25, objc_msgSend(v6, "isFavorite")))
+  assetCopy = asset;
+  contextCopy = context;
+  if (![assetCopy clsIsUtility] || (v8 = 0.25, objc_msgSend(assetCopy, "isFavorite")))
   {
-    if (v7)
+    if (contextCopy)
     {
-      v9 = [v6 clsViewCount];
-      [v7 viewCountThreshold];
-      if (v10 >= v9)
+      clsViewCount = [assetCopy clsViewCount];
+      [contextCopy viewCountThreshold];
+      if (v10 >= clsViewCount)
       {
-        v16 = [v6 clsPlayCount];
-        [v7 playCountThreshold];
-        v11 = v17 < v16;
+        clsPlayCount = [assetCopy clsPlayCount];
+        [contextCopy playCountThreshold];
+        v11 = v17 < clsPlayCount;
       }
 
       else
@@ -864,34 +864,34 @@ LABEL_6:
         v11 = 1;
       }
 
-      v18 = [v7 shouldEmphasizeShared];
-      v19 = [v7 shouldEmphasizeAdjusted];
-      HIDWORD(v33) = [v7 shouldEmphasizePanorama];
-      v12 = [v7 shouldEmphasizeLive];
-      HIDWORD(v31) = [v7 shouldEmphasizeBurst];
-      LODWORD(v33) = [v7 shouldEmphasizeSDOF];
-      LODWORD(v31) = [v7 audioClassificationsToEmphasize];
-      v14 = v18 ^ 1;
-      v13 = v19 ^ 1;
-      v15 = [v6 clsPeopleCount];
+      shouldEmphasizeShared = [contextCopy shouldEmphasizeShared];
+      shouldEmphasizeAdjusted = [contextCopy shouldEmphasizeAdjusted];
+      HIDWORD(v33) = [contextCopy shouldEmphasizePanorama];
+      shouldEmphasizeLive = [contextCopy shouldEmphasizeLive];
+      HIDWORD(v31) = [contextCopy shouldEmphasizeBurst];
+      LODWORD(v33) = [contextCopy shouldEmphasizeSDOF];
+      LODWORD(v31) = [contextCopy audioClassificationsToEmphasize];
+      v14 = shouldEmphasizeShared ^ 1;
+      v13 = shouldEmphasizeAdjusted ^ 1;
+      clsPeopleCount = [assetCopy clsPeopleCount];
     }
 
     else
     {
       v33 = 0;
-      v12 = 0;
+      shouldEmphasizeLive = 0;
       v11 = 0;
       v13 = 1;
       v14 = 1;
-      v15 = [v6 clsPeopleCount];
+      clsPeopleCount = [assetCopy clsPeopleCount];
     }
 
-    v20 = v15;
-    v21 = [v6 clsFaceInformationSummary];
-    [v21 averageFaceQuality];
+    v20 = clsPeopleCount;
+    clsFaceInformationSummary = [assetCopy clsFaceInformationSummary];
+    [clsFaceInformationSummary averageFaceQuality];
     v23 = v22;
-    v24 = [v6 isVideo];
-    if ([v6 isFavorite] & 1) != 0 || -[CLSCurationModel_v1 asset:isAestheticallyAwesomeWithContext:](self, "asset:isAestheticallyAwesomeWithContext:", v6, v7) || (objc_msgSend(v6, "isIncludedInCloudFeeds"))
+    isVideo = [assetCopy isVideo];
+    if ([assetCopy isFavorite] & 1) != 0 || -[CLSCurationModel_v1 asset:isAestheticallyAwesomeWithContext:](self, "asset:isAestheticallyAwesomeWithContext:", assetCopy, contextCopy) || (objc_msgSend(assetCopy, "isIncludedInCloudFeeds"))
     {
 LABEL_12:
       if (!v20)
@@ -909,7 +909,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if (([v6 clsShareCount] == 0) | v14 & 1)
+    if (([assetCopy clsShareCount] == 0) | v14 & 1)
     {
       if (v20 > 3)
       {
@@ -917,17 +917,17 @@ LABEL_16:
       }
     }
 
-    else if ([v6 clsVideoFaceCount] || v20 > 3)
+    else if ([assetCopy clsVideoFaceCount] || v20 > 3)
     {
       goto LABEL_12;
     }
 
-    if (v24)
+    if (isVideo)
     {
-      v27 = [v6 clsVideoFaceCount];
-      if (v20 <= v27)
+      clsVideoFaceCount = [assetCopy clsVideoFaceCount];
+      if (v20 <= clsVideoFaceCount)
       {
-        v20 = v27;
+        v20 = clsVideoFaceCount;
       }
     }
 
@@ -941,8 +941,8 @@ LABEL_16:
       v28 = 0.0;
     }
 
-    v29 = [v6 clsIsInterestingLivePhoto];
-    if ((v13 | v24))
+    clsIsInterestingLivePhoto = [assetCopy clsIsInterestingLivePhoto];
+    if ((v13 | isVideo))
     {
       if (v11)
       {
@@ -950,16 +950,16 @@ LABEL_16:
       }
     }
 
-    else if (([v6 hasAdjustments] | v11))
+    else if (([assetCopy hasAdjustments] | v11))
     {
 LABEL_43:
       v8 = v28 * 0.15 + 0.6;
       goto LABEL_16;
     }
 
-    if (([v6 clsIsInterestingVideo] & 1) == 0 && (v12 & v29 & 1) == 0 && (!HIDWORD(v33) || (objc_msgSend(v6, "clsIsInterestingPanorama") & 1) == 0) && (!v33 || (objc_msgSend(v6, "clsIsInterestingSDOF") & 1) == 0) && (!v29 || (v30 & objc_msgSend(v6, "clsInterestingAudioClassifications")) == 0) && (!v32 || !objc_msgSend(v6, "representsBurst")))
+    if (([assetCopy clsIsInterestingVideo] & 1) == 0 && (shouldEmphasizeLive & clsIsInterestingLivePhoto & 1) == 0 && (!HIDWORD(v33) || (objc_msgSend(assetCopy, "clsIsInterestingPanorama") & 1) == 0) && (!v33 || (objc_msgSend(assetCopy, "clsIsInterestingSDOF") & 1) == 0) && (!clsIsInterestingLivePhoto || (v30 & objc_msgSend(assetCopy, "clsInterestingAudioClassifications")) == 0) && (!v32 || !objc_msgSend(assetCopy, "representsBurst")))
     {
-      if ((v24 & (v28 * 0.25 + 0.5 < 0.6)) != 0)
+      if ((isVideo & (v28 * 0.25 + 0.5 < 0.6)) != 0)
       {
         v8 = 0.6;
       }
@@ -980,19 +980,19 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)asset:(id)a3 isAestheticallyAwesomeWithContext:(id)a4
+- (BOOL)asset:(id)asset isAestheticallyAwesomeWithContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isVideo])
+  assetCopy = asset;
+  contextCopy = context;
+  if ([assetCopy isVideo])
   {
     v8 = 0;
   }
 
   else
   {
-    aestheticsModel = v7;
-    if (v7 || (aestheticsModel = self->_aestheticsModel) != 0)
+    aestheticsModel = contextCopy;
+    if (contextCopy || (aestheticsModel = self->_aestheticsModel) != 0)
     {
       [(CLSAestheticsModel *)aestheticsModel aestheticScoreThresholdToBeAwesome];
       v11 = v10;
@@ -1003,16 +1003,16 @@ LABEL_17:
       v11 = 1.0;
     }
 
-    [v6 clsAestheticScore];
+    [assetCopy clsAestheticScore];
     v8 = v12 >= v11;
   }
 
   return v8;
 }
 
-- (BOOL)isAestheticallyAwesomeWithAsset:(id)a3
+- (BOOL)isAestheticallyAwesomeWithAsset:(id)asset
 {
-  [a3 clsAestheticScore];
+  [asset clsAestheticScore];
   aestheticsModel = self->_aestheticsModel;
   if (aestheticsModel)
   {
@@ -1024,9 +1024,9 @@ LABEL_17:
   return aestheticsModel;
 }
 
-- (BOOL)isAestheticallyPrettyGoodWithAsset:(id)a3
+- (BOOL)isAestheticallyPrettyGoodWithAsset:(id)asset
 {
-  [a3 clsAestheticScore];
+  [asset clsAestheticScore];
   aestheticsModel = self->_aestheticsModel;
   if (aestheticsModel)
   {
@@ -1038,7 +1038,7 @@ LABEL_17:
   return aestheticsModel;
 }
 
-- (BOOL)isNonMemorableWithAsset:(id)a3
+- (BOOL)isNonMemorableWithAsset:(id)asset
 {
   v18 = *MEMORY[0x1E69E9840];
   if (!self->_junkClassificationModel)
@@ -1046,7 +1046,7 @@ LABEL_17:
     return 0;
   }
 
-  [a3 clsSceneClassifications];
+  [asset clsSceneClassifications];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1066,8 +1066,8 @@ LABEL_17:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [(CLSJunkClassificationModel *)self->_junkClassificationModel nonMemorableNode];
-        LOBYTE(v9) = [v10 passesWithSignal:v9];
+        nonMemorableNode = [(CLSJunkClassificationModel *)self->_junkClassificationModel nonMemorableNode];
+        LOBYTE(v9) = [nonMemorableNode passesWithSignal:v9];
 
         if (v9)
         {
@@ -1092,18 +1092,18 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)isInterestingVideoWithAsset:(id)a3
+- (BOOL)isInterestingVideoWithAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 isVideo])
+  assetCopy = asset;
+  if ([assetCopy isVideo])
   {
-    v5 = [v4 mediaAnalysisProperties];
-    v6 = [v5 mediaAnalysisTimeStamp];
-    if (v6)
+    mediaAnalysisProperties = [assetCopy mediaAnalysisProperties];
+    mediaAnalysisTimeStamp = [mediaAnalysisProperties mediaAnalysisTimeStamp];
+    if (mediaAnalysisTimeStamp)
     {
       if (self->_mediaAnalysisModel)
       {
-        [v5 videoScore];
+        [mediaAnalysisProperties videoScore];
         v8 = v7;
         [(CLSMediaAnalysisModel *)self->_mediaAnalysisModel videoScoreThresholdToBeInteresting];
         v10 = v9 <= v8;
@@ -1129,26 +1129,26 @@ LABEL_12:
   return v10;
 }
 
-- (signed)interestingAudioClassificationsWithAsset:(id)a3
+- (signed)interestingAudioClassificationsWithAsset:(id)asset
 {
-  v3 = [a3 mediaAnalysisProperties];
-  v4 = [v3 audioClassification];
+  mediaAnalysisProperties = [asset mediaAnalysisProperties];
+  audioClassification = [mediaAnalysisProperties audioClassification];
 
-  return v4 & ~[objc_opt_class() uninterestingAudioClassifications];
+  return audioClassification & ~[objc_opt_class() uninterestingAudioClassifications];
 }
 
-- (BOOL)isInterestingLivePhotoWithAsset:(id)a3
+- (BOOL)isInterestingLivePhotoWithAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 isSubtype:8])
+  assetCopy = asset;
+  if ([assetCopy isSubtype:8])
   {
-    v5 = [v4 mediaAnalysisProperties];
-    v6 = [v5 mediaAnalysisTimeStamp];
-    if (v6)
+    mediaAnalysisProperties = [assetCopy mediaAnalysisProperties];
+    mediaAnalysisTimeStamp = [mediaAnalysisProperties mediaAnalysisTimeStamp];
+    if (mediaAnalysisTimeStamp)
     {
       if (self->_mediaAnalysisModel)
       {
-        [v5 autoplaySuggestionScore];
+        [mediaAnalysisProperties autoplaySuggestionScore];
         v8 = v7;
         [(CLSMediaAnalysisModel *)self->_mediaAnalysisModel autoplaySuggestionScoreThresholdToBeInteresting];
         v10 = v9 <= v8;
@@ -1174,18 +1174,18 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)hasInterestingScenesWithAsset:(id)a3
+- (BOOL)hasInterestingScenesWithAsset:(id)asset
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [a3 clsSceneClassifications];
-  if ([v4 count])
+  clsSceneClassifications = [asset clsSceneClassifications];
+  if ([clsSceneClassifications count])
   {
     v5 = self->_confidenceThresholdBySceneIdentifierForInterestingScenes;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v4;
+    v6 = clsSceneClassifications;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -1238,81 +1238,81 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)hasPoorResolutionWithAsset:(id)a3
+- (BOOL)hasPoorResolutionWithAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 pixelWidth];
-  v5 = [v3 pixelHeight];
+  assetCopy = asset;
+  pixelWidth = [assetCopy pixelWidth];
+  pixelHeight = [assetCopy pixelHeight];
 
-  if (v4 >= v5)
+  if (pixelWidth >= pixelHeight)
   {
-    v6 = v5;
+    v6 = pixelHeight;
   }
 
   else
   {
-    v6 = v4;
+    v6 = pixelWidth;
   }
 
   return v6 < 0x259;
 }
 
-- (BOOL)avoidIfPossibleForKeyAssetWithAsset:(id)a3 statistics:(id *)a4
+- (BOOL)avoidIfPossibleForKeyAssetWithAsset:(id)asset statistics:(id *)statistics
 {
-  v6 = a3;
-  v7 = [v6 clsFaceInformationSummary];
-  v8 = [v7 numberOfFacesOfHiddenPersons];
+  assetCopy = asset;
+  clsFaceInformationSummary = [assetCopy clsFaceInformationSummary];
+  numberOfFacesOfHiddenPersons = [clsFaceInformationSummary numberOfFacesOfHiddenPersons];
 
-  if (v8)
+  if (numberOfFacesOfHiddenPersons)
   {
     goto LABEL_2;
   }
 
-  if (![v6 isPhoto])
+  if (![assetCopy isPhoto])
   {
-    if (![v6 isVideo])
+    if (![assetCopy isVideo])
     {
       goto LABEL_3;
     }
 
-    if (([v6 clsIsInterestingVideo] & 1) == 0)
+    if (([assetCopy clsIsInterestingVideo] & 1) == 0)
     {
-      a4 = (a4 + 32);
+      statistics = (statistics + 32);
       goto LABEL_2;
     }
 
     if (self->_mediaAnalysisModel)
     {
-      [v6 clsAutoplaySuggestionScore];
+      [assetCopy clsAutoplaySuggestionScore];
       v12 = v11;
       [(CLSMediaAnalysisModel *)self->_mediaAnalysisModel autoplaySuggestionScoreExclusiveThresholdForVideoKeyAsset];
       if (v12 <= v13)
       {
-        a4 = (a4 + 36);
+        statistics = (statistics + 36);
         goto LABEL_2;
       }
     }
 
-    v14 = [v6 clsLocation];
+    clsLocation = [assetCopy clsLocation];
 
-    v15 = [v6 clsHasPoorResolution];
-    if (!v14 && v15)
+    clsHasPoorResolution = [assetCopy clsHasPoorResolution];
+    if (!clsLocation && clsHasPoorResolution)
     {
-      a4 = (a4 + 40);
+      statistics = (statistics + 40);
       goto LABEL_2;
     }
 
 LABEL_19:
-    if ([CLSCurationUtilities isRiskyFileFormatWithAsset:v6])
+    if ([CLSCurationUtilities isRiskyFileFormatWithAsset:assetCopy])
     {
-      a4 = (a4 + 44);
+      statistics = (statistics + 44);
     }
 
     else
     {
-      v18 = [v6 curationProperties];
-      v19 = [v18 importedByBundleIdentifier];
-      v20 = [CLSCurationUtilities isBlocklistedImportedByBundleIdentifier:v19 withExternalAppBlocklistType:0];
+      curationProperties = [assetCopy curationProperties];
+      importedByBundleIdentifier = [curationProperties importedByBundleIdentifier];
+      v20 = [CLSCurationUtilities isBlocklistedImportedByBundleIdentifier:importedByBundleIdentifier withExternalAppBlocklistType:0];
 
       if (!v20)
       {
@@ -1320,34 +1320,34 @@ LABEL_19:
         goto LABEL_4;
       }
 
-      a4 = (a4 + 48);
+      statistics = (statistics + 48);
     }
 
     goto LABEL_2;
   }
 
-  if (![v6 isSubtype:1])
+  if (![assetCopy isSubtype:1])
   {
-    if ([(CLSCurationModel_v1 *)self isBadQualityForImageKeyAssetWithAsset:v6 statistics:&a4->var2])
+    if ([(CLSCurationModel_v1 *)self isBadQualityForImageKeyAssetWithAsset:assetCopy statistics:&statistics->var2])
     {
       goto LABEL_3;
     }
 
-    v16 = [v6 clsSceneClassifications];
-    v17 = [(CLSCurationModel_v1 *)self imageAssetIsJunkForMemoriesFromSceneAndJunkClassifications:v16 forKeyAsset:1 forMemories:1];
+    clsSceneClassifications = [assetCopy clsSceneClassifications];
+    v17 = [(CLSCurationModel_v1 *)self imageAssetIsJunkForMemoriesFromSceneAndJunkClassifications:clsSceneClassifications forKeyAsset:1 forMemories:1];
 
     if (v17)
     {
-      a4 = (a4 + 28);
+      statistics = (statistics + 28);
       goto LABEL_2;
     }
 
     goto LABEL_19;
   }
 
-  a4 = (a4 + 4);
+  statistics = (statistics + 4);
 LABEL_2:
-  ++a4->var0;
+  ++statistics->var0;
 LABEL_3:
   v9 = 1;
 LABEL_4:
@@ -1355,42 +1355,42 @@ LABEL_4:
   return v9;
 }
 
-- (BOOL)isInhabitedWithAsset:(id)a3
+- (BOOL)isInhabitedWithAsset:(id)asset
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = objc_getAssociatedObject(v4, "clsIsInhabited");
+  assetCopy = asset;
+  v5 = objc_getAssociatedObject(assetCopy, "clsIsInhabited");
   v6 = v5;
   if (v5)
   {
     LOBYTE(v7) = [v5 BOOLValue];
   }
 
-  else if ([v4 clsIsUtility])
+  else if ([assetCopy clsIsUtility])
   {
     LOBYTE(v7) = 0;
   }
 
-  else if ([v4 clsPeopleCount] || objc_msgSend(v4, "clsVideoFaceCount"))
+  else if ([assetCopy clsPeopleCount] || objc_msgSend(assetCopy, "clsVideoFaceCount"))
   {
     LOBYTE(v7) = 1;
   }
 
   else
   {
-    v9 = [v4 clsSceneClassifications];
-    if ([v9 count])
+    clsSceneClassifications = [assetCopy clsSceneClassifications];
+    if ([clsSceneClassifications count])
     {
       v10 = self->_confidenceThresholdBySceneIdentifierForBabyChildTeenAdultAndPetScenes;
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v11 = v9;
+      v11 = clsSceneClassifications;
       v7 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v7)
       {
-        v21 = v9;
+        v21 = clsSceneClassifications;
         v12 = *v23;
         while (2)
         {
@@ -1429,7 +1429,7 @@ LABEL_4:
         }
 
 LABEL_22:
-        v9 = v21;
+        clsSceneClassifications = v21;
       }
     }
 
@@ -1439,13 +1439,13 @@ LABEL_22:
     }
 
     v20 = [MEMORY[0x1E696AD98] numberWithBool:v7];
-    objc_setAssociatedObject(v4, "clsIsInhabited", v20, 3);
+    objc_setAssociatedObject(assetCopy, "clsIsInhabited", v20, 3);
   }
 
   return v7;
 }
 
-- (BOOL)isBlurryWithAsset:(id)a3
+- (BOOL)isBlurryWithAsset:(id)asset
 {
   mediaPreAnalysisModel = self->_mediaPreAnalysisModel;
   if (!mediaPreAnalysisModel)
@@ -1453,13 +1453,13 @@ LABEL_22:
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(CLSMediaPreAnalysisModel *)mediaPreAnalysisModel sharpnessNode];
-  [v4 clsSharpnessScore];
+  assetCopy = asset;
+  sharpnessNode = [(CLSMediaPreAnalysisModel *)mediaPreAnalysisModel sharpnessNode];
+  [assetCopy clsSharpnessScore];
   v7 = v6;
 
-  LOBYTE(v4) = [v5 failsHighRecallWithConfidence:v7];
-  return v4;
+  LOBYTE(assetCopy) = [sharpnessNode failsHighRecallWithConfidence:v7];
+  return assetCopy;
 }
 
 - (id)initForTesting
@@ -1470,36 +1470,36 @@ LABEL_22:
   return v4;
 }
 
-- (CLSCurationModel_v1)initWithCurationModelSpecification:(id)a3
+- (CLSCurationModel_v1)initWithCurationModelSpecification:(id)specification
 {
-  v4 = a3;
+  specificationCopy = specification;
   v30.receiver = self;
   v30.super_class = CLSCurationModel_v1;
   v5 = [(CLSCurationModel_v1 *)&v30 init];
   if (v5)
   {
-    v6 = [v4 sceneAnalysisVersion];
-    v7 = [objc_alloc(MEMORY[0x1E69C1A90]) initWithSceneAnalysisVersion:v6];
+    sceneAnalysisVersion = [specificationCopy sceneAnalysisVersion];
+    v7 = [objc_alloc(MEMORY[0x1E69C1A90]) initWithSceneAnalysisVersion:sceneAnalysisVersion];
     v8 = *(v5 + 1);
     *(v5 + 1) = v7;
 
-    v9 = [objc_alloc(MEMORY[0x1E69C1A68]) initWithSceneAnalysisVersion:v6];
+    v9 = [objc_alloc(MEMORY[0x1E69C1A68]) initWithSceneAnalysisVersion:sceneAnalysisVersion];
     v10 = *(v5 + 2);
     *(v5 + 2) = v9;
 
-    v11 = [objc_alloc(MEMORY[0x1E69C1A60]) initWithMediaAnalysisVersion:{objc_msgSend(v4, "mediaAnalysisVersion")}];
+    v11 = [objc_alloc(MEMORY[0x1E69C1A60]) initWithMediaAnalysisVersion:{objc_msgSend(specificationCopy, "mediaAnalysisVersion")}];
     v12 = *(v5 + 3);
     *(v5 + 3) = v11;
 
-    v13 = [objc_alloc(MEMORY[0x1E69C1A18]) initWithSceneAnalysisVersion:v6];
+    v13 = [objc_alloc(MEMORY[0x1E69C1A18]) initWithSceneAnalysisVersion:sceneAnalysisVersion];
     v14 = *(v5 + 4);
     *(v5 + 4) = v13;
 
-    v15 = [objc_alloc(MEMORY[0x1E69C1A58]) initWithSceneAnalysisVersion:v6];
+    v15 = [objc_alloc(MEMORY[0x1E69C1A58]) initWithSceneAnalysisVersion:sceneAnalysisVersion];
     v16 = *(v5 + 5);
     *(v5 + 5) = v15;
 
-    v17 = [objc_alloc(MEMORY[0x1E69C1A40]) initWithFaceAnalysisVersion:{objc_msgSend(v4, "faceAnalysisVersion")}];
+    v17 = [objc_alloc(MEMORY[0x1E69C1A40]) initWithFaceAnalysisVersion:{objc_msgSend(specificationCopy, "faceAnalysisVersion")}];
     v18 = *(v5 + 6);
     *(v5 + 6) = v17;
 
@@ -1528,24 +1528,24 @@ LABEL_22:
   return v5;
 }
 
-+ (id)baseSpecificationWithSpecification:(id)a3
++ (id)baseSpecificationWithSpecification:(id)specification
 {
-  v3 = a3;
-  v4 = [v3 sceneAnalysisVersion];
-  v5 = [MEMORY[0x1E69C1A90] baseSceneAnalysisVersionWithSceneAnalysisVersion:v4];
-  v6 = [MEMORY[0x1E69C1A68] baseSceneAnalysisVersionWithSceneAnalysisVersion:v4];
+  specificationCopy = specification;
+  sceneAnalysisVersion = [specificationCopy sceneAnalysisVersion];
+  v5 = [MEMORY[0x1E69C1A90] baseSceneAnalysisVersionWithSceneAnalysisVersion:sceneAnalysisVersion];
+  v6 = [MEMORY[0x1E69C1A68] baseSceneAnalysisVersionWithSceneAnalysisVersion:sceneAnalysisVersion];
   if (v5 <= v6)
   {
     v5 = v6;
   }
 
-  v7 = [MEMORY[0x1E69C1A18] baseSceneAnalysisVersionWithSceneAnalysisVersion:v4];
+  v7 = [MEMORY[0x1E69C1A18] baseSceneAnalysisVersionWithSceneAnalysisVersion:sceneAnalysisVersion];
   if (v5 <= v7)
   {
     v5 = v7;
   }
 
-  v8 = [MEMORY[0x1E69C1A58] baseSceneAnalysisVersionWithSceneAnalysisVersion:v4];
+  v8 = [MEMORY[0x1E69C1A58] baseSceneAnalysisVersionWithSceneAnalysisVersion:sceneAnalysisVersion];
   if (v5 <= v8)
   {
     v9 = v8;
@@ -1556,11 +1556,11 @@ LABEL_22:
     v9 = v5;
   }
 
-  v10 = [v3 mediaAnalysisVersion];
-  v11 = [MEMORY[0x1E69C1A60] baseMediaAnalysisVersionWithMediaAnalysisVersion:v10];
-  v12 = [v3 faceAnalysisVersion];
+  mediaAnalysisVersion = [specificationCopy mediaAnalysisVersion];
+  v11 = [MEMORY[0x1E69C1A60] baseMediaAnalysisVersionWithMediaAnalysisVersion:mediaAnalysisVersion];
+  faceAnalysisVersion = [specificationCopy faceAnalysisVersion];
 
-  v13 = -[CLSCurationModelSpecification initWithSceneAnalysisVersion:mediaAnalysisVersion:faceAnalysisVersion:]([CLSCurationModelSpecification alloc], "initWithSceneAnalysisVersion:mediaAnalysisVersion:faceAnalysisVersion:", v9, v11, [MEMORY[0x1E69C1A40] baseFaceAnalysisVersionWithFaceAnalysisVersion:v12]);
+  v13 = -[CLSCurationModelSpecification initWithSceneAnalysisVersion:mediaAnalysisVersion:faceAnalysisVersion:]([CLSCurationModelSpecification alloc], "initWithSceneAnalysisVersion:mediaAnalysisVersion:faceAnalysisVersion:", v9, v11, [MEMORY[0x1E69C1A40] baseFaceAnalysisVersionWithFaceAnalysisVersion:faceAnalysisVersion]);
 
   return v13;
 }

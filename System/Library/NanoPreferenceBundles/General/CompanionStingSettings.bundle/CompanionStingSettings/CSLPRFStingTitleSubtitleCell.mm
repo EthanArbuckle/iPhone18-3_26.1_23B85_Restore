@@ -1,6 +1,6 @@
 @interface CSLPRFStingTitleSubtitleCell
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation CSLPRFStingTitleSubtitleCell
@@ -12,45 +12,45 @@
   [(CSLPRFStingTitleSubtitleCell *)&v14 layoutSubviews];
   if ([objc_opt_class() cellStyle] == &dword_0 + 3 && !-[CSLPRFStingTitleSubtitleCell hasSubtitle](self, "hasSubtitle"))
   {
-    v3 = [(CSLPRFStingTitleSubtitleCell *)self textLabel];
-    [v3 frame];
+    textLabel = [(CSLPRFStingTitleSubtitleCell *)self textLabel];
+    [textLabel frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
 
-    v10 = [(CSLPRFStingTitleSubtitleCell *)self contentView];
-    [v10 bounds];
+    contentView = [(CSLPRFStingTitleSubtitleCell *)self contentView];
+    [contentView bounds];
     v12 = round((v11 - v9) * 0.5);
 
-    v13 = [(CSLPRFStingTitleSubtitleCell *)self textLabel];
-    [v13 setFrame:{v5, v12, v7, v9}];
+    textLabel2 = [(CSLPRFStingTitleSubtitleCell *)self textLabel];
+    [textLabel2 setFrame:{v5, v12, v7, v9}];
   }
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = CSLPRFStingTitleSubtitleCell;
-  [(CSLPRFStingTitleSubtitleCell *)&v9 refreshCellContentsWithSpecifier:v4];
+  [(CSLPRFStingTitleSubtitleCell *)&v9 refreshCellContentsWithSpecifier:specifierCopy];
   if ([objc_opt_class() cellStyle] == &dword_0 + 3)
   {
-    v5 = [(CSLPRFStingTitleSubtitleCell *)self detailTextLabel];
+    detailTextLabel = [(CSLPRFStingTitleSubtitleCell *)self detailTextLabel];
     v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    [v5 setFont:v6];
+    [detailTextLabel setFont:v6];
 
-    v7 = [v4 objectForKeyedSubscript:PSTableCellSubtitleTextKey];
+    v7 = [specifierCopy objectForKeyedSubscript:PSTableCellSubtitleTextKey];
     [(CSLPRFStingTitleSubtitleCell *)self setHasSubtitle:v7 != 0];
     if ([(CSLPRFStingTitleSubtitleCell *)self hasSubtitle])
     {
-      [v5 setText:v7];
+      [detailTextLabel setText:v7];
       v8 = +[UIColor grayColor];
-      [v5 setTextColor:v8];
+      [detailTextLabel setTextColor:v8];
     }
 
     else
     {
-      [v5 setText:@" "];
+      [detailTextLabel setText:@" "];
     }
   }
 

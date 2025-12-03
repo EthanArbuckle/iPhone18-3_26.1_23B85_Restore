@@ -1,16 +1,16 @@
 @interface ECColumnWidthConvertor
-- (CGSize)stringSizeWithFont:(id)a3 edFont:(id)a4 drawingState:(id)a5;
-- (float)fontWidthAdjustmentFor:(id)a3;
-- (void)setupWithEDFont:(id)a3 state:(id)a4;
+- (CGSize)stringSizeWithFont:(id)font edFont:(id)edFont drawingState:(id)state;
+- (float)fontWidthAdjustmentFor:(id)for;
+- (void)setupWithEDFont:(id)font state:(id)state;
 @end
 
 @implementation ECColumnWidthConvertor
 
-- (void)setupWithEDFont:(id)a3 state:(id)a4
+- (void)setupWithEDFont:(id)font state:(id)state
 {
-  v5 = a3;
+  fontCopy = font;
   self->mMultiplier = 7;
-  v9 = v5;
+  v9 = fontCopy;
   [ECColumnWidthConvertor stringSizeWithFont:"stringSizeWithFont:edFont:drawingState:" edFont:@"m" drawingState:?];
   v7 = v6 * 0.65;
   if (v7 != 0.0)
@@ -20,23 +20,23 @@
   }
 }
 
-- (CGSize)stringSizeWithFont:(id)a3 edFont:(id)a4 drawingState:(id)a5
+- (CGSize)stringSizeWithFont:(id)font edFont:(id)edFont drawingState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  fontCopy = font;
+  edFontCopy = edFont;
+  stateCopy = state;
   v10 = *MEMORY[0x277CBF3A8];
   v11 = *(MEMORY[0x277CBF3A8] + 8);
-  if (v7 && [v7 length])
+  if (fontCopy && [fontCopy length])
   {
-    v12 = [v8 name];
-    if (!v9)
+    name = [edFontCopy name];
+    if (!stateCopy)
     {
-      [v8 height];
-      v14 = CTFontCreateWithName(v12, v13 / 20.0, 0);
+      [edFontCopy height];
+      v14 = CTFontCreateWithName(name, v13 / 20.0, 0);
       if (v14)
       {
-        [TCImportFontCache stringSizeForText:v7 ctFontRef:v14];
+        [TCImportFontCache stringSizeForText:fontCopy ctFontRef:v14];
         v10 = v15;
         v11 = v16;
         CFRelease(v14);
@@ -60,16 +60,16 @@
   return result;
 }
 
-- (float)fontWidthAdjustmentFor:(id)a3
+- (float)fontWidthAdjustmentFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   {
     -[ECColumnWidthConvertor(Private) fontWidthAdjustmentFor:]::sFontAdjustmentMap = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{@"Academy Engraved LET", &unk_286F6DEB8, @"Apple-Chancery", &unk_286F6DEC8, @"AbadiMT-CondensedExtraBold", &unk_286F6DED8, @"Ayuthaya", &unk_286F6DEE8, @"Arial", &unk_286F6DEE8, @"ArialMT", &unk_286F6DEE8, @"ArialRoundedMTBold", &unk_286F6DEE8, @"AmericanTypewriter", &unk_286F6DEE8, @"AlBayan", &unk_286F6DEE8, @"AppleSymbols", &unk_286F6DEE8, @"Avenir-Heavy", &unk_286F6DEE8, @"Avenir-Black", &unk_286F6DEF8, @"Avenir-Light", &unk_286F6DEE8, @"Avenir Next", &unk_286F6DEE8, @"Avenir Medium", &unk_286F6DEE8, @"AvenirNext-DemiBold", &unk_286F6DEE8, @"AvenirNext-Heavy", &unk_286F6DEE8, @"AvenirNext-Medium", &unk_286F6DEE8, @"AvenirNextCondensed-Medium", &unk_286F6DF08, @"Avenir Next Condensed Ultra Lig", &unk_286F6DEF8, @"AvenirNext-UltraLight", &unk_286F6DED8, @"Baghdad", &unk_286F6DEC8, @"BanglaSangamMN", &unk_286F6DF18, @"Bank Gothic", &unk_286F6DF18, @"Blackmoor LET", &unk_286F6DF28, @"BlairMdITC TT", &unk_286F6DF28, @"Bodoni 72", &unk_286F6DF28, @"Bodoni 72 Oldstyle", &unk_286F6DED8, @"Bodoni 72 Smallcaps", &unk_286F6DF38, @"BodoniOrnamentsITCTT", &unk_286F6DEB8, @"BookshelfSymbolSeven"}];
   }
 
   v4 = [ECColumnWidthConvertor(Private) fontWidthAdjustmentFor:]::sFontAdjustmentMap;
-  v5 = [v3 name];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  name = [forCopy name];
+  v6 = [v4 objectForKeyedSubscript:name];
 
   if (v6)
   {

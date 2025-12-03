@@ -1,22 +1,22 @@
 @interface ArtworkLoader
-- (void)imageRequest:(id)a3 didFailWithError:(id)a4;
-- (void)imageRequest:(id)a3 didLoadImage:(id)a4;
+- (void)imageRequest:(id)request didFailWithError:(id)error;
+- (void)imageRequest:(id)request didLoadImage:(id)image;
 @end
 
 @implementation ArtworkLoader
 
-- (void)imageRequest:(id)a3 didLoadImage:(id)a4
+- (void)imageRequest:(id)request didLoadImage:(id)image
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  imageCopy = image;
 
-  sub_24E2025B8(v5, a4);
+  sub_24E2025B8(requestCopy, image);
 }
 
-- (void)imageRequest:(id)a3 didFailWithError:(id)a4
+- (void)imageRequest:(id)request didFailWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
 
   sub_24E20262C();
 }

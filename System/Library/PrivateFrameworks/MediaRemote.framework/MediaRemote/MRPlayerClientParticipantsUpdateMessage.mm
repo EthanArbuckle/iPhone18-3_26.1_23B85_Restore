@@ -1,30 +1,30 @@
 @interface MRPlayerClientParticipantsUpdateMessage
-- (MRPlayerClientParticipantsUpdateMessage)initWithPlayerPath:(id)a3 participants:(id)a4;
+- (MRPlayerClientParticipantsUpdateMessage)initWithPlayerPath:(id)path participants:(id)participants;
 - (MRPlayerPath)playerPath;
 - (NSArray)participants;
 @end
 
 @implementation MRPlayerClientParticipantsUpdateMessage
 
-- (MRPlayerClientParticipantsUpdateMessage)initWithPlayerPath:(id)a3 participants:(id)a4
+- (MRPlayerClientParticipantsUpdateMessage)initWithPlayerPath:(id)path participants:(id)participants
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  participantsCopy = participants;
   v23.receiver = self;
   v23.super_class = MRPlayerClientParticipantsUpdateMessage;
   v8 = [(MRProtocolMessage *)&v23 init];
   if (v8)
   {
     v9 = objc_alloc_init(_MRPlayerClientParticipantsUpdateMessageProtobuf);
-    v10 = [v6 protobuf];
-    [(_MRPlayerClientParticipantsUpdateMessageProtobuf *)v9 setPlayerPath:v10];
+    protobuf = [pathCopy protobuf];
+    [(_MRPlayerClientParticipantsUpdateMessageProtobuf *)v9 setPlayerPath:protobuf];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = v7;
+    v11 = participantsCopy;
     v12 = [v11 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v12)
     {
@@ -63,9 +63,9 @@
 - (MRPlayerPath)playerPath
 {
   v3 = [MRPlayerPath alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 playerPath];
-  v6 = [(MRPlayerPath *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  playerPath = [underlyingCodableMessage playerPath];
+  v6 = [(MRPlayerPath *)v3 initWithProtobuf:playerPath];
 
   return v6;
 }
@@ -74,18 +74,18 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 participants];
-  v6 = [v3 initWithCapacity:{objc_msgSend(v5, "count")}];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  participants = [underlyingCodableMessage participants];
+  v6 = [v3 initWithCapacity:{objc_msgSend(participants, "count")}];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v8 = [v7 participants];
+  underlyingCodableMessage2 = [(MRProtocolMessage *)self underlyingCodableMessage];
+  participants2 = [underlyingCodableMessage2 participants];
 
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v9 = [participants2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -96,14 +96,14 @@
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(participants2);
         }
 
         v13 = [[MRPlaybackQueueParticipant alloc] initWithProtobuf:*(*(&v17 + 1) + 8 * i)];
         [v6 addObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [participants2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);

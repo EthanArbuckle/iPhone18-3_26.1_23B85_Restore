@@ -1,21 +1,21 @@
 @interface MRExternalDeviceMessageMetrics
-- (MRExternalDeviceMessageMetrics)initWithPath:(id)a3;
-- (void)addMessage:(id)a3 data:(id)a4;
+- (MRExternalDeviceMessageMetrics)initWithPath:(id)path;
+- (void)addMessage:(id)message data:(id)data;
 - (void)dealloc;
 - (void)write;
 @end
 
 @implementation MRExternalDeviceMessageMetrics
 
-- (MRExternalDeviceMessageMetrics)initWithPath:(id)a3
+- (MRExternalDeviceMessageMetrics)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = MRExternalDeviceMessageMetrics;
   v5 = [(MRExternalDeviceMessageMetrics *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
 
@@ -35,9 +35,9 @@
   [(MRExternalDeviceMessageMetrics *)&v3 dealloc];
 }
 
-- (void)addMessage:(id)a3 data:(id)a4
+- (void)addMessage:(id)message data:(id)data
 {
-  v8 = a4;
+  dataCopy = data;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [(NSMutableDictionary *)self->_entries objectForKey:v6];
@@ -47,13 +47,13 @@
     [(NSMutableDictionary *)self->_entries setObject:v7 forKey:v6];
   }
 
-  -[MRExternalDeviceMessageMetricsEntry updateWithValue:](v7, "updateWithValue:", [v8 length]);
+  -[MRExternalDeviceMessageMetricsEntry updateWithValue:](v7, "updateWithValue:", [dataCopy length]);
 }
 
 - (void)write
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  [v3 createFileAtPath:self->_path contents:0 attributes:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager createFileAtPath:self->_path contents:0 attributes:0];
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   entries = self->_entries;
   v7[0] = MEMORY[0x1E69E9820];

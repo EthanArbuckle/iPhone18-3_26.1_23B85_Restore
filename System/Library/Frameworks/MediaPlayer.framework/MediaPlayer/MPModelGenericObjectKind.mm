@@ -1,13 +1,13 @@
 @interface MPModelGenericObjectKind
 + (id)identityKind;
-+ (id)kindWithRelationshipKinds:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MPModelGenericObjectKind)initWithCoder:(id)a3;
++ (id)kindWithRelationshipKinds:(id)kinds;
+- (BOOL)isEqual:(id)equal;
+- (MPModelGenericObjectKind)initWithCoder:(id)coder;
 - (id)humanDescription;
-- (id)msv_initWithJSONValue:(id)a3;
+- (id)msv_initWithJSONValue:(id)value;
 - (id)msv_jsonValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelGenericObjectKind
@@ -16,43 +16,43 @@
 {
   v3 = [(NSDictionary *)self->_relationshipKinds count];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(NSDictionary *)self->_relationshipKinds allValues];
-  v6 = v5;
+  allValues = [(NSDictionary *)self->_relationshipKinds allValues];
+  v6 = allValues;
   if (v3 == 1)
   {
-    v7 = [v5 firstObject];
-    v8 = [v7 humanDescription];
-    [v4 stringWithFormat:@"generic %@", v8];
+    firstObject = [allValues firstObject];
+    humanDescription = [firstObject humanDescription];
+    [v4 stringWithFormat:@"generic %@", humanDescription];
   }
 
   else
   {
-    v7 = [v5 valueForKeyPath:@"humanDescription"];
-    v8 = [v7 componentsJoinedByString:@" or "];;
-    [v4 stringWithFormat:@"any generic (%@)", v8];
+    firstObject = [allValues valueForKeyPath:@"humanDescription"];
+    humanDescription = [firstObject componentsJoinedByString:@" or "];;
+    [v4 stringWithFormat:@"any generic (%@)", humanDescription];
   }
   v9 = ;
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPModelGenericObjectKind;
-  v4 = a3;
-  [(MPModelKind *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_relationshipKinds forKey:{@"relationshipKinds", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MPModelKind *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_relationshipKinds forKey:{@"relationshipKinds", v5.receiver, v5.super_class}];
 }
 
-- (MPModelGenericObjectKind)initWithCoder:(id)a3
+- (MPModelGenericObjectKind)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"relationshipKinds"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"relationshipKinds"];
 
   if (v9)
   {
@@ -71,20 +71,20 @@
 {
   v8.receiver = self;
   v8.super_class = MPModelGenericObjectKind;
-  v3 = [(MPModelKind *)&v8 msv_jsonValue];
-  v4 = [v3 mutableCopy];
+  msv_jsonValue = [(MPModelKind *)&v8 msv_jsonValue];
+  v4 = [msv_jsonValue mutableCopy];
 
-  v5 = [(NSDictionary *)self->_relationshipKinds msv_jsonValue];
-  [v4 setObject:v5 forKeyedSubscript:@"relationshipKinds"];
+  msv_jsonValue2 = [(NSDictionary *)self->_relationshipKinds msv_jsonValue];
+  [v4 setObject:msv_jsonValue2 forKeyedSubscript:@"relationshipKinds"];
 
   v6 = [v4 copy];
 
   return v6;
 }
 
-- (id)msv_initWithJSONValue:(id)a3
+- (id)msv_initWithJSONValue:(id)value
 {
-  v3 = [a3 objectForKeyedSubscript:@"relationshipKinds"];
+  v3 = [value objectForKeyedSubscript:@"relationshipKinds"];
   v4 = [v3 msv_mapValues:&__block_literal_global_26854];
 
   v5 = [objc_opt_class() kindWithRelationshipKinds:v4];
@@ -101,14 +101,14 @@ id __50__MPModelGenericObjectKind_msv_initWithJSONValue___block_invoke(uint64_t 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = MPModelGenericObjectKind;
-  if ([(MPModelKind *)&v7 isEqual:v4])
+  if ([(MPModelKind *)&v7 isEqual:equalCopy])
   {
-    v5 = [(NSDictionary *)self->_relationshipKinds isEqual:v4[2]];
+    v5 = [(NSDictionary *)self->_relationshipKinds isEqual:equalCopy[2]];
   }
 
   else
@@ -127,17 +127,17 @@ id __50__MPModelGenericObjectKind_msv_initWithJSONValue___block_invoke(uint64_t 
   return [(NSDictionary *)self->_relationshipKinds hash]^ v3;
 }
 
-+ (id)kindWithRelationshipKinds:(id)a3
++ (id)kindWithRelationshipKinds:(id)kinds
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  kindsCopy = kinds;
   v5 = [MEMORY[0x1E696AD60] stringWithString:@"GenericObject:k"];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [v4 allKeys];
-  v7 = [v6 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [kindsCopy allKeys];
+  v7 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
@@ -154,7 +154,7 @@ id __50__MPModelGenericObjectKind_msv_initWithJSONValue___block_invoke(uint64_t 
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v4 objectForKeyedSubscript:v12];
+        v13 = [kindsCopy objectForKeyedSubscript:v12];
         [v5 appendFormat:@"%@-%p", v12, v13];
       }
 
@@ -169,9 +169,9 @@ id __50__MPModelGenericObjectKind_msv_initWithJSONValue___block_invoke(uint64_t 
   v18[1] = 3221225472;
   v18[2] = __54__MPModelGenericObjectKind_kindWithRelationshipKinds___block_invoke;
   v18[3] = &unk_1E767A288;
-  v19 = v4;
-  v15 = v4;
-  v16 = [a1 kindWithModelClass:v14 cacheKey:v5 block:v18];
+  v19 = kindsCopy;
+  v15 = kindsCopy;
+  v16 = [self kindWithModelClass:v14 cacheKey:v5 block:v18];
 
   return v16;
 }

@@ -1,10 +1,10 @@
 @interface PXPhotosDetailsNavigationDiagnostics
-+ (id)swift_diagnosticDescriptionForWindows:(id)a3;
++ (id)swift_diagnosticDescriptionForWindows:(id)windows;
 @end
 
 @implementation PXPhotosDetailsNavigationDiagnostics
 
-+ (id)swift_diagnosticDescriptionForWindows:(id)a3
++ (id)swift_diagnosticDescriptionForWindows:(id)windows
 {
   sub_1A46CCF0C();
   v3 = sub_1A524CA34();

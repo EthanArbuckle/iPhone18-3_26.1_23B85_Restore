@@ -1,25 +1,25 @@
 @interface QDSchemaQDEntityType
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (QDSchemaQDEntityType)initWithDictionary:(id)a3;
-- (QDSchemaQDEntityType)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (QDSchemaQDEntityType)initWithDictionary:(id)dictionary;
+- (QDSchemaQDEntityType)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation QDSchemaQDEntityType
 
-- (QDSchemaQDEntityType)initWithDictionary:(id)a3
+- (QDSchemaQDEntityType)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = QDSchemaQDEntityType;
   v5 = [(QDSchemaQDEntityType *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"bundleId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(QDSchemaQDEntityType *)v5 setBundleId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"nameOfTypedValue"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"nameOfTypedValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (QDSchemaQDEntityType)initWithJSON:(id)a3
+- (QDSchemaQDEntityType)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(QDSchemaQDEntityType *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(QDSchemaQDEntityType *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(QDSchemaQDEntityType *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,48 +77,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleId)
   {
-    v4 = [(QDSchemaQDEntityType *)self bundleId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleId"];
+    bundleId = [(QDSchemaQDEntityType *)self bundleId];
+    v5 = [bundleId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleId"];
   }
 
   if (self->_nameOfTypedValue)
   {
-    v6 = [(QDSchemaQDEntityType *)self nameOfTypedValue];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"nameOfTypedValue"];
+    nameOfTypedValue = [(QDSchemaQDEntityType *)self nameOfTypedValue];
+    v7 = [nameOfTypedValue copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"nameOfTypedValue"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(QDSchemaQDEntityType *)self bundleId];
-  v6 = [v4 bundleId];
-  if ((v5 != 0) == (v6 == 0))
+  bundleId = [(QDSchemaQDEntityType *)self bundleId];
+  bundleId2 = [equalCopy bundleId];
+  if ((bundleId != 0) == (bundleId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(QDSchemaQDEntityType *)self bundleId];
-  if (v7)
+  bundleId3 = [(QDSchemaQDEntityType *)self bundleId];
+  if (bundleId3)
   {
-    v8 = v7;
-    v9 = [(QDSchemaQDEntityType *)self bundleId];
-    v10 = [v4 bundleId];
-    v11 = [v9 isEqual:v10];
+    v8 = bundleId3;
+    bundleId4 = [(QDSchemaQDEntityType *)self bundleId];
+    bundleId5 = [equalCopy bundleId];
+    v11 = [bundleId4 isEqual:bundleId5];
 
     if (!v11)
     {
@@ -130,12 +130,12 @@
   {
   }
 
-  v5 = [(QDSchemaQDEntityType *)self nameOfTypedValue];
-  v6 = [v4 nameOfTypedValue];
-  if ((v5 != 0) != (v6 == 0))
+  bundleId = [(QDSchemaQDEntityType *)self nameOfTypedValue];
+  bundleId2 = [equalCopy nameOfTypedValue];
+  if ((bundleId != 0) != (bundleId2 == 0))
   {
-    v12 = [(QDSchemaQDEntityType *)self nameOfTypedValue];
-    if (!v12)
+    nameOfTypedValue = [(QDSchemaQDEntityType *)self nameOfTypedValue];
+    if (!nameOfTypedValue)
     {
 
 LABEL_15:
@@ -143,10 +143,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(QDSchemaQDEntityType *)self nameOfTypedValue];
-    v15 = [v4 nameOfTypedValue];
-    v16 = [v14 isEqual:v15];
+    v13 = nameOfTypedValue;
+    nameOfTypedValue2 = [(QDSchemaQDEntityType *)self nameOfTypedValue];
+    nameOfTypedValue3 = [equalCopy nameOfTypedValue];
+    v16 = [nameOfTypedValue2 isEqual:nameOfTypedValue3];
 
     if (v16)
     {
@@ -166,31 +166,31 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(QDSchemaQDEntityType *)self bundleId];
+  toCopy = to;
+  bundleId = [(QDSchemaQDEntityType *)self bundleId];
 
-  if (v4)
+  if (bundleId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(QDSchemaQDEntityType *)self nameOfTypedValue];
+  nameOfTypedValue = [(QDSchemaQDEntityType *)self nameOfTypedValue];
 
-  if (v5)
+  if (nameOfTypedValue)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = QDSchemaQDEntityType;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{4, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{4, v8.receiver, v8.super_class}];
 
   if (v6)
   {

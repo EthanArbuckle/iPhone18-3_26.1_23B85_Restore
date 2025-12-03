@@ -1,19 +1,19 @@
 @interface CPLEngineSyncTask
-+ (id)taskWithEngineLibrary:(id)a3 session:(id)a4;
-- (CPLEngineSyncTask)initWithEngineLibrary:(id)a3 session:(id)a4;
++ (id)taskWithEngineLibrary:(id)library session:(id)session;
+- (CPLEngineSyncTask)initWithEngineLibrary:(id)library session:(id)session;
 - (NSString)phaseDescription;
 - (NSString)taskIdentifier;
 - (id)description;
-- (id)phaseDescriptionLastChangeDate:(id *)a3;
+- (id)phaseDescriptionLastChangeDate:(id *)date;
 - (unint64_t)diskPressureState;
 - (void)cancel;
 - (void)launch;
-- (void)launchTransportTask:(id)a3 withTransportGroup:(id)a4;
-- (void)setPhaseDescription:(id)a3;
-- (void)setThroughputReporter:(id)a3;
-- (void)taskDidFinishWithError:(id)a3;
-- (void)taskDidProgress:(float)a3 userInfo:(id)a4;
-- (void)withThroughputReporter:(id)a3;
+- (void)launchTransportTask:(id)task withTransportGroup:(id)group;
+- (void)setPhaseDescription:(id)description;
+- (void)setThroughputReporter:(id)reporter;
+- (void)taskDidFinishWithError:(id)error;
+- (void)taskDidProgress:(float)progress userInfo:(id)info;
+- (void)withThroughputReporter:(id)reporter;
 @end
 
 @implementation CPLEngineSyncTask
@@ -28,7 +28,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
       v5 = 138412290;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v3, OS_LOG_TYPE_DEBUG, "%@ launched", &v5, 0xCu);
     }
   }
@@ -51,9 +51,9 @@
       {
         v7 = MEMORY[0x1E696AEC0];
         v8 = objc_opt_class();
-        v9 = [(CPLEngineSyncTask *)self taskIdentifier];
+        taskIdentifier = [(CPLEngineSyncTask *)self taskIdentifier];
         v10 = [CPLDateFormatter stringForTimeIntervalAgo:v5 now:0];
-        [v7 stringWithFormat:@"<%@ %@ %@ %@>", v8, v9, v3, v10];
+        [v7 stringWithFormat:@"<%@ %@ %@ %@>", v8, taskIdentifier, v3, v10];
         v16 = LABEL_9:;
 
         goto LABEL_12;
@@ -62,8 +62,8 @@
 
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
-    v9 = [(CPLEngineSyncTask *)self taskIdentifier];
-    [v11 stringWithFormat:@"<%@ %@ %@>", v12, v9, v3];
+    taskIdentifier = [(CPLEngineSyncTask *)self taskIdentifier];
+    [v11 stringWithFormat:@"<%@ %@ %@>", v12, taskIdentifier, v3];
   }
 
   else
@@ -75,17 +75,17 @@
       {
         v14 = MEMORY[0x1E696AEC0];
         v15 = objc_opt_class();
-        v9 = [(CPLEngineSyncTask *)self taskIdentifier];
+        taskIdentifier = [(CPLEngineSyncTask *)self taskIdentifier];
         v10 = [CPLDateFormatter stringForTimeIntervalAgo:v5 now:0];
-        [v14 stringWithFormat:@"<%@ %@ %@>", v15, v9, v10, v21];
+        [v14 stringWithFormat:@"<%@ %@ %@>", v15, taskIdentifier, v10, v21];
         goto LABEL_9;
       }
     }
 
     v17 = MEMORY[0x1E696AEC0];
     v18 = objc_opt_class();
-    v9 = [(CPLEngineSyncTask *)self taskIdentifier];
-    [v17 stringWithFormat:@"<%@ %@>", v18, v9, v20];
+    taskIdentifier = [(CPLEngineSyncTask *)self taskIdentifier];
+    [v17 stringWithFormat:@"<%@ %@>", v18, taskIdentifier, v20];
   }
   v16 = ;
 LABEL_12:
@@ -93,17 +93,17 @@ LABEL_12:
   return v16;
 }
 
-- (void)setPhaseDescription:(id)a3
+- (void)setPhaseDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   os_unfair_lock_lock(&self->_phaseDescriptionLock);
   phaseDescription = self->_phaseDescription;
   self->_phaseDescription = v4;
   v6 = v4;
 
-  v7 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   lastChangeDateForPhaseDescription = self->_lastChangeDateForPhaseDescription;
-  self->_lastChangeDateForPhaseDescription = v7;
+  self->_lastChangeDateForPhaseDescription = date;
 
   os_unfair_lock_unlock(&self->_phaseDescriptionLock);
 }
@@ -117,7 +117,7 @@ LABEL_12:
   return v3;
 }
 
-- (id)phaseDescriptionLastChangeDate:(id *)a3
+- (id)phaseDescriptionLastChangeDate:(id *)date
 {
   os_unfair_lock_lock(&self->_phaseDescriptionLock);
   lastChangeDateForPhaseDescription = self->_lastChangeDateForPhaseDescription;
@@ -125,23 +125,23 @@ LABEL_12:
   v7 = lastChangeDateForPhaseDescription;
   os_unfair_lock_unlock(&self->_phaseDescriptionLock);
   v8 = v7;
-  *a3 = v7;
+  *date = v7;
 
   return v6;
 }
 
-- (void)taskDidProgress:(float)a3 userInfo:(id)a4
+- (void)taskDidProgress:(float)progress userInfo:(id)info
 {
-  v6 = a4;
-  v8 = [(CPLEngineSyncTask *)self delegate];
-  *&v7 = a3;
-  [v8 task:self didProgress:v6 userInfo:v7];
+  infoCopy = info;
+  delegate = [(CPLEngineSyncTask *)self delegate];
+  *&v7 = progress;
+  [delegate task:self didProgress:infoCopy userInfo:v7];
 }
 
-- (void)taskDidFinishWithError:(id)a3
+- (void)taskDidFinishWithError:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   if (self->_hasFinishedTask)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -151,24 +151,24 @@ LABEL_12:
       {
         v11 = NSStringFromSelector(a2);
         *buf = 138412546;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2112;
         v18 = v11;
         _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_ERROR, "%@ called %@ twice", buf, 0x16u);
       }
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineSyncTask.m"];
     v14 = NSStringFromSelector(a2);
-    [v12 handleFailureInMethod:a2 object:self file:v13 lineNumber:111 description:{@"%@ called %@ twice", self, v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v13 lineNumber:111 description:{@"%@ called %@ twice", self, v14}];
 
     abort();
   }
 
-  v6 = v5;
+  v6 = errorCopy;
   self->_hasFinishedTask = 1;
-  if (!v5)
+  if (!errorCopy)
   {
     if ([(CPLEngineSyncTask *)self isCancelled])
     {
@@ -187,7 +187,7 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = v6;
       _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEBUG, "%@ did finish with error: %@", buf, 0x16u);
@@ -195,22 +195,22 @@ LABEL_12:
   }
 
   [(CPLEngineSyncTask *)self withThroughputReporter:&__block_literal_global_16_15627];
-  v8 = [(CPLEngineSyncTask *)self delegate];
-  [v8 task:self didFinishWithError:v6];
+  delegate = [(CPLEngineSyncTask *)self delegate];
+  [delegate task:self didFinishWithError:v6];
 
   [(CPLEngineSyncTask *)self setDelegate:0];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)withThroughputReporter:(id)a3
+- (void)withThroughputReporter:(id)reporter
 {
-  v4 = a3;
+  reporterCopy = reporter;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __44__CPLEngineSyncTask_withThroughputReporter___block_invoke;
   v9 = &unk_1E861AA50;
-  v10 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = reporterCopy;
   v11 = v5;
   v6 = v7;
   os_unfair_lock_lock(&self->_throughputReporterLock);
@@ -244,15 +244,15 @@ uint64_t __44__CPLEngineSyncTask_withThroughputReporter___block_invoke(uint64_t 
   return v9();
 }
 
-- (void)setThroughputReporter:(id)a3
+- (void)setThroughputReporter:(id)reporter
 {
-  v4 = a3;
+  reporterCopy = reporter;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __43__CPLEngineSyncTask_setThroughputReporter___block_invoke;
   v9 = &unk_1E861B290;
-  v10 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = reporterCopy;
   v11 = v5;
   v6 = v7;
   os_unfair_lock_lock(&self->_throughputReporterLock);
@@ -269,7 +269,7 @@ uint64_t __44__CPLEngineSyncTask_withThroughputReporter___block_invoke(uint64_t 
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
       v5 = 138412290;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v3, OS_LOG_TYPE_DEBUG, "%@ has been cancelled", &v5, 0xCu);
     }
   }
@@ -281,68 +281,68 @@ uint64_t __44__CPLEngineSyncTask_withThroughputReporter___block_invoke(uint64_t 
 
 - (NSString)taskIdentifier
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineSyncTask.m"];
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:72 description:{@"%@ should be overridden by %@", v6, objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v5 lineNumber:72 description:{@"%@ should be overridden by %@", v6, objc_opt_class()}];
 
   abort();
 }
 
 - (unint64_t)diskPressureState
 {
-  v2 = [(CPLEngineSyncTask *)self engineLibrary];
-  v3 = [v2 systemMonitor];
-  v4 = [v3 diskPressureState];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  systemMonitor = [engineLibrary systemMonitor];
+  diskPressureState = [systemMonitor diskPressureState];
 
-  return v4;
+  return diskPressureState;
 }
 
-- (void)launchTransportTask:(id)a3 withTransportGroup:(id)a4
+- (void)launchTransportTask:(id)task withTransportGroup:(id)group
 {
-  v8 = a3;
-  v6 = a4;
-  [v8 setForeground:{-[CPLEngineSyncTask foreground](self, "foreground")}];
-  [v8 setForcedTask:{-[CPLEngineSyncTask forceSync](self, "forceSync")}];
-  [v8 setTransportUserIdentifier:self->_transportUserIdentifier];
-  [v8 setTransportGroup:v6];
+  taskCopy = task;
+  groupCopy = group;
+  [taskCopy setForeground:{-[CPLEngineSyncTask foreground](self, "foreground")}];
+  [taskCopy setForcedTask:{-[CPLEngineSyncTask forceSync](self, "forceSync")}];
+  [taskCopy setTransportUserIdentifier:self->_transportUserIdentifier];
+  [taskCopy setTransportGroup:groupCopy];
 
-  v7 = [(CPLEngineSyncTask *)self session];
-  [v8 runWithinSyncSession:v7];
+  session = [(CPLEngineSyncTask *)self session];
+  [taskCopy runWithinSyncSession:session];
 
   if ([(CPLEngineSyncTask *)self isCancelled])
   {
-    [v8 cancel];
+    [taskCopy cancel];
   }
 }
 
-- (CPLEngineSyncTask)initWithEngineLibrary:(id)a3 session:(id)a4
+- (CPLEngineSyncTask)initWithEngineLibrary:(id)library session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  sessionCopy = session;
   v14.receiver = self;
   v14.super_class = CPLEngineSyncTask;
   v9 = [(CPLEngineSyncTask *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_engineLibrary, a3);
-    objc_storeStrong(&v10->_session, a4);
+    objc_storeStrong(&v9->_engineLibrary, library);
+    objc_storeStrong(&v10->_session, session);
     v10->_phaseDescriptionLock._os_unfair_lock_opaque = 0;
     v10->_throughputReporterLock._os_unfair_lock_opaque = 0;
-    v11 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     lastChangeDateForPhaseDescription = v10->_lastChangeDateForPhaseDescription;
-    v10->_lastChangeDateForPhaseDescription = v11;
+    v10->_lastChangeDateForPhaseDescription = date;
   }
 
   return v10;
 }
 
-+ (id)taskWithEngineLibrary:(id)a3 session:(id)a4
++ (id)taskWithEngineLibrary:(id)library session:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithEngineLibrary:v7 session:v6];
+  sessionCopy = session;
+  libraryCopy = library;
+  v8 = [[self alloc] initWithEngineLibrary:libraryCopy session:sessionCopy];
 
   return v8;
 }

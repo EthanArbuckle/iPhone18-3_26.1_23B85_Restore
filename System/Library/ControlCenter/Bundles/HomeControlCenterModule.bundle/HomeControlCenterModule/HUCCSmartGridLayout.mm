@@ -1,7 +1,7 @@
 @interface HUCCSmartGridLayout
 + (id)layoutGeometry;
-+ (id)layoutGeometryIsPortrait:(BOOL)a3;
-+ (id)layoutOptionsForViewSize:(CGSize)a3 andMosaicSize:(unint64_t)a4;
++ (id)layoutGeometryIsPortrait:(BOOL)portrait;
++ (id)layoutOptionsForViewSize:(CGSize)size andMosaicSize:(unint64_t)mosaicSize;
 + (unint64_t)mosaicType;
 @end
 
@@ -14,10 +14,10 @@
   return objc_msgSend_layoutGeometryIsPortrait_(HUCCSmartGridLayout, v2, v3);
 }
 
-+ (id)layoutGeometryIsPortrait:(BOOL)a3
++ (id)layoutGeometryIsPortrait:(BOOL)portrait
 {
   v6 = objc_alloc_init(MEMORY[0x29EDC54E8]);
-  if (a3)
+  if (portrait)
   {
     v7 = 1;
     objc_msgSend_setGridSize_(v6, v4, 2, 4);
@@ -75,10 +75,10 @@
   }
 }
 
-+ (id)layoutOptionsForViewSize:(CGSize)a3 andMosaicSize:(unint64_t)a4
++ (id)layoutOptionsForViewSize:(CGSize)size andMosaicSize:(unint64_t)mosaicSize
 {
   v66 = *MEMORY[0x29EDCA608];
-  v5 = objc_msgSend_defaultOptionsForViewSize_(MEMORY[0x29EDC54C8], a2, a4, a3.width, a3.height);
+  v5 = objc_msgSend_defaultOptionsForViewSize_(MEMORY[0x29EDC54C8], a2, mosaicSize, size.width, size.height);
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
@@ -120,7 +120,7 @@
   objc_msgSend_setSceneCellOptions_(v5, v30, v25);
   v33 = objc_msgSend_serviceCellOptions(v5, v31, v32);
   v36 = v33;
-  if (a4 == 1)
+  if (mosaicSize == 1)
   {
     v37 = objc_msgSend_font(v33, v34, v35);
     v40 = objc_msgSend_fontWithSize_(v37, v38, v39, 11.0);

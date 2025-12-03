@@ -1,21 +1,21 @@
 @interface AMSUIWebStoreProductPresentAction
-- (AMSUIWebStoreProductPresentAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebStoreProductPresentAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
-- (void)productViewControllerDidFinish:(id)a3;
+- (void)productViewControllerDidFinish:(id)finish;
 @end
 
 @implementation AMSUIWebStoreProductPresentAction
 
-- (AMSUIWebStoreProductPresentAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebStoreProductPresentAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v48.receiver = self;
   v48.super_class = AMSUIWebStoreProductPresentAction;
-  v8 = [(AMSUIWebAction *)&v48 initWithJSObject:v6 context:v7];
+  v8 = [(AMSUIWebAction *)&v48 initWithJSObject:objectCopy context:contextCopy];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"itunesItemIdentifier"];
+    v9 = [objectCopy objectForKeyedSubscript:@"itunesItemIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       v47 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"productIdentifier"];
+    v10 = [objectCopy objectForKeyedSubscript:@"productIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       v46 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"customProductPageIdentifier"];
+    v11 = [objectCopy objectForKeyedSubscript:@"customProductPageIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       v45 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"affiliateToken"];
+    v12 = [objectCopy objectForKeyedSubscript:@"affiliateToken"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
       v44 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"campaignToken"];
+    v13 = [objectCopy objectForKeyedSubscript:@"campaignToken"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       v14 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"providerToken"];
+    v15 = [objectCopy objectForKeyedSubscript:@"providerToken"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,7 +87,7 @@
       v16 = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"advertisingPartnerToken"];
+    v17 = [objectCopy objectForKeyedSubscript:@"advertisingPartnerToken"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,7 +99,7 @@
       v18 = 0;
     }
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (v47)
     {
       v54 = 0;
@@ -128,7 +128,7 @@
         goto LABEL_61;
       }
 
-      [(NSDictionary *)v19 setObject:v47 forKeyedSubscript:*v20];
+      [(NSDictionary *)dictionary setObject:v47 forKeyedSubscript:*v20];
     }
 
     if (!v46)
@@ -150,7 +150,7 @@ LABEL_53:
               {
 LABEL_58:
                 parameters = v8->_parameters;
-                v8->_parameters = v19;
+                v8->_parameters = dictionary;
 
                 goto LABEL_59;
               }
@@ -177,7 +177,7 @@ LABEL_58:
               _Block_object_dispose(&v54, 8);
               if (v38)
               {
-                [(NSDictionary *)v19 setObject:v18 forKeyedSubscript:*v38];
+                [(NSDictionary *)dictionary setObject:v18 forKeyedSubscript:*v38];
                 goto LABEL_58;
               }
 
@@ -209,7 +209,7 @@ LABEL_66:
             _Block_object_dispose(&v54, 8);
             if (v35)
             {
-              [(NSDictionary *)v19 setObject:v16 forKeyedSubscript:*v35];
+              [(NSDictionary *)dictionary setObject:v16 forKeyedSubscript:*v35];
               goto LABEL_53;
             }
 
@@ -240,7 +240,7 @@ LABEL_65:
           _Block_object_dispose(&v54, 8);
           if (v32)
           {
-            [(NSDictionary *)v19 setObject:v14 forKeyedSubscript:*v32];
+            [(NSDictionary *)dictionary setObject:v14 forKeyedSubscript:*v32];
             goto LABEL_48;
           }
 
@@ -271,7 +271,7 @@ LABEL_64:
         _Block_object_dispose(&v54, 8);
         if (v29)
         {
-          [(NSDictionary *)v19 setObject:v44 forKeyedSubscript:*v29];
+          [(NSDictionary *)dictionary setObject:v44 forKeyedSubscript:*v29];
           goto LABEL_43;
         }
 
@@ -302,7 +302,7 @@ LABEL_63:
       _Block_object_dispose(&v54, 8);
       if (v26)
       {
-        [(NSDictionary *)v19 setObject:v45 forKeyedSubscript:*v26];
+        [(NSDictionary *)dictionary setObject:v45 forKeyedSubscript:*v26];
         goto LABEL_38;
       }
 
@@ -333,7 +333,7 @@ LABEL_62:
     _Block_object_dispose(&v54, 8);
     if (v23)
     {
-      [(NSDictionary *)v19 setObject:v46 forKeyedSubscript:*v23];
+      [(NSDictionary *)dictionary setObject:v46 forKeyedSubscript:*v23];
       goto LABEL_33;
     }
 
@@ -351,7 +351,7 @@ LABEL_59:
 {
   v15.receiver = self;
   v15.super_class = AMSUIWebStoreProductPresentAction;
-  v3 = [(AMSUIWebAction *)&v15 runAction];
+  runAction = [(AMSUIWebAction *)&v15 runAction];
   v4 = objc_alloc_init(MEMORY[0x1E698CA48]);
   [(AMSUIWebStoreProductPresentAction *)self setPresentPromise:v4];
   v17 = 0;
@@ -375,17 +375,17 @@ LABEL_59:
   v7 = objc_alloc_init(v5);
   [(AMSUIWebStoreProductPresentAction *)self setController:v7];
 
-  v8 = [(AMSUIWebStoreProductPresentAction *)self controller];
-  [v8 setDelegate:self];
+  controller = [(AMSUIWebStoreProductPresentAction *)self controller];
+  [controller setDelegate:self];
 
-  v9 = [(AMSUIWebStoreProductPresentAction *)self controller];
-  v10 = [(AMSUIWebStoreProductPresentAction *)self parameters];
+  controller2 = [(AMSUIWebStoreProductPresentAction *)self controller];
+  parameters = [(AMSUIWebStoreProductPresentAction *)self parameters];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__AMSUIWebStoreProductPresentAction_runAction__block_invoke;
   v14[3] = &unk_1E7F246E0;
   v14[4] = self;
-  [v9 loadProductWithParameters:v10 completionBlock:v14];
+  [controller2 loadProductWithParameters:parameters completionBlock:v14];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -393,9 +393,9 @@ LABEL_59:
   v13[3] = &unk_1E7F246E0;
   v13[4] = self;
   [v4 addFinishBlock:v13];
-  v11 = [v4 promiseAdapter];
+  promiseAdapter = [v4 promiseAdapter];
 
-  return v11;
+  return promiseAdapter;
 }
 
 void __46__AMSUIWebStoreProductPresentAction_runAction__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -432,10 +432,10 @@ uint64_t __46__AMSUIWebStoreProductPresentAction_runAction__block_invoke_2(uint6
   return [v2 setPresentPromise:0];
 }
 
-- (void)productViewControllerDidFinish:(id)a3
+- (void)productViewControllerDidFinish:(id)finish
 {
-  v3 = [(AMSUIWebStoreProductPresentAction *)self presentPromise];
-  [v3 finishWithSuccess];
+  presentPromise = [(AMSUIWebStoreProductPresentAction *)self presentPromise];
+  [presentPromise finishWithSuccess];
 }
 
 @end

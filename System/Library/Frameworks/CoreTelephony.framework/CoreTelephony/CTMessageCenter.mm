@@ -1,30 +1,30 @@
 @interface CTMessageCenter
 + (id)sharedMessageCenter;
-- ($2825F4736939C4A6D3AD43837233062D)isDeliveryReportsEnabled:(BOOL *)a3;
-- ($2825F4736939C4A6D3AD43837233062D)isMmsEnabledForSub:(id)a3 enabled:(BOOL *)a4;
-- ($2825F4736939C4A6D3AD43837233062D)sendMMS:(id)a3;
-- ($2825F4736939C4A6D3AD43837233062D)sendMMSFromData:(id)a3 messageId:(unsigned int)a4 subSlot:(int64_t)a5;
-- ($2825F4736939C4A6D3AD43837233062D)sendSMS:(id)a3 withMoreToFollow:(BOOL)a4 trackingID:(unsigned int *)a5;
-- (BOOL)getCharacterCount:(int64_t *)a3 andMessageSplitThreshold:(int64_t *)a4 forSmsText:(id)a5;
-- (BOOL)getCharacterCountForSub:(id)a3 count:(int64_t *)a4 andMessageSplitThreshold:(int64_t *)a5 forSmsText:(id)a6;
+- ($2825F4736939C4A6D3AD43837233062D)isDeliveryReportsEnabled:(BOOL *)enabled;
+- ($2825F4736939C4A6D3AD43837233062D)isMmsEnabledForSub:(id)sub enabled:(BOOL *)enabled;
+- ($2825F4736939C4A6D3AD43837233062D)sendMMS:(id)s;
+- ($2825F4736939C4A6D3AD43837233062D)sendMMSFromData:(id)data messageId:(unsigned int)id subSlot:(int64_t)slot;
+- ($2825F4736939C4A6D3AD43837233062D)sendSMS:(id)s withMoreToFollow:(BOOL)follow trackingID:(unsigned int *)d;
+- (BOOL)getCharacterCount:(int64_t *)count andMessageSplitThreshold:(int64_t *)threshold forSmsText:(id)text;
+- (BOOL)getCharacterCountForSub:(id)sub count:(int64_t *)count andMessageSplitThreshold:(int64_t *)threshold forSmsText:(id)text;
 - (BOOL)isMmsConfigured;
-- (BOOL)isMmsConfiguredForSub:(id)a3;
+- (BOOL)isMmsConfiguredForSub:(id)sub;
 - (BOOL)isMmsEnabled;
-- (BOOL)sendBinarySMS:(id)a3 trackingID:(unsigned int *)a4;
-- (BOOL)sendSMSWithText:(id)a3 serviceCenter:(id)a4 toAddress:(id)a5 trackingID:(unsigned int *)a6;
-- (BOOL)sendSMSWithText:(id)a3 text:(id)a4 serviceCenter:(id)a5 toAddress:(id)a6;
-- (BOOL)sendSMSWithText:(id)a3 text:(id)a4 serviceCenter:(id)a5 toAddress:(id)a6 trackingID:(unsigned int *)a7;
+- (BOOL)sendBinarySMS:(id)s trackingID:(unsigned int *)d;
+- (BOOL)sendSMSWithText:(id)text serviceCenter:(id)center toAddress:(id)address trackingID:(unsigned int *)d;
+- (BOOL)sendSMSWithText:(id)text text:(id)a4 serviceCenter:(id)center toAddress:(id)address;
+- (BOOL)sendSMSWithText:(id)text text:(id)a4 serviceCenter:(id)center toAddress:(id)address trackingID:(unsigned int *)d;
 - (BOOL)simulateDeferredMessage;
-- (BOOL)simulateSmsReceived:(id)a3;
+- (BOOL)simulateSmsReceived:(id)received;
 - (CTMessageCenter)init;
 - (id)allIncomingMessages;
-- (id)decodeMessage:(id)a3;
+- (id)decodeMessage:(id)message;
 - (int)incomingMessageCount;
-- (void)addMessageOfType:(int)a3 toArray:(id)a4 withIdsFromArray:(id)a5;
+- (void)addMessageOfType:(int)type toArray:(id)array withIdsFromArray:(id)fromArray;
 - (void)dealloc;
-- (void)emergencySessionIntentEnd:(id)a3;
-- (void)emergencySessionIntentStart:(id)a3;
-- (void)sendMessageAsSmsToShortCodeRecipients:(id)a3 andReplaceData:(id *)a4;
+- (void)emergencySessionIntentEnd:(id)end;
+- (void)emergencySessionIntentStart:(id)start;
+- (void)sendMessageAsSmsToShortCodeRecipients:(id)recipients andReplaceData:(id *)data;
 @end
 
 @implementation CTMessageCenter
@@ -81,21 +81,21 @@
   [(CTMessageCenter *)&v3 dealloc];
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)sendSMS:(id)a3 withMoreToFollow:(BOOL)a4 trackingID:(unsigned int *)a5
+- ($2825F4736939C4A6D3AD43837233062D)sendSMS:(id)s withMoreToFollow:(BOOL)follow trackingID:(unsigned int *)d
 {
   v56 = *MEMORY[0x1E69E9840];
   if (_messageCenterServerConnection)
   {
-    v6 = a4;
-    if ([a3 messageType] == 1)
+    followCopy = follow;
+    if ([s messageType] == 1)
     {
-      if ([objc_msgSend(a3 "items")])
+      if ([objc_msgSend(s "items")])
       {
-        if ([objc_msgSend(a3 "recipients")] == 1)
+        if ([objc_msgSend(s "recipients")] == 1)
         {
-          if ([a3 context])
+          if ([s context])
           {
-            v8 = [objc_msgSend(a3 "context")];
+            v8 = [objc_msgSend(s "context")];
           }
 
           else
@@ -109,7 +109,7 @@
             v8 = 1;
           }
 
-          v14 = [CTMMSEncoder encodeSms:a3];
+          v14 = [CTMMSEncoder encodeSms:s];
           if (v14)
           {
             xdict = 0;
@@ -119,7 +119,7 @@
             xdict = v49;
             v49 = xpc_null_create();
             xpc_release(v49);
-            v15 = xpc_int64_create([a3 messageId]);
+            v15 = xpc_int64_create([s messageId]);
             if (!v15)
             {
               v15 = xpc_null_create();
@@ -146,7 +146,7 @@
             xpc_release(v20);
             xpc_release(value);
             value = 0;
-            v21 = xpc_BOOL_create(v6);
+            v21 = xpc_BOOL_create(followCopy);
             if (!v21)
             {
               v21 = xpc_null_create();
@@ -156,7 +156,7 @@
             v22 = xpc_null_create();
             xpc_release(v21);
             xpc_release(v22);
-            v23 = xpc_BOOL_create([a3 bypassSupportedMessageModesCheck]);
+            v23 = xpc_BOOL_create([s bypassSupportedMessageModesCheck]);
             if (!v23)
             {
               v23 = xpc_null_create();
@@ -166,7 +166,7 @@
             v24 = xpc_null_create();
             xpc_release(v23);
             xpc_release(v24);
-            v25 = xpc_BOOL_create([a3 appCheckBypassForCriticalMessaging]);
+            v25 = xpc_BOOL_create([s appCheckBypassForCriticalMessaging]);
             if (!v25)
             {
               v25 = xpc_null_create();
@@ -186,7 +186,7 @@
             v28 = xpc_null_create();
             xpc_release(v27);
             xpc_release(v28);
-            v29 = xpc_int64_create([a3 smsType]);
+            v29 = xpc_int64_create([s smsType]);
             if (!v29)
             {
               v29 = xpc_null_create();
@@ -200,13 +200,13 @@
             if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
             {
               v32 = CTSubscriptionSlotAsString(v8);
-              v33 = [a3 messageId];
+              messageId = [s messageId];
               v34 = [(ctu *)v14 length];
               *object = 136315906;
               *&object[4] = v32;
               *&object[12] = 2048;
-              *&object[14] = v33;
-              if (v6)
+              *&object[14] = messageId;
+              if (followCopy)
               {
                 v35 = "true";
               }
@@ -242,12 +242,12 @@
                 v37 = 0;
               }
 
-              if (a5)
+              if (d)
               {
                 *object = &v49;
                 *&object[8] = "kSmsMessageID";
                 xpc::dict::object_proxy::operator xpc::object(object, &v47);
-                *a5 = xpc::dyn_cast_or_default(&v47, 0xFFFFFFFFLL);
+                *d = xpc::dyn_cast_or_default(&v47, 0xFFFFFFFFLL);
                 xpc_release(v47);
               }
             }
@@ -265,9 +265,9 @@
                 v44 = CTLogMessageCenter();
                 if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
                 {
-                  v45 = [a3 messageId];
+                  messageId2 = [s messageId];
                   *object = 67109120;
-                  *&object[4] = v45;
+                  *&object[4] = messageId2;
                   _os_log_impl(&dword_182E9B000, v44, OS_LOG_TYPE_INFO, "Queued messageId %u", object, 8u);
                 }
 
@@ -281,7 +281,7 @@
               v42 = CTLogMessageCenter();
               if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
               {
-                -[CTMessageCenter sendSMS:withMoreToFollow:trackingID:].cold.4(object, [a3 messageId], v42);
+                -[CTMessageCenter sendSMS:withMoreToFollow:trackingID:].cold.4(object, [s messageId], v42);
               }
 
               v43 = 0xFFFFFFFFLL;
@@ -333,7 +333,7 @@ LABEL_61:
       v10 = CTLogMessageCenter();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [CTMessageCenter sendSMS:a3 withMoreToFollow:v10 trackingID:?];
+        [CTMessageCenter sendSMS:s withMoreToFollow:v10 trackingID:?];
       }
     }
   }
@@ -354,7 +354,7 @@ LABEL_43:
   return (v36 | v39);
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)sendMMSFromData:(id)a3 messageId:(unsigned int)a4 subSlot:(int64_t)a5
+- ($2825F4736939C4A6D3AD43837233062D)sendMMSFromData:(id)data messageId:(unsigned int)id subSlot:(int64_t)slot
 {
   v40 = *MEMORY[0x1E69E9840];
   if (_messageCenterServerConnection)
@@ -366,7 +366,7 @@ LABEL_43:
     v34 = xdict;
     xdict = xpc_null_create();
     xpc_release(xdict);
-    v9 = xpc_int64_create(a4);
+    v9 = xpc_int64_create(id);
     if (!v9)
     {
       v9 = xpc_null_create();
@@ -386,7 +386,7 @@ LABEL_43:
     v12 = xpc_null_create();
     xpc_release(v11);
     xpc_release(v12);
-    ctu::cf_to_xpc(&value, a3, v13);
+    ctu::cf_to_xpc(&value, data, v13);
     xpc_dictionary_set_value(v8, "kSmsMessageBody", value);
     v14 = value;
     value = xpc_null_create();
@@ -403,7 +403,7 @@ LABEL_43:
     v16 = xpc_null_create();
     xpc_release(v15);
     xpc_release(v16);
-    v17 = xpc_int64_create(a5);
+    v17 = xpc_int64_create(slot);
     if (!v17)
     {
       v17 = xpc_null_create();
@@ -416,12 +416,12 @@ LABEL_43:
     v19 = CTLogMessageCenter();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = CTSubscriptionSlotAsString(a5);
-      v21 = [a3 length];
+      v20 = CTSubscriptionSlotAsString(slot);
+      v21 = [data length];
       *object = 136315906;
       *&object[4] = v20;
       *&object[12] = 2048;
-      *&object[14] = a4;
+      *&object[14] = id;
       v36 = 2048;
       v37 = v21;
       v38 = 2080;
@@ -495,15 +495,15 @@ LABEL_43:
   return v24;
 }
 
-- (void)sendMessageAsSmsToShortCodeRecipients:(id)a3 andReplaceData:(id *)a4
+- (void)sendMessageAsSmsToShortCodeRecipients:(id)recipients andReplaceData:(id *)data
 {
-  if (a3)
+  if (recipients)
   {
-    v7 = [a3 recipients];
-    v8 = [v7 count];
+    recipients = [recipients recipients];
+    v8 = [recipients count];
     if (v8 >= 2)
     {
-      v9 = [v7 objectEnumerator];
+      objectEnumerator = [recipients objectEnumerator];
       v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
       if (!v10)
       {
@@ -511,71 +511,71 @@ LABEL_43:
       }
 
       v11 = v10;
-      v19 = a4;
-      v12 = [v9 nextObject];
-      if (v12)
+      dataCopy = data;
+      nextObject = [objectEnumerator nextObject];
+      if (nextObject)
       {
-        v13 = v12;
+        nextObject2 = nextObject;
         do
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            if ([v13 isShortCode])
+            if ([nextObject2 isShortCode])
             {
-              [v11 addObject:v13];
-              v14 = [objc_msgSend(a3 "items")];
-              if (![objc_msgSend(v14 "contentType")] || (v14 = objc_msgSend(objc_msgSend(a3, "items"), "objectAtIndex:", 1), !objc_msgSend(objc_msgSend(v14, "contentType"), "caseInsensitiveCompare:", @"text/plain")))
+              [v11 addObject:nextObject2];
+              v14 = [objc_msgSend(recipients "items")];
+              if (![objc_msgSend(v14 "contentType")] || (v14 = objc_msgSend(objc_msgSend(recipients, "items"), "objectAtIndex:", 1), !objc_msgSend(objc_msgSend(v14, "contentType"), "caseInsensitiveCompare:", @"text/plain")))
               {
                 if (v14)
                 {
                   if ([v11 count] == v8)
                   {
-                    v15 = [a3 messageId];
+                    messageId = [recipients messageId];
                   }
 
                   else
                   {
-                    v15 = 999999999;
+                    messageId = 999999999;
                   }
 
                   v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:objc_msgSend(objc_msgSend(v14 length:"data") encoding:{"bytes"), objc_msgSend(objc_msgSend(v14, "data"), "length"), 4}];
-                  -[CTMessageCenter sendSMSWithText:text:serviceCenter:toAddress:withID:](self, "sendSMSWithText:text:serviceCenter:toAddress:withID:", [a3 context], v16, 0, objc_msgSend(v13, "canonicalFormat"), v15);
+                  -[CTMessageCenter sendSMSWithText:text:serviceCenter:toAddress:withID:](self, "sendSMSWithText:text:serviceCenter:toAddress:withID:", [recipients context], v16, 0, objc_msgSend(nextObject2, "canonicalFormat"), messageId);
                 }
               }
             }
           }
 
-          v13 = [v9 nextObject];
+          nextObject2 = [objectEnumerator nextObject];
         }
 
-        while (v13);
+        while (nextObject2);
       }
 
       if ([v11 count])
       {
-        [a3 removeRecipientsInArray:v11];
+        [recipients removeRecipientsInArray:v11];
       }
 
-      a4 = v19;
+      data = dataCopy;
     }
 
-    v17 = [objc_msgSend(a3 "recipients")];
+    v17 = [objc_msgSend(recipients "recipients")];
     if (v17 != v8)
     {
-      if (a4 && v17)
+      if (data && v17)
       {
 
-        v18 = [CTMMSEncoder encodeMessage:a3];
+        v18 = [CTMMSEncoder encodeMessage:recipients];
 LABEL_23:
-        *a4 = v18;
+        *data = v18;
         return;
       }
 
       if (!v17)
       {
-        [a3 setMessageType:1];
-        if (a4)
+        [recipients setMessageType:1];
+        if (data)
         {
 
           v18 = 0;
@@ -586,7 +586,7 @@ LABEL_23:
   }
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)sendMMS:(id)a3
+- ($2825F4736939C4A6D3AD43837233062D)sendMMS:(id)s
 {
   v24 = *MEMORY[0x1E69E9840];
   v21 = [CTMMSEncoder encodeMessage:?];
@@ -609,22 +609,22 @@ LABEL_23:
     v8 = CFGetTypeID(v6);
     if (v8 == CFBooleanGetTypeID() && CFEqual(v7, *MEMORY[0x1E695E4D0]))
     {
-      v9 = [objc_msgSend(a3 "items")];
-      v10 = [a3 items];
+      v9 = [objc_msgSend(s "items")];
+      items = [s items];
       if (v9 == 1)
       {
-        v11 = [v10 objectAtIndex:0];
+        v11 = [items objectAtIndex:0];
       }
 
       else
       {
-        if ([v10 count] != 2)
+        if ([items count] != 2)
         {
           goto LABEL_13;
         }
 
-        v13 = [objc_msgSend(a3 "items")];
-        v14 = [objc_msgSend(a3 "items")];
+        v13 = [objc_msgSend(s "items")];
+        v14 = [objc_msgSend(s "items")];
         if ([objc_msgSend(v13 "contentType")])
         {
           goto LABEL_13;
@@ -635,7 +635,7 @@ LABEL_23:
 
       if (![objc_msgSend(v11 "contentType")])
       {
-        [(CTMessageCenter *)self sendMessageAsSmsToShortCodeRecipients:a3 andReplaceData:&v21];
+        [(CTMessageCenter *)self sendMessageAsSmsToShortCodeRecipients:s andReplaceData:&v21];
       }
     }
 
@@ -652,9 +652,9 @@ LABEL_16:
   }
 
 LABEL_14:
-  if ([a3 context])
+  if ([s context])
   {
-    v15 = [objc_msgSend(a3 "context")];
+    v15 = [objc_msgSend(s "context")];
   }
 
   else
@@ -671,7 +671,7 @@ LABEL_14:
     }
   }
 
-  v16 = -[CTMessageCenter sendMMSFromData:messageId:subSlot:](self, "sendMMSFromData:messageId:subSlot:", v21, [a3 messageId], v15);
+  v16 = -[CTMessageCenter sendMMSFromData:messageId:subSlot:](self, "sendMMSFromData:messageId:subSlot:", v21, [s messageId], v15);
 
 LABEL_20:
   v19 = *MEMORY[0x1E69E9840];
@@ -732,15 +732,15 @@ LABEL_20:
   return v2;
 }
 
-- (void)addMessageOfType:(int)a3 toArray:(id)a4 withIdsFromArray:(id)a5
+- (void)addMessageOfType:(int)type toArray:(id)array withIdsFromArray:(id)fromArray
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = [a5 objectEnumerator];
-  v9 = [v8 nextObject];
-  if (v9)
+  objectEnumerator = [fromArray objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v11 = v9;
-    if (a3 == 2)
+    nextObject2 = nextObject;
+    if (type == 2)
     {
       v12 = "mms";
     }
@@ -754,10 +754,10 @@ LABEL_20:
     v17 = v10;
     do
     {
-      v13 = -[CTMessageCenter incomingMessageWithId:](self, "incomingMessageWithId:", [v11 intValue]);
+      v13 = -[CTMessageCenter incomingMessageWithId:](self, "incomingMessageWithId:", [nextObject2 intValue]);
       if (v13)
       {
-        [a4 addObject:v13];
+        [array addObject:v13];
       }
 
       else
@@ -765,21 +765,21 @@ LABEL_20:
         v14 = CTLogMessageCenter();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          v15 = [v11 integerValue];
+          integerValue = [nextObject2 integerValue];
           *buf = v17;
-          v19 = v15;
+          v19 = integerValue;
           v20 = 1024;
-          v21 = a3;
+          typeCopy = type;
           v22 = 2080;
           v23 = v12;
           _os_log_error_impl(&dword_182E9B000, v14, OS_LOG_TYPE_ERROR, "couldn't get message %ld, type %d (%s)", buf, 0x1Cu);
         }
       }
 
-      v11 = [v8 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v11);
+    while (nextObject2);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -829,7 +829,7 @@ LABEL_20:
         [(CTMessageCenter *)self addMessageOfType:2 toArray:v7 withIdsFromArray:?];
       }
 
-      v4 = v7;
+      array = v7;
       if (cf)
       {
         CFRelease(cf);
@@ -843,7 +843,7 @@ LABEL_20:
 
     else
     {
-      v4 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
     xpc_release(v16);
@@ -861,21 +861,21 @@ LABEL_20:
     return [MEMORY[0x1E695DEC8] array];
   }
 
-  return v4;
+  return array;
 }
 
-- (id)decodeMessage:(id)a3
+- (id)decodeMessage:(id)message
 {
   v4 = [[CTXPCServiceSubscriptionContext alloc] initWithSlot:1];
 
-  return [CTMMSEncoder decodeMessageFromData:v4 data:a3];
+  return [CTMMSEncoder decodeMessageFromData:v4 data:message];
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)isDeliveryReportsEnabled:(BOOL *)a3
+- ($2825F4736939C4A6D3AD43837233062D)isDeliveryReportsEnabled:(BOOL *)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    *a3 = 0;
+    *enabled = 0;
   }
 
   return 0;
@@ -888,7 +888,7 @@ LABEL_20:
   return [(CTMessageCenter *)self isMmsConfiguredForSub:v3];
 }
 
-- (BOOL)isMmsConfiguredForSub:(id)a3
+- (BOOL)isMmsConfiguredForSub:(id)sub
 {
   v31 = *MEMORY[0x1E69E9840];
   if (!_messageCenterServerConnection)
@@ -910,16 +910,16 @@ LABEL_20:
   v29 = v28;
   v28 = xpc_null_create();
   xpc_release(v28);
-  if (a3)
+  if (sub)
   {
-    v5 = [a3 slotID];
+    slotID = [sub slotID];
     v6 = CTLogMessageCenter();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       goto LABEL_11;
     }
 
-    v7 = CTSubscriptionSlotAsString(v5);
+    v7 = CTSubscriptionSlotAsString(slotID);
     *object = 136315138;
     *&object[4] = v7;
     v8 = "MMS configured check requested for slot %s";
@@ -930,7 +930,7 @@ LABEL_20:
   else
   {
     v13 = CTLogMessageCenter();
-    v5 = 1;
+    slotID = 1;
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       goto LABEL_11;
@@ -938,14 +938,14 @@ LABEL_20:
 
     *object = 0;
     v8 = "MMS configured check slot forced to CTSubscriptionSlotOne";
-    v5 = 1;
+    slotID = 1;
     v9 = v13;
     v10 = 2;
   }
 
   _os_log_impl(&dword_182E9B000, v9, OS_LOG_TYPE_INFO, v8, object, v10);
 LABEL_11:
-  v14 = xpc_int64_create(v5);
+  v14 = xpc_int64_create(slotID);
   if (!v14)
   {
     v14 = xpc_null_create();
@@ -1011,7 +1011,7 @@ LABEL_11:
   v22 = CTLogMessageCenter();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
-    v23 = CTSubscriptionSlotAsString(v5);
+    v23 = CTSubscriptionSlotAsString(slotID);
     v24 = "NO";
     if (v12)
     {
@@ -1066,7 +1066,7 @@ void __41__CTMessageCenter_isMmsConfiguredForSub___block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)isMmsEnabledForSub:(id)a3 enabled:(BOOL *)a4
+- ($2825F4736939C4A6D3AD43837233062D)isMmsEnabledForSub:(id)sub enabled:(BOOL *)enabled
 {
   if (!_messageCenterServerConnection)
   {
@@ -1080,7 +1080,7 @@ void __41__CTMessageCenter_isMmsConfiguredForSub___block_invoke()
     goto LABEL_11;
   }
 
-  if (!a4)
+  if (!enabled)
   {
     v8 = CTLogMessageCenter();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1094,14 +1094,14 @@ LABEL_11:
     return (v9 | v7);
   }
 
-  if (a3)
+  if (sub)
   {
-    v5 = [a3 slotID];
+    slotID = [sub slotID];
   }
 
   else
   {
-    v5 = 1;
+    slotID = 1;
   }
 
   xpc::dict_creator::dict_creator(object);
@@ -1111,7 +1111,7 @@ LABEL_11:
   v18 = v17;
   v17 = xpc_null_create();
   xpc_release(v17);
-  v11 = xpc_int64_create(v5);
+  v11 = xpc_int64_create(slotID);
   if (!v11)
   {
     v11 = xpc_null_create();
@@ -1128,7 +1128,7 @@ LABEL_11:
     object[0] = &v17;
     object[1] = "kSmsMmsIsConfigured";
     xpc::dict::object_proxy::operator xpc::object(object, &v16);
-    *a4 = xpc::dyn_cast_or_default(&v16, 0);
+    *enabled = xpc::dyn_cast_or_default(&v16, 0);
     xpc_release(v16);
   }
 
@@ -1139,12 +1139,12 @@ LABEL_11:
   return (v9 | v7);
 }
 
-- (BOOL)sendSMSWithText:(id)a3 text:(id)a4 serviceCenter:(id)a5 toAddress:(id)a6
+- (BOOL)sendSMSWithText:(id)text text:(id)a4 serviceCenter:(id)center toAddress:(id)address
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3 && [a3 slotID] != 1)
+  if (text && [text slotID] != 1)
   {
-    if ([a3 slotID] != 2)
+    if ([text slotID] != 2)
     {
       v17 = CTLogMessageCenter();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -1180,16 +1180,16 @@ LABEL_17:
     [(CTMessage *)v12 addText:a4];
   }
 
-  if (!a6)
+  if (!address)
   {
 
     goto LABEL_17;
   }
 
-  [(CTMessage *)v12 addRecipient:a6];
-  if (a5)
+  [(CTMessage *)v12 addRecipient:address];
+  if (center)
   {
-    [(CTMessage *)v12 setServiceCenter:[CTPhoneNumber phoneNumberWithDigits:[(CTXPCServiceSubscriptionContext *)v13 slotID] digits:a5 countryCode:0]];
+    [(CTMessage *)v12 setServiceCenter:[CTPhoneNumber phoneNumberWithDigits:[(CTXPCServiceSubscriptionContext *)v13 slotID] digits:center countryCode:0]];
   }
 
   [(CTMessage *)v12 setMessageId:0xFFFFFFFFLL];
@@ -1199,9 +1199,9 @@ LABEL_17:
   v15 = CTLogMessageCenter();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [a6 UTF8String];
+    uTF8String = [address UTF8String];
     *buf = 136315394;
-    v22 = v16;
+    v22 = uTF8String;
     v23 = 1024;
     v24 = v20;
     _os_log_impl(&dword_182E9B000, v15, OS_LOG_TYPE_INFO, "Tracking sms to destination %s with message id: %u", buf, 0x12u);
@@ -1212,22 +1212,22 @@ LABEL_18:
   return v14;
 }
 
-- (BOOL)sendSMSWithText:(id)a3 serviceCenter:(id)a4 toAddress:(id)a5 trackingID:(unsigned int *)a6
+- (BOOL)sendSMSWithText:(id)text serviceCenter:(id)center toAddress:(id)address trackingID:(unsigned int *)d
 {
   v11 = [[CTXPCServiceSubscriptionContext alloc] initWithSlot:1];
 
-  return [(CTMessageCenter *)self sendSMSWithText:v11 text:a3 serviceCenter:a4 toAddress:a5 trackingID:a6];
+  return [(CTMessageCenter *)self sendSMSWithText:v11 text:text serviceCenter:center toAddress:address trackingID:d];
 }
 
-- (BOOL)sendSMSWithText:(id)a3 text:(id)a4 serviceCenter:(id)a5 toAddress:(id)a6 trackingID:(unsigned int *)a7
+- (BOOL)sendSMSWithText:(id)text text:(id)a4 serviceCenter:(id)center toAddress:(id)address trackingID:(unsigned int *)d
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (!a7)
+  if (!d)
   {
     goto LABEL_11;
   }
 
-  *a7 = -1;
+  *d = -1;
   v13 = objc_alloc_init(CTMessage);
   if (!v13)
   {
@@ -1235,13 +1235,13 @@ LABEL_18:
   }
 
   v14 = v13;
-  [(CTMessage *)v13 setContext:a3];
+  [(CTMessage *)v13 setContext:text];
   if (a4)
   {
     [(CTMessage *)v14 addText:a4];
   }
 
-  if (!a6)
+  if (!address)
   {
 
 LABEL_11:
@@ -1249,25 +1249,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  [(CTMessage *)v14 addRecipient:a6];
-  if (a5)
+  [(CTMessage *)v14 addRecipient:address];
+  if (center)
   {
-    -[CTMessage setServiceCenter:](v14, "setServiceCenter:", +[CTPhoneNumber phoneNumberWithDigits:digits:countryCode:](CTPhoneNumber, "phoneNumberWithDigits:digits:countryCode:", [a3 slotID], a5, 0));
+    -[CTMessage setServiceCenter:](v14, "setServiceCenter:", +[CTPhoneNumber phoneNumberWithDigits:digits:countryCode:](CTPhoneNumber, "phoneNumberWithDigits:digits:countryCode:", [text slotID], center, 0));
   }
 
   [(CTMessage *)v14 setMessageType:1];
-  v15 = [(CTMessageCenter *)self sendSMS:v14 withMoreToFollow:0 trackingID:a7]== 0;
+  v15 = [(CTMessageCenter *)self sendSMS:v14 withMoreToFollow:0 trackingID:d]== 0;
 
   v16 = CTLogMessageCenter();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [a6 UTF8String];
-    v18 = [a5 UTF8String];
-    v19 = *a7;
+    uTF8String = [address UTF8String];
+    uTF8String2 = [center UTF8String];
+    v19 = *d;
     v22 = 136315650;
-    v23 = v17;
+    v23 = uTF8String;
     v24 = 2080;
-    v25 = v18;
+    v25 = uTF8String2;
     v26 = 1024;
     v27 = v19;
     _os_log_impl(&dword_182E9B000, v16, OS_LOG_TYPE_INFO, "Tracking sms to destination %s service center %s with message id: %u", &v22, 0x1Cu);
@@ -1278,13 +1278,13 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)getCharacterCountForSub:(id)a3 count:(int64_t *)a4 andMessageSplitThreshold:(int64_t *)a5 forSmsText:(id)a6
+- (BOOL)getCharacterCountForSub:(id)sub count:(int64_t *)count andMessageSplitThreshold:(int64_t *)threshold forSmsText:(id)text
 {
   v27 = *MEMORY[0x1E69E9840];
   if (_messageCenterServerConnection)
   {
     LOBYTE(v7) = 0;
-    if (a5 && a4 && a6)
+    if (threshold && count && text)
     {
       xpc::dict_creator::dict_creator(&object);
       xpc::dict_creator::operator()<char const*>("kSmsGetCharacterCountAndThresholdForMessage", &object, "kRequest", &v24);
@@ -1294,20 +1294,20 @@ LABEL_12:
       v24 = xpc_null_create();
       xpc_release(v24);
       v24 = xpc_null_create();
-      ctu::cf_to_xpc(&value, a6, v12);
+      ctu::cf_to_xpc(&value, text, v12);
       xpc_dictionary_set_value(v11, "kSmsMessageBody", value);
       v13 = value;
       value = xpc_null_create();
       xpc_release(v13);
       xpc_release(value);
       value = 0;
-      if (a3)
+      if (sub)
       {
-        v14 = [a3 slotID];
+        slotID = [sub slotID];
         v15 = CTLogMessageCenter();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
-          v16 = CTSubscriptionSlotAsString(v14);
+          v16 = CTSubscriptionSlotAsString(slotID);
           LODWORD(object) = 136315138;
           *(&object + 4) = v16;
           _os_log_impl(&dword_182E9B000, v15, OS_LOG_TYPE_INFO, "Character count requested for Slot %s", &object, 0xCu);
@@ -1322,10 +1322,10 @@ LABEL_12:
           [CTMessageCenter getCharacterCountForSub:count:andMessageSplitThreshold:forSmsText:];
         }
 
-        v14 = 1;
+        slotID = 1;
       }
 
-      v18 = xpc_int64_create(v14);
+      v18 = xpc_int64_create(slotID);
       if (!v18)
       {
         v18 = xpc_null_create();
@@ -1347,12 +1347,12 @@ LABEL_12:
           *&object = &v24;
           *(&object + 1) = "kSmsCharacterCount";
           xpc::dict::object_proxy::operator xpc::object(&object, &v22);
-          *a4 = xpc::dyn_cast_or_default(&v22, 0);
+          *count = xpc::dyn_cast_or_default(&v22, 0);
           xpc_release(v22);
           *&object = &v24;
           *(&object + 1) = "kSmsThreshold";
           xpc::dict::object_proxy::operator xpc::object(&object, &v22);
-          *a5 = xpc::dyn_cast_or_default(&v22, 0);
+          *threshold = xpc::dyn_cast_or_default(&v22, 0);
           xpc_release(v22);
           LOBYTE(v7) = 1;
         }
@@ -1377,19 +1377,19 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)getCharacterCount:(int64_t *)a3 andMessageSplitThreshold:(int64_t *)a4 forSmsText:(id)a5
+- (BOOL)getCharacterCount:(int64_t *)count andMessageSplitThreshold:(int64_t *)threshold forSmsText:(id)text
 {
   v9 = [[CTXPCServiceSubscriptionContext alloc] initWithSlot:1];
 
-  return [(CTMessageCenter *)self getCharacterCountForSub:v9 count:a3 andMessageSplitThreshold:a4 forSmsText:a5];
+  return [(CTMessageCenter *)self getCharacterCountForSub:v9 count:count andMessageSplitThreshold:threshold forSmsText:text];
 }
 
-- (BOOL)simulateSmsReceived:(id)a3
+- (BOOL)simulateSmsReceived:(id)received
 {
   if (_messageCenterServerConnection)
   {
-    v3 = a3;
-    if (a3)
+    receivedCopy = received;
+    if (received)
     {
       xpc::dict_creator::dict_creator(object);
       xpc::dict_creator::operator()<char const*>("kSimulateSmsReceived", object, "kRequest", &v12);
@@ -1399,7 +1399,7 @@ LABEL_12:
       v12 = xpc_null_create();
       xpc_release(v12);
       v12 = xpc_null_create();
-      ctu::cf_to_xpc(&value, v3, v5);
+      ctu::cf_to_xpc(&value, receivedCopy, v5);
       xpc_dictionary_set_value(v4, "kCTSmsPdu", value);
       v6 = value;
       value = xpc_null_create();
@@ -1408,7 +1408,7 @@ LABEL_12:
       value = 0;
       if (SendXpcMessage(_messageCenterServerConnection, &v13, &v12) >> 32)
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(receivedCopy) = 0;
       }
 
       else
@@ -1416,7 +1416,7 @@ LABEL_12:
         object[0] = &v12;
         object[1] = "kDidSucceed";
         xpc::dict::object_proxy::operator xpc::object(object, &v10);
-        LOBYTE(v3) = xpc::dyn_cast_or_default(&v10, 0);
+        LOBYTE(receivedCopy) = xpc::dyn_cast_or_default(&v10, 0);
         xpc_release(v10);
       }
 
@@ -1433,10 +1433,10 @@ LABEL_12:
       [CTMessageCenter simulateSmsReceived:];
     }
 
-    LOBYTE(v3) = 0;
+    LOBYTE(receivedCopy) = 0;
   }
 
-  return v3;
+  return receivedCopy;
 }
 
 - (BOOL)simulateDeferredMessage
@@ -1482,18 +1482,18 @@ LABEL_12:
   return v2;
 }
 
-- (BOOL)sendBinarySMS:(id)a3 trackingID:(unsigned int *)a4
+- (BOOL)sendBinarySMS:(id)s trackingID:(unsigned int *)d
 {
   v48 = *MEMORY[0x1E69E9840];
-  if (!a3 || ![a3 isValid])
+  if (!s || ![s isValid])
   {
     v11 = 0;
     goto LABEL_46;
   }
 
-  if ([a3 context])
+  if ([s context])
   {
-    v6 = [objc_msgSend(a3 "context")];
+    v6 = [objc_msgSend(s "context")];
     v7 = CTLogMessageCenter();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -1539,15 +1539,15 @@ LABEL_9:
   v15 = xpc_null_create();
   xpc_release(v14);
   xpc_release(v15);
-  v16 = [a3 payload];
-  ctu::cf_to_xpc(&value, v16, v17);
+  payload = [s payload];
+  ctu::cf_to_xpc(&value, payload, v17);
   xpc_dictionary_set_value(v13, "kSmsBinaryPayload", value);
   v18 = value;
   value = xpc_null_create();
   xpc_release(v18);
   xpc_release(value);
   value = 0;
-  v19 = xpc_int64_create([a3 srcPort]);
+  v19 = xpc_int64_create([s srcPort]);
   if (!v19)
   {
     v19 = xpc_null_create();
@@ -1557,7 +1557,7 @@ LABEL_9:
   v20 = xpc_null_create();
   xpc_release(v19);
   xpc_release(v20);
-  v21 = xpc_int64_create([a3 dstPort]);
+  v21 = xpc_int64_create([s dstPort]);
   if (!v21)
   {
     v21 = xpc_null_create();
@@ -1567,7 +1567,7 @@ LABEL_9:
   v22 = xpc_null_create();
   xpc_release(v21);
   xpc_release(v22);
-  v23 = xpc_int64_create([a3 portAddressingScheme]);
+  v23 = xpc_int64_create([s portAddressingScheme]);
   if (!v23)
   {
     v23 = xpc_null_create();
@@ -1577,7 +1577,7 @@ LABEL_9:
   v24 = xpc_null_create();
   xpc_release(v23);
   xpc_release(v24);
-  [a3 destinationAddress];
+  [s destinationAddress];
   memset(buf, 0, sizeof(buf));
   v47 = 0;
   ctu::cf::assign();
@@ -1608,7 +1608,7 @@ LABEL_9:
     operator delete(__p[0]);
   }
 
-  [a3 smscAddress];
+  [s smscAddress];
   memset(buf, 0, sizeof(buf));
   v47 = 0;
   ctu::cf::assign();
@@ -1659,7 +1659,7 @@ LABEL_9:
   v34 = xpc_null_create();
   xpc_release(v33);
   xpc_release(v34);
-  v35 = xpc_int64_create([a3 smsType]);
+  v35 = xpc_int64_create([s smsType]);
   if (!v35)
   {
     v35 = xpc_null_create();
@@ -1678,12 +1678,12 @@ LABEL_9:
     xpc::dict::object_proxy::operator xpc::object(buf, &object);
     v38 = xpc::dyn_cast_or_default(&object, 0);
     xpc_release(object);
-    if (a4)
+    if (d)
     {
       *buf = __p;
       *&buf[8] = "kSmsMessageID";
       xpc::dict::object_proxy::operator xpc::object(buf, &object);
-      *a4 = xpc::dyn_cast_or_default(&object, 0xFFFFFFFFLL);
+      *d = xpc::dyn_cast_or_default(&object, 0xFFFFFFFFLL);
       xpc_release(object);
     }
   }
@@ -1710,9 +1710,9 @@ LABEL_46:
   return v11;
 }
 
-- (void)emergencySessionIntentStart:(id)a3
+- (void)emergencySessionIntentStart:(id)start
 {
-  if (a3)
+  if (start)
   {
     xpc::dict_creator::dict_creator(object);
     xpc::dict_creator::operator()<char const*>("kSmsEmergencyUISession", object, "kRequest", &v15);
@@ -1721,7 +1721,7 @@ LABEL_46:
     v16 = v15;
     v15 = xpc_null_create();
     xpc_release(v15);
-    v5 = xpc_int64_create([a3 slotID]);
+    v5 = xpc_int64_create([start slotID]);
     if (!v5)
     {
       v5 = xpc_null_create();
@@ -1782,9 +1782,9 @@ LABEL_46:
   }
 }
 
-- (void)emergencySessionIntentEnd:(id)a3
+- (void)emergencySessionIntentEnd:(id)end
 {
-  if (a3)
+  if (end)
   {
     xpc::dict_creator::dict_creator(&object);
     xpc::dict_creator::operator()<char const*>("kSmsEmergencyUISession", &object, "kRequest", &v15);
@@ -1793,7 +1793,7 @@ LABEL_46:
     v16 = v15;
     v15 = xpc_null_create();
     xpc_release(v15);
-    v5 = xpc_int64_create([a3 slotID]);
+    v5 = xpc_int64_create([end slotID]);
     if (!v5)
     {
       v5 = xpc_null_create();

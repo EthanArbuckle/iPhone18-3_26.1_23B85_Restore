@@ -1,18 +1,18 @@
 @interface __CKDynamicObjCType
-- (__CKDynamicObjCType)initWithCode:(int64_t)a3 encoding:(id)a4;
+- (__CKDynamicObjCType)initWithCode:(int64_t)code encoding:(id)encoding;
 @end
 
 @implementation __CKDynamicObjCType
 
-- (__CKDynamicObjCType)initWithCode:(int64_t)a3 encoding:(id)a4
+- (__CKDynamicObjCType)initWithCode:(int64_t)code encoding:(id)encoding
 {
-  v6 = a4;
+  encodingCopy = encoding;
   v13.receiver = self;
   v13.super_class = __CKDynamicObjCType;
-  v9 = [(CKObjCType *)&v13 initWithCode:a3];
+  v9 = [(CKObjCType *)&v13 initWithCode:code];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v6, v7, v8);
+    v10 = objc_msgSend_copy(encodingCopy, v7, v8);
     encoding = v9->_encoding;
     v9->_encoding = v10;
   }

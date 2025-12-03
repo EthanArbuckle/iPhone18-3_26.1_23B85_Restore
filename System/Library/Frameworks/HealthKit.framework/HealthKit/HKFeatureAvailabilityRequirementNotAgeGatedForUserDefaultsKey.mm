@@ -1,23 +1,23 @@
 @interface HKFeatureAvailabilityRequirementNotAgeGatedForUserDefaultsKey
-- (HKFeatureAvailabilityRequirementNotAgeGatedForUserDefaultsKey)initWithUserDefaultsKey:(id)a3;
+- (HKFeatureAvailabilityRequirementNotAgeGatedForUserDefaultsKey)initWithUserDefaultsKey:(id)key;
 - (id)requiredEntitlements;
 - (id)requirementDescription;
 @end
 
 @implementation HKFeatureAvailabilityRequirementNotAgeGatedForUserDefaultsKey
 
-- (HKFeatureAvailabilityRequirementNotAgeGatedForUserDefaultsKey)initWithUserDefaultsKey:(id)a3
+- (HKFeatureAvailabilityRequirementNotAgeGatedForUserDefaultsKey)initWithUserDefaultsKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = HKFeatureAvailabilityRequirementNotAgeGatedForUserDefaultsKey;
-  return [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)&v4 initWithUserDefaultsKey:a3];
+  return [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)&v4 initWithUserDefaultsKey:key];
 }
 
 - (id)requirementDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)self userDefaultsKey];
-  v4 = [v2 stringWithFormat:@"The value of the age gating user defaults key %@ must not be YES", v3];
+  userDefaultsKey = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)self userDefaultsKey];
+  v4 = [v2 stringWithFormat:@"The value of the age gating user defaults key %@ must not be YES", userDefaultsKey];
 
   return v4;
 }

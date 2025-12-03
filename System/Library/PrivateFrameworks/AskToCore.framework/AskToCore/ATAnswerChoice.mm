@@ -1,18 +1,18 @@
 @interface ATAnswerChoice
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)completedRequestTitle;
 - (NSString)description;
 - (NSString)id;
 - (NSString)title;
 - (_TtC5AskTo14ATAnswerChoice)init;
-- (_TtC5AskTo14ATAnswerChoice)initWithId:(id)a3 title:(id)a4;
-- (_TtC5AskTo14ATAnswerChoice)initWithId:(id)a3 title:(id)a4 completedRequestTitle:(id)a5;
+- (_TtC5AskTo14ATAnswerChoice)initWithId:(id)id title:(id)title;
+- (_TtC5AskTo14ATAnswerChoice)initWithId:(id)id title:(id)title completedRequestTitle:(id)requestTitle;
 - (int64_t)hash;
 - (signed)kind;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCompletedRequestTitle:(id)a3;
-- (void)setKind:(signed __int16)a3;
-- (void)setTitle:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCompletedRequestTitle:(id)title;
+- (void)setKind:(signed __int16)kind;
+- (void)setTitle:(id)title;
 @end
 
 @implementation ATAnswerChoice
@@ -39,7 +39,7 @@
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4 = sub_2410DF0C0();
   v6 = v5;
@@ -69,9 +69,9 @@
   return v4;
 }
 
-- (void)setCompletedRequestTitle:(id)a3
+- (void)setCompletedRequestTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_2410DF0C0();
     v6 = v5;
@@ -97,14 +97,14 @@
   return *(self + v3);
 }
 
-- (void)setKind:(signed __int16)a3
+- (void)setKind:(signed __int16)kind
 {
   v5 = OBJC_IVAR____TtC5AskTo14ATAnswerChoice_kind;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = kind;
 }
 
-- (_TtC5AskTo14ATAnswerChoice)initWithId:(id)a3 title:(id)a4
+- (_TtC5AskTo14ATAnswerChoice)initWithId:(id)id title:(id)title
 {
   ObjectType = swift_getObjectType();
   v6 = sub_2410DF0C0();
@@ -125,16 +125,16 @@
   return [(ATAnswerChoice *)&v15 init];
 }
 
-- (_TtC5AskTo14ATAnswerChoice)initWithId:(id)a3 title:(id)a4 completedRequestTitle:(id)a5
+- (_TtC5AskTo14ATAnswerChoice)initWithId:(id)id title:(id)title completedRequestTitle:(id)requestTitle
 {
   ObjectType = swift_getObjectType();
   v8 = sub_2410DF0C0();
   v10 = v9;
   v11 = sub_2410DF0C0();
   v13 = v12;
-  if (a5)
+  if (requestTitle)
   {
-    a5 = sub_2410DF0C0();
+    requestTitle = sub_2410DF0C0();
     v15 = v14;
   }
 
@@ -154,18 +154,18 @@
   *v18 = v11;
   v18[1] = v13;
   swift_beginAccess();
-  *v16 = a5;
+  *v16 = requestTitle;
   v16[1] = v15;
   v20.receiver = self;
   v20.super_class = ObjectType;
   return [(ATAnswerChoice *)&v20 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2410DF4E0();
     swift_unknownObjectRelease();
@@ -174,7 +174,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = ATAnswerChoice.isEqual(_:)(v8);
@@ -185,7 +185,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ATAnswerChoice.hash.getter();
 
   return v3;
@@ -193,7 +193,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ATAnswerChoice.description.getter();
 
   v3 = sub_2410DF0A0();
@@ -208,11 +208,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ATAnswerChoice.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ATAnswerChoice.encode(with:)(coderCopy);
 }
 
 @end

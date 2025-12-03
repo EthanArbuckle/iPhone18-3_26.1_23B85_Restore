@@ -1,11 +1,11 @@
 @interface SiriSharedUICompactAdditionalContentView
 - (BOOL)layerHasOpacity;
 - (CGSize)_fittingSize;
-- (CGSize)_sizeThatFits:(CGSize)a3 forSnippet:(id)a4;
-- (CGSize)_sizeThatFitsAllSnippets:(CGSize)a3;
+- (CGSize)_sizeThatFits:(CGSize)fits forSnippet:(id)snippet;
+- (CGSize)_sizeThatFitsAllSnippets:(CGSize)snippets;
 - (CGSize)portraitContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriSharedUICompactAdditionalContentView)initWithFrame:(CGRect)a3 platterCategory:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriSharedUICompactAdditionalContentView)initWithFrame:(CGRect)frame platterCategory:(int64_t)category;
 - (SiriSharedUICompactAdditionalContentViewDelegate)delegate;
 - (SiriSharedUIStackableContentDelegate)stackContainerDelegate;
 - (id)_conversationAppearAnimation;
@@ -13,17 +13,17 @@
 - (id)prepareForUpdatesPendingCompletionBlocks;
 - (void)_setupSubviews;
 - (void)animateAppearanceIfNeeded;
-- (void)animateFadeOutWithCompletion:(id)a3;
+- (void)animateFadeOutWithCompletion:(id)completion;
 - (void)didCompleteAnimatedFadeOut;
 - (void)layoutSubviews;
-- (void)prepareForUpdatesToSnippetViews:(BOOL)a3;
-- (void)setSnippetViews:(id)a3;
-- (void)updateContentSizeWithAnimation:(BOOL)a3;
+- (void)prepareForUpdatesToSnippetViews:(BOOL)views;
+- (void)setSnippetViews:(id)views;
+- (void)updateContentSizeWithAnimation:(BOOL)animation;
 @end
 
 @implementation SiriSharedUICompactAdditionalContentView
 
-- (SiriSharedUICompactAdditionalContentView)initWithFrame:(CGRect)a3 platterCategory:(int64_t)a4
+- (SiriSharedUICompactAdditionalContentView)initWithFrame:(CGRect)frame platterCategory:(int64_t)category
 {
   v9.receiver = self;
   v9.super_class = SiriSharedUICompactAdditionalContentView;
@@ -32,11 +32,11 @@
   if (v5)
   {
     [(SiriSharedUICompactAdditionalContentView *)v5 _setupSubviews];
-    v7 = [(SiriSharedUICompactAdditionalContentView *)v6 layer];
-    [v7 setOpacity:0.0];
+    layer = [(SiriSharedUICompactAdditionalContentView *)v6 layer];
+    [layer setOpacity:0.0];
   }
 
-  v6->_platterCategory = a4;
+  v6->_platterCategory = category;
   return v6;
 }
 
@@ -54,11 +54,11 @@
 
   [(UIView *)self->_containerView setClipsToBounds:1];
   v7 = self->_containerView;
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)v7 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)v7 setBackgroundColor:clearColor];
 
-  v9 = [(PLPlatterView *)self->_platterView customContentView];
-  [v9 addSubview:self->_containerView];
+  customContentView = [(PLPlatterView *)self->_platterView customContentView];
+  [customContentView addSubview:self->_containerView];
 
   v10 = objc_alloc_init(SiriSharedUIStandardView);
   snippetContainerView = self->_snippetContainerView;
@@ -81,9 +81,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SiriSharedUICompactAdditionalContentView *)self animationContextForFrameAndLayoutUpdate];
+  animationContextForFrameAndLayoutUpdate = [(SiriSharedUICompactAdditionalContentView *)self animationContextForFrameAndLayoutUpdate];
 
-  if (v11)
+  if (animationContextForFrameAndLayoutUpdate)
   {
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
@@ -94,8 +94,8 @@
     *&v41[6] = v6;
     *&v41[7] = v8;
     *&v41[8] = v10;
-    v12 = [(SiriSharedUICompactAdditionalContentView *)self animationContextForFrameAndLayoutUpdate];
-    [SiriSharedUIAnimationUtilities perfomAnimationBlockWithAnimationBlock:v41 context:v12 completion:0];
+    animationContextForFrameAndLayoutUpdate2 = [(SiriSharedUICompactAdditionalContentView *)self animationContextForFrameAndLayoutUpdate];
+    [SiriSharedUIAnimationUtilities perfomAnimationBlockWithAnimationBlock:v41 context:animationContextForFrameAndLayoutUpdate2 completion:0];
   }
 
   else
@@ -117,7 +117,7 @@
   v14 = [(NSArray *)v13 countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v14)
   {
-    v15 = v14;
+    maxY = v14;
     rect = v10;
     v32 = v4;
     v16 = 0;
@@ -132,7 +132,7 @@
     v21 = 0.0;
     do
     {
-      for (i = 0; i != v15; ++i)
+      for (i = 0; i != maxY; ++i)
       {
         if (*v38 != v19)
         {
@@ -177,10 +177,10 @@
         }
       }
 
-      v15 = [(NSArray *)v13 countByEnumeratingWithState:&v37 objects:v43 count:16, MaxY];
+      maxY = [(NSArray *)v13 countByEnumeratingWithState:&v37 objects:v43 count:16, MaxY];
     }
 
-    while (v15);
+    while (maxY);
   }
 
   else
@@ -190,15 +190,15 @@
   }
 
   [(UIView *)self->_snippetContainerView setFrame:0.0, 0.0, v20, v21];
-  v30 = [(SiriSharedUICompactAdditionalContentView *)self stackContainerDelegate];
-  [v30 stackableContentDidLayout:self];
+  stackContainerDelegate = [(SiriSharedUICompactAdditionalContentView *)self stackContainerDelegate];
+  [stackContainerDelegate stackableContentDidLayout:self];
 }
 
-- (void)setSnippetViews:(id)a3
+- (void)setSnippetViews:(id)views
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(NSArray *)self->_snippetViews isEqualToArray:v4])
+  viewsCopy = views;
+  if (![(NSArray *)self->_snippetViews isEqualToArray:viewsCopy])
   {
     v26 = 0u;
     v27 = 0u;
@@ -228,7 +228,7 @@
       while (v7);
     }
 
-    v10 = [v4 copy];
+    v10 = [viewsCopy copy];
     snippetViews = self->_snippetViews;
     self->_snippetViews = v10;
 
@@ -284,9 +284,9 @@
   prepareForUpdatesPendingCompletionBlocks = self->_prepareForUpdatesPendingCompletionBlocks;
   if (!prepareForUpdatesPendingCompletionBlocks)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_prepareForUpdatesPendingCompletionBlocks;
-    self->_prepareForUpdatesPendingCompletionBlocks = v4;
+    self->_prepareForUpdatesPendingCompletionBlocks = array;
 
     prepareForUpdatesPendingCompletionBlocks = self->_prepareForUpdatesPendingCompletionBlocks;
   }
@@ -325,13 +325,13 @@
       }
 
       [MEMORY[0x277CD9FF0] begin];
-      v4 = [(SiriSharedUICompactAdditionalContentView *)self layer];
-      v5 = [(SiriSharedUICompactAdditionalContentView *)self _conversationAppearAnimation];
-      [v4 addAnimation:v5 forKey:@"additionalContentAppearance"];
+      layer = [(SiriSharedUICompactAdditionalContentView *)self layer];
+      _conversationAppearAnimation = [(SiriSharedUICompactAdditionalContentView *)self _conversationAppearAnimation];
+      [layer addAnimation:_conversationAppearAnimation forKey:@"additionalContentAppearance"];
 
-      v6 = [(SiriSharedUICompactAdditionalContentView *)self layer];
+      layer2 = [(SiriSharedUICompactAdditionalContentView *)self layer];
       LODWORD(v7) = 1.0;
-      [v6 setOpacity:v7];
+      [layer2 setOpacity:v7];
 
       [MEMORY[0x277CD9FF0] commit];
     }
@@ -350,14 +350,14 @@
 
 - (id)_conversationDisappearAnimation
 {
-  v2 = [(SiriSharedUICompactAdditionalContentView *)self _animatedPresentationType];
+  _animatedPresentationType = [(SiriSharedUICompactAdditionalContentView *)self _animatedPresentationType];
 
-  return [SiriSharedUIAnimationUtilities animationForStyle:2 expectedWidthForStyle:0 presentationType:v2];
+  return [SiriSharedUIAnimationUtilities animationForStyle:2 expectedWidthForStyle:0 presentationType:_animatedPresentationType];
 }
 
-- (void)prepareForUpdatesToSnippetViews:(BOOL)a3
+- (void)prepareForUpdatesToSnippetViews:(BOOL)views
 {
-  v3 = a3;
+  viewsCopy = views;
   v15 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -372,7 +372,7 @@
     _os_log_impl(&dword_21E3EB000, v5, OS_LOG_TYPE_DEFAULT, "%s #compact prepareForUpdates isAlreadyRunningPrepareForUpdates: %d, meetsRequirementsForContentUpdating: %d", buf, 0x18u);
   }
 
-  if (v3 && !self->_runningPrepareForUpdates)
+  if (viewsCopy && !self->_runningPrepareForUpdates)
   {
     self->_runningPrepareForUpdates = 1;
     objc_initWeak(buf, self);
@@ -467,10 +467,10 @@ uint64_t __76__SiriSharedUICompactAdditionalContentView_prepareForUpdatesToSnipp
   }
 }
 
-- (void)animateFadeOutWithCompletion:(id)a3
+- (void)animateFadeOutWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if ([(SiriSharedUICompactAdditionalContentView *)self layerHasOpacity])
   {
     v5 = *MEMORY[0x277CEF098];
@@ -490,23 +490,23 @@ uint64_t __76__SiriSharedUICompactAdditionalContentView_prepareForUpdatesToSnipp
     v12 = __73__SiriSharedUICompactAdditionalContentView_animateFadeOutWithCompletion___block_invoke;
     v13 = &unk_2783548D0;
     objc_copyWeak(&v15, buf);
-    v14 = v4;
+    v14 = completionCopy;
     [v6 setCompletionBlock:&v10];
     v7 = [(SiriSharedUICompactAdditionalContentView *)self layer:v10];
-    v8 = [(SiriSharedUICompactAdditionalContentView *)self _conversationDisappearAnimation];
-    [v7 addAnimation:v8 forKey:@"additionalContentDisappearance"];
+    _conversationDisappearAnimation = [(SiriSharedUICompactAdditionalContentView *)self _conversationDisappearAnimation];
+    [v7 addAnimation:_conversationDisappearAnimation forKey:@"additionalContentDisappearance"];
 
-    v9 = [(SiriSharedUICompactAdditionalContentView *)self layer];
-    [v9 setOpacity:0.0];
+    layer = [(SiriSharedUICompactAdditionalContentView *)self layer];
+    [layer setOpacity:0.0];
 
     [MEMORY[0x277CD9FF0] commit];
     objc_destroyWeak(&v15);
     objc_destroyWeak(buf);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -532,17 +532,17 @@ void __73__SiriSharedUICompactAdditionalContentView_animateFadeOutWithCompletion
 
 - (BOOL)layerHasOpacity
 {
-  v2 = [(SiriSharedUICompactAdditionalContentView *)self layer];
-  [v2 opacity];
+  layer = [(SiriSharedUICompactAdditionalContentView *)self layer];
+  [layer opacity];
   v4 = v3 > 0.0;
 
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(SiriSharedUICompactAdditionalContentView *)self _sizeThatFitsAllSnippets:a3.width, a3.height];
+  width = fits.width;
+  [(SiriSharedUICompactAdditionalContentView *)self _sizeThatFitsAllSnippets:fits.width, fits.height];
   v5 = fmax(v4, 0.0);
   v6 = width;
   result.height = v5;
@@ -550,10 +550,10 @@ void __73__SiriSharedUICompactAdditionalContentView_animateFadeOutWithCompletion
   return result;
 }
 
-- (CGSize)_sizeThatFitsAllSnippets:(CGSize)a3
+- (CGSize)_sizeThatFitsAllSnippets:(CGSize)snippets
 {
-  height = a3.height;
-  width = a3.width;
+  height = snippets.height;
+  width = snippets.width;
   v22 = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
@@ -597,14 +597,14 @@ void __73__SiriSharedUICompactAdditionalContentView_animateFadeOutWithCompletion
   return result;
 }
 
-- (void)updateContentSizeWithAnimation:(BOOL)a3
+- (void)updateContentSizeWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   [(SiriSharedUICompactAdditionalContentView *)self _fittingSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(SiriSharedUICompactAdditionalContentView *)self stackContainerDelegate];
-  [v9 stackableContentWillUpdateLayout:self withUpdatedContentSize:v3 animated:{v6, v8}];
+  stackContainerDelegate = [(SiriSharedUICompactAdditionalContentView *)self stackContainerDelegate];
+  [stackContainerDelegate stackableContentWillUpdateLayout:self withUpdatedContentSize:animationCopy animated:{v6, v8}];
 
   [(SiriSharedUICompactAdditionalContentView *)self invalidateIntrinsicContentSize];
 }
@@ -628,8 +628,8 @@ void __73__SiriSharedUICompactAdditionalContentView_animateFadeOutWithCompletion
   }
 
   v5 = *v4;
-  v6 = [(SiriSharedUICompactAdditionalContentView *)self stackContainerDelegate];
-  [v6 stackableContentMaximumContainerWidth];
+  stackContainerDelegate = [(SiriSharedUICompactAdditionalContentView *)self stackContainerDelegate];
+  [stackContainerDelegate stackableContentMaximumContainerWidth];
   v8 = v7 + v5 * -2.0;
 
   if (v3 >= v8)
@@ -648,22 +648,22 @@ void __73__SiriSharedUICompactAdditionalContentView_animateFadeOutWithCompletion
   return result;
 }
 
-- (CGSize)_sizeThatFits:(CGSize)a3 forSnippet:(id)a4
+- (CGSize)_sizeThatFits:(CGSize)fits forSnippet:(id)snippet
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
+  height = fits.height;
+  width = fits.width;
+  snippetCopy = snippet;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 collectionViewLayout];
-    [v7 collectionViewContentSize];
+    collectionViewLayout = [snippetCopy collectionViewLayout];
+    [collectionViewLayout collectionViewContentSize];
     v9 = v8;
   }
 
   else
   {
-    [v6 sizeThatFits:{width, height}];
+    [snippetCopy sizeThatFits:{width, height}];
     width = v10;
     v9 = v11;
   }

@@ -3,17 +3,17 @@
 - (NSData)peerSessionId;
 - (NSData)sessionId;
 - (_TtC21transparencyStaticKey12GSASAnnounce)init;
-- (void)aProtocolVersionArrayWithAddValue:(int64_t)a3;
-- (void)setPeerSessionId:(id)a3;
-- (void)setSessionId:(id)a3;
+- (void)aProtocolVersionArrayWithAddValue:(int64_t)value;
+- (void)setPeerSessionId:(id)id;
+- (void)setSessionId:(id)id;
 @end
 
 @implementation GSASAnnounce
 
-- (void)aProtocolVersionArrayWithAddValue:(int64_t)a3
+- (void)aProtocolVersionArrayWithAddValue:(int64_t)value
 {
   v4 = *((swift_isaMask & self->super.isa) + 0x68);
-  v5 = self;
+  selfCopy = self;
   v6 = v4(v13);
   v8 = v7;
   v9 = *v7;
@@ -34,7 +34,7 @@
   }
 
   *(v9 + 2) = v12 + 1;
-  *&v9[8 * v12 + 32] = a3;
+  *&v9[8 * v12 + 32] = value;
   v6(v13, 0);
 }
 
@@ -45,7 +45,7 @@
   __chkstk_darwin(v3 - 8);
   v6 = &v13 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v7 = *((swift_isaMask & self->super.isa) + 0x58);
-  v8 = self;
+  selfCopy = self;
   v7();
 
   v9 = *(v6 + 1);
@@ -58,14 +58,14 @@
   return v11.super.isa;
 }
 
-- (void)setSessionId:(id)a3
+- (void)setSessionId:(id)id
 {
-  v4 = a3;
-  v5 = self;
+  idCopy = id;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
-  v9 = *((swift_isaMask & v5->super.isa) + 0x68);
+  v9 = *((swift_isaMask & selfCopy->super.isa) + 0x68);
   sub_10005F0F8(v6, v8);
   v10 = v9(v14);
   v12 = *(v11 + 8);
@@ -85,7 +85,7 @@
   __chkstk_darwin(v3 - 8);
   v6 = &v13 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v7 = *((swift_isaMask & self->super.isa) + 0x58);
-  v8 = self;
+  selfCopy = self;
   v7();
 
   v9 = *(v6 + 3);
@@ -98,14 +98,14 @@
   return v11.super.isa;
 }
 
-- (void)setPeerSessionId:(id)a3
+- (void)setPeerSessionId:(id)id
 {
-  v4 = a3;
-  v5 = self;
+  idCopy = id;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
-  v9 = *((swift_isaMask & v5->super.isa) + 0x68);
+  v9 = *((swift_isaMask & selfCopy->super.isa) + 0x68);
   sub_10005F0F8(v6, v8);
   v10 = v9(v14);
   v12 = *(v11 + 24);
@@ -139,7 +139,7 @@
   __chkstk_darwin(v3);
   v6 = &v14 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v7 = *((swift_isaMask & self->super.isa) + 0x58);
-  v8 = self;
+  selfCopy = self;
   v7();
   sub_10006CE3C(&qword_1000AE3A0, type metadata accessor for SASAnnounce);
   v9 = Message.serializedData(partial:)();

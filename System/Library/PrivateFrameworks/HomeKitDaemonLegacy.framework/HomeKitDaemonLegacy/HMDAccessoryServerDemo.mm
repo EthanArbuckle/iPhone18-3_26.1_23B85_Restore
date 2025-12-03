@@ -1,21 +1,21 @@
 @interface HMDAccessoryServerDemo
-- (BOOL)_delegateRespondsToSelector:(SEL)a3;
-- (BOOL)removePairingForCurrentControllerOnQueue:(id)a3 completion:(id)a4;
+- (BOOL)_delegateRespondsToSelector:(SEL)selector;
+- (BOOL)removePairingForCurrentControllerOnQueue:(id)queue completion:(id)completion;
 - (HMDAccessoryServerBrowserDemo)browser;
-- (HMDAccessoryServerDemo)initWithName:(id)a3 identifier:(id)a4 deviceInfo:(id)a5 paired:(BOOL)a6 keyStore:(id)a7 testMode:(BOOL)a8 browser:(id)a9;
-- (id)initCommon:(id)a3 browser:(id)a4;
-- (void)_parseAttributeDatabase:(id)a3;
-- (void)addPairing:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (void)enableEvents:(BOOL)a3 forCharacteristics:(id)a4 withCompletionHandler:(id)a5 queue:(id)a6;
-- (void)handleUpdatesForCharacteristics:(id)a3 stateNumber:(id)a4;
-- (void)identifyWithCompletion:(id)a3;
-- (void)listPairingsWithCompletionQueue:(id)a3 completionHandler:(id)a4;
-- (void)processCharacteristicWrite:(id)a3 value:(id)a4;
-- (void)readCharacteristicValues:(id)a3 timeout:(double)a4 expiry:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7;
-- (void)removePairing:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (void)sendDelayedResponse:(unint64_t)a3 responses:(id)a4 readOperation:(BOOL)a5 completionQueue:(id)a6 completionHandler:(id)a7;
-- (void)startPairingWithRequest:(id)a3;
-- (void)writeCharacteristicValues:(id)a3 timeout:(double)a4 expiry:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7;
+- (HMDAccessoryServerDemo)initWithName:(id)name identifier:(id)identifier deviceInfo:(id)info paired:(BOOL)paired keyStore:(id)store testMode:(BOOL)mode browser:(id)browser;
+- (id)initCommon:(id)common browser:(id)browser;
+- (void)_parseAttributeDatabase:(id)database;
+- (void)addPairing:(id)pairing completionQueue:(id)queue completionHandler:(id)handler;
+- (void)enableEvents:(BOOL)events forCharacteristics:(id)characteristics withCompletionHandler:(id)handler queue:(id)queue;
+- (void)handleUpdatesForCharacteristics:(id)characteristics stateNumber:(id)number;
+- (void)identifyWithCompletion:(id)completion;
+- (void)listPairingsWithCompletionQueue:(id)queue completionHandler:(id)handler;
+- (void)processCharacteristicWrite:(id)write value:(id)value;
+- (void)readCharacteristicValues:(id)values timeout:(double)timeout expiry:(id)expiry completionQueue:(id)queue completionHandler:(id)handler;
+- (void)removePairing:(id)pairing completionQueue:(id)queue completionHandler:(id)handler;
+- (void)sendDelayedResponse:(unint64_t)response responses:(id)responses readOperation:(BOOL)operation completionQueue:(id)queue completionHandler:(id)handler;
+- (void)startPairingWithRequest:(id)request;
+- (void)writeCharacteristicValues:(id)values timeout:(double)timeout expiry:(id)expiry completionQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation HMDAccessoryServerDemo
@@ -27,21 +27,21 @@
   return WeakRetained;
 }
 
-- (void)handleUpdatesForCharacteristics:(id)a3 stateNumber:(id)a4
+- (void)handleUpdatesForCharacteristics:(id)characteristics stateNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServer *)self clientQueue];
+  characteristicsCopy = characteristics;
+  numberCopy = number;
+  clientQueue = [(HAPAccessoryServer *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__HMDAccessoryServerDemo_handleUpdatesForCharacteristics_stateNumber___block_invoke;
   block[3] = &unk_279734960;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = characteristicsCopy;
+  v13 = numberCopy;
+  v9 = numberCopy;
+  v10 = characteristicsCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __70__HMDAccessoryServerDemo_handleUpdatesForCharacteristics_stateNumber___block_invoke(uint64_t a1)
@@ -53,13 +53,13 @@ void __70__HMDAccessoryServerDemo_handleUpdatesForCharacteristics_stateNumber___
   }
 }
 
-- (BOOL)_delegateRespondsToSelector:(SEL)a3
+- (BOOL)_delegateRespondsToSelector:(SEL)selector
 {
-  v4 = [(HAPAccessoryServer *)self delegate];
-  if (v4)
+  delegate = [(HAPAccessoryServer *)self delegate];
+  if (delegate)
   {
-    v5 = [(HAPAccessoryServer *)self delegateQueue];
-    if (v5)
+    delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
+    if (delegateQueue)
     {
       v6 = objc_opt_respondsToSelector();
     }
@@ -78,20 +78,20 @@ void __70__HMDAccessoryServerDemo_handleUpdatesForCharacteristics_stateNumber___
   return v6 & 1;
 }
 
-- (void)identifyWithCompletion:(id)a3
+- (void)identifyWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)listPairingsWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)listPairingsWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (queueCopy)
   {
     if ([(HMDAccessoryServerDemo *)self testMode])
     {
@@ -110,12 +110,12 @@ void __70__HMDAccessoryServerDemo_handleUpdatesForCharacteristics_stateNumber___
     v13 = v9;
     v14 = v8;
     v10 = v9;
-    dispatch_async(v6, v12);
+    dispatch_async(queueCopy, v12);
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(handlerCopy);
     if (v10)
     {
       v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
@@ -135,20 +135,20 @@ void __76__HMDAccessoryServerDemo_listPairingsWithCompletionQueue_completionHand
   }
 }
 
-- (BOOL)removePairingForCurrentControllerOnQueue:(id)a3 completion:(id)a4
+- (BOOL)removePairingForCurrentControllerOnQueue:(id)queue completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   self->__paired = 0;
   self->__hasPairings = 0;
   WeakRetained = objc_loadWeakRetained(&self->_browser);
   [WeakRetained resetDemoAccessory:self];
 
-  v9 = [(HAPAccessoryServer *)self keyStore];
-  v10 = [(HAPAccessoryServer *)self identifier];
+  keyStore = [(HAPAccessoryServer *)self keyStore];
+  identifier = [(HAPAccessoryServer *)self identifier];
   v25 = 0;
-  [v9 removeAccessoryKeyForName:v10 error:&v25];
+  [keyStore removeAccessoryKeyForName:identifier error:&v25];
   v11 = v25;
 
   if (v11)
@@ -158,21 +158,21 @@ void __76__HMDAccessoryServerDemo_listPairingsWithCompletionQueue_completionHand
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [(HAPAccessoryServer *)self identifier];
-      v16 = [(HAPAccessoryServer *)self name];
+      identifier2 = [(HAPAccessoryServer *)self identifier];
+      name = [(HAPAccessoryServer *)self name];
       *buf = 138544130;
       v27 = v14;
       v28 = 2112;
-      v29 = v15;
+      v29 = identifier2;
       v30 = 2112;
-      v31 = v16;
+      v31 = name;
       v32 = 2112;
       v33 = v11;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Failed to remove public key for accessory %@/%@- error %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v12);
-    if (v6)
+    if (queueCopy)
     {
       if (![(HMDAccessoryServerDemo *)self testMode])
       {
@@ -183,9 +183,9 @@ LABEL_9:
         block[2] = __78__HMDAccessoryServerDemo_removePairingForCurrentControllerOnQueue_completion___block_invoke;
         block[3] = &unk_279735738;
         v23 = v17;
-        v24 = v7;
+        v24 = completionCopy;
         v18 = v17;
-        dispatch_async(v6, block);
+        dispatch_async(queueCopy, block);
 
         v19 = v24;
 LABEL_12:
@@ -199,12 +199,12 @@ LABEL_8:
     }
   }
 
-  else if (v6)
+  else if (queueCopy)
   {
     goto LABEL_8;
   }
 
-  v18 = _Block_copy(v7);
+  v18 = _Block_copy(completionCopy);
   if (v18)
   {
     v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
@@ -229,12 +229,12 @@ void __78__HMDAccessoryServerDemo_removePairingForCurrentControllerOnQueue_compl
   }
 }
 
-- (void)removePairing:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)removePairing:(id)pairing completionQueue:(id)queue completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (queueCopy)
   {
     if ([(HMDAccessoryServerDemo *)self testMode])
     {
@@ -253,12 +253,12 @@ void __78__HMDAccessoryServerDemo_removePairingForCurrentControllerOnQueue_compl
     v14 = v10;
     v15 = v9;
     v11 = v10;
-    dispatch_async(v7, v13);
+    dispatch_async(queueCopy, v13);
   }
 
   else
   {
-    v11 = _Block_copy(v8);
+    v11 = _Block_copy(handlerCopy);
     if (v11)
     {
       v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
@@ -278,12 +278,12 @@ void __74__HMDAccessoryServerDemo_removePairing_completionQueue_completionHandle
   }
 }
 
-- (void)addPairing:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)addPairing:(id)pairing completionQueue:(id)queue completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (queueCopy)
   {
     if ([(HMDAccessoryServerDemo *)self testMode])
     {
@@ -302,12 +302,12 @@ void __74__HMDAccessoryServerDemo_removePairing_completionQueue_completionHandle
     v14 = v10;
     v15 = v9;
     v11 = v10;
-    dispatch_async(v7, v13);
+    dispatch_async(queueCopy, v13);
   }
 
   else
   {
-    v11 = _Block_copy(v8);
+    v11 = _Block_copy(handlerCopy);
     if (v11)
     {
       v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
@@ -327,20 +327,20 @@ void __71__HMDAccessoryServerDemo_addPairing_completionQueue_completionHandler__
   }
 }
 
-- (void)startPairingWithRequest:(id)a3
+- (void)startPairingWithRequest:(id)request
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   self->__paired = 1;
   self->__hasPairings = 1;
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
-  v7 = [v6 dataUsingEncoding:4];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v7 = [uUIDString dataUsingEncoding:4];
 
-  v8 = [(HAPAccessoryServer *)self keyStore];
-  v9 = [(HAPAccessoryServer *)self identifier];
+  keyStore = [(HAPAccessoryServer *)self keyStore];
+  identifier = [(HAPAccessoryServer *)self identifier];
   v22 = 0;
-  v10 = [v8 savePublicKey:v7 forAccessoryName:v9 error:&v22];
+  v10 = [keyStore savePublicKey:v7 forAccessoryName:identifier error:&v22];
   v11 = v22;
 
   if (v10)
@@ -360,14 +360,14 @@ void __71__HMDAccessoryServerDemo_addPairing_completionQueue_completionHandler__
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [(HAPAccessoryServer *)self identifier];
-      v17 = [(HAPAccessoryServer *)self name];
+      identifier2 = [(HAPAccessoryServer *)self identifier];
+      name = [(HAPAccessoryServer *)self name];
       *buf = 138544130;
       v24 = v15;
       v25 = 2112;
-      v26 = v16;
+      v26 = identifier2;
       v27 = 2112;
-      v28 = v17;
+      v28 = name;
       v29 = 2112;
       v30 = v11;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Failed to save public for accessory %@/%@ - error %@", buf, 0x2Au);
@@ -378,14 +378,14 @@ void __71__HMDAccessoryServerDemo_addPairing_completionQueue_completionHandler__
 
   if ([(HMDAccessoryServerDemo *)self _delegateRespondsToSelector:sel_accessoryServer_didStopPairingWithError_])
   {
-    v18 = [(HAPAccessoryServer *)self delegateQueue];
+    delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__HMDAccessoryServerDemo_startPairingWithRequest___block_invoke;
     block[3] = &unk_2797359B0;
     block[4] = self;
     v21 = v11;
-    dispatch_async(v18, block);
+    dispatch_async(delegateQueue, block);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -397,27 +397,27 @@ void __50__HMDAccessoryServerDemo_startPairingWithRequest___block_invoke(uint64_
   [v2 accessoryServer:*(a1 + 32) didStopPairingWithError:*(a1 + 40)];
 }
 
-- (void)processCharacteristicWrite:(id)a3 value:(id)a4
+- (void)processCharacteristicWrite:(id)write value:(id)value
 {
   v112 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v90 = a4;
-  v6 = [v90 copy];
-  v95 = v5;
-  [v5 setValue:v6];
+  writeCopy = write;
+  valueCopy = value;
+  v6 = [valueCopy copy];
+  v95 = writeCopy;
+  [writeCopy setValue:v6];
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v5 setValueUpdatedTime:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  [writeCopy setValueUpdatedTime:date];
 
-  v93 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
-  v92 = [v5 service];
-  v8 = [v5 type];
+  weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+  service = [writeCopy service];
+  type = [writeCopy type];
   delta = 1100000000;
-  v9 = [v8 isEqualToString:*MEMORY[0x277CFE730]];
+  v9 = [type isEqualToString:*MEMORY[0x277CFE730]];
 
   if (v9)
   {
-    v10 = __findAssociatedCharacteristicWithService(v92, *MEMORY[0x277CFE608]);
+    v10 = __findAssociatedCharacteristicWithService(service, *MEMORY[0x277CFE608]);
     v94 = v10;
     if (v10)
     {
@@ -430,12 +430,12 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v11 = [v5 type];
-  v12 = [v11 isEqualToString:*MEMORY[0x277CFE710]];
+  type2 = [writeCopy type];
+  v12 = [type2 isEqualToString:*MEMORY[0x277CFE710]];
 
   if (v12)
   {
-    v10 = __findAssociatedCharacteristicWithService(v92, *MEMORY[0x277CFE5E8]);
+    v10 = __findAssociatedCharacteristicWithService(service, *MEMORY[0x277CFE5E8]);
     v94 = v10;
     if (v10)
     {
@@ -445,49 +445,49 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v16 = [v5 type];
-  v17 = [v16 isEqualToString:*MEMORY[0x277CFE720]];
+  type3 = [writeCopy type];
+  v17 = [type3 isEqualToString:*MEMORY[0x277CFE720]];
 
   if (v17)
   {
-    v94 = __findAssociatedCharacteristicWithService(v92, *MEMORY[0x277CFE5F8]);
-    v18 = [v92 characteristicsOfType:*MEMORY[0x277CFE628]];
-    v19 = [v18 firstObject];
+    v94 = __findAssociatedCharacteristicWithService(service, *MEMORY[0x277CFE5F8]);
+    v18 = [service characteristicsOfType:*MEMORY[0x277CFE628]];
+    firstObject = [v18 firstObject];
 
-    v20 = __findAssociatedCharacteristicWithService(v92, *MEMORY[0x277CFE750]);
+    v20 = __findAssociatedCharacteristicWithService(service, *MEMORY[0x277CFE750]);
     if (!v94)
     {
 
       goto LABEL_30;
     }
 
-    v21 = [v94 responseDelay];
-    v22 = [v21 unsignedLongValue];
-    v23 = v22 == 0;
+    responseDelay = [v94 responseDelay];
+    unsignedLongValue = [responseDelay unsignedLongValue];
+    v23 = unsignedLongValue == 0;
 
-    if (v22)
+    if (unsignedLongValue)
     {
       v24 = 0;
       goto LABEL_12;
     }
 
     delta = 300000000;
-    if ([v90 integerValue] == 3)
+    if ([valueCopy integerValue] == 3)
     {
-      v57 = [v19 value];
-      [v57 doubleValue];
+      value = [firstObject value];
+      [value doubleValue];
       v59 = v58;
-      v60 = [v20 value];
-      [v60 doubleValue];
+      value2 = [v20 value];
+      [value2 doubleValue];
       v62 = v61;
 
       if (v59 <= v62)
       {
-        v79 = [v19 value];
-        [v79 doubleValue];
+        value3 = [firstObject value];
+        [value3 doubleValue];
         v81 = v80;
-        v82 = [v20 value];
-        [v82 doubleValue];
+        value4 = [v20 value];
+        [value4 doubleValue];
         v84 = v83;
 
         if (v81 >= v84)
@@ -509,13 +509,13 @@ LABEL_30:
 
     else
     {
-      v24 = v90;
+      v24 = valueCopy;
       if ([v24 integerValue] == 1)
       {
         v65 = v24;
         v66 = MEMORY[0x277CCABB0];
-        v67 = [v20 value];
-        [v67 doubleValue];
+        value5 = [v20 value];
+        [value5 doubleValue];
         v69 = [v66 numberWithDouble:v68 + -1.0];
       }
 
@@ -528,13 +528,13 @@ LABEL_30:
 
         v65 = v24;
         v72 = MEMORY[0x277CCABB0];
-        v67 = [v20 value];
-        [v67 doubleValue];
+        value5 = [v20 value];
+        [value5 doubleValue];
         v69 = [v72 numberWithDouble:v73 + 1.0];
       }
 
       v74 = v69;
-      [v93 setObject:v69 forKey:v19];
+      [weakToStrongObjectsMapTable setObject:v69 forKey:firstObject];
 
       v24 = v65;
     }
@@ -552,58 +552,58 @@ LABEL_15:
     if (v24)
     {
       v15 = v24;
-      [v93 setObject:v24 forKey:v94];
+      [weakToStrongObjectsMapTable setObject:v24 forKey:v94];
       goto LABEL_31;
     }
 
     goto LABEL_17;
   }
 
-  v34 = [v5 type];
-  v35 = [v34 isEqualToString:*MEMORY[0x277CFE750]];
+  type4 = [writeCopy type];
+  v35 = [type4 isEqualToString:*MEMORY[0x277CFE750]];
 
   if (v35)
   {
-    v36 = __findAssociatedCharacteristicWithService(v92, *MEMORY[0x277CFE628]);
+    v36 = __findAssociatedCharacteristicWithService(service, *MEMORY[0x277CFE628]);
     v94 = v36;
     if (v36)
     {
-      v37 = [v36 responseDelay];
-      v38 = [v37 unsignedLongValue];
+      responseDelay2 = [v36 responseDelay];
+      unsignedLongValue2 = [responseDelay2 unsignedLongValue];
 
-      if (v38)
+      if (unsignedLongValue2)
       {
         goto LABEL_7;
       }
 
-      v39 = [v92 characteristicsOfType:*MEMORY[0x277CFE5F8]];
-      v40 = [v39 firstObject];
+      v39 = [service characteristicsOfType:*MEMORY[0x277CFE5F8]];
+      firstObject2 = [v39 firstObject];
 
-      v41 = [v40 value];
-      v42 = [v41 integerValue];
+      value6 = [firstObject2 value];
+      integerValue = [value6 integerValue];
 
-      if (v42 == 1)
+      if (integerValue == 1)
       {
         v43 = MEMORY[0x277CCABB0];
-        [v90 doubleValue];
+        [valueCopy doubleValue];
         v45 = [v43 numberWithDouble:v44 + -1.0];
       }
 
       else
       {
-        v75 = [v40 value];
-        v76 = [v75 integerValue];
+        value7 = [firstObject2 value];
+        integerValue2 = [value7 integerValue];
 
-        if (v76 == 2)
+        if (integerValue2 == 2)
         {
           v77 = MEMORY[0x277CCABB0];
-          [v90 doubleValue];
+          [valueCopy doubleValue];
           v45 = [v77 numberWithDouble:v78 + 1.0];
         }
 
         else
         {
-          v45 = v90;
+          v45 = valueCopy;
         }
       }
 
@@ -615,12 +615,12 @@ LABEL_15:
     goto LABEL_30;
   }
 
-  v46 = [v5 type];
-  v47 = [v46 isEqualToString:*MEMORY[0x277CFE740]];
+  type5 = [writeCopy type];
+  v47 = [type5 isEqualToString:*MEMORY[0x277CFE740]];
 
   if (v47)
   {
-    v10 = __findAssociatedCharacteristicWithService(v92, *MEMORY[0x277CFE618]);
+    v10 = __findAssociatedCharacteristicWithService(service, *MEMORY[0x277CFE618]);
     v94 = v10;
     if (!v10)
     {
@@ -630,25 +630,25 @@ LABEL_15:
 
   else
   {
-    v52 = [v5 type];
-    v53 = [v52 isEqualToString:*MEMORY[0x277CFE748]];
+    type6 = [writeCopy type];
+    v53 = [type6 isEqualToString:*MEMORY[0x277CFE748]];
 
     if (v53)
     {
-      v54 = __findAssociatedCharacteristicWithService(v92, *MEMORY[0x277CFE620]);
+      v54 = __findAssociatedCharacteristicWithService(service, *MEMORY[0x277CFE620]);
       v94 = v54;
       if (v54)
       {
-        v55 = [v54 responseDelay];
-        v56 = [v55 unsignedLongValue];
+        responseDelay3 = [v54 responseDelay];
+        unsignedLongValue3 = [responseDelay3 unsignedLongValue];
 
-        if (v56)
+        if (unsignedLongValue3)
         {
           goto LABEL_7;
         }
 
         delta = 300000000;
-        if ([v90 integerValue] >= 3)
+        if ([valueCopy integerValue] >= 3)
         {
           v24 = &unk_2866285D0;
         }
@@ -664,12 +664,12 @@ LABEL_15:
       goto LABEL_30;
     }
 
-    v63 = [v5 type];
-    v64 = [v63 isEqualToString:*MEMORY[0x277CFE738]];
+    type7 = [writeCopy type];
+    v64 = [type7 isEqualToString:*MEMORY[0x277CFE738]];
 
     if (v64)
     {
-      v10 = __findAssociatedCharacteristicWithService(v92, *MEMORY[0x277CFE610]);
+      v10 = __findAssociatedCharacteristicWithService(service, *MEMORY[0x277CFE610]);
       v94 = v10;
       if (!v10)
       {
@@ -679,12 +679,12 @@ LABEL_15:
 
     else
     {
-      v70 = [v5 type];
-      v71 = [v70 isEqualToString:*MEMORY[0x277CFE728]];
+      type8 = [writeCopy type];
+      v71 = [type8 isEqualToString:*MEMORY[0x277CFE728]];
 
       if (v71)
       {
-        v10 = __findAssociatedCharacteristicWithService(v92, *MEMORY[0x277CFE600]);
+        v10 = __findAssociatedCharacteristicWithService(service, *MEMORY[0x277CFE600]);
         v94 = v10;
         if (!v10)
         {
@@ -694,12 +694,12 @@ LABEL_15:
 
       else
       {
-        v85 = [v5 type];
-        v86 = [v85 isEqualToString:*MEMORY[0x277CFE760]];
+        type9 = [writeCopy type];
+        v86 = [type9 isEqualToString:*MEMORY[0x277CFE760]];
 
         if (v86)
         {
-          v10 = __findAssociatedCharacteristicWithService(v92, *MEMORY[0x277CFE638]);
+          v10 = __findAssociatedCharacteristicWithService(service, *MEMORY[0x277CFE638]);
           v94 = v10;
           if (!v10)
           {
@@ -709,15 +709,15 @@ LABEL_15:
 
         else
         {
-          v87 = [v5 type];
-          v88 = [v87 isEqualToString:*MEMORY[0x277CFE5B0]];
+          type10 = [writeCopy type];
+          v88 = [type10 isEqualToString:*MEMORY[0x277CFE5B0]];
 
           if (!v88)
           {
             goto LABEL_30;
           }
 
-          v10 = __findAssociatedCharacteristicWithService(v92, *MEMORY[0x277CFE658]);
+          v10 = __findAssociatedCharacteristicWithService(service, *MEMORY[0x277CFE658]);
           v94 = v10;
           if (!v10)
           {
@@ -729,12 +729,12 @@ LABEL_15:
   }
 
 LABEL_6:
-  v13 = [v10 responseDelay];
-  v14 = [v13 unsignedLongValue];
+  responseDelay4 = [v10 responseDelay];
+  unsignedLongValue4 = [responseDelay4 unsignedLongValue];
 
-  if (!v14)
+  if (!unsignedLongValue4)
   {
-    v24 = v90;
+    v24 = valueCopy;
     goto LABEL_15;
   }
 
@@ -746,45 +746,45 @@ LABEL_18:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
     v27 = HMFGetLogIdentifier();
-    v28 = [(HAPAccessoryServer *)self name];
-    v29 = [(HAPAccessoryServer *)self identifier];
-    v30 = [v94 responseDelay];
-    v31 = [v30 unsignedLongValue];
-    v32 = [v94 type];
-    v33 = [v94 instanceID];
+    name = [(HAPAccessoryServer *)self name];
+    identifier = [(HAPAccessoryServer *)self identifier];
+    responseDelay5 = [v94 responseDelay];
+    unsignedLongValue5 = [responseDelay5 unsignedLongValue];
+    type11 = [v94 type];
+    instanceID = [v94 instanceID];
     *buf = 138544642;
     v101 = v27;
     v102 = 2112;
-    v103 = v28;
+    v103 = name;
     v104 = 2112;
-    v105 = v29;
+    v105 = identifier;
     v106 = 2048;
-    v107 = v31;
+    v107 = unsignedLongValue5;
     v108 = 2112;
-    v109 = v32;
+    v109 = type11;
     v110 = 2112;
-    v111 = v33;
+    v111 = instanceID;
     _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_INFO, "%{public}@[HMDAccessoryServerDemo %@/%@] responseDelay set to %lu for current state characteristic %@/%@ - bypassing processing effects...", buf, 0x3Eu);
   }
 
   objc_autoreleasePoolPop(v25);
 LABEL_31:
-  if ([v93 count])
+  if ([weakToStrongObjectsMapTable count])
   {
-    v48 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v93, "count")}];
+    v48 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(weakToStrongObjectsMapTable, "count")}];
     objc_initWeak(buf, self);
     if ([(HMDAccessoryServerDemo *)self _delegateRespondsToSelector:sel_accessoryServer_didUpdateValuesForCharacteristics_stateNumber_broadcast_])
     {
       v49 = dispatch_time(0, delta);
-      v50 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __59__HMDAccessoryServerDemo_processCharacteristicWrite_value___block_invoke;
       block[3] = &unk_279732670;
-      v97 = v93;
+      v97 = weakToStrongObjectsMapTable;
       v98 = v48;
       objc_copyWeak(&v99, buf);
-      dispatch_after(v49, v50, block);
+      dispatch_after(v49, delegateQueue, block);
 
       objc_destroyWeak(&v99);
     }
@@ -844,18 +844,18 @@ void __59__HMDAccessoryServerDemo_processCharacteristicWrite_value___block_invok
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableEvents:(BOOL)a3 forCharacteristics:(id)a4 withCompletionHandler:(id)a5 queue:(id)a6
+- (void)enableEvents:(BOOL)events forCharacteristics:(id)characteristics withCompletionHandler:(id)handler queue:(id)queue
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [MEMORY[0x277CBEB18] array];
+  characteristicsCopy = characteristics;
+  handlerCopy = handler;
+  queueCopy = queue;
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = v8;
+  v12 = characteristicsCopy;
   v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
@@ -872,7 +872,7 @@ void __59__HMDAccessoryServerDemo_processCharacteristicWrite_value___block_invok
         }
 
         v17 = [MEMORY[0x277CFEA90] responseTupleForCharacteristic:*(*(&v24 + 1) + 8 * v16) error:0];
-        [v11 addObject:v17];
+        [array addObject:v17];
 
         ++v16;
       }
@@ -884,22 +884,22 @@ void __59__HMDAccessoryServerDemo_processCharacteristicWrite_value___block_invok
     while (v14);
   }
 
-  if (v10)
+  if (queueCopy)
   {
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __86__HMDAccessoryServerDemo_enableEvents_forCharacteristics_withCompletionHandler_queue___block_invoke;
     v21[3] = &unk_279735738;
-    v23 = v9;
-    v22 = v11;
-    dispatch_async(v10, v21);
+    v23 = handlerCopy;
+    v22 = array;
+    dispatch_async(queueCopy, v21);
 
     v18 = v23;
   }
 
   else
   {
-    v18 = _Block_copy(v9);
+    v18 = _Block_copy(handlerCopy);
     if (v18)
     {
       v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
@@ -921,46 +921,46 @@ void __86__HMDAccessoryServerDemo_enableEvents_forCharacteristics_withCompletion
   }
 }
 
-- (void)writeCharacteristicValues:(id)a3 timeout:(double)a4 expiry:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7
+- (void)writeCharacteristicValues:(id)values timeout:(double)timeout expiry:(id)expiry completionQueue:(id)queue completionHandler:(id)handler
 {
   v85 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v46 = [MEMORY[0x277CBEB18] array];
+  valuesCopy = values;
+  expiryCopy = expiry;
+  queueCopy = queue;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v10;
+  obj = valuesCopy;
   v56 = [obj countByEnumeratingWithState:&v64 objects:v84 count:16];
   if (!v56)
   {
 
-    v15 = v46;
+    v15 = array;
 LABEL_18:
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __101__HMDAccessoryServerDemo_writeCharacteristicValues_timeout_expiry_completionQueue_completionHandler___block_invoke;
     block[3] = &unk_279735738;
     v62 = v15;
-    v63 = v13;
+    v63 = handlerCopy;
     v39 = v15;
-    v40 = v13;
-    dispatch_async(v12, block);
+    v40 = handlerCopy;
+    dispatch_async(queueCopy, block);
 
     v38 = v63;
     goto LABEL_19;
   }
 
-  v42 = v13;
-  v43 = v12;
-  v44 = v11;
+  v42 = handlerCopy;
+  v43 = queueCopy;
+  v44 = expiryCopy;
   v14 = 0;
   v55 = *v65;
-  v16 = self;
-  v15 = v46;
+  selfCopy2 = self;
+  v15 = array;
   do
   {
     for (i = 0; i != v56; ++i)
@@ -971,65 +971,65 @@ LABEL_18:
       }
 
       v18 = *(*(&v64 + 1) + 8 * i);
-      v19 = [v18 characteristic];
-      v20 = [v19 responseDelay];
-      v21 = [v20 unsignedLongValue];
+      characteristic = [v18 characteristic];
+      responseDelay = [characteristic responseDelay];
+      unsignedLongValue = [responseDelay unsignedLongValue];
 
-      if (v21)
+      if (unsignedLongValue)
       {
         v22 = objc_autoreleasePoolPush();
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
           v54 = HMFGetLogIdentifier();
-          v49 = [(HAPAccessoryServer *)v16 name];
-          v48 = [(HAPAccessoryServer *)v16 identifier];
-          [v19 service];
+          name = [(HAPAccessoryServer *)selfCopy2 name];
+          identifier = [(HAPAccessoryServer *)selfCopy2 identifier];
+          [characteristic service];
           v50 = v52 = v14;
-          v24 = [v50 type];
-          [v19 type];
+          type = [v50 type];
+          [characteristic type];
           v25 = log = v23;
-          v26 = [v19 instanceID];
-          [v19 value];
+          instanceID = [characteristic instanceID];
+          [characteristic value];
           v27 = v51 = v22;
           *buf = 138545154;
           v69 = v54;
           v70 = 2112;
-          v71 = v49;
+          v71 = name;
           v72 = 2112;
-          v73 = v48;
+          v73 = identifier;
           v74 = 2112;
-          v75 = v24;
+          v75 = type;
           v76 = 2112;
           v77 = v25;
           v78 = 2112;
-          v79 = v26;
+          v79 = instanceID;
           v80 = 2112;
           v81 = v27;
           v82 = 2048;
-          v83 = v21;
+          v83 = unsignedLongValue;
           _os_log_impl(&dword_2531F8000, log, OS_LOG_TYPE_INFO, "%{public}@[HMDAccessoryServerDemo %@/%@] Service %@ Characteristic %@/%@: value %@, delay %lu", buf, 0x52u);
 
           v22 = v51;
-          v15 = v46;
+          v15 = array;
 
           v23 = log;
-          v16 = self;
+          selfCopy2 = self;
 
           v14 = v52;
         }
 
         objc_autoreleasePoolPop(v22);
-        if (v14 <= v21)
+        if (v14 <= unsignedLongValue)
         {
-          v14 = v21;
+          v14 = unsignedLongValue;
         }
       }
 
-      v28 = [v18 value];
-      [(HMDAccessoryServerDemo *)v16 processCharacteristicWrite:v19 value:v28];
+      value = [v18 value];
+      [(HMDAccessoryServerDemo *)selfCopy2 processCharacteristicWrite:characteristic value:value];
 
-      v29 = [MEMORY[0x277CFEA90] responseTupleForCharacteristic:v19 error:0];
+      v29 = [MEMORY[0x277CFEA90] responseTupleForCharacteristic:characteristic error:0];
       [v15 addObject:v29];
     }
 
@@ -1038,9 +1038,9 @@ LABEL_18:
 
   while (v56);
 
-  v12 = v43;
-  v11 = v44;
-  v13 = v42;
+  queueCopy = v43;
+  expiryCopy = v44;
+  handlerCopy = v42;
   if (!v14)
   {
     goto LABEL_18;
@@ -1052,19 +1052,19 @@ LABEL_18:
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
   {
     v33 = HMFGetLogIdentifier();
-    v34 = [(HAPAccessoryServer *)self name];
-    v35 = [(HAPAccessoryServer *)self identifier];
+    name2 = [(HAPAccessoryServer *)self name];
+    identifier2 = [(HAPAccessoryServer *)self identifier];
     *buf = 138544130;
     v69 = v33;
     v70 = 2112;
-    v71 = v34;
+    v71 = name2;
     v72 = 2112;
-    v73 = v35;
+    v73 = identifier2;
     v74 = 2048;
     v75 = v30;
     _os_log_impl(&dword_2531F8000, v32, OS_LOG_TYPE_INFO, "%{public}@[HMDAccessoryServerDemo %@/%@] Delaying write-response by %lu", buf, 0x2Au);
 
-    v15 = v46;
+    v15 = array;
   }
 
   objc_autoreleasePoolPop(v31);
@@ -1088,19 +1088,19 @@ LABEL_19:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readCharacteristicValues:(id)a3 timeout:(double)a4 expiry:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7
+- (void)readCharacteristicValues:(id)values timeout:(double)timeout expiry:(id)expiry completionQueue:(id)queue completionHandler:(id)handler
 {
   v81 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v52 = [MEMORY[0x277CBEB18] array];
+  valuesCopy = values;
+  expiryCopy = expiry;
+  queueCopy = queue;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v10;
+  obj = valuesCopy;
   v14 = [obj countByEnumeratingWithState:&v60 objects:v80 count:16];
   if (!v14)
   {
@@ -1110,19 +1110,19 @@ LABEL_18:
     block[1] = 3221225472;
     block[2] = __100__HMDAccessoryServerDemo_readCharacteristicValues_timeout_expiry_completionQueue_completionHandler___block_invoke;
     block[3] = &unk_279735738;
-    v58 = v52;
-    v59 = v13;
-    v38 = v52;
-    v39 = v13;
-    dispatch_async(v12, block);
+    v58 = array;
+    v59 = handlerCopy;
+    v38 = array;
+    v39 = handlerCopy;
+    dispatch_async(queueCopy, block);
 
     v37 = v59;
     goto LABEL_19;
   }
 
-  v41 = v13;
-  v42 = v12;
-  v43 = v11;
+  v41 = handlerCopy;
+  v42 = queueCopy;
+  v43 = expiryCopy;
   v15 = 0;
   v51 = *v61;
   v16 = v14;
@@ -1138,10 +1138,10 @@ LABEL_18:
       }
 
       v18 = *(*(&v60 + 1) + 8 * v17);
-      v19 = [v18 responseDelay];
-      v20 = [v19 unsignedLongValue];
+      responseDelay = [v18 responseDelay];
+      unsignedLongValue = [responseDelay unsignedLongValue];
 
-      if (v20)
+      if (unsignedLongValue)
       {
         v21 = objc_autoreleasePoolPush();
         v22 = HMFGetOSLogHandle();
@@ -1149,30 +1149,30 @@ LABEL_18:
         {
           v50 = HMFGetLogIdentifier();
           v48 = v21;
-          v23 = [(HAPAccessoryServer *)self name];
-          v24 = [(HAPAccessoryServer *)self identifier];
-          v47 = [v18 service];
-          [v47 type];
+          name = [(HAPAccessoryServer *)self name];
+          identifier = [(HAPAccessoryServer *)self identifier];
+          service = [v18 service];
+          [service type];
           v25 = v49 = v15;
-          v26 = [v18 type];
-          v27 = [v18 instanceID];
-          v28 = [v18 value];
+          type = [v18 type];
+          instanceID = [v18 instanceID];
+          value = [v18 value];
           *buf = 138545154;
           v65 = v50;
           v66 = 2112;
-          v67 = v23;
+          v67 = name;
           v68 = 2112;
-          v69 = v24;
+          v69 = identifier;
           v70 = 2112;
           v71 = v25;
           v72 = 2112;
-          v73 = v26;
+          v73 = type;
           v74 = 2112;
-          v75 = v27;
+          v75 = instanceID;
           v76 = 2112;
-          v77 = v28;
+          v77 = value;
           v78 = 2048;
-          v79 = v20;
+          v79 = unsignedLongValue;
           _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_INFO, "%{public}@[HMDAccessoryServerDemo %@/%@] Service %@ Characteristic %@/%@: value %@, delay %lu", buf, 0x52u);
 
           v21 = v48;
@@ -1182,14 +1182,14 @@ LABEL_18:
         }
 
         objc_autoreleasePoolPop(v21);
-        if (v15 <= v20)
+        if (v15 <= unsignedLongValue)
         {
-          v15 = v20;
+          v15 = unsignedLongValue;
         }
       }
 
       v29 = [MEMORY[0x277CFEA90] responseTupleForCharacteristic:v18 error:0];
-      [v52 addObject:v29];
+      [array addObject:v29];
 
       ++v17;
     }
@@ -1200,9 +1200,9 @@ LABEL_18:
 
   while (v16);
 
-  v12 = v42;
-  v11 = v43;
-  v13 = v41;
+  queueCopy = v42;
+  expiryCopy = v43;
+  handlerCopy = v41;
   if (!v15)
   {
     goto LABEL_18;
@@ -1213,14 +1213,14 @@ LABEL_18:
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
     v32 = HMFGetLogIdentifier();
-    v33 = [(HAPAccessoryServer *)self name];
-    v34 = [(HAPAccessoryServer *)self identifier];
+    name2 = [(HAPAccessoryServer *)self name];
+    identifier2 = [(HAPAccessoryServer *)self identifier];
     *buf = 138544130;
     v65 = v32;
     v66 = 2112;
-    v67 = v33;
+    v67 = name2;
     v68 = 2112;
-    v69 = v34;
+    v69 = identifier2;
     v70 = 2048;
     v71 = v15;
     _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_INFO, "%{public}@[HMDAccessoryServerDemo %@/%@] Delaying read-response by %lu", buf, 0x2Au);
@@ -1235,9 +1235,9 @@ LABEL_18:
   handler[2] = __100__HMDAccessoryServerDemo_readCharacteristicValues_timeout_expiry_completionQueue_completionHandler___block_invoke_17;
   handler[3] = &unk_2797355D0;
   v54 = v35;
-  v55 = v52;
+  v55 = array;
   v56 = v41;
-  v37 = v52;
+  v37 = array;
   v38 = v41;
   v39 = v35;
   dispatch_source_set_event_handler(v39, handler);
@@ -1247,26 +1247,26 @@ LABEL_19:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendDelayedResponse:(unint64_t)a3 responses:(id)a4 readOperation:(BOOL)a5 completionQueue:(id)a6 completionHandler:(id)a7
+- (void)sendDelayedResponse:(unint64_t)response responses:(id)responses readOperation:(BOOL)operation completionQueue:(id)queue completionHandler:(id)handler
 {
-  LODWORD(v9) = a5;
+  LODWORD(v9) = operation;
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
-  if (a3)
+  responsesCopy = responses;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  if (response)
   {
     v16 = objc_autoreleasePoolPush();
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
-      v27 = v12;
+      v27 = responsesCopy;
       v9 = v18 = v9;
-      v19 = [(HAPAccessoryServer *)self name];
-      v20 = [(HAPAccessoryServer *)self identifier];
-      v21 = v20;
+      name = [(HAPAccessoryServer *)self name];
+      identifier = [(HAPAccessoryServer *)self identifier];
+      v21 = identifier;
       *buf = 138544386;
       v22 = @"write";
       v37 = v9;
@@ -1276,22 +1276,22 @@ LABEL_19:
       }
 
       v38 = 2112;
-      v39 = v19;
+      v39 = name;
       v40 = 2112;
-      v41 = v20;
+      v41 = identifier;
       v42 = 2112;
       v43 = v22;
       v44 = 2048;
-      v45 = a3;
+      responseCopy = response;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@[HMDAccessoryServerDemo %@/%@] Delaying %@-response by %lu", buf, 0x34u);
 
       LOBYTE(v9) = v18;
-      v12 = v27;
+      responsesCopy = v27;
     }
 
     objc_autoreleasePoolPop(v16);
-    v23 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v13);
-    v24 = dispatch_time(0, 1000000 * a3);
+    v23 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queueCopy);
+    v24 = dispatch_time(0, 1000000 * response);
     dispatch_source_set_timer(v23, v24, 0xFFFFFFFFFFFFFFFFLL, 0xF4240uLL);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
@@ -1301,7 +1301,7 @@ LABEL_19:
     handler[4] = self;
     v29 = v23;
     v31 = v15;
-    v30 = v12;
+    v30 = responsesCopy;
     v25 = v23;
     dispatch_source_set_event_handler(v25, handler);
     dispatch_resume(v25);
@@ -1313,9 +1313,9 @@ LABEL_19:
     block[1] = 3221225472;
     block[2] = __104__HMDAccessoryServerDemo_sendDelayedResponse_responses_readOperation_completionQueue_completionHandler___block_invoke;
     block[3] = &unk_279735738;
-    v35 = v14;
-    v34 = v12;
-    dispatch_async(v13, block);
+    v35 = handlerCopy;
+    v34 = responsesCopy;
+    dispatch_async(queueCopy, block);
 
     v25 = v35;
   }
@@ -1362,12 +1362,12 @@ uint64_t __104__HMDAccessoryServerDemo_sendDelayedResponse_responses_readOperati
   return result;
 }
 
-- (void)_parseAttributeDatabase:(id)a3
+- (void)_parseAttributeDatabase:(id)database
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  databaseCopy = database;
   v5 = *MEMORY[0x277CFE590];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277CFE590]];
+  v6 = [databaseCopy objectForKeyedSubscript:*MEMORY[0x277CFE590]];
   if (!v6)
   {
     v30 = objc_autoreleasePoolPush();
@@ -1375,11 +1375,11 @@ uint64_t __104__HMDAccessoryServerDemo_sendDelayedResponse_responses_readOperati
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       v32 = HMFGetLogIdentifier();
-      v33 = [(HAPAccessoryServer *)self name];
+      name = [(HAPAccessoryServer *)self name];
       *buf = 138543618;
       v60 = v32;
       v61 = 2112;
-      v62 = v33;
+      v62 = name;
       _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_ERROR, "%{public}@[HMDAccessoryServerDemo %@] No accessory objects found in the attribute database", buf, 0x16u);
     }
 
@@ -1403,12 +1403,12 @@ uint64_t __104__HMDAccessoryServerDemo_sendDelayedResponse_responses_readOperati
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [(HAPAccessoryServer *)self name];
+    name2 = [(HAPAccessoryServer *)self name];
     v11 = objc_opt_class();
     *buf = 138544130;
     v60 = v9;
     v61 = 2112;
-    v62 = v10;
+    v62 = name2;
     v63 = 2112;
     v64 = v5;
     v65 = 2112;
@@ -1429,9 +1429,9 @@ LABEL_23:
   else
   {
 LABEL_6:
-    v49 = v4;
+    v49 = databaseCopy;
     v15 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v6, "count")}];
-    v51 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
@@ -1465,11 +1465,11 @@ LABEL_6:
             if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
             {
               v37 = HMFGetLogIdentifier();
-              v38 = [(HAPAccessoryServer *)self name];
+              name3 = [(HAPAccessoryServer *)self name];
               *buf = 138543618;
               v60 = v37;
               v61 = 2112;
-              v62 = v38;
+              v62 = name3;
               _os_log_impl(&dword_2531F8000, v36, OS_LOG_TYPE_ERROR, "%{public}@[HMDAccessoryServerDemo %@] Unable to parse serialized accessory", buf, 0x16u);
             }
 
@@ -1479,9 +1479,9 @@ LABEL_6:
             goto LABEL_30;
           }
 
-          v23 = [v18 instanceID];
+          instanceID = [v18 instanceID];
           v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v20];
-          v25 = [v23 isEqualToNumber:v24];
+          v25 = [instanceID isEqualToNumber:v24];
 
           if (v25)
           {
@@ -1494,8 +1494,8 @@ LABEL_6:
             [v18 setPrimary:0];
           }
 
-          v26 = [v18 instanceID];
-          v27 = [v15 containsObject:v26];
+          instanceID2 = [v18 instanceID];
+          v27 = [v15 containsObject:instanceID2];
 
           if (v27)
           {
@@ -1504,11 +1504,11 @@ LABEL_6:
             if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
             {
               v42 = HMFGetLogIdentifier();
-              v43 = [(HAPAccessoryServer *)self name];
+              name4 = [(HAPAccessoryServer *)self name];
               *buf = 138543618;
               v60 = v42;
               v61 = 2112;
-              v62 = v43;
+              v62 = name4;
               _os_log_impl(&dword_2531F8000, v41, OS_LOG_TYPE_ERROR, "%{public}@[HMDAccessoryServerDemo %@] Accessory Server has accessory with duplicate instance ID", buf, 0x16u);
             }
 
@@ -1519,11 +1519,11 @@ LABEL_6:
             goto LABEL_30;
           }
 
-          v28 = [v18 instanceID];
-          [v15 addObject:v28];
+          instanceID3 = [v18 instanceID];
+          [v15 addObject:instanceID3];
 
           [v18 setServer:self];
-          [v51 addObject:v18];
+          [array addObject:v18];
           ++v21;
           v22 = v18;
         }
@@ -1542,23 +1542,23 @@ LABEL_6:
     v29 = 0;
 LABEL_30:
 
-    [(HAPAccessoryServer *)self setAccessories:v51];
+    [(HAPAccessoryServer *)self setAccessories:array];
     v6 = v48;
-    v4 = v49;
+    databaseCopy = v49;
   }
 
-  v45 = [(HAPAccessoryServer *)self delegateQueue];
+  delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
 
-  if (v45)
+  if (delegateQueue)
   {
-    v46 = [(HAPAccessoryServer *)self delegateQueue];
+    delegateQueue2 = [(HAPAccessoryServer *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__HMDAccessoryServerDemo__parseAttributeDatabase___block_invoke;
     block[3] = &unk_2797359B0;
     block[4] = self;
     v53 = v29;
-    dispatch_async(v46, block);
+    dispatch_async(delegateQueue2, block);
   }
 
   v47 = *MEMORY[0x277D85DE8];
@@ -1573,32 +1573,32 @@ void __50__HMDAccessoryServerDemo__parseAttributeDatabase___block_invoke(uint64_
   [v5 accessoryServer:v2 didDiscoverAccessories:v4 transaction:0 error:*(a1 + 40)];
 }
 
-- (HMDAccessoryServerDemo)initWithName:(id)a3 identifier:(id)a4 deviceInfo:(id)a5 paired:(BOOL)a6 keyStore:(id)a7 testMode:(BOOL)a8 browser:(id)a9
+- (HMDAccessoryServerDemo)initWithName:(id)name identifier:(id)identifier deviceInfo:(id)info paired:(BOOL)paired keyStore:(id)store testMode:(BOOL)mode browser:(id)browser
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = [(HMDAccessoryServerDemo *)self initCommon:a7 browser:a9];
+  nameCopy = name;
+  identifierCopy = identifier;
+  infoCopy = info;
+  v18 = [(HMDAccessoryServerDemo *)self initCommon:store browser:browser];
   v19 = v18;
   if (v18)
   {
-    v18->__paired = a6;
-    v18->__hasPairings = a6;
-    v20 = [v17 copy];
+    v18->__paired = paired;
+    v18->__hasPairings = paired;
+    v20 = [infoCopy copy];
     accessoryInfo = v19->_accessoryInfo;
     v19->_accessoryInfo = v20;
 
-    v22 = [v16 copy];
+    v22 = [identifierCopy copy];
     v23 = *MEMORY[0x277CFECD0];
     v24 = *(&v19->super.super.super.isa + v23);
     *(&v19->super.super.super.isa + v23) = v22;
 
-    v25 = [v15 copy];
+    v25 = [nameCopy copy];
     v26 = *MEMORY[0x277CFECE0];
     v27 = *(&v19->super.super.super.isa + v26);
     *(&v19->super.super.super.isa + v26) = v25;
 
-    v19->_testMode = a8;
+    v19->_testMode = mode;
     category = v19->_category;
     v19->_category = &unk_2866285D0;
   }
@@ -1606,16 +1606,16 @@ void __50__HMDAccessoryServerDemo__parseAttributeDatabase___block_invoke(uint64_
   return v19;
 }
 
-- (id)initCommon:(id)a3 browser:(id)a4
+- (id)initCommon:(id)common browser:(id)browser
 {
-  v6 = a4;
+  browserCopy = browser;
   v10.receiver = self;
   v10.super_class = HMDAccessoryServerDemo;
-  v7 = [(HAPAccessoryServer *)&v10 initWithKeystore:a3];
+  v7 = [(HAPAccessoryServer *)&v10 initWithKeystore:common];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_browser, v6);
+    objc_storeWeak(&v7->_browser, browserCopy);
   }
 
   return v8;

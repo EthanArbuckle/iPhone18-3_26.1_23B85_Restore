@@ -1,53 +1,53 @@
 @interface AIRecognizedText
-- (AIRecognizedText)initWithString:(id)a3;
-- (AIRecognizedText)initWithString:(id)a3 center:(CGPoint)a4;
-- (AIRecognizedText)initWithString:(id)a3 center:(CGPoint)a4 numericalValue:(id)a5;
-- (AIRecognizedText)initWithString:(id)a3 center:(CGPoint)a4 width:(double)a5 numericalValue:(id)a6;
-- (AIRecognizedText)initWithTextObservation:(id)a3;
-- (AIRecognizedText)initWithTextObservation:(id)a3 regionOfInterest:(CGRect)a4;
-- (CGPoint)_point:(CGPoint)a3 adjustedByRegionOfInterest:(CGRect)a4;
+- (AIRecognizedText)initWithString:(id)string;
+- (AIRecognizedText)initWithString:(id)string center:(CGPoint)center;
+- (AIRecognizedText)initWithString:(id)string center:(CGPoint)center numericalValue:(id)value;
+- (AIRecognizedText)initWithString:(id)string center:(CGPoint)center width:(double)width numericalValue:(id)value;
+- (AIRecognizedText)initWithTextObservation:(id)observation;
+- (AIRecognizedText)initWithTextObservation:(id)observation regionOfInterest:(CGRect)interest;
+- (CGPoint)_point:(CGPoint)_point adjustedByRegionOfInterest:(CGRect)interest;
 - (CGPoint)center;
-- (CGRect)boundingBoxForRange:(_NSRange)a3 error:(id *)a4;
+- (CGRect)boundingBoxForRange:(_NSRange)range error:(id *)error;
 - (CGRect)regionOfInterest;
 - (id)description;
 @end
 
 @implementation AIRecognizedText
 
-- (AIRecognizedText)initWithTextObservation:(id)a3
+- (AIRecognizedText)initWithTextObservation:(id)observation
 {
-  v4 = a3;
+  observationCopy = observation;
   v13.receiver = self;
   v13.super_class = AIRecognizedText;
   v5 = [(AIRecognizedText *)&v13 init];
   if (v5)
   {
-    v6 = [v4 topCandidates:1];
-    v7 = [v6 firstObject];
-    [(AIRecognizedText *)v5 setRecognizedText:v7];
+    v6 = [observationCopy topCandidates:1];
+    firstObject = [v6 firstObject];
+    [(AIRecognizedText *)v5 setRecognizedText:firstObject];
 
-    v8 = [(AIRecognizedText *)v5 recognizedText];
-    v9 = [v8 string];
-    [(AIRecognizedText *)v5 setString:v9];
+    recognizedText = [(AIRecognizedText *)v5 recognizedText];
+    string = [recognizedText string];
+    [(AIRecognizedText *)v5 setString:string];
 
-    [v4 boundingBox];
+    [observationCopy boundingBox];
     MidX = CGRectGetMidX(v14);
-    [v4 boundingBox];
+    [observationCopy boundingBox];
     [(AIRecognizedText *)v5 setCenter:MidX, CGRectGetMidY(v15)];
-    [v4 boundingBox];
+    [observationCopy boundingBox];
     [(AIRecognizedText *)v5 setWidth:v11];
   }
 
   return v5;
 }
 
-- (AIRecognizedText)initWithTextObservation:(id)a3 regionOfInterest:(CGRect)a4
+- (AIRecognizedText)initWithTextObservation:(id)observation regionOfInterest:(CGRect)interest
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [(AIRecognizedText *)self initWithTextObservation:a3];
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v8 = [(AIRecognizedText *)self initWithTextObservation:observation];
   v9 = v8;
   if (v8)
   {
@@ -63,28 +63,28 @@
   return v9;
 }
 
-- (AIRecognizedText)initWithString:(id)a3 center:(CGPoint)a4 width:(double)a5 numericalValue:(id)a6
+- (AIRecognizedText)initWithString:(id)string center:(CGPoint)center width:(double)width numericalValue:(id)value
 {
-  v7 = [(AIRecognizedText *)self initWithString:a3 center:a6 numericalValue:a4.x, a4.y];
+  v7 = [(AIRecognizedText *)self initWithString:string center:value numericalValue:center.x, center.y];
   v8 = v7;
   if (v7)
   {
-    [(AIRecognizedText *)v7 setWidth:a5];
+    [(AIRecognizedText *)v7 setWidth:width];
   }
 
   return v8;
 }
 
-- (CGRect)boundingBoxForRange:(_NSRange)a3 error:(id *)a4
+- (CGRect)boundingBoxForRange:(_NSRange)range error:(id *)error
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = [(AIRecognizedText *)self recognizedText];
+  length = range.length;
+  location = range.location;
+  recognizedText = [(AIRecognizedText *)self recognizedText];
 
-  if (v8)
+  if (recognizedText)
   {
-    v9 = [(AIRecognizedText *)self recognizedText];
-    v10 = [v9 boundingBoxForRange:location error:{length, a4}];
+    recognizedText2 = [(AIRecognizedText *)self recognizedText];
+    v10 = [recognizedText2 boundingBoxForRange:location error:{length, error}];
 
     [v10 topLeft];
     v12 = v11;
@@ -121,15 +121,15 @@
   return result;
 }
 
-- (CGPoint)_point:(CGPoint)a3 adjustedByRegionOfInterest:(CGRect)a4
+- (CGPoint)_point:(CGPoint)_point adjustedByRegionOfInterest:(CGRect)interest
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  if (!CGRectIsEmpty(a4))
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v8 = _point.y;
+  v9 = _point.x;
+  if (!CGRectIsEmpty(interest))
   {
     v15.origin.x = x;
     v15.origin.y = y;
@@ -162,20 +162,20 @@
 
 - (id)description
 {
-  v3 = [(AIRecognizedText *)self numericalValue];
+  numericalValue = [(AIRecognizedText *)self numericalValue];
 
   v4 = MEMORY[0x277CCACA8];
-  if (v3)
+  if (numericalValue)
   {
     v14.receiver = self;
     v14.super_class = AIRecognizedText;
     v5 = [(AIRecognizedText *)&v14 description];
-    v6 = [(AIRecognizedText *)self string];
-    v7 = [(AIRecognizedText *)self numericalValue];
+    string = [(AIRecognizedText *)self string];
+    numericalValue2 = [(AIRecognizedText *)self numericalValue];
     [(AIRecognizedText *)self center];
     v8 = NSStringFromCGPoint(v16);
     [(AIRecognizedText *)self width];
-    v10 = [v4 stringWithFormat:@"%@ '%@' (%@) at point %@ width %f", v5, v6, v7, v8, v9];
+    v10 = [v4 stringWithFormat:@"%@ '%@' (%@) at point %@ width %f", v5, string, numericalValue2, v8, v9];
   }
 
   else
@@ -183,36 +183,36 @@
     v13.receiver = self;
     v13.super_class = AIRecognizedText;
     v5 = [(AIRecognizedText *)&v13 description];
-    v6 = [(AIRecognizedText *)self string];
+    string = [(AIRecognizedText *)self string];
     [(AIRecognizedText *)self center];
-    v7 = NSStringFromCGPoint(v17);
+    numericalValue2 = NSStringFromCGPoint(v17);
     [(AIRecognizedText *)self width];
-    v10 = [v4 stringWithFormat:@"%@ '%@' at point %@ width %f", v5, v6, v7, v11];
+    v10 = [v4 stringWithFormat:@"%@ '%@' at point %@ width %f", v5, string, numericalValue2, v11];
   }
 
   return v10;
 }
 
-- (AIRecognizedText)initWithString:(id)a3
+- (AIRecognizedText)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v8.receiver = self;
   v8.super_class = AIRecognizedText;
   v5 = [(AIRecognizedText *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AIRecognizedText *)v5 setString:v4];
+    [(AIRecognizedText *)v5 setString:stringCopy];
   }
 
   return v6;
 }
 
-- (AIRecognizedText)initWithString:(id)a3 center:(CGPoint)a4
+- (AIRecognizedText)initWithString:(id)string center:(CGPoint)center
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = [(AIRecognizedText *)self initWithString:a3];
+  y = center.y;
+  x = center.x;
+  v6 = [(AIRecognizedText *)self initWithString:string];
   v7 = v6;
   if (v6)
   {
@@ -222,16 +222,16 @@
   return v7;
 }
 
-- (AIRecognizedText)initWithString:(id)a3 center:(CGPoint)a4 numericalValue:(id)a5
+- (AIRecognizedText)initWithString:(id)string center:(CGPoint)center numericalValue:(id)value
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
-  v10 = [(AIRecognizedText *)self initWithString:a3 center:x, y];
+  y = center.y;
+  x = center.x;
+  valueCopy = value;
+  v10 = [(AIRecognizedText *)self initWithString:string center:x, y];
   v11 = v10;
   if (v10)
   {
-    [(AIRecognizedText *)v10 setNumericalValue:v9];
+    [(AIRecognizedText *)v10 setNumericalValue:valueCopy];
   }
 
   return v11;

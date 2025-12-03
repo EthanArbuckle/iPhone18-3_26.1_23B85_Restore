@@ -1,37 +1,37 @@
 @interface PKVisualizationManager
 - (BOOL)recognitionStatusReportingEnabled;
 - (PKVisualizationManager)delegate;
-- (PKVisualizationManager)initWithRecognitionSession:(id)a3;
-- (id)valueForRecognitionStatusKey:(id)a3;
+- (PKVisualizationManager)initWithRecognitionSession:(id)session;
+- (id)valueForRecognitionStatusKey:(id)key;
 - (void)dealloc;
-- (void)setRecognitionStatusReportingEnabled:(BOOL)a3;
-- (void)visualizationManagerDidUpdateSessionStatus:(id)a3;
+- (void)setRecognitionStatusReportingEnabled:(BOOL)enabled;
+- (void)visualizationManagerDidUpdateSessionStatus:(id)status;
 @end
 
 @implementation PKVisualizationManager
 
-- (PKVisualizationManager)initWithRecognitionSession:(id)a3
+- (PKVisualizationManager)initWithRecognitionSession:(id)session
 {
   v10.receiver = self;
   v10.super_class = PKVisualizationManager;
-  v3 = a3;
+  sessionCopy = session;
   v4 = [(PKVisualizationManager *)&v10 init];
   v5 = objc_alloc(MEMORY[0x1E6997C10]);
-  v6 = [v5 initWithRecognitionSession:{v3, v10.receiver, v10.super_class}];
+  v6 = [v5 initWithRecognitionSession:{sessionCopy, v10.receiver, v10.super_class}];
 
   chVisualizationManager = v4->_chVisualizationManager;
   v4->_chVisualizationManager = v6;
 
-  v8 = [(PKVisualizationManager *)v4 chVisualizationManager];
-  [v8 setDelegate:v4];
+  chVisualizationManager = [(PKVisualizationManager *)v4 chVisualizationManager];
+  [chVisualizationManager setDelegate:v4];
 
   return v4;
 }
 
 - (void)dealloc
 {
-  v3 = [(PKVisualizationManager *)self chVisualizationManager];
-  [v3 setDelegate:0];
+  chVisualizationManager = [(PKVisualizationManager *)self chVisualizationManager];
+  [chVisualizationManager setDelegate:0];
 
   [(PKVisualizationManager *)self setDelegate:0];
   v4.receiver = self;
@@ -41,35 +41,35 @@
 
 - (BOOL)recognitionStatusReportingEnabled
 {
-  v2 = [(PKVisualizationManager *)self chVisualizationManager];
-  v3 = [v2 statusReportingEnabled];
+  chVisualizationManager = [(PKVisualizationManager *)self chVisualizationManager];
+  statusReportingEnabled = [chVisualizationManager statusReportingEnabled];
 
-  return v3;
+  return statusReportingEnabled;
 }
 
-- (void)setRecognitionStatusReportingEnabled:(BOOL)a3
+- (void)setRecognitionStatusReportingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(PKVisualizationManager *)self chVisualizationManager];
-  [v4 setStatusReportingEnabled:v3];
+  enabledCopy = enabled;
+  chVisualizationManager = [(PKVisualizationManager *)self chVisualizationManager];
+  [chVisualizationManager setStatusReportingEnabled:enabledCopy];
 }
 
-- (id)valueForRecognitionStatusKey:(id)a3
+- (id)valueForRecognitionStatusKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKVisualizationManager *)self chVisualizationManager];
-  v6 = [v5 valueForRecognitionStatusKey:v4];
+  keyCopy = key;
+  chVisualizationManager = [(PKVisualizationManager *)self chVisualizationManager];
+  v6 = [chVisualizationManager valueForRecognitionStatusKey:keyCopy];
 
   return v6;
 }
 
-- (void)visualizationManagerDidUpdateSessionStatus:(id)a3
+- (void)visualizationManagerDidUpdateSessionStatus:(id)status
 {
-  v4 = [(PKVisualizationManager *)self delegate];
-  v5 = v4;
-  if (v4)
+  delegate = [(PKVisualizationManager *)self delegate];
+  v5 = delegate;
+  if (delegate)
   {
-    v7 = v4;
+    v7 = delegate;
     v6 = objc_opt_respondsToSelector();
     v5 = v7;
     if (v6)

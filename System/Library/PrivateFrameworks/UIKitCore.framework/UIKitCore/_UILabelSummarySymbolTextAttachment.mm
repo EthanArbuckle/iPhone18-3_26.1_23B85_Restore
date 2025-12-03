@@ -2,88 +2,88 @@
 - (BOOL)isOn;
 - (UIColor)foregroundColor;
 - (UIFont)font;
-- (_UILabelSummarySymbolTextAttachment)initWithSummarySymbolOn:(BOOL)a3 font:(id)a4 foregroundColor:(id)a5;
+- (_UILabelSummarySymbolTextAttachment)initWithSummarySymbolOn:(BOOL)on font:(id)font foregroundColor:(id)color;
 - (double)baseline;
 - (void)setBounds;
-- (void)setFont:(id)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setIsOn:(BOOL)a3;
+- (void)setFont:(id)font;
+- (void)setForegroundColor:(id)color;
+- (void)setIsOn:(BOOL)on;
 @end
 
 @implementation _UILabelSummarySymbolTextAttachment
 
 - (BOOL)isOn
 {
-  v2 = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
-  v3 = [v2 isOn];
+  summarySymbolView = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
+  isOn = [summarySymbolView isOn];
 
-  return v3;
+  return isOn;
 }
 
-- (void)setIsOn:(BOOL)a3
+- (void)setIsOn:(BOOL)on
 {
-  v3 = a3;
-  v4 = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
-  [v4 setIsOn:v3];
+  onCopy = on;
+  summarySymbolView = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
+  [summarySymbolView setIsOn:onCopy];
 }
 
 - (UIFont)font
 {
-  v2 = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
-  v3 = [v2 font];
+  summarySymbolView = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
+  font = [summarySymbolView font];
 
-  return v3;
+  return font;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
-  [v5 setFont:v4];
+  fontCopy = font;
+  summarySymbolView = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
+  [summarySymbolView setFont:fontCopy];
 
   [(_UILabelSummarySymbolTextAttachment *)self setBounds];
 }
 
 - (UIColor)foregroundColor
 {
-  v2 = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
-  v3 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v2 foregroundColor]);
+  summarySymbolView = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
+  v3 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [summarySymbolView foregroundColor]);
 
   return v3;
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v5 = a3;
-  v6 = [a3 CGColor];
-  v7 = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
-  [v7 setForegroundColor:v6];
+  colorCopy = color;
+  cGColor = [color CGColor];
+  summarySymbolView = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
+  [summarySymbolView setForegroundColor:cGColor];
 }
 
 - (double)baseline
 {
-  v2 = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
-  [v2 baseline];
+  summarySymbolView = [(_UILabelSummarySymbolTextAttachment *)self summarySymbolView];
+  [summarySymbolView baseline];
   v4 = v3;
 
   return v4;
 }
 
-- (_UILabelSummarySymbolTextAttachment)initWithSummarySymbolOn:(BOOL)a3 font:(id)a4 foregroundColor:(id)a5
+- (_UILabelSummarySymbolTextAttachment)initWithSummarySymbolOn:(BOOL)on font:(id)font foregroundColor:(id)color
 {
-  v8 = a4;
-  v9 = a5;
+  fontCopy = font;
+  colorCopy = color;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __84___UILabelSummarySymbolTextAttachment_initWithSummarySymbolOn_font_foregroundColor___block_invoke;
   v16[3] = &unk_1E711F6B8;
-  v19 = a3;
-  v17 = v8;
-  v18 = v9;
+  onCopy = on;
+  v17 = fontCopy;
+  v18 = colorCopy;
   v15.receiver = self;
   v15.super_class = _UILabelSummarySymbolTextAttachment;
-  v10 = v9;
-  v11 = v8;
+  v10 = colorCopy;
+  v11 = fontCopy;
   v12 = [(_UILabelViewTextAttachment *)&v15 initWithViewProvider:v16];
   v13 = v12;
   if (v12)
@@ -96,19 +96,19 @@
 
 - (void)setBounds
 {
-  v3 = [(_UILabelViewTextAttachment *)self view];
-  [v3 sizeToFit];
+  view = [(_UILabelViewTextAttachment *)self view];
+  [view sizeToFit];
 
   [(_UILabelSummarySymbolTextAttachment *)self baseline];
   v5 = v4;
-  v10 = [(_UILabelViewTextAttachment *)self view];
-  [v10 bounds];
+  view2 = [(_UILabelViewTextAttachment *)self view];
+  [view2 bounds];
   v6 = v5 - CGRectGetHeight(v12);
-  v7 = [(_UILabelViewTextAttachment *)self view];
-  [v7 bounds];
+  view3 = [(_UILabelViewTextAttachment *)self view];
+  [view3 bounds];
   Width = CGRectGetWidth(v13);
-  v9 = [(_UILabelViewTextAttachment *)self view];
-  [v9 bounds];
+  view4 = [(_UILabelViewTextAttachment *)self view];
+  [view4 bounds];
   [(_UILabelSummarySymbolTextAttachment *)self setBounds:0.0, v6, Width, CGRectGetHeight(v14)];
 }
 

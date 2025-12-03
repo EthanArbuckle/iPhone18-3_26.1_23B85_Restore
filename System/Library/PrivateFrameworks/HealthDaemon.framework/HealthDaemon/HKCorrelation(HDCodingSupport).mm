@@ -9,7 +9,7 @@
 - (HDCodableCorrelation)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableCorrelation);
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &off_283D43988;
   v3 = objc_msgSendSuper2(&v5, sel_codableRepresentationForSync);
   [(HDCodableCorrelation *)v2 setSample:v3];
@@ -20,13 +20,13 @@
 - (BOOL)addCodableRepresentationToCollection:()HDCodingSupport
 {
   v4 = a3;
-  v5 = [a1 codableRepresentationForSync];
-  if (v5)
+  codableRepresentationForSync = [self codableRepresentationForSync];
+  if (codableRepresentationForSync)
   {
-    [v4 addCorrelations:v5];
+    [v4 addCorrelations:codableRepresentationForSync];
   }
 
-  return v5 != 0;
+  return codableRepresentationForSync != 0;
 }
 
 + (id)createWithCodable:()HDCodingSupport
@@ -36,11 +36,11 @@
   if (objc_opt_isKindOfClass())
   {
     v4 = v3;
-    v5 = [objc_alloc(MEMORY[0x277CCDD50]) _init];
-    if ([v4 applyToObject:v5])
+    _init = [objc_alloc(MEMORY[0x277CCDD50]) _init];
+    if ([v4 applyToObject:_init])
     {
       v6 = HKDefaultObjectValidationConfigurationIgnoringAllOptions();
-      v8 = [v5 _validateWithConfiguration:{v6, v7}];
+      v8 = [_init _validateWithConfiguration:{v6, v7}];
       if (v8)
       {
         v9 = 0;
@@ -48,7 +48,7 @@
 
       else
       {
-        v9 = v5;
+        v9 = _init;
       }
 
       v10 = v9;

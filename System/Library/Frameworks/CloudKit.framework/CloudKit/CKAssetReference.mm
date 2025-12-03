@@ -1,20 +1,20 @@
 @interface CKAssetReference
-- (BOOL)isEqual:(id)a3;
-- (CKAssetReference)initWithCoder:(id)a3;
-- (CKAssetReference)initWithExistingRecordID:(id)a3 databaseScope:(int64_t)a4 fieldName:(id)a5 fileSignature:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (CKAssetReference)initWithCoder:(id)coder;
+- (CKAssetReference)initWithExistingRecordID:(id)d databaseScope:(int64_t)scope fieldName:(id)name fileSignature:(id)signature;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKAssetReference
 
-- (CKAssetReference)initWithExistingRecordID:(id)a3 databaseScope:(int64_t)a4 fieldName:(id)a5 fileSignature:(id)a6
+- (CKAssetReference)initWithExistingRecordID:(id)d databaseScope:(int64_t)scope fieldName:(id)name fileSignature:(id)signature
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  nameCopy = name;
+  signatureCopy = signature;
   v47 = 0;
-  v13 = _CKCheckArgument("recordID", v10, 0, 0, 0, &v47);
+  v13 = _CKCheckArgument("recordID", dCopy, 0, 0, 0, &v47);
   v14 = v47;
   if ((v13 & 1) == 0)
   {
@@ -22,9 +22,9 @@
   }
 
   v46 = 0;
-  v15 = _CKCheckArgument("fieldName", v11, 0, 0, 0, &v46);
+  v15 = _CKCheckArgument("fieldName", nameCopy, 0, 0, 0, &v46);
   v14 = v46;
-  if ((v15 & 1) == 0 || (v14, v45 = 0, v16 = _CKCheckArgument("fileSignature", v12, 0, 0, 0, &v45), v14 = v45, (v16 & 1) == 0))
+  if ((v15 & 1) == 0 || (v14, v45 = 0, v16 = _CKCheckArgument("fileSignature", signatureCopy, 0, 0, 0, &v45), v14 = v45, (v16 & 1) == 0))
   {
 LABEL_9:
     v33 = v14;
@@ -37,7 +37,7 @@ LABEL_9:
     objc_exception_throw(v42);
   }
 
-  if ((objc_msgSend_isValidSignature_(CKSignatureGenerator, v17, v12) & 1) == 0)
+  if ((objc_msgSend_isValidSignature_(CKSignatureGenerator, v17, signatureCopy) & 1) == 0)
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v18, *MEMORY[0x1E695D940], @"Invalid fileSignature");
   }
@@ -47,16 +47,16 @@ LABEL_9:
   v21 = [(CKAssetReference *)&v44 init];
   if (v21)
   {
-    v22 = objc_msgSend_copy(v10, v19, v20);
+    v22 = objc_msgSend_copy(dCopy, v19, v20);
     recordID = v21->_recordID;
     v21->_recordID = v22;
 
-    v21->_databaseScope = a4;
-    v26 = objc_msgSend_copy(v11, v24, v25);
+    v21->_databaseScope = scope;
+    v26 = objc_msgSend_copy(nameCopy, v24, v25);
     fieldName = v21->_fieldName;
     v21->_fieldName = v26;
 
-    v30 = objc_msgSend_copy(v12, v28, v29);
+    v30 = objc_msgSend_copy(signatureCopy, v28, v29);
     fileSignature = v21->_fileSignature;
     v21->_fileSignature = v30;
   }
@@ -64,10 +64,10 @@ LABEL_9:
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v34 = 1;
   }
@@ -77,7 +77,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_recordID(self, v6, v7);
       v11 = objc_msgSend_recordID(v5, v9, v10);
       isEqual = objc_msgSend_isEqual_(v8, v12, v11);
@@ -133,27 +133,27 @@ LABEL_9:
   return v10 ^ v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v21 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_recordID(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v21, v8, v7, @"RecordID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"RecordID");
 
   v11 = objc_msgSend_databaseScope(self, v9, v10);
-  objc_msgSend_encodeInteger_forKey_(v21, v12, v11, @"DatabaseScope");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v12, v11, @"DatabaseScope");
   v15 = objc_msgSend_fieldName(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v21, v16, v15, @"FieldName");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"FieldName");
 
   v19 = objc_msgSend_fileSignature(self, v17, v18);
-  objc_msgSend_encodeObject_forKey_(v21, v20, v19, @"FileSignature");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, v19, @"FileSignature");
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKAssetReference)initWithCoder:(id)a3
+- (CKAssetReference)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CKAssetReference;
   v5 = [(CKAssetReference *)&v21 init];
@@ -161,18 +161,18 @@ LABEL_9:
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"RecordID");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"RecordID");
     recordID = v5->_recordID;
     v5->_recordID = v9;
 
-    v5->_databaseScope = objc_msgSend_decodeIntegerForKey_(v4, v11, @"DatabaseScope");
+    v5->_databaseScope = objc_msgSend_decodeIntegerForKey_(coderCopy, v11, @"DatabaseScope");
     v12 = objc_opt_class();
-    v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v13, v12, @"FieldName");
+    v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v13, v12, @"FieldName");
     fieldName = v5->_fieldName;
     v5->_fieldName = v14;
 
     v16 = objc_opt_class();
-    v18 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v17, v16, @"FileSignature");
+    v18 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v17, v16, @"FileSignature");
     fileSignature = v5->_fileSignature;
     v5->_fileSignature = v18;
 

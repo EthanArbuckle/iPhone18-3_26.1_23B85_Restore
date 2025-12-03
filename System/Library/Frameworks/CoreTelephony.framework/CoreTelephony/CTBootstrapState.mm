@@ -1,9 +1,9 @@
 @interface CTBootstrapState
-- (BOOL)isEqual:(id)a3;
-- (CTBootstrapState)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTBootstrapState)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTBootstrapState
@@ -11,15 +11,15 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTBootstrapState *)self bootstrapStatus];
-  if (v4 > 2)
+  bootstrapStatus = [(CTBootstrapState *)self bootstrapStatus];
+  if (bootstrapStatus > 2)
   {
     v5 = "??";
   }
 
   else
   {
-    v5 = off_1E6A44850[v4];
+    v5 = off_1E6A44850[bootstrapStatus];
   }
 
   [v3 appendFormat:@", bootstrapStatus=%s", v5];
@@ -28,17 +28,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setBootstrapStatus:{-[CTBootstrapState bootstrapStatus](self, "bootstrapStatus")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -49,7 +49,7 @@
     if (objc_opt_isKindOfClass())
     {
       bootstrapStatus = self->_bootstrapStatus;
-      v6 = bootstrapStatus == [(CTBootstrapState *)v4 bootstrapStatus];
+      v6 = bootstrapStatus == [(CTBootstrapState *)equalCopy bootstrapStatus];
     }
 
     else
@@ -61,21 +61,21 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[CTBootstrapState bootstrapStatus](self forKey:{"bootstrapStatus"), @"bootsrtap_state"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CTBootstrapState bootstrapStatus](self forKey:{"bootstrapStatus"), @"bootsrtap_state"}];
 }
 
-- (CTBootstrapState)initWithCoder:(id)a3
+- (CTBootstrapState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CTBootstrapState;
   v5 = [(CTBootstrapState *)&v7 init];
   if (v5)
   {
-    v5->_bootstrapStatus = [v4 decodeIntegerForKey:@"bootsrtap_state"];
+    v5->_bootstrapStatus = [coderCopy decodeIntegerForKey:@"bootsrtap_state"];
   }
 
   return v5;

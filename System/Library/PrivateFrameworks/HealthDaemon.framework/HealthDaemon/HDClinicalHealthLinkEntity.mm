@@ -1,13 +1,13 @@
 @interface HDClinicalHealthLinkEntity
 + (id)databaseTable;
 + (id)foreignKeys;
-+ (id)joinClausesForProperty:(id)a3;
++ (id)joinClausesForProperty:(id)property;
 + (id)propertyForSyncAnchor;
 + (id)propertyForSyncIdentity;
 + (id)propertyForSyncProvenance;
 + (id)uniquedColumns;
 - (_TtC12HealthDaemon26HDClinicalHealthLinkEntity)init;
-- (_TtC12HealthDaemon26HDClinicalHealthLinkEntity)initWithPersistentID:(int64_t)a3;
+- (_TtC12HealthDaemon26HDClinicalHealthLinkEntity)initWithPersistentID:(int64_t)d;
 @end
 
 @implementation HDClinicalHealthLinkEntity
@@ -44,7 +44,7 @@
   return v2;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
   v3 = sub_22911C35C();
   v5 = v4;
@@ -87,11 +87,11 @@
   return v2;
 }
 
-- (_TtC12HealthDaemon26HDClinicalHealthLinkEntity)initWithPersistentID:(int64_t)a3
+- (_TtC12HealthDaemon26HDClinicalHealthLinkEntity)initWithPersistentID:(int64_t)d
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(HDSQLiteEntity *)&v5 initWithPersistentID:a3];
+  return [(HDSQLiteEntity *)&v5 initWithPersistentID:d];
 }
 
 - (_TtC12HealthDaemon26HDClinicalHealthLinkEntity)init

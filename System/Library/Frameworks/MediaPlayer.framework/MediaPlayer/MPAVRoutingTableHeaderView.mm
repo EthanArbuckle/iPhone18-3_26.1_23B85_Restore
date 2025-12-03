@@ -1,7 +1,7 @@
 @interface MPAVRoutingTableHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MPAVRoutingTableHeaderView)initWithCoder:(id)a3;
-- (MPAVRoutingTableHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MPAVRoutingTableHeaderView)initWithCoder:(id)coder;
+- (MPAVRoutingTableHeaderView)initWithFrame:(CGRect)frame;
 - (id)_mirroringCompactDescription;
 - (id)_mirroringCompactDescriptionTextAttributes;
 - (id)_mirroringTitleTextAttributes;
@@ -21,9 +21,9 @@
   v3 = [MEMORY[0x1E69DB878] defaultFontForTextStyle:*MEMORY[0x1E69DDD28]];
   v8[0] = v3;
   v7[1] = *MEMORY[0x1E69DB650];
-  v4 = [MEMORY[0x1E69DC888] tableCellGrayTextColor];
+  tableCellGrayTextColor = [MEMORY[0x1E69DC888] tableCellGrayTextColor];
   v7[2] = *MEMORY[0x1E69DB688];
-  v8[1] = v4;
+  v8[1] = tableCellGrayTextColor;
   v8[2] = v2;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:3];
 
@@ -72,32 +72,32 @@
   v3 = [MEMORY[0x1E69DB878] defaultFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   v8[0] = v3;
   v7[1] = *MEMORY[0x1E69DB650];
-  v4 = [MEMORY[0x1E69DC888] blackColor];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
   v7[2] = *MEMORY[0x1E69DB688];
-  v8[1] = v4;
+  v8[1] = blackColor;
   v8[2] = v2;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:3];
 
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
   v7 = [v6 localizedStringForKey:@"AIRPLAY_MIRRORING_TITLE" value:&stru_1F149ECA8 table:@"MediaPlayer"];
 
-  v8 = [(MPAVRoutingTableHeaderView *)self _mirroringTitleTextAttributes];
-  v9 = [(MPAVRoutingTableHeaderView *)self _mirroringCompactDescription];
-  v10 = [(MPAVRoutingTableHeaderView *)self _mirroringCompactDescriptionTextAttributes];
+  _mirroringTitleTextAttributes = [(MPAVRoutingTableHeaderView *)self _mirroringTitleTextAttributes];
+  _mirroringCompactDescription = [(MPAVRoutingTableHeaderView *)self _mirroringCompactDescription];
+  _mirroringCompactDescriptionTextAttributes = [(MPAVRoutingTableHeaderView *)self _mirroringCompactDescriptionTextAttributes];
   p_edgeInsets = &self->_edgeInsets;
   v12 = width - (p_edgeInsets->f64[1] + p_edgeInsets[1].f64[1]);
   v13 = height - (p_edgeInsets->f64[0] + p_edgeInsets[1].f64[0]);
-  [v7 boundingRectWithSize:1 options:v8 attributes:0 context:{v12, v13}];
+  [v7 boundingRectWithSize:1 options:_mirroringTitleTextAttributes attributes:0 context:{v12, v13}];
   v15 = v14;
   v17 = v16;
-  [v9 boundingRectWithSize:1 options:v10 attributes:0 context:{v12, v13}];
+  [_mirroringCompactDescription boundingRectWithSize:1 options:_mirroringCompactDescriptionTextAttributes attributes:0 context:{v12, v13}];
   if (v15 >= v18)
   {
     v20 = v15;
@@ -150,11 +150,11 @@
   -[CAShapeLayer setPath:](self->_borderLayer, "setPath:", [v18 CGPath]);
 }
 
-- (MPAVRoutingTableHeaderView)initWithCoder:(id)a3
+- (MPAVRoutingTableHeaderView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MPAVRoutingTableHeaderView;
-  v3 = [(MPAVRoutingTableHeaderView *)&v6 initWithCoder:a3];
+  v3 = [(MPAVRoutingTableHeaderView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -164,11 +164,11 @@
   return v4;
 }
 
-- (MPAVRoutingTableHeaderView)initWithFrame:(CGRect)a3
+- (MPAVRoutingTableHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MPAVRoutingTableHeaderView;
-  v3 = [(MPAVRoutingTableHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPAVRoutingTableHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -180,8 +180,8 @@
 
 - (void)_init
 {
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  [(MPAVRoutingTableHeaderView *)self setBackgroundColor:v3];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(MPAVRoutingTableHeaderView *)self setBackgroundColor:whiteColor];
 
   *&self->_edgeInsets.top = xmmword_1A273DDE0;
   *&self->_edgeInsets.bottom = xmmword_1A273DDE0;
@@ -201,22 +201,22 @@
   v13 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
   v24 = [v13 localizedStringForKey:@"AIRPLAY_MIRRORING_TITLE" value:&stru_1F149ECA8 table:@"MediaPlayer"];
 
-  v14 = [(MPAVRoutingTableHeaderView *)self _mirroringTitleTextAttributes];
-  v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v24 attributes:v14];
+  _mirroringTitleTextAttributes = [(MPAVRoutingTableHeaderView *)self _mirroringTitleTextAttributes];
+  v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v24 attributes:_mirroringTitleTextAttributes];
   [(UILabel *)self->_titleLabel setAttributedText:v15];
 
   [(UILabel *)self->_titleLabel setNumberOfLines:1];
   [(MPAVRoutingTableHeaderView *)self addSubview:self->_titleLabel];
-  v16 = [(MPAVRoutingTableHeaderView *)self _mirroringCompactDescription];
-  v17 = [(MPAVRoutingTableHeaderView *)self _mirroringCompactDescriptionTextAttributes];
-  v18 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v16 attributes:v17];
+  _mirroringCompactDescription = [(MPAVRoutingTableHeaderView *)self _mirroringCompactDescription];
+  _mirroringCompactDescriptionTextAttributes = [(MPAVRoutingTableHeaderView *)self _mirroringCompactDescriptionTextAttributes];
+  v18 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:_mirroringCompactDescription attributes:_mirroringCompactDescriptionTextAttributes];
   [(UILabel *)self->_detailLabel setAttributedText:v18];
 
   [(UILabel *)self->_detailLabel setNumberOfLines:0];
   [(MPAVRoutingTableHeaderView *)self addSubview:self->_detailLabel];
-  v19 = [MEMORY[0x1E69794A0] layer];
+  layer = [MEMORY[0x1E69794A0] layer];
   borderLayer = self->_borderLayer;
-  self->_borderLayer = v19;
+  self->_borderLayer = layer;
 
   v21 = [MEMORY[0x1E69DC888] colorWithWhite:0.8 alpha:1.0];
   -[CAShapeLayer setStrokeColor:](self->_borderLayer, "setStrokeColor:", [v21 CGColor]);
@@ -225,8 +225,8 @@
   [(CAShapeLayer *)self->_borderLayer setFillColor:0];
   LODWORD(v22) = 1.0;
   [(CAShapeLayer *)self->_borderLayer setOpacity:v22];
-  v23 = [(MPAVRoutingTableHeaderView *)self layer];
-  [v23 addSublayer:self->_borderLayer];
+  layer2 = [(MPAVRoutingTableHeaderView *)self layer];
+  [layer2 addSublayer:self->_borderLayer];
 }
 
 @end

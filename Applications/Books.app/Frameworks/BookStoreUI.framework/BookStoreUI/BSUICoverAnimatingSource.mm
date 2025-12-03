@@ -1,6 +1,6 @@
 @interface BSUICoverAnimatingSource
-+ (id)renderReferenceMatchingQuery:(id)a3 inFeedViewController:(id)a4;
-- (BSUICoverAnimatingSource)initWithFeedViewController:(id)a3 query:(id)a4 audioBookControlQuery:(id)a5;
++ (id)renderReferenceMatchingQuery:(id)query inFeedViewController:(id)controller;
+- (BSUICoverAnimatingSource)initWithFeedViewController:(id)controller query:(id)query audioBookControlQuery:(id)controlQuery;
 - (CGRect)coverAnimationSourceFrame;
 - (id)coverAnimationSourceReferenceView;
 - (id)coverAnimationSourceView;
@@ -11,33 +11,33 @@
 
 @implementation BSUICoverAnimatingSource
 
-+ (id)renderReferenceMatchingQuery:(id)a3 inFeedViewController:(id)a4
++ (id)renderReferenceMatchingQuery:(id)query inFeedViewController:(id)controller
 {
-  v4 = [a4 renderReferencesMatchingQuery:a3];
-  v5 = [v4 allKeys];
-  v6 = [v5 firstObject];
+  v4 = [controller renderReferencesMatchingQuery:query];
+  allKeys = [v4 allKeys];
+  firstObject = [allKeys firstObject];
 
-  return v6;
+  return firstObject;
 }
 
-- (BSUICoverAnimatingSource)initWithFeedViewController:(id)a3 query:(id)a4 audioBookControlQuery:(id)a5
+- (BSUICoverAnimatingSource)initWithFeedViewController:(id)controller query:(id)query audioBookControlQuery:(id)controlQuery
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  queryCopy = query;
+  controlQueryCopy = controlQuery;
   v19.receiver = self;
   v19.super_class = BSUICoverAnimatingSource;
   v12 = [(BSUICoverAnimatingSource *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_feedViewController, a3);
-    objc_storeStrong(&v13->_query, a4);
-    v14 = [TUIRenderReferenceOverride overrideWithQuery:v10 alpha:0.0];
+    objc_storeStrong(&v12->_feedViewController, controller);
+    objc_storeStrong(&v13->_query, query);
+    v14 = [TUIRenderReferenceOverride overrideWithQuery:queryCopy alpha:0.0];
     overrideForHiding = v13->_overrideForHiding;
     v13->_overrideForHiding = v14;
 
-    v16 = [TUIRenderReferenceOverride overrideWithQuery:v11 alpha:0.0];
+    v16 = [TUIRenderReferenceOverride overrideWithQuery:controlQueryCopy alpha:0.0];
     overrideForHidingAudioControl = v13->_overrideForHidingAudioControl;
     v13->_overrideForHidingAudioControl = v16;
   }
@@ -47,42 +47,42 @@
 
 - (id)renderReferenceTransform
 {
-  v3 = [(BSUICoverAnimatingSource *)self feedViewController];
-  v4 = [(BSUICoverAnimatingSource *)self query];
-  v5 = [v3 renderReferencesMatchingQuery:v4];
+  feedViewController = [(BSUICoverAnimatingSource *)self feedViewController];
+  query = [(BSUICoverAnimatingSource *)self query];
+  v5 = [feedViewController renderReferencesMatchingQuery:query];
 
-  v6 = [v5 allKeys];
-  v7 = [v6 firstObject];
+  allKeys = [v5 allKeys];
+  firstObject = [allKeys firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [v5 objectForKeyedSubscript:v7];
-    v9 = [v8 firstObject];
+    v8 = [v5 objectForKeyedSubscript:firstObject];
+    firstObject2 = [v8 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject2 = 0;
   }
 
-  return v9;
+  return firstObject2;
 }
 
 - (CGRect)coverAnimationSourceFrame
 {
-  v3 = [(BSUICoverAnimatingSource *)self transformForSourceFrame];
+  transformForSourceFrame = [(BSUICoverAnimatingSource *)self transformForSourceFrame];
 
-  if (!v3)
+  if (!transformForSourceFrame)
   {
-    v4 = [(BSUICoverAnimatingSource *)self renderReferenceTransform];
-    [(BSUICoverAnimatingSource *)self setTransformForSourceFrame:v4];
+    renderReferenceTransform = [(BSUICoverAnimatingSource *)self renderReferenceTransform];
+    [(BSUICoverAnimatingSource *)self setTransformForSourceFrame:renderReferenceTransform];
   }
 
-  v5 = [(BSUICoverAnimatingSource *)self transformForSourceFrame];
-  v6 = v5;
-  if (v5)
+  transformForSourceFrame2 = [(BSUICoverAnimatingSource *)self transformForSourceFrame];
+  v6 = transformForSourceFrame2;
+  if (transformForSourceFrame2)
   {
-    [v5 center];
+    [transformForSourceFrame2 center];
     [v6 size];
     CGRectMakeWithCenterAndSize();
     x = v7;
@@ -112,47 +112,47 @@
 
 - (id)coverAnimationSourceReferenceView
 {
-  v2 = [(BSUICoverAnimatingSource *)self feedViewController];
-  v3 = [v2 view];
+  feedViewController = [(BSUICoverAnimatingSource *)self feedViewController];
+  view = [feedViewController view];
 
-  return v3;
+  return view;
 }
 
 - (id)coverAnimationSourceView
 {
-  v3 = [(BSUICoverAnimatingSource *)self renderReferenceTransform];
-  v4 = [(BSUICoverAnimatingSource *)self feedViewController];
-  v5 = [v3 renderModel];
-  v6 = [v5 identifier];
-  v7 = [v4 descendentViewWithIdentifier:v6];
+  renderReferenceTransform = [(BSUICoverAnimatingSource *)self renderReferenceTransform];
+  feedViewController = [(BSUICoverAnimatingSource *)self feedViewController];
+  renderModel = [renderReferenceTransform renderModel];
+  identifier = [renderModel identifier];
+  v7 = [feedViewController descendentViewWithIdentifier:identifier];
 
   return v7;
 }
 
 - (void)coverAnimationSourcePrepare
 {
-  v3 = [(BSUICoverAnimatingSource *)self feedViewController];
-  v4 = [(BSUICoverAnimatingSource *)self overrideForHiding];
-  [v3 addRenderOverride:v4];
+  feedViewController = [(BSUICoverAnimatingSource *)self feedViewController];
+  overrideForHiding = [(BSUICoverAnimatingSource *)self overrideForHiding];
+  [feedViewController addRenderOverride:overrideForHiding];
 
-  v6 = [(BSUICoverAnimatingSource *)self feedViewController];
-  v5 = [(BSUICoverAnimatingSource *)self overrideForHidingAudioControl];
-  [v6 addRenderOverride:v5];
+  feedViewController2 = [(BSUICoverAnimatingSource *)self feedViewController];
+  overrideForHidingAudioControl = [(BSUICoverAnimatingSource *)self overrideForHidingAudioControl];
+  [feedViewController2 addRenderOverride:overrideForHidingAudioControl];
 }
 
 - (void)coverAnimationSourceFinalize
 {
-  v3 = [(BSUICoverAnimatingSource *)self feedViewController];
-  v4 = [(BSUICoverAnimatingSource *)self overrideForHiding];
-  [v3 removeRenderOverride:v4];
+  feedViewController = [(BSUICoverAnimatingSource *)self feedViewController];
+  overrideForHiding = [(BSUICoverAnimatingSource *)self overrideForHiding];
+  [feedViewController removeRenderOverride:overrideForHiding];
 
-  v5 = [(BSUICoverAnimatingSource *)self feedViewController];
-  v6 = [(BSUICoverAnimatingSource *)self overrideForHidingAudioControl];
-  [v5 removeRenderOverride:v6];
+  feedViewController2 = [(BSUICoverAnimatingSource *)self feedViewController];
+  overrideForHidingAudioControl = [(BSUICoverAnimatingSource *)self overrideForHidingAudioControl];
+  [feedViewController2 removeRenderOverride:overrideForHidingAudioControl];
 
-  v8 = [(BSUICoverAnimatingSource *)self feedViewController];
-  v7 = [v8 view];
-  [v7 layoutIfNeeded];
+  feedViewController3 = [(BSUICoverAnimatingSource *)self feedViewController];
+  view = [feedViewController3 view];
+  [view layoutIfNeeded];
 }
 
 @end

@@ -24,7 +24,7 @@
 
 - (CFArrayRef)elementsMatching:()HIDFramework
 {
-  v3 = IOHIDDeviceCopyMatchingElements(a1, matching, 0);
+  v3 = IOHIDDeviceCopyMatchingElements(self, matching, 0);
 
   return v3;
 }
@@ -36,12 +36,12 @@
   if (v16)
   {
     v18 = _Block_copy(v16);
-    v19 = IOHIDDeviceSetReportWithCallback(a1, a6, a5, a3, a4, a8, asyncReportCallback, v18);
+    v19 = IOHIDDeviceSetReportWithCallback(self, a6, a5, a3, a4, a8, asyncReportCallback, v18);
   }
 
   else
   {
-    v19 = IOHIDDeviceSetReport(a1, a6, a5, a3, a4);
+    v19 = IOHIDDeviceSetReport(self, a6, a5, a3, a4);
   }
 
   v20 = v19;
@@ -68,7 +68,7 @@
   if (v16)
   {
     v18 = _Block_copy(v16);
-    ReportWithCallback = IOHIDDeviceGetReportWithCallback(a1, a6, a5, a3, &pReportLength, a8, asyncReportCallback, v18);
+    ReportWithCallback = IOHIDDeviceGetReportWithCallback(self, a6, a5, a3, &pReportLength, a8, asyncReportCallback, v18);
     if (!a7)
     {
       goto LABEL_8;
@@ -77,7 +77,7 @@
 
   else
   {
-    ReportWithCallback = IOHIDDeviceGetReport(a1, a6, a5, a3, &pReportLength);
+    ReportWithCallback = IOHIDDeviceGetReport(self, a6, a5, a3, &pReportLength);
     *a4 = pReportLength;
     if (!a7)
     {
@@ -103,12 +103,12 @@ LABEL_8:
 {
   v12 = a3;
   v13 = a7;
-  v14 = a1 + *MEMORY[0x277CD2868];
+  v14 = self + *MEMORY[0x277CD2868];
   os_unfair_recursive_lock_lock_with_options();
   v15 = *(v14 + 256);
   if (!v15)
   {
-    v15 = [[HIDTransaction alloc] initWithDevice:a1];
+    v15 = [[HIDTransaction alloc] initWithDevice:self];
     *(v14 + 256) = v15;
   }
 
@@ -149,17 +149,17 @@ LABEL_8:
   {
     if ([(__CFDictionary *)v9 count])
     {
-      v4 = a1;
+      selfCopy2 = self;
       v5 = v9;
     }
 
     else
     {
-      v4 = a1;
+      selfCopy2 = self;
       v5 = 0;
     }
 
-    IOHIDDeviceSetInputValueMatching(v4, v5);
+    IOHIDDeviceSetInputValueMatching(selfCopy2, v5);
   }
 
   else
@@ -169,17 +169,17 @@ LABEL_8:
     {
       if ([(__CFDictionary *)v9 count])
       {
-        v6 = a1;
+        selfCopy4 = self;
         v7 = v9;
       }
 
       else
       {
-        v6 = a1;
+        selfCopy4 = self;
         v7 = 0;
       }
 
-      IOHIDDeviceSetInputValueMatchingMultiple(v6, v7);
+      IOHIDDeviceSetInputValueMatchingMultiple(selfCopy4, v7);
     }
   }
 
@@ -189,18 +189,18 @@ LABEL_8:
 - (void)setInputElementHandler:()HIDFramework
 {
   v4 = a3;
-  if (atomic_exchange((a1 + *MEMORY[0x277CD2868] + 312), _Block_copy(v4)))
+  if (atomic_exchange((self + *MEMORY[0x277CD2868] + 312), _Block_copy(v4)))
   {
     [HIDManager setInputElementHandler:];
   }
 
-  IOHIDDeviceRegisterInputValueCallback(a1, inputValueCallback_0, a1);
+  IOHIDDeviceRegisterInputValueCallback(self, inputValueCallback_0, self);
 }
 
 - (void)setBatchInputElementHandler:()HIDFramework
 {
   v4 = a3;
-  v5 = (a1 + *MEMORY[0x277CD2868]);
+  v5 = (self + *MEMORY[0x277CD2868]);
   v6 = v4;
   if (atomic_exchange(v5 + 39, _Block_copy(v4)))
   {
@@ -208,59 +208,59 @@ LABEL_8:
   }
 
   v5[35] = CFArrayCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF128]);
-  IOHIDDeviceRegisterInputValueCallback(a1, batchInputValueCallback, a1);
+  IOHIDDeviceRegisterInputValueCallback(self, batchInputValueCallback, self);
 }
 
 - (void)setRemovalHandler:()HIDFramework
 {
   v4 = a3;
-  if (atomic_exchange((a1 + *MEMORY[0x277CD2868] + 320), _Block_copy(v4)))
+  if (atomic_exchange((self + *MEMORY[0x277CD2868] + 320), _Block_copy(v4)))
   {
     [HIDServiceClient(HIDFramework) setRemovalHandler:];
   }
 
-  IOHIDDeviceRegisterRemovalCallback(a1, removalCallback, a1);
+  IOHIDDeviceRegisterRemovalCallback(self, removalCallback, self);
 }
 
 - (void)setInputReportHandler:()HIDFramework
 {
   v4 = a3;
-  v5 = &a1[*MEMORY[0x277CD2868]];
+  v5 = &self[*MEMORY[0x277CD2868]];
   v13 = v4;
   if (atomic_exchange(v5 + 41, _Block_copy(v4)))
   {
     [HIDManager setInputReportHandler:];
   }
 
-  v6 = [a1 propertyForKey:@"MaxInputReportSize"];
+  v6 = [self propertyForKey:@"MaxInputReportSize"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 1;
+    unsignedIntegerValue = 1;
   }
 
   v9 = *(v5 + 34);
   if (!v9)
   {
-    Mutable = CFDataCreateMutable(*MEMORY[0x277CBECE8], v8);
+    Mutable = CFDataCreateMutable(*MEMORY[0x277CBECE8], unsignedIntegerValue);
     *(v5 + 34) = Mutable;
-    CFDataSetLength(Mutable, v8);
+    CFDataSetLength(Mutable, unsignedIntegerValue);
     v9 = *(v5 + 34);
   }
 
   MutableBytePtr = CFDataGetMutableBytePtr(v9);
   Length = CFDataGetLength(*(v5 + 34));
-  IOHIDDeviceRegisterInputReportWithTimeStampCallback(a1, MutableBytePtr, Length, inputReportCallback_0, a1);
+  IOHIDDeviceRegisterInputReportWithTimeStampCallback(self, MutableBytePtr, Length, inputReportCallback_0, self);
 }
 
 - (BOOL)openWithOptions:()HIDFramework error:
 {
-  v5 = IOHIDDeviceOpen(a1, options);
+  v5 = IOHIDDeviceOpen(self, options);
   v6 = v5;
   if (a4 && v5)
   {
@@ -272,7 +272,7 @@ LABEL_8:
 
 - (void)activate
 {
-  v2 = &a1[*MEMORY[0x277CD2868]];
+  v2 = &self[*MEMORY[0x277CD2868]];
   os_unfair_recursive_lock_lock_with_options();
   if (*(v2 + 35))
   {
@@ -288,7 +288,7 @@ LABEL_8:
     v3 = ;
     [v3 addObject:&unk_28419A550];
     os_unfair_recursive_lock_unlock();
-    [a1 setInputElementMatching:v3];
+    [self setInputElementMatching:v3];
   }
 
   else
@@ -296,7 +296,7 @@ LABEL_8:
     os_unfair_recursive_lock_unlock();
   }
 
-  IOHIDDeviceActivate(a1);
+  IOHIDDeviceActivate(self);
 }
 
 - (void)setInputElementMatching:()HIDFramework .cold.1(uint64_t *a1, _OWORD *a2)

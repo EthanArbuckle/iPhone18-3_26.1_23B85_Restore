@@ -1,50 +1,50 @@
 @interface TSTMergeRegionMap
-+ (id)mergeRegionMapFromMap:(id)a3 intersectingRange:(id)a4;
-- ($AA9F29356CAB8C7531B71D0D1ACCC7CE)mergedRangeForCellID:(id)a3;
-- (BOOL)find:(id)a3;
++ (id)mergeRegionMapFromMap:(id)map intersectingRange:(id)range;
+- ($AA9F29356CAB8C7531B71D0D1ACCC7CE)mergedRangeForCellID:(id)d;
+- (BOOL)find:(id)find;
 - (BOOL)hasRangeSpanningRows;
-- (BOOL)insert:(id)a3;
-- (BOOL)partiallyIntersectsCellRange:(id)a3;
-- (BOOL)partiallyIntersectsCellRegion:(id)a3;
-- (BOOL)remove:(id)a3;
-- (TSTMergeRegionMap)initWithContext:(id)a3;
+- (BOOL)insert:(id)insert;
+- (BOOL)partiallyIntersectsCellRange:(id)range;
+- (BOOL)partiallyIntersectsCellRegion:(id)region;
+- (BOOL)remove:(id)remove;
+- (TSTMergeRegionMap)initWithContext:(id)context;
 - (id).cxx_construct;
 - (id)description;
-- (id)initRegionMapFromMap:(id)a3 intersectingRange:(id)a4;
-- (id)initRegionMapFromMap:(id)a3 rowRemapping:(id)a4;
+- (id)initRegionMapFromMap:(id)map intersectingRange:(id)range;
+- (id)initRegionMapFromMap:(id)map rowRemapping:(id)remapping;
 - (id)iterator;
-- (id)mergedGridIndicesForDimension:(int)a3;
+- (id)mergedGridIndicesForDimension:(int)dimension;
 @end
 
 @implementation TSTMergeRegionMap
 
-+ (id)mergeRegionMapFromMap:(id)a3 intersectingRange:(id)a4
++ (id)mergeRegionMapFromMap:(id)map intersectingRange:(id)range
 {
-  v4 = [[TSTMergeRegionMap alloc] initRegionMapFromMap:a3 intersectingRange:a4];
+  v4 = [[TSTMergeRegionMap alloc] initRegionMapFromMap:map intersectingRange:range];
 
   return v4;
 }
 
-- (id)initRegionMapFromMap:(id)a3 rowRemapping:(id)a4
+- (id)initRegionMapFromMap:(id)map rowRemapping:(id)remapping
 {
-  if (([a4 isVertical] & 1) == 0)
+  if (([remapping isVertical] & 1) == 0)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMergeRegionMap initRegionMapFromMap:rowRemapping:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 26, @"remapping must be vertical."}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 26, @"remapping must be vertical."}];
   }
 
-  v9 = -[TSTMergeRegionMap initWithContext:](self, "initWithContext:", [a3 context]);
+  v9 = -[TSTMergeRegionMap initWithContext:](self, "initWithContext:", [map context]);
   v10 = v9;
-  if (a3 && v9)
+  if (map && v9)
   {
-    v11 = [[TSTMergeRegionMapIterator alloc] initWithMergeRegionMap:a3];
+    v11 = [[TSTMergeRegionMapIterator alloc] initWithMergeRegionMap:map];
     if ([(TSTMergeRegionMapIterator *)v11 hasNextMergeRegion])
     {
       do
       {
-        v12 = [(TSTMergeRegionMapIterator *)v11 nextMergeRegion];
-        -[TSTMergeRegionMap insert:](v10, "insert:", v12 & 0xFFFFFFFFFFFF0000 | [a4 mapIndex:v12]);
+        nextMergeRegion = [(TSTMergeRegionMapIterator *)v11 nextMergeRegion];
+        -[TSTMergeRegionMap insert:](v10, "insert:", nextMergeRegion & 0xFFFFFFFFFFFF0000 | [remapping mapIndex:nextMergeRegion]);
       }
 
       while ([(TSTMergeRegionMapIterator *)v11 hasNextMergeRegion]);
@@ -54,19 +54,19 @@
   return v10;
 }
 
-- (id)initRegionMapFromMap:(id)a3 intersectingRange:(id)a4
+- (id)initRegionMapFromMap:(id)map intersectingRange:(id)range
 {
-  v6 = -[TSTMergeRegionMap initWithContext:](self, "initWithContext:", [a3 context]);
+  v6 = -[TSTMergeRegionMap initWithContext:](self, "initWithContext:", [map context]);
   v7 = v6;
-  if (!a3 || !v6 || a4.var0.var0 == 0xFFFF || (*&a4 & 0xFF0000) == 0xFF0000 || !HIWORD(*&a4) || (*&a4 & 0xFFFF00000000) == 0)
+  if (!map || !v6 || range.var0.var0 == 0xFFFF || (*&range & 0xFF0000) == 0xFF0000 || !HIWORD(*&range) || (*&range & 0xFFFF00000000) == 0)
   {
     return v7;
   }
 
-  v33 = *&a4 >> 16;
-  if (a4.var1.var0 * *&a4.var1.var1 >= *(a3 + 28))
+  v33 = *&range >> 16;
+  if (range.var1.var0 * *&range.var1.var1 >= *(map + 28))
   {
-    v17 = [[TSTMergeRegionMapIterator alloc] initWithMergeRegionMap:a3];
+    v17 = [[TSTMergeRegionMapIterator alloc] initWithMergeRegionMap:map];
     if (![(TSTMergeRegionMapIterator *)v17 hasNextMergeRegion])
     {
 LABEL_57:
@@ -76,61 +76,61 @@ LABEL_57:
 
     while (1)
     {
-      v18 = [(TSTMergeRegionMapIterator *)v17 nextMergeRegion];
+      nextMergeRegion = [(TSTMergeRegionMapIterator *)v17 nextMergeRegion];
       v19 = 0;
-      if (v18 != 0xFFFF)
+      if (nextMergeRegion != 0xFFFF)
       {
         v20 = 0xFFFFLL;
         v21 = 16711680;
         v22 = 0;
-        if ((v18 & 0xFF0000) == 0xFF0000)
+        if ((nextMergeRegion & 0xFF0000) == 0xFF0000)
         {
           goto LABEL_47;
         }
 
         v19 = 0;
-        if (HIWORD(v18))
+        if (HIWORD(nextMergeRegion))
         {
           v20 = 0xFFFFLL;
           v21 = 16711680;
           v22 = 0;
-          if ((v18 & 0xFFFF00000000) != 0)
+          if ((nextMergeRegion & 0xFFFF00000000) != 0)
           {
             v20 = 0;
-            var1 = BYTE2(v18);
-            if (BYTE2(v18) <= a4.var0.var1)
+            var1 = BYTE2(nextMergeRegion);
+            if (BYTE2(nextMergeRegion) <= range.var0.var1)
             {
-              var1 = a4.var0.var1;
+              var1 = range.var0.var1;
             }
 
-            if (v18 <= a4.var0.var0)
+            if (nextMergeRegion <= range.var0.var0)
             {
-              var0 = a4.var0.var0;
-            }
-
-            else
-            {
-              var0 = v18;
-            }
-
-            if ((BYTE4(v18) + BYTE2(v18) - 1) >= (LOBYTE(a4.var1.var0) + a4.var0.var1 - 1))
-            {
-              v25 = (LOBYTE(a4.var1.var0) + a4.var0.var1 - 1);
+              var0 = range.var0.var0;
             }
 
             else
             {
-              v25 = (BYTE4(v18) + BYTE2(v18) - 1);
+              var0 = nextMergeRegion;
             }
 
-            if ((v18 + HIWORD(v18) - 1) >= (a4.var0.var0 + a4.var1.var1 - 1))
+            if ((BYTE4(nextMergeRegion) + BYTE2(nextMergeRegion) - 1) >= (LOBYTE(range.var1.var0) + range.var0.var1 - 1))
             {
-              v26 = (a4.var0.var0 + a4.var1.var1 - 1);
+              v25 = (LOBYTE(range.var1.var0) + range.var0.var1 - 1);
             }
 
             else
             {
-              v26 = (v18 + HIWORD(v18) - 1);
+              v25 = (BYTE4(nextMergeRegion) + BYTE2(nextMergeRegion) - 1);
+            }
+
+            if ((nextMergeRegion + HIWORD(nextMergeRegion) - 1) >= (range.var0.var0 + range.var1.var1 - 1))
+            {
+              v26 = (range.var0.var0 + range.var1.var1 - 1);
+            }
+
+            else
+            {
+              v26 = (nextMergeRegion + HIWORD(nextMergeRegion) - 1);
             }
 
             v21 = 0;
@@ -173,12 +173,12 @@ LABEL_47:
     }
   }
 
-  v8 = a4.var0.var0 + a4.var1.var1 - 1;
-  if (v8 >= a4.var0.var0)
+  v8 = range.var0.var0 + range.var1.var1 - 1;
+  if (v8 >= range.var0.var0)
   {
-    v9 = *&a4.var1 + HIWORD(*&a4.var0) + 255;
-    v10 = a4.var0.var1;
-    v11 = a4.var0.var0;
+    v9 = *&range.var1 + HIWORD(*&range.var0) + 255;
+    v10 = range.var0.var1;
+    v11 = range.var0.var0;
     do
     {
       if (v10 <= v9)
@@ -186,8 +186,8 @@ LABEL_47:
         v12 = v33;
         do
         {
-          a4 = (v11 | (v12 << 16) | *&a4 & 0xFFFFFFFF00000000);
-          v13 = [a3 mergedRangeForCellID:a4];
+          range = (v11 | (v12 << 16) | *&range & 0xFFFFFFFF00000000);
+          v13 = [map mergedRangeForCellID:range];
           v14 = v13;
           if (v13 != 0xFFFF)
           {
@@ -214,11 +214,11 @@ LABEL_47:
   return v7;
 }
 
-- (TSTMergeRegionMap)initWithContext:(id)a3
+- (TSTMergeRegionMap)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TSTMergeRegionMap;
-  result = [(TSPObject *)&v4 initWithContext:a3];
+  result = [(TSPObject *)&v4 initWithContext:context];
   if (result)
   {
     result->mUnionedMergeRange = 0xFFFFFFLL;
@@ -242,10 +242,10 @@ LABEL_47:
   {
     do
     {
-      v5 = [(TSTMergeRegionMapIterator *)v4 nextMergeRegion];
+      nextMergeRegion = [(TSTMergeRegionMapIterator *)v4 nextMergeRegion];
       v6 = MEMORY[0x277CCACA8];
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%hu, %hu)", BYTE2(v5), v5];
-      [v3 appendString:{objc_msgSend(v6, "stringWithFormat:", @"(%@, %@)", v7, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%hux%hu", WORD2(v5), HIWORD(v5)))}];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%hu, %hu)", BYTE2(nextMergeRegion), nextMergeRegion];
+      [v3 appendString:{objc_msgSend(v6, "stringWithFormat:", @"(%@, %@)", v7, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%hux%hu", WORD2(nextMergeRegion), HIWORD(nextMergeRegion)))}];
       if ([(TSTMergeRegionMapIterator *)v4 hasNextMergeRegion])
       {
         [v3 appendString:{@", "}];
@@ -258,42 +258,42 @@ LABEL_47:
   return v3;
 }
 
-- (BOOL)insert:(id)a3
+- (BOOL)insert:(id)insert
 {
-  v5 = ~a3.var0.var0;
-  v22 = a3;
+  v5 = ~insert.var0.var0;
+  insertCopy = insert;
   [(TSPObject *)self willModify];
-  if (!v5 || (*&a3 & 0xFF0000) == 0xFF0000 || !HIWORD(*&a3) || (*&a3 & 0xFFFF00000000) == 0)
+  if (!v5 || (*&insert & 0xFF0000) == 0xFF0000 || !HIWORD(*&insert) || (*&insert & 0xFFFF00000000) == 0)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMergeRegionMap insert:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 172, @"can't insert an invalid merge range"}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 172, @"can't insert an invalid merge range"}];
   }
 
-  v8 = a3.var0.var0 + a3.var1.var1 - 1;
-  if (v8 >= a3.var0.var0)
+  v8 = insert.var0.var0 + insert.var1.var1 - 1;
+  if (v8 >= insert.var0.var0)
   {
-    var0 = a3.var0.var0;
-    while (a3.var0.var1 > (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1))
+    var0 = insert.var0.var0;
+    while (insert.var0.var1 > (LOBYTE(insert.var1.var0) + insert.var0.var1 - 1))
     {
 LABEL_15:
       if (++var0 > v8)
       {
-        v16 = a3.var0.var0;
+        v16 = insert.var0.var0;
         do
         {
-          if (a3.var0.var1 <= (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1))
+          if (insert.var0.var1 <= (LOBYTE(insert.var1.var0) + insert.var0.var1 - 1))
           {
-            v17 = *&a3 >> 16;
+            v17 = *&insert >> 16;
             do
             {
               v21 = v16 | (v17 << 16);
               v23 = &v21;
-              *(std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::__emplace_unique_key_args<TSUColumnRowCoordinate,std::piecewise_construct_t const&,std::tuple<TSUColumnRowCoordinate const&>,std::tuple<>>(&self->mCellIDToMergeRegionTopLeft.__table_.__bucket_list_.__ptr_, &v21) + 5) = a3.var0;
+              *(std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::__emplace_unique_key_args<TSUColumnRowCoordinate,std::piecewise_construct_t const&,std::tuple<TSUColumnRowCoordinate const&>,std::tuple<>>(&self->mCellIDToMergeRegionTopLeft.__table_.__bucket_list_.__ptr_, &v21) + 5) = insert.var0;
               LODWORD(v17) = v17 + 1;
             }
 
-            while (v17 <= (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1));
+            while (v17 <= (LOBYTE(insert.var1.var0) + insert.var0.var1 - 1));
           }
 
           ++v16;
@@ -304,7 +304,7 @@ LABEL_15:
       }
     }
 
-    v14 = *&a3 >> 16;
+    v14 = *&insert >> 16;
     while (1)
     {
       v15 = v14;
@@ -315,56 +315,56 @@ LABEL_15:
       }
 
       LOBYTE(v14) = v15 + 1;
-      if ((v15 + 1) > (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1))
+      if ((v15 + 1) > (LOBYTE(insert.var1.var0) + insert.var0.var1 - 1))
       {
         goto LABEL_15;
       }
     }
 
-    v18 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMergeRegionMap insert:]"];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"];
-    [v18 handleFailureInFunction:v19 file:v20 lineNumber:186 description:{@"can't merge an already-merged cell: %@", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"(%hu, %hu)", v15, var0)}];
+    [currentHandler2 handleFailureInFunction:v19 file:v20 lineNumber:186 description:{@"can't merge an already-merged cell: %@", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"(%hu, %hu)", v15, var0)}];
     return 0;
   }
 
   else
   {
 LABEL_7:
-    if (std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&self->mMergeRegionTopLeftToMergeRegionSize.__table_.__bucket_list_.__ptr_, &v22))
+    if (std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&self->mMergeRegionTopLeftToMergeRegionSize.__table_.__bucket_list_.__ptr_, &insertCopy))
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMergeRegionMap insert:]"];
-      [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 204, @"merge region to be inserted already exists!"}];
+      [currentHandler3 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 204, @"merge region to be inserted already exists!"}];
     }
 
-    v23 = &v22;
-    v11 = std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::__emplace_unique_key_args<TSUColumnRowCoordinate,std::piecewise_construct_t const&,std::tuple<TSUColumnRowCoordinate const&>,std::tuple<>>(&self->mMergeRegionTopLeftToMergeRegionSize.__table_.__bucket_list_.__ptr_, &v22);
-    *(v11 + 5) = HIDWORD(v22);
-    self->mUnionedMergeRange = TSTCellRangeUnionCellRange(*&self->mUnionedMergeRange, v22);
+    v23 = &insertCopy;
+    v11 = std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::__emplace_unique_key_args<TSUColumnRowCoordinate,std::piecewise_construct_t const&,std::tuple<TSUColumnRowCoordinate const&>,std::tuple<>>(&self->mMergeRegionTopLeftToMergeRegionSize.__table_.__bucket_list_.__ptr_, &insertCopy);
+    *(v11 + 5) = HIDWORD(insertCopy);
+    self->mUnionedMergeRange = TSTCellRangeUnionCellRange(*&self->mUnionedMergeRange, insertCopy);
     return 1;
   }
 }
 
-- (BOOL)remove:(id)a3
+- (BOOL)remove:(id)remove
 {
-  v3 = a3;
-  v5 = ~a3.var0.var0;
-  v22 = a3;
+  removeCopy = remove;
+  v5 = ~remove.var0.var0;
+  removeCopy2 = remove;
   [(TSPObject *)self willModify];
-  if (!v5 || (*&v3 & 0xFF0000) == 0xFF0000 || !HIWORD(*&v3) || (*&v3 & 0xFFFF00000000) == 0)
+  if (!v5 || (*&removeCopy & 0xFF0000) == 0xFF0000 || !HIWORD(*&removeCopy) || (*&removeCopy & 0xFFFF00000000) == 0)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMergeRegionMap remove:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 217, @"can't remove an invalid merge range"}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 217, @"can't remove an invalid merge range"}];
   }
 
-  v20 = v3.var0.var0 + v3.var1.var1 - 1;
-  if (v20 >= v3.var0.var0)
+  v20 = removeCopy.var0.var0 + removeCopy.var1.var1 - 1;
+  if (v20 >= removeCopy.var0.var0)
   {
-    v18 = *&v3 >> 16;
-    v8 = *&v3.var1 + HIWORD(*&v3.var0) + 255;
-    var1 = v3.var0.var1;
+    v18 = *&removeCopy >> 16;
+    v8 = *&removeCopy.var1 + HIWORD(*&removeCopy.var0) + 255;
+    var1 = removeCopy.var0.var1;
     do
     {
       if (var1 <= v8)
@@ -372,13 +372,13 @@ LABEL_7:
         v9 = v18;
         do
         {
-          v21 = v3.var0.var0 | (v9 << 16);
+          v21 = removeCopy.var0.var0 | (v9 << 16);
           if (!std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&self->mCellIDToMergeRegionTopLeft.__table_.__bucket_list_.__ptr_, &v21))
           {
-            v10 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
             v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMergeRegionMap remove:]"];
             v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"];
-            [v10 handleFailureInFunction:v11 file:v12 lineNumber:222 description:{@"can't unmerge an already-unmerged cell: %@", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"(%hu, %hu)", BYTE2(v21), v21)}];
+            [currentHandler2 handleFailureInFunction:v11 file:v12 lineNumber:222 description:{@"can't unmerge an already-unmerged cell: %@", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"(%hu, %hu)", BYTE2(v21), v21)}];
           }
 
           std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::__erase_unique<TSUColumnRowCoordinate>(&self->mCellIDToMergeRegionTopLeft.__table_.__bucket_list_.__ptr_, &v21);
@@ -388,20 +388,20 @@ LABEL_7:
         while (v9 <= v8);
       }
 
-      ++*&v3.var0;
+      ++*&removeCopy.var0;
     }
 
-    while (v3.var0.var0 <= v20);
+    while (removeCopy.var0.var0 <= v20);
   }
 
-  if (!std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&self->mMergeRegionTopLeftToMergeRegionSize.__table_.__bucket_list_.__ptr_, &v22))
+  if (!std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&self->mMergeRegionTopLeftToMergeRegionSize.__table_.__bucket_list_.__ptr_, &removeCopy2))
   {
-    v13 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMergeRegionMap remove:]"];
-    [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 228, @"merge region to be deleted doesn't exist!"}];
+    [currentHandler3 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 228, @"merge region to be deleted doesn't exist!"}];
   }
 
-  std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::__erase_unique<TSUColumnRowCoordinate>(&self->mMergeRegionTopLeftToMergeRegionSize.__table_.__bucket_list_.__ptr_, &v22);
+  std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::__erase_unique<TSUColumnRowCoordinate>(&self->mMergeRegionTopLeftToMergeRegionSize.__table_.__bucket_list_.__ptr_, &removeCopy2);
   self->mUnionedMergeRange = 0xFFFFFFLL;
   next = self->mMergeRegionTopLeftToMergeRegionSize.__table_.__first_node_.__next_;
   if (next)
@@ -420,28 +420,28 @@ LABEL_7:
   return 1;
 }
 
-- ($AA9F29356CAB8C7531B71D0D1ACCC7CE)mergedRangeForCellID:(id)a3
+- ($AA9F29356CAB8C7531B71D0D1ACCC7CE)mergedRangeForCellID:(id)d
 {
-  v15 = a3;
-  v4 = std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&self->mCellIDToMergeRegionTopLeft.__table_.__bucket_list_.__ptr_, &v15);
+  dCopy = d;
+  v4 = std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&self->mCellIDToMergeRegionTopLeft.__table_.__bucket_list_.__ptr_, &dCopy);
   if (v4)
   {
     v14 = *(v4 + 5);
     v5 = std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&self->mMergeRegionTopLeftToMergeRegionSize.__table_.__bucket_list_.__ptr_, &v14);
     if (!v5)
     {
-      v6 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMergeRegionMap mergedRangeForCellID:]"];
-      [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 267, @"merge region map inconsistency found"}];
+      [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 267, @"merge region map inconsistency found"}];
     }
 
     v8 = *(v5 + 5);
     v9 = (v14 | (v8 << 32));
     if (v14 == 0xFFFF || (v14 & 0xFF0000) == 0xFF0000 || (v8 >= 0x10000 ? (v10 = v8 == 0) : (v10 = 1), v10))
     {
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMergeRegionMap mergedRangeForCellID:]"];
-      [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 269, @"merge region map inconsistency found"}];
+      [currentHandler2 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 269, @"merge region map inconsistency found"}];
     }
   }
 
@@ -453,41 +453,41 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)partiallyIntersectsCellRange:(id)a3
+- (BOOL)partiallyIntersectsCellRange:(id)range
 {
-  var0 = a3.var0;
+  var0 = range.var0;
   v4 = 0;
-  if (a3.var0.var0 == 0xFFFF)
+  if (range.var0.var0 == 0xFFFF)
   {
     return v4;
   }
 
-  if ((*&a3 & 0xFF0000) == 0xFF0000)
+  if ((*&range & 0xFF0000) == 0xFF0000)
   {
     return v4;
   }
 
   v4 = 0;
-  var1 = a3.var1.var1;
-  if (!a3.var1.var1 || (*&a3 & 0xFFFF00000000) == 0)
+  var1 = range.var1.var1;
+  if (!range.var1.var1 || (*&range & 0xFFFF00000000) == 0)
   {
     return v4;
   }
 
   p_mMergeRegionTopLeftToMergeRegionSize = &self->mMergeRegionTopLeftToMergeRegionSize;
-  v8 = a3.var1;
-  if (self->mMergeRegionTopLeftToMergeRegionSize.__table_.__size_ >= a3.var1.var0 * a3.var1.var1)
+  v8 = range.var1;
+  if (self->mMergeRegionTopLeftToMergeRegionSize.__table_.__size_ >= range.var1.var0 * range.var1.var1)
   {
-    v45 = a3.var0.var0 + a3.var1.var1 - 1;
-    if (v45 < a3.var0.var0)
+    v45 = range.var0.var0 + range.var1.var1 - 1;
+    if (v45 < range.var0.var0)
     {
       return 0;
     }
 
-    v43 = *&a3 >> 16;
-    v22 = LOBYTE(a3.var1.var0) + a3.var0.var1 - 1;
-    v42 = a3.var0.var1;
-    v44 = a3.var0.var0;
+    v43 = *&range >> 16;
+    v22 = LOBYTE(range.var1.var0) + range.var0.var1 - 1;
+    v42 = range.var0.var1;
+    v44 = range.var0.var0;
     while (v42 > v22)
     {
 LABEL_62:
@@ -521,10 +521,10 @@ LABEL_61:
     if (!v26)
     {
       v27 = v23;
-      v28 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMergeRegionMap partiallyIntersectsCellRange:]"];
       v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"];
-      v31 = v28;
+      v31 = currentHandler;
       v23 = v27;
       [v31 handleFailureInFunction:v29 file:v30 lineNumber:320 description:@"merge region map inconsistency found"];
     }
@@ -631,9 +631,9 @@ LABEL_31:
   v11 = var0.var0 + var1 - 1;
   while (1)
   {
-    v12 = [(TSTMergeRegionMapIterator *)v9 nextMergeRegion];
+    nextMergeRegion = [(TSTMergeRegionMapIterator *)v9 nextMergeRegion];
     v13 = 0;
-    if (v12 == 0xFFFF)
+    if (nextMergeRegion == 0xFFFF)
     {
 LABEL_26:
       v14 = 0xFFFFLL;
@@ -645,10 +645,10 @@ LABEL_26:
     v14 = 0xFFFFLL;
     v15 = 16711680;
     v16 = 0;
-    if ((v12 & 0xFF0000) != 0xFF0000)
+    if ((nextMergeRegion & 0xFF0000) != 0xFF0000)
     {
       v13 = 0;
-      if (!HIWORD(v12))
+      if (!HIWORD(nextMergeRegion))
       {
         goto LABEL_26;
       }
@@ -656,43 +656,43 @@ LABEL_26:
       v14 = 0xFFFFLL;
       v15 = 16711680;
       v16 = 0;
-      if ((v12 & 0xFFFF00000000) != 0)
+      if ((nextMergeRegion & 0xFFFF00000000) != 0)
       {
         v14 = 0;
         v17 = var0.var1;
-        if (BYTE2(v12) > var0.var1)
+        if (BYTE2(nextMergeRegion) > var0.var1)
         {
-          v17 = BYTE2(v12);
+          v17 = BYTE2(nextMergeRegion);
         }
 
-        if (v12 <= var0.var0)
+        if (nextMergeRegion <= var0.var0)
         {
           v18 = var0.var0;
         }
 
         else
         {
-          v18 = v12;
+          v18 = nextMergeRegion;
         }
 
-        if ((BYTE4(v12) + BYTE2(v12) - 1) >= v10)
+        if ((BYTE4(nextMergeRegion) + BYTE2(nextMergeRegion) - 1) >= v10)
         {
           v19 = v10;
         }
 
         else
         {
-          v19 = (BYTE4(v12) + BYTE2(v12) - 1);
+          v19 = (BYTE4(nextMergeRegion) + BYTE2(nextMergeRegion) - 1);
         }
 
-        if ((v12 + HIWORD(v12) - 1) >= v11)
+        if ((nextMergeRegion + HIWORD(nextMergeRegion) - 1) >= v11)
         {
           v20 = v11;
         }
 
         else
         {
-          v20 = (v12 + HIWORD(v12) - 1);
+          v20 = (nextMergeRegion + HIWORD(nextMergeRegion) - 1);
         }
 
         v15 = 0;
@@ -712,7 +712,7 @@ LABEL_27:
     if (HIWORD(v16))
     {
       v21 = v15 | v14 | v13 | v16;
-      if ((v21 & 0xFFFF00000000) != 0 && ((v21 ^ v12) & 0xFFFFFFFF00FFFFFFLL) != 0)
+      if ((v21 & 0xFFFF00000000) != 0 && ((v21 ^ nextMergeRegion) & 0xFFFFFFFF00FFFFFFLL) != 0)
       {
         break;
       }
@@ -730,25 +730,25 @@ LABEL_32:
   return v4;
 }
 
-- (BOOL)partiallyIntersectsCellRegion:(id)a3
+- (BOOL)partiallyIntersectsCellRegion:(id)region
 {
-  if (!a3)
+  if (!region)
   {
     return 0;
   }
 
-  if ([a3 isEmpty])
+  if ([region isEmpty])
   {
     return 0;
   }
 
   size = self->mMergeRegionTopLeftToMergeRegionSize.__table_.__size_;
-  if (size < [a3 cellCount])
+  if (size < [region cellCount])
   {
     v6 = [[TSTMergeRegionMapIterator alloc] initWithMergeRegionMap:self];
     while ([(TSTMergeRegionMapIterator *)v6 hasNextMergeRegion])
     {
-      if ([a3 partiallyIntersectsCellRange:{-[TSTMergeRegionMapIterator nextMergeRegion](v6, "nextMergeRegion")}])
+      if ([region partiallyIntersectsCellRange:{-[TSTMergeRegionMapIterator nextMergeRegion](v6, "nextMergeRegion")}])
       {
 
         return 1;
@@ -758,7 +758,7 @@ LABEL_32:
     return 0;
   }
 
-  v8 = [objc_msgSend(a3 "iterator")];
+  v8 = [objc_msgSend(region "iterator")];
   v14 = v8;
   if (v8 == 0xFFFF || (*&v8 & 0xFF0000) == 0xFF0000)
   {
@@ -774,12 +774,12 @@ LABEL_32:
       v10 = std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&self->mMergeRegionTopLeftToMergeRegionSize.__table_.__bucket_list_.__ptr_, &v13);
       if (!v10)
       {
-        v11 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMergeRegionMap partiallyIntersectsCellRegion:]"];
-        [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 381, @"merge region map inconsistency found"}];
+        [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 381, @"merge region map inconsistency found"}];
       }
 
-      if (![a3 containsCellRange:v13 | (*(v10 + 5) << 32)])
+      if (![region containsCellRange:v13 | (*(v10 + 5) << 32)])
       {
         break;
       }
@@ -794,9 +794,9 @@ LABEL_32:
   return 1;
 }
 
-- (BOOL)find:(id)a3
+- (BOOL)find:(id)find
 {
-  v14 = a3;
+  findCopy = find;
   mUnionedMergeRange = self->mUnionedMergeRange;
   if (HIWORD(*&mUnionedMergeRange))
   {
@@ -813,41 +813,41 @@ LABEL_32:
     goto LABEL_6;
   }
 
-  v5 = self;
+  selfCopy = self;
   LOBYTE(self) = 0;
-  if (!a3.var1.var1 || (*&a3 & 0xFFFF00000000) == 0)
+  if (!find.var1.var1 || (*&find & 0xFFFF00000000) == 0)
   {
     return self;
   }
 
-  if (mUnionedMergeRange.origin.row > a3.var0.var0 || (v6 = mUnionedMergeRange.origin.row + mUnionedMergeRange.size.numberOfRows - 1, v6 < a3.var0.var0) || a3.var0.var1 < mUnionedMergeRange.origin.column || (v7 = (LOBYTE(mUnionedMergeRange.size.numberOfColumns) + mUnionedMergeRange.origin.column - 1), v7 < a3.var0.var1) || v7 < (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1) || v6 < (a3.var0.var0 + a3.var1.var1 - 1))
+  if (mUnionedMergeRange.origin.row > find.var0.var0 || (v6 = mUnionedMergeRange.origin.row + mUnionedMergeRange.size.numberOfRows - 1, v6 < find.var0.var0) || find.var0.var1 < mUnionedMergeRange.origin.column || (v7 = (LOBYTE(mUnionedMergeRange.size.numberOfColumns) + mUnionedMergeRange.origin.column - 1), v7 < find.var0.var1) || v7 < (LOBYTE(find.var1.var0) + find.var0.var1 - 1) || v6 < (find.var0.var0 + find.var1.var1 - 1))
   {
 LABEL_6:
     LOBYTE(self) = 0;
     return self;
   }
 
-  self = std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&v5->mCellIDToMergeRegionTopLeft.__table_.__bucket_list_.__ptr_, &v14);
+  self = std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&selfCopy->mCellIDToMergeRegionTopLeft.__table_.__bucket_list_.__ptr_, &findCopy);
   if (self)
   {
     modifyObjectToken_high = HIDWORD(self->super._modifyObjectToken);
-    v8 = std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&v5->mMergeRegionTopLeftToMergeRegionSize.__table_.__bucket_list_.__ptr_, &modifyObjectToken_high);
+    v8 = std::__hash_table<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::__unordered_map_hasher<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,TSTCellIDHasher,std::equal_to<TSUColumnRowCoordinate>,true>,std::__unordered_map_equal<TSUColumnRowCoordinate,std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>,std::equal_to<TSUColumnRowCoordinate>,TSTCellIDHasher,true>,std::allocator<std::__hash_value_type<TSUColumnRowCoordinate,TSUColumnRowCoordinate>>>::find<TSUColumnRowCoordinate>(&selfCopy->mMergeRegionTopLeftToMergeRegionSize.__table_.__bucket_list_.__ptr_, &modifyObjectToken_high);
     if (!v8)
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMergeRegionMap find:]"];
-      [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 413, @"merge region map inconsistency found"}];
+      [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMergeRegionMap.mm"), 413, @"merge region map inconsistency found"}];
     }
 
-    LOBYTE(self) = *(v8 + 11) == v14.var1.var1 && *(v8 + 10) == v14.var1.var0;
+    LOBYTE(self) = *(v8 + 11) == findCopy.var1.var1 && *(v8 + 10) == findCopy.var1.var0;
   }
 
   return self;
 }
 
-- (id)mergedGridIndicesForDimension:(int)a3
+- (id)mergedGridIndicesForDimension:(int)dimension
 {
-  if (!a3)
+  if (!dimension)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCAB58]);
     v5 = [[TSTMergeRegionMapIterator alloc] initWithMergeRegionMap:self];
@@ -855,8 +855,8 @@ LABEL_6:
     {
       do
       {
-        v7 = [(TSTMergeRegionMapIterator *)v5 nextMergeRegion];
-        [v4 addIndexesInRange:{v7 + 1, HIWORD(v7) - 1}];
+        nextMergeRegion = [(TSTMergeRegionMapIterator *)v5 nextMergeRegion];
+        [v4 addIndexesInRange:{nextMergeRegion + 1, HIWORD(nextMergeRegion) - 1}];
       }
 
       while ([(TSTMergeRegionMapIterator *)v5 hasNextMergeRegion]);
@@ -865,7 +865,7 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (a3 == 1)
+  if (dimension == 1)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCAB58]);
     v5 = [[TSTMergeRegionMapIterator alloc] initWithMergeRegionMap:self];
@@ -873,8 +873,8 @@ LABEL_6:
     {
       do
       {
-        v6 = [(TSTMergeRegionMapIterator *)v5 nextMergeRegion];
-        [v4 addIndexesInRange:{BYTE2(v6) + 1, WORD2(v6) - 1}];
+        nextMergeRegion2 = [(TSTMergeRegionMapIterator *)v5 nextMergeRegion];
+        [v4 addIndexesInRange:{BYTE2(nextMergeRegion2) + 1, WORD2(nextMergeRegion2) - 1}];
       }
 
       while ([(TSTMergeRegionMapIterator *)v5 hasNextMergeRegion]);
@@ -893,14 +893,14 @@ LABEL_10:
 
 - (BOOL)hasRangeSpanningRows
 {
-  v2 = [(TSTMergeRegionMap *)self iterator];
+  iterator = [(TSTMergeRegionMap *)self iterator];
   do
   {
-    v3 = [v2 hasNextMergeRegion];
+    hasNextMergeRegion = [iterator hasNextMergeRegion];
   }
 
-  while (v3 && !([v2 nextMergeRegion] >> 49));
-  return v3;
+  while (hasNextMergeRegion && !([iterator nextMergeRegion] >> 49));
+  return hasNextMergeRegion;
 }
 
 - (id).cxx_construct

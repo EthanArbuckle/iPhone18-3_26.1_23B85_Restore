@@ -1,76 +1,76 @@
 @interface NEHasher
-+ (id)hashObject:(id)a3;
-+ (id)hashObject:(id)a3 withClassPrefixWhitelist:(id)a4;
-- (BOOL)decodeBoolForKey:(id)a3;
++ (id)hashObject:(id)object;
++ (id)hashObject:(id)object withClassPrefixWhitelist:(id)whitelist;
+- (BOOL)decodeBoolForKey:(id)key;
 - (NEHasher)init;
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4;
-- (double)decodeDoubleForKey:(id)a3;
-- (float)decodeFloatForKey:(id)a3;
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length;
+- (double)decodeDoubleForKey:(id)key;
+- (float)decodeFloatForKey:(id)key;
 - (id)decodeDataObject;
 - (id)finishHashing;
-- (int)decodeInt32ForKey:(id)a3;
-- (int)decodeIntForKey:(id)a3;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (int64_t)decodeIntegerForKey:(id)a3;
+- (int)decodeInt32ForKey:(id)key;
+- (int)decodeIntForKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (int64_t)decodeIntegerForKey:(id)key;
 - (void)dealloc;
-- (void)decodeValueOfObjCType:(const char *)a3 at:(void *)a4;
-- (void)encodeBytes:(const void *)a3 length:(unint64_t)a4;
-- (void)encodeDataObject:(id)a3;
-- (void)encodeValueOfObjCType:(const char *)a3 at:(const void *)a4;
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)at;
+- (void)encodeBytes:(const void *)bytes length:(unint64_t)length;
+- (void)encodeDataObject:(id)object;
+- (void)encodeValueOfObjCType:(const char *)type at:(const void *)at;
 @end
 
 @implementation NEHasher
 
-- (int)decodeIntForKey:(id)a3
+- (int)decodeIntForKey:(id)key
 {
   v4 = 0;
   [(NEHasher *)self decodeValueOfObjCType:"i" at:&v4 size:4];
   return v4;
 }
 
-- (int64_t)decodeIntegerForKey:(id)a3
+- (int64_t)decodeIntegerForKey:(id)key
 {
   v4 = 0;
   [(NEHasher *)self decodeValueOfObjCType:"q" at:&v4 size:8];
   return v4;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
   v4 = 0;
   [(NEHasher *)self decodeValueOfObjCType:"q" at:&v4 size:8];
   return v4;
 }
 
-- (int)decodeInt32ForKey:(id)a3
+- (int)decodeInt32ForKey:(id)key
 {
   v4 = 0;
   [(NEHasher *)self decodeValueOfObjCType:"i" at:&v4 size:4];
   return v4;
 }
 
-- (float)decodeFloatForKey:(id)a3
+- (float)decodeFloatForKey:(id)key
 {
   v4 = 0.0;
   [(NEHasher *)self decodeValueOfObjCType:"f" at:&v4 size:4];
   return v4;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
   v4 = 0.0;
   [(NEHasher *)self decodeValueOfObjCType:"d" at:&v4 size:8];
   return v4;
 }
 
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length
 {
-  v5 = self;
+  selfCopy = self;
 
-  return [(NEHasher *)v5 decodeBytesWithReturnedLength:a4];
+  return [(NEHasher *)selfCopy decodeBytesWithReturnedLength:length];
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
   v4 = 0;
   [(NEHasher *)self decodeValueOfObjCType:"B" at:&v4 size:1];
@@ -83,32 +83,32 @@
   objc_exception_throw(v2);
 }
 
-- (void)decodeValueOfObjCType:(const char *)a3 at:(void *)a4
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)at
 {
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:@"NEHasherInvalidOperationException" reason:@"NEHasher cannot be used as a decoder" userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (void)encodeBytes:(const void *)a3 length:(unint64_t)a4
+- (void)encodeBytes:(const void *)bytes length:(unint64_t)length
 {
-  if (a3 && a4)
+  if (bytes && length)
   {
     if (self)
     {
       self = self->_sha1Context;
     }
 
-    CC_SHA1_Update(self, a3, a4);
+    CC_SHA1_Update(self, bytes, length);
   }
 }
 
-- (void)encodeDataObject:(id)a3
+- (void)encodeDataObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v6 = v4;
-    if ([v4 length])
+    v6 = objectCopy;
+    if ([objectCopy length])
     {
       if (self)
       {
@@ -123,16 +123,16 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)encodeValueOfObjCType:(const char *)a3 at:(const void *)a4
+- (void)encodeValueOfObjCType:(const char *)type at:(const void *)at
 {
   v69 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!at)
   {
     goto LABEL_60;
   }
 
-  v5 = self;
-  v6 = *a3;
+  selfCopy = self;
+  v6 = *type;
   v7 = 1;
   if (v6 > 98)
   {
@@ -194,7 +194,7 @@ LABEL_44:
   {
     if (v6 == 64)
     {
-      v8 = *a4;
+      v8 = *at;
       v9 = v8;
       if (!v8)
       {
@@ -271,7 +271,7 @@ LABEL_60:
               }
 
               v21 = [v10 objectForKeyedSubscript:*(*(&v56 + 1) + 8 * j)];
-              [(NEHasher *)v5 encodeObject:v21];
+              [(NEHasher *)selfCopy encodeObject:v21];
             }
 
             v18 = [v16 countByEnumeratingWithState:&v56 objects:v67 count:16];
@@ -307,7 +307,7 @@ LABEL_57:
                 objc_enumerationMutation(v10);
               }
 
-              [(NEHasher *)v5 encodeObject:*(*(&v52 + 1) + 8 * k)];
+              [(NEHasher *)selfCopy encodeObject:*(*(&v52 + 1) + 8 * k)];
             }
 
             v26 = [v10 countByEnumeratingWithState:&v52 objects:v66 count:16];
@@ -323,17 +323,17 @@ LABEL_58:
 
       if (isa_nsdata(v9))
       {
-        [(NEHasher *)v5 encodeDataObject:v9];
+        [(NEHasher *)selfCopy encodeDataObject:v9];
         goto LABEL_59;
       }
 
       if (isa_nsstring(v9))
       {
-        v30 = [v9 UTF8String];
-        if (v5)
+        uTF8String = [v9 UTF8String];
+        if (selfCopy)
         {
 LABEL_65:
-          v5 = v5->_sha1Context;
+          selfCopy = selfCopy->_sha1Context;
         }
       }
 
@@ -343,9 +343,9 @@ LABEL_65:
         {
           [v9 doubleValue];
           *buf = v34;
-          if (v5)
+          if (selfCopy)
           {
-            sha1Context = v5->_sha1Context;
+            sha1Context = selfCopy->_sha1Context;
           }
 
           else
@@ -362,9 +362,9 @@ LABEL_65:
         {
           *buf = 0uLL;
           [v9 getUUIDBytes:buf];
-          if (v5)
+          if (selfCopy)
           {
-            sha1Context = v5->_sha1Context;
+            sha1Context = selfCopy->_sha1Context;
           }
 
           else
@@ -381,14 +381,14 @@ LABEL_65:
         {
           if (isa_neclass())
           {
-            [v9 encodeWithCoder:v5];
+            [v9 encodeWithCoder:selfCopy];
           }
 
           else
           {
-            if (v5)
+            if (selfCopy)
             {
-              Property = objc_getProperty(v5, v36, 16, 1);
+              Property = objc_getProperty(selfCopy, v36, 16, 1);
             }
 
             else
@@ -404,9 +404,9 @@ LABEL_65:
               v49 = 0u;
               v50 = 0u;
               v51 = 0u;
-              if (v5)
+              if (selfCopy)
               {
-                v40 = objc_getProperty(v5, v39, 16, 1);
+                v40 = objc_getProperty(selfCopy, v39, 16, 1);
               }
 
               else
@@ -431,7 +431,7 @@ LABEL_65:
 
                     if ([v10 hasPrefix:{*(*(&v48 + 1) + 8 * m), v48}])
                     {
-                      [v9 encodeWithCoder:v5];
+                      [v9 encodeWithCoder:selfCopy];
                       goto LABEL_57;
                     }
                   }
@@ -461,18 +461,18 @@ LABEL_65:
           goto LABEL_59;
         }
 
-        v35 = [v9 absoluteString];
-        v30 = [v35 UTF8String];
+        absoluteString = [v9 absoluteString];
+        uTF8String = [absoluteString UTF8String];
 
-        if (v5)
+        if (selfCopy)
         {
           goto LABEL_65;
         }
       }
 
-      v31 = strlen(v30);
-      sha1Context = v5;
-      v33 = v30;
+      v31 = strlen(uTF8String);
+      sha1Context = selfCopy;
+      v33 = uTF8String;
 LABEL_75:
       CC_SHA1_Update(sha1Context, v33, v31);
       goto LABEL_59;
@@ -483,7 +483,7 @@ LABEL_32:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315138;
-      *&buf[4] = a3;
+      *&buf[4] = type;
       _os_log_debug_impl(&dword_1BA83C000, v22, OS_LOG_TYPE_DEBUG, "Not hashing value with type %s", buf, 0xCu);
     }
 
@@ -501,7 +501,7 @@ LABEL_39:
 LABEL_40:
   v24 = *MEMORY[0x1E69E9840];
 
-  CC_SHA1_Update(v23, a4, v7);
+  CC_SHA1_Update(v23, at, v7);
 }
 
 - (void)dealloc
@@ -535,37 +535,37 @@ LABEL_40:
   return v2;
 }
 
-+ (id)hashObject:(id)a3 withClassPrefixWhitelist:(id)a4
++ (id)hashObject:(id)object withClassPrefixWhitelist:(id)whitelist
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  whitelistCopy = whitelist;
   v7 = objc_alloc_init(NEHasher);
   v9 = v7;
   if (v7)
   {
-    objc_setProperty_atomic(v7, v8, v6, 16);
-    [(NEHasher *)v9 encodeRootObject:v5];
-    v10 = [(NEHasher *)v9 finishHashing];
+    objc_setProperty_atomic(v7, v8, whitelistCopy, 16);
+    [(NEHasher *)v9 encodeRootObject:objectCopy];
+    finishHashing = [(NEHasher *)v9 finishHashing];
   }
 
   else
   {
-    [0 encodeRootObject:v5];
-    v10 = 0;
+    [0 encodeRootObject:objectCopy];
+    finishHashing = 0;
   }
 
-  return v10;
+  return finishHashing;
 }
 
 - (id)finishHashing
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a1 && (v2 = *(a1 + 8)) != 0)
+  if (self && (v2 = *(self + 8)) != 0)
   {
     CC_SHA1_Final(md, v2);
     v3 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:20];
-    free(*(a1 + 8));
-    *(a1 + 8) = 0;
+    free(*(self + 8));
+    *(self + 8) = 0;
   }
 
   else
@@ -578,15 +578,15 @@ LABEL_40:
   return v3;
 }
 
-+ (id)hashObject:(id)a3
++ (id)hashObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_alloc_init(NEHasher);
-  [(NEHasher *)v4 encodeRootObject:v3];
+  [(NEHasher *)v4 encodeRootObject:objectCopy];
 
-  v5 = [(NEHasher *)v4 finishHashing];
+  finishHashing = [(NEHasher *)v4 finishHashing];
 
-  return v5;
+  return finishHashing;
 }
 
 @end

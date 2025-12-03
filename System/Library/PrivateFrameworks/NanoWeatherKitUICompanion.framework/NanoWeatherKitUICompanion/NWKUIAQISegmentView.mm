@@ -1,25 +1,25 @@
 @interface NWKUIAQISegmentView
-- (NWKUIAQISegmentView)initWithColor:(id)a3 active:(BOOL)a4 mode:(unint64_t)a5;
+- (NWKUIAQISegmentView)initWithColor:(id)color active:(BOOL)active mode:(unint64_t)mode;
 - (void)layoutSubviews;
 @end
 
 @implementation NWKUIAQISegmentView
 
-- (NWKUIAQISegmentView)initWithColor:(id)a3 active:(BOOL)a4 mode:(unint64_t)a5
+- (NWKUIAQISegmentView)initWithColor:(id)color active:(BOOL)active mode:(unint64_t)mode
 {
-  v6 = a4;
-  v9 = a3;
+  activeCopy = active;
+  colorCopy = color;
   v23.receiver = self;
   v23.super_class = NWKUIAQISegmentView;
   v10 = [(NWKUIAQISegmentView *)&v23 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_color, a3);
-    v11->_active = v6;
-    v11->_mode = a5;
+    objc_storeStrong(&v10->_color, color);
+    v11->_active = activeCopy;
+    v11->_mode = mode;
     v12 = 0.3;
-    if (v6)
+    if (activeCopy)
     {
       v12 = 1.0;
     }
@@ -27,12 +27,12 @@
     [(NWKUIAQISegmentView *)v11 setAlpha:v12];
     v13 = 15;
     v14 = 3;
-    if (a5 == 2)
+    if (mode == 2)
     {
       v13 = 3;
     }
 
-    if (a5)
+    if (mode)
     {
       v15 = v13;
     }
@@ -44,25 +44,25 @@
 
     v16 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     [v16 setAnchorPoint:{0.0, 0.0}];
-    [v16 setBackgroundColor:{objc_msgSend(v9, "CGColor")}];
+    [v16 setBackgroundColor:{objc_msgSend(colorCopy, "CGColor")}];
     v17 = *MEMORY[0x277CDA138];
     [v16 setCornerCurve:*MEMORY[0x277CDA138]];
     [v16 setCornerRadius:2.0];
     [v16 setMaskedCorners:v15];
-    v18 = [(NWKUIAQISegmentView *)v11 layer];
-    [v18 addSublayer:v16];
+    layer = [(NWKUIAQISegmentView *)v11 layer];
+    [layer addSublayer:v16];
 
     objc_storeStrong(&v11->_bodyLayer, v16);
-    if (a5)
+    if (mode)
     {
-      if (a5 == 1)
+      if (mode == 1)
       {
 LABEL_15:
 
         goto LABEL_16;
       }
 
-      if (a5 == 2)
+      if (mode == 2)
       {
         v14 = 12;
       }
@@ -75,11 +75,11 @@ LABEL_15:
 
     v19 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     [(CALayer *)v19 setAnchorPoint:0.0, 0.0];
-    -[CALayer setBackgroundColor:](v19, "setBackgroundColor:", [v9 CGColor]);
+    -[CALayer setBackgroundColor:](v19, "setBackgroundColor:", [colorCopy CGColor]);
     [(CALayer *)v19 setCornerCurve:v17];
     [(CALayer *)v19 setMaskedCorners:v14];
-    v20 = [(NWKUIAQISegmentView *)v11 layer];
-    [v20 addSublayer:v19];
+    layer2 = [(NWKUIAQISegmentView *)v11 layer];
+    [layer2 addSublayer:v19];
 
     capLayer = v11->_capLayer;
     v11->_capLayer = v19;
@@ -109,9 +109,9 @@ LABEL_16:
   {
     self->_lastLayoutHeight = v8;
     v18 = floor(v8 * 0.75 + v8 * 0.75 + 0.5) * 0.5;
-    v9 = [(NWKUIAQISegmentView *)self mode];
+    mode = [(NWKUIAQISegmentView *)self mode];
     v19 = v7;
-    if (v9 == 2)
+    if (mode == 2)
     {
       v10 = v8 - v18;
       v11 = 0.0;
@@ -124,7 +124,7 @@ LABEL_16:
       v7 = width;
       v11 = y;
       v12 = x;
-      if (!v9)
+      if (!mode)
       {
         v7 = v19;
         v10 = v8 - v18;
@@ -142,8 +142,8 @@ LABEL_16:
     [MEMORY[0x277CD9FF0] commit];
     if (self->_capLayer)
     {
-      v15 = [(NWKUIAQISegmentView *)self mode];
-      if (v15 == 2)
+      mode2 = [(NWKUIAQISegmentView *)self mode];
+      if (mode2 == 2)
       {
         height = v18;
         y = v8 - v18;
@@ -151,7 +151,7 @@ LABEL_16:
         width = v19;
       }
 
-      else if (!v15)
+      else if (!mode2)
       {
         x = 0.0;
         y = 0.0;

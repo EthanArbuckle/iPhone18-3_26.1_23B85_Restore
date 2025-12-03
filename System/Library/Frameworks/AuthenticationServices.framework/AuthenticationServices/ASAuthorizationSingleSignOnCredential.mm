@@ -1,17 +1,17 @@
 @interface ASAuthorizationSingleSignOnCredential
 + (id)emptyCredential;
 - (ASAuthorizationSingleSignOnCredential)init;
-- (ASAuthorizationSingleSignOnCredential)initWithAuthenticatedResponse:(id)a3;
-- (ASAuthorizationSingleSignOnCredential)initWithAuthenticatedResponse:(id)a3 privateKeys:(id)a4;
+- (ASAuthorizationSingleSignOnCredential)initWithAuthenticatedResponse:(id)response;
+- (ASAuthorizationSingleSignOnCredential)initWithAuthenticatedResponse:(id)response privateKeys:(id)keys;
 - (NSString)description;
-- (void)_initWithAuthenticatedResponse:(id)a3;
+- (void)_initWithAuthenticatedResponse:(id)response;
 @end
 
 @implementation ASAuthorizationSingleSignOnCredential
 
 + (id)emptyCredential
 {
-  v2 = [[a1 alloc] initWithAuthenticatedResponse:0];
+  v2 = [[self alloc] initWithAuthenticatedResponse:0];
 
   return v2;
 }
@@ -23,21 +23,21 @@
   return 0;
 }
 
-- (ASAuthorizationSingleSignOnCredential)initWithAuthenticatedResponse:(id)a3
+- (ASAuthorizationSingleSignOnCredential)initWithAuthenticatedResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v10.receiver = self;
   v10.super_class = ASAuthorizationSingleSignOnCredential;
   v5 = [(ASAuthorizationSingleSignOnCredential *)&v10 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     privateKeys = v5->_privateKeys;
-    v5->_privateKeys = v6;
+    v5->_privateKeys = array;
 
-    if (v4)
+    if (responseCopy)
     {
-      [(ASAuthorizationSingleSignOnCredential *)v5 _initWithAuthenticatedResponse:v4];
+      [(ASAuthorizationSingleSignOnCredential *)v5 _initWithAuthenticatedResponse:responseCopy];
     }
 
     v8 = v5;
@@ -46,31 +46,31 @@
   return v5;
 }
 
-- (ASAuthorizationSingleSignOnCredential)initWithAuthenticatedResponse:(id)a3 privateKeys:(id)a4
+- (ASAuthorizationSingleSignOnCredential)initWithAuthenticatedResponse:(id)response privateKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  keysCopy = keys;
   v13.receiver = self;
   v13.super_class = ASAuthorizationSingleSignOnCredential;
   v8 = [(ASAuthorizationSingleSignOnCredential *)&v13 init];
   if (v8)
   {
-    if (v7)
+    if (keysCopy)
     {
-      v9 = v7;
+      array = keysCopy;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
     privateKeys = v8->_privateKeys;
-    v8->_privateKeys = v9;
+    v8->_privateKeys = array;
 
-    if (v6)
+    if (responseCopy)
     {
-      [(ASAuthorizationSingleSignOnCredential *)v8 _initWithAuthenticatedResponse:v6];
+      [(ASAuthorizationSingleSignOnCredential *)v8 _initWithAuthenticatedResponse:responseCopy];
     }
 
     v11 = v8;
@@ -79,17 +79,17 @@
   return v8;
 }
 
-- (void)_initWithAuthenticatedResponse:(id)a3
+- (void)_initWithAuthenticatedResponse:(id)response
 {
-  objc_storeStrong(&self->_authenticatedResponse, a3);
-  v5 = a3;
-  v6 = [v5 allHeaderFields];
+  objc_storeStrong(&self->_authenticatedResponse, response);
+  responseCopy = response;
+  allHeaderFields = [responseCopy allHeaderFields];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__ASAuthorizationSingleSignOnCredential__initWithAuthenticatedResponse___block_invoke;
   v7[3] = &unk_1E7AF8A10;
   v7[4] = self;
-  [v6 enumerateKeysAndObjectsUsingBlock:v7];
+  [allHeaderFields enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __72__ASAuthorizationSingleSignOnCredential__initWithAuthenticatedResponse___block_invoke(uint64_t a1, void *a2, void *a3)

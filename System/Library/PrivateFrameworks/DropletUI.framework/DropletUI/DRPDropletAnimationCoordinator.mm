@@ -1,36 +1,36 @@
 @interface DRPDropletAnimationCoordinator
 - (DRPDropletAnimationCoordinator)init;
 - (UIViewSpringAnimationBehaviorDescribing)defaultBehaviorSettings;
-- (void)applyViewConfiguration:(id)a3 animated:(BOOL)a4 tracking:(BOOL)a5 containerView:(id)a6 contextView:(id)a7;
-- (void)setDefaultBehaviorSettings:(id)a3;
+- (void)applyViewConfiguration:(id)configuration animated:(BOOL)animated tracking:(BOOL)tracking containerView:(id)view contextView:(id)contextView;
+- (void)setDefaultBehaviorSettings:(id)settings;
 @end
 
 @implementation DRPDropletAnimationCoordinator
 
 - (UIViewSpringAnimationBehaviorDescribing)defaultBehaviorSettings
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DRPDropletAnimationCoordinator.defaultBehaviorSettings.getter();
 
   return v3;
 }
 
-- (void)setDefaultBehaviorSettings:(id)a3
+- (void)setDefaultBehaviorSettings:(id)settings
 {
   v3 = *(&self->super.isa + OBJC_IVAR___DRPDropletAnimationCoordinator____lazy_storage___defaultBehaviorSettings);
-  *(&self->super.isa + OBJC_IVAR___DRPDropletAnimationCoordinator____lazy_storage___defaultBehaviorSettings) = a3;
+  *(&self->super.isa + OBJC_IVAR___DRPDropletAnimationCoordinator____lazy_storage___defaultBehaviorSettings) = settings;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)applyViewConfiguration:(id)a3 animated:(BOOL)a4 tracking:(BOOL)a5 containerView:(id)a6 contextView:(id)a7
+- (void)applyViewConfiguration:(id)configuration animated:(BOOL)animated tracking:(BOOL)tracking containerView:(id)view contextView:(id)contextView
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = self;
-  DRPDropletAnimationCoordinator.apply(_:animated:tracking:containerView:contextView:)(v12, a4, a5, v13, v14);
+  configurationCopy = configuration;
+  viewCopy = view;
+  contextViewCopy = contextView;
+  selfCopy = self;
+  DRPDropletAnimationCoordinator.apply(_:animated:tracking:containerView:contextView:)(configurationCopy, animated, tracking, viewCopy, contextViewCopy);
 }
 
 - (DRPDropletAnimationCoordinator)init

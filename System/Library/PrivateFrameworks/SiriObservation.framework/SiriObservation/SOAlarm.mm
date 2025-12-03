@@ -1,72 +1,72 @@
 @interface SOAlarm
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SOAlarm)initWithAlarmID:(id)a3 alarmURL:(id)a4 title:(id)a5 hour:(unint64_t)a6 minute:(unint64_t)a7 repeatSchedule:(unint64_t)a8 isEnabled:(BOOL)a9 isFiring:(BOOL)a10;
-- (SOAlarm)initWithBuilder:(id)a3;
-- (SOAlarm)initWithCoder:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SOAlarm)initWithAlarmID:(id)d alarmURL:(id)l title:(id)title hour:(unint64_t)hour minute:(unint64_t)minute repeatSchedule:(unint64_t)schedule isEnabled:(BOOL)enabled isFiring:(BOOL)self0;
+- (SOAlarm)initWithBuilder:(id)builder;
+- (SOAlarm)initWithCoder:(id)coder;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SOAlarm
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   alarmID = self->_alarmID;
-  v5 = a3;
-  [v5 encodeObject:alarmID forKey:@"SOAlarm::alarmID"];
-  [v5 encodeObject:self->_alarmURL forKey:@"SOAlarm::alarmURL"];
-  [v5 encodeObject:self->_title forKey:@"SOAlarm::title"];
+  coderCopy = coder;
+  [coderCopy encodeObject:alarmID forKey:@"SOAlarm::alarmID"];
+  [coderCopy encodeObject:self->_alarmURL forKey:@"SOAlarm::alarmURL"];
+  [coderCopy encodeObject:self->_title forKey:@"SOAlarm::title"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_hour];
-  [v5 encodeObject:v6 forKey:@"SOAlarm::hour"];
+  [coderCopy encodeObject:v6 forKey:@"SOAlarm::hour"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_minute];
-  [v5 encodeObject:v7 forKey:@"SOAlarm::minute"];
+  [coderCopy encodeObject:v7 forKey:@"SOAlarm::minute"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_repeatSchedule];
-  [v5 encodeObject:v8 forKey:@"SOAlarm::repeatSchedule"];
+  [coderCopy encodeObject:v8 forKey:@"SOAlarm::repeatSchedule"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_isEnabled];
-  [v5 encodeObject:v9 forKey:@"SOAlarm::isEnabled"];
+  [coderCopy encodeObject:v9 forKey:@"SOAlarm::isEnabled"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_isFiring];
-  [v5 encodeObject:v10 forKey:@"SOAlarm::isFiring"];
+  [coderCopy encodeObject:v10 forKey:@"SOAlarm::isFiring"];
 }
 
-- (SOAlarm)initWithCoder:(id)a3
+- (SOAlarm)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::alarmID"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::alarmURL"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::title"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::hour"];
-  v8 = [v7 unsignedIntegerValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::alarmID"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::alarmURL"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::title"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::hour"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::minute"];
-  v10 = [v9 unsignedIntegerValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::minute"];
+  unsignedIntegerValue2 = [v9 unsignedIntegerValue];
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::repeatSchedule"];
-  v12 = [v11 unsignedIntegerValue];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::repeatSchedule"];
+  unsignedIntegerValue3 = [v11 unsignedIntegerValue];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::isEnabled"];
-  v14 = [v13 BOOLValue];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::isEnabled"];
+  bOOLValue = [v13 BOOLValue];
 
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::isFiring"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOAlarm::isFiring"];
 
-  LOBYTE(v3) = [v15 BOOLValue];
-  BYTE1(v18) = v3;
-  LOBYTE(v18) = v14;
-  v16 = [(SOAlarm *)self initWithAlarmID:v4 alarmURL:v5 title:v6 hour:v8 minute:v10 repeatSchedule:v12 isEnabled:v18 isFiring:?];
+  LOBYTE(coderCopy) = [v15 BOOLValue];
+  BYTE1(v18) = coderCopy;
+  LOBYTE(v18) = bOOLValue;
+  v16 = [(SOAlarm *)self initWithAlarmID:v4 alarmURL:v5 title:v6 hour:unsignedIntegerValue minute:unsignedIntegerValue2 repeatSchedule:unsignedIntegerValue3 isEnabled:v18 isFiring:?];
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
@@ -76,21 +76,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       hour = self->_hour;
       if (hour == [(SOAlarm *)v5 hour]&& (minute = self->_minute, minute == [(SOAlarm *)v5 minute]) && (repeatSchedule = self->_repeatSchedule, repeatSchedule == [(SOAlarm *)v5 repeatSchedule]) && (isEnabled = self->_isEnabled, isEnabled == [(SOAlarm *)v5 isEnabled]) && (isFiring = self->_isFiring, isFiring == [(SOAlarm *)v5 isFiring]))
       {
-        v11 = [(SOAlarm *)v5 alarmID];
+        alarmID = [(SOAlarm *)v5 alarmID];
         alarmID = self->_alarmID;
-        if (alarmID == v11 || [(NSUUID *)alarmID isEqual:v11])
+        if (alarmID == alarmID || [(NSUUID *)alarmID isEqual:alarmID])
         {
-          v13 = [(SOAlarm *)v5 alarmURL];
+          alarmURL = [(SOAlarm *)v5 alarmURL];
           alarmURL = self->_alarmURL;
-          if (alarmURL == v13 || [(NSURL *)alarmURL isEqual:v13])
+          if (alarmURL == alarmURL || [(NSURL *)alarmURL isEqual:alarmURL])
           {
-            v15 = [(SOAlarm *)v5 title];
+            title = [(SOAlarm *)v5 title];
             title = self->_title;
-            v17 = title == v15 || [(NSString *)title isEqual:v15];
+            v17 = title == title || [(NSString *)title isEqual:title];
           }
 
           else
@@ -139,7 +139,7 @@
   return v11 ^ v15;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v16.receiver = self;
@@ -172,26 +172,26 @@
   return v12;
 }
 
-- (SOAlarm)initWithAlarmID:(id)a3 alarmURL:(id)a4 title:(id)a5 hour:(unint64_t)a6 minute:(unint64_t)a7 repeatSchedule:(unint64_t)a8 isEnabled:(BOOL)a9 isFiring:(BOOL)a10
+- (SOAlarm)initWithAlarmID:(id)d alarmURL:(id)l title:(id)title hour:(unint64_t)hour minute:(unint64_t)minute repeatSchedule:(unint64_t)schedule isEnabled:(BOOL)enabled isFiring:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
+  dCopy = d;
+  lCopy = l;
+  titleCopy = title;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __88__SOAlarm_initWithAlarmID_alarmURL_title_hour_minute_repeatSchedule_isEnabled_isFiring___block_invoke;
   v24[3] = &unk_279C3D498;
-  v25 = v16;
-  v26 = v17;
-  v27 = v18;
-  v28 = a6;
-  v29 = a7;
-  v30 = a8;
-  v31 = a9;
-  v32 = a10;
-  v19 = v18;
-  v20 = v17;
-  v21 = v16;
+  v25 = dCopy;
+  v26 = lCopy;
+  v27 = titleCopy;
+  hourCopy = hour;
+  minuteCopy = minute;
+  scheduleCopy = schedule;
+  enabledCopy = enabled;
+  firingCopy = firing;
+  v19 = titleCopy;
+  v20 = lCopy;
+  v21 = dCopy;
   v22 = [(SOAlarm *)self initWithBuilder:v24];
 
   return v22;
@@ -211,31 +211,31 @@ void __88__SOAlarm_initWithAlarmID_alarmURL_title_hour_minute_repeatSchedule_isE
   [v4 setIsFiring:*(a1 + 81)];
 }
 
-- (SOAlarm)initWithBuilder:(id)a3
+- (SOAlarm)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v18.receiver = self;
   v18.super_class = SOAlarm;
   v5 = [(SOAlarm *)&v18 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_SOAlarmMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_SOAlarmMutation *)v7 isDirty])
     {
-      v8 = [(_SOAlarmMutation *)v7 getAlarmID];
-      v9 = [v8 copy];
+      getAlarmID = [(_SOAlarmMutation *)v7 getAlarmID];
+      v9 = [getAlarmID copy];
       alarmID = v6->_alarmID;
       v6->_alarmID = v9;
 
-      v11 = [(_SOAlarmMutation *)v7 getAlarmURL];
-      v12 = [v11 copy];
+      getAlarmURL = [(_SOAlarmMutation *)v7 getAlarmURL];
+      v12 = [getAlarmURL copy];
       alarmURL = v6->_alarmURL;
       v6->_alarmURL = v12;
 
-      v14 = [(_SOAlarmMutation *)v7 getTitle];
-      v15 = [v14 copy];
+      getTitle = [(_SOAlarmMutation *)v7 getTitle];
+      v15 = [getTitle copy];
       title = v6->_title;
       v6->_title = v15;
 
@@ -250,36 +250,36 @@ void __88__SOAlarm_initWithAlarmID_alarmURL_title_hour_minute_repeatSchedule_isE
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SOAlarmMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_SOAlarmMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(SOAlarm);
-      v7 = [(_SOAlarmMutation *)v5 getAlarmID];
-      v8 = [v7 copy];
+      getAlarmID = [(_SOAlarmMutation *)v5 getAlarmID];
+      v8 = [getAlarmID copy];
       alarmID = v6->_alarmID;
       v6->_alarmID = v8;
 
-      v10 = [(_SOAlarmMutation *)v5 getAlarmURL];
-      v11 = [v10 copy];
+      getAlarmURL = [(_SOAlarmMutation *)v5 getAlarmURL];
+      v11 = [getAlarmURL copy];
       alarmURL = v6->_alarmURL;
       v6->_alarmURL = v11;
 
-      v13 = [(_SOAlarmMutation *)v5 getTitle];
-      v14 = [v13 copy];
+      getTitle = [(_SOAlarmMutation *)v5 getTitle];
+      v14 = [getTitle copy];
       title = v6->_title;
       v6->_title = v14;
 

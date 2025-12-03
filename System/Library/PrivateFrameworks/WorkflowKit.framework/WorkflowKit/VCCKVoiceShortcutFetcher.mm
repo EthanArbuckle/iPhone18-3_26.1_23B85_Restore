@@ -1,27 +1,27 @@
 @interface VCCKVoiceShortcutFetcher
-- (VCCKVoiceShortcutFetcher)initWithRecordHandler:(id)a3 completionHandler:(id)a4;
-- (void)addOperation:(id)a3;
+- (VCCKVoiceShortcutFetcher)initWithRecordHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)addOperation:(id)operation;
 - (void)fetchRecordZones;
-- (void)fetchRecordsFromZone:(id)a3;
-- (void)finishWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)fetchRecordsFromZone:(id)zone;
+- (void)finishWithSuccess:(BOOL)success error:(id)error;
 - (void)start;
 @end
 
 @implementation VCCKVoiceShortcutFetcher
 
-- (void)fetchRecordsFromZone:(id)a3
+- (void)fetchRecordsFromZone:(id)zone
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  zoneCopy = zone;
+  if (!zoneCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"VCCKVoiceShortcutFetcher.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"zone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCCKVoiceShortcutFetcher.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"zone"}];
   }
 
   v6 = objc_alloc(MEMORY[0x1E695B918]);
-  v7 = [v5 zoneID];
-  v14[0] = v7;
+  zoneID = [zoneCopy zoneID];
+  v14[0] = zoneID;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v9 = [v6 initWithRecordZoneIDs:v8 configurationsByRecordZoneID:0];
 
@@ -84,16 +84,16 @@ void __49__VCCKVoiceShortcutFetcher_fetchRecordsFromZone___block_invoke_197(uint
 
 - (void)fetchRecordZones
 {
-  v3 = [MEMORY[0x1E695B928] fetchAllRecordZonesOperation];
+  fetchAllRecordZonesOperation = [MEMORY[0x1E695B928] fetchAllRecordZonesOperation];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__VCCKVoiceShortcutFetcher_fetchRecordZones__block_invoke;
   v5[3] = &unk_1E8376F58;
   v5[4] = self;
   v4 = [VCRecordZoneParser activeRecordZone:v5];
-  [v3 setFetchRecordZonesCompletionBlock:v4];
+  [fetchAllRecordZonesOperation setFetchRecordZonesCompletionBlock:v4];
 
-  [(VCCKVoiceShortcutFetcher *)self addOperation:v3];
+  [(VCCKVoiceShortcutFetcher *)self addOperation:fetchAllRecordZonesOperation];
 }
 
 void __44__VCCKVoiceShortcutFetcher_fetchRecordZones__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -133,39 +133,39 @@ void __44__VCCKVoiceShortcutFetcher_fetchRecordZones__block_invoke(uint64_t a1, 
 
 - (void)start
 {
-  v3 = [(VCCKVoiceShortcutFetcher *)self queue];
+  queue = [(VCCKVoiceShortcutFetcher *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__VCCKVoiceShortcutFetcher_start__block_invoke;
   block[3] = &unk_1E837FA70;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v4 = a3;
-  [v4 setQualityOfService:25];
-  v5 = [v4 configuration];
-  [v5 setDiscretionaryNetworkBehavior:0];
+  operationCopy = operation;
+  [operationCopy setQualityOfService:25];
+  configuration = [operationCopy configuration];
+  [configuration setDiscretionaryNetworkBehavior:0];
 
-  v6 = [(VCCKVoiceShortcutFetcher *)self database];
-  [v6 addOperation:v4];
+  database = [(VCCKVoiceShortcutFetcher *)self database];
+  [database addOperation:operationCopy];
 }
 
-- (void)finishWithSuccess:(BOOL)a3 error:(id)a4
+- (void)finishWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
-  v7 = [(VCCKVoiceShortcutFetcher *)self queue];
+  errorCopy = error;
+  queue = [(VCCKVoiceShortcutFetcher *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__VCCKVoiceShortcutFetcher_finishWithSuccess_error___block_invoke;
   block[3] = &unk_1E8377C58;
-  v11 = a3;
+  successCopy = success;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = errorCopy;
+  v8 = errorCopy;
+  dispatch_async(queue, block);
 }
 
 void __52__VCCKVoiceShortcutFetcher_finishWithSuccess_error___block_invoke(uint64_t a1)
@@ -178,14 +178,14 @@ void __52__VCCKVoiceShortcutFetcher_finishWithSuccess_error___block_invoke(uint6
   }
 }
 
-- (VCCKVoiceShortcutFetcher)initWithRecordHandler:(id)a3 completionHandler:(id)a4
+- (VCCKVoiceShortcutFetcher)initWithRecordHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v9 = completionHandlerCopy;
+  if (handlerCopy)
   {
-    if (v8)
+    if (completionHandlerCopy)
     {
       goto LABEL_3;
     }
@@ -193,8 +193,8 @@ void __52__VCCKVoiceShortcutFetcher_finishWithSuccess_error___block_invoke(uint6
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"VCCKVoiceShortcutFetcher.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"recordHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCCKVoiceShortcutFetcher.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"recordHandler"}];
 
     if (v9)
     {
@@ -202,8 +202,8 @@ void __52__VCCKVoiceShortcutFetcher_finishWithSuccess_error___block_invoke(uint6
     }
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"VCCKVoiceShortcutFetcher.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCCKVoiceShortcutFetcher.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v25.receiver = self;
@@ -218,11 +218,11 @@ LABEL_3:
     queue = v10->_queue;
     v10->_queue = v13;
 
-    v15 = [v11 privateCloudDatabase];
+    privateCloudDatabase = [v11 privateCloudDatabase];
     database = v10->_database;
-    v10->_database = v15;
+    v10->_database = privateCloudDatabase;
 
-    v17 = [v7 copy];
+    v17 = [handlerCopy copy];
     recordHandler = v10->_recordHandler;
     v10->_recordHandler = v17;
 

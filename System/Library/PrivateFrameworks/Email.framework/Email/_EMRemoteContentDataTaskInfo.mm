@@ -1,29 +1,29 @@
 @interface _EMRemoteContentDataTaskInfo
 - (NSString)debugDescription;
-- (_EMRemoteContentDataTaskInfo)initWithDataTask:(id)a3 isSynthetic:(BOOL)a4 failOpen:(BOOL)a5 completion:(id)a6;
-- (void)finishWithError:(id)a3;
-- (void)receiveData:(id)a3;
+- (_EMRemoteContentDataTaskInfo)initWithDataTask:(id)task isSynthetic:(BOOL)synthetic failOpen:(BOOL)open completion:(id)completion;
+- (void)finishWithError:(id)error;
+- (void)receiveData:(id)data;
 @end
 
 @implementation _EMRemoteContentDataTaskInfo
 
-- (_EMRemoteContentDataTaskInfo)initWithDataTask:(id)a3 isSynthetic:(BOOL)a4 failOpen:(BOOL)a5 completion:(id)a6
+- (_EMRemoteContentDataTaskInfo)initWithDataTask:(id)task isSynthetic:(BOOL)synthetic failOpen:(BOOL)open completion:(id)completion
 {
-  v11 = a3;
-  v12 = a6;
+  taskCopy = task;
+  completionCopy = completion;
   v18.receiver = self;
   v18.super_class = _EMRemoteContentDataTaskInfo;
   v13 = [(_EMRemoteContentDataTaskInfo *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_dataTask, a3);
-    v15 = [v12 copy];
+    objc_storeStrong(&v13->_dataTask, task);
+    v15 = [completionCopy copy];
     completion = v14->_completion;
     v14->_completion = v15;
 
-    v14->_isSynthetic = a4;
-    v14->_failOpen = a5;
+    v14->_isSynthetic = synthetic;
+    v14->_failOpen = open;
   }
 
   return v14;
@@ -42,54 +42,54 @@
   return [v3 stringWithFormat:@"<%@: %@>%@ %@", v4, self, v5, self->_dataTask];
 }
 
-- (void)receiveData:(id)a3
+- (void)receiveData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self->_completion)
   {
     data = self->_data;
-    v8 = v4;
+    v8 = dataCopy;
     if (data)
     {
-      concat = dispatch_data_create_concat(data, v4);
+      concat = dispatch_data_create_concat(data, dataCopy);
     }
 
     else
     {
-      concat = v4;
+      concat = dataCopy;
     }
 
     v7 = self->_data;
     self->_data = concat;
 
-    v4 = v8;
+    dataCopy = v8;
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   completion = self->_completion;
   if (completion)
   {
-    v9 = v4;
-    if (v4)
+    v9 = errorCopy;
+    if (errorCopy)
     {
-      v6 = [(NSURLSessionDataTask *)self->_dataTask response];
-      completion[2](completion, 0, v6, v9);
+      response = [(NSURLSessionDataTask *)self->_dataTask response];
+      completion[2](completion, 0, response, v9);
     }
 
     else
     {
       data = self->_data;
-      v6 = [(NSURLSessionDataTask *)self->_dataTask response];
-      (completion)[2](completion, data, v6, 0);
+      response = [(NSURLSessionDataTask *)self->_dataTask response];
+      (completion)[2](completion, data, response, 0);
     }
 
     v8 = self->_completion;
     self->_completion = 0;
 
-    v4 = v9;
+    errorCopy = v9;
   }
 }
 

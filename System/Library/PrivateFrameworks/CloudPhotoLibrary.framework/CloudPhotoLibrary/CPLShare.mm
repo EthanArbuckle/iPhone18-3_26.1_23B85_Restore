@@ -1,16 +1,16 @@
 @interface CPLShare
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)ownerIsCurrentUser;
 - (CPLShare)init;
-- (CPLShare)initWithCoder:(id)a3;
+- (CPLShare)initWithCoder:(id)coder;
 - (CPLShareParticipant)currentUserParticipant;
 - (CPLShareParticipant)owner;
 - (NSArray)participants;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLShare
@@ -22,10 +22,10 @@
   return v4 ^ [(NSArray *)self->_participants hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
     goto LABEL_13;
@@ -38,7 +38,7 @@
   }
 
   transportShare = self->_transportShare;
-  v6 = v4->_transportShare;
+  v6 = equalCopy->_transportShare;
   if (transportShare)
   {
     if (v6)
@@ -52,14 +52,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v6 || self->_publicPermission != v4->_publicPermission)
+  if (v6 || self->_publicPermission != equalCopy->_publicPermission)
   {
     goto LABEL_12;
   }
 
   v8 = self->_URL;
   v9 = v8;
-  URL = v4->_URL;
+  URL = equalCopy->_URL;
   if (v8 && URL)
   {
     v11 = [v8 isEqual:?];
@@ -81,7 +81,7 @@ LABEL_12:
   }
 
   v14 = self->_participants;
-  v15 = v4->_participants;
+  v15 = equalCopy->_participants;
   v16 = v15;
   v7 = v14 && v15 && ([v14 isEqual:v15] & 1) != 0 || (v14 | v16) == 0;
 
@@ -89,13 +89,13 @@ LABEL_13:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setPublicPermission:self->_publicPermission];
   [v4 setURL:self->_URL];
-  v5 = [(NSArray *)self->_participants cplDeepCopy];
-  [v4 setParticipants:v5];
+  cplDeepCopy = [(NSArray *)self->_participants cplDeepCopy];
+  [v4 setParticipants:cplDeepCopy];
 
   [v4 setCreationDate:self->_creationDate];
   [v4 setTransportShare:self->_transportShare];
@@ -106,11 +106,11 @@ LABEL_13:
 {
   publicPermission = self->_publicPermission;
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v5 = [(NSURL *)self->_URL cpl_redactedShareURL];
-  v6 = v5;
-  if (v5)
+  cpl_redactedShareURL = [(NSURL *)self->_URL cpl_redactedShareURL];
+  v6 = cpl_redactedShareURL;
+  if (cpl_redactedShareURL)
   {
-    v7 = v5;
+    v7 = cpl_redactedShareURL;
   }
 
   else
@@ -121,9 +121,9 @@ LABEL_13:
   if (publicPermission == 1)
   {
     v8 = [(NSArray *)self->_participants count];
-    v9 = [(CPLShare *)self ownerIsCurrentUser];
+    ownerIsCurrentUser = [(CPLShare *)self ownerIsCurrentUser];
     v10 = "";
-    if (v9)
+    if (ownerIsCurrentUser)
     {
       v10 = "owner";
     }
@@ -134,9 +134,9 @@ LABEL_13:
   else
   {
     v12 = [CPLShareParticipant descriptionForPermission:self->_publicPermission];
-    v13 = [(CPLShare *)self ownerIsCurrentUser];
+    ownerIsCurrentUser2 = [(CPLShare *)self ownerIsCurrentUser];
     v14 = "";
-    if (v13)
+    if (ownerIsCurrentUser2)
     {
       v14 = "owner";
     }
@@ -154,8 +154,8 @@ LABEL_13:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CPLShare *)self participants];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  participants = [(CPLShare *)self participants];
+  v3 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -165,7 +165,7 @@ LABEL_13:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(participants);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -176,7 +176,7 @@ LABEL_13:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -199,8 +199,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CPLShare *)self participants];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  participants = [(CPLShare *)self participants];
+  v3 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -210,7 +210,7 @@ LABEL_11:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(participants);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -221,7 +221,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -245,8 +245,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CPLShare *)self participants];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  participants = [(CPLShare *)self participants];
+  v3 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -256,7 +256,7 @@ LABEL_11:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(participants);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -267,7 +267,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -297,42 +297,42 @@ LABEL_11:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_publicPermission forKey:@"pubPerm"];
-  [v4 encodeObject:self->_URL forKey:@"url"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_publicPermission forKey:@"pubPerm"];
+  [coderCopy encodeObject:self->_URL forKey:@"url"];
   if ([(NSArray *)self->_participants count])
   {
-    [v4 encodeObject:self->_participants forKey:@"participants"];
+    [coderCopy encodeObject:self->_participants forKey:@"participants"];
   }
 
-  [v4 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v4 encodeObject:self->_transportShare forKey:@"transportShare"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_transportShare forKey:@"transportShare"];
 }
 
-- (CPLShare)initWithCoder:(id)a3
+- (CPLShare)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CPLShare;
   v5 = [(CPLShare *)&v15 init];
   if (v5)
   {
-    v5->_publicPermission = [v4 decodeIntegerForKey:@"pubPerm"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v5->_publicPermission = [coderCopy decodeIntegerForKey:@"pubPerm"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = [v4 decodeObjectOfClasses:_participantsClasses forKey:@"participants"];
+    v8 = [coderCopy decodeObjectOfClasses:_participantsClasses forKey:@"participants"];
     participants = v5->_participants;
     v5->_participants = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transportShare"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transportShare"];
     transportShare = v5->_transportShare;
     v5->_transportShare = v12;
   }
@@ -355,7 +355,7 @@ LABEL_11:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc(MEMORY[0x1E695DFD8]);
     v3 = objc_opt_class();

@@ -6,22 +6,22 @@
 
 - (uint64_t)_cn_scanHexChar:()ContactsFoundation
 {
-  if ([a1 isAtEnd])
+  if ([self isAtEnd])
   {
     return 0;
   }
 
-  v5 = [a1 scanLocation];
-  [a1 scanString:@"0x" intoString:0];
-  if ([a1 isAtEnd])
+  scanLocation = [self scanLocation];
+  [self scanString:@"0x" intoString:0];
+  if ([self isAtEnd])
   {
-    [a1 setScanLocation:v5];
+    [self setScanLocation:scanLocation];
     return 0;
   }
 
   v7 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"0123456789ABCDEFabcdef"];
-  v8 = [a1 string];
-  v9 = [v8 characterAtIndex:{objc_msgSend(a1, "scanLocation")}];
+  string = [self string];
+  v9 = [string characterAtIndex:{objc_msgSend(self, "scanLocation")}];
 
   v6 = [v7 characterIsMember:v9];
   if (v6)
@@ -37,14 +37,14 @@
         }
 
         [v10 appendFormat:@"%c", v9];
-        [a1 setScanLocation:{objc_msgSend(a1, "scanLocation") + 1}];
-        if ([a1 isAtEnd])
+        [self setScanLocation:{objc_msgSend(self, "scanLocation") + 1}];
+        if ([self isAtEnd])
         {
           break;
         }
 
-        v11 = [a1 string];
-        v9 = [v11 characterAtIndex:{objc_msgSend(a1, "scanLocation")}];
+        string2 = [self string];
+        v9 = [string2 characterAtIndex:{objc_msgSend(self, "scanLocation")}];
       }
 
       while (([v7 characterIsMember:v9] & 1) != 0);

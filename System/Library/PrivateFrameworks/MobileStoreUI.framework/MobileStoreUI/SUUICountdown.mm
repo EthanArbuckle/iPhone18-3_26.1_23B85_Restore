@@ -1,13 +1,13 @@
 @interface SUUICountdown
-- (SUUICountdown)initWithCountdownDictionary:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (SUUICountdown)initWithCountdownDictionary:(id)dictionary;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation SUUICountdown
 
-- (SUUICountdown)initWithCountdownDictionary:(id)a3
+- (SUUICountdown)initWithCountdownDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v43.receiver = self;
   v43.super_class = SUUICountdown;
   v5 = [(SUUICountdown *)&v43 init];
@@ -18,15 +18,15 @@
   }
 
   [(SUUICountdown *)v5 setType:1];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [(SUUICountdown *)v6 setEndDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(SUUICountdown *)v6 setEndDate:date];
 
-  v8 = [MEMORY[0x277CBEAA8] date];
-  [(SUUICountdown *)v6 setStartDate:v8];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [(SUUICountdown *)v6 setStartDate:date2];
 
   [(SUUICountdown *)v6 setFlapped:1];
   [(SUUICountdown *)v6 setRate:1];
-  v9 = [v4 objectForKey:@"type"];
+  v9 = [dictionaryCopy objectForKey:@"type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -49,7 +49,7 @@
   }
 
 LABEL_8:
-  v11 = [v4 objectForKey:@"subType"];
+  v11 = [dictionaryCopy objectForKey:@"subType"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -70,7 +70,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  v13 = [v4 objectForKey:@"endDate"];
+  v13 = [dictionaryCopy objectForKey:@"endDate"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -87,7 +87,7 @@ LABEL_14:
     }
   }
 
-  v17 = [v4 objectForKey:@"dateFormat"];
+  v17 = [dictionaryCopy objectForKey:@"dateFormat"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -108,7 +108,7 @@ LABEL_14:
     [(SUUICountdown *)v6 setDateFormat:v21];
   }
 
-  v22 = [v4 objectForKey:@"numberFormat"];
+  v22 = [dictionaryCopy objectForKey:@"numberFormat"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -116,18 +116,18 @@ LABEL_14:
     [(SUUICountdown *)v6 setNumberFormat:v22];
   }
 
-  v23 = [v4 objectForKey:@"endValue"];
+  v23 = [dictionaryCopy objectForKey:@"endValue"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = [(SUUICountdown *)v6 numberFormat];
+    numberFormat = [(SUUICountdown *)v6 numberFormat];
 
-    if (v24)
+    if (numberFormat)
     {
       v25 = objc_alloc_init(MEMORY[0x277CCABB8]);
-      v26 = [(SUUICountdown *)v6 numberFormat];
-      [v25 setPositiveFormat:v26];
+      numberFormat2 = [(SUUICountdown *)v6 numberFormat];
+      [v25 setPositiveFormat:numberFormat2];
 
       v27 = [v25 numberFromString:v23];
       v28 = v27;
@@ -143,7 +143,7 @@ LABEL_14:
     -[SUUICountdown setFinalValue:](v6, "setFinalValue:", [v23 longLongValue]);
   }
 
-  v29 = [v4 objectForKey:@"url"];
+  v29 = [dictionaryCopy objectForKey:@"url"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -152,8 +152,8 @@ LABEL_14:
     [(SUUICountdown *)v6 setURL:v30];
   }
 
-  [(SUUICountdown *)v6 updateWithDictionary:v4];
-  v31 = [v4 objectForKey:@"fontColor"];
+  [(SUUICountdown *)v6 updateWithDictionary:dictionaryCopy];
+  v31 = [dictionaryCopy objectForKey:@"fontColor"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -162,7 +162,7 @@ LABEL_14:
     [(SUUICountdown *)v6 setFontColor:v32];
   }
 
-  v33 = [v4 objectForKey:@"flapTopColor"];
+  v33 = [dictionaryCopy objectForKey:@"flapTopColor"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -171,7 +171,7 @@ LABEL_14:
     [(SUUICountdown *)v6 setFlapTopColor:v34];
   }
 
-  v35 = [v4 objectForKey:@"flapBottomColor"];
+  v35 = [dictionaryCopy objectForKey:@"flapBottomColor"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -180,19 +180,19 @@ LABEL_14:
     [(SUUICountdown *)v6 setFlapBottomColor:v36];
   }
 
-  v37 = [v4 objectForKey:@"flapped"];
+  v37 = [dictionaryCopy objectForKey:@"flapped"];
 
   if (objc_opt_respondsToSelector())
   {
     -[SUUICountdown setFlapped:](v6, "setFlapped:", [v37 BOOLValue]);
   }
 
-  v38 = [v4 objectForKey:@"artwork"];
+  v38 = [dictionaryCopy objectForKey:@"artwork"];
 
   v39 = [SUUIArtworkProvidingFactory artworkProviderForStoreResponse:v38];
   [(SUUICountdown *)v6 setArtworkProvider:v39];
 
-  v40 = [v4 objectForKey:@"endArtwork"];
+  v40 = [dictionaryCopy objectForKey:@"endArtwork"];
 
   v41 = [SUUIArtworkProvidingFactory artworkProviderForStoreResponse:v40];
   [(SUUICountdown *)v6 setEndArtworkProvider:v41];
@@ -201,17 +201,17 @@ LABEL_44:
   return v6;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v11 = a3;
-  v4 = [v11 objectForKey:@"value"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"value"];
   v5 = objc_opt_respondsToSelector();
   if (v5)
   {
     -[SUUICountdown setInitialValue:](self, "setInitialValue:", [v4 longLongValue]);
   }
 
-  v6 = [v11 objectForKey:@"rate"];
+  v6 = [dictionaryCopy objectForKey:@"rate"];
 
   if (objc_opt_respondsToSelector())
   {
@@ -223,7 +223,7 @@ LABEL_44:
     v5 = 0;
   }
 
-  v7 = [v11 objectForKey:@"timestamp"];
+  v7 = [dictionaryCopy objectForKey:@"timestamp"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

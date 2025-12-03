@@ -1,17 +1,17 @@
 @interface SRCSCommandRecognitionSystem
-- (SRCSCommandRecognitionSystem)initWithLocaleIdentifier:(id)a3;
-- (id)languageModelTreeForBuiltInLMIdentifier:(id)a3;
-- (id)spokenCommandFromRecognizedAFSpeechPhrases:(id)a3;
-- (id)spokenCommandFromRecognizedEARTokenSausage:(__CFArray *)a3;
+- (SRCSCommandRecognitionSystem)initWithLocaleIdentifier:(id)identifier;
+- (id)languageModelTreeForBuiltInLMIdentifier:(id)identifier;
+- (id)spokenCommandFromRecognizedAFSpeechPhrases:(id)phrases;
+- (id)spokenCommandFromRecognizedEARTokenSausage:(__CFArray *)sausage;
 - (void)_initalizeLanguageModelTree;
-- (void)_testWithPhrases:(id)a3;
+- (void)_testWithPhrases:(id)phrases;
 @end
 
 @implementation SRCSCommandRecognitionSystem
 
-- (SRCSCommandRecognitionSystem)initWithLocaleIdentifier:(id)a3
+- (SRCSCommandRecognitionSystem)initWithLocaleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = SRCSCommandRecognitionSystem;
   v6 = [(SRCSCommandRecognitionSystem *)&v14 init];
@@ -21,7 +21,7 @@
     recognizers = v6->_recognizers;
     v6->_recognizers = v7;
 
-    objc_storeStrong(&v6->_localeIdentifier, a3);
+    objc_storeStrong(&v6->_localeIdentifier, identifier);
     v9 = +[SRCSCommandStringsTable activeTargetTypes];
     targetTypes = v6->_targetTypes;
     v6->_targetTypes = v9;
@@ -40,7 +40,7 @@
   return v6;
 }
 
-- (id)spokenCommandFromRecognizedEARTokenSausage:(__CFArray *)a3
+- (id)spokenCommandFromRecognizedEARTokenSausage:(__CFArray *)sausage
 {
   v34 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -48,7 +48,7 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v20 = self;
+  selfCopy = self;
   v5 = self->_recognizers;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
@@ -70,8 +70,8 @@
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v11 = [v10 spokenCommands];
-        v12 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        spokenCommands = [v10 spokenCommands];
+        v12 = [spokenCommands countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v12)
         {
           v13 = v12;
@@ -83,20 +83,20 @@
             {
               if (*v25 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(spokenCommands);
               }
 
-              v16 = [*(*(&v24 + 1) + 8 * v15) fstGrammar];
-              if (v16)
+              fstGrammar = [*(*(&v24 + 1) + 8 * v15) fstGrammar];
+              if (fstGrammar)
               {
-                [v4 addObject:v16];
+                [v4 addObject:fstGrammar];
               }
 
               ++v15;
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v13 = [spokenCommands countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v13);
@@ -112,7 +112,7 @@
     while (v7);
   }
 
-  v17 = [[CMDPResult alloc] initWithTokenSausage:a3 forLocaleIdentifier:v20->_localeIdentifier];
+  v17 = [[CMDPResult alloc] initWithTokenSausage:sausage forLocaleIdentifier:selfCopy->_localeIdentifier];
   v22 = -1082130432;
   v23 = -1;
   [(CMDPResult *)v17 matchWithGrammars:v4 winningIndex:&v23 winningDistance:&v22];
@@ -121,16 +121,16 @@
   return 0;
 }
 
-- (id)spokenCommandFromRecognizedAFSpeechPhrases:(id)a3
+- (id)spokenCommandFromRecognizedAFSpeechPhrases:(id)phrases
 {
   v85 = *MEMORY[0x277D85DE8];
-  v47 = a3;
+  phrasesCopy = phrases;
   v4 = objc_opt_new();
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v54 = self;
+  selfCopy = self;
   v5 = self->_recognizers;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v74 objects:v84 count:16];
   if (v6)
@@ -151,8 +151,8 @@
         v71 = 0u;
         v72 = 0u;
         v73 = 0u;
-        v11 = [v10 spokenCommands];
-        v12 = [v11 countByEnumeratingWithState:&v70 objects:v83 count:16];
+        spokenCommands = [v10 spokenCommands];
+        v12 = [spokenCommands countByEnumeratingWithState:&v70 objects:v83 count:16];
         if (v12)
         {
           v13 = v12;
@@ -163,17 +163,17 @@
             {
               if (*v71 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(spokenCommands);
               }
 
-              v16 = [*(*(&v70 + 1) + 8 * j) fstGrammar];
-              if (v16)
+              fstGrammar = [*(*(&v70 + 1) + 8 * j) fstGrammar];
+              if (fstGrammar)
               {
-                [v4 addObject:v16];
+                [v4 addObject:fstGrammar];
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v70 objects:v83 count:16];
+            v13 = [spokenCommands countByEnumeratingWithState:&v70 objects:v83 count:16];
           }
 
           while (v13);
@@ -186,7 +186,7 @@
     while (v7);
   }
 
-  v17 = [[CMDPResult alloc] initWithAFSpeechPhraseArray:v47 forLocaleIdentifier:v54->_localeIdentifier];
+  v17 = [[CMDPResult alloc] initWithAFSpeechPhraseArray:phrasesCopy forLocaleIdentifier:selfCopy->_localeIdentifier];
   v69 = -1;
   v68 = -1082130432;
   v18 = [(CMDPResult *)v17 matchWithGrammars:v4 winningIndex:&v69 winningDistance:&v68];
@@ -202,7 +202,7 @@
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      obj = v54->_recognizers;
+      obj = selfCopy->_recognizers;
       v52 = [(NSMutableArray *)obj countByEnumeratingWithState:&v64 objects:v82 count:16];
       v21 = 0;
       if (v52)
@@ -223,8 +223,8 @@
             v61 = 0u;
             v62 = 0u;
             v63 = 0u;
-            v55 = [v23 spokenCommands];
-            v24 = [v55 countByEnumeratingWithState:&v60 objects:v81 count:16];
+            spokenCommands2 = [v23 spokenCommands];
+            v24 = [spokenCommands2 countByEnumeratingWithState:&v60 objects:v81 count:16];
             if (v24)
             {
               v25 = v24;
@@ -235,12 +235,12 @@
                 {
                   if (*v61 != v26)
                   {
-                    objc_enumerationMutation(v55);
+                    objc_enumerationMutation(spokenCommands2);
                   }
 
                   v28 = *(*(&v60 + 1) + 8 * m);
-                  v29 = [v28 identifier];
-                  v30 = [v29 isEqualToString:v20];
+                  identifier = [v28 identifier];
+                  v30 = [identifier isEqualToString:v20];
 
                   if (v30)
                   {
@@ -298,7 +298,7 @@
                   }
                 }
 
-                v25 = [v55 countByEnumeratingWithState:&v60 objects:v81 count:16];
+                v25 = [spokenCommands2 countByEnumeratingWithState:&v60 objects:v81 count:16];
                 if (v25)
                 {
                   continue;
@@ -338,12 +338,12 @@ LABEL_45:
   return v43;
 }
 
-- (id)languageModelTreeForBuiltInLMIdentifier:(id)a3
+- (id)languageModelTreeForBuiltInLMIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_resolvedBuiltInIdentifiers;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_resolvedBuiltInIdentifiers objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_resolvedBuiltInIdentifiers objectForKey:identifierCopy];
   objc_sync_exit(v5);
 
   return v6;
@@ -431,36 +431,36 @@ LABEL_45:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_testWithPhrases:(id)a3
+- (void)_testWithPhrases:(id)phrases
 {
-  v3 = a3;
+  phrasesCopy = phrases;
   v14 = [[SRCSCommandRecognitionSystem alloc] initWithLocaleIdentifier:@"en-US"];
   v4 = [[SRCSCommandRecognizer alloc] initWithCommandRecognitionSystem:v14 commandIdentifiers:&unk_287C0D660];
   [(SRCSCommandRecognizer *)v4 setActive:1];
-  v5 = [(SRCSCommandRecognitionSystem *)v14 spokenCommandFromRecognizedAFSpeechPhrases:v3];
+  v5 = [(SRCSCommandRecognitionSystem *)v14 spokenCommandFromRecognizedAFSpeechPhrases:phrasesCopy];
 
   if (v5)
   {
-    v6 = [v5 identifier];
-    v7 = [v6 isEqualToString:@"Text.ChangePhrase"];
+    identifier = [v5 identifier];
+    v7 = [identifier isEqualToString:@"Text.ChangePhrase"];
 
     if (v7)
     {
-      v8 = [v5 recognizedParameters];
-      v9 = [v8 objectForKey:kSRCSCommandParameterDictation[0]];
-      v10 = [v9 objectForKey:kSRCSCommandParameterText];
+      recognizedParameters = [v5 recognizedParameters];
+      v9 = [recognizedParameters objectForKey:kSRCSCommandParameterDictation[0]];
+      identifier2 = [v9 objectForKey:kSRCSCommandParameterText];
 
-      v11 = [v5 recognizedParameters];
-      v12 = [v11 objectForKey:kSRCSCommandParameterDictation2[0]];
+      recognizedParameters2 = [v5 recognizedParameters];
+      v12 = [recognizedParameters2 objectForKey:kSRCSCommandParameterDictation2[0]];
       v13 = [v12 objectForKey:kSRCSCommandParameterText];
 
-      NSLog(&stru_287C0BDE8.isa, v10, v13);
+      NSLog(&stru_287C0BDE8.isa, identifier2, v13);
     }
 
     else
     {
-      v10 = [v5 identifier];
-      [v10 isEqualToString:@"Text.SelectNextWord"];
+      identifier2 = [v5 identifier];
+      [identifier2 isEqualToString:@"Text.SelectNextWord"];
     }
   }
 }

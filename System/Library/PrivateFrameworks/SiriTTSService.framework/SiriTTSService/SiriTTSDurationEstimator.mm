@@ -1,13 +1,13 @@
 @interface SiriTTSDurationEstimator
-+ (double)roughEstimationWithRequest:(id)a3;
++ (double)roughEstimationWithRequest:(id)request;
 @end
 
 @implementation SiriTTSDurationEstimator
 
-+ (double)roughEstimationWithRequest:(id)a3
++ (double)roughEstimationWithRequest:(id)request
 {
-  v3 = a3;
-  v4 = static DurationEstimator.roughEstimation(request:)(v3);
+  requestCopy = request;
+  v4 = static DurationEstimator.roughEstimation(request:)(requestCopy);
 
   return v4;
 }

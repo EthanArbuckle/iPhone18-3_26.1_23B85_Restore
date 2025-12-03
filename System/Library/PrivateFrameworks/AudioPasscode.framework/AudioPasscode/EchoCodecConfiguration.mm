@@ -1,69 +1,69 @@
 @interface EchoCodecConfiguration
 - (EchoCodecConfiguration)init;
-- (EchoCodecConfiguration)initWithCapabilityData:(id)a3;
-- (EchoCodecConfiguration)initWithCoder:(id)a3;
-- (EchoCodecConfiguration)initWithCommandLineArgs:(id)a3;
+- (EchoCodecConfiguration)initWithCapabilityData:(id)data;
+- (EchoCodecConfiguration)initWithCoder:(id)coder;
+- (EchoCodecConfiguration)initWithCommandLineArgs:(id)args;
 - (id)commandLineOptions;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)setDefaultValues;
 @end
 
 @implementation EchoCodecConfiguration
 
-- (EchoCodecConfiguration)initWithCoder:(id)a3
+- (EchoCodecConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = EchoCodecConfiguration;
-  v5 = [(AUPasscodeCodecConfiguration *)&v13 initWithCoder:v4];
+  v5 = [(AUPasscodeCodecConfiguration *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"delayForBit0"];
+    [coderCopy decodeFloatForKey:@"delayForBit0"];
     v5->_delayForBit0 = v6;
-    [v4 decodeFloatForKey:@"delayForBit1"];
+    [coderCopy decodeFloatForKey:@"delayForBit1"];
     v5->_delayForBit1 = v7;
-    v5->_frameSize = [v4 decodeIntegerForKey:@"frameSize"];
-    v5->_numFrameRepeat = [v4 decodeIntegerForKey:@"numFrameRepeat"];
-    [v4 decodeFloatForKey:@"syncDetectThreshold"];
+    v5->_frameSize = [coderCopy decodeIntegerForKey:@"frameSize"];
+    v5->_numFrameRepeat = [coderCopy decodeIntegerForKey:@"numFrameRepeat"];
+    [coderCopy decodeFloatForKey:@"syncDetectThreshold"];
     v5->_syncDetectThreshold = v8;
-    v5->_randomSeed = [v4 decodeIntegerForKey:@"randomSeed"];
-    [v4 decodeFloatForKey:@"echoGain"];
+    v5->_randomSeed = [coderCopy decodeIntegerForKey:@"randomSeed"];
+    [coderCopy decodeFloatForKey:@"echoGain"];
     v5->_echoGainDB = v9;
-    [v4 decodeFloatForKey:@"noiseGain"];
+    [coderCopy decodeFloatForKey:@"noiseGain"];
     v5->_noiseGainDB = v10;
-    [v4 decodeFloatForKey:@"hpfCutOffFreq"];
+    [coderCopy decodeFloatForKey:@"hpfCutOffFreq"];
     v5->_hpfCutOffFreq = v11;
-    v5->_hfNoiseFillingFlag = [v4 decodeIntegerForKey:@"hfNoiseFilling"] != 0;
-    v5->_algorithmVersionNumber = [v4 decodeIntegerForKey:@"algorithmVersion"];
+    v5->_hfNoiseFillingFlag = [coderCopy decodeIntegerForKey:@"hfNoiseFilling"] != 0;
+    v5->_algorithmVersionNumber = [coderCopy decodeIntegerForKey:@"algorithmVersion"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(EchoCodecConfiguration *)self delayForBit0];
-  [v4 encodeFloat:@"delayForBit0" forKey:?];
+  [coderCopy encodeFloat:@"delayForBit0" forKey:?];
   [(EchoCodecConfiguration *)self delayForBit1];
-  [v4 encodeFloat:@"delayForBit1" forKey:?];
-  [v4 encodeInteger:-[EchoCodecConfiguration frameSize](self forKey:{"frameSize"), @"frameSize"}];
-  [v4 encodeInteger:-[EchoCodecConfiguration numFrameRepeat](self forKey:{"numFrameRepeat"), @"numFrameRepeat"}];
+  [coderCopy encodeFloat:@"delayForBit1" forKey:?];
+  [coderCopy encodeInteger:-[EchoCodecConfiguration frameSize](self forKey:{"frameSize"), @"frameSize"}];
+  [coderCopy encodeInteger:-[EchoCodecConfiguration numFrameRepeat](self forKey:{"numFrameRepeat"), @"numFrameRepeat"}];
   [(EchoCodecConfiguration *)self syncDetectThreshold];
-  [v4 encodeFloat:@"syncDetectThreshold" forKey:?];
-  [v4 encodeInteger:-[EchoCodecConfiguration randomSeed](self forKey:{"randomSeed"), @"randomSeed"}];
+  [coderCopy encodeFloat:@"syncDetectThreshold" forKey:?];
+  [coderCopy encodeInteger:-[EchoCodecConfiguration randomSeed](self forKey:{"randomSeed"), @"randomSeed"}];
   [(EchoCodecConfiguration *)self echoGainDB];
-  [v4 encodeFloat:@"echoGain" forKey:?];
+  [coderCopy encodeFloat:@"echoGain" forKey:?];
   [(EchoCodecConfiguration *)self noiseGainDB];
-  [v4 encodeFloat:@"noiseGain" forKey:?];
+  [coderCopy encodeFloat:@"noiseGain" forKey:?];
   [(EchoCodecConfiguration *)self hpfCutOffFreq];
-  [v4 encodeFloat:@"hpfCutOffFreq" forKey:?];
-  [v4 encodeInteger:-[EchoCodecConfiguration hfNoiseFillingFlag](self forKey:{"hfNoiseFillingFlag"), @"hfNoiseFilling"}];
-  [v4 encodeInteger:-[EchoCodecConfiguration algorithmVersionNumber](self forKey:{"algorithmVersionNumber"), @"algorithmVersion"}];
+  [coderCopy encodeFloat:@"hpfCutOffFreq" forKey:?];
+  [coderCopy encodeInteger:-[EchoCodecConfiguration hfNoiseFillingFlag](self forKey:{"hfNoiseFillingFlag"), @"hfNoiseFilling"}];
+  [coderCopy encodeInteger:-[EchoCodecConfiguration algorithmVersionNumber](self forKey:{"algorithmVersionNumber"), @"algorithmVersion"}];
   v5.receiver = self;
   v5.super_class = EchoCodecConfiguration;
-  [(AUPasscodeCodecConfiguration *)&v5 encodeWithCoder:v4];
+  [(AUPasscodeCodecConfiguration *)&v5 encodeWithCoder:coderCopy];
 }
 
 - (EchoCodecConfiguration)init
@@ -128,17 +128,17 @@
 
   v19.receiver = self;
   v19.super_class = EchoCodecConfiguration;
-  v12 = [(AUPasscodeCodecConfiguration *)&v19 commandLineOptions];
-  v13 = [v12 arrayByAddingObjectsFromArray:v11];
+  commandLineOptions = [(AUPasscodeCodecConfiguration *)&v19 commandLineOptions];
+  v13 = [commandLineOptions arrayByAddingObjectsFromArray:v11];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (EchoCodecConfiguration)initWithCapabilityData:(id)a3
+- (EchoCodecConfiguration)initWithCapabilityData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"echo"];
   v11.receiver = self;
   v11.super_class = EchoCodecConfiguration;
@@ -147,22 +147,22 @@
   if (v6)
   {
     [(EchoCodecConfiguration *)v6 setDefaultValues];
-    v7 = [v4 algorithmVersionNumbers];
-    v8 = [v7 valueForKeyPath:@"@max.self"];
-    v9 = [v8 intValue];
+    algorithmVersionNumbers = [dataCopy algorithmVersionNumbers];
+    v8 = [algorithmVersionNumbers valueForKeyPath:@"@max.self"];
+    intValue = [v8 intValue];
 
-    v6->_algorithmVersionNumber = v9;
+    v6->_algorithmVersionNumber = intValue;
   }
 
   return v6;
 }
 
-- (EchoCodecConfiguration)initWithCommandLineArgs:(id)a3
+- (EchoCodecConfiguration)initWithCommandLineArgs:(id)args
 {
-  v4 = a3;
+  argsCopy = args;
   v58.receiver = self;
   v58.super_class = EchoCodecConfiguration;
-  v5 = [(AUPasscodeCodecConfiguration *)&v58 initWithCommandLineArgs:v4];
+  v5 = [(AUPasscodeCodecConfiguration *)&v58 initWithCommandLineArgs:argsCopy];
   v6 = v5;
   if (!v5)
   {
@@ -173,11 +173,11 @@
   v6->_algorithmVersionNumber = 110;
   v7 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v7 setNumberStyle:1];
-  v8 = [v4 count];
+  v8 = [argsCopy count];
   v9 = objc_alloc_init(EchoCodecCapability);
-  for (i = 0; i < [v4 count]; ++i)
+  for (i = 0; i < [argsCopy count]; ++i)
   {
-    v11 = [v4 objectAtIndex:i];
+    v11 = [argsCopy objectAtIndex:i];
     v12 = [v11 isEqualToString:@"-n"];
     if (v8)
     {
@@ -191,15 +191,15 @@
 
     if (v13 == 1)
     {
-      v14 = [v4 objectAtIndex:++i];
+      v14 = [argsCopy objectAtIndex:++i];
       v15 = [v7 numberFromString:v14];
       v6->_frameSize = [v15 unsignedIntegerValue];
 
       frameSize = v6->_frameSize;
-      v17 = [(EchoCodecCapability *)v9 frameSizeRange];
+      frameSizeRange = [(EchoCodecCapability *)v9 frameSizeRange];
 LABEL_14:
-      v23 = frameSize - v17;
-      if (frameSize < v17)
+      v23 = frameSize - frameSizeRange;
+      if (frameSize < frameSizeRange)
       {
         goto LABEL_69;
       }
@@ -228,12 +228,12 @@ LABEL_29:
 
     if (v20 == 1)
     {
-      v21 = [v4 objectAtIndex:++i];
+      v21 = [argsCopy objectAtIndex:++i];
       v22 = [v7 numberFromString:v21];
       v6->_numFrameRepeat = [v22 unsignedIntegerValue];
 
       frameSize = v6->_numFrameRepeat;
-      v17 = [(EchoCodecCapability *)v9 numFrameRepeatRange];
+      frameSizeRange = [(EchoCodecCapability *)v9 numFrameRepeatRange];
       goto LABEL_14;
     }
 
@@ -250,7 +250,7 @@ LABEL_29:
 
     if (v25 == 1)
     {
-      v26 = [v4 objectAtIndex:++i];
+      v26 = [argsCopy objectAtIndex:++i];
       v27 = [v7 numberFromString:v26];
       [v27 floatValue];
       v29 = v28 / 1000.0;
@@ -271,7 +271,7 @@ LABEL_29:
 
     if (v32 == 1)
     {
-      v26 = [v4 objectAtIndex:++i];
+      v26 = [argsCopy objectAtIndex:++i];
       v27 = [v7 numberFromString:v26];
       [v27 floatValue];
       v29 = v33 / 1000.0;
@@ -292,7 +292,7 @@ LABEL_29:
 
     if (v35 == 1)
     {
-      v26 = [v4 objectAtIndex:++i];
+      v26 = [argsCopy objectAtIndex:++i];
       v27 = [v7 numberFromString:v26];
       v6->_randomSeed = [v27 unsignedIntegerValue];
       goto LABEL_28;
@@ -311,7 +311,7 @@ LABEL_29:
 
     if (v37 == 1)
     {
-      v26 = [v4 objectAtIndex:++i];
+      v26 = [argsCopy objectAtIndex:++i];
       v27 = [v7 numberFromString:v26];
       [v27 floatValue];
       v30 = 52;
@@ -333,7 +333,7 @@ LABEL_27:
 
     if (v39 == 1)
     {
-      v26 = [v4 objectAtIndex:++i];
+      v26 = [argsCopy objectAtIndex:++i];
       v27 = [v7 numberFromString:v26];
       [v27 floatValue];
       v30 = 56;
@@ -353,7 +353,7 @@ LABEL_27:
 
     if (v41 == 1)
     {
-      v26 = [v4 objectAtIndex:++i];
+      v26 = [argsCopy objectAtIndex:++i];
       v27 = [v7 numberFromString:v26];
       [v27 floatValue];
       v30 = 60;
@@ -373,15 +373,15 @@ LABEL_27:
 
     if (v43 == 1)
     {
-      v44 = [v4 objectAtIndex:++i];
+      v44 = [argsCopy objectAtIndex:++i];
       v45 = [v7 numberFromString:v44];
       [v45 floatValue];
       v6->_hpfCutOffFreq = v46;
 
       hpfCutOffFreq = v6->_hpfCutOffFreq;
-      v48 = [(EchoCodecCapability *)v9 hpfCutOffFreqRange];
-      v23 = hpfCutOffFreq - v48;
-      if (hpfCutOffFreq < v48)
+      hpfCutOffFreqRange = [(EchoCodecCapability *)v9 hpfCutOffFreqRange];
+      v23 = hpfCutOffFreq - hpfCutOffFreqRange;
+      if (hpfCutOffFreq < hpfCutOffFreqRange)
       {
         goto LABEL_69;
       }
@@ -402,7 +402,7 @@ LABEL_27:
 
     if (v50 == 1)
     {
-      v26 = [v4 objectAtIndex:++i];
+      v26 = [argsCopy objectAtIndex:++i];
       v27 = [v7 numberFromString:v26];
       v6->_hfNoiseFillingFlag = [v27 unsignedIntegerValue] != 0;
 LABEL_28:
@@ -423,7 +423,7 @@ LABEL_28:
 
     if (v52 == 1)
     {
-      v53 = [v4 objectAtIndex:++i];
+      v53 = [argsCopy objectAtIndex:++i];
       v54 = [v7 numberFromString:v53];
       v6->_algorithmVersionNumber = [v54 unsignedIntegerValue];
 
@@ -450,13 +450,13 @@ LABEL_72:
   return v56;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[EchoCodecConfiguration allocWithZone:?]];
   [(AUPasscodeCodecConfiguration *)v4 setSampleRate:[(AUPasscodeCodecConfiguration *)self sampleRate]];
   [(AUPasscodeCodecConfiguration *)v4 setNumChannels:[(AUPasscodeCodecConfiguration *)self numChannels]];
-  v5 = [(AUPasscodeCodecConfiguration *)self algorithmName];
-  v6 = [v5 copy];
+  algorithmName = [(AUPasscodeCodecConfiguration *)self algorithmName];
+  v6 = [algorithmName copy];
   [(AUPasscodeCodecConfiguration *)v4 setAlgorithmName:v6];
 
   [(AUPasscodeCodecConfiguration *)v4 setPayloadLengthBytes:[(AUPasscodeCodecConfiguration *)self payloadLengthBytes]];

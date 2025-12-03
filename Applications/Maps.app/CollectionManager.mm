@@ -7,27 +7,27 @@
 - (NSArray)currentCollectionsForPicker;
 - (NSArray)currentCollectionsForToolbarMenu;
 - (NSArray)currentCollectionsForWatchHome;
-- (id)_asMapsSyncObjectOrNil:(id)a3;
-- (id)collectionForFavoritesType:(int64_t)a3;
-- (id)collectionWithIdentifier:(id)a3;
-- (id)collectionsContainingMapItem:(id)a3;
+- (id)_asMapsSyncObjectOrNil:(id)nil;
+- (id)collectionForFavoritesType:(int64_t)type;
+- (id)collectionWithIdentifier:(id)identifier;
+- (id)collectionsContainingMapItem:(id)item;
 - (id)collectionsForAddingMapItems;
-- (id)collectionsNotContainingMapItem:(id)a3;
-- (id)firstUserGuideContainingMapItem:(id)a3 requiresOrdering:(BOOL)a4;
-- (id)lookupMapItem:(id)a3;
+- (id)collectionsNotContainingMapItem:(id)item;
+- (id)firstUserGuideContainingMapItem:(id)item requiresOrdering:(BOOL)ordering;
+- (id)lookupMapItem:(id)item;
 - (id)newTraits;
 - (id)orderedCollectionsExcludingAllPlacesCollection;
 - (unint64_t)displayCountForCollectionsInLibrary;
-- (void)_fetchCollectionsWithCompletion:(id)a3;
+- (void)_fetchCollectionsWithCompletion:(id)completion;
 - (void)_scheduleFetch;
 - (void)_updateContent;
-- (void)createCollection:(id)a3 completion:(id)a4;
-- (void)curatedCollectionSyncManagerDidUpdateCachedCollections:(id)a3;
+- (void)createCollection:(id)collection completion:(id)completion;
+- (void)curatedCollectionSyncManagerDidUpdateCachedCollections:(id)collections;
 - (void)dealloc;
-- (void)deleteCollection:(id)a3 completion:(id)a4;
-- (void)deleteCollections:(id)a3 completion:(id)a4;
-- (void)saveCollection:(id)a3 completion:(id)a4;
-- (void)touchCollection:(id)a3;
+- (void)deleteCollection:(id)collection completion:(id)completion;
+- (void)deleteCollections:(id)collections completion:(id)completion;
+- (void)saveCollection:(id)collection completion:(id)completion;
+- (void)touchCollection:(id)collection;
 @end
 
 @implementation CollectionManager
@@ -46,8 +46,8 @@
 
 - (void)_scheduleFetch
 {
-  v4 = [(MapsThrottler *)self->_fetchThrottler value];
-  v3 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 BOOLValue] ^ 1);
+  value = [(MapsThrottler *)self->_fetchThrottler value];
+  v3 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [value BOOLValue] ^ 1);
   [(MapsThrottler *)self->_fetchThrottler setValue:v3];
 }
 
@@ -148,22 +148,22 @@
   v7 = sub_10000BDA4();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(CollectionManager *)self queryContents];
+    queryContents = [(CollectionManager *)self queryContents];
     *buf = 138412290;
-    v87 = v8;
+    v87 = queryContents;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[MCM] _updateContent %@", buf, 0xCu);
   }
 
   v59 = [(NSMutableArray *)self->_currentContents mutableCopy];
   v56 = [&__NSArray0__struct mutableCopy];
-  v9 = [(CollectionManager *)self favoriteCollection];
-  v54 = [(CollectionManager *)self allPlacesCollection];
-  if (v9)
+  favoriteCollection = [(CollectionManager *)self favoriteCollection];
+  allPlacesCollection = [(CollectionManager *)self allPlacesCollection];
+  if (favoriteCollection)
   {
-    [(NSMutableArray *)self->_currentContents removeObject:v9];
+    [(NSMutableArray *)self->_currentContents removeObject:favoriteCollection];
   }
 
-  if (v54)
+  if (allPlacesCollection)
   {
     [(NSMutableArray *)self->_currentContents removeObject:?];
   }
@@ -174,8 +174,8 @@
   v78 = 0u;
   obj = [(CollectionManager *)self queryContents];
   v10 = [obj countByEnumeratingWithState:&v77 objects:v85 count:16];
-  v62 = self;
-  v52 = v9;
+  selfCopy = self;
+  v52 = favoriteCollection;
   if (v10)
   {
     v11 = v10;
@@ -194,13 +194,13 @@
         }
 
         v15 = *(*(&v77 + 1) + 8 * v14);
-        v16 = [v15 identifier];
-        v17 = [v16 UUIDString];
+        identifier = [v15 identifier];
+        uUIDString = [identifier UUIDString];
 
-        v18 = [v15 placesCount];
+        placesCount = [v15 placesCount];
         if ([v15 isLegacyFavoritesCollection])
         {
-          v19 = v18 == 0;
+          v19 = placesCount == 0;
         }
 
         else
@@ -210,7 +210,7 @@
 
         if (!v19)
         {
-          if (!v17)
+          if (!uUIDString)
           {
             v28 = +[_TtC8MapsSync13MapsSyncStore sharedStore];
             v84 = v15;
@@ -241,14 +241,14 @@
                 }
 
                 v25 = *(*(&v73 + 1) + 8 * i);
-                v26 = [v25 identifier];
-                v27 = [v17 isEqualToString:v26];
+                identifier2 = [v25 identifier];
+                v27 = [uUIDString isEqualToString:identifier2];
 
                 if (v27)
                 {
                   [v59 removeObject:v25];
                   [v25 updateWithMapsSyncCollection:v15];
-                  self = v62;
+                  self = selfCopy;
                   goto LABEL_30;
                 }
               }
@@ -264,8 +264,8 @@
           }
 
           v20 = [CollectionHandler collectionWithMapsSyncCollection:v15];
-          self = v62;
-          [(NSMutableArray *)v20 setCollectionOperation:v62];
+          self = selfCopy;
+          [(NSMutableArray *)v20 setCollectionOperation:selfCopy];
           [v56 addObject:v20];
 LABEL_30:
           v12 = (v63 + 1);
@@ -299,13 +299,13 @@ LABEL_36:
   [v30 setMapFeaturePersonalCollectionsCount:v12];
 
   v31 = +[CuratedCollectionSyncManager sharedManager];
-  v32 = [v31 cachedCuratedCollections];
+  cachedCuratedCollections = [v31 cachedCuratedCollections];
 
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v58 = v32;
+  v58 = cachedCuratedCollections;
   v64 = [v58 countByEnumeratingWithState:&v69 objects:v82 count:16];
   if (v64)
   {
@@ -320,8 +320,8 @@ LABEL_36:
         }
 
         v34 = *(*(&v69 + 1) + 8 * j);
-        v35 = [v34 identifier];
-        v36 = [v35 UUIDString];
+        identifier3 = [v34 identifier];
+        uUIDString2 = [identifier3 UUIDString];
 
         v67 = 0u;
         v68 = 0u;
@@ -343,14 +343,14 @@ LABEL_36:
               }
 
               v42 = *(*(&v65 + 1) + 8 * k);
-              v43 = [v42 identifier];
-              v44 = [v36 isEqualToString:v43];
+              identifier4 = [v42 identifier];
+              v44 = [uUIDString2 isEqualToString:identifier4];
 
               if (v44)
               {
                 [v59 removeObject:v42];
                 [v42 updateWithMapsSyncCachedCuratedCollection:v34];
-                self = v62;
+                self = selfCopy;
                 goto LABEL_51;
               }
             }
@@ -366,8 +366,8 @@ LABEL_36:
         }
 
         v37 = [CollectionHandler collectionWithMapsSyncCachedCuratedCollection:v34];
-        self = v62;
-        [(NSMutableArray *)v37 setCollectionOperation:v62];
+        self = selfCopy;
+        [(NSMutableArray *)v37 setCollectionOperation:selfCopy];
         [v56 addObject:v37];
 LABEL_51:
       }
@@ -394,15 +394,15 @@ LABEL_51:
     [(NSMutableArray *)self->_currentContents insertObject:v52 atIndex:0];
   }
 
-  if (v54)
+  if (allPlacesCollection)
   {
     [(NSMutableArray *)self->_currentContents addObject:?];
   }
 
   if (self->_needToSendUpdate || [v59 count] || objc_msgSend(v56, "count"))
   {
-    v47 = [(CollectionManager *)self currentCollections];
-    [(GEOObserverHashTable *)self->_observers collectionManager:self contentDidChange:v47];
+    currentCollections = [(CollectionManager *)self currentCollections];
+    [(GEOObserverHashTable *)self->_observers collectionManager:self contentDidChange:currentCollections];
   }
 
   self->_needToSendUpdate = 0;
@@ -477,15 +477,15 @@ LABEL_51:
 - (id)orderedCollectionsExcludingAllPlacesCollection
 {
   v3 = [(NSMutableArray *)self->_currentContents mutableCopy];
-  v4 = [(CollectionManager *)self allPlacesCollection];
-  [v3 removeObject:v4];
+  allPlacesCollection = [(CollectionManager *)self allPlacesCollection];
+  [v3 removeObject:allPlacesCollection];
 
   v5 = [(CollectionOrderStorage *)self->_orderStorage orderCollections:v3];
 
   return v5;
 }
 
-- (void)curatedCollectionSyncManagerDidUpdateCachedCollections:(id)a3
+- (void)curatedCollectionSyncManagerDidUpdateCachedCollections:(id)collections
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -495,13 +495,13 @@ LABEL_51:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)_asMapsSyncObjectOrNil:(id)a3
+- (id)_asMapsSyncObjectOrNil:(id)nil
 {
-  v3 = a3;
+  nilCopy = nil;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = nilCopy;
   }
 
   else
@@ -548,13 +548,13 @@ LABEL_51:
 
   v3 = [(NSMutableArray *)self->_currentContents count];
   currentContents = self->_currentContents;
-  v5 = [(CollectionManager *)self allPlacesCollection];
-  LODWORD(currentContents) = [(NSMutableArray *)currentContents containsObject:v5];
+  allPlacesCollection = [(CollectionManager *)self allPlacesCollection];
+  LODWORD(currentContents) = [(NSMutableArray *)currentContents containsObject:allPlacesCollection];
 
   v6 = v3 - currentContents;
-  v7 = [(CollectionManager *)self favoriteCollection];
-  v8 = v7;
-  if (v7 && [v7 isEmpty])
+  favoriteCollection = [(CollectionManager *)self favoriteCollection];
+  v8 = favoriteCollection;
+  if (favoriteCollection && [favoriteCollection isEmpty])
   {
     v6 -= [(NSMutableArray *)self->_currentContents containsObject:v8];
   }
@@ -562,16 +562,16 @@ LABEL_51:
   return v6;
 }
 
-- (id)lookupMapItem:(id)a3
+- (id)lookupMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [_TtC8MapsSync22MapsSyncQueryPredicate alloc];
-  v6 = [v4 _geoMapItem];
-  v55 = v4;
-  v7 = [v4 _geoMapItemStorageForPersistence];
-  v8 = [v7 userValues];
-  v9 = [v8 name];
-  v10 = [v5 initWithMapItem:v6 customName:v9];
+  _geoMapItem = [itemCopy _geoMapItem];
+  v55 = itemCopy;
+  _geoMapItemStorageForPersistence = [itemCopy _geoMapItemStorageForPersistence];
+  userValues = [_geoMapItemStorageForPersistence userValues];
+  name = [userValues name];
+  v10 = [v5 initWithMapItem:_geoMapItem customName:name];
 
   v54 = v10;
   v11 = [[_TtC8MapsSync20MapsSyncQueryOptions alloc] initWithPredicate:v10 sortDescriptors:0 range:0];
@@ -617,21 +617,21 @@ LABEL_51:
         if ([v20 type] == 1)
         {
           v41 = [LibraryMapItemLookupResult alloc];
-          v39 = [(CollectionManager *)self favoriteCollection];
-          v38 = [(LibraryMapItemLookupResult *)v41 initWithPlaceItem:v20 collectionHandler:v39];
+          favoriteCollection = [(CollectionManager *)self favoriteCollection];
+          v38 = [(LibraryMapItemLookupResult *)v41 initWithPlaceItem:v20 collectionHandler:favoriteCollection];
 LABEL_32:
 
-          v37 = v16;
+          firstObject = v16;
           goto LABEL_33;
         }
 
         v49 = v20;
-        v21 = [v20 fetchCollections];
+        fetchCollections = [v20 fetchCollections];
         v60 = 0u;
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
-        v22 = v21;
+        v22 = fetchCollections;
         v47 = [v22 countByEnumeratingWithState:&v60 objects:v70 count:16];
         if (v47)
         {
@@ -639,7 +639,7 @@ LABEL_32:
           v51 = v16;
           v52 = v14;
           v45 = v19;
-          v46 = self;
+          selfCopy = self;
           v50 = v22;
           v44 = *v61;
           do
@@ -658,8 +658,8 @@ LABEL_32:
               v57 = 0u;
               v58 = 0u;
               v59 = 0u;
-              v26 = [(CollectionManager *)self currentCollections];
-              v27 = [v26 countByEnumeratingWithState:&v56 objects:v69 count:16];
+              currentCollections = [(CollectionManager *)self currentCollections];
+              v27 = [currentCollections countByEnumeratingWithState:&v56 objects:v69 count:16];
               if (v27)
               {
                 v28 = v27;
@@ -670,22 +670,22 @@ LABEL_32:
                   {
                     if (*v57 != v29)
                     {
-                      objc_enumerationMutation(v26);
+                      objc_enumerationMutation(currentCollections);
                     }
 
                     v31 = *(*(&v56 + 1) + 8 * i);
                     if (![v31 handlerType])
                     {
-                      v32 = [v31 identifier];
-                      v33 = [v25 identifier];
-                      v34 = [v33 UUIDString];
-                      v35 = [v32 isEqualToString:v34];
+                      identifier = [v31 identifier];
+                      identifier2 = [v25 identifier];
+                      uUIDString = [identifier2 UUIDString];
+                      v35 = [identifier isEqualToString:uUIDString];
 
                       if (v35)
                       {
                         v38 = [[LibraryMapItemLookupResult alloc] initWithPlaceItem:v49 collectionHandler:v31];
 
-                        v39 = v50;
+                        favoriteCollection = v50;
                         v16 = v51;
                         v14 = v52;
                         goto LABEL_32;
@@ -693,7 +693,7 @@ LABEL_32:
                     }
                   }
 
-                  v28 = [v26 countByEnumeratingWithState:&v56 objects:v69 count:16];
+                  v28 = [currentCollections countByEnumeratingWithState:&v56 objects:v69 count:16];
                   if (v28)
                   {
                     continue;
@@ -707,7 +707,7 @@ LABEL_32:
               v16 = v51;
               v14 = v52;
               v19 = v45;
-              self = v46;
+              self = selfCopy;
               v22 = v50;
               v23 = v44;
             }
@@ -738,8 +738,8 @@ LABEL_32:
   if ([v16 count])
   {
     v36 = [LibraryMapItemLookupResult alloc];
-    v37 = [v16 firstObject];
-    v38 = [(LibraryMapItemLookupResult *)v36 initWithPlaceItem:v37 collectionHandler:0];
+    firstObject = [v16 firstObject];
+    v38 = [(LibraryMapItemLookupResult *)v36 initWithPlaceItem:firstObject collectionHandler:0];
 LABEL_33:
   }
 
@@ -758,8 +758,8 @@ LABEL_33:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CollectionManager *)self currentCollections];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  currentCollections = [(CollectionManager *)self currentCollections];
+  v5 = [currentCollections countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -770,7 +770,7 @@ LABEL_33:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(currentCollections);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -780,7 +780,7 @@ LABEL_33:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [currentCollections countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -791,24 +791,24 @@ LABEL_33:
   return v10;
 }
 
-- (id)collectionsNotContainingMapItem:(id)a3
+- (id)collectionsNotContainingMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CollectionManager *)self currentCollections];
-  v6 = [v5 mutableCopy];
+  itemCopy = item;
+  currentCollections = [(CollectionManager *)self currentCollections];
+  v6 = [currentCollections mutableCopy];
 
-  v45 = self;
-  v7 = [(CollectionManager *)self allPlacesCollection];
+  selfCopy = self;
+  allPlacesCollection = [(CollectionManager *)self allPlacesCollection];
   v49 = v6;
-  [v6 removeObject:v7];
+  [v6 removeObject:allPlacesCollection];
 
   v8 = [_TtC8MapsSync22MapsSyncQueryPredicate alloc];
-  v9 = [v4 _geoMapItem];
-  v38 = v4;
-  v10 = [v4 _geoMapItemStorageForPersistence];
-  v11 = [v10 userValues];
-  v12 = [v11 name];
-  v13 = [v8 initWithMapItem:v9 customName:v12];
+  _geoMapItem = [itemCopy _geoMapItem];
+  v38 = itemCopy;
+  _geoMapItemStorageForPersistence = [itemCopy _geoMapItemStorageForPersistence];
+  userValues = [_geoMapItemStorageForPersistence userValues];
+  name = [userValues name];
+  v13 = [v8 initWithMapItem:_geoMapItem customName:name];
 
   v37 = v13;
   v14 = [[_TtC8MapsSync20MapsSyncQueryOptions alloc] initWithPredicate:v13 sortDescriptors:0 range:0];
@@ -853,17 +853,17 @@ LABEL_33:
         v20 = *(*(&v58 + 1) + 8 * v19);
         if ([v20 type] == 1)
         {
-          v21 = [(CollectionManager *)v45 favoriteCollection];
-          [v49 removeObject:v21];
+          favoriteCollection = [(CollectionManager *)selfCopy favoriteCollection];
+          [v49 removeObject:favoriteCollection];
         }
 
-        v22 = [v20 fetchCollections];
+        fetchCollections = [v20 fetchCollections];
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v44 = v22;
-        v47 = [v22 countByEnumeratingWithState:&v54 objects:v64 count:16];
+        v44 = fetchCollections;
+        v47 = [fetchCollections countByEnumeratingWithState:&v54 objects:v64 count:16];
         if (v47)
         {
           v46 = *v55;
@@ -883,8 +883,8 @@ LABEL_33:
               v51 = 0u;
               v52 = 0u;
               v53 = 0u;
-              v25 = [(CollectionManager *)v45 currentCollections];
-              v26 = [v25 countByEnumeratingWithState:&v50 objects:v63 count:16];
+              currentCollections2 = [(CollectionManager *)selfCopy currentCollections];
+              v26 = [currentCollections2 countByEnumeratingWithState:&v50 objects:v63 count:16];
               if (v26)
               {
                 v27 = v26;
@@ -895,16 +895,16 @@ LABEL_33:
                   {
                     if (*v51 != v28)
                     {
-                      objc_enumerationMutation(v25);
+                      objc_enumerationMutation(currentCollections2);
                     }
 
                     v30 = *(*(&v50 + 1) + 8 * i);
                     if (![v30 handlerType])
                     {
-                      v31 = [v30 identifier];
-                      v32 = [v24 identifier];
-                      v33 = [v32 UUIDString];
-                      v34 = [v31 isEqualToString:v33];
+                      identifier = [v30 identifier];
+                      identifier2 = [v24 identifier];
+                      uUIDString = [identifier2 UUIDString];
+                      v34 = [identifier isEqualToString:uUIDString];
 
                       if (v34)
                       {
@@ -913,7 +913,7 @@ LABEL_33:
                     }
                   }
 
-                  v27 = [v25 countByEnumeratingWithState:&v50 objects:v63 count:16];
+                  v27 = [currentCollections2 countByEnumeratingWithState:&v50 objects:v63 count:16];
                 }
 
                 while (v27);
@@ -942,17 +942,17 @@ LABEL_33:
   return v49;
 }
 
-- (id)firstUserGuideContainingMapItem:(id)a3 requiresOrdering:(BOOL)a4
+- (id)firstUserGuideContainingMapItem:(id)item requiresOrdering:(BOOL)ordering
 {
-  v5 = a3;
-  if (v5)
+  itemCopy = item;
+  if (itemCopy)
   {
     v6 = [_TtC8MapsSync22MapsSyncQueryPredicate alloc];
-    v7 = [v5 _geoMapItem];
-    v8 = [v5 _geoMapItemStorageForPersistence];
-    v9 = [v8 userValues];
-    v10 = [v9 name];
-    v11 = [v6 initWithMapItem:v7 customName:v10];
+    _geoMapItem = [itemCopy _geoMapItem];
+    _geoMapItemStorageForPersistence = [itemCopy _geoMapItemStorageForPersistence];
+    userValues = [_geoMapItemStorageForPersistence userValues];
+    name = [userValues name];
+    v11 = [v6 initWithMapItem:_geoMapItem customName:name];
 
     v51 = v11;
     v12 = [[_TtC8MapsSync20MapsSyncQueryOptions alloc] initWithPredicate:v11 sortDescriptors:0 range:0];
@@ -997,24 +997,24 @@ LABEL_33:
           v21 = *(*(&v60 + 1) + 8 * v20);
           if ([v21 type] == 1)
           {
-            v37 = [(CollectionManager *)self favoriteCollection];
+            favoriteCollection = [(CollectionManager *)self favoriteCollection];
             goto LABEL_33;
           }
 
-          v22 = [v21 fetchCollections];
+          fetchCollections = [v21 fetchCollections];
           v56 = 0u;
           v57 = 0u;
           v58 = 0u;
           v59 = 0u;
-          v23 = v22;
+          v23 = fetchCollections;
           v44 = [v23 countByEnumeratingWithState:&v56 objects:v66 count:16];
           if (v44)
           {
             v24 = *v57;
             v48 = v15;
-            v49 = v5;
+            v49 = itemCopy;
             v42 = v20;
-            v43 = self;
+            selfCopy = self;
             v46 = v23;
             v47 = v17;
             v41 = *v57;
@@ -1034,8 +1034,8 @@ LABEL_33:
                 v53 = 0u;
                 v54 = 0u;
                 v55 = 0u;
-                v27 = [(CollectionManager *)self currentCollections];
-                v28 = [v27 countByEnumeratingWithState:&v52 objects:v65 count:16];
+                currentCollections = [(CollectionManager *)self currentCollections];
+                v28 = [currentCollections countByEnumeratingWithState:&v52 objects:v65 count:16];
                 if (v28)
                 {
                   v29 = v28;
@@ -1046,30 +1046,30 @@ LABEL_33:
                     {
                       if (*v53 != v30)
                       {
-                        objc_enumerationMutation(v27);
+                        objc_enumerationMutation(currentCollections);
                       }
 
                       v32 = *(*(&v52 + 1) + 8 * i);
                       if (![v32 handlerType])
                       {
-                        v33 = [v32 identifier];
-                        v34 = [v26 identifier];
-                        v35 = [v34 UUIDString];
-                        v36 = [v33 isEqualToString:v35];
+                        identifier = [v32 identifier];
+                        identifier2 = [v26 identifier];
+                        uUIDString = [identifier2 UUIDString];
+                        v36 = [identifier isEqualToString:uUIDString];
 
                         if (v36)
                         {
-                          v37 = v32;
+                          favoriteCollection = v32;
 
                           v15 = v48;
-                          v5 = v49;
+                          itemCopy = v49;
                           v17 = v47;
                           goto LABEL_33;
                         }
                       }
                     }
 
-                    v29 = [v27 countByEnumeratingWithState:&v52 objects:v65 count:16];
+                    v29 = [currentCollections countByEnumeratingWithState:&v52 objects:v65 count:16];
                     if (v29)
                     {
                       continue;
@@ -1081,9 +1081,9 @@ LABEL_33:
 
                 v25 = v45 + 1;
                 v15 = v48;
-                v5 = v49;
+                itemCopy = v49;
                 v20 = v42;
-                self = v43;
+                self = selfCopy;
                 v23 = v46;
                 v17 = v47;
                 v24 = v41;
@@ -1103,7 +1103,7 @@ LABEL_33:
         while (v20 != v39);
         v18 = [v17 countByEnumeratingWithState:&v60 objects:v67 count:16];
         v19 = v40;
-        v37 = 0;
+        favoriteCollection = 0;
         if (v18)
         {
           continue;
@@ -1115,7 +1115,7 @@ LABEL_33:
 
     else
     {
-      v37 = 0;
+      favoriteCollection = 0;
     }
 
 LABEL_33:
@@ -1123,26 +1123,26 @@ LABEL_33:
 
   else
   {
-    v37 = 0;
+    favoriteCollection = 0;
   }
 
-  return v37;
+  return favoriteCollection;
 }
 
-- (id)collectionsContainingMapItem:(id)a3
+- (id)collectionsContainingMapItem:(id)item
 {
-  v3 = a3;
-  if (v3)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v4 = v3;
+    v4 = itemCopy;
     v44 = +[NSMutableSet set];
     v5 = [_TtC8MapsSync22MapsSyncQueryPredicate alloc];
-    v6 = [v4 _geoMapItem];
+    _geoMapItem = [v4 _geoMapItem];
     v39 = v4;
-    v7 = [v4 _geoMapItemStorageForPersistence];
-    v8 = [v7 userValues];
-    v9 = [v8 name];
-    v10 = [v5 initWithMapItem:v6 customName:v9];
+    _geoMapItemStorageForPersistence = [v4 _geoMapItemStorageForPersistence];
+    userValues = [_geoMapItemStorageForPersistence userValues];
+    name = [userValues name];
+    v10 = [v5 initWithMapItem:_geoMapItem customName:name];
 
     v38 = v10;
     v11 = [[_TtC8MapsSync20MapsSyncQueryOptions alloc] initWithPredicate:v10 sortDescriptors:0 range:0];
@@ -1189,23 +1189,23 @@ LABEL_33:
           v20 = *(*(&v58 + 1) + 8 * v19);
           if ([v20 type] == 1)
           {
-            v21 = [(CollectionManager *)self favoriteCollection];
-            [v44 addObject:v21];
+            favoriteCollection = [(CollectionManager *)self favoriteCollection];
+            [v44 addObject:favoriteCollection];
           }
 
           else
           {
-            v21 = [v20 fetchCollections];
+            favoriteCollection = [v20 fetchCollections];
             v54 = 0u;
             v55 = 0u;
             v56 = 0u;
             v57 = 0u;
-            v48 = [v21 countByEnumeratingWithState:&v54 objects:v64 count:16];
+            v48 = [favoriteCollection countByEnumeratingWithState:&v54 objects:v64 count:16];
             if (v48)
             {
               v43 = v19;
               v45 = *v55;
-              v46 = v21;
+              v46 = favoriteCollection;
               do
               {
                 v22 = 0;
@@ -1213,7 +1213,7 @@ LABEL_33:
                 {
                   if (*v55 != v45)
                   {
-                    objc_enumerationMutation(v21);
+                    objc_enumerationMutation(favoriteCollection);
                   }
 
                   v49 = v22;
@@ -1222,8 +1222,8 @@ LABEL_33:
                   v51 = 0u;
                   v52 = 0u;
                   v53 = 0u;
-                  v24 = [(CollectionManager *)self currentCollections];
-                  v25 = [v24 countByEnumeratingWithState:&v50 objects:v63 count:16];
+                  currentCollections = [(CollectionManager *)self currentCollections];
+                  v25 = [currentCollections countByEnumeratingWithState:&v50 objects:v63 count:16];
                   if (v25)
                   {
                     v26 = v25;
@@ -1234,16 +1234,16 @@ LABEL_33:
                       {
                         if (*v51 != v27)
                         {
-                          objc_enumerationMutation(v24);
+                          objc_enumerationMutation(currentCollections);
                         }
 
                         v29 = *(*(&v50 + 1) + 8 * i);
                         if (![v29 handlerType])
                         {
-                          v30 = [v29 identifier];
-                          v31 = [v23 identifier];
-                          v32 = [v31 UUIDString];
-                          v33 = [v30 isEqualToString:v32];
+                          identifier = [v29 identifier];
+                          identifier2 = [v23 identifier];
+                          uUIDString = [identifier2 UUIDString];
+                          v33 = [identifier isEqualToString:uUIDString];
 
                           if (v33)
                           {
@@ -1253,7 +1253,7 @@ LABEL_33:
                         }
                       }
 
-                      v26 = [v24 countByEnumeratingWithState:&v50 objects:v63 count:16];
+                      v26 = [currentCollections countByEnumeratingWithState:&v50 objects:v63 count:16];
                       if (v26)
                       {
                         continue;
@@ -1266,7 +1266,7 @@ LABEL_33:
 LABEL_29:
 
                   v22 = v49 + 1;
-                  v21 = v46;
+                  favoriteCollection = v46;
                 }
 
                 while ((v49 + 1) != v48);
@@ -1290,22 +1290,22 @@ LABEL_29:
       while (v17);
     }
 
-    v34 = [v44 allObjects];
+    allObjects = [v44 allObjects];
 
-    v3 = v39;
+    itemCopy = v39;
   }
 
   else
   {
-    v34 = &__NSArray0__struct;
+    allObjects = &__NSArray0__struct;
   }
 
-  return v34;
+  return allObjects;
 }
 
-- (id)collectionWithIdentifier:(id)a3
+- (id)collectionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_currentContents;
   v14 = 0u;
   v15 = 0u;
@@ -1326,8 +1326,8 @@ LABEL_29:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -1351,19 +1351,19 @@ LABEL_11:
   return v7;
 }
 
-- (id)collectionForFavoritesType:(int64_t)a3
+- (id)collectionForFavoritesType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v5 = [(CollectionManager *)self allPlacesCollection];
+    allPlacesCollection = [(CollectionManager *)self allPlacesCollection];
   }
 
   else
   {
-    v5 = 0;
+    allPlacesCollection = 0;
   }
 
-  return v5;
+  return allPlacesCollection;
 }
 
 - (NSArray)currentCollectionsForToolbarMenu
@@ -1389,9 +1389,9 @@ LABEL_11:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(CollectionManager *)self allPlacesCollection];
-        v11 = v10;
-        if (v9 == v10)
+        allPlacesCollection = [(CollectionManager *)self allPlacesCollection];
+        v11 = allPlacesCollection;
+        if (v9 == allPlacesCollection)
         {
 
 LABEL_10:
@@ -1399,9 +1399,9 @@ LABEL_10:
           continue;
         }
 
-        v12 = [v9 handlerType];
+        handlerType = [v9 handlerType];
 
-        if (v12 == 4)
+        if (handlerType == 4)
         {
           goto LABEL_10;
         }
@@ -1441,9 +1441,9 @@ LABEL_10:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [(CollectionManager *)self allPlacesCollection];
-        v11 = v10;
-        if (v9 == v10)
+        allPlacesCollection = [(CollectionManager *)self allPlacesCollection];
+        v11 = allPlacesCollection;
+        if (v9 == allPlacesCollection)
         {
 
 LABEL_10:
@@ -1451,9 +1451,9 @@ LABEL_10:
           continue;
         }
 
-        v12 = [v9 handlerType];
+        handlerType = [v9 handlerType];
 
-        if (v12 == 4)
+        if (handlerType == 4)
         {
           goto LABEL_10;
         }
@@ -1476,36 +1476,36 @@ LABEL_10:
 
 - (NSArray)currentCollectionsForCarPlay
 {
-  v2 = [(CollectionManager *)self currentCollections];
+  currentCollections = [(CollectionManager *)self currentCollections];
   v3 = [NSPredicate predicateWithBlock:&stru_10164DBB0];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [currentCollections filteredArrayUsingPredicate:v3];
 
   return v4;
 }
 
 - (NSArray)currentCollectionsForWatchHome
 {
-  v3 = [(CollectionManager *)self currentCollections];
+  currentCollections = [(CollectionManager *)self currentCollections];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100C129BC;
   v7[3] = &unk_101656A98;
   v7[4] = self;
   v4 = [NSPredicate predicateWithBlock:v7];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [currentCollections filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (void)deleteCollections:(id)a3 completion:(id)a4
+- (void)deleteCollections:(id)collections completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  collectionsCopy = collections;
+  completionCopy = completion;
   v8 = sub_10000BDA4();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v6;
+    v25 = collectionsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[MCM] deleteCollections %@", buf, 0xCu);
   }
 
@@ -1514,7 +1514,7 @@ LABEL_10:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v6;
+  v10 = collectionsCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -1553,28 +1553,28 @@ LABEL_10:
     v17[1] = 3221225472;
     v17[2] = sub_100C12C80;
     v17[3] = &unk_1016610B8;
-    v18 = v7;
+    v18 = completionCopy;
     [v16 deleteWithObjects:v9 completionHandler:v17];
 
     [(CollectionOrderStorage *)self->_orderStorage removeCollections:v10];
   }
 }
 
-- (void)deleteCollection:(id)a3 completion:(id)a4
+- (void)deleteCollection:(id)collection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  completionCopy = completion;
   v8 = sub_10000BDA4();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 title];
+    title = [collectionCopy title];
     *buf = 138412290;
-    v20 = v9;
+    v20 = title;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[MCM] deleteCollection %@", buf, 0xCu);
   }
 
-  v10 = [(CollectionManager *)self _asMapsSyncObjectOrNil:v6];
-  if (v6)
+  v10 = [(CollectionManager *)self _asMapsSyncObjectOrNil:collectionCopy];
+  if (collectionCopy)
   {
     v11 = +[_TtC8MapsSync13MapsSyncStore sharedStore];
     v18 = v10;
@@ -1583,31 +1583,31 @@ LABEL_10:
     v15[1] = 3221225472;
     v15[2] = sub_100C12F28;
     v15[3] = &unk_1016610B8;
-    v16 = v7;
+    v16 = completionCopy;
     [v11 deleteWithObjects:v12 completionHandler:v15];
 
     orderStorage = self->_orderStorage;
-    v17 = v6;
+    v17 = collectionCopy;
     v14 = [NSArray arrayWithObjects:&v17 count:1];
     [(CollectionOrderStorage *)orderStorage removeCollections:v14];
   }
 }
 
-- (void)saveCollection:(id)a3 completion:(id)a4
+- (void)saveCollection:(id)collection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  completionCopy = completion;
   v8 = sub_10000BDA4();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 title];
+    title = [collectionCopy title];
     *buf = 138412290;
-    v20 = v9;
+    v20 = title;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[MCM] saveCollection %@", buf, 0xCu);
   }
 
-  v10 = [(CollectionManager *)self _asMapsSyncObjectOrNil:v6];
-  if (v6)
+  v10 = [(CollectionManager *)self _asMapsSyncObjectOrNil:collectionCopy];
+  if (collectionCopy)
   {
     v11 = +[_TtC8MapsSync13MapsSyncStore sharedStore];
     v18 = v10;
@@ -1616,28 +1616,28 @@ LABEL_10:
     v14 = 3221225472;
     v15 = sub_100C13224;
     v16 = &unk_1016610B8;
-    v17 = v7;
+    v17 = completionCopy;
     [v11 saveWithObjects:v12 completionHandler:&v13];
 
-    [(CollectionOrderStorage *)self->_orderStorage editCollection:v6, v13, v14, v15, v16];
+    [(CollectionOrderStorage *)self->_orderStorage editCollection:collectionCopy, v13, v14, v15, v16];
   }
 }
 
-- (void)createCollection:(id)a3 completion:(id)a4
+- (void)createCollection:(id)collection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  completionCopy = completion;
   v8 = sub_10000BDA4();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 title];
+    title = [collectionCopy title];
     *buf = 138412290;
-    v20 = v9;
+    v20 = title;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[MCM] createCollection %@", buf, 0xCu);
   }
 
-  v10 = [(CollectionManager *)self _asMapsSyncObjectOrNil:v6];
-  if (v6)
+  v10 = [(CollectionManager *)self _asMapsSyncObjectOrNil:collectionCopy];
+  if (collectionCopy)
   {
     v11 = +[_TtC8MapsSync13MapsSyncStore sharedStore];
     v18 = v10;
@@ -1646,24 +1646,24 @@ LABEL_10:
     v14 = 3221225472;
     v15 = sub_100C13520;
     v16 = &unk_1016610B8;
-    v17 = v7;
+    v17 = completionCopy;
     [v11 saveWithObjects:v12 completionHandler:&v13];
 
-    [(CollectionOrderStorage *)self->_orderStorage editCollection:v6, v13, v14, v15, v16];
+    [(CollectionOrderStorage *)self->_orderStorage editCollection:collectionCopy, v13, v14, v15, v16];
   }
 }
 
-- (void)touchCollection:(id)a3
+- (void)touchCollection:(id)collection
 {
-  [(CollectionOrderStorage *)self->_orderStorage editCollection:a3];
+  [(CollectionOrderStorage *)self->_orderStorage editCollection:collection];
   self->_needToSendUpdate = 1;
 
   [(CollectionManager *)self _updateContent];
 }
 
-- (void)_fetchCollectionsWithCompletion:(id)a3
+- (void)_fetchCollectionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_updateContentQueue);
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(MSCollectionRequest);
@@ -1672,7 +1672,7 @@ LABEL_10:
   v7[2] = sub_100C137BC;
   v7[3] = &unk_10165E308;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [v5 fetchWithCompletionHandler:v7];
 
@@ -1682,15 +1682,15 @@ LABEL_10:
 
 - (id)newTraits
 {
-  v3 = [(CollectionManager *)self traitsCreationBlock];
+  traitsCreationBlock = [(CollectionManager *)self traitsCreationBlock];
 
-  if (!v3 || ([(CollectionManager *)self traitsCreationBlock], v4 = objc_claimAutoreleasedReturnValue(), v4[2](), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (!traitsCreationBlock || ([(CollectionManager *)self traitsCreationBlock], v4 = objc_claimAutoreleasedReturnValue(), v4[2](), mapsDefaultTraits = objc_claimAutoreleasedReturnValue(), v4, !mapsDefaultTraits))
   {
     v6 = +[MKMapService sharedService];
-    v5 = [v6 mapsDefaultTraits];
+    mapsDefaultTraits = [v6 mapsDefaultTraits];
   }
 
-  return v5;
+  return mapsDefaultTraits;
 }
 
 - (void)dealloc

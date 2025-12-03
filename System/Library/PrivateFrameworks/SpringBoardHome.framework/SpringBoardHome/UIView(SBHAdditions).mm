@@ -14,7 +14,7 @@
     v20[1] = 3221225472;
     v20[2] = __88__UIView_SBHAdditions__scaleAndBlurForDuration_initiallyHidden_visibleAlpha_completion___block_invoke;
     v20[3] = &unk_1E8088C90;
-    v20[4] = a1;
+    v20[4] = self;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v20];
     v11 = 10.0;
     v12 = 0.0;
@@ -26,8 +26,8 @@
     v12 = 10.0;
   }
 
-  v13 = [a1 layer];
-  [a1 blurAnimationFor:v13 duration:a2 startRadius:v11 endRadius:v12];
+  layer = [self layer];
+  [self blurAnimationFor:layer duration:a2 startRadius:v11 endRadius:v12];
 
   v14 = MEMORY[0x1E69DD250];
   v18[0] = MEMORY[0x1E69E9820];
@@ -36,7 +36,7 @@
   v18[3] = &unk_1E808B1B0;
   v19 = a5;
   *&v18[5] = a3;
-  v18[4] = a1;
+  v18[4] = self;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __88__UIView_SBHAdditions__scaleAndBlurForDuration_initiallyHidden_visibleAlpha_completion___block_invoke_3;
@@ -62,17 +62,17 @@
   [v10 setFilters:v14];
 
   [MEMORY[0x1E6979518] begin];
-  v15 = [MEMORY[0x1E6979518] disableActions];
-  v16 = [MEMORY[0x1E6979318] animation];
-  [v16 setKeyPath:@"filters.gaussianBlur.inputRadius"];
-  [v16 setFromValue:v11];
-  [v16 setToValue:v12];
-  [v16 setDuration:a1];
-  [v16 setFillMode:*MEMORY[0x1E69797E8]];
-  [v10 addAnimation:v16 forKey:@"blurAnimation"];
+  disableActions = [MEMORY[0x1E6979518] disableActions];
+  animation = [MEMORY[0x1E6979318] animation];
+  [animation setKeyPath:@"filters.gaussianBlur.inputRadius"];
+  [animation setFromValue:v11];
+  [animation setToValue:v12];
+  [animation setDuration:self];
+  [animation setFillMode:*MEMORY[0x1E69797E8]];
+  [v10 addAnimation:animation forKey:@"blurAnimation"];
 
   [MEMORY[0x1E6979518] commit];
-  [MEMORY[0x1E6979518] setDisableActions:v15];
+  [MEMORY[0x1E6979518] setDisableActions:disableActions];
 }
 
 @end

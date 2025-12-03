@@ -1,43 +1,43 @@
 @interface _PXStoryDefaultStyleProducer
-- (_PXStoryDefaultStyleProducer)initWithStoryConfiguration:(id)a3;
-- (id)styleWithCustomColorGradeKind:(int64_t)a3 originalColorGradeCategory:(id)a4 songResource:(id)a5 cueSource:(id)a6 autoEditDecisionList:(id)a7 styleOptions:(id)a8 isCustomized:(BOOL)a9;
+- (_PXStoryDefaultStyleProducer)initWithStoryConfiguration:(id)configuration;
+- (id)styleWithCustomColorGradeKind:(int64_t)kind originalColorGradeCategory:(id)category songResource:(id)resource cueSource:(id)source autoEditDecisionList:(id)list styleOptions:(id)options isCustomized:(BOOL)customized;
 @end
 
 @implementation _PXStoryDefaultStyleProducer
 
-- (id)styleWithCustomColorGradeKind:(int64_t)a3 originalColorGradeCategory:(id)a4 songResource:(id)a5 cueSource:(id)a6 autoEditDecisionList:(id)a7 styleOptions:(id)a8 isCustomized:(BOOL)a9
+- (id)styleWithCustomColorGradeKind:(int64_t)kind originalColorGradeCategory:(id)category songResource:(id)resource cueSource:(id)source autoEditDecisionList:(id)list styleOptions:(id)options isCustomized:(BOOL)customized
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  resourceCopy = resource;
+  sourceCopy = source;
+  listCopy = list;
   if (self->_thumbnailOnly)
   {
-    v17 = a4;
-    v18 = [[PXStoryConcreteThumbnailOnlyStyle alloc] initWithCustomColorGradeKind:a3 originalColorGradeCategory:v17];
+    categoryCopy = category;
+    categoryCopy = [[PXStoryConcreteThumbnailOnlyStyle alloc] initWithCustomColorGradeKind:kind originalColorGradeCategory:categoryCopy];
   }
 
   else
   {
-    v19 = a4;
+    categoryCopy2 = category;
     v20 = [PXStoryConcreteStyle alloc];
-    v17 = [(_PXStoryDefaultStyleProducer *)self storyConfiguration];
-    LOBYTE(v22) = a9;
-    v18 = [(PXStoryConcreteStyle *)v20 initWithCustomColorGradeKind:a3 originalColorGradeCategory:v19 songResource:v14 cueSource:v15 autoEditDecisionList:v16 styleOptions:a8.var0 isCustomized:*&a8.var1 storyConfiguration:v22, v17];
+    categoryCopy = [(_PXStoryDefaultStyleProducer *)self storyConfiguration];
+    LOBYTE(v22) = customized;
+    categoryCopy = [(PXStoryConcreteStyle *)v20 initWithCustomColorGradeKind:kind originalColorGradeCategory:categoryCopy2 songResource:resourceCopy cueSource:sourceCopy autoEditDecisionList:listCopy styleOptions:options.var0 isCustomized:*&options.var1 storyConfiguration:v22, categoryCopy];
   }
 
-  return v18;
+  return categoryCopy;
 }
 
-- (_PXStoryDefaultStyleProducer)initWithStoryConfiguration:(id)a3
+- (_PXStoryDefaultStyleProducer)initWithStoryConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v8.receiver = self;
   v8.super_class = _PXStoryDefaultStyleProducer;
   v6 = [(_PXStoryDefaultStyleProducer *)&v8 init];
   if (v6)
   {
-    v6->_thumbnailOnly = ([v5 options] & 2) != 0;
-    objc_storeStrong(&v6->_storyConfiguration, a3);
+    v6->_thumbnailOnly = ([configurationCopy options] & 2) != 0;
+    objc_storeStrong(&v6->_storyConfiguration, configuration);
   }
 
   return v6;

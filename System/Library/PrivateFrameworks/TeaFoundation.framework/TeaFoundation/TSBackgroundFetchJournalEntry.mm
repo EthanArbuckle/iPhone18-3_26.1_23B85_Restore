@@ -1,7 +1,7 @@
 @interface TSBackgroundFetchJournalEntry
 - (NSDate)date;
 - (NSString)reason;
-- (TSBackgroundFetchJournalEntry)initWithReason:(id)a3 date:(id)a4;
+- (TSBackgroundFetchJournalEntry)initWithReason:(id)reason date:(id)date;
 @end
 
 @implementation TSBackgroundFetchJournalEntry
@@ -28,7 +28,7 @@
   return v7;
 }
 
-- (TSBackgroundFetchJournalEntry)initWithReason:(id)a3 date:(id)a4
+- (TSBackgroundFetchJournalEntry)initWithReason:(id)reason date:(id)date
 {
   v4 = sub_1BF1794AC();
   v5 = *(*(v4 - 8) + 64);

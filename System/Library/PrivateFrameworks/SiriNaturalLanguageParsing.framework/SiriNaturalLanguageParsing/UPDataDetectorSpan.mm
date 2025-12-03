@@ -1,6 +1,6 @@
 @interface UPDataDetectorSpan
-- (UPDataDetectorSpan)initWithRange:(_NSRange)a3 category:(id)a4 dataDetectorResult:(__DDResult *)a5;
-- (UPDataDetectorSpan)initWithRange:(_NSRange)a3 category:(id)a4 dataDetectorResult:(__DDResult *)a5 usoGraph:(id)a6;
+- (UPDataDetectorSpan)initWithRange:(_NSRange)range category:(id)category dataDetectorResult:(__DDResult *)result;
+- (UPDataDetectorSpan)initWithRange:(_NSRange)range category:(id)category dataDetectorResult:(__DDResult *)result usoGraph:(id)graph;
 - (void)dealloc;
 @end
 
@@ -14,31 +14,31 @@
   [(UPDataDetectorSpan *)&v3 dealloc];
 }
 
-- (UPDataDetectorSpan)initWithRange:(_NSRange)a3 category:(id)a4 dataDetectorResult:(__DDResult *)a5 usoGraph:(id)a6
+- (UPDataDetectorSpan)initWithRange:(_NSRange)range category:(id)category dataDetectorResult:(__DDResult *)result usoGraph:(id)graph
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(UPSpan *)self initWithRange:location type:length category:2, v11];
-  CFRetain(a5);
-  v13->_dataDetectorResult = a5;
-  usoGraph = v13->_usoGraph;
-  v13->_usoGraph = v12;
+  length = range.length;
+  location = range.location;
+  categoryCopy = category;
+  graphCopy = graph;
+  categoryCopy = [(UPSpan *)self initWithRange:location type:length category:2, categoryCopy];
+  CFRetain(result);
+  categoryCopy->_dataDetectorResult = result;
+  usoGraph = categoryCopy->_usoGraph;
+  categoryCopy->_usoGraph = graphCopy;
 
-  return v13;
+  return categoryCopy;
 }
 
-- (UPDataDetectorSpan)initWithRange:(_NSRange)a3 category:(id)a4 dataDetectorResult:(__DDResult *)a5
+- (UPDataDetectorSpan)initWithRange:(_NSRange)range category:(id)category dataDetectorResult:(__DDResult *)result
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = [(UPSpan *)self initWithRange:location type:length category:2, v9];
-  CFRetain(a5);
-  v10->_dataDetectorResult = a5;
+  length = range.length;
+  location = range.location;
+  categoryCopy = category;
+  categoryCopy = [(UPSpan *)self initWithRange:location type:length category:2, categoryCopy];
+  CFRetain(result);
+  categoryCopy->_dataDetectorResult = result;
 
-  return v10;
+  return categoryCopy;
 }
 
 @end

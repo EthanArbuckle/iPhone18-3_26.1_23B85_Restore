@@ -9,20 +9,20 @@
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(SUIOpenInAppActivity *)self applicationProxy];
-    v4 = [v3 localizedName];
+    applicationProxy = [(SUIOpenInAppActivity *)self applicationProxy];
+    localizedName = [applicationProxy localizedName];
   }
 
   else
   {
-    v3 = sub_10026BF6C();
-    v5 = [v3 localizedStringForKey:@"COPY_TO_APP_ACTIVITY_TITLE" value:@"Copy to" table:@"Localizable"];
-    v6 = [(SUIOpenInAppActivity *)self applicationProxy];
-    v7 = [v6 localizedName];
-    v4 = [NSString stringWithFormat:v5, v7];
+    applicationProxy = sub_10026BF6C();
+    v5 = [applicationProxy localizedStringForKey:@"COPY_TO_APP_ACTIVITY_TITLE" value:@"Copy to" table:@"Localizable"];
+    applicationProxy2 = [(SUIOpenInAppActivity *)self applicationProxy];
+    localizedName2 = [applicationProxy2 localizedName];
+    localizedName = [NSString stringWithFormat:v5, localizedName2];
   }
 
-  return v4;
+  return localizedName;
 }
 
 - (void)performActivity

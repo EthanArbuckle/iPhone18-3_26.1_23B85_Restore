@@ -1,17 +1,17 @@
 @interface PTTimedRenderingMetadataVersion1
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4;
-- (PTTimedRenderingMetadataVersion1)initWithData:(id)a3 minorVersion:(unsigned int)a4;
-- (PTTimedRenderingMetadataVersion1)initWithMinorVersion:(unsigned int)a3;
-- (void)applyToRenderRequest:(id)a3;
+- (BOOL)writeToData:(id)data withOptions:(id)options;
+- (PTTimedRenderingMetadataVersion1)initWithData:(id)data minorVersion:(unsigned int)version;
+- (PTTimedRenderingMetadataVersion1)initWithMinorVersion:(unsigned int)version;
+- (void)applyToRenderRequest:(id)request;
 @end
 
 @implementation PTTimedRenderingMetadataVersion1
 
-- (PTTimedRenderingMetadataVersion1)initWithMinorVersion:(unsigned int)a3
+- (PTTimedRenderingMetadataVersion1)initWithMinorVersion:(unsigned int)version
 {
   v8.receiver = self;
   v8.super_class = PTTimedRenderingMetadataVersion1;
-  v3 = [(PTTimedRenderingMetadata *)&v8 initWithMajorVersion:1 minorVersion:*&a3];
+  v3 = [(PTTimedRenderingMetadata *)&v8 initWithMajorVersion:1 minorVersion:*&version];
   v5 = v3;
   if (v3)
   {
@@ -24,12 +24,12 @@
   return v5;
 }
 
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4
+- (BOOL)writeToData:(id)data withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PTTimedRenderingMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7];
-  if ([v6 length] < v8 || -[PTTimedRenderingMetadata majorVersion](self, "majorVersion") != 1 || (v9 = objc_msgSend(v6, "mutableBytes"), *v9 = bswap32(-[PTTimedRenderingMetadataVersion1 sizeOfSerializedObjectWithOptions:](self, "sizeOfSerializedObjectWithOptions:", v7)), v9[1] = 1684956530, v17 = v9 + 2, *&v10 = self->_focusDistance, v11 = 1, +[PTParameterPairSerialization appendFloatParameter:value:toOutput:](PTParameterPairSerialization, "appendFloatParameter:value:toOutput:", 1, &v17, v10), *&v12 = self->_aperture, +[PTParameterPairSerialization appendFloatParameter:value:toOutput:](PTParameterPairSerialization, "appendFloatParameter:value:toOutput:", 2, &v17, v12), +[PTParameterPairSerialization appendUIntParameter:value:toOutput:](PTParameterPairSerialization, "appendUIntParameter:value:toOutput:", 3, self->_agc, &v17), *&v13 = self->_alphaLowLight, +[PTParameterPairSerialization appendFloatParameter:value:toOutput:](PTParameterPairSerialization, "appendFloatParameter:value:toOutput:", 4, &v17, v13), +[PTParameterPairSerialization appendUIntParameter:value:toOutput:](PTParameterPairSerialization, "appendUIntParameter:value:toOutput:", 5, self->_frameId, &v17), v14 = v17, v15 = v14 - objc_msgSend(v6, "bytes"), v15 != -[PTTimedRenderingMetadataVersion1 sizeOfSerializedObjectWithOptions:](self, "sizeOfSerializedObjectWithOptions:", v7)))
+  dataCopy = data;
+  optionsCopy = options;
+  v8 = [(PTTimedRenderingMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy];
+  if ([dataCopy length] < v8 || -[PTTimedRenderingMetadata majorVersion](self, "majorVersion") != 1 || (v9 = objc_msgSend(dataCopy, "mutableBytes"), *v9 = bswap32(-[PTTimedRenderingMetadataVersion1 sizeOfSerializedObjectWithOptions:](self, "sizeOfSerializedObjectWithOptions:", optionsCopy)), v9[1] = 1684956530, v17 = v9 + 2, *&v10 = self->_focusDistance, v11 = 1, +[PTParameterPairSerialization appendFloatParameter:value:toOutput:](PTParameterPairSerialization, "appendFloatParameter:value:toOutput:", 1, &v17, v10), *&v12 = self->_aperture, +[PTParameterPairSerialization appendFloatParameter:value:toOutput:](PTParameterPairSerialization, "appendFloatParameter:value:toOutput:", 2, &v17, v12), +[PTParameterPairSerialization appendUIntParameter:value:toOutput:](PTParameterPairSerialization, "appendUIntParameter:value:toOutput:", 3, self->_agc, &v17), *&v13 = self->_alphaLowLight, +[PTParameterPairSerialization appendFloatParameter:value:toOutput:](PTParameterPairSerialization, "appendFloatParameter:value:toOutput:", 4, &v17, v13), +[PTParameterPairSerialization appendUIntParameter:value:toOutput:](PTParameterPairSerialization, "appendUIntParameter:value:toOutput:", 5, self->_frameId, &v17), v14 = v17, v15 = v14 - objc_msgSend(dataCopy, "bytes"), v15 != -[PTTimedRenderingMetadataVersion1 sizeOfSerializedObjectWithOptions:](self, "sizeOfSerializedObjectWithOptions:", optionsCopy)))
   {
     v11 = 0;
   }
@@ -37,18 +37,18 @@
   return v11;
 }
 
-- (void)applyToRenderRequest:(id)a3
+- (void)applyToRenderRequest:(id)request
 {
   aperture = self->_aperture;
-  v5 = a3;
+  requestCopy = request;
   *&v6 = aperture;
-  [v5 setFNumber:v6];
+  [requestCopy setFNumber:v6];
   *&v7 = self->_focusDistance;
-  [v5 setFocusDisparity:v7];
-  [v5 setAGC:self->_agc];
+  [requestCopy setFocusDisparity:v7];
+  [requestCopy setAGC:self->_agc];
   *&v8 = self->_alphaLowLight;
-  [v5 setAlphaLowLight:v8];
-  [v5 setFrameId:self->_frameId];
+  [requestCopy setAlphaLowLight:v8];
+  [requestCopy setFrameId:self->_frameId];
 
   if (!self->_readSuccessAll)
   {
@@ -60,12 +60,12 @@
   }
 }
 
-- (PTTimedRenderingMetadataVersion1)initWithData:(id)a3 minorVersion:(unsigned int)a4
+- (PTTimedRenderingMetadataVersion1)initWithData:(id)data minorVersion:(unsigned int)version
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&version;
+  dataCopy = data;
   v7 = [(PTTimedRenderingMetadataVersion1 *)self initWithMinorVersion:v4];
-  if (v7 && ((v8 = [v6 bytes], v9 = bswap32(*v8), objc_msgSend(v6, "length") == v9) ? (v10 = (v9 & 7) == 0) : (v10 = 0), v10))
+  if (v7 && ((v8 = [dataCopy bytes], v9 = bswap32(*v8), objc_msgSend(dataCopy, "length") == v9) ? (v10 = (v9 & 7) == 0) : (v10 = 0), v10))
   {
     v11 = (v9 + 0x7FFFFFFF8) >> 3;
     v71 = 0;

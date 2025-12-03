@@ -1,21 +1,21 @@
 @interface ATXActionBlendingUpdater
-+ (double)generateScoreForFallbackActionKey:(id)a3 fallbackAction:(id)a4 penalizedFallbackActions:(id)a5;
-+ (id)clientModelIdForConsumerSubType:(unsigned __int8)a3;
++ (double)generateScoreForFallbackActionKey:(id)key fallbackAction:(id)action penalizedFallbackActions:(id)actions;
++ (id)clientModelIdForConsumerSubType:(unsigned __int8)type;
 + (void)updateBlendingLayerWithFallbackActions;
-+ (void)updateBlendingLayerWithHeuristicPredictions:(id)a3;
-+ (void)updateBlendingLayerWithLockscreenActions:(id)a3 feedbackMetadata:(id)a4;
-+ (void)updateBlendingLayerWithRecentShortcuts:(id)a3;
++ (void)updateBlendingLayerWithHeuristicPredictions:(id)predictions;
++ (void)updateBlendingLayerWithLockscreenActions:(id)actions feedbackMetadata:(id)metadata;
++ (void)updateBlendingLayerWithRecentShortcuts:(id)shortcuts;
 @end
 
 @implementation ATXActionBlendingUpdater
 
-+ (id)clientModelIdForConsumerSubType:(unsigned __int8)a3
++ (id)clientModelIdForConsumerSubType:(unsigned __int8)type
 {
-  v5 = a3;
+  typeCopy = type;
   v6 = 0;
-  if (a3 > 37)
+  if (type > 37)
   {
-    switch(a3)
+    switch(type)
     {
       case '1':
         v7 = 49;
@@ -34,7 +34,7 @@
   else
   {
     v7 = 6;
-    if ((v5 - 18) >= 4 && v5 != 16)
+    if ((typeCopy - 18) >= 4 && typeCopy != 16)
     {
 LABEL_4:
 
@@ -47,16 +47,16 @@ LABEL_4:
   return v6;
 }
 
-+ (void)updateBlendingLayerWithRecentShortcuts:(id)a3
++ (void)updateBlendingLayerWithRecentShortcuts:(id)shortcuts
 {
-  v8 = a3;
+  shortcutsCopy = shortcuts;
   v3 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:11];
   v4 = objc_alloc(MEMORY[0x277D42070]);
   v5 = +[ATXClientModelSuggestionReceiver sharedInstance];
-  v6 = [v5 blendingLayerServer];
-  v7 = [v4 initWithClientModelId:v3 blendingLayerServer:v6];
+  blendingLayerServer = [v5 blendingLayerServer];
+  v7 = [v4 initWithClientModelId:v3 blendingLayerServer:blendingLayerServer];
 
-  [v7 updateSuggestions:v8];
+  [v7 updateSuggestions:shortcutsCopy];
 }
 
 void __106__ATXActionBlendingUpdater_updateBlendingLayerWithBehavioralPredictions_feedbackMetadata_consumerSubType___block_invoke(uint64_t a1, int a2, void *a3)
@@ -88,19 +88,19 @@ void __106__ATXActionBlendingUpdater_updateBlendingLayerWithBehavioralPrediction
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)updateBlendingLayerWithHeuristicPredictions:(id)a3
++ (void)updateBlendingLayerWithHeuristicPredictions:(id)predictions
 {
-  v12 = a3;
+  predictionsCopy = predictions;
   v3 = +[_ATXGlobals sharedInstance];
   v4 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:3];
-  v5 = [v3 heuristicPredictionBlendingModelVersion];
+  heuristicPredictionBlendingModelVersion = [v3 heuristicPredictionBlendingModelVersion];
   v6 = objc_alloc(MEMORY[0x277D42070]);
   v7 = +[ATXClientModelSuggestionReceiver sharedInstance];
-  v8 = [v7 blendingLayerServer];
-  v9 = [v6 initWithClientModelId:v4 blendingLayerServer:v8];
+  blendingLayerServer = [v7 blendingLayerServer];
+  v9 = [v6 initWithClientModelId:v4 blendingLayerServer:blendingLayerServer];
 
-  v10 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:v4 clientModelVersion:v5 engagementResetPolicy:1];
-  v11 = [ATXProactiveSuggestionBuilder proactiveSuggestionsFromHeuristicActionResults:v12 clientModelSpec:v10];
+  v10 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:v4 clientModelVersion:heuristicPredictionBlendingModelVersion engagementResetPolicy:1];
+  v11 = [ATXProactiveSuggestionBuilder proactiveSuggestionsFromHeuristicActionResults:predictionsCopy clientModelSpec:v10];
   [v9 updateSuggestions:v11];
 }
 
@@ -111,23 +111,23 @@ void __106__ATXActionBlendingUpdater_updateBlendingLayerWithBehavioralPrediction
   v26 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:10];
   v2 = objc_alloc(MEMORY[0x277D42070]);
   v3 = +[ATXClientModelSuggestionReceiver sharedInstance];
-  v4 = [v3 blendingLayerServer];
-  v23 = [v2 initWithClientModelId:v26 blendingLayerServer:v4];
+  blendingLayerServer = [v3 blendingLayerServer];
+  v23 = [v2 initWithClientModelId:v26 blendingLayerServer:blendingLayerServer];
 
-  v24 = [v27 actionFallbacksBlendingModelVersion];
-  v25 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:v26 clientModelVersion:v24 engagementResetPolicy:0];
+  actionFallbacksBlendingModelVersion = [v27 actionFallbacksBlendingModelVersion];
+  v25 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:v26 clientModelVersion:actionFallbacksBlendingModelVersion engagementResetPolicy:0];
   v5 = [objc_alloc(MEMORY[0x277CEB540]) initWithClientModelSpec:v25];
   v6 = MEMORY[0x277CBEB98];
-  v7 = [v27 penalizedFallbackActions];
-  v29 = [v6 setWithArray:v7];
+  penalizedFallbackActions = [v27 penalizedFallbackActions];
+  v29 = [v6 setWithArray:penalizedFallbackActions];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
   v30 = objc_opt_new();
-  v8 = [v27 enabledFallbackActions];
-  v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  enabledFallbackActions = [v27 enabledFallbackActions];
+  v9 = [enabledFallbackActions countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v9)
   {
     v10 = *v32;
@@ -137,7 +137,7 @@ void __106__ATXActionBlendingUpdater_updateBlendingLayerWithBehavioralPrediction
       {
         if (*v32 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(enabledFallbackActions);
         }
 
         v12 = *(*(&v31 + 1) + 8 * i);
@@ -145,20 +145,20 @@ void __106__ATXActionBlendingUpdater_updateBlendingLayerWithBehavioralPrediction
         v14 = v13;
         if (v13)
         {
-          v15 = [v13 executableSpecification];
-          v16 = [v15 executableObject];
+          executableSpecification = [v13 executableSpecification];
+          executableObject = [executableSpecification executableObject];
 
-          v17 = [v16 actionKey];
-          [a1 generateScoreForFallbackActionKey:v17 fallbackAction:v12 penalizedFallbackActions:v29];
+          actionKey = [executableObject actionKey];
+          [self generateScoreForFallbackActionKey:actionKey fallbackAction:v12 penalizedFallbackActions:v29];
           v19 = v18;
-          v20 = [v14 scoreSpecification];
-          [v20 setRawScore:v19];
+          scoreSpecification = [v14 scoreSpecification];
+          [scoreSpecification setRawScore:v19];
 
           [v30 addObject:v14];
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v9 = [enabledFallbackActions countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v9);
@@ -187,22 +187,22 @@ uint64_t __66__ATXActionBlendingUpdater_updateBlendingLayerWithFallbackActions__
   return v11;
 }
 
-+ (double)generateScoreForFallbackActionKey:(id)a3 fallbackAction:(id)a4 penalizedFallbackActions:(id)a5
++ (double)generateScoreForFallbackActionKey:(id)key fallbackAction:(id)action penalizedFallbackActions:(id)actions
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  actionCopy = action;
+  actionsCopy = actions;
   v10 = +[_ATXGlobals sharedInstance];
   v11 = +[_ATXAppLaunchHistogramManager sharedInstance];
   v12 = [v11 histogramForLaunchType:90];
   v13 = [v11 histogramForLaunchType:91];
-  v28[0] = v7;
+  v28[0] = keyCopy;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
   [v12 totalLaunchesForBundleIds:v14];
   v16 = v15;
 
-  v27 = v7;
+  v27 = keyCopy;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
   [v13 totalLaunchesForBundleIds:v17];
   v19 = v18;
@@ -212,7 +212,7 @@ uint64_t __66__ATXActionBlendingUpdater_updateBlendingLayerWithFallbackActions__
   [v13 totalLaunches];
   +[_ATXActionUtils computeNormalizedBetaDistEngagementScoreWithPriorAlpha:priorBeta:confirms:rejects:totalConfirms:totalRejects:](_ATXActionUtils, "computeNormalizedBetaDistEngagementScoreWithPriorAlpha:priorBeta:confirms:rejects:totalConfirms:totalRejects:", [v10 fallbackActionsEngagementPriorAlpha], objc_msgSend(v10, "fallbackActionsEngagementPriorBeta"), v16, v19, v21, v22);
   v24 = v23;
-  if ([v9 containsObject:v8])
+  if ([actionsCopy containsObject:actionCopy])
   {
     v24 = v24 + -10000.0;
   }
@@ -221,29 +221,29 @@ uint64_t __66__ATXActionBlendingUpdater_updateBlendingLayerWithFallbackActions__
   return v24;
 }
 
-+ (void)updateBlendingLayerWithLockscreenActions:(id)a3 feedbackMetadata:(id)a4
++ (void)updateBlendingLayerWithLockscreenActions:(id)actions feedbackMetadata:(id)metadata
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  actionsCopy = actions;
+  metadataCopy = metadata;
   v7 = +[_ATXGlobals sharedInstance];
   v8 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:9];
   v9 = objc_alloc(MEMORY[0x277D42070]);
   v10 = +[ATXClientModelSuggestionReceiver sharedInstance];
-  v11 = [v10 blendingLayerServer];
-  v12 = [v9 initWithClientModelId:v8 blendingLayerServer:v11];
+  blendingLayerServer = [v10 blendingLayerServer];
+  v12 = [v9 initWithClientModelId:v8 blendingLayerServer:blendingLayerServer];
 
-  v13 = [v7 actionPredictionBlendingModelVersion];
-  v14 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:v8 clientModelVersion:v13 engagementResetPolicy:0];
+  actionPredictionBlendingModelVersion = [v7 actionPredictionBlendingModelVersion];
+  v14 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:v8 clientModelVersion:actionPredictionBlendingModelVersion engagementResetPolicy:0];
   v15 = __atxlog_handle_blending();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v5;
+    v20 = actionsCopy;
     _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "lockscreen: converting actions to proactive suggestions: %@", &v19, 0xCu);
   }
 
-  v16 = [ATXProactiveSuggestionBuilder proactiveSuggestionsForLockscreenActions:v5 clientModelSpec:v14];
+  v16 = [ATXProactiveSuggestionBuilder proactiveSuggestionsForLockscreenActions:actionsCopy clientModelSpec:v14];
   v17 = __atxlog_handle_blending();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -252,7 +252,7 @@ uint64_t __66__ATXActionBlendingUpdater_updateBlendingLayerWithFallbackActions__
     _os_log_impl(&dword_2263AA000, v17, OS_LOG_TYPE_DEFAULT, "lockscreen: Sending suggestions to blending: %@", &v19, 0xCu);
   }
 
-  [v12 updateSuggestions:v16 feedbackMetadata:v6 completionHandler:&__block_literal_global_35_7];
+  [v12 updateSuggestions:v16 feedbackMetadata:metadataCopy completionHandler:&__block_literal_global_35_7];
   v18 = *MEMORY[0x277D85DE8];
 }
 

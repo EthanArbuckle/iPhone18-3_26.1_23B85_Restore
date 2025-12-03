@@ -1,16 +1,16 @@
 @interface SBDashBoardNotificationPresenter
-- (void)presentModalBannerAndExpandForNotificationRequest:(id)a3;
+- (void)presentModalBannerAndExpandForNotificationRequest:(id)request;
 @end
 
 @implementation SBDashBoardNotificationPresenter
 
-- (void)presentModalBannerAndExpandForNotificationRequest:(id)a3
+- (void)presentModalBannerAndExpandForNotificationRequest:(id)request
 {
   v3 = SBApp;
-  v4 = a3;
-  v6 = [v3 notificationDispatcher];
-  v5 = [v6 bannerDestination];
-  [v5 presentModalBannerAndExpandForNotificationRequest:v4];
+  requestCopy = request;
+  notificationDispatcher = [v3 notificationDispatcher];
+  bannerDestination = [notificationDispatcher bannerDestination];
+  [bannerDestination presentModalBannerAndExpandForNotificationRequest:requestCopy];
 }
 
 @end

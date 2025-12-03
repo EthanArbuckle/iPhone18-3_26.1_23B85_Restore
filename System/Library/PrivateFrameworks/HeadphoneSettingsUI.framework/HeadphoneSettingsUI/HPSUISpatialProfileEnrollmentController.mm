@@ -6,9 +6,9 @@
 - (BOOL)isEarTooFar;
 - (BOOL)isPresentingWrongEar;
 - (HPSUISpatialProfileEnrollmentController)init;
-- (id)angleArrayToBinaryString:(id)a3;
+- (id)angleArrayToBinaryString:(id)string;
 - (id)getBudsInEarString;
-- (void)alertEarDistanceWarning:(int)a3;
+- (void)alertEarDistanceWarning:(int)warning;
 - (void)alertEarEnrollWarning;
 - (void)alertOcclusionWarning;
 - (void)bluetoothDidBecomeAvailable;
@@ -21,22 +21,22 @@
 - (void)continueButtonTapped;
 - (void)continueEarDistanceWarning;
 - (void)continueOcclusionWarning;
-- (void)didReceiveCaptureVideo:(id)a3 colorImage:(id)a4 depthImage:(id)a5 faceObject:(id)a6;
-- (void)didReceiveStateUpdateForSession:(id)a3 stateInfo:(id)a4;
+- (void)didReceiveCaptureVideo:(id)video colorImage:(id)image depthImage:(id)depthImage faceObject:(id)object;
+- (void)didReceiveStateUpdateForSession:(id)session stateInfo:(id)info;
 - (void)earCentralPartCaptured;
 - (void)earLeftPartCaptured;
 - (void)earRightPartCaptured;
-- (void)fillFacePillsByDirection:(int)a3;
+- (void)fillFacePillsByDirection:(int)direction;
 - (void)forceBlur;
 - (void)getBudsInEarString;
 - (void)hideContinueButton;
 - (void)hideEarDistanceWarningContinueButton;
 - (void)hideEarPillsDots;
 - (void)hideOcclusionContinueButton;
-- (void)moveToStep:(int)a3;
+- (void)moveToStep:(int)step;
 - (void)nudgeEar;
 - (void)pauseEnrollment;
-- (void)playEarCaptureSoundWithCompletion:(id)a3;
+- (void)playEarCaptureSoundWithCompletion:(id)completion;
 - (void)prepareSpinner;
 - (void)pulseEarBoundingBox;
 - (void)resetVolume;
@@ -50,7 +50,7 @@
 - (void)setupEnrollController;
 - (void)setupEnrollViewUI;
 - (void)setupWelcomeContentView;
-- (void)showBudsInEarPopUp:(id)a3;
+- (void)showBudsInEarPopUp:(id)up;
 - (void)showContinueButton;
 - (void)showEarDistanceWarningContinueButton;
 - (void)showEarPillsDots;
@@ -81,7 +81,7 @@
 - (void)stopTutorialResumeEnrollTimer;
 - (void)stopWelcomeSpinner;
 - (void)syncProfile;
-- (void)translateEarBoundingBox:(CGRect)a3 previewLayerBoundingBox:(CGRect)a4;
+- (void)translateEarBoundingBox:(CGRect)box previewLayerBoundingBox:(CGRect)boundingBox;
 - (void)triggerEarDistanceWarnCoolDownTimer;
 - (void)triggerEarEnrollmentNudgeTimer;
 - (void)triggerEnrollGuidanceTimer;
@@ -91,12 +91,12 @@
 - (void)triggerstartEarEnrollWarningTimer;
 - (void)tutorialResumeEnrollTimerDidFire;
 - (void)updateBoundingBoxHiddenStatus;
-- (void)updateCurrentTrackingEar:(id)a3 rightEarPoseStatus:(id)a4 earBoundingBox:(CGRect)a5 earStatus:(int)a6;
+- (void)updateCurrentTrackingEar:(id)ear rightEarPoseStatus:(id)status earBoundingBox:(CGRect)box earStatus:(int)earStatus;
 - (void)updateEarEnrollText;
-- (void)updateFaceTrackingStatus:(CGRect)a3;
+- (void)updateFaceTrackingStatus:(CGRect)status;
 - (void)userCancelEnrollment;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -112,9 +112,9 @@
   v41.receiver = self;
   v41.super_class = HPSUISpatialProfileEnrollmentController;
   v2 = [(HPSUISpatialProfileEnrollmentController *)&v41 init];
-  v3 = [MEMORY[0x1E698F468] sharedInstance];
+  mEMORY[0x1E698F468] = [MEMORY[0x1E698F468] sharedInstance];
   v4 = *(v2 + 177);
-  *(v2 + 177) = v3;
+  *(v2 + 177) = mEMORY[0x1E698F468];
 
   v2[1424] = 0;
   v2[1425] = 0;
@@ -246,11 +246,11 @@
   v37 = *(v2 + 202);
   *(v2 + 202) = v36;
 
-  v38 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v38 addObserver:v2 selector:sel_cancelSpatialAudioProfile name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel_cancelSpatialAudioProfile name:*MEMORY[0x1E69DDAC8] object:0];
 
-  v39 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v39 addObserver:v2 selector:sel_bluetoothDidBecomeAvailable name:*MEMORY[0x1E698F448] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:v2 selector:sel_bluetoothDidBecomeAvailable name:*MEMORY[0x1E698F448] object:0];
 
   return v2;
 }
@@ -260,11 +260,11 @@
   v9.receiver = self;
   v9.super_class = HPSUISpatialProfileEnrollmentController;
   [(HPSUISpatialProfileEnrollmentController *)&v9 viewDidLoad];
-  v3 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  [v3 size];
+  view = [(HPSUISpatialProfileEnrollmentController *)self view];
+  [view size];
   v5 = v4;
-  v6 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  [v6 size];
+  view2 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  [view2 size];
   v8 = v7;
 
   if (v5 <= v8)
@@ -283,14 +283,14 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = HPSUISpatialProfileEnrollmentController;
   [(HPSUISpatialProfileEnrollmentController *)&v3 viewDidAppear:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -315,13 +315,13 @@
   }
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_userCancelEnrollment];
-  v6 = [(HPSUISpatialProfileEnrollmentController *)self navigationItem];
+  navigationItem = [(HPSUISpatialProfileEnrollmentController *)self navigationItem];
   v229 = v5;
-  [v6 setLeftBarButtonItem:v5];
+  [navigationItem setLeftBarButtonItem:v5];
 
-  v7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v8 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  [v8 setBackgroundColor:v7];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(HPSUISpatialProfileEnrollmentController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v9 = objc_alloc(MEMORY[0x1E69DD250]);
   v10 = *MEMORY[0x1E695F058];
@@ -381,13 +381,13 @@
   [(UILabel *)self->_learnMoreView setFont:v35];
 
   [(UILabel *)self->_learnMoreView setAdjustsFontForContentSizeCategory:1];
-  v36 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UILabel *)self->_learnMoreView setTextColor:v36];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UILabel *)self->_learnMoreView setTextColor:systemGrayColor];
 
   [(UILabel *)self->_learnMoreView setTextAlignment:1];
-  v37 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   continueButton = self->_continueButton;
-  self->_continueButton = v37;
+  self->_continueButton = boldButton;
 
   v39 = self->_continueButton;
   v40 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -395,9 +395,9 @@
   [(OBTrayButton *)v39 setTitle:v41 forState:0];
 
   [(OBTrayButton *)self->_continueButton addTarget:self action:sel_continueButtonTapped forControlEvents:64];
-  v42 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton2 = [MEMORY[0x1E69B7D00] boldButton];
   occlusionContinueButton = self->_occlusionContinueButton;
-  self->_occlusionContinueButton = v42;
+  self->_occlusionContinueButton = boldButton2;
 
   v44 = self->_occlusionContinueButton;
   v45 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -405,9 +405,9 @@
   [(OBTrayButton *)v44 setTitle:v46 forState:0];
 
   [(OBTrayButton *)self->_occlusionContinueButton addTarget:self action:sel_continueOcclusionWarning forControlEvents:64];
-  v47 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton3 = [MEMORY[0x1E69B7D00] boldButton];
   earDistanceWarnContinueButton = self->_earDistanceWarnContinueButton;
-  self->_earDistanceWarnContinueButton = v47;
+  self->_earDistanceWarnContinueButton = boldButton3;
 
   v49 = self->_earDistanceWarnContinueButton;
   v50 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -434,52 +434,52 @@
   [(UIView *)self->_spacerViewSecond setTranslatesAutoresizingMaskIntoConstraints:0];
   if (self->_debugMode)
   {
-    v60 = [(UIView *)self->_enrollContentView layer];
-    [v60 setBorderWidth:1.0];
+    layer = [(UIView *)self->_enrollContentView layer];
+    [layer setBorderWidth:1.0];
 
-    v61 = [MEMORY[0x1E69DC888] systemRedColor];
-    v62 = [v61 CGColor];
-    v63 = [(UIView *)self->_enrollContentView layer];
-    [v63 setBorderColor:v62];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    cGColor = [systemRedColor CGColor];
+    layer2 = [(UIView *)self->_enrollContentView layer];
+    [layer2 setBorderColor:cGColor];
 
-    v64 = [(UIView *)self->_scrollContentView layer];
-    [v64 setBorderWidth:1.0];
+    layer3 = [(UIView *)self->_scrollContentView layer];
+    [layer3 setBorderWidth:1.0];
 
-    v65 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v66 = [v65 CGColor];
-    v67 = [(UIView *)self->_scrollContentView layer];
-    [v67 setBorderColor:v66];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    cGColor2 = [systemBlueColor CGColor];
+    layer4 = [(UIView *)self->_scrollContentView layer];
+    [layer4 setBorderColor:cGColor2];
 
-    v68 = [(UIScrollView *)self->_scrollView layer];
-    [v68 setBorderWidth:1.0];
+    layer5 = [(UIScrollView *)self->_scrollView layer];
+    [layer5 setBorderWidth:1.0];
 
-    v69 = [MEMORY[0x1E69DC888] systemYellowColor];
-    v70 = [v69 CGColor];
-    v71 = [(UIScrollView *)self->_scrollView layer];
-    [v71 setBorderColor:v70];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    cGColor3 = [systemYellowColor CGColor];
+    layer6 = [(UIScrollView *)self->_scrollView layer];
+    [layer6 setBorderColor:cGColor3];
 
-    v72 = [(OBHeaderView *)self->_infoView layer];
-    [v72 setBorderWidth:2.0];
+    layer7 = [(OBHeaderView *)self->_infoView layer];
+    [layer7 setBorderWidth:2.0];
 
-    v73 = [MEMORY[0x1E69DC888] systemGreenColor];
-    v74 = [v73 CGColor];
-    v75 = [(OBHeaderView *)self->_infoView layer];
-    [v75 setBorderColor:v74];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+    cGColor4 = [systemGreenColor CGColor];
+    layer8 = [(OBHeaderView *)self->_infoView layer];
+    [layer8 setBorderColor:cGColor4];
 
-    v76 = [(UIVisualEffectView *)self->_buttonTrayEffectView layer];
-    [v76 setBorderWidth:2.0];
+    layer9 = [(UIVisualEffectView *)self->_buttonTrayEffectView layer];
+    [layer9 setBorderWidth:2.0];
 
-    v77 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v78 = [v77 CGColor];
-    v79 = [(UIVisualEffectView *)self->_buttonTrayEffectView layer];
-    [v79 setBorderColor:v78];
+    systemGrayColor2 = [MEMORY[0x1E69DC888] systemGrayColor];
+    cGColor5 = [systemGrayColor2 CGColor];
+    layer10 = [(UIVisualEffectView *)self->_buttonTrayEffectView layer];
+    [layer10 setBorderColor:cGColor5];
   }
 
-  v80 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  [v80 addSubview:self->_enrollContentView];
+  view2 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  [view2 addSubview:self->_enrollContentView];
 
-  v81 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  [v81 addSubview:self->_scrollContentView];
+  view3 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  [view3 addSubview:self->_scrollContentView];
 
   [(UIView *)self->_scrollContentView addSubview:self->_scrollView];
   [(UIView *)self->_scrollContentView addSubview:self->_buttonTrayEffectView];
@@ -495,202 +495,202 @@
   [(HPSUISpatialProfileEnrollmentController *)self hideOcclusionContinueButton];
   [(HPSUISpatialProfileEnrollmentController *)self hideEarDistanceWarningContinueButton];
   v169 = MEMORY[0x1E696ACD8];
-  v227 = [(UIView *)self->_enrollContentView topAnchor];
-  v228 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  v226 = [v228 safeAreaLayoutGuide];
-  v225 = [v226 topAnchor];
-  v224 = [v227 constraintEqualToAnchor:v225];
+  topAnchor = [(UIView *)self->_enrollContentView topAnchor];
+  view4 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v224 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v235[0] = v224;
-  v222 = [(UIView *)self->_enrollContentView heightAnchor];
-  v223 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  [v223 frame];
-  v221 = [v222 constraintEqualToConstant:v82];
+  heightAnchor = [(UIView *)self->_enrollContentView heightAnchor];
+  view5 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  [view5 frame];
+  v221 = [heightAnchor constraintEqualToConstant:v82];
   v235[1] = v221;
-  v219 = [(UIView *)self->_enrollContentView leadingAnchor];
-  v220 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  v218 = [v220 leadingAnchor];
-  v217 = [v219 constraintEqualToAnchor:v218];
+  leadingAnchor = [(UIView *)self->_enrollContentView leadingAnchor];
+  view6 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v217 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v235[2] = v217;
-  v215 = [(UIView *)self->_enrollContentView trailingAnchor];
-  v216 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  v214 = [v216 trailingAnchor];
-  v213 = [v215 constraintEqualToAnchor:v214];
+  trailingAnchor = [(UIView *)self->_enrollContentView trailingAnchor];
+  view7 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v213 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v235[3] = v213;
-  v212 = [(UIView *)self->_scrollContentView topAnchor];
-  v230 = [(UIView *)self->_enrollContentView bottomAnchor];
-  v211 = [v212 constraintEqualToAnchor:v230 constant:24.0];
+  topAnchor3 = [(UIView *)self->_scrollContentView topAnchor];
+  bottomAnchor = [(UIView *)self->_enrollContentView bottomAnchor];
+  v211 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:24.0];
   v235[4] = v211;
-  v209 = [(UIView *)self->_scrollContentView leadingAnchor];
-  v210 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  v208 = [v210 leadingAnchor];
-  v207 = [v209 constraintEqualToAnchor:v208 constant:24.0];
+  leadingAnchor3 = [(UIView *)self->_scrollContentView leadingAnchor];
+  view8 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  leadingAnchor4 = [view8 leadingAnchor];
+  v207 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:24.0];
   v235[5] = v207;
-  v205 = [(UIView *)self->_scrollContentView trailingAnchor];
-  v206 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  v204 = [v206 trailingAnchor];
-  v203 = [v205 constraintEqualToAnchor:v204 constant:-24.0];
+  trailingAnchor3 = [(UIView *)self->_scrollContentView trailingAnchor];
+  view9 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  trailingAnchor4 = [view9 trailingAnchor];
+  v203 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-24.0];
   v235[6] = v203;
-  v201 = [(UIView *)self->_scrollContentView bottomAnchor];
-  v202 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  v200 = [v202 safeAreaLayoutGuide];
-  v199 = [v200 bottomAnchor];
-  v198 = [v201 constraintEqualToAnchor:v199];
+  bottomAnchor2 = [(UIView *)self->_scrollContentView bottomAnchor];
+  view10 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  safeAreaLayoutGuide2 = [view10 safeAreaLayoutGuide];
+  bottomAnchor3 = [safeAreaLayoutGuide2 bottomAnchor];
+  v198 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v235[7] = v198;
-  v197 = [(OBTrayButton *)self->_continueButton leadingAnchor];
-  v196 = [(UIView *)self->_scrollContentView leadingAnchor];
-  v195 = [v197 constraintEqualToAnchor:v196];
+  leadingAnchor5 = [(OBTrayButton *)self->_continueButton leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_scrollContentView leadingAnchor];
+  v195 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v235[8] = v195;
-  v194 = [(OBTrayButton *)self->_continueButton trailingAnchor];
-  v193 = [(UIView *)self->_scrollContentView trailingAnchor];
-  v192 = [v194 constraintEqualToAnchor:v193];
+  trailingAnchor5 = [(OBTrayButton *)self->_continueButton trailingAnchor];
+  trailingAnchor6 = [(UIView *)self->_scrollContentView trailingAnchor];
+  v192 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v235[9] = v192;
-  v191 = [(OBTrayButton *)self->_continueButton bottomAnchor];
-  v190 = [(UIView *)self->_scrollContentView bottomAnchor];
-  v189 = [v191 constraintEqualToAnchor:v190];
+  bottomAnchor4 = [(OBTrayButton *)self->_continueButton bottomAnchor];
+  bottomAnchor5 = [(UIView *)self->_scrollContentView bottomAnchor];
+  v189 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v235[10] = v189;
-  v188 = [(OBTrayButton *)self->_occlusionContinueButton leadingAnchor];
-  v187 = [(UIView *)self->_scrollContentView leadingAnchor];
-  v186 = [v188 constraintEqualToAnchor:v187];
+  leadingAnchor7 = [(OBTrayButton *)self->_occlusionContinueButton leadingAnchor];
+  leadingAnchor8 = [(UIView *)self->_scrollContentView leadingAnchor];
+  v186 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v235[11] = v186;
-  v185 = [(OBTrayButton *)self->_occlusionContinueButton trailingAnchor];
-  v184 = [(UIView *)self->_scrollContentView trailingAnchor];
-  v183 = [v185 constraintEqualToAnchor:v184];
+  trailingAnchor7 = [(OBTrayButton *)self->_occlusionContinueButton trailingAnchor];
+  trailingAnchor8 = [(UIView *)self->_scrollContentView trailingAnchor];
+  v183 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v235[12] = v183;
-  v182 = [(OBTrayButton *)self->_occlusionContinueButton bottomAnchor];
-  v181 = [(UIView *)self->_scrollContentView bottomAnchor];
-  v180 = [v182 constraintEqualToAnchor:v181];
+  bottomAnchor6 = [(OBTrayButton *)self->_occlusionContinueButton bottomAnchor];
+  bottomAnchor7 = [(UIView *)self->_scrollContentView bottomAnchor];
+  v180 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v235[13] = v180;
-  v178 = [(OBTrayButton *)self->_earDistanceWarnContinueButton leadingAnchor];
-  v177 = [(UIView *)self->_scrollContentView leadingAnchor];
-  v176 = [v178 constraintEqualToAnchor:v177];
+  leadingAnchor9 = [(OBTrayButton *)self->_earDistanceWarnContinueButton leadingAnchor];
+  leadingAnchor10 = [(UIView *)self->_scrollContentView leadingAnchor];
+  v176 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v235[14] = v176;
-  v175 = [(OBTrayButton *)self->_earDistanceWarnContinueButton trailingAnchor];
-  v174 = [(UIView *)self->_scrollContentView trailingAnchor];
-  v173 = [v175 constraintEqualToAnchor:v174];
+  trailingAnchor9 = [(OBTrayButton *)self->_earDistanceWarnContinueButton trailingAnchor];
+  trailingAnchor10 = [(UIView *)self->_scrollContentView trailingAnchor];
+  v173 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v235[15] = v173;
-  v171 = [(OBTrayButton *)self->_earDistanceWarnContinueButton bottomAnchor];
-  v170 = [(UIView *)self->_scrollContentView bottomAnchor];
-  v168 = [v171 constraintEqualToAnchor:v170];
+  bottomAnchor8 = [(OBTrayButton *)self->_earDistanceWarnContinueButton bottomAnchor];
+  bottomAnchor9 = [(UIView *)self->_scrollContentView bottomAnchor];
+  v168 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
   v235[16] = v168;
-  v166 = [(UIVisualEffectView *)self->_buttonTrayEffectView leadingAnchor];
-  v167 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  v165 = [v167 leadingAnchor];
-  v164 = [v166 constraintEqualToAnchor:v165];
+  leadingAnchor11 = [(UIVisualEffectView *)self->_buttonTrayEffectView leadingAnchor];
+  view11 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  leadingAnchor12 = [view11 leadingAnchor];
+  v164 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
   v235[17] = v164;
-  v162 = [(UIVisualEffectView *)self->_buttonTrayEffectView trailingAnchor];
-  v163 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  v161 = [v163 trailingAnchor];
-  v160 = [v162 constraintEqualToAnchor:v161];
+  trailingAnchor11 = [(UIVisualEffectView *)self->_buttonTrayEffectView trailingAnchor];
+  view12 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  trailingAnchor12 = [view12 trailingAnchor];
+  v160 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
   v235[18] = v160;
-  v159 = [(UIVisualEffectView *)self->_buttonTrayEffectView topAnchor];
-  v179 = [(OBTrayButton *)self->_continueButton topAnchor];
-  v158 = [v159 constraintEqualToAnchor:v179 constant:-24.0];
+  topAnchor4 = [(UIVisualEffectView *)self->_buttonTrayEffectView topAnchor];
+  topAnchor5 = [(OBTrayButton *)self->_continueButton topAnchor];
+  v158 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:-24.0];
   v235[19] = v158;
-  v157 = [(UIVisualEffectView *)self->_buttonTrayEffectView topAnchor];
-  v156 = [(OBTrayButton *)self->_occlusionContinueButton topAnchor];
-  v155 = [v157 constraintEqualToAnchor:v156 constant:-24.0];
+  topAnchor6 = [(UIVisualEffectView *)self->_buttonTrayEffectView topAnchor];
+  topAnchor7 = [(OBTrayButton *)self->_occlusionContinueButton topAnchor];
+  v155 = [topAnchor6 constraintEqualToAnchor:topAnchor7 constant:-24.0];
   v235[20] = v155;
-  v154 = [(UIVisualEffectView *)self->_buttonTrayEffectView topAnchor];
-  v172 = [(OBTrayButton *)self->_earDistanceWarnContinueButton topAnchor];
-  v153 = [v154 constraintEqualToAnchor:v172 constant:-24.0];
+  topAnchor8 = [(UIVisualEffectView *)self->_buttonTrayEffectView topAnchor];
+  topAnchor9 = [(OBTrayButton *)self->_earDistanceWarnContinueButton topAnchor];
+  v153 = [topAnchor8 constraintEqualToAnchor:topAnchor9 constant:-24.0];
   v235[21] = v153;
-  v151 = [(UIVisualEffectView *)self->_buttonTrayEffectView bottomAnchor];
-  v152 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  v150 = [v152 bottomAnchor];
-  v149 = [v151 constraintEqualToAnchor:v150];
+  bottomAnchor10 = [(UIVisualEffectView *)self->_buttonTrayEffectView bottomAnchor];
+  view13 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  bottomAnchor11 = [view13 bottomAnchor];
+  v149 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11];
   v235[22] = v149;
-  v148 = [(UIScrollView *)self->_scrollView topAnchor];
-  v147 = [(UIView *)self->_scrollContentView topAnchor];
-  v146 = [v148 constraintEqualToAnchor:v147];
+  topAnchor10 = [(UIScrollView *)self->_scrollView topAnchor];
+  topAnchor11 = [(UIView *)self->_scrollContentView topAnchor];
+  v146 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
   v235[23] = v146;
-  v145 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v144 = [(UIVisualEffectView *)self->_buttonTrayEffectView topAnchor];
-  v143 = [v145 constraintEqualToAnchor:v144 constant:24.0];
+  bottomAnchor12 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  topAnchor12 = [(UIVisualEffectView *)self->_buttonTrayEffectView topAnchor];
+  v143 = [bottomAnchor12 constraintEqualToAnchor:topAnchor12 constant:24.0];
   v235[24] = v143;
-  v142 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v141 = [(UIView *)self->_scrollContentView leadingAnchor];
-  v140 = [v142 constraintEqualToAnchor:v141];
+  leadingAnchor13 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  leadingAnchor14 = [(UIView *)self->_scrollContentView leadingAnchor];
+  v140 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14];
   v235[25] = v140;
-  v139 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v138 = [(UIView *)self->_scrollContentView trailingAnchor];
-  v137 = [v139 constraintEqualToAnchor:v138];
+  trailingAnchor13 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  trailingAnchor14 = [(UIView *)self->_scrollContentView trailingAnchor];
+  v137 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14];
   v235[26] = v137;
-  v136 = [(UIView *)self->_scrollInnerContentView topAnchor];
-  v135 = [(UIScrollView *)self->_scrollView topAnchor];
-  v134 = [v136 constraintEqualToAnchor:v135];
+  topAnchor13 = [(UIView *)self->_scrollInnerContentView topAnchor];
+  topAnchor14 = [(UIScrollView *)self->_scrollView topAnchor];
+  v134 = [topAnchor13 constraintEqualToAnchor:topAnchor14];
   v235[27] = v134;
-  v133 = [(UIView *)self->_scrollInnerContentView bottomAnchor];
-  v132 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v131 = [v133 constraintEqualToAnchor:v132];
+  bottomAnchor13 = [(UIView *)self->_scrollInnerContentView bottomAnchor];
+  bottomAnchor14 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  v131 = [bottomAnchor13 constraintEqualToAnchor:bottomAnchor14];
   v235[28] = v131;
-  v130 = [(UIView *)self->_scrollInnerContentView leadingAnchor];
-  v129 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v128 = [v130 constraintEqualToAnchor:v129];
+  leadingAnchor15 = [(UIView *)self->_scrollInnerContentView leadingAnchor];
+  leadingAnchor16 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  v128 = [leadingAnchor15 constraintEqualToAnchor:leadingAnchor16];
   v235[29] = v128;
-  v127 = [(UIView *)self->_scrollInnerContentView trailingAnchor];
-  v126 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v125 = [v127 constraintEqualToAnchor:v126];
+  trailingAnchor15 = [(UIView *)self->_scrollInnerContentView trailingAnchor];
+  trailingAnchor16 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  v125 = [trailingAnchor15 constraintEqualToAnchor:trailingAnchor16];
   v235[30] = v125;
-  v232 = [(UIView *)self->_scrollInnerContentView widthAnchor];
-  v124 = [(UIScrollView *)self->_scrollView widthAnchor];
-  v123 = [v232 constraintEqualToAnchor:v124];
+  widthAnchor = [(UIView *)self->_scrollInnerContentView widthAnchor];
+  widthAnchor2 = [(UIScrollView *)self->_scrollView widthAnchor];
+  v123 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v235[31] = v123;
-  v122 = [(UIStackView *)self->_scrollInnerStackView topAnchor];
-  v121 = [(UIScrollView *)self->_scrollView topAnchor];
-  v120 = [v122 constraintEqualToAnchor:v121];
+  topAnchor15 = [(UIStackView *)self->_scrollInnerStackView topAnchor];
+  topAnchor16 = [(UIScrollView *)self->_scrollView topAnchor];
+  v120 = [topAnchor15 constraintEqualToAnchor:topAnchor16];
   v235[32] = v120;
-  v119 = [(UIStackView *)self->_scrollInnerStackView bottomAnchor];
-  v118 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v117 = [v119 constraintEqualToAnchor:v118];
+  bottomAnchor15 = [(UIStackView *)self->_scrollInnerStackView bottomAnchor];
+  bottomAnchor16 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  v117 = [bottomAnchor15 constraintEqualToAnchor:bottomAnchor16];
   v235[33] = v117;
-  v116 = [(UIStackView *)self->_scrollInnerStackView leadingAnchor];
-  v115 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v114 = [v116 constraintEqualToAnchor:v115];
+  leadingAnchor17 = [(UIStackView *)self->_scrollInnerStackView leadingAnchor];
+  leadingAnchor18 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  v114 = [leadingAnchor17 constraintEqualToAnchor:leadingAnchor18];
   v235[34] = v114;
-  v113 = [(UIStackView *)self->_scrollInnerStackView trailingAnchor];
-  v112 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v111 = [v113 constraintEqualToAnchor:v112];
+  trailingAnchor17 = [(UIStackView *)self->_scrollInnerStackView trailingAnchor];
+  trailingAnchor18 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  v111 = [trailingAnchor17 constraintEqualToAnchor:trailingAnchor18];
   v235[35] = v111;
-  v110 = [(OBHeaderView *)self->_infoView leadingAnchor];
-  v109 = [(UIStackView *)self->_scrollInnerStackView leadingAnchor];
-  v108 = [v110 constraintEqualToAnchor:v109];
+  leadingAnchor19 = [(OBHeaderView *)self->_infoView leadingAnchor];
+  leadingAnchor20 = [(UIStackView *)self->_scrollInnerStackView leadingAnchor];
+  v108 = [leadingAnchor19 constraintEqualToAnchor:leadingAnchor20];
   v235[36] = v108;
-  v234 = [(OBHeaderView *)self->_infoView trailingAnchor];
-  v107 = [(UIStackView *)self->_scrollInnerStackView trailingAnchor];
-  v106 = [v234 constraintEqualToAnchor:v107];
+  trailingAnchor19 = [(OBHeaderView *)self->_infoView trailingAnchor];
+  trailingAnchor20 = [(UIStackView *)self->_scrollInnerStackView trailingAnchor];
+  v106 = [trailingAnchor19 constraintEqualToAnchor:trailingAnchor20];
   v235[37] = v106;
-  v105 = [(UILabel *)self->_learnMoreView leadingAnchor];
-  v104 = [(UIStackView *)self->_scrollInnerStackView leadingAnchor];
-  v103 = [v105 constraintEqualToAnchor:v104];
+  leadingAnchor21 = [(UILabel *)self->_learnMoreView leadingAnchor];
+  leadingAnchor22 = [(UIStackView *)self->_scrollInnerStackView leadingAnchor];
+  v103 = [leadingAnchor21 constraintEqualToAnchor:leadingAnchor22];
   v235[38] = v103;
-  v102 = [(UILabel *)self->_learnMoreView trailingAnchor];
-  v101 = [(UIStackView *)self->_scrollInnerStackView trailingAnchor];
-  v100 = [v102 constraintEqualToAnchor:v101];
+  trailingAnchor21 = [(UILabel *)self->_learnMoreView trailingAnchor];
+  trailingAnchor22 = [(UIStackView *)self->_scrollInnerStackView trailingAnchor];
+  v100 = [trailingAnchor21 constraintEqualToAnchor:trailingAnchor22];
   v235[39] = v100;
-  v233 = [(UILabel *)self->_learnMoreView heightAnchor];
-  v99 = [v233 constraintGreaterThanOrEqualToConstant:50.0];
+  heightAnchor2 = [(UILabel *)self->_learnMoreView heightAnchor];
+  v99 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:50.0];
   v235[40] = v99;
-  v98 = [(UIView *)self->_spacerViewFirst leadingAnchor];
-  v97 = [(UIStackView *)self->_scrollInnerStackView leadingAnchor];
-  v96 = [v98 constraintEqualToAnchor:v97];
+  leadingAnchor23 = [(UIView *)self->_spacerViewFirst leadingAnchor];
+  leadingAnchor24 = [(UIStackView *)self->_scrollInnerStackView leadingAnchor];
+  v96 = [leadingAnchor23 constraintEqualToAnchor:leadingAnchor24];
   v235[41] = v96;
-  v95 = [(UIView *)self->_spacerViewFirst trailingAnchor];
-  v94 = [(UIStackView *)self->_scrollInnerStackView trailingAnchor];
-  v93 = [v95 constraintEqualToAnchor:v94];
+  trailingAnchor23 = [(UIView *)self->_spacerViewFirst trailingAnchor];
+  trailingAnchor24 = [(UIStackView *)self->_scrollInnerStackView trailingAnchor];
+  v93 = [trailingAnchor23 constraintEqualToAnchor:trailingAnchor24];
   v235[42] = v93;
-  v231 = [(UIView *)self->_spacerViewFirst heightAnchor];
-  v83 = [v231 constraintEqualToConstant:24.0];
+  heightAnchor3 = [(UIView *)self->_spacerViewFirst heightAnchor];
+  v83 = [heightAnchor3 constraintEqualToConstant:24.0];
   v235[43] = v83;
-  v84 = [(UIView *)self->_spacerViewSecond leadingAnchor];
-  v85 = [(UIStackView *)self->_scrollInnerStackView leadingAnchor];
-  v86 = [v84 constraintEqualToAnchor:v85];
+  leadingAnchor25 = [(UIView *)self->_spacerViewSecond leadingAnchor];
+  leadingAnchor26 = [(UIStackView *)self->_scrollInnerStackView leadingAnchor];
+  v86 = [leadingAnchor25 constraintEqualToAnchor:leadingAnchor26];
   v235[44] = v86;
-  v87 = [(UIView *)self->_spacerViewSecond trailingAnchor];
-  v88 = [(UIStackView *)self->_scrollInnerStackView trailingAnchor];
-  v89 = [v87 constraintEqualToAnchor:v88];
+  trailingAnchor25 = [(UIView *)self->_spacerViewSecond trailingAnchor];
+  trailingAnchor26 = [(UIStackView *)self->_scrollInnerStackView trailingAnchor];
+  v89 = [trailingAnchor25 constraintEqualToAnchor:trailingAnchor26];
   v235[45] = v89;
-  v90 = [(UIView *)self->_spacerViewSecond heightAnchor];
-  v91 = [v90 constraintEqualToConstant:24.0];
+  heightAnchor4 = [(UIView *)self->_spacerViewSecond heightAnchor];
+  v91 = [heightAnchor4 constraintEqualToConstant:24.0];
   v235[46] = v91;
   v92 = [MEMORY[0x1E695DEC8] arrayWithObjects:v235 count:47];
   [v169 activateConstraints:v92];
@@ -717,35 +717,35 @@
   [(UIImageView *)self->_welcomeImageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_welcomeContentView addSubview:self->_welcomeImageView];
   v23 = MEMORY[0x1E696ACD8];
-  v32 = [(UIView *)self->_welcomeContentView leadingAnchor];
-  v31 = [(UIView *)self->_enrollContentView leadingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  leadingAnchor = [(UIView *)self->_welcomeContentView leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_enrollContentView leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v34[0] = v30;
-  v29 = [(UIView *)self->_welcomeContentView trailingAnchor];
-  v28 = [(UIView *)self->_enrollContentView trailingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  trailingAnchor = [(UIView *)self->_welcomeContentView trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_enrollContentView trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v34[1] = v27;
-  v26 = [(UIView *)self->_welcomeContentView topAnchor];
-  v25 = [(UIView *)self->_enrollContentView topAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  topAnchor = [(UIView *)self->_welcomeContentView topAnchor];
+  topAnchor2 = [(UIView *)self->_enrollContentView topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v34[2] = v24;
-  v22 = [(UIView *)self->_welcomeContentView bottomAnchor];
-  v21 = [(UIView *)self->_enrollContentView bottomAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  bottomAnchor = [(UIView *)self->_welcomeContentView bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_enrollContentView bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v34[3] = v20;
-  v19 = [(UIImageView *)self->_welcomeImageView widthAnchor];
-  v9 = [v19 constraintEqualToConstant:240.0];
+  widthAnchor = [(UIImageView *)self->_welcomeImageView widthAnchor];
+  v9 = [widthAnchor constraintEqualToConstant:240.0];
   v34[4] = v9;
-  v10 = [(UIImageView *)self->_welcomeImageView heightAnchor];
-  v11 = [v10 constraintEqualToConstant:240.0];
+  heightAnchor = [(UIImageView *)self->_welcomeImageView heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:240.0];
   v34[5] = v11;
-  v12 = [(UIImageView *)self->_welcomeImageView centerXAnchor];
-  v13 = [(UIView *)self->_welcomeContentView centerXAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  centerXAnchor = [(UIImageView *)self->_welcomeImageView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_welcomeContentView centerXAnchor];
+  v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v34[6] = v14;
-  v15 = [(UIImageView *)self->_welcomeImageView centerYAnchor];
-  v16 = [(UIView *)self->_welcomeContentView centerYAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  centerYAnchor = [(UIImageView *)self->_welcomeImageView centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_welcomeContentView centerYAnchor];
+  v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v34[7] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:8];
   [v23 activateConstraints:v18];
@@ -768,9 +768,9 @@
 - (void)checkVolume
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
   p_initialVolume = &self->_initialVolume;
-  v5 = [v3 getVolume:&self->_initialVolume forCategory:@"Audio/Video"];
+  v5 = [mEMORY[0x1E69AED10] getVolume:&self->_initialVolume forCategory:@"Audio/Video"];
 
   v6 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
   v7 = v6;
@@ -794,9 +794,9 @@
         _os_log_impl(&dword_1AC1C3000, v9, OS_LOG_TYPE_DEFAULT, "Spatial Profile: Initial Volume Too Low, Changing to Min Volume: %f", &v12, 0xCu);
       }
 
-      v10 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+      mEMORY[0x1E69AED10]2 = [MEMORY[0x1E69AED10] sharedAVSystemController];
       LODWORD(v11) = 0.5;
-      [v10 setVolumeTo:@"Audio/Video" forCategory:v11];
+      [mEMORY[0x1E69AED10]2 setVolumeTo:@"Audio/Video" forCategory:v11];
 
       self->_volumeChanged = 1;
     }
@@ -825,9 +825,9 @@
       _os_log_impl(&dword_1AC1C3000, v3, OS_LOG_TYPE_DEFAULT, "Spatial Profile: Volume Changed, Reset to Initial Volume: %f", &v7, 0xCu);
     }
 
-    v5 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
     *&v6 = self->_initialVolume;
-    [v5 setVolumeTo:@"Audio/Video" forCategory:v6];
+    [mEMORY[0x1E69AED10] setVolumeTo:@"Audio/Video" forCategory:v6];
   }
 }
 
@@ -844,8 +844,8 @@
   [(HPSUISpatialProfileUIPearlEnrollView *)self->_enrollView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(BKUIPearlEnrollView *)self->_enrollView setDelegate:self];
   [(BKUIPearlEnrollView *)self->_enrollView preEnrollActivate];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(BKUIPearlEnrollView *)self->_enrollView setBackgroundColor:v4];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(BKUIPearlEnrollView *)self->_enrollView setBackgroundColor:systemBackgroundColor];
 
   v5 = objc_alloc_init(HPSUISpatialProfileEarPillContainerView);
   earPillContainer = self->_earPillContainer;
@@ -853,8 +853,8 @@
 
   [(HPSUISpatialProfileEarPillContainerView *)self->_earPillContainer setTranslatesAutoresizingMaskIntoConstraints:0];
   [(HPSUISpatialProfileEarPillContainerView *)self->_earPillContainer setAlpha:0.0];
-  v7 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  [v7 frame];
+  view = [(HPSUISpatialProfileEnrollmentController *)self view];
+  [view frame];
   v9 = v8 / 390.0;
 
   v10 = v9 < 1.0;
@@ -888,49 +888,49 @@
   [(UIView *)self->_enrollContentView addSubview:self->_earPillContainer];
   [(UIView *)self->_enrollContentView addSubview:self->_earDotsMovieView];
   v37 = MEMORY[0x1E696ACD8];
-  v49 = [(HPSUISpatialProfileUIPearlEnrollView *)self->_enrollView leadingAnchor];
-  v48 = [(UIView *)self->_enrollContentView leadingAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  leadingAnchor = [(HPSUISpatialProfileUIPearlEnrollView *)self->_enrollView leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_enrollContentView leadingAnchor];
+  v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v51[0] = v47;
-  v46 = [(HPSUISpatialProfileUIPearlEnrollView *)self->_enrollView trailingAnchor];
-  v45 = [(UIView *)self->_enrollContentView trailingAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  trailingAnchor = [(HPSUISpatialProfileUIPearlEnrollView *)self->_enrollView trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_enrollContentView trailingAnchor];
+  v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v51[1] = v44;
-  v43 = [(HPSUISpatialProfileUIPearlEnrollView *)self->_enrollView topAnchor];
-  v42 = [(UIView *)self->_enrollContentView topAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  topAnchor = [(HPSUISpatialProfileUIPearlEnrollView *)self->_enrollView topAnchor];
+  topAnchor2 = [(UIView *)self->_enrollContentView topAnchor];
+  v41 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v51[2] = v41;
-  v40 = [(HPSUISpatialProfileUIPearlEnrollView *)self->_enrollView bottomAnchor];
-  v39 = [(UIView *)self->_enrollContentView bottomAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  bottomAnchor = [(HPSUISpatialProfileUIPearlEnrollView *)self->_enrollView bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_enrollContentView bottomAnchor];
+  v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v51[3] = v38;
-  v36 = [(HPSUISpatialProfileEarPillContainerView *)self->_earPillContainer widthAnchor];
-  v35 = [v36 constraintEqualToConstant:172.5];
+  widthAnchor = [(HPSUISpatialProfileEarPillContainerView *)self->_earPillContainer widthAnchor];
+  v35 = [widthAnchor constraintEqualToConstant:172.5];
   v51[4] = v35;
-  v34 = [(HPSUISpatialProfileEarPillContainerView *)self->_earPillContainer heightAnchor];
-  v33 = [v34 constraintEqualToConstant:25.0];
+  heightAnchor = [(HPSUISpatialProfileEarPillContainerView *)self->_earPillContainer heightAnchor];
+  v33 = [heightAnchor constraintEqualToConstant:25.0];
   v51[5] = v33;
-  v32 = [(HPSUISpatialProfileEarPillContainerView *)self->_earPillContainer centerXAnchor];
-  v31 = [(UIView *)self->_enrollContentView centerXAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  centerXAnchor = [(HPSUISpatialProfileEarPillContainerView *)self->_earPillContainer centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_enrollContentView centerXAnchor];
+  v30 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v51[6] = v30;
-  v29 = [(HPSUISpatialProfileEarPillContainerView *)self->_earPillContainer bottomAnchor];
-  v28 = [(UIView *)self->_enrollContentView bottomAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28 constant:v11];
+  bottomAnchor3 = [(HPSUISpatialProfileEarPillContainerView *)self->_earPillContainer bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_enrollContentView bottomAnchor];
+  v27 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:v11];
   v51[7] = v27;
-  v26 = [(HPSUISpatialProfileEarDotsMovieView *)self->_earDotsMovieView widthAnchor];
-  v25 = [v26 constraintEqualToConstant:345.0];
+  widthAnchor2 = [(HPSUISpatialProfileEarDotsMovieView *)self->_earDotsMovieView widthAnchor];
+  v25 = [widthAnchor2 constraintEqualToConstant:345.0];
   v51[8] = v25;
-  v24 = [(HPSUISpatialProfileEarDotsMovieView *)self->_earDotsMovieView heightAnchor];
-  v15 = [v24 constraintEqualToConstant:v12];
+  heightAnchor2 = [(HPSUISpatialProfileEarDotsMovieView *)self->_earDotsMovieView heightAnchor];
+  v15 = [heightAnchor2 constraintEqualToConstant:v12];
   v51[9] = v15;
-  v16 = [(HPSUISpatialProfileEarDotsMovieView *)self->_earDotsMovieView centerXAnchor];
-  v17 = [(UIView *)self->_enrollContentView centerXAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  centerXAnchor3 = [(HPSUISpatialProfileEarDotsMovieView *)self->_earDotsMovieView centerXAnchor];
+  centerXAnchor4 = [(UIView *)self->_enrollContentView centerXAnchor];
+  v18 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v51[10] = v18;
-  v19 = [(HPSUISpatialProfileEarDotsMovieView *)self->_earDotsMovieView bottomAnchor];
-  v20 = [(UIView *)self->_enrollContentView bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  bottomAnchor5 = [(HPSUISpatialProfileEarDotsMovieView *)self->_earDotsMovieView bottomAnchor];
+  bottomAnchor6 = [(UIView *)self->_enrollContentView bottomAnchor];
+  v21 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v51[11] = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:12];
   [v37 activateConstraints:v22];
@@ -941,8 +941,8 @@
     [(HPSUISpatialProfileUIPearlEnrollView *)self->_enrollView setHidden:1];
   }
 
-  v23 = [(HPSUISpatialProfileEnrollmentController *)self view];
-  [v23 setNeedsLayout];
+  view2 = [(HPSUISpatialProfileEnrollmentController *)self view];
+  [view2 setNeedsLayout];
 }
 
 - (void)setupEarTutorialView
@@ -968,35 +968,35 @@
   [(HPSUISpatialProfileEarTutorialView *)self->_earTutorialView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_tutorialContentView addSubview:self->_earTutorialView];
   v22 = MEMORY[0x1E696ACD8];
-  v31 = [(UIView *)self->_tutorialContentView leadingAnchor];
-  v30 = [(UIView *)self->_enrollContentView leadingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  leadingAnchor = [(UIView *)self->_tutorialContentView leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_enrollContentView leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v33[0] = v29;
-  v28 = [(UIView *)self->_tutorialContentView trailingAnchor];
-  v27 = [(UIView *)self->_enrollContentView trailingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  trailingAnchor = [(UIView *)self->_tutorialContentView trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_enrollContentView trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v33[1] = v26;
-  v25 = [(UIView *)self->_tutorialContentView topAnchor];
-  v24 = [(UIView *)self->_enrollContentView topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  topAnchor = [(UIView *)self->_tutorialContentView topAnchor];
+  topAnchor2 = [(UIView *)self->_enrollContentView topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v33[2] = v23;
-  v21 = [(UIView *)self->_tutorialContentView bottomAnchor];
-  v20 = [(UIView *)self->_enrollContentView bottomAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  bottomAnchor = [(UIView *)self->_tutorialContentView bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_enrollContentView bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v33[3] = v19;
-  v18 = [(HPSUISpatialProfileEarTutorialView *)self->_earTutorialView widthAnchor];
-  v17 = [v18 constraintEqualToConstant:240.0];
+  widthAnchor = [(HPSUISpatialProfileEarTutorialView *)self->_earTutorialView widthAnchor];
+  v17 = [widthAnchor constraintEqualToConstant:240.0];
   v33[4] = v17;
-  v16 = [(HPSUISpatialProfileEarTutorialView *)self->_earTutorialView heightAnchor];
-  v8 = [v16 constraintEqualToConstant:106.666664];
+  heightAnchor = [(HPSUISpatialProfileEarTutorialView *)self->_earTutorialView heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:106.666664];
   v33[5] = v8;
-  v9 = [(HPSUISpatialProfileEarTutorialView *)self->_earTutorialView centerXAnchor];
-  v10 = [(UIView *)self->_tutorialContentView centerXAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  centerXAnchor = [(HPSUISpatialProfileEarTutorialView *)self->_earTutorialView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_tutorialContentView centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v33[6] = v11;
-  v12 = [(HPSUISpatialProfileEarTutorialView *)self->_earTutorialView centerYAnchor];
-  v13 = [(UIView *)self->_tutorialContentView centerYAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  centerYAnchor = [(HPSUISpatialProfileEarTutorialView *)self->_earTutorialView centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_tutorialContentView centerYAnchor];
+  v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v33[7] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:8];
   [v22 activateConstraints:v15];
@@ -1174,7 +1174,7 @@ LABEL_7:
   }
 }
 
-- (void)moveToStep:(int)a3
+- (void)moveToStep:(int)step
 {
   stepSerialQueue = self->_stepSerialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1182,7 +1182,7 @@ LABEL_7:
   v4[2] = __54__HPSUISpatialProfileEnrollmentController_moveToStep___block_invoke;
   v4[3] = &unk_1E7970468;
   v4[4] = self;
-  v5 = a3;
+  stepCopy = step;
   dispatch_async(stepSerialQueue, v4);
 }
 
@@ -2713,17 +2713,17 @@ void __54__HPSUISpatialProfileEnrollmentController_moveToStep___block_invoke_3_5
         return;
       }
 
-      v7 = self;
+      selfCopy2 = self;
       v8 = 12;
     }
 
     else
     {
       v8 = (v6 + 1);
-      v7 = self;
+      selfCopy2 = self;
     }
 
-    [(HPSUISpatialProfileEnrollmentController *)v7 moveToStep:v8];
+    [(HPSUISpatialProfileEnrollmentController *)selfCopy2 moveToStep:v8];
   }
 
   else if (!self->_welcomeSpinnerOn)
@@ -2803,8 +2803,8 @@ void __54__HPSUISpatialProfileEnrollmentController_moveToStep___block_invoke_3_5
   [(HPSUISpatialProfileEnrollmentController *)self dismissViewControllerAnimated:1 completion:&__block_literal_global_524];
   if (self->_enrollmentCompleted)
   {
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:@"HPSSpatialAudioProfileUpdated" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"HPSSpatialAudioProfileUpdated" object:0];
   }
 
   if (self->dismissalHandler)
@@ -2860,7 +2860,7 @@ uint64_t __70__HPSUISpatialProfileEnrollmentController_bluetoothDidBecomeAvailab
 
 - (void)retrieveProfile
 {
-  [a1 code];
+  [self code];
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_2();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0x12u);
@@ -2961,15 +2961,15 @@ void __54__HPSUISpatialProfileEnrollmentController_syncProfile__block_invoke(uin
   [*(a1 + 40) invalidate];
 }
 
-- (id)angleArrayToBinaryString:(id)a3
+- (id)angleArrayToBinaryString:(id)string
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringCopy = string;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [stringCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2983,7 +2983,7 @@ void __54__HPSUISpatialProfileEnrollmentController_syncProfile__block_invoke(uin
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(stringCopy);
         }
 
         if ([*(*(&v12 + 1) + 8 * v8) captured])
@@ -3003,7 +3003,7 @@ void __54__HPSUISpatialProfileEnrollmentController_syncProfile__block_invoke(uin
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [stringCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -3343,7 +3343,7 @@ void __64__HPSUISpatialProfileEnrollmentController_alertEarEnrollWarning__block_
   if (v4)
   {
     v5 = v4;
-    v15 = self;
+    selfCopy = self;
     v6 = *v21;
     while (2)
     {
@@ -3355,7 +3355,7 @@ void __64__HPSUISpatialProfileEnrollmentController_alertEarEnrollWarning__block_
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        if (+[HPSProductUtils isAppleHeadphone:](HPSProductUtils, "isAppleHeadphone:", v8, v15) && ([v8 isTemporaryPaired] & 1) == 0)
+        if (+[HPSProductUtils isAppleHeadphone:](HPSProductUtils, "isAppleHeadphone:", v8, selfCopy) && ([v8 isTemporaryPaired] & 1) == 0)
         {
           if ([v8 isGenuineAirPods])
           {
@@ -3365,13 +3365,13 @@ void __64__HPSUISpatialProfileEnrollmentController_alertEarEnrollWarning__block_
             {
               v16 = 3;
               v17 = 3;
-              v11 = [v9 classicDevice];
-              [v11 inEarStatusPrimary:&v17 secondary:&v16];
+              classicDevice = [v9 classicDevice];
+              [classicDevice inEarStatusPrimary:&v17 secondary:&v16];
 
               if (!v17 || !v16)
               {
-                v13 = [(HPSUISpatialProfileEnrollmentController *)v15 content];
-                v12 = [v13 removeAccessoryFromEar];
+                content = [(HPSUISpatialProfileEnrollmentController *)selfCopy content];
+                removeAccessoryFromEar = [content removeAccessoryFromEar];
 
                 goto LABEL_20;
               }
@@ -3399,10 +3399,10 @@ void __64__HPSUISpatialProfileEnrollmentController_alertEarEnrollWarning__block_
     }
   }
 
-  v12 = 0;
+  removeAccessoryFromEar = 0;
 LABEL_20:
 
-  return v12;
+  return removeAccessoryFromEar;
 }
 
 - (void)triggerFaceInFrameHandlerTimeout
@@ -3932,27 +3932,27 @@ uint64_t __67__HPSUISpatialProfileEnrollmentController_continueOcclusionWarning_
   [(HPSUISpatialProfileEnrollmentController *)self moveToStep:19];
 }
 
-- (void)didReceiveStateUpdateForSession:(id)a3 stateInfo:(id)a4
+- (void)didReceiveStateUpdateForSession:(id)session stateInfo:(id)info
 {
   v228 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  infoCopy = info;
   v8 = MEMORY[0x1E69A2AC0];
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A2AC0]];
-  if (!v9 || (v10 = v9, [v7 objectForKeyedSubscript:*v8], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  v9 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69A2AC0]];
+  if (!v9 || (v10 = v9, [infoCopy objectForKeyedSubscript:*v8], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [HPSUISpatialProfileEnrollmentController didReceiveStateUpdateForSession:stateInfo:];
   }
 
-  v12 = [v7 objectForKeyedSubscript:*v8];
+  v12 = [infoCopy objectForKeyedSubscript:*v8];
   *&v13 = COERCE_DOUBLE([v12 integerValue]);
 
   v14 = MEMORY[0x1E69A2A98];
-  v15 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A2A98]];
+  v15 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69A2A98]];
 
   if (v15)
   {
-    [v7 objectForKeyedSubscript:*v14];
+    [infoCopy objectForKeyedSubscript:*v14];
     v16 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     v17 = v16;
     if (v16 != 0.0)
@@ -3998,18 +3998,18 @@ uint64_t __67__HPSUISpatialProfileEnrollmentController_continueOcclusionWarning_
   }
 
   v21 = MEMORY[0x1E69A2AB0];
-  v22 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A2AB0]];
+  v22 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69A2AB0]];
 
   if (v22)
   {
-    v23 = [v7 objectForKeyedSubscript:*v21];
+    v23 = [infoCopy objectForKeyedSubscript:*v21];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       [HPSUISpatialProfileEnrollmentController didReceiveStateUpdateForSession:stateInfo:];
     }
 
-    v24 = [v7 objectForKeyedSubscript:*v21];
+    v24 = [infoCopy objectForKeyedSubscript:*v21];
     [v24 doubleValue];
     v26 = v25;
   }
@@ -4145,16 +4145,16 @@ LABEL_51:
       goto LABEL_274;
     }
 
-    v28 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A2A90]];
-    v29 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A2AA8]];
-    v30 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A2AB8]];
-    v31 = [v28 earCaptureStatus];
+    v28 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69A2A90]];
+    v29 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69A2AA8]];
+    v30 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69A2AB8]];
+    earCaptureStatus = [v28 earCaptureStatus];
     [v28 earBoundingBox];
     v33 = v32;
     v35 = v34;
     v37 = v36;
     v39 = v38;
-    [(HPSUISpatialProfileEnrollmentController *)self updateCurrentTrackingEar:v29 rightEarPoseStatus:v30 earBoundingBox:v31 earStatus:?];
+    [(HPSUISpatialProfileEnrollmentController *)self updateCurrentTrackingEar:v29 rightEarPoseStatus:v30 earBoundingBox:earCaptureStatus earStatus:?];
     v40 = self->_currentStep;
     if (v40 == 9)
     {
@@ -4314,7 +4314,7 @@ LABEL_164:
       v221 = 2048;
       v222 = v39;
       v223 = 1024;
-      v224 = v31;
+      v224 = earCaptureStatus;
       _os_log_debug_impl(&dword_1AC1C3000, v100, OS_LOG_TYPE_DEBUG, "Spatial Profile: Left :%@ Right:%@ Yaw-Pitch left (%f ,%f) Right (%f ,%f)Ear Bounding Box: : %@ origin(%f, %f), size(%f, %f) Status %d", buf, 0x76u);
       v27 = 0x1EB54B000;
       v28 = v167;
@@ -4355,8 +4355,8 @@ LABEL_188:
           v184 = 0u;
           v181 = 0u;
           v182 = 0u;
-          v110 = [v30 yawAngles];
-          v111 = [v110 countByEnumeratingWithState:&v181 objects:v200 count:16];
+          yawAngles = [v30 yawAngles];
+          v111 = [yawAngles countByEnumeratingWithState:&v181 objects:v200 count:16];
           if (v111)
           {
             v112 = v111;
@@ -4368,7 +4368,7 @@ LABEL_188:
               {
                 if (*v182 != v114)
                 {
-                  objc_enumerationMutation(v110);
+                  objc_enumerationMutation(yawAngles);
                 }
 
                 v116 = *(*(&v181 + 1) + 8 * i);
@@ -4377,10 +4377,10 @@ LABEL_188:
                 if (v117 <= -11.0)
                 {
                   v122 = v117;
-                  v123 = [v116 captured];
+                  captured = [v116 captured];
                   if (v122 >= -13.0)
                   {
-                    if (v123 && !self->_rightEarMidCaptured)
+                    if (captured && !self->_rightEarMidCaptured)
                     {
                       v127 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
                       if (os_log_type_enabled(v127, OS_LOG_TYPE_DEFAULT))
@@ -4405,7 +4405,7 @@ LABEL_188:
                     }
                   }
 
-                  else if (v123 && !self->_rightEarFrontCaptured)
+                  else if (captured && !self->_rightEarFrontCaptured)
                   {
                     v124 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
                     if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
@@ -4454,7 +4454,7 @@ LABEL_188:
                 }
               }
 
-              v112 = [v110 countByEnumeratingWithState:&v181 objects:v200 count:16];
+              v112 = [yawAngles countByEnumeratingWithState:&v181 objects:v200 count:16];
             }
 
             while (v112);
@@ -4465,8 +4465,8 @@ LABEL_188:
             v113 = 0;
           }
 
-          v130 = [v174 remainingYawAngles];
-          if ([v130 count])
+          remainingYawAngles = [v174 remainingYawAngles];
+          if ([remainingYawAngles count])
           {
 
             v27 = 0x1EB54B000;
@@ -4520,8 +4520,8 @@ LABEL_227:
                 v179 = 0u;
                 v176 = 0u;
                 v177 = 0u;
-                v134 = [v29 yawAngles];
-                v135 = [v134 countByEnumeratingWithState:&v176 objects:v199 count:16];
+                yawAngles2 = [v29 yawAngles];
+                v135 = [yawAngles2 countByEnumeratingWithState:&v176 objects:v199 count:16];
                 if (v135)
                 {
                   v136 = v135;
@@ -4532,7 +4532,7 @@ LABEL_227:
                     {
                       if (*v177 != v137)
                       {
-                        objc_enumerationMutation(v134);
+                        objc_enumerationMutation(yawAngles2);
                       }
 
                       v139 = *(*(&v176 + 1) + 8 * j);
@@ -4541,10 +4541,10 @@ LABEL_227:
                       if (v140 >= -13.0)
                       {
                         v145 = v140;
-                        v146 = [v139 captured];
+                        captured2 = [v139 captured];
                         if (v145 <= -11.0)
                         {
-                          if (v146 && !self->_leftEarMidCaptured)
+                          if (captured2 && !self->_leftEarMidCaptured)
                           {
                             v150 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
                             if (os_log_type_enabled(v150, OS_LOG_TYPE_DEFAULT))
@@ -4569,7 +4569,7 @@ LABEL_227:
                           }
                         }
 
-                        else if (v146 && !self->_leftEarFrontCaptured)
+                        else if (captured2 && !self->_leftEarFrontCaptured)
                         {
                           v147 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
                           if (os_log_type_enabled(v147, OS_LOG_TYPE_DEFAULT))
@@ -4619,15 +4619,15 @@ LABEL_227:
                       }
                     }
 
-                    v136 = [v134 countByEnumeratingWithState:&v176 objects:v199 count:16];
+                    v136 = [yawAngles2 countByEnumeratingWithState:&v176 objects:v199 count:16];
                   }
 
                   while (v136);
                 }
 
                 v29 = v169;
-                v153 = [v169 remainingYawAngles];
-                if ([v153 count])
+                remainingYawAngles2 = [v169 remainingYawAngles];
+                if ([remainingYawAngles2 count])
                 {
 
                   v27 = 0x1EB54B000;
@@ -4692,8 +4692,8 @@ LABEL_272:
     v230.size.height = v39;
     if (!CGRectEqualToRect(v230, *MEMORY[0x1E695F058]))
     {
-      v101 = [(HPSUISpatialProfileVideoCaptureSession *)self->videoCaptureSession previewLayer];
-      [v101 frame];
+      previewLayer = [(HPSUISpatialProfileVideoCaptureSession *)self->videoCaptureSession previewLayer];
+      [previewLayer frame];
       [(HPSUISpatialProfileEnrollmentController *)self translateEarBoundingBox:v33 previewLayerBoundingBox:v35, v37, v39, v102, v103, v104, v105];
 
       if (!self->_rightEarDetected && self->_currentStep == 6)
@@ -4755,7 +4755,7 @@ LABEL_186:
     goto LABEL_188;
   }
 
-  v52 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A2AA0]];
+  v52 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69A2AA0]];
   v53 = v52;
   if (v52)
   {
@@ -4766,17 +4766,17 @@ LABEL_186:
       [(HPSUISpatialProfileEnrollmentController *)self updateFaceTrackingStatus:?];
     }
 
-    v172 = v6;
+    v172 = sessionCopy;
     v173 = v53;
-    v171 = v7;
+    v171 = infoCopy;
     if (!self->_faceStraightZeroAngleCaptured)
     {
       v197 = 0u;
       v198 = 0u;
       v195 = 0u;
       v196 = 0u;
-      v54 = [v53 yawAngles];
-      v55 = [v54 countByEnumeratingWithState:&v195 objects:v227 count:16];
+      yawAngles3 = [v53 yawAngles];
+      v55 = [yawAngles3 countByEnumeratingWithState:&v195 objects:v227 count:16];
       if (v55)
       {
         v56 = v55;
@@ -4787,7 +4787,7 @@ LABEL_186:
           {
             if (*v196 != v57)
             {
-              objc_enumerationMutation(v54);
+              objc_enumerationMutation(yawAngles3);
             }
 
             v59 = *(*(&v195 + 1) + 8 * k);
@@ -4800,17 +4800,17 @@ LABEL_186:
               {
                 [v59 angle];
                 v63 = v62;
-                v64 = [v59 captured];
+                captured3 = [v59 captured];
                 *buf = 134218240;
                 v202 = v63;
                 v203 = 1024;
-                LODWORD(v204) = v64;
+                LODWORD(v204) = captured3;
                 _os_log_impl(&dword_1AC1C3000, v61, OS_LOG_TYPE_DEFAULT, "Spatial Profile: Captured straight face angle %f ->  %d", buf, 0x12u);
               }
             }
           }
 
-          v56 = [v54 countByEnumeratingWithState:&v195 objects:v227 count:16];
+          v56 = [yawAngles3 countByEnumeratingWithState:&v195 objects:v227 count:16];
         }
 
         while (v56);
@@ -4861,8 +4861,8 @@ LABEL_97:
     v194 = 0u;
     v191 = 0u;
     v192 = 0u;
-    v71 = [v53 yawAngles];
-    v72 = [v71 countByEnumeratingWithState:&v191 objects:v226 count:16];
+    yawAngles4 = [v53 yawAngles];
+    v72 = [yawAngles4 countByEnumeratingWithState:&v191 objects:v226 count:16];
     if (!v72)
     {
       goto LABEL_126;
@@ -4876,7 +4876,7 @@ LABEL_97:
       {
         if (*v192 != v74)
         {
-          objc_enumerationMutation(v71);
+          objc_enumerationMutation(yawAngles4);
         }
 
         v76 = *(*(&v191 + 1) + 8 * m);
@@ -4944,7 +4944,7 @@ LABEL_123:
         }
       }
 
-      v73 = [v71 countByEnumeratingWithState:&v191 objects:v226 count:16];
+      v73 = [yawAngles4 countByEnumeratingWithState:&v191 objects:v226 count:16];
       if (!v73)
       {
 LABEL_126:
@@ -4953,8 +4953,8 @@ LABEL_126:
         v190 = 0u;
         v187 = 0u;
         v188 = 0u;
-        v84 = [v173 pitchAngles];
-        v85 = [v84 countByEnumeratingWithState:&v187 objects:v225 count:16];
+        pitchAngles = [v173 pitchAngles];
+        v85 = [pitchAngles countByEnumeratingWithState:&v187 objects:v225 count:16];
         if (!v85)
         {
           goto LABEL_154;
@@ -4968,7 +4968,7 @@ LABEL_126:
           {
             if (*v188 != v87)
             {
-              objc_enumerationMutation(v84);
+              objc_enumerationMutation(pitchAngles);
             }
 
             v89 = *(*(&v187 + 1) + 8 * n);
@@ -5037,13 +5037,13 @@ LABEL_151:
             }
           }
 
-          v86 = [v84 countByEnumeratingWithState:&v187 objects:v225 count:16];
+          v86 = [pitchAngles countByEnumeratingWithState:&v187 objects:v225 count:16];
           if (!v86)
           {
 LABEL_154:
 
-            v7 = v171;
-            v6 = v172;
+            infoCopy = v171;
+            sessionCopy = v172;
             v27 = 0x1EB54B000uLL;
             v53 = v173;
             goto LABEL_155;
@@ -5116,11 +5116,11 @@ uint64_t __85__HPSUISpatialProfileEnrollmentController_didReceiveStateUpdateForS
   return [*(a1 + 32) alertEarEnrollWarning];
 }
 
-- (void)didReceiveCaptureVideo:(id)a3 colorImage:(id)a4 depthImage:(id)a5 faceObject:(id)a6
+- (void)didReceiveCaptureVideo:(id)video colorImage:(id)image depthImage:(id)depthImage faceObject:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  videoCopy = video;
+  imageCopy = image;
+  v10 = imageCopy;
   if (self->_enrollViewInitialized)
   {
     visualDetectionQueue = self->_visualDetectionQueue;
@@ -5129,7 +5129,7 @@ uint64_t __85__HPSUISpatialProfileEnrollmentController_didReceiveStateUpdateForS
     block[2] = __99__HPSUISpatialProfileEnrollmentController_didReceiveCaptureVideo_colorImage_depthImage_faceObject___block_invoke_626;
     block[3] = &unk_1E79703C8;
     v12 = v14;
-    v14[0] = v9;
+    v14[0] = imageCopy;
     v14[1] = self;
     dispatch_async(visualDetectionQueue, block);
   }
@@ -5141,7 +5141,7 @@ uint64_t __85__HPSUISpatialProfileEnrollmentController_didReceiveStateUpdateForS
     v15[2] = __99__HPSUISpatialProfileEnrollmentController_didReceiveCaptureVideo_colorImage_depthImage_faceObject___block_invoke;
     v15[3] = &unk_1E79703F0;
     v12 = v16;
-    v16[0] = v8;
+    v16[0] = videoCopy;
     v16[1] = self;
     v17 = v10;
     dispatch_async(MEMORY[0x1E69E96A0], v15);
@@ -5357,9 +5357,9 @@ LABEL_12:
   }
 }
 
-- (void)playEarCaptureSoundWithCompletion:(id)a3
+- (void)playEarCaptureSoundWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   if (self->_earCaptureSoundStep == 1)
@@ -5398,8 +5398,8 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __77__HPSUISpatialProfileEnrollmentController_playEarCaptureSoundWithCompletion___block_invoke_3;
   block[3] = &unk_1E7970258;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_group_notify(v5, MEMORY[0x1E69E96A0], block);
 }
 
@@ -5414,26 +5414,26 @@ uint64_t __77__HPSUISpatialProfileEnrollmentController_playEarCaptureSoundWithCo
   return result;
 }
 
-- (void)showBudsInEarPopUp:(id)a3
+- (void)showBudsInEarPopUp:(id)up
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  upCopy = up;
   v5 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 classicDevice];
-    v7 = [v6 name];
+    classicDevice = [upCopy classicDevice];
+    name = [classicDevice name];
     *buf = 138412290;
-    v21 = v7;
+    v21 = name;
     _os_log_impl(&dword_1AC1C3000, v5, OS_LOG_TYPE_DEFAULT, "Spatial Profile: Device %@, bud in ear", buf, 0xCu);
   }
 
-  v8 = [(HPSUISpatialProfileEnrollmentController *)self content];
-  v9 = [v8 removeAccessoryFromEar];
+  content = [(HPSUISpatialProfileEnrollmentController *)self content];
+  removeAccessoryFromEar = [content removeAccessoryFromEar];
 
   v10 = MEMORY[0x1E69DC650];
   v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v12 = [v11 localizedStringForKey:v9 value:&stru_1F20FAB50 table:@"SpatialAudioProfile"];
+  v12 = [v11 localizedStringForKey:removeAccessoryFromEar value:&stru_1F20FAB50 table:@"SpatialAudioProfile"];
   v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"SPATIAL_AUDIO_PROFILE_IN_EAR_TEXT" value:&stru_1F20FAB50 table:@"SpatialAudioProfile"];
   v15 = [v10 alertControllerWithTitle:v12 message:v14 preferredStyle:1];
@@ -5459,7 +5459,7 @@ uint64_t __77__HPSUISpatialProfileEnrollmentController_playEarCaptureSoundWithCo
   if (v4)
   {
     v5 = v4;
-    v15 = self;
+    selfCopy = self;
     v6 = *v21;
     while (2)
     {
@@ -5471,7 +5471,7 @@ uint64_t __77__HPSUISpatialProfileEnrollmentController_playEarCaptureSoundWithCo
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        if (+[HPSProductUtils isAppleHeadphone:](HPSProductUtils, "isAppleHeadphone:", v8, v15) && ([v8 isTemporaryPaired] & 1) == 0)
+        if (+[HPSProductUtils isAppleHeadphone:](HPSProductUtils, "isAppleHeadphone:", v8, selfCopy) && ([v8 isTemporaryPaired] & 1) == 0)
         {
           if ([v8 isGenuineAirPods])
           {
@@ -5482,12 +5482,12 @@ uint64_t __77__HPSUISpatialProfileEnrollmentController_playEarCaptureSoundWithCo
               {
                 v16 = 3;
                 *buf = 3;
-                v10 = [v9 classicDevice];
-                [v10 inEarStatusPrimary:buf secondary:&v16];
+                classicDevice = [v9 classicDevice];
+                [classicDevice inEarStatusPrimary:buf secondary:&v16];
 
                 if (!*buf || !v16)
                 {
-                  [(HPSUISpatialProfileEnrollmentController *)v15 showBudsInEarPopUp:v9];
+                  [(HPSUISpatialProfileEnrollmentController *)selfCopy showBudsInEarPopUp:v9];
                   v12 = 1;
 LABEL_27:
 
@@ -5507,11 +5507,11 @@ LABEL_27:
 
               if (v9)
               {
-                inEarDetectDisabledPopUpShown = v15->_inEarDetectDisabledPopUpShown;
+                inEarDetectDisabledPopUpShown = selfCopy->_inEarDetectDisabledPopUpShown;
                 if (!inEarDetectDisabledPopUpShown)
                 {
-                  v15->_inEarDetectDisabledPopUpShown = 1;
-                  [(HPSUISpatialProfileEnrollmentController *)v15 showBudsInEarPopUp:v9];
+                  selfCopy->_inEarDetectDisabledPopUpShown = 1;
+                  [(HPSUISpatialProfileEnrollmentController *)selfCopy showBudsInEarPopUp:v9];
                 }
 
                 v12 = !inEarDetectDisabledPopUpShown;
@@ -5577,12 +5577,12 @@ LABEL_28:
   [(HPSUISpatialProfileEnrollmentController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)fillFacePillsByDirection:(int)a3
+- (void)fillFacePillsByDirection:(int)direction
 {
   v5 = 0;
-  if ((a3 - 1) <= 6)
+  if ((direction - 1) <= 6)
   {
-    v5 = qword_1AC30EC98[a3 - 1];
+    v5 = qword_1AC30EC98[direction - 1];
   }
 
   v7[6] = v3;
@@ -5678,14 +5678,14 @@ void __68__HPSUISpatialProfileEnrollmentController_fillFacePillsByDirection___bl
   }
 
   self->_welcomeSpinnerOn = 1;
-  v4 = [(OBTrayButton *)self->_continueButton titleLabel];
-  [v4 setHidden:1];
+  titleLabel = [(OBTrayButton *)self->_continueButton titleLabel];
+  [titleLabel setHidden:1];
 
   [(OBTrayButton *)self->_continueButton setUserInteractionEnabled:0];
   [(HPSUISpatialProfileEnrollmentController *)self prepareSpinner];
   spinner = self->_spinner;
-  v6 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  [(UIActivityIndicatorView *)spinner setColor:v6];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  [(UIActivityIndicatorView *)spinner setColor:systemWhiteColor];
 }
 
 - (void)stopWelcomeSpinner
@@ -5697,11 +5697,11 @@ void __68__HPSUISpatialProfileEnrollmentController_fillFacePillsByDirection___bl
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       enrollmentReady = self->_enrollmentReady;
-      v8 = [(BluetoothManager *)self->_btManager available];
+      available = [(BluetoothManager *)self->_btManager available];
       v9[0] = 67109376;
       v9[1] = enrollmentReady;
       v10 = 1024;
-      v11 = v8;
+      v11 = available;
       _os_log_impl(&dword_1AC1C3000, v5, OS_LOG_TYPE_DEFAULT, "Spatial Profile: stopWelcomeSpinner failed _enrollmentReady %d [_btManager available] %d", v9, 0xEu);
     }
 
@@ -5730,8 +5730,8 @@ LABEL_11:
   }
 
   self->_welcomeSpinnerOn = 0;
-  v6 = [(OBTrayButton *)self->_continueButton titleLabel];
-  [v6 setHidden:0];
+  titleLabel = [(OBTrayButton *)self->_continueButton titleLabel];
+  [titleLabel setHidden:0];
 
   [(OBTrayButton *)self->_continueButton setUserInteractionEnabled:1];
   [(HPSUISpatialProfileEnrollmentController *)self cleanUpSpinner];
@@ -5748,18 +5748,18 @@ LABEL_11:
   }
 
   self->_postProcessSpinnerOn = 1;
-  v4 = [(OBTrayButton *)self->_continueButton titleLabel];
-  [v4 setHidden:1];
+  titleLabel = [(OBTrayButton *)self->_continueButton titleLabel];
+  [titleLabel setHidden:1];
 
   [(OBTrayButton *)self->_continueButton setUserInteractionEnabled:0];
-  v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(OBTrayButton *)self->_continueButton setTintColor:v5];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(OBTrayButton *)self->_continueButton setTintColor:systemBackgroundColor];
 
   [(HPSUISpatialProfileEnrollmentController *)self showContinueButton];
   [(HPSUISpatialProfileEnrollmentController *)self prepareSpinner];
   spinner = self->_spinner;
-  v7 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UIActivityIndicatorView *)spinner setColor:v7];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UIActivityIndicatorView *)spinner setColor:systemGrayColor];
 }
 
 - (void)stopPostProcessSpinner
@@ -5776,11 +5776,11 @@ LABEL_11:
     }
 
     self->_postProcessSpinnerOn = 0;
-    v6 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(OBTrayButton *)self->_continueButton setTintColor:v6];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(OBTrayButton *)self->_continueButton setTintColor:systemBlueColor];
 
-    v7 = [(OBTrayButton *)self->_continueButton titleLabel];
-    [v7 setHidden:0];
+    titleLabel = [(OBTrayButton *)self->_continueButton titleLabel];
+    [titleLabel setHidden:0];
 
     [(OBTrayButton *)self->_continueButton setUserInteractionEnabled:1];
     [(HPSUISpatialProfileEnrollmentController *)self cleanUpSpinner];
@@ -5939,11 +5939,11 @@ void __62__HPSUISpatialProfileEnrollmentController_pulseEarBoundingBox__block_in
 - (void)updateBoundingBoxHiddenStatus
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(CEKSubjectIndicatorView *)self->_earBoundingBoxView isHidden];
+  isHidden = [(CEKSubjectIndicatorView *)self->_earBoundingBoxView isHidden];
   currentStep = self->_currentStep;
   if (currentStep == 7 || currentStep == 11)
   {
-    if (v3 != self->_earBoundingBoxDetected)
+    if (isHidden != self->_earBoundingBoxDetected)
     {
       return;
     }
@@ -5961,7 +5961,7 @@ void __62__HPSUISpatialProfileEnrollmentController_pulseEarBoundingBox__block_in
     }
   }
 
-  else if (v3)
+  else if (isHidden)
   {
     return;
   }
@@ -6002,26 +6002,26 @@ uint64_t __72__HPSUISpatialProfileEnrollmentController_updateBoundingBoxHiddenSt
   return [MEMORY[0x1E69DD250] animateWithDuration:v2 animations:0.3];
 }
 
-- (void)translateEarBoundingBox:(CGRect)a3 previewLayerBoundingBox:(CGRect)a4
+- (void)translateEarBoundingBox:(CGRect)box previewLayerBoundingBox:(CGRect)boundingBox
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__HPSUISpatialProfileEnrollmentController_translateEarBoundingBox_previewLayerBoundingBox___block_invoke;
   block[3] = &unk_1E7970558;
   block[4] = self;
-  v4.f64[0] = a4.size.width;
-  v4.f64[1] = a4.size.height;
+  v4.f64[0] = boundingBox.size.width;
+  v4.f64[1] = boundingBox.size.height;
   _Q7 = vcvtq_f64_f32(vcvt_f32_f64(vdivq_f64(v4, self->_visageFrame.size)));
-  height = a3.size.height;
-  v7 = vcvt_f32_f64(vmulq_f64(vcvtq_f64_f32(vcvt_f32_f64(vmulq_f64(a3.size, _Q7))), xmmword_1AC30EC80));
-  v8 = (0.5 * v7.f32[0]) + _Q7.f64[0] * a3.origin.x;
+  height = box.size.height;
+  v7 = vcvt_f32_f64(vmulq_f64(vcvtq_f64_f32(vcvt_f32_f64(vmulq_f64(box.size, _Q7))), xmmword_1AC30EC80));
+  v8 = (0.5 * v7.f32[0]) + _Q7.f64[0] * box.origin.x;
   __asm { FMLA            D3, D1, V7.D[1] }
 
-  v14.f64[0] = a4.size.width - v8;
+  v14.f64[0] = boundingBox.size.width - v8;
   v14.f64[1] = _D3;
-  y = a4.origin.y;
+  y = boundingBox.origin.y;
   block[5] = v7;
-  block[6] = vcvt_f32_f64(vaddq_f64(a4.origin, vcvtq_f64_f32(vcvt_f32_f64(v14))));
+  block[6] = vcvt_f32_f64(vaddq_f64(boundingBox.origin, vcvtq_f64_f32(vcvt_f32_f64(v14))));
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -6046,16 +6046,16 @@ uint64_t __91__HPSUISpatialProfileEnrollmentController_translateEarBoundingBox_p
   return [v4 setCenter:{v2, v3}];
 }
 
-- (void)updateFaceTrackingStatus:(CGRect)a3
+- (void)updateFaceTrackingStatus:(CGRect)status
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = status.size.height;
+  width = status.size.width;
+  y = status.origin.y;
+  x = status.origin.x;
   v30 = *MEMORY[0x1E69E9840];
   faceBoundingBoxStatus = self->_faceBoundingBoxStatus;
   v9 = self->_visageFrame.size.height;
-  v10 = a3.size.width / self->_visageFrame.size.width;
+  v10 = status.size.width / self->_visageFrame.size.width;
   if (faceBoundingBoxStatus == 1)
   {
     if (v10 >= 0.45)
@@ -6102,19 +6102,19 @@ uint64_t __91__HPSUISpatialProfileEnrollmentController_translateEarBoundingBox_p
   }
 }
 
-- (void)updateCurrentTrackingEar:(id)a3 rightEarPoseStatus:(id)a4 earBoundingBox:(CGRect)a5 earStatus:(int)a6
+- (void)updateCurrentTrackingEar:(id)ear rightEarPoseStatus:(id)status earBoundingBox:(CGRect)box earStatus:(int)earStatus
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v89 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = v14;
-  if (v13)
+  earCopy = ear;
+  statusCopy = status;
+  v15 = statusCopy;
+  if (earCopy)
   {
-    v78 = [v13 hasYawAngle] != 0;
+    v78 = [earCopy hasYawAngle] != 0;
     if (v15)
     {
 LABEL_3:
@@ -6126,7 +6126,7 @@ LABEL_3:
   else
   {
     v78 = 0;
-    if (v14)
+    if (statusCopy)
     {
       goto LABEL_3;
     }
@@ -6146,9 +6146,9 @@ LABEL_6:
     goto LABEL_40;
   }
 
-  if (a6 > 2)
+  if (earStatus > 2)
   {
-    switch(a6)
+    switch(earStatus)
     {
       case 3:
         if (self->_isLookingAtPhone)
@@ -6194,9 +6194,9 @@ LABEL_28:
     goto LABEL_27;
   }
 
-  if (a6)
+  if (earStatus)
   {
-    if (a6 == 2 && !self->_isLookingAtPhone && !earTooClose)
+    if (earStatus == 2 && !self->_isLookingAtPhone && !earTooClose)
     {
       v22 = 1427;
       earTooCloseDetectTracker = self->_earOcclusionDetectTracker;
@@ -6310,18 +6310,18 @@ LABEL_40:
   self->_earBoundingBoxDetected = v29 != 0;
   if (v78)
   {
-    [v13 currentYawAngle];
+    [earCopy currentYawAngle];
     if (v30 != -100.0)
     {
-      [v13 currentYawAngle];
+      [earCopy currentYawAngle];
       self->_leftEarLastYaw = v31;
-      [v13 currentYawAngle];
+      [earCopy currentYawAngle];
       self->_leftLastReceivedYaw = v32;
-      [v13 currentYawAngle];
+      [earCopy currentYawAngle];
       self->_currentYaw = v33;
-      v34 = [v13 remainingYawAngles];
+      remainingYawAngles = [earCopy remainingYawAngles];
       pendingYaw = self->_pendingYaw;
-      self->_pendingYaw = v34;
+      self->_pendingYaw = remainingYawAngles;
     }
 
     self->_rightEarLastYaw = -100.0;
@@ -6355,9 +6355,9 @@ LABEL_40:
       self->_rightLastReceivedYaw = v39;
       [v15 currentYawAngle];
       self->_currentYaw = v40;
-      v41 = [v15 remainingYawAngles];
+      remainingYawAngles2 = [v15 remainingYawAngles];
       v42 = self->_pendingYaw;
-      self->_pendingYaw = v41;
+      self->_pendingYaw = remainingYawAngles2;
     }
 
     self->_leftEarLastYaw = -100.0;
@@ -6382,18 +6382,18 @@ LABEL_40:
   }
 
   *(&self->super.super.super.isa + v44) = 0;
-  if (v13)
+  if (earCopy)
   {
-    if ([v13 hasYawAngle])
+    if ([earCopy hasYawAngle])
     {
       leftEarStatus = self->_leftEarStatus;
       if (leftEarStatus >= 1 && leftEarStatus != 3)
       {
-        [v13 currentYawAngle];
+        [earCopy currentYawAngle];
         self->_currentYaw = v46;
-        v47 = [v13 remainingYawAngles];
+        remainingYawAngles3 = [earCopy remainingYawAngles];
         v48 = self->_pendingYaw;
-        self->_pendingYaw = v47;
+        self->_pendingYaw = remainingYawAngles3;
       }
     }
   }
@@ -6407,9 +6407,9 @@ LABEL_40:
       {
         [v15 currentYawAngle];
         self->_currentYaw = v50;
-        v51 = [v15 remainingYawAngles];
+        remainingYawAngles4 = [v15 remainingYawAngles];
         v52 = self->_pendingYaw;
-        self->_pendingYaw = v51;
+        self->_pendingYaw = remainingYawAngles4;
       }
     }
   }
@@ -6763,11 +6763,11 @@ void __67__HPSUISpatialProfileEnrollmentController_startEnrollGuidanceTimer__blo
     {
       candidateYaw = self->_candidateYaw;
       self->_candidateYaw = -100.0;
-      v6 = [(NSArray *)self->_pendingYaw firstObject];
-      v7 = v6;
-      if (v6)
+      firstObject = [(NSArray *)self->_pendingYaw firstObject];
+      v7 = firstObject;
+      if (firstObject)
       {
-        [v6 floatValue];
+        [firstObject floatValue];
         v9 = -v8;
         self->_candidateYaw = v9;
         if (candidateYaw != v9)
@@ -6903,8 +6903,8 @@ LABEL_42:
           v7 = v59;
           if (v28 > [(NSArray *)self->_feedBackBinning count])
           {
-            v41 = [(NSArray *)self->_feedBackPitch lastObject];
-            [v41 floatValue];
+            lastObject = [(NSArray *)self->_feedBackPitch lastObject];
+            [lastObject floatValue];
             self->_enrollGuidancePitch = v42;
             v43 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
             if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
@@ -6939,11 +6939,11 @@ LABEL_42:
             if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
             {
               v50 = self->_enrollGuidancePitch;
-              v51 = [(HPSUISpatialProfileSoundHapticManager *)self->_soundHapticManager isEnrollGuidancePlaying];
+              isEnrollGuidancePlaying = [(HPSUISpatialProfileSoundHapticManager *)self->_soundHapticManager isEnrollGuidancePlaying];
               v52 = @"YES";
               *buf = 134218498;
               v67 = enrollGuidancePitch;
-              if (v51)
+              if (isEnrollGuidancePlaying)
               {
                 v52 = @"NO";
               }
@@ -7026,7 +7026,7 @@ uint64_t __69__HPSUISpatialProfileEnrollmentController_triggerEnrollGuidanceTime
   }
 }
 
-- (void)alertEarDistanceWarning:(int)a3
+- (void)alertEarDistanceWarning:(int)warning
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
@@ -7035,7 +7035,7 @@ uint64_t __69__HPSUISpatialProfileEnrollmentController_triggerEnrollGuidanceTime
     currentYaw = self->_currentYaw;
     candidateYaw = self->_candidateYaw;
     *buf = 67109632;
-    v16 = a3;
+    warningCopy = warning;
     v17 = 2048;
     v18 = currentYaw;
     v19 = 2048;
@@ -7052,7 +7052,7 @@ uint64_t __69__HPSUISpatialProfileEnrollmentController_triggerEnrollGuidanceTime
   block[3] = &unk_1E7970208;
   block[4] = self;
   dispatch_async(MEMORY[0x1E69E96A0], block);
-  switch(a3)
+  switch(warning)
   {
     case 5:
       [(HPSUISpatialProfileEnrollmentController *)self pauseEnrollment];
@@ -7594,14 +7594,14 @@ void __70__HPSUISpatialProfileEnrollmentController_stopEarEnrollmentNudgeTimer__
 
 - (void)sendTipKitSignal
 {
-  v2 = [MEMORY[0x1E698F350] discoverabilitySignal];
-  v3 = [v2 source];
+  discoverabilitySignal = [MEMORY[0x1E698F350] discoverabilitySignal];
+  source = [discoverabilitySignal source];
   v4 = objc_alloc(MEMORY[0x1E698F278]);
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v4 initWithIdentifier:@"com.apple.HeadphoneSettings.spatial-profile-enrollment-triggered" bundleID:v6 context:0];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [v4 initWithIdentifier:@"com.apple.HeadphoneSettings.spatial-profile-enrollment-triggered" bundleID:bundleIdentifier context:0];
 
-  [v3 sendEvent:v7];
+  [source sendEvent:v7];
   v8 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {

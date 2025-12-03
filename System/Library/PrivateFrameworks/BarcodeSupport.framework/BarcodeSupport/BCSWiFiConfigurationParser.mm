@@ -1,19 +1,19 @@
 @interface BCSWiFiConfigurationParser
-+ (id)parseString:(id)a3;
++ (id)parseString:(id)string;
 @end
 
 @implementation BCSWiFiConfigurationParser
 
-+ (id)parseString:(id)a3
++ (id)parseString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v4)
   {
     [(BCSWiFiConfigurationParser *)v4 parseString:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  if ([v3 length] <= 4)
+  if ([stringCopy length] <= 4)
   {
     v12 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
     if (v12)
@@ -26,7 +26,7 @@ LABEL_25:
     goto LABEL_30;
   }
 
-  if (([v3 hasPrefix:@"WIFI:"] & 1) == 0)
+  if (([stringCopy hasPrefix:@"WIFI:"] & 1) == 0)
   {
     v36 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
     if (v36)
@@ -37,9 +37,9 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v20 = [[BCSKeyValueParser alloc] initWithString:v3 startIndex:5];
-  v21 = [(BCSKeyValueParser *)v20 keyValuePairs];
-  v22 = [v21 objectForKeyedSubscript:@"S"];
+  v20 = [[BCSKeyValueParser alloc] initWithString:stringCopy startIndex:5];
+  keyValuePairs = [(BCSKeyValueParser *)v20 keyValuePairs];
+  v22 = [keyValuePairs objectForKeyedSubscript:@"S"];
   if (![v22 length])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -47,20 +47,20 @@ LABEL_25:
       +[BCSWiFiConfigurationParser parseString:];
     }
 
-    v31 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:8 invalidContents:v3];
+    v31 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:8 invalidContents:stringCopy];
     goto LABEL_29;
   }
 
-  v23 = [v21 objectForKeyedSubscript:@"T"];
-  v24 = [v21 objectForKeyedSubscript:@"P"];
-  v25 = [v21 objectForKeyedSubscript:@"H"];
-  v26 = [v25 BOOLValue];
+  v23 = [keyValuePairs objectForKeyedSubscript:@"T"];
+  v24 = [keyValuePairs objectForKeyedSubscript:@"P"];
+  v25 = [keyValuePairs objectForKeyedSubscript:@"H"];
+  bOOLValue = [v25 BOOLValue];
 
   if ([v23 isEqualToString:@"WEP"])
   {
-    v27 = [v24 _bcs_stringWithEnclosingDoubleQuotesRemoved];
+    _bcs_stringWithEnclosingDoubleQuotesRemoved = [v24 _bcs_stringWithEnclosingDoubleQuotesRemoved];
 
-    v24 = v27;
+    v24 = _bcs_stringWithEnclosingDoubleQuotesRemoved;
   }
 
   if (v23 && ![v23 isEqualToString:@"nopass"])
@@ -79,7 +79,7 @@ LABEL_25:
           +[BCSWiFiConfigurationParser parseString:];
         }
 
-        v31 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:8 invalidContents:v3];
+        v31 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:8 invalidContents:stringCopy];
         goto LABEL_22;
       }
 
@@ -103,19 +103,19 @@ LABEL_25:
 
   v29 = v20;
   v30 = v22;
-  v31 = [[BCSWiFiConfigurationData alloc] initWithSSID:v22 isWEP:v28 password:v24 isHidden:v26];
-  v32 = [v21 objectForKeyedSubscript:@"AAB"];
-  v33 = [v21 objectForKeyedSubscript:@"AAP"];
-  v34 = [v21 objectForKeyedSubscript:@"CPT"];
+  v31 = [[BCSWiFiConfigurationData alloc] initWithSSID:v22 isWEP:v28 password:v24 isHidden:bOOLValue];
+  v32 = [keyValuePairs objectForKeyedSubscript:@"AAB"];
+  v33 = [keyValuePairs objectForKeyedSubscript:@"AAP"];
+  v34 = [keyValuePairs objectForKeyedSubscript:@"CPT"];
   if (v32 && v33)
   {
     [(BCSInvalidParsedData *)v31 setAirplayBrokerID:v32];
     [(BCSInvalidParsedData *)v31 setAirplayBrokerPin:v33];
   }
 
-  v35 = [(BCSInvalidParsedData *)v31 airplayBrokerID];
+  airplayBrokerID = [(BCSInvalidParsedData *)v31 airplayBrokerID];
 
-  if (v35 && v34)
+  if (airplayBrokerID && v34)
   {
     [(BCSInvalidParsedData *)v31 setCaptivePortalToken:v34];
   }

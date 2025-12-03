@@ -4,13 +4,13 @@
 - (_UIDragInteractionDriver)init;
 - (_UIDragInteractionDriverDelegate)delegate;
 - (unint64_t)_state;
-- (void)_handleEvent:(unint64_t)a3;
+- (void)_handleEvent:(unint64_t)event;
 - (void)cancel;
 - (void)didTransitionToCancelState;
 - (void)didTransitionToInflightState;
 - (void)didTransitionToPreparing;
-- (void)setInitialLocationInWindow:(CGPoint)a3;
-- (void)setView:(id)a3;
+- (void)setInitialLocationInWindow:(CGPoint)window;
+- (void)setView:(id)view;
 @end
 
 @implementation _UIDragInteractionDriver
@@ -51,9 +51,9 @@
   return WeakRetained;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   if (WeakRetained != obj)
@@ -78,19 +78,19 @@
 
 - (void)didTransitionToPreparing
 {
-  v3 = [(_UIDragInteractionDriver *)self delegate];
+  delegate = [(_UIDragInteractionDriver *)self delegate];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __52___UIDragInteractionDriver_didTransitionToPreparing__block_invoke;
   v4[3] = &unk_1E70F5AC0;
   v4[4] = self;
-  [v3 dragDriver:self prepareToLiftWithCompletion:v4];
+  [delegate dragDriver:self prepareToLiftWithCompletion:v4];
 }
 
 - (void)didTransitionToInflightState
 {
-  v3 = [(_UIDragInteractionDriver *)self delegate];
-  v4 = [v3 dragDriverBeginLift:self];
+  delegate = [(_UIDragInteractionDriver *)self delegate];
+  v4 = [delegate dragDriverBeginLift:self];
 
   if ((v4 & 1) == 0)
   {
@@ -101,11 +101,11 @@
 
 - (void)didTransitionToCancelState
 {
-  v3 = [(_UIDragInteractionDriver *)self delegate];
-  [v3 dragDriverCancelLift:self];
+  delegate = [(_UIDragInteractionDriver *)self delegate];
+  [delegate dragDriverCancelLift:self];
 
-  v4 = [(_UIDragInteractionDriver *)self delegate];
-  [v4 dragDriverCancelAddItemsGesture:self];
+  delegate2 = [(_UIDragInteractionDriver *)self delegate];
+  [delegate2 dragDriverCancelAddItemsGesture:self];
 
   if (self)
   {
@@ -123,10 +123,10 @@
   return result;
 }
 
-- (void)setInitialLocationInWindow:(CGPoint)a3
+- (void)setInitialLocationInWindow:(CGPoint)window
 {
-  self->_initialLocationInWindow.x = a3.x;
-  self->_initialLocationInWindow.y = a3.y;
+  self->_initialLocationInWindow.x = window.x;
+  self->_initialLocationInWindow.y = window.y;
   self->_initialLocationInWindow.z = 0.0;
 }
 
@@ -140,11 +140,11 @@
   return self;
 }
 
-- (void)_handleEvent:(unint64_t)a3
+- (void)_handleEvent:(unint64_t)event
 {
   if (self)
   {
-    _UIDragInteractionDriverStateMachineHandleEvent(&self->_stateMachine, self, a3);
+    _UIDragInteractionDriverStateMachineHandleEvent(&self->_stateMachine, self, event);
   }
 }
 

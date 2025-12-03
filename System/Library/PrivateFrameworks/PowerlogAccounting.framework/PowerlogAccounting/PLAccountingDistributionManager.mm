@@ -2,14 +2,14 @@
 + (double)freeTimerInterval;
 - (PLAccountingDistributionManager)init;
 - (PLAccountingDistributionManagerDelegate)delegate;
-- (id)dependencyIDsForOwner:(id)a3;
-- (id)ownerIDsForDependency:(id)a3;
-- (void)addDistributionEvent:(id)a3;
-- (void)addEnergyEstimate:(id)a3 withNow:(id)a4;
-- (void)closeLastDistributionEventForwardWithDistributionID:(id)a3 withEndDate:(id)a4;
-- (void)didDistributeEnergyEstimate:(id)a3;
-- (void)didDistributeToChildEnergyEstimate:(id)a3 fromParentEnergyEstimate:(id)a4;
-- (void)reloadDependenciesNewerThanDate:(id)a3;
+- (id)dependencyIDsForOwner:(id)owner;
+- (id)ownerIDsForDependency:(id)dependency;
+- (void)addDistributionEvent:(id)event;
+- (void)addEnergyEstimate:(id)estimate withNow:(id)now;
+- (void)closeLastDistributionEventForwardWithDistributionID:(id)d withEndDate:(id)date;
+- (void)didDistributeEnergyEstimate:(id)estimate;
+- (void)didDistributeToChildEnergyEstimate:(id)estimate fromParentEnergyEstimate:(id)energyEstimate;
+- (void)reloadDependenciesNewerThanDate:(id)date;
 @end
 
 @implementation PLAccountingDistributionManager
@@ -28,10 +28,10 @@
   return [(PLAccountingOwnerDependencyManager *)&v3 init];
 }
 
-- (void)addEnergyEstimate:(id)a3 withNow:(id)a4
+- (void)addEnergyEstimate:(id)estimate withNow:(id)now
 {
-  v6 = a3;
-  v7 = a4;
+  estimateCopy = estimate;
+  nowCopy = now;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -47,12 +47,12 @@
 
     if (addEnergyEstimate_withNow__classDebugEnabled_0 == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEstimate=%@, now=%@", v6, v7];
+      nowCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEstimate=%@, now=%@", estimateCopy, nowCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager addEnergyEstimate:withNow:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:26];
+      [v10 logMessage:nowCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:26];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -62,21 +62,21 @@
     }
   }
 
-  if (v6 && v7)
+  if (estimateCopy && nowCopy)
   {
-    if ([v6 numAncestors] < 100)
+    if ([estimateCopy numAncestors] < 100)
     {
-      v15 = [[PLAccountingDistributionOwner alloc] initWithEnergyEstimate:v6];
-      v21 = [v6 distributionRuleID];
-      v22 = [v21 intValue];
+      estimateCopy = [[PLAccountingDistributionOwner alloc] initWithEnergyEstimate:estimateCopy];
+      distributionRuleID = [estimateCopy distributionRuleID];
+      intValue = [distributionRuleID intValue];
 
-      if (v22 < 1)
+      if (intValue < 1)
       {
-        if ([v6 writeToDB])
+        if ([estimateCopy writeToDB])
         {
-          [v6 setDistributionDate:v7];
-          v30 = [(PLAccountingDistributionManager *)self delegate];
-          [v30 didDistributeEnergyEstimate:v6];
+          [estimateCopy setDistributionDate:nowCopy];
+          delegate = [(PLAccountingDistributionManager *)self delegate];
+          [delegate didDistributeEnergyEstimate:estimateCopy];
         }
       }
 
@@ -100,9 +100,9 @@
             v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"rule exists"];
             v25 = MEMORY[0x277D3F178];
             v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-            v27 = [v26 lastPathComponent];
+            lastPathComponent2 = [v26 lastPathComponent];
             v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager addEnergyEstimate:withNow:]"];
-            [v25 logMessage:v24 fromFile:v27 fromFunction:v28 fromLineNumber:39];
+            [v25 logMessage:v24 fromFile:lastPathComponent2 fromFunction:v28 fromLineNumber:39];
 
             v29 = PLLogCommon();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -112,20 +112,20 @@
           }
         }
 
-        [(PLAccountingOwnerDependencyManager *)self addOwner:v15];
+        [(PLAccountingOwnerDependencyManager *)self addOwner:estimateCopy];
       }
 
-      [(PLAccountingOwnerDependencyManager *)self notifyDependenciesWithOwner:v15];
+      [(PLAccountingOwnerDependencyManager *)self notifyDependenciesWithOwner:estimateCopy];
     }
 
     else
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: possible accounting distribution loop detected for energyEstimate=%@", v6];
+      estimateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: possible accounting distribution loop detected for energyEstimate=%@", estimateCopy];
       v16 = MEMORY[0x277D3F178];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent3 = [v17 lastPathComponent];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager addEnergyEstimate:withNow:]"];
-      [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:31];
+      [v16 logMessage:estimateCopy fromFile:lastPathComponent3 fromFunction:v19 fromLineNumber:31];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -150,9 +150,9 @@ uint64_t __61__PLAccountingDistributionManager_addEnergyEstimate_withNow___block
   return result;
 }
 
-- (void)addDistributionEvent:(id)a3
+- (void)addDistributionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -168,12 +168,12 @@ uint64_t __61__PLAccountingDistributionManager_addEnergyEstimate_withNow___block
 
     if (addDistributionEvent__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionEvent=%@", v4];
+      eventCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionEvent=%@", eventCopy];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager addDistributionEvent:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:52];
+      [v7 logMessage:eventCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:52];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -183,12 +183,12 @@ uint64_t __61__PLAccountingDistributionManager_addEnergyEstimate_withNow___block
     }
   }
 
-  if (v4)
+  if (eventCopy)
   {
-    v12 = [[PLAccountingDistributionDependency alloc] initWithDistributionEvent:v4];
+    v12 = [[PLAccountingDistributionDependency alloc] initWithDistributionEvent:eventCopy];
     v13 = +[PLAccountingDistributionRuleManager sharedInstance];
-    v14 = [v4 distributionID];
-    v15 = [v13 distributionRulesForDistributionID:v14];
+    distributionID = [eventCopy distributionID];
+    v15 = [v13 distributionRulesForDistributionID:distributionID];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -208,9 +208,9 @@ uint64_t __61__PLAccountingDistributionManager_addEnergyEstimate_withNow___block
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionRules=%@", v15];
         v18 = MEMORY[0x277D3F178];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent2 = [v19 lastPathComponent];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager addDistributionEvent:]"];
-        [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:59];
+        [v18 logMessage:v17 fromFile:lastPathComponent2 fromFunction:v21 fromLineNumber:59];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -243,10 +243,10 @@ uint64_t __56__PLAccountingDistributionManager_addDistributionEvent___block_invo
   return result;
 }
 
-- (void)closeLastDistributionEventForwardWithDistributionID:(id)a3 withEndDate:(id)a4
+- (void)closeLastDistributionEventForwardWithDistributionID:(id)d withEndDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dateCopy = date;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -262,12 +262,12 @@ uint64_t __56__PLAccountingDistributionManager_addDistributionEvent___block_invo
 
     if (closeLastDistributionEventForwardWithDistributionID_withEndDate__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionID=%@, endDate=%@", v6, v7];
+      dateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionID=%@, endDate=%@", dCopy, dateCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager closeLastDistributionEventForwardWithDistributionID:withEndDate:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:71];
+      [v10 logMessage:dateCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:71];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -277,15 +277,15 @@ uint64_t __56__PLAccountingDistributionManager_addDistributionEvent___block_invo
     }
   }
 
-  v15 = [v6 intValue];
-  if (v7 && v15 >= 1)
+  intValue = [dCopy intValue];
+  if (dateCopy && intValue >= 1)
   {
-    v16 = [&unk_2870F87F8 objectAtIndexedSubscript:{objc_msgSend(v6, "intValue")}];
-    v17 = [v16 intValue];
+    v16 = [&unk_2870F87F8 objectAtIndexedSubscript:{objc_msgSend(dCopy, "intValue")}];
+    intValue2 = [v16 intValue];
 
-    if (v17 == 1)
+    if (intValue2 == 1)
     {
-      [(PLAccountingOwnerDependencyManager *)self updateLastDependencyID:v6 withEndDate:v7];
+      [(PLAccountingOwnerDependencyManager *)self updateLastDependencyID:dCopy withEndDate:dateCopy];
     }
 
     else if ([MEMORY[0x277D3F180] debugEnabled])
@@ -303,12 +303,12 @@ uint64_t __56__PLAccountingDistributionManager_addDistributionEvent___block_invo
 
       if (closeLastDistributionEventForwardWithDistributionID_withEndDate__classDebugEnabled_48 == 1)
       {
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"directionality=%i not allowed for closing", v17];
+        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"directionality=%i not allowed for closing", intValue2];
         v20 = MEMORY[0x277D3F178];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-        v22 = [v21 lastPathComponent];
+        lastPathComponent2 = [v21 lastPathComponent];
         v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager closeLastDistributionEventForwardWithDistributionID:withEndDate:]"];
-        [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:76];
+        [v20 logMessage:v19 fromFile:lastPathComponent2 fromFunction:v23 fromLineNumber:76];
 
         v24 = PLLogCommon();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -359,12 +359,12 @@ uint64_t __52__PLAccountingDistributionManager_freeTimerInterval__block_invoke(u
   return result;
 }
 
-- (void)reloadDependenciesNewerThanDate:(id)a3
+- (void)reloadDependenciesNewerThanDate:(id)date
 {
   v115 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = 0x277D3F000uLL;
-  v94 = self;
+  selfCopy = self;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v6 = objc_opt_class();
@@ -380,13 +380,13 @@ uint64_t __52__PLAccountingDistributionManager_freeTimerInterval__block_invoke(u
 
     if (reloadDependenciesNewerThanDate__classDebugEnabled_0 == 1)
     {
-      v7 = v4;
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"date=%@", v4];
+      v7 = dateCopy;
+      dateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"date=%@", dateCopy];
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager reloadDependenciesNewerThanDate:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:90];
+      [v9 logMessage:dateCopy fromFile:lastPathComponent fromFunction:v12 fromLineNumber:90];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -394,20 +394,20 @@ uint64_t __52__PLAccountingDistributionManager_freeTimerInterval__block_invoke(u
         [PLAccountingDependency activate];
       }
 
-      v4 = v7;
-      self = v94;
+      dateCopy = v7;
+      self = selfCopy;
       v5 = 0x277D3F000uLL;
     }
   }
 
-  if (v4)
+  if (dateCopy)
   {
-    v14 = [MEMORY[0x277CBEAA8] distantFuture];
-    v15 = [v4 isEqualToDate:v14];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v15 = [dateCopy isEqualToDate:distantFuture];
 
     if ((v15 & 1) == 0)
     {
-      v86 = v4;
+      v86 = dateCopy;
       v108 = 0u;
       v109 = 0u;
       v106 = 0u;
@@ -454,9 +454,9 @@ uint64_t __52__PLAccountingDistributionManager_freeTimerInterval__block_invoke(u
               v20 = [*(v16 + 3240) stringWithFormat:@"distributionID=%@", v18];
               v21 = MEMORY[0x277D3F178];
               v22 = [*(v16 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-              v23 = [v22 lastPathComponent];
+              lastPathComponent2 = [v22 lastPathComponent];
               v24 = [*(v16 + 3240) stringWithUTF8String:"-[PLAccountingDistributionManager reloadDependenciesNewerThanDate:]"];
-              [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:95];
+              [v21 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:95];
 
               v25 = PLLogCommon();
               if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -471,7 +471,7 @@ uint64_t __52__PLAccountingDistributionManager_freeTimerInterval__block_invoke(u
           }
 
           v26 = [&unk_2870F8810 objectAtIndexedSubscript:{objc_msgSend(v18, "intValue")}];
-          v96 = [v26 intValue];
+          intValue = [v26 intValue];
 
           if ([*(v5 + 384) debugEnabled])
           {
@@ -488,12 +488,12 @@ uint64_t __52__PLAccountingDistributionManager_freeTimerInterval__block_invoke(u
 
             if (reloadDependenciesNewerThanDate__classDebugEnabled_71_0 == 1)
             {
-              v28 = [*(v16 + 3240) stringWithFormat:@"directionality=%i", v96];
+              v28 = [*(v16 + 3240) stringWithFormat:@"directionality=%i", intValue];
               v29 = MEMORY[0x277D3F178];
               v30 = [*(v16 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-              v31 = [v30 lastPathComponent];
+              lastPathComponent3 = [v30 lastPathComponent];
               v32 = [*(v16 + 3240) stringWithUTF8String:"-[PLAccountingDistributionManager reloadDependenciesNewerThanDate:]"];
-              [v29 logMessage:v28 fromFile:v31 fromFunction:v32 fromLineNumber:99];
+              [v29 logMessage:v28 fromFile:lastPathComponent3 fromFunction:v32 fromLineNumber:99];
 
               v33 = PLLogCommon();
               if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -506,9 +506,9 @@ uint64_t __52__PLAccountingDistributionManager_freeTimerInterval__block_invoke(u
           }
 
           v34 = 0;
-          if (v96 > 2)
+          if (intValue > 2)
           {
-            if (v96 == 3)
+            if (intValue == 3)
             {
               v35 = +[PLAccountingDistributionEventIntervalEntry entryKey];
               v42 = *(v16 + 3240);
@@ -518,7 +518,7 @@ uint64_t __52__PLAccountingDistributionManager_freeTimerInterval__block_invoke(u
             }
 
             v35 = 0;
-            if (v96 == 4)
+            if (intValue == 4)
             {
               v35 = +[PLAccountingDistributionEventPointEntry entryKey];
               v39 = *(v16 + 3240);
@@ -530,7 +530,7 @@ uint64_t __52__PLAccountingDistributionManager_freeTimerInterval__block_invoke(u
 
           else
           {
-            if (v96 == 1)
+            if (intValue == 1)
             {
               v35 = +[PLAccountingDistributionEventForwardEntry entryKey];
               v36 = *(v16 + 3240);
@@ -541,7 +541,7 @@ uint64_t __52__PLAccountingDistributionManager_freeTimerInterval__block_invoke(u
             }
 
             v35 = 0;
-            if (v96 == 2)
+            if (intValue == 2)
             {
               v35 = +[PLAccountingDistributionEventBackwardEntry entryKey];
               v36 = *(v16 + 3240);
@@ -576,9 +576,9 @@ LABEL_37:
               v46 = [*(v16 + 3240) stringWithFormat:@"distributionQuery=%@", v44];
               v47 = MEMORY[0x277D3F178];
               v48 = [*(v16 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-              v49 = [v48 lastPathComponent];
+              lastPathComponent4 = [v48 lastPathComponent];
               v50 = [*(v16 + 3240) stringWithUTF8String:"-[PLAccountingDistributionManager reloadDependenciesNewerThanDate:]"];
-              [v47 logMessage:v46 fromFile:v49 fromFunction:v50 fromLineNumber:128];
+              [v47 logMessage:v46 fromFile:lastPathComponent4 fromFunction:v50 fromLineNumber:128];
 
               v51 = PLLogCommon();
               if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
@@ -590,9 +590,9 @@ LABEL_37:
             }
           }
 
-          v52 = [MEMORY[0x277D3F2A0] sharedCore];
-          v53 = [v52 storage];
-          v54 = [v53 entriesForKey:v35 withQuery:v44];
+          mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+          storage = [mEMORY[0x277D3F2A0] storage];
+          v54 = [storage entriesForKey:v35 withQuery:v44];
 
           v90 = v44;
           if ([*(v5 + 384) debugEnabled])
@@ -613,9 +613,9 @@ LABEL_37:
               v56 = [*(v16 + 3240) stringWithFormat:@"distributionEvents=%@", v54];
               v57 = MEMORY[0x277D3F178];
               v58 = [*(v16 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-              v59 = [v58 lastPathComponent];
+              lastPathComponent5 = [v58 lastPathComponent];
               v60 = [*(v16 + 3240) stringWithUTF8String:"-[PLAccountingDistributionManager reloadDependenciesNewerThanDate:]"];
-              [v57 logMessage:v56 fromFile:v59 fromFunction:v60 fromLineNumber:132];
+              [v57 logMessage:v56 fromFile:lastPathComponent5 fromFunction:v60 fromLineNumber:132];
 
               v61 = PLLogCommon();
               if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
@@ -643,7 +643,7 @@ LABEL_37:
           v63 = v62;
           v64 = 0;
           v65 = *v99;
-          v66 = v96;
+          v66 = intValue;
           do
           {
             v67 = 0;
@@ -673,9 +673,9 @@ LABEL_37:
                   v70 = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionEvent=%@, lastDistributionEvent=%@", v68, v64];
                   v71 = MEMORY[0x277D3F178];
                   v72 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-                  v73 = [v72 lastPathComponent];
+                  lastPathComponent6 = [v72 lastPathComponent];
                   v74 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager reloadDependenciesNewerThanDate:]"];
-                  [v71 logMessage:v70 fromFile:v73 fromFunction:v74 fromLineNumber:137];
+                  [v71 logMessage:v70 fromFile:lastPathComponent6 fromFunction:v74 fromLineNumber:137];
 
                   v75 = PLLogCommon();
                   if (os_log_type_enabled(v75, OS_LOG_TYPE_DEBUG))
@@ -685,9 +685,9 @@ LABEL_37:
                     _os_log_debug_impl(&dword_25EDCD000, v75, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                   }
 
-                  self = v94;
+                  self = selfCopy;
                   v5 = 0x277D3F000;
-                  v66 = v96;
+                  v66 = intValue;
                 }
               }
 
@@ -695,8 +695,8 @@ LABEL_37:
               {
                 if (v66 == 3)
                 {
-                  v77 = [(PLAccountingDistributionManager *)self delegate];
-                  [v77 addDistributionEventInterval:v68];
+                  delegate = [(PLAccountingDistributionManager *)self delegate];
+                  [delegate addDistributionEventInterval:v68];
                 }
 
                 else
@@ -706,8 +706,8 @@ LABEL_37:
                     goto LABEL_77;
                   }
 
-                  v77 = [(PLAccountingDistributionManager *)self delegate];
-                  [v77 addDistributionEventPoint:v68];
+                  delegate = [(PLAccountingDistributionManager *)self delegate];
+                  [delegate addDistributionEventPoint:v68];
                 }
               }
 
@@ -715,8 +715,8 @@ LABEL_37:
               {
                 if (v66 == 1)
                 {
-                  v76 = [(PLAccountingDistributionManager *)self delegate];
-                  [v76 addDistributionEventIntervalWithLastDistributionEventForward:v64 withDistributionEventForward:v68];
+                  delegate2 = [(PLAccountingDistributionManager *)self delegate];
+                  [delegate2 addDistributionEventIntervalWithLastDistributionEventForward:v64 withDistributionEventForward:v68];
                 }
 
                 else
@@ -726,12 +726,12 @@ LABEL_37:
                     goto LABEL_77;
                   }
 
-                  v76 = [(PLAccountingDistributionManager *)self delegate];
-                  [v76 addDistributionEventIntervalWithLastDistributionEventBackward:v64 withDistributionEventBackward:v68];
+                  delegate2 = [(PLAccountingDistributionManager *)self delegate];
+                  [delegate2 addDistributionEventIntervalWithLastDistributionEventBackward:v64 withDistributionEventBackward:v68];
                 }
 
-                v66 = v96;
-                v77 = v64;
+                v66 = intValue;
+                delegate = v64;
                 v64 = v68;
               }
 
@@ -756,7 +756,7 @@ LABEL_81:
         {
 LABEL_83:
 
-          v4 = v86;
+          dateCopy = v86;
           break;
         }
       }
@@ -808,10 +808,10 @@ uint64_t __67__PLAccountingDistributionManager_reloadDependenciesNewerThanDate__
   return result;
 }
 
-- (void)didDistributeToChildEnergyEstimate:(id)a3 fromParentEnergyEstimate:(id)a4
+- (void)didDistributeToChildEnergyEstimate:(id)estimate fromParentEnergyEstimate:(id)energyEstimate
 {
-  v6 = a3;
-  v7 = a4;
+  estimateCopy = estimate;
+  energyEstimateCopy = energyEstimate;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -827,12 +827,12 @@ uint64_t __67__PLAccountingDistributionManager_reloadDependenciesNewerThanDate__
 
     if (didDistributeToChildEnergyEstimate_fromParentEnergyEstimate__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"childEnergyEstimate=%@, parentEnergyEstimate=%@", v6, v7];
+      energyEstimateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"childEnergyEstimate=%@, parentEnergyEstimate=%@", estimateCopy, energyEstimateCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager didDistributeToChildEnergyEstimate:fromParentEnergyEstimate:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:169];
+      [v10 logMessage:energyEstimateCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:169];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -842,18 +842,18 @@ uint64_t __67__PLAccountingDistributionManager_reloadDependenciesNewerThanDate__
     }
   }
 
-  v15 = [(PLAccountingDistributionManager *)self delegate];
-  v16 = [v15 workQueue];
+  delegate = [(PLAccountingDistributionManager *)self delegate];
+  workQueue = [delegate workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95__PLAccountingDistributionManager_didDistributeToChildEnergyEstimate_fromParentEnergyEstimate___block_invoke_111;
   block[3] = &unk_279A55D98;
   block[4] = self;
-  v20 = v6;
-  v21 = v7;
-  v17 = v7;
-  v18 = v6;
-  dispatch_async(v16, block);
+  v20 = estimateCopy;
+  v21 = energyEstimateCopy;
+  v17 = energyEstimateCopy;
+  v18 = estimateCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __95__PLAccountingDistributionManager_didDistributeToChildEnergyEstimate_fromParentEnergyEstimate___block_invoke(uint64_t a1)
@@ -869,9 +869,9 @@ void __95__PLAccountingDistributionManager_didDistributeToChildEnergyEstimate_fr
   [v2 didCreateChildEnergyEstimate:*(a1 + 40) withParentEnergyEstimate:*(a1 + 48)];
 }
 
-- (void)didDistributeEnergyEstimate:(id)a3
+- (void)didDistributeEnergyEstimate:(id)estimate
 {
-  v4 = a3;
+  estimateCopy = estimate;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -887,12 +887,12 @@ void __95__PLAccountingDistributionManager_didDistributeToChildEnergyEstimate_fr
 
     if (didDistributeEnergyEstimate__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEstimate=%@", v4];
+      estimateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEstimate=%@", estimateCopy];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager didDistributeEnergyEstimate:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:177];
+      [v7 logMessage:estimateCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:177];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -902,16 +902,16 @@ void __95__PLAccountingDistributionManager_didDistributeToChildEnergyEstimate_fr
     }
   }
 
-  v12 = [(PLAccountingDistributionManager *)self delegate];
-  v13 = [v12 workQueue];
+  delegate = [(PLAccountingDistributionManager *)self delegate];
+  workQueue = [delegate workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__PLAccountingDistributionManager_didDistributeEnergyEstimate___block_invoke_115;
   block[3] = &unk_279A55DC0;
   block[4] = self;
-  v16 = v4;
-  v14 = v4;
-  dispatch_async(v13, block);
+  v16 = estimateCopy;
+  v14 = estimateCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __63__PLAccountingDistributionManager_didDistributeEnergyEstimate___block_invoke(uint64_t a1)
@@ -927,9 +927,9 @@ void __63__PLAccountingDistributionManager_didDistributeEnergyEstimate___block_i
   [v2 didDistributeEnergyEstimate:*(a1 + 40)];
 }
 
-- (id)dependencyIDsForOwner:(id)a3
+- (id)dependencyIDsForOwner:(id)owner
 {
-  v3 = a3;
+  ownerCopy = owner;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -945,12 +945,12 @@ void __63__PLAccountingDistributionManager_didDistributeEnergyEstimate___block_i
 
     if (dependencyIDsForOwner__classDebugEnabled_0 == 1)
     {
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"owner=%@", v3];
+      ownerCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"owner=%@", ownerCopy];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager dependencyIDsForOwner:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:185];
+      [v6 logMessage:ownerCopy fromFile:lastPathComponent fromFunction:v9 fromLineNumber:185];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -960,10 +960,10 @@ void __63__PLAccountingDistributionManager_didDistributeEnergyEstimate___block_i
     }
   }
 
-  if (v3)
+  if (ownerCopy)
   {
     v11 = +[PLAccountingDistributionRuleManager sharedInstance];
-    v12 = [v3 ID];
+    v12 = [ownerCopy ID];
     v13 = [v11 ruleForRuleID:v12];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -984,9 +984,9 @@ void __63__PLAccountingDistributionManager_didDistributeEnergyEstimate___block_i
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionRule=%@", v13];
         v16 = MEMORY[0x277D3F178];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-        v18 = [v17 lastPathComponent];
+        lastPathComponent2 = [v17 lastPathComponent];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager dependencyIDsForOwner:]"];
-        [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:189];
+        [v16 logMessage:v15 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:189];
 
         v20 = PLLogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -999,8 +999,8 @@ void __63__PLAccountingDistributionManager_didDistributeEnergyEstimate___block_i
     if (v13)
     {
       v21 = MEMORY[0x277CBEB58];
-      v22 = [v13 distributionID];
-      v23 = [v21 setWithObject:v22];
+      distributionID = [v13 distributionID];
+      v23 = [v21 setWithObject:distributionID];
     }
 
     else
@@ -1031,10 +1031,10 @@ uint64_t __57__PLAccountingDistributionManager_dependencyIDsForOwner___block_inv
   return result;
 }
 
-- (id)ownerIDsForDependency:(id)a3
+- (id)ownerIDsForDependency:(id)dependency
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dependencyCopy = dependency;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -1050,12 +1050,12 @@ uint64_t __57__PLAccountingDistributionManager_dependencyIDsForOwner___block_inv
 
     if (ownerIDsForDependency__classDebugEnabled_0 == 1)
     {
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"dependency=%@", v3];
+      dependencyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"dependency=%@", dependencyCopy];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager ownerIDsForDependency:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:197];
+      [v6 logMessage:dependencyCopy fromFile:lastPathComponent fromFunction:v9 fromLineNumber:197];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1065,10 +1065,10 @@ uint64_t __57__PLAccountingDistributionManager_dependencyIDsForOwner___block_inv
     }
   }
 
-  if (v3)
+  if (dependencyCopy)
   {
     v11 = +[PLAccountingDistributionRuleManager sharedInstance];
-    v12 = [v3 ID];
+    v12 = [dependencyCopy ID];
     v13 = [v11 distributionRulesForDistributionID:v12];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -1089,9 +1089,9 @@ uint64_t __57__PLAccountingDistributionManager_dependencyIDsForOwner___block_inv
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionRules=%@", v13];
         v16 = MEMORY[0x277D3F178];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-        v18 = [v17 lastPathComponent];
+        lastPathComponent2 = [v17 lastPathComponent];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager ownerIDsForDependency:]"];
-        [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:202];
+        [v16 logMessage:v15 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:202];
 
         v20 = PLLogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -1151,9 +1151,9 @@ uint64_t __57__PLAccountingDistributionManager_dependencyIDsForOwner___block_inv
           v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionRuleIDs=%@", v21, v37, v38, v39, v40, v41, v42];
           v30 = MEMORY[0x277D3F178];
           v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionManager.m"];
-          v32 = [v31 lastPathComponent];
+          lastPathComponent3 = [v31 lastPathComponent];
           v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionManager ownerIDsForDependency:]"];
-          [v30 logMessage:v29 fromFile:v32 fromFunction:v33 fromLineNumber:209];
+          [v30 logMessage:v29 fromFile:lastPathComponent3 fromFunction:v33 fromLineNumber:209];
 
           v34 = PLLogCommon();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))

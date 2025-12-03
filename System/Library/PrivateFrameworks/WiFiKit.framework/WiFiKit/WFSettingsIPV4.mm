@@ -2,8 +2,8 @@
 + (id)automaticConfig;
 + (id)bootPConfig;
 - (NSString)description;
-- (WFSettingsIPV4)initWithDictionary:(id)a3;
-- (WFSettingsIPV4)initWithMethod:(int64_t)a3 addresses:(id)a4 subnetMasks:(id)a5 router:(id)a6 dhcpClientID:(id)a7;
+- (WFSettingsIPV4)initWithDictionary:(id)dictionary;
+- (WFSettingsIPV4)initWithMethod:(int64_t)method addresses:(id)addresses subnetMasks:(id)masks router:(id)router dhcpClientID:(id)d;
 @end
 
 @implementation WFSettingsIPV4
@@ -22,17 +22,17 @@
   return v2;
 }
 
-- (WFSettingsIPV4)initWithDictionary:(id)a3
+- (WFSettingsIPV4)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v7 = 0;
     goto LABEL_17;
   }
 
-  objc_storeStrong(&self->_items, a3);
+  objc_storeStrong(&self->_items, dictionary);
   v6 = [(NSDictionary *)self->_items objectForKey:*MEMORY[0x277CE1730]];
   if (!v6)
   {
@@ -99,90 +99,90 @@ LABEL_7:
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"%@- ", v5];
+  [string appendFormat:@"%@- ", v5];
 
-  v6 = [(WFSettingsIPV4 *)self items];
-  v7 = [v6 objectForKey:*MEMORY[0x277CE1730]];
-  [v3 appendFormat:@"ConfigMethod: %@ ", v7];
+  items = [(WFSettingsIPV4 *)self items];
+  v7 = [items objectForKey:*MEMORY[0x277CE1730]];
+  [string appendFormat:@"ConfigMethod: %@ ", v7];
 
-  [v3 appendString:@"| Addresses: "];
-  v8 = [(WFSettingsIPV4 *)self addresses];
+  [string appendString:@"| Addresses: "];
+  addresses = [(WFSettingsIPV4 *)self addresses];
 
-  if (v8)
+  if (addresses)
   {
-    v9 = [(WFSettingsIPV4 *)self addresses];
-    v10 = [v9 description];
-    [v3 appendFormat:@"%@ ", v10];
+    addresses2 = [(WFSettingsIPV4 *)self addresses];
+    v10 = [addresses2 description];
+    [string appendFormat:@"%@ ", v10];
   }
 
   else
   {
-    [v3 appendString:@"(None) "];
+    [string appendString:@"(None) "];
   }
 
-  [v3 appendString:@"| SubnetMasks: "];
-  v11 = [(WFSettingsIPV4 *)self subnetMasks];
+  [string appendString:@"| SubnetMasks: "];
+  subnetMasks = [(WFSettingsIPV4 *)self subnetMasks];
 
-  if (v11)
+  if (subnetMasks)
   {
-    v12 = [(WFSettingsIPV4 *)self subnetMasks];
-    v13 = [v12 description];
-    [v3 appendFormat:@"%@ ", v13];
+    subnetMasks2 = [(WFSettingsIPV4 *)self subnetMasks];
+    v13 = [subnetMasks2 description];
+    [string appendFormat:@"%@ ", v13];
   }
 
   else
   {
-    [v3 appendString:@"(None) "];
+    [string appendString:@"(None) "];
   }
 
-  [v3 appendString:@"| Router: "];
-  v14 = [(WFSettingsIPV4 *)self router];
+  [string appendString:@"| Router: "];
+  router = [(WFSettingsIPV4 *)self router];
 
-  if (v14)
+  if (router)
   {
-    v15 = [(WFSettingsIPV4 *)self router];
-    [v3 appendFormat:@"%@ ", v15];
+    router2 = [(WFSettingsIPV4 *)self router];
+    [string appendFormat:@"%@ ", router2];
   }
 
   else
   {
-    [v3 appendString:@"(None) "];
+    [string appendString:@"(None) "];
   }
 
-  [v3 appendString:@"| DHCP Client ID: "];
-  v16 = [(WFSettingsIPV4 *)self dhcpClientID];
+  [string appendString:@"| DHCP Client ID: "];
+  dhcpClientID = [(WFSettingsIPV4 *)self dhcpClientID];
 
-  if (v16)
+  if (dhcpClientID)
   {
-    v17 = [(WFSettingsIPV4 *)self dhcpClientID];
-    [v3 appendFormat:@"%@ ", v17];
+    dhcpClientID2 = [(WFSettingsIPV4 *)self dhcpClientID];
+    [string appendFormat:@"%@ ", dhcpClientID2];
   }
 
   else
   {
-    [v3 appendString:@"(None) "];
+    [string appendString:@"(None) "];
   }
 
-  return v3;
+  return string;
 }
 
-- (WFSettingsIPV4)initWithMethod:(int64_t)a3 addresses:(id)a4 subnetMasks:(id)a5 router:(id)a6 dhcpClientID:(id)a7
+- (WFSettingsIPV4)initWithMethod:(int64_t)method addresses:(id)addresses subnetMasks:(id)masks router:(id)router dhcpClientID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v27 = a4;
-  v26 = a5;
-  v13 = a6;
-  v14 = a7;
+  addressesCopy = addresses;
+  masksCopy = masks;
+  routerCopy = router;
+  dCopy = d;
   v28.receiver = self;
   v28.super_class = WFSettingsIPV4;
   v15 = [(WFSettingsIPV4 *)&v28 init];
   if (v15)
   {
     v16 = MEMORY[0x277CE1810];
-    switch(a3)
+    switch(method)
     {
       case 0:
       case 2:
@@ -201,34 +201,34 @@ LABEL_14:
         v20 = *v16;
         if (v20)
         {
-          v15->_method = a3;
-          v22 = [MEMORY[0x277CBEB38] dictionary];
-          [v22 setObject:v20 forKey:*MEMORY[0x277CE1730]];
-          if (v27)
+          v15->_method = method;
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:v20 forKey:*MEMORY[0x277CE1730]];
+          if (addressesCopy)
           {
-            objc_storeStrong(&v15->_addresses, a4);
-            [v22 setObject:v27 forKey:*MEMORY[0x277CE1728]];
+            objc_storeStrong(&v15->_addresses, addresses);
+            [dictionary setObject:addressesCopy forKey:*MEMORY[0x277CE1728]];
           }
 
-          if (v26)
+          if (masksCopy)
           {
-            objc_storeStrong(&v15->_subnetMasks, a5);
-            [v22 setObject:v26 forKey:*MEMORY[0x277CE1750]];
+            objc_storeStrong(&v15->_subnetMasks, masks);
+            [dictionary setObject:masksCopy forKey:*MEMORY[0x277CE1750]];
           }
 
-          if (v13)
+          if (routerCopy)
           {
-            objc_storeStrong(&v15->_router, a6);
-            [v22 setObject:v13 forKey:*MEMORY[0x277CE1748]];
+            objc_storeStrong(&v15->_router, router);
+            [dictionary setObject:routerCopy forKey:*MEMORY[0x277CE1748]];
           }
 
-          if (v14)
+          if (dCopy)
           {
-            objc_storeStrong(&v15->_dhcpClientID, a7);
-            [v22 setObject:v14 forKey:*MEMORY[0x277CE1738]];
+            objc_storeStrong(&v15->_dhcpClientID, d);
+            [dictionary setObject:dCopy forKey:*MEMORY[0x277CE1738]];
           }
 
-          v19 = v22;
+          v19 = dictionary;
           items = v15->_items;
           v15->_items = v19;
         }
@@ -243,7 +243,7 @@ LABEL_9:
 
         break;
       default:
-        if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+        if (method == 0x7FFFFFFFFFFFFFFFLL)
         {
 LABEL_3:
           v17 = WFLogForCategory(0);
@@ -251,7 +251,7 @@ LABEL_3:
           if (WFCurrentLogLevel() && v17 && os_log_type_enabled(v17, v18))
           {
             *buf = 134217984;
-            v30 = a3;
+            methodCopy = method;
             _os_log_impl(&dword_273ECD000, v17, v18, "Unsupported WFIPv4ConfigMethod used %lu", buf, 0xCu);
           }
         }

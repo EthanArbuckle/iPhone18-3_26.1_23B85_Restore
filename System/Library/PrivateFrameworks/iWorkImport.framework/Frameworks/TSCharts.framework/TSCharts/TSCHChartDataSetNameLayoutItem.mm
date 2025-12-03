@@ -2,7 +2,7 @@
 - (BOOL)isAboveChartBody;
 - (CGSize)calcMinSize;
 - (id)titleSelectionPath;
-- (id)titleTextForModel:(id)a3;
+- (id)titleTextForModel:(id)model;
 - (unint64_t)titleParagraphStyleIndex;
 @end
 
@@ -47,9 +47,9 @@
   return result;
 }
 
-- (id)titleTextForModel:(id)a3
+- (id)titleTextForModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v9 = objc_msgSend_editedString(self, v5, v6, v7, v8);
   v14 = v9;
   if (v9)
@@ -59,7 +59,7 @@
 
   else
   {
-    v15 = objc_msgSend_dataSetNameForMultiDataModel(v4, v10, v11, v12, v13);
+    v15 = objc_msgSend_dataSetNameForMultiDataModel(modelCopy, v10, v11, v12, v13);
   }
 
   v16 = v15;

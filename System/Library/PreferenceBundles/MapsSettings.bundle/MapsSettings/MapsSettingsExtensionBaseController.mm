@@ -1,12 +1,12 @@
 @interface MapsSettingsExtensionBaseController
-- (BOOL)_countAndIdentifiersOfApplications:(id)a3 matchCountAndIdentifiersOfApplications:(id)a4;
+- (BOOL)_countAndIdentifiersOfApplications:(id)applications matchCountAndIdentifiersOfApplications:(id)ofApplications;
 - (BOOL)hasInstalledApplications;
-- (MapsSettingsExtensionBaseController)initWithNibName:(id)a3 bundle:(id)a4;
-- (MapsSettingsExtensionBaseController)initWithUpdateHandler:(id)a3;
-- (id)_extensionEnabled:(id)a3 applications:(id)a4;
+- (MapsSettingsExtensionBaseController)initWithNibName:(id)name bundle:(id)bundle;
+- (MapsSettingsExtensionBaseController)initWithUpdateHandler:(id)handler;
+- (id)_extensionEnabled:(id)enabled applications:(id)applications;
 - (id)specifiers;
 - (void)_callUpdateHandler;
-- (void)_setExtensionEnabled:(id)a3 specifier:(id)a4 applications:(id)a5;
+- (void)_setExtensionEnabled:(id)enabled specifier:(id)specifier applications:(id)applications;
 - (void)_setupExtensionManager;
 @end
 
@@ -14,30 +14,30 @@
 
 - (BOOL)hasInstalledApplications
 {
-  v2 = [(MapsSettingsExtensionBaseController *)self applications];
-  v3 = [v2 count] != 0;
+  applications = [(MapsSettingsExtensionBaseController *)self applications];
+  v3 = [applications count] != 0;
 
   return v3;
 }
 
-- (MapsSettingsExtensionBaseController)initWithUpdateHandler:(id)a3
+- (MapsSettingsExtensionBaseController)initWithUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(MapsSettingsExtensionBaseController *)self initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(MapsSettingsExtensionBaseController *)v5 setUpdateHandler:v4];
+    [(MapsSettingsExtensionBaseController *)v5 setUpdateHandler:handlerCopy];
   }
 
   return v6;
 }
 
-- (MapsSettingsExtensionBaseController)initWithNibName:(id)a3 bundle:(id)a4
+- (MapsSettingsExtensionBaseController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = MapsSettingsExtensionBaseController;
-  v4 = [(MapsSettingBaseController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(MapsSettingBaseController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -49,28 +49,28 @@
 
 - (void)_callUpdateHandler
 {
-  v3 = [(MapsSettingsExtensionBaseController *)self updateHandler];
+  updateHandler = [(MapsSettingsExtensionBaseController *)self updateHandler];
 
-  if (v3)
+  if (updateHandler)
   {
-    v4 = [(MapsSettingsExtensionBaseController *)self updateHandler];
-    v4[2]();
+    updateHandler2 = [(MapsSettingsExtensionBaseController *)self updateHandler];
+    updateHandler2[2]();
   }
 }
 
 - (id)specifiers
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(MapsSettingsExtensionBaseController *)self applications];
-  v5 = [v4 count];
+  applications = [(MapsSettingsExtensionBaseController *)self applications];
+  v5 = [applications count];
 
   if (v5)
   {
-    v6 = [(MapsSettingsExtensionBaseController *)self localizedExtensionsHeader];
-    v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:0 set:0 get:0 detail:0 cell:0 edit:0];
+    localizedExtensionsHeader = [(MapsSettingsExtensionBaseController *)self localizedExtensionsHeader];
+    v7 = [PSSpecifier preferenceSpecifierNamed:localizedExtensionsHeader target:0 set:0 get:0 detail:0 cell:0 edit:0];
 
-    v8 = [(MapsSettingsExtensionBaseController *)self localizedExtensionsFooter];
-    [v7 setProperty:v8 forKey:PSFooterTextGroupKey];
+    localizedExtensionsFooter = [(MapsSettingsExtensionBaseController *)self localizedExtensionsFooter];
+    [v7 setProperty:localizedExtensionsFooter forKey:PSFooterTextGroupKey];
 
     [v3 addObject:v7];
     v27 = 0u;
@@ -85,7 +85,7 @@
       v21 = v7;
       v11 = 0;
       v23 = *v26;
-      v24 = self;
+      selfCopy = self;
       v12 = PSIconImageKey;
       do
       {
@@ -100,13 +100,13 @@
           }
 
           v16 = *(*(&v25 + 1) + 8 * v13);
-          v17 = [v16 displayName];
-          v11 = [PSSpecifier preferenceSpecifierNamed:v17 target:v24 set:"_setExtensionEnabled:specifier:" get:"_extensionEnabled:" detail:0 cell:6 edit:0];
+          displayName = [v16 displayName];
+          v11 = [PSSpecifier preferenceSpecifierNamed:displayName target:selfCopy set:"_setExtensionEnabled:specifier:" get:"_extensionEnabled:" detail:0 cell:6 edit:0];
 
-          v18 = [v16 displayImage];
-          [v11 setProperty:v18 forKey:v12];
-          v19 = [v16 identifier];
-          [v11 setIdentifier:v19];
+          displayImage = [v16 displayImage];
+          [v11 setProperty:displayImage forKey:v12];
+          identifier = [v16 identifier];
+          [v11 setIdentifier:identifier];
 
           v3 = v15;
           [v15 addObject:v11];
@@ -121,7 +121,7 @@
 
       while (v10);
 
-      self = v24;
+      self = selfCopy;
       v7 = v21;
     }
   }
@@ -134,13 +134,13 @@
 - (void)_setupExtensionManager
 {
   objc_initWeak(&location, self);
-  v3 = [(MapsSettingsExtensionBaseController *)self extensionLookupPolicy];
+  extensionLookupPolicy = [(MapsSettingsExtensionBaseController *)self extensionLookupPolicy];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1913C;
   v6[3] = &unk_7FD28;
   objc_copyWeak(&v7, &location);
-  v4 = [_MXExtensionManager managerWithExtensionLookupPolicy:v3 updateHandler:v6];
+  v4 = [_MXExtensionManager managerWithExtensionLookupPolicy:extensionLookupPolicy updateHandler:v6];
   v5 = *(&self->super + 1);
   *(&self->super + 1) = v4;
 
@@ -148,15 +148,15 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_countAndIdentifiersOfApplications:(id)a3 matchCountAndIdentifiersOfApplications:(id)a4
+- (BOOL)_countAndIdentifiersOfApplications:(id)applications matchCountAndIdentifiersOfApplications:(id)ofApplications
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  applicationsCopy = applications;
+  ofApplicationsCopy = ofApplications;
+  v7 = [applicationsCopy count];
+  if (v7 == [ofApplicationsCopy count])
   {
-    v8 = [v5 valueForKey:@"identifier"];
-    v9 = [v6 valueForKey:@"identifier"];
+    v8 = [applicationsCopy valueForKey:@"identifier"];
+    v9 = [ofApplicationsCopy valueForKey:@"identifier"];
     v10 = [v8 isEqualToArray:v9];
   }
 
@@ -168,30 +168,30 @@
   return v10;
 }
 
-- (void)_setExtensionEnabled:(id)a3 specifier:(id)a4 applications:(id)a5
+- (void)_setExtensionEnabled:(id)enabled specifier:(id)specifier applications:(id)applications
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  applicationsCopy = applications;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_195D8;
   v23[3] = &unk_7FD50;
-  v10 = v8;
+  v10 = specifierCopy;
   v24 = v10;
-  v11 = [v9 indexOfObjectPassingTest:v23];
+  v11 = [applicationsCopy indexOfObjectPassingTest:v23];
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [v9 objectAtIndexedSubscript:v11];
-    [v12 setEnabled:{objc_msgSend(v7, "BOOLValue")}];
+    v12 = [applicationsCopy objectAtIndexedSubscript:v11];
+    [v12 setEnabled:{objc_msgSend(enabledCopy, "BOOLValue")}];
     if (([v12 isEnabled] & 1) == 0)
     {
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v13 = [v12 extensions];
-      v14 = [v13 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      extensions = [v12 extensions];
+      v14 = [extensions countByEnumeratingWithState:&v19 objects:v25 count:16];
       if (v14)
       {
         v15 = v14;
@@ -202,14 +202,14 @@
           {
             if (*v20 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(extensions);
             }
 
-            v18 = [*(*(&v19 + 1) + 8 * i) extension];
-            [v18 _kill:9];
+            extension = [*(*(&v19 + 1) + 8 * i) extension];
+            [extension _kill:9];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v19 objects:v25 count:16];
+          v15 = [extensions countByEnumeratingWithState:&v19 objects:v25 count:16];
         }
 
         while (v15);
@@ -218,17 +218,17 @@
   }
 }
 
-- (id)_extensionEnabled:(id)a3 applications:(id)a4
+- (id)_extensionEnabled:(id)enabled applications:(id)applications
 {
-  v5 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  applicationsCopy = applications;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1974C;
   v12[3] = &unk_7FD50;
-  v7 = v5;
+  v7 = enabledCopy;
   v13 = v7;
-  v8 = [v6 indexOfObjectPassingTest:v12];
+  v8 = [applicationsCopy indexOfObjectPassingTest:v12];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = &__kCFBooleanFalse;
@@ -236,7 +236,7 @@
 
   else
   {
-    v10 = [v6 objectAtIndexedSubscript:v8];
+    v10 = [applicationsCopy objectAtIndexedSubscript:v8];
     v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 isEnabled]);
   }
 

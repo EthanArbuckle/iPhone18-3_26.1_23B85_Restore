@@ -1,24 +1,24 @@
 @interface GKBulletinMonogramRenderer
-+ (void)monogramImageForPlayerID:(id)a3 playerName:(id)a4 withCompletion:(id)a5;
++ (void)monogramImageForPlayerID:(id)d playerName:(id)name withCompletion:(id)completion;
 @end
 
 @implementation GKBulletinMonogramRenderer
 
-+ (void)monogramImageForPlayerID:(id)a3 playerName:(id)a4 withCompletion:(id)a5
++ (void)monogramImageForPlayerID:(id)d playerName:(id)name withCompletion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 componentsSeparatedByString:@":"];
+  nameCopy = name;
+  completionCopy = completion;
+  v9 = [d componentsSeparatedByString:@":"];
   if ([v9 count] == 2)
   {
-    if ([v7 length])
+    if ([nameCopy length])
     {
-      v10 = [v7 _firstGrapheme];
+      _firstGrapheme = [nameCopy _firstGrapheme];
     }
 
     else
     {
-      v10 = @"U";
+      _firstGrapheme = @"U";
     }
 
     v12[0] = _NSConcreteStackBlock;
@@ -28,15 +28,15 @@
     v16 = vdupq_n_s64(0x4060000000000000uLL);
     v17 = 0x4008000000000000;
     v13 = v9;
-    v14 = v10;
-    v15 = v8;
-    v11 = v10;
+    v14 = _firstGrapheme;
+    v15 = completionCopy;
+    v11 = _firstGrapheme;
     dispatch_async(&_dispatch_main_q, v12);
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

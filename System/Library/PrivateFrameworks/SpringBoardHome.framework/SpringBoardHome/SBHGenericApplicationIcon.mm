@@ -1,13 +1,13 @@
 @interface SBHGenericApplicationIcon
-- (SBHGenericApplicationIcon)initWithLeafIdentifier:(id)a3 applicationBundleID:(id)a4;
+- (SBHGenericApplicationIcon)initWithLeafIdentifier:(id)identifier applicationBundleID:(id)d;
 @end
 
 @implementation SBHGenericApplicationIcon
 
-- (SBHGenericApplicationIcon)initWithLeafIdentifier:(id)a3 applicationBundleID:(id)a4
+- (SBHGenericApplicationIcon)initWithLeafIdentifier:(id)identifier applicationBundleID:(id)d
 {
   v5 = sub_1BEE4708C();
-  if (a4)
+  if (d)
   {
     v7 = v5;
     v8 = v6;

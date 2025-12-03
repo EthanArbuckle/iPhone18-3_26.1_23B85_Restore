@@ -1,31 +1,31 @@
 @interface IRTTRpopup
-- (IRTTRpopup)initWithHeader:(id)a3 key:(id)a4 message:(id)a5 defaultButton:(id)a6 otherButton:(id)a7 alternateButton:(id)a8 ttrWillOpen:(BOOL)a9 dismissWillStop:(BOOL)a10;
+- (IRTTRpopup)initWithHeader:(id)header key:(id)key message:(id)message defaultButton:(id)button otherButton:(id)otherButton alternateButton:(id)alternateButton ttrWillOpen:(BOOL)open dismissWillStop:(BOOL)self0;
 @end
 
 @implementation IRTTRpopup
 
-- (IRTTRpopup)initWithHeader:(id)a3 key:(id)a4 message:(id)a5 defaultButton:(id)a6 otherButton:(id)a7 alternateButton:(id)a8 ttrWillOpen:(BOOL)a9 dismissWillStop:(BOOL)a10
+- (IRTTRpopup)initWithHeader:(id)header key:(id)key message:(id)message defaultButton:(id)button otherButton:(id)otherButton alternateButton:(id)alternateButton ttrWillOpen:(BOOL)open dismissWillStop:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  headerCopy = header;
+  keyCopy = key;
+  messageCopy = message;
+  buttonCopy = button;
+  otherButtonCopy = otherButton;
+  alternateButtonCopy = alternateButton;
   v25.receiver = self;
   v25.super_class = IRTTRpopup;
   v22 = [(IRTTRpopup *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    [(IRTTRpopup *)v22 setHeader:v16];
-    [(IRTTRpopup *)v23 setKey:v17];
-    [(IRTTRpopup *)v23 setMessage:v18];
-    [(IRTTRpopup *)v23 setDefaultButton:v19];
-    [(IRTTRpopup *)v23 setOtherButton:v20];
-    [(IRTTRpopup *)v23 setAlternateButton:v21];
-    [(IRTTRpopup *)v23 setTtrWillOpen:a9];
-    [(IRTTRpopup *)v23 setDismissWillStop:a10];
+    [(IRTTRpopup *)v22 setHeader:headerCopy];
+    [(IRTTRpopup *)v23 setKey:keyCopy];
+    [(IRTTRpopup *)v23 setMessage:messageCopy];
+    [(IRTTRpopup *)v23 setDefaultButton:buttonCopy];
+    [(IRTTRpopup *)v23 setOtherButton:otherButtonCopy];
+    [(IRTTRpopup *)v23 setAlternateButton:alternateButtonCopy];
+    [(IRTTRpopup *)v23 setTtrWillOpen:open];
+    [(IRTTRpopup *)v23 setDismissWillStop:stop];
   }
 
   return v23;

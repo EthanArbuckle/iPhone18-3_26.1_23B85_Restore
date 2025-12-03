@@ -1,49 +1,49 @@
 @interface SBTransientOverlayDismissalRequest
 + (id)dismissalRequestForAllViewControllers;
-+ (id)dismissalRequestForAllViewControllersInWindowScene:(id)a3;
-+ (id)dismissalRequestForViewController:(id)a3;
++ (id)dismissalRequestForAllViewControllersInWindowScene:(id)scene;
++ (id)dismissalRequestForViewController:(id)controller;
 - (SBWindowScene)windowScene;
-- (id)_copyWithClass:(Class)a3;
+- (id)_copyWithClass:(Class)class;
 - (id)_init;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBTransientOverlayDismissalRequest
 
 + (id)dismissalRequestForAllViewControllers
 {
-  v2 = [[a1 alloc] _init];
-  if (v2)
+  _init = [[self alloc] _init];
+  if (_init)
   {
-    v2[3] = 2;
+    _init[3] = 2;
   }
 
-  return v2;
+  return _init;
 }
 
-+ (id)dismissalRequestForAllViewControllersInWindowScene:(id)a3
++ (id)dismissalRequestForAllViewControllersInWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _init];
-  v6 = v5;
-  if (v5)
+  sceneCopy = scene;
+  _init = [[self alloc] _init];
+  v6 = _init;
+  if (_init)
   {
-    *(v5 + 24) = 3;
-    objc_storeWeak((v5 + 40), v4);
+    *(_init + 24) = 3;
+    objc_storeWeak((_init + 40), sceneCopy);
   }
 
   return v6;
 }
 
-+ (id)dismissalRequestForViewController:(id)a3
++ (id)dismissalRequestForViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [[a1 alloc] _init];
-  v7 = v6;
-  if (v6)
+  controllerCopy = controller;
+  _init = [[self alloc] _init];
+  v7 = _init;
+  if (_init)
   {
-    *(v6 + 24) = 1;
-    objc_storeStrong((v6 + 32), a3);
+    *(_init + 24) = 1;
+    objc_storeStrong((_init + 32), controller);
   }
 
   return v7;
@@ -62,20 +62,20 @@
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(SBTransientOverlayDismissalRequest *)self _copyWithClass:v4];
 }
 
-- (id)_copyWithClass:(Class)a3
+- (id)_copyWithClass:(Class)class
 {
-  v4 = [[a3 alloc] _init];
-  v5 = v4;
-  if (v4)
+  _init = [[class alloc] _init];
+  v5 = _init;
+  if (_init)
   {
-    *(v4 + 8) = self->_animated;
+    *(_init + 8) = self->_animated;
     v6 = [self->_completionHandler copy];
     v7 = *(v5 + 16);
     *(v5 + 16) = v6;

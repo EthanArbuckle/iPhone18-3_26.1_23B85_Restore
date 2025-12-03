@@ -1,20 +1,20 @@
 @interface _UITableViewIgnoreDragsTokenImpl
-- (_UITableViewIgnoreDragsTokenImpl)initWithDidEndHandler:(id)a3;
+- (_UITableViewIgnoreDragsTokenImpl)initWithDidEndHandler:(id)handler;
 - (void)dealloc;
 - (void)endIgnoringDrags;
 @end
 
 @implementation _UITableViewIgnoreDragsTokenImpl
 
-- (_UITableViewIgnoreDragsTokenImpl)initWithDidEndHandler:(id)a3
+- (_UITableViewIgnoreDragsTokenImpl)initWithDidEndHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = _UITableViewIgnoreDragsTokenImpl;
   v5 = [(_UITableViewIgnoreDragsTokenImpl *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     didEndHandler = v5->_didEndHandler;
     v5->_didEndHandler = v6;
   }

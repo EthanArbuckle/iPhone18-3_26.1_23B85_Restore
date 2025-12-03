@@ -1,8 +1,8 @@
 @interface IMCoreCommSafetyHelper
 + (id)sharedInstance;
-- (id)_urlFromAddressList:(id)a3;
-- (void)addressesForParents:(id)a3 completion:(id)a4;
-- (void)getOpenChatURLWith:(id)a3;
+- (id)_urlFromAddressList:(id)list;
+- (void)addressesForParents:(id)parents completion:(id)completion;
+- (void)getOpenChatURLWith:(id)with;
 @end
 
 @implementation IMCoreCommSafetyHelper
@@ -19,9 +19,9 @@
   return v3;
 }
 
-- (void)getOpenChatURLWith:(id)a3
+- (void)getOpenChatURLWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v7 = objc_msgSend_sharedManager(MEMORY[0x1E69A7FC8], v5, v6);
   IsYoungAgeGroup = objc_msgSend_childIsYoungAgeGroup(v7, v8, v9);
   v11 = IMLogHandleForCategory();
@@ -40,8 +40,8 @@
     v24[3] = &unk_1E7812890;
     v17 = &v25;
     v24[4] = self;
-    v25 = v4;
-    v18 = v4;
+    v25 = withCopy;
+    v18 = withCopy;
     objc_msgSend_addressesForParents_completion_(self, v19, v16, v24);
   }
 
@@ -59,24 +59,24 @@
     v21[3] = &unk_1E7810230;
     v17 = &v22;
     v21[4] = self;
-    v22 = v4;
-    v20 = v4;
+    v22 = withCopy;
+    v20 = withCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v21);
   }
 }
 
-- (void)addressesForParents:(id)a3 completion:(id)a4
+- (void)addressesForParents:(id)parents completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v34 = a4;
+  parentsCopy = parents;
+  completionCopy = completion;
   v6 = dispatch_group_create();
   v9 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v5;
+  obj = parentsCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v10, &v43, v47, 16);
   if (v11)
   {
@@ -92,7 +92,7 @@
         }
 
         v17 = *(*(&v43 + 1) + 8 * i);
-        v18 = objc_msgSend_contact(v17, v12, v13, v34);
+        v18 = objc_msgSend_contact(v17, v12, v13, completionCopy);
 
         if (v18)
         {
@@ -129,8 +129,8 @@
   block[3] = &unk_1E7810190;
   v37 = v9;
   v38 = obj;
-  v39 = v34;
-  v30 = v34;
+  v39 = completionCopy;
+  v30 = completionCopy;
   v31 = obj;
   v32 = v9;
   dispatch_group_notify(v6, MEMORY[0x1E69E96A0], block);
@@ -138,9 +138,9 @@
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_urlFromAddressList:(id)a3
+- (id)_urlFromAddressList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v5 = objc_msgSend_componentsWithString_(MEMORY[0x1E696AF20], v4, @"messages://open");
   v6 = objc_opt_new();
   v7 = IMSharedUtilitiesFrameworkBundle();
@@ -149,9 +149,9 @@
   v11 = objc_msgSend_queryItemWithName_value_(MEMORY[0x1E696AF60], v10, @"body", v9);
   objc_msgSend_addObject_(v6, v12, v11);
 
-  if (v3 && objc_msgSend_count(v3, v13, v14))
+  if (listCopy && objc_msgSend_count(listCopy, v13, v14))
   {
-    v15 = objc_msgSend_componentsJoinedByString_(v3, v13, @",");
+    v15 = objc_msgSend_componentsJoinedByString_(listCopy, v13, @",");
     v17 = objc_msgSend_queryItemWithName_value_(MEMORY[0x1E696AF60], v16, @"recipients", v15);
     objc_msgSend_addObject_(v6, v18, v17);
   }

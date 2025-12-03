@@ -7,28 +7,28 @@
 - (NSString)autoHighlightIdentifier;
 - (NSString)elementIdentifier;
 - (NSString)elementName;
-- (TVViewElement)initWithViewElement:(id)a3;
+- (TVViewElement)initWithViewElement:(id)element;
 - (TVViewElement)parentViewElement;
 - (TVViewElementStyle)style;
 - (int64_t)semanticContentAttribute;
 - (int64_t)updateType;
-- (void)dispatchEventOfType:(int64_t)a3 canBubble:(BOOL)a4 cancellable:(BOOL)a5 extraInfo:(id)a6 completion:(id)a7;
-- (void)dispatchEventWithName:(id)a3 canBubble:(BOOL)a4 cancellable:(BOOL)a5 extraInfo:(id)a6 completion:(id)a7;
-- (void)resetProperty:(int64_t)a3;
+- (void)dispatchEventOfType:(int64_t)type canBubble:(BOOL)bubble cancellable:(BOOL)cancellable extraInfo:(id)info completion:(id)completion;
+- (void)dispatchEventWithName:(id)name canBubble:(BOOL)bubble cancellable:(BOOL)cancellable extraInfo:(id)info completion:(id)completion;
+- (void)resetProperty:(int64_t)property;
 @end
 
 @implementation TVViewElement
 
-- (TVViewElement)initWithViewElement:(id)a3
+- (TVViewElement)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = TVViewElement;
   v5 = [(TVViewElement *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_element, v4);
+    objc_storeWeak(&v5->_element, elementCopy);
   }
 
   return v6;
@@ -36,92 +36,92 @@
 
 - (NSDictionary)elementData
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 dataDictionary];
+  element = [(TVViewElement *)self element];
+  dataDictionary = [element dataDictionary];
 
-  return v3;
+  return dataDictionary;
 }
 
 - (NSString)elementIdentifier
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 elementID];
+  element = [(TVViewElement *)self element];
+  elementID = [element elementID];
 
-  return v3;
+  return elementID;
 }
 
 - (NSString)elementName
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 elementName];
+  element = [(TVViewElement *)self element];
+  elementName = [element elementName];
 
-  return v3;
+  return elementName;
 }
 
 - (TVViewElement)parentViewElement
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 parent];
-  v4 = [v3 tv_associatedViewElement];
+  element = [(TVViewElement *)self element];
+  parent = [element parent];
+  tv_associatedViewElement = [parent tv_associatedViewElement];
 
-  return v4;
+  return tv_associatedViewElement;
 }
 
 - (NSArray)childViewElements
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 children];
-  v4 = [v3 valueForKey:@"tv_associatedViewElement"];
+  element = [(TVViewElement *)self element];
+  children = [element children];
+  v4 = [children valueForKey:@"tv_associatedViewElement"];
 
   return v4;
 }
 
 - (NSDictionary)attributes
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 attributes];
+  element = [(TVViewElement *)self element];
+  attributes = [element attributes];
 
-  return v3;
+  return attributes;
 }
 
 - (TVViewElementStyle)style
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 style];
-  v4 = [v3 tv_associatedViewElementStyle];
+  element = [(TVViewElement *)self element];
+  style = [element style];
+  tv_associatedViewElementStyle = [style tv_associatedViewElementStyle];
 
-  return v4;
+  return tv_associatedViewElementStyle;
 }
 
 - (NSString)autoHighlightIdentifier
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 autoHighlightIdentifier];
+  element = [(TVViewElement *)self element];
+  autoHighlightIdentifier = [element autoHighlightIdentifier];
 
-  return v3;
+  return autoHighlightIdentifier;
 }
 
 - (BOOL)isDisabled
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 isDisabled];
+  element = [(TVViewElement *)self element];
+  isDisabled = [element isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (int64_t)semanticContentAttribute
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 tv_semanticContentAttribute];
+  element = [(TVViewElement *)self element];
+  tv_semanticContentAttribute = [element tv_semanticContentAttribute];
 
-  return v3;
+  return tv_semanticContentAttribute;
 }
 
 - (int64_t)updateType
 {
   v3 = dyld_program_sdk_at_least();
-  v4 = [(TVViewElement *)self element];
-  v5 = [v4 updateType];
+  element = [(TVViewElement *)self element];
+  updateType = [element updateType];
 
   v6 = 2;
   if (v3)
@@ -135,12 +135,12 @@
     v7 = 4;
   }
 
-  if (v5 != 4)
+  if (updateType != 4)
   {
     v7 = 0;
   }
 
-  if (v5 != 3)
+  if (updateType != 3)
   {
     v6 = v7;
   }
@@ -152,17 +152,17 @@
     v9 = 2;
   }
 
-  if (v5 != 2)
+  if (updateType != 2)
   {
     v9 = 0;
   }
 
-  if (v5 != 1)
+  if (updateType != 1)
   {
     v8 = v9;
   }
 
-  if (v5 <= 2)
+  if (updateType <= 2)
   {
     return v8;
   }
@@ -173,11 +173,11 @@
   }
 }
 
-- (void)resetProperty:(int64_t)a3
+- (void)resetProperty:(int64_t)property
 {
-  if (a3)
+  if (property)
   {
-    v3 = 2 * (a3 == 1);
+    v3 = 2 * (property == 1);
   }
 
   else
@@ -185,39 +185,39 @@
     v3 = 1;
   }
 
-  v4 = [(TVViewElement *)self element];
-  [v4 resetProperty:v3];
+  element = [(TVViewElement *)self element];
+  [element resetProperty:v3];
 }
 
-- (void)dispatchEventOfType:(int64_t)a3 canBubble:(BOOL)a4 cancellable:(BOOL)a5 extraInfo:(id)a6 completion:(id)a7
+- (void)dispatchEventOfType:(int64_t)type canBubble:(BOOL)bubble cancellable:(BOOL)cancellable extraInfo:(id)info completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  if ((a3 - 1) > 4)
+  cancellableCopy = cancellable;
+  bubbleCopy = bubble;
+  if ((type - 1) > 4)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = qword_26CE88028[a3 - 1];
+    v11 = qword_26CE88028[type - 1];
   }
 
-  v12 = a7;
-  v13 = a6;
-  v14 = [(TVViewElement *)self element];
-  [v14 dispatchEventOfType:v11 canBubble:v9 isCancelable:v8 extraInfo:v13 completionBlock:v12];
+  completionCopy = completion;
+  infoCopy = info;
+  element = [(TVViewElement *)self element];
+  [element dispatchEventOfType:v11 canBubble:bubbleCopy isCancelable:cancellableCopy extraInfo:infoCopy completionBlock:completionCopy];
 }
 
-- (void)dispatchEventWithName:(id)a3 canBubble:(BOOL)a4 cancellable:(BOOL)a5 extraInfo:(id)a6 completion:(id)a7
+- (void)dispatchEventWithName:(id)name canBubble:(BOOL)bubble cancellable:(BOOL)cancellable extraInfo:(id)info completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
-  v15 = [(TVViewElement *)self element];
-  [v15 dispatchEvent:v14 eventAttribute:0 canBubble:v9 isCancelable:v8 extraInfo:v13 completionBlock:v12];
+  cancellableCopy = cancellable;
+  bubbleCopy = bubble;
+  completionCopy = completion;
+  infoCopy = info;
+  nameCopy = name;
+  element = [(TVViewElement *)self element];
+  [element dispatchEvent:nameCopy eventAttribute:0 canBubble:bubbleCopy isCancelable:cancellableCopy extraInfo:infoCopy completionBlock:completionCopy];
 }
 
 - (IKViewElement)element

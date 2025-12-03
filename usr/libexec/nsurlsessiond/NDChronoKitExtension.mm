@@ -1,63 +1,63 @@
 @interface NDChronoKitExtension
 + (id)requestDelayQueue;
-- (BOOL)isHandlingBackgroundURLSessionWithIdentifier:(id)a3 withSessionUUID:(id)a4;
-- (BOOL)wakeForSessionIdentifier:(id)a3 withSessionUUID:(id)a4 wakeRequirement:(int64_t)a5;
+- (BOOL)isHandlingBackgroundURLSessionWithIdentifier:(id)identifier withSessionUUID:(id)d;
+- (BOOL)wakeForSessionIdentifier:(id)identifier withSessionUUID:(id)d wakeRequirement:(int64_t)requirement;
 - (id)containerURL;
 - (void)_onqueue_resetRequestDelay;
-- (void)addObserver:(id)a3;
-- (void)extensionWasRemovedFromScreen:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)extensionWasRemovedFromScreen:(id)screen;
+- (void)removeObserver:(id)observer;
 - (void)setupDelayTimer;
 @end
 
 @implementation NDChronoKitExtension
 
-- (void)extensionWasRemovedFromScreen:(id)a3
+- (void)extensionWasRemovedFromScreen:(id)screen
 {
   v3.receiver = self;
   v3.super_class = NDChronoKitExtension;
   [(NDApplication *)&v3 invokeSelectorForAllObservers:"applicationWasQuitFromAppSwitcher:"];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v8.receiver = v5;
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8.receiver = selfCopy;
   v8.super_class = NDChronoKitExtension;
-  [(NDApplication *)&v8 removeObserver:v4];
-  if (![(NSMutableArray *)v5->super._observers count])
+  [(NDApplication *)&v8 removeObserver:observerCopy];
+  if (![(NSMutableArray *)selfCopy->super._observers count])
   {
     v6 = +[NDChronoKitLauncher sharedLauncher];
-    [v6 removeObserver:v5 forExtension:v5->super._bundleIdentifier];
+    [v6 removeObserver:selfCopy forExtension:selfCopy->super._bundleIdentifier];
 
     v7 = +[NDChronoKitLauncher sharedLauncher];
-    [v7 stopMonitoringBundleID:v5->super._bundleIdentifier];
+    [v7 stopMonitoringBundleID:selfCopy->super._bundleIdentifier];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(NSMutableArray *)v5->super._observers count])
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(NSMutableArray *)selfCopy->super._observers count])
   {
     v6 = +[NDChronoKitLauncher sharedLauncher];
-    [v6 startMonitoringBundleID:v5->super._bundleIdentifier];
+    [v6 startMonitoringBundleID:selfCopy->super._bundleIdentifier];
 
     v7 = +[NDChronoKitLauncher sharedLauncher];
-    [v7 addObserver:v5 forExtension:v5->super._bundleIdentifier];
+    [v7 addObserver:selfCopy forExtension:selfCopy->super._bundleIdentifier];
 
-    if (![(NDChronoKitExtension *)v5 isHandlingBackgroundURLSessionWithIdentifier:0 withSessionUUID:0])
+    if (![(NDChronoKitExtension *)selfCopy isHandlingBackgroundURLSessionWithIdentifier:0 withSessionUUID:0])
     {
       v8 = qword_1000EB210;
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
       {
-        bundleIdentifier = v5->super._bundleIdentifier;
+        bundleIdentifier = selfCopy->super._bundleIdentifier;
         *buf = 138412290;
         v14 = bundleIdentifier;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Resetting request delay and clearing pending wake requests for %@ since the first observer is being added", buf, 0xCu);
@@ -68,31 +68,31 @@
       block[1] = 3221225472;
       block[2] = sub_10005C078;
       block[3] = &unk_1000D63D0;
-      block[4] = v5;
+      block[4] = selfCopy;
       dispatch_async(v10, block);
     }
   }
 
-  v11.receiver = v5;
+  v11.receiver = selfCopy;
   v11.super_class = NDChronoKitExtension;
-  [(NDApplication *)&v11 addObserver:v4];
-  objc_sync_exit(v5);
+  [(NDApplication *)&v11 addObserver:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)isHandlingBackgroundURLSessionWithIdentifier:(id)a3 withSessionUUID:(id)a4
+- (BOOL)isHandlingBackgroundURLSessionWithIdentifier:(id)identifier withSessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v8 = +[NDChronoKitLauncher sharedLauncher];
-  LOBYTE(self) = [v8 extension:self->super._bundleIdentifier isHandlingBackgroundSessionWithIdentifier:v6 withSessionUUID:v7];
+  LOBYTE(self) = [v8 extension:self->super._bundleIdentifier isHandlingBackgroundSessionWithIdentifier:identifierCopy withSessionUUID:dCopy];
 
   return self;
 }
 
-- (BOOL)wakeForSessionIdentifier:(id)a3 withSessionUUID:(id)a4 wakeRequirement:(int64_t)a5
+- (BOOL)wakeForSessionIdentifier:(id)identifier withSessionUUID:(id)d wakeRequirement:(int64_t)requirement
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v10 = +[NDChronoKitExtension requestDelayQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -102,17 +102,17 @@
   dispatch_async(v10, block);
 
   v11 = +[NDChronoKitLauncher sharedLauncher];
-  LOBYTE(a5) = [v11 wakeUpExtension:self->super._bundleIdentifier forSession:v8 withSessionUUID:v9 wakeRequirement:a5];
+  LOBYTE(requirement) = [v11 wakeUpExtension:self->super._bundleIdentifier forSession:identifierCopy withSessionUUID:dCopy wakeRequirement:requirement];
 
-  return a5;
+  return requirement;
 }
 
 - (id)containerURL
 {
   v2 = [[LSApplicationExtensionRecord alloc] initWithBundleIdentifier:self->super._bundleIdentifier error:0];
-  v3 = [v2 dataContainerURL];
+  dataContainerURL = [v2 dataContainerURL];
 
-  return v3;
+  return dataContainerURL;
 }
 
 - (void)_onqueue_resetRequestDelay

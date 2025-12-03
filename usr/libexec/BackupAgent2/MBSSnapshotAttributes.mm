@@ -1,17 +1,17 @@
 @interface MBSSnapshotAttributes
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)backupReason;
 - (int)backupType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBackupType:(BOOL)a3;
-- (void)setHasKeybagID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBackupType:(BOOL)type;
+- (void)setHasKeybagID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MBSSnapshotAttributes
@@ -27,9 +27,9 @@
   [(MBSSnapshotAttributes *)&v3 dealloc];
 }
 
-- (void)setHasKeybagID:(BOOL)a3
+- (void)setHasKeybagID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 4;
   }
@@ -68,9 +68,9 @@
   }
 }
 
-- (void)setHasBackupType:(BOOL)a3
+- (void)setHasBackupType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -160,7 +160,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_deviceName)
   {
@@ -204,64 +204,64 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_deviceName)
   {
-    [a3 setDeviceName:?];
+    [to setDeviceName:?];
   }
 
   if (self->_productVersion)
   {
-    [a3 setProductVersion:?];
+    [to setProductVersion:?];
   }
 
   if (self->_buildVersion)
   {
-    [a3 setBuildVersion:?];
+    [to setBuildVersion:?];
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(a3 + 8) = self->_keybagID;
-    *(a3 + 56) |= 4u;
+    *(to + 8) = self->_keybagID;
+    *(to + 56) |= 4u;
   }
 
   if (self->_keybagUUID)
   {
-    [a3 setKeybagUUID:?];
+    [to setKeybagUUID:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 2) = self->_backupReason;
-    *(a3 + 56) |= 1u;
+    *(to + 2) = self->_backupReason;
+    *(to + 56) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 3) = self->_backupType;
-    *(a3 + 56) |= 2u;
+    *(to + 3) = self->_backupType;
+    *(to + 56) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[3] = [(NSString *)self->_deviceName copyWithZone:a3];
-  v5[6] = [(NSString *)self->_productVersion copyWithZone:a3];
+  v5[3] = [(NSString *)self->_deviceName copyWithZone:zone];
+  v5[6] = [(NSString *)self->_productVersion copyWithZone:zone];
 
-  v5[2] = [(NSString *)self->_buildVersion copyWithZone:a3];
+  v5[2] = [(NSString *)self->_buildVersion copyWithZone:zone];
   if ((*&self->_has & 4) != 0)
   {
     *(v5 + 8) = self->_keybagID;
     *(v5 + 56) |= 4u;
   }
 
-  v5[5] = [(NSData *)self->_keybagUUID copyWithZone:a3];
+  v5[5] = [(NSData *)self->_keybagUUID copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -279,31 +279,31 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     deviceName = self->_deviceName;
-    if (!(deviceName | *(a3 + 3)) || (v5 = [(NSString *)deviceName isEqual:?]) != 0)
+    if (!(deviceName | *(equal + 3)) || (v5 = [(NSString *)deviceName isEqual:?]) != 0)
     {
       productVersion = self->_productVersion;
-      if (!(productVersion | *(a3 + 6)) || (v5 = [(NSString *)productVersion isEqual:?]) != 0)
+      if (!(productVersion | *(equal + 6)) || (v5 = [(NSString *)productVersion isEqual:?]) != 0)
       {
         buildVersion = self->_buildVersion;
-        if (!(buildVersion | *(a3 + 2)) || (v5 = [(NSString *)buildVersion isEqual:?]) != 0)
+        if (!(buildVersion | *(equal + 2)) || (v5 = [(NSString *)buildVersion isEqual:?]) != 0)
         {
           has = self->_has;
-          v10 = *(a3 + 56);
+          v10 = *(equal + 56);
           if ((has & 4) != 0)
           {
-            if ((*(a3 + 56) & 4) == 0 || self->_keybagID != *(a3 + 8))
+            if ((*(equal + 56) & 4) == 0 || self->_keybagID != *(equal + 8))
             {
               goto LABEL_25;
             }
           }
 
-          else if ((*(a3 + 56) & 4) != 0)
+          else if ((*(equal + 56) & 4) != 0)
           {
 LABEL_25:
             LOBYTE(v5) = 0;
@@ -311,7 +311,7 @@ LABEL_25:
           }
 
           keybagUUID = self->_keybagUUID;
-          if (keybagUUID | *(a3 + 5))
+          if (keybagUUID | *(equal + 5))
           {
             v5 = [(NSData *)keybagUUID isEqual:?];
             if (!v5)
@@ -324,21 +324,21 @@ LABEL_25:
 
           if (has)
           {
-            if ((*(a3 + 56) & 1) == 0 || self->_backupReason != *(a3 + 2))
+            if ((*(equal + 56) & 1) == 0 || self->_backupReason != *(equal + 2))
             {
               goto LABEL_25;
             }
           }
 
-          else if (*(a3 + 56))
+          else if (*(equal + 56))
           {
             goto LABEL_25;
           }
 
-          LOBYTE(v5) = (*(a3 + 56) & 2) == 0;
+          LOBYTE(v5) = (*(equal + 56) & 2) == 0;
           if ((has & 2) != 0)
           {
-            if ((*(a3 + 56) & 2) == 0 || self->_backupType != *(a3 + 3))
+            if ((*(equal + 56) & 2) == 0 || self->_backupType != *(equal + 3))
             {
               goto LABEL_25;
             }
@@ -393,45 +393,45 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(MBSSnapshotAttributes *)self setDeviceName:?];
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(MBSSnapshotAttributes *)self setProductVersion:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(MBSSnapshotAttributes *)self setBuildVersion:?];
   }
 
-  if ((*(a3 + 56) & 4) != 0)
+  if ((*(from + 56) & 4) != 0)
   {
-    self->_keybagID = *(a3 + 8);
+    self->_keybagID = *(from + 8);
     *&self->_has |= 4u;
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(MBSSnapshotAttributes *)self setKeybagUUID:?];
   }
 
-  v5 = *(a3 + 56);
+  v5 = *(from + 56);
   if (v5)
   {
-    self->_backupReason = *(a3 + 2);
+    self->_backupReason = *(from + 2);
     *&self->_has |= 1u;
-    v5 = *(a3 + 56);
+    v5 = *(from + 56);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_backupType = *(a3 + 3);
+    self->_backupType = *(from + 3);
     *&self->_has |= 2u;
   }
 }

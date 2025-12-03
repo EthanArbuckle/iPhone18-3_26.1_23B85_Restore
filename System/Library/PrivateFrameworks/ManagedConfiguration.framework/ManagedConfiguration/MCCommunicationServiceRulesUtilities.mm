@@ -1,8 +1,8 @@
 @interface MCCommunicationServiceRulesUtilities
-+ (id)defaultAppBundleIDForCommunicationServiceType:(id)a3 forAccountWithIdentifier:(id)a4;
-+ (id)restrictionsForValidatedCommunicationServiceRules:(id)a3;
++ (id)defaultAppBundleIDForCommunicationServiceType:(id)type forAccountWithIdentifier:(id)identifier;
++ (id)restrictionsForValidatedCommunicationServiceRules:(id)rules;
 + (id)validServiceTypes;
-+ (id)validatedCommunicationServiceRules:(id)a3 outError:(id *)a4;
++ (id)validatedCommunicationServiceRules:(id)rules outError:(id *)error;
 @end
 
 @implementation MCCommunicationServiceRulesUtilities
@@ -17,10 +17,10 @@
   return v2;
 }
 
-+ (id)validatedCommunicationServiceRules:(id)a3 outError:(id *)a4
++ (id)validatedCommunicationServiceRules:(id)rules outError:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = [a3 mutableCopy];
+  v6 = [rules mutableCopy];
   v35 = 0;
   v7 = [v6 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"DefaultServiceHandlers" isRequired:0 outError:&v35];
   v8 = v35;
@@ -35,14 +35,14 @@
   else
   {
     v28 = v6;
-    v29 = a4;
+    errorCopy = error;
     v12 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v13 = [a1 validServiceTypes];
-    v14 = [v13 countByEnumeratingWithState:&v31 objects:v40 count:16];
+    validServiceTypes = [self validServiceTypes];
+    v14 = [validServiceTypes countByEnumeratingWithState:&v31 objects:v40 count:16];
     if (v14)
     {
       v15 = v14;
@@ -53,7 +53,7 @@
         {
           if (*v32 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(validServiceTypes);
           }
 
           v18 = *(*(&v31 + 1) + 8 * i);
@@ -68,7 +68,7 @@
             v10 = 0;
             v11 = 0;
             v6 = v28;
-            a4 = v29;
+            error = errorCopy;
             goto LABEL_23;
           }
 
@@ -78,7 +78,7 @@
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v31 objects:v40 count:16];
+        v15 = [validServiceTypes countByEnumeratingWithState:&v31 objects:v40 count:16];
         if (v15)
         {
           continue;
@@ -113,7 +113,7 @@
 
     v6 = v28;
 
-    a4 = v29;
+    error = errorCopy;
     if ([v10 count])
     {
       v10 = v10;
@@ -138,10 +138,10 @@ LABEL_23:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v24 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v25 = v11;
@@ -150,12 +150,12 @@ LABEL_23:
   return v11;
 }
 
-+ (id)restrictionsForValidatedCommunicationServiceRules:(id)a3
++ (id)restrictionsForValidatedCommunicationServiceRules:(id)rules
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  rulesCopy = rules;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKey:@"DefaultServiceHandlers"];
+  v5 = [rulesCopy objectForKey:@"DefaultServiceHandlers"];
 
   v6 = [v5 objectForKey:@"AudioCall"];
   v7 = v6;
@@ -177,17 +177,17 @@ LABEL_23:
   return v4;
 }
 
-+ (id)defaultAppBundleIDForCommunicationServiceType:(id)a3 forAccountWithIdentifier:(id)a4
++ (id)defaultAppBundleIDForCommunicationServiceType:(id)type forAccountWithIdentifier:(id)identifier
 {
   v5 = MEMORY[0x1E6959A48];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 defaultStore];
-  v9 = [v8 accountWithIdentifier:v6];
+  identifierCopy = identifier;
+  typeCopy = type;
+  defaultStore = [v5 defaultStore];
+  v9 = [defaultStore accountWithIdentifier:identifierCopy];
 
-  v10 = [v9 communicationServiceRules];
-  v11 = [v10 objectForKeyedSubscript:@"DefaultServiceHandlers"];
-  v12 = [v11 objectForKeyedSubscript:v7];
+  communicationServiceRules = [v9 communicationServiceRules];
+  v11 = [communicationServiceRules objectForKeyedSubscript:@"DefaultServiceHandlers"];
+  v12 = [v11 objectForKeyedSubscript:typeCopy];
 
   return v12;
 }

@@ -1,56 +1,56 @@
 @interface DirectionsPlanTransitPreferences
-- (BOOL)isEqual:(id)a3;
-- (DirectionsPlanTransitPreferences)initWithGEOTransitOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (DirectionsPlanTransitPreferences)initWithGEOTransitOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)avoidedTransitModes;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAvoidFerryRoutes:(BOOL)a3;
-- (void)setHasAvoidMetroLightRailRoutes:(BOOL)a3;
-- (void)setHasAvoidRailRoutes:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAvoidFerryRoutes:(BOOL)routes;
+- (void)setHasAvoidMetroLightRailRoutes:(BOOL)routes;
+- (void)setHasAvoidRailRoutes:(BOOL)routes;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DirectionsPlanTransitPreferences
 
 - (unint64_t)avoidedTransitModes
 {
-  v3 = [(DirectionsPlanTransitPreferences *)self avoidBusRoutes];
+  avoidBusRoutes = [(DirectionsPlanTransitPreferences *)self avoidBusRoutes];
   if ([(DirectionsPlanTransitPreferences *)self avoidMetroLightRailRoutes])
   {
-    v3 |= 2uLL;
+    avoidBusRoutes |= 2uLL;
   }
 
   if ([(DirectionsPlanTransitPreferences *)self avoidRailRoutes])
   {
-    v3 |= 4uLL;
+    avoidBusRoutes |= 4uLL;
   }
 
   if ([(DirectionsPlanTransitPreferences *)self avoidFerryRoutes])
   {
-    return v3 | 8;
+    return avoidBusRoutes | 8;
   }
 
   else
   {
-    return v3;
+    return avoidBusRoutes;
   }
 }
 
-- (DirectionsPlanTransitPreferences)initWithGEOTransitOptions:(id)a3
+- (DirectionsPlanTransitPreferences)initWithGEOTransitOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = DirectionsPlanTransitPreferences;
   v5 = [(DirectionsPlanTransitPreferences *)&v9 init];
-  if (v5 && [v4 avoidedModesCount])
+  if (v5 && [optionsCopy avoidedModesCount])
   {
-    for (i = 0; i < [v4 avoidedModesCount]; ++i)
+    for (i = 0; i < [optionsCopy avoidedModesCount]; ++i)
     {
-      v7 = *([v4 avoidedModes] + i);
+      v7 = *([optionsCopy avoidedModes] + i);
       if (v7 <= 2)
       {
         if (v7 != 1)
@@ -91,15 +91,15 @@
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[12];
+  fromCopy = from;
+  v5 = fromCopy[12];
   if (v5)
   {
-    self->_avoidBusRoutes = v4[8];
+    self->_avoidBusRoutes = fromCopy[8];
     *&self->_has |= 1u;
-    v5 = v4[12];
+    v5 = fromCopy[12];
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -112,14 +112,14 @@ LABEL_3:
     }
   }
 
-  else if ((v4[12] & 4) == 0)
+  else if ((fromCopy[12] & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_avoidMetroLightRailRoutes = v4[10];
+  self->_avoidMetroLightRailRoutes = fromCopy[10];
   *&self->_has |= 4u;
-  v5 = v4[12];
+  v5 = fromCopy[12];
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -132,12 +132,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_avoidRailRoutes = v4[11];
+  self->_avoidRailRoutes = fromCopy[11];
   *&self->_has |= 8u;
-  if ((v4[12] & 2) != 0)
+  if ((fromCopy[12] & 2) != 0)
   {
 LABEL_5:
-    self->_avoidFerryRoutes = v4[9];
+    self->_avoidFerryRoutes = fromCopy[9];
     *&self->_has |= 2u;
   }
 
@@ -198,69 +198,69 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
   if (*&self->_has)
   {
-    if ((v4[12] & 1) == 0)
+    if ((equalCopy[12] & 1) == 0)
     {
       goto LABEL_32;
     }
 
     if (self->_avoidBusRoutes)
     {
-      if ((v4[8] & 1) == 0)
+      if ((equalCopy[8] & 1) == 0)
       {
         goto LABEL_32;
       }
     }
 
-    else if (v4[8])
+    else if (equalCopy[8])
     {
       goto LABEL_32;
     }
   }
 
-  else if (v4[12])
+  else if (equalCopy[12])
   {
     goto LABEL_32;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[12] & 4) == 0)
+    if ((equalCopy[12] & 4) == 0)
     {
       goto LABEL_32;
     }
 
     if (self->_avoidMetroLightRailRoutes)
     {
-      if ((v4[10] & 1) == 0)
+      if ((equalCopy[10] & 1) == 0)
       {
         goto LABEL_32;
       }
     }
 
-    else if (v4[10])
+    else if (equalCopy[10])
     {
       goto LABEL_32;
     }
   }
 
-  else if ((v4[12] & 4) != 0)
+  else if ((equalCopy[12] & 4) != 0)
   {
     goto LABEL_32;
   }
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((v4[12] & 8) == 0)
+    if ((equalCopy[12] & 8) == 0)
     {
       goto LABEL_8;
     }
@@ -270,39 +270,39 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  if ((v4[12] & 8) == 0)
+  if ((equalCopy[12] & 8) == 0)
   {
     goto LABEL_32;
   }
 
   if (self->_avoidRailRoutes)
   {
-    if ((v4[11] & 1) == 0)
+    if ((equalCopy[11] & 1) == 0)
     {
       goto LABEL_32;
     }
   }
 
-  else if (v4[11])
+  else if (equalCopy[11])
   {
     goto LABEL_32;
   }
 
 LABEL_8:
-  v5 = (v4[12] & 2) == 0;
+  v5 = (equalCopy[12] & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[12] & 2) != 0)
+    if ((equalCopy[12] & 2) != 0)
     {
       if (self->_avoidFerryRoutes)
       {
-        if (v4[9])
+        if (equalCopy[9])
         {
           goto LABEL_34;
         }
       }
 
-      else if (!v4[9])
+      else if (!equalCopy[9])
       {
 LABEL_34:
         v5 = 1;
@@ -318,9 +318,9 @@ LABEL_33:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -372,14 +372,14 @@ LABEL_5:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[8] = self->_avoidBusRoutes;
-    v4[12] |= 1u;
+    toCopy[8] = self->_avoidBusRoutes;
+    toCopy[12] |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -398,8 +398,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[10] = self->_avoidMetroLightRailRoutes;
-  v4[12] |= 4u;
+  toCopy[10] = self->_avoidMetroLightRailRoutes;
+  toCopy[12] |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -413,21 +413,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  v4[11] = self->_avoidRailRoutes;
-  v4[12] |= 8u;
+  toCopy[11] = self->_avoidRailRoutes;
+  toCopy[12] |= 8u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_5:
-    v4[9] = self->_avoidFerryRoutes;
-    v4[12] |= 2u;
+    toCopy[9] = self->_avoidFerryRoutes;
+    toCopy[12] |= 2u;
   }
 
 LABEL_6:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -537,15 +537,15 @@ LABEL_6:
   v7.receiver = self;
   v7.super_class = DirectionsPlanTransitPreferences;
   v3 = [(DirectionsPlanTransitPreferences *)&v7 description];
-  v4 = [(DirectionsPlanTransitPreferences *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(DirectionsPlanTransitPreferences *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasAvoidFerryRoutes:(BOOL)a3
+- (void)setHasAvoidFerryRoutes:(BOOL)routes
 {
-  if (a3)
+  if (routes)
   {
     v3 = 2;
   }
@@ -558,9 +558,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasAvoidRailRoutes:(BOOL)a3
+- (void)setHasAvoidRailRoutes:(BOOL)routes
 {
-  if (a3)
+  if (routes)
   {
     v3 = 8;
   }
@@ -573,9 +573,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasAvoidMetroLightRailRoutes:(BOOL)a3
+- (void)setHasAvoidMetroLightRailRoutes:(BOOL)routes
 {
-  if (a3)
+  if (routes)
   {
     v3 = 4;
   }

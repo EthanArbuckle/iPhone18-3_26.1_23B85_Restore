@@ -1,25 +1,25 @@
 @interface SSVURLBagInterpreter
-- (BOOL)shouldSendAnonymousMachineIdentifierForURL:(id)a3;
+- (BOOL)shouldSendAnonymousMachineIdentifierForURL:(id)l;
 - (NSArray)AMDDomains;
 - (NSDictionary)mescalSignedActions;
 - (NSDictionary)mescalSignedRequests;
 - (NSDictionary)mescalSignedResponses;
 - (NSString)storeFrontSuffix;
-- (SSVURLBagInterpreter)initWithSSBag:(id)a3;
-- (SSVURLBagInterpreter)initWithURLBag:(id)a3;
-- (SSVURLBagInterpreter)initWithURLBagDictionary:(id)a3;
-- (id)URLForURLBagKey:(id)a3;
-- (id)_valueForKey:(id)a3 withClass:(Class)a4;
-- (id)cachedValueFromBag:(id)a3 key:(id)a4 withType:(unint64_t)a5 updateCache:(BOOL)a6;
-- (id)mescalSignaturePolicyForRequestURL:(id)a3;
-- (id)mescalSignaturePolicyForResponseURL:(id)a3;
+- (SSVURLBagInterpreter)initWithSSBag:(id)bag;
+- (SSVURLBagInterpreter)initWithURLBag:(id)bag;
+- (SSVURLBagInterpreter)initWithURLBagDictionary:(id)dictionary;
+- (id)URLForURLBagKey:(id)key;
+- (id)_valueForKey:(id)key withClass:(Class)class;
+- (id)cachedValueFromBag:(id)bag key:(id)key withType:(unint64_t)type updateCache:(BOOL)cache;
+- (id)mescalSignaturePolicyForRequestURL:(id)l;
+- (id)mescalSignaturePolicyForResponseURL:(id)l;
 @end
 
 @implementation SSVURLBagInterpreter
 
-- (SSVURLBagInterpreter)initWithURLBag:(id)a3
+- (SSVURLBagInterpreter)initWithURLBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -34,7 +34,7 @@
   v14 = &v15;
   v6 = v5;
   v13 = v6;
-  [v4 loadWithCompletionBlock:&v9];
+  [bagCopy loadWithCompletionBlock:&v9];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = [(SSVURLBagInterpreter *)self initWithURLBagDictionary:v16[5], v9, v10, v11, v12];
 
@@ -49,10 +49,10 @@ void __39__SSVURLBagInterpreter_initWithURLBag___block_invoke(uint64_t a1, void 
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (SSVURLBagInterpreter)initWithURLBagDictionary:(id)a3
+- (SSVURLBagInterpreter)initWithURLBagDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = SSVURLBagInterpreter;
   v5 = [(SSVURLBagInterpreter *)&v23 init];
@@ -71,7 +71,7 @@ void __39__SSVURLBagInterpreter_initWithURLBag___block_invoke(uint64_t a1, void 
     do
     {
       v9 = *(v24 + v8);
-      v10 = [v4 objectForKey:v9];
+      v10 = [dictionaryCopy objectForKey:v9];
       if (v10)
       {
         [(NSMutableDictionary *)v5->_cachedBagValues setObject:v10 forKey:v9];
@@ -81,7 +81,7 @@ void __39__SSVURLBagInterpreter_initWithURLBag___block_invoke(uint64_t a1, void 
     }
 
     while (v8 != 80);
-    v11 = [v4 objectForKey:@"musicCommon"];
+    v11 = [dictionaryCopy objectForKey:@"musicCommon"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -121,9 +121,9 @@ void __39__SSVURLBagInterpreter_initWithURLBag___block_invoke(uint64_t a1, void 
   return v5;
 }
 
-- (SSVURLBagInterpreter)initWithSSBag:(id)a3
+- (SSVURLBagInterpreter)initWithSSBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v26.receiver = self;
   v26.super_class = SSVURLBagInterpreter;
   v5 = [(SSVURLBagInterpreter *)&v26 init];
@@ -133,16 +133,16 @@ void __39__SSVURLBagInterpreter_initWithURLBag___block_invoke(uint64_t a1, void 
     cachedBagValues = v5->_cachedBagValues;
     v5->_cachedBagValues = v6;
 
-    v8 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:v4 key:@"amd-domains" withType:0 updateCache:1];
-    v9 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:v4 key:@"sign-sap-setup-cert" withType:5 updateCache:1];
-    v10 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:v4 key:@"sign-sap-setup" withType:5 updateCache:1];
-    v11 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:v4 key:@"signed-actions" withType:2 updateCache:1];
-    v12 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:v4 key:@"sign-sap-request" withType:2 updateCache:1];
-    v13 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:v4 key:@"sign-sap-response" withType:2 updateCache:1];
-    v14 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:v4 key:@"storefront-header-suffix" withType:5 updateCache:1];
-    v15 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:v4 key:@"fps-request" withType:5 updateCache:1];
-    v16 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:v4 key:@"fps-cert" withType:5 updateCache:1];
-    v17 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:v4 key:@"musicCommon" withType:2 updateCache:0];
+    v8 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:bagCopy key:@"amd-domains" withType:0 updateCache:1];
+    v9 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:bagCopy key:@"sign-sap-setup-cert" withType:5 updateCache:1];
+    v10 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:bagCopy key:@"sign-sap-setup" withType:5 updateCache:1];
+    v11 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:bagCopy key:@"signed-actions" withType:2 updateCache:1];
+    v12 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:bagCopy key:@"sign-sap-request" withType:2 updateCache:1];
+    v13 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:bagCopy key:@"sign-sap-response" withType:2 updateCache:1];
+    v14 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:bagCopy key:@"storefront-header-suffix" withType:5 updateCache:1];
+    v15 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:bagCopy key:@"fps-request" withType:5 updateCache:1];
+    v16 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:bagCopy key:@"fps-cert" withType:5 updateCache:1];
+    v17 = [(SSVURLBagInterpreter *)v5 cachedValueFromBag:bagCopy key:@"musicCommon" withType:2 updateCache:0];
     v18 = [v17 objectForKey:@"musicMescal"];
     if (v18)
     {
@@ -171,34 +171,34 @@ void __39__SSVURLBagInterpreter_initWithURLBag___block_invoke(uint64_t a1, void 
   return v5;
 }
 
-- (id)cachedValueFromBag:(id)a3 key:(id)a4 withType:(unint64_t)a5 updateCache:(BOOL)a6
+- (id)cachedValueFromBag:(id)bag key:(id)key withType:(unint64_t)type updateCache:(BOOL)cache
 {
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  bagCopy = bag;
+  keyCopy = key;
   v11 = 0;
-  if (a5 <= 2)
+  if (type <= 2)
   {
-    if (a5)
+    if (type)
     {
-      if (a5 == 1)
+      if (type == 1)
       {
         v36 = 0;
         v12 = &v36;
-        v13 = [v9 BOOLForKey:v10 error:&v36];
+        v13 = [bagCopy BOOLForKey:keyCopy error:&v36];
       }
 
       else
       {
         v14 = 0;
-        if (a5 != 2)
+        if (type != 2)
         {
           goto LABEL_19;
         }
 
         v31 = 0;
         v12 = &v31;
-        v13 = [v9 dictionaryForKey:v10 error:&v31];
+        v13 = [bagCopy dictionaryForKey:keyCopy error:&v31];
       }
     }
 
@@ -206,45 +206,45 @@ void __39__SSVURLBagInterpreter_initWithURLBag___block_invoke(uint64_t a1, void 
     {
       v37 = 0;
       v12 = &v37;
-      v13 = [v9 arrayForKey:v10 error:&v37];
+      v13 = [bagCopy arrayForKey:keyCopy error:&v37];
     }
   }
 
-  else if (a5 > 4)
+  else if (type > 4)
   {
-    if (a5 == 5)
+    if (type == 5)
     {
       v33 = 0;
       v12 = &v33;
-      v13 = [v9 stringForKey:v10 error:&v33];
+      v13 = [bagCopy stringForKey:keyCopy error:&v33];
     }
 
     else
     {
       v14 = 0;
-      if (a5 != 6)
+      if (type != 6)
       {
         goto LABEL_19;
       }
 
       v32 = 0;
       v12 = &v32;
-      v13 = [v9 URLForKey:v10 error:&v32];
+      v13 = [bagCopy URLForKey:keyCopy error:&v32];
     }
   }
 
-  else if (a5 == 3)
+  else if (type == 3)
   {
     v35 = 0;
     v12 = &v35;
-    v13 = [v9 doubleForKey:v10 error:&v35];
+    v13 = [bagCopy doubleForKey:keyCopy error:&v35];
   }
 
   else
   {
     v34 = 0;
     v12 = &v34;
-    v13 = [v9 integerForKey:v10 error:&v34];
+    v13 = [bagCopy integerForKey:keyCopy error:&v34];
   }
 
   v14 = v13;
@@ -252,7 +252,7 @@ void __39__SSVURLBagInterpreter_initWithURLBag___block_invoke(uint64_t a1, void 
   v11 = v15;
   if (v14 && !v15)
   {
-    [(NSMutableDictionary *)self->_cachedBagValues setObject:v14 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)self->_cachedBagValues setObject:v14 forKeyedSubscript:keyCopy];
     goto LABEL_31;
   }
 
@@ -263,19 +263,19 @@ LABEL_19:
     v16 = +[SSLogConfig sharedConfig];
   }
 
-  v17 = [v16 shouldLog];
+  shouldLog = [v16 shouldLog];
   if ([v16 shouldLogToDisk])
   {
-    v18 = v17 | 2;
+    v18 = shouldLog | 2;
   }
 
   else
   {
-    v18 = v17;
+    v18 = shouldLog;
   }
 
-  v19 = [v16 OSLogObject];
-  if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v16 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v18 &= 2u;
   }
@@ -289,7 +289,7 @@ LABEL_19:
   v38 = 138412802;
   v39 = v20;
   v40 = 2112;
-  v41 = v10;
+  v41 = keyCopy;
   v42 = 2112;
   v43 = v11;
   v21 = v20;
@@ -298,9 +298,9 @@ LABEL_19:
 
   if (v22)
   {
-    v19 = [MEMORY[0x1E696AEC0] stringWithCString:v22 encoding:{4, &v38, v30}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v22 encoding:{4, &v38, v30}];
     free(v22);
-    SSFileLog(v16, @"%@", v23, v24, v25, v26, v27, v28, v19);
+    SSFileLog(v16, @"%@", v23, v24, v25, v26, v27, v28, oSLogObject);
 LABEL_29:
   }
 
@@ -316,26 +316,26 @@ LABEL_31:
   return [(SSVURLBagInterpreter *)self _valueForKey:@"amd-domains" withClass:v3];
 }
 
-- (id)mescalSignaturePolicyForRequestURL:(id)a3
+- (id)mescalSignaturePolicyForRequestURL:(id)l
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [(SSVURLBagInterpreter *)self mescalSignedRequests];
-  v7 = SSVURLPathMatchesActionDictionary(v5, v6);
+  lCopy = l;
+  path = [lCopy path];
+  mescalSignedRequests = [(SSVURLBagInterpreter *)self mescalSignedRequests];
+  v7 = SSVURLPathMatchesActionDictionary(path, mescalSignedRequests);
 
   if (v7)
   {
     v8 = [[SSVSAPSignatureComponent alloc] initWithComponentType:0 key:0];
-    v9 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v8, 0}];
-    v10 = [[SSVSAPSignaturePolicy alloc] initWithPolicyType:2 signatureComponents:v9];
+    lastPathComponent = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v8, 0}];
+    v10 = [[SSVSAPSignaturePolicy alloc] initWithPolicyType:2 signatureComponents:lastPathComponent];
 LABEL_3:
 
     goto LABEL_18;
   }
 
-  v11 = [(SSVURLBagInterpreter *)self mescalSignedActions];
-  v8 = SSVURLBagGetSignaturePolicyDictionaryForURL(v4, v11);
+  mescalSignedActions = [(SSVURLBagInterpreter *)self mescalSignedActions];
+  v8 = SSVURLBagGetSignaturePolicyDictionaryForURL(lCopy, mescalSignedActions);
 
   if (v8)
   {
@@ -346,7 +346,7 @@ LABEL_3:
   {
     if (self->_subscriptionSignaturePolicy && [(NSArray *)self->_subscriptionSignedActions count])
     {
-      v9 = [v4 lastPathComponent];
+      lastPathComponent = [lCopy lastPathComponent];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
@@ -366,7 +366,7 @@ LABEL_3:
               objc_enumerationMutation(v12);
             }
 
-            if (![*(*(&v18 + 1) + 8 * i) caseInsensitiveCompare:v9])
+            if (![*(*(&v18 + 1) + 8 * i) caseInsensitiveCompare:lastPathComponent])
             {
               v10 = self->_subscriptionSignaturePolicy;
               goto LABEL_22;
@@ -397,11 +397,11 @@ LABEL_18:
   return v10;
 }
 
-- (id)mescalSignaturePolicyForResponseURL:(id)a3
+- (id)mescalSignaturePolicyForResponseURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [(SSVURLBagInterpreter *)self mescalSignedResponses];
-  v6 = SSVURLPathMatchesActionDictionary(v4, v5);
+  path = [l path];
+  mescalSignedResponses = [(SSVURLBagInterpreter *)self mescalSignedResponses];
+  v6 = SSVURLPathMatchesActionDictionary(path, mescalSignedResponses);
 
   if (v6)
   {
@@ -439,11 +439,11 @@ LABEL_18:
   return [(SSVURLBagInterpreter *)self _valueForKey:@"sign-sap-response" withClass:v3];
 }
 
-- (BOOL)shouldSendAnonymousMachineIdentifierForURL:(id)a3
+- (BOOL)shouldSendAnonymousMachineIdentifierForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SSVURLBagInterpreter *)self AMDDomains];
-  ShouldSendAMDForURL = SSVURLBagShouldSendAMDForURL(v4, v5);
+  lCopy = l;
+  aMDDomains = [(SSVURLBagInterpreter *)self AMDDomains];
+  ShouldSendAMDForURL = SSVURLBagShouldSendAMDForURL(lCopy, aMDDomains);
 
   return ShouldSendAMDForURL;
 }
@@ -455,9 +455,9 @@ LABEL_18:
   return [(SSVURLBagInterpreter *)self _valueForKey:@"storefront-header-suffix" withClass:v3];
 }
 
-- (id)URLForURLBagKey:(id)a3
+- (id)URLForURLBagKey:(id)key
 {
-  v3 = [(SSVURLBagInterpreter *)self valueForURLBagKey:a3];
+  v3 = [(SSVURLBagInterpreter *)self valueForURLBagKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -480,11 +480,11 @@ LABEL_7:
   return v5;
 }
 
-- (id)_valueForKey:(id)a3 withClass:(Class)a4
+- (id)_valueForKey:(id)key withClass:(Class)class
 {
-  v5 = [(NSMutableDictionary *)self->_cachedBagValues objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_cachedBagValues objectForKey:key];
   v6 = v5;
-  if (a4 && v5 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (class && v5 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 
     v6 = 0;

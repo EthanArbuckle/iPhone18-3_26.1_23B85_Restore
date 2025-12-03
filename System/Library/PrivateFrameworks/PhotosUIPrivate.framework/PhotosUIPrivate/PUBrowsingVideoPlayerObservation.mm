@@ -1,21 +1,21 @@
 @interface PUBrowsingVideoPlayerObservation
-- (PUBrowsingVideoPlayerObservation)initWithViewModel:(id)a3 changeHandler:(id)a4;
+- (PUBrowsingVideoPlayerObservation)initWithViewModel:(id)model changeHandler:(id)handler;
 @end
 
 @implementation PUBrowsingVideoPlayerObservation
 
-- (PUBrowsingVideoPlayerObservation)initWithViewModel:(id)a3 changeHandler:(id)a4
+- (PUBrowsingVideoPlayerObservation)initWithViewModel:(id)model changeHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PUBrowsingVideoPlayerObservation_initWithViewModel_changeHandler___block_invoke;
   v11[3] = &unk_1E7B7FB48;
-  v12 = v6;
+  v12 = handlerCopy;
   v10.receiver = self;
   v10.super_class = PUBrowsingVideoPlayerObservation;
-  v7 = v6;
-  v8 = [(PUViewModelObservation *)&v10 initWithViewModel:a3 changeHandler:v11];
+  v7 = handlerCopy;
+  v8 = [(PUViewModelObservation *)&v10 initWithViewModel:model changeHandler:v11];
 
   return v8;
 }

@@ -1,15 +1,15 @@
 @interface BrailleUI_UIController
-+ (id)requiredEntitlementForProcessingMessageWithIdentifier:(int64_t)a3;
++ (id)requiredEntitlementForProcessingMessageWithIdentifier:(int64_t)identifier;
 - (BrailleUI_UIController)init;
-- (id)processMessage:(id)a3 withIdentifier:(int64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
-- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)a3;
+- (id)processMessage:(id)message withIdentifier:(int64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
+- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)identifier;
 @end
 
 @implementation BrailleUI_UIController
 
-- (id)processMessage:(id)a3 withIdentifier:(int64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(int64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  if (a3)
+  if (message)
   {
     v8 = sub_5114();
   }
@@ -19,22 +19,22 @@
     v8 = 0;
   }
 
-  v9 = self;
-  sub_3F2C(v8, a4);
+  selfCopy = self;
+  sub_3F2C(v8, identifier);
 
   v10.super.isa = sub_5104().super.isa;
 
   return v10.super.isa;
 }
 
-+ (id)requiredEntitlementForProcessingMessageWithIdentifier:(int64_t)a3
++ (id)requiredEntitlementForProcessingMessageWithIdentifier:(int64_t)identifier
 {
   v3 = sub_5124();
 
   return v3;
 }
 
-- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)a3
+- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)identifier
 {
   v4 = (*(*(sub_4164(&qword_C5F0, &qword_5810) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
@@ -42,12 +42,12 @@
   v7 = sub_51A4();
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
   sub_5184();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_5174();
   v10 = swift_allocObject();
   v10[2] = v9;
   v10[3] = &protocol witness table for MainActor;
-  v10[4] = v8;
+  v10[4] = selfCopy;
   sub_25F0(0, 0, v6, &unk_5890, v10);
 }
 

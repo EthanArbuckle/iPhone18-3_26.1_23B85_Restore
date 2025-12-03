@@ -1,47 +1,47 @@
 @interface CNVisualIdentityItemEditorViewController
-- (BOOL)editorViewOverlapsWindowBasedKeyboardRect:(CGRect)a3;
+- (BOOL)editorViewOverlapsWindowBasedKeyboardRect:(CGRect)rect;
 - (BOOL)isEmojiProviderItemType;
 - (BOOL)shouldBeginEditing;
 - (BOOL)shouldShowStyleCollectionView;
-- (CNVisualIdentityItemEditorViewController)initWithProviderItem:(id)a3 variantsManager:(id)a4;
+- (CNVisualIdentityItemEditorViewController)initWithProviderItem:(id)item variantsManager:(id)manager;
 - (CNVisualIdentityItemEditorViewControllerDelegate)delegate;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (double)editableAvatarViewEdgeLength;
-- (double)editorViewBottomYForAvatarSize:(double)a3 withContainerTopMargin:(double)a4;
-- (double)fontSizeForContainerSize:(double)a3;
+- (double)editorViewBottomYForAvatarSize:(double)size withContainerTopMargin:(double)margin;
+- (double)fontSizeForContainerSize:(double)size;
 - (double)segmentedControlTopMargin;
 - (double)styleContainerTopMargin;
 - (double)textFieldFontSize;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)updatedProviderItem;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfItemsPerRow;
-- (void)adjustAvatarViewConstraintsForKeyboardFrame:(CGRect)a3;
+- (void)adjustAvatarViewConstraintsForKeyboardFrame:(CGRect)frame;
 - (void)beginEditingAvatar;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)didTapCancel;
 - (void)didTapDone;
-- (void)didTapEditableAvatar:(id)a3;
-- (void)didTapSegmentedControl:(id)a3;
-- (void)editableAvatarViewController:(id)a3 didUpdateWithProviderItem:(id)a4;
+- (void)didTapEditableAvatar:(id)avatar;
+- (void)didTapSegmentedControl:(id)control;
+- (void)editableAvatarViewController:(id)controller didUpdateWithProviderItem:(id)item;
 - (void)forceEmojiKeyboardIfNeeded;
 - (void)generateProviderItems;
 - (void)hideStyleCollectionView;
-- (void)keyboardWillShow:(id)a3;
-- (void)providerItemDidUpdate:(id)a3;
-- (void)setUpFirstResponderForProviderItem:(id)a3;
+- (void)keyboardWillShow:(id)show;
+- (void)providerItemDidUpdate:(id)update;
+- (void)setUpFirstResponderForProviderItem:(id)item;
 - (void)setupBarButtonItems;
 - (void)setupEditableAvatarViewController;
 - (void)setupSegmentedControl;
 - (void)setupStyleCollectionView;
-- (void)setupViewWithProviderItem:(id)a3;
-- (void)switchEditorToMode:(unint64_t)a3;
-- (void)updateDoneButtonEnabledStateForText:(id)a3;
+- (void)setupViewWithProviderItem:(id)item;
+- (void)switchEditorToMode:(unint64_t)mode;
+- (void)updateDoneButtonEnabledStateForText:(id)text;
 - (void)updateFlowLayoutItemSize;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CNVisualIdentityItemEditorViewController
@@ -55,8 +55,8 @@
 
 - (double)styleContainerTopMargin
 {
-  v2 = [(CNVisualIdentityItemEditorViewController *)self view];
-  [v2 bounds];
+  view = [(CNVisualIdentityItemEditorViewController *)self view];
+  [view bounds];
   if (v3 <= 667.0)
   {
     v4 = 36.0;
@@ -72,8 +72,8 @@
 
 - (double)segmentedControlTopMargin
 {
-  v2 = [(CNVisualIdentityItemEditorViewController *)self view];
-  [v2 bounds];
+  view = [(CNVisualIdentityItemEditorViewController *)self view];
+  [view bounds];
   if (v3 <= 667.0)
   {
     v4 = 20.0;
@@ -87,20 +87,20 @@
   return v4;
 }
 
-- (double)fontSizeForContainerSize:(double)a3
+- (double)fontSizeForContainerSize:(double)size
 {
   if ([(CNVisualIdentityItemEditorViewController *)self isEmojiProviderItemType])
   {
-    return a3 * 0.631578947;
+    return size * 0.631578947;
   }
 
-  if (a3 == 240.0)
+  if (size == 240.0)
   {
     return 120.0;
   }
 
   result = 60.0;
-  if (a3 == 200.0)
+  if (size == 200.0)
   {
     return 100.0;
   }
@@ -118,8 +118,8 @@
 
 - (double)editableAvatarViewEdgeLength
 {
-  v2 = [(CNVisualIdentityItemEditorViewController *)self view];
-  [v2 bounds];
+  view = [(CNVisualIdentityItemEditorViewController *)self view];
+  [view bounds];
   if (v3 <= 667.0)
   {
     v4 = 200.0;
@@ -133,12 +133,12 @@
   return v4;
 }
 
-- (void)editableAvatarViewController:(id)a3 didUpdateWithProviderItem:(id)a4
+- (void)editableAvatarViewController:(id)controller didUpdateWithProviderItem:(id)item
 {
-  v9 = a4;
-  if ([v9 conformsToProtocol:&unk_1F0DD51E0])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_1F0DD51E0])
   {
-    v5 = v9;
+    v5 = itemCopy;
   }
 
   else
@@ -150,16 +150,16 @@
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 itemText];
-    [(CNVisualIdentityItemEditorViewController *)self updateDoneButtonEnabledStateForText:v8];
+    itemText = [v6 itemText];
+    [(CNVisualIdentityItemEditorViewController *)self updateDoneButtonEnabledStateForText:itemText];
   }
 }
 
-- (void)providerItemDidUpdate:(id)a3
+- (void)providerItemDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(CNVisualIdentityItemEditorViewController *)self variantProviderItems];
-  v6 = [v5 indexOfObject:v4];
+  updateCopy = update;
+  variantProviderItems = [(CNVisualIdentityItemEditorViewController *)self variantProviderItems];
+  v6 = [variantProviderItems indexOfObject:updateCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -186,12 +186,12 @@ void __66__CNVisualIdentityItemEditorViewController_providerItemDidUpdate___bloc
 
 - (void)generateProviderItems
 {
-  v3 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
-  [v3 conformsToProtocol:&unk_1F0DD51E0];
+  providerItem = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+  [providerItem conformsToProtocol:&unk_1F0DD51E0];
 
-  v4 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
-  v5 = [(CNVisualIdentityItemEditorViewController *)self variantsManager];
-  v6 = [v4 createVariantsItemsWithVariantsManager:v5];
+  providerItem2 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+  variantsManager = [(CNVisualIdentityItemEditorViewController *)self variantsManager];
+  v6 = [providerItem2 createVariantsItemsWithVariantsManager:variantsManager];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -200,8 +200,8 @@ void __66__CNVisualIdentityItemEditorViewController_providerItemDidUpdate___bloc
   v8[4] = self;
   [v6 _cn_each:v8];
   [(CNVisualIdentityItemEditorViewController *)self setVariantProviderItems:v6];
-  v7 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-  [v7 reloadData];
+  styleCollectionView = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+  [styleCollectionView reloadData];
 }
 
 void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block_invoke(uint64_t a1, void *a2)
@@ -254,13 +254,13 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
   [v10 setDelegate:*(a1 + 32)];
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v6 = [(CNVisualIdentityItemEditorViewController *)self view:a3];
+  v6 = [(CNVisualIdentityItemEditorViewController *)self view:view];
   [v6 layoutMargins];
   v8 = v7;
-  v9 = [(CNVisualIdentityItemEditorViewController *)self view];
-  [v9 layoutMargins];
+  view = [(CNVisualIdentityItemEditorViewController *)self view];
+  [view layoutMargins];
   v11 = v10;
 
   v12 = 0.0;
@@ -274,20 +274,20 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CNVisualIdentityItemEditorViewController *)self variantProviderItems];
-  v7 = [v5 row];
+  pathCopy = path;
+  variantProviderItems = [(CNVisualIdentityItemEditorViewController *)self variantProviderItems];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [variantProviderItems objectAtIndexedSubscript:v7];
   [(CNVisualIdentityItemEditorViewController *)self setProviderItem:v8];
 
   objc_opt_class();
-  v9 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+  providerItem = [(CNVisualIdentityItemEditorViewController *)self providerItem];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = providerItem;
   }
 
   else
@@ -299,20 +299,20 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
 
   if (v14)
   {
-    v11 = [v14 generateImageDataIfNeeded];
+    generateImageDataIfNeeded = [v14 generateImageDataIfNeeded];
   }
 
-  v12 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  v13 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
-  [v12 updateWithProviderItem:v13];
+  editableAvatarViewController = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  providerItem2 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+  [editableAvatarViewController updateWithProviderItem:providerItem2];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[CNPhotoPickerCollectionViewCell cellIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
   objc_opt_class();
   v10 = v9;
@@ -331,8 +331,8 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
   [v12 setCellStyle:1];
   if (v12)
   {
-    v13 = [(CNVisualIdentityItemEditorViewController *)self variantProviderItems];
-    v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    variantProviderItems = [(CNVisualIdentityItemEditorViewController *)self variantProviderItems];
+    v14 = [variantProviderItems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -352,29 +352,29 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
   return v10;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(CNVisualIdentityItemEditorViewController *)self variantProviderItems:a3];
+  v4 = [(CNVisualIdentityItemEditorViewController *)self variantProviderItems:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)didTapSegmentedControl:(id)a3
+- (void)didTapSegmentedControl:(id)control
 {
-  v4 = [a3 selectedSegmentIndex];
-  if (v4 == 1)
+  selectedSegmentIndex = [control selectedSegmentIndex];
+  if (selectedSegmentIndex == 1)
   {
-    v5 = [(CNVisualIdentityItemEditorViewController *)self updatedProviderItem];
-    [(CNVisualIdentityItemEditorViewController *)self setProviderItem:v5];
+    updatedProviderItem = [(CNVisualIdentityItemEditorViewController *)self updatedProviderItem];
+    [(CNVisualIdentityItemEditorViewController *)self setProviderItem:updatedProviderItem];
 
-    v6 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-    [v6 endEditing];
+    editableAvatarViewController = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+    [editableAvatarViewController endEditing];
 
     [(CNVisualIdentityItemEditorViewController *)self setupStyleCollectionView];
   }
 
-  else if (!v4)
+  else if (!selectedSegmentIndex)
   {
     [(CNVisualIdentityItemEditorViewController *)self beginEditingAvatar];
 
@@ -384,13 +384,13 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
 
 - (void)didTapDone
 {
-  v3 = [(CNVisualIdentityItemEditorViewController *)self delegate];
+  delegate = [(CNVisualIdentityItemEditorViewController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v5 = [(CNVisualIdentityItemEditorViewController *)self updatedProviderItem];
-    v4 = [(CNVisualIdentityItemEditorViewController *)self delegate];
-    [v4 visualIdentityEditorController:self didFinishWithProviderItem:v5];
+    updatedProviderItem = [(CNVisualIdentityItemEditorViewController *)self updatedProviderItem];
+    delegate2 = [(CNVisualIdentityItemEditorViewController *)self delegate];
+    [delegate2 visualIdentityEditorController:self didFinishWithProviderItem:updatedProviderItem];
   }
 
   else
@@ -402,12 +402,12 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
 
 - (void)didTapCancel
 {
-  v3 = [(CNVisualIdentityItemEditorViewController *)self delegate];
+  delegate = [(CNVisualIdentityItemEditorViewController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(CNVisualIdentityItemEditorViewController *)self delegate];
-    [v4 visualIdentityEditorControllerDidCancel:self];
+    delegate2 = [(CNVisualIdentityItemEditorViewController *)self delegate];
+    [delegate2 visualIdentityEditorControllerDidCancel:self];
   }
 
   else
@@ -419,18 +419,18 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
 
 - (BOOL)isEmojiProviderItemType
 {
-  v2 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
-  v3 = [v2 imageType] == 4;
+  providerItem = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+  v3 = [providerItem imageType] == 4;
 
   return v3;
 }
 
 - (id)updatedProviderItem
 {
-  v3 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
-  if ([v3 conformsToProtocol:&unk_1F0DD51E0])
+  providerItem = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+  if ([providerItem conformsToProtocol:&unk_1F0DD51E0])
   {
-    v4 = v3;
+    v4 = providerItem;
   }
 
   else
@@ -442,15 +442,15 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
 
   if (v5)
   {
-    v6 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-    v7 = [v6 text];
-    v8 = [v5 updatedProviderItemWithText:v7];
+    editableAvatarViewController = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+    text = [editableAvatarViewController text];
+    v8 = [v5 updatedProviderItemWithText:text];
   }
 
   else
   {
-    v6 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
-    v8 = [v6 copy];
+    editableAvatarViewController = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+    v8 = [editableAvatarViewController copy];
   }
 
   return v8;
@@ -458,8 +458,8 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
 
 - (int64_t)numberOfItemsPerRow
 {
-  v2 = [(CNVisualIdentityItemEditorViewController *)self view];
-  [v2 bounds];
+  view = [(CNVisualIdentityItemEditorViewController *)self view];
+  [view bounds];
   if (v3 <= 460.0)
   {
     v4 = 4;
@@ -477,42 +477,42 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
 {
   if ([(CNVisualIdentityItemEditorViewController *)self shouldShowStyleCollectionView])
   {
-    v3 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-    v8 = [v3 collectionViewLayout];
+    styleCollectionView = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+    collectionViewLayout = [styleCollectionView collectionViewLayout];
 
-    v4 = [(CNVisualIdentityItemEditorViewController *)self numberOfItemsPerRow];
-    v5 = [(CNVisualIdentityItemEditorViewController *)self view];
-    [v5 bounds];
-    v7 = (v6 + (v4 + 1) * -20.0) / v4;
+    numberOfItemsPerRow = [(CNVisualIdentityItemEditorViewController *)self numberOfItemsPerRow];
+    view = [(CNVisualIdentityItemEditorViewController *)self view];
+    [view bounds];
+    v7 = (v6 + (numberOfItemsPerRow + 1) * -20.0) / numberOfItemsPerRow;
 
-    [v8 setItemSize:{v7, v7}];
-    [v8 invalidateLayout];
+    [collectionViewLayout setItemSize:{v7, v7}];
+    [collectionViewLayout invalidateLayout];
   }
 }
 
 - (BOOL)shouldShowStyleCollectionView
 {
-  v2 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  v3 = [v2 selectedSegmentIndex] == 1;
+  segmentedControl = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  v3 = [segmentedControl selectedSegmentIndex] == 1;
 
   return v3;
 }
 
 - (void)hideStyleCollectionView
 {
-  v3 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-  [v3 removeFromSuperview];
+  styleCollectionView = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+  [styleCollectionView removeFromSuperview];
 
-  v4 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-  [v4 removeFromSuperview];
+  styleDividerView = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+  [styleDividerView removeFromSuperview];
 }
 
-- (void)setUpFirstResponderForProviderItem:(id)a3
+- (void)setUpFirstResponderForProviderItem:(id)item
 {
-  v6 = a3;
-  if ([v6 conformsToProtocol:&unk_1F0DD51E0])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_1F0DD51E0])
   {
-    v4 = v6;
+    v4 = itemCopy;
   }
 
   else
@@ -527,12 +527,12 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
   }
 }
 
-- (void)setupViewWithProviderItem:(id)a3
+- (void)setupViewWithProviderItem:(id)item
 {
-  v4 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
-  if ([v4 conformsToProtocol:&unk_1F0DD51E0])
+  providerItem = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+  if ([providerItem conformsToProtocol:&unk_1F0DD51E0])
   {
-    v5 = v4;
+    v5 = providerItem;
   }
 
   else
@@ -542,22 +542,22 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
 
   v8 = v5;
 
-  v6 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  segmentedControl = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
   if (v8)
   {
-    [v6 setTextAndStyleMode];
+    [segmentedControl setTextAndStyleMode];
 
-    v6 = [v8 itemText];
-    [(CNVisualIdentityItemEditorViewController *)self updateDoneButtonEnabledStateForText:v6];
+    segmentedControl = [v8 itemText];
+    [(CNVisualIdentityItemEditorViewController *)self updateDoneButtonEnabledStateForText:segmentedControl];
   }
 
   else
   {
-    [v6 setStyleOnlyMode];
+    [segmentedControl setStyleOnlyMode];
   }
 
-  v7 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  [(CNVisualIdentityItemEditorViewController *)self didTapSegmentedControl:v7];
+  segmentedControl2 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  [(CNVisualIdentityItemEditorViewController *)self didTapSegmentedControl:segmentedControl2];
 }
 
 - (void)setupStyleCollectionView
@@ -565,9 +565,9 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
   v83[8] = *MEMORY[0x1E69E9840];
   if ([(CNVisualIdentityItemEditorViewController *)self shouldShowStyleCollectionView])
   {
-    v3 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+    styleCollectionView = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
 
-    if (!v3)
+    if (!styleCollectionView)
     {
       v4 = objc_alloc_init(MEMORY[0x1E69DC840]);
       [v4 setMinimumLineSpacing:8.0];
@@ -580,63 +580,63 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
       v10 = [v5 initWithFrame:v4 collectionViewLayout:{*MEMORY[0x1E695F058], v7, v8, v9}];
       [(CNVisualIdentityItemEditorViewController *)self setStyleCollectionView:v10];
 
-      v11 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-      [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+      styleCollectionView2 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+      [styleCollectionView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v12 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-      [v12 setDelegate:self];
+      styleCollectionView3 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+      [styleCollectionView3 setDelegate:self];
 
-      v13 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-      [v13 setDataSource:self];
+      styleCollectionView4 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+      [styleCollectionView4 setDataSource:self];
 
-      v14 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+      styleCollectionView5 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
       v15 = objc_opt_class();
       v16 = +[CNPhotoPickerCollectionViewCell cellIdentifier];
-      [v14 registerClass:v15 forCellWithReuseIdentifier:v16];
+      [styleCollectionView5 registerClass:v15 forCellWithReuseIdentifier:v16];
 
-      v17 = [MEMORY[0x1E69DC888] clearColor];
-      v18 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-      [v18 setBackgroundColor:v17];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      styleCollectionView6 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+      [styleCollectionView6 setBackgroundColor:clearColor];
 
-      v19 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-      [v19 setAlwaysBounceVertical:1];
+      styleCollectionView7 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+      [styleCollectionView7 setAlwaysBounceVertical:1];
 
-      v20 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-      [v20 setContentInsetAdjustmentBehavior:3];
+      styleCollectionView8 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+      [styleCollectionView8 setContentInsetAdjustmentBehavior:3];
 
       [(CNVisualIdentityItemEditorViewController *)self updateFlowLayoutItemSize];
       v21 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v6, v7, v8, v9}];
       [(CNVisualIdentityItemEditorViewController *)self setStyleDividerView:v21];
 
-      v22 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-      [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+      styleDividerView = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+      [styleDividerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
       v23 = +[CNUIColorRepository visualIdentityEditorDividerColor];
-      v24 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-      [v24 setBackgroundColor:v23];
+      styleDividerView2 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+      [styleDividerView2 setBackgroundColor:v23];
 
       v25 = +[CNUIColorRepository photoPickerBackgroundShadowColor];
-      v26 = [v25 CGColor];
-      v27 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-      v28 = [v27 layer];
-      [v28 setShadowColor:v26];
+      cGColor = [v25 CGColor];
+      styleDividerView3 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+      layer = [styleDividerView3 layer];
+      [layer setShadowColor:cGColor];
 
-      v29 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-      v30 = [v29 layer];
+      styleDividerView4 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+      layer2 = [styleDividerView4 layer];
       LODWORD(v31) = 1.0;
-      [v30 setShadowOpacity:v31];
+      [layer2 setShadowOpacity:v31];
 
-      v32 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-      v33 = [v32 layer];
-      [v33 setShadowOffset:{0.0, 1.0}];
+      styleDividerView5 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+      layer3 = [styleDividerView5 layer];
+      [layer3 setShadowOffset:{0.0, 1.0}];
 
-      v34 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-      v35 = [v34 layer];
-      [v35 setShadowRadius:0.5];
+      styleDividerView6 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+      layer4 = [styleDividerView6 layer];
+      [layer4 setShadowRadius:0.5];
     }
 
-    v36 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v36 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v38 = v37;
 
     if (v38 <= 0.0)
@@ -649,60 +649,60 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
       v39 = 1.0 / v38;
     }
 
-    v40 = [(CNVisualIdentityItemEditorViewController *)self view];
-    v41 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-    [v40 addSubview:v41];
+    view = [(CNVisualIdentityItemEditorViewController *)self view];
+    styleDividerView7 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+    [view addSubview:styleDividerView7];
 
-    v42 = [(CNVisualIdentityItemEditorViewController *)self view];
-    v43 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-    [v42 addSubview:v43];
+    view2 = [(CNVisualIdentityItemEditorViewController *)self view];
+    styleCollectionView9 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+    [view2 addSubview:styleCollectionView9];
 
-    v82 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-    v80 = [v82 topAnchor];
-    v81 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-    v79 = [v81 bottomAnchor];
+    styleDividerView8 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+    topAnchor = [styleDividerView8 topAnchor];
+    segmentedControl = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+    bottomAnchor = [segmentedControl bottomAnchor];
     [(CNVisualIdentityItemEditorViewController *)self styleContainerTopMargin];
-    v78 = [v80 constraintEqualToAnchor:v79 constant:?];
+    v78 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
     v83[0] = v78;
-    v77 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-    v75 = [v77 leadingAnchor];
-    v76 = [(CNVisualIdentityItemEditorViewController *)self view];
-    v74 = [v76 leadingAnchor];
-    v73 = [v75 constraintEqualToAnchor:v74];
+    styleDividerView9 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+    leadingAnchor = [styleDividerView9 leadingAnchor];
+    view3 = [(CNVisualIdentityItemEditorViewController *)self view];
+    leadingAnchor2 = [view3 leadingAnchor];
+    v73 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v83[1] = v73;
-    v72 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-    v70 = [v72 trailingAnchor];
-    v71 = [(CNVisualIdentityItemEditorViewController *)self view];
-    v69 = [v71 trailingAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69];
+    styleDividerView10 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+    trailingAnchor = [styleDividerView10 trailingAnchor];
+    view4 = [(CNVisualIdentityItemEditorViewController *)self view];
+    trailingAnchor2 = [view4 trailingAnchor];
+    v68 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v83[2] = v68;
-    v67 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-    v66 = [v67 heightAnchor];
-    v65 = [v66 constraintEqualToConstant:v39];
+    styleDividerView11 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+    heightAnchor = [styleDividerView11 heightAnchor];
+    v65 = [heightAnchor constraintEqualToConstant:v39];
     v83[3] = v65;
-    v64 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-    v62 = [v64 topAnchor];
-    v63 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
-    v61 = [v63 bottomAnchor];
-    v59 = [v62 constraintEqualToAnchor:v61 constant:12.0];
+    styleCollectionView10 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+    topAnchor2 = [styleCollectionView10 topAnchor];
+    styleDividerView12 = [(CNVisualIdentityItemEditorViewController *)self styleDividerView];
+    bottomAnchor2 = [styleDividerView12 bottomAnchor];
+    v59 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:12.0];
     v83[4] = v59;
-    v58 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-    v56 = [v58 leadingAnchor];
-    v57 = [(CNVisualIdentityItemEditorViewController *)self view];
-    v55 = [v57 leadingAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    styleCollectionView11 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+    leadingAnchor3 = [styleCollectionView11 leadingAnchor];
+    view5 = [(CNVisualIdentityItemEditorViewController *)self view];
+    leadingAnchor4 = [view5 leadingAnchor];
+    v54 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v83[5] = v54;
-    v53 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-    v44 = [v53 trailingAnchor];
-    v45 = [(CNVisualIdentityItemEditorViewController *)self view];
-    v46 = [v45 trailingAnchor];
-    v47 = [v44 constraintEqualToAnchor:v46];
+    styleCollectionView12 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+    trailingAnchor3 = [styleCollectionView12 trailingAnchor];
+    view6 = [(CNVisualIdentityItemEditorViewController *)self view];
+    trailingAnchor4 = [view6 trailingAnchor];
+    v47 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v83[6] = v47;
-    v48 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-    v49 = [v48 bottomAnchor];
-    v50 = [(CNVisualIdentityItemEditorViewController *)self view];
-    v51 = [v50 bottomAnchor];
-    v52 = [v49 constraintEqualToAnchor:v51];
+    styleCollectionView13 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+    bottomAnchor3 = [styleCollectionView13 bottomAnchor];
+    view7 = [(CNVisualIdentityItemEditorViewController *)self view];
+    bottomAnchor4 = [view7 bottomAnchor];
+    v52 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v83[7] = v52;
     v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:8];
 
@@ -714,10 +714,10 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
 - (void)setupSegmentedControl
 {
   v41[5] = *MEMORY[0x1E69E9840];
-  v3 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
-  if ([v3 conformsToProtocol:&unk_1F0DD51E0])
+  providerItem = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+  if ([providerItem conformsToProtocol:&unk_1F0DD51E0])
   {
-    v4 = v3;
+    v4 = providerItem;
   }
 
   else
@@ -725,12 +725,12 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
     v4 = 0;
   }
 
-  v5 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
-  v6 = +[CNVisualIdentityItemEditorSegmentedControl segmentedControlForItemType:](CNVisualIdentityItemEditorSegmentedControl, "segmentedControlForItemType:", [v5 imageType]);
+  providerItem2 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+  v6 = +[CNVisualIdentityItemEditorSegmentedControl segmentedControlForItemType:](CNVisualIdentityItemEditorSegmentedControl, "segmentedControlForItemType:", [providerItem2 imageType]);
   [(CNVisualIdentityItemEditorViewController *)self setSegmentedControl:v6];
 
-  v7 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  v8 = v7;
+  segmentedControl = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  v8 = segmentedControl;
   if (v4)
   {
     v9 = 30.0;
@@ -741,49 +741,49 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
     v9 = 0.0;
   }
 
-  [v7 setHidden:v4 == 0];
+  [segmentedControl setHidden:v4 == 0];
 
-  v10 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  [v10 addTarget:self action:sel_didTapSegmentedControl_ forControlEvents:4096];
+  segmentedControl2 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  [segmentedControl2 addTarget:self action:sel_didTapSegmentedControl_ forControlEvents:4096];
 
-  v11 = [(CNVisualIdentityItemEditorViewController *)self view];
-  v12 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  [v11 addSubview:v12];
+  view = [(CNVisualIdentityItemEditorViewController *)self view];
+  segmentedControl3 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  [view addSubview:segmentedControl3];
 
-  v13 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  v14 = [v13 heightAnchor];
-  v15 = [v14 constraintEqualToConstant:v9];
+  segmentedControl4 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  heightAnchor = [segmentedControl4 heightAnchor];
+  v15 = [heightAnchor constraintEqualToConstant:v9];
   [(CNVisualIdentityItemEditorViewController *)self setSegmentedControlHeightConstraint:v15];
 
-  v40 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  v37 = [v40 topAnchor];
-  v39 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  v38 = [v39 view];
-  v36 = [v38 bottomAnchor];
+  segmentedControl5 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  topAnchor = [segmentedControl5 topAnchor];
+  editableAvatarViewController = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  view2 = [editableAvatarViewController view];
+  bottomAnchor = [view2 bottomAnchor];
   [(CNVisualIdentityItemEditorViewController *)self segmentedControlTopMargin];
-  v35 = [v37 constraintEqualToAnchor:v36 constant:?];
+  v35 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   v41[0] = v35;
-  v34 = [(CNVisualIdentityItemEditorViewController *)self segmentedControlHeightConstraint];
-  v41[1] = v34;
-  v33 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  v31 = [v33 centerXAnchor];
-  v32 = [(CNVisualIdentityItemEditorViewController *)self view];
-  v30 = [v32 centerXAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  segmentedControlHeightConstraint = [(CNVisualIdentityItemEditorViewController *)self segmentedControlHeightConstraint];
+  v41[1] = segmentedControlHeightConstraint;
+  segmentedControl6 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  centerXAnchor = [segmentedControl6 centerXAnchor];
+  view3 = [(CNVisualIdentityItemEditorViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v41[2] = v29;
-  v28 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  v25 = [v28 leadingAnchor];
-  v26 = [(CNVisualIdentityItemEditorViewController *)self view];
-  v16 = [v26 layoutMarginsGuide];
-  v17 = [v16 leadingAnchor];
-  v18 = [v25 constraintEqualToAnchor:v17];
+  segmentedControl7 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  leadingAnchor = [segmentedControl7 leadingAnchor];
+  view4 = [(CNVisualIdentityItemEditorViewController *)self view];
+  layoutMarginsGuide = [view4 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v41[3] = v18;
-  v19 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  v20 = [v19 trailingAnchor];
-  v21 = [(CNVisualIdentityItemEditorViewController *)self view];
-  v22 = [v21 layoutMarginsGuide];
-  v23 = [v22 trailingAnchor];
-  v24 = [v20 constraintEqualToAnchor:v23];
+  segmentedControl8 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  trailingAnchor = [segmentedControl8 trailingAnchor];
+  view5 = [(CNVisualIdentityItemEditorViewController *)self view];
+  layoutMarginsGuide2 = [view5 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v41[4] = v24;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:5];
 
@@ -791,39 +791,39 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
   [(CNVisualIdentityItemEditorViewController *)self setupStyleCollectionView];
 }
 
-- (void)switchEditorToMode:(unint64_t)a3
+- (void)switchEditorToMode:(unint64_t)mode
 {
-  v5 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  [v5 setSelectedSegmentIndex:a3];
+  segmentedControl = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  [segmentedControl setSelectedSegmentIndex:mode];
 
-  v6 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  [(CNVisualIdentityItemEditorViewController *)self didTapSegmentedControl:v6];
+  segmentedControl2 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  [(CNVisualIdentityItemEditorViewController *)self didTapSegmentedControl:segmentedControl2];
 }
 
 - (BOOL)shouldBeginEditing
 {
   if ([(CNVisualIdentityItemEditorViewController *)self canBeginEditing])
   {
-    v3 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-    v4 = [v3 allowsTextInputForCurrentEditorType];
+    segmentedControl = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+    allowsTextInputForCurrentEditorType = [segmentedControl allowsTextInputForCurrentEditorType];
   }
 
   else
   {
-    v4 = 0;
+    allowsTextInputForCurrentEditorType = 0;
   }
 
-  v5 = [(CNVisualIdentityItemEditorViewController *)self navigationController];
+  navigationController = [(CNVisualIdentityItemEditorViewController *)self navigationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     objc_opt_class();
-    v7 = [(CNVisualIdentityItemEditorViewController *)self navigationController];
+    navigationController2 = [(CNVisualIdentityItemEditorViewController *)self navigationController];
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = navigationController2;
     }
 
     else
@@ -833,46 +833,46 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
 
     v9 = v8;
 
-    v10 = [v9 isDisplayingTrapView];
-    return v10 ^ 1;
+    isDisplayingTrapView = [v9 isDisplayingTrapView];
+    return isDisplayingTrapView ^ 1;
   }
 
-  return v4;
+  return allowsTextInputForCurrentEditorType;
 }
 
 - (void)beginEditingAvatar
 {
   if ([(CNVisualIdentityItemEditorViewController *)self shouldBeginEditing])
   {
-    v3 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-    [v3 beginEditing];
+    editableAvatarViewController = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+    [editableAvatarViewController beginEditing];
   }
 }
 
 - (void)forceEmojiKeyboardIfNeeded
 {
-  v3 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v4 = [v3 currentInputMode];
-  v6 = [v4 normalizedIdentifier];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  currentInputMode = [mEMORY[0x1E69DCBF0] currentInputMode];
+  normalizedIdentifier = [currentInputMode normalizedIdentifier];
 
-  if (([v6 isEqualToString:*MEMORY[0x1E69DDFB8]] & 1) == 0)
+  if (([normalizedIdentifier isEqualToString:*MEMORY[0x1E69DDFB8]] & 1) == 0)
   {
-    v5 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-    [v5 endEditing];
+    editableAvatarViewController = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+    [editableAvatarViewController endEditing];
   }
 
   [(CNVisualIdentityItemEditorViewController *)self beginEditingAvatar];
 }
 
-- (void)didTapEditableAvatar:(id)a3
+- (void)didTapEditableAvatar:(id)avatar
 {
-  v4 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-  v5 = [v4 selectedSegmentIndex];
+  segmentedControl = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+  selectedSegmentIndex = [segmentedControl selectedSegmentIndex];
 
-  if (v5 == 1)
+  if (selectedSegmentIndex == 1)
   {
-    v6 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
-    v7 = [v6 isEnabledForSegmentAtIndex:0];
+    segmentedControl2 = [(CNVisualIdentityItemEditorViewController *)self segmentedControl];
+    v7 = [segmentedControl2 isEnabledForSegmentAtIndex:0];
 
     if (v7)
     {
@@ -881,7 +881,7 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
     }
   }
 
-  else if (!v5)
+  else if (!selectedSegmentIndex)
   {
     if ([(CNVisualIdentityItemEditorViewController *)self isEmojiProviderItemType])
     {
@@ -901,85 +901,85 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
 {
   v47[4] = *MEMORY[0x1E69E9840];
   v3 = [CNVisualIdentityEditablePrimaryAvatarViewController alloc];
-  v4 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
-  v5 = [(CNVisualIdentityItemEditorViewController *)self variantsManager];
-  v6 = [(CNVisualIdentityEditablePrimaryAvatarViewController *)v3 initWithProviderItem:v4 variantsManager:v5];
+  providerItem = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+  variantsManager = [(CNVisualIdentityItemEditorViewController *)self variantsManager];
+  v6 = [(CNVisualIdentityEditablePrimaryAvatarViewController *)v3 initWithProviderItem:providerItem variantsManager:variantsManager];
   [(CNVisualIdentityItemEditorViewController *)self setEditableAvatarViewController:v6];
 
-  v7 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  [v7 setDelegate:self];
+  editableAvatarViewController = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  [editableAvatarViewController setDelegate:self];
 
   [(CNVisualIdentityItemEditorViewController *)self textFieldFontSize];
   v9 = v8;
-  v10 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  [v10 setDesiredFontSize:v9];
+  editableAvatarViewController2 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  [editableAvatarViewController2 setDesiredFontSize:v9];
 
-  v11 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  v12 = [v11 view];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  editableAvatarViewController3 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  view = [editableAvatarViewController3 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v13 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  [(CNVisualIdentityItemEditorViewController *)self addChildViewController:v13];
+  editableAvatarViewController4 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  [(CNVisualIdentityItemEditorViewController *)self addChildViewController:editableAvatarViewController4];
 
-  v14 = [(CNVisualIdentityItemEditorViewController *)self view];
-  v15 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  v16 = [v15 view];
-  [v14 addSubview:v16];
+  view2 = [(CNVisualIdentityItemEditorViewController *)self view];
+  editableAvatarViewController5 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  view3 = [editableAvatarViewController5 view];
+  [view2 addSubview:view3];
 
-  v17 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  [v17 didMoveToParentViewController:self];
+  editableAvatarViewController6 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  [editableAvatarViewController6 didMoveToParentViewController:self];
 
-  v18 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  v19 = [v18 view];
-  v20 = [v19 widthAnchor];
+  editableAvatarViewController7 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  view4 = [editableAvatarViewController7 view];
+  widthAnchor = [view4 widthAnchor];
   [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewEdgeLength];
-  v21 = [v20 constraintEqualToConstant:?];
+  v21 = [widthAnchor constraintEqualToConstant:?];
   [(CNVisualIdentityItemEditorViewController *)self setAvatarViewSizeConstraint:v21];
 
-  v22 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  v23 = [v22 view];
-  v24 = [v23 topAnchor];
-  v25 = [(CNVisualIdentityItemEditorViewController *)self view];
-  v26 = [v25 topAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:100.0];
+  editableAvatarViewController8 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  view5 = [editableAvatarViewController8 view];
+  topAnchor = [view5 topAnchor];
+  view6 = [(CNVisualIdentityItemEditorViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:100.0];
   [(CNVisualIdentityItemEditorViewController *)self setAvatarViewTopConstraint:v27];
 
-  v46 = [(CNVisualIdentityItemEditorViewController *)self avatarViewSizeConstraint];
-  v47[0] = v46;
-  v45 = [(CNVisualIdentityItemEditorViewController *)self avatarViewTopConstraint];
-  v47[1] = v45;
-  v44 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  v43 = [v44 view];
-  v41 = [v43 heightAnchor];
-  v42 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  v28 = [v42 view];
-  v29 = [v28 widthAnchor];
-  v30 = [v41 constraintEqualToAnchor:v29];
+  avatarViewSizeConstraint = [(CNVisualIdentityItemEditorViewController *)self avatarViewSizeConstraint];
+  v47[0] = avatarViewSizeConstraint;
+  avatarViewTopConstraint = [(CNVisualIdentityItemEditorViewController *)self avatarViewTopConstraint];
+  v47[1] = avatarViewTopConstraint;
+  editableAvatarViewController9 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  view7 = [editableAvatarViewController9 view];
+  heightAnchor = [view7 heightAnchor];
+  editableAvatarViewController10 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  view8 = [editableAvatarViewController10 view];
+  widthAnchor2 = [view8 widthAnchor];
+  v30 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v47[2] = v30;
-  v31 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  v32 = [v31 view];
-  v33 = [v32 centerXAnchor];
-  v34 = [(CNVisualIdentityItemEditorViewController *)self view];
-  v35 = [v34 centerXAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  editableAvatarViewController11 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  view9 = [editableAvatarViewController11 view];
+  centerXAnchor = [view9 centerXAnchor];
+  view10 = [(CNVisualIdentityItemEditorViewController *)self view];
+  centerXAnchor2 = [view10 centerXAnchor];
+  v36 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v47[3] = v36;
   v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:4];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v40];
   v37 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_didTapEditableAvatar_];
-  v38 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-  v39 = [v38 view];
-  [v39 addGestureRecognizer:v37];
+  editableAvatarViewController12 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+  view11 = [editableAvatarViewController12 view];
+  [view11 addGestureRecognizer:v37];
 }
 
-- (void)updateDoneButtonEnabledStateForText:(id)a3
+- (void)updateDoneButtonEnabledStateForText:(id)text
 {
   v4 = *MEMORY[0x1E6996570];
-  v8 = [a3 _cn_trimmedString];
-  v5 = (*(v4 + 16))(v4, v8);
-  v6 = [(CNVisualIdentityItemEditorViewController *)self navigationItem];
-  v7 = [v6 rightBarButtonItem];
-  [v7 setEnabled:v5];
+  _cn_trimmedString = [text _cn_trimmedString];
+  v5 = (*(v4 + 16))(v4, _cn_trimmedString);
+  navigationItem = [(CNVisualIdentityItemEditorViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v5];
 }
 
 - (void)setupBarButtonItems
@@ -987,101 +987,101 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
   if ([(CNVisualIdentityItemEditorViewController *)self canCancel])
   {
     v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_didTapCancel];
-    v4 = [(CNVisualIdentityItemEditorViewController *)self navigationItem];
-    [v4 setLeftBarButtonItem:v3];
+    navigationItem = [(CNVisualIdentityItemEditorViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v3];
   }
 
   v5 = *MEMORY[0x1E6996570];
-  v6 = [(CNVisualIdentityItemEditorViewController *)self doneButtonTitle];
-  LODWORD(v5) = (*(v5 + 16))(v5, v6);
+  doneButtonTitle = [(CNVisualIdentityItemEditorViewController *)self doneButtonTitle];
+  LODWORD(v5) = (*(v5 + 16))(v5, doneButtonTitle);
 
   v7 = objc_alloc(MEMORY[0x1E69DC708]);
   v8 = v7;
   if (v5)
   {
-    v9 = [(CNVisualIdentityItemEditorViewController *)self doneButtonTitle];
-    v10 = [v8 initWithTitle:v9 style:2 target:self action:sel_didTapDone];
-    v11 = [(CNVisualIdentityItemEditorViewController *)self navigationItem];
-    [v11 setRightBarButtonItem:v10];
+    doneButtonTitle2 = [(CNVisualIdentityItemEditorViewController *)self doneButtonTitle];
+    navigationItem3 = [v8 initWithTitle:doneButtonTitle2 style:2 target:self action:sel_didTapDone];
+    navigationItem2 = [(CNVisualIdentityItemEditorViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:navigationItem3];
   }
 
   else
   {
-    v9 = [v7 initWithBarButtonSystemItem:0 target:self action:sel_didTapDone];
-    v10 = [(CNVisualIdentityItemEditorViewController *)self navigationItem];
-    [v10 setRightBarButtonItem:v9];
+    doneButtonTitle2 = [v7 initWithBarButtonSystemItem:0 target:self action:sel_didTapDone];
+    navigationItem3 = [(CNVisualIdentityItemEditorViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:doneButtonTitle2];
   }
 
-  v12 = [(CNVisualIdentityItemEditorViewController *)self navigationItem];
-  [v12 _setBackgroundHidden:1];
+  navigationItem4 = [(CNVisualIdentityItemEditorViewController *)self navigationItem];
+  [navigationItem4 _setBackgroundHidden:1];
 
-  v13 = [(CNVisualIdentityItemEditorViewController *)self navigationController];
-  v14 = [v13 navigationBar];
-  v15 = [v14 isTranslucent];
+  navigationController = [(CNVisualIdentityItemEditorViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  isTranslucent = [navigationBar isTranslucent];
 
-  if ((v15 & 1) == 0)
+  if ((isTranslucent & 1) == 0)
   {
 
     [(CNVisualIdentityItemEditorViewController *)self setExtendedLayoutIncludesOpaqueBars:1];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = CNVisualIdentityItemEditorViewController;
-  [(CNVisualIdentityItemEditorViewController *)&v7 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
-  v6 = [v5 collectionViewLayout];
-  [v6 invalidateLayout];
+  [(CNVisualIdentityItemEditorViewController *)&v7 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  styleCollectionView = [(CNVisualIdentityItemEditorViewController *)self styleCollectionView];
+  collectionViewLayout = [styleCollectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (BOOL)editorViewOverlapsWindowBasedKeyboardRect:(CGRect)a3
+- (BOOL)editorViewOverlapsWindowBasedKeyboardRect:(CGRect)rect
 {
-  y = a3.origin.y;
-  v5 = [(CNVisualIdentityItemEditorViewController *)self avatarViewSizeConstraint:a3.origin.x];
+  y = rect.origin.y;
+  v5 = [(CNVisualIdentityItemEditorViewController *)self avatarViewSizeConstraint:rect.origin.x];
   [v5 constant];
   v7 = v6;
-  v8 = [(CNVisualIdentityItemEditorViewController *)self avatarViewTopConstraint];
-  [v8 constant];
+  avatarViewTopConstraint = [(CNVisualIdentityItemEditorViewController *)self avatarViewTopConstraint];
+  [avatarViewTopConstraint constant];
   [(CNVisualIdentityItemEditorViewController *)self editorViewBottomYForAvatarSize:v7 withContainerTopMargin:v9];
   v11 = v10;
 
   return v11 > y;
 }
 
-- (double)editorViewBottomYForAvatarSize:(double)a3 withContainerTopMargin:(double)a4
+- (double)editorViewBottomYForAvatarSize:(double)size withContainerTopMargin:(double)margin
 {
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v9 = v8;
-  v10 = [(CNVisualIdentityItemEditorViewController *)self view];
-  [v10 bounds];
+  view = [(CNVisualIdentityItemEditorViewController *)self view];
+  [view bounds];
   v12 = v9 - v11;
 
   v13 = 30.0;
-  if (a3 <= 200.0)
+  if (size <= 200.0)
   {
     v13 = 20.0;
   }
 
-  v14 = v13 + v12 + a4 + a3;
-  v15 = [(CNVisualIdentityItemEditorViewController *)self segmentedControlHeightConstraint];
-  [v15 constant];
+  v14 = v13 + v12 + margin + size;
+  segmentedControlHeightConstraint = [(CNVisualIdentityItemEditorViewController *)self segmentedControlHeightConstraint];
+  [segmentedControlHeightConstraint constant];
   v17 = v16 + v14;
 
   return v17;
 }
 
-- (void)adjustAvatarViewConstraintsForKeyboardFrame:(CGRect)a3
+- (void)adjustAvatarViewConstraintsForKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CNVisualIdentityItemEditorViewController *)self view];
-  v9 = [v8 window];
-  [v9 convertRect:0 fromWindow:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  view = [(CNVisualIdentityItemEditorViewController *)self view];
+  window = [view window];
+  [window convertRect:0 fromWindow:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1089,51 +1089,51 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
 
   if ([(CNVisualIdentityItemEditorViewController *)self editorViewOverlapsWindowBasedKeyboardRect:v11, v13, v15, v17])
   {
-    v18 = [(CNVisualIdentityItemEditorViewController *)self avatarViewSizeConstraint];
-    [v18 setConstant:200.0];
+    avatarViewSizeConstraint = [(CNVisualIdentityItemEditorViewController *)self avatarViewSizeConstraint];
+    [avatarViewSizeConstraint setConstant:200.0];
 
-    v19 = [(CNVisualIdentityItemEditorViewController *)self avatarViewTopConstraint];
-    [v19 setConstant:64.0];
+    avatarViewTopConstraint = [(CNVisualIdentityItemEditorViewController *)self avatarViewTopConstraint];
+    [avatarViewTopConstraint setConstant:64.0];
 
     if ([(CNVisualIdentityItemEditorViewController *)self editorViewOverlapsWindowBasedKeyboardRect:v11, v13, v15, v17])
     {
       if ([(CNVisualIdentityItemEditorViewController *)self isEmojiProviderItemType])
       {
-        v20 = [(CNVisualIdentityItemEditorViewController *)self avatarViewTopConstraint];
-        [v20 setConstant:32.0];
+        avatarViewTopConstraint2 = [(CNVisualIdentityItemEditorViewController *)self avatarViewTopConstraint];
+        [avatarViewTopConstraint2 setConstant:32.0];
       }
 
       if ([(CNVisualIdentityItemEditorViewController *)self editorViewOverlapsWindowBasedKeyboardRect:v11, v13, v15, v17])
       {
-        v21 = [(CNVisualIdentityItemEditorViewController *)self avatarViewSizeConstraint];
-        [v21 setConstant:120.0];
+        avatarViewSizeConstraint2 = [(CNVisualIdentityItemEditorViewController *)self avatarViewSizeConstraint];
+        [avatarViewSizeConstraint2 setConstant:120.0];
 
-        v22 = [(CNVisualIdentityItemEditorViewController *)self avatarViewTopConstraint];
-        [v22 setConstant:42.0];
+        avatarViewTopConstraint3 = [(CNVisualIdentityItemEditorViewController *)self avatarViewTopConstraint];
+        [avatarViewTopConstraint3 setConstant:42.0];
 
         if ([(CNVisualIdentityItemEditorViewController *)self editorViewOverlapsWindowBasedKeyboardRect:v11, v13, v15, v17])
         {
           if ([(CNVisualIdentityItemEditorViewController *)self isEmojiProviderItemType])
           {
-            v23 = [(CNVisualIdentityItemEditorViewController *)self avatarViewTopConstraint];
-            [v23 setConstant:24.0];
+            avatarViewTopConstraint4 = [(CNVisualIdentityItemEditorViewController *)self avatarViewTopConstraint];
+            [avatarViewTopConstraint4 setConstant:24.0];
           }
         }
       }
     }
 
-    v25 = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
-    v24 = [(CNVisualIdentityItemEditorViewController *)self avatarViewSizeConstraint];
-    [v24 constant];
+    editableAvatarViewController = [(CNVisualIdentityItemEditorViewController *)self editableAvatarViewController];
+    avatarViewSizeConstraint3 = [(CNVisualIdentityItemEditorViewController *)self avatarViewSizeConstraint];
+    [avatarViewSizeConstraint3 constant];
     [(CNVisualIdentityItemEditorViewController *)self fontSizeForContainerSize:?];
-    [v25 updateTextFieldFontSize:?];
+    [editableAvatarViewController updateTextFieldFontSize:?];
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
@@ -1151,14 +1151,14 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
   [(CNVisualIdentityItemEditorViewController *)self updateFlowLayoutItemSize];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CNVisualIdentityItemEditorViewController;
-  [(CNVisualIdentityItemEditorViewController *)&v5 viewDidAppear:a3];
+  [(CNVisualIdentityItemEditorViewController *)&v5 viewDidAppear:appear];
   [(CNVisualIdentityItemEditorViewController *)self setCanBeginEditing:1];
-  v4 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
-  [(CNVisualIdentityItemEditorViewController *)self setUpFirstResponderForProviderItem:v4];
+  providerItem = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+  [(CNVisualIdentityItemEditorViewController *)self setUpFirstResponderForProviderItem:providerItem];
 }
 
 - (void)viewDidLoad
@@ -1169,29 +1169,29 @@ void __65__CNVisualIdentityItemEditorViewController_generateProviderItems__block
   [(CNVisualIdentityItemEditorViewController *)self setupBarButtonItems];
   [(CNVisualIdentityItemEditorViewController *)self setupEditableAvatarViewController];
   [(CNVisualIdentityItemEditorViewController *)self setupSegmentedControl];
-  v3 = [(CNVisualIdentityItemEditorViewController *)self providerItem];
-  [(CNVisualIdentityItemEditorViewController *)self setupViewWithProviderItem:v3];
+  providerItem = [(CNVisualIdentityItemEditorViewController *)self providerItem];
+  [(CNVisualIdentityItemEditorViewController *)self setupViewWithProviderItem:providerItem];
 
   v4 = +[CNUIColorRepository visualIdentityEditorBackgroundColor];
-  v5 = [(CNVisualIdentityItemEditorViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view = [(CNVisualIdentityItemEditorViewController *)self view];
+  [view setBackgroundColor:v4];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
 }
 
-- (CNVisualIdentityItemEditorViewController)initWithProviderItem:(id)a3 variantsManager:(id)a4
+- (CNVisualIdentityItemEditorViewController)initWithProviderItem:(id)item variantsManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = CNVisualIdentityItemEditorViewController;
   v9 = [(CNVisualIdentityItemEditorViewController *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_providerItem, a3);
-    objc_storeStrong(&v10->_variantsManager, a4);
+    objc_storeStrong(&v9->_providerItem, item);
+    objc_storeStrong(&v10->_variantsManager, manager);
     v10->_canCancel = 1;
     v11 = v10;
   }

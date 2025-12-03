@@ -1,72 +1,72 @@
 @interface MKFCKHAPAccessory
-+ (id)fetchWithLocalModel:(id)a3 context:(id)a4;
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)hasServicePropertiesForInstanceID:(void *)a1;
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (id)fetchLocalModelWithContext:(id)a3;
-- (void)exportServiceDictionary:(void *)a3 forLocalModel:(int)a4 servicesModified:(void *)a5 withBlock:;
-- (void)importServiceDictionary:(void *)a3 forLocalModel:(void *)a4 withBlock:;
-- (void)lazyMutableCopy:(void *)a1 of:(void *)a2;
++ (id)fetchWithLocalModel:(id)model context:(id)context;
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)hasServicePropertiesForInstanceID:(void *)d;
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (id)fetchLocalModelWithContext:(id)context;
+- (void)exportServiceDictionary:(void *)dictionary forLocalModel:(int)model servicesModified:(void *)modified withBlock:;
+- (void)importServiceDictionary:(void *)dictionary forLocalModel:(void *)model withBlock:;
+- (void)lazyMutableCopy:(void *)copy of:(void *)of;
 @end
 
 @implementation MKFCKHAPAccessory
 
-+ (id)fetchWithLocalModel:(id)a3 context:(id)a4
++ (id)fetchWithLocalModel:(id)model context:(id)context
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___MKFCKHAPAccessory;
-  v4 = objc_msgSendSuper2(&v6, sel_fetchWithLocalModel_context_, a3, a4);
+  v4 = objc_msgSendSuper2(&v6, sel_fetchWithLocalModel_context_, model, context);
 
   return v4;
 }
 
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
   v84 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  propertiesCopy = properties;
+  contextCopy = context;
   v65.receiver = self;
   v65.super_class = MKFCKHAPAccessory;
-  if (![(MKFCKAccessory *)&v65 exportFromLocalModel:v8 updatedProperties:v9 context:v10])
+  if (![(MKFCKAccessory *)&v65 exportFromLocalModel:modelCopy updatedProperties:propertiesCopy context:contextCopy])
   {
     goto LABEL_54;
   }
 
-  v11 = [(MKFCKHAPAccessory *)self initialServiceTypes];
-  if (!v11)
+  initialServiceTypes = [(MKFCKHAPAccessory *)self initialServiceTypes];
+  if (!initialServiceTypes)
   {
-    v12 = [v8 initialServiceTypes];
+    initialServiceTypes2 = [modelCopy initialServiceTypes];
 
-    if (!v12)
+    if (!initialServiceTypes2)
     {
       goto LABEL_6;
     }
 
-    v11 = [v8 initialServiceTypes];
-    [(MKFCKHAPAccessory *)self setInitialServiceTypes:v11];
+    initialServiceTypes = [modelCopy initialServiceTypes];
+    [(MKFCKHAPAccessory *)self setInitialServiceTypes:initialServiceTypes];
   }
 
 LABEL_6:
-  v13 = v8;
+  v13 = modelCopy;
   if (self)
   {
-    v14 = [(MKFCKHAPAccessory *)self serviceProperties];
+    serviceProperties = [(MKFCKHAPAccessory *)self serviceProperties];
     v78 = 0;
-    v15 = [v13 services];
+    services = [v13 services];
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
-    obj = v15;
-    v16 = [v15 countByEnumeratingWithState:&v74 objects:v83 count:16];
+    obj = services;
+    v16 = [services countByEnumeratingWithState:&v74 objects:v83 count:16];
     if (v16)
     {
       v59 = v13;
-      v60 = self;
-      v61 = v10;
-      v62 = v9;
-      v63 = v8;
+      selfCopy = self;
+      v61 = contextCopy;
+      v62 = propertiesCopy;
+      v63 = modelCopy;
       v17 = *v75;
       do
       {
@@ -78,27 +78,27 @@ LABEL_6:
           }
 
           v19 = *(*(&v74 + 1) + 8 * i);
-          v20 = [v19 instanceID];
-          v21 = [v14 objectForKeyedSubscript:v20];
+          instanceID = [v19 instanceID];
+          v21 = [serviceProperties objectForKeyedSubscript:instanceID];
 
           if (!v21)
           {
             v81[0] = @"t";
-            v22 = [v19 serviceType];
+            serviceType = [v19 serviceType];
             v81[1] = @"p";
-            v82[0] = v22;
-            v23 = [v19 serviceProperties];
-            v24 = v23;
+            v82[0] = serviceType;
+            serviceProperties2 = [v19 serviceProperties];
+            v24 = serviceProperties2;
             v25 = &unk_283E73718;
-            if (v23)
+            if (serviceProperties2)
             {
-              v25 = v23;
+              v25 = serviceProperties2;
             }
 
             v82[1] = v25;
             v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v82 forKeys:v81 count:2];
-            v27 = [MKFCKHAPAccessory lazyMutableCopy:v14 of:?];
-            [v27 setObject:v26 forKeyedSubscript:v20];
+            v27 = [MKFCKHAPAccessory lazyMutableCopy:serviceProperties of:?];
+            [v27 setObject:v26 forKeyedSubscript:instanceID];
           }
         }
 
@@ -110,8 +110,8 @@ LABEL_6:
       if (v78)
       {
         v28 = MEMORY[0x277CBEB58];
-        v29 = [v14 allKeys];
-        v30 = [v28 setWithArray:v29];
+        allKeys = [serviceProperties allKeys];
+        v30 = [v28 setWithArray:allKeys];
 
         v72 = 0u;
         v73 = 0u;
@@ -119,7 +119,7 @@ LABEL_6:
         v71 = 0u;
         v31 = obj;
         v32 = [v31 countByEnumeratingWithState:&v70 objects:v80 count:16];
-        v9 = v62;
+        propertiesCopy = v62;
         if (v32)
         {
           v33 = v32;
@@ -133,8 +133,8 @@ LABEL_6:
                 objc_enumerationMutation(v31);
               }
 
-              v36 = [*(*(&v70 + 1) + 8 * j) instanceID];
-              [v30 removeObject:v36];
+              instanceID2 = [*(*(&v70 + 1) + 8 * j) instanceID];
+              [v30 removeObject:instanceID2];
             }
 
             v33 = [v31 countByEnumeratingWithState:&v70 objects:v80 count:16];
@@ -163,8 +163,8 @@ LABEL_6:
               }
 
               v42 = *(*(&v66 + 1) + 8 * k);
-              v43 = [MEMORY[0x277CBEB68] null];
-              [v16 setObject:v43 forKeyedSubscript:v42];
+              null = [MEMORY[0x277CBEB68] null];
+              [v16 setObject:null forKeyedSubscript:v42];
             }
 
             v39 = [v37 countByEnumeratingWithState:&v66 objects:v79 count:16];
@@ -173,26 +173,26 @@ LABEL_6:
           while (v39);
         }
 
-        self = v60;
-        v44 = [(MKFCKHAPAccessory *)v60 serviceProperties];
+        self = selfCopy;
+        serviceProperties3 = [(MKFCKHAPAccessory *)selfCopy serviceProperties];
         v45 = HMFEqualObjects();
 
         if ((v45 & 1) == 0)
         {
           v46 = [v16 copy];
-          [(MKFCKHAPAccessory *)v60 setServiceProperties:v46];
+          [(MKFCKHAPAccessory *)selfCopy setServiceProperties:v46];
         }
 
         LODWORD(v16) = 1;
-        v8 = v63;
-        v10 = v61;
+        modelCopy = v63;
+        contextCopy = v61;
       }
 
       else
       {
-        v9 = v62;
-        v8 = v63;
-        self = v60;
+        propertiesCopy = v62;
+        modelCopy = v63;
+        self = selfCopy;
       }
 
       v13 = v59;
@@ -212,7 +212,7 @@ LABEL_6:
     goto LABEL_47;
   }
 
-  if (![(MKFCKModel *)self shouldExportUpdatedPropertyInSet:v9 name:@"adaptiveTemperatureSleepScheduleRules_"])
+  if (![(MKFCKModel *)self shouldExportUpdatedPropertyInSet:propertiesCopy name:@"adaptiveTemperatureSleepScheduleRules_"])
   {
     if (self)
     {
@@ -229,44 +229,44 @@ LABEL_54:
     goto LABEL_54;
   }
 
-  v47 = [v13 adaptiveTemperatureSleepScheduleRules];
-  v48 = [(MKFCKHAPAccessory *)self adaptiveTemperatureSleepScheduleRules];
-  v49 = [MKFCKGuest _dictionaryRepresentationFromWeekDayScheduleRules:v47 cloudWeekDayScheduleRulesDictionary:v48];
+  adaptiveTemperatureSleepScheduleRules = [v13 adaptiveTemperatureSleepScheduleRules];
+  adaptiveTemperatureSleepScheduleRules2 = [(MKFCKHAPAccessory *)self adaptiveTemperatureSleepScheduleRules];
+  v49 = [MKFCKGuest _dictionaryRepresentationFromWeekDayScheduleRules:adaptiveTemperatureSleepScheduleRules cloudWeekDayScheduleRulesDictionary:adaptiveTemperatureSleepScheduleRules2];
 
-  v50 = [(MKFCKHAPAccessory *)self adaptiveTemperatureSleepScheduleRules];
-  LOBYTE(v47) = HMFEqualObjects();
+  adaptiveTemperatureSleepScheduleRules3 = [(MKFCKHAPAccessory *)self adaptiveTemperatureSleepScheduleRules];
+  LOBYTE(adaptiveTemperatureSleepScheduleRules) = HMFEqualObjects();
 
-  if ((v47 & 1) == 0)
+  if ((adaptiveTemperatureSleepScheduleRules & 1) == 0)
   {
     [(MKFCKHAPAccessory *)self setAdaptiveTemperatureSleepScheduleRules:v49];
   }
 
 LABEL_46:
-  if (![(MKFCKHomeObject *)self _exportSiblingRelationshipsFromLocalModel:v13 localRelationship:@"localPresenceRooms_" context:v10])
+  if (![(MKFCKHomeObject *)self _exportSiblingRelationshipsFromLocalModel:v13 localRelationship:@"localPresenceRooms_" context:contextCopy])
   {
     goto LABEL_54;
   }
 
 LABEL_47:
-  v51 = [v13 accessoryCategory];
-  if (v51)
+  accessoryCategory = [v13 accessoryCategory];
+  if (accessoryCategory)
   {
-    v52 = [(MKFCKHAPAccessory *)self category];
+    category = [(MKFCKHAPAccessory *)self category];
     v53 = HMFEqualObjects();
 
     if ((v53 & 1) == 0)
     {
-      v54 = [(MKFCKHAPAccessory *)self category];
+      category2 = [(MKFCKHAPAccessory *)self category];
 
       v55 = v16 ^ 1;
-      if (!v54)
+      if (!category2)
       {
         v55 = 0;
       }
 
       if ((v55 & 1) == 0)
       {
-        [(MKFCKHAPAccessory *)self setCategory:v51];
+        [(MKFCKHAPAccessory *)self setCategory:accessoryCategory];
       }
     }
   }
@@ -278,26 +278,26 @@ LABEL_55:
   return v56;
 }
 
-- (void)exportServiceDictionary:(void *)a3 forLocalModel:(int)a4 servicesModified:(void *)a5 withBlock:
+- (void)exportServiceDictionary:(void *)dictionary forLocalModel:(int)model servicesModified:(void *)modified withBlock:
 {
   v49 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v36 = a5;
-  if (a1)
+  dictionaryCopy = dictionary;
+  modifiedCopy = modified;
+  if (self)
   {
     v35 = v9;
-    v11 = [a1 valueForKey:v9];
+    v11 = [self valueForKey:v9];
     v12 = v11;
     v46 = 0;
-    if (a4)
+    if (model)
     {
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v13 = [v11 allKeys];
-      v14 = [v13 countByEnumeratingWithState:&v42 objects:v48 count:16];
+      allKeys = [v11 allKeys];
+      v14 = [allKeys countByEnumeratingWithState:&v42 objects:v48 count:16];
       if (v14)
       {
         v15 = v14;
@@ -308,18 +308,18 @@ LABEL_55:
           {
             if (*v43 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(allKeys);
             }
 
             v18 = *(*(&v42 + 1) + 8 * i);
-            if (![(MKFCKHAPAccessory *)a1 hasServicePropertiesForInstanceID:v18])
+            if (![(MKFCKHAPAccessory *)self hasServicePropertiesForInstanceID:v18])
             {
               v19 = [MKFCKHAPAccessory lazyMutableCopy:v12 of:?];
               [v19 removeObjectForKey:v18];
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v42 objects:v48 count:16];
+          v15 = [allKeys countByEnumeratingWithState:&v42 objects:v48 count:16];
         }
 
         while (v15);
@@ -330,7 +330,7 @@ LABEL_55:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    obj = [v10 services];
+    obj = [dictionaryCopy services];
     v20 = [obj countByEnumeratingWithState:&v38 objects:v47 count:16];
     if (v20)
     {
@@ -346,11 +346,11 @@ LABEL_55:
           }
 
           v24 = *(*(&v38 + 1) + 8 * j);
-          v25 = [v24 instanceID];
-          if ([(MKFCKHAPAccessory *)a1 hasServicePropertiesForInstanceID:v25])
+          instanceID = [v24 instanceID];
+          if ([(MKFCKHAPAccessory *)self hasServicePropertiesForInstanceID:instanceID])
           {
-            v26 = v36[2](v36, v24);
-            [v12 objectForKeyedSubscript:v25];
+            v26 = modifiedCopy[2](modifiedCopy, v24);
+            [v12 objectForKeyedSubscript:instanceID];
             v28 = v27 = v12;
             v29 = HMFEqualObjects();
 
@@ -358,7 +358,7 @@ LABEL_55:
             if ((v29 & 1) == 0)
             {
               v30 = [MKFCKHAPAccessory lazyMutableCopy:v27 of:?];
-              [v30 setObject:v26 forKeyedSubscript:v25];
+              [v30 setObject:v26 forKeyedSubscript:instanceID];
             }
           }
         }
@@ -374,20 +374,20 @@ LABEL_55:
     if (v46)
     {
       v32 = [v46 copy];
-      [a1 setValue:v32 forKey:v35];
+      [self setValue:v32 forKey:v35];
     }
 
-    v10 = v34;
+    dictionaryCopy = v34;
   }
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasServicePropertiesForInstanceID:(void *)a1
+- (BOOL)hasServicePropertiesForInstanceID:(void *)d
 {
   v3 = a2;
-  v4 = [a1 serviceProperties];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  serviceProperties = [d serviceProperties];
+  v5 = [serviceProperties objectForKeyedSubscript:v3];
 
   v6 = v5;
   v7 = v6;
@@ -404,29 +404,29 @@ LABEL_55:
   return v8 != 0;
 }
 
-- (void)lazyMutableCopy:(void *)a1 of:(void *)a2
+- (void)lazyMutableCopy:(void *)copy of:(void *)of
 {
-  v3 = a2;
-  v4 = v3;
-  v5 = *a1;
-  if (!*a1)
+  ofCopy = of;
+  v4 = ofCopy;
+  v5 = *copy;
+  if (!*copy)
   {
-    v6 = [v3 mutableCopy];
+    v6 = [ofCopy mutableCopy];
     v7 = v6;
     if (v6)
     {
-      v8 = v6;
+      dictionary = v6;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    v9 = *a1;
-    *a1 = v8;
+    v9 = *copy;
+    *copy = dictionary;
 
-    v5 = *a1;
+    v5 = *copy;
   }
 
   v10 = v5;
@@ -434,41 +434,41 @@ LABEL_55:
   return v5;
 }
 
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
   v73 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  modelCopy = model;
   v52.receiver = self;
   v52.super_class = MKFCKHAPAccessory;
-  v50 = a5;
-  v51 = v8;
-  if ([(MKFCKAccessory *)&v52 importIntoLocalModel:v8 updatedProperties:a4 context:?])
+  contextCopy = context;
+  v51 = modelCopy;
+  if ([(MKFCKAccessory *)&v52 importIntoLocalModel:modelCopy updatedProperties:properties context:?])
   {
-    v9 = [v8 pairingUsername];
-    v10 = v9 == 0;
+    pairingUsername = [modelCopy pairingUsername];
+    v10 = pairingUsername == 0;
 
     if (v10)
     {
-      v11 = [(MKFCKHAPAccessory *)self identifier];
-      [v51 setPairingUsername:v11];
+      identifier = [(MKFCKHAPAccessory *)self identifier];
+      [v51 setPairingUsername:identifier];
     }
 
-    v12 = [(MKFCKHAPAccessory *)self initialServiceTypes];
-    v13 = [v51 initialServiceTypes];
+    initialServiceTypes = [(MKFCKHAPAccessory *)self initialServiceTypes];
+    initialServiceTypes2 = [v51 initialServiceTypes];
     v14 = HMFEqualObjects();
 
     if ((v14 & 1) == 0)
     {
-      [v51 setInitialServiceTypes:v12];
+      [v51 setInitialServiceTypes:initialServiceTypes];
     }
 
     v15 = v51;
-    v47 = v50;
+    v47 = contextCopy;
     if (self)
     {
-      v49 = [(MKFCKHAPAccessory *)self serviceProperties];
+      serviceProperties = [(MKFCKHAPAccessory *)self serviceProperties];
       v16 = [v15 mutableSetValueForKey:@"services_"];
-      v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v49, "count")}];
+      v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(serviceProperties, "count")}];
       v69 = 0u;
       v70 = 0u;
       v67 = 0u;
@@ -488,8 +488,8 @@ LABEL_55:
             }
 
             v22 = *(*(&v67 + 1) + 8 * i);
-            v23 = [v22 instanceID];
-            [v17 setObject:v22 forKeyedSubscript:v23];
+            instanceID = [v22 instanceID];
+            [v17 setObject:v22 forKeyedSubscript:instanceID];
           }
 
           v19 = [v18 countByEnumeratingWithState:&v67 objects:v72 count:16];
@@ -498,7 +498,7 @@ LABEL_55:
         while (v19);
       }
 
-      v48 = v12;
+      v48 = initialServiceTypes;
       v63 = 0;
       v64 = &v63;
       v65 = 0x2020000000;
@@ -516,7 +516,7 @@ LABEL_55:
       v27 = v18;
       v61 = v27;
       v62 = &v63;
-      [v49 enumerateKeysAndObjectsUsingBlock:v57];
+      [serviceProperties enumerateKeysAndObjectsUsingBlock:v57];
       v28 = *(v64 + 24);
       if (v28 == 1)
       {
@@ -524,8 +524,8 @@ LABEL_55:
         v56 = 0u;
         v53 = 0u;
         v54 = 0u;
-        v29 = [v24 allValues];
-        v30 = [v29 countByEnumeratingWithState:&v53 objects:v71 count:16];
+        allValues = [v24 allValues];
+        v30 = [allValues countByEnumeratingWithState:&v53 objects:v71 count:16];
         if (v30)
         {
           v31 = *v54;
@@ -535,7 +535,7 @@ LABEL_55:
             {
               if (*v54 != v31)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(allValues);
               }
 
               v33 = *(*(&v53 + 1) + 8 * j);
@@ -543,13 +543,13 @@ LABEL_55:
               [v25 deleteObject:v33];
             }
 
-            v30 = [v29 countByEnumeratingWithState:&v53 objects:v71 count:16];
+            v30 = [allValues countByEnumeratingWithState:&v53 objects:v71 count:16];
           }
 
           while (v30);
         }
 
-        v12 = v48;
+        initialServiceTypes = v48;
         LOBYTE(v28) = *(v64 + 24);
       }
 
@@ -559,14 +559,14 @@ LABEL_55:
       [(MKFCKHAPAccessory *)self importServiceDictionary:v26 forLocalModel:&__block_literal_global_18_162557 withBlock:?];
       if (v28)
       {
-        v34 = [v26 accessoryCategory];
-        v35 = [(MKFCKHAPAccessory *)self category];
+        accessoryCategory = [v26 accessoryCategory];
+        category = [(MKFCKHAPAccessory *)self category];
         v36 = HMFEqualObjects();
 
         if ((v36 & 1) == 0)
         {
-          v37 = [(MKFCKHAPAccessory *)self category];
-          [v26 setAccessoryCategory:v37];
+          category2 = [(MKFCKHAPAccessory *)self category];
+          [v26 setAccessoryCategory:category2];
         }
       }
 
@@ -577,9 +577,9 @@ LABEL_55:
 
       v38 = v25;
       v39 = v26;
-      v40 = [v39 entity];
-      v41 = [v40 relationshipsByName];
-      v42 = [v41 objectForKeyedSubscript:@"adaptiveTemperatureSleepScheduleRules_"];
+      entity = [v39 entity];
+      relationshipsByName = [entity relationshipsByName];
+      v42 = [relationshipsByName objectForKeyedSubscript:@"adaptiveTemperatureSleepScheduleRules_"];
       v43 = [MKFCKGuest _importWeekDayScheduleRulesIntoLocalModel:v39 fromCloudModel:self localRelationship:v42 cloudAttributeName:@"adaptiveTemperatureSleepScheduleRules" parentRelationshipName:@"hapAccessory" context:v38];
 
       if (v43 && [(MKFCKHomeObject *)self _importSiblingRelationshipsIntoLocalModel:v39 localRelationship:@"localPresenceRooms_" context:v38])
@@ -615,20 +615,20 @@ LABEL_34:
   return v44;
 }
 
-- (void)importServiceDictionary:(void *)a3 forLocalModel:(void *)a4 withBlock:
+- (void)importServiceDictionary:(void *)dictionary forLocalModel:(void *)model withBlock:
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  dictionaryCopy = dictionary;
+  modelCopy = model;
+  if (self)
   {
-    v18 = [a1 valueForKey:a2];
+    v18 = [self valueForKey:a2];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [v7 services];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    services = [dictionaryCopy services];
+    v10 = [services countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -639,19 +639,19 @@ LABEL_34:
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(services);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [v14 instanceID];
-          if ([(MKFCKHAPAccessory *)a1 hasServicePropertiesForInstanceID:v15])
+          instanceID = [v14 instanceID];
+          if ([(MKFCKHAPAccessory *)self hasServicePropertiesForInstanceID:instanceID])
           {
-            v16 = [v18 objectForKeyedSubscript:v15];
-            v8[2](v8, v14, v16);
+            v16 = [v18 objectForKeyedSubscript:instanceID];
+            modelCopy[2](modelCopy, v14, v16);
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [services countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v11);
@@ -706,11 +706,11 @@ void __76__MKFCKHAPAccessory_importServicePropertiesIntoLocalModel_context_modif
   }
 }
 
-- (id)fetchLocalModelWithContext:(id)a3
+- (id)fetchLocalModelWithContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = MKFCKHAPAccessory;
-  v3 = [(MKFCKModel *)&v5 fetchLocalModelWithContext:a3];
+  v3 = [(MKFCKModel *)&v5 fetchLocalModelWithContext:context];
 
   return v3;
 }

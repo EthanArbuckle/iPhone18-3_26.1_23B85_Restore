@@ -1,62 +1,62 @@
 @interface _SFPBProduct
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBProduct)initWithDictionary:(id)a3;
-- (_SFPBProduct)initWithFacade:(id)a3;
-- (_SFPBProduct)initWithJSON:(id)a3;
+- (_SFPBProduct)initWithDictionary:(id)dictionary;
+- (_SFPBProduct)initWithFacade:(id)facade;
+- (_SFPBProduct)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setDisplayName:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setProductIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setDisplayName:(id)name;
+- (void)setIdentifier:(id)identifier;
+- (void)setProductIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBProduct
 
-- (_SFPBProduct)initWithFacade:(id)a3
+- (_SFPBProduct)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBProduct *)self init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [facadeCopy identifier];
 
-    if (v6)
+    if (identifier)
     {
-      v7 = [v4 identifier];
-      [(_SFPBProduct *)v5 setIdentifier:v7];
+      identifier2 = [facadeCopy identifier];
+      [(_SFPBProduct *)v5 setIdentifier:identifier2];
     }
 
-    v8 = [v4 productIdentifier];
+    productIdentifier = [facadeCopy productIdentifier];
 
-    if (v8)
+    if (productIdentifier)
     {
-      v9 = [v4 productIdentifier];
-      [(_SFPBProduct *)v5 setProductIdentifier:v9];
+      productIdentifier2 = [facadeCopy productIdentifier];
+      [(_SFPBProduct *)v5 setProductIdentifier:productIdentifier2];
     }
 
-    v10 = [v4 availabilityURL];
+    availabilityURL = [facadeCopy availabilityURL];
 
-    if (v10)
+    if (availabilityURL)
     {
       v11 = [_SFPBURL alloc];
-      v12 = [v4 availabilityURL];
-      v13 = [(_SFPBURL *)v11 initWithNSURL:v12];
+      availabilityURL2 = [facadeCopy availabilityURL];
+      v13 = [(_SFPBURL *)v11 initWithNSURL:availabilityURL2];
       [(_SFPBProduct *)v5 setAvailabilityURL:v13];
     }
 
-    v14 = [v4 displayName];
+    displayName = [facadeCopy displayName];
 
-    if (v14)
+    if (displayName)
     {
-      v15 = [v4 displayName];
-      [(_SFPBProduct *)v5 setDisplayName:v15];
+      displayName2 = [facadeCopy displayName];
+      [(_SFPBProduct *)v5 setDisplayName:displayName2];
     }
 
-    if ([v4 hasBuyable])
+    if ([facadeCopy hasBuyable])
     {
-      -[_SFPBProduct setBuyable:](v5, "setBuyable:", [v4 buyable]);
+      -[_SFPBProduct setBuyable:](v5, "setBuyable:", [facadeCopy buyable]);
     }
 
     v16 = v5;
@@ -65,15 +65,15 @@
   return v5;
 }
 
-- (_SFPBProduct)initWithDictionary:(id)a3
+- (_SFPBProduct)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = _SFPBProduct;
   v5 = [(_SFPBProduct *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"identifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
       [(_SFPBProduct *)v5 setIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"productIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"productIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
       [(_SFPBProduct *)v5 setProductIdentifier:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"availabilityURL"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"availabilityURL"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,7 +97,7 @@
       [(_SFPBProduct *)v5 setAvailabilityURL:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"displayName"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"displayName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,7 +105,7 @@
       [(_SFPBProduct *)v5 setDisplayName:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"buyable"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"buyable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,30 +118,30 @@
   return v5;
 }
 
-- (_SFPBProduct)initWithJSON:(id)a3
+- (_SFPBProduct)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBProduct *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBProduct *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBProduct *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -154,51 +154,51 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_availabilityURL)
   {
-    v4 = [(_SFPBProduct *)self availabilityURL];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    availabilityURL = [(_SFPBProduct *)self availabilityURL];
+    dictionaryRepresentation = [availabilityURL dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"availabilityURL"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"availabilityURL"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"availabilityURL"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"availabilityURL"];
     }
   }
 
   if (self->_buyable)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBProduct buyable](self, "buyable")}];
-    [v3 setObject:v7 forKeyedSubscript:@"buyable"];
+    [dictionary setObject:v7 forKeyedSubscript:@"buyable"];
   }
 
   if (self->_displayName)
   {
-    v8 = [(_SFPBProduct *)self displayName];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"displayName"];
+    displayName = [(_SFPBProduct *)self displayName];
+    v9 = [displayName copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"displayName"];
   }
 
   if (self->_identifier)
   {
-    v10 = [(_SFPBProduct *)self identifier];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"identifier"];
+    identifier = [(_SFPBProduct *)self identifier];
+    v11 = [identifier copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"identifier"];
   }
 
   if (self->_productIdentifier)
   {
-    v12 = [(_SFPBProduct *)self productIdentifier];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"productIdentifier"];
+    productIdentifier = [(_SFPBProduct *)self productIdentifier];
+    v13 = [productIdentifier copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"productIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -216,28 +216,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_SFPBProduct *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBProduct *)self identifier];
+  identifier2 = [equalCopy identifier];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_SFPBProduct *)self identifier];
-  if (v7)
+  identifier3 = [(_SFPBProduct *)self identifier];
+  if (identifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBProduct *)self identifier];
-    v10 = [v4 identifier];
-    v11 = [v9 isEqual:v10];
+    v8 = identifier3;
+    identifier4 = [(_SFPBProduct *)self identifier];
+    identifier5 = [equalCopy identifier];
+    v11 = [identifier4 isEqual:identifier5];
 
     if (!v11)
     {
@@ -249,20 +249,20 @@
   {
   }
 
-  v5 = [(_SFPBProduct *)self productIdentifier];
-  v6 = [v4 productIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBProduct *)self productIdentifier];
+  identifier2 = [equalCopy productIdentifier];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_SFPBProduct *)self productIdentifier];
-  if (v12)
+  productIdentifier = [(_SFPBProduct *)self productIdentifier];
+  if (productIdentifier)
   {
-    v13 = v12;
-    v14 = [(_SFPBProduct *)self productIdentifier];
-    v15 = [v4 productIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = productIdentifier;
+    productIdentifier2 = [(_SFPBProduct *)self productIdentifier];
+    productIdentifier3 = [equalCopy productIdentifier];
+    v16 = [productIdentifier2 isEqual:productIdentifier3];
 
     if (!v16)
     {
@@ -274,20 +274,20 @@
   {
   }
 
-  v5 = [(_SFPBProduct *)self availabilityURL];
-  v6 = [v4 availabilityURL];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBProduct *)self availabilityURL];
+  identifier2 = [equalCopy availabilityURL];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_SFPBProduct *)self availabilityURL];
-  if (v17)
+  availabilityURL = [(_SFPBProduct *)self availabilityURL];
+  if (availabilityURL)
   {
-    v18 = v17;
-    v19 = [(_SFPBProduct *)self availabilityURL];
-    v20 = [v4 availabilityURL];
-    v21 = [v19 isEqual:v20];
+    v18 = availabilityURL;
+    availabilityURL2 = [(_SFPBProduct *)self availabilityURL];
+    availabilityURL3 = [equalCopy availabilityURL];
+    v21 = [availabilityURL2 isEqual:availabilityURL3];
 
     if (!v21)
     {
@@ -299,24 +299,24 @@
   {
   }
 
-  v5 = [(_SFPBProduct *)self displayName];
-  v6 = [v4 displayName];
-  if ((v5 != 0) != (v6 == 0))
+  identifier = [(_SFPBProduct *)self displayName];
+  identifier2 = [equalCopy displayName];
+  if ((identifier != 0) != (identifier2 == 0))
   {
-    v22 = [(_SFPBProduct *)self displayName];
-    if (!v22)
+    displayName = [(_SFPBProduct *)self displayName];
+    if (!displayName)
     {
 
 LABEL_25:
       buyable = self->_buyable;
-      v27 = buyable == [v4 buyable];
+      v27 = buyable == [equalCopy buyable];
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_SFPBProduct *)self displayName];
-    v25 = [v4 displayName];
-    v26 = [v24 isEqual:v25];
+    v23 = displayName;
+    displayName2 = [(_SFPBProduct *)self displayName];
+    displayName3 = [equalCopy displayName];
+    v26 = [displayName2 isEqual:displayName3];
 
     if (v26)
     {
@@ -336,29 +336,29 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_SFPBProduct *)self identifier];
-  if (v4)
+  toCopy = to;
+  identifier = [(_SFPBProduct *)self identifier];
+  if (identifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBProduct *)self productIdentifier];
-  if (v5)
+  productIdentifier = [(_SFPBProduct *)self productIdentifier];
+  if (productIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBProduct *)self availabilityURL];
-  if (v6)
+  availabilityURL = [(_SFPBProduct *)self availabilityURL];
+  if (availabilityURL)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBProduct *)self displayName];
-  if (v7)
+  displayName = [(_SFPBProduct *)self displayName];
+  if (displayName)
   {
     PBDataWriterWriteStringField();
   }
@@ -369,27 +369,27 @@ LABEL_23:
   }
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   displayName = self->_displayName;
   self->_displayName = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setProductIdentifier:(id)a3
+- (void)setProductIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   productIdentifier = self->_productIdentifier;
   self->_productIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 

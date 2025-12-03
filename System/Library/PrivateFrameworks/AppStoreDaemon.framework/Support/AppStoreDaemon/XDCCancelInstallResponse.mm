@@ -1,11 +1,11 @@
 @interface XDCCancelInstallResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation XDCCancelInstallResponse
@@ -15,8 +15,8 @@
   v7.receiver = self;
   v7.super_class = XDCCancelInstallResponse;
   v3 = [(XDCCancelInstallResponse *)&v7 description];
-  v4 = [(XDCCancelInstallResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(XDCCancelInstallResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -46,14 +46,14 @@
   return v4;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -64,18 +64,18 @@
       while (1)
       {
         v28 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v28 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v28 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v28 & 0x7F) << v6;
@@ -93,9 +93,9 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -118,18 +118,18 @@ LABEL_15:
           while (1)
           {
             v29 = 0;
-            v20 = [a3 position] + 1;
-            if (v20 >= [a3 position] && (v21 = objc_msgSend(a3, "position") + 1, v21 <= objc_msgSend(a3, "length")))
+            v20 = [from position] + 1;
+            if (v20 >= [from position] && (v21 = objc_msgSend(from, "position") + 1, v21 <= objc_msgSend(from, "length")))
             {
-              v22 = [a3 data];
-              [v22 getBytes:&v29 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:&v29 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v19 |= (v29 & 0x7F) << v17;
@@ -147,7 +147,7 @@ LABEL_15:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v23 = 0;
           }
@@ -181,43 +181,43 @@ LABEL_37:
       *&self->PBCodable_opaque[v16] = v15;
 
 LABEL_38:
-      v26 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v26 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v25) = [a3 hasError] ^ 1;
+  LOBYTE(v25) = [from hasError] ^ 1;
   return v25;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_errorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_errorDomain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_errorDomain copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -227,23 +227,23 @@ LABEL_38:
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(NSString *)self->_errorDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_errorDescription copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   errorDomain = self->_errorDomain;
-  if (errorDomain | *(v4 + 3))
+  if (errorDomain | *(equalCopy + 3))
   {
     if (![(NSString *)errorDomain isEqual:?])
     {
@@ -253,13 +253,13 @@ LABEL_38:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_errorCode != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_errorCode != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v7 = 0;
@@ -267,7 +267,7 @@ LABEL_11:
   }
 
   errorDescription = self->_errorDescription;
-  if (errorDescription | *(v4 + 2))
+  if (errorDescription | *(equalCopy + 2))
   {
     v7 = [(NSString *)errorDescription isEqual:?];
   }

@@ -1,22 +1,22 @@
 @interface VUIPlistMediaEntityImageLoadParams
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)imageIdentifier;
 - (VUIPlistMediaEntityImageLoadParams)init;
-- (VUIPlistMediaEntityImageLoadParams)initWithImageURL:(id)a3 baseImageIdentifier:(id)a4 imageType:(unint64_t)a5;
+- (VUIPlistMediaEntityImageLoadParams)initWithImageURL:(id)l baseImageIdentifier:(id)identifier imageType:(unint64_t)type;
 - (unint64_t)hash;
 @end
 
 @implementation VUIPlistMediaEntityImageLoadParams
 
-- (VUIPlistMediaEntityImageLoadParams)initWithImageURL:(id)a3 baseImageIdentifier:(id)a4 imageType:(unint64_t)a5
+- (VUIPlistMediaEntityImageLoadParams)initWithImageURL:(id)l baseImageIdentifier:(id)identifier imageType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  lCopy = l;
+  identifierCopy = identifier;
+  v10 = identifierCopy;
+  if (lCopy)
   {
-    if (v9)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -38,7 +38,7 @@ LABEL_3:
   v11 = [(VUIPlistMediaEntityImageLoadParams *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [lCopy copy];
     imageURL = v11->_imageURL;
     v11->_imageURL = v12;
 
@@ -46,7 +46,7 @@ LABEL_3:
     baseImageIdentifier = v11->_baseImageIdentifier;
     v11->_baseImageIdentifier = v14;
 
-    v11->_imageType = a5;
+    v11->_imageType = type;
   }
 
   return v11;
@@ -67,14 +67,14 @@ LABEL_3:
   imageIdentifier = self->_imageIdentifier;
   if (!imageIdentifier)
   {
-    v4 = [(VUIPlistMediaEntityImageLoadParams *)self imageType];
+    imageType = [(VUIPlistMediaEntityImageLoadParams *)self imageType];
     v5 = @"previewFrame";
-    if (v4 != 1)
+    if (imageType != 1)
     {
       v5 = 0;
     }
 
-    if (v4)
+    if (imageType)
     {
       v6 = v5;
     }
@@ -85,8 +85,8 @@ LABEL_3:
     }
 
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(VUIPlistMediaEntityImageLoadParams *)self baseImageIdentifier];
-    v9 = [v7 stringWithFormat:@"%@_%@", v8, v6];
+    baseImageIdentifier = [(VUIPlistMediaEntityImageLoadParams *)self baseImageIdentifier];
+    v9 = [v7 stringWithFormat:@"%@_%@", baseImageIdentifier, v6];
     v10 = self->_imageIdentifier;
     self->_imageIdentifier = v9;
 
@@ -98,35 +98,35 @@ LABEL_3:
 
 - (unint64_t)hash
 {
-  v3 = [(VUIPlistMediaEntityImageLoadParams *)self imageType];
-  v4 = [(VUIPlistMediaEntityImageLoadParams *)self baseImageIdentifier];
-  v5 = [v4 hash] ^ v3;
+  imageType = [(VUIPlistMediaEntityImageLoadParams *)self imageType];
+  baseImageIdentifier = [(VUIPlistMediaEntityImageLoadParams *)self baseImageIdentifier];
+  v5 = [baseImageIdentifier hash] ^ imageType;
 
-  v6 = [(VUIPlistMediaEntityImageLoadParams *)self imageURL];
-  v7 = [v6 hash];
+  imageURL = [(VUIPlistMediaEntityImageLoadParams *)self imageURL];
+  v7 = [imageURL hash];
 
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(VUIPlistMediaEntityImageLoadParams *)self imageType];
-        if (v7 != [(VUIPlistMediaEntityImageLoadParams *)v6 imageType])
+        imageType = [(VUIPlistMediaEntityImageLoadParams *)self imageType];
+        if (imageType != [(VUIPlistMediaEntityImageLoadParams *)v6 imageType])
         {
 LABEL_9:
           v13 = 0;
@@ -135,10 +135,10 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        v8 = [(VUIPlistMediaEntityImageLoadParams *)self baseImageIdentifier];
-        v9 = [(VUIPlistMediaEntityImageLoadParams *)v6 baseImageIdentifier];
-        v10 = v8;
-        v11 = v9;
+        baseImageIdentifier = [(VUIPlistMediaEntityImageLoadParams *)self baseImageIdentifier];
+        baseImageIdentifier2 = [(VUIPlistMediaEntityImageLoadParams *)v6 baseImageIdentifier];
+        v10 = baseImageIdentifier;
+        v11 = baseImageIdentifier2;
         v12 = v11;
         if (v10 == v11)
         {
@@ -162,10 +162,10 @@ LABEL_18:
           }
         }
 
-        v15 = [(VUIPlistMediaEntityImageLoadParams *)self imageURL];
-        v16 = [(VUIPlistMediaEntityImageLoadParams *)v6 imageURL];
-        v10 = v15;
-        v17 = v16;
+        imageURL = [(VUIPlistMediaEntityImageLoadParams *)self imageURL];
+        imageURL2 = [(VUIPlistMediaEntityImageLoadParams *)v6 imageURL];
+        v10 = imageURL;
+        v17 = imageURL2;
         v12 = v17;
         if (v10 == v17)
         {
@@ -207,13 +207,13 @@ LABEL_20:
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIPlistMediaEntityImageLoadParams *)self baseImageIdentifier];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"baseImageIdentifier", v9];
+  baseImageIdentifier = [(VUIPlistMediaEntityImageLoadParams *)self baseImageIdentifier];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"baseImageIdentifier", baseImageIdentifier];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(VUIPlistMediaEntityImageLoadParams *)self imageURL];
-  v13 = [v11 stringWithFormat:@"%@=%@", @"imageURL", v12];
+  imageURL = [(VUIPlistMediaEntityImageLoadParams *)self imageURL];
+  v13 = [v11 stringWithFormat:@"%@=%@", @"imageURL", imageURL];
   [v3 addObject:v13];
 
   v14 = MEMORY[0x1E696AEC0];

@@ -1,7 +1,7 @@
 @interface AVAssetWriterInputFigAssetWriterEndPassOperation
 - (AVAssetWriterInputFigAssetWriterEndPassOperation)init;
-- (AVAssetWriterInputFigAssetWriterEndPassOperation)initWithFigAssetWriter:(OpaqueFigAssetWriter *)a3 trackID:(int)a4;
-- (void)_notifyWhetherMorePassesAreNeeded:(BOOL)a3 timeRanges:(id)a4 forTrackWithID:(int)a5;
+- (AVAssetWriterInputFigAssetWriterEndPassOperation)initWithFigAssetWriter:(OpaqueFigAssetWriter *)writer trackID:(int)d;
+- (void)_notifyWhetherMorePassesAreNeeded:(BOOL)needed timeRanges:(id)ranges forTrackWithID:(int)d;
 - (void)dealloc;
 - (void)start;
 @end
@@ -17,11 +17,11 @@
   objc_exception_throw(v12);
 }
 
-- (AVAssetWriterInputFigAssetWriterEndPassOperation)initWithFigAssetWriter:(OpaqueFigAssetWriter *)a3 trackID:(int)a4
+- (AVAssetWriterInputFigAssetWriterEndPassOperation)initWithFigAssetWriter:(OpaqueFigAssetWriter *)writer trackID:(int)d
 {
-  if (a3)
+  if (writer)
   {
-    if (a4)
+    if (d)
     {
       goto LABEL_3;
     }
@@ -30,7 +30,7 @@
   else
   {
     [AVAssetWriterInputFigAssetWriterEndPassOperation initWithFigAssetWriter:trackID:];
-    if (a4)
+    if (d)
     {
       goto LABEL_3;
     }
@@ -43,9 +43,9 @@ LABEL_3:
   v7 = [(AVOperation *)&v10 init];
   if (v7)
   {
-    if (a3)
+    if (writer)
     {
-      v8 = CFRetain(a3);
+      v8 = CFRetain(writer);
     }
 
     else
@@ -54,7 +54,7 @@ LABEL_3:
     }
 
     v7->_figAssetWriter = v8;
-    v7->_trackID = a4;
+    v7->_trackID = d;
   }
 
   return v7;
@@ -103,14 +103,14 @@ LABEL_3:
   }
 }
 
-- (void)_notifyWhetherMorePassesAreNeeded:(BOOL)a3 timeRanges:(id)a4 forTrackWithID:(int)a5
+- (void)_notifyWhetherMorePassesAreNeeded:(BOOL)needed timeRanges:(id)ranges forTrackWithID:(int)d
 {
-  if (self->_trackID == a5)
+  if (self->_trackID == d)
   {
     v10 = v5;
-    if (a3)
+    if (needed)
     {
-      self->_nextPassDescription = [[AVAssetWriterInputPassDescription alloc] initWithTimeRanges:a4];
+      self->_nextPassDescription = [[AVAssetWriterInputPassDescription alloc] initWithTimeRanges:ranges];
     }
 
     [(AVOperation *)self markAsCompleted:v6];

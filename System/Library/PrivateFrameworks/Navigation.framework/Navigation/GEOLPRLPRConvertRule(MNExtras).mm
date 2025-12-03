@@ -13,8 +13,8 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 fillRules];
-  v9 = [a1 rules:v8 forPlateTypes:v7 atIndexes:v6];
+  fillRules = [self fillRules];
+  v9 = [self rules:fillRules forPlateTypes:v7 atIndexes:v6];
 
   return v9;
 }
@@ -23,8 +23,8 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 mapRules];
-  v9 = [a1 rules:v8 forPlateTypes:v7 atIndexes:v6];
+  mapRules = [self mapRules];
+  v9 = [self rules:mapRules forPlateTypes:v7 atIndexes:v6];
 
   return v9;
 }
@@ -33,8 +33,8 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 pickupRules];
-  v9 = [a1 rules:v8 forPlateTypes:v7 atIndexes:v6];
+  pickupRules = [self pickupRules];
+  v9 = [self rules:pickupRules forPlateTypes:v7 atIndexes:v6];
 
   return v9;
 }
@@ -45,7 +45,7 @@
   v9 = a5;
   v10 = MEMORY[0x1E695DF70];
   v11 = a3;
-  v12 = [v10 arrayWithCapacity:{objc_msgSend(a1, "pickupRulesCount")}];
+  v12 = [v10 arrayWithCapacity:{objc_msgSend(self, "pickupRulesCount")}];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __64__GEOLPRLPRConvertRule_MNExtras__rules_forPlateTypes_atIndexes___block_invoke;
@@ -66,9 +66,9 @@
 
 - (id)validDateInterval
 {
-  if ([a1 hasValidStartTime])
+  if ([self hasValidStartTime])
   {
-    [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{objc_msgSend(a1, "validStartTime")}];
+    [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{objc_msgSend(self, "validStartTime")}];
   }
 
   else
@@ -76,9 +76,9 @@
     [MEMORY[0x1E695DF00] distantPast];
   }
   v2 = ;
-  if ([a1 hasValidEndTime])
+  if ([self hasValidEndTime])
   {
-    [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{objc_msgSend(a1, "validEndTime")}];
+    [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{objc_msgSend(self, "validEndTime")}];
   }
 
   else
@@ -93,13 +93,13 @@
 
 - (uint64_t)hasValidDateInterval
 {
-  if ([a1 hasValidStartTime] && objc_msgSend(a1, "hasValidEndTime"))
+  if ([self hasValidStartTime] && objc_msgSend(self, "hasValidEndTime"))
   {
-    v2 = [a1 validStartTime];
-    return v2 < [a1 validEndTime];
+    validStartTime = [self validStartTime];
+    return validStartTime < [self validEndTime];
   }
 
-  else if ([a1 hasValidStartTime])
+  else if ([self hasValidStartTime])
   {
     return 1;
   }
@@ -107,7 +107,7 @@
   else
   {
 
-    return [a1 hasValidEndTime];
+    return [self hasValidEndTime];
   }
 }
 

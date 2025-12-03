@@ -1,19 +1,19 @@
 @interface MUGroupedActionsRowViewConfiguration
 + (id)defaultConfiguration;
-- (MUGroupedActionsRowViewConfiguration)initWithStyle:(int64_t)a3 useVibrancy:(BOOL)a4;
+- (MUGroupedActionsRowViewConfiguration)initWithStyle:(int64_t)style useVibrancy:(BOOL)vibrancy;
 @end
 
 @implementation MUGroupedActionsRowViewConfiguration
 
-- (MUGroupedActionsRowViewConfiguration)initWithStyle:(int64_t)a3 useVibrancy:(BOOL)a4
+- (MUGroupedActionsRowViewConfiguration)initWithStyle:(int64_t)style useVibrancy:(BOOL)vibrancy
 {
   v7.receiver = self;
   v7.super_class = MUGroupedActionsRowViewConfiguration;
   result = [(MUGroupedActionsRowViewConfiguration *)&v7 init];
   if (result)
   {
-    result->_style = a3;
-    result->_useVibrancy = a4;
+    result->_style = style;
+    result->_useVibrancy = vibrancy;
   }
 
   return result;

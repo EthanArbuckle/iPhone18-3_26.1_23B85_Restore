@@ -1,17 +1,17 @@
 @interface ASDTPMActionAnalyticsEvent
-- (ASDTPMActionAnalyticsEvent)initWithConfig:(id)a3 forSequencer:(id)a4;
+- (ASDTPMActionAnalyticsEvent)initWithConfig:(id)config forSequencer:(id)sequencer;
 - (int)action;
-- (void)sendEventNamed:(id)a3 withData:(id)a4;
+- (void)sendEventNamed:(id)named withData:(id)data;
 @end
 
 @implementation ASDTPMActionAnalyticsEvent
 
-- (ASDTPMActionAnalyticsEvent)initWithConfig:(id)a3 forSequencer:(id)a4
+- (ASDTPMActionAnalyticsEvent)initWithConfig:(id)config forSequencer:(id)sequencer
 {
-  v6 = a3;
+  configCopy = config;
   v17.receiver = self;
   v17.super_class = ASDTPMActionAnalyticsEvent;
-  v7 = [(ASDTPMAction *)&v17 initWithConfig:v6 forSequencer:a4];
+  v7 = [(ASDTPMAction *)&v17 initWithConfig:configCopy forSequencer:sequencer];
   if (!v7)
   {
 LABEL_5:
@@ -19,20 +19,20 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  v8 = [v6 asdtPMActionAnalyticsEventName];
-  [(ASDTPMActionAnalyticsEvent *)v7 setEventName:v8];
+  asdtPMActionAnalyticsEventName = [configCopy asdtPMActionAnalyticsEventName];
+  [(ASDTPMActionAnalyticsEvent *)v7 setEventName:asdtPMActionAnalyticsEventName];
 
-  v9 = [(ASDTPMActionAnalyticsEvent *)v7 eventName];
+  eventName = [(ASDTPMActionAnalyticsEvent *)v7 eventName];
 
-  if (v9)
+  if (eventName)
   {
-    v10 = [v6 asdtName];
+    asdtName = [configCopy asdtName];
 
-    if (!v10)
+    if (!asdtName)
     {
       v11 = MEMORY[0x277CCACA8];
-      v12 = [(ASDTPMActionAnalyticsEvent *)v7 eventName];
-      v13 = [v11 stringWithFormat:@"AnalyticsEvent:%@", v12];
+      eventName2 = [(ASDTPMActionAnalyticsEvent *)v7 eventName];
+      v13 = [v11 stringWithFormat:@"AnalyticsEvent:%@", eventName2];
       [(ASDTPMAction *)v7 setName:v13];
     }
 
@@ -42,7 +42,7 @@ LABEL_5:
   v15 = ASDTBaseLogType();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    [(ASDTPMActionAnalyticsEvent *)v7 initWithConfig:v6 forSequencer:v15];
+    [(ASDTPMActionAnalyticsEvent *)v7 initWithConfig:configCopy forSequencer:v15];
   }
 
   v14 = 0;
@@ -51,35 +51,35 @@ LABEL_9:
   return v14;
 }
 
-- (void)sendEventNamed:(id)a3 withData:(id)a4
+- (void)sendEventNamed:(id)named withData:(id)data
 {
-  v5 = a4;
-  v4 = v5;
+  dataCopy = data;
+  v4 = dataCopy;
   AnalyticsSendEventLazy();
 }
 
 - (int)action
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(ASDTPMActionAnalyticsEvent *)self eventData];
-  if (v3)
+  eventData = [(ASDTPMActionAnalyticsEvent *)self eventData];
+  if (eventData)
   {
     v4 = ASDTBaseLogType();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(ASDTPMDevice *)self name];
-      v6 = [(ASDTPMActionAnalyticsEvent *)self eventName];
+      name = [(ASDTPMDevice *)self name];
+      eventName = [(ASDTPMActionAnalyticsEvent *)self eventName];
       v10 = 138412802;
-      v11 = v5;
+      v11 = name;
       v12 = 2112;
-      v13 = v6;
+      v13 = eventName;
       v14 = 2112;
-      v15 = v3;
+      v15 = eventData;
       _os_log_impl(&dword_241659000, v4, OS_LOG_TYPE_DEFAULT, "%@: %@: %@", &v10, 0x20u);
     }
 
-    v7 = [(ASDTPMActionAnalyticsEvent *)self eventName];
-    [(ASDTPMActionAnalyticsEvent *)self sendEventNamed:v7 withData:v3];
+    eventName2 = [(ASDTPMActionAnalyticsEvent *)self eventName];
+    [(ASDTPMActionAnalyticsEvent *)self sendEventNamed:eventName2 withData:eventData];
   }
 
   v8 = *MEMORY[0x277D85DE8];

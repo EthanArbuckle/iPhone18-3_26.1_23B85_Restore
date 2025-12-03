@@ -16,10 +16,10 @@
 
 - (id)unitForDisplayType:()HealthUI
 {
-  v4 = [a3 objectType];
-  if (v4)
+  objectType = [a3 objectType];
+  if (objectType)
   {
-    v5 = [a1 unitForObjectType:v4];
+    v5 = [self unitForObjectType:objectType];
   }
 
   else
@@ -33,7 +33,7 @@
 - (id)unitForChartingDisplayType:()HealthUI
 {
   v4 = a3;
-  v5 = [a1 unitForDisplayType:v4];
+  v5 = [self unitForDisplayType:v4];
   if (v5 && ([v4 behavior], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "chartsRelativeData"), v6, v7))
   {
     v8 = [MEMORY[0x1E696C510] _changeInUnit:v5];
@@ -52,8 +52,8 @@
 - (void)updatePreferredUnit:()HealthUI forDisplayType:
 {
   v6 = a3;
-  v7 = [a4 objectType];
-  [a1 updatePreferredUnit:v6 forObjectType:v7];
+  objectType = [a4 objectType];
+  [self updatePreferredUnit:v6 forObjectType:objectType];
 }
 
 - (id)localizedDisplayNameForDisplayType:()HealthUI unit:value:
@@ -61,7 +61,7 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [(HKUnitPreferenceController *)a1 _unitDisplayNameKeyForDisplayType:v10 unit:v9 nameContext:1];
+  v11 = [(HKUnitPreferenceController *)self _unitDisplayNameKeyForDisplayType:v10 unit:v9 nameContext:1];
   v12 = MEMORY[0x1E696C518];
   v13 = [(HKUnitPreferenceController *)MEMORY[0x1E696C518] _displayNameKey:v11 withNumber:v8 != 0];
   v14 = [(HKUnitPreferenceController *)v12 _localizedHealthUIStringForDisplayType:v10 unit:v9 key:v13 value:v8];
@@ -85,30 +85,30 @@
 - (id)localizedLongDisplayNameForDisplayType:()HealthUI
 {
   v4 = a3;
-  v5 = [a1 unitForDisplayType:v4];
-  v6 = [(HKUnitPreferenceController *)a1 _longDisplayNameOverrideForDisplayType:v4];
-  if (v6 || (-[HKUnitPreferenceController _longDisplayNameForUnit:](a1, v5), (v6 = objc_claimAutoreleasedReturnValue()) != 0) || ([a1 localizedDisplayNameForDisplayType:v4], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  v5 = [self unitForDisplayType:v4];
+  v6 = [(HKUnitPreferenceController *)self _longDisplayNameOverrideForDisplayType:v4];
+  if (v6 || (-[HKUnitPreferenceController _longDisplayNameForUnit:](self, v5), (v6 = objc_claimAutoreleasedReturnValue()) != 0) || ([self localizedDisplayNameForDisplayType:v4], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = v6;
+    displayName = v6;
   }
 
   else
   {
-    v9 = [v4 localization];
-    v7 = [v9 displayName];
+    localization = [v4 localization];
+    displayName = [localization displayName];
   }
 
-  return v7;
+  return displayName;
 }
 
 - (double)scaleFactorForYAxisLabeling:()HealthUI
 {
   v4 = a3;
-  v5 = [a1 unitForDisplayType:v4];
-  v6 = [v4 displayTypeIdentifier];
+  v5 = [self unitForDisplayType:v4];
+  displayTypeIdentifier = [v4 displayTypeIdentifier];
 
   v7 = 1.0;
-  if (v6 == 2)
+  if (displayTypeIdentifier == 2)
   {
     v8 = [MEMORY[0x1E696C510] unitFromString:@"ft"];
     v9 = [v5 isEqual:v8];
@@ -137,10 +137,10 @@
   }
 
   v5 = displayRangeForDisplayType____displayRanges;
-  v6 = [v4 objectType];
+  objectType = [v4 objectType];
 
-  v7 = [v6 identifier];
-  v8 = [v5 objectForKeyedSubscript:v7];
+  identifier = [objectType identifier];
+  v8 = [v5 objectForKeyedSubscript:identifier];
 
   return v8;
 }
@@ -150,8 +150,8 @@
   v9 = a4;
   v10 = a5;
   v11 = [HKDisplayTypeController displayTypeForObjectType:a3 wheelchairUse:a6];
-  v12 = [v11 localization];
-  v13 = [v12 unitDisplayNameKeyOverrideForUnit:v9 nameContext:1];
+  localization = [v11 localization];
+  v13 = [localization unitDisplayNameKeyOverrideForUnit:v9 nameContext:1];
 
   if (!v13)
   {
@@ -168,8 +168,8 @@
 - (id)localizedDisplayNameForDisplayType:()HealthUI
 {
   v4 = a3;
-  v5 = [(HKUnitPreferenceController *)a1 _displayNameKeyForDisplayType:v4 withNumber:0];
-  v6 = [(HKUnitPreferenceController *)a1 localizedHealthUIStringForDisplayType:v4 key:v5 value:0];
+  v5 = [(HKUnitPreferenceController *)self _displayNameKeyForDisplayType:v4 withNumber:0];
+  v6 = [(HKUnitPreferenceController *)self localizedHealthUIStringForDisplayType:v4 key:v5 value:0];
 
   return v6;
 }
@@ -179,8 +179,8 @@
   v8 = a4 != 0;
   v9 = a4;
   v10 = a3;
-  v11 = [(HKUnitPreferenceController *)a1 _displayNameKeyForDisplayType:v10 withNumber:v8 nameContext:a5];
-  v12 = [(HKUnitPreferenceController *)a1 localizedHealthUIStringForDisplayType:v10 key:v11 value:v9];
+  v11 = [(HKUnitPreferenceController *)self _displayNameKeyForDisplayType:v10 withNumber:v8 nameContext:a5];
+  v12 = [(HKUnitPreferenceController *)self localizedHealthUIStringForDisplayType:v10 key:v11 value:v9];
 
   return v12;
 }

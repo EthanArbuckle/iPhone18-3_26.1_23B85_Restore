@@ -1,29 +1,29 @@
 @interface _UIWebViewScrollViewDelegateForwarder
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation _UIWebViewScrollViewDelegateForwarder
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v6.receiver = self;
   v6.super_class = _UIWebViewScrollViewDelegateForwarder;
   result = [(_UIWebViewScrollViewDelegateForwarder *)&v6 methodSignatureForSelector:?];
   if (!result)
   {
-    result = [(UIWebView *)self->_webView methodSignatureForSelector:a3];
+    result = [(UIWebView *)self->_webView methodSignatureForSelector:selector];
     if (!result)
     {
-      return [(UIScrollViewDelegate *)self->_delegate methodSignatureForSelector:a3];
+      return [(UIScrollViewDelegate *)self->_delegate methodSignatureForSelector:selector];
     }
   }
 
   return result;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = _UIWebViewScrollViewDelegateForwarder;
@@ -40,28 +40,28 @@
   return v3 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  [a3 selector];
+  [invocation selector];
   v5 = objc_opt_respondsToSelector();
   if (v5)
   {
-    [a3 invokeWithTarget:self->_webView];
+    [invocation invokeWithTarget:self->_webView];
   }
 
-  [a3 selector];
+  [invocation selector];
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
 
-    [a3 invokeWithTarget:delegate];
+    [invocation invokeWithTarget:delegate];
   }
 
   else if ((v5 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = _UIWebViewScrollViewDelegateForwarder;
-    [(_UIWebViewScrollViewDelegateForwarder *)&v7 forwardInvocation:a3];
+    [(_UIWebViewScrollViewDelegateForwarder *)&v7 forwardInvocation:invocation];
   }
 }
 

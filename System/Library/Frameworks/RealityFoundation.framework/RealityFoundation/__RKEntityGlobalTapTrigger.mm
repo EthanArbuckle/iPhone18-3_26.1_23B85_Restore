@@ -1,10 +1,10 @@
 @interface __RKEntityGlobalTapTrigger
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityGlobalTapTrigger
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   type metadata accessor for __RKEntityGlobalTapTrigger();
   result = swift_allocObject();

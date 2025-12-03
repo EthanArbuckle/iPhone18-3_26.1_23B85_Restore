@@ -1,22 +1,22 @@
 @interface RBAssertionDescriptorValidator
-+ (BOOL)checkConflictingAttributes:(id)a3 error:(id *)a4;
-- (BOOL)isAssertionValidForContext:(id)a3 error:(id *)a4;
-- (id)_errorWithDescription:(uint64_t)a1;
-- (id)_flattenedAttributesFromAttribute:(void *)a3 context:;
-- (id)_flattenedAttributesFromContext:(void *)a1;
++ (BOOL)checkConflictingAttributes:(id)attributes error:(id *)error;
+- (BOOL)isAssertionValidForContext:(id)context error:(id *)error;
+- (id)_errorWithDescription:(uint64_t)description;
+- (id)_flattenedAttributesFromAttribute:(void *)attribute context:;
+- (id)_flattenedAttributesFromContext:(void *)context;
 @end
 
 @implementation RBAssertionDescriptorValidator
 
-+ (BOOL)checkConflictingAttributes:(id)a3 error:(id *)a4
++ (BOOL)checkConflictingAttributes:(id)attributes error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  attributesCopy = attributes;
+  v6 = [attributesCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -27,7 +27,7 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
@@ -35,7 +35,7 @@
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v11 = v5;
+        v11 = attributesCopy;
         v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v12)
         {
@@ -50,7 +50,7 @@
                 objc_enumerationMutation(v11);
               }
 
-              if (v10 != *(*(&v19 + 1) + 8 * j) && (![v10 allowedWithAttribute:? error:?] || !objc_msgSend(v10, "hasMandatoryAttributes:error:", v11, a4)))
+              if (v10 != *(*(&v19 + 1) + 8 * j) && (![v10 allowedWithAttribute:? error:?] || !objc_msgSend(v10, "hasMandatoryAttributes:error:", v11, error)))
               {
 
                 v16 = 0;
@@ -87,21 +87,21 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)isAssertionValidForContext:(id)a3 error:(id *)a4
+- (BOOL)isAssertionValidForContext:(id)context error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  contextCopy = context;
+  if (!contextCopy)
   {
     [RBAssertionDescriptorValidator isAssertionValidForContext:error:];
   }
 
-  v8 = [v7 assertionDescriptor];
-  v9 = [v7 originatorEntitlements];
-  v10 = v9;
-  if (v8)
+  assertionDescriptor = [contextCopy assertionDescriptor];
+  originatorEntitlements = [contextCopy originatorEntitlements];
+  v10 = originatorEntitlements;
+  if (assertionDescriptor)
   {
-    if (v9)
+    if (originatorEntitlements)
     {
       goto LABEL_5;
     }
@@ -118,47 +118,47 @@ LABEL_21:
 
   [RBAssertionDescriptorValidator isAssertionValidForContext:error:];
 LABEL_5:
-  v11 = [v7 bundlePropertiesManager];
+  bundlePropertiesManager = [contextCopy bundlePropertiesManager];
 
-  if (!v11)
+  if (!bundlePropertiesManager)
   {
     [RBAssertionDescriptorValidator isAssertionValidForContext:error:];
   }
 
-  v12 = [v7 domainAttributeManager];
+  domainAttributeManager = [contextCopy domainAttributeManager];
 
-  if (!v12)
+  if (!domainAttributeManager)
   {
     [RBAssertionDescriptorValidator isAssertionValidForContext:error:];
   }
 
-  v13 = [v7 entitlementManager];
+  entitlementManager = [contextCopy entitlementManager];
 
-  if (!v13)
+  if (!entitlementManager)
   {
     [RBAssertionDescriptorValidator isAssertionValidForContext:error:];
   }
 
-  [v7 setAssertionDescriptionValidator:self];
-  v14 = [v8 attributes];
-  if ([v14 count])
+  [contextCopy setAssertionDescriptionValidator:self];
+  attributes = [assertionDescriptor attributes];
+  if ([attributes count])
   {
-    v44 = self;
+    selfCopy = self;
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v15 = v14;
+    v15 = attributes;
     v16 = [v15 countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (v16)
     {
       v17 = v16;
-      v47 = v8;
+      v47 = assertionDescriptor;
       obj = v15;
       v43 = a2;
-      v45 = v14;
-      v46 = a4;
-      v18 = v7;
+      v45 = attributes;
+      errorCopy = error;
+      v18 = contextCopy;
       v19 = 0;
       v20 = *v51;
       while (2)
@@ -181,19 +181,19 @@ LABEL_5:
           {
             if (!v25)
             {
-              [(RBAssertionDescriptorValidator *)v43 isAssertionValidForContext:v44 error:v22];
+              [(RBAssertionDescriptorValidator *)v43 isAssertionValidForContext:selfCopy error:v22];
             }
 
-            v7 = v18;
-            v8 = v47;
-            if (v46)
+            contextCopy = v18;
+            assertionDescriptor = v47;
+            if (errorCopy)
             {
               v27 = v26;
-              *v46 = v26;
+              *errorCopy = v26;
             }
 
-            LOBYTE(a4) = 0;
-            v14 = v45;
+            LOBYTE(error) = 0;
+            attributes = v45;
             goto LABEL_43;
           }
 
@@ -209,10 +209,10 @@ LABEL_5:
         break;
       }
 
-      v7 = v18;
-      v8 = v47;
-      v14 = v45;
-      a4 = v46;
+      contextCopy = v18;
+      assertionDescriptor = v47;
+      attributes = v45;
+      error = errorCopy;
       if (v19)
       {
         goto LABEL_42;
@@ -223,28 +223,28 @@ LABEL_5:
     {
     }
 
-    v30 = [v8 target];
-    v31 = [v30 processIdentity];
-    if (v31)
+    target = [assertionDescriptor target];
+    processIdentity = [target processIdentity];
+    if (processIdentity)
     {
-      v32 = v31;
-      v33 = [v7 acquisitionContext];
-      if (([v33 allowAbstractTarget] & 1) == 0)
+      v32 = processIdentity;
+      acquisitionContext = [contextCopy acquisitionContext];
+      if (([acquisitionContext allowAbstractTarget] & 1) == 0)
       {
-        v34 = v14;
-        v35 = [v8 target];
-        v36 = [v35 processIdentity];
-        if (!v36 && ([v10 rb_hasEntitlementDomain:2] & 1) == 0 && (objc_msgSend(v10, "rb_hasEntitlementDomain:", 4) & 1) == 0)
+        v34 = attributes;
+        target2 = [assertionDescriptor target];
+        processIdentity2 = [target2 processIdentity];
+        if (!processIdentity2 && ([v10 rb_hasEntitlementDomain:2] & 1) == 0 && (objc_msgSend(v10, "rb_hasEntitlementDomain:", 4) & 1) == 0)
         {
           v37 = [v10 rb_hasEntitlement:@"com.apple.runningboard.targetidentities"];
 
-          v14 = v34;
+          attributes = v34;
           if ((v37 & 1) == 0)
           {
-            if (a4)
+            if (error)
             {
               v28 = @"Client is not entitled to use identities as assertion targets";
-              v29 = v44;
+              selfCopy2 = selfCopy;
               goto LABEL_38;
             }
 
@@ -252,40 +252,40 @@ LABEL_5:
           }
 
 LABEL_42:
-          v40 = [(RBAssertionDescriptorValidator *)v44 _flattenedAttributesFromContext:v7];
-          LOBYTE(a4) = [RBAssertionDescriptorValidator checkConflictingAttributes:v40 error:a4];
+          v40 = [(RBAssertionDescriptorValidator *)selfCopy _flattenedAttributesFromContext:contextCopy];
+          LOBYTE(error) = [RBAssertionDescriptorValidator checkConflictingAttributes:v40 error:error];
 
           goto LABEL_43;
         }
 
-        v14 = v34;
+        attributes = v34;
       }
     }
 
     goto LABEL_42;
   }
 
-  if (a4)
+  if (error)
   {
     v28 = @"Cannot acquire an assertion with no attributes";
-    v29 = self;
+    selfCopy2 = self;
 LABEL_38:
-    v38 = [(RBAssertionDescriptorValidator *)v29 _errorWithDescription:v28];
-    v39 = a4;
-    LOBYTE(a4) = 0;
-    *v39 = v38;
+    v38 = [(RBAssertionDescriptorValidator *)selfCopy2 _errorWithDescription:v28];
+    errorCopy2 = error;
+    LOBYTE(error) = 0;
+    *errorCopy2 = v38;
   }
 
 LABEL_43:
 
   v41 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (id)_errorWithDescription:(uint64_t)a1
+- (id)_errorWithDescription:(uint64_t)description
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (description)
   {
     v2 = MEMORY[0x277CCA9B8];
     v3 = *MEMORY[0x277D47050];
@@ -307,21 +307,21 @@ LABEL_43:
   return v7;
 }
 
-- (id)_flattenedAttributesFromContext:(void *)a1
+- (id)_flattenedAttributesFromContext:(void *)context
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (context)
   {
-    v5 = [v3 assertionDescriptor];
+    assertionDescriptor = [v3 assertionDescriptor];
     v6 = [MEMORY[0x277CBEB58] set];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [v5 attributes];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    attributes = [assertionDescriptor attributes];
+    v8 = [attributes countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -332,14 +332,14 @@ LABEL_43:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(attributes);
           }
 
-          v12 = [(RBAssertionDescriptorValidator *)a1 _flattenedAttributesFromAttribute:v4 context:?];
+          v12 = [(RBAssertionDescriptorValidator *)context _flattenedAttributesFromAttribute:v4 context:?];
           [v6 unionSet:v12];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [attributes countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -356,29 +356,29 @@ LABEL_43:
   return v6;
 }
 
-- (id)_flattenedAttributesFromAttribute:(void *)a3 context:
+- (id)_flattenedAttributesFromAttribute:(void *)attribute context:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
+  attributeCopy = attribute;
+  v7 = attributeCopy;
   v17 = v5;
-  if (a1)
+  if (self)
   {
-    v8 = [v6 domainAttributeManager];
-    a1 = [MEMORY[0x277CBEB58] set];
+    domainAttributeManager = [attributeCopy domainAttributeManager];
+    self = [MEMORY[0x277CBEB58] set];
     v9 = [MEMORY[0x277CBEB58] set];
     [v9 addObject:v5];
     while ([v9 count])
     {
-      v10 = [v9 anyObject];
+      anyObject = [v9 anyObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
-        v12 = [v11 domain];
-        v13 = [v11 name];
+        v11 = anyObject;
+        domain = [v11 domain];
+        name = [v11 name];
 
-        v14 = [v8 attributesForDomain:v12 andName:v13 context:v7 withError:0];
+        v14 = [domainAttributeManager attributesForDomain:domain andName:name context:v7 withError:0];
 
         [v9 addObjectsFromArray:v14];
       }
@@ -388,23 +388,23 @@ LABEL_43:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          [a1 addObject:v10];
+          [self addObject:anyObject];
           goto LABEL_9;
         }
 
-        v14 = v10;
-        v15 = [v14 attributes];
-        [v9 addObjectsFromArray:v15];
+        v14 = anyObject;
+        attributes = [v14 attributes];
+        [v9 addObjectsFromArray:attributes];
 
-        [a1 addObject:v14];
+        [self addObject:v14];
       }
 
 LABEL_9:
-      [v9 removeObject:v10];
+      [v9 removeObject:anyObject];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)isAssertionValidForContext:error:.cold.1()

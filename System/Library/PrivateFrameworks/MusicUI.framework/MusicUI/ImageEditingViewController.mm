@@ -1,16 +1,16 @@
 @interface ImageEditingViewController
-- (_TtC7MusicUI26ImageEditingViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC7MusicUI26ImageEditingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7MusicUI26ImageEditingViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC7MusicUI26ImageEditingViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation ImageEditingViewController
 
-- (_TtC7MusicUI26ImageEditingViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC7MusicUI26ImageEditingViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
-  if (!a3)
+  if (!class)
   {
     ObjCClassMetadata = 0;
-    if (a4)
+    if (toolbarClass)
     {
       goto LABEL_3;
     }
@@ -21,7 +21,7 @@ LABEL_5:
   }
 
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  if (!a4)
+  if (!toolbarClass)
   {
     goto LABEL_5;
   }
@@ -31,9 +31,9 @@ LABEL_3:
   return sub_21694C694(ObjCClassMetadata, v6);
 }
 
-- (_TtC7MusicUI26ImageEditingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7MusicUI26ImageEditingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_21700E514();
     v7 = v6;
@@ -45,8 +45,8 @@ LABEL_3:
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_21694C7E8(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_21694C7E8(v5, v7, bundle);
 }
 
 @end

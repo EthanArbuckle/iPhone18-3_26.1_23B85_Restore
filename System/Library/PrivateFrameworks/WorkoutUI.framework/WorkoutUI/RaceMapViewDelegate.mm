@@ -1,16 +1,16 @@
 @interface RaceMapViewDelegate
 - (_TtC9WorkoutUI19RaceMapViewDelegate)init;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 @end
 
 @implementation RaceMapViewDelegate
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = specialized RaceMapViewDelegate.mapView(_:rendererFor:)();
 
   swift_unknownObjectRelease();
@@ -18,11 +18,11 @@
   return v7;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = specialized RaceMapViewDelegate.mapView(_:viewFor:)();
 
   swift_unknownObjectRelease();

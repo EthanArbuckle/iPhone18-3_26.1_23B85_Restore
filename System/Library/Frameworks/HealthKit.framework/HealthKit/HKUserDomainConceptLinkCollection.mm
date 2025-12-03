@@ -1,29 +1,29 @@
 @interface HKUserDomainConceptLinkCollection
-+ (id)collectionByMergingCollection:(id)a3 otherCollection:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)collectionByMergingCollection:(id)collection otherCollection:(id)otherCollection;
+- (BOOL)isEqual:(id)equal;
 - (HKUserDomainConceptLinkCollection)init;
-- (HKUserDomainConceptLinkCollection)initWithCoder:(id)a3;
-- (HKUserDomainConceptLinkCollection)initWithLinkSetWrapper:(id)a3 epoch:(int64_t)a4;
+- (HKUserDomainConceptLinkCollection)initWithCoder:(id)coder;
+- (HKUserDomainConceptLinkCollection)initWithLinkSetWrapper:(id)wrapper epoch:(int64_t)epoch;
 - (NSArray)links;
-- (id)_copyWithLinkSetWrapper:(id)a3;
-- (id)_initWithLinks:(id)a3;
-- (id)_orderedSetWithDecoder:(id)a3 error:(id *)a4;
-- (id)collectionByAppendingLink:(id)a3;
-- (id)collectionByAppendingLinks:(id)a3;
-- (id)collectionByInsertingLink:(id)a3 atIndex:(unint64_t)a4;
-- (id)collectionByMergingCollection:(id)a3;
-- (id)collectionByMergingInLegacyArrayOfLinks:(id)a3;
-- (id)collectionByMovingLinkFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
+- (id)_copyWithLinkSetWrapper:(id)wrapper;
+- (id)_initWithLinks:(id)links;
+- (id)_orderedSetWithDecoder:(id)decoder error:(id *)error;
+- (id)collectionByAppendingLink:(id)link;
+- (id)collectionByAppendingLinks:(id)links;
+- (id)collectionByInsertingLink:(id)link atIndex:(unint64_t)index;
+- (id)collectionByMergingCollection:(id)collection;
+- (id)collectionByMergingInLegacyArrayOfLinks:(id)links;
+- (id)collectionByMovingLinkFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
 - (id)collectionByRemovingAllLinks;
-- (id)collectionByRemovingLinkAtIndex:(unint64_t)a3;
-- (id)collectionByRemovingLinksWithTargetUUID:(id)a3;
-- (id)collectionByReplacingLinkAtIndex:(unint64_t)a3 withLink:(id)a4;
-- (id)collectionByRetargetingLinksWithUUID:(id)a3 withNewUUID:(id)a4;
-- (id)collectionBySwappingLinksAtIndex:(unint64_t)a3 otherIndex:(unint64_t)a4;
+- (id)collectionByRemovingLinkAtIndex:(unint64_t)index;
+- (id)collectionByRemovingLinksWithTargetUUID:(id)d;
+- (id)collectionByReplacingLinkAtIndex:(unint64_t)index withLink:(id)link;
+- (id)collectionByRetargetingLinksWithUUID:(id)d withNewUUID:(id)iD;
+- (id)collectionBySwappingLinksAtIndex:(unint64_t)index otherIndex:(unint64_t)otherIndex;
 - (id)description;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKUserDomainConceptLinkCollection
@@ -38,27 +38,27 @@
   return 0;
 }
 
-- (HKUserDomainConceptLinkCollection)initWithLinkSetWrapper:(id)a3 epoch:(int64_t)a4
+- (HKUserDomainConceptLinkCollection)initWithLinkSetWrapper:(id)wrapper epoch:(int64_t)epoch
 {
-  v7 = a3;
+  wrapperCopy = wrapper;
   v11.receiver = self;
   v11.super_class = HKUserDomainConceptLinkCollection;
   v8 = [(HKUserDomainConceptLinkCollection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_orderedSet, a3);
-    v9->_epoch = a4;
+    objc_storeStrong(&v8->_orderedSet, wrapper);
+    v9->_epoch = epoch;
     v9->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v9;
 }
 
-- (id)_initWithLinks:(id)a3
+- (id)_initWithLinks:(id)links
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _wrappedUDCLinks:v4];
+  linksCopy = links;
+  v5 = [objc_opt_class() _wrappedUDCLinks:linksCopy];
 
   v6 = [[HKLinkSetWrapper alloc] initWithLinks:v5];
   v7 = [(HKUserDomainConceptLinkCollection *)self initWithLinkSetWrapper:v6 epoch:0];
@@ -66,10 +66,10 @@
   return v7;
 }
 
-- (id)_copyWithLinkSetWrapper:(id)a3
+- (id)_copyWithLinkSetWrapper:(id)wrapper
 {
-  v4 = a3;
-  v5 = [[HKUserDomainConceptLinkCollection alloc] initWithLinkSetWrapper:v4 epoch:self->_epoch];
+  wrapperCopy = wrapper;
+  v5 = [[HKUserDomainConceptLinkCollection alloc] initWithLinkSetWrapper:wrapperCopy epoch:self->_epoch];
 
   return v5;
 }
@@ -79,8 +79,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   epoch = self->_epoch;
-  v6 = [(HKUserDomainConceptLinkCollection *)self links];
-  v7 = [v3 stringWithFormat:@"<%@ %ld %@>", v4, epoch, v6];
+  links = [(HKUserDomainConceptLinkCollection *)self links];
+  v7 = [v3 stringWithFormat:@"<%@ %ld %@>", v4, epoch, links];
 
   return v7;
 }
@@ -91,8 +91,8 @@
   lock_arrayRepresentation = self->_lock_arrayRepresentation;
   if (!lock_arrayRepresentation)
   {
-    v4 = [(HKLinkSetWrapper *)self->_orderedSet elements];
-    v5 = [v4 hk_map:&__block_literal_global_52];
+    elements = [(HKLinkSetWrapper *)self->_orderedSet elements];
+    v5 = [elements hk_map:&__block_literal_global_52];
     v6 = self->_lock_arrayRepresentation;
     self->_lock_arrayRepresentation = v5;
 
@@ -113,11 +113,11 @@ HKUserDomainConceptLink *__42__HKUserDomainConceptLinkCollection_links__block_in
   return v3;
 }
 
-- (id)collectionByAppendingLink:(id)a3
+- (id)collectionByAppendingLink:(id)link
 {
   orderedSet = self->_orderedSet;
-  v5 = a3;
-  v6 = [[HKUserDomainConceptLinkStructWrapper alloc] initWithLink:v5];
+  linkCopy = link;
+  v6 = [[HKUserDomainConceptLinkStructWrapper alloc] initWithLink:linkCopy];
 
   v7 = [(HKLinkSetWrapper *)orderedSet appendingElement:v6];
 
@@ -126,9 +126,9 @@ HKUserDomainConceptLink *__42__HKUserDomainConceptLinkCollection_links__block_in
   return v8;
 }
 
-- (id)collectionByAppendingLinks:(id)a3
+- (id)collectionByAppendingLinks:(id)links
 {
-  v4 = [a3 hk_map:&__block_literal_global_306];
+  v4 = [links hk_map:&__block_literal_global_306];
   v5 = [(HKLinkSetWrapper *)self->_orderedSet appendingElements:v4];
   v6 = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v5];
 
@@ -143,67 +143,67 @@ HKUserDomainConceptLinkStructWrapper *__64__HKUserDomainConceptLinkCollection_co
   return v3;
 }
 
-- (id)collectionByInsertingLink:(id)a3 atIndex:(unint64_t)a4
+- (id)collectionByInsertingLink:(id)link atIndex:(unint64_t)index
 {
   orderedSet = self->_orderedSet;
-  v7 = a3;
-  if ([(HKLinkSetWrapper *)orderedSet count]< a4)
+  linkCopy = link;
+  if ([(HKLinkSetWrapper *)orderedSet count]< index)
   {
     [HKUserDomainConceptLinkCollection collectionByInsertingLink:atIndex:];
   }
 
   v8 = self->_orderedSet;
-  v9 = [[HKUserDomainConceptLinkStructWrapper alloc] initWithLink:v7];
+  v9 = [[HKUserDomainConceptLinkStructWrapper alloc] initWithLink:linkCopy];
 
-  v10 = [(HKLinkSetWrapper *)v8 insertingElement:v9 index:a4];
+  v10 = [(HKLinkSetWrapper *)v8 insertingElement:v9 index:index];
 
   v11 = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v10];
 
   return v11;
 }
 
-- (id)collectionByMovingLinkFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (id)collectionByMovingLinkFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  if ([(HKLinkSetWrapper *)self->_orderedSet count]<= a3)
+  if ([(HKLinkSetWrapper *)self->_orderedSet count]<= index)
   {
     [HKUserDomainConceptLinkCollection collectionByMovingLinkFromIndex:toIndex:];
   }
 
-  if ([(HKLinkSetWrapper *)self->_orderedSet count]<= a4)
+  if ([(HKLinkSetWrapper *)self->_orderedSet count]<= toIndex)
   {
     [HKUserDomainConceptLinkCollection collectionByMovingLinkFromIndex:toIndex:];
   }
 
-  if (a3 == a4)
+  if (index == toIndex)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [(HKLinkSetWrapper *)self->_orderedSet movingElementFrom:a3 to:a4];
-    v7 = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v8];
+    v8 = [(HKLinkSetWrapper *)self->_orderedSet movingElementFrom:index to:toIndex];
+    selfCopy = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v8];
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)collectionByRemovingLinkAtIndex:(unint64_t)a3
+- (id)collectionByRemovingLinkAtIndex:(unint64_t)index
 {
-  if ([(HKLinkSetWrapper *)self->_orderedSet count]<= a3)
+  if ([(HKLinkSetWrapper *)self->_orderedSet count]<= index)
   {
     [HKUserDomainConceptLinkCollection collectionByRemovingLinkAtIndex:];
   }
 
-  v5 = [(HKLinkSetWrapper *)self->_orderedSet removingAtIndex:a3];
+  v5 = [(HKLinkSetWrapper *)self->_orderedSet removingAtIndex:index];
   v6 = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v5];
 
   return v6;
 }
 
-- (id)collectionByRemovingLinksWithTargetUUID:(id)a3
+- (id)collectionByRemovingLinksWithTargetUUID:(id)d
 {
-  v4 = [(HKLinkSetWrapper *)self->_orderedSet removingLinksWithUUID:a3];
+  v4 = [(HKLinkSetWrapper *)self->_orderedSet removingLinksWithUUID:d];
   v5 = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v4];
 
   return v5;
@@ -211,88 +211,88 @@ HKUserDomainConceptLinkStructWrapper *__64__HKUserDomainConceptLinkCollection_co
 
 - (id)collectionByRemovingAllLinks
 {
-  v3 = [(HKLinkSetWrapper *)self->_orderedSet removingAll];
-  v4 = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v3];
+  removingAll = [(HKLinkSetWrapper *)self->_orderedSet removingAll];
+  v4 = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:removingAll];
 
   return v4;
 }
 
-- (id)collectionByReplacingLinkAtIndex:(unint64_t)a3 withLink:(id)a4
+- (id)collectionByReplacingLinkAtIndex:(unint64_t)index withLink:(id)link
 {
   orderedSet = self->_orderedSet;
-  v7 = a4;
-  if ([(HKLinkSetWrapper *)orderedSet count]<= a3)
+  linkCopy = link;
+  if ([(HKLinkSetWrapper *)orderedSet count]<= index)
   {
     [HKUserDomainConceptLinkCollection collectionByReplacingLinkAtIndex:withLink:];
   }
 
   v8 = self->_orderedSet;
-  v9 = [[HKUserDomainConceptLinkStructWrapper alloc] initWithLink:v7];
+  v9 = [[HKUserDomainConceptLinkStructWrapper alloc] initWithLink:linkCopy];
 
-  v10 = [(HKLinkSetWrapper *)v8 replacingElementAt:a3 withElement:v9];
+  v10 = [(HKLinkSetWrapper *)v8 replacingElementAt:index withElement:v9];
 
   v11 = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v10];
 
   return v11;
 }
 
-- (id)collectionByRetargetingLinksWithUUID:(id)a3 withNewUUID:(id)a4
+- (id)collectionByRetargetingLinksWithUUID:(id)d withNewUUID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqual:v6])
+  dCopy = d;
+  iDCopy = iD;
+  if ([iDCopy isEqual:dCopy])
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = [(HKLinkSetWrapper *)self->_orderedSet retargetingLinksWithUUID:v6 newUUID:v7];
-    v8 = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v9];
+    v9 = [(HKLinkSetWrapper *)self->_orderedSet retargetingLinksWithUUID:dCopy newUUID:iDCopy];
+    selfCopy = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v9];
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)collectionBySwappingLinksAtIndex:(unint64_t)a3 otherIndex:(unint64_t)a4
+- (id)collectionBySwappingLinksAtIndex:(unint64_t)index otherIndex:(unint64_t)otherIndex
 {
-  if ([(HKLinkSetWrapper *)self->_orderedSet count]<= a3)
+  if ([(HKLinkSetWrapper *)self->_orderedSet count]<= index)
   {
     [HKUserDomainConceptLinkCollection collectionBySwappingLinksAtIndex:otherIndex:];
   }
 
-  if ([(HKLinkSetWrapper *)self->_orderedSet count]<= a4)
+  if ([(HKLinkSetWrapper *)self->_orderedSet count]<= otherIndex)
   {
     [HKUserDomainConceptLinkCollection collectionBySwappingLinksAtIndex:otherIndex:];
   }
 
-  v7 = [(HKLinkSetWrapper *)self->_orderedSet swappingElementsAt:a3 andAt:a4];
+  v7 = [(HKLinkSetWrapper *)self->_orderedSet swappingElementsAt:index andAt:otherIndex];
   v8 = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v7];
 
   return v8;
 }
 
-+ (id)collectionByMergingCollection:(id)a3 otherCollection:(id)a4
++ (id)collectionByMergingCollection:(id)collection otherCollection:(id)otherCollection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  collectionCopy = collection;
+  otherCollectionCopy = otherCollection;
+  v7 = otherCollectionCopy;
+  if (otherCollectionCopy)
   {
-    if (v5)
+    if (collectionCopy)
     {
-      v8 = [v5 collectionByMergingCollection:v6];
+      v8 = [collectionCopy collectionByMergingCollection:otherCollectionCopy];
     }
 
     else
     {
-      v8 = v6;
+      v8 = otherCollectionCopy;
     }
   }
 
   else
   {
-    v8 = v5;
+    v8 = collectionCopy;
   }
 
   v9 = v8;
@@ -300,17 +300,17 @@ HKUserDomainConceptLinkStructWrapper *__64__HKUserDomainConceptLinkCollection_co
   return v9;
 }
 
-- (id)collectionByMergingCollection:(id)a3
+- (id)collectionByMergingCollection:(id)collection
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionCopy = collection;
   epoch = self->_epoch;
-  v6 = v4[4];
+  v6 = collectionCopy[4];
   if (epoch <= v6)
   {
     if (epoch >= v6)
     {
-      v14 = [(HKLinkSetWrapper *)self->_orderedSet mergingLinkSet:v4[1]];
+      v14 = [(HKLinkSetWrapper *)self->_orderedSet mergingLinkSet:collectionCopy[1]];
       v15 = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v14];
 
       goto LABEL_11;
@@ -320,10 +320,10 @@ HKUserDomainConceptLinkStructWrapper *__64__HKUserDomainConceptLinkCollection_co
     v11 = HKLogHealthOntology();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = v4[4];
+      v12 = collectionCopy[4];
       v13 = self->_epoch;
       v18 = 138543874;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2048;
       v21 = v12;
       v22 = 2048;
@@ -331,7 +331,7 @@ HKUserDomainConceptLinkStructWrapper *__64__HKUserDomainConceptLinkCollection_co
       _os_log_impl(&dword_19197B000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: returning other because epoch %ld is higher than self epoch %ld", &v18, 0x20u);
     }
 
-    v10 = v4;
+    selfCopy3 = collectionCopy;
   }
 
   else
@@ -341,9 +341,9 @@ HKUserDomainConceptLinkStructWrapper *__64__HKUserDomainConceptLinkCollection_co
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = self->_epoch;
-      v9 = v4[4];
+      v9 = collectionCopy[4];
       v18 = 138543874;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2048;
       v21 = v8;
       v22 = 2048;
@@ -351,10 +351,10 @@ HKUserDomainConceptLinkStructWrapper *__64__HKUserDomainConceptLinkCollection_co
       _os_log_impl(&dword_19197B000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: returning self because epoch %ld is higher than other epoch %ld", &v18, 0x20u);
     }
 
-    v10 = self;
+    selfCopy3 = self;
   }
 
-  v15 = v10;
+  v15 = selfCopy3;
 LABEL_11:
 
   v16 = *MEMORY[0x1E69E9840];
@@ -362,21 +362,21 @@ LABEL_11:
   return v15;
 }
 
-- (id)collectionByMergingInLegacyArrayOfLinks:(id)a3
+- (id)collectionByMergingInLegacyArrayOfLinks:(id)links
 {
-  v4 = [a3 hk_map:&__block_literal_global_330];
+  v4 = [links hk_map:&__block_literal_global_330];
   v5 = [(HKLinkSetWrapper *)self->_orderedSet mergingLegacyElementsArray:v4];
   if ([v5 isEqual:self->_orderedSet])
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v5];
+    selfCopy = [(HKUserDomainConceptLinkCollection *)self _copyWithLinkSetWrapper:v5];
   }
 
-  v7 = v6;
+  v7 = selfCopy;
 
   return v7;
 }
@@ -391,16 +391,16 @@ HKUserDomainConceptLinkStructWrapper *__77__HKUserDomainConceptLinkCollection_co
 
 - (unint64_t)hash
 {
-  v2 = [(HKUserDomainConceptLinkCollection *)self links];
-  v3 = [v2 hash];
+  links = [(HKUserDomainConceptLinkCollection *)self links];
+  v3 = [links hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -408,16 +408,16 @@ HKUserDomainConceptLinkStructWrapper *__77__HKUserDomainConceptLinkCollection_co
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HKLinkSetWrapper *)self->_orderedSet isEqual:v4->_orderedSet];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HKLinkSetWrapper *)self->_orderedSet isEqual:equalCopy->_orderedSet];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   orderedSet = self->_orderedSet;
   v18 = 0;
@@ -427,8 +427,8 @@ HKUserDomainConceptLinkStructWrapper *__77__HKUserDomainConceptLinkCollection_co
   {
     if ([v7 length] < 0x32000)
     {
-      [v4 encodeObject:v7 forKey:@"links"];
-      [v4 encodeInteger:self->_epoch forKey:@"epoch"];
+      [coderCopy encodeObject:v7 forKey:@"links"];
+      [coderCopy encodeInteger:self->_epoch forKey:@"epoch"];
       goto LABEL_10;
     }
 
@@ -442,7 +442,7 @@ HKUserDomainConceptLinkStructWrapper *__77__HKUserDomainConceptLinkCollection_co
       *buf = 138544386;
       v20 = v15;
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       v23 = 2048;
       v24 = v16;
       v25 = 2048;
@@ -453,11 +453,11 @@ HKUserDomainConceptLinkStructWrapper *__77__HKUserDomainConceptLinkCollection_co
     }
 
     v10 = [HKLinkSetWrapper alloc];
-    v11 = [(HKLinkSetWrapper *)self->_orderedSet elements];
-    v12 = [(HKLinkSetWrapper *)v10 initWithLinks:v11];
+    elements = [(HKLinkSetWrapper *)self->_orderedSet elements];
+    v12 = [(HKLinkSetWrapper *)v10 initWithLinks:elements];
 
     v13 = [[HKUserDomainConceptLinkCollection alloc] initWithLinkSetWrapper:v12 epoch:self->_epoch + 1];
-    [(HKUserDomainConceptLinkCollection *)v13 encodeWithCoder:v4];
+    [(HKUserDomainConceptLinkCollection *)v13 encodeWithCoder:coderCopy];
   }
 
   else
@@ -476,15 +476,15 @@ LABEL_10:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (HKUserDomainConceptLinkCollection)initWithCoder:(id)a3
+- (HKUserDomainConceptLinkCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14 = 0;
-  v5 = [(HKUserDomainConceptLinkCollection *)self _orderedSetWithDecoder:v4 error:&v14];
+  v5 = [(HKUserDomainConceptLinkCollection *)self _orderedSetWithDecoder:coderCopy error:&v14];
   v6 = v14;
   if (v5)
   {
-    v7 = [v4 decodeIntegerForKey:@"epoch"];
+    v7 = [coderCopy decodeIntegerForKey:@"epoch"];
     v13.receiver = self;
     v13.super_class = HKUserDomainConceptLinkCollection;
     v8 = [(HKUserDomainConceptLinkCollection *)&v13 init];
@@ -497,7 +497,7 @@ LABEL_10:
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -509,17 +509,17 @@ LABEL_10:
       [HKUserDomainConceptLinkCollection initWithCoder:];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)_orderedSetWithDecoder:(id)a3 error:(id *)a4
+- (id)_orderedSetWithDecoder:(id)decoder error:(id *)error
 {
   v22[4] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E695DFD8];
-  v8 = a3;
+  decoderCopy = decoder;
   v9 = [v7 alloc];
   v22[0] = objc_opt_class();
   v22[1] = objc_opt_class();
@@ -528,12 +528,12 @@ LABEL_10:
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
   v11 = [v9 initWithArray:v10];
 
-  v12 = [v8 decodeObjectOfClasses:v11 forKey:@"links"];
+  v12 = [decoderCopy decodeObjectOfClasses:v11 forKey:@"links"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [[HKLinkSetWrapper alloc] initWithSerializedData:v12 error:a4];
+    v13 = [[HKLinkSetWrapper alloc] initWithSerializedData:v12 error:error];
   }
 
   else
@@ -551,16 +551,16 @@ LABEL_10:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [v12 array];
+        array = [v12 array];
         v17 = [HKLinkSetWrapper alloc];
-        v18 = [objc_opt_class() _wrappedUDCLinks:v16];
+        v18 = [objc_opt_class() _wrappedUDCLinks:array];
         v13 = [(HKLinkSetWrapper *)v17 initWithLinks:v18];
       }
 
       else
       {
-        v19 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v19 handleFailureInMethod:a2 object:self file:@"HKUserDomainConceptLinkCollection.m" lineNumber:356 description:@"Unreachable code has been executed"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HKUserDomainConceptLinkCollection.m" lineNumber:356 description:@"Unreachable code has been executed"];
 
         v13 = 0;
       }
@@ -572,10 +572,10 @@ LABEL_10:
   return v13;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(HKUserDomainConceptLinkCollection *)self links];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  links = [(HKUserDomainConceptLinkCollection *)self links];
+  v9 = [links countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }

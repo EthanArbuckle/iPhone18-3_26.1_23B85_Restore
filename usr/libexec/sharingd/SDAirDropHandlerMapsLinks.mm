@@ -1,6 +1,6 @@
 @interface SDAirDropHandlerMapsLinks
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandlerMapsLinks)initWithTransfer:(id)a3;
+- (SDAirDropHandlerMapsLinks)initWithTransfer:(id)transfer;
 - (id)candidateIdentifiers;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
@@ -8,23 +8,23 @@
 
 @implementation SDAirDropHandlerMapsLinks
 
-- (SDAirDropHandlerMapsLinks)initWithTransfer:(id)a3
+- (SDAirDropHandlerMapsLinks)initWithTransfer:(id)transfer
 {
   v4.receiver = self;
   v4.super_class = SDAirDropHandlerMapsLinks;
-  return [(SDAirDropHandler *)&v4 initWithTransfer:a3 bundleIdentifier:@"com.apple.Maps"];
+  return [(SDAirDropHandler *)&v4 initWithTransfer:transfer bundleIdentifier:@"com.apple.Maps"];
 }
 
 - (id)candidateIdentifiers
 {
   v3 = objc_opt_new();
-  v4 = [(SDAirDropHandler *)self bundleProxy];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
 
-  if (v4)
+  if (bundleProxy)
   {
-    v5 = [(SDAirDropHandler *)self bundleProxy];
-    v6 = [v5 bundleIdentifier];
-    [v3 addObject:v6];
+    bundleProxy2 = [(SDAirDropHandler *)self bundleProxy];
+    bundleIdentifier = [bundleProxy2 bundleIdentifier];
+    [v3 addObject:bundleIdentifier];
   }
 
   return v3;
@@ -37,15 +37,15 @@
     return 0;
   }
 
-  v3 = [(SDAirDropHandlerMapsLinks *)self candidateIdentifiers];
+  candidateIdentifiers = [(SDAirDropHandlerMapsLinks *)self candidateIdentifiers];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SDAirDropHandler *)self transfer];
-  v5 = [v4 completedURLs];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [completedURLs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -56,10 +56,10 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(completedURLs);
         }
 
-        v10 = [(SDAirDropHandler *)self bundleProxyFromCandidateIdentifiers:v3 handlesURL:*(*(&v13 + 1) + 8 * i)];
+        v10 = [(SDAirDropHandler *)self bundleProxyFromCandidateIdentifiers:candidateIdentifiers handlesURL:*(*(&v13 + 1) + 8 * i)];
 
         if (!v10)
         {
@@ -68,7 +68,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [completedURLs countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -93,16 +93,16 @@ LABEL_13:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self totalSharedItemsCount];
-  v5 = [(SDAirDropHandler *)self transfer];
-  v6 = [v5 metaData];
-  v7 = [v6 itemsDescriptionAdvanced];
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  itemsDescriptionAdvanced = [metaData itemsDescriptionAdvanced];
 
-  if (v4 != 1 || !v7 || ([v7 objectForKeyedSubscript:@"SFAirDropActivitySubjectMapsLinkType"], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
+  if (totalSharedItemsCount != 1 || !itemsDescriptionAdvanced || ([itemsDescriptionAdvanced objectForKeyedSubscript:@"SFAirDropActivitySubjectMapsLinkType"], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
     v30 = @"MAPS_LINK";
-    v15 = [NSNumber numberWithUnsignedInteger:v4];
+    v15 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
     v31 = v15;
     v16 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v32 = v16;
@@ -110,27 +110,27 @@ LABEL_13:
     v11 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:v17];
 
     LODWORD(v16) = [(SDAirDropHandler *)self isModernProgress];
-    v18 = SFLocalizedStringForKey();
+    itemsDescription2 = SFLocalizedStringForKey();
     if (v16)
     {
-      [NSString localizedStringWithFormat:v18, v4, v29];
+      [NSString localizedStringWithFormat:itemsDescription2, totalSharedItemsCount, v29];
     }
 
     else
     {
-      [NSString localizedStringWithFormat:v18, v3, v4];
+      [NSString localizedStringWithFormat:itemsDescription2, senderName, totalSharedItemsCount];
     }
     v19 = ;
     goto LABEL_25;
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"SFAirDropActivitySubjectMapsLinkType"];
-  v10 = [v9 integerValue];
+  v9 = [itemsDescriptionAdvanced objectForKeyedSubscript:@"SFAirDropActivitySubjectMapsLinkType"];
+  integerValue = [v9 integerValue];
 
   v11 = 0;
-  if (v10 > 1)
+  if (integerValue > 1)
   {
-    if (v10 == 2)
+    if (integerValue == 2)
     {
       v36 = @"MAPS_LINK_DROPPED_PIN";
       v12 = [NSNumber numberWithUnsignedInteger:1];
@@ -141,7 +141,7 @@ LABEL_13:
       goto LABEL_17;
     }
 
-    if (v10 == 3)
+    if (integerValue == 3)
     {
       v33 = @"MAPS_LINK_POI";
       v12 = [NSNumber numberWithUnsignedInteger:1];
@@ -155,7 +155,7 @@ LABEL_13:
 
   else
   {
-    if (!v10)
+    if (!integerValue)
     {
       v42 = @"MAPS_LINK_CURRENT_LOCATION";
       v12 = [NSNumber numberWithUnsignedInteger:1];
@@ -166,7 +166,7 @@ LABEL_13:
       goto LABEL_17;
     }
 
-    if (v10 == 1)
+    if (integerValue == 1)
     {
       v39 = @"MAPS_LINK_DIRECTIONS";
       v12 = [NSNumber numberWithUnsignedInteger:1];
@@ -180,31 +180,31 @@ LABEL_17:
     }
   }
 
-  v21 = [(SDAirDropHandler *)self transfer];
-  v22 = [v21 metaData];
-  v23 = [v22 itemsDescription];
-  if ([v23 length])
+  transfer2 = [(SDAirDropHandler *)self transfer];
+  metaData2 = [transfer2 metaData];
+  itemsDescription = [metaData2 itemsDescription];
+  if ([itemsDescription length])
   {
-    v24 = [(SDAirDropHandler *)self transfer];
-    v25 = [v24 metaData];
-    v18 = [v25 itemsDescription];
+    transfer3 = [(SDAirDropHandler *)self transfer];
+    metaData3 = [transfer3 metaData];
+    itemsDescription2 = [metaData3 itemsDescription];
   }
 
   else
   {
-    v18 = 0;
+    itemsDescription2 = 0;
   }
 
-  v26 = [(SDAirDropHandler *)self isModernProgress];
+  isModernProgress = [(SDAirDropHandler *)self isModernProgress];
   v27 = SFLocalizedStringForKey();
-  if (v26)
+  if (isModernProgress)
   {
-    [NSString localizedStringWithFormat:v27, v18, v29];
+    [NSString localizedStringWithFormat:v27, itemsDescription2, v29];
   }
 
   else
   {
-    [NSString localizedStringWithFormat:v27, v3, v18];
+    [NSString localizedStringWithFormat:v27, senderName, itemsDescription2];
   }
   v19 = ;
 

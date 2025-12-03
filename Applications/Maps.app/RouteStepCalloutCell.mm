@@ -1,14 +1,14 @@
 @interface RouteStepCalloutCell
-+ (RouteStepCalloutCell)cellWithRoute:(id)a3 stepIndex:(unint64_t)a4 type:(unsigned int)a5;
++ (RouteStepCalloutCell)cellWithRoute:(id)route stepIndex:(unint64_t)index type:(unsigned int)type;
 - (BOOL)rotate;
-- (BOOL)shouldRotateWithCallout:(id)a3;
-- (CGRect)_frameForType:(unsigned int)a3;
+- (BOOL)shouldRotateWithCallout:(id)callout;
+- (CGRect)_frameForType:(unsigned int)type;
 - (CGRect)contentRect;
 - (CGRect)frame;
 - (GEOComposedRouteStep)routeStep;
-- (RouteStepCalloutCell)initWithRoute:(id)a3 stepIndex:(unint64_t)a4 type:(unsigned int)a5;
-- (void)drawInRect:(CGRect)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (RouteStepCalloutCell)initWithRoute:(id)route stepIndex:(unint64_t)index type:(unsigned int)type;
+- (void)drawInRect:(CGRect)rect;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation RouteStepCalloutCell
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (void)drawInRect:(CGRect)a3
+- (void)drawInRect:(CGRect)rect
 {
   [PDFUtilities renderDocumentForType:self->_calloutType inRect:self->_frame.origin.x, self->_frame.origin.y, self->_frame.size.width, self->_frame.size.height];
   if ((self->_calloutType & 0xFFFFFFFE) != 4)
@@ -95,9 +95,9 @@
   return 1;
 }
 
-- (BOOL)shouldRotateWithCallout:(id)a3
+- (BOOL)shouldRotateWithCallout:(id)callout
 {
-  [a3 contentRect];
+  [callout contentRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -110,10 +110,10 @@
   return CGRectIntersectsRect(*&x, *&v5);
 }
 
-- (CGRect)_frameForType:(unsigned int)a3
+- (CGRect)_frameForType:(unsigned int)type
 {
-  v4 = [(RouteStepCalloutCell *)self routeStep];
-  [v4 startCoordinate];
+  routeStep = [(RouteStepCalloutCell *)self routeStep];
+  [routeStep startCoordinate];
   v5 = MKMapPointForCoordinate(v35);
 
   x = v5.x;
@@ -283,11 +283,11 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->a;
-  v5 = *&a3->tx;
-  *&self->_t.c = *&a3->c;
+  v4 = *&transform->a;
+  v5 = *&transform->tx;
+  *&self->_t.c = *&transform->c;
   *&self->_t.tx = v5;
   *&self->_t.a = v4;
   [(RouteStepCalloutCell *)self _frameForType:self->_calloutType];
@@ -299,39 +299,39 @@
 
 - (GEOComposedRouteStep)routeStep
 {
-  v3 = [(GEOComposedRoute *)self->_route steps];
-  v4 = [v3 objectAtIndexedSubscript:self->_stepIndex];
+  steps = [(GEOComposedRoute *)self->_route steps];
+  v4 = [steps objectAtIndexedSubscript:self->_stepIndex];
 
   return v4;
 }
 
-- (RouteStepCalloutCell)initWithRoute:(id)a3 stepIndex:(unint64_t)a4 type:(unsigned int)a5
+- (RouteStepCalloutCell)initWithRoute:(id)route stepIndex:(unint64_t)index type:(unsigned int)type
 {
-  v8 = a3;
+  routeCopy = route;
   v14.receiver = self;
   v14.super_class = RouteStepCalloutCell;
   v9 = [(RouteStepCalloutCell *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    [(RouteStepCalloutCell *)v9 setRoute:v8];
-    [(RouteStepCalloutCell *)v10 setStepIndex:a4];
+    [(RouteStepCalloutCell *)v9 setRoute:routeCopy];
+    [(RouteStepCalloutCell *)v10 setStepIndex:index];
     v11 = [[UIColor alloc] initWithRed:0.396078431 green:0.62745098 blue:0.992156863 alpha:1.0];
     calloutTextColor = v10->_calloutTextColor;
     v10->_calloutTextColor = v11;
 
-    v10->_calloutType = a5;
+    v10->_calloutType = type;
     v10->_numberOfAttemptedRotations = 0;
   }
 
   return v10;
 }
 
-+ (RouteStepCalloutCell)cellWithRoute:(id)a3 stepIndex:(unint64_t)a4 type:(unsigned int)a5
++ (RouteStepCalloutCell)cellWithRoute:(id)route stepIndex:(unint64_t)index type:(unsigned int)type
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = [[a1 alloc] initWithRoute:v8 stepIndex:a4 type:v5];
+  v5 = *&type;
+  routeCopy = route;
+  v9 = [[self alloc] initWithRoute:routeCopy stepIndex:index type:v5];
 
   return v9;
 }

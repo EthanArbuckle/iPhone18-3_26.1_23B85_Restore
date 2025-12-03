@@ -1,6 +1,6 @@
 @interface PHRepairRequest
-- (PHRepairRequest)initWithRequestID:(int)a3 requestIndex:(unint64_t)a4 contextType:(int64_t)a5 managerID:(unint64_t)a6 asset:(id)a7 assetResource:(id)a8 errorCodes:(id)a9 delegate:(id)a10;
-- (id)_sendRepairRequestWithReply:(id)a3;
+- (PHRepairRequest)initWithRequestID:(int)d requestIndex:(unint64_t)index contextType:(int64_t)type managerID:(unint64_t)iD asset:(id)asset assetResource:(id)resource errorCodes:(id)codes delegate:(id)self0;
+- (id)_sendRepairRequestWithReply:(id)reply;
 - (void)dealloc;
 - (void)startRequest;
 @end
@@ -48,21 +48,21 @@ void __31__PHRepairRequest_startRequest__block_invoke_2(uint64_t a1, void *a2)
   [v4 mediaRequest:WeakRetained didReportProgress:v3];
 }
 
-- (id)_sendRepairRequestWithReply:(id)a3
+- (id)_sendRepairRequestWithReply:(id)reply
 {
   resource = self->_resource;
   if (resource)
   {
-    v5 = a3;
-    v6 = [(PHAssetResource *)resource backingResourceIdentity];
-    v7 = [(PHMediaRequest *)self sendResourceRepairRequestForResource:v6 errorCodes:self->_errorCodes reply:v5];
+    replyCopy = reply;
+    replyCopy2 = [(PHAssetResource *)resource backingResourceIdentity];
+    v7 = [(PHMediaRequest *)self sendResourceRepairRequestForResource:replyCopy2 errorCodes:self->_errorCodes reply:replyCopy];
   }
 
   else
   {
     errorCodes = self->_errorCodes;
-    v6 = a3;
-    v7 = [(PHMediaRequest *)self sendResourceRepairRequestWithErrorCodes:errorCodes reply:v6];
+    replyCopy2 = reply;
+    v7 = [(PHMediaRequest *)self sendResourceRepairRequestWithErrorCodes:errorCodes reply:replyCopy2];
   }
 
   return v7;
@@ -76,19 +76,19 @@ void __31__PHRepairRequest_startRequest__block_invoke_2(uint64_t a1, void *a2)
   [(PHMediaRequest *)&v3 dealloc];
 }
 
-- (PHRepairRequest)initWithRequestID:(int)a3 requestIndex:(unint64_t)a4 contextType:(int64_t)a5 managerID:(unint64_t)a6 asset:(id)a7 assetResource:(id)a8 errorCodes:(id)a9 delegate:(id)a10
+- (PHRepairRequest)initWithRequestID:(int)d requestIndex:(unint64_t)index contextType:(int64_t)type managerID:(unint64_t)iD asset:(id)asset assetResource:(id)resource errorCodes:(id)codes delegate:(id)self0
 {
-  v15 = *&a3;
-  v21 = a8;
-  v17 = a9;
+  v15 = *&d;
+  resourceCopy = resource;
+  codesCopy = codes;
   v22.receiver = self;
   v22.super_class = PHRepairRequest;
-  v18 = [(PHMediaRequest *)&v22 initWithRequestID:v15 requestIndex:a4 contextType:a5 managerID:a6 asset:a7 delegate:a10];
+  v18 = [(PHMediaRequest *)&v22 initWithRequestID:v15 requestIndex:index contextType:type managerID:iD asset:asset delegate:delegate];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_resource, a8);
-    objc_storeStrong(&v19->_errorCodes, a9);
+    objc_storeStrong(&v18->_resource, resource);
+    objc_storeStrong(&v19->_errorCodes, codes);
   }
 
   return v19;

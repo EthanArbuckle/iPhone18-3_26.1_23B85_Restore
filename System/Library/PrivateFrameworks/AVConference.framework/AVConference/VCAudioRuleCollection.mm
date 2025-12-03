@@ -1,23 +1,23 @@
 @interface VCAudioRuleCollection
-+ (BOOL)processPayloads:(id)a3 withMinBlockSize:(unsigned __int16)a4 allowLargerBlockSizes:(BOOL)a5;
++ (BOOL)processPayloads:(id)payloads withMinBlockSize:(unsigned __int16)size allowLargerBlockSizes:(BOOL)sizes;
 + (int)getForcedPayload;
-+ (void)addSupportGuardedPayloadsToBasePayloads:(id)a3 withConfiguration:(id)a4 forSwitchingCase:(BOOL)a5;
-+ (void)restrictPayloads:(id)a3 forChannelCount:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isPayloadSupported:(int)a3;
-- (BOOL)setUpAudioRulesWithConfiguration:(id)a3;
++ (void)addSupportGuardedPayloadsToBasePayloads:(id)payloads withConfiguration:(id)configuration forSwitchingCase:(BOOL)case;
++ (void)restrictPayloads:(id)payloads forChannelCount:(unint64_t)count;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isPayloadSupported:(int)supported;
+- (BOOL)setUpAudioRulesWithConfiguration:(id)configuration;
 - (BOOL)setUpForcedPayload;
 - (VCAudioRuleCollection)init;
-- (VCAudioRuleCollection)initWithConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initPrimaryPayload:(int)a3 dtxPayload:(int)a4 redPayload:(int)a5 secondaryPayloads:(id)a6 allowAudioSwitching:(BOOL)a7 sbr:(BOOL)a8 aacBlockSize:(int)a9;
-- (id)payloadsForAudioSwitchingWithConfiguration:(id)a3;
-- (void)addAudioPayload:(int)a3 isSecondary:(BOOL)a4 sbr:(BOOL)a5;
-- (void)addAudioRule:(id)a3;
-- (void)addAudioRules:(id)a3;
+- (VCAudioRuleCollection)initWithConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initPrimaryPayload:(int)payload dtxPayload:(int)dtxPayload redPayload:(int)redPayload secondaryPayloads:(id)payloads allowAudioSwitching:(BOOL)switching sbr:(BOOL)sbr aacBlockSize:(int)size;
+- (id)payloadsForAudioSwitchingWithConfiguration:(id)configuration;
+- (void)addAudioPayload:(int)payload isSecondary:(BOOL)secondary sbr:(BOOL)sbr;
+- (void)addAudioRule:(id)rule;
+- (void)addAudioRules:(id)rules;
 - (void)clearAudioRules;
 - (void)dealloc;
-- (void)setRules:(id)a3;
+- (void)setRules:(id)rules;
 @end
 
 @implementation VCAudioRuleCollection
@@ -37,7 +37,7 @@
   return v2;
 }
 
-- (VCAudioRuleCollection)initWithConfiguration:(id)a3
+- (VCAudioRuleCollection)initWithConfiguration:(id)configuration
 {
   v4 = [(VCAudioRuleCollection *)self init];
   v5 = v4;
@@ -47,16 +47,16 @@
     goto LABEL_4;
   }
 
-  if (!a3)
+  if (!configuration)
   {
     [VCAudioRuleCollection initWithConfiguration:v4];
     goto LABEL_4;
   }
 
-  v4->_aacBlockSize = [a3 aacBlockSize];
-  v5->_allowAudioSwitching = [a3 allowAudioSwitching];
-  v5->_usesSBR = [a3 usesSBR];
-  if (![(VCAudioRuleCollection *)v5 setUpAudioRulesWithConfiguration:a3])
+  v4->_aacBlockSize = [configuration aacBlockSize];
+  v5->_allowAudioSwitching = [configuration allowAudioSwitching];
+  v5->_usesSBR = [configuration usesSBR];
+  if (![(VCAudioRuleCollection *)v5 setUpAudioRulesWithConfiguration:configuration])
   {
 LABEL_4:
 
@@ -66,23 +66,23 @@ LABEL_4:
   return v5;
 }
 
-- (id)initPrimaryPayload:(int)a3 dtxPayload:(int)a4 redPayload:(int)a5 secondaryPayloads:(id)a6 allowAudioSwitching:(BOOL)a7 sbr:(BOOL)a8 aacBlockSize:(int)a9
+- (id)initPrimaryPayload:(int)payload dtxPayload:(int)dtxPayload redPayload:(int)redPayload secondaryPayloads:(id)payloads allowAudioSwitching:(BOOL)switching sbr:(BOOL)sbr aacBlockSize:(int)size
 {
-  v9 = a8;
-  v12 = *&a5;
-  v13 = *&a4;
-  v14 = *&a3;
+  sbrCopy = sbr;
+  v12 = *&redPayload;
+  v13 = *&dtxPayload;
+  v14 = *&payload;
   v27 = *MEMORY[0x1E69E9840];
   v15 = [(VCAudioRuleCollection *)self init];
   v16 = v15;
   if (v15)
   {
-    v15->_aacBlockSize = a9;
-    v15->_allowAudioSwitching = a7;
-    [(VCAudioRuleCollection *)v15 addAudioPayload:v14 isSecondary:0 sbr:v9];
+    v15->_aacBlockSize = size;
+    v15->_allowAudioSwitching = switching;
+    [(VCAudioRuleCollection *)v15 addAudioPayload:v14 isSecondary:0 sbr:sbrCopy];
     if (v13 != 128)
     {
-      [(VCAudioRuleCollection *)v16 addAudioPayload:v13 isSecondary:1 sbr:v9];
+      [(VCAudioRuleCollection *)v16 addAudioPayload:v13 isSecondary:1 sbr:sbrCopy];
     }
 
     if (v12 != 128)
@@ -94,7 +94,7 @@ LABEL_4:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v17 = [a6 countByEnumeratingWithState:&v23 objects:v22 count:16];
+    v17 = [payloads countByEnumeratingWithState:&v23 objects:v22 count:16];
     if (v17)
     {
       v18 = v17;
@@ -106,14 +106,14 @@ LABEL_4:
         {
           if (*v24 != v19)
           {
-            objc_enumerationMutation(a6);
+            objc_enumerationMutation(payloads);
           }
 
-          -[VCAudioRuleCollection addAudioPayload:isSecondary:sbr:](v16, "addAudioPayload:isSecondary:sbr:", [*(*(&v23 + 1) + 8 * v20++) unsignedIntValue], 1, v9);
+          -[VCAudioRuleCollection addAudioPayload:isSecondary:sbr:](v16, "addAudioPayload:isSecondary:sbr:", [*(*(&v23 + 1) + 8 * v20++) unsignedIntValue], 1, sbrCopy);
         }
 
         while (v18 != v20);
-        v18 = [a6 countByEnumeratingWithState:&v23 objects:v22 count:16];
+        v18 = [payloads countByEnumeratingWithState:&v23 objects:v22 count:16];
       }
 
       while (v18);
@@ -132,11 +132,11 @@ LABEL_4:
   [(VCAudioRuleCollection *)&v3 dealloc];
 }
 
-- (void)addAudioPayload:(int)a3 isSecondary:(BOOL)a4 sbr:(BOOL)a5
+- (void)addAudioPayload:(int)payload isSecondary:(BOOL)secondary sbr:(BOOL)sbr
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = *&a3;
+  sbrCopy = sbr;
+  secondaryCopy = secondary;
+  v7 = *&payload;
   v9 = [VCAudioRule alloc];
   aacBlockSize = 0;
   if ((v7 - 101) <= 5 && ((1 << (v7 - 101)) & 0x39) != 0)
@@ -144,28 +144,28 @@ LABEL_4:
     aacBlockSize = self->_aacBlockSize;
   }
 
-  v12 = (v7 == 101 || (v7 - 104) < 3) && v5;
-  v13 = [(VCAudioRule *)v9 initWithPayload:v7 isSecondary:v6 sbr:v12 samplesPerBlock:aacBlockSize];
+  v12 = (v7 == 101 || (v7 - 104) < 3) && sbrCopy;
+  v13 = [(VCAudioRule *)v9 initWithPayload:v7 isSecondary:secondaryCopy sbr:v12 samplesPerBlock:aacBlockSize];
   [(VCAudioRuleCollection *)self addAudioRule:v13];
 }
 
-+ (void)restrictPayloads:(id)a3 forChannelCount:(unint64_t)a4
++ (void)restrictPayloads:(id)payloads forChannelCount:(unint64_t)count
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a4 == 4)
+  if (count == 4)
   {
-    v5 = [a1 payloadsForQuadChannel];
+    payloadsForQuadChannel = [self payloadsForQuadChannel];
 
-    [a3 intersectSet:v5];
+    [payloads intersectSet:payloadsForQuadChannel];
   }
 
-  else if (a4 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+  else if (count - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
       __str = 0;
-      v7 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
-      asprintf(&__str, "Unexpected requiredChannelCount=%lu, removing all payloads=%s.", a4, v7);
+      v7 = payloads ? [objc_msgSend(payloads "description")] : "<nil>";
+      asprintf(&__str, "Unexpected requiredChannelCount=%lu, removing all payloads=%s.", count, v7);
       if (__str)
       {
         __lasts = 0;
@@ -201,40 +201,40 @@ LABEL_4:
       }
     }
 
-    [a3 removeAllObjects];
+    [payloads removeAllObjects];
   }
 }
 
-+ (BOOL)processPayloads:(id)a3 withMinBlockSize:(unsigned __int16)a4 allowLargerBlockSizes:(BOOL)a5
++ (BOOL)processPayloads:(id)payloads withMinBlockSize:(unsigned __int16)size allowLargerBlockSizes:(BOOL)sizes
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a4 == 3)
+  if (size == 3)
   {
     return 1;
   }
 
-  v5 = a5;
-  v6 = a4;
-  if (a4 == 2)
+  sizesCopy = sizes;
+  sizeCopy = size;
+  if (size == 2)
   {
 LABEL_5:
     v8 = +[VCAudioRuleCollection payloadsFor10MSBlockSize];
-    [a3 addObjectsFromArray:{objc_msgSend(v8, "allObjects")}];
-    if (v5)
+    [payloads addObjectsFromArray:{objc_msgSend(v8, "allObjects")}];
+    if (sizesCopy)
     {
       return 1;
     }
 
 LABEL_6:
-    [a3 intersectSet:v8];
+    [payloads intersectSet:v8];
     return 1;
   }
 
-  if (a4 == 1)
+  if (size == 1)
   {
     v8 = +[VCAudioRuleCollection payloadsFor5MSBlockSize];
-    [a3 addObjectsFromArray:{objc_msgSend(v8, "allObjects")}];
-    if (!v5)
+    [payloads addObjectsFromArray:{objc_msgSend(v8, "allObjects")}];
+    if (!sizesCopy)
     {
       goto LABEL_6;
     }
@@ -245,8 +245,8 @@ LABEL_6:
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
     __str = 0;
-    v10 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
-    asprintf(&__str, "Unexpected minBlockSize=%hu allowLargerBlockSizes=%d, removing all payloads=%s.", v6, v5, v10);
+    v10 = payloads ? [objc_msgSend(payloads "description")] : "<nil>";
+    asprintf(&__str, "Unexpected minBlockSize=%hu allowLargerBlockSizes=%d, removing all payloads=%s.", sizeCopy, sizesCopy, v10);
     if (__str)
     {
       __lasts = 0;
@@ -282,28 +282,28 @@ LABEL_6:
     }
   }
 
-  [a3 removeAllObjects];
+  [payloads removeAllObjects];
   return 0;
 }
 
-+ (void)addSupportGuardedPayloadsToBasePayloads:(id)a3 withConfiguration:(id)a4 forSwitchingCase:(BOOL)a5
++ (void)addSupportGuardedPayloadsToBasePayloads:(id)payloads withConfiguration:(id)configuration forSwitchingCase:(BOOL)case
 {
   v8 = +[GKSConnectivitySettings supportsEVSCodec];
   v9 = +[GKSConnectivitySettings supportsRedAudio];
   if (v8)
   {
-    [a3 addObject:&unk_1F5798700];
+    [payloads addObject:&unk_1F5798700];
   }
 
-  if ([a4 addACC24])
+  if ([configuration addACC24])
   {
-    [a3 addObject:&unk_1F5798718];
+    [payloads addObject:&unk_1F5798718];
   }
 
-  if (!a5 && v9)
+  if (!case && v9)
   {
 
-    [a3 addObject:&unk_1F5798730];
+    [payloads addObject:&unk_1F5798730];
   }
 }
 
@@ -322,11 +322,11 @@ LABEL_6:
 + (int)getForcedPayload
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [+[VCDefaults sharedInstance](VCDefaults forceAudioPayload];
-  v3 = v2;
-  if (v2 - 97 <= 0x1F)
+  forceAudioPayload = [+[VCDefaults sharedInstance](VCDefaults forceAudioPayload];
+  v3 = forceAudioPayload;
+  if (forceAudioPayload - 97 <= 0x1F)
   {
-    if (((1 << (v2 - 97)) & 0x3418B93) != 0)
+    if (((1 << (forceAudioPayload - 97)) & 0x3418B93) != 0)
     {
 LABEL_3:
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -350,13 +350,13 @@ LABEL_3:
       return v3;
     }
 
-    if (v2 == 128)
+    if (forceAudioPayload == 128)
     {
       return v3;
     }
   }
 
-  if (v2 <= 0xD && ((1 << v2) & 0x2201) != 0)
+  if (forceAudioPayload <= 0xD && ((1 << forceAudioPayload) & 0x2201) != 0)
   {
     goto LABEL_3;
   }
@@ -382,36 +382,36 @@ LABEL_3:
   return 128;
 }
 
-- (void)setRules:(id)a3
+- (void)setRules:(id)rules
 {
-  if (self->_rules != a3)
+  if (self->_rules != rules)
   {
     [(VCAudioRuleCollection *)self clearAudioRules];
 
-    [(VCAudioRuleCollection *)self addAudioRules:a3];
+    [(VCAudioRuleCollection *)self addAudioRules:rules];
   }
 }
 
-- (void)addAudioRule:(id)a3
+- (void)addAudioRule:(id)rule
 {
   [(NSMutableArray *)self->_rules addObject:?];
-  if ([a3 isSecondary])
+  if ([rule isSecondary])
   {
     secondaryPayloads = self->_secondaryPayloads;
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "payload")}];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(rule, "payload")}];
 
     [(NSMutableArray *)secondaryPayloads addObject:v6];
   }
 }
 
-- (void)addAudioRules:(id)a3
+- (void)addAudioRules:(id)rules
 {
   v14 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  v5 = [rules countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v5)
   {
     v6 = v5;
@@ -423,14 +423,14 @@ LABEL_3:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(rules);
         }
 
         [(VCAudioRuleCollection *)self addAudioRule:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v6 = [rules countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v6);
@@ -445,7 +445,7 @@ LABEL_3:
   [(NSMutableArray *)secondaryPayloads removeAllObjects];
 }
 
-- (BOOL)isPayloadSupported:(int)a3
+- (BOOL)isPayloadSupported:(int)supported
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -468,7 +468,7 @@ LABEL_3:
           objc_enumerationMutation(rules);
         }
 
-        if ([*(*(&v11 + 1) + 8 * v8) payload] == a3)
+        if ([*(*(&v11 + 1) + 8 * v8) payload] == supported)
         {
           LOBYTE(v5) = 1;
           return v5;
@@ -492,14 +492,14 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     allowAudioRecording = self->_allowAudioRecording;
-    if (allowAudioRecording == [a3 allowAudioRecording] && (allowAudioSwitching = self->_allowAudioSwitching, allowAudioSwitching == objc_msgSend(a3, "allowAudioSwitching")) && (v8 = -[NSMutableArray count](self->_rules, "count"), v8 == objc_msgSend(objc_msgSend(a3, "rules"), "count")))
+    if (allowAudioRecording == [equal allowAudioRecording] && (allowAudioSwitching = self->_allowAudioSwitching, allowAudioSwitching == objc_msgSend(equal, "allowAudioSwitching")) && (v8 = -[NSMutableArray count](self->_rules, "count"), v8 == objc_msgSend(objc_msgSend(equal, "rules"), "count")))
     {
       v18 = 0u;
       v19 = 0u;
@@ -520,7 +520,7 @@ LABEL_7:
             objc_enumerationMutation(rules);
           }
 
-          v5 = [objc_msgSend(a3 "rules")];
+          v5 = [objc_msgSend(equal "rules")];
           if (!v5)
           {
             break;
@@ -555,7 +555,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = [[VCAudioRuleCollection allocWithZone:?]];
@@ -595,7 +595,7 @@ LABEL_7:
   return v4;
 }
 
-- (id)payloadsForAudioSwitchingWithConfiguration:(id)a3
+- (id)payloadsForAudioSwitchingWithConfiguration:(id)configuration
 {
   if (!self->_allowAudioSwitching)
   {
@@ -603,11 +603,11 @@ LABEL_7:
   }
 
   v4 = +[VCAudioRuleCollection secondaryPayloads];
-  [VCAudioRuleCollection addSupportGuardedPayloadsToBasePayloads:v4 withConfiguration:a3 forSwitchingCase:1];
+  [VCAudioRuleCollection addSupportGuardedPayloadsToBasePayloads:v4 withConfiguration:configuration forSwitchingCase:1];
   return v4;
 }
 
-- (BOOL)setUpAudioRulesWithConfiguration:(id)a3
+- (BOOL)setUpAudioRulesWithConfiguration:(id)configuration
 {
   v70 = *MEMORY[0x1E69E9840];
   if ([(VCAudioRuleCollection *)self setUpForcedPayload])
@@ -617,7 +617,7 @@ LABEL_14:
     return v27;
   }
 
-  if ([a3 isContinuity])
+  if ([configuration isContinuity])
   {
     v5 = +[VCAudioRuleCollection continuityPayloads];
   }
@@ -628,14 +628,14 @@ LABEL_14:
   }
 
   v6 = v5;
-  [VCAudioRuleCollection addSupportGuardedPayloadsToBasePayloads:v5 withConfiguration:a3 forSwitchingCase:0];
-  if (!+[VCAudioRuleCollection processPayloads:withMinBlockSize:allowLargerBlockSizes:](VCAudioRuleCollection, "processPayloads:withMinBlockSize:allowLargerBlockSizes:", v6, [a3 minBlockSize], objc_msgSend(a3, "allowLargerBlockSizes")))
+  [VCAudioRuleCollection addSupportGuardedPayloadsToBasePayloads:v5 withConfiguration:configuration forSwitchingCase:0];
+  if (!+[VCAudioRuleCollection processPayloads:withMinBlockSize:allowLargerBlockSizes:](VCAudioRuleCollection, "processPayloads:withMinBlockSize:allowLargerBlockSizes:", v6, [configuration minBlockSize], objc_msgSend(configuration, "allowLargerBlockSizes")))
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
       __str = 0;
       v28 = v6 ? [objc_msgSend(v6 "description")] : "<nil>";
-      v38 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
+      v38 = configuration ? [objc_msgSend(configuration "description")] : "<nil>";
       asprintf(&__str, "Failed to process payloads=%s with configuration=%s", v28, v38);
       if (__str)
       {
@@ -657,9 +657,9 @@ LABEL_14:
               v58 = 1024;
               v59 = 283;
               v60 = 2080;
-              v61 = "";
+              configurationCopy2 = "";
               v62 = 2080;
-              v63 = v39;
+              selfCopy = v39;
               _os_log_error_impl(&dword_1DB56E000, v42, OS_LOG_TYPE_ERROR, " [%s] %s:%d %s %s", buf, 0x30u);
             }
           }
@@ -675,8 +675,8 @@ LABEL_14:
     goto LABEL_41;
   }
 
-  +[VCAudioRuleCollection restrictPayloads:forChannelCount:](VCAudioRuleCollection, "restrictPayloads:forChannelCount:", v6, [a3 channelCount]);
-  v7 = [(VCAudioRuleCollection *)self payloadsForAudioSwitchingWithConfiguration:a3];
+  +[VCAudioRuleCollection restrictPayloads:forChannelCount:](VCAudioRuleCollection, "restrictPayloads:forChannelCount:", v6, [configuration channelCount]);
+  v7 = [(VCAudioRuleCollection *)self payloadsForAudioSwitchingWithConfiguration:configuration];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
@@ -738,11 +738,11 @@ LABEL_14:
     v55 = v35;
     v56 = 2080;
     OUTLINED_FUNCTION_0_4();
-    v61 = v29;
+    configurationCopy2 = v29;
     v62 = 2048;
-    v63 = self;
+    selfCopy = self;
     v64 = v37;
-    v65 = a3;
+    configurationCopy = configuration;
     v32 = " [%s] %s:%d %@(%p) Failed to configure any payloads for configuration=%@";
     v33 = v36;
     v34 = 58;
@@ -763,7 +763,7 @@ LABEL_14:
     v55 = v30;
     v56 = 2080;
     OUTLINED_FUNCTION_0_4();
-    v61 = a3;
+    configurationCopy2 = configuration;
     v32 = " [%s] %s:%d Failed to configure any payloads for configuration=%@";
     v33 = v31;
     v34 = 38;

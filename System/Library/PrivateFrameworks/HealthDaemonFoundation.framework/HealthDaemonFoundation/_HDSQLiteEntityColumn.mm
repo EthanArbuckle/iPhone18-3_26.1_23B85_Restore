@@ -1,5 +1,5 @@
 @interface _HDSQLiteEntityColumn
-- (_HDSQLiteEntityColumn)initWithName:(id)a3 columnType:(id)a4 keyPathType:(unsigned __int8)a5 foreignKey:(id)a6;
+- (_HDSQLiteEntityColumn)initWithName:(id)name columnType:(id)type keyPathType:(unsigned __int8)pathType foreignKey:(id)key;
 - (id)_columnNameAndTypeString;
 - (id)creationSQL;
 - (id)description;
@@ -7,14 +7,14 @@
 
 @implementation _HDSQLiteEntityColumn
 
-- (_HDSQLiteEntityColumn)initWithName:(id)a3 columnType:(id)a4 keyPathType:(unsigned __int8)a5 foreignKey:(id)a6
+- (_HDSQLiteEntityColumn)initWithName:(id)name columnType:(id)type keyPathType:(unsigned __int8)pathType foreignKey:(id)key
 {
-  v7 = a5;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  HasForeignKey = HDKeyPathTypeHasForeignKey(v7);
-  if (!v13 && HasForeignKey)
+  pathTypeCopy = pathType;
+  nameCopy = name;
+  typeCopy = type;
+  keyCopy = key;
+  HasForeignKey = HDKeyPathTypeHasForeignKey(pathTypeCopy);
+  if (!keyCopy && HasForeignKey)
   {
     [_HDSQLiteEntityColumn initWithName:a2 columnType:self keyPathType:? foreignKey:?];
   }
@@ -24,16 +24,16 @@
   v15 = [(_HDSQLiteEntityColumn *)&v21 init];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [nameCopy copy];
     name = v15->_name;
     v15->_name = v16;
 
-    v18 = [v12 copy];
+    v18 = [typeCopy copy];
     columnType = v15->_columnType;
     v15->_columnType = v18;
 
-    v15->_keyPathType = v7;
-    objc_storeStrong(&v15->_foreignKey, a6);
+    v15->_keyPathType = pathTypeCopy;
+    objc_storeStrong(&v15->_foreignKey, key);
   }
 
   return v15;
@@ -44,52 +44,52 @@
   if (self->_foreignKey)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(_HDSQLiteEntityColumn *)self _columnNameAndTypeString];
-    v6 = [(HDSQLiteEntityForeignKey *)self->_foreignKey creationSQL];
-    v3 = [v4 stringWithFormat:@"%@ %@", v5, v6];
+    _columnNameAndTypeString = [(_HDSQLiteEntityColumn *)self _columnNameAndTypeString];
+    creationSQL = [(HDSQLiteEntityForeignKey *)self->_foreignKey creationSQL];
+    _columnNameAndTypeString2 = [v4 stringWithFormat:@"%@ %@", _columnNameAndTypeString, creationSQL];
   }
 
   else
   {
-    v3 = [(_HDSQLiteEntityColumn *)self _columnNameAndTypeString];
+    _columnNameAndTypeString2 = [(_HDSQLiteEntityColumn *)self _columnNameAndTypeString];
   }
 
-  return v3;
+  return _columnNameAndTypeString2;
 }
 
 - (id)_columnNameAndTypeString
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy = self;
     v3 = MEMORY[0x277CCACA8];
-    v4 = *(a1 + 16);
-    v5 = [*(a1 + 24) length];
+    v4 = *(self + 16);
+    v5 = [*(self + 24) length];
     v6 = " ";
     if (!v5)
     {
       v6 = "";
     }
 
-    v7 = *(v2 + 24);
+    v7 = *(selfCopy + 24);
     if (!v7)
     {
       v7 = &stru_28637B800;
     }
 
-    a1 = [v3 stringWithFormat:@"%@%s%@", v4, v6, v7];
+    self = [v3 stringWithFormat:@"%@%s%@", v4, v6, v7];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_HDSQLiteEntityColumn *)self _columnNameAndTypeString];
+  _columnNameAndTypeString = [(_HDSQLiteEntityColumn *)self _columnNameAndTypeString];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:self->_keyPathType];
-  v6 = [v3 stringWithFormat:@"%@ (%@)", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@ (%@)", _columnNameAndTypeString, v5];
 
   return v6;
 }

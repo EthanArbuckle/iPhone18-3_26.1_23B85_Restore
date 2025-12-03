@@ -1,12 +1,12 @@
 @interface CRThemeAssetOverrider
 + (BOOL)_shouldForceUpdateAsset;
-+ (id)_carplayLibraryDirectoryForAssetIdentifier:(id)a3;
++ (id)_carplayLibraryDirectoryForAssetIdentifier:(id)identifier;
 + (id)_carplayLibraryURL;
-+ (void)_readMetadataFromAsset:(id)a3 assetIdentifier:(id)a4 completion:(id)a5;
-- (BOOL)hasOverrideAssetForAssetIdentifier:(id)a3;
++ (void)_readMetadataFromAsset:(id)asset assetIdentifier:(id)identifier completion:(id)completion;
+- (BOOL)hasOverrideAssetForAssetIdentifier:(id)identifier;
 - (CRThemeAssetOverrider)init;
-- (id)_internalQueue_generatedAssetForSourceAssetURL:(id)a3 version:(id)a4;
-- (void)setupOverrideAssetForRequest:(id)a3 newerThanVersion:(id)a4 completion:(id)a5;
+- (id)_internalQueue_generatedAssetForSourceAssetURL:(id)l version:(id)version;
+- (void)setupOverrideAssetForRequest:(id)request newerThanVersion:(id)version completion:(id)completion;
 @end
 
 @implementation CRThemeAssetOverrider
@@ -31,26 +31,26 @@
   return v2;
 }
 
-- (BOOL)hasOverrideAssetForAssetIdentifier:(id)a3
+- (BOOL)hasOverrideAssetForAssetIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _carplayLibraryDirectoryForAssetIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [objc_opt_class() _carplayLibraryDirectoryForAssetIdentifier:identifierCopy];
 
   return v4 != 0;
 }
 
-- (void)setupOverrideAssetForRequest:(id)a3 newerThanVersion:(id)a4 completion:(id)a5
+- (void)setupOverrideAssetForRequest:(id)request newerThanVersion:(id)version completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  requestCopy = request;
+  versionCopy = version;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = [v8 assetIdentifier];
-    v12 = [v9 iOSContentVersion];
-    v13 = [v9 accessoryContentVersion];
-    v14 = [(CRThemeAssetOverrider *)self mainQueue_pendingOverrideAssetIDs];
-    v15 = [v14 containsObject:v11];
+    assetIdentifier = [requestCopy assetIdentifier];
+    iOSContentVersion = [versionCopy iOSContentVersion];
+    accessoryContentVersion = [versionCopy accessoryContentVersion];
+    mainQueue_pendingOverrideAssetIDs = [(CRThemeAssetOverrider *)self mainQueue_pendingOverrideAssetIDs];
+    v15 = [mainQueue_pendingOverrideAssetIDs containsObject:assetIdentifier];
 
     if (v15)
     {
@@ -58,69 +58,69 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v31 = v11;
+        v31 = assetIdentifier;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "already creating an override asset for %{public}@, ignoring additional request", buf, 0xCu);
       }
 
-      v17 = [(CRThemeAssetOverrider *)self internalQueue];
+      internalQueue = [(CRThemeAssetOverrider *)self internalQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100057798;
       block[3] = &unk_1000DD960;
       v18 = &v29;
-      v29 = v10;
-      dispatch_async(v17, block);
+      v29 = completionCopy;
+      dispatch_async(internalQueue, block);
     }
 
     else
     {
-      v19 = [(CRThemeAssetOverrider *)self mainQueue_pendingOverrideAssetIDs];
-      [v19 addObject:v11];
+      mainQueue_pendingOverrideAssetIDs2 = [(CRThemeAssetOverrider *)self mainQueue_pendingOverrideAssetIDs];
+      [mainQueue_pendingOverrideAssetIDs2 addObject:assetIdentifier];
 
-      v20 = [(CRThemeAssetOverrider *)self internalQueue];
+      internalQueue2 = [(CRThemeAssetOverrider *)self internalQueue];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_1000577B0;
       v21[3] = &unk_1000DF598;
       v18 = &v27;
-      v27 = v10;
+      v27 = completionCopy;
       v21[4] = self;
-      v22 = v11;
-      v23 = v12;
-      v24 = v13;
-      v25 = v9;
-      v26 = v8;
-      dispatch_async(v20, v21);
+      v22 = assetIdentifier;
+      v23 = iOSContentVersion;
+      v24 = accessoryContentVersion;
+      v25 = versionCopy;
+      v26 = requestCopy;
+      dispatch_async(internalQueue2, v21);
     }
   }
 }
 
-- (id)_internalQueue_generatedAssetForSourceAssetURL:(id)a3 version:(id)a4
+- (id)_internalQueue_generatedAssetForSourceAssetURL:(id)l version:(id)version
 {
-  v43 = a3;
-  v6 = a4;
-  v7 = [(CRThemeAssetOverrider *)self internalQueue];
-  dispatch_assert_queue_V2(v7);
+  lCopy = l;
+  versionCopy = version;
+  internalQueue = [(CRThemeAssetOverrider *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v8 = [objc_opt_class() _carplayLibraryURL];
-  v9 = [v8 URLByAppendingPathComponent:@"CarPlayApp" isDirectory:1];
-  v10 = [v6 identifier];
-  v11 = [v9 URLByAppendingPathComponent:v10 isDirectory:1];
+  _carplayLibraryURL = [objc_opt_class() _carplayLibraryURL];
+  v9 = [_carplayLibraryURL URLByAppendingPathComponent:@"CarPlayApp" isDirectory:1];
+  identifier = [versionCopy identifier];
+  v11 = [v9 URLByAppendingPathComponent:identifier isDirectory:1];
 
-  v12 = [v6 iOSContentVersion];
-  v13 = [v12 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+  iOSContentVersion = [versionCopy iOSContentVersion];
+  v13 = [iOSContentVersion stringByReplacingOccurrencesOfString:@"." withString:@"_"];
 
-  v14 = [v6 accessoryContentVersion];
-  v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Asset-%@-%lu", v13, [v14 unsignedIntegerValue]);
+  accessoryContentVersion = [versionCopy accessoryContentVersion];
+  v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Asset-%@-%lu", v13, [accessoryContentVersion unsignedIntegerValue]);
 
   v16 = [v11 URLByAppendingPathComponent:v15 isDirectory:1];
   v17 = +[NSFileManager defaultManager];
   [v17 removeItemAtURL:v16 error:0];
 
   v18 = +[NSFileManager defaultManager];
-  v19 = [v16 path];
+  path = [v16 path];
   v49 = 0;
-  v20 = [v18 createDirectoryAtPath:v19 withIntermediateDirectories:1 attributes:0 error:&v49];
+  v20 = [v18 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v49];
   v21 = v49;
 
   if (v20)
@@ -129,8 +129,8 @@
     v38 = v15;
     v39 = v13;
     v40 = v11;
-    v41 = v8;
-    v42 = v6;
+    v41 = _carplayLibraryURL;
+    v42 = versionCopy;
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
@@ -156,7 +156,7 @@
           }
 
           v27 = *(*(&v45 + 1) + 8 * i);
-          v28 = [v43 URLByAppendingPathComponent:v27];
+          v28 = [lCopy URLByAppendingPathComponent:v27];
           v29 = [v16 URLByAppendingPathComponent:v27];
           v30 = +[NSFileManager defaultManager];
           v44 = 0;
@@ -186,8 +186,8 @@
     }
 
     v34 = v16;
-    v8 = v41;
-    v6 = v42;
+    _carplayLibraryURL = v41;
+    versionCopy = v42;
     v13 = v39;
     v11 = v40;
     v21 = v37;
@@ -227,39 +227,39 @@
 {
   v2 = +[NSFileManager defaultManager];
   v3 = [v2 URLsForDirectory:5 inDomains:1];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 URLByAppendingPathComponent:@"CarPlay" isDirectory:1];
+  v5 = [firstObject URLByAppendingPathComponent:@"CarPlay" isDirectory:1];
 
   return v5;
 }
 
-+ (id)_carplayLibraryDirectoryForAssetIdentifier:(id)a3
++ (id)_carplayLibraryDirectoryForAssetIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 length])
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (!identifierCopy || ![identifierCopy length])
   {
-    v9 = 0;
+    uRLByStandardizingPath = 0;
     goto LABEL_17;
   }
 
-  v6 = [a1 _carplayLibraryURL];
-  v7 = [v6 URLByAppendingPathComponent:v5 isDirectory:1];
+  _carplayLibraryURL = [self _carplayLibraryURL];
+  v7 = [_carplayLibraryURL URLByAppendingPathComponent:v5 isDirectory:1];
   if (v7)
   {
     v8 = v7;
-    v9 = [v7 URLByStandardizingPath];
+    uRLByStandardizingPath = [v7 URLByStandardizingPath];
 
-    v10 = [v9 path];
-    v11 = [v6 path];
-    v12 = [v10 hasPrefix:v11];
+    path = [uRLByStandardizingPath path];
+    path2 = [_carplayLibraryURL path];
+    v12 = [path hasPrefix:path2];
 
     if (v12)
     {
       v13 = +[NSFileManager defaultManager];
-      v14 = [v9 path];
-      v15 = [v13 fileExistsAtPath:v14];
+      path3 = [uRLByStandardizingPath path];
+      v15 = [v13 fileExistsAtPath:path3];
 
       v16 = CarThemeAssetsLogging();
       v17 = v16;
@@ -268,7 +268,7 @@
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v19 = 138412290;
-          v20 = v9;
+          v20 = uRLByStandardizingPath;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "using override asset %@", &v19, 0xCu);
         }
 
@@ -290,29 +290,29 @@
       }
     }
 
-    v17 = v9;
-    v9 = 0;
+    v17 = uRLByStandardizingPath;
+    uRLByStandardizingPath = 0;
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v9 = 0;
+  uRLByStandardizingPath = 0;
 LABEL_16:
 
 LABEL_17:
 
-  return v9;
+  return uRLByStandardizingPath;
 }
 
-+ (void)_readMetadataFromAsset:(id)a3 assetIdentifier:(id)a4 completion:(id)a5
++ (void)_readMetadataFromAsset:(id)asset assetIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a5;
-  if (v7)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = CARThemeAssetInfoFilename;
-    v9 = a4;
-    v10 = [a3 URLByAppendingPathComponent:v8];
+    identifierCopy = identifier;
+    v10 = [asset URLByAppendingPathComponent:v8];
     v26 = 0;
     v11 = [NSDictionary dictionaryWithContentsOfURL:v10 error:&v26];
     v12 = v26;
@@ -324,7 +324,7 @@ LABEL_17:
         sub_100088540();
       }
 
-      (*(v7 + 2))(v7, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0);
     }
 
     objc_opt_class();
@@ -367,7 +367,7 @@ LABEL_17:
       v19 = [v11 objectForKey:kCFBundleVersionKey];
       if (!v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
-        (*(v7 + 2))(v7, 0, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0);
       }
 
       v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v19 integerValue]);
@@ -383,7 +383,7 @@ LABEL_17:
       }
     }
 
-    v21 = [[CARThemeAssetVersion alloc] initWithIdentifier:v9 iOSContentVersion:v15 accessoryContentVersion:v17];
+    v21 = [[CARThemeAssetVersion alloc] initWithIdentifier:identifierCopy iOSContentVersion:v15 accessoryContentVersion:v17];
 
     objc_opt_class();
     v22 = [v11 objectForKey:@"MinimumCompatibilityVersion"];
@@ -409,7 +409,7 @@ LABEL_17:
       v25 = 0;
     }
 
-    (*(v7 + 2))(v7, v21, v23, v25);
+    (*(completionCopy + 2))(completionCopy, v21, v23, v25);
   }
 }
 

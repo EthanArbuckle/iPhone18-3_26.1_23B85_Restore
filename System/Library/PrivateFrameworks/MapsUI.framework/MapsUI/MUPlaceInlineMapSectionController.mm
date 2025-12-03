@@ -1,5 +1,5 @@
 @interface MUPlaceInlineMapSectionController
-- (MUPlaceInlineMapSectionController)initWithMapItem:(id)a3 configuration:(id)a4;
+- (MUPlaceInlineMapSectionController)initWithMapItem:(id)item configuration:(id)configuration;
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel;
 - (UIView)sectionView;
 - (UIViewController)sectionViewController;
@@ -54,16 +54,16 @@
       inlineMapViewController = self->_poiInlineMapViewController;
     }
 
-    v6 = [(MKPlaceInlineMapViewController *)inlineMapViewController view];
-    [v6 setPreservesSuperviewLayoutMargins:0];
+    view = [(MKPlaceInlineMapViewController *)inlineMapViewController view];
+    [view setPreservesSuperviewLayoutMargins:0];
     v7 = [MUPlaceSectionView alloc];
-    v8 = [(MUPlaceInlineMapSectionController *)self sectionHeaderViewModel];
-    v9 = [(MUPlaceSectionView *)v7 initWithStyle:2 sectionHeaderViewModel:v8];
+    sectionHeaderViewModel = [(MUPlaceInlineMapSectionController *)self sectionHeaderViewModel];
+    v9 = [(MUPlaceSectionView *)v7 initWithStyle:2 sectionHeaderViewModel:sectionHeaderViewModel];
     v10 = self->_sectionView;
     self->_sectionView = v9;
 
     [(MUPlaceSectionView *)self->_sectionView configureWithSectionController:self];
-    [(MUPlaceSectionView *)self->_sectionView attachViewToContentView:v6];
+    [(MUPlaceSectionView *)self->_sectionView attachViewToContentView:view];
     v3 = self->_sectionView;
   }
 
@@ -73,16 +73,16 @@
 - (void)_setupInlineMap
 {
   v3 = MEMORY[0x1E696F328];
-  v4 = [(MUPlaceSectionController *)self mapItem];
-  v5 = [v3 inlineMapWithMapItem:v4 configuration:self->_configuration];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  v5 = [v3 inlineMapWithMapItem:mapItem configuration:self->_configuration];
   inlineMapViewController = self->_inlineMapViewController;
   self->_inlineMapViewController = v5;
 
   [(MKPlaceInlineMapViewController *)self->_inlineMapViewController setBottomHairlineHidden:1];
   [(MKPlaceInlineMapViewController *)self->_inlineMapViewController setDelegate:self];
   v7 = MEMORY[0x1E696F338];
-  v8 = [(MUPlaceSectionController *)self mapItem];
-  v9 = [v7 inlineMapWithMapItem:v8 configuration:self->_configuration];
+  mapItem2 = [(MUPlaceSectionController *)self mapItem];
+  v9 = [v7 inlineMapWithMapItem:mapItem2 configuration:self->_configuration];
   poiInlineMapViewController = self->_poiInlineMapViewController;
   self->_poiInlineMapViewController = v9;
 
@@ -91,12 +91,12 @@
   [(MKPlacePoisInlineMapViewController *)v11 setBottomHairlineHidden:1];
 }
 
-- (MUPlaceInlineMapSectionController)initWithMapItem:(id)a3 configuration:(id)a4
+- (MUPlaceInlineMapSectionController)initWithMapItem:(id)item configuration:(id)configuration
 {
-  v7 = a4;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = MUPlaceInlineMapSectionController;
-  v8 = [(MUPlaceSectionController *)&v13 initWithMapItem:a3];
+  v8 = [(MUPlaceSectionController *)&v13 initWithMapItem:item];
   if (v8)
   {
     v9 = MUGetPlaceCardLog();
@@ -106,7 +106,7 @@
       _os_signpost_emit_with_name_impl(&dword_1C5620000, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUPlaceInlineMapSectionControllerInit", "", v12, 2u);
     }
 
-    objc_storeStrong(&v8->_configuration, a4);
+    objc_storeStrong(&v8->_configuration, configuration);
     [(MUPlaceInlineMapSectionController *)v8 _setupInlineMap];
     v10 = MUGetPlaceCardLog();
     if (os_signpost_enabled(v10))

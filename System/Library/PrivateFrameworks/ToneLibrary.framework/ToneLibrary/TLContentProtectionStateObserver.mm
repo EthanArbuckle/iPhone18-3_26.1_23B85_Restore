@@ -1,12 +1,12 @@
 @interface TLContentProtectionStateObserver
 + (TLContentProtectionStateObserver)sharedContentProtectionStateObserver;
 - (TLContentProtectionStateObserver)init;
-- (id)_performBlockAfterProtectedContentUnlocked:(id)a3;
-- (id)performBlockAfterProtectedContentUnlocked:(id)a3;
+- (id)_performBlockAfterProtectedContentUnlocked:(id)unlocked;
+- (id)performBlockAfterProtectedContentUnlocked:(id)unlocked;
 - (int64_t)_queryCurrentUnlockedSinceBootStatus;
 - (void)_assertNotRunningOnAccessQueue;
 - (void)_assertRunningOnAccessQueue;
-- (void)_cancelBlockScheduledForProtectedContentUnlockedEventWithToken:(id)a3;
+- (void)_cancelBlockScheduledForProtectedContentUnlockedEventWithToken:(id)token;
 - (void)_cancelFirstUnlockNotifyToken;
 - (void)_handleFirstUnlockNotification;
 - (void)_loadContentProtectionStatusIfNeeded;
@@ -14,7 +14,7 @@
 - (void)_queryCurrentUnlockedSinceBootStatus;
 - (void)_registerFirstUnlockNotifyToken;
 - (void)_updateUnlockedSinceBootStatus;
-- (void)cancelBlockScheduledForProtectedContentUnlockedEventWithToken:(id)a3;
+- (void)cancelBlockScheduledForProtectedContentUnlockedEventWithToken:(id)token;
 - (void)dealloc;
 @end
 
@@ -49,9 +49,9 @@ uint64_t __72__TLContentProtectionStateObserver_sharedContentProtectionStateObse
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:v3];
-    v6 = [v5 bundleIdentifier];
+    bundleIdentifier = [v5 bundleIdentifier];
 
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@-%@", v6, v4, @"AccessQueue"];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@-%@", bundleIdentifier, v4, @"AccessQueue"];
     accessQueueLabel = v2->_accessQueueLabel;
     v2->_accessQueueLabel = v7;
 
@@ -93,9 +93,9 @@ uint64_t __40__TLContentProtectionStateObserver_init__block_invoke(uint64_t resu
   [(TLContentProtectionStateObserver *)&v5 dealloc];
 }
 
-- (id)performBlockAfterProtectedContentUnlocked:(id)a3
+- (id)performBlockAfterProtectedContentUnlocked:(id)unlocked
 {
-  v4 = a3;
+  unlockedCopy = unlocked;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -109,7 +109,7 @@ uint64_t __40__TLContentProtectionStateObserver_init__block_invoke(uint64_t resu
   block[3] = &unk_1E8579C08;
   v12 = &v13;
   block[4] = self;
-  v6 = v4;
+  v6 = unlockedCopy;
   v11 = v6;
   dispatch_sync(accessQueue, block);
   v7 = v14[5];
@@ -136,15 +136,15 @@ uint64_t __78__TLContentProtectionStateObserver_performBlockAfterProtectedConten
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_performBlockAfterProtectedContentUnlocked:(id)a3
+- (id)_performBlockAfterProtectedContentUnlocked:(id)unlocked
 {
-  v4 = a3;
+  unlockedCopy = unlocked;
   [(TLContentProtectionStateObserver *)self _assertRunningOnAccessQueue];
   [(TLContentProtectionStateObserver *)self _loadContentProtectionStatusIfNeeded];
   if (self->_contentProtectionStatus == 1 && ([(TLContentProtectionStateObserver *)self _loadUnlockedSinceBootStatusIfNeeded], self->_unlockedSinceBootStatus != 1))
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [v6 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     blocksScheduledForProtectedContentUnlockedEvent = self->_blocksScheduledForProtectedContentUnlockedEvent;
     if (!blocksScheduledForProtectedContentUnlockedEvent)
@@ -156,38 +156,38 @@ uint64_t __78__TLContentProtectionStateObserver_performBlockAfterProtectedConten
       blocksScheduledForProtectedContentUnlockedEvent = self->_blocksScheduledForProtectedContentUnlockedEvent;
     }
 
-    v10 = [v4 copy];
+    v10 = [unlockedCopy copy];
     v11 = MEMORY[0x1DA730160]();
-    [(NSMutableDictionary *)blocksScheduledForProtectedContentUnlockedEvent setObject:v11 forKey:v5];
+    [(NSMutableDictionary *)blocksScheduledForProtectedContentUnlockedEvent setObject:v11 forKey:uUIDString];
   }
 
   else
   {
-    v5 = 0;
+    uUIDString = 0;
   }
 
-  return v5;
+  return uUIDString;
 }
 
-- (void)cancelBlockScheduledForProtectedContentUnlockedEventWithToken:(id)a3
+- (void)cancelBlockScheduledForProtectedContentUnlockedEventWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __98__TLContentProtectionStateObserver_cancelBlockScheduledForProtectedContentUnlockedEventWithToken___block_invoke;
   v7[3] = &unk_1E8578900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)_cancelBlockScheduledForProtectedContentUnlockedEventWithToken:(id)a3
+- (void)_cancelBlockScheduledForProtectedContentUnlockedEventWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   [(TLContentProtectionStateObserver *)self _assertRunningOnAccessQueue];
-  [(NSMutableDictionary *)self->_blocksScheduledForProtectedContentUnlockedEvent removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_blocksScheduledForProtectedContentUnlockedEvent removeObjectForKey:tokenCopy];
 }
 
 - (void)_assertRunningOnAccessQueue
@@ -215,16 +215,16 @@ uint64_t __78__TLContentProtectionStateObserver_performBlockAfterProtectedConten
         v9 = TLLogGeneral();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 lastPathComponent];
-          v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+          lastPathComponent = [v8 lastPathComponent];
+          callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
           v14 = 136381443;
           v15 = "[TLContentProtectionStateObserver _assertRunningOnAccessQueue]";
           v16 = 2113;
-          v17 = v10;
+          v17 = lastPathComponent;
           v18 = 2049;
           v19 = 155;
           v20 = 2113;
-          v21 = v11;
+          v21 = callStackSymbols;
           _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v14, 0x2Au);
         }
       }
@@ -274,16 +274,16 @@ uint64_t __78__TLContentProtectionStateObserver_performBlockAfterProtectedConten
         v9 = TLLogGeneral();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 lastPathComponent];
-          v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+          lastPathComponent = [v8 lastPathComponent];
+          callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
           v14 = 136381443;
           v15 = "[TLContentProtectionStateObserver _assertNotRunningOnAccessQueue]";
           v16 = 2113;
-          v17 = v10;
+          v17 = lastPathComponent;
           v18 = 2049;
           v19 = 163;
           v20 = 2113;
-          v21 = v11;
+          v21 = callStackSymbols;
           _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v14, 0x2Au);
         }
       }
@@ -347,7 +347,7 @@ void __67__TLContentProtectionStateObserver__registerFirstUnlockNotifyToken__blo
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543618;
-    v6 = self;
+    selfCopy = self;
     v7 = 2082;
     v8 = "com.apple.mobile.keybagd.first_unlock";
     _os_log_impl(&dword_1D9356000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Notify block fired for topic named %{public}s; updating unlocked since boot status.", &v5, 0x16u);
@@ -360,13 +360,13 @@ void __67__TLContentProtectionStateObserver__registerFirstUnlockNotifyToken__blo
 - (void)_updateUnlockedSinceBootStatus
 {
   [(TLContentProtectionStateObserver *)self _assertRunningOnAccessQueue];
-  v3 = [(TLContentProtectionStateObserver *)self _queryCurrentUnlockedSinceBootStatus];
-  self->_unlockedSinceBootStatus = v3;
-  if (v3 == 1)
+  _queryCurrentUnlockedSinceBootStatus = [(TLContentProtectionStateObserver *)self _queryCurrentUnlockedSinceBootStatus];
+  self->_unlockedSinceBootStatus = _queryCurrentUnlockedSinceBootStatus;
+  if (_queryCurrentUnlockedSinceBootStatus == 1)
   {
     [(TLContentProtectionStateObserver *)self _cancelFirstUnlockNotifyToken];
-    v4 = [(NSMutableDictionary *)self->_blocksScheduledForProtectedContentUnlockedEvent allValues];
-    v5 = [v4 copy];
+    allValues = [(NSMutableDictionary *)self->_blocksScheduledForProtectedContentUnlockedEvent allValues];
+    v5 = [allValues copy];
 
     blocksScheduledForProtectedContentUnlockedEvent = self->_blocksScheduledForProtectedContentUnlockedEvent;
     self->_blocksScheduledForProtectedContentUnlockedEvent = 0;

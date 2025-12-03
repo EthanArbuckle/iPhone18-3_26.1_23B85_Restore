@@ -1,17 +1,17 @@
 @interface CKUIBehaviorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)shouldUseDynamicScrolling;
 - (BOOL)shouldUseRotisserieScrolling;
 @end
 
 @implementation CKUIBehaviorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKUIBehavior"];
-  [v3 validateClass:@"CKUIBehavior" hasInstanceMethod:@"shouldUseDynamicScrolling" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKUIBehavior" hasInstanceMethod:@"shouldUseRotisserieScrolling" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKUIBehavior"];
+  [validationsCopy validateClass:@"CKUIBehavior" hasInstanceMethod:@"shouldUseDynamicScrolling" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKUIBehavior" hasInstanceMethod:@"shouldUseRotisserieScrolling" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)shouldUseDynamicScrolling

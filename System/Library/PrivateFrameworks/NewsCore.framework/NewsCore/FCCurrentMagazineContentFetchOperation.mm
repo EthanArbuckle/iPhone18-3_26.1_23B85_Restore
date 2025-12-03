@@ -1,10 +1,10 @@
 @interface FCCurrentMagazineContentFetchOperation
 - (BOOL)validateOperation;
 - (FCCurrentMagazineContentFetchOperation)init;
-- (FCCurrentMagazineContentFetchOperation)initWithContext:(id)a3 configIssueIDs:(id)a4 configArticleIDs:(id)a5 trendingArticleListID:(id)a6;
-- (id)_filterInaccessibleHeadlines:(uint64_t)a1;
-- (id)_filterInaccessibleIssues:(uint64_t)a1;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCCurrentMagazineContentFetchOperation)initWithContext:(id)context configIssueIDs:(id)ds configArticleIDs:(id)iDs trendingArticleListID:(id)d;
+- (id)_filterInaccessibleHeadlines:(uint64_t)headlines;
+- (id)_filterInaccessibleIssues:(uint64_t)issues;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -36,28 +36,28 @@
   objc_exception_throw(v6);
 }
 
-- (FCCurrentMagazineContentFetchOperation)initWithContext:(id)a3 configIssueIDs:(id)a4 configArticleIDs:(id)a5 trendingArticleListID:(id)a6
+- (FCCurrentMagazineContentFetchOperation)initWithContext:(id)context configIssueIDs:(id)ds configArticleIDs:(id)iDs trendingArticleListID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = FCCurrentMagazineContentFetchOperation;
   v15 = [(FCOperation *)&v25 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_context, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_context, context);
+    v17 = [dsCopy copy];
     configIssueIDs = v16->_configIssueIDs;
     v16->_configIssueIDs = v17;
 
-    v19 = [v13 copy];
+    v19 = [iDsCopy copy];
     configArticleIDs = v16->_configArticleIDs;
     v16->_configArticleIDs = v19;
 
-    v21 = [v14 copy];
+    v21 = [dCopy copy];
     trendingArticleListID = v16->_trendingArticleListID;
     v16->_trendingArticleListID = v21;
 
@@ -205,7 +205,7 @@ LABEL_17:
   if (self)
   {
     v6 = self->_context;
-    v7 = [(FCCloudContext *)v6 configurationManager];
+    configurationManager = [(FCCloudContext *)v6 configurationManager];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __92__FCCurrentMagazineContentFetchOperation__fetchConfigContentAndCurrentIssuesWithCompletion___block_invoke;
@@ -214,7 +214,7 @@ LABEL_17:
     v8 = v5;
 
     v29 = v8;
-    FCCoreConfigurationFetch(v7, v28);
+    FCCoreConfigurationFetch(configurationManager, v28);
   }
 
   v9 = FCDispatchQueueForQualityOfService([(FCCurrentMagazineContentFetchOperation *)self qualityOfService]);
@@ -360,20 +360,20 @@ uint64_t __58__FCCurrentMagazineContentFetchOperation_performOperation__block_in
   return [v21 finishedPerformingOperationWithError:0];
 }
 
-- (id)_filterInaccessibleIssues:(uint64_t)a1
+- (id)_filterInaccessibleIssues:(uint64_t)issues
 {
-  if (a1)
+  if (issues)
   {
-    v3 = *(a1 + 392);
+    v3 = *(issues + 392);
     v4 = a2;
-    v5 = [v3 issueAccessChecker];
+    issueAccessChecker = [v3 issueAccessChecker];
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __68__FCCurrentMagazineContentFetchOperation__filterInaccessibleIssues___block_invoke;
     v9[3] = &unk_1E7C3B270;
-    v10 = v5;
-    v6 = v5;
+    v10 = issueAccessChecker;
+    v6 = issueAccessChecker;
     v7 = [v4 fc_arrayOfObjectsPassingTest:v9];
   }
 
@@ -385,20 +385,20 @@ uint64_t __58__FCCurrentMagazineContentFetchOperation_performOperation__block_in
   return v7;
 }
 
-- (id)_filterInaccessibleHeadlines:(uint64_t)a1
+- (id)_filterInaccessibleHeadlines:(uint64_t)headlines
 {
-  if (a1)
+  if (headlines)
   {
-    v3 = *(a1 + 392);
+    v3 = *(headlines + 392);
     v4 = a2;
-    v5 = [v3 articleAccessChecker];
+    articleAccessChecker = [v3 articleAccessChecker];
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __71__FCCurrentMagazineContentFetchOperation__filterInaccessibleHeadlines___block_invoke;
     v9[3] = &unk_1E7C37550;
-    v10 = v5;
-    v6 = v5;
+    v10 = articleAccessChecker;
+    v6 = articleAccessChecker;
     v7 = [v4 fc_arrayOfObjectsPassingTest:v9];
   }
 
@@ -410,16 +410,16 @@ uint64_t __58__FCCurrentMagazineContentFetchOperation_performOperation__block_in
   return v7;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v5 = FCOperationLog;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(FCOperation *)self shortOperationDescription];
+      shortOperationDescription = [(FCOperation *)self shortOperationDescription];
       if (self)
       {
         resultConfigIssues = self->_resultConfigIssues;
@@ -468,7 +468,7 @@ uint64_t __58__FCCurrentMagazineContentFetchOperation_performOperation__block_in
 
       v15 = resultTrendingHeadlines;
       *buf = 138544386;
-      v26 = v24;
+      v26 = shortOperationDescription;
       v27 = 2048;
       v28 = v23;
       v29 = 2048;
@@ -481,11 +481,11 @@ uint64_t __58__FCCurrentMagazineContentFetchOperation_performOperation__block_in
     }
   }
 
-  v16 = [(FCCurrentMagazineContentFetchOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCCurrentMagazineContentFetchOperation *)self fetchCompletionHandler];
 
-  if (v16)
+  if (fetchCompletionHandler)
   {
-    v17 = [(FCCurrentMagazineContentFetchOperation *)self fetchCompletionHandler];
+    fetchCompletionHandler2 = [(FCCurrentMagazineContentFetchOperation *)self fetchCompletionHandler];
     if (self)
     {
       v18 = self->_resultConfigIssues;
@@ -502,7 +502,7 @@ uint64_t __58__FCCurrentMagazineContentFetchOperation_performOperation__block_in
       v21 = 0;
     }
 
-    (v17)[2](v17, v18, v19, v20, v21, v4);
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, v18, v19, v20, v21, errorCopy);
   }
 
   v22 = *MEMORY[0x1E69E9840];

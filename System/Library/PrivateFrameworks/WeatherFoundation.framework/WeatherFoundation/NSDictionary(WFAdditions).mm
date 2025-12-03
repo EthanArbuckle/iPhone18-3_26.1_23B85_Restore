@@ -18,7 +18,7 @@
 {
   v23 = *MEMORY[0x277D85DE8];
   v6 = a4;
-  v7 = a1;
+  selfCopy = self;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -42,23 +42,23 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v7 firstObject];
+          firstObject = [selfCopy firstObject];
         }
 
         else
         {
-          v14 = v7;
+          firstObject = selfCopy;
         }
 
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) == 0 || ([v14 objectForKeyedSubscript:v13], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
+        if ((objc_opt_isKindOfClass() & 1) == 0 || ([firstObject objectForKeyedSubscript:v13], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
         {
 
           v16 = 0;
           goto LABEL_17;
         }
 
-        v7 = [v14 objectForKeyedSubscript:v13];
+        selfCopy = [firstObject objectForKeyedSubscript:v13];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -74,13 +74,13 @@
   if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v16 = 0;
-    v14 = v7;
+    firstObject = selfCopy;
   }
 
   else
   {
-    v14 = v7;
-    v16 = v14;
+    firstObject = selfCopy;
+    v16 = firstObject;
   }
 
 LABEL_17:
@@ -91,7 +91,7 @@ LABEL_17:
 - (id)wf_dictionaryForKeyPath:()WFAdditions
 {
   v4 = a3;
-  v5 = [a1 wf_objectOfKind:objc_opt_class() forKeyPath:v4];
+  v5 = [self wf_objectOfKind:objc_opt_class() forKeyPath:v4];
 
   return v5;
 }
@@ -99,7 +99,7 @@ LABEL_17:
 - (id)wf_arrayForKeyPath:()WFAdditions
 {
   v4 = a3;
-  v5 = [a1 wf_objectOfKind:objc_opt_class() forKeyPath:v4];
+  v5 = [self wf_objectOfKind:objc_opt_class() forKeyPath:v4];
 
   return v5;
 }
@@ -107,7 +107,7 @@ LABEL_17:
 - (id)wf_stringForKeyPath:()WFAdditions
 {
   v4 = a3;
-  v5 = [a1 wf_objectOfKind:objc_opt_class() forKeyPath:v4];
+  v5 = [self wf_objectOfKind:objc_opt_class() forKeyPath:v4];
 
   return v5;
 }
@@ -115,7 +115,7 @@ LABEL_17:
 - (id)wf_URLForKeyPath:()WFAdditions
 {
   v4 = a3;
-  v5 = [a1 wf_objectOfKind:objc_opt_class() forKeyPath:v4];
+  v5 = [self wf_objectOfKind:objc_opt_class() forKeyPath:v4];
 
   return v5;
 }
@@ -123,7 +123,7 @@ LABEL_17:
 - (id)wf_numberForKeyPath:()WFAdditions
 {
   v4 = a3;
-  v5 = [a1 wf_objectOfKind:objc_opt_class() forKeyPath:v4];
+  v5 = [self wf_objectOfKind:objc_opt_class() forKeyPath:v4];
 
   return v5;
 }
@@ -132,9 +132,9 @@ LABEL_17:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 wf_objectOfKind:objc_opt_class() forKeyPath:v7];
+  v8 = [self wf_objectOfKind:objc_opt_class() forKeyPath:v7];
 
-  v9 = [a1 wf_objectOfKind:objc_opt_class() forKeyPath:v6];
+  v9 = [self wf_objectOfKind:objc_opt_class() forKeyPath:v6];
 
   if (v8 | v9)
   {
@@ -163,7 +163,7 @@ LABEL_17:
 - (uint64_t)wf_integerForKeyPath:()WFAdditions
 {
   v4 = a3;
-  v5 = [a1 wf_numberForKeyPath:v4];
+  v5 = [self wf_numberForKeyPath:v4];
   v6 = v5;
   if (v5)
   {
@@ -172,19 +172,19 @@ LABEL_17:
 
   else
   {
-    v7 = [a1 wf_stringForKeyPath:v4];
+    v7 = [self wf_stringForKeyPath:v4];
   }
 
   v8 = v7;
 
-  v9 = [v8 integerValue];
-  return v9;
+  integerValue = [v8 integerValue];
+  return integerValue;
 }
 
 - (float)wf_floatForKeyPath:()WFAdditions
 {
   v4 = a3;
-  v5 = [a1 wf_numberForKeyPath:v4];
+  v5 = [self wf_numberForKeyPath:v4];
   v6 = v5;
   if (v5)
   {
@@ -193,7 +193,7 @@ LABEL_17:
 
   else
   {
-    v7 = [a1 wf_stringForKeyPath:v4];
+    v7 = [self wf_stringForKeyPath:v4];
   }
 
   v8 = v7;
@@ -207,7 +207,7 @@ LABEL_17:
 - (double)wf_doubleForKeyPath:()WFAdditions
 {
   v4 = a3;
-  v5 = [a1 wf_numberForKeyPath:v4];
+  v5 = [self wf_numberForKeyPath:v4];
   v6 = v5;
   if (v5)
   {
@@ -216,7 +216,7 @@ LABEL_17:
 
   else
   {
-    v7 = [a1 wf_stringForKeyPath:v4];
+    v7 = [self wf_stringForKeyPath:v4];
   }
 
   v8 = v7;
@@ -232,7 +232,7 @@ LABEL_17:
   v4 = a3;
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(a1, "count")}];
+    v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(self, "count")}];
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
     v11 = __39__NSDictionary_WFAdditions__wf_filter___block_invoke;
@@ -240,16 +240,16 @@ LABEL_17:
     v13 = v5;
     v14 = v4;
     v6 = v5;
-    [a1 enumerateKeysAndObjectsUsingBlock:&v9];
-    v7 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:{v6, v9, v10, v11, v12}];
+    [self enumerateKeysAndObjectsUsingBlock:&v9];
+    selfCopy = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:{v6, v9, v10, v11, v12}];
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

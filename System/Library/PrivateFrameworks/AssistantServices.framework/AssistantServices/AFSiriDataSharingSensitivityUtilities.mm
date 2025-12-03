@@ -1,16 +1,16 @@
 @interface AFSiriDataSharingSensitivityUtilities
-+ (BOOL)isRequestSensitiveWithPolicy:(int64_t)a3 optInStatus:(int64_t)a4 siriLanguageCode:(id)a5;
++ (BOOL)isRequestSensitiveWithPolicy:(int64_t)policy optInStatus:(int64_t)status siriLanguageCode:(id)code;
 @end
 
 @implementation AFSiriDataSharingSensitivityUtilities
 
-+ (BOOL)isRequestSensitiveWithPolicy:(int64_t)a3 optInStatus:(int64_t)a4 siriLanguageCode:(id)a5
++ (BOOL)isRequestSensitiveWithPolicy:(int64_t)policy optInStatus:(int64_t)status siriLanguageCode:(id)code
 {
-  v7 = a5;
+  codeCopy = code;
   v8 = +[AFSiriDataSharingSensitivityManager shared];
-  LOBYTE(a4) = [v8 isRequestSensitiveWithPolicy:a3 optInStatus:a4 siriLanguageCode:v7];
+  LOBYTE(status) = [v8 isRequestSensitiveWithPolicy:policy optInStatus:status siriLanguageCode:codeCopy];
 
-  return a4;
+  return status;
 }
 
 @end

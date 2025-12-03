@@ -1,34 +1,34 @@
 @interface BuddySetupTableViewCell
-- (BuddySetupTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BuddySetupTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation BuddySetupTableViewCell
 
-- (BuddySetupTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BuddySetupTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = v13;
-  v13 = 0;
+  objc_storeStrong(&location, identifier);
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = BuddySetupTableViewCell;
-  v13 = [(BuddySetupTableViewCell *)&v9 initWithStyle:v11 reuseIdentifier:location];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(BuddySetupTableViewCell *)&v9 initWithStyle:styleCopy reuseIdentifier:location];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v5 = +[BFFStyle sharedStyle];
-    [v5 applyThemeToTableCell:v13];
+    [v5 applyThemeToTableCell:selfCopy];
 
-    v6 = [v13 textLabel];
-    [v6 setNumberOfLines:0];
+    textLabel = [selfCopy textLabel];
+    [textLabel setNumberOfLines:0];
   }
 
-  v7 = v13;
+  v7 = selfCopy;
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 

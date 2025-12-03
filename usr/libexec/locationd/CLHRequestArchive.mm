@@ -42,16 +42,16 @@
 
 - (BOOL)isActiveSubArchive
 {
-  v2 = [(NSString *)[(CLHRequestArchive *)self directory] lastPathComponent];
+  lastPathComponent = [(NSString *)[(CLHRequestArchive *)self directory] lastPathComponent];
 
-  return [(NSString *)v2 hasPrefix:@"sub_"];
+  return [(NSString *)lastPathComponent hasPrefix:@"sub_"];
 }
 
 - (unint64_t)totalCountIncludingAllSubArchives
 {
-  v3 = [(CLHRequestArchive *)self isActiveSubArchive];
+  isActiveSubArchive = [(CLHRequestArchive *)self isActiveSubArchive];
   v4 = 40;
-  if (v3)
+  if (isActiveSubArchive)
   {
     v4 = 48;
   }

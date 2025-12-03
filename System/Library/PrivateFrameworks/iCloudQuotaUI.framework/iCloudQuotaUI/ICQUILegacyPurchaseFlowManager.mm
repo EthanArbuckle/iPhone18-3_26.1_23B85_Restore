@@ -1,38 +1,38 @@
 @interface ICQUILegacyPurchaseFlowManager
-- (BOOL)_loadNativeURL:(id)a3;
-- (ICQUILegacyPurchaseFlowManager)initWithPresenter:(id)a3;
+- (BOOL)_loadNativeURL:(id)l;
+- (ICQUILegacyPurchaseFlowManager)initWithPresenter:(id)presenter;
 - (id)_presentationContext;
-- (void)_beginRUIFlowWithAMSURLResult:(id)a3;
-- (void)_beginURLOperationWithURLRequest:(id)a3;
+- (void)_beginRUIFlowWithAMSURLResult:(id)result;
+- (void)_beginURLOperationWithURLRequest:(id)request;
 - (void)_clearRetailFollowUpItem;
-- (void)_didCompletePurchaseFlowWithStatusCode:(int64_t)a3;
+- (void)_didCompletePurchaseFlowWithStatusCode:(int64_t)code;
 - (void)_dismissPurchaseFlow;
-- (void)_fetchURLRequestWithURL:(id)a3 completion:(id)a4;
-- (void)_handleAuthenticateRequest:(id)a3 completion:(id)a4;
-- (void)_handleDialogRequest:(id)a3 completion:(id)a4;
-- (void)_handleEngagementRequest:(id)a3 completion:(id)a4;
-- (void)_popObjectModelAnimated:(BOOL)a3;
-- (void)_updatePage:(id)a3;
-- (void)beginFlowWithCompletion:(id)a3;
-- (void)makeBuyRequest:(id)a3;
-- (void)makeBuyRequestWithParams:(id)a3 completion:(id)a4;
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5;
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5 completion:(id)a6;
-- (void)objectModelPressedBack:(id)a3;
+- (void)_fetchURLRequestWithURL:(id)l completion:(id)completion;
+- (void)_handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)_handleDialogRequest:(id)request completion:(id)completion;
+- (void)_handleEngagementRequest:(id)request completion:(id)completion;
+- (void)_popObjectModelAnimated:(BOOL)animated;
+- (void)_updatePage:(id)page;
+- (void)beginFlowWithCompletion:(id)completion;
+- (void)makeBuyRequest:(id)request;
+- (void)makeBuyRequestWithParams:(id)params completion:(id)completion;
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes;
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method completion:(id)completion;
+- (void)objectModelPressedBack:(id)back;
 @end
 
 @implementation ICQUILegacyPurchaseFlowManager
 
-- (ICQUILegacyPurchaseFlowManager)initWithPresenter:(id)a3
+- (ICQUILegacyPurchaseFlowManager)initWithPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   v10.receiver = self;
   v10.super_class = ICQUILegacyPurchaseFlowManager;
   v5 = [(ICQUILegacyPurchaseFlowManager *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_presenter, v4);
+    objc_storeWeak(&v5->_presenter, presenterCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     objectModels = v6->_objectModels;
     v6->_objectModels = v7;
@@ -43,22 +43,22 @@
   return v6;
 }
 
-- (void)beginFlowWithCompletion:(id)a3
+- (void)beginFlowWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   flowCompletion = self->_flowCompletion;
   self->_flowCompletion = v4;
 
-  v6 = [MEMORY[0x277CEE3F8] quotaBag];
-  v7 = [v6 URLForKey:@"mint-offers"];
-  v8 = [v7 valuePromise];
+  quotaBag = [MEMORY[0x277CEE3F8] quotaBag];
+  v7 = [quotaBag URLForKey:@"mint-offers"];
+  valuePromise = [v7 valuePromise];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__ICQUILegacyPurchaseFlowManager_beginFlowWithCompletion___block_invoke;
   v9[3] = &unk_27A65C460;
   v9[4] = self;
-  [v8 addFinishBlock:v9];
+  [valuePromise addFinishBlock:v9];
 }
 
 void __58__ICQUILegacyPurchaseFlowManager_beginFlowWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -141,29 +141,29 @@ void __58__ICQUILegacyPurchaseFlowManager_beginFlowWithCompletion___block_invoke
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(UINavigationController *)v4 presentedViewController];
+    presentedViewController = [(UINavigationController *)v4 presentedViewController];
     v8 = 138412546;
     v9 = v4;
     v10 = 2112;
-    v11 = v6;
+    v11 = presentedViewController;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Presentation Context: %@ - %@", &v8, 0x16u);
   }
 
   return v4;
 }
 
-- (void)_fetchURLRequestWithURL:(id)a3 completion:(id)a4
+- (void)_fetchURLRequestWithURL:(id)l completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v26 = "[ICQUILegacyPurchaseFlowManager _fetchURLRequestWithURL:completion:]";
     v27 = 2112;
-    v28 = v6;
+    v28 = lCopy;
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "%s called with url: %@", buf, 0x16u);
   }
 
@@ -171,14 +171,14 @@ void __58__ICQUILegacyPurchaseFlowManager_beginFlowWithCompletion___block_invoke
   aBlock[1] = 3221225472;
   aBlock[2] = __69__ICQUILegacyPurchaseFlowManager__fetchURLRequestWithURL_completion___block_invoke;
   aBlock[3] = &unk_27A65C488;
-  v9 = v6;
+  v9 = lCopy;
   v23 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v24 = v10;
   v11 = _Block_copy(aBlock);
   v12 = objc_alloc(MEMORY[0x277CEE6D8]);
-  v13 = [MEMORY[0x277CEE3F8] quotaBag];
-  v14 = [v12 initWithBag:v13];
+  quotaBag = [MEMORY[0x277CEE3F8] quotaBag];
+  v14 = [v12 initWithBag:quotaBag];
 
   if (self->_amsAccount)
   {
@@ -188,11 +188,11 @@ void __58__ICQUILegacyPurchaseFlowManager_beginFlowWithCompletion___block_invoke
 
   else
   {
-    v15 = [MEMORY[0x277CB8F48] defaultStore];
-    v16 = [v15 aa_primaryAppleAccount];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v15 ams_iTunesAccountForAccount:v16 forMediaType:*MEMORY[0x277CEE160] createIfNeeded:1];
+      v17 = [defaultStore ams_iTunesAccountForAccount:aa_primaryAppleAccount forMediaType:*MEMORY[0x277CEE160] createIfNeeded:1];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __69__ICQUILegacyPurchaseFlowManager__fetchURLRequestWithURL_completion___block_invoke_2;
@@ -204,7 +204,7 @@ void __58__ICQUILegacyPurchaseFlowManager_beginFlowWithCompletion___block_invoke
 
     else
     {
-      v18 = [v15 ams_iTunesAccountForAccount:v16];
+      v18 = [defaultStore ams_iTunesAccountForAccount:aa_primaryAppleAccount];
       [v14 setAccount:v18];
 
       v11[2](v11, v14);
@@ -238,33 +238,33 @@ void __69__ICQUILegacyPurchaseFlowManager__fetchURLRequestWithURL_completion___b
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_beginURLOperationWithURLRequest:(id)a3
+- (void)_beginURLOperationWithURLRequest:(id)request
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v13 = "[ICQUILegacyPurchaseFlowManager _beginURLOperationWithURLRequest:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = requestCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "%s called with urlRequest: %@", buf, 0x16u);
   }
 
-  v6 = [MEMORY[0x277CEE6F0] defaultSession];
+  defaultSession = [MEMORY[0x277CEE6F0] defaultSession];
   defaultAMSURLSession = self->_defaultAMSURLSession;
-  self->_defaultAMSURLSession = v6;
+  self->_defaultAMSURLSession = defaultSession;
 
   [self->_defaultAMSURLSession setDelegate:self];
-  v8 = [self->_defaultAMSURLSession dataTaskPromiseWithRequest:v4];
+  v8 = [self->_defaultAMSURLSession dataTaskPromiseWithRequest:requestCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __67__ICQUILegacyPurchaseFlowManager__beginURLOperationWithURLRequest___block_invoke;
   v10[3] = &unk_27A65C4D8;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = requestCopy;
+  v9 = requestCopy;
   [v8 addFinishBlock:v10];
 }
 
@@ -320,10 +320,10 @@ void __67__ICQUILegacyPurchaseFlowManager__beginURLOperationWithURLRequest___blo
   }
 }
 
-- (void)_beginRUIFlowWithAMSURLResult:(id)a3
+- (void)_beginRUIFlowWithAMSURLResult:(id)result
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -334,27 +334,27 @@ void __67__ICQUILegacyPurchaseFlowManager__beginURLOperationWithURLRequest___blo
 
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v6 = objc_alloc(MEMORY[0x277D461F8]);
-  v7 = [v4 data];
-  v8 = [v6 initWithXML:v7];
+  data = [resultCopy data];
+  v8 = [v6 initWithXML:data];
 
   if ([v8 succeeded])
   {
-    v9 = [v8 uiObjectModel];
-    v10 = [v8 actionSignal];
-    [v9 setDelegate:self];
+    uiObjectModel = [v8 uiObjectModel];
+    actionSignal = [v8 actionSignal];
+    [uiObjectModel setDelegate:self];
     v11 = _ICQGetLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v33 = v9;
+      v33 = uiObjectModel;
       v34 = 2112;
-      v35 = v10;
+      v35 = actionSignal;
       _os_log_impl(&dword_275623000, v11, OS_LOG_TYPE_DEFAULT, "objectModel: %@, actionSignal: %@", buf, 0x16u);
     }
 
-    if (!-[NSMutableArray count](self->_objectModels, "count") && [v10 topSignal] == 3)
+    if (!-[NSMutableArray count](self->_objectModels, "count") && [actionSignal topSignal] == 3)
     {
-      [v10 setTopSignal:2];
+      [actionSignal setTopSignal:2];
     }
 
     navController = self->_navController;
@@ -368,16 +368,16 @@ void __67__ICQUILegacyPurchaseFlowManager__beginURLOperationWithURLRequest___blo
       [(UINavigationController *)self->_navController setModalTransitionStyle:0];
     }
 
-    if (![v10 topSignal])
+    if (![actionSignal topSignal])
     {
-      [v10 setTopSignal:2];
+      [actionSignal setTopSignal:2];
     }
 
-    if ([v10 topSignal] == 2)
+    if ([actionSignal topSignal] == 2)
     {
-      [(NSMutableArray *)self->_objectModels addObject:v9];
-      v15 = [v9 defaultPages];
-      v16 = [v15 firstObject];
+      [(NSMutableArray *)self->_objectModels addObject:uiObjectModel];
+      defaultPages = [uiObjectModel defaultPages];
+      firstObject = [defaultPages firstObject];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -385,12 +385,12 @@ void __67__ICQUILegacyPurchaseFlowManager__beginURLOperationWithURLRequest___blo
         [ICQUILegacyPurchaseFlowManager _beginRUIFlowWithAMSURLResult:];
       }
 
-      if (v16)
+      if (firstObject)
       {
-        [(ICQUILegacyPurchaseFlowManager *)self _updatePage:v16];
+        [(ICQUILegacyPurchaseFlowManager *)self _updatePage:firstObject];
       }
 
-      v17 = [(UINavigationController *)self->_navController topViewController];
+      topViewController = [(UINavigationController *)self->_navController topViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -402,47 +402,47 @@ void __67__ICQUILegacyPurchaseFlowManager__beginURLOperationWithURLRequest___blo
         v31[2] = __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_invoke;
         v31[3] = &unk_27A65A820;
         v31[4] = self;
-        [v9 presentInParentViewController:v19 animated:0 completion:v31];
+        [uiObjectModel presentInParentViewController:v19 animated:0 completion:v31];
 
         goto LABEL_32;
       }
 
-      [v9 presentInParentViewController:v19 animated:navController != 0];
+      [uiObjectModel presentInParentViewController:v19 animated:navController != 0];
       goto LABEL_30;
     }
 
-    if ([v10 topSignal] == 3)
+    if ([actionSignal topSignal] == 3)
     {
-      v21 = [(UINavigationController *)self->_navController viewControllers];
-      v16 = [v21 mutableCopy];
+      viewControllers = [(UINavigationController *)self->_navController viewControllers];
+      firstObject = [viewControllers mutableCopy];
 
       [(NSMutableArray *)self->_objectModels removeLastObject];
-      [v16 removeLastObject];
-      v22 = [v9 defaultPages];
-      v23 = [v22 lastObject];
-      [v16 addObject:v23];
+      [firstObject removeLastObject];
+      defaultPages2 = [uiObjectModel defaultPages];
+      lastObject = [defaultPages2 lastObject];
+      [firstObject addObject:lastObject];
 
-      [(NSMutableArray *)self->_objectModels addObject:v9];
-      [(UINavigationController *)self->_navController setViewControllers:v16 animated:0];
+      [(NSMutableArray *)self->_objectModels addObject:uiObjectModel];
+      [(UINavigationController *)self->_navController setViewControllers:firstObject animated:0];
 LABEL_30:
 
       goto LABEL_31;
     }
 
-    if ([v10 topSignal] != 4)
+    if ([actionSignal topSignal] != 4)
     {
       goto LABEL_31;
     }
 
-    v24 = [v9 defaultPages];
-    v25 = [v24 count];
+    defaultPages3 = [uiObjectModel defaultPages];
+    v25 = [defaultPages3 count];
 
     if (v25)
     {
       if ([(NSMutableArray *)self->_objectModels count]<= 1)
       {
-        v16 = _ICQGetLogSystem();
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        firstObject = _ICQGetLogSystem();
+        if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
         {
           [ICQUILegacyPurchaseFlowManager _beginRUIFlowWithAMSURLResult:];
         }
@@ -452,15 +452,15 @@ LABEL_30:
 
       [(NSMutableArray *)self->_objectModels removeLastObject];
       [(NSMutableArray *)self->_objectModels removeLastObject];
-      v27 = [(UINavigationController *)self->_navController viewControllers];
-      v28 = [v27 mutableCopy];
+      viewControllers2 = [(UINavigationController *)self->_navController viewControllers];
+      v28 = [viewControllers2 mutableCopy];
 
       [v28 removeLastObject];
       [v28 removeLastObject];
-      [(NSMutableArray *)self->_objectModels addObject:v9];
-      v29 = [v9 defaultPages];
-      v30 = [v29 lastObject];
-      [v28 addObject:v30];
+      [(NSMutableArray *)self->_objectModels addObject:uiObjectModel];
+      defaultPages4 = [uiObjectModel defaultPages];
+      lastObject2 = [defaultPages4 lastObject];
+      [v28 addObject:lastObject2];
 
       [(UINavigationController *)self->_navController setViewControllers:v28 animated:0];
     }
@@ -514,11 +514,11 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
   [*(*(a1 + 32) + 40) setViewControllers:v4];
 }
 
-- (void)_updatePage:(id)a3
+- (void)_updatePage:(id)page
 {
   v44 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v31 = self;
+  pageCopy = page;
+  selfCopy = self;
   if (self->_requiredStorageThreshold)
   {
     v4 = _ICQGetLogSystem();
@@ -534,11 +534,11 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v6 = [v30 tableViewOM];
-    v7 = [v6 sections];
+    tableViewOM = [pageCopy tableViewOM];
+    sections = [tableViewOM sections];
 
-    obj = v7;
-    v28 = [v7 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    obj = sections;
+    v28 = [sections countByEnumeratingWithState:&v36 objects:v41 count:16];
     v8 = 0;
     if (v28)
     {
@@ -559,8 +559,8 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
           v33 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v11 = [v10 rows];
-          v12 = [v11 countByEnumeratingWithState:&v32 objects:v40 count:16];
+          rows = [v10 rows];
+          v12 = [rows countByEnumeratingWithState:&v32 objects:v40 count:16];
           if (v12)
           {
             v13 = v12;
@@ -571,21 +571,21 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
               {
                 if (*v33 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(rows);
                 }
 
                 v16 = *(*(&v32 + 1) + 8 * i);
-                v17 = [v16 attributes];
-                v18 = [v17 objectForKeyedSubscript:@"totalStorage"];
+                attributes = [v16 attributes];
+                v18 = [attributes objectForKeyedSubscript:@"totalStorage"];
 
                 objc_opt_class();
-                if ((objc_opt_isKindOfClass() & 1) != 0 && (v19 = strtoull([v18 UTF8String], 0, 0), v19 < -[ICQUILegacyPurchaseFlowManager requiredStorageThreshold](v31, "requiredStorageThreshold")))
+                if ((objc_opt_isKindOfClass() & 1) != 0 && (v19 = strtoull([v18 UTF8String], 0, 0), v19 < -[ICQUILegacyPurchaseFlowManager requiredStorageThreshold](selfCopy, "requiredStorageThreshold")))
                 {
                   [v16 setEnabled:0];
                   if ([v16 isSelected])
                   {
-                    v20 = [v16 attributes];
-                    v21 = [v20 objectForKeyedSubscript:@"radioGroup"];
+                    attributes2 = [v16 attributes];
+                    v21 = [attributes2 objectForKeyedSubscript:@"radioGroup"];
 
                     [v16 setSelected:0];
                     v8 = v21;
@@ -594,21 +594,21 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
 
                 else
                 {
-                  v22 = [v16 attributes];
-                  v23 = [v22 objectForKeyedSubscript:@"radioGroup"];
+                  attributes3 = [v16 attributes];
+                  v23 = [attributes3 objectForKeyedSubscript:@"radioGroup"];
                   v24 = [v23 isEqualToString:v8];
 
                   if (v24)
                   {
-                    v25 = [v30 tableViewOM];
-                    [v25 setSelectedRadioGroupRow:v16];
+                    tableViewOM2 = [pageCopy tableViewOM];
+                    [tableViewOM2 setSelectedRadioGroupRow:v16];
 
                     v8 = 0;
                   }
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v32 objects:v40 count:16];
+              v13 = [rows countByEnumeratingWithState:&v32 objects:v40 count:16];
             }
 
             while (v13);
@@ -626,24 +626,24 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
   }
 }
 
-- (void)_popObjectModelAnimated:(BOOL)a3
+- (void)_popObjectModelAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(NSMutableArray *)self->_objectModels count])
   {
-    v5 = [(NSMutableArray *)self->_objectModels lastObject];
-    v13 = [v5 defaultPages];
+    lastObject = [(NSMutableArray *)self->_objectModels lastObject];
+    defaultPages = [lastObject defaultPages];
 
     [(NSMutableArray *)self->_objectModels removeLastObject];
-    v6 = [v13 count] - 1;
+    v6 = [defaultPages count] - 1;
     if (v6 >= 0)
     {
       do
       {
-        v7 = [v13 objectAtIndex:v6];
-        v8 = [(UINavigationController *)self->_navController topViewController];
+        v7 = [defaultPages objectAtIndex:v6];
+        topViewController = [(UINavigationController *)self->_navController topViewController];
 
-        if (v8 == v7)
+        if (topViewController == v7)
         {
           if (v6)
           {
@@ -652,7 +652,7 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
 
           else
           {
-            v9 = v3;
+            v9 = animatedCopy;
           }
 
           v10 = [(UINavigationController *)self->_navController popViewControllerAnimated:v9];
@@ -673,10 +673,10 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
   }
 }
 
-- (void)objectModelPressedBack:(id)a3
+- (void)objectModelPressedBack:(id)back
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  backCopy = back;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -685,16 +685,16 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v11, 0xCu);
   }
 
-  v6 = [(UINavigationController *)self->_navController topViewController];
+  topViewController = [(UINavigationController *)self->_navController topViewController];
   v7 = [(UINavigationController *)self->_navController popViewControllerAnimated:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = topViewController;
     if (v8)
     {
-      v9 = [v4 defaultPages];
-      v10 = [v9 containsObject:v8];
+      defaultPages = [backCopy defaultPages];
+      v10 = [defaultPages containsObject:v8];
 
       if (v10)
       {
@@ -709,31 +709,31 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
   }
 }
 
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  buttonCopy = button;
+  attributesCopy = attributes;
   v11 = _ICQGetLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 136315650;
     v24 = "[ICQUILegacyPurchaseFlowManager objectModel:pressedButton:attributes:]";
     v25 = 2112;
-    v26 = v9;
+    v26 = buttonCopy;
     v27 = 2112;
-    v28 = v10;
+    v28 = attributesCopy;
     _os_log_impl(&dword_275623000, v11, OS_LOG_TYPE_DEFAULT, "%s called with element name: %@, attributes: %@", &v23, 0x20u);
   }
 
-  v12 = [v10 objectForKeyedSubscript:@"ams_followup"];
+  v12 = [attributesCopy objectForKeyedSubscript:@"ams_followup"];
   if ([v12 isEqualToString:@"clear"])
   {
     [(ICQUILegacyPurchaseFlowManager *)self _clearRetailFollowUpItem];
   }
 
-  if ([v9 isEqualToString:@"cancel"])
+  if ([buttonCopy isEqualToString:@"cancel"])
   {
     v13 = _ICQGetLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -745,27 +745,27 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
     [(ICQUILegacyPurchaseFlowManager *)self _didCompletePurchaseFlowWithStatusCode:2];
   }
 
-  else if ([v9 isEqualToString:@"buy"])
+  else if ([buttonCopy isEqualToString:@"buy"])
   {
-    v14 = [v8 defaultPages];
-    v15 = [v14 lastObject];
-    v16 = [v15 navTitle];
+    defaultPages = [modelCopy defaultPages];
+    lastObject = [defaultPages lastObject];
+    navTitle = [lastObject navTitle];
 
-    [v8 startNavigationBarSpinnerWithTitle:v16];
-    v17 = [MEMORY[0x277CBEB38] dictionary];
-    v18 = [v8 defaultPages];
-    v19 = [v18 lastObject];
-    [v19 populatePostbackDictionary:v17];
+    [modelCopy startNavigationBarSpinnerWithTitle:navTitle];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    defaultPages2 = [modelCopy defaultPages];
+    lastObject2 = [defaultPages2 lastObject];
+    [lastObject2 populatePostbackDictionary:dictionary];
 
-    v20 = [v17 objectForKey:@"quota"];
+    v20 = [dictionary objectForKey:@"quota"];
     if (!v20)
     {
-      v21 = [v10 objectForKeyedSubscript:@"id"];
+      v21 = [attributesCopy objectForKeyedSubscript:@"id"];
       v22 = [v21 isEqualToString:@"quota"];
 
       if (v22)
       {
-        v20 = [v10 objectForKeyedSubscript:@"value"];
+        v20 = [attributesCopy objectForKeyedSubscript:@"value"];
       }
 
       else
@@ -777,30 +777,30 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
     [(ICQUILegacyPurchaseFlowManager *)self makeBuyRequest:v20];
   }
 
-  else if ([v9 isEqualToString:@"pop"])
+  else if ([buttonCopy isEqualToString:@"pop"])
   {
     [(ICQUILegacyPurchaseFlowManager *)self _popObjectModelAnimated:1];
   }
 }
 
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5 completion:(id)a6
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modelCopy = model;
+  linkCopy = link;
+  methodCopy = method;
+  completionCopy = completion;
   v14 = _ICQGetLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v30 = "[ICQUILegacyPurchaseFlowManager objectModel:pressedLink:httpMethod:completion:]";
     v31 = 2112;
-    v32 = v11;
+    v32 = linkCopy;
     _os_log_impl(&dword_275623000, v14, OS_LOG_TYPE_DEFAULT, "%s called with URL: %@", buf, 0x16u);
   }
 
-  if ([(ICQUILegacyPurchaseFlowManager *)self _loadNativeURL:v11])
+  if ([(ICQUILegacyPurchaseFlowManager *)self _loadNativeURL:linkCopy])
   {
     v15 = _ICQGetLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -809,22 +809,22 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
       _os_log_impl(&dword_275623000, v15, OS_LOG_TYPE_DEFAULT, "Successfully handled native url/deep link URL.", buf, 2u);
     }
 
-    v13[2](v13, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    v16 = [v12 lowercaseString];
-    v17 = [v16 isEqualToString:@"post"];
+    lowercaseString = [methodCopy lowercaseString];
+    v17 = [lowercaseString isEqualToString:@"post"];
 
     if (v17)
     {
-      v18 = [MEMORY[0x277CBEB38] dictionary];
-      v19 = [v10 defaultPages];
-      v20 = [v19 lastObject];
-      [v20 populatePostbackDictionary:v18];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      defaultPages = [modelCopy defaultPages];
+      lastObject = [defaultPages lastObject];
+      [lastObject populatePostbackDictionary:dictionary];
 
-      v21 = [MEMORY[0x277CCAC58] dataWithPropertyList:v18 format:100 options:0 error:0];
+      v21 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:100 options:0 error:0];
     }
 
     else
@@ -837,10 +837,10 @@ void __64__ICQUILegacyPurchaseFlowManager__beginRUIFlowWithAMSURLResult___block_
     v23[2] = __80__ICQUILegacyPurchaseFlowManager_objectModel_pressedLink_httpMethod_completion___block_invoke;
     v23[3] = &unk_27A65C500;
     v24 = v21;
-    v25 = v12;
-    v26 = self;
-    v28 = v13;
-    v27 = v11;
+    v25 = methodCopy;
+    selfCopy = self;
+    v28 = completionCopy;
+    v27 = linkCopy;
     v22 = v21;
     [(ICQUILegacyPurchaseFlowManager *)self _fetchURLRequestWithURL:v27 completion:v23];
   }
@@ -878,11 +878,11 @@ void __80__ICQUILegacyPurchaseFlowManager_objectModel_pressedLink_httpMethod_com
   }
 }
 
-- (void)makeBuyRequestWithParams:(id)a3 completion:(id)a4
+- (void)makeBuyRequestWithParams:(id)params completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  paramsCopy = params;
+  v7 = _Block_copy(completion);
   flowCompletion = self->_flowCompletion;
   self->_flowCompletion = v7;
 
@@ -891,7 +891,7 @@ void __80__ICQUILegacyPurchaseFlowManager_objectModel_pressedLink_httpMethod_com
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v6;
+  v10 = paramsCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -921,44 +921,44 @@ void __80__ICQUILegacyPurchaseFlowManager_objectModel_pressedLink_httpMethod_com
 
   v19 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v19 setQueryItems:v9];
-  v20 = [v19 query];
+  query = [v19 query];
 
-  if (v20)
+  if (query)
   {
-    v21 = [v19 query];
-    [(ICQUILegacyPurchaseFlowManager *)self makeBuyRequest:v21];
+    query2 = [v19 query];
+    [(ICQUILegacyPurchaseFlowManager *)self makeBuyRequest:query2];
   }
 
   else
   {
-    v21 = _ICQGetLogSystem();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    query2 = _ICQGetLogSystem();
+    if (os_log_type_enabled(query2, OS_LOG_TYPE_ERROR))
     {
       [ICQUILegacyPurchaseFlowManager makeBuyRequestWithParams:completion:];
     }
   }
 }
 
-- (void)makeBuyRequest:(id)a3
+- (void)makeBuyRequest:(id)request
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = v4;
+    v35 = requestCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Performing AMSPurchase request with buyParams: %@", buf, 0xCu);
   }
 
   v6 = objc_alloc(MEMORY[0x277CEE650]);
-  v7 = [MEMORY[0x277CEE3F8] quotaBag];
-  v8 = [v6 initWithBag:v7];
+  quotaBag = [MEMORY[0x277CEE3F8] quotaBag];
+  v8 = [v6 initWithBag:quotaBag];
 
   [v8 setDelegate:self];
   v9 = [objc_alloc(MEMORY[0x277CEE648]) initWithConfiguration:v8];
   v10 = objc_alloc(MEMORY[0x277CEE640]);
-  v11 = [MEMORY[0x277CEE438] buyParamsWithString:v4];
+  v11 = [MEMORY[0x277CEE438] buyParamsWithString:requestCopy];
   v12 = [v10 initWithPurchaseType:0 buyParams:v11];
 
   [v12 setUserInitiated:1];
@@ -968,38 +968,38 @@ void __80__ICQUILegacyPurchaseFlowManager_objectModel_pressedLink_httpMethod_com
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
   [v12 setMetricsOverlay:v13];
 
-  v14 = [(ICQUILegacyPurchaseFlowManager *)self _presentationContext];
-  v15 = [v14 view];
-  v16 = [v15 window];
-  v17 = [v16 windowScene];
-  v18 = [v17 _sceneIdentifier];
-  [v12 setPresentingSceneIdentifier:v18];
+  _presentationContext = [(ICQUILegacyPurchaseFlowManager *)self _presentationContext];
+  view = [_presentationContext view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
+  [v12 setPresentingSceneIdentifier:_sceneIdentifier];
 
   v19 = _ICQGetLogSystem();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v12 presentingSceneIdentifier];
+    presentingSceneIdentifier = [v12 presentingSceneIdentifier];
     *buf = 138412290;
-    v35 = v20;
+    v35 = presentingSceneIdentifier;
     _os_log_impl(&dword_275623000, v19, OS_LOG_TYPE_DEFAULT, "Setting sceneIdentifier: %@ to AMSPurchase.", buf, 0xCu);
   }
 
-  v21 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  if ([v21 ams_isActiveAccountCombined])
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  if ([ams_sharedAccountStore ams_isActiveAccountCombined])
   {
-    [v21 ams_activeiTunesAccount];
+    [ams_sharedAccountStore ams_activeiTunesAccount];
   }
 
   else
   {
-    [v21 ams_activeiCloudAccount];
+    [ams_sharedAccountStore ams_activeiCloudAccount];
   }
   v22 = ;
   [v12 setAccount:v22];
 
-  v23 = [MEMORY[0x277CEE620] currentProcess];
+  currentProcess = [MEMORY[0x277CEE620] currentProcess];
   v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"CastleSettings/1.0"];
-  [v23 setUserAgentSuffix:v24];
+  [currentProcess setUserAgentSuffix:v24];
 
   if (self->_presentingSceneBundleIdentifier)
   {
@@ -1012,10 +1012,10 @@ void __80__ICQUILegacyPurchaseFlowManager_objectModel_pressedLink_httpMethod_com
       _os_log_impl(&dword_275623000, v25, OS_LOG_TYPE_DEFAULT, "Setting app bundleID: %@ to AMSPurchase.", buf, 0xCu);
     }
 
-    [v23 setProxyAppBundleID:self->_presentingSceneBundleIdentifier];
+    [currentProcess setProxyAppBundleID:self->_presentingSceneBundleIdentifier];
   }
 
-  [v12 setClientInfo:v23];
+  [v12 setClientInfo:currentProcess];
   v31 = v12;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
   v28 = [v9 enquePurchases:v27];
@@ -1111,10 +1111,10 @@ void __49__ICQUILegacyPurchaseFlowManager_makeBuyRequest___block_invoke_127(uint
   [v1 stopNavigationBarSpinner];
 }
 
-- (void)_handleAuthenticateRequest:(id)a3 completion:(id)a4
+- (void)_handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1126,11 +1126,11 @@ void __49__ICQUILegacyPurchaseFlowManager_makeBuyRequest___block_invoke_127(uint
   block[1] = 3221225472;
   block[2] = __72__ICQUILegacyPurchaseFlowManager__handleAuthenticateRequest_completion___block_invoke;
   block[3] = &unk_27A65B060;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1181,10 +1181,10 @@ void __72__ICQUILegacyPurchaseFlowManager__handleAuthenticateRequest_completion_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_handleDialogRequest:(id)a3 completion:(id)a4
+- (void)_handleDialogRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1196,11 +1196,11 @@ void __72__ICQUILegacyPurchaseFlowManager__handleAuthenticateRequest_completion_
   block[1] = 3221225472;
   block[2] = __66__ICQUILegacyPurchaseFlowManager__handleDialogRequest_completion___block_invoke;
   block[3] = &unk_27A65B060;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1352,10 +1352,10 @@ LABEL_11:
   *(v16 + 40) = 0;
 }
 
-- (void)_handleEngagementRequest:(id)a3 completion:(id)a4
+- (void)_handleEngagementRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1367,11 +1367,11 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __70__ICQUILegacyPurchaseFlowManager__handleEngagementRequest_completion___block_invoke;
   block[3] = &unk_27A65B060;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1417,29 +1417,29 @@ void __58__ICQUILegacyPurchaseFlowManager__clearRetailFollowUpItem__block_invoke
   [MEMORY[0x277CEE470] removeDeviceOfferWithIdentifier:*MEMORY[0x277CEE178] account:v3 bag:v7 logKey:v1];
 }
 
-- (BOOL)_loadNativeURL:(id)a3
+- (BOOL)_loadNativeURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"ams-ui"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v5 = [scheme isEqualToString:@"ams-ui"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v6 openSensitiveURL:v3 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace openSensitiveURL:lCopy withOptions:0];
   }
 
   return v5;
 }
 
-- (void)_didCompletePurchaseFlowWithStatusCode:(int64_t)a3
+- (void)_didCompletePurchaseFlowWithStatusCode:(int64_t)code
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = a3;
+    codeCopy = code;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Legacy purchase flow has been completed with error code: %ld", buf, 0xCu);
   }
 
@@ -1448,7 +1448,7 @@ void __58__ICQUILegacyPurchaseFlowManager__clearRetailFollowUpItem__block_invoke
   v6[2] = __73__ICQUILegacyPurchaseFlowManager__didCompletePurchaseFlowWithStatusCode___block_invoke;
   v6[3] = &unk_27A65B1C8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = code;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

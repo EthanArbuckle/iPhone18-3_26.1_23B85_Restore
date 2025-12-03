@@ -1,5 +1,5 @@
 @interface CollectionsFilterCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_NSRange)accessibilityRowRange;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,24 +7,24 @@
 
 @implementation CollectionsFilterCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CollectionsFilterCarouselView"];
-  [v3 validateClass:@"CollectionsFilterCell" hasInstanceMethod:@"filterLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CollectionsFilterCell" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CollectionsFilterViewModel" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CollectionsFilterCarouselView" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CollectionsFilterCarouselView" hasInstanceMethod:@"logicController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CollectionsFilterLogicController" hasInstanceMethod:@"filters" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CollectionsFilterCarouselView"];
+  [validationsCopy validateClass:@"CollectionsFilterCell" hasInstanceMethod:@"filterLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CollectionsFilterCell" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CollectionsFilterViewModel" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CollectionsFilterCarouselView" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CollectionsFilterCarouselView" hasInstanceMethod:@"logicController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CollectionsFilterLogicController" hasInstanceMethod:@"filters" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(CollectionsFilterCellAccessibility *)self safeValueForKey:@"filterLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -59,7 +59,7 @@
     v6 = [v3 safeValueForKey:@"logicController"];
     v7 = v6;
     v8 = 0;
-    v9 = 0x7FFFFFFFLL;
+    item = 0x7FFFFFFFLL;
     if (v5 && v6)
     {
       v10 = [v6 safeArrayForKey:@"filters"];
@@ -71,21 +71,21 @@
 
         if (v12)
         {
-          v9 = [v12 item];
+          item = [v12 item];
           v8 = [v10 count];
         }
 
         else
         {
           v8 = 0;
-          v9 = 0x7FFFFFFFLL;
+          item = 0x7FFFFFFFLL;
         }
       }
 
       else
       {
         v8 = 0;
-        v9 = 0x7FFFFFFFLL;
+        item = 0x7FFFFFFFLL;
       }
     }
   }
@@ -93,10 +93,10 @@
   else
   {
     v8 = 0;
-    v9 = 0x7FFFFFFFLL;
+    item = 0x7FFFFFFFLL;
   }
 
-  v13 = v9;
+  v13 = item;
   v14 = v8;
   result.length = v14;
   result.location = v13;

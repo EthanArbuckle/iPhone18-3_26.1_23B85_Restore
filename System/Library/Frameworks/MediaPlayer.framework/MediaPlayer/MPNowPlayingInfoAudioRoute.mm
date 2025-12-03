@@ -1,14 +1,14 @@
 @interface MPNowPlayingInfoAudioRoute
 - (BOOL)isSpatializationEnabled;
 - (BOOL)supportsSpatialization;
-- (MPNowPlayingInfoAudioRoute)initWithMediaRemoteAudioRoute:(id)a3;
+- (MPNowPlayingInfoAudioRoute)initWithMediaRemoteAudioRoute:(id)route;
 - (MRContentItemMetadataAudioRoute)mediaRemoteAudioRoute;
 - (NSString)name;
 - (int64_t)type;
-- (void)setName:(id)a3;
-- (void)setSpatializationEnabled:(BOOL)a3;
-- (void)setSupportsSpatialization:(BOOL)a3;
-- (void)setType:(int64_t)a3;
+- (void)setName:(id)name;
+- (void)setSpatializationEnabled:(BOOL)enabled;
+- (void)setSupportsSpatialization:(BOOL)spatialization;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation MPNowPlayingInfoAudioRoute
@@ -22,20 +22,20 @@
     v5 = self->_mediaRemoteAudioRoute;
     self->_mediaRemoteAudioRoute = v4;
 
-    v6 = [(MPNowPlayingInfoAudioRoute *)self type];
-    if ((v6 - 1) >= 9)
+    type = [(MPNowPlayingInfoAudioRoute *)self type];
+    if ((type - 1) >= 9)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = v6;
+      v7 = type;
     }
 
     [(MRContentItemMetadataAudioRoute *)self->_mediaRemoteAudioRoute setType:v7];
-    v8 = [(MPNowPlayingInfoAudioRoute *)self name];
-    [(MRContentItemMetadataAudioRoute *)self->_mediaRemoteAudioRoute setName:v8];
+    name = [(MPNowPlayingInfoAudioRoute *)self name];
+    [(MRContentItemMetadataAudioRoute *)self->_mediaRemoteAudioRoute setName:name];
 
     [(MRContentItemMetadataAudioRoute *)self->_mediaRemoteAudioRoute setSupportsSpatialization:[(MPNowPlayingInfoAudioRoute *)self supportsSpatialization]];
     [(MRContentItemMetadataAudioRoute *)self->_mediaRemoteAudioRoute setSpatializationEnabled:[(MPNowPlayingInfoAudioRoute *)self isSpatializationEnabled]];
@@ -45,88 +45,88 @@
   return mediaRemoteAudioRoute;
 }
 
-- (void)setSpatializationEnabled:(BOOL)a3
+- (void)setSpatializationEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
-  [v4 setSpatializationEnabled:v3];
+  enabledCopy = enabled;
+  mediaRemoteAudioRoute = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
+  [mediaRemoteAudioRoute setSpatializationEnabled:enabledCopy];
 }
 
 - (BOOL)isSpatializationEnabled
 {
-  v2 = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
-  v3 = [v2 isSpatializationEnabled];
+  mediaRemoteAudioRoute = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
+  isSpatializationEnabled = [mediaRemoteAudioRoute isSpatializationEnabled];
 
-  return v3;
+  return isSpatializationEnabled;
 }
 
-- (void)setSupportsSpatialization:(BOOL)a3
+- (void)setSupportsSpatialization:(BOOL)spatialization
 {
-  v3 = a3;
-  v4 = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
-  [v4 setSupportsSpatialization:v3];
+  spatializationCopy = spatialization;
+  mediaRemoteAudioRoute = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
+  [mediaRemoteAudioRoute setSupportsSpatialization:spatializationCopy];
 }
 
 - (BOOL)supportsSpatialization
 {
-  v2 = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
-  v3 = [v2 supportsSpatialization];
+  mediaRemoteAudioRoute = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
+  supportsSpatialization = [mediaRemoteAudioRoute supportsSpatialization];
 
-  return v3;
+  return supportsSpatialization;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
-  [v5 setName:v4];
+  nameCopy = name;
+  mediaRemoteAudioRoute = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
+  [mediaRemoteAudioRoute setName:nameCopy];
 }
 
 - (NSString)name
 {
-  v2 = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
-  v3 = [v2 name];
+  mediaRemoteAudioRoute = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
+  name = [mediaRemoteAudioRoute name];
 
-  return v3;
+  return name;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  if ((a3 - 1) >= 9)
+  if ((type - 1) >= 9)
   {
-    v3 = 0;
+    typeCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    typeCopy = type;
   }
 
-  v4 = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
-  [v4 setType:v3];
+  mediaRemoteAudioRoute = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
+  [mediaRemoteAudioRoute setType:typeCopy];
 }
 
 - (int64_t)type
 {
-  v2 = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
-  v3 = [v2 type];
-  if ((v3 - 1) >= 9)
+  mediaRemoteAudioRoute = [(MPNowPlayingInfoAudioRoute *)self mediaRemoteAudioRoute];
+  type = [mediaRemoteAudioRoute type];
+  if ((type - 1) >= 9)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = type;
   }
 
   return v4;
 }
 
-- (MPNowPlayingInfoAudioRoute)initWithMediaRemoteAudioRoute:(id)a3
+- (MPNowPlayingInfoAudioRoute)initWithMediaRemoteAudioRoute:(id)route
 {
-  v5 = a3;
-  if (v5)
+  routeCopy = route;
+  if (routeCopy)
   {
     v10.receiver = self;
     v10.super_class = MPNowPlayingInfoAudioRoute;
@@ -134,19 +134,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_mediaRemoteAudioRoute, a3);
+      objc_storeStrong(&v6->_mediaRemoteAudioRoute, route);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

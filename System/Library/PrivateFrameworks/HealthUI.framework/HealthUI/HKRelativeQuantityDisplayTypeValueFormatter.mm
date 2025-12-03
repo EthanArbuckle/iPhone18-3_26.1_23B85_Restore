@@ -1,109 +1,109 @@
 @interface HKRelativeQuantityDisplayTypeValueFormatter
-- (id)attributedStringFromValue:(id)a3 displayType:(id)a4 unit:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8 formatForChart:(BOOL)a9 unitFormatString:(id)a10 formatString:(id)a11;
-- (id)stringFromValue:(id)a3 displayType:(id)a4 unit:(id)a5 unitController:(id)a6;
-- (id)stringFromValue:(id)a3 displayType:(id)a4 unit:(id)a5 unitController:(id)a6 formatString:(id)a7;
+- (id)attributedStringFromValue:(id)value displayType:(id)type unit:(id)unit unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)chart unitFormatString:(id)self0 formatString:(id)self1;
+- (id)stringFromValue:(id)value displayType:(id)type unit:(id)unit unitController:(id)controller;
+- (id)stringFromValue:(id)value displayType:(id)type unit:(id)unit unitController:(id)controller formatString:(id)string;
 @end
 
 @implementation HKRelativeQuantityDisplayTypeValueFormatter
 
-- (id)attributedStringFromValue:(id)a3 displayType:(id)a4 unit:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8 formatForChart:(BOOL)a9 unitFormatString:(id)a10 formatString:(id)a11
+- (id)attributedStringFromValue:(id)value displayType:(id)type unit:(id)unit unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)chart unitFormatString:(id)self0 formatString:(id)self1
 {
   v59[1] = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v53 = a10;
-  v23 = a11;
-  [v17 doubleValue];
+  valueCopy = value;
+  typeCopy = type;
+  unitCopy = unit;
+  controllerCopy = controller;
+  fontCopy = font;
+  unitFontCopy = unitFont;
+  stringCopy = string;
+  formatStringCopy = formatString;
+  [valueCopy doubleValue];
   if (v24 == 1.79769313e308)
   {
     v51 = objc_alloc(MEMORY[0x1E696AAB0]);
     v25 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     [v25 localizedStringForKey:@"ESTABLISHING_BASELINE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Kali"];
-    v26 = v20;
-    v28 = v27 = v18;
+    v26 = controllerCopy;
+    v28 = v27 = typeCopy;
     v58 = *MEMORY[0x1E69DB648];
-    v59[0] = v21;
+    v59[0] = fontCopy;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:&v58 count:1];
-    v29 = v17;
-    v30 = v21;
-    v31 = v23;
-    v32 = v22;
-    v34 = v33 = v19;
+    v29 = valueCopy;
+    v30 = fontCopy;
+    v31 = formatStringCopy;
+    v32 = unitFontCopy;
+    v34 = v33 = unitCopy;
     v52 = [v51 initWithString:v28 attributes:v34];
 
-    v19 = v33;
-    v22 = v32;
-    v23 = v31;
-    v21 = v30;
-    v17 = v29;
+    unitCopy = v33;
+    unitFontCopy = v32;
+    formatStringCopy = v31;
+    fontCopy = v30;
+    valueCopy = v29;
 
-    v18 = v27;
-    v20 = v26;
+    typeCopy = v27;
+    controllerCopy = v26;
 
 LABEL_5:
-    v43 = v53;
+    v43 = stringCopy;
     goto LABEL_6;
   }
 
-  [v17 doubleValue];
+  [valueCopy doubleValue];
   if (v35 == -1.79769313e308)
   {
     v36 = objc_alloc(MEMORY[0x1E696AAB0]);
     [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v37 = v50 = v19;
+    v37 = v50 = unitCopy;
     v38 = [v37 localizedStringForKey:@"NOT_ENOUGH_DATA" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Kali"];
     v56 = *MEMORY[0x1E69DB648];
-    v57 = v21;
+    v57 = fontCopy;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-    v39 = v22;
-    v40 = v20;
-    v42 = v41 = v18;
+    v39 = unitFontCopy;
+    v40 = controllerCopy;
+    v42 = v41 = typeCopy;
     v52 = [v36 initWithString:v38 attributes:v42];
 
-    v18 = v41;
-    v20 = v40;
-    v22 = v39;
+    typeCopy = v41;
+    controllerCopy = v40;
+    unitFontCopy = v39;
 
-    v19 = v50;
+    unitCopy = v50;
     goto LABEL_5;
   }
 
-  v43 = v53;
-  if (!v53)
+  v43 = stringCopy;
+  if (!stringCopy)
   {
     [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v54 = v22;
-    v45 = v20;
-    v46 = v19;
-    v48 = v47 = v18;
+    v54 = unitFontCopy;
+    v45 = controllerCopy;
+    v46 = unitCopy;
+    v48 = v47 = typeCopy;
     v43 = [v48 localizedStringForKey:@"%@_DEGREES_FROM_BASELINE_UNIT" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Kali"];
 
-    v18 = v47;
-    v19 = v46;
-    v20 = v45;
-    v22 = v54;
+    typeCopy = v47;
+    unitCopy = v46;
+    controllerCopy = v45;
+    unitFontCopy = v54;
   }
 
   v55.receiver = self;
   v55.super_class = HKRelativeQuantityDisplayTypeValueFormatter;
-  v52 = [(HKQuantityDisplayTypeValueFormatter *)&v55 attributedStringFromValue:v17 displayType:v18 unit:v19 unitController:v20 valueFont:v21 unitFont:v22 formatForChart:a9 unitFormatString:v43 formatString:v23];
+  v52 = [(HKQuantityDisplayTypeValueFormatter *)&v55 attributedStringFromValue:valueCopy displayType:typeCopy unit:unitCopy unitController:controllerCopy valueFont:fontCopy unitFont:unitFontCopy formatForChart:chart unitFormatString:v43 formatString:formatStringCopy];
 LABEL_6:
 
   return v52;
 }
 
-- (id)stringFromValue:(id)a3 displayType:(id)a4 unit:(id)a5 unitController:(id)a6 formatString:(id)a7
+- (id)stringFromValue:(id)value displayType:(id)type unit:(id)unit unitController:(id)controller formatString:(id)string
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  [v12 doubleValue];
+  valueCopy = value;
+  typeCopy = type;
+  unitCopy = unit;
+  controllerCopy = controller;
+  stringCopy = string;
+  [valueCopy doubleValue];
   if (v17 == 1.79769313e308)
   {
     v18 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -115,7 +115,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v12 doubleValue];
+  [valueCopy doubleValue];
   if (v21 == -1.79769313e308)
   {
     v18 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -126,19 +126,19 @@ LABEL_5:
 
   v24.receiver = self;
   v24.super_class = HKRelativeQuantityDisplayTypeValueFormatter;
-  v22 = [(HKQuantityDisplayTypeValueFormatter *)&v24 stringFromValue:v12 displayType:v13 unit:v14 unitController:v15 formatString:v16];
+  v22 = [(HKQuantityDisplayTypeValueFormatter *)&v24 stringFromValue:valueCopy displayType:typeCopy unit:unitCopy unitController:controllerCopy formatString:stringCopy];
 LABEL_6:
 
   return v22;
 }
 
-- (id)stringFromValue:(id)a3 displayType:(id)a4 unit:(id)a5 unitController:(id)a6
+- (id)stringFromValue:(id)value displayType:(id)type unit:(id)unit unitController:(id)controller
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  [v10 doubleValue];
+  valueCopy = value;
+  typeCopy = type;
+  unitCopy = unit;
+  controllerCopy = controller;
+  [valueCopy doubleValue];
   if (v14 == 1.79769313e308)
   {
     v15 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -150,7 +150,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v10 doubleValue];
+  [valueCopy doubleValue];
   if (v18 == -1.79769313e308)
   {
     v15 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -161,7 +161,7 @@ LABEL_5:
 
   v21.receiver = self;
   v21.super_class = HKRelativeQuantityDisplayTypeValueFormatter;
-  v19 = [(HKQuantityDisplayTypeValueFormatter *)&v21 stringFromValue:v10 displayType:v11 unit:v12 unitController:v13];
+  v19 = [(HKQuantityDisplayTypeValueFormatter *)&v21 stringFromValue:valueCopy displayType:typeCopy unit:unitCopy unitController:controllerCopy];
 LABEL_6:
 
   return v19;

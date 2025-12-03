@@ -1,23 +1,23 @@
 @interface CNPropertyGroupAddressingGrammarItem
-+ (id)propertyGroupItemWithLabeledValue:(id)a3 group:(id)a4 contact:(id)a5;
++ (id)propertyGroupItemWithLabeledValue:(id)value group:(id)group contact:(id)contact;
 - (BOOL)modified;
 - (BOOL)shouldShowLanguageLabel;
 - (id)displayLabel;
-- (id)displayStringForValue:(id)a3;
+- (id)displayStringForValue:(id)value;
 @end
 
 @implementation CNPropertyGroupAddressingGrammarItem
 
-+ (id)propertyGroupItemWithLabeledValue:(id)a3 group:(id)a4 contact:(id)a5
++ (id)propertyGroupItemWithLabeledValue:(id)value group:(id)group contact:(id)contact
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  groupCopy = group;
+  contactCopy = contact;
   objc_opt_class();
-  v11 = [v8 value];
+  value = [valueCopy value];
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = value;
   }
 
   else
@@ -31,9 +31,9 @@
   v15 = 0;
   if ((v14 & 1) == 0)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = &OBJC_METACLASS___CNPropertyGroupAddressingGrammarItem;
-    v15 = objc_msgSendSuper2(&v17, sel_propertyGroupItemWithLabeledValue_group_contact_, v8, v9, v10);
+    v15 = objc_msgSendSuper2(&v17, sel_propertyGroupItemWithLabeledValue_group_contact_, valueCopy, groupCopy, contactCopy);
   }
 
   return v15;
@@ -42,11 +42,11 @@
 - (id)displayLabel
 {
   objc_opt_class();
-  v3 = [(CNPropertyGroupItem *)self labeledValue];
-  v4 = [v3 value];
+  labeledValue = [(CNPropertyGroupItem *)self labeledValue];
+  value = [labeledValue value];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = value;
   }
 
   else
@@ -60,27 +60,27 @@
   {
     v10.receiver = self;
     v10.super_class = CNPropertyGroupAddressingGrammarItem;
-    v7 = [(CNPropertyGroupItem *)&v10 displayLabel];
+    displayLabel = [(CNPropertyGroupItem *)&v10 displayLabel];
   }
 
   else
   {
-    v7 = [v6 localizedLanguageDescription];
+    displayLabel = [v6 localizedLanguageDescription];
   }
 
-  v8 = v7;
+  v8 = displayLabel;
 
   return v8;
 }
 
-- (id)displayStringForValue:(id)a3
+- (id)displayStringForValue:(id)value
 {
   objc_opt_class();
-  v4 = [(CNPropertyGroupItem *)self labeledValue];
-  v5 = [v4 value];
+  labeledValue = [(CNPropertyGroupItem *)self labeledValue];
+  value = [labeledValue value];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = value;
   }
 
   else
@@ -92,15 +92,15 @@
 
   if (v7)
   {
-    v8 = [v7 localizedShortDescription];
+    localizedShortDescription = [v7 localizedShortDescription];
   }
 
   else
   {
-    v8 = &stru_1F0CE7398;
+    localizedShortDescription = &stru_1F0CE7398;
   }
 
-  return v8;
+  return localizedShortDescription;
 }
 
 - (BOOL)modified
@@ -115,11 +115,11 @@
   else
   {
     objc_opt_class();
-    v4 = [(CNPropertyGroupItem *)self labeledValue];
-    v5 = [v4 value];
+    labeledValue = [(CNPropertyGroupItem *)self labeledValue];
+    value = [labeledValue value];
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = value;
     }
 
     else
@@ -146,10 +146,10 @@
 - (BOOL)shouldShowLanguageLabel
 {
   objc_opt_class();
-  v3 = [(CNPropertyGroupItem *)self group];
+  group = [(CNPropertyGroupItem *)self group];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = group;
   }
 
   else
@@ -161,15 +161,15 @@
 
   if (v5)
   {
-    v6 = [v5 shouldShowLanguageLabel];
+    shouldShowLanguageLabel = [v5 shouldShowLanguageLabel];
   }
 
   else
   {
-    v6 = 0;
+    shouldShowLanguageLabel = 0;
   }
 
-  return v6;
+  return shouldShowLanguageLabel;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface SBTransientOverlayPresentWorkspaceTransaction
 - (BOOL)_canBeInterrupted;
-- (BOOL)canInterruptForTransitionRequest:(id)a3;
-- (SBTransientOverlayPresentWorkspaceTransaction)initWithTransitionRequest:(id)a3;
+- (BOOL)canInterruptForTransitionRequest:(id)request;
+- (SBTransientOverlayPresentWorkspaceTransaction)initWithTransitionRequest:(id)request;
 - (void)_begin;
 - (void)_didComplete;
-- (void)_logForInterruptAttemptReason:(id)a3;
-- (void)_performStandardPresentationAnimated:(BOOL)a3;
+- (void)_logForInterruptAttemptReason:(id)reason;
+- (void)_performStandardPresentationAnimated:(BOOL)animated;
 - (void)_willBegin;
-- (void)_willInterruptWithReason:(id)a3;
-- (void)animationControllerDidFinishAnimation:(id)a3;
+- (void)_willInterruptWithReason:(id)reason;
+- (void)animationControllerDidFinishAnimation:(id)animation;
 @end
 
 @implementation SBTransientOverlayPresentWorkspaceTransaction
 
-- (SBTransientOverlayPresentWorkspaceTransaction)initWithTransitionRequest:(id)a3
+- (SBTransientOverlayPresentWorkspaceTransaction)initWithTransitionRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = SBTransientOverlayPresentWorkspaceTransaction;
-  return [(SBMainWorkspaceTransaction *)&v4 initWithTransitionRequest:a3];
+  return [(SBMainWorkspaceTransaction *)&v4 initWithTransitionRequest:request];
 }
 
 - (void)_willBegin
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a1 object:a2 file:@"SBTransientOverlayPresentWorkspaceTransaction.m" lineNumber:61 description:{@"No publisher for window scene: %@; self: %@", a3, a2}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBTransientOverlayPresentWorkspaceTransaction.m" lineNumber:61 description:{@"No publisher for window scene: %@; self: %@", a3, a2}];
 }
 
 - (void)_begin
@@ -32,26 +32,26 @@
   v19.super_class = SBTransientOverlayPresentWorkspaceTransaction;
   [(SBTransientOverlayPresentWorkspaceTransaction *)&v19 _begin];
   [(SBTransientOverlayPresentWorkspaceTransaction *)self addMilestone:@"SBTransientOverlayPresentWorkspaceTransactionMilestonePresentationCompletion"];
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v4 = [v3 transientOverlayContext];
-  v5 = [v4 transientOverlay];
-  v6 = [(SBWorkspaceTransaction *)self windowScene];
-  v7 = [v6 switcherController];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  transientOverlayContext = [transitionRequest transientOverlayContext];
+  transientOverlay = [transientOverlayContext transientOverlay];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  switcherController = [windowScene switcherController];
 
-  v8 = [v3 workspace];
-  v9 = [v8 keyboardFocusController];
-  v10 = [(SBWorkspaceTransaction *)self windowScene];
-  v11 = [v9 bufferEventsForSpringBoardScene:v10 reason:@"SBTransientOverlayPresentWorkspaceTransaction"];
+  workspace = [transitionRequest workspace];
+  keyboardFocusController = [workspace keyboardFocusController];
+  windowScene2 = [(SBWorkspaceTransaction *)self windowScene];
+  v11 = [keyboardFocusController bufferEventsForSpringBoardScene:windowScene2 reason:@"SBTransientOverlayPresentWorkspaceTransaction"];
   eventBufferingAssertion = self->_eventBufferingAssertion;
   self->_eventBufferingAssertion = v11;
 
-  if (v5 && [v7 unlockedEnvironmentMode] == 2)
+  if (transientOverlay && [switcherController unlockedEnvironmentMode] == 2)
   {
-    v13 = [v7 appLayoutForWorkspaceTransientOverlay:v5];
+    v13 = [switcherController appLayoutForWorkspaceTransientOverlay:transientOverlay];
     if (v13)
     {
-      v14 = [v5 viewController];
-      v15 = [v14 preferredUnlockedGestureDismissalStyle] == 3;
+      viewController = [transientOverlay viewController];
+      v15 = [viewController preferredUnlockedGestureDismissalStyle] == 3;
     }
 
     else
@@ -65,11 +65,11 @@
     v15 = 0;
   }
 
-  v16 = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
-  [v16 beginTransitionForWorkspaceTransaction:self];
+  layoutStateTransitionCoordinator = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
+  [layoutStateTransitionCoordinator beginTransitionForWorkspaceTransaction:self];
   if (v15)
   {
-    v17 = [v7 animationControllerForTransitionRequest:v3];
+    v17 = [switcherController animationControllerForTransitionRequest:transitionRequest];
     animation = self->_animation;
     self->_animation = v17;
 
@@ -83,7 +83,7 @@
 
   else
   {
-    -[SBTransientOverlayPresentWorkspaceTransaction _performStandardPresentationAnimated:](self, "_performStandardPresentationAnimated:", [v4 isAnimated]);
+    -[SBTransientOverlayPresentWorkspaceTransaction _performStandardPresentationAnimated:](self, "_performStandardPresentationAnimated:", [transientOverlayContext isAnimated]);
   }
 }
 
@@ -109,14 +109,14 @@
   [(SBMainWorkspaceTransaction *)&v4 _didComplete];
 }
 
-- (BOOL)canInterruptForTransitionRequest:(id)a3
+- (BOOL)canInterruptForTransitionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (self->_animation)
   {
     v5 = objc_opt_class();
-    v6 = SBSafeCast(v5, v4);
-    v7 = [v6 copyMainWorkspaceTransitionRequest];
+    transientOverlay = SBSafeCast(v5, requestCopy);
+    copyMainWorkspaceTransitionRequest = [transientOverlay copyMainWorkspaceTransitionRequest];
     if ([(SBTransientOverlayPresentWorkspaceTransaction *)self isInterrupted])
     {
       [(SBTransientOverlayPresentWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<SBTransientOverlayPresentWorkspaceTransaction:%p> not interruptible because: already interrupted", self];
@@ -125,10 +125,10 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v14 = [v7 applicationContext];
-    v15 = [v14 isBackground];
+    applicationContext = [copyMainWorkspaceTransitionRequest applicationContext];
+    isBackground = [applicationContext isBackground];
 
-    if (v15)
+    if (isBackground)
     {
       [(SBTransientOverlayPresentWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<SBTransientOverlayPresentWorkspaceTransaction:%p> not interruptible because: request is for background activation", self];
       goto LABEL_17;
@@ -138,9 +138,9 @@ LABEL_17:
     if ([v16 isInSetupMode])
     {
       v17 = +[SBSetupManager sharedInstance];
-      v18 = [v17 isInSetupModeReadyToExit];
+      isInSetupModeReadyToExit = [v17 isInSetupModeReadyToExit];
 
-      if ((v18 & 1) == 0)
+      if ((isInSetupModeReadyToExit & 1) == 0)
       {
         [(SBTransientOverlayPresentWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<SBTransientOverlayPresentWorkspaceTransaction:%p> not interruptible because: we are in setup mode", self];
         goto LABEL_17;
@@ -151,10 +151,10 @@ LABEL_17:
     {
     }
 
-    v19 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v20 = [v19 source];
+    transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+    source = [transitionRequest source];
 
-    if (v20 == 31)
+    if (source == 31)
     {
       [(SBTransientOverlayPresentWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<SBTransientOverlayPresentWorkspaceTransaction:%p> not interruptible because: we are in a startup transition", self];
       goto LABEL_17;
@@ -186,7 +186,7 @@ LABEL_17:
         _Block_object_dispose(&v26, 8);
       }
 
-      if (!v7 || [v7 source] != 14)
+      if (!copyMainWorkspaceTransitionRequest || [copyMainWorkspaceTransitionRequest source] != 14)
       {
         LOBYTE(v12) = 1;
         goto LABEL_29;
@@ -209,14 +209,14 @@ LABEL_29:
     goto LABEL_18;
   }
 
-  v8 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v9 = [v8 transientOverlayContext];
-  v6 = [v9 transientOverlay];
+  transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+  transientOverlayContext = [transitionRequest2 transientOverlayContext];
+  transientOverlay = [transientOverlayContext transientOverlay];
 
-  v10 = [v4 transientOverlayContext];
-  v7 = [v10 transientOverlay];
+  transientOverlayContext2 = [requestCopy transientOverlayContext];
+  copyMainWorkspaceTransitionRequest = [transientOverlayContext2 transientOverlay];
 
-  if ([v6 isAnalogousToEntity:v7] && (objc_msgSend(v4, "transientOverlayContext"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "transitionType"), v11, v12 == 1))
+  if ([transientOverlay isAnalogousToEntity:copyMainWorkspaceTransitionRequest] && (objc_msgSend(requestCopy, "transientOverlayContext"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "transitionType"), v11, v12 == 1))
   {
     v13 = @"<SBTransientOverlayPresentWorkspaceTransaction:%p> interruptible because: next request is to dismiss the same transient overlay we're currently presenting";
   }
@@ -246,31 +246,31 @@ void __82__SBTransientOverlayPresentWorkspaceTransaction_canInterruptForTransiti
   }
 }
 
-- (void)_willInterruptWithReason:(id)a3
+- (void)_willInterruptWithReason:(id)reason
 {
   v5.receiver = self;
   v5.super_class = SBTransientOverlayPresentWorkspaceTransaction;
-  [(SBTransientOverlayPresentWorkspaceTransaction *)&v5 _willInterruptWithReason:a3];
-  v4 = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
-  if ([v4 isTransitioning])
+  [(SBTransientOverlayPresentWorkspaceTransaction *)&v5 _willInterruptWithReason:reason];
+  layoutStateTransitionCoordinator = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
+  if ([layoutStateTransitionCoordinator isTransitioning])
   {
-    [v4 willEndTransition];
-    [v4 endTransitionWithError:0];
+    [layoutStateTransitionCoordinator willEndTransition];
+    [layoutStateTransitionCoordinator endTransitionWithError:0];
   }
 }
 
-- (void)animationControllerDidFinishAnimation:(id)a3
+- (void)animationControllerDidFinishAnimation:(id)animation
 {
   [(SBTransientOverlayPresentWorkspaceTransaction *)self _performStandardPresentationAnimated:0];
 
   [(SBTransientOverlayPresentWorkspaceTransaction *)self removeMilestone:@"SBTransientOverlayPresentWorkspaceTransactionMilestoneAnimation"];
 }
 
-- (void)_logForInterruptAttemptReason:(id)a3
+- (void)_logForInterruptAttemptReason:(id)reason
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  reasonCopy = reason;
+  v6 = [[v4 alloc] initWithFormat:reasonCopy arguments:&v7];
 
   if ([(SBTransientOverlayPresentWorkspaceTransaction *)self isAuditHistoryEnabled])
   {
@@ -278,46 +278,46 @@ void __82__SBTransientOverlayPresentWorkspaceTransaction_canInterruptForTransiti
   }
 }
 
-- (void)_performStandardPresentationAnimated:(BOOL)a3
+- (void)_performStandardPresentationAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v6 = [v5 transientOverlayContext];
-  v7 = [v6 transientOverlay];
-  v8 = [v7 viewController];
-  v9 = [v6 presentationManager];
+  animatedCopy = animated;
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  transientOverlayContext = [transitionRequest transientOverlayContext];
+  transientOverlay = [transientOverlayContext transientOverlay];
+  viewController = [transientOverlay viewController];
+  presentationManager = [transientOverlayContext presentationManager];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __86__SBTransientOverlayPresentWorkspaceTransaction__performStandardPresentationAnimated___block_invoke;
   v31[3] = &unk_2783A8C18;
   v31[4] = self;
   v10 = MEMORY[0x223D6F7F0](v31);
-  if (-[SBTransientOverlayPresentWorkspaceTransaction isInterrupted](self, "isInterrupted") || !v8 || ([v9 isPresentingViewController:v8] & 1) != 0)
+  if (-[SBTransientOverlayPresentWorkspaceTransaction isInterrupted](self, "isInterrupted") || !viewController || ([presentationManager isPresentingViewController:viewController] & 1) != 0)
   {
     v10[2](v10);
   }
 
   else
   {
-    v11 = [(SBWorkspaceTransaction *)self windowScene];
-    v12 = [v11 switcherController];
+    windowScene = [(SBWorkspaceTransaction *)self windowScene];
+    switcherController = [windowScene switcherController];
 
-    v17 = [v12 isAcquiredTransientOverlayViewController:v8];
+    v17 = [switcherController isAcquiredTransientOverlayViewController:viewController];
     if (v17)
     {
-      [v8 beginIgnoringAppearanceUpdates];
-      [v8 beginIgnoringContentOverlayInsetUpdates];
-      [v12 removeAcquiredTransientOverlayViewController:v8];
+      [viewController beginIgnoringAppearanceUpdates];
+      [viewController beginIgnoringContentOverlayInsetUpdates];
+      [switcherController removeAcquiredTransientOverlayViewController:viewController];
     }
 
-    v13 = [(SBTransientOverlayPresentationRequest *)[SBMutableTransientOverlayPresentationRequest alloc] initWithViewController:v8];
-    [(SBMutableTransientOverlayPresentationRequest *)v13 setAnimated:v3];
-    -[SBMutableTransientOverlayPresentationRequest setShouldDismissSiri:](v13, "setShouldDismissSiri:", [v6 shouldDismissSiriUponPresentation]);
-    v14 = [v6 originatingProcess];
-    [(SBMutableTransientOverlayPresentationRequest *)v13 setOriginatingProcess:v14];
+    v13 = [(SBTransientOverlayPresentationRequest *)[SBMutableTransientOverlayPresentationRequest alloc] initWithViewController:viewController];
+    [(SBMutableTransientOverlayPresentationRequest *)v13 setAnimated:animatedCopy];
+    -[SBMutableTransientOverlayPresentationRequest setShouldDismissSiri:](v13, "setShouldDismissSiri:", [transientOverlayContext shouldDismissSiriUponPresentation]);
+    originatingProcess = [transientOverlayContext originatingProcess];
+    [(SBMutableTransientOverlayPresentationRequest *)v13 setOriginatingProcess:originatingProcess];
 
-    v15 = [v6 windowScene];
-    [(SBMutableTransientOverlayPresentationRequest *)v13 setWindowScene:v15];
+    windowScene2 = [transientOverlayContext windowScene];
+    [(SBMutableTransientOverlayPresentationRequest *)v13 setWindowScene:windowScene2];
 
     v27 = 0;
     v28 = &v27;
@@ -336,7 +336,7 @@ void __82__SBTransientOverlayPresentWorkspaceTransaction_canInterruptForTransiti
     v20 = v16;
     v22 = &v27;
     [(SBMutableTransientOverlayPresentationRequest *)v13 setCompletionHandler:v19];
-    [v9 performPresentationRequest:v13];
+    [presentationManager performPresentationRequest:v13];
     if ((v28[3] & 1) == 0)
     {
       *(v24 + 24) = 1;
@@ -344,8 +344,8 @@ void __82__SBTransientOverlayPresentWorkspaceTransaction_canInterruptForTransiti
 
     if (v17)
     {
-      [v8 endIgnoringAppearanceUpdates];
-      [v8 endIgnoringContentOverlayInsetUpdates];
+      [viewController endIgnoringAppearanceUpdates];
+      [viewController endIgnoringContentOverlayInsetUpdates];
     }
 
     v18[0] = MEMORY[0x277D85DD0];

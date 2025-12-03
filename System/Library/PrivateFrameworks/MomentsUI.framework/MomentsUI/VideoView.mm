@@ -1,11 +1,11 @@
 @interface VideoView
 - (_TtC9MomentsUI9VideoView)init;
-- (_TtC9MomentsUI9VideoView)initWithCoder:(id)a3;
+- (_TtC9MomentsUI9VideoView)initWithCoder:(id)coder;
 @end
 
 @implementation VideoView
 
-- (_TtC9MomentsUI9VideoView)initWithCoder:(id)a3
+- (_TtC9MomentsUI9VideoView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI9VideoView_videoStaticView;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for VideoStaticView()) init];

@@ -1,7 +1,7 @@
 @interface RBDrawable
 - ($C28CD4A45FD07A4F97CC9D5F91F25271)clearColor;
 - (CGSize)size;
-- (RBDrawable)initWithDevice:(id)a3;
+- (RBDrawable)initWithDevice:(id)device;
 - (RBDrawableDelegate)delegate;
 - (id).cxx_construct;
 - (id)statisticsHandler;
@@ -9,21 +9,21 @@
 - (unint64_t)GPUPriority;
 - (unint64_t)backgroundGPUPriority;
 - (void)dealloc;
-- (void)dumpTexture:(id)a3 name:(id)a4;
-- (void)renderDisplayList:(id)a3 flags:(unsigned int)a4;
-- (void)renderDisplayList:(id)a3 sourceRect:(id *)a4 destinationOffset:(id *)a5 flags:(unsigned int)a6;
-- (void)renderItems:(id)a3 flags:(unsigned int)a4;
-- (void)renderWithFlags:(uint64_t)a3 items:(uint64_t)a4 count:(void *)a5 displayList:;
-- (void)setBackgroundGPUPriority:(unint64_t)a3;
-- (void)setClearColor:(id)a3;
-- (void)setCompletedHandler:(id)a3;
-- (void)setErrorHandler:(id)a3;
-- (void)setEvent:(id)a3;
-- (void)setGPUPriority:(unint64_t)a3;
-- (void)setLabel:(id)a3;
-- (void)setScheduledHandler:(id)a3;
-- (void)setStatisticsHandler:(id)a3;
-- (void)setTexture:(id)a3;
+- (void)dumpTexture:(id)texture name:(id)name;
+- (void)renderDisplayList:(id)list flags:(unsigned int)flags;
+- (void)renderDisplayList:(id)list sourceRect:(id *)rect destinationOffset:(id *)offset flags:(unsigned int)flags;
+- (void)renderItems:(id)items flags:(unsigned int)flags;
+- (void)renderWithFlags:(uint64_t)flags items:(uint64_t)items count:(void *)count displayList:;
+- (void)setBackgroundGPUPriority:(unint64_t)priority;
+- (void)setClearColor:(id)color;
+- (void)setCompletedHandler:(id)handler;
+- (void)setErrorHandler:(id)handler;
+- (void)setEvent:(id)event;
+- (void)setGPUPriority:(unint64_t)priority;
+- (void)setLabel:(id)label;
+- (void)setScheduledHandler:(id)handler;
+- (void)setStatisticsHandler:(id)handler;
+- (void)setTexture:(id)texture;
 @end
 
 @implementation RBDrawable
@@ -51,7 +51,7 @@
   [(RBDrawable *)&v4 dealloc];
 }
 
-- (RBDrawable)initWithDevice:(id)a3
+- (RBDrawable)initWithDevice:(id)device
 {
   v8.receiver = self;
   v8.super_class = RBDrawable;
@@ -60,10 +60,10 @@
   if (v4)
   {
     v6 = *(v4 + 3);
-    if (v6 != a3)
+    if (v6 != device)
     {
 
-      *(v5 + 3) = a3;
+      *(v5 + 3) = device;
     }
 
     *(v5 + 13) = 0x3FF0000000000000;
@@ -89,9 +89,9 @@
   }
 }
 
-- (void)setGPUPriority:(unint64_t)a3
+- (void)setGPUPriority:(unint64_t)priority
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (priority == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (*(self + 81) == 1)
     {
@@ -101,7 +101,7 @@
 
   else
   {
-    *(self + 40) = a3 | 0x100;
+    *(self + 40) = priority | 0x100;
   }
 }
 
@@ -118,9 +118,9 @@
   }
 }
 
-- (void)setBackgroundGPUPriority:(unint64_t)a3
+- (void)setBackgroundGPUPriority:(unint64_t)priority
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (priority == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (*(self + 83) == 1)
     {
@@ -130,7 +130,7 @@
 
   else
   {
-    *(self + 41) = a3 | 0x100;
+    *(self + 41) = priority | 0x100;
   }
 }
 
@@ -141,64 +141,64 @@
   return v2;
 }
 
-- (void)setTexture:(id)a3
+- (void)setTexture:(id)texture
 {
   v4 = *(self + 4);
-  if (v4 != a3)
+  if (v4 != texture)
   {
 
-    *(self + 4) = a3;
+    *(self + 4) = texture;
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [a3 copy];
+  v4 = [label copy];
 
   *(self + 5) = v4;
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
   v4 = *(self + 6);
-  if (v4 != a3)
+  if (v4 != event)
   {
 
-    *(self + 6) = a3;
+    *(self + 6) = event;
   }
 }
 
-- (void)setScheduledHandler:(id)a3
+- (void)setScheduledHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
 
   *(self + 7) = v4;
 }
 
-- (void)setCompletedHandler:(id)a3
+- (void)setCompletedHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
 
   *(self + 8) = v4;
 }
 
-- (void)setErrorHandler:(id)a3
+- (void)setErrorHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
 
   *(self + 9) = v4;
 }
 
-- (void)renderDisplayList:(id)a3 flags:(unsigned int)a4
+- (void)renderDisplayList:(id)list flags:(unsigned int)flags
 {
   memset(v4, 0, sizeof(v4));
   v5[0] = 0;
   v5[1] = 0;
   v6 = vcvtq_u64_f64(*(self + 8));
-  [(RBDrawable *)self renderDisplayList:a3 sourceRect:v5 destinationOffset:v4 flags:*&a4];
+  [(RBDrawable *)self renderDisplayList:list sourceRect:v5 destinationOffset:v4 flags:*&flags];
 }
 
-- (void)renderDisplayList:(id)a3 sourceRect:(id *)a4 destinationOffset:(id *)a5 flags:(unsigned int)a6
+- (void)renderDisplayList:(id)list sourceRect:(id *)rect destinationOffset:(id *)offset flags:(unsigned int)flags
 {
   v32 = *MEMORY[0x1E69E9840];
   v7 = *(self + 24);
@@ -207,21 +207,21 @@
     abort();
   }
 
-  v8 = *&a6;
+  v8 = *&flags;
   v6.i64[0] = *(self + 18);
   v6.i32[2] = *(self + 38);
   v25 = v6;
   v24 = *(self + 39);
-  v13 = [a3 _rb_contents];
-  if (v13)
+  _rb_contents = [list _rb_contents];
+  if (_rb_contents)
   {
-    v14 = vmovn_s64(*&a4->var2);
+    v14 = vmovn_s64(*&rect->var2);
     v15 = vclez_s32(v14);
     if ((vpmax_u32(v15, v15).u32[0] & 0x80000000) == 0)
     {
-      v16 = v13;
-      v17 = vmovn_s64(*&a4->var0);
-      if (*(v13 + 424) == 1)
+      v16 = _rb_contents;
+      v17 = vmovn_s64(*&rect->var0);
+      if (*(_rb_contents + 424) == 1)
       {
         RB::DisplayList::Builder::Builder(v27);
         RB::DisplayList::Builder::set_optimized(v27, 1);
@@ -247,11 +247,11 @@
       v27[1] = 0;
       v27[2] = v17;
       v27[3] = v14;
-      v27[4] = vmovn_s64(*&a5->var0);
+      v27[4] = vmovn_s64(*&offset->var0);
       v28 = *(self + 23);
       v29 = v7;
       v30 = vmulq_n_f32(v23, v24);
-      [(RBDrawable *)self renderWithFlags:v8 items:v27 count:1 displayList:a3];
+      [(RBDrawable *)self renderWithFlags:v8 items:v27 count:1 displayList:list];
       if (v22)
       {
         if (atomic_fetch_add_explicit(v22 + 2, 0xFFFFFFFF, memory_order_release) == 1)
@@ -263,42 +263,42 @@
   }
 }
 
-- (void)renderWithFlags:(uint64_t)a3 items:(uint64_t)a4 count:(void *)a5 displayList:
+- (void)renderWithFlags:(uint64_t)flags items:(uint64_t)items count:(void *)count displayList:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v6 = vmovn_s64(vcvtq_s64_f64(*(a1 + 128)));
+  v6 = vmovn_s64(vcvtq_s64_f64(*(self + 128)));
   v7 = vclez_s32(v6);
-  if ((vpmax_u32(v7, v7).u32[0] & 0x80000000) != 0 || *(a1 + 104) == 0.0)
+  if ((vpmax_u32(v7, v7).u32[0] & 0x80000000) != 0 || *(self + 104) == 0.0)
   {
     return;
   }
 
   v11 = a2;
-  v12 = *(a1 + 112);
-  if (!v12)
+  pixelFormat = *(self + 112);
+  if (!pixelFormat)
   {
-    v13 = *(a1 + 32);
+    v13 = *(self + 32);
     if (v13)
     {
-      v12 = [v13 pixelFormat];
+      pixelFormat = [v13 pixelFormat];
     }
 
     else
     {
-      v12 = 80;
+      pixelFormat = 80;
     }
   }
 
-  v14 = RB::pixel_format_traits(v12, a2);
+  v14 = RB::pixel_format_traits(pixelFormat, a2);
   v15 = v14;
   v16 = v14[1] & 2;
   if ((v14[1] & 0x10) != 0)
   {
-    v17 = rb_color_space(*(a1 + 84));
+    v17 = rb_color_space(*(self + 84));
     v18 = (v17 >> 8) & 1;
     goto LABEL_12;
   }
@@ -306,7 +306,7 @@
   if ((v14[1] & 2) != 0)
   {
     v20 = *(v14 + 18);
-    v17 = rb_color_space(*(a1 + 84));
+    v17 = rb_color_space(*(self + 84));
     v18 = (v17 >> 8) & 1;
     if (v20)
     {
@@ -318,7 +318,7 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  v17 = rb_color_space(*(a1 + 84));
+  v17 = rb_color_space(*(self + 84));
   v18 = (v17 >> 8) & 1;
 LABEL_14:
   v19 = 17;
@@ -333,7 +333,7 @@ LABEL_15:
     v21 = v19;
   }
 
-  v22 = rb_color_space(*(a1 + 88));
+  v22 = rb_color_space(*(self + 88));
   if (*(v15 + 17))
   {
     v24 = *(v15 + 16);
@@ -355,29 +355,29 @@ LABEL_15:
     RB::ColorMode::pixel_format(v22, v23);
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
-  v36 = *(a1 + 24);
-  v26 = *(a1 + 8);
+  WeakRetained = objc_loadWeakRetained((self + 16));
+  v36 = *(self + 24);
+  v26 = *(self + 8);
   if (v26)
   {
     atomic_fetch_add_explicit(v26 + 2, 1u, memory_order_relaxed);
   }
 
-  v34 = *(a1 + 32);
-  v31 = *(a1 + 48);
-  v27 = *(a1 + 120);
-  *(a1 + 120) = v27 + 1;
-  v30 = *(a1 + 56);
-  v29 = *(a1 + 64);
-  v28 = *(a1 + 72);
-  v33 = *(a1 + 40);
+  v34 = *(self + 32);
+  v31 = *(self + 48);
+  v27 = *(self + 120);
+  *(self + 120) = v27 + 1;
+  v30 = *(self + 56);
+  v29 = *(self + 64);
+  v28 = *(self + 72);
+  v33 = *(self + 40);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3321888768;
   block[2] = __54__RBDrawable_renderWithFlags_items_count_displayList___block_invoke;
   block[3] = &unk_1F0A3EAB0;
   v38 = v34;
   v39 = WeakRetained;
-  block[4] = a1;
+  block[4] = self;
   v52 = v11;
   v40 = v36;
   if (v26)
@@ -387,24 +387,24 @@ LABEL_15:
 
   v41 = v26;
   v42 = v33;
-  v43 = v12;
+  v43 = pixelFormat;
   v44 = v6;
   v53 = v32;
   v54 = v21;
   v55 = v16 >> 1;
-  v45 = a3;
-  v46 = a4;
+  flagsCopy = flags;
+  itemsCopy = items;
   v47 = v30;
   v48 = v29;
   v49 = v28;
-  block[5] = a5;
+  block[5] = count;
   v50 = v31;
   v51 = v27;
   RB::Drawable::begin_frame(v26);
   if ((v11 & 8) != 0)
   {
     dispatch_async([v36 queue], block);
-    if (!a5)
+    if (!count)
     {
       goto LABEL_37;
     }
@@ -413,10 +413,10 @@ LABEL_15:
   }
 
   dispatch_sync([v36 queue], block);
-  if (a5)
+  if (count)
   {
 LABEL_36:
-    RBXMLRecorderMarkFrame(a1, a5, v32, *(a1 + 128), *(a1 + 136));
+    RBXMLRecorderMarkFrame(self, count, v32, *(self + 128), *(self + 136));
   }
 
 LABEL_37:
@@ -435,10 +435,10 @@ LABEL_37:
   }
 }
 
-- (void)renderItems:(id)a3 flags:(unsigned int)a4
+- (void)renderItems:(id)items flags:(unsigned int)flags
 {
   v69 = *MEMORY[0x1E69E9840];
-  v7 = [a3 count];
+  v7 = [items count];
   if (!(v7 >> 58))
   {
     v51 = v7 << 6;
@@ -466,9 +466,9 @@ LABEL_50:
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v11 = [a3 countByEnumeratingWithState:&v58 objects:v65 count:16];
-    v50 = self;
-    v49 = a4;
+    v11 = [items countByEnumeratingWithState:&v58 objects:v65 count:16];
+    selfCopy = self;
+    flagsCopy = flags;
     v12 = 0;
     if (v11)
     {
@@ -483,15 +483,15 @@ LABEL_50:
         {
           if (*v59 != v13)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(items);
           }
 
           v21 = *(*(&v58 + 1) + 8 * i);
-          v22 = [v21 displayList];
-          if (v22)
+          displayList = [v21 displayList];
+          if (displayList)
           {
-            v23 = [v22 _rb_contents];
-            if (v23)
+            _rb_contents = [displayList _rb_contents];
+            if (_rb_contents)
             {
               v24 = 0uLL;
               v56 = 0u;
@@ -507,7 +507,7 @@ LABEL_50:
               v25 = vclez_s32(*v53.i8);
               if ((vpmax_u32(v25, v25).u32[0] & 0x80000000) == 0)
               {
-                if (*(v23 + 424) == 1)
+                if (*(_rb_contents + 424) == 1)
                 {
                   RB::DisplayList::Builder::Builder(&v62);
                   RB::DisplayList::Builder::set_optimized(&v62, 1);
@@ -515,7 +515,7 @@ LABEL_50:
                   v27 = vceq_s32(*v53.i8, 0x8000000080000000);
                   v28 = vdup_lane_s32(vcgt_s32(v26, vpmin_u32(v27, v27)), 0);
                   RB::DisplayList::Builder::set_crop(&v62, v70, vbsl_s8(v28, 0x100000001000000, vcvt_f32_s32(*v54.i8)), vbsl_s8(v28, v14, vcvt_f32_s32(*v53.i8)));
-                  RB::DisplayList::Builder::draw(&v62, v23, v64, 1.0, 0, 0);
+                  RB::DisplayList::Builder::draw(&v62, _rb_contents, v64, 1.0, 0, 0);
                   RB::DisplayList::Builder::move_contents(&v62, v29, &v55);
                   v30 = v68;
                   v31 = v68 + 1;
@@ -534,12 +534,12 @@ LABEL_50:
 
                   *&v32[8 * v30] = v55;
                   LODWORD(v68) = v31;
-                  v23 = *&v32[8 * v30];
+                  _rb_contents = *&v32[8 * v30];
                   RB::DisplayList::Builder::~Builder(&v62);
                 }
 
                 v33 = &v9[64 * v12];
-                v33->i64[0] = v23;
+                v33->i64[0] = _rb_contents;
                 v34 = v53.i64[0];
                 v33[1].i64[0] = v54.i64[0];
                 v33[1].i64[1] = v34;
@@ -559,8 +559,8 @@ LABEL_50:
                 *v33[2].f32 = v35;
                 [v21 targetHeadroom];
                 v33[2].i32[2] = v36;
-                v37 = [v21 initialState];
-                switch(v37)
+                initialState = [v21 initialState];
+                switch(initialState)
                 {
                   case 2:
                     v33[2].i32[3] = 2;
@@ -583,15 +583,15 @@ LABEL_50:
           }
         }
 
-        v11 = [a3 countByEnumeratingWithState:&v58 objects:v65 count:16];
+        v11 = [items countByEnumeratingWithState:&v58 objects:v65 count:16];
       }
 
       while (v11);
     }
 
-    if ([a3 count] == 1)
+    if ([items count] == 1)
     {
-      v43 = [objc_msgSend(a3 objectAtIndexedSubscript:{0), "displayList"}];
+      v43 = [objc_msgSend(items objectAtIndexedSubscript:{0), "displayList"}];
     }
 
     else
@@ -599,7 +599,7 @@ LABEL_50:
       v43 = 0;
     }
 
-    [(RBDrawable *)v50 renderWithFlags:v49 items:v9 count:v12 displayList:v43];
+    [(RBDrawable *)selfCopy renderWithFlags:flagsCopy items:v9 count:v12 displayList:v43];
     v44 = v67;
     if (v67)
     {
@@ -820,17 +820,17 @@ uint64_t __54__RBDrawable_renderWithFlags_items_count_displayList___block_invoke
   return result;
 }
 
-- (void)dumpTexture:(id)a3 name:(id)a4
+- (void)dumpTexture:(id)texture name:(id)name
 {
-  v7 = [*(self + 3) queue];
+  queue = [*(self + 3) queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __31__RBDrawable_dumpTexture_name___block_invoke;
   block[3] = &unk_1E744CBE0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
-  dispatch_sync(v7, block);
+  block[5] = name;
+  block[6] = texture;
+  dispatch_sync(queue, block);
 }
 
 uint64_t __31__RBDrawable_dumpTexture_name___block_invoke(void *a1)
@@ -900,9 +900,9 @@ uint64_t __31__RBDrawable_dumpTexture_name___block_invoke(void *a1)
   return v2;
 }
 
-- (void)setStatisticsHandler:(id)a3
+- (void)setStatisticsHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     operator new();
   }
@@ -934,12 +934,12 @@ uint64_t __31__RBDrawable_dumpTexture_name___block_invoke(void *a1)
   return result;
 }
 
-- (void)setClearColor:(id)a3
+- (void)setClearColor:(id)color
 {
-  *(self + 36) = LODWORD(a3.var0);
-  *(self + 37) = LODWORD(a3.var1);
-  *(self + 38) = LODWORD(a3.var2);
-  *(self + 39) = LODWORD(a3.var3);
+  *(self + 36) = LODWORD(color.var0);
+  *(self + 37) = LODWORD(color.var1);
+  *(self + 38) = LODWORD(color.var2);
+  *(self + 39) = LODWORD(color.var3);
 }
 
 - (uint64_t)renderDisplayList:(uint64_t)a1 sourceRect:destinationOffset:flags:.cold.1(uint64_t a1)

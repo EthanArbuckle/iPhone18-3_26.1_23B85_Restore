@@ -1,28 +1,28 @@
 @interface UARPAssetManagerController
-- (UARPAssetManagerController)initWithIdleTimeout:(int64_t)a3;
-- (id)getAssetURLForPersonality:(id)a3;
-- (void)addXPCEventSubscriber:(unint64_t)a3 withDomain:(id)a4;
-- (void)assetAvailabilityUpdateForPersonality:(id)a3 assetVersion:(id)a4 creationDate:(id)a5 status:(int64_t)a6;
-- (void)checkAssetAvailabilityForDomain:(id)a3;
-- (void)clearAssetCacheForDomain:(id)a3;
-- (void)handleXPCEventError:(int)a3;
-- (void)handleXPCEventWithAction:(unsigned int)a3 token:(unint64_t)a4 descriptor:(id)a5;
-- (void)notifySubscribers:(id)a3 withDomain:(id)a4;
-- (void)primeCache:(id)a3;
-- (void)removeXPCEventSubscriber:(unint64_t)a3;
+- (UARPAssetManagerController)initWithIdleTimeout:(int64_t)timeout;
+- (id)getAssetURLForPersonality:(id)personality;
+- (void)addXPCEventSubscriber:(unint64_t)subscriber withDomain:(id)domain;
+- (void)assetAvailabilityUpdateForPersonality:(id)personality assetVersion:(id)version creationDate:(id)date status:(int64_t)status;
+- (void)checkAssetAvailabilityForDomain:(id)domain;
+- (void)clearAssetCacheForDomain:(id)domain;
+- (void)handleXPCEventError:(int)error;
+- (void)handleXPCEventWithAction:(unsigned int)action token:(unint64_t)token descriptor:(id)descriptor;
+- (void)notifySubscribers:(id)subscribers withDomain:(id)domain;
+- (void)primeCache:(id)cache;
+- (void)removeXPCEventSubscriber:(unint64_t)subscriber;
 - (void)setActivityForUARPPeriodicLaunch;
-- (void)settingsChangedForSerialNumber:(id)a3;
-- (void)subscribeForPersonality:(id)a3;
-- (void)updateReachabilityForPersonality:(id)a3 reachable:(BOOL)a4;
-- (void)updateSettingsForPersonality:(id)a3;
+- (void)settingsChangedForSerialNumber:(id)number;
+- (void)subscribeForPersonality:(id)personality;
+- (void)updateReachabilityForPersonality:(id)personality reachable:(BOOL)reachable;
+- (void)updateSettingsForPersonality:(id)personality;
 @end
 
 @implementation UARPAssetManagerController
 
-- (UARPAssetManagerController)initWithIdleTimeout:(int64_t)a3
+- (UARPAssetManagerController)initWithIdleTimeout:(int64_t)timeout
 {
   v35 = a2;
-  v34 = a3;
+  timeoutCopy = timeout;
   v36 = 0;
   v33.receiver = self;
   v33.super_class = UARPAssetManagerController;
@@ -30,7 +30,7 @@
   objc_storeStrong(&v36, v36);
   if (v36)
   {
-    v36->_idleExitTimeoutSec = v34;
+    v36->_idleExitTimeoutSec = timeoutCopy;
     v3 = dispatch_queue_create("com.apple.AsyncAssetManager.queue", 0);
     internalQueue = v36->_internalQueue;
     v36->_internalQueue = v3;
@@ -110,16 +110,16 @@ void __50__UARPAssetManagerController_initWithIdleTimeout___block_invoke_2(uint6
 
 - (void)setActivityForUARPPeriodicLaunch
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v3 = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = __62__UARPAssetManagerController_setActivityForUARPPeriodicLaunch__block_invoke;
   v7 = &unk_100035D08;
-  v8 = self;
+  selfCopy2 = self;
   v9[0] = objc_retainBlock(&v3);
-  oslog = v10->_log;
+  oslog = selfCopy->_log;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     __os_log_helper_16_2_1_8_32(v11, "com.apple.UARPAssetManager.periodicFirmwareCheck");
@@ -129,7 +129,7 @@ void __50__UARPAssetManagerController_initWithIdleTimeout___block_invoke_2(uint6
   objc_storeStrong(&oslog, 0);
   xpc_activity_register("com.apple.UARPAssetManager.periodicFirmwareCheck", XPC_ACTIVITY_CHECK_IN, v9[0]);
   objc_storeStrong(v9, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy2, 0);
 }
 
 void __62__UARPAssetManagerController_setActivityForUARPPeriodicLaunch__block_invoke(void *a1, void *a2)
@@ -182,11 +182,11 @@ void __62__UARPAssetManagerController_setActivityForUARPPeriodicLaunch__block_in
   objc_storeStrong(location, 0);
 }
 
-- (void)handleXPCEventError:(int)a3
+- (void)handleXPCEventError:(int)error
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  errorCopy = error;
   oslog = self->_log;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
@@ -198,42 +198,42 @@ void __62__UARPAssetManagerController_setActivityForUARPPeriodicLaunch__block_in
   objc_storeStrong(&oslog, 0);
 }
 
-- (void)handleXPCEventWithAction:(unsigned int)a3 token:(unint64_t)a4 descriptor:(id)a5
+- (void)handleXPCEventWithAction:(unsigned int)action token:(unint64_t)token descriptor:(id)descriptor
 {
-  v30 = self;
+  selfCopy = self;
   v29 = a2;
-  v28 = a3;
-  v27 = a4;
+  actionCopy = action;
+  tokenCopy = token;
   location = 0;
-  objc_storeStrong(&location, a5);
-  v25 = v30->_log;
+  objc_storeStrong(&location, descriptor);
+  v25 = selfCopy->_log;
   v24 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_0_1_8_0(v33, v27);
+    __os_log_helper_16_0_1_8_0(v33, tokenCopy);
     _os_log_debug_impl(&_mh_execute_header, v25, v24, "Received event for token=%llu", v33, 0xCu);
   }
 
   objc_storeStrong(&v25, 0);
-  if (v28)
+  if (actionCopy)
   {
-    if (v28 == 1)
+    if (actionCopy == 1)
     {
-      oslog = v30->_log;
+      oslog = selfCopy->_log;
       v15 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_0_1_8_0(v31, v27);
+        __os_log_helper_16_0_1_8_0(v31, tokenCopy);
         _os_log_debug_impl(&_mh_execute_header, oslog, v15, "Remove Subscriber with token=%llu", v31, 0xCu);
       }
 
       objc_storeStrong(&oslog, 0);
-      [(UARPAssetManagerController *)v30 removeXPCEventSubscriber:v27];
+      [(UARPAssetManagerController *)selfCopy removeXPCEventSubscriber:tokenCopy];
     }
 
-    else if (v28 == 2)
+    else if (actionCopy == 2)
     {
-      v14 = v30->_log;
+      v14 = selfCopy->_log;
       v13 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
@@ -254,24 +254,24 @@ LABEL_20:
   string = xpc_dictionary_get_string(location, [kUARPAssetAvailabilityXPCEventDomainKey UTF8String]);
   if (string)
   {
-    v18 = v30->_log;
+    v18 = selfCopy->_log;
     v17 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_2_8_32_8_0(v32, string, v27);
+      __os_log_helper_16_2_2_8_32_8_0(v32, string, tokenCopy);
       _os_log_debug_impl(&_mh_execute_header, v18, v17, "Add Subscriber for %s with token=%llu", v32, 0x16u);
     }
 
     objc_storeStrong(&v18, 0);
-    v8 = v30;
-    v7 = v27;
+    v8 = selfCopy;
+    v7 = tokenCopy;
     v9 = [NSString stringWithUTF8String:string];
     [(UARPAssetManagerController *)v8 addXPCEventSubscriber:v7 withDomain:?];
 
     goto LABEL_20;
   }
 
-  v22 = v30->_log;
+  v22 = selfCopy->_log;
   v21 = 16;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
@@ -287,14 +287,14 @@ LABEL_21:
   objc_storeStrong(&location, 0);
 }
 
-- (void)addXPCEventSubscriber:(unint64_t)a3 withDomain:(id)a4
+- (void)addXPCEventSubscriber:(unint64_t)subscriber withDomain:(id)domain
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  subscriberCopy = subscriber;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v8 = v12->_log;
+  objc_storeStrong(&location, domain);
+  v8 = selfCopy->_log;
   v7 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -303,27 +303,27 @@ LABEL_21:
   }
 
   objc_storeStrong(&v8, 0);
-  v6 = [(NSMutableDictionary *)v12->_subscriberTokens objectForKeyedSubscript:location];
+  v6 = [(NSMutableDictionary *)selfCopy->_subscriberTokens objectForKeyedSubscript:location];
   if (!v6)
   {
     v6 = objc_opt_new();
 
-    [(NSMutableDictionary *)v12->_subscriberTokens setObject:v6 forKeyedSubscript:location];
+    [(NSMutableDictionary *)selfCopy->_subscriberTokens setObject:v6 forKeyedSubscript:location];
   }
 
   v4 = v6;
-  v5 = [NSNumber numberWithUnsignedLongLong:v10];
+  v5 = [NSNumber numberWithUnsignedLongLong:subscriberCopy];
   [v4 addObject:?];
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(&location, 0);
 }
 
-- (void)removeXPCEventSubscriber:(unint64_t)a3
+- (void)removeXPCEventSubscriber:(unint64_t)subscriber
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  subscriberCopy = subscriber;
   location = self->_log;
   v17 = 1;
   if (os_log_type_enabled(location, OS_LOG_TYPE_INFO))
@@ -336,7 +336,7 @@ LABEL_21:
 
   objc_storeStrong(&location, 0);
   memset(__b, 0, sizeof(__b));
-  obj = [(NSMutableDictionary *)v21->_subscriberTokens allKeys];
+  obj = [(NSMutableDictionary *)selfCopy->_subscriberTokens allKeys];
   v10 = [obj countByEnumeratingWithState:__b objects:v22 count:16];
   if (v10)
   {
@@ -352,11 +352,11 @@ LABEL_21:
       }
 
       v15 = *(__b[1] + 8 * v7);
-      v13 = [(NSMutableDictionary *)v21->_subscriberTokens objectForKeyedSubscript:v15];
+      v13 = [(NSMutableDictionary *)selfCopy->_subscriberTokens objectForKeyedSubscript:v15];
       if (v13)
       {
         v3 = v13;
-        v4 = [NSNumber numberWithUnsignedLongLong:v19];
+        v4 = [NSNumber numberWithUnsignedLongLong:subscriberCopy];
         [v3 removeObject:?];
       }
 
@@ -375,94 +375,94 @@ LABEL_21:
   }
 }
 
-- (void)subscribeForPersonality:(id)a3
+- (void)subscribeForPersonality:(id)personality
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UARPAssetManagerServiceManager *)v4->_assetManagerServiceManager subscribeForPersonality:location[0]];
+  objc_storeStrong(location, personality);
+  [(UARPAssetManagerServiceManager *)selfCopy->_assetManagerServiceManager subscribeForPersonality:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)updateReachabilityForPersonality:(id)a3 reachable:(BOOL)a4
+- (void)updateReachabilityForPersonality:(id)personality reachable:(BOOL)reachable
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UARPAssetManagerServiceManager *)v6->_assetManagerServiceManager updateReachabilityForPersonality:location[0] reachable:a4];
+  objc_storeStrong(location, personality);
+  [(UARPAssetManagerServiceManager *)selfCopy->_assetManagerServiceManager updateReachabilityForPersonality:location[0] reachable:reachable];
   objc_storeStrong(location, 0);
 }
 
-- (void)updateSettingsForPersonality:(id)a3
+- (void)updateSettingsForPersonality:(id)personality
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UARPAssetManagerServiceManager *)v4->_assetManagerServiceManager updateSettingsForPersonality:location[0]];
+  objc_storeStrong(location, personality);
+  [(UARPAssetManagerServiceManager *)selfCopy->_assetManagerServiceManager updateSettingsForPersonality:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (id)getAssetURLForPersonality:(id)a3
+- (id)getAssetURLForPersonality:(id)personality
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(UARPAssetManagerServiceManager *)v6->_assetManagerServiceManager checkCacheForPersonality:location[0]];
+  objc_storeStrong(location, personality);
+  v4 = [(UARPAssetManagerServiceManager *)selfCopy->_assetManagerServiceManager checkCacheForPersonality:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (void)checkAssetAvailabilityForDomain:(id)a3
+- (void)checkAssetAvailabilityForDomain:(id)domain
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UARPAssetManagerServiceManager *)v4->_assetManagerServiceManager checkAssetAvailabilityForDomain:location[0]];
+  objc_storeStrong(location, domain);
+  [(UARPAssetManagerServiceManager *)selfCopy->_assetManagerServiceManager checkAssetAvailabilityForDomain:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)clearAssetCacheForDomain:(id)a3
+- (void)clearAssetCacheForDomain:(id)domain
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UARPAssetManagerServiceManager *)v4->_assetManagerServiceManager clearAssetCacheForDomain:location[0]];
+  objc_storeStrong(location, domain);
+  [(UARPAssetManagerServiceManager *)selfCopy->_assetManagerServiceManager clearAssetCacheForDomain:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)primeCache:(id)a3
+- (void)primeCache:(id)cache
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UARPAssetManagerServiceManager *)v4->_assetManagerServiceManager primeCache:location[0]];
+  objc_storeStrong(location, cache);
+  [(UARPAssetManagerServiceManager *)selfCopy->_assetManagerServiceManager primeCache:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)notifySubscribers:(id)a3 withDomain:(id)a4
+- (void)notifySubscribers:(id)subscribers withDomain:(id)domain
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, subscribers);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, domain);
   v14 = xpc_copy(location[0]);
-  queue = v17->_internalQueue;
+  queue = selfCopy->_internalQueue;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = __59__UARPAssetManagerController_notifySubscribers_withDomain___block_invoke;
   v10 = &unk_100035D30;
-  v11 = v17;
+  v11 = selfCopy;
   v12 = v15;
   v13 = v14;
   dispatch_async(queue, &v6);
@@ -561,18 +561,18 @@ void __59__UARPAssetManagerController_notifySubscribers_withDomain___block_invok
   objc_storeStrong(location, 0);
 }
 
-- (void)assetAvailabilityUpdateForPersonality:(id)a3 assetVersion:(id)a4 creationDate:(id)a5 status:(int64_t)a6
+- (void)assetAvailabilityUpdateForPersonality:(id)personality assetVersion:(id)version creationDate:(id)date status:(int64_t)status
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, personality);
   v46 = 0;
-  objc_storeStrong(&v46, a4);
+  objc_storeStrong(&v46, version);
   v45 = 0;
-  objc_storeStrong(&v45, a5);
-  v44 = a6;
-  if (a6 == 2)
+  objc_storeStrong(&v45, date);
+  statusCopy = status;
+  if (status == 2)
   {
     v39 = 0;
     v37 = 0;
@@ -587,8 +587,8 @@ void __59__UARPAssetManagerController_notifySubscribers_withDomain___block_invok
       v6 = v38;
       bytes = [v20 bytes];
       xpc_dictionary_set_data(v34, key, bytes, [v38 length]);
-      v7 = [kUARPAssetAvailabilityXPCEventStatusKey UTF8String];
-      xpc_dictionary_set_uint64(v34, v7, v44);
+      uTF8String = [kUARPAssetAvailabilityXPCEventStatusKey UTF8String];
+      xpc_dictionary_set_uint64(v34, uTF8String, statusCopy);
       if (!v46)
       {
         goto LABEL_16;
@@ -602,17 +602,17 @@ void __59__UARPAssetManagerController_notifySubscribers_withDomain___block_invok
       if (v19)
       {
         v18 = v34;
-        v16 = [kUARPAssetAvailabilityXPCEventAssetVersionKey UTF8String];
+        uTF8String2 = [kUARPAssetAvailabilityXPCEventAssetVersionKey UTF8String];
         v15 = v32;
         v8 = v32;
-        v17 = [v15 bytes];
-        xpc_dictionary_set_data(v18, v16, v17, [v32 length]);
+        bytes = [v15 bytes];
+        xpc_dictionary_set_data(v18, uTF8String2, bytes, [v32 length]);
         v40 = 0;
       }
 
       else
       {
-        v30 = v48->_log;
+        v30 = selfCopy->_log;
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
           __os_log_helper_16_2_1_8_66(v49, v46);
@@ -631,14 +631,14 @@ LABEL_16:
         if (v45)
         {
           v13 = v34;
-          v14 = [kUARPAssetAvailabilityXPCEventAssetCreationDateKey UTF8String];
+          uTF8String3 = [kUARPAssetAvailabilityXPCEventAssetCreationDateKey UTF8String];
           [v45 timeIntervalSince1970];
-          xpc_dictionary_set_date(v13, v14, v9);
+          xpc_dictionary_set_date(v13, uTF8String3, v9);
         }
 
-        v11 = v48;
+        v11 = selfCopy;
         v10 = v34;
-        v12 = [location[0] domain];
+        domain = [location[0] domain];
         [(UARPAssetManagerController *)v11 notifySubscribers:v10 withDomain:?];
 
         v40 = 0;
@@ -649,7 +649,7 @@ LABEL_16:
 
     else
     {
-      v36 = v48->_log;
+      v36 = selfCopy->_log;
       v35 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
@@ -667,7 +667,7 @@ LABEL_16:
 
   else
   {
-    v43 = v48->_log;
+    v43 = selfCopy->_log;
     v42 = 16;
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
@@ -690,13 +690,13 @@ LABEL_16:
   objc_storeStrong(location, 0);
 }
 
-- (void)settingsChangedForSerialNumber:(id)a3
+- (void)settingsChangedForSerialNumber:(id)number
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  oslog = v5->_log;
+  objc_storeStrong(location, number);
+  oslog = selfCopy->_log;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     __os_log_helper_16_2_1_8_64(v6, location[0]);
@@ -704,7 +704,7 @@ LABEL_16:
   }
 
   objc_storeStrong(&oslog, 0);
-  [(UARPAssetManagerServiceManager *)v5->_assetManagerServiceManager settingsChangedForSerialNumber:location[0]];
+  [(UARPAssetManagerServiceManager *)selfCopy->_assetManagerServiceManager settingsChangedForSerialNumber:location[0]];
   objc_storeStrong(location, 0);
 }
 

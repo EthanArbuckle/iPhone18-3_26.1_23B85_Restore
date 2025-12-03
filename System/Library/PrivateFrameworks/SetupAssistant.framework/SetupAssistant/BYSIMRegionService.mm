@@ -1,10 +1,10 @@
 @interface BYSIMRegionService
 - (BYSIMRegionService)init;
 - (id)cellularNetworkInformation;
-- (id)isoCodeForMCC:(int64_t)a3;
-- (id)subregionISOCodesForMCC:(int64_t)a3 MNC:(int64_t)a4;
+- (id)isoCodeForMCC:(int64_t)c;
+- (id)subregionISOCodesForMCC:(int64_t)c MNC:(int64_t)nC;
 - (void)cellularNetworkInformation;
-- (void)logTelephonyError:(id)a3;
+- (void)logTelephonyError:(id)error;
 @end
 
 @implementation BYSIMRegionService
@@ -27,9 +27,9 @@
 {
   v49 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(BYSIMRegionService *)self telephonyClient];
+  telephonyClient = [(BYSIMRegionService *)self telephonyClient];
   v45 = 0;
-  v5 = [v4 getActiveContexts:&v45];
+  v5 = [telephonyClient getActiveContexts:&v45];
   v6 = v45;
 
   if (v6)
@@ -68,30 +68,30 @@
         if (v15)
         {
 
-          v16 = [(BYSIMRegionService *)self telephonyClient];
+          telephonyClient2 = [(BYSIMRegionService *)self telephonyClient];
           v40 = 0;
-          v17 = [v16 copyMobileSubscriberCountryCode:v15 error:&v40];
+          v17 = [telephonyClient2 copyMobileSubscriberCountryCode:v15 error:&v40];
           v18 = v40;
           -[BYCellularNetworkInformation setHomeMCC:](v14, "setHomeMCC:", [v17 integerValue]);
 
           [(BYSIMRegionService *)self logTelephonyError:v18];
-          v19 = [(BYSIMRegionService *)self telephonyClient];
+          telephonyClient3 = [(BYSIMRegionService *)self telephonyClient];
           v39 = 0;
-          v20 = [v19 copyMobileSubscriberNetworkCode:v15 error:&v39];
+          v20 = [telephonyClient3 copyMobileSubscriberNetworkCode:v15 error:&v39];
           v21 = v39;
           -[BYCellularNetworkInformation setHomeMNC:](v14, "setHomeMNC:", [v20 integerValue]);
 
           [(BYSIMRegionService *)self logTelephonyError:v21];
-          v22 = [(BYSIMRegionService *)self telephonyClient];
+          telephonyClient4 = [(BYSIMRegionService *)self telephonyClient];
           v38 = 0;
-          v23 = [v22 copyMobileCountryCode:v15 error:&v38];
+          v23 = [telephonyClient4 copyMobileCountryCode:v15 error:&v38];
           v24 = v38;
           -[BYCellularNetworkInformation setNetworkMCC:](v14, "setNetworkMCC:", [v23 integerValue]);
 
           [(BYSIMRegionService *)self logTelephonyError:v24];
-          v25 = [(BYSIMRegionService *)self telephonyClient];
+          telephonyClient5 = [(BYSIMRegionService *)self telephonyClient];
           v37 = 0;
-          v26 = [v25 copyMobileNetworkCode:v15 error:&v37];
+          v26 = [telephonyClient5 copyMobileNetworkCode:v15 error:&v37];
           v6 = v37;
           -[BYCellularNetworkInformation setNetworkMNC:](v14, "setNetworkMNC:", [v26 integerValue]);
 
@@ -135,54 +135,54 @@
   return v8;
 }
 
-- (void)logTelephonyError:(id)a3
+- (void)logTelephonyError:(id)error
 {
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
     v4 = _BYLoggingFacility();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      [(BYSIMRegionService *)v3 logTelephonyError:v4];
+      [(BYSIMRegionService *)errorCopy logTelephonyError:v4];
     }
   }
 }
 
-- (id)isoCodeForMCC:(int64_t)a3
+- (id)isoCodeForMCC:(int64_t)c
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v5 = [v4 stringValue];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:c];
+  stringValue = [v4 stringValue];
 
-  v6 = [(BYSIMRegionService *)self telephonyClient];
+  telephonyClient = [(BYSIMRegionService *)self telephonyClient];
   v12 = 0;
-  v7 = [v6 copyMobileSubscriberIsoCountryCode:v5 error:&v12];
+  v7 = [telephonyClient copyMobileSubscriberIsoCountryCode:stringValue error:&v12];
   v8 = v12;
-  v9 = [v7 uppercaseString];
+  uppercaseString = [v7 uppercaseString];
 
   if (v8)
   {
     v10 = _BYLoggingFacility();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(BYSIMRegionService *)v5 isoCodeForMCC:v8, v10];
+      [(BYSIMRegionService *)stringValue isoCodeForMCC:v8, v10];
     }
   }
 
-  return v9;
+  return uppercaseString;
 }
 
-- (id)subregionISOCodesForMCC:(int64_t)a3 MNC:(int64_t)a4
+- (id)subregionISOCodesForMCC:(int64_t)c MNC:(int64_t)nC
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v7 = [v6 stringValue];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:c];
+  stringValue = [v6 stringValue];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v9 = [v8 stringValue];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:nC];
+  stringValue2 = [v8 stringValue];
 
-  v10 = [(BYSIMRegionService *)self telephonyClient];
+  telephonyClient = [(BYSIMRegionService *)self telephonyClient];
   v16 = 0;
-  v11 = [v10 copyMobileSubscriberIsoSubregionCode:v7 MNC:v9 error:&v16];
+  v11 = [telephonyClient copyMobileSubscriberIsoSubregionCode:stringValue MNC:stringValue2 error:&v16];
   v12 = v16;
 
   if (v12)
@@ -191,9 +191,9 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v18 = v7;
+      v18 = stringValue;
       v19 = 2112;
-      v20 = v9;
+      v20 = stringValue2;
       v21 = 2112;
       v22 = v12;
       _os_log_error_impl(&dword_1B862F000, v13, OS_LOG_TYPE_ERROR, "Error getting subregion ISO code from MCC: %@, MNC: %@, error: %@", buf, 0x20u);
@@ -207,10 +207,10 @@
 
 - (void)cellularNetworkInformation
 {
-  v7 = [a2 slotID];
-  *a1 = 134217984;
-  *a3 = v7;
-  _os_log_error_impl(&dword_1B862F000, a4, OS_LOG_TYPE_ERROR, "Unable to find selected context to load telephony network information { slot: %ld }", a1, 0xCu);
+  slotID = [a2 slotID];
+  *self = 134217984;
+  *a3 = slotID;
+  _os_log_error_impl(&dword_1B862F000, a4, OS_LOG_TYPE_ERROR, "Unable to find selected context to load telephony network information { slot: %ld }", self, 0xCu);
 }
 
 - (void)logTelephonyError:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

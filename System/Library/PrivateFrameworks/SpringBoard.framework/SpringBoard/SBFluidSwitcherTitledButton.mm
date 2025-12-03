@@ -1,16 +1,16 @@
 @interface SBFluidSwitcherTitledButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)setTitle:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SBFluidSwitcherTitledButton
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v7 = a3;
+  titleCopy = title;
   if ((BSEqualStrings() & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [titleCopy copy];
     title = self->_title;
     self->_title = v4;
 
@@ -19,9 +19,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(SBFluidSwitcherButton *)self image:a3.width];
+  v3 = [(SBFluidSwitcherButton *)self image:fits.width];
   [v3 alignmentRectInsets];
   v5 = v4;
   v7 = v6;

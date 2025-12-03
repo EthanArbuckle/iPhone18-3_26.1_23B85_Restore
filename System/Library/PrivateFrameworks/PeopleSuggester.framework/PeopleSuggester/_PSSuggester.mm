@@ -1,59 +1,59 @@
 @interface _PSSuggester
 + (id)suggesterWithDaemon;
-+ (id)suggesterWithDaemonUsingMaxSuggestionCount:(int64_t)a3;
-+ (void)initializePSSuggesterCacheWithMaxSuggestionCount:(id)a3;
-- (BOOL)interactionAvailableForHandle:(id)a3 interactionStoreDB:(id)a4;
-- (BOOL)isTransportBundleIDSupported:(id)a3;
-- (BOOL)reportShareSheetTimeoutWithError:(id *)a3;
++ (id)suggesterWithDaemonUsingMaxSuggestionCount:(int64_t)count;
++ (void)initializePSSuggesterCacheWithMaxSuggestionCount:(id)count;
+- (BOOL)interactionAvailableForHandle:(id)handle interactionStoreDB:(id)b;
+- (BOOL)isTransportBundleIDSupported:(id)supported;
+- (BOOL)reportShareSheetTimeoutWithError:(id *)error;
 - (_PSSuggester)init;
-- (_PSSuggester)initWithConfiguration:(id)a3 feedbackRecording:(BOOL)a4;
-- (_PSSuggester)initWithDaemonUsingConfiguration:(id)a3;
+- (_PSSuggester)initWithConfiguration:(id)configuration feedbackRecording:(BOOL)recording;
+- (_PSSuggester)initWithDaemonUsingConfiguration:(id)configuration;
 - (id)_dateFormatter;
 - (id)_getUserDaemonXPCConnection;
-- (id)_stringFromValue:(id)a3;
-- (id)appExtensionSuggestionsFromContext:(id)a3;
-- (id)autocompleteSearchResultsWithPredictionContext:(id)a3;
-- (id)buildFilteringPredicateMatchingSuggestLessFeedback:(id)a3;
+- (id)_stringFromValue:(id)value;
+- (id)appExtensionSuggestionsFromContext:(id)context;
+- (id)autocompleteSearchResultsWithPredictionContext:(id)context;
+- (id)buildFilteringPredicateMatchingSuggestLessFeedback:(id)feedback;
 - (id)candidatesForShareSheetRanking;
 - (id)candidatesForShareSheetRankingCompute;
 - (id)contactStore;
-- (id)convertCoreAnalyticsEvent2BiomeEvent:(id)a3;
-- (id)familyRecommendationSuggestionsWithPredictionContext:(id)a3;
-- (id)generatePSRTelemetry:(id)a3;
-- (id)getCachedSuggestionsFetchingIfNeeded:(BOOL)a3;
-- (id)hourOfDayProbabilitiesToInteractWithContact:(id)a3;
-- (id)hourOfDayProbabilitiesToInteractWithContacts:(id)a3;
-- (id)interactionCountForHandle:(id)a3 fetchLimit:(unint64_t)a4 interactionStoreDB:(id)a5;
-- (id)photosContactInferencesSuggestionsWithPredictionContext:(id)a3;
-- (id)photosRelationshipSuggestionsWithPredictionContext:(id)a3;
-- (id)rankedAutocompleteSuggestionsFromContext:(id)a3 candidates:(id)a4;
+- (id)convertCoreAnalyticsEvent2BiomeEvent:(id)event;
+- (id)familyRecommendationSuggestionsWithPredictionContext:(id)context;
+- (id)generatePSRTelemetry:(id)telemetry;
+- (id)getCachedSuggestionsFetchingIfNeeded:(BOOL)needed;
+- (id)hourOfDayProbabilitiesToInteractWithContact:(id)contact;
+- (id)hourOfDayProbabilitiesToInteractWithContacts:(id)contacts;
+- (id)interactionCountForHandle:(id)handle fetchLimit:(unint64_t)limit interactionStoreDB:(id)b;
+- (id)photosContactInferencesSuggestionsWithPredictionContext:(id)context;
+- (id)photosRelationshipSuggestionsWithPredictionContext:(id)context;
+- (id)rankedAutocompleteSuggestionsFromContext:(id)context candidates:(id)candidates;
 - (id)rankedFamilySuggestions;
-- (id)rankedNameSuggestionsFromContext:(id)a3 name:(id)a4;
-- (id)rankedSiriNLContactSuggestionsFromContext:(id)a3 maxSuggestions:(id)a4 interactionId:(id)a5;
-- (id)rankedZKWSuggestionsFromContext:(id)a3;
-- (id)relativeAppUsageProbabilitiesForCandidateBundleIds:(id)a3 daysAgo:(int64_t)a4;
-- (id)shareExtensionSuggestionsFromContext:(id)a3;
-- (id)shareInformationForPhotoId:(id)a3 dateInterval:(id)a4 interactionStoreDB:(id)a5;
-- (id)shareSheetInteractionsFromContext:(id)a3;
-- (id)shareSheetInteractionsFromContext:(id)a3 maximumNumberOfSuggestions:(int64_t)a4;
-- (id)suggestInteractionsFromContext:(id)a3;
-- (void)_recordFeedbackToInteractionStoreWithFeedback:(id)a3 mechanism:(int64_t)a4;
-- (void)asyncShareExtensionSuggestionsFromContext:(id)a3 completionHandler:(id)a4;
-- (void)asyncShareExtensionSuggestionsFromContext:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
-- (void)asyncSuggestInteractionsFromContext:(id)a3 completionHandler:(id)a4;
-- (void)asyncSuggestInteractionsFromContext:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
+- (id)rankedNameSuggestionsFromContext:(id)context name:(id)name;
+- (id)rankedSiriNLContactSuggestionsFromContext:(id)context maxSuggestions:(id)suggestions interactionId:(id)id;
+- (id)rankedZKWSuggestionsFromContext:(id)context;
+- (id)relativeAppUsageProbabilitiesForCandidateBundleIds:(id)ids daysAgo:(int64_t)ago;
+- (id)shareExtensionSuggestionsFromContext:(id)context;
+- (id)shareInformationForPhotoId:(id)id dateInterval:(id)interval interactionStoreDB:(id)b;
+- (id)shareSheetInteractionsFromContext:(id)context;
+- (id)shareSheetInteractionsFromContext:(id)context maximumNumberOfSuggestions:(int64_t)suggestions;
+- (id)suggestInteractionsFromContext:(id)context;
+- (void)_recordFeedbackToInteractionStoreWithFeedback:(id)feedback mechanism:(int64_t)mechanism;
+- (void)asyncShareExtensionSuggestionsFromContext:(id)context completionHandler:(id)handler;
+- (void)asyncShareExtensionSuggestionsFromContext:(id)context timeout:(double)timeout completionHandler:(id)handler;
+- (void)asyncSuggestInteractionsFromContext:(id)context completionHandler:(id)handler;
+- (void)asyncSuggestInteractionsFromContext:(id)context timeout:(double)timeout completionHandler:(id)handler;
 - (void)candidatesForShareSheetRanking;
 - (void)dealloc;
-- (void)deleteInteractionsMatchingSuggestLessFeedback:(id)a3;
-- (void)deleteUIInteractionsMatchingSuggestLessFeedback:(id)a3;
-- (void)donateCA2Biome:(id)a3;
-- (void)provideFeedbackForContactsAutocompleteSuggestions:(id)a3;
-- (void)provideFeedbackForMessagesZkwSuggestions:(id)a3;
-- (void)provideFeedbackForSuggestions:(id)a3;
-- (void)provideSuggestLessFeedbackForShareSheetSuggestion:(id)a3;
+- (void)deleteInteractionsMatchingSuggestLessFeedback:(id)feedback;
+- (void)deleteUIInteractionsMatchingSuggestLessFeedback:(id)feedback;
+- (void)donateCA2Biome:(id)biome;
+- (void)provideFeedbackForContactsAutocompleteSuggestions:(id)suggestions;
+- (void)provideFeedbackForMessagesZkwSuggestions:(id)suggestions;
+- (void)provideFeedbackForSuggestions:(id)suggestions;
+- (void)provideSuggestLessFeedbackForShareSheetSuggestion:(id)suggestion;
 - (void)rankedFamilySuggestions;
 - (void)showNotificationToFileARadarForUserStudyParticipants;
-- (void)writeFeedbackForContactsAutocompleteSuggestions:(id)a3;
+- (void)writeFeedbackForContactsAutocompleteSuggestions:(id)suggestions;
 @end
 
 @implementation _PSSuggester
@@ -90,25 +90,25 @@
 
 + (id)suggesterWithDaemon
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_PSSuggesterConfiguration defaultConfiguration];
   v4 = [v2 initWithDaemonUsingConfiguration:v3];
 
   return v4;
 }
 
-+ (id)suggesterWithDaemonUsingMaxSuggestionCount:(int64_t)a3
++ (id)suggesterWithDaemonUsingMaxSuggestionCount:(int64_t)count
 {
   v5 = +[_PSSuggesterConfiguration defaultConfiguration];
-  [v5 setMaximumNumberOfSuggestions:a3];
-  v6 = [[a1 alloc] initWithDaemonUsingConfiguration:v5];
+  [v5 setMaximumNumberOfSuggestions:count];
+  v6 = [[self alloc] initWithDaemonUsingConfiguration:v5];
 
   return v6;
 }
 
-+ (void)initializePSSuggesterCacheWithMaxSuggestionCount:(id)a3
++ (void)initializePSSuggesterCacheWithMaxSuggestionCount:(id)count
 {
-  v3 = [_PSSuggesterCache defaultServiceWithMaxSuggestionCount:a3];
+  v3 = [_PSSuggesterCache defaultServiceWithMaxSuggestionCount:count];
   v4 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -117,16 +117,16 @@
   }
 }
 
-- (_PSSuggester)initWithDaemonUsingConfiguration:(id)a3
+- (_PSSuggester)initWithDaemonUsingConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v22.receiver = self;
   v22.super_class = _PSSuggester;
   v6 = [(_PSSuggester *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v7->_lock._os_unfair_lock_opaque = 0;
     v8 = objc_alloc(MEMORY[0x1E696B0B8]);
     v9 = [v8 initWithMachServiceName:*MEMORY[0x1E6997A00] options:4096];
@@ -157,19 +157,19 @@
   return v7;
 }
 
-- (_PSSuggester)initWithConfiguration:(id)a3 feedbackRecording:(BOOL)a4
+- (_PSSuggester)initWithConfiguration:(id)configuration feedbackRecording:(BOOL)recording
 {
-  v4 = a4;
-  v7 = a3;
+  recordingCopy = recording;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = _PSSuggester;
   v8 = [(_PSSuggester *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_configuration, a3);
+    objc_storeStrong(&v8->_configuration, configuration);
     v9->_lock._os_unfair_lock_opaque = 0;
-    if (v4)
+    if (recordingCopy)
     {
       v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v11 = dispatch_queue_create("_ps_suggester_feedback", v10);
@@ -235,18 +235,18 @@
   return v8;
 }
 
-- (id)shareSheetInteractionsFromContext:(id)a3
+- (id)shareSheetInteractionsFromContext:(id)context
 {
-  v4 = a3;
-  v5 = [(_PSSuggester *)self configuration];
-  v6 = -[_PSSuggester shareSheetInteractionsFromContext:maximumNumberOfSuggestions:](self, "shareSheetInteractionsFromContext:maximumNumberOfSuggestions:", v4, [v5 maximumNumberOfSuggestions]);
+  contextCopy = context;
+  configuration = [(_PSSuggester *)self configuration];
+  v6 = -[_PSSuggester shareSheetInteractionsFromContext:maximumNumberOfSuggestions:](self, "shareSheetInteractionsFromContext:maximumNumberOfSuggestions:", contextCopy, [configuration maximumNumberOfSuggestions]);
 
   return v6;
 }
 
-- (id)shareSheetInteractionsFromContext:(id)a3 maximumNumberOfSuggestions:(int64_t)a4
+- (id)shareSheetInteractionsFromContext:(id)context maximumNumberOfSuggestions:(int64_t)suggestions
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = _os_activity_create(&dword_1B5ED1000, "CoreDuet: Share Sheet Suggestions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v14.opaque[0] = 0;
   v14.opaque[1] = 0;
@@ -260,9 +260,9 @@
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v8, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleSuggestionsTotalTime", " enableTelemetry=YES ", &v14, 2u);
   }
 
-  v9 = [(_PSSuggester *)self configuration];
-  v10 = [v9 suggestionModel];
-  v11 = [v10 predictWithPredictionContext:v6 maxSuggestions:a4];
+  configuration = [(_PSSuggester *)self configuration];
+  suggestionModel = [configuration suggestionModel];
+  v11 = [suggestionModel predictWithPredictionContext:contextCopy maxSuggestions:suggestions];
 
   v12 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v12))
@@ -274,14 +274,14 @@
   return v11;
 }
 
-- (BOOL)reportShareSheetTimeoutWithError:(id *)a3
+- (BOOL)reportShareSheetTimeoutWithError:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696B0B8] currentConnection];
-  v4 = v3;
-  if (v3)
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v4 = currentConnection;
+  if (currentConnection)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "processIdentifier")}];
+    v5 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(currentConnection, "processIdentifier")}];
   }
 
   else
@@ -302,9 +302,9 @@
   return v7;
 }
 
-- (id)appExtensionSuggestionsFromContext:(id)a3
+- (id)appExtensionSuggestionsFromContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = _os_activity_create(&dword_1B5ED1000, "CoreDuet: App Suggestions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
@@ -318,9 +318,9 @@
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetAppSuggestionsTotalTime", " enableTelemetry=YES ", &v12, 2u);
   }
 
-  v7 = [(_PSSuggester *)self configuration];
-  v8 = [v7 suggestionModel];
-  v9 = [v8 appExtensionSuggestionsFromContext:v4];
+  configuration = [(_PSSuggester *)self configuration];
+  suggestionModel = [configuration suggestionModel];
+  v9 = [suggestionModel appExtensionSuggestionsFromContext:contextCopy];
 
   v10 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v10))
@@ -347,11 +347,11 @@
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v4, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSCandidatesForShareSheetRankingTotalTime", " enableTelemetry=YES ", &v11, 2u);
   }
 
-  v5 = [(_PSSuggester *)self configuration];
-  v6 = [v5 suggestionModel];
-  v7 = [v6 candidatesForShareSheetRanking];
+  configuration = [(_PSSuggester *)self configuration];
+  suggestionModel = [configuration suggestionModel];
+  candidatesForShareSheetRanking = [suggestionModel candidatesForShareSheetRanking];
 
-  v8 = [v7 _pas_mappedSetWithTransform:&__block_literal_global_12];
+  v8 = [candidatesForShareSheetRanking _pas_mappedSetWithTransform:&__block_literal_global_12];
   v9 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v9))
   {
@@ -383,8 +383,8 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_69];
-    if ([v7 count])
+    allObjects = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_69];
+    if ([allObjects count])
     {
       v8 = +[_PSLogging generalChannel];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -404,11 +404,11 @@
     _os_log_impl(&dword_1B5ED1000, v9, OS_LOG_TYPE_DEFAULT, "Requesting candidates over XPC", buf, 2u);
   }
 
-  v10 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
-  v8 = v10;
-  if (v10)
+  _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+  v8 = _getUserDaemonXPCConnection;
+  if (_getUserDaemonXPCConnection)
   {
-    v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_73];
+    candidatesForShareSheetRankingCompute = [_getUserDaemonXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_73];
     *buf = 0;
     v19 = buf;
     v20 = 0x3032000000;
@@ -420,7 +420,7 @@
     v17[2] = __46___PSSuggester_candidatesForShareSheetRanking__block_invoke_74;
     v17[3] = &unk_1E7C251F0;
     v17[4] = buf;
-    [v11 candidatesForShareSheetRanking:v17];
+    [candidatesForShareSheetRankingCompute candidatesForShareSheetRanking:v17];
     v12 = +[_PSLogging generalChannel];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -430,7 +430,7 @@
       _os_log_impl(&dword_1B5ED1000, v12, OS_LOG_TYPE_INFO, "Fetched candidates %{private}@", v24, 0xCu);
     }
 
-    v7 = *(v19 + 5);
+    allObjects = *(v19 + 5);
     _Block_object_dispose(buf, 8);
   }
 
@@ -442,28 +442,28 @@
       [_PSSuggester candidatesForShareSheetRanking];
     }
 
-    v11 = [(_PSSuggester *)self candidatesForShareSheetRankingCompute];
-    v7 = [v11 allObjects];
+    candidatesForShareSheetRankingCompute = [(_PSSuggester *)self candidatesForShareSheetRankingCompute];
+    allObjects = [candidatesForShareSheetRankingCompute allObjects];
   }
 
 LABEL_20:
   v15 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return allObjects;
 }
 
-- (id)suggestInteractionsFromContext:(id)a3
+- (id)suggestInteractionsFromContext:(id)context
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = [AeroMLTracerSession alloc];
-  v6 = [v4 sessionID];
+  sessionID = [contextCopy sessionID];
   v7 = +[_PSConstants peopleSuggesterShareSheetProjectName];
-  v8 = [(AeroMLTracerSession *)v5 initWithTraceId:v6 projectName:v7];
+  v8 = [(AeroMLTracerSession *)v5 initWithTraceId:sessionID projectName:v7];
 
   v9 = [(AeroMLTracerSession *)v8 createRootSpanWithName:@"syncsuggestInteractionsFromContext_End2End"];
-  v10 = [MEMORY[0x1E695DF00] date];
-  [v4 setQueryStartDate:v10];
+  date = [MEMORY[0x1E695DF00] date];
+  [contextCopy setQueryStartDate:date];
 
   v11 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.Sharing"];
   if ([v11 integerForKey:@"SharingPeopleSuggestionsDisabled"] == 1)
@@ -480,28 +480,28 @@ LABEL_20:
 
   else
   {
-    v14 = [v4 locationUUIDs];
+    locationUUIDs = [contextCopy locationUUIDs];
 
-    if (!v14)
+    if (!locationUUIDs)
     {
-      v15 = [MEMORY[0x1E6997A60] userContext];
-      v16 = [MEMORY[0x1E6997A68] keyPathForNearbyLOIIdentifiers];
-      v17 = [v15 objectForKeyedSubscript:v16];
-      [v4 setLocationUUIDs:v17];
+      userContext = [MEMORY[0x1E6997A60] userContext];
+      keyPathForNearbyLOIIdentifiers = [MEMORY[0x1E6997A68] keyPathForNearbyLOIIdentifiers];
+      v17 = [userContext objectForKeyedSubscript:keyPathForNearbyLOIIdentifiers];
+      [contextCopy setLocationUUIDs:v17];
     }
 
     v18 = +[_PSLogging coreBehaviorChannel];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [v4 locationUUIDs];
+      locationUUIDs2 = [contextCopy locationUUIDs];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v19;
+      *(&buf + 4) = locationUUIDs2;
       _os_log_impl(&dword_1B5ED1000, v18, OS_LOG_TYPE_INFO, "Prediction Context - LocationUUIDs: %@", &buf, 0xCu);
     }
 
-    v20 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
-    v12 = v20;
-    if (v20)
+    _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+    v12 = _getUserDaemonXPCConnection;
+    if (_getUserDaemonXPCConnection)
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -509,7 +509,7 @@ LABEL_20:
       v38 = __Block_byref_object_copy__4;
       v39 = __Block_byref_object_dispose__4;
       v40 = 0;
-      v21 = [v20 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_86];
+      v21 = [_getUserDaemonXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_86];
       v22 = +[_PSLogging coreBehaviorChannel];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
@@ -518,14 +518,14 @@ LABEL_20:
       }
 
       v23 = MEMORY[0x1E696AD98];
-      v24 = [(_PSSuggester *)self configuration];
-      v25 = [v23 numberWithInteger:{objc_msgSend(v24, "maximumNumberOfSuggestions")}];
+      configuration = [(_PSSuggester *)self configuration];
+      v25 = [v23 numberWithInteger:{objc_msgSend(configuration, "maximumNumberOfSuggestions")}];
       v29 = MEMORY[0x1E69E9820];
       v30 = 3221225472;
       v31 = __47___PSSuggester_suggestInteractionsFromContext___block_invoke_87;
       v32 = &unk_1E7C25218;
       p_buf = &buf;
-      v33 = v4;
+      v33 = contextCopy;
       [v21 suggestInteractionsFromContext:v33 maxSuggestions:v25 reply:&v29];
 
       [v9 end];
@@ -542,7 +542,7 @@ LABEL_20:
         [_PSSuggester suggestInteractionsFromContext:];
       }
 
-      v13 = [(_PSSuggester *)self shareSheetInteractionsFromContext:v4];
+      v13 = [(_PSSuggester *)self shareSheetInteractionsFromContext:contextCopy];
     }
   }
 
@@ -551,24 +551,24 @@ LABEL_20:
   return v13;
 }
 
-- (void)asyncSuggestInteractionsFromContext:(id)a3 completionHandler:(id)a4
+- (void)asyncSuggestInteractionsFromContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70___PSSuggester_asyncSuggestInteractionsFromContext_completionHandler___block_invoke;
   v10[3] = &unk_1E7C25240;
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = contextCopy;
+  v12 = handlerCopy;
+  v8 = contextCopy;
+  v9 = handlerCopy;
   [(_PSSuggester *)self asyncSuggestInteractionsFromContext:v8 timeout:v10 completionHandler:978307200.0];
 }
 
-- (id)getCachedSuggestionsFetchingIfNeeded:(BOOL)a3
+- (id)getCachedSuggestionsFetchingIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v23 = *MEMORY[0x1E69E9840];
   v4 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -579,7 +579,7 @@ LABEL_20:
 
   v5 = +[_PSSuggesterCache defaultService];
   v6 = v5;
-  if (v3)
+  if (neededCopy)
   {
     [v5 performInitialFetchIfNeeded];
   }
@@ -599,7 +599,7 @@ LABEL_20:
     *buf = 134218499;
     v18 = v10;
     v19 = 1024;
-    v20 = v3;
+    v20 = neededCopy;
     v21 = 2113;
     v22 = v7;
     v11 = "Retrieved %tu cached suggestions (fetchIfNeeded=%d): %{private}@";
@@ -615,7 +615,7 @@ LABEL_20:
     }
 
     *buf = 67109120;
-    LODWORD(v18) = v3;
+    LODWORD(v18) = neededCopy;
     v11 = "Retrieved NULL cached suggestions (fetchIfNeeded=%d)";
     v12 = v8;
     v13 = 8;
@@ -649,18 +649,18 @@ LABEL_11:
   }
 }
 
-- (void)asyncSuggestInteractionsFromContext:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)asyncSuggestInteractionsFromContext:(id)context timeout:(double)timeout completionHandler:(id)handler
 {
   v104[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v60 = a5;
-  v9 = [MEMORY[0x1E695DF00] date];
-  [v8 setQueryStartDate:v9];
+  contextCopy = context;
+  handlerCopy = handler;
+  date = [MEMORY[0x1E695DF00] date];
+  [contextCopy setQueryStartDate:date];
 
   v10 = [AeroMLTracerSession alloc];
-  v11 = [v8 sessionID];
+  sessionID = [contextCopy sessionID];
   v12 = +[_PSConstants peopleSuggesterShareSheetProjectName];
-  v13 = [(AeroMLTracerSession *)v10 initWithTraceId:v11 projectName:v12];
+  v13 = [(AeroMLTracerSession *)v10 initWithTraceId:sessionID projectName:v12];
 
   v58 = v13;
   v62 = [(AeroMLTracerSession *)v13 createRootSpanWithName:@"asyncSuggestInteractionsFromContext_End2End"];
@@ -679,7 +679,7 @@ LABEL_11:
     v103 = *MEMORY[0x1E696A578];
     v104[0] = @"Share Sheet People Suggestions disabled in Settings Switch";
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v104 forKeys:&v103 count:1];
-    v61 = [v15 initWithDomain:@"com.apple.PeopleSuggester" code:1 userInfo:v16];
+    _getUserDaemonXPCConnection = [v15 initWithDomain:@"com.apple.PeopleSuggester" code:1 userInfo:v16];
 
     v101 = @"SharingPeopleSuggestionsDisabled";
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", 1];
@@ -687,34 +687,34 @@ LABEL_11:
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
     [v62 logErrorEventWithName:@"PSShareSheetPeopleSuggestionsDisabled" details:@"Share Sheet People Suggestions disabled in Settings Switch attributes:{return empty suggestion list", v18}];
 
-    (*(v60 + 2))(v60, MEMORY[0x1E695E0F0], 0, v61);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0], 0, _getUserDaemonXPCConnection);
   }
 
   else
   {
-    v19 = [v8 locationUUIDs];
+    locationUUIDs = [contextCopy locationUUIDs];
 
-    if (!v19)
+    if (!locationUUIDs)
     {
-      v20 = [MEMORY[0x1E6997A60] userContext];
-      v21 = [MEMORY[0x1E6997A68] keyPathForNearbyLOIIdentifiers];
-      v22 = [v20 objectForKeyedSubscript:v21];
-      [v8 setLocationUUIDs:v22];
+      userContext = [MEMORY[0x1E6997A60] userContext];
+      keyPathForNearbyLOIIdentifiers = [MEMORY[0x1E6997A68] keyPathForNearbyLOIIdentifiers];
+      v22 = [userContext objectForKeyedSubscript:keyPathForNearbyLOIIdentifiers];
+      [contextCopy setLocationUUIDs:v22];
     }
 
     v23 = +[_PSLogging coreBehaviorChannel];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = [v8 locationUUIDs];
+      locationUUIDs2 = [contextCopy locationUUIDs];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v24;
+      *(&buf + 4) = locationUUIDs2;
       _os_log_impl(&dword_1B5ED1000, v23, OS_LOG_TYPE_INFO, "Prediction Context - LocationUUIDs: %@", &buf, 0xCu);
     }
 
-    v61 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+    _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
     v25 = +[_PSLogging suggestionSignpost];
     v26 = v25;
-    if (v61)
+    if (_getUserDaemonXPCConnection)
     {
       if (os_signpost_enabled(v25))
       {
@@ -739,15 +739,15 @@ LABEL_11:
       v90[1] = 3221225472;
       v90[2] = __78___PSSuggester_asyncSuggestInteractionsFromContext_timeout_completionHandler___block_invoke;
       v90[3] = &unk_1E7C25290;
-      v28 = v8;
+      v28 = contextCopy;
       v91 = v28;
       v29 = v62;
       v92 = v29;
-      v30 = v60;
+      v30 = handlerCopy;
       v93 = v30;
       v57 = MEMORY[0x1B8C8C060](v90);
-      v31 = [v61 synchronousRemoteObjectProxyWithErrorHandler:v57];
-      v32 = [v61 remoteObjectProxyWithErrorHandler:v57];
+      v31 = [_getUserDaemonXPCConnection synchronousRemoteObjectProxyWithErrorHandler:v57];
+      v32 = [_getUserDaemonXPCConnection remoteObjectProxyWithErrorHandler:v57];
       v88[0] = 0;
       v88[1] = v88;
       v88[2] = 0x3032000000;
@@ -786,7 +786,7 @@ LABEL_11:
       v72 = v37;
       v38 = v33;
       v76 = v38;
-      v73 = self;
+      selfCopy = self;
       v78 = v86;
       v56 = v32;
       v74 = v56;
@@ -807,20 +807,20 @@ LABEL_11:
       v70 = v34;
       v65 = v37;
       v66 = v31;
-      v67 = self;
+      selfCopy2 = self;
       v68 = v38;
       v69 = v40;
       v44 = v40;
       v45 = v31;
       v46 = v38;
       dispatch_async(peopleSuggestionQueue, block);
-      v47 = a4 + 2.0;
+      timeoutCopy = timeout + 2.0;
       if (!v34)
       {
-        v47 = a4;
+        timeoutCopy = timeout;
       }
 
-      v48 = dispatch_time(0, (v47 * 1000000000.0));
+      v48 = dispatch_time(0, (timeoutCopy * 1000000000.0));
       dispatch_after(v48, self->_peopleSuggestionQueue, v41);
 
       _Block_object_dispose(v86, 8);
@@ -843,13 +843,13 @@ LABEL_11:
       v51 = [v49 initWithDomain:@"com.apple.PeopleSuggester" code:1 userInfo:v50];
 
       v52 = +[_PSConstants suggestionPathXPCConnectionFailure];
-      [v8 setSuggestionPath:v52];
+      [contextCopy setSuggestionPath:v52];
 
       [v62 logErrorEventWithName:@"getUserDaemonXPCConnectionFailed" details:@"Unable to get xpc connection for share sheet suggestions" attributes:MEMORY[0x1E695E0F8]];
       v53 = [v62 createSubSpanWithName:@"FallbackToInProcessSuggestion"];
       [v53 start];
-      v54 = [(_PSSuggester *)self shareSheetInteractionsFromContext:v8];
-      (*(v60 + 2))(v60, v54, 0, v51);
+      v54 = [(_PSSuggester *)self shareSheetInteractionsFromContext:contextCopy];
+      (*(handlerCopy + 2))(handlerCopy, v54, 0, v51);
 
       [v53 end];
     }
@@ -858,9 +858,9 @@ LABEL_11:
   v55 = *MEMORY[0x1E69E9840];
 }
 
-- (id)shareExtensionSuggestionsFromContext:(id)a3
+- (id)shareExtensionSuggestionsFromContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (self->_connection)
   {
     v5 = _os_activity_create(&dword_1B5ED1000, "CoreDuet: Share Sheet Suggestions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -881,7 +881,7 @@ LABEL_11:
     v9[2] = __53___PSSuggester_shareExtensionSuggestionsFromContext___block_invoke_248;
     v9[3] = &unk_1E7C243A0;
     v9[4] = &state;
-    [v6 shareExtensionSuggestionsFromContext:v4 reply:v9];
+    [v6 shareExtensionSuggestionsFromContext:contextCopy reply:v9];
     v7 = *(state.opaque[1] + 40);
 
     _Block_object_dispose(&state, 8);
@@ -895,25 +895,25 @@ LABEL_11:
   return v7;
 }
 
-- (void)asyncShareExtensionSuggestionsFromContext:(id)a3 completionHandler:(id)a4
+- (void)asyncShareExtensionSuggestionsFromContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76___PSSuggester_asyncShareExtensionSuggestionsFromContext_completionHandler___block_invoke;
   v8[3] = &unk_1E7C25358;
-  v9 = v6;
-  v7 = v6;
-  [(_PSSuggester *)self asyncShareExtensionSuggestionsFromContext:a3 timeout:v8 completionHandler:978307200.0];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(_PSSuggester *)self asyncShareExtensionSuggestionsFromContext:context timeout:v8 completionHandler:978307200.0];
 }
 
-- (void)asyncShareExtensionSuggestionsFromContext:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)asyncShareExtensionSuggestionsFromContext:(id)context timeout:(double)timeout completionHandler:(id)handler
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
-  if (v10)
+  contextCopy = context;
+  handlerCopy = handler;
+  _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+  if (_getUserDaemonXPCConnection)
   {
     v45[0] = 0;
     v45[1] = v45;
@@ -949,7 +949,7 @@ LABEL_11:
       v39 = 0x3032000000;
       v40 = __Block_byref_object_copy__202;
       v41 = __Block_byref_object_dispose__203;
-      v42 = MEMORY[0x1B8C8C060](v9);
+      v42 = MEMORY[0x1B8C8C060](handlerCopy);
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __84___PSSuggester_asyncShareExtensionSuggestionsFromContext_timeout_completionHandler___block_invoke_255;
@@ -959,14 +959,14 @@ LABEL_11:
       v36[6] = v43;
       v36[7] = buf;
       v19 = MEMORY[0x1B8C8C060](v36);
-      v20 = dispatch_time(0, (a4 * 1000000000.0));
+      v20 = dispatch_time(0, (timeout * 1000000000.0));
       appExtensionQueue = self->_appExtensionQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __84___PSSuggester_asyncShareExtensionSuggestionsFromContext_timeout_completionHandler___block_invoke_256;
       block[3] = &unk_1E7C253A8;
       block[4] = self;
-      v22 = v8;
+      v22 = contextCopy;
       v33 = v22;
       v35 = v43;
       v23 = v19;
@@ -1005,17 +1005,17 @@ LABEL_11:
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
     v17 = [v15 initWithDomain:@"com.apple.PeopleSuggester" code:1 userInfo:v16];
 
-    v18 = [(_PSSuggester *)self shareSheetInteractionsFromContext:v8];
-    v9[2](v9, v18, 0, v17);
+    v18 = [(_PSSuggester *)self shareSheetInteractionsFromContext:contextCopy];
+    handlerCopy[2](handlerCopy, v18, 0, v17);
   }
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (id)rankedNameSuggestionsFromContext:(id)a3 name:(id)a4
+- (id)rankedNameSuggestionsFromContext:(id)context name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  nameCopy = name;
   v8 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v8))
   {
@@ -1050,7 +1050,7 @@ LABEL_11:
   v18[2] = __54___PSSuggester_rankedNameSuggestionsFromContext_name___block_invoke_260;
   v18[3] = &unk_1E7C243A0;
   v18[4] = buf;
-  [v13 rankedNameSuggestionsFromContext:v6 name:v7 reply:v18];
+  [v13 rankedNameSuggestionsFromContext:contextCopy name:nameCopy reply:v18];
   v14 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v14))
   {
@@ -1064,11 +1064,11 @@ LABEL_11:
   return v15;
 }
 
-- (id)rankedSiriNLContactSuggestionsFromContext:(id)a3 maxSuggestions:(id)a4 interactionId:(id)a5
+- (id)rankedSiriNLContactSuggestionsFromContext:(id)context maxSuggestions:(id)suggestions interactionId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  suggestionsCopy = suggestions;
+  idCopy = id;
   v11 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v11))
   {
@@ -1076,9 +1076,9 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSRankedSiriNLSuggestionsTotalTime", &unk_1B5FD970D, buf, 2u);
   }
 
-  v12 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
-  v13 = v12;
-  if (v12)
+  _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+  v13 = _getUserDaemonXPCConnection;
+  if (_getUserDaemonXPCConnection)
   {
     *buf = 0;
     v22 = buf;
@@ -1086,13 +1086,13 @@ LABEL_11:
     v24 = __Block_byref_object_copy__4;
     v25 = __Block_byref_object_dispose__4;
     v26 = 0;
-    v14 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_265];
+    v14 = [_getUserDaemonXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_265];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __87___PSSuggester_rankedSiriNLContactSuggestionsFromContext_maxSuggestions_interactionId___block_invoke_266;
     v20[3] = &unk_1E7C243A0;
     v20[4] = buf;
-    [v14 rankedSiriNLContactSuggestionsFromContext:v8 maxSuggestions:v9 interactionId:v10 reply:v20];
+    [v14 rankedSiriNLContactSuggestionsFromContext:contextCopy maxSuggestions:suggestionsCopy interactionId:idCopy reply:v20];
     v15 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v15))
     {
@@ -1118,28 +1118,28 @@ LABEL_11:
   return v16;
 }
 
-- (id)rankedZKWSuggestionsFromContext:(id)a3
+- (id)rankedZKWSuggestionsFromContext:(id)context
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 bundleID];
-    v7 = [v4 seedRecipients];
+    bundleID = [contextCopy bundleID];
+    seedRecipients = [contextCopy seedRecipients];
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = bundleID;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = seedRecipients;
     _os_log_impl(&dword_1B5ED1000, v5, OS_LOG_TYPE_DEFAULT, "[rankedZKWSuggestionsFromContext] Serving request from bundle %@, seed: %@", buf, 0x16u);
   }
 
-  if ([v4 supportsZKWSuggestions])
+  if ([contextCopy supportsZKWSuggestions])
   {
-    v8 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+    _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
     v9 = +[_PSLogging suggestionSignpost];
     v10 = v9;
-    if (v8)
+    if (_getUserDaemonXPCConnection)
     {
       if (os_signpost_enabled(v9))
       {
@@ -1147,9 +1147,9 @@ LABEL_11:
         _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSZkwSuggestionsTotalTime", " enableTelemetry=YES ", buf, 2u);
       }
 
-      v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_268];
-      v11 = [(_PSSuggester *)self configuration];
-      v12 = [v11 maximumNumberOfSuggestions];
+      v10 = [_getUserDaemonXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_268];
+      configuration = [(_PSSuggester *)self configuration];
+      maximumNumberOfSuggestions = [configuration maximumNumberOfSuggestions];
 
       *buf = 0;
       *&buf[8] = buf;
@@ -1157,13 +1157,13 @@ LABEL_11:
       v33 = __Block_byref_object_copy__4;
       v34 = __Block_byref_object_dispose__4;
       v35 = 0;
-      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
+      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:maximumNumberOfSuggestions];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __48___PSSuggester_rankedZKWSuggestionsFromContext___block_invoke_269;
       v29[3] = &unk_1E7C243A0;
       v29[4] = buf;
-      [v10 zkwSuggestionsFromContext:v4 maxSuggestions:v13 reply:v29];
+      [v10 zkwSuggestionsFromContext:contextCopy maxSuggestions:v13 reply:v29];
 
       v14 = +[_PSLogging suggestionSignpost];
       if (os_signpost_enabled(v14))
@@ -1172,18 +1172,18 @@ LABEL_11:
         _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v14, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "_PSZkwSuggestionsTotalTime", &unk_1B5FD970D, v30, 2u);
       }
 
-      v15 = [v4 bundleID];
+      bundleID2 = [contextCopy bundleID];
       v16 = +[_PSConstants mobileFacetimeBundleId];
-      if ([v15 isEqualToString:v16])
+      if ([bundleID2 isEqualToString:v16])
       {
         v17 = 1;
       }
 
       else
       {
-        v19 = [v4 bundleID];
+        bundleID3 = [contextCopy bundleID];
         v20 = +[_PSConstants macFacetimeBundleId];
-        v17 = [v19 isEqualToString:v20];
+        v17 = [bundleID3 isEqualToString:v20];
       }
 
       if (rankedZKWSuggestionsFromContext___pasOnceToken104 != -1)
@@ -1195,8 +1195,8 @@ LABEL_11:
       v22 = v21;
       if (v17 && ([v21 isEqualToString:@"pstool"] & 1) == 0)
       {
-        v23 = [v4 bundleID];
-        v24 = [_PSCNAutocompleteFeedback createVendedSuggestionsFeedbackWithBundleIdentifier:v23 suggestions:*(*&buf[8] + 40) isImplicit:1];
+        bundleID4 = [contextCopy bundleID];
+        v24 = [_PSCNAutocompleteFeedback createVendedSuggestionsFeedbackWithBundleIdentifier:bundleID4 suggestions:*(*&buf[8] + 40) isImplicit:1];
         [(_PSSuggester *)self provideFeedbackForContactsAutocompleteSuggestions:v24];
       }
 
@@ -1226,10 +1226,10 @@ LABEL_11:
 
   else
   {
-    v8 = +[_PSLogging suggestionSignpost];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    _getUserDaemonXPCConnection = +[_PSLogging suggestionSignpost];
+    if (os_log_type_enabled(_getUserDaemonXPCConnection, OS_LOG_TYPE_ERROR))
     {
-      [_PSSuggester rankedZKWSuggestionsFromContext:v4];
+      [_PSSuggester rankedZKWSuggestionsFromContext:contextCopy];
     }
 
     v18 = MEMORY[0x1E695E0F0];
@@ -1240,9 +1240,9 @@ LABEL_11:
   return v18;
 }
 
-- (id)autocompleteSearchResultsWithPredictionContext:(id)a3
+- (id)autocompleteSearchResultsWithPredictionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (autocompleteSearchResultsWithPredictionContext___pasOnceToken106 != -1)
   {
     [_PSSuggester autocompleteSearchResultsWithPredictionContext:];
@@ -1259,8 +1259,8 @@ LABEL_11:
   v9[1] = 3221225472;
   v9[2] = __63___PSSuggester_autocompleteSearchResultsWithPredictionContext___block_invoke_2;
   v9[3] = &unk_1E7C253F8;
-  v6 = v4;
-  v11 = self;
+  v6 = contextCopy;
+  selfCopy = self;
   v12 = &v13;
   v10 = v6;
   [v5 runWithLockAcquired:v9];
@@ -1271,14 +1271,14 @@ LABEL_11:
   return v7;
 }
 
-- (id)rankedAutocompleteSuggestionsFromContext:(id)a3 candidates:(id)a4
+- (id)rankedAutocompleteSuggestionsFromContext:(id)context candidates:(id)candidates
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+  contextCopy = context;
+  candidatesCopy = candidates;
+  _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
   v9 = +[_PSLogging suggestionSignpost];
   v10 = v9;
-  if (v8)
+  if (_getUserDaemonXPCConnection)
   {
     if (os_signpost_enabled(v9))
     {
@@ -1292,13 +1292,13 @@ LABEL_11:
     v20 = __Block_byref_object_copy__4;
     v21 = __Block_byref_object_dispose__4;
     v22 = 0;
-    v11 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_286];
+    v11 = [_getUserDaemonXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_286];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __68___PSSuggester_rankedAutocompleteSuggestionsFromContext_candidates___block_invoke_287;
     v16[3] = &unk_1E7C243A0;
     v16[4] = buf;
-    [v11 rankedAutocompleteSuggestionsFromContext:v6 candidates:v7 reply:v16];
+    [v11 rankedAutocompleteSuggestionsFromContext:contextCopy candidates:candidatesCopy reply:v16];
     v12 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v12))
     {
@@ -1325,9 +1325,9 @@ LABEL_11:
 
 - (id)rankedFamilySuggestions
 {
-  v2 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
-  v3 = v2;
-  if (v2)
+  _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+  v3 = _getUserDaemonXPCConnection;
+  if (_getUserDaemonXPCConnection)
   {
     v9 = 0;
     v10 = &v9;
@@ -1335,7 +1335,7 @@ LABEL_11:
     v12 = __Block_byref_object_copy__4;
     v13 = __Block_byref_object_dispose__4;
     v14 = 0;
-    v4 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_289];
+    v4 = [_getUserDaemonXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_289];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __39___PSSuggester_rankedFamilySuggestions__block_invoke_290;
@@ -1361,12 +1361,12 @@ LABEL_11:
   return v5;
 }
 
-- (id)familyRecommendationSuggestionsWithPredictionContext:(id)a3
+- (id)familyRecommendationSuggestionsWithPredictionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+  v6 = _getUserDaemonXPCConnection;
+  if (_getUserDaemonXPCConnection)
   {
     v12 = 0;
     v13 = &v12;
@@ -1374,13 +1374,13 @@ LABEL_11:
     v15 = __Block_byref_object_copy__4;
     v16 = __Block_byref_object_dispose__4;
     v17 = 0;
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_292_0];
+    v7 = [_getUserDaemonXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_292_0];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __69___PSSuggester_familyRecommendationSuggestionsWithPredictionContext___block_invoke_293;
     v11[3] = &unk_1E7C243A0;
     v11[4] = &v12;
-    [v7 familyRecommendedSuggestionsWithPredictionContext:v4 reply:v11];
+    [v7 familyRecommendedSuggestionsWithPredictionContext:contextCopy reply:v11];
     v8 = v13[5];
 
     _Block_object_dispose(&v12, 8);
@@ -1400,12 +1400,12 @@ LABEL_11:
   return v8;
 }
 
-- (id)photosRelationshipSuggestionsWithPredictionContext:(id)a3
+- (id)photosRelationshipSuggestionsWithPredictionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+  v6 = _getUserDaemonXPCConnection;
+  if (_getUserDaemonXPCConnection)
   {
     v12 = 0;
     v13 = &v12;
@@ -1413,13 +1413,13 @@ LABEL_11:
     v15 = __Block_byref_object_copy__4;
     v16 = __Block_byref_object_dispose__4;
     v17 = 0;
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_295];
+    v7 = [_getUserDaemonXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_295];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __67___PSSuggester_photosRelationshipSuggestionsWithPredictionContext___block_invoke_296;
     v11[3] = &unk_1E7C243A0;
     v11[4] = &v12;
-    [v7 photosRelationshipSuggestionsWithPredictionContext:v4 reply:v11];
+    [v7 photosRelationshipSuggestionsWithPredictionContext:contextCopy reply:v11];
     v8 = v13[5];
 
     _Block_object_dispose(&v12, 8);
@@ -1439,12 +1439,12 @@ LABEL_11:
   return v8;
 }
 
-- (id)photosContactInferencesSuggestionsWithPredictionContext:(id)a3
+- (id)photosContactInferencesSuggestionsWithPredictionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+  v6 = _getUserDaemonXPCConnection;
+  if (_getUserDaemonXPCConnection)
   {
     v12 = 0;
     v13 = &v12;
@@ -1452,13 +1452,13 @@ LABEL_11:
     v15 = __Block_byref_object_copy__4;
     v16 = __Block_byref_object_dispose__4;
     v17 = 0;
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_298];
+    v7 = [_getUserDaemonXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_298];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __72___PSSuggester_photosContactInferencesSuggestionsWithPredictionContext___block_invoke_299;
     v11[3] = &unk_1E7C243A0;
     v11[4] = &v12;
-    [v7 photosContactInferencesSuggestionsWithPredictionContext:v4 reply:v11];
+    [v7 photosContactInferencesSuggestionsWithPredictionContext:contextCopy reply:v11];
     v8 = v13[5];
 
     _Block_object_dispose(&v12, 8);
@@ -1478,70 +1478,70 @@ LABEL_11:
   return v8;
 }
 
-- (id)hourOfDayProbabilitiesToInteractWithContact:(id)a3
+- (id)hourOfDayProbabilitiesToInteractWithContact:(id)contact
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contactCopy = contact;
   v4 = [_PSHeuristics alloc];
   v5 = MEMORY[0x1E69978F8];
-  v6 = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
-  v7 = [v5 storeWithDirectory:v6 readOnly:1];
+  defaultDatabaseDirectory = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
+  v7 = [v5 storeWithDirectory:defaultDatabaseDirectory readOnly:1];
   v8 = [(_PSHeuristics *)v4 initWithKnowledgeStore:0 interactionStore:v7 contactResolver:0 messageInteractionCache:0];
 
-  if (v3)
+  if (contactCopy)
   {
-    v15[0] = v3;
+    v15[0] = contactCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     v10 = [(_PSHeuristics *)v8 hourOfDayProbabilitiesToInteractWithContacts:v9];
-    v11 = [v10 allValues];
-    v12 = [v11 firstObject];
+    allValues = [v10 allValues];
+    firstObject = [allValues firstObject];
   }
 
   else
   {
-    v12 = MEMORY[0x1E695E0F8];
+    firstObject = MEMORY[0x1E695E0F8];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return firstObject;
 }
 
-- (id)hourOfDayProbabilitiesToInteractWithContacts:(id)a3
+- (id)hourOfDayProbabilitiesToInteractWithContacts:(id)contacts
 {
-  v3 = a3;
+  contactsCopy = contacts;
   v4 = [_PSHeuristics alloc];
   v5 = MEMORY[0x1E69978F8];
-  v6 = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
-  v7 = [v5 storeWithDirectory:v6 readOnly:1];
+  defaultDatabaseDirectory = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
+  v7 = [v5 storeWithDirectory:defaultDatabaseDirectory readOnly:1];
   v8 = [(_PSHeuristics *)v4 initWithKnowledgeStore:0 interactionStore:v7 contactResolver:0 messageInteractionCache:0];
 
-  v9 = [(_PSHeuristics *)v8 hourOfDayProbabilitiesToInteractWithContacts:v3];
+  v9 = [(_PSHeuristics *)v8 hourOfDayProbabilitiesToInteractWithContacts:contactsCopy];
 
   return v9;
 }
 
-- (id)relativeAppUsageProbabilitiesForCandidateBundleIds:(id)a3 daysAgo:(int64_t)a4
+- (id)relativeAppUsageProbabilitiesForCandidateBundleIds:(id)ids daysAgo:(int64_t)ago
 {
-  v6 = a3;
-  v7 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
-  v8 = v7;
+  idsCopy = ids;
+  _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+  v8 = _getUserDaemonXPCConnection;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__4;
   v19 = __Block_byref_object_dispose__4;
   v20 = 0;
-  if (v7)
+  if (_getUserDaemonXPCConnection)
   {
-    v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_304];
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v9 = [_getUserDaemonXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_304];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:ago];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __75___PSSuggester_relativeAppUsageProbabilitiesForCandidateBundleIds_daysAgo___block_invoke_305;
     v14[3] = &unk_1E7C25420;
     v14[4] = &v15;
-    [v9 relativeAppUsageProbabilitiesForCandidateBundleIds:v6 daysAgo:v10 reply:v14];
+    [v9 relativeAppUsageProbabilitiesForCandidateBundleIds:idsCopy daysAgo:v10 reply:v14];
 
     v11 = v16[5];
   }
@@ -1562,45 +1562,45 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)isTransportBundleIDSupported:(id)a3
+- (BOOL)isTransportBundleIDSupported:(id)supported
 {
-  v3 = a3;
-  v4 = [v3 action];
-  v5 = [v4 transportBundleID];
+  supportedCopy = supported;
+  action = [supportedCopy action];
+  transportBundleID = [action transportBundleID];
 
-  if (v5)
+  if (transportBundleID)
   {
-    v6 = [v3 suggestions];
-    v7 = [v6 firstObject];
+    suggestions = [supportedCopy suggestions];
+    firstObject = [suggestions firstObject];
 
-    if (v7)
+    if (firstObject)
     {
-      v5 = [v7 supportedBundleIDs];
-      v8 = [v5 componentsSeparatedByString:{@", "}];
+      transportBundleID = [firstObject supportedBundleIDs];
+      v8 = [transportBundleID componentsSeparatedByString:{@", "}];
 
-      v9 = [v3 action];
-      v10 = [v9 transportBundleID];
-      LOBYTE(v5) = [v8 containsObject:v10];
+      action2 = [supportedCopy action];
+      transportBundleID2 = [action2 transportBundleID];
+      LOBYTE(transportBundleID) = [v8 containsObject:transportBundleID2];
     }
 
     else
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(transportBundleID) = 0;
     }
   }
 
-  return v5;
+  return transportBundleID;
 }
 
-- (id)generatePSRTelemetry:(id)a3
+- (id)generatePSRTelemetry:(id)telemetry
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [v3 action];
-  v6 = [v5 type];
+  telemetryCopy = telemetry;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  action = [telemetryCopy action];
+  type = [action type];
 
   v7 = &unk_1F2D8B490;
-  if (v6)
+  if (type)
   {
     v8 = 0;
     v9 = 0;
@@ -1609,27 +1609,27 @@ LABEL_11:
 
   else
   {
-    if ([v3 indexOfEngagedSuggestion])
+    if ([telemetryCopy indexOfEngagedSuggestion])
     {
       v9 = 0;
     }
 
     else
     {
-      v11 = [v3 action];
-      v12 = [v11 transportBundleID];
-      v9 = [v12 isEqualToString:@"com.apple.UIKit.activity.AirDrop"];
+      action2 = [telemetryCopy action];
+      transportBundleID = [action2 transportBundleID];
+      v9 = [transportBundleID isEqualToString:@"com.apple.UIKit.activity.AirDrop"];
     }
 
     v13 = +[_PSConstants shareplayBundleIds];
-    v14 = [v3 action];
-    v15 = [v14 transportBundleID];
-    v8 = [v13 containsObject:v15];
+    action3 = [telemetryCopy action];
+    transportBundleID2 = [action3 transportBundleID];
+    v8 = [v13 containsObject:transportBundleID2];
 
-    v16 = [v3 action];
-    v17 = [v16 suggestion];
-    v18 = [v17 reasonType];
-    v19 = [v18 isEqualToString:@"assistant"];
+    action4 = [telemetryCopy action];
+    suggestion = [action4 suggestion];
+    reasonType = [suggestion reasonType];
+    v19 = [reasonType isEqualToString:@"assistant"];
 
     if (v19)
     {
@@ -1641,25 +1641,25 @@ LABEL_11:
       v10 = &unk_1F2D8B490;
     }
 
-    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "indexOfEngagedSuggestion")}];
-    [v4 setObject:v20 forKeyedSubscript:@"indexSelected"];
+    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(telemetryCopy, "indexOfEngagedSuggestion")}];
+    [dictionary setObject:v20 forKeyedSubscript:@"indexSelected"];
 
-    v21 = [v3 action];
-    v22 = [v21 suggestion];
-    v23 = [v22 reason];
-    [v4 setObject:v23 forKeyedSubscript:@"engagedSuggestionProxyReason"];
+    action5 = [telemetryCopy action];
+    suggestion2 = [action5 suggestion];
+    reason = [suggestion2 reason];
+    [dictionary setObject:reason forKeyedSubscript:@"engagedSuggestionProxyReason"];
 
-    v24 = [v3 action];
-    v25 = [v24 suggestion];
-    v26 = [v25 reasonType];
-    v27 = [v26 isEqualToString:@"_PSHeuristics"];
+    action6 = [telemetryCopy action];
+    suggestion3 = [action6 suggestion];
+    reasonType2 = [suggestion3 reasonType];
+    v27 = [reasonType2 isEqualToString:@"_PSHeuristics"];
 
     if ((v27 & 1) == 0)
     {
-      v28 = [v3 action];
-      v29 = [v28 suggestion];
-      v30 = [v29 reasonType];
-      v31 = [v30 isEqualToString:@"suggestionsProxiesFromStats"];
+      action7 = [telemetryCopy action];
+      suggestion4 = [action7 suggestion];
+      reasonType3 = [suggestion4 reasonType];
+      v31 = [reasonType3 isEqualToString:@"suggestionsProxiesFromStats"];
 
       if (v31)
       {
@@ -1672,45 +1672,45 @@ LABEL_11:
       }
     }
 
-    [v4 setObject:v7 forKeyedSubscript:@"engagedSuggestionProxy"];
-    v32 = [v3 action];
-    v33 = [v32 suggestion];
-    v34 = [v33 reasonType];
-    [v4 setObject:v34 forKeyedSubscript:@"engagedSuggestionProxy_debug"];
+    [dictionary setObject:v7 forKeyedSubscript:@"engagedSuggestionProxy"];
+    action8 = [telemetryCopy action];
+    suggestion5 = [action8 suggestion];
+    reasonType4 = [suggestion5 reasonType];
+    [dictionary setObject:reasonType4 forKeyedSubscript:@"engagedSuggestionProxy_debug"];
   }
 
-  v35 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "wasAirDropShown")}];
-  [v4 setObject:v35 forKeyedSubscript:@"airdropShown"];
+  v35 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(telemetryCopy, "wasAirDropShown")}];
+  [dictionary setObject:v35 forKeyedSubscript:@"airdropShown"];
 
   v36 = [MEMORY[0x1E696AD98] numberWithBool:v9];
-  [v4 setObject:v36 forKeyedSubscript:@"airdropEngaged"];
+  [dictionary setObject:v36 forKeyedSubscript:@"airdropEngaged"];
 
   v37 = MEMORY[0x1E696AD98];
-  v38 = [v3 context];
-  v39 = [v37 numberWithBool:{objc_msgSend(v38, "isSharePlayAvailable")}];
-  [v4 setObject:v39 forKeyedSubscript:@"sharePlayAvailable"];
+  context = [telemetryCopy context];
+  v39 = [v37 numberWithBool:{objc_msgSend(context, "isSharePlayAvailable")}];
+  [dictionary setObject:v39 forKeyedSubscript:@"sharePlayAvailable"];
 
   v40 = [MEMORY[0x1E696AD98] numberWithBool:v8];
-  [v4 setObject:v40 forKeyedSubscript:@"sharePlayEngaged"];
+  [dictionary setObject:v40 forKeyedSubscript:@"sharePlayEngaged"];
 
   v41 = MEMORY[0x1E696AD98];
-  v42 = [v3 context];
-  v43 = [v42 supportedBundleIds];
-  v44 = [v3 action];
-  v45 = [v44 transportBundleID];
-  v46 = [v41 numberWithBool:{objc_msgSend(v43, "containsObject:", v45)}];
-  [v4 setObject:v46 forKeyedSubscript:@"appSharingIntent"];
+  context2 = [telemetryCopy context];
+  supportedBundleIds = [context2 supportedBundleIds];
+  action9 = [telemetryCopy action];
+  transportBundleID3 = [action9 transportBundleID];
+  v46 = [v41 numberWithBool:{objc_msgSend(supportedBundleIds, "containsObject:", transportBundleID3)}];
+  [dictionary setObject:v46 forKeyedSubscript:@"appSharingIntent"];
 
   v47 = MEMORY[0x1E696AD98];
-  v48 = [v3 action];
-  v49 = [v47 numberWithInteger:{objc_msgSend(v48, "type")}];
-  [v4 setObject:v49 forKeyedSubscript:@"engagementType"];
+  action10 = [telemetryCopy action];
+  v49 = [v47 numberWithInteger:{objc_msgSend(action10, "type")}];
+  [dictionary setObject:v49 forKeyedSubscript:@"engagementType"];
 
-  v50 = [v3 suggestions];
-  if (v50)
+  suggestions = [telemetryCopy suggestions];
+  if (suggestions)
   {
-    v51 = [v3 suggestions];
-    v52 = [v51 count] != 0;
+    suggestions2 = [telemetryCopy suggestions];
+    v52 = [suggestions2 count] != 0;
   }
 
   else
@@ -1719,71 +1719,71 @@ LABEL_11:
   }
 
   v53 = [MEMORY[0x1E696AD98] numberWithBool:v52];
-  [v4 setObject:v53 forKeyedSubscript:@"suggestionAvailable"];
+  [dictionary setObject:v53 forKeyedSubscript:@"suggestionAvailable"];
 
   v54 = MEMORY[0x1E696AD98];
-  v55 = [v3 suggestions];
-  v56 = [v54 numberWithUnsignedInteger:{objc_msgSend(v55, "count")}];
-  [v4 setObject:v56 forKeyedSubscript:@"suggestionNumber"];
+  suggestions3 = [telemetryCopy suggestions];
+  v56 = [v54 numberWithUnsignedInteger:{objc_msgSend(suggestions3, "count")}];
+  [dictionary setObject:v56 forKeyedSubscript:@"suggestionNumber"];
 
   v57 = MEMORY[0x1E696AD98];
-  [v3 numberOfVisibleSuggestions];
+  [telemetryCopy numberOfVisibleSuggestions];
   v58 = [v57 numberWithFloat:?];
-  [v4 setObject:v58 forKeyedSubscript:@"numberOfVisibleSuggestions"];
+  [dictionary setObject:v58 forKeyedSubscript:@"numberOfVisibleSuggestions"];
 
   v59 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.Sharing"];
   v60 = [v59 integerForKey:@"SharingPeopleSuggestionsDisabled"] == 1;
   v61 = [MEMORY[0x1E696AD98] numberWithBool:v60];
-  [v4 setObject:v61 forKeyedSubscript:@"peopleSuggestionsSetting"];
+  [dictionary setObject:v61 forKeyedSubscript:@"peopleSuggestionsSetting"];
 
-  v62 = [v3 action];
-  v63 = [v62 transportBundleID];
-  [v4 setObject:v63 forKeyedSubscript:@"transportApp"];
+  action11 = [telemetryCopy action];
+  transportBundleID4 = [action11 transportBundleID];
+  [dictionary setObject:transportBundleID4 forKeyedSubscript:@"transportApp"];
 
-  v64 = [v3 context];
-  v65 = [v64 bundleID];
-  [v4 setObject:v65 forKeyedSubscript:@"sourceApp"];
+  context3 = [telemetryCopy context];
+  bundleID = [context3 bundleID];
+  [dictionary setObject:bundleID forKeyedSubscript:@"sourceApp"];
 
-  v66 = [v3 suggestions];
-  v67 = [v66 firstObject];
-  v68 = [v67 utiList];
-  [v4 setObject:v68 forKeyedSubscript:@"contentShared"];
+  suggestions4 = [telemetryCopy suggestions];
+  firstObject = [suggestions4 firstObject];
+  utiList = [firstObject utiList];
+  [dictionary setObject:utiList forKeyedSubscript:@"contentShared"];
 
-  v69 = [v3 context];
-  v70 = [v69 sessionID];
-  [v4 setObject:v70 forKeyedSubscript:@"sessionId"];
+  context4 = [telemetryCopy context];
+  sessionID = [context4 sessionID];
+  [dictionary setObject:sessionID forKeyedSubscript:@"sessionId"];
 
-  [v4 setObject:v10 forKeyedSubscript:@"userExperienceFlow"];
+  [dictionary setObject:v10 forKeyedSubscript:@"userExperienceFlow"];
   v71 = MEMORY[0x1E696AD98];
-  v72 = [v3 context];
-  v73 = [v72 suggestionCompletionDate];
-  v74 = [v3 context];
-  v75 = [v74 suggestionDate];
-  [v73 timeIntervalSinceDate:v75];
+  context5 = [telemetryCopy context];
+  suggestionCompletionDate = [context5 suggestionCompletionDate];
+  context6 = [telemetryCopy context];
+  suggestionDate = [context6 suggestionDate];
+  [suggestionCompletionDate timeIntervalSinceDate:suggestionDate];
   v77 = [v71 numberWithInt:(v76 * 1000.0)];
-  [v4 setObject:v77 forKeyedSubscript:@"sessionLatency"];
+  [dictionary setObject:v77 forKeyedSubscript:@"sessionLatency"];
 
   v78 = MEMORY[0x1E696AD98];
-  v79 = [v3 context];
-  v80 = [v78 numberWithBool:{objc_msgSend(v79, "timedOut")}];
-  [v4 setObject:v80 forKeyedSubscript:@"modelTimeout"];
+  context7 = [telemetryCopy context];
+  v80 = [v78 numberWithBool:{objc_msgSend(context7, "timedOut")}];
+  [dictionary setObject:v80 forKeyedSubscript:@"modelTimeout"];
 
-  v81 = [v3 context];
-  v82 = [v81 suggestionPath];
+  context8 = [telemetryCopy context];
+  suggestionPath = [context8 suggestionPath];
   v83 = +[_PSConstants suggestionPathNormal];
-  LOBYTE(v74) = [v82 isEqualToString:v83];
+  LOBYTE(context6) = [suggestionPath isEqualToString:v83];
 
-  if (v74)
+  if (context6)
   {
     v84 = &unk_1F2D8B490;
   }
 
   else
   {
-    v85 = [v3 context];
-    v86 = [v85 suggestionPath];
+    context9 = [telemetryCopy context];
+    suggestionPath2 = [context9 suggestionPath];
     v87 = +[_PSConstants suggestionPathBestEffort];
-    v88 = [v86 isEqualToString:v87];
+    v88 = [suggestionPath2 isEqualToString:v87];
 
     if (v88)
     {
@@ -1792,10 +1792,10 @@ LABEL_11:
 
     else
     {
-      v89 = [v3 context];
-      v90 = [v89 suggestionPath];
+      context10 = [telemetryCopy context];
+      suggestionPath3 = [context10 suggestionPath];
       v91 = +[_PSConstants suggestionPathCachedSuggestion];
-      v92 = [v90 isEqualToString:v91];
+      v92 = [suggestionPath3 isEqualToString:v91];
 
       if (v92)
       {
@@ -1809,77 +1809,77 @@ LABEL_11:
     }
   }
 
-  [v4 setObject:v84 forKeyedSubscript:@"suggestionPath"];
-  v93 = [v3 context];
-  v94 = [v93 suggestionPath];
-  [v4 setObject:v94 forKeyedSubscript:@"suggestionPath_debug"];
+  [dictionary setObject:v84 forKeyedSubscript:@"suggestionPath"];
+  context11 = [telemetryCopy context];
+  suggestionPath4 = [context11 suggestionPath];
+  [dictionary setObject:suggestionPath4 forKeyedSubscript:@"suggestionPath_debug"];
 
-  v95 = [v3 context];
-  v96 = [v95 trialDeploymentId];
-  if (v96)
+  context12 = [telemetryCopy context];
+  trialDeploymentId = [context12 trialDeploymentId];
+  if (trialDeploymentId)
   {
-    [v4 setObject:v96 forKeyedSubscript:@"trialDeploymentId"];
+    [dictionary setObject:trialDeploymentId forKeyedSubscript:@"trialDeploymentId"];
   }
 
   else
   {
-    v97 = [MEMORY[0x1E695DFB0] null];
-    [v4 setObject:v97 forKeyedSubscript:@"trialDeploymentId"];
+    null = [MEMORY[0x1E695DFB0] null];
+    [dictionary setObject:null forKeyedSubscript:@"trialDeploymentId"];
   }
 
-  v98 = [v3 context];
-  v99 = [v98 trialExperimentId];
-  if (v99)
+  context13 = [telemetryCopy context];
+  trialExperimentId = [context13 trialExperimentId];
+  if (trialExperimentId)
   {
-    [v4 setObject:v99 forKeyedSubscript:@"trialExperimentId"];
+    [dictionary setObject:trialExperimentId forKeyedSubscript:@"trialExperimentId"];
   }
 
   else
   {
-    v100 = [MEMORY[0x1E695DFB0] null];
-    [v4 setObject:v100 forKeyedSubscript:@"trialExperimentId"];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [dictionary setObject:null2 forKeyedSubscript:@"trialExperimentId"];
   }
 
-  v101 = [v3 context];
-  v102 = [v101 trialTreatmentId];
-  if (v102)
+  context14 = [telemetryCopy context];
+  trialTreatmentId = [context14 trialTreatmentId];
+  if (trialTreatmentId)
   {
-    [v4 setObject:v102 forKeyedSubscript:@"trialTreatmentId"];
+    [dictionary setObject:trialTreatmentId forKeyedSubscript:@"trialTreatmentId"];
   }
 
   else
   {
-    v103 = [MEMORY[0x1E695DFB0] null];
-    [v4 setObject:v103 forKeyedSubscript:@"trialTreatmentId"];
+    null3 = [MEMORY[0x1E695DFB0] null];
+    [dictionary setObject:null3 forKeyedSubscript:@"trialTreatmentId"];
   }
 
-  v104 = [v3 context];
-  v105 = [v104 bundleID];
-  v106 = [&unk_1F2D8C240 containsObject:v105];
+  context15 = [telemetryCopy context];
+  bundleID2 = [context15 bundleID];
+  v106 = [&unk_1F2D8C240 containsObject:bundleID2];
 
   v107 = [MEMORY[0x1E696AD98] numberWithBool:v106];
-  [v4 setObject:v107 forKeyedSubscript:@"isPhotos"];
+  [dictionary setObject:v107 forKeyedSubscript:@"isPhotos"];
 
   v108 = MEMORY[0x1E696AD98];
-  v109 = [v3 context];
-  v110 = [v108 numberWithBool:{objc_msgSend(v109, "isPSRActive")}];
-  [v4 setObject:v110 forKeyedSubscript:@"PSRActive"];
+  context16 = [telemetryCopy context];
+  v110 = [v108 numberWithBool:{objc_msgSend(context16, "isPSRActive")}];
+  [dictionary setObject:v110 forKeyedSubscript:@"PSRActive"];
 
   v111 = MEMORY[0x1E696AD98];
-  [v3 delay];
+  [telemetryCopy delay];
   v113 = [v111 numberWithInt:(v112 * 1000.0)];
-  [v4 setObject:v113 forKeyedSubscript:@"sessionDelayInMilliseconds"];
+  [dictionary setObject:v113 forKeyedSubscript:@"sessionDelayInMilliseconds"];
 
-  v115 = v4;
+  v115 = dictionary;
   AnalyticsSendEventLazy();
 
   return v115;
 }
 
-- (void)provideFeedbackForSuggestions:(id)a3
+- (void)provideFeedbackForSuggestions:(id)suggestions
 {
   v104 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   connection = self->_connection;
   if (!connection)
   {
@@ -1897,38 +1897,38 @@ LABEL_11:
     connection = self->_connection;
   }
 
-  v87 = self;
+  selfCopy = self;
   v97 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_432];
-  v95 = [v4 action];
-  v93 = [v95 suggestion];
-  v10 = [v93 conversationIdentifier];
-  v11 = v10;
-  if (!v10)
+  action = [suggestionsCopy action];
+  suggestion = [action suggestion];
+  conversationIdentifier = [suggestion conversationIdentifier];
+  derivedIntentIdentifier = conversationIdentifier;
+  if (!conversationIdentifier)
   {
-    v92 = [v4 action];
-    v90 = [v92 suggestion];
-    v11 = [v90 derivedIntentIdentifier];
+    action2 = [suggestionsCopy action];
+    suggestion2 = [action2 suggestion];
+    derivedIntentIdentifier = [suggestion2 derivedIntentIdentifier];
   }
 
-  v12 = [v4 context];
-  v13 = [v12 sessionID];
-  v14 = [v4 action];
-  v15 = [v14 type];
-  v16 = [v4 action];
-  v17 = [v16 transportBundleID];
-  v18 = [v4 context];
-  [v97 saveFeedbackInCoreDuetd:v11 forSessionId:v13 feedbackActionType:v15 transportBundleId:v17 isFallbackFetch:objc_msgSend(v18 reply:{"isFallbackFetch"), &__block_literal_global_436}];
+  context = [suggestionsCopy context];
+  sessionID = [context sessionID];
+  action3 = [suggestionsCopy action];
+  type = [action3 type];
+  action4 = [suggestionsCopy action];
+  transportBundleID = [action4 transportBundleID];
+  context2 = [suggestionsCopy context];
+  [v97 saveFeedbackInCoreDuetd:derivedIntentIdentifier forSessionId:sessionID feedbackActionType:type transportBundleId:transportBundleID isFallbackFetch:objc_msgSend(context2 reply:{"isFallbackFetch"), &__block_literal_global_436}];
 
-  if (!v10)
+  if (!conversationIdentifier)
   {
   }
 
-  v19 = [v4 action];
-  v20 = [v19 type];
+  action5 = [suggestionsCopy action];
+  type2 = [action5 type];
 
-  if (v20 > 1)
+  if (type2 > 1)
   {
-    if (v20 == 2)
+    if (type2 == 2)
     {
       v21 = +[_PSLogging feedbackChannel];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -1943,15 +1943,15 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    if (v20 == 4)
+    if (type2 == 4)
     {
       v21 = +[_PSLogging feedbackChannel];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v23 = [v4 action];
-        v24 = [v23 transportBundleID];
+        action6 = [suggestionsCopy action];
+        transportBundleID2 = [action6 transportBundleID];
         *buf = 138412290;
-        v99 = v24;
+        v99 = transportBundleID2;
         _os_log_impl(&dword_1B5ED1000, v21, OS_LOG_TYPE_INFO, "Feedback for app suggestions: Engagement with transport: %@", buf, 0xCu);
       }
 
@@ -1968,9 +1968,9 @@ LABEL_16:
     goto LABEL_24;
   }
 
-  if (v20)
+  if (type2)
   {
-    if (v20 == 1)
+    if (type2 == 1)
     {
       v21 = +[_PSLogging feedbackChannel];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -1988,10 +1988,10 @@ LABEL_23:
     goto LABEL_16;
   }
 
-  v25 = [v4 indexOfEngagedSuggestion];
+  indexOfEngagedSuggestion = [suggestionsCopy indexOfEngagedSuggestion];
   v26 = +[_PSLogging feedbackChannel];
   v21 = v26;
-  if (v25 == 0x7FFFFFFFFFFFFFFFLL)
+  if (indexOfEngagedSuggestion == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -2003,81 +2003,81 @@ LABEL_23:
 
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
-    v84 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v25];
-    v85 = [v4 action];
-    v86 = [v85 transportBundleID];
+    v84 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:indexOfEngagedSuggestion];
+    action7 = [suggestionsCopy action];
+    transportBundleID3 = [action7 transportBundleID];
     *buf = 138412546;
     v99 = v84;
     v100 = 2112;
-    v101 = v86;
+    v101 = transportBundleID3;
     _os_log_impl(&dword_1B5ED1000, v21, OS_LOG_TYPE_INFO, "Feedback for people suggestions: Engagement with suggestion at index %@, transport: %@", buf, 0x16u);
   }
 
-  [(_PSSuggester *)v87 _recordFeedbackToInteractionStoreWithFeedback:v4 mechanism:20];
+  [(_PSSuggester *)selfCopy _recordFeedbackToInteractionStoreWithFeedback:suggestionsCopy mechanism:20];
 LABEL_25:
-  v27 = [v4 suggestions];
-  v28 = [v27 firstObject];
-  v96 = [v28 familySuggestion];
+  suggestions = [suggestionsCopy suggestions];
+  firstObject = [suggestions firstObject];
+  familySuggestion = [firstObject familySuggestion];
 
-  v29 = [v4 action];
-  v30 = [v29 suggestion];
+  action8 = [suggestionsCopy action];
+  suggestion3 = [action8 suggestion];
 
-  v31 = [v30 bundleID];
-  v91 = v30;
-  v32 = [v30 derivedIntentIdentifier];
-  if (v31)
+  bundleID = [suggestion3 bundleID];
+  v91 = suggestion3;
+  derivedIntentIdentifier2 = [suggestion3 derivedIntentIdentifier];
+  if (bundleID)
   {
-    v33 = [MEMORY[0x1E6997A60] userContext];
+    userContext = [MEMORY[0x1E6997A60] userContext];
     v34 = [MEMORY[0x1E6997A78] keyPathWithKey:@"/sharesheet/selectedSuggestion"];
     v35 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
-    [v35 setObject:v31 forKeyedSubscript:@"bundleID"];
-    if (v32)
+    [v35 setObject:bundleID forKeyedSubscript:@"bundleID"];
+    if (derivedIntentIdentifier2)
     {
       v36 = +[_PSConstants mobileMessagesBundleId];
-      v37 = [v31 isEqualToString:v36];
+      v37 = [bundleID isEqualToString:v36];
 
       if ((v37 & 1) == 0)
       {
-        [v35 setObject:v32 forKeyedSubscript:@"derivedIntentIdentifier"];
+        [v35 setObject:derivedIntentIdentifier2 forKeyedSubscript:@"derivedIntentIdentifier"];
       }
     }
 
     v38 = [v35 copy];
-    [v33 setObject:v38 forKeyedSubscript:v34];
+    [userContext setObject:v38 forKeyedSubscript:v34];
 
     v39 = +[_PSLogging feedbackChannel];
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v99 = v31;
+      v99 = bundleID;
       _os_log_impl(&dword_1B5ED1000, v39, OS_LOG_TYPE_INFO, "Set selected suggestion in context store for bundleID %@", buf, 0xCu);
     }
   }
 
-  v88 = v32;
-  v89 = v31;
-  v40 = [v4 suggestions];
-  v41 = [v40 firstObject];
-  v42 = v4;
-  v43 = [v41 isAdaptedModelCreated];
+  v88 = derivedIntentIdentifier2;
+  v89 = bundleID;
+  suggestions2 = [suggestionsCopy suggestions];
+  firstObject2 = [suggestions2 firstObject];
+  v42 = suggestionsCopy;
+  isAdaptedModelCreated = [firstObject2 isAdaptedModelCreated];
 
-  v44 = [v42 suggestions];
-  v45 = [v44 firstObject];
-  v46 = [v45 isAdaptedModelUsed];
+  suggestions3 = [v42 suggestions];
+  firstObject3 = [suggestions3 firstObject];
+  isAdaptedModelUsed = [firstObject3 isAdaptedModelUsed];
 
-  v47 = [v42 suggestions];
-  v48 = [v47 firstObject];
-  v49 = [v48 adaptedModelRecipeID];
+  suggestions4 = [v42 suggestions];
+  firstObject4 = [suggestions4 firstObject];
+  adaptedModelRecipeID = [firstObject4 adaptedModelRecipeID];
 
-  v50 = [v42 suggestions];
-  v51 = [v50 firstObject];
-  v52 = [v51 supportedBundleIDs];
+  suggestions5 = [v42 suggestions];
+  firstObject5 = [suggestions5 firstObject];
+  supportedBundleIDs = [firstObject5 supportedBundleIDs];
 
-  v53 = [v42 suggestions];
-  v54 = [v53 firstObject];
-  v55 = [v54 utiList];
+  suggestions6 = [v42 suggestions];
+  firstObject6 = [suggestions6 firstObject];
+  utiList = [firstObject6 utiList];
 
-  v56 = [MEMORY[0x1E696AD98] numberWithBool:v96];
+  v56 = [MEMORY[0x1E696AD98] numberWithBool:familySuggestion];
   v94 = v42;
   v57 = [v42 feedbackPayloadShowFamily:v56];
   v58 = [v57 mutableCopy];
@@ -2087,71 +2087,71 @@ LABEL_25:
   v61 = [MEMORY[0x1E696AD98] numberWithInteger:v60];
   [v58 setObject:v61 forKeyedSubscript:@"peopleSuggestionsDisabled"];
 
-  v62 = [MEMORY[0x1E696AD98] numberWithBool:v43];
+  v62 = [MEMORY[0x1E696AD98] numberWithBool:isAdaptedModelCreated];
   [v58 setObject:v62 forKeyedSubscript:@"isAdaptedModelCreated"];
 
-  v63 = [MEMORY[0x1E696AD98] numberWithBool:v46];
+  v63 = [MEMORY[0x1E696AD98] numberWithBool:isAdaptedModelUsed];
   [v58 setObject:v63 forKeyedSubscript:@"isAdaptedModelUsed"];
 
-  [v58 setObject:v49 forKeyedSubscript:@"adaptedModelRecipeID"];
+  [v58 setObject:adaptedModelRecipeID forKeyedSubscript:@"adaptedModelRecipeID"];
   v64 = +[_PSLogging feedbackChannel];
   if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
   {
-    v65 = [MEMORY[0x1E696AD98] numberWithBool:v43];
-    v66 = [MEMORY[0x1E696AD98] numberWithBool:v46];
+    v65 = [MEMORY[0x1E696AD98] numberWithBool:isAdaptedModelCreated];
+    v66 = [MEMORY[0x1E696AD98] numberWithBool:isAdaptedModelUsed];
     *buf = 138412802;
     v99 = v65;
     v100 = 2112;
     v101 = v66;
     v102 = 2112;
-    v103 = v49;
+    v103 = adaptedModelRecipeID;
     _os_log_impl(&dword_1B5ED1000, v64, OS_LOG_TYPE_INFO, "Adapted model use and availability indicators are set as isAdaptedModelCreated:%@, isAdaptedModelUsed:%@, adaptedModelRecipeID:%@", buf, 0x20u);
   }
 
-  [v58 setObject:v52 forKeyedSubscript:@"supportedBundleIds"];
+  [v58 setObject:supportedBundleIDs forKeyedSubscript:@"supportedBundleIds"];
   v67 = +[_PSLogging feedbackChannel];
   if (os_log_type_enabled(v67, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v99 = v52;
+    v99 = supportedBundleIDs;
     _os_log_impl(&dword_1B5ED1000, v67, OS_LOG_TYPE_INFO, "Comma seperated supported bundleID list:%@", buf, 0xCu);
   }
 
-  [v58 setObject:v55 forKeyedSubscript:@"uti"];
+  [v58 setObject:utiList forKeyedSubscript:@"uti"];
   v68 = +[_PSLogging feedbackChannel];
   v69 = v94;
   if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v99 = v55;
+    v99 = utiList;
     _os_log_impl(&dword_1B5ED1000, v68, OS_LOG_TYPE_INFO, "Comma seperated UTI list:%@", buf, 0xCu);
   }
 
   v70 = MEMORY[0x1E696AD98];
-  v71 = [v94 context];
-  v72 = [v70 numberWithInteger:{objc_msgSend(v71, "suggestionPurpose")}];
+  context3 = [v94 context];
+  v72 = [v70 numberWithInteger:{objc_msgSend(context3, "suggestionPurpose")}];
   [v58 setObject:v72 forKeyedSubscript:@"suggestionPurpose"];
 
-  v73 = [v94 action];
-  v74 = [v73 suggestion];
-  v75 = [v74 recipients];
+  action9 = [v94 action];
+  suggestion4 = [action9 suggestion];
+  recipients = [suggestion4 recipients];
 
-  if (v75)
+  if (recipients)
   {
     v76 = MEMORY[0x1E696AD98];
-    v77 = [v94 action];
-    v78 = [v77 suggestion];
-    v79 = [v78 recipients];
-    v80 = [v76 numberWithUnsignedInteger:{objc_msgSend(v79, "count")}];
+    action10 = [v94 action];
+    suggestion5 = [action10 suggestion];
+    recipients2 = [suggestion5 recipients];
+    v80 = [v76 numberWithUnsignedInteger:{objc_msgSend(recipients2, "count")}];
     [v58 setObject:v80 forKeyedSubscript:@"recipientCount"];
 
     v69 = v94;
   }
 
-  if ((v96 & 1) == 0)
+  if ((familySuggestion & 1) == 0)
   {
-    v81 = [(_PSSuggester *)v87 generatePSRTelemetry:v69];
-    [(_PSSuggester *)v87 donateCA2Biome:v81];
+    v81 = [(_PSSuggester *)selfCopy generatePSRTelemetry:v69];
+    [(_PSSuggester *)selfCopy donateCA2Biome:v81];
   }
 
   v82 = v58;
@@ -2161,16 +2161,16 @@ LABEL_25:
   v83 = *MEMORY[0x1E69E9840];
 }
 
-- (void)donateCA2Biome:(id)a3
+- (void)donateCA2Biome:(id)biome
 {
-  v4 = a3;
-  v5 = [(_PSSuggester *)self convertCoreAnalyticsEvent2BiomeEvent:v4];
+  biomeCopy = biome;
+  v5 = [(_PSSuggester *)self convertCoreAnalyticsEvent2BiomeEvent:biomeCopy];
   v6 = BiomeLibrary();
-  v7 = [v6 MLSE];
-  v8 = [v7 ShareSheet];
-  v9 = [v8 Feedback];
+  mLSE = [v6 MLSE];
+  shareSheet = [mLSE ShareSheet];
+  feedback = [shareSheet Feedback];
 
-  v10 = [v9 source];
+  source = [feedback source];
   v11 = objc_alloc(MEMORY[0x1E698EC98]);
   LODWORD(v15) = 0;
   v12 = [v11 initWithIdentifier:0 engagementType:0 engagementIdentifier:0 visiblePeopleSuggestionCount:0 visibleAppSuggestionCount:0 airdropPeopleSuggestionShown:0 inferenceSource:v15 trialIdentifier:0 timeouts:MEMORY[0x1E695E0F0] productInsights:v5];
@@ -2181,7 +2181,7 @@ LABEL_25:
     _os_log_impl(&dword_1B5ED1000, v13, OS_LOG_TYPE_INFO, "Attempting to send BMMLSEShareSheetFeedback event...", buf, 2u);
   }
 
-  [v10 sendEvent:v12];
+  [source sendEvent:v12];
   v14 = +[_PSLogging feedbackChannel];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -2190,11 +2190,11 @@ LABEL_25:
   }
 }
 
-- (id)_stringFromValue:(id)a3
+- (id)_stringFromValue:(id)value
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3 || ([MEMORY[0x1E695DFB0] null], v4 = objc_claimAutoreleasedReturnValue(), v4, v4 == v3))
+  valueCopy = value;
+  if (!valueCopy || ([MEMORY[0x1E695DFB0] null], v4 = objc_claimAutoreleasedReturnValue(), v4, v4 == valueCopy))
   {
     v6 = 0;
   }
@@ -2204,7 +2204,7 @@ LABEL_25:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
+      stringValue = valueCopy;
     }
 
     else
@@ -2212,7 +2212,7 @@ LABEL_25:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [v3 stringValue];
+        stringValue = [valueCopy stringValue];
       }
 
       else
@@ -2220,7 +2220,7 @@ LABEL_25:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v5 = [v3 componentsJoinedByString:{@", "}];
+          stringValue = [valueCopy componentsJoinedByString:{@", "}];
         }
 
         else
@@ -2234,12 +2234,12 @@ LABEL_25:
             _os_log_impl(&dword_1B5ED1000, v7, OS_LOG_TYPE_INFO, "Unexpected type for value of class %@. Converting to string via -description.", &v11, 0xCu);
           }
 
-          v5 = [v3 description];
+          stringValue = [valueCopy description];
         }
       }
     }
 
-    v6 = v5;
+    v6 = stringValue;
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -2247,10 +2247,10 @@ LABEL_25:
   return v6;
 }
 
-- (id)convertCoreAnalyticsEvent2BiomeEvent:(id)a3
+- (id)convertCoreAnalyticsEvent2BiomeEvent:(id)event
 {
   v103 = *MEMORY[0x1E69E9840];
-  v4 = [a3 mutableCopy];
+  v4 = [event mutableCopy];
   v5 = [v4 objectForKeyedSubscript:@"indexSelected"];
   v6 = [(_PSSuggester *)self _stringFromValue:v5];
   [v4 setObject:v6 forKeyedSubscript:@"indexSelected"];
@@ -2319,12 +2319,12 @@ LABEL_25:
   v38 = [(_PSSuggester *)self _stringFromValue:v37];
   [v4 setObject:v38 forKeyedSubscript:@"trialTreatmentId"];
 
-  v39 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v40 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v40 setDateFormat:@"MM/dd/yyyy"];
   v72 = v40;
-  v73 = v39;
-  v41 = [v40 stringFromDate:v39];
+  v73 = date;
+  v41 = [v40 stringFromDate:date];
   v42 = +[_PSLogging feedbackChannel];
   if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
   {
@@ -2429,10 +2429,10 @@ LABEL_25:
   return v70;
 }
 
-- (void)_recordFeedbackToInteractionStoreWithFeedback:(id)a3 mechanism:(int64_t)a4
+- (void)_recordFeedbackToInteractionStoreWithFeedback:(id)feedback mechanism:(int64_t)mechanism
 {
   v106 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  feedbackCopy = feedback;
   connection = self->_connection;
   if (!connection)
   {
@@ -2443,10 +2443,10 @@ LABEL_25:
     self->_connection = v9;
 
     _CDInteractionNSXPCInterface();
-    v12 = v11 = v6;
+    v12 = v11 = feedbackCopy;
     [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v12];
 
-    v6 = v11;
+    feedbackCopy = v11;
     [(NSXPCConnection *)self->_connection resume];
     os_unfair_lock_unlock(&self->_lock);
     connection = self->_connection;
@@ -2455,53 +2455,53 @@ LABEL_25:
   v13 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_488];
   v14 = objc_opt_new();
   appBundleIdToShareExtensionMapping = self->_appBundleIdToShareExtensionMapping;
-  v16 = [v6 action];
-  v17 = [v16 transportBundleID];
-  v18 = [(NSDictionary *)appBundleIdToShareExtensionMapping objectForKey:v17];
-  v19 = [v18 firstObject];
+  action = [feedbackCopy action];
+  transportBundleID = [action transportBundleID];
+  v18 = [(NSDictionary *)appBundleIdToShareExtensionMapping objectForKey:transportBundleID];
+  firstObject = [v18 firstObject];
 
-  if (!v19)
+  if (!firstObject)
   {
-    v20 = [v6 action];
-    v19 = [v20 transportBundleID];
+    action2 = [feedbackCopy action];
+    firstObject = [action2 transportBundleID];
   }
 
   v84 = v13;
-  v21 = [v6 action];
-  v22 = [v21 suggestion];
-  v23 = [v22 groupName];
-  [v14 setGroupName:v23];
+  action3 = [feedbackCopy action];
+  suggestion = [action3 suggestion];
+  groupName = [suggestion groupName];
+  [v14 setGroupName:groupName];
 
-  v82 = v19;
-  [v14 setTargetBundleId:v19];
-  v24 = [v6 context];
-  v25 = [v24 bundleID];
-  [v14 setBundleId:v25];
+  v82 = firstObject;
+  [v14 setTargetBundleId:firstObject];
+  context = [feedbackCopy context];
+  bundleID = [context bundleID];
+  [v14 setBundleId:bundleID];
 
-  [v14 setMechanism:a4];
-  v26 = [v6 action];
-  v27 = [v26 suggestion];
-  v28 = [v27 derivedIntentIdentifier];
-  [v14 setDerivedIntentIdentifier:v28];
+  [v14 setMechanism:mechanism];
+  action4 = [feedbackCopy action];
+  suggestion2 = [action4 suggestion];
+  derivedIntentIdentifier = [suggestion2 derivedIntentIdentifier];
+  [v14 setDerivedIntentIdentifier:derivedIntentIdentifier];
 
-  v29 = [v6 action];
-  v30 = [v29 suggestion];
-  v31 = [v30 image];
-  v32 = [v31 _uri];
+  action5 = [feedbackCopy action];
+  suggestion3 = [action5 suggestion];
+  image = [suggestion3 image];
+  _uri = [image _uri];
   v83 = v14;
-  if (v32)
+  if (_uri)
   {
-    [v14 setContentURL:v32];
+    [v14 setContentURL:_uri];
   }
 
   else
   {
     v33 = MEMORY[0x1E695DFF8];
-    obja = [v6 action];
-    v34 = [obja suggestion];
-    v35 = [v34 image];
-    v36 = [v35 _identifier];
-    v37 = [v33 URLWithString:v36];
+    obja = [feedbackCopy action];
+    suggestion4 = [obja suggestion];
+    image2 = [suggestion4 image];
+    _identifier = [image2 _identifier];
+    v37 = [v33 URLWithString:_identifier];
     [v14 setContentURL:v37];
   }
 
@@ -2517,11 +2517,11 @@ LABEL_25:
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v40 = [v6 context];
-  v41 = [v40 attachments];
+  context2 = [feedbackCopy context];
+  attachments = [context2 attachments];
 
-  obj = v41;
-  v42 = [v41 countByEnumeratingWithState:&v96 objects:v105 count:16];
+  obj = attachments;
+  v42 = [attachments countByEnumeratingWithState:&v96 objects:v105 count:16];
   if (v42)
   {
     v43 = v42;
@@ -2547,8 +2547,8 @@ LABEL_25:
           v95 = 0u;
           v92 = 0u;
           v93 = 0u;
-          v49 = [v47 photoSceneDescriptors];
-          v50 = [v49 countByEnumeratingWithState:&v92 objects:v104 count:16];
+          photoSceneDescriptors = [v47 photoSceneDescriptors];
+          v50 = [photoSceneDescriptors countByEnumeratingWithState:&v92 objects:v104 count:16];
           if (v50)
           {
             v51 = v50;
@@ -2559,13 +2559,13 @@ LABEL_25:
               {
                 if (*v93 != v52)
                 {
-                  objc_enumerationMutation(v49);
+                  objc_enumerationMutation(photoSceneDescriptors);
                 }
 
                 (v39)[2](v39, v47, *(*(&v92 + 1) + 8 * i), 0);
               }
 
-              v51 = [v49 countByEnumeratingWithState:&v92 objects:v104 count:16];
+              v51 = [photoSceneDescriptors countByEnumeratingWithState:&v92 objects:v104 count:16];
             }
 
             while (v51);
@@ -2575,8 +2575,8 @@ LABEL_25:
           v91 = 0u;
           v88 = 0u;
           v89 = 0u;
-          v54 = [v47 peopleInPhoto];
-          v55 = [v54 countByEnumeratingWithState:&v88 objects:v103 count:16];
+          peopleInPhoto = [v47 peopleInPhoto];
+          v55 = [peopleInPhoto countByEnumeratingWithState:&v88 objects:v103 count:16];
           if (v55)
           {
             v56 = v55;
@@ -2587,13 +2587,13 @@ LABEL_25:
               {
                 if (*v89 != v57)
                 {
-                  objc_enumerationMutation(v54);
+                  objc_enumerationMutation(peopleInPhoto);
                 }
 
                 (v39)[2](v39, v47, 0, *(*(&v88 + 1) + 8 * j));
               }
 
-              v56 = [v54 countByEnumeratingWithState:&v88 objects:v103 count:16];
+              v56 = [peopleInPhoto countByEnumeratingWithState:&v88 objects:v103 count:16];
             }
 
             while (v56);
@@ -2614,57 +2614,57 @@ LABEL_25:
   }
 
   [v83 setAttachments:v81];
-  v59 = [v6 action];
-  v60 = [v59 suggestion];
-  v61 = [v60 conversationIdentifier];
+  action6 = [feedbackCopy action];
+  suggestion5 = [action6 suggestion];
+  conversationIdentifier = [suggestion5 conversationIdentifier];
 
-  if (v61)
+  if (conversationIdentifier)
   {
-    v62 = [v6 action];
-    v63 = [v62 suggestion];
-    v64 = [v63 conversationIdentifier];
-    [v83 setDomainIdentifier:v64];
+    action7 = [feedbackCopy action];
+    suggestion6 = [action7 suggestion];
+    conversationIdentifier2 = [suggestion6 conversationIdentifier];
+    [v83 setDomainIdentifier:conversationIdentifier2];
 
     v65 = v84;
   }
 
   else
   {
-    v66 = [v83 derivedIntentIdentifier];
-    v67 = [v66 stringByReplacingOccurrencesOfString:@"conversationIdentifier" withString:&stru_1F2D6CE98];
+    derivedIntentIdentifier2 = [v83 derivedIntentIdentifier];
+    v67 = [derivedIntentIdentifier2 stringByReplacingOccurrencesOfString:@"conversationIdentifier" withString:&stru_1F2D6CE98];
 
-    v62 = [v67 substringWithRange:{1, objc_msgSend(v67, "length") - 2}];
+    action7 = [v67 substringWithRange:{1, objc_msgSend(v67, "length") - 2}];
 
-    v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%@)", @"conversationIdentifier", v62];
-    v69 = [v83 derivedIntentIdentifier];
-    LODWORD(v67) = [v68 isEqualToString:v69];
+    v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%@)", @"conversationIdentifier", action7];
+    derivedIntentIdentifier3 = [v83 derivedIntentIdentifier];
+    LODWORD(v67) = [v68 isEqualToString:derivedIntentIdentifier3];
 
     v65 = v84;
     if (v67)
     {
-      v63 = [v62 stringByRemovingPercentEncoding];
-      [v83 setDomainIdentifier:v63];
+      suggestion6 = [action7 stringByRemovingPercentEncoding];
+      [v83 setDomainIdentifier:suggestion6];
     }
 
     else
     {
-      v63 = [v83 derivedIntentIdentifier];
-      v70 = [v63 stringByRemovingPercentEncoding];
-      [v83 setDomainIdentifier:v70];
+      suggestion6 = [v83 derivedIntentIdentifier];
+      stringByRemovingPercentEncoding = [suggestion6 stringByRemovingPercentEncoding];
+      [v83 setDomainIdentifier:stringByRemovingPercentEncoding];
     }
   }
 
-  v71 = [v6 action];
-  v72 = [v71 suggestion];
-  v73 = [v72 recipients];
-  v74 = [v73 _pas_mappedArrayWithTransform:&__block_literal_global_500];
+  action8 = [feedbackCopy action];
+  suggestion7 = [action8 suggestion];
+  recipients = [suggestion7 recipients];
+  v74 = [recipients _pas_mappedArrayWithTransform:&__block_literal_global_500];
   [v83 setRecipients:v74];
 
-  v75 = [v83 targetBundleId];
+  targetBundleId = [v83 targetBundleId];
   v76 = +[_PSConstants sharePlayBundleId];
-  LODWORD(v73) = [v75 isEqualToString:v76];
+  LODWORD(recipients) = [targetBundleId isEqualToString:v76];
 
-  if (v73)
+  if (recipients)
   {
     v77 = 2;
   }
@@ -2685,9 +2685,9 @@ LABEL_25:
   v80 = *MEMORY[0x1E69E9840];
 }
 
-- (void)provideSuggestLessFeedbackForShareSheetSuggestion:(id)a3
+- (void)provideSuggestLessFeedbackForShareSheetSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2050000000;
@@ -2707,69 +2707,69 @@ LABEL_25:
   v6 = v5;
   _Block_object_dispose(&v19, 8);
   v7 = [v5 alloc];
-  v8 = [v4 bundleId];
-  v9 = [v4 derivedIntentId];
-  v10 = [v4 conversationId];
-  v11 = [v4 handle];
-  v12 = [v4 contactId];
-  v13 = [v7 initWithIdentifier:@"shareSheetSuggestLessFeedback" bundleId:v8 derivedIdentifier:v9 conversationIdentifier:v10 handle:v11 contactIdentifier:v12 itemIdentifier:0 groupIdentifier:0 deviceIdentifier:0 userIdentifier:0];
+  bundleId = [suggestionCopy bundleId];
+  derivedIntentId = [suggestionCopy derivedIntentId];
+  conversationId = [suggestionCopy conversationId];
+  handle = [suggestionCopy handle];
+  contactId = [suggestionCopy contactId];
+  v13 = [v7 initWithIdentifier:@"shareSheetSuggestLessFeedback" bundleId:bundleId derivedIdentifier:derivedIntentId conversationIdentifier:conversationId handle:handle contactIdentifier:contactId itemIdentifier:0 groupIdentifier:0 deviceIdentifier:0 userIdentifier:0];
 
   v14 = BiomeLibrary();
-  v15 = [v14 PeopleSuggester];
-  v16 = [v15 SuggestLessFeedback];
+  peopleSuggester = [v14 PeopleSuggester];
+  suggestLessFeedback = [peopleSuggester SuggestLessFeedback];
 
-  v17 = [v16 source];
-  [v17 sendEvent:v13];
+  source = [suggestLessFeedback source];
+  [source sendEvent:v13];
 
-  [(_PSSuggester *)self deleteInteractionsMatchingSuggestLessFeedback:v4];
-  [(_PSSuggester *)self deleteUIInteractionsMatchingSuggestLessFeedback:v4];
+  [(_PSSuggester *)self deleteInteractionsMatchingSuggestLessFeedback:suggestionCopy];
+  [(_PSSuggester *)self deleteUIInteractionsMatchingSuggestLessFeedback:suggestionCopy];
 }
 
-- (id)buildFilteringPredicateMatchingSuggestLessFeedback:(id)a3
+- (id)buildFilteringPredicateMatchingSuggestLessFeedback:(id)feedback
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [v3 derivedIntentId];
-  if (v5)
+  feedbackCopy = feedback;
+  array = [MEMORY[0x1E695DF70] array];
+  derivedIntentId = [feedbackCopy derivedIntentId];
+  if (derivedIntentId)
   {
 LABEL_2:
 
     goto LABEL_3;
   }
 
-  v16 = [v3 conversationId];
+  conversationId = [feedbackCopy conversationId];
 
-  if (v16)
+  if (conversationId)
   {
     v17 = MEMORY[0x1E696AE18];
-    v18 = [v3 conversationId];
-    v5 = [v17 predicateWithFormat:@"domainIdentifier == %@", v18];
+    conversationId2 = [feedbackCopy conversationId];
+    derivedIntentId = [v17 predicateWithFormat:@"domainIdentifier == %@", conversationId2];
 
-    if (v5)
+    if (derivedIntentId)
     {
-      [v4 addObject:v5];
+      [array addObject:derivedIntentId];
     }
 
     goto LABEL_2;
   }
 
 LABEL_3:
-  v6 = [v3 derivedIntentId];
+  derivedIntentId2 = [feedbackCopy derivedIntentId];
 
-  if (v6)
+  if (derivedIntentId2)
   {
     v7 = MEMORY[0x1E696AE18];
-    v8 = [v3 derivedIntentId];
-    v9 = [v7 predicateWithFormat:@"derivedIntentIdentifier == %@", v8];
+    derivedIntentId3 = [feedbackCopy derivedIntentId];
+    v9 = [v7 predicateWithFormat:@"derivedIntentIdentifier == %@", derivedIntentId3];
 
     if (v9)
     {
-      [v4 addObject:v9];
+      [array addObject:v9];
     }
   }
 
-  if (![v4 count])
+  if (![array count])
   {
     v10 = +[_PSLogging feedbackChannel];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2777,26 +2777,26 @@ LABEL_3:
       [_PSSuggester buildFilteringPredicateMatchingSuggestLessFeedback:];
     }
 
-    v11 = [v3 handle];
+    handle = [feedbackCopy handle];
 
     v12 = MEMORY[0x1E696AE18];
-    if (v11)
+    if (handle)
     {
-      v13 = [v3 handle];
-      v27[0] = v13;
+      handle2 = [feedbackCopy handle];
+      v27[0] = handle2;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
       v15 = [v12 predicateWithFormat:@"ANY recipients.identifier IN %@", v14];
 
       if (v15)
       {
-        [v4 addObject:v15];
+        [array addObject:v15];
       }
     }
 
     else
     {
       v19 = [MEMORY[0x1E696AE18] predicateWithValue:0];
-      [v4 addObject:v19];
+      [array addObject:v19];
 
       v15 = +[_PSLogging feedbackChannel];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2813,20 +2813,20 @@ LABEL_3:
 
   if (v22)
   {
-    [v4 addObject:v22];
+    [array addObject:v22];
   }
 
-  v23 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v4];
+  v23 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
 
   v24 = *MEMORY[0x1E69E9840];
 
   return v23;
 }
 
-- (void)deleteInteractionsMatchingSuggestLessFeedback:(id)a3
+- (void)deleteInteractionsMatchingSuggestLessFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = [(_PSSuggester *)self buildFilteringPredicateMatchingSuggestLessFeedback:v4];
+  feedbackCopy = feedback;
+  v5 = [(_PSSuggester *)self buildFilteringPredicateMatchingSuggestLessFeedback:feedbackCopy];
   connection = self->_connection;
   if (connection)
   {
@@ -2835,63 +2835,63 @@ LABEL_3:
     v16[1] = 3221225472;
     v16[2] = __62___PSSuggester_deleteInteractionsMatchingSuggestLessFeedback___block_invoke_529;
     v16[3] = &unk_1E7C254D8;
-    v17 = v4;
+    v17 = feedbackCopy;
     [v7 deleteInteractionsMatchingPredicate:v5 sortDescriptors:0 limit:0 reply:v16];
   }
 
-  v8 = [(_PSSuggester *)self configuration];
-  v9 = [v8 suggestionModel];
+  configuration = [(_PSSuggester *)self configuration];
+  suggestionModel = [configuration suggestionModel];
 
-  if (v9)
+  if (suggestionModel)
   {
-    v10 = [(_PSSuggester *)self configuration];
-    v11 = [v10 suggestionModel];
-    [v11 setMessageInteractionCache:0];
+    configuration2 = [(_PSSuggester *)self configuration];
+    suggestionModel2 = [configuration2 suggestionModel];
+    [suggestionModel2 setMessageInteractionCache:0];
 
-    v12 = [(_PSSuggester *)self configuration];
-    v13 = [v12 suggestionModel];
-    [v13 setShareInteractionCache:0];
+    configuration3 = [(_PSSuggester *)self configuration];
+    suggestionModel3 = [configuration3 suggestionModel];
+    [suggestionModel3 setShareInteractionCache:0];
 
-    v14 = [(_PSSuggester *)self configuration];
-    v15 = [v14 suggestionModel];
-    [v15 populateCaches];
+    configuration4 = [(_PSSuggester *)self configuration];
+    suggestionModel4 = [configuration4 suggestionModel];
+    [suggestionModel4 populateCaches];
   }
 }
 
-- (void)deleteUIInteractionsMatchingSuggestLessFeedback:(id)a3
+- (void)deleteUIInteractionsMatchingSuggestLessFeedback:(id)feedback
 {
-  v3 = a3;
+  feedbackCopy = feedback;
   v4 = BiomeLibrary();
-  v5 = [v4 MLSE];
-  v6 = [v5 ShareSheet];
-  v7 = [v6 ConversationUserInteraction];
+  mLSE = [v4 MLSE];
+  shareSheet = [mLSE ShareSheet];
+  conversationUserInteraction = [shareSheet ConversationUserInteraction];
 
-  v8 = [v7 pruner];
+  pruner = [conversationUserInteraction pruner];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64___PSSuggester_deleteUIInteractionsMatchingSuggestLessFeedback___block_invoke;
   v10[3] = &unk_1E7C25500;
-  v11 = v3;
-  v9 = v3;
-  [v8 deleteWithPolicy:@"suggest-less-feedback" eventsPassingTest:v10];
+  v11 = feedbackCopy;
+  v9 = feedbackCopy;
+  [pruner deleteWithPolicy:@"suggest-less-feedback" eventsPassingTest:v10];
 }
 
-- (void)provideFeedbackForMessagesZkwSuggestions:(id)a3
+- (void)provideFeedbackForMessagesZkwSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v3 = v4;
+  suggestionsCopy = suggestions;
+  v3 = suggestionsCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)provideFeedbackForContactsAutocompleteSuggestions:(id)a3
+- (void)provideFeedbackForContactsAutocompleteSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [(_PSSuggester *)self _getUserDaemonXPCConnection];
-  v6 = v5;
-  if (v5)
+  suggestionsCopy = suggestions;
+  _getUserDaemonXPCConnection = [(_PSSuggester *)self _getUserDaemonXPCConnection];
+  v6 = _getUserDaemonXPCConnection;
+  if (_getUserDaemonXPCConnection)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_537];
-    [v7 provideFeedbackForContactsAutocompleteSuggestions:v4];
+    v7 = [_getUserDaemonXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_537];
+    [v7 provideFeedbackForContactsAutocompleteSuggestions:suggestionsCopy];
   }
 
   else
@@ -2904,18 +2904,18 @@ LABEL_3:
   }
 }
 
-- (void)writeFeedbackForContactsAutocompleteSuggestions:(id)a3
+- (void)writeFeedbackForContactsAutocompleteSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = v4;
+  suggestionsCopy = suggestions;
+  v5 = suggestionsCopy;
   if (self->_feedbackQueue)
   {
-    v6 = [v4 feedbackType];
+    feedbackType = [suggestionsCopy feedbackType];
     v7 = +[_PSLogging feedbackChannel];
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-    if (v6 > 2)
+    if (feedbackType > 2)
     {
-      switch(v6)
+      switch(feedbackType)
       {
         case 3:
           if (v8)
@@ -2943,7 +2943,7 @@ LABEL_3:
 
     else
     {
-      switch(v6)
+      switch(feedbackType)
       {
         case 0:
           if (v8)
@@ -2997,26 +2997,26 @@ LABEL_26:
 LABEL_27:
 }
 
-- (id)shareInformationForPhotoId:(id)a3 dateInterval:(id)a4 interactionStoreDB:(id)a5
+- (id)shareInformationForPhotoId:(id)id dateInterval:(id)interval interactionStoreDB:(id)b
 {
   v83 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  v56 = v7;
-  if (v7)
+  idCopy = id;
+  intervalCopy = interval;
+  bCopy = b;
+  defaultDatabaseDirectory = bCopy;
+  v56 = idCopy;
+  if (idCopy)
   {
-    if (!v9)
+    if (!bCopy)
     {
-      v10 = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
+      defaultDatabaseDirectory = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
     }
 
-    v50 = v10;
-    v11 = [MEMORY[0x1E69978F8] storeWithDirectory:v10 readOnly:1];
-    v12 = [v8 startDate];
-    v51 = v8;
-    v13 = [v8 endDate];
+    v50 = defaultDatabaseDirectory;
+    v11 = [MEMORY[0x1E69978F8] storeWithDirectory:defaultDatabaseDirectory readOnly:1];
+    startDate = [intervalCopy startDate];
+    v51 = intervalCopy;
+    endDate = [intervalCopy endDate];
     v14 = objc_autoreleasePoolPush();
     v15 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{&unk_1F2D8B520, &unk_1F2D8B538, 0}];
     objc_autoreleasePoolPop(v14);
@@ -3025,7 +3025,7 @@ LABEL_27:
     objc_autoreleasePoolPop(v16);
     v49 = v11;
     LOBYTE(v48) = 0;
-    v18 = [_PSInteractionStoreUtils interactionsFromStore:v11 startDate:v12 tillDate:v13 withMechanisms:v15 withAccount:0 withBundleIds:0 withTargetBundleIds:0 withDirections:v17 singleRecipient:v48 fetchLimit:10000];
+    v18 = [_PSInteractionStoreUtils interactionsFromStore:v11 startDate:startDate tillDate:endDate withMechanisms:v15 withAccount:0 withBundleIds:0 withTargetBundleIds:0 withDirections:v17 singleRecipient:v48 fetchLimit:10000];
 
     v71 = 0u;
     v72 = 0u;
@@ -3046,12 +3046,12 @@ LABEL_27:
             objc_enumerationMutation(obj);
           }
 
-          v20 = [*(*(&v69 + 1) + 8 * i) attachments];
+          attachments = [*(*(&v69 + 1) + 8 * i) attachments];
           v65 = 0u;
           v66 = 0u;
           v67 = 0u;
           v68 = 0u;
-          v21 = v20;
+          v21 = attachments;
           v22 = [v21 countByEnumeratingWithState:&v65 objects:v81 count:16];
           if (v22)
           {
@@ -3066,11 +3066,11 @@ LABEL_27:
                   objc_enumerationMutation(v21);
                 }
 
-                v26 = [*(*(&v65 + 1) + 8 * j) photoLocalIdentifier];
-                v27 = v26;
-                if (v26)
+                photoLocalIdentifier = [*(*(&v65 + 1) + 8 * j) photoLocalIdentifier];
+                v27 = photoLocalIdentifier;
+                if (photoLocalIdentifier)
                 {
-                  v28 = [v26 rangeOfString:@"/"];
+                  v28 = [photoLocalIdentifier rangeOfString:@"/"];
                   if (v28 == 0x7FFFFFFFFFFFFFFFLL)
                   {
                     if ([v27 isEqualToString:v56])
@@ -3139,12 +3139,12 @@ LABEL_23:
             objc_enumerationMutation(v33);
           }
 
-          v39 = [*(*(&v61 + 1) + 8 * k) attachments];
+          attachments2 = [*(*(&v61 + 1) + 8 * k) attachments];
           v57 = 0u;
           v58 = 0u;
           v59 = 0u;
           v60 = 0u;
-          v40 = [v39 countByEnumeratingWithState:&v57 objects:v79 count:16];
+          v40 = [attachments2 countByEnumeratingWithState:&v57 objects:v79 count:16];
           if (v40)
           {
             v41 = v40;
@@ -3155,17 +3155,17 @@ LABEL_23:
               {
                 if (*v58 != v42)
                 {
-                  objc_enumerationMutation(v39);
+                  objc_enumerationMutation(attachments2);
                 }
 
-                v44 = [*(*(&v57 + 1) + 8 * m) photoLocalIdentifier];
-                if (v44)
+                photoLocalIdentifier2 = [*(*(&v57 + 1) + 8 * m) photoLocalIdentifier];
+                if (photoLocalIdentifier2)
                 {
                   ++v36;
                 }
               }
 
-              v41 = [v39 countByEnumeratingWithState:&v57 objects:v79 count:16];
+              v41 = [attachments2 countByEnumeratingWithState:&v57 objects:v79 count:16];
             }
 
             while (v41);
@@ -3196,8 +3196,8 @@ LABEL_23:
     }
 
     v32 = [[_PSPhotosShareInformation alloc] initWithInteractionCount:v55 totalInteractionCount:v36];
-    v10 = v50;
-    v8 = v51;
+    defaultDatabaseDirectory = v50;
+    intervalCopy = v51;
     v31 = v49;
   }
 
@@ -3217,45 +3217,45 @@ LABEL_23:
   return v32;
 }
 
-- (id)interactionCountForHandle:(id)a3 fetchLimit:(unint64_t)a4 interactionStoreDB:(id)a5
+- (id)interactionCountForHandle:(id)handle fetchLimit:(unint64_t)limit interactionStoreDB:(id)b
 {
   v126[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  handleCopy = handle;
+  bCopy = b;
+  defaultDatabaseDirectory = bCopy;
+  if (handleCopy)
   {
-    if (!v8)
+    if (!bCopy)
     {
-      v9 = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
+      defaultDatabaseDirectory = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
     }
 
-    v126[0] = v7;
+    v126[0] = handleCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v126 count:1];
     v11 = [_PSContactResolver normalizedHandlesDictionaryFromHandles:v10];
 
     v12 = MEMORY[0x1E695DFD8];
     v110 = v11;
-    v13 = [v11 allValues];
-    v14 = [v12 setWithArray:v13];
+    allValues = [v11 allValues];
+    v14 = [v12 setWithArray:allValues];
     v15 = [v14 mutableCopy];
 
     v16 = objc_opt_new();
-    v111 = v9;
-    v17 = [MEMORY[0x1E69978F8] storeWithDirectory:v9 readOnly:1];
-    v18 = [v15 allObjects];
-    v19 = [_PSInteractionStoreUtils interactionsMatchingAnyHandles:v18 account:0 directions:&unk_1F2D8C2E8 mechanisms:0 bundleIds:0 store:v17 fetchLimit:a4 messageInteractionCache:0];
+    v111 = defaultDatabaseDirectory;
+    v17 = [MEMORY[0x1E69978F8] storeWithDirectory:defaultDatabaseDirectory readOnly:1];
+    allObjects = [v15 allObjects];
+    v19 = [_PSInteractionStoreUtils interactionsMatchingAnyHandles:allObjects account:0 directions:&unk_1F2D8C2E8 mechanisms:0 bundleIds:0 store:v17 fetchLimit:limit messageInteractionCache:0];
 
     [v16 addObjectsFromArray:v19];
-    v20 = [v15 allObjects];
-    [_PSInteractionStoreUtils interactionsMatchingAnySender:v20 store:v17 fetchLimit:a4 messageInteractionCache:0];
-    v22 = v21 = v7;
+    allObjects2 = [v15 allObjects];
+    [_PSInteractionStoreUtils interactionsMatchingAnySender:allObjects2 store:v17 fetchLimit:limit messageInteractionCache:0];
+    v22 = v21 = handleCopy;
 
     [v16 addObjectsFromArray:v22];
     v109 = v15;
-    v23 = [v15 allObjects];
+    allObjects3 = [v15 allObjects];
     v108 = v17;
-    v24 = [_PSInteractionStoreUtils interactionsMatchingAnyHandles:v23 account:0 directions:&unk_1F2D8C300 mechanisms:0 bundleIds:0 store:v17 fetchLimit:a4 messageInteractionCache:0];
+    v24 = [_PSInteractionStoreUtils interactionsMatchingAnyHandles:allObjects3 account:0 directions:&unk_1F2D8C300 mechanisms:0 bundleIds:0 store:v17 fetchLimit:limit messageInteractionCache:0];
 
     v25 = objc_opt_new();
     v26 = objc_opt_new();
@@ -3272,92 +3272,92 @@ LABEL_23:
       v27 = v26;
       v117 = v27;
       v28 = [v16 _pas_filteredArrayWithTest:v115];
-      v29 = [v28 firstObject];
-      v30 = [v29 startDate];
+      firstObject = [v28 firstObject];
+      startDate = [firstObject startDate];
 
-      v7 = v21;
-      if (v30)
+      handleCopy = v21;
+      if (startDate)
       {
-        v31 = [(_PSSuggester *)self _dateFormatter];
-        v32 = [v29 startDate];
-        v33 = [v31 stringFromDate:v32];
+        _dateFormatter = [(_PSSuggester *)self _dateFormatter];
+        startDate2 = [firstObject startDate];
+        v33 = [_dateFormatter stringFromDate:startDate2];
         [v25 setObject:v33 forKeyedSubscript:@"recentIncomingStartDate"];
       }
 
-      v34 = [v29 endDate];
+      endDate = [firstObject endDate];
 
-      if (v34)
+      if (endDate)
       {
-        v35 = [(_PSSuggester *)self _dateFormatter];
-        v36 = [v29 endDate];
-        v37 = [v35 stringFromDate:v36];
+        _dateFormatter2 = [(_PSSuggester *)self _dateFormatter];
+        endDate2 = [firstObject endDate];
+        v37 = [_dateFormatter2 stringFromDate:endDate2];
         [v25 setObject:v37 forKeyedSubscript:@"recentIncomingEndDate"];
       }
 
-      v38 = [v29 bundleId];
-      [v25 setObject:v38 forKeyedSubscript:@"recentIncomingBundleId"];
+      bundleId = [firstObject bundleId];
+      [v25 setObject:bundleId forKeyedSubscript:@"recentIncomingBundleId"];
 
-      v39 = [v29 domainIdentifier];
-      [v25 setObject:v39 forKeyedSubscript:@"recentIncomingDomainId"];
+      domainIdentifier = [firstObject domainIdentifier];
+      [v25 setObject:domainIdentifier forKeyedSubscript:@"recentIncomingDomainId"];
 
-      v40 = [v29 account];
-      [v25 setObject:v40 forKeyedSubscript:@"recentIncomingAccount"];
+      account = [firstObject account];
+      [v25 setObject:account forKeyedSubscript:@"recentIncomingAccount"];
 
-      v41 = [v29 recipients];
-      v42 = [v41 count];
+      recipients = [firstObject recipients];
+      v42 = [recipients count];
 
       if (v42)
       {
-        v43 = [v29 recipients];
-        v44 = [v43 firstObject];
+        recipients2 = [firstObject recipients];
+        firstObject2 = [recipients2 firstObject];
 
-        v45 = [v44 identifier];
-        [v25 setObject:v45 forKeyedSubscript:@"recentIncomingRecipientContactId"];
+        identifier = [firstObject2 identifier];
+        [v25 setObject:identifier forKeyedSubscript:@"recentIncomingRecipientContactId"];
 
-        v46 = [v44 displayName];
+        displayName = [firstObject2 displayName];
 
-        if (v46)
+        if (displayName)
         {
-          v47 = [v44 displayName];
-          [v25 setObject:v47 forKeyedSubscript:@"recentIncomingRecipientDisplayName"];
+          displayName2 = [firstObject2 displayName];
+          [v25 setObject:displayName2 forKeyedSubscript:@"recentIncomingRecipientDisplayName"];
         }
       }
 
       if ([v27 count])
       {
         v48 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v27, "count")}];
-        v49 = [v48 stringValue];
-        [v25 setObject:v49 forKeyedSubscript:@"incomingCalls"];
+        stringValue = [v48 stringValue];
+        [v25 setObject:stringValue forKeyedSubscript:@"incomingCalls"];
 
-        v50 = [v27 firstObject];
-        v51 = [v50 startDate];
-        [v25 setObject:v51 forKeyedSubscript:@"recentIncomingCallStartDate"];
+        firstObject3 = [v27 firstObject];
+        startDate3 = [firstObject3 startDate];
+        [v25 setObject:startDate3 forKeyedSubscript:@"recentIncomingCallStartDate"];
 
-        v52 = [v50 endDate];
-        [v25 setObject:v52 forKeyedSubscript:@"recentIncomingCallEndDate"];
+        endDate3 = [firstObject3 endDate];
+        [v25 setObject:endDate3 forKeyedSubscript:@"recentIncomingCallEndDate"];
 
-        v53 = [v50 bundleId];
-        [v25 setObject:v53 forKeyedSubscript:@"recentIncomingCallBundleId"];
+        bundleId2 = [firstObject3 bundleId];
+        [v25 setObject:bundleId2 forKeyedSubscript:@"recentIncomingCallBundleId"];
 
-        v54 = [v50 domainIdentifier];
-        [v25 setObject:v54 forKeyedSubscript:@"recentIncomingCallDomainId"];
+        domainIdentifier2 = [firstObject3 domainIdentifier];
+        [v25 setObject:domainIdentifier2 forKeyedSubscript:@"recentIncomingCallDomainId"];
 
-        v55 = [v50 account];
-        [v25 setObject:v55 forKeyedSubscript:@"recentIncomingCallAccount"];
+        account2 = [firstObject3 account];
+        [v25 setObject:account2 forKeyedSubscript:@"recentIncomingCallAccount"];
 
-        v56 = [v29 recipients];
-        v57 = [v56 count];
+        recipients3 = [firstObject recipients];
+        v57 = [recipients3 count];
 
         if (v57)
         {
-          v58 = [v50 recipients];
-          v59 = [v58 firstObject];
+          recipients4 = [firstObject3 recipients];
+          firstObject4 = [recipients4 firstObject];
 
-          v60 = [v59 identifier];
-          [v25 setObject:v60 forKeyedSubscript:@"recentIncomingCallRecipientContactId"];
+          identifier2 = [firstObject4 identifier];
+          [v25 setObject:identifier2 forKeyedSubscript:@"recentIncomingCallRecipientContactId"];
 
-          v61 = [v59 displayName];
-          [v25 setObject:v61 forKeyedSubscript:@"recentIncomingCallRecipientDisplayName"];
+          displayName3 = [firstObject4 displayName];
+          [v25 setObject:displayName3 forKeyedSubscript:@"recentIncomingCallRecipientDisplayName"];
         }
       }
 
@@ -3367,7 +3367,7 @@ LABEL_23:
     else
     {
       v28 = MEMORY[0x1E695E0F0];
-      v7 = v21;
+      handleCopy = v21;
     }
 
     if ([v24 count])
@@ -3375,86 +3375,86 @@ LABEL_23:
       v106 = v28;
       v64 = [v24 _pas_filteredArrayWithTest:&__block_literal_global_19];
       v65 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v64, "count")}];
-      v66 = [v65 stringValue];
-      [v25 setObject:v66 forKeyedSubscript:@"outgoingCalls"];
+      stringValue2 = [v65 stringValue];
+      [v25 setObject:stringValue2 forKeyedSubscript:@"outgoingCalls"];
 
-      v67 = [v24 firstObject];
-      v68 = [v67 startDate];
-      if (v68)
+      firstObject5 = [v24 firstObject];
+      startDate4 = [firstObject5 startDate];
+      if (startDate4)
       {
-        v69 = [(_PSSuggester *)self _dateFormatter];
-        v70 = [v69 stringFromDate:v68];
+        _dateFormatter3 = [(_PSSuggester *)self _dateFormatter];
+        v70 = [_dateFormatter3 stringFromDate:startDate4];
         [v25 setObject:v70 forKeyedSubscript:@"recentOutgoingStartDate"];
       }
 
-      v71 = [v67 endDate];
-      if (v71)
+      endDate4 = [firstObject5 endDate];
+      if (endDate4)
       {
-        v72 = [(_PSSuggester *)self _dateFormatter];
-        v73 = [v72 stringFromDate:v71];
+        _dateFormatter4 = [(_PSSuggester *)self _dateFormatter];
+        v73 = [_dateFormatter4 stringFromDate:endDate4];
         [v25 setObject:v73 forKeyedSubscript:@"recentOutgoingEndDate"];
       }
 
-      v74 = [v67 bundleId];
-      [v25 setObject:v74 forKeyedSubscript:@"recentOutgoingBundleId"];
+      bundleId3 = [firstObject5 bundleId];
+      [v25 setObject:bundleId3 forKeyedSubscript:@"recentOutgoingBundleId"];
 
-      v75 = [v67 domainIdentifier];
-      [v25 setObject:v75 forKeyedSubscript:@"recentOutgoingDomainId"];
+      domainIdentifier3 = [firstObject5 domainIdentifier];
+      [v25 setObject:domainIdentifier3 forKeyedSubscript:@"recentOutgoingDomainId"];
 
-      v76 = [v67 account];
-      [v25 setObject:v76 forKeyedSubscript:@"recentOutgoingAccount"];
+      account3 = [firstObject5 account];
+      [v25 setObject:account3 forKeyedSubscript:@"recentOutgoingAccount"];
 
-      v77 = [v67 recipients];
-      v78 = [v77 count];
+      recipients5 = [firstObject5 recipients];
+      v78 = [recipients5 count];
 
       if (v78)
       {
-        v79 = [v67 recipients];
-        v80 = [v79 firstObject];
+        recipients6 = [firstObject5 recipients];
+        firstObject6 = [recipients6 firstObject];
 
-        v81 = [v80 identifier];
-        [v25 setObject:v81 forKeyedSubscript:@"recentOutgoingRecipientContactId"];
+        identifier3 = [firstObject6 identifier];
+        [v25 setObject:identifier3 forKeyedSubscript:@"recentOutgoingRecipientContactId"];
 
-        v82 = [v80 displayName];
+        displayName4 = [firstObject6 displayName];
 
-        if (v82)
+        if (displayName4)
         {
-          v83 = [v80 displayName];
-          [v25 setObject:v83 forKeyedSubscript:@"recentOutgoingRecipientDisplayName"];
+          displayName5 = [firstObject6 displayName];
+          [v25 setObject:displayName5 forKeyedSubscript:@"recentOutgoingRecipientDisplayName"];
         }
       }
 
       if ([v64 count])
       {
-        v84 = [v64 firstObject];
-        v85 = [v84 startDate];
-        [v25 setObject:v85 forKeyedSubscript:@"recentOutgoingCallStartDate"];
+        firstObject7 = [v64 firstObject];
+        startDate5 = [firstObject7 startDate];
+        [v25 setObject:startDate5 forKeyedSubscript:@"recentOutgoingCallStartDate"];
 
-        v86 = [v84 endDate];
-        [v25 setObject:v86 forKeyedSubscript:@"recentOutgoingCallEndDate"];
+        endDate5 = [firstObject7 endDate];
+        [v25 setObject:endDate5 forKeyedSubscript:@"recentOutgoingCallEndDate"];
 
-        v87 = [v84 bundleId];
-        [v25 setObject:v87 forKeyedSubscript:@"recentOutgoingCallBundleId"];
+        bundleId4 = [firstObject7 bundleId];
+        [v25 setObject:bundleId4 forKeyedSubscript:@"recentOutgoingCallBundleId"];
 
-        v88 = [v84 domainIdentifier];
-        [v25 setObject:v88 forKeyedSubscript:@"recentOutgoingCallDomainId"];
+        domainIdentifier4 = [firstObject7 domainIdentifier];
+        [v25 setObject:domainIdentifier4 forKeyedSubscript:@"recentOutgoingCallDomainId"];
 
-        v89 = [v84 account];
-        [v25 setObject:v89 forKeyedSubscript:@"recentOutgoingCallAccount"];
+        account4 = [firstObject7 account];
+        [v25 setObject:account4 forKeyedSubscript:@"recentOutgoingCallAccount"];
 
-        v90 = [v84 recipients];
-        v91 = [v90 count];
+        recipients7 = [firstObject7 recipients];
+        v91 = [recipients7 count];
 
         if (v91)
         {
-          v92 = [v84 recipients];
-          v93 = [v92 firstObject];
+          recipients8 = [firstObject7 recipients];
+          firstObject8 = [recipients8 firstObject];
 
-          v94 = [v93 identifier];
-          [v25 setObject:v94 forKeyedSubscript:@"recentOutgoingCallRecipientContactId"];
+          identifier4 = [firstObject8 identifier];
+          [v25 setObject:identifier4 forKeyedSubscript:@"recentOutgoingCallRecipientContactId"];
 
-          v95 = [v93 displayName];
-          [v25 setObject:v95 forKeyedSubscript:@"recentOutgoingCallRecipientDisplayName"];
+          displayName6 = [firstObject8 displayName];
+          [v25 setObject:displayName6 forKeyedSubscript:@"recentOutgoingCallRecipientDisplayName"];
         }
       }
 
@@ -3463,12 +3463,12 @@ LABEL_23:
     }
 
     v96 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v28, "count")}];
-    v97 = [v96 stringValue];
-    [v25 setObject:v97 forKeyedSubscript:@"incoming"];
+    stringValue3 = [v96 stringValue];
+    [v25 setObject:stringValue3 forKeyedSubscript:@"incoming"];
 
     v98 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v24, "count")}];
-    v99 = [v98 stringValue];
-    [v25 setObject:v99 forKeyedSubscript:@"outgoing"];
+    stringValue4 = [v98 stringValue];
+    [v25 setObject:stringValue4 forKeyedSubscript:@"outgoing"];
 
     v100 = +[_PSLogging generalChannel];
     if (os_log_type_enabled(v100, OS_LOG_TYPE_DEBUG))
@@ -3477,7 +3477,7 @@ LABEL_23:
       v104 = [v112 count];
       v105 = [v24 count];
       *buf = 138413058;
-      v119 = v7;
+      v119 = handleCopy;
       v120 = 2048;
       v121 = v103;
       v122 = 2048;
@@ -3487,9 +3487,9 @@ LABEL_23:
       _os_log_debug_impl(&dword_1B5ED1000, v100, OS_LOG_TYPE_DEBUG, "_PSSuggester: For handle %@, interaction count: incoming %tu (%tu), outgoing %tu", buf, 0x2Au);
     }
 
-    v63 = [[_PSInteractionInformation alloc] initWithHandle:v7 interactionInformation:v25];
+    v63 = [[_PSInteractionInformation alloc] initWithHandle:handleCopy interactionInformation:v25];
     v62 = v110;
-    v9 = v111;
+    defaultDatabaseDirectory = v111;
   }
 
   else
@@ -3520,21 +3520,21 @@ LABEL_23:
   return v3;
 }
 
-- (BOOL)interactionAvailableForHandle:(id)a3 interactionStoreDB:(id)a4
+- (BOOL)interactionAvailableForHandle:(id)handle interactionStoreDB:(id)b
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  handleCopy = handle;
+  bCopy = b;
+  defaultDatabaseDirectory = bCopy;
+  if (handleCopy)
   {
-    if (!v6)
+    if (!bCopy)
     {
-      v7 = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
+      defaultDatabaseDirectory = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
     }
 
-    v8 = [MEMORY[0x1E69978F8] storeWithDirectory:v7 readOnly:1];
-    v19[0] = v5;
+    v8 = [MEMORY[0x1E69978F8] storeWithDirectory:defaultDatabaseDirectory readOnly:1];
+    v19[0] = handleCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     v10 = [_PSInteractionStoreUtils interactionsMatchingAnyHandles:v9 directions:&unk_1F2D8C528 mechanisms:&unk_1F2D8C510 interactionDuration:v8 store:10 fetchLimit:0.0];
 
@@ -3543,13 +3543,13 @@ LABEL_23:
       v11 = +[_PSLogging generalChannel];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        [_PSSuggester(InteractionAvailable) interactionAvailableForHandle:v5 interactionStoreDB:v10];
+        [_PSSuggester(InteractionAvailable) interactionAvailableForHandle:handleCopy interactionStoreDB:v10];
       }
     }
 
     else
     {
-      v18 = v5;
+      v18 = handleCopy;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
       v11 = [_PSInteractionStoreUtils interactionsMatchingAnyHandles:v13 directions:&unk_1F2D8C540 mechanisms:&unk_1F2D8C510 interactionDuration:v8 store:10 fetchLimit:30.0];
 
@@ -3565,7 +3565,7 @@ LABEL_15:
       v15 = +[_PSLogging generalChannel];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        [_PSSuggester(InteractionAvailable) interactionAvailableForHandle:v5 interactionStoreDB:v11];
+        [_PSSuggester(InteractionAvailable) interactionAvailableForHandle:handleCopy interactionStoreDB:v11];
       }
     }
 

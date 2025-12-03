@@ -4,69 +4,69 @@
 - (ACUISActivityItemMetricsRequest)compactTrailingMetricsRequest;
 - (ACUISActivityItemMetricsRequest)expandedMetricsRequest;
 - (ACUISActivityItemMetricsRequest)minimalMetricsRequest;
-- (ACUISSystemApertureMetricsRequest)initWithCoder:(id)a3;
-- (ACUISSystemApertureMetricsRequest)initWithObstructionSize:(CGSize)a3 expandedMetricsRequest:(id)a4 compactLeadingMetricsRequest:(id)a5 compactTrailingMetricsRequest:(id)a6 minimalMetricsRequest:(id)a7;
-- (ACUISSystemApertureMetricsRequest)initWithObstructionSize:(CGSize)a3 expandedMetricsRequest:(id)a4 compactMetricsRequest:(id)a5 minimalMetricsRequest:(id)a6;
-- (ACUISSystemApertureMetricsRequest)initWithObstructionSize:(CGSize)a3 obstructionTopMargin:(double)a4 expandedMetricsRequest:(id)a5 compactLeadingMetricsRequest:(id)a6 compactTrailingMetricsRequest:(id)a7 minimalMetricsRequest:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (ACUISSystemApertureMetricsRequest)initWithCoder:(id)coder;
+- (ACUISSystemApertureMetricsRequest)initWithObstructionSize:(CGSize)size expandedMetricsRequest:(id)request compactLeadingMetricsRequest:(id)metricsRequest compactTrailingMetricsRequest:(id)trailingMetricsRequest minimalMetricsRequest:(id)minimalMetricsRequest;
+- (ACUISSystemApertureMetricsRequest)initWithObstructionSize:(CGSize)size expandedMetricsRequest:(id)request compactMetricsRequest:(id)metricsRequest minimalMetricsRequest:(id)minimalMetricsRequest;
+- (ACUISSystemApertureMetricsRequest)initWithObstructionSize:(CGSize)size obstructionTopMargin:(double)margin expandedMetricsRequest:(id)request compactLeadingMetricsRequest:(id)metricsRequest compactTrailingMetricsRequest:(id)trailingMetricsRequest minimalMetricsRequest:(id)minimalMetricsRequest;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)obstructionSize;
-- (id)_initWithMetricsRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithMetricsRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setCompactLeadingMetricsRequest:(id)a3;
-- (void)setCompactMetricsRequest:(id)a3;
-- (void)setCompactTrailingMetricsRequest:(id)a3;
-- (void)setExpandedMetricsRequest:(id)a3;
-- (void)setMinimalMetricsRequest:(id)a3;
+- (void)setCompactLeadingMetricsRequest:(id)request;
+- (void)setCompactMetricsRequest:(id)request;
+- (void)setCompactTrailingMetricsRequest:(id)request;
+- (void)setExpandedMetricsRequest:(id)request;
+- (void)setMinimalMetricsRequest:(id)request;
 @end
 
 @implementation ACUISSystemApertureMetricsRequest
 
-- (ACUISSystemApertureMetricsRequest)initWithObstructionSize:(CGSize)a3 obstructionTopMargin:(double)a4 expandedMetricsRequest:(id)a5 compactLeadingMetricsRequest:(id)a6 compactTrailingMetricsRequest:(id)a7 minimalMetricsRequest:(id)a8
+- (ACUISSystemApertureMetricsRequest)initWithObstructionSize:(CGSize)size obstructionTopMargin:(double)margin expandedMetricsRequest:(id)request compactLeadingMetricsRequest:(id)metricsRequest compactTrailingMetricsRequest:(id)trailingMetricsRequest minimalMetricsRequest:(id)minimalMetricsRequest
 {
-  height = a3.height;
-  width = a3.width;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  height = size.height;
+  width = size.width;
+  requestCopy = request;
+  metricsRequestCopy = metricsRequest;
+  trailingMetricsRequestCopy = trailingMetricsRequest;
+  minimalMetricsRequestCopy = minimalMetricsRequest;
   v28.receiver = self;
   v28.super_class = ACUISSystemApertureMetricsRequest;
   v19 = [(ACUISSystemApertureMetricsRequest *)&v28 init];
   if (v19)
   {
     v20 = [_TtC18ActivityUIServices28SystemApertureMetricsRequest alloc];
-    v21 = [v15 _activityItemMetricsRequest];
-    v22 = [v16 _activityItemMetricsRequest];
-    v23 = [v17 _activityItemMetricsRequest];
-    v24 = [v18 _activityItemMetricsRequest];
-    v25 = [(SystemApertureMetricsRequest *)v20 initWithObstructionSize:v21 obstructionTopMargin:v22 expandedMetricsRequest:v23 compactLeadingMetricsRequest:v24 compactTrailingMetricsRequest:width minimalMetricsRequest:height, a4];
+    _activityItemMetricsRequest = [requestCopy _activityItemMetricsRequest];
+    _activityItemMetricsRequest2 = [metricsRequestCopy _activityItemMetricsRequest];
+    _activityItemMetricsRequest3 = [trailingMetricsRequestCopy _activityItemMetricsRequest];
+    _activityItemMetricsRequest4 = [minimalMetricsRequestCopy _activityItemMetricsRequest];
+    margin = [(SystemApertureMetricsRequest *)v20 initWithObstructionSize:_activityItemMetricsRequest obstructionTopMargin:_activityItemMetricsRequest2 expandedMetricsRequest:_activityItemMetricsRequest3 compactLeadingMetricsRequest:_activityItemMetricsRequest4 compactTrailingMetricsRequest:width minimalMetricsRequest:height, margin];
     metricsRequest = v19->_metricsRequest;
-    v19->_metricsRequest = v25;
+    v19->_metricsRequest = margin;
   }
 
   return v19;
 }
 
-- (ACUISSystemApertureMetricsRequest)initWithObstructionSize:(CGSize)a3 expandedMetricsRequest:(id)a4 compactLeadingMetricsRequest:(id)a5 compactTrailingMetricsRequest:(id)a6 minimalMetricsRequest:(id)a7
+- (ACUISSystemApertureMetricsRequest)initWithObstructionSize:(CGSize)size expandedMetricsRequest:(id)request compactLeadingMetricsRequest:(id)metricsRequest compactTrailingMetricsRequest:(id)trailingMetricsRequest minimalMetricsRequest:(id)minimalMetricsRequest
 {
-  height = a3.height;
-  width = a3.width;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  height = size.height;
+  width = size.width;
+  requestCopy = request;
+  metricsRequestCopy = metricsRequest;
+  trailingMetricsRequestCopy = trailingMetricsRequest;
+  minimalMetricsRequestCopy = minimalMetricsRequest;
   v26.receiver = self;
   v26.super_class = ACUISSystemApertureMetricsRequest;
   v17 = [(ACUISSystemApertureMetricsRequest *)&v26 init];
   if (v17)
   {
     v18 = [_TtC18ActivityUIServices28SystemApertureMetricsRequest alloc];
-    v19 = [v13 _activityItemMetricsRequest];
-    v20 = [v14 _activityItemMetricsRequest];
-    v21 = [v15 _activityItemMetricsRequest];
-    v22 = [v16 _activityItemMetricsRequest];
-    v23 = [(SystemApertureMetricsRequest *)v18 initWithObstructionSize:v19 obstructionTopMargin:v20 expandedMetricsRequest:v21 compactLeadingMetricsRequest:v22 compactTrailingMetricsRequest:width minimalMetricsRequest:height, 0.0];
+    _activityItemMetricsRequest = [requestCopy _activityItemMetricsRequest];
+    _activityItemMetricsRequest2 = [metricsRequestCopy _activityItemMetricsRequest];
+    _activityItemMetricsRequest3 = [trailingMetricsRequestCopy _activityItemMetricsRequest];
+    _activityItemMetricsRequest4 = [minimalMetricsRequestCopy _activityItemMetricsRequest];
+    v23 = [(SystemApertureMetricsRequest *)v18 initWithObstructionSize:_activityItemMetricsRequest obstructionTopMargin:_activityItemMetricsRequest2 expandedMetricsRequest:_activityItemMetricsRequest3 compactLeadingMetricsRequest:_activityItemMetricsRequest4 compactTrailingMetricsRequest:width minimalMetricsRequest:height, 0.0];
     metricsRequest = v17->_metricsRequest;
     v17->_metricsRequest = v23;
   }
@@ -74,37 +74,37 @@
   return v17;
 }
 
-- (ACUISSystemApertureMetricsRequest)initWithObstructionSize:(CGSize)a3 expandedMetricsRequest:(id)a4 compactMetricsRequest:(id)a5 minimalMetricsRequest:(id)a6
+- (ACUISSystemApertureMetricsRequest)initWithObstructionSize:(CGSize)size expandedMetricsRequest:(id)request compactMetricsRequest:(id)metricsRequest minimalMetricsRequest:(id)minimalMetricsRequest
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [v12 copy];
-  v15 = [v14 edgeInsets];
-  [v15 setTrailing:0.0];
-  [v14 setEdgeInsets:v15];
-  v16 = [v12 copy];
+  height = size.height;
+  width = size.width;
+  minimalMetricsRequestCopy = minimalMetricsRequest;
+  metricsRequestCopy = metricsRequest;
+  requestCopy = request;
+  v14 = [metricsRequestCopy copy];
+  edgeInsets = [v14 edgeInsets];
+  [edgeInsets setTrailing:0.0];
+  [v14 setEdgeInsets:edgeInsets];
+  v16 = [metricsRequestCopy copy];
 
-  v17 = [v16 edgeInsets];
-  [v17 setLeading:0.0];
-  [v16 setEdgeInsets:v17];
-  v18 = [(ACUISSystemApertureMetricsRequest *)self initWithObstructionSize:v13 expandedMetricsRequest:v14 compactLeadingMetricsRequest:v16 compactTrailingMetricsRequest:v11 minimalMetricsRequest:width, height];
+  edgeInsets2 = [v16 edgeInsets];
+  [edgeInsets2 setLeading:0.0];
+  [v16 setEdgeInsets:edgeInsets2];
+  height = [(ACUISSystemApertureMetricsRequest *)self initWithObstructionSize:requestCopy expandedMetricsRequest:v14 compactLeadingMetricsRequest:v16 compactTrailingMetricsRequest:minimalMetricsRequestCopy minimalMetricsRequest:width, height];
 
-  return v18;
+  return height;
 }
 
-- (id)_initWithMetricsRequest:(id)a3
+- (id)_initWithMetricsRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = ACUISSystemApertureMetricsRequest;
   v6 = [(ACUISSystemApertureMetricsRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metricsRequest, a3);
+    objc_storeStrong(&v6->_metricsRequest, request);
   }
 
   return v7;
@@ -118,95 +118,95 @@
   return result;
 }
 
-- (void)setExpandedMetricsRequest:(id)a3
+- (void)setExpandedMetricsRequest:(id)request
 {
-  v4 = [a3 _activityItemMetricsRequest];
-  [(SystemApertureMetricsRequest *)self->_metricsRequest setExpandedMetricsRequest:v4];
+  _activityItemMetricsRequest = [request _activityItemMetricsRequest];
+  [(SystemApertureMetricsRequest *)self->_metricsRequest setExpandedMetricsRequest:_activityItemMetricsRequest];
 }
 
 - (ACUISActivityItemMetricsRequest)expandedMetricsRequest
 {
   v3 = [ACUISActivityItemMetricsRequest alloc];
-  v4 = [(SystemApertureMetricsRequest *)self->_metricsRequest expandedMetricsRequest];
-  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:v4];
+  expandedMetricsRequest = [(SystemApertureMetricsRequest *)self->_metricsRequest expandedMetricsRequest];
+  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:expandedMetricsRequest];
 
   return v5;
 }
 
-- (void)setCompactLeadingMetricsRequest:(id)a3
+- (void)setCompactLeadingMetricsRequest:(id)request
 {
-  v4 = [a3 _activityItemMetricsRequest];
-  [(SystemApertureMetricsRequest *)self->_metricsRequest setCompactLeadingMetricsRequest:v4];
+  _activityItemMetricsRequest = [request _activityItemMetricsRequest];
+  [(SystemApertureMetricsRequest *)self->_metricsRequest setCompactLeadingMetricsRequest:_activityItemMetricsRequest];
 }
 
 - (ACUISActivityItemMetricsRequest)compactLeadingMetricsRequest
 {
   v3 = [ACUISActivityItemMetricsRequest alloc];
-  v4 = [(SystemApertureMetricsRequest *)self->_metricsRequest compactLeadingMetricsRequest];
-  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:v4];
+  compactLeadingMetricsRequest = [(SystemApertureMetricsRequest *)self->_metricsRequest compactLeadingMetricsRequest];
+  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:compactLeadingMetricsRequest];
 
   return v5;
 }
 
-- (void)setCompactTrailingMetricsRequest:(id)a3
+- (void)setCompactTrailingMetricsRequest:(id)request
 {
-  v4 = [a3 _activityItemMetricsRequest];
-  [(SystemApertureMetricsRequest *)self->_metricsRequest setCompactTrailingMetricsRequest:v4];
+  _activityItemMetricsRequest = [request _activityItemMetricsRequest];
+  [(SystemApertureMetricsRequest *)self->_metricsRequest setCompactTrailingMetricsRequest:_activityItemMetricsRequest];
 }
 
 - (ACUISActivityItemMetricsRequest)compactTrailingMetricsRequest
 {
   v3 = [ACUISActivityItemMetricsRequest alloc];
-  v4 = [(SystemApertureMetricsRequest *)self->_metricsRequest compactTrailingMetricsRequest];
-  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:v4];
+  compactTrailingMetricsRequest = [(SystemApertureMetricsRequest *)self->_metricsRequest compactTrailingMetricsRequest];
+  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:compactTrailingMetricsRequest];
 
   return v5;
 }
 
-- (void)setCompactMetricsRequest:(id)a3
+- (void)setCompactMetricsRequest:(id)request
 {
-  v4 = a3;
-  v8 = [v4 copy];
-  v5 = [v8 edgeInsets];
-  [v5 setTrailing:0.0];
-  [v8 setEdgeInsets:v5];
+  requestCopy = request;
+  v8 = [requestCopy copy];
+  edgeInsets = [v8 edgeInsets];
+  [edgeInsets setTrailing:0.0];
+  [v8 setEdgeInsets:edgeInsets];
   [(ACUISSystemApertureMetricsRequest *)self setCompactLeadingMetricsRequest:v8];
-  v6 = [v4 copy];
+  v6 = [requestCopy copy];
 
-  v7 = [v6 edgeInsets];
-  [v7 setLeading:0.0];
-  [v6 setEdgeInsets:v7];
+  edgeInsets2 = [v6 edgeInsets];
+  [edgeInsets2 setLeading:0.0];
+  [v6 setEdgeInsets:edgeInsets2];
   [(ACUISSystemApertureMetricsRequest *)self setCompactLeadingMetricsRequest:v6];
 }
 
 - (ACUISActivityItemMetricsRequest)compactMetricsRequest
 {
   v3 = [ACUISActivityItemMetricsRequest alloc];
-  v4 = [(SystemApertureMetricsRequest *)self->_metricsRequest compactLeadingMetricsRequest];
-  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:v4];
+  compactLeadingMetricsRequest = [(SystemApertureMetricsRequest *)self->_metricsRequest compactLeadingMetricsRequest];
+  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:compactLeadingMetricsRequest];
 
   return v5;
 }
 
-- (void)setMinimalMetricsRequest:(id)a3
+- (void)setMinimalMetricsRequest:(id)request
 {
-  v4 = [a3 _activityItemMetricsRequest];
-  [(SystemApertureMetricsRequest *)self->_metricsRequest setMinimalMetricsRequest:v4];
+  _activityItemMetricsRequest = [request _activityItemMetricsRequest];
+  [(SystemApertureMetricsRequest *)self->_metricsRequest setMinimalMetricsRequest:_activityItemMetricsRequest];
 }
 
 - (ACUISActivityItemMetricsRequest)minimalMetricsRequest
 {
   v3 = [ACUISActivityItemMetricsRequest alloc];
-  v4 = [(SystemApertureMetricsRequest *)self->_metricsRequest minimalMetricsRequest];
-  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:v4];
+  minimalMetricsRequest = [(SystemApertureMetricsRequest *)self->_metricsRequest minimalMetricsRequest];
+  v5 = [(ACUISActivityItemMetricsRequest *)v3 _initWithItemMetrics:minimalMetricsRequest];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -214,7 +214,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SystemApertureMetricsRequest *)self->_metricsRequest isEqual:v4->_metricsRequest];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SystemApertureMetricsRequest *)self->_metricsRequest isEqual:equalCopy->_metricsRequest];
   }
 
   return v5;
@@ -224,24 +224,24 @@
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_metricsRequest withName:@"metrics"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ACUISSystemApertureMetricsRequest allocWithZone:a3];
+  v4 = [ACUISSystemApertureMetricsRequest allocWithZone:zone];
   v5 = [(SystemApertureMetricsRequest *)self->_metricsRequest copy];
   v6 = [(ACUISSystemApertureMetricsRequest *)v4 _initWithMetricsRequest:v5];
 
   return v6;
 }
 
-- (ACUISSystemApertureMetricsRequest)initWithCoder:(id)a3
+- (ACUISSystemApertureMetricsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metricsRequest"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metricsRequest"];
 
   v6 = [(ACUISSystemApertureMetricsRequest *)self _initWithMetricsRequest:v5];
   return v6;

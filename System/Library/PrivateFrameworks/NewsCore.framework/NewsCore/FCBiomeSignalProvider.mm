@@ -1,33 +1,33 @@
 @interface FCBiomeSignalProvider
-+ (void)fetchSignalsFromBiomeWithSafariBlockoutDuration:(double)a3 maxExternalSignalEventCount:(int64_t)a4 resultsBlock:(id)a5;
++ (void)fetchSignalsFromBiomeWithSafariBlockoutDuration:(double)duration maxExternalSignalEventCount:(int64_t)count resultsBlock:(id)block;
 @end
 
 @implementation FCBiomeSignalProvider
 
-+ (void)fetchSignalsFromBiomeWithSafariBlockoutDuration:(double)a3 maxExternalSignalEventCount:(int64_t)a4 resultsBlock:(id)a5
++ (void)fetchSignalsFromBiomeWithSafariBlockoutDuration:(double)duration maxExternalSignalEventCount:(int64_t)count resultsBlock:(id)block
 {
   v54 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = v7;
-  if (a4 <= 0)
+  blockCopy = block;
+  v8 = blockCopy;
+  if (count <= 0)
   {
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __114__FCBiomeSignalProvider_fetchSignalsFromBiomeWithSafariBlockoutDuration_maxExternalSignalEventCount_resultsBlock___block_invoke;
     v43[3] = &unk_1E7C46E00;
-    v45 = a4;
-    v44 = v7;
+    countCopy = count;
+    v44 = blockCopy;
     __114__FCBiomeSignalProvider_fetchSignalsFromBiomeWithSafariBlockoutDuration_maxExternalSignalEventCount_resultsBlock___block_invoke(v43);
     v32 = v44;
   }
 
   else
   {
-    if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (!blockCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v34 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "resultsBlock"];
       *buf = 136315906;
-      v47 = "+[FCBiomeSignalProvider fetchSignalsFromBiomeWithSafariBlockoutDuration:maxExternalSignalEventCount:resultsBlock:]";
+      countCopy2 = "+[FCBiomeSignalProvider fetchSignalsFromBiomeWithSafariBlockoutDuration:maxExternalSignalEventCount:resultsBlock:]";
       v48 = 2080;
       v49 = "FCBiomeSignalProvider.m";
       v50 = 1024;
@@ -42,22 +42,22 @@
     if (os_log_type_enabled(FCBiomeLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v47 = a4;
+      countCopy2 = count;
       _os_log_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_DEFAULT, "Querying Biome for Safari and App Signals with maxExternalSignalEventCount %ld", buf, 0xCu);
     }
 
     v10 = BiomeLibrary();
     v11 = [v10 App];
-    v12 = [v11 InFocus];
+    inFocus = [v11 InFocus];
 
     v13 = BiomeLibrary();
     v14 = [v13 App];
-    v15 = [v14 WebUsage];
+    webUsage = [v14 WebUsage];
 
     v16 = objc_opt_new();
     v17 = objc_opt_new();
-    v18 = [objc_alloc(MEMORY[0x1E698F2D0]) initWithStartDate:0 endDate:0 maxEvents:0 lastN:a4 reversed:0];
-    v19 = [v12 publisherWithUseCase:@"AutoFavorites" options:v18];
+    v18 = [objc_alloc(MEMORY[0x1E698F2D0]) initWithStartDate:0 endDate:0 maxEvents:0 lastN:count reversed:0];
+    v19 = [inFocus publisherWithUseCase:@"AutoFavorites" options:v18];
     v20 = objc_opt_new();
     v21 = [v19 reduceWithInitial:v20 nextPartialResult:&__block_literal_global_76_0];
     v40[0] = MEMORY[0x1E69E9820];
@@ -69,8 +69,8 @@
     v42 = &__block_literal_global_172;
     v23 = [v21 sinkWithCompletion:&__block_literal_global_80_0 receiveInput:v40];
 
-    v24 = v15;
-    v25 = [v15 publisherWithUseCase:@"AutoFavorites" options:v18];
+    v24 = webUsage;
+    v25 = [webUsage publisherWithUseCase:@"AutoFavorites" options:v18];
     v26 = objc_opt_new();
     v27 = [v25 reduceWithInitial:v26 nextPartialResult:&__block_literal_global_85];
     v36[0] = MEMORY[0x1E69E9820];
@@ -80,7 +80,7 @@
     v28 = v17;
     v37 = v28;
     v38 = &__block_literal_global_172;
-    v39 = a3;
+    durationCopy = duration;
     v29 = [v27 sinkWithCompletion:&__block_literal_global_87_0 receiveInput:v36];
 
     v8 = v35;
@@ -91,7 +91,7 @@
       v35[2](v35, v30, v31);
     }
 
-    v32 = v12;
+    v32 = inFocus;
   }
 
   v33 = *MEMORY[0x1E69E9840];

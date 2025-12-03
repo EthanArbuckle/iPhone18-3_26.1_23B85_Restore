@@ -1,7 +1,7 @@
 @interface HMMTRControllerParameters
 - (BOOL)usesCommonStorageDelegate;
-- (HMMTRControllerParameters)initWithIPK:(id)a3 operationalKeypair:(id)a4 operationalCertificate:(id)a5 intermediateCertificate:(id)a6 rootCertificate:(id)a7;
-- (HMMTRControllerParameters)initWithStorageDelegate:(id)a3 storageDelegateQueue:(id)a4 uniqueIdentifier:(id)a5 ipk:(id)a6 vendorID:(id)a7 operationalKeypair:(id)a8 operationalCertificate:(id)a9 intermediateCertificate:(id)a10 rootCertificate:(id)a11;
+- (HMMTRControllerParameters)initWithIPK:(id)k operationalKeypair:(id)keypair operationalCertificate:(id)certificate intermediateCertificate:(id)intermediateCertificate rootCertificate:(id)rootCertificate;
+- (HMMTRControllerParameters)initWithStorageDelegate:(id)delegate storageDelegateQueue:(id)queue uniqueIdentifier:(id)identifier ipk:(id)ipk vendorID:(id)d operationalKeypair:(id)keypair operationalCertificate:(id)certificate intermediateCertificate:(id)self0 rootCertificate:(id)self1;
 - (id)controllerParams;
 - (id)controllerParams2;
 @end
@@ -18,30 +18,30 @@
   else
   {
     v20 = objc_alloc(MEMORY[0x277CD5320]);
-    v19 = [(HMMTRControllerParameters *)self storageDelegate];
-    v4 = [(HMMTRControllerParameters *)self storageDelegateQueue];
-    v5 = [(HMMTRControllerParameters *)self uniqueIdentifier];
+    storageDelegate = [(HMMTRControllerParameters *)self storageDelegate];
+    storageDelegateQueue = [(HMMTRControllerParameters *)self storageDelegateQueue];
+    uniqueIdentifier = [(HMMTRControllerParameters *)self uniqueIdentifier];
     v6 = [(HMMTRControllerParameters *)self ipk];
-    v7 = [(HMMTRControllerParameters *)self vendorID];
-    v8 = [(HMMTRControllerParameters *)self operationalKeypair];
-    v9 = [(HMMTRControllerParameters *)self operationalCertificate];
-    v10 = [(HMMTRControllerParameters *)self intermediateCertificate];
-    v11 = [(HMMTRControllerParameters *)self rootCertificate];
-    v3 = [v20 initWithStorageDelegate:v19 storageDelegateQueue:v4 uniqueIdentifier:v5 ipk:v6 vendorID:v7 operationalKeypair:v8 operationalCertificate:v9 intermediateCertificate:v10 rootCertificate:v11];
+    vendorID = [(HMMTRControllerParameters *)self vendorID];
+    operationalKeypair = [(HMMTRControllerParameters *)self operationalKeypair];
+    operationalCertificate = [(HMMTRControllerParameters *)self operationalCertificate];
+    intermediateCertificate = [(HMMTRControllerParameters *)self intermediateCertificate];
+    rootCertificate = [(HMMTRControllerParameters *)self rootCertificate];
+    v3 = [v20 initWithStorageDelegate:storageDelegate storageDelegateQueue:storageDelegateQueue uniqueIdentifier:uniqueIdentifier ipk:v6 vendorID:vendorID operationalKeypair:operationalKeypair operationalCertificate:operationalCertificate intermediateCertificate:intermediateCertificate rootCertificate:rootCertificate];
 
-    v12 = [(HMMTRControllerParameters *)self otaProviderDelegate];
-    v13 = [(HMMTRControllerParameters *)self otaProviderDelegateQueue];
-    [v3 setOTAProviderDelegate:v12 queue:v13];
+    otaProviderDelegate = [(HMMTRControllerParameters *)self otaProviderDelegate];
+    otaProviderDelegateQueue = [(HMMTRControllerParameters *)self otaProviderDelegateQueue];
+    [v3 setOTAProviderDelegate:otaProviderDelegate queue:otaProviderDelegateQueue];
 
-    v14 = [(HMMTRControllerParameters *)self operationalCertificateIssuer];
-    v15 = [(HMMTRControllerParameters *)self operationalCertificateIssuerQueue];
-    [v3 setOperationalCertificateIssuer:v14 queue:v15];
+    operationalCertificateIssuer = [(HMMTRControllerParameters *)self operationalCertificateIssuer];
+    operationalCertificateIssuerQueue = [(HMMTRControllerParameters *)self operationalCertificateIssuerQueue];
+    [v3 setOperationalCertificateIssuer:operationalCertificateIssuer queue:operationalCertificateIssuerQueue];
 
-    v16 = [(HMMTRControllerParameters *)self productAttestationAuthorityCertificates];
-    [v3 setProductAttestationAuthorityCertificates:v16];
+    productAttestationAuthorityCertificates = [(HMMTRControllerParameters *)self productAttestationAuthorityCertificates];
+    [v3 setProductAttestationAuthorityCertificates:productAttestationAuthorityCertificates];
 
-    v17 = [(HMMTRControllerParameters *)self certificationDeclarationCertificates];
-    [v3 setCertificationDeclarationCertificates:v17];
+    certificationDeclarationCertificates = [(HMMTRControllerParameters *)self certificationDeclarationCertificates];
+    [v3 setCertificationDeclarationCertificates:certificationDeclarationCertificates];
 
     [v3 setShouldAdvertiseOperational:{-[HMMTRControllerParameters shouldAdvertiseOperational](self, "shouldAdvertiseOperational")}];
   }
@@ -55,20 +55,20 @@
   {
     v3 = objc_alloc(MEMORY[0x277CD5338]);
     v4 = [(HMMTRControllerParameters *)self ipk];
-    v5 = [(HMMTRControllerParameters *)self operationalKeypair];
-    v6 = [(HMMTRControllerParameters *)self operationalCertificate];
-    v7 = [(HMMTRControllerParameters *)self intermediateCertificate];
-    v8 = [(HMMTRControllerParameters *)self rootCertificate];
-    v9 = [v3 initWithIPK:v4 operationalKeypair:v5 operationalCertificate:v6 intermediateCertificate:v7 rootCertificate:v8];
+    operationalKeypair = [(HMMTRControllerParameters *)self operationalKeypair];
+    operationalCertificate = [(HMMTRControllerParameters *)self operationalCertificate];
+    intermediateCertificate = [(HMMTRControllerParameters *)self intermediateCertificate];
+    rootCertificate = [(HMMTRControllerParameters *)self rootCertificate];
+    v9 = [v3 initWithIPK:v4 operationalKeypair:operationalKeypair operationalCertificate:operationalCertificate intermediateCertificate:intermediateCertificate rootCertificate:rootCertificate];
 
-    v10 = [(HMMTRControllerParameters *)self vendorID];
-    [v9 setVendorID:v10];
+    vendorID = [(HMMTRControllerParameters *)self vendorID];
+    [v9 setVendorID:vendorID];
 
-    v11 = [(HMMTRControllerParameters *)self operationalCertificateIssuer];
-    [v9 setOperationalCertificateIssuer:v11];
+    operationalCertificateIssuer = [(HMMTRControllerParameters *)self operationalCertificateIssuer];
+    [v9 setOperationalCertificateIssuer:operationalCertificateIssuer];
 
-    v12 = [(HMMTRControllerParameters *)self operationalCertificateIssuerQueue];
-    [v9 setOperationalCertificateIssuerQueue:v12];
+    operationalCertificateIssuerQueue = [(HMMTRControllerParameters *)self operationalCertificateIssuerQueue];
+    [v9 setOperationalCertificateIssuerQueue:operationalCertificateIssuerQueue];
   }
 
   else
@@ -81,43 +81,43 @@
 
 - (BOOL)usesCommonStorageDelegate
 {
-  v2 = [(HMMTRControllerParameters *)self storageDelegate];
-  v3 = v2 == 0;
+  storageDelegate = [(HMMTRControllerParameters *)self storageDelegate];
+  v3 = storageDelegate == 0;
 
   return v3;
 }
 
-- (HMMTRControllerParameters)initWithStorageDelegate:(id)a3 storageDelegateQueue:(id)a4 uniqueIdentifier:(id)a5 ipk:(id)a6 vendorID:(id)a7 operationalKeypair:(id)a8 operationalCertificate:(id)a9 intermediateCertificate:(id)a10 rootCertificate:(id)a11
+- (HMMTRControllerParameters)initWithStorageDelegate:(id)delegate storageDelegateQueue:(id)queue uniqueIdentifier:(id)identifier ipk:(id)ipk vendorID:(id)d operationalKeypair:(id)keypair operationalCertificate:(id)certificate intermediateCertificate:(id)self0 rootCertificate:(id)self1
 {
-  v33 = a3;
-  v32 = a4;
-  v31 = a5;
-  v30 = a6;
-  v29 = a7;
-  v28 = a8;
-  v27 = a9;
-  v26 = a10;
-  v18 = a11;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  ipkCopy = ipk;
+  dCopy = d;
+  keypairCopy = keypair;
+  certificateCopy = certificate;
+  intermediateCertificateCopy = intermediateCertificate;
+  rootCertificateCopy = rootCertificate;
   v34.receiver = self;
   v34.super_class = HMMTRControllerParameters;
   v19 = [(HMMTRControllerParameters *)&v34 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_storageDelegate, a3);
-    objc_storeStrong(&v20->_storageDelegateQueue, a4);
-    objc_storeStrong(&v20->_uniqueIdentifier, a5);
-    objc_storeStrong(&v20->_ipk, a6);
-    objc_storeStrong(&v20->_vendorID, a7);
-    objc_storeStrong(&v20->_operationalKeypair, a8);
-    objc_storeStrong(&v20->_operationalCertificate, a9);
-    objc_storeStrong(&v20->_intermediateCertificate, a10);
-    objc_storeStrong(&v20->_rootCertificate, a11);
-    v21 = [MEMORY[0x277CD5230] fabricIDFromCertificate:v18];
+    objc_storeStrong(&v19->_storageDelegate, delegate);
+    objc_storeStrong(&v20->_storageDelegateQueue, queue);
+    objc_storeStrong(&v20->_uniqueIdentifier, identifier);
+    objc_storeStrong(&v20->_ipk, ipk);
+    objc_storeStrong(&v20->_vendorID, d);
+    objc_storeStrong(&v20->_operationalKeypair, keypair);
+    objc_storeStrong(&v20->_operationalCertificate, certificate);
+    objc_storeStrong(&v20->_intermediateCertificate, intermediateCertificate);
+    objc_storeStrong(&v20->_rootCertificate, rootCertificate);
+    v21 = [MEMORY[0x277CD5230] fabricIDFromCertificate:rootCertificateCopy];
     fabricID = v20->_fabricID;
     v20->_fabricID = v21;
 
-    v23 = [MEMORY[0x277CD5230] publicKeyDataFromCertificate:v18];
+    v23 = [MEMORY[0x277CD5230] publicKeyDataFromCertificate:rootCertificateCopy];
     rootPublicKey = v20->_rootPublicKey;
     v20->_rootPublicKey = v23;
   }
@@ -125,29 +125,29 @@
   return v20;
 }
 
-- (HMMTRControllerParameters)initWithIPK:(id)a3 operationalKeypair:(id)a4 operationalCertificate:(id)a5 intermediateCertificate:(id)a6 rootCertificate:(id)a7
+- (HMMTRControllerParameters)initWithIPK:(id)k operationalKeypair:(id)keypair operationalCertificate:(id)certificate intermediateCertificate:(id)intermediateCertificate rootCertificate:(id)rootCertificate
 {
-  v24 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  kCopy = k;
+  keypairCopy = keypair;
+  certificateCopy = certificate;
+  intermediateCertificateCopy = intermediateCertificate;
+  rootCertificateCopy = rootCertificate;
   v25.receiver = self;
   v25.super_class = HMMTRControllerParameters;
   v17 = [(HMMTRControllerParameters *)&v25 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_ipk, a3);
-    objc_storeStrong(&v18->_operationalKeypair, a4);
-    objc_storeStrong(&v18->_operationalCertificate, a5);
-    objc_storeStrong(&v18->_intermediateCertificate, a6);
-    objc_storeStrong(&v18->_rootCertificate, a7);
-    v19 = [MEMORY[0x277CD5230] fabricIDFromCertificate:v16];
+    objc_storeStrong(&v17->_ipk, k);
+    objc_storeStrong(&v18->_operationalKeypair, keypair);
+    objc_storeStrong(&v18->_operationalCertificate, certificate);
+    objc_storeStrong(&v18->_intermediateCertificate, intermediateCertificate);
+    objc_storeStrong(&v18->_rootCertificate, rootCertificate);
+    v19 = [MEMORY[0x277CD5230] fabricIDFromCertificate:rootCertificateCopy];
     fabricID = v18->_fabricID;
     v18->_fabricID = v19;
 
-    v21 = [MEMORY[0x277CD5230] publicKeyDataFromCertificate:v16];
+    v21 = [MEMORY[0x277CD5230] publicKeyDataFromCertificate:rootCertificateCopy];
     rootPublicKey = v18->_rootPublicKey;
     v18->_rootPublicKey = v21;
   }

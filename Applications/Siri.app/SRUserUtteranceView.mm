@@ -1,25 +1,25 @@
 @interface SRUserUtteranceView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SRUserUtteranceView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SRUserUtteranceView)initWithFrame:(CGRect)frame;
 - (double)_indentWidth;
 - (double)_scaledSiriTapToEditViewLeading;
 - (double)_streamingTextMaxYToTapToEditOriginDistance;
 - (double)baselineOffsetFromBottom;
 - (double)firstLineBaselineOffsetFromTop;
 - (void)layoutSubviews;
-- (void)setBlendEffectEnabled:(BOOL)a3;
-- (void)setChevronHidden:(BOOL)a3;
-- (void)setText:(id)a3;
+- (void)setBlendEffectEnabled:(BOOL)enabled;
+- (void)setChevronHidden:(BOOL)hidden;
+- (void)setText:(id)text;
 @end
 
 @implementation SRUserUtteranceView
 
-- (SRUserUtteranceView)initWithFrame:(CGRect)a3
+- (SRUserUtteranceView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17.receiver = self;
   v17.super_class = SRUserUtteranceView;
   v7 = [(SRUserUtteranceView *)&v17 initWithFrame:?];
@@ -38,9 +38,9 @@
     SiriUITextHyphenationFactor();
     [(SUICStreamingTextView *)v12 setHyphenationFactor:?];
     [(SRUserUtteranceView *)v7 addSubview:v7->_streamingTextView];
-    v13 = [[SRTapToEditView alloc] initWithFrame:x, y, width, height];
+    height = [[SRTapToEditView alloc] initWithFrame:x, y, width, height];
     tapToEditView = v7->_tapToEditView;
-    v7->_tapToEditView = v13;
+    v7->_tapToEditView = height;
 
     [(SRUserUtteranceView *)v7 addSubview:v7->_tapToEditView];
     [(SRTapToEditView *)v7->_tapToEditView setHidden:1];
@@ -55,11 +55,11 @@
   return v7;
 }
 
-- (void)setChevronHidden:(BOOL)a3
+- (void)setChevronHidden:(BOOL)hidden
 {
   if (self->_blendEffectEnabled)
   {
-    [(SRTapToEditView *)self->_tapToEditView setHidden:a3];
+    [(SRTapToEditView *)self->_tapToEditView setHidden:hidden];
 
     [(SRUserUtteranceView *)self setNeedsLayout];
   }
@@ -91,9 +91,9 @@
   return result;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -101,7 +101,7 @@
   v36 = sub_100076900;
   v37 = 0;
   v5 = +[NSCharacterSet whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  v6 = [textCopy stringByTrimmingCharactersInSet:v5];
 
   if (v6)
   {
@@ -180,12 +180,12 @@
   _Block_object_dispose(&v32, 8);
 }
 
-- (void)setBlendEffectEnabled:(BOOL)a3
+- (void)setBlendEffectEnabled:(BOOL)enabled
 {
-  if (self->_blendEffectEnabled != a3)
+  if (self->_blendEffectEnabled != enabled)
   {
-    self->_blendEffectEnabled = a3;
-    if (a3)
+    self->_blendEffectEnabled = enabled;
+    if (enabled)
     {
       v4 = [SUICStreamingTextView alloc];
       [(SUICStreamingTextView *)self->_streamingTextView frame];
@@ -203,8 +203,8 @@
       SiriUITextHyphenationFactor();
       [(SUICStreamingTextView *)v9 setHyphenationFactor:?];
       v10 = self->_clonedStreamingTextView;
-      v11 = [(SUICStreamingTextView *)self->_streamingTextView words];
-      [(SUICStreamingTextView *)v10 setWords:v11];
+      words = [(SUICStreamingTextView *)self->_streamingTextView words];
+      [(SUICStreamingTextView *)v10 setWords:words];
 
       [(SRUserUtteranceView *)self addSubview:self->_clonedStreamingTextView];
       streamingTextView = self->_streamingTextView;
@@ -254,10 +254,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(SRUserUtteranceView *)self _indentWidth];
   SiriUIUtteranceWidthForAvailableWidthAndInsets();
   [(SUICStreamingTextView *)self->_streamingTextView sizeThatFits:?];
@@ -357,8 +357,8 @@
   v5 = v4;
   [(SRUserUtteranceView *)self _scaledSiriTapToEditViewLeading];
   v7 = v6;
-  v8 = [(SUICStreamingTextView *)self->_streamingTextView font];
-  [v8 descender];
+  font = [(SUICStreamingTextView *)self->_streamingTextView font];
+  [font descender];
   v10 = v7 + v9;
   [(SRTapToEditView *)self->_tapToEditView firstLineBaselineOffsetFromTop];
   v12 = v10 - v11;

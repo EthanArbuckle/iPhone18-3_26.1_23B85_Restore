@@ -1,21 +1,21 @@
 @interface _BSProtobufTranslator_BSAuditToken
-- (id)didFinishProtobufDecodingWithError:(id *)a3;
-- (id)initProtobufTranslatorForObject:(id)a3;
+- (id)didFinishProtobufDecodingWithError:(id *)error;
+- (id)initProtobufTranslatorForObject:(id)object;
 @end
 
 @implementation _BSProtobufTranslator_BSAuditToken
 
-- (id)initProtobufTranslatorForObject:(id)a3
+- (id)initProtobufTranslatorForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = _BSProtobufTranslator_BSAuditToken;
   v5 = [(_BSProtobufTranslator_BSAuditToken *)&v14 init];
   if (v5)
   {
-    if (v4)
+    if (objectCopy)
     {
-      v6 = [MEMORY[0x1E696B098] value:v4 + 8 withObjCType:"{?=[8I]}"];
+      v6 = [MEMORY[0x1E696B098] value:objectCopy + 8 withObjCType:"{?=[8I]}"];
       v7 = v6;
       if (v6)
       {
@@ -41,20 +41,20 @@
     tokenData = v5->_tokenData;
     v5->_tokenData = v8;
 
-    v11 = [v4 bundleID];
+    bundleID = [objectCopy bundleID];
     bundleID = v5->_bundleID;
-    v5->_bundleID = v11;
+    v5->_bundleID = bundleID;
   }
 
   return v5;
 }
 
-- (id)didFinishProtobufDecodingWithError:(id *)a3
+- (id)didFinishProtobufDecodingWithError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   v4 = [BSAuditToken alloc];

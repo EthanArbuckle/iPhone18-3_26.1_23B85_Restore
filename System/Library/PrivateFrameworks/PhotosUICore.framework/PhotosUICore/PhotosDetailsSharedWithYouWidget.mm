@@ -1,7 +1,7 @@
 @interface PhotosDetailsSharedWithYouWidget
 - (NSString)snappableWidgetIdentifier;
 - (_TtC12PhotosUICore32PhotosDetailsSharedWithYouWidget)init;
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3;
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width;
 - (int64_t)contentLayoutStyle;
 @end
 
@@ -17,7 +17,7 @@
 - (int64_t)contentLayoutStyle
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self->PXPhotosDetailsWidget_opaque) + 0x168);
-  v3 = self;
+  selfCopy = self;
   if (v2())
   {
 
@@ -40,9 +40,9 @@
   }
 }
 
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1A3DBEC58();
 
   return v4;

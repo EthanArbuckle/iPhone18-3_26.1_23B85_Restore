@@ -1,21 +1,21 @@
 @interface PKDQuery
-+ (id)queryWithCriteria:(id)a3 discoveryUUID:(id)a4 database:(id)a5;
-- (BOOL)_allowPlugInForRecord:(id)a3;
++ (id)queryWithCriteria:(id)criteria discoveryUUID:(id)d database:(id)database;
+- (BOOL)_allowPlugInForRecord:(id)record;
 - (BOOL)_needsFilter;
-- (BOOL)allowPlugInWithBundleIdentifier:(id)a3 entitlements:(id)a4;
+- (BOOL)allowPlugInWithBundleIdentifier:(id)identifier entitlements:(id)entitlements;
 - (BOOL)criteriaIsSimple;
 - (PKDatabase)database;
 - (id)_allPlugIns;
 - (id)_electionPatternAsArray;
-- (id)_filterDictForRecord:(id)a3;
+- (id)_filterDictForRecord:(id)record;
 - (id)_findPlugIns;
-- (id)_findPlugInsFromEnumerator:(id)a3;
-- (id)_findPlugInsWithExtensionPoint:(id)a3 platforms:(id)a4;
-- (id)_findPlugInsWithExtensionPoints:(id)a3 platforms:(id)a4;
-- (id)_findPlugInsWithIdentifier:(id)a3;
-- (id)_lsPattern:(id)a3;
+- (id)_findPlugInsFromEnumerator:(id)enumerator;
+- (id)_findPlugInsWithExtensionPoint:(id)point platforms:(id)platforms;
+- (id)_findPlugInsWithExtensionPoints:(id)points platforms:(id)platforms;
+- (id)_findPlugInsWithIdentifier:(id)identifier;
+- (id)_lsPattern:(id)pattern;
 - (id)findPlugIns;
-- (void)_safelyAddPlugIn:(id)a3 toSet:(id)a4;
+- (void)_safelyAddPlugIn:(id)in toSet:(id)set;
 - (void)signpostBegin;
 - (void)signpostEnd;
 @end
@@ -24,8 +24,8 @@
 
 - (void)signpostBegin
 {
-  v3 = [(PKDQuery *)self criteria];
-  v4 = [v3 objectForKeyedSubscript:PKProtocolAttribute];
+  criteria = [(PKDQuery *)self criteria];
+  v4 = [criteria objectForKeyedSubscript:PKProtocolAttribute];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -42,19 +42,19 @@
 
   [(PKDQuery *)self setSignpostIdentifier:v6];
   v7 = pklog_handle_for_category();
-  v8 = [(PKDQuery *)self discoveryUUID];
-  [(PKDQuery *)self setInterval:os_signpost_id_make_with_pointer(v7, v8)];
+  discoveryUUID = [(PKDQuery *)self discoveryUUID];
+  [(PKDQuery *)self setInterval:os_signpost_id_make_with_pointer(v7, discoveryUUID)];
 
   v9 = pklog_handle_for_category();
-  v10 = [(PKDQuery *)self interval];
-  if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  interval = [(PKDQuery *)self interval];
+  if (interval - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v11 = v10;
+    v11 = interval;
     if (os_signpost_enabled(v9))
     {
-      v12 = [(PKDQuery *)self discoveryUUID];
+      discoveryUUID2 = [(PKDQuery *)self discoveryUUID];
       v13 = 138543619;
-      v14 = v12;
+      v14 = discoveryUUID2;
       v15 = 2113;
       v16 = v6;
       _os_signpost_emit_with_name_impl(&dword_0, v9, OS_SIGNPOST_INTERVAL_BEGIN, v11, "LSQuery", " discoveryUUID=%{public, signpost.description:attribute}@  identifier=%{private, signpost.description:attribute}@ ", &v13, 0x16u);
@@ -64,37 +64,37 @@
 
 - (id)findPlugIns
 {
-  v2 = [(PKDQuery *)self _findPlugIns];
+  _findPlugIns = [(PKDQuery *)self _findPlugIns];
 
-  return v2;
+  return _findPlugIns;
 }
 
 - (id)_findPlugIns
 {
-  v3 = [(PKDQuery *)self criteria];
-  v4 = [(PKDQuery *)self criteriaIsSimple];
+  criteria = [(PKDQuery *)self criteria];
+  criteriaIsSimple = [(PKDQuery *)self criteriaIsSimple];
   v5 = pklog_handle_for_category();
   v6 = v5;
-  if (v4)
+  if (criteriaIsSimple)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v15 = 138412290;
-      v16 = v3;
+      v16 = criteria;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "got simple query: %@", &v15, 0xCu);
     }
 
-    if (![v3 count])
+    if (![criteria count])
     {
-      v10 = [(PKDQuery *)self _allPlugIns];
+      _allPlugIns = [(PKDQuery *)self _allPlugIns];
       goto LABEL_23;
     }
 
-    v7 = [v3 objectForKeyedSubscript:PKIdentifierAttribute];
+    v7 = [criteria objectForKeyedSubscript:PKIdentifierAttribute];
     v8 = v7;
     if (!v7)
     {
-      v8 = [v3 objectForKeyedSubscript:PKCFBundleIdentifierAttribute];
+      v8 = [criteria objectForKeyedSubscript:PKCFBundleIdentifierAttribute];
     }
 
     v9 = v8;
@@ -105,14 +105,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [(PKDQuery *)self _findPlugInsWithIdentifier:v9];
+      _allPlugIns = [(PKDQuery *)self _findPlugInsWithIdentifier:v9];
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    v11 = [v3 objectForKeyedSubscript:PKProtocolAttribute];
-    v12 = [v3 objectForKeyedSubscript:PKExtensionPlatformsAttribute];
+    v11 = [criteria objectForKeyedSubscript:PKProtocolAttribute];
+    v12 = [criteria objectForKeyedSubscript:PKExtensionPlatformsAttribute];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,14 +124,14 @@ LABEL_22:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v10 = 0;
+        _allPlugIns = 0;
         goto LABEL_21;
       }
 
       v13 = [(PKDQuery *)self _findPlugInsWithExtensionPoints:v11 platforms:v12];
     }
 
-    v10 = v13;
+    _allPlugIns = v13;
 LABEL_21:
 
     goto LABEL_22;
@@ -142,27 +142,27 @@ LABEL_21:
     [PKDQuery _findPlugIns];
   }
 
-  v10 = 0;
+  _allPlugIns = 0;
 LABEL_23:
 
-  return v10;
+  return _allPlugIns;
 }
 
 - (BOOL)criteriaIsSimple
 {
   if (criteriaIsSimple_onceToken != -1)
   {
-    v6 = self;
+    selfCopy = self;
     [PKDQuery criteriaIsSimple];
-    self = v6;
+    self = selfCopy;
   }
 
-  v2 = [(PKDQuery *)self criteria];
-  v3 = [v2 allKeys];
-  v4 = [NSSet setWithArray:v3];
+  criteria = [(PKDQuery *)self criteria];
+  allKeys = [criteria allKeys];
+  v4 = [NSSet setWithArray:allKeys];
 
-  LOBYTE(v2) = [v4 isSubsetOfSet:criteriaIsSimple_simpleSet];
-  return v2;
+  LOBYTE(criteria) = [v4 isSubsetOfSet:criteriaIsSimple_simpleSet];
+  return criteria;
 }
 
 - (PKDatabase)database
@@ -174,8 +174,8 @@ LABEL_23:
 
 - (id)_electionPatternAsArray
 {
-  v3 = [(PKDQuery *)self criteria];
-  v4 = [v3 objectForKeyedSubscript:PKUserElectionAttribute];
+  criteria = [(PKDQuery *)self criteria];
+  v4 = [criteria objectForKeyedSubscript:PKUserElectionAttribute];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -262,8 +262,8 @@ LABEL_19:
 
 - (BOOL)_needsFilter
 {
-  v2 = [(PKDQuery *)self _electionPatternAsArray];
-  v3 = v2 != 0;
+  _electionPatternAsArray = [(PKDQuery *)self _electionPatternAsArray];
+  v3 = _electionPatternAsArray != 0;
 
   return v3;
 }
@@ -271,10 +271,10 @@ LABEL_19:
 - (void)signpostEnd
 {
   v3 = pklog_handle_for_category();
-  v4 = [(PKDQuery *)self interval];
-  if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  interval = [(PKDQuery *)self interval];
+  if (interval - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v5 = v4;
+    v5 = interval;
     if (os_signpost_enabled(v3))
     {
       *v6 = 0;
@@ -283,47 +283,47 @@ LABEL_19:
   }
 }
 
-+ (id)queryWithCriteria:(id)a3 discoveryUUID:(id)a4 database:(id)a5
++ (id)queryWithCriteria:(id)criteria discoveryUUID:(id)d database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  criteriaCopy = criteria;
+  dCopy = d;
+  databaseCopy = database;
   v10 = objc_opt_new();
   v11 = *(v10 + 8);
-  *(v10 + 8) = v7;
-  v12 = v7;
+  *(v10 + 8) = criteriaCopy;
+  v12 = criteriaCopy;
 
   v13 = *(v10 + 40);
-  *(v10 + 40) = v8;
+  *(v10 + 40) = dCopy;
 
-  objc_storeWeak((v10 + 32), v9);
+  objc_storeWeak((v10 + 32), databaseCopy);
 
   return v10;
 }
 
-- (BOOL)allowPlugInWithBundleIdentifier:(id)a3 entitlements:(id)a4
+- (BOOL)allowPlugInWithBundleIdentifier:(id)identifier entitlements:(id)entitlements
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKDQuery *)self _electionPatternAsArray];
-  if (v8)
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  _electionPatternAsArray = [(PKDQuery *)self _electionPatternAsArray];
+  if (_electionPatternAsArray)
   {
-    v9 = [v7 objectForKey:PKOverrideEntitlement ofClass:objc_opt_class()];
+    v9 = [entitlementsCopy objectForKey:PKOverrideEntitlement ofClass:objc_opt_class()];
     v10 = v9;
     if (v9)
     {
       v11 = v9;
 
-      v6 = v11;
+      identifierCopy = v11;
     }
 
-    v12 = [(PKDQuery *)self database];
-    v13 = [v12 annotationForIdentifier:v6];
+    database = [(PKDQuery *)self database];
+    v13 = [database annotationForIdentifier:identifierCopy];
 
     v14 = [v13 objectForKeyedSubscript:PKAnnotationElectionKey];
     if (!v14)
     {
-      v15 = [v7 objectForKey:PKAutoElectEntitlement ofClass:objc_opt_class()];
+      v15 = [entitlementsCopy objectForKey:PKAutoElectEntitlement ofClass:objc_opt_class()];
       if ([v15 BOOLValue])
       {
         v14 = &off_2A210;
@@ -336,17 +336,17 @@ LABEL_19:
     }
 
     v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d", [v14 integerValue]);
-    v17 = [v8 containsObject:v16];
+    v17 = [_electionPatternAsArray containsObject:v16];
     if ((v17 & 1) == 0)
     {
       v18 = pklog_handle_for_category();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [(PKDQuery *)self discoveryUUID];
+        discoveryUUID = [(PKDQuery *)self discoveryUUID];
         *buf = 138412802;
-        v22 = v19;
+        v22 = discoveryUUID;
         v23 = 2112;
-        v24 = v6;
+        v24 = identifierCopy;
         v25 = 2114;
         v26 = v14;
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "[d %@] [%@] rejecting; election criteria excludes election state: %{public}@", buf, 0x20u);
@@ -377,14 +377,14 @@ void __28__PKDQuery_criteriaIsSimple__block_invoke(id a1)
   criteriaIsSimple_simpleSet = v3;
 }
 
-- (void)_safelyAddPlugIn:(id)a3 toSet:(id)a4
+- (void)_safelyAddPlugIn:(id)in toSet:(id)set
 {
-  v8 = a3;
-  v5 = a4;
-  if (v8)
+  inCopy = in;
+  setCopy = set;
+  if (inCopy)
   {
     v6 = +[PKDPlugIn nullPlugIn];
-    v7 = v6 != v8;
+    v7 = v6 != inCopy;
   }
 
   else
@@ -394,20 +394,20 @@ void __28__PKDQuery_criteriaIsSimple__block_invoke(id a1)
 
   if (v7)
   {
-    [v5 addObject:v8];
+    [setCopy addObject:inCopy];
   }
 }
 
-- (id)_lsPattern:(id)a3
+- (id)_lsPattern:(id)pattern
 {
-  v3 = a3;
+  patternCopy = pattern;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [patternCopy length])
   {
-    v4 = [v3 characterAtIndex:0];
+    v4 = [patternCopy characterAtIndex:0];
     if (v4 == 61)
     {
-      v5 = [v3 substringFromIndex:1];
+      v5 = [patternCopy substringFromIndex:1];
 LABEL_7:
       v8 = v5;
       goto LABEL_9;
@@ -419,7 +419,7 @@ LABEL_7:
 
     if (v6)
     {
-      v5 = v3;
+      v5 = patternCopy;
       goto LABEL_7;
     }
   }
@@ -430,19 +430,19 @@ LABEL_9:
   return v8;
 }
 
-- (id)_filterDictForRecord:(id)a3
+- (id)_filterDictForRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = objc_opt_new();
-  v5 = [v3 entitlements];
+  entitlements = [recordCopy entitlements];
   v6 = PKOverrideEntitlement;
-  v7 = [v5 objectForKey:PKOverrideEntitlement ofClass:objc_opt_class()];
+  v7 = [entitlements objectForKey:PKOverrideEntitlement ofClass:objc_opt_class()];
   [v4 setObject:v7 forKeyedSubscript:v6];
 
-  v8 = [v3 entitlements];
+  entitlements2 = [recordCopy entitlements];
 
   v9 = PKAutoElectEntitlement;
-  v10 = [v8 objectForKey:PKAutoElectEntitlement ofClass:objc_opt_class()];
+  v10 = [entitlements2 objectForKey:PKAutoElectEntitlement ofClass:objc_opt_class()];
   [v4 setObject:v10 forKeyedSubscript:v9];
 
   v11 = [v4 copy];
@@ -450,19 +450,19 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)_allowPlugInForRecord:(id)a3
+- (BOOL)_allowPlugInForRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(PKDQuery *)self _filterDictForRecord:v4];
-  v6 = [v4 bundleIdentifier];
+  recordCopy = record;
+  v5 = [(PKDQuery *)self _filterDictForRecord:recordCopy];
+  bundleIdentifier = [recordCopy bundleIdentifier];
 
-  LOBYTE(self) = [(PKDQuery *)self allowPlugInWithBundleIdentifier:v6 entitlements:v5];
+  LOBYTE(self) = [(PKDQuery *)self allowPlugInWithBundleIdentifier:bundleIdentifier entitlements:v5];
   return self;
 }
 
-- (id)_findPlugInsFromEnumerator:(id)a3
+- (id)_findPlugInsFromEnumerator:(id)enumerator
 {
-  v4 = a3;
+  enumeratorCopy = enumerator;
   v5 = objc_opt_new();
   context = objc_autoreleasePoolPush();
   if ([(PKDQuery *)self _needsFilter])
@@ -472,7 +472,7 @@ LABEL_9:
     v23[2] = __39__PKDQuery__findPlugInsFromEnumerator___block_invoke;
     v23[3] = &unk_28B58;
     v23[4] = self;
-    [v4 setFilter:v23];
+    [enumeratorCopy setFilter:v23];
   }
 
   v6 = +[NSMutableDictionary dictionary];
@@ -480,7 +480,7 @@ LABEL_9:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v4;
+  v7 = enumeratorCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v8)
   {
@@ -506,9 +506,9 @@ LABEL_9:
         }
 
         v12 = *(*(&v19 + 1) + 8 * v10);
-        v13 = [(PKDQuery *)self database];
-        v14 = [(PKDQuery *)self discoveryUUID];
-        v15 = [v13 plugInForExtensionRecord:v12 discoveryInstanceUUID:v14 extensionPointCache:v6];
+        database = [(PKDQuery *)self database];
+        discoveryUUID = [(PKDQuery *)self discoveryUUID];
+        v15 = [database plugInForExtensionRecord:v12 discoveryInstanceUUID:discoveryUUID extensionPointCache:v6];
 
         [(PKDQuery *)self _safelyAddPlugIn:v15 toSet:v5];
         ++v10;
@@ -529,39 +529,39 @@ LABEL_9:
 
 - (id)_allPlugIns
 {
-  v3 = [(PKDQuery *)self database];
-  v4 = [v3 external];
-  v5 = [v4 ls];
-  v6 = [v5 plugInRecordEnumerator];
+  database = [(PKDQuery *)self database];
+  external = [database external];
+  v5 = [external ls];
+  plugInRecordEnumerator = [v5 plugInRecordEnumerator];
 
-  v7 = [(PKDQuery *)self _findPlugInsFromEnumerator:v6];
+  v7 = [(PKDQuery *)self _findPlugInsFromEnumerator:plugInRecordEnumerator];
 
   return v7;
 }
 
-- (id)_findPlugInsWithExtensionPoint:(id)a3 platforms:(id)a4
+- (id)_findPlugInsWithExtensionPoint:(id)point platforms:(id)platforms
 {
-  v6 = a3;
-  v7 = a4;
+  pointCopy = point;
+  platformsCopy = platforms;
   v8 = objc_opt_new();
   objc_opt_class();
-  v37 = v6;
+  v37 = pointCopy;
   if (objc_opt_isKindOfClass())
   {
-    if (v7)
+    if (platformsCopy)
     {
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v9 = v7;
+      v9 = platformsCopy;
       v10 = [v9 countByEnumeratingWithState:&v42 objects:v47 count:16];
       if (!v10)
       {
         goto LABEL_27;
       }
 
-      v36 = v7;
+      v36 = platformsCopy;
       v11 = *v43;
       do
       {
@@ -584,9 +584,9 @@ LABEL_9:
           }
 
           v14 = *(*(&v42 + 1) + 8 * v12);
-          v15 = [(PKDQuery *)self database];
-          v16 = [v15 external];
-          v17 = [v16 ls];
+          database = [(PKDQuery *)self database];
+          external = [database external];
+          v17 = [external ls];
           v18 = [v17 plugInRecordEnumeratorWithExtensionPointName:v37 platform:{objc_msgSend(v14, "unsignedIntValue")}];
 
           v19 = [(PKDQuery *)self _findPlugInsFromEnumerator:v18];
@@ -605,10 +605,10 @@ LABEL_9:
     else
     {
       v36 = 0;
-      v20 = [(PKDQuery *)self database];
-      v21 = [v20 external];
-      v22 = [v21 ls];
-      v23 = [v22 extensionPointRecordEnumeratorForExtensionPointIdentifier:v6];
+      database2 = [(PKDQuery *)self database];
+      external2 = [database2 external];
+      v22 = [external2 ls];
+      v23 = [v22 extensionPointRecordEnumeratorForExtensionPointIdentifier:pointCopy];
 
       v40 = 0u;
       v41 = 0u;
@@ -640,9 +640,9 @@ LABEL_9:
             }
 
             v28 = *(*(&v38 + 1) + 8 * v26);
-            v29 = [(PKDQuery *)self database];
-            v30 = [v29 external];
-            v31 = [v30 ls];
+            database3 = [(PKDQuery *)self database];
+            external3 = [database3 external];
+            v31 = [external3 ls];
             v32 = [v31 plugInRecordEnumeratorForExtensionPointRecord:v28];
 
             if (v32)
@@ -662,7 +662,7 @@ LABEL_9:
       }
     }
 
-    v7 = v36;
+    platformsCopy = v36;
   }
 
   else
@@ -681,17 +681,17 @@ LABEL_27:
   return v34;
 }
 
-- (id)_findPlugInsWithExtensionPoints:(id)a3 platforms:(id)a4
+- (id)_findPlugInsWithExtensionPoints:(id)points platforms:(id)platforms
 {
-  v6 = a3;
-  v7 = a4;
+  pointsCopy = points;
+  platformsCopy = platforms;
   v8 = objc_opt_new();
   v9 = objc_autoreleasePoolPush();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = v6;
+  v10 = pointsCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -716,7 +716,7 @@ LABEL_27:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [(PKDQuery *)self _findPlugInsWithExtensionPoint:*(*(&v18 + 1) + 8 * v13) platforms:v7, v18];
+        v15 = [(PKDQuery *)self _findPlugInsWithExtensionPoint:*(*(&v18 + 1) + 8 * v13) platforms:platformsCopy, v18];
         [v8 unionSet:v15];
 
         ++v13;
@@ -735,24 +735,24 @@ LABEL_27:
   return v16;
 }
 
-- (id)_findPlugInsWithIdentifier:(id)a3
+- (id)_findPlugInsWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_new();
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PKDQuery *)self database];
-  v8 = [v7 external];
-  v9 = [v8 ls];
-  v10 = [v9 plugInRecordForIdentifier:v4];
+  database = [(PKDQuery *)self database];
+  external = [database external];
+  v9 = [external ls];
+  v10 = [v9 plugInRecordForIdentifier:identifierCopy];
 
   if (v10)
   {
     if (![(PKDQuery *)self _needsFilter]|| [(PKDQuery *)self _allowPlugInForRecord:v10])
     {
       v11 = +[NSMutableDictionary dictionary];
-      v12 = [(PKDQuery *)self database];
-      v13 = [(PKDQuery *)self discoveryUUID];
-      v14 = [v12 plugInForExtensionRecord:v10 discoveryInstanceUUID:v13 extensionPointCache:v11];
+      database2 = [(PKDQuery *)self database];
+      discoveryUUID = [(PKDQuery *)self discoveryUUID];
+      v14 = [database2 plugInForExtensionRecord:v10 discoveryInstanceUUID:discoveryUUID extensionPointCache:v11];
 
       [(PKDQuery *)self _safelyAddPlugIn:v14 toSet:v5];
       v15 = 1;

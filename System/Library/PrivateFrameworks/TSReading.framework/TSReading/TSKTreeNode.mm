@@ -1,32 +1,32 @@
 @interface TSKTreeNode
-- (BOOL)hasChildWithName:(id)a3;
-- (TSKTreeNode)initWithContext:(id)a3;
-- (TSKTreeNode)nodeWithObject:(id)a3;
-- (id)nodeAtIndex:(unint64_t)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (BOOL)hasChildWithName:(id)name;
+- (TSKTreeNode)initWithContext:(id)context;
+- (TSKTreeNode)nodeWithObject:(id)object;
+- (id)nodeAtIndex:(unint64_t)index;
+- (id)objectAtIndex:(unint64_t)index;
 - (id)shallowCopy;
-- (int64_t)indexOfNodeWithObject:(id)a3;
-- (void)addChildWithName:(id)a3 object:(id)a4;
-- (void)addNode:(id)a3 atIndex:(unint64_t)a4;
-- (void)addObject:(id)a3 atIndex:(unint64_t)a4;
+- (int64_t)indexOfNodeWithObject:(id)object;
+- (void)addChildWithName:(id)name object:(id)object;
+- (void)addNode:(id)node atIndex:(unint64_t)index;
+- (void)addObject:(id)object atIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)enumerateAllChildrenWithBlock:(id)a3;
+- (void)enumerateAllChildrenWithBlock:(id)block;
 - (void)removeAllChildren;
-- (void)removeChildAtIndex:(unint64_t)a3;
-- (void)removeChildWithDataObject:(id)a3;
-- (void)removeChildWithName:(id)a3;
-- (void)setChildren:(id)a3;
-- (void)setDataObject:(id)a3;
-- (void)setName:(id)a3;
+- (void)removeChildAtIndex:(unint64_t)index;
+- (void)removeChildWithDataObject:(id)object;
+- (void)removeChildWithName:(id)name;
+- (void)setChildren:(id)children;
+- (void)setDataObject:(id)object;
+- (void)setName:(id)name;
 @end
 
 @implementation TSKTreeNode
 
-- (TSKTreeNode)initWithContext:(id)a3
+- (TSKTreeNode)initWithContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = TSKTreeNode;
-  v3 = [(TSPObject *)&v6 initWithContext:a3];
+  v3 = [(TSPObject *)&v6 initWithContext:context];
   v4 = v3;
   if (v3)
   {
@@ -45,33 +45,33 @@
   [(TSKTreeNode *)&v3 dealloc];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  nameCopy = name;
 
-  self->mDisplayName = a3;
+  self->mDisplayName = name;
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  childrenCopy = children;
 
-  self->mChildren = a3;
+  self->mChildren = children;
 }
 
-- (void)setDataObject:(id)a3
+- (void)setDataObject:(id)object
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  objectCopy = object;
 
-  self->mObject = a3;
+  self->mObject = object;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v3 = [(NSMutableArray *)self->mChildren objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->mChildren objectAtIndex:index];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -81,21 +81,21 @@
   return [v3 dataObject];
 }
 
-- (id)nodeAtIndex:(unint64_t)a3
+- (id)nodeAtIndex:(unint64_t)index
 {
-  v3 = [(NSMutableArray *)self->mChildren objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->mChildren objectAtIndex:index];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKTreeNode nodeAtIndex:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKTreeNode.mm"), 119, @"Not a tree node where there should be one!"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKTreeNode.mm"), 119, @"Not a tree node where there should be one!"}];
   }
 
   return v3;
 }
 
-- (TSKTreeNode)nodeWithObject:(id)a3
+- (TSKTreeNode)nodeWithObject:(id)object
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -139,7 +139,7 @@ LABEL_3:
   }
 }
 
-- (int64_t)indexOfNodeWithObject:(id)a3
+- (int64_t)indexOfNodeWithObject:(id)object
 {
   v5 = [(NSMutableArray *)self->mChildren count];
   if (v5 < 1)
@@ -149,7 +149,7 @@ LABEL_3:
 
   v6 = v5;
   v7 = 0;
-  while (([objc_msgSend(-[NSMutableArray objectAtIndex:](self->mChildren objectAtIndex:{v7), "dataObject"), "isEqual:", a3}] & 1) == 0)
+  while (([objc_msgSend(-[NSMutableArray objectAtIndex:](self->mChildren objectAtIndex:{v7), "dataObject"), "isEqual:", object}] & 1) == 0)
   {
     if (v6 == ++v7)
     {
@@ -160,7 +160,7 @@ LABEL_3:
   return v7;
 }
 
-- (BOOL)hasChildWithName:(id)a3
+- (BOOL)hasChildWithName:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
@@ -207,7 +207,7 @@ LABEL_3:
   return v5;
 }
 
-- (void)addChildWithName:(id)a3 object:(id)a4
+- (void)addChildWithName:(id)name object:(id)object
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -232,7 +232,7 @@ LABEL_3:
         v12 = *(*(&v14 + 1) + 8 * i);
         if ([objc_msgSend(v12 "name")])
         {
-          [v12 setDataObject:a4];
+          [v12 setDataObject:object];
           return;
         }
       }
@@ -249,36 +249,36 @@ LABEL_3:
 
   [(TSPObject *)self willModify];
   v13 = [[TSKTreeNode alloc] initWithContext:[(TSPObject *)self context]];
-  [(TSKTreeNode *)v13 setName:a3];
-  [(TSKTreeNode *)v13 setDataObject:a4];
+  [(TSKTreeNode *)v13 setName:name];
+  [(TSKTreeNode *)v13 setDataObject:object];
   [(NSMutableArray *)self->mChildren addObject:v13];
 }
 
-- (void)addObject:(id)a3 atIndex:(unint64_t)a4
+- (void)addObject:(id)object atIndex:(unint64_t)index
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKTreeNode addObject:atIndex:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKTreeNode.mm"), 184, @"Can't get a name for this object!"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKTreeNode.mm"), 184, @"Can't get a name for this object!"}];
   }
 
   [(TSPObject *)self willModify];
   v9 = [[TSKTreeNode alloc] initWithContext:[(TSPObject *)self context]];
-  -[TSKTreeNode setName:](v9, "setName:", [a3 name]);
-  [(TSKTreeNode *)v9 setDataObject:a3];
-  [(NSMutableArray *)self->mChildren insertObject:v9 atIndex:a4];
+  -[TSKTreeNode setName:](v9, "setName:", [object name]);
+  [(TSKTreeNode *)v9 setDataObject:object];
+  [(NSMutableArray *)self->mChildren insertObject:v9 atIndex:index];
 }
 
-- (void)addNode:(id)a3 atIndex:(unint64_t)a4
+- (void)addNode:(id)node atIndex:(unint64_t)index
 {
   [(TSPObject *)self willModify];
   mChildren = self->mChildren;
 
-  [(NSMutableArray *)mChildren insertObject:a3 atIndex:a4];
+  [(NSMutableArray *)mChildren insertObject:node atIndex:index];
 }
 
-- (void)removeChildWithName:(id)a3
+- (void)removeChildWithName:(id)name
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -343,7 +343,7 @@ LABEL_3:
   }
 }
 
-- (void)removeChildWithDataObject:(id)a3
+- (void)removeChildWithDataObject:(id)object
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -408,12 +408,12 @@ LABEL_3:
   }
 }
 
-- (void)removeChildAtIndex:(unint64_t)a3
+- (void)removeChildAtIndex:(unint64_t)index
 {
   [(TSPObject *)self willModify];
   mChildren = self->mChildren;
 
-  [(NSMutableArray *)mChildren removeObjectAtIndex:a3];
+  [(NSMutableArray *)mChildren removeObjectAtIndex:index];
 }
 
 - (void)removeAllChildren
@@ -424,14 +424,14 @@ LABEL_3:
   [(NSMutableArray *)mChildren removeAllObjects];
 }
 
-- (void)enumerateAllChildrenWithBlock:(id)a3
+- (void)enumerateAllChildrenWithBlock:(id)block
 {
   mChildren = self->mChildren;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__TSKTreeNode_enumerateAllChildrenWithBlock___block_invoke;
   v4[3] = &unk_279D47730;
-  v4[4] = a3;
+  v4[4] = block;
   [(NSMutableArray *)mChildren enumerateObjectsUsingBlock:v4];
 }
 
@@ -480,8 +480,8 @@ uint64_t __45__TSKTreeNode_enumerateAllChildrenWithBlock___block_invoke(uint64_t
           objc_enumerationMutation(mChildren);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) shallowCopy];
-        [v4 addObject:v10];
+        shallowCopy = [*(*(&v12 + 1) + 8 * v9) shallowCopy];
+        [v4 addObject:shallowCopy];
 
         ++v9;
       }

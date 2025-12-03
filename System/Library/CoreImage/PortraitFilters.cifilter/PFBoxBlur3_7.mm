@@ -17,14 +17,14 @@
     v23 = kCIKernelOutputFormat;
     v24 = [NSNumber numberWithInt:kCIFormatRh];
     v11 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    v12 = [(CIImage *)inputImage imageByClampingToExtent];
+    imageByClampingToExtent = [(CIImage *)inputImage imageByClampingToExtent];
     if (qword_8C968 != -1)
     {
       sub_491D4();
     }
 
     v13 = qword_8C960;
-    v22 = v12;
+    v22 = imageByClampingToExtent;
     v14 = [NSArray arrayWithObjects:&v22 count:1];
     y = CGRectInfinite.origin.y;
     width = CGRectInfinite.size.width;

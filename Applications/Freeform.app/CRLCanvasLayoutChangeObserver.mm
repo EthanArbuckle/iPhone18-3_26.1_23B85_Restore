@@ -1,72 +1,72 @@
 @interface CRLCanvasLayoutChangeObserver
-- (CRLCanvasLayoutChangeObserver)initWithChangeNotifier:(id)a3 layoutController:(id)a4;
+- (CRLCanvasLayoutChangeObserver)initWithChangeNotifier:(id)notifier layoutController:(id)controller;
 - (CRLInteractiveCanvasController)interactiveCanvasController;
 - (void)didProcessAllChanges;
-- (void)i_layoutRegistered:(id)a3;
-- (void)i_layoutUnregistered:(id)a3;
-- (void)preprocessChanges:(id)a3 forChangeSource:(id)a4;
-- (void)processChanges:(id)a3 forChangeSource:(id)a4;
+- (void)i_layoutRegistered:(id)registered;
+- (void)i_layoutUnregistered:(id)unregistered;
+- (void)preprocessChanges:(id)changes forChangeSource:(id)source;
+- (void)processChanges:(id)changes forChangeSource:(id)source;
 @end
 
 @implementation CRLCanvasLayoutChangeObserver
 
-- (CRLCanvasLayoutChangeObserver)initWithChangeNotifier:(id)a3 layoutController:(id)a4
+- (CRLCanvasLayoutChangeObserver)initWithChangeNotifier:(id)notifier layoutController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  notifierCopy = notifier;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = CRLCanvasLayoutChangeObserver;
   v8 = [(CRLCanvasLayoutChangeObserver *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_changeNotifier, v6);
-    objc_storeWeak(&v9->_layoutController, v7);
+    objc_storeWeak(&v8->_changeNotifier, notifierCopy);
+    objc_storeWeak(&v9->_layoutController, controllerCopy);
   }
 
   return v9;
 }
 
-- (void)i_layoutRegistered:(id)a3
+- (void)i_layoutRegistered:(id)registered
 {
-  v4 = a3;
+  registeredCopy = registered;
   WeakRetained = objc_loadWeakRetained(&self->_changeNotifier);
-  v5 = [v4 info];
+  info = [registeredCopy info];
 
-  [WeakRetained addObserver:self forChangeSource:v5];
+  [WeakRetained addObserver:self forChangeSource:info];
 }
 
-- (void)i_layoutUnregistered:(id)a3
+- (void)i_layoutUnregistered:(id)unregistered
 {
-  v4 = a3;
+  unregisteredCopy = unregistered;
   WeakRetained = objc_loadWeakRetained(&self->_changeNotifier);
-  v5 = [v4 info];
+  info = [unregisteredCopy info];
 
-  [WeakRetained removeObserver:self forChangeSource:v5];
+  [WeakRetained removeObserver:self forChangeSource:info];
 }
 
-- (void)preprocessChanges:(id)a3 forChangeSource:(id)a4
+- (void)preprocessChanges:(id)changes forChangeSource:(id)source
 {
-  v17 = a3;
-  v6 = a4;
-  v13 = sub_1003035DC(v6, 1, v7, v8, v9, v10, v11, v12, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+  changesCopy = changes;
+  sourceCopy = source;
+  v13 = sub_1003035DC(sourceCopy, 1, v7, v8, v9, v10, v11, v12, &OBJC_PROTOCOL___CRLCanvasElementInfo);
   if (v13)
   {
     WeakRetained = objc_loadWeakRetained(&self->_layoutController);
     v15 = [WeakRetained layoutsForInfo:v13];
-    [v15 makeObjectsPerformSelector:"processChanges:" withObject:v17];
+    [v15 makeObjectsPerformSelector:"processChanges:" withObject:changesCopy];
   }
 
   v16 = objc_loadWeakRetained(&self->_icc);
-  [v16 preprocessChanges:v17 forChangeSource:v6];
+  [v16 preprocessChanges:changesCopy forChangeSource:sourceCopy];
 }
 
-- (void)processChanges:(id)a3 forChangeSource:(id)a4
+- (void)processChanges:(id)changes forChangeSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  changesCopy = changes;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  [WeakRetained processChanges:v7 forChangeSource:v6];
+  [WeakRetained processChanges:changesCopy forChangeSource:sourceCopy];
 }
 
 - (void)didProcessAllChanges

@@ -1,6 +1,6 @@
 @interface NFTagAppProcessorHomeKitAccessory
 - (NFTagAppProcessorHomeKitAccessory)init;
-- (id)processNDEFMesssage:(id)a3 outputMessage:(id *)a4 tag:(id)a5 stopProcessing:(BOOL *)a6;
+- (id)processNDEFMesssage:(id)messsage outputMessage:(id *)message tag:(id)tag stopProcessing:(BOOL *)processing;
 @end
 
 @implementation NFTagAppProcessorHomeKitAccessory
@@ -24,38 +24,38 @@
   return v2;
 }
 
-- (id)processNDEFMesssage:(id)a3 outputMessage:(id *)a4 tag:(id)a5 stopProcessing:(BOOL *)a6
+- (id)processNDEFMesssage:(id)messsage outputMessage:(id *)message tag:(id)tag stopProcessing:(BOOL *)processing
 {
-  v8 = a5;
-  v44 = a6;
-  *a6 = 0;
+  tagCopy = tag;
+  processingCopy = processing;
+  *processing = 0;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v9 = [a3 records];
-  v10 = [v9 countByEnumeratingWithState:&v52 objects:v69 count:16];
+  records = [messsage records];
+  v10 = [records countByEnumeratingWithState:&v52 objects:v69 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v53;
     v13 = &GetElapsedTimeInMillisecondsFromMachTime_ptr;
     v41 = *v53;
-    v42 = v8;
-    v45 = v9;
+    v42 = tagCopy;
+    v45 = records;
     do
     {
       for (i = 0; i != v11; i = i + 1)
       {
         if (*v53 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(records);
         }
 
         v15 = *(*(&v52 + 1) + 8 * i);
         if ([v15 isURIRecord])
         {
-          v47 = [v15 decode];
+          decode = [v15 decode];
           v16 = [v13[476] componentsWithString:?];
           v48 = 0u;
           v49 = 0u;
@@ -78,15 +78,15 @@
                 if (v16)
                 {
                   v21 = *(*(&v48 + 1) + 8 * j);
-                  v22 = [v16 scheme];
-                  v23 = [v22 lowercaseString];
-                  LODWORD(v21) = [v23 isEqualToString:v21];
+                  scheme = [v16 scheme];
+                  lowercaseString = [scheme lowercaseString];
+                  LODWORD(v21) = [lowercaseString isEqualToString:v21];
 
                   if (v21)
                   {
                     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
                     Logger = NFLogGetLogger();
-                    v8 = v42;
+                    tagCopy = v42;
                     if (Logger)
                     {
                       v25 = Logger;
@@ -94,14 +94,14 @@
                       isMetaClass = class_isMetaClass(Class);
                       ClassName = object_getClassName(self);
                       Name = sel_getName(a2);
-                      v30 = [v42 tagID];
+                      tagID = [v42 tagID];
                       v31 = 45;
                       if (isMetaClass)
                       {
                         v31 = 43;
                       }
 
-                      v25(6, "%c[%{public}s %{public}s]:%i Posting HomeKit Tag notification with UID : %@ for urlText = %@", v31, ClassName, Name, 59, v30, v47);
+                      v25(6, "%c[%{public}s %{public}s]:%i Posting HomeKit Tag notification with UID : %@ for urlText = %@", v31, ClassName, Name, 59, tagID, decode);
                     }
 
                     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -121,7 +121,7 @@
 
                       v35 = object_getClassName(self);
                       v36 = sel_getName(a2);
-                      v37 = [v42 tagID];
+                      tagID2 = [v42 tagID];
                       *buf = 67110402;
                       v57 = v34;
                       v58 = 2082;
@@ -131,9 +131,9 @@
                       v62 = 1024;
                       v63 = 59;
                       v64 = 2112;
-                      v65 = v37;
+                      v65 = tagID2;
                       v66 = 2112;
-                      v67 = v47;
+                      v67 = decode;
                       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Posting HomeKit Tag notification with UID : %@ for urlText = %@", buf, 0x36u);
                     }
 
@@ -145,12 +145,12 @@
                     }
 
                     v39 = +[NSDistributedNotificationCenter defaultCenter];
-                    [v39 postNotificationName:@"com.apple.nfcd.homekit.proxcard" object:v47 userInfo:0 options:3];
+                    [v39 postNotificationName:@"com.apple.nfcd.homekit.proxcard" object:decode userInfo:0 options:3];
 
-                    [(NFXPCEventPublisher *)self->_eventPublisher sendXpcNotificationEventWithString:v47];
-                    *v44 = 1;
+                    [(NFXPCEventPublisher *)self->_eventPublisher sendXpcNotificationEventWithString:decode];
+                    *processingCopy = 1;
 
-                    v9 = v45;
+                    records = v45;
                     goto LABEL_32;
                   }
                 }
@@ -166,14 +166,14 @@
             }
           }
 
-          v9 = v45;
+          records = v45;
           v12 = v41;
           v13 = &GetElapsedTimeInMillisecondsFromMachTime_ptr;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v52 objects:v69 count:16];
-      v8 = v42;
+      v11 = [records countByEnumeratingWithState:&v52 objects:v69 count:16];
+      tagCopy = v42;
     }
 
     while (v11);

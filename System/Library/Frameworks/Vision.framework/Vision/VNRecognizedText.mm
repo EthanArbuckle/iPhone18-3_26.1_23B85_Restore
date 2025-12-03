@@ -1,14 +1,14 @@
 @interface VNRecognizedText
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)string;
 - (VNConfidence)confidence;
-- (VNRecognizedText)initWithCoder:(id)a3;
-- (VNRecognizedText)initWithRequestRevision:(unint64_t)a3 CRImageReaderOutput:(id)a4;
+- (VNRecognizedText)initWithCoder:(id)coder;
+- (VNRecognizedText)initWithRequestRevision:(unint64_t)revision CRImageReaderOutput:(id)output;
 - (VNRectangleObservation)boundingBoxForRange:(NSRange)range error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNRecognizedText
@@ -18,9 +18,9 @@
   v8.receiver = self;
   v8.super_class = VNRecognizedText;
   v3 = [(VNRecognizedText *)&v8 debugDescription];
-  v4 = [(VNRecognizedText *)self string];
+  string = [(VNRecognizedText *)self string];
   [(VNRecognizedText *)self confidence];
-  v6 = [v3 stringByAppendingFormat:@" %@ - (%f) revision: %ld", v4, v5, -[VNRecognizedText requestRevision](self, "requestRevision")];
+  v6 = [v3 stringByAppendingFormat:@" %@ - (%f) revision: %ld", string, v5, -[VNRecognizedText requestRevision](self, "requestRevision")];
 
   return v6;
 }
@@ -29,8 +29,8 @@
 {
   length = range.length;
   location = range.location;
-  v8 = [(VNRecognizedText *)self crOutput];
-  v9 = [v8 cornersForCharacterRange:location error:{length, error}];
+  crOutput = [(VNRecognizedText *)self crOutput];
+  v9 = [crOutput cornersForCharacterRange:location error:{length, error}];
 
   if (v9 && [v9 count] == 4)
   {
@@ -67,12 +67,12 @@
 
 - (VNConfidence)confidence
 {
-  v2 = [(VNRecognizedText *)self crOutput];
-  v3 = [v2 confidence];
+  crOutput = [(VNRecognizedText *)self crOutput];
+  confidence = [crOutput confidence];
   v4 = 0.0;
-  if (v3 < 3)
+  if (confidence < 3)
   {
-    v4 = *&dword_1A6050128[v3];
+    v4 = *&dword_1A6050128[confidence];
   }
 
   return v4;
@@ -80,16 +80,16 @@
 
 - (NSString)string
 {
-  v2 = [(VNRecognizedText *)self crOutput];
-  v3 = [v2 stringValue];
+  crOutput = [(VNRecognizedText *)self crOutput];
+  stringValue = [crOutput stringValue];
 
-  return v3;
+  return stringValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -99,8 +99,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNRecognizedText *)v5 crOutput];
+      v5 = equalCopy;
+      crOutput = [(VNRecognizedText *)v5 crOutput];
       v7 = VisionCoreEqualOrNilObjects();
 
       if (v7)
@@ -127,7 +127,7 @@
   return self->_requestRevision ^ __ROR8__([(CRImageReaderOutput *)self->_crOutput hash]^ __ROR8__([(VNRecognizedText *)&v3 hash], 51), 51);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [VNRecognizedText alloc];
   requestRevision = self->_requestRevision;
@@ -137,55 +137,55 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_crOutput forKey:@"crOutput"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_crOutput forKey:@"crOutput"];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_requestRevision];
-  [v5 encodeObject:v4 forKey:@"requestRevision"];
+  [coderCopy encodeObject:v4 forKey:@"requestRevision"];
 }
 
-- (VNRecognizedText)initWithCoder:(id)a3
+- (VNRecognizedText)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"crOutput"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"crOutput"];
   v6 = [v5 copy];
 
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestRevision"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestRevision"];
     v8 = v7;
     if (v7)
     {
       self = -[VNRecognizedText initWithRequestRevision:CRImageReaderOutput:](self, "initWithRequestRevision:CRImageReaderOutput:", [v7 unsignedIntegerValue], v6);
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (VNRecognizedText)initWithRequestRevision:(unint64_t)a3 CRImageReaderOutput:(id)a4
+- (VNRecognizedText)initWithRequestRevision:(unint64_t)revision CRImageReaderOutput:(id)output
 {
-  v7 = a4;
+  outputCopy = output;
   v11.receiver = self;
   v11.super_class = VNRecognizedText;
   v8 = [(VNRecognizedText *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_crOutput, a4);
-    v9->_requestRevision = a3;
+    objc_storeStrong(&v8->_crOutput, output);
+    v9->_requestRevision = revision;
   }
 
   return v9;

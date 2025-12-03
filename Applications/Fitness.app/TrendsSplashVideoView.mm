@@ -1,6 +1,6 @@
 @interface TrendsSplashVideoView
-- (_TtC10FitnessApp21TrendsSplashVideoView)initWithCoder:(id)a3;
-- (_TtC10FitnessApp21TrendsSplashVideoView)initWithFrame:(CGRect)a3;
+- (_TtC10FitnessApp21TrendsSplashVideoView)initWithCoder:(id)coder;
+- (_TtC10FitnessApp21TrendsSplashVideoView)initWithFrame:(CGRect)frame;
 - (void)configurePlayer;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
@@ -24,7 +24,7 @@
   }
 }
 
-- (_TtC10FitnessApp21TrendsSplashVideoView)initWithCoder:(id)a3
+- (_TtC10FitnessApp21TrendsSplashVideoView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp21TrendsSplashVideoView_player) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp21TrendsSplashVideoView_playerLayer) = 0;
@@ -35,11 +35,11 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C00B8();
 }
 
-- (_TtC10FitnessApp21TrendsSplashVideoView)initWithFrame:(CGRect)a3
+- (_TtC10FitnessApp21TrendsSplashVideoView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -48,13 +48,13 @@
 
 - (void)configurePlayer
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006825C();
 }
 
 - (void)teardownPlayer
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C0758();
 }
 

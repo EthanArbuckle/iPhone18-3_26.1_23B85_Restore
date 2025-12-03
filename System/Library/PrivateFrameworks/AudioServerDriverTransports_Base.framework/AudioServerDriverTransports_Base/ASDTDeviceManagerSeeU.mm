@@ -1,22 +1,22 @@
 @interface ASDTDeviceManagerSeeU
-- (ASDTDeviceManagerSeeU)initWithConfig:(id)a3 withDelegate:(id)a4;
-- (BOOL)addAudioDeviceWithCheck:(id)a3;
+- (ASDTDeviceManagerSeeU)initWithConfig:(id)config withDelegate:(id)delegate;
+- (BOOL)addAudioDeviceWithCheck:(id)check;
 - (BOOL)setupPublishUnderlyingDevicesProperty;
-- (void)publishDevice:(id)a3;
-- (void)removeAudioDevice:(id)a3;
-- (void)removeAudioDevices:(id)a3;
+- (void)publishDevice:(id)device;
+- (void)removeAudioDevice:(id)device;
+- (void)removeAudioDevices:(id)devices;
 - (void)updateUnderlyingDeviceVisibility;
 @end
 
 @implementation ASDTDeviceManagerSeeU
 
-- (ASDTDeviceManagerSeeU)initWithConfig:(id)a3 withDelegate:(id)a4
+- (ASDTDeviceManagerSeeU)initWithConfig:(id)config withDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = ASDTDeviceManagerSeeU;
-  v8 = [(ASDTDeviceManager *)&v12 initWithConfig:v6 withDelegate:v7];
+  v8 = [(ASDTDeviceManager *)&v12 initWithConfig:configCopy withDelegate:delegateCopy];
   if (v8 && ([MEMORY[0x277CBEB58] set], v9 = objc_claimAutoreleasedReturnValue(), -[ASDTDeviceManagerSeeU setUnderlyingDevices:](v8, "setUnderlyingDevices:", v9), v9, !-[ASDTDeviceManagerSeeU setupPublishUnderlyingDevicesProperty](v8, "setupPublishUnderlyingDevicesProperty")))
   {
     v10 = 0;
@@ -30,38 +30,38 @@
   return v10;
 }
 
-- (BOOL)addAudioDeviceWithCheck:(id)a3
+- (BOOL)addAudioDeviceWithCheck:(id)check
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  checkCopy = check;
   v17.receiver = self;
   v17.super_class = ASDTDeviceManagerSeeU;
-  v5 = [(ASDTDeviceManager *)&v17 addAudioDeviceWithCheck:v4];
+  v5 = [(ASDTDeviceManager *)&v17 addAudioDeviceWithCheck:checkCopy];
   if (v5)
   {
-    v6 = [v4 deviceUID];
-    v7 = [(ASDTDeviceManager *)self factoryForDeviceUID:v6];
+    deviceUID = [checkCopy deviceUID];
+    v7 = [(ASDTDeviceManager *)self factoryForDeviceUID:deviceUID];
 
-    v8 = [v7 config];
-    v9 = [v8 asdtOptionallyPublishedDevice];
+    config = [v7 config];
+    asdtOptionallyPublishedDevice = [config asdtOptionallyPublishedDevice];
 
-    if (v9)
+    if (asdtOptionallyPublishedDevice)
     {
-      v10 = [(ASDTDeviceManager *)self initializingCond];
-      [v10 lock];
+      initializingCond = [(ASDTDeviceManager *)self initializingCond];
+      [initializingCond lock];
 
       v11 = ASDTBaseLogType();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [v4 deviceName];
-        [(ASDTDeviceManagerSeeU *)v12 addAudioDeviceWithCheck:buf, v11];
+        deviceName = [checkCopy deviceName];
+        [(ASDTDeviceManagerSeeU *)deviceName addAudioDeviceWithCheck:buf, v11];
       }
 
-      v13 = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
-      [v13 addObject:v4];
+      underlyingDevices = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
+      [underlyingDevices addObject:checkCopy];
 
-      v14 = [(ASDTDeviceManager *)self initializingCond];
-      [v14 unlock];
+      initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+      [initializingCond2 unlock];
     }
   }
 
@@ -69,74 +69,74 @@
   return v5;
 }
 
-- (void)removeAudioDevice:(id)a3
+- (void)removeAudioDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(ASDTDeviceManager *)self initializingCond];
-  [v5 lock];
+  deviceCopy = device;
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
-  v6 = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
-  v7 = [v6 containsObject:v4];
+  underlyingDevices = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
+  v7 = [underlyingDevices containsObject:deviceCopy];
 
   if (v7)
   {
-    v8 = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
-    [v8 removeObject:v4];
+    underlyingDevices2 = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
+    [underlyingDevices2 removeObject:deviceCopy];
   }
 
-  v9 = [(ASDTDeviceManager *)self initializingCond];
-  [v9 unlock];
+  initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond2 unlock];
 
   v10.receiver = self;
   v10.super_class = ASDTDeviceManagerSeeU;
-  [(ASDTDeviceManager *)&v10 removeAudioDevice:v4];
+  [(ASDTDeviceManager *)&v10 removeAudioDevice:deviceCopy];
 }
 
-- (void)removeAudioDevices:(id)a3
+- (void)removeAudioDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(ASDTDeviceManager *)self initializingCond];
-  [v5 lock];
+  devicesCopy = devices;
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
-  if ([v4 count])
+  if ([devicesCopy count])
   {
-    v6 = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
-    v7 = [MEMORY[0x277CBEB98] setWithArray:v4];
-    [v6 minusSet:v7];
+    underlyingDevices = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
+    v7 = [MEMORY[0x277CBEB98] setWithArray:devicesCopy];
+    [underlyingDevices minusSet:v7];
   }
 
-  v8 = [(ASDTDeviceManager *)self initializingCond];
-  [v8 unlock];
+  initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond2 unlock];
 
   v9.receiver = self;
   v9.super_class = ASDTDeviceManagerSeeU;
-  [(ASDTDeviceManager *)&v9 removeAudioDevices:v4];
+  [(ASDTDeviceManager *)&v9 removeAudioDevices:devicesCopy];
 }
 
-- (void)publishDevice:(id)a3
+- (void)publishDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(ASDTDeviceManager *)self initializingCond];
-  [v5 lock];
+  deviceCopy = device;
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
-  v6 = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
-  v7 = [v4 device];
-  v8 = [v6 containsObject:v7];
+  underlyingDevices = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
+  device = [deviceCopy device];
+  v8 = [underlyingDevices containsObject:device];
 
   if (!v8 || (-[ASDTDeviceManagerSeeU publishUnderlyingDevicesProperty](self, "publishUnderlyingDevicesProperty"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 uint32Value], v9, v10))
   {
     v12.receiver = self;
     v12.super_class = ASDTDeviceManagerSeeU;
-    [(ASDTDeviceManager *)&v12 publishDeviceLocked:v4];
+    [(ASDTDeviceManager *)&v12 publishDeviceLocked:deviceCopy];
   }
 
-  v11 = [(ASDTDeviceManager *)self initializingCond];
-  [v11 unlock];
+  initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond2 unlock];
 }
 
 - (BOOL)setupPublishUnderlyingDevicesProperty
 {
-  v2 = self;
+  selfCopy = self;
   v16[2] = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
   v15[0] = @"Subclass";
@@ -145,30 +145,30 @@
   v16[1] = &unk_2853549D8;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v4 = [ASDTCustomProperty customPropertyForConfig:v3];
-  [(ASDTDeviceManagerSeeU *)v2 setPublishUnderlyingDevicesProperty:v4];
+  [(ASDTDeviceManagerSeeU *)selfCopy setPublishUnderlyingDevicesProperty:v4];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__ASDTDeviceManagerSeeU_setupPublishUnderlyingDevicesProperty__block_invoke;
   v12[3] = &unk_278CE6540;
   objc_copyWeak(&v13, &location);
-  v5 = [(ASDTDeviceManagerSeeU *)v2 publishUnderlyingDevicesProperty];
-  [v5 setPropertyChangeBlock:v12];
+  publishUnderlyingDevicesProperty = [(ASDTDeviceManagerSeeU *)selfCopy publishUnderlyingDevicesProperty];
+  [publishUnderlyingDevicesProperty setPropertyChangeBlock:v12];
 
-  v6 = [(ASDTDeviceManager *)v2 plugin];
-  v7 = [(ASDTDeviceManagerSeeU *)v2 publishUnderlyingDevicesProperty];
-  [v6 addCustomProperty:v7];
+  plugin = [(ASDTDeviceManager *)selfCopy plugin];
+  publishUnderlyingDevicesProperty2 = [(ASDTDeviceManagerSeeU *)selfCopy publishUnderlyingDevicesProperty];
+  [plugin addCustomProperty:publishUnderlyingDevicesProperty2];
 
-  v8 = [(ASDTDeviceManagerSeeU *)v2 publishUnderlyingDevicesProperty];
-  -[ASDTDeviceManagerSeeU setUnderlyingDevicesArePublished:](v2, "setUnderlyingDevicesArePublished:", [v8 uint32Value] != 0);
+  publishUnderlyingDevicesProperty3 = [(ASDTDeviceManagerSeeU *)selfCopy publishUnderlyingDevicesProperty];
+  -[ASDTDeviceManagerSeeU setUnderlyingDevicesArePublished:](selfCopy, "setUnderlyingDevicesArePublished:", [publishUnderlyingDevicesProperty3 uint32Value] != 0);
 
-  v9 = [(ASDTDeviceManagerSeeU *)v2 publishUnderlyingDevicesProperty];
-  LOBYTE(v2) = v9 != 0;
+  publishUnderlyingDevicesProperty4 = [(ASDTDeviceManagerSeeU *)selfCopy publishUnderlyingDevicesProperty];
+  LOBYTE(selfCopy) = publishUnderlyingDevicesProperty4 != 0;
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
   v10 = *MEMORY[0x277D85DE8];
-  return v2;
+  return selfCopy;
 }
 
 void __62__ASDTDeviceManagerSeeU_setupPublishUnderlyingDevicesProperty__block_invoke(uint64_t a1)
@@ -193,44 +193,44 @@ void __62__ASDTDeviceManagerSeeU_setupPublishUnderlyingDevicesProperty__block_in
 
 - (void)updateUnderlyingDeviceVisibility
 {
-  v7 = [(ASDTDeviceManager *)self initializingCond];
-  [v7 lock];
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
-  v8 = [(ASDTDeviceManagerSeeU *)self publishUnderlyingDevicesProperty];
-  v3 = [v8 uint32Value];
+  publishUnderlyingDevicesProperty = [(ASDTDeviceManagerSeeU *)self publishUnderlyingDevicesProperty];
+  uint32Value = [publishUnderlyingDevicesProperty uint32Value];
 
-  v4 = [(ASDTDeviceManagerSeeU *)self underlyingDevicesArePublished];
-  if (v3)
+  underlyingDevicesArePublished = [(ASDTDeviceManagerSeeU *)self underlyingDevicesArePublished];
+  if (uint32Value)
   {
-    if (v4)
+    if (underlyingDevicesArePublished)
     {
       goto LABEL_7;
     }
 
     [(ASDTDeviceManagerSeeU *)self setUnderlyingDevicesArePublished:1];
-    v9 = [(ASDTDeviceManager *)self delegate];
-    v5 = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
-    v6 = [v5 allObjects];
-    [v9 addAudioDevices:v6];
+    delegate = [(ASDTDeviceManager *)self delegate];
+    underlyingDevices = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
+    allObjects = [underlyingDevices allObjects];
+    [delegate addAudioDevices:allObjects];
   }
 
   else
   {
-    if (!v4)
+    if (!underlyingDevicesArePublished)
     {
       goto LABEL_7;
     }
 
     [(ASDTDeviceManagerSeeU *)self setUnderlyingDevicesArePublished:0];
-    v9 = [(ASDTDeviceManager *)self delegate];
-    v5 = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
-    v6 = [v5 allObjects];
-    [v9 removeAudioDevices:v6];
+    delegate = [(ASDTDeviceManager *)self delegate];
+    underlyingDevices = [(ASDTDeviceManagerSeeU *)self underlyingDevices];
+    allObjects = [underlyingDevices allObjects];
+    [delegate removeAudioDevices:allObjects];
   }
 
 LABEL_7:
-  v10 = [(ASDTDeviceManager *)self initializingCond];
-  [v10 unlock];
+  initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond2 unlock];
 }
 
 - (void)addAudioDeviceWithCheck:(os_log_t)log .cold.1(void *a1, uint8_t *buf, os_log_t log)

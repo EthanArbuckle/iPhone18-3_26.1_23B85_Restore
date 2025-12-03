@@ -1,14 +1,14 @@
 @interface CDPWebAccessStateController
-- (unint64_t)webAccessStatus:(id *)a3;
-- (void)updateWebAccessStatus:(unint64_t)a3 completion:(id)a4;
-- (void)webAccessStatusWithCompletion:(id)a3;
+- (unint64_t)webAccessStatus:(id *)status;
+- (void)updateWebAccessStatus:(unint64_t)status completion:(id)completion;
+- (void)webAccessStatusWithCompletion:(id)completion;
 @end
 
 @implementation CDPWebAccessStateController
 
-- (void)webAccessStatusWithCompletion:(id)a3
+- (void)webAccessStatusWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _os_activity_create(&dword_1DED99000, "Web access: Fetching status.", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -18,7 +18,7 @@
   v11[1] = 3221225472;
   v11[2] = __61__CDPWebAccessStateController_webAccessStatusWithCompletion___block_invoke;
   v11[3] = &unk_1E869D588;
-  v6 = v3;
+  v6 = completionCopy;
   v12 = v6;
   v7 = [(CDPDaemonConnection *)v5 daemonWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -75,7 +75,7 @@ void __61__CDPWebAccessStateController_webAccessStatusWithCompletion___block_inv
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)webAccessStatus:(id *)a3
+- (unint64_t)webAccessStatus:(id *)status
 {
   v4 = _os_activity_create(&dword_1DED99000, "Web access: Fetching status.", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -105,9 +105,9 @@ void __61__CDPWebAccessStateController_webAccessStatusWithCompletion___block_inv
   v9[4] = &v11;
   v9[5] = &v17;
   [v6 webAccessStatusWithCompletion:v9];
-  if (a3)
+  if (status)
   {
-    *a3 = v12[5];
+    *status = v12[5];
   }
 
   v7 = v18[3];
@@ -165,9 +165,9 @@ void __47__CDPWebAccessStateController_webAccessStatus___block_invoke_20(uint64_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateWebAccessStatus:(unint64_t)a3 completion:(id)a4
+- (void)updateWebAccessStatus:(unint64_t)status completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = _os_activity_create(&dword_1DED99000, "Web access: Updating status", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -177,7 +177,7 @@ void __47__CDPWebAccessStateController_webAccessStatus___block_invoke_20(uint64_
   v13[1] = 3221225472;
   v13[2] = __64__CDPWebAccessStateController_updateWebAccessStatus_completion___block_invoke;
   v13[3] = &unk_1E869D588;
-  v8 = v5;
+  v8 = completionCopy;
   v14 = v8;
   v9 = [(CDPDaemonConnection *)v7 daemonWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
@@ -186,7 +186,7 @@ void __47__CDPWebAccessStateController_webAccessStatus___block_invoke_20(uint64_
   v11[3] = &unk_1E869D588;
   v10 = v8;
   v12 = v10;
-  [v9 updateWebAccessStatus:a3 completion:v11];
+  [v9 updateWebAccessStatus:status completion:v11];
 
   os_activity_scope_leave(&state);
 }

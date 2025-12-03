@@ -1,21 +1,21 @@
 @interface _DAChangeHistoryABLegacyClerk
-- (_DAChangeHistoryABLegacyClerk)initWithAddressBook:(void *)a3;
+- (_DAChangeHistoryABLegacyClerk)initWithAddressBook:(void *)book;
 - (id)identifiersOfAllRegisterdClients;
 - (void)dealloc;
-- (void)registerClientWithIdentifier:(id)a3 forContainer:(id)a4;
-- (void)unregisterClientWithIdentifier:(id)a3 forContainer:(id)a4;
+- (void)registerClientWithIdentifier:(id)identifier forContainer:(id)container;
+- (void)unregisterClientWithIdentifier:(id)identifier forContainer:(id)container;
 @end
 
 @implementation _DAChangeHistoryABLegacyClerk
 
-- (_DAChangeHistoryABLegacyClerk)initWithAddressBook:(void *)a3
+- (_DAChangeHistoryABLegacyClerk)initWithAddressBook:(void *)book
 {
   v6.receiver = self;
   v6.super_class = _DAChangeHistoryABLegacyClerk;
   v4 = [(_DAChangeHistoryABLegacyClerk *)&v6 init];
   if (v4)
   {
-    v4->_addressBook = CFRetain(a3);
+    v4->_addressBook = CFRetain(book);
   }
 
   return v4;
@@ -29,22 +29,22 @@
   [(_DAChangeHistoryABLegacyClerk *)&v3 dealloc];
 }
 
-- (void)unregisterClientWithIdentifier:(id)a3 forContainer:(id)a4
+- (void)unregisterClientWithIdentifier:(id)identifier forContainer:(id)container
 {
-  v6 = a4;
-  v7 = a3;
+  containerCopy = container;
+  identifierCopy = identifier;
   [(_DAChangeHistoryABLegacyClerk *)self addressBook];
-  [v6 asSource];
+  [containerCopy asSource];
 
   ABChangeHistoryUnregisterClientForSource();
 }
 
-- (void)registerClientWithIdentifier:(id)a3 forContainer:(id)a4
+- (void)registerClientWithIdentifier:(id)identifier forContainer:(id)container
 {
-  v6 = a4;
-  v7 = a3;
+  containerCopy = container;
+  identifierCopy = identifier;
   [(_DAChangeHistoryABLegacyClerk *)self addressBook];
-  [v6 asSource];
+  [containerCopy asSource];
 
   ABChangeHistoryRegisterClientForSource();
 }

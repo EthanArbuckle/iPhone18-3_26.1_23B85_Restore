@@ -1,45 +1,45 @@
 @interface _UIPreviewPresentationController2
 - (CGAffineTransform)preferredContentPlatterTransform;
 - (CGRect)_computedPlatterFrame;
-- (CGRect)_preferredContentPlatterRectForContainerRect:(CGRect)a3;
+- (CGRect)_preferredContentPlatterRectForContainerRect:(CGRect)rect;
 - (UIViewControllerPreviewing_Internal)previewingContext;
 - (UIViewPropertyAnimator)currentTransitionAnimator;
 - (_UIPreviewInteractionHighlighting)currentHighlighter;
-- (_UIPreviewPresentationController2)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4 previewingContext:(id)a5;
+- (_UIPreviewPresentationController2)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController previewingContext:(id)context;
 - (void)_layoutContentViews;
-- (void)_performDismissAnimationsWithTransitionContext:(id)a3;
-- (void)_performPresentationAnimationsWithTransitionContext:(id)a3;
-- (void)_performReducedMotionDismissAnimationsWithTransitionContext:(id)a3;
-- (void)_performReducedMotionPresentationAnimationsWithTransitionContext:(id)a3;
-- (void)_performTransitionAnimations:(id)a3;
-- (void)_prepareContentPlatterViewForPresentationTransitionIfNeeded:(id)a3;
+- (void)_performDismissAnimationsWithTransitionContext:(id)context;
+- (void)_performPresentationAnimationsWithTransitionContext:(id)context;
+- (void)_performReducedMotionDismissAnimationsWithTransitionContext:(id)context;
+- (void)_performReducedMotionPresentationAnimationsWithTransitionContext:(id)context;
+- (void)_performTransitionAnimations:(id)animations;
+- (void)_prepareContentPlatterViewForPresentationTransitionIfNeeded:(id)needed;
 - (void)_prepareContentViewsForPresentationAnimationsIfNeeded;
-- (void)_prepareRevealPlatterViewForPresentationTransitionIfNeeded:(id)a3;
-- (void)_presentationTransitionWillBeginForContainerEffectView:(id)a3;
-- (void)_updateFromInteractionEffect:(id)a3;
+- (void)_prepareRevealPlatterViewForPresentationTransitionIfNeeded:(id)needed;
+- (void)_presentationTransitionWillBeginForContainerEffectView:(id)view;
+- (void)_updateFromInteractionEffect:(id)effect;
 - (void)containerViewDidLayoutSubviews;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)setPreferredContentPlatterTransform:(CGAffineTransform *)a3;
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)a3;
+- (void)setPreferredContentPlatterTransform:(CGAffineTransform *)transform;
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)container;
 @end
 
 @implementation _UIPreviewPresentationController2
 
-- (_UIPreviewPresentationController2)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4 previewingContext:(id)a5
+- (_UIPreviewPresentationController2)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController previewingContext:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = _UIPreviewPresentationController2;
-  v9 = [(UIPreviewPresentationController *)&v15 initWithPresentedViewController:a3 presentingViewController:a4];
+  v9 = [(UIPreviewPresentationController *)&v15 initWithPresentedViewController:controller presentingViewController:viewController];
   v10 = v9;
   if (v9)
   {
     [(_UIPreviewPresentationController2 *)v9 setShouldScaleContentViewToAspectFitPlatter:1];
-    [(_UIPreviewPresentationController2 *)v10 setPreviewingContext:v8];
+    [(_UIPreviewPresentationController2 *)v10 setPreviewingContext:contextCopy];
     v11 = *(MEMORY[0x1E695EFD0] + 16);
     v14[0] = *MEMORY[0x1E695EFD0];
     v14[1] = v11;
@@ -51,18 +51,18 @@
   return v10;
 }
 
-- (void)_presentationTransitionWillBeginForContainerEffectView:(id)a3
+- (void)_presentationTransitionWillBeginForContainerEffectView:(id)view
 {
   v6.receiver = self;
   v6.super_class = _UIPreviewPresentationController2;
-  v4 = a3;
-  [(UIPreviewPresentationController *)&v6 _presentationTransitionWillBeginForContainerEffectView:v4];
-  [(_UIPreviewPresentationController2 *)self _prepareRevealPlatterViewForPresentationTransitionIfNeeded:v4, v6.receiver, v6.super_class];
-  [(_UIPreviewPresentationController2 *)self _prepareContentPlatterViewForPresentationTransitionIfNeeded:v4];
+  viewCopy = view;
+  [(UIPreviewPresentationController *)&v6 _presentationTransitionWillBeginForContainerEffectView:viewCopy];
+  [(_UIPreviewPresentationController2 *)self _prepareRevealPlatterViewForPresentationTransitionIfNeeded:viewCopy, v6.receiver, v6.super_class];
+  [(_UIPreviewPresentationController2 *)self _prepareContentPlatterViewForPresentationTransitionIfNeeded:viewCopy];
 
-  v5 = [(UIPresentationController *)self containerView];
-  [v5 setNeedsLayout];
-  [v5 layoutIfNeeded];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView setNeedsLayout];
+  [containerView layoutIfNeeded];
   [(_UIPreviewPresentationController2 *)self _prepareContentViewsForPresentationAnimationsIfNeeded];
 }
 
@@ -71,17 +71,17 @@
   v11.receiver = self;
   v11.super_class = _UIPreviewPresentationController2;
   [(UIPreviewPresentationController *)&v11 presentationTransitionWillBegin];
-  v3 = [(_UIPreviewPresentationController2 *)self previewingContext];
+  previewingContext = [(_UIPreviewPresentationController2 *)self previewingContext];
 
-  if (v3)
+  if (previewingContext)
   {
-    v4 = [(_UIPreviewPresentationController2 *)self revealPlatterView];
-    v5 = [v4 contentView];
+    revealPlatterView = [(_UIPreviewPresentationController2 *)self revealPlatterView];
+    contentView = [revealPlatterView contentView];
 
-    v6 = [(_UIPreviewPresentationController2 *)self currentHighlighter];
-    v7 = [(UIPresentationController *)self containerView];
-    v8 = [(_UIPreviewPresentationController2 *)self previewingContext];
-    v9 = [v6 highlightShouldBeginInContainerView:v5 presentationContainerView:v7 previewingContext:v8];
+    currentHighlighter = [(_UIPreviewPresentationController2 *)self currentHighlighter];
+    containerView = [(UIPresentationController *)self containerView];
+    previewingContext2 = [(_UIPreviewPresentationController2 *)self previewingContext];
+    v9 = [currentHighlighter highlightShouldBeginInContainerView:contentView presentationContainerView:containerView previewingContext:previewingContext2];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -92,11 +92,11 @@
   }
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
   v3.receiver = self;
   v3.super_class = _UIPreviewPresentationController2;
-  [(UIPreviewPresentationController *)&v3 presentationTransitionDidEnd:a3];
+  [(UIPreviewPresentationController *)&v3 presentationTransitionDidEnd:end];
 }
 
 - (void)dismissalTransitionWillBegin
@@ -112,11 +112,11 @@
   [(_UIPreviewPresentationController2 *)self _performTransitionAnimations:v3];
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
   v3.receiver = self;
   v3.super_class = _UIPreviewPresentationController2;
-  [(UIPreviewPresentationController *)&v3 dismissalTransitionDidEnd:a3];
+  [(UIPreviewPresentationController *)&v3 dismissalTransitionDidEnd:end];
 }
 
 - (void)containerViewDidLayoutSubviews
@@ -133,10 +133,10 @@
 
 - (void)_layoutContentViews
 {
-  v3 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
-  v4 = [v3 contentView];
+  presentationContainerEffectView = [(UIPreviewPresentationController *)self presentationContainerEffectView];
+  contentView = [presentationContainerEffectView contentView];
 
-  [v4 bounds];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -146,11 +146,11 @@
   v36 = v13;
   v33 = v16;
   v34 = v15;
-  v17 = [(_UIPreviewPresentationController2 *)self previewingContext];
-  if (v17)
+  previewingContext = [(_UIPreviewPresentationController2 *)self previewingContext];
+  if (previewingContext)
   {
-    v18 = [(_UIPreviewPresentationController2 *)self previewingContext];
-    [v18 preferredSourceViewRectInCoordinateSpace:v4];
+    previewingContext2 = [(_UIPreviewPresentationController2 *)self previewingContext];
+    [previewingContext2 preferredSourceViewRectInCoordinateSpace:contentView];
     v37 = v20;
     v38 = v19;
     v22 = v21;
@@ -167,8 +167,8 @@
 
   if ([(_UIPreviewPresentationController2 *)self shouldScaleContentViewToAspectFitPlatter])
   {
-    v25 = [(UIPresentationController *)self presentedViewController];
-    [v25 preferredContentSize];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    [presentedViewController preferredContentSize];
     Width = v26;
     Height = v28;
 
@@ -197,13 +197,13 @@
     Height = *(MEMORY[0x1E695F060] + 8);
   }
 
-  v30 = [(_UIPreviewPresentationController2 *)self contentPlatterView];
+  contentPlatterView = [(_UIPreviewPresentationController2 *)self contentPlatterView];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __56___UIPreviewPresentationController2__layoutContentViews__block_invoke;
   v40[3] = &unk_1E70F3590;
-  v41 = v30;
-  v31 = v30;
+  v41 = contentPlatterView;
+  v31 = contentPlatterView;
   [UIView performWithoutAnimation:v40];
   [v31 setContentSize:{Width, Height}];
   [v31 setFrame:{v36, v35, v34, v33}];
@@ -214,19 +214,19 @@
   *&v39[2] = *&v39[9];
   *&v39[4] = *&v39[11];
   [v31 setTransform:v39];
-  v32 = [(_UIPreviewPresentationController2 *)self revealPlatterView];
-  [v32 setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v22, v24}];
-  [v32 setCenter:{v38 + v22 * 0.5, v37 + v24 * 0.5}];
-  [v32 setDropShadowEnabled:0];
+  revealPlatterView = [(_UIPreviewPresentationController2 *)self revealPlatterView];
+  [revealPlatterView setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v22, v24}];
+  [revealPlatterView setCenter:{v38 + v22 * 0.5, v37 + v24 * 0.5}];
+  [revealPlatterView setDropShadowEnabled:0];
 }
 
-- (CGRect)_preferredContentPlatterRectForContainerRect:(CGRect)a3
+- (CGRect)_preferredContentPlatterRectForContainerRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsEmpty(rect))
   {
     v8 = *MEMORY[0x1E695F058];
     v9 = *(MEMORY[0x1E695F058] + 8);
@@ -241,8 +241,8 @@
     v9 = y + v13;
     v10 = width - (v12 + v14);
     v11 = height - (v13 + v15);
-    v16 = [(UIPresentationController *)self presentedViewController];
-    [v16 preferredContentSize];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    [presentedViewController preferredContentSize];
     v18 = v17;
     v20 = v19;
 
@@ -281,8 +281,8 @@
         v26 = v10 / v24;
       }
 
-      v27 = [(UIPresentationController *)self traitCollection];
-      [v27 displayScale];
+      traitCollection = [(UIPresentationController *)self traitCollection];
+      [traitCollection displayScale];
       v8 = UIRectCenteredIntegralRectScale(0.0, 0.0, v25, v26, v8, v9, v10, v11, v28);
       v9 = v29;
       v10 = v30;
@@ -301,64 +301,64 @@
   return result;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v4.receiver = self;
   v4.super_class = _UIPreviewPresentationController2;
-  [(UIPresentationController *)&v4 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(UIPresentationController *)&v4 preferredContentSizeDidChangeForChildContentContainer:container];
   [(_UIPreviewPresentationController2 *)self _layoutContentViews];
 }
 
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)a3
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)container
 {
   v5.receiver = self;
   v5.super_class = _UIPreviewPresentationController2;
-  [(UIPresentationController *)&v5 systemLayoutFittingSizeDidChangeForChildContentContainer:a3];
-  v4 = [(UIPresentationController *)self containerView];
-  [v4 setNeedsLayout];
+  [(UIPresentationController *)&v5 systemLayoutFittingSizeDidChangeForChildContentContainer:container];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView setNeedsLayout];
 }
 
-- (void)_prepareRevealPlatterViewForPresentationTransitionIfNeeded:(id)a3
+- (void)_prepareRevealPlatterViewForPresentationTransitionIfNeeded:(id)needed
 {
-  v14 = a3;
-  v4 = [(_UIPreviewPresentationController2 *)self revealPlatterView];
+  neededCopy = needed;
+  revealPlatterView = [(_UIPreviewPresentationController2 *)self revealPlatterView];
 
-  if (!v4)
+  if (!revealPlatterView)
   {
-    v5 = [(_UIPreviewPresentationController2 *)self previewingContext];
+    previewingContext = [(_UIPreviewPresentationController2 *)self previewingContext];
 
-    if (v5)
+    if (previewingContext)
     {
-      v6 = [(_UIPreviewPresentationController2 *)self previewingContext];
-      [v6 preferredSourceViewRectInCoordinateSpace:0];
+      previewingContext2 = [(_UIPreviewPresentationController2 *)self previewingContext];
+      [previewingContext2 preferredSourceViewRectInCoordinateSpace:0];
       v8 = v7;
       v10 = v9;
 
       v11 = [[UIView alloc] initWithFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v8, v10];
       v12 = [[_UIPreviewPresentationPlatterView alloc] initWithContentView:v11];
       [(UIView *)v12 setUserInteractionEnabled:0];
-      v13 = [v14 contentView];
-      [v13 addSubview:v12];
+      contentView = [neededCopy contentView];
+      [contentView addSubview:v12];
 
       [(_UIPreviewPresentationController2 *)self setRevealPlatterView:v12];
     }
   }
 }
 
-- (void)_prepareContentPlatterViewForPresentationTransitionIfNeeded:(id)a3
+- (void)_prepareContentPlatterViewForPresentationTransitionIfNeeded:(id)needed
 {
-  v9 = a3;
-  v4 = [(_UIPreviewPresentationController2 *)self contentPlatterView];
+  neededCopy = needed;
+  contentPlatterView = [(_UIPreviewPresentationController2 *)self contentPlatterView];
 
-  if (!v4)
+  if (!contentPlatterView)
   {
-    v5 = [(UIPresentationController *)self presentedViewController];
-    v6 = [v5 view];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    view = [presentedViewController view];
 
-    v7 = [[_UIPreviewPresentationPlatterView alloc] initWithContentView:v6];
+    v7 = [[_UIPreviewPresentationPlatterView alloc] initWithContentView:view];
     [(UIView *)v7 setUserInteractionEnabled:[(_UIPreviewPresentationController2 *)self shouldEnableUserInteractionOnPlatter]];
-    v8 = [v9 contentView];
-    [v8 addSubview:v7];
+    contentView = [neededCopy contentView];
+    [contentView addSubview:v7];
 
     [(_UIPreviewPresentationController2 *)self setContentPlatterView:v7];
   }
@@ -366,25 +366,25 @@
 
 - (void)_prepareContentViewsForPresentationAnimationsIfNeeded
 {
-  v3 = [(_UIPreviewPresentationController2 *)self currentTransitionAnimator];
+  currentTransitionAnimator = [(_UIPreviewPresentationController2 *)self currentTransitionAnimator];
 
-  if (v3)
+  if (currentTransitionAnimator)
   {
-    v4 = [(UIPresentationController *)self presentedViewController];
-    v5 = [v4 transitionCoordinator];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    transitionCoordinator = [presentedViewController transitionCoordinator];
 
-    if (v5)
+    if (transitionCoordinator)
     {
-      v6 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
-      v7 = [(_UIPreviewPresentationController2 *)self contentPlatterView];
-      [v7 frame];
+      presentationContainerEffectView = [(UIPreviewPresentationController *)self presentationContainerEffectView];
+      contentPlatterView = [(_UIPreviewPresentationController2 *)self contentPlatterView];
+      [contentPlatterView frame];
       v9 = v8;
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v16 = [(_UIPreviewPresentationController2 *)self previewingContext];
-      v17 = [v6 contentView];
-      [v16 preferredSourceViewRectInCoordinateSpace:v17];
+      previewingContext = [(_UIPreviewPresentationController2 *)self previewingContext];
+      contentView = [presentationContainerEffectView contentView];
+      [previewingContext preferredSourceViewRectInCoordinateSpace:contentView];
       v19 = v18;
       v21 = v20;
       v23 = v22;
@@ -433,62 +433,62 @@
       v37 = v39;
       CGAffineTransformScale(&v38, &v37, Height / v31 * 1.2, Height / v31 * 1.2);
       v39 = v38;
-      [v7 setTransform:&v38];
-      [v7 setAlpha:0.0];
-      [v7 setBlurRadius:96.0];
-      [v7 setDropShadowEnabled:0];
-      v32 = [(UIPresentationController *)self traitCollection];
-      v33 = [UIForcePresentationHelper visualEffectForPresentationPhase:0 traitCollection:v32 variant:0];
-      [v6 setEffect:v33];
+      [contentPlatterView setTransform:&v38];
+      [contentPlatterView setAlpha:0.0];
+      [contentPlatterView setBlurRadius:96.0];
+      [contentPlatterView setDropShadowEnabled:0];
+      traitCollection = [(UIPresentationController *)self traitCollection];
+      v33 = [UIForcePresentationHelper visualEffectForPresentationPhase:0 traitCollection:traitCollection variant:0];
+      [presentationContainerEffectView setEffect:v33];
     }
   }
 }
 
-- (void)_performTransitionAnimations:(id)a3
+- (void)_performTransitionAnimations:(id)animations
 {
-  v4 = a3;
-  v5 = [(_UIPreviewPresentationController2 *)self currentTransitionAnimator];
-  [v5 addAnimations:v4];
+  animationsCopy = animations;
+  currentTransitionAnimator = [(_UIPreviewPresentationController2 *)self currentTransitionAnimator];
+  [currentTransitionAnimator addAnimations:animationsCopy];
 }
 
-- (void)_performPresentationAnimationsWithTransitionContext:(id)a3
+- (void)_performPresentationAnimationsWithTransitionContext:(id)context
 {
-  v4 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
-  [v4 bounds];
+  presentationContainerEffectView = [(UIPreviewPresentationController *)self presentationContainerEffectView];
+  [presentationContainerEffectView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(_UIPreviewPresentationController2 *)self contentPlatterView];
-  v14 = [(_UIPreviewPresentationController2 *)self revealPlatterView];
+  contentPlatterView = [(_UIPreviewPresentationController2 *)self contentPlatterView];
+  revealPlatterView = [(_UIPreviewPresentationController2 *)self revealPlatterView];
   [(_UIPreviewPresentationController2 *)self _preferredContentPlatterRectForContainerRect:v6, v8, v10, v12];
   v41 = v16;
   v42 = v15;
   v40 = v17;
   v19 = v18;
-  v20 = [(_UIPreviewPresentationController2 *)self previewingContext];
-  v21 = [v4 contentView];
-  [v20 preferredSourceViewRectInCoordinateSpace:v21];
+  previewingContext = [(_UIPreviewPresentationController2 *)self previewingContext];
+  contentView = [presentationContainerEffectView contentView];
+  [previewingContext preferredSourceViewRectInCoordinateSpace:contentView];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
 
-  v30 = [(_UIPreviewPresentationController2 *)self currentTransitionAnimator];
-  [v30 duration];
+  currentTransitionAnimator = [(_UIPreviewPresentationController2 *)self currentTransitionAnimator];
+  [currentTransitionAnimator duration];
   v32 = v31;
 
   [(_UIPreviewPresentationController2 *)self interactiveTransitionFraction];
   v34 = v33;
-  v35 = [(UIPresentationController *)self traitCollection];
+  traitCollection = [(UIPresentationController *)self traitCollection];
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __89___UIPreviewPresentationController2__performPresentationAnimationsWithTransitionContext___block_invoke;
   v43[3] = &unk_1E711B030;
-  v44 = v14;
-  v45 = v4;
-  v46 = self;
-  v47 = v35;
+  v44 = revealPlatterView;
+  v45 = presentationContainerEffectView;
+  selfCopy = self;
+  v47 = traitCollection;
   v49 = v34;
   v50 = 1.0 - v34;
   v51 = v42;
@@ -499,69 +499,69 @@
   v56 = v25;
   v57 = v27;
   v58 = v29;
-  v48 = v13;
-  v36 = v13;
-  v37 = v35;
-  v38 = v4;
-  v39 = v14;
+  v48 = contentPlatterView;
+  v36 = contentPlatterView;
+  v37 = traitCollection;
+  v38 = presentationContainerEffectView;
+  v39 = revealPlatterView;
   [UIView animateKeyframesWithDuration:6 delay:v43 options:0 animations:v32 completion:0.0];
 }
 
-- (void)_performReducedMotionPresentationAnimationsWithTransitionContext:(id)a3
+- (void)_performReducedMotionPresentationAnimationsWithTransitionContext:(id)context
 {
-  v4 = [(_UIPreviewPresentationController2 *)self contentPlatterView];
-  [v4 setAlpha:1.0];
+  contentPlatterView = [(_UIPreviewPresentationController2 *)self contentPlatterView];
+  [contentPlatterView setAlpha:1.0];
 
-  v5 = [(_UIPreviewPresentationController2 *)self revealPlatterView];
-  [v5 setAlpha:0.0];
+  revealPlatterView = [(_UIPreviewPresentationController2 *)self revealPlatterView];
+  [revealPlatterView setAlpha:0.0];
 
   v6 = objc_opt_class();
-  v9 = [(UIPresentationController *)self traitCollection];
-  v7 = [v6 _backgroundEffectForTraitCollection:v9 interactive:0];
-  v8 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
-  [v8 setEffect:v7];
+  traitCollection = [(UIPresentationController *)self traitCollection];
+  v7 = [v6 _backgroundEffectForTraitCollection:traitCollection interactive:0];
+  presentationContainerEffectView = [(UIPreviewPresentationController *)self presentationContainerEffectView];
+  [presentationContainerEffectView setEffect:v7];
 }
 
-- (void)_performDismissAnimationsWithTransitionContext:(id)a3
+- (void)_performDismissAnimationsWithTransitionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(_UIPreviewPresentationController2 *)self _shouldReduceMotion])
   {
-    [(_UIPreviewPresentationController2 *)self _performReducedMotionDismissAnimationsWithTransitionContext:v4];
+    [(_UIPreviewPresentationController2 *)self _performReducedMotionDismissAnimationsWithTransitionContext:contextCopy];
   }
 
   else
   {
-    v5 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
-    [v5 bounds];
+    presentationContainerEffectView = [(UIPreviewPresentationController *)self presentationContainerEffectView];
+    [presentationContainerEffectView bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(_UIPreviewPresentationController2 *)self contentPlatterView];
+    contentPlatterView = [(_UIPreviewPresentationController2 *)self contentPlatterView];
     [(_UIPreviewPresentationController2 *)self _preferredContentPlatterRectForContainerRect:v7, v9, v11, v13];
     v37 = v15;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(_UIPreviewPresentationController2 *)self previewingContext];
-    v23 = [v5 contentView];
-    [v22 preferredSourceViewRectInCoordinateSpace:v23];
+    previewingContext = [(_UIPreviewPresentationController2 *)self previewingContext];
+    contentView = [presentationContainerEffectView contentView];
+    [previewingContext preferredSourceViewRectInCoordinateSpace:contentView];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
 
-    v32 = [(_UIPreviewPresentationController2 *)self currentTransitionAnimator];
-    [v32 duration];
+    currentTransitionAnimator = [(_UIPreviewPresentationController2 *)self currentTransitionAnimator];
+    [currentTransitionAnimator duration];
     v34 = v33;
 
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __84___UIPreviewPresentationController2__performDismissAnimationsWithTransitionContext___block_invoke;
     v38[3] = &unk_1E70F8980;
-    v39 = v5;
-    v40 = v14;
+    v39 = presentationContainerEffectView;
+    v40 = contentPlatterView;
     v41 = v25;
     v42 = v27;
     v43 = v29;
@@ -570,28 +570,28 @@
     v46 = v17;
     v47 = v19;
     v48 = v21;
-    v35 = v14;
-    v36 = v5;
+    v35 = contentPlatterView;
+    v36 = presentationContainerEffectView;
     [UIView animateKeyframesWithDuration:6 delay:v38 options:0 animations:v34 completion:0.0];
   }
 }
 
-- (void)_performReducedMotionDismissAnimationsWithTransitionContext:(id)a3
+- (void)_performReducedMotionDismissAnimationsWithTransitionContext:(id)context
 {
-  v4 = [(_UIPreviewPresentationController2 *)self contentPlatterView];
-  [v4 setAlpha:0.0];
+  contentPlatterView = [(_UIPreviewPresentationController2 *)self contentPlatterView];
+  [contentPlatterView setAlpha:0.0];
 
-  v5 = [(_UIPreviewPresentationController2 *)self revealPlatterView];
-  [v5 setAlpha:0.0];
+  revealPlatterView = [(_UIPreviewPresentationController2 *)self revealPlatterView];
+  [revealPlatterView setAlpha:0.0];
 
-  v6 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
-  [v6 setEffect:0];
+  presentationContainerEffectView = [(UIPreviewPresentationController *)self presentationContainerEffectView];
+  [presentationContainerEffectView setEffect:0];
 }
 
 - (CGRect)_computedPlatterFrame
 {
-  v3 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
-  [v3 bounds];
+  presentationContainerEffectView = [(UIPreviewPresentationController *)self presentationContainerEffectView];
+  [presentationContainerEffectView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -605,11 +605,11 @@
   return result;
 }
 
-- (void)_updateFromInteractionEffect:(id)a3
+- (void)_updateFromInteractionEffect:(id)effect
 {
-  if (a3)
+  if (effect)
   {
-    [a3 preferredContentTransform];
+    [effect preferredContentTransform];
   }
 
   else
@@ -624,11 +624,11 @@
   v10 = v13;
   [(_UIPreviewPresentationController2 *)self setPreferredContentPlatterTransform:&v8];
   [(_UIPreviewPresentationController2 *)self preferredContentPlatterTransform];
-  v4 = [(_UIPreviewPresentationController2 *)self contentPlatterView];
+  contentPlatterView = [(_UIPreviewPresentationController2 *)self contentPlatterView];
   v8 = v5;
   v9 = v6;
   v10 = v7;
-  [v4 setTransform:&v8];
+  [contentPlatterView setTransform:&v8];
 }
 
 - (UIViewControllerPreviewing_Internal)previewingContext
@@ -647,11 +647,11 @@
   return self;
 }
 
-- (void)setPreferredContentPlatterTransform:(CGAffineTransform *)a3
+- (void)setPreferredContentPlatterTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_preferredContentPlatterTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_preferredContentPlatterTransform.a = *&transform->a;
   *&self->_preferredContentPlatterTransform.c = v4;
   *&self->_preferredContentPlatterTransform.tx = v3;
 }

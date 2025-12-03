@@ -1,21 +1,21 @@
 @interface EPSagaTransactionDismissSetup
 - (EPTransactionDelegate)delegate;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionDismissSetup
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v5 = a4;
-  v6 = [v5 serviceFromClass:objc_opt_class()];
+  registryCopy = registry;
+  v6 = [registryCopy serviceFromClass:objc_opt_class()];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000A7BEC;
   v8[3] = &unk_1001757C0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = registryCopy;
+  selfCopy = self;
+  v7 = registryCopy;
   [v6 grabRegistryWithReadBlockAsync:v8];
 }
 

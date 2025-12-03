@@ -1,13 +1,13 @@
 @interface IdentityProofingImagePreviewViewController
-- (_TtC9CoreIDVUI42IdentityProofingImagePreviewViewController)initWithCoder:(id)a3;
-- (_TtC9CoreIDVUI42IdentityProofingImagePreviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9CoreIDVUI42IdentityProofingImagePreviewViewController)initWithCoder:(id)coder;
+- (_TtC9CoreIDVUI42IdentityProofingImagePreviewViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation IdentityProofingImagePreviewViewController
 
-- (_TtC9CoreIDVUI42IdentityProofingImagePreviewViewController)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI42IdentityProofingImagePreviewViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9CoreIDVUI42IdentityProofingImagePreviewViewController____lazy_storage___imageView) = 0;
   type metadata accessor for IdentityProofingImagePreviewViewController();
@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2457D3834();
 }
 
@@ -28,11 +28,11 @@
   v2 = v14.receiver;
   [(IdentityProofingImagePreviewViewController *)&v14 viewDidLayoutSubviews];
   v3 = sub_2457D355C();
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -52,7 +52,7 @@
   }
 }
 
-- (_TtC9CoreIDVUI42IdentityProofingImagePreviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9CoreIDVUI42IdentityProofingImagePreviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

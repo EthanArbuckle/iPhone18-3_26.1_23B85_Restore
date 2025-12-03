@@ -1,22 +1,22 @@
 @interface ICASCollaboratorData
-- (ICASCollaboratorData)initWithCountOfCollaboratorAdded:(id)a3 countOfCollaboratorRemoved:(id)a4;
+- (ICASCollaboratorData)initWithCountOfCollaboratorAdded:(id)added countOfCollaboratorRemoved:(id)removed;
 - (id)toDict;
 @end
 
 @implementation ICASCollaboratorData
 
-- (ICASCollaboratorData)initWithCountOfCollaboratorAdded:(id)a3 countOfCollaboratorRemoved:(id)a4
+- (ICASCollaboratorData)initWithCountOfCollaboratorAdded:(id)added countOfCollaboratorRemoved:(id)removed
 {
-  v7 = a3;
-  v8 = a4;
+  addedCopy = added;
+  removedCopy = removed;
   v12.receiver = self;
   v12.super_class = ICASCollaboratorData;
   v9 = [(ICASCollaboratorData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_countOfCollaboratorAdded, a3);
-    objc_storeStrong(&v10->_countOfCollaboratorRemoved, a4);
+    objc_storeStrong(&v9->_countOfCollaboratorAdded, added);
+    objc_storeStrong(&v10->_countOfCollaboratorRemoved, removed);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"countOfCollaboratorAdded";
-  v3 = [(ICASCollaboratorData *)self countOfCollaboratorAdded];
-  if (v3)
+  countOfCollaboratorAdded = [(ICASCollaboratorData *)self countOfCollaboratorAdded];
+  if (countOfCollaboratorAdded)
   {
-    v4 = [(ICASCollaboratorData *)self countOfCollaboratorAdded];
+    countOfCollaboratorAdded2 = [(ICASCollaboratorData *)self countOfCollaboratorAdded];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    countOfCollaboratorAdded2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = countOfCollaboratorAdded2;
   v12[1] = @"countOfCollaboratorRemoved";
-  v13[0] = v4;
-  v6 = [(ICASCollaboratorData *)self countOfCollaboratorRemoved];
-  if (v6)
+  v13[0] = countOfCollaboratorAdded2;
+  countOfCollaboratorRemoved = [(ICASCollaboratorData *)self countOfCollaboratorRemoved];
+  if (countOfCollaboratorRemoved)
   {
-    v7 = [(ICASCollaboratorData *)self countOfCollaboratorRemoved];
+    countOfCollaboratorRemoved2 = [(ICASCollaboratorData *)self countOfCollaboratorRemoved];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    countOfCollaboratorRemoved2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = countOfCollaboratorRemoved2;
+  v13[1] = countOfCollaboratorRemoved2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

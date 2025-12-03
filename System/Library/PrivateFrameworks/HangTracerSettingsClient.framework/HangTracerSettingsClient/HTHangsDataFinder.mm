@@ -1,23 +1,23 @@
 @interface HTHangsDataFinder
-+ (id)groupEntriesByHangID:(id)a3;
-- (HTHangsDataFinder)initWithLogUpdateCallback:(id)a3 tailspinSavedCallback:(id)a4;
-- (id)appRecordWithBundleId:(id)a3 cachedAppRecords:(id)a4;
-- (id)dateFromString:(id)a3;
-- (id)getFilteredLogURLsForPath:(id)a3 error:(id *)a4;
-- (id)hangsDataEntryAtPath:(id)a3 error:(id *)a4;
-- (id)hangsDataEntryWithFullPath:(id)a3 extendedAttributes:(id)a4 cachedAppRecords:(id)a5;
++ (id)groupEntriesByHangID:(id)d;
+- (HTHangsDataFinder)initWithLogUpdateCallback:(id)callback tailspinSavedCallback:(id)savedCallback;
+- (id)appRecordWithBundleId:(id)id cachedAppRecords:(id)records;
+- (id)dateFromString:(id)string;
+- (id)getFilteredLogURLsForPath:(id)path error:(id *)error;
+- (id)hangsDataEntryAtPath:(id)path error:(id *)error;
+- (id)hangsDataEntryWithFullPath:(id)path extendedAttributes:(id)attributes cachedAppRecords:(id)records;
 - (void)dealloc;
-- (void)findProcessingEventsFilteringDeveloperApps:(BOOL)a3 completionHandler:(id)a4;
-- (void)hangReporterDidSaveTailspin:(id)a3;
+- (void)findProcessingEventsFilteringDeveloperApps:(BOOL)apps completionHandler:(id)handler;
+- (void)hangReporterDidSaveTailspin:(id)tailspin;
 @end
 
 @implementation HTHangsDataFinder
 
-- (HTHangsDataFinder)initWithLogUpdateCallback:(id)a3 tailspinSavedCallback:(id)a4
+- (HTHangsDataFinder)initWithLogUpdateCallback:(id)callback tailspinSavedCallback:(id)savedCallback
 {
   v46 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v31 = a4;
+  callbackCopy = callback;
+  savedCallbackCopy = savedCallback;
   v44.receiver = self;
   v44.super_class = HTHangsDataFinder;
   v6 = [(HTHangsDataFinder *)&v44 init];
@@ -27,9 +27,9 @@
     v8 = *(v6 + 2);
     *(v6 + 2) = v7;
 
-    if (v32)
+    if (callbackCopy)
     {
-      v9 = MEMORY[0x25306A220](v32);
+      v9 = MEMORY[0x25306A220](callbackCopy);
       v10 = *(v6 + 3);
       *(v6 + 3) = v9;
 
@@ -112,14 +112,14 @@
       objc_destroyWeak(&v43);
     }
 
-    if (v31)
+    if (savedCallbackCopy)
     {
-      v26 = MEMORY[0x25306A220](v31);
+      v26 = MEMORY[0x25306A220](savedCallbackCopy);
       v27 = *(v6 + 4);
       *(v6 + 4) = v26;
 
-      v28 = [MEMORY[0x277CCA9A0] defaultCenter];
-      [v28 addObserver:v6 selector:sel_hangReporterDidSaveTailspin_ name:*MEMORY[0x277D0FA30] object:0];
+      defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+      [defaultCenter addObserver:v6 selector:sel_hangReporterDidSaveTailspin_ name:*MEMORY[0x277D0FA30] object:0];
     }
   }
 
@@ -189,34 +189,34 @@ void __69__HTHangsDataFinder_initWithLogUpdateCallback_tailspinSavedCallback___b
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HTHangsDataFinder;
   [(HTHangsDataFinder *)&v4 dealloc];
 }
 
-- (id)getFilteredLogURLsForPath:(id)a3 error:(id *)a4
+- (id)getFilteredLogURLsForPath:(id)path error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathCopy = path;
   v18 = 0;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6 isDirectory:&v18];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:pathCopy isDirectory:&v18];
   v9 = v18;
 
   v10 = MEMORY[0x277CBEBF8];
   if (v8 && (v9 & 1) != 0)
   {
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6 isDirectory:v18];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy isDirectory:v18];
     v19[0] = *MEMORY[0x277CBE8E0];
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    v14 = [v11 contentsOfDirectoryAtURL:v12 includingPropertiesForKeys:v13 options:0 error:a4];
+    v14 = [defaultManager2 contentsOfDirectoryAtURL:v12 includingPropertiesForKeys:v13 options:0 error:error];
 
-    v15 = [(HTHangsDataFinder *)self hangLogPredicate];
-    v10 = [v14 filteredArrayUsingPredicate:v15];
+    hangLogPredicate = [(HTHangsDataFinder *)self hangLogPredicate];
+    v10 = [v14 filteredArrayUsingPredicate:hangLogPredicate];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -224,17 +224,17 @@ void __69__HTHangsDataFinder_initWithLogUpdateCallback_tailspinSavedCallback___b
   return v10;
 }
 
-- (id)dateFromString:(id)a3
+- (id)dateFromString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  stringCopy = string;
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v5 = [stringCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v6 = [v5 length];
 
-  if (v6 && ([v3 doubleValue], v7 != 0.0))
+  if (v6 && ([stringCopy doubleValue], v7 != 0.0))
   {
     v9 = MEMORY[0x277CBEAA8];
-    [v3 doubleValue];
+    [stringCopy doubleValue];
     v8 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
   }
 
@@ -246,24 +246,24 @@ void __69__HTHangsDataFinder_initWithLogUpdateCallback_tailspinSavedCallback___b
   return v8;
 }
 
-- (id)hangsDataEntryAtPath:(id)a3 error:(id *)a4
+- (id)hangsDataEntryAtPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  NSLog(&cfstr_LookingForData.isa, v6);
-  v7 = [(HTHangsDataFinder *)self getFilteredLogURLsForPath:v6 error:a4];
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  pathCopy = path;
+  NSLog(&cfstr_LookingForData.isa, pathCopy);
+  v7 = [(HTHangsDataFinder *)self getFilteredLogURLsForPath:pathCopy error:error];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __48__HTHangsDataFinder_hangsDataEntryAtPath_error___block_invoke;
   v16[3] = &unk_2796A9280;
-  v17 = v6;
-  v18 = self;
-  v19 = v9;
-  v10 = v8;
+  v17 = pathCopy;
+  selfCopy = self;
+  v19 = dictionary;
+  v10 = array;
   v20 = v10;
-  v11 = v9;
-  v12 = v6;
+  v11 = dictionary;
+  v12 = pathCopy;
   [v7 enumerateObjectsUsingBlock:v16];
   v13 = v20;
   v14 = v10;
@@ -300,47 +300,47 @@ void __48__HTHangsDataFinder_hangsDataEntryAtPath_error___block_invoke(uint64_t 
   }
 }
 
-- (id)hangsDataEntryWithFullPath:(id)a3 extendedAttributes:(id)a4 cachedAppRecords:(id)a5
+- (id)hangsDataEntryWithFullPath:(id)path extendedAttributes:(id)attributes cachedAppRecords:(id)records
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 bundleID];
-  if (v11 && (v12 = v11, [v9 hangID], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
+  pathCopy = path;
+  attributesCopy = attributes;
+  recordsCopy = records;
+  bundleID = [attributesCopy bundleID];
+  if (bundleID && (v12 = bundleID, [attributesCopy hangID], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
   {
-    v14 = [v9 bundleID];
-    v26 = [(HTHangsDataFinder *)self appRecordWithBundleId:v14 cachedAppRecords:v10];
+    bundleID2 = [attributesCopy bundleID];
+    v26 = [(HTHangsDataFinder *)self appRecordWithBundleId:bundleID2 cachedAppRecords:recordsCopy];
 
     v25 = [HTHangsDataEntry alloc];
-    v24 = [v9 hangID];
-    v15 = [v9 creationDate];
-    v16 = [(HTHangsDataFinder *)self dateFromString:v15];
-    v17 = [v9 duration];
-    [v17 doubleValue];
+    hangID = [attributesCopy hangID];
+    creationDate = [attributesCopy creationDate];
+    v16 = [(HTHangsDataFinder *)self dateFromString:creationDate];
+    duration = [attributesCopy duration];
+    [duration doubleValue];
     v19 = v18;
-    v20 = [v9 bundleID];
-    v21 = [v9 processPath];
-    v22 = [(HTHangsDataEntry *)v25 initWithPath:v8 hangID:v24 creationDate:v16 duration:v20 processBundleID:v21 processPath:v26 processRecord:v19];
+    bundleID3 = [attributesCopy bundleID];
+    processPath = [attributesCopy processPath];
+    v22 = [(HTHangsDataEntry *)v25 initWithPath:pathCopy hangID:hangID creationDate:v16 duration:bundleID3 processBundleID:processPath processPath:v26 processRecord:v19];
   }
 
   else
   {
-    NSLog(&cfstr_EntryAtPathIsM.isa, v8);
+    NSLog(&cfstr_EntryAtPathIsM.isa, pathCopy);
     v22 = 0;
   }
 
   return v22;
 }
 
-- (id)appRecordWithBundleId:(id)a3 cachedAppRecords:(id)a4
+- (id)appRecordWithBundleId:(id)id cachedAppRecords:(id)records
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:v5];
+  idCopy = id;
+  recordsCopy = records;
+  v7 = [recordsCopy objectForKeyedSubscript:idCopy];
   if (!v7)
   {
     v12 = 0;
-    v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v5 allowPlaceholder:0 error:&v12];
+    v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:idCopy allowPlaceholder:0 error:&v12];
     v8 = v12;
     v9 = v8;
     if (!v8 && v7)
@@ -354,27 +354,27 @@ void __48__HTHangsDataFinder_hangsDataEntryAtPath_error___block_invoke(uint64_t 
       v10 = v8;
     }
 
-    NSLog(&cfstr_UnableToRetrie_0.isa, v5, v10);
+    NSLog(&cfstr_UnableToRetrie_0.isa, idCopy, v10);
     if (v7)
     {
 LABEL_7:
-      [v6 setObject:v7 forKeyedSubscript:v5];
+      [recordsCopy setObject:v7 forKeyedSubscript:idCopy];
     }
   }
 
   return v7;
 }
 
-+ (id)groupEntriesByHangID:(id)a3
++ (id)groupEntriesByHangID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dCopy = d;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = dCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -390,18 +390,18 @@ LABEL_7:
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 hangID];
-        if (v11)
+        hangID = [v10 hangID];
+        if (hangID)
         {
-          v12 = [v4 objectForKeyedSubscript:v11];
+          v12 = [dictionary objectForKeyedSubscript:hangID];
 
           if (!v12)
           {
-            v13 = [MEMORY[0x277CBEB18] array];
-            [v4 setObject:v13 forKeyedSubscript:v11];
+            array = [MEMORY[0x277CBEB18] array];
+            [dictionary setObject:array forKeyedSubscript:hangID];
           }
 
-          v14 = [v4 objectForKeyedSubscript:v11];
+          v14 = [dictionary objectForKeyedSubscript:hangID];
           [v14 addObject:v10];
         }
       }
@@ -412,7 +412,7 @@ LABEL_7:
     while (v7);
   }
 
-  v15 = [v4 copy];
+  v15 = [dictionary copy];
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
@@ -492,15 +492,15 @@ void __72__HTHangsDataFinder_findEventsFilteringDeveloperApps_completionHandler_
   }
 }
 
-- (void)findProcessingEventsFilteringDeveloperApps:(BOOL)a3 completionHandler:(id)a4
+- (void)findProcessingEventsFilteringDeveloperApps:(BOOL)apps completionHandler:(id)handler
 {
-  v4 = a3;
+  appsCopy = apps;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v16 = v4;
+    v16 = appsCopy;
     _os_log_impl(&dword_2510AF000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Getting pending hangs list (filtering on developer apps: %d)", buf, 8u);
   }
 
@@ -512,8 +512,8 @@ void __72__HTHangsDataFinder_findEventsFilteringDeveloperApps_completionHandler_
     v12[2] = __82__HTHangsDataFinder_findProcessingEventsFilteringDeveloperApps_completionHandler___block_invoke;
     v12[3] = &unk_2796A9348;
     v12[4] = self;
-    v13 = v6;
-    v14 = v4;
+    v13 = handlerCopy;
+    v14 = appsCopy;
     [(HTHangReporterService *)hangReporterService getProcessingHangsWithCompletion:v12];
     v10 = v13;
   }
@@ -521,7 +521,7 @@ void __72__HTHangsDataFinder_findEventsFilteringDeveloperApps_completionHandler_
   else
   {
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4099 userInfo:0];
-    (*(v6 + 2))(v6, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -627,7 +627,7 @@ void __82__HTHangsDataFinder_findProcessingEventsFilteringDeveloperApps_completi
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hangReporterDidSaveTailspin:(id)a3
+- (void)hangReporterDidSaveTailspin:(id)tailspin
 {
   tailspinSavedCallback = self->_tailspinSavedCallback;
   if (tailspinSavedCallback)

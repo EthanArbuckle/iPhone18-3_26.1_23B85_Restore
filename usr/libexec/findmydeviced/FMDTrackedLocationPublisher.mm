@@ -1,39 +1,39 @@
 @interface FMDTrackedLocationPublisher
-- (void)_publishResultLocation:(id)a3 reason:(int64_t)a4;
+- (void)_publishResultLocation:(id)location reason:(int64_t)reason;
 - (void)flushLocations;
-- (void)startPublishingWithBlock:(id)a3;
-- (void)updatedLocations:(id)a3 reason:(int64_t)a4;
+- (void)startPublishingWithBlock:(id)block;
+- (void)updatedLocations:(id)locations reason:(int64_t)reason;
 @end
 
 @implementation FMDTrackedLocationPublisher
 
-- (void)startPublishingWithBlock:(id)a3
+- (void)startPublishingWithBlock:(id)block
 {
-  [(FMDTrackedLocationPublisher *)self setPublishingBlock:a3];
+  [(FMDTrackedLocationPublisher *)self setPublishingBlock:block];
 
   [(FMDTrackedLocationPublisher *)self setStartedPublishing:1];
 }
 
-- (void)updatedLocations:(id)a3 reason:(int64_t)a4
+- (void)updatedLocations:(id)locations reason:(int64_t)reason
 {
-  v6 = a3;
+  locationsCopy = locations;
   if (![(FMDTrackedLocationPublisher *)self startedPublishing])
   {
-    v7 = sub_10017D9A8();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    lastObject = sub_10017D9A8();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
     {
-      sub_100227638(v7);
+      sub_100227638(lastObject);
     }
 
     goto LABEL_27;
   }
 
-  if ([v6 count])
+  if ([locationsCopy count])
   {
-    v7 = [v6 lastObject];
-    v8 = [(FMDTrackedLocationPublisher *)self lastLocation];
-    [(FMDTrackedLocationPublisher *)self setLastLocation:v7];
-    if (!v8)
+    lastObject = [locationsCopy lastObject];
+    lastLocation = [(FMDTrackedLocationPublisher *)self lastLocation];
+    [(FMDTrackedLocationPublisher *)self setLastLocation:lastObject];
+    if (!lastLocation)
     {
       v50 = sub_100002880();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
@@ -42,59 +42,59 @@
         _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "New location is the first recorded location. Recording this location...", &v51, 2u);
       }
 
-      [(FMDTrackedLocationPublisher *)self _publishResultLocation:v7 reason:a4];
+      [(FMDTrackedLocationPublisher *)self _publishResultLocation:lastObject reason:reason];
       goto LABEL_26;
     }
 
-    v9 = [v7 latitude];
-    [v9 doubleValue];
+    latitude = [lastObject latitude];
+    [latitude doubleValue];
     v11 = v10;
 
-    v12 = [v7 longitude];
-    [v12 doubleValue];
+    longitude = [lastObject longitude];
+    [longitude doubleValue];
     v14 = v13;
 
-    v15 = [v7 horizontalAccuracy];
-    [v15 doubleValue];
+    horizontalAccuracy = [lastObject horizontalAccuracy];
+    [horizontalAccuracy doubleValue];
     v17 = v16;
 
-    v18 = [v7 verticalAccuracy];
-    [v18 doubleValue];
+    verticalAccuracy = [lastObject verticalAccuracy];
+    [verticalAccuracy doubleValue];
     v20 = v19;
 
-    v21 = [v7 floor];
-    v22 = [v21 integerValue];
+    floor = [lastObject floor];
+    integerValue = [floor integerValue];
 
     v23 = [[CLLocation alloc] initWithLatitude:v11 longitude:v14];
-    v24 = [v8 latitude];
-    [v24 doubleValue];
+    latitude2 = [lastLocation latitude];
+    [latitude2 doubleValue];
     v26 = v25;
 
-    v27 = [v8 longitude];
-    [v27 doubleValue];
+    longitude2 = [lastLocation longitude];
+    [longitude2 doubleValue];
     v29 = v28;
 
-    v30 = [v8 horizontalAccuracy];
-    [v30 doubleValue];
+    horizontalAccuracy2 = [lastLocation horizontalAccuracy];
+    [horizontalAccuracy2 doubleValue];
     v32 = v31;
 
-    v33 = [v8 verticalAccuracy];
-    [v33 doubleValue];
+    verticalAccuracy2 = [lastLocation verticalAccuracy];
+    [verticalAccuracy2 doubleValue];
     v35 = v34;
 
-    v36 = [v8 floor];
-    v37 = [v36 integerValue];
+    floor2 = [lastLocation floor];
+    integerValue2 = [floor2 integerValue];
 
     v38 = [[CLLocation alloc] initWithLatitude:v26 longitude:v29];
     [v23 distanceFromLocation:v38];
     v40 = v39;
-    v41 = [(FMDTrackedLocationPublisher *)self minimumDistance];
-    [v41 doubleValue];
+    minimumDistance = [(FMDTrackedLocationPublisher *)self minimumDistance];
+    [minimumDistance doubleValue];
     v43 = v42;
 
     v44 = sub_100002880();
     v45 = os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT);
-    if (v40 < v43 && v37 == v22)
+    if (v40 < v43 && integerValue2 == integerValue)
     {
       if (v45)
       {
@@ -113,8 +113,8 @@
           _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "New location does not have a better accuracy.", &v51, 2u);
         }
 
-        v48 = self;
-        v49 = v8;
+        selfCopy2 = self;
+        v49 = lastLocation;
         goto LABEL_25;
       }
 
@@ -135,46 +135,46 @@
       }
     }
 
-    v48 = self;
-    v49 = v7;
+    selfCopy2 = self;
+    v49 = lastObject;
 LABEL_25:
-    [(FMDTrackedLocationPublisher *)v48 _publishResultLocation:v49 reason:a4];
+    [(FMDTrackedLocationPublisher *)selfCopy2 _publishResultLocation:v49 reason:reason];
 
 LABEL_26:
 LABEL_27:
   }
 }
 
-- (void)_publishResultLocation:(id)a3 reason:(int64_t)a4
+- (void)_publishResultLocation:(id)location reason:(int64_t)reason
 {
-  v6 = a3;
+  locationCopy = location;
   v7 = sub_100002880();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = a4;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "FMDTrackedLocationPublisher _publishResultLocation %li", &v10, 0xCu);
   }
 
-  [(FMDTrackedLocationPublisher *)self setLastPublishedLocation:v6];
-  v8 = [(FMDTrackedLocationPublisher *)self publishingBlock];
-  v9 = v8;
-  if (v8)
+  [(FMDTrackedLocationPublisher *)self setLastPublishedLocation:locationCopy];
+  publishingBlock = [(FMDTrackedLocationPublisher *)self publishingBlock];
+  v9 = publishingBlock;
+  if (publishingBlock)
   {
-    (*(v8 + 16))(v8, 0, v6, a4);
+    (*(publishingBlock + 16))(publishingBlock, 0, locationCopy, reason);
   }
 }
 
 - (void)flushLocations
 {
   [(FMDTrackedLocationPublisher *)self setLastLocation:0];
-  v3 = [(FMDTrackedLocationPublisher *)self lastLocation];
-  if (v3)
+  lastLocation = [(FMDTrackedLocationPublisher *)self lastLocation];
+  if (lastLocation)
   {
-    v5 = v3;
-    v4 = [(FMDTrackedLocationPublisher *)self lastPublishedLocation];
+    v5 = lastLocation;
+    lastPublishedLocation = [(FMDTrackedLocationPublisher *)self lastPublishedLocation];
 
-    if (v5 != v4)
+    if (v5 != lastPublishedLocation)
     {
       [(FMDTrackedLocationPublisher *)self _publishResultLocation:v5 reason:5];
       [(FMDTrackedLocationPublisher *)self setLastLocation:0];

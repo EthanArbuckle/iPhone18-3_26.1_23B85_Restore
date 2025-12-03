@@ -3,9 +3,9 @@
 + (id)sharedDelegate;
 - (TPAppDelegate)init;
 - (id)createCompatibilityDelegate;
-- (id)universalPreviewImageNameForDocumentType:(id)a3;
+- (id)universalPreviewImageNameForDocumentType:(id)type;
 - (void)dealloc;
-- (void)p_localeChanged:(id)a3;
+- (void)p_localeChanged:(id)changed;
 - (void)registerSOSClassTypeMappings;
 @end
 
@@ -54,7 +54,7 @@
 + (TPAppPropertiesProvider)tp_sharedPropertiesProvider
 {
   objc_opt_class();
-  v8 = objc_msgSend_sharedPropertiesProvider(a1, v3, v4, v5, v6, v7);
+  v8 = objc_msgSend_sharedPropertiesProvider(self, v3, v4, v5, v6, v7);
   v9 = TSUCheckedDynamicCast();
 
   return v9;
@@ -72,7 +72,7 @@
 
 + (id)sharedDelegate
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___TPAppDelegate;
   v2 = objc_msgSendSuper2(&v4, sel_sharedDelegate);
 
@@ -86,16 +86,16 @@
   return v2;
 }
 
-- (id)universalPreviewImageNameForDocumentType:(id)a3
+- (id)universalPreviewImageNameForDocumentType:(id)type
 {
   v60[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typeCopy = type;
   v4 = objc_opt_class();
   v10 = objc_msgSend_tp_sharedPropertiesProvider(v4, v5, v6, v7, v8, v9);
   v60[0] = @"com.apple.iwork.pages.template";
   v60[1] = @"com.apple.iwork.pages.sfftemplate";
   v16 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v11, v12, v13, v14, v15, v60, 2);
-  v22 = objc_msgSend_tsu_conformsToAnyUTI_(v3, v17, v18, v19, v20, v21, v16);
+  v22 = objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v17, v18, v19, v20, v21, v16);
 
   if (v22)
   {
@@ -105,7 +105,7 @@
   else
   {
     v29 = objc_msgSend_wordDocumentTypes(v10, v23, v24, v25, v26, v27);
-    v35 = objc_msgSend_tsu_conformsToAnyUTI_(v3, v30, v31, v32, v33, v34, v29);
+    v35 = objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v30, v31, v32, v33, v34, v29);
 
     if (v35)
     {
@@ -115,7 +115,7 @@
     else
     {
       v41 = objc_msgSend_textDocumentTypes(v10, v36, v37, v38, v39, v40);
-      if (objc_msgSend_tsu_conformsToAnyUTI_(v3, v42, v43, v44, v45, v46, v41))
+      if (objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v42, v43, v44, v45, v46, v41))
       {
 
         v28 = @"doc_manager_pages_txt";
@@ -124,7 +124,7 @@
       else
       {
         v52 = objc_msgSend_rtfDocumentTypes(v10, v47, v48, v49, v50, v51);
-        v58 = objc_msgSend_tsu_conformsToAnyUTI_(v3, v53, v54, v55, v56, v57, v52);
+        v58 = objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v53, v54, v55, v56, v57, v52);
 
         if (v58)
         {
@@ -149,9 +149,9 @@
   [(TSABaseApplicationDelegate *)&v2 registerSOSClassTypeMappings];
 }
 
-- (void)p_localeChanged:(id)a3
+- (void)p_localeChanged:(id)changed
 {
-  v7 = objc_msgSend_currentLocale(MEMORY[0x277CBEAF8], a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_currentLocale(MEMORY[0x277CBEAF8], a2, v3, v4, v5, v6, changed);
   if (v7)
   {
     v27 = v7;

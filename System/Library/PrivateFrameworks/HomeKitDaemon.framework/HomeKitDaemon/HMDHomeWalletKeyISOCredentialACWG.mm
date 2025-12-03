@@ -1,18 +1,18 @@
 @interface HMDHomeWalletKeyISOCredentialACWG
-- (HMDHomeWalletKeyISOCredentialACWG)initWithIssuerKeyPairExternalRepresentation:(id)a3 deviceCredentialPublicKeyExternalRepresentation:(id)a4;
-- (void)encodeWithCompletion:(id)a3;
-- (void)signPayloadWithBuilder:(id)a3 data:(id)a4 completion:(id)a5;
+- (HMDHomeWalletKeyISOCredentialACWG)initWithIssuerKeyPairExternalRepresentation:(id)representation deviceCredentialPublicKeyExternalRepresentation:(id)externalRepresentation;
+- (void)encodeWithCompletion:(id)completion;
+- (void)signPayloadWithBuilder:(id)builder data:(id)data completion:(id)completion;
 @end
 
 @implementation HMDHomeWalletKeyISOCredentialACWG
 
-- (void)signPayloadWithBuilder:(id)a3 data:(id)a4 completion:(id)a5
+- (void)signPayloadWithBuilder:(id)builder data:(id)data completion:(id)completion
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(HMDHomeWalletKeyISOCredentialACWG *)self issuerKeyPairExternalRepresentation];
-  v10 = [HMDNIST256Utilities publicKeyExternalRepresentationFromKeyPairExternalRepresentation:v9];
+  dataCopy = data;
+  completionCopy = completion;
+  issuerKeyPairExternalRepresentation = [(HMDHomeWalletKeyISOCredentialACWG *)self issuerKeyPairExternalRepresentation];
+  v10 = [HMDNIST256Utilities publicKeyExternalRepresentationFromKeyPairExternalRepresentation:issuerKeyPairExternalRepresentation];
 
   error = 0;
   v11 = *MEMORY[0x277CDC028];
@@ -22,39 +22,39 @@
   v22[0] = *MEMORY[0x277CDBFF0];
   v22[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
-  v14 = [(HMDHomeWalletKeyISOCredentialACWG *)self issuerKeyPairExternalRepresentation];
-  v15 = SecKeyCreateWithData(v14, v13, &error);
+  issuerKeyPairExternalRepresentation2 = [(HMDHomeWalletKeyISOCredentialACWG *)self issuerKeyPairExternalRepresentation];
+  v15 = SecKeyCreateWithData(issuerKeyPairExternalRepresentation2, v13, &error);
 
   if (v15)
   {
     v19 = 0;
-    v16 = SecKeyCreateSignature(v15, *MEMORY[0x277CDC2D0], v7, &v19);
+    v16 = SecKeyCreateSignature(v15, *MEMORY[0x277CDC2D0], dataCopy, &v19);
     if (v16)
     {
       v17 = [objc_alloc(MEMORY[0x277CFEE68]) initWithSigningAlgorithm:-7 issuerKey:v10 signature:v16];
-      v8[2](v8, v17, 0);
+      completionCopy[2](completionCopy, v17, 0);
     }
 
     else
     {
-      (v8)[2](v8, 0, v19);
+      (completionCopy)[2](completionCopy, 0, v19);
     }
   }
 
   else
   {
-    (v8)[2](v8, 0, error);
+    (completionCopy)[2](completionCopy, 0, error);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCompletion:(id)a3
+- (void)encodeWithCompletion:(id)completion
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v4 = [(HMDHomeWalletKeyISOCredentialACWG *)self deviceCredentialPublicKeyExternalRepresentation];
-  v5 = [HMDHomeNFCReaderKey publicKeyWithPublicKeyExternalRepresentation:v4];
+  completionCopy = completion;
+  deviceCredentialPublicKeyExternalRepresentation = [(HMDHomeWalletKeyISOCredentialACWG *)self deviceCredentialPublicKeyExternalRepresentation];
+  v5 = [HMDHomeNFCReaderKey publicKeyWithPublicKeyExternalRepresentation:deviceCredentialPublicKeyExternalRepresentation];
 
   v6 = [v5 subdataWithRange:{0, 32}];
   v38 = [v5 subdataWithRange:{32, 32}];
@@ -90,11 +90,11 @@
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = HMFGetLogIdentifier();
-    v20 = [v6 hmf_hexadecimalRepresentation];
+    hmf_hexadecimalRepresentation = [v6 hmf_hexadecimalRepresentation];
     *buf = 138543618;
     v43 = v19;
     v44 = 2112;
-    v45 = v20;
+    v45 = hmf_hexadecimalRepresentation;
     _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@ISOCredentialEncode deviceCredentialPublicKey x: %@", buf, 0x16u);
   }
 
@@ -104,11 +104,11 @@
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     v23 = HMFGetLogIdentifier();
-    v24 = [v38 hmf_hexadecimalRepresentation];
+    hmf_hexadecimalRepresentation2 = [v38 hmf_hexadecimalRepresentation];
     *buf = 138543618;
     v43 = v23;
     v44 = 2112;
-    v45 = v24;
+    v45 = hmf_hexadecimalRepresentation2;
     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@ISOCredentialEncode deviceCredentialPublicKey y: %@", buf, 0x16u);
   }
 
@@ -118,29 +118,29 @@
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
     v27 = HMFGetLogIdentifier();
-    v28 = [v7 hmf_hexadecimalRepresentation];
+    hmf_hexadecimalRepresentation3 = [v7 hmf_hexadecimalRepresentation];
     *buf = 138543618;
     v43 = v27;
     v44 = 2112;
-    v45 = v28;
+    v45 = hmf_hexadecimalRepresentation3;
     _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@ISOCredentialEncode dataWithCOSEKey: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v25);
   v29 = objc_alloc(MEMORY[0x277CFEE80]);
-  v30 = [MEMORY[0x277CBEAA8] distantPast];
-  v31 = [MEMORY[0x277CBEAA8] distantFuture];
-  v32 = [v29 initWithFormat:1 docType:@"aliro-a" elements:v13 validFrom:v30 validUntil:v31 deviceKey:v7 signingAlgorithm:-7];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v32 = [v29 initWithFormat:1 docType:@"aliro-a" elements:v13 validFrom:distantPast validUntil:distantFuture deviceKey:v7 signingAlgorithm:-7];
 
-  v33 = [(HMDHomeWalletKeyISOCredentialACWG *)self credentialBuilder];
+  credentialBuilder = [(HMDHomeWalletKeyISOCredentialACWG *)self credentialBuilder];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __58__HMDHomeWalletKeyISOCredentialACWG_encodeWithCompletion___block_invoke;
   v40[3] = &unk_278683AB0;
   v40[4] = self;
-  v41 = v37;
-  v34 = v37;
-  [v33 buildPayloadWithDetails:v32 completion:v40];
+  v41 = completionCopy;
+  v34 = completionCopy;
+  [credentialBuilder buildPayloadWithDetails:v32 completion:v40];
 
   v35 = *MEMORY[0x277D85DE8];
 }
@@ -163,18 +163,18 @@ void __58__HMDHomeWalletKeyISOCredentialACWG_encodeWithCompletion___block_invoke
   }
 }
 
-- (HMDHomeWalletKeyISOCredentialACWG)initWithIssuerKeyPairExternalRepresentation:(id)a3 deviceCredentialPublicKeyExternalRepresentation:(id)a4
+- (HMDHomeWalletKeyISOCredentialACWG)initWithIssuerKeyPairExternalRepresentation:(id)representation deviceCredentialPublicKeyExternalRepresentation:(id)externalRepresentation
 {
-  v7 = a3;
-  v8 = a4;
+  representationCopy = representation;
+  externalRepresentationCopy = externalRepresentation;
   v14.receiver = self;
   v14.super_class = HMDHomeWalletKeyISOCredentialACWG;
   v9 = [(HMDHomeWalletKeyISOCredentialACWG *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_issuerKeyPairExternalRepresentation, a3);
-    objc_storeStrong(&v10->_deviceCredentialPublicKeyExternalRepresentation, a4);
+    objc_storeStrong(&v9->_issuerKeyPairExternalRepresentation, representation);
+    objc_storeStrong(&v10->_deviceCredentialPublicKeyExternalRepresentation, externalRepresentation);
     v11 = [objc_alloc(MEMORY[0x277CFEE78]) initWithDelegate:v10];
     credentialBuilder = v10->_credentialBuilder;
     v10->_credentialBuilder = v11;

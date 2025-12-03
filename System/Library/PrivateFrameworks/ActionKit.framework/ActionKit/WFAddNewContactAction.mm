@@ -1,8 +1,8 @@
 @interface WFAddNewContactAction
 + (id)userInterfaceXPCInterface;
-+ (void)contactFromParameters:(id)a3 completionHandler:(id)a4;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3;
++ (void)contactFromParameters:(id)parameters completionHandler:(id)handler;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)runAsynchronouslyWithInput:(id)input;
 - (void)runWithoutUI;
 @end
 
@@ -10,7 +10,7 @@
 
 + (id)userInterfaceXPCInterface
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___WFAddNewContactAction;
   v2 = objc_msgSendSuper2(&v10, sel_userInterfaceXPCInterface);
   v3 = MEMORY[0x277CBEB98];
@@ -24,12 +24,12 @@
   return v2;
 }
 
-+ (void)contactFromParameters:(id)a3 completionHandler:(id)a4
++ (void)contactFromParameters:(id)parameters completionHandler:(id)handler
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v41 = a4;
-  v6 = [v5 objectForKey:@"WFContactFirstName"];
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  v6 = [parametersCopy objectForKey:@"WFContactFirstName"];
   if (v6)
   {
     objc_opt_class();
@@ -51,7 +51,7 @@
 
   v8 = v7;
 
-  v9 = [v5 objectForKey:@"WFContactLastName"];
+  v9 = [parametersCopy objectForKey:@"WFContactLastName"];
   if (v9)
   {
     objc_opt_class();
@@ -73,7 +73,7 @@
 
   v44 = v10;
 
-  v11 = [v5 objectForKey:@"WFContactCompany"];
+  v11 = [parametersCopy objectForKey:@"WFContactCompany"];
   if (v11)
   {
     objc_opt_class();
@@ -95,7 +95,7 @@
 
   v43 = v12;
 
-  v13 = [v5 objectForKey:@"WFContactNotes"];
+  v13 = [parametersCopy objectForKey:@"WFContactNotes"];
   if (v13)
   {
     objc_opt_class();
@@ -117,7 +117,7 @@
 
   v42 = v14;
 
-  v15 = [v5 objectForKey:@"WFContactPhoneNumbers"];
+  v15 = [parametersCopy objectForKey:@"WFContactPhoneNumbers"];
   if (v15)
   {
     objc_opt_class();
@@ -140,8 +140,8 @@
   v17 = v16;
 
   v40 = v17;
-  v18 = [v17 contentCollection];
-  v19 = [v5 objectForKey:@"WFContactEmails"];
+  contentCollection = [v17 contentCollection];
+  v19 = [parametersCopy objectForKey:@"WFContactEmails"];
   if (v19)
   {
     objc_opt_class();
@@ -163,8 +163,8 @@
 
   v21 = v20;
 
-  v22 = [v21 contentCollection];
-  v23 = [v5 objectForKey:@"WFContactPhoto"];
+  contentCollection2 = [v21 contentCollection];
+  v23 = [parametersCopy objectForKey:@"WFContactPhoto"];
   if (v23)
   {
     objc_opt_class();
@@ -224,46 +224,46 @@
   [v32 setFamilyName:v44];
   [v32 setOrganizationName:v43];
   [v32 setNote:v42];
-  if (v18)
+  if (contentCollection)
   {
-    v33 = [v18 items];
-    v34 = [v33 if_compactMap:&__block_literal_global_7201];
+    items = [contentCollection items];
+    v34 = [items if_compactMap:&__block_literal_global_7201];
     [v32 setPhoneNumbers:v34];
   }
 
-  if (v22)
+  if (contentCollection2)
   {
-    v35 = [v22 items];
-    v36 = [v35 if_compactMap:&__block_literal_global_211];
+    items2 = [contentCollection2 items];
+    v36 = [items2 if_compactMap:&__block_literal_global_211];
     [v32 setEmailAddresses:v36];
   }
 
   if (v25)
   {
-    v37 = [v25 items];
-    v38 = [v37 firstObject];
+    items3 = [v25 items];
+    firstObject = [items3 firstObject];
 
-    if (v38)
+    if (firstObject)
     {
       v45[0] = MEMORY[0x277D85DD0];
       v45[1] = 3221225472;
       v45[2] = __65__WFAddNewContactAction_contactFromParameters_completionHandler___block_invoke_3;
       v45[3] = &unk_278C19FA8;
-      v48 = v41;
+      v48 = handlerCopy;
       v46 = v32;
       v47 = v29;
-      [v38 getObjectRepresentation:v45 forClass:objc_opt_class()];
+      [firstObject getObjectRepresentation:v45 forClass:objc_opt_class()];
     }
 
     else
     {
-      (*(v41 + 2))(v41, v32, v29);
+      (*(handlerCopy + 2))(handlerCopy, v32, v29);
     }
   }
 
   else
   {
-    (*(v41 + 2))(v41, v32, v29);
+    (*(handlerCopy + 2))(handlerCopy, v32, v29);
   }
 
   v39 = *MEMORY[0x277D85DE8];
@@ -354,27 +354,27 @@ id __65__WFAddNewContactAction_contactFromParameters_completionHandler___block_i
   return v11;
 }
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a5;
-  v8 = a3;
+  nameCopy = name;
+  descriptionCopy = description;
   v9 = WFLocalizedString(@"Allow “%1$@” to use %2$@ in a new contact?");
-  v10 = [v6 localizedStringWithFormat:v9, v7, v8];
+  descriptionCopy = [v6 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
 
-  return v10;
+  return descriptionCopy;
 }
 
 - (void)runWithoutUI
 {
   v3 = objc_opt_class();
-  v4 = [(WFAddNewContactAction *)self processedParameters];
+  processedParameters = [(WFAddNewContactAction *)self processedParameters];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __37__WFAddNewContactAction_runWithoutUI__block_invoke;
   v5[3] = &unk_278C19FD0;
   v5[4] = self;
-  [v3 contactFromParameters:v4 completionHandler:v5];
+  [v3 contactFromParameters:processedParameters completionHandler:v5];
 }
 
 void __37__WFAddNewContactAction_runWithoutUI__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -416,35 +416,35 @@ void __37__WFAddNewContactAction_runWithoutUI__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = [(WFAddNewContactAction *)self resourceManager];
-  v5 = [v4 resourceObjectsOfClass:objc_opt_class()];
-  v6 = [v5 anyObject];
+  resourceManager = [(WFAddNewContactAction *)self resourceManager];
+  v5 = [resourceManager resourceObjectsOfClass:objc_opt_class()];
+  anyObject = [v5 anyObject];
 
-  if ([v6 status] != 4)
+  if ([anyObject status] != 4)
   {
-    v11 = [v6 availabilityError];
+    availabilityError = [anyObject availabilityError];
     goto LABEL_6;
   }
 
   v7 = [(WFAddNewContactAction *)self parameterValueForKey:@"ShowWhenRun" ofClass:objc_opt_class()];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [(WFAddNewContactAction *)self userInterface];
-  v10 = [v9 isRunningWithSiriUI];
+  userInterface = [(WFAddNewContactAction *)self userInterface];
+  isRunningWithSiriUI = [userInterface isRunningWithSiriUI];
 
-  if (v10 && v8)
+  if (isRunningWithSiriUI && bOOLValue)
   {
-    v11 = [MEMORY[0x277CCA9B8] wfUnsupportedUserInterfaceError];
+    availabilityError = [MEMORY[0x277CCA9B8] wfUnsupportedUserInterfaceError];
 LABEL_6:
-    v12 = v11;
-    [(WFAddNewContactAction *)self finishRunningWithError:v11];
+    v12 = availabilityError;
+    [(WFAddNewContactAction *)self finishRunningWithError:availabilityError];
 
     goto LABEL_7;
   }
 
-  if (v8)
+  if (bOOLValue)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;

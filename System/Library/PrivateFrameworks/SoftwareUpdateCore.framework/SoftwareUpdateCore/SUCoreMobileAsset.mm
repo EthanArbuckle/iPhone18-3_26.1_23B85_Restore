@@ -1,50 +1,50 @@
 @interface SUCoreMobileAsset
-+ (BOOL)downloadConfig:(id)a3 isEqualToConfig:(id)a4;
-+ (id)_reloadDescriptor:(id)a3 allowingDifferences:(id)a4 forceReload:(BOOL)a5 skipMSU:(BOOL)a6 defaultValues:(id)a7 pSUReloadError:(id *)a8 pDocReloadError:(id *)a9;
-+ (id)downloadConfigCopy:(id)a3;
-+ (id)downloadConfigSummary:(id)a3;
-+ (id)downloadOptionsDescription:(id)a3;
-+ (void)_callReloadCompletion:(id)a3 withDescriptor:(id)a4 suError:(id)a5 docError:(id)a6;
++ (BOOL)downloadConfig:(id)config isEqualToConfig:(id)toConfig;
++ (id)_reloadDescriptor:(id)descriptor allowingDifferences:(id)differences forceReload:(BOOL)reload skipMSU:(BOOL)u defaultValues:(id)values pSUReloadError:(id *)error pDocReloadError:(id *)reloadError;
++ (id)downloadConfigCopy:(id)copy;
++ (id)downloadConfigSummary:(id)summary;
++ (id)downloadOptionsDescription:(id)description;
++ (void)_callReloadCompletion:(id)completion withDescriptor:(id)descriptor suError:(id)error docError:(id)docError;
 + (void)mapMobileAssetErrorIndications;
-+ (void)reloadDescriptor:(id)a3 allowingDifferences:(id)a4 forceReload:(BOOL)a5 skipMSU:(BOOL)a6 defaultValues:(id)a7 completion:(id)a8;
-+ (void)reloadDescriptor:(id)a3 completion:(id)a4;
-- (SUCoreMobileAsset)initWithDelegate:(id)a3 forAsset:(id)a4 updateUUID:(id)a5 withCallbackQueue:(id)a6 withCompletionQueue:(id)a7;
++ (void)reloadDescriptor:(id)descriptor allowingDifferences:(id)differences forceReload:(BOOL)reload skipMSU:(BOOL)u defaultValues:(id)values completion:(id)completion;
++ (void)reloadDescriptor:(id)descriptor completion:(id)completion;
+- (SUCoreMobileAsset)initWithDelegate:(id)delegate forAsset:(id)asset updateUUID:(id)d withCallbackQueue:(id)queue withCompletionQueue:(id)completionQueue;
 - (id)_updateAssetTypeName;
 - (id)description;
 - (id)maDelegate;
 - (void)_cancelDownloadAndPurge;
-- (void)_downloadAssetWithOptions:(id)a3 stashingDocumentationForBuild:(id)a4 completion:(id)a5;
-- (void)_issueAlterDownloadCompletion:(int64_t)a3 forReason:(id)a4;
+- (void)_downloadAssetWithOptions:(id)options stashingDocumentationForBuild:(id)build completion:(id)completion;
+- (void)_issueAlterDownloadCompletion:(int64_t)completion forReason:(id)reason;
 - (void)_registerProgressAndStartDownload;
-- (void)_reportAnomaly:(id)a3 issuingCompletion:(id)a4;
-- (void)_reportAssetRemoveFailed:(id)a3;
+- (void)_reportAnomaly:(id)anomaly issuingCompletion:(id)completion;
+- (void)_reportAssetRemoveFailed:(id)failed;
 - (void)_reportAssetRemoved;
-- (void)_reportDownloadFailed:(id)a3;
-- (void)_reportDownloadProgress:(id)a3;
-- (void)_reportDownloaded:(id)a3;
-- (void)_requestChangeConfigDownload:(id)a3;
-- (void)_trackMAAnomaly:(id)a3 result:(int64_t)a4 description:(id)a5;
-- (void)_trackMobileAssetBegin:(id)a3;
-- (void)_trackMobileAssetBegin:(id)a3 withIdentifier:(id)a4;
-- (void)_trackMobileAssetEnd:(id)a3 withIdentifier:(id)a4 withResult:(int64_t)a5 withError:(id)a6;
-- (void)_trackMobileAssetEnd:(id)a3 withResult:(int64_t)a4 withError:(id)a5;
-- (void)alterDownloadOptions:(id)a3 completion:(id)a4;
-- (void)downloadConfigStatus:(id)a3;
-- (void)downloadDocumentationAssetWithPolicy:(id)a3 withUUID:(id)a4 stashingDocumentationForBuild:(id)a5 completion:(id)a6;
-- (void)downloadSoftwareUpdateAssetWithPolicy:(id)a3 withUUID:(id)a4 completion:(id)a5;
-- (void)removeAsset:(id)a3;
+- (void)_reportDownloadFailed:(id)failed;
+- (void)_reportDownloadProgress:(id)progress;
+- (void)_reportDownloaded:(id)downloaded;
+- (void)_requestChangeConfigDownload:(id)download;
+- (void)_trackMAAnomaly:(id)anomaly result:(int64_t)result description:(id)description;
+- (void)_trackMobileAssetBegin:(id)begin;
+- (void)_trackMobileAssetBegin:(id)begin withIdentifier:(id)identifier;
+- (void)_trackMobileAssetEnd:(id)end withIdentifier:(id)identifier withResult:(int64_t)result withError:(id)error;
+- (void)_trackMobileAssetEnd:(id)end withResult:(int64_t)result withError:(id)error;
+- (void)alterDownloadOptions:(id)options completion:(id)completion;
+- (void)downloadConfigStatus:(id)status;
+- (void)downloadDocumentationAssetWithPolicy:(id)policy withUUID:(id)d stashingDocumentationForBuild:(id)build completion:(id)completion;
+- (void)downloadSoftwareUpdateAssetWithPolicy:(id)policy withUUID:(id)d completion:(id)completion;
+- (void)removeAsset:(id)asset;
 @end
 
 @implementation SUCoreMobileAsset
 
-- (SUCoreMobileAsset)initWithDelegate:(id)a3 forAsset:(id)a4 updateUUID:(id)a5 withCallbackQueue:(id)a6 withCompletionQueue:(id)a7
+- (SUCoreMobileAsset)initWithDelegate:(id)delegate forAsset:(id)asset updateUUID:(id)d withCallbackQueue:(id)queue withCompletionQueue:(id)completionQueue
 {
   v83 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  delegateCopy = delegate;
+  assetCopy = asset;
+  dCopy = d;
+  queueCopy = queue;
+  completionQueueCopy = completionQueue;
   v80.receiver = self;
   v80.super_class = SUCoreMobileAsset;
   v17 = [(SUCoreMobileAsset *)&v80 init];
@@ -56,9 +56,9 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  objc_storeWeak(&v17->_maDelegate, v12);
-  objc_storeStrong(&v18->_asset, a4);
-  objc_storeStrong(&v18->_updateUUID, a5);
+  objc_storeWeak(&v17->_maDelegate, delegateCopy);
+  objc_storeStrong(&v18->_asset, asset);
+  objc_storeStrong(&v18->_updateUUID, d);
   documentationStashBuild = v18->_documentationStashBuild;
   v18->_documentationStashBuild = 0;
 
@@ -88,27 +88,27 @@ LABEL_36:
   removeCompletion = v18->_removeCompletion;
   v18->_removeCompletion = 0;
 
-  v28 = [MEMORY[0x277D643F8] sharedCore];
-  v29 = [v28 commonDomain];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  commonDomain = [mEMORY[0x277D643F8] commonDomain];
 
-  v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@", v29, @"ma.control"];
-  v31 = [v30 UTF8String];
+  v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@", commonDomain, @"ma.control"];
+  uTF8String = [v30 UTF8String];
   v32 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v33 = dispatch_queue_create(v31, v32);
+  v33 = dispatch_queue_create(uTF8String, v32);
   maControlQueue = v18->_maControlQueue;
   v18->_maControlQueue = v33;
 
   if (v18->_maControlQueue)
   {
-    v35 = [MEMORY[0x277D64460] sharedLogger];
-    v36 = [v35 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
-    if (v12)
+    v37 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
+    if (delegateCopy)
     {
       if (v37)
       {
-        v38 = [(SUCoreMobileAsset *)v18 maDelegate];
+        maDelegate = [(SUCoreMobileAsset *)v18 maDelegate];
         v39 = objc_opt_respondsToSelector();
         v40 = @"NO";
         if (v39)
@@ -118,15 +118,15 @@ LABEL_36:
 
         *buf = 138543362;
         v82 = v40;
-        _os_log_impl(&dword_23193C000, v36, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maDownloadProgress:) %{public}@", buf, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maDownloadProgress:) %{public}@", buf, 0xCu);
       }
 
-      v41 = [MEMORY[0x277D64460] sharedLogger];
-      v42 = [v41 oslog];
+      mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+      oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-      if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
-        v43 = [(SUCoreMobileAsset *)v18 maDelegate];
+        maDelegate2 = [(SUCoreMobileAsset *)v18 maDelegate];
         v44 = objc_opt_respondsToSelector();
         v45 = @"NO";
         if (v44)
@@ -136,15 +136,15 @@ LABEL_36:
 
         *buf = 138543362;
         v82 = v45;
-        _os_log_impl(&dword_23193C000, v42, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maDownloadStalled:) %{public}@", buf, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maDownloadStalled:) %{public}@", buf, 0xCu);
       }
 
-      v46 = [MEMORY[0x277D64460] sharedLogger];
-      v47 = [v46 oslog];
+      mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+      oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-      if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [(SUCoreMobileAsset *)v18 maDelegate];
+        maDelegate3 = [(SUCoreMobileAsset *)v18 maDelegate];
         v49 = objc_opt_respondsToSelector();
         v50 = @"NO";
         if (v49)
@@ -154,15 +154,15 @@ LABEL_36:
 
         *buf = 138543362;
         v82 = v50;
-        _os_log_impl(&dword_23193C000, v47, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maDownloaded:) %{public}@", buf, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maDownloaded:) %{public}@", buf, 0xCu);
       }
 
-      v51 = [MEMORY[0x277D64460] sharedLogger];
-      v52 = [v51 oslog];
+      mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+      oslog4 = [mEMORY[0x277D64460]4 oslog];
 
-      if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
       {
-        v53 = [(SUCoreMobileAsset *)v18 maDelegate];
+        maDelegate4 = [(SUCoreMobileAsset *)v18 maDelegate];
         v54 = objc_opt_respondsToSelector();
         v55 = @"NO";
         if (v54)
@@ -172,15 +172,15 @@ LABEL_36:
 
         *buf = 138543362;
         v82 = v55;
-        _os_log_impl(&dword_23193C000, v52, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maDownloadFailed:) %{public}@", buf, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maDownloadFailed:) %{public}@", buf, 0xCu);
       }
 
-      v56 = [MEMORY[0x277D64460] sharedLogger];
-      v57 = [v56 oslog];
+      mEMORY[0x277D64460]5 = [MEMORY[0x277D64460] sharedLogger];
+      oslog5 = [mEMORY[0x277D64460]5 oslog];
 
-      if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
       {
-        v58 = [(SUCoreMobileAsset *)v18 maDelegate];
+        maDelegate5 = [(SUCoreMobileAsset *)v18 maDelegate];
         v59 = objc_opt_respondsToSelector();
         v60 = @"NO";
         if (v59)
@@ -190,15 +190,15 @@ LABEL_36:
 
         *buf = 138543362;
         v82 = v60;
-        _os_log_impl(&dword_23193C000, v57, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maAssetRemoved) %{public}@", buf, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog5, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maAssetRemoved) %{public}@", buf, 0xCu);
       }
 
-      v61 = [MEMORY[0x277D64460] sharedLogger];
-      v62 = [v61 oslog];
+      mEMORY[0x277D64460]6 = [MEMORY[0x277D64460] sharedLogger];
+      oslog6 = [mEMORY[0x277D64460]6 oslog];
 
-      if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog6, OS_LOG_TYPE_DEFAULT))
       {
-        v63 = [(SUCoreMobileAsset *)v18 maDelegate];
+        maDelegate6 = [(SUCoreMobileAsset *)v18 maDelegate];
         v64 = objc_opt_respondsToSelector();
         v65 = @"NO";
         if (v64)
@@ -208,15 +208,15 @@ LABEL_36:
 
         *buf = 138543362;
         v82 = v65;
-        _os_log_impl(&dword_23193C000, v62, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maAssetRemoveFailed:) %{public}@", buf, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog6, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maAssetRemoveFailed:) %{public}@", buf, 0xCu);
       }
 
-      v66 = [MEMORY[0x277D64460] sharedLogger];
-      v36 = [v66 oslog];
+      mEMORY[0x277D64460]7 = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460]7 oslog];
 
-      if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v67 = [(SUCoreMobileAsset *)v18 maDelegate];
+        maDelegate7 = [(SUCoreMobileAsset *)v18 maDelegate];
         v68 = objc_opt_respondsToSelector();
         v69 = @"NO";
         if (v68)
@@ -226,23 +226,23 @@ LABEL_36:
 
         *buf = 138543362;
         v82 = v69;
-        _os_log_impl(&dword_23193C000, v36, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maAnomaly:) %{public}@", buf, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[MA] operating with delegate: respondsToSelector(maAnomaly:) %{public}@", buf, 0xCu);
       }
     }
 
     else if (v37)
     {
       *buf = 0;
-      _os_log_impl(&dword_23193C000, v36, OS_LOG_TYPE_DEFAULT, "[MA] operating without delegate", buf, 2u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[MA] operating without delegate", buf, 2u);
     }
 
-    v72 = [MEMORY[0x277D643F8] sharedCore];
-    v73 = [v72 selectDelegateCallbackQueue:v15];
+    mEMORY[0x277D643F8]2 = [MEMORY[0x277D643F8] sharedCore];
+    v73 = [mEMORY[0x277D643F8]2 selectDelegateCallbackQueue:queueCopy];
     clientDelegateCallbackQueue = v18->_clientDelegateCallbackQueue;
     v18->_clientDelegateCallbackQueue = v73;
 
-    v75 = [MEMORY[0x277D643F8] sharedCore];
-    v76 = [v75 selectCompletionQueue:v16];
+    mEMORY[0x277D643F8]3 = [MEMORY[0x277D643F8] sharedCore];
+    v76 = [mEMORY[0x277D643F8]3 selectCompletionQueue:completionQueueCopy];
     clientCompletionQueue = v18->_clientCompletionQueue;
     v18->_clientCompletionQueue = v76;
 
@@ -250,8 +250,8 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  v70 = [MEMORY[0x277D64428] sharedDiag];
-  [v70 trackError:@"[MA]" forReason:@"unable to create MA control dispatch queue" withResult:8100 withError:0];
+  mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+  [mEMORY[0x277D64428] trackError:@"[MA]" forReason:@"unable to create MA control dispatch queue" withResult:8100 withError:0];
 
   v71 = 0;
 LABEL_37:
@@ -411,39 +411,39 @@ void __51__SUCoreMobileAsset_mapMobileAssetErrorIndications__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)downloadSoftwareUpdateAssetWithPolicy:(id)a3 withUUID:(id)a4 completion:(id)a5
+- (void)downloadSoftwareUpdateAssetWithPolicy:(id)policy withUUID:(id)d completion:(id)completion
 {
-  v8 = a5;
-  v9 = [a3 constructMASoftwareUpdateAssetDownloadOptionsWithUUID:a4];
-  [(SUCoreMobileAsset *)self _downloadAssetWithOptions:v9 completion:v8];
+  completionCopy = completion;
+  v9 = [policy constructMASoftwareUpdateAssetDownloadOptionsWithUUID:d];
+  [(SUCoreMobileAsset *)self _downloadAssetWithOptions:v9 completion:completionCopy];
 }
 
-- (void)downloadDocumentationAssetWithPolicy:(id)a3 withUUID:(id)a4 stashingDocumentationForBuild:(id)a5 completion:(id)a6
+- (void)downloadDocumentationAssetWithPolicy:(id)policy withUUID:(id)d stashingDocumentationForBuild:(id)build completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [a3 constructMADocumentationAssetDownloadOptionsWithUUID:a4];
-  [(SUCoreMobileAsset *)self _downloadAssetWithOptions:v12 stashingDocumentationForBuild:v11 completion:v10];
+  completionCopy = completion;
+  buildCopy = build;
+  v12 = [policy constructMADocumentationAssetDownloadOptionsWithUUID:d];
+  [(SUCoreMobileAsset *)self _downloadAssetWithOptions:v12 stashingDocumentationForBuild:buildCopy completion:completionCopy];
 }
 
-- (void)alterDownloadOptions:(id)a3 completion:(id)a4
+- (void)alterDownloadOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = [MEMORY[0x277D643F8] beginTransactionWithName:@"ma.AlterDownloadOptions"];
-  v9 = [(SUCoreMobileAsset *)self maControlQueue];
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __53__SUCoreMobileAsset_alterDownloadOptions_completion___block_invoke;
   v13[3] = &unk_27892D2C8;
   v13[4] = self;
   v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v6;
+  v15 = optionsCopy;
+  v16 = completionCopy;
+  v10 = optionsCopy;
   v11 = v8;
-  v12 = v7;
-  dispatch_async(v9, v13);
+  v12 = completionCopy;
+  dispatch_async(maControlQueue, v13);
 }
 
 void __53__SUCoreMobileAsset_alterDownloadOptions_completion___block_invoke(uint64_t a1)
@@ -710,21 +710,21 @@ void __53__SUCoreMobileAsset_alterDownloadOptions_completion___block_invoke_1105
   [MEMORY[0x277D643F8] endTransaction:a1[5] withName:@"ma.AlterDownloadOptions"];
 }
 
-- (void)downloadConfigStatus:(id)a3
+- (void)downloadConfigStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"ma.DownloadConfigStatus.Completion"];
-  v6 = [(SUCoreMobileAsset *)self maControlQueue];
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__SUCoreMobileAsset_downloadConfigStatus___block_invoke;
   block[3] = &unk_27892D368;
   v10 = v5;
-  v11 = v4;
+  v11 = statusCopy;
   block[4] = self;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = statusCopy;
+  dispatch_async(maControlQueue, block);
 }
 
 void __42__SUCoreMobileAsset_downloadConfigStatus___block_invoke(id *a1)
@@ -786,21 +786,21 @@ uint64_t __42__SUCoreMobileAsset_downloadConfigStatus___block_invoke_2(void *a1)
   return [v6 endTransaction:v7 withName:@"ma.DownloadConfigStatus.Completion"];
 }
 
-- (void)removeAsset:(id)a3
+- (void)removeAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"ma.RemoveAsset"];
-  v6 = [(SUCoreMobileAsset *)self maControlQueue];
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__SUCoreMobileAsset_removeAsset___block_invoke;
   block[3] = &unk_27892D368;
   v10 = v5;
-  v11 = v4;
+  v11 = assetCopy;
   block[4] = self;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = assetCopy;
+  dispatch_async(maControlQueue, block);
 }
 
 uint64_t __33__SUCoreMobileAsset_removeAsset___block_invoke(uint64_t a1)
@@ -837,27 +837,27 @@ uint64_t __33__SUCoreMobileAsset_removeAsset___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_downloadAssetWithOptions:(id)a3 stashingDocumentationForBuild:(id)a4 completion:(id)a5
+- (void)_downloadAssetWithOptions:(id)options stashingDocumentationForBuild:(id)build completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  buildCopy = build;
+  completionCopy = completion;
   v11 = [MEMORY[0x277D643F8] beginTransactionWithName:@"ma.DownloadAsset"];
-  v12 = [(SUCoreMobileAsset *)self maControlQueue];
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__SUCoreMobileAsset__downloadAssetWithOptions_stashingDocumentationForBuild_completion___block_invoke;
   block[3] = &unk_27892D2F0;
-  v20 = v9;
-  v21 = v10;
+  v20 = buildCopy;
+  v21 = completionCopy;
   block[4] = self;
   v18 = v11;
-  v19 = v8;
-  v13 = v9;
-  v14 = v8;
+  v19 = optionsCopy;
+  v13 = buildCopy;
+  v14 = optionsCopy;
   v15 = v11;
-  v16 = v10;
-  dispatch_async(v12, block);
+  v16 = completionCopy;
+  dispatch_async(maControlQueue, block);
 }
 
 void __88__SUCoreMobileAsset__downloadAssetWithOptions_stashingDocumentationForBuild_completion___block_invoke(uint64_t a1)
@@ -1188,24 +1188,24 @@ void __54__SUCoreMobileAsset__registerProgressAndStartDownload__block_invoke_2_1
   }
 }
 
-- (void)_requestChangeConfigDownload:(id)a3
+- (void)_requestChangeConfigDownload:(id)download
 {
-  v4 = a3;
-  v5 = [(SUCoreMobileAsset *)self maControlQueue];
-  dispatch_assert_queue_V2(v5);
+  downloadCopy = download;
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
+  dispatch_assert_queue_V2(maControlQueue);
 
-  v6 = [(SUCoreMobileAsset *)self asset];
+  asset = [(SUCoreMobileAsset *)self asset];
 
-  if (v6)
+  if (asset)
   {
-    [(SUCoreMobileAsset *)self setRequestedDownloadConfig:v4];
+    [(SUCoreMobileAsset *)self setRequestedDownloadConfig:downloadCopy];
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
-    v8 = [(SUCoreMobileAsset *)self operationName];
-    v9 = [SUCoreMobileAsset downloadConfigSummary:v4];
-    v10 = [v7 initWithFormat:@"%@ [requesting (%@)]", v8, v9];
+    operationName = [(SUCoreMobileAsset *)self operationName];
+    v9 = [SUCoreMobileAsset downloadConfigSummary:downloadCopy];
+    v10 = [v7 initWithFormat:@"%@ [requesting (%@)]", operationName, v9];
 
     [(SUCoreMobileAsset *)self _trackMobileAssetBegin:@"configDownload" withIdentifier:v10];
-    v11 = [(SUCoreMobileAsset *)self asset];
+    asset2 = [(SUCoreMobileAsset *)self asset];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __50__SUCoreMobileAsset__requestChangeConfigDownload___block_invoke;
@@ -1213,15 +1213,15 @@ void __54__SUCoreMobileAsset__registerProgressAndStartDownload__block_invoke_2_1
     v15[4] = self;
     v16 = v10;
     v12 = v10;
-    [v11 SUCoreBorder_configDownload:v4 completion:v15];
+    [asset2 SUCoreBorder_configDownload:downloadCopy completion:v15];
   }
 
   else
   {
-    v13 = [MEMORY[0x277D64460] sharedLogger];
-    v14 = [v13 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreMobileAsset _requestChangeConfigDownload:];
     }
@@ -1387,64 +1387,64 @@ LABEL_6:
   [*(a1 + 32) _requestChangeConfigDownload:v12];
 }
 
-- (void)_issueAlterDownloadCompletion:(int64_t)a3 forReason:(id)a4
+- (void)_issueAlterDownloadCompletion:(int64_t)completion forReason:(id)reason
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SUCoreMobileAsset *)self maControlQueue];
-  dispatch_assert_queue_V2(v7);
+  reasonCopy = reason;
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
+  dispatch_assert_queue_V2(maControlQueue);
 
-  v8 = [MEMORY[0x277D64460] sharedLogger];
-  v9 = [v8 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (a3)
+  if (completion)
   {
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreScan _downloadCatalog:withIdentifier:];
     }
 
-    v9 = [MEMORY[0x277D643F8] sharedCore];
-    v10 = [v9 buildError:a3 underlying:0 description:v6];
+    oslog = [MEMORY[0x277D643F8] sharedCore];
+    v10 = [oslog buildError:completion underlying:0 description:reasonCopy];
   }
 
   else
   {
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUCoreMobileAsset *)self currentDownloadConfig];
-      v12 = [SUCoreMobileAsset downloadConfigSummary:v11];
+      currentDownloadConfig = [(SUCoreMobileAsset *)self currentDownloadConfig];
+      v12 = [SUCoreMobileAsset downloadConfigSummary:currentDownloadConfig];
       *buf = 138543874;
-      v25 = self;
+      selfCopy = self;
       v26 = 2114;
       v27 = v12;
       v28 = 2114;
-      v29 = v6;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ successfully altered download config (%{public}@) | %{public}@", buf, 0x20u);
+      v29 = reasonCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ successfully altered download config (%{public}@) | %{public}@", buf, 0x20u);
     }
 
     v10 = 0;
   }
 
-  v13 = [(SUCoreMobileAsset *)self alterDownloadCompletion];
+  alterDownloadCompletion = [(SUCoreMobileAsset *)self alterDownloadCompletion];
 
-  if (v13)
+  if (alterDownloadCompletion)
   {
-    v14 = [(SUCoreMobileAsset *)self alterDownloadCompletion];
-    v15 = [(SUCoreMobileAsset *)self alterDownloadTransaction];
+    alterDownloadCompletion2 = [(SUCoreMobileAsset *)self alterDownloadCompletion];
+    alterDownloadTransaction = [(SUCoreMobileAsset *)self alterDownloadTransaction];
     [(SUCoreMobileAsset *)self setAlterDownloadCompletion:0];
     [(SUCoreMobileAsset *)self setAlterDownloadTransaction:0];
-    v16 = [(SUCoreMobileAsset *)self clientCompletionQueue];
+    clientCompletionQueue = [(SUCoreMobileAsset *)self clientCompletionQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__SUCoreMobileAsset__issueAlterDownloadCompletion_forReason___block_invoke;
     block[3] = &unk_27892C830;
-    v23 = v14;
+    v23 = alterDownloadCompletion2;
     v21 = v10;
-    v22 = v15;
-    v17 = v15;
-    v18 = v14;
-    dispatch_async(v16, block);
+    v22 = alterDownloadTransaction;
+    v17 = alterDownloadTransaction;
+    v18 = alterDownloadCompletion2;
+    dispatch_async(clientCompletionQueue, block);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1462,27 +1462,27 @@ uint64_t __61__SUCoreMobileAsset__issueAlterDownloadCompletion_forReason___block
 
 - (void)_cancelDownloadAndPurge
 {
-  v3 = [(SUCoreMobileAsset *)self maControlQueue];
-  dispatch_assert_queue_V2(v3);
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
+  dispatch_assert_queue_V2(maControlQueue);
 
-  v4 = [(SUCoreMobileAsset *)self asset];
+  asset = [(SUCoreMobileAsset *)self asset];
 
-  if (v4)
+  if (asset)
   {
     [(SUCoreMobileAsset *)self _trackMobileAssetBegin:@"cancelDownload"];
-    v5 = [(SUCoreMobileAsset *)self asset];
+    asset2 = [(SUCoreMobileAsset *)self asset];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __44__SUCoreMobileAsset__cancelDownloadAndPurge__block_invoke;
     v8[3] = &unk_27892D250;
     v8[4] = self;
-    [v5 SUCoreBorder_cancelDownload:v8];
+    [asset2 SUCoreBorder_cancelDownload:v8];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D643F8] sharedCore];
-    v7 = [v6 buildError:8701 underlying:0 description:@"failed to purge asset (self.asset is not present)"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v7 = [mEMORY[0x277D643F8] buildError:8701 underlying:0 description:@"failed to purge asset (self.asset is not present)"];
 
     [(SUCoreMobileAsset *)self _reportAssetRemoveFailed:v7];
   }
@@ -1550,31 +1550,31 @@ uint64_t __44__SUCoreMobileAsset__cancelDownloadAndPurge__block_invoke_3(uint64_
   }
 }
 
-- (void)_reportDownloadProgress:(id)a3
+- (void)_reportDownloadProgress:(id)progress
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMobileAsset *)self maControlQueue];
-  dispatch_assert_queue_V2(v5);
+  progressCopy = progress;
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
+  dispatch_assert_queue_V2(maControlQueue);
 
   if (![(SUCoreMobileAsset *)self removingAsset]&& ![(SUCoreMobileAsset *)self assetRemoved])
   {
-    v6 = [v4 isStalled];
-    v7 = [(SUCoreMobileAsset *)self maDelegate];
-    if (v6)
+    isStalled = [progressCopy isStalled];
+    maDelegate = [(SUCoreMobileAsset *)self maDelegate];
+    if (isStalled)
     {
       v8 = objc_opt_respondsToSelector();
 
       if (v8)
       {
-        v9 = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
+        clientDelegateCallbackQueue = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __45__SUCoreMobileAsset__reportDownloadProgress___block_invoke;
         block[3] = &unk_27892D478;
         block[4] = self;
-        v20 = v4;
-        dispatch_async(v9, block);
+        v20 = progressCopy;
+        dispatch_async(clientDelegateCallbackQueue, block);
 
         v10 = v20;
 LABEL_8:
@@ -1589,31 +1589,31 @@ LABEL_8:
 
       if (v11)
       {
-        v12 = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
+        clientDelegateCallbackQueue2 = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __45__SUCoreMobileAsset__reportDownloadProgress___block_invoke_2;
         v17[3] = &unk_27892D478;
         v17[4] = self;
-        v18 = v4;
-        dispatch_async(v12, v17);
+        v18 = progressCopy;
+        dispatch_async(clientDelegateCallbackQueue2, v17);
 
         v10 = v18;
         goto LABEL_8;
       }
     }
 
-    v13 = [MEMORY[0x277D64460] sharedLogger];
-    v14 = [v13 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 summary];
+      summary = [progressCopy summary];
       *buf = 138543618;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
-      v24 = v15;
-      _os_log_impl(&dword_23193C000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ download progress (not reported): progress=%{public}@", buf, 0x16u);
+      v24 = summary;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ download progress (not reported): progress=%{public}@", buf, 0x16u);
     }
   }
 
@@ -1634,57 +1634,57 @@ void __45__SUCoreMobileAsset__reportDownloadProgress___block_invoke_2(uint64_t a
   [v2 maDownloadProgress:*(a1 + 40)];
 }
 
-- (void)_reportDownloaded:(id)a3
+- (void)_reportDownloaded:(id)downloaded
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMobileAsset *)self maControlQueue];
-  dispatch_assert_queue_V2(v5);
+  downloadedCopy = downloaded;
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
+  dispatch_assert_queue_V2(maControlQueue);
 
-  v6 = [MEMORY[0x277D64460] sharedLogger];
-  v7 = [v6 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(SUCoreMobileAsset *)self documentationStashBuild];
+    documentationStashBuild = [(SUCoreMobileAsset *)self documentationStashBuild];
     v9 = +[SUCoreDocumentationDataManager sharedManager];
     *buf = 138412546;
-    v48 = v8;
+    selfCopy2 = documentationStashBuild;
     v49 = 2112;
     v50 = v9;
-    _os_log_impl(&dword_23193C000, v7, OS_LOG_TYPE_DEFAULT, "Report downloaded, found stashDocumentationBuild=%@ sharedmanager:%@", buf, 0x16u);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Report downloaded, found stashDocumentationBuild=%@ sharedmanager:%@", buf, 0x16u);
   }
 
-  v10 = [(SUCoreMobileAsset *)self documentationStashBuild];
+  documentationStashBuild2 = [(SUCoreMobileAsset *)self documentationStashBuild];
 
-  if (v10)
+  if (documentationStashBuild2)
   {
-    v11 = [MEMORY[0x277D64460] sharedLogger];
-    v12 = [v11 oslog];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(SUCoreMobileAsset *)self documentationStashBuild];
+      documentationStashBuild3 = [(SUCoreMobileAsset *)self documentationStashBuild];
       *buf = 138543618;
-      v48 = self;
+      selfCopy2 = self;
       v49 = 2114;
-      v50 = v13;
-      _os_log_impl(&dword_23193C000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Stashing documentation asset for build: %{public}@", buf, 0x16u);
+      v50 = documentationStashBuild3;
+      _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "%{public}@ Stashing documentation asset for build: %{public}@", buf, 0x16u);
     }
 
     v14 = +[SUCoreDocumentationDataManager sharedManager];
-    v15 = [(SUCoreMobileAsset *)self asset];
-    v16 = [(SUCoreMobileAsset *)self documentationStashBuild];
+    asset = [(SUCoreMobileAsset *)self asset];
+    documentationStashBuild4 = [(SUCoreMobileAsset *)self documentationStashBuild];
     v46 = 0;
-    v17 = [v14 stashDocumentationAssetData:v15 forBuildVersion:v16 error:&v46];
+    v17 = [v14 stashDocumentationAssetData:asset forBuildVersion:documentationStashBuild4 error:&v46];
     v18 = v46;
 
     if ((v17 & 1) == 0)
     {
-      v19 = [MEMORY[0x277D64460] sharedLogger];
-      v20 = [v19 oslog];
+      mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+      oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
       {
         [SUCoreMobileAsset _reportDownloaded:];
       }
@@ -1701,37 +1701,37 @@ void __45__SUCoreMobileAsset__reportDownloadProgress___block_invoke_2(uint64_t a
   else
   {
     v23 = [MEMORY[0x277D643F8] beginTransactionWithName:@"ma.DownloadAsset.Delegate"];
-    v24 = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __39__SUCoreMobileAsset__reportDownloaded___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v44 = v4;
+    v44 = downloadedCopy;
     v45 = v23;
     v25 = v23;
-    dispatch_async(v24, block);
+    dispatch_async(clientDelegateCallbackQueue, block);
 
     v26 = 1;
   }
 
-  v27 = [(SUCoreMobileAsset *)self downloadCompletion];
+  downloadCompletion = [(SUCoreMobileAsset *)self downloadCompletion];
 
-  if (v27)
+  if (downloadCompletion)
   {
-    v28 = [(SUCoreMobileAsset *)self downloadCompletion];
+    downloadCompletion2 = [(SUCoreMobileAsset *)self downloadCompletion];
     [(SUCoreMobileAsset *)self setDownloadCompletion:0];
     v29 = [MEMORY[0x277D643F8] beginTransactionWithName:@"ma.DownloadAsset.Completion"];
-    v30 = [(SUCoreMobileAsset *)self clientCompletionQueue];
+    clientCompletionQueue = [(SUCoreMobileAsset *)self clientCompletionQueue];
     v37 = MEMORY[0x277D85DD0];
     v38 = 3221225472;
     v39 = __39__SUCoreMobileAsset__reportDownloaded___block_invoke_2;
     v40 = &unk_27892CA88;
     v41 = v29;
-    v42 = v28;
-    v31 = v29;
-    v32 = v28;
-    dispatch_async(v30, &v37);
+    v42 = downloadCompletion2;
+    summary = v29;
+    oslog4 = downloadCompletion2;
+    dispatch_async(clientCompletionQueue, &v37);
 
 LABEL_18:
     goto LABEL_19;
@@ -1742,17 +1742,17 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v36 = [MEMORY[0x277D64460] sharedLogger];
-  v32 = [v36 oslog];
+  mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+  oslog4 = [mEMORY[0x277D64460]4 oslog];
 
-  if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v4 summary];
+    summary = [downloadedCopy summary];
     *buf = 138543618;
-    v48 = self;
+    selfCopy2 = self;
     v49 = 2114;
-    v50 = v31;
-    _os_log_impl(&dword_23193C000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@ downloaded (not reported): progress=%{public}@", buf, 0x16u);
+    v50 = summary;
+    _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "%{public}@ downloaded (not reported): progress=%{public}@", buf, 0x16u);
     goto LABEL_18;
   }
 
@@ -1787,22 +1787,22 @@ uint64_t __39__SUCoreMobileAsset__reportDownloaded___block_invoke_2(uint64_t a1)
   return [v2 endTransaction:v3 withName:@"ma.DownloadAsset.Completion"];
 }
 
-- (void)_reportDownloadFailed:(id)a3
+- (void)_reportDownloadFailed:(id)failed
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMobileAsset *)self maControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
+  dispatch_assert_queue_V2(maControlQueue);
 
-  v6 = [MEMORY[0x277D64460] sharedLogger];
-  v7 = [v6 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(SUCoreMobileAsset *)self documentationStashBuild];
+    documentationStashBuild = [(SUCoreMobileAsset *)self documentationStashBuild];
     *buf = 138412290;
-    v36 = v8;
-    _os_log_impl(&dword_23193C000, v7, OS_LOG_TYPE_DEFAULT, "Report download failed, found stashDocumentationBuild=%@", buf, 0xCu);
+    selfCopy = documentationStashBuild;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Report download failed, found stashDocumentationBuild=%@", buf, 0xCu);
   }
 
   if ([(SUCoreMobileAsset *)self removingAsset]|| [(SUCoreMobileAsset *)self assetRemoved]|| ([(SUCoreMobileAsset *)self maDelegate], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) == 0))
@@ -1813,38 +1813,38 @@ uint64_t __39__SUCoreMobileAsset__reportDownloaded___block_invoke_2(uint64_t a1)
   else
   {
     v11 = [MEMORY[0x277D643F8] beginTransactionWithName:@"ma.DownloadAsset.Delegate"];
-    v12 = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __43__SUCoreMobileAsset__reportDownloadFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v33 = v4;
+    v33 = failedCopy;
     v34 = v11;
     v13 = v11;
-    dispatch_async(v12, block);
+    dispatch_async(clientDelegateCallbackQueue, block);
 
     v14 = 1;
   }
 
-  v15 = [(SUCoreMobileAsset *)self downloadCompletion];
+  downloadCompletion = [(SUCoreMobileAsset *)self downloadCompletion];
 
-  if (v15)
+  if (downloadCompletion)
   {
-    v16 = [(SUCoreMobileAsset *)self downloadCompletion];
+    downloadCompletion2 = [(SUCoreMobileAsset *)self downloadCompletion];
     [(SUCoreMobileAsset *)self setDownloadCompletion:0];
     v17 = [MEMORY[0x277D643F8] beginTransactionWithName:@"ma.DownloadAsset.Completion"];
-    v18 = [(SUCoreMobileAsset *)self clientCompletionQueue];
+    clientCompletionQueue = [(SUCoreMobileAsset *)self clientCompletionQueue];
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
     v27 = __43__SUCoreMobileAsset__reportDownloadFailed___block_invoke_2;
     v28 = &unk_27892C830;
-    v31 = v16;
-    v29 = v4;
+    v31 = downloadCompletion2;
+    v29 = failedCopy;
     v30 = v17;
     v19 = v17;
-    v20 = v16;
-    dispatch_async(v18, &v25);
+    oslog2 = downloadCompletion2;
+    dispatch_async(clientCompletionQueue, &v25);
   }
 
   else
@@ -1854,24 +1854,24 @@ uint64_t __39__SUCoreMobileAsset__reportDownloaded___block_invoke_2(uint64_t a1)
       goto LABEL_11;
     }
 
-    v24 = [MEMORY[0x277D64460] sharedLogger];
-    v20 = [v24 oslog];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v36 = self;
+      selfCopy = self;
       v37 = 2114;
-      v38 = v4;
-      _os_log_impl(&dword_23193C000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ download failed (not reported): error=%{public}@", buf, 0x16u);
+      v38 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "%{public}@ download failed (not reported): error=%{public}@", buf, 0x16u);
     }
   }
 
 LABEL_11:
   [(SUCoreMobileAsset *)self setDocumentationStashBuild:0, v25, v26, v27, v28];
   v21 = MEMORY[0x277D643F8];
-  v22 = [(SUCoreMobileAsset *)self downloadAssetTransaction];
-  [v21 endTransaction:v22 withName:@"ma.DownloadAsset"];
+  downloadAssetTransaction = [(SUCoreMobileAsset *)self downloadAssetTransaction];
+  [v21 endTransaction:downloadAssetTransaction withName:@"ma.DownloadAsset"];
 
   [(SUCoreMobileAsset *)self setDownloadAssetTransaction:0];
   v23 = *MEMORY[0x277D85DE8];
@@ -1901,16 +1901,16 @@ uint64_t __43__SUCoreMobileAsset__reportDownloadFailed___block_invoke_2(void *a1
 - (void)_reportAssetRemoved
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreMobileAsset *)self maControlQueue];
-  dispatch_assert_queue_V2(v3);
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
+  dispatch_assert_queue_V2(maControlQueue);
 
-  v4 = [(SUCoreMobileAsset *)self maDelegate];
+  maDelegate = [(SUCoreMobileAsset *)self maDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = [MEMORY[0x277D643F8] beginTransactionWithName:@"ma.RemoveAsset.Delegate"];
-    v7 = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__SUCoreMobileAsset__reportAssetRemoved__block_invoke;
@@ -1918,26 +1918,26 @@ uint64_t __43__SUCoreMobileAsset__reportDownloadFailed___block_invoke_2(void *a1
     block[4] = self;
     v26 = v6;
     v8 = v6;
-    dispatch_async(v7, block);
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
-  v9 = [(SUCoreMobileAsset *)self removeCompletion];
+  removeCompletion = [(SUCoreMobileAsset *)self removeCompletion];
 
-  if (v9)
+  if (removeCompletion)
   {
-    v10 = [(SUCoreMobileAsset *)self removeCompletion];
+    removeCompletion2 = [(SUCoreMobileAsset *)self removeCompletion];
     [(SUCoreMobileAsset *)self setRemoveCompletion:0];
     v11 = [MEMORY[0x277D643F8] beginTransactionWithName:@"ma.RemoveAsset.Completion"];
-    v12 = [(SUCoreMobileAsset *)self clientCompletionQueue];
+    clientCompletionQueue = [(SUCoreMobileAsset *)self clientCompletionQueue];
     v19 = MEMORY[0x277D85DD0];
     v20 = 3221225472;
     v21 = __40__SUCoreMobileAsset__reportAssetRemoved__block_invoke_2;
     v22 = &unk_27892CA88;
     v23 = v11;
-    v24 = v10;
+    v24 = removeCompletion2;
     v13 = v11;
-    v14 = v10;
-    dispatch_async(v12, &v19);
+    oslog = removeCompletion2;
+    dispatch_async(clientCompletionQueue, &v19);
   }
 
   else
@@ -1947,14 +1947,14 @@ uint64_t __43__SUCoreMobileAsset__reportDownloadFailed___block_invoke_2(void *a1
       goto LABEL_6;
     }
 
-    v18 = [MEMORY[0x277D64460] sharedLogger];
-    v14 = [v18 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v28 = self;
-      _os_log_impl(&dword_23193C000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ asset removed (not reported)", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ asset removed (not reported)", buf, 0xCu);
     }
   }
 
@@ -1987,49 +1987,49 @@ uint64_t __40__SUCoreMobileAsset__reportAssetRemoved__block_invoke_2(uint64_t a1
   return [v2 endTransaction:v3 withName:@"ma.RemoveAsset.Completion"];
 }
 
-- (void)_reportAssetRemoveFailed:(id)a3
+- (void)_reportAssetRemoveFailed:(id)failed
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreMobileAsset *)self maControlQueue];
-  dispatch_assert_queue_V2(v5);
+  failedCopy = failed;
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
+  dispatch_assert_queue_V2(maControlQueue);
 
-  v6 = [(SUCoreMobileAsset *)self maDelegate];
+  maDelegate = [(SUCoreMobileAsset *)self maDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = [MEMORY[0x277D643F8] beginTransactionWithName:@"ma.RemoveAsset.Delegate"];
-    v9 = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__SUCoreMobileAsset__reportAssetRemoveFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v29 = v4;
+    v29 = failedCopy;
     v30 = v8;
     v10 = v8;
-    dispatch_async(v9, block);
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
-  v11 = [(SUCoreMobileAsset *)self removeCompletion];
+  removeCompletion = [(SUCoreMobileAsset *)self removeCompletion];
 
-  if (v11)
+  if (removeCompletion)
   {
-    v12 = [(SUCoreMobileAsset *)self removeCompletion];
+    removeCompletion2 = [(SUCoreMobileAsset *)self removeCompletion];
     [(SUCoreMobileAsset *)self setRemoveCompletion:0];
     v13 = [MEMORY[0x277D643F8] beginTransactionWithName:@"ma.RemoveAsset.Completion"];
-    v14 = [(SUCoreMobileAsset *)self clientCompletionQueue];
+    clientCompletionQueue = [(SUCoreMobileAsset *)self clientCompletionQueue];
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __46__SUCoreMobileAsset__reportAssetRemoveFailed___block_invoke_2;
     v24 = &unk_27892C830;
-    v27 = v12;
-    v25 = v4;
+    v27 = removeCompletion2;
+    v25 = failedCopy;
     v26 = v13;
     v15 = v13;
-    v16 = v12;
-    dispatch_async(v14, &v21);
+    oslog = removeCompletion2;
+    dispatch_async(clientCompletionQueue, &v21);
   }
 
   else
@@ -2039,16 +2039,16 @@ uint64_t __40__SUCoreMobileAsset__reportAssetRemoved__block_invoke_2(uint64_t a1
       goto LABEL_6;
     }
 
-    v20 = [MEMORY[0x277D64460] sharedLogger];
-    v16 = [v20 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v32 = self;
+      selfCopy = self;
       v33 = 2114;
-      v34 = v4;
-      _os_log_impl(&dword_23193C000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ asset remove failed (not reported): error=%{public}@", buf, 0x16u);
+      v34 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ asset remove failed (not reported): error=%{public}@", buf, 0x16u);
     }
   }
 
@@ -2082,61 +2082,61 @@ uint64_t __46__SUCoreMobileAsset__reportAssetRemoveFailed___block_invoke_2(void 
   return [v3 endTransaction:v4 withName:@"ma.RemoveAsset.Completion"];
 }
 
-- (void)_reportAnomaly:(id)a3 issuingCompletion:(id)a4
+- (void)_reportAnomaly:(id)anomaly issuingCompletion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreMobileAsset *)self maControlQueue];
-  dispatch_assert_queue_V2(v8);
+  anomalyCopy = anomaly;
+  completionCopy = completion;
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
+  dispatch_assert_queue_V2(maControlQueue);
 
-  v9 = [(SUCoreMobileAsset *)self maDelegate];
+  maDelegate = [(SUCoreMobileAsset *)self maDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreMobileAsset *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke;
     block[3] = &unk_27892D478;
     block[4] = self;
-    v20 = v6;
-    dispatch_async(v11, block);
+    v20 = anomalyCopy;
+    dispatch_async(clientDelegateCallbackQueue, block);
 
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_7;
     }
   }
 
-  else if (!v7)
+  else if (!completionCopy)
   {
-    v15 = [MEMORY[0x277D64460] sharedLogger];
-    v13 = [v15 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
-      v24 = v6;
-      _os_log_impl(&dword_23193C000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ anomaly (not reported): error=%{public}@", buf, 0x16u);
+      v24 = anomalyCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ anomaly (not reported): error=%{public}@", buf, 0x16u);
     }
 
     goto LABEL_6;
   }
 
-  v12 = [(SUCoreMobileAsset *)self clientCompletionQueue];
+  clientCompletionQueue = [(SUCoreMobileAsset *)self clientCompletionQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke_2;
   v16[3] = &unk_27892CA88;
-  v18 = v7;
-  v17 = v6;
-  dispatch_async(v12, v16);
+  v18 = completionCopy;
+  v17 = anomalyCopy;
+  dispatch_async(clientCompletionQueue, v16);
 
-  v13 = v18;
+  oslog = v18;
 LABEL_6:
 
 LABEL_7:
@@ -2149,100 +2149,100 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
   [v2 maAnomaly:*(a1 + 40)];
 }
 
-- (void)_trackMobileAssetBegin:(id)a3
+- (void)_trackMobileAssetBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SUCoreMobileAsset *)self operationName];
-  [(SUCoreMobileAsset *)self _trackMobileAssetBegin:v4 withIdentifier:v5];
+  beginCopy = begin;
+  operationName = [(SUCoreMobileAsset *)self operationName];
+  [(SUCoreMobileAsset *)self _trackMobileAssetBegin:beginCopy withIdentifier:operationName];
 }
 
-- (void)_trackMobileAssetBegin:(id)a3 withIdentifier:(id)a4
+- (void)_trackMobileAssetBegin:(id)begin withIdentifier:(id)identifier
 {
   v5 = MEMORY[0x277D64428];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDiag];
-  [v8 trackBegin:v7 atLevel:1 forModule:@"ma" withIdentifier:v6];
+  identifierCopy = identifier;
+  beginCopy = begin;
+  sharedDiag = [v5 sharedDiag];
+  [sharedDiag trackBegin:beginCopy atLevel:1 forModule:@"ma" withIdentifier:identifierCopy];
 }
 
-- (void)_trackMobileAssetEnd:(id)a3 withResult:(int64_t)a4 withError:(id)a5
+- (void)_trackMobileAssetEnd:(id)end withResult:(int64_t)result withError:(id)error
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SUCoreMobileAsset *)self operationName];
-  [(SUCoreMobileAsset *)self _trackMobileAssetEnd:v9 withIdentifier:v10 withResult:a4 withError:v8];
+  errorCopy = error;
+  endCopy = end;
+  operationName = [(SUCoreMobileAsset *)self operationName];
+  [(SUCoreMobileAsset *)self _trackMobileAssetEnd:endCopy withIdentifier:operationName withResult:result withError:errorCopy];
 }
 
-- (void)_trackMobileAssetEnd:(id)a3 withIdentifier:(id)a4 withResult:(int64_t)a5 withError:(id)a6
+- (void)_trackMobileAssetEnd:(id)end withIdentifier:(id)identifier withResult:(int64_t)result withError:(id)error
 {
   v9 = MEMORY[0x277D64428];
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v9 sharedDiag];
-  [v13 trackEnd:v12 atLevel:1 forModule:@"ma" withIdentifier:v11 withResult:a5 withError:v10];
+  errorCopy = error;
+  identifierCopy = identifier;
+  endCopy = end;
+  sharedDiag = [v9 sharedDiag];
+  [sharedDiag trackEnd:endCopy atLevel:1 forModule:@"ma" withIdentifier:identifierCopy withResult:result withError:errorCopy];
 }
 
-- (void)_trackMAAnomaly:(id)a3 result:(int64_t)a4 description:(id)a5
+- (void)_trackMAAnomaly:(id)anomaly result:(int64_t)result description:(id)description
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SUCoreMobileAsset *)self maControlQueue];
-  dispatch_assert_queue_V2(v10);
+  descriptionCopy = description;
+  anomalyCopy = anomaly;
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
+  dispatch_assert_queue_V2(maControlQueue);
 
-  v11 = [MEMORY[0x277D643F8] sharedCore];
-  v15 = [v11 buildError:a4 underlying:0 description:v8];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v15 = [mEMORY[0x277D643F8] buildError:result underlying:0 description:descriptionCopy];
 
-  v12 = [MEMORY[0x277D64428] sharedDiag];
-  v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[MA] %@", v9];
+  mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+  anomalyCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[MA] %@", anomalyCopy];
 
-  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ %@", self, v8];
-  [v12 trackAnomaly:v13 forReason:v14 withResult:a4 withError:v15];
+  descriptionCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ %@", self, descriptionCopy];
+  [mEMORY[0x277D64428] trackAnomaly:anomalyCopy forReason:descriptionCopy withResult:result withError:v15];
 
   [(SUCoreMobileAsset *)self _reportAnomaly:v15];
 }
 
 - (id)_updateAssetTypeName
 {
-  v3 = [(SUCoreMobileAsset *)self maControlQueue];
-  dispatch_assert_queue_V2(v3);
+  maControlQueue = [(SUCoreMobileAsset *)self maControlQueue];
+  dispatch_assert_queue_V2(maControlQueue);
 
-  v4 = [(SUCoreMobileAsset *)self asset];
-  v5 = [v4 assetType];
-  v6 = [v5 componentsSeparatedByString:@"."];
+  asset = [(SUCoreMobileAsset *)self asset];
+  assetType = [asset assetType];
+  v6 = [assetType componentsSeparatedByString:@"."];
 
   if ([v6 count])
   {
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
   }
 
   else
   {
-    v8 = [(SUCoreMobileAsset *)self asset];
-    v7 = [v8 assetType];
+    asset2 = [(SUCoreMobileAsset *)self asset];
+    lastObject = [asset2 assetType];
   }
 
-  return v7;
+  return lastObject;
 }
 
 - (id)description
 {
-  v2 = [(SUCoreMobileAsset *)self operationName];
-  if (!v2)
+  operationName = [(SUCoreMobileAsset *)self operationName];
+  if (!operationName)
   {
-    v2 = @"[MA(initialized)]";
+    operationName = @"[MA(initialized)]";
   }
 
-  return v2;
+  return operationName;
 }
 
-+ (id)downloadOptionsDescription:(id)a3
++ (id)downloadOptionsDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = descriptionCopy;
   }
 
   else
@@ -2251,7 +2251,7 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
   }
 
   v26 = objc_alloc(MEMORY[0x277CCACA8]);
-  if ([v3 allowsCellularAccess])
+  if ([descriptionCopy allowsCellularAccess])
   {
     v5 = @"YES";
   }
@@ -2262,8 +2262,8 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
   }
 
   v25 = v5;
-  v24 = [v3 timeoutIntervalForResource];
-  if ([v3 discretionary])
+  timeoutIntervalForResource = [descriptionCopy timeoutIntervalForResource];
+  if ([descriptionCopy discretionary])
   {
     v6 = @"YES";
   }
@@ -2274,7 +2274,7 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
   }
 
   v23 = v6;
-  if ([v3 allowsExpensiveAccess])
+  if ([descriptionCopy allowsExpensiveAccess])
   {
     v7 = @"YES";
   }
@@ -2285,7 +2285,7 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
   }
 
   v22 = v7;
-  if ([v3 requiresPowerPluggedIn])
+  if ([descriptionCopy requiresPowerPluggedIn])
   {
     v8 = @"YES";
   }
@@ -2296,7 +2296,7 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
   }
 
   v21 = v8;
-  if ([v3 canUseLocalCacheServer])
+  if ([descriptionCopy canUseLocalCacheServer])
   {
     v9 = @"YES";
   }
@@ -2307,7 +2307,7 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
   }
 
   v20 = v9;
-  if ([v3 prefersInfraWiFi])
+  if ([descriptionCopy prefersInfraWiFi])
   {
     v10 = @"YES";
   }
@@ -2317,18 +2317,18 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
     v10 = @"NO";
   }
 
-  v11 = [v3 sessionId];
-  if (v11)
+  sessionId = [descriptionCopy sessionId];
+  if (sessionId)
   {
-    v12 = [v3 sessionId];
+    sessionId2 = [descriptionCopy sessionId];
   }
 
   else
   {
-    v12 = @"NONE";
+    sessionId2 = @"NONE";
   }
 
-  if ([v3 liveServerCatalogOnly])
+  if ([descriptionCopy liveServerCatalogOnly])
   {
     v13 = @"YES";
   }
@@ -2340,42 +2340,42 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
 
   if (v4)
   {
-    v14 = [v4 liveAssetAudienceUUID];
-    v15 = [v4 purpose];
+    liveAssetAudienceUUID = [v4 liveAssetAudienceUUID];
+    purpose = [v4 purpose];
   }
 
   else
   {
-    v14 = @"NONE";
-    v15 = @"NONE";
+    liveAssetAudienceUUID = @"NONE";
+    purpose = @"NONE";
   }
 
-  v16 = [v3 additionalServerParams];
-  if (v16)
+  additionalServerParams = [descriptionCopy additionalServerParams];
+  if (additionalServerParams)
   {
-    v17 = [v3 additionalServerParams];
-    v18 = [v26 initWithFormat:@"\n[>>>\n       allowsCellularAccess: %@\n timeoutIntervalForResource: %ld\n              discretionary: %@\n      allowsExpensiveAccess: %@\n     requiresPowerPluggedIn: %@\n     canUseLocalCacheServer: %@\n           prefersInfraWiFi: %@\n                  sessionId: %@\n      liveServerCatalogOnly: %@\n      liveAssetAudienceUUID: %@\n                    purpose: %@\n     additionalServerParams: %@\n<<<]", v25, v24, v23, v22, v21, v20, v10, v12, v13, v14, v15, v17];
+    additionalServerParams2 = [descriptionCopy additionalServerParams];
+    v18 = [v26 initWithFormat:@"\n[>>>\n       allowsCellularAccess: %@\n timeoutIntervalForResource: %ld\n              discretionary: %@\n      allowsExpensiveAccess: %@\n     requiresPowerPluggedIn: %@\n     canUseLocalCacheServer: %@\n           prefersInfraWiFi: %@\n                  sessionId: %@\n      liveServerCatalogOnly: %@\n      liveAssetAudienceUUID: %@\n                    purpose: %@\n     additionalServerParams: %@\n<<<]", v25, timeoutIntervalForResource, v23, v22, v21, v20, v10, sessionId2, v13, liveAssetAudienceUUID, purpose, additionalServerParams2];
   }
 
   else
   {
-    v18 = [v26 initWithFormat:@"\n[>>>\n       allowsCellularAccess: %@\n timeoutIntervalForResource: %ld\n              discretionary: %@\n      allowsExpensiveAccess: %@\n     requiresPowerPluggedIn: %@\n     canUseLocalCacheServer: %@\n           prefersInfraWiFi: %@\n                  sessionId: %@\n      liveServerCatalogOnly: %@\n      liveAssetAudienceUUID: %@\n                    purpose: %@\n     additionalServerParams: %@\n<<<]", v25, v24, v23, v22, v21, v20, v10, v12, v13, v14, v15, @"NONE"];
+    v18 = [v26 initWithFormat:@"\n[>>>\n       allowsCellularAccess: %@\n timeoutIntervalForResource: %ld\n              discretionary: %@\n      allowsExpensiveAccess: %@\n     requiresPowerPluggedIn: %@\n     canUseLocalCacheServer: %@\n           prefersInfraWiFi: %@\n                  sessionId: %@\n      liveServerCatalogOnly: %@\n      liveAssetAudienceUUID: %@\n                    purpose: %@\n     additionalServerParams: %@\n<<<]", v25, timeoutIntervalForResource, v23, v22, v21, v20, v10, sessionId2, v13, liveAssetAudienceUUID, purpose, @"NONE"];
   }
 
   if (v4)
   {
   }
 
-  if (v11)
+  if (sessionId)
   {
   }
 
   return v18;
 }
 
-+ (id)downloadConfigSummary:(id)a3
++ (id)downloadConfigSummary:(id)summary
 {
-  if ([a3 discretionary])
+  if ([summary discretionary])
   {
     return @"background(discretionary)";
   }
@@ -2386,25 +2386,25 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
   }
 }
 
-+ (BOOL)downloadConfig:(id)a3 isEqualToConfig:(id)a4
++ (BOOL)downloadConfig:(id)config isEqualToConfig:(id)toConfig
 {
-  v5 = a4;
-  LOBYTE(a3) = [a3 discretionary];
-  v6 = [v5 discretionary];
+  toConfigCopy = toConfig;
+  LOBYTE(config) = [config discretionary];
+  discretionary = [toConfigCopy discretionary];
 
-  return a3 ^ v6 ^ 1;
+  return config ^ discretionary ^ 1;
 }
 
-+ (id)downloadConfigCopy:(id)a3
++ (id)downloadConfigCopy:(id)copy
 {
-  if (a3)
+  if (copy)
   {
     v3 = MEMORY[0x277D28A00];
-    v4 = a3;
+    copyCopy = copy;
     v5 = objc_alloc_init(v3);
-    v6 = [v4 discretionary];
+    discretionary = [copyCopy discretionary];
 
-    [v5 setDiscretionary:v6];
+    [v5 setDiscretionary:discretionary];
   }
 
   else
@@ -2415,31 +2415,31 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
   return v5;
 }
 
-+ (void)reloadDescriptor:(id)a3 completion:(id)a4
++ (void)reloadDescriptor:(id)descriptor completion:(id)completion
 {
   v5 = MEMORY[0x277D289C8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 requireSameAssetTypeAndDownloadContent];
-  [SUCoreMobileAsset reloadDescriptor:v7 allowingDifferences:v8 forceReload:0 completion:v6];
+  completionCopy = completion;
+  descriptorCopy = descriptor;
+  requireSameAssetTypeAndDownloadContent = [v5 requireSameAssetTypeAndDownloadContent];
+  [SUCoreMobileAsset reloadDescriptor:descriptorCopy allowingDifferences:requireSameAssetTypeAndDownloadContent forceReload:0 completion:completionCopy];
 }
 
-+ (void)reloadDescriptor:(id)a3 allowingDifferences:(id)a4 forceReload:(BOOL)a5 skipMSU:(BOOL)a6 defaultValues:(id)a7 completion:(id)a8
++ (void)reloadDescriptor:(id)descriptor allowingDifferences:(id)differences forceReload:(BOOL)reload skipMSU:(BOOL)u defaultValues:(id)values completion:(id)completion
 {
-  LODWORD(v10) = a6;
-  LODWORD(v11) = a5;
+  LODWORD(v10) = u;
+  LODWORD(v11) = reload;
   v55 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = [MEMORY[0x277D64460] sharedLogger];
-  v18 = [v17 oslog];
+  descriptorCopy = descriptor;
+  differencesCopy = differences;
+  valuesCopy = values;
+  completionCopy = completion;
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v13 summary];
-    v29 = [v14 summary];
+    summary = [descriptorCopy summary];
+    summary2 = [differencesCopy summary];
     v31 = v11;
     v32 = v10;
     if (v11)
@@ -2462,8 +2462,8 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
       v10 = @"NO";
     }
 
-    v33 = v14;
-    if (v16)
+    v33 = differencesCopy;
+    if (completionCopy)
     {
       v19 = @"YES";
     }
@@ -2473,8 +2473,8 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
       v19 = @"NO";
     }
 
-    v20 = v16;
-    if ([v13 requiresSoftwareUpdateAssetReload])
+    v20 = completionCopy;
+    if ([descriptorCopy requiresSoftwareUpdateAssetReload])
     {
       v21 = @"YES";
     }
@@ -2485,7 +2485,7 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
     }
 
     *buf = 138544898;
-    if ([v13 requiresDocumentationReload])
+    if ([descriptorCopy requiresDocumentationReload])
     {
       v22 = @"YES";
     }
@@ -2495,9 +2495,9 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
       v22 = @"NO";
     }
 
-    v42 = v30;
+    v42 = summary;
     v43 = 2114;
-    v44 = v29;
+    v44 = summary2;
     v45 = 2114;
     v46 = v11;
     v47 = 2114;
@@ -2506,43 +2506,43 @@ void __54__SUCoreMobileAsset__reportAnomaly_issuingCompletion___block_invoke(uin
     LOBYTE(v10) = v32;
     v49 = 2114;
     v50 = v19;
-    v14 = v33;
+    differencesCopy = v33;
     v51 = 2114;
     v52 = v21;
-    v16 = v20;
+    completionCopy = v20;
     v53 = 2114;
     v54 = v22;
-    _os_log_impl(&dword_23193C000, v18, OS_LOG_TYPE_DEFAULT, "[ReloadDescriptor] Reload descriptor method called, descriptor:%{public}@ allowingDifferences:%{public}@ forceReload:%{public}@ skipMSU:%{public}@ completion:%{public}@ requiresSoftwareUpdateAssetReload:%{public}@ requiresDocumentationReload:%{public}@", buf, 0x48u);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[ReloadDescriptor] Reload descriptor method called, descriptor:%{public}@ allowingDifferences:%{public}@ forceReload:%{public}@ skipMSU:%{public}@ completion:%{public}@ requiresSoftwareUpdateAssetReload:%{public}@ requiresDocumentationReload:%{public}@", buf, 0x48u);
   }
 
-  v23 = [MEMORY[0x277D643F8] sharedCore];
-  v24 = v23;
-  if (v13)
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v24 = mEMORY[0x277D643F8];
+  if (descriptorCopy)
   {
-    v25 = [v23 waitedOperationQueue];
+    waitedOperationQueue = [mEMORY[0x277D643F8] waitedOperationQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __103__SUCoreMobileAsset_reloadDescriptor_allowingDifferences_forceReload_skipMSU_defaultValues_completion___block_invoke;
     block[3] = &unk_27892E620;
-    v35 = v13;
-    v36 = v14;
+    v35 = descriptorCopy;
+    v36 = differencesCopy;
     v39 = v11;
     v40 = v10;
-    v37 = v15;
-    v38 = v16;
-    dispatch_async(v25, block);
+    v37 = valuesCopy;
+    v38 = completionCopy;
+    dispatch_async(waitedOperationQueue, block);
 
     v26 = v35;
   }
 
   else
   {
-    v26 = [v23 buildError:8116 underlying:0 description:@"No descriptor was provided for descriptor reload"];
+    v26 = [mEMORY[0x277D643F8] buildError:8116 underlying:0 description:@"No descriptor was provided for descriptor reload"];
 
-    v27 = [MEMORY[0x277D64428] sharedDiag];
-    [v27 trackAnomaly:@"ReloadDescriptor" forReason:@"No descriptor was provided for descriptor reload" withResult:8116 withError:v26];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"ReloadDescriptor" forReason:@"No descriptor was provided for descriptor reload" withResult:8116 withError:v26];
 
-    [SUCoreMobileAsset _callReloadCompletion:v16 withDescriptor:0 suError:v26 docError:v26];
+    [SUCoreMobileAsset _callReloadCompletion:completionCopy withDescriptor:0 suError:v26 docError:v26];
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -2592,50 +2592,50 @@ void __103__SUCoreMobileAsset_reloadDescriptor_allowingDifferences_forceReload_s
   [SUCoreMobileAsset _callReloadCompletion:*(a1 + 56) withDescriptor:v7 suError:v8 docError:v9];
 }
 
-+ (id)_reloadDescriptor:(id)a3 allowingDifferences:(id)a4 forceReload:(BOOL)a5 skipMSU:(BOOL)a6 defaultValues:(id)a7 pSUReloadError:(id *)a8 pDocReloadError:(id *)a9
++ (id)_reloadDescriptor:(id)descriptor allowingDifferences:(id)differences forceReload:(BOOL)reload skipMSU:(BOOL)u defaultValues:(id)values pSUReloadError:(id *)error pDocReloadError:(id *)reloadError
 {
-  v11 = a6;
-  v14 = a9;
+  uCopy = u;
+  reloadErrorCopy = reloadError;
   v77 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v67 = a7;
-  v17 = v15;
+  descriptorCopy = descriptor;
+  differencesCopy = differences;
+  valuesCopy = values;
+  v17 = descriptorCopy;
   v18 = v17;
   v19 = 0x277D64000uLL;
-  v68 = a8;
-  if (a5 || [(SUCoreDescriptor *)v17 requiresSoftwareUpdateAssetReload])
+  errorCopy = error;
+  if (reload || [(SUCoreDescriptor *)v17 requiresSoftwareUpdateAssetReload])
   {
-    v65 = a5;
-    v20 = [MEMORY[0x277D64460] sharedLogger];
-    v21 = [v20 oslog];
+    reloadCopy = reload;
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(SUCoreDescriptor *)v18 softwareUpdateAssetAbsoluteID];
-      v23 = [(SUCoreDescriptor *)v18 softwareUpdateAssetPurpose];
+      softwareUpdateAssetAbsoluteID = [(SUCoreDescriptor *)v18 softwareUpdateAssetAbsoluteID];
+      softwareUpdateAssetPurpose = [(SUCoreDescriptor *)v18 softwareUpdateAssetPurpose];
       *buf = 138543874;
-      v72 = v16;
+      v72 = differencesCopy;
       v73 = 2114;
-      v74 = v22;
+      v74 = softwareUpdateAssetAbsoluteID;
       v75 = 2114;
-      v76 = v23;
-      _os_log_impl(&dword_23193C000, v21, OS_LOG_TYPE_DEFAULT, "[ReloadDescriptor] Attempting to reload software update asset, allowing differences:%{public}@ absoluteAssetID:%{public}@ purpose:%{public}@", buf, 0x20u);
+      v76 = softwareUpdateAssetPurpose;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[ReloadDescriptor] Attempting to reload software update asset, allowing differences:%{public}@ absoluteAssetID:%{public}@ purpose:%{public}@", buf, 0x20u);
     }
 
     v24 = MEMORY[0x277D289C0];
-    v25 = [(SUCoreDescriptor *)v18 softwareUpdateAssetAbsoluteID];
-    v26 = [(SUCoreDescriptor *)v18 softwareUpdateAssetPurpose];
+    softwareUpdateAssetAbsoluteID2 = [(SUCoreDescriptor *)v18 softwareUpdateAssetAbsoluteID];
+    softwareUpdateAssetPurpose2 = [(SUCoreDescriptor *)v18 softwareUpdateAssetPurpose];
     v70 = 0;
-    v66 = v16;
-    v27 = [v24 SUCoreBorder_loadSync:v25 allowingDifferences:v16 withPurpose:v26 error:&v70 simulateForDescriptor:v18 simulateForType:1];
+    v66 = differencesCopy;
+    v27 = [v24 SUCoreBorder_loadSync:softwareUpdateAssetAbsoluteID2 allowingDifferences:differencesCopy withPurpose:softwareUpdateAssetPurpose2 error:&v70 simulateForDescriptor:v18 simulateForType:1];
     v28 = v70;
 
     if (v28 || !v27)
     {
-      v31 = a9;
-      v36 = [MEMORY[0x277D643F8] sharedCore];
-      v32 = v36;
+      reloadErrorCopy3 = reloadError;
+      mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+      v32 = mEMORY[0x277D643F8];
       if (v28)
       {
         v37 = @"Failed to reload software update asset for descriptor with MobileAsset error";
@@ -2650,24 +2650,24 @@ void __103__SUCoreMobileAsset_reloadDescriptor_allowingDifferences_forceReload_s
         v39 = 0;
       }
 
-      v40 = [v36 buildError:v38 underlying:v39 description:v37];
+      v40 = [mEMORY[0x277D643F8] buildError:v38 underlying:v39 description:v37];
       v41 = v18;
     }
 
     else
     {
-      v29 = [MEMORY[0x277D64460] sharedLogger];
-      v30 = [v29 oslog];
+      mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+      oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_23193C000, v30, OS_LOG_TYPE_DEFAULT, "[ReloadDescriptor] Software update asset reload completed successfully", buf, 2u);
+        _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[ReloadDescriptor] Software update asset reload completed successfully", buf, 2u);
       }
 
-      v31 = a9;
+      reloadErrorCopy3 = reloadError;
 
-      if (v11)
+      if (uCopy)
       {
         v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor msuPrepareSize](v18, "msuPrepareSize")}];
         v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor installationSize](v18, "installationSize")}];
@@ -2684,47 +2684,47 @@ void __103__SUCoreMobileAsset_reloadDescriptor_allowingDifferences_forceReload_s
       }
 
       v42 = [SUCoreDescriptor alloc];
-      v43 = [(SUCoreDescriptor *)v18 releaseDate];
-      v41 = [(SUCoreDescriptor *)v42 initWithSUAsset:v27 releaseDate:v43 prepareSize:v32 snapshotPrepareSize:v34 applySize:v33 snapshotApplySize:v35 defaultValues:v67];
+      releaseDate = [(SUCoreDescriptor *)v18 releaseDate];
+      v41 = [(SUCoreDescriptor *)v42 initWithSUAsset:v27 releaseDate:releaseDate prepareSize:v32 snapshotPrepareSize:v34 applySize:v33 snapshotApplySize:v35 defaultValues:valuesCopy];
 
       [(SUCoreDescriptor *)v41 transferNonAssetPropertiesFromDescriptor:v18];
       v40 = 0;
       v19 = 0x277D64000;
     }
 
-    v16 = v66;
-    v14 = v31;
-    a8 = v68;
-    if (v65)
+    differencesCopy = v66;
+    reloadErrorCopy = reloadErrorCopy3;
+    error = errorCopy;
+    if (reloadCopy)
     {
 LABEL_20:
-      v44 = [*(v19 + 1120) sharedLogger];
-      v45 = [v44 oslog];
+      sharedLogger = [*(v19 + 1120) sharedLogger];
+      oslog3 = [sharedLogger oslog];
 
-      if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
-        v46 = [(SUCoreDescriptor *)v18 documentationAssetAbsoluteID];
-        v47 = [(SUCoreDescriptor *)v18 documentationAssetPurpose];
+        documentationAssetAbsoluteID = [(SUCoreDescriptor *)v18 documentationAssetAbsoluteID];
+        documentationAssetPurpose = [(SUCoreDescriptor *)v18 documentationAssetPurpose];
         *buf = 138543874;
-        v72 = v16;
+        v72 = differencesCopy;
         v73 = 2114;
-        v74 = v46;
+        v74 = documentationAssetAbsoluteID;
         v75 = 2114;
-        v76 = v47;
-        _os_log_impl(&dword_23193C000, v45, OS_LOG_TYPE_DEFAULT, "[ReloadDescriptor] Attempting to reload documentation asset, allowing differences:%{public}@ absoluteAssetID:%{public}@ purpose:%{public}@", buf, 0x20u);
+        v76 = documentationAssetPurpose;
+        _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "[ReloadDescriptor] Attempting to reload documentation asset, allowing differences:%{public}@ absoluteAssetID:%{public}@ purpose:%{public}@", buf, 0x20u);
       }
 
       v48 = MEMORY[0x277D289C0];
-      v49 = [(SUCoreDescriptor *)v18 documentationAssetAbsoluteID];
-      v50 = [(SUCoreDescriptor *)v18 documentationAssetPurpose];
+      documentationAssetAbsoluteID2 = [(SUCoreDescriptor *)v18 documentationAssetAbsoluteID];
+      documentationAssetPurpose2 = [(SUCoreDescriptor *)v18 documentationAssetPurpose];
       v69 = 0;
-      v51 = [v48 SUCoreBorder_loadSync:v49 allowingDifferences:v16 withPurpose:v50 error:&v69 simulateForDescriptor:v41 simulateForType:2];
+      v51 = [v48 SUCoreBorder_loadSync:documentationAssetAbsoluteID2 allowingDifferences:differencesCopy withPurpose:documentationAssetPurpose2 error:&v69 simulateForDescriptor:v41 simulateForType:2];
       v52 = v69;
 
       if (v52 || !v51)
       {
-        v56 = [MEMORY[0x277D643F8] sharedCore];
-        v57 = v56;
+        mEMORY[0x277D643F8]2 = [MEMORY[0x277D643F8] sharedCore];
+        v57 = mEMORY[0x277D643F8]2;
         if (v52)
         {
           v58 = @"Failed to reload documentation asset for descriptor with MobileAsset error";
@@ -2739,26 +2739,26 @@ LABEL_20:
           v60 = 0;
         }
 
-        v55 = [v56 buildError:v59 underlying:v60 description:v58];
+        v55 = [mEMORY[0x277D643F8]2 buildError:v59 underlying:v60 description:v58];
       }
 
       else
       {
-        v53 = [MEMORY[0x277D64460] sharedLogger];
-        v54 = [v53 oslog];
+        mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+        oslog4 = [mEMORY[0x277D64460]3 oslog];
 
-        if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_23193C000, v54, OS_LOG_TYPE_DEFAULT, "[ReloadDescriptor] Documentation asset reload completed successfully", buf, 2u);
+          _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "[ReloadDescriptor] Documentation asset reload completed successfully", buf, 2u);
         }
 
         -[SUCoreDescriptor assignDocumentationFromAsset:extendingBundleProperties:](v41, "assignDocumentationFromAsset:extendingBundleProperties:", v51, [v51 wasLocal]);
         v55 = 0;
       }
 
-      a8 = v68;
-      if (v68)
+      error = errorCopy;
+      if (errorCopy)
       {
         goto LABEL_34;
       }
@@ -2779,18 +2779,18 @@ LABEL_20:
   }
 
   v55 = 0;
-  if (a8)
+  if (error)
   {
 LABEL_34:
     v61 = v40;
-    *a8 = v40;
+    *error = v40;
   }
 
 LABEL_35:
-  if (v14)
+  if (reloadErrorCopy)
   {
     v62 = v55;
-    *v14 = v55;
+    *reloadErrorCopy = v55;
   }
 
   v63 = *MEMORY[0x277D85DE8];
@@ -2798,48 +2798,48 @@ LABEL_35:
   return v41;
 }
 
-+ (void)_callReloadCompletion:(id)a3 withDescriptor:(id)a4 suError:(id)a5 docError:(id)a6
++ (void)_callReloadCompletion:(id)completion withDescriptor:(id)descriptor suError:(id)error docError:(id)docError
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x277D64460] sharedLogger];
-  v14 = [v13 oslog];
+  completionCopy = completion;
+  descriptorCopy = descriptor;
+  errorCopy = error;
+  docErrorCopy = docError;
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v25 = v10;
+    v25 = descriptorCopy;
     v26 = 2114;
-    v27 = v11;
+    v27 = errorCopy;
     v28 = 2114;
-    v29 = v12;
-    _os_log_impl(&dword_23193C000, v14, OS_LOG_TYPE_DEFAULT, "[ReloadDescriptor] Dispatching onto shared completion queue and calling provided reload completion with descriptor:%{public}@ suError:%{public}@ docError:%{public}@", buf, 0x20u);
+    v29 = docErrorCopy;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[ReloadDescriptor] Dispatching onto shared completion queue and calling provided reload completion with descriptor:%{public}@ suError:%{public}@ docError:%{public}@", buf, 0x20u);
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v15 = [MEMORY[0x277D643F8] sharedCore];
-    v16 = [v15 completionQueue];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    completionQueue = [mEMORY[0x277D643F8] completionQueue];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __75__SUCoreMobileAsset__callReloadCompletion_withDescriptor_suError_docError___block_invoke;
     v19[3] = &unk_27892CA10;
-    v23 = v9;
-    v20 = v10;
-    v21 = v11;
-    v22 = v12;
-    dispatch_async(v16, v19);
+    v23 = completionCopy;
+    v20 = descriptorCopy;
+    v21 = errorCopy;
+    v22 = docErrorCopy;
+    dispatch_async(completionQueue, v19);
 
-    v17 = v23;
+    mEMORY[0x277D64428] = v23;
   }
 
   else
   {
-    v17 = [MEMORY[0x277D64428] sharedDiag];
-    [v17 trackAnomaly:@"ReloadDescriptor" forReason:@"No completion was provided for descriptor reload" withResult:8116 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"ReloadDescriptor" forReason:@"No completion was provided for descriptor reload" withResult:8116 withError:0];
   }
 
   v18 = *MEMORY[0x277D85DE8];

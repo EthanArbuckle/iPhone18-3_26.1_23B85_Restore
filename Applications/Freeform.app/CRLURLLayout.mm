@@ -1,6 +1,6 @@
 @interface CRLURLLayout
 - (CGSize)minimumSize;
-- (_TtC8Freeform12CRLURLLayout)initWithInfo:(id)a3;
+- (_TtC8Freeform12CRLURLLayout)initWithInfo:(id)info;
 @end
 
 @implementation CRLURLLayout
@@ -14,12 +14,12 @@
   return result;
 }
 
-- (_TtC8Freeform12CRLURLLayout)initWithInfo:(id)a3
+- (_TtC8Freeform12CRLURLLayout)initWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for CRLURLLayout();
   swift_unknownObjectRetain();
-  v4 = [(CRLCanvasLayout *)&v6 initWithInfo:a3];
+  v4 = [(CRLCanvasLayout *)&v6 initWithInfo:info];
   swift_unknownObjectRelease();
   if (v4)
   {

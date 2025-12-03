@@ -1,29 +1,29 @@
 @interface IMScheduledMessageUpdateProcessingPipelineComponent
-- (IMScheduledMessageUpdateProcessingPipelineComponent)initWithPipelineResources:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IMScheduledMessageUpdateProcessingPipelineComponent)initWithPipelineResources:(id)resources;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMScheduledMessageUpdateProcessingPipelineComponent
 
-- (IMScheduledMessageUpdateProcessingPipelineComponent)initWithPipelineResources:(id)a3
+- (IMScheduledMessageUpdateProcessingPipelineComponent)initWithPipelineResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = IMScheduledMessageUpdateProcessingPipelineComponent;
   v6 = [(IMScheduledMessageUpdateProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelineResources, a3);
+    objc_storeStrong(&v6->_pipelineResources, resources);
   }
 
   return v7;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -34,17 +34,17 @@
     }
   }
 
-  if ([v4 isFromMe])
+  if ([inputCopy isFromMe])
   {
-    v6 = [v4 GUID];
-    v7 = [(IMScheduledMessageUpdateProcessingPipelineComponent *)self pipelineResources];
-    v8 = [v7 messageStore];
-    v9 = [v8 messageWithGUID:v6];
+    gUID = [inputCopy GUID];
+    pipelineResources = [(IMScheduledMessageUpdateProcessingPipelineComponent *)self pipelineResources];
+    messageStore = [pipelineResources messageStore];
+    v9 = [messageStore messageWithGUID:gUID];
 
-    if ([v6 length] && v9)
+    if ([gUID length] && v9)
     {
-      v10 = [v4 scheduleState];
-      v11 = v10 == 0;
+      scheduleState = [inputCopy scheduleState];
+      v11 = scheduleState == 0;
 
       if (v11)
       {
@@ -58,34 +58,34 @@
           }
         }
 
-        v18 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+        v18 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
       }
 
       else
       {
-        v12 = [v4 scheduleState];
-        [v9 setScheduleState:{objc_msgSend(v12, "intValue")}];
+        scheduleState2 = [inputCopy scheduleState];
+        [v9 setScheduleState:{objc_msgSend(scheduleState2, "intValue")}];
 
-        v13 = [(IMScheduledMessageUpdateProcessingPipelineComponent *)self pipelineResources];
-        v14 = [v13 messageStore];
-        v15 = [v14 storeMessage:v9 forceReplace:1 modifyError:0 modifyFlags:0 flagMask:0];
+        pipelineResources2 = [(IMScheduledMessageUpdateProcessingPipelineComponent *)self pipelineResources];
+        messageStore2 = [pipelineResources2 messageStore];
+        v15 = [messageStore2 storeMessage:v9 forceReplace:1 modifyError:0 modifyFlags:0 flagMask:0];
 
         if (IMOSLoggingEnabled())
         {
           v16 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
-            v17 = [v4 scheduleState];
+            scheduleState3 = [inputCopy scheduleState];
             v26 = 138412546;
-            v27 = v6;
+            v27 = gUID;
             v28 = 2112;
-            v29 = v17;
+            v29 = scheduleState3;
             _os_log_impl(&dword_22B4CC000, v16, OS_LOG_TYPE_INFO, "Stored scheduled message %@ with scheduleState %@", &v26, 0x16u);
           }
         }
 
         v18 = objc_alloc_init(MEMORY[0x277D18E08]);
-        [v18 fullfillWithValue:v4];
+        [v18 fullfillWithValue:inputCopy];
       }
     }
 
@@ -104,14 +104,14 @@
       v19 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [v4 fromIdentifier];
+        fromIdentifier = [inputCopy fromIdentifier];
         v26 = 138412290;
-        v27 = v20;
+        v27 = fromIdentifier;
         _os_log_impl(&dword_22B4CC000, v19, OS_LOG_TYPE_INFO, "Scheduled Message update is not from me, not processing: %@", &v26, 0xCu);
       }
     }
 
-    v18 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+    v18 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
   }
 
   v24 = *MEMORY[0x277D85DE8];

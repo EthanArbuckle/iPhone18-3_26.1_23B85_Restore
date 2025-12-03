@@ -1,7 +1,7 @@
 @interface NSDate
-+ (NSDate)allocWithZone:(_NSZone *)a3;
++ (NSDate)allocWithZone:(_NSZone *)zone;
 + (NSDate)date;
-+ (NSDate)dateWithDate:(id)a3;
++ (NSDate)dateWithDate:(id)date;
 + (NSDate)dateWithTimeInterval:(NSTimeInterval)secsToBeAdded sinceDate:(NSDate *)date;
 + (NSDate)dateWithTimeIntervalSince1970:(NSTimeInterval)secs;
 + (NSDate)dateWithTimeIntervalSinceNow:(NSTimeInterval)secs;
@@ -9,16 +9,16 @@
 + (NSDate)now;
 + (NSTimeInterval)timeIntervalSinceReferenceDate;
 + (id)dateWithString:(NSString *)aString;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEqualToDate:(NSDate *)otherDate;
-- (BOOL)isInSameDayAsDate:(id)a3;
+- (BOOL)isInSameDayAsDate:(id)date;
 - (BOOL)isInToday;
 - (BOOL)isInTomorrow;
 - (BOOL)isInYesterday;
 - (NSComparisonResult)compare:(NSDate *)other;
 - (NSDate)dateByAddingTimeInterval:(NSTimeInterval)ti;
 - (NSDate)earlierDate:(NSDate *)anotherDate;
-- (NSDate)initWithDate:(id)a3;
+- (NSDate)initWithDate:(id)date;
 - (NSDate)initWithTimeInterval:(NSTimeInterval)secsToBeAdded sinceDate:(NSDate *)date;
 - (NSDate)initWithTimeIntervalSinceNow:(NSTimeInterval)secs;
 - (NSDate)laterDate:(NSDate *)anotherDate;
@@ -26,7 +26,7 @@
 - (NSTimeInterval)timeIntervalSinceDate:(NSDate *)anotherDate;
 - (NSTimeInterval)timeIntervalSinceNow;
 - (id)initWithString:(NSString *)description;
-- (int64_t)compare:(id)a3 toUnitGranularity:(unint64_t)a4;
+- (int64_t)compare:(id)compare toUnitGranularity:(unint64_t)granularity;
 - (unint64_t)hash;
 @end
 
@@ -35,7 +35,7 @@
 + (NSDate)date
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   __tp.tv_sec = 0;
   __tp.tv_nsec = 0;
   clock_gettime(_CLOCK_REALTIME, &__tp);
@@ -205,20 +205,20 @@
   return v5 - v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
 
-  else if (a3)
+  else if (equal)
   {
-    v5 = _NSIsNSDate(a3);
+    v5 = _NSIsNSDate(equal);
     if (v5)
     {
 
-      LOBYTE(v5) = [(NSDate *)self isEqualToDate:a3];
+      LOBYTE(v5) = [(NSDate *)self isEqualToDate:equal];
     }
   }
 
@@ -408,19 +408,19 @@ LABEL_46:
   }
 }
 
-+ (NSDate)allocWithZone:(_NSZone *)a3
++ (NSDate)allocWithZone:(_NSZone *)zone
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (NSDate == a1)
+  if (NSDate == self)
   {
     result = &___immutablePlaceholderDate;
   }
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___NSDate;
-    result = objc_msgSendSuper2(&v5, sel_allocWithZone_, a3);
+    result = objc_msgSendSuper2(&v5, sel_allocWithZone_, zone);
   }
 
   v4 = *MEMORY[0x1E69E9840];
@@ -429,7 +429,7 @@ LABEL_46:
 
 + (NSDate)dateWithTimeIntervalSinceReferenceDate:(NSTimeInterval)ti
 {
-  v3 = [[a1 alloc] initWithTimeIntervalSinceReferenceDate:ti];
+  v3 = [[self alloc] initWithTimeIntervalSinceReferenceDate:ti];
 
   return v3;
 }
@@ -437,7 +437,7 @@ LABEL_46:
 + (NSDate)dateWithTimeIntervalSinceNow:(NSTimeInterval)secs
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   __tp.tv_sec = 0;
   __tp.tv_nsec = 0;
   clock_gettime(_CLOCK_REALTIME, &__tp);
@@ -459,7 +459,7 @@ LABEL_46:
 
 + (NSDate)dateWithTimeIntervalSince1970:(NSTimeInterval)secs
 {
-  v3 = [[a1 alloc] initWithTimeIntervalSinceReferenceDate:secs + -978307200.0];
+  v3 = [[self alloc] initWithTimeIntervalSinceReferenceDate:secs + -978307200.0];
 
   return v3;
 }
@@ -477,9 +477,9 @@ LABEL_46:
     v7 = NAN;
   }
 
-  v8 = [[a1 alloc] initWithTimeIntervalSinceReferenceDate:v7 + secsToBeAdded];
+  secsToBeAdded = [[self alloc] initWithTimeIntervalSinceReferenceDate:v7 + secsToBeAdded];
 
-  return v8;
+  return secsToBeAdded;
 }
 
 - (NSDate)initWithTimeInterval:(NSTimeInterval)secsToBeAdded sinceDate:(NSDate *)date
@@ -499,11 +499,11 @@ LABEL_46:
   return [(NSDate *)self initWithTimeIntervalSinceReferenceDate:v7];
 }
 
-+ (NSDate)dateWithDate:(id)a3
++ (NSDate)dateWithDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v5 = v4;
   }
 
@@ -512,16 +512,16 @@ LABEL_46:
     v5 = NAN;
   }
 
-  v6 = [[a1 alloc] initWithTimeIntervalSinceReferenceDate:v5];
+  v6 = [[self alloc] initWithTimeIntervalSinceReferenceDate:v5];
 
   return v6;
 }
 
-- (NSDate)initWithDate:(id)a3
+- (NSDate)initWithDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
   }
 
   else
@@ -534,7 +534,7 @@ LABEL_46:
 
 + (id)dateWithString:(NSString *)aString
 {
-  v3 = [[a1 alloc] initWithString:aString];
+  v3 = [[self alloc] initWithString:aString];
 
   return v3;
 }
@@ -542,14 +542,14 @@ LABEL_46:
 - (id)initWithString:(NSString *)description
 {
   v5 = objc_opt_new();
-  v6 = [(NSString *)description UTF8String];
-  if (!v6)
+  uTF8String = [(NSString *)description UTF8String];
+  if (!uTF8String)
   {
     goto LABEL_66;
   }
 
-  v7 = v6;
-  v8 = *v6;
+  v7 = uTF8String;
+  v8 = *uTF8String;
   if ((v8 - 48) > 9)
   {
     v9 = 0;
@@ -842,23 +842,23 @@ LABEL_67:
   return [(NSCalendar *)v3 isDateInYesterday:self];
 }
 
-- (BOOL)isInSameDayAsDate:(id)a3
+- (BOOL)isInSameDayAsDate:(id)date
 {
   v5 = +[NSCalendar currentCalendar];
 
-  return [(NSCalendar *)v5 isDate:self inSameDayAsDate:a3];
+  return [(NSCalendar *)v5 isDate:self inSameDayAsDate:date];
 }
 
-- (int64_t)compare:(id)a3 toUnitGranularity:(unint64_t)a4
+- (int64_t)compare:(id)compare toUnitGranularity:(unint64_t)granularity
 {
-  if (self == a3)
+  if (self == compare)
   {
     return 0;
   }
 
   v8 = +[NSCalendar currentCalendar];
 
-  return [(NSCalendar *)v8 compareDate:self toDate:a3 toUnitGranularity:a4];
+  return [(NSCalendar *)v8 compareDate:self toDate:compare toUnitGranularity:granularity];
 }
 
 @end

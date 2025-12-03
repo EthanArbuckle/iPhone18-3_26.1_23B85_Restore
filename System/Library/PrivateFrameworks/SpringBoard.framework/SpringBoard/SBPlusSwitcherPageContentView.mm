@@ -1,17 +1,17 @@
 @interface SBPlusSwitcherPageContentView
-- (SBPlusSwitcherPageContentView)initWithFrame:(CGRect)a3;
+- (SBPlusSwitcherPageContentView)initWithFrame:(CGRect)frame;
 - (unint64_t)maskedCorners;
 - (void)layoutSubviews;
-- (void)setMaskedCorners:(unint64_t)a3;
+- (void)setMaskedCorners:(unint64_t)corners;
 @end
 
 @implementation SBPlusSwitcherPageContentView
 
-- (SBPlusSwitcherPageContentView)initWithFrame:(CGRect)a3
+- (SBPlusSwitcherPageContentView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = SBPlusSwitcherPageContentView;
-  v3 = [(SBPlusSwitcherPageContentView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBPlusSwitcherPageContentView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D26718] materialViewWithRecipe:53 options:0];
@@ -31,8 +31,8 @@
     [v12 automaticallyUpdateView:v3->_plusImageView withStyle:1];
 
     [(SBPlusSwitcherPageContentView *)v3 addSubview:v3->_plusImageView];
-    v13 = [MEMORY[0x277D75348] clearColor];
-    [(SBPlusSwitcherPageContentView *)v3 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBPlusSwitcherPageContentView *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;
@@ -56,18 +56,18 @@
   [(UIImageView *)v5 setTransform:&v6];
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  v4 = [(MTMaterialView *)self->_materialView layer];
-  [v4 setMaskedCorners:a3];
+  layer = [(MTMaterialView *)self->_materialView layer];
+  [layer setMaskedCorners:corners];
 }
 
 - (unint64_t)maskedCorners
 {
-  v2 = [(MTMaterialView *)self->_materialView layer];
-  v3 = [v2 maskedCorners];
+  layer = [(MTMaterialView *)self->_materialView layer];
+  maskedCorners = [layer maskedCorners];
 
-  return v3;
+  return maskedCorners;
 }
 
 @end

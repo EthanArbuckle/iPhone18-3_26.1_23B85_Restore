@@ -6,7 +6,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   ICRSimulatedGlassChicletLayer.layoutSublayers()();
 }
 

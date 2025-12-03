@@ -11,27 +11,27 @@
 
 - (id)roundedFormattedTimeWithRoundedMinutesUnit:()SMExtensions allowedUnits:
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [a1 timeIntervalSinceDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [self timeIntervalSinceDate:date];
   v7 = v6;
 
   v8 = (round(v7) / 60.0);
-  v9 = [MEMORY[0x277CCAA28] relativeDateFormatter];
-  v10 = v9;
+  relativeDateFormatter = [MEMORY[0x277CCAA28] relativeDateFormatter];
+  v10 = relativeDateFormatter;
   v11 = a3 - 1;
   if (v7 < 0.0)
   {
     v11 = 0;
   }
 
-  v12 = [v9 localizedStringFromTimeInterval:(60 * (v8 + v11) / a3 * a3)];
+  v12 = [relativeDateFormatter localizedStringFromTimeInterval:(60 * (v8 + v11) / a3 * a3)];
 
   return v12;
 }
 
 - (uint64_t)roundedTime
 {
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v2 = ceil(v1 / 300.0) * 300.0;
   v3 = MEMORY[0x277CBEAA8];
 
@@ -40,9 +40,9 @@
 
 - (id)relativeTimeString
 {
-  v2 = [MEMORY[0x277CCAA28] relativeDateFormatter];
+  relativeDateFormatter = [MEMORY[0x277CCAA28] relativeDateFormatter];
   v3 = [MEMORY[0x277CBEAA8] now];
-  v4 = [v2 localizedStringForDate:a1 relativeToDate:v3];
+  v4 = [relativeDateFormatter localizedStringForDate:self relativeToDate:v3];
 
   return v4;
 }
@@ -51,21 +51,21 @@
 {
   if (a3 == 1)
   {
-    v6 = [a1 dateString];
+    dateString = [self dateString];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCAA28] dateFormatter];
-    [v9 setDateFormat:@"yyyy-MM-dd"];
-    v10 = [v9 stringFromDate:a1];
-    v11 = [MEMORY[0x277CBEAA8] date];
-    v12 = [v9 stringFromDate:v11];
+    dateFormatter = [MEMORY[0x277CCAA28] dateFormatter];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    v10 = [dateFormatter stringFromDate:self];
+    date = [MEMORY[0x277CBEAA8] date];
+    v12 = [dateFormatter stringFromDate:date];
     v13 = [v10 isEqual:v12];
 
     if (v13)
     {
-      v6 = [a1 timeStringWithPreposition:a4 capitalized:a5];
+      dateString = [self timeStringWithPreposition:a4 capitalized:a5];
     }
 
     else
@@ -74,43 +74,43 @@
       v15 = [v14 localizedStringForKey:@"ESTIMATED_TIME_NEXT_CALENDAR_DAY" value:@"%@ on %@" table:0];
 
       v16 = MEMORY[0x277CCACA8];
-      v17 = [a1 timeStringWithPreposition:a4 capitalized:a5];
-      v18 = [a1 dateString];
-      v6 = [v16 localizedStringWithValidatedFormat:v15 validFormatSpecifiers:@"%@%@" error:0, v17, v18];
+      v17 = [self timeStringWithPreposition:a4 capitalized:a5];
+      dateString2 = [self dateString];
+      dateString = [v16 localizedStringWithValidatedFormat:v15 validFormatSpecifiers:@"%@%@" error:0, v17, dateString2];
     }
   }
 
-  return v6;
+  return dateString;
 }
 
 - (id)dateString
 {
-  v2 = [MEMORY[0x277CCAA28] dateFormatter];
-  [v2 setLocalizedDateFormatFromTemplate:{@"EEEE, MMMM d"}];
-  v3 = [v2 stringFromDate:a1];
+  dateFormatter = [MEMORY[0x277CCAA28] dateFormatter];
+  [dateFormatter setLocalizedDateFormatFromTemplate:{@"EEEE, MMMM d"}];
+  v3 = [dateFormatter stringFromDate:self];
 
   return v3;
 }
 
 - (id)timeStringWithPreposition:()SMExtensions capitalized:
 {
-  v7 = [MEMORY[0x277CCA968] localizedStringFromDate:a1 dateStyle:0 timeStyle:1];
-  v8 = [MEMORY[0x277CCAA28] dateFormatter];
-  [v8 setLocalizedDateFormatFromTemplate:@"j"];
-  v9 = [v8 stringFromDate:a1];
-  v10 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v11 = [v10 invertedSet];
-  v12 = [v9 componentsSeparatedByCharactersInSet:v11];
+  v7 = [MEMORY[0x277CCA968] localizedStringFromDate:self dateStyle:0 timeStyle:1];
+  dateFormatter = [MEMORY[0x277CCAA28] dateFormatter];
+  [dateFormatter setLocalizedDateFormatFromTemplate:@"j"];
+  v9 = [dateFormatter stringFromDate:self];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
+  v12 = [v9 componentsSeparatedByCharactersInSet:invertedSet];
   v13 = [v12 componentsJoinedByString:&stru_287607830];
 
   v14 = objc_opt_new();
   v15 = [v14 numberFromString:v13];
-  v16 = [v15 integerValue];
+  integerValue = [v15 integerValue];
 
   if (a3 == 1)
   {
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    if (v16 == 1)
+    if (integerValue == 1)
     {
       if (a4)
       {
@@ -146,7 +146,7 @@ LABEL_18:
     }
 
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    if (v16 == 1)
+    if (integerValue == 1)
     {
       if (a4)
       {
@@ -175,7 +175,7 @@ LABEL_21:
   }
 
   v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  if (v16 != 1)
+  if (integerValue != 1)
   {
     if (a4)
     {

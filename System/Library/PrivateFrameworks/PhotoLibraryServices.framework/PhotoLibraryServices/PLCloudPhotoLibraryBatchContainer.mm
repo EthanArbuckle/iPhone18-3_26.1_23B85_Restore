@@ -3,7 +3,7 @@
 - (id)batchesSplitForError;
 - (id)description;
 - (id)lastAddedRecord;
-- (void)addRecord:(id)a3;
+- (void)addRecord:(id)record;
 @end
 
 @implementation PLCloudPhotoLibraryBatchContainer
@@ -11,13 +11,13 @@
 - (id)description
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CPLChangeBatch *)self->_batch records];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  records = [(CPLChangeBatch *)self->_batch records];
+  v5 = [records countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -28,20 +28,20 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(records);
         }
 
         v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"  %@\r", *(*(&v11 + 1) + 8 * i)];
-        [v3 appendString:v9];
+        [string appendString:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [records countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return string;
 }
 
 - (id)batchesSplitForError
@@ -107,9 +107,9 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v16 = [v12 masterScopedIdentifier];
-          v17 = [v8 scopedIdentifier];
-          v22 = [v16 isEqual:v17];
+          masterScopedIdentifier = [v12 masterScopedIdentifier];
+          scopedIdentifier = [v8 scopedIdentifier];
+          v22 = [masterScopedIdentifier isEqual:scopedIdentifier];
 
           if (v22)
           {
@@ -187,18 +187,18 @@ LABEL_31:
 
 - (id)lastAddedRecord
 {
-  v2 = [(CPLChangeBatch *)self->_batch records];
-  v3 = [v2 lastObject];
+  records = [(CPLChangeBatch *)self->_batch records];
+  lastObject = [records lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (void)addRecord:(id)a3
+- (void)addRecord:(id)record
 {
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
-    [(CPLChangeBatch *)self->_batch addRecord:v4];
+    [(CPLChangeBatch *)self->_batch addRecord:recordCopy];
   }
 
   else if ((*MEMORY[0x1E6994D48] & 1) == 0)

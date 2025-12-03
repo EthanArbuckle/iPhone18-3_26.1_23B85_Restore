@@ -1,36 +1,36 @@
 @interface MapsSuggestionsMapsAppFeeler
-- (BOOL)canProduceSignalType:(int64_t)a3;
+- (BOOL)canProduceSignalType:(int64_t)type;
 - (BOOL)startUpdatingSignals;
 - (BOOL)stopUpdatingSignals;
 - (BOOL)updateSignals;
-- (void)sendSignalPack:(id)a3;
+- (void)sendSignalPack:(id)pack;
 @end
 
 @implementation MapsSuggestionsMapsAppFeeler
 
 - (BOOL)startUpdatingSignals
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_sync_exit(selfCopy);
 
   return 1;
 }
 
-- (void)sendSignalPack:(id)a3
+- (void)sendSignalPack:(id)pack
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 copy];
-  signalPack = v5->_signalPack;
-  v5->_signalPack = v6;
+  packCopy = pack;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [packCopy copy];
+  signalPack = selfCopy->_signalPack;
+  selfCopy->_signalPack = v6;
 
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = objc_opt_class();
-    v10 = [(MapsSuggestionsSignalPack *)v5->_signalPack description];
+    v10 = [(MapsSuggestionsSignalPack *)selfCopy->_signalPack description];
     v13 = 138412546;
     v14 = v9;
     v15 = 2112;
@@ -38,12 +38,12 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@ is streaming signal pack: %@ ", &v13, 0x16u);
   }
 
-  v11 = [(MapsSuggestionsBaseFeeler *)v5 delegate];
-  if (v11)
+  delegate = [(MapsSuggestionsBaseFeeler *)selfCopy delegate];
+  if (delegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v11 feeler:v5 sendsSignalPack:v5->_signalPack];
+      [delegate feeler:selfCopy sendsSignalPack:selfCopy->_signalPack];
     }
   }
 
@@ -62,35 +62,35 @@
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)canProduceSignalType:(int64_t)a3
+- (BOOL)canProduceSignalType:(int64_t)type
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_sync_exit(selfCopy);
 
-  return (a3 & 0xFFFFFFFFFFFFFFFDLL) == 21;
+  return (type & 0xFFFFFFFFFFFFFFFDLL) == 21;
 }
 
 - (BOOL)stopUpdatingSignals
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_sync_exit(selfCopy);
 
   return 1;
 }
 
 - (BOOL)updateSignals
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MapsSuggestionsSignalPack *)v2->_signalPack copy];
-  [(MapsSuggestionsMapsAppFeeler *)v2 sendSignalPack:v3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(MapsSuggestionsSignalPack *)selfCopy->_signalPack copy];
+  [(MapsSuggestionsMapsAppFeeler *)selfCopy sendSignalPack:v3];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return 1;
 }
 

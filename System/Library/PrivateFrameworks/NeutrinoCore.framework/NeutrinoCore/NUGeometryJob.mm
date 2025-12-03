@@ -8,18 +8,18 @@
 - (id)result
 {
   v3 = objc_alloc_init(_NUGeometryResult);
-  v4 = [(NURenderJob *)self outputGeometry];
-  [(_NUGeometryResult *)v3 setGeometry:v4];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  [(_NUGeometryResult *)v3 setGeometry:outputGeometry];
 
   return v3;
 }
 
 - (id)scalePolicy
 {
-  v2 = [(NUGeometryJob *)self geometryRequest];
-  v3 = [v2 scalePolicy];
+  geometryRequest = [(NUGeometryJob *)self geometryRequest];
+  scalePolicy = [geometryRequest scalePolicy];
 
-  return v3;
+  return scalePolicy;
 }
 
 @end

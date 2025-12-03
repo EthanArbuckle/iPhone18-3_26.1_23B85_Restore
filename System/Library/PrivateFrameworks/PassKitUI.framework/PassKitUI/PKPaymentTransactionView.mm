@@ -1,9 +1,9 @@
 @interface PKPaymentTransactionView
 - (BOOL)_shouldUseStackedLayout;
-- (BOOL)shouldShowTransactionPreviewForTouchAtPoint:(CGPoint)a3 inView:(id)a4;
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPaymentTransactionView)initWithFrame:(CGRect)a3;
+- (BOOL)shouldShowTransactionPreviewForTouchAtPoint:(CGPoint)point inView:(id)view;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPaymentTransactionView)initWithFrame:(CGRect)frame;
 - (id)_disclosureView;
 - (void)_updateAvatarView;
 - (void)_updateImageViewDynamicColors;
@@ -11,33 +11,33 @@
 - (void)createSubviews;
 - (void)layoutSubviews;
 - (void)resetFonts;
-- (void)setAllowPrimaryStringExpansion:(BOOL)a3;
-- (void)setBadgeString:(id)a3;
-- (void)setHideBadgeBackground:(BOOL)a3;
-- (void)setHideSecondaryBadgeSymbolBackground:(BOOL)a3;
-- (void)setPrimaryColor:(id)a3;
-- (void)setPrimaryImage:(id)a3 animated:(BOOL)a4;
-- (void)setPrimaryString:(id)a3;
-- (void)setSecondaryBadgeSymbol:(id)a3;
-- (void)setSecondaryBadgeSymbolConfiguration:(id)a3;
-- (void)setSecondaryColor:(id)a3;
-- (void)setSecondaryString:(id)a3;
-- (void)setShowsAvatarView:(BOOL)a3;
-- (void)setShowsDisclosureView:(BOOL)a3;
-- (void)setStrokeImage:(BOOL)a3;
-- (void)setTertiaryString:(id)a3;
-- (void)setTransactionCategoryImage:(id)a3;
-- (void)setTransactionValueAttributedText:(id)a3;
+- (void)setAllowPrimaryStringExpansion:(BOOL)expansion;
+- (void)setBadgeString:(id)string;
+- (void)setHideBadgeBackground:(BOOL)background;
+- (void)setHideSecondaryBadgeSymbolBackground:(BOOL)background;
+- (void)setPrimaryColor:(id)color;
+- (void)setPrimaryImage:(id)image animated:(BOOL)animated;
+- (void)setPrimaryString:(id)string;
+- (void)setSecondaryBadgeSymbol:(id)symbol;
+- (void)setSecondaryBadgeSymbolConfiguration:(id)configuration;
+- (void)setSecondaryColor:(id)color;
+- (void)setSecondaryString:(id)string;
+- (void)setShowsAvatarView:(BOOL)view;
+- (void)setShowsDisclosureView:(BOOL)view;
+- (void)setStrokeImage:(BOOL)image;
+- (void)setTertiaryString:(id)string;
+- (void)setTransactionCategoryImage:(id)image;
+- (void)setTransactionValueAttributedText:(id)text;
 @end
 
 @implementation PKPaymentTransactionView
 
-- (PKPaymentTransactionView)initWithFrame:(CGRect)a3
+- (PKPaymentTransactionView)initWithFrame:(CGRect)frame
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKPaymentTransactionView;
-  v3 = [(PKPaymentTransactionView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaymentTransactionView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -58,10 +58,10 @@ void __42__PKPaymentTransactionView_initWithFrame___block_invoke(uint64_t a1, vo
   [v2 _updateImageViewDynamicColors];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKPaymentTransactionView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, 3.40282347e38];
+  [(PKPaymentTransactionView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, 3.40282347e38];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
@@ -101,65 +101,65 @@ void __42__PKPaymentTransactionView_initWithFrame___block_invoke(uint64_t a1, vo
     self->_transactionCategoryImageView = v15;
 
     v17 = self->_primaryLabel;
-    v18 = [(PKPaymentTransactionView *)self defaultPrimaryColor];
-    [(UILabel *)v17 setTextColor:v18];
+    defaultPrimaryColor = [(PKPaymentTransactionView *)self defaultPrimaryColor];
+    [(UILabel *)v17 setTextColor:defaultPrimaryColor];
 
     v19 = self->_secondaryLabel;
-    v20 = [(PKPaymentTransactionView *)self defaultSecondaryColor];
-    [(UILabel *)v19 setTextColor:v20];
+    defaultSecondaryColor = [(PKPaymentTransactionView *)self defaultSecondaryColor];
+    [(UILabel *)v19 setTextColor:defaultSecondaryColor];
 
     v21 = self->_tertiaryLabel;
-    v22 = [(PKPaymentTransactionView *)self defaultSecondaryColor];
-    [(UILabel *)v21 setTextColor:v22];
+    defaultSecondaryColor2 = [(PKPaymentTransactionView *)self defaultSecondaryColor];
+    [(UILabel *)v21 setTextColor:defaultSecondaryColor2];
 
     v23 = self->_badgeLabel;
-    v24 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v23 setTextColor:v24];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v23 setTextColor:secondaryLabelColor];
 
     v25 = self->_badgeLabel;
-    v26 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    [(UILabel *)v25 setBackgroundColor:v26];
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    [(UILabel *)v25 setBackgroundColor:quaternarySystemFillColor];
 
     [(UILabel *)self->_badgeLabel setTextAlignment:1];
-    v27 = [(UILabel *)self->_badgeLabel layer];
-    [v27 setCornerRadius:4.0];
+    layer = [(UILabel *)self->_badgeLabel layer];
+    [layer setCornerRadius:4.0];
 
-    v28 = [(UILabel *)self->_badgeLabel layer];
-    [v28 setMasksToBounds:1];
+    layer2 = [(UILabel *)self->_badgeLabel layer];
+    [layer2 setMasksToBounds:1];
 
     v29 = self->_bonusImageView;
-    v30 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIImageView *)v29 setTintColor:v30];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIImageView *)v29 setTintColor:secondaryLabelColor2];
 
     v31 = self->_bonusImageView;
-    v32 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    [(UIImageView *)v31 setBackgroundColor:v32];
+    quaternarySystemFillColor2 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    [(UIImageView *)v31 setBackgroundColor:quaternarySystemFillColor2];
 
     [(UIImageView *)self->_bonusImageView setContentMode:4];
     [(UIImageView *)self->_bonusImageView setHidden:1];
-    v42 = [(UIImageView *)self->_bonusImageView layer];
-    [v42 setCornerRadius:4.0];
+    layer3 = [(UIImageView *)self->_bonusImageView layer];
+    [layer3 setCornerRadius:4.0];
     v33 = *MEMORY[0x1E69796E8];
-    [v42 setCornerCurve:*MEMORY[0x1E69796E8]];
-    [v42 setMasksToBounds:1];
+    [layer3 setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layer3 setMasksToBounds:1];
     v34 = self->_transactionCategoryImageView;
-    v35 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIImageView *)v34 setTintColor:v35];
+    secondaryLabelColor3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIImageView *)v34 setTintColor:secondaryLabelColor3];
 
     v36 = self->_transactionCategoryImageView;
-    v37 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    [(UIImageView *)v36 setBackgroundColor:v37];
+    quaternarySystemFillColor3 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    [(UIImageView *)v36 setBackgroundColor:quaternarySystemFillColor3];
 
     [(UIImageView *)self->_transactionCategoryImageView setContentMode:4];
     [(UIImageView *)self->_transactionCategoryImageView setHidden:1];
-    v38 = [(UIImageView *)self->_transactionCategoryImageView layer];
-    v39 = [(PKPaymentTransactionView *)self traitCollection];
-    v40 = [v39 preferredContentSizeCategory];
-    v41 = PKMultiplierForContentSizeCategory(v40);
+    layer4 = [(UIImageView *)self->_transactionCategoryImageView layer];
+    traitCollection = [(PKPaymentTransactionView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v41 = PKMultiplierForContentSizeCategory(preferredContentSizeCategory);
 
-    [v38 setCornerRadius:v41 * 4.0];
-    [v38 setCornerCurve:v33];
-    [v38 setMasksToBounds:1];
+    [layer4 setCornerRadius:v41 * 4.0];
+    [layer4 setCornerCurve:v33];
+    [layer4 setMasksToBounds:1];
     [(UILabel *)self->_primaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
     [(UILabel *)self->_secondaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
     [(UILabel *)self->_tertiaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D10]];
@@ -181,8 +181,8 @@ void __42__PKPaymentTransactionView_initWithFrame___block_invoke(uint64_t a1, vo
 
 - (void)resetFonts
 {
-  v3 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -244,9 +244,9 @@ void __42__PKPaymentTransactionView_initWithFrame___block_invoke(uint64_t a1, vo
 
   v18 = v17;
   [(UILabel *)self->_badgeLabel setFont:v17];
-  v19 = [(PKPaymentTransactionView *)self _shouldUseStackedLayout];
+  _shouldUseStackedLayout = [(PKPaymentTransactionView *)self _shouldUseStackedLayout];
   v20 = self->_transactionValueLabel;
-  if (v19)
+  if (_shouldUseStackedLayout)
   {
     [(UILabel *)v20 setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)self->_transactionValueLabel setMinimumScaleFactor:0.5];
@@ -282,19 +282,19 @@ void __42__PKPaymentTransactionView_initWithFrame___block_invoke(uint64_t a1, vo
 
 - (BOOL)_shouldUseStackedLayout
 {
-  v2 = [(PKPaymentTransactionView *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  v4 = UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC40]) == NSOrderedDescending;
+  traitCollection = [(PKPaymentTransactionView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v4 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC40]) == NSOrderedDescending;
 
   return v4;
 }
 
-- (void)setPrimaryString:(id)a3
+- (void)setPrimaryString:(id)string
 {
   v4 = MEMORY[0x1E696AB08];
-  v5 = a3;
-  v6 = [v4 whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  stringCopy = string;
+  whitespaceAndNewlineCharacterSet = [v4 whitespaceAndNewlineCharacterSet];
+  v7 = [stringCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([(__CFString *)v7 length])
   {
@@ -347,11 +347,11 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)setAllowPrimaryStringExpansion:(BOOL)a3
+- (void)setAllowPrimaryStringExpansion:(BOOL)expansion
 {
-  if (self->_allowPrimaryStringExpansion != a3)
+  if (self->_allowPrimaryStringExpansion != expansion)
   {
-    self->_allowPrimaryStringExpansion = a3;
+    self->_allowPrimaryStringExpansion = expansion;
     [(PKPaymentTransactionView *)self _updatePrimaryLabelString];
 
     [(PKPaymentTransactionView *)self setNeedsLayout];
@@ -371,68 +371,68 @@ LABEL_14:
   [(UILabel *)primaryLabel _setHyphenationFactor:v3];
 }
 
-- (void)setPrimaryColor:(id)a3
+- (void)setPrimaryColor:(id)color
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  colorCopy = color;
+  v10 = colorCopy;
+  if (colorCopy)
   {
-    v5 = v4;
+    v5 = colorCopy;
   }
 
   else
   {
     v6 = +[PKPaymentTransactionView appearance];
-    v7 = [v6 primaryColor];
-    v8 = v7;
-    if (v7)
+    primaryColor = [v6 primaryColor];
+    v8 = primaryColor;
+    if (primaryColor)
     {
-      v9 = v7;
+      defaultPrimaryColor = primaryColor;
     }
 
     else
     {
-      v9 = [(PKPaymentTransactionView *)self defaultPrimaryColor];
+      defaultPrimaryColor = [(PKPaymentTransactionView *)self defaultPrimaryColor];
     }
 
-    v5 = v9;
+    v5 = defaultPrimaryColor;
   }
 
   [(UILabel *)self->_primaryLabel setTextColor:v5];
 }
 
-- (void)setSecondaryString:(id)a3
+- (void)setSecondaryString:(id)string
 {
-  [(UILabel *)self->_secondaryLabel setText:a3];
+  [(UILabel *)self->_secondaryLabel setText:string];
 
   [(PKPaymentTransactionView *)self setNeedsLayout];
 }
 
-- (void)setSecondaryColor:(id)a3
+- (void)setSecondaryColor:(id)color
 {
-  v4 = a3;
-  v12 = v4;
-  if (v4)
+  colorCopy = color;
+  v12 = colorCopy;
+  if (colorCopy)
   {
-    v5 = v4;
+    v5 = colorCopy;
   }
 
   else
   {
     v6 = +[PKPaymentTransactionView appearance];
-    v7 = [v6 secondaryColor];
-    v8 = v7;
-    if (v7)
+    secondaryColor = [v6 secondaryColor];
+    v8 = secondaryColor;
+    if (secondaryColor)
     {
-      v9 = v7;
+      defaultSecondaryColor = secondaryColor;
     }
 
     else
     {
-      v9 = [(PKPaymentTransactionView *)self defaultSecondaryColor];
+      defaultSecondaryColor = [(PKPaymentTransactionView *)self defaultSecondaryColor];
     }
 
-    v5 = v9;
+    v5 = defaultSecondaryColor;
   }
 
   secondaryColor = self->_secondaryColor;
@@ -442,35 +442,35 @@ LABEL_14:
   [(UILabel *)self->_secondaryLabel setTextColor:v11];
 }
 
-- (void)setTertiaryString:(id)a3
+- (void)setTertiaryString:(id)string
 {
-  [(UILabel *)self->_tertiaryLabel setText:a3];
+  [(UILabel *)self->_tertiaryLabel setText:string];
 
   [(PKPaymentTransactionView *)self setNeedsLayout];
 }
 
-- (void)setBadgeString:(id)a3
+- (void)setBadgeString:(id)string
 {
   badgeLabel = self->_badgeLabel;
-  v5 = a3;
-  [(UILabel *)badgeLabel setText:v5];
-  v6 = [v5 length];
+  stringCopy = string;
+  [(UILabel *)badgeLabel setText:stringCopy];
+  v6 = [stringCopy length];
 
   [(UILabel *)self->_badgeLabel setHidden:v6 == 0];
 
   [(PKPaymentTransactionView *)self setNeedsLayout];
 }
 
-- (void)setHideBadgeBackground:(BOOL)a3
+- (void)setHideBadgeBackground:(BOOL)background
 {
-  if (self->_hideBadgeBackground != a3)
+  if (self->_hideBadgeBackground != background)
   {
     v12 = v5;
     v13 = v4;
     v14 = v3;
-    self->_hideBadgeBackground = a3;
+    self->_hideBadgeBackground = background;
     badgeLabel = self->_badgeLabel;
-    if (a3)
+    if (background)
     {
       [MEMORY[0x1E69DC888] clearColor];
     }
@@ -488,18 +488,18 @@ LABEL_14:
   }
 }
 
-- (void)setTransactionValueAttributedText:(id)a3
+- (void)setTransactionValueAttributedText:(id)text
 {
-  [(UILabel *)self->_transactionValueLabel setAttributedText:a3];
+  [(UILabel *)self->_transactionValueLabel setAttributedText:text];
 
   [(PKPaymentTransactionView *)self setNeedsLayout];
 }
 
-- (void)setSecondaryBadgeSymbol:(id)a3
+- (void)setSecondaryBadgeSymbol:(id)symbol
 {
-  v5 = a3;
+  symbolCopy = symbol;
   v6 = self->_secondaryBadgeSymbol;
-  v7 = v5;
+  v7 = symbolCopy;
   v11 = v7;
   if (v6 == v7)
   {
@@ -518,7 +518,7 @@ LABEL_14:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_secondaryBadgeSymbol, a3);
+    objc_storeStrong(&self->_secondaryBadgeSymbol, symbol);
     bonusImageView = self->_bonusImageView;
     v10 = [MEMORY[0x1E69DCAB8] _systemImageNamed:self->_secondaryBadgeSymbol];
     [(UIImageView *)bonusImageView setImage:v10];
@@ -531,16 +531,16 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setHideSecondaryBadgeSymbolBackground:(BOOL)a3
+- (void)setHideSecondaryBadgeSymbolBackground:(BOOL)background
 {
-  if (self->_hideSecondaryBadgeSymbolBackground != a3)
+  if (self->_hideSecondaryBadgeSymbolBackground != background)
   {
     v12 = v5;
     v13 = v4;
     v14 = v3;
-    self->_hideSecondaryBadgeSymbolBackground = a3;
+    self->_hideSecondaryBadgeSymbolBackground = background;
     bonusImageView = self->_bonusImageView;
-    if (a3)
+    if (background)
     {
       [MEMORY[0x1E69DC888] clearColor];
     }
@@ -558,65 +558,65 @@ LABEL_9:
   }
 }
 
-- (void)setSecondaryBadgeSymbolConfiguration:(id)a3
+- (void)setSecondaryBadgeSymbolConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_secondaryBadgeSymbolConfiguration, a3);
+    objc_storeStrong(&self->_secondaryBadgeSymbolConfiguration, configuration);
     [(PKPaymentTransactionView *)self resetFonts];
     [(PKPaymentTransactionView *)self setNeedsLayout];
   }
 }
 
-- (void)setTransactionCategoryImage:(id)a3
+- (void)setTransactionCategoryImage:(id)image
 {
-  v5 = a3;
-  v4 = [(UIImageView *)self->_transactionCategoryImageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_transactionCategoryImageView image];
 
-  if (v4 != v5)
+  if (image != imageCopy)
   {
-    [(UIImageView *)self->_transactionCategoryImageView setImage:v5];
-    [(UIImageView *)self->_transactionCategoryImageView setHidden:v5 == 0];
+    [(UIImageView *)self->_transactionCategoryImageView setImage:imageCopy];
+    [(UIImageView *)self->_transactionCategoryImageView setHidden:imageCopy == 0];
     [(PKPaymentTransactionView *)self setNeedsLayout];
     [(PKPaymentTransactionView *)self layoutIfNeeded];
   }
 }
 
-- (void)setStrokeImage:(BOOL)a3
+- (void)setStrokeImage:(BOOL)image
 {
-  if (self->_strokeImage == !a3)
+  if (self->_strokeImage == !image)
   {
-    self->_strokeImage = a3;
+    self->_strokeImage = image;
     primaryImageView = self->_primaryImageView;
     if (primaryImageView)
     {
-      v6 = [(UIImageView *)primaryImageView layer];
+      layer = [(UIImageView *)primaryImageView layer];
       v5 = 0.0;
       if (self->_strokeImage)
       {
         v5 = PKUIPixelLength();
       }
 
-      [v6 setBorderWidth:v5];
+      [layer setBorderWidth:v5];
     }
   }
 }
 
-- (void)setPrimaryImage:(id)a3 animated:(BOOL)a4
+- (void)setPrimaryImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_primaryImage != v7)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (self->_primaryImage != imageCopy)
   {
-    objc_storeStrong(&self->_primaryImage, a3);
+    objc_storeStrong(&self->_primaryImage, image);
     if (self->_primaryImage)
     {
       [(PKPaymentTransactionView *)self setShowsAvatarView:0];
       primaryImageView = self->_primaryImageView;
       if (primaryImageView)
       {
-        if (v4)
+        if (animatedCopy)
         {
           v9 = primaryImageView;
           v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:self->_primaryImage];
@@ -627,14 +627,14 @@ LABEL_9:
           [(UIImageView *)self->_primaryImageView setClipsToBounds:1];
           [(UIImageView *)self->_primaryImageView _setContinuousCornerRadius:8.0];
           [(PKPaymentTransactionView *)self _updateImageViewDynamicColors];
-          v12 = [(UIImageView *)self->_primaryImageView layer];
+          layer = [(UIImageView *)self->_primaryImageView layer];
           v13 = 0.0;
           if (self->_strokeImage)
           {
             v13 = PKUIPixelLength();
           }
 
-          [v12 setBorderWidth:v13];
+          [layer setBorderWidth:v13];
 
           [(UIImageView *)self->_primaryImageView setImage:self->_primaryImage];
           [(UIImageView *)self->_primaryImageView setAlpha:0.0];
@@ -650,17 +650,17 @@ LABEL_9:
           v26[2] = __53__PKPaymentTransactionView_setPrimaryImage_animated___block_invoke_2;
           v26[3] = &unk_1E8011D28;
           v27 = v29;
-          v15 = v29;
+          image = v29;
           [v14 pkui_animateUsingOptions:4 animations:v28 completion:v26];
         }
 
         else
         {
-          v15 = [(UIImageView *)primaryImageView image];
+          image = [(UIImageView *)primaryImageView image];
           [(UIImageView *)self->_primaryImageView setImage:self->_primaryImage];
-          v20 = [(UIImageView *)self->_primaryImageView image];
+          image2 = [(UIImageView *)self->_primaryImageView image];
 
-          if (v20 == v15)
+          if (image2 == image)
           {
             [(UIImageView *)self->_primaryImageView removeFromSuperview];
             v21 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:self->_primaryImage];
@@ -671,14 +671,14 @@ LABEL_9:
             [(UIImageView *)self->_primaryImageView setClipsToBounds:1];
             [(UIImageView *)self->_primaryImageView _setContinuousCornerRadius:8.0];
             [(PKPaymentTransactionView *)self _updateImageViewDynamicColors];
-            v23 = [(UIImageView *)self->_primaryImageView layer];
+            layer2 = [(UIImageView *)self->_primaryImageView layer];
             v24 = 0.0;
             if (self->_strokeImage)
             {
               v24 = PKUIPixelLength();
             }
 
-            [v23 setBorderWidth:v24];
+            [layer2 setBorderWidth:v24];
           }
         }
       }
@@ -693,19 +693,19 @@ LABEL_9:
         [(UIImageView *)self->_primaryImageView setClipsToBounds:1];
         [(UIImageView *)self->_primaryImageView _setContinuousCornerRadius:8.0];
         [(PKPaymentTransactionView *)self _updateImageViewDynamicColors];
-        v15 = [(UIImageView *)self->_primaryImageView layer];
+        image = [(UIImageView *)self->_primaryImageView layer];
         v19 = 0.0;
         if (self->_strokeImage)
         {
           v19 = PKUIPixelLength();
         }
 
-        [(UIImageView *)v15 setBorderWidth:v19];
+        [(UIImageView *)image setBorderWidth:v19];
       }
 
-      v25 = [(UIImageView *)self->_primaryImageView superview];
+      superview = [(UIImageView *)self->_primaryImageView superview];
 
-      if (!v25)
+      if (!superview)
       {
         [(PKPaymentTransactionView *)self addSubview:self->_primaryImageView];
         goto LABEL_19;
@@ -714,9 +714,9 @@ LABEL_9:
 
     else
     {
-      v16 = [(UIImageView *)self->_primaryImageView superview];
+      superview2 = [(UIImageView *)self->_primaryImageView superview];
 
-      if (v16)
+      if (superview2)
       {
         [(UIImageView *)self->_primaryImageView removeFromSuperview];
 LABEL_19:
@@ -737,13 +737,13 @@ uint64_t __53__PKPaymentTransactionView_setPrimaryImage_animated___block_invoke(
 
 - (void)_updateImageViewDynamicColors
 {
-  v3 = [(PKPaymentTransactionView *)self traitCollection];
+  traitCollection = [(PKPaymentTransactionView *)self traitCollection];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke;
   v4[3] = &unk_1E8010970;
   v4[4] = self;
-  PKUIPerformWithEffectiveTraitCollection(v3, v4);
+  PKUIPerformWithEffectiveTraitCollection(traitCollection, v4);
 }
 
 void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(uint64_t a1)
@@ -753,11 +753,11 @@ void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(
   [v2 setBorderColor:{objc_msgSend(v1, "CGColor")}];
 }
 
-- (void)setShowsAvatarView:(BOOL)a3
+- (void)setShowsAvatarView:(BOOL)view
 {
-  if (self->_showsAvatarView == !a3)
+  if (self->_showsAvatarView == !view)
   {
-    self->_showsAvatarView = a3;
+    self->_showsAvatarView = view;
     [(PKPaymentTransactionView *)self _updateAvatarView];
   }
 }
@@ -798,15 +798,15 @@ void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(
   [(PKPaymentTransactionView *)self setNeedsLayout];
 }
 
-- (BOOL)shouldShowTransactionPreviewForTouchAtPoint:(CGPoint)a3 inView:(id)a4
+- (BOOL)shouldShowTransactionPreviewForTouchAtPoint:(CGPoint)point inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   avatarView = self->_avatarView;
   if (avatarView && ([(CNAvatarView *)avatarView isHidden]& 1) == 0)
   {
-    [(CNAvatarView *)self->_avatarView convertPoint:v7 fromView:x, y];
+    [(CNAvatarView *)self->_avatarView convertPoint:viewCopy fromView:x, y];
     v11 = v10;
     v13 = v12;
     [(CNAvatarView *)self->_avatarView bounds];
@@ -823,17 +823,17 @@ void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(
   return v9;
 }
 
-- (void)setShowsDisclosureView:(BOOL)a3
+- (void)setShowsDisclosureView:(BOOL)view
 {
-  if (self->_showsDisclosureView != a3)
+  if (self->_showsDisclosureView != view)
   {
-    self->_showsDisclosureView = a3;
-    if (a3)
+    self->_showsDisclosureView = view;
+    if (view)
     {
-      v4 = [(PKPaymentTransactionView *)self _disclosureView];
-      v5 = [(UIImageView *)self->_disclosureView superview];
+      _disclosureView = [(PKPaymentTransactionView *)self _disclosureView];
+      superview = [(UIImageView *)self->_disclosureView superview];
 
-      if (v5)
+      if (superview)
       {
         return;
       }
@@ -859,8 +859,8 @@ void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(
     v5 = PKUISmallChevronImage();
     v6 = [v4 initWithImage:v5];
 
-    v7 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIImageView *)v6 setTintColor:v7];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIImageView *)v6 setTintColor:tertiaryLabelColor];
 
     [(UIImageView *)v6 setContentMode:1];
     v8 = self->_disclosureView;
@@ -872,15 +872,15 @@ void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(
   return disclosureView;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(PKPaymentTransactionView *)self _shouldUseStackedLayout];
-  v8 = [(PKPaymentTransactionView *)self _shouldReverseLayoutDirection];
-  if (v8)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _shouldUseStackedLayout = [(PKPaymentTransactionView *)self _shouldUseStackedLayout];
+  _shouldReverseLayoutDirection = [(PKPaymentTransactionView *)self _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v9 = CGRectMaxXEdge;
   }
@@ -890,7 +890,7 @@ void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(
     v9 = CGRectMinXEdge;
   }
 
-  if (v8)
+  if (_shouldReverseLayoutDirection)
   {
     v10 = CGRectMinXEdge;
   }
@@ -900,12 +900,12 @@ void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(
     v10 = CGRectMaxXEdge;
   }
 
-  if (v7)
+  if (_shouldUseStackedLayout)
   {
-    v11 = [(UILabel *)self->_transactionValueLabel font];
-    [v11 lineHeight];
-    [v11 capHeight];
-    [v11 descender];
+    font = [(UILabel *)self->_transactionValueLabel font];
+    [font lineHeight];
+    [font capHeight];
+    [font descender];
     PKFloatRoundToPixel();
     v13 = v12;
 
@@ -915,16 +915,16 @@ void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(
 
   else
   {
-    v16 = [(UILabel *)self->_primaryLabel text];
+    text = [(UILabel *)self->_primaryLabel text];
     v13 = 0.0;
     v17 = 0.0;
-    if ([v16 length])
+    if ([text length])
     {
-      v18 = [(UILabel *)self->_secondaryLabel text];
-      if (![v18 length])
+      text2 = [(UILabel *)self->_secondaryLabel text];
+      if (![text2 length])
       {
-        v19 = [(UILabel *)self->_tertiaryLabel text];
-        if ([v19 length])
+        text3 = [(UILabel *)self->_tertiaryLabel text];
+        if ([text3 length])
         {
           v17 = 0.0;
         }
@@ -940,12 +940,12 @@ void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(
     v15 = v17 + 12.0;
   }
 
-  v20 = [(UILabel *)self->_badgeLabel text];
-  v158 = [v20 length];
+  text4 = [(UILabel *)self->_badgeLabel text];
+  v158 = [text4 length];
 
-  v160 = [(UIImageView *)self->_bonusImageView isHidden];
-  v147 = [(UIImageView *)self->_transactionCategoryImageView isHidden];
-  if (v147)
+  isHidden = [(UIImageView *)self->_bonusImageView isHidden];
+  isHidden2 = [(UIImageView *)self->_transactionCategoryImageView isHidden];
+  if (isHidden2)
   {
     v21 = *MEMORY[0x1E695F060];
     v148 = *(MEMORY[0x1E695F060] + 8);
@@ -953,8 +953,8 @@ void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(
 
   else
   {
-    v22 = [(PKPaymentTransactionView *)self traitCollection];
-    v21 = PKTransactionCategoryImageSizeForTraitCollection(v22);
+    traitCollection = [(PKPaymentTransactionView *)self traitCollection];
+    v21 = PKTransactionCategoryImageSizeForTraitCollection(traitCollection);
     v148 = v23;
   }
 
@@ -972,10 +972,10 @@ void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(
   remainder.size.width = v26;
   remainder.size.height = v27;
   v151 = x;
-  if (!v7)
+  if (!_shouldUseStackedLayout)
   {
-    v33 = [(UILabel *)self->_tertiaryLabel text];
-    v34 = [v33 length];
+    text5 = [(UILabel *)self->_tertiaryLabel text];
+    v34 = [text5 length];
 
     if (v34)
     {
@@ -988,20 +988,20 @@ void __57__PKPaymentTransactionView__updateImageViewDynamicColors__block_invoke(
     }
 
     p_primaryLabel = &self->_primaryLabel;
-    v36 = [(UILabel *)self->_primaryLabel text];
-    if (!v36)
+    text6 = [(UILabel *)self->_primaryLabel text];
+    if (!text6)
     {
       goto LABEL_36;
     }
 
-    v37 = v36;
-    v38 = [(UILabel *)self->_secondaryLabel text];
-    if (v38)
+    v37 = text6;
+    text7 = [(UILabel *)self->_secondaryLabel text];
+    if (text7)
     {
-      v39 = v38;
-      v40 = [(UILabel *)self->_tertiaryLabel text];
+      v39 = text7;
+      text8 = [(UILabel *)self->_tertiaryLabel text];
 
-      if (v40)
+      if (text8)
       {
 LABEL_36:
         p_primaryLabel = &self->_primaryLabel;
@@ -1063,7 +1063,7 @@ LABEL_37:
           v50 = *(MEMORY[0x1E695F060] + 8);
         }
 
-        if (v160)
+        if (isHidden)
         {
           v52 = *MEMORY[0x1E695F060];
           v53 = *(MEMORY[0x1E695F060] + 8);
@@ -1081,13 +1081,13 @@ LABEL_37:
         }
 
         v142 = v52 + 6.0;
-        if (!v160)
+        if (!isHidden)
         {
           v53 = v54;
         }
 
         v144 = v53;
-        if (!v160)
+        if (!isHidden)
         {
           v52 = v52 + 6.0;
         }
@@ -1105,9 +1105,9 @@ LABEL_37:
         v58 = v57;
         [(UILabel *)self->_secondaryLabel sizeThatFits:rect.size.width, rect.size.height];
         v60 = v59;
-        v61 = [(UILabel *)self->_tertiaryLabel text];
+        text9 = [(UILabel *)self->_tertiaryLabel text];
         v146 = v21;
-        if ([v61 length])
+        if ([text9 length])
         {
           [(UILabel *)self->_tertiaryLabel sizeThatFits:rect.size.width, rect.size.height];
           v63 = v62;
@@ -1136,8 +1136,8 @@ LABEL_37:
         v68 = v67;
         if (!self->_isTemplateLayout)
         {
-          v69 = [(UILabel *)self->_transactionValueLabel font];
-          [v69 lineHeight];
+          font2 = [(UILabel *)self->_transactionValueLabel font];
+          [font2 lineHeight];
           v71 = v70;
 
           if (self->_showsDisclosureView)
@@ -1169,7 +1169,7 @@ LABEL_37:
             CGRectDivide(v163, &slice, &v163, 6.0, v10);
           }
 
-          if ((v160 & 1) == 0)
+          if ((isHidden & 1) == 0)
           {
             CGRectDivide(v163, &slice, &v163, v142, v10);
             bonusImageView = self->_bonusImageView;
@@ -1179,7 +1179,7 @@ LABEL_37:
             CGRectDivide(v163, &slice, &v163, 6.0, v10);
           }
 
-          if ((v147 & 1) == 0)
+          if ((isHidden2 & 1) == 0)
           {
             CGRectDivide(v163, &slice, &v163, v146, v10);
             transactionCategoryImageView = self->_transactionCategoryImageView;
@@ -1271,8 +1271,8 @@ LABEL_88:
 
   PKContentAlignmentMake();
   [(UILabel *)self->_primaryLabel setNumberOfLines:2];
-  v28 = [(UILabel *)self->_transactionValueLabel text];
-  v29 = [v28 length];
+  text10 = [(UILabel *)self->_transactionValueLabel text];
+  v29 = [text10 length];
 
   if (self->_showsDisclosureView)
   {
@@ -1305,8 +1305,8 @@ LABEL_88:
       v32 = *MEMORY[0x1E695F060];
     }
 
-    v89 = [(UILabel *)self->_transactionValueLabel font];
-    [v89 lineHeight];
+    font3 = [(UILabel *)self->_transactionValueLabel font];
+    [font3 lineHeight];
     v91 = v90;
 
     memset(&v167, 0, sizeof(v167));
@@ -1369,7 +1369,7 @@ LABEL_95:
       v95 = v96;
     }
 
-    if ((v160 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
       [(UIImageView *)self->_bonusImageView sizeThatFits:v167.size.width, v167.size.height];
       v94 = v97;
@@ -1406,7 +1406,7 @@ LABEL_95:
     }
 
     v104 = v98;
-    if ((v160 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
       memset(&v163, 0, sizeof(v163));
       CGRectIsEmpty(rect);
@@ -1423,7 +1423,7 @@ LABEL_95:
       }
     }
 
-    if ((v147 & 1) == 0)
+    if ((isHidden2 & 1) == 0)
     {
       memset(&v163, 0, sizeof(v163));
       CGRectDivide(v165, &v163, &v165, v145, v10);
@@ -1513,7 +1513,7 @@ LABEL_119:
       v87 = v126 + v128;
     }
 
-    if ((v147 & 1) == 0)
+    if ((isHidden2 & 1) == 0)
     {
       v130 = v87 + 2.0;
       [(UIImageView *)self->_transactionCategoryImageView sizeThatFits:v114, 3.40282347e38];
@@ -1537,7 +1537,7 @@ LABEL_119:
       v136 = v135;
       if (!self->_isTemplateLayout)
       {
-        if (v160)
+        if (isHidden)
         {
           v137 = self->_badgeLabel;
           PKContentAlignmentMake();

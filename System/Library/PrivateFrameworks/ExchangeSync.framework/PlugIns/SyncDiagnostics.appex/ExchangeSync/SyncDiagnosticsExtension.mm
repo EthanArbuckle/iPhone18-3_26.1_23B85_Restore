@@ -2,8 +2,8 @@
 - (id)attachmentList;
 - (void)_addDAManagedDefaults;
 - (void)_removeDAManagedDefaults;
-- (void)setupWithParameters:(id)a3;
-- (void)teardownWithParameters:(id)a3;
+- (void)setupWithParameters:(id)parameters;
+- (void)teardownWithParameters:(id)parameters;
 @end
 
 @implementation SyncDiagnosticsExtension
@@ -74,11 +74,11 @@
   _CFPreferencesPostValuesChangedInDomains();
 }
 
-- (void)setupWithParameters:(id)a3
+- (void)setupWithParameters:(id)parameters
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4 && [v4 count])
+  parametersCopy = parameters;
+  v6 = parametersCopy;
+  if (parametersCopy && [parametersCopy count])
   {
     v5 = [v6 objectForKey:@"hostAppString"];
     if ([v5 isEqualToString:@"Timberlorry"])
@@ -93,11 +93,11 @@
   }
 }
 
-- (void)teardownWithParameters:(id)a3
+- (void)teardownWithParameters:(id)parameters
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4 && [v4 count])
+  parametersCopy = parameters;
+  v6 = parametersCopy;
+  if (parametersCopy && [parametersCopy count])
   {
     v5 = [v6 objectForKey:@"hostAppString"];
     if ([v5 isEqualToString:@"Timberlorry"])
@@ -142,8 +142,8 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 lastPathComponent];
-        if ([v12 containsString:@"ExchangeTraffic.com.apple."] && objc_msgSend(v12, "containsString:", @"501_"))
+        lastPathComponent = [v11 lastPathComponent];
+        if ([lastPathComponent containsString:@"ExchangeTraffic.com.apple."] && objc_msgSend(lastPathComponent, "containsString:", @"501_"))
         {
           v13 = [DEAttachmentItem attachmentWithPathURL:v11];
           [v5 addObject:v13];

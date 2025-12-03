@@ -1,111 +1,111 @@
 @interface HMDAirPlayAccessory
 + (id)logCategory;
 + (void)initialize;
-- (HMDAirPlayAccessory)initWithCoder:(id)a3;
-- (HMDAirPlayAccessory)initWithTransaction:(id)a3 home:(id)a4;
+- (HMDAirPlayAccessory)initWithCoder:(id)coder;
+- (HMDAirPlayAccessory)initWithTransaction:(id)transaction home:(id)home;
 - (HMFPairingIdentity)pairingIdentity;
 - (NSString)password;
 - (id)advertisement;
-- (id)backingStoreObjects:(int64_t)a3;
+- (id)backingStoreObjects:(int64_t)objects;
 - (id)logIdentifier;
 - (id)messageSendPolicy;
-- (id)transactionWithObjectChangeType:(unint64_t)a3;
+- (id)transactionWithObjectChangeType:(unint64_t)type;
 - (int64_t)minimumUserPriviledge;
-- (void)_handleUpdatedName:(id)a3;
-- (void)addUser:(id)a3 completionHandler:(id)a4;
-- (void)disassociatePairingIdentity:(id)a3 completionHandler:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleUpdatedAdvertisement:(id)a3;
-- (void)handleUpdatedMinimumUserPrivilege:(int64_t)a3;
-- (void)handleUpdatedPassword:(id)a3;
-- (void)pairingsWithCompletionHandler:(id)a3;
-- (void)populateModelObject:(id)a3 version:(int64_t)a4;
-- (void)removeUser:(id)a3 completionHandler:(id)a4;
-- (void)removeUserPairingIdentity:(id)a3 isOwner:(BOOL)a4 completionHandler:(id)a5;
-- (void)setAdvertisement:(id)a3;
-- (void)setMinimumUserPriviledge:(int64_t)a3;
-- (void)setPairingIdentity:(id)a3;
-- (void)setPassword:(id)a3;
-- (void)setReachable:(BOOL)a3;
-- (void)timerDidFire:(id)a3;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
+- (void)_handleUpdatedName:(id)name;
+- (void)addUser:(id)user completionHandler:(id)handler;
+- (void)disassociatePairingIdentity:(id)identity completionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleUpdatedAdvertisement:(id)advertisement;
+- (void)handleUpdatedMinimumUserPrivilege:(int64_t)privilege;
+- (void)handleUpdatedPassword:(id)password;
+- (void)pairingsWithCompletionHandler:(id)handler;
+- (void)populateModelObject:(id)object version:(int64_t)version;
+- (void)removeUser:(id)user completionHandler:(id)handler;
+- (void)removeUserPairingIdentity:(id)identity isOwner:(BOOL)owner completionHandler:(id)handler;
+- (void)setAdvertisement:(id)advertisement;
+- (void)setMinimumUserPriviledge:(int64_t)priviledge;
+- (void)setPairingIdentity:(id)identity;
+- (void)setPassword:(id)password;
+- (void)setReachable:(BOOL)reachable;
+- (void)timerDidFire:(id)fire;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
 @end
 
 @implementation HMDAirPlayAccessory
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccessory *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDAccessory *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 hmd_isForXPCTransport];
-  v6 = [v4 hmd_isForLocalStore];
+  coderCopy = coder;
+  hmd_isForXPCTransport = [coderCopy hmd_isForXPCTransport];
+  hmd_isForLocalStore = [coderCopy hmd_isForLocalStore];
   v11.receiver = self;
   v11.super_class = HMDAirPlayAccessory;
-  [(HMDMediaAccessory *)&v11 encodeWithCoder:v4];
-  v7 = [(HMDAirPlayAccessory *)self pairingIdentity];
-  v8 = v7;
-  if ((v5 & 1) == 0)
+  [(HMDMediaAccessory *)&v11 encodeWithCoder:coderCopy];
+  pairingIdentity = [(HMDAirPlayAccessory *)self pairingIdentity];
+  v8 = pairingIdentity;
+  if ((hmd_isForXPCTransport & 1) == 0)
   {
-    if (v6)
+    if (hmd_isForLocalStore)
     {
-      [v4 encodeObject:v7 forKey:*MEMORY[0x277CCEC20]];
+      [coderCopy encodeObject:pairingIdentity forKey:*MEMORY[0x277CCEC20]];
     }
 
-    else if (v7)
+    else if (pairingIdentity)
     {
-      v9 = [v7 publicPairingIdentity];
-      [v4 encodeObject:v9 forKey:*MEMORY[0x277CCEC20]];
+      publicPairingIdentity = [pairingIdentity publicPairingIdentity];
+      [coderCopy encodeObject:publicPairingIdentity forKey:*MEMORY[0x277CCEC20]];
     }
   }
 
-  if (([v4 hmd_isForLocalStore] & 1) != 0 || objc_msgSend(v4, "hmd_isForRemoteTransportOnSameAccount"))
+  if (([coderCopy hmd_isForLocalStore] & 1) != 0 || objc_msgSend(coderCopy, "hmd_isForRemoteTransportOnSameAccount"))
   {
-    v10 = [(HMDAirPlayAccessory *)self password];
-    [v4 encodeObject:v10 forKey:@"HM.password"];
+    password = [(HMDAirPlayAccessory *)self password];
+    [coderCopy encodeObject:password forKey:@"HM.password"];
 
-    [v4 encodeInteger:-[HMDAirPlayAccessory minimumUserPriviledge](self forKey:{"minimumUserPriviledge"), @"HM.minimumUserPriviledge"}];
+    [coderCopy encodeInteger:-[HMDAirPlayAccessory minimumUserPriviledge](self forKey:{"minimumUserPriviledge"), @"HM.minimumUserPriviledge"}];
   }
 }
 
-- (HMDAirPlayAccessory)initWithCoder:(id)a3
+- (HMDAirPlayAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HMDAirPlayAccessory;
-  v5 = [(HMDMediaAccessory *)&v11 initWithCoder:v4];
+  v5 = [(HMDMediaAccessory *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCEC20]];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCEC20]];
     pairingIdentity = v5->_pairingIdentity;
     v5->_pairingIdentity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.password"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.password"];
     password = v5->_password;
     v5->_password = v8;
 
-    v5->_minimumUserPriviledge = [v4 decodeIntegerForKey:@"HM.minimumUserPriviledge"];
+    v5->_minimumUserPriviledge = [coderCopy decodeIntegerForKey:@"HM.minimumUserPriviledge"];
     v5->super.super._reachable = 1;
   }
 
   return v5;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = [(HMDAccessory *)self workQueue];
+  workQueue = [(HMDAccessory *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__HMDAirPlayAccessory_timerDidFire___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __36__HMDAirPlayAccessory_timerDidFire___block_invoke(uint64_t a1)
@@ -235,13 +235,13 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
+  v11 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -255,7 +255,7 @@ LABEL_6:
 
   v13 = v12;
 
-  v38 = v8;
+  v38 = updatedCopy;
   if (v13)
   {
     v42 = 0;
@@ -264,8 +264,8 @@ LABEL_6:
     v45 = __Block_byref_object_copy__90437;
     v46 = __Block_byref_object_dispose__90438;
     v47 = 0;
-    v14 = [v10 responseHandler];
-    if (v14)
+    responseHandler = [messageCopy responseHandler];
+    if (responseHandler)
     {
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
@@ -273,81 +273,81 @@ LABEL_6:
       aBlock[3] = &unk_27972A108;
       aBlock[4] = &v42;
       v15 = _Block_copy(aBlock);
-      [v10 setResponseHandler:v15];
+      [messageCopy setResponseHandler:v15];
     }
 
     v40.receiver = self;
     v40.super_class = HMDAirPlayAccessory;
-    [(HMDMediaAccessory *)&v40 transactionObjectUpdated:0 newValues:v11 message:v10];
-    v16 = self;
+    [(HMDMediaAccessory *)&v40 transactionObjectUpdated:0 newValues:v11 message:messageCopy];
+    selfCopy = self;
     v17 = v13;
-    v18 = v10;
-    v37 = [v18 transactionResult];
-    v19 = [v17 pairingIdentity];
+    v18 = messageCopy;
+    transactionResult = [v18 transactionResult];
+    pairingIdentity = [v17 pairingIdentity];
 
-    if (v19)
+    if (pairingIdentity)
     {
-      v20 = [v17 pairingIdentity];
-      v21 = [(HMDAirPlayAccessory *)v16 pairingIdentity];
-      v22 = [v20 isEqual:v21];
+      pairingIdentity2 = [v17 pairingIdentity];
+      pairingIdentity3 = [(HMDAirPlayAccessory *)selfCopy pairingIdentity];
+      v22 = [pairingIdentity2 isEqual:pairingIdentity3];
 
       if ((v22 & 1) == 0)
       {
         context = objc_autoreleasePoolPush();
-        v23 = v16;
+        v23 = selfCopy;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           v35 = HMFGetLogIdentifier();
-          v25 = [v17 pairingIdentity];
+          pairingIdentity4 = [v17 pairingIdentity];
           *buf = 138543618;
           v49 = v35;
           v50 = 2112;
-          v51 = v25;
-          v34 = v25;
+          v51 = pairingIdentity4;
+          v34 = pairingIdentity4;
           _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@Updated pairing identity: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(context);
-        v26 = [v17 pairingIdentity];
-        [(HMDAirPlayAccessory *)v23 setPairingIdentity:v26];
+        pairingIdentity5 = [v17 pairingIdentity];
+        [(HMDAirPlayAccessory *)v23 setPairingIdentity:pairingIdentity5];
 
-        [v37 markChanged];
+        [transactionResult markChanged];
       }
     }
 
     if ([v17 propertyWasSet:{@"password", v34}])
     {
-      v27 = [v17 password];
-      v28 = [(HMDAirPlayAccessory *)v16 password];
+      password = [v17 password];
+      password2 = [(HMDAirPlayAccessory *)selfCopy password];
       v29 = HMFEqualObjects();
 
       if ((v29 & 1) == 0)
       {
-        v30 = [v17 password];
-        [(HMDAirPlayAccessory *)v16 setPassword:v30];
+        password3 = [v17 password];
+        [(HMDAirPlayAccessory *)selfCopy setPassword:password3];
 
-        [v37 markChanged];
+        [transactionResult markChanged];
       }
     }
 
     if ([v17 propertyWasSet:@"minimumUserPriviledge"])
     {
-      v31 = [v17 minimumUserPriviledge];
-      v32 = [v31 integerValue];
+      minimumUserPriviledge = [v17 minimumUserPriviledge];
+      integerValue = [minimumUserPriviledge integerValue];
 
-      if ([(HMDAirPlayAccessory *)v16 minimumUserPriviledge]!= v32)
+      if ([(HMDAirPlayAccessory *)selfCopy minimumUserPriviledge]!= integerValue)
       {
-        [(HMDAirPlayAccessory *)v16 setMinimumUserPriviledge:v32];
-        [v37 markChanged];
+        [(HMDAirPlayAccessory *)selfCopy setMinimumUserPriviledge:integerValue];
+        [transactionResult markChanged];
       }
     }
 
     [v18 respondWithPayload:0];
 
-    if (v14)
+    if (responseHandler)
     {
-      v14[2](v14, v43[5], 0);
+      responseHandler[2](responseHandler, v43[5], 0);
     }
 
     _Block_object_dispose(&v42, 8);
@@ -357,7 +357,7 @@ LABEL_6:
   {
     v39.receiver = self;
     v39.super_class = HMDAirPlayAccessory;
-    [(HMDMediaAccessory *)&v39 transactionObjectUpdated:v8 newValues:v11 message:v10];
+    [(HMDMediaAccessory *)&v39 transactionObjectUpdated:updatedCopy newValues:v11 message:messageCopy];
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -374,12 +374,12 @@ void __66__HMDAirPlayAccessory_transactionObjectUpdated_newValues_message___bloc
   }
 }
 
-- (void)pairingsWithCompletionHandler:(id)a3
+- (void)pairingsWithCompletionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -390,27 +390,27 @@ void __66__HMDAirPlayAccessory_transactionObjectUpdated_newValues_message___bloc
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDAccessory *)v6 home];
-  v10 = [v9 isOwnerUser];
+  home = [(HMDAccessory *)selfCopy home];
+  isOwnerUser = [home isOwnerUser];
 
-  if (v10)
+  if (isOwnerUser)
   {
-    v11 = [(HMDAirPlayAccessory *)v6 advertisement];
-    v12 = [v11 outputDevice];
-    v13 = [v12 av_OutputDevice];
+    advertisement = [(HMDAirPlayAccessory *)selfCopy advertisement];
+    outputDevice = [advertisement outputDevice];
+    av_OutputDevice = [outputDevice av_OutputDevice];
 
-    if (v13)
+    if (av_OutputDevice)
     {
-      objc_initWeak(buf, v6);
+      objc_initWeak(buf, selfCopy);
       v14 = __outputDeviceConfigurationOptions();
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __53__HMDAirPlayAccessory_pairingsWithCompletionHandler___block_invoke_2;
       v25[3] = &unk_279729CA0;
-      v26 = v11;
+      v26 = advertisement;
       objc_copyWeak(&v28, buf);
-      v27 = v4;
-      [v13 configureUsingBlock:&__block_literal_global_90444 options:v14 completionHandler:v25];
+      v27 = handlerCopy;
+      [av_OutputDevice configureUsingBlock:&__block_literal_global_90444 options:v14 completionHandler:v25];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(buf);
@@ -419,7 +419,7 @@ void __66__HMDAirPlayAccessory_transactionObjectUpdated_newValues_message___bloc
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = v6;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
@@ -431,14 +431,14 @@ void __66__HMDAirPlayAccessory_transactionObjectUpdated_newValues_message___bloc
 
       objc_autoreleasePoolPop(v19);
       v23 = [MEMORY[0x277CCA9B8] hmErrorWithCode:4];
-      (*(v4 + 2))(v4, 0, v23);
+      (*(handlerCopy + 2))(handlerCopy, 0, v23);
     }
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v6;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -449,8 +449,8 @@ void __66__HMDAirPlayAccessory_transactionObjectUpdated_newValues_message___bloc
     }
 
     objc_autoreleasePoolPop(v15);
-    v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:17];
-    (*(v4 + 2))(v4, 0, v11);
+    advertisement = [MEMORY[0x277CCA9B8] hmErrorWithCode:17];
+    (*(handlerCopy + 2))(handlerCopy, 0, advertisement);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -553,16 +553,16 @@ void __53__HMDAirPlayAccessory_pairingsWithCompletionHandler___block_invoke_2(ui
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeUserPairingIdentity:(id)a3 isOwner:(BOOL)a4 completionHandler:(id)a5
+- (void)removeUserPairingIdentity:(id)identity isOwner:(BOOL)owner completionHandler:(id)handler
 {
-  v6 = a4;
+  ownerCopy = owner;
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  identityCopy = identity;
+  handlerCopy = handler;
+  if (ownerCopy)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -573,22 +573,22 @@ void __53__HMDAirPlayAccessory_pairingsWithCompletionHandler___block_invoke_2(ui
     }
 
     objc_autoreleasePoolPop(v10);
-    [(HMDAirPlayAccessory *)v11 disassociatePairingIdentity:v8 completionHandler:v9];
+    [(HMDAirPlayAccessory *)selfCopy disassociatePairingIdentity:identityCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v14 = [(HMDAirPlayAccessory *)self advertisement];
-    v15 = [v14 outputDevice];
-    v16 = [v15 av_OutputDevice];
+    advertisement = [(HMDAirPlayAccessory *)self advertisement];
+    outputDevice = [advertisement outputDevice];
+    av_OutputDevice = [outputDevice av_OutputDevice];
 
-    if (v16)
+    if (av_OutputDevice)
     {
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __75__HMDAirPlayAccessory_removeUserPairingIdentity_isOwner_completionHandler___block_invoke;
       aBlock[3] = &unk_279729C78;
-      v17 = v8;
+      v17 = identityCopy;
       v32 = v17;
       v18 = _Block_copy(aBlock);
       objc_initWeak(buf, self);
@@ -597,11 +597,11 @@ void __53__HMDAirPlayAccessory_pairingsWithCompletionHandler___block_invoke_2(ui
       v26[1] = 3221225472;
       v26[2] = __75__HMDAirPlayAccessory_removeUserPairingIdentity_isOwner_completionHandler___block_invoke_2;
       v26[3] = &unk_279729CC8;
-      v27 = v14;
+      v27 = advertisement;
       objc_copyWeak(&v30, buf);
       v28 = v17;
-      v29 = v9;
-      [v16 configureUsingBlock:v18 options:v19 completionHandler:v26];
+      v29 = handlerCopy;
+      [av_OutputDevice configureUsingBlock:v18 options:v19 completionHandler:v26];
 
       objc_destroyWeak(&v30);
       objc_destroyWeak(buf);
@@ -612,7 +612,7 @@ void __53__HMDAirPlayAccessory_pairingsWithCompletionHandler___block_invoke_2(ui
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy2 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
@@ -624,7 +624,7 @@ void __53__HMDAirPlayAccessory_pairingsWithCompletionHandler___block_invoke_2(ui
 
       objc_autoreleasePoolPop(v21);
       v20 = [MEMORY[0x277CCA9B8] hmErrorWithCode:4];
-      (*(v9 + 2))(v9, v20);
+      (*(handlerCopy + 2))(handlerCopy, v20);
     }
   }
 
@@ -755,13 +755,13 @@ LABEL_16:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeUser:(id)a3 completionHandler:(id)a4
+- (void)removeUser:(id)user completionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -769,21 +769,21 @@ LABEL_16:
     v19 = 138543618;
     v20 = v11;
     v21 = 2112;
-    v22 = v6;
+    v22 = userCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Removing user: %@", &v19, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v6 pairingIdentity];
-  if (v12)
+  pairingIdentity = [userCopy pairingIdentity];
+  if (pairingIdentity)
   {
-    -[HMDAirPlayAccessory removeUserPairingIdentity:isOwner:completionHandler:](v9, "removeUserPairingIdentity:isOwner:completionHandler:", v12, [v6 isOwner], v7);
+    -[HMDAirPlayAccessory removeUserPairingIdentity:isOwner:completionHandler:](selfCopy, "removeUserPairingIdentity:isOwner:completionHandler:", pairingIdentity, [userCopy isOwner], handlerCopy);
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v9;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -791,13 +791,13 @@ LABEL_16:
       v19 = 138543618;
       v20 = v16;
       v21 = 2112;
-      v22 = v6;
+      v22 = userCopy;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_INFO, "%{public}@Failed to get pairing identity for user: %@", &v19, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
     v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    v7[2](v7, v17);
+    handlerCopy[2](handlerCopy, v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -882,13 +882,13 @@ LABEL_13:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addUser:(id)a3 completionHandler:(id)a4
+- (void)addUser:(id)user completionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -896,27 +896,27 @@ LABEL_13:
     v26 = 138543618;
     v27 = v11;
     v28 = 2112;
-    v29 = v6;
+    v29 = userCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Adding user: %@", &v26, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDAccessory *)v9 home];
-  v13 = [v12 isOwnerUser];
+  home = [(HMDAccessory *)selfCopy home];
+  isOwnerUser = [home isOwnerUser];
 
-  if (v13)
+  if (isOwnerUser)
   {
-    v14 = [v6 pairingIdentity];
-    if (v14)
+    pairingIdentity = [userCopy pairingIdentity];
+    if (pairingIdentity)
     {
-      v15 = v14;
-      -[HMDAirPlayAccessory addUserPairingIdentity:isOwner:completionHandler:](v9, "addUserPairingIdentity:isOwner:completionHandler:", v14, [v6 isOwner], v7);
+      v15 = pairingIdentity;
+      -[HMDAirPlayAccessory addUserPairingIdentity:isOwner:completionHandler:](selfCopy, "addUserPairingIdentity:isOwner:completionHandler:", pairingIdentity, [userCopy isOwner], handlerCopy);
     }
 
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = v9;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
@@ -924,13 +924,13 @@ LABEL_13:
         v26 = 138543618;
         v27 = v23;
         v28 = 2112;
-        v29 = v6;
+        v29 = userCopy;
         _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_INFO, "%{public}@Failed to get pairing identity for user: %@", &v26, 0x16u);
       }
 
       objc_autoreleasePoolPop(v20);
       v24 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      v7[2](v7, v24);
+      handlerCopy[2](handlerCopy, v24);
 
       v15 = 0;
     }
@@ -939,7 +939,7 @@ LABEL_13:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v9;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -951,19 +951,19 @@ LABEL_13:
 
     objc_autoreleasePoolPop(v16);
     v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:17];
-    v7[2](v7, v15);
+    handlerCopy[2](handlerCopy, v15);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disassociatePairingIdentity:(id)a3 completionHandler:(id)a4
+- (void)disassociatePairingIdentity:(id)identity completionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -974,28 +974,28 @@ LABEL_13:
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDAirPlayAccessory *)v9 advertisement];
-  v13 = [v12 outputDevice];
-  v14 = [v13 av_OutputDevice];
+  advertisement = [(HMDAirPlayAccessory *)selfCopy advertisement];
+  outputDevice = [advertisement outputDevice];
+  av_OutputDevice = [outputDevice av_OutputDevice];
 
-  if (v14)
+  if (av_OutputDevice)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __69__HMDAirPlayAccessory_disassociatePairingIdentity_completionHandler___block_invoke;
     aBlock[3] = &unk_279729C78;
-    v28 = v6;
+    v28 = identityCopy;
     v15 = _Block_copy(aBlock);
-    objc_initWeak(buf, v9);
+    objc_initWeak(buf, selfCopy);
     v16 = __outputDeviceConfigurationOptions();
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __69__HMDAirPlayAccessory_disassociatePairingIdentity_completionHandler___block_invoke_2;
     v23[3] = &unk_279729CA0;
-    v24 = v12;
+    v24 = advertisement;
     objc_copyWeak(&v26, buf);
-    v25 = v7;
-    [v14 configureUsingBlock:v15 options:v16 completionHandler:v23];
+    v25 = handlerCopy;
+    [av_OutputDevice configureUsingBlock:v15 options:v16 completionHandler:v23];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(buf);
@@ -1006,7 +1006,7 @@ LABEL_13:
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v9;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -1018,7 +1018,7 @@ LABEL_13:
 
     objc_autoreleasePoolPop(v18);
     v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:4];
-    (*(v7 + 2))(v7, v17);
+    (*(handlerCopy + 2))(handlerCopy, v17);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -1131,24 +1131,24 @@ LABEL_15:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)transactionWithObjectChangeType:(unint64_t)a3
+- (id)transactionWithObjectChangeType:(unint64_t)type
 {
   v5 = [HMDAirPlayAccessoryModel alloc];
-  v6 = [(HMDAccessory *)self uuid];
-  v7 = [(HMDAccessory *)self home];
-  v8 = [v7 uuid];
-  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:a3 uuid:v6 parentUUID:v8];
+  uuid = [(HMDAccessory *)self uuid];
+  home = [(HMDAccessory *)self home];
+  uuid2 = [home uuid];
+  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:type uuid:uuid parentUUID:uuid2];
 
   return v9;
 }
 
-- (void)populateModelObject:(id)a3 version:(int64_t)a4
+- (void)populateModelObject:(id)object version:(int64_t)version
 {
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = objectCopy;
   }
 
   else
@@ -1159,39 +1159,39 @@ LABEL_15:
   v8 = v7;
   v12.receiver = self;
   v12.super_class = HMDAirPlayAccessory;
-  [(HMDAccessory *)&v12 populateModelObject:v8 version:a4];
-  v9 = [(HMDAirPlayAccessory *)self pairingIdentity];
-  [v8 setPairingIdentity:v9];
+  [(HMDAccessory *)&v12 populateModelObject:v8 version:version];
+  pairingIdentity = [(HMDAirPlayAccessory *)self pairingIdentity];
+  [v8 setPairingIdentity:pairingIdentity];
 
-  v10 = [(HMDAirPlayAccessory *)self password];
-  [v8 setPassword:v10];
+  password = [(HMDAirPlayAccessory *)self password];
+  [v8 setPassword:password];
 
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDAirPlayAccessory minimumUserPriviledge](self, "minimumUserPriviledge")}];
   [v8 setMinimumUserPriviledge:v11];
 }
 
-- (id)backingStoreObjects:(int64_t)a3
+- (id)backingStoreObjects:(int64_t)objects
 {
   v5 = [HMDAirPlayAccessoryModel alloc];
-  v6 = [(HMDAccessory *)self uuid];
-  v7 = [(HMDAccessory *)self home];
-  v8 = [v7 uuid];
-  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:v8];
+  uuid = [(HMDAccessory *)self uuid];
+  home = [(HMDAccessory *)self home];
+  uuid2 = [home uuid];
+  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:uuid parentUUID:uuid2];
 
-  [(HMDAirPlayAccessory *)self populateModelObject:v9 version:a3];
+  [(HMDAirPlayAccessory *)self populateModelObject:v9 version:objects];
   v10 = [MEMORY[0x277CBEB18] arrayWithObject:v9];
   v13.receiver = self;
   v13.super_class = HMDAirPlayAccessory;
-  v11 = [(HMDAccessory *)&v13 backingStoreObjects:a3];
+  v11 = [(HMDAccessory *)&v13 backingStoreObjects:objects];
   [v10 addObjectsFromArray:v11];
 
   return v10;
 }
 
-- (void)setMinimumUserPriviledge:(int64_t)a3
+- (void)setMinimumUserPriviledge:(int64_t)priviledge
 {
   os_unfair_recursive_lock_lock_with_options();
-  self->_minimumUserPriviledge = a3;
+  self->_minimumUserPriviledge = priviledge;
 
   os_unfair_recursive_lock_unlock();
 }
@@ -1204,11 +1204,11 @@ LABEL_15:
   return minimumUserPriviledge;
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v6 = a3;
+  passwordCopy = password;
   os_unfair_recursive_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [passwordCopy copy];
   password = self->_password;
   self->_password = v4;
 
@@ -1224,11 +1224,11 @@ LABEL_15:
   return v3;
 }
 
-- (void)setPairingIdentity:(id)a3
+- (void)setPairingIdentity:(id)identity
 {
-  v6 = a3;
+  identityCopy = identity;
   os_unfair_recursive_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [identityCopy copy];
   pairingIdentity = self->_pairingIdentity;
   self->_pairingIdentity = v4;
 
@@ -1244,25 +1244,25 @@ LABEL_15:
   return v3;
 }
 
-- (void)handleUpdatedPassword:(id)a3
+- (void)handleUpdatedPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   v10.receiver = self;
   v10.super_class = HMDAirPlayAccessory;
-  [(HMDMediaAccessory *)&v10 handleUpdatedPassword:v4];
-  v5 = [(HMDAirPlayAccessory *)self password];
+  [(HMDMediaAccessory *)&v10 handleUpdatedPassword:passwordCopy];
+  password = [(HMDAirPlayAccessory *)self password];
   v6 = HMFEqualObjects();
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(HMDAccessory *)self workQueue];
+    workQueue = [(HMDAccessory *)self workQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __45__HMDAirPlayAccessory_handleUpdatedPassword___block_invoke;
     v8[3] = &unk_2797359B0;
     v8[4] = self;
-    v9 = v4;
-    dispatch_async(v7, v8);
+    v9 = passwordCopy;
+    dispatch_async(workQueue, v8);
   }
 }
 
@@ -1318,21 +1318,21 @@ void __45__HMDAirPlayAccessory_handleUpdatedPassword___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdatedMinimumUserPrivilege:(int64_t)a3
+- (void)handleUpdatedMinimumUserPrivilege:(int64_t)privilege
 {
   v7.receiver = self;
   v7.super_class = HMDAirPlayAccessory;
   [(HMDMediaAccessory *)&v7 handleUpdatedMinimumUserPrivilege:?];
-  if ([(HMDAirPlayAccessory *)self minimumUserPriviledge]!= a3)
+  if ([(HMDAirPlayAccessory *)self minimumUserPriviledge]!= privilege)
   {
-    v5 = [(HMDAccessory *)self workQueue];
+    workQueue = [(HMDAccessory *)self workQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __57__HMDAirPlayAccessory_handleUpdatedMinimumUserPrivilege___block_invoke;
     v6[3] = &unk_279734BB8;
     v6[4] = self;
-    v6[5] = a3;
-    dispatch_async(v5, v6);
+    v6[5] = privilege;
+    dispatch_async(workQueue, v6);
   }
 }
 
@@ -1387,13 +1387,13 @@ void __57__HMDAirPlayAccessory_handleUpdatedMinimumUserPrivilege___block_invoke(
   return v2;
 }
 
-- (void)setReachable:(BOOL)a3
+- (void)setReachable:(BOOL)reachable
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!reachable)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -1415,32 +1415,32 @@ void __57__HMDAirPlayAccessory_handleUpdatedMinimumUserPrivilege___block_invoke(
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleUpdatedName:(id)a3
+- (void)_handleUpdatedName:(id)name
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = HMDAirPlayAccessory;
-  [(HMDAccessory *)&v19 _handleUpdatedName:v4];
-  v5 = [(HMDAccessory *)self room];
-  v6 = [v5 name];
+  [(HMDAccessory *)&v19 _handleUpdatedName:nameCopy];
+  room = [(HMDAccessory *)self room];
+  name = [room name];
 
-  v7 = [(HMDAccessory *)self getConfiguredName];
+  getConfiguredName = [(HMDAccessory *)self getConfiguredName];
 
-  if (v7)
+  if (getConfiguredName)
   {
-    v8 = [(HMDAccessory *)self getConfiguredName];
+    getConfiguredName2 = [(HMDAccessory *)self getConfiguredName];
 
-    v6 = v8;
+    name = getConfiguredName2;
   }
 
-  v9 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = name;
   v11 = v10;
-  if (v9 && v10)
+  if (selfCopy && v10)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v9;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -1456,8 +1456,8 @@ void __57__HMDAirPlayAccessory_handleUpdatedMinimumUserPrivilege___block_invoke(
     v24 = @"name";
     v25[0] = v11;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-    v17 = [(HMDAirPlayAccessory *)v13 configurationRetryTimer];
-    [v17 reset];
+    configurationRetryTimer = [(HMDAirPlayAccessory *)v13 configurationRetryTimer];
+    [configurationRetryTimer reset];
 
     objc_initWeak(&location, v13);
     *buf = MEMORY[0x277D85DD0];
@@ -1473,26 +1473,26 @@ void __57__HMDAirPlayAccessory_handleUpdatedMinimumUserPrivilege___block_invoke(
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdatedAdvertisement:(id)a3
+- (void)handleUpdatedAdvertisement:(id)advertisement
 {
   v75 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessory *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  advertisementCopy = advertisement;
+  workQueue = [(HMDAccessory *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v72.receiver = self;
   v72.super_class = HMDAirPlayAccessory;
-  [(HMDMediaAccessory *)&v72 handleUpdatedAdvertisement:v4];
-  if (!v4)
+  [(HMDMediaAccessory *)&v72 handleUpdatedAdvertisement:advertisementCopy];
+  if (!advertisementCopy)
   {
     __stopConfigurationRetryTimer(self);
     goto LABEL_44;
   }
 
-  v6 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = advertisementCopy;
   v8 = objc_autoreleasePoolPush();
-  v9 = v6;
+  v9 = selfCopy;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1503,10 +1503,10 @@ void __57__HMDAirPlayAccessory_handleUpdatedMinimumUserPrivilege___block_invoke(
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v7 outputDevice];
-  v13 = [v12 av_OutputDevice];
+  outputDevice = [v7 outputDevice];
+  av_OutputDevice = [outputDevice av_OutputDevice];
 
-  if (v13)
+  if (av_OutputDevice)
   {
     v14 = [(HMDAirPlayAccessory *)v9 transactionWithObjectChangeType:2];
     objc_opt_class();
@@ -1522,14 +1522,14 @@ void __57__HMDAirPlayAccessory_handleUpdatedMinimumUserPrivilege___block_invoke(
 
     v16 = v15;
 
-    v17 = [v13 modelID];
-    if (!v17)
+    modelID = [av_OutputDevice modelID];
+    if (!modelID)
     {
       goto LABEL_10;
     }
 
-    v18 = [v13 modelID];
-    v19 = [(HMDAccessory *)v9 model];
+    modelID2 = [av_OutputDevice modelID];
+    model = [(HMDAccessory *)v9 model];
     v20 = HMFEqualObjects();
 
     if ((v20 & 1) == 0)
@@ -1546,8 +1546,8 @@ void __57__HMDAirPlayAccessory_handleUpdatedMinimumUserPrivilege___block_invoke(
       }
 
       objc_autoreleasePoolPop(v22);
-      v26 = [v13 modelID];
-      [v16 setModel:v26];
+      modelID3 = [av_OutputDevice modelID];
+      [v16 setModel:modelID3];
 
       v21 = 1;
     }
@@ -1558,11 +1558,11 @@ LABEL_10:
       v21 = 0;
     }
 
-    v27 = [v13 manufacturer];
-    if (v27)
+    manufacturer = [av_OutputDevice manufacturer];
+    if (manufacturer)
     {
-      v28 = [v13 manufacturer];
-      v29 = [(HMDAccessory *)v9 manufacturer];
+      manufacturer2 = [av_OutputDevice manufacturer];
+      manufacturer3 = [(HMDAccessory *)v9 manufacturer];
       v30 = HMFEqualObjects();
 
       if ((v30 & 1) == 0)
@@ -1579,18 +1579,18 @@ LABEL_10:
         }
 
         objc_autoreleasePoolPop(v31);
-        v35 = [v13 manufacturer];
-        [v16 setManufacturer:v35];
+        manufacturer4 = [av_OutputDevice manufacturer];
+        [v16 setManufacturer:manufacturer4];
 
         v21 = 1;
       }
     }
 
-    v36 = [v13 serialNumber];
-    if (v36)
+    serialNumber = [av_OutputDevice serialNumber];
+    if (serialNumber)
     {
-      v37 = [v13 serialNumber];
-      v38 = [(HMDAccessory *)v9 serialNumber];
+      serialNumber2 = [av_OutputDevice serialNumber];
+      serialNumber3 = [(HMDAccessory *)v9 serialNumber];
       v39 = HMFEqualObjects();
 
       if ((v39 & 1) == 0)
@@ -1607,22 +1607,22 @@ LABEL_10:
         }
 
         objc_autoreleasePoolPop(v40);
-        v44 = [v13 serialNumber];
-        [v16 setSerialNumber:v44];
+        serialNumber4 = [av_OutputDevice serialNumber];
+        [v16 setSerialNumber:serialNumber4];
 
         v21 = 1;
       }
     }
 
-    v45 = [v13 firmwareVersion];
+    firmwareVersion = [av_OutputDevice firmwareVersion];
 
-    if (v45)
+    if (firmwareVersion)
     {
       v46 = [HMDAccessoryVersion alloc];
-      v47 = [v13 firmwareVersion];
-      v48 = [(HMDAccessoryVersion *)v46 initWithString:v47];
+      firmwareVersion2 = [av_OutputDevice firmwareVersion];
+      v48 = [(HMDAccessoryVersion *)v46 initWithString:firmwareVersion2];
 
-      v49 = [(HMDAccessory *)v9 firmwareVersion];
+      firmwareVersion3 = [(HMDAccessory *)v9 firmwareVersion];
       v50 = HMFEqualObjects();
 
       if (v50)
@@ -1650,8 +1650,8 @@ LABEL_37:
         }
 
         objc_autoreleasePoolPop(v51);
-        v55 = [v13 firmwareVersion];
-        [v16 setFirmwareVersion:v55];
+        firmwareVersion4 = [av_OutputDevice firmwareVersion];
+        [v16 setFirmwareVersion:firmwareVersion4];
       }
     }
 
@@ -1672,10 +1672,10 @@ LABEL_37:
     }
 
     objc_autoreleasePoolPop(v56);
-    v60 = [(HMDAccessory *)v57 home];
-    v61 = [v60 backingStore];
+    home = [(HMDAccessory *)v57 home];
+    backingStore = [home backingStore];
     v62 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-    v63 = [v61 transaction:@"Update Accessory Information" options:v62];
+    v63 = [backingStore transaction:@"Update Accessory Information" options:v62];
 
     [v63 add:v16 withMessage:0];
     [v63 run];
@@ -1763,21 +1763,21 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAdvertisement:(id)a3
+- (void)setAdvertisement:(id)advertisement
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  advertisementCopy = advertisement;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMDAccessory *)v6 identifier];
+    identifier = [(HMDAccessory *)selfCopy identifier];
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v9;
+    v14 = identifier;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Ignoring setting the advertisement data for AirPlay accessory %@", &v11, 0x16u);
   }
 
@@ -1788,25 +1788,25 @@ LABEL_6:
 - (id)advertisement
 {
   v3 = [HMDMediaAccessoryBrowseOperation alloc];
-  v4 = [(HMDAccessory *)self identifier];
-  v5 = [(HMDMediaAccessoryBrowseOperation *)v3 initWithAccessoryIdentifier:v4];
+  identifier = [(HMDAccessory *)self identifier];
+  v5 = [(HMDMediaAccessoryBrowseOperation *)v3 initWithAccessoryIdentifier:identifier];
 
   [(HMDMediaAccessoryBrowseOperation *)v5 setEndpointFeatures:1];
   [(HMFOperation *)v5 start];
   [(HMDMediaAccessoryBrowseOperation *)v5 waitUntilFinished];
-  v6 = [(HMFOperation *)v5 error];
+  error = [(HMFOperation *)v5 error];
 
-  if (v6)
+  if (error)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(HMDMediaAccessoryBrowseOperation *)v5 outputDevices];
-    v9 = [v8 firstObject];
+    outputDevices = [(HMDMediaAccessoryBrowseOperation *)v5 outputDevices];
+    firstObject = [outputDevices firstObject];
 
-    v7 = [[HMDMediaAccessoryAdvertisement alloc] initWithOutputDevice:v9];
+    v7 = [[HMDMediaAccessoryAdvertisement alloc] initWithOutputDevice:firstObject];
   }
 
   return v7;
@@ -1838,12 +1838,12 @@ void __97__HMDAirPlayAccessory_configureWithHome_msgDispatcher_configurationTrac
   }
 }
 
-- (HMDAirPlayAccessory)initWithTransaction:(id)a3 home:(id)a4
+- (HMDAirPlayAccessory)initWithTransaction:(id)transaction home:(id)home
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  transactionCopy = transaction;
+  homeCopy = home;
+  v8 = transactionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1861,28 +1861,28 @@ void __97__HMDAirPlayAccessory_configureWithHome_msgDispatcher_configurationTrac
   {
     v23.receiver = self;
     v23.super_class = HMDAirPlayAccessory;
-    v11 = [(HMDMediaAccessory *)&v23 initWithTransaction:v8 home:v7];
+    v11 = [(HMDMediaAccessory *)&v23 initWithTransaction:v8 home:homeCopy];
     if (v11)
     {
-      v12 = [v10 pairingIdentity];
+      pairingIdentity = [v10 pairingIdentity];
       pairingIdentity = v11->_pairingIdentity;
-      v11->_pairingIdentity = v12;
+      v11->_pairingIdentity = pairingIdentity;
 
-      v14 = [v10 password];
+      password = [v10 password];
       password = v11->_password;
-      v11->_password = v14;
+      v11->_password = password;
 
       v11->super.super._reachable = 1;
     }
 
-    v16 = v11;
-    v17 = v16;
+    selfCopy = v11;
+    v17 = selfCopy;
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {

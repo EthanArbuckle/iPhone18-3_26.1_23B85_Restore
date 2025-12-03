@@ -1,16 +1,16 @@
 @interface CHWorkoutVoiceAvailabilityProvider
 - (BOOL)isFeatureSupported;
 - (CHWorkoutVoiceAvailabilityProvider)init;
-- (CHWorkoutVoiceAvailabilityProvider)initWithConnection:(id)a3;
+- (CHWorkoutVoiceAvailabilityProvider)initWithConnection:(id)connection;
 - (void)setupAvailabilityObservation;
 @end
 
 @implementation CHWorkoutVoiceAvailabilityProvider
 
-- (CHWorkoutVoiceAvailabilityProvider)initWithConnection:(id)a3
+- (CHWorkoutVoiceAvailabilityProvider)initWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = sub_10039F094(v3);
+  connectionCopy = connection;
+  v4 = sub_10039F094(connectionCopy);
 
   return v4;
 }
@@ -26,13 +26,13 @@
   v7[2] = 0;
   v7[3] = 0;
   v7[4] = self;
-  v8 = self;
+  selfCopy = self;
   sub_10026E198(0, 0, v5, &unk_1006ECAA8, v7);
 }
 
 - (BOOL)isFeatureSupported
 {
-  v2 = self;
+  selfCopy = self;
   v3 = dispatch thunk of WorkoutVoiceAvailabilityProvider.isFeatureSupported()();
 
   return v3 & 1;

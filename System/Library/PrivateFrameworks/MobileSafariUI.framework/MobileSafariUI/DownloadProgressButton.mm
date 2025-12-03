@@ -1,16 +1,16 @@
 @interface DownloadProgressButton
-- (DownloadProgressButton)initWithFrame:(CGRect)a3;
+- (DownloadProgressButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation DownloadProgressButton
 
-- (DownloadProgressButton)initWithFrame:(CGRect)a3
+- (DownloadProgressButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v14.receiver = self;
   v14.super_class = DownloadProgressButton;
   v7 = [(DownloadProgressButton *)&v14 initWithFrame:?];
@@ -21,11 +21,11 @@
     v7->_progressView = v8;
 
     [(SFProgressView *)v7->_progressView setTrackWidth:3.0];
-    v10 = [MEMORY[0x277D75348] labelColor];
-    [(SFProgressView *)v7->_progressView setTintColor:v10];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(SFProgressView *)v7->_progressView setTintColor:labelColor];
 
-    v11 = [MEMORY[0x277D75348] systemFillColor];
-    [(SFProgressView *)v7->_progressView setTrackTintColor:v11];
+    systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+    [(SFProgressView *)v7->_progressView setTrackTintColor:systemFillColor];
 
     [(SFProgressView *)v7->_progressView setUserInteractionEnabled:0];
     [(DownloadProgressButton *)v7 addSubview:v7->_progressView];

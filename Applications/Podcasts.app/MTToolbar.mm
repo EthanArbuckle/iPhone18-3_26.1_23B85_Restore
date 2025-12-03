@@ -2,8 +2,8 @@
 - (MTToolbar)init;
 - (id)_separatorColor;
 - (void)layoutSubviews;
-- (void)setSeparatorColor:(id)a3;
-- (void)setSeparatorHidden:(BOOL)a3;
+- (void)setSeparatorColor:(id)color;
+- (void)setSeparatorHidden:(BOOL)hidden;
 - (void)setupView;
 @end
 
@@ -38,46 +38,46 @@
   separatorView = self->_separatorView;
   self->_separatorView = v6;
 
-  v8 = [(MTToolbar *)self _separatorColor];
-  [(UIView *)self->_separatorView setBackgroundColor:v8];
+  _separatorColor = [(MTToolbar *)self _separatorColor];
+  [(UIView *)self->_separatorView setBackgroundColor:_separatorColor];
 
   v9 = self->_separatorView;
 
   [(MTToolbar *)self addSubview:v9];
 }
 
-- (void)setSeparatorHidden:(BOOL)a3
+- (void)setSeparatorHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(MTToolbar *)self isSeparatorHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(MTToolbar *)self isSeparatorHidden]!= hidden)
   {
     separatorView = self->_separatorView;
 
-    [(UIView *)separatorView setHidden:v3];
+    [(UIView *)separatorView setHidden:hiddenCopy];
   }
 }
 
-- (void)setSeparatorColor:(id)a3
+- (void)setSeparatorColor:(id)color
 {
-  v5 = a3;
-  if (self->_separatorColor != v5)
+  colorCopy = color;
+  if (self->_separatorColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_separatorColor, a3);
-    v6 = [(MTToolbar *)self _separatorColor];
-    [(UIView *)self->_separatorView setBackgroundColor:v6];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_separatorColor, color);
+    _separatorColor = [(MTToolbar *)self _separatorColor];
+    [(UIView *)self->_separatorView setBackgroundColor:_separatorColor];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
 - (id)_separatorColor
 {
-  v2 = [(MTToolbar *)self separatorColor];
-  v3 = v2;
-  if (v2)
+  separatorColor = [(MTToolbar *)self separatorColor];
+  v3 = separatorColor;
+  if (separatorColor)
   {
-    v4 = v2;
+    v4 = separatorColor;
   }
 
   else

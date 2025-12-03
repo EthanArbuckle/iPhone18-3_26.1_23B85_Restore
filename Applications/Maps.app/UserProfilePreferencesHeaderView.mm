@@ -1,10 +1,10 @@
 @interface UserProfilePreferencesHeaderView
-- (UserProfilePreferencesHeaderView)initWithFrame:(CGRect)a3;
+- (UserProfilePreferencesHeaderView)initWithFrame:(CGRect)frame;
 - (void)_updateForCollapsed;
 - (void)_updateForFooter;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setFooter:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setFooter:(BOOL)footer;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation UserProfilePreferencesHeaderView
@@ -27,13 +27,13 @@
   [(NSLayoutConstraint *)bottomConstraint setConstant:v3];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5.receiver = self;
   v5.super_class = UserProfilePreferencesHeaderView;
   [(UserProfilePreferencesHeaderView *)&v5 setHidden:?];
-  [(UserProfilePreferencesHeaderView *)self setCollapsed:v3];
+  [(UserProfilePreferencesHeaderView *)self setCollapsed:hiddenCopy];
 }
 
 - (void)_updateForCollapsed
@@ -58,31 +58,31 @@
   [(NSLayoutConstraint *)v4 setActive:1];
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(UserProfilePreferencesHeaderView *)self _updateForCollapsed];
   }
 }
 
-- (void)setFooter:(BOOL)a3
+- (void)setFooter:(BOOL)footer
 {
-  if (self->_footer != a3)
+  if (self->_footer != footer)
   {
-    self->_footer = a3;
+    self->_footer = footer;
     [(UserProfilePreferencesHeaderView *)self _updateForFooter];
 
     [(UserProfilePreferencesHeaderView *)self _updateForCollapsed];
   }
 }
 
-- (UserProfilePreferencesHeaderView)initWithFrame:(CGRect)a3
+- (UserProfilePreferencesHeaderView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = UserProfilePreferencesHeaderView;
-  v3 = [(MapsThemeCollectionReusableView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsThemeCollectionReusableView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -115,31 +115,31 @@
     [(UILabel *)v4->_textLabel setContentHuggingPriority:1 forAxis:v10];
     LODWORD(v11) = 1148846080;
     [(UILabel *)v4->_textLabel setContentCompressionResistancePriority:1 forAxis:v11];
-    v12 = [(MapsThemeCollectionReusableView *)v4 contentView];
-    [v12 addSubview:v4->_textLabel];
+    contentView = [(MapsThemeCollectionReusableView *)v4 contentView];
+    [contentView addSubview:v4->_textLabel];
 
     [(UserProfilePreferencesHeaderView *)v4 setDirectionalLayoutMargins:0.0, 0.0, 0.0, 0.0];
     v13 = v4->_textLabel;
-    v14 = [(MapsThemeCollectionReusableView *)v4 contentView];
+    contentView2 = [(MapsThemeCollectionReusableView *)v4 contentView];
     LODWORD(v15) = 1148846080;
-    v16 = [(UILabel *)v13 _maps_constraintsEqualToEdgesOfView:v14 priority:v15];
+    v16 = [(UILabel *)v13 _maps_constraintsEqualToEdgesOfView:contentView2 priority:v15];
 
-    v17 = [v16 topConstraint];
+    topConstraint = [v16 topConstraint];
     topConstraint = v4->_topConstraint;
-    v4->_topConstraint = v17;
+    v4->_topConstraint = topConstraint;
 
-    v19 = [v16 bottomConstraint];
+    bottomConstraint = [v16 bottomConstraint];
     bottomConstraint = v4->_bottomConstraint;
-    v4->_bottomConstraint = v19;
+    v4->_bottomConstraint = bottomConstraint;
 
-    v21 = [(MapsThemeCollectionReusableView *)v4 contentView];
-    v22 = [v21 heightAnchor];
-    v23 = [v22 constraintEqualToConstant:0.0];
+    contentView3 = [(MapsThemeCollectionReusableView *)v4 contentView];
+    heightAnchor = [contentView3 heightAnchor];
+    v23 = [heightAnchor constraintEqualToConstant:0.0];
     collapsedHeightConstraint = v4->_collapsedHeightConstraint;
     v4->_collapsedHeightConstraint = v23;
 
-    v25 = [v16 allConstraints];
-    [NSLayoutConstraint activateConstraints:v25];
+    allConstraints = [v16 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
 
     [(UserProfilePreferencesHeaderView *)v4 _updateForFooter];
   }

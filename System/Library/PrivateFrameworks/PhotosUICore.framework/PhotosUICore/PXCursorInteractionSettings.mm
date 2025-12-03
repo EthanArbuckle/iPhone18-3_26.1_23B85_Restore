@@ -1,10 +1,10 @@
 @interface PXCursorInteractionSettings
 + (PXCursorInteractionSettings)sharedInstance;
 + (id)settingsControllerModule;
-- (double)paddingForZoomLevel:(int64_t)a3;
+- (double)paddingForZoomLevel:(int64_t)level;
 - (int64_t)cardInteractionOptions;
 - (int64_t)gridInteractionOptions;
-- (int64_t)interactionOptionsForZoomLevel:(int64_t)a3 isAllPhotosAspectFit:(BOOL)a4;
+- (int64_t)interactionOptionsForZoomLevel:(int64_t)level isAllPhotosAspectFit:(BOOL)fit;
 - (void)setDefaultValues;
 @end
 
@@ -126,24 +126,24 @@ void __45__PXCursorInteractionSettings_sharedInstance__block_invoke()
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:2];
   v24 = [v16 sectionWithRows:v23 title:@"Enablement"];
   v66[3] = v24;
-  v25 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v66[4] = v25;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v66[4] = px_restoreDefaultsSection;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:5];
   v33 = [v32 moduleWithTitle:@"Cursor Interaction" contents:v26];
 
   return v33;
 }
 
-- (double)paddingForZoomLevel:(int64_t)a3
+- (double)paddingForZoomLevel:(int64_t)level
 {
-  if (a3 <= 1)
+  if (level <= 1)
   {
-    if (!a3)
+    if (!level)
     {
       return 0.0;
     }
 
-    if (a3 != 1)
+    if (level != 1)
     {
       goto LABEL_20;
     }
@@ -153,7 +153,7 @@ void __45__PXCursorInteractionSettings_sharedInstance__block_invoke()
 
   else
   {
-    switch(a3)
+    switch(level)
     {
       case 2:
 
@@ -171,8 +171,8 @@ void __45__PXCursorInteractionSettings_sharedInstance__block_invoke()
 LABEL_20:
         v13 = v4;
         v14 = v3;
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"PXCursorInteractionSettings.m" lineNumber:90 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXCursorInteractionSettings.m" lineNumber:90 description:@"Code which should be unreachable has been reached"];
 
         abort();
     }
@@ -181,17 +181,17 @@ LABEL_20:
   return result;
 }
 
-- (int64_t)interactionOptionsForZoomLevel:(int64_t)a3 isAllPhotosAspectFit:(BOOL)a4
+- (int64_t)interactionOptionsForZoomLevel:(int64_t)level isAllPhotosAspectFit:(BOOL)fit
 {
-  if (a3 <= 2)
+  if (level <= 2)
   {
-    if ((a3 - 1) < 2)
+    if ((level - 1) < 2)
     {
 
       return [(PXCursorInteractionSettings *)self cardInteractionOptions];
     }
 
-    if (!a3)
+    if (!level)
     {
       return 0;
     }
@@ -199,23 +199,23 @@ LABEL_20:
     goto LABEL_14;
   }
 
-  if (a3 == 3)
+  if (level == 3)
   {
     return 0;
   }
 
-  if (a3 != 4)
+  if (level != 4)
   {
 LABEL_14:
     v14 = v5;
     v15 = v4;
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXCursorInteractionSettings.m" lineNumber:74 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCursorInteractionSettings.m" lineNumber:74 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (!a4)
+  if (!fit)
   {
     return 0;
   }
@@ -225,29 +225,29 @@ LABEL_14:
 
 - (int64_t)cardInteractionOptions
 {
-  v3 = [(PXCursorInteractionSettings *)self enableCardShadows];
+  enableCardShadows = [(PXCursorInteractionSettings *)self enableCardShadows];
   if ([(PXCursorInteractionSettings *)self enableCardLift])
   {
-    return v3 | 2;
+    return enableCardShadows | 2;
   }
 
   else
   {
-    return v3;
+    return enableCardShadows;
   }
 }
 
 - (int64_t)gridInteractionOptions
 {
-  v3 = [(PXCursorInteractionSettings *)self enableGridShadows];
+  enableGridShadows = [(PXCursorInteractionSettings *)self enableGridShadows];
   if ([(PXCursorInteractionSettings *)self enableGridLift])
   {
-    return v3 | 2;
+    return enableGridShadows | 2;
   }
 
   else
   {
-    return v3;
+    return enableGridShadows;
   }
 }
 

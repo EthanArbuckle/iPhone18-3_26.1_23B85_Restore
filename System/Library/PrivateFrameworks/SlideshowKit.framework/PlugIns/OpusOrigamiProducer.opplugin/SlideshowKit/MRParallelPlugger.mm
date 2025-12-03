@@ -1,10 +1,10 @@
 @interface MRParallelPlugger
-- (BOOL)applyAtTime:(double)a3 toSublayer:(id)a4 withArguments:(id)a5;
+- (BOOL)applyAtTime:(double)time toSublayer:(id)sublayer withArguments:(id)arguments;
 - (MRParallelPlugger)init;
 - (void)dealloc;
-- (void)setCurrentLayoutIndex:(unsigned __int8)a3;
-- (void)setOpacityAnimationPath:(id)a3;
-- (void)setPlug:(id)a3;
+- (void)setCurrentLayoutIndex:(unsigned __int8)index;
+- (void)setOpacityAnimationPath:(id)path;
+- (void)setPlug:(id)plug;
 @end
 
 @implementation MRParallelPlugger
@@ -32,22 +32,22 @@
   [(MRParallelPlugger *)&v3 dealloc];
 }
 
-- (void)setOpacityAnimationPath:(id)a3
+- (void)setOpacityAnimationPath:(id)path
 {
   mAnimationPathOpacity = self->mAnimationPathOpacity;
-  if (a3)
+  if (path)
   {
     if (mAnimationPathOpacity)
     {
 
-      self->mAnimationPathOpacity->animationPath = a3;
+      self->mAnimationPathOpacity->animationPath = path;
     }
 
     else
     {
       v6 = [MRAnimationPathScalar alloc];
       [(MCPlugParallel *)self->mPlug opacity];
-      self->mAnimationPathOpacity = [(MRAnimationPathScalar *)v6 initWithMCAnimationPath:a3 andValue:?];
+      self->mAnimationPathOpacity = [(MRAnimationPathScalar *)v6 initWithMCAnimationPath:path andValue:?];
     }
   }
 
@@ -58,23 +58,23 @@
   }
 }
 
-- (BOOL)applyAtTime:(double)a3 toSublayer:(id)a4 withArguments:(id)a5
+- (BOOL)applyAtTime:(double)time toSublayer:(id)sublayer withArguments:(id)arguments
 {
   mPlugWasSetSinceLastRendering = self->mPlugWasSetSinceLastRendering;
   self->mPlugWasSetSinceLastRendering = 0;
-  [objc_msgSend(a4 "clock")];
-  v10 = [a5 skipsAnimations];
-  v11 = [a4 renderingState];
-  v11[240] = 1;
-  [objc_msgSend(a4 "superlayer")];
+  [objc_msgSend(sublayer "clock")];
+  skipsAnimations = [arguments skipsAnimations];
+  renderingState = [sublayer renderingState];
+  renderingState[240] = 1;
+  [objc_msgSend(sublayer "superlayer")];
   [(MCPlugParallel *)self->mPlug sizeForParentAspectRatio:v12 / v13];
   *&v14 = v14;
   *&v15 = v15;
-  *v11 = LODWORD(v14);
-  *(v11 + 1) = LODWORD(v15);
-  v16 = [a4 persistentState];
-  v17 = [a4 animationTriggers];
-  v18 = [a4 motions];
+  *renderingState = LODWORD(v14);
+  *(renderingState + 1) = LODWORD(v15);
+  persistentState = [sublayer persistentState];
+  animationTriggers = [sublayer animationTriggers];
+  motions = [sublayer motions];
   v183 = 0.0;
   v184 = 0.0;
   if ([(MCPlug *)self->mPlug countOfAnimationPaths]|| self->mAnimationPathOpacity)
@@ -86,11 +86,11 @@
       self->mAnimationContext = mAnimationContext;
     }
 
-    mAnimationContext->state = v16;
+    mAnimationContext->state = persistentState;
     mAnimationPathParam1 = self->mAnimationPathParam1;
     if (mAnimationPathParam1)
     {
-      v19 = ValueForScalarAnimationPath(mAnimationPathParam1, self->mPlug, self->mAnimationContext, v17, a3, 0.0);
+      v19 = ValueForScalarAnimationPath(mAnimationPathParam1, self->mPlug, self->mAnimationContext, animationTriggers, time, 0.0);
       v184 = v19;
       v22 = &v184;
     }
@@ -104,7 +104,7 @@
     mAnimationPathParam2 = self->mAnimationPathParam2;
     if (mAnimationPathParam2)
     {
-      v19 = ValueForScalarAnimationPath(mAnimationPathParam2, self->mPlug, self->mAnimationContext, v17, a3, 0.0);
+      v19 = ValueForScalarAnimationPath(mAnimationPathParam2, self->mPlug, self->mAnimationContext, animationTriggers, time, 0.0);
       v183 = v19;
       v24 = &v183;
     }
@@ -118,46 +118,46 @@
   }
 
   mAnimationPathXY = self->mAnimationPathXY;
-  v180 = v17;
-  v182 = v18;
+  v180 = animationTriggers;
+  v182 = motions;
   if (mAnimationPathXY)
   {
-    v26 = [a4 clock];
+    clock = [sublayer clock];
     [(MCPlugParallel *)self->mPlug position];
-    [MRUtilities valueForPointAnimationPath:mAnimationPathXY withPlugTiming:v26 atTime:0 defaultsTo:0 previousKeyPoint:0 nextKeyPoint:a3 animationIsOver:v27, v28];
+    [MRUtilities valueForPointAnimationPath:mAnimationPathXY withPlugTiming:clock atTime:0 defaultsTo:0 previousKeyPoint:0 nextKeyPoint:time animationIsOver:v27, v28];
     *&v19 = v19;
     v30 = v29;
-    v31 = *(v11 + 2) != *&v19 || *(v11 + 3) != v30;
+    v31 = *(renderingState + 2) != *&v19 || *(renderingState + 3) != v30;
     v35 = v31 || mPlugWasSetSinceLastRendering;
-    *(v11 + 2) = LODWORD(v19);
-    *(v11 + 3) = v30;
-    v18 = v182;
+    *(renderingState + 2) = LODWORD(v19);
+    *(renderingState + 3) = v30;
+    motions = v182;
     goto LABEL_21;
   }
 
-  if (v18)
+  if (motions)
   {
-    v32 = [v18 objectForKey:@"positionX"];
+    v32 = [motions objectForKey:@"positionX"];
     if (v32)
     {
       v33 = v32;
       [v32 startTime];
       if (v34 < 0.0)
       {
-        [v33 setStartTime:a3];
-        [v33 setStartValue:*(v11 + 2)];
+        [v33 setStartTime:time];
+        [v33 setStartValue:*(renderingState + 2)];
         v35 = mPlugWasSetSinceLastRendering;
         goto LABEL_193;
       }
 
-      [v33 valueAtTime:a3];
+      [v33 valueAtTime:time];
       v155 = v159;
       [v33 startTime];
-      v161 = a3 - v160;
+      v161 = time - v160;
       [v33 duration];
       if (v161 >= v162)
       {
-        [v18 removeObjectForKey:@"positionX"];
+        [motions removeObjectForKey:@"positionX"];
       }
 
       goto LABEL_180;
@@ -165,9 +165,9 @@
   }
 
   mAnimationPathX = self->mAnimationPathX;
-  if (mAnimationPathX && (!-[MCAnimationPath isTriggered](mAnimationPathX->animationPath, "isTriggered") || [v17 objectForKey:@"positionX"]))
+  if (mAnimationPathX && (!-[MCAnimationPath isTriggered](mAnimationPathX->animationPath, "isTriggered") || [animationTriggers objectForKey:@"positionX"]))
   {
-    if (v10)
+    if (skipsAnimations)
     {
       self->mAnimationPathX->speed = 0.0;
       self->mAnimationPathX->time = -1.0e10;
@@ -176,9 +176,9 @@
     v49 = self->mAnimationPathX;
     self->mAnimationContext->animationPath = v49;
     animationPath = v49->animationPath;
-    v51 = [a4 clock];
+    clock2 = [sublayer clock];
     [(MCPlugParallel *)self->mPlug position];
-    v53 = ValueForScalarAnimationPath(animationPath, v51, self->mAnimationContext, v17, a3, v52);
+    v53 = ValueForScalarAnimationPath(animationPath, clock2, self->mAnimationContext, animationTriggers, time, v52);
     goto LABEL_179;
   }
 
@@ -192,25 +192,25 @@ LABEL_180:
     if (v156)
     {
       v157 = 0.0;
-      if ((v10 & 1) == 0)
+      if ((skipsAnimations & 1) == 0)
       {
         time = v156->time;
-        if (time < a3)
+        if (time < time)
         {
-          v157 = (v155 - v156->value) / (a3 - time);
+          v157 = (v155 - v156->value) / (time - time);
         }
       }
 
       v156->speed = v157;
       self->mAnimationPathX->value = v155;
-      self->mAnimationPathX->time = a3;
+      self->mAnimationPathX->time = time;
     }
 
-    v19 = *(v11 + 2);
+    v19 = *(renderingState + 2);
     if (v155 == v19)
     {
       v35 = mPlugWasSetSinceLastRendering;
-      if (!v18)
+      if (!motions)
       {
         goto LABEL_196;
       }
@@ -219,9 +219,9 @@ LABEL_180:
     else
     {
       *&v19 = v155;
-      *(v11 + 2) = LODWORD(v19);
+      *(renderingState + 2) = LODWORD(v19);
       v35 = 1;
-      if (!v18)
+      if (!motions)
       {
         goto LABEL_196;
       }
@@ -231,13 +231,13 @@ LABEL_180:
   }
 
   v35 = 0;
-  if (!v18)
+  if (!motions)
   {
 LABEL_196:
     mAnimationPathY = self->mAnimationPathY;
-    if (mAnimationPathY && (!-[MCAnimationPath isTriggered](mAnimationPathY->animationPath, "isTriggered") || [v17 objectForKey:@"positionY"]))
+    if (mAnimationPathY && (!-[MCAnimationPath isTriggered](mAnimationPathY->animationPath, "isTriggered") || [animationTriggers objectForKey:@"positionY"]))
     {
-      if (v10)
+      if (skipsAnimations)
       {
         self->mAnimationPathY->speed = 0.0;
         self->mAnimationPathY->time = -1.0e10;
@@ -246,10 +246,10 @@ LABEL_196:
       v167 = self->mAnimationPathY;
       self->mAnimationContext->animationPath = v167;
       v168 = v167->animationPath;
-      v169 = [a4 clock];
+      clock3 = [sublayer clock];
       [(MCPlugParallel *)self->mPlug position];
-      v171 = ValueForScalarAnimationPath(v168, v169, self->mAnimationContext, v17, a3, v170);
-      v18 = v182;
+      v171 = ValueForScalarAnimationPath(v168, clock3, self->mAnimationContext, animationTriggers, time, v170);
+      motions = v182;
     }
 
     else
@@ -267,7 +267,7 @@ LABEL_196:
   }
 
 LABEL_193:
-  v163 = [v18 objectForKey:@"positionY"];
+  v163 = [motions objectForKey:@"positionY"];
   if (!v163)
   {
     goto LABEL_196;
@@ -277,19 +277,19 @@ LABEL_193:
   [v163 startTime];
   if (v165 < 0.0)
   {
-    [v164 setStartTime:a3];
-    [v164 setStartValue:*(v11 + 3)];
+    [v164 setStartTime:time];
+    [v164 setStartValue:*(renderingState + 3)];
     goto LABEL_22;
   }
 
-  [v164 valueAtTime:a3];
+  [v164 valueAtTime:time];
   v171 = v173;
   [v164 startTime];
-  v175 = a3 - v174;
+  v175 = time - v174;
   [v164 duration];
   if (v175 >= v176)
   {
-    [v18 removeObjectForKey:@"positionY"];
+    [motions removeObjectForKey:@"positionY"];
   }
 
 LABEL_206:
@@ -297,37 +297,37 @@ LABEL_206:
   if (v177)
   {
     v178 = 0.0;
-    if ((v10 & 1) == 0)
+    if ((skipsAnimations & 1) == 0)
     {
       v179 = v177->time;
-      if (v179 < a3)
+      if (v179 < time)
       {
-        v178 = (v171 - v177->value) / (a3 - v179);
+        v178 = (v171 - v177->value) / (time - v179);
       }
     }
 
     v177->speed = v178;
     self->mAnimationPathY->value = v171;
-    self->mAnimationPathY->time = a3;
+    self->mAnimationPathY->time = time;
   }
 
-  v19 = *(v11 + 3);
+  v19 = *(renderingState + 3);
   if (v171 != v19)
   {
     *&v19 = v171;
-    *(v11 + 3) = LODWORD(v19);
+    *(renderingState + 3) = LODWORD(v19);
     v35 = 1;
   }
 
 LABEL_21:
-  if (!v18)
+  if (!motions)
   {
     v40 = 1;
     goto LABEL_27;
   }
 
 LABEL_22:
-  v36 = [v18 objectForKey:@"zPosition"];
+  v36 = [motions objectForKey:@"zPosition"];
   if (v36)
   {
     v37 = v36;
@@ -335,19 +335,19 @@ LABEL_22:
     if (v38 < 0.0)
     {
       v39 = mPlugWasSetSinceLastRendering;
-      [v37 setStartTime:a3];
-      [v37 setStartValue:*(v11 + 4)];
+      [v37 setStartTime:time];
+      [v37 setStartValue:*(renderingState + 4)];
       goto LABEL_54;
     }
 
-    [v37 valueAtTime:a3];
+    [v37 valueAtTime:time];
     v46 = v54;
     [v37 startTime];
-    v56 = a3 - v55;
+    v56 = time - v55;
     [v37 duration];
     if (v56 >= v57)
     {
-      [v18 removeObjectForKey:@"zPosition"];
+      [motions removeObjectForKey:@"zPosition"];
     }
 
     v40 = 0;
@@ -357,9 +357,9 @@ LABEL_22:
   v40 = 0;
 LABEL_27:
   mAnimationPathZ = self->mAnimationPathZ;
-  if (mAnimationPathZ && (!-[MCAnimationPath isTriggered](mAnimationPathZ->animationPath, "isTriggered") || [v17 objectForKey:@"zPosition"]))
+  if (mAnimationPathZ && (!-[MCAnimationPath isTriggered](mAnimationPathZ->animationPath, "isTriggered") || [animationTriggers objectForKey:@"zPosition"]))
   {
-    if (v10)
+    if (skipsAnimations)
     {
       self->mAnimationPathZ->speed = 0.0;
       self->mAnimationPathZ->time = -1.0e10;
@@ -368,35 +368,35 @@ LABEL_27:
     v42 = self->mAnimationPathZ;
     self->mAnimationContext->animationPath = v42;
     v43 = v42->animationPath;
-    v44 = [a4 clock];
+    clock4 = [sublayer clock];
     [(MCPlugParallel *)self->mPlug zPosition];
-    v46 = ValueForScalarAnimationPath(v43, v44, self->mAnimationContext, v17, a3, v45);
-    v18 = v182;
+    v46 = ValueForScalarAnimationPath(v43, clock4, self->mAnimationContext, animationTriggers, time, v45);
+    motions = v182;
 LABEL_44:
     v58 = self->mAnimationPathZ;
     if (v58)
     {
       v59 = 0.0;
-      if ((v10 & 1) == 0)
+      if ((skipsAnimations & 1) == 0)
       {
         v60 = v58->time;
-        if (v60 < a3)
+        if (v60 < time)
         {
-          v59 = (v46 - v58->value) / (a3 - v60);
+          v59 = (v46 - v58->value) / (time - v60);
         }
       }
 
       v58->speed = v59;
       self->mAnimationPathZ->value = v46;
-      self->mAnimationPathZ->time = a3;
+      self->mAnimationPathZ->time = time;
     }
 
-    v19 = *(v11 + 4);
+    v19 = *(renderingState + 4);
     if (v46 != v19)
     {
       v39 = mPlugWasSetSinceLastRendering;
       *&v19 = v46;
-      *(v11 + 4) = LODWORD(v19);
+      *(renderingState + 4) = LODWORD(v19);
       v35 = 1;
       v61 = 1;
       if (v40)
@@ -426,7 +426,7 @@ LABEL_52:
   }
 
 LABEL_54:
-  v62 = [v18 objectForKey:@"scale"];
+  v62 = [motions objectForKey:@"scale"];
   if (v62)
   {
     v63 = v62;
@@ -434,19 +434,19 @@ LABEL_54:
     if (v64 < 0.0)
     {
       v181 = v35;
-      [v63 setStartTime:a3];
-      [v63 setStartValue:*(v11 + 5)];
+      [v63 setStartTime:time];
+      [v63 setStartValue:*(renderingState + 5)];
       goto LABEL_79;
     }
 
-    [v63 valueAtTime:a3];
+    [v63 valueAtTime:time];
     v70 = v72;
     [v63 startTime];
-    v74 = a3 - v73;
+    v74 = time - v73;
     [v63 duration];
     if (v74 >= v75)
     {
-      [v18 removeObjectForKey:@"scale"];
+      [motions removeObjectForKey:@"scale"];
     }
 
     v61 = 0;
@@ -458,7 +458,7 @@ LABEL_58:
   mAnimationPathScale = self->mAnimationPathScale;
   if (mAnimationPathScale && (!-[MCAnimationPath isTriggered](mAnimationPathScale->animationPath, "isTriggered") || [v180 objectForKey:@"scale"]))
   {
-    if (v10)
+    if (skipsAnimations)
     {
       self->mAnimationPathScale->speed = 0.0;
       self->mAnimationPathScale->time = -1.0e10;
@@ -467,34 +467,34 @@ LABEL_58:
     v66 = self->mAnimationPathScale;
     self->mAnimationContext->animationPath = v66;
     v67 = v66->animationPath;
-    v68 = [a4 clock];
+    clock5 = [sublayer clock];
     [(MCPlugParallel *)self->mPlug scale];
-    v70 = ValueForScalarAnimationPath(v67, v68, self->mAnimationContext, v180, a3, v69);
-    v18 = v182;
+    v70 = ValueForScalarAnimationPath(v67, clock5, self->mAnimationContext, v180, time, v69);
+    motions = v182;
 LABEL_69:
     v76 = self->mAnimationPathScale;
     if (v76)
     {
       v77 = 0.0;
-      if ((v10 & 1) == 0)
+      if ((skipsAnimations & 1) == 0)
       {
         v78 = v76->time;
-        if (v78 < a3)
+        if (v78 < time)
         {
-          v77 = (v70 - v76->value) / (a3 - v78);
+          v77 = (v70 - v76->value) / (time - v78);
         }
       }
 
       v76->speed = v77;
       self->mAnimationPathScale->value = v70;
-      self->mAnimationPathScale->time = a3;
+      self->mAnimationPathScale->time = time;
     }
 
-    v19 = *(v11 + 5);
+    v19 = *(renderingState + 5);
     if (v70 != v19)
     {
       *&v19 = v70;
-      *(v11 + 5) = LODWORD(v19);
+      *(renderingState + 5) = LODWORD(v19);
       v181 = 1;
       v79 = 1;
       if (v61)
@@ -524,29 +524,29 @@ LABEL_77:
   }
 
 LABEL_79:
-  v80 = [v18 objectForKey:@"xRotationAngle"];
+  v80 = [motions objectForKey:@"xRotationAngle"];
   if (v80)
   {
     v81 = v80;
     [v80 startTime];
     if (v82 < 0.0)
     {
-      [v81 setStartTime:a3];
-      [v81 setStartValue:*(v11 + 7)];
+      [v81 setStartTime:time];
+      [v81 setStartValue:*(renderingState + 7)];
       v83 = v39;
       v84 = v180;
       goto LABEL_106;
     }
 
-    [v81 valueAtTime:a3];
+    [v81 valueAtTime:time];
     v90 = v92;
     [v81 startTime];
-    v94 = a3 - v93;
+    v94 = time - v93;
     [v81 duration];
     v83 = v39;
     if (v94 >= v95)
     {
-      [v18 removeObjectForKey:@"xRotationAngle"];
+      [motions removeObjectForKey:@"xRotationAngle"];
     }
 
     v79 = 0;
@@ -559,7 +559,7 @@ LABEL_83:
   if (mAnimationPathRX && (!-[MCAnimationPath isTriggered](mAnimationPathRX->animationPath, "isTriggered") || [v180 objectForKey:@"xRotationAngle"]))
   {
     v83 = v39;
-    if (v10)
+    if (skipsAnimations)
     {
       self->mAnimationPathRX->speed = 0.0;
       self->mAnimationPathRX->time = -1.0e10;
@@ -568,35 +568,35 @@ LABEL_83:
     v86 = self->mAnimationPathRX;
     self->mAnimationContext->animationPath = v86;
     v87 = v86->animationPath;
-    v88 = [a4 clock];
+    clock6 = [sublayer clock];
     [(MCPlugParallel *)self->mPlug xRotationAngle];
     v84 = v180;
-    v90 = ValueForScalarAnimationPath(v87, v88, self->mAnimationContext, v180, a3, v89);
-    v18 = v182;
+    v90 = ValueForScalarAnimationPath(v87, clock6, self->mAnimationContext, v180, time, v89);
+    motions = v182;
 LABEL_95:
     v96 = self->mAnimationPathRX;
     if (v96)
     {
       v97 = 0.0;
-      if ((v10 & 1) == 0)
+      if ((skipsAnimations & 1) == 0)
       {
         v98 = v96->time;
-        if (v98 < a3)
+        if (v98 < time)
         {
-          v97 = (v90 - v96->value) / (a3 - v98);
+          v97 = (v90 - v96->value) / (time - v98);
         }
       }
 
       v96->speed = v97;
       self->mAnimationPathRX->value = v90;
-      self->mAnimationPathRX->time = a3;
+      self->mAnimationPathRX->time = time;
     }
 
     v19 = v90 * 57.2957764;
-    if (v90 * 57.2957764 != *(v11 + 7))
+    if (v90 * 57.2957764 != *(renderingState + 7))
     {
       *&v19 = v19;
-      *(v11 + 7) = LODWORD(v19);
+      *(renderingState + 7) = LODWORD(v19);
       v181 = 1;
       v99 = 1;
       if (v79)
@@ -629,26 +629,26 @@ LABEL_104:
   }
 
 LABEL_106:
-  v100 = [v18 objectForKey:@"yRotationAngle"];
+  v100 = [motions objectForKey:@"yRotationAngle"];
   if (v100)
   {
     v101 = v100;
     [v100 startTime];
     if (v102 < 0.0)
     {
-      [v101 setStartTime:a3];
-      [v101 setStartValue:*(v11 + 8)];
+      [v101 setStartTime:time];
+      [v101 setStartValue:*(renderingState + 8)];
       goto LABEL_131;
     }
 
-    [v101 valueAtTime:a3];
+    [v101 valueAtTime:time];
     v108 = v110;
     [v101 startTime];
-    v112 = a3 - v111;
+    v112 = time - v111;
     [v101 duration];
     if (v112 >= v113)
     {
-      [v18 removeObjectForKey:@"yRotationAngle"];
+      [motions removeObjectForKey:@"yRotationAngle"];
     }
 
     v99 = 0;
@@ -660,7 +660,7 @@ LABEL_110:
   mAnimationPathRY = self->mAnimationPathRY;
   if (mAnimationPathRY && (!-[MCAnimationPath isTriggered](mAnimationPathRY->animationPath, "isTriggered") || [v84 objectForKey:@"yRotationAngle"]))
   {
-    if (v10)
+    if (skipsAnimations)
     {
       self->mAnimationPathRY->speed = 0.0;
       self->mAnimationPathRY->time = -1.0e10;
@@ -669,34 +669,34 @@ LABEL_110:
     v104 = self->mAnimationPathRY;
     self->mAnimationContext->animationPath = v104;
     v105 = v104->animationPath;
-    v106 = [a4 clock];
+    clock7 = [sublayer clock];
     [(MCPlugParallel *)self->mPlug yRotationAngle];
-    v108 = ValueForScalarAnimationPath(v105, v106, self->mAnimationContext, v84, a3, v107);
-    v18 = v182;
+    v108 = ValueForScalarAnimationPath(v105, clock7, self->mAnimationContext, v84, time, v107);
+    motions = v182;
 LABEL_121:
     v114 = self->mAnimationPathRY;
     if (v114)
     {
       v115 = 0.0;
-      if ((v10 & 1) == 0)
+      if ((skipsAnimations & 1) == 0)
       {
         v116 = v114->time;
-        if (v116 < a3)
+        if (v116 < time)
         {
-          v115 = (v108 - v114->value) / (a3 - v116);
+          v115 = (v108 - v114->value) / (time - v116);
         }
       }
 
       v114->speed = v115;
       self->mAnimationPathRY->value = v108;
-      self->mAnimationPathRY->time = a3;
+      self->mAnimationPathRY->time = time;
     }
 
     v19 = v108 * 57.2957764;
-    if (v108 * 57.2957764 != *(v11 + 8))
+    if (v108 * 57.2957764 != *(renderingState + 8))
     {
       *&v19 = v19;
-      *(v11 + 8) = LODWORD(v19);
+      *(renderingState + 8) = LODWORD(v19);
       v181 = 1;
       v117 = 1;
       if (v99)
@@ -725,26 +725,26 @@ LABEL_129:
   }
 
 LABEL_131:
-  v118 = [v18 objectForKey:@"rotationAngle"];
+  v118 = [motions objectForKey:@"rotationAngle"];
   if (v118)
   {
     v119 = v118;
     [v118 startTime];
     if (v120 < 0.0)
     {
-      [v119 setStartTime:a3];
-      [v119 setStartValue:*(v11 + 9)];
+      [v119 setStartTime:time];
+      [v119 setStartValue:*(renderingState + 9)];
       goto LABEL_154;
     }
 
-    [v119 valueAtTime:a3];
+    [v119 valueAtTime:time];
     v126 = v128;
     [v119 startTime];
-    v130 = a3 - v129;
+    v130 = time - v129;
     [v119 duration];
     if (v130 >= v131)
     {
-      [v18 removeObjectForKey:@"rotationAngle"];
+      [motions removeObjectForKey:@"rotationAngle"];
     }
 
     v117 = 0;
@@ -756,7 +756,7 @@ LABEL_135:
   mAnimationPathRZ = self->mAnimationPathRZ;
   if (mAnimationPathRZ && (!-[MCAnimationPath isTriggered](mAnimationPathRZ->animationPath, "isTriggered") || [v84 objectForKey:@"rotationAngle"]))
   {
-    if (v10)
+    if (skipsAnimations)
     {
       self->mAnimationPathRZ->speed = 0.0;
       self->mAnimationPathRZ->time = -1.0e10;
@@ -765,10 +765,10 @@ LABEL_135:
     v122 = self->mAnimationPathRZ;
     self->mAnimationContext->animationPath = v122;
     v123 = v122->animationPath;
-    v124 = [a4 clock];
+    clock8 = [sublayer clock];
     [(MCPlugParallel *)self->mPlug rotationAngle];
-    v126 = ValueForScalarAnimationPath(v123, v124, self->mAnimationContext, v84, a3, v125);
-    v18 = v182;
+    v126 = ValueForScalarAnimationPath(v123, clock8, self->mAnimationContext, v84, time, v125);
+    motions = v182;
   }
 
   else
@@ -787,25 +787,25 @@ LABEL_146:
   if (v132)
   {
     v133 = 0.0;
-    if ((v10 & 1) == 0)
+    if ((skipsAnimations & 1) == 0)
     {
       v134 = v132->time;
-      if (v134 < a3)
+      if (v134 < time)
       {
-        v133 = (v126 - v132->value) / (a3 - v134);
+        v133 = (v126 - v132->value) / (time - v134);
       }
     }
 
     v132->speed = v133;
     self->mAnimationPathRZ->value = v126;
-    self->mAnimationPathRZ->time = a3;
+    self->mAnimationPathRZ->time = time;
   }
 
   v19 = v126 * 57.2957764;
-  if (v126 * 57.2957764 != *(v11 + 9))
+  if (v126 * 57.2957764 != *(renderingState + 9))
   {
     *&v19 = v19;
-    *(v11 + 9) = LODWORD(v19);
+    *(renderingState + 9) = LODWORD(v19);
     v181 = 1;
   }
 
@@ -816,14 +816,14 @@ LABEL_153:
   }
 
 LABEL_154:
-  v135 = [v18 objectForKey:@"opacity"];
+  v135 = [motions objectForKey:@"opacity"];
   if (!v135)
   {
 LABEL_157:
     mAnimationPathOpacity = self->mAnimationPathOpacity;
     if (mAnimationPathOpacity && (!-[MCAnimationPath isTriggered](mAnimationPathOpacity->animationPath, "isTriggered", v19) || [v84 objectForKey:@"opacity"]))
     {
-      if (v10)
+      if (skipsAnimations)
       {
         self->mAnimationPathOpacity->speed = 0.0;
         self->mAnimationPathOpacity->time = -1.0e10;
@@ -832,9 +832,9 @@ LABEL_157:
       v139 = self->mAnimationPathOpacity;
       self->mAnimationContext->animationPath = v139;
       v140 = v139->animationPath;
-      v141 = [a4 clock];
+      clock9 = [sublayer clock];
       [(MCPlugParallel *)self->mPlug opacity];
-      v143 = ValueForScalarAnimationPath(v140, v141, self->mAnimationContext, v180, a3, v142);
+      v143 = ValueForScalarAnimationPath(v140, clock9, self->mAnimationContext, v180, time, v142);
     }
 
     else
@@ -856,22 +856,22 @@ LABEL_157:
   [v135 startTime];
   if (v137 < 0.0)
   {
-    [v136 setStartTime:a3];
-    [v136 setStartValue:*(v11 + 11)];
+    [v136 setStartTime:time];
+    [v136 setStartValue:*(renderingState + 11)];
 LABEL_173:
     v145 = v181;
     goto LABEL_174;
   }
 
-  [v136 valueAtTime:a3];
+  [v136 valueAtTime:time];
   v144 = v151;
   [v136 startTime];
-  v153 = a3 - v152;
+  v153 = time - v152;
   [v136 duration];
   v145 = v181;
   if (v153 >= v154)
   {
-    [v18 removeObjectForKey:@"opacity"];
+    [motions removeObjectForKey:@"opacity"];
   }
 
 LABEL_166:
@@ -879,37 +879,37 @@ LABEL_166:
   if (v146)
   {
     v147 = 0.0;
-    if ((v10 & 1) == 0)
+    if ((skipsAnimations & 1) == 0)
     {
       v148 = v146->time;
-      if (v148 < a3)
+      if (v148 < time)
       {
-        v147 = (v144 - v146->value) / (a3 - v148);
+        v147 = (v144 - v146->value) / (time - v148);
       }
     }
 
     v146->speed = v147;
     self->mAnimationPathOpacity->value = v144;
-    self->mAnimationPathOpacity->time = a3;
+    self->mAnimationPathOpacity->time = time;
   }
 
-  if (v144 != *(v11 + 11))
+  if (v144 != *(renderingState + 11))
   {
     v149 = v144;
-    *(v11 + 11) = v149;
+    *(renderingState + 11) = v149;
     v145 = 1;
   }
 
 LABEL_174:
-  *(v11 + 10) = 1065353216;
-  *(v11 + 6) = 1065353216;
+  *(renderingState + 10) = 1065353216;
+  *(renderingState + 6) = 1065353216;
   return v145;
 }
 
-- (void)setPlug:(id)a3
+- (void)setPlug:(id)plug
 {
   self->mNeedsUpdate = 0;
-  if ([a3 container])
+  if ([plug container])
   {
 
     self->mAnimationPathParam1 = 0;
@@ -931,19 +931,19 @@ LABEL_174:
   }
 
   self->mPlug = 0;
-  if (a3)
+  if (plug)
   {
-    self->mPlug = [a3 snapshot];
-    -[MRParallelPlugger setCurrentLayoutIndex:](self, "setCurrentLayoutIndex:", [a3 currentLayoutIndex]);
+    self->mPlug = [plug snapshot];
+    -[MRParallelPlugger setCurrentLayoutIndex:](self, "setCurrentLayoutIndex:", [plug currentLayoutIndex]);
   }
 
   self->mPlugWasSetSinceLastRendering = 1;
 }
 
-- (void)setCurrentLayoutIndex:(unsigned __int8)a3
+- (void)setCurrentLayoutIndex:(unsigned __int8)index
 {
-  v3 = a3;
-  self->mCurrentLayoutIndex = a3;
+  indexCopy = index;
+  self->mCurrentLayoutIndex = index;
   [(MCPlugParallel *)self->mPlug setCurrentLayoutIndex:?];
   self->mPlugWasSetSinceLastRendering = 1;
   if (![(MCPlug *)self->mPlug countOfAnimationPaths])
@@ -951,7 +951,7 @@ LABEL_174:
     return;
   }
 
-  if (!v3)
+  if (!indexCopy)
   {
     self->mAnimationPathParam1 = [(MCPlug *)self->mPlug animationPathForKey:@"param1"];
     self->mAnimationPathParam2 = [(MCPlug *)self->mPlug animationPathForKey:@"param2"];
@@ -959,28 +959,28 @@ LABEL_174:
     goto LABEL_12;
   }
 
-  v5 = -[MCPlug animationPathForKey:](self->mPlug, "animationPathForKey:", [@"param1" stringByAppendingFormat:@":%d", v3]);
+  v5 = -[MCPlug animationPathForKey:](self->mPlug, "animationPathForKey:", [@"param1" stringByAppendingFormat:@":%d", indexCopy]);
   if (!v5)
   {
     v5 = [(MCPlug *)self->mPlug animationPathForKey:@"param1"];
   }
 
   self->mAnimationPathParam1 = v5;
-  v6 = -[MCPlug animationPathForKey:](self->mPlug, "animationPathForKey:", [@"param2" stringByAppendingFormat:@":%d", v3]);
+  v6 = -[MCPlug animationPathForKey:](self->mPlug, "animationPathForKey:", [@"param2" stringByAppendingFormat:@":%d", indexCopy]);
   if (!v6)
   {
     v6 = [(MCPlug *)self->mPlug animationPathForKey:@"param2"];
   }
 
   self->mAnimationPathParam2 = v6;
-  v7 = -[MCPlug animationPathForKey:](self->mPlug, "animationPathForKey:", [@"position" stringByAppendingFormat:@":%d", v3]);
+  v7 = -[MCPlug animationPathForKey:](self->mPlug, "animationPathForKey:", [@"position" stringByAppendingFormat:@":%d", indexCopy]);
   if (!v7)
   {
     v7 = [(MCPlug *)self->mPlug animationPathForKey:@"position"];
   }
 
   self->mAnimationPathXY = v7;
-  v8 = -[MCPlug animationPathForKey:](self->mPlug, "animationPathForKey:", [@"positionX" stringByAppendingFormat:@":%d", v3]);
+  v8 = -[MCPlug animationPathForKey:](self->mPlug, "animationPathForKey:", [@"positionX" stringByAppendingFormat:@":%d", indexCopy]);
   if (!v8)
   {
 LABEL_12:
@@ -1013,12 +1013,12 @@ LABEL_12:
 
 LABEL_17:
   mPlug = self->mPlug;
-  if (!v3)
+  if (!indexCopy)
   {
     goto LABEL_20;
   }
 
-  v14 = -[MCPlug animationPathForKey:](mPlug, "animationPathForKey:", [@"positionY" stringByAppendingFormat:@":%d", v3]);
+  v14 = -[MCPlug animationPathForKey:](mPlug, "animationPathForKey:", [@"positionY" stringByAppendingFormat:@":%d", indexCopy]);
   if (!v14)
   {
     mPlug = self->mPlug;
@@ -1052,12 +1052,12 @@ LABEL_20:
 
 LABEL_25:
   v21 = self->mPlug;
-  if (!v3)
+  if (!indexCopy)
   {
     goto LABEL_28;
   }
 
-  v22 = -[MCPlug animationPathForKey:](v21, "animationPathForKey:", [@"zPosition" stringByAppendingFormat:@":%d", v3]);
+  v22 = -[MCPlug animationPathForKey:](v21, "animationPathForKey:", [@"zPosition" stringByAppendingFormat:@":%d", indexCopy]);
   if (!v22)
   {
     v21 = self->mPlug;
@@ -1091,12 +1091,12 @@ LABEL_28:
 
 LABEL_33:
   v27 = self->mPlug;
-  if (!v3)
+  if (!indexCopy)
   {
     goto LABEL_36;
   }
 
-  v28 = -[MCPlug animationPathForKey:](v27, "animationPathForKey:", [@"scale" stringByAppendingFormat:@":%d", v3]);
+  v28 = -[MCPlug animationPathForKey:](v27, "animationPathForKey:", [@"scale" stringByAppendingFormat:@":%d", indexCopy]);
   if (!v28)
   {
     v27 = self->mPlug;
@@ -1130,12 +1130,12 @@ LABEL_36:
 
 LABEL_41:
   v33 = self->mPlug;
-  if (!v3)
+  if (!indexCopy)
   {
     goto LABEL_44;
   }
 
-  v34 = -[MCPlug animationPathForKey:](v33, "animationPathForKey:", [@"xRotationAngle" stringByAppendingFormat:@":%d", v3]);
+  v34 = -[MCPlug animationPathForKey:](v33, "animationPathForKey:", [@"xRotationAngle" stringByAppendingFormat:@":%d", indexCopy]);
   if (!v34)
   {
     v33 = self->mPlug;
@@ -1169,12 +1169,12 @@ LABEL_44:
 
 LABEL_49:
   v39 = self->mPlug;
-  if (!v3)
+  if (!indexCopy)
   {
     goto LABEL_52;
   }
 
-  v40 = -[MCPlug animationPathForKey:](v39, "animationPathForKey:", [@"yRotationAngle" stringByAppendingFormat:@":%d", v3]);
+  v40 = -[MCPlug animationPathForKey:](v39, "animationPathForKey:", [@"yRotationAngle" stringByAppendingFormat:@":%d", indexCopy]);
   if (!v40)
   {
     v39 = self->mPlug;
@@ -1208,12 +1208,12 @@ LABEL_52:
 
 LABEL_57:
   v45 = self->mPlug;
-  if (!v3)
+  if (!indexCopy)
   {
     goto LABEL_60;
   }
 
-  v46 = -[MCPlug animationPathForKey:](v45, "animationPathForKey:", [@"rotationAngle" stringByAppendingFormat:@":%d", v3]);
+  v46 = -[MCPlug animationPathForKey:](v45, "animationPathForKey:", [@"rotationAngle" stringByAppendingFormat:@":%d", indexCopy]);
   if (!v46)
   {
     v45 = self->mPlug;
@@ -1247,12 +1247,12 @@ LABEL_60:
 
 LABEL_65:
   v51 = self->mPlug;
-  if (!v3)
+  if (!indexCopy)
   {
     goto LABEL_68;
   }
 
-  v52 = -[MCPlug animationPathForKey:](v51, "animationPathForKey:", [@"opacity" stringByAppendingFormat:@":%d", v3]);
+  v52 = -[MCPlug animationPathForKey:](v51, "animationPathForKey:", [@"opacity" stringByAppendingFormat:@":%d", indexCopy]);
   if (!v52)
   {
     v51 = self->mPlug;

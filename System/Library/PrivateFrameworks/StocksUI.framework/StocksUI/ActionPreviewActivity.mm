@@ -1,26 +1,26 @@
 @interface ActionPreviewActivity
 - (_TtC8StocksUI21ActionPreviewActivity)init;
-- (id)previewViewControllerForAction:(id)a3;
-- (void)commitViewController:(id)a3 action:(id)a4;
+- (id)previewViewControllerForAction:(id)action;
+- (void)commitViewController:(id)controller action:(id)action;
 @end
 
 @implementation ActionPreviewActivity
 
-- (id)previewViewControllerForAction:(id)a3
+- (id)previewViewControllerForAction:(id)action
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_22078ADA4(a3);
+  selfCopy = self;
+  v6 = sub_22078ADA4(action);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (void)commitViewController:(id)a3 action:(id)a4
+- (void)commitViewController:(id)controller action:(id)action
 {
-  v5 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_22078BDC0();
 
   swift_unknownObjectRelease();

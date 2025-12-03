@@ -1,8 +1,8 @@
 @interface SBFFileCacheURLFaultHandler
 - (SBFFileCacheURLFaultHandler)init;
-- (void)attemptLoadFromURL:(id)a3 session:(id)a4 retryIntervalEnumerator:(id)a5 completionHandler:(id)a6;
-- (void)fileCache:(id)a3 loadFileForIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)performLoadFromURL:(id)a3 session:(id)a4 completionHandler:(id)a5;
+- (void)attemptLoadFromURL:(id)l session:(id)session retryIntervalEnumerator:(id)enumerator completionHandler:(id)handler;
+- (void)fileCache:(id)cache loadFileForIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)performLoadFromURL:(id)l session:(id)session completionHandler:(id)handler;
 @end
 
 @implementation SBFFileCacheURLFaultHandler
@@ -15,8 +15,8 @@
   if (v2)
   {
     v3 = MEMORY[0x1E696AF78];
-    v4 = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
-    v5 = [v3 sessionWithConfiguration:v4];
+    ephemeralSessionConfiguration = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
+    v5 = [v3 sessionWithConfiguration:ephemeralSessionConfiguration];
     urlSession = v2->_urlSession;
     v2->_urlSession = v5;
 
@@ -27,35 +27,35 @@
   return v2;
 }
 
-- (void)fileCache:(id)a3 loadFileForIdentifier:(id)a4 completionHandler:(id)a5
+- (void)fileCache:(id)cache loadFileForIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = [(SBFFileCacheURLFaultHandler *)self retryIntervals];
-  v9 = [v11 objectEnumerator];
-  v10 = [(SBFFileCacheURLFaultHandler *)self urlSession];
-  [(SBFFileCacheURLFaultHandler *)self attemptLoadFromURL:v8 session:v10 retryIntervalEnumerator:v9 completionHandler:v7];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  retryIntervals = [(SBFFileCacheURLFaultHandler *)self retryIntervals];
+  objectEnumerator = [retryIntervals objectEnumerator];
+  urlSession = [(SBFFileCacheURLFaultHandler *)self urlSession];
+  [(SBFFileCacheURLFaultHandler *)self attemptLoadFromURL:identifierCopy session:urlSession retryIntervalEnumerator:objectEnumerator completionHandler:handlerCopy];
 }
 
-- (void)attemptLoadFromURL:(id)a3 session:(id)a4 retryIntervalEnumerator:(id)a5 completionHandler:(id)a6
+- (void)attemptLoadFromURL:(id)l session:(id)session retryIntervalEnumerator:(id)enumerator completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  sessionCopy = session;
+  enumeratorCopy = enumerator;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __100__SBFFileCacheURLFaultHandler_attemptLoadFromURL_session_retryIntervalEnumerator_completionHandler___block_invoke;
   v18[3] = &unk_1E807FBB8;
-  v22 = v11;
-  v23 = v13;
-  v19 = v12;
-  v20 = self;
-  v21 = v10;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
-  v17 = v13;
+  v22 = sessionCopy;
+  v23 = handlerCopy;
+  v19 = enumeratorCopy;
+  selfCopy = self;
+  v21 = lCopy;
+  v14 = sessionCopy;
+  v15 = lCopy;
+  v16 = enumeratorCopy;
+  v17 = handlerCopy;
   [(SBFFileCacheURLFaultHandler *)self performLoadFromURL:v15 session:v14 completionHandler:v18];
 }
 
@@ -101,19 +101,19 @@ void __100__SBFFileCacheURLFaultHandler_attemptLoadFromURL_session_retryInterval
   }
 }
 
-- (void)performLoadFromURL:(id)a3 session:(id)a4 completionHandler:(id)a5
+- (void)performLoadFromURL:(id)l session:(id)session completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __76__SBFFileCacheURLFaultHandler_performLoadFromURL_session_completionHandler___block_invoke;
   v15 = &unk_1E807FBE0;
-  v16 = v7;
-  v17 = v8;
-  v9 = v8;
-  v10 = v7;
-  v11 = [a4 dataTaskWithURL:v10 completionHandler:&v12];
+  v16 = lCopy;
+  v17 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = lCopy;
+  v11 = [session dataTaskWithURL:v10 completionHandler:&v12];
   [v11 resume];
 }
 

@@ -1,16 +1,16 @@
 @interface STMostUsedGroupSpecifierProvider
 - (STMostUsedGroupSpecifierProvider)init;
-- (id)allowanceIconForUsageItem:(id)a3;
-- (id)newSpecifierWithUsageItem:(id)a3;
-- (void)_allowancesByIdentifierDidChangeFrom:(id)a3 to:(id)a4;
-- (void)_selectedUsageReportDidChangeFrom:(id)a3 to:(id)a4;
+- (id)allowanceIconForUsageItem:(id)item;
+- (id)newSpecifierWithUsageItem:(id)item;
+- (void)_allowancesByIdentifierDidChangeFrom:(id)from to:(id)to;
+- (void)_selectedUsageReportDidChangeFrom:(id)from to:(id)to;
 - (void)loadActiveBudgetedIdentifiers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)reloadMostUsedSpecifiers;
-- (void)setCoordinator:(id)a3;
-- (void)showMostUsedDetailListController:(id)a3;
-- (void)toggleSelectedItemType:(id)a3;
-- (void)updateSpecifier:(id)a3 usageItem:(id)a4;
+- (void)setCoordinator:(id)coordinator;
+- (void)showMostUsedDetailListController:(id)controller;
+- (void)toggleSelectedItemType:(id)type;
+- (void)updateSpecifier:(id)specifier usageItem:(id)item;
 @end
 
 @implementation STMostUsedGroupSpecifierProvider
@@ -46,42 +46,42 @@
   return v3;
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STUsageGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" context:"KVOContextMostUsedGroupSpecifierProvider"];
-  [v5 removeObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.allowancesByIdentifier" context:"KVOContextMostUsedGroupSpecifierProvider"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" context:"KVOContextMostUsedGroupSpecifierProvider"];
+  [coordinator removeObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.allowancesByIdentifier" context:"KVOContextMostUsedGroupSpecifierProvider"];
   v6.receiver = self;
   v6.super_class = STMostUsedGroupSpecifierProvider;
-  [(STUsageGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" options:7 context:"KVOContextMostUsedGroupSpecifierProvider"];
-  [v4 addObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.allowancesByIdentifier" options:7 context:"KVOContextMostUsedGroupSpecifierProvider"];
+  [(STUsageGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" options:7 context:"KVOContextMostUsedGroupSpecifierProvider"];
+  [coordinatorCopy addObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.allowancesByIdentifier" options:7 context:"KVOContextMostUsedGroupSpecifierProvider"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "KVOContextMostUsedGroupSpecifierProvider")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "KVOContextMostUsedGroupSpecifierProvider")
   {
     [(STUsageGroupSpecifierProvider *)self coordinator];
 
-    if ([v10 isEqualToString:@"usageDetailsCoordinator.viewModel.selectedUsageReport"])
+    if ([pathCopy isEqualToString:@"usageDetailsCoordinator.viewModel.selectedUsageReport"])
     {
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v13 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v13)
+      if (v12 == null)
       {
 
         v12 = 0;
       }
 
-      v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v15)
+      if (v14 == null2)
       {
 
         v14 = 0;
@@ -94,24 +94,24 @@
     {
       [(STUsageGroupSpecifierProvider *)self coordinator];
 
-      if (![v10 isEqualToString:@"timeAllowancesCoordinator.viewModel.allowancesByIdentifier"])
+      if (![pathCopy isEqualToString:@"timeAllowancesCoordinator.viewModel.allowancesByIdentifier"])
       {
         goto LABEL_16;
       }
 
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v16 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null3 = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v16)
+      if (v12 == null3)
       {
 
         v12 = 0;
       }
 
-      v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v17 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null4 = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v17)
+      if (v14 == null4)
       {
 
         v14 = 0;
@@ -125,26 +125,26 @@
 
   v18.receiver = self;
   v18.super_class = STMostUsedGroupSpecifierProvider;
-  [(STMostUsedGroupSpecifierProvider *)&v18 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(STMostUsedGroupSpecifierProvider *)&v18 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_16:
 }
 
-- (void)_selectedUsageReportDidChangeFrom:(id)a3 to:(id)a4
+- (void)_selectedUsageReportDidChangeFrom:(id)from to:(id)to
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v6 appAndWebUsages];
-  v8 = [v7 count];
+  fromCopy = from;
+  toCopy = to;
+  appAndWebUsages = [toCopy appAndWebUsages];
+  v8 = [appAndWebUsages count];
 
   [(STGroupSpecifierProvider *)self setIsHidden:v8 == 0];
-  if (v13 != v6 && ([v13 isEqual:v6] & 1) == 0)
+  if (fromCopy != toCopy && ([fromCopy isEqual:toCopy] & 1) == 0)
   {
-    v9 = [v6 categoryUsageByTrustIdentifier];
-    v10 = ![v9 count] && (-[STMostUsedGroupSpecifierProvider selectedItemType](self, "selectedItemType") == 0);
+    categoryUsageByTrustIdentifier = [toCopy categoryUsageByTrustIdentifier];
+    v10 = ![categoryUsageByTrustIdentifier count] && (-[STMostUsedGroupSpecifierProvider selectedItemType](self, "selectedItemType") == 0);
 
     v11 = [MEMORY[0x277CCABB0] numberWithBool:v10];
-    v12 = [(STGroupSpecifierProvider *)self groupSpecifier];
-    [v12 setObject:v11 forKeyedSubscript:0x287677028];
+    groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
+    [groupSpecifier setObject:v11 forKeyedSubscript:0x287677028];
 
     if (v8)
     {
@@ -153,34 +153,34 @@ LABEL_16:
   }
 }
 
-- (void)_allowancesByIdentifierDidChangeFrom:(id)a3 to:(id)a4
+- (void)_allowancesByIdentifierDidChangeFrom:(id)from to:(id)to
 {
-  v6 = a4;
-  v8 = [a3 allValues];
-  v7 = [v6 allValues];
+  toCopy = to;
+  allValues = [from allValues];
+  allValues2 = [toCopy allValues];
 
-  if (v8 != v7 && ([v8 isEqual:v7] & 1) == 0)
+  if (allValues != allValues2 && ([allValues isEqual:allValues2] & 1) == 0)
   {
     [(STMostUsedGroupSpecifierProvider *)self loadActiveBudgetedIdentifiers];
     [(STShowMoreUsageGroupSpecifierProvider *)self refreshUsageSpecifiersWithUpdates:1];
   }
 }
 
-- (id)newSpecifierWithUsageItem:(id)a3
+- (id)newSpecifierWithUsageItem:(id)item
 {
   v4 = MEMORY[0x277D3FAD8];
-  v5 = a3;
-  v6 = [v5 displayName];
-  v7 = [v4 preferenceSpecifierNamed:v6 target:self set:0 get:sel_getUsageItem_ detail:0 cell:2 edit:0];
+  itemCopy = item;
+  displayName = [itemCopy displayName];
+  v7 = [v4 preferenceSpecifierNamed:displayName target:self set:0 get:sel_getUsageItem_ detail:0 cell:2 edit:0];
 
   [v7 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
   [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FF38]];
-  v8 = [v5 displayName];
-  [v7 setName:v8];
+  displayName2 = [itemCopy displayName];
+  [v7 setName:displayName2];
 
-  [v7 setUserInfo:v5];
+  [v7 setUserInfo:itemCopy];
   [v7 setControllerLoadAction:sel_showMostUsedDetailListController_];
-  v9 = [(STMostUsedGroupSpecifierProvider *)self allowanceIconForUsageItem:v5];
+  v9 = [(STMostUsedGroupSpecifierProvider *)self allowanceIconForUsageItem:itemCopy];
 
   if (v9)
   {
@@ -195,24 +195,24 @@ LABEL_16:
   return v7;
 }
 
-- (void)updateSpecifier:(id)a3 usageItem:(id)a4
+- (void)updateSpecifier:(id)specifier usageItem:(id)item
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v6 displayName];
-  [v9 setName:v7];
+  specifierCopy = specifier;
+  itemCopy = item;
+  displayName = [itemCopy displayName];
+  [specifierCopy setName:displayName];
 
-  [v9 setUserInfo:v6];
-  v8 = [(STMostUsedGroupSpecifierProvider *)self allowanceIconForUsageItem:v6];
+  [specifierCopy setUserInfo:itemCopy];
+  v8 = [(STMostUsedGroupSpecifierProvider *)self allowanceIconForUsageItem:itemCopy];
 
   if (v8)
   {
-    [v9 setObject:v8 forKeyedSubscript:0x287675208];
+    [specifierCopy setObject:v8 forKeyedSubscript:0x287675208];
   }
 
   else
   {
-    [v9 removePropertyForKey:0x287675208];
+    [specifierCopy removePropertyForKey:0x287675208];
   }
 }
 
@@ -224,15 +224,15 @@ LABEL_16:
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v41 = self;
-  v4 = [(STUsageGroupSpecifierProvider *)self coordinator];
-  v5 = [v4 timeAllowancesCoordinator];
-  v6 = [v5 viewModel];
-  v7 = [v6 allowancesByIdentifier];
-  v8 = [v7 allValues];
+  selfCopy = self;
+  coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+  timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
+  viewModel = [timeAllowancesCoordinator viewModel];
+  allowancesByIdentifier = [viewModel allowancesByIdentifier];
+  allValues = [allowancesByIdentifier allValues];
 
-  obj = v8;
-  v44 = [v8 countByEnumeratingWithState:&v58 objects:v65 count:16];
+  obj = allValues;
+  v44 = [allValues countByEnumeratingWithState:&v58 objects:v65 count:16];
   if (v44)
   {
     v43 = *v59;
@@ -252,8 +252,8 @@ LABEL_16:
         v55 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v11 = [v10 bundleIdentifiers];
-        v12 = [v11 countByEnumeratingWithState:&v54 objects:v64 count:16];
+        bundleIdentifiers = [v10 bundleIdentifiers];
+        v12 = [bundleIdentifiers countByEnumeratingWithState:&v54 objects:v64 count:16];
         if (v12)
         {
           v13 = v12;
@@ -265,7 +265,7 @@ LABEL_16:
             {
               if (*v55 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(bundleIdentifiers);
               }
 
               v16 = *(*(&v54 + 1) + 8 * v15);
@@ -288,7 +288,7 @@ LABEL_16:
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v54 objects:v64 count:16];
+            v13 = [bundleIdentifiers countByEnumeratingWithState:&v54 objects:v64 count:16];
           }
 
           while (v13);
@@ -298,8 +298,8 @@ LABEL_16:
         v53 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v21 = [v10 webDomains];
-        v22 = [v21 countByEnumeratingWithState:&v50 objects:v63 count:16];
+        webDomains = [v10 webDomains];
+        v22 = [webDomains countByEnumeratingWithState:&v50 objects:v63 count:16];
         if (v22)
         {
           v23 = v22;
@@ -311,7 +311,7 @@ LABEL_16:
             {
               if (*v51 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(webDomains);
               }
 
               v26 = *(*(&v50 + 1) + 8 * v25);
@@ -334,7 +334,7 @@ LABEL_16:
             }
 
             while (v23 != v25);
-            v23 = [v21 countByEnumeratingWithState:&v50 objects:v63 count:16];
+            v23 = [webDomains countByEnumeratingWithState:&v50 objects:v63 count:16];
           }
 
           while (v23);
@@ -344,8 +344,8 @@ LABEL_16:
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v31 = [v10 categoryIdentifiers];
-        v32 = [v31 countByEnumeratingWithState:&v46 objects:v62 count:16];
+        categoryIdentifiers = [v10 categoryIdentifiers];
+        v32 = [categoryIdentifiers countByEnumeratingWithState:&v46 objects:v62 count:16];
         if (v32)
         {
           v33 = v32;
@@ -357,7 +357,7 @@ LABEL_16:
             {
               if (*v47 != v34)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(categoryIdentifiers);
               }
 
               v36 = *(*(&v46 + 1) + 8 * v35);
@@ -380,7 +380,7 @@ LABEL_16:
             }
 
             while (v33 != v35);
-            v33 = [v31 countByEnumeratingWithState:&v46 objects:v62 count:16];
+            v33 = [categoryIdentifiers countByEnumeratingWithState:&v46 objects:v62 count:16];
           }
 
           while (v33);
@@ -396,12 +396,12 @@ LABEL_16:
     while (v44);
   }
 
-  [(STMostUsedGroupSpecifierProvider *)v41 setAllowancesByActiveBudgetedIdentifier:v3];
+  [(STMostUsedGroupSpecifierProvider *)selfCopy setAllowancesByActiveBudgetedIdentifier:v3];
 }
 
-- (void)toggleSelectedItemType:(id)a3
+- (void)toggleSelectedItemType:(id)type
 {
-  v6 = a3;
+  typeCopy = type;
   selectedItemType = self->_selectedItemType;
   if (selectedItemType)
   {
@@ -425,64 +425,64 @@ LABEL_6:
 
 - (void)reloadMostUsedSpecifiers
 {
-  v13 = [(STGroupSpecifierProvider *)self groupSpecifier];
-  v3 = [(STUsageGroupSpecifierProvider *)self coordinator];
-  v4 = [v3 usageDetailsCoordinator];
-  v5 = [v4 viewModel];
+  groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
+  coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+  viewModel = [usageDetailsCoordinator viewModel];
 
-  v6 = [v5 selectedUsageReport];
-  v7 = [(STMostUsedGroupSpecifierProvider *)self selectedItemType];
-  if (v7 == 1)
+  selectedUsageReport = [viewModel selectedUsageReport];
+  selectedItemType = [(STMostUsedGroupSpecifierProvider *)self selectedItemType];
+  if (selectedItemType == 1)
   {
-    v8 = [v6 categoryUsages];
+    categoryUsages = [selectedUsageReport categoryUsages];
     v9 = @"ShowMostUsedAppsButtonText";
     goto LABEL_5;
   }
 
-  if (!v7)
+  if (!selectedItemType)
   {
-    v8 = [v6 appAndWebUsages];
+    categoryUsages = [selectedUsageReport appAndWebUsages];
     v9 = @"ShowMostUsedCategoriesButtonText";
 LABEL_5:
     v10 = +[STScreenTimeSettingsUIBundle bundle];
     v11 = [v10 localizedStringForKey:v9 value:&stru_28766E5A8 table:0];
-    [v13 setObject:v11 forKeyedSubscript:0x287677008];
+    [groupSpecifier setObject:v11 forKeyedSubscript:0x287677008];
 
     goto LABEL_7;
   }
 
-  v8 = 0;
+  categoryUsages = 0;
 LABEL_7:
-  v12 = [v13 objectForKeyedSubscript:*MEMORY[0x277D3FFB0]];
+  v12 = [groupSpecifier objectForKeyedSubscript:*MEMORY[0x277D3FFB0]];
   [v12 reloadFromSpecifier];
-  [(STShowMoreUsageGroupSpecifierProvider *)self setUsageItems:v8];
-  -[STGroupSpecifierProvider setIsHidden:](self, "setIsHidden:", [v8 count] == 0);
+  [(STShowMoreUsageGroupSpecifierProvider *)self setUsageItems:categoryUsages];
+  -[STGroupSpecifierProvider setIsHidden:](self, "setIsHidden:", [categoryUsages count] == 0);
 }
 
-- (void)showMostUsedDetailListController:(id)a3
+- (void)showMostUsedDetailListController:(id)controller
 {
-  v4 = a3;
-  v10 = [v4 userInfo];
+  controllerCopy = controller;
+  userInfo = [controllerCopy userInfo];
   v5 = [STDrillInDetailListController alloc];
-  v6 = [(STUsageGroupSpecifierProvider *)self coordinator];
-  v7 = [(STDrillInDetailListController *)v5 initWithUsageItem:v10 coordinator:v6];
+  coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+  v7 = [(STDrillInDetailListController *)v5 initWithUsageItem:userInfo coordinator:coordinator];
 
-  v8 = [(STGroupSpecifierProvider *)self delegate];
-  [(STDrillInDetailListController *)v7 setParentController:v8];
-  v9 = [v8 rootController];
-  [(STDrillInDetailListController *)v7 setRootController:v9];
+  delegate = [(STGroupSpecifierProvider *)self delegate];
+  [(STDrillInDetailListController *)v7 setParentController:delegate];
+  rootController = [delegate rootController];
+  [(STDrillInDetailListController *)v7 setRootController:rootController];
 
-  [(STDrillInDetailListController *)v7 setSpecifier:v4];
+  [(STDrillInDetailListController *)v7 setSpecifier:controllerCopy];
   [(STGroupSpecifierProvider *)self showController:v7 animated:1];
 }
 
-- (id)allowanceIconForUsageItem:(id)a3
+- (id)allowanceIconForUsageItem:(id)item
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 budgetItemIdentifier];
-  v6 = [(STMostUsedGroupSpecifierProvider *)self allowancesByActiveBudgetedIdentifier];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  itemCopy = item;
+  budgetItemIdentifier = [itemCopy budgetItemIdentifier];
+  allowancesByActiveBudgetedIdentifier = [(STMostUsedGroupSpecifierProvider *)self allowancesByActiveBudgetedIdentifier];
+  v7 = [allowancesByActiveBudgetedIdentifier objectForKeyedSubscript:budgetItemIdentifier];
 
   if (![v7 count])
   {
@@ -515,8 +515,8 @@ LABEL_14:
         {
           [v13 timeToday];
           v15 = v14;
-          v16 = [v4 totalUsage];
-          [v16 doubleValue];
+          totalUsage = [itemCopy totalUsage];
+          [totalUsage doubleValue];
           v18 = v15 - v17;
 
           if (v18 <= 0.0)

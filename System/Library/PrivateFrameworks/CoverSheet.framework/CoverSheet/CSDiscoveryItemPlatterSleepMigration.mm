@@ -3,7 +3,7 @@
 - (void)_configureGraphicViewIfNecessary;
 - (void)_layoutGraphicView;
 - (void)layoutSubviews;
-- (void)visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
+- (void)visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
 @end
 
 @implementation CSDiscoveryItemPlatterSleepMigration
@@ -42,9 +42,9 @@
 
 - (void)_configureGraphicViewIfNecessary
 {
-  v3 = [(PLPlatterDiscoveryView *)self graphicView];
+  graphicView = [(PLPlatterDiscoveryView *)self graphicView];
 
-  if (!v3)
+  if (!graphicView)
   {
     v22 = objc_alloc_init(MEMORY[0x277D75D18]);
     v4 = [MEMORY[0x277D755D0] configurationWithPointSize:2 weight:70.0];
@@ -56,20 +56,20 @@
     [(UIImageView *)self->_deviceImageView setContentMode:11];
     [v22 addSubview:self->_deviceImageView];
     v8 = self->_deviceImageView;
-    v9 = [(PLPlatterDiscoveryView *)self strokeVisualStylingProvider];
-    [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:v8 style:1 visualStylingProvider:v9 outgoingProvider:0];
+    strokeVisualStylingProvider = [(PLPlatterDiscoveryView *)self strokeVisualStylingProvider];
+    [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:v8 style:1 visualStylingProvider:strokeVisualStylingProvider outgoingProvider:0];
 
     v10 = objc_alloc_init(MEMORY[0x277D75D18]);
     sleepSymbolBackgroundView = self->_sleepSymbolBackgroundView;
     self->_sleepSymbolBackgroundView = v10;
 
     v12 = self->_sleepSymbolBackgroundView;
-    v13 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UIView *)v12 setBackgroundColor:v13];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UIView *)v12 setBackgroundColor:systemWhiteColor];
 
     [v22 addSubview:self->_sleepSymbolBackgroundView];
-    v14 = [MEMORY[0x277CF0D60] defaultFontProvider];
-    v15 = [v14 preferredFontForTextStyle:*MEMORY[0x277D76940] hiFontStyle:4];
+    defaultFontProvider = [MEMORY[0x277CF0D60] defaultFontProvider];
+    v15 = [defaultFontProvider preferredFontForTextStyle:*MEMORY[0x277D76940] hiFontStyle:4];
 
     v16 = [MEMORY[0x277D755D0] configurationWithFont:v15];
     v17 = [MEMORY[0x277D755B8] systemImageNamed:@"bed.double.fill" withConfiguration:v16];
@@ -78,8 +78,8 @@
     self->_sleepSymbolImageView = v18;
 
     v20 = self->_sleepSymbolImageView;
-    v21 = [MEMORY[0x277D75348] systemMintColor];
-    [(UIView *)v20 setTintColor:v21];
+    systemMintColor = [MEMORY[0x277D75348] systemMintColor];
+    [(UIView *)v20 setTintColor:systemMintColor];
 
     [v22 addSubview:self->_sleepSymbolImageView];
     [(PLPlatterDiscoveryView *)self setGraphicView:v22];
@@ -88,13 +88,13 @@
 
 - (void)_layoutGraphicView
 {
-  v3 = [(CSDiscoveryItemPlatterSleepMigration *)self _shouldReverseLayoutDirection];
-  v4 = [(CSDiscoveryItemPlatterSleepMigration *)self traitCollection];
-  [v4 displayScale];
+  _shouldReverseLayoutDirection = [(CSDiscoveryItemPlatterSleepMigration *)self _shouldReverseLayoutDirection];
+  traitCollection = [(CSDiscoveryItemPlatterSleepMigration *)self traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
-  v7 = [(PLPlatterDiscoveryView *)self graphicView];
-  [v7 bounds];
+  graphicView = [(PLPlatterDiscoveryView *)self graphicView];
+  [graphicView bounds];
 
   UIRectCenteredIntegralRectScale();
   v9 = v8;
@@ -107,7 +107,7 @@
   v30.size.width = v13;
   v30.size.height = v15;
   MinX = CGRectGetMinX(v30);
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     MinX = v13 + MinX;
   }
@@ -136,14 +136,14 @@
   [(UIView *)sleepSymbolBackgroundView _setCornerRadius:v27];
 }
 
-- (void)visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
   v8.receiver = self;
   v8.super_class = CSDiscoveryItemPlatterSleepMigration;
-  [(PLPlatterDiscoveryView *)&v8 visualStylingProviderDidChange:a3 forCategory:a4 outgoingProvider:a5];
+  [(PLPlatterDiscoveryView *)&v8 visualStylingProviderDidChange:change forCategory:category outgoingProvider:provider];
   deviceImageView = self->_deviceImageView;
-  v7 = [(PLPlatterDiscoveryView *)self strokeVisualStylingProvider];
-  [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:deviceImageView style:1 visualStylingProvider:v7 outgoingProvider:0];
+  strokeVisualStylingProvider = [(PLPlatterDiscoveryView *)self strokeVisualStylingProvider];
+  [(PLPlatterDiscoveryView *)self updateVisualStylingOfView:deviceImageView style:1 visualStylingProvider:strokeVisualStylingProvider outgoingProvider:0];
 }
 
 @end

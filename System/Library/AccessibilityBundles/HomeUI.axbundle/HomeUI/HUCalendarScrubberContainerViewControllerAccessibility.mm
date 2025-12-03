@@ -1,17 +1,17 @@
 @interface HUCalendarScrubberContainerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation HUCalendarScrubberContainerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUCalendarScrubberContainerViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"HUCalendarScrubberContainerViewController" hasInstanceMethod:@"prevWeekButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUCalendarScrubberContainerViewController" hasInstanceMethod:@"nextWeekButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUCalendarScrubberContainerViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"HUCalendarScrubberContainerViewController" hasInstanceMethod:@"prevWeekButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUCalendarScrubberContainerViewController" hasInstanceMethod:@"nextWeekButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

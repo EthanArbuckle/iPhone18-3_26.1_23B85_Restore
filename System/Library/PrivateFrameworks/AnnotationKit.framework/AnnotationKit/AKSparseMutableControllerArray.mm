@@ -1,37 +1,37 @@
 @interface AKSparseMutableControllerArray
-- (AKSparseMutableControllerArray)initWithCapacity:(unint64_t)a3;
-- (BOOL)containsAnyObjects:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectsAtIndexes:(id)a3;
+- (AKSparseMutableControllerArray)initWithCapacity:(unint64_t)capacity;
+- (BOOL)containsAnyObjects:(id)objects;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectsAtIndexes:(id)indexes;
 - (unint64_t)count;
-- (void)_backFillUntilCount:(unint64_t)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
+- (void)_backFillUntilCount:(unint64_t)count;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
 - (void)removeLastObject;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
 @end
 
 @implementation AKSparseMutableControllerArray
 
-- (BOOL)containsAnyObjects:(id)a3
+- (BOOL)containsAnyObjects:(id)objects
 {
   v3 = MEMORY[0x277CBEB98];
   backendArray = self->_backendArray;
-  v5 = a3;
+  objectsCopy = objects;
   v6 = [v3 setWithArray:backendArray];
-  v7 = [MEMORY[0x277CBEB98] setWithObject:v5];
+  v7 = [MEMORY[0x277CBEB98] setWithObject:objectsCopy];
 
-  LOBYTE(v5) = [v6 intersectsSet:v7];
-  return v5;
+  LOBYTE(objectsCopy) = [v6 intersectsSet:v7];
+  return objectsCopy;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_backendArray count]> a3)
+  if ([(NSMutableArray *)self->_backendArray count]> index)
   {
-    v5 = [(NSMutableArray *)self->_backendArray objectAtIndex:a3];
-    v6 = [MEMORY[0x277CBEB68] null];
-    v7 = [v5 isEqual:v6];
+    v5 = [(NSMutableArray *)self->_backendArray objectAtIndex:index];
+    null = [MEMORY[0x277CBEB68] null];
+    v7 = [v5 isEqual:null];
 
     if (!v7)
     {
@@ -45,19 +45,19 @@ LABEL_5:
   return v5;
 }
 
-- (id)objectsAtIndexes:(id)a3
+- (id)objectsAtIndexes:(id)indexes
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  indexesCopy = indexes;
+  array = [v4 array];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_23F4462B0;
   v11[3] = &unk_278C7BC78;
   v11[4] = self;
-  v7 = v6;
+  v7 = array;
   v12 = v7;
-  [v5 enumerateIndexesUsingBlock:v11];
+  [indexesCopy enumerateIndexesUsingBlock:v11];
 
   v8 = v12;
   v9 = v7;
@@ -65,14 +65,14 @@ LABEL_5:
   return v7;
 }
 
-- (AKSparseMutableControllerArray)initWithCapacity:(unint64_t)a3
+- (AKSparseMutableControllerArray)initWithCapacity:(unint64_t)capacity
 {
   v8.receiver = self;
   v8.super_class = AKSparseMutableControllerArray;
   v4 = [(AKSparseMutableControllerArray *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:capacity];
     backendArray = v4->_backendArray;
     v4->_backendArray = v5;
   }
@@ -80,28 +80,28 @@ LABEL_5:
   return v4;
 }
 
-- (void)_backFillUntilCount:(unint64_t)a3
+- (void)_backFillUntilCount:(unint64_t)count
 {
-  while ([(NSMutableArray *)self->_backendArray count]< a3)
+  while ([(NSMutableArray *)self->_backendArray count]< count)
   {
     backendArray = self->_backendArray;
-    v6 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableArray *)backendArray addObject:v6];
+    null = [MEMORY[0x277CBEB68] null];
+    [(NSMutableArray *)backendArray addObject:null];
   }
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [(AKSparseMutableControllerArray *)self _backFillUntilCount:a4];
-  [(NSMutableArray *)self->_backendArray insertObject:v6 atIndex:a4];
+  objectCopy = object;
+  [(AKSparseMutableControllerArray *)self _backFillUntilCount:index];
+  [(NSMutableArray *)self->_backendArray insertObject:objectCopy atIndex:index];
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
-  v6 = a4;
-  [(AKSparseMutableControllerArray *)self _backFillUntilCount:a3 + 1];
-  [(NSMutableArray *)self->_backendArray setObject:v6 atIndexedSubscript:a3];
+  objectCopy = object;
+  [(AKSparseMutableControllerArray *)self _backFillUntilCount:index + 1];
+  [(NSMutableArray *)self->_backendArray setObject:objectCopy atIndexedSubscript:index];
 }
 
 - (unint64_t)count
@@ -110,8 +110,8 @@ LABEL_5:
   while (v3-- >= 1)
   {
     v5 = [(NSMutableArray *)self->_backendArray objectAtIndexedSubscript:v3];
-    v6 = [MEMORY[0x277CBEB68] null];
-    v7 = [v5 isEqual:v6];
+    null = [MEMORY[0x277CBEB68] null];
+    v7 = [v5 isEqual:null];
 
     if ((v7 & 1) == 0)
     {
@@ -134,20 +134,20 @@ LABEL_5:
 
     v5 = [(NSMutableArray *)self->_backendArray objectAtIndexedSubscript:v3];
     [(NSMutableArray *)self->_backendArray removeObjectAtIndex:v3];
-    v6 = [MEMORY[0x277CBEB68] null];
-    v7 = [v5 isEqual:v6];
+    null = [MEMORY[0x277CBEB68] null];
+    v7 = [v5 isEqual:null];
   }
 
   while ((v7 & 1) != 0);
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_backendArray count]> a3)
+  if ([(NSMutableArray *)self->_backendArray count]> index)
   {
     backendArray = self->_backendArray;
 
-    [(NSMutableArray *)backendArray removeObjectAtIndex:a3];
+    [(NSMutableArray *)backendArray removeObjectAtIndex:index];
   }
 }
 

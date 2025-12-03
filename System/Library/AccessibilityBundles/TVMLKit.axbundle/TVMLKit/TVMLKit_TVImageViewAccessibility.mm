@@ -7,16 +7,16 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(TVMLKit_TVImageViewAccessibility *)self accessibilityLabel];
-  v3 = [v2 length] != 0;
+  accessibilityLabel = [(TVMLKit_TVImageViewAccessibility *)self accessibilityLabel];
+  v3 = [accessibilityLabel length] != 0;
 
   return v3;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(TVMLKit_TVImageViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AXTVMLKitLogoImageViewID"];
+  accessibilityIdentifier = [(TVMLKit_TVImageViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AXTVMLKitLogoImageViewID"];
 
   if (v4)
   {

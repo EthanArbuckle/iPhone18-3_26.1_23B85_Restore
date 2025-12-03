@@ -1,9 +1,9 @@
 @interface MTLIndirectArgumentDescriptorInternal
 + (id)indirectArgumentDescriptor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLIndirectArgumentDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)hash;
 @end
 
@@ -31,9 +31,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = *&self->_private.arrayLength;
   v5 = *&self->_private.textureType;
   *(result + 8) = *&self->_private.dataType;
@@ -42,15 +42,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  return Class == object_getClass(a3) && memcmp(&self->_private, a3 + 8, 0x30uLL) == 0;
+  return Class == object_getClass(equal) && memcmp(&self->_private, equal + 8, 0x30uLL) == 0;
 }
 
 - (unint64_t)hash
@@ -67,13 +67,13 @@
   return (1540483477 * (v3 ^ (v3 >> 13))) ^ ((1540483477 * (v3 ^ (v3 >> 13))) >> 15);
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v5 = MEMORY[0x1E696AEC0];
   v8.receiver = self;
   v8.super_class = MTLIndirectArgumentDescriptorInternal;
   v6 = [(MTLIndirectArgumentDescriptorInternal *)&v8 description];
-  return [v5 stringWithFormat:@"%@%@", v6, indirectArgumentFormattedDescription(a3, &self->_private)];
+  return [v5 stringWithFormat:@"%@%@", v6, indirectArgumentFormattedDescription(description, &self->_private)];
 }
 
 @end

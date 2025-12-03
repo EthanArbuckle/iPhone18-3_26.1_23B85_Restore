@@ -1,7 +1,7 @@
 @interface SCEntitlements
-+ (id)_setValueForEntitlement:(__CFString *)a3 expectedElementClass:(Class)a4;
-+ (id)_valueForEntitlement:(__CFString *)a3 expectedClass:(Class)a4;
-+ (id)_valueForEntitlement:(__CFString *)a3 secTask:(__SecTask *)a4;
++ (id)_setValueForEntitlement:(__CFString *)entitlement expectedElementClass:(Class)class;
++ (id)_valueForEntitlement:(__CFString *)entitlement expectedClass:(Class)class;
++ (id)_valueForEntitlement:(__CFString *)entitlement secTask:(__SecTask *)task;
 + (id)readCurrentBundleIdentifier;
 + (id)readCurrentServices;
 @end
@@ -12,24 +12,24 @@
 {
   v3 = objc_opt_class();
 
-  return [a1 _setValueForEntitlement:@"com.apple.sensitivecontentanalysis.service" expectedElementClass:v3];
+  return [self _setValueForEntitlement:@"com.apple.sensitivecontentanalysis.service" expectedElementClass:v3];
 }
 
 + (id)readCurrentBundleIdentifier
 {
   v3 = objc_opt_class();
 
-  return [a1 _valueForEntitlement:@"application-identifier" expectedClass:v3];
+  return [self _valueForEntitlement:@"application-identifier" expectedClass:v3];
 }
 
-+ (id)_setValueForEntitlement:(__CFString *)a3 expectedElementClass:(Class)a4
++ (id)_setValueForEntitlement:(__CFString *)entitlement expectedElementClass:(Class)class
 {
   v24 = *MEMORY[0x1E69E9840];
   v6 = SecTaskCreateFromSelf(0);
   if (v6)
   {
     v7 = v6;
-    v8 = [a1 _valueForEntitlement:a3 secTask:v6];
+    v8 = [self _valueForEntitlement:entitlement secTask:v6];
     if (objc_opt_isKindOfClass())
     {
       v9 = [MEMORY[0x1E695DFD8] setWithObject:v8];
@@ -91,13 +91,13 @@
   return v9;
 }
 
-+ (id)_valueForEntitlement:(__CFString *)a3 expectedClass:(Class)a4
++ (id)_valueForEntitlement:(__CFString *)entitlement expectedClass:(Class)class
 {
   v6 = SecTaskCreateFromSelf(0);
   if (v6)
   {
     v7 = v6;
-    v8 = [a1 _valueForEntitlement:a3 secTask:v6];
+    v8 = [self _valueForEntitlement:entitlement secTask:v6];
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -119,9 +119,9 @@
   return v9;
 }
 
-+ (id)_valueForEntitlement:(__CFString *)a3 secTask:(__SecTask *)a4
++ (id)_valueForEntitlement:(__CFString *)entitlement secTask:(__SecTask *)task
 {
-  v4 = SecTaskCopyValueForEntitlement(a4, a3, 0);
+  v4 = SecTaskCopyValueForEntitlement(task, entitlement, 0);
 
   return v4;
 }

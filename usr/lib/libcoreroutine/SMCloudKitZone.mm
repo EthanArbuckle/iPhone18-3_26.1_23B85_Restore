@@ -1,41 +1,41 @@
 @interface SMCloudKitZone
-+ (BOOL)shouldRetryCkError:(id)a3;
++ (BOOL)shouldRetryCkError:(id)error;
 + (id)getContainer;
-+ (void)acceptShareWithInvitationToken:(id)a3 sessionID:(id)a4 container:(id)a5 queue:(id)a6 qos:(id)a7 withCompletion:(id)a8;
-+ (void)acceptShareWithShareMetadata:(id)a3 sessionID:(id)a4 container:(id)a5 queue:(id)a6 qos:(id)a7 withCompletion:(id)a8;
-+ (void)configureCloudKitQos:(id)a3 configuration:(id *)a4;
-+ (void)fetchAllZonesFromContainer:(id)a3 database:(id)a4 qos:(id)a5 withCompletion:(id)a6;
-+ (void)fetchShareMetadataWithInvitationToken:(id)a3 sessionID:(id)a4 container:(id)a5 queue:(id)a6 qos:(id)a7 withCompletion:(id)a8;
-+ (void)supportsDeviceToDeviceEncryptionWithCompletion:(id)a3;
++ (void)acceptShareWithInvitationToken:(id)token sessionID:(id)d container:(id)container queue:(id)queue qos:(id)qos withCompletion:(id)completion;
++ (void)acceptShareWithShareMetadata:(id)metadata sessionID:(id)d container:(id)container queue:(id)queue qos:(id)qos withCompletion:(id)completion;
++ (void)configureCloudKitQos:(id)qos configuration:(id *)configuration;
++ (void)fetchAllZonesFromContainer:(id)container database:(id)database qos:(id)qos withCompletion:(id)completion;
++ (void)fetchShareMetadataWithInvitationToken:(id)token sessionID:(id)d container:(id)container queue:(id)queue qos:(id)qos withCompletion:(id)completion;
++ (void)supportsDeviceToDeviceEncryptionWithCompletion:(id)completion;
 - (CKDatabase)privateDatabase;
 - (CKDatabase)sharedDatabase;
 - (CKRecordZoneID)zoneID;
 - (NSString)ownerName;
 - (NSString)zoneName;
 - (NSString)zoneSubscriptionID;
-- (SMCloudKitZone)initWithZone:(id)a3 queue:(id)a4;
+- (SMCloudKitZone)initWithZone:(id)zone queue:(id)queue;
 - (id)apsEnvironmentString;
 - (id)createPushConnection;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
-- (void)createNewInvitationTokensWithConversation:(id)a3 qos:(id)a4 completion:(id)a5;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
+- (void)createNewInvitationTokensWithConversation:(id)conversation qos:(id)qos completion:(id)completion;
 - (void)dealloc;
-- (void)deleteRecords:(id)a3 fromDatabase:(id)a4 qos:(id)a5 withCompletion:(id)a6;
-- (void)deleteZoneFromDatabase:(id)a3 qos:(id)a4 withCompletion:(id)a5;
+- (void)deleteRecords:(id)records fromDatabase:(id)database qos:(id)qos withCompletion:(id)completion;
+- (void)deleteZoneFromDatabase:(id)database qos:(id)qos withCompletion:(id)completion;
 - (void)deregisterForZoneUpdates;
-- (void)fetchRecord:(id)a3 fromDatabase:(id)a4 qos:(id)a5 withCompletion:(id)a6;
-- (void)fetchShareParticipantsWithConversation:(id)a3 qos:(id)a4 completion:(id)a5;
-- (void)fetchShareWithQos:(id)a3 withCompletion:(id)a4;
-- (void)fetchZoneFromDatabase:(id)a3 qos:(id)a4 withCompletion:(id)a5;
-- (void)registerForZoneUpdatesWithHandler:(id)a3;
-- (void)removeShareParticipantsInConversation:(id)a3 qos:(id)a4 withCompletion:(id)a5;
-- (void)saveRecord:(id)a3 toDatabase:(id)a4 qos:(id)a5 withCompletion:(id)a6;
-- (void)saveRecords:(id)a3 toDatabase:(id)a4 qos:(id)a5 withCompletion:(id)a6;
-- (void)saveRecordsWithRetry:(int64_t)a3 records:(id)a4 toDatabase:(id)a5 qos:(id)a6 withCompletion:(id)a7;
-- (void)saveZoneToDatabase:(id)a3 qos:(id)a4 withCompletion:(id)a5;
-- (void)subscribeToZoneChangesInPrivateDatabaseWithQoS:(id)a3 completion:(id)a4;
-- (void)updateRecord:(id)a3 inDatabase:(id)a4 qos:(id)a5 usingBlock:(id)a6 withCompletion:(id)a7;
+- (void)fetchRecord:(id)record fromDatabase:(id)database qos:(id)qos withCompletion:(id)completion;
+- (void)fetchShareParticipantsWithConversation:(id)conversation qos:(id)qos completion:(id)completion;
+- (void)fetchShareWithQos:(id)qos withCompletion:(id)completion;
+- (void)fetchZoneFromDatabase:(id)database qos:(id)qos withCompletion:(id)completion;
+- (void)registerForZoneUpdatesWithHandler:(id)handler;
+- (void)removeShareParticipantsInConversation:(id)conversation qos:(id)qos withCompletion:(id)completion;
+- (void)saveRecord:(id)record toDatabase:(id)database qos:(id)qos withCompletion:(id)completion;
+- (void)saveRecords:(id)records toDatabase:(id)database qos:(id)qos withCompletion:(id)completion;
+- (void)saveRecordsWithRetry:(int64_t)retry records:(id)records toDatabase:(id)database qos:(id)qos withCompletion:(id)completion;
+- (void)saveZoneToDatabase:(id)database qos:(id)qos withCompletion:(id)completion;
+- (void)subscribeToZoneChangesInPrivateDatabaseWithQoS:(id)s completion:(id)completion;
+- (void)updateRecord:(id)record inDatabase:(id)database qos:(id)qos usingBlock:(id)block withCompletion:(id)completion;
 @end
 
 @implementation SMCloudKitZone
@@ -50,19 +50,19 @@
   return v4;
 }
 
-- (SMCloudKitZone)initWithZone:(id)a3 queue:(id)a4
+- (SMCloudKitZone)initWithZone:(id)zone queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  zoneCopy = zone;
+  queueCopy = queue;
+  v9 = queueCopy;
+  if (!zoneCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -73,7 +73,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!queueCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -92,18 +92,18 @@ LABEL_12:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_zone, a3);
-    objc_storeStrong(&v11->_queue, a4);
+    objc_storeStrong(&v10->_zone, zone);
+    objc_storeStrong(&v11->_queue, queue);
     v12 = +[SMCloudKitZone getContainer];
     container = v11->_container;
     v11->_container = v12;
   }
 
   self = v11;
-  v14 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -114,10 +114,10 @@ LABEL_10:
   [(SMCloudKitZone *)&v3 dealloc];
 }
 
-+ (void)supportsDeviceToDeviceEncryptionWithCompletion:(id)a3
++ (void)supportsDeviceToDeviceEncryptionWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completionCopy = completion;
   v6 = +[SMCloudKitZone getContainer];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -141,10 +141,10 @@ LABEL_10:
   v12[1] = 3221225472;
   v12[2] = __65__SMCloudKitZone_supportsDeviceToDeviceEncryptionWithCompletion___block_invoke;
   v12[3] = &unk_2788C7770;
-  v14 = a1;
+  selfCopy = self;
   v15 = a2;
-  v13 = v5;
-  v8 = v5;
+  v13 = completionCopy;
+  v8 = completionCopy;
   [v6 accountInfoWithCompletionHandler:v12];
 }
 
@@ -236,43 +236,43 @@ LABEL_13:
 LABEL_14:
 }
 
-+ (void)configureCloudKitQos:(id)a3 configuration:(id *)a4
++ (void)configureCloudKitQos:(id)qos configuration:(id *)configuration
 {
-  v9 = a3;
-  v5 = [v9 masqueradeBundleID];
+  qosCopy = qos;
+  masqueradeBundleID = [qosCopy masqueradeBundleID];
 
-  if (v5)
+  if (masqueradeBundleID)
   {
-    v6 = [v9 masqueradeBundleID];
-    [*a4 setApplicationBundleIdentifierOverrideForNetworkAttribution:v6];
+    masqueradeBundleID2 = [qosCopy masqueradeBundleID];
+    [*configuration setApplicationBundleIdentifierOverrideForNetworkAttribution:masqueradeBundleID2];
   }
 
-  v7 = [v9 xpcActivity];
+  xpcActivity = [qosCopy xpcActivity];
 
-  if (v7)
+  if (xpcActivity)
   {
-    v8 = [v9 xpcActivity];
-    [*a4 setXPCActivity:v8];
+    xpcActivity2 = [qosCopy xpcActivity];
+    [*configuration setXPCActivity:xpcActivity2];
   }
 
-  if ([v9 defaultQos])
+  if ([qosCopy defaultQos])
   {
-    [*a4 setQualityOfService:25];
+    [*configuration setQualityOfService:25];
   }
 }
 
-+ (void)fetchAllZonesFromContainer:(id)a3 database:(id)a4 qos:(id)a5 withCompletion:(id)a6
++ (void)fetchAllZonesFromContainer:(id)container database:(id)database qos:(id)qos withCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v12)
+  containerCopy = container;
+  databaseCopy = database;
+  qosCopy = qos;
+  completionCopy = completion;
+  v15 = completionCopy;
+  if (!databaseCopy)
   {
-    v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    fetchAllRecordZonesOperation = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(fetchAllRecordZonesOperation, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_9;
     }
@@ -280,14 +280,14 @@ LABEL_14:
     *buf = 0;
     v25 = "Invalid parameter not satisfying: database";
 LABEL_11:
-    _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, v25, buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, fetchAllRecordZonesOperation, OS_LOG_TYPE_ERROR, v25, buf, 2u);
     goto LABEL_9;
   }
 
-  if (!v14)
+  if (!completionCopy)
   {
-    v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    fetchAllRecordZonesOperation = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(fetchAllRecordZonesOperation, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_9;
     }
@@ -297,14 +297,14 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v16 = [MEMORY[0x277CBC3D0] fetchAllRecordZonesOperation];
-  v17 = [v16 configuration];
-  [v17 setContainer:v11];
+  fetchAllRecordZonesOperation = [MEMORY[0x277CBC3D0] fetchAllRecordZonesOperation];
+  configuration = [fetchAllRecordZonesOperation configuration];
+  [configuration setContainer:containerCopy];
 
-  [v16 setDatabase:v12];
-  v18 = [v16 configuration];
-  v26 = v18;
-  [a1 configureCloudKitQos:v13 configuration:&v26];
+  [fetchAllRecordZonesOperation setDatabase:databaseCopy];
+  configuration2 = [fetchAllRecordZonesOperation configuration];
+  v26 = configuration2;
+  [self configureCloudKitQos:qosCopy configuration:&v26];
   v19 = v26;
 
   v20 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -313,33 +313,33 @@ LABEL_11:
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
     v23 = NSStringFromSelector(a2);
-    v24 = [v16 operationID];
+    operationID = [fetchAllRecordZonesOperation operationID];
     *buf = 138412802;
     v28 = v22;
     v29 = 2112;
     v30 = v23;
     v31 = 2112;
-    v32 = v24;
+    v32 = operationID;
     _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,created CKOperation ID, %@", buf, 0x20u);
   }
 
-  [v16 setFetchRecordZonesCompletionBlock:v15];
-  [v12 addOperation:v16];
+  [fetchAllRecordZonesOperation setFetchRecordZonesCompletionBlock:v15];
+  [databaseCopy addOperation:fetchAllRecordZonesOperation];
 
 LABEL_9:
 }
 
-+ (void)acceptShareWithInvitationToken:(id)a3 sessionID:(id)a4 container:(id)a5 queue:(id)a6 qos:(id)a7 withCompletion:(id)a8
++ (void)acceptShareWithInvitationToken:(id)token sessionID:(id)d container:(id)container queue:(id)queue qos:(id)qos withCompletion:(id)completion
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = v20;
-  if (!v15)
+  tokenCopy = token;
+  dCopy = d;
+  containerCopy = container;
+  queueCopy = queue;
+  qosCopy = qos;
+  completionCopy = completion;
+  v21 = completionCopy;
+  if (!tokenCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -354,7 +354,7 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  if (!v17)
+  if (!containerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -367,7 +367,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (!v18)
+  if (!queueCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -380,7 +380,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (!v20)
+  if (!completionCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -393,11 +393,11 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v22 = [v15 shareURL];
+  shareURL = [tokenCopy shareURL];
 
   v23 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   v24 = v23;
-  if (v22)
+  if (shareURL)
   {
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -405,15 +405,15 @@ LABEL_17:
       v35 = NSStringFromClass(v25);
       v26 = NSStringFromSelector(a2);
       *buf = 138413314;
-      v46 = v16;
+      v46 = dCopy;
       v47 = 2112;
       v48 = v35;
       v49 = 2112;
       v50 = v26;
       v51 = 2112;
-      v52 = v15;
+      v52 = tokenCopy;
       v53 = 2112;
-      v54 = v17;
+      v54 = containerCopy;
       _os_log_impl(&dword_2304B3000, v24, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,accepting share token,invitationToken,%@,container,%@", buf, 0x34u);
     }
 
@@ -421,15 +421,15 @@ LABEL_17:
     v36[1] = 3221225472;
     v36[2] = __94__SMCloudKitZone_acceptShareWithInvitationToken_sessionID_container_queue_qos_withCompletion___block_invoke;
     v36[3] = &unk_2788C77C0;
-    v37 = v16;
-    v43 = a1;
+    v37 = dCopy;
+    selfCopy = self;
     v44 = a2;
-    v38 = v15;
+    v38 = tokenCopy;
     v42 = v21;
-    v39 = v17;
-    v40 = v18;
-    v41 = v19;
-    [a1 fetchShareMetadataWithInvitationToken:v38 sessionID:v37 container:v39 queue:v40 qos:v41 withCompletion:v36];
+    v39 = containerCopy;
+    v40 = queueCopy;
+    v41 = qosCopy;
+    [self fetchShareMetadataWithInvitationToken:v38 sessionID:v37 container:v39 queue:v40 qos:v41 withCompletion:v36];
 
     v27 = v37;
   }
@@ -442,7 +442,7 @@ LABEL_17:
       v33 = NSStringFromClass(v32);
       v34 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v46 = v16;
+      v46 = dCopy;
       v47 = 2112;
       v48 = v33;
       v49 = 2112;
@@ -562,31 +562,31 @@ void __94__SMCloudKitZone_acceptShareWithInvitationToken_sessionID_container_que
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)fetchShareMetadataWithInvitationToken:(id)a3 sessionID:(id)a4 container:(id)a5 queue:(id)a6 qos:(id)a7 withCompletion:(id)a8
++ (void)fetchShareMetadataWithInvitationToken:(id)token sessionID:(id)d container:(id)container queue:(id)queue qos:(id)qos withCompletion:(id)completion
 {
   v72[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v42 = a4;
-  v16 = a5;
-  v17 = a6;
-  v43 = a7;
-  v41 = a8;
-  v18 = [v15 shareURL];
-  v72[0] = v18;
+  tokenCopy = token;
+  dCopy = d;
+  containerCopy = container;
+  queueCopy = queue;
+  qosCopy = qos;
+  completionCopy = completion;
+  shareURL = [tokenCopy shareURL];
+  v72[0] = shareURL;
   v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:1];
 
-  v19 = [v15 shareURL];
-  v70 = v19;
-  v71 = v15;
+  shareURL2 = [tokenCopy shareURL];
+  v70 = shareURL2;
+  v71 = tokenCopy;
   v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
 
   v20 = [objc_alloc(MEMORY[0x277CBC3F8]) initWithShareURLs:v45 invitationTokensByShareURL:v44];
-  v21 = [v20 configuration];
-  [v21 setContainer:v16];
+  configuration = [v20 configuration];
+  [configuration setContainer:containerCopy];
 
-  v22 = [v20 configuration];
-  v61 = v22;
-  [a1 configureCloudKitQos:v43 configuration:&v61];
+  configuration2 = [v20 configuration];
+  v61 = configuration2;
+  [self configureCloudKitQos:qosCopy configuration:&v61];
   v39 = v61;
 
   v23 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -595,13 +595,13 @@ void __94__SMCloudKitZone_acceptShareWithInvitationToken_sessionID_container_que
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
     v26 = NSStringFromSelector(a2);
-    v27 = [v20 operationID];
+    operationID = [v20 operationID];
     *buf = 138412802;
     *&buf[4] = v25;
     *&buf[12] = 2112;
     *&buf[14] = v26;
     *&buf[22] = 2112;
-    v69 = v27;
+    v69 = operationID;
     _os_log_impl(&dword_2304B3000, v23, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,created CKOperation ID, %@", buf, 0x20u);
   }
 
@@ -613,16 +613,16 @@ void __94__SMCloudKitZone_acceptShareWithInvitationToken_sessionID_container_que
   v53[1] = 3221225472;
   v53[2] = __101__SMCloudKitZone_fetchShareMetadataWithInvitationToken_sessionID_container_queue_qos_withCompletion___block_invoke;
   v53[3] = &unk_2788C7810;
-  v28 = v17;
+  v28 = queueCopy;
   v54 = v28;
-  v29 = v42;
+  v29 = dCopy;
   v55 = v29;
-  v59 = a1;
+  selfCopy = self;
   v60 = a2;
-  v30 = v15;
+  v30 = tokenCopy;
   v56 = v30;
   v58 = buf;
-  v31 = v41;
+  v31 = completionCopy;
   v57 = v31;
   [v20 setPerShareMetadataBlock:v53];
   v46[0] = MEMORY[0x277D85DD0];
@@ -634,7 +634,7 @@ void __94__SMCloudKitZone_acceptShareWithInvitationToken_sessionID_container_que
   v50 = buf;
   v33 = v29;
   v48 = v33;
-  v51 = a1;
+  selfCopy2 = self;
   v52 = a2;
   v34 = v31;
   v49 = v34;
@@ -657,7 +657,7 @@ void __94__SMCloudKitZone_acceptShareWithInvitationToken_sessionID_container_que
     }
   }
 
-  [v16 addOperation:{v20, v39}];
+  [containerCopy addOperation:{v20, v39}];
 
   _Block_object_dispose(buf, 8);
 }
@@ -810,26 +810,26 @@ uint64_t __101__SMCloudKitZone_fetchShareMetadataWithInvitationToken_sessionID_c
   return result;
 }
 
-+ (void)acceptShareWithShareMetadata:(id)a3 sessionID:(id)a4 container:(id)a5 queue:(id)a6 qos:(id)a7 withCompletion:(id)a8
++ (void)acceptShareWithShareMetadata:(id)metadata sessionID:(id)d container:(id)container queue:(id)queue qos:(id)qos withCompletion:(id)completion
 {
   v68[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v41 = a4;
-  v43 = a5;
-  v16 = a6;
-  v42 = a7;
-  v17 = a8;
+  metadataCopy = metadata;
+  dCopy = d;
+  containerCopy = container;
+  queueCopy = queue;
+  qosCopy = qos;
+  completionCopy = completion;
   v18 = objc_alloc(MEMORY[0x277CBC158]);
-  v68[0] = v15;
+  v68[0] = metadataCopy;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v68 count:1];
   v20 = [v18 initWithShareMetadatas:v19];
 
-  v21 = [v20 configuration];
-  [v21 setContainer:v43];
+  configuration = [v20 configuration];
+  [configuration setContainer:containerCopy];
 
-  v22 = [v20 configuration];
-  v59 = v22;
-  [a1 configureCloudKitQos:v42 configuration:&v59];
+  configuration2 = [v20 configuration];
+  v59 = configuration2;
+  [self configureCloudKitQos:qosCopy configuration:&v59];
   v39 = v59;
 
   v23 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -838,13 +838,13 @@ uint64_t __101__SMCloudKitZone_fetchShareMetadataWithInvitationToken_sessionID_c
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
     v26 = NSStringFromSelector(a2);
-    v27 = [v20 operationID];
+    operationID = [v20 operationID];
     *buf = 138412802;
     *&buf[4] = v25;
     *&buf[12] = 2112;
     *&buf[14] = v26;
     *&buf[22] = 2112;
-    v67 = v27;
+    v67 = operationID;
     _os_log_impl(&dword_2304B3000, v23, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,created CKOperation ID, %@", buf, 0x20u);
   }
 
@@ -856,16 +856,16 @@ uint64_t __101__SMCloudKitZone_fetchShareMetadataWithInvitationToken_sessionID_c
   v51[1] = 3221225472;
   v51[2] = __92__SMCloudKitZone_acceptShareWithShareMetadata_sessionID_container_queue_qos_withCompletion___block_invoke;
   v51[3] = &unk_2788C7888;
-  v28 = v16;
+  v28 = queueCopy;
   v52 = v28;
-  v29 = v41;
+  v29 = dCopy;
   v53 = v29;
-  v57 = a1;
+  selfCopy = self;
   v58 = a2;
-  v30 = v15;
+  v30 = metadataCopy;
   v54 = v30;
   v56 = buf;
-  v31 = v17;
+  v31 = completionCopy;
   v55 = v31;
   [v20 setPerShareCompletionBlock:v51];
   v44[0] = MEMORY[0x277D85DD0];
@@ -877,7 +877,7 @@ uint64_t __101__SMCloudKitZone_fetchShareMetadataWithInvitationToken_sessionID_c
   v48 = buf;
   v33 = v29;
   v46 = v33;
-  v49 = a1;
+  selfCopy2 = self;
   v50 = a2;
   v34 = v31;
   v47 = v34;
@@ -900,7 +900,7 @@ uint64_t __101__SMCloudKitZone_fetchShareMetadataWithInvitationToken_sessionID_c
     }
   }
 
-  [v43 addOperation:{v20, v39}];
+  [containerCopy addOperation:{v20, v39}];
 
   _Block_object_dispose(buf, 8);
 }
@@ -1047,14 +1047,14 @@ uint64_t __92__SMCloudKitZone_acceptShareWithShareMetadata_sessionID_container_q
   return result;
 }
 
-- (void)fetchZoneFromDatabase:(id)a3 qos:(id)a4 withCompletion:(id)a5
+- (void)fetchZoneFromDatabase:(id)database qos:(id)qos withCompletion:(id)completion
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  databaseCopy = database;
+  qosCopy = qos;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (!databaseCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1069,7 +1069,7 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1083,19 +1083,19 @@ LABEL_11:
   }
 
   v13 = objc_alloc(MEMORY[0x277CBC3D0]);
-  v14 = [(SMCloudKitZone *)self zoneID];
-  v39[0] = v14;
+  zoneID = [(SMCloudKitZone *)self zoneID];
+  v39[0] = zoneID;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
   v16 = [v13 initWithRecordZoneIDs:v15];
 
-  v17 = [(SMCloudKitZone *)self container];
-  v18 = [v16 configuration];
-  [v18 setContainer:v17];
+  container = [(SMCloudKitZone *)self container];
+  configuration = [v16 configuration];
+  [configuration setContainer:container];
 
-  [v16 setDatabase:v9];
-  v19 = [v16 configuration];
-  v36 = v19;
-  [objc_opt_class() configureCloudKitQos:v10 configuration:&v36];
+  [v16 setDatabase:databaseCopy];
+  configuration2 = [v16 configuration];
+  v36 = configuration2;
+  [objc_opt_class() configureCloudKitQos:qosCopy configuration:&v36];
   v27 = v36;
 
   v20 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1104,13 +1104,13 @@ LABEL_11:
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
     v23 = NSStringFromSelector(a2);
-    v24 = [v16 operationID];
+    operationID = [v16 operationID];
     *buf = 138412802;
     *&buf[4] = v22;
     *&buf[12] = 2112;
     *&buf[14] = v23;
     *&buf[22] = 2112;
-    v38 = v24;
+    v38 = operationID;
     _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,created CKOperation ID, %@", buf, 0x20u);
   }
 
@@ -1137,7 +1137,7 @@ LABEL_11:
   v31 = a2;
   v29 = v25;
   [v16 setFetchRecordZonesCompletionBlock:v28];
-  [v9 addOperation:v16];
+  [databaseCopy addOperation:v16];
 
   _Block_object_dispose(buf, 8);
 LABEL_9:
@@ -1271,14 +1271,14 @@ uint64_t __59__SMCloudKitZone_fetchZoneFromDatabase_qos_withCompletion___block_i
   return result;
 }
 
-- (void)saveZoneToDatabase:(id)a3 qos:(id)a4 withCompletion:(id)a5
+- (void)saveZoneToDatabase:(id)database qos:(id)qos withCompletion:(id)completion
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  databaseCopy = database;
+  qosCopy = qos;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (!databaseCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1293,7 +1293,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1306,7 +1306,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v10)
+  if (!qosCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1325,14 +1325,14 @@ LABEL_13:
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
   v16 = [v13 initWithRecordZonesToSave:v15 recordZoneIDsToDelete:0];
 
-  v17 = [(SMCloudKitZone *)self container];
-  v18 = [v16 configuration];
-  [v18 setContainer:v17];
+  container = [(SMCloudKitZone *)self container];
+  configuration = [v16 configuration];
+  [configuration setContainer:container];
 
-  [v16 setDatabase:v9];
-  v19 = [v16 configuration];
-  v37 = v19;
-  [objc_opt_class() configureCloudKitQos:v10 configuration:&v37];
+  [v16 setDatabase:databaseCopy];
+  configuration2 = [v16 configuration];
+  v37 = configuration2;
+  [objc_opt_class() configureCloudKitQos:qosCopy configuration:&v37];
   v28 = v37;
 
   v20 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1341,16 +1341,16 @@ LABEL_13:
     v21 = objc_opt_class();
     v27 = NSStringFromClass(v21);
     v22 = NSStringFromSelector(a2);
-    v23 = [(SMCloudKitZone *)self zoneID];
-    v24 = [v16 operationID];
+    zoneID = [(SMCloudKitZone *)self zoneID];
+    operationID = [v16 operationID];
     *buf = 138413058;
     *&buf[4] = v27;
     *&buf[12] = 2112;
     *&buf[14] = v22;
     *&buf[22] = 2112;
-    v39 = v23;
+    v39 = zoneID;
     v40 = 2112;
-    v41 = v24;
+    v41 = operationID;
     _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,zoneID,%@,created CKOperation ID, %@", buf, 0x2Au);
   }
 
@@ -1377,7 +1377,7 @@ LABEL_13:
   v32 = a2;
   v30 = v25;
   [v16 setModifyRecordZonesCompletionBlock:v29];
-  [v9 addOperation:v16];
+  [databaseCopy addOperation:v16];
 
   _Block_object_dispose(buf, 8);
 LABEL_14:
@@ -1511,14 +1511,14 @@ uint64_t __56__SMCloudKitZone_saveZoneToDatabase_qos_withCompletion___block_invo
   return result;
 }
 
-- (void)deleteZoneFromDatabase:(id)a3 qos:(id)a4 withCompletion:(id)a5
+- (void)deleteZoneFromDatabase:(id)database qos:(id)qos withCompletion:(id)completion
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v28 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  databaseCopy = database;
+  qosCopy = qos;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (!databaseCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1533,7 +1533,7 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1547,19 +1547,19 @@ LABEL_11:
   }
 
   v12 = objc_alloc(MEMORY[0x277CBC490]);
-  v13 = [(SMCloudKitZone *)self zoneID];
-  v42[0] = v13;
+  zoneID = [(SMCloudKitZone *)self zoneID];
+  v42[0] = zoneID;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
   v15 = [v12 initWithRecordZonesToSave:0 recordZoneIDsToDelete:v14];
 
-  v16 = [(SMCloudKitZone *)self container];
-  v17 = [v15 configuration];
-  [v17 setContainer:v16];
+  container = [(SMCloudKitZone *)self container];
+  configuration = [v15 configuration];
+  [configuration setContainer:container];
 
-  [v15 setDatabase:v9];
-  v18 = [v15 configuration];
-  v37 = v18;
-  [objc_opt_class() configureCloudKitQos:v28 configuration:&v37];
+  [v15 setDatabase:databaseCopy];
+  configuration2 = [v15 configuration];
+  v37 = configuration2;
+  [objc_opt_class() configureCloudKitQos:qosCopy configuration:&v37];
   v27 = v37;
 
   v19 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1568,16 +1568,16 @@ LABEL_11:
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
     v22 = NSStringFromSelector(a2);
-    v23 = [(SMCloudKitZone *)self zoneID];
-    v24 = [v15 operationID];
+    zoneID2 = [(SMCloudKitZone *)self zoneID];
+    operationID = [v15 operationID];
     *buf = 138413058;
     *&buf[4] = v21;
     *&buf[12] = 2112;
     *&buf[14] = v22;
     *&buf[22] = 2112;
-    v39 = v23;
+    v39 = zoneID2;
     v40 = 2112;
-    v41 = v24;
+    v41 = operationID;
     _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,zoneID,%@,created CKOperation ID, %@", buf, 0x2Au);
   }
 
@@ -1604,7 +1604,7 @@ LABEL_11:
   v32 = a2;
   v30 = v25;
   [v15 setModifyRecordZonesCompletionBlock:v29];
-  [v9 addOperation:v15];
+  [databaseCopy addOperation:v15];
 
   _Block_object_dispose(buf, 8);
 LABEL_9:
@@ -1738,24 +1738,24 @@ uint64_t __60__SMCloudKitZone_deleteZoneFromDatabase_qos_withCompletion___block_
   return result;
 }
 
-- (void)fetchShareWithQos:(id)a3 withCompletion:(id)a4
+- (void)fetchShareWithQos:(id)qos withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  qosCopy = qos;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = objc_alloc(MEMORY[0x277CBC5D0]);
     v9 = *MEMORY[0x277CBC020];
-    v10 = [(SMCloudKitZone *)self zoneID];
-    v11 = [v8 initWithRecordName:v9 zoneID:v10];
+    zoneID = [(SMCloudKitZone *)self zoneID];
+    v11 = [v8 initWithRecordName:v9 zoneID:zoneID];
 
-    v12 = [(SMCloudKitZone *)self privateDatabase];
+    privateDatabase = [(SMCloudKitZone *)self privateDatabase];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __51__SMCloudKitZone_fetchShareWithQos_withCompletion___block_invoke;
     v13[3] = &unk_2788C79A0;
-    v14 = v7;
-    [(SMCloudKitZone *)self fetchRecord:v11 fromDatabase:v12 qos:v6 withCompletion:v13];
+    v14 = completionCopy;
+    [(SMCloudKitZone *)self fetchRecord:v11 fromDatabase:privateDatabase qos:qosCopy withCompletion:v13];
   }
 
   else
@@ -1769,22 +1769,22 @@ uint64_t __60__SMCloudKitZone_deleteZoneFromDatabase_qos_withCompletion___block_
   }
 }
 
-- (void)fetchShareParticipantsWithConversation:(id)a3 qos:(id)a4 completion:(id)a5
+- (void)fetchShareParticipantsWithConversation:(id)conversation qos:(id)qos completion:(id)completion
 {
   v86 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v55 = a4;
-  v56 = a5;
+  conversationCopy = conversation;
+  qosCopy = qos;
+  completionCopy = completion;
   v8 = objc_alloc(MEMORY[0x277CBEB38]);
-  v57 = v7;
-  v9 = [v7 receiverHandles];
-  v61 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+  v57 = conversationCopy;
+  receiverHandles = [conversationCopy receiverHandles];
+  v61 = [v8 initWithCapacity:{objc_msgSend(receiverHandles, "count")}];
 
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = [v7 receiverHandles];
+  obj = [conversationCopy receiverHandles];
   v10 = [obj countByEnumeratingWithState:&v70 objects:v85 count:16];
   if (v10)
   {
@@ -1800,14 +1800,14 @@ uint64_t __60__SMCloudKitZone_deleteZoneFromDatabase_qos_withCompletion___block_
 
         v13 = *(*(&v70 + 1) + 8 * i);
         v14 = MEMORY[0x277D4AAE8];
-        v15 = [v13 primaryHandle];
-        v16 = [v14 getSMHandleTypeWithHandle:v15];
+        primaryHandle = [v13 primaryHandle];
+        v16 = [v14 getSMHandleTypeWithHandle:primaryHandle];
 
         if (v16 == 2)
         {
           v20 = objc_alloc(MEMORY[0x277CBC7C8]);
-          v18 = [v13 primaryHandle];
-          v19 = [v20 initWithEmailAddress:v18];
+          primaryHandle2 = [v13 primaryHandle];
+          v19 = [v20 initWithEmailAddress:primaryHandle2];
         }
 
         else
@@ -1818,8 +1818,8 @@ uint64_t __60__SMCloudKitZone_deleteZoneFromDatabase_qos_withCompletion___block_
           }
 
           v17 = objc_alloc(MEMORY[0x277CBC7C8]);
-          v18 = [v13 primaryHandle];
-          v19 = [v17 initWithPhoneNumber:v18];
+          primaryHandle2 = [v13 primaryHandle];
+          v19 = [v17 initWithPhoneNumber:primaryHandle2];
         }
 
         v21 = v19;
@@ -1833,13 +1833,13 @@ LABEL_22:
             v47 = objc_opt_class();
             v48 = NSStringFromClass(v47);
             v49 = NSStringFromSelector(a2);
-            v50 = [v13 primaryHandle];
+            primaryHandle3 = [v13 primaryHandle];
             *buf = 138412802;
             *&buf[4] = v48;
             *&buf[12] = 2112;
             *&buf[14] = v49;
             *&buf[22] = 2112;
-            v81 = v50;
+            v81 = primaryHandle3;
             _os_log_error_impl(&dword_2304B3000, v44, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,Invalid Handle %@", buf, 0x20u);
           }
 
@@ -1848,7 +1848,7 @@ LABEL_22:
           v84 = @"Invalid Receiver Handle received";
           v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
           v46 = [v45 initWithDomain:*MEMORY[0x277D4ACD0] code:0 userInfo:v32];
-          (*(v56 + 2))(v56, 0, 0, v46);
+          (*(completionCopy + 2))(completionCopy, 0, 0, v46);
 
           goto LABEL_25;
         }
@@ -1859,13 +1859,13 @@ LABEL_22:
           v23 = objc_opt_class();
           v24 = NSStringFromClass(v23);
           v25 = NSStringFromSelector(a2);
-          v26 = [v13 primaryHandle];
+          primaryHandle4 = [v13 primaryHandle];
           *buf = 138413058;
           *&buf[4] = v24;
           *&buf[12] = 2112;
           *&buf[14] = v25;
           *&buf[22] = 2112;
-          v81 = v26;
+          v81 = primaryHandle4;
           LOWORD(v82) = 2112;
           *(&v82 + 2) = v21;
           _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,Valid Handle %@,%@", buf, 0x2Au);
@@ -1885,16 +1885,16 @@ LABEL_22:
   }
 
   v27 = objc_alloc(MEMORY[0x277CBC410]);
-  v28 = [v61 allValues];
-  obj = [v27 initWithUserIdentityLookupInfos:v28];
+  allValues = [v61 allValues];
+  obj = [v27 initWithUserIdentityLookupInfos:allValues];
 
-  v29 = [(SMCloudKitZone *)self container];
-  v30 = [obj configuration];
-  [v30 setContainer:v29];
+  container = [(SMCloudKitZone *)self container];
+  configuration = [obj configuration];
+  [configuration setContainer:container];
 
-  v31 = [obj configuration];
-  v69 = v31;
-  [objc_opt_class() configureCloudKitQos:v55 configuration:&v69];
+  configuration2 = [obj configuration];
+  v69 = configuration2;
+  [objc_opt_class() configureCloudKitQos:qosCopy configuration:&v69];
   v32 = v69;
 
   v33 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1903,16 +1903,16 @@ LABEL_22:
     v34 = objc_opt_class();
     v35 = NSStringFromClass(v34);
     v36 = NSStringFromSelector(a2);
-    v37 = [(SMCloudKitZone *)self zoneID];
-    v38 = [obj operationID];
+    zoneID = [(SMCloudKitZone *)self zoneID];
+    operationID = [obj operationID];
     *buf = 138413058;
     *&buf[4] = v35;
     *&buf[12] = 2112;
     *&buf[14] = v36;
     *&buf[22] = 2112;
-    v81 = v37;
+    v81 = zoneID;
     LOWORD(v82) = 2112;
-    *(&v82 + 2) = v38;
+    *(&v82 + 2) = operationID;
     _os_log_impl(&dword_2304B3000, v33, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,zoneID,%@,created CKOperation ID, %@", buf, 0x2Au);
   }
 
@@ -1922,14 +1922,14 @@ LABEL_22:
   v81 = __Block_byref_object_copy__31;
   *&v82 = __Block_byref_object_dispose__31;
   v39 = objc_alloc(MEMORY[0x277CBEB38]);
-  v40 = [v57 receiverHandles];
-  *(&v82 + 1) = [v39 initWithCapacity:{objc_msgSend(v40, "count")}];
+  receiverHandles2 = [v57 receiverHandles];
+  *(&v82 + 1) = [v39 initWithCapacity:{objc_msgSend(receiverHandles2, "count")}];
 
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
   v68[2] = __72__SMCloudKitZone_fetchShareParticipantsWithConversation_qos_completion___block_invoke;
   v68[3] = &unk_2788C79F0;
-  v41 = self;
+  selfCopy2 = self;
   v68[4] = self;
   v68[5] = buf;
   v68[6] = a2;
@@ -1940,7 +1940,7 @@ LABEL_22:
   v62[3] = &unk_2788C7A40;
   v62[4] = self;
   v67 = a2;
-  v65 = v56;
+  v65 = completionCopy;
   v63 = v57;
   v64 = v61;
   v66 = buf;
@@ -1953,21 +1953,21 @@ LABEL_22:
       v51 = objc_opt_class();
       v52 = NSStringFromClass(v51);
       v53 = NSStringFromSelector(a2);
-      v54 = [obj userIdentityLookupInfos];
+      userIdentityLookupInfos = [obj userIdentityLookupInfos];
       *v74 = 138412802;
       v75 = v52;
       v76 = 2112;
       v77 = v53;
       v78 = 2112;
-      v79 = v54;
+      v79 = userIdentityLookupInfos;
       _os_log_debug_impl(&dword_2304B3000, v42, OS_LOG_TYPE_DEBUG, "#SafetyCache,%@,%@,adding fetch share participants operation with ID lookups %@", v74, 0x20u);
     }
 
-    v41 = self;
+    selfCopy2 = self;
   }
 
-  v43 = [(SMCloudKitZone *)v41 container];
-  [v43 addOperation:obj];
+  container2 = [(SMCloudKitZone *)selfCopy2 container];
+  [container2 addOperation:obj];
 
   _Block_object_dispose(buf, 8);
 LABEL_25:
@@ -2209,15 +2209,15 @@ void __72__SMCloudKitZone_fetchShareParticipantsWithConversation_qos_completion_
   }
 }
 
-- (void)saveRecord:(id)a3 toDatabase:(id)a4 qos:(id)a5 withCompletion:(id)a6
+- (void)saveRecord:(id)record toDatabase:(id)database qos:(id)qos withCompletion:(id)completion
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v11)
+  recordCopy = record;
+  databaseCopy = database;
+  qosCopy = qos;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (!databaseCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2232,7 +2232,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v10)
+  if (!recordCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2245,7 +2245,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v13)
+  if (!completionCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2258,14 +2258,14 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v21[0] = v10;
+  v21[0] = recordCopy;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __59__SMCloudKitZone_saveRecord_toDatabase_qos_withCompletion___block_invoke;
   v18[3] = &unk_2788C6D60;
   v19 = v14;
-  [(SMCloudKitZone *)self saveRecords:v15 toDatabase:v11 qos:v12 withCompletion:v18];
+  [(SMCloudKitZone *)self saveRecords:v15 toDatabase:databaseCopy qos:qosCopy withCompletion:v18];
 
   v16 = v19;
 LABEL_12:
@@ -2279,15 +2279,15 @@ void __59__SMCloudKitZone_saveRecord_toDatabase_qos_withCompletion___block_invok
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)saveRecords:(id)a3 toDatabase:(id)a4 qos:(id)a5 withCompletion:(id)a6
+- (void)saveRecords:(id)records toDatabase:(id)database qos:(id)qos withCompletion:(id)completion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v12)
+  recordsCopy = records;
+  databaseCopy = database;
+  qosCopy = qos;
+  completionCopy = completion;
+  v15 = completionCopy;
+  if (!databaseCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2302,7 +2302,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (!v11)
+  if (!recordsCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2315,7 +2315,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!v13)
+  if (!qosCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2328,7 +2328,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!v14)
+  if (!completionCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2354,21 +2354,21 @@ LABEL_20:
       v41 = 2112;
       v42 = v30;
       v43 = 2112;
-      v44 = v11;
+      v44 = recordsCopy;
       _os_log_debug_impl(&dword_2304B3000, v16, OS_LOG_TYPE_DEBUG, "#SafetyCache,Initiator,%@,%@,saving records,%@", buf, 0x20u);
     }
   }
 
-  v17 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:v11 recordIDsToDelete:0];
-  v18 = [(SMCloudKitZone *)self container];
-  v19 = [v17 configuration];
-  [v19 setContainer:v18];
+  v17 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:recordsCopy recordIDsToDelete:0];
+  container = [(SMCloudKitZone *)self container];
+  configuration = [v17 configuration];
+  [configuration setContainer:container];
 
-  [v17 setDatabase:v12];
+  [v17 setDatabase:databaseCopy];
   [v17 setSavePolicy:1];
-  v20 = [v17 configuration];
-  v38 = v20;
-  [objc_opt_class() configureCloudKitQos:v13 configuration:&v38];
+  configuration2 = [v17 configuration];
+  v38 = configuration2;
+  [objc_opt_class() configureCloudKitQos:qosCopy configuration:&v38];
   v33 = v38;
 
   v21 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2378,17 +2378,17 @@ LABEL_20:
     v31 = NSStringFromClass(v22);
     NSStringFromSelector(a2);
     v23 = v32 = a2;
-    v24 = [(SMCloudKitZone *)self zoneID];
-    v25 = [v17 operationID];
+    zoneID = [(SMCloudKitZone *)self zoneID];
+    operationID = [v17 operationID];
     *buf = 138413058;
     v40 = v31;
     v41 = 2112;
     v42 = v23;
     v43 = 2112;
-    v44 = v24;
+    v44 = zoneID;
     v45 = 2112;
-    v46 = v25;
-    v26 = v25;
+    v46 = operationID;
+    v26 = operationID;
     _os_log_impl(&dword_2304B3000, v21, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,zoneID,%@,created CKOperation ID, %@", buf, 0x2Au);
 
     a2 = v32;
@@ -2409,7 +2409,7 @@ LABEL_20:
   v36 = a2;
   v35 = v15;
   [v17 setModifyRecordsCompletionBlock:v34];
-  [v12 addOperation:v17];
+  [databaseCopy addOperation:v17];
 
 LABEL_21:
 }
@@ -2582,14 +2582,14 @@ LABEL_3:
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)saveRecordsWithRetry:(int64_t)a3 records:(id)a4 toDatabase:(id)a5 qos:(id)a6 withCompletion:(id)a7
+- (void)saveRecordsWithRetry:(int64_t)retry records:(id)records toDatabase:(id)database qos:(id)qos withCompletion:(id)completion
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (!v14)
+  recordsCopy = records;
+  databaseCopy = database;
+  qosCopy = qos;
+  completionCopy = completion;
+  v17 = completionCopy;
+  if (!databaseCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -2604,7 +2604,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v13)
+  if (!recordsCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -2617,7 +2617,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v16)
+  if (!completionCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -2630,7 +2630,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v15)
+  if (!qosCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -2645,7 +2645,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v18 = [(SMCloudKitZone *)self privateDatabase];
+  privateDatabase = [(SMCloudKitZone *)self privateDatabase];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __77__SMCloudKitZone_saveRecordsWithRetry_records_toDatabase_qos_withCompletion___block_invoke;
@@ -2653,10 +2653,10 @@ LABEL_15:
   v21[4] = self;
   v25 = a2;
   v24 = v17;
-  v26 = a3;
-  v22 = v13;
-  v23 = v15;
-  [(SMCloudKitZone *)self saveRecords:v22 toDatabase:v18 qos:v23 withCompletion:v21];
+  retryCopy = retry;
+  v22 = recordsCopy;
+  v23 = qosCopy;
+  [(SMCloudKitZone *)self saveRecords:v22 toDatabase:privateDatabase qos:v23 withCompletion:v21];
 
 LABEL_16:
 }
@@ -2772,15 +2772,15 @@ LABEL_16:
 LABEL_14:
 }
 
-- (void)fetchRecord:(id)a3 fromDatabase:(id)a4 qos:(id)a5 withCompletion:(id)a6
+- (void)fetchRecord:(id)record fromDatabase:(id)database qos:(id)qos withCompletion:(id)completion
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v12)
+  recordCopy = record;
+  databaseCopy = database;
+  qosCopy = qos;
+  completionCopy = completion;
+  v15 = completionCopy;
+  if (!databaseCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -2795,7 +2795,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v11)
+  if (!recordCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -2808,7 +2808,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v14)
+  if (!completionCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -2822,18 +2822,18 @@ LABEL_13:
   }
 
   v16 = objc_alloc(MEMORY[0x277CBC3E0]);
-  v44[0] = v11;
+  v44[0] = recordCopy;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:1];
   v18 = [v16 initWithRecordIDs:v17];
 
-  v19 = [(SMCloudKitZone *)self container];
-  v20 = [v18 configuration];
-  [v20 setContainer:v19];
+  container = [(SMCloudKitZone *)self container];
+  configuration = [v18 configuration];
+  [configuration setContainer:container];
 
-  [v18 setDatabase:v12];
-  v21 = [v18 configuration];
-  v39 = v21;
-  [objc_opt_class() configureCloudKitQos:v13 configuration:&v39];
+  [v18 setDatabase:databaseCopy];
+  configuration2 = [v18 configuration];
+  v39 = configuration2;
+  [objc_opt_class() configureCloudKitQos:qosCopy configuration:&v39];
   v30 = v39;
 
   v22 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2842,16 +2842,16 @@ LABEL_13:
     v23 = objc_opt_class();
     v29 = NSStringFromClass(v23);
     v28 = NSStringFromSelector(a2);
-    v24 = [(SMCloudKitZone *)self zoneID];
-    v25 = [v18 operationID];
+    zoneID = [(SMCloudKitZone *)self zoneID];
+    operationID = [v18 operationID];
     *buf = 138413058;
     *&buf[4] = v29;
     *&buf[12] = 2112;
     *&buf[14] = v28;
     *&buf[22] = 2112;
-    v41 = v24;
+    v41 = zoneID;
     v42 = 2112;
-    v43 = v25;
+    v43 = operationID;
     _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,zoneID,%@,created CKOperation ID, %@", buf, 0x2Au);
   }
 
@@ -2878,7 +2878,7 @@ LABEL_13:
   v34 = a2;
   v32 = v26;
   [v18 setFetchRecordsCompletionBlock:v31];
-  [v12 addOperation:v18];
+  [databaseCopy addOperation:v18];
 
   _Block_object_dispose(buf, 8);
 LABEL_14:
@@ -3020,15 +3020,15 @@ uint64_t __62__SMCloudKitZone_fetchRecord_fromDatabase_qos_withCompletion___bloc
   return result;
 }
 
-- (void)updateRecord:(id)a3 inDatabase:(id)a4 qos:(id)a5 usingBlock:(id)a6 withCompletion:(id)a7
+- (void)updateRecord:(id)record inDatabase:(id)database qos:(id)qos usingBlock:(id)block withCompletion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = v17;
-  if (!v14)
+  recordCopy = record;
+  databaseCopy = database;
+  qosCopy = qos;
+  blockCopy = block;
+  completionCopy = completion;
+  v18 = completionCopy;
+  if (!databaseCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -3043,7 +3043,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v13)
+  if (!recordCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -3056,7 +3056,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v16)
+  if (!blockCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -3069,7 +3069,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v17)
+  if (!completionCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -3090,11 +3090,11 @@ LABEL_15:
   v21[3] = &unk_2788C7B30;
   v21[4] = self;
   v27 = a2;
-  v22 = v13;
+  v22 = recordCopy;
   v25 = v18;
-  v26 = v16;
-  v23 = v14;
-  v24 = v15;
+  v26 = blockCopy;
+  v23 = databaseCopy;
+  v24 = qosCopy;
   [(SMCloudKitZone *)self fetchRecord:v22 fromDatabase:v23 qos:v24 withCompletion:v21];
 
 LABEL_16:
@@ -3221,15 +3221,15 @@ LABEL_4:
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)deleteRecords:(id)a3 fromDatabase:(id)a4 qos:(id)a5 withCompletion:(id)a6
+- (void)deleteRecords:(id)records fromDatabase:(id)database qos:(id)qos withCompletion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v12)
+  recordsCopy = records;
+  databaseCopy = database;
+  qosCopy = qos;
+  completionCopy = completion;
+  v15 = completionCopy;
+  if (!databaseCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -3244,7 +3244,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v11)
+  if (!recordsCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -3257,7 +3257,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v14)
+  if (!completionCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -3270,15 +3270,15 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v16 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:0 recordIDsToDelete:v11];
-  v17 = [(SMCloudKitZone *)self container];
-  v18 = [v16 configuration];
-  [v18 setContainer:v17];
+  v16 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:0 recordIDsToDelete:recordsCopy];
+  container = [(SMCloudKitZone *)self container];
+  configuration = [v16 configuration];
+  [configuration setContainer:container];
 
-  [v16 setDatabase:v12];
-  v19 = [v16 configuration];
-  v35 = v19;
-  [objc_opt_class() configureCloudKitQos:v13 configuration:&v35];
+  [v16 setDatabase:databaseCopy];
+  configuration2 = [v16 configuration];
+  v35 = configuration2;
+  [objc_opt_class() configureCloudKitQos:qosCopy configuration:&v35];
   v20 = v35;
 
   v21 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -3287,7 +3287,7 @@ LABEL_13:
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
     NSStringFromSelector(a2);
-    v24 = v29 = v13;
+    v24 = v29 = qosCopy;
     [(SMCloudKitZone *)self zoneID];
     v25 = v28 = a2;
     [v16 operationID];
@@ -3305,7 +3305,7 @@ LABEL_13:
     v20 = v30;
     a2 = v28;
 
-    v13 = v29;
+    qosCopy = v29;
   }
 
   v34[0] = MEMORY[0x277D85DD0];
@@ -3323,7 +3323,7 @@ LABEL_13:
   v33 = a2;
   v32 = v15;
   [v16 setModifyRecordsCompletionBlock:v31];
-  [v12 addOperation:v16];
+  [databaseCopy addOperation:v16];
 
 LABEL_14:
 }
@@ -3539,15 +3539,15 @@ LABEL_20:
 LABEL_24:
 }
 
-- (void)removeShareParticipantsInConversation:(id)a3 qos:(id)a4 withCompletion:(id)a5
+- (void)removeShareParticipantsInConversation:(id)conversation qos:(id)qos withCompletion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(SMCloudKitZone *)self share];
+  conversationCopy = conversation;
+  qosCopy = qos;
+  completionCopy = completion;
+  share = [(SMCloudKitZone *)self share];
 
-  if (v12)
+  if (share)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -3557,13 +3557,13 @@ LABEL_24:
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
         v16 = NSStringFromSelector(a2);
-        v17 = [v9 receiverPrimaryHandles];
+        receiverPrimaryHandles = [conversationCopy receiverPrimaryHandles];
         *buf = 138412802;
         *&buf[4] = v15;
         *&buf[12] = 2112;
         *&buf[14] = v16;
         *&buf[22] = 2112;
-        v41 = v17;
+        v41 = receiverPrimaryHandles;
         _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "#SafetyCache,%@,%@,removing handles from share,%@", buf, 0x20u);
       }
     }
@@ -3585,18 +3585,18 @@ LABEL_24:
     v34[4] = self;
     v19 = v18;
     v35 = v19;
-    [(SMCloudKitZone *)self fetchShareParticipantsWithConversation:v9 qos:v10 completion:v34];
-    v20 = [(SMCloudKitZone *)self queue];
+    [(SMCloudKitZone *)self fetchShareParticipantsWithConversation:conversationCopy qos:qosCopy completion:v34];
+    queue = [(SMCloudKitZone *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __75__SMCloudKitZone_removeShareParticipantsInConversation_qos_withCompletion___block_invoke_98;
     block[3] = &unk_2788C7950;
     block[4] = self;
-    v30 = v10;
+    v30 = qosCopy;
     v32 = buf;
     v33 = a2;
-    v31 = v11;
-    dispatch_group_notify(v19, v20, block);
+    v31 = completionCopy;
+    dispatch_group_notify(v19, queue, block);
 
     _Block_object_dispose(buf, 8);
   }
@@ -3623,7 +3623,7 @@ LABEL_24:
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
     v25 = [v22 initWithDomain:*MEMORY[0x277D4ACD0] code:49 userInfo:v24];
 
-    (*(v11 + 2))(v11, 0, v25);
+    (*(completionCopy + 2))(completionCopy, 0, v25);
   }
 }
 
@@ -3785,23 +3785,23 @@ void __75__SMCloudKitZone_removeShareParticipantsInConversation_qos_withCompleti
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)createNewInvitationTokensWithConversation:(id)a3 qos:(id)a4 completion:(id)a5
+- (void)createNewInvitationTokensWithConversation:(id)conversation qos:(id)qos completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  conversationCopy = conversation;
+  qosCopy = qos;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__SMCloudKitZone_createNewInvitationTokensWithConversation_qos_completion___block_invoke;
   v15[3] = &unk_2788C7C48;
-  v18 = v11;
+  v18 = completionCopy;
   v19 = a2;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v12 = v10;
-  v13 = v11;
-  v14 = v9;
+  v16 = conversationCopy;
+  v17 = qosCopy;
+  v12 = qosCopy;
+  v13 = completionCopy;
+  v14 = conversationCopy;
   [(SMCloudKitZone *)self fetchShareParticipantsWithConversation:v14 qos:v12 completion:v15];
 }
 
@@ -4034,16 +4034,16 @@ void __75__SMCloudKitZone_createNewInvitationTokensWithConversation_qos_completi
   }
 }
 
-- (void)subscribeToZoneChangesInPrivateDatabaseWithQoS:(id)a3 completion:(id)a4
+- (void)subscribeToZoneChangesInPrivateDatabaseWithQoS:(id)s completion:(id)completion
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  completionCopy = completion;
   v8 = MEMORY[0x277CBC618];
-  v9 = a3;
+  sCopy = s;
   v10 = [v8 alloc];
-  v11 = [(SMCloudKitZone *)self zoneID];
-  v12 = [(SMCloudKitZone *)self zoneSubscriptionID];
-  v13 = [v10 initWithZoneID:v11 subscriptionID:v12];
+  zoneID = [(SMCloudKitZone *)self zoneID];
+  zoneSubscriptionID = [(SMCloudKitZone *)self zoneSubscriptionID];
+  v13 = [v10 initWithZoneID:zoneID subscriptionID:zoneSubscriptionID];
 
   v14 = objc_alloc_init(MEMORY[0x277CBC4D0]);
   [v14 setShouldSendContentAvailable:1];
@@ -4053,9 +4053,9 @@ void __75__SMCloudKitZone_createNewInvitationTokensWithConversation_qos_completi
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
   v17 = [v15 initWithSubscriptionsToSave:v16 subscriptionIDsToDelete:0];
 
-  v18 = [v17 configuration];
-  v36 = v18;
-  [objc_opt_class() configureCloudKitQos:v9 configuration:&v36];
+  configuration = [v17 configuration];
+  v36 = configuration;
+  [objc_opt_class() configureCloudKitQos:sCopy configuration:&v36];
 
   v19 = v36;
   v20 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -4070,7 +4070,7 @@ void __75__SMCloudKitZone_createNewInvitationTokensWithConversation_qos_completi
     v31 = v14;
     v25 = v19;
     v26 = v13;
-    v28 = v27 = v7;
+    v28 = v27 = completionCopy;
     *buf = 138413058;
     v38 = v22;
     v39 = 2112;
@@ -4081,7 +4081,7 @@ void __75__SMCloudKitZone_createNewInvitationTokensWithConversation_qos_completi
     v44 = v28;
     _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,%@,zoneID,%@,created CKOperation ID, %@", buf, 0x2Au);
 
-    v7 = v27;
+    completionCopy = v27;
     v13 = v26;
     v19 = v25;
     v14 = v31;
@@ -4093,13 +4093,13 @@ void __75__SMCloudKitZone_createNewInvitationTokensWithConversation_qos_completi
   v33[1] = 3221225472;
   v33[2] = __76__SMCloudKitZone_subscribeToZoneChangesInPrivateDatabaseWithQoS_completion___block_invoke;
   v33[3] = &unk_2788C7A90;
-  v34 = v7;
+  v34 = completionCopy;
   v35 = a2;
   v33[4] = self;
-  v29 = v7;
+  v29 = completionCopy;
   [v17 setModifySubscriptionsCompletionBlock:v33];
-  v30 = [(SMCloudKitZone *)self privateDatabase];
-  [v30 addOperation:v17];
+  privateDatabase = [(SMCloudKitZone *)self privateDatabase];
+  [privateDatabase addOperation:v17];
 }
 
 void __76__SMCloudKitZone_subscribeToZoneChangesInPrivateDatabaseWithQoS_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -4148,16 +4148,16 @@ void __76__SMCloudKitZone_subscribeToZoneChangesInPrivateDatabaseWithQoS_complet
   (*(*(a1 + 40) + 16))();
 }
 
-+ (BOOL)shouldRetryCkError:(id)a3
++ (BOOL)shouldRetryCkError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CBBF50]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x277CBBF50]];
 
   v7 = 1;
   if (v5)
   {
-    if ((v6 = [v3 code], v6 <= 0x24) && ((1 << v6) & 0x1BFFAF5FA2) != 0 || v6 - 110 < 3)
+    if ((v6 = [errorCopy code], v6 <= 0x24) && ((1 << v6) & 0x1BFFAF5FA2) != 0 || v6 - 110 < 3)
     {
       v7 = 0;
     }
@@ -4169,49 +4169,49 @@ void __76__SMCloudKitZone_subscribeToZoneChangesInPrivateDatabaseWithQoS_complet
 - (CKRecordZoneID)zoneID
 {
   v2 = [(SMCloudKitZone *)self zone];
-  v3 = [v2 zoneID];
+  zoneID = [v2 zoneID];
 
-  return v3;
+  return zoneID;
 }
 
 - (NSString)zoneName
 {
-  v2 = [(SMCloudKitZone *)self zoneID];
-  v3 = [v2 zoneName];
+  zoneID = [(SMCloudKitZone *)self zoneID];
+  zoneName = [zoneID zoneName];
 
-  return v3;
+  return zoneName;
 }
 
 - (NSString)zoneSubscriptionID
 {
-  v2 = [(SMCloudKitZone *)self zoneName];
-  v3 = [@"SMCloudKitSubscription-" stringByAppendingString:v2];
+  zoneName = [(SMCloudKitZone *)self zoneName];
+  v3 = [@"SMCloudKitSubscription-" stringByAppendingString:zoneName];
 
   return v3;
 }
 
 - (NSString)ownerName
 {
-  v2 = [(SMCloudKitZone *)self zoneID];
-  v3 = [v2 ownerName];
+  zoneID = [(SMCloudKitZone *)self zoneID];
+  ownerName = [zoneID ownerName];
 
-  return v3;
+  return ownerName;
 }
 
 - (CKDatabase)privateDatabase
 {
-  v2 = [(SMCloudKitZone *)self container];
-  v3 = [v2 privateCloudDatabase];
+  container = [(SMCloudKitZone *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
 
-  return v3;
+  return privateCloudDatabase;
 }
 
 - (CKDatabase)sharedDatabase
 {
-  v2 = [(SMCloudKitZone *)self container];
-  v3 = [v2 sharedCloudDatabase];
+  container = [(SMCloudKitZone *)self container];
+  sharedCloudDatabase = [container sharedCloudDatabase];
 
-  return v3;
+  return sharedCloudDatabase;
 }
 
 - (id)apsEnvironmentString
@@ -4241,7 +4241,7 @@ void __76__SMCloudKitZone_subscribeToZoneChangesInPrivateDatabaseWithQoS_complet
         v52 = __Block_byref_object_copy__31;
         *&v53 = __Block_byref_object_dispose__31;
         *(&v53 + 1) = dispatch_semaphore_create(0);
-        v8 = [(SMCloudKitZone *)self container];
+        container = [(SMCloudKitZone *)self container];
         v39[0] = MEMORY[0x277D85DD0];
         v39[1] = 3221225472;
         v39[2] = __38__SMCloudKitZone_apsEnvironmentString__block_invoke;
@@ -4250,7 +4250,7 @@ void __76__SMCloudKitZone_subscribeToZoneChangesInPrivateDatabaseWithQoS_complet
         v39[5] = &v40;
         v39[6] = v51;
         v39[7] = a2;
-        [v8 serverPreferredPushEnvironmentWithCompletionHandler:v39];
+        [container serverPreferredPushEnvironmentWithCompletionHandler:v39];
 
         v9 = *(*&v51[8] + 40);
         v10 = [MEMORY[0x277CBEAA8] now];
@@ -4262,11 +4262,11 @@ void __76__SMCloudKitZone_subscribeToZoneChangesInPrivateDatabaseWithQoS_complet
           v13 = v12;
           v14 = objc_opt_new();
           v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_26];
-          v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v17 = [v16 filteredArrayUsingPredicate:v15];
-          v18 = [v17 firstObject];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+          v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+          firstObject = [v17 firstObject];
 
-          [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+          [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
           v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
           {
@@ -4300,13 +4300,13 @@ void __76__SMCloudKitZone_subscribeToZoneChangesInPrivateDatabaseWithQoS_complet
             v26 = objc_opt_class();
             v27 = NSStringFromClass(v26);
             v28 = NSStringFromSelector(a2);
-            v29 = [(SMCloudKitZone *)self zoneName];
+            zoneName = [(SMCloudKitZone *)self zoneName];
             *buf = 138412802;
             *&buf[4] = v27;
             v47 = 2112;
             v48 = v28;
             v49 = 2112;
-            v50 = v29;
+            v50 = zoneName;
             _os_log_impl(&dword_2304B3000, v25, OS_LOG_TYPE_DEFAULT, "#SafetyCache,APSConnectionDelegate,%@,%@,zone,%@,Timeout getting server preferred push environment", buf, 0x20u);
           }
         }
@@ -4329,13 +4329,13 @@ void __76__SMCloudKitZone_subscribeToZoneChangesInPrivateDatabaseWithQoS_complet
     v33 = objc_opt_class();
     v34 = NSStringFromClass(v33);
     v35 = NSStringFromSelector(a2);
-    v36 = [(SMCloudKitZone *)self zoneName];
+    zoneName2 = [(SMCloudKitZone *)self zoneName];
     *v51 = 138413058;
     *&v51[4] = v34;
     *&v51[12] = 2112;
     *&v51[14] = v35;
     *&v51[22] = 2112;
-    v52 = v36;
+    v52 = zoneName2;
     LOWORD(v53) = 2112;
     *(&v53 + 2) = v31;
     _os_log_impl(&dword_2304B3000, v32, OS_LOG_TYPE_DEFAULT, "#SafetyCache,APSConnectionDelegate,%@,%@,zone,%@,Using push environment %@", v51, 0x2Au);
@@ -4387,10 +4387,10 @@ void __38__SMCloudKitZone_apsEnvironmentString__block_invoke(uint64_t a1, void *
   if (!pushConnection)
   {
     v5 = objc_alloc(MEMORY[0x277CEEA10]);
-    v6 = [(SMCloudKitZone *)self apsEnvironmentString];
+    apsEnvironmentString = [(SMCloudKitZone *)self apsEnvironmentString];
     v7 = *MEMORY[0x277D4AC48];
-    v8 = [(SMCloudKitZone *)self queue];
-    v9 = [v5 initWithEnvironmentName:v6 namedDelegatePort:v7 queue:v8];
+    queue = [(SMCloudKitZone *)self queue];
+    v9 = [v5 initWithEnvironmentName:apsEnvironmentString namedDelegatePort:v7 queue:queue];
     v10 = self->_pushConnection;
     self->_pushConnection = v9;
 
@@ -4404,13 +4404,13 @@ void __38__SMCloudKitZone_apsEnvironmentString__block_invoke(uint64_t a1, void *
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
         v14 = NSStringFromSelector(a2);
-        v15 = [(SMCloudKitZone *)self zoneName];
+        zoneName = [(SMCloudKitZone *)self zoneName];
         v17 = 138412802;
         v18 = v13;
         v19 = 2112;
         v20 = v14;
         v21 = 2112;
-        v22 = v15;
+        v22 = zoneName;
         _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_DEFAULT, "#SafetyCache,APSConnectionDelegate,%@,%@,zone,%@,Couldn't create push connection", &v17, 0x20u);
       }
 
@@ -4421,145 +4421,145 @@ void __38__SMCloudKitZone_apsEnvironmentString__block_invoke(uint64_t a1, void *
   return pushConnection;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     v12 = NSStringFromSelector(a2);
-    v13 = [(SMCloudKitZone *)self zoneName];
+    zoneName = [(SMCloudKitZone *)self zoneName];
     v14 = 138413314;
     v15 = v11;
     v16 = 2112;
     v17 = v12;
     v18 = 2112;
-    v19 = v13;
+    v19 = zoneName;
     v20 = 2112;
-    v21 = v8;
+    v21 = tokenCopy;
     v22 = 2112;
-    v23 = v7;
+    v23 = connectionCopy;
     _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEFAULT, "#SafetyCache,APSConnectionDelegate,%@,%@,zone,%@,Received public token %@ on connection %@", &v14, 0x34u);
   }
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  connectionCopy = connection;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
     v18 = NSStringFromSelector(a2);
-    v19 = [(SMCloudKitZone *)self zoneName];
+    zoneName = [(SMCloudKitZone *)self zoneName];
     v20 = 138413826;
     v21 = v17;
     v22 = 2112;
     v23 = v18;
     v24 = 2112;
-    v25 = v19;
+    v25 = zoneName;
     v26 = 2112;
-    v27 = v12;
+    v27 = tokenCopy;
     v28 = 2112;
-    v29 = v13;
+    v29 = topicCopy;
     v30 = 2112;
-    v31 = v14;
+    v31 = identifierCopy;
     v32 = 2112;
-    v33 = v11;
+    v33 = connectionCopy;
     _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_DEFAULT, "#SafetyCache,APSConnectionDelegate,%@,%@,zone,%@,Received per-topic push token %@ for topic %@ identifier %@ on connection %@", &v20, 0x48u);
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 userInfo];
-  v8 = [MEMORY[0x277CBC4C0] notificationFromRemoteNotificationDictionary:v7];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v8 = [MEMORY[0x277CBC4C0] notificationFromRemoteNotificationDictionary:userInfo];
   v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     v12 = NSStringFromSelector(a2);
-    v13 = [(SMCloudKitZone *)self zoneName];
-    v14 = [v6 topic];
+    zoneName = [(SMCloudKitZone *)self zoneName];
+    topic = [messageCopy topic];
     v21 = 138413314;
     v22 = v11;
     v23 = 2112;
     v24 = v12;
     v25 = 2112;
-    v26 = v13;
+    v26 = zoneName;
     v27 = 2112;
-    v28 = v14;
+    v28 = topic;
     v29 = 2112;
     v30 = v8;
     _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEFAULT, "#SafetyCache,APSConnectionDelegate,%@,%@,zone,%@,\nAPS Push received: %@ %@", &v21, 0x34u);
   }
 
-  v15 = [v8 subscriptionID];
-  v16 = [(SMCloudKitZone *)self zoneSubscriptionID];
-  v17 = [v15 isEqualToString:v16];
+  subscriptionID = [v8 subscriptionID];
+  zoneSubscriptionID = [(SMCloudKitZone *)self zoneSubscriptionID];
+  v17 = [subscriptionID isEqualToString:zoneSubscriptionID];
 
   if (v17)
   {
-    v18 = [(SMCloudKitZone *)self zoneUpdateHandler];
+    zoneUpdateHandler = [(SMCloudKitZone *)self zoneUpdateHandler];
 
-    if (v18)
+    if (zoneUpdateHandler)
     {
-      v19 = [(SMCloudKitZone *)self zoneUpdateHandler];
-      v20 = [(SMCloudKitZone *)self zoneName];
-      (v19)[2](v19, v20);
+      zoneUpdateHandler2 = [(SMCloudKitZone *)self zoneUpdateHandler];
+      zoneName2 = [(SMCloudKitZone *)self zoneName];
+      (zoneUpdateHandler2)[2](zoneUpdateHandler2, zoneName2);
     }
   }
 }
 
-- (void)registerForZoneUpdatesWithHandler:(id)a3
+- (void)registerForZoneUpdatesWithHandler:(id)handler
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA8D8];
-  v6 = a3;
-  v7 = [v5 mainBundle];
-  v8 = [v7 bundleIdentifier];
+  handlerCopy = handler;
+  mainBundle = [v5 mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (![v8 length])
+  if (![bundleIdentifier length])
   {
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v9 executablePath];
-    v11 = [v10 lastPathComponent];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    executablePath = [mainBundle2 executablePath];
+    lastPathComponent = [executablePath lastPathComponent];
 
-    v8 = v11;
+    bundleIdentifier = lastPathComponent;
   }
 
-  v12 = [@"com.apple.icloud-container." stringByAppendingString:v8];
-  v13 = [(SMCloudKitZone *)self createPushConnection];
+  v12 = [@"com.apple.icloud-container." stringByAppendingString:bundleIdentifier];
+  createPushConnection = [(SMCloudKitZone *)self createPushConnection];
   v26[0] = v12;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
   [(APSConnection *)self->_pushConnection _setOpportunisticTopics:v14];
 
-  [(SMCloudKitZone *)self setZoneUpdateHandler:v6];
+  [(SMCloudKitZone *)self setZoneUpdateHandler:handlerCopy];
   v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
     v18 = NSStringFromSelector(a2);
-    v19 = [(SMCloudKitZone *)self zoneName];
+    zoneName = [(SMCloudKitZone *)self zoneName];
     v20 = 138412802;
     v21 = v17;
     v22 = 2112;
     v23 = v18;
     v24 = 2112;
-    v25 = v19;
+    v25 = zoneName;
     _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_DEFAULT, "#SafetyCache,APSConnectionDelegate,%@,%@,zone,%@", &v20, 0x20u);
   }
 }
@@ -4581,13 +4581,13 @@ void __38__SMCloudKitZone_apsEnvironmentString__block_invoke(uint64_t a1, void *
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v9 = NSStringFromSelector(a2);
-      v10 = [(SMCloudKitZone *)self zoneName];
+      zoneName = [(SMCloudKitZone *)self zoneName];
       v11 = 138412802;
       v12 = v8;
       v13 = 2112;
       v14 = v9;
       v15 = 2112;
-      v16 = v10;
+      v16 = zoneName;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEFAULT, "#SafetyCache,APSConnectionDelegate,%@,%@,zone,%@", &v11, 0x20u);
     }
   }

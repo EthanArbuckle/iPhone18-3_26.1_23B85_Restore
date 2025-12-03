@@ -1,30 +1,30 @@
 @interface BADownloaderExtensionProxy
-- (BADownloaderExtensionProxy)initWithExtension:(id)a3 xpcConnection:(id)a4 parentAppRecord:(id)a5 applicationInfo:(id)a6;
-- (BOOL)sendAuthenticationChallenge:(id)a3 download:(id)a4 completionHandler:(id)a5;
+- (BADownloaderExtensionProxy)initWithExtension:(id)extension xpcConnection:(id)connection parentAppRecord:(id)record applicationInfo:(id)info;
+- (BOOL)sendAuthenticationChallenge:(id)challenge download:(id)download completionHandler:(id)handler;
 - (NSString)debugDescription;
-- (id)extendClientSandboxForStagedURL:(id)a3 allowWrites:(BOOL)a4;
+- (id)extendClientSandboxForStagedURL:(id)l allowWrites:(BOOL)writes;
 - (void)_checkForExit;
 - (void)_sendingMessage;
 - (void)_startExitTimer;
-- (void)backgroundDownload:(id)a3 failedWithError:(id)a4 completionHandler:(id)a5;
-- (void)backgroundDownload:(id)a3 finishedWithSandboxToken:(id)a4 completionHandler:(id)a5;
-- (void)decrementWakeAssertionWithReply:(id)a3;
+- (void)backgroundDownload:(id)download failedWithError:(id)error completionHandler:(id)handler;
+- (void)backgroundDownload:(id)download finishedWithSandboxToken:(id)token completionHandler:(id)handler;
+- (void)decrementWakeAssertionWithReply:(id)reply;
 - (void)extensionWillTerminate;
-- (void)incrementWakeAssertionWithReply:(id)a3;
+- (void)incrementWakeAssertionWithReply:(id)reply;
 - (void)invalidate;
-- (void)markPurgeableWithFileURL:(id)a3 sandboxToken:(id)a4 reply:(id)a5;
-- (void)requestDownloadsWithContentRequest:(int64_t)a3 manifestURL:(id)a4 extensionInfo:(id)a5 completion:(id)a6;
-- (void)wakeupForTokenWithReply:(id)a3;
+- (void)markPurgeableWithFileURL:(id)l sandboxToken:(id)token reply:(id)reply;
+- (void)requestDownloadsWithContentRequest:(int64_t)request manifestURL:(id)l extensionInfo:(id)info completion:(id)completion;
+- (void)wakeupForTokenWithReply:(id)reply;
 @end
 
 @implementation BADownloaderExtensionProxy
 
-- (BADownloaderExtensionProxy)initWithExtension:(id)a3 xpcConnection:(id)a4 parentAppRecord:(id)a5 applicationInfo:(id)a6
+- (BADownloaderExtensionProxy)initWithExtension:(id)extension xpcConnection:(id)connection parentAppRecord:(id)record applicationInfo:(id)info
 {
-  v68 = a3;
-  v69 = a4;
-  v66 = a5;
-  v70 = a6;
+  extensionCopy = extension;
+  connectionCopy = connection;
+  recordCopy = record;
+  infoCopy = info;
   v88.receiver = self;
   v88.super_class = BADownloaderExtensionProxy;
   v10 = [(BADownloaderExtensionProxy *)&v88 init];
@@ -34,12 +34,12 @@
     goto LABEL_19;
   }
 
-  [(BADownloaderExtensionProxy *)v10 setExtensionConnection:v69];
-  [(BADownloaderExtensionProxy *)v11 setExtensionProcess:v68];
-  [(BADownloaderExtensionProxy *)v11 setApplicationInfo:v70];
-  v67 = [v70 applicationIdentifier];
-  v65 = [v67 _baassets_validUTI];
-  if (![v65 isEqualToString:v67])
+  [(BADownloaderExtensionProxy *)v10 setExtensionConnection:connectionCopy];
+  [(BADownloaderExtensionProxy *)v11 setExtensionProcess:extensionCopy];
+  [(BADownloaderExtensionProxy *)v11 setApplicationInfo:infoCopy];
+  applicationIdentifier = [infoCopy applicationIdentifier];
+  _baassets_validUTI = [applicationIdentifier _baassets_validUTI];
+  if (![_baassets_validUTI isEqualToString:applicationIdentifier])
   {
 
 LABEL_20:
@@ -47,14 +47,14 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  [(BADownloaderExtensionProxy *)v11 setIdentifier:v65];
-  v12 = [(BADownloaderExtensionProxy *)v11 identifier];
-  v13 = [NSString stringWithFormat:@"com.apple.backgroundassets.extension.%@.shutdown_queue", v12];
+  [(BADownloaderExtensionProxy *)v11 setIdentifier:_baassets_validUTI];
+  identifier = [(BADownloaderExtensionProxy *)v11 identifier];
+  v13 = [NSString stringWithFormat:@"com.apple.backgroundassets.extension.%@.shutdown_queue", identifier];
   v14 = v13;
   v15 = dispatch_queue_create([v13 UTF8String], 0);
   [(BADownloaderExtensionProxy *)v11 setShutdownQueue:v15];
 
-  [(BADownloaderExtensionProxy *)v11 setParentAppRecord:v66];
+  [(BADownloaderExtensionProxy *)v11 setParentAppRecord:recordCopy];
   v16 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BADownloaderExtensionSyncProtocol];
   v17 = [NSSet setWithObjects:objc_opt_class(), 0];
   [v16 setClasses:v17 forSelector:"downloadsForRequest:manifestURL:manifestToken:extensionInfo:completionHandler:" argumentIndex:1 ofReply:0];
@@ -104,28 +104,28 @@ LABEL_20:
   [v16 setClasses:v34 forSelector:"backgroundDownload:finishedWithSandboxToken:completionHandler:" argumentIndex:1 ofReply:0];
 
   v35 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BADownloaderExtensionClientSyncProtocol];
-  v36 = [(BADownloaderExtensionProxy *)v11 extensionConnection];
-  [v36 setRemoteObjectInterface:v16];
+  extensionConnection = [(BADownloaderExtensionProxy *)v11 extensionConnection];
+  [extensionConnection setRemoteObjectInterface:v16];
 
-  v37 = [(BADownloaderExtensionProxy *)v11 extensionConnection];
-  [v37 setExportedInterface:v35];
+  extensionConnection2 = [(BADownloaderExtensionProxy *)v11 extensionConnection];
+  [extensionConnection2 setExportedInterface:v35];
 
-  v38 = [(BADownloaderExtensionProxy *)v11 extensionConnection];
-  [v38 setExportedObject:v11];
+  extensionConnection3 = [(BADownloaderExtensionProxy *)v11 extensionConnection];
+  [extensionConnection3 setExportedObject:v11];
 
   v39 = v11;
-  v40 = [(BADownloaderExtensionProxy *)v39 extensionConnection];
+  extensionConnection4 = [(BADownloaderExtensionProxy *)v39 extensionConnection];
   v85[0] = _NSConcreteStackBlock;
   v85[1] = 3221225472;
   v85[2] = sub_100006980;
   v85[3] = &unk_100079300;
-  v41 = v65;
+  v41 = _baassets_validUTI;
   v86 = v41;
   v42 = v39;
   v87 = v42;
-  [v40 setInterruptionHandler:v85];
+  [extensionConnection4 setInterruptionHandler:v85];
 
-  v43 = [(BADownloaderExtensionProxy *)v42 extensionConnection];
+  extensionConnection5 = [(BADownloaderExtensionProxy *)v42 extensionConnection];
   v82[0] = _NSConcreteStackBlock;
   v82[1] = 3221225472;
   v82[2] = sub_1000069D4;
@@ -134,10 +134,10 @@ LABEL_20:
   v83 = v44;
   v45 = v42;
   v84 = v45;
-  [v43 setInvalidationHandler:v82];
+  [extensionConnection5 setInvalidationHandler:v82];
 
-  v46 = [(BADownloaderExtensionProxy *)v45 extensionConnection];
-  [v46 resume];
+  extensionConnection6 = [(BADownloaderExtensionProxy *)v45 extensionConnection];
+  [extensionConnection6 resume];
 
   v47 = sub_100010584();
   if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
@@ -151,14 +151,14 @@ LABEL_20:
   v80 = 0x2020000000;
   v81 = 0;
   v48 = dispatch_semaphore_create(0);
-  v49 = [(BADownloaderExtensionProxy *)v45 extensionConnection];
+  extensionConnection7 = [(BADownloaderExtensionProxy *)v45 extensionConnection];
   v76[0] = _NSConcreteStackBlock;
   v76[1] = 3221225472;
   v76[2] = sub_100006AA4;
   v76[3] = &unk_100079328;
   v50 = v48;
   v77 = v50;
-  v51 = [v49 remoteObjectProxyWithErrorHandler:v76];
+  v51 = [extensionConnection7 remoteObjectProxyWithErrorHandler:v76];
   v73[0] = _NSConcreteStackBlock;
   v73[1] = 3221225472;
   v73[2] = sub_100006B0C;
@@ -179,11 +179,11 @@ LABEL_20:
 
 LABEL_17:
 
-    v60 = [(BADownloaderExtensionProxy *)v45 extensionConnection];
-    [v60 invalidate];
+    extensionConnection8 = [(BADownloaderExtensionProxy *)v45 extensionConnection];
+    [extensionConnection8 invalidate];
 
-    v61 = [(BADownloaderExtensionProxy *)v45 exitTimer];
-    [v61 invalidate];
+    exitTimer = [(BADownloaderExtensionProxy *)v45 exitTimer];
+    [exitTimer invalidate];
 
     v62 = 0;
     goto LABEL_18;
@@ -207,15 +207,15 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_INFO, "Wakeup extension succeeded.\n", v71, 2u);
   }
 
-  v56 = [(BADownloaderExtensionProxy *)v45 applicationInfo];
-  [v56 willLaunchExtension];
+  applicationInfo = [(BADownloaderExtensionProxy *)v45 applicationInfo];
+  [applicationInfo willLaunchExtension];
 
-  v57 = [(BADownloaderExtensionProxy *)v45 applicationInfo];
-  v58 = [(BADownloaderExtensionProxy *)v45 extensionConnection];
-  v59 = v58;
-  if (v58)
+  applicationInfo2 = [(BADownloaderExtensionProxy *)v45 applicationInfo];
+  extensionConnection9 = [(BADownloaderExtensionProxy *)v45 extensionConnection];
+  v59 = extensionConnection9;
+  if (extensionConnection9)
   {
-    [v58 auditToken];
+    [extensionConnection9 auditToken];
   }
 
   else
@@ -224,7 +224,7 @@ LABEL_17:
     v72 = 0u;
   }
 
-  [v57 determineInstallSourceIfUnsetFromAuditToken:v71];
+  [applicationInfo2 determineInstallSourceIfUnsetFromAuditToken:v71];
 
   [(BADownloaderExtensionProxy *)v45 _startExitTimer];
   v62 = 1;
@@ -243,31 +243,31 @@ LABEL_21:
   return v63;
 }
 
-- (void)requestDownloadsWithContentRequest:(int64_t)a3 manifestURL:(id)a4 extensionInfo:(id)a5 completion:(id)a6
+- (void)requestDownloadsWithContentRequest:(int64_t)request manifestURL:(id)l extensionInfo:(id)info completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(BADownloaderExtensionProxy *)self extendClientSandboxForStagedURL:v10 allowWrites:0];
+  lCopy = l;
+  infoCopy = info;
+  completionCopy = completion;
+  v13 = [(BADownloaderExtensionProxy *)self extendClientSandboxForStagedURL:lCopy allowWrites:0];
   if (v13)
   {
     [(BADownloaderExtensionProxy *)self _sendingMessage];
-    v14 = [(BADownloaderExtensionProxy *)self extensionConnection];
+    extensionConnection = [(BADownloaderExtensionProxy *)self extensionConnection];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100006D1C;
     v21[3] = &unk_100079378;
     v21[4] = self;
-    v15 = v12;
+    v15 = completionCopy;
     v22 = v15;
-    v16 = [v14 remoteObjectProxyWithErrorHandler:v21];
+    v16 = [extensionConnection remoteObjectProxyWithErrorHandler:v21];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100006DBC;
     v19[3] = &unk_1000793A0;
     v19[4] = self;
     v20 = v15;
-    [v16 downloadsForRequest:a3 manifestURL:v10 manifestToken:v13 extensionInfo:v11 completionHandler:v19];
+    [v16 downloadsForRequest:request manifestURL:lCopy manifestToken:v13 extensionInfo:infoCopy completionHandler:v19];
   }
 
   else
@@ -279,36 +279,36 @@ LABEL_21:
     }
 
     v18 = +[NSSet set];
-    (*(v12 + 2))(v12, 0, v18);
+    (*(completionCopy + 2))(completionCopy, 0, v18);
   }
 }
 
-- (BOOL)sendAuthenticationChallenge:(id)a3 download:(id)a4 completionHandler:(id)a5
+- (BOOL)sendAuthenticationChallenge:(id)challenge download:(id)download completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  challengeCopy = challenge;
+  downloadCopy = download;
+  handlerCopy = handler;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 1;
   [(BADownloaderExtensionProxy *)self _sendingMessage];
-  v11 = [(BADownloaderExtensionProxy *)self extensionConnection];
+  extensionConnection = [(BADownloaderExtensionProxy *)self extensionConnection];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100006F98;
   v17[3] = &unk_1000793C8;
   v17[4] = self;
   v17[5] = &v18;
-  v12 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v17];
+  v12 = [extensionConnection synchronousRemoteObjectProxyWithErrorHandler:v17];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100007010;
   v15[3] = &unk_1000793F0;
-  v13 = v10;
+  v13 = handlerCopy;
   v15[4] = self;
   v16 = v13;
-  [v12 receivedAuthenticationChallenge:v8 download:v9 completionHandler:v15];
+  [v12 receivedAuthenticationChallenge:challengeCopy download:downloadCopy completionHandler:v15];
 
   LOBYTE(self) = *(v19 + 24);
   _Block_object_dispose(&v18, 8);
@@ -318,31 +318,31 @@ LABEL_21:
 
 - (void)extensionWillTerminate
 {
-  v3 = [(BADownloaderExtensionProxy *)self extensionConnection];
+  extensionConnection = [(BADownloaderExtensionProxy *)self extensionConnection];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000070EC;
   v5[3] = &unk_100079328;
   v5[4] = self;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v5];
+  v4 = [extensionConnection remoteObjectProxyWithErrorHandler:v5];
   [v4 extensionWillTerminate];
 }
 
-- (void)backgroundDownload:(id)a3 failedWithError:(id)a4 completionHandler:(id)a5
+- (void)backgroundDownload:(id)download failedWithError:(id)error completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  errorCopy = error;
+  downloadCopy = download;
   [(BADownloaderExtensionProxy *)self _sendingMessage];
-  v11 = [(BADownloaderExtensionProxy *)self extensionConnection];
+  extensionConnection = [(BADownloaderExtensionProxy *)self extensionConnection];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000072B0;
   v17[3] = &unk_100079378;
   v17[4] = self;
-  v12 = v8;
+  v12 = handlerCopy;
   v18 = v12;
-  v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v17];
+  v13 = [extensionConnection synchronousRemoteObjectProxyWithErrorHandler:v17];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100007330;
@@ -350,24 +350,24 @@ LABEL_21:
   v15[4] = self;
   v16 = v12;
   v14 = v12;
-  [v13 backgroundDownload:v10 failedWithError:v9 completionHandler:v15];
+  [v13 backgroundDownload:downloadCopy failedWithError:errorCopy completionHandler:v15];
 }
 
-- (void)backgroundDownload:(id)a3 finishedWithSandboxToken:(id)a4 completionHandler:(id)a5
+- (void)backgroundDownload:(id)download finishedWithSandboxToken:(id)token completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  tokenCopy = token;
+  downloadCopy = download;
   [(BADownloaderExtensionProxy *)self _sendingMessage];
-  v11 = [(BADownloaderExtensionProxy *)self extensionConnection];
+  extensionConnection = [(BADownloaderExtensionProxy *)self extensionConnection];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000074D4;
   v17[3] = &unk_100079378;
   v17[4] = self;
-  v12 = v8;
+  v12 = handlerCopy;
   v18 = v12;
-  v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v17];
+  v13 = [extensionConnection synchronousRemoteObjectProxyWithErrorHandler:v17];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100007554;
@@ -375,31 +375,31 @@ LABEL_21:
   v15[4] = self;
   v16 = v12;
   v14 = v12;
-  [v13 backgroundDownload:v10 finishedWithSandboxToken:v9 completionHandler:v15];
+  [v13 backgroundDownload:downloadCopy finishedWithSandboxToken:tokenCopy completionHandler:v15];
 }
 
-- (void)wakeupForTokenWithReply:(id)a3
+- (void)wakeupForTokenWithReply:(id)reply
 {
   v3 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"wakeupForTokenWithReply should never be called on the proxy object userInfo:it is for internal use only", 0];
   [v3 raise];
 }
 
-- (id)extendClientSandboxForStagedURL:(id)a3 allowWrites:(BOOL)a4
+- (id)extendClientSandboxForStagedURL:(id)l allowWrites:(BOOL)writes
 {
   v6 = &APP_SANDBOX_READ_WRITE;
-  if (!a4)
+  if (!writes)
   {
     v6 = &APP_SANDBOX_READ;
   }
 
   v7 = *v6;
-  v8 = a3;
-  [a3 fileSystemRepresentation];
-  v9 = [(BADownloaderExtensionProxy *)self extensionConnection];
-  v10 = v9;
-  if (v9)
+  lCopy = l;
+  [l fileSystemRepresentation];
+  extensionConnection = [(BADownloaderExtensionProxy *)self extensionConnection];
+  v10 = extensionConnection;
+  if (extensionConnection)
   {
-    [v9 auditToken];
+    [extensionConnection auditToken];
   }
 
   v11 = sandbox_extension_issue_file_to_process();
@@ -423,81 +423,81 @@ LABEL_21:
   v3 = sub_10001060C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(BADownloaderExtensionProxy *)self identifier];
+    identifier = [(BADownloaderExtensionProxy *)self identifier];
     v7 = 138543362;
-    v8 = v4;
+    v8 = identifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Invalidating connection to extension: %{public}@", &v7, 0xCu);
   }
 
-  v5 = [(BADownloaderExtensionProxy *)self extensionConnection];
-  [v5 invalidate];
+  extensionConnection = [(BADownloaderExtensionProxy *)self extensionConnection];
+  [extensionConnection invalidate];
 
   [(BADownloaderExtensionProxy *)self setExtensionConnection:0];
-  v6 = [(BADownloaderExtensionProxy *)self extensionProcess];
-  [v6 invalidate];
+  extensionProcess = [(BADownloaderExtensionProxy *)self extensionProcess];
+  [extensionProcess invalidate];
 
   [(BADownloaderExtensionProxy *)self setExtensionProcess:0];
 }
 
 - (void)_sendingMessage
 {
-  v3 = [(BADownloaderExtensionProxy *)self shutdownQueue];
+  shutdownQueue = [(BADownloaderExtensionProxy *)self shutdownQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100007884;
   block[3] = &unk_100079260;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(shutdownQueue, block);
 }
 
 - (void)_checkForExit
 {
-  v3 = [(BADownloaderExtensionProxy *)self shutdownQueue];
+  shutdownQueue = [(BADownloaderExtensionProxy *)self shutdownQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000795C;
   block[3] = &unk_100079260;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(shutdownQueue, block);
 }
 
 - (void)_startExitTimer
 {
   v3 = dispatch_time(0, 10000000000);
-  v4 = [(BADownloaderExtensionProxy *)self shutdownQueue];
+  shutdownQueue = [(BADownloaderExtensionProxy *)self shutdownQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100007A8C;
   block[3] = &unk_100079260;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, shutdownQueue, block);
 }
 
 - (NSString)debugDescription
 {
-  v3 = [(BADownloaderExtensionProxy *)self exitTimer];
-  v4 = [v3 fireDate];
+  exitTimer = [(BADownloaderExtensionProxy *)self exitTimer];
+  fireDate = [exitTimer fireDate];
 
-  [v4 timeIntervalSinceNow];
+  [fireDate timeIntervalSinceNow];
   v6 = v5;
-  v7 = [(BADownloaderExtensionProxy *)self identifier];
-  v8 = [(BADownloaderExtensionProxy *)self extensionConnection];
-  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Extension Proxy\nIdentifier: %@\nPID: %d\nExtension Termination Time: %@ (%.2lf seconds remaining)\n", v7, [v8 processIdentifier], v4, v6);
+  identifier = [(BADownloaderExtensionProxy *)self identifier];
+  extensionConnection = [(BADownloaderExtensionProxy *)self extensionConnection];
+  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Extension Proxy\nIdentifier: %@\nPID: %d\nExtension Termination Time: %@ (%.2lf seconds remaining)\n", identifier, [extensionConnection processIdentifier], fireDate, v6);
 
   return v9;
 }
 
-- (void)markPurgeableWithFileURL:(id)a3 sandboxToken:(id)a4 reply:(id)a5
+- (void)markPurgeableWithFileURL:(id)l sandboxToken:(id)token reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
-  [a4 UTF8String];
+  lCopy = l;
+  replyCopy = reply;
+  [token UTF8String];
   if (sandbox_extension_consume() == -1)
   {
     v14 = *__error();
     v22 = @"FileURL";
-    v15 = v7;
-    if (!v7)
+    v15 = lCopy;
+    if (!lCopy)
     {
       v15 = +[NSNull null];
     }
@@ -506,23 +506,23 @@ LABEL_21:
     v16 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v17 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v14 userInfo:v16];
 
-    if (!v7)
+    if (!lCopy)
     {
     }
 
     v18 = sub_100027BF8(@"BAErrorDomain", -108, v17);
-    v8[2](v8, 0, v18);
+    replyCopy[2](replyCopy, 0, v18);
   }
 
   else
   {
     v19 = 66564;
-    if (fsctl([v7 fileSystemRepresentation], 0xC0084A44uLL, &v19, 0))
+    if (fsctl([lCopy fileSystemRepresentation], 0xC0084A44uLL, &v19, 0))
     {
       v9 = *__error();
       v20 = @"FileURL";
-      v10 = v7;
-      if (!v7)
+      v10 = lCopy;
+      if (!lCopy)
       {
         v10 = +[NSNull null];
       }
@@ -531,50 +531,50 @@ LABEL_21:
       v11 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       v12 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v9 userInfo:v11];
 
-      if (!v7)
+      if (!lCopy)
       {
       }
 
       sandbox_extension_release();
       v13 = sub_100027BF8(@"BAErrorDomain", -57, v12);
-      v8[2](v8, 0, v13);
+      replyCopy[2](replyCopy, 0, v13);
     }
 
     else
     {
       sandbox_extension_release();
-      v8[2](v8, 1, 0);
+      replyCopy[2](replyCopy, 1, 0);
     }
   }
 }
 
-- (void)decrementWakeAssertionWithReply:(id)a3
+- (void)decrementWakeAssertionWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(BADownloaderExtensionProxy *)self shutdownQueue];
+  replyCopy = reply;
+  shutdownQueue = [(BADownloaderExtensionProxy *)self shutdownQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000080DC;
   block[3] = &unk_100079260;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(shutdownQueue, block);
 
   [(BADownloaderExtensionProxy *)self _checkForExit];
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)incrementWakeAssertionWithReply:(id)a3
+- (void)incrementWakeAssertionWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(BADownloaderExtensionProxy *)self shutdownQueue];
+  replyCopy = reply;
+  shutdownQueue = [(BADownloaderExtensionProxy *)self shutdownQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100008214;
   block[3] = &unk_100079260;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(shutdownQueue, block);
 
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
 @end

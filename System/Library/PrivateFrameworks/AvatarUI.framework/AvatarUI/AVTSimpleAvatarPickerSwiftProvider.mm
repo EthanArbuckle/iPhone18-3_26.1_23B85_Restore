@@ -1,29 +1,29 @@
 @interface AVTSimpleAvatarPickerSwiftProvider
 - (AVTAvatarPickerDelegate)avatarPickerDelegate;
 - (AVTPresenterDelegate)presenterDelegate;
-- (AVTSimpleAvatarPickerSwiftProvider)initWithDelegate:(id)a3 allowAddItem:(BOOL)a4 allowEditing:(BOOL)a5 interItemSpacing:(double)a6 shouldReverseNaturalLayout:(BOOL)a7;
+- (AVTSimpleAvatarPickerSwiftProvider)initWithDelegate:(id)delegate allowAddItem:(BOOL)item allowEditing:(BOOL)editing interItemSpacing:(double)spacing shouldReverseNaturalLayout:(BOOL)layout;
 - (AVTSimpleAvatarPickerSwiftProviderDelegate)delegate;
 - (UIEdgeInsets)contentInset;
 - (void)_notifyStoreChanged;
-- (void)avatarPicker:(id)a3 didSelectAvatarRecord:(id)a4;
+- (void)avatarPicker:(id)picker didSelectAvatarRecord:(id)record;
 - (void)beginObservingAvatarStoreChanges;
 - (void)dealloc;
-- (void)dismissAvatarUIControllerAnimated:(BOOL)a3;
+- (void)dismissAvatarUIControllerAnimated:(BOOL)animated;
 - (void)endObservingAvatarStoreChanges;
-- (void)presentAvatarUIController:(id)a3 animated:(BOOL)a4;
-- (void)updatePickerSelectionWithAnimation:(BOOL)a3;
-- (void)updatePresentedRecordWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)updatePresentedRecordWithRecord:(id)a3 animated:(BOOL)a4;
+- (void)presentAvatarUIController:(id)controller animated:(BOOL)animated;
+- (void)updatePickerSelectionWithAnimation:(BOOL)animation;
+- (void)updatePresentedRecordWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)updatePresentedRecordWithRecord:(id)record animated:(BOOL)animated;
 @end
 
 @implementation AVTSimpleAvatarPickerSwiftProvider
 
-- (AVTSimpleAvatarPickerSwiftProvider)initWithDelegate:(id)a3 allowAddItem:(BOOL)a4 allowEditing:(BOOL)a5 interItemSpacing:(double)a6 shouldReverseNaturalLayout:(BOOL)a7
+- (AVTSimpleAvatarPickerSwiftProvider)initWithDelegate:(id)delegate allowAddItem:(BOOL)item allowEditing:(BOOL)editing interItemSpacing:(double)spacing shouldReverseNaturalLayout:(BOOL)layout
 {
-  v7 = a7;
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
+  layoutCopy = layout;
+  editingCopy = editing;
+  itemCopy = item;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = AVTSimpleAvatarPickerSwiftProvider;
   v13 = [(AVTSimpleAvatarPickerSwiftProvider *)&v24 init];
@@ -33,21 +33,21 @@
     environment = v13->_environment;
     v13->_environment = v14;
 
-    v16 = [(AVTUIEnvironment *)v13->_environment logger];
+    logger = [(AVTUIEnvironment *)v13->_environment logger];
     logger = v13->_logger;
-    v13->_logger = v16;
+    v13->_logger = logger;
 
-    objc_storeWeak(&v13->_delegate, v12);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v18 = objc_alloc_init(AVTAvatarStore);
     avatarStore = v13->_avatarStore;
     v13->_avatarStore = v18;
 
-    v20 = [[AVTSimpleAvatarPicker alloc] initWithStore:v13->_avatarStore environment:v13->_environment allowAddItem:v10 interItemSpacing:v7 shouldReverseNaturalLayout:a6];
+    v20 = [[AVTSimpleAvatarPicker alloc] initWithStore:v13->_avatarStore environment:v13->_environment allowAddItem:itemCopy interItemSpacing:layoutCopy shouldReverseNaturalLayout:spacing];
     avatarPicker = v13->_avatarPicker;
     v13->_avatarPicker = v20;
 
     [(AVTSimpleAvatarPicker *)v13->_avatarPicker setAvatarPickerDelegate:v13];
-    [(AVTSimpleAvatarPicker *)v13->_avatarPicker setAllowEditing:v9];
+    [(AVTSimpleAvatarPicker *)v13->_avatarPicker setAllowEditing:editingCopy];
     [(AVTSimpleAvatarPicker *)v13->_avatarPicker reloadDataSource];
     [(AVTSimpleAvatarPicker *)v13->_avatarPicker setPresenterDelegate:v13];
     presentedIdentifier = v13->_presentedIdentifier;
@@ -61,8 +61,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_avatarStoreChangeObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_avatarStoreChangeObserver];
 
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = 0;
@@ -85,14 +85,14 @@
 - (void)beginObservingAvatarStoreChanges
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E698E308];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__AVTSimpleAvatarPickerSwiftProvider_beginObservingAvatarStoreChanges__block_invoke;
   v7[3] = &unk_1E7F3B248;
   objc_copyWeak(&v8, &location);
-  v5 = [v3 addObserverForName:v4 object:0 queue:0 usingBlock:v7];
+  v5 = [defaultCenter addObserverForName:v4 object:0 queue:0 usingBlock:v7];
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = v5;
 
@@ -108,8 +108,8 @@ void __70__AVTSimpleAvatarPickerSwiftProvider_beginObservingAvatarStoreChanges__
 
 - (void)endObservingAvatarStoreChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_avatarStoreChangeObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_avatarStoreChangeObserver];
 
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = 0;
@@ -142,21 +142,21 @@ void __57__AVTSimpleAvatarPickerSwiftProvider__notifyStoreChanged__block_invoke(
   }
 }
 
-- (void)updatePickerSelectionWithAnimation:(BOOL)a3
+- (void)updatePickerSelectionWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v6 = [(AVTSimpleAvatarPickerSwiftProvider *)self avatarPicker];
-  v5 = [(AVTSimpleAvatarPickerSwiftProvider *)self presentedIdentifier];
-  [v6 selectAvatarRecordWithIdentifier:v5 animated:v3];
+  animationCopy = animation;
+  avatarPicker = [(AVTSimpleAvatarPickerSwiftProvider *)self avatarPicker];
+  presentedIdentifier = [(AVTSimpleAvatarPickerSwiftProvider *)self presentedIdentifier];
+  [avatarPicker selectAvatarRecordWithIdentifier:presentedIdentifier animated:animationCopy];
 }
 
-- (void)updatePresentedRecordWithRecord:(id)a3 animated:(BOOL)a4
+- (void)updatePresentedRecordWithRecord:(id)record animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3)
+  animatedCopy = animated;
+  if (record)
   {
-    v6 = [a3 identifier];
-    v7 = [v6 copy];
+    identifier = [record identifier];
+    v7 = [identifier copy];
   }
 
   else
@@ -164,56 +164,56 @@ void __57__AVTSimpleAvatarPickerSwiftProvider__notifyStoreChanged__block_invoke(
     v7 = 0;
   }
 
-  [(AVTSimpleAvatarPickerSwiftProvider *)self updatePresentedRecordWithIdentifier:v7 animated:v4];
+  [(AVTSimpleAvatarPickerSwiftProvider *)self updatePresentedRecordWithIdentifier:v7 animated:animatedCopy];
 }
 
-- (void)updatePresentedRecordWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)updatePresentedRecordWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  if (self->_presentedIdentifier != a3)
+  if (self->_presentedIdentifier != identifier)
   {
-    v5 = a4;
+    animatedCopy = animated;
     [(AVTSimpleAvatarPickerSwiftProvider *)self setPresentedIdentifier:?];
 
-    [(AVTSimpleAvatarPickerSwiftProvider *)self updatePickerSelectionWithAnimation:v5];
+    [(AVTSimpleAvatarPickerSwiftProvider *)self updatePickerSelectionWithAnimation:animatedCopy];
   }
 }
 
-- (void)avatarPicker:(id)a3 didSelectAvatarRecord:(id)a4
+- (void)avatarPicker:(id)picker didSelectAvatarRecord:(id)record
 {
-  v7 = a4;
+  recordCopy = record;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
-    [(AVTSimpleAvatarPickerSwiftProvider *)self updatePresentedRecordWithRecord:v7 animated:1];
+    [(AVTSimpleAvatarPickerSwiftProvider *)self updatePresentedRecordWithRecord:recordCopy animated:1];
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 avatarPicker:self didSelectAvatarRecord:v7];
+    [v6 avatarPicker:self didSelectAvatarRecord:recordCopy];
   }
 }
 
-- (void)dismissAvatarUIControllerAnimated:(BOOL)a3
+- (void)dismissAvatarUIControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     [(AVTSimpleAvatarPickerSwiftProvider *)self updatePickerSelectionWithAnimation:0];
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 dismissAvatarUIControllerWithIdentifier:self->_presentedIdentifier animated:v3];
+    [v6 dismissAvatarUIControllerWithIdentifier:self->_presentedIdentifier animated:animatedCopy];
   }
 }
 
-- (void)presentAvatarUIController:(id)a3 animated:(BOOL)a4
+- (void)presentAvatarUIController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 presentAvatarUIController:v8 animated:v4];
+    [v7 presentAvatarUIController:controllerCopy animated:animatedCopy];
   }
 }
 

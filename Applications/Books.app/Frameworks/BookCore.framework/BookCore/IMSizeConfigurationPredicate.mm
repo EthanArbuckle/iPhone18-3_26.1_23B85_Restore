@@ -1,66 +1,66 @@
 @interface IMSizeConfigurationPredicate
-+ (id)predicateForDisplayClassSize:(CGSize)a3;
-+ (id)predicateForExactSize:(CGSize)a3;
-+ (id)predicateForHeight:(double)a3;
-+ (id)predicateForLargerThan:(CGSize)a3;
-+ (id)predicateForSize:(CGSize)a3;
-+ (id)predicateForWidth:(double)a3;
-- (BOOL)evaluateWithFrameEnvironmentContext:(id)a3;
++ (id)predicateForDisplayClassSize:(CGSize)size;
++ (id)predicateForExactSize:(CGSize)size;
++ (id)predicateForHeight:(double)height;
++ (id)predicateForLargerThan:(CGSize)than;
++ (id)predicateForSize:(CGSize)size;
++ (id)predicateForWidth:(double)width;
+- (BOOL)evaluateWithFrameEnvironmentContext:(id)context;
 - (CGSize)size;
 - (IMSizeConfigurationPredicate)init;
-- (IMSizeConfigurationPredicate)initWithSize:(CGSize)a3 hasWidth:(BOOL)a4 hasHeight:(BOOL)a5 exactSize:(BOOL)a6;
+- (IMSizeConfigurationPredicate)initWithSize:(CGSize)size hasWidth:(BOOL)width hasHeight:(BOOL)height exactSize:(BOOL)exactSize;
 @end
 
 @implementation IMSizeConfigurationPredicate
 
-+ (id)predicateForSize:(CGSize)a3
++ (id)predicateForSize:(CGSize)size
 {
-  v3 = [[a1 alloc] initWithSize:1 hasWidth:1 hasHeight:0 exactSize:{a3.width, a3.height}];
+  v3 = [[self alloc] initWithSize:1 hasWidth:1 hasHeight:0 exactSize:{size.width, size.height}];
 
   return v3;
 }
 
-+ (id)predicateForExactSize:(CGSize)a3
++ (id)predicateForExactSize:(CGSize)size
 {
-  v3 = [[a1 alloc] initWithSize:1 hasWidth:1 hasHeight:1 exactSize:{a3.width, a3.height}];
+  v3 = [[self alloc] initWithSize:1 hasWidth:1 hasHeight:1 exactSize:{size.width, size.height}];
 
   return v3;
 }
 
-+ (id)predicateForWidth:(double)a3
++ (id)predicateForWidth:(double)width
 {
-  v3 = [[a1 alloc] initWithSize:1 hasWidth:0 hasHeight:0 exactSize:{a3, 0.0}];
+  v3 = [[self alloc] initWithSize:1 hasWidth:0 hasHeight:0 exactSize:{width, 0.0}];
 
   return v3;
 }
 
-+ (id)predicateForHeight:(double)a3
++ (id)predicateForHeight:(double)height
 {
-  v3 = [[a1 alloc] initWithSize:0 hasWidth:1 hasHeight:0 exactSize:{0.0, a3}];
+  v3 = [[self alloc] initWithSize:0 hasWidth:1 hasHeight:0 exactSize:{0.0, height}];
 
   return v3;
 }
 
-+ (id)predicateForDisplayClassSize:(CGSize)a3
++ (id)predicateForDisplayClassSize:(CGSize)size
 {
-  v3 = [[a1 alloc] initWithSize:1 hasWidth:1 hasHeight:0 exactSize:{a3.width, a3.height}];
+  v3 = [[self alloc] initWithSize:1 hasWidth:1 hasHeight:0 exactSize:{size.width, size.height}];
   [v3 setIsDisplayClassSize:1];
 
   return v3;
 }
 
-+ (id)predicateForLargerThan:(CGSize)a3
++ (id)predicateForLargerThan:(CGSize)than
 {
-  v3 = [[a1 alloc] initWithSize:1 hasWidth:1 hasHeight:0 exactSize:{a3.width, a3.height}];
+  v3 = [[self alloc] initWithSize:1 hasWidth:1 hasHeight:0 exactSize:{than.width, than.height}];
   [v3 setLargerThan:1];
 
   return v3;
 }
 
-- (IMSizeConfigurationPredicate)initWithSize:(CGSize)a3 hasWidth:(BOOL)a4 hasHeight:(BOOL)a5 exactSize:(BOOL)a6
+- (IMSizeConfigurationPredicate)initWithSize:(CGSize)size hasWidth:(BOOL)width hasHeight:(BOOL)height exactSize:(BOOL)exactSize
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15.receiver = self;
   v15.super_class = IMSizeConfigurationPredicate;
   v11 = [(IMConfigurationPredicate *)&v15 init];
@@ -69,10 +69,10 @@
   {
     v11->_size.width = width;
     v11->_size.height = height;
-    v11->_hasWidth = a4;
-    v11->_hasHeight = a5;
-    v11->_exactSize = a6;
-    if (a6)
+    v11->_hasWidth = width;
+    v11->_hasHeight = height;
+    v11->_exactSize = exactSize;
+    if (exactSize)
     {
       v13 = 1000000000;
 LABEL_7:
@@ -100,9 +100,9 @@ LABEL_7:
   return 0;
 }
 
-- (BOOL)evaluateWithFrameEnvironmentContext:(id)a3
+- (BOOL)evaluateWithFrameEnvironmentContext:(id)context
 {
-  [a3 im_frameEnvironmentBounds];
+  [context im_frameEnvironmentBounds];
   x = v22.origin.x;
   y = v22.origin.y;
   width = v22.size.width;

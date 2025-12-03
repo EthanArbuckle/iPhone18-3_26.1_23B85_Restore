@@ -1,9 +1,9 @@
 @interface SFTelephonyURLHandler
 + (id)sharedInstance;
-- (BOOL)openURLForDialRequest:(id)a3 withScene:(id)a4 completionHandler:(id)a5;
+- (BOOL)openURLForDialRequest:(id)request withScene:(id)scene completionHandler:(id)handler;
 - (SFTelephonyURLHandler)init;
-- (void)addObserverForRequest:(id)a3;
-- (void)removeObserverForRequest:(id)a3;
+- (void)addObserverForRequest:(id)request;
+- (void)removeObserverForRequest:(id)request;
 @end
 
 @implementation SFTelephonyURLHandler
@@ -42,58 +42,58 @@ void __39__SFTelephonyURLHandler_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)openURLForDialRequest:(id)a3 withScene:(id)a4 completionHandler:(id)a5
+- (BOOL)openURLForDialRequest:(id)request withScene:(id)scene completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  requestCopy = request;
+  sceneCopy = scene;
+  if (handler)
   {
-    v10 = a5;
-    v11 = [[SFTelephonyURLRequest alloc] initWithCompletionHandler:v10];
+    handlerCopy = handler;
+    v11 = [[SFTelephonyURLRequest alloc] initWithCompletionHandler:handlerCopy];
 
-    v12 = [(SFTelephonyURLRequest *)v11 successNotificationName];
-    [v8 setSuccessNotification:v12];
+    successNotificationName = [(SFTelephonyURLRequest *)v11 successNotificationName];
+    [requestCopy setSuccessNotification:successNotificationName];
 
-    v13 = [(SFTelephonyURLRequest *)v11 failureNotificationName];
-    [v8 setFailureNotification:v13];
+    failureNotificationName = [(SFTelephonyURLRequest *)v11 failureNotificationName];
+    [requestCopy setFailureNotification:failureNotificationName];
 
     [(SFTelephonyURLHandler *)self addObserverForRequest:v11];
   }
 
-  v14 = [v8 URL];
-  [v9 openURL:v14 options:0 completionHandler:0];
+  v14 = [requestCopy URL];
+  [sceneCopy openURL:v14 options:0 completionHandler:0];
 
   return 1;
 }
 
-- (void)addObserverForRequest:(id)a3
+- (void)addObserverForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  v6 = [v4 failureNotificationName];
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, dialRequestNotificationHandler, v6, 0, 1028);
+  failureNotificationName = [requestCopy failureNotificationName];
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, dialRequestNotificationHandler, failureNotificationName, 0, 1028);
 
   v7 = CFNotificationCenterGetDarwinNotifyCenter();
-  v8 = [v4 successNotificationName];
-  CFNotificationCenterAddObserver(v7, self, dialRequestNotificationHandler, v8, 0, 1028);
+  successNotificationName = [requestCopy successNotificationName];
+  CFNotificationCenterAddObserver(v7, self, dialRequestNotificationHandler, successNotificationName, 0, 1028);
 
-  v9 = [(SFTelephonyURLHandler *)self pendingRequests];
-  [v9 addObject:v4];
+  pendingRequests = [(SFTelephonyURLHandler *)self pendingRequests];
+  [pendingRequests addObject:requestCopy];
 }
 
-- (void)removeObserverForRequest:(id)a3
+- (void)removeObserverForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  v6 = [v4 successNotificationName];
-  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, v6, 0);
+  successNotificationName = [requestCopy successNotificationName];
+  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, successNotificationName, 0);
 
   v7 = CFNotificationCenterGetDarwinNotifyCenter();
-  v8 = [v4 failureNotificationName];
-  CFNotificationCenterRemoveObserver(v7, self, v8, 0);
+  failureNotificationName = [requestCopy failureNotificationName];
+  CFNotificationCenterRemoveObserver(v7, self, failureNotificationName, 0);
 
-  v9 = [(SFTelephonyURLHandler *)self pendingRequests];
-  [v9 removeObject:v4];
+  pendingRequests = [(SFTelephonyURLHandler *)self pendingRequests];
+  [pendingRequests removeObject:requestCopy];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface SKUIGiftTermsAndConditionsSection
 - (id)_headerView;
-- (id)headerViewForTableView:(id)a3;
-- (void)_termsAction:(id)a3;
+- (id)headerViewForTableView:(id)view;
+- (void)_termsAction:(id)action;
 @end
 
 @implementation SKUIGiftTermsAndConditionsSection
 
-- (id)headerViewForTableView:(id)a3
+- (id)headerViewForTableView:(id)view
 {
   if (os_variant_has_internal_content())
   {
@@ -20,12 +20,12 @@
     }
   }
 
-  v12 = [(SKUIGiftTermsAndConditionsSection *)self _headerView];
+  _headerView = [(SKUIGiftTermsAndConditionsSection *)self _headerView];
 
-  return v12;
+  return _headerView;
 }
 
-- (void)_termsAction:(id)a3
+- (void)_termsAction:(id)action
 {
   if (os_variant_has_internal_content())
   {
@@ -39,8 +39,8 @@
     }
   }
 
-  v11 = [MEMORY[0x277CBEBC0] termsAndConditionsURL];
-  SKUIMetricsOpenURL(v11);
+  termsAndConditionsURL = [MEMORY[0x277CBEBC0] termsAndConditionsURL];
+  SKUIMetricsOpenURL(termsAndConditionsURL);
 }
 
 - (id)_headerView
@@ -67,11 +67,11 @@
     [(UIView *)self->_headerView setFrame:0.0, 0.0, 60.0, 45.0];
     [(UIView *)self->_headerView bounds];
     v15 = v14;
-    v16 = [MEMORY[0x277D75128] sharedApplication];
-    v17 = [v16 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
     v18 = [SKUILinkButton alloc];
-    if (v17)
+    if (userInterfaceLayoutDirection)
     {
       v19 = 5;
     }
@@ -84,28 +84,28 @@
     v20 = [(SKUILinkButton *)v18 initWithArrowStyle:v19];
     [(SKUILinkButton *)v20 addTarget:self action:sel__termsAction_ forControlEvents:64];
     [(SKUILinkButton *)v20 setAutoresizingMask:5];
-    v21 = [(SKUIGiftTableViewSection *)self giftConfiguration];
-    v22 = [v21 clientContext];
+    giftConfiguration = [(SKUIGiftTableViewSection *)self giftConfiguration];
+    clientContext = [giftConfiguration clientContext];
 
-    if (SKUIUserInterfaceIdiom(v22) == 1)
+    if (SKUIUserInterfaceIdiom(clientContext) == 1)
     {
-      if (v22)
+      if (clientContext)
       {
         v23 = @"GIFTING_TERMS_LINK_IPAD";
 LABEL_14:
-        v24 = [v22 localizedStringForKey:v23 inTable:@"Gifting"];
+        v24 = [clientContext localizedStringForKey:v23 inTable:@"Gifting"];
 LABEL_18:
         v26 = v24;
         [(SKUILinkButton *)v20 setTitle:v24 forState:0];
-        v27 = [(SKUILinkButton *)v20 titleLabel];
+        titleLabel = [(SKUILinkButton *)v20 titleLabel];
         v28 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-        [v27 setFont:v28];
+        [titleLabel setFont:v28];
 
-        v29 = [MEMORY[0x277D75348] _secondaryLabelColor];
-        [(SKUILinkButton *)v20 setTitleColor:v29 forState:0];
+        _secondaryLabelColor = [MEMORY[0x277D75348] _secondaryLabelColor];
+        [(SKUILinkButton *)v20 setTitleColor:_secondaryLabelColor forState:0];
 
-        v30 = [MEMORY[0x277D75348] _labelColor];
-        [(SKUILinkButton *)v20 setTitleColor:v30 forState:1];
+        _labelColor = [MEMORY[0x277D75348] _labelColor];
+        [(SKUILinkButton *)v20 setTitleColor:_labelColor forState:1];
 
         [(SKUILinkButton *)v20 sizeToFit];
         [(SKUILinkButton *)v20 frame];
@@ -121,7 +121,7 @@ LABEL_18:
 
     else
     {
-      if (v22)
+      if (clientContext)
       {
         v23 = @"GIFTING_TERMS_LINK_IPHONE";
         goto LABEL_14;

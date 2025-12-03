@@ -1,5 +1,5 @@
 @interface CRLiOSWindowIgnoreUserInteractionSafeWrapper
-- (CRLiOSWindowIgnoreUserInteractionSafeWrapper)initWithWindowWrapper:(id)a3 token:(id)a4;
+- (CRLiOSWindowIgnoreUserInteractionSafeWrapper)initWithWindowWrapper:(id)wrapper token:(id)token;
 - (NSString)description;
 - (void)dealloc;
 - (void)endIgnoringUserInteractionSafely;
@@ -8,18 +8,18 @@
 
 @implementation CRLiOSWindowIgnoreUserInteractionSafeWrapper
 
-- (CRLiOSWindowIgnoreUserInteractionSafeWrapper)initWithWindowWrapper:(id)a3 token:(id)a4
+- (CRLiOSWindowIgnoreUserInteractionSafeWrapper)initWithWindowWrapper:(id)wrapper token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  wrapperCopy = wrapper;
+  tokenCopy = token;
   v11.receiver = self;
   v11.super_class = CRLiOSWindowIgnoreUserInteractionSafeWrapper;
   v8 = [(CRLiOSWindowIgnoreUserInteractionSafeWrapper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_windowWrapper, v6);
-    objc_storeStrong(&v9->_token, a4);
+    objc_storeWeak(&v8->_windowWrapper, wrapperCopy);
+    objc_storeStrong(&v9->_token, token);
   }
 
   return v9;

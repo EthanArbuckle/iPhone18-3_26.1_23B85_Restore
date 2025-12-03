@@ -1,5 +1,5 @@
 @interface EpisodeHeroTextAreaUIKitView
-- (_TtC23ShelfKitCollectionViews28EpisodeHeroTextAreaUIKitView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews28EpisodeHeroTextAreaUIKitView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_7689C();
 }
 
-- (_TtC23ShelfKitCollectionViews28EpisodeHeroTextAreaUIKitView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews28EpisodeHeroTextAreaUIKitView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

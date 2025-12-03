@@ -1,10 +1,10 @@
 @interface NCSecureLockscreenListener
 + (BOOL)isSensitiveUIEnabled;
 + (id)_shared;
-+ (void)addObserver:(id)a3 changeBlock:(id)a4;
-+ (void)removeObserver:(id)a3;
++ (void)addObserver:(id)observer changeBlock:(id)block;
++ (void)removeObserver:(id)observer;
 - (id)_init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation NCSecureLockscreenListener
@@ -16,42 +16,42 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.internal.NotificationsUITool"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.internal.NotificationsUITool"];
 
   if (v5)
   {
     return 1;
   }
 
-  v7 = [a1 _shared];
-  v8 = [v7 _sensitiveUIEnabled];
+  _shared = [self _shared];
+  _sensitiveUIEnabled = [_shared _sensitiveUIEnabled];
 
-  return v8;
+  return _sensitiveUIEnabled;
 }
 
-+ (void)addObserver:(id)a3 changeBlock:(id)a4
++ (void)addObserver:(id)observer changeBlock:(id)block
 {
-  v10 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  blockCopy = block;
   if (os_variant_has_internal_content())
   {
-    v7 = [a1 _shared];
-    v8 = [v7 observers];
-    v9 = _Block_copy(v6);
-    [v8 setObject:v9 forKey:v10];
+    _shared = [self _shared];
+    observers = [_shared observers];
+    v9 = _Block_copy(blockCopy);
+    [observers setObject:v9 forKey:observerCopy];
   }
 }
 
-+ (void)removeObserver:(id)a3
++ (void)removeObserver:(id)observer
 {
-  v6 = a3;
+  observerCopy = observer;
   if (os_variant_has_internal_content())
   {
-    v4 = [a1 _shared];
-    v5 = [v4 observers];
-    [v5 removeObjectForKey:v6];
+    _shared = [self _shared];
+    observers = [_shared observers];
+    [observers removeObjectForKey:observerCopy];
   }
 }
 
@@ -63,8 +63,8 @@
   v2 = [(NCSecureLockscreenListener *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_sensitiveUIEnabled = [v3 BOOLForKey:@"SBSensitiveUIEnabled"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_sensitiveUIEnabled = [standardUserDefaults BOOLForKey:@"SBSensitiveUIEnabled"];
 
     v4 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
@@ -77,12 +77,12 @@
       _os_log_impl(&dword_21E77E000, v4, OS_LOG_TYPE_DEFAULT, "Secure Lock Screen: %{public}@ initing to %d", buf, 0x12u);
     }
 
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v6 addObserver:v2 forKeyPath:@"SBSensitiveUIEnabled" options:1 context:0];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults2 addObserver:v2 forKeyPath:@"SBSensitiveUIEnabled" options:1 context:0];
 
-    v7 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     observers = v2->_observers;
-    v2->_observers = v7;
+    v2->_observers = weakToStrongObjectsMapTable;
   }
 
   return v2;
@@ -94,7 +94,7 @@
   block[1] = 3221225472;
   block[2] = __37__NCSecureLockscreenListener__shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_shared_onceToken != -1)
   {
     dispatch_once(&_shared_onceToken, block);
@@ -113,18 +113,18 @@ uint64_t __37__NCSecureLockscreenListener__shared__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v1);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 isEqualToString:@"SBSensitiveUIEnabled"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"SBSensitiveUIEnabled"])
   {
-    v25 = [v11 objectForKey:*MEMORY[0x277CCA2F0]];
-    v12 = [v25 BOOLValue];
+    v25 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
+    bOOLValue = [v25 BOOLValue];
     sensitiveUIEnabled = self->_sensitiveUIEnabled;
-    self->_sensitiveUIEnabled = v12;
+    self->_sensitiveUIEnabled = bOOLValue;
     v14 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
@@ -133,20 +133,20 @@ uint64_t __37__NCSecureLockscreenListener__shared__block_invoke(uint64_t a1)
       v33 = 1024;
       v34 = sensitiveUIEnabled;
       v35 = 1024;
-      v36 = v12;
+      v36 = bOOLValue;
       _os_log_impl(&dword_21E77E000, v14, OS_LOG_TYPE_DEFAULT, "Secure Lock Screen: %{public}@ changed from %d to %d", buf, 0x18u);
     }
 
     v15 = objc_autoreleasePoolPush();
-    v16 = [(NSMapTable *)self->_observers objectEnumerator];
-    v17 = [v16 allObjects];
+    objectEnumerator = [(NSMapTable *)self->_observers objectEnumerator];
+    allObjects = [objectEnumerator allObjects];
 
     objc_autoreleasePoolPop(v15);
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v18 = v17;
+    v18 = allObjects;
     v19 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v19)
     {
@@ -164,7 +164,7 @@ uint64_t __37__NCSecureLockscreenListener__shared__block_invoke(uint64_t a1)
 
           v23 = *(*(&v26 + 1) + 8 * v22);
           v24 = objc_autoreleasePoolPush();
-          (*(v23 + 16))(v23, v12);
+          (*(v23 + 16))(v23, bOOLValue);
           objc_autoreleasePoolPop(v24);
           ++v22;
         }

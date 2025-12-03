@@ -1,6 +1,6 @@
 @interface HMDAccessorySoftwareUpdateAutoThirdPartyToggledEvent
-+ (id)eventWithHome:(id)a3;
-- (HMDAccessorySoftwareUpdateAutoThirdPartyToggledEvent)initWithAutoThirdPartyUpdateEnable:(BOOL)a3 numHAPAccessories:(unint64_t)a4 numCameraAccessories:(unint64_t)a5 numCameraAccessoriesRecordingEnabled:(unint64_t)a6 numSecurityClassAccessories:(unint64_t)a7 numCriticalSensorAccessories:(unint64_t)a8;
++ (id)eventWithHome:(id)home;
+- (HMDAccessorySoftwareUpdateAutoThirdPartyToggledEvent)initWithAutoThirdPartyUpdateEnable:(BOOL)enable numHAPAccessories:(unint64_t)accessories numCameraAccessories:(unint64_t)cameraAccessories numCameraAccessoriesRecordingEnabled:(unint64_t)enabled numSecurityClassAccessories:(unint64_t)classAccessories numCriticalSensorAccessories:(unint64_t)sensorAccessories;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -34,31 +34,31 @@
   return v9;
 }
 
-- (HMDAccessorySoftwareUpdateAutoThirdPartyToggledEvent)initWithAutoThirdPartyUpdateEnable:(BOOL)a3 numHAPAccessories:(unint64_t)a4 numCameraAccessories:(unint64_t)a5 numCameraAccessoriesRecordingEnabled:(unint64_t)a6 numSecurityClassAccessories:(unint64_t)a7 numCriticalSensorAccessories:(unint64_t)a8
+- (HMDAccessorySoftwareUpdateAutoThirdPartyToggledEvent)initWithAutoThirdPartyUpdateEnable:(BOOL)enable numHAPAccessories:(unint64_t)accessories numCameraAccessories:(unint64_t)cameraAccessories numCameraAccessoriesRecordingEnabled:(unint64_t)enabled numSecurityClassAccessories:(unint64_t)classAccessories numCriticalSensorAccessories:(unint64_t)sensorAccessories
 {
   v15.receiver = self;
   v15.super_class = HMDAccessorySoftwareUpdateAutoThirdPartyToggledEvent;
   result = [(HMMLogEvent *)&v15 init];
   if (result)
   {
-    result->_autoThirdPartySoftwareUpdateEnable = a3;
-    result->_numHAPAccessories = a4;
-    result->_numCameraAccessories = a5;
-    result->_numCameraAccessoriesRecordingEnabled = a6;
-    result->_numSecurityClassAccessories = a7;
-    result->_numCriticalSensorAccessories = a8;
+    result->_autoThirdPartySoftwareUpdateEnable = enable;
+    result->_numHAPAccessories = accessories;
+    result->_numCameraAccessories = cameraAccessories;
+    result->_numCameraAccessoriesRecordingEnabled = enabled;
+    result->_numSecurityClassAccessories = classAccessories;
+    result->_numCriticalSensorAccessories = sensorAccessories;
   }
 
   return result;
 }
 
-+ (id)eventWithHome:(id)a3
++ (id)eventWithHome:(id)home
 {
-  v3 = a3;
-  v4 = [v3 accessoryCount];
-  v5 = [v3 isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
+  homeCopy = home;
+  accessoryCount = [homeCopy accessoryCount];
+  isAutomaticThirdPartyAccessorySoftwareUpdateEnabled = [homeCopy isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
 
-  v6 = +[HMDAccessorySoftwareUpdateAutoThirdPartyToggledEvent eventWithAutoThirdPartyUpdateEnable:numHAPAccessories:numCameraAccessories:numCameraAccessoriesRecordingEnabled:numSecurityClassAccessories:numCriticalSensorAccessories:](HMDAccessorySoftwareUpdateAutoThirdPartyToggledEvent, "eventWithAutoThirdPartyUpdateEnable:numHAPAccessories:numCameraAccessories:numCameraAccessoriesRecordingEnabled:numSecurityClassAccessories:numCriticalSensorAccessories:", v5, [v4 numHAPAccessories], objc_msgSend(v4, "numCameraAccessories"), objc_msgSend(v4, "numCameraAccessoriesRecordingEnabled"), objc_msgSend(v4, "numSecurityClassAccessories"), objc_msgSend(v4, "numCriticalSensorAccessories"));
+  v6 = +[HMDAccessorySoftwareUpdateAutoThirdPartyToggledEvent eventWithAutoThirdPartyUpdateEnable:numHAPAccessories:numCameraAccessories:numCameraAccessoriesRecordingEnabled:numSecurityClassAccessories:numCriticalSensorAccessories:](HMDAccessorySoftwareUpdateAutoThirdPartyToggledEvent, "eventWithAutoThirdPartyUpdateEnable:numHAPAccessories:numCameraAccessories:numCameraAccessoriesRecordingEnabled:numSecurityClassAccessories:numCriticalSensorAccessories:", isAutomaticThirdPartyAccessorySoftwareUpdateEnabled, [accessoryCount numHAPAccessories], objc_msgSend(accessoryCount, "numCameraAccessories"), objc_msgSend(accessoryCount, "numCameraAccessoriesRecordingEnabled"), objc_msgSend(accessoryCount, "numSecurityClassAccessories"), objc_msgSend(accessoryCount, "numCriticalSensorAccessories"));
 
   return v6;
 }

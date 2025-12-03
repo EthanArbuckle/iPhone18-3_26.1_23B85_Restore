@@ -43,8 +43,8 @@ uint64_t __44__CCSControlCenterDefaults_standardDefaults__block_invoke()
 
 - (unint64_t)_defaultPresentationGesture
 {
-  v2 = [MEMORY[0x277CF0CA8] sharedInstance];
-  v3 = [v2 homeButtonType] == 2 || objc_msgSend(v2, "deviceClass") == 2;
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  v3 = [mEMORY[0x277CF0CA8] homeButtonType] == 2 || objc_msgSend(mEMORY[0x277CF0CA8], "deviceClass") == 2;
 
   return v3;
 }

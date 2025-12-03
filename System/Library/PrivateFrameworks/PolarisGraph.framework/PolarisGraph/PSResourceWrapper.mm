@@ -1,9 +1,9 @@
 @interface PSResourceWrapper
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)setData_deallocator_map:(void *)a3;
-- (void)setObject_deallocator_map:(void *)a3;
-- (void)setOpaque_deallocator_map:(void *)a3;
+- (void)setData_deallocator_map:(void *)data_deallocator_map;
+- (void)setObject_deallocator_map:(void *)object_deallocator_map;
+- (void)setOpaque_deallocator_map:(void *)opaque_deallocator_map;
 @end
 
 @implementation PSResourceWrapper
@@ -134,33 +134,33 @@ LABEL_32:
   [(PSResourceWrapper *)&v18 dealloc];
 }
 
-- (void)setObject_deallocator_map:(void *)a3
+- (void)setObject_deallocator_map:(void *)object_deallocator_map
 {
   v4 = (self + 464);
-  if (v4 != a3)
+  if (v4 != object_deallocator_map)
   {
-    *(self + 124) = *(a3 + 8);
-    std::__hash_table<std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>,std::__unordered_map_hasher<objc_object * {__strong},std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>,std::hash<objc_object * {__strong}>,std::equal_to<objc_object * {__strong}>,true>,std::__unordered_map_equal<objc_object * {__strong},std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>,std::equal_to<objc_object * {__strong}>,std::hash<objc_object * {__strong}>,true>,std::allocator<std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>>>::__assign_multi<std::__hash_const_iterator<std::__hash_node<std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>,void *> *>>(v4, *(a3 + 2), 0);
+    *(self + 124) = *(object_deallocator_map + 8);
+    std::__hash_table<std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>,std::__unordered_map_hasher<objc_object * {__strong},std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>,std::hash<objc_object * {__strong}>,std::equal_to<objc_object * {__strong}>,true>,std::__unordered_map_equal<objc_object * {__strong},std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>,std::equal_to<objc_object * {__strong}>,std::hash<objc_object * {__strong}>,true>,std::allocator<std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>>>::__assign_multi<std::__hash_const_iterator<std::__hash_node<std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>,void *> *>>(v4, *(object_deallocator_map + 2), 0);
   }
 }
 
-- (void)setOpaque_deallocator_map:(void *)a3
+- (void)setOpaque_deallocator_map:(void *)opaque_deallocator_map
 {
   v4 = (self + 504);
-  if (v4 != a3)
+  if (v4 != opaque_deallocator_map)
   {
-    *(self + 134) = *(a3 + 8);
-    std::__hash_table<std::__hash_value_type<void *,void (*)(void *)>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,void (*)(void *)>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,void (*)(void *)>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,void (*)(void *)>>>::__assign_multi<std::__hash_const_iterator<std::__hash_node<std::__hash_value_type<void *,void (*)(void *)>,void *> *>>(v4, *(a3 + 2), 0);
+    *(self + 134) = *(opaque_deallocator_map + 8);
+    std::__hash_table<std::__hash_value_type<void *,void (*)(void *)>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,void (*)(void *)>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,void (*)(void *)>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,void (*)(void *)>>>::__assign_multi<std::__hash_const_iterator<std::__hash_node<std::__hash_value_type<void *,void (*)(void *)>,void *> *>>(v4, *(opaque_deallocator_map + 2), 0);
   }
 }
 
-- (void)setData_deallocator_map:(void *)a3
+- (void)setData_deallocator_map:(void *)data_deallocator_map
 {
   v4 = (self + 544);
-  if (v4 != a3)
+  if (v4 != data_deallocator_map)
   {
-    *(self + 144) = *(a3 + 8);
-    std::__hash_table<std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>>>::__assign_multi<std::__hash_const_iterator<std::__hash_node<std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>,void *> *>>(v4, *(a3 + 2), 0);
+    *(self + 144) = *(data_deallocator_map + 8);
+    std::__hash_table<std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>>>::__assign_multi<std::__hash_const_iterator<std::__hash_node<std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>,void *> *>>(v4, *(data_deallocator_map + 2), 0);
   }
 }
 

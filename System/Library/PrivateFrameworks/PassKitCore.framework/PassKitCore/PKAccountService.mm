@@ -1,147 +1,147 @@
 @interface PKAccountService
 + (PKAccountService)sharedInstance;
-- (BOOL)supportsCardNumbersShortcutForPassUniqueID:(id)a3;
+- (BOOL)supportsCardNumbersShortcutForPassUniqueID:(id)d;
 - (PKAccountService)init;
-- (id)accountBalancesForAccountIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 type:(unint64_t)a6;
-- (id)accountUsersForAccountWithIdentifier:(id)a3;
-- (id)accountWithIdentifier:(id)a3 error:(id *)a4;
-- (id)defaultAccountForFeature:(unint64_t)a3;
-- (id)errorHandlerForMethod:(SEL)a3 completion:(id)a4;
-- (void)_accessObserversWithHandler:(id)a3;
-- (void)_accountsChanged:(id)a3;
-- (void)accountAdded:(id)a3;
-- (void)accountChanged:(id)a3;
-- (void)accountEnhancedMerchantBehaviorForAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)accountEnhancedMerchantsForAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)accountEntityOrderingsForAccountWithIdentifier:(id)a3 entityType:(unint64_t)a4 completion:(id)a5;
-- (void)accountForPassWithUniqueID:(id)a3 completion:(id)a4;
-- (void)accountHoldsForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)accountPendingFamilyMembersForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)accountPromotionBehaviorForAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)accountPromotionsForAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)accountRemoved:(id)a3;
-- (void)accountStatementMetadataForAllAccountsWithCompletion:(id)a3;
-- (void)accountStatementMetadataForStatementIdentifier:(id)a3 accountIdentifier:(id)a4 completion:(id)a5;
-- (void)accountUsersChanged:(id)a3 forAccountIdentifier:(id)a4;
-- (void)accountUsersForAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)accountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)accountWithVirtualCardIdentifier:(id)a3 completion:(id)a4;
-- (void)accountsForProvisioningWithCompletion:(id)a3;
-- (void)accountsWithCompletion:(id)a3;
-- (void)accountsWithPassLocallyProvisionedWithCompletion:(id)a3;
-- (void)activateBroadwayPhysicalCardWithActivationCode:(id)a3 completion:(id)a4;
-- (void)activatePhysicalCard:(id)a3 withActivationCode:(id)a4 forFeatureIdentifier:(unint64_t)a5 completion:(id)a6;
-- (void)appleBalancePromotionForAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)attemptAppleBalanceSetupWithCompletion:(id)a3;
-- (void)attemptAppleStoredValueSetupWithCompletion:(id)a3;
-- (void)backgroundProvisionInProgressForFeature:(unint64_t)a3 withCompletion:(id)a4;
-- (void)beginPhysicalCardAction:(id)a3 onPhysicalCardWithIdentifier:(id)a4 forAccountWithIdentifier:(id)a5 accountUserAltDSID:(id)a6 deviceMetadata:(id)a7 completion:(id)a8;
-- (void)beginPhysicalCardRequestWithOrder:(id)a3 forAccountWithIdentifier:(id)a4 accountUserAltDSID:(id)a5 deviceMetadata:(id)a6 completion:(id)a7;
-- (void)billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:(id)a3 withStartDate:(id)a4 endDate:(id)a5 completion:(id)a6;
-- (void)billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:(id)a3 withStatementIdentifier:(id)a4 completion:(id)a5;
-- (void)cardCredentialsForVirtualCard:(id)a3 authorization:(id)a4 action:(int64_t)a5 completion:(id)a6;
-- (void)completePhysicalCardActionRequest:(id)a3 withSignature:(id)a4 completion:(id)a5;
-- (void)completePhysicalCardRequest:(id)a3 withSignature:(id)a4 completion:(id)a5;
-- (void)createVirtualCard:(int64_t)a3 forAccountIdentifier:(id)a4 completion:(id)a5;
-- (void)creditRecoveryPaymentPlanInformationForAccountIdentifier:(id)a3 allowFetchFromServer:(BOOL)a4 completion:(id)a5;
-- (void)creditRecoveryPaymentPlansChangedForAccountIdentifier:(id)a3;
-- (void)creditRecoveryPaymentPlansForAccountIdentifier:(id)a3 allowFetchFromServer:(BOOL)a4 completion:(id)a5;
-- (void)creditStatementsForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)creditStatementsForStatementIdentifiers:(id)a3 accountIdentifier:(id)a4 completion:(id)a5;
-- (void)dailyCashEligibleDestinationsForAccountWithIdentifier:(id)a3 completion:(id)a4;
+- (id)accountBalancesForAccountIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate type:(unint64_t)type;
+- (id)accountUsersForAccountWithIdentifier:(id)identifier;
+- (id)accountWithIdentifier:(id)identifier error:(id *)error;
+- (id)defaultAccountForFeature:(unint64_t)feature;
+- (id)errorHandlerForMethod:(SEL)method completion:(id)completion;
+- (void)_accessObserversWithHandler:(id)handler;
+- (void)_accountsChanged:(id)changed;
+- (void)accountAdded:(id)added;
+- (void)accountChanged:(id)changed;
+- (void)accountEnhancedMerchantBehaviorForAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)accountEnhancedMerchantsForAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)accountEntityOrderingsForAccountWithIdentifier:(id)identifier entityType:(unint64_t)type completion:(id)completion;
+- (void)accountForPassWithUniqueID:(id)d completion:(id)completion;
+- (void)accountHoldsForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)accountPendingFamilyMembersForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)accountPromotionBehaviorForAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)accountPromotionsForAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)accountRemoved:(id)removed;
+- (void)accountStatementMetadataForAllAccountsWithCompletion:(id)completion;
+- (void)accountStatementMetadataForStatementIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completion:(id)completion;
+- (void)accountUsersChanged:(id)changed forAccountIdentifier:(id)identifier;
+- (void)accountUsersForAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)accountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)accountWithVirtualCardIdentifier:(id)identifier completion:(id)completion;
+- (void)accountsForProvisioningWithCompletion:(id)completion;
+- (void)accountsWithCompletion:(id)completion;
+- (void)accountsWithPassLocallyProvisionedWithCompletion:(id)completion;
+- (void)activateBroadwayPhysicalCardWithActivationCode:(id)code completion:(id)completion;
+- (void)activatePhysicalCard:(id)card withActivationCode:(id)code forFeatureIdentifier:(unint64_t)identifier completion:(id)completion;
+- (void)appleBalancePromotionForAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)attemptAppleBalanceSetupWithCompletion:(id)completion;
+- (void)attemptAppleStoredValueSetupWithCompletion:(id)completion;
+- (void)backgroundProvisionInProgressForFeature:(unint64_t)feature withCompletion:(id)completion;
+- (void)beginPhysicalCardAction:(id)action onPhysicalCardWithIdentifier:(id)identifier forAccountWithIdentifier:(id)withIdentifier accountUserAltDSID:(id)d deviceMetadata:(id)metadata completion:(id)completion;
+- (void)beginPhysicalCardRequestWithOrder:(id)order forAccountWithIdentifier:(id)identifier accountUserAltDSID:(id)d deviceMetadata:(id)metadata completion:(id)completion;
+- (void)billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:(id)identifier withStartDate:(id)date endDate:(id)endDate completion:(id)completion;
+- (void)billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:(id)identifier withStatementIdentifier:(id)statementIdentifier completion:(id)completion;
+- (void)cardCredentialsForVirtualCard:(id)card authorization:(id)authorization action:(int64_t)action completion:(id)completion;
+- (void)completePhysicalCardActionRequest:(id)request withSignature:(id)signature completion:(id)completion;
+- (void)completePhysicalCardRequest:(id)request withSignature:(id)signature completion:(id)completion;
+- (void)createVirtualCard:(int64_t)card forAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)creditRecoveryPaymentPlanInformationForAccountIdentifier:(id)identifier allowFetchFromServer:(BOOL)server completion:(id)completion;
+- (void)creditRecoveryPaymentPlansChangedForAccountIdentifier:(id)identifier;
+- (void)creditRecoveryPaymentPlansForAccountIdentifier:(id)identifier allowFetchFromServer:(BOOL)server completion:(id)completion;
+- (void)creditStatementsForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)creditStatementsForStatementIdentifiers:(id)identifiers accountIdentifier:(id)identifier completion:(id)completion;
+- (void)dailyCashEligibleDestinationsForAccountWithIdentifier:(id)identifier completion:(id)completion;
 - (void)dealloc;
-- (void)defaultAccountForFeature:(unint64_t)a3 completion:(id)a4;
-- (void)deleteAccountEnhancedMerchant:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5;
-- (void)deleteAccountPromotion:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5;
-- (void)deleteAccountStatementMetadataForStatementIdentifier:(id)a3 accountIdentifier:(id)a4 completion:(id)a5;
-- (void)deleteAccountUserWithAltDSID:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5;
-- (void)deleteAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteAppleBalancePromotionForAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteBeneficiaryWithIdentifier:(id)a3 accountIdentifier:(id)a4 completion:(id)a5;
-- (void)deleteEventWithIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteEventsWithAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteEventsWithAccountIdentifier:(id)a3 excludingTypes:(id)a4 completion:(id)a5;
-- (void)deleteInStoreTopUpTokenForAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteLocalAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)didAddAccountPendingFamilyMembers:(id)a3;
-- (void)didRemoveAppleBalancePromotionWithUniqueIdentifier:(id)a3 forAccountIdentifier:(id)a4;
-- (void)didUpdateAccountEnhancedMerchants:(id)a3 accountIdentifier:(id)a4 lastUpdate:(id)a5;
-- (void)didUpdateAccountPromotions:(id)a3 accountIdentifier:(id)a4;
-- (void)didUpdateAppleBalancePromotion:(id)a3 forAccountIdentifier:(id)a4;
-- (void)didUpdateInStoreTopUpToken:(id)a3 forAccountIdentifier:(id)a4;
-- (void)didUpdatePaymentFundingSources:(id)a3 accountIdentifier:(id)a4;
-- (void)eventsForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)eventsForAccountIdentifier:(id)a3 types:(id)a4 startDate:(id)a5 endDate:(id)a6 orderedByDate:(int64_t)a7 limit:(unint64_t)a8 completion:(id)a9;
-- (void)exportTransactionDataForAccountIdentifier:(id)a3 withFileFormat:(id)a4 beginDate:(id)a5 endDate:(id)a6 productTimeZone:(id)a7 completion:(id)a8;
-- (void)fetchKeychainCredentialForVirtualCardIdentifier:(id)a3 forAccountIdentifier:(id)a4 completion:(id)a5;
-- (void)inStoreTopUpTokenForAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)inactivePhysicalCardForFeatureIdentifier:(unint64_t)a3 completion:(id)a4;
-- (void)insertDailyCashNotificationForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)insertEvents:(id)a3 withAccountidentifier:(id)a4 completion:(id)a5;
-- (void)insertOrUpdateAccountEnhancedMerchants:(id)a3 accountIdentifier:(id)a4 completion:(id)a5;
-- (void)insertOrUpdateAccountPromotions:(id)a3 accountIdentifier:(id)a4 completion:(id)a5;
-- (void)insertOrUpdateInStoreTopUpToken:(id)a3 accountIdentifier:(id)a4 completion:(id)a5;
-- (void)insertOrUpdateLocalAccount:(id)a3 completion:(id)a4;
-- (void)insertSummaryNotificationForAccountIdentifier:(id)a3 summaryType:(int64_t)a4 completion:(id)a5;
-- (void)invalidateTopUpTokenWithIdentifier:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5;
-- (void)lastRedemptionEventToDestination:(unint64_t)a3 forAccountIdentifier:(id)a4 altDSID:(id)a5 completion:(id)a6;
-- (void)lastUsedInAppFundingSourceForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)markUserViewedIntroduction:(BOOL)a3 forInstallmentIdentifiers:(id)a4 accountIdentifier:(id)a5;
-- (void)noteSecurityCodeActivityWithAction:(int64_t)a3 forSecurityCodeIdentifier:(id)a4 forVirtualCardIdentifier:(id)a5 forAccountIdentifier:(id)a6 completion:(id)a7;
-- (void)noteVirtualCardAutoFilledBySafari:(id)a3 completion:(id)a4;
-- (void)paymentFundingSourceForIdentifier:(id)a3 accountIdentifier:(id)a4 completion:(id)a5;
-- (void)paymentFundingSourcesForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)performAccountAction:(id)a3 withAccountIdentifier:(id)a4 accountUserAltDSID:(id)a5 completion:(id)a6;
-- (void)performVirtualCardAction:(int64_t)a3 forVirtualCardIdentifier:(id)a4 forAccountIdentifier:(id)a5 completion:(id)a6;
-- (void)physicalCardForFeatureIdentifier:(unint64_t)a3 activationCode:(id)a4 completion:(id)a5;
-- (void)physicalCardsChanged:(id)a3 forAccountIdentifier:(id)a4;
-- (void)physicalCardsForAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)processPhysicalCardExpirationMessaging:(id)a3 physicalCards:(id)a4 account:(id)a5;
-- (void)registerObserver:(id)a3;
-- (void)resetAccountBalancesForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)rewardsTierSummaryForTransactionSourceIdentifiers:(id)a3 currencyCode:(id)a4 startDate:(id)a5 endDate:(id)a6 completion:(id)a7;
-- (void)savingsStatementsForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)scheduleSetupReminderForAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)scheduledPaymentsChangedForAccountIdentifier:(id)a3;
-- (void)scheduledPaymentsWithAccountIdentifier:(id)a3 includeFailedRecurringPayments:(BOOL)a4 allowFetchFromServer:(BOOL)a5 completion:(id)a6;
-- (void)setNeedsSyncToFinanceForAllTransactionsWithCompletion:(id)a3;
-- (void)sharedAccountCloudStoreWithAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)statementsChangedForAccountIdentifier:(id)a3;
-- (void)taxFormsForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)termsWithIdentifier:(id)a3 accepted:(BOOL)a4 withAccountIdentifier:(id)a5 completion:(id)a6;
-- (void)triggerCloudStoreZoneCreationForAccount:(id)a3 withCompletion:(id)a4;
-- (void)triggerStatementMetadataProcessingForAccountIdentifier:(id)a3 statementIdentifier:(id)a4 completion:(id)a5;
-- (void)unregisterObserver:(id)a3;
-- (void)updateAccountBalancesForAccountIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 type:(unint64_t)a6 completion:(id)a7;
-- (void)updateAccountEnhancedMerchantsForAccountWithIdentifier:(id)a3 cooldownLevel:(unint64_t)a4 completion:(id)a5;
-- (void)updateAccountEnhancedMerchantsForAccountWithIdentifier:(id)a3 ignoreErrorBackoff:(BOOL)a4 cooldownLevel:(unint64_t)a5 completion:(id)a6;
-- (void)updateAccountPromotionsForAccountWithIdentifier:(id)a3 ignoreErrorBackoff:(BOOL)a4 observeCooldownPeriod:(BOOL)a5 completion:(id)a6;
-- (void)updateAccountPromotionsForAccountWithIdentifier:(id)a3 observeCooldownPeriod:(BOOL)a4 completion:(id)a5;
-- (void)updateAccountStatementMetadataForStatementIdentifier:(id)a3 accountIdentifier:(id)a4 completion:(id)a5;
-- (void)updateAccountUserNotificationSettings:(id)a3 forAccountUserWithAltDSID:(id)a4 forAccountWithIdentifier:(id)a5 completion:(id)a6;
-- (void)updateAccountUserPreferences:(id)a3 forAccountUserWithAltDSID:(id)a4 forAccountWithIdentifier:(id)a5 completion:(id)a6;
-- (void)updateAccountUsersForAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)updateAccountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)updateAccountWithIdentifier:(id)a3 extended:(BOOL)a4 completion:(id)a5;
-- (void)updateAccountsWithCompletion:(id)a3;
-- (void)updateCreditRecoveryPaymentPlansForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)updateCreditStatementsForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)updateImpressionCount:(int64_t)a3 promotionProgramIdentifier:(id)a4 accountIdentifier:(id)a5 completion:(id)a6;
-- (void)updateImpressionCountsForPromotions:(id)a3 accountIdentifier:(id)a4 completion:(id)a5;
-- (void)updateLastUsedInAppFundingSource:(id)a3 accountIdentifier:(id)a4;
-- (void)updateMockAccountWithAccount:(id)a3 completion:(id)a4;
-- (void)updatePaymentFundingSourcesForAccountIdentifier:(id)a3 force:(BOOL)a4 completion:(id)a5;
-- (void)updatePhysicalCardsForAccountWithIdentifier:(id)a3 force:(BOOL)a4 completion:(id)a5;
-- (void)updateSavingsStatementsForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)updateScheduledPaymentsWithAccount:(id)a3 completion:(id)a4;
-- (void)updateSharedAccountCloudStoreWithAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)updateTaxFormsForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)updateUserInfoForAccountIdentifier:(id)a3 contact:(id)a4 completion:(id)a5;
-- (void)updateVirtualCardsWithAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)userInfoForAccountIdentifier:(id)a3 forceFetch:(BOOL)a4 completion:(id)a5;
-- (void)validateAppleBalanceSecurityRequirementsWithCompletion:(id)a3;
-- (void)virtualCardsInKeychainWithCompletion:(id)a3;
-- (void)writeVirtualCardToKeychain:(id)a3 completion:(id)a4;
+- (void)defaultAccountForFeature:(unint64_t)feature completion:(id)completion;
+- (void)deleteAccountEnhancedMerchant:(id)merchant forAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteAccountPromotion:(id)promotion forAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteAccountStatementMetadataForStatementIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completion:(id)completion;
+- (void)deleteAccountUserWithAltDSID:(id)d forAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteAppleBalancePromotionForAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteBeneficiaryWithIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completion:(id)completion;
+- (void)deleteEventWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteEventsWithAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteEventsWithAccountIdentifier:(id)identifier excludingTypes:(id)types completion:(id)completion;
+- (void)deleteInStoreTopUpTokenForAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteLocalAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)didAddAccountPendingFamilyMembers:(id)members;
+- (void)didRemoveAppleBalancePromotionWithUniqueIdentifier:(id)identifier forAccountIdentifier:(id)accountIdentifier;
+- (void)didUpdateAccountEnhancedMerchants:(id)merchants accountIdentifier:(id)identifier lastUpdate:(id)update;
+- (void)didUpdateAccountPromotions:(id)promotions accountIdentifier:(id)identifier;
+- (void)didUpdateAppleBalancePromotion:(id)promotion forAccountIdentifier:(id)identifier;
+- (void)didUpdateInStoreTopUpToken:(id)token forAccountIdentifier:(id)identifier;
+- (void)didUpdatePaymentFundingSources:(id)sources accountIdentifier:(id)identifier;
+- (void)eventsForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)eventsForAccountIdentifier:(id)identifier types:(id)types startDate:(id)date endDate:(id)endDate orderedByDate:(int64_t)byDate limit:(unint64_t)limit completion:(id)completion;
+- (void)exportTransactionDataForAccountIdentifier:(id)identifier withFileFormat:(id)format beginDate:(id)date endDate:(id)endDate productTimeZone:(id)zone completion:(id)completion;
+- (void)fetchKeychainCredentialForVirtualCardIdentifier:(id)identifier forAccountIdentifier:(id)accountIdentifier completion:(id)completion;
+- (void)inStoreTopUpTokenForAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)inactivePhysicalCardForFeatureIdentifier:(unint64_t)identifier completion:(id)completion;
+- (void)insertDailyCashNotificationForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)insertEvents:(id)events withAccountidentifier:(id)accountidentifier completion:(id)completion;
+- (void)insertOrUpdateAccountEnhancedMerchants:(id)merchants accountIdentifier:(id)identifier completion:(id)completion;
+- (void)insertOrUpdateAccountPromotions:(id)promotions accountIdentifier:(id)identifier completion:(id)completion;
+- (void)insertOrUpdateInStoreTopUpToken:(id)token accountIdentifier:(id)identifier completion:(id)completion;
+- (void)insertOrUpdateLocalAccount:(id)account completion:(id)completion;
+- (void)insertSummaryNotificationForAccountIdentifier:(id)identifier summaryType:(int64_t)type completion:(id)completion;
+- (void)invalidateTopUpTokenWithIdentifier:(id)identifier forAccountWithIdentifier:(id)withIdentifier completion:(id)completion;
+- (void)lastRedemptionEventToDestination:(unint64_t)destination forAccountIdentifier:(id)identifier altDSID:(id)d completion:(id)completion;
+- (void)lastUsedInAppFundingSourceForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)markUserViewedIntroduction:(BOOL)introduction forInstallmentIdentifiers:(id)identifiers accountIdentifier:(id)identifier;
+- (void)noteSecurityCodeActivityWithAction:(int64_t)action forSecurityCodeIdentifier:(id)identifier forVirtualCardIdentifier:(id)cardIdentifier forAccountIdentifier:(id)accountIdentifier completion:(id)completion;
+- (void)noteVirtualCardAutoFilledBySafari:(id)safari completion:(id)completion;
+- (void)paymentFundingSourceForIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completion:(id)completion;
+- (void)paymentFundingSourcesForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)performAccountAction:(id)action withAccountIdentifier:(id)identifier accountUserAltDSID:(id)d completion:(id)completion;
+- (void)performVirtualCardAction:(int64_t)action forVirtualCardIdentifier:(id)identifier forAccountIdentifier:(id)accountIdentifier completion:(id)completion;
+- (void)physicalCardForFeatureIdentifier:(unint64_t)identifier activationCode:(id)code completion:(id)completion;
+- (void)physicalCardsChanged:(id)changed forAccountIdentifier:(id)identifier;
+- (void)physicalCardsForAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)processPhysicalCardExpirationMessaging:(id)messaging physicalCards:(id)cards account:(id)account;
+- (void)registerObserver:(id)observer;
+- (void)resetAccountBalancesForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)rewardsTierSummaryForTransactionSourceIdentifiers:(id)identifiers currencyCode:(id)code startDate:(id)date endDate:(id)endDate completion:(id)completion;
+- (void)savingsStatementsForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)scheduleSetupReminderForAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)scheduledPaymentsChangedForAccountIdentifier:(id)identifier;
+- (void)scheduledPaymentsWithAccountIdentifier:(id)identifier includeFailedRecurringPayments:(BOOL)payments allowFetchFromServer:(BOOL)server completion:(id)completion;
+- (void)setNeedsSyncToFinanceForAllTransactionsWithCompletion:(id)completion;
+- (void)sharedAccountCloudStoreWithAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)statementsChangedForAccountIdentifier:(id)identifier;
+- (void)taxFormsForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)termsWithIdentifier:(id)identifier accepted:(BOOL)accepted withAccountIdentifier:(id)accountIdentifier completion:(id)completion;
+- (void)triggerCloudStoreZoneCreationForAccount:(id)account withCompletion:(id)completion;
+- (void)triggerStatementMetadataProcessingForAccountIdentifier:(id)identifier statementIdentifier:(id)statementIdentifier completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
+- (void)updateAccountBalancesForAccountIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate type:(unint64_t)type completion:(id)completion;
+- (void)updateAccountEnhancedMerchantsForAccountWithIdentifier:(id)identifier cooldownLevel:(unint64_t)level completion:(id)completion;
+- (void)updateAccountEnhancedMerchantsForAccountWithIdentifier:(id)identifier ignoreErrorBackoff:(BOOL)backoff cooldownLevel:(unint64_t)level completion:(id)completion;
+- (void)updateAccountPromotionsForAccountWithIdentifier:(id)identifier ignoreErrorBackoff:(BOOL)backoff observeCooldownPeriod:(BOOL)period completion:(id)completion;
+- (void)updateAccountPromotionsForAccountWithIdentifier:(id)identifier observeCooldownPeriod:(BOOL)period completion:(id)completion;
+- (void)updateAccountStatementMetadataForStatementIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completion:(id)completion;
+- (void)updateAccountUserNotificationSettings:(id)settings forAccountUserWithAltDSID:(id)d forAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)updateAccountUserPreferences:(id)preferences forAccountUserWithAltDSID:(id)d forAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)updateAccountUsersForAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)updateAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)updateAccountWithIdentifier:(id)identifier extended:(BOOL)extended completion:(id)completion;
+- (void)updateAccountsWithCompletion:(id)completion;
+- (void)updateCreditRecoveryPaymentPlansForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)updateCreditStatementsForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)updateImpressionCount:(int64_t)count promotionProgramIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completion:(id)completion;
+- (void)updateImpressionCountsForPromotions:(id)promotions accountIdentifier:(id)identifier completion:(id)completion;
+- (void)updateLastUsedInAppFundingSource:(id)source accountIdentifier:(id)identifier;
+- (void)updateMockAccountWithAccount:(id)account completion:(id)completion;
+- (void)updatePaymentFundingSourcesForAccountIdentifier:(id)identifier force:(BOOL)force completion:(id)completion;
+- (void)updatePhysicalCardsForAccountWithIdentifier:(id)identifier force:(BOOL)force completion:(id)completion;
+- (void)updateSavingsStatementsForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)updateScheduledPaymentsWithAccount:(id)account completion:(id)completion;
+- (void)updateSharedAccountCloudStoreWithAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)updateTaxFormsForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)updateUserInfoForAccountIdentifier:(id)identifier contact:(id)contact completion:(id)completion;
+- (void)updateVirtualCardsWithAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)userInfoForAccountIdentifier:(id)identifier forceFetch:(BOOL)fetch completion:(id)completion;
+- (void)validateAppleBalanceSecurityRequirementsWithCompletion:(id)completion;
+- (void)virtualCardsInKeychainWithCompletion:(id)completion;
+- (void)writeVirtualCardToKeychain:(id)keychain completion:(id)completion;
 @end
 
 @implementation PKAccountService
@@ -152,7 +152,7 @@
   block[1] = 3221225472;
   block[2] = __34__PKAccountService_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_280 != -1)
   {
     dispatch_once(&_MergedGlobals_280, block);
@@ -189,12 +189,12 @@ void __34__PKAccountService_sharedInstance__block_invoke(uint64_t a1)
     v2->_remoteService = v8;
 
     v2->_lockObservers._os_unfair_lock_opaque = 0;
-    v10 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v2->_observers;
-    v2->_observers = v10;
+    v2->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
-    v12 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v12 addObserver:v2 selector:sel__accountsChanged_ name:@"PKAccountServiceAccountsChangedDistributedNotification" object:0 suspensionBehavior:2];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__accountsChanged_ name:@"PKAccountServiceAccountsChangedDistributedNotification" object:0 suspensionBehavior:2];
   }
 
   return v2;
@@ -202,31 +202,31 @@ void __34__PKAccountService_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKAccountService;
   [(PKAccountService *)&v4 dealloc];
 }
 
-- (void)_accountsChanged:(id)a3
+- (void)_accountsChanged:(id)changed
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"PKAccountServiceAccountsChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PKAccountServiceAccountsChangedNotification" object:self];
 }
 
-- (id)errorHandlerForMethod:(SEL)a3 completion:(id)a4
+- (id)errorHandlerForMethod:(SEL)method completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __53__PKAccountService_errorHandlerForMethod_completion___block_invoke;
   aBlock[3] = &unk_1E79C8E18;
-  v12 = v6;
-  v13 = a3;
+  v12 = completionCopy;
+  methodCopy = method;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   v8 = _Block_copy(aBlock);
   v9 = _Block_copy(v8);
 
@@ -277,17 +277,17 @@ uint64_t __53__PKAccountService_errorHandlerForMethod_completion___block_invoke_
   return result;
 }
 
-- (void)accountsWithCompletion:(id)a3
+- (void)accountsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __43__PKAccountService_accountsWithCompletion___block_invoke;
     v12[3] = &unk_1E79C4450;
-    v7 = v5;
+    v7 = completionCopy;
     v13 = v7;
     v8 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v12];
     v9 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v8];
@@ -349,17 +349,17 @@ uint64_t __43__PKAccountService_accountsWithCompletion___block_invoke_3(void *a1
   return result;
 }
 
-- (void)accountsForProvisioningWithCompletion:(id)a3
+- (void)accountsForProvisioningWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __58__PKAccountService_accountsForProvisioningWithCompletion___block_invoke;
     v12[3] = &unk_1E79C4450;
-    v7 = v5;
+    v7 = completionCopy;
     v13 = v7;
     v8 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v12];
     v9 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v8];
@@ -425,17 +425,17 @@ uint64_t __58__PKAccountService_accountsForProvisioningWithCompletion___block_in
   return result;
 }
 
-- (void)accountsWithPassLocallyProvisionedWithCompletion:(id)a3
+- (void)accountsWithPassLocallyProvisionedWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __69__PKAccountService_accountsWithPassLocallyProvisionedWithCompletion___block_invoke;
     v12[3] = &unk_1E79C4450;
-    v7 = v5;
+    v7 = completionCopy;
     v13 = v7;
     v8 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v12];
     v9 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v8];
@@ -497,14 +497,14 @@ uint64_t __69__PKAccountService_accountsWithPassLocallyProvisionedWithCompletion
   return result;
 }
 
-- (void)updateAccountsWithCompletion:(id)a3
+- (void)updateAccountsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __49__PKAccountService_updateAccountsWithCompletion___block_invoke;
   v12[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = completionCopy;
   v13 = v6;
   v7 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v12];
   v8 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v7];
@@ -566,16 +566,16 @@ uint64_t __49__PKAccountService_updateAccountsWithCompletion___block_invoke_3(vo
   return result;
 }
 
-- (void)updateMockAccountWithAccount:(id)a3 completion:(id)a4
+- (void)updateMockAccountWithAccount:(id)account completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __60__PKAccountService_updateMockAccountWithAccount_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  accountCopy = account;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -586,7 +586,7 @@ uint64_t __49__PKAccountService_updateAccountsWithCompletion___block_invoke_3(vo
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 updateMockAccountWithAccount:v9 completion:v13];
+  [v11 updateMockAccountWithAccount:accountCopy completion:v13];
 }
 
 uint64_t __60__PKAccountService_updateMockAccountWithAccount_completion___block_invoke(uint64_t a1)
@@ -634,9 +634,9 @@ uint64_t __60__PKAccountService_updateMockAccountWithAccount_completion___block_
   return result;
 }
 
-- (id)accountWithIdentifier:(id)a3 error:(id *)a4
+- (id)accountWithIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -658,16 +658,16 @@ uint64_t __60__PKAccountService_updateMockAccountWithAccount_completion___block_
   v13[3] = &unk_1E79E34F0;
   v13[4] = &v20;
   v13[5] = &v14;
-  [v9 usingSynchronousProxy:1 accountWithIdentifier:v7 completion:v13];
+  [v9 usingSynchronousProxy:1 accountWithIdentifier:identifierCopy completion:v13];
   v10 = v21[5];
   if (v10)
   {
     v11 = v10;
   }
 
-  else if (a4)
+  else if (error)
   {
-    objc_storeStrong(a4, v15[5]);
+    objc_storeStrong(error, v15[5]);
   }
 
   _Block_object_dispose(&v14, 8);
@@ -698,19 +698,19 @@ void __48__PKAccountService_accountWithIdentifier_error___block_invoke(uint64_t 
   *(v8 + 40) = v9;
 }
 
-- (void)accountWithIdentifier:(id)a3 completion:(id)a4
+- (void)accountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __53__PKAccountService_accountWithIdentifier_completion___block_invoke;
     v15[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v16 = v9;
-    v10 = a3;
+    identifierCopy = identifier;
     v11 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
     v12 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -720,7 +720,7 @@ void __48__PKAccountService_accountWithIdentifier_error___block_invoke(uint64_t 
     v13[3] = &unk_1E79C4928;
     v13[4] = self;
     v14 = v9;
-    [v12 usingSynchronousProxy:0 accountWithIdentifier:v10 completion:v13];
+    [v12 usingSynchronousProxy:0 accountWithIdentifier:identifierCopy completion:v13];
   }
 }
 
@@ -771,19 +771,19 @@ uint64_t __53__PKAccountService_accountWithIdentifier_completion___block_invoke_
   return result;
 }
 
-- (void)accountWithVirtualCardIdentifier:(id)a3 completion:(id)a4
+- (void)accountWithVirtualCardIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __64__PKAccountService_accountWithVirtualCardIdentifier_completion___block_invoke;
     v15[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v16 = v9;
-    v10 = a3;
+    identifierCopy = identifier;
     v11 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
     v12 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -793,7 +793,7 @@ uint64_t __53__PKAccountService_accountWithIdentifier_completion___block_invoke_
     v13[3] = &unk_1E79C4928;
     v13[4] = self;
     v14 = v9;
-    [v12 accountWithVirtualCardIdentifier:v10 completion:v13];
+    [v12 accountWithVirtualCardIdentifier:identifierCopy completion:v13];
   }
 }
 
@@ -844,19 +844,19 @@ uint64_t __64__PKAccountService_accountWithVirtualCardIdentifier_completion___bl
   return result;
 }
 
-- (void)accountForPassWithUniqueID:(id)a3 completion:(id)a4
+- (void)accountForPassWithUniqueID:(id)d completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __58__PKAccountService_accountForPassWithUniqueID_completion___block_invoke;
     v15[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v16 = v9;
-    v10 = a3;
+    dCopy = d;
     v11 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
     v12 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -866,7 +866,7 @@ uint64_t __64__PKAccountService_accountWithVirtualCardIdentifier_completion___bl
     v13[3] = &unk_1E79E34C8;
     v13[4] = self;
     v14 = v9;
-    [v12 accountForPassWithUniqueID:v10 completion:v13];
+    [v12 accountForPassWithUniqueID:dCopy completion:v13];
   }
 }
 
@@ -915,16 +915,16 @@ uint64_t __58__PKAccountService_accountForPassWithUniqueID_completion___block_in
   return result;
 }
 
-- (void)updateAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)updateAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __59__PKAccountService_updateAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -935,7 +935,7 @@ uint64_t __58__PKAccountService_accountForPassWithUniqueID_completion___block_in
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 updateAccountWithIdentifier:v9 extended:0 completion:v13];
+  [v11 updateAccountWithIdentifier:identifierCopy extended:0 completion:v13];
 }
 
 uint64_t __59__PKAccountService_updateAccountWithIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -985,17 +985,17 @@ uint64_t __59__PKAccountService_updateAccountWithIdentifier_completion___block_i
   return result;
 }
 
-- (void)updateAccountWithIdentifier:(id)a3 extended:(BOOL)a4 completion:(id)a5
+- (void)updateAccountWithIdentifier:(id)identifier extended:(BOOL)extended completion:(id)completion
 {
-  v5 = a4;
-  v9 = a5;
+  extendedCopy = extended;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __68__PKAccountService_updateAccountWithIdentifier_extended_completion___block_invoke;
   v17[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v17];
   v13 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v12];
 
@@ -1006,7 +1006,7 @@ uint64_t __59__PKAccountService_updateAccountWithIdentifier_completion___block_i
   v15[4] = self;
   v16 = v10;
   v14 = v10;
-  [v13 updateAccountWithIdentifier:v11 extended:v5 completion:v15];
+  [v13 updateAccountWithIdentifier:identifierCopy extended:extendedCopy completion:v15];
 }
 
 uint64_t __68__PKAccountService_updateAccountWithIdentifier_extended_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1056,16 +1056,16 @@ uint64_t __68__PKAccountService_updateAccountWithIdentifier_extended_completion_
   return result;
 }
 
-- (void)updateAccountUsersForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)updateAccountUsersForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __74__PKAccountService_updateAccountUsersForAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -1076,7 +1076,7 @@ uint64_t __68__PKAccountService_updateAccountWithIdentifier_extended_completion_
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 updateAccountUsersForAccountWithIdentifier:v9 completion:v13];
+  [v11 updateAccountUsersForAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __74__PKAccountService_updateAccountUsersForAccountWithIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1126,9 +1126,9 @@ uint64_t __74__PKAccountService_updateAccountUsersForAccountWithIdentifier_compl
   return result;
 }
 
-- (id)accountUsersForAccountWithIdentifier:(id)a3
+- (id)accountUsersForAccountWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(PKAccountService *)self _synchronousRemoteObjectProxyWithErrorHandler:0];
   v9 = 0;
   v10 = &v9;
@@ -1142,23 +1142,23 @@ uint64_t __74__PKAccountService_updateAccountUsersForAccountWithIdentifier_compl
   v8[3] = &unk_1E79CA7D8;
   v8[4] = self;
   v8[5] = &v9;
-  [v5 accountUsersForAccountWithIdentifier:v4 usingSynchronousProxy:1 completion:v8];
+  [v5 accountUsersForAccountWithIdentifier:identifierCopy usingSynchronousProxy:1 completion:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
   return v6;
 }
 
-- (void)accountUsersForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)accountUsersForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __68__PKAccountService_accountUsersForAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -1169,7 +1169,7 @@ uint64_t __74__PKAccountService_updateAccountUsersForAccountWithIdentifier_compl
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 accountUsersForAccountWithIdentifier:v9 usingSynchronousProxy:0 completion:v13];
+  [v11 accountUsersForAccountWithIdentifier:identifierCopy usingSynchronousProxy:0 completion:v13];
 }
 
 uint64_t __68__PKAccountService_accountUsersForAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -1217,17 +1217,17 @@ uint64_t __68__PKAccountService_accountUsersForAccountWithIdentifier_completion_
   return result;
 }
 
-- (void)deleteAccountUserWithAltDSID:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5
+- (void)deleteAccountUserWithAltDSID:(id)d forAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __85__PKAccountService_deleteAccountUserWithAltDSID_forAccountWithIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  identifierCopy = identifier;
+  dCopy = d;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -1238,7 +1238,7 @@ uint64_t __68__PKAccountService_accountUsersForAccountWithIdentifier_completion_
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 deleteAccountUserWithAltDSID:v12 forAccountWithIdentifier:v11 completion:v16];
+  [v14 deleteAccountUserWithAltDSID:dCopy forAccountWithIdentifier:identifierCopy completion:v16];
 }
 
 uint64_t __85__PKAccountService_deleteAccountUserWithAltDSID_forAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -1286,17 +1286,17 @@ uint64_t __85__PKAccountService_deleteAccountUserWithAltDSID_forAccountWithIdent
   return result;
 }
 
-- (void)deleteBeneficiaryWithIdentifier:(id)a3 accountIdentifier:(id)a4 completion:(id)a5
+- (void)deleteBeneficiaryWithIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __81__PKAccountService_deleteBeneficiaryWithIdentifier_accountIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  accountIdentifierCopy = accountIdentifier;
+  identifierCopy = identifier;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -1307,7 +1307,7 @@ uint64_t __85__PKAccountService_deleteAccountUserWithAltDSID_forAccountWithIdent
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 deleteBeneficiaryWithIdentifier:v12 accountIdentifier:v11 completion:v16];
+  [v14 deleteBeneficiaryWithIdentifier:identifierCopy accountIdentifier:accountIdentifierCopy completion:v16];
 }
 
 uint64_t __81__PKAccountService_deleteBeneficiaryWithIdentifier_accountIdentifier_completion___block_invoke(uint64_t a1)
@@ -1355,18 +1355,18 @@ uint64_t __81__PKAccountService_deleteBeneficiaryWithIdentifier_accountIdentifie
   return result;
 }
 
-- (void)updateAccountUserPreferences:(id)a3 forAccountUserWithAltDSID:(id)a4 forAccountWithIdentifier:(id)a5 completion:(id)a6
+- (void)updateAccountUserPreferences:(id)preferences forAccountUserWithAltDSID:(id)d forAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v11 = a6;
+  completionCopy = completion;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __111__PKAccountService_updateAccountUserPreferences_forAccountUserWithAltDSID_forAccountWithIdentifier_completion___block_invoke;
   v21[3] = &unk_1E79C4450;
-  v12 = v11;
+  v12 = completionCopy;
   v22 = v12;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  identifierCopy = identifier;
+  dCopy = d;
+  preferencesCopy = preferences;
   v16 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v21];
   v17 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v16];
 
@@ -1377,7 +1377,7 @@ uint64_t __81__PKAccountService_deleteBeneficiaryWithIdentifier_accountIdentifie
   v19[4] = self;
   v20 = v12;
   v18 = v12;
-  [v17 updateAccountUserPreferences:v15 forAccountUserWithAltDSID:v14 forAccountWithIdentifier:v13 completion:v19];
+  [v17 updateAccountUserPreferences:preferencesCopy forAccountUserWithAltDSID:dCopy forAccountWithIdentifier:identifierCopy completion:v19];
 }
 
 uint64_t __111__PKAccountService_updateAccountUserPreferences_forAccountUserWithAltDSID_forAccountWithIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1427,18 +1427,18 @@ uint64_t __111__PKAccountService_updateAccountUserPreferences_forAccountUserWith
   return result;
 }
 
-- (void)updateAccountUserNotificationSettings:(id)a3 forAccountUserWithAltDSID:(id)a4 forAccountWithIdentifier:(id)a5 completion:(id)a6
+- (void)updateAccountUserNotificationSettings:(id)settings forAccountUserWithAltDSID:(id)d forAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v11 = a6;
+  completionCopy = completion;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __120__PKAccountService_updateAccountUserNotificationSettings_forAccountUserWithAltDSID_forAccountWithIdentifier_completion___block_invoke;
   v21[3] = &unk_1E79C4450;
-  v12 = v11;
+  v12 = completionCopy;
   v22 = v12;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  identifierCopy = identifier;
+  dCopy = d;
+  settingsCopy = settings;
   v16 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v21];
   v17 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v16];
 
@@ -1449,7 +1449,7 @@ uint64_t __111__PKAccountService_updateAccountUserPreferences_forAccountUserWith
   v19[4] = self;
   v20 = v12;
   v18 = v12;
-  [v17 updateAccountUserNotificationSettings:v15 forAccountUserWithAltDSID:v14 forAccountWithIdentifier:v13 completion:v19];
+  [v17 updateAccountUserNotificationSettings:settingsCopy forAccountUserWithAltDSID:dCopy forAccountWithIdentifier:identifierCopy completion:v19];
 }
 
 uint64_t __120__PKAccountService_updateAccountUserNotificationSettings_forAccountUserWithAltDSID_forAccountWithIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1499,16 +1499,16 @@ uint64_t __120__PKAccountService_updateAccountUserNotificationSettings_forAccoun
   return result;
 }
 
-- (void)deleteAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __59__PKAccountService_deleteAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -1519,7 +1519,7 @@ uint64_t __120__PKAccountService_updateAccountUserNotificationSettings_forAccoun
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 deleteAccountWithIdentifier:v9 completion:v13];
+  [v11 deleteAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __59__PKAccountService_deleteAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -1567,16 +1567,16 @@ uint64_t __59__PKAccountService_deleteAccountWithIdentifier_completion___block_i
   return result;
 }
 
-- (void)deleteLocalAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteLocalAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__PKAccountService_deleteLocalAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -1587,7 +1587,7 @@ uint64_t __59__PKAccountService_deleteAccountWithIdentifier_completion___block_i
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 deleteLocalAccountWithIdentifier:v9 completion:v13];
+  [v11 deleteLocalAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __64__PKAccountService_deleteLocalAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -1635,16 +1635,16 @@ uint64_t __64__PKAccountService_deleteLocalAccountWithIdentifier_completion___bl
   return result;
 }
 
-- (void)insertOrUpdateLocalAccount:(id)a3 completion:(id)a4
+- (void)insertOrUpdateLocalAccount:(id)account completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __58__PKAccountService_insertOrUpdateLocalAccount_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  accountCopy = account;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -1655,7 +1655,7 @@ uint64_t __64__PKAccountService_deleteLocalAccountWithIdentifier_completion___bl
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 insertOrUpdateLocalAccount:v9 completion:v13];
+  [v11 insertOrUpdateLocalAccount:accountCopy completion:v13];
 }
 
 uint64_t __58__PKAccountService_insertOrUpdateLocalAccount_completion___block_invoke(uint64_t a1)
@@ -1703,14 +1703,14 @@ uint64_t __58__PKAccountService_insertOrUpdateLocalAccount_completion___block_in
   return result;
 }
 
-- (void)setNeedsSyncToFinanceForAllTransactionsWithCompletion:(id)a3
+- (void)setNeedsSyncToFinanceForAllTransactionsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__PKAccountService_setNeedsSyncToFinanceForAllTransactionsWithCompletion___block_invoke;
   v12[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = completionCopy;
   v13 = v6;
   v7 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v12];
   v8 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v7];
@@ -1765,10 +1765,10 @@ uint64_t __74__PKAccountService_setNeedsSyncToFinanceForAllTransactionsWithCompl
   return result;
 }
 
-- (void)scheduleSetupReminderForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)scheduleSetupReminderForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v9 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:&__block_literal_global_228];
   v10 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v9];
 
@@ -1777,9 +1777,9 @@ uint64_t __74__PKAccountService_setNeedsSyncToFinanceForAllTransactionsWithCompl
   v12[2] = __77__PKAccountService_scheduleSetupReminderForAccountWithIdentifier_completion___block_invoke_2;
   v12[3] = &unk_1E79C4A40;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
-  [v10 scheduleSetupReminderForAccountWithIdentifier:v8 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [v10 scheduleSetupReminderForAccountWithIdentifier:identifierCopy completion:v12];
 }
 
 void __77__PKAccountService_scheduleSetupReminderForAccountWithIdentifier_completion___block_invoke_2(uint64_t a1)
@@ -1812,16 +1812,16 @@ uint64_t __77__PKAccountService_scheduleSetupReminderForAccountWithIdentifier_co
   return result;
 }
 
-- (void)insertSummaryNotificationForAccountIdentifier:(id)a3 summaryType:(int64_t)a4 completion:(id)a5
+- (void)insertSummaryNotificationForAccountIdentifier:(id)identifier summaryType:(int64_t)type completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __89__PKAccountService_insertSummaryNotificationForAccountIdentifier_summaryType_completion___block_invoke;
   v17[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v17];
   v13 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v12];
 
@@ -1832,7 +1832,7 @@ uint64_t __77__PKAccountService_scheduleSetupReminderForAccountWithIdentifier_co
   v15[4] = self;
   v16 = v10;
   v14 = v10;
-  [v13 insertSummaryNotificationForAccountIdentifier:v11 summaryType:a4 completion:v15];
+  [v13 insertSummaryNotificationForAccountIdentifier:identifierCopy summaryType:type completion:v15];
 }
 
 uint64_t __89__PKAccountService_insertSummaryNotificationForAccountIdentifier_summaryType_completion___block_invoke(uint64_t a1)
@@ -1880,16 +1880,16 @@ uint64_t __89__PKAccountService_insertSummaryNotificationForAccountIdentifier_su
   return result;
 }
 
-- (void)insertDailyCashNotificationForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)insertDailyCashNotificationForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__PKAccountService_insertDailyCashNotificationForAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -1900,7 +1900,7 @@ uint64_t __89__PKAccountService_insertSummaryNotificationForAccountIdentifier_su
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 insertDailyCashNotificationForAccountIdentifier:v9 completion:v13];
+  [v11 insertDailyCashNotificationForAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __79__PKAccountService_insertDailyCashNotificationForAccountIdentifier_completion___block_invoke(uint64_t a1)
@@ -1948,16 +1948,16 @@ uint64_t __79__PKAccountService_insertDailyCashNotificationForAccountIdentifier_
   return result;
 }
 
-- (void)paymentFundingSourcesForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)paymentFundingSourcesForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__PKAccountService_paymentFundingSourcesForAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -1968,7 +1968,7 @@ uint64_t __79__PKAccountService_insertDailyCashNotificationForAccountIdentifier_
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 paymentFundingSourcesForAccountIdentifier:v9 completion:v13];
+  [v11 paymentFundingSourcesForAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __73__PKAccountService_paymentFundingSourcesForAccountIdentifier_completion___block_invoke(uint64_t a1)
@@ -2016,17 +2016,17 @@ uint64_t __73__PKAccountService_paymentFundingSourcesForAccountIdentifier_comple
   return result;
 }
 
-- (void)paymentFundingSourceForIdentifier:(id)a3 accountIdentifier:(id)a4 completion:(id)a5
+- (void)paymentFundingSourceForIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __83__PKAccountService_paymentFundingSourceForIdentifier_accountIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  accountIdentifierCopy = accountIdentifier;
+  identifierCopy = identifier;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -2037,7 +2037,7 @@ uint64_t __73__PKAccountService_paymentFundingSourcesForAccountIdentifier_comple
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 paymentFundingSourceForIdentifier:v12 accountIdentifier:v11 completion:v16];
+  [v14 paymentFundingSourceForIdentifier:identifierCopy accountIdentifier:accountIdentifierCopy completion:v16];
 }
 
 uint64_t __83__PKAccountService_paymentFundingSourceForIdentifier_accountIdentifier_completion___block_invoke(uint64_t a1)
@@ -2085,17 +2085,17 @@ uint64_t __83__PKAccountService_paymentFundingSourceForIdentifier_accountIdentif
   return result;
 }
 
-- (void)updatePaymentFundingSourcesForAccountIdentifier:(id)a3 force:(BOOL)a4 completion:(id)a5
+- (void)updatePaymentFundingSourcesForAccountIdentifier:(id)identifier force:(BOOL)force completion:(id)completion
 {
-  v5 = a4;
-  v9 = a5;
+  forceCopy = force;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __85__PKAccountService_updatePaymentFundingSourcesForAccountIdentifier_force_completion___block_invoke;
   v17[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v17];
   v13 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v12];
 
@@ -2106,7 +2106,7 @@ uint64_t __83__PKAccountService_paymentFundingSourceForIdentifier_accountIdentif
   v15[4] = self;
   v16 = v10;
   v14 = v10;
-  [v13 updatePaymentFundingSourcesForAccountIdentifier:v11 force:v5 completion:v15];
+  [v13 updatePaymentFundingSourcesForAccountIdentifier:identifierCopy force:forceCopy completion:v15];
 }
 
 uint64_t __85__PKAccountService_updatePaymentFundingSourcesForAccountIdentifier_force_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -2156,7 +2156,7 @@ uint64_t __85__PKAccountService_updatePaymentFundingSourcesForAccountIdentifier_
   return result;
 }
 
-- (id)defaultAccountForFeature:(unint64_t)a3
+- (id)defaultAccountForFeature:(unint64_t)feature
 {
   v5 = [(PKAccountService *)self _synchronousRemoteObjectProxyWithErrorHandler:0];
   v9 = 0;
@@ -2171,24 +2171,24 @@ uint64_t __85__PKAccountService_updatePaymentFundingSourcesForAccountIdentifier_
   v8[3] = &unk_1E79E3568;
   v8[4] = self;
   v8[5] = &v9;
-  [v5 defaultAccountForFeature:a3 usingSynchronousProxy:1 completion:v8];
+  [v5 defaultAccountForFeature:feature usingSynchronousProxy:1 completion:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
   return v6;
 }
 
-- (void)defaultAccountForFeature:(unint64_t)a3 completion:(id)a4
+- (void)defaultAccountForFeature:(unint64_t)feature completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __56__PKAccountService_defaultAccountForFeature_completion___block_invoke;
     v14[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v15 = v9;
     v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v14];
     v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
@@ -2199,25 +2199,25 @@ uint64_t __85__PKAccountService_updatePaymentFundingSourcesForAccountIdentifier_
     v12[3] = &unk_1E79E3590;
     v12[4] = self;
     v13 = v9;
-    [v11 defaultAccountForFeature:a3 usingSynchronousProxy:0 completion:v12];
+    [v11 defaultAccountForFeature:feature usingSynchronousProxy:0 completion:v12];
   }
 }
 
-- (void)termsWithIdentifier:(id)a3 accepted:(BOOL)a4 withAccountIdentifier:(id)a5 completion:(id)a6
+- (void)termsWithIdentifier:(id)identifier accepted:(BOOL)accepted withAccountIdentifier:(id)accountIdentifier completion:(id)completion
 {
-  v7 = a4;
-  v11 = a6;
-  v12 = v11;
-  if (v11)
+  acceptedCopy = accepted;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (completionCopy)
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __82__PKAccountService_termsWithIdentifier_accepted_withAccountIdentifier_completion___block_invoke;
     v20[3] = &unk_1E79C4450;
-    v13 = v11;
+    v13 = completionCopy;
     v21 = v13;
-    v14 = a5;
-    v15 = a3;
+    accountIdentifierCopy = accountIdentifier;
+    identifierCopy = identifier;
     v16 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v20];
     v17 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v16];
 
@@ -2226,7 +2226,7 @@ uint64_t __85__PKAccountService_updatePaymentFundingSourcesForAccountIdentifier_
     v18[2] = __82__PKAccountService_termsWithIdentifier_accepted_withAccountIdentifier_completion___block_invoke_2;
     v18[3] = &unk_1E79C4450;
     v19 = v13;
-    [v17 termsWithIdentifier:v15 accepted:v7 withAccountIdentifier:v14 completion:v18];
+    [v17 termsWithIdentifier:identifierCopy accepted:acceptedCopy withAccountIdentifier:accountIdentifierCopy completion:v18];
   }
 }
 
@@ -2241,21 +2241,21 @@ uint64_t __82__PKAccountService_termsWithIdentifier_accepted_withAccountIdentifi
   return result;
 }
 
-- (void)performAccountAction:(id)a3 withAccountIdentifier:(id)a4 accountUserAltDSID:(id)a5 completion:(id)a6
+- (void)performAccountAction:(id)action withAccountIdentifier:(id)identifier accountUserAltDSID:(id)d completion:(id)completion
 {
-  v11 = a6;
-  v12 = v11;
-  if (v11)
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (completionCopy)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __93__PKAccountService_performAccountAction_withAccountIdentifier_accountUserAltDSID_completion___block_invoke;
     v21[3] = &unk_1E79C4450;
-    v13 = v11;
+    v13 = completionCopy;
     v22 = v13;
-    v14 = a5;
-    v15 = a4;
-    v16 = a3;
+    dCopy = d;
+    identifierCopy = identifier;
+    actionCopy = action;
     v17 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v21];
     v18 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v17];
 
@@ -2265,7 +2265,7 @@ uint64_t __82__PKAccountService_termsWithIdentifier_accepted_withAccountIdentifi
     v19[3] = &unk_1E79C4928;
     v19[4] = self;
     v20 = v13;
-    [v18 performAccountAction:v16 withAccountIdentifier:v15 accountUserAltDSID:v14 completion:v19];
+    [v18 performAccountAction:actionCopy withAccountIdentifier:identifierCopy accountUserAltDSID:dCopy completion:v19];
   }
 }
 
@@ -2316,20 +2316,20 @@ uint64_t __93__PKAccountService_performAccountAction_withAccountIdentifier_accou
   return result;
 }
 
-- (void)userInfoForAccountIdentifier:(id)a3 forceFetch:(BOOL)a4 completion:(id)a5
+- (void)userInfoForAccountIdentifier:(id)identifier forceFetch:(BOOL)fetch completion:(id)completion
 {
-  v5 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  fetchCopy = fetch;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __71__PKAccountService_userInfoForAccountIdentifier_forceFetch_completion___block_invoke;
     v17[3] = &unk_1E79C4450;
-    v11 = v9;
+    v11 = completionCopy;
     v18 = v11;
-    v12 = a3;
+    identifierCopy = identifier;
     v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v17];
     v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -2339,7 +2339,7 @@ uint64_t __93__PKAccountService_performAccountAction_withAccountIdentifier_accou
     v15[3] = &unk_1E79E35B8;
     v15[4] = self;
     v16 = v11;
-    [v14 userInfoForAccountIdentifier:v12 forceFetch:v5 completion:v15];
+    [v14 userInfoForAccountIdentifier:identifierCopy forceFetch:fetchCopy completion:v15];
   }
 }
 
@@ -2390,20 +2390,20 @@ uint64_t __71__PKAccountService_userInfoForAccountIdentifier_forceFetch_completi
   return result;
 }
 
-- (void)updateUserInfoForAccountIdentifier:(id)a3 contact:(id)a4 completion:(id)a5
+- (void)updateUserInfoForAccountIdentifier:(id)identifier contact:(id)contact completion:(id)completion
 {
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __74__PKAccountService_updateUserInfoForAccountIdentifier_contact_completion___block_invoke;
     v18[3] = &unk_1E79C4450;
-    v11 = v9;
+    v11 = completionCopy;
     v19 = v11;
-    v12 = a4;
-    v13 = a3;
+    contactCopy = contact;
+    identifierCopy = identifier;
     v14 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
     v15 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v14];
 
@@ -2413,7 +2413,7 @@ uint64_t __71__PKAccountService_userInfoForAccountIdentifier_forceFetch_completi
     v16[3] = &unk_1E79E35E0;
     v16[4] = self;
     v17 = v11;
-    [v15 updateUserInfoForAccountIdentifier:v13 contact:v12 completion:v16];
+    [v15 updateUserInfoForAccountIdentifier:identifierCopy contact:contactCopy completion:v16];
   }
 }
 
@@ -2464,19 +2464,19 @@ uint64_t __74__PKAccountService_updateUserInfoForAccountIdentifier_contact_compl
   return result;
 }
 
-- (void)lastUsedInAppFundingSourceForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)lastUsedInAppFundingSourceForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __78__PKAccountService_lastUsedInAppFundingSourceForAccountIdentifier_completion___block_invoke;
     v15[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v16 = v9;
-    v10 = a3;
+    identifierCopy = identifier;
     v11 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
     v12 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -2486,7 +2486,7 @@ uint64_t __74__PKAccountService_updateUserInfoForAccountIdentifier_contact_compl
     v13[3] = &unk_1E79E3608;
     v13[4] = self;
     v14 = v9;
-    [v12 lastUsedInAppFundingSourceForAccountIdentifier:v10 completion:v13];
+    [v12 lastUsedInAppFundingSourceForAccountIdentifier:identifierCopy completion:v13];
   }
 }
 
@@ -2535,27 +2535,27 @@ uint64_t __78__PKAccountService_lastUsedInAppFundingSourceForAccountIdentifier_c
   return result;
 }
 
-- (void)updateLastUsedInAppFundingSource:(id)a3 accountIdentifier:(id)a4
+- (void)updateLastUsedInAppFundingSource:(id)source accountIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    v6 = a4;
-    v7 = a3;
+    identifierCopy = identifier;
+    sourceCopy = source;
     v8 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:0];
-    [v8 updateLastUsedInAppFundingSource:v7 accountIdentifier:v6];
+    [v8 updateLastUsedInAppFundingSource:sourceCopy accountIdentifier:identifierCopy];
   }
 }
 
-- (void)eventsForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)eventsForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __58__PKAccountService_eventsForAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -2566,7 +2566,7 @@ uint64_t __78__PKAccountService_lastUsedInAppFundingSourceForAccountIdentifier_c
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 eventsForAccountIdentifier:v9 completion:v13];
+  [v11 eventsForAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __58__PKAccountService_eventsForAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -2616,19 +2616,19 @@ uint64_t __58__PKAccountService_eventsForAccountIdentifier_completion___block_in
   return result;
 }
 
-- (void)eventsForAccountIdentifier:(id)a3 types:(id)a4 startDate:(id)a5 endDate:(id)a6 orderedByDate:(int64_t)a7 limit:(unint64_t)a8 completion:(id)a9
+- (void)eventsForAccountIdentifier:(id)identifier types:(id)types startDate:(id)date endDate:(id)endDate orderedByDate:(int64_t)byDate limit:(unint64_t)limit completion:(id)completion
 {
-  v17 = a9;
+  completionCopy = completion;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __102__PKAccountService_eventsForAccountIdentifier_types_startDate_endDate_orderedByDate_limit_completion___block_invoke;
   v28[3] = &unk_1E79C4450;
-  v18 = v17;
+  v18 = completionCopy;
   v29 = v18;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
+  typesCopy = types;
+  identifierCopy = identifier;
   v23 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v28];
   v24 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v23];
 
@@ -2639,7 +2639,7 @@ uint64_t __58__PKAccountService_eventsForAccountIdentifier_completion___block_in
   v26[4] = self;
   v27 = v18;
   v25 = v18;
-  [v24 eventsForAccountIdentifier:v22 types:v21 startDate:v20 endDate:v19 orderedByDate:a7 limit:a8 completion:v26];
+  [v24 eventsForAccountIdentifier:identifierCopy types:typesCopy startDate:dateCopy endDate:endDateCopy orderedByDate:byDate limit:limit completion:v26];
 }
 
 uint64_t __102__PKAccountService_eventsForAccountIdentifier_types_startDate_endDate_orderedByDate_limit_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -2689,16 +2689,16 @@ uint64_t __102__PKAccountService_eventsForAccountIdentifier_types_startDate_endD
   return result;
 }
 
-- (void)deleteEventsWithAccountIdentifier:(id)a3 completion:(id)a4
+- (void)deleteEventsWithAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __65__PKAccountService_deleteEventsWithAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -2709,7 +2709,7 @@ uint64_t __102__PKAccountService_eventsForAccountIdentifier_types_startDate_endD
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 deleteEventsWithAccountIdentifier:v9 completion:v13];
+  [v11 deleteEventsWithAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __65__PKAccountService_deleteEventsWithAccountIdentifier_completion___block_invoke(uint64_t a1)
@@ -2757,16 +2757,16 @@ uint64_t __65__PKAccountService_deleteEventsWithAccountIdentifier_completion___b
   return result;
 }
 
-- (void)deleteEventWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteEventWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __57__PKAccountService_deleteEventWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -2777,7 +2777,7 @@ uint64_t __65__PKAccountService_deleteEventsWithAccountIdentifier_completion___b
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 deleteEventWithIdentifier:v9 completion:v13];
+  [v11 deleteEventWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __57__PKAccountService_deleteEventWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -2825,17 +2825,17 @@ uint64_t __57__PKAccountService_deleteEventWithIdentifier_completion___block_inv
   return result;
 }
 
-- (void)deleteEventsWithAccountIdentifier:(id)a3 excludingTypes:(id)a4 completion:(id)a5
+- (void)deleteEventsWithAccountIdentifier:(id)identifier excludingTypes:(id)types completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __80__PKAccountService_deleteEventsWithAccountIdentifier_excludingTypes_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  typesCopy = types;
+  identifierCopy = identifier;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -2846,7 +2846,7 @@ uint64_t __57__PKAccountService_deleteEventWithIdentifier_completion___block_inv
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 deleteEventsWithAccountIdentifier:v12 excludingTypes:v11 completion:v16];
+  [v14 deleteEventsWithAccountIdentifier:identifierCopy excludingTypes:typesCopy completion:v16];
 }
 
 uint64_t __80__PKAccountService_deleteEventsWithAccountIdentifier_excludingTypes_completion___block_invoke(uint64_t a1)
@@ -2894,17 +2894,17 @@ uint64_t __80__PKAccountService_deleteEventsWithAccountIdentifier_excludingTypes
   return result;
 }
 
-- (void)insertEvents:(id)a3 withAccountidentifier:(id)a4 completion:(id)a5
+- (void)insertEvents:(id)events withAccountidentifier:(id)accountidentifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __66__PKAccountService_insertEvents_withAccountidentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  accountidentifierCopy = accountidentifier;
+  eventsCopy = events;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -2915,7 +2915,7 @@ uint64_t __80__PKAccountService_deleteEventsWithAccountIdentifier_excludingTypes
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 insertEvents:v12 withAccountidentifier:v11 completion:v16];
+  [v14 insertEvents:eventsCopy withAccountidentifier:accountidentifierCopy completion:v16];
 }
 
 uint64_t __66__PKAccountService_insertEvents_withAccountidentifier_completion___block_invoke(uint64_t a1)
@@ -2963,16 +2963,16 @@ uint64_t __66__PKAccountService_insertEvents_withAccountidentifier_completion___
   return result;
 }
 
-- (void)updateCreditStatementsForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)updateCreditStatementsForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __74__PKAccountService_updateCreditStatementsForAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -2983,7 +2983,7 @@ uint64_t __66__PKAccountService_insertEvents_withAccountidentifier_completion___
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 updateCreditStatementsForAccountIdentifier:v9 completion:v13];
+  [v11 updateCreditStatementsForAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __74__PKAccountService_updateCreditStatementsForAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3033,16 +3033,16 @@ uint64_t __74__PKAccountService_updateCreditStatementsForAccountIdentifier_compl
   return result;
 }
 
-- (void)creditStatementsForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)creditStatementsForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __68__PKAccountService_creditStatementsForAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -3053,7 +3053,7 @@ uint64_t __74__PKAccountService_updateCreditStatementsForAccountIdentifier_compl
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 creditStatementsForAccountIdentifier:v9 completion:v13];
+  [v11 creditStatementsForAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __68__PKAccountService_creditStatementsForAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3103,17 +3103,17 @@ uint64_t __68__PKAccountService_creditStatementsForAccountIdentifier_completion_
   return result;
 }
 
-- (void)creditStatementsForStatementIdentifiers:(id)a3 accountIdentifier:(id)a4 completion:(id)a5
+- (void)creditStatementsForStatementIdentifiers:(id)identifiers accountIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __89__PKAccountService_creditStatementsForStatementIdentifiers_accountIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -3124,7 +3124,7 @@ uint64_t __68__PKAccountService_creditStatementsForAccountIdentifier_completion_
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 creditStatementsForStatementIdentifiers:v12 accountIdentifier:v11 completion:v16];
+  [v14 creditStatementsForStatementIdentifiers:identifiersCopy accountIdentifier:identifierCopy completion:v16];
 }
 
 uint64_t __89__PKAccountService_creditStatementsForStatementIdentifiers_accountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3174,16 +3174,16 @@ uint64_t __89__PKAccountService_creditStatementsForStatementIdentifiers_accountI
   return result;
 }
 
-- (void)updateSavingsStatementsForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)updateSavingsStatementsForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__PKAccountService_updateSavingsStatementsForAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -3194,7 +3194,7 @@ uint64_t __89__PKAccountService_creditStatementsForStatementIdentifiers_accountI
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 updateSavingsStatementsForAccountIdentifier:v9 completion:v13];
+  [v11 updateSavingsStatementsForAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __75__PKAccountService_updateSavingsStatementsForAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3244,16 +3244,16 @@ uint64_t __75__PKAccountService_updateSavingsStatementsForAccountIdentifier_comp
   return result;
 }
 
-- (void)savingsStatementsForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)savingsStatementsForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__PKAccountService_savingsStatementsForAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -3264,7 +3264,7 @@ uint64_t __75__PKAccountService_updateSavingsStatementsForAccountIdentifier_comp
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 savingsStatementsForAccountIdentifier:v9 completion:v13];
+  [v11 savingsStatementsForAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __69__PKAccountService_savingsStatementsForAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3314,14 +3314,14 @@ uint64_t __69__PKAccountService_savingsStatementsForAccountIdentifier_completion
   return result;
 }
 
-- (void)accountStatementMetadataForAllAccountsWithCompletion:(id)a3
+- (void)accountStatementMetadataForAllAccountsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__PKAccountService_accountStatementMetadataForAllAccountsWithCompletion___block_invoke;
   v12[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = completionCopy;
   v13 = v6;
   v7 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v12];
   v8 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v7];
@@ -3383,17 +3383,17 @@ uint64_t __73__PKAccountService_accountStatementMetadataForAllAccountsWithComple
   return result;
 }
 
-- (void)accountStatementMetadataForStatementIdentifier:(id)a3 accountIdentifier:(id)a4 completion:(id)a5
+- (void)accountStatementMetadataForStatementIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __96__PKAccountService_accountStatementMetadataForStatementIdentifier_accountIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  accountIdentifierCopy = accountIdentifier;
+  identifierCopy = identifier;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -3404,7 +3404,7 @@ uint64_t __73__PKAccountService_accountStatementMetadataForAllAccountsWithComple
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 accountStatementMetadataForStatementIdentifier:v12 accountIdentifier:v11 completion:v16];
+  [v14 accountStatementMetadataForStatementIdentifier:identifierCopy accountIdentifier:accountIdentifierCopy completion:v16];
 }
 
 uint64_t __96__PKAccountService_accountStatementMetadataForStatementIdentifier_accountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3454,17 +3454,17 @@ uint64_t __96__PKAccountService_accountStatementMetadataForStatementIdentifier_a
   return result;
 }
 
-- (void)updateAccountStatementMetadataForStatementIdentifier:(id)a3 accountIdentifier:(id)a4 completion:(id)a5
+- (void)updateAccountStatementMetadataForStatementIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __102__PKAccountService_updateAccountStatementMetadataForStatementIdentifier_accountIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  accountIdentifierCopy = accountIdentifier;
+  identifierCopy = identifier;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -3475,7 +3475,7 @@ uint64_t __96__PKAccountService_accountStatementMetadataForStatementIdentifier_a
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 updateAccountStatementMetadataForStatementIdentifier:v12 accountIdentifier:v11 completion:v16];
+  [v14 updateAccountStatementMetadataForStatementIdentifier:identifierCopy accountIdentifier:accountIdentifierCopy completion:v16];
 }
 
 uint64_t __102__PKAccountService_updateAccountStatementMetadataForStatementIdentifier_accountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3525,17 +3525,17 @@ uint64_t __102__PKAccountService_updateAccountStatementMetadataForStatementIdent
   return result;
 }
 
-- (void)deleteAccountStatementMetadataForStatementIdentifier:(id)a3 accountIdentifier:(id)a4 completion:(id)a5
+- (void)deleteAccountStatementMetadataForStatementIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __102__PKAccountService_deleteAccountStatementMetadataForStatementIdentifier_accountIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  accountIdentifierCopy = accountIdentifier;
+  identifierCopy = identifier;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -3546,7 +3546,7 @@ uint64_t __102__PKAccountService_updateAccountStatementMetadataForStatementIdent
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 deleteAccountStatementMetadataForStatementIdentifier:v12 accountIdentifier:v11 completion:v16];
+  [v14 deleteAccountStatementMetadataForStatementIdentifier:identifierCopy accountIdentifier:accountIdentifierCopy completion:v16];
 }
 
 uint64_t __102__PKAccountService_deleteAccountStatementMetadataForStatementIdentifier_accountIdentifier_completion___block_invoke(uint64_t a1)
@@ -3594,17 +3594,17 @@ uint64_t __102__PKAccountService_deleteAccountStatementMetadataForStatementIdent
   return result;
 }
 
-- (void)triggerStatementMetadataProcessingForAccountIdentifier:(id)a3 statementIdentifier:(id)a4 completion:(id)a5
+- (void)triggerStatementMetadataProcessingForAccountIdentifier:(id)identifier statementIdentifier:(id)statementIdentifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __106__PKAccountService_triggerStatementMetadataProcessingForAccountIdentifier_statementIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  statementIdentifierCopy = statementIdentifier;
+  identifierCopy = identifier;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -3615,7 +3615,7 @@ uint64_t __102__PKAccountService_deleteAccountStatementMetadataForStatementIdent
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 triggerStatementMetadataProcessingForAccountIdentifier:v12 statementIdentifier:v11 completion:v16];
+  [v14 triggerStatementMetadataProcessingForAccountIdentifier:identifierCopy statementIdentifier:statementIdentifierCopy completion:v16];
 }
 
 uint64_t __106__PKAccountService_triggerStatementMetadataProcessingForAccountIdentifier_statementIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3665,16 +3665,16 @@ uint64_t __106__PKAccountService_triggerStatementMetadataProcessingForAccountIde
   return result;
 }
 
-- (void)updateTaxFormsForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)updateTaxFormsForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __66__PKAccountService_updateTaxFormsForAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -3685,7 +3685,7 @@ uint64_t __106__PKAccountService_triggerStatementMetadataProcessingForAccountIde
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 updateTaxFormsForAccountIdentifier:v9 completion:v13];
+  [v11 updateTaxFormsForAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __66__PKAccountService_updateTaxFormsForAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3735,16 +3735,16 @@ uint64_t __66__PKAccountService_updateTaxFormsForAccountIdentifier_completion___
   return result;
 }
 
-- (void)taxFormsForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)taxFormsForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __60__PKAccountService_taxFormsForAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -3755,7 +3755,7 @@ uint64_t __66__PKAccountService_updateTaxFormsForAccountIdentifier_completion___
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 taxFormsForAccountIdentifier:v9 completion:v13];
+  [v11 taxFormsForAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __60__PKAccountService_taxFormsForAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3805,17 +3805,17 @@ uint64_t __60__PKAccountService_taxFormsForAccountIdentifier_completion___block_
   return result;
 }
 
-- (void)lastRedemptionEventToDestination:(unint64_t)a3 forAccountIdentifier:(id)a4 altDSID:(id)a5 completion:(id)a6
+- (void)lastRedemptionEventToDestination:(unint64_t)destination forAccountIdentifier:(id)identifier altDSID:(id)d completion:(id)completion
 {
-  v11 = a6;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __93__PKAccountService_lastRedemptionEventToDestination_forAccountIdentifier_altDSID_completion___block_invoke;
   v20[3] = &unk_1E79C4450;
-  v12 = v11;
+  v12 = completionCopy;
   v21 = v12;
-  v13 = a5;
-  v14 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v15 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v20];
   v16 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v15];
 
@@ -3826,7 +3826,7 @@ uint64_t __60__PKAccountService_taxFormsForAccountIdentifier_completion___block_
   v18[4] = self;
   v19 = v12;
   v17 = v12;
-  [v16 lastRedemptionEventToDestination:a3 forAccountIdentifier:v14 altDSID:v13 completion:v18];
+  [v16 lastRedemptionEventToDestination:destination forAccountIdentifier:identifierCopy altDSID:dCopy completion:v18];
 }
 
 uint64_t __93__PKAccountService_lastRedemptionEventToDestination_forAccountIdentifier_altDSID_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3876,16 +3876,16 @@ uint64_t __93__PKAccountService_lastRedemptionEventToDestination_forAccountIdent
   return result;
 }
 
-- (void)createVirtualCard:(int64_t)a3 forAccountIdentifier:(id)a4 completion:(id)a5
+- (void)createVirtualCard:(int64_t)card forAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __70__PKAccountService_createVirtualCard_forAccountIdentifier_completion___block_invoke;
   v17[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = a4;
+  identifierCopy = identifier;
   v12 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v17];
   v13 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v12];
 
@@ -3896,7 +3896,7 @@ uint64_t __93__PKAccountService_lastRedemptionEventToDestination_forAccountIdent
   v15[4] = self;
   v16 = v10;
   v14 = v10;
-  [v13 createVirtualCard:a3 forAccountIdentifier:v11 completion:v15];
+  [v13 createVirtualCard:card forAccountIdentifier:identifierCopy completion:v15];
 }
 
 uint64_t __70__PKAccountService_createVirtualCard_forAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3950,17 +3950,17 @@ uint64_t __70__PKAccountService_createVirtualCard_forAccountIdentifier_completio
   return result;
 }
 
-- (void)performVirtualCardAction:(int64_t)a3 forVirtualCardIdentifier:(id)a4 forAccountIdentifier:(id)a5 completion:(id)a6
+- (void)performVirtualCardAction:(int64_t)action forVirtualCardIdentifier:(id)identifier forAccountIdentifier:(id)accountIdentifier completion:(id)completion
 {
-  v11 = a6;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __102__PKAccountService_performVirtualCardAction_forVirtualCardIdentifier_forAccountIdentifier_completion___block_invoke;
   v20[3] = &unk_1E79C4450;
-  v12 = v11;
+  v12 = completionCopy;
   v21 = v12;
-  v13 = a5;
-  v14 = a4;
+  accountIdentifierCopy = accountIdentifier;
+  identifierCopy = identifier;
   v15 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v20];
   v16 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v15];
 
@@ -3971,7 +3971,7 @@ uint64_t __70__PKAccountService_createVirtualCard_forAccountIdentifier_completio
   v18[4] = self;
   v19 = v12;
   v17 = v12;
-  [v16 performVirtualCardAction:a3 forVirtualCardIdentifier:v14 forAccountIdentifier:v13 completion:v18];
+  [v16 performVirtualCardAction:action forVirtualCardIdentifier:identifierCopy forAccountIdentifier:accountIdentifierCopy completion:v18];
 }
 
 uint64_t __102__PKAccountService_performVirtualCardAction_forVirtualCardIdentifier_forAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -4025,16 +4025,16 @@ uint64_t __102__PKAccountService_performVirtualCardAction_forVirtualCardIdentifi
   return result;
 }
 
-- (void)updateVirtualCardsWithAccountIdentifier:(id)a3 completion:(id)a4
+- (void)updateVirtualCardsWithAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __71__PKAccountService_updateVirtualCardsWithAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -4045,7 +4045,7 @@ uint64_t __102__PKAccountService_performVirtualCardAction_forVirtualCardIdentifi
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 updateVirtualCardsWithAccountIdentifier:v9 completion:v13];
+  [v11 updateVirtualCardsWithAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __71__PKAccountService_updateVirtualCardsWithAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -4099,17 +4099,17 @@ uint64_t __71__PKAccountService_updateVirtualCardsWithAccountIdentifier_completi
   return result;
 }
 
-- (void)cardCredentialsForVirtualCard:(id)a3 authorization:(id)a4 action:(int64_t)a5 completion:(id)a6
+- (void)cardCredentialsForVirtualCard:(id)card authorization:(id)authorization action:(int64_t)action completion:(id)completion
 {
-  v11 = a6;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __82__PKAccountService_cardCredentialsForVirtualCard_authorization_action_completion___block_invoke;
   v20[3] = &unk_1E79C4450;
-  v12 = v11;
+  v12 = completionCopy;
   v21 = v12;
-  v13 = a4;
-  v14 = a3;
+  authorizationCopy = authorization;
+  cardCopy = card;
   v15 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v20];
   v16 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v15];
 
@@ -4120,7 +4120,7 @@ uint64_t __71__PKAccountService_updateVirtualCardsWithAccountIdentifier_completi
   v18[4] = self;
   v19 = v12;
   v17 = v12;
-  [v16 cardCredentialsForVirtualCard:v14 authorization:v13 action:a5 completion:v18];
+  [v16 cardCredentialsForVirtualCard:cardCopy authorization:authorizationCopy action:action completion:v18];
 }
 
 uint64_t __82__PKAccountService_cardCredentialsForVirtualCard_authorization_action_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -4170,16 +4170,16 @@ uint64_t __82__PKAccountService_cardCredentialsForVirtualCard_authorization_acti
   return result;
 }
 
-- (void)noteVirtualCardAutoFilledBySafari:(id)a3 completion:(id)a4
+- (void)noteVirtualCardAutoFilledBySafari:(id)safari completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __65__PKAccountService_noteVirtualCardAutoFilledBySafari_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  safariCopy = safari;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -4190,7 +4190,7 @@ uint64_t __82__PKAccountService_cardCredentialsForVirtualCard_authorization_acti
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 noteVirtualCardAutoFilledBySafari:v9 completion:v13];
+  [v11 noteVirtualCardAutoFilledBySafari:safariCopy completion:v13];
 }
 
 uint64_t __65__PKAccountService_noteVirtualCardAutoFilledBySafari_completion___block_invoke(uint64_t a1)
@@ -4238,17 +4238,17 @@ uint64_t __65__PKAccountService_noteVirtualCardAutoFilledBySafari_completion___b
   return result;
 }
 
-- (void)fetchKeychainCredentialForVirtualCardIdentifier:(id)a3 forAccountIdentifier:(id)a4 completion:(id)a5
+- (void)fetchKeychainCredentialForVirtualCardIdentifier:(id)identifier forAccountIdentifier:(id)accountIdentifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __100__PKAccountService_fetchKeychainCredentialForVirtualCardIdentifier_forAccountIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  accountIdentifierCopy = accountIdentifier;
+  identifierCopy = identifier;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -4259,7 +4259,7 @@ uint64_t __65__PKAccountService_noteVirtualCardAutoFilledBySafari_completion___b
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 fetchKeychainCredentialForVirtualCardIdentifier:v12 forAccountIdentifier:v11 completion:v16];
+  [v14 fetchKeychainCredentialForVirtualCardIdentifier:identifierCopy forAccountIdentifier:accountIdentifierCopy completion:v16];
 }
 
 uint64_t __100__PKAccountService_fetchKeychainCredentialForVirtualCardIdentifier_forAccountIdentifier_completion___block_invoke(uint64_t a1)
@@ -4307,16 +4307,16 @@ uint64_t __100__PKAccountService_fetchKeychainCredentialForVirtualCardIdentifier
   return result;
 }
 
-- (void)writeVirtualCardToKeychain:(id)a3 completion:(id)a4
+- (void)writeVirtualCardToKeychain:(id)keychain completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __58__PKAccountService_writeVirtualCardToKeychain_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  keychainCopy = keychain;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -4327,7 +4327,7 @@ uint64_t __100__PKAccountService_fetchKeychainCredentialForVirtualCardIdentifier
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 writeVirtualCardToKeychain:v9 completion:v13];
+  [v11 writeVirtualCardToKeychain:keychainCopy completion:v13];
 }
 
 uint64_t __58__PKAccountService_writeVirtualCardToKeychain_completion___block_invoke(uint64_t a1)
@@ -4371,14 +4371,14 @@ uint64_t __58__PKAccountService_writeVirtualCardToKeychain_completion___block_in
   return result;
 }
 
-- (void)virtualCardsInKeychainWithCompletion:(id)a3
+- (void)virtualCardsInKeychainWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__PKAccountService_virtualCardsInKeychainWithCompletion___block_invoke;
   v12[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = completionCopy;
   v13 = v6;
   v7 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v12];
   v8 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v7];
@@ -4438,18 +4438,18 @@ uint64_t __57__PKAccountService_virtualCardsInKeychainWithCompletion___block_inv
   return result;
 }
 
-- (void)noteSecurityCodeActivityWithAction:(int64_t)a3 forSecurityCodeIdentifier:(id)a4 forVirtualCardIdentifier:(id)a5 forAccountIdentifier:(id)a6 completion:(id)a7
+- (void)noteSecurityCodeActivityWithAction:(int64_t)action forSecurityCodeIdentifier:(id)identifier forVirtualCardIdentifier:(id)cardIdentifier forAccountIdentifier:(id)accountIdentifier completion:(id)completion
 {
-  v13 = a7;
+  completionCopy = completion;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __138__PKAccountService_noteSecurityCodeActivityWithAction_forSecurityCodeIdentifier_forVirtualCardIdentifier_forAccountIdentifier_completion___block_invoke;
   v23[3] = &unk_1E79C4450;
-  v14 = v13;
+  v14 = completionCopy;
   v24 = v14;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
+  accountIdentifierCopy = accountIdentifier;
+  cardIdentifierCopy = cardIdentifier;
+  identifierCopy = identifier;
   v18 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v23];
   v19 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v18];
 
@@ -4460,7 +4460,7 @@ uint64_t __57__PKAccountService_virtualCardsInKeychainWithCompletion___block_inv
   v21[4] = self;
   v22 = v14;
   v20 = v14;
-  [v19 noteSecurityCodeActivityWithAction:a3 forSecurityCodeIdentifier:v17 forVirtualCardIdentifier:v16 forAccountIdentifier:v15 completion:v21];
+  [v19 noteSecurityCodeActivityWithAction:action forSecurityCodeIdentifier:identifierCopy forVirtualCardIdentifier:cardIdentifierCopy forAccountIdentifier:accountIdentifierCopy completion:v21];
 }
 
 uint64_t __138__PKAccountService_noteSecurityCodeActivityWithAction_forSecurityCodeIdentifier_forVirtualCardIdentifier_forAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -4510,16 +4510,16 @@ uint64_t __138__PKAccountService_noteSecurityCodeActivityWithAction_forSecurityC
   return result;
 }
 
-- (void)physicalCardsForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)physicalCardsForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__PKAccountService_physicalCardsForAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -4530,7 +4530,7 @@ uint64_t __138__PKAccountService_noteSecurityCodeActivityWithAction_forSecurityC
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 physicalCardsForAccountWithIdentifier:v9 completion:v13];
+  [v11 physicalCardsForAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __69__PKAccountService_physicalCardsForAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -4572,17 +4572,17 @@ uint64_t __69__PKAccountService_physicalCardsForAccountWithIdentifier_completion
   return result;
 }
 
-- (void)updatePhysicalCardsForAccountWithIdentifier:(id)a3 force:(BOOL)a4 completion:(id)a5
+- (void)updatePhysicalCardsForAccountWithIdentifier:(id)identifier force:(BOOL)force completion:(id)completion
 {
-  v5 = a4;
-  v9 = a5;
+  forceCopy = force;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __81__PKAccountService_updatePhysicalCardsForAccountWithIdentifier_force_completion___block_invoke;
   v17[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v17];
   v13 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v12];
 
@@ -4593,7 +4593,7 @@ uint64_t __69__PKAccountService_physicalCardsForAccountWithIdentifier_completion
   v15[4] = self;
   v16 = v10;
   v14 = v10;
-  [v13 updatePhysicalCardsForAccountWithIdentifier:v11 force:v5 completion:v15];
+  [v13 updatePhysicalCardsForAccountWithIdentifier:identifierCopy force:forceCopy completion:v15];
 }
 
 uint64_t __81__PKAccountService_updatePhysicalCardsForAccountWithIdentifier_force_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -4637,19 +4637,19 @@ uint64_t __81__PKAccountService_updatePhysicalCardsForAccountWithIdentifier_forc
   return result;
 }
 
-- (void)beginPhysicalCardRequestWithOrder:(id)a3 forAccountWithIdentifier:(id)a4 accountUserAltDSID:(id)a5 deviceMetadata:(id)a6 completion:(id)a7
+- (void)beginPhysicalCardRequestWithOrder:(id)order forAccountWithIdentifier:(id)identifier accountUserAltDSID:(id)d deviceMetadata:(id)metadata completion:(id)completion
 {
-  v13 = a7;
+  completionCopy = completion;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __124__PKAccountService_beginPhysicalCardRequestWithOrder_forAccountWithIdentifier_accountUserAltDSID_deviceMetadata_completion___block_invoke;
   v24[3] = &unk_1E79C4450;
-  v14 = v13;
+  v14 = completionCopy;
   v25 = v14;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  metadataCopy = metadata;
+  dCopy = d;
+  identifierCopy = identifier;
+  orderCopy = order;
   v19 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v24];
   v20 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v19];
 
@@ -4660,7 +4660,7 @@ uint64_t __81__PKAccountService_updatePhysicalCardsForAccountWithIdentifier_forc
   v22[4] = self;
   v23 = v14;
   v21 = v14;
-  [v20 beginPhysicalCardRequestWithOrder:v18 forAccountWithIdentifier:v17 accountUserAltDSID:v16 deviceMetadata:v15 completion:v22];
+  [v20 beginPhysicalCardRequestWithOrder:orderCopy forAccountWithIdentifier:identifierCopy accountUserAltDSID:dCopy deviceMetadata:metadataCopy completion:v22];
 }
 
 uint64_t __124__PKAccountService_beginPhysicalCardRequestWithOrder_forAccountWithIdentifier_accountUserAltDSID_deviceMetadata_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -4720,17 +4720,17 @@ uint64_t __124__PKAccountService_beginPhysicalCardRequestWithOrder_forAccountWit
   return result;
 }
 
-- (void)completePhysicalCardRequest:(id)a3 withSignature:(id)a4 completion:(id)a5
+- (void)completePhysicalCardRequest:(id)request withSignature:(id)signature completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __73__PKAccountService_completePhysicalCardRequest_withSignature_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  signatureCopy = signature;
+  requestCopy = request;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -4741,7 +4741,7 @@ uint64_t __124__PKAccountService_beginPhysicalCardRequestWithOrder_forAccountWit
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 completePhysicalCardRequest:v12 withSignature:v11 completion:v16];
+  [v14 completePhysicalCardRequest:requestCopy withSignature:signatureCopy completion:v16];
 }
 
 uint64_t __73__PKAccountService_completePhysicalCardRequest_withSignature_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -4795,20 +4795,20 @@ uint64_t __73__PKAccountService_completePhysicalCardRequest_withSignature_comple
   return result;
 }
 
-- (void)beginPhysicalCardAction:(id)a3 onPhysicalCardWithIdentifier:(id)a4 forAccountWithIdentifier:(id)a5 accountUserAltDSID:(id)a6 deviceMetadata:(id)a7 completion:(id)a8
+- (void)beginPhysicalCardAction:(id)action onPhysicalCardWithIdentifier:(id)identifier forAccountWithIdentifier:(id)withIdentifier accountUserAltDSID:(id)d deviceMetadata:(id)metadata completion:(id)completion
 {
-  v15 = a8;
+  completionCopy = completion;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __143__PKAccountService_beginPhysicalCardAction_onPhysicalCardWithIdentifier_forAccountWithIdentifier_accountUserAltDSID_deviceMetadata_completion___block_invoke;
   v27[3] = &unk_1E79C4450;
-  v16 = v15;
+  v16 = completionCopy;
   v28 = v16;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
+  metadataCopy = metadata;
+  dCopy = d;
+  withIdentifierCopy = withIdentifier;
+  identifierCopy = identifier;
+  actionCopy = action;
   v22 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v27];
   v23 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v22];
 
@@ -4819,7 +4819,7 @@ uint64_t __73__PKAccountService_completePhysicalCardRequest_withSignature_comple
   v25[4] = self;
   v26 = v16;
   v24 = v16;
-  [v23 beginPhysicalCardAction:v21 onPhysicalCardWithIdentifier:v20 forAccountWithIdentifier:v19 accountUserAltDSID:v18 deviceMetadata:v17 completion:v25];
+  [v23 beginPhysicalCardAction:actionCopy onPhysicalCardWithIdentifier:identifierCopy forAccountWithIdentifier:withIdentifierCopy accountUserAltDSID:dCopy deviceMetadata:metadataCopy completion:v25];
 }
 
 uint64_t __143__PKAccountService_beginPhysicalCardAction_onPhysicalCardWithIdentifier_forAccountWithIdentifier_accountUserAltDSID_deviceMetadata_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -4879,17 +4879,17 @@ uint64_t __143__PKAccountService_beginPhysicalCardAction_onPhysicalCardWithIdent
   return result;
 }
 
-- (void)completePhysicalCardActionRequest:(id)a3 withSignature:(id)a4 completion:(id)a5
+- (void)completePhysicalCardActionRequest:(id)request withSignature:(id)signature completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __79__PKAccountService_completePhysicalCardActionRequest_withSignature_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  signatureCopy = signature;
+  requestCopy = request;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -4900,7 +4900,7 @@ uint64_t __143__PKAccountService_beginPhysicalCardAction_onPhysicalCardWithIdent
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 completePhysicalCardActionRequest:v12 withSignature:v11 completion:v16];
+  [v14 completePhysicalCardActionRequest:requestCopy withSignature:signatureCopy completion:v16];
 }
 
 uint64_t __79__PKAccountService_completePhysicalCardActionRequest_withSignature_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -4954,16 +4954,16 @@ uint64_t __79__PKAccountService_completePhysicalCardActionRequest_withSignature_
   return result;
 }
 
-- (void)activateBroadwayPhysicalCardWithActivationCode:(id)a3 completion:(id)a4
+- (void)activateBroadwayPhysicalCardWithActivationCode:(id)code completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __78__PKAccountService_activateBroadwayPhysicalCardWithActivationCode_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  codeCopy = code;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -4974,7 +4974,7 @@ uint64_t __79__PKAccountService_completePhysicalCardActionRequest_withSignature_
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 activatePhysicalCardWithActivationCode:v9 completion:v13];
+  [v11 activatePhysicalCardWithActivationCode:codeCopy completion:v13];
 }
 
 uint64_t __78__PKAccountService_activateBroadwayPhysicalCardWithActivationCode_completion___block_invoke(uint64_t a1)
@@ -5019,14 +5019,14 @@ uint64_t __78__PKAccountService_activateBroadwayPhysicalCardWithActivationCode_c
   return result;
 }
 
-- (void)inactivePhysicalCardForFeatureIdentifier:(unint64_t)a3 completion:(id)a4
+- (void)inactivePhysicalCardForFeatureIdentifier:(unint64_t)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__PKAccountService_inactivePhysicalCardForFeatureIdentifier_completion___block_invoke;
   v14[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v15 = v8;
   v9 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v14];
   v10 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v9];
@@ -5038,7 +5038,7 @@ uint64_t __78__PKAccountService_activateBroadwayPhysicalCardWithActivationCode_c
   v12[4] = self;
   v13 = v8;
   v11 = v8;
-  [v10 inactivatePhysicalCardForFeatureIdentifier:a3 completion:v12];
+  [v10 inactivatePhysicalCardForFeatureIdentifier:identifier completion:v12];
 }
 
 uint64_t __72__PKAccountService_inactivePhysicalCardForFeatureIdentifier_completion___block_invoke(uint64_t a1)
@@ -5086,16 +5086,16 @@ uint64_t __72__PKAccountService_inactivePhysicalCardForFeatureIdentifier_complet
   return result;
 }
 
-- (void)physicalCardForFeatureIdentifier:(unint64_t)a3 activationCode:(id)a4 completion:(id)a5
+- (void)physicalCardForFeatureIdentifier:(unint64_t)identifier activationCode:(id)code completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __79__PKAccountService_physicalCardForFeatureIdentifier_activationCode_completion___block_invoke;
   v17[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = a4;
+  codeCopy = code;
   v12 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v17];
   v13 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v12];
 
@@ -5106,7 +5106,7 @@ uint64_t __72__PKAccountService_inactivePhysicalCardForFeatureIdentifier_complet
   v15[4] = self;
   v16 = v10;
   v14 = v10;
-  [v13 physicalCardForFeatureIdentifier:a3 activationCode:v11 completion:v15];
+  [v13 physicalCardForFeatureIdentifier:identifier activationCode:codeCopy completion:v15];
 }
 
 uint64_t __79__PKAccountService_physicalCardForFeatureIdentifier_activationCode_completion___block_invoke(uint64_t a1)
@@ -5154,21 +5154,21 @@ uint64_t __79__PKAccountService_physicalCardForFeatureIdentifier_activationCode_
   return result;
 }
 
-- (void)activatePhysicalCard:(id)a3 withActivationCode:(id)a4 forFeatureIdentifier:(unint64_t)a5 completion:(id)a6
+- (void)activatePhysicalCard:(id)card withActivationCode:(id)code forFeatureIdentifier:(unint64_t)identifier completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __92__PKAccountService_activatePhysicalCard_withActivationCode_forFeatureIdentifier_completion___block_invoke;
   v20[3] = &unk_1E79C4450;
-  v11 = v10;
+  v11 = completionCopy;
   v21 = v11;
-  v12 = a4;
-  v13 = a3;
+  codeCopy = code;
+  cardCopy = card;
   v14 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v20];
   v15 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v14];
 
-  v16 = [v13 identifier];
+  identifier = [cardCopy identifier];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -5177,7 +5177,7 @@ uint64_t __79__PKAccountService_physicalCardForFeatureIdentifier_activationCode_
   v18[4] = self;
   v19 = v11;
   v17 = v11;
-  [v15 activatePhysicalCardWithIdentifier:v16 activationCode:v12 completion:v18];
+  [v15 activatePhysicalCardWithIdentifier:identifier activationCode:codeCopy completion:v18];
 }
 
 uint64_t __92__PKAccountService_activatePhysicalCard_withActivationCode_forFeatureIdentifier_completion___block_invoke(uint64_t a1)
@@ -5221,28 +5221,28 @@ uint64_t __92__PKAccountService_activatePhysicalCard_withActivationCode_forFeatu
   return result;
 }
 
-- (void)processPhysicalCardExpirationMessaging:(id)a3 physicalCards:(id)a4 account:(id)a5
+- (void)processPhysicalCardExpirationMessaging:(id)messaging physicalCards:(id)cards account:(id)account
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  accountCopy = account;
+  cardsCopy = cards;
+  messagingCopy = messaging;
   v12 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:0];
   v13 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v12];
 
-  [v13 processPhysicalCardExpirationMessaging:v11 physicalCards:v10 account:v9];
+  [v13 processPhysicalCardExpirationMessaging:messagingCopy physicalCards:cardsCopy account:accountCopy];
 }
 
-- (void)billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:(id)a3 withStatementIdentifier:(id)a4 completion:(id)a5
+- (void)billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:(id)identifier withStatementIdentifier:(id)statementIdentifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __120__PKAccountService_billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier_withStatementIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  statementIdentifierCopy = statementIdentifier;
+  identifierCopy = identifier;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -5253,7 +5253,7 @@ uint64_t __92__PKAccountService_activatePhysicalCard_withActivationCode_forFeatu
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:v12 withStatementIdentifier:v11 completion:v16];
+  [v14 billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:identifierCopy withStatementIdentifier:statementIdentifierCopy completion:v16];
 }
 
 uint64_t __120__PKAccountService_billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier_withStatementIdentifier_completion___block_invoke(uint64_t a1)
@@ -5303,18 +5303,18 @@ uint64_t __120__PKAccountService_billPaymentSelectedSuggestedAmountDataEventsFor
   return result;
 }
 
-- (void)billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:(id)a3 withStartDate:(id)a4 endDate:(id)a5 completion:(id)a6
+- (void)billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:(id)identifier withStartDate:(id)date endDate:(id)endDate completion:(id)completion
 {
-  v11 = a6;
+  completionCopy = completion;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __118__PKAccountService_billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier_withStartDate_endDate_completion___block_invoke;
   v21[3] = &unk_1E79C4450;
-  v12 = v11;
+  v12 = completionCopy;
   v22 = v12;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
+  identifierCopy = identifier;
   v16 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v21];
   v17 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v16];
 
@@ -5325,7 +5325,7 @@ uint64_t __120__PKAccountService_billPaymentSelectedSuggestedAmountDataEventsFor
   v19[4] = self;
   v20 = v12;
   v18 = v12;
-  [v17 billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:v15 withStartDate:v14 endDate:v13 completion:v19];
+  [v17 billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier:identifierCopy withStartDate:dateCopy endDate:endDateCopy completion:v19];
 }
 
 uint64_t __118__PKAccountService_billPaymentSelectedSuggestedAmountDataEventsForAccountIdentifier_withStartDate_endDate_completion___block_invoke(uint64_t a1)
@@ -5375,18 +5375,18 @@ uint64_t __118__PKAccountService_billPaymentSelectedSuggestedAmountDataEventsFor
   return result;
 }
 
-- (void)scheduledPaymentsWithAccountIdentifier:(id)a3 includeFailedRecurringPayments:(BOOL)a4 allowFetchFromServer:(BOOL)a5 completion:(id)a6
+- (void)scheduledPaymentsWithAccountIdentifier:(id)identifier includeFailedRecurringPayments:(BOOL)payments allowFetchFromServer:(BOOL)server completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v11 = a6;
+  serverCopy = server;
+  paymentsCopy = payments;
+  completionCopy = completion;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __122__PKAccountService_scheduledPaymentsWithAccountIdentifier_includeFailedRecurringPayments_allowFetchFromServer_completion___block_invoke;
   v19[3] = &unk_1E79C4450;
-  v12 = v11;
+  v12 = completionCopy;
   v20 = v12;
-  v13 = a3;
+  identifierCopy = identifier;
   v14 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v19];
   v15 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v14];
 
@@ -5397,7 +5397,7 @@ uint64_t __118__PKAccountService_billPaymentSelectedSuggestedAmountDataEventsFor
   v17[4] = self;
   v18 = v12;
   v16 = v12;
-  [v15 scheduledPaymentsWithAccountIdentifier:v13 includeFailedRecurringPayments:v7 allowFetchFromServer:v6 completion:v17];
+  [v15 scheduledPaymentsWithAccountIdentifier:identifierCopy includeFailedRecurringPayments:paymentsCopy allowFetchFromServer:serverCopy completion:v17];
 }
 
 uint64_t __122__PKAccountService_scheduledPaymentsWithAccountIdentifier_includeFailedRecurringPayments_allowFetchFromServer_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -5447,16 +5447,16 @@ uint64_t __122__PKAccountService_scheduledPaymentsWithAccountIdentifier_includeF
   return result;
 }
 
-- (void)updateScheduledPaymentsWithAccount:(id)a3 completion:(id)a4
+- (void)updateScheduledPaymentsWithAccount:(id)account completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __66__PKAccountService_updateScheduledPaymentsWithAccount_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  accountCopy = account;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -5467,7 +5467,7 @@ uint64_t __122__PKAccountService_scheduledPaymentsWithAccountIdentifier_includeF
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 updateScheduledPaymentsWithAccount:v9 completion:v13];
+  [v11 updateScheduledPaymentsWithAccount:accountCopy completion:v13];
 }
 
 uint64_t __66__PKAccountService_updateScheduledPaymentsWithAccount_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -5517,11 +5517,11 @@ uint64_t __66__PKAccountService_updateScheduledPaymentsWithAccount_completion___
   return result;
 }
 
-- (void)markUserViewedIntroduction:(BOOL)a3 forInstallmentIdentifiers:(id)a4 accountIdentifier:(id)a5
+- (void)markUserViewedIntroduction:(BOOL)introduction forInstallmentIdentifiers:(id)identifiers accountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v9 = a5;
-  v10 = a4;
+  introductionCopy = introduction;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v11 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:0];
   v12 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -5530,7 +5530,7 @@ uint64_t __66__PKAccountService_updateScheduledPaymentsWithAccount_completion___
   v13[2] = __91__PKAccountService_markUserViewedIntroduction_forInstallmentIdentifiers_accountIdentifier___block_invoke;
   v13[3] = &unk_1E79C7D08;
   v13[4] = self;
-  [v12 markUserViewedIntroduction:v6 forInstallmentIdentifiers:v10 accountIdentifier:v9 completion:v13];
+  [v12 markUserViewedIntroduction:introductionCopy forInstallmentIdentifiers:identifiersCopy accountIdentifier:identifierCopy completion:v13];
 }
 
 void __91__PKAccountService_markUserViewedIntroduction_forInstallmentIdentifiers_accountIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -5570,14 +5570,14 @@ void __91__PKAccountService_markUserViewedIntroduction_forInstallmentIdentifiers
   }
 }
 
-- (void)exportTransactionDataForAccountIdentifier:(id)a3 withFileFormat:(id)a4 beginDate:(id)a5 endDate:(id)a6 productTimeZone:(id)a7 completion:(id)a8
+- (void)exportTransactionDataForAccountIdentifier:(id)identifier withFileFormat:(id)format beginDate:(id)date endDate:(id)endDate productTimeZone:(id)zone completion:(id)completion
 {
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  completionCopy = completion;
+  zoneCopy = zone;
+  endDateCopy = endDate;
+  dateCopy = date;
+  formatCopy = format;
+  identifierCopy = identifier;
   v21 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:0];
   v22 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v21];
 
@@ -5586,9 +5586,9 @@ void __91__PKAccountService_markUserViewedIntroduction_forInstallmentIdentifiers
   v24[2] = __122__PKAccountService_exportTransactionDataForAccountIdentifier_withFileFormat_beginDate_endDate_productTimeZone_completion___block_invoke;
   v24[3] = &unk_1E79E37C0;
   v24[4] = self;
-  v25 = v15;
-  v23 = v15;
-  [v22 exportTransactionDataForAccountIdentifier:v20 withFileFormat:v19 beginDate:v18 endDate:v17 productTimeZone:v16 completion:v24];
+  v25 = completionCopy;
+  v23 = completionCopy;
+  [v22 exportTransactionDataForAccountIdentifier:identifierCopy withFileFormat:formatCopy beginDate:dateCopy endDate:endDateCopy productTimeZone:zoneCopy completion:v24];
 }
 
 void __122__PKAccountService_exportTransactionDataForAccountIdentifier_withFileFormat_beginDate_endDate_productTimeZone_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5627,10 +5627,10 @@ uint64_t __122__PKAccountService_exportTransactionDataForAccountIdentifier_withF
   return result;
 }
 
-- (void)sharedAccountCloudStoreWithAccountIdentifier:(id)a3 completion:(id)a4
+- (void)sharedAccountCloudStoreWithAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v9 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:0];
   v10 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v9];
 
@@ -5639,9 +5639,9 @@ uint64_t __122__PKAccountService_exportTransactionDataForAccountIdentifier_withF
   v12[2] = __76__PKAccountService_sharedAccountCloudStoreWithAccountIdentifier_completion___block_invoke;
   v12[3] = &unk_1E79E37E8;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
-  [v10 sharedAccountCloudStoreWithAccountIdentifier:v8 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [v10 sharedAccountCloudStoreWithAccountIdentifier:identifierCopy completion:v12];
 }
 
 void __76__PKAccountService_sharedAccountCloudStoreWithAccountIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -5678,10 +5678,10 @@ uint64_t __76__PKAccountService_sharedAccountCloudStoreWithAccountIdentifier_com
   return result;
 }
 
-- (void)updateSharedAccountCloudStoreWithAccountIdentifier:(id)a3 completion:(id)a4
+- (void)updateSharedAccountCloudStoreWithAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v9 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:0];
   v10 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v9];
 
@@ -5690,9 +5690,9 @@ uint64_t __76__PKAccountService_sharedAccountCloudStoreWithAccountIdentifier_com
   v12[2] = __82__PKAccountService_updateSharedAccountCloudStoreWithAccountIdentifier_completion___block_invoke;
   v12[3] = &unk_1E79E3810;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
-  [v10 updateSharedAccountCloudStoreWithAccountIdentifier:v8 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [v10 updateSharedAccountCloudStoreWithAccountIdentifier:identifierCopy completion:v12];
 }
 
 void __82__PKAccountService_updateSharedAccountCloudStoreWithAccountIdentifier_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5731,19 +5731,19 @@ uint64_t __82__PKAccountService_updateSharedAccountCloudStoreWithAccountIdentifi
   return result;
 }
 
-- (void)didAddAccountPendingFamilyMembers:(id)a3
+- (void)didAddAccountPendingFamilyMembers:(id)members
 {
-  v5 = a3;
+  membersCopy = members;
   v6 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:0];
   v7 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v6];
 
-  [v7 didAddAccountPendingFamilyMembers:v5];
+  [v7 didAddAccountPendingFamilyMembers:membersCopy];
 }
 
-- (void)accountPendingFamilyMembersForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)accountPendingFamilyMembersForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v9 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:0];
   v10 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v9];
 
@@ -5752,9 +5752,9 @@ uint64_t __82__PKAccountService_updateSharedAccountCloudStoreWithAccountIdentifi
   v12[2] = __79__PKAccountService_accountPendingFamilyMembersForAccountIdentifier_completion___block_invoke;
   v12[3] = &unk_1E79C4BD0;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
-  [v10 accountPendingFamilyMembersForAccountIdentifier:v8 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [v10 accountPendingFamilyMembersForAccountIdentifier:identifierCopy completion:v12];
 }
 
 void __79__PKAccountService_accountPendingFamilyMembersForAccountIdentifier_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5793,11 +5793,11 @@ uint64_t __79__PKAccountService_accountPendingFamilyMembersForAccountIdentifier_
   return result;
 }
 
-- (id)accountBalancesForAccountIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 type:(unint64_t)a6
+- (id)accountBalancesForAccountIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate type:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -5811,7 +5811,7 @@ uint64_t __79__PKAccountService_accountPendingFamilyMembersForAccountIdentifier_
   v16[3] = &unk_1E79D6538;
   v16[4] = self;
   v16[5] = &v17;
-  [v13 accountBalancesForAccountIdentifier:v10 startDate:v11 endDate:v12 type:a6 completion:v16];
+  [v13 accountBalancesForAccountIdentifier:identifierCopy startDate:dateCopy endDate:endDateCopy type:type completion:v16];
   v14 = v18[5];
 
   _Block_object_dispose(&v17, 8);
@@ -5856,12 +5856,12 @@ void __79__PKAccountService_accountBalancesForAccountIdentifier_startDate_endDat
   *(v8 + 40) = v5;
 }
 
-- (void)updateAccountBalancesForAccountIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 type:(unint64_t)a6 completion:(id)a7
+- (void)updateAccountBalancesForAccountIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate type:(unint64_t)type completion:(id)completion
 {
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionCopy = completion;
+  endDateCopy = endDate;
+  dateCopy = date;
+  identifierCopy = identifier;
   v17 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:0];
   v18 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v17];
 
@@ -5870,9 +5870,9 @@ void __79__PKAccountService_accountBalancesForAccountIdentifier_startDate_endDat
   v20[2] = __96__PKAccountService_updateAccountBalancesForAccountIdentifier_startDate_endDate_type_completion___block_invoke;
   v20[3] = &unk_1E79C4BD0;
   v20[4] = self;
-  v21 = v13;
-  v19 = v13;
-  [v18 updateAccountBalancesForAccountIdentifier:v16 startDate:v15 endDate:v14 type:a6 completion:v20];
+  v21 = completionCopy;
+  v19 = completionCopy;
+  [v18 updateAccountBalancesForAccountIdentifier:identifierCopy startDate:dateCopy endDate:endDateCopy type:type completion:v20];
 }
 
 void __96__PKAccountService_updateAccountBalancesForAccountIdentifier_startDate_endDate_type_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5911,10 +5911,10 @@ uint64_t __96__PKAccountService_updateAccountBalancesForAccountIdentifier_startD
   return result;
 }
 
-- (void)resetAccountBalancesForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)resetAccountBalancesForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v9 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:0];
   v10 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v9];
 
@@ -5923,9 +5923,9 @@ uint64_t __96__PKAccountService_updateAccountBalancesForAccountIdentifier_startD
   v12[2] = __72__PKAccountService_resetAccountBalancesForAccountIdentifier_completion___block_invoke;
   v12[3] = &unk_1E79C4C70;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
-  [v10 resetAccountBalancesForAccountIdentifier:v8 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [v10 resetAccountBalancesForAccountIdentifier:identifierCopy completion:v12];
 }
 
 void __72__PKAccountService_resetAccountBalancesForAccountIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -5962,14 +5962,14 @@ uint64_t __72__PKAccountService_resetAccountBalancesForAccountIdentifier_complet
   return result;
 }
 
-- (void)attemptAppleBalanceSetupWithCompletion:(id)a3
+- (void)attemptAppleBalanceSetupWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__PKAccountService_attemptAppleBalanceSetupWithCompletion___block_invoke;
   v12[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = completionCopy;
   v13 = v6;
   v7 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v12];
   v8 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v7];
@@ -6029,14 +6029,14 @@ uint64_t __59__PKAccountService_attemptAppleBalanceSetupWithCompletion___block_i
   return result;
 }
 
-- (void)attemptAppleStoredValueSetupWithCompletion:(id)a3
+- (void)attemptAppleStoredValueSetupWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__PKAccountService_attemptAppleStoredValueSetupWithCompletion___block_invoke;
   v12[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = completionCopy;
   v13 = v6;
   v7 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v12];
   v8 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v7];
@@ -6096,14 +6096,14 @@ uint64_t __63__PKAccountService_attemptAppleStoredValueSetupWithCompletion___blo
   return result;
 }
 
-- (void)validateAppleBalanceSecurityRequirementsWithCompletion:(id)a3
+- (void)validateAppleBalanceSecurityRequirementsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __75__PKAccountService_validateAppleBalanceSecurityRequirementsWithCompletion___block_invoke;
   v12[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = completionCopy;
   v13 = v6;
   v7 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v12];
   v8 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v7];
@@ -6164,16 +6164,16 @@ uint64_t __75__PKAccountService_validateAppleBalanceSecurityRequirementsWithComp
   return result;
 }
 
-- (void)triggerCloudStoreZoneCreationForAccount:(id)a3 withCompletion:(id)a4
+- (void)triggerCloudStoreZoneCreationForAccount:(id)account withCompletion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__PKAccountService_triggerCloudStoreZoneCreationForAccount_withCompletion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  accountCopy = account;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -6184,7 +6184,7 @@ uint64_t __75__PKAccountService_validateAppleBalanceSecurityRequirementsWithComp
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 triggerCloudStoreZoneCreationForAccount:v9 withCompletion:v13];
+  [v11 triggerCloudStoreZoneCreationForAccount:accountCopy withCompletion:v13];
 }
 
 uint64_t __75__PKAccountService_triggerCloudStoreZoneCreationForAccount_withCompletion___block_invoke(uint64_t a1)
@@ -6229,14 +6229,14 @@ uint64_t __75__PKAccountService_triggerCloudStoreZoneCreationForAccount_withComp
   return result;
 }
 
-- (void)backgroundProvisionInProgressForFeature:(unint64_t)a3 withCompletion:(id)a4
+- (void)backgroundProvisionInProgressForFeature:(unint64_t)feature withCompletion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __75__PKAccountService_backgroundProvisionInProgressForFeature_withCompletion___block_invoke;
   v14[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v15 = v8;
   v9 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v14];
   v10 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v9];
@@ -6248,7 +6248,7 @@ uint64_t __75__PKAccountService_triggerCloudStoreZoneCreationForAccount_withComp
   v12[4] = self;
   v13 = v8;
   v11 = v8;
-  [v10 backgroundProvisionInProgressForFeature:a3 withCompletion:v12];
+  [v10 backgroundProvisionInProgressForFeature:feature withCompletion:v12];
 }
 
 uint64_t __75__PKAccountService_backgroundProvisionInProgressForFeature_withCompletion___block_invoke(uint64_t a1)
@@ -6293,17 +6293,17 @@ uint64_t __75__PKAccountService_backgroundProvisionInProgressForFeature_withComp
   return result;
 }
 
-- (void)invalidateTopUpTokenWithIdentifier:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5
+- (void)invalidateTopUpTokenWithIdentifier:(id)identifier forAccountWithIdentifier:(id)withIdentifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __91__PKAccountService_invalidateTopUpTokenWithIdentifier_forAccountWithIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  withIdentifierCopy = withIdentifier;
+  identifierCopy = identifier;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -6314,7 +6314,7 @@ uint64_t __75__PKAccountService_backgroundProvisionInProgressForFeature_withComp
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 invalidateTopUpTokenWithIdentifier:v12 forAccountWithIdentifier:v11 completion:v16];
+  [v14 invalidateTopUpTokenWithIdentifier:identifierCopy forAccountWithIdentifier:withIdentifierCopy completion:v16];
 }
 
 uint64_t __91__PKAccountService_invalidateTopUpTokenWithIdentifier_forAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -6362,16 +6362,16 @@ uint64_t __91__PKAccountService_invalidateTopUpTokenWithIdentifier_forAccountWit
   return result;
 }
 
-- (void)appleBalancePromotionForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)appleBalancePromotionForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __77__PKAccountService_appleBalancePromotionForAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -6382,7 +6382,7 @@ uint64_t __91__PKAccountService_invalidateTopUpTokenWithIdentifier_forAccountWit
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 appleBalancePromotionForAccountWithIdentifier:v9 completion:v13];
+  [v11 appleBalancePromotionForAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __77__PKAccountService_appleBalancePromotionForAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -6430,16 +6430,16 @@ uint64_t __77__PKAccountService_appleBalancePromotionForAccountWithIdentifier_co
   return result;
 }
 
-- (void)deleteAppleBalancePromotionForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteAppleBalancePromotionForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __83__PKAccountService_deleteAppleBalancePromotionForAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -6450,7 +6450,7 @@ uint64_t __77__PKAccountService_appleBalancePromotionForAccountWithIdentifier_co
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 deleteAppleBalancePromotionForAccountWithIdentifier:v9 completion:v13];
+  [v11 deleteAppleBalancePromotionForAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __83__PKAccountService_deleteAppleBalancePromotionForAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -6498,16 +6498,16 @@ uint64_t __83__PKAccountService_deleteAppleBalancePromotionForAccountWithIdentif
   return result;
 }
 
-- (void)inStoreTopUpTokenForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)inStoreTopUpTokenForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__PKAccountService_inStoreTopUpTokenForAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -6518,7 +6518,7 @@ uint64_t __83__PKAccountService_deleteAppleBalancePromotionForAccountWithIdentif
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 inStoreTopUpTokenForAccountWithIdentifier:v9 completion:v13];
+  [v11 inStoreTopUpTokenForAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __73__PKAccountService_inStoreTopUpTokenForAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -6566,17 +6566,17 @@ uint64_t __73__PKAccountService_inStoreTopUpTokenForAccountWithIdentifier_comple
   return result;
 }
 
-- (void)insertOrUpdateInStoreTopUpToken:(id)a3 accountIdentifier:(id)a4 completion:(id)a5
+- (void)insertOrUpdateInStoreTopUpToken:(id)token accountIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __81__PKAccountService_insertOrUpdateInStoreTopUpToken_accountIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  identifierCopy = identifier;
+  tokenCopy = token;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -6587,7 +6587,7 @@ uint64_t __73__PKAccountService_inStoreTopUpTokenForAccountWithIdentifier_comple
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 insertOrUpdateInStoreTopUpToken:v12 accountIdentifier:v11 completion:v16];
+  [v14 insertOrUpdateInStoreTopUpToken:tokenCopy accountIdentifier:identifierCopy completion:v16];
 }
 
 uint64_t __81__PKAccountService_insertOrUpdateInStoreTopUpToken_accountIdentifier_completion___block_invoke(uint64_t a1)
@@ -6635,16 +6635,16 @@ uint64_t __81__PKAccountService_insertOrUpdateInStoreTopUpToken_accountIdentifie
   return result;
 }
 
-- (void)deleteInStoreTopUpTokenForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteInStoreTopUpTokenForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__PKAccountService_deleteInStoreTopUpTokenForAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -6655,7 +6655,7 @@ uint64_t __81__PKAccountService_insertOrUpdateInStoreTopUpToken_accountIdentifie
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 deleteInStoreTopUpTokenForAccountWithIdentifier:v9 completion:v13];
+  [v11 deleteInStoreTopUpTokenForAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __79__PKAccountService_deleteInStoreTopUpTokenForAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -6703,16 +6703,16 @@ uint64_t __79__PKAccountService_deleteInStoreTopUpTokenForAccountWithIdentifier_
   return result;
 }
 
-- (void)dailyCashEligibleDestinationsForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)dailyCashEligibleDestinationsForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__PKAccountService_dailyCashEligibleDestinationsForAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -6723,7 +6723,7 @@ uint64_t __79__PKAccountService_deleteInStoreTopUpTokenForAccountWithIdentifier_
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 dailyCashEligibleDestinationsForAccountWithIdentifier:v9 completion:v13];
+  [v11 dailyCashEligibleDestinationsForAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __85__PKAccountService_dailyCashEligibleDestinationsForAccountWithIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -6773,16 +6773,16 @@ uint64_t __85__PKAccountService_dailyCashEligibleDestinationsForAccountWithIdent
   return result;
 }
 
-- (void)accountHoldsForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)accountHoldsForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__PKAccountService_accountHoldsForAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -6793,7 +6793,7 @@ uint64_t __85__PKAccountService_dailyCashEligibleDestinationsForAccountWithIdent
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 accountHoldsForAccountIdentifier:v9 completion:v13];
+  [v11 accountHoldsForAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __64__PKAccountService_accountHoldsForAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -6843,19 +6843,19 @@ uint64_t __64__PKAccountService_accountHoldsForAccountIdentifier_completion___bl
   return result;
 }
 
-- (void)rewardsTierSummaryForTransactionSourceIdentifiers:(id)a3 currencyCode:(id)a4 startDate:(id)a5 endDate:(id)a6 completion:(id)a7
+- (void)rewardsTierSummaryForTransactionSourceIdentifiers:(id)identifiers currencyCode:(id)code startDate:(id)date endDate:(id)endDate completion:(id)completion
 {
-  v13 = a7;
+  completionCopy = completion;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __112__PKAccountService_rewardsTierSummaryForTransactionSourceIdentifiers_currencyCode_startDate_endDate_completion___block_invoke;
   v24[3] = &unk_1E79C4450;
-  v14 = v13;
+  v14 = completionCopy;
   v25 = v14;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
+  codeCopy = code;
+  identifiersCopy = identifiers;
   v19 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v24];
   v20 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v19];
 
@@ -6866,7 +6866,7 @@ uint64_t __64__PKAccountService_accountHoldsForAccountIdentifier_completion___bl
   v22[4] = self;
   v23 = v14;
   v21 = v14;
-  [v20 rewardsTierSummaryForTransactionSourceIdentifiers:v18 currencyCode:v17 startDate:v16 endDate:v15 completion:v22];
+  [v20 rewardsTierSummaryForTransactionSourceIdentifiers:identifiersCopy currencyCode:codeCopy startDate:dateCopy endDate:endDateCopy completion:v22];
 }
 
 uint64_t __112__PKAccountService_rewardsTierSummaryForTransactionSourceIdentifiers_currencyCode_startDate_endDate_completion___block_invoke(uint64_t a1)
@@ -6914,17 +6914,17 @@ uint64_t __112__PKAccountService_rewardsTierSummaryForTransactionSourceIdentifie
   return result;
 }
 
-- (void)updateAccountPromotionsForAccountWithIdentifier:(id)a3 observeCooldownPeriod:(BOOL)a4 completion:(id)a5
+- (void)updateAccountPromotionsForAccountWithIdentifier:(id)identifier observeCooldownPeriod:(BOOL)period completion:(id)completion
 {
-  v5 = a4;
-  v9 = a5;
+  periodCopy = period;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __101__PKAccountService_updateAccountPromotionsForAccountWithIdentifier_observeCooldownPeriod_completion___block_invoke;
   v17[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v17];
   v13 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v12];
 
@@ -6935,7 +6935,7 @@ uint64_t __112__PKAccountService_rewardsTierSummaryForTransactionSourceIdentifie
   v15[4] = self;
   v16 = v10;
   v14 = v10;
-  [v13 updateAccountPromotionsForAccountWithIdentifier:v11 observeCooldownPeriod:v5 completion:v15];
+  [v13 updateAccountPromotionsForAccountWithIdentifier:identifierCopy observeCooldownPeriod:periodCopy completion:v15];
 }
 
 uint64_t __101__PKAccountService_updateAccountPromotionsForAccountWithIdentifier_observeCooldownPeriod_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -6985,18 +6985,18 @@ uint64_t __101__PKAccountService_updateAccountPromotionsForAccountWithIdentifier
   return result;
 }
 
-- (void)updateAccountPromotionsForAccountWithIdentifier:(id)a3 ignoreErrorBackoff:(BOOL)a4 observeCooldownPeriod:(BOOL)a5 completion:(id)a6
+- (void)updateAccountPromotionsForAccountWithIdentifier:(id)identifier ignoreErrorBackoff:(BOOL)backoff observeCooldownPeriod:(BOOL)period completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v11 = a6;
+  periodCopy = period;
+  backoffCopy = backoff;
+  completionCopy = completion;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __120__PKAccountService_updateAccountPromotionsForAccountWithIdentifier_ignoreErrorBackoff_observeCooldownPeriod_completion___block_invoke;
   v19[3] = &unk_1E79C4450;
-  v12 = v11;
+  v12 = completionCopy;
   v20 = v12;
-  v13 = a3;
+  identifierCopy = identifier;
   v14 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v19];
   v15 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v14];
 
@@ -7007,7 +7007,7 @@ uint64_t __101__PKAccountService_updateAccountPromotionsForAccountWithIdentifier
   v17[4] = self;
   v18 = v12;
   v16 = v12;
-  [v15 updateAccountPromotionsForAccountWithIdentifier:v13 ignoreErrorBackoff:v7 observeCooldownPeriod:v6 completion:v17];
+  [v15 updateAccountPromotionsForAccountWithIdentifier:identifierCopy ignoreErrorBackoff:backoffCopy observeCooldownPeriod:periodCopy completion:v17];
 }
 
 uint64_t __120__PKAccountService_updateAccountPromotionsForAccountWithIdentifier_ignoreErrorBackoff_observeCooldownPeriod_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -7057,17 +7057,17 @@ uint64_t __120__PKAccountService_updateAccountPromotionsForAccountWithIdentifier
   return result;
 }
 
-- (void)insertOrUpdateAccountPromotions:(id)a3 accountIdentifier:(id)a4 completion:(id)a5
+- (void)insertOrUpdateAccountPromotions:(id)promotions accountIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __81__PKAccountService_insertOrUpdateAccountPromotions_accountIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  identifierCopy = identifier;
+  promotionsCopy = promotions;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -7078,7 +7078,7 @@ uint64_t __120__PKAccountService_updateAccountPromotionsForAccountWithIdentifier
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 insertOrUpdateAccountPromotions:v12 accountIdentifier:v11 completion:v16];
+  [v14 insertOrUpdateAccountPromotions:promotionsCopy accountIdentifier:identifierCopy completion:v16];
 }
 
 uint64_t __81__PKAccountService_insertOrUpdateAccountPromotions_accountIdentifier_completion___block_invoke(uint64_t a1)
@@ -7126,16 +7126,16 @@ uint64_t __81__PKAccountService_insertOrUpdateAccountPromotions_accountIdentifie
   return result;
 }
 
-- (void)accountPromotionsForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)accountPromotionsForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__PKAccountService_accountPromotionsForAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -7146,7 +7146,7 @@ uint64_t __81__PKAccountService_insertOrUpdateAccountPromotions_accountIdentifie
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 accountPromotionsForAccountWithIdentifier:v9 completion:v13];
+  [v11 accountPromotionsForAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __73__PKAccountService_accountPromotionsForAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -7194,17 +7194,17 @@ uint64_t __73__PKAccountService_accountPromotionsForAccountWithIdentifier_comple
   return result;
 }
 
-- (void)deleteAccountPromotion:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5
+- (void)deleteAccountPromotion:(id)promotion forAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __79__PKAccountService_deleteAccountPromotion_forAccountWithIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  identifierCopy = identifier;
+  promotionCopy = promotion;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -7215,7 +7215,7 @@ uint64_t __73__PKAccountService_accountPromotionsForAccountWithIdentifier_comple
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 deleteAccountPromotion:v12 forAccountWithIdentifier:v11 completion:v16];
+  [v14 deleteAccountPromotion:promotionCopy forAccountWithIdentifier:identifierCopy completion:v16];
 }
 
 uint64_t __79__PKAccountService_deleteAccountPromotion_forAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -7263,17 +7263,17 @@ uint64_t __79__PKAccountService_deleteAccountPromotion_forAccountWithIdentifier_
   return result;
 }
 
-- (void)updateImpressionCountsForPromotions:(id)a3 accountIdentifier:(id)a4 completion:(id)a5
+- (void)updateImpressionCountsForPromotions:(id)promotions accountIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __85__PKAccountService_updateImpressionCountsForPromotions_accountIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  identifierCopy = identifier;
+  promotionsCopy = promotions;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -7284,7 +7284,7 @@ uint64_t __79__PKAccountService_deleteAccountPromotion_forAccountWithIdentifier_
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 updateImpressionCountsForPromotions:v12 accountIdentifier:v11 completion:v16];
+  [v14 updateImpressionCountsForPromotions:promotionsCopy accountIdentifier:identifierCopy completion:v16];
 }
 
 uint64_t __85__PKAccountService_updateImpressionCountsForPromotions_accountIdentifier_completion___block_invoke(uint64_t a1)
@@ -7332,17 +7332,17 @@ uint64_t __85__PKAccountService_updateImpressionCountsForPromotions_accountIdent
   return result;
 }
 
-- (void)updateImpressionCount:(int64_t)a3 promotionProgramIdentifier:(id)a4 accountIdentifier:(id)a5 completion:(id)a6
+- (void)updateImpressionCount:(int64_t)count promotionProgramIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completion:(id)completion
 {
-  v11 = a6;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __98__PKAccountService_updateImpressionCount_promotionProgramIdentifier_accountIdentifier_completion___block_invoke;
   v20[3] = &unk_1E79C4450;
-  v12 = v11;
+  v12 = completionCopy;
   v21 = v12;
-  v13 = a5;
-  v14 = a4;
+  accountIdentifierCopy = accountIdentifier;
+  identifierCopy = identifier;
   v15 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v20];
   v16 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v15];
 
@@ -7353,7 +7353,7 @@ uint64_t __85__PKAccountService_updateImpressionCountsForPromotions_accountIdent
   v18[4] = self;
   v19 = v12;
   v17 = v12;
-  [v16 updateImpressionCount:a3 promotionProgramIdentifier:v14 accountIdentifier:v13 completion:v18];
+  [v16 updateImpressionCount:count promotionProgramIdentifier:identifierCopy accountIdentifier:accountIdentifierCopy completion:v18];
 }
 
 uint64_t __98__PKAccountService_updateImpressionCount_promotionProgramIdentifier_accountIdentifier_completion___block_invoke(uint64_t a1)
@@ -7401,16 +7401,16 @@ uint64_t __98__PKAccountService_updateImpressionCount_promotionProgramIdentifier
   return result;
 }
 
-- (void)accountPromotionBehaviorForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)accountPromotionBehaviorForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__PKAccountService_accountPromotionBehaviorForAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -7421,7 +7421,7 @@ uint64_t __98__PKAccountService_updateImpressionCount_promotionProgramIdentifier
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 accountPromotionBehaviorForAccountWithIdentifier:v9 completion:v13];
+  [v11 accountPromotionBehaviorForAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __80__PKAccountService_accountPromotionBehaviorForAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -7469,16 +7469,16 @@ uint64_t __80__PKAccountService_accountPromotionBehaviorForAccountWithIdentifier
   return result;
 }
 
-- (void)updateAccountEnhancedMerchantsForAccountWithIdentifier:(id)a3 cooldownLevel:(unint64_t)a4 completion:(id)a5
+- (void)updateAccountEnhancedMerchantsForAccountWithIdentifier:(id)identifier cooldownLevel:(unint64_t)level completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __100__PKAccountService_updateAccountEnhancedMerchantsForAccountWithIdentifier_cooldownLevel_completion___block_invoke;
   v17[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v17];
   v13 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v12];
 
@@ -7489,7 +7489,7 @@ uint64_t __80__PKAccountService_accountPromotionBehaviorForAccountWithIdentifier
   v15[4] = self;
   v16 = v10;
   v14 = v10;
-  [v13 updateAccountEnhancedMerchantsForAccountWithIdentifier:v11 cooldownLevel:a4 completion:v15];
+  [v13 updateAccountEnhancedMerchantsForAccountWithIdentifier:identifierCopy cooldownLevel:level completion:v15];
 }
 
 uint64_t __100__PKAccountService_updateAccountEnhancedMerchantsForAccountWithIdentifier_cooldownLevel_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -7539,17 +7539,17 @@ uint64_t __100__PKAccountService_updateAccountEnhancedMerchantsForAccountWithIde
   return result;
 }
 
-- (void)updateAccountEnhancedMerchantsForAccountWithIdentifier:(id)a3 ignoreErrorBackoff:(BOOL)a4 cooldownLevel:(unint64_t)a5 completion:(id)a6
+- (void)updateAccountEnhancedMerchantsForAccountWithIdentifier:(id)identifier ignoreErrorBackoff:(BOOL)backoff cooldownLevel:(unint64_t)level completion:(id)completion
 {
-  v7 = a4;
-  v11 = a6;
+  backoffCopy = backoff;
+  completionCopy = completion;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __119__PKAccountService_updateAccountEnhancedMerchantsForAccountWithIdentifier_ignoreErrorBackoff_cooldownLevel_completion___block_invoke;
   v19[3] = &unk_1E79C4450;
-  v12 = v11;
+  v12 = completionCopy;
   v20 = v12;
-  v13 = a3;
+  identifierCopy = identifier;
   v14 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v19];
   v15 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v14];
 
@@ -7560,7 +7560,7 @@ uint64_t __100__PKAccountService_updateAccountEnhancedMerchantsForAccountWithIde
   v17[4] = self;
   v18 = v12;
   v16 = v12;
-  [v15 updateAccountEnhancedMerchantsForAccountWithIdentifier:v13 ignoreErrorBackoff:v7 cooldownLevel:a5 completion:v17];
+  [v15 updateAccountEnhancedMerchantsForAccountWithIdentifier:identifierCopy ignoreErrorBackoff:backoffCopy cooldownLevel:level completion:v17];
 }
 
 uint64_t __119__PKAccountService_updateAccountEnhancedMerchantsForAccountWithIdentifier_ignoreErrorBackoff_cooldownLevel_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -7614,17 +7614,17 @@ uint64_t __119__PKAccountService_updateAccountEnhancedMerchantsForAccountWithIde
   return result;
 }
 
-- (void)insertOrUpdateAccountEnhancedMerchants:(id)a3 accountIdentifier:(id)a4 completion:(id)a5
+- (void)insertOrUpdateAccountEnhancedMerchants:(id)merchants accountIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __88__PKAccountService_insertOrUpdateAccountEnhancedMerchants_accountIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  identifierCopy = identifier;
+  merchantsCopy = merchants;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -7635,7 +7635,7 @@ uint64_t __119__PKAccountService_updateAccountEnhancedMerchantsForAccountWithIde
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 insertOrUpdateAccountEnhancedMerchants:v12 accountIdentifier:v11 completion:v16];
+  [v14 insertOrUpdateAccountEnhancedMerchants:merchantsCopy accountIdentifier:identifierCopy completion:v16];
 }
 
 uint64_t __88__PKAccountService_insertOrUpdateAccountEnhancedMerchants_accountIdentifier_completion___block_invoke(uint64_t a1)
@@ -7683,16 +7683,16 @@ uint64_t __88__PKAccountService_insertOrUpdateAccountEnhancedMerchants_accountId
   return result;
 }
 
-- (void)accountEnhancedMerchantsForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)accountEnhancedMerchantsForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__PKAccountService_accountEnhancedMerchantsForAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -7703,7 +7703,7 @@ uint64_t __88__PKAccountService_insertOrUpdateAccountEnhancedMerchants_accountId
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 accountEnhancedMerchantsForAccountWithIdentifier:v9 completion:v13];
+  [v11 accountEnhancedMerchantsForAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __80__PKAccountService_accountEnhancedMerchantsForAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -7751,17 +7751,17 @@ uint64_t __80__PKAccountService_accountEnhancedMerchantsForAccountWithIdentifier
   return result;
 }
 
-- (void)deleteAccountEnhancedMerchant:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5
+- (void)deleteAccountEnhancedMerchant:(id)merchant forAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __86__PKAccountService_deleteAccountEnhancedMerchant_forAccountWithIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  identifierCopy = identifier;
+  merchantCopy = merchant;
   v13 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -7772,7 +7772,7 @@ uint64_t __80__PKAccountService_accountEnhancedMerchantsForAccountWithIdentifier
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 deleteAccountEnhancedMerchant:v12 forAccountWithIdentifier:v11 completion:v16];
+  [v14 deleteAccountEnhancedMerchant:merchantCopy forAccountWithIdentifier:identifierCopy completion:v16];
 }
 
 uint64_t __86__PKAccountService_deleteAccountEnhancedMerchant_forAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -7820,16 +7820,16 @@ uint64_t __86__PKAccountService_deleteAccountEnhancedMerchant_forAccountWithIden
   return result;
 }
 
-- (void)accountEnhancedMerchantBehaviorForAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)accountEnhancedMerchantBehaviorForAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __87__PKAccountService_accountEnhancedMerchantBehaviorForAccountWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -7840,7 +7840,7 @@ uint64_t __86__PKAccountService_deleteAccountEnhancedMerchant_forAccountWithIden
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 accountEnhancedMerchantBehaviorForAccountWithIdentifier:v9 completion:v13];
+  [v11 accountEnhancedMerchantBehaviorForAccountWithIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __87__PKAccountService_accountEnhancedMerchantBehaviorForAccountWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -7888,16 +7888,16 @@ uint64_t __87__PKAccountService_accountEnhancedMerchantBehaviorForAccountWithIde
   return result;
 }
 
-- (void)updateCreditRecoveryPaymentPlansForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)updateCreditRecoveryPaymentPlansForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__PKAccountService_updateCreditRecoveryPaymentPlansForAccountIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v15];
   v11 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -7908,7 +7908,7 @@ uint64_t __87__PKAccountService_accountEnhancedMerchantBehaviorForAccountWithIde
   v13[4] = self;
   v14 = v8;
   v12 = v8;
-  [v11 updateCreditRecoveryPaymentPlansForAccountIdentifier:v9 completion:v13];
+  [v11 updateCreditRecoveryPaymentPlansForAccountIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __84__PKAccountService_updateCreditRecoveryPaymentPlansForAccountIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -7958,17 +7958,17 @@ uint64_t __84__PKAccountService_updateCreditRecoveryPaymentPlansForAccountIdenti
   return result;
 }
 
-- (void)creditRecoveryPaymentPlansForAccountIdentifier:(id)a3 allowFetchFromServer:(BOOL)a4 completion:(id)a5
+- (void)creditRecoveryPaymentPlansForAccountIdentifier:(id)identifier allowFetchFromServer:(BOOL)server completion:(id)completion
 {
-  v5 = a4;
-  v9 = a5;
+  serverCopy = server;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __99__PKAccountService_creditRecoveryPaymentPlansForAccountIdentifier_allowFetchFromServer_completion___block_invoke;
   v17[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v17];
   v13 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v12];
 
@@ -7979,7 +7979,7 @@ uint64_t __84__PKAccountService_updateCreditRecoveryPaymentPlansForAccountIdenti
   v15[4] = self;
   v16 = v10;
   v14 = v10;
-  [v13 creditRecoveryPaymentPlansForAccountIdentifier:v11 allowFetchFromServer:v5 completion:v15];
+  [v13 creditRecoveryPaymentPlansForAccountIdentifier:identifierCopy allowFetchFromServer:serverCopy completion:v15];
 }
 
 uint64_t __99__PKAccountService_creditRecoveryPaymentPlansForAccountIdentifier_allowFetchFromServer_completion___block_invoke(uint64_t a1)
@@ -8027,17 +8027,17 @@ uint64_t __99__PKAccountService_creditRecoveryPaymentPlansForAccountIdentifier_a
   return result;
 }
 
-- (void)creditRecoveryPaymentPlanInformationForAccountIdentifier:(id)a3 allowFetchFromServer:(BOOL)a4 completion:(id)a5
+- (void)creditRecoveryPaymentPlanInformationForAccountIdentifier:(id)identifier allowFetchFromServer:(BOOL)server completion:(id)completion
 {
-  v5 = a4;
-  v9 = a5;
+  serverCopy = server;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __109__PKAccountService_creditRecoveryPaymentPlanInformationForAccountIdentifier_allowFetchFromServer_completion___block_invoke;
   v17[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v17];
   v13 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v12];
 
@@ -8048,7 +8048,7 @@ uint64_t __99__PKAccountService_creditRecoveryPaymentPlansForAccountIdentifier_a
   v15[4] = self;
   v16 = v10;
   v14 = v10;
-  [v13 creditRecoveryPaymentPlanInformationForAccountIdentifier:v11 allowFetchFromServer:v5 completion:v15];
+  [v13 creditRecoveryPaymentPlanInformationForAccountIdentifier:identifierCopy allowFetchFromServer:serverCopy completion:v15];
 }
 
 uint64_t __109__PKAccountService_creditRecoveryPaymentPlanInformationForAccountIdentifier_allowFetchFromServer_completion___block_invoke(uint64_t a1)
@@ -8094,16 +8094,16 @@ uint64_t __109__PKAccountService_creditRecoveryPaymentPlanInformationForAccountI
   return result;
 }
 
-- (void)accountEntityOrderingsForAccountWithIdentifier:(id)a3 entityType:(unint64_t)a4 completion:(id)a5
+- (void)accountEntityOrderingsForAccountWithIdentifier:(id)identifier entityType:(unint64_t)type completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __89__PKAccountService_accountEntityOrderingsForAccountWithIdentifier_entityType_completion___block_invoke;
   v17[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = [(PKAccountService *)self errorHandlerForMethod:a2 completion:v17];
   v13 = [(PKAccountService *)self _remoteObjectProxyWithErrorHandler:v12];
 
@@ -8114,7 +8114,7 @@ uint64_t __109__PKAccountService_creditRecoveryPaymentPlanInformationForAccountI
   v15[4] = self;
   v16 = v10;
   v14 = v10;
-  [v13 accountEntityOrderingsForAccountWithIdentifier:v11 entityType:a4 completion:v15];
+  [v13 accountEntityOrderingsForAccountWithIdentifier:identifierCopy entityType:type completion:v15];
 }
 
 uint64_t __89__PKAccountService_accountEntityOrderingsForAccountWithIdentifier_entityType_completion___block_invoke(uint64_t a1)
@@ -8162,9 +8162,9 @@ uint64_t __89__PKAccountService_accountEntityOrderingsForAccountWithIdentifier_e
   return result;
 }
 
-- (BOOL)supportsCardNumbersShortcutForPassUniqueID:(id)a3
+- (BOOL)supportsCardNumbersShortcutForPassUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8175,55 +8175,55 @@ uint64_t __89__PKAccountService_accountEntityOrderingsForAccountWithIdentifier_e
   v8[2] = __63__PKAccountService_supportsCardNumbersShortcutForPassUniqueID___block_invoke;
   v8[3] = &unk_1E79C4798;
   v8[4] = &v9;
-  [v5 supportsCardNumbersShortcutForPassUniqueID:v4 completion:v8];
+  [v5 supportsCardNumbersShortcutForPassUniqueID:dCopy completion:v8];
   v6 = *(v10 + 24);
 
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lockObservers);
     [(NSHashTable *)self->_observers addObject:v5];
     os_unfair_lock_unlock(&self->_lockObservers);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lockObservers);
     [(NSHashTable *)self->_observers removeObject:v5];
     os_unfair_lock_unlock(&self->_lockObservers);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)_accessObserversWithHandler:(id)a3
+- (void)_accessObserversWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     os_unfair_lock_lock(&self->_lockObservers);
-    v5 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_lockObservers);
     replyQueue = self->_replyQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __48__PKAccountService__accessObserversWithHandler___block_invoke;
     v8[3] = &unk_1E79C4A40;
-    v9 = v5;
-    v10 = v4;
-    v7 = v5;
+    v9 = allObjects;
+    v10 = handlerCopy;
+    v7 = allObjects;
     dispatch_async(replyQueue, v8);
   }
 }
@@ -8263,15 +8263,15 @@ void __48__PKAccountService__accessObserversWithHandler___block_invoke(uint64_t 
   }
 }
 
-- (void)accountAdded:(id)a3
+- (void)accountAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __33__PKAccountService_accountAdded___block_invoke;
   v6[3] = &unk_1E79E39A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = addedCopy;
+  v5 = addedCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v6];
 }
 
@@ -8284,15 +8284,15 @@ void __33__PKAccountService_accountAdded___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)accountChanged:(id)a3
+- (void)accountChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__PKAccountService_accountChanged___block_invoke;
   v6[3] = &unk_1E79E39A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = changedCopy;
+  v5 = changedCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v6];
 }
 
@@ -8305,15 +8305,15 @@ void __35__PKAccountService_accountChanged___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)accountRemoved:(id)a3
+- (void)accountRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__PKAccountService_accountRemoved___block_invoke;
   v6[3] = &unk_1E79E39A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = removedCopy;
+  v5 = removedCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v6];
 }
 
@@ -8326,15 +8326,15 @@ void __35__PKAccountService_accountRemoved___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)statementsChangedForAccountIdentifier:(id)a3
+- (void)statementsChangedForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__PKAccountService_statementsChangedForAccountIdentifier___block_invoke;
   v6[3] = &unk_1E79E39A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v6];
 }
 
@@ -8347,15 +8347,15 @@ void __58__PKAccountService_statementsChangedForAccountIdentifier___block_invoke
   }
 }
 
-- (void)scheduledPaymentsChangedForAccountIdentifier:(id)a3
+- (void)scheduledPaymentsChangedForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__PKAccountService_scheduledPaymentsChangedForAccountIdentifier___block_invoke;
   v6[3] = &unk_1E79E39A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v6];
 }
 
@@ -8368,18 +8368,18 @@ void __65__PKAccountService_scheduledPaymentsChangedForAccountIdentifier___block
   }
 }
 
-- (void)didUpdatePaymentFundingSources:(id)a3 accountIdentifier:(id)a4
+- (void)didUpdatePaymentFundingSources:(id)sources accountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  sourcesCopy = sources;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__PKAccountService_didUpdatePaymentFundingSources_accountIdentifier___block_invoke;
   v10[3] = &unk_1E79E39C8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = sourcesCopy;
+  v12 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = sourcesCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v10];
 }
 
@@ -8392,18 +8392,18 @@ void __69__PKAccountService_didUpdatePaymentFundingSources_accountIdentifier___b
   }
 }
 
-- (void)accountUsersChanged:(id)a3 forAccountIdentifier:(id)a4
+- (void)accountUsersChanged:(id)changed forAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__PKAccountService_accountUsersChanged_forAccountIdentifier___block_invoke;
   v10[3] = &unk_1E79E39C8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = changedCopy;
+  v12 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = changedCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v10];
 }
 
@@ -8416,18 +8416,18 @@ void __61__PKAccountService_accountUsersChanged_forAccountIdentifier___block_inv
   }
 }
 
-- (void)physicalCardsChanged:(id)a3 forAccountIdentifier:(id)a4
+- (void)physicalCardsChanged:(id)changed forAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__PKAccountService_physicalCardsChanged_forAccountIdentifier___block_invoke;
   v10[3] = &unk_1E79E39C8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = changedCopy;
+  v12 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = changedCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v10];
 }
 
@@ -8440,18 +8440,18 @@ void __62__PKAccountService_physicalCardsChanged_forAccountIdentifier___block_in
   }
 }
 
-- (void)didUpdateAccountPromotions:(id)a3 accountIdentifier:(id)a4
+- (void)didUpdateAccountPromotions:(id)promotions accountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  promotionsCopy = promotions;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__PKAccountService_didUpdateAccountPromotions_accountIdentifier___block_invoke;
   v10[3] = &unk_1E79E39C8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = promotionsCopy;
+  v12 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = promotionsCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v10];
 }
 
@@ -8464,21 +8464,21 @@ void __65__PKAccountService_didUpdateAccountPromotions_accountIdentifier___block
   }
 }
 
-- (void)didUpdateAccountEnhancedMerchants:(id)a3 accountIdentifier:(id)a4 lastUpdate:(id)a5
+- (void)didUpdateAccountEnhancedMerchants:(id)merchants accountIdentifier:(id)identifier lastUpdate:(id)update
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  merchantsCopy = merchants;
+  identifierCopy = identifier;
+  updateCopy = update;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __83__PKAccountService_didUpdateAccountEnhancedMerchants_accountIdentifier_lastUpdate___block_invoke;
   v14[3] = &unk_1E79E39F0;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = merchantsCopy;
+  v16 = identifierCopy;
+  v17 = updateCopy;
+  v11 = updateCopy;
+  v12 = identifierCopy;
+  v13 = merchantsCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v14];
 }
 
@@ -8491,15 +8491,15 @@ void __83__PKAccountService_didUpdateAccountEnhancedMerchants_accountIdentifier_
   }
 }
 
-- (void)creditRecoveryPaymentPlansChangedForAccountIdentifier:(id)a3
+- (void)creditRecoveryPaymentPlansChangedForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __74__PKAccountService_creditRecoveryPaymentPlansChangedForAccountIdentifier___block_invoke;
   v6[3] = &unk_1E79E39A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v6];
 }
 
@@ -8512,18 +8512,18 @@ void __74__PKAccountService_creditRecoveryPaymentPlansChangedForAccountIdentifie
   }
 }
 
-- (void)didUpdateAppleBalancePromotion:(id)a3 forAccountIdentifier:(id)a4
+- (void)didUpdateAppleBalancePromotion:(id)promotion forAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  promotionCopy = promotion;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__PKAccountService_didUpdateAppleBalancePromotion_forAccountIdentifier___block_invoke;
   v10[3] = &unk_1E79E39C8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = promotionCopy;
+  v12 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = promotionCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v10];
 }
 
@@ -8536,18 +8536,18 @@ void __72__PKAccountService_didUpdateAppleBalancePromotion_forAccountIdentifier_
   }
 }
 
-- (void)didRemoveAppleBalancePromotionWithUniqueIdentifier:(id)a3 forAccountIdentifier:(id)a4
+- (void)didRemoveAppleBalancePromotionWithUniqueIdentifier:(id)identifier forAccountIdentifier:(id)accountIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  accountIdentifierCopy = accountIdentifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__PKAccountService_didRemoveAppleBalancePromotionWithUniqueIdentifier_forAccountIdentifier___block_invoke;
   v10[3] = &unk_1E79E39C8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = accountIdentifierCopy;
+  v8 = accountIdentifierCopy;
+  v9 = identifierCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v10];
 }
 
@@ -8560,18 +8560,18 @@ void __92__PKAccountService_didRemoveAppleBalancePromotionWithUniqueIdentifier_f
   }
 }
 
-- (void)didUpdateInStoreTopUpToken:(id)a3 forAccountIdentifier:(id)a4
+- (void)didUpdateInStoreTopUpToken:(id)token forAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__PKAccountService_didUpdateInStoreTopUpToken_forAccountIdentifier___block_invoke;
   v10[3] = &unk_1E79E39C8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = tokenCopy;
+  v12 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = tokenCopy;
   [(PKAccountService *)self _accessObserversWithHandler:v10];
 }
 

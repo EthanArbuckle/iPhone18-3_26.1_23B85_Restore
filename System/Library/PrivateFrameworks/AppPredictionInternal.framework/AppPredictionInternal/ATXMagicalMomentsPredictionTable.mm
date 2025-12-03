@@ -1,31 +1,31 @@
 @interface ATXMagicalMomentsPredictionTable
-- (ATXMagicalMomentsPredictionTable)initWithCoder:(id)a3;
-- (ATXMagicalMomentsPredictionTable)initWithPredictionTableEntries:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)deduplicatePredictions:(id)a3;
+- (ATXMagicalMomentsPredictionTable)initWithCoder:(id)coder;
+- (ATXMagicalMomentsPredictionTable)initWithPredictionTableEntries:(id)entries;
+- (BOOL)isEqual:(id)equal;
+- (id)deduplicatePredictions:(id)predictions;
 - (id)describeTable;
 - (id)predictionTableEntries;
-- (id)predictionsForTriggerEvent:(id)a3;
-- (id)removeRestrictedPredictions:(id)a3;
-- (id)validPredictionsFromTableEntries:(id)a3 event:(id)a4;
-- (void)addPrediction:(id)a3 withApplicablePredicates:(id)a4;
-- (void)addPredictions:(id)a3 withApplicablePredicates:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)predictionsForTriggerEvent:(id)event;
+- (id)removeRestrictedPredictions:(id)predictions;
+- (id)validPredictionsFromTableEntries:(id)entries event:(id)event;
+- (void)addPrediction:(id)prediction withApplicablePredicates:(id)predicates;
+- (void)addPredictions:(id)predictions withApplicablePredicates:(id)predicates;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXMagicalMomentsPredictionTable
 
-- (ATXMagicalMomentsPredictionTable)initWithPredictionTableEntries:(id)a3
+- (ATXMagicalMomentsPredictionTable)initWithPredictionTableEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v9.receiver = self;
   v9.super_class = ATXMagicalMomentsPredictionTable;
   v5 = [(ATXMagicalMomentsPredictionTable *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (entriesCopy)
     {
-      v6 = [v4 mutableCopy];
+      v6 = [entriesCopy mutableCopy];
     }
 
     else
@@ -83,10 +83,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_5;
   }
@@ -98,7 +98,7 @@
     goto LABEL_7;
   }
 
-  predictionTableEntries = v4->_predictionTableEntries;
+  predictionTableEntries = equalCopy->_predictionTableEntries;
   if (predictionTableEntries == self->_predictionTableEntries)
   {
 LABEL_5:
@@ -115,16 +115,16 @@ LABEL_7:
   return v6;
 }
 
-- (void)addPredictions:(id)a3 withApplicablePredicates:(id)a4
+- (void)addPredictions:(id)predictions withApplicablePredicates:(id)predicates
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  predictionsCopy = predictions;
+  predicatesCopy = predicates;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [predictionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -136,14 +136,14 @@ LABEL_7:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(predictionsCopy);
         }
 
-        [(ATXMagicalMomentsPredictionTable *)self addPrediction:*(*(&v13 + 1) + 8 * v11++) withApplicablePredicates:v7];
+        [(ATXMagicalMomentsPredictionTable *)self addPrediction:*(*(&v13 + 1) + 8 * v11++) withApplicablePredicates:predicatesCopy];
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [predictionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -152,16 +152,16 @@ LABEL_7:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPrediction:(id)a3 withApplicablePredicates:(id)a4
+- (void)addPrediction:(id)prediction withApplicablePredicates:(id)predicates
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  predictionCopy = prediction;
+  predicatesCopy = predicates;
+  v8 = predicatesCopy;
+  if (predictionCopy)
   {
-    if (v7 && [v7 count])
+    if (predicatesCopy && [predicatesCopy count])
     {
-      v9 = [[ATXMagicalMomentsPredictionTableEntry alloc] initWithPrediction:v6 applicablePredicates:v8];
+      v9 = [[ATXMagicalMomentsPredictionTableEntry alloc] initWithPrediction:predictionCopy applicablePredicates:v8];
       if (v9)
       {
         [(NSMutableArray *)self->_predictionTableEntries addObject:v9];
@@ -210,17 +210,17 @@ LABEL_7:
   return v3;
 }
 
-- (id)validPredictionsFromTableEntries:(id)a3 event:(id)a4
+- (id)validPredictionsFromTableEntries:(id)entries event:(id)event
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  eventCopy = event;
   v7 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = entriesCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -237,16 +237,16 @@ LABEL_7:
 
         v13 = *(*(&v20 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 compoundPredicate];
-        [v15 allowEvaluation];
-        if ([v15 evaluateWithObject:v6])
+        compoundPredicate = [v13 compoundPredicate];
+        [compoundPredicate allowEvaluation];
+        if ([compoundPredicate evaluateWithObject:eventCopy])
         {
-          v16 = [v13 prediction];
+          prediction = [v13 prediction];
 
-          if (v16)
+          if (prediction)
           {
-            v17 = [v13 prediction];
-            [v7 addObject:v17];
+            prediction2 = [v13 prediction];
+            [v7 addObject:prediction2];
           }
         }
 
@@ -264,17 +264,17 @@ LABEL_7:
   return v7;
 }
 
-- (id)deduplicatePredictions:(id)a3
+- (id)deduplicatePredictions:(id)predictions
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  predictionsCopy = predictions;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v3;
+  v6 = predictionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v7)
   {
@@ -291,14 +291,14 @@ LABEL_7:
 
         v11 = *(*(&v19 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 predictionIdentifier];
-        v14 = [v5 containsObject:v13];
+        predictionIdentifier = [v11 predictionIdentifier];
+        v14 = [v5 containsObject:predictionIdentifier];
 
         if ((v14 & 1) == 0)
         {
           [v4 addObject:v11];
-          v15 = [v11 predictionIdentifier];
-          [v5 addObject:v15];
+          predictionIdentifier2 = [v11 predictionIdentifier];
+          [v5 addObject:predictionIdentifier2];
 
           v16 = __atxlog_handle_default();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -323,16 +323,16 @@ LABEL_7:
   return v4;
 }
 
-- (id)removeRestrictedPredictions:(id)a3
+- (id)removeRestrictedPredictions:(id)predictions
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  predictionsCopy = predictions;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = predictionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
@@ -349,10 +349,10 @@ LABEL_7:
 
         v10 = *(*(&v18 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 predictionIdentifier];
-        if ([MEMORY[0x277CEB3B8] isInstalledAndNotRestrictedForBundle:v12])
+        predictionIdentifier = [v10 predictionIdentifier];
+        if ([MEMORY[0x277CEB3B8] isInstalledAndNotRestrictedForBundle:predictionIdentifier])
         {
-          if ([MEMORY[0x277CEB3B8] isDeviceManagementPolicyOkForBundleId:v12])
+          if ([MEMORY[0x277CEB3B8] isDeviceManagementPolicyOkForBundleId:predictionIdentifier])
           {
             [v4 addObject:v10];
             goto LABEL_15;
@@ -362,7 +362,7 @@ LABEL_7:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v23 = v12;
+            v23 = predictionIdentifier;
             v14 = v13;
             v15 = "ATXMM: Skipping screen time restricted app %@.";
             goto LABEL_13;
@@ -375,7 +375,7 @@ LABEL_7:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v23 = v12;
+            v23 = predictionIdentifier;
             v14 = v13;
             v15 = "ATXMM: Skipping restricted app %@.";
 LABEL_13:
@@ -398,12 +398,12 @@ LABEL_15:
   return v4;
 }
 
-- (id)predictionsForTriggerEvent:(id)a3
+- (id)predictionsForTriggerEvent:(id)event
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(ATXMagicalMomentsPredictionTable *)self validPredictionsFromTableEntries:self->_predictionTableEntries event:v4];
+  v6 = [(ATXMagicalMomentsPredictionTable *)self validPredictionsFromTableEntries:self->_predictionTableEntries event:eventCopy];
   v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:0];
   v15[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
@@ -419,30 +419,30 @@ LABEL_15:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAC98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 sortDescriptorWithKey:@"prediction.confidence" ascending:0];
   predictionTableEntries = self->_predictionTableEntries;
   v10[0] = v6;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   [(NSMutableArray *)predictionTableEntries sortUsingDescriptors:v8];
 
-  [v5 encodeObject:self->_predictionTableEntries forKey:@"predictionTableEntries"];
+  [coderCopy encodeObject:self->_predictionTableEntries forKey:@"predictionTableEntries"];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (ATXMagicalMomentsPredictionTable)initWithCoder:(id)a3
+- (ATXMagicalMomentsPredictionTable)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x277CBEB98]);
   v7 = objc_opt_class();
   v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"predictionTableEntries"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"predictionTableEntries"];
   v10 = [(ATXMagicalMomentsPredictionTable *)self initWithPredictionTableEntries:v9];
 
   return v10;

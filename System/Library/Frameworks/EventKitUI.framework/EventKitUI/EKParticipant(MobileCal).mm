@@ -6,13 +6,13 @@
 
 - (id)commentLabelString
 {
-  v2 = [a1 inviterNameString];
-  if ([v2 length])
+  inviterNameString = [self inviterNameString];
+  if ([inviterNameString length])
   {
     v3 = MEMORY[0x1E696AEC0];
     v4 = EventKitUIBundle();
     v5 = [v4 localizedStringForKey:@"Invited by %@" value:&stru_1F4EF6790 table:0];
-    v6 = [v3 localizedStringWithFormat:v5, v2];
+    v6 = [v3 localizedStringWithFormat:v5, inviterNameString];
   }
 
   else
@@ -21,8 +21,8 @@
   }
 
   v7 = MEMORY[0x1E6993410];
-  v8 = [a1 comment];
-  v9 = [v7 stringWithAutoCommentRemoved:v8];
+  comment = [self comment];
+  v9 = [v7 stringWithAutoCommentRemoved:comment];
 
   if (v9 && [v9 length])
   {

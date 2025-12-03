@@ -1,9 +1,9 @@
 @interface NotificationViewController
-- (_TtC26FindMyNotificationsContent26NotificationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (void)didReceiveNotification:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC26FindMyNotificationsContent26NotificationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (void)didReceiveNotification:(id)notification;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -11,26 +11,26 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100001B44();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100001D84(a3);
+  selfCopy = self;
+  sub_100001D84(disappear);
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_100001E8C(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_100001E8C(notificationCopy);
 }
 
-- (_TtC26FindMyNotificationsContent26NotificationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26FindMyNotificationsContent26NotificationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -42,28 +42,28 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100004540(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100004540(v5, v7, bundle);
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_100006204(v6, a4);
+  selfCopy = self;
+  v8 = sub_100006204(viewCopy, annotation);
 
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_100006328(a4);
+  selfCopy = self;
+  v8 = sub_100006328(overlay);
 
   swift_unknownObjectRelease();
 

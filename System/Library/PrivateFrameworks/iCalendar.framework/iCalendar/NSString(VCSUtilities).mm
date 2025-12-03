@@ -18,11 +18,11 @@
     v2 = VCS_uncommentedAddress_uncommentedAddresses;
   }
 
-  v5 = [v2 objectForKey:a1];
+  v5 = [v2 objectForKey:self];
   objc_sync_exit(@"AddressParsing");
   if (!v5)
   {
-    v6 = [a1 length];
+    v6 = [self length];
     v7 = NSZoneMalloc(0, 2 * v6 + 2);
     v8 = v7;
     v9 = MEMORY[0x277D85DE0];
@@ -37,7 +37,7 @@
       v10 = v7;
       do
       {
-        v14 = [a1 characterAtIndex:v11];
+        v14 = [self characterAtIndex:v11];
         v15 = v14;
         if (v14 == 92)
         {
@@ -64,7 +64,7 @@ LABEL_13:
           }
 
           *v10 = 92;
-          *(v10 + 1) = [a1 characterAtIndex:v11 + 1];
+          *(v10 + 1) = [self characterAtIndex:v11 + 1];
           v10 += 4;
           ++v11;
         }
@@ -163,7 +163,7 @@ LABEL_27:
     v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharacters:v8 length:v18 >> 1];
     NSZoneFree(0, v8);
     objc_sync_enter(@"AddressParsing");
-    [VCS_uncommentedAddress_uncommentedAddresses setObject:v5 forKey:a1];
+    [VCS_uncommentedAddress_uncommentedAddresses setObject:v5 forKey:self];
     objc_sync_exit(@"AddressParsing");
   }
 
@@ -180,10 +180,10 @@ LABEL_27:
     [NSString(VCSUtilities) VCS_isPhoneNumber];
   }
 
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2)
   {
-    [VCS_isPhoneNumber_phoneNumberDetector matchesInString:a1 options:0 range:{0, v2}];
+    [VCS_isPhoneNumber_phoneNumberDetector matchesInString:self options:0 range:{0, v2}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -206,8 +206,8 @@ LABEL_27:
           if ([v8 resultType] == 32)
           {
             v9 = [v8 URL];
-            v10 = [v9 scheme];
-            v11 = [v10 isEqualToString:@"tel"];
+            scheme = [v9 scheme];
+            v11 = [scheme isEqualToString:@"tel"];
 
             if (v11)
             {

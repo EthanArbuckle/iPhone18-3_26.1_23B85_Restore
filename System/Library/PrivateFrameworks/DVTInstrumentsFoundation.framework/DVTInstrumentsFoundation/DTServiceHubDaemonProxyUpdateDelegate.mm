@@ -1,24 +1,24 @@
 @interface DTServiceHubDaemonProxyUpdateDelegate
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4;
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info;
 @end
 
 @implementation DTServiceHubDaemonProxyUpdateDelegate
 
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
+  infoCopy = info;
+  v7 = infoCopy;
   if (self->_channel)
   {
-    if (a3 == 8)
+    if (type == 8)
     {
       v8 = @"Achievements";
     }
 
     else
     {
-      if (a3 != 9)
+      if (type != 9)
       {
         goto LABEL_11;
       }
@@ -26,7 +26,7 @@
       v8 = @"Leaderboards";
     }
 
-    v9 = [v6 objectForKeyedSubscript:@"ids"];
+    v9 = [infoCopy objectForKeyedSubscript:@"ids"];
 
     if (v9)
     {

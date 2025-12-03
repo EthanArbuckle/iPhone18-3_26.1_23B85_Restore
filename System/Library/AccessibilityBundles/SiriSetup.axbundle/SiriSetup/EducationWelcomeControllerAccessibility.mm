@@ -1,24 +1,24 @@
 @interface EducationWelcomeControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityHideVideoPlayer;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation EducationWelcomeControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SiriSetup.EducationWelcomeController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SiriSetup.EducationWelcomeController" isKindOfClass:@"OBWelcomeController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SiriSetup.EducationWelcomeController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SiriSetup.EducationWelcomeController" isKindOfClass:@"OBWelcomeController"];
 }
 
 - (void)_accessibilityHideVideoPlayer
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 contentView];
-  [v3 setAccessibilityElementsHidden:1];
+  contentView = [v2 contentView];
+  [contentView setAccessibilityElementsHidden:1];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

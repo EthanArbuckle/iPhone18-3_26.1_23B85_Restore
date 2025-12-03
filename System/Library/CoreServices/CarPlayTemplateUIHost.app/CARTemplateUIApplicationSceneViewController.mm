@@ -1,27 +1,27 @@
 @interface CARTemplateUIApplicationSceneViewController
-- (CARTemplateUIApplicationSceneViewController)initWithWindowScene:(id)a3 templateInstance:(id)a4 options:(id)a5;
+- (CARTemplateUIApplicationSceneViewController)initWithWindowScene:(id)scene templateInstance:(id)instance options:(id)options;
 - (UIWindowScene)windowScene;
 - (id)_frameRateLimit;
 - (id)_sceneSettings;
 - (int64_t)_mapStyle;
-- (void)_handleActivityContinuationAction:(id)a3;
+- (void)_handleActivityContinuationAction:(id)action;
 - (void)_installScenePresentationViewIfNeeded;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 - (void)_removeScenePresentationView;
 - (void)_updateUserInterfaceStyle;
 - (void)dealloc;
-- (void)forwardActivityContinuationAction:(id)a3 fromScene:(id)a4;
+- (void)forwardActivityContinuationAction:(id)action fromScene:(id)scene;
 - (void)invalidate;
-- (void)mapTemplateWillHide:(id)a3;
-- (void)mapTemplateWillShow:(id)a3;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)setOverlayViewController:(id)a3;
-- (void)setScene:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)mapTemplateWillHide:(id)hide;
+- (void)mapTemplateWillShow:(id)show;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)setOverlayViewController:(id)controller;
+- (void)setScene:(id)scene;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -29,28 +29,28 @@
 
 - (void)_updateUserInterfaceStyle
 {
-  v3 = [(CARTemplateUIApplicationSceneViewController *)self scene];
+  scene = [(CARTemplateUIApplicationSceneViewController *)self scene];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100001414;
   v4[3] = &unk_10001C460;
   v4[4] = self;
-  [v3 updateUISettingsWithBlock:v4];
+  [scene updateUISettingsWithBlock:v4];
 }
 
-- (CARTemplateUIApplicationSceneViewController)initWithWindowScene:(id)a3 templateInstance:(id)a4 options:(id)a5
+- (CARTemplateUIApplicationSceneViewController)initWithWindowScene:(id)scene templateInstance:(id)instance options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  instanceCopy = instance;
+  optionsCopy = options;
   v46.receiver = self;
   v46.super_class = CARTemplateUIApplicationSceneViewController;
   v11 = [(CARTemplateUIApplicationSceneViewController *)&v46 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_windowScene, v8);
-    objc_storeStrong(&v12->_templateInstance, a4);
+    objc_storeWeak(&v11->_windowScene, sceneCopy);
+    objc_storeStrong(&v12->_templateInstance, instance);
     [(CPSTemplateInstance *)v12->_templateInstance setDelegate:v12];
     v13 = objc_alloc_init(FBSSceneSettingsDiffInspector);
     settingsDiffInspector = v12->_settingsDiffInspector;
@@ -66,7 +66,7 @@
     [(FBSSceneSettingsDiffInspector *)v15 observeFrameWithBlock:v43];
     v47 = v12;
     v16 = [NSArray arrayWithObjects:&v47 count:1];
-    [v8 _registerSettingsDiffActionArray:v16 forKey:@"settingsObserver"];
+    [sceneCopy _registerSettingsDiffActionArray:v16 forKey:@"settingsObserver"];
 
     v17 = objc_alloc_init(CRSUIApplicationSceneSettingsDiffInspector);
     appSettingsDiffInspector = v12->_appSettingsDiffInspector;
@@ -87,11 +87,11 @@
     objc_copyWeak(&v40, &location);
     [(CRSUIApplicationSceneSettingsDiffInspector *)v20 observeFrameRateLimitWithBlock:v39];
     objc_opt_class();
-    v21 = [v8 _FBSScene];
-    v22 = [v21 settings];
-    if (v22 && (objc_opt_isKindOfClass() & 1) != 0)
+    _FBSScene = [sceneCopy _FBSScene];
+    settings = [_FBSScene settings];
+    if (settings && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v23 = v22;
+      v23 = settings;
     }
 
     else
@@ -99,27 +99,27 @@
       v23 = 0;
     }
 
-    v24 = [v23 proxiedApplicationBundleIdentifier];
+    proxiedApplicationBundleIdentifier = [v23 proxiedApplicationBundleIdentifier];
     applicationIdentifier = v12->_applicationIdentifier;
-    v12->_applicationIdentifier = v24;
+    v12->_applicationIdentifier = proxiedApplicationBundleIdentifier;
 
-    v26 = [v8 _FBSScene];
-    v27 = [v26 settings];
-    v28 = [v27 displayConfiguration];
+    _FBSScene2 = [sceneCopy _FBSScene];
+    settings2 = [_FBSScene2 settings];
+    displayConfiguration = [settings2 displayConfiguration];
     displayConfiguration = v12->_displayConfiguration;
-    v12->_displayConfiguration = v28;
+    v12->_displayConfiguration = displayConfiguration;
 
-    v30 = [v10 URLContexts];
-    LOBYTE(v27) = [v30 count] == 0;
+    uRLContexts = [optionsCopy URLContexts];
+    LOBYTE(settings2) = [uRLContexts count] == 0;
 
-    if ((v27 & 1) == 0)
+    if ((settings2 & 1) == 0)
     {
-      v31 = [v10 URLContexts];
+      uRLContexts2 = [optionsCopy URLContexts];
       pendingOpenURLContexts = v12->_pendingOpenURLContexts;
-      v12->_pendingOpenURLContexts = v31;
+      v12->_pendingOpenURLContexts = uRLContexts2;
     }
 
-    [v8 setDelegate:v12];
+    [sceneCopy setDelegate:v12];
     v33 = [BSDescriptionBuilder descriptionForObject:v12];
     v34 = [NSString stringWithFormat:@"%@-%u", v33, ++dword_1000254F0];
     requester = v12->_requester;
@@ -145,19 +145,19 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(CARTemplateUIApplicationSceneViewController *)self scenePresenter];
-  [v4 invalidate];
+  scenePresenter = [(CARTemplateUIApplicationSceneViewController *)self scenePresenter];
+  [scenePresenter invalidate];
 
   v5.receiver = self;
   v5.super_class = CARTemplateUIApplicationSceneViewController;
   [(CARTemplateUIApplicationSceneViewController *)&v5 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CARTemplateUIApplicationSceneViewController;
-  [(CARTemplateUIApplicationSceneViewController *)&v4 traitCollectionDidChange:a3];
+  [(CARTemplateUIApplicationSceneViewController *)&v4 traitCollectionDidChange:change];
   [(CARTemplateUIApplicationSceneViewController *)self _updateUserInterfaceStyle];
 }
 
@@ -166,60 +166,60 @@
   v5.receiver = self;
   v5.super_class = CARTemplateUIApplicationSceneViewController;
   [(CARTemplateUIApplicationSceneViewController *)&v5 viewDidLoad];
-  v3 = [(CARTemplateUIApplicationSceneViewController *)self templateInstance];
-  v4 = [v3 overlayViewController];
-  [(CARTemplateUIApplicationSceneViewController *)self setOverlayViewController:v4];
+  templateInstance = [(CARTemplateUIApplicationSceneViewController *)self templateInstance];
+  overlayViewController = [templateInstance overlayViewController];
+  [(CARTemplateUIApplicationSceneViewController *)self setOverlayViewController:overlayViewController];
 }
 
-- (void)setOverlayViewController:(id)a3
+- (void)setOverlayViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   overlayViewController = self->_overlayViewController;
-  v21 = v5;
+  v21 = controllerCopy;
   if (overlayViewController)
   {
     [(UIViewController *)overlayViewController willMoveToParentViewController:0];
-    v7 = [(UIViewController *)self->_overlayViewController view];
-    [v7 removeFromSuperview];
+    view = [(UIViewController *)self->_overlayViewController view];
+    [view removeFromSuperview];
 
     [(UIViewController *)self->_overlayViewController removeFromParentViewController];
     v8 = self->_overlayViewController;
     self->_overlayViewController = 0;
 
-    v5 = v21;
+    controllerCopy = v21;
   }
 
-  if (v5)
+  if (controllerCopy)
   {
     [(CARTemplateUIApplicationSceneViewController *)self addChildViewController:v21];
-    v9 = [(CARTemplateUIApplicationSceneViewController *)self view];
-    v10 = [v21 view];
-    [v9 addSubview:v10];
+    view2 = [(CARTemplateUIApplicationSceneViewController *)self view];
+    view3 = [v21 view];
+    [view2 addSubview:view3];
 
-    v11 = [(CARTemplateUIApplicationSceneViewController *)self view];
-    [v11 bounds];
+    view4 = [(CARTemplateUIApplicationSceneViewController *)self view];
+    [view4 bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [v21 view];
-    [v20 setFrame:{v13, v15, v17, v19}];
+    view5 = [v21 view];
+    [view5 setFrame:{v13, v15, v17, v19}];
 
     [v21 didMoveToParentViewController:self];
-    objc_storeStrong(&self->_overlayViewController, a3);
+    objc_storeStrong(&self->_overlayViewController, controller);
   }
 
   _objc_release_x1();
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   v6 = sub_100001280(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v5;
+    v14 = sceneCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "setScene: %@", buf, 0xCu);
   }
 
@@ -227,23 +227,23 @@
   scene = self->_scene;
   self->_scene = 0;
 
-  if (v5)
+  if (sceneCopy)
   {
-    objc_storeStrong(&self->_scene, a3);
-    v8 = [(CARTemplateUIApplicationSceneViewController *)self templateInstance];
-    [v8 setScene:v5];
+    objc_storeStrong(&self->_scene, scene);
+    templateInstance = [(CARTemplateUIApplicationSceneViewController *)self templateInstance];
+    [templateInstance setScene:sceneCopy];
 
-    v9 = [(CARTemplateUIApplicationSceneViewController *)self templateInstance];
-    v10 = [v9 clientApplicationSceneIsConnected];
+    templateInstance2 = [(CARTemplateUIApplicationSceneViewController *)self templateInstance];
+    clientApplicationSceneIsConnected = [templateInstance2 clientApplicationSceneIsConnected];
 
-    if (v10)
+    if (clientApplicationSceneIsConnected)
     {
       [(CARTemplateUIApplicationSceneViewController *)self _installScenePresentationViewIfNeeded];
     }
 
-    v11 = [(CARTemplateUIApplicationSceneViewController *)self pendingActivityContinuationAction];
+    pendingActivityContinuationAction = [(CARTemplateUIApplicationSceneViewController *)self pendingActivityContinuationAction];
 
-    if (v11)
+    if (pendingActivityContinuationAction)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -257,56 +257,56 @@
 
 - (void)_installScenePresentationViewIfNeeded
 {
-  v3 = [(CARTemplateUIApplicationSceneViewController *)self scene];
-  if (v3)
+  scene = [(CARTemplateUIApplicationSceneViewController *)self scene];
+  if (scene)
   {
-    v4 = [(CARTemplateUIApplicationSceneViewController *)self templateInstance];
-    v5 = [v4 requiresApplicationScenePresenter];
+    templateInstance = [(CARTemplateUIApplicationSceneViewController *)self templateInstance];
+    requiresApplicationScenePresenter = [templateInstance requiresApplicationScenePresenter];
 
-    if ((v5 & 1) == 0)
+    if ((requiresApplicationScenePresenter & 1) == 0)
     {
       v10 = sub_100001280(7uLL);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v3;
+        v17 = scene;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Not installing presentation view for scene %@", &v16, 0xCu);
       }
 
       goto LABEL_9;
     }
 
-    v6 = [(CARTemplateUIApplicationSceneViewController *)self sceneHostView];
+    sceneHostView = [(CARTemplateUIApplicationSceneViewController *)self sceneHostView];
 
-    if (!v6)
+    if (!sceneHostView)
     {
       v7 = sub_100001280(7uLL);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v3;
+        v17 = scene;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Installing presentation view for scene %@", &v16, 0xCu);
       }
 
-      v8 = [v3 uiPresentationManager];
-      v9 = [(CARTemplateUIApplicationSceneViewController *)self requester];
-      v10 = [v8 createPresenterWithIdentifier:v9 priority:1];
+      uiPresentationManager = [scene uiPresentationManager];
+      requester = [(CARTemplateUIApplicationSceneViewController *)self requester];
+      v10 = [uiPresentationManager createPresenterWithIdentifier:requester priority:1];
 
       [v10 modifyPresentationContext:&stru_10001C648];
       [v10 activate];
       [(CARTemplateUIApplicationSceneViewController *)self setScenePresenter:v10];
-      v11 = [v10 presentationView];
-      v12 = [(CARTemplateUIApplicationSceneViewController *)self view];
-      [v12 insertSubview:v11 atIndex:0];
+      presentationView = [v10 presentationView];
+      view = [(CARTemplateUIApplicationSceneViewController *)self view];
+      [view insertSubview:presentationView atIndex:0];
 
       y = CGPointZero.y;
-      v14 = [v3 settings];
-      [v14 frame];
-      [v11 setFrame:{CGPointZero.x, y}];
+      settings = [scene settings];
+      [settings frame];
+      [presentationView setFrame:{CGPointZero.x, y}];
 
-      [(CARTemplateUIApplicationSceneViewController *)self setSceneHostView:v11];
-      v15 = [(CARTemplateUIApplicationSceneViewController *)self view];
-      [v15 setNeedsLayout];
+      [(CARTemplateUIApplicationSceneViewController *)self setSceneHostView:presentationView];
+      view2 = [(CARTemplateUIApplicationSceneViewController *)self view];
+      [view2 setNeedsLayout];
 
 LABEL_9:
     }
@@ -315,115 +315,115 @@ LABEL_9:
 
 - (void)_removeScenePresentationView
 {
-  v3 = [(CARTemplateUIApplicationSceneViewController *)self scenePresenter];
-  [v3 invalidate];
+  scenePresenter = [(CARTemplateUIApplicationSceneViewController *)self scenePresenter];
+  [scenePresenter invalidate];
 
   [(CARTemplateUIApplicationSceneViewController *)self setScenePresenter:0];
-  v4 = [(CARTemplateUIApplicationSceneViewController *)self sceneHostView];
-  [v4 removeFromSuperview];
+  sceneHostView = [(CARTemplateUIApplicationSceneViewController *)self sceneHostView];
+  [sceneHostView removeFromSuperview];
 
   [(CARTemplateUIApplicationSceneViewController *)self setSceneHostView:0];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v3 = a3;
+  disconnectCopy = disconnect;
   v4 = sub_100001280(7uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "sceneDidDisconnect: %@", &v5, 0xCu);
   }
 
-  [v3 setDelegate:0];
+  [disconnectCopy setDelegate:0];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v3 = a3;
+  activeCopy = active;
   v4 = sub_100001280(7uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = activeCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "sceneDidBecomeActive: %@", &v5, 0xCu);
   }
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v3 = a3;
+  activeCopy = active;
   v4 = sub_100001280(7uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = activeCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "sceneWillResignActive: %@", &v5, 0xCu);
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = sub_100001280(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = foregroundCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "sceneWillEnterForeground: %@", &v7, 0xCu);
   }
 
-  v6 = [(CARTemplateUIApplicationSceneViewController *)self pendingOpenURLContexts];
+  pendingOpenURLContexts = [(CARTemplateUIApplicationSceneViewController *)self pendingOpenURLContexts];
   [(CARTemplateUIApplicationSceneViewController *)self setPendingOpenURLContexts:0];
-  [(CARTemplateUIApplicationSceneViewController *)self sendSceneUpdate:1 openURLContexts:v6];
+  [(CARTemplateUIApplicationSceneViewController *)self sendSceneUpdate:1 openURLContexts:pendingOpenURLContexts];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   v5 = sub_100001280(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = backgroundCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "sceneDidEnterBackground: %@", &v6, 0xCu);
   }
 
   [(CARTemplateUIApplicationSceneViewController *)self sendSceneUpdate:0 openURLContexts:0];
 }
 
-- (void)forwardActivityContinuationAction:(id)a3 fromScene:(id)a4
+- (void)forwardActivityContinuationAction:(id)action fromScene:(id)scene
 {
-  v6 = a3;
-  v5 = [(CARTemplateUIApplicationSceneViewController *)self scene];
+  actionCopy = action;
+  scene = [(CARTemplateUIApplicationSceneViewController *)self scene];
 
-  if (v5)
+  if (scene)
   {
-    [(CARTemplateUIApplicationSceneViewController *)self _handleActivityContinuationAction:v6];
+    [(CARTemplateUIApplicationSceneViewController *)self _handleActivityContinuationAction:actionCopy];
   }
 
   else
   {
-    [(CARTemplateUIApplicationSceneViewController *)self setPendingActivityContinuationAction:v6];
+    [(CARTemplateUIApplicationSceneViewController *)self setPendingActivityContinuationAction:actionCopy];
   }
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [(CARTemplateUIApplicationSceneViewController *)self settingsDiffInspector];
-  [v12 inspectDiff:v10 withContext:0];
+  diffCopy = diff;
+  sSceneCopy = sScene;
+  settingsDiffInspector = [(CARTemplateUIApplicationSceneViewController *)self settingsDiffInspector];
+  [settingsDiffInspector inspectDiff:diffCopy withContext:0];
 
-  v13 = [(CARTemplateUIApplicationSceneViewController *)self appSettingsDiffInspector];
-  [v13 inspectDiff:v10 withContext:v11];
+  appSettingsDiffInspector = [(CARTemplateUIApplicationSceneViewController *)self appSettingsDiffInspector];
+  [appSettingsDiffInspector inspectDiff:diffCopy withContext:sSceneCopy];
 }
 
-- (void)mapTemplateWillShow:(id)a3
+- (void)mapTemplateWillShow:(id)show
 {
-  v4 = [a3 object];
-  v5 = [v4 BOOLValue];
+  object = [show object];
+  bOOLValue = [object BOOLValue];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -432,7 +432,7 @@ LABEL_9:
   v8[4] = self;
   v6 = objc_retainBlock(v8);
   v7 = v6;
-  if (v5)
+  if (bOOLValue)
   {
     [UIView animateWithDuration:6 delay:v6 options:0 animations:UINavigationControllerHideShowBarDuration completion:0.0];
   }
@@ -443,10 +443,10 @@ LABEL_9:
   }
 }
 
-- (void)mapTemplateWillHide:(id)a3
+- (void)mapTemplateWillHide:(id)hide
 {
-  v4 = [a3 object];
-  v5 = [v4 BOOLValue];
+  object = [hide object];
+  bOOLValue = [object BOOLValue];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -455,7 +455,7 @@ LABEL_9:
   v8[4] = self;
   v6 = objc_retainBlock(v8);
   v7 = v6;
-  if (v5)
+  if (bOOLValue)
   {
     [UIView animateWithDuration:6 delay:v6 options:0 animations:UINavigationControllerHideShowBarDuration completion:0.0];
   }
@@ -466,74 +466,74 @@ LABEL_9:
   }
 }
 
-- (void)_handleActivityContinuationAction:(id)a3
+- (void)_handleActivityContinuationAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = sub_100001280(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CARTemplateUIApplicationSceneViewController *)self scene];
+    scene = [(CARTemplateUIApplicationSceneViewController *)self scene];
     *buf = 138543618;
-    v12 = v4;
+    v12 = actionCopy;
     v13 = 2114;
-    v14 = v6;
+    v14 = scene;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Forwarding activity continuation action %{public}@ to scene: %{public}@", buf, 0x16u);
   }
 
-  v7 = [(CARTemplateUIApplicationSceneViewController *)self scene];
+  scene2 = [(CARTemplateUIApplicationSceneViewController *)self scene];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000B59C;
   v9[3] = &unk_10001C698;
-  v10 = v4;
-  v8 = v4;
-  [v7 updateUISettingsWithTransitionBlock:v9];
+  v10 = actionCopy;
+  v8 = actionCopy;
+  [scene2 updateUISettingsWithTransitionBlock:v9];
 }
 
 - (void)invalidate
 {
   [(CARTemplateUIApplicationSceneViewController *)self setInvalidated:1];
-  v3 = [(CARTemplateUIApplicationSceneViewController *)self windowScene];
-  [v3 _unregisterSettingsDiffActionArrayForKey:@"settingsObserver"];
+  windowScene = [(CARTemplateUIApplicationSceneViewController *)self windowScene];
+  [windowScene _unregisterSettingsDiffActionArrayForKey:@"settingsObserver"];
 }
 
 - (id)_sceneSettings
 {
-  v3 = [(CARTemplateUIApplicationSceneViewController *)self windowScene];
-  v4 = [v3 _FBSScene];
-  v5 = [v4 settings];
+  windowScene = [(CARTemplateUIApplicationSceneViewController *)self windowScene];
+  _FBSScene = [windowScene _FBSScene];
+  settings = [_FBSScene settings];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(CARTemplateUIApplicationSceneViewController *)self windowScene];
-    v8 = [v7 _FBSScene];
-    v9 = [v8 settings];
+    windowScene2 = [(CARTemplateUIApplicationSceneViewController *)self windowScene];
+    _FBSScene2 = [windowScene2 _FBSScene];
+    settings2 = [_FBSScene2 settings];
   }
 
   else
   {
-    v9 = 0;
+    settings2 = 0;
   }
 
-  return v9;
+  return settings2;
 }
 
 - (int64_t)_mapStyle
 {
-  v2 = [(CARTemplateUIApplicationSceneViewController *)self _sceneSettings];
-  v3 = [v2 mapStyle];
+  _sceneSettings = [(CARTemplateUIApplicationSceneViewController *)self _sceneSettings];
+  mapStyle = [_sceneSettings mapStyle];
 
-  return v3;
+  return mapStyle;
 }
 
 - (id)_frameRateLimit
 {
-  v2 = [(CARTemplateUIApplicationSceneViewController *)self _sceneSettings];
-  v3 = [v2 frameRateLimit];
+  _sceneSettings = [(CARTemplateUIApplicationSceneViewController *)self _sceneSettings];
+  frameRateLimit = [_sceneSettings frameRateLimit];
 
-  return v3;
+  return frameRateLimit;
 }
 
 - (UIWindowScene)windowScene

@@ -1,24 +1,24 @@
 @interface NRGSync
-- (NRGSync)initWithDelegate:(id)a3;
+- (NRGSync)initWithDelegate:(id)delegate;
 - (NRGSyncDelegate)delegate;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
-- (void)performIconSync:(id)a3 completion:(id)a4;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncIcons:(id)a3;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
+- (void)performIconSync:(id)sync completion:(id)completion;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncIcons:(id)icons;
 @end
 
 @implementation NRGSync
 
-- (NRGSync)initWithDelegate:(id)a3
+- (NRGSync)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = NRGSync;
   v5 = [(NRGSync *)&v30 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_semaphore_create(0);
     startupSemaphore = v6->_startupSemaphore;
     v6->_startupSemaphore = v7;
@@ -77,15 +77,15 @@ LABEL_7:
   return v6;
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
-  v7 = a3;
+  deviceCopy = device;
   v8 = NRDevicePropertySystemBuildVersion;
-  if ([a4 isEqualToString:NRDevicePropertySystemBuildVersion])
+  if ([change isEqualToString:NRDevicePropertySystemBuildVersion])
   {
-    v9 = [v7 valueForProperty:v8];
-    v10 = [(NRGSync *)self gizmoBuild];
-    v11 = [v10 isEqualToString:v9];
+    v9 = [deviceCopy valueForProperty:v8];
+    gizmoBuild = [(NRGSync *)self gizmoBuild];
+    v11 = [gizmoBuild isEqualToString:v9];
 
     if (v11)
     {
@@ -97,9 +97,9 @@ LABEL_7:
       v12 = nrg_framework_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(NRGSync *)self gizmoBuild];
+        gizmoBuild2 = [(NRGSync *)self gizmoBuild];
         *buf = 138412546;
-        v17 = v13;
+        v17 = gizmoBuild2;
         v18 = 2112;
         v19 = v9;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "build has changed, old build is %@, new build is %@", buf, 0x16u);
@@ -131,9 +131,9 @@ LABEL_7:
   }
 }
 
-- (void)syncIcons:(id)a3
+- (void)syncIcons:(id)icons
 {
-  v4 = a3;
+  iconsCopy = icons;
   v5 = +[NSDate date];
   v27[0] = 0;
   v27[1] = v27;
@@ -151,55 +151,55 @@ LABEL_7:
   v22 = v6;
   v24 = v27;
   objc_copyWeak(&v25, &location);
-  v23 = self;
+  selfCopy = self;
   v7 = objc_retainBlock(v21);
-  v8 = [v4 syncSessionType];
-  if (!v8)
+  syncSessionType = [iconsCopy syncSessionType];
+  if (!syncSessionType)
   {
-    v17 = [(NRGSync *)self delegate];
-    [v17 pairedSyncInProgress];
+    delegate = [(NRGSync *)self delegate];
+    [delegate pairedSyncInProgress];
 
     v10 = nrg_daemon_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v18 = NRGGetActivePairedDevice();
-      v19 = [v18 pairingID];
+      pairingID = [v18 pairingID];
       *buf = 138412290;
-      v30 = v19;
+      v30 = pairingID;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "performing full sync, activeDevice = %@", buf, 0xCu);
     }
 
     goto LABEL_12;
   }
 
-  if (v8 == 1)
+  if (syncSessionType == 1)
   {
     v13 = nrg_daemon_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = NRGGetActivePairedDevice();
-      v15 = [v14 pairingID];
+      pairingID2 = [v14 pairingID];
       *buf = 138412290;
-      v30 = v15;
+      v30 = pairingID2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "performing reunion sync (aka quick watch switch), activeDevice = %@", buf, 0xCu);
     }
 
-    v16 = [(NRGSync *)self delegate];
-    [v16 deviceSwitched];
+    delegate2 = [(NRGSync *)self delegate];
+    [delegate2 deviceSwitched];
   }
 
-  else if (v8 == 2)
+  else if (syncSessionType == 2)
   {
-    v9 = [(NRGSync *)self delegate];
-    [v9 pairedSyncInProgress];
+    delegate3 = [(NRGSync *)self delegate];
+    [delegate3 pairedSyncInProgress];
 
     v10 = nrg_daemon_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = NRGGetActivePairedDevice();
-      v12 = [v11 pairingID];
+      pairingID3 = [v11 pairingID];
       *buf = 138412290;
-      v30 = v12;
+      v30 = pairingID3;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "performing migration sync, activeDevice = %@", buf, 0xCu);
     }
 
@@ -208,7 +208,7 @@ LABEL_12:
     v20 = NRGGetActivePairedDeviceStorePath();
     [NRGResourceCache invalidatePairedDevice:v20];
 
-    [(NRGSync *)self performIconSync:v4 completion:v7];
+    [(NRGSync *)self performIconSync:iconsCopy completion:v7];
   }
 
   objc_destroyWeak(&v25);
@@ -216,10 +216,10 @@ LABEL_12:
   _Block_object_dispose(v27, 8);
 }
 
-- (void)performIconSync:(id)a3 completion:(id)a4
+- (void)performIconSync:(id)sync completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  syncCopy = sync;
+  completionCopy = completion;
   v7 = [[NRGFullSyncRequestOperation alloc] initWithRequest:0];
   v8 = +[NRGCompanionDaemon sharedInstance];
   [(NRGFullSyncRequestOperation *)v7 setDaemon:v8];
@@ -228,7 +228,7 @@ LABEL_12:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v5;
+    v22 = syncCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "starting full sync %@", buf, 0xCu);
   }
 
@@ -240,7 +240,7 @@ LABEL_12:
   v19[1] = 3221225472;
   v19[2] = sub_100008610;
   v19[3] = &unk_100020830;
-  v11 = v5;
+  v11 = syncCopy;
   v20 = v11;
   [(NRGFullSyncRequestOperation *)v7 setRequestSentHandler:v19];
   v16[0] = _NSConcreteStackBlock;
@@ -249,7 +249,7 @@ LABEL_12:
   v16[3] = &unk_100020858;
   v12 = v11;
   v17 = v12;
-  v13 = v6;
+  v13 = completionCopy;
   v18 = v13;
   [(NRGFullSyncRequestOperation *)v7 setCompletionHandler:v16];
   v14 = +[NRGCompanionDaemon sharedInstance];
@@ -263,18 +263,18 @@ LABEL_12:
   }
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = nrg_daemon_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "received beginSyncSession: %@", &v7, 0xCu);
   }
 
-  [(NRGSync *)self syncIcons:v5];
+  [(NRGSync *)self syncIcons:sessionCopy];
 }
 
 - (NRGSyncDelegate)delegate

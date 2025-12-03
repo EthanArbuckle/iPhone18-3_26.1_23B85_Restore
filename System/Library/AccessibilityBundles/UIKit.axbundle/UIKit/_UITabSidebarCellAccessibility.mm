@@ -1,5 +1,5 @@
 @interface _UITabSidebarCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySidebarItem;
 - (id)accessibilityAttributedHint;
 - (id)accessibilityAttributedLabel;
@@ -16,14 +16,14 @@
 
 @implementation _UITabSidebarCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v5 = @"_UITabBarItemBridgedElement";
   v4 = @"_UITab";
   [location[0] validateClass:? isKindOfClass:?];
@@ -41,9 +41,9 @@
 
 - (id)_accessibilitySidebarItem
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 safeValueForKeyPath:@"_sidebarItem._tab"];
+    v2 = [self safeValueForKeyPath:@"_sidebarItem._tab"];
   }
 
   else
@@ -56,7 +56,7 @@
 
 - (id)accessibilityLabel
 {
-  v25 = self;
+  selfCopy = self;
   v24[1] = a2;
   v24[0] = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
   location = 0;
@@ -64,15 +64,15 @@
   if (objc_opt_isKindOfClass())
   {
     v14 = [v24[0] safeValueForKey:@"tabBarItem"];
-    v22 = [v14 accessibilityUserDefinedLabel];
-    if ([v22 length] || (v2 = objc_msgSend(v24[0], "accessibilityUserDefinedLabel"), v3 = v22, v22 = v2, objc_msgSend(v2, "length", MEMORY[0x29EDC9740](v3).n128_f64[0])))
+    accessibilityUserDefinedLabel = [v14 accessibilityUserDefinedLabel];
+    if ([accessibilityUserDefinedLabel length] || (v2 = objc_msgSend(v24[0], "accessibilityUserDefinedLabel"), v3 = accessibilityUserDefinedLabel, accessibilityUserDefinedLabel = v2, objc_msgSend(v2, "length", MEMORY[0x29EDC9740](v3).n128_f64[0])))
     {
-      objc_storeStrong(&location, v22);
+      objc_storeStrong(&location, accessibilityUserDefinedLabel);
     }
 
     else
     {
-      v21 = [(_UITabSidebarCellAccessibility *)v25 safeValueForKey:@"_sidebarItem"];
+      v21 = [(_UITabSidebarCellAccessibility *)selfCopy safeValueForKey:@"_sidebarItem"];
       v20 = [v21 safeValueForKey:@"_contentConfiguration"];
       v18 = 0;
       LOBYTE(v13) = 0;
@@ -90,9 +90,9 @@
 
       if (v13)
       {
-        v4 = [v20 accessibilityLabel];
+        accessibilityLabel = [v20 accessibilityLabel];
         v5 = location;
-        location = v4;
+        location = accessibilityLabel;
         MEMORY[0x29EDC9740](v5);
       }
 
@@ -100,23 +100,23 @@
       objc_storeStrong(&v21, 0);
     }
 
-    objc_storeStrong(&v22, 0);
+    objc_storeStrong(&accessibilityUserDefinedLabel, 0);
   }
 
   if (![location length])
   {
-    v6 = [v24[0] accessibilityLabel];
+    accessibilityLabel2 = [v24[0] accessibilityLabel];
     v7 = location;
-    location = v6;
+    location = accessibilityLabel2;
     MEMORY[0x29EDC9740](v7);
   }
 
   if (![location length])
   {
-    v12 = [(_UITabSidebarCellAccessibility *)v25 safeValueForKeyPath:@"_sidebarItem._contentConfiguration"];
-    v8 = [v12 accessibilityLabel];
+    v12 = [(_UITabSidebarCellAccessibility *)selfCopy safeValueForKeyPath:@"_sidebarItem._contentConfiguration"];
+    accessibilityLabel3 = [v12 accessibilityLabel];
     v9 = location;
-    location = v8;
+    location = accessibilityLabel3;
     MEMORY[0x29EDC9740](v9);
     MEMORY[0x29EDC9740](v12);
   }
@@ -124,38 +124,38 @@
   if ([location length])
   {
     v17 = [v24[0] safeStringForKey:@"_badgeValue"];
-    v26 = __UIAXStringForVariables();
+    accessibilityLabel4 = __UIAXStringForVariables();
     v16 = 1;
     objc_storeStrong(&v17, 0);
   }
 
   else
   {
-    v15.receiver = v25;
+    v15.receiver = selfCopy;
     v15.super_class = _UITabSidebarCellAccessibility;
-    v26 = [(_UITabSidebarCellAccessibility *)&v15 accessibilityLabel];
+    accessibilityLabel4 = [(_UITabSidebarCellAccessibility *)&v15 accessibilityLabel];
     v16 = 1;
   }
 
   objc_storeStrong(&location, 0);
   objc_storeStrong(v24, 0);
-  v10 = v26;
+  v10 = accessibilityLabel4;
 
   return v10;
 }
 
 - (id)accessibilityAttributedLabel
 {
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   v19[0] = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
-  v18 = [v19[0] accessibilityAttributedLabel];
-  if ([v18 length] || ((location = -[_UITabSidebarCellAccessibility accessibilityLabel](v20, "accessibilityLabel"), (objc_msgSend(location, "isAXAttributedString") & 1) == 0) ? (!location ? (v16 = 0) : (v21 = objc_msgSend(objc_alloc(MEMORY[0x29EDB9F30]), "initWithString:", location), v16 = 1)) : (v21 = objc_msgSend(location, "cfAttributedString"), v16 = 1), objc_storeStrong(&location, 0), !v16))
+  accessibilityAttributedLabel = [v19[0] accessibilityAttributedLabel];
+  if ([accessibilityAttributedLabel length] || ((location = -[_UITabSidebarCellAccessibility accessibilityLabel](selfCopy, "accessibilityLabel"), (objc_msgSend(location, "isAXAttributedString") & 1) == 0) ? (!location ? (v16 = 0) : (v21 = objc_msgSend(objc_alloc(MEMORY[0x29EDB9F30]), "initWithString:", location), v16 = 1)) : (v21 = objc_msgSend(location, "cfAttributedString"), v16 = 1), objc_storeStrong(&location, 0), !v16))
   {
     v15 = [v19[0] safeStringForKey:@"_badgeValue"];
-    if ([v18 length] && objc_msgSend(v15, "length"))
+    if ([accessibilityAttributedLabel length] && objc_msgSend(v15, "length"))
     {
-      obj = [v18 mutableCopy];
+      obj = [accessibilityAttributedLabel mutableCopy];
       v2 = [MEMORY[0x29EDBA0F8] stringWithFormat:@", %@", v15];
       v3 = v15;
       v15 = v2;
@@ -165,34 +165,34 @@
       v12 = [v4 initWithString:v15];
       [v11 appendAttributedString:?];
       MEMORY[0x29EDC9740](v12);
-      objc_storeStrong(&v18, obj);
+      objc_storeStrong(&accessibilityAttributedLabel, obj);
       objc_storeStrong(&obj, 0);
     }
 
     else if ([v15 length])
     {
       v5 = [objc_alloc(MEMORY[0x29EDB9F30]) initWithString:v15];
-      v6 = v18;
-      v18 = v5;
+      v6 = accessibilityAttributedLabel;
+      accessibilityAttributedLabel = v5;
       MEMORY[0x29EDC9740](v6);
     }
 
     else
     {
-      v13.receiver = v20;
+      v13.receiver = selfCopy;
       v13.super_class = _UITabSidebarCellAccessibility;
-      v7 = [(_UITabSidebarCellAccessibility *)&v13 accessibilityAttributedLabel];
-      v8 = v18;
-      v18 = v7;
+      accessibilityAttributedLabel2 = [(_UITabSidebarCellAccessibility *)&v13 accessibilityAttributedLabel];
+      v8 = accessibilityAttributedLabel;
+      accessibilityAttributedLabel = accessibilityAttributedLabel2;
       MEMORY[0x29EDC9740](v8);
     }
 
-    v21 = MEMORY[0x29EDC9748](v18);
+    v21 = MEMORY[0x29EDC9748](accessibilityAttributedLabel);
     v16 = 1;
     objc_storeStrong(&v15, 0);
   }
 
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&accessibilityAttributedLabel, 0);
   objc_storeStrong(v19, 0);
   v9 = v21;
 
@@ -201,30 +201,30 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v12.receiver = self;
   v12.super_class = _UITabSidebarCellAccessibility;
-  v6 = [(_UITabSidebarCellAccessibility *)&v12 accessibilityTraits];
-  v7 = [(_UITabSidebarCellAccessibility *)v15 _accessibilitySidebarItem];
-  v8 = v6 | [v7 accessibilityTraits];
-  MEMORY[0x29EDC9740](v7);
+  accessibilityTraits = [(_UITabSidebarCellAccessibility *)&v12 accessibilityTraits];
+  _accessibilitySidebarItem = [(_UITabSidebarCellAccessibility *)selfCopy _accessibilitySidebarItem];
+  v8 = accessibilityTraits | [_accessibilitySidebarItem accessibilityTraits];
+  MEMORY[0x29EDC9740](_accessibilitySidebarItem);
   v13 = v8;
   v11 = 0;
   objc_opt_class();
   v10 = __UIAccessibilityCastAsClass();
   v9 = MEMORY[0x29EDC9748](v10);
   objc_storeStrong(&v10, 0);
-  v5 = [v9 isSelected];
+  isSelected = [v9 isSelected];
   MEMORY[0x29EDC9740](v9);
-  if (v5)
+  if (isSelected)
   {
     v13 |= *MEMORY[0x29EDC7FC0];
   }
 
-  v3 = [(_UITabSidebarCellAccessibility *)v15 _accessibilitySidebarItem];
-  v4 = [v3 safeBoolForKey:@"_isGroup"];
-  MEMORY[0x29EDC9740](v3);
+  _accessibilitySidebarItem2 = [(_UITabSidebarCellAccessibility *)selfCopy _accessibilitySidebarItem];
+  v4 = [_accessibilitySidebarItem2 safeBoolForKey:@"_isGroup"];
+  MEMORY[0x29EDC9740](_accessibilitySidebarItem2);
   if (v4)
   {
     v13 |= *MEMORY[0x29EDC7F80];
@@ -235,176 +235,176 @@
 
 - (id)accessibilityValue
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
-  v4 = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
-  location[0] = [v4 accessibilityValue];
+  _accessibilitySidebarItem = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
+  location[0] = [_accessibilitySidebarItem accessibilityValue];
   if ([location[0] length])
   {
-    v9 = MEMORY[0x29EDC9748](location[0]);
+    accessibilityValue = MEMORY[0x29EDC9748](location[0]);
   }
 
   else
   {
-    v5.receiver = v8;
+    v5.receiver = selfCopy;
     v5.super_class = _UITabSidebarCellAccessibility;
-    v9 = [(_UITabSidebarCellAccessibility *)&v5 accessibilityValue];
+    accessibilityValue = [(_UITabSidebarCellAccessibility *)&v5 accessibilityValue];
   }
 
   v6 = 1;
   objc_storeStrong(location, 0);
-  v2 = v9;
+  v2 = accessibilityValue;
 
   return v2;
 }
 
 - (id)accessibilityAttributedValue
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
-  v4 = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
-  location[0] = [v4 accessibilityAttributedValue];
+  _accessibilitySidebarItem = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
+  location[0] = [_accessibilitySidebarItem accessibilityAttributedValue];
   if ([location[0] length])
   {
-    v9 = MEMORY[0x29EDC9748](location[0]);
+    accessibilityAttributedValue = MEMORY[0x29EDC9748](location[0]);
   }
 
   else
   {
-    v5.receiver = v8;
+    v5.receiver = selfCopy;
     v5.super_class = _UITabSidebarCellAccessibility;
-    v9 = [(_UITabSidebarCellAccessibility *)&v5 accessibilityAttributedValue];
+    accessibilityAttributedValue = [(_UITabSidebarCellAccessibility *)&v5 accessibilityAttributedValue];
   }
 
   v6 = 1;
   objc_storeStrong(location, 0);
-  v2 = v9;
+  v2 = accessibilityAttributedValue;
 
   return v2;
 }
 
 - (id)accessibilityHint
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
-  v4 = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
-  location[0] = [v4 accessibilityHint];
+  _accessibilitySidebarItem = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
+  location[0] = [_accessibilitySidebarItem accessibilityHint];
   if ([location[0] length])
   {
-    v9 = MEMORY[0x29EDC9748](location[0]);
+    accessibilityHint = MEMORY[0x29EDC9748](location[0]);
   }
 
   else
   {
-    v5.receiver = v8;
+    v5.receiver = selfCopy;
     v5.super_class = _UITabSidebarCellAccessibility;
-    v9 = [(_UITabSidebarCellAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(_UITabSidebarCellAccessibility *)&v5 accessibilityHint];
   }
 
   v6 = 1;
   objc_storeStrong(location, 0);
-  v2 = v9;
+  v2 = accessibilityHint;
 
   return v2;
 }
 
 - (id)accessibilityAttributedHint
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
-  v4 = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
-  location[0] = [v4 accessibilityAttributedHint];
+  _accessibilitySidebarItem = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
+  location[0] = [_accessibilitySidebarItem accessibilityAttributedHint];
   if ([location[0] length])
   {
-    v9 = MEMORY[0x29EDC9748](location[0]);
+    accessibilityAttributedHint = MEMORY[0x29EDC9748](location[0]);
   }
 
   else
   {
-    v5.receiver = v8;
+    v5.receiver = selfCopy;
     v5.super_class = _UITabSidebarCellAccessibility;
-    v9 = [(_UITabSidebarCellAccessibility *)&v5 accessibilityAttributedHint];
+    accessibilityAttributedHint = [(_UITabSidebarCellAccessibility *)&v5 accessibilityAttributedHint];
   }
 
   v6 = 1;
   objc_storeStrong(location, 0);
-  v2 = v9;
+  v2 = accessibilityAttributedHint;
 
   return v2;
 }
 
 - (id)accessibilityIdentifier
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
-  v4 = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
-  location[0] = [v4 accessibilityIdentifier];
+  _accessibilitySidebarItem = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
+  location[0] = [_accessibilitySidebarItem accessibilityIdentifier];
   if ([location[0] length])
   {
-    v9 = MEMORY[0x29EDC9748](location[0]);
+    accessibilityIdentifier = MEMORY[0x29EDC9748](location[0]);
   }
 
   else
   {
-    v5.receiver = v8;
+    v5.receiver = selfCopy;
     v5.super_class = _UITabSidebarCellAccessibility;
-    v9 = [(_UITabSidebarCellAccessibility *)&v5 accessibilityIdentifier];
+    accessibilityIdentifier = [(_UITabSidebarCellAccessibility *)&v5 accessibilityIdentifier];
   }
 
   v6 = 1;
   objc_storeStrong(location, 0);
-  v2 = v9;
+  v2 = accessibilityIdentifier;
 
   return v2;
 }
 
 - (id)accessibilityUserInputLabels
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
-  v4 = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
-  location[0] = [v4 accessibilityUserInputLabels];
+  _accessibilitySidebarItem = [(_UITabSidebarCellAccessibility *)self _accessibilitySidebarItem];
+  location[0] = [_accessibilitySidebarItem accessibilityUserInputLabels];
   if ([location[0] count])
   {
-    v9 = MEMORY[0x29EDC9748](location[0]);
+    accessibilityUserInputLabels = MEMORY[0x29EDC9748](location[0]);
   }
 
   else
   {
-    v5.receiver = v8;
+    v5.receiver = selfCopy;
     v5.super_class = _UITabSidebarCellAccessibility;
-    v9 = [(_UITabSidebarCellAccessibility *)&v5 accessibilityUserInputLabels];
+    accessibilityUserInputLabels = [(_UITabSidebarCellAccessibility *)&v5 accessibilityUserInputLabels];
   }
 
   v6 = 1;
   objc_storeStrong(location, 0);
-  v2 = v9;
+  v2 = accessibilityUserInputLabels;
 
   return v2;
 }
 
 - (id)accessibilityCustomActions
 {
-  v42 = self;
+  selfCopy = self;
   v41[1] = a2;
   v40 = 0;
   objc_opt_class();
-  v12 = [(_UITabSidebarCellAccessibility *)v42 _accessibilitySidebarItem];
+  _accessibilitySidebarItem = [(_UITabSidebarCellAccessibility *)selfCopy _accessibilitySidebarItem];
   v39 = __UIAccessibilityCastAsClass();
-  MEMORY[0x29EDC9740](v12);
+  MEMORY[0x29EDC9740](_accessibilitySidebarItem);
   v38 = MEMORY[0x29EDC9748](v39);
   objc_storeStrong(&v39, 0);
   v41[0] = v38;
-  v10 = [v38 tabBarController];
-  v37 = [v10 safeValueForKey:@"_tabCustomizationProxy"];
-  *&v2 = MEMORY[0x29EDC9740](v10).n128_u64[0];
-  v11 = [v41[0] accessibilityCustomActions];
-  v36 = [v11 mutableCopy];
+  tabBarController = [v38 tabBarController];
+  v37 = [tabBarController safeValueForKey:@"_tabCustomizationProxy"];
+  *&v2 = MEMORY[0x29EDC9740](tabBarController).n128_u64[0];
+  accessibilityCustomActions = [v41[0] accessibilityCustomActions];
+  v36 = [accessibilityCustomActions mutableCopy];
   if (![v36 count])
   {
-    v3 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v4 = v36;
-    v36 = v3;
+    v36 = array;
     MEMORY[0x29EDC9740](v4);
   }
 
@@ -447,40 +447,40 @@
 
   if ([v36 count])
   {
-    v43 = MEMORY[0x29EDC9748](v36);
+    accessibilityCustomActions2 = MEMORY[0x29EDC9748](v36);
   }
 
   else
   {
-    v13.receiver = v42;
+    v13.receiver = selfCopy;
     v13.super_class = _UITabSidebarCellAccessibility;
-    v43 = [(_UITabSidebarCellAccessibility *)&v13 accessibilityCustomActions];
+    accessibilityCustomActions2 = [(_UITabSidebarCellAccessibility *)&v13 accessibilityCustomActions];
   }
 
   v14 = 1;
   objc_storeStrong(&v36, 0);
   objc_storeStrong(&v37, 0);
   objc_storeStrong(v41, 0);
-  v6 = v43;
+  v6 = accessibilityCustomActions2;
 
   return v6;
 }
 
 - (id)accessibilityDragSourceDescriptors
 {
-  v26 = self;
+  selfCopy = self;
   v25[1] = a2;
   v24 = 0;
   objc_opt_class();
-  v5 = [(_UITabSidebarCellAccessibility *)v26 _accessibilitySidebarItem];
+  _accessibilitySidebarItem = [(_UITabSidebarCellAccessibility *)selfCopy _accessibilitySidebarItem];
   v23 = __UIAccessibilityCastAsClass();
-  MEMORY[0x29EDC9740](v5);
+  MEMORY[0x29EDC9740](_accessibilitySidebarItem);
   v22 = MEMORY[0x29EDC9748](v23);
   objc_storeStrong(&v23, 0);
   v25[0] = v22;
-  v4 = [v22 tabBarController];
-  v21 = [v4 safeValueForKey:@"_tabCustomizationProxy"];
-  MEMORY[0x29EDC9740](v4);
+  tabBarController = [v22 tabBarController];
+  v21 = [tabBarController safeValueForKey:@"_tabCustomizationProxy"];
+  MEMORY[0x29EDC9740](tabBarController);
   v16 = 0;
   v17 = &v16;
   v18 = 0x20000000;
@@ -501,20 +501,20 @@
   _Block_object_dispose(&v16, 8);
   if (v8)
   {
-    v27 = 0;
+    accessibilityDragSourceDescriptors = 0;
   }
 
   else
   {
-    v6.receiver = v26;
+    v6.receiver = selfCopy;
     v6.super_class = _UITabSidebarCellAccessibility;
-    v27 = [(_UITabSidebarCellAccessibility *)&v6 accessibilityDragSourceDescriptors];
+    accessibilityDragSourceDescriptors = [(_UITabSidebarCellAccessibility *)&v6 accessibilityDragSourceDescriptors];
   }
 
   v7 = 1;
   objc_storeStrong(&v21, 0);
   objc_storeStrong(v25, 0);
-  v2 = v27;
+  v2 = accessibilityDragSourceDescriptors;
 
   return v2;
 }

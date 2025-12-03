@@ -1,33 +1,33 @@
 @interface DigestVerifier
-- (BOOL)_validateAndResetDigestError:(id *)a3;
-- (BOOL)verifyBuffer:(const char *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (BOOL)verifyData:(id)a3 error:(id *)a4;
-- (DigestVerifier)initWithChunkedDigest:(id)a3 resumptionOffset:(unint64_t)a4;
-- (DigestVerifier)initWithDigest:(id)a3 type:(int64_t)a4;
-- (void)_hashData:(id)a3;
+- (BOOL)_validateAndResetDigestError:(id *)error;
+- (BOOL)verifyBuffer:(const char *)buffer length:(unint64_t)length error:(id *)error;
+- (BOOL)verifyData:(id)data error:(id *)error;
+- (DigestVerifier)initWithChunkedDigest:(id)digest resumptionOffset:(unint64_t)offset;
+- (DigestVerifier)initWithDigest:(id)digest type:(int64_t)type;
+- (void)_hashData:(id)data;
 @end
 
 @implementation DigestVerifier
 
-- (DigestVerifier)initWithChunkedDigest:(id)a3 resumptionOffset:(unint64_t)a4
+- (DigestVerifier)initWithChunkedDigest:(id)digest resumptionOffset:(unint64_t)offset
 {
-  v6 = a3;
+  digestCopy = digest;
   v14.receiver = self;
   v14.super_class = DigestVerifier;
   v7 = [(DigestVerifier *)&v14 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [digestCopy copy];
     digest = v7->_digest;
     v7->_digest = v8;
 
-    v7->_bytesProcessed = a4;
-    v7->_bytesValidated = a4;
-    v10 = [(ChunkedDigest *)v7->_digest chunkSize];
-    if (v10)
+    v7->_bytesProcessed = offset;
+    v7->_bytesValidated = offset;
+    chunkSize = [(ChunkedDigest *)v7->_digest chunkSize];
+    if (chunkSize)
     {
-      v7->_index = a4 / v10;
-      if (a4 % v10)
+      v7->_index = offset / chunkSize;
+      if (offset % chunkSize)
       {
 LABEL_7:
         v7->_valid = 1;
@@ -52,13 +52,13 @@ LABEL_8:
   return v7;
 }
 
-- (DigestVerifier)initWithDigest:(id)a3 type:(int64_t)a4
+- (DigestVerifier)initWithDigest:(id)digest type:(int64_t)type
 {
-  v6 = a3;
+  digestCopy = digest;
   v7 = objc_alloc_init(ChunkedDigest);
-  [(ChunkedDigest *)v7 setChunkType:a4];
+  [(ChunkedDigest *)v7 setChunkType:type];
   [(ChunkedDigest *)v7 setChunkSize:0];
-  v11 = v6;
+  v11 = digestCopy;
   v8 = [NSArray arrayWithObjects:&v11 count:1];
 
   [(ChunkedDigest *)v7 setChunkDigests:v8];
@@ -67,31 +67,31 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)verifyBuffer:(const char *)a3 length:(unint64_t)a4 error:(id *)a5
+- (BOOL)verifyBuffer:(const char *)buffer length:(unint64_t)length error:(id *)error
 {
   if (self->_valid)
   {
-    if ([(ChunkedDigest *)self->_digest chunkSize]&& (v9 = [(ChunkedDigest *)self->_digest chunkSize], bytesProcessed = self->_bytesProcessed, v11 = [(ChunkedDigest *)self->_digest chunkSize], v12 = v9 + (bytesProcessed / v11) * v11 - bytesProcessed, a4 >= v12))
+    if ([(ChunkedDigest *)self->_digest chunkSize]&& (v9 = [(ChunkedDigest *)self->_digest chunkSize], bytesProcessed = self->_bytesProcessed, v11 = [(ChunkedDigest *)self->_digest chunkSize], v12 = v9 + (bytesProcessed / v11) * v11 - bytesProcessed, length >= v12))
     {
-      [(DigestVerifier *)self _hashBuffer:a3 length:v12];
-      if (![(DigestVerifier *)self _validateAndResetDigestError:a5])
+      [(DigestVerifier *)self _hashBuffer:buffer length:v12];
+      if (![(DigestVerifier *)self _validateAndResetDigestError:error])
       {
         return 0;
       }
 
-      v14 = &a3[v12];
-      v13 = self;
-      v15 = a4 - v12;
+      bufferCopy = &buffer[v12];
+      selfCopy2 = self;
+      lengthCopy = length - v12;
     }
 
     else
     {
-      v13 = self;
-      v14 = a3;
-      v15 = a4;
+      selfCopy2 = self;
+      bufferCopy = buffer;
+      lengthCopy = length;
     }
 
-    [(DigestVerifier *)v13 _hashBuffer:v14 length:v15];
+    [(DigestVerifier *)selfCopy2 _hashBuffer:bufferCopy length:lengthCopy];
     return self->_valid;
   }
 
@@ -101,9 +101,9 @@ LABEL_8:
   }
 }
 
-- (BOOL)verifyData:(id)a3 error:(id *)a4
+- (BOOL)verifyData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   if (!self->_valid)
   {
     goto LABEL_8;
@@ -111,25 +111,25 @@ LABEL_8:
 
   if ([(ChunkedDigest *)self->_digest chunkSize])
   {
-    v7 = [(ChunkedDigest *)self->_digest chunkSize];
+    chunkSize = [(ChunkedDigest *)self->_digest chunkSize];
     bytesProcessed = self->_bytesProcessed;
-    v9 = [(ChunkedDigest *)self->_digest chunkSize];
-    v10 = v7 + (bytesProcessed / v9) * v9 - bytesProcessed;
-    if ([v6 length] >= v10)
+    chunkSize2 = [(ChunkedDigest *)self->_digest chunkSize];
+    v10 = chunkSize + (bytesProcessed / chunkSize2) * chunkSize2 - bytesProcessed;
+    if ([dataCopy length] >= v10)
     {
-      v12 = [v6 subdataWithRange:{0, v10}];
+      v12 = [dataCopy subdataWithRange:{0, v10}];
       [(DigestVerifier *)self _hashData:v12];
 
-      if ([(DigestVerifier *)self _validateAndResetDigestError:a4])
+      if ([(DigestVerifier *)self _validateAndResetDigestError:error])
       {
-        v13 = [(ChunkedDigest *)self->_digest chunkSize];
+        chunkSize3 = [(ChunkedDigest *)self->_digest chunkSize];
         v15[0] = _NSConcreteStackBlock;
         v15[1] = 3221225472;
         v15[2] = sub_1000690B4;
         v15[3] = &unk_100382B28;
         v15[4] = self;
-        v15[5] = a4;
-        [v6 lib_enumerateSubdataWithOffset:v10 length:v13 usingBlock:v15];
+        v15[5] = error;
+        [dataCopy lib_enumerateSubdataWithOffset:v10 length:chunkSize3 usingBlock:v15];
         goto LABEL_5;
       }
 
@@ -139,7 +139,7 @@ LABEL_8:
     }
   }
 
-  [(DigestVerifier *)self _hashData:v6];
+  [(DigestVerifier *)self _hashData:dataCopy];
 LABEL_5:
   valid = self->_valid;
 LABEL_9:
@@ -147,25 +147,25 @@ LABEL_9:
   return valid;
 }
 
-- (void)_hashData:(id)a3
+- (void)_hashData:(id)data
 {
-  v4 = a3;
-  self->_bytesProcessed += [v4 length];
-  [(HashDigest *)self->_hashDigest updateWithData:v4];
+  dataCopy = data;
+  self->_bytesProcessed += [dataCopy length];
+  [(HashDigest *)self->_hashDigest updateWithData:dataCopy];
 }
 
-- (BOOL)_validateAndResetDigestError:(id *)a3
+- (BOOL)_validateAndResetDigestError:(id *)error
 {
-  v5 = [(HashDigest *)self->_hashDigest finalAndCompute];
+  finalAndCompute = [(HashDigest *)self->_hashDigest finalAndCompute];
   index = self->_index;
-  v7 = [(ChunkedDigest *)self->_digest chunkDigests];
-  v8 = [v7 count];
+  chunkDigests = [(ChunkedDigest *)self->_digest chunkDigests];
+  v8 = [chunkDigests count];
 
   if (index >= v8)
   {
     v15 = self->_index;
-    v16 = [(ChunkedDigest *)self->_digest chunkDigests];
-    if (v15 == [v16 count])
+    chunkDigests2 = [(ChunkedDigest *)self->_digest chunkDigests];
+    if (v15 == [chunkDigests2 count])
     {
       bytesProcessed = self->_bytesProcessed;
       bytesValidated = self->_bytesValidated;
@@ -175,7 +175,7 @@ LABEL_9:
         goto LABEL_22;
       }
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -184,19 +184,19 @@ LABEL_9:
     else
     {
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_13;
       }
     }
 
-    *a3 = ASDErrorWithDescription();
+    *error = ASDErrorWithDescription();
 LABEL_13:
     self->_valid = 0;
     goto LABEL_22;
   }
 
-  if (!v5)
+  if (!finalAndCompute)
   {
     if (qword_1003D4758 != -1)
     {
@@ -216,9 +216,9 @@ LABEL_13:
     goto LABEL_21;
   }
 
-  v9 = [(ChunkedDigest *)self->_digest chunkDigests];
-  v10 = [v9 objectAtIndexedSubscript:self->_index];
-  self->_valid = [v5 isEqualToString:v10];
+  chunkDigests3 = [(ChunkedDigest *)self->_digest chunkDigests];
+  v10 = [chunkDigests3 objectAtIndexedSubscript:self->_index];
+  self->_valid = [finalAndCompute isEqualToString:v10];
 
   if (self->_valid)
   {
@@ -236,7 +236,7 @@ LABEL_21:
   v11 = off_1003CBAF0;
   if (!os_log_type_enabled(off_1003CBAF0, OS_LOG_TYPE_ERROR))
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -246,22 +246,22 @@ LABEL_21:
 
   digest = self->_digest;
   v26 = v11;
-  v27 = [(ChunkedDigest *)digest chunkDigests];
-  v28 = [v27 objectAtIndexedSubscript:self->_index];
+  chunkDigests4 = [(ChunkedDigest *)digest chunkDigests];
+  v28 = [chunkDigests4 objectAtIndexedSubscript:self->_index];
   *buf = 138412546;
-  v30 = v5;
+  v30 = finalAndCompute;
   v31 = 2112;
   v32 = v28;
   _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Invalid hash '%@' expected '%@'", buf, 0x16u);
 
-  if (a3)
+  if (error)
   {
 LABEL_8:
-    v12 = [(ChunkedDigest *)self->_digest chunkDigests];
-    v13 = [v12 objectAtIndexedSubscript:self->_index];
-    v14 = [NSString stringWithFormat:@"Invalid hash '%@' expected '%@'", v5, v13];
+    chunkDigests5 = [(ChunkedDigest *)self->_digest chunkDigests];
+    v13 = [chunkDigests5 objectAtIndexedSubscript:self->_index];
+    v14 = [NSString stringWithFormat:@"Invalid hash '%@' expected '%@'", finalAndCompute, v13];
 
-    *a3 = ASDErrorWithDescription();
+    *error = ASDErrorWithDescription();
   }
 
 LABEL_22:

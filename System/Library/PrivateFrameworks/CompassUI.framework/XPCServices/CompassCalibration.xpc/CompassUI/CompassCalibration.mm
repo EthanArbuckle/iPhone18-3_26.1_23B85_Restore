@@ -1,19 +1,19 @@
 @interface CompassCalibration
-- (void)showCalibrationAlert:(id)a3;
+- (void)showCalibrationAlert:(id)alert;
 @end
 
 @implementation CompassCalibration
 
-- (void)showCalibrationAlert:(id)a3
+- (void)showCalibrationAlert:(id)alert
 {
-  v3 = a3;
+  alertCopy = alert;
   v6[0] = SBSUIRemoteAlertOptionViewControllerClass;
   v6[1] = SBSUIRemoteAlertOptionDismissWithHomeButton;
   v7[0] = @"CalibrationViewServiceController";
   v7[1] = &__kCFBooleanTrue;
   [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:2];
-  v5 = v3;
-  v4 = v3;
+  v5 = alertCopy;
+  v4 = alertCopy;
   SBSUIActivateRemoteAlertWithLifecycleNotifications();
 }
 

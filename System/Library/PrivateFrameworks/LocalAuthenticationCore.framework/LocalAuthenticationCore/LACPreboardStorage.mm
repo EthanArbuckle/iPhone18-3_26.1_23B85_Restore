@@ -1,6 +1,6 @@
 @interface LACPreboardStorage
 - (_TtC23LocalAuthenticationCore18LACPreboardStorage)init;
-- (id)acmContextForUUID:(id)a3 error:(id *)a4;
+- (id)acmContextForUUID:(id)d error:(id *)error;
 @end
 
 @implementation LACPreboardStorage
@@ -12,7 +12,7 @@
   return result;
 }
 
-- (id)acmContextForUUID:(id)a3 error:(id *)a4
+- (id)acmContextForUUID:(id)d error:(id *)error
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
@@ -23,7 +23,7 @@
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v14 = &v21[-v13];
-  if (a3)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     (*(v7 + 32))(v14, v10, v6);
@@ -35,7 +35,7 @@
     (*(v7 + 56))(v14, 1, 1, v6);
   }
 
-  v15 = self;
+  selfCopy = self;
   v16 = LACPreboardStorage.acmContext(for:)(v14);
   v18 = v17;
   outlined destroy of AsyncStream<()>.Continuation?(v14, &_s10Foundation4UUIDVSgMd, &_s10Foundation4UUIDVSgMR);

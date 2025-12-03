@@ -1,17 +1,17 @@
 @interface ML3DatabaseRecoveryOperation
-- (ML3DatabaseRecoveryOperation)initWithDatabaseFilePath:(id)a3;
-- (id)_createSQLiteErrorWithCode:(int)a3 description:(id)a4;
+- (ML3DatabaseRecoveryOperation)initWithDatabaseFilePath:(id)path;
+- (id)_createSQLiteErrorWithCode:(int)code description:(id)description;
 - (id)_lastCorruptionRestoreAttemptDate;
-- (void)_recreateDatabaseWithCompletion:(id)a3;
+- (void)_recreateDatabaseWithCompletion:(id)completion;
 - (void)_updateLastCorruptionRestoreAttemptDate;
 - (void)main;
 @end
 
 @implementation ML3DatabaseRecoveryOperation
 
-- (void)_recreateDatabaseWithCompletion:(id)a3
+- (void)_recreateDatabaseWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -26,8 +26,8 @@
   v9[2] = __64__ML3DatabaseRecoveryOperation__recreateDatabaseWithCompletion___block_invoke;
   v9[3] = &unk_278764F50;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v6 recreateDatabaseAtPath:path withCompletionHandler:v9];
 }
 
@@ -63,30 +63,30 @@ LABEL_6:
 
 - (void)_updateLastCorruptionRestoreAttemptDate
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v2 = [MEMORY[0x277CBEAA8] date];
-  [v3 setObject:v2 forKey:@"LastCorruptionRestoreAttempt"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  date = [MEMORY[0x277CBEAA8] date];
+  [standardUserDefaults setObject:date forKey:@"LastCorruptionRestoreAttempt"];
 }
 
 - (id)_lastCorruptionRestoreAttemptDate
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"LastCorruptionRestoreAttempt"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"LastCorruptionRestoreAttempt"];
 
   return v3;
 }
 
-- (id)_createSQLiteErrorWithCode:(int)a3 description:(id)a4
+- (id)_createSQLiteErrorWithCode:(int)code description:(id)description
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a3;
+  codeCopy = code;
   v11 = *MEMORY[0x277CCA450];
-  v12[0] = a4;
+  v12[0] = description;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
+  descriptionCopy = description;
   v8 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v9 = [v4 errorWithDomain:@"NSSQLiteErrorDomain" code:v5 userInfo:v8];
+  v9 = [v4 errorWithDomain:@"NSSQLiteErrorDomain" code:codeCopy userInfo:v8];
 
   return v9;
 }
@@ -101,8 +101,8 @@ LABEL_6:
     _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEFAULT, "[ML3DatabaseRecoveryOperation] Starting recovery operation...", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v4 fileExistsAtPath:self->_path] && MSVDeviceOSIsInternalInstall())
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:self->_path] && MSVDeviceOSIsInternalInstall())
   {
     v5 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -153,15 +153,15 @@ LABEL_12:
   self->_error = 0;
 }
 
-- (ML3DatabaseRecoveryOperation)initWithDatabaseFilePath:(id)a3
+- (ML3DatabaseRecoveryOperation)initWithDatabaseFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = ML3DatabaseRecoveryOperation;
   v5 = [(ML3DatabaseRecoveryOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
   }

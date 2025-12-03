@@ -1,21 +1,21 @@
 @interface PPDataDetectors
-+ (BOOL)isValidDataDetectorsMatch:(__DDResult *)a3 addressComponents:(id *)a4;
-+ (id)addressComponentsFromString:(id)a3 extractedAddress:(id *)a4 locale:(id)a5;
-+ (uint64_t)_components:(void *)a3 haveHongKongAtKey:;
-+ (void)addAddressComponentsInResult:(__DDResult *)a3 toDictionary:(id)a4;
-+ (void)scanString:(id)a3 inRange:(id)a4 withScanner:(__DDScanner *)a5 options:(int64_t)a6 block:(id)a7;
++ (BOOL)isValidDataDetectorsMatch:(__DDResult *)match addressComponents:(id *)components;
++ (id)addressComponentsFromString:(id)string extractedAddress:(id *)address locale:(id)locale;
++ (uint64_t)_components:(void *)_components haveHongKongAtKey:;
++ (void)addAddressComponentsInResult:(__DDResult *)result toDictionary:(id)dictionary;
++ (void)scanString:(id)string inRange:(id)range withScanner:(__DDScanner *)scanner options:(int64_t)options block:(id)block;
 @end
 
 @implementation PPDataDetectors
 
-+ (BOOL)isValidDataDetectorsMatch:(__DDResult *)a3 addressComponents:(id *)a4
++ (BOOL)isValidDataDetectorsMatch:(__DDResult *)match addressComponents:(id *)components
 {
   v7 = objc_opt_new();
-  [PPDataDetectors addAddressComponentsInResult:a3 toDictionary:v7];
-  if (a4)
+  [PPDataDetectors addAddressComponentsInResult:match toDictionary:v7];
+  if (components)
   {
     v8 = v7;
-    *a4 = v7;
+    *components = v7;
   }
 
   v9 = *MEMORY[0x277CCA6B0];
@@ -24,7 +24,7 @@
   if (!v10)
   {
     v11 = *MEMORY[0x277CCA6B8];
-    if (([(PPDataDetectors *)a1 _components:v7 haveHongKongAtKey:*MEMORY[0x277CCA6B8]]& 1) != 0 || (v11 = *MEMORY[0x277CCA6E0], [(PPDataDetectors *)a1 _components:v7 haveHongKongAtKey:*MEMORY[0x277CCA6E0]]))
+    if (([(PPDataDetectors *)self _components:v7 haveHongKongAtKey:*MEMORY[0x277CCA6B8]]& 1) != 0 || (v11 = *MEMORY[0x277CCA6E0], [(PPDataDetectors *)self _components:v7 haveHongKongAtKey:*MEMORY[0x277CCA6E0]]))
     {
       v12 = [v7 objectForKeyedSubscript:v11];
       [v7 setObject:v12 forKeyedSubscript:v9];
@@ -59,12 +59,12 @@
   return v16;
 }
 
-+ (uint64_t)_components:(void *)a3 haveHongKongAtKey:
++ (uint64_t)_components:(void *)_components haveHongKongAtKey:
 {
-  v4 = a3;
+  _componentsCopy = _components;
   v5 = a2;
   objc_opt_self();
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:_componentsCopy];
 
   if ([v6 isEqualToString:@"香港"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"香港省") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"HongKong"))
   {
@@ -79,16 +79,16 @@
   return v7;
 }
 
-+ (id)addressComponentsFromString:(id)a3 extractedAddress:(id *)a4 locale:(id)a5
++ (id)addressComponentsFromString:(id)string extractedAddress:(id *)address locale:(id)locale
 {
-  v9 = a3;
-  v10 = a5;
-  if ([v9 length])
+  stringCopy = string;
+  localeCopy = locale;
+  if ([stringCopy length])
   {
-    if (v10)
+    if (localeCopy)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
-      [v15 handleFailureInMethod:a2 object:a1 file:@"PPDataDetectors.m" lineNumber:110 description:@"overriding locale for PPDataDetectors +addressComponentsFromString is for unit tests only"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PPDataDetectors.m" lineNumber:110 description:@"overriding locale for PPDataDetectors +addressComponentsFromString is for unit tests only"];
     }
 
     if (addressComponentsFromString_extractedAddress_locale___pasOnceToken2 != -1)
@@ -97,7 +97,7 @@
     }
 
     v11 = addressComponentsFromString_extractedAddress_locale___pasExprOnceResult;
-    v12 = [v11 result];
+    result = [v11 result];
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
@@ -108,11 +108,11 @@
     v16[1] = 3221225472;
     v16[2] = __71__PPDataDetectors_addressComponentsFromString_extractedAddress_locale___block_invoke_47;
     v16[3] = &unk_278972BD8;
-    v19 = a1;
-    v20 = a4;
-    v17 = v9;
+    selfCopy = self;
+    addressCopy = address;
+    v17 = stringCopy;
     v18 = &v21;
-    [v12 runWithLockAcquired:v16];
+    [result runWithLockAcquired:v16];
     v13 = v22[5];
 
     _Block_object_dispose(&v21, 8);
@@ -203,9 +203,9 @@ id __71__PPDataDetectors_addressComponentsFromString_extractedAddress_locale___b
   return v1;
 }
 
-+ (void)addAddressComponentsInResult:(__DDResult *)a3 toDictionary:(id)a4
++ (void)addAddressComponentsInResult:(__DDResult *)result toDictionary:(id)dictionary
 {
-  v15 = a4;
+  dictionaryCopy = dictionary;
   if (addAddressComponentsInResult_toDictionary__onceToken != -1)
   {
     dispatch_once(&addAddressComponentsInResult_toDictionary__onceToken, &__block_literal_global_4356);
@@ -233,12 +233,12 @@ id __71__PPDataDetectors_addressComponentsFromString_extractedAddress_locale___b
             TypeID = CFStringGetTypeID();
             if (TypeID == CFGetTypeID(v13))
             {
-              [v15 setObject:v13 forKeyedSubscript:v11];
+              [dictionaryCopy setObject:v13 forKeyedSubscript:v11];
             }
           }
         }
 
-        [objc_opt_class() addAddressComponentsInResult:ValueAtIndex toDictionary:v15];
+        [objc_opt_class() addAddressComponentsInResult:ValueAtIndex toDictionary:dictionaryCopy];
       }
     }
   }
@@ -271,9 +271,9 @@ void __61__PPDataDetectors_addAddressComponentsInResult_toDictionary___block_inv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)scanString:(id)a3 inRange:(id)a4 withScanner:(__DDScanner *)a5 options:(int64_t)a6 block:(id)a7
++ (void)scanString:(id)string inRange:(id)range withScanner:(__DDScanner *)scanner options:(int64_t)options block:(id)block
 {
-  v15 = a7;
+  blockCopy = block;
   if (DDScannerScanStringWithRange())
   {
     v7 = DDScannerCopyResultsWithOptions();
@@ -289,7 +289,7 @@ void __61__PPDataDetectors_addAddressComponentsInResult_toDictionary___block_inv
         {
           ValueAtIndex = CFArrayGetValueAtIndex(v8, v11);
           Category = DDResultGetCategory();
-          if (v15[2](v15, ValueAtIndex, Category))
+          if (blockCopy[2](blockCopy, ValueAtIndex, Category))
           {
             v14 = v10 == v11;
           }

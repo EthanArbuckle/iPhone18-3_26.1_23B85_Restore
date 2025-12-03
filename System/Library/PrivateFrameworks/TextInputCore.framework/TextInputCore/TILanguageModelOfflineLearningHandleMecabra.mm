@@ -1,49 +1,49 @@
 @interface TILanguageModelOfflineLearningHandleMecabra
-- (void)adaptToParagraph:(id)a3 timeStamp:(double)a4 adaptationType:(int)a5;
+- (void)adaptToParagraph:(id)paragraph timeStamp:(double)stamp adaptationType:(int)type;
 - (void)didFinishLearning;
 - (void)load;
-- (void)updateAdaptationContext:(id)a3;
+- (void)updateAdaptationContext:(id)context;
 @end
 
 @implementation TILanguageModelOfflineLearningHandleMecabra
 
 - (void)didFinishLearning
 {
-  v2 = [(TILanguageModelOfflineLearningHandleMecabra *)self wordSearch];
-  [v2 flushDynamicData];
+  wordSearch = [(TILanguageModelOfflineLearningHandleMecabra *)self wordSearch];
+  [wordSearch flushDynamicData];
 }
 
-- (void)adaptToParagraph:(id)a3 timeStamp:(double)a4 adaptationType:(int)a5
+- (void)adaptToParagraph:(id)paragraph timeStamp:(double)stamp adaptationType:(int)type
 {
-  v9 = a3;
-  v7 = [(TILanguageModelOfflineLearningHandleMecabra *)self wordSearch];
-  if (v7)
+  paragraphCopy = paragraph;
+  wordSearch = [(TILanguageModelOfflineLearningHandleMecabra *)self wordSearch];
+  if (wordSearch)
   {
-    v8 = [(TILanguageModelOfflineLearningHandle *)self currentAdaptationContext];
-    [v7 adaptOfflineToParagraph:v9 adaptationContext:v8 timeStamp:a4];
+    currentAdaptationContext = [(TILanguageModelOfflineLearningHandle *)self currentAdaptationContext];
+    [wordSearch adaptOfflineToParagraph:paragraphCopy adaptationContext:currentAdaptationContext timeStamp:stamp];
   }
 }
 
 - (void)load
 {
   v5 = +[TIWordSearchController sharedWordSearchController];
-  v3 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
-  v4 = [v5 wordSearchForInputMode:v3];
+  inputMode = [(TILanguageModelOfflineLearningHandle *)self inputMode];
+  v4 = [v5 wordSearchForInputMode:inputMode];
   [(TILanguageModelOfflineLearningHandleMecabra *)self setWordSearch:v4];
 }
 
-- (void)updateAdaptationContext:(id)a3
+- (void)updateAdaptationContext:(id)context
 {
-  v4 = a3;
-  v5 = [(TILanguageModelOfflineLearningHandleMecabra *)self wordSearch];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  wordSearch = [(TILanguageModelOfflineLearningHandleMecabra *)self wordSearch];
+  v6 = wordSearch;
+  if (wordSearch)
   {
-    [v5 setLanguageModelAdaptationContext:v4];
-    [(TILanguageModelOfflineLearningHandle *)self setCurrentAdaptationContext:v4];
-    v7 = [(TILanguageModelOfflineLearningHandle *)self lastAdaptationDate];
+    [wordSearch setLanguageModelAdaptationContext:contextCopy];
+    [(TILanguageModelOfflineLearningHandle *)self setCurrentAdaptationContext:contextCopy];
+    lastAdaptationDate = [(TILanguageModelOfflineLearningHandle *)self lastAdaptationDate];
 
-    if (!v7)
+    if (!lastAdaptationDate)
     {
       v8 = v6;
       TIDispatchSync();

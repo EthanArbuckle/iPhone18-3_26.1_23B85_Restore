@@ -11,15 +11,15 @@
   {
     v6.receiver = self;
     v6.super_class = SeymourUI_ActivityTypeIconViewAccessibility;
-    v4 = [(SeymourUI_ActivityTypeIconViewAccessibility *)&v6 accessibilityLabel];
+    accessibilityLabel = [(SeymourUI_ActivityTypeIconViewAccessibility *)&v6 accessibilityLabel];
   }
 
   else
   {
-    v4 = _accessibilityStringForHealthKitWorkoutType(v3);
+    accessibilityLabel = _accessibilityStringForHealthKitWorkoutType(v3);
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 @end

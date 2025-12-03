@@ -6,13 +6,13 @@
 
 - (id)nextObject
 {
-  v3 = [(NSEnumerator *)self->_prefixEnumerator nextObject];
-  if (!v3)
+  nextObject = [(NSEnumerator *)self->_prefixEnumerator nextObject];
+  if (!nextObject)
   {
-    v3 = [(NSEnumerator *)self->_suffixEnumerator nextObject];
+    nextObject = [(NSEnumerator *)self->_suffixEnumerator nextObject];
   }
 
-  return v3;
+  return nextObject;
 }
 
 @end

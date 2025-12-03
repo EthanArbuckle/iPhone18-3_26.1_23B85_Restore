@@ -1,10 +1,10 @@
 @interface BKCAContextDestination
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)appendSuccinctDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)appendSuccinctDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation BKCAContextDestination
@@ -17,24 +17,24 @@
   return v3;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100034F08;
   v4[3] = &unk_1000FD128;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [v3 appendProem:v5 block:v4];
+  selfCopy = self;
+  formatterCopy = formatter;
+  v3 = formatterCopy;
+  [v3 appendProem:selfCopy block:v4];
 }
 
-- (void)appendSuccinctDescriptionToFormatter:(id)a3
+- (void)appendSuccinctDescriptionToFormatter:(id)formatter
 {
-  v7 = a3;
-  v4 = [v7 appendUInt64:self->_contextID withName:@"contextID" format:1];
-  v5 = [v7 appendUInt64:self->_clientPort withName:@"clientPort" format:1];
-  v6 = [v7 appendObject:self->_inheritedSceneHostSettings withName:@"inheritedSceneHostSettings" skipIfNil:1];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendUInt64:self->_contextID withName:@"contextID" format:1];
+  v5 = [formatterCopy appendUInt64:self->_clientPort withName:@"clientPort" format:1];
+  v6 = [formatterCopy appendObject:self->_inheritedSceneHostSettings withName:@"inheritedSceneHostSettings" skipIfNil:1];
 }
 
 - (id)succinctDescription
@@ -46,11 +46,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -75,7 +75,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 2) = self->_contextID;

@@ -1,53 +1,53 @@
 @interface UGCARPPhotoCarouselViewModel
 - (CGSize)imageSizeForCell;
 - (NSString)_maps_diffableDataSourceIdentifier;
-- (UGCARPPhotoCarouselViewModel)initWithImageManager:(id)a3;
-- (int)_loadPhotoFromAsset:(id)a3 shouldDegrade:(BOOL)a4 scale:(double)a5 progressHandler:(id)a6 completion:(id)a7;
-- (void)_prepareImageThumbnailWithOriginalImage:(id)a3 targetSize:(CGSize)a4 scale:(double)a5 completion:(id)a6;
-- (void)loadOriginalImageWithDisplayScale:(double)a3 progressHandler:(id)a4 completion:(id)a5;
-- (void)loadThumbnailImageWithDisplayScale:(double)a3 completion:(id)a4;
+- (UGCARPPhotoCarouselViewModel)initWithImageManager:(id)manager;
+- (int)_loadPhotoFromAsset:(id)asset shouldDegrade:(BOOL)degrade scale:(double)scale progressHandler:(id)handler completion:(id)completion;
+- (void)_prepareImageThumbnailWithOriginalImage:(id)image targetSize:(CGSize)size scale:(double)scale completion:(id)completion;
+- (void)loadOriginalImageWithDisplayScale:(double)scale progressHandler:(id)handler completion:(id)completion;
+- (void)loadThumbnailImageWithDisplayScale:(double)scale completion:(id)completion;
 @end
 
 @implementation UGCARPPhotoCarouselViewModel
 
-- (void)_prepareImageThumbnailWithOriginalImage:(id)a3 targetSize:(CGSize)a4 scale:(double)a5 completion:(id)a6
+- (void)_prepareImageThumbnailWithOriginalImage:(id)image targetSize:(CGSize)size scale:(double)scale completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1005765F0;
   v12[3] = &unk_101627390;
-  v13 = a3;
-  v14 = a6;
-  v10 = v13;
-  v11 = v14;
-  [MapsUIUtilities resizeImageIfNeeded:v10 toFrameSize:v12 displayScale:width completion:height, a5];
+  imageCopy = image;
+  completionCopy = completion;
+  v10 = imageCopy;
+  v11 = completionCopy;
+  [MapsUIUtilities resizeImageIfNeeded:v10 toFrameSize:v12 displayScale:width completion:height, scale];
 }
 
-- (int)_loadPhotoFromAsset:(id)a3 shouldDegrade:(BOOL)a4 scale:(double)a5 progressHandler:(id)a6 completion:(id)a7
+- (int)_loadPhotoFromAsset:(id)asset shouldDegrade:(BOOL)degrade scale:(double)scale progressHandler:(id)handler completion:(id)completion
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  degradeCopy = degrade;
+  assetCopy = asset;
+  handlerCopy = handler;
+  completionCopy = completion;
   v15 = objc_opt_new();
   [v15 setNetworkAccessAllowed:1];
-  if (v10)
+  if (degradeCopy)
   {
     [v15 setDeliveryMode:0];
-    v16 = a5 * 220.0;
-    v17 = v16;
+    pixelHeight = scale * 220.0;
+    pixelWidth = pixelHeight;
   }
 
   else
   {
     [v15 setDeliveryMode:1];
-    v16 = [v12 pixelHeight];
-    v17 = [v12 pixelWidth];
+    pixelHeight = [assetCopy pixelHeight];
+    pixelWidth = [assetCopy pixelWidth];
   }
 
-  [v15 setProgressHandler:v13];
+  [v15 setProgressHandler:handlerCopy];
   objc_initWeak(&location, self);
   imageManager = self->_imageManager;
   v22[0] = _NSConcreteStackBlock;
@@ -55,11 +55,11 @@
   v22[2] = sub_1005767C8;
   v22[3] = &unk_101622198;
   objc_copyWeak(&v25, &location);
-  v19 = v12;
+  v19 = assetCopy;
   v23 = v19;
-  v20 = v14;
+  v20 = completionCopy;
   v24 = v20;
-  LODWORD(imageManager) = [(PHCachingImageManager *)imageManager requestImageForAsset:v19 targetSize:1 contentMode:v15 options:v22 resultHandler:v16, v17];
+  LODWORD(imageManager) = [(PHCachingImageManager *)imageManager requestImageForAsset:v19 targetSize:1 contentMode:v15 options:v22 resultHandler:pixelHeight, pixelWidth];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
@@ -67,20 +67,20 @@
   return imageManager;
 }
 
-- (void)loadThumbnailImageWithDisplayScale:(double)a3 completion:(id)a4
+- (void)loadThumbnailImageWithDisplayScale:(double)scale completion:(id)completion
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100576B8C;
   v15[3] = &unk_10165FEF8;
-  v6 = a4;
-  v16 = v6;
+  completionCopy = completion;
+  v16 = completionCopy;
   v7 = objc_retainBlock(v15);
   photoWithMetadata = self->_photoWithMetadata;
   if (photoWithMetadata)
   {
-    v9 = [(UGCPhotoWithMetadata *)photoWithMetadata image];
-    [(UGCARPPhotoCarouselViewModel *)self _prepareImageThumbnailWithOriginalImage:v9 targetSize:v7 scale:220.0 completion:220.0, a3];
+    image = [(UGCPhotoWithMetadata *)photoWithMetadata image];
+    [(UGCARPPhotoCarouselViewModel *)self _prepareImageThumbnailWithOriginalImage:image targetSize:v7 scale:220.0 completion:220.0, scale];
   }
 
   else
@@ -94,9 +94,9 @@
       v11[3] = &unk_101622170;
       v11[4] = self;
       v13 = vdupq_n_s64(0x406B800000000000uLL);
-      v14 = a3;
+      scaleCopy = scale;
       v12 = v7;
-      [(UGCARPPhotoCarouselViewModel *)self _loadPhotoFromAsset:asset shouldDegrade:1 scale:0 progressHandler:v11 completion:a3];
+      [(UGCARPPhotoCarouselViewModel *)self _loadPhotoFromAsset:asset shouldDegrade:1 scale:0 progressHandler:v11 completion:scale];
     }
 
     else
@@ -106,15 +106,15 @@
   }
 }
 
-- (void)loadOriginalImageWithDisplayScale:(double)a3 progressHandler:(id)a4 completion:(id)a5
+- (void)loadOriginalImageWithDisplayScale:(double)scale progressHandler:(id)handler completion:(id)completion
 {
-  v8 = a4;
+  handlerCopy = handler;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100576E6C;
   v18[3] = &unk_1016220D0;
-  v9 = a5;
-  v19 = v9;
+  completionCopy = completion;
+  v19 = completionCopy;
   v10 = objc_retainBlock(v18);
   v11 = v10;
   if (self->_photoWithMetadata)
@@ -131,13 +131,13 @@
       v16[1] = 3221225472;
       v16[2] = sub_100576F18;
       v16[3] = &unk_101622120;
-      v17 = v8;
+      v17 = handlerCopy;
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_100577008;
       v14[3] = &unk_101622148;
       v15 = v11;
-      [(UGCARPPhotoCarouselViewModel *)self _loadPhotoFromAsset:asset shouldDegrade:0 scale:v16 progressHandler:v14 completion:a3];
+      [(UGCARPPhotoCarouselViewModel *)self _loadPhotoFromAsset:asset shouldDegrade:0 scale:v16 progressHandler:v14 completion:scale];
 
       goto LABEL_6;
     }
@@ -154,11 +154,11 @@ LABEL_6:
   photoWithMetadata = self->_photoWithMetadata;
   if (photoWithMetadata)
   {
-    v4 = [(UGCPhotoWithMetadata *)photoWithMetadata image];
-    [v4 size];
+    image = [(UGCPhotoWithMetadata *)photoWithMetadata image];
+    [image size];
     v6 = v5;
-    v7 = [(UGCPhotoWithMetadata *)self->_photoWithMetadata image];
-    [v7 size];
+    image2 = [(UGCPhotoWithMetadata *)self->_photoWithMetadata image];
+    [image2 size];
     v9 = v6 / v8;
 
     v10 = v9 * 220.0;
@@ -215,22 +215,22 @@ LABEL_12:
 
 - (NSString)_maps_diffableDataSourceIdentifier
 {
-  v3 = [(UGCARPPhotoCarouselViewModel *)self identifier];
-  v4 = [v3 stringByAppendingFormat:@"%d", self->_enabled];
+  identifier = [(UGCARPPhotoCarouselViewModel *)self identifier];
+  v4 = [identifier stringByAppendingFormat:@"%d", self->_enabled];
 
   return v4;
 }
 
-- (UGCARPPhotoCarouselViewModel)initWithImageManager:(id)a3
+- (UGCARPPhotoCarouselViewModel)initWithImageManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = UGCARPPhotoCarouselViewModel;
   v6 = [(UGCARPPhotoCarouselViewModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageManager, a3);
+    objc_storeStrong(&v6->_imageManager, manager);
     v7->_enabled = 1;
   }
 

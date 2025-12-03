@@ -1,28 +1,28 @@
 @interface HKBloodPressureCategoryContext
-- (HKBloodPressureCategoryContext)initWithMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 classificationManager:(id)a6 baseDisplayType:(id)a7 categoryData:(id)a8;
-- (id)highlightedBloodPressureCoordinateWithCoordinate:(id)a3 originalCoordinate:(id)a4;
-- (void)overlayStateWillChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (HKBloodPressureCategoryContext)initWithMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller classificationManager:(id)manager baseDisplayType:(id)type categoryData:(id)data;
+- (id)highlightedBloodPressureCoordinateWithCoordinate:(id)coordinate originalCoordinate:(id)originalCoordinate;
+- (void)overlayStateWillChange:(BOOL)change contextItem:(id)item chartController:(id)controller;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation HKBloodPressureCategoryContext
 
-- (HKBloodPressureCategoryContext)initWithMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 classificationManager:(id)a6 baseDisplayType:(id)a7 categoryData:(id)a8
+- (HKBloodPressureCategoryContext)initWithMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller classificationManager:(id)manager baseDisplayType:(id)type categoryData:(id)data
 {
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
+  itemsCopy = items;
+  typeCopy = type;
+  dataCopy = data;
   v41.receiver = self;
   v41.super_class = HKBloodPressureCategoryContext;
-  v17 = [(HKBloodPressureOverlayContext *)&v41 initWithMode:a3 applicationItems:v14 overlayChartController:a5 classificationManager:a6];
+  v17 = [(HKBloodPressureOverlayContext *)&v41 initWithMode:mode applicationItems:itemsCopy overlayChartController:controller classificationManager:manager];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_categoryData, a8);
-    objc_storeStrong(&v18->_baseDisplayType, a7);
+    objc_storeStrong(&v17->_categoryData, data);
+    objc_storeStrong(&v18->_baseDisplayType, type);
     v19 = [HKBloodPressureOverlayDataSourceDelegate alloc];
-    v20 = [v14 healthStore];
-    v21 = [(HKBloodPressureOverlayDataSourceDelegate *)v19 initWithClassificationCategoryData:v16 healthStore:v20 baseDisplayType:v15];
+    healthStore = [itemsCopy healthStore];
+    v21 = [(HKBloodPressureOverlayDataSourceDelegate *)v19 initWithClassificationCategoryData:dataCopy healthStore:healthStore baseDisplayType:typeCopy];
     dataSourceDelegate = v18->_dataSourceDelegate;
     v18->_dataSourceDelegate = v21;
 
@@ -36,9 +36,9 @@
     overlayDisplayType = v18->_overlayDisplayType;
     v18->_overlayDisplayType = v26;
 
-    v28 = [(HKBloodPressureOverlayContext *)v18 healthStore];
+    healthStore2 = [(HKBloodPressureOverlayContext *)v18 healthStore];
     v40 = 0;
-    v29 = [v28 dateOfBirthComponentsWithError:&v40];
+    v29 = [healthStore2 dateOfBirthComponentsWithError:&v40];
     v30 = v40;
     dateOfBirth = v18->_dateOfBirth;
     v18->_dateOfBirth = v29;
@@ -54,38 +54,38 @@
     }
 
     v33 = [HKDateCoordinateTransform alloc];
-    v34 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-    v35 = [(HKDateCoordinateTransform *)v33 initWithCurrentCalendar:v34];
+    hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+    v35 = [(HKDateCoordinateTransform *)v33 initWithCurrentCalendar:hk_gregorianCalendar];
     dateCoordinateTransform = v18->_dateCoordinateTransform;
     v18->_dateCoordinateTransform = v35;
 
-    v37 = [(HKBloodPressureClassificationCategoryData *)v18->_categoryData identifier];
-    v38 = [(HKBloodPressureOverlayContext *)v18 _bloodPressureContextItemWithCategory:v37 count:0 unitString:&stru_1F42FFBE0];
+    identifier = [(HKBloodPressureClassificationCategoryData *)v18->_categoryData identifier];
+    v38 = [(HKBloodPressureOverlayContext *)v18 _bloodPressureContextItemWithCategory:identifier count:0 unitString:&stru_1F42FFBE0];
     [(HKBloodPressureOverlayContext *)v18 setLastUpdatedItem:v38];
   }
 
   return v18;
 }
 
-- (void)overlayStateWillChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5
+- (void)overlayStateWillChange:(BOOL)change contextItem:(id)item chartController:(id)controller
 {
-  v6 = a3;
+  changeCopy = change;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HKBloodPressureOverlayContext *)self lastUpdatedItem];
-  v11 = [v8 isEqual:v10];
+  itemCopy = item;
+  controllerCopy = controller;
+  lastUpdatedItem = [(HKBloodPressureOverlayContext *)self lastUpdatedItem];
+  v11 = [itemCopy isEqual:lastUpdatedItem];
 
   if (v11)
   {
-    if (v6)
+    if (changeCopy)
     {
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v12 = [v9 supportedTimeScopes];
-      v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      supportedTimeScopes = [controllerCopy supportedTimeScopes];
+      v13 = [supportedTimeScopes countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v13)
       {
         v14 = v13;
@@ -97,10 +97,10 @@
           {
             if (*v21 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(supportedTimeScopes);
             }
 
-            v17 = [v9 primaryGraphSeriesForTimeScope:{objc_msgSend(*(*(&v20 + 1) + 8 * v16), "integerValue")}];
+            v17 = [controllerCopy primaryGraphSeriesForTimeScope:{objc_msgSend(*(*(&v20 + 1) + 8 * v16), "integerValue")}];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -111,51 +111,51 @@
           }
 
           while (v14 != v16);
-          v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v14 = [supportedTimeScopes countByEnumeratingWithState:&v20 objects:v24 count:16];
         }
 
         while (v14);
       }
     }
 
-    v18 = self;
-    v19 = v6;
+    selfCopy2 = self;
+    v19 = changeCopy;
   }
 
   else
   {
-    v18 = self;
+    selfCopy2 = self;
     v19 = 0;
   }
 
-  [(HKBloodPressureCategoryContext *)v18 setOverlayActivated:v19];
+  [(HKBloodPressureCategoryContext *)selfCopy2 setOverlayActivated:v19];
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  intervalCopy = interval;
+  controllerCopy = controller;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v14 = [(HKBloodPressureOverlayContext *)self overlayChartController];
-  v15 = [v14 primaryDisplayType];
-  v16 = [HKOverlayRoomBloodPressureViewController bloodPressureDisplayType:v15];
+  overlayChartController = [(HKBloodPressureOverlayContext *)self overlayChartController];
+  primaryDisplayType = [overlayChartController primaryDisplayType];
+  v16 = [HKOverlayRoomBloodPressureViewController bloodPressureDisplayType:primaryDisplayType];
 
-  v17 = [(HKBloodPressureCategoryContext *)self categoryData];
-  v18 = [(HKBloodPressureOverlayContext *)self overlayChartController];
-  v19 = [v11 startDate];
-  v20 = [v11 endDate];
+  categoryData = [(HKBloodPressureCategoryContext *)self categoryData];
+  overlayChartController2 = [(HKBloodPressureOverlayContext *)self overlayChartController];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __117__HKBloodPressureCategoryContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke;
   v23[3] = &unk_1E81BA7A8;
   objc_copyWeak(v26, &location);
-  v21 = v17;
+  v21 = categoryData;
   v24 = v21;
-  v26[1] = a5;
-  v22 = v13;
+  v26[1] = scope;
+  v22 = completionCopy;
   v25 = v22;
-  [v18 cachedDataForStandardDisplayType:v16 timeScope:a5 resolution:0 startDate:v19 endDate:v20 completion:v23];
+  [overlayChartController2 cachedDataForStandardDisplayType:v16 timeScope:scope resolution:0 startDate:startDate endDate:endDate completion:v23];
 
   objc_destroyWeak(v26);
   objc_destroyWeak(&location);
@@ -199,34 +199,34 @@ void __117__HKBloodPressureCategoryContext_updateContextItemForDateInterval_over
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)highlightedBloodPressureCoordinateWithCoordinate:(id)a3 originalCoordinate:(id)a4
+- (id)highlightedBloodPressureCoordinateWithCoordinate:(id)coordinate originalCoordinate:(id)originalCoordinate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
+  coordinateCopy = coordinate;
+  originalCoordinateCopy = originalCoordinate;
+  userInfo = [coordinateCopy userInfo];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_28:
-    v63 = 0;
+    identifier3 = 0;
     goto LABEL_32;
   }
 
-  v10 = [v6 userInfo];
-  v11 = [(HKBloodPressureCategoryContext *)self dateOfBirth];
+  userInfo2 = [coordinateCopy userInfo];
+  dateOfBirth = [(HKBloodPressureCategoryContext *)self dateOfBirth];
 
-  if (v11)
+  if (dateOfBirth)
   {
-    v12 = [(HKBloodPressureCategoryContext *)self dateCoordinateTransform];
-    v13 = [v7 systolicCoordinate];
-    [v13 endXValue];
-    v14 = [v12 valueForCoordinate:?];
+    dateCoordinateTransform = [(HKBloodPressureCategoryContext *)self dateCoordinateTransform];
+    systolicCoordinate = [originalCoordinateCopy systolicCoordinate];
+    [systolicCoordinate endXValue];
+    v14 = [dateCoordinateTransform valueForCoordinate:?];
 
     v15 = MEMORY[0x1E696AD98];
-    v16 = [(HKBloodPressureCategoryContext *)self dateOfBirth];
-    v17 = [v15 numberWithInteger:{objc_msgSend(v16, "hk_ageWithCurrentDate:", v14)}];
+    dateOfBirth2 = [(HKBloodPressureCategoryContext *)self dateOfBirth];
+    v17 = [v15 numberWithInteger:{objc_msgSend(dateOfBirth2, "hk_ageWithCurrentDate:", v14)}];
   }
 
   else
@@ -236,59 +236,59 @@ LABEL_28:
 
   if (_HKBloodPressureOverlayClassificationUsesMinMax())
   {
-    v112 = v10;
+    v112 = userInfo2;
     v18 = MEMORY[0x1E696C348];
-    v19 = [MEMORY[0x1E696C510] millimeterOfMercuryUnit];
-    v20 = [v7 systolicCoordinate];
-    [v20 max];
-    v22 = [v18 quantityWithUnit:v19 doubleValue:v21];
+    millimeterOfMercuryUnit = [MEMORY[0x1E696C510] millimeterOfMercuryUnit];
+    systolicCoordinate2 = [originalCoordinateCopy systolicCoordinate];
+    [systolicCoordinate2 max];
+    v22 = [v18 quantityWithUnit:millimeterOfMercuryUnit doubleValue:v21];
 
     v23 = MEMORY[0x1E696C348];
-    v24 = [MEMORY[0x1E696C510] millimeterOfMercuryUnit];
-    v25 = [v7 diastolicCoordinate];
-    [v25 max];
-    [v23 quantityWithUnit:v24 doubleValue:v26];
+    millimeterOfMercuryUnit2 = [MEMORY[0x1E696C510] millimeterOfMercuryUnit];
+    diastolicCoordinate = [originalCoordinateCopy diastolicCoordinate];
+    [diastolicCoordinate max];
+    [v23 quantityWithUnit:millimeterOfMercuryUnit2 doubleValue:v26];
     v28 = v27 = v17;
 
-    v29 = [(HKBloodPressureOverlayContext *)self classificationManager];
-    v30 = [(HKBloodPressureCategoryContext *)self categoryData];
+    classificationManager = [(HKBloodPressureOverlayContext *)self classificationManager];
+    categoryData = [(HKBloodPressureCategoryContext *)self categoryData];
     v109 = v28;
     v110 = v22;
-    v31 = [v29 categoryForClassificationGuidelines:objc_msgSend(v30 systolic:"classificationGuidelines") diastolic:v22 age:{v28, v27}];
+    v31 = [classificationManager categoryForClassificationGuidelines:objc_msgSend(categoryData systolic:"classificationGuidelines") diastolic:v22 age:{v28, v27}];
 
     v32 = MEMORY[0x1E696C348];
-    v33 = [MEMORY[0x1E696C510] millimeterOfMercuryUnit];
-    v34 = [v7 systolicCoordinate];
-    [v34 min];
-    v36 = [v32 quantityWithUnit:v33 doubleValue:v35];
+    millimeterOfMercuryUnit3 = [MEMORY[0x1E696C510] millimeterOfMercuryUnit];
+    systolicCoordinate3 = [originalCoordinateCopy systolicCoordinate];
+    [systolicCoordinate3 min];
+    v36 = [v32 quantityWithUnit:millimeterOfMercuryUnit3 doubleValue:v35];
 
     v37 = MEMORY[0x1E696C348];
     v38 = v36;
-    v39 = [MEMORY[0x1E696C510] millimeterOfMercuryUnit];
-    v40 = [v7 diastolicCoordinate];
-    [v40 min];
-    v42 = [v37 quantityWithUnit:v39 doubleValue:v41];
+    millimeterOfMercuryUnit4 = [MEMORY[0x1E696C510] millimeterOfMercuryUnit];
+    diastolicCoordinate2 = [originalCoordinateCopy diastolicCoordinate];
+    [diastolicCoordinate2 min];
+    v42 = [v37 quantityWithUnit:millimeterOfMercuryUnit4 doubleValue:v41];
 
-    v43 = [(HKBloodPressureOverlayContext *)self classificationManager];
-    v44 = [(HKBloodPressureCategoryContext *)self categoryData];
+    classificationManager2 = [(HKBloodPressureOverlayContext *)self classificationManager];
+    categoryData2 = [(HKBloodPressureCategoryContext *)self categoryData];
     v108 = v38;
     v111 = v27;
-    v45 = [v43 categoryForClassificationGuidelines:objc_msgSend(v44 systolic:"classificationGuidelines") diastolic:v38 age:{v42, v27}];
+    v45 = [classificationManager2 categoryForClassificationGuidelines:objc_msgSend(categoryData2 systolic:"classificationGuidelines") diastolic:v38 age:{v42, v27}];
 
-    v46 = [(HKBloodPressureCategoryContext *)self categoryData];
-    v47 = [v46 identifier];
-    v48 = v47;
+    categoryData3 = [(HKBloodPressureCategoryContext *)self categoryData];
+    identifier = [categoryData3 identifier];
+    v48 = identifier;
     v49 = v31;
-    if (v31 == v47)
+    if (v31 == identifier)
     {
-      v64 = [(HKBloodPressureCategoryContext *)self categoryData];
-      [v64 identifier];
+      categoryData4 = [(HKBloodPressureCategoryContext *)self categoryData];
+      [categoryData4 identifier];
       v65 = v107 = v31;
 
       v49 = v107;
       if (v45 == v65)
       {
-        v63 = v6;
+        identifier3 = coordinateCopy;
         v70 = 0;
         v68 = v112;
         goto LABEL_27;
@@ -299,40 +299,40 @@ LABEL_28:
     {
     }
 
-    v66 = [(HKBloodPressureCategoryContext *)self categoryData];
-    v67 = [v66 identifier];
+    categoryData5 = [(HKBloodPressureCategoryContext *)self categoryData];
+    identifier2 = [categoryData5 identifier];
 
     v68 = v112;
-    if (v49 == v67)
+    if (v49 == identifier2)
     {
-      v71 = [v6 systolicCoordinate];
-      [v71 max];
+      systolicCoordinate4 = [coordinateCopy systolicCoordinate];
+      [systolicCoordinate4 max];
       v73 = v72;
       v75 = v74;
-      v76 = [v6 diastolicCoordinate];
-      v77 = [v76 max];
+      diastolicCoordinate3 = [coordinateCopy diastolicCoordinate];
+      v77 = [diastolicCoordinate3 max];
     }
 
     else
     {
-      v69 = [(HKBloodPressureCategoryContext *)self categoryData];
-      v63 = [v69 identifier];
+      categoryData6 = [(HKBloodPressureCategoryContext *)self categoryData];
+      identifier3 = [categoryData6 identifier];
 
-      if (v45 != v63)
+      if (v45 != identifier3)
       {
         v70 = 1;
         goto LABEL_27;
       }
 
-      v71 = [v6 systolicCoordinate];
-      [v71 min];
+      systolicCoordinate4 = [coordinateCopy systolicCoordinate];
+      [systolicCoordinate4 min];
       v73 = v95;
       v75 = v96;
-      v76 = [v6 diastolicCoordinate];
-      v77 = [v76 min];
+      diastolicCoordinate3 = [coordinateCopy diastolicCoordinate];
+      v77 = [diastolicCoordinate3 min];
     }
 
-    v63 = __102__HKBloodPressureCategoryContext_highlightedBloodPressureCoordinateWithCoordinate_originalCoordinate___block_invoke(v73, v75, v78, v79, v77, v112);
+    identifier3 = __102__HKBloodPressureCategoryContext_highlightedBloodPressureCoordinateWithCoordinate_originalCoordinate___block_invoke(v73, v75, v78, v79, v77, v112);
 
     v70 = 0;
 LABEL_27:
@@ -345,13 +345,13 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v50 = [v7 systolicCoordinate];
-  [v50 avg];
+  systolicCoordinate5 = [originalCoordinateCopy systolicCoordinate];
+  [systolicCoordinate5 avg];
   v52 = v51;
   v54 = v53;
 
-  v55 = [v7 diastolicCoordinate];
-  [v55 avg];
+  diastolicCoordinate4 = [originalCoordinateCopy diastolicCoordinate];
+  [diastolicCoordinate4 avg];
   v57 = v56;
   v59 = v58;
 
@@ -366,50 +366,50 @@ LABEL_27:
       [HKBloodPressureCategoryContext highlightedBloodPressureCoordinateWithCoordinate:v62 originalCoordinate:?];
     }
 
-    v63 = 0;
+    identifier3 = 0;
   }
 
   else
   {
     v80 = MEMORY[0x1E696C348];
-    v81 = [MEMORY[0x1E696C510] millimeterOfMercuryUnit];
-    v82 = [v7 systolicCoordinate];
-    [v82 avg];
-    v84 = [v80 quantityWithUnit:v81 doubleValue:v83];
+    millimeterOfMercuryUnit5 = [MEMORY[0x1E696C510] millimeterOfMercuryUnit];
+    systolicCoordinate6 = [originalCoordinateCopy systolicCoordinate];
+    [systolicCoordinate6 avg];
+    v84 = [v80 quantityWithUnit:millimeterOfMercuryUnit5 doubleValue:v83];
 
     v85 = MEMORY[0x1E696C348];
-    v86 = [MEMORY[0x1E696C510] millimeterOfMercuryUnit];
-    v87 = [v7 diastolicCoordinate];
-    [v87 avg];
-    v89 = [v85 quantityWithUnit:v86 doubleValue:v88];
+    millimeterOfMercuryUnit6 = [MEMORY[0x1E696C510] millimeterOfMercuryUnit];
+    diastolicCoordinate5 = [originalCoordinateCopy diastolicCoordinate];
+    [diastolicCoordinate5 avg];
+    v89 = [v85 quantityWithUnit:millimeterOfMercuryUnit6 doubleValue:v88];
 
-    v90 = [(HKBloodPressureOverlayContext *)self classificationManager];
-    v91 = [(HKBloodPressureCategoryContext *)self categoryData];
-    v92 = [v90 categoryForClassificationGuidelines:objc_msgSend(v91 systolic:"classificationGuidelines") diastolic:v84 age:{v89, v17}];
+    classificationManager3 = [(HKBloodPressureOverlayContext *)self classificationManager];
+    categoryData7 = [(HKBloodPressureCategoryContext *)self categoryData];
+    v92 = [classificationManager3 categoryForClassificationGuidelines:objc_msgSend(categoryData7 systolic:"classificationGuidelines") diastolic:v84 age:{v89, v17}];
 
-    v93 = [(HKBloodPressureCategoryContext *)self categoryData];
-    v94 = [v93 identifier];
+    categoryData8 = [(HKBloodPressureCategoryContext *)self categoryData];
+    identifier4 = [categoryData8 identifier];
 
-    if (v92 == v94)
+    if (v92 == identifier4)
     {
-      v97 = [v6 systolicCoordinate];
-      [v97 avg];
+      systolicCoordinate7 = [coordinateCopy systolicCoordinate];
+      [systolicCoordinate7 avg];
       v99 = v98;
       v101 = v100;
-      v102 = [v6 diastolicCoordinate];
-      v103 = [v102 avg];
-      v63 = __102__HKBloodPressureCategoryContext_highlightedBloodPressureCoordinateWithCoordinate_originalCoordinate___block_invoke(v99, v101, v104, v105, v103, v10);
+      diastolicCoordinate6 = [coordinateCopy diastolicCoordinate];
+      v103 = [diastolicCoordinate6 avg];
+      identifier3 = __102__HKBloodPressureCategoryContext_highlightedBloodPressureCoordinateWithCoordinate_originalCoordinate___block_invoke(v99, v101, v104, v105, v103, userInfo2);
     }
 
     else
     {
-      v63 = 0;
+      identifier3 = 0;
     }
   }
 
 LABEL_32:
 
-  return v63;
+  return identifier3;
 }
 
 _HKBloodPressureCoordinate *__102__HKBloodPressureCategoryContext_highlightedBloodPressureCoordinateWithCoordinate_originalCoordinate___block_invoke(double a1, double a2, double a3, double a4, uint64_t a5, void *a6)

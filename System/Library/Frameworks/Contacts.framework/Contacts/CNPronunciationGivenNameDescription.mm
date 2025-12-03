@@ -1,20 +1,20 @@
 @interface CNPronunciationGivenNameDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNPronunciationGivenNameDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 pronunciationGivenName];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  pronunciationGivenName = [contactCopy pronunciationGivenName];
+  if (!pronunciationGivenName)
   {
-    v4 = [v7 pronunciationGivenName];
-    if (!v4)
+    pronunciationGivenName2 = [otherCopy pronunciationGivenName];
+    if (!pronunciationGivenName2)
     {
       v11 = 1;
 LABEL_6:
@@ -23,11 +23,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 pronunciationGivenName];
-  v10 = [v7 pronunciationGivenName];
-  v11 = [v9 isEqual:v10];
+  pronunciationGivenName3 = [contactCopy pronunciationGivenName];
+  pronunciationGivenName4 = [otherCopy pronunciationGivenName];
+  v11 = [pronunciationGivenName3 isEqual:pronunciationGivenName4];
 
-  if (!v8)
+  if (!pronunciationGivenName)
   {
     goto LABEL_6;
   }
@@ -37,25 +37,25 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_pronunciationGivenName"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_pronunciationGivenName"];
 
   v7 = [v9 copy];
-  v8 = v5[15];
-  v5[15] = v7;
+  v8 = contactCopy[15];
+  contactCopy[15] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A378];
+    *d = *MEMORY[0x1E698A378];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

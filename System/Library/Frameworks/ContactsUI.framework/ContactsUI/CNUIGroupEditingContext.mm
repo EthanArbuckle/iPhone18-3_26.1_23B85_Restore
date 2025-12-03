@@ -1,26 +1,26 @@
 @interface CNUIGroupEditingContext
-- (BOOL)group:(id)a3 isInGroupArray:(id)a4;
+- (BOOL)group:(id)group isInGroupArray:(id)array;
 - (CNUIGroupEditingContext)init;
-- (CNUIGroupEditingContext)initWithOriginalGroups:(id)a3;
+- (CNUIGroupEditingContext)initWithOriginalGroups:(id)groups;
 - (NSArray)groupsToDisplayForEditing;
-- (void)addGroup:(id)a3;
-- (void)removeGroup:(id)a3;
+- (void)addGroup:(id)group;
+- (void)removeGroup:(id)group;
 @end
 
 @implementation CNUIGroupEditingContext
 
 - (NSArray)groupsToDisplayForEditing
 {
-  v3 = [(CNUIGroupEditingContext *)self originalGroups];
+  originalGroups = [(CNUIGroupEditingContext *)self originalGroups];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__CNUIGroupEditingContext_groupsToDisplayForEditing__block_invoke;
   v8[3] = &unk_1E74E49C0;
   v8[4] = self;
-  v4 = [v3 _cn_filter:v8];
+  v4 = [originalGroups _cn_filter:v8];
 
-  v5 = [(CNUIGroupEditingContext *)self addedGroups];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  addedGroups = [(CNUIGroupEditingContext *)self addedGroups];
+  v6 = [v4 arrayByAddingObjectsFromArray:addedGroups];
 
   return v6;
 }
@@ -35,18 +35,18 @@ uint64_t __52__CNUIGroupEditingContext_groupsToDisplayForEditing__block_invoke(u
   return v2 ^ 1;
 }
 
-- (BOOL)group:(id)a3 isInGroupArray:(id)a4
+- (BOOL)group:(id)group isInGroupArray:(id)array
 {
-  v5 = a3;
+  groupCopy = group;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__CNUIGroupEditingContext_group_isInGroupArray___block_invoke;
   v8[3] = &unk_1E74E49C0;
-  v9 = v5;
-  v6 = v5;
-  LOBYTE(a4) = [a4 _cn_any:v8];
+  v9 = groupCopy;
+  v6 = groupCopy;
+  LOBYTE(array) = [array _cn_any:v8];
 
-  return a4;
+  return array;
 }
 
 uint64_t __48__CNUIGroupEditingContext_group_isInGroupArray___block_invoke(uint64_t a1, void *a2)
@@ -58,35 +58,35 @@ uint64_t __48__CNUIGroupEditingContext_group_isInGroupArray___block_invoke(uint6
   return v5;
 }
 
-- (void)removeGroup:(id)a3
+- (void)removeGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(CNUIGroupEditingContext *)self originalGroups];
-  if (![(CNUIGroupEditingContext *)self group:v4 isInGroupArray:v5])
+  groupCopy = group;
+  originalGroups = [(CNUIGroupEditingContext *)self originalGroups];
+  if (![(CNUIGroupEditingContext *)self group:groupCopy isInGroupArray:originalGroups])
   {
     goto LABEL_4;
   }
 
-  v6 = [(CNUIGroupEditingContext *)self removedGroups];
-  v7 = [(CNUIGroupEditingContext *)self group:v4 isInGroupArray:v6];
+  removedGroups = [(CNUIGroupEditingContext *)self removedGroups];
+  v7 = [(CNUIGroupEditingContext *)self group:groupCopy isInGroupArray:removedGroups];
 
   if (!v7)
   {
-    v5 = [(CNUIGroupEditingContext *)self removedGroups];
-    v8 = [v5 arrayByAddingObject:v4];
+    originalGroups = [(CNUIGroupEditingContext *)self removedGroups];
+    v8 = [originalGroups arrayByAddingObject:groupCopy];
     [(CNUIGroupEditingContext *)self setRemovedGroups:v8];
 
 LABEL_4:
   }
 
-  v9 = [(CNUIGroupEditingContext *)self addedGroups];
+  addedGroups = [(CNUIGroupEditingContext *)self addedGroups];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __39__CNUIGroupEditingContext_removeGroup___block_invoke;
   v12[3] = &unk_1E74E49C0;
-  v13 = v4;
-  v10 = v4;
-  v11 = [v9 _cn_filter:v12];
+  v13 = groupCopy;
+  v10 = groupCopy;
+  v11 = [addedGroups _cn_filter:v12];
   [(CNUIGroupEditingContext *)self setAddedGroups:v11];
 }
 
@@ -99,35 +99,35 @@ uint64_t __39__CNUIGroupEditingContext_removeGroup___block_invoke(uint64_t a1, v
   return v5 ^ 1u;
 }
 
-- (void)addGroup:(id)a3
+- (void)addGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(CNUIGroupEditingContext *)self originalGroups];
-  if ([(CNUIGroupEditingContext *)self group:v4 isInGroupArray:v5])
+  groupCopy = group;
+  originalGroups = [(CNUIGroupEditingContext *)self originalGroups];
+  if ([(CNUIGroupEditingContext *)self group:groupCopy isInGroupArray:originalGroups])
   {
     goto LABEL_4;
   }
 
-  v6 = [(CNUIGroupEditingContext *)self addedGroups];
-  v7 = [(CNUIGroupEditingContext *)self group:v4 isInGroupArray:v6];
+  addedGroups = [(CNUIGroupEditingContext *)self addedGroups];
+  v7 = [(CNUIGroupEditingContext *)self group:groupCopy isInGroupArray:addedGroups];
 
   if (!v7)
   {
-    v5 = [(CNUIGroupEditingContext *)self addedGroups];
-    v8 = [v5 arrayByAddingObject:v4];
+    originalGroups = [(CNUIGroupEditingContext *)self addedGroups];
+    v8 = [originalGroups arrayByAddingObject:groupCopy];
     [(CNUIGroupEditingContext *)self setAddedGroups:v8];
 
 LABEL_4:
   }
 
-  v9 = [(CNUIGroupEditingContext *)self removedGroups];
+  removedGroups = [(CNUIGroupEditingContext *)self removedGroups];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __36__CNUIGroupEditingContext_addGroup___block_invoke;
   v12[3] = &unk_1E74E49C0;
-  v13 = v4;
-  v10 = v4;
-  v11 = [v9 _cn_filter:v12];
+  v13 = groupCopy;
+  v10 = groupCopy;
+  v11 = [removedGroups _cn_filter:v12];
   [(CNUIGroupEditingContext *)self setRemovedGroups:v11];
 }
 
@@ -140,14 +140,14 @@ uint64_t __36__CNUIGroupEditingContext_addGroup___block_invoke(uint64_t a1, void
   return v5 ^ 1u;
 }
 
-- (CNUIGroupEditingContext)initWithOriginalGroups:(id)a3
+- (CNUIGroupEditingContext)initWithOriginalGroups:(id)groups
 {
-  v5 = a3;
+  groupsCopy = groups;
   v6 = [(CNUIGroupEditingContext *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_originalGroups, a3);
+    objc_storeStrong(&v6->_originalGroups, groups);
     v8 = v7;
   }
 

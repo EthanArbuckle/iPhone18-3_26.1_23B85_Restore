@@ -1,42 +1,42 @@
 @interface SPRMonitorManager
-- (BOOL)storeAuditLog:(id)a3 error:(id *)a4;
-- (id)sendAuditLogsAndReturnError:(id *)a3;
-- (id)sendIncidentLog:(id)a3 error:(id *)a4;
+- (BOOL)storeAuditLog:(id)log error:(id *)error;
+- (id)sendAuditLogsAndReturnError:(id *)error;
+- (id)sendIncidentLog:(id)log error:(id *)error;
 @end
 
 @implementation SPRMonitorManager
 
-- (BOOL)storeAuditLog:(id)a3 error:(id *)a4
+- (BOOL)storeAuditLog:(id)log error:(id *)error
 {
-  v6 = objc_msgSend_errorWithCode_(SPRError, a2, 7002, a4, v4);
+  v6 = objc_msgSend_errorWithCode_(SPRError, a2, 7002, error, v4);
 
-  if (a4 && v6)
+  if (error && v6)
   {
-    *a4 = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
+    *error = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
   }
 
   return 0;
 }
 
-- (id)sendAuditLogsAndReturnError:(id *)a3
+- (id)sendAuditLogsAndReturnError:(id *)error
 {
   v6 = objc_msgSend_errorWithCode_(SPRError, a2, 7002, v3, v4);
 
-  if (a3 && v6)
+  if (error && v6)
   {
-    *a3 = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
+    *error = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
   }
 
   return 0;
 }
 
-- (id)sendIncidentLog:(id)a3 error:(id *)a4
+- (id)sendIncidentLog:(id)log error:(id *)error
 {
-  v6 = objc_msgSend_errorWithCode_(SPRError, a2, 7002, a4, v4);
+  v6 = objc_msgSend_errorWithCode_(SPRError, a2, 7002, error, v4);
 
-  if (a4 && v6)
+  if (error && v6)
   {
-    *a4 = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
+    *error = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
   }
 
   return 0;

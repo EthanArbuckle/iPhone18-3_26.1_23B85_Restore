@@ -2,35 +2,35 @@
 - (BOOL)hasSentRAPDU;
 - (BOOL)hasTransactionEnded;
 - (BOOL)isFieldPresent;
-- (BOOL)setAlwaysOn:(BOOL)a3;
-- (NFSecureElementHandle)initWithID:(int)a3 driverWrapper:(id)a4 seInfo:(id)a5;
-- (id)transceive:(id)a3 toOS:(int64_t)a4 redact:(BOOL)a5 error:(id *)a6;
+- (BOOL)setAlwaysOn:(BOOL)on;
+- (NFSecureElementHandle)initWithID:(int)d driverWrapper:(id)wrapper seInfo:(id)info;
+- (id)transceive:(id)transceive toOS:(int64_t)s redact:(BOOL)redact error:(id *)error;
 @end
 
 @implementation NFSecureElementHandle
 
-- (NFSecureElementHandle)initWithID:(int)a3 driverWrapper:(id)a4 seInfo:(id)a5
+- (NFSecureElementHandle)initWithID:(int)d driverWrapper:(id)wrapper seInfo:(id)info
 {
-  v9 = a4;
-  v10 = a5;
+  wrapperCopy = wrapper;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = NFSecureElementHandle;
   v11 = [(NFSecureElementHandle *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_identifier = a3;
-    objc_storeStrong(&v11->_driver, a4);
-    objc_storeStrong(&v12->_info, a5);
+    v11->_identifier = d;
+    objc_storeStrong(&v11->_driver, wrapper);
+    objc_storeStrong(&v12->_info, info);
   }
 
   return v12;
 }
 
-- (id)transceive:(id)a3 toOS:(int64_t)a4 redact:(BOOL)a5 error:(id *)a6
+- (id)transceive:(id)transceive toOS:(int64_t)s redact:(BOOL)redact error:(id *)error
 {
-  v7 = a5;
-  v11 = a3;
+  redactCopy = redact;
+  transceiveCopy = transceive;
   driver = self->_driver;
   if (!driver)
   {
@@ -40,12 +40,12 @@
     driver = self->_driver;
   }
 
-  v13 = sub_100016888(driver, self->_identifier, v11, a4, 0, v7, a6);
+  v13 = sub_100016888(driver, self->_identifier, transceiveCopy, s, 0, redactCopy, error);
 
   return v13;
 }
 
-- (BOOL)setAlwaysOn:(BOOL)a3
+- (BOOL)setAlwaysOn:(BOOL)on
 {
   driver = self->_driver;
   if (!driver)

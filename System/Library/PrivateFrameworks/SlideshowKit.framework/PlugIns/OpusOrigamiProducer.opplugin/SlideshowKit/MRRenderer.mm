@@ -1,182 +1,182 @@
 @interface MRRenderer
-+ (double)textScaleForResolution:(CGSize)a3;
++ (double)textScaleForResolution:(CGSize)resolution;
 - (BOOL)_doActions;
-- (BOOL)_r_prerenderWithPassParameters:(id)a3;
-- (BOOL)beginTextEditingOfElement:(id)a3 inLayer:(id)a4 callDelegate:(BOOL)a5;
-- (BOOL)beginTextEditingOfElement:(id)a3 inPlug:(id)a4 callDelegate:(BOOL)a5;
-- (BOOL)canGoToMoreSlides:(BOOL)a3;
+- (BOOL)_r_prerenderWithPassParameters:(id)parameters;
+- (BOOL)beginTextEditingOfElement:(id)element inLayer:(id)layer callDelegate:(BOOL)delegate;
+- (BOOL)beginTextEditingOfElement:(id)element inPlug:(id)plug callDelegate:(BOOL)delegate;
+- (BOOL)canGoToMoreSlides:(BOOL)slides;
 - (BOOL)getVerticesCoordinatesForCurrentlyEditedTextElement:(CGPoint *)(a3;
 - (BOOL)isFlipped;
 - (BOOL)isPlaying;
-- (BOOL)prerenderWithPassParameters:(id)a3;
-- (BOOL)requestRenderingWithin:(double)a3;
+- (BOOL)prerenderWithPassParameters:(id)parameters;
+- (BOOL)requestRenderingWithin:(double)within;
 - (CGImage)currentFrameAsCGImage;
-- (CGImage)snapshotAsCGImageForTime:(double)a3 andSize:(CGSize)a4;
-- (CGPoint)_fixPointForUnprojectionForOrientation:(CGPoint)a3;
-- (CGPoint)_fixProjectedPointForOrientation:(CGPoint)a3;
+- (CGImage)snapshotAsCGImageForTime:(double)time andSize:(CGSize)size;
+- (CGPoint)_fixPointForUnprojectionForOrientation:(CGPoint)orientation;
+- (CGPoint)_fixProjectedPointForOrientation:(CGPoint)orientation;
 - (CGPoint)contextOffset;
 - (CGSize)_maxSizeForCurrentEditingTextElement;
 - (CGSize)size;
-- (MRRenderer)initWithParameters:(id)a3;
+- (MRRenderer)initWithParameters:(id)parameters;
 - (NSString)currentFocusedSlideAsset;
-- (double)_doAction:(id)a3;
+- (double)_doAction:(id)action;
 - (double)_time;
 - (double)_unalteredTime;
-- (double)animateCurrentFocuserToSlideFocusModeWithDuration:(double)a3;
+- (double)animateCurrentFocuserToSlideFocusModeWithDuration:(double)duration;
 - (double)currentSlideshowTime;
-- (double)defaultPauseResumeOnTap:(BOOL)a3;
-- (double)enterSlideFocusModeWithState:(id)a3 animate:(BOOL)a4;
+- (double)defaultPauseResumeOnTap:(BOOL)tap;
+- (double)enterSlideFocusModeWithState:(id)state animate:(BOOL)animate;
 - (double)exitSlideFocusMode;
-- (double)exitSlideZoomMode:(BOOL)a3;
-- (double)focusedTransitionCancel:(id)a3;
-- (double)focusedTransitionEnd:(id)a3;
-- (double)focusedTransitionStart:(id)a3;
-- (double)focusedTransitionUpdate:(id)a3;
+- (double)exitSlideZoomMode:(BOOL)mode;
+- (double)focusedTransitionCancel:(id)cancel;
+- (double)focusedTransitionEnd:(id)end;
+- (double)focusedTransitionStart:(id)start;
+- (double)focusedTransitionUpdate:(id)update;
 - (double)masterClock;
-- (double)slideZoomCancel:(id)a3;
-- (double)slideZoomEnd:(id)a3;
-- (double)slideZoomStart:(id)a3;
-- (double)slideZoomUpdate:(id)a3;
-- (double)slideshowTransitionCancel:(id)a3;
-- (double)slideshowTransitionEnd:(id)a3;
-- (double)slideshowTransitionStart:(id)a3;
+- (double)slideZoomCancel:(id)cancel;
+- (double)slideZoomEnd:(id)end;
+- (double)slideZoomStart:(id)start;
+- (double)slideZoomUpdate:(id)update;
+- (double)slideshowTransitionCancel:(id)cancel;
+- (double)slideshowTransitionEnd:(id)end;
+- (double)slideshowTransitionStart:(id)start;
 - (double)time;
-- (id)_computeMatrixChainForLayer:(id)a3;
-- (id)_layerForPlugObjectID:(id)a3;
-- (id)actionByEvaluatingConditionalAction:(id)a3 withStates:(id)a4;
-- (id)chooseTransitionIDForRandomTransitionPresetID:(id)a3;
+- (id)_computeMatrixChainForLayer:(id)layer;
+- (id)_layerForPlugObjectID:(id)d;
+- (id)actionByEvaluatingConditionalAction:(id)action withStates:(id)states;
+- (id)chooseTransitionIDForRandomTransitionPresetID:(id)d;
 - (id)currentState;
 - (id)currentStateForMontageSwap;
 - (id)currentlyShowingAssetPaths;
-- (id)defaultActionsWithHitLayer:(id)a3 atPoint:(CGPoint)a4;
-- (id)layerAtPath:(id)a3 fromLayer:(id)a4;
-- (id)layerHitAtPoint:(CGPoint)a3 onlyIfHitElement:(BOOL)a4 localPoint:(CGPoint *)a5;
-- (id)plugForCurrentSublayerInNavigatorForPlug:(id)a3;
-- (id)slideInfoForCurrentElement:(id)a3;
+- (id)defaultActionsWithHitLayer:(id)layer atPoint:(CGPoint)point;
+- (id)layerAtPath:(id)path fromLayer:(id)layer;
+- (id)layerHitAtPoint:(CGPoint)point onlyIfHitElement:(BOOL)element localPoint:(CGPoint *)localPoint;
+- (id)plugForCurrentSublayerInNavigatorForPlug:(id)plug;
+- (id)slideInfoForCurrentElement:(id)element;
 - (id)slideInfosForCurrentElements;
-- (id)snapshotOfStates:(id)a3 atSize:(CGSize)a4;
+- (id)snapshotOfStates:(id)states atSize:(CGSize)size;
 - (int64_t)_maxLinesForCurrentEditingTextElement;
-- (void)_adaptToPressureLevel:(int)a3;
+- (void)_adaptToPressureLevel:(int)level;
 - (void)_cleanupGestureRecognizers;
 - (void)_createSlideFocusLayer;
-- (void)_dimLayersExceptForPathTo:(id)a3;
-- (void)_displayFPS:(double)a3 actuallyDisplay:(BOOL)a4;
+- (void)_dimLayersExceptForPathTo:(id)to;
+- (void)_displayFPS:(double)s actuallyDisplay:(BOOL)display;
 - (void)_displayHitZonesVisualFeedback;
 - (void)_displayIsPreloadingImages;
 - (void)_displayPlayingIDs;
 - (void)_displayTouchVisualFeedback;
-- (void)_doLayerTrackingAtLocation:(CGPoint)a3;
-- (void)_findAndHandleBestRecognizerInRecognizers:(id)a3;
-- (void)_playbackIsOverWithTime:(double)a3 sendNotification:(BOOL)a4;
-- (void)_r_beginMorphingToAspectRatio:(double)a3 andOrientation:(int)a4 withDuration:(double)a5;
+- (void)_doLayerTrackingAtLocation:(CGPoint)location;
+- (void)_findAndHandleBestRecognizerInRecognizers:(id)recognizers;
+- (void)_playbackIsOverWithTime:(double)time sendNotification:(BOOL)notification;
+- (void)_r_beginMorphingToAspectRatio:(double)ratio andOrientation:(int)orientation withDuration:(double)duration;
 - (void)_r_doSnapshot;
 - (void)_r_endMorphing;
 - (void)_r_pause;
 - (void)_r_render;
-- (void)_r_renderForScreenBurnTestAtTime:(double)a3;
+- (void)_r_renderForScreenBurnTestAtTime:(double)time;
 - (void)_r_renderRotation;
-- (void)_r_renderWithPassParameters:(id)a3;
+- (void)_r_renderWithPassParameters:(id)parameters;
 - (void)_r_resume;
-- (void)_r_setTime:(double)a3 isResyncing:(BOOL)a4;
+- (void)_r_setTime:(double)time isResyncing:(BOOL)resyncing;
 - (void)_r_snapshotForRotation;
 - (void)_r_startRenderTimer;
 - (void)_r_stopRenderTimer;
 - (void)_r_syncIsPlayingToOuter;
 - (void)_r_syncTimeToOuter;
-- (void)_r_updateTimeWithDisplayLinkTimestamp:(double)a3;
-- (void)_renderOnDisplayLink:(id)a3;
+- (void)_r_updateTimeWithDisplayLinkTimestamp:(double)timestamp;
+- (void)_renderOnDisplayLink:(id)link;
 - (void)_renderThreadMain;
 - (void)_startDisplayLinkOnRunloop;
 - (void)_startMonitoringThermalPressureLevelChanges;
 - (void)_stopMonitoringThermalPressureLevelChanges;
-- (void)_undimAllLayersInLayer:(id)a3;
-- (void)addAudioObject:(id)a3;
-- (void)addIDToDisplay:(id)a3 :(id)a4;
-- (void)addNavigatorToBackHistory:(id)a3;
-- (void)addNavigatorToForthHistory:(id)a3;
-- (void)applyStateForMontageSwap:(id)a3;
-- (void)beginMorphingToAspectRatio:(double)a3 andOrientation:(int)a4 withDuration:(double)a5;
+- (void)_undimAllLayersInLayer:(id)layer;
+- (void)addAudioObject:(id)object;
+- (void)addIDToDisplay:(id)display :(id)a4;
+- (void)addNavigatorToBackHistory:(id)history;
+- (void)addNavigatorToForthHistory:(id)history;
+- (void)applyStateForMontageSwap:(id)swap;
+- (void)beginMorphingToAspectRatio:(double)ratio andOrientation:(int)orientation withDuration:(double)duration;
 - (void)cleanup;
 - (void)dealloc;
 - (void)deselectAllLayers;
-- (void)deselectLayer:(id)a3;
-- (void)didGoToPreviousOrNextFocusedSlide:(BOOL)a3 withAction:(id)a4;
-- (void)dimLayersExceptForPathTo:(id)a3;
-- (void)doAction:(id)a3;
+- (void)deselectLayer:(id)layer;
+- (void)didGoToPreviousOrNextFocusedSlide:(BOOL)slide withAction:(id)action;
+- (void)dimLayersExceptForPathTo:(id)to;
+- (void)doAction:(id)action;
 - (void)dumpActiveHierarchy;
-- (void)effect:(id)a3 requestedNumberOfSlides:(unint64_t)a4 firstSlideIndexStillNeeded:(unint64_t)a5;
+- (void)effect:(id)effect requestedNumberOfSlides:(unint64_t)slides firstSlideIndexStillNeeded:(unint64_t)needed;
 - (void)endMorphing;
-- (void)endTextEditing:(BOOL)a3;
+- (void)endTextEditing:(BOOL)editing;
 - (void)goBack;
 - (void)goForth;
-- (void)gotoNextFocusedSlide:(BOOL)a3;
-- (void)gotoNextInterestingTime:(BOOL)a3;
-- (void)gotoPreviousFocusedSlide:(BOOL)a3;
-- (void)gotoPreviousInterestingTime:(BOOL)a3;
-- (void)gotoState:(id)a3;
+- (void)gotoNextFocusedSlide:(BOOL)slide;
+- (void)gotoNextInterestingTime:(BOOL)time;
+- (void)gotoPreviousFocusedSlide:(BOOL)slide;
+- (void)gotoPreviousInterestingTime:(BOOL)time;
+- (void)gotoState:(id)state;
 - (void)imagePreloadingEnded;
 - (void)jumpToNextMarker;
 - (void)jumpToPreviousMarker;
-- (void)moveNavigatorFromBackToForthHistory:(id)a3;
-- (void)moveNavigatorFromForthToBackHistory:(id)a3;
-- (void)nearingEndForSerializer:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)moveNavigatorFromBackToForthHistory:(id)history;
+- (void)moveNavigatorFromForthToBackHistory:(id)history;
+- (void)nearingEndForSerializer:(id)serializer;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)pauseSlideshow;
 - (void)processAudioObjects;
-- (void)removeAudioObject:(id)a3;
+- (void)removeAudioObject:(id)object;
 - (void)render;
-- (void)requestRendering:(BOOL)a3;
+- (void)requestRendering:(BOOL)rendering;
 - (void)resetFadeInAndOut;
 - (void)resume;
 - (void)resumeSlideshow;
-- (void)selectLayer:(id)a3;
-- (void)sendMCAction:(id)a3 fromSender:(id)a4;
-- (void)sendMCAction:(id)a3 fromSender:(id)a4 toTarget:(id)a5;
-- (void)sendNotification:(id)a3;
-- (void)setAssetManagementDelegate:(id)a3;
-- (void)setAsynchronousOperationsDelegate:(id)a3;
-- (void)setContextOffset:(CGPoint)a3;
-- (void)setCurrentLayoutIndex:(unsigned __int8)a3;
-- (void)setDisplaysFPS:(BOOL)a3;
-- (void)setEAGLContext:(id)a3;
-- (void)setLiveSlideshowDelegate:(id)a3;
-- (void)setMasterStartTime:(double)a3 andDuration:(double)a4 mode:(int)a5;
-- (void)setMode:(int)a3;
-- (void)setMontage:(id)a3;
-- (void)setOrientation:(int)a3;
-- (void)setScreenBurnTest:(BOOL)a3;
-- (void)setSize:(CGSize)a3;
-- (void)setSlideFocusModeBackgroundColor:(CGColor *)a3;
-- (void)setSlideshowTime:(double)a3;
-- (void)setTemporarySize:(CGSize)a3;
-- (void)setTime:(double)a3;
-- (void)setTimeQuantum:(double)a3;
+- (void)selectLayer:(id)layer;
+- (void)sendMCAction:(id)action fromSender:(id)sender;
+- (void)sendMCAction:(id)action fromSender:(id)sender toTarget:(id)target;
+- (void)sendNotification:(id)notification;
+- (void)setAssetManagementDelegate:(id)delegate;
+- (void)setAsynchronousOperationsDelegate:(id)delegate;
+- (void)setContextOffset:(CGPoint)offset;
+- (void)setCurrentLayoutIndex:(unsigned __int8)index;
+- (void)setDisplaysFPS:(BOOL)s;
+- (void)setEAGLContext:(id)context;
+- (void)setLiveSlideshowDelegate:(id)delegate;
+- (void)setMasterStartTime:(double)time andDuration:(double)duration mode:(int)mode;
+- (void)setMode:(int)mode;
+- (void)setMontage:(id)montage;
+- (void)setOrientation:(int)orientation;
+- (void)setScreenBurnTest:(BOOL)test;
+- (void)setSize:(CGSize)size;
+- (void)setSlideFocusModeBackgroundColor:(CGColor *)color;
+- (void)setSlideshowTime:(double)time;
+- (void)setTemporarySize:(CGSize)size;
+- (void)setTime:(double)time;
+- (void)setTimeQuantum:(double)quantum;
 - (void)stepBackward;
 - (void)stepForward;
-- (void)swapMontage:(id)a3;
-- (void)touchesBegan:(id)a3;
-- (void)touchesCancelled:(id)a3;
-- (void)touchesEnded:(id)a3;
-- (void)touchesMoved:(id)a3;
-- (void)transitionToNextPlugInContainerOfPlug:(id)a3;
-- (void)transitionToPreviousPlugInContainerOfPlug:(id)a3;
+- (void)swapMontage:(id)montage;
+- (void)touchesBegan:(id)began;
+- (void)touchesCancelled:(id)cancelled;
+- (void)touchesEnded:(id)ended;
+- (void)touchesMoved:(id)moved;
+- (void)transitionToNextPlugInContainerOfPlug:(id)plug;
+- (void)transitionToPreviousPlugInContainerOfPlug:(id)plug;
 - (void)undimAllLayers;
-- (void)updateTimeWithDisplayLinkTimestamp:(double)a3;
-- (void)warmupVideo:(BOOL)a3;
-- (void)willGoToPreviousOrNextFocusedSlide:(BOOL)a3 withAction:(id)a4 animate:(BOOL)a5;
+- (void)updateTimeWithDisplayLinkTimestamp:(double)timestamp;
+- (void)warmupVideo:(BOOL)video;
+- (void)willGoToPreviousOrNextFocusedSlide:(BOOL)slide withAction:(id)action animate:(BOOL)animate;
 @end
 
 @implementation MRRenderer
 
-- (void)doAction:(id)a3
+- (void)doAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    [a3 check];
+    [action check];
     mActions = self->mInternal->mActions;
     objc_sync_enter(mActions);
-    [(NSMutableArray *)self->mInternal->mActions addObject:a3];
+    [(NSMutableArray *)self->mInternal->mActions addObject:action];
     objc_sync_exit(mActions);
     if ([(MRRenderer *)self requestRenderingOnChanges])
     {
@@ -186,10 +186,10 @@
   }
 }
 
-- (void)sendMCAction:(id)a3 fromSender:(id)a4
+- (void)sendMCAction:(id)action fromSender:(id)sender
 {
-  v6 = [[MRAction alloc] initWithAction:a3 inRenderer:self];
-  [(MRAction *)v6 setSender:a4];
+  v6 = [[MRAction alloc] initWithAction:action inRenderer:self];
+  [(MRAction *)v6 setSender:sender];
   [(MRRenderer *)self time];
   [(MRAction *)v6 setTime:?];
   mActions = self->mInternal->mActions;
@@ -200,10 +200,10 @@
   [(MRRenderer *)self requestRendering:0];
 }
 
-- (void)sendMCAction:(id)a3 fromSender:(id)a4 toTarget:(id)a5
+- (void)sendMCAction:(id)action fromSender:(id)sender toTarget:(id)target
 {
-  v7 = [[MRAction alloc] initWithAction:a3 andTarget:a5];
-  [(MRAction *)v7 setSender:a4];
+  v7 = [[MRAction alloc] initWithAction:action andTarget:target];
+  [(MRAction *)v7 setSender:sender];
   [(MRRenderer *)self time];
   [(MRAction *)v7 setTime:?];
   mActions = self->mInternal->mActions;
@@ -214,9 +214,9 @@
   [(MRRenderer *)self requestRendering:0];
 }
 
-- (id)actionByEvaluatingConditionalAction:(id)a3 withStates:(id)a4
+- (id)actionByEvaluatingConditionalAction:(id)action withStates:(id)states
 {
-  v6 = [a3 predicate];
+  predicate = [action predicate];
   v7 = qword_1EF278;
   if (!qword_1EF278)
   {
@@ -224,7 +224,7 @@
     qword_1EF278 = v7;
   }
 
-  v8 = [v7 objectForKey:v6];
+  v8 = [v7 objectForKey:predicate];
   if (v8)
   {
     v9 = v8;
@@ -233,34 +233,34 @@
 
   else
   {
-    v9 = [[MUMathExpressionFloatBased alloc] initWithString:v6 error:0];
+    v9 = [[MUMathExpressionFloatBased alloc] initWithString:predicate error:0];
     if (v9)
     {
-      [qword_1EF278 setObject:v9 forKey:v6];
+      [qword_1EF278 setObject:v9 forKey:predicate];
     }
   }
 
-  [(MUMathExpressionFloatBased *)v9 setVariableValues:a4];
+  [(MUMathExpressionFloatBased *)v9 setVariableValues:states];
   [(MUMathExpressionFloatBased *)v9 evaluate];
   if (v10 == 0.0)
   {
 
-    return [a3 actionIfFalse];
+    return [action actionIfFalse];
   }
 
   else
   {
 
-    return [a3 actionIfTrue];
+    return [action actionIfTrue];
   }
 }
 
-- (double)_doAction:(id)a3
+- (double)_doAction:(id)action
 {
-  v5 = [a3 mcAction];
-  if (v5)
+  mcAction = [action mcAction];
+  if (mcAction)
   {
-    v6 = v5;
+    v6 = mcAction;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -273,14 +273,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [a3 resolvedTarget];
-      if (v9)
+      resolvedTarget = [action resolvedTarget];
+      if (resolvedTarget)
       {
-        v10 = v9;
-        v11 = [a3 mcAction];
-        v12 = [a3 specificObject];
+        v10 = resolvedTarget;
+        mcAction2 = [action mcAction];
+        specificObject = [action specificObject];
 
-        [v10 doTransition:v11 backwards:0 pzr:v12];
+        [v10 doTransition:mcAction2 backwards:0 pzr:specificObject];
         return result;
       }
 
@@ -290,11 +290,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [a3 resolvedTarget];
-      if (v13)
+      resolvedTarget2 = [action resolvedTarget];
+      if (resolvedTarget2)
       {
 
-        [v13 doAnimationTrigger:a3];
+        [resolvedTarget2 doAnimationTrigger:action];
         return result;
       }
 
@@ -304,13 +304,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [a3 resolvedTarget];
-      if (!v14)
+      resolvedTarget3 = [action resolvedTarget];
+      if (!resolvedTarget3)
       {
         return 0.0;
       }
 
-      [v14 doActionTrigger:a3];
+      [resolvedTarget3 doActionTrigger:action];
     }
 
     else
@@ -318,13 +318,13 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [a3 resolvedTarget];
-        if (!v15)
+        resolvedTarget4 = [action resolvedTarget];
+        if (!resolvedTarget4)
         {
           return 0.0;
         }
 
-        [v15 doStateOperation:a3];
+        [resolvedTarget4 doStateOperation:action];
       }
 
       else
@@ -332,13 +332,13 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [a3 resolvedTarget];
-          if (!v16)
+          resolvedTarget5 = [action resolvedTarget];
+          if (!resolvedTarget5)
           {
             return 0.0;
           }
 
-          [v16 doMotionTrigger:a3];
+          [resolvedTarget5 doMotionTrigger:action];
         }
 
         else
@@ -349,10 +349,10 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v23 = -[MRAction initWithAction:inRenderer:]([MRAction alloc], "initWithAction:inRenderer:", -[MRRenderer actionByEvaluatingConditionalAction:withStates:](self, "actionByEvaluatingConditionalAction:withStates:", [a3 mcAction], objc_msgSend(a3, "states")), self);
-              -[MRAction setSender:](v23, "setSender:", [a3 sender]);
-              -[MRAction setStates:](v23, "setStates:", [a3 states]);
-              [a3 time];
+              v23 = -[MRAction initWithAction:inRenderer:]([MRAction alloc], "initWithAction:inRenderer:", -[MRRenderer actionByEvaluatingConditionalAction:withStates:](self, "actionByEvaluatingConditionalAction:withStates:", [action mcAction], objc_msgSend(action, "states")), self);
+              -[MRAction setSender:](v23, "setSender:", [action sender]);
+              -[MRAction setStates:](v23, "setStates:", [action states]);
+              [action time];
               [(MRAction *)v23 setTime:?];
             }
 
@@ -369,7 +369,7 @@
                   v48 = 0u;
                   v49 = 0u;
                   v50 = 0u;
-                  v30 = [objc_msgSend(a3 "mcAction")];
+                  v30 = [objc_msgSend(action "mcAction")];
                   v31 = [v30 countByEnumeratingWithState:&v47 objects:v55 count:16];
                   if (v31)
                   {
@@ -385,9 +385,9 @@
                         }
 
                         v35 = [[MRAction alloc] initWithAction:*(*(&v47 + 1) + 8 * i) inRenderer:self];
-                        -[MRAction setSender:](v35, "setSender:", [a3 sender]);
-                        -[MRAction setStates:](v35, "setStates:", [objc_msgSend(a3 "states")]);
-                        [a3 time];
+                        -[MRAction setSender:](v35, "setSender:", [action sender]);
+                        -[MRAction setStates:](v35, "setStates:", [objc_msgSend(action "states")]);
+                        [action time];
                         [(MRAction *)v35 setTime:?];
                         [(MRRenderer *)self _doAction:v35];
                         v37 = v36;
@@ -408,32 +408,32 @@
                 return v17;
               }
 
-              v24 = [a3 resolvedTarget];
-              v25 = [v6 prefix];
-              v26 = v25;
-              if (v25)
+              resolvedTarget6 = [action resolvedTarget];
+              prefix = [v6 prefix];
+              v26 = prefix;
+              if (prefix)
               {
-                v27 = [v25 length] + 1;
-                v28 = +[NSMutableDictionary dictionaryWithDictionary:](NSMutableDictionary, "dictionaryWithDictionary:", [a3 states]);
+                v27 = [prefix length] + 1;
+                states = +[NSMutableDictionary dictionaryWithDictionary:](NSMutableDictionary, "dictionaryWithDictionary:", [action states]);
               }
 
               else
               {
-                v28 = [a3 states];
+                states = [action states];
                 v27 = 0;
               }
 
               v23 = -[MRAction initWithAction:inRenderer:]([MRAction alloc], "initWithAction:inRenderer:", [v6 action], self);
-              -[MRAction setSender:](v23, "setSender:", [a3 sender]);
-              [(MRAction *)v23 setStates:v28];
-              [a3 time];
+              -[MRAction setSender:](v23, "setSender:", [action sender]);
+              [(MRAction *)v23 setStates:states];
+              [action time];
               [(MRAction *)v23 setTime:?];
               v53 = 0u;
               v54 = 0u;
               v51 = 0u;
               v52 = 0u;
-              v40 = [v24 sublayers];
-              v41 = [v40 countByEnumeratingWithState:&v51 objects:v56 count:16];
+              sublayers = [resolvedTarget6 sublayers];
+              v41 = [sublayers countByEnumeratingWithState:&v51 objects:v56 count:16];
               if (v41)
               {
                 v42 = v41;
@@ -444,20 +444,20 @@
                   {
                     if (*v52 != v43)
                     {
-                      objc_enumerationMutation(v40);
+                      objc_enumerationMutation(sublayers);
                     }
 
                     v45 = *(*(&v51 + 1) + 8 * j);
                     if (v26)
                     {
-                      -[NSMutableDictionary setObject:forKey:](v28, "setObject:forKey:", +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [objc_msgSend(objc_msgSend(*(*(&v51 + 1) + 8 * j) "idInSupercontainer")]), @"_forEachPlugIndex");
+                      -[NSMutableDictionary setObject:forKey:](states, "setObject:forKey:", +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [objc_msgSend(objc_msgSend(*(*(&v51 + 1) + 8 * j) "idInSupercontainer")]), @"_forEachPlugIndex");
                     }
 
                     [(MRAction *)v23 setResolvedTarget:v45];
                     [(MRRenderer *)self _doAction:v23];
                   }
 
-                  v42 = [v40 countByEnumeratingWithState:&v51 objects:v56 count:16];
+                  v42 = [sublayers countByEnumeratingWithState:&v51 objects:v56 count:16];
                 }
 
                 while (v42);
@@ -470,15 +470,15 @@
             return v17;
           }
 
-          v18 = [a3 resolvedTarget];
+          resolvedTarget7 = [action resolvedTarget];
           v17 = 0.0;
-          if (!v18)
+          if (!resolvedTarget7)
           {
             return v17;
           }
 
-          v19 = v18;
-          v20 = [objc_msgSend(a3 "mcAction")];
+          v19 = resolvedTarget7;
+          v20 = [objc_msgSend(action "mcAction")];
           v21 = [v20 objectForKey:@"type"];
           if ([v21 isEqualToString:@"phaseIn"])
           {
@@ -498,7 +498,7 @@
           {
             if ([v21 isEqualToString:@"startTracking"])
             {
-              v38 = [[NSDictionary alloc] initWithObjectsAndKeys:{v19, @"layer", objc_msgSend(a3, "mcAction"), @"action", 0}];
+              v38 = [[NSDictionary alloc] initWithObjectsAndKeys:{v19, @"layer", objc_msgSend(action, "mcAction"), @"action", 0}];
               mLayerTrackings = self->mInternal->mLayerTrackings;
               if (!mLayerTrackings)
               {
@@ -517,7 +517,7 @@
               return v17;
             }
 
-            [v19 doGenericAction:a3];
+            [v19 doGenericAction:action];
           }
         }
       }
@@ -527,7 +527,7 @@
   else
   {
 
-    [a3 invoke];
+    [action invoke];
   }
 
   return result;
@@ -602,7 +602,7 @@
   return v3;
 }
 
-- (double)defaultPauseResumeOnTap:(BOOL)a3
+- (double)defaultPauseResumeOnTap:(BOOL)tap
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -645,7 +645,7 @@
   return v4 + v5;
 }
 
-- (void)setSlideshowTime:(double)a3
+- (void)setSlideshowTime:(double)time
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -653,16 +653,16 @@
   v4[2] = sub_39B84;
   v4[3] = &unk_1AA670;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = time;
   dispatch_async(mRenderDispatchQueue, v4);
 }
 
-- (BOOL)canGoToMoreSlides:(BOOL)a3
+- (BOOL)canGoToMoreSlides:(BOOL)slides
 {
-  v3 = a3;
+  slidesCopy = slides;
   v4 = [(MRRenderer *)self _layerForPlugObjectID:self->mInternal->mTransitionLayerPlugObjectID];
 
-  return [v4 canTransitionToMoreSlides:v3];
+  return [v4 canTransitionToMoreSlides:slidesCopy];
 }
 
 - (void)jumpToNextMarker
@@ -687,7 +687,7 @@
   dispatch_async(mRenderDispatchQueue, block);
 }
 
-- (void)gotoNextInterestingTime:(BOOL)a3
+- (void)gotoNextInterestingTime:(BOOL)time
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -695,11 +695,11 @@
   v4[2] = sub_3A044;
   v4[3] = &unk_1AA728;
   v4[4] = self;
-  v5 = a3;
+  timeCopy = time;
   dispatch_async(mRenderDispatchQueue, v4);
 }
 
-- (void)gotoPreviousInterestingTime:(BOOL)a3
+- (void)gotoPreviousInterestingTime:(BOOL)time
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -707,11 +707,11 @@
   v4[2] = sub_3A19C;
   v4[3] = &unk_1AA728;
   v4[4] = self;
-  v5 = a3;
+  timeCopy = time;
   dispatch_async(mRenderDispatchQueue, v4);
 }
 
-- (void)gotoNextFocusedSlide:(BOOL)a3
+- (void)gotoNextFocusedSlide:(BOOL)slide
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -722,7 +722,7 @@
   dispatch_async(mRenderDispatchQueue, block);
 }
 
-- (void)gotoPreviousFocusedSlide:(BOOL)a3
+- (void)gotoPreviousFocusedSlide:(BOOL)slide
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -733,19 +733,19 @@
   dispatch_async(mRenderDispatchQueue, block);
 }
 
-- (id)defaultActionsWithHitLayer:(id)a3 atPoint:(CGPoint)a4
+- (id)defaultActionsWithHitLayer:(id)layer atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   if (![(MRRenderer *)self cameraCaptureSession])
   {
     mSlideFocusState = self->mInternal->mSlideFocusState;
     if (!mSlideFocusState)
     {
       v8 = +[NSMutableDictionary dictionary];
-      if (a3)
+      if (layer)
       {
-        v14 = [a3 elementHitAtPoint:0 localPoint:{x, y}];
+        v14 = [layer elementHitAtPoint:0 localPoint:{x, y}];
       }
 
       else
@@ -757,7 +757,7 @@
       v24[6] = 3221225472;
       v24[7] = sub_3AF00;
       v24[8] = &unk_1AA778;
-      v24[9] = a3;
+      v24[9] = layer;
       v24[10] = v14;
       v24[11] = self;
       v24[0] = _NSConcreteStackBlock;
@@ -818,12 +818,12 @@
       goto LABEL_17;
     }
 
-    v10 = [(MRSlideFocusState *)mSlideFocusState isInZoomMode];
+    isInZoomMode = [(MRSlideFocusState *)mSlideFocusState isInZoomMode];
     v8 = +[NSMutableDictionary dictionary];
-    if (a3)
+    if (layer)
     {
-      v11 = [a3 elementHitAtPoint:0 localPoint:{x, y}];
-      if (v10)
+      v11 = [layer elementHitAtPoint:0 localPoint:{x, y}];
+      if (isInZoomMode)
       {
         if (!v11)
         {
@@ -889,7 +889,7 @@ LABEL_17:
       }
     }
 
-    else if (v10)
+    else if (isInZoomMode)
     {
       return v8;
     }
@@ -925,20 +925,20 @@ LABEL_17:
   return 0;
 }
 
-- (void)touchesBegan:(id)a3
+- (void)touchesBegan:(id)began
 {
   [(MRRenderer *)self _cleanupGestureRecognizers];
   if (self->_interactivityIsEnabled)
   {
     if ([self->mTopMRLayer isActivated])
     {
-      v51 = self;
+      selfCopy = self;
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v43 = [a3 countByEnumeratingWithState:&v59 objects:v64 count:16];
-      v4 = self;
+      v43 = [began countByEnumeratingWithState:&v59 objects:v64 count:16];
+      selfCopy2 = self;
       if (v43)
       {
         v42 = *v60;
@@ -953,35 +953,35 @@ LABEL_17:
             if (*v60 != v42)
             {
               v11 = v10;
-              objc_enumerationMutation(a3);
-              v4 = v51;
+              objc_enumerationMutation(began);
+              selfCopy2 = selfCopy;
               v10 = v11;
             }
 
             v44 = v10;
             v12 = *(*(&v59 + 1) + 8 * v10);
-            if ([(MRRenderer *)v4 displaysTouchVisualFeedback])
+            if ([(MRRenderer *)selfCopy2 displaysTouchVisualFeedback])
             {
-              mTouchesForVisualFeedback = v51->mInternal->mTouchesForVisualFeedback;
+              mTouchesForVisualFeedback = selfCopy->mInternal->mTouchesForVisualFeedback;
               objc_sync_enter(mTouchesForVisualFeedback);
-              [(NSMutableArray *)v51->mInternal->mTouchesForVisualFeedback addObject:v12];
+              [(NSMutableArray *)selfCopy->mInternal->mTouchesForVisualFeedback addObject:v12];
               objc_sync_exit(mTouchesForVisualFeedback);
             }
 
             v58 = CGPointZero;
             [v12 location];
-            mTopMRLayer = [(MRRenderer *)v51 layerHitAtPoint:1 onlyIfHitElement:&v58 localPoint:?];
+            mTopMRLayer = [(MRRenderer *)selfCopy layerHitAtPoint:1 onlyIfHitElement:&v58 localPoint:?];
             v45 = mTopMRLayer;
             if (!mTopMRLayer)
             {
               [v12 location];
               v16.f64[1] = v15;
-              v58 = vdivq_f64(vmlaq_f64(vnegq_f64(v51->mSize), v40, v16), v51->mSize);
-              mTopMRLayer = v51->mTopMRLayer;
+              v58 = vdivq_f64(vmlaq_f64(vnegq_f64(selfCopy->mSize), v40, v16), selfCopy->mSize);
+              mTopMRLayer = selfCopy->mTopMRLayer;
             }
 
-            v4 = v51;
-            if (v51->mInternal->mGestureRecognizers)
+            selfCopy2 = selfCopy;
+            if (selfCopy->mInternal->mGestureRecognizers)
             {
               if (!mTopMRLayer)
               {
@@ -993,8 +993,8 @@ LABEL_17:
             {
               v17 = mTopMRLayer;
               v18 = objc_alloc_init(NSMutableDictionary);
-              v4 = v51;
-              v51->mInternal->mGestureRecognizers = v18;
+              selfCopy2 = selfCopy;
+              selfCopy->mInternal->mGestureRecognizers = v18;
               mTopMRLayer = v17;
               if (!v17)
               {
@@ -1006,23 +1006,23 @@ LABEL_17:
             do
             {
               v50 = mTopMRLayer;
-              if (mTopMRLayer == v4->mTopMRLayer)
+              if (mTopMRLayer == selfCopy2->mTopMRLayer)
               {
-                v53 = [(MRRenderer *)v4 defaultActionsWithHitLayer:v45 atPoint:v58];
+                actions = [(MRRenderer *)selfCopy2 defaultActionsWithHitLayer:v45 atPoint:v58];
               }
 
               else
               {
-                v53 = [mTopMRLayer actions];
+                actions = [mTopMRLayer actions];
               }
 
-              if (![v53 count])
+              if (![actions count])
               {
                 goto LABEL_70;
               }
 
               v47 = [MURetainingKey retainingKeyWithObject:v50];
-              v19 = [(NSMutableDictionary *)v51->mInternal->mGestureRecognizers objectForKey:v47];
+              v19 = [(NSMutableDictionary *)selfCopy->mInternal->mGestureRecognizers objectForKey:v47];
               v20 = v19;
               if (v19)
               {
@@ -1060,18 +1060,18 @@ LABEL_17:
               }
 
               v49 = objc_alloc_init(NSMutableArray);
-              v46 = [(MRRenderer *)v51 _computeMatrixChainForLayer:v50];
+              v46 = [(MRRenderer *)selfCopy _computeMatrixChainForLayer:v50];
               if ((v52 & 1) == 0)
               {
-                v25 = [v53 objectForKey:@"onHitStart"];
-                v26 = [v53 objectForKey:@"onHitEnd"];
+                v25 = [actions objectForKey:@"onHitStart"];
+                v26 = [actions objectForKey:@"onHitEnd"];
                 if (v25 | v26)
                 {
-                  v27 = [(MRGestureRecognizer *)[MRTapGestureRecognizer alloc] initWithRenderer:v51 startAction:v25 andSender:v50];
+                  v27 = [(MRGestureRecognizer *)[MRTapGestureRecognizer alloc] initWithRenderer:selfCopy startAction:v25 andSender:v50];
                   [(MRGestureRecognizer *)v27 setRequiredTouchCount:1];
-                  -[MRGestureRecognizer setUpdateAction:](v27, "setUpdateAction:", [v53 objectForKey:@"onHitUpdate"]);
+                  -[MRGestureRecognizer setUpdateAction:](v27, "setUpdateAction:", [actions objectForKey:@"onHitUpdate"]);
                   [(MRGestureRecognizer *)v27 setEndAction:v26];
-                  -[MRGestureRecognizer setCancelAction:](v27, "setCancelAction:", [v53 objectForKey:@"onHitCancel"]);
+                  -[MRGestureRecognizer setCancelAction:](v27, "setCancelAction:", [actions objectForKey:@"onHitCancel"]);
                   [(MRGestureRecognizer *)v27 setMatrixChain:v46];
                   [(MRLayer *)v50 pixelSize];
                   [(MRGestureRecognizer *)v27 setReferenceSize:?];
@@ -1084,15 +1084,15 @@ LABEL_17:
 
               if ((v52 & 2) == 0)
               {
-                v28 = [v53 objectForKey:@"onDoubleHitStart"];
-                v29 = [v53 objectForKey:@"onDoubleHitEnd"];
+                v28 = [actions objectForKey:@"onDoubleHitStart"];
+                v29 = [actions objectForKey:@"onDoubleHitEnd"];
                 if (v28 | v29)
                 {
-                  v30 = [(MRGestureRecognizer *)[MRTapGestureRecognizer alloc] initWithRenderer:v51 startAction:v28 andSender:v50];
+                  v30 = [(MRGestureRecognizer *)[MRTapGestureRecognizer alloc] initWithRenderer:selfCopy startAction:v28 andSender:v50];
                   [(MRGestureRecognizer *)v30 setRequiredTouchCount:2];
-                  -[MRGestureRecognizer setUpdateAction:](v30, "setUpdateAction:", [v53 objectForKey:@"onDoubleHitUpdate"]);
+                  -[MRGestureRecognizer setUpdateAction:](v30, "setUpdateAction:", [actions objectForKey:@"onDoubleHitUpdate"]);
                   [(MRGestureRecognizer *)v30 setEndAction:v29];
-                  -[MRGestureRecognizer setCancelAction:](v30, "setCancelAction:", [v53 objectForKey:@"onDoubleHitCancel"]);
+                  -[MRGestureRecognizer setCancelAction:](v30, "setCancelAction:", [actions objectForKey:@"onDoubleHitCancel"]);
                   [(MRGestureRecognizer *)v30 setMatrixChain:v46];
                   [(MRLayer *)v50 pixelSize];
                   [(MRGestureRecognizer *)v30 setReferenceSize:?];
@@ -1114,15 +1114,15 @@ LABEL_17:
                 }
 
                 v33 = off_1AA7C0[v31];
-                v34 = [v53 objectForKey:v33];
+                v34 = [actions objectForKey:v33];
                 if (v34)
                 {
                   objc_opt_class();
-                  if ((objc_opt_isKindOfClass() & 1) == 0 || (v34 = [(MRRenderer *)v51 actionByEvaluatingConditionalAction:v34 withStates:[(MRLayer *)v50 persistentState]]) != 0)
+                  if ((objc_opt_isKindOfClass() & 1) == 0 || (v34 = [(MRRenderer *)selfCopy actionByEvaluatingConditionalAction:v34 withStates:[(MRLayer *)v50 persistentState]]) != 0)
                   {
-                    v35 = [[MRPanZoomRotationGestureRecognizer alloc] initWithRenderer:v51 masterAction:v34 direction:v32 andSender:v50];
+                    v35 = [[MRPanZoomRotationGestureRecognizer alloc] initWithRenderer:selfCopy masterAction:v34 direction:v32 andSender:v50];
                     v36 = off_1AA848[v31];
-                    -[MRGestureRecognizer setStartAction:](v35, "setStartAction:", [v53 objectForKey:v36]);
+                    -[MRGestureRecognizer setStartAction:](v35, "setStartAction:", [actions objectForKey:v36]);
                     v37 = 0;
                     v38 = 1;
                     if (!v35)
@@ -1131,22 +1131,22 @@ LABEL_17:
                     }
 
 LABEL_54:
-                    [(MRRenderer *)v51 interactiveTransitionTrackingBoxRadius];
+                    [(MRRenderer *)selfCopy interactiveTransitionTrackingBoxRadius];
                     [(MRPanZoomRotationGestureRecognizer *)v35 setTrackingBoxRadius:?];
-                    [(MRRenderer *)v51 interactiveTransitionProgressThreshold];
+                    [(MRRenderer *)selfCopy interactiveTransitionProgressThreshold];
                     [(MRPanZoomRotationGestureRecognizer *)v35 setProgressThreshold:?];
-                    [(MRRenderer *)v51 interactiveTransitionVelocityThreshold];
+                    [(MRRenderer *)selfCopy interactiveTransitionVelocityThreshold];
                     [(MRPanZoomRotationGestureRecognizer *)v35 setVelocityThreshold:?];
                     if (v38)
                     {
-                      -[MRGestureRecognizer setStartAction:](v35, "setStartAction:", [v53 objectForKey:v36]);
+                      -[MRGestureRecognizer setStartAction:](v35, "setStartAction:", [actions objectForKey:v36]);
                     }
 
-                    -[MRGestureRecognizer setEndAction:](v35, "setEndAction:", [v53 objectForKey:off_1AA958[v31]]);
+                    -[MRGestureRecognizer setEndAction:](v35, "setEndAction:", [actions objectForKey:off_1AA958[v31]]);
                     if ((v37 & 1) == 0)
                     {
-                      -[MRGestureRecognizer setUpdateAction:](v35, "setUpdateAction:", [v53 objectForKey:off_1AA8D0[v31]]);
-                      -[MRGestureRecognizer setCancelAction:](v35, "setCancelAction:", [v53 objectForKey:off_1AA9E0[v31]]);
+                      -[MRGestureRecognizer setUpdateAction:](v35, "setUpdateAction:", [actions objectForKey:off_1AA8D0[v31]]);
+                      -[MRGestureRecognizer setCancelAction:](v35, "setCancelAction:", [actions objectForKey:off_1AA9E0[v31]]);
                     }
 
                     if ([v34 tracksInParent])
@@ -1154,7 +1154,7 @@ LABEL_54:
                       v39 = v48;
                       if (!v48)
                       {
-                        v39 = [(MRRenderer *)v51 _computeMatrixChainForLayer:[(MRLayer *)v50 superlayer]];
+                        v39 = [(MRRenderer *)selfCopy _computeMatrixChainForLayer:[(MRLayer *)v50 superlayer]];
                       }
 
                       v48 = v39;
@@ -1183,16 +1183,16 @@ LABEL_54:
                 }
 
                 v36 = off_1AA848[v31];
-                v34 = [v53 objectForKey:v36];
+                v34 = [actions objectForKey:v36];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v34 = [(MRRenderer *)v51 actionByEvaluatingConditionalAction:v34 withStates:[(MRLayer *)v50 persistentState]];
+                  v34 = [(MRRenderer *)selfCopy actionByEvaluatingConditionalAction:v34 withStates:[(MRLayer *)v50 persistentState]];
                 }
 
                 if (v34)
                 {
-                  v35 = [[MRPanZoomRotationGestureRecognizer alloc] initWithRenderer:v51 startAction:v34 direction:v32 andSender:v50];
+                  v35 = [[MRPanZoomRotationGestureRecognizer alloc] initWithRenderer:selfCopy startAction:v34 direction:v32 andSender:v50];
                   v38 = 0;
                   v37 = 0;
                   if (!v35)
@@ -1203,16 +1203,16 @@ LABEL_54:
                   goto LABEL_54;
                 }
 
-                v34 = [v53 objectForKey:off_1AA958[v31]];
+                v34 = [actions objectForKey:off_1AA958[v31]];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v34 = [(MRRenderer *)v51 actionByEvaluatingConditionalAction:v34 withStates:[(MRLayer *)v50 persistentState]];
+                  v34 = [(MRRenderer *)selfCopy actionByEvaluatingConditionalAction:v34 withStates:[(MRLayer *)v50 persistentState]];
                 }
 
                 if (v34)
                 {
-                  v35 = [[MRPanZoomRotationGestureRecognizer alloc] initWithRenderer:v51 endAction:v34 direction:v32 andSender:v50];
+                  v35 = [[MRPanZoomRotationGestureRecognizer alloc] initWithRenderer:selfCopy endAction:v34 direction:v32 andSender:v50];
                   v38 = 0;
                   v37 = 1;
                   if (v35)
@@ -1228,12 +1228,12 @@ LABEL_66:
               while (v31 != 17);
               if ([v49 count])
               {
-                [(NSMutableDictionary *)v51->mInternal->mGestureRecognizers setObject:v49 forKey:v47];
+                [(NSMutableDictionary *)selfCopy->mInternal->mGestureRecognizers setObject:v49 forKey:v47];
               }
 
 LABEL_70:
               mTopMRLayer = [(MRLayer *)v50 superlayer];
-              v4 = v51;
+              selfCopy2 = selfCopy;
             }
 
             while (mTopMRLayer && v52 != 1023);
@@ -1242,8 +1242,8 @@ LABEL_72:
           }
 
           while ((v44 + 1) != v43);
-          v43 = [a3 countByEnumeratingWithState:&v59 objects:v64 count:16];
-          v4 = v51;
+          v43 = [began countByEnumeratingWithState:&v59 objects:v64 count:16];
+          selfCopy2 = selfCopy;
         }
 
         while (v43);
@@ -1252,18 +1252,18 @@ LABEL_72:
   }
 }
 
-- (void)touchesMoved:(id)a3
+- (void)touchesMoved:(id)moved
 {
   [(MRRenderer *)self _cleanupGestureRecognizers];
   if (self->_interactivityIsEnabled && [self->mTopMRLayer isActivated])
   {
-    v17 = self;
+    selfCopy = self;
     v4 = objc_alloc_init(NSMutableArray);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    v5 = [moved countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1274,7 +1274,7 @@ LABEL_72:
         {
           if (*v24 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(moved);
           }
 
           v9 = *(*(&v23 + 1) + 8 * i);
@@ -1282,8 +1282,8 @@ LABEL_72:
           v20 = 0u;
           v21 = 0u;
           v22 = 0u;
-          v10 = [v9 gestureRecognizers];
-          v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          gestureRecognizers = [v9 gestureRecognizers];
+          v11 = [gestureRecognizers countByEnumeratingWithState:&v19 objects:v27 count:16];
           if (v11)
           {
             v12 = v11;
@@ -1294,7 +1294,7 @@ LABEL_72:
               {
                 if (*v20 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(gestureRecognizers);
                 }
 
                 v15 = *(*(&v19 + 1) + 8 * j);
@@ -1305,38 +1305,38 @@ LABEL_72:
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+              v12 = [gestureRecognizers countByEnumeratingWithState:&v19 objects:v27 count:16];
             }
 
             while (v12);
           }
         }
 
-        v6 = [a3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v6 = [moved countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v6);
     }
 
-    v16 = v17;
-    [(MRRenderer *)v17 _findAndHandleBestRecognizerInRecognizers:v4, v17];
+    v16 = selfCopy;
+    [(MRRenderer *)selfCopy _findAndHandleBestRecognizerInRecognizers:v4, selfCopy];
 
     [(MRRenderer *)v16 _cleanupGestureRecognizers];
   }
 }
 
-- (void)touchesEnded:(id)a3
+- (void)touchesEnded:(id)ended
 {
   [(MRRenderer *)self _cleanupGestureRecognizers];
   if (self->_interactivityIsEnabled && [self->mTopMRLayer isActivated])
   {
-    v17 = self;
+    selfCopy = self;
     v4 = objc_alloc_init(NSMutableArray);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    v5 = [ended countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1347,7 +1347,7 @@ LABEL_72:
         {
           if (*v24 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(ended);
           }
 
           v9 = *(*(&v23 + 1) + 8 * i);
@@ -1355,8 +1355,8 @@ LABEL_72:
           v20 = 0u;
           v21 = 0u;
           v22 = 0u;
-          v10 = [v9 gestureRecognizers];
-          v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          gestureRecognizers = [v9 gestureRecognizers];
+          v11 = [gestureRecognizers countByEnumeratingWithState:&v19 objects:v27 count:16];
           if (v11)
           {
             v12 = v11;
@@ -1367,7 +1367,7 @@ LABEL_72:
               {
                 if (*v20 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(gestureRecognizers);
                 }
 
                 v15 = *(*(&v19 + 1) + 8 * j);
@@ -1378,27 +1378,27 @@ LABEL_72:
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+              v12 = [gestureRecognizers countByEnumeratingWithState:&v19 objects:v27 count:16];
             }
 
             while (v12);
           }
         }
 
-        v6 = [a3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v6 = [ended countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v6);
     }
 
-    v16 = v17;
-    [(MRRenderer *)v17 _findAndHandleBestRecognizerInRecognizers:v4, v17];
+    v16 = selfCopy;
+    [(MRRenderer *)selfCopy _findAndHandleBestRecognizerInRecognizers:v4, selfCopy];
 
     [(MRRenderer *)v16 _cleanupGestureRecognizers];
   }
 }
 
-- (void)touchesCancelled:(id)a3
+- (void)touchesCancelled:(id)cancelled
 {
   [(MRRenderer *)self _cleanupGestureRecognizers];
   if (self->_interactivityIsEnabled && [self->mTopMRLayer isActivated])
@@ -1407,7 +1407,7 @@ LABEL_72:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    v5 = [cancelled countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1419,7 +1419,7 @@ LABEL_72:
         {
           if (*v20 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(cancelled);
           }
 
           v9 = *(*(&v19 + 1) + 8 * v8);
@@ -1427,8 +1427,8 @@ LABEL_72:
           v16 = 0u;
           v17 = 0u;
           v18 = 0u;
-          v10 = [v9 gestureRecognizers];
-          v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+          gestureRecognizers = [v9 gestureRecognizers];
+          v11 = [gestureRecognizers countByEnumeratingWithState:&v15 objects:v23 count:16];
           if (v11)
           {
             v12 = v11;
@@ -1440,7 +1440,7 @@ LABEL_72:
               {
                 if (*v16 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(gestureRecognizers);
                 }
 
                 [*(*(&v15 + 1) + 8 * v14) abort];
@@ -1448,7 +1448,7 @@ LABEL_72:
               }
 
               while (v12 != v14);
-              v12 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+              v12 = [gestureRecognizers countByEnumeratingWithState:&v15 objects:v23 count:16];
             }
 
             while (v12);
@@ -1458,7 +1458,7 @@ LABEL_72:
         }
 
         while (v8 != v6);
-        v6 = [a3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v6 = [cancelled countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v6);
@@ -1468,13 +1468,13 @@ LABEL_72:
   }
 }
 
-- (void)_findAndHandleBestRecognizerInRecognizers:(id)a3
+- (void)_findAndHandleBestRecognizerInRecognizers:(id)recognizers
 {
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v45 objects:v52 count:16];
+  v5 = [recognizers countByEnumeratingWithState:&v45 objects:v52 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1487,7 +1487,7 @@ LABEL_72:
       {
         if (*v46 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(recognizers);
         }
 
         v11 = *(*(&v45 + 1) + 8 * i);
@@ -1502,20 +1502,20 @@ LABEL_72:
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v45 objects:v52 count:16];
+      v6 = [recognizers countByEnumeratingWithState:&v45 objects:v52 count:16];
     }
 
     while (v6);
     if (v7)
     {
       [v7 recognize];
-      v13 = [v7 sender];
-      if (v13)
+      sender = [v7 sender];
+      if (sender)
       {
-        v14 = v13;
+        superlayer = sender;
         do
         {
-          v15 = [(NSMutableDictionary *)self->mInternal->mGestureRecognizers objectForKey:[MURetainingKey retainingKeyWithObject:v14]];
+          v15 = [(NSMutableDictionary *)self->mInternal->mGestureRecognizers objectForKey:[MURetainingKey retainingKeyWithObject:superlayer]];
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
@@ -1547,18 +1547,18 @@ LABEL_72:
             while (v17);
           }
 
-          v14 = [v14 superlayer];
+          superlayer = [superlayer superlayer];
         }
 
-        while (v14);
+        while (superlayer);
       }
 
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v21 = [v7 touches];
-      v22 = [v21 countByEnumeratingWithState:&v37 objects:v50 count:16];
+      touches = [v7 touches];
+      v22 = [touches countByEnumeratingWithState:&v37 objects:v50 count:16];
       if (v22)
       {
         v23 = v22;
@@ -1569,7 +1569,7 @@ LABEL_72:
           {
             if (*v38 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(touches);
             }
 
             v26 = *(*(&v37 + 1) + 8 * k);
@@ -1577,8 +1577,8 @@ LABEL_72:
             v34 = 0u;
             v35 = 0u;
             v36 = 0u;
-            v27 = [v26 gestureRecognizers];
-            v28 = [v27 countByEnumeratingWithState:&v33 objects:v49 count:16];
+            gestureRecognizers = [v26 gestureRecognizers];
+            v28 = [gestureRecognizers countByEnumeratingWithState:&v33 objects:v49 count:16];
             if (v28)
             {
               v29 = v28;
@@ -1589,7 +1589,7 @@ LABEL_72:
                 {
                   if (*v34 != v30)
                   {
-                    objc_enumerationMutation(v27);
+                    objc_enumerationMutation(gestureRecognizers);
                   }
 
                   v32 = *(*(&v33 + 1) + 8 * m);
@@ -1599,14 +1599,14 @@ LABEL_72:
                   }
                 }
 
-                v29 = [v27 countByEnumeratingWithState:&v33 objects:v49 count:16];
+                v29 = [gestureRecognizers countByEnumeratingWithState:&v33 objects:v49 count:16];
               }
 
               while (v29);
             }
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v37 objects:v50 count:16];
+          v23 = [touches countByEnumeratingWithState:&v37 objects:v50 count:16];
         }
 
         while (v23);
@@ -1615,10 +1615,10 @@ LABEL_72:
   }
 }
 
-- (id)layerHitAtPoint:(CGPoint)a3 onlyIfHitElement:(BOOL)a4 localPoint:(CGPoint *)a5
+- (id)layerHitAtPoint:(CGPoint)point onlyIfHitElement:(BOOL)element localPoint:(CGPoint *)localPoint
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (![self->mTopMRLayer isActivated])
   {
     return 0;
@@ -1642,30 +1642,30 @@ LABEL_72:
   __asm { FMOV            V2.2D, #2.0 }
 
   v20 = vdivq_f64(vmlaq_f64(vnegq_f64(self->mSize), _Q2, v9), self->mSize);
-  v22 = a4;
-  v21 = a5;
+  elementCopy = element;
+  localPointCopy = localPoint;
   dispatch_sync(mRenderDispatchQueue, block);
   v15 = v24[5];
   _Block_object_dispose(&v23, 8);
   return v15;
 }
 
-- (void)willGoToPreviousOrNextFocusedSlide:(BOOL)a3 withAction:(id)a4 animate:(BOOL)a5
+- (void)willGoToPreviousOrNextFocusedSlide:(BOOL)slide withAction:(id)action animate:(BOOL)animate
 {
-  v5 = a5;
-  v7 = a3;
-  v9 = [(MRSlideFocusState *)self->mInternal->mSlideFocusState delegate];
+  animateCopy = animate;
+  slideCopy = slide;
+  delegate = [(MRSlideFocusState *)self->mInternal->mSlideFocusState delegate];
   mSlideFocusState = self->mInternal->mSlideFocusState;
-  if (v7)
+  if (slideCopy)
   {
-    [(MRLayer *)v9 willFocusOnNextSlideWithState:mSlideFocusState animate:v5];
-    [(MRLayerNavigator *)self->mInternal->mSlideFocusNavigator gotoNextSublayer:a4 animate:v5];
+    [(MRLayer *)delegate willFocusOnNextSlideWithState:mSlideFocusState animate:animateCopy];
+    [(MRLayerNavigator *)self->mInternal->mSlideFocusNavigator gotoNextSublayer:action animate:animateCopy];
   }
 
   else
   {
-    [(MRLayer *)v9 willFocusOnPreviousSlideWithState:mSlideFocusState animate:v5];
-    [(MRLayerNavigator *)self->mInternal->mSlideFocusNavigator gotoPreviousSublayer:a4 animate:v5];
+    [(MRLayer *)delegate willFocusOnPreviousSlideWithState:mSlideFocusState animate:animateCopy];
+    [(MRLayerNavigator *)self->mInternal->mSlideFocusNavigator gotoPreviousSublayer:action animate:animateCopy];
   }
 
   if ([(MRSlideFocusState *)self->mInternal->mSlideFocusState delegateIsTransitioningToo])
@@ -1676,24 +1676,24 @@ LABEL_72:
   [(MRSlideFocusState *)self->mInternal->mSlideFocusState setIsTransitioning:1];
   v11 = self->mInternal->mSlideFocusState;
 
-  [(MRSlideFocusState *)v11 setIsGoingToNext:v7];
+  [(MRSlideFocusState *)v11 setIsGoingToNext:slideCopy];
 }
 
-- (void)didGoToPreviousOrNextFocusedSlide:(BOOL)a3 withAction:(id)a4
+- (void)didGoToPreviousOrNextFocusedSlide:(BOOL)slide withAction:(id)action
 {
-  v5 = a3;
+  slideCopy = slide;
   if ([(MRSlideFocusState *)self->mInternal->mSlideFocusState delegateIsTransitioningToo])
   {
-    v7 = [(MRSlideFocusState *)self->mInternal->mSlideFocusState delegate];
-    [(MRLayer *)v7 setForcedTransitionProgress:1.1];
-    [(MRLayer *)v7 finishTransition:a4];
+    delegate = [(MRSlideFocusState *)self->mInternal->mSlideFocusState delegate];
+    [(MRLayer *)delegate setForcedTransitionProgress:1.1];
+    [(MRLayer *)delegate finishTransition:action];
   }
 
-  v8 = [(MRSlideFocusState *)self->mInternal->mSlideFocusState slideInfo];
+  slideInfo = [(MRSlideFocusState *)self->mInternal->mSlideFocusState slideInfo];
   mSlideFocusState = self->mInternal->mSlideFocusState;
-  if (v5)
+  if (slideCopy)
   {
-    [(MRSlideFocusState *)mSlideFocusState setPreviousSlideInfo:v8];
+    [(MRSlideFocusState *)mSlideFocusState setPreviousSlideInfo:slideInfo];
     [(MRSlideFocusState *)self->mInternal->mSlideFocusState setPreviousSlideID:[(MRSlideFocusState *)self->mInternal->mSlideFocusState slideID]];
     [(MRSlideFocusState *)self->mInternal->mSlideFocusState setSlideInfo:[(MRSlideFocusState *)self->mInternal->mSlideFocusState nextSlideInfo]];
     [(MRSlideFocusState *)self->mInternal->mSlideFocusState setSlideID:[(MRSlideFocusState *)self->mInternal->mSlideFocusState nextSlideID]];
@@ -1703,7 +1703,7 @@ LABEL_72:
 
   else
   {
-    [(MRSlideFocusState *)mSlideFocusState setNextSlideInfo:v8];
+    [(MRSlideFocusState *)mSlideFocusState setNextSlideInfo:slideInfo];
     [(MRSlideFocusState *)self->mInternal->mSlideFocusState setNextSlideID:[(MRSlideFocusState *)self->mInternal->mSlideFocusState slideID]];
     [(MRSlideFocusState *)self->mInternal->mSlideFocusState setSlideInfo:[(MRSlideFocusState *)self->mInternal->mSlideFocusState previousSlideInfo]];
     [(MRSlideFocusState *)self->mInternal->mSlideFocusState setSlideID:[(MRSlideFocusState *)self->mInternal->mSlideFocusState previousSlideID]];
@@ -1723,18 +1723,18 @@ LABEL_72:
   v14 = self->mInternal;
   v15 = v14->mSlideFocuser[v13];
   v16 = v14->mSlideFocusState;
-  if (v5)
+  if (slideCopy)
   {
-    v17 = [(MRSlideFocusState *)v16 nextSlideInfo];
+    nextSlideInfo = [(MRSlideFocusState *)v16 nextSlideInfo];
   }
 
   else
   {
-    v17 = [(MRSlideFocusState *)v16 previousSlideInfo];
+    nextSlideInfo = [(MRSlideFocusState *)v16 previousSlideInfo];
   }
 
-  v18 = v17;
-  [(MRLayerEffect *)v15 setAssetPath:[(MRSlideInfo *)v17 assetPath] ofSlide:@"image0"];
+  v18 = nextSlideInfo;
+  [(MRLayerEffect *)v15 setAssetPath:[(MRSlideInfo *)nextSlideInfo assetPath] ofSlide:@"image0"];
   [(MRLayerEffect *)v15 setCenter:@"image0" ofSlide:0.5, 0.5];
   [(MRSlideInfo *)v18 aspectRatio];
   v20 = v19 * self->mSize.height / self->mSize.width;
@@ -1750,11 +1750,11 @@ LABEL_72:
   NSLog(@"didGoToPreviousOrNextFocusedSlide: %@ %@ %@", [(MRSlideFocusState *)self->mInternal->mSlideFocusState previousSlideID], [(MRSlideFocusState *)self->mInternal->mSlideFocusState slideID], [(MRSlideFocusState *)self->mInternal->mSlideFocusState nextSlideID]);
 }
 
-- (double)slideshowTransitionStart:(id)a3
+- (double)slideshowTransitionStart:(id)start
 {
-  v5 = [a3 specificObject];
+  specificObject = [start specificObject];
   v6 = [(MRLayerParallelizer *)self->mTopMRLayer sublayerForPlugObjectID:self->mInternal->mTransitionLayerPlugObjectID recursive:1];
-  v7 = *(v5 + 96);
+  v7 = *(specificObject + 96);
   if (v7 == 1)
   {
     v8 = 0;
@@ -1762,67 +1762,67 @@ LABEL_72:
 
   else
   {
-    v8 = v7 != 3 || v5[8] >= 0.0;
+    v8 = v7 != 3 || specificObject[8] >= 0.0;
   }
 
-  v9 = fabs(v5[8]) < 1.0;
+  v9 = fabs(specificObject[8]) < 1.0;
 
-  [v6 gotoMoreSlidesWithAction:a3 backwards:v8 animate:1 canCatchCurrentTransition:v9];
+  [v6 gotoMoreSlidesWithAction:start backwards:v8 animate:1 canCatchCurrentTransition:v9];
   return result;
 }
 
-- (double)slideshowTransitionEnd:(id)a3
+- (double)slideshowTransitionEnd:(id)end
 {
   v4 = [(MRLayerParallelizer *)self->mTopMRLayer sublayerForPlugObjectID:self->mInternal->mTransitionLayerPlugObjectID recursive:1];
 
-  [v4 attemptToFinishTransition:a3 didTransition:0 gotReversed:0];
+  [v4 attemptToFinishTransition:end didTransition:0 gotReversed:0];
   return result;
 }
 
-- (double)slideshowTransitionCancel:(id)a3
+- (double)slideshowTransitionCancel:(id)cancel
 {
   v4 = [(MRLayerParallelizer *)self->mTopMRLayer sublayerForPlugObjectID:self->mInternal->mTransitionLayerPlugObjectID recursive:1];
 
-  [v4 abortTransition:a3];
+  [v4 abortTransition:cancel];
   return result;
 }
 
-- (double)focusedTransitionStart:(id)a3
+- (double)focusedTransitionStart:(id)start
 {
   if (self->mInternal->mSlideFocusState)
   {
-    v5 = [a3 specificObject];
-    v6 = *(v5 + 96) == 1 || v5[8] < 0.0;
-    [(MRRenderer *)self willGoToPreviousOrNextFocusedSlide:v6 withAction:a3 animate:1];
+    specificObject = [start specificObject];
+    v6 = *(specificObject + 96) == 1 || specificObject[8] < 0.0;
+    [(MRRenderer *)self willGoToPreviousOrNextFocusedSlide:v6 withAction:start animate:1];
   }
 
   return 0.0;
 }
 
-- (double)focusedTransitionUpdate:(id)a3
+- (double)focusedTransitionUpdate:(id)update
 {
   mSlideFocusState = self->mInternal->mSlideFocusState;
   if (mSlideFocusState && [(MRSlideFocusState *)mSlideFocusState isTransitioning])
   {
     if ([(MRSlideFocusState *)self->mInternal->mSlideFocusState delegateIsTransitioningToo])
     {
-      [(MRLayer *)[(MRSlideFocusState *)self->mInternal->mSlideFocusState delegate] updateTransition:a3];
+      [(MRLayer *)[(MRSlideFocusState *)self->mInternal->mSlideFocusState delegate] updateTransition:update];
     }
 
-    [(MRLayerNavigator *)self->mInternal->mSlideFocusNavigator updateTransition:a3];
+    [(MRLayerNavigator *)self->mInternal->mSlideFocusNavigator updateTransition:update];
   }
 
   return 0.0;
 }
 
-- (double)focusedTransitionEnd:(id)a3
+- (double)focusedTransitionEnd:(id)end
 {
   mSlideFocusState = self->mInternal->mSlideFocusState;
   v5 = 0.0;
   if (mSlideFocusState && [(MRSlideFocusState *)mSlideFocusState isTransitioning])
   {
     v11 = 0;
-    [(MRLayerNavigator *)self->mInternal->mSlideFocusNavigator attemptToFinishTransition:a3 didTransition:&v11 + 1 gotReversed:&v11];
+    [(MRLayerNavigator *)self->mInternal->mSlideFocusNavigator attemptToFinishTransition:end didTransition:&v11 + 1 gotReversed:&v11];
     v5 = v7;
     v8 = self->mInternal->mSlideFocusState;
     if (HIBYTE(v11) == 1)
@@ -1832,13 +1832,13 @@ LABEL_72:
         [(MRRenderer *)self exitSlideZoomMode:0];
       }
 
-      v9 = [(MRSlideFocusState *)self->mInternal->mSlideFocusState isGoingToNext];
-      [(MRRenderer *)self didGoToPreviousOrNextFocusedSlide:v11 != v9 withAction:a3];
+      isGoingToNext = [(MRSlideFocusState *)self->mInternal->mSlideFocusState isGoingToNext];
+      [(MRRenderer *)self didGoToPreviousOrNextFocusedSlide:v11 != isGoingToNext withAction:end];
     }
 
     else if ([(MRSlideFocusState *)v8 delegateIsTransitioningToo])
     {
-      [(MRLayer *)[(MRSlideFocusState *)self->mInternal->mSlideFocusState delegate] abortTransition:a3];
+      [(MRLayer *)[(MRSlideFocusState *)self->mInternal->mSlideFocusState delegate] abortTransition:end];
     }
 
     [(MRSlideFocusState *)self->mInternal->mSlideFocusState setIsTransitioning:0];
@@ -1847,48 +1847,48 @@ LABEL_72:
   return v5;
 }
 
-- (double)focusedTransitionCancel:(id)a3
+- (double)focusedTransitionCancel:(id)cancel
 {
   mSlideFocusState = self->mInternal->mSlideFocusState;
   if (mSlideFocusState && [(MRSlideFocusState *)mSlideFocusState isTransitioning])
   {
     if ([(MRSlideFocusState *)self->mInternal->mSlideFocusState delegateIsTransitioningToo])
     {
-      [(MRLayer *)[(MRSlideFocusState *)self->mInternal->mSlideFocusState delegate] abortTransition:a3];
+      [(MRLayer *)[(MRSlideFocusState *)self->mInternal->mSlideFocusState delegate] abortTransition:cancel];
     }
 
-    [(MRLayerNavigator *)self->mInternal->mSlideFocusNavigator abortTransition:a3];
+    [(MRLayerNavigator *)self->mInternal->mSlideFocusNavigator abortTransition:cancel];
     [(MRSlideFocusState *)self->mInternal->mSlideFocusState setIsTransitioning:0];
   }
 
   return 0.0;
 }
 
-- (double)slideZoomStart:(id)a3
+- (double)slideZoomStart:(id)start
 {
   if (!self->mInternal->mSlideFocusState)
   {
     return 0.0;
   }
 
-  v5 = [a3 specificObject];
-  *(v5 + 99) = 1;
-  *(v5 + 100) = [(MRSlideFocusState *)self->mInternal->mSlideFocusState isInZoomMode];
+  specificObject = [start specificObject];
+  *(specificObject + 99) = 1;
+  *(specificObject + 100) = [(MRSlideFocusState *)self->mInternal->mSlideFocusState isInZoomMode];
   if (![(MRSlideFocusState *)self->mInternal->mSlideFocusState isInZoomMode])
   {
     goto LABEL_10;
   }
 
-  v6 = self->mInternal->mSlideFocuser[self->mInternal->mCurrentSlideFocuserIndex];
-  if (v6)
+  effect = self->mInternal->mSlideFocuser[self->mInternal->mCurrentSlideFocuserIndex];
+  if (effect)
   {
-    v6 = [(MRLayerEffect *)v6 effect];
+    effect = [(MRLayerEffect *)effect effect];
   }
 
-  if (*(v5 + 97) == 1 && *(v5 + 6) == 1.0 && *(v5 + 7) == 0.0 && fabs(*(v5 + 8)) > fabs(*(v5 + 9)) && ![(MRLayerEffect *)v6 canMoveInDirection:3 withPZR:v5])
+  if (*(specificObject + 97) == 1 && *(specificObject + 6) == 1.0 && *(specificObject + 7) == 0.0 && fabs(*(specificObject + 8)) > fabs(*(specificObject + 9)) && ![(MRLayerEffect *)effect canMoveInDirection:3 withPZR:specificObject])
   {
 
-    [(MRRenderer *)self focusedTransitionStart:a3];
+    [(MRRenderer *)self focusedTransitionStart:start];
   }
 
   else
@@ -1896,26 +1896,26 @@ LABEL_72:
 LABEL_10:
     v7 = self->mInternal->mSlideFocuser[self->mInternal->mCurrentSlideFocuserIndex];
 
-    [(MRLayerEffect *)v7 pzrStart:a3];
+    [(MRLayerEffect *)v7 pzrStart:start];
   }
 
   return result;
 }
 
-- (double)slideZoomUpdate:(id)a3
+- (double)slideZoomUpdate:(id)update
 {
   if (!self->mInternal->mSlideFocusState)
   {
     return 0.0;
   }
 
-  v5 = [a3 specificObject];
-  v5[99] = 1;
-  v5[100] = [(MRSlideFocusState *)self->mInternal->mSlideFocusState isInZoomMode];
+  specificObject = [update specificObject];
+  specificObject[99] = 1;
+  specificObject[100] = [(MRSlideFocusState *)self->mInternal->mSlideFocusState isInZoomMode];
   if (![(MRSlideFocusState *)self->mInternal->mSlideFocusState isTransitioning])
   {
     v6 = self->mInternal->mSlideFocuser[self->mInternal->mCurrentSlideFocuserIndex];
-    [(MRLayerEffect *)v6 pzrUpdate:a3];
+    [(MRLayerEffect *)v6 pzrUpdate:update];
     v7 = [(MRLayerEffect *)v6 currentSlideInfoForElement:@"image0"];
     [v7 aspectRatio];
     v9 = v8 * self->mSize.height / self->mSize.width;
@@ -1955,27 +1955,27 @@ LABEL_10:
     return 0.0;
   }
 
-  [(MRRenderer *)self focusedTransitionUpdate:a3];
+  [(MRRenderer *)self focusedTransitionUpdate:update];
   return result;
 }
 
-- (double)slideZoomEnd:(id)a3
+- (double)slideZoomEnd:(id)end
 {
   if (!self->mInternal->mSlideFocusState)
   {
     return 0.0;
   }
 
-  v5 = [a3 specificObject];
-  v5[99] = 1;
-  v5[100] = [(MRSlideFocusState *)self->mInternal->mSlideFocusState isInZoomMode];
+  specificObject = [end specificObject];
+  specificObject[99] = 1;
+  specificObject[100] = [(MRSlideFocusState *)self->mInternal->mSlideFocusState isInZoomMode];
   if (![(MRSlideFocusState *)self->mInternal->mSlideFocusState isTransitioning])
   {
     v7 = self->mInternal->mSlideFocuser[self->mInternal->mCurrentSlideFocuserIndex];
     v8 = [(MRLayerEffect *)v7 currentSlideInfoForElement:@"image0"];
     [v8 aspectRatio];
     v10 = v9 * self->mSize.height / self->mSize.width;
-    v5[98] = 0;
+    specificObject[98] = 0;
     if (v10 <= 1.0)
     {
       v11 = v10;
@@ -1998,11 +1998,11 @@ LABEL_10:
       {
         if ([(MRSlideFocusState *)self->mInternal->mSlideFocusState isInZoomMode])
         {
-          v5[98] = 1;
+          specificObject[98] = 1;
           v6 = 0.0;
 LABEL_19:
-          v5[100] = [(MRSlideFocusState *)self->mInternal->mSlideFocusState isInZoomMode];
-          [(MRLayerEffect *)v7 pzrEnd:a3];
+          specificObject[100] = [(MRSlideFocusState *)self->mInternal->mSlideFocusState isInZoomMode];
+          [(MRLayerEffect *)v7 pzrEnd:end];
           return v6;
         }
 
@@ -2019,45 +2019,45 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  [(MRRenderer *)self focusedTransitionEnd:a3];
+  [(MRRenderer *)self focusedTransitionEnd:end];
   return result;
 }
 
-- (double)slideZoomCancel:(id)a3
+- (double)slideZoomCancel:(id)cancel
 {
   if (!self->mInternal->mSlideFocusState)
   {
     return 0.0;
   }
 
-  v5 = [a3 specificObject];
-  v5[99] = 1;
-  v5[100] = [(MRSlideFocusState *)self->mInternal->mSlideFocusState isInZoomMode];
+  specificObject = [cancel specificObject];
+  specificObject[99] = 1;
+  specificObject[100] = [(MRSlideFocusState *)self->mInternal->mSlideFocusState isInZoomMode];
   if (![(MRSlideFocusState *)self->mInternal->mSlideFocusState isTransitioning])
   {
-    [(MRLayerEffect *)self->mInternal->mSlideFocuser[self->mInternal->mCurrentSlideFocuserIndex] pzrCancel:a3];
+    [(MRLayerEffect *)self->mInternal->mSlideFocuser[self->mInternal->mCurrentSlideFocuserIndex] pzrCancel:cancel];
     return 0.0;
   }
 
-  [(MRRenderer *)self focusedTransitionCancel:a3];
+  [(MRRenderer *)self focusedTransitionCancel:cancel];
   return result;
 }
 
 - (void)_cleanupGestureRecognizers
 {
-  v2 = self;
+  selfCopy = self;
   if ([(NSMutableDictionary *)self->mInternal->mGestureRecognizers count])
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    obj = v2->mInternal->mGestureRecognizers;
+    obj = selfCopy->mInternal->mGestureRecognizers;
     v23 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v23)
     {
       v24 = 0;
-      v21 = v2;
+      v21 = selfCopy;
       v22 = *v34;
       while (1)
       {
@@ -2072,7 +2072,7 @@ LABEL_19:
           v4 = *(*(&v33 + 1) + 8 * v3);
           if ([objc_msgSend(v4 "object")])
           {
-            v5 = [(NSMutableDictionary *)v2->mInternal->mGestureRecognizers objectForKey:v4];
+            v5 = [(NSMutableDictionary *)selfCopy->mInternal->mGestureRecognizers objectForKey:v4];
             v25 = 0u;
             v26 = 0u;
             v27 = 0u;
@@ -2114,7 +2114,7 @@ LABEL_19:
             while (v7);
             if (!v8)
             {
-              v2 = v21;
+              selfCopy = v21;
               goto LABEL_34;
             }
 
@@ -2122,11 +2122,11 @@ LABEL_19:
 
             if ([v5 count])
             {
-              v2 = v21;
+              selfCopy = v21;
               goto LABEL_34;
             }
 
-            v2 = v21;
+            selfCopy = v21;
           }
 
           else
@@ -2135,7 +2135,7 @@ LABEL_19:
             v32 = 0u;
             v29 = 0u;
             v30 = 0u;
-            v12 = [(NSMutableDictionary *)v2->mInternal->mGestureRecognizers objectForKey:v4];
+            v12 = [(NSMutableDictionary *)selfCopy->mInternal->mGestureRecognizers objectForKey:v4];
             v13 = [v12 countByEnumeratingWithState:&v29 objects:v38 count:16];
             if (v13)
             {
@@ -2161,7 +2161,7 @@ LABEL_19:
               while (v14);
             }
 
-            v2 = v21;
+            selfCopy = v21;
           }
 
           v18 = v24;
@@ -2183,7 +2183,7 @@ LABEL_34:
         {
           if (v24)
           {
-            [(NSMutableDictionary *)v2->mInternal->mGestureRecognizers removeObjectsForKeys:v24];
+            [(NSMutableDictionary *)selfCopy->mInternal->mGestureRecognizers removeObjectsForKeys:v24];
           }
 
           return;
@@ -2193,24 +2193,24 @@ LABEL_34:
   }
 }
 
-- (id)_computeMatrixChainForLayer:(id)a3
+- (id)_computeMatrixChainForLayer:(id)layer
 {
-  v4 = [[NSMutableArray alloc] initWithObjects:{a3, 0}];
-  v5 = [a3 superlayer];
-  if (v5)
+  v4 = [[NSMutableArray alloc] initWithObjects:{layer, 0}];
+  superlayer = [layer superlayer];
+  if (superlayer)
   {
-    v6 = v5;
+    superlayer2 = superlayer;
     do
     {
-      if (*([v6 renderingState] + 242) == 1)
+      if (*([superlayer2 renderingState] + 242) == 1)
       {
-        [v4 addObject:v6];
+        [v4 addObject:superlayer2];
       }
 
-      v6 = [v6 superlayer];
+      superlayer2 = [superlayer2 superlayer];
     }
 
-    while (v6);
+    while (superlayer2);
   }
 
   v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
@@ -2218,8 +2218,8 @@ LABEL_34:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v4 reverseObjectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  reverseObjectEnumerator = [v4 reverseObjectEnumerator];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2231,7 +2231,7 @@ LABEL_34:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v13 = *(*(&v16 + 1) + 8 * v12);
@@ -2248,7 +2248,7 @@ LABEL_34:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v10);
@@ -2257,11 +2257,11 @@ LABEL_34:
   return v7;
 }
 
-- (void)_doLayerTrackingAtLocation:(CGPoint)a3
+- (void)_doLayerTrackingAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = location.y;
+  x = location.x;
+  selfCopy = self;
   v66 = 0u;
   v67 = 0u;
   mInternal = self->mInternal;
@@ -2269,7 +2269,7 @@ LABEL_34:
   v69 = 0u;
   obj = [(NSMutableDictionary *)mInternal->mLayerTrackings objectEnumerator];
   v7 = [obj countByEnumeratingWithState:&v66 objects:v74 count:16];
-  v57 = v5;
+  v57 = selfCopy;
   if (v7)
   {
     v8 = v7;
@@ -2294,33 +2294,33 @@ LABEL_34:
           v14 = -[MRAction initWithAction:andTarget:]([MRAction alloc], "initWithAction:andTarget:", +[MCActionTrigger actionTriggerForTargetPlugObjectID:withActionKey:](MCActionTrigger, "actionTriggerForTargetPlugObjectID:withActionKey:", 0, [objc_msgSend(objc_msgSend(v12 objectForKey:{@"action", "attributes"), "objectForKey:", @"actionKey"}]), v13);
           [(MRAction *)v14 setSender:v13];
           v15 = [NSMutableArray arrayWithObject:v13];
-          v16 = [v13 superlayer];
-          if (v16)
+          superlayer = [v13 superlayer];
+          if (superlayer)
           {
-            v17 = v16;
+            superlayer2 = superlayer;
             do
             {
-              if (*([v17 renderingState] + 242) == 1)
+              if (*([superlayer2 renderingState] + 242) == 1)
               {
-                [(NSMutableArray *)v15 addObject:v17];
+                [(NSMutableArray *)v15 addObject:superlayer2];
               }
 
-              v17 = [v17 superlayer];
+              superlayer2 = [superlayer2 superlayer];
             }
 
-            while (v17);
+            while (superlayer2);
           }
 
           v18 = v9;
-          height = v5->mSize.height;
-          v20 = -(v5->mSize.width - x * 2.0) / v5->mSize.width;
+          height = selfCopy->mSize.height;
+          v20 = -(selfCopy->mSize.width - x * 2.0) / selfCopy->mSize.width;
           v62 = 0u;
           v63 = 0u;
           v21 = -(height - y * 2.0) / height;
           v64 = 0u;
           v65 = 0u;
-          v22 = [(NSMutableArray *)v15 reverseObjectEnumerator];
-          v23 = [v22 countByEnumeratingWithState:&v62 objects:v73 count:16];
+          reverseObjectEnumerator = [(NSMutableArray *)v15 reverseObjectEnumerator];
+          v23 = [reverseObjectEnumerator countByEnumeratingWithState:&v62 objects:v73 count:16];
           if (v23)
           {
             v24 = v23;
@@ -2331,7 +2331,7 @@ LABEL_34:
               {
                 if (*v63 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(reverseObjectEnumerator);
                 }
 
                 v27 = *(*(&v62 + 1) + 8 * i);
@@ -2345,7 +2345,7 @@ LABEL_34:
                 }
               }
 
-              v24 = [v22 countByEnumeratingWithState:&v62 objects:v73 count:16];
+              v24 = [reverseObjectEnumerator countByEnumeratingWithState:&v62 objects:v73 count:16];
             }
 
             while (v24);
@@ -2361,7 +2361,7 @@ LABEL_34:
           *&v35 = v32;
           [(NSMutableDictionary *)v33 setObject:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v35], @"trackingY"];
           [(MRAction *)v14 setStates:v33];
-          v5 = v57;
+          selfCopy = v57;
           [(MRRenderer *)v57 time];
           [(MRAction *)v14 setTime:?];
           [(MRRenderer *)v57 doAction:v14];
@@ -2391,24 +2391,24 @@ LABEL_34:
     while (v8);
     if (v9)
     {
-      [(NSMutableDictionary *)v5->mInternal->mLayerTrackings removeObjectsForKeys:v9];
+      [(NSMutableDictionary *)selfCopy->mInternal->mLayerTrackings removeObjectsForKeys:v9];
     }
   }
 
   v72[0] = CGPointZero;
-  v36 = [(MRRenderer *)v5 layerHitAtPoint:1 onlyIfHitElement:v72 localPoint:x, y];
-  if (v36)
+  superlayer3 = [(MRRenderer *)selfCopy layerHitAtPoint:1 onlyIfHitElement:v72 localPoint:x, y];
+  if (superlayer3)
   {
     while (1)
     {
-      v37 = [objc_msgSend(v36 "plug")];
+      v37 = [objc_msgSend(superlayer3 "plug")];
       if (v37)
       {
         break;
       }
 
-      v36 = [v36 superlayer];
-      if (!v36)
+      superlayer3 = [superlayer3 superlayer];
+      if (!superlayer3)
       {
         goto LABEL_32;
       }
@@ -2423,7 +2423,7 @@ LABEL_32:
     obja = 0;
   }
 
-  v38 = [(NSMutableSet *)v5->mInternal->mLayersCurrentlyTrackedIn copy];
+  v38 = [(NSMutableSet *)selfCopy->mInternal->mLayersCurrentlyTrackedIn copy];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
@@ -2448,30 +2448,30 @@ LABEL_32:
           goto LABEL_52;
         }
 
-        v44 = v36 == v43 || v36 == 0;
-        v45 = v36;
+        v44 = superlayer3 == v43 || superlayer3 == 0;
+        superlayer4 = superlayer3;
         if (!v44)
         {
-          v45 = v36;
+          superlayer4 = superlayer3;
           do
           {
-            v45 = [v45 superlayer];
+            superlayer4 = [superlayer4 superlayer];
           }
 
-          while (v45 != v43 && v45);
+          while (superlayer4 != v43 && superlayer4);
         }
 
-        if (!v45)
+        if (!superlayer4)
         {
           v46 = [objc_msgSend(v43 "plug")];
           if (v46)
           {
             v47 = [[MRAction alloc] initWithAction:v46 inRenderer:v57];
             [(MRAction *)v47 setSender:v43];
-            v48 = [v43 persistentState];
-            if (v48)
+            persistentState = [v43 persistentState];
+            if (persistentState)
             {
-              [(MRAction *)v47 setStates:[NSMutableDictionary dictionaryWithDictionary:v48]];
+              [(MRAction *)v47 setStates:[NSMutableDictionary dictionaryWithDictionary:persistentState]];
             }
 
             [(MRRenderer *)v57 time];
@@ -2492,19 +2492,19 @@ LABEL_52:
   }
 
   v49 = obja;
-  if (v36 && ([(NSMutableSet *)v57->mInternal->mLayersCurrentlyTrackedIn containsObject:v36]& 1) == 0)
+  if (superlayer3 && ([(NSMutableSet *)v57->mInternal->mLayersCurrentlyTrackedIn containsObject:superlayer3]& 1) == 0)
   {
     do
     {
       if (v49)
       {
-        [(NSMutableSet *)v57->mInternal->mLayersCurrentlyTrackedIn addObject:v36];
+        [(NSMutableSet *)v57->mInternal->mLayersCurrentlyTrackedIn addObject:superlayer3];
         v50 = [[MRAction alloc] initWithAction:v49 inRenderer:v57];
-        [(MRAction *)v50 setSender:v36];
-        v51 = [v36 persistentState];
-        if (v51)
+        [(MRAction *)v50 setSender:superlayer3];
+        persistentState2 = [superlayer3 persistentState];
+        if (persistentState2)
         {
-          [(MRAction *)v50 setStates:[NSMutableDictionary dictionaryWithDictionary:v51]];
+          [(MRAction *)v50 setStates:[NSMutableDictionary dictionaryWithDictionary:persistentState2]];
         }
 
         [(MRRenderer *)v57 time];
@@ -2512,28 +2512,28 @@ LABEL_52:
         [(MRRenderer *)v57 doAction:v50];
       }
 
-      v52 = [v36 superlayer];
-      if (!v52)
+      v36Superlayer = [superlayer3 superlayer];
+      if (!v36Superlayer)
       {
         break;
       }
 
-      v36 = v52;
-      v49 = [objc_msgSend(v52 "plug")];
+      superlayer3 = v36Superlayer;
+      v49 = [objc_msgSend(v36Superlayer "plug")];
     }
 
-    while (![(NSMutableSet *)v57->mInternal->mLayersCurrentlyTrackedIn containsObject:v36]);
+    while (![(NSMutableSet *)v57->mInternal->mLayersCurrentlyTrackedIn containsObject:superlayer3]);
   }
 }
 
-+ (double)textScaleForResolution:(CGSize)a3
++ (double)textScaleForResolution:(CGSize)resolution
 {
-  if (a3.width >= a3.height)
+  if (resolution.width >= resolution.height)
   {
-    a3.width = a3.height;
+    resolution.width = resolution.height;
   }
 
-  return a3.width / 800.0;
+  return resolution.width / 800.0;
 }
 
 - (BOOL)getVerticesCoordinatesForCurrentlyEditedTextElement:(CGPoint *)(a3
@@ -2603,23 +2603,23 @@ LABEL_52:
     return 0;
   }
 
-  v4 = [(MRLayerEffect *)mInternal->mLayerCurrentlyTextEditing editedElement];
+  editedElement = [(MRLayerEffect *)mInternal->mLayerCurrentlyTextEditing editedElement];
 
-  return [(MRLayerEffect *)mLayerCurrentlyTextEditing _maxLinesForTextElement:v4];
+  return [(MRLayerEffect *)mLayerCurrentlyTextEditing _maxLinesForTextElement:editedElement];
 }
 
-- (BOOL)beginTextEditingOfElement:(id)a3 inLayer:(id)a4 callDelegate:(BOOL)a5
+- (BOOL)beginTextEditingOfElement:(id)element inLayer:(id)layer callDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  if (![a3 hasPrefix:@"text"])
+  delegateCopy = delegate;
+  if (![element hasPrefix:@"text"])
   {
     return 0;
   }
 
   mInternal = self->mInternal;
-  if (mInternal->mLayerCurrentlyTextEditing == a4)
+  if (mInternal->mLayerCurrentlyTextEditing == layer)
   {
-    if (mInternal->mCurrentlyEditedTextElement == a3 || ([a3 isEqualToString:?] & 1) != 0)
+    if (mInternal->mCurrentlyEditedTextElement == element || ([element isEqualToString:?] & 1) != 0)
     {
       return 1;
     }
@@ -2629,23 +2629,23 @@ LABEL_52:
 
   if (mInternal->mCurrentlyEditedTextElement)
   {
-    [(MRRenderer *)self endTextEditing:v5];
+    [(MRRenderer *)self endTextEditing:delegateCopy];
   }
 
-  self->mInternal->mLayerCurrentlyTextEditing = a4;
-  [(MRLayerEffect *)self->mInternal->mLayerCurrentlyTextEditing setEditedElement:a3];
-  self->mInternal->mCurrentlyEditedTextElement = [a3 copy];
-  v10 = [(MRRenderer *)self editingDelegate];
+  self->mInternal->mLayerCurrentlyTextEditing = layer;
+  [(MRLayerEffect *)self->mInternal->mLayerCurrentlyTextEditing setEditedElement:element];
+  self->mInternal->mCurrentlyEditedTextElement = [element copy];
+  editingDelegate = [(MRRenderer *)self editingDelegate];
   v11 = 1;
-  if (v5)
+  if (delegateCopy)
   {
-    v12 = v10;
-    if (v10)
+    v12 = editingDelegate;
+    if (editingDelegate)
     {
       memset(v21, 0, sizeof(v21));
       v19 = 0;
       v20 = 0u;
-      if (([a4 getVerticesCoordinates:&v19 forElement:a3] & 1) == 0)
+      if (([layer getVerticesCoordinates:&v19 forElement:element] & 1) == 0)
       {
         v19 = CGPointZero;
         *&v21[0] = 0;
@@ -2656,7 +2656,7 @@ LABEL_52:
         *(&v21[1] + 1) = 0x3FF0000000000000;
       }
 
-      v11 = -[MREditingDelegate beginEditingTextElement:inContainer:clickAt:vertices:](v12, "beginEditingTextElement:inContainer:clickAt:vertices:", a3, [objc_msgSend(a4 plug], &v19, CGPointZero.x, CGPointZero.y);
+      v11 = -[MREditingDelegate beginEditingTextElement:inContainer:clickAt:vertices:](v12, "beginEditingTextElement:inContainer:clickAt:vertices:", element, [objc_msgSend(layer plug], &v19, CGPointZero.x, CGPointZero.y);
       if (v11)
       {
         [(MRRenderer *)self requestRendering:0];
@@ -2675,40 +2675,40 @@ LABEL_52:
   return v11;
 }
 
-- (BOOL)beginTextEditingOfElement:(id)a3 inPlug:(id)a4 callDelegate:(BOOL)a5
+- (BOOL)beginTextEditingOfElement:(id)element inPlug:(id)plug callDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v9 = [a4 montage];
-  if (v9 != [(MRRenderer *)self montage])
+  delegateCopy = delegate;
+  montage = [plug montage];
+  if (montage != [(MRRenderer *)self montage])
   {
     return 0;
   }
 
-  [a4 container];
+  [plug container];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v10 = -[MRLayerParallelizer sublayerForPlugObjectID:recursive:](self->mTopMRLayer, "sublayerForPlugObjectID:recursive:", [a4 objectID], 1);
+  v10 = -[MRLayerParallelizer sublayerForPlugObjectID:recursive:](self->mTopMRLayer, "sublayerForPlugObjectID:recursive:", [plug objectID], 1);
   if (![v10 isActivated])
   {
     return 0;
   }
 
-  return [(MRRenderer *)self beginTextEditingOfElement:a3 inLayer:v10 callDelegate:v5];
+  return [(MRRenderer *)self beginTextEditingOfElement:element inLayer:v10 callDelegate:delegateCopy];
 }
 
-- (void)endTextEditing:(BOOL)a3
+- (void)endTextEditing:(BOOL)editing
 {
   if (self->mInternal->mCurrentlyEditedTextElement)
   {
-    v3 = a3;
-    v5 = [(MRRenderer *)self editingDelegate];
-    if (v3 && v5)
+    editingCopy = editing;
+    editingDelegate = [(MRRenderer *)self editingDelegate];
+    if (editingCopy && editingDelegate)
     {
-      [(MREditingDelegate *)v5 endEditingTextElement:self->mInternal->mCurrentlyEditedTextElement inContainer:[(MCPlug *)[(MRLayer *)self->mInternal->mLayerCurrentlyTextEditing plug] container]];
+      [(MREditingDelegate *)editingDelegate endEditingTextElement:self->mInternal->mCurrentlyEditedTextElement inContainer:[(MCPlug *)[(MRLayer *)self->mInternal->mLayerCurrentlyTextEditing plug] container]];
     }
 
     [(MRLayerEffect *)self->mInternal->mLayerCurrentlyTextEditing setEditedElement:0];
@@ -2720,7 +2720,7 @@ LABEL_52:
   }
 }
 
-- (MRRenderer)initWithParameters:(id)a3
+- (MRRenderer)initWithParameters:(id)parameters
 {
   v10.receiver = self;
   v10.super_class = MRRenderer;
@@ -2758,7 +2758,7 @@ LABEL_52:
     [(MRRenderArguments *)v4->mInternal->mRenderArguments setPreloadQueue:v7];
 
     v8 = objc_alloc_init(NSMutableDictionary);
-    [(NSDictionary *)v8 addEntriesFromDictionary:a3];
+    [(NSDictionary *)v8 addEntriesFromDictionary:parameters];
     [(NSDictionary *)v8 setObject:v4 forKey:@"renderer"];
     v4->mParameters = v8;
     v4->mOrientation = 0;
@@ -2895,16 +2895,16 @@ LABEL_52:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (NSStringIsEqual(a3, "rootPlug.fullDuration") || NSStringHasPrefix(a3, "fadeInDuration") || NSStringHasPrefix(a3, "fadeOutDuration"))
+  if (NSStringIsEqual(path, "rootPlug.fullDuration") || NSStringHasPrefix(path, "fadeInDuration") || NSStringHasPrefix(path, "fadeOutDuration"))
   {
 
     [(MRRenderer *)self resetFadeInAndOut];
   }
 }
 
-- (void)setEAGLContext:(id)a3
+- (void)setEAGLContext:(id)context
 {
   objc_opt_class();
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
@@ -2913,13 +2913,13 @@ LABEL_52:
   v6[2] = sub_492B8;
   v6[3] = &unk_1AAB08;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = context;
   PerformSynchronouslyOnRenderQueue(mRenderDispatchQueue, v6);
 }
 
-- (void)setMontage:(id)a3
+- (void)setMontage:(id)montage
 {
-  if (self->mMontage != a3)
+  if (self->mMontage != montage)
   {
     v6[6] = v3;
     v6[7] = v4;
@@ -2929,7 +2929,7 @@ LABEL_52:
     v6[2] = sub_49578;
     v6[3] = &unk_1AAB08;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = montage;
     PerformSynchronouslyOnRenderQueue(mRenderDispatchQueue, v6);
   }
 }
@@ -3052,11 +3052,11 @@ LABEL_52:
       if ([+[NSUserDefaults BOOLForKey:"BOOLForKey:"]
       {
         v3 = [NSString stringWithFormat:@"Rendering starting at time %f\n", MRGetCurrentTime()];
-        v4 = [(MRRenderer *)self renderingDelegate];
+        renderingDelegate = [(MRRenderer *)self renderingDelegate];
         self->mInternal->mRespondsToLogDelegateMethod = objc_opt_respondsToSelector() & 1;
         if (self->mInternal->mRespondsToLogDelegateMethod)
         {
-          [(MRRenderingDelegate *)v4 renderer:self renderingTimeLogMessage:v3 withTimestamp:CFAbsoluteTimeGetCurrent()];
+          [(MRRenderingDelegate *)renderingDelegate renderer:self renderingTimeLogMessage:v3 withTimestamp:CFAbsoluteTimeGetCurrent()];
         }
 
         else
@@ -3119,10 +3119,10 @@ LABEL_52:
   }
 }
 
-- (void)requestRendering:(BOOL)a3
+- (void)requestRendering:(BOOL)rendering
 {
-  v3 = a3;
-  if (a3)
+  renderingCopy = rendering;
+  if (rendering)
   {
     mInternal = self->mInternal;
   }
@@ -3143,7 +3143,7 @@ LABEL_52:
 
   mInternal->mRenderingRequested = 1;
   v6 = self->mInternal->mFrameLock;
-  if (v3)
+  if (renderingCopy)
   {
     [(NSConditionLock *)v6 lockBeforeDate:[NSDate dateWithTimeIntervalSinceNow:5.0]];
     [(NSConditionLock *)v6 unlockWithCondition:1];
@@ -3156,7 +3156,7 @@ LABEL_52:
   block[3] = &unk_1AA700;
   block[4] = self;
   dispatch_async(mRenderDispatchQueue, block);
-  if (v3 && !self->mIsCleanedUp)
+  if (renderingCopy && !self->mIsCleanedUp)
   {
     if ([(NSConditionLock *)v6 lockWhenCondition:0 beforeDate:[NSDate dateWithTimeIntervalSinceNow:5.0]])
     {
@@ -3165,7 +3165,7 @@ LABEL_52:
   }
 }
 
-- (BOOL)requestRenderingWithin:(double)a3
+- (BOOL)requestRenderingWithin:(double)within
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -3177,10 +3177,10 @@ LABEL_52:
   return 1;
 }
 
-- (void)warmupVideo:(BOOL)a3
+- (void)warmupVideo:(BOOL)video
 {
-  v3 = a3;
-  if (a3)
+  videoCopy = video;
+  if (video)
   {
     p_mInternal = &self->mInternal;
     self->mInternal->mRenderingRequested = 1;
@@ -3210,11 +3210,11 @@ LABEL_52:
   block[1] = 3221225472;
   block[2] = sub_4A16C;
   block[3] = &unk_1AAB30;
-  v11 = v3;
+  v11 = videoCopy;
   block[4] = self;
   block[5] = v6;
   dispatch_async(mRenderDispatchQueue, block);
-  if (v3)
+  if (videoCopy)
   {
     v9 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(v6, v9);
@@ -3265,7 +3265,7 @@ LABEL_52:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)_r_updateTimeWithDisplayLinkTimestamp:(double)a3
+- (void)_r_updateTimeWithDisplayLinkTimestamp:(double)timestamp
 {
   if (!self->mIsCleanedUp)
   {
@@ -3276,7 +3276,7 @@ LABEL_52:
     {
       if (mInternal->mInnerIsPlaying)
       {
-        self->mDisplayLinkTimestamp = a3;
+        self->mDisplayLinkTimestamp = timestamp;
       }
 
       mTimeOffset = mInternal->mTimeOffset;
@@ -3289,14 +3289,14 @@ LABEL_52:
     {
       if (mInternal->mIsStalled)
       {
-        self->mDisplayLinkTimestamp = a3;
+        self->mDisplayLinkTimestamp = timestamp;
       }
 
       else
       {
         v8 = self->mTimeQuantum * 12.0;
-        self->mDisplayLinkTimestamp = a3;
-        if (a3 - mDisplayLinkTimestamp < v8)
+        self->mDisplayLinkTimestamp = timestamp;
+        if (timestamp - mDisplayLinkTimestamp < v8)
         {
           return;
         }
@@ -3315,7 +3315,7 @@ LABEL_13:
   }
 }
 
-- (void)updateTimeWithDisplayLinkTimestamp:(double)a3
+- (void)updateTimeWithDisplayLinkTimestamp:(double)timestamp
 {
   mRenderDispatchQueueCopyForRenderThread = self->mInternal->mRenderDispatchQueueCopyForRenderThread;
   v4[0] = _NSConcreteStackBlock;
@@ -3323,18 +3323,18 @@ LABEL_13:
   v4[2] = sub_4A4BC;
   v4[3] = &unk_1AA670;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = timestamp;
   dispatch_sync(mRenderDispatchQueueCopyForRenderThread, v4);
 }
 
-- (void)_renderOnDisplayLink:(id)a3
+- (void)_renderOnDisplayLink:(id)link
 {
   mRenderDispatchQueueCopyForRenderThread = self->mInternal->mRenderDispatchQueueCopyForRenderThread;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_4A544;
   v4[3] = &unk_1AAB08;
-  v4[4] = a3;
+  v4[4] = link;
   v4[5] = self;
   dispatch_sync(mRenderDispatchQueueCopyForRenderThread, v4);
 }
@@ -3379,7 +3379,7 @@ LABEL_13:
   }
 }
 
-- (BOOL)prerenderWithPassParameters:(id)a3
+- (BOOL)prerenderWithPassParameters:(id)parameters
 {
   v7 = 0;
   v8 = &v7;
@@ -3390,7 +3390,7 @@ LABEL_13:
   v6[1] = 3221225472;
   v6[2] = sub_4A7E8;
   v6[3] = &unk_1AAB58;
-  v6[5] = a3;
+  v6[5] = parameters;
   v6[6] = &v7;
   v6[4] = self;
   PerformSynchronouslyOnRenderQueue(mRenderDispatchQueue, v6);
@@ -3399,7 +3399,7 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)_r_prerenderWithPassParameters:(id)a3
+- (BOOL)_r_prerenderWithPassParameters:(id)parameters
 {
   if (self->mIsCleanedUp)
   {
@@ -3466,9 +3466,9 @@ LABEL_13:
     v10->mPreviousLogTime = v9;
   }
 
-  if (a3)
+  if (parameters)
   {
-    v24 = [objc_msgSend(a3 objectForKey:{@"forceRendering", "BOOLValue"}];
+    v24 = [objc_msgSend(parameters objectForKey:{@"forceRendering", "BOOLValue"}];
   }
 
   else
@@ -3594,9 +3594,9 @@ LABEL_52:
     self->mInternal->mNeedsToResumeOrPauseLayers = 0;
   }
 
-  if ([a3 objectForKey:@"thumbnailPolicy"])
+  if ([parameters objectForKey:@"thumbnailPolicy"])
   {
-    v36 = [objc_msgSend(a3 objectForKey:{@"thumbnailPolicy", "intValue"}];
+    v36 = [objc_msgSend(parameters objectForKey:{@"thumbnailPolicy", "intValue"}];
   }
 
   else if (self->_allowsThumbnails)
@@ -3670,8 +3670,8 @@ LABEL_52:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v48 = [(NSOperationQueue *)[(MRRenderArguments *)self->mInternal->mRenderArguments preloadQueue] operations];
-  v49 = [(NSArray *)v48 countByEnumeratingWithState:&v62 objects:v66 count:16];
+  operations = [(NSOperationQueue *)[(MRRenderArguments *)self->mInternal->mRenderArguments preloadQueue] operations];
+  v49 = [(NSArray *)operations countByEnumeratingWithState:&v62 objects:v66 count:16];
   if (v49)
   {
     v50 = v49;
@@ -3682,7 +3682,7 @@ LABEL_52:
       {
         if (*v63 != v51)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(operations);
         }
 
         if ([*(*(&v62 + 1) + 8 * i) queuePriority] == &dword_8)
@@ -3691,7 +3691,7 @@ LABEL_52:
         }
       }
 
-      v50 = [(NSArray *)v48 countByEnumeratingWithState:&v62 objects:v66 count:16];
+      v50 = [(NSArray *)operations countByEnumeratingWithState:&v62 objects:v66 count:16];
     }
 
     while (v50);
@@ -3705,9 +3705,9 @@ LABEL_52:
 
   [(MRRenderArguments *)self->mInternal->mRenderArguments setForcedState:0];
   [(MRRenderArguments *)self->mInternal->mRenderArguments setTimeWasSet:0];
-  v53 = [(NSConditionLock *)self->mInternal->mSnapshotAsCGImageLock condition];
+  condition = [(NSConditionLock *)self->mInternal->mSnapshotAsCGImageLock condition];
   v54 = self->mInternal;
-  if (v53 == 1 || v54->mScreenBurnTest)
+  if (condition == 1 || v54->mScreenBurnTest)
   {
     LOBYTE(v24) = 1;
   }
@@ -3825,19 +3825,19 @@ LABEL_52:
     v5 = v6 + 1.0e-10;
   }
 
-  v7 = [(MRRenderer *)self renderingDelegate];
-  if (v7)
+  renderingDelegate = [(MRRenderer *)self renderingDelegate];
+  if (renderingDelegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(MRRenderingDelegate *)v7 renderer:self willRenderAtTime:v5];
+      [(MRRenderingDelegate *)renderingDelegate renderer:self willRenderAtTime:v5];
     }
 
     if (self->mInternal->mMorphingDuration > 0.0 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       mMorphingProgress = self->mInternal->mMorphingProgress;
       *&mMorphingProgress = mMorphingProgress;
-      [(MRRenderingDelegate *)v7 isMorphingWithProgress:mMorphingProgress];
+      [(MRRenderingDelegate *)renderingDelegate isMorphingWithProgress:mMorphingProgress];
     }
   }
 
@@ -3976,11 +3976,11 @@ LABEL_30:
     [(NSConditionLock *)self->mInternal->mFrameLock unlockWithCondition:0];
   }
 
-  if (v7)
+  if (renderingDelegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(MRRenderingDelegate *)v7 renderer:self didRenderAtTime:v5];
+      [(MRRenderingDelegate *)renderingDelegate renderer:self didRenderAtTime:v5];
     }
   }
 
@@ -3988,9 +3988,9 @@ LABEL_30:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)_r_renderWithPassParameters:(id)a3
+- (void)_r_renderWithPassParameters:(id)parameters
 {
-  if ([(MRRenderer *)self _r_prerenderWithPassParameters:a3])
+  if ([(MRRenderer *)self _r_prerenderWithPassParameters:parameters])
   {
 
     [(MRRenderer *)self _r_render];
@@ -3998,10 +3998,10 @@ LABEL_30:
 
   else
   {
-    v4 = [(MRRenderer *)self renderingDelegate];
-    if (v4)
+    renderingDelegate = [(MRRenderer *)self renderingDelegate];
+    if (renderingDelegate)
     {
-      v5 = v4;
+      v5 = renderingDelegate;
       [(MRRenderer *)self _time];
       v7 = v6 + 1.0e-10;
       if (objc_opt_respondsToSelector())
@@ -4278,11 +4278,11 @@ LABEL_30:
   }
 }
 
-- (void)_r_renderForScreenBurnTestAtTime:(double)a3
+- (void)_r_renderForScreenBurnTestAtTime:(double)time
 {
   if (!self->mIsCleanedUp)
   {
-    v4 = [self->mTopMRLayer retainedByUserRenderedImageAtTime:self->mInternal->mContext inContext:self->mInternal->mRenderArguments withArguments:a3];
+    v4 = [self->mTopMRLayer retainedByUserRenderedImageAtTime:self->mInternal->mContext inContext:self->mInternal->mRenderArguments withArguments:time];
     mInternal = self->mInternal;
     if (__ROR8__(0x8F5C28F5C28F5C29 * mInternal->mScreenBurnTestCurrentPass, 2) <= 0x28F5C28F5C28F5CuLL)
     {
@@ -4444,8 +4444,8 @@ LABEL_30:
   {
     do
     {
-      v3 = [(NSMutableArray *)self->mInternal->mNavigatorHistoryBack lastObject];
-      if ([v3 isActivated])
+      lastObject = [(NSMutableArray *)self->mInternal->mNavigatorHistoryBack lastObject];
+      if ([lastObject isActivated])
       {
         break;
       }
@@ -4454,7 +4454,7 @@ LABEL_30:
     }
 
     while ([(NSMutableArray *)self->mInternal->mNavigatorHistoryBack count]);
-    if (v3)
+    if (lastObject)
     {
       v4 = [MCGenericAction genericActionForTargetPlugObjectID:0 withAttributes:[NSDictionary dictionaryWithObject:@"goBack" forKey:@"type"]];
 
@@ -4469,8 +4469,8 @@ LABEL_30:
   {
     do
     {
-      v3 = [(NSMutableArray *)self->mInternal->mNavigatorHistoryForth lastObject];
-      if ([v3 isActivated])
+      lastObject = [(NSMutableArray *)self->mInternal->mNavigatorHistoryForth lastObject];
+      if ([lastObject isActivated])
       {
         break;
       }
@@ -4479,7 +4479,7 @@ LABEL_30:
     }
 
     while ([(NSMutableArray *)self->mInternal->mNavigatorHistoryForth count]);
-    if (v3)
+    if (lastObject)
     {
       v4 = [MCGenericAction genericActionForTargetPlugObjectID:0 withAttributes:[NSDictionary dictionaryWithObject:@"goForth" forKey:@"type"]];
 
@@ -4488,7 +4488,7 @@ LABEL_30:
   }
 }
 
-- (void)addNavigatorToBackHistory:(id)a3
+- (void)addNavigatorToBackHistory:(id)history
 {
   mNavigatorHistoryBack = self->mInternal->mNavigatorHistoryBack;
   if (!mNavigatorHistoryBack)
@@ -4497,10 +4497,10 @@ LABEL_30:
     mNavigatorHistoryBack = self->mInternal->mNavigatorHistoryBack;
   }
 
-  [(NSMutableArray *)mNavigatorHistoryBack addObject:a3];
+  [(NSMutableArray *)mNavigatorHistoryBack addObject:history];
 }
 
-- (void)addNavigatorToForthHistory:(id)a3
+- (void)addNavigatorToForthHistory:(id)history
 {
   mNavigatorHistoryForth = self->mInternal->mNavigatorHistoryForth;
   if (!mNavigatorHistoryForth)
@@ -4509,10 +4509,10 @@ LABEL_30:
     mNavigatorHistoryForth = self->mInternal->mNavigatorHistoryForth;
   }
 
-  [(NSMutableArray *)mNavigatorHistoryForth addObject:a3];
+  [(NSMutableArray *)mNavigatorHistoryForth addObject:history];
 }
 
-- (void)moveNavigatorFromBackToForthHistory:(id)a3
+- (void)moveNavigatorFromBackToForthHistory:(id)history
 {
   mNavigatorHistoryForth = self->mInternal->mNavigatorHistoryForth;
   if (!mNavigatorHistoryForth)
@@ -4521,24 +4521,24 @@ LABEL_30:
     mNavigatorHistoryForth = self->mInternal->mNavigatorHistoryForth;
   }
 
-  [(NSMutableArray *)mNavigatorHistoryForth addObject:a3];
+  [(NSMutableArray *)mNavigatorHistoryForth addObject:history];
   v6 = [(NSMutableArray *)self->mInternal->mNavigatorHistoryBack count];
   do
   {
     if (--v6 < 0)
     {
-      NSLog(@"Consistency error: can't move '%@' from back history", a3);
+      NSLog(@"Consistency error: can't move '%@' from back history", history);
       return;
     }
   }
 
-  while ([(NSMutableArray *)self->mInternal->mNavigatorHistoryBack objectAtIndex:v6]!= a3);
+  while ([(NSMutableArray *)self->mInternal->mNavigatorHistoryBack objectAtIndex:v6]!= history);
   mNavigatorHistoryBack = self->mInternal->mNavigatorHistoryBack;
 
   [(NSMutableArray *)mNavigatorHistoryBack removeObjectAtIndex:v6];
 }
 
-- (void)moveNavigatorFromForthToBackHistory:(id)a3
+- (void)moveNavigatorFromForthToBackHistory:(id)history
 {
   mNavigatorHistoryBack = self->mInternal->mNavigatorHistoryBack;
   if (!mNavigatorHistoryBack)
@@ -4547,18 +4547,18 @@ LABEL_30:
     mNavigatorHistoryBack = self->mInternal->mNavigatorHistoryBack;
   }
 
-  [(NSMutableArray *)mNavigatorHistoryBack addObject:a3];
+  [(NSMutableArray *)mNavigatorHistoryBack addObject:history];
   v6 = [(NSMutableArray *)self->mInternal->mNavigatorHistoryForth count];
   do
   {
     if (--v6 < 0)
     {
-      NSLog(@"Consistency error: can't move '%@' from forth history", a3);
+      NSLog(@"Consistency error: can't move '%@' from forth history", history);
       return;
     }
   }
 
-  while ([(NSMutableArray *)self->mInternal->mNavigatorHistoryForth objectAtIndex:v6]!= a3);
+  while ([(NSMutableArray *)self->mInternal->mNavigatorHistoryForth objectAtIndex:v6]!= history);
   mNavigatorHistoryForth = self->mInternal->mNavigatorHistoryForth;
 
   [(NSMutableArray *)mNavigatorHistoryForth removeObjectAtIndex:v6];
@@ -4576,9 +4576,9 @@ LABEL_30:
   return result;
 }
 
-- (void)setTime:(double)a3
+- (void)setTime:(double)time
 {
-  self->mInternal->mOuterTime = a3;
+  self->mInternal->mOuterTime = time;
   atomic_fetch_add(&self->mInternal->mTimeSyncRequestCount, 1u);
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -4656,7 +4656,7 @@ LABEL_30:
   }
 }
 
-- (void)_r_setTime:(double)a3 isResyncing:(BOOL)a4
+- (void)_r_setTime:(double)time isResyncing:(BOOL)resyncing
 {
   if (!self->mIsCleanedUp)
   {
@@ -4664,18 +4664,18 @@ LABEL_30:
     if (mInternal->mInnerIsPlaying)
     {
       [(MRRenderer *)self masterClock];
-      a3 = v8 - a3;
+      time = v8 - time;
       mInternal = self->mInternal;
     }
 
-    mInternal->mTimeOffset = a3;
+    mInternal->mTimeOffset = time;
     v9 = self->mInternal;
     if (v9->mTimeOffset < 0.0)
     {
       v9->mTimeOffset = 0.0;
     }
 
-    if (!a4)
+    if (!resyncing)
     {
       self->mInternal->mUnalteredTimeOffset = self->mInternal->mTimeOffset;
       self->mInternal->mNeedsToSynchronizeTimeInAudioMovies = 1;
@@ -4740,7 +4740,7 @@ LABEL_30:
   return result;
 }
 
-- (void)setTimeQuantum:(double)a3
+- (void)setTimeQuantum:(double)quantum
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -4748,14 +4748,14 @@ LABEL_30:
   v4[2] = sub_4CC6C;
   v4[3] = &unk_1AA670;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = quantum;
   PerformAsynchronouslyOnRenderQueueIfNotOnRenderQueue(mRenderDispatchQueue, v4);
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  v5 = ceil(a3.width);
-  v6 = ceil(a3.height);
+  v5 = ceil(size.width);
+  v6 = ceil(size.height);
   if (v5 != self->mSize.width || v6 != self->mSize.height)
   {
     v10[9] = v3;
@@ -4776,10 +4776,10 @@ LABEL_30:
   }
 }
 
-- (void)setTemporarySize:(CGSize)a3
+- (void)setTemporarySize:(CGSize)size
 {
-  v3 = ceil(a3.width);
-  v4 = ceil(a3.height);
+  v3 = ceil(size.width);
+  v4 = ceil(size.height);
   mInternal = self->mInternal;
   if (v3 != mInternal->mTemporarySize.width || v4 != mInternal->mTemporarySize.height)
   {
@@ -4809,10 +4809,10 @@ LABEL_30:
   return result;
 }
 
-- (void)setContextOffset:(CGPoint)a3
+- (void)setContextOffset:(CGPoint)offset
 {
   mInternal = self->mInternal;
-  v4 = a3.x == mInternal->mContextOffset.x && a3.y == mInternal->mContextOffset.y;
+  v4 = offset.x == mInternal->mContextOffset.x && offset.y == mInternal->mContextOffset.y;
   if (!v4 && mInternal->mContext)
   {
     mRenderDispatchQueue = mInternal->mRenderDispatchQueue;
@@ -4821,7 +4821,7 @@ LABEL_30:
     v7[2] = sub_4D164;
     v7[3] = &unk_1AABA8;
     v7[4] = self;
-    v8 = a3;
+    offsetCopy = offset;
     PerformAsynchronouslyOnRenderQueueIfNotOnRenderQueue(mRenderDispatchQueue, v7);
     if (self->mRequestRenderingOnChanges)
     {
@@ -4830,9 +4830,9 @@ LABEL_30:
   }
 }
 
-- (void)setOrientation:(int)a3
+- (void)setOrientation:(int)orientation
 {
-  if (self->mOrientation != a3)
+  if (self->mOrientation != orientation)
   {
     v9 = v3;
     v10 = v4;
@@ -4842,7 +4842,7 @@ LABEL_30:
     v7[2] = sub_4D244;
     v7[3] = &unk_1AABD0;
     v7[4] = self;
-    v8 = a3;
+    orientationCopy = orientation;
     PerformAsynchronouslyOnRenderQueueIfNotOnRenderQueue(mRenderDispatchQueue, v7);
     if (self->mRequestRenderingOnChanges)
     {
@@ -4862,28 +4862,28 @@ LABEL_30:
   self->_fadeOutStartTime = v5 - self->_fadeOutDuration;
 }
 
-- (CGPoint)_fixProjectedPointForOrientation:(CGPoint)a3
+- (CGPoint)_fixProjectedPointForOrientation:(CGPoint)orientation
 {
-  x = a3.x;
+  x = orientation.x;
   mOrientation = self->mOrientation;
-  v5 = -a3.y;
+  v5 = -orientation.y;
   if (mOrientation != 1)
   {
     v6 = -x;
     if (mOrientation == 3)
     {
       x = -x;
-      y = -a3.y;
+      y = -orientation.y;
     }
 
     else
     {
-      y = a3.y;
+      y = orientation.y;
     }
 
     if (mOrientation == 2)
     {
-      v5 = a3.y;
+      v5 = orientation.y;
     }
 
     else
@@ -4908,11 +4908,11 @@ LABEL_30:
   return result;
 }
 
-- (CGPoint)_fixPointForUnprojectionForOrientation:(CGPoint)a3
+- (CGPoint)_fixPointForUnprojectionForOrientation:(CGPoint)orientation
 {
-  y = a3.y;
+  y = orientation.y;
   mOrientation = self->mOrientation;
-  x = -a3.x;
+  x = -orientation.x;
   if (mOrientation != 1)
   {
     if (mOrientation == 3)
@@ -4922,7 +4922,7 @@ LABEL_30:
 
     else
     {
-      x = a3.x;
+      x = orientation.x;
       v6 = y;
     }
 
@@ -4938,7 +4938,7 @@ LABEL_30:
 
     if (mOrientation == 2)
     {
-      x = a3.x;
+      x = orientation.x;
     }
 
     else
@@ -4953,7 +4953,7 @@ LABEL_30:
   return result;
 }
 
-- (void)setCurrentLayoutIndex:(unsigned __int8)a3
+- (void)setCurrentLayoutIndex:(unsigned __int8)index
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   v5[0] = _NSConcreteStackBlock;
@@ -4961,7 +4961,7 @@ LABEL_30:
   v5[2] = sub_4D40C;
   v5[3] = &unk_1AA728;
   v5[4] = self;
-  v6 = a3;
+  indexCopy = index;
   PerformAsynchronouslyOnRenderQueueIfNotOnRenderQueue(mRenderDispatchQueue, v5);
   if (self->mRequestRenderingOnChanges)
   {
@@ -4969,9 +4969,9 @@ LABEL_30:
   }
 }
 
-- (void)setMode:(int)a3
+- (void)setMode:(int)mode
 {
-  if (self->mMode != a3)
+  if (self->mMode != mode)
   {
     v10 = v3;
     v11 = v4;
@@ -4981,7 +4981,7 @@ LABEL_30:
     v8[2] = sub_4D4E8;
     v8[3] = &unk_1AABD0;
     v8[4] = self;
-    v9 = a3;
+    modeCopy = mode;
     PerformAsynchronouslyOnRenderQueueIfNotOnRenderQueue(mRenderDispatchQueue, v8);
     v7 = self->mMode != 1 && self->mRequestRenderingOnChanges;
     self->mRequestRenderingOnChanges = v7;
@@ -4992,7 +4992,7 @@ LABEL_30:
   }
 }
 
-- (void)setAssetManagementDelegate:(id)a3
+- (void)setAssetManagementDelegate:(id)delegate
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -5000,20 +5000,20 @@ LABEL_30:
   v4[2] = sub_4D650;
   v4[3] = &unk_1AAB08;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = delegate;
   PerformAsynchronouslyOnRenderQueueIfNotOnRenderQueue(mRenderDispatchQueue, v4);
 }
 
-- (void)setDisplaysFPS:(BOOL)a3
+- (void)setDisplaysFPS:(BOOL)s
 {
-  self->mDisplaysFPS = a3;
+  self->mDisplaysFPS = s;
   if (self->mRequestRenderingOnChanges)
   {
     [(MRRenderer *)self requestRendering:0];
   }
 }
 
-- (void)transitionToNextPlugInContainerOfPlug:(id)a3
+- (void)transitionToNextPlugInContainerOfPlug:(id)plug
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -5021,11 +5021,11 @@ LABEL_30:
   v4[2] = sub_4D778;
   v4[3] = &unk_1AAB08;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = plug;
   PerformAsynchronouslyOnRenderQueueIfNotOnRenderQueue(mRenderDispatchQueue, v4);
 }
 
-- (void)transitionToPreviousPlugInContainerOfPlug:(id)a3
+- (void)transitionToPreviousPlugInContainerOfPlug:(id)plug
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -5033,11 +5033,11 @@ LABEL_30:
   v4[2] = sub_4D880;
   v4[3] = &unk_1AAB08;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = plug;
   PerformAsynchronouslyOnRenderQueueIfNotOnRenderQueue(mRenderDispatchQueue, v4);
 }
 
-- (id)_layerForPlugObjectID:(id)a3
+- (id)_layerForPlugObjectID:(id)d
 {
   if (self->mIsCleanedUp)
   {
@@ -5046,11 +5046,11 @@ LABEL_30:
 
   else
   {
-    return [(MRLayerParallelizer *)self->mTopMRLayer sublayerForPlugObjectID:a3 recursive:1];
+    return [(MRLayerParallelizer *)self->mTopMRLayer sublayerForPlugObjectID:d recursive:1];
   }
 }
 
-- (id)plugForCurrentSublayerInNavigatorForPlug:(id)a3
+- (id)plugForCurrentSublayerInNavigatorForPlug:(id)plug
 {
   v7 = 0;
   v8 = &v7;
@@ -5064,7 +5064,7 @@ LABEL_30:
   block[2] = sub_4DA40;
   block[3] = &unk_1AABF8;
   block[4] = self;
-  block[5] = a3;
+  block[5] = plug;
   block[6] = &v7;
   dispatch_sync(mRenderDispatchQueue, block);
   v4 = v8[5];
@@ -5093,7 +5093,7 @@ LABEL_30:
   return v3;
 }
 
-- (void)gotoState:(id)a3
+- (void)gotoState:(id)state
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -5101,14 +5101,14 @@ LABEL_30:
   v4[2] = sub_4DCD4;
   v4[3] = &unk_1AAB08;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_async(mRenderDispatchQueue, v4);
 }
 
-- (id)snapshotOfStates:(id)a3 atSize:(CGSize)a4
+- (id)snapshotOfStates:(id)states atSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = +[NSMutableArray array];
   v8 = objc_autoreleasePoolPush();
   v9 = [[MRSnapshotter alloc] initWithMontage:self->mMontage andAssetManagementDelegate:[(MRRenderer *)self assetManagementDelegate] isReadOnly:1];
@@ -5127,11 +5127,11 @@ LABEL_30:
   NSLog(@"%dx%d: %f\n%@", width, height, v6, v3);
 }
 
-- (void)nearingEndForSerializer:(id)a3
+- (void)nearingEndForSerializer:(id)serializer
 {
   if (self->mInternal->mLiveSlideshowDelegate)
   {
-    v5 = [objc_msgSend(a3 "referencingPlug")];
+    v5 = [objc_msgSend(serializer "referencingPlug")];
     mInternal = self->mInternal;
     if (v5 == mInternal->mTransitionLayerPlugObjectID)
     {
@@ -5141,13 +5141,13 @@ LABEL_30:
       v8[2] = sub_4DF1C;
       v8[3] = &unk_1AAB08;
       v8[4] = self;
-      v8[5] = a3;
+      v8[5] = serializer;
       PerformAsynchronouslyOnRenderQueueIfNotOnRenderQueue(mRenderDispatchQueue, v8);
     }
   }
 }
 
-- (void)effect:(id)a3 requestedNumberOfSlides:(unint64_t)a4 firstSlideIndexStillNeeded:(unint64_t)a5
+- (void)effect:(id)effect requestedNumberOfSlides:(unint64_t)slides firstSlideIndexStillNeeded:(unint64_t)needed
 {
   mInternal = self->mInternal;
   if (mInternal->mLiveSlideshowDelegate)
@@ -5158,9 +5158,9 @@ LABEL_30:
     v7[2] = sub_4E004;
     v7[3] = &unk_1AAC48;
     v7[4] = self;
-    v7[5] = a3;
-    v7[6] = a4;
-    v7[7] = a5;
+    v7[5] = effect;
+    v7[6] = slides;
+    v7[7] = needed;
     PerformAsynchronouslyOnRenderQueueIfNotOnRenderQueue(mRenderDispatchQueue, v7);
   }
 }
@@ -5175,7 +5175,7 @@ LABEL_30:
   }
 }
 
-- (void)addIDToDisplay:(id)a3 :(id)a4
+- (void)addIDToDisplay:(id)display :(id)a4
 {
   if (self->mDisplaysPlayingIDs)
   {
@@ -5185,12 +5185,12 @@ LABEL_30:
       mCurrentIDs = mInternal->mCurrentIDs;
       if (a4 && ![a4 isEqualToString:@"Default"])
       {
-        v8 = [[NSString alloc] initWithFormat:@"%@, %@/%@", mCurrentIDs, a3, a4];
+        v8 = [[NSString alloc] initWithFormat:@"%@, %@/%@", mCurrentIDs, display, a4];
       }
 
       else
       {
-        v8 = [[NSString alloc] initWithFormat:@"%@, %@", mCurrentIDs, a3, v10];
+        v8 = [[NSString alloc] initWithFormat:@"%@, %@", mCurrentIDs, display, v10];
       }
 
       self->mInternal->mCurrentIDs = v8;
@@ -5200,20 +5200,20 @@ LABEL_30:
     {
       if (a4 && ![a4 isEqualToString:@"Default"])
       {
-        v9 = [[NSString alloc] initWithFormat:@"%@/%@", a3, a4];
+        displayCopy = [[NSString alloc] initWithFormat:@"%@/%@", display, a4];
       }
 
       else
       {
-        v9 = a3;
+        displayCopy = display;
       }
 
-      self->mInternal->mCurrentIDs = v9;
+      self->mInternal->mCurrentIDs = displayCopy;
     }
   }
 }
 
-- (void)beginMorphingToAspectRatio:(double)a3 andOrientation:(int)a4 withDuration:(double)a5
+- (void)beginMorphingToAspectRatio:(double)ratio andOrientation:(int)orientation withDuration:(double)duration
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   v6[0] = _NSConcreteStackBlock;
@@ -5221,9 +5221,9 @@ LABEL_30:
   v6[2] = sub_4E23C;
   v6[3] = &unk_1AAC70;
   v6[4] = self;
-  v7 = a4;
-  *&v6[5] = a3;
-  *&v6[6] = a5;
+  orientationCopy = orientation;
+  *&v6[5] = ratio;
+  *&v6[6] = duration;
   PerformAsynchronouslyOnRenderQueueIfNotOnRenderQueue(mRenderDispatchQueue, v6);
 }
 
@@ -5245,7 +5245,7 @@ LABEL_30:
   }
 }
 
-- (void)_r_beginMorphingToAspectRatio:(double)a3 andOrientation:(int)a4 withDuration:(double)a5
+- (void)_r_beginMorphingToAspectRatio:(double)ratio andOrientation:(int)orientation withDuration:(double)duration
 {
   if (!self->mIsCleanedUp)
   {
@@ -5256,31 +5256,31 @@ LABEL_30:
       mInternal = self->mInternal;
     }
 
-    if (a5 > 0.0)
+    if (duration > 0.0)
     {
-      mInternal->mMorphingDuration = a5;
+      mInternal->mMorphingDuration = duration;
       [(MRRenderer *)self _r_snapshotForRotation];
       mInternal = self->mInternal;
     }
 
-    mInternal->mMorphingHandlesRotation = (a4 - 1) < 4;
+    mInternal->mMorphingHandlesRotation = (orientation - 1) < 4;
     v9 = self->mInternal;
     if (v9->mMorphingHandlesRotation)
     {
       mOrientation_low = LOBYTE(self->mOrientation);
       v9->mMorphingRotationAngle = 0.0;
-      if (mOrientation_low != a4)
+      if (mOrientation_low != orientation)
       {
-        if (a4 > 2)
+        if (orientation > 2)
         {
-          if (a4 == 3)
+          if (orientation == 3)
           {
             v11 = dbl_1635D0[mOrientation_low == 2];
             v12 = mOrientation_low == 4;
             goto LABEL_18;
           }
 
-          if (a4 == 4)
+          if (orientation == 4)
           {
             v11 = *(&xmmword_1635C0 + (mOrientation_low == 2));
             v12 = mOrientation_low == 3;
@@ -5290,14 +5290,14 @@ LABEL_30:
 
         else
         {
-          if (a4 == 1)
+          if (orientation == 1)
           {
             v11 = dbl_1635D0[mOrientation_low == 3];
             v12 = mOrientation_low == 2;
             goto LABEL_18;
           }
 
-          if (a4 == 2)
+          if (orientation == 2)
           {
             v11 = *(&xmmword_1635C0 + (mOrientation_low == 3));
             v12 = mOrientation_low == 1;
@@ -5312,7 +5312,7 @@ LABEL_18:
         }
       }
 
-      self->mOrientation = a4;
+      self->mOrientation = orientation;
       self->mInternal->mNeedsToResize = 1;
     }
   }
@@ -5333,21 +5333,21 @@ LABEL_18:
   }
 }
 
-- (void)_playbackIsOverWithTime:(double)a3 sendNotification:(BOOL)a4
+- (void)_playbackIsOverWithTime:(double)time sendNotification:(BOOL)notification
 {
-  v4 = a4;
+  notificationCopy = notification;
   [(MRRenderer *)self _r_pause];
-  if (a3 < 0.0)
+  if (time < 0.0)
   {
     [(MRRenderer *)self time];
-    a3 = v7;
+    time = v7;
   }
 
-  self->mInternal->mTimeOffset = a3;
+  self->mInternal->mTimeOffset = time;
   self->mInternal->mNeedsToResumeOrPauseLayers = 1;
   self->mInternal->mInnerIsPlaying = 0;
   self->mInternal->mShouldPauseWhenStill = 0;
-  if (v4)
+  if (notificationCopy)
   {
     v8 = kMRNotificationPlaybackOver;
 
@@ -5357,19 +5357,19 @@ LABEL_18:
 
 - (NSString)currentFocusedSlideAsset
 {
-  v2 = [(MRSlideFocusState *)self->mInternal->mSlideFocusState slideInfo];
+  slideInfo = [(MRSlideFocusState *)self->mInternal->mSlideFocusState slideInfo];
 
-  return [(MRSlideInfo *)v2 assetPath];
+  return [(MRSlideInfo *)slideInfo assetPath];
 }
 
-- (void)setSlideFocusModeBackgroundColor:(CGColor *)a3
+- (void)setSlideFocusModeBackgroundColor:(CGColor *)color
 {
-  if (a3)
+  if (color)
   {
-    NumberOfComponents = CGColorGetNumberOfComponents(a3);
+    NumberOfComponents = CGColorGetNumberOfComponents(color);
     if (NumberOfComponents == 4)
     {
-      Components = CGColorGetComponents(a3);
+      Components = CGColorGetComponents(color);
       v9 = Components[2];
       *self->_slideFocusModeBackgroundColor = *Components;
       self->_slideFocusModeBackgroundColor[2] = v9;
@@ -5377,7 +5377,7 @@ LABEL_18:
 
     else if (NumberOfComponents == 2)
     {
-      v6 = CGColorGetComponents(a3);
+      v6 = CGColorGetComponents(color);
       v7 = *v6;
       self->_slideFocusModeBackgroundColor[1] = *v6;
       self->_slideFocusModeBackgroundColor[2] = v7;
@@ -5446,10 +5446,10 @@ LABEL_18:
   }
 
   v2 = +[NSMutableDictionary dictionary];
-  v4 = [(MRRenderer *)self slideInfosForCurrentElements];
-  if (v4)
+  slideInfosForCurrentElements = [(MRRenderer *)self slideInfosForCurrentElements];
+  if (slideInfosForCurrentElements)
   {
-    [v2 setObject:v4 forKey:@"slideInfosForCurrentElements"];
+    [v2 setObject:slideInfosForCurrentElements forKey:@"slideInfosForCurrentElements"];
   }
 
   [v2 setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", -[MRRenderer isPlaying](self, "isPlaying")), @"isPlaying"}];
@@ -5457,9 +5457,9 @@ LABEL_18:
   return v2;
 }
 
-- (void)swapMontage:(id)a3
+- (void)swapMontage:(id)montage
 {
-  if (a3 && !self->mIsCleanedUp && self->mMontage != a3)
+  if (montage && !self->mIsCleanedUp && self->mMontage != montage)
   {
     if (self->mInternal->mSlideFocusLayer)
     {
@@ -5490,7 +5490,7 @@ LABEL_18:
       self->mMontage = 0;
     }
 
-    self->mMontage = a3;
+    self->mMontage = montage;
     [(MRRenderer *)self didChangeValueForKey:@"montage"];
     [(MCMontage *)self->mMontage addObserver:self forKeyPath:@"rootPlug.fullDuration" options:0 context:0];
     [(MCMontage *)self->mMontage addObserver:self forKeyPath:@"fadeInDuration" options:0 context:0];
@@ -5514,26 +5514,26 @@ LABEL_18:
   }
 }
 
-- (void)applyStateForMontageSwap:(id)a3
+- (void)applyStateForMontageSwap:(id)swap
 {
   if (self->mIsCleanedUp)
   {
     return;
   }
 
-  v4 = self;
+  selfCopy = self;
   [(MRRenderer *)self _r_prerenderWithPassParameters:&off_1BBCB0];
-  v5 = [(MRRenderer *)v4 _layerForPlugObjectID:v4->mInternal->mTransitionLayerPlugObjectID];
-  mSlideFocusState = v4->mInternal->mSlideFocusState;
+  v5 = [(MRRenderer *)selfCopy _layerForPlugObjectID:selfCopy->mInternal->mTransitionLayerPlugObjectID];
+  mSlideFocusState = selfCopy->mInternal->mSlideFocusState;
   if (mSlideFocusState)
   {
-    v7 = [(MRSlideFocusState *)mSlideFocusState slideInfo];
+    slideInfo = [(MRSlideFocusState *)mSlideFocusState slideInfo];
     v8 = 0;
   }
 
   else
   {
-    v9 = [objc_msgSend(a3 objectForKey:{@"slideInfosForCurrentElements", "allValues"}];
+    v9 = [objc_msgSend(swap objectForKey:{@"slideInfosForCurrentElements", "allValues"}];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
@@ -5547,7 +5547,7 @@ LABEL_43:
     }
 
     v11 = v10;
-    v7 = 0;
+    slideInfo = 0;
     v12 = *v53;
     while (2)
     {
@@ -5561,16 +5561,16 @@ LABEL_43:
         v14 = *(*(&v52 + 1) + 8 * i);
         if ([(MRSlideInfo *)v14 isMain])
         {
-          if (([(MZMediaManagement *)[(MRRenderer *)v4 assetManagementDelegate] isSupportedMovieForAssetAtPath:[(MRSlideInfo *)v14 assetPath]]& 1) != 0)
+          if (([(MZMediaManagement *)[(MRRenderer *)selfCopy assetManagementDelegate] isSupportedMovieForAssetAtPath:[(MRSlideInfo *)v14 assetPath]]& 1) != 0)
           {
             v8 = 1;
-            v7 = v14;
+            slideInfo = v14;
             goto LABEL_17;
           }
 
-          if (!v7)
+          if (!slideInfo)
           {
-            v7 = v14;
+            slideInfo = v14;
           }
         }
       }
@@ -5587,20 +5587,20 @@ LABEL_43:
   }
 
 LABEL_17:
-  if (!v7)
+  if (!slideInfo)
   {
     goto LABEL_43;
   }
 
-  v15 = [(MRSlideInfo *)v7 assetPath];
-  if (!v15)
+  assetPath = [(MRSlideInfo *)slideInfo assetPath];
+  if (!assetPath)
   {
     goto LABEL_43;
   }
 
-  v16 = v15;
-  v40 = a3;
-  v41 = v4;
+  v16 = assetPath;
+  swapCopy = swap;
+  v41 = selfCopy;
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
@@ -5651,7 +5651,7 @@ LABEL_21:
       v24 = v23;
       v25 = *v45;
 LABEL_32:
-      v26 = v7;
+      v26 = slideInfo;
       v27 = v19;
       v28 = 0;
       while (1)
@@ -5671,7 +5671,7 @@ LABEL_32:
         {
           v24 = [v22 countByEnumeratingWithState:&v44 objects:v56 count:16];
           v19 = v27;
-          v7 = v26;
+          slideInfo = v26;
           v18 = v42;
           if (v24)
           {
@@ -5684,7 +5684,7 @@ LABEL_32:
 
       v30 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"image%d", [v29 index]);
       v19 = v27;
-      v7 = v26;
+      slideInfo = v26;
       v18 = v42;
       if (!v30)
       {
@@ -5729,50 +5729,50 @@ LABEL_48:
   v32 = 0.0;
   v5 = v39;
   [v39 jumpToSublayer:v21 atTime:0.0];
-  v4 = v41;
+  selfCopy = v41;
   [(MRRenderer *)v41 _r_prerenderWithPassParameters:&off_1BBCD8];
   [v21 interestingTimeForElement:v31];
   v34 = v33;
   if (v8)
   {
-    [(MRSlideInfo *)v7 time];
+    [(MRSlideInfo *)slideInfo time];
     v32 = v35;
   }
 
   [v39 jumpToSublayer:v21 atTime:v34 + v32];
-  a3 = v40;
+  swap = swapCopy;
 LABEL_51:
-  v36 = v4->mInternal->mSlideFocusState;
+  v36 = selfCopy->mInternal->mSlideFocusState;
   if (v36)
   {
     [(MRSlideFocusState *)v36 setDelegate:v5];
-    [(MRSlideFocusState *)v4->mInternal->mSlideFocusState setSlideID:v31];
-    [v5 enterSlideFocusModeWithState:v4->mInternal->mSlideFocusState];
+    [(MRSlideFocusState *)selfCopy->mInternal->mSlideFocusState setSlideID:v31];
+    [v5 enterSlideFocusModeWithState:selfCopy->mInternal->mSlideFocusState];
   }
 
-  v37 = [objc_msgSend(a3 objectForKey:{@"slideshowIsPlaying", "BOOLValue"}];
-  v4->_slideshowIsPaused = v37;
+  v37 = [objc_msgSend(swap objectForKey:{@"slideshowIsPlaying", "BOOLValue"}];
+  selfCopy->_slideshowIsPaused = v37;
   if (v37)
   {
-    [(MRRenderer *)v4 resumeSlideshow];
+    [(MRRenderer *)selfCopy resumeSlideshow];
   }
 
   else
   {
-    [(MRRenderer *)v4 pauseSlideshow];
+    [(MRRenderer *)selfCopy pauseSlideshow];
   }
 
-  if ([objc_msgSend(a3 objectForKey:{@"isPlaying", "BOOLValue"}])
+  if ([objc_msgSend(swap objectForKey:{@"isPlaying", "BOOLValue"}])
   {
-    [(MRRenderer *)v4 resume];
+    [(MRRenderer *)selfCopy resume];
   }
 
   else
   {
-    [(MRRenderer *)v4 pause];
+    [(MRRenderer *)selfCopy pause];
   }
 
-  [(MRRenderer *)v4 _r_render];
+  [(MRRenderer *)selfCopy _r_render];
 }
 
 - (CGSize)size
@@ -5784,9 +5784,9 @@ LABEL_51:
   return result;
 }
 
-- (void)_displayFPS:(double)a3 actuallyDisplay:(BOOL)a4
+- (void)_displayFPS:(double)s actuallyDisplay:(BOOL)display
 {
-  if (a4)
+  if (display)
   {
     v6 = +[EAGLContext currentContext];
     v7 = v6;
@@ -5797,7 +5797,7 @@ LABEL_51:
 
     width = self->mSize.width;
     v9 = self->mSize.height / width;
-    v10 = round(64.0 / (a3 - self->mInternal->mFrameTime[self->mInternal->mFrameTimeIndex]));
+    v10 = round(64.0 / (s - self->mInternal->mFrameTime[self->mInternal->mFrameTimeIndex]));
     v11 = -v9;
     v12 = v11 * 0.95;
     *&width = 4.0 / width + v12;
@@ -5904,7 +5904,7 @@ LABEL_51:
     }
   }
 
-  self->mInternal->mFrameTime[self->mInternal->mFrameTimeIndex] = a3;
+  self->mInternal->mFrameTime[self->mInternal->mFrameTimeIndex] = s;
   self->mInternal->mFrameTimeIndex = (self->mInternal->mFrameTimeIndex + 1) & 0x3F;
 }
 
@@ -5931,11 +5931,11 @@ LABEL_51:
         v9 = [[NSAttributedString alloc] initWithString:self->mInternal->mCurrentIDs attributes:{+[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", v8, kCTForegroundColorAttributeName, 0)}];
         CGColorRelease(v8);
         v10 = [[MRTextRenderer alloc] initWithText:v9 resolution:self->mSize.width, self->mSize.height * 0.0799999982];
-        v11 = [(MRTextRenderer *)v10 retainedContext];
-        if (v11)
+        retainedContext = [(MRTextRenderer *)v10 retainedContext];
+        if (retainedContext)
         {
-          v12 = v11;
-          self->mInternal->mCurrentIDsImage = [(MRImageManager *)[(MRContext *)self->mInternal->mContext imageManager] retainedByUserImageWithCGContext:v11];
+          v12 = retainedContext;
+          self->mInternal->mCurrentIDsImage = [(MRImageManager *)[(MRContext *)self->mInternal->mContext imageManager] retainedByUserImageWithCGContext:retainedContext];
           [(MRImage *)self->mInternal->mCurrentIDsImage setLabel:@"Marimba DisplayedIDs"];
           CGContextRelease(v12);
         }
@@ -6154,10 +6154,10 @@ LABEL_51:
             }
 
             v21 = *(*(&v47 + 1) + 8 * j);
-            v22 = [v21 phase];
+            phase = [v21 phase];
             mInternal = self->mInternal;
             mContext = mInternal->mContext;
-            if (v22 > 2)
+            if (phase > 2)
             {
               [v21 timestamp];
               v30 = v29 + 0.5 - v46;
@@ -6325,10 +6325,10 @@ LABEL_51:
             }
 
             v22 = *(*(&v35 + 1) + 8 * j);
-            v23 = [v22 hasEnded];
+            hasEnded = [v22 hasEnded];
             mInternal = self->mInternal;
             mContext = mInternal->mContext;
-            if (v23)
+            if (hasEnded)
             {
               [v22 timestamp];
               v31 = v30 + 0.5 - v3;
@@ -6395,19 +6395,19 @@ LABEL_51:
   return [v2 BOOLValue];
 }
 
-- (void)selectLayer:(id)a3
+- (void)selectLayer:(id)layer
 {
   [(NSMutableArray *)self->mInternal->mSelectedLayers addObject:?];
-  [a3 setIsSelected:1];
+  [layer setIsSelected:1];
 
   [(MRRenderer *)self _updateSelectionLayer];
 }
 
-- (void)deselectLayer:(id)a3
+- (void)deselectLayer:(id)layer
 {
   [(NSMutableArray *)self->mInternal->mSelectedLayers removeObject:?];
-  [a3 setIsSelected:0];
-  if (self->mInternal->mLayerCurrentlyTextEditing == a3)
+  [layer setIsSelected:0];
+  if (self->mInternal->mLayerCurrentlyTextEditing == layer)
   {
     [(MRRenderer *)self endTextEditing:1];
   }
@@ -6450,7 +6450,7 @@ LABEL_51:
   [(MRRenderer *)self _updateSelectionLayer];
 }
 
-- (void)_dimLayersExceptForPathTo:(id)a3
+- (void)_dimLayersExceptForPathTo:(id)to
 {
   v4[0] = 0;
   v4[1] = v4;
@@ -6461,7 +6461,7 @@ LABEL_51:
   v3[1] = 3221225472;
   v3[2] = sub_50730;
   v3[3] = &unk_1AAC98;
-  v3[4] = a3;
+  v3[4] = to;
   v3[5] = self;
   v3[6] = v4;
   v4[5] = v3;
@@ -6469,7 +6469,7 @@ LABEL_51:
   _Block_object_dispose(v4, 8);
 }
 
-- (void)_undimAllLayersInLayer:(id)a3
+- (void)_undimAllLayersInLayer:(id)layer
 {
   v4[0] = 0;
   v4[1] = v4;
@@ -6482,11 +6482,11 @@ LABEL_51:
   v3[3] = &unk_1AACC0;
   v3[4] = v4;
   v4[5] = v3;
-  sub_50994(v3, a3);
+  sub_50994(v3, layer);
   _Block_object_dispose(v4, 8);
 }
 
-- (void)dimLayersExceptForPathTo:(id)a3
+- (void)dimLayersExceptForPathTo:(id)to
 {
   mRenderDispatchQueue = self->mInternal->mRenderDispatchQueue;
   v5[0] = _NSConcreteStackBlock;
@@ -6494,7 +6494,7 @@ LABEL_51:
   v5[2] = sub_50B4C;
   v5[3] = &unk_1AAB08;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = to;
   dispatch_async(mRenderDispatchQueue, v5);
   [(MRRenderer *)self requestRendering:0];
 }
@@ -6511,9 +6511,9 @@ LABEL_51:
   [(MRRenderer *)self requestRendering:0];
 }
 
-- (id)layerAtPath:(id)a3 fromLayer:(id)a4
+- (id)layerAtPath:(id)path fromLayer:(id)layer
 {
-  v5 = [a3 componentsSeparatedByString:@"."];
+  v5 = [path componentsSeparatedByString:@"."];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -6543,7 +6543,7 @@ LABEL_3:
         }
       }
 
-      a4 = [a4 sublayerForKey:v10];
+      layer = [layer sublayerForKey:v10];
       if (v7 == ++v9)
       {
         v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -6552,18 +6552,18 @@ LABEL_3:
           goto LABEL_3;
         }
 
-        return a4;
+        return layer;
       }
     }
   }
 
-  return a4;
+  return layer;
 }
 
-- (CGImage)snapshotAsCGImageForTime:(double)a3 andSize:(CGSize)a4
+- (CGImage)snapshotAsCGImageForTime:(double)time andSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = objc_autoreleasePoolPush();
   v9 = [[EAGLContext alloc] initWithAPI:2];
   if (!v9)
@@ -6582,7 +6582,7 @@ LABEL_3:
   [(MRRenderer *)v12 setTimeQuantum:self->mTimeQuantum];
   [(MRRenderer *)v12 setMode:1];
   [(MRRenderer *)v12 setMontage:self->mMontage];
-  [(MRRenderer *)v12 setTime:a3];
+  [(MRRenderer *)v12 setTime:time];
   [(MRRenderer *)v12 setSize:width, height];
   [(MRRenderer *)v12 requestRendering:1];
   [(MRRenderer *)v12 cleanup];
@@ -6640,35 +6640,35 @@ LABEL_3:
   return mSnapshotAsCGImage;
 }
 
-- (void)setMasterStartTime:(double)a3 andDuration:(double)a4 mode:(int)a5
+- (void)setMasterStartTime:(double)time andDuration:(double)duration mode:(int)mode
 {
-  self->mInternal->mMasterStartTime = a3;
-  self->mInternal->mMasterDuration = a4;
-  self->mInternal->mMasterMode = a5;
+  self->mInternal->mMasterStartTime = time;
+  self->mInternal->mMasterDuration = duration;
+  self->mInternal->mMasterMode = mode;
 }
 
-- (void)setLiveSlideshowDelegate:(id)a3
+- (void)setLiveSlideshowDelegate:(id)delegate
 {
   mInternal = self->mInternal;
-  if (mInternal->mLiveSlideshowDelegate != a3)
+  if (mInternal->mLiveSlideshowDelegate != delegate)
   {
-    mInternal->mLiveSlideshowDelegate = a3;
+    mInternal->mLiveSlideshowDelegate = delegate;
   }
 }
 
-- (void)setAsynchronousOperationsDelegate:(id)a3
+- (void)setAsynchronousOperationsDelegate:(id)delegate
 {
   mInternal = self->mInternal;
-  if (mInternal->mAsynchronousOperationsDelegate != a3)
+  if (mInternal->mAsynchronousOperationsDelegate != delegate)
   {
-    mInternal->mAsynchronousOperationsDelegate = a3;
+    mInternal->mAsynchronousOperationsDelegate = delegate;
   }
 }
 
-- (void)setScreenBurnTest:(BOOL)a3
+- (void)setScreenBurnTest:(BOOL)test
 {
   mInternal = self->mInternal;
-  if (mInternal->mScreenBurnTest != a3)
+  if (mInternal->mScreenBurnTest != test)
   {
     v9 = v3;
     v10 = v4;
@@ -6678,7 +6678,7 @@ LABEL_3:
     v7[2] = sub_51208;
     v7[3] = &unk_1AA728;
     v7[4] = self;
-    v8 = a3;
+    testCopy = test;
     dispatch_async(mRenderDispatchQueue, v7);
   }
 }
@@ -6733,15 +6733,15 @@ LABEL_3:
   [(MRLayer *)v10 setPreviousTransition:v9];
 }
 
-- (double)enterSlideFocusModeWithState:(id)a3 animate:(BOOL)a4
+- (double)enterSlideFocusModeWithState:(id)state animate:(BOOL)animate
 {
   v4 = 0.0;
   if (!self->mInternal->mSlideFocusState)
   {
-    v5 = a4;
-    if ([objc_msgSend(a3 "delegate")])
+    animateCopy = animate;
+    if ([objc_msgSend(state "delegate")])
     {
-      self->mInternal->mSlideFocusState = a3;
+      self->mInternal->mSlideFocusState = state;
       mSlideFocusLayer = self->mInternal->mSlideFocusLayer;
       if (!mSlideFocusLayer)
       {
@@ -6751,44 +6751,44 @@ LABEL_3:
 
       [(MRLayer *)mSlideFocusLayer setIsTriggered:1];
       v9 = self->mSize.height / self->mSize.width;
-      v10 = [(MRSlideFocusState *)self->mInternal->mSlideFocusState slideInfo];
-      v11 = [(MRSlideInfo *)v10 assetPath];
+      slideInfo = [(MRSlideFocusState *)self->mInternal->mSlideFocusState slideInfo];
+      assetPath = [(MRSlideInfo *)slideInfo assetPath];
       v12 = self->mSize.width / self->mSize.height;
-      [(MRSlideInfo *)v10 aspectRatio];
+      [(MRSlideInfo *)slideInfo aspectRatio];
       v14 = v13;
-      [(MRSlideInfo *)v10 center];
+      [(MRSlideInfo *)slideInfo center];
       v16 = v15;
       v18 = v17;
-      [(MRSlideInfo *)v10 scale];
+      [(MRSlideInfo *)slideInfo scale];
       v20 = v19;
       v21 = (1.0 - v16 / v19) * 0.5;
       v22 = (1.0 - v14 / v12 * v18 / v19) * 0.5;
-      [(MRSlideInfo *)v10 rotation];
+      [(MRSlideInfo *)slideInfo rotation];
       v24 = v23;
       v25 = self->mInternal->mSlideFocuser[self->mInternal->mCurrentSlideFocuserIndex];
       [(MRLayerEffect *)v25 setPixelSize:self->mSize.width, self->mSize.height];
-      [(MRLayerEffect *)v25 setAssetPath:v11 ofSlide:@"image0"];
-      if ([(MZMediaManagement *)[(MRRenderer *)self assetManagementDelegate] isSupportedMovieForAssetAtPath:v11])
+      [(MRLayerEffect *)v25 setAssetPath:assetPath ofSlide:@"image0"];
+      if ([(MZMediaManagement *)[(MRRenderer *)self assetManagementDelegate] isSupportedMovieForAssetAtPath:assetPath])
       {
-        [(MRLayerEffect *)v25 setPlayerHint:[(MRSlideInfo *)v10 player] ofSlide:@"image0"];
+        [(MRLayerEffect *)v25 setPlayerHint:[(MRSlideInfo *)slideInfo player] ofSlide:@"image0"];
       }
 
       [(MRLayerEffect *)v25 setCenter:@"image0" ofSlide:v21, v22];
       [(MRLayerEffect *)v25 setScale:@"image0" ofSlide:v20];
-      [(MRSlideInfo *)v10 aspectRatio];
+      [(MRSlideInfo *)slideInfo aspectRatio];
       [(MRLayerEffect *)v25 setMaxScale:@"image0" ofSlide:fmax(v9 * (v26 + v26), 2.0)];
       [(MRLayerEffect *)v25 setRotation:@"image0" ofSlide:v24];
-      v27 = [(MRSlideFocusState *)self->mInternal->mSlideFocusState previousSlideInfo];
+      previousSlideInfo = [(MRSlideFocusState *)self->mInternal->mSlideFocusState previousSlideInfo];
       v28 = self->mInternal->mSlideFocuser[(self->mInternal->mCurrentSlideFocuserIndex + 2) % 3];
       [(MRLayerEffect *)v28 setPixelSize:self->mSize.width, self->mSize.height];
-      [(MRLayerEffect *)v28 setAssetPath:[(MRSlideInfo *)v27 assetPath] ofSlide:@"image0"];
-      if ([(MZMediaManagement *)[(MRRenderer *)self assetManagementDelegate] isSupportedMovieForAssetAtPath:[(MRSlideInfo *)v27 assetPath]])
+      [(MRLayerEffect *)v28 setAssetPath:[(MRSlideInfo *)previousSlideInfo assetPath] ofSlide:@"image0"];
+      if ([(MZMediaManagement *)[(MRRenderer *)self assetManagementDelegate] isSupportedMovieForAssetAtPath:[(MRSlideInfo *)previousSlideInfo assetPath]])
       {
-        [(MRLayerEffect *)v28 setPlayerHint:[(MRSlideInfo *)v27 player] ofSlide:@"image0"];
+        [(MRLayerEffect *)v28 setPlayerHint:[(MRSlideInfo *)previousSlideInfo player] ofSlide:@"image0"];
       }
 
       [(MRLayerEffect *)v28 setCenter:@"image0" ofSlide:0.5, 0.5];
-      [(MRSlideInfo *)v27 aspectRatio];
+      [(MRSlideInfo *)previousSlideInfo aspectRatio];
       v30 = v29 / v12;
       if (v30 > 1.0)
       {
@@ -6796,21 +6796,21 @@ LABEL_3:
       }
 
       [(MRLayerEffect *)v28 setScale:@"image0" ofSlide:v30];
-      [(MRSlideInfo *)v27 aspectRatio];
+      [(MRSlideInfo *)previousSlideInfo aspectRatio];
       [(MRLayerEffect *)v28 setMaxScale:@"image0" ofSlide:fmax(v9 * (v31 + v31), 2.0)];
       [(MRLayerEffect *)v28 setRotation:@"image0" ofSlide:0.0];
-      v32 = [(MRSlideFocusState *)self->mInternal->mSlideFocusState nextSlideInfo];
+      nextSlideInfo = [(MRSlideFocusState *)self->mInternal->mSlideFocusState nextSlideInfo];
       v33 = self->mInternal->mSlideFocuser[(self->mInternal->mCurrentSlideFocuserIndex + 1) % 3];
       [(MRLayerEffect *)v33 setPixelSize:self->mSize.width, self->mSize.height];
-      [(MRLayerEffect *)v33 setAssetPath:[(MRSlideInfo *)v32 assetPath] ofSlide:@"image0"];
-      if ([(MZMediaManagement *)[(MRRenderer *)self assetManagementDelegate] isSupportedMovieForAssetAtPath:[(MRSlideInfo *)v32 assetPath]])
+      [(MRLayerEffect *)v33 setAssetPath:[(MRSlideInfo *)nextSlideInfo assetPath] ofSlide:@"image0"];
+      if ([(MZMediaManagement *)[(MRRenderer *)self assetManagementDelegate] isSupportedMovieForAssetAtPath:[(MRSlideInfo *)nextSlideInfo assetPath]])
       {
-        [(MRLayerEffect *)v33 setPlayerHint:[(MRSlideInfo *)v32 player] ofSlide:@"image0"];
+        [(MRLayerEffect *)v33 setPlayerHint:[(MRSlideInfo *)nextSlideInfo player] ofSlide:@"image0"];
       }
 
       v4 = 0.5;
       [(MRLayerEffect *)v33 setCenter:@"image0" ofSlide:0.5, 0.5];
-      [(MRSlideInfo *)v32 aspectRatio];
+      [(MRSlideInfo *)nextSlideInfo aspectRatio];
       v35 = v34 / v12;
       if (v35 > 1.0)
       {
@@ -6818,12 +6818,12 @@ LABEL_3:
       }
 
       [(MRLayerEffect *)v33 setScale:@"image0" ofSlide:v35];
-      [(MRSlideInfo *)v32 aspectRatio];
+      [(MRSlideInfo *)nextSlideInfo aspectRatio];
       [(MRLayerEffect *)v33 setMaxScale:@"image0" ofSlide:fmax(v9 * (v36 + v36), 2.0)];
       [(MRLayerEffect *)v33 setRotation:@"image0" ofSlide:0.0];
       [(MRLayerParallelizer *)self->mTopMRLayer phaseInSublayerForKey:@"SlideFocusLayer"];
       [(MRLayer *)self->mInternal->mSlideFocusLayer setOpacity:0.001];
-      if (v5)
+      if (animateCopy)
       {
         [(MRRenderer *)self animateCurrentFocuserToSlideFocusModeWithDuration:0.5];
       }
@@ -6839,8 +6839,8 @@ LABEL_3:
 {
   v3 = self->mInternal->mSlideFocuser[self->mInternal->mCurrentSlideFocuserIndex];
   v4 = [(MRLayerEffect *)v3 currentSlideInfoForElement:@"image0"];
-  v5 = [v4 player];
-  if (v5 == [(MRSlideInfo *)[(MRSlideFocusState *)self->mInternal->mSlideFocusState slideInfo] player])
+  player = [v4 player];
+  if (player == [(MRSlideInfo *)[(MRSlideFocusState *)self->mInternal->mSlideFocusState slideInfo] player])
   {
     [v4 time];
     v7 = v6;
@@ -6849,19 +6849,19 @@ LABEL_3:
   }
 
   [(MRLayer *)[(MRSlideFocusState *)self->mInternal->mSlideFocusState delegate] exitSlideFocusModeWithState:self->mInternal->mSlideFocusState];
-  v9 = [(MRSlideFocusState *)self->mInternal->mSlideFocusState slideInfo];
+  slideInfo = [(MRSlideFocusState *)self->mInternal->mSlideFocusState slideInfo];
   v10 = self->mSize.width / self->mSize.height;
-  [(MRSlideInfo *)v9 aspectRatio];
+  [(MRSlideInfo *)slideInfo aspectRatio];
   v12 = v11;
-  [(MRSlideInfo *)v9 center];
+  [(MRSlideInfo *)slideInfo center];
   v14 = v13;
   v16 = v15;
-  [(MRSlideInfo *)v9 scale];
+  [(MRSlideInfo *)slideInfo scale];
   v18 = v17;
   v19 = v12 / v10 * v16;
   v20 = (1.0 - v14 / v18) * 0.5;
   v21 = (1.0 - v19 / v18) * 0.5;
-  [(MRSlideInfo *)v9 rotation];
+  [(MRSlideInfo *)slideInfo rotation];
   v23 = v22;
   [(MRLayerEffect *)v3 animateCenterOfSlide:@"image0" to:v20 withDuration:v21, 0.5];
   [(MRLayerEffect *)v3 animateScaleOfSlide:@"image0" to:v18 withDuration:0.5];
@@ -6881,12 +6881,12 @@ LABEL_3:
   return 0.5;
 }
 
-- (double)exitSlideZoomMode:(BOOL)a3
+- (double)exitSlideZoomMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   [(MRSlideFocusState *)self->mInternal->mSlideFocusState setIsInZoomMode:0];
   v5 = 0.0;
-  if (v3)
+  if (modeCopy)
   {
     v5 = 0.5;
   }
@@ -6895,11 +6895,11 @@ LABEL_3:
   return result;
 }
 
-- (double)animateCurrentFocuserToSlideFocusModeWithDuration:(double)a3
+- (double)animateCurrentFocuserToSlideFocusModeWithDuration:(double)duration
 {
-  v5 = [(MRSlideFocusState *)self->mInternal->mSlideFocusState slideInfo];
+  slideInfo = [(MRSlideFocusState *)self->mInternal->mSlideFocusState slideInfo];
   v6 = self->mSize.width / self->mSize.height;
-  [(MRSlideInfo *)v5 aspectRatio];
+  [(MRSlideInfo *)slideInfo aspectRatio];
   v7 = &self->mInternal->super.isa + self->mInternal->mCurrentSlideFocuserIndex;
   v8 = v7[40];
   v10 = v9 / v6;
@@ -6914,27 +6914,27 @@ LABEL_3:
   }
 
   v12 = v7[40];
-  if (a3 <= 0.0)
+  if (duration <= 0.0)
   {
     [(objc_class *)v12 setCenter:@"image0" ofSlide:0.5, 0.5];
     [(objc_class *)v8 setScale:@"image0" ofSlide:v11];
-    a3 = 0.0;
+    duration = 0.0;
     [(objc_class *)v8 setRotation:@"image0" ofSlide:0.0];
     [(MRLayer *)self->mInternal->mSlideFocusLayer setOpacity:1.0];
   }
 
   else
   {
-    [(objc_class *)v12 animateCenterOfSlide:@"image0" to:0.5 withDuration:0.5, a3];
-    [(objc_class *)v8 animateScaleOfSlide:@"image0" to:v11 withDuration:a3];
-    [(objc_class *)v8 animateRotationOfSlide:@"image0" to:0.0 withDuration:a3];
-    [(MRLayer *)self->mInternal->mSlideFocusLayer animateOpacityTo:1.0 withDuration:a3];
+    [(objc_class *)v12 animateCenterOfSlide:@"image0" to:0.5 withDuration:0.5, duration];
+    [(objc_class *)v8 animateScaleOfSlide:@"image0" to:v11 withDuration:duration];
+    [(objc_class *)v8 animateRotationOfSlide:@"image0" to:0.0 withDuration:duration];
+    [(MRLayer *)self->mInternal->mSlideFocusLayer animateOpacityTo:1.0 withDuration:duration];
   }
 
-  return a3;
+  return duration;
 }
 
-- (id)slideInfoForCurrentElement:(id)a3
+- (id)slideInfoForCurrentElement:(id)element
 {
   v7 = 0;
   v8 = &v7;
@@ -6947,7 +6947,7 @@ LABEL_3:
   v6[1] = 3221225472;
   v6[2] = sub_51F54;
   v6[3] = &unk_1AACE8;
-  v6[5] = a3;
+  v6[5] = element;
   v6[6] = &v7;
   v6[4] = self;
   PerformSynchronouslyOnRenderQueue(mRenderDispatchQueue, v6);
@@ -6977,20 +6977,20 @@ LABEL_3:
   return v3;
 }
 
-- (void)sendNotification:(id)a3
+- (void)sendNotification:(id)notification
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_52140;
   v3[3] = &unk_1AAB08;
-  v3[4] = a3;
+  v3[4] = notification;
   v3[5] = self;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (id)chooseTransitionIDForRandomTransitionPresetID:(id)a3
+- (id)chooseTransitionIDForRandomTransitionPresetID:(id)d
 {
-  v5 = [(MRFeatureDelegate *)[(MRRenderer *)self featureDelegate] descriptionForRandomTransitionPresetID:a3];
+  v5 = [(MRFeatureDelegate *)[(MRRenderer *)self featureDelegate] descriptionForRandomTransitionPresetID:d];
   if (!v5)
   {
     mDescriptionsForRandomTransitionPresetIDs = self->mDescriptionsForRandomTransitionPresetIDs;
@@ -7000,7 +7000,7 @@ LABEL_3:
       self->mDescriptionsForRandomTransitionPresetIDs = mDescriptionsForRandomTransitionPresetIDs;
     }
 
-    v5 = [(NSDictionary *)mDescriptionsForRandomTransitionPresetIDs objectForKey:a3];
+    v5 = [(NSDictionary *)mDescriptionsForRandomTransitionPresetIDs objectForKey:d];
     if (!v5)
     {
       return 0;
@@ -7021,13 +7021,13 @@ LABEL_3:
   return [v8 objectAtIndex:v10];
 }
 
-- (void)_adaptToPressureLevel:(int)a3
+- (void)_adaptToPressureLevel:(int)level
 {
-  if (a3 <= 29)
+  if (level <= 29)
   {
-    if (a3)
+    if (level)
     {
-      if (a3 != 20)
+      if (level != 20)
       {
         return;
       }
@@ -7043,7 +7043,7 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  if (a3 == 30 || a3 == 40 || a3 == 50)
+  if (level == 30 || level == 40 || level == 50)
   {
     v3 = 0.05;
 LABEL_10:
@@ -7160,11 +7160,11 @@ LABEL_10:
                 if ([v20 shouldBePlaying])
                 {
                   [v20 processWithDuckLevel:v8 * v12];
-                  v23 = [v20 avPlayer];
+                  avPlayer = [v20 avPlayer];
                   if (self->mInternal->mInnerIsPlaying)
                   {
-                    v24 = v23;
-                    [v23 rate];
+                    v24 = avPlayer;
+                    [avPlayer rate];
                     if (v25 == 0.0)
                     {
                       [v24 play];
@@ -7202,20 +7202,20 @@ LABEL_10:
     v12 = 1.0;
   }
 
-  v26 = [(MRRenderer *)self renderingDelegate];
+  renderingDelegate = [(MRRenderer *)self renderingDelegate];
   if (objc_opt_respondsToSelector())
   {
     *&v27 = v8;
     *&v28 = v12;
-    [(MRRenderingDelegate *)v26 setAudioFadingLevel:v27 andDuckingLevel:v28];
+    [(MRRenderingDelegate *)renderingDelegate setAudioFadingLevel:v27 andDuckingLevel:v28];
   }
 }
 
-- (void)addAudioObject:(id)a3
+- (void)addAudioObject:(id)object
 {
   if (![(MRRenderer *)self ignoresBackgroundAudio]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 priority]);
+    v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [object priority]);
     v6 = [(NSMutableDictionary *)self->mInternal->mAudioPlayerBuckets objectForKey:v5];
     if (!v6)
     {
@@ -7232,23 +7232,23 @@ LABEL_10:
       self->mInternal->mAudioPlayerSortedBuckets = -[NSMutableDictionary objectsForKeys:notFoundMarker:](self->mInternal->mAudioPlayerBuckets, "objectsForKeys:notFoundMarker:", [-[NSMutableDictionary allKeys](self->mInternal->mAudioPlayerBuckets "allKeys")], +[NSNull null](NSNull, "null"));
     }
 
-    [v6 addObject:a3];
+    [v6 addObject:object];
   }
 }
 
-- (void)removeAudioObject:(id)a3
+- (void)removeAudioObject:(id)object
 {
-  v4 = -[NSMutableDictionary objectForKey:](self->mInternal->mAudioPlayerBuckets, "objectForKey:", +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 priority]));
+  v4 = -[NSMutableDictionary objectForKey:](self->mInternal->mAudioPlayerBuckets, "objectForKey:", +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [object priority]));
   if (v4)
   {
     v5 = v4;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [objc_msgSend(a3 "avPlayer")];
+      [objc_msgSend(object "avPlayer")];
     }
 
-    [v5 removeObject:a3];
+    [v5 removeObject:object];
   }
 }
 

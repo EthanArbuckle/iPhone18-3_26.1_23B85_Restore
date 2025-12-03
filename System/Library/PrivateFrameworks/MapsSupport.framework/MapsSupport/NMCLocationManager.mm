@@ -1,12 +1,12 @@
 @interface NMCLocationManager
-- (NMCLocationManager)initWithBundleIdentifier:(id)a3;
-- (NMCLocationManager)initWithEffectiveBundleIdentifier:(id)a3;
+- (NMCLocationManager)initWithBundleIdentifier:(id)identifier;
+- (NMCLocationManager)initWithEffectiveBundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)locationManagerDidPauseLocationUpdates:(id)a3;
-- (void)locationManagerDidResumeLocationUpdates:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)locationManagerDidPauseLocationUpdates:(id)updates;
+- (void)locationManagerDidResumeLocationUpdates:(id)updates;
 - (void)reset;
 - (void)startLocationUpdate;
 - (void)stopLocationUpdate;
@@ -14,15 +14,15 @@
 
 @implementation NMCLocationManager
 
-- (NMCLocationManager)initWithBundleIdentifier:(id)a3
+- (NMCLocationManager)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = NMCLocationManager;
   v5 = [(NMCLocationManager *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
@@ -49,19 +49,19 @@
   return v5;
 }
 
-- (NMCLocationManager)initWithEffectiveBundleIdentifier:(id)a3
+- (NMCLocationManager)initWithEffectiveBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = NMCLocationManager;
   v5 = [(NMCLocationManager *)&v20 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     effectiveBundleIdentifier = v5->_effectiveBundleIdentifier;
     v5->_effectiveBundleIdentifier = v6;
 
-    v8 = v4;
+    v8 = identifierCopy;
     if (v8)
     {
       v9 = sub_100029194();
@@ -157,9 +157,9 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = [a3 authorizationStatus] - 3;
+  v4 = [authorization authorizationStatus] - 3;
   if (self->_updatingLocations && v4 <= 1)
   {
     locationManager = self->_locationManager;
@@ -168,15 +168,15 @@ LABEL_13:
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v12 = a4;
-  if ([v12 count])
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
-    v5 = [v12 firstObject];
+    firstObject = [locationsCopy firstObject];
     v6 = objc_alloc_init(NMMessage);
     [(NMMessage *)v6 setType:202];
-    v7 = [[NMArgument alloc] _nm_initWithLocation:v5 tag:1];
+    v7 = [[NMArgument alloc] _nm_initWithLocation:firstObject tag:1];
     [(NMMessage *)v6 addArgument:v7];
     v8 = objc_alloc_init(NMArgument);
 
@@ -186,24 +186,24 @@ LABEL_13:
     v9 = +[NMCGizmoConnection sharedInstance];
     [v9 sendMessage:v6 options:0];
 
-    v10 = [(NMCLocationManager *)self locationDidUpdate];
+    locationDidUpdate = [(NMCLocationManager *)self locationDidUpdate];
 
-    if (v10)
+    if (locationDidUpdate)
     {
-      v11 = [(NMCLocationManager *)self locationDidUpdate];
-      (v11)[2](v11, v5);
+      locationDidUpdate2 = [(NMCLocationManager *)self locationDidUpdate];
+      (locationDidUpdate2)[2](locationDidUpdate2, firstObject);
     }
   }
 
   _objc_release_x1();
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v9 = objc_alloc_init(NMMessage);
   [(NMMessage *)v9 setType:203];
-  v6 = [[NMArgument alloc] _nm_initWithErrorValue:v5 tag:3];
+  v6 = [[NMArgument alloc] _nm_initWithErrorValue:errorCopy tag:3];
 
   [(NMMessage *)v9 addArgument:v6];
   v7 = objc_alloc_init(NMArgument);
@@ -215,7 +215,7 @@ LABEL_13:
   [v8 sendMessage:v9 options:0];
 }
 
-- (void)locationManagerDidPauseLocationUpdates:(id)a3
+- (void)locationManagerDidPauseLocationUpdates:(id)updates
 {
   v6 = objc_alloc_init(NMMessage);
   [(NMMessage *)v6 setType:204];
@@ -227,7 +227,7 @@ LABEL_13:
   [v5 sendMessage:v6 options:0];
 }
 
-- (void)locationManagerDidResumeLocationUpdates:(id)a3
+- (void)locationManagerDidResumeLocationUpdates:(id)updates
 {
   v6 = objc_alloc_init(NMMessage);
   [(NMMessage *)v6 setType:205];

@@ -1,10 +1,10 @@
 @interface MTShowsPreferencesDataStore
 + (id)sharedInstance;
-- (id)_stringForSortType:(int64_t)a3;
+- (id)_stringForSortType:(int64_t)type;
 - (id)sortDescriptors;
-- (int64_t)_sortTypeForString:(id)a3;
+- (int64_t)_sortTypeForString:(id)string;
 - (int64_t)sortOrder;
-- (void)setSortOrder:(int64_t)a3;
+- (void)setSortOrder:(int64_t)order;
 @end
 
 @implementation MTShowsPreferencesDataStore
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001679A8;
   block[3] = &unk_1004D86F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100583DE8[0] != -1)
   {
     dispatch_once(qword_100583DE8, block);
@@ -28,9 +28,9 @@
 
 - (id)sortDescriptors
 {
-  v2 = [(MTShowsPreferencesDataStore *)self sortOrder];
+  sortOrder = [(MTShowsPreferencesDataStore *)self sortOrder];
 
-  return [MTPodcast sortDescriptorsForSortType:v2];
+  return [MTPodcast sortDescriptorsForSortType:sortOrder];
 }
 
 - (int64_t)sortOrder
@@ -42,9 +42,9 @@
   return v5;
 }
 
-- (void)setSortOrder:(int64_t)a3
+- (void)setSortOrder:(int64_t)order
 {
-  v5 = [(MTShowsPreferencesDataStore *)self _stringForSortType:a3];
+  v5 = [(MTShowsPreferencesDataStore *)self _stringForSortType:order];
   v3 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
   [v3 setObject:v5 forKey:kMTShowsSortOrderKey];
 
@@ -52,40 +52,40 @@
   [v4 synchronize];
 }
 
-- (int64_t)_sortTypeForString:(id)a3
+- (int64_t)_sortTypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"added"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"added"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"addedAscending"])
+  else if ([stringCopy isEqualToString:@"addedAscending"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"manual"])
+  else if ([stringCopy isEqualToString:@"manual"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"title"])
+  else if ([stringCopy isEqualToString:@"title"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"titleAscending"])
+  else if ([stringCopy isEqualToString:@"titleAscending"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"updated"])
+  else if ([stringCopy isEqualToString:@"updated"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"updatedAscending"])
+  else if ([stringCopy isEqualToString:@"updatedAscending"])
   {
     v4 = 6;
   }
@@ -98,16 +98,16 @@
   return v4;
 }
 
-- (id)_stringForSortType:(int64_t)a3
+- (id)_stringForSortType:(int64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     return @"title";
   }
 
   else
   {
-    return off_1004DE388[a3];
+    return off_1004DE388[type];
   }
 }
 

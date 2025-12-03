@@ -18,7 +18,7 @@
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
   v7 = [v2 detectorOfType:v3 context:0 options:v6];
 
-  v8 = [v7 featuresInImage:a1];
+  v8 = [v7 featuresInImage:self];
   if ([v8 count] == 1)
   {
     v20 = 0u;
@@ -44,7 +44,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [v14 messageString];
+            messageString = [v14 messageString];
 
             goto LABEL_15;
           }
@@ -67,12 +67,12 @@
     _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSCIImageExtras: image has multiple QR codes", buf, 2u);
   }
 
-  v15 = 0;
+  messageString = 0;
 LABEL_15:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return messageString;
 }
 
 @end

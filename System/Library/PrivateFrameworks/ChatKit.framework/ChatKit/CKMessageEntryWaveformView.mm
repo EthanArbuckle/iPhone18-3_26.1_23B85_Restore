@@ -1,12 +1,12 @@
 @interface CKMessageEntryWaveformView
 + (id)waveformCurveTransform;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKMessageEntryWaveformView)initWithFrame:(CGRect)a3;
-- (void)appendPowerLevel:(double)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKMessageEntryWaveformView)initWithFrame:(CGRect)frame;
+- (void)appendPowerLevel:(double)level;
 - (void)clearPowerLevels;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setDuration:(double)a3;
+- (void)setDuration:(double)duration;
 - (void)updateWaveform;
 @end
 
@@ -30,35 +30,35 @@
   return v2;
 }
 
-- (CKMessageEntryWaveformView)initWithFrame:(CGRect)a3
+- (CKMessageEntryWaveformView)initWithFrame:(CGRect)frame
 {
   v65.receiver = self;
   v65.super_class = CKMessageEntryWaveformView;
-  v3 = [(CKMessageEntryWaveformView *)&v65 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKMessageEntryWaveformView *)&v65 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 entryFieldShouldUseBackdropView];
+    entryFieldShouldUseBackdropView = [v4 entryFieldShouldUseBackdropView];
 
-    if (v5)
+    if (entryFieldShouldUseBackdropView)
     {
       v6 = objc_alloc(MEMORY[0x1E69DD298]);
       v7 = [MEMORY[0x1E69DC730] effectWithStyle:1];
       v8 = [v6 initWithEffect:v7];
 
-      v9 = [v8 contentView];
-      v10 = [v9 layer];
+      contentView = [v8 contentView];
+      layer = [contentView layer];
       v11 = +[CKUIBehavior sharedBehaviors];
-      v12 = [v11 theme];
-      v13 = [v12 entryFieldAudioRecordingBalloonColor];
-      [v10 setBackgroundColor:{objc_msgSend(v13, "CGColor")}];
+      theme = [v11 theme];
+      entryFieldAudioRecordingBalloonColor = [theme entryFieldAudioRecordingBalloonColor];
+      [layer setBackgroundColor:{objc_msgSend(entryFieldAudioRecordingBalloonColor, "CGColor")}];
 
-      v14 = [v8 contentView];
-      v15 = [v14 layer];
-      [v15 setCompositingFilter:*MEMORY[0x1E6979CA0]];
+      contentView2 = [v8 contentView];
+      layer2 = [contentView2 layer];
+      [layer2 setCompositingFilter:*MEMORY[0x1E6979CA0]];
 
-      v16 = [v8 layer];
-      [v16 setMasksToBounds:1];
+      layer3 = [v8 layer];
+      [layer3 setMasksToBounds:1];
 
       [(CKMessageEntryWaveformView *)v3 setBlurView:v8];
       [(CKMessageEntryWaveformView *)v3 addSubview:v8];
@@ -101,9 +101,9 @@
       v26 = [v24 initWithImage:v25];
 
       v27 = +[CKUIBehavior sharedBehaviors];
-      v28 = [v27 theme];
-      v29 = [v28 entryFieldAudioRecordingBalloonColor];
-      [v26 setTintColor:v29];
+      theme2 = [v27 theme];
+      entryFieldAudioRecordingBalloonColor2 = [theme2 entryFieldAudioRecordingBalloonColor];
+      [v26 setTintColor:entryFieldAudioRecordingBalloonColor2];
 
       [(CKMessageEntryWaveformView *)v3 setBalloonImageView:v26];
       [(CKMessageEntryWaveformView *)v3 addSubview:v26];
@@ -116,19 +116,19 @@
     v34 = *(MEMORY[0x1E695F058] + 24);
     v35 = [v30 initWithFrame:{*MEMORY[0x1E695F058], v32, v33, v34}];
     [v35 setContentMode:8];
-    v36 = [v35 layer];
+    layer4 = [v35 layer];
     v37 = +[CKMessageEntryWaveformView waveformCurveTransform];
-    [v36 setMeshTransform:v37];
+    [layer4 setMeshTransform:v37];
 
     [(CKMessageEntryWaveformView *)v3 addSubview:v35];
     [(CKMessageEntryWaveformView *)v3 setWaveformImageView:v35];
     v38 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v31, v32, v33, v34}];
     v39 = +[CKUIBehavior sharedBehaviors];
-    v40 = [v39 audioBalloonTimeFont];
-    [v38 setFont:v40];
+    audioBalloonTimeFont = [v39 audioBalloonTimeFont];
+    [v38 setFont:audioBalloonTimeFont];
 
-    v41 = [MEMORY[0x1E69DC888] whiteColor];
-    [v38 setTextColor:v41];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v38 setTextColor:whiteColor];
 
     v42 = CKLocalizedStringForDuration(0.0);
     [v38 setText:v42];
@@ -138,9 +138,9 @@
     [(CKMessageEntryWaveformView *)v3 setTimeLabel:v38];
     [(CKMessageEntryWaveformView *)v3 addSubview:v38];
     v43 = +[CKUIBehavior sharedBehaviors];
-    v44 = [v43 theme];
-    v45 = [v44 entryFieldBorderColor];
-    [v38 setTextColor:v45];
+    theme3 = [v43 theme];
+    entryFieldBorderColor = [theme3 entryFieldBorderColor];
+    [v38 setTextColor:entryFieldBorderColor];
   }
 
   return v3;
@@ -148,11 +148,11 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(CKMessageEntryWaveformView *)self window];
-  if (v3)
+  window = [(CKMessageEntryWaveformView *)self window];
+  if (window)
   {
-    v8 = v3;
-    [v3 bounds];
+    v8 = window;
+    [window bounds];
     if (v4 >= v5)
     {
       v6 = v4;
@@ -166,7 +166,7 @@
     v7 = +[CKUIBehavior sharedBehaviors];
     -[CKMessageEntryWaveformView setMaxPowerLevelsCount:](self, "setMaxPowerLevelsCount:", vcvtpd_u64_f64(v6 / [v7 waveformPowerLevelWidthIncrement]));
 
-    v3 = v8;
+    window = v8;
   }
 }
 
@@ -180,9 +180,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKMessageEntryWaveformView *)self blurView];
-  v12 = [v11 layer];
-  [v12 setCornerRadius:v10 * 0.5];
+  blurView = [(CKMessageEntryWaveformView *)self blurView];
+  layer = [blurView layer];
+  [layer setCornerRadius:v10 * 0.5];
 
   v13 = v8;
   if (!CKIsRunningInMacCatalyst())
@@ -192,11 +192,11 @@
     v13 = v8 - v15;
   }
 
-  v16 = [(CKMessageEntryWaveformView *)self blurView];
-  [v16 setFrame:{v4, v6, v13, v10}];
+  blurView2 = [(CKMessageEntryWaveformView *)self blurView];
+  [blurView2 setFrame:{v4, v6, v13, v10}];
 
-  v17 = [(CKMessageEntryWaveformView *)self balloonImageView];
-  [v17 setFrame:{v4, v6, v8, v10}];
+  balloonImageView = [(CKMessageEntryWaveformView *)self balloonImageView];
+  [balloonImageView setFrame:{v4, v6, v8, v10}];
 
   v18 = CKIsRunningInMacCatalyst();
   v19 = 0.0;
@@ -212,8 +212,8 @@
   v23 = v4 + 0.0;
   v24 = v6 + 0.0;
   v25 = v8 - v19;
-  v26 = [(CKMessageEntryWaveformView *)self timeLabel];
-  [v26 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  timeLabel = [(CKMessageEntryWaveformView *)self timeLabel];
+  [timeLabel sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v28 = v27;
 
   [(CKMessageEntryWaveformView *)self minTimeLabelWidth];
@@ -236,12 +236,12 @@
   [v32 audioBalloonTimeInset];
   v34 = MaxX - (v30 + v33);
 
-  v35 = [(CKMessageEntryWaveformView *)self timeLabel];
-  [v35 setFrame:{v34, v24, v30, v10}];
+  timeLabel2 = [(CKMessageEntryWaveformView *)self timeLabel];
+  [timeLabel2 setFrame:{v34, v24, v30, v10}];
 
-  v36 = [(CKMessageEntryWaveformView *)self waveformImageView];
-  [v36 frame];
-  [v36 sizeThatFits:{v25, v10}];
+  waveformImageView = [(CKMessageEntryWaveformView *)self waveformImageView];
+  [waveformImageView frame];
+  [waveformImageView sizeThatFits:{v25, v10}];
   v38 = v37;
   v39 = +[CKUIBehavior sharedBehaviors];
   [v39 audioBalloonWaveformTimeSpace];
@@ -258,17 +258,17 @@
     v42 = 1.0;
   }
 
-  [v36 setFrame:{0.0, floor((v24 + (v10 - v38) * 0.5) * v42) / v42, v34 - v41, v38}];
+  [waveformImageView setFrame:{0.0, floor((v24 + (v10 - v38) * 0.5) * v42) / v42, v34 - v41, v38}];
   [(CKMessageEntryWaveformView *)self updateWaveform];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *MEMORY[0x1E69A6E08];
   v4 = *(MEMORY[0x1E69A6E08] + 8);
   v5 = *(MEMORY[0x1E69A6E08] + 16);
   v6 = *(MEMORY[0x1E69A6E08] + 24);
-  v7 = [CKUIBehavior sharedBehaviors:a3.width];
+  v7 = [CKUIBehavior sharedBehaviors:fits.width];
   [v7 balloonCornerRadius];
   v9 = v8;
 
@@ -303,36 +303,36 @@
   return result;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   duration = self->_duration;
-  if (duration != a3)
+  if (duration != duration)
   {
     v9 = 0uLL;
     v8 = 0uLL;
     CKTimeIntervalComponents(&v9 + 1, &v9, 0, duration);
-    CKTimeIntervalComponents(&v8 + 1, &v8, 0, a3);
-    self->_duration = a3;
+    CKTimeIntervalComponents(&v8 + 1, &v8, 0, duration);
+    self->_duration = duration;
     if (v9 != v8)
     {
-      v6 = CKLocalizedStringForDuration(a3);
-      v7 = [(CKMessageEntryWaveformView *)self timeLabel];
-      [v7 setText:v6];
+      v6 = CKLocalizedStringForDuration(duration);
+      timeLabel = [(CKMessageEntryWaveformView *)self timeLabel];
+      [timeLabel setText:v6];
     }
   }
 }
 
-- (void)appendPowerLevel:(double)a3
+- (void)appendPowerLevel:(double)level
 {
-  v6 = [(CKMessageEntryWaveformView *)self powerLevels];
-  if (!v6)
+  powerLevels = [(CKMessageEntryWaveformView *)self powerLevels];
+  if (!powerLevels)
   {
-    v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    powerLevels = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(CKMessageEntryWaveformView *)self setPowerLevels:?];
   }
 
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v6 addObject:v5];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:level];
+  [powerLevels addObject:v5];
 
   [(CKMessageEntryWaveformView *)self setNeedsLayout];
 }
@@ -347,12 +347,12 @@
 - (void)updateWaveform
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CKMessageEntryWaveformView *)self powerLevels];
-  v4 = [(CKMessageEntryWaveformView *)self waveformImageView];
-  if ([v3 count])
+  powerLevels = [(CKMessageEntryWaveformView *)self powerLevels];
+  waveformImageView = [(CKMessageEntryWaveformView *)self waveformImageView];
+  if ([powerLevels count])
   {
-    v5 = [v3 count];
-    [v4 bounds];
+    v5 = [powerLevels count];
+    [waveformImageView bounds];
     v7 = v6;
     v8 = +[CKUIBehavior sharedBehaviors];
     v9 = ceil(v7 / [v8 waveformPowerLevelWidthIncrement]);
@@ -367,7 +367,7 @@
     MEMORY[0x1EEE9AC00](v10);
     v14 = (v32 - v13);
     bzero(v32 - v13, v15);
-    v16 = [v3 count];
+    v16 = [powerLevels count];
     v17 = +[CKUIBehavior sharedBehaviors];
     [v17 waveformMinDbPowerLevel];
     v19 = CKLinearForDbPowerLevel(v18) * 32767.0;
@@ -381,7 +381,7 @@
       v24 = v12;
       do
       {
-        v25 = [v3 objectAtIndex:v22];
+        v25 = [powerLevels objectAtIndex:v22];
         [v25 floatValue];
         v27 = v26;
 
@@ -395,9 +395,9 @@
     }
 
     v28 = +[CKUIBehavior sharedBehaviors];
-    v29 = [v28 theme];
-    v30 = [v29 entryFieldBorderColor];
-    v31 = CKWaveformWithPowerLevels(v14, v12, v30);
+    theme = [v28 theme];
+    entryFieldBorderColor = [theme entryFieldBorderColor];
+    v31 = CKWaveformWithPowerLevels(v14, v12, entryFieldBorderColor);
   }
 
   else
@@ -405,7 +405,7 @@
     v31 = 0;
   }
 
-  [v4 setImage:v31];
+  [waveformImageView setImage:v31];
 }
 
 @end

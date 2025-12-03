@@ -1,11 +1,11 @@
 @interface VGExpressionIsAlmostNeutralFilter
-- (VGExpressionIsAlmostNeutralFilter)initWithLowerBound:(float)a3 withUpperBound:(float)a4;
-- (float)filter:(id)a3;
+- (VGExpressionIsAlmostNeutralFilter)initWithLowerBound:(float)bound withUpperBound:(float)upperBound;
+- (float)filter:(id)filter;
 @end
 
 @implementation VGExpressionIsAlmostNeutralFilter
 
-- (VGExpressionIsAlmostNeutralFilter)initWithLowerBound:(float)a3 withUpperBound:(float)a4
+- (VGExpressionIsAlmostNeutralFilter)initWithLowerBound:(float)bound withUpperBound:(float)upperBound
 {
   v10.receiver = self;
   v10.super_class = VGExpressionIsAlmostNeutralFilter;
@@ -13,21 +13,21 @@
   v7 = v6;
   if (v6)
   {
-    v6->_lowerBound = a3;
-    v6->_upperBound = a4;
+    v6->_lowerBound = bound;
+    v6->_upperBound = upperBound;
     v8 = v6;
   }
 
   return v7;
 }
 
-- (float)filter:(id)a3
+- (float)filter:(id)filter
 {
-  v4 = [VGExpressionFilterLegacy getBlendshapes:a3];
+  v4 = [VGExpressionFilterLegacy getBlendshapes:filter];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 bytes];
+    bytes = [v4 bytes];
     v7 = [v5 length];
     if (v7 < 0x3C)
     {
@@ -37,7 +37,7 @@
     else
     {
       v11 = (v7 >> 2) - 14;
-      v12 = (v6 + 56);
+      v12 = (bytes + 56);
       v13 = 1.1755e-38;
       do
       {

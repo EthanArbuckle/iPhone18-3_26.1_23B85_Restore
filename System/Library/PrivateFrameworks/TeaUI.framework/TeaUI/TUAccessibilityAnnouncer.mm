@@ -1,50 +1,50 @@
 @interface TUAccessibilityAnnouncer
-+ (void)speak:(id)a3 style:(unint64_t)a4;
++ (void)speak:(id)speak style:(unint64_t)style;
 @end
 
 @implementation TUAccessibilityAnnouncer
 
-+ (void)speak:(id)a3 style:(unint64_t)a4
++ (void)speak:(id)speak style:(unint64_t)style
 {
-  v5 = a3;
-  if (a4 > 1)
+  speakCopy = speak;
+  if (style > 1)
   {
-    if (a4 == 2)
+    if (style == 2)
     {
-      v6 = v5;
+      v6 = speakCopy;
       UIAccessibilitySpeakIfNotSpeaking();
     }
 
     else
     {
-      if (a4 != 3)
+      if (style != 3)
       {
         goto LABEL_11;
       }
 
-      v6 = v5;
+      v6 = speakCopy;
       UIAccessibilitySpeakAndDoNotBeInterrupted();
     }
   }
 
-  else if (a4)
+  else if (style)
   {
-    if (a4 != 1)
+    if (style != 1)
     {
       goto LABEL_11;
     }
 
-    v6 = v5;
+    v6 = speakCopy;
     UIAccessibilitySpeakOrQueueIfNeeded();
   }
 
   else
   {
-    v6 = v5;
+    v6 = speakCopy;
     UIAccessibilitySpeak();
   }
 
-  v5 = v6;
+  speakCopy = v6;
 LABEL_11:
 }
 

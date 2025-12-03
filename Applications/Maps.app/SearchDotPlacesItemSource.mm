@@ -1,8 +1,8 @@
 @interface SearchDotPlacesItemSource
 - (SearchDotPlacesItemSource)init;
 - (id)allItems;
-- (void)setSearchDotPlaces:(id)a3;
-- (void)setShouldHideSearchDotPlaces:(BOOL)a3;
+- (void)setSearchDotPlaces:(id)places;
+- (void)setShouldHideSearchDotPlaces:(BOOL)places;
 @end
 
 @implementation SearchDotPlacesItemSource
@@ -45,18 +45,18 @@
   return v3;
 }
 
-- (void)setShouldHideSearchDotPlaces:(BOOL)a3
+- (void)setShouldHideSearchDotPlaces:(BOOL)places
 {
-  if (self->_shouldHideSearchDotPlaces != a3)
+  if (self->_shouldHideSearchDotPlaces != places)
   {
-    v3 = a3;
-    self->_shouldHideSearchDotPlaces = a3;
+    placesCopy = places;
+    self->_shouldHideSearchDotPlaces = places;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(SearchDotPlacesItemSource *)self allItems];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allItems = [(SearchDotPlacesItemSource *)self allItems];
+    v6 = [allItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -67,13 +67,13 @@
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allItems);
           }
 
-          [*(*(&v10 + 1) + 8 * i) setShouldBeHiddenFromMap:v3];
+          [*(*(&v10 + 1) + 8 * i) setShouldBeHiddenFromMap:placesCopy];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [allItems countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -83,10 +83,10 @@
   }
 }
 
-- (void)setSearchDotPlaces:(id)a3
+- (void)setSearchDotPlaces:(id)places
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  placesCopy = places;
+  v5 = [placesCopy copy];
   searchDotPlaces = self->_searchDotPlaces;
   self->_searchDotPlaces = v5;
 
@@ -102,9 +102,9 @@
   v13[2] = sub_100D4D864;
   v13[3] = &unk_1016529F8;
   v13[4] = self;
-  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(placesCopy, "count")}];
   v14 = v8;
-  [v4 enumerateObjectsUsingBlock:v13];
+  [placesCopy enumerateObjectsUsingBlock:v13];
 
   v9 = self->_lockQueue;
   v11[0] = _NSConcreteStackBlock;

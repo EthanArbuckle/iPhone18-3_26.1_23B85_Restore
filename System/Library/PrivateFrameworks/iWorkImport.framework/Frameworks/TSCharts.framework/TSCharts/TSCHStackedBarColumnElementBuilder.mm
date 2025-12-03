@@ -1,29 +1,29 @@
 @interface TSCHStackedBarColumnElementBuilder
-- (CGPath)newRoundedRectPathWithRect:(CGRect)a3 chartInfo:(id)a4 series:(id)a5 groupIndex:(unint64_t)a6 isVertical:(BOOL)a7 forGroups:(id)a8 forBodyLayout:(id)a9;
-- (double)p_beginValueForSeries:(id)a3 groupIndex:(unint64_t)a4 unitSpaceIntercept:(double)a5 relativelyPositive:(BOOL)a6 valueAxis:(id)a7;
-- (id)p_stackedRectsWithChartInfo:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5;
-- (unint64_t)countOfSummaryLabelsForGroups:(id)a3 forBodyLayout:(id)a4 outNewTransforms:(CGAffineTransform *)a5 outNewElementSizes:(CGSize *)a6 outNewClipRects:(CGRect *)a7 outNewStrings:(id *)a8;
+- (CGPath)newRoundedRectPathWithRect:(CGRect)rect chartInfo:(id)info series:(id)series groupIndex:(unint64_t)index isVertical:(BOOL)vertical forGroups:(id)groups forBodyLayout:(id)layout;
+- (double)p_beginValueForSeries:(id)series groupIndex:(unint64_t)index unitSpaceIntercept:(double)intercept relativelyPositive:(BOOL)positive valueAxis:(id)axis;
+- (id)p_stackedRectsWithChartInfo:(id)info forGroups:(id)groups forBodyLayout:(id)layout;
+- (unint64_t)countOfSummaryLabelsForGroups:(id)groups forBodyLayout:(id)layout outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewStrings:(id *)strings;
 @end
 
 @implementation TSCHStackedBarColumnElementBuilder
 
-- (double)p_beginValueForSeries:(id)a3 groupIndex:(unint64_t)a4 unitSpaceIntercept:(double)a5 relativelyPositive:(BOOL)a6 valueAxis:(id)a7
+- (double)p_beginValueForSeries:(id)series groupIndex:(unint64_t)index unitSpaceIntercept:(double)intercept relativelyPositive:(BOOL)positive valueAxis:(id)axis
 {
-  v8 = a6;
-  v11 = a3;
-  v12 = a7;
-  v18 = objc_msgSend_seriesIndex(v11, v13, v14, v15, v16);
+  positiveCopy = positive;
+  seriesCopy = series;
+  axisCopy = axis;
+  v18 = objc_msgSend_seriesIndex(seriesCopy, v13, v14, v15, v16);
   if (v18)
   {
-    v23 = objc_msgSend_model(v11, v17, v19, v20, v21);
+    v23 = objc_msgSend_model(seriesCopy, v17, v19, v20, v21);
     v27 = v18 - 1;
     while (1)
     {
       v28 = objc_msgSend_seriesAtIndex_(v23, v22, v24, v25, v26, v27);
-      objc_msgSend_unitSpaceValueForSeries_groupIndex_(v12, v29, v30, v31, v32, v28, a4);
+      objc_msgSend_unitSpaceValueForSeries_groupIndex_(axisCopy, v29, v30, v31, v32, v28, index);
       v34 = v33;
-      v35 = v33 >= a5 || v8;
-      v36 = v33 >= a5 && v8;
+      v35 = v33 >= intercept || positiveCopy;
+      v36 = v33 >= intercept && positiveCopy;
       if (v35 != 1 || v36)
       {
         break;
@@ -35,22 +35,22 @@
       }
     }
 
-    a5 = v34;
+    intercept = v34;
 LABEL_14:
   }
 
-  return a5;
+  return intercept;
 }
 
-- (id)p_stackedRectsWithChartInfo:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5
+- (id)p_stackedRectsWithChartInfo:(id)info forGroups:(id)groups forBodyLayout:(id)layout
 {
   v66 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v57 = a4;
-  v58 = a5;
-  v54 = v7;
+  infoCopy = info;
+  groupsCopy = groups;
+  layoutCopy = layout;
+  v54 = infoCopy;
   v12 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v8, v9, v10, v11);
-  v17 = objc_msgSend_model(v7, v13, v14, v15, v16);
+  v17 = objc_msgSend_model(infoCopy, v13, v14, v15, v16);
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
@@ -72,7 +72,7 @@ LABEL_14:
         v32 = *(*(&v61 + 1) + 8 * i);
         v59 = 0;
         v60 = 0;
-        v33 = objc_msgSend_countOfBarRectsForSeries_forGroups_forBodyLayout_outNewGroupIndexArray_outNewElementRectsArray_outNewClipRectsArray_(self, v26, v28, v29, v30, v32, v57, v58, &v59, &v60, 0);
+        v33 = objc_msgSend_countOfBarRectsForSeries_forGroups_forBodyLayout_outNewGroupIndexArray_outNewElementRectsArray_outNewClipRectsArray_(self, v26, v28, v29, v30, v32, groupsCopy, layoutCopy, &v59, &v60, 0);
         v38 = objc_msgSend_seriesIndex(v32, v34, v35, v36, v37);
         v44 = objc_msgSend_barModelCacheForSeries_(v17, v39, v40, v41, v42, v38);
         v45 = v21;
@@ -109,18 +109,18 @@ LABEL_14:
   return v52;
 }
 
-- (CGPath)newRoundedRectPathWithRect:(CGRect)a3 chartInfo:(id)a4 series:(id)a5 groupIndex:(unint64_t)a6 isVertical:(BOOL)a7 forGroups:(id)a8 forBodyLayout:(id)a9
+- (CGPath)newRoundedRectPathWithRect:(CGRect)rect chartInfo:(id)info series:(id)series groupIndex:(unint64_t)index isVertical:(BOOL)vertical forGroups:(id)groups forBodyLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a4;
-  v19 = a8;
-  v20 = a9;
-  v21 = sub_276348D78(a5, a6);
-  v26 = objc_msgSend_p_stackedRectsWithChartInfo_forGroups_forBodyLayout_(self, v22, v23, v24, v25, v18, v19, v20);
-  v27 = sub_2762A204C(a6, v26, v18, v21, self->super._vertical);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  infoCopy = info;
+  groupsCopy = groups;
+  layoutCopy = layout;
+  v21 = sub_276348D78(series, index);
+  v26 = objc_msgSend_p_stackedRectsWithChartInfo_forGroups_forBodyLayout_(self, v22, v23, v24, v25, infoCopy, groupsCopy, layoutCopy);
+  v27 = sub_2762A204C(index, v26, infoCopy, v21, self->super._vertical);
   v31.origin.x = x;
   v31.origin.y = y;
   v31.size.width = width;
@@ -132,36 +132,36 @@ LABEL_14:
   return v29;
 }
 
-- (unint64_t)countOfSummaryLabelsForGroups:(id)a3 forBodyLayout:(id)a4 outNewTransforms:(CGAffineTransform *)a5 outNewElementSizes:(CGSize *)a6 outNewClipRects:(CGRect *)a7 outNewStrings:(id *)a8
+- (unint64_t)countOfSummaryLabelsForGroups:(id)groups forBodyLayout:(id)layout outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewStrings:(id *)strings
 {
-  v14 = a3;
-  v15 = a4;
-  v20 = v15;
-  if (a5)
+  groupsCopy = groups;
+  layoutCopy = layout;
+  v20 = layoutCopy;
+  if (transforms)
   {
-    *a5 = 0;
+    *transforms = 0;
   }
 
-  if (a6)
+  if (sizes)
   {
-    *a6 = 0;
+    *sizes = 0;
   }
 
-  if (a7)
+  if (rects)
   {
-    *a7 = 0;
+    *rects = 0;
   }
 
-  if (a8)
+  if (strings)
   {
-    *a8 = 0;
+    *strings = 0;
   }
 
-  if (v15)
+  if (layoutCopy)
   {
-    if (a7 || a5 || a8)
+    if (rects || transforms || strings)
     {
-      v21 = objc_msgSend_chart(v15, v16, v17, v18, v19);
+      v21 = objc_msgSend_chart(layoutCopy, v16, v17, v18, v19);
       v26 = objc_msgSend_model(v21, v22, v23, v24, v25);
 
       v31 = objc_msgSend_chart(v26, v27, v28, v29, v30);
@@ -169,7 +169,7 @@ LABEL_14:
 
       if (!v36)
       {
-        a8 = 0;
+        strings = 0;
 LABEL_54:
 
         goto LABEL_55;
@@ -226,9 +226,9 @@ LABEL_54:
 
           v81 = objc_msgSend_allGroupsIndexSetForSeries_(v26, v77, v78, v79, v80, v67);
           v234 = v81;
-          if (v14)
+          if (groupsCopy)
           {
-            v82 = v14;
+            v82 = groupsCopy;
           }
 
           else
@@ -294,7 +294,7 @@ LABEL_54:
             v282[3] = &unk_27A6B9DF0;
             v226 = v228;
             v283 = v226;
-            v284 = self;
+            selfCopy = self;
             v285 = v232;
             v227 = v231;
             v286 = v227;
@@ -361,9 +361,9 @@ LABEL_54:
             v172 = v233;
             objc_msgSend_enumerateIndexesWithOptions_usingBlock_(v233, v173, v174, v175, v176, 2, v240);
             v181 = v279;
-            if (a5)
+            if (transforms)
             {
-              *a5 = malloc_type_calloc(0x30uLL, v279[3], 0x1000040EED21634uLL);
+              *transforms = malloc_type_calloc(0x30uLL, v279[3], 0x1000040EED21634uLL);
               v181 = v279;
               if (v279[3])
               {
@@ -372,7 +372,7 @@ LABEL_54:
                 do
                 {
                   v184 = (v270[6] + v182 * 48);
-                  v185 = &(*a5)[v182];
+                  v185 = &(*transforms)[v182];
                   v178 = *v184;
                   v179 = v184[1];
                   v180 = v184[2];
@@ -387,9 +387,9 @@ LABEL_54:
               }
             }
 
-            if (a6)
+            if (sizes)
             {
-              *a6 = malloc_type_calloc(0x10uLL, v181[3], 0x1000040451B5BE8uLL);
+              *sizes = malloc_type_calloc(0x10uLL, v181[3], 0x1000040451B5BE8uLL);
               v181 = v279;
               if (v279[3])
               {
@@ -398,7 +398,7 @@ LABEL_54:
                 do
                 {
                   v178 = *(v261[6] + v186 * 16);
-                  (*a6)[v186] = v178;
+                  (*sizes)[v186] = v178;
                   ++v187;
                   v181 = v279;
                   ++v186;
@@ -408,7 +408,7 @@ LABEL_54:
               }
             }
 
-            if (a7)
+            if (rects)
             {
               v177 = v181[3];
               if (v177)
@@ -416,7 +416,7 @@ LABEL_54:
                 v188 = malloc_type_calloc(0x20uLL, v177, 0x1000040E0EAB150uLL);
                 v181 = v279;
                 v189 = v279[3];
-                *a7 = v188;
+                *rects = v188;
                 if (v189)
                 {
                   v190 = 0;
@@ -424,7 +424,7 @@ LABEL_54:
                   do
                   {
                     v192 = (v252[6] + v190 * 32);
-                    v193 = &(*a7)[v190];
+                    v193 = &(*rects)[v190];
                     v178 = *v192;
                     v179 = v192[1];
                     v193->origin = *v192;
@@ -440,17 +440,17 @@ LABEL_54:
 
               else
               {
-                *a7 = 0;
+                *rects = 0;
               }
             }
 
-            if (a8 && v181[3])
+            if (strings && v181[3])
             {
-              *a8 = objc_msgSend_subarrayWithRange_(v171, v177, v178.width, v179.width, v180.width, 0);
+              *strings = objc_msgSend_subarrayWithRange_(v171, v177, v178.width, v179.width, v180.width, 0);
               v181 = v279;
             }
 
-            a8 = v181[3];
+            strings = v181[3];
 
             _Block_object_dispose(&v251, 8);
             if (__p)
@@ -481,7 +481,7 @@ LABEL_54:
 
           else
           {
-            a8 = 0;
+            strings = 0;
             v172 = v233;
           }
 
@@ -507,11 +507,11 @@ LABEL_54:
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v220, v221, v222, v223);
       }
 
-      a8 = 0;
-      v172 = v14;
+      strings = 0;
+      v172 = groupsCopy;
 LABEL_53:
 
-      v14 = v172;
+      groupsCopy = v172;
       goto LABEL_54;
     }
   }
@@ -524,12 +524,12 @@ LABEL_53:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v194, v201, v202, v203, v204, v195, v200, 1317, 0, "invalid nil value for '%{public}s'", "bodyLayout");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v205, v206, v207, v208);
-    a8 = 0;
+    strings = 0;
   }
 
 LABEL_55:
 
-  return a8;
+  return strings;
 }
 
 @end

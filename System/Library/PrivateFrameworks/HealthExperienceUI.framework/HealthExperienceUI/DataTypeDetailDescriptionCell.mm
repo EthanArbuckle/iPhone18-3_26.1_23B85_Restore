@@ -1,13 +1,13 @@
 @interface DataTypeDetailDescriptionCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)description;
-- (_TtC18HealthExperienceUI29DataTypeDetailDescriptionCell)initWithCoder:(id)a3;
+- (_TtC18HealthExperienceUI29DataTypeDetailDescriptionCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation DataTypeDetailDescriptionCell
 
-- (_TtC18HealthExperienceUI29DataTypeDetailDescriptionCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI29DataTypeDetailDescriptionCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI29DataTypeDetailDescriptionCell____lazy_storage___textView) = 0;
   v3 = (self + OBJC_IVAR____TtC18HealthExperienceUI29DataTypeDetailDescriptionCell_textInsets);
@@ -31,17 +31,17 @@
   v2 = v7.receiver;
   [(DataTypeDetailDescriptionCell *)&v7 layoutSubviews];
   v3 = sub_1BA152D34();
-  v4 = [v2 contentView];
-  [v4 bounds];
+  contentView = [v2 contentView];
+  [contentView bounds];
   v6 = v5;
 
   [v3 setFrame_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = a3.width + -16.0 + -16.0;
+  width = fits.width;
+  v4 = fits.width + -16.0 + -16.0;
   if (v4 < 0.0)
   {
     v5 = 0.0;
@@ -52,7 +52,7 @@
     v5 = v4;
   }
 
-  v6 = self;
+  selfCopy = self;
   v7 = sub_1BA152D34();
   sub_1BA228B24(v5);
   v9 = v8;
@@ -66,7 +66,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   DataTypeDetailDescriptionCell.description.getter();
 
   v3 = sub_1BA4A6758();

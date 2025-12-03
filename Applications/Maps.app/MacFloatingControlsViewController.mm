@@ -1,37 +1,37 @@
 @interface MacFloatingControlsViewController
-- (BOOL)lacksSearchResultsInVenue:(id)a3 forFloorOrdinal:(signed __int16)a4;
+- (BOOL)lacksSearchResultsInVenue:(id)venue forFloorOrdinal:(signed __int16)ordinal;
 - (LocalSearchViewController)localSearchViewController;
 - (UIEdgeInsets)additionalCompassEdgeInsets;
 - (VKVenueFeatureMarker)venueWithFocus;
 - (id)_localSearchViewConstraints;
 - (id)floatingButtonLeadingGuide;
 - (void)_layoutSearchHereControlIfNeeded;
-- (void)_showSearchHereIfNeeded:(BOOL)a3;
-- (void)didChangeFocusedVenue:(id)a3;
-- (void)hideControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4;
-- (void)localSearchViewControllerDidSelectRefreshSearchHere:(id)a3;
-- (void)localSearchViewShouldBeVisibleDidChange:(id)a3;
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6;
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5;
-- (void)setAdditionalCompassEdgeInsets:(UIEdgeInsets)a3;
-- (void)setRefreshViewEnable:(BOOL)a3;
-- (void)setSearchSession:(id)a3;
+- (void)_showSearchHereIfNeeded:(BOOL)needed;
+- (void)didChangeFocusedVenue:(id)venue;
+- (void)hideControlsIfNeeded:(int64_t)needed animated:(BOOL)animated;
+- (void)localSearchViewControllerDidSelectRefreshSearchHere:(id)here;
+- (void)localSearchViewShouldBeVisibleDidChange:(id)change;
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button;
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated;
+- (void)setAdditionalCompassEdgeInsets:(UIEdgeInsets)insets;
+- (void)setRefreshViewEnable:(BOOL)enable;
+- (void)setSearchSession:(id)session;
 - (void)setupLocalSearchViewController;
 - (void)setupVenueFloorViewController;
-- (void)showControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4;
+- (void)showControlsIfNeeded:(int64_t)needed animated:(BOOL)animated;
 - (void)updateCompassInsets;
-- (void)venueFloorViewControllerDidChangeConstraints:(id)a3;
-- (void)venueFloorViewControllerDidClose:(id)a3;
-- (void)venueFloorViewControllerDidFinishHiding:(id)a3;
-- (void)venueFloorViewControllerDidFinishShowing:(id)a3;
-- (void)venueFloorViewControllerDidOpen:(id)a3;
-- (void)venueFloorViewControllerDidStartHiding:(id)a3;
-- (void)venueFloorViewControllerDidStartShowing:(id)a3;
-- (void)viewControllerDidSelectBrowseVenue:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)venueFloorViewControllerDidChangeConstraints:(id)constraints;
+- (void)venueFloorViewControllerDidClose:(id)close;
+- (void)venueFloorViewControllerDidFinishHiding:(id)hiding;
+- (void)venueFloorViewControllerDidFinishShowing:(id)showing;
+- (void)venueFloorViewControllerDidOpen:(id)open;
+- (void)venueFloorViewControllerDidStartHiding:(id)hiding;
+- (void)venueFloorViewControllerDidStartShowing:(id)showing;
+- (void)viewControllerDidSelectBrowseVenue:(id)venue;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MacFloatingControlsViewController
@@ -54,16 +54,16 @@
   localSearchViewController = self->_localSearchViewController;
   if (localSearchViewController)
   {
-    v4 = [(LocalSearchViewController *)localSearchViewController view];
-    v5 = [v4 centerXAnchor];
-    v6 = [(MacFloatingControlsViewController *)self view];
-    v7 = [v6 centerXAnchor];
-    v8 = [v5 constraintEqualToAnchor:v7];
+    view = [(LocalSearchViewController *)localSearchViewController view];
+    centerXAnchor = [view centerXAnchor];
+    view2 = [(MacFloatingControlsViewController *)self view];
+    centerXAnchor2 = [view2 centerXAnchor];
+    v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v15[0] = v8;
-    v9 = [v4 bottomAnchor];
-    v10 = [(MacFloatingControlsViewController *)self view];
-    v11 = [v10 bottomAnchor];
-    v12 = [v9 constraintEqualToAnchor:v11];
+    bottomAnchor = [view bottomAnchor];
+    view3 = [(MacFloatingControlsViewController *)self view];
+    bottomAnchor2 = [view3 bottomAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v15[1] = v12;
     v13 = [NSArray arrayWithObjects:v15 count:2];
   }
@@ -78,23 +78,23 @@
 
 - (void)setupLocalSearchViewController
 {
-  v3 = [(MacFloatingControlsViewController *)self localSearchViewController];
-  v4 = [v3 view];
-  v5 = [v4 superview];
+  localSearchViewController = [(MacFloatingControlsViewController *)self localSearchViewController];
+  view = [localSearchViewController view];
+  superview = [view superview];
 
-  if (!v5)
+  if (!superview)
   {
     [(MacFloatingControlsViewController *)self addChildViewController:self->_localSearchViewController];
-    v6 = [(MacFloatingControlsViewController *)self localSearchViewController];
-    v7 = [v6 view];
-    v8 = [(MacFloatingControlsViewController *)self _localSearchViewConstraints];
-    [(FloatingControlsViewController *)self _addSubview:v7 withConstraints:v8];
+    localSearchViewController2 = [(MacFloatingControlsViewController *)self localSearchViewController];
+    view2 = [localSearchViewController2 view];
+    _localSearchViewConstraints = [(MacFloatingControlsViewController *)self _localSearchViewConstraints];
+    [(FloatingControlsViewController *)self _addSubview:view2 withConstraints:_localSearchViewConstraints];
 
-    v9 = [(MacFloatingControlsViewController *)self localSearchViewController];
-    v10 = [v9 shouldBeVisible];
-    v11 = [(MacFloatingControlsViewController *)self localSearchViewController];
-    v12 = [v11 view];
-    [v12 setAlpha:v10];
+    localSearchViewController3 = [(MacFloatingControlsViewController *)self localSearchViewController];
+    shouldBeVisible = [localSearchViewController3 shouldBeVisible];
+    localSearchViewController4 = [(MacFloatingControlsViewController *)self localSearchViewController];
+    view3 = [localSearchViewController4 view];
+    [view3 setAlpha:shouldBeVisible];
 
     localSearchViewController = self->_localSearchViewController;
 
@@ -118,24 +118,24 @@
   return localSearchViewController;
 }
 
-- (void)localSearchViewShouldBeVisibleDidChange:(id)a3
+- (void)localSearchViewShouldBeVisibleDidChange:(id)change
 {
-  v4 = [(MacFloatingControlsViewController *)self localSearchViewController];
-  v5 = [v4 view];
-  [v5 alpha];
+  localSearchViewController = [(MacFloatingControlsViewController *)self localSearchViewController];
+  view = [localSearchViewController view];
+  [view alpha];
   v7 = v6;
 
-  v8 = [(MacFloatingControlsViewController *)self localSearchViewController];
-  v9 = [v8 shouldBeVisible];
+  localSearchViewController2 = [(MacFloatingControlsViewController *)self localSearchViewController];
+  shouldBeVisible = [localSearchViewController2 shouldBeVisible];
 
-  if ((((v7 != 1.0) ^ v9) & 1) == 0)
+  if ((((v7 != 1.0) ^ shouldBeVisible) & 1) == 0)
   {
-    if (v9)
+    if (shouldBeVisible)
     {
       [(MacFloatingControlsViewController *)self setupLocalSearchViewController];
-      v10 = [(MacFloatingControlsViewController *)self localSearchViewController];
-      v11 = [v10 view];
-      [v11 layoutIfNeeded];
+      localSearchViewController3 = [(MacFloatingControlsViewController *)self localSearchViewController];
+      view2 = [localSearchViewController3 view];
+      [view2 layoutIfNeeded];
     }
 
     v12[0] = _NSConcreteStackBlock;
@@ -143,59 +143,59 @@
     v12[2] = sub_1008E8230;
     v12[3] = &unk_101661AE0;
     v12[4] = self;
-    v13 = v9;
+    v13 = shouldBeVisible;
     [UIView _animateUsingDefaultTimingWithOptions:0 animations:v12 completion:0];
   }
 }
 
-- (void)viewControllerDidSelectBrowseVenue:(id)a3
+- (void)viewControllerDidSelectBrowseVenue:(id)venue
 {
-  v4 = [(FloatingControlsViewController *)self actionCoordinator];
-  v3 = [v4 venuesManager];
-  [v3 presentPlaceCardForVenueWithFocusAndAddToHistory:1 source:7 centeringOnVenue:1];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager presentPlaceCardForVenueWithFocusAndAddToHistory:1 source:7 centeringOnVenue:1];
 }
 
-- (void)localSearchViewControllerDidSelectRefreshSearchHere:(id)a3
+- (void)localSearchViewControllerDidSelectRefreshSearchHere:(id)here
 {
-  v3 = [(FloatingControlsViewController *)self actionCoordinator];
-  [v3 refreshCurrentSearch];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  [actionCoordinator refreshCurrentSearch];
 }
 
 - (VKVenueFeatureMarker)venueWithFocus
 {
-  v2 = [(FloatingControlsViewController *)self actionCoordinator];
-  v3 = [v2 venuesManager];
-  v4 = [v3 venueWithFocus];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  venueWithFocus = [venuesManager venueWithFocus];
 
-  return v4;
+  return venueWithFocus;
 }
 
-- (void)setSearchSession:(id)a3
+- (void)setSearchSession:(id)session
 {
-  v4 = a3;
-  v6 = [(MacFloatingControlsViewController *)self localSearchViewController];
-  v5 = [v6 refreshSearchHereBusinessController];
-  [v5 setSearchSession:v4];
+  sessionCopy = session;
+  localSearchViewController = [(MacFloatingControlsViewController *)self localSearchViewController];
+  refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+  [refreshSearchHereBusinessController setSearchSession:sessionCopy];
 }
 
-- (void)setRefreshViewEnable:(BOOL)a3
+- (void)setRefreshViewEnable:(BOOL)enable
 {
-  v3 = a3;
-  v4 = [(MacFloatingControlsViewController *)self localSearchViewController];
-  [v4 setEnable:v3];
+  enableCopy = enable;
+  localSearchViewController = [(MacFloatingControlsViewController *)self localSearchViewController];
+  [localSearchViewController setEnable:enableCopy];
 }
 
-- (BOOL)lacksSearchResultsInVenue:(id)a3 forFloorOrdinal:(signed __int16)a4
+- (BOOL)lacksSearchResultsInVenue:(id)venue forFloorOrdinal:(signed __int16)ordinal
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(FloatingControlsViewController *)self actionCoordinator];
-  v8 = [v7 venuesManager];
-  if ([v8 hasSearchResultsInVenueForAnyFloorOrdinal:v6])
+  ordinalCopy = ordinal;
+  venueCopy = venue;
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  if ([venuesManager hasSearchResultsInVenueForAnyFloorOrdinal:venueCopy])
   {
-    v9 = [(FloatingControlsViewController *)self actionCoordinator];
-    v10 = [v9 venuesManager];
-    v11 = [v10 hasSearchResultsInVenue:v6 forFloorOrdinal:v4] ^ 1;
+    actionCoordinator2 = [(FloatingControlsViewController *)self actionCoordinator];
+    venuesManager2 = [actionCoordinator2 venuesManager];
+    v11 = [venuesManager2 hasSearchResultsInVenue:venueCopy forFloorOrdinal:ordinalCopy] ^ 1;
   }
 
   else
@@ -206,150 +206,150 @@
   return v11;
 }
 
-- (void)venueFloorViewControllerDidClose:(id)a3
+- (void)venueFloorViewControllerDidClose:(id)close
 {
-  v4 = a3;
-  v6 = [(FloatingControlsViewController *)self actionCoordinator];
-  v5 = [v6 venuesManager];
-  [v5 venueFloorViewControllerDidClose:v4];
+  closeCopy = close;
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidClose:closeCopy];
 }
 
-- (void)venueFloorViewControllerDidOpen:(id)a3
+- (void)venueFloorViewControllerDidOpen:(id)open
 {
-  v4 = a3;
-  v6 = [(FloatingControlsViewController *)self actionCoordinator];
-  v5 = [v6 venuesManager];
-  [v5 venueFloorViewControllerDidOpen:v4];
+  openCopy = open;
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidOpen:openCopy];
 }
 
-- (void)venueFloorViewControllerDidFinishShowing:(id)a3
+- (void)venueFloorViewControllerDidFinishShowing:(id)showing
 {
-  v4 = a3;
-  v6 = [(FloatingControlsViewController *)self actionCoordinator];
-  v5 = [v6 venuesManager];
-  [v5 venueFloorViewControllerDidFinishShowing:v4];
+  showingCopy = showing;
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidFinishShowing:showingCopy];
 }
 
-- (void)venueFloorViewControllerDidStartShowing:(id)a3
+- (void)venueFloorViewControllerDidStartShowing:(id)showing
 {
-  v4 = a3;
+  showingCopy = showing;
   [(MacFloatingControlsViewController *)self setRefreshViewEnable:0];
-  v5 = [(MacFloatingControlsViewController *)self view];
-  [v5 layoutIfNeeded];
+  view = [(MacFloatingControlsViewController *)self view];
+  [view layoutIfNeeded];
 
   [(MacFloatingControlsViewController *)self _layoutSearchHereControlIfNeeded];
-  v7 = [(FloatingControlsViewController *)self actionCoordinator];
-  v6 = [v7 venuesManager];
-  [v6 venueFloorViewControllerDidStartShowing:v4];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidStartShowing:showingCopy];
 }
 
-- (void)venueFloorViewControllerDidFinishHiding:(id)a3
+- (void)venueFloorViewControllerDidFinishHiding:(id)hiding
 {
-  v4 = a3;
-  v5 = [(MacFloatingControlsViewController *)self view];
-  [v5 layoutIfNeeded];
+  hidingCopy = hiding;
+  view = [(MacFloatingControlsViewController *)self view];
+  [view layoutIfNeeded];
 
-  v7 = [(FloatingControlsViewController *)self actionCoordinator];
-  v6 = [v7 venuesManager];
-  [v6 venueFloorViewControllerDidFinishHiding:v4];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidFinishHiding:hidingCopy];
 }
 
-- (void)venueFloorViewControllerDidStartHiding:(id)a3
+- (void)venueFloorViewControllerDidStartHiding:(id)hiding
 {
-  v4 = a3;
+  hidingCopy = hiding;
   [(MacFloatingControlsViewController *)self setRefreshViewEnable:1];
-  v5 = [(MacFloatingControlsViewController *)self view];
-  [v5 layoutIfNeeded];
+  view = [(MacFloatingControlsViewController *)self view];
+  [view layoutIfNeeded];
 
   [(MacFloatingControlsViewController *)self _layoutSearchHereControlIfNeeded];
-  v7 = [(FloatingControlsViewController *)self actionCoordinator];
-  v6 = [v7 venuesManager];
-  [v6 venueFloorViewControllerDidStartHiding:v4];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidStartHiding:hidingCopy];
 }
 
-- (void)venueFloorViewControllerDidChangeConstraints:(id)a3
+- (void)venueFloorViewControllerDidChangeConstraints:(id)constraints
 {
-  v4 = a3;
-  v5 = [(MacFloatingControlsViewController *)self view];
-  [v5 layoutIfNeeded];
+  constraintsCopy = constraints;
+  view = [(MacFloatingControlsViewController *)self view];
+  [view layoutIfNeeded];
 
-  v7 = [(FloatingControlsViewController *)self actionCoordinator];
-  v6 = [v7 venuesManager];
-  [v6 venueFloorViewControllerDidChangeConstraints:v4];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidChangeConstraints:constraintsCopy];
 }
 
 - (void)setupVenueFloorViewController
 {
-  v3 = [(MacFloatingControlsViewController *)self venueFloorViewController];
+  venueFloorViewController = [(MacFloatingControlsViewController *)self venueFloorViewController];
 
-  if (!v3)
+  if (!venueFloorViewController)
   {
     v4 = [MacVenueControlsViewController alloc];
-    v5 = [(FloatingControlsViewController *)self actionCoordinator];
-    v6 = [v5 venuesManager];
-    v7 = [(MacVenueControlsViewController *)v4 initWithVenueFloorViewDelegate:self venueBrowseDelegate:self venuesManager:v6];
+    actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+    venuesManager = [actionCoordinator venuesManager];
+    v7 = [(MacVenueControlsViewController *)v4 initWithVenueFloorViewDelegate:self venueBrowseDelegate:self venuesManager:venuesManager];
     [(MacFloatingControlsViewController *)self setVenueFloorViewController:v7];
 
-    v8 = [(MacFloatingControlsViewController *)self venueFloorViewController];
-    v9 = [(FloatingControlsViewController *)self actionCoordinator];
-    v10 = [v9 venuesManager];
-    [v10 setVenueFloorViewController:v8];
+    venueFloorViewController2 = [(MacFloatingControlsViewController *)self venueFloorViewController];
+    actionCoordinator2 = [(FloatingControlsViewController *)self actionCoordinator];
+    venuesManager2 = [actionCoordinator2 venuesManager];
+    [venuesManager2 setVenueFloorViewController:venueFloorViewController2];
 
-    v11 = [(MacFloatingControlsViewController *)self venueFloorViewController];
-    [v11 setForceHidden:1];
+    venueFloorViewController3 = [(MacFloatingControlsViewController *)self venueFloorViewController];
+    [venueFloorViewController3 setForceHidden:1];
 
-    v12 = [(MacFloatingControlsViewController *)self venueFloorViewController];
-    [(MacFloatingControlsViewController *)self addChildViewController:v12];
+    venueFloorViewController4 = [(MacFloatingControlsViewController *)self venueFloorViewController];
+    [(MacFloatingControlsViewController *)self addChildViewController:venueFloorViewController4];
 
-    v13 = [(MacFloatingControlsViewController *)self venueFloorViewController];
-    v14 = [v13 view];
+    venueFloorViewController5 = [(MacFloatingControlsViewController *)self venueFloorViewController];
+    view = [venueFloorViewController5 view];
 
-    v15 = [(MacFloatingControlsViewController *)self view];
-    [v15 addSubview:v14];
+    view2 = [(MacFloatingControlsViewController *)self view];
+    [view2 addSubview:view];
 
-    v26 = [v14 centerXAnchor];
-    v16 = [(MacFloatingControlsViewController *)self view];
-    v17 = [v16 centerXAnchor];
-    v18 = [v26 constraintEqualToAnchor:v17];
+    centerXAnchor = [view centerXAnchor];
+    view3 = [(MacFloatingControlsViewController *)self view];
+    centerXAnchor2 = [view3 centerXAnchor];
+    v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v27[0] = v18;
-    v19 = [v14 bottomAnchor];
-    v20 = [(MacFloatingControlsViewController *)self view];
-    v21 = [v20 bottomAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21 constant:0.0];
+    bottomAnchor = [view bottomAnchor];
+    view4 = [(MacFloatingControlsViewController *)self view];
+    bottomAnchor2 = [view4 bottomAnchor];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     v27[1] = v22;
     v23 = [NSArray arrayWithObjects:v27 count:2];
     [NSLayoutConstraint activateConstraints:v23];
 
-    v24 = [(MacFloatingControlsViewController *)self view];
-    [v24 layoutIfNeeded];
+    view5 = [(MacFloatingControlsViewController *)self view];
+    [view5 layoutIfNeeded];
 
     if (([(FloatingControlsViewController *)self visibleControls]& 0x40) != 0)
     {
-      v25 = [(MacFloatingControlsViewController *)self venueFloorViewController];
-      [v25 setForceHidden:0 animated:1 completion:0];
+      venueFloorViewController6 = [(MacFloatingControlsViewController *)self venueFloorViewController];
+      [venueFloorViewController6 setForceHidden:0 animated:1 completion:0];
     }
   }
 }
 
-- (void)hideControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4
+- (void)hideControlsIfNeeded:(int64_t)needed animated:(BOOL)animated
 {
-  v6 = [(FloatingControlsViewController *)self visibleControls:a3];
-  if ([(FloatingControlsViewController *)self shouldHide:4 withControlOptions:a3])
+  v6 = [(FloatingControlsViewController *)self visibleControls:needed];
+  if ([(FloatingControlsViewController *)self shouldHide:4 withControlOptions:needed])
   {
-    v7 = [(MacFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
-    v8 = [v7 viewIfLoaded];
-    [v8 removeFromSuperview];
+    localSearchViewControllerIfLoaded = [(MacFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
+    viewIfLoaded = [localSearchViewControllerIfLoaded viewIfLoaded];
+    [viewIfLoaded removeFromSuperview];
 
-    v9 = [(MacFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
-    [v9 setEnable:0];
+    localSearchViewControllerIfLoaded2 = [(MacFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
+    [localSearchViewControllerIfLoaded2 setEnable:0];
 
     v6 &= ~4uLL;
   }
 
-  if ([(FloatingControlsViewController *)self shouldHide:64 withControlOptions:a3])
+  if ([(FloatingControlsViewController *)self shouldHide:64 withControlOptions:needed])
   {
-    v10 = [(MacFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
-    [v10 setForceHidden:1];
+    venueFloorViewControllerIfLoaded = [(MacFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
+    [venueFloorViewControllerIfLoaded setForceHidden:1];
 
     v6 &= ~0x40uLL;
   }
@@ -357,106 +357,106 @@
   [(FloatingControlsViewController *)self setVisibleControls:v6];
 }
 
-- (void)showControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4
+- (void)showControlsIfNeeded:(int64_t)needed animated:(BOOL)animated
 {
-  v5 = [(FloatingControlsViewController *)self _sanitizedControlsFromControls:a3, a4];
-  if ([(FloatingControlsViewController *)self shouldShow:64 withControlOptions:v5])
+  animated = [(FloatingControlsViewController *)self _sanitizedControlsFromControls:needed, animated];
+  if ([(FloatingControlsViewController *)self shouldShow:64 withControlOptions:animated])
   {
-    v6 = [(MacFloatingControlsViewController *)self venueFloorViewController];
-    [v6 setForceHidden:0];
+    venueFloorViewController = [(MacFloatingControlsViewController *)self venueFloorViewController];
+    [venueFloorViewController setForceHidden:0];
     v7 = 64;
   }
 
   else
   {
-    v6 = [(MacFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
-    [v6 setForceHidden:1];
+    venueFloorViewController = [(MacFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
+    [venueFloorViewController setForceHidden:1];
     v7 = 0;
   }
 
-  if (-[FloatingControlsViewController shouldShow:withControlOptions:](self, "shouldShow:withControlOptions:", 4, v5) && (-[FloatingControlsViewController actionCoordinator](self, "actionCoordinator"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 shouldShowSearchOverlay], v8, v9))
+  if (-[FloatingControlsViewController shouldShow:withControlOptions:](self, "shouldShow:withControlOptions:", 4, animated) && (-[FloatingControlsViewController actionCoordinator](self, "actionCoordinator"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 shouldShowSearchOverlay], v8, v9))
   {
-    v10 = [(MacFloatingControlsViewController *)self localSearchViewController];
-    [v10 setEnable:1];
+    localSearchViewController = [(MacFloatingControlsViewController *)self localSearchViewController];
+    [localSearchViewController setEnable:1];
 
     v7 |= 4uLL;
   }
 
   else
   {
-    v11 = [(MacFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
-    [v11 setEnable:0];
+    localSearchViewControllerIfLoaded = [(MacFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
+    [localSearchViewControllerIfLoaded setEnable:0];
 
-    v12 = [(MacFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
-    [v12 willMoveToParentViewController:0];
+    localSearchViewControllerIfLoaded2 = [(MacFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
+    [localSearchViewControllerIfLoaded2 willMoveToParentViewController:0];
 
-    v13 = [(MacFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
-    v14 = [v13 viewIfLoaded];
-    [v14 removeFromSuperview];
+    localSearchViewControllerIfLoaded3 = [(MacFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
+    viewIfLoaded = [localSearchViewControllerIfLoaded3 viewIfLoaded];
+    [viewIfLoaded removeFromSuperview];
 
-    v15 = [(MacFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
-    [v15 removeFromParentViewController];
+    localSearchViewControllerIfLoaded4 = [(MacFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
+    [localSearchViewControllerIfLoaded4 removeFromParentViewController];
   }
 
   [(FloatingControlsViewController *)self setVisibleControls:v7];
 }
 
-- (void)didChangeFocusedVenue:(id)a3
+- (void)didChangeFocusedVenue:(id)venue
 {
-  if (a3)
+  if (venue)
   {
     [(MacFloatingControlsViewController *)self setupVenueFloorViewController];
   }
 }
 
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button
 {
-  if (a6)
+  if (button)
   {
     self->_tappedTrackingButton = 1;
-    v7 = a3;
-    v9 = [(MacFloatingControlsViewController *)self localSearchViewController];
-    v8 = [v9 refreshSearchHereBusinessController];
-    [v8 didStartRespondingToGesture:v7];
+    viewCopy = view;
+    localSearchViewController = [(MacFloatingControlsViewController *)self localSearchViewController];
+    refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+    [refreshSearchHereBusinessController didStartRespondingToGesture:viewCopy];
   }
 }
 
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection
 {
   localSearchViewController = self->_localSearchViewController;
-  v10 = a3;
-  v11 = [(LocalSearchViewController *)localSearchViewController refreshSearchHereBusinessController];
-  v12 = [v11 didStopRespondingToGesture:v10];
+  viewCopy = view;
+  refreshSearchHereBusinessController = [(LocalSearchViewController *)localSearchViewController refreshSearchHereBusinessController];
+  v12 = [refreshSearchHereBusinessController didStopRespondingToGesture:viewCopy];
 
   [(MacFloatingControlsViewController *)self _showSearchHereIfNeeded:v12];
 }
 
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated
 {
-  if (!a4)
+  if (!gesture)
   {
     localSearchViewController = self->_localSearchViewController;
-    v7 = a3;
-    v8 = [(LocalSearchViewController *)localSearchViewController refreshSearchHereBusinessController];
-    [v8 didStartRespondingToGesture:v7];
+    viewCopy = view;
+    refreshSearchHereBusinessController = [(LocalSearchViewController *)localSearchViewController refreshSearchHereBusinessController];
+    [refreshSearchHereBusinessController didStartRespondingToGesture:viewCopy];
   }
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = MacFloatingControlsViewController;
-  [(FloatingControlsViewController *)&v11 mapView:v6 regionDidChangeAnimated:v4];
+  [(FloatingControlsViewController *)&v11 mapView:viewCopy regionDidChangeAnimated:animatedCopy];
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
     if (self->_tappedTrackingButton)
     {
       self->_tappedTrackingButton = 0;
-      v7 = [(MacFloatingControlsViewController *)self localSearchViewController];
-      v8 = [v7 refreshSearchHereBusinessController];
-      v9 = [v8 didStopRespondingToGesture:v6];
+      localSearchViewController = [(MacFloatingControlsViewController *)self localSearchViewController];
+      refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+      v9 = [refreshSearchHereBusinessController didStopRespondingToGesture:viewCopy];
 
       [(MacFloatingControlsViewController *)self _showSearchHereIfNeeded:v9];
     }
@@ -464,32 +464,32 @@
 
   else
   {
-    v10 = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
-    [v10 handleMapViewRegionDidChange:v6];
+    refreshSearchHereBusinessController2 = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
+    [refreshSearchHereBusinessController2 handleMapViewRegionDidChange:viewCopy];
   }
 }
 
-- (void)_showSearchHereIfNeeded:(BOOL)a3
+- (void)_showSearchHereIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
-  v6 = [v5 searchSession];
-  v12 = [v6 searchInfo];
+  neededCopy = needed;
+  refreshSearchHereBusinessController = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
+  searchSession = [refreshSearchHereBusinessController searchSession];
+  searchInfo = [searchSession searchInfo];
 
-  if (v12)
+  if (searchInfo)
   {
-    v7 = [(FloatingControlsViewController *)self actionCoordinator];
+    actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
-      v10 = [v9 shouldShowManualRedoButton];
+      refreshSearchHereBusinessController2 = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
+      shouldShowManualRedoButton = [refreshSearchHereBusinessController2 shouldShowManualRedoButton];
 
-      if (v3 || v10 && [v12 shouldAllowManualRedoButton])
+      if (neededCopy || shouldShowManualRedoButton && [searchInfo shouldAllowManualRedoButton])
       {
-        v11 = [(FloatingControlsViewController *)self actionCoordinator];
-        [v11 showRedoSearchOverlay:v3];
+        actionCoordinator2 = [(FloatingControlsViewController *)self actionCoordinator];
+        [actionCoordinator2 showRedoSearchOverlay:neededCopy];
       }
     }
 
@@ -499,38 +499,38 @@
 
 - (void)_layoutSearchHereControlIfNeeded
 {
-  v3 = [(FloatingControlsViewController *)self actionCoordinator];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MacFloatingControlsViewController *)self venueFloorViewController];
-    v6 = [v5 view];
-    v7 = [v6 isHidden];
+    venueFloorViewController = [(MacFloatingControlsViewController *)self venueFloorViewController];
+    view = [venueFloorViewController view];
+    isHidden = [view isHidden];
 
     v8 = 0.0;
-    if ((v7 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v9 = [(MacFloatingControlsViewController *)self venueFloorViewController];
-      v10 = [v9 view];
-      [v10 frame];
+      venueFloorViewController2 = [(MacFloatingControlsViewController *)self venueFloorViewController];
+      view2 = [venueFloorViewController2 view];
+      [view2 frame];
       v8 = v11 + 8.0;
     }
 
-    v12 = [(FloatingControlsViewController *)self actionCoordinator];
-    [v12 setSearchHereFloatingControlBottomPadding:-v8];
+    actionCoordinator2 = [(FloatingControlsViewController *)self actionCoordinator];
+    [actionCoordinator2 setSearchHereFloatingControlBottomPadding:-v8];
   }
 }
 
-- (void)setAdditionalCompassEdgeInsets:(UIEdgeInsets)a3
+- (void)setAdditionalCompassEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vcltz_s16(vshl_n_s16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_additionalCompassEdgeInsets.top), vceqq_f64(v4, *&self->_additionalCompassEdgeInsets.bottom))), 0xFuLL))) & 1) == 0)
   {
-    self->_additionalCompassEdgeInsets = a3;
+    self->_additionalCompassEdgeInsets = insets;
     [(MacFloatingControlsViewController *)self updateCompassInsets];
   }
 }
@@ -539,8 +539,8 @@
 {
   if ([(FloatingControlsViewController *)self automaticallyUpdateCompassInsets])
   {
-    v3 = [(MacFloatingControlsViewController *)self view];
-    [v3 effectiveUserInterfaceLayoutDirection];
+    view = [(MacFloatingControlsViewController *)self view];
+    [view effectiveUserInterfaceLayoutDirection];
 
     sub_100019A44();
     [(MacFloatingControlsViewController *)self additionalCompassEdgeInsets];
@@ -549,8 +549,8 @@
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(FloatingControlsViewController *)self mapView];
-    [v12 _compassInsets];
+    mapView = [(FloatingControlsViewController *)self mapView];
+    [mapView _compassInsets];
     if (v7 == v16 && v5 == v13 && v11 == v15)
     {
       v19 = v14;
@@ -565,42 +565,42 @@
     {
     }
 
-    v20 = [(FloatingControlsViewController *)self mapView];
-    [v20 _setCompassInsets:0 animated:{v5, v7, v9, v11}];
+    mapView2 = [(FloatingControlsViewController *)self mapView];
+    [mapView2 _setCompassInsets:0 animated:{v5, v7, v9, v11}];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MacFloatingControlsViewController;
-  [(MacFloatingControlsViewController *)&v6 viewDidDisappear:a3];
-  v4 = [(FloatingControlsViewController *)self actionCoordinator];
-  v5 = [v4 venuesManager];
-  [v5 removeChangeObserver:self];
+  [(MacFloatingControlsViewController *)&v6 viewDidDisappear:disappear];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager removeChangeObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = MacFloatingControlsViewController;
-  [(FloatingControlsViewController *)&v9 viewWillAppear:a3];
-  v4 = [(FloatingControlsViewController *)self actionCoordinator];
-  v5 = [v4 venuesManager];
-  [v5 addChangeObserver:self];
+  [(FloatingControlsViewController *)&v9 viewWillAppear:appear];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager addChangeObserver:self];
 
-  v6 = [(FloatingControlsViewController *)self actionCoordinator];
-  v7 = [v6 venuesManager];
-  v8 = [v7 venueWithFocus];
-  [(MacFloatingControlsViewController *)self didChangeFocusedVenue:v8];
+  actionCoordinator2 = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager2 = [actionCoordinator2 venuesManager];
+  venueWithFocus = [venuesManager2 venueWithFocus];
+  [(MacFloatingControlsViewController *)self didChangeFocusedVenue:venueWithFocus];
 }
 
 - (id)floatingButtonLeadingGuide
 {
-  v2 = [(MacFloatingControlsViewController *)self view];
-  v3 = [v2 trailingAnchor];
+  view = [(MacFloatingControlsViewController *)self view];
+  trailingAnchor = [view trailingAnchor];
 
-  return v3;
+  return trailingAnchor;
 }
 
 @end

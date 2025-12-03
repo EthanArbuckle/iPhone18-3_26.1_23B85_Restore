@@ -1,53 +1,53 @@
 @interface CHRemotePowerLoggingRequest
-- (BOOL)isEqual:(id)a3;
-- (CHRemotePowerLoggingRequest)initWithCoder:(id)a3;
-- (CHRemotePowerLoggingRequest)initWithModel:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHRemotePowerLoggingRequest)initWithCoder:(id)coder;
+- (CHRemotePowerLoggingRequest)initWithModel:(unint64_t)model;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHRemotePowerLoggingRequest
 
-- (CHRemotePowerLoggingRequest)initWithModel:(unint64_t)a3
+- (CHRemotePowerLoggingRequest)initWithModel:(unint64_t)model
 {
   v5.receiver = self;
   v5.super_class = CHRemotePowerLoggingRequest;
   result = [(CHRemotePowerLoggingRequest *)&v5 init];
   if (result)
   {
-    result->_modelIdentifier = a3;
+    result->_modelIdentifier = model;
   }
 
   return result;
 }
 
-- (CHRemotePowerLoggingRequest)initWithCoder:(id)a3
+- (CHRemotePowerLoggingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CHRemotePowerLoggingRequest;
   v9 = [(CHRemotePowerLoggingRequest *)&v11 init];
   if (v9)
   {
-    v9->_modelIdentifier = objc_msgSend_decodeIntForKey_(v4, v5, @"model", v6, v7, v8);
+    v9->_modelIdentifier = objc_msgSend_decodeIntForKey_(coderCopy, v5, @"model", v6, v7, v8);
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
+  coderCopy = coder;
   v8 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v4, self->_modelIdentifier, v5, v6, v7);
-  objc_msgSend_encodeObject_forKey_(v12, v9, v8, @"model", v10, v11);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v8, @"model", v10, v11);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v11 = v5;
     if (self)
     {

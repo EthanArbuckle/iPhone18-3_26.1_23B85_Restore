@@ -7,10 +7,10 @@
 
 - (id)urlString
 {
-  v2 = [MEMORY[0x277CEC860] urlConfiguration];
-  v3 = [v2 familySetupUIURL];
+  urlConfiguration = [MEMORY[0x277CEC860] urlConfiguration];
+  familySetupUIURL = [urlConfiguration familySetupUIURL];
 
-  return v3;
+  return familySetupUIURL;
 }
 
 - (id)urlRequest
@@ -18,8 +18,8 @@
   v13[1] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = FAFamilySetupBuddyMLRequest;
-  v3 = [(AAFamilyRequest *)&v11 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AAFamilyRequest *)&v11 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   if (self->_iTunesAccount)
   {

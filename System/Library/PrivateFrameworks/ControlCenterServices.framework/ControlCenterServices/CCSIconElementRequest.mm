@@ -1,20 +1,20 @@
 @interface CCSIconElementRequest
-- (CCSIconElementRequest)initWithCoder:(id)a3;
-- (CCSIconElementRequest)initWithIntent:(int64_t)a3 controlKind:(id)a4 controlType:(unint64_t)a5 extensionBundleIdentifier:(id)a6 containerBundleIdentifier:(id)a7 size:(unint64_t)a8;
-- (CCSIconElementRequest)initWithIntent:(int64_t)a3 moduleIdentifier:(id)a4 containerBundleIdentifier:(id)a5 moduleSize:(int64_t)a6;
-- (CCSIconElementRequest)initWithIntent:(int64_t)a3 moduleIdentifier:(id)a4 containerBundleIdentifier:(id)a5 size:(unint64_t)a6;
-- (id)_controlSizeString:(unint64_t)a3;
-- (id)_controlTypeString:(unint64_t)a3;
+- (CCSIconElementRequest)initWithCoder:(id)coder;
+- (CCSIconElementRequest)initWithIntent:(int64_t)intent controlKind:(id)kind controlType:(unint64_t)type extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier size:(unint64_t)size;
+- (CCSIconElementRequest)initWithIntent:(int64_t)intent moduleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier moduleSize:(int64_t)size;
+- (CCSIconElementRequest)initWithIntent:(int64_t)intent moduleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier size:(unint64_t)size;
+- (id)_controlSizeString:(unint64_t)string;
+- (id)_controlTypeString:(unint64_t)string;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CCSIconElementRequest
 
-- (CCSIconElementRequest)initWithIntent:(int64_t)a3 moduleIdentifier:(id)a4 containerBundleIdentifier:(id)a5 size:(unint64_t)a6
+- (CCSIconElementRequest)initWithIntent:(int64_t)intent moduleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier size:(unint64_t)size
 {
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v17.receiver = self;
   v17.super_class = CCSIconElementRequest;
   v13 = [(CCSIconElementRequest *)&v17 init];
@@ -23,21 +23,21 @@
   {
     v13->_elementType = 1;
     intentConfiguration = v13->_intentConfiguration;
-    v13->_intent = a3;
+    v13->_intent = intent;
     v13->_intentConfiguration = 0;
 
-    objc_storeStrong(&v14->_moduleIdentifier, a4);
-    objc_storeStrong(&v14->_containerBundleIdentifier, a5);
-    v14->_size = a6;
+    objc_storeStrong(&v14->_moduleIdentifier, identifier);
+    objc_storeStrong(&v14->_containerBundleIdentifier, bundleIdentifier);
+    v14->_size = size;
   }
 
   return v14;
 }
 
-- (CCSIconElementRequest)initWithIntent:(int64_t)a3 moduleIdentifier:(id)a4 containerBundleIdentifier:(id)a5 moduleSize:(int64_t)a6
+- (CCSIconElementRequest)initWithIntent:(int64_t)intent moduleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier moduleSize:(int64_t)size
 {
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v17.receiver = self;
   v17.super_class = CCSIconElementRequest;
   v13 = [(CCSIconElementRequest *)&v17 init];
@@ -46,22 +46,22 @@
   {
     v13->_elementType = 0;
     intentConfiguration = v13->_intentConfiguration;
-    v13->_intent = a3;
+    v13->_intent = intent;
     v13->_intentConfiguration = 0;
 
-    objc_storeStrong(&v14->_moduleIdentifier, a4);
-    objc_storeStrong(&v14->_containerBundleIdentifier, a5);
-    v14->_moduleSize = a6;
+    objc_storeStrong(&v14->_moduleIdentifier, identifier);
+    objc_storeStrong(&v14->_containerBundleIdentifier, bundleIdentifier);
+    v14->_moduleSize = size;
   }
 
   return v14;
 }
 
-- (CCSIconElementRequest)initWithIntent:(int64_t)a3 controlKind:(id)a4 controlType:(unint64_t)a5 extensionBundleIdentifier:(id)a6 containerBundleIdentifier:(id)a7 size:(unint64_t)a8
+- (CCSIconElementRequest)initWithIntent:(int64_t)intent controlKind:(id)kind controlType:(unint64_t)type extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier size:(unint64_t)size
 {
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  kindCopy = kind;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v22.receiver = self;
   v22.super_class = CCSIconElementRequest;
   v18 = [(CCSIconElementRequest *)&v22 init];
@@ -72,12 +72,12 @@
     intentConfiguration = v18->_intentConfiguration;
     v18->_intentConfiguration = 0;
 
-    v19->_intent = a3;
-    objc_storeStrong(&v19->_controlKind, a4);
-    v19->_controlType = a5;
-    objc_storeStrong(&v19->_extensionBundleIdentifier, a6);
-    objc_storeStrong(&v19->_containerBundleIdentifier, a7);
-    v19->_size = a8;
+    v19->_intent = intent;
+    objc_storeStrong(&v19->_controlKind, kind);
+    v19->_controlType = type;
+    objc_storeStrong(&v19->_extensionBundleIdentifier, identifier);
+    objc_storeStrong(&v19->_containerBundleIdentifier, bundleIdentifier);
+    v19->_size = size;
   }
 
   return v19;
@@ -99,8 +99,8 @@
   }
 
   [v3 appendString:v6 withName:@"kCSSIconElementRequestIntent"];
-  v7 = [(INIntent *)self->_intentConfiguration intentDescription];
-  [v4 appendString:v7 withName:@"kCSSIconElementRequestIntentConfiguration"];
+  intentDescription = [(INIntent *)self->_intentConfiguration intentDescription];
+  [v4 appendString:intentDescription withName:@"kCSSIconElementRequestIntentConfiguration"];
 
   v8 = [(CCSIconElementRequest *)self _controlTypeString:self->_controlType];
   [v4 appendString:v8 withName:@"kCSSIconElementRequestControlType"];
@@ -127,36 +127,36 @@
   }
 
   [v4 appendString:v12 withName:@"kCSSIconElementRequestElementType"];
-  v13 = [v4 build];
+  build = [v4 build];
 
-  return v13;
+  return build;
 }
 
-- (CCSIconElementRequest)initWithCoder:(id)a3
+- (CCSIconElementRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"kCSSIconElementRequestIntent"];
-  v6 = [v4 decodeIntegerForKey:@"kCSSIconElementRequestElementType"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCSSIconElementRequestContainerBundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"kCSSIconElementRequestIntent"];
+  v6 = [coderCopy decodeIntegerForKey:@"kCSSIconElementRequestElementType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCSSIconElementRequestContainerBundleIdentifier"];
   switch(v6)
   {
     case 2:
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCSSIconElementRequestControlKind"];
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCSSIconElementRequestIntentConfiguration"];
-      v12 = [v4 decodeIntegerForKey:@"kCSSIconElementRequestControlType"];
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCSSIconElementRequestExtensionBundleIdentifier"];
-      v10 = -[CCSIconElementRequest initWithIntent:controlKind:controlType:extensionBundleIdentifier:containerBundleIdentifier:size:]([CCSIconElementRequest alloc], "initWithIntent:controlKind:controlType:extensionBundleIdentifier:containerBundleIdentifier:size:", v5, v8, v12, v13, v7, [v4 decodeIntegerForKey:@"kCSSIconElementRequestSize"]);
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCSSIconElementRequestControlKind"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCSSIconElementRequestIntentConfiguration"];
+      v12 = [coderCopy decodeIntegerForKey:@"kCSSIconElementRequestControlType"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCSSIconElementRequestExtensionBundleIdentifier"];
+      v10 = -[CCSIconElementRequest initWithIntent:controlKind:controlType:extensionBundleIdentifier:containerBundleIdentifier:size:]([CCSIconElementRequest alloc], "initWithIntent:controlKind:controlType:extensionBundleIdentifier:containerBundleIdentifier:size:", v5, v8, v12, v13, v7, [coderCopy decodeIntegerForKey:@"kCSSIconElementRequestSize"]);
 
       [(CCSIconElementRequest *)v10 setIntentConfiguration:v11];
       self = v11;
       goto LABEL_8;
     case 1:
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCSSIconElementRequestModuleIdentifier"];
-      v9 = -[CCSIconElementRequest initWithIntent:moduleIdentifier:containerBundleIdentifier:size:]([CCSIconElementRequest alloc], "initWithIntent:moduleIdentifier:containerBundleIdentifier:size:", v5, v8, v7, [v4 decodeIntegerForKey:@"kCSSIconElementRequestSize"]);
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCSSIconElementRequestModuleIdentifier"];
+      v9 = -[CCSIconElementRequest initWithIntent:moduleIdentifier:containerBundleIdentifier:size:]([CCSIconElementRequest alloc], "initWithIntent:moduleIdentifier:containerBundleIdentifier:size:", v5, v8, v7, [coderCopy decodeIntegerForKey:@"kCSSIconElementRequestSize"]);
       goto LABEL_6;
     case 0:
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCSSIconElementRequestModuleIdentifier"];
-      v9 = -[CCSIconElementRequest initWithIntent:moduleIdentifier:containerBundleIdentifier:moduleSize:]([CCSIconElementRequest alloc], "initWithIntent:moduleIdentifier:containerBundleIdentifier:moduleSize:", v5, v8, v7, [v4 decodeIntegerForKey:@"kCSSIconElementRequestModuleSize"]);
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCSSIconElementRequestModuleIdentifier"];
+      v9 = -[CCSIconElementRequest initWithIntent:moduleIdentifier:containerBundleIdentifier:moduleSize:]([CCSIconElementRequest alloc], "initWithIntent:moduleIdentifier:containerBundleIdentifier:moduleSize:", v5, v8, v7, [coderCopy decodeIntegerForKey:@"kCSSIconElementRequestModuleSize"]);
 LABEL_6:
       v10 = v9;
 LABEL_8:
@@ -168,45 +168,45 @@ LABEL_8:
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   intent = self->_intent;
-  v5 = a3;
-  [v5 encodeInteger:intent forKey:@"kCSSIconElementRequestIntent"];
-  [v5 encodeObject:self->_intentConfiguration forKey:@"kCSSIconElementRequestIntentConfiguration"];
-  [v5 encodeInteger:self->_controlType forKey:@"kCSSIconElementRequestControlType"];
-  [v5 encodeInteger:self->_size forKey:@"kCSSIconElementRequestSize"];
-  [v5 encodeInteger:self->_moduleSize forKey:@"kCSSIconElementRequestModuleSize"];
-  [v5 encodeObject:self->_moduleIdentifier forKey:@"kCSSIconElementRequestModuleIdentifier"];
-  [v5 encodeObject:self->_controlKind forKey:@"kCSSIconElementRequestControlKind"];
-  [v5 encodeObject:self->_extensionBundleIdentifier forKey:@"kCSSIconElementRequestExtensionBundleIdentifier"];
-  [v5 encodeObject:self->_containerBundleIdentifier forKey:@"kCSSIconElementRequestContainerBundleIdentifier"];
-  [v5 encodeInteger:self->_elementType forKey:@"kCSSIconElementRequestElementType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:intent forKey:@"kCSSIconElementRequestIntent"];
+  [coderCopy encodeObject:self->_intentConfiguration forKey:@"kCSSIconElementRequestIntentConfiguration"];
+  [coderCopy encodeInteger:self->_controlType forKey:@"kCSSIconElementRequestControlType"];
+  [coderCopy encodeInteger:self->_size forKey:@"kCSSIconElementRequestSize"];
+  [coderCopy encodeInteger:self->_moduleSize forKey:@"kCSSIconElementRequestModuleSize"];
+  [coderCopy encodeObject:self->_moduleIdentifier forKey:@"kCSSIconElementRequestModuleIdentifier"];
+  [coderCopy encodeObject:self->_controlKind forKey:@"kCSSIconElementRequestControlKind"];
+  [coderCopy encodeObject:self->_extensionBundleIdentifier forKey:@"kCSSIconElementRequestExtensionBundleIdentifier"];
+  [coderCopy encodeObject:self->_containerBundleIdentifier forKey:@"kCSSIconElementRequestContainerBundleIdentifier"];
+  [coderCopy encodeInteger:self->_elementType forKey:@"kCSSIconElementRequestElementType"];
 }
 
-- (id)_controlTypeString:(unint64_t)a3
+- (id)_controlTypeString:(unint64_t)string
 {
-  if (a3 - 1 > 2)
+  if (string - 1 > 2)
   {
     return @"CHSControlTypeUnknown";
   }
 
   else
   {
-    return off_278E0F2C0[a3 - 1];
+    return off_278E0F2C0[string - 1];
   }
 }
 
-- (id)_controlSizeString:(unint64_t)a3
+- (id)_controlSizeString:(unint64_t)string
 {
-  if (a3 - 1 > 2)
+  if (string - 1 > 2)
   {
     return @"CHSControlSize1x1";
   }
 
   else
   {
-    return off_278E0F2D8[a3 - 1];
+    return off_278E0F2D8[string - 1];
   }
 }
 

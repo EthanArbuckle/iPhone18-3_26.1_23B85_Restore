@@ -1,12 +1,12 @@
 @interface PBUIWallpaperScaleAssertion
-- (double)initWithVariant:(void *)a3 scale:(void *)a4 forReason:(double)a5 invalidationBlock:;
+- (double)initWithVariant:(void *)variant scale:(void *)scale forReason:(double)reason invalidationBlock:;
 - (double)scale;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (uint64_t)variant;
 - (void)dealloc;
-- (void)invalidateWithAnimationFactory:(id)a3;
+- (void)invalidateWithAnimationFactory:(id)factory;
 @end
 
 @implementation PBUIWallpaperScaleAssertion
@@ -23,9 +23,9 @@
 
 - (double)scale
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 64);
+    return *(self + 64);
   }
 
   else
@@ -70,9 +70,9 @@ void __81__PBUIWallpaperScaleAssertion_initWithVariant_scale_forReason_invalidat
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)invalidateWithAnimationFactory:(id)a3
+- (void)invalidateWithAnimationFactory:(id)factory
 {
-  v4 = [a3 copy];
+  v4 = [factory copy];
   invalidationAnimationFactory = self->_invalidationAnimationFactory;
   self->_invalidationAnimationFactory = v4;
 
@@ -83,24 +83,24 @@ void __81__PBUIWallpaperScaleAssertion_initWithVariant_scale_forReason_invalidat
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIWallpaperScaleAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIWallpaperScaleAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIWallpaperScaleAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIWallpaperScaleAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(PBUIWallpaperScaleAssertion *)self succinctDescriptionBuilder];
-  v5 = v4;
+  succinctDescriptionBuilder = [(PBUIWallpaperScaleAssertion *)self succinctDescriptionBuilder];
+  v5 = succinctDescriptionBuilder;
   if (self)
   {
     v6 = PBUIStringForWallpaperVariant(self->_variant);
@@ -111,7 +111,7 @@ void __81__PBUIWallpaperScaleAssertion_initWithVariant_scale_forReason_invalidat
 
   else
   {
-    [PBUIWallpaperScaleAssertion descriptionBuilderWithMultilinePrefix:v4];
+    [PBUIWallpaperScaleAssertion descriptionBuilderWithMultilinePrefix:succinctDescriptionBuilder];
     scale = 0.0;
   }
 
@@ -120,17 +120,17 @@ void __81__PBUIWallpaperScaleAssertion_initWithVariant_scale_forReason_invalidat
   return v5;
 }
 
-- (double)initWithVariant:(void *)a3 scale:(void *)a4 forReason:(double)a5 invalidationBlock:
+- (double)initWithVariant:(void *)variant scale:(void *)scale forReason:(double)reason invalidationBlock:
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (a1)
+  variantCopy = variant;
+  scaleCopy = scale;
+  v11 = scaleCopy;
+  if (self)
   {
-    if (!v10)
+    if (!scaleCopy)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:sel_initWithVariant_scale_forReason_invalidationBlock_ object:a1 file:@"PBUIWallpaperScaleAssertion.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"invalidationBlock"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithVariant_scale_forReason_invalidationBlock_ object:self file:@"PBUIWallpaperScaleAssertion.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"invalidationBlock"}];
     }
 
     v18[0] = MEMORY[0x277D85DD0];
@@ -139,13 +139,13 @@ void __81__PBUIWallpaperScaleAssertion_initWithVariant_scale_forReason_invalidat
     v18[3] = &unk_278363A00;
     v19 = v11;
     v12 = MEMORY[0x223D62EE0](v18);
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = PBUIWallpaperScaleAssertion;
-    v13 = objc_msgSendSuper2(&v17, sel_initWithIdentifier_forReason_invalidationBlock_, @"WallpaperScale", v9, v12);
+    v13 = objc_msgSendSuper2(&v17, sel_initWithIdentifier_forReason_invalidationBlock_, @"WallpaperScale", variantCopy, v12);
     if (v13)
     {
       *(v13 + 7) = a2;
-      v13[8] = a5;
+      v13[8] = reason;
     }
 
     v14 = v13;

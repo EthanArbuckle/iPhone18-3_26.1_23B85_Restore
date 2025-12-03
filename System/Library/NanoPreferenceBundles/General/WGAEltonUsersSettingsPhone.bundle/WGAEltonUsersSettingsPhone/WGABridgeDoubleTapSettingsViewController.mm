@@ -1,21 +1,21 @@
 @interface WGABridgeDoubleTapSettingsViewController
 - (BOOL)_pairedDeviceSupportsFlick;
 - (id)_doubleTapSettingSpecifiers;
-- (id)_getIgnoreGesturesWhileVisionProDonned:(id)a3;
+- (id)_getIgnoreGesturesWhileVisionProDonned:(id)donned;
 - (id)_ignoreWhileVisionProDonnedSettingSpecifiers;
 - (id)_phoneSettings;
 - (id)_playbackSettingSpecifiers;
 - (id)_smartStackSettingSpecifiers;
-- (id)getEltonEnabled:(id)a3;
+- (id)getEltonEnabled:(id)enabled;
 - (id)specifiers;
 - (unint64_t)_gestureMode;
 - (unint64_t)getNowPlayingType;
 - (unint64_t)getSmartStackPrimaryActionType;
-- (void)_setIgnoreGesturesWhileVisionProDonned:(id)a3 specifier:(id)a4;
+- (void)_setIgnoreGesturesWhileVisionProDonned:(id)donned specifier:(id)specifier;
 - (void)openTipsPage;
-- (void)setEltonEnabled:(id)a3 specifier:(id)a4;
-- (void)setNowPlayingTypeForSpecifier:(id)a3;
-- (void)setSmartStackPrimaryActionTypeForSpecifier:(id)a3;
+- (void)setEltonEnabled:(id)enabled specifier:(id)specifier;
+- (void)setNowPlayingTypeForSpecifier:(id)specifier;
+- (void)setSmartStackPrimaryActionTypeForSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -31,7 +31,7 @@
   eltonAccessor = self->_eltonAccessor;
   self->_eltonAccessor = v4;
 
-  v6 = [(NPSDomainAccessor *)self->_eltonAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_eltonAccessor synchronize];
 }
 
 - (id)specifiers
@@ -41,17 +41,17 @@
   if (!v4)
   {
     v5 = objc_alloc_init(NSMutableArray);
-    v6 = [(WGABridgeDoubleTapSettingsViewController *)self _doubleTapSettingSpecifiers];
-    [v5 addObjectsFromArray:v6];
+    _doubleTapSettingSpecifiers = [(WGABridgeDoubleTapSettingsViewController *)self _doubleTapSettingSpecifiers];
+    [v5 addObjectsFromArray:_doubleTapSettingSpecifiers];
 
-    v7 = [(WGABridgeDoubleTapSettingsViewController *)self _playbackSettingSpecifiers];
-    [v5 addObjectsFromArray:v7];
+    _playbackSettingSpecifiers = [(WGABridgeDoubleTapSettingsViewController *)self _playbackSettingSpecifiers];
+    [v5 addObjectsFromArray:_playbackSettingSpecifiers];
 
-    v8 = [(WGABridgeDoubleTapSettingsViewController *)self _smartStackSettingSpecifiers];
-    [v5 addObjectsFromArray:v8];
+    _smartStackSettingSpecifiers = [(WGABridgeDoubleTapSettingsViewController *)self _smartStackSettingSpecifiers];
+    [v5 addObjectsFromArray:_smartStackSettingSpecifiers];
 
-    v9 = [(WGABridgeDoubleTapSettingsViewController *)self _ignoreWhileVisionProDonnedSettingSpecifiers];
-    [v5 addObjectsFromArray:v9];
+    _ignoreWhileVisionProDonnedSettingSpecifiers = [(WGABridgeDoubleTapSettingsViewController *)self _ignoreWhileVisionProDonnedSettingSpecifiers];
+    [v5 addObjectsFromArray:_ignoreWhileVisionProDonnedSettingSpecifiers];
 
     v10 = *&self->BPSListController_opaque[v3];
     *&self->BPSListController_opaque[v3] = v5;
@@ -102,23 +102,23 @@
   return v3;
 }
 
-- (void)setEltonEnabled:(id)a3 specifier:(id)a4
+- (void)setEltonEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  bOOLValue = [enabledCopy BOOLValue];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_41C4;
   v34[3] = &unk_83D0;
   v34[4] = self;
-  v9 = v6;
+  v9 = enabledCopy;
   v35 = v9;
   v10 = objc_retainBlock(v34);
   v11 = +[WatchControlSettings sharedInstance];
-  v12 = [v11 hasGreySupportFeatureEnabled];
+  hasGreySupportFeatureEnabled = [v11 hasGreySupportFeatureEnabled];
 
-  if (v8 && v12)
+  if (bOOLValue && hasGreySupportFeatureEnabled)
   {
     v13 = _os_feature_enabled_impl();
     v14 = [NSBundle bundleForClass:objc_opt_class()];
@@ -158,7 +158,7 @@
     v28[1] = 3221225472;
     v28[2] = sub_43A0;
     v28[3] = &unk_83A8;
-    v29 = v7;
+    v29 = specifierCopy;
     objc_copyWeak(&v30, &location);
     v27 = [UIAlertAction actionWithTitle:v26 style:1 handler:v28];
     [v21 addAction:v27];
@@ -175,7 +175,7 @@
   }
 }
 
-- (id)getEltonEnabled:(id)a3
+- (id)getEltonEnabled:(id)enabled
 {
   v3 = [(WGABridgeDoubleTapSettingsViewController *)self _gestureMode]== &dword_0 + 1;
 
@@ -248,13 +248,13 @@
   return result;
 }
 
-- (void)setNowPlayingTypeForSpecifier:(id)a3
+- (void)setNowPlayingTypeForSpecifier:(id)specifier
 {
   eltonAccessor = self->_eltonAccessor;
-  v5 = [a3 propertyForKey:PSValueKey];
+  v5 = [specifier propertyForKey:PSValueKey];
   [(NPSDomainAccessor *)eltonAccessor setObject:v5 forKey:@"NowPlayingPrimaryAction"];
 
-  v6 = [(NPSDomainAccessor *)self->_eltonAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_eltonAccessor synchronize];
   v7 = objc_opt_new();
   v8 = WAGPreferencesDomain;
   v11 = @"NowPlayingPrimaryAction";
@@ -319,13 +319,13 @@
   return result;
 }
 
-- (void)setSmartStackPrimaryActionTypeForSpecifier:(id)a3
+- (void)setSmartStackPrimaryActionTypeForSpecifier:(id)specifier
 {
   eltonAccessor = self->_eltonAccessor;
-  v5 = [a3 propertyForKey:PSValueKey];
+  v5 = [specifier propertyForKey:PSValueKey];
   [(NPSDomainAccessor *)eltonAccessor setObject:v5 forKey:@"smartStackPrimaryAction_v1"];
 
-  v6 = [(NPSDomainAccessor *)self->_eltonAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_eltonAccessor synchronize];
   v7 = objc_opt_new();
   v8 = WAGPreferencesDomain;
   v11 = @"smartStackPrimaryAction_v1";
@@ -359,10 +359,10 @@
   return v3;
 }
 
-- (void)_setIgnoreGesturesWhileVisionProDonned:(id)a3 specifier:(id)a4
+- (void)_setIgnoreGesturesWhileVisionProDonned:(id)donned specifier:(id)specifier
 {
-  [(NPSDomainAccessor *)self->_eltonAccessor setObject:a3 forKey:@"ignoreGesturesWhileVisionProDonned"];
-  v5 = [(NPSDomainAccessor *)self->_eltonAccessor synchronize];
+  [(NPSDomainAccessor *)self->_eltonAccessor setObject:donned forKey:@"ignoreGesturesWhileVisionProDonned"];
+  synchronize = [(NPSDomainAccessor *)self->_eltonAccessor synchronize];
   v6 = objc_opt_new();
   v7 = WAGPreferencesDomain;
   v10 = @"ignoreGesturesWhileVisionProDonned";
@@ -371,7 +371,7 @@
   [v6 synchronizeNanoDomain:v7 keys:v9];
 }
 
-- (id)_getIgnoreGesturesWhileVisionProDonned:(id)a3
+- (id)_getIgnoreGesturesWhileVisionProDonned:(id)donned
 {
   v3 = [(NPSDomainAccessor *)self->_eltonAccessor BOOLForKey:@"ignoreGesturesWhileVisionProDonned"];
 
@@ -380,8 +380,8 @@
 
 - (void)openTipsPage
 {
-  v3 = [(WGABridgeDoubleTapSettingsViewController *)self _phoneSettings];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneSettings = [(WGABridgeDoubleTapSettingsViewController *)self _phoneSettings];
+  if (os_log_type_enabled(_phoneSettings, OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -389,15 +389,15 @@
     v10 = v5;
     v11 = 2080;
     v12 = "[WGABridgeDoubleTapSettingsViewController openTipsPage]";
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "%@ %s", &v9, 0x16u);
+    _os_log_impl(&dword_0, _phoneSettings, OS_LOG_TYPE_DEFAULT, "%@ %s", &v9, 0x16u);
   }
 
-  v6 = [(WGABridgeDoubleTapSettingsViewController *)self _phoneSettings];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  _phoneSettings2 = [(WGABridgeDoubleTapSettingsViewController *)self _phoneSettings];
+  if (os_log_type_enabled(_phoneSettings2, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
     v10 = @"x-apple-tips://open?tip=TouchFreeWatch&referrer=com.apple.Bridge";
-    _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Will open url %@", &v9, 0xCu);
+    _os_log_impl(&dword_0, _phoneSettings2, OS_LOG_TYPE_DEFAULT, "Will open url %@", &v9, 0xCu);
   }
 
   v7 = +[LSApplicationWorkspace defaultWorkspace];
@@ -408,12 +408,12 @@
 - (BOOL)_pairedDeviceSupportsFlick
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
 
   if (_os_feature_enabled_impl())
   {
     v4 = [[NSUUID alloc] initWithUUIDString:@"D5834418-F4A0-4C74-AA38-8ED5F7765BD1"];
-    v5 = [v3 supportsCapability:v4];
+    v5 = [getActivePairedDevice supportsCapability:v4];
   }
 
   else

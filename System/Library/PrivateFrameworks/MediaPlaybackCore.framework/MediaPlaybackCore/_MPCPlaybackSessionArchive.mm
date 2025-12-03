@@ -1,11 +1,11 @@
 @interface _MPCPlaybackSessionArchive
-- (BOOL)isEqual:(id)a3;
-- (BOOL)saveWithError:(id *)a3;
-- (BOOL)writeWithError:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)saveWithError:(id *)error;
+- (BOOL)writeWithError:(id *)error;
 - (MPNowPlayingContentItem)contentItem;
 - (UIImage)artworkImage;
-- (_MPCPlaybackSessionArchive)initWithURL:(id)a3;
-- (_MPCPlaybackSessionArchive)initWithURL:(id)a3 identifier:(id)a4;
+- (_MPCPlaybackSessionArchive)initWithURL:(id)l;
+- (_MPCPlaybackSessionArchive)initWithURL:(id)l identifier:(id)identifier;
 - (unint64_t)hash;
 @end
 
@@ -16,12 +16,12 @@
   artworkImage = self->_artworkImage;
   if (!artworkImage)
   {
-    v4 = [(MSVSegmentedCodingPackage *)self packageURL];
-    v5 = [v4 URLByAppendingPathComponent:@"artwork" isDirectory:0];
+    packageURL = [(MSVSegmentedCodingPackage *)self packageURL];
+    v5 = [packageURL URLByAppendingPathComponent:@"artwork" isDirectory:0];
 
     v6 = objc_alloc(MEMORY[0x1E69DCAB8]);
-    v7 = [v5 path];
-    v8 = [v6 initWithContentsOfFile:v7];
+    path = [v5 path];
+    v8 = [v6 initWithContentsOfFile:path];
     v9 = self->_artworkImage;
     self->_artworkImage = v8;
 
@@ -36,8 +36,8 @@
   contentItem = self->_contentItem;
   if (!contentItem)
   {
-    v4 = [(MSVSegmentedCodingPackage *)self packageURL];
-    v5 = [v4 URLByAppendingPathComponent:@"contentItem.protobuf.gz" isDirectory:0];
+    packageURL = [(MSVSegmentedCodingPackage *)self packageURL];
+    v5 = [packageURL URLByAppendingPathComponent:@"contentItem.protobuf.gz" isDirectory:0];
 
     v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v5];
     v7 = MSVGzipDecompressData();
@@ -52,10 +52,10 @@
   return contentItem;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -65,11 +65,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_MPCPlaybackSessionArchive *)self identifier];
-      v7 = [(_MPCPlaybackSessionArchive *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(_MPCPlaybackSessionArchive *)self identifier];
+      identifier2 = [(_MPCPlaybackSessionArchive *)v5 identifier];
 
-      v8 = [v6 isEqualToString:v7];
+      v8 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -83,30 +83,30 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_MPCPlaybackSessionArchive *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(_MPCPlaybackSessionArchive *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)writeWithError:(id *)a3
+- (BOOL)writeWithError:(id *)error
 {
   v232[0] = *MEMORY[0x1E69E9840];
   v212.receiver = self;
   v212.super_class = _MPCPlaybackSessionArchive;
   if ([(MSVSegmentedCodingPackage *)&v212 writeWithError:?])
   {
-    v5 = [(MSVSegmentedCodingPackage *)self packageURL];
-    v6 = [v5 URLByAppendingPathComponent:@"contentItem.protobuf.gz" isDirectory:0];
+    packageURL = [(MSVSegmentedCodingPackage *)self packageURL];
+    v6 = [packageURL URLByAppendingPathComponent:@"contentItem.protobuf.gz" isDirectory:0];
 
     if (self->_contentItem)
     {
-      v7 = [(MSVSegmentedCodingPackage *)self infoDictionary];
-      v8 = [v7 objectForKeyedSubscript:@"contentItem"];
+      infoDictionary = [(MSVSegmentedCodingPackage *)self infoDictionary];
+      v8 = [infoDictionary objectForKeyedSubscript:@"contentItem"];
 
-      v9 = [(MPNowPlayingContentItem *)self->_contentItem identifier];
+      identifier = [(MPNowPlayingContentItem *)self->_contentItem identifier];
       v10 = [v8 objectForKeyedSubscript:@"identifier"];
-      v11 = [v9 isEqualToString:v10];
+      v11 = [identifier isEqualToString:v10];
 
       if ((v11 & 1) == 0)
       {
@@ -115,16 +115,16 @@
           v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
         }
 
-        v12 = [(MPNowPlayingContentItem *)self->_contentItem createExternalRepresentation];
+        createExternalRepresentation = [(MPNowPlayingContentItem *)self->_contentItem createExternalRepresentation];
         v13 = MSVGzipCompressData();
 
         if (!v13)
         {
           v13 = 0;
-          if (a3)
+          if (error)
           {
             v16 = 0;
-            *a3 = 0;
+            *error = 0;
 LABEL_216:
 
             return v16;
@@ -133,17 +133,17 @@ LABEL_216:
           goto LABEL_215;
         }
 
-        if (![v13 writeToURL:v6 options:0 error:a3])
+        if (![v13 writeToURL:v6 options:0 error:error])
         {
           goto LABEL_215;
         }
 
-        v14 = [(MPNowPlayingContentItem *)self->_contentItem identifier];
-        [v8 setObject:v14 forKeyedSubscript:@"identifier"];
+        identifier2 = [(MPNowPlayingContentItem *)self->_contentItem identifier];
+        [v8 setObject:identifier2 forKeyedSubscript:@"identifier"];
 
         [v8 setObject:&unk_1F4599568 forKeyedSubscript:@"compressionAlgorithm"];
-        v15 = [(MSVSegmentedCodingPackage *)self infoDictionary];
-        [v15 setObject:v8 forKeyedSubscript:@"contentItem"];
+        infoDictionary2 = [(MSVSegmentedCodingPackage *)self infoDictionary];
+        [infoDictionary2 setObject:v8 forKeyedSubscript:@"contentItem"];
 
         [(MSVSegmentedCodingPackage *)self setNeedsInfoDictionaryUpdate];
       }
@@ -151,39 +151,39 @@ LABEL_216:
 
     else
     {
-      v17 = [MEMORY[0x1E696AC08] defaultManager];
-      [v17 removeItemAtURL:v6 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager removeItemAtURL:v6 error:0];
 
-      v18 = [(MSVSegmentedCodingPackage *)self infoDictionary];
-      v19 = [v18 objectForKeyedSubscript:@"contentItem"];
+      infoDictionary3 = [(MSVSegmentedCodingPackage *)self infoDictionary];
+      v19 = [infoDictionary3 objectForKeyedSubscript:@"contentItem"];
 
       if (v19)
       {
-        v20 = [(MSVSegmentedCodingPackage *)self infoDictionary];
-        [v20 setObject:0 forKeyedSubscript:@"contentItem"];
+        infoDictionary4 = [(MSVSegmentedCodingPackage *)self infoDictionary];
+        [infoDictionary4 setObject:0 forKeyedSubscript:@"contentItem"];
 
         [(MSVSegmentedCodingPackage *)self setNeedsInfoDictionaryUpdate];
       }
     }
 
-    v21 = [(MSVSegmentedCodingPackage *)self packageURL];
-    v8 = [v21 URLByAppendingPathComponent:@"artwork" isDirectory:0];
+    packageURL2 = [(MSVSegmentedCodingPackage *)self packageURL];
+    v8 = [packageURL2 URLByAppendingPathComponent:@"artwork" isDirectory:0];
 
-    v22 = [(MSVSegmentedCodingPackage *)self infoDictionary];
-    v13 = [v22 objectForKeyedSubscript:@"artworkHash"];
+    infoDictionary5 = [(MSVSegmentedCodingPackage *)self infoDictionary];
+    v13 = [infoDictionary5 objectForKeyedSubscript:@"artworkHash"];
 
     if (!self->_artworkImage)
     {
-      v32 = [MEMORY[0x1E696AC08] defaultManager];
-      [v32 removeItemAtURL:v8 error:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager2 removeItemAtURL:v8 error:0];
 
-      v33 = [(MSVSegmentedCodingPackage *)self infoDictionary];
-      v34 = [v33 objectForKeyedSubscript:@"artworkHash"];
+      infoDictionary6 = [(MSVSegmentedCodingPackage *)self infoDictionary];
+      v34 = [infoDictionary6 objectForKeyedSubscript:@"artworkHash"];
 
       if (v34)
       {
-        v35 = [(MSVSegmentedCodingPackage *)self infoDictionary];
-        [v35 setObject:0 forKeyedSubscript:@"artworkHash"];
+        infoDictionary7 = [(MSVSegmentedCodingPackage *)self infoDictionary];
+        [infoDictionary7 setObject:0 forKeyedSubscript:@"artworkHash"];
 
         [(MSVSegmentedCodingPackage *)self setNeedsInfoDictionaryUpdate];
       }
@@ -214,7 +214,7 @@ LABEL_216:
     v218 = 0u;
     v219 = 0;
     v28 = v25;
-    v29 = [v28 bytes];
+    bytes = [v28 bytes];
     v30 = [v28 length];
     v31 = v30;
     if (v213 > 3000)
@@ -224,13 +224,13 @@ LABEL_216:
         switch(v213)
         {
           case 0xFA1:
-            CC_SHA1_Update((&v213 + 8), v29, v30);
+            CC_SHA1_Update((&v213 + 8), bytes, v30);
             break;
           case 0x10A0:
-            CC_SHA256_Update((&v213 + 8), v29, v30);
+            CC_SHA256_Update((&v213 + 8), bytes, v30);
             break;
           case 0x11A0:
-            CC_SHA512_Update((&v213 + 8), v29, v30);
+            CC_SHA512_Update((&v213 + 8), bytes, v30);
             break;
         }
 
@@ -241,13 +241,13 @@ LABEL_216:
       {
         if (v213 == 4000)
         {
-          CC_MD5_Update((&v213 + 8), v29, v30);
+          CC_MD5_Update((&v213 + 8), bytes, v30);
         }
 
         goto LABEL_114;
       }
 
-      if (!v29)
+      if (!bytes)
       {
         goto LABEL_114;
       }
@@ -255,28 +255,28 @@ LABEL_216:
       *(&v213 + 1) += v30;
       if (v30 + v219 <= 0x1F)
       {
-        memcpy(&v217 + v219, v29, v30);
+        memcpy(&v217 + v219, bytes, v30);
         v76 = v219 + v31;
 LABEL_88:
         LODWORD(v219) = v76;
         goto LABEL_114;
       }
 
-      v89 = &v29[v30];
+      v89 = &bytes[v30];
       if (v219)
       {
-        v209 = &v29[v30];
-        memcpy(&v217 + v219, v29, (32 - v219));
+        v209 = &bytes[v30];
+        memcpy(&v217 + v219, bytes, (32 - v219));
         v89 = v209;
         v214.i64[0] = 0x9E3779B185EBCA87 * __ROR8__(v214.i64[0] - 0x3D4D51C2D82B14B1 * v217, 33);
         v214.i64[1] = 0x9E3779B185EBCA87 * __ROR8__(v214.i64[1] - 0x3D4D51C2D82B14B1 * *(&v217 + 1), 33);
         v215 = 0x9E3779B185EBCA87 * __ROR8__(v215 - 0x3D4D51C2D82B14B1 * v218, 33);
         v216 = 0x9E3779B185EBCA87 * __ROR8__(v216 - 0x3D4D51C2D82B14B1 * *(&v218 + 1), 33);
-        v29 += (32 - v219);
+        bytes += (32 - v219);
         LODWORD(v219) = 0;
       }
 
-      if ((v29 + 32) <= v89)
+      if ((bytes + 32) <= v89)
       {
         v91 = v214.u64[1];
         v90 = v214.i64[0];
@@ -284,23 +284,23 @@ LABEL_88:
         v92 = v216;
         do
         {
-          v90 = 0x9E3779B185EBCA87 * __ROR8__(v90 - 0x3D4D51C2D82B14B1 * *v29, 33);
-          v91 = 0x9E3779B185EBCA87 * __ROR8__(v91 - 0x3D4D51C2D82B14B1 * *(v29 + 1), 33);
-          v93 = 0x9E3779B185EBCA87 * __ROR8__(v93 - 0x3D4D51C2D82B14B1 * *(v29 + 2), 33);
-          v92 = 0x9E3779B185EBCA87 * __ROR8__(v92 - 0x3D4D51C2D82B14B1 * *(v29 + 3), 33);
-          v29 += 32;
+          v90 = 0x9E3779B185EBCA87 * __ROR8__(v90 - 0x3D4D51C2D82B14B1 * *bytes, 33);
+          v91 = 0x9E3779B185EBCA87 * __ROR8__(v91 - 0x3D4D51C2D82B14B1 * *(bytes + 1), 33);
+          v93 = 0x9E3779B185EBCA87 * __ROR8__(v93 - 0x3D4D51C2D82B14B1 * *(bytes + 2), 33);
+          v92 = 0x9E3779B185EBCA87 * __ROR8__(v92 - 0x3D4D51C2D82B14B1 * *(bytes + 3), 33);
+          bytes += 32;
         }
 
-        while (v29 <= v89 - 32);
+        while (bytes <= v89 - 32);
         v214.i64[0] = v90;
         v214.i64[1] = v91;
         v215 = v93;
         v216 = v92;
       }
 
-      if (v29 < v89)
+      if (bytes < v89)
       {
-        v76 = v89 - v29;
+        v76 = v89 - bytes;
         __memcpy_chk();
         goto LABEL_88;
       }
@@ -514,10 +514,10 @@ LABEL_213:
                     goto LABEL_216;
                   }
 
-                  if ([v28 writeToURL:v8 options:0 error:a3])
+                  if ([v28 writeToURL:v8 options:0 error:error])
                   {
-                    v204 = [(MSVSegmentedCodingPackage *)self infoDictionary];
-                    [v204 setObject:v187 forKeyedSubscript:@"artworkHash"];
+                    infoDictionary8 = [(MSVSegmentedCodingPackage *)self infoDictionary];
+                    [infoDictionary8 setObject:v187 forKeyedSubscript:@"artworkHash"];
 
                     [(MSVSegmentedCodingPackage *)self setNeedsInfoDictionaryUpdate];
                     goto LABEL_212;
@@ -586,9 +586,9 @@ LABEL_208:
           }
 
 LABEL_218:
-          v206 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v207 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-          [v206 handleFailureInFunction:v207 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+          [currentHandler handleFailureInFunction:v207 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
           v187 = &stru_1F454A698;
           goto LABEL_208;
@@ -645,9 +645,9 @@ LABEL_148:
       {
         if (!v213)
         {
-          v137 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v138 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-          [v137 handleFailureInFunction:v138 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+          [currentHandler2 handleFailureInFunction:v138 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
 
           goto LABEL_161;
         }
@@ -773,9 +773,9 @@ LABEL_160:
     {
       if (!v213)
       {
-        v71 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
         v72 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-        [v71 handleFailureInFunction:v72 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+        [currentHandler3 handleFailureInFunction:v72 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
         goto LABEL_114;
       }
@@ -802,7 +802,7 @@ LABEL_34:
             v65 = v31;
             do
             {
-              v66 = *v29++;
+              v66 = *bytes++;
               v64 |= v66 << v63;
               v63 += 8;
               --v65;
@@ -835,7 +835,7 @@ LABEL_34:
         }
 
         v41 = 8 * v38;
-        v42 = v29;
+        v42 = bytes;
         v43 = v216 & 0xFFFFFFFFFFFFFFLL;
         do
         {
@@ -855,7 +855,7 @@ LABEL_34:
         v215 = v49;
         *(&v213 + 1) = v48 ^ v43;
         v214.i64[0] = v50 ^ __ROR8__(v45, 47);
-        v29 += v39;
+        bytes += v39;
         v216 = (v39 + v36) << 56;
         v31 = v40;
       }
@@ -868,8 +868,8 @@ LABEL_34:
         v52 = v215;
         do
         {
-          v55 = *v29;
-          v29 += 8;
+          v55 = *bytes;
+          bytes += 8;
           v56 = v52 ^ v55;
           v57 = v51 + v53;
           v58 = v57 ^ __ROR8__(v53, 51);
@@ -898,7 +898,7 @@ LABEL_34:
 
     if (v213 != 2000)
     {
-      if (v213 != 3000 || !v29)
+      if (v213 != 3000 || !bytes)
       {
         goto LABEL_114;
       }
@@ -908,11 +908,11 @@ LABEL_34:
       HIDWORD(v213) |= v69;
       if (v30 + v217 > 0xF)
       {
-        v81 = &v29[v30];
+        v81 = &bytes[v30];
         if (v217)
         {
-          v208 = &v29[v30];
-          memcpy(&v215 + v217, v29, (16 - v217));
+          v208 = &bytes[v30];
+          memcpy(&v215 + v217, bytes, (16 - v217));
           v81 = v208;
           HIDWORD(v82) = v214.i32[0] - 2048144777 * v215;
           LODWORD(v82) = HIDWORD(v82);
@@ -926,12 +926,12 @@ LABEL_34:
           v214.i32[2] = -1640531535 * (v82 >> 19);
           HIDWORD(v82) = v214.i32[3] - 2048144777 * HIDWORD(v216);
           LODWORD(v82) = HIDWORD(v82);
-          v29 += (16 - v217);
+          bytes += (16 - v217);
           v214.i32[3] = -1640531535 * (v82 >> 19);
           LODWORD(v217) = 0;
         }
 
-        if (v29 <= v81 - 16)
+        if (bytes <= v81 - 16)
         {
           v84 = v214.i32[0];
           v85 = v214.i32[1];
@@ -939,38 +939,38 @@ LABEL_34:
           v87 = v214.i32[3];
           do
           {
-            HIDWORD(v88) = v84 - 2048144777 * *v29;
+            HIDWORD(v88) = v84 - 2048144777 * *bytes;
             LODWORD(v88) = HIDWORD(v88);
             v84 = -1640531535 * (v88 >> 19);
-            HIDWORD(v88) = v85 - 2048144777 * *(v29 + 1);
+            HIDWORD(v88) = v85 - 2048144777 * *(bytes + 1);
             LODWORD(v88) = HIDWORD(v88);
             v85 = -1640531535 * (v88 >> 19);
-            HIDWORD(v88) = v86 - 2048144777 * *(v29 + 2);
+            HIDWORD(v88) = v86 - 2048144777 * *(bytes + 2);
             LODWORD(v88) = HIDWORD(v88);
             v86 = -1640531535 * (v88 >> 19);
-            HIDWORD(v88) = v87 - 2048144777 * *(v29 + 3);
+            HIDWORD(v88) = v87 - 2048144777 * *(bytes + 3);
             LODWORD(v88) = HIDWORD(v88);
             v87 = -1640531535 * (v88 >> 19);
-            v29 += 16;
+            bytes += 16;
           }
 
-          while (v29 <= v81 - 16);
+          while (bytes <= v81 - 16);
           v214.i64[0] = __PAIR64__(v85, v84);
           v214.i64[1] = __PAIR64__(v87, v86);
         }
 
-        if (v29 >= v81)
+        if (bytes >= v81)
         {
           goto LABEL_114;
         }
 
-        v70 = v81 - v29;
+        v70 = v81 - bytes;
         __memcpy_chk();
       }
 
       else
       {
-        memcpy(&v215 + v217, v29, v30);
+        memcpy(&v215 + v217, bytes, v30);
         v70 = v217 + v31;
       }
 
@@ -994,18 +994,18 @@ LABEL_113:
 
         if (v75 == 1)
         {
-          *v74 = *v29;
+          *v74 = *bytes;
           goto LABEL_113;
         }
 
 LABEL_97:
-        memcpy(v74, v29, (v73 - v214.i8[3]));
+        memcpy(v74, bytes, (v73 - v214.i8[3]));
         goto LABEL_113;
       }
 
       if (v75 == 2)
       {
-        v94 = *v29;
+        v94 = *bytes;
       }
 
       else
@@ -1015,8 +1015,8 @@ LABEL_97:
           goto LABEL_97;
         }
 
-        v94 = *v29;
-        v74[2] = v29[2];
+        v94 = *bytes;
+        v74[2] = bytes[2];
       }
 
       *v74 = v94;
@@ -1037,7 +1037,7 @@ LABEL_97:
           LOBYTE(v79) = v214.i8[0];
           v77 = HIBYTE(v214.u16[0]);
           LOBYTE(v80) = v214.i8[2];
-          v95 = *v29;
+          v95 = *bytes;
         }
 
         goto LABEL_103;
@@ -1045,23 +1045,23 @@ LABEL_97:
 
       LOBYTE(v79) = v214.i8[0];
       v77 = HIBYTE(v214.u16[0]);
-      v80 = *v29;
+      v80 = *bytes;
     }
 
     else
     {
       if (!v214.i8[3])
       {
-        v79 = *v29;
-        v77 = *v29 >> 8;
-        v80 = HIWORD(*v29);
-        v95 = HIBYTE(*v29);
+        v79 = *bytes;
+        v77 = *bytes >> 8;
+        v80 = HIWORD(*bytes);
+        v95 = HIBYTE(*bytes);
         goto LABEL_103;
       }
 
       LOBYTE(v79) = v214.i8[0];
-      LOBYTE(v77) = *v29;
-      v80 = *(v29 + 1);
+      LOBYTE(v77) = *bytes;
+      v80 = *(bytes + 1);
     }
 
     v95 = v80 >> 8;
@@ -1072,8 +1072,8 @@ LABEL_103:
     LODWORD(v98) = HIDWORD(v98);
     v99 = 5 * (v98 >> 19) - 430675100;
     DWORD2(v213) = v99;
-    v100 = &v29[-v214.u8[3] + 4];
-    v101 = &v29[v78 - v214.u8[3]];
+    v100 = &bytes[-v214.u8[3] + 4];
+    v101 = &bytes[v78 - v214.u8[3]];
     while (v100 < v101)
     {
       v102 = *v100;
@@ -1111,21 +1111,21 @@ LABEL_103:
   return 0;
 }
 
-- (BOOL)saveWithError:(id *)a3
+- (BOOL)saveWithError:(id *)error
 {
   v5 = [_MPCPlaybackSessionArchive alloc];
-  v6 = [(MSVSegmentedCodingPackage *)self packageURL];
-  v7 = [(_MPCPlaybackSessionArchive *)v5 initWithURL:v6];
+  packageURL = [(MSVSegmentedCodingPackage *)self packageURL];
+  v7 = [(_MPCPlaybackSessionArchive *)v5 initWithURL:packageURL];
 
-  if (!v7 || (-[_MPCPlaybackSessionArchive identifier](v7, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), -[_MPCPlaybackSessionArchive identifier](self, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqualToString:v9], v9, v8, (v10 & 1) != 0) || -[MSVSegmentedCodingPackage deleteWithError:](v7, "deleteWithError:", a3))
+  if (!v7 || (-[_MPCPlaybackSessionArchive identifier](v7, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), -[_MPCPlaybackSessionArchive identifier](self, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqualToString:v9], v9, v8, (v10 & 1) != 0) || -[MSVSegmentedCodingPackage deleteWithError:](v7, "deleteWithError:", error))
   {
-    v11 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     lastModifiedDate = self->_lastModifiedDate;
-    self->_lastModifiedDate = v11;
+    self->_lastModifiedDate = date;
 
     v15.receiver = self;
     v15.super_class = _MPCPlaybackSessionArchive;
-    v13 = [(MSVSegmentedCodingPackage *)&v15 saveWithError:a3];
+    v13 = [(MSVSegmentedCodingPackage *)&v15 saveWithError:error];
   }
 
   else
@@ -1136,27 +1136,27 @@ LABEL_103:
   return v13;
 }
 
-- (_MPCPlaybackSessionArchive)initWithURL:(id)a3 identifier:(id)a4
+- (_MPCPlaybackSessionArchive)initWithURL:(id)l identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = _MPCPlaybackSessionArchive;
-  v7 = [(MSVSegmentedCodingPackage *)&v15 initWithURL:a3];
+  v7 = [(MSVSegmentedCodingPackage *)&v15 initWithURL:l];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v10 = [(MSVSegmentedCodingPackage *)v7 infoDictionary];
-    v11 = [v10 objectForKeyedSubscript:@"identifier"];
+    infoDictionary = [(MSVSegmentedCodingPackage *)v7 infoDictionary];
+    v11 = [infoDictionary objectForKeyedSubscript:@"identifier"];
 
-    if (([v11 isEqualToString:v6] & 1) == 0)
+    if (([v11 isEqualToString:identifierCopy] & 1) == 0)
     {
       [(MSVSegmentedCodingPackage *)v7 reset];
       v12 = v7->_identifier;
-      v13 = [(MSVSegmentedCodingPackage *)v7 infoDictionary];
-      [v13 setObject:v12 forKeyedSubscript:@"identifier"];
+      infoDictionary2 = [(MSVSegmentedCodingPackage *)v7 infoDictionary];
+      [infoDictionary2 setObject:v12 forKeyedSubscript:@"identifier"];
 
       [(MSVSegmentedCodingPackage *)v7 setNeedsInfoDictionaryUpdate];
     }
@@ -1165,11 +1165,11 @@ LABEL_103:
   return v7;
 }
 
-- (_MPCPlaybackSessionArchive)initWithURL:(id)a3
+- (_MPCPlaybackSessionArchive)initWithURL:(id)l
 {
   v10.receiver = self;
   v10.super_class = _MPCPlaybackSessionArchive;
-  v3 = [(MSVSegmentedCodingPackage *)&v10 initWithURL:a3];
+  v3 = [(MSVSegmentedCodingPackage *)&v10 initWithURL:l];
   v4 = v3;
   if (v3 && (-[MSVSegmentedCodingPackage infoDictionary](v3, "infoDictionary"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"identifier"], v6 = objc_claimAutoreleasedReturnValue(), identifier = v4->_identifier, v4->_identifier = v6, identifier, v5, !v4->_identifier))
   {

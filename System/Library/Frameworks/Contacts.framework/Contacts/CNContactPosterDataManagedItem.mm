@@ -1,29 +1,29 @@
 @interface CNContactPosterDataManagedItem
 + (id)entityName;
 - (id)pairedItem;
-- (void)acceptVisitor:(id)a3;
+- (void)acceptVisitor:(id)visitor;
 @end
 
 @implementation CNContactPosterDataManagedItem
 
 + (id)entityName
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 - (id)pairedItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (void)acceptVisitor:(id)a3
+- (void)acceptVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = self;
+  visitorCopy = visitor;
+  selfCopy = self;
   v6 = CNAbstractMethodException();
   objc_exception_throw(v6);
 }

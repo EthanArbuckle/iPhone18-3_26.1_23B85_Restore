@@ -1,25 +1,25 @@
 @interface CRKASMSuspendableRosterProvider
 - (BOOL)hasRosterProvider;
-- (BOOL)ingestCertificates:(id)a3 forTrustedUserIdentifier:(id)a4 error:(id *)a5;
-- (CRKASMSuspendableRosterProvider)initWithGenerator:(id)a3;
+- (BOOL)ingestCertificates:(id)certificates forTrustedUserIdentifier:(id)identifier error:(id *)error;
+- (CRKASMSuspendableRosterProvider)initWithGenerator:(id)generator;
 - (CRKASMUserFetching)userFetcher;
-- (id)instructorDirectoryForLocationIDs:(id)a3;
+- (id)instructorDirectoryForLocationIDs:(id)ds;
 - (id)observedKeyPaths;
-- (id)studentDirectoryForLocationIDs:(id)a3;
-- (void)createCourseWithProperties:(id)a3 completion:(id)a4;
+- (id)studentDirectoryForLocationIDs:(id)ds;
+- (void)createCourseWithProperties:(id)properties completion:(id)completion;
 - (void)dealloc;
-- (void)fetchASMUsersWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)fetchNextUsersWithCompletion:(id)a3;
+- (void)fetchASMUsersWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)fetchNextUsersWithCompletion:(id)completion;
 - (void)latchDefaultValues;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)refresh;
-- (void)removeCourseWithIdentifier:(id)a3 completion:(id)a4;
+- (void)removeCourseWithIdentifier:(id)identifier completion:(id)completion;
 - (void)resume;
-- (void)setUnderlyingRosterProvider:(id)a3;
+- (void)setUnderlyingRosterProvider:(id)provider;
 - (void)startObservingUnderlyingProvider;
 - (void)stopObservingUnderlyingProvider;
 - (void)suspend;
-- (void)updateCourseWithIdentifier:(id)a3 properties:(id)a4 completion:(id)a5;
+- (void)updateCourseWithIdentifier:(id)identifier properties:(id)properties completion:(id)completion;
 @end
 
 @implementation CRKASMSuspendableRosterProvider
@@ -32,15 +32,15 @@
   [(CRKASMSuspendableRosterProvider *)&v3 dealloc];
 }
 
-- (CRKASMSuspendableRosterProvider)initWithGenerator:(id)a3
+- (CRKASMSuspendableRosterProvider)initWithGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   v9.receiver = self;
   v9.super_class = CRKASMSuspendableRosterProvider;
   v5 = [(CRKASMSuspendableRosterProvider *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x245D3AAD0](v4);
+    v6 = MEMORY[0x245D3AAD0](generatorCopy);
     generator = v5->_generator;
     v5->_generator = v6;
 
@@ -63,28 +63,28 @@
 {
   if (![(CRKASMSuspendableRosterProvider *)self hasRosterProvider])
   {
-    v4 = [(CRKASMSuspendableRosterProvider *)self generator];
-    v3 = v4[2]();
+    generator = [(CRKASMSuspendableRosterProvider *)self generator];
+    v3 = generator[2]();
     [(CRKASMSuspendableRosterProvider *)self setUnderlyingRosterProvider:v3];
   }
 }
 
 - (BOOL)hasRosterProvider
 {
-  v2 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-  v3 = v2 != 0;
+  underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+  v3 = underlyingRosterProvider != 0;
 
   return v3;
 }
 
 - (void)latchDefaultValues
 {
-  v3 = [(CRKASMSuspendableRosterProvider *)self roster];
-  if (v3)
+  roster = [(CRKASMSuspendableRosterProvider *)self roster];
+  if (roster)
   {
-    v4 = v3;
-    v5 = [(CRKASMSuspendableRosterProvider *)self roster];
-    v6 = [v5 isEqual:0];
+    v4 = roster;
+    roster2 = [(CRKASMSuspendableRosterProvider *)self roster];
+    v6 = [roster2 isEqual:0];
 
     if ((v6 & 1) == 0)
     {
@@ -92,9 +92,9 @@
     }
   }
 
-  v7 = [(CRKASMSuspendableRosterProvider *)self locationsWithManagePermissions];
-  v8 = [(CRKASMSuspendableRosterProvider *)self locationsWithManagePermissions];
-  v9 = [v8 isEqual:MEMORY[0x277CBEBF8]];
+  locationsWithManagePermissions = [(CRKASMSuspendableRosterProvider *)self locationsWithManagePermissions];
+  locationsWithManagePermissions2 = [(CRKASMSuspendableRosterProvider *)self locationsWithManagePermissions];
+  v9 = [locationsWithManagePermissions2 isEqual:MEMORY[0x277CBEBF8]];
 
   if ((v9 & 1) == 0)
   {
@@ -104,14 +104,14 @@
   }
 }
 
-- (void)setUnderlyingRosterProvider:(id)a3
+- (void)setUnderlyingRosterProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_underlyingRosterProvider != v5)
+  providerCopy = provider;
+  if (self->_underlyingRosterProvider != providerCopy)
   {
-    v6 = v5;
+    v6 = providerCopy;
     [(CRKASMSuspendableRosterProvider *)self stopObservingUnderlyingProvider];
-    objc_storeStrong(&self->_underlyingRosterProvider, a3);
+    objc_storeStrong(&self->_underlyingRosterProvider, provider);
     if (self->_underlyingRosterProvider)
     {
       [(CRKASMSuspendableRosterProvider *)self startObservingUnderlyingProvider];
@@ -122,7 +122,7 @@
       [(CRKASMSuspendableRosterProvider *)self latchDefaultValues];
     }
 
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
@@ -144,8 +144,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(CRKASMSuspendableRosterProvider *)self observedKeyPaths];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  observedKeyPaths = [(CRKASMSuspendableRosterProvider *)self observedKeyPaths];
+  v4 = [observedKeyPaths countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -157,18 +157,18 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observedKeyPaths);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-        [v9 addObserver:self forKeyPath:v8 options:4 context:@"CRKASMSuspendableRosterProviderObservationContext"];
+        underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+        [underlyingRosterProvider addObserver:self forKeyPath:v8 options:4 context:@"CRKASMSuspendableRosterProviderObservationContext"];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [observedKeyPaths countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -182,8 +182,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(CRKASMSuspendableRosterProvider *)self observedKeyPaths];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  observedKeyPaths = [(CRKASMSuspendableRosterProvider *)self observedKeyPaths];
+  v4 = [observedKeyPaths countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -195,48 +195,48 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observedKeyPaths);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-        [v9 removeObserver:self forKeyPath:v8 context:@"CRKASMSuspendableRosterProviderObservationContext"];
+        underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+        [underlyingRosterProvider removeObserver:self forKeyPath:v8 context:@"CRKASMSuspendableRosterProviderObservationContext"];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [observedKeyPaths countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = v10;
-  if (a6 != @"CRKASMSuspendableRosterProviderObservationContext")
+  pathCopy = path;
+  v11 = pathCopy;
+  if (context != @"CRKASMSuspendableRosterProviderObservationContext")
   {
     v28.receiver = self;
     v28.super_class = CRKASMSuspendableRosterProvider;
-    [(CRKASMSuspendableRosterProvider *)&v28 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(CRKASMSuspendableRosterProvider *)&v28 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
     goto LABEL_27;
   }
 
-  if ([v10 isEqualToString:@"roster"])
+  if ([pathCopy isEqualToString:@"roster"])
   {
-    v12 = [(CRKASMSuspendableRosterProvider *)self roster];
-    if (v12)
+    roster = [(CRKASMSuspendableRosterProvider *)self roster];
+    if (roster)
     {
 LABEL_7:
-      v14 = [(CRKASMSuspendableRosterProvider *)self roster];
-      v15 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-      v16 = [v15 roster];
-      v17 = [v14 isEqual:v16];
+      roster2 = [(CRKASMSuspendableRosterProvider *)self roster];
+      underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+      roster3 = [underlyingRosterProvider roster];
+      v17 = [roster2 isEqual:roster3];
 
-      if (v12)
+      if (roster)
       {
 
         if (v17)
@@ -254,17 +254,17 @@ LABEL_7:
         }
       }
 
-      a6 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-      v27 = [a6 roster];
-      [(CRKASMSuspendableRosterProvider *)self setRoster:v27];
+      context = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+      roster4 = [context roster];
+      [(CRKASMSuspendableRosterProvider *)self setRoster:roster4];
       goto LABEL_25;
     }
 
-    a6 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-    v13 = [a6 roster];
-    if (v13)
+    context = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+    roster5 = [context roster];
+    if (roster5)
     {
-      a4 = v13;
+      object = roster5;
       goto LABEL_7;
     }
 
@@ -275,25 +275,25 @@ LABEL_26:
 
   if ([v11 isEqualToString:@"locationsWithManagePermissions"])
   {
-    v18 = [(CRKASMSuspendableRosterProvider *)self locationsWithManagePermissions];
-    if (!v18)
+    locationsWithManagePermissions = [(CRKASMSuspendableRosterProvider *)self locationsWithManagePermissions];
+    if (!locationsWithManagePermissions)
     {
-      a6 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-      v19 = [a6 locationsWithManagePermissions];
-      if (!v19)
+      context = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+      locationsWithManagePermissions2 = [context locationsWithManagePermissions];
+      if (!locationsWithManagePermissions2)
       {
         goto LABEL_26;
       }
 
-      a4 = v19;
+      object = locationsWithManagePermissions2;
     }
 
-    v20 = [(CRKASMSuspendableRosterProvider *)self locationsWithManagePermissions];
-    v21 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-    v22 = [v21 locationsWithManagePermissions];
-    v23 = [v20 isEqual:v22];
+    locationsWithManagePermissions3 = [(CRKASMSuspendableRosterProvider *)self locationsWithManagePermissions];
+    underlyingRosterProvider2 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+    locationsWithManagePermissions4 = [underlyingRosterProvider2 locationsWithManagePermissions];
+    v23 = [locationsWithManagePermissions3 isEqual:locationsWithManagePermissions4];
 
-    if (v18)
+    if (locationsWithManagePermissions)
     {
 
       if (v23)
@@ -311,9 +311,9 @@ LABEL_26:
       }
     }
 
-    a6 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-    v27 = [a6 locationsWithManagePermissions];
-    [(CRKASMSuspendableRosterProvider *)self setLocationsWithManagePermissions:v27];
+    context = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+    roster4 = [context locationsWithManagePermissions];
+    [(CRKASMSuspendableRosterProvider *)self setLocationsWithManagePermissions:roster4];
 LABEL_25:
 
     goto LABEL_26;
@@ -323,14 +323,14 @@ LABEL_25:
   {
     if (![(CRKASMSuspendableRosterProvider *)self isPopulated])
     {
-      v24 = [(CRKASMSuspendableRosterProvider *)self isPopulated];
-      v25 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-      v26 = [v25 isPopulated];
+      isPopulated = [(CRKASMSuspendableRosterProvider *)self isPopulated];
+      underlyingRosterProvider3 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+      isPopulated2 = [underlyingRosterProvider3 isPopulated];
 
-      if (v24 != v26)
+      if (isPopulated != isPopulated2)
       {
-        a6 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-        -[CRKASMSuspendableRosterProvider setPopulated:](self, "setPopulated:", [a6 isPopulated]);
+        context = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+        -[CRKASMSuspendableRosterProvider setPopulated:](self, "setPopulated:", [context isPopulated]);
         goto LABEL_26;
       }
     }
@@ -343,72 +343,72 @@ LABEL_27:
 {
   if ([(CRKASMSuspendableRosterProvider *)self hasRosterProvider])
   {
-    v3 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-    v4 = [v3 userFetcher];
+    underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+    selfCopy = [underlyingRosterProvider userFetcher];
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)studentDirectoryForLocationIDs:(id)a3
+- (id)studentDirectoryForLocationIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if ([(CRKASMSuspendableRosterProvider *)self hasRosterProvider])
   {
-    v5 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-    v6 = [v5 studentDirectoryForLocationIDs:v4];
+    underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+    selfCopy = [underlyingRosterProvider studentDirectoryForLocationIDs:dsCopy];
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)instructorDirectoryForLocationIDs:(id)a3
+- (id)instructorDirectoryForLocationIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if ([(CRKASMSuspendableRosterProvider *)self hasRosterProvider])
   {
-    v5 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-    v6 = [v5 instructorDirectoryForLocationIDs:v4];
+    underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+    selfCopy = [underlyingRosterProvider instructorDirectoryForLocationIDs:dsCopy];
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)refresh
 {
-  v2 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-  [v2 refresh];
+  underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+  [underlyingRosterProvider refresh];
 }
 
-- (BOOL)ingestCertificates:(id)a3 forTrustedUserIdentifier:(id)a4 error:(id *)a5
+- (BOOL)ingestCertificates:(id)certificates forTrustedUserIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  certificatesCopy = certificates;
+  identifierCopy = identifier;
   if ([(CRKASMSuspendableRosterProvider *)self hasRosterProvider])
   {
-    v10 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-    v11 = [v10 ingestCertificates:v8 forTrustedUserIdentifier:v9 error:a5];
+    underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+    v11 = [underlyingRosterProvider ingestCertificates:certificatesCopy forTrustedUserIdentifier:identifierCopy error:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     [(CRKASMSuspendableRosterProvider *)self noRosterProviderError];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -419,70 +419,70 @@ LABEL_27:
   return v11;
 }
 
-- (void)createCourseWithProperties:(id)a3 completion:(id)a4
+- (void)createCourseWithProperties:(id)properties completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  completionCopy = completion;
   if ([(CRKASMSuspendableRosterProvider *)self hasRosterProvider])
   {
-    v7 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-    [v7 createCourseWithProperties:v8 completion:v6];
+    underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+    [underlyingRosterProvider createCourseWithProperties:propertiesCopy completion:completionCopy];
   }
 
   else
   {
-    v7 = [(CRKASMSuspendableRosterProvider *)self noRosterProviderError];
-    v6[2](v6, v7);
+    underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self noRosterProviderError];
+    completionCopy[2](completionCopy, underlyingRosterProvider);
   }
 }
 
-- (void)removeCourseWithIdentifier:(id)a3 completion:(id)a4
+- (void)removeCourseWithIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(CRKASMSuspendableRosterProvider *)self hasRosterProvider])
   {
-    v7 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-    [v7 removeCourseWithIdentifier:v8 completion:v6];
+    underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+    [underlyingRosterProvider removeCourseWithIdentifier:identifierCopy completion:completionCopy];
   }
 
   else
   {
-    v7 = [(CRKASMSuspendableRosterProvider *)self noRosterProviderError];
-    v6[2](v6, v7);
+    underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self noRosterProviderError];
+    completionCopy[2](completionCopy, underlyingRosterProvider);
   }
 }
 
-- (void)updateCourseWithIdentifier:(id)a3 properties:(id)a4 completion:(id)a5
+- (void)updateCourseWithIdentifier:(id)identifier properties:(id)properties completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
+  completionCopy = completion;
   if ([(CRKASMSuspendableRosterProvider *)self hasRosterProvider])
   {
-    v10 = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
-    [v10 updateCourseWithIdentifier:v11 properties:v8 completion:v9];
+    underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self underlyingRosterProvider];
+    [underlyingRosterProvider updateCourseWithIdentifier:identifierCopy properties:propertiesCopy completion:completionCopy];
   }
 
   else
   {
-    v10 = [(CRKASMSuspendableRosterProvider *)self noRosterProviderError];
-    v9[2](v9, v10);
+    underlyingRosterProvider = [(CRKASMSuspendableRosterProvider *)self noRosterProviderError];
+    completionCopy[2](completionCopy, underlyingRosterProvider);
   }
 }
 
-- (void)fetchASMUsersWithIdentifiers:(id)a3 completion:(id)a4
+- (void)fetchASMUsersWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(CRKASMSuspendableRosterProvider *)self noRosterProviderError];
-  (*(a4 + 2))(v6, 0, v7);
+  completionCopy = completion;
+  noRosterProviderError = [(CRKASMSuspendableRosterProvider *)self noRosterProviderError];
+  (*(completion + 2))(completionCopy, 0, noRosterProviderError);
 }
 
-- (void)fetchNextUsersWithCompletion:(id)a3
+- (void)fetchNextUsersWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(CRKASMSuspendableRosterProvider *)self noRosterProviderError];
-  (*(a3 + 2))(v5, 0, v6);
+  completionCopy = completion;
+  noRosterProviderError = [(CRKASMSuspendableRosterProvider *)self noRosterProviderError];
+  (*(completion + 2))(completionCopy, 0, noRosterProviderError);
 }
 
 @end

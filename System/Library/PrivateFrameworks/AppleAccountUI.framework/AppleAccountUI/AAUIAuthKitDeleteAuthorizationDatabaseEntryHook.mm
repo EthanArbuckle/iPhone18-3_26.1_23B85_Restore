@@ -1,29 +1,29 @@
 @interface AAUIAuthKitDeleteAuthorizationDatabaseEntryHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_revokeAuthorizationForClientID:(id)a3 completion:(id)a4;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_revokeAuthorizationForClientID:(id)d completion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUIAuthKitDeleteAuthorizationDatabaseEntryHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"database:revoke"];
+  name = [element name];
+  v4 = [name isEqualToString:@"database:revoke"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   objc_opt_class();
-  v4 = [v3 clientInfo];
+  clientInfo = [modelCopy clientInfo];
 
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  v5 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -38,32 +38,32 @@
   return v7;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v8 = a6;
-  v9 = [a4 objectForKeyedSubscript:@"clientID"];
-  [(AAUIAuthKitDeleteAuthorizationDatabaseEntryHook *)self _revokeAuthorizationForClientID:v9 completion:v8];
+  completionCopy = completion;
+  v9 = [attributes objectForKeyedSubscript:@"clientID"];
+  [(AAUIAuthKitDeleteAuthorizationDatabaseEntryHook *)self _revokeAuthorizationForClientID:v9 completion:completionCopy];
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v8 = [a3 clientInfo];
-  v7 = [v8 objectForKeyedSubscript:@"clientID"];
-  [(AAUIAuthKitDeleteAuthorizationDatabaseEntryHook *)self _revokeAuthorizationForClientID:v7 completion:v6];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
+  v7 = [clientInfo objectForKeyedSubscript:@"clientID"];
+  [(AAUIAuthKitDeleteAuthorizationDatabaseEntryHook *)self _revokeAuthorizationForClientID:v7 completion:completionCopy];
 }
 
-- (void)_revokeAuthorizationForClientID:(id)a3 completion:(id)a4
+- (void)_revokeAuthorizationForClientID:(id)d completion:(id)completion
 {
   v5 = MEMORY[0x1E698DCC0];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v8 = objc_alloc_init(v5);
   v11 = 0;
-  v9 = [v8 revokeAuthorizationForApplicationWithClientID:v7 error:&v11];
+  v9 = [v8 revokeAuthorizationForApplicationWithClientID:dCopy error:&v11];
 
   v10 = v11;
-  v6[2](v6, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 }
 
 - (RUIServerHookDelegate)delegate

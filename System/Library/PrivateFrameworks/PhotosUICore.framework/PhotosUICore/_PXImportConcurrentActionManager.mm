@@ -1,16 +1,16 @@
 @interface _PXImportConcurrentActionManager
 + (id)sharedInstance;
 - (_PXImportConcurrentActionManager)init;
-- (void)addOperation:(id)a3;
+- (void)addOperation:(id)operation;
 @end
 
 @implementation _PXImportConcurrentActionManager
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v5 = a3;
-  [(NSMutableArray *)self->_operations addObject:v5];
-  v4 = [v5 performAction];
+  operationCopy = operation;
+  [(NSMutableArray *)self->_operations addObject:operationCopy];
+  performAction = [operationCopy performAction];
 }
 
 - (_PXImportConcurrentActionManager)init

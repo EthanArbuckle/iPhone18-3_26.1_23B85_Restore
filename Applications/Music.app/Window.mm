@@ -1,53 +1,53 @@
 @interface Window
-- (_TtC5Music6Window)initWithCoder:(id)a3;
-- (_TtC5Music6Window)initWithWindowScene:(id)a3;
-- (void)_updateWindowTraitsAndNotify:(BOOL)a3;
+- (_TtC5Music6Window)initWithCoder:(id)coder;
+- (_TtC5Music6Window)initWithWindowScene:(id)scene;
+- (void)_updateWindowTraitsAndNotify:(BOOL)notify;
 - (void)layoutSubviews;
-- (void)sendEvent:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)sendEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation Window
 
-- (_TtC5Music6Window)initWithWindowScene:(id)a3
+- (_TtC5Music6Window)initWithWindowScene:(id)scene
 {
-  v3 = a3;
-  v4 = sub_10002ECEC(v3);
+  sceneCopy = scene;
+  v4 = sub_10002ECEC(sceneCopy);
 
   return v4;
 }
 
-- (void)_updateWindowTraitsAndNotify:(BOOL)a3
+- (void)_updateWindowTraitsAndNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music6Window_overrideTraitCollection);
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music6Window_overrideTraitCollection) = 0;
-  v5 = self;
+  selfCopy = self;
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for Window();
-  [(Window *)&v6 _updateWindowTraitsAndNotify:v3];
+  [(Window *)&v6 _updateWindowTraitsAndNotify:notifyCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music6Window_overrideTraitCollection);
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music6Window_overrideTraitCollection) = 0;
-  v5 = a3;
-  v6 = self;
+  changeCopy = change;
+  selfCopy = self;
 
-  v7.receiver = v6;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for Window();
-  [(Window *)&v7 traitCollectionDidChange:v5];
+  [(Window *)&v7 traitCollectionDidChange:changeCopy];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   Window.layoutSubviews()();
 }
 
-- (_TtC5Music6Window)initWithCoder:(id)a3
+- (_TtC5Music6Window)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music6Window_screenDimensionsDidChangeHandler);
   *v3 = 0;
@@ -61,20 +61,20 @@
   return result;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for Window();
-  v4 = a3;
+  eventCopy = event;
   v5 = v7.receiver;
-  [(Window *)&v7 sendEvent:v4];
-  v6 = [objc_opt_self() defaultCenter];
+  [(Window *)&v7 sendEvent:eventCopy];
+  defaultCenter = [objc_opt_self() defaultCenter];
   if (qword_10117F190 != -1)
   {
     swift_once();
   }
 
-  [v6 postNotificationName:qword_101218600 object:v5];
+  [defaultCenter postNotificationName:qword_101218600 object:v5];
 }
 
 @end

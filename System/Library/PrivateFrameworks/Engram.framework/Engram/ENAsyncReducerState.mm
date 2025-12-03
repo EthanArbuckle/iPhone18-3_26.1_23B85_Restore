@@ -1,30 +1,30 @@
 @interface ENAsyncReducerState
-- (void)cancelWithError:(id)a3;
-- (void)continueWithResult:(id)a3;
-- (void)stopWithResult:(id)a3;
+- (void)cancelWithError:(id)error;
+- (void)continueWithResult:(id)result;
+- (void)stopWithResult:(id)result;
 @end
 
 @implementation ENAsyncReducerState
 
-- (void)continueWithResult:(id)a3
+- (void)continueWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [(ENAsyncReducerState *)self continueBlock];
-  v5[2](v5, v4);
+  resultCopy = result;
+  continueBlock = [(ENAsyncReducerState *)self continueBlock];
+  continueBlock[2](continueBlock, resultCopy);
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(ENAsyncReducerState *)self cancelBlock];
-  v5[2](v5, v4);
+  errorCopy = error;
+  cancelBlock = [(ENAsyncReducerState *)self cancelBlock];
+  cancelBlock[2](cancelBlock, errorCopy);
 }
 
-- (void)stopWithResult:(id)a3
+- (void)stopWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [(ENAsyncReducerState *)self stopBlock];
-  v5[2](v5, v4);
+  resultCopy = result;
+  stopBlock = [(ENAsyncReducerState *)self stopBlock];
+  stopBlock[2](stopBlock, resultCopy);
 }
 
 @end

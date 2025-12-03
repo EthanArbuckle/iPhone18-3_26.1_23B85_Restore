@@ -5,25 +5,25 @@
 - (CGRect)transitionContainerFrame;
 - (CGRect)transitionContentFrame;
 - (CGRect)transitionVisibleFrame;
-- (SXTransitionDataSourceNode)initWithComponentView:(id)a3 transitionType:(unint64_t)a4 usesThumbnail:(BOOL)a5;
+- (SXTransitionDataSourceNode)initWithComponentView:(id)view transitionType:(unint64_t)type usesThumbnail:(BOOL)thumbnail;
 - (UIView)transitionContainerView;
 - (UIView)transitionContentView;
 @end
 
 @implementation SXTransitionDataSourceNode
 
-- (SXTransitionDataSourceNode)initWithComponentView:(id)a3 transitionType:(unint64_t)a4 usesThumbnail:(BOOL)a5
+- (SXTransitionDataSourceNode)initWithComponentView:(id)view transitionType:(unint64_t)type usesThumbnail:(BOOL)thumbnail
 {
-  v9 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = SXTransitionDataSourceNode;
   v10 = [(SXTransitionDataSourceNode *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_componentView, a3);
-    v11->_transitionType = a4;
-    v11->_usesThumbnail = a5;
+    objc_storeStrong(&v10->_componentView, view);
+    v11->_transitionType = type;
+    v11->_usesThumbnail = thumbnail;
   }
 
   return v11;
@@ -31,40 +31,40 @@
 
 - (UIView)transitionContainerView
 {
-  v2 = [(SXTransitionDataSourceNode *)self componentView];
-  v3 = [v2 transitionContainerView];
+  componentView = [(SXTransitionDataSourceNode *)self componentView];
+  transitionContainerView = [componentView transitionContainerView];
 
-  return v3;
+  return transitionContainerView;
 }
 
 - (UIView)transitionContentView
 {
-  v2 = [(SXTransitionDataSourceNode *)self componentView];
-  v3 = [v2 transitionContentView];
+  componentView = [(SXTransitionDataSourceNode *)self componentView];
+  transitionContentView = [componentView transitionContentView];
 
-  return v3;
+  return transitionContentView;
 }
 
 - (BOOL)transitionViewIsVisible
 {
-  v2 = [(SXTransitionDataSourceNode *)self componentView];
-  v3 = [v2 transitionViewIsVisible];
+  componentView = [(SXTransitionDataSourceNode *)self componentView];
+  transitionViewIsVisible = [componentView transitionViewIsVisible];
 
-  return v3;
+  return transitionViewIsVisible;
 }
 
 - (BOOL)transitionViewShouldFadeInContent
 {
-  v2 = [(SXTransitionDataSourceNode *)self componentView];
-  v3 = [v2 transitionViewShouldFadeInContent];
+  componentView = [(SXTransitionDataSourceNode *)self componentView];
+  transitionViewShouldFadeInContent = [componentView transitionViewShouldFadeInContent];
 
-  return v3;
+  return transitionViewShouldFadeInContent;
 }
 
 - (CGRect)transitionVisibleFrame
 {
-  v2 = [(SXTransitionDataSourceNode *)self componentView];
-  [v2 transitionVisibleFrame];
+  componentView = [(SXTransitionDataSourceNode *)self componentView];
+  [componentView transitionVisibleFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -83,8 +83,8 @@
 
 - (CGRect)transitionContainerFrame
 {
-  v2 = [(SXTransitionDataSourceNode *)self componentView];
-  [v2 transitionContainerFrame];
+  componentView = [(SXTransitionDataSourceNode *)self componentView];
+  [componentView transitionContainerFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -103,8 +103,8 @@
 
 - (CGRect)transitionContentFrame
 {
-  v2 = [(SXTransitionDataSourceNode *)self componentView];
-  [v2 transitionContentFrame];
+  componentView = [(SXTransitionDataSourceNode *)self componentView];
+  [componentView transitionContentFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -123,10 +123,10 @@
 
 - (BOOL)isTransitionable
 {
-  v2 = [(SXTransitionDataSourceNode *)self componentView];
-  v3 = [v2 isTransitionable];
+  componentView = [(SXTransitionDataSourceNode *)self componentView];
+  isTransitionable = [componentView isTransitionable];
 
-  return v3;
+  return isTransitionable;
 }
 
 @end

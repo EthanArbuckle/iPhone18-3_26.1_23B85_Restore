@@ -1,32 +1,32 @@
 @interface PKDrawingGestureRecognizer
-- (BOOL)_shouldBeginDrawing:(id)a3 withEvent:(id)a4;
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3;
+- (BOOL)_shouldBeginDrawing:(id)drawing withEvent:(id)event;
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer;
 - (CGRect)currentBoundingBoxInWindow;
-- (PKDrawingGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (PKDrawingGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (PKDrawingGestureTarget)drawingTarget;
-- (void)_beginDrawingWithTouch:(id)a3;
+- (void)_beginDrawingWithTouch:(id)touch;
 - (void)_cancelDrawing;
 - (void)_drawingBegan;
 - (void)_drawingCancelled;
 - (void)_drawingEnded;
-- (void)_drawingMoved:(id)a3;
-- (void)_updateDrawingWithEvent:(id)a3;
+- (void)_drawingMoved:(id)moved;
+- (void)_updateDrawingWithEvent:(id)event;
 - (void)reset;
-- (void)setThresholdDistance:(double)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesEstimatedPropertiesUpdated:(id)a3;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setThresholdDistance:(double)distance;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesEstimatedPropertiesUpdated:(id)updated;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation PKDrawingGestureRecognizer
 
-- (PKDrawingGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (PKDrawingGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = PKDrawingGestureRecognizer;
-  v4 = [(PKDrawingGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(PKDrawingGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -39,25 +39,25 @@
   return v5;
 }
 
-- (void)setThresholdDistance:(double)a3
+- (void)setThresholdDistance:(double)distance
 {
-  if (self->_thresholdDistance != a3)
+  if (self->_thresholdDistance != distance)
   {
-    self->_thresholdDistance = a3;
-    self->_squaredThreshold = a3 * a3;
+    self->_thresholdDistance = distance;
+    self->_squaredThreshold = distance * distance;
   }
 }
 
-- (BOOL)_shouldBeginDrawing:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldBeginDrawing:(id)drawing withEvent:(id)event
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  drawingCopy = drawing;
+  eventCopy = event;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = v6;
+  v8 = drawingCopy;
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v9)
   {
@@ -73,9 +73,9 @@ LABEL_3:
       }
 
       v13 = *(*(&v26 + 1) + 8 * v12);
-      v14 = [(PKDrawingGestureRecognizer *)self allowedTouchTypes];
+      allowedTouchTypes = [(PKDrawingGestureRecognizer *)self allowedTouchTypes];
       v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "type")}];
-      v16 = [v14 containsObject:v15];
+      v16 = [allowedTouchTypes containsObject:v15];
 
       if (v16)
       {
@@ -94,10 +94,10 @@ LABEL_3:
       }
     }
 
-    v19 = [(PKDrawingGestureRecognizer *)self delegate];
+    delegate = [(PKDrawingGestureRecognizer *)self delegate];
     v20 = objc_opt_respondsToSelector();
 
-    if (v20 & 1) == 0 || (-[PKDrawingGestureRecognizer delegate](self, "delegate"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 drawingGestureRecognizer:self shouldBeginDrawingWithTouches:v8 event:v7], v21, (v22))
+    if (v20 & 1) == 0 || (-[PKDrawingGestureRecognizer delegate](self, "delegate"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 drawingGestureRecognizer:self shouldBeginDrawingWithTouches:v8 event:eventCopy], v21, (v22))
     {
       v23 = 1;
       goto LABEL_18;
@@ -132,19 +132,19 @@ LABEL_18:
   return v23;
 }
 
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v8 = os_log_create("com.apple.pencilkit", "Sketching");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -152,21 +152,21 @@ LABEL_18:
     _os_log_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_DEFAULT, "Touches drawing", buf, 2u);
   }
 
-  if ([(PKDrawingGestureRecognizer *)self state]|| [(PKDrawingGestureRecognizer *)self _shouldBeginDrawing:v6 withEvent:v7])
+  if ([(PKDrawingGestureRecognizer *)self state]|| [(PKDrawingGestureRecognizer *)self _shouldBeginDrawing:beganCopy withEvent:eventCopy])
   {
-    v9 = [v6 objectsPassingTest:&__block_literal_global_26];
-    v10 = [v9 anyObject];
+    v9 = [beganCopy objectsPassingTest:&__block_literal_global_26];
+    anyObject = [v9 anyObject];
 
-    if (v10)
+    if (anyObject)
     {
       self->_gestureDetected = 1;
-      self->_activeInputProperties = [v7 PK_activeInputPropertiesForTouch:v10];
-      [(PKDrawingGestureRecognizer *)self _beginDrawingWithTouch:v10];
+      self->_activeInputProperties = [eventCopy PK_activeInputPropertiesForTouch:anyObject];
+      [(PKDrawingGestureRecognizer *)self _beginDrawingWithTouch:anyObject];
     }
 
     else if (!self->_ignoreFingerTouchesUntilReset)
     {
-      if (self->_drawingTouch || [v6 count] >= 2)
+      if (self->_drawingTouch || [beganCopy count] >= 2)
       {
         if (!self->_gestureDetected)
         {
@@ -184,9 +184,9 @@ LABEL_18:
 
       else if (!self->_drawingTargetIsDrawing)
       {
-        v13 = [v6 anyObject];
-        self->_activeInputProperties = [v7 PK_activeInputPropertiesForTouch:v13];
-        [(PKDrawingGestureRecognizer *)self _beginDrawingWithTouch:v13];
+        anyObject2 = [beganCopy anyObject];
+        self->_activeInputProperties = [eventCopy PK_activeInputPropertiesForTouch:anyObject2];
+        [(PKDrawingGestureRecognizer *)self _beginDrawingWithTouch:anyObject2];
       }
     }
   }
@@ -204,14 +204,14 @@ LABEL_18:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
-  if ([a3 containsObject:self->_drawingTouch])
+  eventCopy = event;
+  if ([moved containsObject:self->_drawingTouch])
   {
     if (self->_drawingTargetIsDrawing)
     {
-      [(PKDrawingGestureRecognizer *)self _updateDrawingWithEvent:v6];
+      [(PKDrawingGestureRecognizer *)self _updateDrawingWithEvent:eventCopy];
     }
 
     else
@@ -221,9 +221,9 @@ LABEL_18:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  if ([a3 containsObject:{self->_drawingTouch, a4}])
+  if ([cancelled containsObject:{self->_drawingTouch, event}])
   {
     v5 = os_log_create("com.apple.pencilkit", "Sketching");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -236,36 +236,36 @@ LABEL_18:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([a3 containsObject:{self->_drawingTouch, a4}])
+  if ([ended containsObject:{self->_drawingTouch, event}])
   {
-    v5 = [(PKDrawingGestureRecognizer *)self delegate];
+    delegate = [(PKDrawingGestureRecognizer *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(PKDrawingGestureRecognizer *)self delegate];
-      [v7 drawingGestureRecognizer:self touchesEndedWithDrawingTouch:self->_drawingTouch];
+      delegate2 = [(PKDrawingGestureRecognizer *)self delegate];
+      [delegate2 drawingGestureRecognizer:self touchesEndedWithDrawingTouch:self->_drawingTouch];
     }
 
     [(PKDrawingGestureRecognizer *)self _endDrawing];
   }
 }
 
-- (void)touchesEstimatedPropertiesUpdated:(id)a3
+- (void)touchesEstimatedPropertiesUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(PKDrawingGestureRecognizer *)self drawingTarget];
-  [v5 drawingEstimatedPropertiesUpdated:v4];
+  updatedCopy = updated;
+  drawingTarget = [(PKDrawingGestureRecognizer *)self drawingTarget];
+  [drawingTarget drawingEstimatedPropertiesUpdated:updatedCopy];
 }
 
-- (void)_beginDrawingWithTouch:(id)a3
+- (void)_beginDrawingWithTouch:(id)touch
 {
-  v11 = a3;
+  touchCopy = touch;
   if (self->_drawingTargetIsDrawing)
   {
-    if (self->_drawingTouch == v11)
+    if (self->_drawingTouch == touchCopy)
     {
       goto LABEL_13;
     }
@@ -275,18 +275,18 @@ LABEL_18:
 
   if (!self->_drawingTouch)
   {
-    [(UITouch *)v11 locationInView:0];
+    [(UITouch *)touchCopy locationInView:0];
     self->_drawTouchStartPoint.x = v5;
     self->_drawTouchStartPoint.y = v6;
   }
 
-  objc_storeStrong(&self->_drawingTouch, a3);
+  objc_storeStrong(&self->_drawingTouch, touch);
   if (!self->_drawingTargetIsDrawing)
   {
-    v7 = [(PKDrawingGestureRecognizer *)self delegate];
+    delegate = [(PKDrawingGestureRecognizer *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
-    if ((v8 & 1) == 0 || (-[PKDrawingGestureRecognizer delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 drawingGestureRecognizer:self shouldDelayDrawingBeganWithTouch:v11], v9, (v10 & 1) == 0))
+    if ((v8 & 1) == 0 || (-[PKDrawingGestureRecognizer delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 drawingGestureRecognizer:self shouldDelayDrawingBeganWithTouch:touchCopy], v9, (v10 & 1) == 0))
     {
       [(PKDrawingGestureRecognizer *)self _drawingBegan];
     }
@@ -300,13 +300,13 @@ LABEL_18:
 LABEL_13:
 }
 
-- (void)_updateDrawingWithEvent:(id)a3
+- (void)_updateDrawingWithEvent:(id)event
 {
-  v4 = a3;
-  v8 = v4;
+  eventCopy = event;
+  v8 = eventCopy;
   if (self->_gestureDetected)
   {
-    [(PKDrawingGestureRecognizer *)self _drawingMoved:v4];
+    [(PKDrawingGestureRecognizer *)self _drawingMoved:eventCopy];
     if (!self->_gestureDetected)
     {
       goto LABEL_9;
@@ -389,36 +389,36 @@ LABEL_9:
   self->_currentBoundingBoxInWindow.origin.y = v4;
   self->_currentBoundingBoxInWindow.size.width = 0.0;
   self->_currentBoundingBoxInWindow.size.height = 0.0;
-  v5 = [(PKDrawingGestureRecognizer *)self drawingTarget];
-  [v5 drawingBegan:self->_drawingTouch];
+  drawingTarget = [(PKDrawingGestureRecognizer *)self drawingTarget];
+  [drawingTarget drawingBegan:self->_drawingTouch];
 }
 
-- (void)_drawingMoved:(id)a3
+- (void)_drawingMoved:(id)moved
 {
   drawingTouch = self->_drawingTouch;
-  v5 = a3;
+  movedCopy = moved;
   [(UITouch *)drawingTouch locationInView:0];
   v10.origin.x = v6;
   v10.origin.y = v7;
   v10.size.width = 0.0;
   v10.size.height = 0.0;
   self->_currentBoundingBoxInWindow = CGRectUnion(self->_currentBoundingBoxInWindow, v10);
-  v8 = [(PKDrawingGestureRecognizer *)self drawingTarget];
-  [v8 drawingMoved:self->_drawingTouch withEvent:v5];
+  drawingTarget = [(PKDrawingGestureRecognizer *)self drawingTarget];
+  [drawingTarget drawingMoved:self->_drawingTouch withEvent:movedCopy];
 }
 
 - (void)_drawingEnded
 {
-  v3 = [(PKDrawingGestureRecognizer *)self drawingTarget];
-  [v3 drawingEnded:self->_drawingTouch];
+  drawingTarget = [(PKDrawingGestureRecognizer *)self drawingTarget];
+  [drawingTarget drawingEnded:self->_drawingTouch];
 
   self->_drawingTargetIsDrawing = 0;
 }
 
 - (void)_drawingCancelled
 {
-  v3 = [(PKDrawingGestureRecognizer *)self drawingTarget];
-  [v3 drawingCancelled];
+  drawingTarget = [(PKDrawingGestureRecognizer *)self drawingTarget];
+  [drawingTarget drawingCancelled];
 
   self->_drawingTargetIsDrawing = 0;
 }

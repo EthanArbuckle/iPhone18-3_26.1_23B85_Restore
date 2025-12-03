@@ -1,16 +1,16 @@
 @interface MapsSuggestionsSourcesServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MapsSuggestionsSourcesServer)initWithMemory:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MapsSuggestionsSourcesServer)initWithMemory:(id)memory;
 - (NSString)uniqueName;
 - (void)dealloc;
-- (void)didUpdateLocation:(id)a3;
+- (void)didUpdateLocation:(id)location;
 @end
 
 @implementation MapsSuggestionsSourcesServer
 
-- (MapsSuggestionsSourcesServer)initWithMemory:(id)a3
+- (MapsSuggestionsSourcesServer)initWithMemory:(id)memory
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, memory);
   v56.receiver = self;
   v56.super_class = MapsSuggestionsSourcesServer;
   v4 = [(MapsSuggestionsSourcesServer *)&v56 init];
@@ -41,17 +41,17 @@
       goto LABEL_55;
     }
 
-    v10 = [v8 locationUpdater];
+    locationUpdater = [v8 locationUpdater];
     locationUpdater = v4->_locationUpdater;
-    v4->_locationUpdater = v10;
+    v4->_locationUpdater = locationUpdater;
 
-    v12 = [v9 sourceWrapper];
+    sourceWrapper = [v9 sourceWrapper];
     wrapper = v4->_wrapper;
-    v4->_wrapper = v12;
+    v4->_wrapper = sourceWrapper;
 
-    v14 = [v9 destinationGraph];
+    destinationGraph = [v9 destinationGraph];
     graph = v4->_graph;
-    v4->_graph = v14;
+    v4->_graph = destinationGraph;
 
     v16 = objc_alloc_init(NSMutableArray);
     peers = v4->_peers;
@@ -102,9 +102,9 @@ LABEL_55:
     }
 
     v19 = v4->_graph;
-    v20 = [(MapsSuggestionsSourceWrapper *)v4->_wrapper source];
+    source = [(MapsSuggestionsSourceWrapper *)v4->_wrapper source];
     v21 = v19;
-    v22 = v20;
+    v22 = source;
     v23 = v22;
     if (v21)
     {
@@ -134,8 +134,8 @@ LABEL_55:
           v69 = 0u;
           v66 = 0u;
           v67 = 0u;
-          v25 = [v54 children];
-          v26 = [v25 countByEnumeratingWithState:&v66 objects:buf count:16];
+          children = [v54 children];
+          v26 = [children countByEnumeratingWithState:&v66 objects:buf count:16];
           if (v26)
           {
             v52 = v21;
@@ -147,7 +147,7 @@ LABEL_55:
               {
                 if (*v67 != v28)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(children);
                 }
 
                 v30 = *(*(&v66 + 1) + 8 * i);
@@ -158,7 +158,7 @@ LABEL_55:
                 }
               }
 
-              v26 = [v25 countByEnumeratingWithState:&v66 objects:buf count:16];
+              v26 = [children countByEnumeratingWithState:&v66 objects:buf count:16];
             }
 
             while (v26);
@@ -337,22 +337,22 @@ LABEL_56:
   return [v2 description];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v19 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v7 = GEOFindOrCreateLog();
   v8 = v7;
-  if (v6)
+  if (connectionCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v33 = v6;
+      v33 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Incoming XPC connection %@.", buf, 0xCu);
     }
 
-    v9 = [[MapsSuggestionsSourcesXPCPeer alloc] initWithXPCConnection:v6 sourceWrapper:self->_wrapper graph:self->_graph];
+    v9 = [[MapsSuggestionsSourcesXPCPeer alloc] initWithXPCConnection:connectionCopy sourceWrapper:self->_wrapper graph:self->_graph];
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -363,17 +363,17 @@ LABEL_56:
     v31 = v8;
     dispatch_sync(queue, block);
     v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MapsSuggestionsSourceDelegateProxy];
-    v12 = [[NSSet alloc] initWithObjects:{objc_opt_class(), 0, v19}];
+    v12 = [[NSSet alloc] initWithObjects:{objc_opt_class(), 0, listenerCopy}];
     [v11 setClasses:v12 forSelector:"addOrUpdateSuggestionEntriesData:sourceNameData:handler:" argumentIndex:0 ofReply:0];
 
     v13 = [[NSSet alloc] initWithObjects:{objc_opt_class(), 0}];
     [v11 setClasses:v13 forSelector:"addOrUpdateSuggestionEntriesData:sourceNameData:handler:" argumentIndex:1 ofReply:0];
 
-    [v6 setRemoteObjectInterface:v11];
+    [connectionCopy setRemoteObjectInterface:v11];
     v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MapsSuggestionsSourceProxy];
-    [v6 setExportedInterface:v14];
+    [connectionCopy setExportedInterface:v14];
 
-    [v6 setExportedObject:v8];
+    [connectionCopy setExportedObject:v8];
     objc_initWeak(buf, self);
     objc_initWeak(&location, v8);
     v25[0] = _NSConcreteStackBlock;
@@ -382,7 +382,7 @@ LABEL_56:
     v25[3] = &unk_100075A08;
     objc_copyWeak(&v27, buf);
     objc_copyWeak(&v28, &location);
-    v15 = v6;
+    v15 = connectionCopy;
     v26 = v15;
     [v15 setInvalidationHandler:v25];
     v21[0] = _NSConcreteStackBlock;
@@ -425,19 +425,19 @@ LABEL_56:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a newConnection", buf, 0x26u);
   }
 
-  return v6 != 0;
+  return connectionCopy != 0;
 }
 
-- (void)didUpdateLocation:(id)a3
+- (void)didUpdateLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   if (MapsSuggestionsLoggingIsVerbose())
   {
     v4 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v5 = 138412290;
-      v6 = v3;
+      v6 = locationCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Received location update: %@", &v5, 0xCu);
     }
   }

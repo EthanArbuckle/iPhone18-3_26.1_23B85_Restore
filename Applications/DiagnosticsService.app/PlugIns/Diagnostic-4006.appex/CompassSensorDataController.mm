@@ -1,6 +1,6 @@
 @interface CompassSensorDataController
 - (void)finish;
-- (void)handleHIDEvent:(__IOHIDEvent *)a3;
+- (void)handleHIDEvent:(__IOHIDEvent *)event;
 - (void)start;
 - (void)teardown;
 @end
@@ -13,14 +13,14 @@
   v3 = +[DAHIDEventMonitor sharedInstance];
   [(CompassSensorDataController *)self setEventMonitor:v3];
 
-  v4 = [(CompassSensorDataController *)self eventMonitor];
-  [v4 setDelegate:self];
+  eventMonitor = [(CompassSensorDataController *)self eventMonitor];
+  [eventMonitor setDelegate:self];
 
   if (([(CompassSensorDataController *)self isCancelled]& 1) == 0)
   {
-    v5 = [(CompassSensorDataController *)self eventMonitor];
+    eventMonitor2 = [(CompassSensorDataController *)self eventMonitor];
     v6 = [NSSet setWithObject:&off_1000043C8];
-    v7 = [v5 startMonitoringWithHIDEvents:v6];
+    v7 = [eventMonitor2 startMonitoringWithHIDEvents:v6];
 
     if (v7 && (-[CompassSensorDataController eventMonitor](self, "eventMonitor"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 serviceClientSetPropertyValue:+[NSNumber numberWithInt:](NSNumber forKey:"numberWithInt:" forHIDEvent:{10000), @"ReportInterval", 4}], v8, v9))
     {
@@ -35,15 +35,15 @@
 
     else
     {
-      v11 = [(CompassSensorDataController *)self result];
-      [v11 setStatusCode:&off_1000043E0];
+      result = [(CompassSensorDataController *)self result];
+      [result setStatusCode:&off_1000043E0];
 
       [(CompassSensorDataController *)self setFinished:1];
     }
   }
 }
 
-- (void)handleHIDEvent:(__IOHIDEvent *)a3
+- (void)handleHIDEvent:(__IOHIDEvent *)event
 {
   if (([(CompassSensorDataController *)self isCancelled]& 1) == 0 && IOHIDEventGetType() == 21)
   {
@@ -61,10 +61,10 @@
   if (([(CompassSensorDataController *)self isCancelled]& 1) == 0)
   {
     [(CompassSensorDataController *)self teardown];
-    v3 = [(CompassSensorDataController *)self compassDataCount];
+    compassDataCount = [(CompassSensorDataController *)self compassDataCount];
     v4 = DiagnosticLogHandleForCategory();
     v5 = v4;
-    if (v3 < 1)
+    if (compassDataCount < 1)
     {
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
@@ -86,8 +86,8 @@
       v6 = &off_1000043F8;
     }
 
-    v7 = [(CompassSensorDataController *)self result];
-    [v7 setStatusCode:v6];
+    result = [(CompassSensorDataController *)self result];
+    [result setStatusCode:v6];
   }
 
   [(CompassSensorDataController *)self setFinished:1];
@@ -95,17 +95,17 @@
 
 - (void)teardown
 {
-  v3 = [(CompassSensorDataController *)self eventMonitor];
+  eventMonitor = [(CompassSensorDataController *)self eventMonitor];
 
-  if (v3)
+  if (eventMonitor)
   {
-    v4 = [(CompassSensorDataController *)self eventMonitor];
-    v5 = [v4 currentlyMonitoring];
+    eventMonitor2 = [(CompassSensorDataController *)self eventMonitor];
+    currentlyMonitoring = [eventMonitor2 currentlyMonitoring];
 
-    if (v5)
+    if (currentlyMonitoring)
     {
-      v6 = [(CompassSensorDataController *)self eventMonitor];
-      [v6 stopMonitoring];
+      eventMonitor3 = [(CompassSensorDataController *)self eventMonitor];
+      [eventMonitor3 stopMonitoring];
     }
 
     [(CompassSensorDataController *)self setEventMonitor:0];

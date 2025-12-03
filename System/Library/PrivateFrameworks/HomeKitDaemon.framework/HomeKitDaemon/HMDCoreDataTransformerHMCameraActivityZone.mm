@@ -1,17 +1,17 @@
 @interface HMDCoreDataTransformerHMCameraActivityZone
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4;
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4;
++ (id)OPACKFromValue:(id)value error:(id *)error;
++ (id)valueFromOPACK:(id)k error:(id *)error;
 @end
 
 @implementation HMDCoreDataTransformerHMCameraActivityZone
 
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4
++ (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v5 = a3;
+  kCopy = k;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = kCopy;
   }
 
   else
@@ -53,31 +53,31 @@
         goto LABEL_18;
       }
 
-      if (a4)
+      if (error)
       {
         v9 = MEMORY[0x277CCA9B8];
-        [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSArray of even length to create HMCameraActivityZone: %@", v5];
+        [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSArray of even length to create HMCameraActivityZone: %@", kCopy];
         goto LABEL_17;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v9 = MEMORY[0x277CCA9B8];
-      [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSArray of at least 6 elements to create HMCameraActivityZone: %@", v5];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSArray of at least 6 elements to create HMCameraActivityZone: %@", kCopy];
       v10 = LABEL_17:;
       [v9 hmfErrorWithCode:3 reason:v10];
-      *a4 = v19 = 0;
+      *error = v19 = 0;
 LABEL_18:
 
       goto LABEL_20;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v9 = MEMORY[0x277CCA9B8];
-    [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSArray value to create HMCameraActivityZone: %@", v5];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSArray value to create HMCameraActivityZone: %@", kCopy];
     goto LABEL_17;
   }
 
@@ -87,15 +87,15 @@ LABEL_20:
   return v19;
 }
 
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4
++ (id)OPACKFromValue:(id)value error:(id *)error
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  valueCopy = value;
   v6 = [v4 alloc];
-  v7 = [v5 points];
-  v8 = [v6 initWithCapacity:{2 * objc_msgSend(v7, "count")}];
+  points = [valueCopy points];
+  v8 = [v6 initWithCapacity:{2 * objc_msgSend(points, "count")}];
 
-  v9 = [v5 points];
+  points2 = [valueCopy points];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -103,7 +103,7 @@ LABEL_20:
   v13[3] = &unk_2786742C8;
   v14 = v8;
   v10 = v8;
-  [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
+  [points2 hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
 
   v11 = [v10 copy];
 

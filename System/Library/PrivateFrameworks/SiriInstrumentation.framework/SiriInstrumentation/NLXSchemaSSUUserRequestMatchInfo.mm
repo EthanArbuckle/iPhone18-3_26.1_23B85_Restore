@@ -1,33 +1,33 @@
 @interface NLXSchemaSSUUserRequestMatchInfo
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaSSUUserRequestMatchInfo)initWithDictionary:(id)a3;
-- (NLXSchemaSSUUserRequestMatchInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaSSUUserRequestMatchInfo)initWithDictionary:(id)dictionary;
+- (NLXSchemaSSUUserRequestMatchInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasNumEntities:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasNumEntities:(BOOL)entities;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaSSUUserRequestMatchInfo
 
-- (NLXSchemaSSUUserRequestMatchInfo)initWithDictionary:(id)a3
+- (NLXSchemaSSUUserRequestMatchInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = NLXSchemaSSUUserRequestMatchInfo;
   v5 = [(NLXSchemaSSUUserRequestMatchInfo *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"matchingUtteranceCandidateType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"matchingUtteranceCandidateType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaSSUUserRequestMatchInfo setMatchingUtteranceCandidateType:](v5, "setMatchingUtteranceCandidateType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numEntities"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numEntities"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (NLXSchemaSSUUserRequestMatchInfo)initWithJSON:(id)a3
+- (NLXSchemaSSUUserRequestMatchInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaSSUUserRequestMatchInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaSSUUserRequestMatchInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaSSUUserRequestMatchInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,18 +76,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
-    v5 = [(NLXSchemaSSUUserRequestMatchInfo *)self matchingUtteranceCandidateType];
+    matchingUtteranceCandidateType = [(NLXSchemaSSUUserRequestMatchInfo *)self matchingUtteranceCandidateType];
     v6 = @"SSUUTTERANCECANDIDATETYPE_UNKNOWN";
-    if (v5 == 1)
+    if (matchingUtteranceCandidateType == 1)
     {
       v6 = @"SSUUTTERANCECANDIDATETYPE_ORIGINAL";
     }
 
-    if (v5 == 2)
+    if (matchingUtteranceCandidateType == 2)
     {
       v7 = @"SSUUTTERANCECANDIDATETYPE_ALTERNATIVE";
     }
@@ -97,19 +97,19 @@
       v7 = v6;
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"matchingUtteranceCandidateType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"matchingUtteranceCandidateType"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaSSUUserRequestMatchInfo numEntities](self, "numEntities")}];
-    [v3 setObject:v8 forKeyedSubscript:@"numEntities"];
+    [dictionary setObject:v8 forKeyedSubscript:@"numEntities"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -138,16 +138,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   has = self->_has;
-  v6 = v4[16];
+  v6 = equalCopy[16];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -156,7 +156,7 @@ LABEL_3:
   if (*&has)
   {
     matchingUtteranceCandidateType = self->_matchingUtteranceCandidateType;
-    if (matchingUtteranceCandidateType != [v4 matchingUtteranceCandidateType])
+    if (matchingUtteranceCandidateType != [equalCopy matchingUtteranceCandidateType])
     {
 LABEL_10:
       v10 = 0;
@@ -164,7 +164,7 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = v4[16];
+    v6 = equalCopy[16];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -176,7 +176,7 @@ LABEL_10:
   if (v8)
   {
     numEntities = self->_numEntities;
-    if (numEntities != [v4 numEntities])
+    if (numEntities != [equalCopy numEntities])
     {
       goto LABEL_10;
     }
@@ -188,28 +188,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasNumEntities:(BOOL)a3
+- (void)setHasNumEntities:(BOOL)entities
 {
-  if (a3)
+  if (entities)
   {
     v3 = 2;
   }

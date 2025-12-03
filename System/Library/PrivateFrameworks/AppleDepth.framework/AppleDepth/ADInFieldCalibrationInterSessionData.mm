@@ -1,15 +1,15 @@
 @interface ADInFieldCalibrationInterSessionData
-+ (id)interSessionDataFromFile:(id)a3;
++ (id)interSessionDataFromFile:(id)file;
 - (ADInFieldCalibrationInterSessionData)init;
-- (ADInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)a3;
-- (BOOL)writeToFile:(id)a3 atomically:(BOOL)a4;
+- (ADInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)representation;
+- (BOOL)writeToFile:(id)file atomically:(BOOL)atomically;
 - (id)persistenceData;
-- (int64_t)insertEntryAndCalculate:(id)a3 withWeight:(double)a4 toResult:(id *)a5;
+- (int64_t)insertEntryAndCalculate:(id)calculate withWeight:(double)weight toResult:(id *)result;
 @end
 
 @implementation ADInFieldCalibrationInterSessionData
 
-- (BOOL)writeToFile:(id)a3 atomically:(BOOL)a4
+- (BOOL)writeToFile:(id)file atomically:(BOOL)atomically
 {
   v11 = *MEMORY[0x277D85DE8];
   if (ADDebugUtilsADVerboseLogsEnabled == 1)
@@ -41,10 +41,10 @@ LABEL_6:
   return 0;
 }
 
-- (int64_t)insertEntryAndCalculate:(id)a3 withWeight:(double)a4 toResult:(id *)a5
+- (int64_t)insertEntryAndCalculate:(id)calculate withWeight:(double)weight toResult:(id *)result
 {
-  v6 = [(ADInterSessionFilter *)self->_isf insertEntryAndCalculate:a3 withWeight:a4];
-  *a5 = v6;
+  v6 = [(ADInterSessionFilter *)self->_isf insertEntryAndCalculate:calculate withWeight:weight];
+  *result = v6;
   if (v6)
   {
     return 0;
@@ -73,7 +73,7 @@ LABEL_6:
   return v2;
 }
 
-- (ADInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)a3
+- (ADInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)representation
 {
   v4 = objc_opt_new();
 
@@ -87,7 +87,7 @@ LABEL_6:
   return v2;
 }
 
-+ (id)interSessionDataFromFile:(id)a3
++ (id)interSessionDataFromFile:(id)file
 {
   v10 = *MEMORY[0x277D85DE8];
   if (ADDebugUtilsADVerboseLogsEnabled == 1)

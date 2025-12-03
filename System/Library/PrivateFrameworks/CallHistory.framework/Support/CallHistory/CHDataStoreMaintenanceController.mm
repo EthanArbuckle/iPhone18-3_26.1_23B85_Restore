@@ -1,22 +1,22 @@
 @interface CHDataStoreMaintenanceController
-- (CHDataStoreMaintenanceController)initWithDataStore:(id)a3 configuration:(id)a4;
+- (CHDataStoreMaintenanceController)initWithDataStore:(id)store configuration:(id)configuration;
 - (void)removeCalls;
 @end
 
 @implementation CHDataStoreMaintenanceController
 
-- (CHDataStoreMaintenanceController)initWithDataStore:(id)a3 configuration:(id)a4
+- (CHDataStoreMaintenanceController)initWithDataStore:(id)store configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = CHDataStoreMaintenanceController;
   v9 = [(CHDataStoreMaintenanceController *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a4);
-    objc_storeStrong(&v10->_dataStore, a3);
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeStrong(&v10->_dataStore, store);
     objc_initWeak(&location, v10);
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -33,10 +33,10 @@
 
 - (void)removeCalls
 {
-  v3 = [(CHDataStoreMaintenanceController *)self configuration];
-  v4 = [v3 keepCallsTimeIntervalType];
+  configuration = [(CHDataStoreMaintenanceController *)self configuration];
+  keepCallsTimeIntervalType = [configuration keepCallsTimeIntervalType];
 
-  if (v4 == 2)
+  if (keepCallsTimeIntervalType == 2)
   {
     v5 = objc_alloc_init(NSDateComponents);
     [v5 setDay:-30];
@@ -51,8 +51,8 @@ LABEL_6:
     v8 = [v6 dateByAddingComponents:v5 toDate:v7 options:4096];
 
     v9 = [CHRecentCall predicateForCallsLessThanDate:v8];
-    v10 = [(CHDataStoreMaintenanceController *)self dataStore];
-    v11 = [v10 deleteCallsWithPredicate:v9];
+    dataStore = [(CHDataStoreMaintenanceController *)self dataStore];
+    v11 = [dataStore deleteCallsWithPredicate:v9];
     if (v11 < 1)
     {
       v14 = 0;
@@ -61,7 +61,7 @@ LABEL_6:
     else
     {
       v19 = 0;
-      v12 = [v10 saveDatabase:&v19];
+      v12 = [dataStore saveDatabase:&v19];
       v13 = v19;
       v14 = v13;
       if (v11 == 0x7FFFFFFFFFFFFFFFLL || v12 == 0)
@@ -100,7 +100,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (v4 == 1)
+  if (keepCallsTimeIntervalType == 1)
   {
     v5 = objc_alloc_init(NSDateComponents);
     [v5 setYear:-1];

@@ -6,11 +6,11 @@
 
 - (id)scrollView
 {
-  v2 = [(PadDayViewScrollTest *)self controller];
-  v3 = [v2 dayView];
-  v4 = [v3 verticalScrollView];
+  controller = [(PadDayViewScrollTest *)self controller];
+  dayView = [controller dayView];
+  verticalScrollView = [dayView verticalScrollView];
 
-  return v4;
+  return verticalScrollView;
 }
 
 @end

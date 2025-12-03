@@ -1,52 +1,52 @@
 @interface OKPresentationGuideline
 + (id)defaultMobileRecommendedResolutionSizes;
-+ (id)globalUniqueKeyForKey:(id)a3 mediaItem:(id)a4;
-+ (id)globalUniqueKeyForKey:(id)a3 mediaItem:(id)a4 presentationCanvas:(id)a5 producerPlugin:(id)a6;
-+ (id)globalUniqueKeyForKey:(id)a3 presentationCanvas:(id)a4;
-+ (id)globalUniqueKeyForKey:(id)a3 producerPlugin:(id)a4;
-+ (id)guidelineAuthoringAttributedTitle:(id)a3;
-+ (id)guidelineAuthoringAudioURLs:(id)a3;
-+ (id)guidelineAuthoringCurrentPageDuration:(double)a3;
-+ (id)guidelineAuthoringDebuggingEnabled:(BOOL)a3;
++ (id)globalUniqueKeyForKey:(id)key mediaItem:(id)item;
++ (id)globalUniqueKeyForKey:(id)key mediaItem:(id)item presentationCanvas:(id)canvas producerPlugin:(id)plugin;
++ (id)globalUniqueKeyForKey:(id)key presentationCanvas:(id)canvas;
++ (id)globalUniqueKeyForKey:(id)key producerPlugin:(id)plugin;
++ (id)guidelineAuthoringAttributedTitle:(id)title;
++ (id)guidelineAuthoringAudioURLs:(id)ls;
++ (id)guidelineAuthoringCurrentPageDuration:(double)duration;
++ (id)guidelineAuthoringDebuggingEnabled:(BOOL)enabled;
 + (id)guidelineAuthoringDefaultMobileRecommendedResolutionSizes;
-+ (id)guidelineAuthoringDurationFactor:(double)a3;
-+ (id)guidelineAuthoringFitToAudioDuration:(BOOL)a3;
-+ (id)guidelineAuthoringInteractiveTransitionSettings:(id)a3;
-+ (id)guidelineAuthoringMaximumDuration:(double)a3;
-+ (id)guidelineAuthoringMediaAttributes:(id)a3;
-+ (id)guidelineAuthoringMinimumDuration:(double)a3;
-+ (id)guidelineAuthoringPageDuration:(double)a3;
-+ (id)guidelineAuthoringRandomSeed:(unint64_t)a3;
-+ (id)guidelineAuthoringRecommendedResolutionSizes:(id)a3;
-+ (id)guidelineAuthoringSynopsis:(id)a3;
-+ (id)guidelineAuthoringTitle:(id)a3;
-+ (id)guidelineAuthoringTotalDuration:(double)a3;
-+ (id)guidelineAuthoringTransitionSettings:(id)a3;
-+ (id)guidelineLiveAuthoringEnabled:(BOOL)a3;
-+ (id)guidelineWithType:(unint64_t)a3 key:(id)a4 value:(id)a5;
++ (id)guidelineAuthoringDurationFactor:(double)factor;
++ (id)guidelineAuthoringFitToAudioDuration:(BOOL)duration;
++ (id)guidelineAuthoringInteractiveTransitionSettings:(id)settings;
++ (id)guidelineAuthoringMaximumDuration:(double)duration;
++ (id)guidelineAuthoringMediaAttributes:(id)attributes;
++ (id)guidelineAuthoringMinimumDuration:(double)duration;
++ (id)guidelineAuthoringPageDuration:(double)duration;
++ (id)guidelineAuthoringRandomSeed:(unint64_t)seed;
++ (id)guidelineAuthoringRecommendedResolutionSizes:(id)sizes;
++ (id)guidelineAuthoringSynopsis:(id)synopsis;
++ (id)guidelineAuthoringTitle:(id)title;
++ (id)guidelineAuthoringTotalDuration:(double)duration;
++ (id)guidelineAuthoringTransitionSettings:(id)settings;
++ (id)guidelineLiveAuthoringEnabled:(BOOL)enabled;
++ (id)guidelineWithType:(unint64_t)type key:(id)key value:(id)value;
 - (OKMediaItem)mediaItem;
 - (OKPresentationCanvas)presentationCanvas;
 - (OKPresentationGuideline)init;
-- (OKPresentationGuideline)initWithDictionary:(id)a3;
-- (OKPresentationGuideline)initWithType:(unint64_t)a3;
-- (OKPresentationGuideline)initWithType:(unint64_t)a3 key:(id)a4 value:(id)a5;
+- (OKPresentationGuideline)initWithDictionary:(id)dictionary;
+- (OKPresentationGuideline)initWithType:(unint64_t)type;
+- (OKPresentationGuideline)initWithType:(unint64_t)type key:(id)key value:(id)value;
 - (OKProducerPlugin)producerPlugin;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionary;
 - (id)globalUniqueKey;
 - (id)presentationCanvasKeyPath;
 - (void)dealloc;
-- (void)setMediaItem:(id)a3;
-- (void)setPresentationCanvas:(id)a3;
-- (void)setProducerPlugin:(id)a3;
+- (void)setMediaItem:(id)item;
+- (void)setPresentationCanvas:(id)canvas;
+- (void)setProducerPlugin:(id)plugin;
 @end
 
 @implementation OKPresentationGuideline
 
-+ (id)guidelineWithType:(unint64_t)a3 key:(id)a4 value:(id)a5
++ (id)guidelineWithType:(unint64_t)type key:(id)key value:(id)value
 {
-  v5 = [[a1 alloc] initWithType:a3 key:a4 value:a5];
+  v5 = [[self alloc] initWithType:type key:key value:value];
 
   return v5;
 }
@@ -73,24 +73,24 @@
   return v3;
 }
 
-- (OKPresentationGuideline)initWithType:(unint64_t)a3
+- (OKPresentationGuideline)initWithType:(unint64_t)type
 {
   result = [(OKPresentationGuideline *)self init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (OKPresentationGuideline)initWithType:(unint64_t)a3 key:(id)a4 value:(id)a5
+- (OKPresentationGuideline)initWithType:(unint64_t)type key:(id)key value:(id)value
 {
-  v7 = [(OKPresentationGuideline *)self initWithType:a3];
+  v7 = [(OKPresentationGuideline *)self initWithType:type];
   if (v7)
   {
-    v7->_key = [a4 copy];
-    v7->_value = a5;
+    v7->_key = [key copy];
+    v7->_value = value;
   }
 
   return v7;
@@ -160,9 +160,9 @@
   [(OKPresentationGuideline *)&v11 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     *(v4 + 32) = [(NSString *)self->_key copy];
@@ -188,8 +188,8 @@
   {
     if (self->_mediaItemUniqueURLString)
     {
-      v4 = [(OKPresentationGuideline *)self presentation];
-      -[OKPresentationGuideline setMediaItem:](self, "setMediaItem:", -[OKPresentation mediaItemForURL:](v4, "mediaItemForURL:", [MEMORY[0x277CBEBC0] URLWithString:self->_mediaItemUniqueURLString]));
+      presentation = [(OKPresentationGuideline *)self presentation];
+      -[OKPresentationGuideline setMediaItem:](self, "setMediaItem:", -[OKPresentation mediaItemForURL:](presentation, "mediaItemForURL:", [MEMORY[0x277CBEBC0] URLWithString:self->_mediaItemUniqueURLString]));
       return self->_mediaItem;
     }
 
@@ -202,7 +202,7 @@
   return result;
 }
 
-- (void)setMediaItem:(id)a3
+- (void)setMediaItem:(id)item
 {
   mediaItem = self->_mediaItem;
   if (mediaItem)
@@ -218,11 +218,11 @@
     self->_mediaItemUniqueURLString = 0;
   }
 
-  if (a3)
+  if (item)
   {
-    v7 = a3;
-    self->_mediaItem = v7;
-    self->_mediaItemUniqueURLString = [(NSString *)[(NSURL *)[(OKMediaItem *)v7 uniqueURL] absoluteString] copy];
+    itemCopy = item;
+    self->_mediaItem = itemCopy;
+    self->_mediaItemUniqueURLString = [(NSString *)[(NSURL *)[(OKMediaItem *)itemCopy uniqueURL] absoluteString] copy];
   }
 }
 
@@ -248,7 +248,7 @@ LABEL_8:
   return self->_presentationCanvas;
 }
 
-- (void)setPresentationCanvas:(id)a3
+- (void)setPresentationCanvas:(id)canvas
 {
   presentationCanvas = self->_presentationCanvas;
   if (presentationCanvas)
@@ -264,9 +264,9 @@ LABEL_8:
     self->_presentationCanvasKeyPath = 0;
   }
 
-  if (a3)
+  if (canvas)
   {
-    self->_presentationCanvas = a3;
+    self->_presentationCanvas = canvas;
     v7 = objc_opt_class();
     v8 = [v7 isSubclassOfClass:objc_opt_class()];
     v9 = 1;
@@ -315,7 +315,7 @@ LABEL_8:
   return result;
 }
 
-- (void)setProducerPlugin:(id)a3
+- (void)setProducerPlugin:(id)plugin
 {
   producerPlugin = self->_producerPlugin;
   if (producerPlugin)
@@ -331,63 +331,63 @@ LABEL_8:
     self->_producerPluginUUID = 0;
   }
 
-  if (a3)
+  if (plugin)
   {
-    v7 = a3;
-    self->_producerPlugin = v7;
-    self->_producerPluginUUID = [-[OKProducerBundle identifier](v7 "identifier")];
+    pluginCopy = plugin;
+    self->_producerPlugin = pluginCopy;
+    self->_producerPluginUUID = [-[OKProducerBundle identifier](pluginCopy "identifier")];
   }
 }
 
-- (OKPresentationGuideline)initWithDictionary:(id)a3
+- (OKPresentationGuideline)initWithDictionary:(id)dictionary
 {
   v4 = [(OKPresentationGuideline *)self init];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"type"];
+    v5 = [dictionary objectForKey:@"type"];
     if (v5)
     {
       -[OKPresentationGuideline setType:](v4, "setType:", [v5 unsignedIntegerValue]);
     }
 
-    v6 = [a3 objectForKey:@"timestamp"];
+    v6 = [dictionary objectForKey:@"timestamp"];
     if (v6)
     {
       [v6 doubleValue];
       v4->_timestamp = v7;
     }
 
-    v8 = [a3 objectForKey:@"key"];
+    v8 = [dictionary objectForKey:@"key"];
     if (v8)
     {
       [(OKPresentationGuideline *)v4 setKey:v8];
     }
 
-    v9 = [a3 objectForKey:@"value"];
+    v9 = [dictionary objectForKey:@"value"];
     if (v9)
     {
       [(OKPresentationGuideline *)v4 setValue:v9];
     }
 
-    v10 = [a3 objectForKey:@"mediaItemUniqueURLString"];
+    v10 = [dictionary objectForKey:@"mediaItemUniqueURLString"];
     if (v10)
     {
       v4->_mediaItemUniqueURLString = [v10 copy];
     }
 
-    v11 = [a3 objectForKey:@"presentationCanvasType"];
+    v11 = [dictionary objectForKey:@"presentationCanvasType"];
     if (v11)
     {
       v4->_presentationCanvasType = [v11 integerValue];
     }
 
-    v12 = [a3 objectForKey:@"presentationCanvasKeyPath"];
+    v12 = [dictionary objectForKey:@"presentationCanvasKeyPath"];
     if (v12)
     {
       v4->_presentationCanvasKeyPath = [v12 copy];
     }
 
-    v13 = [a3 objectForKey:@"producerPluginUUID"];
+    v13 = [dictionary objectForKey:@"producerPluginUUID"];
     if (v13)
     {
       v4->_producerPluginUUID = [v13 copy];
@@ -399,44 +399,44 @@ LABEL_8:
 
 - (id)dictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", self->_type), @"type"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_timestamp), @"timestamp"}];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", self->_type), @"type"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_timestamp), @"timestamp"}];
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   value = self->_value;
   if (value)
   {
-    [v3 setObject:value forKey:@"value"];
+    [dictionary setObject:value forKey:@"value"];
   }
 
   mediaItemUniqueURLString = self->_mediaItemUniqueURLString;
   if (mediaItemUniqueURLString)
   {
-    [v3 setObject:mediaItemUniqueURLString forKey:@"mediaItemUniqueURLString"];
+    [dictionary setObject:mediaItemUniqueURLString forKey:@"mediaItemUniqueURLString"];
   }
 
   if (self->_presentationCanvasType)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:"), @"presentationCanvasType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:"), @"presentationCanvasType"}];
   }
 
   if ([(OKPresentationGuideline *)self presentationCanvasKeyPath])
   {
-    [v3 setObject:-[OKPresentationGuideline presentationCanvasKeyPath](self forKey:{"presentationCanvasKeyPath"), @"presentationCanvasKeyPath"}];
+    [dictionary setObject:-[OKPresentationGuideline presentationCanvasKeyPath](self forKey:{"presentationCanvasKeyPath"), @"presentationCanvasKeyPath"}];
   }
 
   producerPluginUUID = self->_producerPluginUUID;
   if (producerPluginUUID)
   {
-    [v3 setObject:producerPluginUUID forKey:@"producerPluginUUID"];
+    [dictionary setObject:producerPluginUUID forKey:@"producerPluginUUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -467,74 +467,74 @@ LABEL_8:
   return v3;
 }
 
-+ (id)globalUniqueKeyForKey:(id)a3 mediaItem:(id)a4
++ (id)globalUniqueKeyForKey:(id)key mediaItem:(id)item
 {
-  v5 = [MEMORY[0x277CCAB68] stringWithString:a3];
-  if (a4)
+  v5 = [MEMORY[0x277CCAB68] stringWithString:key];
+  if (item)
   {
-    [v5 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @":%@", objc_msgSend(objc_msgSend(a4, "uniqueURL"), "absoluteString"))}];
+    [v5 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @":%@", objc_msgSend(objc_msgSend(item, "uniqueURL"), "absoluteString"))}];
   }
 
   return v5;
 }
 
-+ (id)globalUniqueKeyForKey:(id)a3 presentationCanvas:(id)a4
++ (id)globalUniqueKeyForKey:(id)key presentationCanvas:(id)canvas
 {
-  v5 = [MEMORY[0x277CCAB68] stringWithString:a3];
-  if (a4)
+  v5 = [MEMORY[0x277CCAB68] stringWithString:key];
+  if (canvas)
   {
-    [v5 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @":%@", objc_msgSend(a4, "keyPath"))}];
+    [v5 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @":%@", objc_msgSend(canvas, "keyPath"))}];
   }
 
   return v5;
 }
 
-+ (id)globalUniqueKeyForKey:(id)a3 producerPlugin:(id)a4
++ (id)globalUniqueKeyForKey:(id)key producerPlugin:(id)plugin
 {
-  v5 = [MEMORY[0x277CCAB68] stringWithString:a3];
-  if (a4)
+  v5 = [MEMORY[0x277CCAB68] stringWithString:key];
+  if (plugin)
   {
-    [v5 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @":%@", objc_msgSend(a4, "identifier"))}];
+    [v5 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @":%@", objc_msgSend(plugin, "identifier"))}];
   }
 
   return v5;
 }
 
-+ (id)globalUniqueKeyForKey:(id)a3 mediaItem:(id)a4 presentationCanvas:(id)a5 producerPlugin:(id)a6
++ (id)globalUniqueKeyForKey:(id)key mediaItem:(id)item presentationCanvas:(id)canvas producerPlugin:(id)plugin
 {
-  v9 = [MEMORY[0x277CCAB68] stringWithString:a3];
-  if (a4)
+  v9 = [MEMORY[0x277CCAB68] stringWithString:key];
+  if (item)
   {
-    [v9 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @":%@", objc_msgSend(objc_msgSend(a4, "uniqueURL"), "absoluteString"))}];
+    [v9 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @":%@", objc_msgSend(objc_msgSend(item, "uniqueURL"), "absoluteString"))}];
   }
 
-  if (a5)
+  if (canvas)
   {
-    [v9 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @":%@", objc_msgSend(a5, "keyPath"))}];
+    [v9 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @":%@", objc_msgSend(canvas, "keyPath"))}];
   }
 
-  if (a6)
+  if (plugin)
   {
-    [v9 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @":%@", objc_msgSend(a6, "identifier"))}];
+    [v9 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @":%@", objc_msgSend(plugin, "identifier"))}];
   }
 
   return v9;
 }
 
-+ (id)guidelineLiveAuthoringEnabled:(BOOL)a3
++ (id)guidelineLiveAuthoringEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:enabledCopy];
 
   return [v4 guidelineWithType:1 key:@"liveAuthoringEnabled" value:v5];
 }
 
-+ (id)guidelineAuthoringRecommendedResolutionSizes:(id)a3
++ (id)guidelineAuthoringRecommendedResolutionSizes:(id)sizes
 {
   v4 = objc_opt_class();
 
-  return [v4 guidelineWithType:1 key:@"authoringRecommendedResolutionSizes" value:a3];
+  return [v4 guidelineWithType:1 key:@"authoringRecommendedResolutionSizes" value:sizes];
 }
 
 + (id)defaultMobileRecommendedResolutionSizes
@@ -551,35 +551,35 @@ LABEL_8:
 + (id)guidelineAuthoringDefaultMobileRecommendedResolutionSizes
 {
   v2 = objc_opt_class();
-  v3 = [objc_opt_class() defaultMobileRecommendedResolutionSizes];
+  defaultMobileRecommendedResolutionSizes = [objc_opt_class() defaultMobileRecommendedResolutionSizes];
 
-  return [v2 guidelineAuthoringRecommendedResolutionSizes:v3];
+  return [v2 guidelineAuthoringRecommendedResolutionSizes:defaultMobileRecommendedResolutionSizes];
 }
 
-+ (id)guidelineAuthoringRandomSeed:(unint64_t)a3
++ (id)guidelineAuthoringRandomSeed:(unint64_t)seed
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:seed];
 
   return [v4 guidelineWithType:1 key:@"authoringRandomSeed" value:v5];
 }
 
-+ (id)guidelineAuthoringSynopsis:(id)a3
++ (id)guidelineAuthoringSynopsis:(id)synopsis
 {
   v4 = objc_opt_class();
 
-  return [v4 guidelineWithType:1 key:@"authoringSynopsis" value:a3];
+  return [v4 guidelineWithType:1 key:@"authoringSynopsis" value:synopsis];
 }
 
-+ (id)guidelineAuthoringAudioURLs:(id)a3
++ (id)guidelineAuthoringAudioURLs:(id)ls
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a3, "count")}];
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(ls, "count")}];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [ls countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -591,14 +591,14 @@ LABEL_8:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ls);
         }
 
         [v4 addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v8++), "absoluteString")}];
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [ls countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -607,103 +607,103 @@ LABEL_8:
   return [objc_opt_class() guidelineWithType:1 key:@"authoringUserAudioURLStrings" value:v4];
 }
 
-+ (id)guidelineAuthoringTitle:(id)a3
++ (id)guidelineAuthoringTitle:(id)title
 {
   v4 = objc_opt_class();
 
-  return [v4 guidelineWithType:1 key:@"authoringTitle" value:a3];
+  return [v4 guidelineWithType:1 key:@"authoringTitle" value:title];
 }
 
-+ (id)guidelineAuthoringAttributedTitle:(id)a3
++ (id)guidelineAuthoringAttributedTitle:(id)title
 {
   v4 = objc_opt_class();
 
-  return [v4 guidelineWithType:1 key:@"authoringAttributedTitle" value:a3];
+  return [v4 guidelineWithType:1 key:@"authoringAttributedTitle" value:title];
 }
 
-+ (id)guidelineAuthoringTransitionSettings:(id)a3
++ (id)guidelineAuthoringTransitionSettings:(id)settings
 {
   v4 = objc_opt_class();
 
-  return [v4 guidelineWithType:1 key:@"transitionSettings" value:a3];
+  return [v4 guidelineWithType:1 key:@"transitionSettings" value:settings];
 }
 
-+ (id)guidelineAuthoringInteractiveTransitionSettings:(id)a3
++ (id)guidelineAuthoringInteractiveTransitionSettings:(id)settings
 {
   v4 = objc_opt_class();
 
-  return [v4 guidelineWithType:1 key:@"interactiveTransitionSettings" value:a3];
+  return [v4 guidelineWithType:1 key:@"interactiveTransitionSettings" value:settings];
 }
 
-+ (id)guidelineAuthoringMediaAttributes:(id)a3
++ (id)guidelineAuthoringMediaAttributes:(id)attributes
 {
   v4 = objc_opt_class();
 
-  return [v4 guidelineWithType:1 key:@"authoringMediaAttributes" value:a3];
+  return [v4 guidelineWithType:1 key:@"authoringMediaAttributes" value:attributes];
 }
 
-+ (id)guidelineAuthoringPageDuration:(double)a3
++ (id)guidelineAuthoringPageDuration:(double)duration
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
 
   return [v4 guidelineWithType:1 key:@"authoringPageDuration" value:v5];
 }
 
-+ (id)guidelineAuthoringCurrentPageDuration:(double)a3
++ (id)guidelineAuthoringCurrentPageDuration:(double)duration
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
 
   return [v4 guidelineWithType:1 key:@"authoringCurrentPageDuration" value:v5];
 }
 
-+ (id)guidelineAuthoringTotalDuration:(double)a3
++ (id)guidelineAuthoringTotalDuration:(double)duration
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
 
   return [v4 guidelineWithType:1 key:@"authoringTotalDuration" value:v5];
 }
 
-+ (id)guidelineAuthoringDurationFactor:(double)a3
++ (id)guidelineAuthoringDurationFactor:(double)factor
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:factor];
 
   return [v4 guidelineWithType:1 key:@"authoringDurationFactor" value:v5];
 }
 
-+ (id)guidelineAuthoringMinimumDuration:(double)a3
++ (id)guidelineAuthoringMinimumDuration:(double)duration
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
 
   return [v4 guidelineWithType:1 key:@"authoringMinimumDuration" value:v5];
 }
 
-+ (id)guidelineAuthoringMaximumDuration:(double)a3
++ (id)guidelineAuthoringMaximumDuration:(double)duration
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
 
   return [v4 guidelineWithType:1 key:@"authoringMaximumDuration" value:v5];
 }
 
-+ (id)guidelineAuthoringFitToAudioDuration:(BOOL)a3
++ (id)guidelineAuthoringFitToAudioDuration:(BOOL)duration
 {
-  v3 = a3;
+  durationCopy = duration;
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:durationCopy];
 
   return [v4 guidelineWithType:1 key:@"authoringFitToAudioDuration" value:v5];
 }
 
-+ (id)guidelineAuthoringDebuggingEnabled:(BOOL)a3
++ (id)guidelineAuthoringDebuggingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:enabledCopy];
 
   return [v4 guidelineWithType:1 key:@"authoringDebuggingEnabled" value:v5];
 }

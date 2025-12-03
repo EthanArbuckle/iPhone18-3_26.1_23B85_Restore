@@ -1,44 +1,44 @@
 @interface RFEngageable
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFEngageable)initWithCoder:(id)a3;
-- (RFEngageable)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFEngageable)initWithCoder:(id)coder;
+- (RFEngageable)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCommand_reference:(id)a3;
-- (void)setPreview_list:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCommand_reference:(id)command_reference;
+- (void)setPreview_list:(id)preview_list;
 @end
 
 @implementation RFEngageable
 
 - (unint64_t)hash
 {
-  v3 = [(RFEngageable *)self command_reference];
-  v4 = [v3 hash];
-  v5 = [(RFEngageable *)self preview_list];
-  v6 = [v5 hash];
+  command_reference = [(RFEngageable *)self command_reference];
+  v4 = [command_reference hash];
+  preview_list = [(RFEngageable *)self preview_list];
+  v6 = [preview_list hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFEngageable *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(RFEngageable *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(RFEngageable *)self command_reference];
-      v8 = [(RFEngageable *)v6 command_reference];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      command_reference = [(RFEngageable *)self command_reference];
+      command_reference2 = [(RFEngageable *)v6 command_reference];
+      if ((command_reference != 0) == (command_reference2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -46,12 +46,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(RFEngageable *)self command_reference];
-      if (v9)
+      command_reference3 = [(RFEngageable *)self command_reference];
+      if (command_reference3)
       {
-        v3 = [(RFEngageable *)self command_reference];
-        v10 = [(RFEngageable *)v6 command_reference];
-        if (![v3 isEqual:v10])
+        command_reference4 = [(RFEngageable *)self command_reference];
+        command_reference5 = [(RFEngageable *)v6 command_reference];
+        if (![command_reference4 isEqual:command_reference5])
         {
           v11 = 0;
 LABEL_17:
@@ -60,13 +60,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = command_reference5;
       }
 
-      v12 = [(RFEngageable *)self preview_list];
-      v13 = [(RFEngageable *)v6 preview_list];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      preview_list = [(RFEngageable *)self preview_list];
+      preview_list2 = [(RFEngageable *)v6 preview_list];
+      v14 = preview_list2;
+      if ((preview_list != 0) == (preview_list2 == 0))
       {
 
         v11 = 0;
@@ -74,16 +74,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(RFEngageable *)self preview_list];
-        if (v15)
+        preview_list3 = [(RFEngageable *)self preview_list];
+        if (preview_list3)
         {
-          v16 = v15;
-          v19 = [(RFEngageable *)self preview_list];
+          v16 = preview_list3;
+          preview_list4 = [(RFEngageable *)self preview_list];
           [(RFEngageable *)v6 preview_list];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = command_reference4;
+          v11 = [preview_list4 isEqual:v17];
 
-          v3 = v20;
+          command_reference4 = v20;
         }
 
         else
@@ -93,8 +93,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      command_reference5 = v21;
+      if (!command_reference3)
       {
         goto LABEL_18;
       }
@@ -110,20 +110,20 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if ([(RFEngageable *)self hasCommand_reference])
   {
-    v5 = [(RFEngageable *)self command_reference];
-    v6 = [v5 copy];
+    command_reference = [(RFEngageable *)self command_reference];
+    v6 = [command_reference copy];
     [v4 setCommand_reference:v6];
   }
 
   if ([(RFEngageable *)self hasPreview_list])
   {
-    v7 = [(RFEngageable *)self preview_list];
-    v8 = [v7 copy];
+    preview_list = [(RFEngageable *)self preview_list];
+    v8 = [preview_list copy];
     [v4 setPreview_list:v8];
   }
 
@@ -133,31 +133,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFEngageable alloc] initWithFacade:self];
-  v3 = [(_SFPBRFEngageable *)v2 jsonData];
+  jsonData = [(_SFPBRFEngageable *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFEngageable alloc] initWithFacade:self];
-  v3 = [(_SFPBRFEngageable *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFEngageable *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFEngageable alloc] initWithFacade:self];
-  v5 = [(_SFPBRFEngageable *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFEngageable *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFEngageable)initWithCoder:(id)a3
+- (RFEngageable)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFEngageable alloc] initWithData:v5];
   v7 = [(RFEngageable *)self initWithProtobuf:v6];
@@ -165,51 +165,51 @@ LABEL_20:
   return v7;
 }
 
-- (void)setPreview_list:(id)a3
+- (void)setPreview_list:(id)preview_list
 {
   *&self->_has |= 2u;
-  objc_storeStrong(&self->_preview_list, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_preview_list, preview_list);
+  preview_listCopy = preview_list;
   *&self->_has &= ~1u;
   command_reference = self->_command_reference;
   self->_command_reference = 0;
 }
 
-- (void)setCommand_reference:(id)a3
+- (void)setCommand_reference:(id)command_reference
 {
   *&self->_has |= 1u;
-  objc_storeStrong(&self->_command_reference, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_command_reference, command_reference);
+  command_referenceCopy = command_reference;
   *&self->_has &= ~2u;
   preview_list = self->_preview_list;
   self->_preview_list = 0;
 }
 
-- (RFEngageable)initWithProtobuf:(id)a3
+- (RFEngageable)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v16.receiver = self;
   v16.super_class = RFEngageable;
   v5 = [(RFEngageable *)&v16 init];
   if (v5)
   {
-    v6 = [v4 command_reference];
+    command_reference = [protobufCopy command_reference];
 
-    if (v6)
+    if (command_reference)
     {
       v7 = [SFCommandReference alloc];
-      v8 = [v4 command_reference];
-      v9 = [(SFCommandReference *)v7 initWithProtobuf:v8];
+      command_reference2 = [protobufCopy command_reference];
+      v9 = [(SFCommandReference *)v7 initWithProtobuf:command_reference2];
       [(RFEngageable *)v5 setCommand_reference:v9];
     }
 
-    v10 = [v4 preview_list];
+    preview_list = [protobufCopy preview_list];
 
-    if (v10)
+    if (preview_list)
     {
       v11 = [RFPreviewList alloc];
-      v12 = [v4 preview_list];
-      v13 = [(RFPreviewList *)v11 initWithProtobuf:v12];
+      preview_list2 = [protobufCopy preview_list];
+      v13 = [(RFPreviewList *)v11 initWithProtobuf:preview_list2];
       [(RFEngageable *)v5 setPreview_list:v13];
     }
 

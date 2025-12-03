@@ -1,15 +1,15 @@
 @interface DeveloperLinkView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC20ProductPageExtension17DeveloperLinkView)initWithCoder:(id)a3;
-- (void)didTapLink:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC20ProductPageExtension17DeveloperLinkView)initWithCoder:(id)coder;
+- (void)didTapLink:(id)link;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DeveloperLinkView
 
-- (_TtC20ProductPageExtension17DeveloperLinkView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension17DeveloperLinkView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension17DeveloperLinkView_tapHandler);
   *v3 = 0;
@@ -21,22 +21,22 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003143A0();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(DeveloperLinkView *)self measurementsWithFitting:self in:a3.width, a3.height];
+  [(DeveloperLinkView *)self measurementsWithFitting:self in:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_100314778();
   v8 = v7;
   v10 = v9;
@@ -54,12 +54,12 @@
   return result;
 }
 
-- (void)didTapLink:(id)a3
+- (void)didTapLink:(id)link
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension17DeveloperLinkView_tapHandler);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_10001CE50(v3);
     v3(v5);
 
@@ -67,11 +67,11 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1003151C4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1003151C4(change);
 }
 
 @end

@@ -3,20 +3,20 @@
 + (double)maxBorderColor;
 + (double)minBorderColor;
 + (double)vibrancyStrength;
-+ (id)reticleVibrancyForVibrancyConfiguration:(id)a3;
++ (id)reticleVibrancyForVibrancyConfiguration:(id)configuration;
 - (PREditingReticleView)init;
 - (void)_startActiveAnimation;
 - (void)_stopActiveAnimation;
-- (void)setActive:(BOOL)a3;
-- (void)setOutlineBorderCornerRadius:(double)a3;
+- (void)setActive:(BOOL)active;
+- (void)setOutlineBorderCornerRadius:(double)radius;
 @end
 
 @implementation PREditingReticleView
 
 + (double)borderColor
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PRReticleBorderColor"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PRReticleBorderColor"];
   v4 = v3;
   if (!v3)
   {
@@ -31,8 +31,8 @@
 
 + (double)minBorderColor
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PRReticleMinBorderColor"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PRReticleMinBorderColor"];
   v4 = v3;
   if (!v3)
   {
@@ -47,8 +47,8 @@
 
 + (double)maxBorderColor
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PRReticleMaxBorderColor"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PRReticleMaxBorderColor"];
   v4 = v3;
   if (!v3)
   {
@@ -63,8 +63,8 @@
 
 + (double)vibrancyStrength
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PRReticleVibrancyStrength"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PRReticleVibrancyStrength"];
   v4 = v3;
   if (!v3)
   {
@@ -77,15 +77,15 @@
   return v6;
 }
 
-+ (id)reticleVibrancyForVibrancyConfiguration:(id)a3
++ (id)reticleVibrancyForVibrancyConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = MEMORY[0x1E69DC888];
   +[PREditingReticleView vibrancyStrength];
   v6 = [v4 colorWithWhite:1.0 alpha:v5];
-  if (v3)
+  if (configurationCopy)
   {
-    v7 = [v3 copyWithEffectType:0 color:v6];
+    v7 = [configurationCopy copyWithEffectType:0 color:v6];
     v8 = [v7 copyWithGroupName:0];
   }
 
@@ -105,8 +105,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(PREditingReticleView *)v2 layer];
-    [v4 setAllowsGroupOpacity:0];
+    layer = [(PREditingReticleView *)v2 layer];
+    [layer setAllowsGroupOpacity:0];
 
     v5 = objc_alloc(MEMORY[0x1E69DD250]);
     [(PREditingReticleView *)v3 bounds];
@@ -115,29 +115,29 @@
     v3->_outlineBorderView = v6;
 
     [(UIView *)v3->_outlineBorderView setAutoresizingMask:18];
-    v8 = [(UIView *)v3->_outlineBorderView layer];
+    layer2 = [(UIView *)v3->_outlineBorderView layer];
     v9 = MEMORY[0x1E69DC888];
     +[PREditingReticleView borderColor];
     v10 = [v9 colorWithWhite:? alpha:?];
-    [v8 setBorderColor:{objc_msgSend(v10, "CGColor")}];
+    [layer2 setBorderColor:{objc_msgSend(v10, "CGColor")}];
 
-    v11 = [(UIView *)v3->_outlineBorderView layer];
-    [v11 setBorderWidth:3.0];
+    layer3 = [(UIView *)v3->_outlineBorderView layer];
+    [layer3 setBorderWidth:3.0];
 
-    v12 = [(UIView *)v3->_outlineBorderView layer];
-    v13 = [MEMORY[0x1E69DC938] currentDevice];
-    v14 = [v13 userInterfaceIdiom];
+    layer4 = [(UIView *)v3->_outlineBorderView layer];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v15 = 16.0;
-    if ((v14 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v15 = 20.0;
     }
 
-    [v12 setCornerRadius:v15];
+    [layer4 setCornerRadius:v15];
 
-    v16 = [(UIView *)v3->_outlineBorderView layer];
-    [v16 setCornerCurve:*MEMORY[0x1E69796E8]];
+    layer5 = [(UIView *)v3->_outlineBorderView layer];
+    [layer5 setCornerCurve:*MEMORY[0x1E69796E8]];
 
     [(PREditingReticleView *)v3 addSubview:v3->_outlineBorderView];
     [(PREditingReticleView *)v3 setAccessibilityIdentifier:@"posterboard-editing-reticle-view"];
@@ -146,12 +146,12 @@
   return v3;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
       [(PREditingReticleView *)self _startActiveAnimation];
     }
@@ -163,19 +163,19 @@
   }
 }
 
-- (void)setOutlineBorderCornerRadius:(double)a3
+- (void)setOutlineBorderCornerRadius:(double)radius
 {
-  if (self->_outlineBorderCornerRadius != a3)
+  if (self->_outlineBorderCornerRadius != radius)
   {
-    self->_outlineBorderCornerRadius = a3;
-    v4 = [(UIView *)self->_outlineBorderView layer];
-    [v4 setCornerRadius:a3];
+    self->_outlineBorderCornerRadius = radius;
+    layer = [(UIView *)self->_outlineBorderView layer];
+    [layer setCornerRadius:radius];
   }
 }
 
 - (void)_startActiveAnimation
 {
-  v23 = [(PREditingReticleView *)self outlineBorderView];
+  outlineBorderView = [(PREditingReticleView *)self outlineBorderView];
   v2 = MEMORY[0x1E69DC888];
   +[PREditingReticleView minBorderColor];
   v3 = [v2 colorWithWhite:? alpha:?];
@@ -187,8 +187,8 @@
   maximum = v25.maximum;
   preferred = v25.preferred;
   v9 = [MEMORY[0x1E6979318] animationWithKeyPath:@"borderColor"];
-  v10 = [v23 layer];
-  [v9 setFromValue:{objc_msgSend(v10, "borderColor")}];
+  layer = [outlineBorderView layer];
+  [v9 setFromValue:{objc_msgSend(layer, "borderColor")}];
 
   [v9 setToValue:{objc_msgSend(v3, "CGColor")}];
   [v9 setDuration:0.5];
@@ -198,8 +198,8 @@
   *&v13 = maximum;
   *&v14 = preferred;
   [v9 setPreferredFrameRateRange:{v12, v13, v14}];
-  v15 = [v23 layer];
-  [v15 addAnimation:v9 forKey:@"pre-active animation"];
+  layer2 = [outlineBorderView layer];
+  [layer2 addAnimation:v9 forKey:@"pre-active animation"];
 
   v16 = [MEMORY[0x1E6979318] animationWithKeyPath:@"borderColor"];
   [v16 setFromValue:{objc_msgSend(v3, "CGColor")}];
@@ -217,27 +217,27 @@
   v21 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
   [v16 setTimingFunction:v21];
 
-  v22 = [v23 layer];
-  [v22 addAnimation:v16 forKey:@"active animation"];
+  layer3 = [outlineBorderView layer];
+  [layer3 addAnimation:v16 forKey:@"active animation"];
 }
 
 - (void)_stopActiveAnimation
 {
-  v12 = [(PREditingReticleView *)self outlineBorderView];
-  v2 = [v12 layer];
-  v3 = [v2 presentationLayer];
-  v4 = v3;
-  if (v3)
+  outlineBorderView = [(PREditingReticleView *)self outlineBorderView];
+  layer = [outlineBorderView layer];
+  presentationLayer = [layer presentationLayer];
+  v4 = presentationLayer;
+  if (presentationLayer)
   {
-    v5 = v3;
+    layer2 = presentationLayer;
   }
 
   else
   {
-    v5 = [v12 layer];
+    layer2 = [outlineBorderView layer];
   }
 
-  v6 = v5;
+  v6 = layer2;
 
   v7 = [MEMORY[0x1E6979318] animationWithKeyPath:@"borderColor"];
   [v7 setFromValue:{objc_msgSend(v6, "borderColor")}];
@@ -255,8 +255,8 @@
   [v7 setDuration:v10];
   v14 = CAFrameRateRangeMake(20.0, 30.0, 24.0);
   [v7 setPreferredFrameRateRange:{*&v14.minimum, *&v14.maximum, *&v14.preferred}];
-  v11 = [v12 layer];
-  [v11 addAnimation:v7 forKey:@"active animation"];
+  layer3 = [outlineBorderView layer];
+  [layer3 addAnimation:v7 forKey:@"active animation"];
 }
 
 @end

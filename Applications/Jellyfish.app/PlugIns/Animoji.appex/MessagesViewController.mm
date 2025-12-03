@@ -5,126 +5,126 @@
 - (BOOL)isLandscapeMode;
 - (BOOL)presentsLaunchScreenInFullScreenModal;
 - (BOOL)requestsExpandedOnLaunchScreenDismissal;
-- (BOOL)shouldPerformSegueWithIdentifier:(id)a3 sender:(id)a4;
+- (BOOL)shouldPerformSegueWithIdentifier:(id)identifier sender:(id)sender;
 - (BOOL)shouldPresentPaddleView;
 - (BOOL)shouldShowDisclosureAlertForSendingMessage;
 - (BOOL)shouldShowLaunchScreen;
 - (BOOL)shouldZoomWhileRecording;
 - (CGSize)defaultVideoExportDimensions;
-- (MessagesViewController)initWithCoder:(id)a3;
+- (MessagesViewController)initWithCoder:(id)coder;
 - (UIEdgeInsets)accessoryButtonContentInsets;
-- (UIEdgeInsets)contentInsetForPuppetCollectionViewController:(id)a3;
+- (UIEdgeInsets)contentInsetForPuppetCollectionViewController:(id)controller;
 - (double)carouselHeight;
 - (double)edgeMargin;
-- (double)horizontalCellSpacingForPuppetCollectionViewController:(id)a3;
-- (double)verticalCellSpacingForPuppetCollectionViewController:(id)a3;
+- (double)horizontalCellSpacingForPuppetCollectionViewController:(id)controller;
+- (double)verticalCellSpacingForPuppetCollectionViewController:(id)controller;
 - (double)widthScaleFactor;
-- (id)defaultExportVideoOptionsForSize:(CGSize)a3;
+- (id)defaultExportVideoOptionsForSize:(CGSize)size;
 - (id)faceTrackingRecordingURL;
-- (id)puppetSnapshotWithContentMode:(int64_t)a3;
+- (id)puppetSnapshotWithContentMode:(int64_t)mode;
 - (id)retargetableSpringBehavior;
-- (id)setRestorableValue:(id)a3 forKeyPath:(id)a4 onViews:(id)a5;
-- (id)stickerImageUsingLargeSticker:(BOOL)a3;
-- (id)stickerUsingLargeSticker:(BOOL)a3;
+- (id)setRestorableValue:(id)value forKeyPath:(id)path onViews:(id)views;
+- (id)stickerImageUsingLargeSticker:(BOOL)sticker;
+- (id)stickerUsingLargeSticker:(BOOL)sticker;
 - (id)trackingLostReason;
 - (int)widthExtent;
 - (int64_t)puppetsPerRow;
 - (unint64_t)actualPresentationStyle;
 - (unint64_t)presentationStyle;
-- (void)_launchTapToRadarWithAttachments:(id)a3;
+- (void)_launchTapToRadarWithAttachments:(id)attachments;
 - (void)addInternalARSessionObserverIfNecessary;
 - (void)addPuppetCollectionViewControllerInNecessary;
 - (void)afterExportMovie;
 - (void)beforeExportMovie;
 - (void)beginObservingFaceTrackingIfNecessary;
 - (void)captureSnapshotMetricsIfNeeded;
-- (void)carouselController:(id)a3 didFocusOnRecordView:(id)a4;
-- (void)carouselController:(id)a3 didMoveTowardRecord:(id)a4 withFactor:(double)a5;
-- (void)carouselController:(id)a3 didUpdateWithRecord:(id)a4;
-- (void)carouselController:(id)a3 willEndFocusOnRecordView:(id)a4;
+- (void)carouselController:(id)controller didFocusOnRecordView:(id)view;
+- (void)carouselController:(id)controller didMoveTowardRecord:(id)record withFactor:(double)factor;
+- (void)carouselController:(id)controller didUpdateWithRecord:(id)record;
+- (void)carouselController:(id)controller willEndFocusOnRecordView:(id)view;
 - (void)changeUserInfoLabelForTrackingState;
 - (void)checkLightingAndObscuredSensorAfterTrackingLost;
 - (void)checkLightingAndObscuredSensorWhileTracking;
 - (void)cleanUpOnExit;
-- (void)conditionallyPerformWithDisclosureAlertForSendingMessageWithConfirmTitle:(id)a3 result:(id)a4;
+- (void)conditionallyPerformWithDisclosureAlertForSendingMessageWithConfirmTitle:(id)title result:(id)result;
 - (void)dealloc;
-- (void)didBecomeActiveWithConversation:(id)a3;
+- (void)didBecomeActiveWithConversation:(id)conversation;
 - (void)didReceiveMemoryWarning;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
 - (void)disableIdleTimer;
 - (void)discardRecording;
-- (void)dismissAvatarUIControllerAnimated:(BOOL)a3;
-- (void)dismissLaunchScreenIfNecessaryForPresentationStyle:(unint64_t)a3 controller:(id)a4;
+- (void)dismissAvatarUIControllerAnimated:(BOOL)animated;
+- (void)dismissLaunchScreenIfNecessaryForPresentationStyle:(unint64_t)style controller:(id)controller;
 - (void)dismissPaddleViewIfNecessary;
 - (void)endObservingFaceTrackingIfNecessary;
-- (void)exportVideoWithCompletion:(id)a3;
-- (void)fadeIn:(id)a3;
-- (void)fadeOut:(id)a3;
+- (void)exportVideoWithCompletion:(id)completion;
+- (void)fadeIn:(id)in;
+- (void)fadeOut:(id)out;
 - (void)handleInterruptionEnded;
-- (void)handleRecordingButtonTouchUp:(id)a3;
-- (void)handleResumeTrackingTap:(id)a3;
-- (void)handleSceneLongPress:(id)a3;
-- (void)handleSceneShortPress:(id)a3;
-- (void)hideUserInfoLabelWithDuration:(double)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
-- (void)interfaceObscuredByOverlayOrPresentationChanged:(BOOL)a3;
+- (void)handleRecordingButtonTouchUp:(id)up;
+- (void)handleResumeTrackingTap:(id)tap;
+- (void)handleSceneLongPress:(id)press;
+- (void)handleSceneShortPress:(id)press;
+- (void)hideUserInfoLabelWithDuration:(double)duration;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
+- (void)interfaceObscuredByOverlayOrPresentationChanged:(BOOL)changed;
 - (void)launchTapToRadar;
-- (void)launchViewControllerDidCancel:(id)a3;
-- (void)launchViewControllerDidConfirm:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)onCancelSendingMessage:(id)a3;
-- (void)onConfirmSendingMessage:(id)a3;
-- (void)onEditAvatar:(id)a3;
-- (void)onReplayMessage:(id)a3;
-- (void)onTapToRadarButtonPressed:(id)a3;
-- (void)overlayPresentationNotification:(id)a3;
-- (void)overrideUserInfoLabelStateWithText:(id)a3 alpha:(double)a4;
-- (void)paddleViewTapped:(id)a3;
-- (void)pauseFaceTrackingWithReason:(id)a3;
-- (void)performWhileOverridingPresentationStyle:(unint64_t)a3 block:(id)a4;
-- (void)performWithFadeAnimation:(id)a3 enabled:(BOOL)a4;
+- (void)launchViewControllerDidCancel:(id)cancel;
+- (void)launchViewControllerDidConfirm:(id)confirm;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)onCancelSendingMessage:(id)message;
+- (void)onConfirmSendingMessage:(id)message;
+- (void)onEditAvatar:(id)avatar;
+- (void)onReplayMessage:(id)message;
+- (void)onTapToRadarButtonPressed:(id)pressed;
+- (void)overlayPresentationNotification:(id)notification;
+- (void)overrideUserInfoLabelStateWithText:(id)text alpha:(double)alpha;
+- (void)paddleViewTapped:(id)tapped;
+- (void)pauseFaceTrackingWithReason:(id)reason;
+- (void)performWhileOverridingPresentationStyle:(unint64_t)style block:(id)block;
+- (void)performWithFadeAnimation:(id)animation enabled:(BOOL)enabled;
 - (void)playPreviewOnce;
-- (void)prepareForSegue:(id)a3 sender:(id)a4;
+- (void)prepareForSegue:(id)segue sender:(id)sender;
 - (void)preparePuppetViewForReuse;
-- (void)presentAvatarUIController:(id)a3 animated:(BOOL)a4;
+- (void)presentAvatarUIController:(id)controller animated:(BOOL)animated;
 - (void)presentPaddleView;
-- (void)puppetCollectionViewController:(id)a3 didSelectPuppetRecord:(id)a4;
-- (void)recordView:(id)a3 previewDidChangeStatus:(int64_t)a4;
-- (void)recordView:(id)a3 session:(id)a4 didFailWithError:(id)a5;
-- (void)recordView:(id)a3 sessionInterruptionEnded:(id)a4;
-- (void)recordView:(id)a3 sessionWasInterrupted:(id)a4;
-- (void)recordingButton:(id)a3 didEndLongPress:(BOOL)a4;
-- (void)recordingButtonDidStartLongPress:(id)a3;
-- (void)recordingDidFinish:(BOOL)a3;
+- (void)puppetCollectionViewController:(id)controller didSelectPuppetRecord:(id)record;
+- (void)recordView:(id)view previewDidChangeStatus:(int64_t)status;
+- (void)recordView:(id)view session:(id)session didFailWithError:(id)error;
+- (void)recordView:(id)view sessionInterruptionEnded:(id)ended;
+- (void)recordView:(id)view sessionWasInterrupted:(id)interrupted;
+- (void)recordingButton:(id)button didEndLongPress:(BOOL)press;
+- (void)recordingButtonDidStartLongPress:(id)press;
+- (void)recordingDidFinish:(BOOL)finish;
 - (void)recordingWillStart;
 - (void)removeInternalARSessionObserverIfNecessary;
 - (void)removePuppetCollectionViewControllerIfNecessary;
-- (void)requestPresentationStyle:(unint64_t)a3;
+- (void)requestPresentationStyle:(unint64_t)style;
 - (void)restoreIdleTimer;
 - (void)resumeFaceTrackingIfNecessary;
 - (void)sendVideoMessage;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
-- (void)setAllowsCreate:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSingleAvatarMode:(BOOL)a3 animated:(BOOL)a4;
-- (void)showAlertForDisclosureWarningWithConfirmTitle:(id)a3 completionBlock:(id)a4;
+- (void)session:(id)session didChangeState:(unint64_t)state;
+- (void)setAllowsCreate:(BOOL)create animated:(BOOL)animated;
+- (void)setSingleAvatarMode:(BOOL)mode animated:(BOOL)animated;
+- (void)showAlertForDisclosureWarningWithConfirmTitle:(id)title completionBlock:(id)block;
 - (void)showFileRadarWarningPopup;
-- (void)showUserInfoLabelWithText:(id)a3;
-- (void)snapshottingEnabledChangedNotification:(id)a3;
+- (void)showUserInfoLabelWithText:(id)text;
+- (void)snapshottingEnabledChangedNotification:(id)notification;
 - (void)startObservingBaseMessagesNotifications;
 - (void)startTrackingLostTimer;
-- (void)startTrackingStartTimerWithCounter:(unint64_t)a3;
+- (void)startTrackingStartTimerWithCounter:(unint64_t)counter;
 - (void)stopObservingBaseMessagesNotifications;
-- (void)stopOverridingUserInfoLabelState:(BOOL)a3;
+- (void)stopOverridingUserInfoLabelState:(BOOL)state;
 - (void)stopPreviewing;
-- (void)stopRecordingAndPlayPreview:(BOOL)a3;
-- (void)strongPopupPresentationNotification:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)stopRecordingAndPlayPreview:(BOOL)preview;
+- (void)strongPopupPresentationNotification:(id)notification;
+- (void)traitCollectionDidChange:(id)change;
 - (void)upateReplayButtonImageForContentSize;
-- (void)updateARSessionStateResettingState:(BOOL)a3;
+- (void)updateARSessionStateResettingState:(BOOL)state;
 - (void)updateButtonsImages;
 - (void)updateConstraintConstants;
-- (void)updateEditButtonVisibilityForceHide:(BOOL)a3;
+- (void)updateEditButtonVisibilityForceHide:(BOOL)hide;
 - (void)updateForNewPuppetView;
 - (void)updateLayoutForPresentationStyle;
 - (void)updatePaddleViewLayoutIfNecessary;
@@ -132,27 +132,27 @@
 - (void)updatePuppetCollectionViewWithCurrentFocusedRecordIfNecessary;
 - (void)updateRecording;
 - (void)updateRecordingTime;
-- (void)updateSnapshotWithCompletionBlock:(id)a3;
-- (void)updateTapToRadarVisibilityForceHide:(BOOL)a3;
-- (void)updateUIState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateSnapshotWithCompletionBlock:(id)block;
+- (void)updateTapToRadarVisibilityForceHide:(BOOL)hide;
+- (void)updateUIState:(unint64_t)state animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willBecomeActiveWithConversation:(id)a3;
-- (void)willResignActiveWithConversation:(id)a3;
-- (void)willTransitionToPresentationStyle:(unint64_t)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willBecomeActiveWithConversation:(id)conversation;
+- (void)willResignActiveWithConversation:(id)conversation;
+- (void)willTransitionToPresentationStyle:(unint64_t)style;
 @end
 
 @implementation MessagesViewController
 
-- (MessagesViewController)initWithCoder:(id)a3
+- (MessagesViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = +[AVAudioSession sharedInstance];
   [v5 setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:0 error:0];
   v11 = 0;
@@ -160,15 +160,15 @@
   v6 = v11;
   if (v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v6 localizedDescription];
+    localizedDescription = [v6 localizedDescription];
     *buf = 138412290;
-    v13 = v7;
+    v13 = localizedDescription;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] %@", buf, 0xCu);
   }
 
   v10.receiver = self;
   v10.super_class = MessagesViewController;
-  v8 = [(MessagesViewController *)&v10 initWithCoder:v4];
+  v8 = [(MessagesViewController *)&v10 initWithCoder:coderCopy];
 
   return v8;
 }
@@ -189,8 +189,8 @@
     kdebug_trace();
     self->_hasLoadedBefore = 1;
     v3 = +[AVTUIColorRepository appBackgroundColor];
-    v4 = [(MessagesViewController *)self view];
-    [v4 setBackgroundColor:v3];
+    view = [(MessagesViewController *)self view];
+    [view setBackgroundColor:v3];
 
     v5 = +[NSUserDefaults standardUserDefaults];
     v6 = [v5 objectForKey:@"LastPuppetIdentifier"];
@@ -216,8 +216,8 @@
     self->_usageTrackingSession = v11;
 
     v13 = self->_usageTrackingSession;
-    v14 = [(AVTAvatarRecordDataSource *)self->_avatarDataSource recordStore];
-    [(AVTUsageTrackingSession *)v13 beginWithStore:v14];
+    recordStore = [(AVTAvatarRecordDataSource *)self->_avatarDataSource recordStore];
+    [(AVTUsageTrackingSession *)v13 beginWithStore:recordStore];
 
     v15 = objc_alloc_init(AVTAvatarRecordImageProvider);
     imageProvider = self->_imageProvider;
@@ -253,10 +253,10 @@
 
     [(UIView *)self->_carouselView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_carouselView setClipsToBounds:1];
-    v21 = [(MessagesViewController *)self view];
+    view2 = [(MessagesViewController *)self view];
     v22 = self->_carouselView;
     WeakRetained = objc_loadWeakRetained(&self->_puppetCollectionViewContainer);
-    [v21 insertSubview:v22 belowSubview:WeakRetained];
+    [view2 insertSubview:v22 belowSubview:WeakRetained];
 
     *buf = 0;
     v242 = buf;
@@ -286,15 +286,15 @@
 
     [obj setTranslatesAutoresizingMaskIntoConstraints:0];
     [obj addTarget:self action:"onCancelSendingMessage:" forControlEvents:64];
-    v30 = [(MessagesViewController *)self view];
-    [v30 addSubview:obj];
+    view3 = [(MessagesViewController *)self view];
+    [view3 addSubview:obj];
 
     objc_storeStrong(&self->_cancelSendingMessageButton, obj);
     v231 = [[AVTCircularButton alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v231 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v231 addTarget:self action:"onEditAvatar:" forControlEvents:64];
-    v31 = [(MessagesViewController *)self view];
-    [v31 addSubview:v231];
+    view4 = [(MessagesViewController *)self view];
+    [view4 addSubview:v231];
 
     objc_storeStrong(&self->_editButton, v231);
     [(MessagesViewController *)self updateButtonsImages];
@@ -305,38 +305,38 @@
     [v234 setTitle:v33 forState:0];
 
     [v234 addTarget:self action:"onReplayMessage:" forControlEvents:64];
-    v34 = [(MessagesViewController *)self view];
-    v35 = [v34 tintColor];
-    [v234 setTintColor:v35];
+    view5 = [(MessagesViewController *)self view];
+    tintColor = [view5 tintColor];
+    [v234 setTintColor:tintColor];
 
-    v36 = [(MessagesViewController *)self view];
-    [v36 insertSubview:v234 aboveSubview:*(v242 + 5)];
+    view6 = [(MessagesViewController *)self view];
+    [view6 insertSubview:v234 aboveSubview:*(v242 + 5)];
 
     objc_storeStrong(&self->_replayMessageButton, v234);
     [(MessagesViewController *)self upateReplayButtonImageForContentSize];
     v37 = [[AVTUserInfoView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v37 setAlpha:0.0];
-    v38 = [(MessagesViewController *)self view];
-    [v38 addSubview:v37];
+    view7 = [(MessagesViewController *)self view];
+    [view7 addSubview:v37];
     v199 = v37;
 
     objc_storeStrong(&self->_userInfoView, v37);
-    v39 = [[RecordingTimeDisplayView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    [(RecordingTimeDisplayView *)v39 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(RecordingTimeDisplayView *)v39 setAlpha:0.0];
-    v40 = [(MessagesViewController *)self view];
-    [v40 insertSubview:v39 aboveSubview:*(v242 + 5)];
-    v198 = v39;
+    height = [[RecordingTimeDisplayView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    [(RecordingTimeDisplayView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(RecordingTimeDisplayView *)height setAlpha:0.0];
+    view8 = [(MessagesViewController *)self view];
+    [view8 insertSubview:height aboveSubview:*(v242 + 5)];
+    v198 = height;
 
-    objc_storeStrong(&self->_recordingTimeDisplayView, v39);
+    objc_storeStrong(&self->_recordingTimeDisplayView, height);
     v226 = objc_alloc_init(UIView);
     [v226 setTranslatesAutoresizingMaskIntoConstraints:0];
     v41 = +[UIColor clearColor];
     [v226 setBackgroundColor:v41];
 
-    v42 = [(MessagesViewController *)self view];
-    [v42 insertSubview:v226 aboveSubview:*(v242 + 5)];
+    view9 = [(MessagesViewController *)self view];
+    [view9 insertSubview:v226 aboveSubview:*(v242 + 5)];
 
     objc_storeStrong(&self->_recordingButtonSuperview, v226);
     v232 = objc_alloc_init(AVTRecordingButton);
@@ -353,8 +353,8 @@
     [v230 setImage:v44 forState:0];
 
     [v230 addTarget:self action:"onTapToRadarButtonPressed:" forControlEvents:64];
-    v45 = [(MessagesViewController *)self view];
-    [v45 insertSubview:v230 aboveSubview:*(v242 + 5)];
+    view10 = [(MessagesViewController *)self view];
+    [view10 insertSubview:v230 aboveSubview:*(v242 + 5)];
 
     objc_storeStrong(&self->_tapToRadar, v230);
     v46 = +[NSFileManager defaultManager];
@@ -368,153 +368,153 @@
     [v49 createDirectoryAtURL:self->_stickerFolder withIntermediateDirectories:1 attributes:0 error:0];
 
     v50 = +[NSFileManager defaultManager];
-    v51 = [v50 temporaryDirectory];
+    temporaryDirectory = [v50 temporaryDirectory];
     videoLoggingFolder = self->_videoLoggingFolder;
-    self->_videoLoggingFolder = v51;
+    self->_videoLoggingFolder = temporaryDirectory;
 
-    v53 = [(UIView *)self->_carouselView heightAnchor];
-    v54 = [v53 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIView *)self->_carouselView heightAnchor];
+    v54 = [heightAnchor constraintEqualToConstant:0.0];
     carouselHeightConstraint = self->_carouselHeightConstraint;
     self->_carouselHeightConstraint = v54;
 
     v257[0] = self->_carouselHeightConstraint;
-    v213 = [(UIView *)self->_carouselView widthAnchor];
-    v221 = [(MessagesViewController *)self view];
-    v217 = [v221 safeAreaLayoutGuide];
-    v209 = [v217 widthAnchor];
-    v206 = [v213 constraintEqualToAnchor:v209];
+    widthAnchor = [(UIView *)self->_carouselView widthAnchor];
+    view11 = [(MessagesViewController *)self view];
+    safeAreaLayoutGuide = [view11 safeAreaLayoutGuide];
+    widthAnchor2 = [safeAreaLayoutGuide widthAnchor];
+    v206 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v257[1] = v206;
-    v200 = [(UIView *)self->_carouselView centerXAnchor];
-    v203 = [(MessagesViewController *)self view];
-    v56 = [v203 safeAreaLayoutGuide];
-    v57 = [v56 centerXAnchor];
-    v58 = [v200 constraintEqualToAnchor:v57];
+    centerXAnchor = [(UIView *)self->_carouselView centerXAnchor];
+    view12 = [(MessagesViewController *)self view];
+    safeAreaLayoutGuide2 = [view12 safeAreaLayoutGuide];
+    centerXAnchor2 = [safeAreaLayoutGuide2 centerXAnchor];
+    v58 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v257[2] = v58;
-    v59 = [(UIView *)self->_carouselView topAnchor];
-    v60 = [(MessagesViewController *)self view];
-    v61 = [v60 safeAreaLayoutGuide];
-    v62 = [v61 topAnchor];
-    v63 = [v59 constraintEqualToAnchor:v62];
+    topAnchor = [(UIView *)self->_carouselView topAnchor];
+    view13 = [(MessagesViewController *)self view];
+    safeAreaLayoutGuide3 = [view13 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+    v63 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v257[3] = v63;
     v64 = [NSArray arrayWithObjects:v257 count:4];
     [NSLayoutConstraint activateConstraints:v64];
 
-    v222 = [*(v242 + 5) widthAnchor];
-    v218 = [(UIView *)self->_carouselView widthAnchor];
-    v214 = [v222 constraintEqualToAnchor:v218 constant:0.0];
+    widthAnchor3 = [*(v242 + 5) widthAnchor];
+    widthAnchor4 = [(UIView *)self->_carouselView widthAnchor];
+    v214 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 constant:0.0];
     v256[0] = v214;
-    v210 = [*(v242 + 5) heightAnchor];
-    v65 = [(UIView *)self->_carouselView heightAnchor];
-    v66 = [v210 constraintEqualToAnchor:v65 constant:0.0];
+    heightAnchor2 = [*(v242 + 5) heightAnchor];
+    heightAnchor3 = [(UIView *)self->_carouselView heightAnchor];
+    v66 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3 constant:0.0];
     v256[1] = v66;
-    v67 = [*(v242 + 5) centerXAnchor];
-    v68 = [(UIView *)self->_carouselView centerXAnchor];
-    v69 = [v67 constraintEqualToAnchor:v68];
+    centerXAnchor3 = [*(v242 + 5) centerXAnchor];
+    centerXAnchor4 = [(UIView *)self->_carouselView centerXAnchor];
+    v69 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v256[2] = v69;
-    v70 = [*(v242 + 5) centerYAnchor];
-    v71 = [(UIView *)self->_carouselView centerYAnchor];
-    v72 = [v70 constraintEqualToAnchor:v71];
+    centerYAnchor = [*(v242 + 5) centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_carouselView centerYAnchor];
+    v72 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v256[3] = v72;
     v73 = [NSArray arrayWithObjects:v256 count:4];
     [NSLayoutConstraint activateConstraints:v73];
 
     v223 = objc_loadWeakRetained(&self->_puppetCollectionViewContainer);
-    v219 = [v223 topAnchor];
-    v215 = [*(v242 + 5) bottomAnchor];
-    v211 = [v219 constraintEqualToAnchor:v215 constant:0.0];
+    topAnchor3 = [v223 topAnchor];
+    bottomAnchor = [*(v242 + 5) bottomAnchor];
+    v211 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:0.0];
     v255[0] = v211;
     v207 = objc_loadWeakRetained(&self->_puppetCollectionViewContainer);
-    v196 = [v207 widthAnchor];
-    v204 = [(MessagesViewController *)self view];
-    v201 = [v204 safeAreaLayoutGuide];
-    v195 = [v201 widthAnchor];
-    v194 = [v196 constraintEqualToAnchor:v195];
+    widthAnchor5 = [v207 widthAnchor];
+    view14 = [(MessagesViewController *)self view];
+    safeAreaLayoutGuide4 = [view14 safeAreaLayoutGuide];
+    widthAnchor6 = [safeAreaLayoutGuide4 widthAnchor];
+    v194 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
     v255[1] = v194;
     v193 = objc_loadWeakRetained(&self->_puppetCollectionViewContainer);
-    v191 = [v193 bottomAnchor];
-    v192 = [(MessagesViewController *)self view];
-    v74 = [v192 bottomAnchor];
-    v75 = [v191 constraintEqualToAnchor:v74];
+    bottomAnchor2 = [v193 bottomAnchor];
+    view15 = [(MessagesViewController *)self view];
+    bottomAnchor3 = [view15 bottomAnchor];
+    v75 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v255[2] = v75;
     v76 = objc_loadWeakRetained(&self->_puppetCollectionViewContainer);
-    v77 = [v76 centerXAnchor];
-    v78 = [(MessagesViewController *)self view];
-    v79 = [v78 safeAreaLayoutGuide];
-    v80 = [v79 centerXAnchor];
-    v81 = [v77 constraintEqualToAnchor:v80];
+    centerXAnchor5 = [v76 centerXAnchor];
+    view16 = [(MessagesViewController *)self view];
+    safeAreaLayoutGuide5 = [view16 safeAreaLayoutGuide];
+    centerXAnchor6 = [safeAreaLayoutGuide5 centerXAnchor];
+    v81 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v255[3] = v81;
     v82 = [NSArray arrayWithObjects:v255 count:4];
     [NSLayoutConstraint activateConstraints:v82];
 
-    v83 = [(AVTUserInfoView *)self->_userInfoView widthAnchor];
-    v84 = [(MessagesViewController *)self view];
-    v85 = [v84 safeAreaLayoutGuide];
-    v86 = [v85 widthAnchor];
-    v87 = [v83 constraintLessThanOrEqualToAnchor:v86 constant:0.0];
+    widthAnchor7 = [(AVTUserInfoView *)self->_userInfoView widthAnchor];
+    view17 = [(MessagesViewController *)self view];
+    safeAreaLayoutGuide6 = [view17 safeAreaLayoutGuide];
+    widthAnchor8 = [safeAreaLayoutGuide6 widthAnchor];
+    v87 = [widthAnchor7 constraintLessThanOrEqualToAnchor:widthAnchor8 constant:0.0];
     userInfoMaximumWidthConstraint = self->_userInfoMaximumWidthConstraint;
     self->_userInfoMaximumWidthConstraint = v87;
 
-    v216 = [(AVTUserInfoView *)self->_userInfoView centerXAnchor];
-    v227 = [(MessagesViewController *)self view];
-    v224 = [v227 safeAreaLayoutGuide];
-    v220 = [v224 centerXAnchor];
-    v212 = [v216 constraintEqualToAnchor:v220];
+    centerXAnchor7 = [(AVTUserInfoView *)self->_userInfoView centerXAnchor];
+    view18 = [(MessagesViewController *)self view];
+    safeAreaLayoutGuide7 = [view18 safeAreaLayoutGuide];
+    centerXAnchor8 = [safeAreaLayoutGuide7 centerXAnchor];
+    v212 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     v254[0] = v212;
-    v208 = [(AVTUserInfoView *)self->_userInfoView centerYAnchor];
-    v205 = [(UIView *)self->_recordingButtonSuperview centerYAnchor];
-    v202 = [v208 constraintEqualToAnchor:v205];
+    centerYAnchor3 = [(AVTUserInfoView *)self->_userInfoView centerYAnchor];
+    centerYAnchor4 = [(UIView *)self->_recordingButtonSuperview centerYAnchor];
+    v202 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v89 = self->_userInfoMaximumWidthConstraint;
     v254[1] = v202;
     v254[2] = v89;
-    v197 = [(AVTUserInfoView *)self->_userInfoView leadingAnchor];
-    v90 = [(AVTCircularButton *)self->_editButton trailingAnchor];
-    v91 = [v197 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v90 multiplier:1.0];
+    leadingAnchor = [(AVTUserInfoView *)self->_userInfoView leadingAnchor];
+    trailingAnchor = [(AVTCircularButton *)self->_editButton trailingAnchor];
+    v91 = [leadingAnchor constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
     v254[3] = v91;
-    v92 = [(AVTUserInfoView *)self->_userInfoView leadingAnchor];
-    v93 = [(AVTCircularButton *)self->_cancelSendingMessageButton trailingAnchor];
-    v94 = [v92 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v93 multiplier:1.0];
+    leadingAnchor2 = [(AVTUserInfoView *)self->_userInfoView leadingAnchor];
+    trailingAnchor2 = [(AVTCircularButton *)self->_cancelSendingMessageButton trailingAnchor];
+    v94 = [leadingAnchor2 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:1.0];
     v254[4] = v94;
-    v95 = [(AVTUserInfoView *)self->_userInfoView trailingAnchor];
-    v96 = [(UIView *)self->_recordingButtonSuperview leadingAnchor];
-    v97 = [v95 constraintLessThanOrEqualToSystemSpacingAfterAnchor:v96 multiplier:1.0];
+    trailingAnchor3 = [(AVTUserInfoView *)self->_userInfoView trailingAnchor];
+    leadingAnchor3 = [(UIView *)self->_recordingButtonSuperview leadingAnchor];
+    v97 = [trailingAnchor3 constraintLessThanOrEqualToSystemSpacingAfterAnchor:leadingAnchor3 multiplier:1.0];
     v254[5] = v97;
     v98 = [NSArray arrayWithObjects:v254 count:6];
     [NSLayoutConstraint activateConstraints:v98];
 
-    v228 = [(UIButton *)self->_replayMessageButton leadingAnchor];
-    v229 = [(MessagesViewController *)self view];
-    v99 = [v229 safeAreaLayoutGuide];
-    v100 = [v99 leadingAnchor];
-    v101 = [v228 constraintEqualToAnchor:v100];
+    leadingAnchor4 = [(UIButton *)self->_replayMessageButton leadingAnchor];
+    view19 = [(MessagesViewController *)self view];
+    safeAreaLayoutGuide8 = [view19 safeAreaLayoutGuide];
+    leadingAnchor5 = [safeAreaLayoutGuide8 leadingAnchor];
+    v101 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v253[0] = v101;
-    v102 = [(UIButton *)self->_replayMessageButton topAnchor];
-    v103 = [(MessagesViewController *)self view];
-    v104 = [v103 safeAreaLayoutGuide];
-    v105 = [v104 topAnchor];
-    v106 = [v102 constraintEqualToAnchor:v105];
+    topAnchor4 = [(UIButton *)self->_replayMessageButton topAnchor];
+    view20 = [(MessagesViewController *)self view];
+    safeAreaLayoutGuide9 = [view20 safeAreaLayoutGuide];
+    topAnchor5 = [safeAreaLayoutGuide9 topAnchor];
+    v106 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v253[1] = v106;
     v107 = [NSArray arrayWithObjects:v253 count:2];
     [NSLayoutConstraint activateConstraints:v107];
 
-    v108 = [(RecordingTimeDisplayView *)self->_recordingTimeDisplayView leadingAnchor];
-    v109 = [(MessagesViewController *)self view];
-    v110 = [v109 safeAreaLayoutGuide];
-    v111 = [v110 leadingAnchor];
-    v112 = [v108 constraintEqualToAnchor:v111 constant:0.0];
+    leadingAnchor6 = [(RecordingTimeDisplayView *)self->_recordingTimeDisplayView leadingAnchor];
+    view21 = [(MessagesViewController *)self view];
+    safeAreaLayoutGuide10 = [view21 safeAreaLayoutGuide];
+    leadingAnchor7 = [safeAreaLayoutGuide10 leadingAnchor];
+    v112 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:0.0];
     recordingDisplayLeadingOffsetConstraint = self->_recordingDisplayLeadingOffsetConstraint;
     self->_recordingDisplayLeadingOffsetConstraint = v112;
 
     v252[0] = self->_recordingDisplayLeadingOffsetConstraint;
-    v114 = [(RecordingTimeDisplayView *)self->_recordingTimeDisplayView centerYAnchor];
-    v115 = [(UIButton *)self->_replayMessageButton centerYAnchor];
-    v116 = [v114 constraintEqualToAnchor:v115];
+    centerYAnchor5 = [(RecordingTimeDisplayView *)self->_recordingTimeDisplayView centerYAnchor];
+    centerYAnchor6 = [(UIButton *)self->_replayMessageButton centerYAnchor];
+    v116 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v252[1] = v116;
     v117 = [NSArray arrayWithObjects:v252 count:2];
     [NSLayoutConstraint activateConstraints:v117];
 
-    v118 = [(UIView *)self->_recordingButtonSuperview bottomAnchor];
-    v119 = [(UIView *)self->_carouselView bottomAnchor];
-    v120 = [v118 constraintEqualToAnchor:v119];
+    bottomAnchor4 = [(UIView *)self->_recordingButtonSuperview bottomAnchor];
+    bottomAnchor5 = [(UIView *)self->_carouselView bottomAnchor];
+    v120 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     recordButtonBottomConstraint = self->_recordButtonBottomConstraint;
     self->_recordButtonBottomConstraint = v120;
 
@@ -530,11 +530,11 @@
 
       if (!v124)
       {
-        v125 = [(UIView *)self->_recordingButtonSuperview trailingAnchor];
-        v126 = [(MessagesViewController *)self view];
-        v128 = [v126 safeAreaLayoutGuide];
-        v129 = [v128 trailingAnchor];
-        v130 = [v125 constraintEqualToAnchor:v129 constant:0.0];
+        trailingAnchor4 = [(UIView *)self->_recordingButtonSuperview trailingAnchor];
+        view22 = [(MessagesViewController *)self view];
+        safeAreaLayoutGuide11 = [view22 safeAreaLayoutGuide];
+        trailingAnchor5 = [safeAreaLayoutGuide11 trailingAnchor];
+        v130 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:0.0];
         recordButtonHorizontalConstraint = self->_recordButtonHorizontalConstraint;
         self->_recordButtonHorizontalConstraint = v130;
 
@@ -542,20 +542,20 @@
       }
     }
 
-    v125 = [(UIView *)self->_recordingButtonSuperview trailingAnchor];
-    v126 = [(UIView *)self->_carouselView trailingAnchor];
-    v127 = [v125 constraintEqualToAnchor:v126 constant:0.0];
-    v128 = self->_recordButtonHorizontalConstraint;
+    trailingAnchor4 = [(UIView *)self->_recordingButtonSuperview trailingAnchor];
+    view22 = [(UIView *)self->_carouselView trailingAnchor];
+    v127 = [trailingAnchor4 constraintEqualToAnchor:view22 constant:0.0];
+    safeAreaLayoutGuide11 = self->_recordButtonHorizontalConstraint;
     self->_recordButtonHorizontalConstraint = v127;
 LABEL_15:
 
-    v132 = [(UIView *)self->_recordingButtonSuperview widthAnchor];
-    v133 = [v132 constraintEqualToConstant:0.0];
+    widthAnchor9 = [(UIView *)self->_recordingButtonSuperview widthAnchor];
+    v133 = [widthAnchor9 constraintEqualToConstant:0.0];
     recordButtonWidthConstraint = self->_recordButtonWidthConstraint;
     self->_recordButtonWidthConstraint = v133;
 
-    v135 = [(UIView *)self->_recordingButtonSuperview heightAnchor];
-    v136 = [v135 constraintEqualToConstant:0.0];
+    heightAnchor4 = [(UIView *)self->_recordingButtonSuperview heightAnchor];
+    v136 = [heightAnchor4 constraintEqualToConstant:0.0];
     recordButtonHeightConstraint = self->_recordButtonHeightConstraint;
     self->_recordButtonHeightConstraint = v136;
 
@@ -569,20 +569,20 @@ LABEL_15:
     v141 = [NSArray arrayWithObjects:v251 count:4];
     [NSLayoutConstraint activateConstraints:v141];
 
-    v142 = [(AVTCircularButton *)self->_editButton widthAnchor];
-    v143 = [v142 constraintEqualToConstant:0.0];
+    widthAnchor10 = [(AVTCircularButton *)self->_editButton widthAnchor];
+    v143 = [widthAnchor10 constraintEqualToConstant:0.0];
     editButtonWidthConstraint = self->_editButtonWidthConstraint;
     self->_editButtonWidthConstraint = v143;
 
-    v145 = [(AVTCircularButton *)self->_editButton heightAnchor];
-    v146 = [v145 constraintEqualToConstant:0.0];
+    heightAnchor5 = [(AVTCircularButton *)self->_editButton heightAnchor];
+    v146 = [heightAnchor5 constraintEqualToConstant:0.0];
     editButtonHeightConstraint = self->_editButtonHeightConstraint;
     self->_editButtonHeightConstraint = v146;
 
-    v148 = [(AVTCircularButton *)self->_editButton leadingAnchor];
-    v149 = [(MessagesViewController *)self view];
-    v150 = [v149 leadingAnchor];
-    v151 = [v148 constraintEqualToAnchor:v150 constant:0.0];
+    leadingAnchor8 = [(AVTCircularButton *)self->_editButton leadingAnchor];
+    view23 = [(MessagesViewController *)self view];
+    leadingAnchor9 = [view23 leadingAnchor];
+    v151 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9 constant:0.0];
     editButtonLeadingOffsetConstraint = self->_editButtonLeadingOffsetConstraint;
     self->_editButtonLeadingOffsetConstraint = v151;
 
@@ -590,54 +590,54 @@ LABEL_15:
     v250[0] = self->_editButtonWidthConstraint;
     v250[1] = v153;
     v250[2] = self->_editButtonLeadingOffsetConstraint;
-    v154 = [(AVTCircularButton *)self->_editButton centerYAnchor];
-    v155 = [(UIView *)self->_recordingButtonSuperview centerYAnchor];
-    v156 = [v154 constraintEqualToAnchor:v155];
+    centerYAnchor7 = [(AVTCircularButton *)self->_editButton centerYAnchor];
+    centerYAnchor8 = [(UIView *)self->_recordingButtonSuperview centerYAnchor];
+    v156 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
     v250[3] = v156;
     v157 = [NSArray arrayWithObjects:v250 count:4];
     [NSLayoutConstraint activateConstraints:v157];
 
-    v158 = [(AVTCircularButton *)self->_cancelSendingMessageButton widthAnchor];
-    v159 = [v158 constraintEqualToConstant:0.0];
+    widthAnchor11 = [(AVTCircularButton *)self->_cancelSendingMessageButton widthAnchor];
+    v159 = [widthAnchor11 constraintEqualToConstant:0.0];
     cancelSendingButtonWidthConstraint = self->_cancelSendingButtonWidthConstraint;
     self->_cancelSendingButtonWidthConstraint = v159;
 
-    v161 = [(AVTCircularButton *)self->_cancelSendingMessageButton heightAnchor];
-    v162 = [v161 constraintEqualToConstant:0.0];
+    heightAnchor6 = [(AVTCircularButton *)self->_cancelSendingMessageButton heightAnchor];
+    v162 = [heightAnchor6 constraintEqualToConstant:0.0];
     cancelSendingButtonHeightConstraint = self->_cancelSendingButtonHeightConstraint;
     self->_cancelSendingButtonHeightConstraint = v162;
 
     v164 = self->_cancelSendingButtonHeightConstraint;
     v249[0] = self->_cancelSendingButtonWidthConstraint;
     v249[1] = v164;
-    v165 = [(AVTCircularButton *)self->_cancelSendingMessageButton leadingAnchor];
-    v166 = [(AVTCircularButton *)self->_editButton leadingAnchor];
-    v167 = [v165 constraintEqualToAnchor:v166];
+    leadingAnchor10 = [(AVTCircularButton *)self->_cancelSendingMessageButton leadingAnchor];
+    leadingAnchor11 = [(AVTCircularButton *)self->_editButton leadingAnchor];
+    v167 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
     v249[2] = v167;
-    v168 = [(AVTCircularButton *)self->_cancelSendingMessageButton topAnchor];
-    v169 = [v231 topAnchor];
-    v170 = [v168 constraintEqualToAnchor:v169];
+    topAnchor6 = [(AVTCircularButton *)self->_cancelSendingMessageButton topAnchor];
+    topAnchor7 = [v231 topAnchor];
+    v170 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
     v249[3] = v170;
     v171 = [NSArray arrayWithObjects:v249 count:4];
     [NSLayoutConstraint activateConstraints:v171];
 
-    v172 = [(UIButton *)self->_tapToRadar leadingAnchor];
-    v173 = [(MessagesViewController *)self view];
-    v174 = [v173 leadingAnchor];
-    v175 = [v172 constraintEqualToAnchor:v174 constant:0.0];
+    leadingAnchor12 = [(UIButton *)self->_tapToRadar leadingAnchor];
+    view24 = [(MessagesViewController *)self view];
+    leadingAnchor13 = [view24 leadingAnchor];
+    v175 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13 constant:0.0];
     tapToRadarLeadingOffsetConstraint = self->_tapToRadarLeadingOffsetConstraint;
     self->_tapToRadarLeadingOffsetConstraint = v175;
 
     v248[0] = self->_tapToRadarLeadingOffsetConstraint;
-    v177 = [(UIButton *)self->_tapToRadar topAnchor];
-    v178 = [(RecordingTimeDisplayView *)self->_recordingTimeDisplayView bottomAnchor];
-    v179 = [v177 constraintEqualToAnchor:v178 constant:20.0];
+    topAnchor8 = [(UIButton *)self->_tapToRadar topAnchor];
+    bottomAnchor6 = [(RecordingTimeDisplayView *)self->_recordingTimeDisplayView bottomAnchor];
+    v179 = [topAnchor8 constraintEqualToAnchor:bottomAnchor6 constant:20.0];
     v248[1] = v179;
-    v180 = [(UIButton *)self->_tapToRadar widthAnchor];
-    v181 = [v180 constraintEqualToConstant:32.0];
+    widthAnchor12 = [(UIButton *)self->_tapToRadar widthAnchor];
+    v181 = [widthAnchor12 constraintEqualToConstant:32.0];
     v248[2] = v181;
-    v182 = [(UIButton *)self->_tapToRadar heightAnchor];
-    v183 = [v182 constraintEqualToConstant:32.0];
+    heightAnchor7 = [(UIButton *)self->_tapToRadar heightAnchor];
+    v183 = [heightAnchor7 constraintEqualToConstant:32.0];
     v248[3] = v183;
     v184 = [NSArray arrayWithObjects:v248 count:4];
     [NSLayoutConstraint activateConstraints:v184];
@@ -653,8 +653,8 @@ LABEL_15:
     self->_pendingLayoutUpdate = v185;
 
     [(MessagesViewController *)self updateConstraintConstants];
-    v187 = [(MessagesViewController *)self view];
-    [v187 setNeedsLayout];
+    view25 = [(MessagesViewController *)self view];
+    [view25 setNeedsLayout];
 
     [(MessagesViewController *)self updateUIState:0 animated:0];
     v188 = +[NSNotificationCenter defaultCenter];
@@ -678,8 +678,8 @@ LABEL_15:
 - (double)edgeMargin
 {
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
-  if (v5 != 1)
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
+  if (userInterfaceIdiom != 1)
   {
     v2 = +[UIDevice currentDevice];
     if ([v2 userInterfaceIdiom] != 5)
@@ -691,8 +691,8 @@ LABEL_11:
     }
   }
 
-  v6 = [(MessagesViewController *)self view];
-  [v6 bounds];
+  view = [(MessagesViewController *)self view];
+  [view bounds];
   if (v7 <= 400.0)
   {
     v10 = 0;
@@ -700,12 +700,12 @@ LABEL_11:
 
   else
   {
-    v8 = [(MessagesViewController *)self view];
-    v9 = [v8 traitCollection];
-    v10 = [v9 horizontalSizeClass] == 2 || -[MessagesViewController presentationStyle](self, "presentationStyle") == 0;
+    view2 = [(MessagesViewController *)self view];
+    traitCollection = [view2 traitCollection];
+    v10 = [traitCollection horizontalSizeClass] == 2 || -[MessagesViewController presentationStyle](self, "presentationStyle") == 0;
   }
 
-  if (v5 != 1)
+  if (userInterfaceIdiom != 1)
   {
     goto LABEL_11;
   }
@@ -724,8 +724,8 @@ LABEL_12:
 - (UIEdgeInsets)accessoryButtonContentInsets
 {
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
-  if (v5 != 1)
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
+  if (userInterfaceIdiom != 1)
   {
     v2 = +[UIDevice currentDevice];
     if ([v2 userInterfaceIdiom] != 5)
@@ -737,8 +737,8 @@ LABEL_11:
     }
   }
 
-  v6 = [(MessagesViewController *)self view];
-  [v6 bounds];
+  view = [(MessagesViewController *)self view];
+  [view bounds];
   if (v7 <= 400.0)
   {
     v10 = 0;
@@ -746,12 +746,12 @@ LABEL_11:
 
   else
   {
-    v8 = [(MessagesViewController *)self view];
-    v9 = [v8 traitCollection];
-    v10 = [v9 horizontalSizeClass] == 2 || -[MessagesViewController presentationStyle](self, "presentationStyle") == 0;
+    view2 = [(MessagesViewController *)self view];
+    traitCollection = [view2 traitCollection];
+    v10 = [traitCollection horizontalSizeClass] == 2 || -[MessagesViewController presentationStyle](self, "presentationStyle") == 0;
   }
 
-  if (v5 != 1)
+  if (userInterfaceIdiom != 1)
   {
     goto LABEL_11;
   }
@@ -780,11 +780,11 @@ LABEL_12:
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = MessagesViewController;
-  [(MessagesViewController *)&v8 traitCollectionDidChange:a3];
+  [(MessagesViewController *)&v8 traitCollectionDidChange:change];
   v4 = +[UIDevice currentDevice];
   if ([v4 userInterfaceIdiom] == 1)
   {
@@ -818,8 +818,8 @@ LABEL_6:
 - (void)updateButtonsImages
 {
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
-  if (v5 != 1)
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
+  if (userInterfaceIdiom != 1)
   {
     v2 = +[UIDevice currentDevice];
     if ([v2 userInterfaceIdiom] != 5)
@@ -828,12 +828,12 @@ LABEL_6:
     }
   }
 
-  v6 = [(MessagesViewController *)self view];
-  [v6 bounds];
+  view = [(MessagesViewController *)self view];
+  [view bounds];
   if (v7 <= 400.0)
   {
 
-    if (v5 == 1)
+    if (userInterfaceIdiom == 1)
     {
 LABEL_8:
 
@@ -845,11 +845,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [(MessagesViewController *)self view];
-  v9 = [v8 traitCollection];
-  v10 = [v9 horizontalSizeClass] == 2 || -[MessagesViewController presentationStyle](self, "presentationStyle") == 0;
+  view2 = [(MessagesViewController *)self view];
+  traitCollection = [view2 traitCollection];
+  v10 = [traitCollection horizontalSizeClass] == 2 || -[MessagesViewController presentationStyle](self, "presentationStyle") == 0;
 
-  if (v5 != 1)
+  if (userInterfaceIdiom != 1)
   {
   }
 
@@ -873,8 +873,8 @@ LABEL_15:
 - (void)updateConstraintConstants
 {
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
-  if (v5 != 1)
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
+  if (userInterfaceIdiom != 1)
   {
     v2 = +[UIDevice currentDevice];
     if ([v2 userInterfaceIdiom] != 5)
@@ -886,8 +886,8 @@ LABEL_11:
     }
   }
 
-  v6 = [(MessagesViewController *)self view];
-  [v6 bounds];
+  view = [(MessagesViewController *)self view];
+  [view bounds];
   if (v7 <= 400.0)
   {
     v10 = 0;
@@ -895,12 +895,12 @@ LABEL_11:
 
   else
   {
-    v8 = [(MessagesViewController *)self view];
-    v9 = [v8 traitCollection];
-    v10 = [v9 horizontalSizeClass] == 2 || -[MessagesViewController presentationStyle](self, "presentationStyle") == 0;
+    view2 = [(MessagesViewController *)self view];
+    traitCollection = [view2 traitCollection];
+    v10 = [traitCollection horizontalSizeClass] == 2 || -[MessagesViewController presentationStyle](self, "presentationStyle") == 0;
   }
 
-  if (v5 != 1)
+  if (userInterfaceIdiom != 1)
   {
     goto LABEL_11;
   }
@@ -982,8 +982,8 @@ LABEL_12:
 {
   [(MessagesViewController *)self accessoryButtonContentInsets];
   [(UIButton *)self->_replayMessageButton setContentEdgeInsets:?];
-  v3 = [UIApp preferredContentSizeCategory];
-  v4 = [UIFont appropriateContentSizeCategoryForCategory:v3 maxCategory:UIContentSizeCategoryAccessibilityMedium];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  v4 = [UIFont appropriateContentSizeCategoryForCategory:preferredContentSizeCategory maxCategory:UIContentSizeCategoryAccessibilityMedium];
   v5 = CTFontDescriptorCreateWithTextStyle();
   v20 = UIFontDescriptorTraitsAttribute;
   v18 = UIFontSymbolicTrait;
@@ -994,11 +994,11 @@ LABEL_12:
   v8 = [v5 fontDescriptorByAddingAttributes:v7];
 
   v9 = [UIFont fontWithDescriptor:v8 size:0.0];
-  v10 = [(UIButton *)self->_replayMessageButton titleLabel];
-  [v10 setFont:v9];
+  titleLabel = [(UIButton *)self->_replayMessageButton titleLabel];
+  [titleLabel setFont:v9];
 
-  v11 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v11);
+  preferredContentSizeCategory2 = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
   if (IsAccessibilityCategory)
   {
@@ -1012,8 +1012,8 @@ LABEL_12:
     v14 = [UIImage systemImageNamed:@"arrow.clockwise" withConfiguration:v13];
 
     [(UIButton *)self->_replayMessageButton setImage:v14 forState:0];
-    v15 = [(UIButton *)self->_replayMessageButton effectiveUserInterfaceLayoutDirection];
-    if (v15 == 1)
+    effectiveUserInterfaceLayoutDirection = [(UIButton *)self->_replayMessageButton effectiveUserInterfaceLayoutDirection];
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v16 = -4.0;
     }
@@ -1023,7 +1023,7 @@ LABEL_12:
       v16 = 4.0;
     }
 
-    if (v15 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v17 = 4.0;
     }
@@ -1039,9 +1039,9 @@ LABEL_12:
   [(UIButton *)self->_replayMessageButton sizeToFit];
 }
 
-- (void)updateTapToRadarVisibilityForceHide:(BOOL)a3
+- (void)updateTapToRadarVisibilityForceHide:(BOOL)hide
 {
-  if (a3 || !-[MessagesViewController isInternalBuild](self, "isInternalBuild") || (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 BOOLForKey:@"JFDefaults_HideTapToRadar"], v4, v5))
+  if (hide || !-[MessagesViewController isInternalBuild](self, "isInternalBuild") || (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 BOOLForKey:@"JFDefaults_HideTapToRadar"], v4, v5))
   {
     tapToRadar = self->_tapToRadar;
 
@@ -1070,24 +1070,24 @@ LABEL_12:
   }
 }
 
-- (void)updateEditButtonVisibilityForceHide:(BOOL)a3
+- (void)updateEditButtonVisibilityForceHide:(BOOL)hide
 {
-  v5 = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
-  v6 = 0.0;
-  v7 = v5;
-  if (!a3 && v5)
+  focusedRecord = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
+  isEditable = 0.0;
+  v7 = focusedRecord;
+  if (!hide && focusedRecord)
   {
-    v6 = [v5 isEditable];
+    isEditable = [focusedRecord isEditable];
   }
 
-  [(AVTCircularButton *)self->_editButton setAlpha:v6];
+  [(AVTCircularButton *)self->_editButton setAlpha:isEditable];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = MessagesViewController;
-  [(MessagesViewController *)&v7 viewWillAppear:a3];
+  [(MessagesViewController *)&v7 viewWillAppear:appear];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
@@ -1106,9 +1106,9 @@ LABEL_12:
 - (void)captureSnapshotMetricsIfNeeded
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if ([(MessagesViewController *)self presentationStyle]|| [(MessagesViewController *)self isSpeculatingLayout]|| [(MessagesViewController *)self isLandscapeMode]&& !v4)
+  if ([(MessagesViewController *)self presentationStyle]|| [(MessagesViewController *)self isSpeculatingLayout]|| [(MessagesViewController *)self isLandscapeMode]&& !userInterfaceIdiom)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -1126,11 +1126,11 @@ LABEL_12:
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(MessagesViewController *)self view];
-      [v5 bounds];
+      view = [(MessagesViewController *)self view];
+      [view bounds];
       v6 = NSStringFromCGRect(v22);
-      v7 = [(AVTRecordingCarouselController *)self->_avatarListController view];
-      [v7 frame];
+      view2 = [(AVTRecordingCarouselController *)self->_avatarListController view];
+      [view2 frame];
       v8 = NSStringFromCGRect(v23);
       v19 = 138412546;
       *v20 = v6;
@@ -1139,15 +1139,15 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] capturing snapshot metrics, snapshotBounds %@; controllerFrame %@", &v19, 0x16u);
     }
 
-    v9 = [(MessagesViewController *)self view];
-    [v9 bounds];
+    view3 = [(MessagesViewController *)self view];
+    [view3 bounds];
     self->_snapshotBounds.origin.x = v10;
     self->_snapshotBounds.origin.y = v11;
     self->_snapshotBounds.size.width = v12;
     self->_snapshotBounds.size.height = v13;
 
-    v14 = [(AVTRecordingCarouselController *)self->_avatarListController view];
-    [v14 frame];
+    view4 = [(AVTRecordingCarouselController *)self->_avatarListController view];
+    [view4 frame];
     self->_avatarControllerFrame.origin.x = v15;
     self->_avatarControllerFrame.origin.y = v16;
     self->_avatarControllerFrame.size.width = v17;
@@ -1159,13 +1159,13 @@ LABEL_12:
 
 - (BOOL)requestsExpandedOnLaunchScreenDismissal
 {
-  v3 = [(MessagesViewController *)self presentsLaunchScreenInFullScreenModal];
-  if (v3)
+  presentsLaunchScreenInFullScreenModal = [(MessagesViewController *)self presentsLaunchScreenInFullScreenModal];
+  if (presentsLaunchScreenInFullScreenModal)
   {
-    LOBYTE(v3) = [(MessagesViewController *)self actualPresentationStyle]== 0;
+    LOBYTE(presentsLaunchScreenInFullScreenModal) = [(MessagesViewController *)self actualPresentationStyle]== 0;
   }
 
-  return v3;
+  return presentsLaunchScreenInFullScreenModal;
 }
 
 - (BOOL)presentsLaunchScreenInFullScreenModal
@@ -1185,11 +1185,11 @@ LABEL_12:
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v33.receiver = self;
   v33.super_class = MessagesViewController;
-  [(MessagesViewController *)&v33 viewDidAppear:a3];
+  [(MessagesViewController *)&v33 viewDidAppear:appear];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -1200,8 +1200,8 @@ LABEL_12:
   self->_isDisappearing = 0;
   if (self->_displaysLaunchScreen)
   {
-    v4 = [(MessagesViewController *)self presentsLaunchScreenInFullScreenModal];
-    if (v4)
+    presentsLaunchScreenInFullScreenModal = [(MessagesViewController *)self presentsLaunchScreenInFullScreenModal];
+    if (presentsLaunchScreenInFullScreenModal)
     {
       v5 = [[LaunchViewController alloc] initWithNibName:0 bundle:0];
       [(LaunchViewController *)v5 setAdditionalSafeAreaInsets:44.0, 10.0, 0.0, 10.0];
@@ -1234,7 +1234,7 @@ LABEL_12:
 
     else
     {
-      [(MessagesViewController *)self setWaitingOnPresentationStyleRequestFulfillment:v4 ^ 1];
+      [(MessagesViewController *)self setWaitingOnPresentationStyleRequestFulfillment:presentsLaunchScreenInFullScreenModal ^ 1];
       [(MessagesViewController *)self requestPresentationStyle:v6];
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
@@ -1288,11 +1288,11 @@ LABEL_12:
   self->_lastMovieDoesNotExistError = @"NoError";
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v13.receiver = self;
   v13.super_class = MessagesViewController;
-  [(MessagesViewController *)&v13 viewWillDisappear:a3];
+  [(MessagesViewController *)&v13 viewWillDisappear:disappear];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     ignoreViewWillDisappearCount = self->_ignoreViewWillDisappearCount;
@@ -1322,9 +1322,9 @@ LABEL_12:
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v10 localizedDescription];
+        localizedDescription = [v10 localizedDescription];
         *buf = 138412290;
-        v15 = v11;
+        v15 = localizedDescription;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] %@", buf, 0xCu);
       }
     }
@@ -1336,25 +1336,25 @@ LABEL_12:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15.receiver = self;
   v15.super_class = MessagesViewController;
-  v8 = a4;
-  [(MessagesViewController *)&v15 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(MessagesViewController *)&v15 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [(MessagesViewController *)self presentationStyle];
-    v11 = [(MessagesViewController *)self view];
-    [v11 bounds];
+    presentationStyle = [(MessagesViewController *)self presentationStyle];
+    view = [(MessagesViewController *)self view];
+    [view bounds];
     v12 = NSStringFromCGRect(v22);
     *buf = 138412802;
     v17 = v9;
     v18 = 2048;
-    v19 = v10;
+    v19 = presentationStyle;
     v20 = 2112;
     v21 = v12;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] %@; style %lu; view.bounds %@", buf, 0x20u);
@@ -1370,7 +1370,7 @@ LABEL_12:
   v13[1] = 3221225472;
   v13[2] = sub_1000096C4;
   v13[3] = &unk_100034940;
-  [v8 animateAlongsideTransition:v14 completion:v13];
+  [coordinatorCopy animateAlongsideTransition:v14 completion:v13];
 }
 
 - (void)viewWillLayoutSubviews
@@ -1381,17 +1381,17 @@ LABEL_12:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = NSStringFromSelector(a2);
-    v5 = [(MessagesViewController *)self presentationStyle];
-    v6 = [(MessagesViewController *)self view];
-    [v6 bounds];
+    presentationStyle = [(MessagesViewController *)self presentationStyle];
+    view = [(MessagesViewController *)self view];
+    [view bounds];
     v7 = NSStringFromCGRect(v22);
-    v8 = [(MessagesViewController *)self view];
-    [v8 safeAreaInsets];
+    view2 = [(MessagesViewController *)self view];
+    [view2 safeAreaInsets];
     v9 = NSStringFromUIEdgeInsets(v23);
     *buf = 138413058;
     v15 = v4;
     v16 = 2048;
-    v17 = v5;
+    v17 = presentationStyle;
     v18 = 2112;
     v19 = v7;
     v20 = 2112;
@@ -1418,16 +1418,16 @@ LABEL_12:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = NSStringFromSelector(a2);
-    v5 = [(MessagesViewController *)self presentationStyle];
-    v6 = [(MessagesViewController *)self view];
-    [v6 bounds];
+    presentationStyle = [(MessagesViewController *)self presentationStyle];
+    view = [(MessagesViewController *)self view];
+    [view bounds];
     v7 = NSStringFromCGRect(v18);
     [(UIView *)self->_carouselView bounds];
     v8 = NSStringFromCGRect(v19);
     *buf = 138413058;
     v11 = v4;
     v12 = 2048;
-    v13 = v5;
+    v13 = presentationStyle;
     v14 = 2112;
     v15 = v7;
     v16 = 2112;
@@ -1438,7 +1438,7 @@ LABEL_12:
   [(MessagesViewController *)self captureSnapshotMetricsIfNeeded];
 }
 
-- (void)requestPresentationStyle:(unint64_t)a3
+- (void)requestPresentationStyle:(unint64_t)style
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -1446,26 +1446,26 @@ LABEL_12:
     *buf = 138412546;
     v10 = v6;
     v11 = 2048;
-    v12 = [(MessagesViewController *)self presentationStyle];
+    presentationStyle = [(MessagesViewController *)self presentationStyle];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] %@; requestPresentationStyle %lu", buf, 0x16u);
   }
 
-  v7 = [(MessagesViewController *)self actualPresentationStyle]!= a3 && a3 != 3;
-  if (a3 == 3)
+  v7 = [(MessagesViewController *)self actualPresentationStyle]!= style && style != 3;
+  if (style == 3)
   {
     self->_ignoreViewWillDisappearCount += 2;
   }
 
   v8.receiver = self;
   v8.super_class = MessagesViewController;
-  [(MessagesViewController *)&v8 requestPresentationStyle:a3];
+  [(MessagesViewController *)&v8 requestPresentationStyle:style];
   if (v7)
   {
     self->_isTransitioningBetweenLayouts = 1;
   }
 }
 
-- (void)willTransitionToPresentationStyle:(unint64_t)a3
+- (void)willTransitionToPresentationStyle:(unint64_t)style
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -1473,13 +1473,13 @@ LABEL_12:
     *buf = 138412546;
     v21 = v6;
     v22 = 2048;
-    v23 = a3;
+    styleCopy = style;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] %@; style %lu", buf, 0x16u);
   }
 
   self->_isTransitioningBetweenLayouts = 1;
   [(MessagesViewController *)self setWaitingOnPresentationStyleRequestFulfillment:0];
-  if (a3 == 1 || [(MessagesViewController *)self isLandcapeTrapOverlayShown])
+  if (style == 1 || [(MessagesViewController *)self isLandcapeTrapOverlayShown])
   {
 LABEL_12:
     v12 = +[UIDevice currentDevice];
@@ -1490,11 +1490,11 @@ LABEL_12:
     else
     {
       v13 = +[UIDevice currentDevice];
-      v14 = [v13 userInterfaceIdiom];
+      userInterfaceIdiom = [v13 userInterfaceIdiom];
 
-      if (v14 != 5)
+      if (userInterfaceIdiom != 5)
       {
-        if (a3 != 1)
+        if (style != 1)
         {
           return;
         }
@@ -1503,15 +1503,15 @@ LABEL_12:
       }
     }
 
-    if (a3 != 1)
+    if (style != 1)
     {
-      v15 = [(MessagesViewController *)self view];
-      v16 = [v15 snapshotViewAfterScreenUpdates:0];
+      view = [(MessagesViewController *)self view];
+      v16 = [view snapshotViewAfterScreenUpdates:0];
       presentationStyleTransitionSnapshotView = self->_presentationStyleTransitionSnapshotView;
       self->_presentationStyleTransitionSnapshotView = v16;
 
-      v18 = [(MessagesViewController *)self view];
-      [v18 addSubview:self->_presentationStyleTransitionSnapshotView];
+      view2 = [(MessagesViewController *)self view];
+      [view2 addSubview:self->_presentationStyleTransitionSnapshotView];
 
       return;
     }
@@ -1528,15 +1528,15 @@ LABEL_19:
     goto LABEL_12;
   }
 
-  v7 = [(MessagesViewController *)self parentMessagesViewController];
-  v8 = [v7 launchViewController];
-  [v8 setFreezeLayout:1];
+  parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+  launchViewController = [parentMessagesViewController launchViewController];
+  [launchViewController setFreezeLayout:1];
 
   if (![(MessagesViewController *)self shouldShowLaunchScreen])
   {
-    v10 = [(MessagesViewController *)self parentMessagesViewController];
-    v11 = [v10 launchViewController];
-    [(MessagesViewController *)self dismissLaunchScreenIfNecessaryForPresentationStyle:a3 controller:v11];
+    parentMessagesViewController2 = [(MessagesViewController *)self parentMessagesViewController];
+    launchViewController2 = [parentMessagesViewController2 launchViewController];
+    [(MessagesViewController *)self dismissLaunchScreenIfNecessaryForPresentationStyle:style controller:launchViewController2];
 
     goto LABEL_12;
   }
@@ -1556,13 +1556,13 @@ LABEL_19:
   dispatch_after(v9, &_dispatch_main_q, block);
 }
 
-- (void)performWhileOverridingPresentationStyle:(unint64_t)a3 block:(id)a4
+- (void)performWhileOverridingPresentationStyle:(unint64_t)style block:(id)block
 {
   usePresentationStyleOverride = self->_usePresentationStyleOverride;
   presentationStyleOverride = self->_presentationStyleOverride;
   self->_usePresentationStyleOverride = 1;
-  self->_presentationStyleOverride = a3;
-  (*(a4 + 2))(a4, a2);
+  self->_presentationStyleOverride = style;
+  (*(block + 2))(block, a2);
   self->_usePresentationStyleOverride = usePresentationStyleOverride;
   self->_presentationStyleOverride = presentationStyleOverride;
 }
@@ -1603,9 +1603,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(MessagesViewController *)self isLandscapeMode];
+  isLandscapeMode = [(MessagesViewController *)self isLandscapeMode];
 
-  if (v6)
+  if (isLandscapeMode)
   {
     goto LABEL_9;
   }
@@ -1614,17 +1614,17 @@ LABEL_5:
   if (AVTUIHasDisplayedPaddleView())
   {
 LABEL_9:
-    LOBYTE(v5) = 0;
-    return v5;
+    LOBYTE(isExpanded) = 0;
+    return isExpanded;
   }
 
-  v5 = [(MessagesViewController *)self isExpanded];
-  if (v5)
+  isExpanded = [(MessagesViewController *)self isExpanded];
+  if (isExpanded)
   {
-    LOBYTE(v5) = self->_paddleView == 0;
+    LOBYTE(isExpanded) = self->_paddleView == 0;
   }
 
-  return v5;
+  return isExpanded;
 }
 
 - (void)presentPaddleView
@@ -1637,8 +1637,8 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] %@", &v10, 0xCu);
   }
 
-  v5 = [(MessagesViewController *)self view];
-  [v5 layoutIfNeeded];
+  view = [(MessagesViewController *)self view];
+  [view layoutIfNeeded];
 
   v6 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleLargeTitle scale:1];
   v7 = [[AVTPaddleView alloc] initWithLayoutDirection:0 symbolConfiguration:v6];
@@ -1646,8 +1646,8 @@ LABEL_9:
   self->_paddleView = v7;
 
   [(AVTPaddleView *)self->_paddleView setDelegate:self];
-  v9 = [(MessagesViewController *)self view];
-  [v9 addSubview:self->_paddleView];
+  view2 = [(MessagesViewController *)self view];
+  [view2 addSubview:self->_paddleView];
 
   [(MessagesViewController *)self updatePaddleViewLayoutIfNecessary];
   AVTUISetHasDisplayedPaddleView();
@@ -1659,16 +1659,16 @@ LABEL_9:
   if (self->_paddleView)
   {
     [(PuppetCollectionViewController *)self->_puppetCollectionViewController reloadData];
-    v3 = [(PuppetCollectionViewController *)self->_puppetCollectionViewController puppetCollectionView];
+    puppetCollectionView = [(PuppetCollectionViewController *)self->_puppetCollectionViewController puppetCollectionView];
     v4 = [NSIndexPath indexPathForRow:0 inSection:0];
-    [v3 scrollToItemAtIndexPath:v4 atScrollPosition:1 animated:0];
+    [puppetCollectionView scrollToItemAtIndexPath:v4 atScrollPosition:1 animated:0];
 
-    v5 = [(PuppetCollectionViewController *)self->_puppetCollectionViewController puppetCollectionView];
-    [v5 layoutIfNeeded];
+    puppetCollectionView2 = [(PuppetCollectionViewController *)self->_puppetCollectionViewController puppetCollectionView];
+    [puppetCollectionView2 layoutIfNeeded];
 
     paddleView = self->_paddleView;
-    v7 = [(PuppetCollectionViewController *)self->_puppetCollectionViewController plusButtonView];
-    [(AVTPaddleView *)paddleView updateLayoutFromPlusButtonView:v7 videoView:0];
+    plusButtonView = [(PuppetCollectionViewController *)self->_puppetCollectionViewController plusButtonView];
+    [(AVTPaddleView *)paddleView updateLayoutFromPlusButtonView:plusButtonView videoView:0];
   }
 }
 
@@ -1683,7 +1683,7 @@ LABEL_9:
   }
 }
 
-- (void)paddleViewTapped:(id)a3
+- (void)paddleViewTapped:(id)tapped
 {
   [(MessagesViewController *)self dismissPaddleViewIfNecessary];
   avatarListController = self->_avatarListController;
@@ -1691,18 +1691,18 @@ LABEL_9:
   [(AVTRecordingCarouselController *)avatarListController presentEditorForCreatingAvatar:self];
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
-    v7 = [(MessagesViewController *)self view];
-    [v7 bounds];
+    view = [(MessagesViewController *)self view];
+    [view bounds];
     v8 = NSStringFromCGRect(v21);
     v15 = 138412802;
     v16 = v6;
     v17 = 2048;
-    v18 = a3;
+    styleCopy = style;
     v19 = 2112;
     v20 = v8;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] %@; style %lu; view.bounds %@", &v15, 0x20u);
@@ -1714,12 +1714,12 @@ LABEL_9:
     UIState = self->_UIState;
     if (UIState == 1)
     {
-      v10 = [(MessagesViewController *)self isLandcapeTrapOverlayShown];
-      if (a3 == 1 && (v10 & 1) == 0)
+      isLandcapeTrapOverlayShown = [(MessagesViewController *)self isLandcapeTrapOverlayShown];
+      if (style == 1 && (isLandcapeTrapOverlayShown & 1) == 0)
       {
-        v11 = [(MessagesViewController *)self parentMessagesViewController];
-        v12 = [v11 launchViewController];
-        [v12 setFreezeLayout:0];
+        parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+        launchViewController = [parentMessagesViewController launchViewController];
+        [launchViewController setFreezeLayout:0];
       }
     }
 
@@ -1755,8 +1755,8 @@ LABEL_9:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = NSStringFromSelector(a2);
-    v5 = [(MessagesViewController *)self view];
-    [v5 safeAreaInsets];
+    view = [(MessagesViewController *)self view];
+    [view safeAreaInsets];
     v6 = NSStringFromUIEdgeInsets(v12);
     *buf = 138412546;
     v9 = v4;
@@ -1773,11 +1773,11 @@ LABEL_9:
 
 - (void)updateLayoutForPresentationStyle
 {
-  v3 = [(MessagesViewController *)self presentationStyle];
+  presentationStyle = [(MessagesViewController *)self presentationStyle];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = @"EXPANDED";
-    if (!v3)
+    if (!presentationStyle)
     {
       v4 = @"COMPACT";
     }
@@ -1789,7 +1789,7 @@ LABEL_9:
 
   WeakRetained = objc_loadWeakRetained(&self->_puppetCollectionViewContainer);
   v6 = WeakRetained;
-  if (v3 == 1)
+  if (presentationStyle == 1)
   {
     [WeakRetained setAlpha:1.0];
 
@@ -1806,44 +1806,44 @@ LABEL_9:
   [(MessagesViewController *)self updatePuppetCollectionViewIfNecessary];
   [(MessagesViewController *)self updateConstraintConstants];
   [(MessagesViewController *)self updateButtonsImages];
-  [(MessagesViewController *)self setSingleAvatarMode:v3 == 1 animated:1];
+  [(MessagesViewController *)self setSingleAvatarMode:presentationStyle == 1 animated:1];
 }
 
-- (void)setSingleAvatarMode:(BOOL)a3 animated:(BOOL)a4
+- (void)setSingleAvatarMode:(BOOL)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  modeCopy = mode;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v9 = 138412802;
     v10 = v8;
     v11 = 1024;
-    v12 = v5;
+    v12 = modeCopy;
     v13 = 1024;
-    v14 = v4;
+    v14 = animatedCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] %@; singleMode %i; animated %i", &v9, 0x18u);
   }
 
-  if ([(AVTRecordingCarouselController *)self->_avatarListController singleAvatarMode]!= v5)
+  if ([(AVTRecordingCarouselController *)self->_avatarListController singleAvatarMode]!= modeCopy)
   {
     self->_isUpdatingAvatarMode = 1;
-    [(AVTRecordingCarouselController *)self->_avatarListController setSingleAvatarMode:v5 fillContainer:[(MessagesViewController *)self isExpanded] animated:v4];
+    [(AVTRecordingCarouselController *)self->_avatarListController setSingleAvatarMode:modeCopy fillContainer:[(MessagesViewController *)self isExpanded] animated:animatedCopy];
   }
 }
 
-- (void)setAllowsCreate:(BOOL)a3 animated:(BOOL)a4
+- (void)setAllowsCreate:(BOOL)create animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(AVTRecordingCarouselController *)self->_avatarListController allowsCreate]!= a3)
+  animatedCopy = animated;
+  createCopy = create;
+  if ([(AVTRecordingCarouselController *)self->_avatarListController allowsCreate]!= create)
   {
-    [(AVTRecordingCarouselController *)self->_avatarListController setAllowsCreate:v5 animated:v4];
+    [(AVTRecordingCarouselController *)self->_avatarListController setAllowsCreate:createCopy animated:animatedCopy];
   }
 
   puppetCollectionViewController = self->_puppetCollectionViewController;
 
-  [(PuppetCollectionViewController *)puppetCollectionViewController setPlusButtonCellEnabled:v5];
+  [(PuppetCollectionViewController *)puppetCollectionViewController setPlusButtonCellEnabled:createCopy];
 }
 
 - (void)dealloc
@@ -1975,14 +1975,14 @@ LABEL_9:
   if (!videoLoggingFolder)
   {
 LABEL_14:
-    v19 = objc_loadWeakRetained(&self->_puppetView);
-    [v19 setFaceTrackingRecordingURL:0];
+    faceTrackingRecordingURL = objc_loadWeakRetained(&self->_puppetView);
+    [faceTrackingRecordingURL setFaceTrackingRecordingURL:0];
     goto LABEL_15;
   }
 
-  v19 = [(MessagesViewController *)self faceTrackingRecordingURL];
+  faceTrackingRecordingURL = [(MessagesViewController *)self faceTrackingRecordingURL];
   v20 = objc_loadWeakRetained(&self->_puppetView);
-  [v20 setFaceTrackingRecordingURL:v19];
+  [v20 setFaceTrackingRecordingURL:faceTrackingRecordingURL];
 
 LABEL_15:
   v21 = +[NSUserDefaults standardUserDefaults];
@@ -2015,9 +2015,9 @@ LABEL_15:
     if (self->_UIState == 2)
     {
       v30 = objc_loadWeakRetained(&self->_puppetView);
-      v31 = [v30 isPreviewing];
+      isPreviewing = [v30 isPreviewing];
 
-      if (v31)
+      if (isPreviewing)
       {
         v32 = 5;
       }
@@ -2067,8 +2067,8 @@ LABEL_15:
       [v6 addObserver:self forKeyPath:@"faceIsTracked" options:5 context:0];
 
       v8 = objc_loadWeakRetained(&self->_puppetView);
-      v7 = [v8 arSession];
-      [v7 addObserver:self forKeyPath:@"state" options:5 context:0];
+      arSession = [v8 arSession];
+      [arSession addObserver:self forKeyPath:@"state" options:5 context:0];
     }
   }
 }
@@ -2081,8 +2081,8 @@ LABEL_15:
     [WeakRetained removeObserver:self forKeyPath:@"faceIsTracked"];
 
     v4 = objc_loadWeakRetained(&self->_puppetViewForKVO);
-    v5 = [v4 arSession];
-    [v5 removeObserver:self forKeyPath:@"state"];
+    arSession = [v4 arSession];
+    [arSession removeObserver:self forKeyPath:@"state"];
 
     objc_storeWeak(&self->_puppetViewForKVO, 0);
     self->_observingFacetracking = 0;
@@ -2113,24 +2113,24 @@ LABEL_15:
   [v5 removeObserver:self name:@"BaseMessagesViewControllerSnapshottingEnabledChangedNotification" object:0];
 }
 
-- (void)strongPopupPresentationNotification:(id)a3
+- (void)strongPopupPresentationNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"BaseMessagesViewControllerStrongPopupPresentedKey"];
-  v6 = [v5 BOOLValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"BaseMessagesViewControllerStrongPopupPresentedKey"];
+  bOOLValue = [v5 BOOLValue];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v6;
+    v8[1] = bOOLValue;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] strongPopupPresentationNotification, presentedOver %i", v8, 8u);
   }
 
-  [(MessagesViewController *)self interfaceObscuredByOverlayOrPresentationChanged:v6];
+  [(MessagesViewController *)self interfaceObscuredByOverlayOrPresentationChanged:bOOLValue];
   paddleView = self->_paddleView;
   if (paddleView)
   {
-    if (v6)
+    if (bOOLValue)
     {
       [(AVTPaddleView *)paddleView pauseVideo];
     }
@@ -2142,30 +2142,30 @@ LABEL_15:
   }
 }
 
-- (void)overlayPresentationNotification:(id)a3
+- (void)overlayPresentationNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"BaseMessagesViewControllerOverlayPresentedKey"];
-  v6 = [v5 BOOLValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"BaseMessagesViewControllerOverlayPresentedKey"];
+  bOOLValue = [v5 BOOLValue];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v6;
+    v7[1] = bOOLValue;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] overlayPresentationNotification, shown %i", v7, 8u);
   }
 
-  [(MessagesViewController *)self interfaceObscuredByOverlayOrPresentationChanged:v6];
+  [(MessagesViewController *)self interfaceObscuredByOverlayOrPresentationChanged:bOOLValue];
 }
 
-- (void)interfaceObscuredByOverlayOrPresentationChanged:(BOOL)a3
+- (void)interfaceObscuredByOverlayOrPresentationChanged:(BOOL)changed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000B650;
   v4[3] = &unk_100034968;
   v4[4] = self;
-  v5 = a3;
+  changedCopy = changed;
   v3 = objc_retainBlock(v4);
   if (+[NSThread isMainThread])
   {
@@ -2178,56 +2178,56 @@ LABEL_15:
   }
 }
 
-- (void)snapshottingEnabledChangedNotification:(id)a3
+- (void)snapshottingEnabledChangedNotification:(id)notification
 {
-  v4 = [(MessagesViewController *)self parentMessagesViewController];
-  v5 = [v4 snapshottingEnabled];
+  parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+  snapshottingEnabled = [parentMessagesViewController snapshottingEnabled];
 
-  if (v5)
+  if (snapshottingEnabled)
   {
 
     [(MessagesViewController *)self captureSnapshotMetricsIfNeeded];
   }
 }
 
-- (void)prepareForSegue:(id)a3 sender:(id)a4
+- (void)prepareForSegue:(id)segue sender:(id)sender
 {
-  v13 = a3;
-  v5 = [v13 identifier];
-  v6 = [v5 isEqualToString:@"MessagesViewController"];
+  segueCopy = segue;
+  identifier = [segueCopy identifier];
+  v6 = [identifier isEqualToString:@"MessagesViewController"];
 
   if (v6)
   {
-    v7 = [(MessagesViewController *)self parentMessagesViewController];
-    v8 = [v7 messagesViewContainer];
-    [v8 setAlpha:0.0];
+    parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+    messagesViewContainer = [parentMessagesViewController messagesViewContainer];
+    [messagesViewContainer setAlpha:0.0];
   }
 
   else
   {
-    v9 = [v13 identifier];
-    v10 = [v9 isEqualToString:@"LaunchViewController"];
+    identifier2 = [segueCopy identifier];
+    v10 = [identifier2 isEqualToString:@"LaunchViewController"];
 
     if (!v10)
     {
       goto LABEL_6;
     }
 
-    v11 = [(MessagesViewController *)self parentMessagesViewController];
-    v12 = [v11 launchViewContainer];
-    [v12 setAlpha:0.0];
+    parentMessagesViewController2 = [(MessagesViewController *)self parentMessagesViewController];
+    launchViewContainer = [parentMessagesViewController2 launchViewContainer];
+    [launchViewContainer setAlpha:0.0];
 
-    v7 = [(MessagesViewController *)self parentMessagesViewController];
-    v8 = [v7 launchViewController];
-    [v8 setDelegate:self];
+    parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+    messagesViewContainer = [parentMessagesViewController launchViewController];
+    [messagesViewContainer setDelegate:self];
   }
 
 LABEL_6:
 }
 
-- (BOOL)shouldPerformSegueWithIdentifier:(id)a3 sender:(id)a4
+- (BOOL)shouldPerformSegueWithIdentifier:(id)identifier sender:(id)sender
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = [v6 BOOLForKey:@"JFDefaults_AlwaysShowLaunchScreen"];
 
@@ -2240,14 +2240,14 @@ LABEL_6:
     AVTUISetHasDisplayedSplashScreen();
   }
 
-  if (![v5 isEqualToString:@"LaunchViewController"])
+  if (![identifierCopy isEqualToString:@"LaunchViewController"])
   {
     goto LABEL_9;
   }
 
-  v9 = [(MessagesViewController *)self shouldShowLaunchScreen];
-  self->_displaysLaunchScreen = v9;
-  if (v9)
+  shouldShowLaunchScreen = [(MessagesViewController *)self shouldShowLaunchScreen];
+  self->_displaysLaunchScreen = shouldShowLaunchScreen;
+  if (shouldShowLaunchScreen)
   {
     v10 = +[UIDevice currentDevice];
     if ([v10 userInterfaceIdiom] == 1)
@@ -2257,9 +2257,9 @@ LABEL_6:
     }
 
     v11 = +[UIDevice currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom = [v11 userInterfaceIdiom];
 
-    if (v12 == 5)
+    if (userInterfaceIdiom == 5)
     {
       goto LABEL_8;
     }
@@ -2270,12 +2270,12 @@ LABEL_9:
   }
 
 LABEL_8:
-  v13 = [(MessagesViewController *)self parentMessagesViewController];
-  v14 = [v13 launchViewContainer];
-  [v14 removeFromSuperview];
+  parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+  launchViewContainer = [parentMessagesViewController launchViewContainer];
+  [launchViewContainer removeFromSuperview];
 
-  v15 = [(MessagesViewController *)self parentMessagesViewController];
-  [v15 setLaunchViewContainer:0];
+  parentMessagesViewController2 = [(MessagesViewController *)self parentMessagesViewController];
+  [parentMessagesViewController2 setLaunchViewContainer:0];
 
   v16 = 0;
 LABEL_10:
@@ -2309,19 +2309,19 @@ LABEL_10:
 
     [(PuppetCollectionViewController *)self->_puppetCollectionViewController setDelegate:self];
     [(PuppetCollectionViewController *)self->_puppetCollectionViewController setAvatarDataSource:self->_avatarDataSource];
-    v5 = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
-    [(PuppetCollectionViewController *)self->_puppetCollectionViewController setSelectedRecord:v5];
+    focusedRecord = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
+    [(PuppetCollectionViewController *)self->_puppetCollectionViewController setSelectedRecord:focusedRecord];
 
     [(PuppetCollectionViewController *)self->_puppetCollectionViewController setPlusButtonCellEnabled:[(AVTRecordingCarouselController *)self->_avatarListController allowsCreate]];
     [(MessagesViewController *)self addChildViewController:self->_puppetCollectionViewController];
-    v8 = [(PuppetCollectionViewController *)self->_puppetCollectionViewController view];
+    view = [(PuppetCollectionViewController *)self->_puppetCollectionViewController view];
     WeakRetained = objc_loadWeakRetained(&self->_puppetCollectionViewContainer);
     [WeakRetained bounds];
-    [v8 setFrame:?];
+    [view setFrame:?];
 
-    [v8 setAutoresizingMask:18];
+    [view setAutoresizingMask:18];
     v7 = objc_loadWeakRetained(&self->_puppetCollectionViewContainer);
-    [v7 addSubview:v8];
+    [v7 addSubview:view];
 
     [(PuppetCollectionViewController *)self->_puppetCollectionViewController didMoveToParentViewController:self];
     [(PuppetCollectionViewController *)self->_puppetCollectionViewController reloadData];
@@ -2334,8 +2334,8 @@ LABEL_10:
   if (puppetCollectionViewController)
   {
     [(PuppetCollectionViewController *)puppetCollectionViewController willMoveToParentViewController:0];
-    v4 = [(PuppetCollectionViewController *)self->_puppetCollectionViewController view];
-    [v4 removeFromSuperview];
+    view = [(PuppetCollectionViewController *)self->_puppetCollectionViewController view];
+    [view removeFromSuperview];
 
     [(MessagesViewController *)self removeChildViewController:self->_puppetCollectionViewController];
     v5 = self->_puppetCollectionViewController;
@@ -2343,9 +2343,9 @@ LABEL_10:
   }
 }
 
-- (void)onTapToRadarButtonPressed:(id)a3
+- (void)onTapToRadarButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -2403,10 +2403,10 @@ LABEL_10:
 
     [v5 _setShouldAlignToKeyboard:0];
     [(MessagesViewController *)self requestPresentationStyle:1];
-    v8 = [(MessagesViewController *)self view];
-    v9 = [v8 window];
-    v10 = [v9 rootViewController];
-    [v10 presentViewController:v5 animated:0 completion:0];
+    view = [(MessagesViewController *)self view];
+    window = [view window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:v5 animated:0 completion:0];
   }
 
   else
@@ -2415,27 +2415,27 @@ LABEL_10:
   }
 }
 
-- (void)_launchTapToRadarWithAttachments:(id)a3
+- (void)_launchTapToRadarWithAttachments:(id)attachments
 {
-  v4 = a3;
+  attachmentsCopy = attachments;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 BOOLForKey:@"JFDefaults_ShouldLogFacetracking"];
 
   if (v6)
   {
-    v35 = [@"ComponentName=Purple AppleCVA" URLEncodedString_ch];
-    v34 = [@"ComponentVersion=FaceKit Secure" URLEncodedString_ch];
+    uRLEncodedString_ch = [@"ComponentName=Purple AppleCVA" URLEncodedString_ch];
+    uRLEncodedString_ch2 = [@"ComponentVersion=FaceKit Secure" URLEncodedString_ch];
     v32 = @"ComponentID=933150";
   }
 
   else
   {
-    v35 = [@"ComponentName=Animoji App" URLEncodedString_ch];
+    uRLEncodedString_ch = [@"ComponentName=Animoji App" URLEncodedString_ch];
     v32 = @"ComponentID=830570";
-    v34 = @"ComponentVersion=All";
+    uRLEncodedString_ch2 = @"ComponentVersion=All";
   }
 
-  if ([v4 count])
+  if ([attachmentsCopy count])
   {
     v7 = 0;
     v8 = @"Attachments=";
@@ -2448,11 +2448,11 @@ LABEL_10:
         v8 = v9;
       }
 
-      v10 = [v4 objectAtIndexedSubscript:v7];
+      v10 = [attachmentsCopy objectAtIndexedSubscript:v7];
 
       if (v10)
       {
-        v11 = [v4 objectAtIndexedSubscript:v7];
+        v11 = [attachmentsCopy objectAtIndexedSubscript:v7];
         v12 = [(__CFString *)v8 stringByAppendingString:v11];
 
         v8 = v12;
@@ -2461,7 +2461,7 @@ LABEL_10:
       ++v7;
     }
 
-    while ([v4 count] > v7);
+    while ([attachmentsCopy count] > v7);
   }
 
   else
@@ -2485,46 +2485,46 @@ LABEL_10:
   lastExportError = self->_lastExportError;
   if (lastExportError)
   {
-    v17 = [(NSError *)lastExportError localizedDescription];
+    localizedDescription = [(NSError *)lastExportError localizedDescription];
   }
 
   else
   {
-    v17 = @"NoError";
+    localizedDescription = @"NoError";
   }
 
   lastSendError = self->_lastSendError;
   if (lastSendError)
   {
-    v19 = [(NSError *)lastSendError localizedDescription];
+    localizedDescription2 = [(NSError *)lastSendError localizedDescription];
   }
 
   else
   {
-    v19 = @"NoError";
+    localizedDescription2 = @"NoError";
   }
 
   lastInsertError = self->_lastInsertError;
   if (lastInsertError)
   {
-    v21 = [(NSError *)lastInsertError localizedDescription];
+    localizedDescription3 = [(NSError *)lastInsertError localizedDescription];
   }
 
   else
   {
-    v21 = @"NoError";
+    localizedDescription3 = @"NoError";
   }
 
-  v22 = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
-  v23 = [v22 identifier];
+  focusedRecord = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
+  identifier = [focusedRecord identifier];
   v30 = [(__CFString *)v15 cStringUsingEncoding:4];
   v24 = ARKitBuildVersionString();
-  v31 = v17;
-  v25 = [NSString stringWithFormat:@"Description=Provide a detailed description of the issue including specific steps to reproduce.  Attachments you submit will be part of the Radar.  Only submit attachments you are comfortable having attached to Radars.\n\nANIMOJI SESSION INFO: puppet:%@ mode:%s sessionLength:%f  AnimojiVersion:%@  AvatarKitVersion:%i  SceneKitVersion:%i  ARKitVersion:%@  lastExportError:%s   lastSendError:%s  lastInsertError:%s   lastMovieExists:%s", v23, v30, v14, @"389.200.11", 356, 608, v24, [(__CFString *)v17 cStringUsingEncoding:4], [(__CFString *)v19 cStringUsingEncoding:4], [(__CFString *)v21 cStringUsingEncoding:4], [(NSString *)self->_lastMovieDoesNotExistError cStringUsingEncoding:4]];
+  v31 = localizedDescription;
+  v25 = [NSString stringWithFormat:@"Description=Provide a detailed description of the issue including specific steps to reproduce.  Attachments you submit will be part of the Radar.  Only submit attachments you are comfortable having attached to Radars.\n\nANIMOJI SESSION INFO: puppet:%@ mode:%s sessionLength:%f  AnimojiVersion:%@  AvatarKitVersion:%i  SceneKitVersion:%i  ARKitVersion:%@  lastExportError:%s   lastSendError:%s  lastInsertError:%s   lastMovieExists:%s", identifier, v30, v14, @"389.200.11", 356, 608, v24, [(__CFString *)localizedDescription cStringUsingEncoding:4], [(__CFString *)localizedDescription2 cStringUsingEncoding:4], [(__CFString *)localizedDescription3 cStringUsingEncoding:4], [(NSString *)self->_lastMovieDoesNotExistError cStringUsingEncoding:4]];
 
-  v26 = [v25 URLEncodedString_ch];
+  uRLEncodedString_ch3 = [v25 URLEncodedString_ch];
 
-  v27 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"tap-to-radar://new?%s&%s&%s&%s&%s&%s&%s", [v35 cStringUsingEncoding:4], -[__CFString cStringUsingEncoding:](v32, "cStringUsingEncoding:", 4), -[__CFString cStringUsingEncoding:](v34, "cStringUsingEncoding:", 4), objc_msgSend(@"Classification=UI/Usability", "cStringUsingEncoding:", 4), objc_msgSend(@"Reproducibility=Always", "cStringUsingEncoding:", 4), -[__CFString cStringUsingEncoding:](v8, "cStringUsingEncoding:", 4), objc_msgSend(v26, "cStringUsingEncoding:", 4));
+  v27 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"tap-to-radar://new?%s&%s&%s&%s&%s&%s&%s", [uRLEncodedString_ch cStringUsingEncoding:4], -[__CFString cStringUsingEncoding:](v32, "cStringUsingEncoding:", 4), -[__CFString cStringUsingEncoding:](uRLEncodedString_ch2, "cStringUsingEncoding:", 4), objc_msgSend(@"Classification=UI/Usability", "cStringUsingEncoding:", 4), objc_msgSend(@"Reproducibility=Always", "cStringUsingEncoding:", 4), -[__CFString cStringUsingEncoding:](v8, "cStringUsingEncoding:", 4), objc_msgSend(uRLEncodedString_ch3, "cStringUsingEncoding:", 4));
   v28 = [NSURL URLWithString:v27];
   v29 = +[LSApplicationWorkspace defaultWorkspace];
   [v29 openURL:v28 configuration:0 completionHandler:0];
@@ -2552,9 +2552,9 @@ LABEL_10:
   {
     v42 = v3;
     v6 = +[NSFileManager defaultManager];
-    v41 = self;
-    v7 = [(NSURL *)self->_stickerFolder path];
-    v8 = [v6 contentsOfDirectoryAtPath:v7 error:0];
+    selfCopy = self;
+    path = [(NSURL *)self->_stickerFolder path];
+    v8 = [v6 contentsOfDirectoryAtPath:path error:0];
 
     v43 = +[NSMutableArray array];
     v9 = +[NSMutableArray array];
@@ -2578,16 +2578,16 @@ LABEL_10:
           }
 
           v15 = *(*(&v47 + 1) + 8 * i);
-          v16 = [v15 pathExtension];
-          v17 = [v16 isEqualToString:@"mov"];
+          pathExtension = [v15 pathExtension];
+          v17 = [pathExtension isEqualToString:@"mov"];
 
           if (v17)
           {
             [v43 addObject:v15];
           }
 
-          v18 = [v15 pathExtension];
-          v19 = [v18 isEqualToString:@"png"];
+          pathExtension2 = [v15 pathExtension];
+          v19 = [pathExtension2 isEqualToString:@"png"];
 
           if (v19)
           {
@@ -2603,23 +2603,23 @@ LABEL_10:
 
     v20 = [v43 sortedArrayUsingSelector:"localizedCaseInsensitiveCompare:"];
     v21 = [v9 sortedArrayUsingSelector:"localizedCaseInsensitiveCompare:"];
-    v22 = [v20 lastObject];
-    v23 = [v21 lastObject];
-    if (v22)
+    lastObject = [v20 lastObject];
+    lastObject2 = [v21 lastObject];
+    if (lastObject)
     {
-      v24 = [(NSURL *)v41->_stickerFolder path];
-      v25 = [v24 stringByAppendingString:@"/"];
-      v26 = [v25 stringByAppendingString:v22];
+      path2 = [(NSURL *)selfCopy->_stickerFolder path];
+      v25 = [path2 stringByAppendingString:@"/"];
+      v26 = [v25 stringByAppendingString:lastObject];
 
       [v42 addObject:v26];
     }
 
-    self = v41;
-    if (v23)
+    self = selfCopy;
+    if (lastObject2)
     {
-      v27 = [(NSURL *)v41->_stickerFolder path];
-      v28 = [v27 stringByAppendingString:@"/"];
-      v29 = [v28 stringByAppendingString:v23];
+      path3 = [(NSURL *)selfCopy->_stickerFolder path];
+      v28 = [path3 stringByAppendingString:@"/"];
+      v29 = [v28 stringByAppendingString:lastObject2];
 
       [v42 addObject:v29];
     }
@@ -2632,9 +2632,9 @@ LABEL_10:
   {
     v31 = +[NSFileManager defaultManager];
     WeakRetained = objc_loadWeakRetained(&self->_puppetView);
-    v33 = [WeakRetained faceTrackingRecordingURL];
-    v34 = [v33 path];
-    v35 = [v31 fileExistsAtPath:v34];
+    faceTrackingRecordingURL = [WeakRetained faceTrackingRecordingURL];
+    path4 = [faceTrackingRecordingURL path];
+    v35 = [v31 fileExistsAtPath:path4];
 
     if (!v35)
     {
@@ -2642,10 +2642,10 @@ LABEL_10:
     }
 
     v30 = objc_loadWeakRetained(&self->_puppetView);
-    v36 = [v30 faceTrackingRecordingURL];
-    v37 = [v36 path];
-    v38 = [v37 URLEncodedString_ch];
-    [v3 addObject:v38];
+    faceTrackingRecordingURL2 = [v30 faceTrackingRecordingURL];
+    path5 = [faceTrackingRecordingURL2 path];
+    uRLEncodedString_ch = [path5 URLEncodedString_ch];
+    [v3 addObject:uRLEncodedString_ch];
   }
 
 LABEL_24:
@@ -2670,7 +2670,7 @@ LABEL_28:
   v44[2] = sub_10000CD88;
   v44[3] = &unk_1000349F8;
   v45 = v3;
-  v46 = self;
+  selfCopy2 = self;
   [(MessagesViewController *)self exportVideoWithCompletion:v44];
 
 LABEL_29:
@@ -2684,9 +2684,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)onCancelSendingMessage:(id)a3
+- (void)onCancelSendingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
@@ -2720,9 +2720,9 @@ LABEL_29:
   dispatch_after(v3, &_dispatch_main_q, block);
 }
 
-- (void)onConfirmSendingMessage:(id)a3
+- (void)onConfirmSendingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -2748,9 +2748,9 @@ LABEL_29:
   }
 }
 
-- (void)onReplayMessage:(id)a3
+- (void)onReplayMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
@@ -2777,31 +2777,31 @@ LABEL_29:
   }
 }
 
-- (void)conditionallyPerformWithDisclosureAlertForSendingMessageWithConfirmTitle:(id)a3 result:(id)a4
+- (void)conditionallyPerformWithDisclosureAlertForSendingMessageWithConfirmTitle:(id)title result:(id)result
 {
-  v7 = a3;
-  v6 = a4;
+  titleCopy = title;
+  resultCopy = result;
   if ([(MessagesViewController *)self shouldShowDisclosureAlertForSendingMessage])
   {
-    [(MessagesViewController *)self showAlertForDisclosureWarningWithConfirmTitle:v7 completionBlock:v6];
+    [(MessagesViewController *)self showAlertForDisclosureWarningWithConfirmTitle:titleCopy completionBlock:resultCopy];
   }
 
   else
   {
-    v6[2](v6, 1);
+    resultCopy[2](resultCopy, 1);
   }
 }
 
-- (void)showAlertForDisclosureWarningWithConfirmTitle:(id)a3 completionBlock:(id)a4
+- (void)showAlertForDisclosureWarningWithConfirmTitle:(id)title completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  titleCopy = title;
   v8 = [UIAlertController alertControllerWithTitle:0 message:@"Please ensure all recipients are disclosed on pre-release Memoji features prior to sending." preferredStyle:1];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000D4BC;
   v15[3] = &unk_100034A70;
-  v9 = v6;
+  v9 = blockCopy;
   v16 = v9;
   v10 = [UIAlertAction actionWithTitle:@"Cancel" style:1 handler:v15];
   [v8 addAction:v10];
@@ -2813,7 +2813,7 @@ LABEL_29:
   v13[4] = self;
   v14 = v9;
   v11 = v9;
-  v12 = [UIAlertAction actionWithTitle:v7 style:0 handler:v13];
+  v12 = [UIAlertAction actionWithTitle:titleCopy style:0 handler:v13];
 
   [v8 addAction:v12];
   [v8 _setShouldAlignToKeyboard:0];
@@ -2871,10 +2871,10 @@ LABEL_29:
   return result;
 }
 
-- (id)defaultExportVideoOptionsForSize:(CGSize)a3
+- (id)defaultExportVideoOptionsForSize:(CGSize)size
 {
   v6[0] = @"size";
-  v3 = [NSValue valueWithCGSize:a3.width, a3.height];
+  v3 = [NSValue valueWithCGSize:size.width, size.height];
   v7[0] = v3;
   v7[1] = &off_1000360C8;
   v6[1] = @"rate";
@@ -2885,18 +2885,18 @@ LABEL_29:
   return v4;
 }
 
-- (void)exportVideoWithCompletion:(id)a3
+- (void)exportVideoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] exporting video for TTR", buf, 2u);
   }
 
-  v5 = [(NSURL *)self->_stickerFolder path];
+  path = [(NSURL *)self->_stickerFolder path];
   v6 = [NSString stringWithFormat:@"/EmojiMovieExport.mov"];
-  v7 = [v5 stringByAppendingString:v6];
+  v7 = [path stringByAppendingString:v6];
 
   v8 = [NSURL fileURLWithPath:v7];
   [(MessagesViewController *)self defaultVideoExportDimensions];
@@ -2908,10 +2908,10 @@ LABEL_29:
   v14[2] = sub_10000D9D0;
   v14[3] = &unk_100034AC0;
   v16 = v7;
-  v17 = v4;
+  v17 = completionCopy;
   v15 = v8;
   v11 = v7;
-  v12 = v4;
+  v12 = completionCopy;
   v13 = v8;
   [WeakRetained exportMovieToURL:v13 options:v9 completionHandler:v14];
 }
@@ -2925,10 +2925,10 @@ LABEL_29:
   }
 
   [(MessagesViewController *)self updateUIState:6 animated:1];
-  v28 = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
-  v3 = [(NSURL *)self->_stickerFolder path];
+  focusedRecord = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
+  path = [(NSURL *)self->_stickerFolder path];
   v4 = [NSString stringWithFormat:@"/EmojiMovie%d.mov", self->_recordingStartTime];
-  v5 = [v3 stringByAppendingString:v4];
+  v5 = [path stringByAppendingString:v4];
 
   v29 = v5;
   v6 = [NSURL fileURLWithPath:v5];
@@ -2963,26 +2963,26 @@ LABEL_29:
 
   if (v14)
   {
-    v15 = [v14 BOOLValue];
+    bOOLValue = [v14 BOOLValue];
   }
 
   else
   {
-    v15 = 1;
+    bOOLValue = 1;
   }
 
   if (v12)
   {
-    v16 = [(NSURL *)self->_stickerFolder path];
+    path2 = [(NSURL *)self->_stickerFolder path];
     v17 = [NSString stringWithFormat:@"/AlphaMatteEmojiMovie%d.mov", self->_recordingStartTime];
-    v18 = [v16 stringByAppendingString:v17];
+    v18 = [path2 stringByAppendingString:v17];
 
     v19 = [NSURL fileURLWithPath:v18];
     v20 = [NSMutableDictionary dictionaryWithDictionary:v7];
     [v20 setObject:v19 forKeyedSubscript:AVTMovieGenerateAlphaMask];
 
     v7 = v20;
-    if (!v15)
+    if (!bOOLValue)
     {
       goto LABEL_17;
     }
@@ -2991,7 +2991,7 @@ LABEL_29:
   }
 
   v19 = 0;
-  if (v15)
+  if (bOOLValue)
   {
 LABEL_16:
     v21 = [NSMutableDictionary dictionaryWithDictionary:v7];
@@ -3011,12 +3011,12 @@ LABEL_17:
   block[4] = self;
   v31 = v6;
   v32 = v7;
-  v33 = v28;
+  v33 = focusedRecord;
   v35 = v27;
   v34 = v19;
   v36 = v12;
   v23 = v19;
-  v24 = v28;
+  v24 = focusedRecord;
   v25 = v7;
   v26 = v6;
   dispatch_async(v22, block);
@@ -3074,13 +3074,13 @@ LABEL_17:
   }
 }
 
-- (void)onEditAvatar:(id)a3
+- (void)onEditAvatar:(id)avatar
 {
-  v4 = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
-  if (v4)
+  focusedRecord = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
+  if (focusedRecord)
   {
-    v5 = v4;
-    if ([v4 isEditable])
+    v5 = focusedRecord;
+    if ([focusedRecord isEditable])
     {
       [(AVTRecordingCarouselController *)self->_avatarListController presentActionsForAvatar:v5];
     }
@@ -3089,14 +3089,14 @@ LABEL_17:
   _objc_release_x1();
 }
 
-- (void)carouselController:(id)a3 didFocusOnRecordView:(id)a4
+- (void)carouselController:(id)controller didFocusOnRecordView:(id)view
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  controllerCopy = controller;
+  viewCopy = view;
+  if (viewCopy)
   {
-    v7 = objc_storeWeak(&self->_puppetView, v6);
-    [v6 updateInterfaceOrientation];
+    v7 = objc_storeWeak(&self->_puppetView, viewCopy);
+    [viewCopy updateInterfaceOrientation];
 
     WeakRetained = objc_loadWeakRetained(&self->_puppetView);
     [WeakRetained setRecordDelegate:self];
@@ -3118,16 +3118,16 @@ LABEL_17:
   self->_isUpdatingAvatarMode = 0;
 }
 
-- (void)carouselController:(id)a3 didUpdateWithRecord:(id)a4
+- (void)carouselController:(id)controller didUpdateWithRecord:(id)record
 {
-  v12 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  recordCopy = record;
   v7 = +[NSUserDefaults standardUserDefaults];
   v8 = v7;
-  if (v6)
+  if (recordCopy)
   {
-    v9 = [v6 identifier];
-    [v8 setValue:v9 forKey:@"LastPuppetIdentifier"];
+    identifier = [recordCopy identifier];
+    [v8 setValue:identifier forKey:@"LastPuppetIdentifier"];
   }
 
   else
@@ -3138,11 +3138,11 @@ LABEL_17:
   puppetCollectionViewController = self->_puppetCollectionViewController;
   if (puppetCollectionViewController)
   {
-    v11 = [(PuppetCollectionViewController *)puppetCollectionViewController selectedRecord];
+    selectedRecord = [(PuppetCollectionViewController *)puppetCollectionViewController selectedRecord];
 
-    if (v11 != v6)
+    if (selectedRecord != recordCopy)
     {
-      [(PuppetCollectionViewController *)self->_puppetCollectionViewController setSelectedRecord:v6];
+      [(PuppetCollectionViewController *)self->_puppetCollectionViewController setSelectedRecord:recordCopy];
       [(PuppetCollectionViewController *)self->_puppetCollectionViewController reloadSelection];
     }
   }
@@ -3153,9 +3153,9 @@ LABEL_17:
   }
 }
 
-- (void)carouselController:(id)a3 willEndFocusOnRecordView:(id)a4
+- (void)carouselController:(id)controller willEndFocusOnRecordView:(id)view
 {
-  [(MessagesViewController *)self preparePuppetViewForReuse:a3];
+  [(MessagesViewController *)self preparePuppetViewForReuse:controller];
   if (!self->_isUpdatingAvatarMode)
   {
     [(MessagesViewController *)self fadeOut:self->_replayMessageButton];
@@ -3167,14 +3167,14 @@ LABEL_17:
   objc_storeWeak(&self->_puppetView, 0);
 }
 
-- (void)carouselController:(id)a3 didMoveTowardRecord:(id)a4 withFactor:(double)a5
+- (void)carouselController:(id)controller didMoveTowardRecord:(id)record withFactor:(double)factor
 {
-  v25 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  recordCopy = record;
   if (self->_UIState == 3)
   {
     [(MessagesViewController *)self resumeFaceTrackingIfNecessary];
-    v9 = fmin(a5 * 5.0 + -3.0, 1.0);
+    v9 = fmin(factor * 5.0 + -3.0, 1.0);
     if (v9 >= 0.0)
     {
       v10 = v9;
@@ -3185,9 +3185,9 @@ LABEL_17:
       v10 = 0.0;
     }
 
-    if (v8)
+    if (recordCopy)
     {
-      v11 = [v8 isEditable];
+      isEditable = [recordCopy isEditable];
       p_userInfoIsBeingOverridden = &self->_userInfoIsBeingOverridden;
     }
 
@@ -3196,24 +3196,24 @@ LABEL_17:
       p_userInfoIsBeingOverridden = &self->_userInfoIsBeingOverridden;
       if (self->_userInfoIsBeingOverridden)
       {
-        v11 = 0;
+        isEditable = 0;
       }
 
       else
       {
-        v24 = [v25 focusedRecord];
+        focusedRecord = [controllerCopy focusedRecord];
 
-        v11 = 0;
-        if (a5 < 0.5 && v24)
+        isEditable = 0;
+        if (factor < 0.5 && focusedRecord)
         {
           goto LABEL_36;
         }
       }
     }
 
-    if (!*p_userInfoIsBeingOverridden || ([v25 focusedRecord], v13 = objc_claimAutoreleasedReturnValue(), v13, a5 >= 0.5) || v13 != v8)
+    if (!*p_userInfoIsBeingOverridden || ([controllerCopy focusedRecord], v13 = objc_claimAutoreleasedReturnValue(), v13, factor >= 0.5) || v13 != recordCopy)
     {
-      if (v11)
+      if (isEditable)
       {
         [(AVTCircularButton *)self->_editButton alpha];
         if (v10 >= v14)
@@ -3232,7 +3232,7 @@ LABEL_17:
       }
 
       [(AVTCircularButton *)self->_editButton setAlpha:v14];
-      if (v8)
+      if (recordCopy)
       {
         [(UIView *)self->_recordingButtonSuperview alpha];
         if (v10 >= v15)
@@ -3289,13 +3289,13 @@ LABEL_17:
 LABEL_36:
 }
 
-- (void)dismissLaunchScreenIfNecessaryForPresentationStyle:(unint64_t)a3 controller:(id)a4
+- (void)dismissLaunchScreenIfNecessaryForPresentationStyle:(unint64_t)style controller:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   AVTUISetHasDisplayedAnimojiSplashScreen();
   AVTUISetHasDisplayedAnimojiCameraDisclosureSplashScreen();
   self->_displaysLaunchScreen = 0;
-  v7 = [(MessagesViewController *)self presentsLaunchScreenInFullScreenModal];
+  presentsLaunchScreenInFullScreenModal = [(MessagesViewController *)self presentsLaunchScreenInFullScreenModal];
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -3304,22 +3304,22 @@ LABEL_36:
   v25[1] = 3221225472;
   v25[2] = sub_10000F708;
   v25[3] = &unk_100034C28;
-  v26 = v7;
+  v26 = presentsLaunchScreenInFullScreenModal;
   v25[4] = self;
   v25[5] = &v27;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10000F764;
   v22[3] = &unk_100034C50;
-  v24 = v7;
+  v24 = presentsLaunchScreenInFullScreenModal;
   v8 = objc_retainBlock(v25);
   v23 = v8;
-  [(MessagesViewController *)self performWhileOverridingPresentationStyle:a3 block:v22];
+  [(MessagesViewController *)self performWhileOverridingPresentationStyle:style block:v22];
   [(MessagesViewController *)self beginObservingFaceTrackingIfNecessary];
-  if (v7)
+  if (presentsLaunchScreenInFullScreenModal)
   {
-    v9 = [v6 parentViewController];
-    [v9 dismiss];
+    parentViewController = [controllerCopy parentViewController];
+    [parentViewController dismiss];
     if ([(MessagesViewController *)self requestsExpandedOnLaunchScreenDismissal])
     {
       v10 = dispatch_time(0, 300000000);
@@ -3334,18 +3334,18 @@ LABEL_36:
 
   else
   {
-    v11 = [(MessagesViewController *)self parentMessagesViewController];
-    v12 = [v11 launchViewContainer];
+    parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+    launchViewContainer = [parentMessagesViewController launchViewContainer];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10000F7A0;
     v17[3] = &unk_100034800;
-    v13 = v6;
+    v13 = controllerCopy;
     v18 = v13;
-    v19 = self;
-    v9 = v12;
-    v20 = v9;
+    selfCopy = self;
+    parentViewController = launchViewContainer;
+    v20 = parentViewController;
     v14 = objc_retainBlock(v17);
     v15 = [LaunchTransitionController controllerForTransitioningBetweenMessagesController:self andLaunchController:v13];
     v16 = v15;
@@ -3363,9 +3363,9 @@ LABEL_36:
   _Block_object_dispose(&v27, 8);
 }
 
-- (void)launchViewControllerDidConfirm:(id)a3
+- (void)launchViewControllerDidConfirm:(id)confirm
 {
-  v4 = a3;
+  confirmCopy = confirm;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
@@ -3373,10 +3373,10 @@ LABEL_36:
   }
 
   [(AVTRecordingCarouselController *)self->_avatarListController setIsPostponingBeginSession:0];
-  [(MessagesViewController *)self dismissLaunchScreenIfNecessaryForPresentationStyle:[(MessagesViewController *)self presentationStyle] controller:v4];
+  [(MessagesViewController *)self dismissLaunchScreenIfNecessaryForPresentationStyle:[(MessagesViewController *)self presentationStyle] controller:confirmCopy];
 }
 
-- (void)launchViewControllerDidCancel:(id)a3
+- (void)launchViewControllerDidCancel:(id)cancel
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -3387,34 +3387,34 @@ LABEL_36:
   [(MessagesViewController *)self dismiss];
 }
 
-- (void)puppetCollectionViewController:(id)a3 didSelectPuppetRecord:(id)a4
+- (void)puppetCollectionViewController:(id)controller didSelectPuppetRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  recordCopy = record;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v7 identifier];
+    identifier = [recordCopy identifier];
     v18 = 138412546;
-    v19 = v7;
+    v19 = recordCopy;
     v20 = 2112;
-    v21 = v8;
+    v21 = identifier;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] puppetCollectionViewController: %@ identifier: %@", &v18, 0x16u);
   }
 
   kdebug_trace();
   [(MessagesViewController *)self resumeFaceTrackingIfNecessary];
-  if (v7)
+  if (recordCopy)
   {
-    v9 = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
-    if (!v9 || (v10 = v9, -[AVTRecordingCarouselController focusedRecord](self->_avatarListController, "focusedRecord"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqual:v7], v11, v10, (v12 & 1) == 0))
+    focusedRecord = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
+    if (!focusedRecord || (v10 = focusedRecord, -[AVTRecordingCarouselController focusedRecord](self->_avatarListController, "focusedRecord"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqual:recordCopy], v11, v10, (v12 & 1) == 0))
     {
       v13 = +[NSUserDefaults standardUserDefaults];
-      v14 = [v7 identifier];
-      [v13 setValue:v14 forKey:@"LastPuppetIdentifier"];
+      identifier2 = [recordCopy identifier];
+      [v13 setValue:identifier2 forKey:@"LastPuppetIdentifier"];
 
       avatarListController = self->_avatarListController;
-      v16 = [v7 identifier];
-      [(AVTRecordingCarouselController *)avatarListController displayAvatarRecordWithIdentifier:v16 animated:1];
+      identifier3 = [recordCopy identifier];
+      [(AVTRecordingCarouselController *)avatarListController displayAvatarRecordWithIdentifier:identifier3 animated:1];
 
       if (self->_UIState == 5)
       {
@@ -3432,7 +3432,7 @@ LABEL_36:
   kdebug_trace();
 }
 
-- (double)verticalCellSpacingForPuppetCollectionViewController:(id)a3
+- (double)verticalCellSpacingForPuppetCollectionViewController:(id)controller
 {
   v4 = +[UIDevice currentDevice];
   if ([v4 userInterfaceIdiom] == 1)
@@ -3442,10 +3442,10 @@ LABEL_36:
   else
   {
     v5 = +[UIDevice currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    userInterfaceIdiom = [v5 userInterfaceIdiom];
 
     result = 16.0;
-    if (v6 != 5)
+    if (userInterfaceIdiom != 5)
     {
       return result;
     }
@@ -3455,7 +3455,7 @@ LABEL_36:
   return 20.0;
 }
 
-- (double)horizontalCellSpacingForPuppetCollectionViewController:(id)a3
+- (double)horizontalCellSpacingForPuppetCollectionViewController:(id)controller
 {
   v4 = +[UIDevice currentDevice];
   if ([v4 userInterfaceIdiom] == 1)
@@ -3465,10 +3465,10 @@ LABEL_36:
   else
   {
     v5 = +[UIDevice currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    userInterfaceIdiom = [v5 userInterfaceIdiom];
 
     result = 16.0;
-    if (v6 != 5)
+    if (userInterfaceIdiom != 5)
     {
       return result;
     }
@@ -3478,7 +3478,7 @@ LABEL_36:
   return 20.0;
 }
 
-- (UIEdgeInsets)contentInsetForPuppetCollectionViewController:(id)a3
+- (UIEdgeInsets)contentInsetForPuppetCollectionViewController:(id)controller
 {
   v4 = +[UIDevice currentDevice];
   if ([v4 userInterfaceIdiom] == 1)
@@ -3490,9 +3490,9 @@ LABEL_4:
   }
 
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if (v6 == 5)
+  if (userInterfaceIdiom == 5)
   {
     goto LABEL_4;
   }
@@ -3511,17 +3511,17 @@ LABEL_5:
 
 - (int)widthExtent
 {
-  v3 = [(MessagesViewController *)self isLandscapeMode];
-  v4 = [(MessagesViewController *)self view];
-  v5 = [v4 window];
-  [v5 bounds];
+  isLandscapeMode = [(MessagesViewController *)self isLandscapeMode];
+  view = [(MessagesViewController *)self view];
+  window = [view window];
+  [window bounds];
   Width = CGRectGetWidth(v28);
 
-  v7 = [(MessagesViewController *)self view];
-  v8 = [v7 window];
-  v9 = [v8 windowScene];
-  v10 = [v9 screen];
-  [v10 _referenceBounds];
+  view2 = [(MessagesViewController *)self view];
+  window2 = [view2 window];
+  windowScene = [window2 windowScene];
+  screen = [windowScene screen];
+  [screen _referenceBounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -3531,7 +3531,7 @@ LABEL_5:
   v20 = v14;
   v21 = v16;
   v22 = v18;
-  if (v3)
+  if (isLandscapeMode)
   {
     v23 = Width / CGRectGetHeight(*&v19);
     if (fabs(v23 + -1.0) <= 0.05)
@@ -3591,23 +3591,23 @@ LABEL_5:
   else
   {
     v4 = +[UIDevice currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-    if (v5 != 5)
+    if (userInterfaceIdiom != 5)
     {
       return 4;
     }
   }
 
-  v6 = [(MessagesViewController *)self widthExtent];
-  if (v6 < 7)
+  widthExtent = [(MessagesViewController *)self widthExtent];
+  if (widthExtent < 7)
   {
-    return qword_10002EE80[v6];
+    return qword_10002EE80[widthExtent];
   }
 
-  v8 = [(MessagesViewController *)self view];
-  v9 = [v8 window];
-  [v9 bounds];
+  view = [(MessagesViewController *)self view];
+  window = [view window];
+  [window bounds];
   v7 = (CGRectGetWidth(v11) / 100.0);
 
   return v7;
@@ -3615,17 +3615,17 @@ LABEL_5:
 
 - (double)widthScaleFactor
 {
-  v3 = [(MessagesViewController *)self isLandscapeMode];
-  v4 = [(MessagesViewController *)self view];
-  v5 = [v4 window];
-  [v5 bounds];
+  isLandscapeMode = [(MessagesViewController *)self isLandscapeMode];
+  view = [(MessagesViewController *)self view];
+  window = [view window];
+  [window bounds];
   Width = CGRectGetWidth(v25);
 
-  v7 = [(MessagesViewController *)self view];
-  v8 = [v7 window];
-  v9 = [v8 windowScene];
-  v10 = [v9 screen];
-  [v10 _referenceBounds];
+  view2 = [(MessagesViewController *)self view];
+  window2 = [view2 window];
+  windowScene = [window2 windowScene];
+  screen = [windowScene screen];
+  [screen _referenceBounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -3635,7 +3635,7 @@ LABEL_5:
   v20 = v14;
   v21 = v16;
   v22 = v18;
-  if (v3)
+  if (isLandscapeMode)
   {
     Height = CGRectGetHeight(*&v19);
   }
@@ -3651,8 +3651,8 @@ LABEL_5:
 - (double)carouselHeight
 {
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
-  if (v5 != 1)
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
+  if (userInterfaceIdiom != 1)
   {
     v2 = +[UIDevice currentDevice];
     if ([v2 userInterfaceIdiom] != 5)
@@ -3664,8 +3664,8 @@ LABEL_11:
     }
   }
 
-  v6 = [(MessagesViewController *)self view];
-  [v6 bounds];
+  view = [(MessagesViewController *)self view];
+  [view bounds];
   if (v7 <= 400.0)
   {
     v10 = 0;
@@ -3673,24 +3673,24 @@ LABEL_11:
 
   else
   {
-    v8 = [(MessagesViewController *)self view];
-    v9 = [v8 traitCollection];
-    v10 = [v9 horizontalSizeClass] == 2 || -[MessagesViewController presentationStyle](self, "presentationStyle") == 0;
+    view2 = [(MessagesViewController *)self view];
+    traitCollection = [view2 traitCollection];
+    v10 = [traitCollection horizontalSizeClass] == 2 || -[MessagesViewController presentationStyle](self, "presentationStyle") == 0;
   }
 
-  if (v5 != 1)
+  if (userInterfaceIdiom != 1)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  v11 = [(MessagesViewController *)self isSpeculatingLayout];
+  isSpeculatingLayout = [(MessagesViewController *)self isSpeculatingLayout];
   if ([(MessagesViewController *)self presentationStyle]!= 1)
   {
-    if (v11)
+    if (isSpeculatingLayout)
     {
-      v19 = &__NSArray0__struct;
+      _detentValues = &__NSArray0__struct;
       if (!v10)
       {
         goto LABEL_25;
@@ -3699,12 +3699,12 @@ LABEL_12:
       goto LABEL_30;
     }
 
-    v23 = [(MessagesViewController *)self view];
-    v24 = [v23 window];
+    view3 = [(MessagesViewController *)self view];
+    window = [view3 window];
 
-    v25 = [v24 _rootSheetPresentationController];
-    v19 = [v25 _detentValues];
-    if ([v19 count] <= 1)
+    _rootSheetPresentationController = [window _rootSheetPresentationController];
+    _detentValues = [_rootSheetPresentationController _detentValues];
+    if ([_detentValues count] <= 1)
     {
 
       if (v10)
@@ -3715,17 +3715,17 @@ LABEL_12:
 
     else
     {
-      v26 = [v19 objectAtIndexedSubscript:1];
+      v26 = [_detentValues objectAtIndexedSubscript:1];
       [v26 doubleValue];
       v28 = v27;
 
       if (v28 != UISheetPresentationControllerDetentInactive)
       {
-        v34 = [(MessagesViewController *)self view];
-        [v34 safeAreaInsets];
+        view4 = [(MessagesViewController *)self view];
+        [view4 safeAreaInsets];
         v36 = v35;
 
-        v37 = [v19 objectAtIndexedSubscript:1];
+        v37 = [_detentValues objectAtIndexedSubscript:1];
         [v37 doubleValue];
         v16 = v38 - v36;
 
@@ -3735,12 +3735,12 @@ LABEL_12:
       if (v10)
       {
 LABEL_30:
-        v29 = [(MessagesViewController *)self isLandscapeMode];
+        isLandscapeMode = [(MessagesViewController *)self isLandscapeMode];
         v30 = +[UIScreen mainScreen];
         [v30 _referenceBounds];
         v32 = v31;
 
-        if (v29)
+        if (isLandscapeMode)
         {
           if (v32 > 1194.0)
           {
@@ -3811,7 +3811,7 @@ LABEL_25:
     v16 = 311.0;
   }
 
-  if (!(v11 & 1 | !v10))
+  if (!(isSpeculatingLayout & 1 | !v10))
   {
     [(MessagesViewController *)self widthScaleFactor];
     v18 = v16 * v17;
@@ -3843,22 +3843,22 @@ LABEL_25:
 {
   if (self->_puppetCollectionViewController)
   {
-    v3 = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
-    [(PuppetCollectionViewController *)self->_puppetCollectionViewController setSelectedRecord:v3];
+    focusedRecord = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
+    [(PuppetCollectionViewController *)self->_puppetCollectionViewController setSelectedRecord:focusedRecord];
     [(MessagesViewController *)self updatePuppetCollectionViewIfNecessary];
   }
 }
 
-- (void)recordView:(id)a3 previewDidChangeStatus:(int64_t)a4
+- (void)recordView:(id)view previewDidChangeStatus:(int64_t)status
 {
-  v6 = a3;
+  viewCopy = view;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] recordView:previewDidChangeStatus", buf, 2u);
   }
 
-  if (a4 == 2)
+  if (status == 2)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -3869,7 +3869,7 @@ LABEL_25:
     [(MessagesViewController *)self fadeIn:self->_replayMessageButton];
   }
 
-  else if (!a4)
+  else if (!status)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -3880,14 +3880,14 @@ LABEL_25:
     [(MessagesViewController *)self fadeOut:self->_replayMessageButton];
   }
 
-  self->_lastPreviewStatus = a4;
+  self->_lastPreviewStatus = status;
 }
 
-- (void)recordView:(id)a3 session:(id)a4 didFailWithError:(id)a5
+- (void)recordView:(id)view session:(id)session didFailWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  sessionCopy = session;
+  errorCopy = error;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v18 = 0;
@@ -3928,10 +3928,10 @@ LABEL_8:
   }
 }
 
-- (void)recordView:(id)a3 sessionWasInterrupted:(id)a4
+- (void)recordView:(id)view sessionWasInterrupted:(id)interrupted
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  interruptedCopy = interrupted;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v15 = 0;
@@ -3974,7 +3974,7 @@ LABEL_8:
   [(MessagesViewController *)self addInternalARSessionObserverIfNecessary];
 }
 
-- (void)recordView:(id)a3 sessionInterruptionEnded:(id)a4
+- (void)recordView:(id)view sessionInterruptionEnded:(id)ended
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -4046,12 +4046,12 @@ LABEL_8:
   if (!v4)
   {
     v5 = objc_loadWeakRetained(&self->_puppetView);
-    v6 = [v5 arSession];
+    arSession = [v5 arSession];
 
-    if (v6)
+    if (arSession)
     {
-      [v6 _addObserver:self];
-      objc_storeWeak(&self->_observingSession, v6);
+      [arSession _addObserver:self];
+      objc_storeWeak(&self->_observingSession, arSession);
     }
   }
 }
@@ -4077,12 +4077,12 @@ LABEL_8:
   }
 }
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = a4;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] session didChangeState %lu", buf, 0xCu);
   }
 
@@ -4091,13 +4091,13 @@ LABEL_8:
   v6[2] = sub_100010E8C;
   v6[3] = &unk_1000348C8;
   v6[4] = self;
-  v6[5] = a4;
+  v6[5] = state;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)updateARSessionStateResettingState:(BOOL)a3
+- (void)updateARSessionStateResettingState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     self->_arSessionState = 5;
   }
@@ -4108,12 +4108,12 @@ LABEL_8:
     if (self->_arSessionState == 5)
     {
       v8 = WeakRetained;
-      v5 = [WeakRetained arSession];
-      v6 = [v5 state];
+      arSession = [WeakRetained arSession];
+      state = [arSession state];
 
-      if (v6)
+      if (state)
       {
-        if (v6 == 2)
+        if (state == 2)
         {
           v7 = 3;
         }
@@ -4121,7 +4121,7 @@ LABEL_8:
         else
         {
           WeakRetained = v8;
-          if (v6 != 1)
+          if (state != 1)
           {
             v7 = 5;
             goto LABEL_14;
@@ -4143,9 +4143,9 @@ LABEL_14:
   }
 }
 
-- (void)presentAvatarUIController:(id)a3 animated:(BOOL)a4
+- (void)presentAvatarUIController:(id)controller animated:(BOOL)animated
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -4158,7 +4158,7 @@ LABEL_14:
 
     if (!v6)
     {
-      [AVTUIControllerPresentation setPendingGlobalPresentation:v5];
+      [AVTUIControllerPresentation setPendingGlobalPresentation:controllerCopy];
       [(MessagesViewController *)self requestPresentationStyle:3];
       goto LABEL_12;
     }
@@ -4189,7 +4189,7 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)dismissAvatarUIControllerAnimated:(BOOL)a3
+- (void)dismissAvatarUIControllerAnimated:(BOOL)animated
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -4202,8 +4202,8 @@ LABEL_12:
     self->_isDismissingAvatarUIController = 1;
     [(MessagesViewController *)self updatePuppetCollectionViewIfNecessary];
     v4 = +[AVTUIControllerPresentation pendingGlobalPresentation];
-    v5 = [v4 modalMessagesController];
-    [v5 dismiss];
+    modalMessagesController = [v4 modalMessagesController];
+    [modalMessagesController dismiss];
 
     v6 = dispatch_time(0, 1000000000);
     block[0] = _NSConcreteStackBlock;
@@ -4215,13 +4215,13 @@ LABEL_12:
   }
 }
 
-- (void)updateUIState:(unint64_t)a3 animated:(BOOL)a4
+- (void)updateUIState:(unint64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v48 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] updateUIState (%lu)", buf, 0xCu);
   }
 
@@ -4229,32 +4229,32 @@ LABEL_12:
   WeakRetained = objc_loadWeakRetained(&self->_puppetCollectionViewContainer);
   [WeakRetained setUserInteractionEnabled:1];
 
-  v8 = [(MessagesViewController *)self presentationStyle];
-  self->_UIState = a3;
-  if (a3 > 2)
+  presentationStyle = [(MessagesViewController *)self presentationStyle];
+  self->_UIState = state;
+  if (state > 2)
   {
-    if (a3 <= 4)
+    if (state <= 4)
     {
-      if (a3 == 3)
+      if (state == 3)
       {
-        v22 = v8;
+        v22 = presentationStyle;
         [(AVTRecordingButton *)self->_recordingButton setUIState:0];
         v44[0] = _NSConcreteStackBlock;
         v44[1] = 3221225472;
         v44[2] = sub_100011B34;
         v44[3] = &unk_100034788;
         v44[4] = self;
-        [(MessagesViewController *)self performWithFadeAnimation:v44 enabled:v4];
-        v23 = [(MessagesViewController *)self parentMessagesViewController];
-        v24 = [v23 launchViewContainer];
-        v25 = v24;
-        if (v4)
+        [(MessagesViewController *)self performWithFadeAnimation:v44 enabled:animatedCopy];
+        parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+        launchViewContainer = [parentMessagesViewController launchViewContainer];
+        v25 = launchViewContainer;
+        if (animatedCopy)
         {
-          [(MessagesViewController *)self fadeIn:v24];
+          [(MessagesViewController *)self fadeIn:launchViewContainer];
 
-          v26 = [(MessagesViewController *)self parentMessagesViewController];
-          v27 = [v26 messagesViewContainer];
-          [(MessagesViewController *)self fadeIn:v27];
+          parentMessagesViewController2 = [(MessagesViewController *)self parentMessagesViewController];
+          messagesViewContainer = [parentMessagesViewController2 messagesViewContainer];
+          [(MessagesViewController *)self fadeIn:messagesViewContainer];
 
           [(MessagesViewController *)self fadeIn:self->_carouselView];
           v28 = objc_loadWeakRetained(&self->_puppetCollectionViewContainer);
@@ -4277,11 +4277,11 @@ LABEL_12:
         else
         {
           v29 = 1.0;
-          [v24 setAlpha:1.0];
+          [launchViewContainer setAlpha:1.0];
 
-          v30 = [(MessagesViewController *)self parentMessagesViewController];
-          v31 = [v30 messagesViewContainer];
-          [v31 setAlpha:1.0];
+          parentMessagesViewController3 = [(MessagesViewController *)self parentMessagesViewController];
+          messagesViewContainer2 = [parentMessagesViewController3 messagesViewContainer];
+          [messagesViewContainer2 setAlpha:1.0];
 
           [(UIView *)self->_carouselView setAlpha:1.0];
           if (v22 != 1)
@@ -4298,7 +4298,7 @@ LABEL_12:
           [(RecordingTimeDisplayView *)self->_recordingTimeDisplayView setAlpha:0.0];
         }
 
-        v10 = self;
+        selfCopy2 = self;
         v11 = 1;
       }
 
@@ -4318,18 +4318,18 @@ LABEL_12:
         v43[2] = sub_100011B78;
         v43[3] = &unk_100034788;
         v43[4] = self;
-        [(MessagesViewController *)self performWithFadeAnimation:v43 enabled:v4];
-        v10 = self;
+        [(MessagesViewController *)self performWithFadeAnimation:v43 enabled:animatedCopy];
+        selfCopy2 = self;
         v11 = 0;
       }
 
-      [(MessagesViewController *)v10 setAllowsCreate:v11 animated:v4];
+      [(MessagesViewController *)selfCopy2 setAllowsCreate:v11 animated:animatedCopy];
       return;
     }
 
-    if (a3 != 5)
+    if (state != 5)
     {
-      if (a3 != 6)
+      if (state != 6)
       {
         return;
       }
@@ -4346,9 +4346,9 @@ LABEL_12:
       v34 = 3221225472;
       v35 = sub_100011B90;
       v36 = &unk_100034788;
-      v37 = self;
+      selfCopy3 = self;
       v14 = &v33;
-      v15 = self;
+      selfCopy6 = self;
       v16 = 1;
       goto LABEL_21;
     }
@@ -4363,26 +4363,26 @@ LABEL_12:
     v39 = 3221225472;
     v40 = sub_100011B84;
     v41 = &unk_100034788;
-    v42 = self;
+    selfCopy5 = self;
     v14 = &v38;
 LABEL_20:
-    v15 = self;
-    v16 = v4;
+    selfCopy6 = self;
+    v16 = animatedCopy;
 LABEL_21:
-    [(MessagesViewController *)v15 performWithFadeAnimation:v14 enabled:v16, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42];
+    [(MessagesViewController *)selfCopy6 performWithFadeAnimation:v14 enabled:v16, v33, v34, v35, v36, selfCopy3, v38, v39, v40, v41, selfCopy5];
     return;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 0uLL:
-      v17 = [(MessagesViewController *)self parentMessagesViewController];
-      v18 = [v17 messagesViewContainer];
-      [v18 setAlpha:0.0];
+      parentMessagesViewController4 = [(MessagesViewController *)self parentMessagesViewController];
+      messagesViewContainer3 = [parentMessagesViewController4 messagesViewContainer];
+      [messagesViewContainer3 setAlpha:0.0];
 
-      v19 = [(MessagesViewController *)self parentMessagesViewController];
-      v20 = [v19 launchViewContainer];
-      [v20 setAlpha:0.0];
+      parentMessagesViewController5 = [(MessagesViewController *)self parentMessagesViewController];
+      launchViewContainer2 = [parentMessagesViewController5 launchViewContainer];
+      [launchViewContainer2 setAlpha:0.0];
 
       v21 = objc_loadWeakRetained(&self->_puppetCollectionViewContainer);
       [v21 setAlpha:0.0];
@@ -4419,7 +4419,7 @@ LABEL_21:
   }
 }
 
-- (void)handleResumeTrackingTap:(id)a3
+- (void)handleResumeTrackingTap:(id)tap
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -4443,15 +4443,15 @@ LABEL_21:
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    v6 = WeakRetained;
+    focusedRecordingView = WeakRetained;
   }
 
   else
   {
-    v6 = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecordingView];
+    focusedRecordingView = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecordingView];
   }
 
-  v11 = v6;
+  v11 = focusedRecordingView;
 
   if (([v11 faceTrackingIsPaused] & 1) != 0 || self->_arSessionState == 4)
   {
@@ -4510,9 +4510,9 @@ LABEL_21:
 LABEL_25:
 }
 
-- (void)handleSceneShortPress:(id)a3
+- (void)handleSceneShortPress:(id)press
 {
-  v4 = a3;
+  pressCopy = press;
   if ([(MessagesViewController *)self canPeelSticker])
   {
     self->_isMakingSticker = 1;
@@ -4523,8 +4523,8 @@ LABEL_25:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_puppetView);
-    v6 = [WeakRetained superview];
-    [v4 locationInView:v6];
+    superview = [WeakRetained superview];
+    [pressCopy locationInView:superview];
     v8 = v7;
     v10 = v9;
 
@@ -4537,17 +4537,17 @@ LABEL_25:
     if (([(MessagesViewController *)self presentationStyle]|| v16 <= 100.0) && (![(MessagesViewController *)self isExpanded]|| v16 <= 160.0))
     {
       v17 = objc_loadWeakRetained(&self->_puppetView);
-      v18 = [v17 superview];
+      superview2 = [v17 superview];
       [(UIView *)self->_recordingButtonSuperview center];
       v20 = v19;
       v22 = v21;
       v23 = objc_loadWeakRetained(&self->_puppetView);
-      v24 = [v23 superview];
-      [v18 convertPoint:v24 toView:{v20, v22}];
+      superview3 = [v23 superview];
+      [superview2 convertPoint:superview3 toView:{v20, v22}];
       v26 = v25;
       v28 = v27;
 
-      if (sqrt((v10 - v28) * (v10 - v28) + (v8 - v26) * (v8 - v26)) >= 40.0 && [v4 state] == 3)
+      if (sqrt((v10 - v28) * (v10 - v28) + (v8 - v26) * (v8 - v26)) >= 40.0 && [pressCopy state] == 3)
       {
         v29[0] = _NSConcreteStackBlock;
         v29[1] = 3221225472;
@@ -4565,21 +4565,21 @@ LABEL_25:
   }
 }
 
-- (void)handleSceneLongPress:(id)a3
+- (void)handleSceneLongPress:(id)press
 {
-  v4 = a3;
+  pressCopy = press;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] handleSceneLongPress", buf, 2u);
   }
 
-  if ([v4 state] == 1)
+  if ([pressCopy state] == 1)
   {
     if ([(MessagesViewController *)self shouldShowDisclosureAlertForSendingMessage])
     {
-      [v4 setEnabled:0];
-      [v4 setEnabled:1];
+      [pressCopy setEnabled:0];
+      [pressCopy setEnabled:1];
       [(MessagesViewController *)self showAlertForDisclosureWarningWithConfirmTitle:@"OK" completionBlock:0];
     }
 
@@ -4603,9 +4603,9 @@ LABEL_25:
       block[2] = sub_100012EC0;
       block[3] = &unk_100034D18;
       v59 = v15;
-      v17 = v4;
+      v17 = pressCopy;
       v57 = v17;
-      v58 = self;
+      selfCopy = self;
       v50 = v15;
       dispatch_after(v16, &_dispatch_main_q, block);
       [(AVTUserInfoView *)self->_userInfoView setHidden:1];
@@ -4620,8 +4620,8 @@ LABEL_25:
       [(MSStickerView *)v22 setBackgroundColor:v23];
 
       [(MSStickerView *)v22 setUserInteractionEnabled:0];
-      v24 = [(MessagesViewController *)self view];
-      [v24 addSubview:v22];
+      view = [(MessagesViewController *)self view];
+      [view addSubview:v22];
 
       [(MSStickerView *)v22 sizeToFit];
       [(MSStickerView *)v22 frame];
@@ -4658,21 +4658,21 @@ LABEL_25:
       }
 
       [(MSStickerView *)v22 setFrame:v26, v28, v30 * (Height / v38), v32 * (Height / v38), v50];
-      v39 = [(MSStickerView *)v22 superview];
+      superview = [(MSStickerView *)v22 superview];
       v40 = objc_loadWeakRetained(&self->_puppetView);
       [v40 center];
       v42 = v41;
       v44 = v43;
       v45 = objc_loadWeakRetained(&self->_puppetView);
-      v46 = [v45 superview];
-      [v39 convertPoint:v46 fromView:{v42, v44}];
+      superview2 = [v45 superview];
+      [superview convertPoint:superview2 fromView:{v42, v44}];
       [(MSStickerView *)v22 setCenter:?];
 
       v47 = objc_loadWeakRetained(&self->_puppetView);
       [v47 setAlpha:0.0];
 
-      v48 = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
-      [(AVTUsageTrackingSession *)self->_usageTrackingSession didSendStickerWithAvatar:v48];
+      focusedRecord = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
+      [(AVTUsageTrackingSession *)self->_usageTrackingSession didSendStickerWithAvatar:focusedRecord];
       [(MSStickerView *)v22 layoutIfNeeded];
       [(MSStickerView *)v22 handleLongPress:v17];
       stickerView = self->_stickerView;
@@ -4680,7 +4680,7 @@ LABEL_25:
     }
   }
 
-  else if ([v4 state] == 3 || objc_msgSend(v4, "state") == 5 || objc_msgSend(v4, "state") == 4)
+  else if ([pressCopy state] == 3 || objc_msgSend(pressCopy, "state") == 5 || objc_msgSend(pressCopy, "state") == 4)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -4692,8 +4692,8 @@ LABEL_25:
     if (v5)
     {
       v6 = v5;
-      v7 = [(AVTRecordingCarouselController *)self->_avatarListController view];
-      [v7 center];
+      view2 = [(AVTRecordingCarouselController *)self->_avatarListController view];
+      [view2 center];
       [(MSStickerView *)v6 setCenter:?];
 
       v8 = self->_stickerView;
@@ -4750,9 +4750,9 @@ LABEL_25:
   [WeakRetained stopPreviewing];
 }
 
-- (void)handleRecordingButtonTouchUp:(id)a3
+- (void)handleRecordingButtonTouchUp:(id)up
 {
-  v4 = a3;
+  upCopy = up;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v8 = 0;
@@ -4764,9 +4764,9 @@ LABEL_25:
   {
     case 3uLL:
       WeakRetained = objc_loadWeakRetained(&self->_puppetView);
-      v7 = [WeakRetained faceIsTracked];
+      faceIsTracked = [WeakRetained faceIsTracked];
 
-      if (v7)
+      if (faceIsTracked)
       {
         [(MessagesViewController *)self recordingWillStart];
         [(MessagesViewController *)self updateUIState:4 animated:1];
@@ -4777,7 +4777,7 @@ LABEL_25:
       UIState = self->_UIState;
       break;
     case 5uLL:
-      [(MessagesViewController *)self onConfirmSendingMessage:v4];
+      [(MessagesViewController *)self onConfirmSendingMessage:upCopy];
       break;
     case 4uLL:
       [(MessagesViewController *)self stopRecordingAndPlayPreview:1];
@@ -4785,9 +4785,9 @@ LABEL_25:
   }
 }
 
-- (void)recordingButtonDidStartLongPress:(id)a3
+- (void)recordingButtonDidStartLongPress:(id)press
 {
-  v4 = a3;
+  pressCopy = press;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v7 = 0;
@@ -4797,9 +4797,9 @@ LABEL_25:
   if (self->_UIState == 3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_puppetView);
-    v6 = [WeakRetained faceIsTracked];
+    faceIsTracked = [WeakRetained faceIsTracked];
 
-    if (v6)
+    if (faceIsTracked)
     {
       [(MessagesViewController *)self recordingWillStart];
       [(MessagesViewController *)self updateUIState:4 animated:1];
@@ -4808,21 +4808,21 @@ LABEL_25:
   }
 }
 
-- (void)recordingButton:(id)a3 didEndLongPress:(BOOL)a4
+- (void)recordingButton:(id)button didEndLongPress:(BOOL)press
 {
-  v4 = a4;
-  v6 = a3;
+  pressCopy = press;
+  buttonCopy = button;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v4;
+    v7[1] = pressCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] recordingButtonDidEndLongPress cancelled:%d", v7, 8u);
   }
 
   if (self->_UIState == 4)
   {
     [(AVTRecordingButton *)self->_recordingButton cancelTrackingWithEvent:0];
-    if (v4)
+    if (pressCopy)
     {
       [(MessagesViewController *)self stopRecordingAndPlayPreview:0];
       [(MessagesViewController *)self discardRecording];
@@ -4864,9 +4864,9 @@ LABEL_25:
   }
 }
 
-- (void)stopRecordingAndPlayPreview:(BOOL)a3
+- (void)stopRecordingAndPlayPreview:(BOOL)preview
 {
-  v3 = a3;
+  previewCopy = preview;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
@@ -4877,7 +4877,7 @@ LABEL_25:
   recordTimer = self->_recordTimer;
   self->_recordTimer = 0;
 
-  [(MessagesViewController *)self recordingDidFinish:v3];
+  [(MessagesViewController *)self recordingDidFinish:previewCopy];
 }
 
 - (void)updateRecordingTime
@@ -4904,15 +4904,15 @@ LABEL_25:
 
   if (v8)
   {
-    v9 = [(RecordingTimeDisplayView *)self->_recordingTimeDisplayView timerLabel];
-    [v9 setText:v4];
+    timerLabel = [(RecordingTimeDisplayView *)self->_recordingTimeDisplayView timerLabel];
+    [timerLabel setText:v4];
   }
 
   else
   {
-    v9 = [v5 stringByAppendingString:v4];
-    v10 = [(RecordingTimeDisplayView *)self->_recordingTimeDisplayView timerLabel];
-    [v10 setText:v9];
+    timerLabel = [v5 stringByAppendingString:v4];
+    timerLabel2 = [(RecordingTimeDisplayView *)self->_recordingTimeDisplayView timerLabel];
+    [timerLabel2 setText:timerLabel];
   }
 
   if (self->_recording && recordingElapsedTime == 30.0)
@@ -4951,9 +4951,9 @@ LABEL_25:
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v5 localizedDescription];
+        localizedDescription = [v5 localizedDescription];
         *buf = 138412290;
-        v10 = v7;
+        v10 = localizedDescription;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] disableIdleTimer: Failed to disable idle timer with error %@", buf, 0xCu);
       }
     }
@@ -4994,8 +4994,8 @@ LABEL_25:
   }
 
   [(MessagesViewController *)self setSingleAvatarMode:1 animated:1];
-  v6 = +[NSUserDefaults standardUserDefaults];
-  if ([v6 BOOLForKey:@"JFDefaults_ShouldLogFacetracking"])
+  faceTrackingRecordingURL = +[NSUserDefaults standardUserDefaults];
+  if ([faceTrackingRecordingURL BOOLForKey:@"JFDefaults_ShouldLogFacetracking"])
   {
     videoLoggingFolder = self->_videoLoggingFolder;
 
@@ -5004,9 +5004,9 @@ LABEL_25:
       goto LABEL_9;
     }
 
-    v6 = [(MessagesViewController *)self faceTrackingRecordingURL];
+    faceTrackingRecordingURL = [(MessagesViewController *)self faceTrackingRecordingURL];
     WeakRetained = objc_loadWeakRetained(&self->_puppetView);
-    [WeakRetained setFaceTrackingRecordingURL:v6];
+    [WeakRetained setFaceTrackingRecordingURL:faceTrackingRecordingURL];
   }
 
 LABEL_9:
@@ -5015,13 +5015,13 @@ LABEL_9:
 
   if ([(MessagesViewController *)self shouldZoomWhileRecording])
   {
-    v10 = [(MessagesViewController *)self retargetableSpringBehavior];
+    retargetableSpringBehavior = [(MessagesViewController *)self retargetableSpringBehavior];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100013CA8;
     v11[3] = &unk_100034788;
     v11[4] = self;
-    [UIView _animateUsingSpringBehavior:v10 tracking:0 animations:v11 completion:0];
+    [UIView _animateUsingSpringBehavior:retargetableSpringBehavior tracking:0 animations:v11 completion:0];
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -5031,9 +5031,9 @@ LABEL_9:
   }
 }
 
-- (void)recordingDidFinish:(BOOL)a3
+- (void)recordingDidFinish:(BOOL)finish
 {
-  v3 = a3;
+  finishCopy = finish;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -5043,13 +5043,13 @@ LABEL_9:
   self->_recording = 0;
   if ([(MessagesViewController *)self shouldZoomWhileRecording])
   {
-    v5 = [(MessagesViewController *)self retargetableSpringBehavior];
+    retargetableSpringBehavior = [(MessagesViewController *)self retargetableSpringBehavior];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100013F7C;
     v12[3] = &unk_100034788;
     v12[4] = self;
-    [UIView _animateUsingSpringBehavior:v5 tracking:0 animations:v12 completion:0];
+    [UIView _animateUsingSpringBehavior:retargetableSpringBehavior tracking:0 animations:v12 completion:0];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_puppetView);
@@ -5069,9 +5069,9 @@ LABEL_9:
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_puppetView);
-    v10 = [v9 faceTrackingRecordingURL];
+    faceTrackingRecordingURL = [v9 faceTrackingRecordingURL];
 
-    if (v10)
+    if (faceTrackingRecordingURL)
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
@@ -5083,7 +5083,7 @@ LABEL_9:
   }
 
   [(AVTUsageTrackingSession *)self->_usageTrackingSession didRecordVideo];
-  if (v3)
+  if (finishCopy)
   {
     [(MessagesViewController *)self playPreviewOnce];
     [(MessagesViewController *)self updateUIState:5 animated:1];
@@ -5107,9 +5107,9 @@ LABEL_9:
   return v4;
 }
 
-- (id)stickerImageUsingLargeSticker:(BOOL)a3
+- (id)stickerImageUsingLargeSticker:(BOOL)sticker
 {
-  if (a3)
+  if (sticker)
   {
     [(MessagesViewController *)self defaultVideoExportDimensions];
     v5 = v4;
@@ -5153,9 +5153,9 @@ LABEL_9:
   return v20;
 }
 
-- (id)stickerUsingLargeSticker:(BOOL)a3
+- (id)stickerUsingLargeSticker:(BOOL)sticker
 {
-  v4 = [(MessagesViewController *)self stickerImageUsingLargeSticker:a3];
+  v4 = [(MessagesViewController *)self stickerImageUsingLargeSticker:sticker];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
@@ -5164,89 +5164,89 @@ LABEL_9:
   }
 
   v5 = UIImagePNGRepresentation(v4);
-  v6 = [(NSURL *)self->_stickerFolder path];
+  path = [(NSURL *)self->_stickerFolder path];
   v7 = [NSString stringWithFormat:@"/View%d.png", CFAbsoluteTimeGetCurrent()];
-  v8 = [v6 stringByAppendingString:v7];
+  v8 = [path stringByAppendingString:v7];
 
   v9 = [NSURL fileURLWithPath:v8];
   [v5 writeToURL:v9 atomically:1];
-  v10 = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
-  v11 = [AXUIAvatarUtilities descriptionForAvatarWithRecord:v10 includeVideoPrefix:0];
+  focusedRecord = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
+  v11 = [AXUIAvatarUtilities descriptionForAvatarWithRecord:focusedRecord includeVideoPrefix:0];
 
   v12 = [[MSSticker alloc] initWithContentsOfFileURL:v9 localizedDescription:v11 error:0];
 
   return v12;
 }
 
-- (id)puppetSnapshotWithContentMode:(int64_t)a3
+- (id)puppetSnapshotWithContentMode:(int64_t)mode
 {
   WeakRetained = objc_loadWeakRetained(&self->_puppetView);
-  v6 = [WeakRetained snapshot];
+  snapshot = [WeakRetained snapshot];
 
   v7 = [UIImageView alloc];
   v8 = objc_loadWeakRetained(&self->_puppetView);
   [v8 frame];
   v9 = [v7 initWithFrame:?];
 
-  [v9 setImage:v6];
-  [v9 setContentMode:a3];
+  [v9 setImage:snapshot];
+  [v9 setContentMode:mode];
 
   return v9;
 }
 
-- (void)performWithFadeAnimation:(id)a3 enabled:(BOOL)a4
+- (void)performWithFadeAnimation:(id)animation enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  enabledCopy = enabled;
+  animationCopy = animation;
+  v6 = animationCopy;
+  if (enabledCopy)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100014990;
     v7[3] = &unk_100034A48;
-    v8 = v5;
+    v8 = animationCopy;
     [UIView animateWithDuration:v7 animations:0.2];
   }
 
   else
   {
-    v5[2](v5);
+    animationCopy[2](animationCopy);
   }
 }
 
-- (void)fadeIn:(id)a3
+- (void)fadeIn:(id)in
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100014A38;
   v5[3] = &unk_100034788;
-  v6 = a3;
-  v4 = v6;
+  inCopy = in;
+  v4 = inCopy;
   [(MessagesViewController *)self performWithFadeAnimation:v5 enabled:1];
 }
 
-- (void)fadeOut:(id)a3
+- (void)fadeOut:(id)out
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100014ADC;
   v5[3] = &unk_100034788;
-  v6 = a3;
-  v4 = v6;
+  outCopy = out;
+  v4 = outCopy;
   [(MessagesViewController *)self performWithFadeAnimation:v5 enabled:1];
 }
 
-- (void)showUserInfoLabelWithText:(id)a3
+- (void)showUserInfoLabelWithText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if (!self->_displaysLaunchScreen && self->_UIState != 2)
   {
     self->_userInfoAlpha = 1.0;
-    objc_storeStrong(&self->_userInfoText, a3);
+    objc_storeStrong(&self->_userInfoText, text);
     if (!self->_userInfoIsBeingOverridden)
     {
-      [(AVTUserInfoView *)self->_userInfoView setText:v5];
+      [(AVTUserInfoView *)self->_userInfoView setText:textCopy];
       v6[0] = _NSConcreteStackBlock;
       v6[1] = 3221225472;
       v6[2] = sub_100014BF4;
@@ -5257,7 +5257,7 @@ LABEL_9:
   }
 }
 
-- (void)hideUserInfoLabelWithDuration:(double)a3
+- (void)hideUserInfoLabelWithDuration:(double)duration
 {
   self->_userInfoAlpha = 0.0;
   userInfoText = self->_userInfoText;
@@ -5268,28 +5268,28 @@ LABEL_9:
   v6[2] = sub_100014CCC;
   v6[3] = &unk_100034788;
   v6[4] = self;
-  [UIView animateWithDuration:v6 animations:0 completion:a3];
+  [UIView animateWithDuration:v6 animations:0 completion:duration];
 }
 
-- (void)overrideUserInfoLabelStateWithText:(id)a3 alpha:(double)a4
+- (void)overrideUserInfoLabelStateWithText:(id)text alpha:(double)alpha
 {
-  v6 = a3;
+  textCopy = text;
   self->_userInfoIsBeingOverridden = 1;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_100014DB8;
   v11 = &unk_100034AE8;
-  v12 = self;
-  v13 = v6;
-  v7 = v6;
+  selfCopy = self;
+  v13 = textCopy;
+  v7 = textCopy;
   [UIView performWithoutAnimation:&v8];
-  [(AVTUserInfoView *)self->_userInfoView setAlpha:a4, v8, v9, v10, v11, v12];
+  [(AVTUserInfoView *)self->_userInfoView setAlpha:alpha, v8, v9, v10, v11, selfCopy];
 }
 
-- (void)stopOverridingUserInfoLabelState:(BOOL)a3
+- (void)stopOverridingUserInfoLabelState:(BOOL)state
 {
   self->_userInfoIsBeingOverridden = 0;
-  if (a3 && self->_userInfoAlpha > 0.0 && self->_userInfoText)
+  if (state && self->_userInfoAlpha > 0.0 && self->_userInfoText)
   {
     [(AVTUserInfoView *)self->_userInfoView setText:?];
     userInfoAlpha = self->_userInfoAlpha;
@@ -5299,41 +5299,41 @@ LABEL_9:
   }
 }
 
-- (id)setRestorableValue:(id)a3 forKeyPath:(id)a4 onViews:(id)a5
+- (id)setRestorableValue:(id)value forKeyPath:(id)path onViews:(id)views
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  valueCopy = value;
+  pathCopy = path;
+  viewsCopy = views;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100015044;
   v22[3] = &unk_100034DB8;
-  v10 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
+  v10 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(viewsCopy, "count")}];
   v23 = v10;
-  v11 = v8;
+  v11 = pathCopy;
   v24 = v11;
-  v25 = v7;
-  v12 = v7;
-  [v9 enumerateObjectsUsingBlock:v22];
+  v25 = valueCopy;
+  v12 = valueCopy;
+  [viewsCopy enumerateObjectsUsingBlock:v22];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000150C0;
   v18[3] = &unk_100034800;
-  v19 = v9;
+  v19 = viewsCopy;
   v20 = v10;
   v21 = v11;
   v13 = v11;
   v14 = v10;
-  v15 = v9;
+  v15 = viewsCopy;
   v16 = objc_retainBlock(v18);
 
   return v16;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
-  if ([v7 isEqualToString:@"faceIsTracked"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"faceIsTracked"])
   {
     v8 = +[NSThread isMainThread];
     v11[0] = _NSConcreteStackBlock;
@@ -5354,7 +5354,7 @@ LABEL_9:
     }
   }
 
-  else if ([v7 isEqualToString:@"state"])
+  else if ([pathCopy isEqualToString:@"state"])
   {
     [(MessagesViewController *)self updateARSessionStateResettingState:1];
   }
@@ -5379,7 +5379,7 @@ LABEL_9:
   }
 }
 
-- (void)startTrackingStartTimerWithCounter:(unint64_t)a3
+- (void)startTrackingStartTimerWithCounter:(unint64_t)counter
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -5399,7 +5399,7 @@ LABEL_9:
     v8[2] = sub_100015954;
     v8[3] = &unk_100034E08;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = counter;
     v6 = [NSTimer scheduledTimerWithTimeInterval:1 repeats:v8 block:1.0];
     v7 = self->_trackingStartTimer;
     self->_trackingStartTimer = v6;
@@ -5460,8 +5460,8 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] JFARSessionUndefined || JFARSessionLost", v9, 2u);
   }
 
-  v8 = [(MessagesViewController *)self trackingLostReason];
-  [(MessagesViewController *)self showUserInfoLabelWithText:v8];
+  trackingLostReason = [(MessagesViewController *)self trackingLostReason];
+  [(MessagesViewController *)self showUserInfoLabelWithText:trackingLostReason];
 
   [(MessagesViewController *)self checkLightingAndObscuredSensorAfterTrackingLost];
 }
@@ -5475,16 +5475,16 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  v4 = [(MessagesViewController *)self parentMessagesViewController];
-  v5 = [v4 currentOrientation];
+  parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+  currentOrientation = [parentMessagesViewController currentOrientation];
 
-  if (v5 != 2)
+  if (currentOrientation != 2)
   {
 LABEL_5:
     WeakRetained = objc_loadWeakRetained(&self->_puppetView);
-    v11 = [WeakRetained isSensorCovered];
+    isSensorCovered = [WeakRetained isSensorCovered];
 
-    if (v11)
+    if (isSensorCovered)
     {
       v12 = +[NSBundle mainBundle];
       v6 = v12;
@@ -5494,11 +5494,11 @@ LABEL_5:
     else
     {
       v14 = objc_loadWeakRetained(&self->_puppetView);
-      v15 = [v14 captureImageIsTooDark];
+      captureImageIsTooDark = [v14 captureImageIsTooDark];
 
       v12 = +[NSBundle mainBundle];
       v6 = v12;
-      if (v15)
+      if (captureImageIsTooDark)
       {
         v13 = @"sJFLowLight";
       }
@@ -5527,25 +5527,25 @@ LABEL_11:
 {
   if (self->_arSessionState)
   {
-    v3 = [(AVTUserInfoView *)self->_userInfoView text];
+    text = [(AVTUserInfoView *)self->_userInfoView text];
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"sJFLowLight" value:&stru_100035080 table:@"JFStrings"];
-    if (([v3 isEqualToString:v5] & 1) == 0)
+    if (([text isEqualToString:v5] & 1) == 0)
     {
       v6 = +[NSBundle mainBundle];
       v7 = [v6 localizedStringForKey:@"sJFCameraCovered" value:&stru_100035080 table:@"JFStrings"];
-      if (([v3 isEqualToString:v7] & 1) == 0)
+      if (([text isEqualToString:v7] & 1) == 0)
       {
         v8 = +[NSBundle mainBundle];
         v9 = [v8 localizedStringForKey:@"sJFLookAtCameraMessage" value:&stru_100035080 table:@"JFStrings"];
-        if (([v3 isEqualToString:v9] & 1) == 0)
+        if (([text isEqualToString:v9] & 1) == 0)
         {
           v25 = +[NSBundle mainBundle];
           [v25 localizedStringForKey:@"sJFUpsideDownFormat" value:&stru_100035080 table:@"JFStrings"];
           v21 = v26 = v8;
           v22 = MGCopyAnswer();
           v23 = [NSString localizedStringWithFormat:v21, v22];
-          v24 = [v3 isEqualToString:v23];
+          v24 = [text isEqualToString:v23];
 
           if ((v24 & 1) == 0)
           {
@@ -5553,8 +5553,8 @@ LABEL_11:
           }
 
 LABEL_8:
-          v10 = [(MessagesViewController *)self trackingLostReason];
-          if ([v3 isEqualToString:v10])
+          trackingLostReason = [(MessagesViewController *)self trackingLostReason];
+          if ([text isEqualToString:trackingLostReason])
           {
 LABEL_26:
             [(MessagesViewController *)self performSelector:"checkLightingAndObscuredSensorAfterTrackingLost" withObject:0 afterDelay:1.0];
@@ -5566,10 +5566,10 @@ LABEL_27:
           v11 = +[UIDevice currentDevice];
           if ([v11 userInterfaceIdiom] == 1)
           {
-            v12 = [(MessagesViewController *)self parentMessagesViewController];
-            v13 = [v12 currentOrientation];
+            parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+            currentOrientation = [parentMessagesViewController currentOrientation];
 
-            if (v13 == 2)
+            if (currentOrientation == 2)
             {
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
               {
@@ -5590,9 +5590,9 @@ LABEL_24:
           }
 
           WeakRetained = objc_loadWeakRetained(&self->_puppetView);
-          v17 = [WeakRetained captureImageIsTooDark];
+          captureImageIsTooDark = [WeakRetained captureImageIsTooDark];
 
-          if (v17)
+          if (captureImageIsTooDark)
           {
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
@@ -5606,10 +5606,10 @@ LABEL_24:
           else
           {
             v18 = objc_loadWeakRetained(&self->_puppetView);
-            v19 = [v18 isSensorCovered];
+            isSensorCovered = [v18 isSensorCovered];
 
             v20 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            if (v19)
+            if (isSensorCovered)
             {
               if (v20)
               {
@@ -5630,7 +5630,7 @@ LABEL_24:
           }
 
 LABEL_25:
-          [(MessagesViewController *)self showUserInfoLabelWithText:v10];
+          [(MessagesViewController *)self showUserInfoLabelWithText:trackingLostReason];
           goto LABEL_26;
         }
       }
@@ -5653,9 +5653,9 @@ LABEL_25:
   self->_lightingCheckTimer = v3;
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -5664,13 +5664,13 @@ LABEL_25:
 
   v5.receiver = self;
   v5.super_class = MessagesViewController;
-  [(MessagesViewController *)&v5 willBecomeActiveWithConversation:v4];
+  [(MessagesViewController *)&v5 willBecomeActiveWithConversation:conversationCopy];
   [STDynamicActivityAttributionPublisher setCurrentAttributionKey:0 andApp:@"com.apple.Jellyfish"];
 }
 
-- (void)didBecomeActiveWithConversation:(id)a3
+- (void)didBecomeActiveWithConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -5679,14 +5679,14 @@ LABEL_25:
 
   v6.receiver = self;
   v6.super_class = MessagesViewController;
-  [(MessagesViewController *)&v6 didBecomeActiveWithConversation:v4];
+  [(MessagesViewController *)&v6 didBecomeActiveWithConversation:conversationCopy];
   conversation = self->_conversation;
-  self->_conversation = v4;
+  self->_conversation = conversationCopy;
 
   [(MessagesViewController *)self startObservingBaseMessagesNotifications];
 }
 
-- (void)willResignActiveWithConversation:(id)a3
+- (void)willResignActiveWithConversation:(id)conversation
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -5703,9 +5703,9 @@ LABEL_25:
   [(MessagesViewController *)self stopObservingBaseMessagesNotifications];
 }
 
-- (void)updateSnapshotWithCompletionBlock:(id)a3
+- (void)updateSnapshotWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     displaysLaunchScreen = self->_displaysLaunchScreen;
@@ -5725,18 +5725,18 @@ LABEL_25:
   v26 = 0x3032000000;
   v27 = sub_1000079EC;
   v28 = sub_1000079FC;
-  v8 = [(MessagesViewController *)self parentMessagesViewController];
-  v29 = [v8 emptySnapshotImage];
+  parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+  emptySnapshotImage = [parentMessagesViewController emptySnapshotImage];
 
   if (!self->_displaysLaunchScreen && self->_capturedSnapshotMetrics && self->_isDisappearing)
   {
-    v9 = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
-    v10 = [v9 identifier];
-    v11 = v10;
+    focusedRecord = [(AVTRecordingCarouselController *)self->_avatarListController focusedRecord];
+    identifier = [focusedRecord identifier];
+    v11 = identifier;
     v12 = @"mouse";
-    if (v10)
+    if (identifier)
     {
-      v12 = v10;
+      v12 = identifier;
     }
 
     v13 = v12;
@@ -5746,11 +5746,11 @@ LABEL_25:
     {
       v15 = NSStringFromCGRect(self->_snapshotBounds);
       v16 = NSStringFromCGRect(self->_avatarControllerFrame);
-      v17 = [(MessagesViewController *)self view];
-      [v17 bounds];
+      view = [(MessagesViewController *)self view];
+      [view bounds];
       v18 = NSStringFromCGRect(v39);
-      v19 = [(AVTRecordingCarouselController *)self->_avatarListController view];
-      [v19 frame];
+      view2 = [(AVTRecordingCarouselController *)self->_avatarListController view];
+      [view2 frame];
       v20 = NSStringFromCGRect(v40);
       *buf = 138413314;
       *v31 = v13;
@@ -5783,36 +5783,36 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] updateSnapshot: with image %@", buf, 0xCu);
   }
 
-  v4[2](v4, v25[5]);
+  blockCopy[2](blockCopy, v25[5]);
   _Block_object_dispose(&v24, 8);
 }
 
 - (BOOL)isLandcapeTrapOverlayShown
 {
-  v2 = [(MessagesViewController *)self parentMessagesViewController];
-  v3 = [v2 isLandcapeTrapOverlayShown];
+  parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+  isLandcapeTrapOverlayShown = [parentMessagesViewController isLandcapeTrapOverlayShown];
 
-  return v3;
+  return isLandcapeTrapOverlayShown;
 }
 
 - (BOOL)isLandscapeMode
 {
-  v2 = [(MessagesViewController *)self parentMessagesViewController];
-  v3 = [v2 isLandscapeMode];
+  parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+  isLandscapeMode = [parentMessagesViewController isLandscapeMode];
 
-  return v3;
+  return isLandscapeMode;
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] imagePickerController", buf, 2u);
   }
 
-  v6 = [v5 objectForKeyedSubscript:UIImagePickerControllerPHAsset];
+  v6 = [infoCopy objectForKeyedSubscript:UIImagePickerControllerPHAsset];
   v7 = +[PHImageManager defaultManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -5822,7 +5822,7 @@ LABEL_25:
   [v7 requestAVAssetForVideo:v6 options:0 resultHandler:v8];
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -5843,13 +5843,13 @@ LABEL_25:
   return v6;
 }
 
-- (void)pauseFaceTrackingWithReason:(id)a3
+- (void)pauseFaceTrackingWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = reasonCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] pauseFaceTrackingWithReason: %@", &v10, 0xCu);
   }
 

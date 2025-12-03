@@ -1,16 +1,16 @@
 @interface PXCuratedLibraryRemoveFiltersActionPerformer
 - (NSString)activitySystemImageName;
 - (NSString)activityType;
-- (PXCuratedLibraryRemoveFiltersActionPerformer)initWithActionType:(id)a3 viewModel:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (PXCuratedLibraryRemoveFiltersActionPerformer)initWithActionType:(id)type viewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXCuratedLibraryRemoveFiltersActionPerformer
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A3E99C70();
   v5 = v4;
 
@@ -44,15 +44,15 @@
 
 - (void)performUserInteractionTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3E999A8();
 }
 
-- (PXCuratedLibraryRemoveFiltersActionPerformer)initWithActionType:(id)a3 viewModel:(id)a4
+- (PXCuratedLibraryRemoveFiltersActionPerformer)initWithActionType:(id)type viewModel:(id)model
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CuratedLibraryRemoveFiltersActionPerformer();
-  return [(PXCuratedLibraryActionPerformer *)&v7 initWithActionType:a3 viewModel:a4];
+  return [(PXCuratedLibraryActionPerformer *)&v7 initWithActionType:type viewModel:model];
 }
 
 @end

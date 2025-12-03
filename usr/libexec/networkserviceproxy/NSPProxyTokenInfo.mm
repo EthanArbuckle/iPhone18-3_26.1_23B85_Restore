@@ -1,11 +1,11 @@
 @interface NSPProxyTokenInfo
 - (NSPProxyTokenInfo)init;
-- (NSPProxyTokenInfo)initWithCoder:(id)a3;
+- (NSPProxyTokenInfo)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)reportErrorForTokenRegistration:(id)a3 error:(int)a4 withOptions:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)reportErrorForTokenRegistration:(id)registration error:(int)error withOptions:(id)options;
 - (void)tokenLowWaterMarkReached;
 @end
 
@@ -16,8 +16,8 @@
   if (self)
   {
     v3 = [[NSMutableString alloc] initWithCapacity:0];
-    v4 = [(NSPPrivacyProxyProxyInfo *)self->_proxyInfo proxyURL];
-    sub_1000417D0(v3, v4, @"Proxy URL", 0, 14);
+    proxyURL = [(NSPPrivacyProxyProxyInfo *)self->_proxyInfo proxyURL];
+    sub_1000417D0(v3, proxyURL, @"Proxy URL", 0, 14);
 
     sub_10004208C(v3, self->_tokenCount, @"Proxy tokens count", 0, 14);
     sub_1000417D0(v3, self->_tokenAgentUUID, @"Proxy token Agent UUID", 0, 14);
@@ -47,9 +47,9 @@
     }
 
     v5 = proxyInfo;
-    v6 = [(NSPPrivacyProxyProxyInfo *)v5 vendor];
+    vendor = [(NSPPrivacyProxyProxyInfo *)v5 vendor];
     *buf = 138412290;
-    v11 = v6;
+    v11 = vendor;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Dealloc: Proxy Token Info : %@", buf, 0xCu);
   }
 
@@ -90,29 +90,29 @@
   return v2;
 }
 
-- (NSPProxyTokenInfo)initWithCoder:(id)a3
+- (NSPProxyTokenInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NSPProxyTokenInfo *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyInfo"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyInfo"];
     proxyInfo = v5->_proxyInfo;
     v5->_proxyInfo = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyTokenAgentUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyTokenAgentUUID"];
     tokenAgentUUID = v5->_tokenAgentUUID;
     v5->_tokenAgentUUID = v8;
 
-    v5->_tokenFetchRetryAttempt = [v4 decodeIntegerForKey:@"proxyTokenFetchRetryAttempt"];
-    v5->_tokenFetchRetryOnKeyOrNetworkChange = [v4 decodeBoolForKey:@"proxyTokenFetchRetryOnNetworkOrKeyChange"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyTokenFetchRetryDate"];
+    v5->_tokenFetchRetryAttempt = [coderCopy decodeIntegerForKey:@"proxyTokenFetchRetryAttempt"];
+    v5->_tokenFetchRetryOnKeyOrNetworkChange = [coderCopy decodeBoolForKey:@"proxyTokenFetchRetryOnNetworkOrKeyChange"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyTokenFetchRetryDate"];
     tokenFetchRetryDate = v5->_tokenFetchRetryDate;
     v5->_tokenFetchRetryDate = v10;
 
-    v5->_useDefaultInterface = [v4 decodeBoolForKey:@"proxyTokenUseDefaultInterface"];
-    v5->_subscriber = [v4 decodeBoolForKey:@"proxyTokenSubscriber"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyTokenNetworkSignature"];
+    v5->_useDefaultInterface = [coderCopy decodeBoolForKey:@"proxyTokenUseDefaultInterface"];
+    v5->_subscriber = [coderCopy decodeBoolForKey:@"proxyTokenSubscriber"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyTokenNetworkSignature"];
     networkSignature = v5->_networkSignature;
     v5->_networkSignature = v12;
 
@@ -122,8 +122,8 @@
       v15 = v5->_tokenAgentUUID;
       v16 = v5->_proxyInfo;
       v17 = v15;
-      v18 = [(NSPPrivacyProxyProxyInfo *)v16 vendor];
-      v19 = sub_100002834(v14, v17, v18, v5, 1);
+      vendor = [(NSPPrivacyProxyProxyInfo *)v16 vendor];
+      v19 = sub_100002834(v14, v17, vendor, v5, 1);
       tokenRegistration = v5->_tokenRegistration;
       v5->_tokenRegistration = v19;
 
@@ -153,37 +153,37 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (self)
   {
-    [v5 encodeObject:self->_proxyInfo forKey:@"proxyInfo"];
-    [v5 encodeObject:self->_tokenAgentUUID forKey:@"proxyTokenAgentUUID"];
-    [v5 encodeInteger:self->_tokenFetchRetryAttempt forKey:@"proxyTokenFetchRetryAttempt"];
-    [v5 encodeBool:self->_tokenFetchRetryOnKeyOrNetworkChange forKey:@"proxyTokenFetchRetryOnNetworkOrKeyChange"];
-    [v5 encodeObject:self->_tokenFetchRetryDate forKey:@"proxyTokenFetchRetryDate"];
-    [v5 encodeBool:self->_useDefaultInterface forKey:@"proxyTokenUseDefaultInterface"];
-    [v5 encodeBool:self->_subscriber forKey:@"proxyTokenSubscriber"];
+    [coderCopy encodeObject:self->_proxyInfo forKey:@"proxyInfo"];
+    [coderCopy encodeObject:self->_tokenAgentUUID forKey:@"proxyTokenAgentUUID"];
+    [coderCopy encodeInteger:self->_tokenFetchRetryAttempt forKey:@"proxyTokenFetchRetryAttempt"];
+    [coderCopy encodeBool:self->_tokenFetchRetryOnKeyOrNetworkChange forKey:@"proxyTokenFetchRetryOnNetworkOrKeyChange"];
+    [coderCopy encodeObject:self->_tokenFetchRetryDate forKey:@"proxyTokenFetchRetryDate"];
+    [coderCopy encodeBool:self->_useDefaultInterface forKey:@"proxyTokenUseDefaultInterface"];
+    [coderCopy encodeBool:self->_subscriber forKey:@"proxyTokenSubscriber"];
     networkSignature = self->_networkSignature;
   }
 
   else
   {
-    [v5 encodeObject:0 forKey:@"proxyInfo"];
-    [v5 encodeObject:0 forKey:@"proxyTokenAgentUUID"];
-    [v5 encodeInteger:0 forKey:@"proxyTokenFetchRetryAttempt"];
-    [v5 encodeBool:0 forKey:@"proxyTokenFetchRetryOnNetworkOrKeyChange"];
-    [v5 encodeObject:0 forKey:@"proxyTokenFetchRetryDate"];
-    [v5 encodeBool:0 forKey:@"proxyTokenUseDefaultInterface"];
-    [v5 encodeBool:0 forKey:@"proxyTokenSubscriber"];
+    [coderCopy encodeObject:0 forKey:@"proxyInfo"];
+    [coderCopy encodeObject:0 forKey:@"proxyTokenAgentUUID"];
+    [coderCopy encodeInteger:0 forKey:@"proxyTokenFetchRetryAttempt"];
+    [coderCopy encodeBool:0 forKey:@"proxyTokenFetchRetryOnNetworkOrKeyChange"];
+    [coderCopy encodeObject:0 forKey:@"proxyTokenFetchRetryDate"];
+    [coderCopy encodeBool:0 forKey:@"proxyTokenUseDefaultInterface"];
+    [coderCopy encodeBool:0 forKey:@"proxyTokenSubscriber"];
     networkSignature = 0;
   }
 
-  [v5 encodeObject:networkSignature forKey:@"proxyTokenNetworkSignature"];
+  [coderCopy encodeObject:networkSignature forKey:@"proxyTokenNetworkSignature"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPProxyTokenInfo allocWithZone:?]];
   v5 = v4;
@@ -504,7 +504,7 @@ LABEL_50:
     self = self->_networkSignature;
   }
 
-  v23 = self;
+  selfCopy = self;
   if (v5)
   {
     objc_storeStrong((v5 + 152), self);
@@ -533,21 +533,21 @@ LABEL_50:
   }
 
   v5 = proxyInfo;
-  v6 = [(NSPPrivacyProxyProxyInfo *)v5 vendor];
+  vendor = [(NSPPrivacyProxyProxyInfo *)v5 vendor];
   v7 = sub_1000071A0(self);
 
-  [NSPCoreData saveTokenEvent:v3 eventType:0 vendor:v6 tokenCount:v7];
+  [NSPCoreData saveTokenEvent:v3 eventType:0 vendor:vendor tokenCount:v7];
   sub_100005F60(self);
 
   sub_100008198(self);
 }
 
-- (void)reportErrorForTokenRegistration:(id)a3 error:(int)a4 withOptions:(id)a5
+- (void)reportErrorForTokenRegistration:(id)registration error:(int)error withOptions:(id)options
 {
-  v8 = a3;
+  registrationCopy = registration;
   buffer = 0u;
   memset(v31, 0, sizeof(v31));
-  v9 = [a5 objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
+  v9 = [options objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
   if (!v9)
   {
     v16 = 0;
@@ -558,9 +558,9 @@ LABEL_50:
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 interface];
-    v13 = [v11 parameters];
-    v14 = [v13 pid];
+    interface = [v10 interface];
+    parameters = [v11 parameters];
+    v14 = [parameters pid];
     if (v14)
     {
       v15 = v14;
@@ -591,7 +591,7 @@ LABEL_13:
 LABEL_14:
   v18 = nplog_obj();
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
-  if (a4)
+  if (error)
   {
     if (v19)
     {
@@ -611,17 +611,17 @@ LABEL_14:
       }
 
       v21 = proxyInfo;
-      v22 = [(NSPPrivacyProxyProxyInfo *)v21 vendor];
+      vendor = [(NSPPrivacyProxyProxyInfo *)v21 vendor];
       v28 = 67109634;
-      *v29 = a4;
+      *v29 = error;
       *&v29[4] = 2080;
       *&v29[6] = v16;
       *&v29[14] = 2112;
-      *&v29[16] = v22;
+      *&v29[16] = vendor;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Received error (%d) from %s for %@ agent", &v28, 0x1Cu);
     }
 
-    if (a4 == 81)
+    if (error == 81)
     {
       if (self)
       {
@@ -633,14 +633,14 @@ LABEL_14:
       sub_100007414(self);
     }
 
-    else if (a4 == 80)
+    else if (error == 80)
     {
       if (self)
       {
         ++self->_badTokenCount;
-        if (v8)
+        if (registrationCopy)
         {
-          [v8[3] flushTokens];
+          [registrationCopy[3] flushTokens];
         }
 
         sub_10000724C(self);
@@ -649,9 +649,9 @@ LABEL_14:
 
       else
       {
-        if (v8)
+        if (registrationCopy)
         {
-          [v8[3] flushTokens];
+          [registrationCopy[3] flushTokens];
         }
 
         WeakRetained = 0;
@@ -686,11 +686,11 @@ LABEL_14:
       }
 
       v26 = v25;
-      v27 = [(NSPPrivacyProxyProxyInfo *)v26 vendor];
+      vendor2 = [(NSPPrivacyProxyProxyInfo *)v26 vendor];
       v28 = 136315394;
       *v29 = v24;
       *&v29[8] = 2112;
-      *&v29[10] = v27;
+      *&v29[10] = vendor2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Received success indication from %s for %@ agent", &v28, 0x16u);
     }
   }

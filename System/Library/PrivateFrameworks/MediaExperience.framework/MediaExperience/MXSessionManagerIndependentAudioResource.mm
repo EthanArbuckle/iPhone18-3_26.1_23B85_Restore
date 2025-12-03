@@ -1,17 +1,17 @@
 @interface MXSessionManagerIndependentAudioResource
 + (id)sharedInstance;
 - (MXSessionManagerIndependentAudioResource)init;
-- (id)copyIndependentInputAudioResourceSessionWithAudioSessionID:(unsigned int)a3;
+- (id)copyIndependentInputAudioResourceSessionWithAudioSessionID:(unsigned int)d;
 - (id)copyMXCoreSessionIndependentInputAudioResourceList;
-- (int)_beginInterruption:(id)a3 withSecTask:(__SecTask *)a4 andFlags:(unint64_t)a5;
-- (int)_endInterruption:(id)a3 withSecTask:(__SecTask *)a4 andStatus:(id)a5;
-- (void)addMXCoreSessionIndependentInputAudioResource:(id)a3;
+- (int)_beginInterruption:(id)interruption withSecTask:(__SecTask *)task andFlags:(unint64_t)flags;
+- (int)_endInterruption:(id)interruption withSecTask:(__SecTask *)task andStatus:(id)status;
+- (void)addMXCoreSessionIndependentInputAudioResource:(id)resource;
 - (void)dealloc;
 - (void)dumpDebugInfo;
-- (void)interruptAllIndependentInputAudioResourceSessions:(id)a3 interruptorName:(id)a4;
-- (void)removeMXCoreSessionIndependentInputAudioResource:(id)a3;
-- (void)resumeAllIndependentInputAudioResourceSessions:(id)a3 interruptorBundleID:(id)a4 interruptorName:(id)a5;
-- (void)resumeIndependentInputAudioResourceSession:(id)a3 interruptorBundleID:(id)a4 interruptorName:(id)a5 status:(id)a6 fadeDuration:(id)a7;
+- (void)interruptAllIndependentInputAudioResourceSessions:(id)sessions interruptorName:(id)name;
+- (void)removeMXCoreSessionIndependentInputAudioResource:(id)resource;
+- (void)resumeAllIndependentInputAudioResourceSessions:(id)sessions interruptorBundleID:(id)d interruptorName:(id)name;
+- (void)resumeIndependentInputAudioResourceSession:(id)session interruptorBundleID:(id)d interruptorName:(id)name status:(id)status fadeDuration:(id)duration;
 @end
 
 @implementation MXSessionManagerIndependentAudioResource
@@ -30,10 +30,10 @@
 {
   [(NSLock *)self->mMXCoreSessionIndependentInputAudioResourceListLock lock];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(NSPointerArray *)self->mMXCoreSessionIndependentInputAudioResourceList allObjects];
+  allObjects = [(NSPointerArray *)self->mMXCoreSessionIndependentInputAudioResourceList allObjects];
   objc_autoreleasePoolPop(v3);
   [(NSLock *)self->mMXCoreSessionIndependentInputAudioResourceListLock unlock];
-  return v4;
+  return allObjects;
 }
 
 MXSessionManagerIndependentAudioResource *__58__MXSessionManagerIndependentAudioResource_sharedInstance__block_invoke()
@@ -67,9 +67,9 @@ MXSessionManagerIndependentAudioResource *__58__MXSessionManagerIndependentAudio
   [(MXSessionManagerIndependentAudioResource *)&v3 dealloc];
 }
 
-- (void)addMXCoreSessionIndependentInputAudioResource:(id)a3
+- (void)addMXCoreSessionIndependentInputAudioResource:(id)resource
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, resource);
   [(NSLock *)self->mMXCoreSessionIndependentInputAudioResourceListLock lock];
   [(NSPointerArray *)self->mMXCoreSessionIndependentInputAudioResourceList addPointer:objc_loadWeak(&location)];
   [(NSPointerArray *)self->mMXCoreSessionIndependentInputAudioResourceList compact];
@@ -77,9 +77,9 @@ MXSessionManagerIndependentAudioResource *__58__MXSessionManagerIndependentAudio
   objc_destroyWeak(&location);
 }
 
-- (void)removeMXCoreSessionIndependentInputAudioResource:(id)a3
+- (void)removeMXCoreSessionIndependentInputAudioResource:(id)resource
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, resource);
   [(NSLock *)self->mMXCoreSessionIndependentInputAudioResourceListLock lock];
   for (i = 0; i < [(NSPointerArray *)self->mMXCoreSessionIndependentInputAudioResourceList count]; ++i)
   {
@@ -95,14 +95,14 @@ MXSessionManagerIndependentAudioResource *__58__MXSessionManagerIndependentAudio
   objc_destroyWeak(&location);
 }
 
-- (int)_beginInterruption:(id)a3 withSecTask:(__SecTask *)a4 andFlags:(unint64_t)a5
+- (int)_beginInterruption:(id)interruption withSecTask:(__SecTask *)task andFlags:(unint64_t)flags
 {
-  [a3 activate];
-  [a3 sendSessionConfigurationInfoToVA];
+  [interruption activate];
+  [interruption sendSessionConfigurationInfoToVA];
   return 0;
 }
 
-- (int)_endInterruption:(id)a3 withSecTask:(__SecTask *)a4 andStatus:(id)a5
+- (int)_endInterruption:(id)interruption withSecTask:(__SecTask *)task andStatus:(id)status
 {
   v11 = *MEMORY[0x1E69E9840];
   if (dword_1EB75DE40)
@@ -112,21 +112,21 @@ MXSessionManagerIndependentAudioResource *__58__MXSessionManagerIndependentAudio
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  [a3 deactivate];
-  [a3 sendSessionConfigurationInfoToVA];
+  [interruption deactivate];
+  [interruption sendSessionConfigurationInfoToVA];
   v7 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (id)copyIndependentInputAudioResourceSessionWithAudioSessionID:(unsigned int)a3
+- (id)copyIndependentInputAudioResourceSessionWithAudioSessionID:(unsigned int)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(MXSessionManagerIndependentAudioResource *)self copyMXCoreSessionIndependentInputAudioResourceList];
+  copyMXCoreSessionIndependentInputAudioResourceList = [(MXSessionManagerIndependentAudioResource *)self copyMXCoreSessionIndependentInputAudioResourceList];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [copyMXCoreSessionIndependentInputAudioResourceList countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -137,18 +137,18 @@ MXSessionManagerIndependentAudioResource *__58__MXSessionManagerIndependentAudio
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(copyMXCoreSessionIndependentInputAudioResourceList);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 audioSessionID] == a3)
+        if ([v9 audioSessionID] == d)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [copyMXCoreSessionIndependentInputAudioResourceList countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -173,16 +173,16 @@ void __164__MXSessionManagerIndependentAudioResource_postInterruptionCommandNoti
   v3 = *(a1 + 32);
 }
 
-- (void)interruptAllIndependentInputAudioResourceSessions:(id)a3 interruptorName:(id)a4
+- (void)interruptAllIndependentInputAudioResourceSessions:(id)sessions interruptorName:(id)name
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = [+[MXSessionManagerIndependentAudioResource sharedInstance](MXSessionManagerIndependentAudioResource copyMXCoreSessionIndependentInputAudioResourceList];
+  copyMXCoreSessionIndependentInputAudioResourceList = [+[MXSessionManagerIndependentAudioResource sharedInstance](MXSessionManagerIndependentAudioResource copyMXCoreSessionIndependentInputAudioResourceList];
   v8 = CMSUtility_CopyFadeDuration(0, 0, 0);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v9 = [copyMXCoreSessionIndependentInputAudioResourceList countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -194,15 +194,15 @@ void __164__MXSessionManagerIndependentAudioResource_postInterruptionCommandNoti
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(copyMXCoreSessionIndependentInputAudioResourceList);
         }
 
-        -[MXSessionManagerIndependentAudioResource interruptIndpendentInputAudioResourceSession:interruptorBundleID:interruptorName:fadeDuration:waitingToResume:](self, "interruptIndpendentInputAudioResourceSession:interruptorBundleID:interruptorName:fadeDuration:waitingToResume:", *(*(&v14 + 1) + 8 * v12), a3, a4, v8, [*(*(&v14 + 1) + 8 * v12) isPlaying]);
+        -[MXSessionManagerIndependentAudioResource interruptIndpendentInputAudioResourceSession:interruptorBundleID:interruptorName:fadeDuration:waitingToResume:](self, "interruptIndpendentInputAudioResourceSession:interruptorBundleID:interruptorName:fadeDuration:waitingToResume:", *(*(&v14 + 1) + 8 * v12), sessions, name, v8, [*(*(&v14 + 1) + 8 * v12) isPlaying]);
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [copyMXCoreSessionIndependentInputAudioResourceList countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -211,12 +211,12 @@ void __164__MXSessionManagerIndependentAudioResource_postInterruptionCommandNoti
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resumeIndependentInputAudioResourceSession:(id)a3 interruptorBundleID:(id)a4 interruptorName:(id)a5 status:(id)a6 fadeDuration:(id)a7
+- (void)resumeIndependentInputAudioResourceSession:(id)session interruptorBundleID:(id)d interruptorName:(id)name status:(id)status fadeDuration:(id)duration
 {
   v17 = *MEMORY[0x1E69E9840];
-  if ([a3 waitingToResume])
+  if ([session waitingToResume])
   {
-    [a3 setWaitingToResume:0];
+    [session setWaitingToResume:0];
     if (dword_1EB75DE40)
     {
       os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -224,13 +224,13 @@ void __164__MXSessionManagerIndependentAudioResource_postInterruptionCommandNoti
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [(MXSessionManagerIndependentAudioResource *)self postInterruptionCommandNotification:a3 interruptionCommand:1 interruptorName:a5 interruptorBundleID:a4 status:a6 volumeChangeDuration:a7, v15, v16];
+    [(MXSessionManagerIndependentAudioResource *)self postInterruptionCommandNotification:session interruptionCommand:1 interruptorName:name interruptorBundleID:d status:status volumeChangeDuration:duration, v15, v16];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resumeAllIndependentInputAudioResourceSessions:(id)a3 interruptorBundleID:(id)a4 interruptorName:(id)a5
+- (void)resumeAllIndependentInputAudioResourceSessions:(id)sessions interruptorBundleID:(id)d interruptorName:(id)name
 {
   v26 = *MEMORY[0x1E69E9840];
   if (dword_1EB75DE40)
@@ -262,7 +262,7 @@ void __164__MXSessionManagerIndependentAudioResource_postInterruptionCommandNoti
           objc_enumerationMutation(v10);
         }
 
-        [(MXSessionManagerIndependentAudioResource *)self resumeIndependentInputAudioResourceSession:*(*(&v19 + 1) + 8 * i) interruptorBundleID:a4 interruptorName:a5 status:a3 fadeDuration:v11];
+        [(MXSessionManagerIndependentAudioResource *)self resumeIndependentInputAudioResourceSession:*(*(&v19 + 1) + 8 * i) interruptorBundleID:d interruptorName:name status:sessions fadeDuration:v11];
       }
 
       v13 = [v10 countByEnumeratingWithState:&v19 objects:v25 count:16];

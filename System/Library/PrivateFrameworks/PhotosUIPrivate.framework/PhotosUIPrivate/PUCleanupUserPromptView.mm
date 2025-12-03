@@ -2,12 +2,12 @@
 - (BOOL)isIpadLayout;
 - (BOOL)isPortrait;
 - (CGPoint)animationCenter;
-- (PUCleanupUserPromptView)initWithType:(unint64_t)a3 showPlatter:(BOOL)a4;
+- (PUCleanupUserPromptView)initWithType:(unint64_t)type showPlatter:(BOOL)platter;
 - (PUCleanupUserPromptViewLayoutDelegate)layoutDelegate;
-- (void)enableAnimation:(BOOL)a3;
+- (void)enableAnimation:(BOOL)animation;
 - (void)layoutSubviews;
-- (void)setShowPlatter:(BOOL)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setShowPlatter:(BOOL)platter;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PUCleanupUserPromptView
@@ -28,14 +28,14 @@
   return WeakRetained;
 }
 
-- (void)setShowPlatter:(BOOL)a3
+- (void)setShowPlatter:(BOOL)platter
 {
-  v3 = a3;
-  if (MEMORY[0x1B8C6D660](self, a2) && self->_showPlatter != v3)
+  platterCopy = platter;
+  if (MEMORY[0x1B8C6D660](self, a2) && self->_showPlatter != platterCopy)
   {
-    self->_showPlatter = v3;
+    self->_showPlatter = platterCopy;
     container = self->_container;
-    if (v3)
+    if (platterCopy)
     {
 
       [(UIView *)container _reviewScreen_applyGlassBackground];
@@ -49,27 +49,27 @@
   }
 }
 
-- (void)enableAnimation:(BOOL)a3
+- (void)enableAnimation:(BOOL)animation
 {
   if (self->_type == 1)
   {
     v17 = v3;
     v18 = v4;
-    v5 = a3;
+    animationCopy = animation;
     if (self->_animation)
     {
-      v7 = [(UIImageView *)self->_handView layer];
-      [v7 removeAllAnimations];
+      layer = [(UIImageView *)self->_handView layer];
+      [layer removeAllAnimations];
 
-      v8 = [(UIImageView *)self->_handView layer];
+      layer2 = [(UIImageView *)self->_handView layer];
       v9 = *(MEMORY[0x1E695EFD0] + 16);
       v16[0] = *MEMORY[0x1E695EFD0];
       v16[1] = v9;
       v16[2] = *(MEMORY[0x1E695EFD0] + 32);
-      [v8 setAffineTransform:v16];
+      [layer2 setAffineTransform:v16];
     }
 
-    if (v5)
+    if (animationCopy)
     {
       v10 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.rotation.z"];
       animation = self->_animation;
@@ -85,24 +85,24 @@
       [(CABasicAnimation *)self->_animation setAutoreverses:1];
       LODWORD(v14) = 8.0;
       [(CABasicAnimation *)self->_animation setRepeatCount:v14];
-      v15 = [(UIImageView *)self->_handView layer];
-      [v15 addAnimation:self->_animation forKey:@"rotation"];
+      layer3 = [(UIImageView *)self->_handView layer];
+      [layer3 addAnimation:self->_animation forKey:@"rotation"];
     }
   }
 }
 
 - (BOOL)isIpadLayout
 {
-  v2 = [(PUCleanupUserPromptView *)self layoutDelegate];
-  v3 = [v2 currentLayoutStyle] == 4;
+  layoutDelegate = [(PUCleanupUserPromptView *)self layoutDelegate];
+  v3 = [layoutDelegate currentLayoutStyle] == 4;
 
   return v3;
 }
 
 - (BOOL)isPortrait
 {
-  v2 = [(PUCleanupUserPromptView *)self layoutDelegate];
-  v3 = [v2 layoutOrientation] == 1;
+  layoutDelegate = [(PUCleanupUserPromptView *)self layoutDelegate];
+  v3 = [layoutDelegate layoutOrientation] == 1;
 
   return v3;
 }
@@ -113,101 +113,101 @@
   v99.receiver = self;
   v99.super_class = PUCleanupUserPromptView;
   [(PUCleanupUserPromptView *)&v99 layoutSubviews];
-  v3 = [(PUCleanupUserPromptView *)self layoutDelegate];
-  [v3 currentRenderViewWidth];
+  layoutDelegate = [(PUCleanupUserPromptView *)self layoutDelegate];
+  [layoutDelegate currentRenderViewWidth];
   v5 = v4;
 
   v6 = &OBJC_IVAR___PUCleanupUserPromptView__showPlatter;
   if (!self->_constraints)
   {
-    v7 = [(UILabel *)self->_promptLabel bottomAnchor];
-    v8 = [(UIView *)self->_container bottomAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8 constant:-14.0];
+    bottomAnchor = [(UILabel *)self->_promptLabel bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_container bottomAnchor];
+    v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-14.0];
     promptLabelBottomPaddingConstraint = self->_promptLabelBottomPaddingConstraint;
     self->_promptLabelBottomPaddingConstraint = v9;
 
-    v11 = [(UIView *)self->_handGuideView bottomAnchor];
-    v12 = [(UILabel *)self->_promptLabel topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:-8.0];
+    bottomAnchor3 = [(UIView *)self->_handGuideView bottomAnchor];
+    topAnchor = [(UILabel *)self->_promptLabel topAnchor];
+    v13 = [bottomAnchor3 constraintEqualToAnchor:topAnchor constant:-8.0];
     handBottomPaddingConstraint = self->_handBottomPaddingConstraint;
     self->_handBottomPaddingConstraint = v13;
 
-    v15 = [(UIView *)self->_container bottomAnchor];
-    v16 = [(PUCleanupUserPromptView *)self bottomAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:-13.0];
+    bottomAnchor4 = [(UIView *)self->_container bottomAnchor];
+    bottomAnchor5 = [(PUCleanupUserPromptView *)self bottomAnchor];
+    v17 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-13.0];
     containerBottomPaddingConstraint = self->_containerBottomPaddingConstraint;
     self->_containerBottomPaddingConstraint = v17;
 
-    v19 = [(UIView *)self->_container widthAnchor];
-    v20 = [v19 constraintLessThanOrEqualToConstant:{fmax(v5 + -48.0, 400.0)}];
+    widthAnchor = [(UIView *)self->_container widthAnchor];
+    v20 = [widthAnchor constraintLessThanOrEqualToConstant:{fmax(v5 + -48.0, 400.0)}];
     containerWidthConstraint = self->_containerWidthConstraint;
     self->_containerWidthConstraint = v20;
 
     v22 = (self->_animationCenter.x + -0.5) * 35.0;
     v23 = (self->_animationCenter.y + -0.5) * 35.0;
-    v24 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     constraints = self->_constraints;
-    self->_constraints = v24;
+    self->_constraints = array;
 
     v79 = self->_constraints;
-    v97 = [(UIView *)self->_container centerXAnchor];
-    v95 = [(PUCleanupUserPromptView *)self centerXAnchor];
-    v93 = [v97 constraintEqualToAnchor:v95];
+    centerXAnchor = [(UIView *)self->_container centerXAnchor];
+    centerXAnchor2 = [(PUCleanupUserPromptView *)self centerXAnchor];
+    v93 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v102[0] = v93;
-    v91 = [(UIView *)self->_container leadingAnchor];
-    v89 = [(PUCleanupUserPromptView *)self leadingAnchor];
-    v88 = [v91 constraintGreaterThanOrEqualToAnchor:v89 constant:4.0];
+    leadingAnchor = [(UIView *)self->_container leadingAnchor];
+    leadingAnchor2 = [(PUCleanupUserPromptView *)self leadingAnchor];
+    v88 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:4.0];
     v102[1] = v88;
-    v87 = [(UIView *)self->_container trailingAnchor];
-    v86 = [(PUCleanupUserPromptView *)self trailingAnchor];
-    v85 = [v87 constraintLessThanOrEqualToAnchor:v86 constant:-4.0];
+    trailingAnchor = [(UIView *)self->_container trailingAnchor];
+    trailingAnchor2 = [(PUCleanupUserPromptView *)self trailingAnchor];
+    v85 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-4.0];
     v26 = self->_containerBottomPaddingConstraint;
     v102[2] = v85;
     v102[3] = v26;
     v102[4] = self->_containerWidthConstraint;
-    v84 = [(UILabel *)self->_promptLabel centerXAnchor];
-    v83 = [(UIView *)self->_container centerXAnchor];
-    v82 = [v84 constraintEqualToAnchor:v83];
+    centerXAnchor3 = [(UILabel *)self->_promptLabel centerXAnchor];
+    centerXAnchor4 = [(UIView *)self->_container centerXAnchor];
+    v82 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v102[5] = v82;
-    v81 = [(UILabel *)self->_promptLabel leadingAnchor];
-    v80 = [(UIView *)self->_container leadingAnchor];
-    v78 = [v81 constraintEqualToAnchor:v80 constant:28.0];
+    leadingAnchor3 = [(UILabel *)self->_promptLabel leadingAnchor];
+    leadingAnchor4 = [(UIView *)self->_container leadingAnchor];
+    v78 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:28.0];
     v102[6] = v78;
-    v77 = [(UILabel *)self->_promptLabel trailingAnchor];
-    v76 = [(UIView *)self->_container trailingAnchor];
-    v75 = [v77 constraintEqualToAnchor:v76 constant:-28.0];
+    trailingAnchor3 = [(UILabel *)self->_promptLabel trailingAnchor];
+    trailingAnchor4 = [(UIView *)self->_container trailingAnchor];
+    v75 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-28.0];
     v27 = self->_promptLabelBottomPaddingConstraint;
     v102[7] = v75;
     v102[8] = v27;
-    v74 = [(UIView *)self->_handGuideView widthAnchor];
-    v73 = [v74 constraintEqualToConstant:35.0];
+    widthAnchor2 = [(UIView *)self->_handGuideView widthAnchor];
+    v73 = [widthAnchor2 constraintEqualToConstant:35.0];
     v102[9] = v73;
-    v72 = [(UIView *)self->_handGuideView heightAnchor];
-    v71 = [v72 constraintEqualToConstant:35.0];
+    heightAnchor = [(UIView *)self->_handGuideView heightAnchor];
+    v71 = [heightAnchor constraintEqualToConstant:35.0];
     v102[10] = v71;
-    v70 = [(UIView *)self->_handGuideView centerXAnchor];
-    v69 = [(UIView *)self->_container centerXAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69 constant:0.0];
+    centerXAnchor5 = [(UIView *)self->_handGuideView centerXAnchor];
+    centerXAnchor6 = [(UIView *)self->_container centerXAnchor];
+    v68 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6 constant:0.0];
     v28 = self->_handBottomPaddingConstraint;
     v102[11] = v68;
     v102[12] = v28;
-    v67 = [(UIView *)self->_handGuideView topAnchor];
-    v66 = [(UIView *)self->_container topAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66 constant:8.0];
+    topAnchor2 = [(UIView *)self->_handGuideView topAnchor];
+    topAnchor3 = [(UIView *)self->_container topAnchor];
+    v65 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:8.0];
     v102[13] = v65;
-    v64 = [(UIImageView *)self->_handView widthAnchor];
-    v63 = [v64 constraintEqualToConstant:35.0];
+    widthAnchor3 = [(UIImageView *)self->_handView widthAnchor];
+    v63 = [widthAnchor3 constraintEqualToConstant:35.0];
     v102[14] = v63;
-    v29 = [(UIImageView *)self->_handView heightAnchor];
-    v30 = [v29 constraintEqualToConstant:35.0];
+    heightAnchor2 = [(UIImageView *)self->_handView heightAnchor];
+    v30 = [heightAnchor2 constraintEqualToConstant:35.0];
     v102[15] = v30;
-    v31 = [(UIImageView *)self->_handView centerXAnchor];
-    v32 = [(UIView *)self->_handGuideView centerXAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:v22];
+    centerXAnchor7 = [(UIImageView *)self->_handView centerXAnchor];
+    centerXAnchor8 = [(UIView *)self->_handGuideView centerXAnchor];
+    v33 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8 constant:v22];
     v102[16] = v33;
-    v34 = [(UIImageView *)self->_handView centerYAnchor];
-    v35 = [(UIView *)self->_handGuideView centerYAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35 constant:v23];
+    centerYAnchor = [(UIImageView *)self->_handView centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_handGuideView centerYAnchor];
+    v36 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:v23];
     v102[17] = v36;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:18];
     [(NSMutableArray *)v79 addObjectsFromArray:v37];
@@ -217,21 +217,21 @@
     if (visualEffectView)
     {
       v90 = self->_constraints;
-      v98 = [(UIVisualEffectView *)visualEffectView leadingAnchor];
-      v96 = [(UIView *)self->_container leadingAnchor];
-      v94 = [v98 constraintEqualToAnchor:v96];
+      leadingAnchor5 = [(UIVisualEffectView *)visualEffectView leadingAnchor];
+      leadingAnchor6 = [(UIView *)self->_container leadingAnchor];
+      v94 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
       v101[0] = v94;
-      v92 = [(UIVisualEffectView *)self->_visualEffectView trailingAnchor];
-      v39 = [(UIView *)self->_container trailingAnchor];
-      v40 = [v92 constraintEqualToAnchor:v39];
+      trailingAnchor5 = [(UIVisualEffectView *)self->_visualEffectView trailingAnchor];
+      trailingAnchor6 = [(UIView *)self->_container trailingAnchor];
+      v40 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
       v101[1] = v40;
-      v41 = [(UIVisualEffectView *)self->_visualEffectView topAnchor];
-      v42 = [(UIView *)self->_container topAnchor];
-      v43 = [v41 constraintEqualToAnchor:v42];
+      topAnchor4 = [(UIVisualEffectView *)self->_visualEffectView topAnchor];
+      topAnchor5 = [(UIView *)self->_container topAnchor];
+      v43 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
       v101[2] = v43;
-      v44 = [(UIVisualEffectView *)self->_visualEffectView bottomAnchor];
-      v45 = [(UIView *)self->_container bottomAnchor];
-      v46 = [v44 constraintEqualToAnchor:v45];
+      bottomAnchor6 = [(UIVisualEffectView *)self->_visualEffectView bottomAnchor];
+      bottomAnchor7 = [(UIView *)self->_container bottomAnchor];
+      v46 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
       v101[3] = v46;
       v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:v101 count:4];
       [(NSMutableArray *)v90 addObjectsFromArray:v47];
@@ -240,9 +240,9 @@
     }
 
     v48 = self->_constraints;
-    v49 = [(UIView *)self->_container topAnchor];
-    v50 = [(PUCleanupUserPromptView *)self topAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    topAnchor6 = [(UIView *)self->_container topAnchor];
+    topAnchor7 = [(PUCleanupUserPromptView *)self topAnchor];
+    v51 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
     v100 = v51;
     v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v100 count:1];
     [(NSMutableArray *)v48 addObjectsFromArray:v52];
@@ -252,11 +252,11 @@
 
   [(UIView *)self->_handGuideView frame];
   [(UIImageView *)self->_handView setFrame:?];
-  v53 = [(PUCleanupUserPromptView *)self isPortrait];
-  v54 = !v53 | [(PUCleanupUserPromptView *)self isIpadLayout];
-  v55 = [(PUCleanupUserPromptView *)self isIpadLayout];
+  isPortrait = [(PUCleanupUserPromptView *)self isPortrait];
+  v54 = !isPortrait | [(PUCleanupUserPromptView *)self isIpadLayout];
+  isIpadLayout = [(PUCleanupUserPromptView *)self isIpadLayout];
   v56 = v6[3];
-  [*(&self->super.super.super.isa + v56) setHidden:((v55 | v54) & 1) == 0];
+  [*(&self->super.super.super.isa + v56) setHidden:((isIpadLayout | v54) & 1) == 0];
   if (self->_type - 3 <= 3)
   {
     [*(&self->super.super.super.isa + v56) setHidden:0];
@@ -312,14 +312,14 @@
   [(NSLayoutConstraint *)v58 setConstant:v57];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v3.receiver = self;
   v3.super_class = PUCleanupUserPromptView;
-  [(PUCleanupUserPromptView *)&v3 willMoveToSuperview:a3];
+  [(PUCleanupUserPromptView *)&v3 willMoveToSuperview:superview];
 }
 
-- (PUCleanupUserPromptView)initWithType:(unint64_t)a3 showPlatter:(BOOL)a4
+- (PUCleanupUserPromptView)initWithType:(unint64_t)type showPlatter:(BOOL)platter
 {
   v44[1] = *MEMORY[0x1E69E9840];
   v43.receiver = self;
@@ -331,12 +331,12 @@
     return v7;
   }
 
-  v6->_type = a3;
-  v6->_showPlatter = a4;
-  if (a3 <= 6)
+  v6->_type = type;
+  v6->_showPlatter = platter;
+  if (type <= 6)
   {
-    v8 = dbl_1B3D0D190[a3];
-    *&v6->_animationCenter.x = qword_1B3D0D158[a3];
+    v8 = dbl_1B3D0D190[type];
+    *&v6->_animationCenter.x = qword_1B3D0D158[type];
     v6->_animationCenter.y = v8;
   }
 
@@ -359,22 +359,22 @@
       [(UIView *)v11 _setBackground:0];
     }
 
-    v12 = [(UIView *)v7->_container layer];
-    [v12 setCornerRadius:20.0];
+    layer = [(UIView *)v7->_container layer];
+    [layer setCornerRadius:20.0];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E69DC730] effectWithStyle:7];
-    v13 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v12];
+    layer = [MEMORY[0x1E69DC730] effectWithStyle:7];
+    v13 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:layer];
     visualEffectView = v7->_visualEffectView;
     v7->_visualEffectView = v13;
 
-    v15 = [(UIVisualEffectView *)v7->_visualEffectView layer];
-    [v15 setCornerRadius:20.0];
+    layer2 = [(UIVisualEffectView *)v7->_visualEffectView layer];
+    [layer2 setCornerRadius:20.0];
 
-    v16 = [(UIVisualEffectView *)v7->_visualEffectView layer];
-    [v16 setMasksToBounds:1];
+    layer3 = [(UIVisualEffectView *)v7->_visualEffectView layer];
+    [layer3 setMasksToBounds:1];
 
     [(UIVisualEffectView *)v7->_visualEffectView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v7->_container addSubview:v7->_visualEffectView];
@@ -384,8 +384,8 @@
   promptLabel = v7->_promptLabel;
   v7->_promptLabel = v17;
 
-  v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v7->_promptLabel setTextColor:v19];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v7->_promptLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)v7->_promptLabel setNumberOfLines:0];
   type = v7->_type;
@@ -409,13 +409,13 @@
     v24 = PULocalizedString(v22);
     [(UILabel *)v7->_promptLabel setText:v24];
 
-    v25 = [(UILabel *)v7->_promptLabel text];
-    v26 = [v25 stringByAppendingString:@"\n"];
+    text = [(UILabel *)v7->_promptLabel text];
+    v26 = [text stringByAppendingString:@"\n"];
     [(UILabel *)v7->_promptLabel setText:v26];
 
-    v23 = [(UILabel *)v7->_promptLabel text];
+    text2 = [(UILabel *)v7->_promptLabel text];
     v27 = PULocalizedString(@"PHOTOEDIT_CLEANUP_IOS_PAN_INSTRUCTION");
-    v28 = [v23 stringByAppendingString:v27];
+    v28 = [text2 stringByAppendingString:v27];
     [(UILabel *)v7->_promptLabel setText:v28];
 
     goto LABEL_27;
@@ -446,14 +446,14 @@
   {
     v21 = @"PHOTOEDIT_CLEANUP_IOS_PROMPT_UNKNOWN_ERROR";
 LABEL_24:
-    v23 = PULocalizedString(v21);
-    [(UILabel *)v7->_promptLabel setText:v23];
+    text2 = PULocalizedString(v21);
+    [(UILabel *)v7->_promptLabel setText:text2];
 LABEL_27:
   }
 
 LABEL_28:
-  v29 = [(UILabel *)v7->_promptLabel font];
-  v30 = [v29 fontWithSize:14.0];
+  font = [(UILabel *)v7->_promptLabel font];
+  v30 = [font fontWithSize:14.0];
   [(UILabel *)v7->_promptLabel setFont:v30];
 
   [(UILabel *)v7->_promptLabel setTextAlignment:1];
@@ -469,8 +469,8 @@ LABEL_28:
   [(UIView *)v7->_handGuideView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)v7->_container addSubview:v7->_handGuideView];
   v33 = MEMORY[0x1E69DCAD8];
-  v34 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v44[0] = v34;
+  secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v44[0] = secondaryLabelColor2;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:1];
   v36 = [v33 configurationWithPaletteColors:v35];
 
@@ -487,8 +487,8 @@ LABEL_28:
 
   [(UIImageView *)v7->_handView setImage:v37];
   [(UIImageView *)v7->_handView setContentMode:1];
-  v41 = [(UIImageView *)v7->_handView layer];
-  [v41 setAnchorPoint:{v7->_animationCenter.x, v7->_animationCenter.y}];
+  layer4 = [(UIImageView *)v7->_handView layer];
+  [layer4 setAnchorPoint:{v7->_animationCenter.x, v7->_animationCenter.y}];
 
   [(UIImageView *)v7->_handView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)v7->_container addSubview:v7->_handView];

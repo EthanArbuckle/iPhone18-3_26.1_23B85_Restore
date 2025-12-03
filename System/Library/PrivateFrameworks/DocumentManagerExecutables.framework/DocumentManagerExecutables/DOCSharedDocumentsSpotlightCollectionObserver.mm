@@ -6,7 +6,7 @@
 
 - (void)collectionUpdated
 {
-  v2 = self;
+  selfCopy = self;
   DOCSharedDocumentsSpotlightCollectionObserver.collectionUpdated()();
 }
 

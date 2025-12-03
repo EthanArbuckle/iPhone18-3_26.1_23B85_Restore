@@ -6,12 +6,12 @@
 
 - (__CFString)_avtui_identifier
 {
-  if ([a1 isNeutralPose])
+  if ([self isNeutralPose])
   {
     return @"neutral";
   }
 
-  if ([a1 isFriendlyPose])
+  if ([self isFriendlyPose])
   {
     return @"friendly2";
   }

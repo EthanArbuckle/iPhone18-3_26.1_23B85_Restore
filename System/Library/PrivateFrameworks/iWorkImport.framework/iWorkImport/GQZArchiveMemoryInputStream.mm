@@ -1,20 +1,20 @@
 @interface GQZArchiveMemoryInputStream
-- (GQZArchiveMemoryInputStream)initWithData:(id)a3;
-- (const)dataAtOffset:(int64_t)a3 size:(unint64_t)a4 end:(int64_t)a5 readSize:(unint64_t *)a6;
+- (GQZArchiveMemoryInputStream)initWithData:(id)data;
+- (const)dataAtOffset:(int64_t)offset size:(unint64_t)size end:(int64_t)end readSize:(unint64_t *)readSize;
 - (void)dealloc;
-- (void)readFromOffset:(int64_t)a3 size:(unint64_t)a4 buffer:(char *)a5;
+- (void)readFromOffset:(int64_t)offset size:(unint64_t)size buffer:(char *)buffer;
 @end
 
 @implementation GQZArchiveMemoryInputStream
 
-- (GQZArchiveMemoryInputStream)initWithData:(id)a3
+- (GQZArchiveMemoryInputStream)initWithData:(id)data
 {
   v4 = [(GQZArchiveMemoryInputStream *)self init];
   if (v4)
   {
-    v5 = a3;
-    v4->mData = v5;
-    v4->mBytes = [(NSData *)v5 bytes];
+    dataCopy = data;
+    v4->mData = dataCopy;
+    v4->mBytes = [(NSData *)dataCopy bytes];
     v4->mSize = [(NSData *)v4->mData length];
   }
 
@@ -28,16 +28,16 @@
   [(GQZArchiveMemoryInputStream *)&v3 dealloc];
 }
 
-- (const)dataAtOffset:(int64_t)a3 size:(unint64_t)a4 end:(int64_t)a5 readSize:(unint64_t *)a6
+- (const)dataAtOffset:(int64_t)offset size:(unint64_t)size end:(int64_t)end readSize:(unint64_t *)readSize
 {
-  if (((a3 | a4) & 0x8000000000000000) != 0 || (a4 ^ 0x7FFFFFFFFFFFFFFFLL) < a3)
+  if (((offset | size) & 0x8000000000000000) != 0 || (size ^ 0x7FFFFFFFFFFFFFFFLL) < offset)
   {
     [GQZException raise:@"GQZReadError" format:@"Size overflow."];
   }
 
-  if (a5)
+  if (end)
   {
-    if ((a4 + a3) > a5)
+    if ((size + offset) > end)
     {
       [GQZException raise:@"GQZReadError" format:@"Tried to read past end of chunk."];
     }
@@ -45,26 +45,26 @@
 
   else
   {
-    a5 = a4 + a3;
+    end = size + offset;
   }
 
-  if (a5 > self->mSize)
+  if (end > self->mSize)
   {
     [GQZException raise:@"GQZReadError" format:@"Tried to read past end of the stream."];
   }
 
-  if (a6)
+  if (readSize)
   {
-    *a6 = a5 - a3;
+    *readSize = end - offset;
   }
 
-  return &self->mBytes[a3];
+  return &self->mBytes[offset];
 }
 
-- (void)readFromOffset:(int64_t)a3 size:(unint64_t)a4 buffer:(char *)a5
+- (void)readFromOffset:(int64_t)offset size:(unint64_t)size buffer:(char *)buffer
 {
-  v9 = a4 + a3;
-  if (((a3 | a4) & 0x8000000000000000) != 0 || (a4 ^ 0x7FFFFFFFFFFFFFFFLL) < a3)
+  v9 = size + offset;
+  if (((offset | size) & 0x8000000000000000) != 0 || (size ^ 0x7FFFFFFFFFFFFFFFLL) < offset)
   {
     [GQZException raise:@"GQZReadError" format:@"Size overflow."];
   }
@@ -74,9 +74,9 @@
     [GQZException raise:@"GQZReadError" format:@"Tried to read past end of the stream."];
   }
 
-  v10 = &self->mBytes[a3];
+  v10 = &self->mBytes[offset];
 
-  memcpy(a5, v10, a4);
+  memcpy(buffer, v10, size);
 }
 
 @end

@@ -11,13 +11,13 @@
 - (id)ef_uniquedObject:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 set];
+  v5 = [self set];
   v6 = [v5 member:v4];
 
   if (!v6)
   {
     v6 = [v4 copyWithZone:0];
-    [a1 addObject:v6];
+    [self addObject:v6];
   }
 
   return v6;
@@ -45,7 +45,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 removeObject:{*(*(&v9 + 1) + 8 * v7++), v9}];
+        [self removeObject:{*(*(&v9 + 1) + 8 * v7++), v9}];
       }
 
       while (v5 != v7);
@@ -62,23 +62,23 @@
 {
   v9 = a3;
   v6 = a4;
-  v7 = [a1 indexOfObject:v6];
+  v7 = [self indexOfObject:v6];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a1 addObjectsFromArray:v9];
+    [self addObjectsFromArray:v9];
   }
 
   else
   {
     v8 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{v7, objc_msgSend(v9, "count")}];
-    [a1 insertObjects:v9 atIndexes:v8];
+    [self insertObjects:v9 atIndexes:v8];
   }
 }
 
 - (void)ef_insertObjects:()EmailFoundationAdditions after:
 {
   v11 = a3;
-  v6 = [a1 indexOfObject:a4];
+  v6 = [self indexOfObject:a4];
   v7 = objc_alloc(MEMORY[0x1E696AC90]);
   v8 = [v11 count];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -92,14 +92,14 @@
   }
 
   v10 = [v7 initWithIndexesInRange:{v9, v8}];
-  [a1 insertObjects:v11 atIndexes:v10];
+  [self insertObjects:v11 atIndexes:v10];
 }
 
 - (void)ef_insertObject:()EmailFoundationAdditions usingComparator:
 {
   v7 = a3;
   v6 = a4;
-  [a1 insertObject:v7 atIndex:{objc_msgSend(a1, "indexOfObject:inSortedRange:options:usingComparator:", v7, 0, objc_msgSend(a1, "count"), 1024, v6)}];
+  [self insertObject:v7 atIndex:{objc_msgSend(self, "indexOfObject:inSortedRange:options:usingComparator:", v7, 0, objc_msgSend(self, "count"), 1024, v6)}];
 }
 
 @end

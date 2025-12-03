@@ -1,16 +1,16 @@
 @interface TLKRichTextFieldAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axLabelForElementIfVisible:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axLabelForElementIfVisible:(id)visible;
 - (id)accessibilityLabel;
 @end
 
 @implementation TLKRichTextFieldAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TLKRichTextField" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKRichTextField" hasInstanceMethod:@"starRatingView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TLKRichTextField" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKRichTextField" hasInstanceMethod:@"starRatingView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -24,20 +24,20 @@
   return v6;
 }
 
-- (id)_axLabelForElementIfVisible:(id)a3
+- (id)_axLabelForElementIfVisible:(id)visible
 {
-  v3 = a3;
-  if ([v3 _accessibilityViewIsVisible])
+  visibleCopy = visible;
+  if ([visibleCopy _accessibilityViewIsVisible])
   {
-    v4 = [v3 accessibilityLabel];
+    accessibilityLabel = [visibleCopy accessibilityLabel];
   }
 
   else
   {
-    v4 = 0;
+    accessibilityLabel = 0;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 @end

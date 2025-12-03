@@ -1,7 +1,7 @@
 @interface CSADPPreventStandbyAssertion
-- (CSADPPreventStandbyAssertion)initWithName:(id)a3 clientQueue:(id)a4;
+- (CSADPPreventStandbyAssertion)initWithName:(id)name clientQueue:(id)queue;
 - (OS_dispatch_queue)clientQueue;
-- (void)_setupADPAssertion:(id)a3;
+- (void)_setupADPAssertion:(id)assertion;
 - (void)dealloc;
 @end
 
@@ -37,10 +37,10 @@
   return WeakRetained;
 }
 
-- (void)_setupADPAssertion:(id)a3
+- (void)_setupADPAssertion:(id)assertion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   if (self->_adpAssertion)
   {
     ADPAssertionDestroy();
@@ -51,7 +51,7 @@
   objc_initWeak(&location, self);
   adpAssertion = self->_adpAssertion;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = assertionCopy;
   ADPAssertionSetCancelHandler();
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -102,10 +102,10 @@ uint64_t __51__CSADPPreventStandbyAssertion__setupADPAssertion___block_invoke_2(
   return result;
 }
 
-- (CSADPPreventStandbyAssertion)initWithName:(id)a3 clientQueue:(id)a4
+- (CSADPPreventStandbyAssertion)initWithName:(id)name clientQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  queueCopy = queue;
   if (+[CSUtils deviceRequirePreventStandbyAssertion])
   {
     v13.receiver = self;
@@ -114,21 +114,21 @@ uint64_t __51__CSADPPreventStandbyAssertion__setupADPAssertion___block_invoke_2(
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_name, a3);
-      objc_storeWeak(p_isa + 3, v8);
-      [p_isa _setupADPAssertion:v7];
+      objc_storeStrong(&v9->_name, name);
+      objc_storeWeak(p_isa + 3, queueCopy);
+      [p_isa _setupADPAssertion:nameCopy];
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

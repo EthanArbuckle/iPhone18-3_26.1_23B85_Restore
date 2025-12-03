@@ -1,16 +1,16 @@
 @interface VCMediaNegotiationBlobV2
-+ (int)pruneDisabledCipherSuites:(int)a3 u1AuthTagEnabled:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (int)pruneDisabledCipherSuites:(int)suites u1AuthTagEnabled:(BOOL)enabled;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addStreamGroups:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addStreamGroups:(id)groups;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)printWithTitle:(id)a3 logFile:(void *)a4;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)printWithTitle:(id)title logFile:(void *)file;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobV2
@@ -30,7 +30,7 @@
   [(VCMediaNegotiationBlobV2 *)&v3 dealloc];
 }
 
-- (void)addStreamGroups:(id)a3
+- (void)addStreamGroups:(id)groups
 {
   streamGroups = self->_streamGroups;
   if (!streamGroups)
@@ -39,7 +39,7 @@
     self->_streamGroups = streamGroups;
   }
 
-  [(NSMutableArray *)streamGroups addObject:a3];
+  [(NSMutableArray *)streamGroups addObject:groups];
 }
 
 - (id)description
@@ -53,41 +53,41 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   generalInfo = self->_generalInfo;
   if (generalInfo)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobV2GeneralInfo dictionaryRepresentation](generalInfo forKey:{"dictionaryRepresentation"), @"generalInfo"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobV2GeneralInfo dictionaryRepresentation](generalInfo forKey:{"dictionaryRepresentation"), @"generalInfo"}];
   }
 
   bandwidthSettings = self->_bandwidthSettings;
   if (bandwidthSettings)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobV2BandwidthSettings dictionaryRepresentation](bandwidthSettings forKey:{"dictionaryRepresentation"), @"bandwidthSettings"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobV2BandwidthSettings dictionaryRepresentation](bandwidthSettings forKey:{"dictionaryRepresentation"), @"bandwidthSettings"}];
   }
 
   codecSupport = self->_codecSupport;
   if (codecSupport)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobV2CodecFeatures dictionaryRepresentation](codecSupport forKey:{"dictionaryRepresentation"), @"codecSupport"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobV2CodecFeatures dictionaryRepresentation](codecSupport forKey:{"dictionaryRepresentation"), @"codecSupport"}];
   }
 
   microphoneU1 = self->_microphoneU1;
   if (microphoneU1)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobV2MicrophoneSettingsU1 dictionaryRepresentation](microphoneU1 forKey:{"dictionaryRepresentation"), @"microphoneU1"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobV2MicrophoneSettingsU1 dictionaryRepresentation](microphoneU1 forKey:{"dictionaryRepresentation"), @"microphoneU1"}];
   }
 
   cameraU1 = self->_cameraU1;
   if (cameraU1)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobV2CameraSettingsU1 dictionaryRepresentation](cameraU1 forKey:{"dictionaryRepresentation"), @"cameraU1"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobV2CameraSettingsU1 dictionaryRepresentation](cameraU1 forKey:{"dictionaryRepresentation"), @"cameraU1"}];
   }
 
   momentsSettings = self->_momentsSettings;
   if (momentsSettings)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobV2MomentsSettings dictionaryRepresentation](momentsSettings forKey:{"dictionaryRepresentation"), @"momentsSettings"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobV2MomentsSettings dictionaryRepresentation](momentsSettings forKey:{"dictionaryRepresentation"), @"momentsSettings"}];
   }
 
   if ([(NSMutableArray *)self->_streamGroups count])
@@ -121,13 +121,13 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"streamGroups"];
+    [dictionary setObject:v10 forKey:@"streamGroups"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v14 = *MEMORY[0x1E69E9840];
   if (self->_generalInfo)
@@ -192,66 +192,66 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_generalInfo)
   {
-    [a3 setGeneralInfo:?];
+    [to setGeneralInfo:?];
   }
 
   if (self->_bandwidthSettings)
   {
-    [a3 setBandwidthSettings:?];
+    [to setBandwidthSettings:?];
   }
 
   if (self->_codecSupport)
   {
-    [a3 setCodecSupport:?];
+    [to setCodecSupport:?];
   }
 
   if (self->_microphoneU1)
   {
-    [a3 setMicrophoneU1:?];
+    [to setMicrophoneU1:?];
   }
 
   if (self->_cameraU1)
   {
-    [a3 setCameraU1:?];
+    [to setCameraU1:?];
   }
 
   if (self->_momentsSettings)
   {
-    [a3 setMomentsSettings:?];
+    [to setMomentsSettings:?];
   }
 
   if ([(VCMediaNegotiationBlobV2 *)self streamGroupsCount])
   {
-    [a3 clearStreamGroups];
-    v5 = [(VCMediaNegotiationBlobV2 *)self streamGroupsCount];
-    if (v5)
+    [to clearStreamGroups];
+    streamGroupsCount = [(VCMediaNegotiationBlobV2 *)self streamGroupsCount];
+    if (streamGroupsCount)
     {
-      v6 = v5;
+      v6 = streamGroupsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addStreamGroups:{-[VCMediaNegotiationBlobV2 streamGroupsAtIndex:](self, "streamGroupsAtIndex:", i)}];
+        [to addStreamGroups:{-[VCMediaNegotiationBlobV2 streamGroupsAtIndex:](self, "streamGroupsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[4] = [(VCMediaNegotiationBlobV2GeneralInfo *)self->_generalInfo copyWithZone:a3];
-  v5[1] = [(VCMediaNegotiationBlobV2BandwidthSettings *)self->_bandwidthSettings copyWithZone:a3];
+  v5[4] = [(VCMediaNegotiationBlobV2GeneralInfo *)self->_generalInfo copyWithZone:zone];
+  v5[1] = [(VCMediaNegotiationBlobV2BandwidthSettings *)self->_bandwidthSettings copyWithZone:zone];
 
-  v5[3] = [(VCMediaNegotiationBlobV2CodecFeatures *)self->_codecSupport copyWithZone:a3];
-  v5[5] = [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)self->_microphoneU1 copyWithZone:a3];
+  v5[3] = [(VCMediaNegotiationBlobV2CodecFeatures *)self->_codecSupport copyWithZone:zone];
+  v5[5] = [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)self->_microphoneU1 copyWithZone:zone];
 
-  v5[2] = [(VCMediaNegotiationBlobV2CameraSettingsU1 *)self->_cameraU1 copyWithZone:a3];
-  v5[6] = [(VCMediaNegotiationBlobV2MomentsSettings *)self->_momentsSettings copyWithZone:a3];
+  v5[2] = [(VCMediaNegotiationBlobV2CameraSettingsU1 *)self->_cameraU1 copyWithZone:zone];
+  v5[6] = [(VCMediaNegotiationBlobV2MomentsSettings *)self->_momentsSettings copyWithZone:zone];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -272,7 +272,7 @@
           objc_enumerationMutation(streamGroups);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addStreamGroups:v11];
 
         ++v10;
@@ -288,31 +288,31 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     generalInfo = self->_generalInfo;
-    if (!(generalInfo | *(a3 + 4)) || (v5 = [(VCMediaNegotiationBlobV2GeneralInfo *)generalInfo isEqual:?]) != 0)
+    if (!(generalInfo | *(equal + 4)) || (v5 = [(VCMediaNegotiationBlobV2GeneralInfo *)generalInfo isEqual:?]) != 0)
     {
       bandwidthSettings = self->_bandwidthSettings;
-      if (!(bandwidthSettings | *(a3 + 1)) || (v5 = [(VCMediaNegotiationBlobV2BandwidthSettings(Utils) *)bandwidthSettings isEqual:?]) != 0)
+      if (!(bandwidthSettings | *(equal + 1)) || (v5 = [(VCMediaNegotiationBlobV2BandwidthSettings(Utils) *)bandwidthSettings isEqual:?]) != 0)
       {
         codecSupport = self->_codecSupport;
-        if (!(codecSupport | *(a3 + 3)) || (v5 = [(VCMediaNegotiationBlobV2CodecFeatures *)codecSupport isEqual:?]) != 0)
+        if (!(codecSupport | *(equal + 3)) || (v5 = [(VCMediaNegotiationBlobV2CodecFeatures *)codecSupport isEqual:?]) != 0)
         {
           microphoneU1 = self->_microphoneU1;
-          if (!(microphoneU1 | *(a3 + 5)) || (v5 = [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)microphoneU1 isEqual:?]) != 0)
+          if (!(microphoneU1 | *(equal + 5)) || (v5 = [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)microphoneU1 isEqual:?]) != 0)
           {
             cameraU1 = self->_cameraU1;
-            if (!(cameraU1 | *(a3 + 2)) || (v5 = [(VCMediaNegotiationBlobV2CameraSettingsU1 *)cameraU1 isEqual:?]) != 0)
+            if (!(cameraU1 | *(equal + 2)) || (v5 = [(VCMediaNegotiationBlobV2CameraSettingsU1 *)cameraU1 isEqual:?]) != 0)
             {
               momentsSettings = self->_momentsSettings;
-              if (!(momentsSettings | *(a3 + 6)) || (v5 = [(VCMediaNegotiationBlobV2MomentsSettings *)momentsSettings isEqual:?]) != 0)
+              if (!(momentsSettings | *(equal + 6)) || (v5 = [(VCMediaNegotiationBlobV2MomentsSettings *)momentsSettings isEqual:?]) != 0)
               {
                 streamGroups = self->_streamGroups;
-                if (streamGroups | *(a3 + 7))
+                if (streamGroups | *(equal + 7))
                 {
 
                   LOBYTE(v5) = [(NSMutableArray *)streamGroups isEqual:?];
@@ -344,11 +344,11 @@
   return v6 ^ v8 ^ [(NSMutableArray *)self->_streamGroups hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x1E69E9840];
   generalInfo = self->_generalInfo;
-  v6 = *(a3 + 4);
+  v6 = *(from + 4);
   if (generalInfo)
   {
     if (v6)
@@ -363,7 +363,7 @@
   }
 
   bandwidthSettings = self->_bandwidthSettings;
-  v8 = *(a3 + 1);
+  v8 = *(from + 1);
   if (bandwidthSettings)
   {
     if (v8)
@@ -378,7 +378,7 @@
   }
 
   codecSupport = self->_codecSupport;
-  v10 = *(a3 + 3);
+  v10 = *(from + 3);
   if (codecSupport)
   {
     if (v10)
@@ -393,7 +393,7 @@
   }
 
   microphoneU1 = self->_microphoneU1;
-  v12 = *(a3 + 5);
+  v12 = *(from + 5);
   if (microphoneU1)
   {
     if (v12)
@@ -408,7 +408,7 @@
   }
 
   cameraU1 = self->_cameraU1;
-  v14 = *(a3 + 2);
+  v14 = *(from + 2);
   if (cameraU1)
   {
     if (v14)
@@ -423,7 +423,7 @@
   }
 
   momentsSettings = self->_momentsSettings;
-  v16 = *(a3 + 6);
+  v16 = *(from + 6);
   if (momentsSettings)
   {
     if (v16)
@@ -441,7 +441,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = *(a3 + 7);
+  v17 = *(from + 7);
   v18 = [v17 countByEnumeratingWithState:&v23 objects:v22 count:16];
   if (v18)
   {
@@ -466,12 +466,12 @@
   }
 }
 
-- (void)printWithTitle:(id)a3 logFile:(void *)a4
+- (void)printWithTitle:(id)title logFile:(void *)file
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (size=%lu):", a3, objc_msgSend(-[VCMediaNegotiationBlobV2 data](self, "data"), "length")];
-  v7 = [v6 UTF8String];
-  VRLogfilePrintWithTimestamp(a4, "Media Blob (v2) - %s\n", v8, v9, v10, v11, v12, v13, v7);
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (size=%lu):", title, objc_msgSend(-[VCMediaNegotiationBlobV2 data](self, "data"), "length")];
+  uTF8String = [v6 UTF8String];
+  VRLogfilePrintWithTimestamp(file, "Media Blob (v2) - %s\n", v8, v9, v10, v11, v12, v13, uTF8String);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v14 = VRTraceErrorLogLevelToCSTR();
@@ -485,7 +485,7 @@
       v32 = 1024;
       v33 = 22;
       v34 = 2080;
-      v35 = [v6 UTF8String];
+      uTF8String2 = [v6 UTF8String];
       _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media Blob (v2) - %s", buf, 0x26u);
     }
   }
@@ -493,42 +493,42 @@
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s  ", "Media Blob (v2) - "];
   if ([(VCMediaNegotiationBlobV2 *)self hasGeneralInfo])
   {
-    [(VCMediaNegotiationBlobV2GeneralInfo *)self->_generalInfo printWithLogFile:a4 prefix:v16];
+    [(VCMediaNegotiationBlobV2GeneralInfo *)self->_generalInfo printWithLogFile:file prefix:v16];
   }
 
   if ([(VCMediaNegotiationBlobV2 *)self hasBandwidthSettings])
   {
-    [(VCMediaNegotiationBlobV2BandwidthSettings *)self->_bandwidthSettings printWithLogFile:a4 prefix:v16];
+    [(VCMediaNegotiationBlobV2BandwidthSettings *)self->_bandwidthSettings printWithLogFile:file prefix:v16];
   }
 
   if ([(VCMediaNegotiationBlobV2 *)self hasCodecSupport])
   {
-    [(VCMediaNegotiationBlobV2CodecFeatures *)self->_codecSupport printWithLogFile:a4 prefix:v16];
+    [(VCMediaNegotiationBlobV2CodecFeatures *)self->_codecSupport printWithLogFile:file prefix:v16];
   }
 
   if ([(VCMediaNegotiationBlobV2 *)self hasMicrophoneU1])
   {
-    [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)self->_microphoneU1 printWithLogFile:a4 prefix:v16];
+    [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)self->_microphoneU1 printWithLogFile:file prefix:v16];
   }
 
   if ([(VCMediaNegotiationBlobV2 *)self hasCameraU1])
   {
     cameraU1 = self->_cameraU1;
     [(VCMediaNegotiationBlobV2GeneralInfo *)self->_generalInfo screenResolution];
-    [(VCMediaNegotiationBlobV2CameraSettingsU1 *)cameraU1 printWithLogFile:a4 prefix:v16 screenSize:?];
+    [(VCMediaNegotiationBlobV2CameraSettingsU1 *)cameraU1 printWithLogFile:file prefix:v16 screenSize:?];
   }
 
   if ([(VCMediaNegotiationBlobV2 *)self hasMomentsSettings])
   {
-    [(VCMediaNegotiationBlobV2MomentsSettings *)self->_momentsSettings printWithLogFile:a4 prefix:v16];
+    [(VCMediaNegotiationBlobV2MomentsSettings *)self->_momentsSettings printWithLogFile:file prefix:v16];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = [(VCMediaNegotiationBlobV2 *)self streamGroups];
-  v19 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v24 objects:v23 count:16];
+  streamGroups = [(VCMediaNegotiationBlobV2 *)self streamGroups];
+  v19 = [(NSMutableArray *)streamGroups countByEnumeratingWithState:&v24 objects:v23 count:16];
   if (v19)
   {
     v20 = v19;
@@ -540,27 +540,27 @@
       {
         if (*v25 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(streamGroups);
         }
 
-        [*(*(&v24 + 1) + 8 * v22++) printWithLogFile:a4 prefix:v16];
+        [*(*(&v24 + 1) + 8 * v22++) printWithLogFile:file prefix:v16];
       }
 
       while (v20 != v22);
-      v20 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v24 objects:v23 count:16];
+      v20 = [(NSMutableArray *)streamGroups countByEnumeratingWithState:&v24 objects:v23 count:16];
     }
 
     while (v20);
   }
 }
 
-+ (int)pruneDisabledCipherSuites:(int)a3 u1AuthTagEnabled:(BOOL)a4
++ (int)pruneDisabledCipherSuites:(int)suites u1AuthTagEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = *&a3;
+  enabledCopy = enabled;
+  v5 = *&suites;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = +[VCMediaNegotiationBlobV2SettingsU1 appendCipherSuiteFlags:toDescription:](VCMediaNegotiationBlobV2SettingsU1, "appendCipherSuiteFlags:toDescription:", *&a3, [MEMORY[0x1E696AD60] string]);
-  if (!v4 || (VCFeatureFlagManager_U1AuthTagEnabled() & 1) == 0)
+  v6 = +[VCMediaNegotiationBlobV2SettingsU1 appendCipherSuiteFlags:toDescription:](VCMediaNegotiationBlobV2SettingsU1, "appendCipherSuiteFlags:toDescription:", *&suites, [MEMORY[0x1E696AD60] string]);
+  if (!enabledCopy || (VCFeatureFlagManager_U1AuthTagEnabled() & 1) == 0)
   {
     v5 = v5 & 0xFFFFFFF9;
     if (VRTraceGetErrorLogLevelForModule() >= 7)

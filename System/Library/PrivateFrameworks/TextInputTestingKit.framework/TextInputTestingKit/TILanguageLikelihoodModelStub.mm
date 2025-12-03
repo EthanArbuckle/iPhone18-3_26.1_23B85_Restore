@@ -1,33 +1,33 @@
 @interface TILanguageLikelihoodModelStub
-- (unint64_t)emojiUsageCountForApp:(id)a3 lastEmojiCountUpdateTime:(double *)a4;
-- (void)priorProbabilityForLanguages:(id)a3 recipient:(id)a4 handler:(id)a5;
+- (unint64_t)emojiUsageCountForApp:(id)app lastEmojiCountUpdateTime:(double *)time;
+- (void)priorProbabilityForLanguages:(id)languages recipient:(id)recipient handler:(id)handler;
 @end
 
 @implementation TILanguageLikelihoodModelStub
 
-- (unint64_t)emojiUsageCountForApp:(id)a3 lastEmojiCountUpdateTime:(double *)a4
+- (unint64_t)emojiUsageCountForApp:(id)app lastEmojiCountUpdateTime:(double *)time
 {
-  if (a4)
+  if (time)
   {
     [(TILanguageLikelihoodModelStub *)self emojiLastUsageTime];
-    *a4 = v6;
+    *time = v6;
   }
 
   return [(TILanguageLikelihoodModelStub *)self emojiUsageCount];
 }
 
-- (void)priorProbabilityForLanguages:(id)a3 recipient:(id)a4 handler:(id)a5
+- (void)priorProbabilityForLanguages:(id)languages recipient:(id)recipient handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
+  languagesCopy = languages;
+  handlerCopy = handler;
   v19 = 0;
-  v8 = [v6 count];
+  v8 = [languagesCopy count];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = v6;
+  v9 = languagesCopy;
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v10)
   {
@@ -43,7 +43,7 @@ LABEL_3:
         objc_enumerationMutation(v9);
       }
 
-      v7[2](v7, *(*(&v15 + 1) + 8 * v14), &v19, v13);
+      handlerCopy[2](handlerCopy, *(*(&v15 + 1) + 8 * v14), &v19, v13);
       if (v19)
       {
         break;

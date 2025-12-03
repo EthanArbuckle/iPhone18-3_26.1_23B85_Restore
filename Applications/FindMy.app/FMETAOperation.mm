@@ -1,26 +1,26 @@
 @interface FMETAOperation
 - (_TtC6FindMy14FMETAOperation)init;
 - (void)main;
-- (void)setFinished:(BOOL)a3;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
 @implementation FMETAOperation
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  v6 = self;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
-  [(FMETAOperation *)v6 willChangeValueForKey:v4];
+  [(FMETAOperation *)selfCopy willChangeValueForKey:v4];
 
-  *(&v6->super.super.isa + OBJC_IVAR____TtC6FindMy14FMETAOperation__isFinished) = a3;
+  *(&selfCopy->super.super.isa + OBJC_IVAR____TtC6FindMy14FMETAOperation__isFinished) = finished;
   v5 = String._bridgeToObjectiveC()();
-  [(FMETAOperation *)v6 didChangeValueForKey:v5];
+  [(FMETAOperation *)selfCopy didChangeValueForKey:v5];
 }
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   sub_10042528C();
 }
 
@@ -32,16 +32,16 @@
   v6 = type metadata accessor for FMETAOperation();
   v19.receiver = self;
   v19.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(FMETAOperation *)&v19 start];
   v8 = type metadata accessor for TaskPriority();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
-  v10 = *(&v7->super.super.isa + OBJC_IVAR____TtC6FindMy14FMETAOperation_request);
-  v9 = *&v7->request[OBJC_IVAR____TtC6FindMy14FMETAOperation_request];
-  v11 = *&v7->request[OBJC_IVAR____TtC6FindMy14FMETAOperation_request + 8];
-  v12 = *&v7->request[OBJC_IVAR____TtC6FindMy14FMETAOperation_request + 16];
-  v13 = *(&v7->super.super.isa + OBJC_IVAR____TtC6FindMy14FMETAOperation_completion);
-  v14 = *&v7->request[OBJC_IVAR____TtC6FindMy14FMETAOperation_completion];
+  v10 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC6FindMy14FMETAOperation_request);
+  v9 = *&selfCopy->request[OBJC_IVAR____TtC6FindMy14FMETAOperation_request];
+  v11 = *&selfCopy->request[OBJC_IVAR____TtC6FindMy14FMETAOperation_request + 8];
+  v12 = *&selfCopy->request[OBJC_IVAR____TtC6FindMy14FMETAOperation_request + 16];
+  v13 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC6FindMy14FMETAOperation_completion);
+  v14 = *&selfCopy->request[OBJC_IVAR____TtC6FindMy14FMETAOperation_completion];
   v15 = swift_allocObject();
   v15[2] = 0;
   v15[3] = 0;
@@ -51,8 +51,8 @@
   v15[7] = v12;
   v15[8] = v13;
   v15[9] = v14;
-  v15[10] = v7;
-  v16 = v7;
+  v15[10] = selfCopy;
+  v16 = selfCopy;
 
   v17 = v11;
   v18 = v12;

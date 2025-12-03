@@ -1,88 +1,88 @@
 @interface JFXEffect
-- ($AC64C642040120CEEAD84DEEACA9A5CE)rangeForPresentationRange:(SEL)a3;
+- ($AC64C642040120CEEAD84DEEACA9A5CE)rangeForPresentationRange:(SEL)range;
 - (BOOL)arePreviewingAssetsLocal;
 - (BOOL)areRenderingAssetsLocal;
 - (BOOL)buildInAnimation;
-- (BOOL)enablePresentationState:(BOOL)a3;
+- (BOOL)enablePresentationState:(BOOL)state;
 - (BOOL)forceDisableLooping;
 - (BOOL)forceRenderAtPosterFrame;
-- (BOOL)isAppearanceEqual:(id)a3 forPurpose:(unint64_t)a4;
-- (BOOL)isConfiguredForOutputAspect:(double)a3;
-- (BOOL)isConfiguredForOutputAspectMatchingSize:(CGSize)a3;
+- (BOOL)isAppearanceEqual:(id)equal forPurpose:(unint64_t)purpose;
+- (BOOL)isConfiguredForOutputAspect:(double)aspect;
+- (BOOL)isConfiguredForOutputAspectMatchingSize:(CGSize)size;
 - (BOOL)isContentAvailable;
 - (BOOL)isContentNew;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHidden;
 - (BOOL)loadRenderEffect;
 - (BOOL)renderEffectResourcesAreReady;
-- (CGAffineTransform)_affineTransformFromEffectRect:(SEL)a3 toSize:(CGRect)a4 basisOrigin:(CGSize)a5;
-- (CGAffineTransform)addTransform:(SEL)a3 withComponentTime:(CGAffineTransform *)a4 relativeTo:(id *)a5 basisOrigin:(CGRect)a6;
-- (CGAffineTransform)addTransform:(SEL)a3 withComponentTime:(CGAffineTransform *)a4 relativeTo:(id *)a5 basisOrigin:(CGRect)a6 ignoreTranslation:(int)a7;
-- (CGRect)playableRectInOutputSize:(CGSize)a3;
+- (CGAffineTransform)_affineTransformFromEffectRect:(SEL)rect toSize:(CGRect)size basisOrigin:(CGSize)origin;
+- (CGAffineTransform)addTransform:(SEL)transform withComponentTime:(CGAffineTransform *)time relativeTo:(id *)to basisOrigin:(CGRect)origin;
+- (CGAffineTransform)addTransform:(SEL)transform withComponentTime:(CGAffineTransform *)time relativeTo:(id *)to basisOrigin:(CGRect)origin ignoreTranslation:(int)translation;
+- (CGRect)playableRectInOutputSize:(CGSize)size;
 - (CGSize)renderSize;
-- (JFXEffect)initWithCoder:(id)a3;
-- (JFXEffect)initWithEffectID:(id)a3;
+- (JFXEffect)initWithCoder:(id)coder;
+- (JFXEffect)initWithEffectID:(id)d;
 - (NSDictionary)effectParameters;
 - (NSString)contentVersion;
 - (NSString)description;
-- (PVCGPointQuad)_convertRenderEffectPoints:(SEL)a3 toBasisRect:(PVCGPointQuad *)a4 basisOrigin:(CGRect)a5;
+- (PVCGPointQuad)_convertRenderEffectPoints:(SEL)points toBasisRect:(PVCGPointQuad *)rect basisOrigin:(CGRect)origin;
 - (double)outputAspect;
-- (double)playableScaleInOutputSize:(CGSize)a3;
+- (double)playableScaleInOutputSize:(CGSize)size;
 - (float)opacity;
 - (id)JFX_defaultMotionDocumentFolderLocalURL;
 - (id)accessibilityName;
-- (id)availableAssetsWithFilteringOptions:(id)a3;
-- (id)availableAssetsWithFilteringOptionsArray:(id)a3;
+- (id)availableAssetsWithFilteringOptions:(id)options;
+- (id)availableAssetsWithFilteringOptionsArray:(id)array;
 - (id)contentProperties;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)describeRequest:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)describeRequest:(id)request;
 - (id)displayName;
-- (id)localAssetsWithFilteringOptions:(id)a3;
-- (id)parameterForKey:(id)a3;
+- (id)localAssetsWithFilteringOptions:(id)options;
+- (id)parameterForKey:(id)key;
 - (id)parametersClassWhitelist;
 - (id)renderEffect;
-- (id)requestAllAssetsWithOptions:(id)a3 progressAndCancellationHandler:(id)a4 completionHandler:(id)a5;
-- (id)requestAllAssetsWithOptions:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (id)requestAssetWithOptions:(id)a3 progressAndCancellationHandler:(id)a4 completionHandler:(id)a5;
-- (id)requestAssetWithOptions:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (id)requestPreviewingAssetsWithPriority:(int64_t)a3 onlyThumbnailAssetWhenAvailable:(BOOL)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (id)requestRenderingAssetsWithPriority:(int64_t)a3 progressHandler:(id)a4 completionHandler:(id)a5;
+- (id)requestAllAssetsWithOptions:(id)options progressAndCancellationHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)requestAllAssetsWithOptions:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)requestAssetWithOptions:(id)options progressAndCancellationHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)requestAssetWithOptions:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)requestPreviewingAssetsWithPriority:(int64_t)priority onlyThumbnailAssetWhenAvailable:(BOOL)available progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)requestRenderingAssetsWithPriority:(int64_t)priority progressHandler:(id)handler completionHandler:(id)completionHandler;
 - (id)serializableEffectParameters;
 - (int64_t)playableAspectRatio;
 - (int64_t)playableAspectRatioPreservationMode;
-- (uint64_t)setTopLevelTransform:(__n128)a3 relativeTo:(uint64_t)a4 basisOrigin:(__int128 *)a5;
-- (uint64_t)topLevelTransformRelativeTo:(void *)a1@<X0> basisOrigin:(_OWORD *)a2@<X8>;
+- (uint64_t)setTopLevelTransform:(__n128)transform relativeTo:(uint64_t)to basisOrigin:(__int128 *)origin;
+- (uint64_t)topLevelTransformRelativeTo:(void *)to@<X0> basisOrigin:(_OWORD *)origin@<X8>;
 - (unint64_t)contentAvailability;
 - (unint64_t)hash;
-- (void)_convertRenderEffectPoints:(CGPoint *)a3 numPoints:(unint64_t)a4 fromBasisRect:(CGRect)a5 basisOrigin:(int)a6;
-- (void)_convertRenderEffectPoints:(CGPoint *)a3 numPoints:(unint64_t)a4 toBasisRect:(CGRect)a5 basisOrigin:(int)a6;
+- (void)_convertRenderEffectPoints:(CGPoint *)points numPoints:(unint64_t)numPoints fromBasisRect:(CGRect)rect basisOrigin:(int)origin;
+- (void)_convertRenderEffectPoints:(CGPoint *)points numPoints:(unint64_t)numPoints toBasisRect:(CGRect)rect basisOrigin:(int)origin;
 - (void)_createCachedRenderEffect_noLock;
-- (void)addEffectParameters:(id)a3;
-- (void)cancelAssetRequest:(id)a3;
+- (void)addEffectParameters:(id)parameters;
+- (void)cancelAssetRequest:(id)request;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadRenderEffectInBackgroundWithCompletionOnMainQueue:(id)a3;
-- (void)loadRenderEffectOnQueue:(id)a3 completion:(id)a4;
-- (void)registerMotionDocumentWithinAssets:(id)a3;
-- (void)removeEffectParameters:(id)a3;
-- (void)setBuildInAnimation:(BOOL)a3;
-- (void)setEffectParameters:(id)a3;
-- (void)setForceDisableLooping:(BOOL)a3;
-- (void)setForceRenderAtPosterFrame:(BOOL)a3;
-- (void)setHDR:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setMotionDocumentFolderPath:(id)a3;
-- (void)setOpacity:(float)a3;
-- (void)setOutputAspect:(double)a3;
-- (void)setParameter:(id)a3 forKey:(id)a4;
-- (void)setPlayableAspectRatio:(int64_t)a3;
-- (void)setPlayableAspectRatioPreservationMode:(int64_t)a3;
-- (void)setRenderSize:(CGSize)a3;
-- (void)setRenderStartOffset:(id *)a3;
-- (void)setTopLevelAdditionalScale:(CGPoint)a3;
-- (void)setTopLevelTransform:(_OWORD *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadRenderEffectInBackgroundWithCompletionOnMainQueue:(id)queue;
+- (void)loadRenderEffectOnQueue:(id)queue completion:(id)completion;
+- (void)registerMotionDocumentWithinAssets:(id)assets;
+- (void)removeEffectParameters:(id)parameters;
+- (void)setBuildInAnimation:(BOOL)animation;
+- (void)setEffectParameters:(id)parameters;
+- (void)setForceDisableLooping:(BOOL)looping;
+- (void)setForceRenderAtPosterFrame:(BOOL)frame;
+- (void)setHDR:(BOOL)r;
+- (void)setHidden:(BOOL)hidden;
+- (void)setMotionDocumentFolderPath:(id)path;
+- (void)setOpacity:(float)opacity;
+- (void)setOutputAspect:(double)aspect;
+- (void)setParameter:(id)parameter forKey:(id)key;
+- (void)setPlayableAspectRatio:(int64_t)ratio;
+- (void)setPlayableAspectRatioPreservationMode:(int64_t)mode;
+- (void)setRenderSize:(CGSize)size;
+- (void)setRenderStartOffset:(id *)offset;
+- (void)setTopLevelAdditionalScale:(CGPoint)scale;
+- (void)setTopLevelTransform:(_OWORD *)transform;
 - (void)topLevelTransform;
-- (void)updatePriorityForAssetRequest:(id)a3 newPriority:(int64_t)a4;
+- (void)updatePriorityForAssetRequest:(id)request newPriority:(int64_t)priority;
 @end
 
 @implementation JFXEffect
@@ -105,9 +105,9 @@
   [(JFXEffect *)&v6 dealloc];
 }
 
-- (JFXEffect)initWithEffectID:(id)a3
+- (JFXEffect)initWithEffectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = JFXEffect;
   v6 = [(JFXEffect *)&v17 init];
@@ -125,7 +125,7 @@
     paramLock = v6->_paramLock;
     v6->_paramLock = v11;
 
-    objc_storeStrong(&v6->_effectID, a3);
+    objc_storeStrong(&v6->_effectID, d);
     v6->_isNone = [JFXEffect effectIDIsNone:v6->_effectID];
     v6->_renderSize = *MEMORY[0x277CBF3A8];
     -[JFXEffect setPlayableAspectRatio:](v6, "setPlayableAspectRatio:", [objc_opt_class() defaultPlayableAspectRatio]);
@@ -149,23 +149,23 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(JFXEffect *)self effectID];
-  v6 = [v4 initWithEffectID:v5];
+  effectID = [(JFXEffect *)self effectID];
+  v6 = [v4 initWithEffectID:effectID];
 
   [(JFXEffect *)self renderSize];
   [v6 setRenderSize:?];
   [(NSLock *)self->_paramLock lock];
   [*(v6 + 48) lock];
-  v7 = [(NSMutableDictionary *)self->_effectParameters mutableDeepCopy];
+  mutableDeepCopy = [(NSMutableDictionary *)self->_effectParameters mutableDeepCopy];
   v8 = *(v6 + 32);
-  *(v6 + 32) = v7;
+  *(v6 + 32) = mutableDeepCopy;
 
-  v9 = [(NSMutableDictionary *)self->_dirtyEffectParameters mutableDeepCopy];
+  mutableDeepCopy2 = [(NSMutableDictionary *)self->_dirtyEffectParameters mutableDeepCopy];
   v10 = *(v6 + 40);
-  *(v6 + 40) = v9;
+  *(v6 + 40) = mutableDeepCopy2;
 
   objc_storeStrong((v6 + 72), self->_motionDocumentFolderPath);
   [*(v6 + 48) unlock];
@@ -180,11 +180,11 @@
   v3 = [(JFXEffect *)&v14 description];
   v4 = MEMORY[0x277CCACA8];
   v5 = MEMORY[0x277D415F8];
-  v6 = [(JFXEffect *)self effectID];
-  v7 = [v5 effectTypeForEffectID:v6];
+  effectID = [(JFXEffect *)self effectID];
+  v7 = [v5 effectTypeForEffectID:effectID];
   v8 = MEMORY[0x277D415F8];
-  v9 = [(JFXEffect *)self effectID];
-  v10 = [v8 displayNameForEffectID:v9];
+  effectID2 = [(JFXEffect *)self effectID];
+  v10 = [v8 displayNameForEffectID:effectID2];
   v11 = [v4 stringWithFormat:@" %@: %@", v7, v10];
   v12 = [v3 stringByAppendingString:v11];
 
@@ -193,74 +193,74 @@
 
 - (unint64_t)contentAvailability
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (!v3)
+  if (!contentDataSource)
   {
     return 0;
   }
 
-  v4 = [(JFXEffect *)self contentDataSource];
-  v5 = [v4 contentAvailability];
+  contentDataSource2 = [(JFXEffect *)self contentDataSource];
+  contentAvailability = [contentDataSource2 contentAvailability];
 
-  return v5;
+  return contentAvailability;
 }
 
 - (BOOL)isContentAvailable
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (!v3)
+  if (!contentDataSource)
   {
     return 1;
   }
 
-  v4 = [(JFXEffect *)self contentDataSource];
-  v5 = [v4 isContentAvailable];
+  contentDataSource2 = [(JFXEffect *)self contentDataSource];
+  isContentAvailable = [contentDataSource2 isContentAvailable];
 
-  return v5;
+  return isContentAvailable;
 }
 
 - (BOOL)isContentNew
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (!v3)
+  if (!contentDataSource)
   {
     return 0;
   }
 
-  v4 = [(JFXEffect *)self contentDataSource];
-  v5 = [v4 isContentNew];
+  contentDataSource2 = [(JFXEffect *)self contentDataSource];
+  isContentNew = [contentDataSource2 isContentNew];
 
-  return v5;
+  return isContentNew;
 }
 
 - (NSString)contentVersion
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXEffect *)self contentDataSource];
-    v5 = [v4 contentVersion];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
+    contentVersion = [contentDataSource2 contentVersion];
   }
 
   else
   {
-    v5 = @"nodatasource";
+    contentVersion = @"nodatasource";
   }
 
-  return v5;
+  return contentVersion;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:hidden];
   [(JFXEffect *)self setParameter:v4 forKey:*MEMORY[0x277D41A70]];
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   [(JFXEffect *)self setParameter:v4 forKey:*MEMORY[0x277D41B58]];
@@ -278,8 +278,8 @@
 
   else
   {
-    v7 = [(JFXEffect *)self renderEffect];
-    [v7 topLevelOpacity];
+    renderEffect = [(JFXEffect *)self renderEffect];
+    [renderEffect topLevelOpacity];
     v6 = v8;
   }
 
@@ -289,27 +289,27 @@
 - (BOOL)isHidden
 {
   v2 = [(JFXEffect *)self parameterForKey:*MEMORY[0x277D41A70]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (BOOL)enablePresentationState:(BOOL)a3
+- (BOOL)enablePresentationState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(JFXEffect *)self forceRenderAtPosterFrame]^ a3;
+  stateCopy = state;
+  v5 = [(JFXEffect *)self forceRenderAtPosterFrame]^ state;
   if (v5)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:stateCopy];
     [(JFXEffect *)self setParameter:v6 forKey:*MEMORY[0x277D41AB0]];
   }
 
   return v5;
 }
 
-- (void)setForceRenderAtPosterFrame:(BOOL)a3
+- (void)setForceRenderAtPosterFrame:(BOOL)frame
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:frame];
   [(JFXEffect *)self setParameter:v4 forKey:*MEMORY[0x277D41AB0]];
 }
 
@@ -319,46 +319,46 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setBuildInAnimation:(BOOL)a3
+- (void)setBuildInAnimation:(BOOL)animation
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:animation];
   [(JFXEffect *)self setParameter:v4 forKey:*MEMORY[0x277D41AF8]];
 }
 
 - (BOOL)buildInAnimation
 {
   v2 = [(JFXEffect *)self parameterForKey:*MEMORY[0x277D41AF8]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)renderEffectResourcesAreReady
 {
-  v2 = [(JFXEffect *)self renderEffect];
-  v3 = [v2 resourcesAreReady];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  resourcesAreReady = [renderEffect resourcesAreReady];
 
-  return v3;
+  return resourcesAreReady;
 }
 
-- (void)setRenderSize:(CGSize)a3
+- (void)setRenderSize:(CGSize)size
 {
-  if (self->_renderSize.width != a3.width || self->_renderSize.height != a3.height)
+  if (self->_renderSize.width != size.width || self->_renderSize.height != size.height)
   {
-    self->_renderSize = a3;
-    v5 = a3.height == *(MEMORY[0x277CBF3A8] + 8) && a3.width == *MEMORY[0x277CBF3A8] || a3.height <= 0.0;
-    v6 = a3.width / a3.height;
+    self->_renderSize = size;
+    v5 = size.height == *(MEMORY[0x277CBF3A8] + 8) && size.width == *MEMORY[0x277CBF3A8] || size.height <= 0.0;
+    v6 = size.width / size.height;
     if (v5)
     {
       v6 = 0.0;
@@ -386,9 +386,9 @@
   return v5;
 }
 
-- (void)setOutputAspect:(double)a3
+- (void)setOutputAspect:(double)aspect
 {
-  if (fabs(a3) >= 0.0001)
+  if (fabs(aspect) >= 0.0001)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:?];
     [(JFXEffect *)self setParameter:v5 forKey:*MEMORY[0x277D41A90]];
@@ -402,7 +402,7 @@
   }
 }
 
-- (BOOL)isConfiguredForOutputAspect:(double)a3
+- (BOOL)isConfiguredForOutputAspect:(double)aspect
 {
   if ([(JFXEffect *)self isNone])
   {
@@ -414,7 +414,7 @@
   if (v6)
   {
     [v6 doubleValue];
-    v5 = vabdd_f64(a3, v8) < 0.0001;
+    v5 = vabdd_f64(aspect, v8) < 0.0001;
   }
 
   else
@@ -425,10 +425,10 @@
   return v5;
 }
 
-- (BOOL)isConfiguredForOutputAspectMatchingSize:(CGSize)a3
+- (BOOL)isConfiguredForOutputAspectMatchingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(JFXEffect *)self isNone])
   {
     return 1;
@@ -449,22 +449,22 @@
   if (v2)
   {
     [v2 doubleValue];
-    v5 = aspectRatioForMultiplier(v4);
+    defaultPlayableAspectRatio = aspectRatioForMultiplier(v4);
   }
 
   else
   {
-    v5 = [objc_opt_class() defaultPlayableAspectRatio];
+    defaultPlayableAspectRatio = [objc_opt_class() defaultPlayableAspectRatio];
   }
 
-  v6 = v5;
+  v6 = defaultPlayableAspectRatio;
 
   return v6;
 }
 
-- (void)setPlayableAspectRatio:(int64_t)a3
+- (void)setPlayableAspectRatio:(int64_t)ratio
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:multiplierForAspectRatio(a3)];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:multiplierForAspectRatio(ratio)];
   [(JFXEffect *)self setParameter:v4 forKey:*MEMORY[0x277D41AA0]];
 }
 
@@ -474,33 +474,33 @@
   v3 = v2;
   if (v2)
   {
-    v4 = aspectRatioPreservationModeFromPVViewContentMode([v2 integerValue]);
+    defaultPlayableAspectRatioPreservationMode = aspectRatioPreservationModeFromPVViewContentMode([v2 integerValue]);
   }
 
   else
   {
-    v4 = [objc_opt_class() defaultPlayableAspectRatioPreservationMode];
+    defaultPlayableAspectRatioPreservationMode = [objc_opt_class() defaultPlayableAspectRatioPreservationMode];
   }
 
-  v5 = v4;
+  v5 = defaultPlayableAspectRatioPreservationMode;
 
   return v5;
 }
 
-- (void)setPlayableAspectRatioPreservationMode:(int64_t)a3
+- (void)setPlayableAspectRatioPreservationMode:(int64_t)mode
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:PVViewContentModeFromAspectRatioPreservationMode(a3)];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:PVViewContentModeFromAspectRatioPreservationMode(mode)];
   [(JFXEffect *)self setParameter:v4 forKey:*MEMORY[0x277D41AA8]];
 }
 
-- (CGRect)playableRectInOutputSize:(CGSize)a3
+- (CGRect)playableRectInOutputSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(JFXEffect *)self playableAspectRatio];
-  v7 = [(JFXEffect *)self playableAspectRatioPreservationMode];
+  height = size.height;
+  width = size.width;
+  playableAspectRatio = [(JFXEffect *)self playableAspectRatio];
+  playableAspectRatioPreservationMode = [(JFXEffect *)self playableAspectRatioPreservationMode];
 
-  v8 = rectWithAspectRatioAndPreservationModeInRectWithSize(v6, v7, width, height);
+  v8 = rectWithAspectRatioAndPreservationModeInRectWithSize(playableAspectRatio, playableAspectRatioPreservationMode, width, height);
   result.size.height = v11;
   result.size.width = v10;
   result.origin.y = v9;
@@ -508,10 +508,10 @@
   return result;
 }
 
-- (double)playableScaleInOutputSize:(CGSize)a3
+- (double)playableScaleInOutputSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = PVViewContentModeFromAspectRatioPreservationMode([(JFXEffect *)self playableAspectRatioPreservationMode]);
   v7 = multiplierForAspectRatio([(JFXEffect *)self playableAspectRatio]);
   v8 = 1.0;
@@ -591,9 +591,9 @@ LABEL_15:
   }
 }
 
-- (void)setForceDisableLooping:(BOOL)a3
+- (void)setForceDisableLooping:(BOOL)looping
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:looping];
   [(JFXEffect *)self setParameter:v4 forKey:*MEMORY[0x277D41B08]];
 }
 
@@ -603,37 +603,37 @@ LABEL_15:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)accessibilityName
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXEffect *)self contentDataSource];
-    v5 = [v4 localizedAccessibilityName];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
+    localizedAccessibilityName = [contentDataSource2 localizedAccessibilityName];
   }
 
   else
   {
-    v4 = [(NSString *)self->_effectID stringByAppendingString:@"_Accessibility Name"];
-    v6 = [MEMORY[0x277CCA8D8] jfxBundle];
-    v7 = [v6 localizedStringForKey:v4 value:&stru_28553D028 table:0];
+    contentDataSource2 = [(NSString *)self->_effectID stringByAppendingString:@"_Accessibility Name"];
+    jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+    v7 = [jfxBundle localizedStringForKey:contentDataSource2 value:&stru_28553D028 table:0];
 
-    if ([v7 length] && !objc_msgSend(v7, "isEqualToString:", v4))
+    if ([v7 length] && !objc_msgSend(v7, "isEqualToString:", contentDataSource2))
     {
-      v10 = v7;
+      displayName = v7;
     }
 
     else
@@ -647,52 +647,52 @@ LABEL_15:
         _os_log_impl(&dword_242A3B000, v8, OS_LOG_TYPE_DEFAULT, "Missing accessibility name for effect: %@", &v12, 0xCu);
       }
 
-      v10 = [(JFXEffect *)self displayName];
+      displayName = [(JFXEffect *)self displayName];
     }
 
-    v5 = v10;
+    localizedAccessibilityName = displayName;
   }
 
-  return v5;
+  return localizedAccessibilityName;
 }
 
 - (id)displayName
 {
   if ([(JFXEffect *)self isNone])
   {
-    v3 = [MEMORY[0x277CCA8D8] jfxBundle];
-    v4 = [v3 localizedStringForKey:@"None_Effect_Display Name" value:&stru_28553D028 table:0];
+    jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+    localizedDisplayName = [jfxBundle localizedStringForKey:@"None_Effect_Display Name" value:&stru_28553D028 table:0];
 LABEL_5:
-    v6 = v4;
+    v6 = localizedDisplayName;
     goto LABEL_6;
   }
 
-  v5 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v5)
+  if (contentDataSource)
   {
-    v3 = [(JFXEffect *)self contentDataSource];
-    v4 = [v3 localizedDisplayName];
+    jfxBundle = [(JFXEffect *)self contentDataSource];
+    localizedDisplayName = [jfxBundle localizedDisplayName];
     goto LABEL_5;
   }
 
-  v3 = [(NSString *)self->_effectID stringByAppendingString:@"_Display Name"];
-  v8 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v6 = [v8 localizedStringForKey:v3 value:&stru_28553D028 table:0];
+  jfxBundle = [(NSString *)self->_effectID stringByAppendingString:@"_Display Name"];
+  jfxBundle2 = [MEMORY[0x277CCA8D8] jfxBundle];
+  v6 = [jfxBundle2 localizedStringForKey:jfxBundle value:&stru_28553D028 table:0];
 
 LABEL_6:
 
   return v6;
 }
 
-- (void)setRenderStartOffset:(id *)a3
+- (void)setRenderStartOffset:(id *)offset
 {
-  v5 = *a3;
+  v5 = *offset;
   v4 = [MEMORY[0x277CCAE60] valueWithCMTime:&v5];
   [(JFXEffect *)self setParameter:v4 forKey:*MEMORY[0x277D41AB8]];
 }
 
-- ($AC64C642040120CEEAD84DEEACA9A5CE)rangeForPresentationRange:(SEL)a3
+- ($AC64C642040120CEEAD84DEEACA9A5CE)rangeForPresentationRange:(SEL)range
 {
   v4 = *&a4->var0.var3;
   *&retstr->var0.var0 = *&a4->var0.var0;
@@ -701,39 +701,39 @@ LABEL_6:
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(JFXEffect *)self effectID];
-        v8 = [(JFXEffect *)v6 effectID];
-        if ([v7 isEqualToString:v8])
+        effectID = [(JFXEffect *)self effectID];
+        effectID2 = [(JFXEffect *)v6 effectID];
+        if ([effectID isEqualToString:effectID2])
         {
-          v9 = [(JFXEffect *)self type];
-          v10 = [(JFXEffect *)v6 type];
+          type = [(JFXEffect *)self type];
+          type2 = [(JFXEffect *)v6 type];
 
-          if (v9 != v10)
+          if (type != type2)
           {
             v11 = 0;
             goto LABEL_12;
           }
 
-          v7 = [(JFXEffect *)v6 effectParameters];
+          effectID = [(JFXEffect *)v6 effectParameters];
           [(NSLock *)self->_paramLock lock];
-          v11 = [(NSMutableDictionary *)self->_effectParameters isEqual:v7];
+          v11 = [(NSMutableDictionary *)self->_effectParameters isEqual:effectID];
           [(NSLock *)self->_paramLock unlock];
         }
 
@@ -760,22 +760,22 @@ LABEL_13:
 {
   v3 = 2654435761 * [(JFXEffect *)self type];
   [(NSLock *)self->_paramLock lock];
-  v4 = [(JFXEffect *)self effectID];
-  v5 = [v4 hash] ^ v3;
+  effectID = [(JFXEffect *)self effectID];
+  v5 = [effectID hash] ^ v3;
   v6 = [(NSMutableDictionary *)self->_effectParameters hash];
 
   [(NSLock *)self->_paramLock unlock];
   return v5 ^ v6;
 }
 
-- (BOOL)isAppearanceEqual:(id)a3 forPurpose:(unint64_t)a4
+- (BOOL)isAppearanceEqual:(id)equal forPurpose:(unint64_t)purpose
 {
-  v5 = a3;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(JFXEffect *)self effectID];
-    v7 = [v5 effectID];
-    v8 = [v6 isEqual:v7];
+    effectID = [(JFXEffect *)self effectID];
+    effectID2 = [equalCopy effectID];
+    v8 = [effectID isEqual:effectID2];
   }
 
   else
@@ -786,17 +786,17 @@ LABEL_13:
   return v8;
 }
 
-- (void)setEffectParameters:(id)a3
+- (void)setEffectParameters:(id)parameters
 {
-  v8 = a3;
+  parametersCopy = parameters;
   [(NSLock *)self->_paramLock lock];
-  if (v8)
+  if (parametersCopy)
   {
-    v4 = [v8 mutableCopy];
+    v4 = [parametersCopy mutableCopy];
     effectParameters = self->_effectParameters;
     self->_effectParameters = v4;
 
-    v6 = [v8 mutableCopy];
+    v6 = [parametersCopy mutableCopy];
     dirtyEffectParameters = self->_dirtyEffectParameters;
     self->_dirtyEffectParameters = v6;
   }
@@ -810,15 +810,15 @@ LABEL_13:
   [(NSLock *)self->_paramLock unlock];
 }
 
-- (void)addEffectParameters:(id)a3
+- (void)addEffectParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     paramLock = self->_paramLock;
-    v5 = a3;
+    parametersCopy = parameters;
     [(NSLock *)paramLock lock];
-    [(NSMutableDictionary *)self->_effectParameters addEntriesFromDictionary:v5];
-    [(NSMutableDictionary *)self->_dirtyEffectParameters addEntriesFromDictionary:v5];
+    [(NSMutableDictionary *)self->_effectParameters addEntriesFromDictionary:parametersCopy];
+    [(NSMutableDictionary *)self->_dirtyEffectParameters addEntriesFromDictionary:parametersCopy];
 
     v6 = self->_paramLock;
 
@@ -826,15 +826,15 @@ LABEL_13:
   }
 }
 
-- (void)removeEffectParameters:(id)a3
+- (void)removeEffectParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     paramLock = self->_paramLock;
-    v5 = a3;
+    parametersCopy = parameters;
     [(NSLock *)paramLock lock];
-    [(NSMutableDictionary *)self->_effectParameters removeObjectsForKeys:v5];
-    [(NSMutableDictionary *)self->_dirtyEffectParameters removeObjectsForKeys:v5];
+    [(NSMutableDictionary *)self->_effectParameters removeObjectsForKeys:parametersCopy];
+    [(NSMutableDictionary *)self->_dirtyEffectParameters removeObjectsForKeys:parametersCopy];
 
     v6 = self->_paramLock;
 
@@ -851,37 +851,37 @@ LABEL_13:
   return v3;
 }
 
-- (void)setParameter:(id)a3 forKey:(id)a4
+- (void)setParameter:(id)parameter forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
+  parameterCopy = parameter;
+  keyCopy = key;
   [(NSLock *)self->_paramLock lock];
-  if (v9)
+  if (parameterCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_effectParameters objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_effectParameters objectForKeyedSubscript:keyCopy];
     v8 = v7;
-    if (!v7 || ([v7 isEqual:v9] & 1) == 0)
+    if (!v7 || ([v7 isEqual:parameterCopy] & 1) == 0)
     {
-      [(NSMutableDictionary *)self->_effectParameters setObject:v9 forKeyedSubscript:v6];
-      [(NSMutableDictionary *)self->_dirtyEffectParameters setObject:v9 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_effectParameters setObject:parameterCopy forKeyedSubscript:keyCopy];
+      [(NSMutableDictionary *)self->_dirtyEffectParameters setObject:parameterCopy forKeyedSubscript:keyCopy];
     }
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_dirtyEffectParameters removeObjectForKey:v6];
-    [(NSMutableDictionary *)self->_effectParameters removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_dirtyEffectParameters removeObjectForKey:keyCopy];
+    [(NSMutableDictionary *)self->_effectParameters removeObjectForKey:keyCopy];
   }
 
   [(NSLock *)self->_paramLock unlock];
 }
 
-- (id)parameterForKey:(id)a3
+- (id)parameterForKey:(id)key
 {
   paramLock = self->_paramLock;
-  v5 = a3;
+  keyCopy = key;
   [(NSLock *)paramLock lock];
-  v6 = [(NSMutableDictionary *)self->_effectParameters objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_effectParameters objectForKeyedSubscript:keyCopy];
 
   [(NSLock *)self->_paramLock unlock];
 
@@ -891,18 +891,18 @@ LABEL_13:
 - (BOOL)loadRenderEffect
 {
   [(JFXEffect *)self renderEffectWillLoad];
-  v3 = [(JFXEffect *)self renderEffect];
-  v4 = [v3 loadResources];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  loadResources = [renderEffect loadResources];
 
-  return v4;
+  return loadResources;
 }
 
-- (void)loadRenderEffectInBackgroundWithCompletionOnMainQueue:(id)a3
+- (void)loadRenderEffectInBackgroundWithCompletionOnMainQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   [(JFXEffect *)self renderEffectWillLoad];
-  v5 = [(JFXEffect *)self renderEffect];
-  if (v5)
+  renderEffect = [(JFXEffect *)self renderEffect];
+  if (renderEffect)
   {
     v6 = dispatch_get_global_queue(25, 0);
     v12[0] = MEMORY[0x277D85DD0];
@@ -910,9 +910,9 @@ LABEL_13:
     v12[2] = __67__JFXEffect_loadRenderEffectInBackgroundWithCompletionOnMainQueue___block_invoke;
     v12[3] = &unk_278D7ADD0;
     v7 = &v13;
-    v13 = v4;
-    v8 = v4;
-    [v5 loadResourcesOnQueue:v6 completion:v12];
+    v13 = queueCopy;
+    v8 = queueCopy;
+    [renderEffect loadResourcesOnQueue:v6 completion:v12];
   }
 
   else
@@ -922,8 +922,8 @@ LABEL_13:
     v10[2] = __67__JFXEffect_loadRenderEffectInBackgroundWithCompletionOnMainQueue___block_invoke_3;
     v10[3] = &unk_278D7A168;
     v7 = &v11;
-    v11 = v4;
-    v9 = v4;
+    v11 = queueCopy;
+    v9 = queueCopy;
     dispatch_async(MEMORY[0x277D85CD0], v10);
   }
 }
@@ -939,22 +939,22 @@ void __67__JFXEffect_loadRenderEffectInBackgroundWithCompletionOnMainQueue___blo
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
-- (void)loadRenderEffectOnQueue:(id)a3 completion:(id)a4
+- (void)loadRenderEffectOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   [(JFXEffect *)self renderEffectWillLoad];
-  v8 = [(JFXEffect *)self renderEffect];
-  if (v8)
+  renderEffect = [(JFXEffect *)self renderEffect];
+  if (renderEffect)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __48__JFXEffect_loadRenderEffectOnQueue_completion___block_invoke;
     v14[3] = &unk_278D7ADD0;
     v9 = &v15;
-    v15 = v6;
-    v10 = v6;
-    [v8 loadResourcesOnQueue:v7 completion:v14];
+    v15 = completionCopy;
+    v10 = completionCopy;
+    [renderEffect loadResourcesOnQueue:queueCopy completion:v14];
   }
 
   else
@@ -964,9 +964,9 @@ void __67__JFXEffect_loadRenderEffectInBackgroundWithCompletionOnMainQueue___blo
     v12[2] = __48__JFXEffect_loadRenderEffectOnQueue_completion___block_invoke_2;
     v12[3] = &unk_278D7A168;
     v9 = &v13;
-    v13 = v6;
-    v11 = v6;
-    dispatch_async(v7, v12);
+    v13 = completionCopy;
+    v11 = completionCopy;
+    dispatch_async(queueCopy, v12);
   }
 }
 
@@ -987,11 +987,11 @@ void __67__JFXEffect_loadRenderEffectInBackgroundWithCompletionOnMainQueue___blo
   return renderEffect;
 }
 
-- (void)setHDR:(BOOL)a3
+- (void)setHDR:(BOOL)r
 {
   v6[1] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D41A38];
-  if (a3)
+  if (r)
   {
 
     [(JFXEffect *)self setParameter:@"1" forKey:v4];
@@ -1005,25 +1005,25 @@ void __67__JFXEffect_loadRenderEffectInBackgroundWithCompletionOnMainQueue___blo
   }
 }
 
-- (void)setMotionDocumentFolderPath:(id)a3
+- (void)setMotionDocumentFolderPath:(id)path
 {
-  v11 = a3;
+  pathCopy = path;
   [(NSLock *)self->_paramLock lock];
-  if (![(NSString *)self->_motionDocumentFolderPath isEqualToString:v11])
+  if (![(NSString *)self->_motionDocumentFolderPath isEqualToString:pathCopy])
   {
-    objc_storeStrong(&self->_motionDocumentFolderPath, a3);
+    objc_storeStrong(&self->_motionDocumentFolderPath, path);
     renderEffect = self->_renderEffect;
     self->_renderEffect = 0;
 
-    v6 = [MEMORY[0x277D415F0] sharedInstance];
-    v7 = [(JFXEffect *)self effectID];
-    v8 = [v6 isContentIDRegistered:v7];
+    mEMORY[0x277D415F0] = [MEMORY[0x277D415F0] sharedInstance];
+    effectID = [(JFXEffect *)self effectID];
+    v8 = [mEMORY[0x277D415F0] isContentIDRegistered:effectID];
 
     if (v8)
     {
-      v9 = [MEMORY[0x277D415F0] sharedInstance];
-      v10 = [(JFXEffect *)self effectID];
-      [v9 unregisterContentID:v10];
+      mEMORY[0x277D415F0]2 = [MEMORY[0x277D415F0] sharedInstance];
+      effectID2 = [(JFXEffect *)self effectID];
+      [mEMORY[0x277D415F0]2 unregisterContentID:effectID2];
     }
   }
 
@@ -1035,23 +1035,23 @@ void __67__JFXEffect_loadRenderEffectInBackgroundWithCompletionOnMainQueue___blo
   v40 = *MEMORY[0x277D85DE8];
   if (!self->_renderEffect)
   {
-    v3 = [(JFXEffect *)self motionDocumentFolderPath];
+    motionDocumentFolderPath = [(JFXEffect *)self motionDocumentFolderPath];
     v4 = 0x277D41000uLL;
-    if (v3 || ([(JFXEffect *)self JFX_defaultMotionDocumentFolderLocalURL], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (motionDocumentFolderPath || ([(JFXEffect *)self JFX_defaultMotionDocumentFolderLocalURL], (motionDocumentFolderPath = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v5 = v3;
+      v5 = motionDocumentFolderPath;
     }
 
     else
     {
-      v27 = [MEMORY[0x277D415F0] sharedInstance];
-      v28 = [(JFXEffect *)self effectID];
-      v5 = [v27 contentPathForID:v28];
+      mEMORY[0x277D415F0] = [MEMORY[0x277D415F0] sharedInstance];
+      effectID = [(JFXEffect *)self effectID];
+      v5 = [mEMORY[0x277D415F0] contentPathForID:effectID];
 
       if (!v5)
       {
-        v29 = [(JFXEffect *)self contentDataSource];
-        if (!v29 || (v30 = v29, -[JFXEffect contentDataSource](self, "contentDataSource"), v31 = objc_claimAutoreleasedReturnValue(), v32 = [v31 isContentAvailable], v31, v30, (v32 & 1) == 0))
+        contentDataSource = [(JFXEffect *)self contentDataSource];
+        if (!contentDataSource || (v30 = contentDataSource, -[JFXEffect contentDataSource](self, "contentDataSource"), v31 = objc_claimAutoreleasedReturnValue(), v32 = [v31 isContentAvailable], v31, v30, (v32 & 1) == 0))
         {
           v33 = [MEMORY[0x277D415F8] newEffectWithID:self->_effectID];
           renderEffect = self->_renderEffect;
@@ -1064,14 +1064,14 @@ LABEL_21:
       }
     }
 
-    v6 = [MEMORY[0x277D415F0] sharedInstance];
-    v7 = [(JFXEffect *)self effectID];
-    v8 = [v6 isContentIDRegistered:v7];
+    mEMORY[0x277D415F0]2 = [MEMORY[0x277D415F0] sharedInstance];
+    effectID2 = [(JFXEffect *)self effectID];
+    v8 = [mEMORY[0x277D415F0]2 isContentIDRegistered:effectID2];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      v10 = [v9 contentsOfDirectoryAtPath:v5 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v10 = [defaultManager contentsOfDirectoryAtPath:v5 error:0];
 
       v37 = 0u;
       v38 = 0u;
@@ -1094,8 +1094,8 @@ LABEL_8:
           }
 
           v17 = *(*(&v35 + 1) + 8 * v16);
-          v18 = [v17 pathExtension];
-          if ([v18 isEqualToString:@"moti"] & 1) != 0 || (objc_msgSend(v18, "isEqualToString:", @"moef"))
+          pathExtension = [v17 pathExtension];
+          if ([pathExtension isEqualToString:@"moti"] & 1) != 0 || (objc_msgSend(pathExtension, "isEqualToString:", @"moef"))
           {
             break;
           }
@@ -1123,10 +1123,10 @@ LABEL_8:
         }
 
         v19 = [v5 stringByAppendingPathComponent:v13];
-        v20 = [MEMORY[0x277D415F0] sharedInstance];
-        v21 = [(JFXEffect *)self effectID];
-        v22 = [(JFXEffect *)self contentProperties];
-        [v20 registerContentFile:v19 forID:v21 properties:v22];
+        mEMORY[0x277D415F0]3 = [MEMORY[0x277D415F0] sharedInstance];
+        effectID3 = [(JFXEffect *)self effectID];
+        contentProperties = [(JFXEffect *)self contentProperties];
+        [mEMORY[0x277D415F0]3 registerContentFile:v19 forID:effectID3 properties:contentProperties];
       }
 
 LABEL_18:
@@ -1134,9 +1134,9 @@ LABEL_18:
 LABEL_19:
     }
 
-    v23 = [*(v4 + 1520) sharedInstance];
-    v24 = [(JFXEffect *)self effectID];
-    v25 = [v23 createContentInstance:v24];
+    sharedInstance = [*(v4 + 1520) sharedInstance];
+    effectID4 = [(JFXEffect *)self effectID];
+    v25 = [sharedInstance createContentInstance:effectID4];
     v26 = self->_renderEffect;
     self->_renderEffect = v25;
 
@@ -1155,30 +1155,30 @@ LABEL_19:
   return v3;
 }
 
-- (PVCGPointQuad)_convertRenderEffectPoints:(SEL)a3 toBasisRect:(PVCGPointQuad *)a4 basisOrigin:(CGRect)a5
+- (PVCGPointQuad)_convertRenderEffectPoints:(SEL)points toBasisRect:(PVCGPointQuad *)rect basisOrigin:(CGRect)origin
 {
-  v7 = [(JFXEffect *)self renderEffect:a5.origin.x];
+  v7 = [(JFXEffect *)self renderEffect:origin.origin.x];
   [v7 outputSize];
 
-  v8 = [(JFXEffect *)self renderEffect];
-  [v8 origin];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  [renderEffect origin];
 
   return pv_transform_PVCGPointQuad_between_coordinate_systems();
 }
 
-- (void)_convertRenderEffectPoints:(CGPoint *)a3 numPoints:(unint64_t)a4 toBasisRect:(CGRect)a5 basisOrigin:(int)a6
+- (void)_convertRenderEffectPoints:(CGPoint *)points numPoints:(unint64_t)numPoints toBasisRect:(CGRect)rect basisOrigin:(int)origin
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  v12 = [(JFXEffect *)self renderEffect:a5.origin.x];
+  height = rect.size.height;
+  width = rect.size.width;
+  v12 = [(JFXEffect *)self renderEffect:rect.origin.x];
   [v12 outputSize];
   v14 = v13;
   v31 = v15;
 
-  v16 = [(JFXEffect *)self renderEffect];
-  v17 = [v16 origin];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  origin = [renderEffect origin];
 
-  if (a4)
+  if (numPoints)
   {
     v18 = 0;
     v20 = *MEMORY[0x277CBF348];
@@ -1190,32 +1190,32 @@ LABEL_19:
     v23 = height / v31;
     do
     {
-      v24 = &a3[v18];
+      v24 = &points[v18];
       x = v24->x;
       y = v24->y;
-      if (v17 == 2)
+      if (origin == 2)
       {
         v28 = v30;
         v27 = v31 * 0.5;
-        if (a6 == 1)
+        if (origin == 1)
         {
           goto LABEL_16;
         }
 
         v25 = v19;
         v26 = v20;
-        if (!a6)
+        if (!origin)
         {
           v26 = v30;
           v25 = v31 * 0.5;
         }
       }
 
-      else if (v17 == 1)
+      else if (origin == 1)
       {
         v27 = v31;
         v28 = v20;
-        if (!a6 || (v27 = v31 * 0.5, v28 = v29, v25 = v19, v26 = v20, a6 == 2))
+        if (!origin || (v27 = v31 * 0.5, v28 = v29, v25 = v19, v26 = v20, origin == 2))
         {
 LABEL_16:
           memset(&v34, 0, sizeof(v34));
@@ -1233,18 +1233,18 @@ LABEL_16:
       {
         v25 = v19;
         v26 = v20;
-        if (!v17)
+        if (!origin)
         {
           v27 = v31;
           v28 = v20;
-          if (a6 == 1)
+          if (origin == 1)
           {
             goto LABEL_16;
           }
 
           v25 = v19;
           v26 = v20;
-          if (a6 == 2)
+          if (origin == 2)
           {
             v25 = v31 * -0.5;
             v26 = v29;
@@ -1262,30 +1262,30 @@ LABEL_17:
       v18 = v22++;
     }
 
-    while (v18 < a4);
+    while (v18 < numPoints);
   }
 }
 
-- (void)_convertRenderEffectPoints:(CGPoint *)a3 numPoints:(unint64_t)a4 fromBasisRect:(CGRect)a5 basisOrigin:(int)a6
+- (void)_convertRenderEffectPoints:(CGPoint *)points numPoints:(unint64_t)numPoints fromBasisRect:(CGRect)rect basisOrigin:(int)origin
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  v12 = [(JFXEffect *)self renderEffect:a5.origin.x];
-  v13 = [v12 origin];
+  height = rect.size.height;
+  width = rect.size.width;
+  v12 = [(JFXEffect *)self renderEffect:rect.origin.x];
+  origin = [v12 origin];
 
-  v14 = [(JFXEffect *)self renderEffect];
-  [v14 outputSize];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  [renderEffect outputSize];
   v16 = v15;
   v18 = v17;
 
-  if (a6 <= 1 && v13 == 2 && a4)
+  if (origin <= 1 && origin == 2 && numPoints)
   {
-    p_y = &a3->y;
-    v20 = a4;
+    p_y = &points->y;
+    numPointsCopy = numPoints;
     do
     {
       v21 = *p_y;
-      if (a6)
+      if (origin)
       {
         v21 = -*p_y;
       }
@@ -1293,41 +1293,41 @@ LABEL_17:
       *(p_y - 1) = *(p_y - 1) - width * 0.5;
       *p_y = height * 0.5 + v21;
       p_y += 2;
-      --v20;
+      --numPointsCopy;
     }
 
-    while (v20);
+    while (numPointsCopy);
   }
 
   v22 = v16 / width;
   v23 = v18 / height;
-  if ((v23 != 1.0 || v22 != 1.0) && a4 != 0)
+  if ((v23 != 1.0 || v22 != 1.0) && numPoints != 0)
   {
     v26 = 0;
     v27 = 1;
     do
     {
-      v28 = &a3[v26];
+      v28 = &points[v26];
       CGAffineTransformMakeScale(&v29, v22, v23);
       *v28 = vaddq_f64(*&v29.tx, vmlaq_n_f64(vmulq_n_f64(*&v29.c, v28->y), *&v29.a, v28->x));
       v26 = v27++;
     }
 
-    while (v26 < a4);
+    while (v26 < numPoints);
   }
 }
 
-- (CGAffineTransform)_affineTransformFromEffectRect:(SEL)a3 toSize:(CGRect)a4 basisOrigin:(CGSize)a5
+- (CGAffineTransform)_affineTransformFromEffectRect:(SEL)rect toSize:(CGRect)size basisOrigin:(CGSize)origin
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v13 = [(JFXEffect *)self renderEffect:a4.origin.x];
-  v14 = [v13 origin];
+  height = origin.height;
+  width = origin.width;
+  v9 = size.size.height;
+  v10 = size.size.width;
+  v13 = [(JFXEffect *)self renderEffect:size.origin.x];
+  origin = [v13 origin];
 
-  v15 = [(JFXEffect *)self renderEffect];
-  [v15 outputSize];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  [renderEffect outputSize];
   v17 = v16;
   v19 = v18;
 
@@ -1339,7 +1339,7 @@ LABEL_17:
     v23 = 0.0 - v9 * 0.5;
   }
 
-  if (v14 != 2)
+  if (origin != 2)
   {
     v22 = 0.0;
     v23 = 0.0;
@@ -1364,23 +1364,23 @@ LABEL_17:
   return result;
 }
 
-- (JFXEffect)initWithCoder:(id)a3
+- (JFXEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = JFXEffect;
   v5 = [(JFXEffect *)&v27 init];
   if (v5)
   {
     [MEMORY[0x277CCAAC8] setClass:objc_opt_class() forClassName:@"PCMatrix44Double"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"JTEffectEffectIDCoderKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"JTEffectEffectIDCoderKey"];
     effectID = v5->_effectID;
     v5->_effectID = v6;
 
     v5->_isNone = [JFXEffect effectIDIsNone:v5->_effectID];
-    v8 = [(JFXEffect *)v5 parametersClassWhitelist];
+    parametersClassWhitelist = [(JFXEffect *)v5 parametersClassWhitelist];
     v26 = 0;
-    v9 = [v4 decodeTopLevelObjectOfClasses:v8 forKey:@"JTEffectEffectParameterCoderKey" error:&v26];
+    v9 = [coderCopy decodeTopLevelObjectOfClasses:parametersClassWhitelist forKey:@"JTEffectEffectParameterCoderKey" error:&v26];
     v10 = v26;
     v11 = [v9 mutableCopy];
     effectParameters = v5->_effectParameters;
@@ -1438,13 +1438,13 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   effectID = self->_effectID;
-  v5 = a3;
-  [v5 encodeObject:effectID forKey:@"JTEffectEffectIDCoderKey"];
-  v6 = [(JFXEffect *)self serializableEffectParameters];
-  [v5 encodeObject:v6 forKey:@"JTEffectEffectParameterCoderKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:effectID forKey:@"JTEffectEffectIDCoderKey"];
+  serializableEffectParameters = [(JFXEffect *)self serializableEffectParameters];
+  [coderCopy encodeObject:serializableEffectParameters forKey:@"JTEffectEffectParameterCoderKey"];
 }
 
 - (id)parametersClassWhitelist
@@ -1484,8 +1484,8 @@ void __37__JFXEffect_parametersClassWhitelist__block_invoke()
 
 - (id)serializableEffectParameters
 {
-  v2 = [(JFXEffect *)self effectParameters];
-  v3 = [v2 mutableCopy];
+  effectParameters = [(JFXEffect *)self effectParameters];
+  v3 = [effectParameters mutableCopy];
 
   [v3 removeObjectForKey:*MEMORY[0x277D41A90]];
   [v3 removeObjectForKey:*MEMORY[0x277D41AF8]];
@@ -1502,12 +1502,12 @@ void __37__JFXEffect_parametersClassWhitelist__block_invoke()
 
 - (void)topLevelTransform
 {
-  v3 = [a1 topLevelTransformObject];
-  if (v3)
+  topLevelTransformObject = [self topLevelTransformObject];
+  if (topLevelTransformObject)
   {
-    v9 = v3;
-    [v3 SIMDDouble4x4];
-    v3 = v9;
+    v9 = topLevelTransformObject;
+    [topLevelTransformObject SIMDDouble4x4];
+    topLevelTransformObject = v9;
   }
 
   else
@@ -1528,51 +1528,51 @@ void __37__JFXEffect_parametersClassWhitelist__block_invoke()
   }
 }
 
-- (void)setTopLevelTransform:(_OWORD *)a3
+- (void)setTopLevelTransform:(_OWORD *)transform
 {
-  v4 = a3[5];
-  v9[4] = a3[4];
+  v4 = transform[5];
+  v9[4] = transform[4];
   v9[5] = v4;
-  v5 = a3[7];
-  v9[6] = a3[6];
+  v5 = transform[7];
+  v9[6] = transform[6];
   v9[7] = v5;
-  v6 = a3[1];
-  v9[0] = *a3;
+  v6 = transform[1];
+  v9[0] = *transform;
   v9[1] = v6;
-  v7 = a3[3];
-  v9[2] = a3[2];
+  v7 = transform[3];
+  v9[2] = transform[2];
   v9[3] = v7;
   v8 = [MEMORY[0x277D41690] matrixWithSIMDDouble4x4:v9];
-  [a1 setTopLevelTransformObject:v8];
+  [self setTopLevelTransformObject:v8];
 }
 
-- (uint64_t)topLevelTransformRelativeTo:(void *)a1@<X0> basisOrigin:(_OWORD *)a2@<X8>
+- (uint64_t)topLevelTransformRelativeTo:(void *)to@<X0> basisOrigin:(_OWORD *)origin@<X8>
 {
-  [a1 topLevelTransform];
-  v4 = [a1 renderEffect];
-  [v4 origin];
+  [to topLevelTransform];
+  renderEffect = [to renderEffect];
+  [renderEffect origin];
 
-  v5 = [a1 renderEffect];
-  [v5 outputSize];
+  renderEffect2 = [to renderEffect];
+  [renderEffect2 outputSize];
 
-  a2[6] = 0u;
-  a2[7] = 0u;
-  a2[4] = 0u;
-  a2[5] = 0u;
-  a2[2] = 0u;
-  a2[3] = 0u;
-  *a2 = 0u;
-  a2[1] = 0u;
+  origin[6] = 0u;
+  origin[7] = 0u;
+  origin[4] = 0u;
+  origin[5] = 0u;
+  origin[2] = 0u;
+  origin[3] = 0u;
+  *origin = 0u;
+  origin[1] = 0u;
   return pv_simd_matrix_convert_coordinate_system();
 }
 
-- (uint64_t)setTopLevelTransform:(__n128)a3 relativeTo:(uint64_t)a4 basisOrigin:(__int128 *)a5
+- (uint64_t)setTopLevelTransform:(__n128)transform relativeTo:(uint64_t)to basisOrigin:(__int128 *)origin
 {
-  v28 = [a1 renderEffect];
-  [v28 origin];
+  renderEffect = [self renderEffect];
+  [renderEffect origin];
 
-  v29 = [a1 renderEffect];
-  [v29 outputSize];
+  renderEffect2 = [self renderEffect];
+  [renderEffect2 outputSize];
 
   a25 = 0u;
   a26 = 0u;
@@ -1582,17 +1582,17 @@ void __37__JFXEffect_parametersClassWhitelist__block_invoke()
   a22 = 0u;
   a19 = 0u;
   a20 = 0u;
-  v30 = a5[5];
-  a15 = a5[4];
+  v30 = origin[5];
+  a15 = origin[4];
   a16 = v30;
-  v31 = a5[7];
-  a17 = a5[6];
+  v31 = origin[7];
+  a17 = origin[6];
   a18 = v31;
-  v32 = a5[1];
-  a11 = *a5;
+  v32 = origin[1];
+  a11 = *origin;
   a12 = v32;
-  v33 = a5[3];
-  a13 = a5[2];
+  v33 = origin[3];
+  a13 = origin[2];
   a14 = v33;
   pv_simd_matrix_convert_coordinate_system();
   a15 = a23;
@@ -1603,37 +1603,37 @@ void __37__JFXEffect_parametersClassWhitelist__block_invoke()
   a12 = a20;
   a13 = a21;
   a14 = a22;
-  return [a1 setTopLevelTransform:&a11];
+  return [self setTopLevelTransform:&a11];
 }
 
-- (CGAffineTransform)addTransform:(SEL)a3 withComponentTime:(CGAffineTransform *)a4 relativeTo:(id *)a5 basisOrigin:(CGRect)a6
+- (CGAffineTransform)addTransform:(SEL)transform withComponentTime:(CGAffineTransform *)time relativeTo:(id *)to basisOrigin:(CGRect)origin
 {
-  v7 = *&a4->c;
-  v10[0] = *&a4->a;
+  v7 = *&time->c;
+  v10[0] = *&time->a;
   v10[1] = v7;
-  v10[2] = *&a4->tx;
-  v9 = *a5;
-  return [(JFXEffect *)self addTransform:v10 withComponentTime:&v9 relativeTo:*&a7 basisOrigin:0 ignoreTranslation:a6.origin.x, a6.origin.y, a6.size.width, a6.size.height];
+  v10[2] = *&time->tx;
+  v9 = *to;
+  return [(JFXEffect *)self addTransform:v10 withComponentTime:&v9 relativeTo:*&a7 basisOrigin:0 ignoreTranslation:origin.origin.x, origin.origin.y, origin.size.width, origin.size.height];
 }
 
-- (CGAffineTransform)addTransform:(SEL)a3 withComponentTime:(CGAffineTransform *)a4 relativeTo:(id *)a5 basisOrigin:(CGRect)a6 ignoreTranslation:(int)a7
+- (CGAffineTransform)addTransform:(SEL)transform withComponentTime:(CGAffineTransform *)time relativeTo:(id *)to basisOrigin:(CGRect)origin ignoreTranslation:(int)translation
 {
   v8 = a8;
-  height = a6.size.height;
-  width = a6.size.width;
-  v16 = [(JFXEffect *)self renderEffect:a6.origin.x];
+  height = origin.size.height;
+  width = origin.size.width;
+  v16 = [(JFXEffect *)self renderEffect:origin.origin.x];
   [v16 outputSize];
   v18 = v17;
   v20 = v19;
 
-  v21 = [(JFXEffect *)self renderEffect];
-  v22 = [v21 origin];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  origin = [renderEffect origin];
 
-  v24 = *&a4->a;
-  v23 = *&a4->c;
-  p_ty = &a4->ty;
-  v27 = *&a4->tx;
-  p_tx = &a4->tx;
+  v24 = *&time->a;
+  v23 = *&time->c;
+  p_ty = &time->ty;
+  v27 = *&time->tx;
+  p_tx = &time->tx;
   v54 = *(MEMORY[0x277D41B90] + 80);
   v55 = *(MEMORY[0x277D41B90] + 64);
   v75 = v55;
@@ -1684,15 +1684,15 @@ void __37__JFXEffect_parametersClassWhitelist__block_invoke()
   v33 = *(MEMORY[0x277CBF3A8] + 8) == *v30 && v29 == v31;
   if (!v33 && !v8)
   {
-    v34 = [(JFXEffect *)self transformAnimation];
-    v35 = v34;
-    if (v34)
+    transformAnimation = [(JFXEffect *)self transformAnimation];
+    v35 = transformAnimation;
+    if (transformAnimation)
     {
       *&v74 = 0;
       memset(&v73, 0, sizeof(v73));
-      *&t1.a = *&a5->var0;
-      *&t1.c = a5->var3;
-      [v34 transformInfoAtTime:&t1];
+      *&t1.a = *&to->var0;
+      *&t1.c = to->var3;
+      [transformAnimation transformInfoAtTime:&t1];
       t1 = v73;
       *&v68 = v74;
       if ((PVTransformAnimationInfoIsIdentity() & 1) == 0)
@@ -1717,15 +1717,15 @@ void __37__JFXEffect_parametersClassWhitelist__block_invoke()
       v40 = v38;
     }
 
-    if (a7 != 2)
+    if (translation != 2)
     {
-      if (a7 == 1)
+      if (translation == 1)
       {
-        v41 = (v22 & 0xFFFFFFFD) == 0;
+        v41 = (origin & 0xFFFFFFFD) == 0;
         goto LABEL_22;
       }
 
-      if (a7)
+      if (translation)
       {
         memset(&v79, 0, sizeof(v79));
         CGAffineTransformMakeScale(&v79, v18 / width, v20 / height);
@@ -1737,7 +1737,7 @@ LABEL_28:
       }
     }
 
-    v41 = v22 == 1;
+    v41 = origin == 1;
 LABEL_22:
     v42 = v41;
     memset(&v79, 0, sizeof(v79));
@@ -1806,34 +1806,34 @@ LABEL_29:
   return [(JFXEffect *)self setTopLevelTransform:&t1];
 }
 
-- (void)setTopLevelAdditionalScale:(CGPoint)a3
+- (void)setTopLevelAdditionalScale:(CGPoint)scale
 {
-  v4 = [MEMORY[0x277CCAE60] valueWithCGPoint:{a3.x, a3.y}];
+  v4 = [MEMORY[0x277CCAE60] valueWithCGPoint:{scale.x, scale.y}];
   [(JFXEffect *)self setParameter:v4 forKey:*MEMORY[0x277D41B50]];
 }
 
 - (id)JFX_defaultMotionDocumentFolderLocalURL
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3 && (-[JFXEffect contentDataSource](self, "contentDataSource"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 conformsToProtocol:&unk_285584528], v4, v5))
+  if (contentDataSource && (-[JFXEffect contentDataSource](self, "contentDataSource"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 conformsToProtocol:&unk_285584528], v4, v5))
   {
     v6 = objc_opt_new();
     [v6 setContentType:5];
-    v7 = [(JFXEffect *)self contentDataSource];
-    v8 = [v7 localAssetsWithFilteringOptions:v6];
-    v9 = [v8 firstObject];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
+    v8 = [contentDataSource2 localAssetsWithFilteringOptions:v6];
+    firstObject = [v8 firstObject];
 
-    v10 = [v9 localURL];
-    v11 = [v10 path];
+    localURL = [firstObject localURL];
+    path = [localURL path];
   }
 
   else
   {
-    v11 = 0;
+    path = 0;
   }
 
-  return v11;
+  return path;
 }
 
 - (CGSize)renderSize
@@ -1845,17 +1845,17 @@ LABEL_29:
   return result;
 }
 
-- (id)requestAllAssetsWithOptions:(id)a3 progressAndCancellationHandler:(id)a4 completionHandler:(id)a5
+- (id)requestAllAssetsWithOptions:(id)options progressAndCancellationHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(JFXEffect *)self contentDataSource];
-  v12 = [v11 conformsToProtocol:&unk_285584528];
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  contentDataSource = [(JFXEffect *)self contentDataSource];
+  v12 = [contentDataSource conformsToProtocol:&unk_285584528];
 
   if (v12)
   {
-    v13 = [(JFXEffect *)self contentDataSource];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
@@ -1866,10 +1866,10 @@ LABEL_29:
     v18[1] = 3221225472;
     v18[2] = __108__JFXEffect_AssetDownloading__requestAllAssetsWithOptions_progressAndCancellationHandler_completionHandler___block_invoke;
     v18[3] = &unk_278D7CC58;
-    v19 = v9;
+    v19 = handlerCopy;
     v20 = &v21;
     v18[4] = self;
-    v14 = [v13 requestAllAssetsWithOptions:v8 progressHandler:v18 completionHandler:v10];
+    v14 = [contentDataSource2 requestAllAssetsWithOptions:optionsCopy progressHandler:v18 completionHandler:completionHandlerCopy];
     v15 = v22[5];
     v22[5] = v14;
 
@@ -1879,7 +1879,7 @@ LABEL_29:
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, 0, 0);
     v16 = 0;
   }
 
@@ -1905,17 +1905,17 @@ uint64_t __108__JFXEffect_AssetDownloading__requestAllAssetsWithOptions_progress
   return result;
 }
 
-- (id)requestAssetWithOptions:(id)a3 progressAndCancellationHandler:(id)a4 completionHandler:(id)a5
+- (id)requestAssetWithOptions:(id)options progressAndCancellationHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(JFXEffect *)self contentDataSource];
-  v12 = [v11 conformsToProtocol:&unk_285584528];
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  contentDataSource = [(JFXEffect *)self contentDataSource];
+  v12 = [contentDataSource conformsToProtocol:&unk_285584528];
 
   if (v12)
   {
-    v13 = [(JFXEffect *)self contentDataSource];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
@@ -1926,10 +1926,10 @@ uint64_t __108__JFXEffect_AssetDownloading__requestAllAssetsWithOptions_progress
     v18[1] = 3221225472;
     v18[2] = __104__JFXEffect_AssetDownloading__requestAssetWithOptions_progressAndCancellationHandler_completionHandler___block_invoke;
     v18[3] = &unk_278D7CC58;
-    v19 = v9;
+    v19 = handlerCopy;
     v20 = &v21;
     v18[4] = self;
-    v14 = [v13 requestAssetWithOptions:v8 progressHandler:v18 completionHandler:v10];
+    v14 = [contentDataSource2 requestAssetWithOptions:optionsCopy progressHandler:v18 completionHandler:completionHandlerCopy];
     v15 = v22[5];
     v22[5] = v14;
 
@@ -1939,7 +1939,7 @@ uint64_t __108__JFXEffect_AssetDownloading__requestAllAssetsWithOptions_progress
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, 0, 0);
     v16 = 0;
   }
 
@@ -1965,35 +1965,35 @@ uint64_t __104__JFXEffect_AssetDownloading__requestAssetWithOptions_progressAndC
   return result;
 }
 
-- (id)requestAssetWithOptions:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (id)requestAssetWithOptions:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(JFXEffect *)self contentDataSource];
-  v12 = [v11 conformsToProtocol:&unk_285584528];
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  contentDataSource = [(JFXEffect *)self contentDataSource];
+  v12 = [contentDataSource conformsToProtocol:&unk_285584528];
 
   if (v12)
   {
-    v13 = [(JFXEffect *)self contentDataSource];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __89__JFXEffect_AssetDownloading__requestAssetWithOptions_progressHandler_completionHandler___block_invoke;
     v18[3] = &unk_278D7CC80;
     v18[4] = self;
-    v19 = v9;
+    v19 = handlerCopy;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __89__JFXEffect_AssetDownloading__requestAssetWithOptions_progressHandler_completionHandler___block_invoke_60;
     v16[3] = &unk_278D7CCA8;
     v16[4] = self;
-    v17 = v10;
-    v14 = [v13 requestAssetWithOptions:v8 progressHandler:v18 completionHandler:v16];
+    v17 = completionHandlerCopy;
+    v14 = [contentDataSource2 requestAssetWithOptions:optionsCopy progressHandler:v18 completionHandler:v16];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, 0, 0);
     v14 = 0;
   }
 
@@ -2058,35 +2058,35 @@ LABEL_8:
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)requestAllAssetsWithOptions:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (id)requestAllAssetsWithOptions:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(JFXEffect *)self contentDataSource];
-  v12 = [v11 conformsToProtocol:&unk_285584528];
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  contentDataSource = [(JFXEffect *)self contentDataSource];
+  v12 = [contentDataSource conformsToProtocol:&unk_285584528];
 
   if (v12)
   {
-    v13 = [(JFXEffect *)self contentDataSource];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __93__JFXEffect_AssetDownloading__requestAllAssetsWithOptions_progressHandler_completionHandler___block_invoke;
     v18[3] = &unk_278D7CC80;
     v18[4] = self;
-    v19 = v9;
+    v19 = handlerCopy;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __93__JFXEffect_AssetDownloading__requestAllAssetsWithOptions_progressHandler_completionHandler___block_invoke_62;
     v16[3] = &unk_278D7CCD0;
     v16[4] = self;
-    v17 = v10;
-    v14 = [v13 requestAllAssetsWithOptions:v8 progressHandler:v18 completionHandler:v16];
+    v17 = completionHandlerCopy;
+    v14 = [contentDataSource2 requestAllAssetsWithOptions:optionsCopy progressHandler:v18 completionHandler:v16];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, 0, 0);
     v14 = 0;
   }
 
@@ -2151,42 +2151,42 @@ LABEL_8:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)cancelAssetRequest:(id)a3
+- (void)cancelAssetRequest:(id)request
 {
-  v7 = a3;
-  v4 = [(JFXEffect *)self contentDataSource];
-  v5 = [v4 conformsToProtocol:&unk_285584528];
+  requestCopy = request;
+  contentDataSource = [(JFXEffect *)self contentDataSource];
+  v5 = [contentDataSource conformsToProtocol:&unk_285584528];
 
   if (v5)
   {
-    v6 = [(JFXEffect *)self contentDataSource];
-    [v6 cancelAssetRequest:v7];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
+    [contentDataSource2 cancelAssetRequest:requestCopy];
   }
 }
 
-- (void)updatePriorityForAssetRequest:(id)a3 newPriority:(int64_t)a4
+- (void)updatePriorityForAssetRequest:(id)request newPriority:(int64_t)priority
 {
-  v9 = a3;
-  v6 = [(JFXEffect *)self contentDataSource];
-  v7 = [v6 conformsToProtocol:&unk_285584528];
+  requestCopy = request;
+  contentDataSource = [(JFXEffect *)self contentDataSource];
+  v7 = [contentDataSource conformsToProtocol:&unk_285584528];
 
   if (v7)
   {
-    v8 = [(JFXEffect *)self contentDataSource];
-    [v8 updatePriorityForAssetRequest:v9 newPriority:a4];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
+    [contentDataSource2 updatePriorityForAssetRequest:requestCopy newPriority:priority];
   }
 }
 
-- (id)availableAssetsWithFilteringOptionsArray:(id)a3
+- (id)availableAssetsWithFilteringOptionsArray:(id)array
 {
-  v4 = a3;
-  v5 = [(JFXEffect *)self contentDataSource];
-  v6 = [v5 conformsToProtocol:&unk_285584528];
+  arrayCopy = array;
+  contentDataSource = [(JFXEffect *)self contentDataSource];
+  v6 = [contentDataSource conformsToProtocol:&unk_285584528];
 
   if (v6)
   {
-    v7 = [(JFXEffect *)self contentDataSource];
-    v8 = [v7 availableAssetsWithFilteringOptionsArray:v4];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
+    v8 = [contentDataSource2 availableAssetsWithFilteringOptionsArray:arrayCopy];
   }
 
   else
@@ -2197,16 +2197,16 @@ LABEL_8:
   return v8;
 }
 
-- (id)availableAssetsWithFilteringOptions:(id)a3
+- (id)availableAssetsWithFilteringOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(JFXEffect *)self contentDataSource];
-  v6 = [v5 conformsToProtocol:&unk_285584528];
+  optionsCopy = options;
+  contentDataSource = [(JFXEffect *)self contentDataSource];
+  v6 = [contentDataSource conformsToProtocol:&unk_285584528];
 
   if (v6)
   {
-    v7 = [(JFXEffect *)self contentDataSource];
-    v8 = [v7 availableAssetsWithFilteringOptions:v4];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
+    v8 = [contentDataSource2 availableAssetsWithFilteringOptions:optionsCopy];
   }
 
   else
@@ -2217,16 +2217,16 @@ LABEL_8:
   return v8;
 }
 
-- (id)localAssetsWithFilteringOptions:(id)a3
+- (id)localAssetsWithFilteringOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(JFXEffect *)self contentDataSource];
-  v6 = [v5 conformsToProtocol:&unk_285584528];
+  optionsCopy = options;
+  contentDataSource = [(JFXEffect *)self contentDataSource];
+  v6 = [contentDataSource conformsToProtocol:&unk_285584528];
 
   if (v6)
   {
-    v7 = [(JFXEffect *)self contentDataSource];
-    v8 = [v7 localAssetsWithFilteringOptions:v4];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
+    v8 = [contentDataSource2 localAssetsWithFilteringOptions:optionsCopy];
   }
 
   else
@@ -2237,16 +2237,16 @@ LABEL_8:
   return v8;
 }
 
-- (id)describeRequest:(id)a3
+- (id)describeRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(JFXEffect *)self contentDataSource];
-  v6 = [v5 conformsToProtocol:&unk_285584528];
+  requestCopy = request;
+  contentDataSource = [(JFXEffect *)self contentDataSource];
+  v6 = [contentDataSource conformsToProtocol:&unk_285584528];
 
   if (v6)
   {
-    v7 = [(JFXEffect *)self contentDataSource];
-    v8 = [v7 describeRequest:v4];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
+    v8 = [contentDataSource2 describeRequest:requestCopy];
   }
 
   else
@@ -2257,19 +2257,19 @@ LABEL_8:
   return v8;
 }
 
-- (void)registerMotionDocumentWithinAssets:(id)a3
+- (void)registerMotionDocumentWithinAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v5 = objc_opt_new();
   [v5 setContentType:5];
-  v6 = [JFXEffectAsset firstAssetInAssets:v4 matchingFilterAttributes:v5];
+  v6 = [JFXEffectAsset firstAssetInAssets:assetsCopy matchingFilterAttributes:v5];
 
   if (v6)
   {
-    v7 = [v6 localURL];
-    v8 = [v7 path];
+    localURL = [v6 localURL];
+    path = [localURL path];
 
-    [(JFXEffect *)self setMotionDocumentFolderPath:v8];
+    [(JFXEffect *)self setMotionDocumentFolderPath:path];
     v9 = JFXLog_DebugEffectAssetDownloading();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -2279,8 +2279,8 @@ LABEL_8:
 
   else
   {
-    v8 = JFXLog_DebugEffectAssetDownloading();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    path = JFXLog_DebugEffectAssetDownloading();
+    if (os_log_type_enabled(path, OS_LOG_TYPE_DEBUG))
     {
       [JFXEffect(AssetDownloading) registerMotionDocumentWithinAssets:];
     }
@@ -2292,18 +2292,18 @@ LABEL_8:
   v25 = *MEMORY[0x277D85DE8];
   if ([(JFXEffect *)self isNone])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(localURL) = 1;
   }
 
   else
   {
-    v4 = [(JFXEffect *)self contentDataSource];
-    if (!v4 || (v5 = v4, -[JFXEffect contentDataSource](self, "contentDataSource"), v6 = objc_claimAutoreleasedReturnValue(), LODWORD(v3) = [v6 isContentAvailable], v6, v5, v3))
+    contentDataSource = [(JFXEffect *)self contentDataSource];
+    if (!contentDataSource || (v5 = contentDataSource, -[JFXEffect contentDataSource](self, "contentDataSource"), v6 = objc_claimAutoreleasedReturnValue(), LODWORD(localURL) = [v6 isContentAvailable], v6, v5, localURL))
     {
       v7 = objc_opt_new();
       v8 = objc_opt_new();
       [v8 setContentType:5];
-      LOBYTE(v3) = 1;
+      LOBYTE(localURL) = 1;
       [v8 setUsageMode:1];
       v9 = [(JFXEffect *)self availableAssetsWithFilteringOptions:v8];
       [v7 addObjectsFromArray:v9];
@@ -2335,24 +2335,24 @@ LABEL_7:
           }
 
           v17 = *(*(&v20 + 1) + 8 * v16);
-          v3 = [v17 localURL];
-          if (!v3)
+          localURL = [v17 localURL];
+          if (!localURL)
           {
             break;
           }
 
-          v18 = [v17 contentUpdateAvailable];
+          contentUpdateAvailable = [v17 contentUpdateAvailable];
 
-          if (v18)
+          if (contentUpdateAvailable)
           {
-            LOBYTE(v3) = 0;
+            LOBYTE(localURL) = 0;
             break;
           }
 
           if (v14 == ++v16)
           {
             v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
-            LOBYTE(v3) = 1;
+            LOBYTE(localURL) = 1;
             if (v14)
             {
               goto LABEL_7;
@@ -2365,20 +2365,20 @@ LABEL_7:
     }
   }
 
-  return v3;
+  return localURL;
 }
 
-- (id)requestPreviewingAssetsWithPriority:(int64_t)a3 onlyThumbnailAssetWhenAvailable:(BOOL)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (id)requestPreviewingAssetsWithPriority:(int64_t)priority onlyThumbnailAssetWhenAvailable:(BOOL)available progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v7 = a4;
+  availableCopy = available;
   v28[1] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v12 = objc_opt_new();
   [v12 setContentType:1];
   [v12 setUsageMode:1];
   [v12 setFilteringMode:1];
-  if (v7 && (-[JFXEffect availableAssetsWithFilteringOptions:](self, "availableAssetsWithFilteringOptions:", v12), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 count], v13, v14))
+  if (availableCopy && (-[JFXEffect availableAssetsWithFilteringOptions:](self, "availableAssetsWithFilteringOptions:", v12), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 count], v13, v14))
   {
     v15 = JFXLog_DebugEffectAssetDownloading();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -2391,14 +2391,14 @@ LABEL_7:
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
     [v16 setFilterOptionsArray:v17];
 
-    [v16 setPriority:a3];
+    [v16 setPriority:priority];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __133__JFXEffect_AssetDownloading__requestPreviewingAssetsWithPriority_onlyThumbnailAssetWhenAvailable_progressHandler_completionHandler___block_invoke;
     v25[3] = &unk_278D7CCF8;
-    v26 = v11;
-    v18 = v11;
-    v19 = [(JFXEffect *)self requestAssetWithOptions:v16 progressAndCancellationHandler:v10 completionHandler:v25];
+    v26 = completionHandlerCopy;
+    v18 = completionHandlerCopy;
+    v19 = [(JFXEffect *)self requestAssetWithOptions:v16 progressAndCancellationHandler:handlerCopy completionHandler:v25];
     v20 = v26;
   }
 
@@ -2412,15 +2412,15 @@ LABEL_7:
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
     [v16 setFilterOptionsArray:v21];
 
-    [v16 setPriority:a3];
+    [v16 setPriority:priority];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __133__JFXEffect_AssetDownloading__requestPreviewingAssetsWithPriority_onlyThumbnailAssetWhenAvailable_progressHandler_completionHandler___block_invoke_2;
     v23[3] = &unk_278D7CCD0;
     v23[4] = self;
-    v24 = v11;
-    v20 = v11;
-    v19 = [(JFXEffect *)self requestAllAssetsWithOptions:v16 progressAndCancellationHandler:v10 completionHandler:v23];
+    v24 = completionHandlerCopy;
+    v20 = completionHandlerCopy;
+    v19 = [(JFXEffect *)self requestAllAssetsWithOptions:v16 progressAndCancellationHandler:handlerCopy completionHandler:v23];
   }
 
   return v19;
@@ -2466,13 +2466,13 @@ void __133__JFXEffect_AssetDownloading__requestPreviewingAssetsWithPriority_only
   v21 = *MEMORY[0x277D85DE8];
   if ([(JFXEffect *)self isNone])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(localURL) = 1;
   }
 
   else
   {
-    v4 = [(JFXEffect *)self contentDataSource];
-    if (!v4 || (v5 = v4, -[JFXEffect contentDataSource](self, "contentDataSource"), v6 = objc_claimAutoreleasedReturnValue(), LODWORD(v3) = [v6 isContentAvailable], v6, v5, v3))
+    contentDataSource = [(JFXEffect *)self contentDataSource];
+    if (!contentDataSource || (v5 = contentDataSource, -[JFXEffect contentDataSource](self, "contentDataSource"), v6 = objc_claimAutoreleasedReturnValue(), LODWORD(localURL) = [v6 isContentAvailable], v6, v5, localURL))
     {
       v7 = objc_opt_new();
       [v7 setUsageMode:2];
@@ -2496,24 +2496,24 @@ LABEL_7:
           }
 
           v13 = *(*(&v16 + 1) + 8 * v12);
-          v3 = [v13 localURL];
-          if (!v3)
+          localURL = [v13 localURL];
+          if (!localURL)
           {
             break;
           }
 
-          v14 = [v13 contentUpdateAvailable];
+          contentUpdateAvailable = [v13 contentUpdateAvailable];
 
-          if (v14)
+          if (contentUpdateAvailable)
           {
-            LOBYTE(v3) = 0;
+            LOBYTE(localURL) = 0;
             break;
           }
 
           if (v10 == ++v12)
           {
             v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
-            LOBYTE(v3) = 1;
+            LOBYTE(localURL) = 1;
             if (v10)
             {
               goto LABEL_7;
@@ -2526,19 +2526,19 @@ LABEL_7:
 
       else
       {
-        LOBYTE(v3) = 1;
+        LOBYTE(localURL) = 1;
       }
     }
   }
 
-  return v3;
+  return localURL;
 }
 
-- (id)requestRenderingAssetsWithPriority:(int64_t)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (id)requestRenderingAssetsWithPriority:(int64_t)priority progressHandler:(id)handler completionHandler:(id)completionHandler
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
   v10 = objc_opt_new();
   v11 = objc_opt_new();
   [v11 setUsageMode:2];
@@ -2550,15 +2550,15 @@ LABEL_7:
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
   [v10 setFilterOptionsArray:v13];
 
-  [v10 setPriority:a3];
+  [v10 setPriority:priority];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __100__JFXEffect_AssetDownloading__requestRenderingAssetsWithPriority_progressHandler_completionHandler___block_invoke;
   v17[3] = &unk_278D7CCD0;
   v17[4] = self;
-  v18 = v8;
-  v14 = v8;
-  v15 = [(JFXEffect *)self requestAllAssetsWithOptions:v10 progressAndCancellationHandler:v9 completionHandler:v17];
+  v18 = completionHandlerCopy;
+  v14 = completionHandlerCopy;
+  v15 = [(JFXEffect *)self requestAllAssetsWithOptions:v10 progressAndCancellationHandler:handlerCopy completionHandler:v17];
 
   return v15;
 }

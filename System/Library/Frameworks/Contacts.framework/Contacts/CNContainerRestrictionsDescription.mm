@@ -1,44 +1,44 @@
 @interface CNContainerRestrictionsDescription
-- (BOOL)isConvertibleABValue:(void *)a3;
-- (BOOL)isValidValue:(id)a3 error:(id *)a4;
-- (BOOL)setABValue:(void *)a3 onABSource:(void *)a4 error:(__CFError *)a5;
-- (id)CNValueForContainer:(id)a3;
-- (id)CNValueFromABValue:(void *)a3;
-- (void)ABValueFromCNValue:(id)a3;
-- (void)setCNValue:(id)a3 onContainer:(id)a4;
+- (BOOL)isConvertibleABValue:(void *)value;
+- (BOOL)isValidValue:(id)value error:(id *)error;
+- (BOOL)setABValue:(void *)value onABSource:(void *)source error:(__CFError *)error;
+- (id)CNValueForContainer:(id)container;
+- (id)CNValueFromABValue:(void *)value;
+- (void)ABValueFromCNValue:(id)value;
+- (void)setCNValue:(id)value onContainer:(id)container;
 @end
 
 @implementation CNContainerRestrictionsDescription
 
-- (id)CNValueForContainer:(id)a3
+- (id)CNValueForContainer:(id)container
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [a3 restrictions];
+  restrictions = [container restrictions];
 
-  return [v3 numberWithUnsignedInteger:v4];
+  return [v3 numberWithUnsignedInteger:restrictions];
 }
 
-- (void)setCNValue:(id)a3 onContainer:(id)a4
+- (void)setCNValue:(id)value onContainer:(id)container
 {
-  v5 = a4;
-  [v5 setRestrictions:{objc_msgSend(a3, "unsignedIntegerValue")}];
+  containerCopy = container;
+  [containerCopy setRestrictions:{objc_msgSend(value, "unsignedIntegerValue")}];
 }
 
-- (BOOL)isValidValue:(id)a3 error:(id *)a4
+- (BOOL)isValidValue:(id)value error:(id *)error
 {
-  v5 = [a3 unsignedIntegerValue];
-  if (v5 >= 8)
+  unsignedIntegerValue = [value unsignedIntegerValue];
+  if (unsignedIntegerValue >= 8)
   {
-    CNSetError(a4, 301, 0);
+    CNSetError(error, 301, 0);
   }
 
-  return v5 < 8;
+  return unsignedIntegerValue < 8;
 }
 
-- (BOOL)isConvertibleABValue:(void *)a3
+- (BOOL)isConvertibleABValue:(void *)value
 {
   valuePtr = 0;
-  if (CFNumberGetValue(a3, kCFNumberIntType, &valuePtr))
+  if (CFNumberGetValue(value, kCFNumberIntType, &valuePtr))
   {
     v3 = valuePtr >= 0x10;
   }
@@ -51,10 +51,10 @@
   return !v3;
 }
 
-- (void)ABValueFromCNValue:(id)a3
+- (void)ABValueFromCNValue:(id)value
 {
-  v3 = [a3 intValue];
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:v3 & 3];
+  intValue = [value intValue];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:intValue & 3];
   if (!v4)
   {
     return 0;
@@ -69,25 +69,25 @@
   return CFAutorelease(v5);
 }
 
-- (id)CNValueFromABValue:(void *)a3
+- (id)CNValueFromABValue:(void *)value
 {
-  v3 = [a3 intValue] & 3;
+  v3 = [value intValue] & 3;
   v4 = MEMORY[0x1E696AD98];
 
   return [v4 numberWithUnsignedInteger:v3];
 }
 
-- (BOOL)setABValue:(void *)a3 onABSource:(void *)a4 error:(__CFError *)a5
+- (BOOL)setABValue:(void *)value onABSource:(void *)source error:(__CFError *)error
 {
-  if (!a3)
+  if (!value)
   {
     return 1;
   }
 
-  v6 = a3;
+  valueCopy = value;
   [(CNContainerRestrictionsDescription *)self abPropertyID];
   ABRecordGetIntValue();
-  [v6 intValue];
+  [valueCopy intValue];
 
   [(CNContainerRestrictionsDescription *)self abPropertyID];
 

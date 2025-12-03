@@ -1,20 +1,20 @@
 @interface PXPeopleProgressManager
-+ (BOOL)hasSubstantialProcessingRemainingForThreshold:(int64_t)a3 pendingAssetCount:(int64_t)a4 allowedAssetCount:(int64_t)a5 photoLibrary:(id)a6;
++ (BOOL)hasSubstantialProcessingRemainingForThreshold:(int64_t)threshold pendingAssetCount:(int64_t)count allowedAssetCount:(int64_t)assetCount photoLibrary:(id)library;
 + (id)_progressFooterQueue;
-+ (id)statusStringForStatus:(int64_t)a3;
-+ (void)shouldCheckProcessedCounts:(BOOL *)a3 hasSubstantialProcessingRemaining:(BOOL *)a4 threshold:(int64_t)a5 featureUnlocked:(BOOL)a6;
-- (BOOL)_hasSubstantialProcessingRemainingForThreshold:(int64_t)a3 allowMocking:(BOOL)a4;
++ (id)statusStringForStatus:(int64_t)status;
++ (void)shouldCheckProcessedCounts:(BOOL *)counts hasSubstantialProcessingRemaining:(BOOL *)remaining threshold:(int64_t)threshold featureUnlocked:(BOOL)unlocked;
+- (BOOL)_hasSubstantialProcessingRemainingForThreshold:(int64_t)threshold allowMocking:(BOOL)mocking;
 - (BOOL)featureUnlocked;
-- (PXPeopleProgressManager)initWithPhotoLibrary:(id)a3;
+- (PXPeopleProgressManager)initWithPhotoLibrary:(id)library;
 - (int64_t)processingStatus;
-- (void)_handleAsyncUpdateIsReadyForAnalysis:(BOOL)a3 processedToAnyVersionProgress:(int64_t)a4 processedToAnyVersionCount:(int64_t)a5;
+- (void)_handleAsyncUpdateIsReadyForAnalysis:(BOOL)analysis processedToAnyVersionProgress:(int64_t)progress processedToAnyVersionCount:(int64_t)count;
 - (void)_logFaceCounts;
 - (void)_scheduleNextUpdate;
-- (void)_updateStatusForIsReadyForAnalysis:(BOOL)a3 progress:(double)a4 processCount:(int64_t)a5;
-- (void)setMonitoringProgress:(BOOL)a3;
-- (void)setUpdateInterval:(double)a3;
-- (void)shouldUseProgressFooterWithCompletion:(id)a3;
-- (void)updateProgressWithForce:(BOOL)a3;
+- (void)_updateStatusForIsReadyForAnalysis:(BOOL)analysis progress:(double)progress processCount:(int64_t)count;
+- (void)setMonitoringProgress:(BOOL)progress;
+- (void)setUpdateInterval:(double)interval;
+- (void)shouldUseProgressFooterWithCompletion:(id)completion;
+- (void)updateProgressWithForce:(BOOL)force;
 @end
 
 @implementation PXPeopleProgressManager
@@ -175,9 +175,9 @@ void __41__PXPeopleProgressManager__logFaceCounts__block_invoke_23(uint64_t a1, 
   }
 }
 
-- (void)_handleAsyncUpdateIsReadyForAnalysis:(BOOL)a3 processedToAnyVersionProgress:(int64_t)a4 processedToAnyVersionCount:(int64_t)a5
+- (void)_handleAsyncUpdateIsReadyForAnalysis:(BOOL)analysis processedToAnyVersionProgress:(int64_t)progress processedToAnyVersionCount:(int64_t)count
 {
-  [(PXPeopleProgressManager *)self _updateStatusForIsReadyForAnalysis:a3 progress:a5 processCount:a4];
+  [(PXPeopleProgressManager *)self _updateStatusForIsReadyForAnalysis:analysis progress:count processCount:progress];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __121__PXPeopleProgressManager__handleAsyncUpdateIsReadyForAnalysis_processedToAnyVersionProgress_processedToAnyVersionCount___block_invoke;
@@ -190,10 +190,10 @@ void __41__PXPeopleProgressManager__logFaceCounts__block_invoke_23(uint64_t a1, 
 {
   lock._os_unfair_lock_opaque = [(PXPeopleProgressManager *)self progressLock];
   os_unfair_lock_lock(&lock);
-  v3 = [(PXPeopleProgressManager *)self statusTimer];
-  v4 = [(PXPeopleProgressManager *)self monitoringProgress];
+  statusTimer = [(PXPeopleProgressManager *)self statusTimer];
+  monitoringProgress = [(PXPeopleProgressManager *)self monitoringProgress];
   os_unfair_lock_unlock(&lock);
-  if (!v3 && v4)
+  if (!statusTimer && monitoringProgress)
   {
     objc_initWeak(&location, self);
     v14._os_unfair_lock_opaque = [(PXPeopleProgressManager *)self progressLock];
@@ -224,23 +224,23 @@ void __46__PXPeopleProgressManager__scheduleNextUpdate__block_invoke(uint64_t a1
   [v3 updateProgressWithForce:0];
 }
 
-- (void)_updateStatusForIsReadyForAnalysis:(BOOL)a3 progress:(double)a4 processCount:(int64_t)a5
+- (void)_updateStatusForIsReadyForAnalysis:(BOOL)analysis progress:(double)progress processCount:(int64_t)count
 {
-  v8 = [(PXPeopleProgressManager *)self dataSource:a3];
-  v9 = [PXPeopleProgressManager progressComplete:a4];
-  v10 = [v8 hasHomePeople];
-  v11 = v10;
-  v12 = (v10 ^ 1) & v9;
+  v8 = [(PXPeopleProgressManager *)self dataSource:analysis];
+  v9 = [PXPeopleProgressManager progressComplete:progress];
+  hasHomePeople = [v8 hasHomePeople];
+  v11 = hasHomePeople;
+  v12 = (hasHomePeople ^ 1) & v9;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__PXPeopleProgressManager__updateStatusForIsReadyForAnalysis_progress_processCount___block_invoke;
   aBlock[3] = &unk_1E7736D70;
   objc_copyWeak(v21, &location);
-  v22 = a3;
+  analysisCopy = analysis;
   v23 = v11;
   v24 = v9;
-  v21[1] = *&a4;
+  v21[1] = *&progress;
   v13 = _Block_copy(aBlock);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -334,31 +334,31 @@ void __84__PXPeopleProgressManager__updateStatusForIsReadyForAnalysis_progress_p
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-- (BOOL)_hasSubstantialProcessingRemainingForThreshold:(int64_t)a3 allowMocking:(BOOL)a4
+- (BOOL)_hasSubstantialProcessingRemainingForThreshold:(int64_t)threshold allowMocking:(BOOL)mocking
 {
-  v4 = a4;
+  mockingCopy = mocking;
   v20 = 0;
-  [PXPeopleProgressManager shouldCheckProcessedCounts:&v20 + 1 hasSubstantialProcessingRemaining:&v20 threshold:a3 featureUnlocked:[(PXPeopleProgressManager *)self featureUnlocked]];
+  [PXPeopleProgressManager shouldCheckProcessedCounts:&v20 + 1 hasSubstantialProcessingRemaining:&v20 threshold:threshold featureUnlocked:[(PXPeopleProgressManager *)self featureUnlocked]];
   if (HIBYTE(v20) == 1)
   {
-    v7 = [(PXPeopleProgressManager *)self dataSource];
+    dataSource = [(PXPeopleProgressManager *)self dataSource];
     objc_initWeak(&location, self);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __87__PXPeopleProgressManager__hasSubstantialProcessingRemainingForThreshold_allowMocking___block_invoke;
     v17[3] = &unk_1E7736D48;
     objc_copyWeak(&v18, &location);
-    [v7 updateProgressIfNeededWithReportBlock:v17];
-    v8 = [v7 allowedAssetCount];
-    if (a3 >= 2)
+    [dataSource updateProgressIfNeededWithReportBlock:v17];
+    allowedAssetCount = [dataSource allowedAssetCount];
+    if (threshold >= 2)
     {
-      if (a3 != 2)
+      if (threshold != 2)
       {
         v10 = 0;
 LABEL_8:
-        v11 = [(PXPeopleProgressManager *)self dataSource];
-        v12 = [v11 photoLibrary];
-        LOBYTE(v20) = [PXPeopleProgressManager hasSubstantialProcessingRemainingForThreshold:a3 pendingAssetCount:v10 allowedAssetCount:v8 photoLibrary:v12];
+        dataSource2 = [(PXPeopleProgressManager *)self dataSource];
+        photoLibrary = [dataSource2 photoLibrary];
+        LOBYTE(v20) = [PXPeopleProgressManager hasSubstantialProcessingRemainingForThreshold:threshold pendingAssetCount:v10 allowedAssetCount:allowedAssetCount photoLibrary:photoLibrary];
 
         objc_destroyWeak(&v18);
         objc_destroyWeak(&location);
@@ -366,20 +366,20 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v9 = [v7 pendingToLatestVersionAssetCount];
+      pendingToLatestVersionAssetCount = [dataSource pendingToLatestVersionAssetCount];
     }
 
     else
     {
-      v9 = [v7 pendingToAnyVersionAssetCount];
+      pendingToLatestVersionAssetCount = [dataSource pendingToAnyVersionAssetCount];
     }
 
-    v10 = v9;
+    v10 = pendingToLatestVersionAssetCount;
     goto LABEL_8;
   }
 
 LABEL_9:
-  if (v4 && (+[PXPeopleUISettings sharedInstance](PXPeopleUISettings, "sharedInstance"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 mockProcessingUpdates], v13, v14))
+  if (mockingCopy && (+[PXPeopleUISettings sharedInstance](PXPeopleUISettings, "sharedInstance"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 mockProcessingUpdates], v13, v14))
   {
     return ([(PXPeopleProgressManager *)self mockSubstantialProcessingCount]& 0x8000000000000001) == 1;
   }
@@ -396,14 +396,14 @@ void __87__PXPeopleProgressManager__hasSubstantialProcessingRemainingForThreshol
   [WeakRetained _updateStatusForIsReadyForAnalysis:a2 progress:a6 processCount:a4];
 }
 
-- (void)updateProgressWithForce:(BOOL)a3
+- (void)updateProgressWithForce:(BOOL)force
 {
-  v3 = a3;
+  forceCopy = force;
   lock._os_unfair_lock_opaque = [(PXPeopleProgressManager *)self progressLock];
   os_unfair_lock_lock(&lock);
-  v5 = [(PXPeopleProgressManager *)self monitoringProgress];
+  monitoringProgress = [(PXPeopleProgressManager *)self monitoringProgress];
   os_unfair_lock_unlock(&lock);
-  if (v5 || v3)
+  if (monitoringProgress || forceCopy)
   {
     v6 = dispatch_get_global_queue(9, 0);
     v7[0] = MEMORY[0x1E69E9820];
@@ -436,13 +436,13 @@ void __51__PXPeopleProgressManager_updateProgressWithForce___block_invoke_2(uint
   [WeakRetained _handleAsyncUpdateIsReadyForAnalysis:a2 processedToAnyVersionProgress:a4 processedToAnyVersionCount:a6];
 }
 
-- (void)shouldUseProgressFooterWithCompletion:(id)a3
+- (void)shouldUseProgressFooterWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXPeopleProgressManager.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleProgressManager.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   v6 = +[PXPeopleProgressManager _progressFooterQueue];
@@ -451,8 +451,8 @@ void __51__PXPeopleProgressManager_updateProgressWithForce___block_invoke_2(uint
   block[2] = __65__PXPeopleProgressManager_shouldUseProgressFooterWithCompletion___block_invoke;
   block[3] = &unk_1E774C2F0;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(v6, block);
 }
 
@@ -467,13 +467,13 @@ uint64_t __65__PXPeopleProgressManager_shouldUseProgressFooterWithCompletion___b
 - (int64_t)processingStatus
 {
   objc_initWeak(&location, self);
-  v3 = [(PXPeopleProgressManager *)self dataSource];
+  dataSource = [(PXPeopleProgressManager *)self dataSource];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__PXPeopleProgressManager_processingStatus__block_invoke;
   v6[3] = &unk_1E7736D48;
   objc_copyWeak(&v7, &location);
-  [v3 updateProgressIfNeededWithReportBlock:v6];
+  [dataSource updateProgressIfNeededWithReportBlock:v6];
 
   processingStatus = self->_processingStatus;
   objc_destroyWeak(&v7);
@@ -489,40 +489,40 @@ void __43__PXPeopleProgressManager_processingStatus__block_invoke(uint64_t a1, u
 
 - (BOOL)featureUnlocked
 {
-  v2 = [(PXPeopleProgressManager *)self dataSource];
-  v3 = [v2 isReadyForAnalysis];
-  v4 = [v2 hasHomePeople];
+  dataSource = [(PXPeopleProgressManager *)self dataSource];
+  isReadyForAnalysis = [dataSource isReadyForAnalysis];
+  hasHomePeople = [dataSource hasHomePeople];
 
-  return v3 & v4;
+  return isReadyForAnalysis & hasHomePeople;
 }
 
-- (void)setUpdateInterval:(double)a3
+- (void)setUpdateInterval:(double)interval
 {
   lock._os_unfair_lock_opaque = [(PXPeopleProgressManager *)self progressLock];
   os_unfair_lock_lock(&lock);
-  if (self->_updateInterval != a3)
+  if (self->_updateInterval != interval)
   {
-    v5 = 1.0;
-    if (a3 >= 1.0)
+    intervalCopy = 1.0;
+    if (interval >= 1.0)
     {
-      v5 = a3;
+      intervalCopy = interval;
     }
 
-    self->_updateInterval = v5;
+    self->_updateInterval = intervalCopy;
   }
 
   os_unfair_lock_unlock(&lock);
 }
 
-- (void)setMonitoringProgress:(BOOL)a3
+- (void)setMonitoringProgress:(BOOL)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   lock._os_unfair_lock_opaque = [(PXPeopleProgressManager *)self progressLock];
   os_unfair_lock_lock(&lock);
-  if (self->_monitoringProgress != v3)
+  if (self->_monitoringProgress != progressCopy)
   {
-    self->_monitoringProgress = v3;
-    if (v3)
+    self->_monitoringProgress = progressCopy;
+    if (progressCopy)
     {
       os_unfair_lock_unlock(&lock);
       [(PXPeopleProgressManager *)self updateProgressWithForce:0];
@@ -531,8 +531,8 @@ void __43__PXPeopleProgressManager_processingStatus__block_invoke(uint64_t a1, u
 
     if (self->_statusTimer)
     {
-      v5 = [(PXPeopleProgressManager *)self statusTimer];
-      [v5 invalidate];
+      statusTimer = [(PXPeopleProgressManager *)self statusTimer];
+      [statusTimer invalidate];
 
       [(PXPeopleProgressManager *)self setStatusTimer:0];
     }
@@ -541,9 +541,9 @@ void __43__PXPeopleProgressManager_processingStatus__block_invoke(uint64_t a1, u
   os_unfair_lock_unlock(&lock);
 }
 
-- (PXPeopleProgressManager)initWithPhotoLibrary:(id)a3
+- (PXPeopleProgressManager)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v13.receiver = self;
   v13.super_class = PXPeopleProgressManager;
   v5 = [(PXPeopleProgressManager *)&v13 init];
@@ -552,7 +552,7 @@ void __43__PXPeopleProgressManager_processingStatus__block_invoke(uint64_t a1, u
   {
     v5->_updateInterval = 1.0;
     v5->_processingStatus = 0;
-    v7 = [[PXPeopleProgressDataSource alloc] initWithPhotoLibrary:v4];
+    v7 = [[PXPeopleProgressDataSource alloc] initWithPhotoLibrary:libraryCopy];
     dataSource = v6->_dataSource;
     v6->_dataSource = v7;
     v9 = v7;
@@ -560,23 +560,23 @@ void __43__PXPeopleProgressManager_processingStatus__block_invoke(uint64_t a1, u
     [(PXPeopleProgressDataSource *)v9 loadQueryData];
     v6->_progressLock._os_unfair_lock_opaque = 0;
     v10 = *MEMORY[0x1E69DDBA8];
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v6 selector:sel__logFaceCounts name:v10 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__logFaceCounts name:v10 object:0];
   }
 
   return v6;
 }
 
-+ (id)statusStringForStatus:(int64_t)a3
++ (id)statusStringForStatus:(int64_t)status
 {
-  if ((a3 - 1) > 3)
+  if ((status - 1) > 3)
   {
     return @"PXPeopleProcessStatusNotAvailable";
   }
 
   else
   {
-    return off_1E7736D90[a3 - 1];
+    return off_1E7736D90[status - 1];
   }
 }
 
@@ -600,11 +600,11 @@ void __47__PXPeopleProgressManager__progressFooterQueue__block_invoke()
   _progressFooterQueue_footerQueue = v0;
 }
 
-+ (void)shouldCheckProcessedCounts:(BOOL *)a3 hasSubstantialProcessingRemaining:(BOOL *)a4 threshold:(int64_t)a5 featureUnlocked:(BOOL)a6
++ (void)shouldCheckProcessedCounts:(BOOL *)counts hasSubstantialProcessingRemaining:(BOOL *)remaining threshold:(int64_t)threshold featureUnlocked:(BOOL)unlocked
 {
-  if (a6)
+  if (unlocked)
   {
-    v8 = [PXPeopleProgressManager shouldCheckProcessedCountsForThreshold:a5];
+    v8 = [PXPeopleProgressManager shouldCheckProcessedCountsForThreshold:threshold];
     v9 = v8;
   }
 
@@ -614,19 +614,19 @@ void __47__PXPeopleProgressManager__progressFooterQueue__block_invoke()
     v9 = 1;
   }
 
-  *a3 = v8;
-  *a4 = v9;
+  *counts = v8;
+  *remaining = v9;
 }
 
-+ (BOOL)hasSubstantialProcessingRemainingForThreshold:(int64_t)a3 pendingAssetCount:(int64_t)a4 allowedAssetCount:(int64_t)a5 photoLibrary:(id)a6
++ (BOOL)hasSubstantialProcessingRemainingForThreshold:(int64_t)threshold pendingAssetCount:(int64_t)count allowedAssetCount:(int64_t)assetCount photoLibrary:(id)library
 {
-  v9 = a6;
-  v10 = ceil(a5 * 0.05);
-  if (a3 >= 2)
+  libraryCopy = library;
+  v10 = ceil(assetCount * 0.05);
+  if (threshold >= 2)
   {
-    if (a3 == 2)
+    if (threshold == 2)
     {
-      if (!a4)
+      if (!count)
       {
         goto LABEL_14;
       }
@@ -636,7 +636,7 @@ void __47__PXPeopleProgressManager__progressFooterQueue__block_invoke()
         v10 = 150.0;
       }
 
-      if (v10 <= a4)
+      if (v10 <= count)
       {
         LOBYTE(v12) = 1;
       }
@@ -644,7 +644,7 @@ void __47__PXPeopleProgressManager__progressFooterQueue__block_invoke()
       else
       {
 LABEL_14:
-        v12 = [objc_opt_class() isFaceProcessingFinishedForPhotoLibrary:v9] ^ 1;
+        v12 = [objc_opt_class() isFaceProcessingFinishedForPhotoLibrary:libraryCopy] ^ 1;
       }
     }
 
@@ -656,7 +656,7 @@ LABEL_14:
 
   else
   {
-    LOBYTE(v12) = v10 <= a4 && a4 != 0;
+    LOBYTE(v12) = v10 <= count && count != 0;
   }
 
   return v12;

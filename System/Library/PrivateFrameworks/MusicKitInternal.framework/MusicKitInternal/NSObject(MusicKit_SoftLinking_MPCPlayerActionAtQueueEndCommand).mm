@@ -8,17 +8,17 @@
 
 - (id)_musicKit_self_actionAtQueueEndCommand
 {
-  if ([a1 conformsToProtocol:&unk_1F50DDCF8])
+  if ([self conformsToProtocol:&unk_1F50DDCF8])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)musicKit_actionAtQueueEndCommand_setQueueEndActionCommandRequest:()MusicKit_SoftLinking_MPCPlayerActionAtQueueEndCommand
@@ -33,18 +33,18 @@
     v3 = a3;
   }
 
-  v4 = [a1 _musicKit_self_actionAtQueueEndCommand];
-  v5 = [v4 setQueueEndAction:v3];
+  _musicKit_self_actionAtQueueEndCommand = [self _musicKit_self_actionAtQueueEndCommand];
+  v5 = [_musicKit_self_actionAtQueueEndCommand setQueueEndAction:v3];
 
   return v5;
 }
 
 - (uint64_t)musicKit_actionAtQueueEndCommand_isAutoPlaySupported
 {
-  v1 = [a1 _musicKit_self_actionAtQueueEndCommand];
-  v2 = [v1 supportedActions];
+  _musicKit_self_actionAtQueueEndCommand = [self _musicKit_self_actionAtQueueEndCommand];
+  supportedActions = [_musicKit_self_actionAtQueueEndCommand supportedActions];
   v3 = [MEMORY[0x1E696AD98] numberWithInteger:3];
-  v4 = [v2 containsObject:v3];
+  v4 = [supportedActions containsObject:v3];
 
   return v4;
 }

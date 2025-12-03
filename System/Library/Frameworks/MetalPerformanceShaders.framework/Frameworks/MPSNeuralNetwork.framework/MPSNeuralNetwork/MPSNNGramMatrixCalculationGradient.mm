@@ -1,10 +1,10 @@
 @interface MPSNNGramMatrixCalculationGradient
 - (MPSNNGramMatrixCalculationGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSNNGramMatrixCalculationGradient)initWithDevice:(id)device alpha:(float)alpha;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNGramMatrixCalculationGradient
@@ -39,11 +39,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v26.receiver = self;
   v26.super_class = MPSNNGramMatrixCalculationGradient;
-  v5 = [(MPSCNNGradientKernel *)&v26 copyWithZone:a3 device:a4];
+  v5 = [(MPSCNNGradientKernel *)&v26 copyWithZone:zone device:device];
   alpha = self->_alpha;
   v5[116] = alpha;
   v7 = *(*(v5 + *MEMORY[0x277CD7350]) + 16);
@@ -112,14 +112,14 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v12.receiver = self;
   v12.super_class = MPSNNGramMatrixCalculationGradient;
   [(MPSCNNGradientKernel *)&v12 encodeWithCoder:?];
   *&v5 = self->_alpha;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSCNNGram_alpha", v7, v8, v9, v10, v11, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSCNNGram_alpha", v7, v8, v9, v10, v11, v5);
 }
 
 - (id)debugDescription

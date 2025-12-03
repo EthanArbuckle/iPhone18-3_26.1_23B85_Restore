@@ -1,23 +1,23 @@
 @interface PRELocaleDetection
-+ (BOOL)isLanguageMismatchedForIdentifier:(id)a3 withIdentifier:(id)a4;
-+ (id)languageTagForLocaleIdentifier:(id)a3;
++ (BOOL)isLanguageMismatchedForIdentifier:(id)identifier withIdentifier:(id)withIdentifier;
++ (id)languageTagForLocaleIdentifier:(id)identifier;
 + (id)sharedInstance;
-- (BOOL)isLanguageMismatchedForMessage:(id)a3 withLocaleIdentifier:(id)a4;
+- (BOOL)isLanguageMismatchedForMessage:(id)message withLocaleIdentifier:(id)identifier;
 - (PRELocaleDetection)init;
-- (PRELocaleDetection)initWithLanguageLimit:(unint64_t)a3 withPreferredLocales:(id)a4;
-- (id)_bestLocaleForLanguageTag:(id)a3;
-- (id)_userLanguageDetectedFromString:(id)a3 preferredLocales:(id)a4;
-- (id)_userLocaleDetectedFromString:(id)a3;
-- (id)localeForIncomingMessages:(id)a3 outgoingMessages:(id)a4 defaultLocale:(id)a5 defaultLocaleLastChangedDate:(id)a6 sender:(id)a7;
-- (id)localeForMessage:(id)a3 outgoingMessageHistory:(id)a4 defaultLocale:(id)a5 defaultLocaleLastChangedDate:(id)a6 sender:(id)a7;
+- (PRELocaleDetection)initWithLanguageLimit:(unint64_t)limit withPreferredLocales:(id)locales;
+- (id)_bestLocaleForLanguageTag:(id)tag;
+- (id)_userLanguageDetectedFromString:(id)string preferredLocales:(id)locales;
+- (id)_userLocaleDetectedFromString:(id)string;
+- (id)localeForIncomingMessages:(id)messages outgoingMessages:(id)outgoingMessages defaultLocale:(id)locale defaultLocaleLastChangedDate:(id)date sender:(id)sender;
+- (id)localeForMessage:(id)message outgoingMessageHistory:(id)history defaultLocale:(id)locale defaultLocaleLastChangedDate:(id)date sender:(id)sender;
 @end
 
 @implementation PRELocaleDetection
 
-- (id)_bestLocaleForLanguageTag:(id)a3
+- (id)_bestLocaleForLanguageTag:(id)tag
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tagCopy = tag;
   [(NSDictionary *)self->_preferredLocales allKeys];
   v12 = 0u;
   v13 = 0u;
@@ -37,7 +37,7 @@
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 hasPrefix:{v4, v12}])
+        if ([v9 hasPrefix:{tagCopy, v12}])
         {
           v6 = v9;
           goto LABEL_11;
@@ -61,21 +61,21 @@ LABEL_11:
   return v6;
 }
 
-- (id)localeForMessage:(id)a3 outgoingMessageHistory:(id)a4 defaultLocale:(id)a5 defaultLocaleLastChangedDate:(id)a6 sender:(id)a7
+- (id)localeForMessage:(id)message outgoingMessageHistory:(id)history defaultLocale:(id)locale defaultLocaleLastChangedDate:(id)date sender:(id)sender
 {
   v48 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  messageCopy = message;
+  historyCopy = history;
+  localeCopy = locale;
+  dateCopy = date;
+  senderCopy = sender;
   v17 = objc_autoreleasePoolPush();
-  if (!v14 || !v15)
+  if (!localeCopy || !dateCopy)
   {
-    if (!v14 && [(NSDictionary *)self->_preferredLocales count])
+    if (!localeCopy && [(NSDictionary *)self->_preferredLocales count])
     {
-      v28 = [(NSDictionary *)self->_preferredLocales allValues];
-      v23 = [v28 firstObject];
+      allValues = [(NSDictionary *)self->_preferredLocales allValues];
+      firstObject = [allValues firstObject];
 
 LABEL_9:
       if ([(NSDictionary *)self->_preferredLocales count]<= 1)
@@ -84,36 +84,36 @@ LABEL_9:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v43 = v14;
+          v43 = localeCopy;
           v44 = 2112;
-          v45 = v23;
+          v45 = firstObject;
           _os_log_impl(&dword_260CE3000, v24, OS_LOG_TYPE_DEFAULT, "Monolingual, default locale %@, detection result %@.", buf, 0x16u);
         }
 
-        v22 = v23;
+        v22 = firstObject;
         goto LABEL_38;
       }
 
-      if ([v12 length])
+      if ([messageCopy length])
       {
-        v25 = [(PRELocaleDetection *)self _userLocaleDetectedFromString:v12];
+        v25 = [(PRELocaleDetection *)self _userLocaleDetectedFromString:messageCopy];
         if ([v25 length])
         {
           v26 = pre_locale_handle();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218498;
-            v43 = [v12 length];
+            v43 = [messageCopy length];
             v44 = 2112;
-            v45 = v14;
+            v45 = localeCopy;
             v46 = 2112;
             v47 = v25;
             _os_log_impl(&dword_260CE3000, v26, OS_LOG_TYPE_DEFAULT, "Message length: %lu, default locale: %@, detected locale: %@.", buf, 0x20u);
           }
 
-          if (v16)
+          if (senderCopy)
           {
-            [(_PASLRUCache *)self->_lastConfidentLocaleForSender setObject:v25 forKey:v16];
+            [(_PASLRUCache *)self->_lastConfidentLocaleForSender setObject:v25 forKey:senderCopy];
           }
 
           v27 = v25;
@@ -128,9 +128,9 @@ LABEL_9:
       }
 
       v29 = objc_opt_new();
-      if ([v13 count])
+      if ([historyCopy count])
       {
-        [v29 addObjectsFromArray:v13];
+        [v29 addObjectsFromArray:historyCopy];
       }
 
       v41 = v29;
@@ -145,15 +145,15 @@ LABEL_9:
           *buf = 134218498;
           v43 = [v41 count];
           v44 = 2112;
-          v45 = v14;
+          v45 = localeCopy;
           v46 = 2112;
           v47 = v27;
           _os_log_impl(&dword_260CE3000, v30, OS_LOG_TYPE_DEFAULT, "Number of messages used for detection: %lu, default locale: %@, detected locale: %@.", buf, 0x20u);
         }
 
-        if (v16)
+        if (senderCopy)
         {
-          [(_PASLRUCache *)self->_lastConfidentLocaleForSender setObject:v27 forKey:v16];
+          [(_PASLRUCache *)self->_lastConfidentLocaleForSender setObject:v27 forKey:senderCopy];
         }
 
         v31 = v27;
@@ -161,15 +161,15 @@ LABEL_9:
 
       else
       {
-        if (![v14 length])
+        if (![localeCopy length])
         {
-          v35 = [(_PASLRUCache *)self->_lastConfidentLocaleForSender objectForKey:v16];
+          v35 = [(_PASLRUCache *)self->_lastConfidentLocaleForSender objectForKey:senderCopy];
           v36 = v35;
-          v37 = v23;
-          if (v16)
+          v37 = firstObject;
+          if (senderCopy)
           {
             v38 = [v35 length];
-            v37 = v23;
+            v37 = firstObject;
             if (v38)
             {
               v39 = pre_locale_handle();
@@ -193,11 +193,11 @@ LABEL_9:
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v43 = v14;
+          v43 = localeCopy;
           _os_log_impl(&dword_260CE3000, v32, OS_LOG_TYPE_DEFAULT, "Failed to detect a locale so falling back to the default locale: %@", buf, 0xCu);
         }
 
-        v31 = v14;
+        v31 = localeCopy;
       }
 
       v22 = v31;
@@ -210,12 +210,12 @@ LABEL_38:
     }
 
 LABEL_8:
-    v23 = v14;
+    firstObject = localeCopy;
     goto LABEL_9;
   }
 
-  v18 = [MEMORY[0x277CBEAA8] date];
-  [v18 timeIntervalSinceDate:v15];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:dateCopy];
   v20 = v19;
 
   if (v20 > 3600.0)
@@ -227,15 +227,15 @@ LABEL_8:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v43 = v14;
+    v43 = localeCopy;
     v44 = 2048;
     v45 = 3600;
     v46 = 2112;
-    v47 = v14;
+    v47 = localeCopy;
     _os_log_impl(&dword_260CE3000, v21, OS_LOG_TYPE_DEFAULT, "Default locale %@ was changed less than %lu seconds ago, detection result %@.", buf, 0x20u);
   }
 
-  v22 = v14;
+  v22 = localeCopy;
 LABEL_39:
   objc_autoreleasePoolPop(v17);
 
@@ -244,27 +244,27 @@ LABEL_39:
   return v22;
 }
 
-- (id)localeForIncomingMessages:(id)a3 outgoingMessages:(id)a4 defaultLocale:(id)a5 defaultLocaleLastChangedDate:(id)a6 sender:(id)a7
+- (id)localeForIncomingMessages:(id)messages outgoingMessages:(id)outgoingMessages defaultLocale:(id)locale defaultLocaleLastChangedDate:(id)date sender:(id)sender
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [a3 _pas_componentsJoinedByString:@"\n"];
-  v17 = [(PRELocaleDetection *)self localeForMessage:v16 outgoingMessageHistory:v15 defaultLocale:v14 defaultLocaleLastChangedDate:v13 sender:v12];
+  senderCopy = sender;
+  dateCopy = date;
+  localeCopy = locale;
+  outgoingMessagesCopy = outgoingMessages;
+  v16 = [messages _pas_componentsJoinedByString:@"\n"];
+  v17 = [(PRELocaleDetection *)self localeForMessage:v16 outgoingMessageHistory:outgoingMessagesCopy defaultLocale:localeCopy defaultLocaleLastChangedDate:dateCopy sender:senderCopy];
 
   return v17;
 }
 
-- (BOOL)isLanguageMismatchedForMessage:(id)a3 withLocaleIdentifier:(id)a4
+- (BOOL)isLanguageMismatchedForMessage:(id)message withLocaleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
+  identifierCopy = identifier;
+  v7 = identifierCopy;
   LOBYTE(v8) = 0;
-  if (a3 && v6)
+  if (message && identifierCopy)
   {
-    v9 = [(PRELocaleDetection *)self _userLanguageDetectedFromString:a3 preferredLocales:0];
+    v9 = [(PRELocaleDetection *)self _userLanguageDetectedFromString:message preferredLocales:0];
     if (v9)
     {
       v10 = [objc_opt_class() languageTagForLocaleIdentifier:v7];
@@ -298,13 +298,13 @@ LABEL_39:
   return v8;
 }
 
-- (id)_userLocaleDetectedFromString:(id)a3
+- (id)_userLocaleDetectedFromString:(id)string
 {
   v16 = *MEMORY[0x277D85DE8];
   preferredLocales = self->_preferredLocales;
-  v5 = a3;
-  v6 = [(NSDictionary *)preferredLocales allKeys];
-  v7 = [(PRELocaleDetection *)self _userLanguageDetectedFromString:v5 preferredLocales:v6];
+  stringCopy = string;
+  allKeys = [(NSDictionary *)preferredLocales allKeys];
+  v7 = [(PRELocaleDetection *)self _userLanguageDetectedFromString:stringCopy preferredLocales:allKeys];
 
   if (!v7)
   {
@@ -355,17 +355,17 @@ LABEL_12:
   return v10;
 }
 
-- (id)_userLanguageDetectedFromString:(id)a3 preferredLocales:(id)a4
+- (id)_userLanguageDetectedFromString:(id)string preferredLocales:(id)locales
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  localesCopy = locales;
   v8 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = v7;
+  v9 = localesCopy;
   v10 = [v9 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v10)
   {
@@ -409,17 +409,17 @@ LABEL_12:
     [v17 setLanguageConstraints:v8];
   }
 
-  [v18 processString:{v6, v28}];
+  [v18 processString:{stringCopy, v28}];
   v19 = [v18 languageHypothesesWithMaximum:self->_languageLimit];
-  v20 = [v18 dominantLanguage];
-  if (v20 == *MEMORY[0x277CD8858])
+  dominantLanguage = [v18 dominantLanguage];
+  if (dominantLanguage == *MEMORY[0x277CD8858])
   {
     v25 = 0;
   }
 
   else
   {
-    v21 = [v19 objectForKeyedSubscript:v20];
+    v21 = [v19 objectForKeyedSubscript:dominantLanguage];
     v22 = pre_locale_handle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
@@ -430,7 +430,7 @@ LABEL_12:
       }
 
       *buf = 138412546;
-      v33 = v20;
+      v33 = dominantLanguage;
       v34 = 2112;
       v35 = v23;
       _os_log_impl(&dword_260CE3000, v22, OS_LOG_TYPE_DEFAULT, "The probability for this message being for language %@ is %@", buf, 0x16u);
@@ -444,7 +444,7 @@ LABEL_12:
 
     else
     {
-      v25 = v20;
+      v25 = dominantLanguage;
     }
   }
 
@@ -453,10 +453,10 @@ LABEL_12:
   return v25;
 }
 
-- (PRELocaleDetection)initWithLanguageLimit:(unint64_t)a3 withPreferredLocales:(id)a4
+- (PRELocaleDetection)initWithLanguageLimit:(unint64_t)limit withPreferredLocales:(id)locales
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  localesCopy = locales;
   v35.receiver = self;
   v35.super_class = PRELocaleDetection;
   v6 = [(PRELocaleDetection *)&v35 init];
@@ -470,8 +470,8 @@ LABEL_12:
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v27 = v5;
-    obj = v5;
+    v27 = localesCopy;
+    obj = localesCopy;
     v9 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v9)
     {
@@ -489,17 +489,17 @@ LABEL_12:
             objc_enumerationMutation(obj);
           }
 
-          if (a3 - 1 >= v11)
+          if (limit - 1 >= v11)
           {
             v14 = *(*(&v31 + 1) + 8 * v13);
             v15 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:{v14, context}];
             v16 = [v15 componentsSeparatedByString:@"@"];
-            v17 = [v16 firstObject];
-            v18 = [v8 objectForKeyedSubscript:v17];
+            firstObject = [v16 firstObject];
+            v18 = [v8 objectForKeyedSubscript:firstObject];
 
             if (!v18)
             {
-              [v8 setObject:v14 forKeyedSubscript:v17];
+              [v8 setObject:v14 forKeyedSubscript:firstObject];
               ++v11;
             }
 
@@ -517,7 +517,7 @@ LABEL_12:
     }
 
     v7 = v26;
-    v26->_languageLimit = a3;
+    v26->_languageLimit = limit;
     v19 = [v8 copy];
     preferredLocales = v26->_preferredLocales;
     v26->_preferredLocales = v19;
@@ -527,7 +527,7 @@ LABEL_12:
     v26->_lastConfidentLocaleForSender = v21;
 
     objc_autoreleasePoolPop(context);
-    v5 = v27;
+    localesCopy = v27;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -536,22 +536,22 @@ LABEL_12:
 
 - (PRELocaleDetection)init
 {
-  v3 = [MEMORY[0x277D3A248] userLanguages];
-  v4 = [v3 allObjects];
-  v5 = [(PRELocaleDetection *)self initWithLanguageLimit:0 withPreferredLocales:v4];
+  userLanguages = [MEMORY[0x277D3A248] userLanguages];
+  allObjects = [userLanguages allObjects];
+  v5 = [(PRELocaleDetection *)self initWithLanguageLimit:0 withPreferredLocales:allObjects];
 
   return v5;
 }
 
-+ (BOOL)isLanguageMismatchedForIdentifier:(id)a3 withIdentifier:(id)a4
++ (BOOL)isLanguageMismatchedForIdentifier:(id)identifier withIdentifier:(id)withIdentifier
 {
   LOBYTE(v4) = 0;
-  if (a3 && a4)
+  if (identifier && withIdentifier)
   {
     v6 = MEMORY[0x277D3A248];
-    v7 = a4;
-    v8 = [v6 languageForLocaleIdentifier:a3];
-    v9 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:v7];
+    withIdentifierCopy = withIdentifier;
+    v8 = [v6 languageForLocaleIdentifier:identifier];
+    v9 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:withIdentifierCopy];
 
     v4 = [v8 isEqualToString:v9] ^ 1;
   }
@@ -559,17 +559,17 @@ LABEL_12:
   return v4;
 }
 
-+ (id)languageTagForLocaleIdentifier:(id)a3
++ (id)languageTagForLocaleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if ([v3 containsString:@"@"])
+  identifierCopy = identifier;
+  firstObject = identifierCopy;
+  if ([identifierCopy containsString:@"@"])
   {
-    v5 = [v3 componentsSeparatedByString:@"@"];
-    v4 = [v5 firstObject];
+    v5 = [identifierCopy componentsSeparatedByString:@"@"];
+    firstObject = [v5 firstObject];
   }
 
-  v6 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:v4];
+  v6 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:firstObject];
 
   return v6;
 }

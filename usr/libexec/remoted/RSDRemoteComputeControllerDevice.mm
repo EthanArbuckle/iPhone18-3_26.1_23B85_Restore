@@ -1,7 +1,7 @@
 @interface RSDRemoteComputeControllerDevice
-- (RSDRemoteComputeControllerDevice)initWithGeneratedName:(const char *)a3;
-- (RSDRemoteComputeControllerDevice)initWithInterface:(id)a3 address:(const in6_addr *)a4;
-- (RSDRemoteComputeControllerDevice)initWithInterface:(id)a3 endpoint:(id)a4 bonjourUUID:(unsigned __int8)a5[16];
+- (RSDRemoteComputeControllerDevice)initWithGeneratedName:(const char *)name;
+- (RSDRemoteComputeControllerDevice)initWithInterface:(id)interface address:(const in6_addr *)address;
+- (RSDRemoteComputeControllerDevice)initWithInterface:(id)interface endpoint:(id)endpoint bonjourUUID:(unsigned __int8)d[16];
 - (uint64_t)tlsRequirement;
 - (void)attach;
 - (void)connected;
@@ -13,7 +13,7 @@
 
 @implementation RSDRemoteComputeControllerDevice
 
-- (RSDRemoteComputeControllerDevice)initWithGeneratedName:(const char *)a3
+- (RSDRemoteComputeControllerDevice)initWithGeneratedName:(const char *)name
 {
   result = [(RSDRemoteComputeControllerDevice *)self init];
   if (result)
@@ -24,7 +24,7 @@
     *__str = v6;
     v10 = v6;
     v7 = dword_100063C88++;
-    snprintf(__str, 0x20uLL, "%s-%d", a3, v7);
+    snprintf(__str, 0x20uLL, "%s-%d", name, v7);
     v8.receiver = v5;
     v8.super_class = RSDRemoteComputeControllerDevice;
     return [(RSDRemoteDevice *)&v8 initWithName:__str];
@@ -33,27 +33,27 @@
   return result;
 }
 
-- (RSDRemoteComputeControllerDevice)initWithInterface:(id)a3 address:(const in6_addr *)a4
+- (RSDRemoteComputeControllerDevice)initWithInterface:(id)interface address:(const in6_addr *)address
 {
-  v7 = a3;
-  v8 = 0;
+  interfaceCopy = interface;
+  selfCopy = 0;
   *__s1 = 0u;
   memset(v15, 0, sizeof(v15));
-  if (!v7 || !a4)
+  if (!interfaceCopy || !address)
   {
     goto LABEL_18;
   }
 
-  if (!a4->__u6_addr32[0] && !a4->__u6_addr32[1] && !a4->__u6_addr32[2] && !a4->__u6_addr32[3] || (v9 = [(RSDRemoteComputeControllerDevice *)self initWithGeneratedName:"cnode"], (self = v9) == 0))
+  if (!address->__u6_addr32[0] && !address->__u6_addr32[1] && !address->__u6_addr32[2] && !address->__u6_addr32[3] || (v9 = [(RSDRemoteComputeControllerDevice *)self initWithGeneratedName:"cnode"], (self = v9) == 0))
   {
 LABEL_17:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
-  objc_storeStrong(&v9->_interface, a3);
-  self->remote_address_storage = *a4;
-  if (!inet_ntop(30, a4, __s1, 0x2Eu))
+  objc_storeStrong(&v9->_interface, interface);
+  self->remote_address_storage = *address;
+  if (!inet_ntop(30, address, __s1, 0x2Eu))
   {
     v11 = __error();
     if (os_log_type_enabled(qword_100064410, OS_LOG_TYPE_ERROR))
@@ -89,36 +89,36 @@ LABEL_17:
 
   self->_ipv6_str = v10;
   self = self;
-  v8 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v8;
+  return selfCopy;
 }
 
-- (RSDRemoteComputeControllerDevice)initWithInterface:(id)a3 endpoint:(id)a4 bonjourUUID:(unsigned __int8)a5[16]
+- (RSDRemoteComputeControllerDevice)initWithInterface:(id)interface endpoint:(id)endpoint bonjourUUID:(unsigned __int8)d[16]
 {
-  v9 = a3;
-  v10 = a4;
-  if (v9 && !uuid_is_null(a5) && (v13 = [(RSDRemoteComputeControllerDevice *)self initWithGeneratedName:"cnode"], (self = v13) != 0))
+  interfaceCopy = interface;
+  endpointCopy = endpoint;
+  if (interfaceCopy && !uuid_is_null(d) && (v13 = [(RSDRemoteComputeControllerDevice *)self initWithGeneratedName:"cnode"], (self = v13) != 0))
   {
-    objc_storeStrong(&v13->_interface, a3);
-    uuid_copy(self->bonjour_uuid, a5);
+    objc_storeStrong(&v13->_interface, interface);
+    uuid_copy(self->bonjour_uuid, d);
     if (uuid_is_null(self->bonjour_uuid))
     {
       sub_10003DBB4(&v14, v15);
     }
 
-    objc_storeStrong(&self->bonjour_endpoint, a4);
+    objc_storeStrong(&self->bonjour_endpoint, endpoint);
     self = self;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -132,23 +132,23 @@ LABEL_18:
 
 - (void)populateInterfaceProperties
 {
-  v3 = [(RSDRemoteComputeControllerDevice *)self interface];
-  -[RSDRemoteDevice setBackendProperty:withUint:](self, "setBackendProperty:withUint:", "InterfaceIndex", [v3 index]);
+  interface = [(RSDRemoteComputeControllerDevice *)self interface];
+  -[RSDRemoteDevice setBackendProperty:withUint:](self, "setBackendProperty:withUint:", "InterfaceIndex", [interface index]);
 
-  v4 = [(RSDRemoteComputeControllerDevice *)self interface];
-  v5 = [v4 name];
+  interface2 = [(RSDRemoteComputeControllerDevice *)self interface];
+  name = [interface2 name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [(RSDRemoteComputeControllerDevice *)self interface];
-    -[RSDRemoteDevice setBackendProperty:withString:](self, "setBackendProperty:withString:", "InterfaceName", [v6 name]);
+    interface3 = [(RSDRemoteComputeControllerDevice *)self interface];
+    -[RSDRemoteDevice setBackendProperty:withString:](self, "setBackendProperty:withString:", "InterfaceName", [interface3 name]);
   }
 
   if ([(RSDRemoteComputeControllerDevice *)self ipv6_str])
   {
-    v7 = [(RSDRemoteComputeControllerDevice *)self ipv6_str];
+    ipv6_str = [(RSDRemoteComputeControllerDevice *)self ipv6_str];
 
-    [(RSDRemoteDevice *)self setBackendProperty:"IPV6Address" withString:v7];
+    [(RSDRemoteDevice *)self setBackendProperty:"IPV6Address" withString:ipv6_str];
   }
 }
 
@@ -171,7 +171,7 @@ LABEL_18:
 
 - (void)connected
 {
-  v3 = [(RSDRemoteDevice *)self connection];
+  connection = [(RSDRemoteDevice *)self connection];
   v4 = xpc_remote_connection_copy_remote_endpoint();
   address_endpoint = self->address_endpoint;
   self->address_endpoint = v4;
@@ -189,7 +189,7 @@ LABEL_18:
       sub_10003DC20();
     }
 
-    v7 = [(RSDRemoteDevice *)self connection];
+    connection2 = [(RSDRemoteDevice *)self connection];
     xpc_remote_connection_cancel();
   }
 }
@@ -200,7 +200,7 @@ LABEL_18:
   if (os_log_type_enabled(qword_100064410, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> needsConnect", buf, 0xCu);
   }
 
@@ -249,10 +249,10 @@ LABEL_18:
     v2 = " by default";
     if (v3)
     {
-      v5 = [v3 unsignedIntValue];
-      if (v5)
+      unsignedIntValue = [v3 unsignedIntValue];
+      if (unsignedIntValue)
       {
-        v1 = v5;
+        v1 = unsignedIntValue;
       }
 
       else
@@ -260,7 +260,7 @@ LABEL_18:
         v1 = 1;
       }
 
-      if (v5)
+      if (unsignedIntValue)
       {
         v2 = " by default on this hardware model";
       }

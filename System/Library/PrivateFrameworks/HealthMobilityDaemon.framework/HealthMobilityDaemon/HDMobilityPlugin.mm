@@ -1,25 +1,25 @@
 @interface HDMobilityPlugin
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3;
-- (id)extensionForProfile:(id)a3;
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon;
+- (id)extensionForProfile:(id)profile;
 - (id)taskServerClasses;
 @end
 
 @implementation HDMobilityPlugin
 
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon
 {
-  v3 = [a3 behavior];
-  v4 = [v3 isRealityDevice];
+  behavior = [daemon behavior];
+  isRealityDevice = [behavior isRealityDevice];
 
-  return v4 ^ 1;
+  return isRealityDevice ^ 1;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
-  if ([v3 profileType] == 1)
+  profileCopy = profile;
+  if ([profileCopy profileType] == 1)
   {
-    v4 = [[HDMobilityProfileExtension alloc] initWithProfile:v3];
+    v4 = [[HDMobilityProfileExtension alloc] initWithProfile:profileCopy];
   }
 
   else

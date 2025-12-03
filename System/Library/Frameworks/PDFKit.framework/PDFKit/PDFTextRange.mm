@@ -1,22 +1,22 @@
 @interface PDFTextRange
-+ (id)textRangeFromSelection:(id)a3;
++ (id)textRangeFromSelection:(id)selection;
 - (BOOL)isEmpty;
 - (id)description;
-- (id)initFromPos:(id)a3 toPos:(id)a4;
+- (id)initFromPos:(id)pos toPos:(id)toPos;
 @end
 
 @implementation PDFTextRange
 
 - (BOOL)isEmpty
 {
-  v3 = [(PDFTextPosition *)self->_end page];
-  v4 = [v3 document];
+  page = [(PDFTextPosition *)self->_end page];
+  document = [page document];
 
-  v5 = [(PDFTextPosition *)self->_end page];
-  v6 = [v4 indexForPage:v5];
+  page2 = [(PDFTextPosition *)self->_end page];
+  v6 = [document indexForPage:page2];
 
-  v7 = [(PDFTextPosition *)self->_start page];
-  v8 = [v4 indexForPage:v7];
+  page3 = [(PDFTextPosition *)self->_start page];
+  v8 = [document indexForPage:page3];
 
   v11 = 1;
   if (self->_start)
@@ -34,58 +34,58 @@
   return v11;
 }
 
-+ (id)textRangeFromSelection:(id)a3
++ (id)textRangeFromSelection:(id)selection
 {
-  v3 = a3;
-  v4 = [v3 pages];
-  v5 = [v4 firstObject];
+  selectionCopy = selection;
+  pages = [selectionCopy pages];
+  firstObject = [pages firstObject];
 
-  v6 = -[PDFTextPosition initWithOffset:onPage:]([PDFTextPosition alloc], "initWithOffset:onPage:", [v3 rangeAtIndex:0 onPage:v5], v5);
-  v7 = [v3 pages];
-  v8 = [v7 lastObject];
+  v6 = -[PDFTextPosition initWithOffset:onPage:]([PDFTextPosition alloc], "initWithOffset:onPage:", [selectionCopy rangeAtIndex:0 onPage:firstObject], firstObject);
+  pages2 = [selectionCopy pages];
+  lastObject = [pages2 lastObject];
 
-  v9 = [v3 rangeAtIndex:objc_msgSend(v3 onPage:{"numberOfTextRangesOnPage:", v8) - 1, v8}];
+  v9 = [selectionCopy rangeAtIndex:objc_msgSend(selectionCopy onPage:{"numberOfTextRangesOnPage:", lastObject) - 1, lastObject}];
   v11 = v10;
 
-  v12 = [[PDFTextPosition alloc] initWithOffset:v9 + v11 onPage:v8];
+  v12 = [[PDFTextPosition alloc] initWithOffset:v9 + v11 onPage:lastObject];
   v13 = [[PDFTextRange alloc] initFromPos:v6 toPos:v12];
 
   return v13;
 }
 
-- (id)initFromPos:(id)a3 toPos:(id)a4
+- (id)initFromPos:(id)pos toPos:(id)toPos
 {
-  v6 = a3;
-  v7 = a4;
+  posCopy = pos;
+  toPosCopy = toPos;
   v18.receiver = self;
   v18.super_class = PDFTextRange;
   v8 = [(PDFTextRange *)&v18 init];
   if (v8)
   {
-    v9 = [v6 page];
-    v10 = [v9 document];
-    v11 = [v10 indexForPage:v9];
+    page = [posCopy page];
+    document = [page document];
+    v11 = [document indexForPage:page];
 
-    v12 = [v7 page];
-    v13 = [v12 document];
-    v14 = [v13 indexForPage:v12];
+    page2 = [toPosCopy page];
+    document2 = [page2 document];
+    v14 = [document2 indexForPage:page2];
 
-    if (v14 < v11 || v14 == v11 && (v16 = [v7 offset], v16 < objc_msgSend(v6, "offset")))
+    if (v14 < v11 || v14 == v11 && (v16 = [toPosCopy offset], v16 < objc_msgSend(posCopy, "offset")))
     {
-      v15 = v6;
+      v15 = posCopy;
     }
 
     else
     {
-      v15 = v7;
-      v7 = v6;
+      v15 = toPosCopy;
+      toPosCopy = posCopy;
     }
 
-    v6 = v7;
-    objc_storeStrong(&v8->_start, v7);
+    posCopy = toPosCopy;
+    objc_storeStrong(&v8->_start, toPosCopy);
     objc_storeStrong(&v8->_end, v15);
 
-    v7 = v15;
+    toPosCopy = v15;
   }
 
   return v8;

@@ -1,12 +1,12 @@
 @interface ScreenshotCollectionViewCell
-- (_TtC18ASMessagesProvider28ScreenshotCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider28ScreenshotCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ScreenshotCollectionViewCell
 
-- (_TtC18ASMessagesProvider28ScreenshotCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider28ScreenshotCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider28ScreenshotCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -22,13 +22,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_318C90();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_318DA0();
 }
 

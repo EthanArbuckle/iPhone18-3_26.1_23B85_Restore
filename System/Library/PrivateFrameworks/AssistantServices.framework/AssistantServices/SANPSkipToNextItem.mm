@@ -1,14 +1,14 @@
 @interface SANPSkipToNextItem
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4;
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler;
 @end
 
 @implementation SANPSkipToNextItem
 
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 targetQueue];
-  sub_1001B7630(4, self, 0, v7, v6);
+  handlerCopy = handler;
+  targetQueue = [service targetQueue];
+  sub_1001B7630(4, self, 0, targetQueue, handlerCopy);
 }
 
 @end

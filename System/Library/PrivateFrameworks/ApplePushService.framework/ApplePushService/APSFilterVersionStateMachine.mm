@@ -1,55 +1,55 @@
 @interface APSFilterVersionStateMachine
-- (APSFilterVersionStateMachine)initWithInitialVersion:(unint64_t)a3;
-- (BOOL)everHadAckOn:(id)a3;
-- (BOOL)everSentFilterOn:(id)a3;
-- (BOOL)hasStaleStateOn:(id)a3 comparedTo:(id)a4;
-- (BOOL)hasUnAckedVersionOn:(id)a3;
-- (BOOL)isOutOfDateOn:(id)a3;
+- (APSFilterVersionStateMachine)initWithInitialVersion:(unint64_t)version;
+- (BOOL)everHadAckOn:(id)on;
+- (BOOL)everSentFilterOn:(id)on;
+- (BOOL)hasStaleStateOn:(id)on comparedTo:(id)to;
+- (BOOL)hasUnAckedVersionOn:(id)on;
+- (BOOL)isOutOfDateOn:(id)on;
 - (id)aps_prettyDescription;
-- (id)noteInvalidWithVersion:(unint64_t)a3;
-- (unint64_t)versionToSendFor:(id)a3 error:(id *)a4;
-- (void)clearInfoFor:(id)a3;
-- (void)noteAckedWithVersion:(unint64_t)a3 on:(id)a4;
-- (void)noteSentWithVersion:(unint64_t)a3 on:(id)a4;
+- (id)noteInvalidWithVersion:(unint64_t)version;
+- (unint64_t)versionToSendFor:(id)for error:(id *)error;
+- (void)clearInfoFor:(id)for;
+- (void)noteAckedWithVersion:(unint64_t)version on:(id)on;
+- (void)noteSentWithVersion:(unint64_t)version on:(id)on;
 @end
 
 @implementation APSFilterVersionStateMachine
 
-- (unint64_t)versionToSendFor:(id)a3 error:(id *)a4
+- (unint64_t)versionToSendFor:(id)for error:(id *)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1000061B8(v6, a4);
+  forCopy = for;
+  selfCopy = self;
+  v8 = sub_1000061B8(forCopy, error);
 
   return v8;
 }
 
-- (BOOL)everSentFilterOn:(id)a3
+- (BOOL)everSentFilterOn:(id)on
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100006A28(v4);
+  onCopy = on;
+  selfCopy = self;
+  LOBYTE(self) = sub_100006A28(onCopy);
 
   return self & 1;
 }
 
-- (void)noteAckedWithVersion:(unint64_t)a3 on:(id)a4
+- (void)noteAckedWithVersion:(unint64_t)version on:(id)on
 {
-  v6 = a4;
-  v7 = self;
-  sub_10000DE94(a3, v6);
+  onCopy = on;
+  selfCopy = self;
+  sub_10000DE94(version, onCopy);
 }
 
-- (void)noteSentWithVersion:(unint64_t)a3 on:(id)a4
+- (void)noteSentWithVersion:(unint64_t)version on:(id)on
 {
-  v6 = a4;
-  v7 = self;
-  sub_10000E014(a3, v6);
+  onCopy = on;
+  selfCopy = self;
+  sub_10000E014(version, onCopy);
 }
 
 - (id)aps_prettyDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000E724();
 
   v3 = String._bridgeToObjectiveC()();
@@ -57,66 +57,66 @@
   return v3;
 }
 
-- (BOOL)isOutOfDateOn:(id)a3
+- (BOOL)isOutOfDateOn:(id)on
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100013074(v4);
+  onCopy = on;
+  selfCopy = self;
+  LOBYTE(self) = sub_100013074(onCopy);
 
   return self & 1;
 }
 
-- (APSFilterVersionStateMachine)initWithInitialVersion:(unint64_t)a3
+- (APSFilterVersionStateMachine)initWithInitialVersion:(unint64_t)version
 {
-  *(&self->super.isa + OBJC_IVAR___APSFilterVersionStateMachine__highestSentVersion) = a3;
-  *(&self->super.isa + OBJC_IVAR___APSFilterVersionStateMachine__highestAckedVersion) = a3;
+  *(&self->super.isa + OBJC_IVAR___APSFilterVersionStateMachine__highestSentVersion) = version;
+  *(&self->super.isa + OBJC_IVAR___APSFilterVersionStateMachine__highestAckedVersion) = version;
   *(&self->super.isa + OBJC_IVAR___APSFilterVersionStateMachine__stateByInterface) = sub_1000DA120(&_swiftEmptyArrayStorage);
   v5.receiver = self;
   v5.super_class = type metadata accessor for FilterVersionStateMachine();
   return [(APSFilterVersionStateMachine *)&v5 init];
 }
 
-- (id)noteInvalidWithVersion:(unint64_t)a3
+- (id)noteInvalidWithVersion:(unint64_t)version
 {
-  v4 = self;
-  v5 = sub_1000D95C4(a3);
+  selfCopy = self;
+  v5 = sub_1000D95C4(version);
 
   return v5;
 }
 
-- (BOOL)everHadAckOn:(id)a3
+- (BOOL)everHadAckOn:(id)on
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1000D96C8(v4);
+  onCopy = on;
+  selfCopy = self;
+  LOBYTE(self) = sub_1000D96C8(onCopy);
 
   return self & 1;
 }
 
-- (BOOL)hasUnAckedVersionOn:(id)a3
+- (BOOL)hasUnAckedVersionOn:(id)on
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1000D97B0(v4);
+  onCopy = on;
+  selfCopy = self;
+  LOBYTE(self) = sub_1000D97B0(onCopy);
 
   return self & 1;
 }
 
-- (BOOL)hasStaleStateOn:(id)a3 comparedTo:(id)a4
+- (BOOL)hasStaleStateOn:(id)on comparedTo:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1000D989C(v6, v7);
+  onCopy = on;
+  toCopy = to;
+  selfCopy = self;
+  v9 = sub_1000D989C(onCopy, toCopy);
 
   return v9;
 }
 
-- (void)clearInfoFor:(id)a3
+- (void)clearInfoFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000D99E8(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_1000D99E8(forCopy);
 }
 
 @end

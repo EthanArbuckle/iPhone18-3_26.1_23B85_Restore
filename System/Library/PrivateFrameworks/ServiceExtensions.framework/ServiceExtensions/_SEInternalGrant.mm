@@ -1,11 +1,11 @@
 @interface _SEInternalGrant
-- (BOOL)invalidateWithError:(id *)a3;
+- (BOOL)invalidateWithError:(id *)error;
 - (_TtC17ServiceExtensionsP33_620D12DBAD85E5FA4594BA268933638A16_SEInternalGrant)init;
 @end
 
 @implementation _SEInternalGrant
 
-- (BOOL)invalidateWithError:(id *)a3
+- (BOOL)invalidateWithError:(id *)error
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC17ServiceExtensionsP33_620D12DBAD85E5FA4594BA268933638A16_SEInternalGrant_inner);
   v11 = *&self->inner[OBJC_IVAR____TtC17ServiceExtensionsP33_620D12DBAD85E5FA4594BA268933638A16_SEInternalGrant_inner];
@@ -15,12 +15,12 @@
 
   if (v7)
   {
-    if (a3)
+    if (error)
     {
       v8 = sub_26574FE48();
 
       v9 = v8;
-      *a3 = v8;
+      *error = v8;
     }
 
     else

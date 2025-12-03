@@ -9,15 +9,15 @@
   v0 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
   if ([v0 count])
   {
-    v1 = [v0 firstObject];
+    firstObject = [v0 firstObject];
   }
 
   else
   {
-    v1 = 0;
+    firstObject = 0;
   }
 
-  return v1;
+  return firstObject;
 }
 
 @end

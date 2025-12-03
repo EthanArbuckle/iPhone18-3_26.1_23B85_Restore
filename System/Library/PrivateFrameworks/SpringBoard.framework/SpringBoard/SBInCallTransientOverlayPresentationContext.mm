@@ -1,18 +1,18 @@
 @interface SBInCallTransientOverlayPresentationContext
-- (SBInCallTransientOverlayPresentationContext)initWithRequestBuilder:(id)a3;
+- (SBInCallTransientOverlayPresentationContext)initWithRequestBuilder:(id)builder;
 @end
 
 @implementation SBInCallTransientOverlayPresentationContext
 
-- (SBInCallTransientOverlayPresentationContext)initWithRequestBuilder:(id)a3
+- (SBInCallTransientOverlayPresentationContext)initWithRequestBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = SBInCallTransientOverlayPresentationContext;
   v5 = [(SBInCallTransientOverlayPresentationContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [builderCopy copy];
     requestBuilder = v5->_requestBuilder;
     v5->_requestBuilder = v6;
   }

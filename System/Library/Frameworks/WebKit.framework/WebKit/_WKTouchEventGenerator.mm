@@ -1,27 +1,27 @@
 @interface _WKTouchEventGenerator
 + (id)sharedTouchEventGenerator;
-- (BOOL)_sendHIDEvent:(__IOHIDEvent *)a3 window:(id)a4;
-- (BOOL)_sendMarkerHIDEventInWindow:(id)a3 completionBlock:(id)a4;
+- (BOOL)_sendHIDEvent:(__IOHIDEvent *)event window:(id)window;
+- (BOOL)_sendMarkerHIDEventInWindow:(id)window completionBlock:(id)block;
 - (_WKTouchEventGenerator)init;
-- (__IOHIDEvent)_createIOHIDEventType:(int)a3;
-- (uint64_t)_sendHIDEvent:(WTF *)this window:(void *)a2;
-- (uint64_t)_sendHIDEvent:(uint64_t)a1 window:;
-- (uint64_t)_sendMarkerHIDEventInWindow:(WTF *)this completionBlock:(void *)a2;
-- (uint64_t)_sendMarkerHIDEventInWindow:(uint64_t)a1 completionBlock:;
-- (void)_sendHIDEvent:(void *)a1 window:;
-- (void)_sendMarkerHIDEventInWindow:(void *)a1 completionBlock:;
-- (void)_updateTouchPoints:()span<CGPoint window:(18446744073709551615UL>)a3;
+- (__IOHIDEvent)_createIOHIDEventType:(int)type;
+- (uint64_t)_sendHIDEvent:(WTF *)this window:(void *)window;
+- (uint64_t)_sendHIDEvent:(uint64_t)event window:;
+- (uint64_t)_sendMarkerHIDEventInWindow:(WTF *)this completionBlock:(void *)block;
+- (uint64_t)_sendMarkerHIDEventInWindow:(uint64_t)window completionBlock:;
+- (void)_sendHIDEvent:(void *)event window:;
+- (void)_sendMarkerHIDEventInWindow:(void *)window completionBlock:;
+- (void)_updateTouchPoints:()span<CGPoint window:(18446744073709551615UL>)window;
 - (void)dealloc;
-- (void)liftUp:(CGPoint)a3 touchCount:(unint64_t)a4 window:(id)a5;
-- (void)liftUp:(CGPoint)a3 window:(id)a4 completionBlock:(id)a5;
-- (void)liftUpAtPoints:(CGPoint *)a3 touchCount:(unint64_t)a4 window:(id)a5;
-- (void)moveToPoint:(CGPoint)a3 duration:(double)a4 window:(id)a5;
-- (void)moveToPoint:(CGPoint)a3 duration:(double)a4 window:(id)a5 completionBlock:(id)a6;
-- (void)moveToPoints:(CGPoint *)a3 touchCount:(unint64_t)a4 duration:(double)a5 window:(id)a6;
-- (void)receivedHIDEvent:(__IOHIDEvent *)a3;
-- (void)touchDown:(CGPoint)a3 touchCount:(unint64_t)a4 window:(id)a5;
-- (void)touchDown:(CGPoint)a3 window:(id)a4 completionBlock:(id)a5;
-- (void)touchDownAtPoints:(CGPoint *)a3 touchCount:(unint64_t)a4 window:(id)a5;
+- (void)liftUp:(CGPoint)up touchCount:(unint64_t)count window:(id)window;
+- (void)liftUp:(CGPoint)up window:(id)window completionBlock:(id)block;
+- (void)liftUpAtPoints:(CGPoint *)points touchCount:(unint64_t)count window:(id)window;
+- (void)moveToPoint:(CGPoint)point duration:(double)duration window:(id)window;
+- (void)moveToPoint:(CGPoint)point duration:(double)duration window:(id)window completionBlock:(id)block;
+- (void)moveToPoints:(CGPoint *)points touchCount:(unint64_t)count duration:(double)duration window:(id)window;
+- (void)receivedHIDEvent:(__IOHIDEvent *)event;
+- (void)touchDown:(CGPoint)down touchCount:(unint64_t)count window:(id)window;
+- (void)touchDown:(CGPoint)down window:(id)window completionBlock:(id)block;
+- (void)touchDownAtPoints:(CGPoint *)points touchCount:(unint64_t)count window:(id)window;
 @end
 
 @implementation _WKTouchEventGenerator
@@ -70,7 +70,7 @@
   [(_WKTouchEventGenerator *)&v3 dealloc];
 }
 
-- (__IOHIDEvent)_createIOHIDEventType:(int)a3
+- (__IOHIDEvent)_createIOHIDEventType:(int)type
 {
   mach_absolute_time();
   DigitizerEvent = IOHIDEventCreateDigitizerEvent();
@@ -84,7 +84,7 @@
   p_pathProximity = &self->_activePoints.__elems_[0].pathProximity;
   while (v7 != 5)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       if (*(p_pathProximity - 2) == 0.0)
       {
@@ -102,7 +102,7 @@
       }
     }
 
-    else if ((a3 & 0xFFFFFFFE) == 4)
+    else if ((type & 0xFFFFFFFE) == 4)
     {
       *(p_pathProximity - 2) = 0;
       *(p_pathProximity - 1) = 0;
@@ -130,7 +130,7 @@
   return result;
 }
 
-- (BOOL)_sendHIDEvent:(__IOHIDEvent *)a3 window:(id)a4
+- (BOOL)_sendHIDEvent:(__IOHIDEvent *)event window:(id)window
 {
   if (!self->_ioSystemClient.m_ptr)
   {
@@ -143,15 +143,15 @@
     }
   }
 
-  if (a3)
+  if (event)
   {
-    v9 = [a4 _contextId];
-    v10 = v9;
-    WTF::RunLoop::mainSingleton(v9);
-    CFRetain(a3);
+    _contextId = [window _contextId];
+    v10 = _contextId;
+    WTF::RunLoop::mainSingleton(_contextId);
+    CFRetain(event);
     v11 = WTF::fastMalloc(0x18);
     *v11 = &unk_1F10FBDE8;
-    *(v11 + 8) = a3;
+    *(v11 + 8) = event;
     *(v11 + 16) = v10;
     v13 = v11;
     WTF::RunLoop::dispatch();
@@ -164,18 +164,18 @@
   return 1;
 }
 
-- (BOOL)_sendMarkerHIDEventInWindow:(id)a3 completionBlock:(id)a4
+- (BOOL)_sendMarkerHIDEventInWindow:(id)window completionBlock:(id)block
 {
   v14 = +[_WKTouchEventGenerator nextEventCallbackID];
-  -[NSMutableDictionary setObject:forKey:](self->_eventCallbacks, "setObject:forKey:", _Block_copy(a4), [MEMORY[0x1E696AD98] numberWithLong:v14]);
+  -[NSMutableDictionary setObject:forKey:](self->_eventCallbacks, "setObject:forKey:", _Block_copy(block), [MEMORY[0x1E696AD98] numberWithLong:v14]);
   mach_absolute_time();
   VendorDefinedEvent = IOHIDEventCreateVendorDefinedEvent();
   if (VendorDefinedEvent)
   {
     v8 = VendorDefinedEvent;
-    v9 = [a3 _contextId];
-    v10 = v9;
-    WTF::RunLoop::mainSingleton(v9);
+    _contextId = [window _contextId];
+    v10 = _contextId;
+    WTF::RunLoop::mainSingleton(_contextId);
     v11 = WTF::fastMalloc(0x18);
     *v11 = &unk_1F10FBE10;
     *(v11 + 8) = v8;
@@ -191,14 +191,14 @@
   return 1;
 }
 
-- (void)_updateTouchPoints:()span<CGPoint window:(18446744073709551615UL>)a3
+- (void)_updateTouchPoints:()span<CGPoint window:(18446744073709551615UL>)window
 {
   activePointCount = self->_activePointCount;
   if (!activePointCount)
   {
-    self->_activePointCount = a3.var1;
+    self->_activePointCount = window.var1;
     v7 = 1;
-    if (a3.var1)
+    if (window.var1)
     {
       goto LABEL_8;
     }
@@ -215,14 +215,14 @@ LABEL_13:
     return;
   }
 
-  if (!a3.var1)
+  if (!window.var1)
   {
     self->_activePointCount = 0;
     v7 = 4;
     goto LABEL_13;
   }
 
-  if (a3.var1 == activePointCount)
+  if (window.var1 == activePointCount)
   {
     v7 = 2;
   }
@@ -232,7 +232,7 @@ LABEL_13:
     v7 = 3;
   }
 
-  self->_activePointCount = a3.var1;
+  self->_activePointCount = window.var1;
 LABEL_8:
   v8 = 0;
   p_point = &self->_activePoints.__elems_[0].point;
@@ -244,10 +244,10 @@ LABEL_8:
       break;
     }
 
-    *p_point = a3.var0[v8];
+    *p_point = window.var0[v8];
     p_point += 3;
     ++v8;
-    if (16 * a3.var1 == v10)
+    if (16 * window.var1 == v10)
     {
       goto LABEL_13;
     }
@@ -256,22 +256,22 @@ LABEL_8:
   __break(1u);
 }
 
-- (void)touchDownAtPoints:(CGPoint *)a3 touchCount:(unint64_t)a4 window:(id)a5
+- (void)touchDownAtPoints:(CGPoint *)points touchCount:(unint64_t)count window:(id)window
 {
-  v7 = 5;
-  if (a4 < 5)
+  countCopy = 5;
+  if (count < 5)
   {
-    v7 = a4;
+    countCopy = count;
   }
 
-  self->_activePointCount = v7;
-  if (a4)
+  self->_activePointCount = countCopy;
+  if (count)
   {
-    v8 = 16 * v7;
+    v8 = 16 * countCopy;
     p_point = &self->_activePoints.__elems_[0].point;
     do
     {
-      v10 = *a3++;
+      v10 = *points++;
       *p_point = v10;
       p_point += 3;
       v8 -= 16;
@@ -281,7 +281,7 @@ LABEL_8:
   }
 
   v11 = [(_WKTouchEventGenerator *)self _createIOHIDEventType:1];
-  [(_WKTouchEventGenerator *)self _sendHIDEvent:v11 window:a5];
+  [(_WKTouchEventGenerator *)self _sendHIDEvent:v11 window:window];
   if (v11)
   {
 
@@ -289,69 +289,69 @@ LABEL_8:
   }
 }
 
-- (void)touchDown:(CGPoint)a3 touchCount:(unint64_t)a4 window:(id)a5
+- (void)touchDown:(CGPoint)down touchCount:(unint64_t)count window:(id)window
 {
-  if (a4 >= 5)
+  if (count >= 5)
   {
-    v5 = 5;
+    countCopy = 5;
   }
 
   else
   {
-    v5 = a4;
+    countCopy = count;
   }
 
   LODWORD(v10) = 5;
-  HIDWORD(v10) = v5;
-  if (a4)
+  HIDWORD(v10) = countCopy;
+  if (count)
   {
     v6 = v11;
     do
     {
-      *v6++ = a3;
+      *v6++ = down;
     }
 
-    while (v6 != &v11[v5]);
+    while (v6 != &v11[countCopy]);
   }
 
-  [(_WKTouchEventGenerator *)self touchDownAtPoints:v11 touchCount:a3.x window:a3.y, v11, v10];
+  [(_WKTouchEventGenerator *)self touchDownAtPoints:v11 touchCount:down.x window:down.y, v11, v10];
   if (v11 != v9 && v9 != 0)
   {
     WTF::fastFree(v9, v7);
   }
 }
 
-- (void)liftUpAtPoints:(CGPoint *)a3 touchCount:(unint64_t)a4 window:(id)a5
+- (void)liftUpAtPoints:(CGPoint *)points touchCount:(unint64_t)count window:(id)window
 {
   activePointCount = self->_activePointCount;
-  if (a4 >= activePointCount)
+  if (count >= activePointCount)
   {
-    v8 = self->_activePointCount;
+    countCopy = self->_activePointCount;
   }
 
   else
   {
-    v8 = a4;
+    countCopy = count;
   }
 
-  if (v8 >= 5)
+  if (countCopy >= 5)
   {
     v9 = 5;
   }
 
   else
   {
-    v9 = v8;
+    v9 = countCopy;
   }
 
-  if (v8)
+  if (countCopy)
   {
     v10 = 16 * v9;
     v11 = (&self->_activePoints.__elems_[0].point.x + 48 * activePointCount - 48 * v9);
     v12 = ~v9 + activePointCount;
     while (++v12 < 5)
     {
-      v13 = *a3++;
+      v13 = *points++;
       *v11 = v13;
       v11 += 3;
       v10 -= 16;
@@ -368,7 +368,7 @@ LABEL_8:
   {
 LABEL_11:
     v14 = [(_WKTouchEventGenerator *)self _createIOHIDEventType:4];
-    [(_WKTouchEventGenerator *)self _sendHIDEvent:v14 window:a5];
+    [(_WKTouchEventGenerator *)self _sendHIDEvent:v14 window:window];
     self->_activePointCount = activePointCount - v9;
     if (v14)
     {
@@ -378,77 +378,77 @@ LABEL_11:
   }
 }
 
-- (void)liftUp:(CGPoint)a3 touchCount:(unint64_t)a4 window:(id)a5
+- (void)liftUp:(CGPoint)up touchCount:(unint64_t)count window:(id)window
 {
-  if (a4 >= 5)
+  if (count >= 5)
   {
-    v5 = 5;
+    countCopy = 5;
   }
 
   else
   {
-    v5 = a4;
+    countCopy = count;
   }
 
   LODWORD(v10) = 5;
-  HIDWORD(v10) = v5;
-  if (a4)
+  HIDWORD(v10) = countCopy;
+  if (count)
   {
     v6 = v11;
     do
     {
-      *v6++ = a3;
+      *v6++ = up;
     }
 
-    while (v6 != &v11[v5]);
+    while (v6 != &v11[countCopy]);
   }
 
-  [(_WKTouchEventGenerator *)self liftUpAtPoints:v11 touchCount:a3.x window:a3.y, v11, v10];
+  [(_WKTouchEventGenerator *)self liftUpAtPoints:v11 touchCount:up.x window:up.y, v11, v10];
   if (v11 != v9 && v9 != 0)
   {
     WTF::fastFree(v9, v7);
   }
 }
 
-- (void)moveToPoints:(CGPoint *)a3 touchCount:(unint64_t)a4 duration:(double)a5 window:(id)a6
+- (void)moveToPoints:(CGPoint *)points touchCount:(unint64_t)count duration:(double)duration window:(id)window
 {
   v28 = v31;
-  if (a4 >= 5)
+  if (count >= 5)
   {
-    v11 = 5;
+    countCopy = 5;
   }
 
   else
   {
-    v11 = a4;
+    countCopy = count;
   }
 
   v29 = 5;
-  v30 = v11;
-  if (a4)
+  v30 = countCopy;
+  if (count)
   {
-    bzero(v31, 16 * v11);
-    v26 = v11;
-    bzero(v27, 16 * v11);
+    bzero(v31, 16 * countCopy);
+    v26 = countCopy;
+    bzero(v27, 16 * countCopy);
   }
 
   else
   {
-    v26 = v11;
+    v26 = countCopy;
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  if (a5 + -0.016 > 0.0)
+  if (duration + -0.016 > 0.0)
   {
     v13 = 0;
     v25 = 1000000000.0;
     do
     {
       v14 = CFAbsoluteTimeGetCurrent() - Current;
-      if (a4)
+      if (count)
       {
-        v15 = sin(v14 / a5 * 3.14159265 * 0.5);
-        *&v16 = sin(v14 / a5 * v15 * 3.14159265 * 0.5);
+        v15 = sin(v14 / duration * 3.14159265 * 0.5);
+        *&v16 = sin(v14 / duration * v15 * 3.14159265 * 0.5);
         v17 = 0;
         v18 = 0;
         v19 = v30;
@@ -480,13 +480,13 @@ LABEL_26:
             JUMPOUT(0x19DB8D2B4);
           }
 
-          *&v27[v17] = vmlaq_f64(*(v28 + v17), v20, vsubq_f64(a3[v17 / 0x10], *(v28 + v17)));
+          *&v27[v17] = vmlaq_f64(*(v28 + v17), v20, vsubq_f64(points[v17 / 0x10], *(v28 + v17)));
           ++v18;
           v17 += 16;
           p_point += 3;
         }
 
-        while (16 * v11 != v17);
+        while (16 * countCopy != v17);
       }
 
       [(_WKTouchEventGenerator *)self _updateTouchPoints:*&v25 window:?];
@@ -501,10 +501,10 @@ LABEL_26:
       ++v13;
     }
 
-    while (v14 < a5 + -0.016);
+    while (v14 < duration + -0.016);
   }
 
-  [(_WKTouchEventGenerator *)self _updateTouchPoints:a3 window:v11, a6];
+  [(_WKTouchEventGenerator *)self _updateTouchPoints:points window:countCopy, window];
   v24 = v28;
   if (v31 != v28)
   {
@@ -517,35 +517,35 @@ LABEL_26:
   }
 }
 
-- (void)touchDown:(CGPoint)a3 window:(id)a4 completionBlock:(id)a5
+- (void)touchDown:(CGPoint)down window:(id)window completionBlock:(id)block
 {
-  [(_WKTouchEventGenerator *)self touchDown:a3.x window:a3.y];
+  [(_WKTouchEventGenerator *)self touchDown:down.x window:down.y];
 
-  [(_WKTouchEventGenerator *)self _sendMarkerHIDEventInWindow:a4 completionBlock:a5];
+  [(_WKTouchEventGenerator *)self _sendMarkerHIDEventInWindow:window completionBlock:block];
 }
 
-- (void)liftUp:(CGPoint)a3 window:(id)a4 completionBlock:(id)a5
+- (void)liftUp:(CGPoint)up window:(id)window completionBlock:(id)block
 {
-  [(_WKTouchEventGenerator *)self liftUp:a3.x window:a3.y];
+  [(_WKTouchEventGenerator *)self liftUp:up.x window:up.y];
 
-  [(_WKTouchEventGenerator *)self _sendMarkerHIDEventInWindow:a4 completionBlock:a5];
+  [(_WKTouchEventGenerator *)self _sendMarkerHIDEventInWindow:window completionBlock:block];
 }
 
-- (void)moveToPoint:(CGPoint)a3 duration:(double)a4 window:(id)a5
+- (void)moveToPoint:(CGPoint)point duration:(double)duration window:(id)window
 {
   v6 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  [(_WKTouchEventGenerator *)self moveToPoints:&v5 touchCount:1 duration:a5 window:a4];
+  pointCopy = point;
+  [(_WKTouchEventGenerator *)self moveToPoints:&pointCopy touchCount:1 duration:window window:duration];
 }
 
-- (void)moveToPoint:(CGPoint)a3 duration:(double)a4 window:(id)a5 completionBlock:(id)a6
+- (void)moveToPoint:(CGPoint)point duration:(double)duration window:(id)window completionBlock:(id)block
 {
-  [(_WKTouchEventGenerator *)self moveToPoint:a3.x duration:a3.y window:a4];
+  [(_WKTouchEventGenerator *)self moveToPoint:point.x duration:point.y window:duration];
 
-  [(_WKTouchEventGenerator *)self _sendMarkerHIDEventInWindow:a5 completionBlock:a6];
+  [(_WKTouchEventGenerator *)self _sendMarkerHIDEventInWindow:window completionBlock:block];
 }
 
-- (void)receivedHIDEvent:(__IOHIDEvent *)a3
+- (void)receivedHIDEvent:(__IOHIDEvent *)event
 {
   if (IOHIDEventGetType() == 1)
   {
@@ -562,20 +562,20 @@ LABEL_26:
   }
 }
 
-- (void)_sendHIDEvent:(void *)a1 window:
+- (void)_sendHIDEvent:(void *)event window:
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10FBDE8;
-  a1[1] = 0;
+  v2 = event[1];
+  *event = &unk_1F10FBDE8;
+  event[1] = 0;
   if (v2)
   {
     CFRelease(v2);
   }
 
-  return a1;
+  return event;
 }
 
-- (uint64_t)_sendHIDEvent:(WTF *)this window:(void *)a2
+- (uint64_t)_sendHIDEvent:(WTF *)this window:(void *)window
 {
   v3 = *(this + 1);
   *this = &unk_1F10FBDE8;
@@ -585,32 +585,32 @@ LABEL_26:
     CFRelease(v3);
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, window);
 }
 
-- (uint64_t)_sendHIDEvent:(uint64_t)a1 window:
+- (uint64_t)_sendHIDEvent:(uint64_t)event window:
 {
-  softLinkBKSHIDEventSetDigitizerInfo(*(a1 + 8), *(a1 + 16), 0, 0, 0, 0.0, 0.0);
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = *(a1 + 8);
+  softLinkBKSHIDEventSetDigitizerInfo(*(event + 8), *(event + 16), 0, 0, 0, 0.0, 0.0);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  v3 = *(event + 8);
 
-  return [v2 _enqueueHIDEvent:v3];
+  return [mEMORY[0x1E69DC668] _enqueueHIDEvent:v3];
 }
 
-- (void)_sendMarkerHIDEventInWindow:(void *)a1 completionBlock:
+- (void)_sendMarkerHIDEventInWindow:(void *)window completionBlock:
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10FBE10;
-  a1[1] = 0;
+  v2 = window[1];
+  *window = &unk_1F10FBE10;
+  window[1] = 0;
   if (v2)
   {
     CFRelease(v2);
   }
 
-  return a1;
+  return window;
 }
 
-- (uint64_t)_sendMarkerHIDEventInWindow:(WTF *)this completionBlock:(void *)a2
+- (uint64_t)_sendMarkerHIDEventInWindow:(WTF *)this completionBlock:(void *)block
 {
   v3 = *(this + 1);
   *this = &unk_1F10FBE10;
@@ -620,16 +620,16 @@ LABEL_26:
     CFRelease(v3);
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, block);
 }
 
-- (uint64_t)_sendMarkerHIDEventInWindow:(uint64_t)a1 completionBlock:
+- (uint64_t)_sendMarkerHIDEventInWindow:(uint64_t)window completionBlock:
 {
-  softLinkBKSHIDEventSetDigitizerInfo(*(a1 + 8), *(a1 + 16), 0, 0, 0, 0.0, 0.0);
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = *(a1 + 8);
+  softLinkBKSHIDEventSetDigitizerInfo(*(window + 8), *(window + 16), 0, 0, 0, 0.0, 0.0);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  v3 = *(window + 8);
 
-  return [v2 _enqueueHIDEvent:v3];
+  return [mEMORY[0x1E69DC668] _enqueueHIDEvent:v3];
 }
 
 @end

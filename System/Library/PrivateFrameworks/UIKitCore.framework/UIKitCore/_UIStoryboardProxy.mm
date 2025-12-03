@@ -1,22 +1,22 @@
 @interface _UIStoryboardProxy
-- (_UIStoryboardProxy)initWithCoder:(id)a3;
-- (_UIStoryboardProxy)initWithStoryboard:(id)a3;
+- (_UIStoryboardProxy)initWithCoder:(id)coder;
+- (_UIStoryboardProxy)initWithStoryboard:(id)storyboard;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIStoryboardProxy
 
-- (_UIStoryboardProxy)initWithStoryboard:(id)a3
+- (_UIStoryboardProxy)initWithStoryboard:(id)storyboard
 {
   v6.receiver = self;
   v6.super_class = _UIStoryboardProxy;
   v4 = [(_UIStoryboardProxy *)&v6 init];
   if (v4)
   {
-    if (a3)
+    if (storyboard)
     {
-      v4->_storyboard = a3;
+      v4->_storyboard = storyboard;
     }
 
     else
@@ -33,13 +33,13 @@
   return v4;
 }
 
-- (_UIStoryboardProxy)initWithCoder:(id)a3
+- (_UIStoryboardProxy)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kStoryboardNameKey"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kStoryboardNameKey"];
   if (v5)
   {
     v6 = v5;
-    v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kStoryboardBundlePathKey"];
+    v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kStoryboardBundlePathKey"];
     if (v7)
     {
       v8 = [MEMORY[0x1E696AAE8] bundleWithPath:v7];
@@ -63,28 +63,28 @@
     v11 = 0;
   }
 
-  v9 = self;
+  selfCopy = self;
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [(UIStoryboard *)self->_storyboard name];
-  if (v5)
+  name = [(UIStoryboard *)self->_storyboard name];
+  if (name)
   {
-    [a3 encodeObject:v5 forKey:@"kStoryboardNameKey"];
-    v6 = [(UIStoryboard *)self->_storyboard bundle];
-    if (v6)
+    [coder encodeObject:name forKey:@"kStoryboardNameKey"];
+    bundle = [(UIStoryboard *)self->_storyboard bundle];
+    if (bundle)
     {
-      v7 = v6;
-      if (v6 != [MEMORY[0x1E696AAE8] mainBundle])
+      v7 = bundle;
+      if (bundle != [MEMORY[0x1E696AAE8] mainBundle])
       {
-        v8 = [(NSBundle *)v7 bundlePath];
-        if (v8)
+        bundlePath = [(NSBundle *)v7 bundlePath];
+        if (bundlePath)
         {
 
-          [a3 encodeObject:v8 forKey:@"kStoryboardBundlePathKey"];
+          [coder encodeObject:bundlePath forKey:@"kStoryboardBundlePathKey"];
         }
 
         else if (_UIStateRestorationDebugLogEnabled())

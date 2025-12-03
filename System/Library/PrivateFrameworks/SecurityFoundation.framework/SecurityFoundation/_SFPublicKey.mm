@@ -1,39 +1,39 @@
 @interface _SFPublicKey
-+ (id)_secKeyCreationAttributesForSpecifier:(id)a3;
-- (_SFPublicKey)initWithAttributes:(id)a3;
-- (_SFPublicKey)initWithData:(id)a3 specifier:(id)a4 error:(id *)a5;
-- (_SFPublicKey)initWithSecKey:(__SecKey *)a3;
++ (id)_secKeyCreationAttributesForSpecifier:(id)specifier;
+- (_SFPublicKey)initWithAttributes:(id)attributes;
+- (_SFPublicKey)initWithData:(id)data specifier:(id)specifier error:(id *)error;
+- (_SFPublicKey)initWithSecKey:(__SecKey *)key;
 - (id)keyData;
 - (void)dealloc;
 @end
 
 @implementation _SFPublicKey
 
-+ (id)_secKeyCreationAttributesForSpecifier:(id)a3
++ (id)_secKeyCreationAttributesForSpecifier:(id)specifier
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  v6 = NSStringFromClass(a1);
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v6 = NSStringFromClass(self);
   v7 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:a1 file:@"SFKey.m" lineNumber:740 description:{@"subclass %@ must implement %@", v6, v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SFKey.m" lineNumber:740 description:{@"subclass %@ must implement %@", v6, v7}];
 
   return 0;
 }
 
-- (_SFPublicKey)initWithAttributes:(id)a3
+- (_SFPublicKey)initWithAttributes:(id)attributes
 {
   v4.receiver = self;
   v4.super_class = _SFPublicKey;
-  return [(_SFKey *)&v4 initWithAttributes:a3];
+  return [(_SFKey *)&v4 initWithAttributes:attributes];
 }
 
-- (_SFPublicKey)initWithData:(id)a3 specifier:(id)a4 error:(id *)a5
+- (_SFPublicKey)initWithData:(id)data specifier:(id)specifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  dataCopy = data;
+  specifierCopy = specifier;
+  v10 = specifierCopy;
+  if (dataCopy)
   {
-    if (v9)
+    if (specifierCopy)
     {
       goto LABEL_3;
     }
@@ -55,7 +55,7 @@ LABEL_3:
   {
     v11 = v10;
     v12 = [objc_opt_class() _secKeyCreationAttributesForSpecifier:v11];
-    v13 = SecKeyCreateWithData(v8, v12, a5);
+    v13 = SecKeyCreateWithData(dataCopy, v12, error);
     if (v13)
     {
       v14 = v13;
@@ -71,32 +71,32 @@ LABEL_3:
 
     self = v15;
 
-    v16 = self;
+    selfCopy = self;
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:4 userInfo:0];
-    *a5 = v16 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (_SFPublicKey)initWithSecKey:(__SecKey *)a3
+- (_SFPublicKey)initWithSecKey:(__SecKey *)key
 {
-  if (!a3)
+  if (!key)
   {
     [_SFPublicKey initWithSecKey:];
   }
 
   v5 = [objc_msgSend(objc_opt_class() "_attributesClass")];
-  v6 = [objc_opt_class() _specifierForSecKey:a3];
+  v6 = [objc_opt_class() _specifierForSecKey:key];
   v7 = [v5 initWithSpecifier:v6];
   v12.receiver = self;
   v12.super_class = _SFPublicKey;
@@ -108,7 +108,7 @@ LABEL_3:
     publicKeyInternal = v8->_publicKeyInternal;
     v8->_publicKeyInternal = v9;
 
-    *(v8->_publicKeyInternal + 1) = a3;
+    *(v8->_publicKeyInternal + 1) = key;
     CFRetain(*(v8->_publicKeyInternal + 1));
   }
 

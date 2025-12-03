@@ -1,38 +1,38 @@
 @interface IFTSchemaIFTActionResolverRequest
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTActionResolverRequest)initWithDictionary:(id)a3;
-- (IFTSchemaIFTActionResolverRequest)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTActionResolverRequest)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTActionResolverRequest)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addUnresolvedParameterSets:(id)a3;
-- (void)setHasIsAuthenticated:(BOOL)a3;
-- (void)setHasIsClientAction:(BOOL)a3;
-- (void)setHasIsConfirmed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addUnresolvedParameterSets:(id)sets;
+- (void)setHasIsAuthenticated:(BOOL)authenticated;
+- (void)setHasIsClientAction:(BOOL)action;
+- (void)setHasIsConfirmed:(BOOL)confirmed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTActionResolverRequest
 
-- (IFTSchemaIFTActionResolverRequest)initWithDictionary:(id)a3
+- (IFTSchemaIFTActionResolverRequest)initWithDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = IFTSchemaIFTActionResolverRequest;
   v5 = [(IFTSchemaIFTActionResolverRequest *)&v39 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionResolverRequest setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"statementId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"statementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(IFTSchemaIFTActionResolverRequest *)v5 setStatementId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"toolId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"toolId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,21 +48,21 @@
       [(IFTSchemaIFTActionResolverRequest *)v5 setToolId:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isClientAction"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isClientAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionResolverRequest setIsClientAction:](v5, "setIsClientAction:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isConfirmed"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isConfirmed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionResolverRequest setIsConfirmed:](v5, "setIsConfirmed:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"isAuthenticated"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isAuthenticated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
     }
 
     v34 = v13;
-    v14 = [v4 objectForKeyedSubscript:@"resolvedParameters"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"resolvedParameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,7 +84,7 @@
       v14 = v16;
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"unresolvedParameterSets"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"unresolvedParameterSets"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -140,30 +140,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTActionResolverRequest)initWithJSON:(id)a3
+- (IFTSchemaIFTActionResolverRequest)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTActionResolverRequest *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTActionResolverRequest *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTActionResolverRequest *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -177,12 +177,12 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionResolverRequest exists](self, "exists")}];
-    [v3 setObject:v8 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v8 forKeyedSubscript:@"exists"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -203,7 +203,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionResolverRequest isAuthenticated](self, "isAuthenticated")}];
-  [v3 setObject:v9 forKeyedSubscript:@"isAuthenticated"];
+  [dictionary setObject:v9 forKeyedSubscript:@"isAuthenticated"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -219,58 +219,58 @@ LABEL_4:
 
 LABEL_11:
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionResolverRequest isClientAction](self, "isClientAction")}];
-  [v3 setObject:v10 forKeyedSubscript:@"isClientAction"];
+  [dictionary setObject:v10 forKeyedSubscript:@"isClientAction"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionResolverRequest isConfirmed](self, "isConfirmed")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isConfirmed"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isConfirmed"];
   }
 
 LABEL_6:
   if (self->_resolvedParameters)
   {
-    v6 = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    resolvedParameters = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
+    dictionaryRepresentation = [resolvedParameters dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"resolvedParameters"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"resolvedParameters"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"resolvedParameters"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"resolvedParameters"];
     }
   }
 
   if (self->_statementId)
   {
-    v12 = [(IFTSchemaIFTActionResolverRequest *)self statementId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    statementId = [(IFTSchemaIFTActionResolverRequest *)self statementId];
+    dictionaryRepresentation2 = [statementId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"statementId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"statementId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"statementId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"statementId"];
     }
   }
 
   if (self->_toolId)
   {
-    v15 = [(IFTSchemaIFTActionResolverRequest *)self toolId];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"toolId"];
+    toolId = [(IFTSchemaIFTActionResolverRequest *)self toolId];
+    v16 = [toolId copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"toolId"];
   }
 
   if ([(NSArray *)self->_unresolvedParameterSets count])
   {
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -290,16 +290,16 @@ LABEL_6:
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          if (v23)
+          dictionaryRepresentation3 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v17 addObject:v23];
+            [array addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v24 = [MEMORY[0x1E695DFB0] null];
-            [v17 addObject:v24];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null3];
           }
         }
 
@@ -309,12 +309,12 @@ LABEL_6:
       while (v20);
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"unresolvedParameterSets"];
+    [dictionary setObject:array forKeyedSubscript:@"unresolvedParameterSets"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v26];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v26];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -372,15 +372,15 @@ LABEL_11:
   return v9 ^ v10 ^ [(NSArray *)self->_unresolvedParameterSets hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_36;
   }
@@ -388,26 +388,26 @@ LABEL_11:
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_36;
     }
   }
 
-  v6 = [(IFTSchemaIFTActionResolverRequest *)self statementId];
-  v7 = [v4 statementId];
-  if ((v6 != 0) == (v7 == 0))
+  statementId = [(IFTSchemaIFTActionResolverRequest *)self statementId];
+  statementId2 = [equalCopy statementId];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_35;
   }
 
-  v8 = [(IFTSchemaIFTActionResolverRequest *)self statementId];
-  if (v8)
+  statementId3 = [(IFTSchemaIFTActionResolverRequest *)self statementId];
+  if (statementId3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTActionResolverRequest *)self statementId];
-    v11 = [v4 statementId];
-    v12 = [v10 isEqual:v11];
+    v9 = statementId3;
+    statementId4 = [(IFTSchemaIFTActionResolverRequest *)self statementId];
+    statementId5 = [equalCopy statementId];
+    v12 = [statementId4 isEqual:statementId5];
 
     if (!v12)
     {
@@ -419,20 +419,20 @@ LABEL_11:
   {
   }
 
-  v6 = [(IFTSchemaIFTActionResolverRequest *)self toolId];
-  v7 = [v4 toolId];
-  if ((v6 != 0) == (v7 == 0))
+  statementId = [(IFTSchemaIFTActionResolverRequest *)self toolId];
+  statementId2 = [equalCopy toolId];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_35;
   }
 
-  v13 = [(IFTSchemaIFTActionResolverRequest *)self toolId];
-  if (v13)
+  toolId = [(IFTSchemaIFTActionResolverRequest *)self toolId];
+  if (toolId)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTActionResolverRequest *)self toolId];
-    v16 = [v4 toolId];
-    v17 = [v15 isEqual:v16];
+    v14 = toolId;
+    toolId2 = [(IFTSchemaIFTActionResolverRequest *)self toolId];
+    toolId3 = [equalCopy toolId];
+    v17 = [toolId2 isEqual:toolId3];
 
     if (!v17)
     {
@@ -446,7 +446,7 @@ LABEL_11:
 
   has = self->_has;
   v19 = (*&has >> 1) & 1;
-  v20 = v4[56];
+  v20 = equalCopy[56];
   if (v19 != ((v20 >> 1) & 1))
   {
     goto LABEL_36;
@@ -455,13 +455,13 @@ LABEL_11:
   if (v19)
   {
     isClientAction = self->_isClientAction;
-    if (isClientAction != [v4 isClientAction])
+    if (isClientAction != [equalCopy isClientAction])
     {
       goto LABEL_36;
     }
 
     has = self->_has;
-    v20 = v4[56];
+    v20 = equalCopy[56];
   }
 
   v22 = (*&has >> 2) & 1;
@@ -473,13 +473,13 @@ LABEL_11:
   if (v22)
   {
     isConfirmed = self->_isConfirmed;
-    if (isConfirmed != [v4 isConfirmed])
+    if (isConfirmed != [equalCopy isConfirmed])
     {
       goto LABEL_36;
     }
 
     has = self->_has;
-    v20 = v4[56];
+    v20 = equalCopy[56];
   }
 
   v24 = (*&has >> 3) & 1;
@@ -491,26 +491,26 @@ LABEL_11:
   if (v24)
   {
     isAuthenticated = self->_isAuthenticated;
-    if (isAuthenticated != [v4 isAuthenticated])
+    if (isAuthenticated != [equalCopy isAuthenticated])
     {
       goto LABEL_36;
     }
   }
 
-  v6 = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
-  v7 = [v4 resolvedParameters];
-  if ((v6 != 0) == (v7 == 0))
+  statementId = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
+  statementId2 = [equalCopy resolvedParameters];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_35;
   }
 
-  v26 = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
-  if (v26)
+  resolvedParameters = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
+  if (resolvedParameters)
   {
-    v27 = v26;
-    v28 = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
-    v29 = [v4 resolvedParameters];
-    v30 = [v28 isEqual:v29];
+    v27 = resolvedParameters;
+    resolvedParameters2 = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
+    resolvedParameters3 = [equalCopy resolvedParameters];
+    v30 = [resolvedParameters2 isEqual:resolvedParameters3];
 
     if (!v30)
     {
@@ -522,17 +522,17 @@ LABEL_11:
   {
   }
 
-  v6 = [(IFTSchemaIFTActionResolverRequest *)self unresolvedParameterSets];
-  v7 = [v4 unresolvedParameterSets];
-  if ((v6 != 0) == (v7 == 0))
+  statementId = [(IFTSchemaIFTActionResolverRequest *)self unresolvedParameterSets];
+  statementId2 = [equalCopy unresolvedParameterSets];
+  if ((statementId != 0) == (statementId2 == 0))
   {
 LABEL_35:
 
     goto LABEL_36;
   }
 
-  v31 = [(IFTSchemaIFTActionResolverRequest *)self unresolvedParameterSets];
-  if (!v31)
+  unresolvedParameterSets = [(IFTSchemaIFTActionResolverRequest *)self unresolvedParameterSets];
+  if (!unresolvedParameterSets)
   {
 
 LABEL_39:
@@ -540,10 +540,10 @@ LABEL_39:
     goto LABEL_37;
   }
 
-  v32 = v31;
-  v33 = [(IFTSchemaIFTActionResolverRequest *)self unresolvedParameterSets];
-  v34 = [v4 unresolvedParameterSets];
-  v35 = [v33 isEqual:v34];
+  v32 = unresolvedParameterSets;
+  unresolvedParameterSets2 = [(IFTSchemaIFTActionResolverRequest *)self unresolvedParameterSets];
+  unresolvedParameterSets3 = [equalCopy unresolvedParameterSets];
+  v35 = [unresolvedParameterSets2 isEqual:unresolvedParameterSets3];
 
   if (v35)
   {
@@ -557,26 +557,26 @@ LABEL_37:
   return v36;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(IFTSchemaIFTActionResolverRequest *)self statementId];
+  statementId = [(IFTSchemaIFTActionResolverRequest *)self statementId];
 
-  if (v5)
+  if (statementId)
   {
-    v6 = [(IFTSchemaIFTActionResolverRequest *)self statementId];
+    statementId2 = [(IFTSchemaIFTActionResolverRequest *)self statementId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(IFTSchemaIFTActionResolverRequest *)self toolId];
+  toolId = [(IFTSchemaIFTActionResolverRequest *)self toolId];
 
-  if (v7)
+  if (toolId)
   {
     PBDataWriterWriteStringField();
   }
@@ -611,11 +611,11 @@ LABEL_10:
   }
 
 LABEL_11:
-  v9 = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
+  resolvedParameters = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
 
-  if (v9)
+  if (resolvedParameters)
   {
-    v10 = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
+    resolvedParameters2 = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
     PBDataWriterWriteSubmessage();
   }
 
@@ -648,27 +648,27 @@ LABEL_11:
   }
 }
 
-- (void)addUnresolvedParameterSets:(id)a3
+- (void)addUnresolvedParameterSets:(id)sets
 {
-  v4 = a3;
+  setsCopy = sets;
   unresolvedParameterSets = self->_unresolvedParameterSets;
-  v8 = v4;
+  v8 = setsCopy;
   if (!unresolvedParameterSets)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_unresolvedParameterSets;
-    self->_unresolvedParameterSets = v6;
+    self->_unresolvedParameterSets = array;
 
-    v4 = v8;
+    setsCopy = v8;
     unresolvedParameterSets = self->_unresolvedParameterSets;
   }
 
-  [(NSArray *)unresolvedParameterSets addObject:v4];
+  [(NSArray *)unresolvedParameterSets addObject:setsCopy];
 }
 
-- (void)setHasIsAuthenticated:(BOOL)a3
+- (void)setHasIsAuthenticated:(BOOL)authenticated
 {
-  if (a3)
+  if (authenticated)
   {
     v3 = 8;
   }
@@ -681,9 +681,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsConfirmed:(BOOL)a3
+- (void)setHasIsConfirmed:(BOOL)confirmed
 {
-  if (a3)
+  if (confirmed)
   {
     v3 = 4;
   }
@@ -696,9 +696,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsClientAction:(BOOL)a3
+- (void)setHasIsClientAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2;
   }
@@ -711,37 +711,37 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = IFTSchemaIFTActionResolverRequest;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(IFTSchemaIFTActionResolverRequest *)self deleteToolId];
   }
 
-  v6 = [(IFTSchemaIFTActionResolverRequest *)self statementId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  statementId = [(IFTSchemaIFTActionResolverRequest *)self statementId];
+  v7 = [statementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTActionResolverRequest *)self deleteStatementId];
   }
 
-  v9 = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  resolvedParameters = [(IFTSchemaIFTActionResolverRequest *)self resolvedParameters];
+  v10 = [resolvedParameters applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTActionResolverRequest *)self deleteResolvedParameters];
   }
 
-  v12 = [(IFTSchemaIFTActionResolverRequest *)self unresolvedParameterSets];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  unresolvedParameterSets = [(IFTSchemaIFTActionResolverRequest *)self unresolvedParameterSets];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:unresolvedParameterSets underConditions:policyCopy];
   [(IFTSchemaIFTActionResolverRequest *)self setUnresolvedParameterSets:v13];
 
   return v5;

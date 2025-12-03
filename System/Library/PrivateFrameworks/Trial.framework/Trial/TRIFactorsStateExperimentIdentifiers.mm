@@ -1,21 +1,21 @@
 @interface TRIFactorsStateExperimentIdentifiers
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIdentifiers:(id)a3;
-- (TRIFactorsStateExperimentIdentifiers)initWithExperimentId:(id)a3 deploymentId:(int)a4 treatmentId:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIdentifiers:(id)identifiers;
+- (TRIFactorsStateExperimentIdentifiers)initWithExperimentId:(id)id deploymentId:(int)deploymentId treatmentId:(id)treatmentId;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TRIFactorsStateExperimentIdentifiers
 
-- (TRIFactorsStateExperimentIdentifiers)initWithExperimentId:(id)a3 deploymentId:(int)a4 treatmentId:(id)a5
+- (TRIFactorsStateExperimentIdentifiers)initWithExperimentId:(id)id deploymentId:(int)deploymentId treatmentId:(id)treatmentId
 {
-  v10 = a3;
-  v11 = a5;
-  if (!v10)
+  idCopy = id;
+  treatmentIdCopy = treatmentId;
+  if (!idCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TRIFactorsStateIdentifiers.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"experimentId != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFactorsStateIdentifiers.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"experimentId != nil"}];
   }
 
   v16.receiver = self;
@@ -24,26 +24,26 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_experimentId, a3);
-    v13->_deploymentId = a4;
-    objc_storeStrong(&v13->_treatmentId, a5);
+    objc_storeStrong(&v12->_experimentId, id);
+    v13->_deploymentId = deploymentId;
+    objc_storeStrong(&v13->_treatmentId, treatmentId);
   }
 
   return v13;
 }
 
-- (BOOL)isEqualToIdentifiers:(id)a3
+- (BOOL)isEqualToIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  identifiersCopy = identifiers;
+  v5 = identifiersCopy;
+  if (!identifiersCopy)
   {
     goto LABEL_9;
   }
 
   v6 = self->_experimentId == 0;
-  v7 = [v4 experimentId];
-  v8 = v7 != 0;
+  experimentId = [identifiersCopy experimentId];
+  v8 = experimentId != 0;
 
   if (v6 == v8)
   {
@@ -53,8 +53,8 @@
   experimentId = self->_experimentId;
   if (experimentId)
   {
-    v10 = [v5 experimentId];
-    v11 = [(NSString *)experimentId isEqual:v10];
+    experimentId2 = [v5 experimentId];
+    v11 = [(NSString *)experimentId isEqual:experimentId2];
 
     if (!v11)
     {
@@ -74,8 +74,8 @@ LABEL_9:
     treatmentId = self->_treatmentId;
     if (treatmentId)
     {
-      v17 = [v5 treatmentId];
-      v18 = [(NSString *)treatmentId isEqual:v17];
+      treatmentId = [v5 treatmentId];
+      v18 = [(NSString *)treatmentId isEqual:treatmentId];
     }
 
     else
@@ -87,18 +87,18 @@ LABEL_9:
   return v18 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIFactorsStateExperimentIdentifiers *)self isEqualToIdentifiers:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIFactorsStateExperimentIdentifiers *)self isEqualToIdentifiers:v5];
   }
 
   return v6;

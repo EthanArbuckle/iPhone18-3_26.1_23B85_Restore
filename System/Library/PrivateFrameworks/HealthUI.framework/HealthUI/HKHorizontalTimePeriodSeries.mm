@@ -1,28 +1,28 @@
 @interface HKHorizontalTimePeriodSeries
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4;
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4;
-- (CGPoint)renderPositionForLabelLocation:(id)a3 rect:(CGRect)a4 zoomScale:(double)a5 contentOffset:(CGPoint)a6 constantOffset:(double)a7 isHorizontal:(BOOL)a8 optionalOffset:(CGPoint)a9;
-- (CGRect)enumerationRectForLevel:(int64_t)a3 axisRect:(CGRect)a4;
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than;
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than;
+- (CGPoint)renderPositionForLabelLocation:(id)location rect:(CGRect)rect zoomScale:(double)scale contentOffset:(CGPoint)offset constantOffset:(double)constantOffset isHorizontal:(BOOL)horizontal optionalOffset:(CGPoint)optionalOffset;
+- (CGRect)enumerationRectForLevel:(int64_t)level axisRect:(CGRect)rect;
 - (HKHorizontalTimePeriodSeries)init;
 - (NSArray)enumerationValueOrdering;
 - (NSDictionary)valueLabels;
 - (UIColor)fillColor;
 - (UIImage)selectedPointMarkerImage;
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
 - (double)lineWidth;
-- (double)offsetForCoordinate:(id)a3 axisRect:(CGRect)a4;
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisSelectedCoordinate:(double)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
+- (double)offsetForCoordinate:(id)coordinate axisRect:(CGRect)rect;
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisSelectedCoordinate:(double)coordinate blockCoordinate:(id)blockCoordinate chartRect:(CGRect)rect;
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
 - (id)_generateAxisLabels;
 - (id)cachedAxisLabels;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
-- (void)setEnumerationValueOrdering:(id)a3;
-- (void)setFillColor:(id)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setSelectedPointMarkerImage:(id)a3;
-- (void)setValueLabels:(id)a3;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
+- (void)setEnumerationValueOrdering:(id)ordering;
+- (void)setFillColor:(id)color;
+- (void)setLineWidth:(double)width;
+- (void)setSelectedPointMarkerImage:(id)image;
+- (void)setValueLabels:(id)labels;
 @end
 
 @implementation HKHorizontalTimePeriodSeries
@@ -62,167 +62,167 @@
 
 - (id)cachedAxisLabels
 {
-  v3 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_cachedAxisLabelsStorage;
-  v5 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
 - (UIImage)selectedPointMarkerImage
 {
-  v3 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_selectedPointMarkerImageStorage;
-  v5 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setSelectedPointMarkerImage:(id)a3
+- (void)setSelectedPointMarkerImage:(id)image
 {
-  v4 = a3;
-  v5 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  imageCopy = image;
+  seriesMutableStateLock = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   selectedPointMarkerImageStorage = self->_selectedPointMarkerImageStorage;
-  self->_selectedPointMarkerImageStorage = v4;
+  self->_selectedPointMarkerImageStorage = imageCopy;
 
-  v7 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (UIColor)fillColor
 {
-  v3 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_fillColorStorage;
-  v5 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = a3;
-  v5 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  colorCopy = color;
+  seriesMutableStateLock = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   fillColorStorage = self->_fillColorStorage;
-  self->_fillColorStorage = v4;
+  self->_fillColorStorage = colorCopy;
 
-  v7 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (double)lineWidth
 {
-  v3 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   lineWidthStorage = self->_lineWidthStorage;
-  v5 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return lineWidthStorage;
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
-  v5 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  seriesMutableStateLock = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  self->_lineWidthStorage = a3;
-  v6 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v6 unlock];
+  self->_lineWidthStorage = width;
+  seriesMutableStateLock2 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (NSArray)enumerationValueOrdering
 {
-  v3 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_enumerationValueOrderingStorage;
-  v5 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setEnumerationValueOrdering:(id)a3
+- (void)setEnumerationValueOrdering:(id)ordering
 {
-  v4 = a3;
-  v5 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  orderingCopy = ordering;
+  seriesMutableStateLock = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   enumerationValueOrderingStorage = self->_enumerationValueOrderingStorage;
-  self->_enumerationValueOrderingStorage = v4;
-  v7 = v4;
+  self->_enumerationValueOrderingStorage = orderingCopy;
+  v7 = orderingCopy;
 
-  v8 = [(HKHorizontalTimePeriodSeries *)self _generateAxisLabels];
+  _generateAxisLabels = [(HKHorizontalTimePeriodSeries *)self _generateAxisLabels];
   cachedAxisLabelsStorage = self->_cachedAxisLabelsStorage;
-  self->_cachedAxisLabelsStorage = v8;
+  self->_cachedAxisLabelsStorage = _generateAxisLabels;
 
-  v10 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v10 unlock];
+  seriesMutableStateLock2 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (NSDictionary)valueLabels
 {
-  v3 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_valueLabelsStorage;
-  v5 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setValueLabels:(id)a3
+- (void)setValueLabels:(id)labels
 {
-  v4 = a3;
-  v5 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  labelsCopy = labels;
+  seriesMutableStateLock = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   valueLabelsStorage = self->_valueLabelsStorage;
-  self->_valueLabelsStorage = v4;
-  v7 = v4;
+  self->_valueLabelsStorage = labelsCopy;
+  v7 = labelsCopy;
 
-  v8 = [(HKHorizontalTimePeriodSeries *)self _generateAxisLabels];
+  _generateAxisLabels = [(HKHorizontalTimePeriodSeries *)self _generateAxisLabels];
   cachedAxisLabelsStorage = self->_cachedAxisLabelsStorage;
-  self->_cachedAxisLabelsStorage = v8;
+  self->_cachedAxisLabelsStorage = _generateAxisLabels;
 
-  v10 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
-  [v10 unlock];
+  seriesMutableStateLock2 = [(HKHorizontalTimePeriodSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v19 = a3;
-  v20 = a5;
-  v21 = a8;
-  v22 = a9;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  coordinatesCopy = coordinates;
+  configurationCopy = configuration;
+  renderContextCopy = renderContext;
+  delegateCopy = delegate;
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
   [(HKGraphSeries *)self selectedPathRange];
-  v23 = [(HKGraphSeries *)self closestXCoordinateRange];
-  v38 = [v23 minValue];
+  closestXCoordinateRange = [(HKGraphSeries *)self closestXCoordinateRange];
+  minValue = [closestXCoordinateRange minValue];
 
-  LOBYTE(v23) = [(HKGraphSeries *)self isHighlighted];
+  LOBYTE(closestXCoordinateRange) = [(HKGraphSeries *)self isHighlighted];
   v58 = 0;
   v59 = &v58;
   v60 = 0x3010000000;
@@ -232,12 +232,12 @@
   v55 = &v54;
   v56 = 0x2020000000;
   v57 = 0;
-  CGContextSaveGState(a7);
+  CGContextSaveGState(context);
   [(HKHorizontalTimePeriodSeries *)self lineWidth];
-  CGContextSetLineWidth(a7, v24);
-  CGContextSetLineCap(a7, kCGLineCapRound);
-  v25 = [(HKHorizontalTimePeriodSeries *)self fillColor];
-  CGContextSetStrokeColorWithColor(a7, [v25 CGColor]);
+  CGContextSetLineWidth(context, v24);
+  CGContextSetLineCap(context, kCGLineCapRound);
+  fillColor = [(HKHorizontalTimePeriodSeries *)self fillColor];
+  CGContextSetStrokeColorWithColor(context, [fillColor CGColor]);
 
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
@@ -247,40 +247,40 @@
   v45 = y;
   v46 = width;
   v47 = height;
-  v48 = a7;
-  v53 = v23;
+  contextCopy = context;
+  v53 = closestXCoordinateRange;
   v49 = v63;
   v50 = v64;
   v51 = v65;
   v52 = v66;
-  v26 = v19;
+  v26 = coordinatesCopy;
   v40[4] = self;
   v42 = &v54;
-  v27 = v38;
+  v27 = minValue;
   v41 = v27;
   v43 = &v58;
-  v28 = *&a6->c;
-  v39[0] = *&a6->a;
+  v28 = *&transform->c;
+  v39[0] = *&transform->a;
   v39[1] = v28;
-  v39[2] = *&a6->tx;
+  v39[2] = *&transform->tx;
   [v26 enumerateCoordinatesWithTransform:v39 roundToViewScale:1 block:v40];
   if (*(v55 + 24) == 1)
   {
-    v29 = [(HKHorizontalTimePeriodSeries *)self selectedPointMarkerImage];
-    v30 = HKChartSeriesPointMarkerBaseRect(v29);
+    selectedPointMarkerImage = [(HKHorizontalTimePeriodSeries *)self selectedPointMarkerImage];
+    v30 = HKChartSeriesPointMarkerBaseRect(selectedPointMarkerImage);
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    v37 = [v29 CGImage];
+    cGImage = [selectedPointMarkerImage CGImage];
     v67.origin.x = v30;
     v67.origin.y = v32;
     v67.size.width = v34;
     v67.size.height = v36;
     v68 = CGRectOffset(v67, v59[4], v59[5]);
-    CGContextDrawImage(a7, v68, v37);
+    CGContextDrawImage(context, v68, cGImage);
   }
 
-  CGContextRestoreGState(a7);
+  CGContextRestoreGState(context);
 
   _Block_object_dispose(&v54, 8);
   _Block_object_dispose(&v58, 8);
@@ -334,17 +334,17 @@ void __171__HKHorizontalTimePeriodSeries_drawSeriesWithBlockCoordinates_axisRect
   }
 }
 
-- (CGRect)enumerationRectForLevel:(int64_t)a3 axisRect:(CGRect)a4
+- (CGRect)enumerationRectForLevel:(int64_t)level axisRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = [(HKHorizontalTimePeriodSeries *)self valueLabels];
-  if ([v10 count])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  valueLabels = [(HKHorizontalTimePeriodSeries *)self valueLabels];
+  if ([valueLabels count])
   {
-    v11 = [(HKHorizontalTimePeriodSeries *)self valueLabels];
-    v12 = [v11 count];
+    valueLabels2 = [(HKHorizontalTimePeriodSeries *)self valueLabels];
+    v12 = [valueLabels2 count];
   }
 
   else
@@ -357,7 +357,7 @@ void __171__HKHorizontalTimePeriodSeries_drawSeriesWithBlockCoordinates_axisRect
   v17.size.width = width;
   v17.size.height = height;
   v13 = CGRectGetHeight(v17) / v12;
-  v14 = y + a3 * v13;
+  v14 = y + level * v13;
   v15 = x;
   v16 = width;
   result.size.height = v13;
@@ -367,41 +367,41 @@ void __171__HKHorizontalTimePeriodSeries_drawSeriesWithBlockCoordinates_axisRect
   return result;
 }
 
-- (double)offsetForCoordinate:(id)a3 axisRect:(CGRect)a4
+- (double)offsetForCoordinate:(id)coordinate axisRect:(CGRect)rect
 {
-  [(HKHorizontalTimePeriodSeries *)self enumerationRectForLevel:[(HKHorizontalTimePeriodSeries *)self _enumeratedLevelForCoordinate:a3] axisRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(HKHorizontalTimePeriodSeries *)self enumerationRectForLevel:[(HKHorizontalTimePeriodSeries *)self _enumeratedLevelForCoordinate:coordinate] axisRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 
   [(HKHorizontalTimePeriodSeries *)self offsetForEnumerationRect:?];
   return result;
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [a3 chartPoints];
-  if (!v11)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKHorizontalTimePeriodSeries coordinatesForBlock:blockPath:xAxis:yAxis:];
   }
 
-  v12 = [v9 transform];
-  v13 = [v10 transform];
+  transform = [axisCopy transform];
+  transform2 = [yAxisCopy transform];
 
   v14 = objc_opt_new();
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __74__HKHorizontalTimePeriodSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke;
   v22[3] = &unk_1E81BBDA8;
-  v23 = v12;
-  v24 = v13;
+  v23 = transform;
+  v24 = transform2;
   v25 = v14;
   v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  [v11 enumerateObjectsUsingBlock:v22];
-  v20 = *&a4->index;
-  resolution = a4->resolution;
+  v16 = transform2;
+  v17 = transform;
+  [chartPoints enumerateObjectsUsingBlock:v22];
+  v20 = *&path->index;
+  resolution = path->resolution;
   v18 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v15 blockPath:&v20];
 
   return v18;
@@ -437,30 +437,30 @@ void __74__HKHorizontalTimePeriodSeries_coordinatesForBlock_blockPath_xAxis_yAxi
   }
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v12 = a4;
-  [(HKHorizontalTimePeriodSeries *)self xAxisDistanceFromPoint:v12 blockCoordinate:v10 chartRect:v9, x, y, width, height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = point.y;
+  v10 = point.x;
+  coordinateCopy = coordinate;
+  [(HKHorizontalTimePeriodSeries *)self xAxisDistanceFromPoint:coordinateCopy blockCoordinate:v10 chartRect:v9, x, y, width, height];
   v14 = v13;
-  [(HKHorizontalTimePeriodSeries *)self yAxisDifferenceToPoint:v12 blockCoordinate:v10 chartRect:v9, x, y, width, height];
+  [(HKHorizontalTimePeriodSeries *)self yAxisDifferenceToPoint:coordinateCopy blockCoordinate:v10 chartRect:v9, x, y, width, height];
   v16 = v15;
 
   return sqrt(v16 * v16 + v14 * v14);
 }
 
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  height = a5.size.height;
-  y = a5.origin.y;
-  v7 = a3.y;
-  x = a3.x;
-  v9 = a4;
+  height = rect.size.height;
+  y = rect.origin.y;
+  v7 = point.y;
+  x = point.x;
+  coordinateCopy = coordinate;
   if (v7 >= y && v7 <= y + height)
   {
     objc_opt_class();
@@ -469,7 +469,7 @@ void __74__HKHorizontalTimePeriodSeries_coordinatesForBlock_blockPath_xAxis_yAxi
       [HKHorizontalTimePeriodSeries xAxisDistanceFromPoint:blockCoordinate:chartRect:];
     }
 
-    v12 = v9;
+    v12 = coordinateCopy;
     [v12 startXValue];
     v14 = v13 - x;
     [v12 endXValue];
@@ -495,70 +495,70 @@ void __74__HKHorizontalTimePeriodSeries_coordinatesForBlock_blockPath_xAxis_yAxi
   return v11;
 }
 
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a3.y;
-  v11 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = point.y;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKHorizontalTimePeriodSeries yAxisDifferenceToPoint:blockCoordinate:chartRect:];
   }
 
-  [(HKHorizontalTimePeriodSeries *)self offsetForCoordinate:v11 axisRect:x, y, width, height];
+  [(HKHorizontalTimePeriodSeries *)self offsetForCoordinate:coordinateCopy axisRect:x, y, width, height];
   v13 = v12 - v9;
 
   return v13;
 }
 
-- (double)xAxisSelectedCoordinate:(double)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisSelectedCoordinate:(double)coordinate blockCoordinate:(id)blockCoordinate chartRect:(CGRect)rect
 {
-  v6 = a4;
+  blockCoordinateCopy = blockCoordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKHorizontalTimePeriodSeries xAxisSelectedCoordinate:blockCoordinate:chartRect:];
   }
 
-  v7 = v6;
+  v7 = blockCoordinateCopy;
   [v7 startXValue];
-  if (v8 <= a3)
+  if (v8 <= coordinate)
   {
-    v9 = a3;
+    coordinateCopy = coordinate;
   }
 
   else
   {
-    v9 = v8;
+    coordinateCopy = v8;
   }
 
   [v7 endXValue];
   v11 = v10;
 
-  if (v9 < v11)
+  if (coordinateCopy < v11)
   {
-    v11 = v9;
+    v11 = coordinateCopy;
   }
 
   return v11;
 }
 
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than
 {
-  v5 = a3;
-  v6 = a4;
+  coordinateCopy = coordinate;
+  thanCopy = than;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKHorizontalTimePeriodSeries blockCoordinate:lessThan:];
   }
 
-  v7 = v6;
-  [v5 start];
+  v7 = thanCopy;
+  [coordinateCopy start];
   v9 = v8;
   [v7 start];
   v11 = v10;
@@ -566,18 +566,18 @@ void __74__HKHorizontalTimePeriodSeries_coordinatesForBlock_blockPath_xAxis_yAxi
   return v9 < v11;
 }
 
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than
 {
-  v5 = a3;
-  v6 = a4;
+  coordinateCopy = coordinate;
+  thanCopy = than;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKHorizontalTimePeriodSeries blockCoordinate:greaterThan:];
   }
 
-  v7 = v6;
-  [v5 start];
+  v7 = thanCopy;
+  [coordinateCopy start];
   v9 = v8;
   [v7 start];
   v11 = v10;
@@ -628,29 +628,29 @@ void __74__HKHorizontalTimePeriodSeries_coordinatesForBlock_blockPath_xAxis_yAxi
   return v3;
 }
 
-- (CGPoint)renderPositionForLabelLocation:(id)a3 rect:(CGRect)a4 zoomScale:(double)a5 contentOffset:(CGPoint)a6 constantOffset:(double)a7 isHorizontal:(BOOL)a8 optionalOffset:(CGPoint)a9
+- (CGPoint)renderPositionForLabelLocation:(id)location rect:(CGRect)rect zoomScale:(double)scale contentOffset:(CGPoint)offset constantOffset:(double)constantOffset isHorizontal:(BOOL)horizontal optionalOffset:(CGPoint)optionalOffset
 {
-  v9 = a8;
-  -[HKHorizontalTimePeriodSeries enumerationRectForLevel:axisRect:](self, "enumerationRectForLevel:axisRect:", [a3 integerValue], a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  horizontalCopy = horizontal;
+  -[HKHorizontalTimePeriodSeries enumerationRectForLevel:axisRect:](self, "enumerationRectForLevel:axisRect:", [location integerValue], rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   [(HKHorizontalTimePeriodSeries *)self offsetForEnumerationRect:?];
-  v13 = HKUIFloorToScreenScale(v12);
-  if (v9)
+  constantOffsetCopy2 = HKUIFloorToScreenScale(v12);
+  if (horizontalCopy)
   {
-    v14 = v13;
+    constantOffsetCopy = constantOffsetCopy2;
   }
 
   else
   {
-    v14 = a7;
+    constantOffsetCopy = constantOffset;
   }
 
-  v15 = v18 + v14;
-  if (v9)
+  v15 = v18 + constantOffsetCopy;
+  if (horizontalCopy)
   {
-    v13 = a7;
+    constantOffsetCopy2 = constantOffset;
   }
 
-  v16 = v19 + v13;
+  v16 = v19 + constantOffsetCopy2;
   v17 = v15;
   result.y = v16;
   result.x = v17;

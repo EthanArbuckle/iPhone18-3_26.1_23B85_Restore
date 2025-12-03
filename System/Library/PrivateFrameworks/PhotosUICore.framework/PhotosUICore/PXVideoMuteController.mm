@@ -1,14 +1,14 @@
 @interface PXVideoMuteController
 + (PXVideoMuteController)sharedController;
-- (PXVideoMuteController)initWithAutoplaySetting:(BOOL)a3;
+- (PXVideoMuteController)initWithAutoplaySetting:(BOOL)setting;
 - (id)debugDescription;
 - (void)_updateIsMuted;
 - (void)applicationDidMoveToBackground;
 - (void)autoplaySettingDidChange;
 - (void)resetMuteState;
-- (void)setAutoplayEnabled:(BOOL)a3;
-- (void)setIsMuted:(BOOL)a3;
-- (void)setMuteState:(int64_t)a3;
+- (void)setAutoplayEnabled:(BOOL)enabled;
+- (void)setIsMuted:(BOOL)muted;
+- (void)setMuteState:(int64_t)state;
 - (void)userDidMute;
 - (void)userDidUnmute;
 @end
@@ -31,9 +31,9 @@
     v7 = off_1E7738D28[v6];
   }
 
-  v8 = [(PXVideoMuteController *)self isMuted];
+  isMuted = [(PXVideoMuteController *)self isMuted];
   v9 = @"NO";
-  if (v8)
+  if (isMuted)
   {
     v9 = @"YES";
   }
@@ -43,12 +43,12 @@
   return v10;
 }
 
-- (void)setIsMuted:(BOOL)a3
+- (void)setIsMuted:(BOOL)muted
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (self->_isMuted != a3)
+  if (self->_isMuted != muted)
   {
-    self->_isMuted = a3;
+    self->_isMuted = muted;
     [(PXVideoMuteController *)self signalChange:1];
     v4 = PLVideoPlaybackGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -63,26 +63,26 @@
 
 - (void)_updateIsMuted
 {
-  v3 = [(PXVideoMuteController *)self muteState];
-  v4 = [(PXVideoMuteController *)self isAutoplayEnabled];
-  if ((v3 - 3) < 2)
+  muteState = [(PXVideoMuteController *)self muteState];
+  isAutoplayEnabled = [(PXVideoMuteController *)self isAutoplayEnabled];
+  if ((muteState - 3) < 2)
   {
     v5 = 1;
   }
 
-  else if (v3 == 2)
+  else if (muteState == 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4;
-    if (!v3)
+    v5 = isAutoplayEnabled;
+    if (!muteState)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"BOOL isMutedForMuteState(PXVideoMuteState, BOOL)"}];
-      [v6 handleFailureInFunction:v7 file:@"PXVideoMuteController.m" lineNumber:59 description:@"Code which should be unreachable has been reached"];
+      [currentHandler handleFailureInFunction:v7 file:@"PXVideoMuteController.m" lineNumber:59 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -91,20 +91,20 @@
   [(PXVideoMuteController *)self setIsMuted:v5];
 }
 
-- (void)setAutoplayEnabled:(BOOL)a3
+- (void)setAutoplayEnabled:(BOOL)enabled
 {
-  if (self->_isAutoplayEnabled != a3)
+  if (self->_isAutoplayEnabled != enabled)
   {
-    self->_isAutoplayEnabled = a3;
+    self->_isAutoplayEnabled = enabled;
     [(PXVideoMuteController *)self autoplaySettingDidChange];
   }
 }
 
-- (void)setMuteState:(int64_t)a3
+- (void)setMuteState:(int64_t)state
 {
-  if (self->_muteState != a3)
+  if (self->_muteState != state)
   {
-    self->_muteState = a3;
+    self->_muteState = state;
     [(PXVideoMuteController *)self _updateIsMuted];
   }
 }
@@ -168,7 +168,7 @@
   [(PXVideoMuteController *)self performChanges:v2];
 }
 
-- (PXVideoMuteController)initWithAutoplaySetting:(BOOL)a3
+- (PXVideoMuteController)initWithAutoplaySetting:(BOOL)setting
 {
   v5.receiver = self;
   v5.super_class = PXVideoMuteController;
@@ -176,8 +176,8 @@
   if (result)
   {
     result->_muteState = 1;
-    result->_isAutoplayEnabled = a3;
-    result->_isMuted = a3;
+    result->_isAutoplayEnabled = setting;
+    result->_isMuted = setting;
   }
 
   return result;

@@ -1,24 +1,24 @@
 @interface RTAuthorizedLocationConfirmationStatus
-+ (id)createWithAuthorizedLocationCofirmationStatusMO:(id)a3;
-+ (id)createWithManagedObject:(id)a3;
-- (RTAuthorizedLocationConfirmationStatus)initWithCoder:(id)a3;
-- (RTAuthorizedLocationConfirmationStatus)initWithConfirmationStatus:(int64_t)a3 statusCode:(int64_t)a4 timeOfEvent:(id)a5 zdrStatus:(int64_t)a6 zdrStatusCode:(int64_t)a7 zdrTimeOfEvent:(id)a8;
-- (id)managedObjectWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)createWithAuthorizedLocationCofirmationStatusMO:(id)o;
++ (id)createWithManagedObject:(id)object;
+- (RTAuthorizedLocationConfirmationStatus)initWithCoder:(id)coder;
+- (RTAuthorizedLocationConfirmationStatus)initWithConfirmationStatus:(int64_t)status statusCode:(int64_t)code timeOfEvent:(id)event zdrStatus:(int64_t)zdrStatus zdrStatusCode:(int64_t)statusCode zdrTimeOfEvent:(id)ofEvent;
+- (id)managedObjectWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTAuthorizedLocationConfirmationStatus
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = objectCopy;
       v6 = [objc_opt_class() createWithAuthorizedLocationCofirmationStatusMO:v5];
 
       goto LABEL_8;
@@ -32,7 +32,7 @@
       v11 = v9;
       v12 = 2112;
       v14 = 2080;
-      v13 = v4;
+      v13 = objectCopy;
       v15 = "+[RTAuthorizedLocationConfirmationStatus(RTCoreDataTransformable) createWithManagedObject:]";
       v16 = 1024;
       v17 = 31;
@@ -46,27 +46,27 @@ LABEL_8:
   return v6;
 }
 
-+ (id)createWithAuthorizedLocationCofirmationStatusMO:(id)a3
++ (id)createWithAuthorizedLocationCofirmationStatusMO:(id)o
 {
-  v3 = a3;
+  oCopy = o;
   v4 = [RTAuthorizedLocationConfirmationStatus alloc];
-  v5 = [v3 confirmationStatus];
-  v6 = [v3 confirmationStatusCode];
-  v7 = [v3 confirmationStatusTime];
-  v8 = [v3 zdrConfirmationStatus];
-  v9 = [v3 zdrConfirmationStatusCode];
-  v10 = [v3 zdrConfirmationStatusTime];
+  confirmationStatus = [oCopy confirmationStatus];
+  confirmationStatusCode = [oCopy confirmationStatusCode];
+  confirmationStatusTime = [oCopy confirmationStatusTime];
+  zdrConfirmationStatus = [oCopy zdrConfirmationStatus];
+  zdrConfirmationStatusCode = [oCopy zdrConfirmationStatusCode];
+  zdrConfirmationStatusTime = [oCopy zdrConfirmationStatusTime];
 
-  v11 = [(RTAuthorizedLocationConfirmationStatus *)v4 initWithConfirmationStatus:v5 statusCode:v6 timeOfEvent:v7 zdrStatus:v8 zdrStatusCode:v9 zdrTimeOfEvent:v10];
+  v11 = [(RTAuthorizedLocationConfirmationStatus *)v4 initWithConfirmationStatus:confirmationStatus statusCode:confirmationStatusCode timeOfEvent:confirmationStatusTime zdrStatus:zdrConfirmationStatus zdrStatusCode:zdrConfirmationStatusCode zdrTimeOfEvent:zdrConfirmationStatusTime];
 
   return v11;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -79,11 +79,11 @@ LABEL_8:
       v15 = 2112;
       v16 = v9;
       v17 = 2112;
-      v18 = v5;
+      v18 = contextCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@,%@", &v13, 0x20u);
     }
 
-    v10 = [RTAuthorizedLocationConfirmationStatusMO managedObjectWithAuthorizedLocationConfirmationStatus:self inManagedObjectContext:v5];
+    v10 = [RTAuthorizedLocationConfirmationStatusMO managedObjectWithAuthorizedLocationConfirmationStatus:self inManagedObjectContext:contextCopy];
   }
 
   else
@@ -101,48 +101,48 @@ LABEL_8:
   return v10;
 }
 
-- (RTAuthorizedLocationConfirmationStatus)initWithConfirmationStatus:(int64_t)a3 statusCode:(int64_t)a4 timeOfEvent:(id)a5 zdrStatus:(int64_t)a6 zdrStatusCode:(int64_t)a7 zdrTimeOfEvent:(id)a8
+- (RTAuthorizedLocationConfirmationStatus)initWithConfirmationStatus:(int64_t)status statusCode:(int64_t)code timeOfEvent:(id)event zdrStatus:(int64_t)zdrStatus zdrStatusCode:(int64_t)statusCode zdrTimeOfEvent:(id)ofEvent
 {
-  v15 = a5;
-  v16 = a8;
+  eventCopy = event;
+  ofEventCopy = ofEvent;
   v20.receiver = self;
   v20.super_class = RTAuthorizedLocationConfirmationStatus;
   v17 = [(RTAuthorizedLocationConfirmationStatus *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_confirmationStatusCode = a4;
-    v17->_confirmationStatus = a3;
-    objc_storeStrong(&v17->_confirmationStatusTime, a5);
-    v18->_zdrConfirmationStatusCode = a7;
-    v18->_zdrConfirmationStatus = a6;
-    objc_storeStrong(&v18->_zdrConfirmationStatusTime, a8);
+    v17->_confirmationStatusCode = code;
+    v17->_confirmationStatus = status;
+    objc_storeStrong(&v17->_confirmationStatusTime, event);
+    v18->_zdrConfirmationStatusCode = statusCode;
+    v18->_zdrConfirmationStatus = zdrStatus;
+    objc_storeStrong(&v18->_zdrConfirmationStatusTime, ofEvent);
   }
 
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   confirmationStatus = self->_confirmationStatus;
-  v5 = a3;
-  [v5 encodeInteger:confirmationStatus forKey:@"statusIdentifier"];
-  [v5 encodeInteger:self->_confirmationStatusCode forKey:@"statusCodeIdentifier"];
-  [v5 encodeObject:self->_confirmationStatusTime forKey:@"statusDateIdentifier"];
-  [v5 encodeInteger:self->_zdrConfirmationStatus forKey:@"zdrStatusIdentifier"];
-  [v5 encodeInteger:self->_zdrConfirmationStatusCode forKey:@"zdrStatusCodeIdentifier"];
-  [v5 encodeObject:self->_zdrConfirmationStatusTime forKey:@"zdrStatusDateIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:confirmationStatus forKey:@"statusIdentifier"];
+  [coderCopy encodeInteger:self->_confirmationStatusCode forKey:@"statusCodeIdentifier"];
+  [coderCopy encodeObject:self->_confirmationStatusTime forKey:@"statusDateIdentifier"];
+  [coderCopy encodeInteger:self->_zdrConfirmationStatus forKey:@"zdrStatusIdentifier"];
+  [coderCopy encodeInteger:self->_zdrConfirmationStatusCode forKey:@"zdrStatusCodeIdentifier"];
+  [coderCopy encodeObject:self->_zdrConfirmationStatusTime forKey:@"zdrStatusDateIdentifier"];
 }
 
-- (RTAuthorizedLocationConfirmationStatus)initWithCoder:(id)a3
+- (RTAuthorizedLocationConfirmationStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"statusIdentifier"];
-  v6 = [v4 decodeIntegerForKey:@"statusCodeIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statusDateIdentifier"];
-  v8 = [v4 decodeIntegerForKey:@"zdrStatusIdentifier"];
-  v9 = [v4 decodeIntegerForKey:@"zdrStatusCodeIdentifier"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zdrStatusDateIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"statusIdentifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"statusCodeIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statusDateIdentifier"];
+  v8 = [coderCopy decodeIntegerForKey:@"zdrStatusIdentifier"];
+  v9 = [coderCopy decodeIntegerForKey:@"zdrStatusCodeIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zdrStatusDateIdentifier"];
 
   v11 = [(RTAuthorizedLocationConfirmationStatus *)self initWithConfirmationStatus:v5 statusCode:v6 timeOfEvent:v7 zdrStatus:v8 zdrStatusCode:v9 zdrTimeOfEvent:v10];
   return v11;

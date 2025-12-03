@@ -1,9 +1,9 @@
 @interface MADHomePersonProcessingTask
 - (MADHomePersonProcessingTask)init;
-- (int)_analyzeFaceCropWithPersonUUID:(id)a3 faceCropUUID:(id)a4 confirmed:(BOOL)a5 andCVPixelBuffer:(__CVBuffer *)a6;
-- (int)_processFaceCrop:(id)a3;
-- (void)_processFacesForHome:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (int)_analyzeFaceCropWithPersonUUID:(id)d faceCropUUID:(id)iD confirmed:(BOOL)confirmed andCVPixelBuffer:(__CVBuffer *)buffer;
+- (int)_processFaceCrop:(id)crop;
+- (void)_processFacesForHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)process;
 @end
 
@@ -24,9 +24,9 @@
     context = v2->_context;
     v2->_context = v5;
 
-    v7 = [(PHPhotoLibrary *)v2->_photoLibrary vcp_visionCacheStorageDirectoryURL];
+    vcp_visionCacheStorageDirectoryURL = [(PHPhotoLibrary *)v2->_photoLibrary vcp_visionCacheStorageDirectoryURL];
     v23 = 0;
-    v8 = [[VUWGallery alloc] initWithClient:2 path:v7 error:&v23];
+    v8 = [[VUWGallery alloc] initWithClient:2 path:vcp_visionCacheStorageDirectoryURL error:&v23];
     v9 = v23;
     gallery = v2->_gallery;
     v2->_gallery = v8;
@@ -79,18 +79,18 @@
   return v21;
 }
 
-- (int)_analyzeFaceCropWithPersonUUID:(id)a3 faceCropUUID:(id)a4 confirmed:(BOOL)a5 andCVPixelBuffer:(__CVBuffer *)a6
+- (int)_analyzeFaceCropWithPersonUUID:(id)d faceCropUUID:(id)iD confirmed:(BOOL)confirmed andCVPixelBuffer:(__CVBuffer *)buffer
 {
-  v10 = a3;
-  v11 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12 = +[PHPhotoLibrary vcp_defaultPhotoLibrary];
   v13 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:v12];
   v14 = [[VCPFaceAnalyzer alloc] initWithContext:v13];
   v34 = 0;
-  v15 = [v14 quickAnalyzeCVPixelBuffer:a6 results:&v34];
+  code = [v14 quickAnalyzeCVPixelBuffer:buffer results:&v34];
   v16 = v34;
   v17 = v16;
-  if (!v15)
+  if (!code)
   {
     v18 = [v16 objectForKeyedSubscript:MediaAnalysisFaceResultsKey];
     if (MediaAnalysisLogLevel() >= 6)
@@ -115,9 +115,9 @@
       v28[3] = &unk_100288010;
       v29 = v18;
       v30 = @"[HomeIngestion][FaceProcessing]";
-      v31 = v11;
-      v32 = v10;
-      v33 = a5;
+      v31 = iDCopy;
+      v32 = dCopy;
+      confirmedCopy = confirmed;
       v21 = objc_retainBlock(v28);
       gallery = self->_gallery;
       v27 = 0;
@@ -125,7 +125,7 @@
       v24 = v27;
       if (v23)
       {
-        v15 = 0;
+        code = 0;
       }
 
       else
@@ -143,30 +143,30 @@
           }
         }
 
-        v15 = [v24 code];
+        code = [v24 code];
       }
     }
 
     else
     {
-      v15 = 0;
+      code = 0;
     }
   }
 
-  return v15;
+  return code;
 }
 
-- (int)_processFaceCrop:(id)a3
+- (int)_processFaceCrop:(id)crop
 {
-  v4 = a3;
-  v5 = [v4 personUUID];
-  if (v5)
+  cropCopy = crop;
+  personUUID = [cropCopy personUUID];
+  if (personUUID)
   {
-    v6 = [v4 UUID];
-    if (v6)
+    uUID = [cropCopy UUID];
+    if (uUID)
     {
-      [(NSMutableSet *)self->_clientAssets addObject:v6];
-      if ([(NSSet *)self->_vuKnownAssets containsObject:v6])
+      [(NSMutableSet *)self->_clientAssets addObject:uUID];
+      if ([(NSSet *)self->_vuKnownAssets containsObject:uUID])
       {
         if (MediaAnalysisLogLevel() >= 7)
         {
@@ -176,7 +176,7 @@
             *buf = 138412546;
             v18 = @"[HomeIngestion][FaceCrop]";
             v19 = 2112;
-            v20 = v6;
+            v20 = uUID;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "%@ Gallery already indexes FaceCrop (asset) %@; ignoring", buf, 0x16u);
           }
         }
@@ -194,18 +194,18 @@
             *buf = 138412802;
             v18 = @"[HomeIngestion][FaceCrop]";
             v19 = 2112;
-            v20 = v6;
+            v20 = uUID;
             v21 = 2112;
-            v22 = v5;
+            v22 = personUUID;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "%@ Processing FaceCrop %@ for person %@ ...", buf, 0x20u);
           }
         }
 
         v12 = +[VCPImageManager sharedImageManager];
-        v13 = [v4 dataRepresentation];
-        v16 = [v12 pixelBufferWithFormat:875704422 andMaxDimension:0 fromData:v13 withUniformTypeIdentifier:UTTypeJPEG flushCache:1 orientation:0];
+        dataRepresentation = [cropCopy dataRepresentation];
+        v16 = [v12 pixelBufferWithFormat:875704422 andMaxDimension:0 fromData:dataRepresentation withUniformTypeIdentifier:UTTypeJPEG flushCache:1 orientation:0];
 
-        v8 = -[MADHomePersonProcessingTask _analyzeFaceCropWithPersonUUID:faceCropUUID:confirmed:andCVPixelBuffer:](self, "_analyzeFaceCropWithPersonUUID:faceCropUUID:confirmed:andCVPixelBuffer:", v5, v6, [v4 source] == 2, v16);
+        v8 = -[MADHomePersonProcessingTask _analyzeFaceCropWithPersonUUID:faceCropUUID:confirmed:andCVPixelBuffer:](self, "_analyzeFaceCropWithPersonUUID:faceCropUUID:confirmed:andCVPixelBuffer:", personUUID, uUID, [cropCopy source] == 2, v16);
         if (!v8 && MediaAnalysisLogLevel() >= 7)
         {
           v14 = VCPLogToOSLogType[7];
@@ -214,9 +214,9 @@
             *buf = 138412802;
             v18 = @"[HomeIngestion][FaceCrop]";
             v19 = 2112;
-            v20 = v6;
+            v20 = uUID;
             v21 = 2112;
-            v22 = v5;
+            v22 = personUUID;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "%@ Finished processing FaceCrop %@ for person %@", buf, 0x20u);
           }
         }
@@ -265,15 +265,15 @@
   return v8;
 }
 
-- (void)_processFacesForHome:(id)a3
+- (void)_processFacesForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v5 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
-      if ([v4 isPrimary])
+      if ([homeCopy isPrimary])
       {
         v6 = &stru_1002890F8;
       }
@@ -283,32 +283,32 @@
         v6 = @"non-";
       }
 
-      v7 = [v4 name];
-      v8 = [v4 uniqueIdentifier];
-      v9 = [v4 personManagerSettings];
-      v10 = [v9 isFaceClassificationEnabled];
+      name = [homeCopy name];
+      uniqueIdentifier = [homeCopy uniqueIdentifier];
+      personManagerSettings = [homeCopy personManagerSettings];
+      isFaceClassificationEnabled = [personManagerSettings isFaceClassificationEnabled];
       v11 = @"dis";
       *buf = 138413314;
       v23 = @"[HomeIngestion][Home]";
       v24 = 2112;
       v25 = v6;
-      if (v10)
+      if (isFaceClassificationEnabled)
       {
         v11 = @"en";
       }
 
       v26 = 2112;
-      v27 = v7;
+      v27 = name;
       v28 = 2112;
-      v29 = v8;
+      v29 = uniqueIdentifier;
       v30 = 2112;
       v31 = v11;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "%@ Processing %@primary home %@ (%@) (faceClassification %@abled) ...", buf, 0x34u);
     }
   }
 
-  v12 = [v4 personManager];
-  if (v12)
+  personManager = [homeCopy personManager];
+  if (personManager)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -318,14 +318,14 @@
     v20 = @"[HomeIngestion][Home]";
     v13 = dispatch_semaphore_create(0);
     v21 = v13;
-    [v12 fetchAllPersonFaceCropsWithCompletion:v19];
+    [personManager fetchAllPersonFaceCropsWithCompletion:v19];
     dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
     if (MediaAnalysisLogLevel() >= 6)
     {
       v14 = VCPLogToOSLogType[6];
       if (os_log_type_enabled(&_os_log_default, v14))
       {
-        if ([v4 isPrimary])
+        if ([homeCopy isPrimary])
         {
           v15 = &stru_1002890F8;
         }
@@ -335,16 +335,16 @@
           v15 = @"non-";
         }
 
-        v16 = [v4 name];
-        v17 = [v4 uniqueIdentifier];
+        name2 = [homeCopy name];
+        uniqueIdentifier2 = [homeCopy uniqueIdentifier];
         *buf = 138413058;
         v23 = @"[HomeIngestion][Home]";
         v24 = 2112;
         v25 = v15;
         v26 = 2112;
-        v27 = v16;
+        v27 = name2;
         v28 = 2112;
-        v29 = v17;
+        v29 = uniqueIdentifier2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "%@ Processed %@primary home %@ (%@)", buf, 0x2Au);
       }
     }
@@ -362,9 +362,9 @@
   }
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
+  homesCopy = homes;
   v5 = atomic_load(&self->_homeManagerUpdateTimedOut);
   if ((v5 & 1) == 0)
   {
@@ -374,9 +374,9 @@
       v6 = VCPLogToOSLogType[6];
       if (os_log_type_enabled(&_os_log_default, v6))
       {
-        v7 = [v4 homes];
+        homes = [homesCopy homes];
         v8 = 134217984;
-        v9 = [v7 count];
+        v9 = [homes count];
         _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "[HomeIngestion] Home Manager update returns with %lu homes", &v8, 0xCu);
       }
     }
@@ -416,10 +416,10 @@
 
   v5 = v4;
   _Block_object_dispose(&v59, 8);
-  v46 = [v4 defaultPrivateConfiguration];
-  [v46 setOptions:1];
-  [v46 setCachePolicy:0];
-  [v46 setDiscretionary:1];
+  defaultPrivateConfiguration = [v4 defaultPrivateConfiguration];
+  [defaultPrivateConfiguration setOptions:1];
+  [defaultPrivateConfiguration setCachePolicy:0];
+  [defaultPrivateConfiguration setDiscretionary:1];
   dispatch_group_enter(self->_homeManagerGroup);
   v59 = 0;
   v60 = &v59;
@@ -439,7 +439,7 @@
 
   v7 = v6;
   _Block_object_dispose(&v59, 8);
-  v45 = [[v6 alloc] initWithConfiguration:v46];
+  v45 = [[v6 alloc] initWithConfiguration:defaultPrivateConfiguration];
   [v45 setDelegate:self];
   homeManagerGroup = self->_homeManagerGroup;
   v9 = dispatch_time(0, 10000000000);
@@ -451,8 +451,8 @@
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v11 = [v45 homes];
-    v12 = [v11 countByEnumeratingWithState:&v55 objects:v63 count:16];
+    homes = [v45 homes];
+    v12 = [homes countByEnumeratingWithState:&v55 objects:v63 count:16];
     if (v12)
     {
       v13 = *v56;
@@ -462,13 +462,13 @@ LABEL_11:
       {
         if (*v56 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(homes);
         }
 
         v15 = *(*(&v55 + 1) + 8 * v14);
         v16 = objc_autoreleasePoolPush();
-        v17 = [(MADProcessingTask *)self cancelBlock];
-        if (v17 && ([(MADProcessingTask *)self cancelBlock], v18 = objc_claimAutoreleasedReturnValue(), v19 = v18[2](), v18, v17, (v19 & 1) != 0))
+        cancelBlock = [(MADProcessingTask *)self cancelBlock];
+        if (cancelBlock && ([(MADProcessingTask *)self cancelBlock], v18 = objc_claimAutoreleasedReturnValue(), v19 = v18[2](), v18, cancelBlock, (v19 & 1) != 0))
         {
           v20 = 1;
         }
@@ -490,7 +490,7 @@ LABEL_11:
 
         if (v12 == ++v14)
         {
-          v12 = [v11 countByEnumeratingWithState:&v55 objects:v63 count:16];
+          v12 = [homes countByEnumeratingWithState:&v55 objects:v63 count:16];
           if (v12)
           {
             goto LABEL_11;
@@ -501,11 +501,11 @@ LABEL_11:
       }
     }
 
-    v22 = [(MADProcessingTask *)self cancelBlock];
-    if (v22)
+    cancelBlock2 = [(MADProcessingTask *)self cancelBlock];
+    if (cancelBlock2)
     {
-      v23 = [(MADProcessingTask *)self cancelBlock];
-      v24 = v23[2]();
+      cancelBlock3 = [(MADProcessingTask *)self cancelBlock];
+      v24 = cancelBlock3[2]();
 
       if (v24)
       {
@@ -599,7 +599,7 @@ LABEL_41:
     v48[2] = sub_10018A9A8;
     v48[3] = &unk_100286268;
     v49 = @"[HomeIngestion]";
-    v50 = self;
+    selfCopy = self;
     v38 = [(VUWGallery *)v37 updateForType:1 mode:1 progressHandler:v48 error:&v47];
     v39 = v47;
     if (v38)

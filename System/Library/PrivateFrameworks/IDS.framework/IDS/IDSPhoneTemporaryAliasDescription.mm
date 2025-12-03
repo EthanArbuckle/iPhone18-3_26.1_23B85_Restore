@@ -1,25 +1,25 @@
 @interface IDSPhoneTemporaryAliasDescription
-- (IDSPhoneTemporaryAliasDescription)initWithCoder:(id)a3;
-- (IDSPhoneTemporaryAliasDescription)initWithURI:(id)a3 expirationDate:(id)a4 selected:(BOOL)a5;
+- (IDSPhoneTemporaryAliasDescription)initWithCoder:(id)coder;
+- (IDSPhoneTemporaryAliasDescription)initWithURI:(id)i expirationDate:(id)date selected:(BOOL)selected;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSPhoneTemporaryAliasDescription
 
-- (IDSPhoneTemporaryAliasDescription)initWithURI:(id)a3 expirationDate:(id)a4 selected:(BOOL)a5
+- (IDSPhoneTemporaryAliasDescription)initWithURI:(id)i expirationDate:(id)date selected:(BOOL)selected
 {
-  v9 = a3;
-  v10 = a4;
+  iCopy = i;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = IDSPhoneTemporaryAliasDescription;
   v11 = [(IDSPhoneTemporaryAliasDescription *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_URI, a3);
-    objc_storeStrong(&v12->_expirationDate, a4);
-    v12->_selected = a5;
+    objc_storeStrong(&v11->_URI, i);
+    objc_storeStrong(&v12->_expirationDate, date);
+    v12->_selected = selected;
   }
 
   return v12;
@@ -42,21 +42,21 @@
   return [v3 stringWithFormat:@"<%@: %p; URI: %@, expirationDate: %@, selected: %@>", v4, self, self->_URI, self->_expirationDate, v5];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   URI = self->_URI;
-  v5 = a3;
-  [v5 encodeObject:URI forKey:@"uri"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expiration"];
-  [v5 encodeBool:self->_selected forKey:@"selected"];
+  coderCopy = coder;
+  [coderCopy encodeObject:URI forKey:@"uri"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expiration"];
+  [coderCopy encodeBool:self->_selected forKey:@"selected"];
 }
 
-- (IDSPhoneTemporaryAliasDescription)initWithCoder:(id)a3
+- (IDSPhoneTemporaryAliasDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiration"];
-  v7 = [v4 decodeBoolForKey:@"selected"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiration"];
+  v7 = [coderCopy decodeBoolForKey:@"selected"];
 
   v8 = [(IDSPhoneTemporaryAliasDescription *)self initWithURI:v5 expirationDate:v6 selected:v7];
   return v8;

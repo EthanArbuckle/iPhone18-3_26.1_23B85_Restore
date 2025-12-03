@@ -7,8 +7,8 @@
 
 - (id)description
 {
-  v3 = [(FMAccuracyOverlay *)self parentAnnotation];
-  v4 = [v3 description];
+  parentAnnotation = [(FMAccuracyOverlay *)self parentAnnotation];
+  v4 = [parentAnnotation description];
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   [(MKCircle *)self coordinate];

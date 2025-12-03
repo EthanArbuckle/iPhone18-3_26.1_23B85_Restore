@@ -7,21 +7,21 @@
 
 - (id)_af_messageIdentifierValue
 {
-  v2 = [a1 scheme];
-  v3 = [v2 isEqualToString:@"siri-message-internal"];
+  scheme = [self scheme];
+  v3 = [scheme isEqualToString:@"siri-message-internal"];
 
   if (v3)
   {
-    v4 = [a1 resourceSpecifier];
-    v5 = [v4 stringByRemovingPercentEncoding];
+    resourceSpecifier = [self resourceSpecifier];
+    stringByRemovingPercentEncoding = [resourceSpecifier stringByRemovingPercentEncoding];
   }
 
   else
   {
-    v5 = 0;
+    stringByRemovingPercentEncoding = 0;
   }
 
-  return v5;
+  return stringByRemovingPercentEncoding;
 }
 
 + (id)_af_URLWithMessageIdentifier:()STSiriMessage
@@ -30,13 +30,13 @@
   {
     v4 = MEMORY[0x1E696AB08];
     v5 = a3;
-    v6 = [v4 URLPathAllowedCharacterSet];
-    v7 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:v6];
+    uRLPathAllowedCharacterSet = [v4 URLPathAllowedCharacterSet];
+    v7 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
     v8 = [@"siri-message-internal" stringByAppendingString:@":"];
     v9 = [v8 stringByAppendingString:v7];
 
-    v10 = [a1 URLWithString:v9];
+    v10 = [self URLWithString:v9];
   }
 
   else

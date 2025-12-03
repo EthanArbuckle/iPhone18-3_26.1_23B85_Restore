@@ -1,10 +1,10 @@
 @interface CARDebugColorsPanel
-- (CARDebugColorsPanel)initWithPanelController:(id)a3;
+- (CARDebugColorsPanel)initWithPanelController:(id)controller;
 - (id)cellSpecifier;
 - (id)cellSpecifiers;
 - (id)phoneView;
-- (void)_phoneButtonPressed:(id)a3;
-- (void)colorViewWasTapped:(id)a3;
+- (void)_phoneButtonPressed:(id)pressed;
+- (void)colorViewWasTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -43,14 +43,14 @@
     v5 = self->_phoneView;
     self->_phoneView = v4;
 
-    v23 = [(UIView *)self->_phoneView leftAnchor];
-    v6 = [(UIView *)self->_phoneView topAnchor];
+    leftAnchor = [(UIView *)self->_phoneView leftAnchor];
+    topAnchor = [(UIView *)self->_phoneView topAnchor];
     v22 = objc_opt_new();
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v24 = self;
+    selfCopy = self;
     obj = [(CARDebugColorsPanel *)self colorModels];
     v25 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v25)
@@ -60,7 +60,7 @@
       do
       {
         v8 = 0;
-        v9 = v6;
+        v9 = topAnchor;
         do
         {
           if (*v39 != v21)
@@ -76,39 +76,39 @@
           [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
           [v11 setTag:v7];
           [v11 addSubview:v10];
-          [(UIView *)v24->_phoneView addSubview:v11];
-          [v11 addTarget:v24 action:"_phoneButtonPressed:" forControlEvents:0x2000];
-          v36 = [(DebugColorView *)v10 topAnchor];
-          v35 = [v11 topAnchor];
-          v34 = [v36 constraintEqualToAnchor:v35];
+          [(UIView *)selfCopy->_phoneView addSubview:v11];
+          [v11 addTarget:selfCopy action:"_phoneButtonPressed:" forControlEvents:0x2000];
+          topAnchor2 = [(DebugColorView *)v10 topAnchor];
+          topAnchor3 = [v11 topAnchor];
+          v34 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
           v42[0] = v34;
-          v33 = [(DebugColorView *)v10 leftAnchor];
-          v32 = [v11 leftAnchor];
-          v31 = [v33 constraintEqualToAnchor:v32];
+          leftAnchor2 = [(DebugColorView *)v10 leftAnchor];
+          leftAnchor3 = [v11 leftAnchor];
+          v31 = [leftAnchor2 constraintEqualToAnchor:leftAnchor3];
           v42[1] = v31;
-          v30 = [(DebugColorView *)v10 rightAnchor];
-          v29 = [v11 rightAnchor];
-          v27 = [v30 constraintEqualToAnchor:v29];
+          rightAnchor = [(DebugColorView *)v10 rightAnchor];
+          rightAnchor2 = [v11 rightAnchor];
+          v27 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
           v42[2] = v27;
-          v26 = [(DebugColorView *)v10 bottomAnchor];
-          v12 = [v11 bottomAnchor];
-          v13 = [v26 constraintEqualToAnchor:v12];
+          bottomAnchor = [(DebugColorView *)v10 bottomAnchor];
+          bottomAnchor2 = [v11 bottomAnchor];
+          v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
           v42[3] = v13;
-          v14 = [v11 topAnchor];
-          v15 = [v14 constraintEqualToAnchor:v9 constant:10.0];
+          topAnchor4 = [v11 topAnchor];
+          v15 = [topAnchor4 constraintEqualToAnchor:v9 constant:10.0];
           v42[4] = v15;
           [v11 leftAnchor];
           v16 = v28 = v9;
-          v17 = [v16 constraintEqualToAnchor:v23 constant:10.0];
+          v17 = [v16 constraintEqualToAnchor:leftAnchor constant:10.0];
           v42[5] = v17;
           v18 = [NSArray arrayWithObjects:v42 count:6];
           [v22 addObjectsFromArray:v18];
 
-          v6 = [v11 bottomAnchor];
+          topAnchor = [v11 bottomAnchor];
 
           ++v7;
           v8 = v37 + 1;
-          v9 = v6;
+          v9 = topAnchor;
         }
 
         while (v25 != (v37 + 1));
@@ -119,29 +119,29 @@
     }
 
     [NSLayoutConstraint activateConstraints:v22];
-    phoneView = v24->_phoneView;
+    phoneView = selfCopy->_phoneView;
   }
 
   return phoneView;
 }
 
-- (void)_phoneButtonPressed:(id)a3
+- (void)_phoneButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v9 = [(CARDebugColorsPanel *)self colorModels];
-  v5 = [v4 tag];
+  pressedCopy = pressed;
+  colorModels = [(CARDebugColorsPanel *)self colorModels];
+  v5 = [pressedCopy tag];
 
-  v6 = [v9 objectAtIndexedSubscript:v5 - 1000];
-  v7 = [v6 color];
-  v8 = [(CARDebugColorsPanel *)self view];
-  [v8 setBackgroundColor:v7];
+  1000 = [colorModels objectAtIndexedSubscript:v5 - 1000];
+  color = [1000 color];
+  view = [(CARDebugColorsPanel *)self view];
+  [view setBackgroundColor:color];
 }
 
-- (CARDebugColorsPanel)initWithPanelController:(id)a3
+- (CARDebugColorsPanel)initWithPanelController:(id)controller
 {
   v47.receiver = self;
   v47.super_class = CARDebugColorsPanel;
-  result = [(CARSettingsPanel *)&v47 initWithPanelController:a3];
+  result = [(CARSettingsPanel *)&v47 initWithPanelController:controller];
   if (result)
   {
     v46 = result;
@@ -283,11 +283,11 @@
   return cellSpecifiers;
 }
 
-- (void)colorViewWasTapped:(id)a3
+- (void)colorViewWasTapped:(id)tapped
 {
-  v5 = [a3 colorModel];
-  v4 = [v5 color];
-  [(CARSettingsCollectionPanel *)self setBackgroundColor:v4];
+  colorModel = [tapped colorModel];
+  color = [colorModel color];
+  [(CARSettingsCollectionPanel *)self setBackgroundColor:color];
 }
 
 @end

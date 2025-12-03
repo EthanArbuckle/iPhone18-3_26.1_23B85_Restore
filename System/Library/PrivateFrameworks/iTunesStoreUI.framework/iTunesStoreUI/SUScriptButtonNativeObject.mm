@@ -2,26 +2,26 @@
 - (BOOL)isEnabled;
 - (NSString)styleString;
 - (NSString)subtitle;
-- (SUScriptButtonNativeObject)initWithSystemItemString:(id)a3;
+- (SUScriptButtonNativeObject)initWithSystemItemString:(id)string;
 - (UIEdgeInsets)imageInsets;
-- (void)buttonAction:(id)a3;
-- (void)configureFromScriptButtonNativeObject:(id)a3;
+- (void)buttonAction:(id)action;
+- (void)configureFromScriptButtonNativeObject:(id)object;
 - (void)dealloc;
-- (void)setEnabled:(BOOL)a3;
-- (void)setStyleFromString:(id)a3;
-- (void)setSubtitle:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setStyleFromString:(id)string;
+- (void)setSubtitle:(id)subtitle;
 @end
 
 @implementation SUScriptButtonNativeObject
 
-- (SUScriptButtonNativeObject)initWithSystemItemString:(id)a3
+- (SUScriptButtonNativeObject)initWithSystemItemString:(id)string
 {
   v6.receiver = self;
   v6.super_class = SUScriptButtonNativeObject;
   v4 = [(SUScriptNativeObject *)&v6 init];
   if (v4)
   {
-    v4->_systemItemString = [a3 copy];
+    v4->_systemItemString = [string copy];
   }
 
   return v4;
@@ -34,29 +34,29 @@
   [(SUScriptButtonNativeObject *)&v3 dealloc];
 }
 
-- (void)buttonAction:(id)a3
+- (void)buttonAction:(id)action
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
-  if ([(SUScriptObject *)v3 shouldPerformDefaultAction])
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
+  if ([(SUScriptObject *)scriptObject shouldPerformDefaultAction])
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v3, 0}];
-    [(SUScriptObject *)v3 performActionWithArguments:v4];
+    v4 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{scriptObject, 0}];
+    [(SUScriptObject *)scriptObject performActionWithArguments:v4];
   }
 }
 
-- (void)configureFromScriptButtonNativeObject:(id)a3
+- (void)configureFromScriptButtonNativeObject:(id)object
 {
-  -[SUScriptButtonNativeObject setEnabled:](self, "setEnabled:", [a3 isEnabled]);
-  -[SUScriptButtonNativeObject setImage:](self, "setImage:", [a3 image]);
-  [a3 imageInsets];
+  -[SUScriptButtonNativeObject setEnabled:](self, "setEnabled:", [object isEnabled]);
+  -[SUScriptButtonNativeObject setImage:](self, "setImage:", [object image]);
+  [object imageInsets];
   [(SUScriptButtonNativeObject *)self setImageInsets:?];
-  -[SUScriptButtonNativeObject setLoading:](self, "setLoading:", [a3 isLoading]);
-  -[SUScriptButtonNativeObject setStyleFromString:](self, "setStyleFromString:", [a3 styleString]);
-  -[SUScriptButtonNativeObject setSubtitle:](self, "setSubtitle:", [a3 subtitle]);
-  -[SUScriptButtonNativeObject setTag:](self, "setTag:", [a3 tag]);
-  v5 = [a3 title];
+  -[SUScriptButtonNativeObject setLoading:](self, "setLoading:", [object isLoading]);
+  -[SUScriptButtonNativeObject setStyleFromString:](self, "setStyleFromString:", [object styleString]);
+  -[SUScriptButtonNativeObject setSubtitle:](self, "setSubtitle:", [object subtitle]);
+  -[SUScriptButtonNativeObject setTag:](self, "setTag:", [object tag]);
+  title = [object title];
 
-  [(SUScriptButtonNativeObject *)self setTitle:v5];
+  [(SUScriptButtonNativeObject *)self setTitle:title];
 }
 
 - (UIEdgeInsets)imageInsets
@@ -74,49 +74,49 @@
 
 - (BOOL)isEnabled
 {
-  v2 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 1;
   }
 
-  return [v2 isEnabled];
+  return [object isEnabled];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SUScriptNativeObject *)self object];
+  enabledCopy = enabled;
+  object = [(SUScriptNativeObject *)self object];
   if (objc_opt_respondsToSelector())
   {
 
-    [v4 setEnabled:v3];
+    [object setEnabled:enabledCopy];
   }
 }
 
-- (void)setStyleFromString:(id)a3
+- (void)setStyleFromString:(id)string
 {
   styleString = self->_styleString;
-  if (styleString != a3)
+  if (styleString != string)
   {
 
-    self->_styleString = a3;
+    self->_styleString = string;
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
   if (objc_opt_respondsToSelector())
   {
-    [v5 setSubtitle:a3];
+    [object setSubtitle:subtitle];
   }
 
   subtitle = self->_subtitle;
-  if (subtitle != a3)
+  if (subtitle != subtitle)
   {
 
-    self->_subtitle = a3;
+    self->_subtitle = subtitle;
   }
 }
 
@@ -136,13 +136,13 @@
 - (NSString)subtitle
 {
   subtitle = self->_subtitle;
-  v3 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return subtitle;
   }
 
-  return [v3 subtitle];
+  return [object subtitle];
 }
 
 @end

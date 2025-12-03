@@ -1,7 +1,7 @@
 @interface ASDSRCStream
-- (ASDSRCStream)initWithDirection:(unsigned int)a3 withPlugin:(id)a4;
+- (ASDSRCStream)initWithDirection:(unsigned int)direction withPlugin:(id)plugin;
 - (BOOL)_allocateStreamingResources;
-- (BOOL)changePhysicalFormat:(id)a3;
+- (BOOL)changePhysicalFormat:(id)format;
 - (id)readInputBlock;
 - (id)readIsolatedInputBlock;
 - (id)writeMixBlock;
@@ -9,7 +9,7 @@
 - (void)_deallocateStreamingResources;
 - (void)_updateLatency;
 - (void)_updateMaximumFramesPerIOCycle;
-- (void)setUnderlyingStreams:(id)a3;
+- (void)setUnderlyingStreams:(id)streams;
 - (void)startStream;
 - (void)stopStream;
 - (void)updateLatency;
@@ -17,26 +17,26 @@
 
 @implementation ASDSRCStream
 
-- (ASDSRCStream)initWithDirection:(unsigned int)a3 withPlugin:(id)a4
+- (ASDSRCStream)initWithDirection:(unsigned int)direction withPlugin:(id)plugin
 {
   v5 = MEMORY[0x277CBEAD8];
-  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[ASDSRCStream initWithDirection:withPlugin:]", a4}];
+  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[ASDSRCStream initWithDirection:withPlugin:]", plugin}];
   [v5 raise:*MEMORY[0x277CBE660] format:{@"Do not call %@", v6}];
 
   return 0;
 }
 
-- (void)setUnderlyingStreams:(id)a3
+- (void)setUnderlyingStreams:(id)streams
 {
-  v4 = a3;
+  streamsCopy = streams;
   srcQueue = self->_srcQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__ASDSRCStream_setUnderlyingStreams___block_invoke;
   v7[3] = &unk_278CE3BE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = streamsCopy;
+  v6 = streamsCopy;
   dispatch_sync(srcQueue, v7);
 }
 
@@ -172,21 +172,21 @@ uint64_t __26__ASDSRCStream_stopStream__block_invoke(uint64_t result)
   return result;
 }
 
-- (BOOL)changePhysicalFormat:(id)a3
+- (BOOL)changePhysicalFormat:(id)format
 {
-  v4 = a3;
-  v5 = [(ASDStream *)self physicalFormat];
+  formatCopy = format;
+  physicalFormat = [(ASDStream *)self physicalFormat];
 
-  if (v5 != v4)
+  if (physicalFormat != formatCopy)
   {
-    v6 = [(ASDObject *)self owner];
+    owner = [(ASDObject *)self owner];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __37__ASDSRCStream_changePhysicalFormat___block_invoke;
     v8[3] = &unk_278CE3BE8;
     v8[4] = self;
-    v9 = v4;
-    [v6 requestConfigurationChange:v8];
+    v9 = formatCopy;
+    [owner requestConfigurationChange:v8];
   }
 
   return 1;
@@ -427,8 +427,8 @@ uint64_t __39__ASDSRCStream_maximumFramesPerIOCycle__block_invoke(uint64_t a1)
   WeakRetained = objc_loadWeakRetained(&self->_owningDevice);
   [WeakRetained samplingRate];
   v5 = v4;
-  v6 = [WeakRetained underlyingDevice];
-  [v6 samplingRate];
+  underlyingDevice = [WeakRetained underlyingDevice];
+  [underlyingDevice samplingRate];
   v8 = v7;
 
   v30 = 0u;
@@ -439,7 +439,7 @@ uint64_t __39__ASDSRCStream_maximumFramesPerIOCycle__block_invoke(uint64_t a1)
   v10 = [(NSArray *)v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v10)
   {
-    v11 = 0;
+    latency = 0;
     v12 = *v29;
     do
     {
@@ -451,9 +451,9 @@ uint64_t __39__ASDSRCStream_maximumFramesPerIOCycle__block_invoke(uint64_t a1)
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
-        if ([v14 latency] > v11)
+        if ([v14 latency] > latency)
         {
-          v11 = [v14 latency];
+          latency = [v14 latency];
         }
       }
 
@@ -461,7 +461,7 @@ uint64_t __39__ASDSRCStream_maximumFramesPerIOCycle__block_invoke(uint64_t a1)
     }
 
     while (v10);
-    v15 = v11;
+    v15 = latency;
   }
 
   else
@@ -469,16 +469,16 @@ uint64_t __39__ASDSRCStream_maximumFramesPerIOCycle__block_invoke(uint64_t a1)
     v15 = 0.0;
   }
 
-  v16 = [WeakRetained underlyingDevice];
-  [v16 samplingRate];
+  underlyingDevice2 = [WeakRetained underlyingDevice];
+  [underlyingDevice2 samplingRate];
   v18 = v17;
   [WeakRetained samplingRate];
   v20 = v18 != v19;
 
   if (v20)
   {
-    v21 = [WeakRetained underlyingDevice];
-    [v21 samplingRate];
+    underlyingDevice3 = [WeakRetained underlyingDevice];
+    [underlyingDevice3 samplingRate];
     v23 = v22;
     [WeakRetained samplingRate];
     v25 = v24;

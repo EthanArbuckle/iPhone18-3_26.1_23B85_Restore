@@ -1,32 +1,32 @@
 @interface CMStrideCalibrator
-- (BOOL)checkValidTrack:(id)a3 associatedEntry:(const CLStepDistance *)a4;
+- (BOOL)checkValidTrack:(id)track associatedEntry:(const CLStepDistance *)entry;
 - (id).cxx_construct;
-- (id)initInUniverse:(id)a3 stepCountDb:(shared_ptr<CLStepCountRecorderDb>)a4;
+- (id)initInUniverse:(id)universe stepCountDb:(shared_ptr<CLStepCountRecorderDb>)db;
 - (shared_ptr<CMMobilityCal::GPSRawSpeedToKValueTable>)getSpdToKTable;
-- (void)addLatestCalData:(id)a3;
+- (void)addLatestCalData:(id)data;
 - (void)attemptForcedLocation;
 - (void)checkForLocationStateTransition;
 - (void)checkTimeToSendNewCAGPSCalibration;
 - (void)dealloc;
-- (void)feedBodyMetrics:(CLBodyMetrics *)a3;
-- (void)fsm:(id)a3 didTransitionFromState:(int)a4 toState:(int)a5;
-- (void)fsm:(id)a3 didUpdateLocationAtTime:(double)a4;
-- (void)fsm:(id)a3 didYieldTrack:(id)a4;
+- (void)feedBodyMetrics:(CLBodyMetrics *)metrics;
+- (void)fsm:(id)fsm didTransitionFromState:(int)state toState:(int)toState;
+- (void)fsm:(id)fsm didUpdateLocationAtTime:(double)time;
+- (void)fsm:(id)fsm didYieldTrack:(id)track;
 - (void)quitForcedLocationState;
 - (void)sendGPSCoreAnalyticsAndUpdateTime;
-- (void)setSession:(int64_t)a3;
-- (void)strideCalibrationDatabase:(id)a3 didInsertEntry:(CLStrideCalEntry *)a4;
-- (void)tick:(double)a3;
-- (void)updateCalibrationBins:(double)a3;
-- (void)updateUserHeight:(int64_t)a3;
+- (void)setSession:(int64_t)session;
+- (void)strideCalibrationDatabase:(id)database didInsertEntry:(CLStrideCalEntry *)entry;
+- (void)tick:(double)tick;
+- (void)updateCalibrationBins:(double)bins;
+- (void)updateUserHeight:(int64_t)height;
 @end
 
 @implementation CMStrideCalibrator
 
 - (void)checkForLocationStateTransition
 {
-  v3 = [(CMStrideCalLocationFSM *)self->fStrideCalLocationFSM locationState];
-  if ([(CMStrideCalibrator *)self inOutdoorPedestrianSession]&& v3 <= 2)
+  locationState = [(CMStrideCalLocationFSM *)self->fStrideCalLocationFSM locationState];
+  if ([(CMStrideCalibrator *)self inOutdoorPedestrianSession]&& locationState <= 2)
   {
     if (qword_1025D4270 != -1)
     {
@@ -57,9 +57,9 @@
     sub_10001A3E8();
     if ((sub_10001CF3C() & 1) == 0 && [(CMStrideCalibrator *)self outOfSession]&& [(CMStrideCalibrationActivityBuffer *)self->fActivityBuffer isRunningStateInWindow])
     {
-      if (v3 >= 2)
+      if (locationState >= 2)
       {
-        if (v3 > 2)
+        if (locationState > 2)
         {
           return;
         }
@@ -75,9 +75,9 @@
         v6 = qword_1025D4278;
         if (os_log_type_enabled(qword_1025D4278, OS_LOG_TYPE_DEBUG))
         {
-          v7 = [(CMStrideCalibrationStepCountBuffer *)self->fStepsBuffer stepsInWindow];
+          stepsInWindow = [(CMStrideCalibrationStepCountBuffer *)self->fStepsBuffer stepsInWindow];
           v10 = 67109120;
-          LODWORD(v11) = v7;
+          LODWORD(v11) = stepsInWindow;
           _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEBUG, "StepRunNotification,Pass,LeechingLocation,Steps,%d", &v10, 8u);
         }
 
@@ -99,9 +99,9 @@
         v8 = qword_1025D4278;
         if (os_log_type_enabled(qword_1025D4278, OS_LOG_TYPE_DEBUG))
         {
-          v9 = [(CMStrideCalibrationStepCountBuffer *)self->fStepsBuffer stepsInWindow];
+          stepsInWindow2 = [(CMStrideCalibrationStepCountBuffer *)self->fStepsBuffer stepsInWindow];
           v10 = 67109120;
-          LODWORD(v11) = v9;
+          LODWORD(v11) = stepsInWindow2;
           _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_DEBUG, "StepRunNotification,Pass,AttemptingToForceLocation,Steps,%d", &v10, 8u);
         }
 
@@ -148,9 +148,9 @@
   }
 }
 
-- (id)initInUniverse:(id)a3 stepCountDb:(shared_ptr<CLStepCountRecorderDb>)a4
+- (id)initInUniverse:(id)universe stepCountDb:(shared_ptr<CLStepCountRecorderDb>)db
 {
-  ptr = a4.__ptr_;
+  ptr = db.__ptr_;
   sub_10001A3E8();
   if (sub_10001CF04() & 1) != 0 || (sub_10001A3E8(), (sub_10001CF3C()))
   {
@@ -159,7 +159,7 @@
     v7 = [(CMStrideCalibrator *)&v25 init];
     if (v7)
     {
-      *(v7 + 11) = a3;
+      *(v7 + 11) = universe;
       v9 = *ptr;
       v8 = *(ptr + 1);
       if (v8)
@@ -337,9 +337,9 @@
   [(CMStrideCalibrator *)&v4 dealloc];
 }
 
-- (void)setSession:(int64_t)a3
+- (void)setSession:(int64_t)session
 {
-  if (self->fCurrentSession != a3)
+  if (self->fCurrentSession != session)
   {
     if (qword_1025D4270 != -1)
     {
@@ -353,16 +353,16 @@
       v7 = 134218240;
       v8 = fCurrentSession;
       v9 = 2048;
-      v10 = a3;
+      sessionCopy = session;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "setSession,oldSession,%ld,newSession,%ld", &v7, 0x16u);
     }
 
     if (sub_10000A100(121, 2))
     {
-      sub_10195B2C4(&self->fCurrentSession, a3);
+      sub_10195B2C4(&self->fCurrentSession, session);
     }
 
-    self->fCurrentSession = a3;
+    self->fCurrentSession = session;
     if (![(CMStrideCalibrator *)self inOutdoorPedestrianSession])
     {
       [(CMStrideCalibrator *)self quitForcedLocationState];
@@ -372,7 +372,7 @@
   }
 }
 
-- (void)addLatestCalData:(id)a3
+- (void)addLatestCalData:(id)data
 {
   if (qword_1025D4270 != -1)
   {
@@ -383,21 +383,21 @@
   if (os_log_type_enabled(qword_1025D4278, OS_LOG_TYPE_DEBUG))
   {
     v6 = 136315138;
-    v7 = [objc_msgSend(a3 "description")];
+    v7 = [objc_msgSend(data "description")];
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "A new calData is added: %s", &v6, 0xCu);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_10195B3D4(a3);
+    sub_10195B3D4(data);
   }
 
-  [(NSMutableArray *)self->fLatestCalDataArray addObject:a3];
+  [(NSMutableArray *)self->fLatestCalDataArray addObject:data];
 }
 
-- (void)tick:(double)a3
+- (void)tick:(double)tick
 {
-  [(CMStrideCalibrator *)self updateCalibrationBins:a3];
+  [(CMStrideCalibrator *)self updateCalibrationBins:tick];
   [(CMStrideCalibrator *)self checkForLocationStateTransition];
 
   [(CMStrideCalibrator *)self checkTimeToSendNewCAGPSCalibration];
@@ -549,37 +549,37 @@
   return result;
 }
 
-- (void)strideCalibrationDatabase:(id)a3 didInsertEntry:(CLStrideCalEntry *)a4
+- (void)strideCalibrationDatabase:(id)database didInsertEntry:(CLStrideCalEntry *)entry
 {
-  if ([a3 isCalibrationConvergedStdForBinWithSpeed:a4->speed])
+  if ([database isCalibrationConvergedStdForBinWithSpeed:entry->speed])
   {
     v6 = sub_1000206B4();
     *&v11[0] = CFAbsoluteTimeGetCurrent();
     sub_100116D68(v6, "LastStrideCalibrationConverge", v11);
   }
 
-  [(CMStrideCalibrationStats *)self->fStats activityLoggerLogStrideCalEntry:a4];
+  [(CMStrideCalibrationStats *)self->fStats activityLoggerLogStrideCalEntry:entry];
   if ([(CMStrideCalibrator *)self calibrationTrackCallback])
   {
-    v7 = [(CMStrideCalibrator *)self calibrationTrackCallback];
-    v8 = *&a4->percentGrade;
-    v11[4] = *&a4->steps;
+    calibrationTrackCallback = [(CMStrideCalibrator *)self calibrationTrackCallback];
+    v8 = *&entry->percentGrade;
+    v11[4] = *&entry->steps;
     v11[5] = v8;
-    v11[6] = *&a4->timestamp;
-    v12 = *&a4->runningFormStrideLengthMetrics;
-    v9 = *&a4->endTime;
-    v11[2] = *&a4->kvalueTrack;
+    v11[6] = *&entry->timestamp;
+    v12 = *&entry->runningFormStrideLengthMetrics;
+    v9 = *&entry->endTime;
+    v11[2] = *&entry->kvalueTrack;
     v11[3] = v9;
-    v10 = *&a4->pacebin;
-    v11[0] = *&a4->recordId;
+    v10 = *&entry->pacebin;
+    v11[0] = *&entry->recordId;
     v11[1] = v10;
-    v7[2](v7, v11);
+    calibrationTrackCallback[2](calibrationTrackCallback, v11);
   }
 }
 
-- (void)fsm:(id)a3 didTransitionFromState:(int)a4 toState:(int)a5
+- (void)fsm:(id)fsm didTransitionFromState:(int)state toState:(int)toState
 {
-  v5 = *&a5;
+  v5 = *&toState;
   if (qword_1025D4270 != -1)
   {
     sub_10195B06C();
@@ -589,7 +589,7 @@
   if (os_log_type_enabled(qword_1025D4278, OS_LOG_TYPE_DEBUG))
   {
     v9[0] = 67109376;
-    v9[1] = a4;
+    v9[1] = state;
     v10 = 1024;
     v11 = v5;
     _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_DEBUG, "LocationStateOld,%d,LocationStateNew,%d", v9, 0xEu);
@@ -597,7 +597,7 @@
 
   if (sub_10000A100(121, 2))
   {
-    sub_10195BF7C(a4, v5);
+    sub_10195BF7C(state, v5);
   }
 
   if (v5 <= 1)
@@ -630,24 +630,24 @@ LABEL_12:
   }
 }
 
-- (void)fsm:(id)a3 didYieldTrack:(id)a4
+- (void)fsm:(id)fsm didYieldTrack:(id)track
 {
   Current = CFAbsoluteTimeGetCurrent();
   v6 = sub_1000206B4();
   sub_100116D68(v6, "StrideCalibrationLastCalibration", &Current);
-  v7 = [[CMStrideCalDataContainer alloc] initWithTrack:a4 session:[(CMStrideCalibrator *)self currentSession]];
+  v7 = [[CMStrideCalDataContainer alloc] initWithTrack:track session:[(CMStrideCalibrator *)self currentSession]];
   [(CMStrideCalibrator *)self addLatestCalData:v7];
 }
 
-- (void)fsm:(id)a3 didUpdateLocationAtTime:(double)a4
+- (void)fsm:(id)fsm didUpdateLocationAtTime:(double)time
 {
-  [(CMStrideCalibrator *)self tickleArrow:a3];
+  [(CMStrideCalibrator *)self tickleArrow:fsm];
   if ([(CMStrideCalibrator *)self outOfSession])
   {
-    v5 = [(CMStrideCalLocationFSM *)self->fStrideCalLocationFSM locationState];
+    locationState = [(CMStrideCalLocationFSM *)self->fStrideCalLocationFSM locationState];
     Current = CFAbsoluteTimeGetCurrent();
     v17 = Current;
-    v7 = Current - self->fLastGoodLocFix > 30.0 && v5 == 3;
+    v7 = Current - self->fLastGoodLocFix > 30.0 && locationState == 3;
     v8 = v7;
     if (v7)
     {
@@ -684,9 +684,9 @@ LABEL_17:
         v12 = qword_1025D4278;
         if (os_log_type_enabled(qword_1025D4278, OS_LOG_TYPE_DEBUG))
         {
-          v13 = [(CMStrideCalibrationStepCountBuffer *)*p_fStepsBuffer stepsInWindow];
+          stepsInWindow = [(CMStrideCalibrationStepCountBuffer *)*p_fStepsBuffer stepsInWindow];
           *buf = 67109120;
-          LODWORD(v19) = v13;
+          LODWORD(v19) = stepsInWindow;
           _os_log_impl(dword_100000000, v12, OS_LOG_TYPE_DEBUG, "TrackClose,Pass,ForcedNotSufficientSteps,Steps,%d", buf, 8u);
         }
 
@@ -718,9 +718,9 @@ LABEL_26:
       v14 = qword_1025D4278;
       if (os_log_type_enabled(qword_1025D4278, OS_LOG_TYPE_DEBUG))
       {
-        v15 = [(CMStrideCalibrationStepCountBuffer *)*p_fStepsBuffer stepsInWindow];
+        stepsInWindow2 = [(CMStrideCalibrationStepCountBuffer *)*p_fStepsBuffer stepsInWindow];
         *buf = 67109120;
-        LODWORD(v19) = v15;
+        LODWORD(v19) = stepsInWindow2;
         _os_log_impl(dword_100000000, v14, OS_LOG_TYPE_DEBUG, "TrackClose,Pass,EnabledNotSufficientSteps,Steps,%d", buf, 8u);
       }
 
@@ -735,12 +735,12 @@ LABEL_33:
       return;
     }
 
-    if (v5 >= 3)
+    if (locationState >= 3)
     {
       goto LABEL_17;
     }
 
-    if (v5 == 2)
+    if (locationState == 2)
     {
       p_fStepsBuffer = &self->fStepsBuffer;
       if ([(CMStrideCalibrationStepCountBuffer *)self->fStepsBuffer stepsInWindow]<= 9)
@@ -751,13 +751,13 @@ LABEL_33:
   }
 }
 
-- (BOOL)checkValidTrack:(id)a3 associatedEntry:(const CLStepDistance *)a4
+- (BOOL)checkValidTrack:(id)track associatedEntry:(const CLStepDistance *)entry
 {
-  [objc_msgSend(a3 "start")];
+  [objc_msgSend(track "start")];
   v8 = v7;
-  [objc_msgSend(a3 "stop")];
+  [objc_msgSend(track "stop")];
   v10 = v9;
-  [a3 distanceRawPed];
+  [track distanceRawPed];
   if (v11 <= 0.0)
   {
     if (qword_1025D4270 != -1)
@@ -781,13 +781,13 @@ LABEL_33:
     }
 
     fStats = self->fStats;
-    var1 = a4->var1;
+    var1 = entry->var1;
     v22 = @"ZeroDistance";
     v23 = 7;
     goto LABEL_23;
   }
 
-  [a3 distanceRawPed];
+  [track distanceRawPed];
   v13 = v12 / (v10 - v8);
   if (![+[CMPedometerTableRawSpeedToKValue isRawSpeedValid:"isRawSpeedValid:"]
   {
@@ -825,7 +825,7 @@ LABEL_33:
     }
 
     fStats = self->fStats;
-    var1 = a4->var1;
+    var1 = entry->var1;
     v22 = @"SpeedOutOfBounds";
     v23 = 6;
 LABEL_23:
@@ -835,9 +835,9 @@ LABEL_24:
     return v25;
   }
 
-  [a3 distanceGps];
+  [track distanceGps];
   v15 = v14;
-  [a3 distanceRawPed];
+  [track distanceRawPed];
   v17 = v15 / v16;
   sub_10001A3E8();
   if (sub_10001CF3C())
@@ -864,7 +864,7 @@ LABEL_28:
   if (os_log_type_enabled(qword_1025D4278, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136316162;
-    v40 = COERCE_DOUBLE([objc_msgSend(a3 "description")]);
+    v40 = COERCE_DOUBLE([objc_msgSend(track "description")]);
     v41 = 2048;
     v42 = v17;
     v43 = 2048;
@@ -884,7 +884,7 @@ LABEL_28:
       sub_10195B16C();
     }
 
-    [objc_msgSend(a3 "description")];
+    [objc_msgSend(track "description")];
     v37 = _os_log_send_and_compose_impl();
     sub_100152C7C("Generic", 1, 0, 2, "[CMStrideCalibrator checkValidTrack:associatedEntry:]", "%s\n", v37);
     if (v37 != buf)
@@ -893,11 +893,11 @@ LABEL_28:
     }
   }
 
-  [(CMStrideCalibrationStats *)self->fStats awdLogDistance:5 status:@"GainOutOfBounds" description:a4->var1];
-  [a3 distanceGps];
+  [(CMStrideCalibrationStats *)self->fStats awdLogDistance:5 status:@"GainOutOfBounds" description:entry->var1];
+  [track distanceGps];
   v28 = v27;
   v29 = self->fStats;
-  v30 = a4->var1;
+  v30 = entry->var1;
   if (v28 >= 70.0)
   {
     [(CMStrideCalibrationStats *)v29 awdLogDistance:3 status:@"GainOutOfBounds" description:v30];
@@ -909,7 +909,7 @@ LABEL_28:
     v33 = qword_1025D4278;
     if (os_log_type_enabled(qword_1025D4278, OS_LOG_TYPE_DEBUG))
     {
-      v34 = a4->var1;
+      v34 = entry->var1;
       *buf = 134218496;
       v40 = v34;
       v41 = 2048;
@@ -943,7 +943,7 @@ LABEL_28:
     v31 = qword_1025D4278;
     if (os_log_type_enabled(qword_1025D4278, OS_LOG_TYPE_DEBUG))
     {
-      v32 = a4->var1;
+      v32 = entry->var1;
       *buf = 134218496;
       v40 = v32;
       v41 = 2048;
@@ -1028,7 +1028,7 @@ LABEL_58:
   }
 }
 
-- (void)updateCalibrationBins:(double)a3
+- (void)updateCalibrationBins:(double)bins
 {
   v44 = +[NSMutableArray array];
   v48 = 0u;
@@ -1055,8 +1055,8 @@ LABEL_58:
         v11 = v10;
         [objc_msgSend(objc_msgSend(v9 "track")];
         v13 = v12;
-        v14 = a3 - v12;
-        if (a3 - v12 >= 60.0)
+        v14 = bins - v12;
+        if (bins - v12 >= 60.0)
         {
           [(CMStrideCalibrationElevationBuffer *)self->fElevationBuffer updateGradient:v9];
           [v44 addObject:v9];
@@ -1074,7 +1074,7 @@ LABEL_58:
               *buf = 136315394;
               *&buf[4] = v16;
               *&buf[12] = 2048;
-              *&buf[14] = a3;
+              *&buf[14] = bins;
               _os_log_impl(dword_100000000, v15, OS_LOG_TYPE_DEBUG, "CalData, %s, stepEntryEpochTime, %f", buf, 0x16u);
             }
 
@@ -1090,7 +1090,7 @@ LABEL_58:
               *v52 = 136315394;
               *&v52[4] = v40;
               *&v52[12] = 2048;
-              *&v52[14] = a3;
+              *&v52[14] = bins;
               v41 = _os_log_send_and_compose_impl();
               sub_100152C7C("Generic", 1, 0, 2, "[CMStrideCalibrator updateCalibrationBins:]", "%s\n", v41);
               if (v41 != buf)
@@ -1150,12 +1150,12 @@ LABEL_58:
               sub_10001A3E8();
               if (sub_10001CF3C())
               {
-                v20 = [(CMStrideCalibrator *)self inOutdoorPedestrianSession];
+                inOutdoorPedestrianSession = [(CMStrideCalibrator *)self inOutdoorPedestrianSession];
               }
 
               else
               {
-                v20 = 0;
+                inOutdoorPedestrianSession = 0;
               }
 
               v23 = sub_10001A3E8();
@@ -1163,8 +1163,8 @@ LABEL_58:
               if (((**v23)(v23) & 1) == 0)
               {
                 sub_10001A3E8();
-                v25 = sub_10001CF04();
-                if (!v25)
+                outOfSession = sub_10001CF04();
+                if (!outOfSession)
                 {
                   goto LABEL_37;
                 }
@@ -1172,14 +1172,14 @@ LABEL_58:
 
               if (![(CMStrideCalibrator *)self inOutdoorPedestrianSession])
               {
-                v25 = [(CMStrideCalibrator *)self outOfSession];
-                if (v25)
+                outOfSession = [(CMStrideCalibrator *)self outOfSession];
+                if (outOfSession)
                 {
-                  v25 = [+[CMPedometerTableRawSpeedToKValue sharedInstance](CMPedometerTableRawSpeedToKValue isRawSpeedRun:"isRawSpeedRun:", v24];
+                  outOfSession = [+[CMPedometerTableRawSpeedToKValue sharedInstance](CMPedometerTableRawSpeedToKValue isRawSpeedRun:"isRawSpeedRun:", v24];
                 }
 
 LABEL_37:
-                if (((v20 | v25) & 1) == 0)
+                if (((inOutdoorPedestrianSession | outOfSession) & 1) == 0)
                 {
                   goto LABEL_49;
                 }
@@ -1316,7 +1316,7 @@ LABEL_49:
   [(NSMutableArray *)self->fLatestCalDataArray removeObjectsInArray:v44];
 }
 
-- (void)updateUserHeight:(int64_t)a3
+- (void)updateUserHeight:(int64_t)height
 {
   if (qword_1025D4270 != -1)
   {
@@ -1335,10 +1335,10 @@ LABEL_49:
     sub_10195C668();
   }
 
-  [(CMStrideCalibrationStats *)self->fStats updateUserHeight:a3];
+  [(CMStrideCalibrationStats *)self->fStats updateUserHeight:height];
 }
 
-- (void)feedBodyMetrics:(CLBodyMetrics *)a3
+- (void)feedBodyMetrics:(CLBodyMetrics *)metrics
 {
   if (qword_1025D4270 != -1)
   {
@@ -1357,14 +1357,14 @@ LABEL_49:
     sub_10195C74C();
   }
 
-  v6 = *&a3->gender;
-  v7 = *&a3->vo2max;
-  v8 = *&a3->hronset;
-  *&self->fCLBodyMetrics.runVo2max = *&a3->runVo2max;
+  v6 = *&metrics->gender;
+  v7 = *&metrics->vo2max;
+  v8 = *&metrics->hronset;
+  *&self->fCLBodyMetrics.runVo2max = *&metrics->runVo2max;
   *&self->fCLBodyMetrics.hronset = v8;
   *&self->fCLBodyMetrics.vo2max = v7;
   *&self->fCLBodyMetrics.gender = v6;
-  [(CMStrideCalibrator *)self updateUserHeight:llroundf(a3->heightM * 100.0)];
+  [(CMStrideCalibrator *)self updateUserHeight:llroundf(metrics->heightM * 100.0)];
 }
 
 - (id).cxx_construct

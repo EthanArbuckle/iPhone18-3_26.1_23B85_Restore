@@ -1,8 +1,8 @@
 @interface AMSBagNetworkDataSource
-+ (id)valueForURLVariable:(id)a3 account:(id)a4 clientInfo:(id)a5;
-+ (void)_valueForURLVariable:(id)a3 account:(id)a4 clientInfo:(id)a5 sync:(BOOL)a6 completion:(id)a7;
-- (AMSBagNetworkDataSource)initWithProfile:(id)a3 profileVersion:(id)a4 processInfo:(id)a5;
-- (AMSBagNetworkDataSource)initWithProfile:(id)a3 profileVersion:(id)a4 processInfo:(id)a5 accountProvider:(id)a6;
++ (id)valueForURLVariable:(id)variable account:(id)account clientInfo:(id)info;
++ (void)_valueForURLVariable:(id)variable account:(id)account clientInfo:(id)info sync:(BOOL)sync completion:(id)completion;
+- (AMSBagNetworkDataSource)initWithProfile:(id)profile profileVersion:(id)version processInfo:(id)info;
+- (AMSBagNetworkDataSource)initWithProfile:(id)profile profileVersion:(id)version processInfo:(id)info accountProvider:(id)provider;
 - (BOOL)isLoaded;
 - (NSDate)expirationDate;
 - (NSString)bagLoadingPartialIdentifier;
@@ -13,19 +13,19 @@
 - (id)_newCompletionQueue;
 - (id)dataSourceChangedHandler;
 - (id)dataSourceDataInvalidatedHandler;
-- (id)defaultValueForKey:(id)a3;
-- (id)loadedValuesForKeys:(id)a3 outExpirationDate:(id *)a4;
-- (id)valueForURLVariable:(id)a3 account:(id)a4;
+- (id)defaultValueForKey:(id)key;
+- (id)loadedValuesForKeys:(id)keys outExpirationDate:(id *)date;
+- (id)valueForURLVariable:(id)variable account:(id)account;
 - (void)_accountStoreDidChange;
-- (void)_invalidateCacheNotification:(id)a3;
-- (void)_updateCachedResult:(id)a3;
+- (void)_invalidateCacheNotification:(id)notification;
+- (void)_updateCachedResult:(id)result;
 - (void)dealloc;
-- (void)loadWithCompletion:(id)a3;
-- (void)setCachedStorefront:(id)a3;
-- (void)setDataSourceChangedHandler:(id)a3;
-- (void)setDataSourceDataInvalidatedHandler:(id)a3;
-- (void)setDefaultValue:(id)a3 forKey:(id)a4;
-- (void)valueForURLVariable:(id)a3 account:(id)a4 completion:(id)a5;
+- (void)loadWithCompletion:(id)completion;
+- (void)setCachedStorefront:(id)storefront;
+- (void)setDataSourceChangedHandler:(id)handler;
+- (void)setDataSourceDataInvalidatedHandler:(id)handler;
+- (void)setDefaultValue:(id)value forKey:(id)key;
+- (void)valueForURLVariable:(id)variable account:(id)account completion:(id)completion;
 @end
 
 @implementation AMSBagNetworkDataSource
@@ -36,9 +36,9 @@
   os_unfair_lock_assert_owner(&self->_cachedDataAccessLock);
   v3 = AMSSetLogKeyIfNeeded();
   v4 = AMSSetLogKey(v3);
-  v5 = [(AMSBagNetworkDataSource *)self currentLoadTask];
+  currentLoadTask = [(AMSBagNetworkDataSource *)self currentLoadTask];
 
-  v6 = v5 == 0;
+  v6 = currentLoadTask == 0;
   v7 = +[AMSLogConfig sharedBagConfig];
   v8 = v7;
   if (v6)
@@ -48,8 +48,8 @@
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v8 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
       v17 = v16;
@@ -61,19 +61,19 @@
       v34 = v18;
       v35 = 2114;
       v36 = v19;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Loading bag from the network. %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Loading bag from the network. %{public}@", buf, 0x20u);
     }
 
     v20 = [AMSBagNetworkTask alloc];
-    v21 = [(AMSBagNetworkDataSource *)self processInfo];
-    v22 = [(AMSBagNetworkDataSource *)self profile];
-    v23 = [(AMSBagNetworkDataSource *)self profileVersion];
-    v24 = [(AMSBagNetworkDataSource *)self accountProvider];
-    v25 = [(AMSBagNetworkTask *)v20 initWithClientInfo:v21 profile:v22 profileVersion:v23 accountProvider:v24];
+    processInfo = [(AMSBagNetworkDataSource *)self processInfo];
+    profile = [(AMSBagNetworkDataSource *)self profile];
+    profileVersion = [(AMSBagNetworkDataSource *)self profileVersion];
+    accountProvider = [(AMSBagNetworkDataSource *)self accountProvider];
+    v25 = [(AMSBagNetworkTask *)v20 initWithClientInfo:processInfo profile:profile profileVersion:profileVersion accountProvider:accountProvider];
     [(AMSBagNetworkDataSource *)self setCurrentLoadTask:v25];
 
-    v26 = [(AMSBagNetworkDataSource *)self currentLoadTask];
-    v14 = [v26 performFetch];
+    currentLoadTask2 = [(AMSBagNetworkDataSource *)self currentLoadTask];
+    performFetch = [currentLoadTask2 performFetch];
 
     objc_initWeak(buf, self);
     v28[0] = MEMORY[0x1E69E9820];
@@ -82,7 +82,7 @@
     v28[3] = &unk_1E73B4440;
     objc_copyWeak(&v30, buf);
     v29 = v3;
-    [v14 addFinishBlock:v28];
+    [performFetch addFinishBlock:v28];
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(buf);
@@ -95,8 +95,8 @@
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
       v11 = v10;
@@ -105,45 +105,45 @@
       v32 = v10;
       v33 = 2114;
       v34 = v12;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Awaiting bag load", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Awaiting bag load", buf, 0x16u);
     }
 
-    v13 = [(AMSBagNetworkDataSource *)self currentLoadTask];
-    v14 = [v13 performFetch];
+    currentLoadTask3 = [(AMSBagNetworkDataSource *)self currentLoadTask];
+    performFetch = [currentLoadTask3 performFetch];
   }
 
-  return v14;
+  return performFetch;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AMSBagNetworkDataSource *)self profile];
-  v6 = [(AMSBagNetworkDataSource *)self profileVersion];
-  v7 = [(AMSBagNetworkDataSource *)self processInfo];
-  v8 = [v7 accountMediaType];
-  v9 = [v3 stringWithFormat:@"<%@: %p profile: %@; version: %@; sandbox: %d>", v4, self, v5, v6, v8 == AMSAccountMediaTypeAppStoreSandbox];;
+  profile = [(AMSBagNetworkDataSource *)self profile];
+  profileVersion = [(AMSBagNetworkDataSource *)self profileVersion];
+  processInfo = [(AMSBagNetworkDataSource *)self processInfo];
+  accountMediaType = [processInfo accountMediaType];
+  aMSAccountMediaTypeAppStoreSandbox = [v3 stringWithFormat:@"<%@: %p profile: %@; version: %@; sandbox: %d>", v4, self, profile, profileVersion, accountMediaType == AMSAccountMediaTypeAppStoreSandbox];;
 
-  return v9;
+  return aMSAccountMediaTypeAppStoreSandbox;
 }
 
 - (id)_newCompletionQueue
 {
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.AppleMediaServices.AMSBagNetworkDataSource.loadCompletionQueue.%lx", self];
-  v3 = [v2 UTF8String];
+  uTF8String = [v2 UTF8String];
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v5 = dispatch_queue_create(v3, v4);
+  v5 = dispatch_queue_create(uTF8String, v4);
 
   return v5;
 }
 
 - (NSString)bagLoadingPartialIdentifier
 {
-  v3 = [(AMSBagNetworkDataSource *)self processInfo];
-  v4 = [(AMSBagNetworkDataSource *)self profile];
-  v5 = [(AMSBagNetworkDataSource *)self profileVersion];
-  v6 = [AMSBagNetworkTask requestPartialIdentifierForClientInfo:v3 profile:v4 profileVersion:v5];
+  processInfo = [(AMSBagNetworkDataSource *)self processInfo];
+  profile = [(AMSBagNetworkDataSource *)self profile];
+  profileVersion = [(AMSBagNetworkDataSource *)self profileVersion];
+  v6 = [AMSBagNetworkTask requestPartialIdentifierForClientInfo:processInfo profile:profile profileVersion:profileVersion];
 
   return v6;
 }
@@ -151,20 +151,20 @@
 - (NSDate)expirationDate
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(AMSBagNetworkDataSource *)self cachedResult];
-  v4 = [v3 expirationDate];
+  cachedResult = [(AMSBagNetworkDataSource *)self cachedResult];
+  expirationDate = [cachedResult expirationDate];
 
   os_unfair_recursive_lock_unlock();
 
-  return v4;
+  return expirationDate;
 }
 
 - (BOOL)isLoaded
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(AMSBagNetworkDataSource *)self cachedResult];
-  v4 = [v3 data];
-  v5 = v4 != 0;
+  cachedResult = [(AMSBagNetworkDataSource *)self cachedResult];
+  data = [cachedResult data];
+  v5 = data != 0;
 
   os_unfair_recursive_lock_unlock();
   return v5;
@@ -221,38 +221,38 @@ void __36__AMSBagNetworkDataSource__fetchBag__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (AMSBagNetworkDataSource)initWithProfile:(id)a3 profileVersion:(id)a4 processInfo:(id)a5
+- (AMSBagNetworkDataSource)initWithProfile:(id)profile profileVersion:(id)version processInfo:(id)info
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  infoCopy = info;
+  versionCopy = version;
+  profileCopy = profile;
   v11 = objc_alloc_init(AMSBagActiveAccountProvider);
-  v12 = [(AMSBagNetworkDataSource *)self initWithProfile:v10 profileVersion:v9 processInfo:v8 accountProvider:v11];
+  v12 = [(AMSBagNetworkDataSource *)self initWithProfile:profileCopy profileVersion:versionCopy processInfo:infoCopy accountProvider:v11];
 
   return v12;
 }
 
-- (AMSBagNetworkDataSource)initWithProfile:(id)a3 profileVersion:(id)a4 processInfo:(id)a5 accountProvider:(id)a6
+- (AMSBagNetworkDataSource)initWithProfile:(id)profile profileVersion:(id)version processInfo:(id)info accountProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  profileCopy = profile;
+  versionCopy = version;
+  infoCopy = info;
+  providerCopy = provider;
   v39.receiver = self;
   v39.super_class = AMSBagNetworkDataSource;
   v15 = [(AMSBagNetworkDataSource *)&v39 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accountProvider, a6);
+    objc_storeStrong(&v15->_accountProvider, provider);
     v16->_cachedDataAccessLock = 0;
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
     defaultValues = v16->_defaultValues;
     v16->_defaultValues = v17;
 
-    objc_storeStrong(&v16->_profile, a3);
-    objc_storeStrong(&v16->_profileVersion, a4);
-    objc_storeStrong(&v16->_processInfo, a5);
+    objc_storeStrong(&v16->_profile, profile);
+    objc_storeStrong(&v16->_profileVersion, version);
+    objc_storeStrong(&v16->_processInfo, info);
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v20 = dispatch_queue_create("com.apple.AppleMediaServices.AMSBagNetworkDataSource.processAccountStoreDidChangeNotification", v19);
     processAccountStoreDidChangeNotificationQueue = v16->_processAccountStoreDidChangeNotificationQueue;
@@ -268,7 +268,7 @@ void __36__AMSBagNetworkDataSource__fetchBag__block_invoke(uint64_t a1, void *a2
     block[2] = __86__AMSBagNetworkDataSource_initWithProfile_profileVersion_processInfo_accountProvider___block_invoke;
     block[3] = &unk_1E73B4328;
     objc_copyWeak(&v37, &location);
-    v36 = v13;
+    v36 = infoCopy;
     dispatch_async(v23, block);
     v24 = [AMSObserver alloc];
     v30 = MEMORY[0x1E69E9820];
@@ -283,8 +283,8 @@ void __36__AMSBagNetworkDataSource__fetchBag__block_invoke(uint64_t a1, void *a2
     v27 = [AMSAccountsChangedObservable sharedInstance:v30];
     [v27 subscribe:v16->_accountsChangedObserver];
 
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v16 selector:sel__invalidateCacheNotification_ name:@"AMSBagNetworkDataSourceInvalidateCacheNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel__invalidateCacheNotification_ name:@"AMSBagNetworkDataSourceInvalidateCacheNotification" object:0];
 
     objc_destroyWeak(&v34);
     objc_destroyWeak(&v37);
@@ -388,11 +388,11 @@ void __86__AMSBagNetworkDataSource_initWithProfile_profileVersion_processInfo_ac
 - (void)dealloc
 {
   v3 = +[AMSAccountsChangedObservable sharedInstance];
-  v4 = [(AMSBagNetworkDataSource *)self accountsChangedObserver];
-  [v3 unsubscribe:v4];
+  accountsChangedObserver = [(AMSBagNetworkDataSource *)self accountsChangedObserver];
+  [v3 unsubscribe:accountsChangedObserver];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = AMSBagNetworkDataSource;
@@ -401,8 +401,8 @@ void __86__AMSBagNetworkDataSource_initWithProfile_profileVersion_processInfo_ac
 
 - (NSString)cachedStorefront
 {
-  v3 = [(AMSBagNetworkDataSource *)self processAccountStoreDidChangeNotificationQueue];
-  dispatch_assert_queue_V2(v3);
+  processAccountStoreDidChangeNotificationQueue = [(AMSBagNetworkDataSource *)self processAccountStoreDidChangeNotificationQueue];
+  dispatch_assert_queue_V2(processAccountStoreDidChangeNotificationQueue);
 
   cachedStorefront = self->_cachedStorefront;
 
@@ -419,23 +419,23 @@ void __86__AMSBagNetworkDataSource_initWithProfile_profileVersion_processInfo_ac
   return v4;
 }
 
-- (id)loadedValuesForKeys:(id)a3 outExpirationDate:(id *)a4
+- (id)loadedValuesForKeys:(id)keys outExpirationDate:(id *)date
 {
-  v6 = a3;
+  keysCopy = keys;
   os_unfair_recursive_lock_lock_with_options();
-  v7 = [(AMSBagNetworkDataSource *)self cachedResult];
-  v8 = [v7 data];
+  cachedResult = [(AMSBagNetworkDataSource *)self cachedResult];
+  data = [cachedResult data];
 
-  if (v8)
+  if (data)
   {
-    v9 = [(AMSBagNetworkDataSource *)self cachedResult];
-    v10 = [v9 data];
-    v11 = [v10 ams_valuesForKeys:v6];
+    cachedResult2 = [(AMSBagNetworkDataSource *)self cachedResult];
+    data2 = [cachedResult2 data];
+    v11 = [data2 ams_valuesForKeys:keysCopy];
 
-    if (a4)
+    if (date)
     {
-      v12 = [(AMSBagNetworkDataSource *)self cachedResult];
-      *a4 = [v12 expirationDate];
+      cachedResult3 = [(AMSBagNetworkDataSource *)self cachedResult];
+      *date = [cachedResult3 expirationDate];
     }
   }
 
@@ -449,22 +449,22 @@ void __86__AMSBagNetworkDataSource_initWithProfile_profileVersion_processInfo_ac
   return v11;
 }
 
-- (void)setCachedStorefront:(id)a3
+- (void)setCachedStorefront:(id)storefront
 {
-  v4 = a3;
-  v5 = [(AMSBagNetworkDataSource *)self processAccountStoreDidChangeNotificationQueue];
-  dispatch_assert_queue_V2(v5);
+  storefrontCopy = storefront;
+  processAccountStoreDidChangeNotificationQueue = [(AMSBagNetworkDataSource *)self processAccountStoreDidChangeNotificationQueue];
+  dispatch_assert_queue_V2(processAccountStoreDidChangeNotificationQueue);
 
-  v6 = [v4 copy];
+  v6 = [storefrontCopy copy];
   cachedStorefront = self->_cachedStorefront;
   self->_cachedStorefront = v6;
 }
 
-- (void)setDataSourceChangedHandler:(id)a3
+- (void)setDataSourceChangedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   dataSourceChangedHandler = self->_dataSourceChangedHandler;
   self->_dataSourceChangedHandler = v5;
@@ -472,11 +472,11 @@ void __86__AMSBagNetworkDataSource_initWithProfile_profileVersion_processInfo_ac
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setDataSourceDataInvalidatedHandler:(id)a3
+- (void)setDataSourceDataInvalidatedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   dataSourceDataInvalidatedHandler = self->_dataSourceDataInvalidatedHandler;
   self->_dataSourceDataInvalidatedHandler = v5;
@@ -491,13 +491,13 @@ void __86__AMSBagNetworkDataSource_initWithProfile_profileVersion_processInfo_ac
   [v3 appendString:v4];
 
   os_unfair_recursive_lock_lock_with_options();
-  v5 = [(AMSBagNetworkDataSource *)self cachedResult];
-  v6 = [v5 data];
+  cachedResult = [(AMSBagNetworkDataSource *)self cachedResult];
+  data = [cachedResult data];
 
   os_unfair_recursive_lock_unlock();
-  if (v6)
+  if (data)
   {
-    v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v6 options:1 error:0];
+    v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:data options:1 error:0];
     if (v7)
     {
       v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v7 encoding:4];
@@ -520,34 +520,34 @@ void __86__AMSBagNetworkDataSource_initWithProfile_profileVersion_processInfo_ac
   return v3;
 }
 
-- (id)defaultValueForKey:(id)a3
+- (id)defaultValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = [(AMSBagNetworkDataSource *)self defaultValues];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  defaultValues = [(AMSBagNetworkDataSource *)self defaultValues];
+  v6 = [defaultValues objectForKeyedSubscript:keyCopy];
 
   os_unfair_recursive_lock_unlock();
   if (!v6)
   {
-    v7 = [(AMSBagNetworkDataSource *)self profile];
-    v8 = [(AMSBagNetworkDataSource *)self profileVersion];
-    v6 = [AMSBagKeySet defaultValueForKey:v4 profile:v7 profileVersion:v8];
+    profile = [(AMSBagNetworkDataSource *)self profile];
+    profileVersion = [(AMSBagNetworkDataSource *)self profileVersion];
+    v6 = [AMSBagKeySet defaultValueForKey:keyCopy profile:profile profileVersion:profileVersion];
   }
 
   return v6;
 }
 
-- (void)loadWithCompletion:(id)a3
+- (void)loadWithCompletion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = [(AMSBagNetworkDataSource *)self cachedResult];
-  v6 = v5;
-  if (v5)
+  cachedResult = [(AMSBagNetworkDataSource *)self cachedResult];
+  v6 = cachedResult;
+  if (cachedResult)
   {
-    v7 = [v5 expired] ^ 1;
+    v7 = [cachedResult expired] ^ 1;
   }
 
   else
@@ -563,22 +563,22 @@ void __86__AMSBagNetworkDataSource_initWithProfile_profileVersion_processInfo_ac
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
-      v12 = [(AMSBagNetworkDataSource *)self profile];
-      v13 = [(AMSBagNetworkDataSource *)self profileVersion];
+      profile = [(AMSBagNetworkDataSource *)self profile];
+      profileVersion = [(AMSBagNetworkDataSource *)self profileVersion];
       *buf = 138544130;
       v24 = v10;
       v25 = 2114;
       v26 = v11;
       v27 = 2114;
-      v28 = v12;
+      v28 = profile;
       v29 = 2114;
-      v30 = v13;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] The backing data for the bag is expired. profile = %{public}@ | profileVersion = %{public}@", buf, 0x2Au);
+      v30 = profileVersion;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] The backing data for the bag is expired. profile = %{public}@ | profileVersion = %{public}@", buf, 0x2Au);
     }
   }
 
@@ -586,9 +586,9 @@ void __86__AMSBagNetworkDataSource_initWithProfile_profileVersion_processInfo_ac
   v18 = 3221225472;
   v19 = __46__AMSBagNetworkDataSource_loadWithCompletion___block_invoke;
   v20 = &unk_1E73B43A0;
-  v21 = self;
-  v22 = v4;
-  v14 = v4;
+  selfCopy = self;
+  v22 = completionCopy;
+  v14 = completionCopy;
   v15 = _Block_copy(&v17);
   if (v7)
   {
@@ -652,41 +652,41 @@ void __46__AMSBagNetworkDataSource_loadWithCompletion___block_invoke_2(uint64_t 
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)setDefaultValue:(id)a3 forKey:(id)a4
+- (void)setDefaultValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   os_unfair_recursive_lock_lock_with_options();
-  v8 = [(AMSBagNetworkDataSource *)self defaultValues];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  defaultValues = [(AMSBagNetworkDataSource *)self defaultValues];
+  [defaultValues setObject:valueCopy forKeyedSubscript:keyCopy];
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (id)valueForURLVariable:(id)a3 account:(id)a4
+- (id)valueForURLVariable:(id)variable account:(id)account
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSBagNetworkDataSource *)self processInfo];
-  v9 = [AMSBagNetworkDataSource valueForURLVariable:v7 account:v6 clientInfo:v8];
+  accountCopy = account;
+  variableCopy = variable;
+  processInfo = [(AMSBagNetworkDataSource *)self processInfo];
+  v9 = [AMSBagNetworkDataSource valueForURLVariable:variableCopy account:accountCopy clientInfo:processInfo];
 
   return v9;
 }
 
-- (void)valueForURLVariable:(id)a3 account:(id)a4 completion:(id)a5
+- (void)valueForURLVariable:(id)variable account:(id)account completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AMSBagNetworkDataSource *)self processInfo];
-  [AMSBagNetworkDataSource valueForURLVariable:v10 account:v9 clientInfo:v11 completion:v8];
+  completionCopy = completion;
+  accountCopy = account;
+  variableCopy = variable;
+  processInfo = [(AMSBagNetworkDataSource *)self processInfo];
+  [AMSBagNetworkDataSource valueForURLVariable:variableCopy account:accountCopy clientInfo:processInfo completion:completionCopy];
 }
 
-+ (id)valueForURLVariable:(id)a3 account:(id)a4 clientInfo:(id)a5
++ (id)valueForURLVariable:(id)variable account:(id)account clientInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  variableCopy = variable;
+  accountCopy = account;
+  infoCopy = info;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -698,7 +698,7 @@ void __46__AMSBagNetworkDataSource_loadWithCompletion___block_invoke_2(uint64_t 
   v13[2] = __66__AMSBagNetworkDataSource_valueForURLVariable_account_clientInfo___block_invoke;
   v13[3] = &unk_1E73B43C8;
   v13[4] = &v14;
-  [a1 _valueForURLVariable:v8 account:v9 clientInfo:v10 sync:1 completion:v13];
+  [self _valueForURLVariable:variableCopy account:accountCopy clientInfo:infoCopy sync:1 completion:v13];
   v11 = v15[5];
   _Block_object_dispose(&v14, 8);
 
@@ -707,18 +707,18 @@ void __46__AMSBagNetworkDataSource_loadWithCompletion___block_invoke_2(uint64_t 
 
 - (void)_accountStoreDidChange
 {
-  v3 = [(AMSBagNetworkDataSource *)self processAccountStoreDidChangeNotificationQueue];
-  dispatch_assert_queue_not_V2(v3);
+  processAccountStoreDidChangeNotificationQueue = [(AMSBagNetworkDataSource *)self processAccountStoreDidChangeNotificationQueue];
+  dispatch_assert_queue_not_V2(processAccountStoreDidChangeNotificationQueue);
 
   objc_initWeak(&location, self);
-  v4 = [(AMSBagNetworkDataSource *)self processAccountStoreDidChangeNotificationQueue];
+  processAccountStoreDidChangeNotificationQueue2 = [(AMSBagNetworkDataSource *)self processAccountStoreDidChangeNotificationQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke;
   v9[3] = &unk_1E73B4418;
   objc_copyWeak(&v10, &location);
   v5 = v9;
-  v6 = v4;
+  v6 = processAccountStoreDidChangeNotificationQueue2;
   v7 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -800,7 +800,7 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)_invalidateCacheNotification:(id)a3
+- (void)_invalidateCacheNotification:(id)notification
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = +[AMSLogConfig sharedBagConfig];
@@ -809,8 +809,8 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -818,7 +818,7 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
     v9 = v6;
     v10 = 2114;
     v11 = v7;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Notification received to invalidate cache", &v8, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Notification received to invalidate cache", &v8, 0x16u);
   }
 
   os_unfair_recursive_lock_lock_with_options();
@@ -826,30 +826,30 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)_updateCachedResult:(id)a3
+- (void)_updateCachedResult:(id)result
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultCopy = result;
   os_unfair_lock_assert_owner(&self->_cachedDataAccessLock);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __47__AMSBagNetworkDataSource__updateCachedResult___block_invoke;
   aBlock[3] = &unk_1E73B3DE0;
   aBlock[4] = self;
-  v45 = v5;
+  v45 = resultCopy;
   v47 = v45;
   v42 = _Block_copy(aBlock);
-  v41 = [(AMSBagNetworkDataSource *)self dataSourceChangedHandler];
-  if (v41)
+  dataSourceChangedHandler = [(AMSBagNetworkDataSource *)self dataSourceChangedHandler];
+  if (dataSourceChangedHandler)
   {
-    v6 = [(AMSBagNetworkDataSource *)self cachedResult];
-    v43 = [v6 data];
+    cachedResult = [(AMSBagNetworkDataSource *)self cachedResult];
+    data = [cachedResult data];
 
-    v7 = [v45 data];
-    v8 = v7;
-    if (v43)
+    data2 = [v45 data];
+    v8 = data2;
+    if (data)
     {
-      v9 = v43;
+      v9 = data;
     }
 
     else
@@ -857,7 +857,7 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
       v9 = MEMORY[0x1E695E0F8];
     }
 
-    log = [v7 ams_keysForChangedValuesComparedToDictionary:v9];
+    log = [data2 ams_keysForChangedValuesComparedToDictionary:v9];
 
     if (![log count])
     {
@@ -867,8 +867,8 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
         v21 = +[AMSLogConfig sharedConfig];
       }
 
-      v22 = [(AMSBagDataSourceChange *)v21 OSLogObject];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [(AMSBagDataSourceChange *)v21 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v23 = AMSLogKey();
         v24 = MEMORY[0x1E696AEC0];
@@ -886,7 +886,7 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
         v26 = ;
         *buf = 138543362;
         v49 = v26;
-        _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@Loaded bag is equal to the previous bag. dataSourceChangedHandler won't be called.", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Loaded bag is equal to the previous bag. dataSourceChangedHandler won't be called.", buf, 0xCu);
         if (v23)
         {
 
@@ -897,7 +897,7 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
       goto LABEL_45;
     }
 
-    if (v43)
+    if (data)
     {
       v10 = +[AMSLogConfig sharedBagConfig];
       if (!v10)
@@ -905,8 +905,8 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
         v10 = +[AMSLogConfig sharedConfig];
       }
 
-      v11 = [v10 OSLogObject];
-      if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v10 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_44;
       }
@@ -927,7 +927,7 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
       v15 = ;
       *buf = 138543362;
       v49 = v15;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Bag data has changed. dataSourceChangedHandler will be called.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Bag data has changed. dataSourceChangedHandler will be called.", buf, 0xCu);
       if (v12)
       {
 
@@ -943,8 +943,8 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
         v10 = +[AMSLogConfig sharedConfig];
       }
 
-      v11 = [v10 OSLogObject];
-      if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v10 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_44;
       }
@@ -965,7 +965,7 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
       v15 = ;
       *buf = 138543362;
       v49 = v15;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Bag data was initially loaded. dataSourceChangedHandler will be called.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Bag data was initially loaded. dataSourceChangedHandler will be called.", buf, 0xCu);
       if (v12)
       {
 
@@ -975,20 +975,20 @@ void __49__AMSBagNetworkDataSource__accountStoreDidChange__block_invoke_35(uint6
 
 LABEL_44:
     v29 = [AMSBagDataSourceChange alloc];
-    v39 = [(AMSBagNetworkDataSource *)self profile];
-    v40 = [(AMSBagNetworkDataSource *)self profileVersion];
-    v30 = [(AMSBagNetworkDataSource *)self cachedResult];
-    v31 = [v30 data];
-    v32 = [(AMSBagNetworkDataSource *)self cachedResult];
-    v33 = [v32 expirationDate];
-    v34 = [v45 data];
-    v35 = [v45 expirationDate];
-    v36 = [v45 loadedBagIdentifier];
-    v37 = [v45 loadedBagPartialIdentifier];
-    v38 = [v45 accountIdentifier];
-    v21 = [(AMSBagDataSourceChange *)v29 initWithProfile:v39 profileVersion:v40 originalData:v31 originalExpirationDate:v33 updatedData:v34 updatedExpirationDate:v35 changedKeys:log loadedBagIdentifier:v36 loadedBagPartialIdentifier:v37 accountIdentifier:v38];
+    profile = [(AMSBagNetworkDataSource *)self profile];
+    profileVersion = [(AMSBagNetworkDataSource *)self profileVersion];
+    cachedResult2 = [(AMSBagNetworkDataSource *)self cachedResult];
+    data3 = [cachedResult2 data];
+    cachedResult3 = [(AMSBagNetworkDataSource *)self cachedResult];
+    expirationDate = [cachedResult3 expirationDate];
+    data4 = [v45 data];
+    expirationDate2 = [v45 expirationDate];
+    loadedBagIdentifier = [v45 loadedBagIdentifier];
+    loadedBagPartialIdentifier = [v45 loadedBagPartialIdentifier];
+    accountIdentifier = [v45 accountIdentifier];
+    v21 = [(AMSBagDataSourceChange *)v29 initWithProfile:profile profileVersion:profileVersion originalData:data3 originalExpirationDate:expirationDate updatedData:data4 updatedExpirationDate:expirationDate2 changedKeys:log loadedBagIdentifier:loadedBagIdentifier loadedBagPartialIdentifier:loadedBagPartialIdentifier accountIdentifier:accountIdentifier];
 
-    (v41)[2](v41, v21);
+    (dataSourceChangedHandler)[2](dataSourceChangedHandler, v21);
 LABEL_45:
 
     goto LABEL_46;
@@ -1000,7 +1000,7 @@ LABEL_45:
     v16 = +[AMSLogConfig sharedConfig];
   }
 
-  v43 = v16;
+  data = v16;
   log = [v16 OSLogObject];
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -1033,25 +1033,25 @@ LABEL_46:
   v42[2]();
 }
 
-+ (void)_valueForURLVariable:(id)a3 account:(id)a4 clientInfo:(id)a5 sync:(BOOL)a6 completion:(id)a7
++ (void)_valueForURLVariable:(id)variable account:(id)account clientInfo:(id)info sync:(BOOL)sync completion:(id)completion
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v13)
+  syncCopy = sync;
+  variableCopy = variable;
+  accountCopy = account;
+  infoCopy = info;
+  completionCopy = completion;
+  if (accountCopy)
   {
-    v16 = [AMSPromise promiseWithResult:v13];
+    v16 = [AMSPromise promiseWithResult:accountCopy];
   }
 
   else
   {
     v17 = [AMSBagActiveAccountProvider alloc];
-    v18 = [v14 accountMediaType];
-    if (v8)
+    accountMediaType = [infoCopy accountMediaType];
+    if (syncCopy)
     {
-      v19 = [(AMSBagActiveAccountProvider *)v17 bagAccountForAccountMediaType:v18];
+      v19 = [(AMSBagActiveAccountProvider *)v17 bagAccountForAccountMediaType:accountMediaType];
 
       if (v19)
       {
@@ -1067,7 +1067,7 @@ LABEL_46:
 
     else
     {
-      v16 = [(AMSBagActiveAccountProvider *)v17 bagAccountPromiseForAccountMediaType:v18];
+      v16 = [(AMSBagActiveAccountProvider *)v17 bagAccountPromiseForAccountMediaType:accountMediaType];
     }
   }
 
@@ -1075,11 +1075,11 @@ LABEL_46:
   v23[1] = 3221225472;
   v23[2] = __83__AMSBagNetworkDataSource__valueForURLVariable_account_clientInfo_sync_completion___block_invoke;
   v23[3] = &unk_1E73B4468;
-  v25 = v15;
-  v26 = a1;
-  v24 = v12;
-  v21 = v15;
-  v22 = v12;
+  v25 = completionCopy;
+  selfCopy = self;
+  v24 = variableCopy;
+  v21 = completionCopy;
+  v22 = variableCopy;
   [v16 addFinishBlock:v23];
 }
 

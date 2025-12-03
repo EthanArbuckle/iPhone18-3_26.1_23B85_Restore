@@ -1,18 +1,18 @@
 @interface VNEntityIdentificationModelReadOptions
-- (BOOL)isEqual:(id)a3;
-- (VNEntityIdentificationModelReadOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (VNEntityIdentificationModelReadOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNEntityIdentificationModelReadOptions
 
-- (VNEntityIdentificationModelReadOptions)initWithCoder:(id)a3
+- (VNEntityIdentificationModelReadOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(VNEntityIdentificationModelReadOptions *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acceptableVersions"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acceptableVersions"];
     acceptableVersions = v5->_acceptableVersions;
     v5->_acceptableVersions = v6;
 
@@ -22,7 +22,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -34,10 +34,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -47,9 +47,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNEntityIdentificationModelReadOptions *)self acceptableVersions];
-      v7 = [(VNEntityIdentificationModelReadOptions *)v5 acceptableVersions];
+      v5 = equalCopy;
+      acceptableVersions = [(VNEntityIdentificationModelReadOptions *)self acceptableVersions];
+      acceptableVersions2 = [(VNEntityIdentificationModelReadOptions *)v5 acceptableVersions];
 
       v8 = VisionCoreEqualOrNilObjects();
     }

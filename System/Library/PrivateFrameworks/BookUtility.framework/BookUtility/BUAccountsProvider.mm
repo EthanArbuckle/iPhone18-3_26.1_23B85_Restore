@@ -3,7 +3,7 @@
 - (ACAccount)activeStoreAccount;
 - (ACAccount)localStoreAccount;
 - (ACAccount)primaryAppleAccount;
-- (BOOL)detectedUserSwitchWithId:(id)a3 outSignedIn:(BOOL *)a4 outSignedOut:(BOOL *)a5 outAccountNumberChanged:(BOOL *)a6;
+- (BOOL)detectedUserSwitchWithId:(id)id outSignedIn:(BOOL *)in outSignedOut:(BOOL *)out outAccountNumberChanged:(BOOL *)changed;
 - (BOOL)hasCloudKitEntitlement;
 - (BOOL)hasRecommendationsEnabled;
 - (BOOL)isGlobalICloudDriveSyncOptedIn;
@@ -18,28 +18,28 @@
 - (NSString)currentStorefront;
 - (NSString)iCloudAccountName;
 - (NSString)iCloudIdentity;
-- (id)_observersForAccountType:(unint64_t)a3;
+- (id)_observersForAccountType:(unint64_t)type;
 - (id)l_activeStoreAccount;
 - (id)l_primaryAppleAccount;
-- (int64_t)_addObserver:(id)a3 forAccountType:(unint64_t)a4;
-- (int64_t)_observerCountForAccountType:(unint64_t)a3;
-- (int64_t)_removeObserver:(id)a3 forAccountType:(unint64_t)a4;
-- (unint64_t)_singleAccountTypeForNotification:(id)a3;
-- (void)_didReceiveNotification:(id)a3;
-- (void)_registerNotificationForAccountTypeIfNeeded:(unint64_t)a3;
-- (void)_unregisterNotificationForAccountType:(unint64_t)a3;
-- (void)addObserver:(id)a3 accountTypes:(unint64_t)a4;
+- (int64_t)_addObserver:(id)observer forAccountType:(unint64_t)type;
+- (int64_t)_observerCountForAccountType:(unint64_t)type;
+- (int64_t)_removeObserver:(id)observer forAccountType:(unint64_t)type;
+- (unint64_t)_singleAccountTypeForNotification:(id)notification;
+- (void)_didReceiveNotification:(id)notification;
+- (void)_registerNotificationForAccountTypeIfNeeded:(unint64_t)needed;
+- (void)_unregisterNotificationForAccountType:(unint64_t)type;
+- (void)addObserver:(id)observer accountTypes:(unint64_t)types;
 - (void)clearLastUsedStoreAccountID;
 - (void)dealloc;
 - (void)nq_resetAppleAccountCachedValues;
 - (void)nq_resetStoreAccountCachedValues;
-- (void)nq_setupNotifyBlockForAccountType:(unint64_t)a3 currentAccountIdentifier:(id)a4;
-- (void)nq_teardownNotifyBlockForAccountType:(unint64_t)a3;
-- (void)nq_updateAccountIdentifierAndNotifyObserversForAccountType:(unint64_t)a3;
+- (void)nq_setupNotifyBlockForAccountType:(unint64_t)type currentAccountIdentifier:(id)identifier;
+- (void)nq_teardownNotifyBlockForAccountType:(unint64_t)type;
+- (void)nq_updateAccountIdentifierAndNotifyObserversForAccountType:(unint64_t)type;
 - (void)nq_updateiCloudAccountIdentifierAndNotifyObservers;
 - (void)nq_updateiTunesAccountIdentifierAndNotifyObservers;
 - (void)observeTCCAccessChangeNotificationIfNeeded;
-- (void)removeObserver:(id)a3 accountTypes:(unint64_t)a4;
+- (void)removeObserver:(id)observer accountTypes:(unint64_t)types;
 - (void)ubiquityIdentityDidChange;
 - (void)updateLastUsedStoreAccountID;
 @end
@@ -103,7 +103,7 @@
   v6[1] = 3221225472;
   v7 = sub_241DA7870;
   v8 = &unk_278D1CE00;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock_with_options();
@@ -156,7 +156,7 @@
   v6[1] = 3221225472;
   v7 = sub_241DA8450;
   v8 = &unk_278D1D0D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock_with_options();
@@ -234,7 +234,7 @@
   v6[1] = 3221225472;
   v7 = sub_241DA8BE0;
   v8 = &unk_278D1CE00;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock_with_options();
@@ -323,7 +323,7 @@ LABEL_16:
   v6[1] = 3221225472;
   v7 = sub_241DA9628;
   v8 = &unk_278D1D0D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock_with_options();
@@ -375,7 +375,7 @@ LABEL_16:
   v6[1] = 3221225472;
   v7 = sub_241DA9FB8;
   v8 = &unk_278D1D0D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock_with_options();
@@ -414,7 +414,7 @@ LABEL_16:
   v5[1] = 3221225472;
   v6 = sub_241DC4098;
   v7 = &unk_278D1CE00;
-  v8 = self;
+  selfCopy = self;
   v9 = &v10;
   v3 = v5;
   os_unfair_lock_lock_with_options();
@@ -459,13 +459,13 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)detectedUserSwitchWithId:(id)a3 outSignedIn:(BOOL *)a4 outSignedOut:(BOOL *)a5 outAccountNumberChanged:(BOOL *)a6
+- (BOOL)detectedUserSwitchWithId:(id)id outSignedIn:(BOOL *)in outSignedOut:(BOOL *)out outAccountNumberChanged:(BOOL *)changed
 {
-  v10 = a3;
+  idCopy = id;
   v13 = objc_msgSend_activeStoreAccount(self, v11, v12);
   v16 = objc_msgSend_ams_DSID(v13, v14, v15);
 
-  if (v10)
+  if (idCopy)
   {
     v18 = v16 == 0;
   }
@@ -476,12 +476,12 @@ LABEL_16:
   }
 
   v19 = v18;
-  if (a5)
+  if (out)
   {
-    *a5 = v19;
+    *out = v19;
   }
 
-  if (v10)
+  if (idCopy)
   {
     v20 = 1;
   }
@@ -492,20 +492,20 @@ LABEL_16:
   }
 
   v21 = !v20;
-  if (a4)
+  if (in)
   {
-    *a4 = v21;
+    *in = v21;
   }
 
   LOBYTE(v22) = 0;
-  if (v10 && v16)
+  if (idCopy && v16)
   {
-    v22 = objc_msgSend_isEqualToNumber_(v10, v17, v16) ^ 1;
+    v22 = objc_msgSend_isEqualToNumber_(idCopy, v17, v16) ^ 1;
   }
 
-  if (a6)
+  if (changed)
   {
-    *a6 = v22;
+    *changed = v22;
   }
 
   v23 = (v19 || v21) | v22;
@@ -537,19 +537,19 @@ LABEL_16:
   objc_msgSend_removeObjectForKey_(v4, v3, @"BKPreviousUserId");
 }
 
-- (void)addObserver:(id)a3 accountTypes:(unint64_t)a4
+- (void)addObserver:(id)observer accountTypes:(unint64_t)types
 {
-  v4 = a4;
-  v6 = a3;
+  typesCopy = types;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   v8 = self->_notifyQueue;
-  if ((v4 & 1) != 0 && objc_msgSend__addObserver_forAccountType_(self, v7, v6, 1) == 1)
+  if ((typesCopy & 1) != 0 && objc_msgSend__addObserver_forAccountType_(self, v7, observerCopy, 1) == 1)
   {
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v30 = sub_241DC468C;
     v31 = &unk_278D1D148;
-    v32 = self;
+    selfCopy = self;
     v9 = v29;
     os_unfair_lock_lock_with_options();
     (v30)(v9);
@@ -564,9 +564,9 @@ LABEL_16:
     objc_destroyWeak(&v28);
   }
 
-  if ((v4 & 2) != 0)
+  if ((typesCopy & 2) != 0)
   {
-    v10 = objc_msgSend__addObserver_forAccountType_(self, v7, v6, 2);
+    v10 = objc_msgSend__addObserver_forAccountType_(self, v7, observerCopy, 2);
     if (objc_msgSend_hasCloudKitEntitlement(self, v11, v12))
     {
       if (v10 == 1)
@@ -575,7 +575,7 @@ LABEL_16:
         v23[1] = 3221225472;
         v24 = sub_241DC471C;
         v25 = &unk_278D1D148;
-        v26 = self;
+        selfCopy2 = self;
         v13 = v23;
         os_unfair_lock_lock_with_options();
         (v24)(v13);
@@ -609,12 +609,12 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (void)removeObserver:(id)a3 accountTypes:(unint64_t)a4
+- (void)removeObserver:(id)observer accountTypes:(unint64_t)types
 {
-  v4 = a4;
-  v6 = a3;
+  typesCopy = types;
+  observerCopy = observer;
   objc_initWeak(&location, self);
-  if ((v4 & 1) != 0 && !objc_msgSend__removeObserver_forAccountType_(self, v7, v6, 1))
+  if ((typesCopy & 1) != 0 && !objc_msgSend__removeObserver_forAccountType_(self, v7, observerCopy, 1))
   {
     notifyQueue = self->_notifyQueue;
     v12[0] = MEMORY[0x277D85DD0];
@@ -624,18 +624,18 @@ LABEL_16:
     objc_copyWeak(&v13, &location);
     dispatch_async(notifyQueue, v12);
     objc_destroyWeak(&v13);
-    if ((v4 & 2) == 0)
+    if ((typesCopy & 2) == 0)
     {
       goto LABEL_7;
     }
   }
 
-  else if ((v4 & 2) == 0)
+  else if ((typesCopy & 2) == 0)
   {
     goto LABEL_7;
   }
 
-  if (!objc_msgSend__removeObserver_forAccountType_(self, v7, v6, 2))
+  if (!objc_msgSend__removeObserver_forAccountType_(self, v7, observerCopy, 2))
   {
     v8 = self->_notifyQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -710,9 +710,9 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_appleAccountCacheLock);
 }
 
-- (int64_t)_addObserver:(id)a3 forAccountType:(unint64_t)a4
+- (int64_t)_addObserver:(id)observer forAccountType:(unint64_t)type
 {
-  v6 = a3;
+  observerCopy = observer;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -721,9 +721,9 @@ LABEL_7:
   v11[1] = 3221225472;
   v12 = sub_241DC5090;
   v13 = &unk_278D1DAB0;
-  v14 = self;
-  v17 = a4;
-  v7 = v6;
+  selfCopy = self;
+  typeCopy = type;
+  v7 = observerCopy;
   v15 = v7;
   v16 = &v18;
   v8 = v11;
@@ -737,9 +737,9 @@ LABEL_7:
   return v9;
 }
 
-- (int64_t)_removeObserver:(id)a3 forAccountType:(unint64_t)a4
+- (int64_t)_removeObserver:(id)observer forAccountType:(unint64_t)type
 {
-  v6 = a3;
+  observerCopy = observer;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -748,9 +748,9 @@ LABEL_7:
   v11[1] = 3221225472;
   v12 = sub_241DC5290;
   v13 = &unk_278D1DAB0;
-  v14 = self;
-  v17 = a4;
-  v7 = v6;
+  selfCopy = self;
+  typeCopy = type;
+  v7 = observerCopy;
   v15 = v7;
   v16 = &v18;
   v8 = v11;
@@ -764,7 +764,7 @@ LABEL_7:
   return v9;
 }
 
-- (id)_observersForAccountType:(unint64_t)a3
+- (id)_observersForAccountType:(unint64_t)type
 {
   v13 = 0;
   v14 = &v13;
@@ -776,9 +776,9 @@ LABEL_7:
   v7[1] = 3221225472;
   v8 = sub_241DC5460;
   v9 = &unk_278D1DAD8;
-  v10 = self;
+  selfCopy = self;
   v11 = &v13;
-  v12 = a3;
+  typeCopy = type;
   v4 = v7;
   os_unfair_lock_lock_with_options();
   v8(v4);
@@ -790,7 +790,7 @@ LABEL_7:
   return v5;
 }
 
-- (int64_t)_observerCountForAccountType:(unint64_t)a3
+- (int64_t)_observerCountForAccountType:(unint64_t)type
 {
   v13 = 0;
   v14 = &v13;
@@ -801,8 +801,8 @@ LABEL_7:
   v8 = sub_241DC55E0;
   v9 = &unk_278D1DB00;
   v11 = &v13;
-  v12 = a3;
-  v10 = self;
+  typeCopy = type;
+  selfCopy = self;
   v4 = v7;
   os_unfair_lock_lock_with_options();
   v8(v4);
@@ -813,10 +813,10 @@ LABEL_7:
   return v5;
 }
 
-- (void)_registerNotificationForAccountTypeIfNeeded:(unint64_t)a3
+- (void)_registerNotificationForAccountTypeIfNeeded:(unint64_t)needed
 {
   objc_initWeak(&location, self);
-  if (a3 == 2)
+  if (needed == 2)
   {
     if (objc_msgSend_hasCloudKitEntitlement(self, v5, v6))
     {
@@ -839,7 +839,7 @@ LABEL_7:
     }
   }
 
-  else if (a3 == 1)
+  else if (needed == 1)
   {
     v7 = objc_msgSend_storeAccountDidChangeNotificationRegisteredToken(self, v5, v6);
 
@@ -865,9 +865,9 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)_unregisterNotificationForAccountType:(unint64_t)a3
+- (void)_unregisterNotificationForAccountType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v13 = objc_msgSend_appleAccountDidChangeNotificationRegisteredToken(self, a2, 2);
 
@@ -882,7 +882,7 @@ LABEL_8:
     }
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     v4 = objc_msgSend_storeAccountDidChangeNotificationRegisteredToken(self, a2, 1);
 
@@ -897,9 +897,9 @@ LABEL_8:
   }
 }
 
-- (void)_didReceiveNotification:(id)a3
+- (void)_didReceiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_initWeak(&location, self);
   notifyQueue = self->_notifyQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -907,22 +907,22 @@ LABEL_8:
   block[2] = sub_241DC5B74;
   block[3] = &unk_278D1DA60;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(notifyQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)nq_setupNotifyBlockForAccountType:(unint64_t)a3 currentAccountIdentifier:(id)a4
+- (void)nq_setupNotifyBlockForAccountType:(unint64_t)type currentAccountIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_notifyQueue);
-  if (objc_msgSend__observerCountForAccountType_(self, v7, a3) >= 1)
+  if (objc_msgSend__observerCountForAccountType_(self, v7, type) >= 1)
   {
     notifyBlocks = self->_notifyBlocks;
-    v10 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v8, a3);
+    v10 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v8, type);
     v12 = objc_msgSend_objectForKeyedSubscript_(notifyBlocks, v11, v10);
 
     if (!v12)
@@ -937,19 +937,19 @@ LABEL_8:
       v15 = v13;
       v36 = v15;
       objc_copyWeak(v37, &location);
-      v37[1] = a3;
-      v17 = NSStringFromBUAccountsType(a3, v16);
+      v37[1] = type;
+      v17 = NSStringFromBUAccountsType(type, v16);
       v19 = objc_msgSend_initWithNotifyBlock_blockDescription_(v14, v18, &v32, v17);
 
       objc_msgSend_setCoalescingDelay_(v19, v20, v21, 1.0, v32, v33, v34, v35);
       objc_msgSend_setMaximumDelay_(v19, v22, v23, 2.0);
       v24 = self->_notifyBlocks;
-      v26 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v25, a3);
+      v26 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v25, type);
       objc_msgSend_setObject_forKeyedSubscript_(v24, v27, v19, v26);
 
       accountIdentifiers = self->_accountIdentifiers;
-      v30 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v29, a3);
-      objc_msgSend_setObject_forKeyedSubscript_(accountIdentifiers, v31, v6, v30);
+      v30 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v29, type);
+      objc_msgSend_setObject_forKeyedSubscript_(accountIdentifiers, v31, identifierCopy, v30);
 
       objc_destroyWeak(v37);
       objc_destroyWeak(&location);
@@ -957,38 +957,38 @@ LABEL_8:
   }
 }
 
-- (void)nq_teardownNotifyBlockForAccountType:(unint64_t)a3
+- (void)nq_teardownNotifyBlockForAccountType:(unint64_t)type
 {
   dispatch_assert_queue_V2(self->_notifyQueue);
-  if (!objc_msgSend__observerCountForAccountType_(self, v5, a3))
+  if (!objc_msgSend__observerCountForAccountType_(self, v5, type))
   {
     notifyBlocks = self->_notifyBlocks;
-    v8 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v6, a3);
+    v8 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v6, type);
     v10 = objc_msgSend_objectForKeyedSubscript_(notifyBlocks, v9, v8);
 
     if (v10)
     {
       v12 = self->_notifyBlocks;
-      v13 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v11, a3);
+      v13 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v11, type);
       objc_msgSend_removeObjectForKey_(v12, v14, v13);
 
       accountIdentifiers = self->_accountIdentifiers;
-      v18 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v16, a3);
+      v18 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v16, type);
       objc_msgSend_removeObjectForKey_(accountIdentifiers, v17, v18);
     }
   }
 }
 
-- (void)nq_updateAccountIdentifierAndNotifyObserversForAccountType:(unint64_t)a3
+- (void)nq_updateAccountIdentifierAndNotifyObserversForAccountType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     objc_msgSend_nq_resetAppleAccountCachedValues(self, a2, 2);
 
     MEMORY[0x2821F9670](self, sel_nq_updateiCloudAccountIdentifierAndNotifyObservers, v5);
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     objc_msgSend_nq_resetStoreAccountCachedValues(self, a2, 1);
 
@@ -1100,7 +1100,7 @@ LABEL_8:
     v14[3] = &unk_278D1DBC8;
     v15 = v5;
     objc_copyWeak(&v17, &location);
-    v16 = self;
+    selfCopy = self;
     objc_msgSend_fetchUserRecordIDWithCompletionHandler_(v12, v13, v14);
 
     objc_destroyWeak(&v17);
@@ -1109,14 +1109,14 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (unint64_t)_singleAccountTypeForNotification:(id)a3
+- (unint64_t)_singleAccountTypeForNotification:(id)notification
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v6 = objc_msgSend_name(v3, v4, v5);
+  notificationCopy = notification;
+  v6 = objc_msgSend_name(notificationCopy, v4, v5);
   if (objc_msgSend_isEqualToString_(v6, v7, *MEMORY[0x277CB8B78]))
   {
-    v10 = objc_msgSend_userInfo(v3, v8, v9);
+    v10 = objc_msgSend_userInfo(notificationCopy, v8, v9);
     v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, *MEMORY[0x277CB8C90]);
 
     if (v12 && !objc_msgSend_isEqualToString_(v12, v13, *MEMORY[0x277CB8D58]))

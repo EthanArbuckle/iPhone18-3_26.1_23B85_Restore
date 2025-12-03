@@ -1,6 +1,6 @@
 @interface MapsSuggestionsBaseCondition
 - (BOOL)isTrue;
-- (MapsSuggestionsBaseCondition)initWithName:(id)a3;
+- (MapsSuggestionsBaseCondition)initWithName:(id)name;
 - (id)objectForJSON;
 @end
 
@@ -8,20 +8,20 @@
 
 - (id)objectForJSON
 {
-  v2 = [(MapsSuggestionsBaseCondition *)self isTrue];
+  isTrue = [(MapsSuggestionsBaseCondition *)self isTrue];
 
-  return MSg::jsonFor(v2);
+  return MSg::jsonFor(isTrue);
 }
 
-- (MapsSuggestionsBaseCondition)initWithName:(id)a3
+- (MapsSuggestionsBaseCondition)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = MapsSuggestionsBaseCondition;
   v5 = [(MapsSuggestionsBaseCondition *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
   }

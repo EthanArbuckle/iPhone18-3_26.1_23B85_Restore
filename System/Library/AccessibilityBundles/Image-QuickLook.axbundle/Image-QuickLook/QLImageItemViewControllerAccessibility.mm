@@ -1,28 +1,28 @@
 @interface QLImageItemViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axPhotoDescriptionFromContents:(id)a3 context:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axPhotoDescriptionFromContents:(id)contents context:(id)context;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
 @end
 
 @implementation QLImageItemViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"QLImageItemViewController" hasInstanceMethod:@"loadPreviewControllerWithContents:context:completionHandler:" withFullSignature:{"v", "@", "@", "@?", 0}];
-  [v3 validateClass:@"QLImageItemViewController" hasInstanceMethod:@"previewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"QLImageItemViewController" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
-  [v3 validateClass:@"QLImageItemViewController" isKindOfClass:@"QLItemViewController"];
-  [v3 validateClass:@"QLItemViewController" hasInstanceMethod:@"contents" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"QLItemViewController" hasInstanceMethod:@"context" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"QLPreviewContext"];
-  [v3 validateClass:@"QLPreviewContext" hasInstanceMethod:@"previewTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"QLPreviewContext" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"QLItem" conformsToProtocol:@"QLPreviewItem"];
-  [v3 validateClass:@"QLItem" hasInstanceMethod:@"editedFileURL" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"QLAnimatedImage"];
-  [v3 validateClass:@"QLAnimatedImage" hasInstanceMethod:@"frameAtTime:" withFullSignature:{"@", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"QLImageItemViewController" hasInstanceMethod:@"loadPreviewControllerWithContents:context:completionHandler:" withFullSignature:{"v", "@", "@", "@?", 0}];
+  [validationsCopy validateClass:@"QLImageItemViewController" hasInstanceMethod:@"previewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"QLImageItemViewController" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"QLImageItemViewController" isKindOfClass:@"QLItemViewController"];
+  [validationsCopy validateClass:@"QLItemViewController" hasInstanceMethod:@"contents" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"QLItemViewController" hasInstanceMethod:@"context" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"QLPreviewContext"];
+  [validationsCopy validateClass:@"QLPreviewContext" hasInstanceMethod:@"previewTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"QLPreviewContext" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"QLItem" conformsToProtocol:@"QLPreviewItem"];
+  [validationsCopy validateClass:@"QLItem" hasInstanceMethod:@"editedFileURL" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"QLAnimatedImage"];
+  [validationsCopy validateClass:@"QLAnimatedImage" hasInstanceMethod:@"frameAtTime:" withFullSignature:{"@", "d", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -38,26 +38,26 @@
   [v6 setAccessibilityLabel:v5];
 }
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
   v6.receiver = self;
   v6.super_class = QLImageItemViewControllerAccessibility;
-  [(QLImageItemViewControllerAccessibility *)&v6 loadPreviewControllerWithContents:a3 context:a4 completionHandler:a5];
+  [(QLImageItemViewControllerAccessibility *)&v6 loadPreviewControllerWithContents:contents context:context completionHandler:handler];
   [(QLImageItemViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (id)_axPhotoDescriptionFromContents:(id)a3 context:(id)a4
+- (id)_axPhotoDescriptionFromContents:(id)contents context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 accessibilityLabel];
-  if (!v7)
+  contentsCopy = contents;
+  contextCopy = context;
+  accessibilityLabel = [contextCopy accessibilityLabel];
+  if (!accessibilityLabel)
   {
-    v7 = [v6 safeValueForKey:@"previewTitle"];
+    accessibilityLabel = [contextCopy safeValueForKey:@"previewTitle"];
   }
 
   LOBYTE(v22) = 0;
-  v8 = [v6 safeValueForKey:@"item"];
+  v8 = [contextCopy safeValueForKey:@"item"];
   v9 = [v8 safeValueForKey:@"editedFileURL"];
   v10 = __UIAccessibilitySafeClass();
 
@@ -90,7 +90,7 @@ LABEL_11:
   v25 = __Block_byref_object_copy_;
   v26 = __Block_byref_object_dispose_;
   v27 = 0;
-  v21 = v5;
+  v21 = contentsCopy;
   AXPerformSafeBlock();
   v11 = v23[5];
 
@@ -104,11 +104,11 @@ LABEL_11:
   }
 
   v13 = v12;
-  v14 = [v12 CGImage];
+  cGImage = [v12 CGImage];
 
   v15 = 0;
   v16 = 0;
-  if (v14)
+  if (cGImage)
   {
     goto LABEL_11;
   }

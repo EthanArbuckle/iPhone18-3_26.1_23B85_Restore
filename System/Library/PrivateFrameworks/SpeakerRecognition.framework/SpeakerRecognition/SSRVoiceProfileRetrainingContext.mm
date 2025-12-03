@@ -1,5 +1,5 @@
 @interface SSRVoiceProfileRetrainingContext
-- (SSRVoiceProfileRetrainingContext)initWithVoiceRetrainingContext:(id)a3 skipClassTypeValidate:(BOOL)a4 error:(id *)a5;
+- (SSRVoiceProfileRetrainingContext)initWithVoiceRetrainingContext:(id)context skipClassTypeValidate:(BOOL)validate error:(id *)error;
 - (id)description;
 @end
 
@@ -10,16 +10,16 @@
   v2 = MEMORY[0x277CCACA8];
   sessionId = self->_sessionId;
   asset = self->_asset;
-  v5 = [(SSRVoiceProfile *)self->_voiceProfile profileID];
-  v6 = [v2 stringWithFormat:@"[SessionId: %@, Asset: %@, ProfileID: %@]", sessionId, asset, v5];
+  profileID = [(SSRVoiceProfile *)self->_voiceProfile profileID];
+  v6 = [v2 stringWithFormat:@"[SessionId: %@, Asset: %@, ProfileID: %@]", sessionId, asset, profileID];
 
   return v6;
 }
 
-- (SSRVoiceProfileRetrainingContext)initWithVoiceRetrainingContext:(id)a3 skipClassTypeValidate:(BOOL)a4 error:(id *)a5
+- (SSRVoiceProfileRetrainingContext)initWithVoiceRetrainingContext:(id)context skipClassTypeValidate:(BOOL)validate error:(id *)error
 {
   v150[1] = *MEMORY[0x277D85DE8];
-  v125 = a3;
+  contextCopy = context;
   v131.receiver = self;
   v131.super_class = SSRVoiceProfileRetrainingContext;
   v7 = [(SSRVoiceProfileRetrainingContext *)&v131 init];
@@ -28,9 +28,9 @@
     goto LABEL_96;
   }
 
-  v8 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingVoiceProfile"];
+  v8 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingVoiceProfile"];
 
-  if (a4)
+  if (validate)
   {
     if (!v8)
     {
@@ -46,13 +46,13 @@ LABEL_9:
         _os_log_error_impl(&dword_225E12000, v17, OS_LOG_TYPE_ERROR, "%s %{public}@", buf, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
         v18 = MEMORY[0x277CCA9B8];
         v149 = @"reason";
         v150[0] = v16;
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v150 forKeys:&v149 count:1];
-        *a5 = [v18 errorWithDomain:@"com.apple.speakerrecognition" code:713 userInfo:v19];
+        *error = [v18 errorWithDomain:@"com.apple.speakerrecognition" code:713 userInfo:v19];
       }
 
 LABEL_13:
@@ -70,7 +70,7 @@ LABEL_14:
       goto LABEL_9;
     }
 
-    v9 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingVoiceProfile"];
+    v9 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingVoiceProfile"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -80,15 +80,15 @@ LABEL_14:
     }
   }
 
-  v11 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingVoiceProfile"];
+  v11 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingVoiceProfile"];
   v12 = *(v7 + 4);
   *(v7 + 4) = v11;
 
-  v13 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingAsset"];
+  v13 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingAsset"];
 
   if (v13)
   {
-    v14 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingAsset"];
+    v14 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingAsset"];
     v15 = *(v7 + 10);
     *(v7 + 10) = v14;
   }
@@ -96,19 +96,19 @@ LABEL_14:
   else
   {
     v15 = +[SSRAssetManager sharedManager];
-    v21 = [*(v7 + 4) locale];
-    v22 = [v15 installedAssetOfType:3 forLanguage:v21];
+    locale = [*(v7 + 4) locale];
+    v22 = [v15 installedAssetOfType:3 forLanguage:locale];
     v23 = *(v7 + 10);
     *(v7 + 10) = v22;
   }
 
   if ([MEMORY[0x277D018F8] supportsSecureAssetForSpeakerRecognition])
   {
-    v24 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingSecureAsset"];
+    v24 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingSecureAsset"];
 
     if (v24)
     {
-      v25 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingSecureAsset"];
+      v25 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingSecureAsset"];
       v26 = *(v7 + 11);
       *(v7 + 11) = v25;
     }
@@ -116,8 +116,8 @@ LABEL_14:
     else
     {
       v26 = objc_alloc_init(SSRSecureAssetProvider);
-      v27 = [*(v7 + 4) locale];
-      v28 = [(SSRSecureAssetProvider *)v26 fetchSecureAssetForLocale:v27 withAsset:*(v7 + 10)];
+      locale2 = [*(v7 + 4) locale];
+      v28 = [(SSRSecureAssetProvider *)v26 fetchSecureAssetForLocale:locale2 withAsset:*(v7 + 10)];
       v29 = *(v7 + 11);
       *(v7 + 11) = v28;
     }
@@ -137,32 +137,32 @@ LABEL_14:
       _os_log_error_impl(&dword_225E12000, v44, OS_LOG_TYPE_ERROR, "%s %{public}@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v45 = MEMORY[0x277CCA9B8];
       v147 = @"reason";
       v148 = v16;
       v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v148 forKeys:&v147 count:1];
-      *a5 = [v45 errorWithDomain:@"com.apple.speakerrecognition" code:107 userInfo:v46];
+      *error = [v45 errorWithDomain:@"com.apple.speakerrecognition" code:107 userInfo:v46];
     }
 
     goto LABEL_13;
   }
 
-  v31 = [v30 configVersion];
+  configVersion = [v30 configVersion];
   v32 = *(v7 + 7);
-  *(v7 + 7) = v31;
+  *(v7 + 7) = configVersion;
 
   [*(v7 + 10) psrCombinationWeight];
   *(v7 + 3) = v33;
-  v34 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingPayloadProfile"];
+  v34 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingPayloadProfile"];
 
   if (v34)
   {
-    v35 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingPayloadProfile"];
-    v36 = [v35 BOOLValue];
+    v35 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingPayloadProfile"];
+    bOOLValue = [v35 BOOLValue];
     v37 = 3;
-    if (!v36)
+    if (!bOOLValue)
     {
       v37 = 1;
     }
@@ -172,8 +172,8 @@ LABEL_14:
 
   else
   {
-    v38 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingSpIdType"];
-    if (!v38 || ([v125 objectForKeyedSubscript:@"SSRVoiceRetrainingSpIdType"], v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "intValue") == 0, v39, v38, v40))
+    v38 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingSpIdType"];
+    if (!v38 || ([contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingSpIdType"], v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "intValue") == 0, v39, v38, v40))
     {
       v42 = *(v7 + 10);
       if (CSIsCommunalDevice())
@@ -205,21 +205,21 @@ LABEL_14:
 
     else
     {
-      v41 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingSpIdType"];
+      v41 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingSpIdType"];
       *(v7 + 5) = [v41 intValue];
     }
   }
 
   v48 = MEMORY[0x277CBEBC0];
-  v49 = [*(v7 + 10) resourcePath];
-  v50 = [v48 URLWithString:v49];
+  resourcePath = [*(v7 + 10) resourcePath];
+  v50 = [v48 URLWithString:resourcePath];
   v51 = *(v7 + 6);
   *(v7 + 6) = v50;
 
-  v52 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingCompareVoiceProfiles"];
+  v52 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingCompareVoiceProfiles"];
   if (v52)
   {
-    v53 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingCompareVoiceProfiles"];
+    v53 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingCompareVoiceProfiles"];
     objc_opt_class();
     v54 = objc_opt_isKindOfClass();
 
@@ -236,13 +236,13 @@ LABEL_14:
         _os_log_error_impl(&dword_225E12000, v104, OS_LOG_TYPE_ERROR, "%s %{public}@", buf, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
         v105 = MEMORY[0x277CCA9B8];
         v145 = @"reason";
         v146 = v16;
         v106 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v146 forKeys:&v145 count:1];
-        *a5 = [v105 errorWithDomain:@"com.apple.speakerrecognition" code:713 userInfo:v106];
+        *error = [v105 errorWithDomain:@"com.apple.speakerrecognition" code:713 userInfo:v106];
       }
 
       goto LABEL_13;
@@ -250,20 +250,20 @@ LABEL_14:
   }
 
   *(v7 + 9) = 0;
-  v55 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingForce"];
+  v55 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingForce"];
 
   if (v55)
   {
-    v56 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingForce"];
+    v56 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingForce"];
     *(v7 + 9) = [v56 BOOLValue];
   }
 
-  v57 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingCompareVoiceProfiles"];
+  v57 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingCompareVoiceProfiles"];
   v58 = *(v7 + 3);
   *(v7 + 3) = v57;
 
   v124 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v122 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v59 = 0;
   v60 = 1;
   *&v61 = 136315906;
@@ -293,20 +293,20 @@ LABEL_53:
     {
       v64 = +[SSRUtils satConfigFileNameForCSSpIdType:forModelType:forAssetType:](SSRUtils, "satConfigFileNameForCSSpIdType:forModelType:forAssetType:", *(v7 + 5), v60, [*(v7 + 10) assetProvider]);
       v67 = MEMORY[0x277CBEBC0];
-      v68 = [*(v7 + 10) resourcePath];
-      v69 = [v68 stringByAppendingPathComponent:v64];
+      resourcePath2 = [*(v7 + 10) resourcePath];
+      v69 = [resourcePath2 stringByAppendingPathComponent:v64];
       v65 = [v67 URLWithString:v69];
 
       v70 = [*(v7 + 4) voiceProfileModelFilePathForRecognizerType:v60 spIdType:*(v7 + 5)];
-      v71 = [*(v7 + 10) hashFromResourcePath];
-      v66 = [v70 URLByAppendingPathComponent:v71];
+      hashFromResourcePath = [*(v7 + 10) hashFromResourcePath];
+      v66 = [v70 URLByAppendingPathComponent:hashFromResourcePath];
 
       v72 = *(v7 + 5);
-      v73 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingCompareVoiceProfilesSpIdType"];
+      v73 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingCompareVoiceProfilesSpIdType"];
 
       if (v73)
       {
-        v74 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingCompareVoiceProfilesSpIdType"];
+        v74 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingCompareVoiceProfilesSpIdType"];
         LODWORD(v72) = [v74 intValue];
 
         v72 = v72;
@@ -357,8 +357,8 @@ LABEL_53:
 
     else
     {
-      v83 = [v65 path];
-      v84 = [v122 fileExistsAtPath:v83];
+      path = [v65 path];
+      v84 = [defaultManager fileExistsAtPath:path];
 
       if ((v84 & 1) == 0)
       {
@@ -367,7 +367,7 @@ LABEL_53:
         {
           v88 = [SSRUtils stringForCSSpIdType:*(v7 + 5)];
           v89 = [SSRUtils stringForSpeakerRecognizerType:v60];
-          v90 = [*(v7 + 4) locale];
+          locale3 = [*(v7 + 4) locale];
           *v134 = v121;
           v135 = "[SSRVoiceProfileRetrainingContext initWithVoiceRetrainingContext:skipClassTypeValidate:error:]";
           v136 = 2114;
@@ -375,7 +375,7 @@ LABEL_53:
           v138 = 2114;
           v139 = v89;
           v140 = 2114;
-          v141 = v90;
+          v141 = locale3;
           _os_log_impl(&dword_225E12000, v87, OS_LOG_TYPE_DEFAULT, "%s Skipping model {%{public}@, %{public}@} for %{public}@", v134, 0x2Au);
         }
 
@@ -404,7 +404,7 @@ LABEL_53:
     {
       v93 = [SSRUtils stringForCSSpIdType:*(v7 + 5)];
       v94 = [SSRUtils stringForSpeakerRecognizerType:v60];
-      v95 = [*(v7 + 4) locale];
+      locale4 = [*(v7 + 4) locale];
       *v134 = v121;
       v135 = "[SSRVoiceProfileRetrainingContext initWithVoiceRetrainingContext:skipClassTypeValidate:error:]";
       v136 = 2114;
@@ -412,7 +412,7 @@ LABEL_53:
       v138 = 2114;
       v139 = v94;
       v140 = 2114;
-      v141 = v95;
+      v141 = locale4;
       _os_log_impl(&dword_225E12000, v92, OS_LOG_TYPE_DEFAULT, "%s Added model context {%{public}@, %{public}@} for %{public}@", v134, 0x2Au);
     }
 
@@ -439,7 +439,7 @@ LABEL_76:
     v97 = v96;
     v98 = [SSRUtils stringForCSSpIdType:v63];
     v99 = [SSRUtils stringForSpeakerRecognizerType:v60];
-    v100 = [*(v7 + 4) locale];
+    locale5 = [*(v7 + 4) locale];
     *buf = v121;
     *&buf[4] = "[SSRVoiceProfileRetrainingContext initWithVoiceRetrainingContext:skipClassTypeValidate:error:]";
     *&buf[12] = 2114;
@@ -447,7 +447,7 @@ LABEL_76:
     *&buf[22] = 2114;
     v143 = v99;
     LOWORD(v144) = 2114;
-    *(&v144 + 2) = v100;
+    *(&v144 + 2) = locale5;
     _os_log_impl(&dword_225E12000, v97, OS_LOG_TYPE_DEFAULT, "%s Skipping SAT Model {%{public}@, %{public}@} for %{public}@", buf, 0x2Au);
   }
 
@@ -476,23 +476,23 @@ LABEL_78:
       _os_log_error_impl(&dword_225E12000, v108, OS_LOG_TYPE_ERROR, "%s %{public}@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v109 = MEMORY[0x277CCA9B8];
       v132 = @"reason";
       v133 = v107;
       v110 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v133 forKeys:&v132 count:1];
-      *a5 = [v109 errorWithDomain:@"com.apple.speakerrecognition" code:713 userInfo:v110];
+      *error = [v109 errorWithDomain:@"com.apple.speakerrecognition" code:713 userInfo:v110];
     }
 
     goto LABEL_14;
   }
 
-  v102 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingFilterToVoiceTriggerUtterances"];
+  v102 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingFilterToVoiceTriggerUtterances"];
 
   if (v102)
   {
-    v103 = [v125 objectForKeyedSubscript:@"SSRVoiceRetrainingFilterToVoiceTriggerUtterances"];
+    v103 = [contextCopy objectForKeyedSubscript:@"SSRVoiceRetrainingFilterToVoiceTriggerUtterances"];
     *(v7 + 8) = [v103 BOOLValue];
   }
 
@@ -502,15 +502,15 @@ LABEL_78:
   }
 
   *(v7 + 8) = [*(v7 + 10) maxAllowedEnrollmentUtterances];
-  v111 = [MEMORY[0x277CCAD78] UUID];
-  v112 = [v111 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v113 = *(v7 + 2);
-  *(v7 + 2) = v112;
+  *(v7 + 2) = uUIDString;
 
   v114 = [SSRLoggingAggregator alloc];
-  v115 = [*(v7 + 4) locale];
-  v116 = [*(v7 + 10) configVersion];
-  v117 = [(SSRLoggingAggregator *)v114 initWithEvent:@"retraining" locale:v115 configVersion:v116];
+  locale6 = [*(v7 + 4) locale];
+  configVersion2 = [*(v7 + 10) configVersion];
+  v117 = [(SSRLoggingAggregator *)v114 initWithEvent:@"retraining" locale:locale6 configVersion:configVersion2];
   v118 = *(v7 + 12);
   *(v7 + 12) = v117;
 

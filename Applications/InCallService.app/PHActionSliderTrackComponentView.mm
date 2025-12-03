@@ -1,13 +1,13 @@
 @interface PHActionSliderTrackComponentView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation PHActionSliderTrackComponentView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"path"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"path"])
   {
     v5 = 1;
   }
@@ -16,7 +16,7 @@
   {
     v7.receiver = self;
     v7.super_class = PHActionSliderTrackComponentView;
-    v5 = [(PHActionSliderTrackComponentView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(PHActionSliderTrackComponentView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

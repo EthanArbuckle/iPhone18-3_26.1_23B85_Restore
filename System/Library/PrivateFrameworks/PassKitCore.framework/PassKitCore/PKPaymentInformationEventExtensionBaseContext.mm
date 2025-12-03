@@ -1,7 +1,7 @@
 @interface PKPaymentInformationEventExtensionBaseContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (id)remoteContextWithErrorHandler:(id)a3;
+- (id)remoteContextWithErrorHandler:(id)handler;
 @end
 
 @implementation PKPaymentInformationEventExtensionBaseContext
@@ -56,11 +56,11 @@ void __62__PKPaymentInformationEventExtensionBaseContext_remoteContext__block_in
   }
 }
 
-- (id)remoteContextWithErrorHandler:(id)a3
+- (id)remoteContextWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PKPaymentInformationEventExtensionBaseContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(PKPaymentInformationEventExtensionBaseContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

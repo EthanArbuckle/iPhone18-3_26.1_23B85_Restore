@@ -1,21 +1,21 @@
 @interface PRLanguage
 + (id)dataBundle;
-+ (id)englishLocalizationAdditionForLanguage:(id)a3;
-+ (id)fallbackLocalizationForLanguage:(id)a3;
-+ (id)languageModelFallbackLocalizationForLanguage:(id)a3;
-+ (id)languageModelLocalizationForLanguage:(id)a3;
-+ (id)languageObjectWithIdentifier:(id)a3;
-+ (id)localizationForLanguage:(id)a3;
-+ (id)localizationsForLanguage:(id)a3;
-+ (id)spellingFallbackLocalizationForLanguage:(id)a3;
-+ (id)textInputModeForLanguage:(id)a3;
-+ (id)transliterationLocalizationForLanguage:(id)a3;
-+ (unint64_t)orthographyIndexForLanguageCode:(unsigned __int8)a3;
-+ (unint64_t)orthographyIndexForOtherLanguage:(id)a3;
-+ (unsigned)encodingForOrthographyIndex:(unint64_t)a3;
-+ (void)getCodesForLanguage:(id)a3 languageCode:(char *)a4 languageDialect:(char *)a5 languageMode:(char *)a6 orthographyIndex:(unint64_t *)a7 encoding:(unsigned int *)a8;
++ (id)englishLocalizationAdditionForLanguage:(id)language;
++ (id)fallbackLocalizationForLanguage:(id)language;
++ (id)languageModelFallbackLocalizationForLanguage:(id)language;
++ (id)languageModelLocalizationForLanguage:(id)language;
++ (id)languageObjectWithIdentifier:(id)identifier;
++ (id)localizationForLanguage:(id)language;
++ (id)localizationsForLanguage:(id)language;
++ (id)spellingFallbackLocalizationForLanguage:(id)language;
++ (id)textInputModeForLanguage:(id)language;
++ (id)transliterationLocalizationForLanguage:(id)language;
++ (unint64_t)orthographyIndexForLanguageCode:(unsigned __int8)code;
++ (unint64_t)orthographyIndexForOtherLanguage:(id)language;
++ (unsigned)encodingForOrthographyIndex:(unint64_t)index;
++ (void)getCodesForLanguage:(id)language languageCode:(char *)code languageDialect:(char *)dialect languageMode:(char *)mode orthographyIndex:(unint64_t *)index encoding:(unsigned int *)encoding;
 - (BOOL)isBicameral;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSupportedAssetLexiconLanguage;
 - (BOOL)isSupportedCompletionLanguage;
 - (BOOL)isSupportedLatinLanguage;
@@ -26,8 +26,8 @@
 - (BOOL)usesOrdinalPeriod;
 - (BOOL)usesSentencePieceModel;
 - (BOOL)usesUnigramProbabilities;
-- (PRLanguage)initWithCoder:(id)a3;
-- (PRLanguage)initWithIdentifier:(id)a3;
+- (PRLanguage)initWithCoder:(id)coder;
+- (PRLanguage)initWithIdentifier:(id)identifier;
 - (const)accents;
 - (const)oneLetterWords;
 - (const)twoLetterWords;
@@ -38,7 +38,7 @@
 - (id)transliterationLocalization;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRLanguage
@@ -55,92 +55,92 @@
   return v2;
 }
 
-+ (id)localizationsForLanguage:(id)a3
++ (id)localizationsForLanguage:(id)language
 {
-  v4 = [objc_msgSend(a1 "dataBundle")];
-  if ([a3 isEqualToString:@"American English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"AmericanEnglish"))
+  v4 = [objc_msgSend(self "dataBundle")];
+  if ([language isEqualToString:@"American English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"AmericanEnglish"))
   {
-    a3 = @"en_US";
+    language = @"en_US";
   }
 
-  else if ([a3 isEqualToString:@"Australian English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"AustralianEnglish"))
+  else if ([language isEqualToString:@"Australian English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"AustralianEnglish"))
   {
-    a3 = @"en_AU";
+    language = @"en_AU";
   }
 
-  else if ([a3 isEqualToString:@"Canadian English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"CanadianEnglish"))
+  else if ([language isEqualToString:@"Canadian English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"CanadianEnglish"))
   {
-    a3 = @"en_CA";
+    language = @"en_CA";
   }
 
-  else if ([a3 isEqualToString:@"British English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"BritishEnglish"))
+  else if ([language isEqualToString:@"British English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"BritishEnglish"))
   {
-    a3 = @"en_GB";
+    language = @"en_GB";
   }
 
-  else if ([a3 isEqualToString:@"Indian English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"IndianEnglish"))
+  else if ([language isEqualToString:@"Indian English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"IndianEnglish"))
   {
-    a3 = @"en_IN";
+    language = @"en_IN";
   }
 
-  else if ([a3 isEqualToString:@"Singapore English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"SingaporeEnglish"))
+  else if ([language isEqualToString:@"Singapore English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"SingaporeEnglish"))
   {
-    a3 = @"en_SG";
+    language = @"en_SG";
   }
 
-  else if ([a3 isEqualToString:@"Japanese English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"JapaneseEnglish"))
+  else if ([language isEqualToString:@"Japanese English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"JapaneseEnglish"))
   {
-    a3 = @"en_JP";
+    language = @"en_JP";
   }
 
-  else if ([a3 isEqualToString:@"Chinese English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"ChineseEnglish"))
+  else if ([language isEqualToString:@"Chinese English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"ChineseEnglish"))
   {
-    a3 = @"en_CN";
+    language = @"en_CN";
   }
 
-  else if ([a3 isEqualToString:@"New Zealand English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"NewZealandEnglish"))
+  else if ([language isEqualToString:@"New Zealand English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"NewZealandEnglish"))
   {
-    a3 = @"en_NZ";
+    language = @"en_NZ";
   }
 
-  else if ([a3 isEqualToString:@"South African English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"SouthAfricanEnglish"))
+  else if ([language isEqualToString:@"South African English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"SouthAfricanEnglish"))
   {
-    a3 = @"en_ZA";
+    language = @"en_ZA";
   }
 
-  else if ([a3 isEqualToString:@"Swiss German"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"SwissGerman"))
+  else if ([language isEqualToString:@"Swiss German"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"SwissGerman"))
   {
-    a3 = @"de_CH";
+    language = @"de_CH";
   }
 
-  else if ([a3 isEqualToString:@"Brazilian Portuguese"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"BrazilianPortuguese"))
+  else if ([language isEqualToString:@"Brazilian Portuguese"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"BrazilianPortuguese"))
   {
-    a3 = @"pt_BR";
+    language = @"pt_BR";
   }
 
-  else if ([a3 isEqualToString:@"European Portuguese"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"EuropeanPortuguese"))
+  else if ([language isEqualToString:@"European Portuguese"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"EuropeanPortuguese"))
   {
-    a3 = @"pt_PT";
+    language = @"pt_PT";
   }
 
-  else if ([a3 isEqualToString:@"Norwegian Bokmål"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"NorwegianBokmål") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"Bokmål"))
+  else if ([language isEqualToString:@"Norwegian Bokmål"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"NorwegianBokmål") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"Bokmål"))
   {
-    a3 = @"nb";
+    language = @"nb";
   }
 
-  else if ([a3 isEqualToString:@"Norwegian Nynorsk"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"NorwegianNynorsk") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"Nynorsk"))
+  else if ([language isEqualToString:@"Norwegian Nynorsk"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"NorwegianNynorsk") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"Nynorsk"))
   {
-    a3 = @"nn";
+    language = @"nn";
   }
 
-  else if (([a3 isEqualToString:@"Irish Gaelic"] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"IrishGaelic"))
+  else if (([language isEqualToString:@"Irish Gaelic"] & 1) != 0 || objc_msgSend(language, "isEqualToString:", @"IrishGaelic"))
   {
-    a3 = @"ga";
+    language = @"ga";
   }
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObject:a3];
+    v5 = [MEMORY[0x1E695DEC8] arrayWithObject:language];
     v6 = [MEMORY[0x1E696AAE8] preferredLocalizationsFromArray:v4 forPreferences:v5];
     if (v6)
     {
@@ -150,7 +150,7 @@
         return v7;
       }
 
-      if ([a3 isEqualToString:@"English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"en") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en_") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en-"))
+      if ([language isEqualToString:@"English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"en") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en_") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en-"))
       {
         return v7;
       }
@@ -159,20 +159,20 @@
 
   v9 = MEMORY[0x1E695DEC8];
 
-  return [v9 arrayWithObject:a3];
+  return [v9 arrayWithObject:language];
 }
 
-+ (id)localizationForLanguage:(id)a3
++ (id)localizationForLanguage:(id)language
 {
   if (localizationForLanguage__onceToken != -1)
   {
     +[PRLanguage localizationForLanguage:];
   }
 
-  result = [localizationForLanguage__localizationDict objectForKey:a3];
+  result = [localizationForLanguage__localizationDict objectForKey:language];
   if (!result)
   {
-    result = [a1 localizationsForLanguage:a3];
+    result = [self localizationsForLanguage:language];
     if (result)
     {
       v6 = result;
@@ -186,7 +186,7 @@
 
   if (!result)
   {
-    return a3;
+    return language;
   }
 
   return result;
@@ -199,17 +199,17 @@ uint64_t __38__PRLanguage_localizationForLanguage___block_invoke()
   return result;
 }
 
-+ (id)fallbackLocalizationForLanguage:(id)a3
++ (id)fallbackLocalizationForLanguage:(id)language
 {
   if (fallbackLocalizationForLanguage__onceToken != -1)
   {
     +[PRLanguage fallbackLocalizationForLanguage:];
   }
 
-  result = [fallbackLocalizationForLanguage__localizationDict objectForKey:a3];
+  result = [fallbackLocalizationForLanguage__localizationDict objectForKey:language];
   if (!result)
   {
-    result = [a1 localizationsForLanguage:a3];
+    result = [self localizationsForLanguage:language];
     if (result)
     {
       v6 = result;
@@ -227,7 +227,7 @@ uint64_t __38__PRLanguage_localizationForLanguage___block_invoke()
 
   if (!result)
   {
-    return a3;
+    return language;
   }
 
   return result;
@@ -240,17 +240,17 @@ uint64_t __46__PRLanguage_fallbackLocalizationForLanguage___block_invoke()
   return result;
 }
 
-+ (id)languageModelLocalizationForLanguage:(id)a3
++ (id)languageModelLocalizationForLanguage:(id)language
 {
   if (languageModelLocalizationForLanguage__onceToken != -1)
   {
     +[PRLanguage languageModelLocalizationForLanguage:];
   }
 
-  result = [languageModelLocalizationForLanguage__localizationDict objectForKey:a3];
+  result = [languageModelLocalizationForLanguage__localizationDict objectForKey:language];
   if (!result)
   {
-    return a3;
+    return language;
   }
 
   return result;
@@ -263,17 +263,17 @@ uint64_t __51__PRLanguage_languageModelLocalizationForLanguage___block_invoke()
   return result;
 }
 
-+ (id)languageModelFallbackLocalizationForLanguage:(id)a3
++ (id)languageModelFallbackLocalizationForLanguage:(id)language
 {
   if (languageModelFallbackLocalizationForLanguage__onceToken != -1)
   {
     +[PRLanguage languageModelFallbackLocalizationForLanguage:];
   }
 
-  result = [languageModelFallbackLocalizationForLanguage__localizationDict objectForKey:a3];
+  result = [languageModelFallbackLocalizationForLanguage__localizationDict objectForKey:language];
   if (!result)
   {
-    return a3;
+    return language;
   }
 
   return result;
@@ -286,17 +286,17 @@ uint64_t __59__PRLanguage_languageModelFallbackLocalizationForLanguage___block_i
   return result;
 }
 
-+ (id)textInputModeForLanguage:(id)a3
++ (id)textInputModeForLanguage:(id)language
 {
   if (textInputModeForLanguage__onceToken != -1)
   {
     +[PRLanguage textInputModeForLanguage:];
   }
 
-  result = [textInputModeForLanguage__textInputModeDict objectForKey:a3];
+  result = [textInputModeForLanguage__textInputModeDict objectForKey:language];
   if (!result)
   {
-    return a3;
+    return language;
   }
 
   return result;
@@ -309,172 +309,172 @@ uint64_t __39__PRLanguage_textInputModeForLanguage___block_invoke()
   return result;
 }
 
-+ (unint64_t)orthographyIndexForLanguageCode:(unsigned __int8)a3
++ (unint64_t)orthographyIndexForLanguageCode:(unsigned __int8)code
 {
-  if ((a3 - 1) > 0x24)
+  if ((code - 1) > 0x24)
   {
     return 0;
   }
 
   else
   {
-    return qword_1D2BFA770[(a3 - 1)];
+    return qword_1D2BFA770[(code - 1)];
   }
 }
 
-+ (unint64_t)orthographyIndexForOtherLanguage:(id)a3
++ (unint64_t)orthographyIndexForOtherLanguage:(id)language
 {
-  if ([a3 isEqualToString:@"Amharic"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"am"))
+  if ([language isEqualToString:@"Amharic"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"am"))
   {
     return 244;
   }
 
-  if ([a3 isEqualToString:@"Najdi Arabic"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"ars"))
+  if ([language isEqualToString:@"Najdi Arabic"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"ars"))
   {
     return 160;
   }
 
-  if ([a3 isEqualToString:@"Armenian"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"hy"))
+  if ([language isEqualToString:@"Armenian"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"hy"))
   {
     return 226;
   }
 
-  if ([a3 isEqualToString:@"Bengali"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"bn"))
+  if ([language isEqualToString:@"Bengali"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"bn"))
   {
     return 230;
   }
 
-  if ([a3 isEqualToString:@"Burmese"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"Myanmar") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"my"))
+  if ([language isEqualToString:@"Burmese"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"Myanmar") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"my"))
   {
     return 242;
   }
 
-  if ([a3 isEqualToString:@"Cherokee"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"chr"))
+  if ([language isEqualToString:@"Cherokee"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"chr"))
   {
     return 245;
   }
 
-  if ([a3 isEqualToString:@"Croatian"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"hr"))
+  if ([language isEqualToString:@"Croatian"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"hr"))
   {
     return 40;
   }
 
-  if ([a3 isEqualToString:@"Georgian"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"ka"))
+  if ([language isEqualToString:@"Georgian"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"ka"))
   {
     return 243;
   }
 
-  if ([a3 isEqualToString:@"Gujarati"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"gu"))
+  if ([language isEqualToString:@"Gujarati"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"gu"))
   {
     return 232;
   }
 
-  if ([a3 isEqualToString:@"Hindi"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"hi"))
+  if ([language isEqualToString:@"Hindi"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"hi"))
   {
     return 192;
   }
 
-  if ([a3 isEqualToString:@"Icelandic"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"is"))
+  if ([language isEqualToString:@"Icelandic"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"is"))
   {
     return 18;
   }
 
-  if ([a3 isEqualToString:@"Indonesian"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"id"))
+  if ([language isEqualToString:@"Indonesian"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"id"))
   {
     return 74;
   }
 
-  if ([a3 isEqualToString:@"Inuktitut"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"iu"))
+  if ([language isEqualToString:@"Inuktitut"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"iu"))
   {
     return 208;
   }
 
-  if ([a3 isEqualToString:@"Kannada"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"kn"))
+  if ([language isEqualToString:@"Kannada"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"kn"))
   {
     return 236;
   }
 
-  if ([a3 isEqualToString:@"Kazakh"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"kk"))
+  if ([language isEqualToString:@"Kazakh"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"kk"))
   {
     return 138;
   }
 
-  if ([a3 isEqualToString:@"Khmer"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"kh"))
+  if ([language isEqualToString:@"Khmer"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"kh"))
   {
     return 247;
   }
 
-  if ([a3 isEqualToString:@"Lao"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"lo"))
+  if ([language isEqualToString:@"Lao"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"lo"))
   {
     return 240;
   }
 
-  if ([a3 isEqualToString:@"Malayalam"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"ml"))
+  if ([language isEqualToString:@"Malayalam"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"ml"))
   {
     return 237;
   }
 
-  if ([a3 isEqualToString:@"Marathi"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"mr"))
+  if ([language isEqualToString:@"Marathi"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"mr"))
   {
     return 193;
   }
 
-  if ([a3 isEqualToString:@"Mongolian"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"mn"))
+  if ([language isEqualToString:@"Mongolian"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"mn"))
   {
     return 248;
   }
 
-  if ([a3 isEqualToString:@"Norwegian Nynorsk"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"NorwegianNynorsk") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"Nynorsk") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"nn"))
+  if ([language isEqualToString:@"Norwegian Nynorsk"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"NorwegianNynorsk") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"Nynorsk") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"nn"))
   {
     return 16;
   }
 
-  if ([a3 isEqualToString:@"Oriya"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"or"))
+  if ([language isEqualToString:@"Oriya"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"or"))
   {
     return 233;
   }
 
-  if ([a3 isEqualToString:@"Persian"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"Farsi") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"fa"))
+  if ([language isEqualToString:@"Persian"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"Farsi") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"fa"))
   {
     return 161;
   }
 
-  if ([a3 isEqualToString:@"Punjabi"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"pa"))
+  if ([language isEqualToString:@"Punjabi"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"pa"))
   {
     return 231;
   }
 
-  if ([a3 isEqualToString:@"Sinhalese"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"si"))
+  if ([language isEqualToString:@"Sinhalese"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"si"))
   {
     return 238;
   }
 
-  if ([a3 isEqualToString:@"Slovak"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"sk"))
+  if ([language isEqualToString:@"Slovak"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"sk"))
   {
     return 46;
   }
 
-  if ([a3 isEqualToString:@"Tamil"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"ta"))
+  if ([language isEqualToString:@"Tamil"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"ta"))
   {
     return 234;
   }
 
-  if ([a3 isEqualToString:@"Telugu"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"te"))
+  if ([language isEqualToString:@"Telugu"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"te"))
   {
     return 235;
   }
 
-  if ([a3 isEqualToString:@"Tibetan"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"bo"))
+  if ([language isEqualToString:@"Tibetan"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"bo"))
   {
     return 241;
   }
 
-  if ([a3 isEqualToString:@"Ukrainian"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"uk"))
+  if ([language isEqualToString:@"Ukrainian"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"uk"))
   {
     return 129;
   }
 
-  if (([a3 isEqualToString:@"Urdu"] & 1) != 0 || objc_msgSend(a3, "hasPrefix:", @"ur"))
+  if (([language isEqualToString:@"Urdu"] & 1) != 0 || objc_msgSend(language, "hasPrefix:", @"ur"))
   {
     return 162;
   }
@@ -482,12 +482,12 @@ uint64_t __39__PRLanguage_textInputModeForLanguage___block_invoke()
   return 0;
 }
 
-+ (unsigned)encodingForOrthographyIndex:(unint64_t)a3
++ (unsigned)encodingForOrthographyIndex:(unint64_t)index
 {
   result = 1280;
-  if (a3 <= 21)
+  if (index <= 21)
   {
-    if (a3 - 6 < 0xB)
+    if (index - 6 < 0xB)
     {
       return result;
     }
@@ -495,13 +495,13 @@ uint64_t __39__PRLanguage_textInputModeForLanguage___block_invoke()
     return 134217984;
   }
 
-  if (a3 > 47)
+  if (index > 47)
   {
-    if (a3 <= 73)
+    if (index <= 73)
     {
-      if (a3 != 48)
+      if (index != 48)
       {
-        if (a3 == 55)
+        if (index == 55)
         {
           return 1284;
         }
@@ -510,9 +510,9 @@ uint64_t __39__PRLanguage_textInputModeForLanguage___block_invoke()
       }
     }
 
-    else if (a3 != 74)
+    else if (index != 74)
     {
-      if (a3 == 128 || a3 == 130)
+      if (index == 128 || index == 130)
       {
         return 517;
       }
@@ -523,9 +523,9 @@ uint64_t __39__PRLanguage_textInputModeForLanguage___block_invoke()
 
   else
   {
-    if (a3 > 40)
+    if (index > 40)
     {
-      if (a3 == 41 || a3 == 42 || a3 == 43)
+      if (index == 41 || index == 42 || index == 43)
       {
         return 514;
       }
@@ -533,7 +533,7 @@ uint64_t __39__PRLanguage_textInputModeForLanguage___block_invoke()
       return 134217984;
     }
 
-    if (a3 != 22 && a3 != 34)
+    if (index != 22 && index != 34)
     {
       return 134217984;
     }
@@ -542,14 +542,14 @@ uint64_t __39__PRLanguage_textInputModeForLanguage___block_invoke()
   return result;
 }
 
-+ (void)getCodesForLanguage:(id)a3 languageCode:(char *)a4 languageDialect:(char *)a5 languageMode:(char *)a6 orthographyIndex:(unint64_t *)a7 encoding:(unsigned int *)a8
++ (void)getCodesForLanguage:(id)language languageCode:(char *)code languageDialect:(char *)dialect languageMode:(char *)mode orthographyIndex:(unint64_t *)index encoding:(unsigned int *)encoding
 {
-  if ([a3 isEqualToString:@"English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"en") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"American English") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"AmericanEnglish") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en_US") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en-US"))
+  if ([language isEqualToString:@"English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"en") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"American English") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"AmericanEnglish") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en_US") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en-US"))
   {
     goto LABEL_7;
   }
 
-  if ([a3 isEqualToString:@"Indian English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"IndianEnglish") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en_IN") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"Singapore English") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"SingaporeEnglish") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en_SG"))
+  if ([language isEqualToString:@"Indian English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"IndianEnglish") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en_IN") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"Singapore English") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"SingaporeEnglish") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en_SG"))
   {
 LABEL_28:
     v16 = 0;
@@ -557,29 +557,29 @@ LABEL_28:
     goto LABEL_8;
   }
 
-  if ([a3 isEqualToString:@"Japanese English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"JapaneseEnglish") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en_JP") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"Chinese English") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"ChineseEnglish") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en_CN"))
+  if ([language isEqualToString:@"Japanese English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"JapaneseEnglish") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en_JP") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"Chinese English") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"ChineseEnglish") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en_CN"))
   {
     goto LABEL_7;
   }
 
-  if ([a3 isEqualToString:@"Australian English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"AustralianEnglish") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en_AU") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en-AU"))
+  if ([language isEqualToString:@"Australian English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"AustralianEnglish") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en_AU") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en-AU"))
   {
     goto LABEL_28;
   }
 
-  if ([a3 isEqualToString:@"Canadian English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"CanadianEnglish") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en_CA") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en-CA"))
+  if ([language isEqualToString:@"Canadian English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"CanadianEnglish") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en_CA") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en-CA"))
   {
     v16 = 0;
     v15 = 32;
     goto LABEL_8;
   }
 
-  if ([a3 isEqualToString:@"New Zealand English"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"NewZealandEnglish") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en_NZ") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"South African English") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"SouthAfricanEnglish") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en_ZA") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"British English") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"BritishEnglish") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"en"))
+  if ([language isEqualToString:@"New Zealand English"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"NewZealandEnglish") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en_NZ") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"South African English") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"SouthAfricanEnglish") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en_ZA") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"British English") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"BritishEnglish") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"en"))
   {
     goto LABEL_28;
   }
 
-  if ([a3 hasPrefix:@"en"])
+  if ([language hasPrefix:@"en"])
   {
 LABEL_7:
     v15 = 0;
@@ -589,7 +589,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([a3 isEqualToString:@"Swiss German"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"SwissGerman") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"de_CH"))
+  if ([language isEqualToString:@"Swiss German"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"SwissGerman") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"de_CH"))
   {
     v16 = 0;
     v15 = 64;
@@ -598,14 +598,14 @@ LABEL_58:
     goto LABEL_9;
   }
 
-  if ([a3 isEqualToString:@"German"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"de"))
+  if ([language isEqualToString:@"German"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"de"))
   {
     v16 = 0;
     v15 = 0x80;
     goto LABEL_58;
   }
 
-  if ([a3 isEqualToString:@"Brazilian Portuguese"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"BrazilianPortuguese") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"pt_BR") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"pt-BR"))
+  if ([language isEqualToString:@"Brazilian Portuguese"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"BrazilianPortuguese") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"pt_BR") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"pt-BR"))
   {
     v16 = 0;
     v15 = 64;
@@ -614,168 +614,168 @@ LABEL_67:
     goto LABEL_9;
   }
 
-  if ([a3 isEqualToString:@"European Portuguese"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"EuropeanPortuguese") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"pt_PT") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"pt-PT") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"Portuguese") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"pt"))
+  if ([language isEqualToString:@"European Portuguese"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"EuropeanPortuguese") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"pt_PT") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"pt-PT") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"Portuguese") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"pt"))
   {
     v16 = 0;
     v15 = 0x80;
     goto LABEL_67;
   }
 
-  if ([a3 isEqualToString:@"Arabic"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"ar"))
+  if ([language isEqualToString:@"Arabic"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"ar"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 20;
   }
 
-  else if ([a3 isEqualToString:@"Bulgarian"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"bg"))
+  else if ([language isEqualToString:@"Bulgarian"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"bg"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 25;
   }
 
-  else if ([a3 isEqualToString:@"Catalan"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"ca"))
+  else if ([language isEqualToString:@"Catalan"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"ca"))
   {
     v15 = 0;
     v16 = 0x80;
     v17 = 3;
   }
 
-  else if ([a3 isEqualToString:@"Czech"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"cs"))
+  else if ([language isEqualToString:@"Czech"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"cs"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 1;
   }
 
-  else if ([a3 isEqualToString:@"Danish"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"da"))
+  else if ([language isEqualToString:@"Danish"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"da"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 10;
   }
 
-  else if ([a3 isEqualToString:@"Dutch"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"nl"))
+  else if ([language isEqualToString:@"Dutch"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"nl"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 11;
   }
 
-  else if ([a3 isEqualToString:@"Finnish"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"fi"))
+  else if ([language isEqualToString:@"Finnish"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"fi"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 14;
   }
 
-  else if ([a3 isEqualToString:@"French"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"fr"))
+  else if ([language isEqualToString:@"French"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"fr"))
   {
     v15 = 0;
     v16 = 96;
     v17 = 5;
   }
 
-  else if ([a3 isEqualToString:@"Greek"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"el"))
+  else if ([language isEqualToString:@"Greek"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"el"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 15;
   }
 
-  else if ([a3 isEqualToString:@"Hebrew"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"he"))
+  else if ([language isEqualToString:@"Hebrew"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"he"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 22;
   }
 
-  else if ([a3 isEqualToString:@"Hungarian"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"hu"))
+  else if ([language isEqualToString:@"Hungarian"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"hu"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 4;
   }
 
-  else if ([a3 isEqualToString:@"Italian"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"it"))
+  else if ([language isEqualToString:@"Italian"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"it"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 9;
   }
 
-  else if ([a3 isEqualToString:@"Korean"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"ko"))
+  else if ([language isEqualToString:@"Korean"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"ko"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 29;
   }
 
-  else if ([a3 isEqualToString:@"Norwegian"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"Norwegian Nynorsk") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"NorwegianNynorsk") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"Nynorsk") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"nb"))
+  else if ([language isEqualToString:@"Norwegian"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"Norwegian Nynorsk") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"NorwegianNynorsk") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"Nynorsk") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"nb"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 13;
   }
 
-  else if ([a3 isEqualToString:@"Polish"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"pl"))
+  else if ([language isEqualToString:@"Polish"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"pl"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 18;
   }
 
-  else if ([a3 isEqualToString:@"Russian"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"ru"))
+  else if ([language isEqualToString:@"Russian"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"ru"))
   {
     v15 = 0;
     v16 = 0x80;
     v17 = 2;
   }
 
-  else if ([a3 isEqualToString:@"Spanish"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"es"))
+  else if ([language isEqualToString:@"Spanish"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"es"))
   {
     v15 = 0;
     v16 = 64;
     v17 = 8;
   }
 
-  else if ([a3 isEqualToString:@"Swedish"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"sv"))
+  else if ([language isEqualToString:@"Swedish"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"sv"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 7;
   }
 
-  else if ([a3 isEqualToString:@"Thai"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"th"))
+  else if ([language isEqualToString:@"Thai"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"th"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 35;
   }
 
-  else if ([a3 isEqualToString:@"Turkish"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"tr"))
+  else if ([language isEqualToString:@"Turkish"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"tr"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 28;
   }
 
-  else if ([a3 isEqualToString:@"Vietnamese"] & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"vi"))
+  else if ([language isEqualToString:@"Vietnamese"] & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"vi"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 36;
   }
 
-  else if ([a3 isEqualToString:@"Irish Gaelic"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"IrishGaelic") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"Gaelic") & 1) != 0 || (objc_msgSend(a3, "hasPrefix:", @"ga"))
+  else if ([language isEqualToString:@"Irish Gaelic"] & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"IrishGaelic") & 1) != 0 || (objc_msgSend(language, "isEqualToString:", @"Gaelic") & 1) != 0 || (objc_msgSend(language, "hasPrefix:", @"ga"))
   {
     v15 = 0;
     v16 = 0;
     v17 = 21;
   }
 
-  else if (([a3 isEqualToString:@"Romanian"] & 1) != 0 || objc_msgSend(a3, "hasPrefix:", @"ro"))
+  else if (([language isEqualToString:@"Romanian"] & 1) != 0 || objc_msgSend(language, "hasPrefix:", @"ro"))
   {
     v15 = 0;
     v16 = 0;
@@ -790,42 +790,42 @@ LABEL_67:
   }
 
 LABEL_9:
-  v18 = [a1 orthographyIndexForLanguageCode:v17];
+  v18 = [self orthographyIndexForLanguageCode:v17];
   if (!v18)
   {
-    v18 = [a1 orthographyIndexForOtherLanguage:a3];
+    v18 = [self orthographyIndexForOtherLanguage:language];
   }
 
-  if (a4)
+  if (code)
   {
-    *a4 = v17;
+    *code = v17;
   }
 
-  if (a5)
+  if (dialect)
   {
-    *a5 = v15;
+    *dialect = v15;
   }
 
-  if (a6)
+  if (mode)
   {
-    *a6 = v16;
+    *mode = v16;
   }
 
-  if (a7)
+  if (index)
   {
-    *a7 = v18;
+    *index = v18;
   }
 
-  if (a8)
+  if (encoding)
   {
-    *a8 = [a1 encodingForOrthographyIndex:v18];
+    *encoding = [self encodingForOrthographyIndex:v18];
   }
 }
 
-+ (id)transliterationLocalizationForLanguage:(id)a3
++ (id)transliterationLocalizationForLanguage:(id)language
 {
-  v4 = baseLanguageForLanguage(a3);
-  if (![objc_msgSend(a1 "supportedTransliterationLanguages")])
+  v4 = baseLanguageForLanguage(language);
+  if (![objc_msgSend(self "supportedTransliterationLanguages")])
   {
     return 0;
   }
@@ -833,15 +833,15 @@ LABEL_9:
   return [v4 stringByAppendingString:@"_Latn"];
 }
 
-+ (id)spellingFallbackLocalizationForLanguage:(id)a3
++ (id)spellingFallbackLocalizationForLanguage:(id)language
 {
-  v4 = baseLanguageForLanguage(a3);
-  if (![objc_msgSend(a1 "supportedSpellingFallbackLanguages")])
+  v4 = baseLanguageForLanguage(language);
+  if (![objc_msgSend(self "supportedSpellingFallbackLanguages")])
   {
     return 0;
   }
 
-  if ([objc_msgSend(a1 "supportedTransliterationLanguages")])
+  if ([objc_msgSend(self "supportedTransliterationLanguages")])
   {
     return @"en_IN";
   }
@@ -849,32 +849,32 @@ LABEL_9:
   return @"en_US";
 }
 
-+ (id)englishLocalizationAdditionForLanguage:(id)a3
++ (id)englishLocalizationAdditionForLanguage:(id)language
 {
-  v4 = baseLanguageForLanguage(a3);
-  v5 = [a1 supportedEnglishLocalizationAdditions];
+  v4 = baseLanguageForLanguage(language);
+  supportedEnglishLocalizationAdditions = [self supportedEnglishLocalizationAdditions];
 
-  return [v5 objectForKey:v4];
+  return [supportedEnglishLocalizationAdditions objectForKey:v4];
 }
 
-+ (id)languageObjectWithIdentifier:(id)a3
++ (id)languageObjectWithIdentifier:(id)identifier
 {
-  v3 = [[a1 alloc] initWithIdentifier:a3];
+  v3 = [[self alloc] initWithIdentifier:identifier];
 
   return v3;
 }
 
-- (PRLanguage)initWithIdentifier:(id)a3
+- (PRLanguage)initWithIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = PRLanguage;
   v4 = [(PRLanguage *)&v6 init];
   if (v4)
   {
-    v4->_identifier = [a3 copy];
-    v4->_localization = [objc_msgSend(objc_opt_class() localizationForLanguage:{a3), "copy"}];
-    v4->_fallbackLocalization = [objc_msgSend(objc_opt_class() fallbackLocalizationForLanguage:{a3), "copy"}];
-    [objc_opt_class() getCodesForLanguage:a3 languageCode:&v4->_languageCode languageDialect:&v4->_languageDialect languageMode:&v4->_languageMode orthographyIndex:&v4->_orthoIndex encoding:&v4->_encoding];
+    v4->_identifier = [identifier copy];
+    v4->_localization = [objc_msgSend(objc_opt_class() localizationForLanguage:{identifier), "copy"}];
+    v4->_fallbackLocalization = [objc_msgSend(objc_opt_class() fallbackLocalizationForLanguage:{identifier), "copy"}];
+    [objc_opt_class() getCodesForLanguage:identifier languageCode:&v4->_languageCode languageDialect:&v4->_languageDialect languageMode:&v4->_languageMode orthographyIndex:&v4->_orthoIndex encoding:&v4->_encoding];
   }
 
   return v4;
@@ -882,19 +882,19 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v2 = [(PRLanguage *)self identifier];
+  identifier = [(PRLanguage *)self identifier];
 
-  return [v2 hash];
+  return [identifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -905,10 +905,10 @@ LABEL_9:
     return 0;
   }
 
-  v5 = [(PRLanguage *)self identifier];
-  v6 = [a3 identifier];
+  identifier = [(PRLanguage *)self identifier];
+  identifier2 = [equal identifier];
 
-  return [v5 isEqual:v6];
+  return [identifier isEqual:identifier2];
 }
 
 - (id)description
@@ -918,26 +918,26 @@ LABEL_9:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@<%@>", -[PRLanguage description](&v3, sel_description), -[PRLanguage identifier](self, "identifier")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"PRLanguage requires keyed coding" userInfo:0]);
   }
 
-  v5 = [(PRLanguage *)self identifier];
+  identifier = [(PRLanguage *)self identifier];
 
-  [a3 encodeObject:v5 forKey:@"PRIdentifier"];
+  [coder encodeObject:identifier forKey:@"PRIdentifier"];
 }
 
-- (PRLanguage)initWithCoder:(id)a3
+- (PRLanguage)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"PRLanguage requires keyed coding" userInfo:0]);
   }
 
-  result = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"PRIdentifier"];
+  result = [coder decodeObjectOfClass:objc_opt_class() forKey:@"PRIdentifier"];
   if (result)
   {
 
@@ -957,33 +957,33 @@ LABEL_9:
 - (id)languageModelLocalization
 {
   v3 = objc_opt_class();
-  v4 = [(PRLanguage *)self identifier];
+  identifier = [(PRLanguage *)self identifier];
 
-  return [v3 languageModelLocalizationForLanguage:v4];
+  return [v3 languageModelLocalizationForLanguage:identifier];
 }
 
 - (id)languageModelFallbackLocalization
 {
   v3 = objc_opt_class();
-  v4 = [(PRLanguage *)self identifier];
+  identifier = [(PRLanguage *)self identifier];
 
-  return [v3 languageModelFallbackLocalizationForLanguage:v4];
+  return [v3 languageModelFallbackLocalizationForLanguage:identifier];
 }
 
 - (id)transliterationLocalization
 {
   v3 = objc_opt_class();
-  v4 = [(PRLanguage *)self identifier];
+  identifier = [(PRLanguage *)self identifier];
 
-  return [v3 transliterationLocalizationForLanguage:v4];
+  return [v3 transliterationLocalizationForLanguage:identifier];
 }
 
 - (id)spellingFallbackLocalization
 {
   v3 = objc_opt_class();
-  v4 = [(PRLanguage *)self identifier];
+  identifier = [(PRLanguage *)self identifier];
 
-  return [v3 spellingFallbackLocalizationForLanguage:v4];
+  return [v3 spellingFallbackLocalizationForLanguage:identifier];
 }
 
 - (const)oneLetterWords
@@ -1177,132 +1177,132 @@ LABEL_9:
 
 - (BOOL)isSupportedAssetLexiconLanguage
 {
-  v3 = [objc_opt_class() supportedAssetLexiconLanguages];
-  if ([v3 containsObject:{-[PRLanguage localization](self, "localization")}])
+  supportedAssetLexiconLanguages = [objc_opt_class() supportedAssetLexiconLanguages];
+  if ([supportedAssetLexiconLanguages containsObject:{-[PRLanguage localization](self, "localization")}])
   {
     return 1;
   }
 
-  v5 = [(PRLanguage *)self fallbackLocalization];
+  fallbackLocalization = [(PRLanguage *)self fallbackLocalization];
 
-  return [v3 containsObject:v5];
+  return [supportedAssetLexiconLanguages containsObject:fallbackLocalization];
 }
 
 - (BOOL)isSupportedCompletionLanguage
 {
-  v3 = [objc_opt_class() supportedCompletionLanguages];
-  if ([v3 containsObject:{-[PRLanguage localization](self, "localization")}])
+  supportedCompletionLanguages = [objc_opt_class() supportedCompletionLanguages];
+  if ([supportedCompletionLanguages containsObject:{-[PRLanguage localization](self, "localization")}])
   {
     return 1;
   }
 
-  v5 = [(PRLanguage *)self fallbackLocalization];
+  fallbackLocalization = [(PRLanguage *)self fallbackLocalization];
 
-  return [v3 containsObject:v5];
+  return [supportedCompletionLanguages containsObject:fallbackLocalization];
 }
 
 - (BOOL)isSupportedSingleCompletionLanguage
 {
-  v3 = [objc_opt_class() supportedSingleCompletionLanguages];
-  if ([v3 containsObject:{-[PRLanguage localization](self, "localization")}])
+  supportedSingleCompletionLanguages = [objc_opt_class() supportedSingleCompletionLanguages];
+  if ([supportedSingleCompletionLanguages containsObject:{-[PRLanguage localization](self, "localization")}])
   {
     return 1;
   }
 
-  v5 = [(PRLanguage *)self fallbackLocalization];
+  fallbackLocalization = [(PRLanguage *)self fallbackLocalization];
 
-  return [v3 containsObject:v5];
+  return [supportedSingleCompletionLanguages containsObject:fallbackLocalization];
 }
 
 - (BOOL)isSupportedLatinLanguage
 {
-  v3 = [objc_opt_class() supportedLatinLanguages];
-  if ([v3 containsObject:{-[PRLanguage localization](self, "localization")}])
+  supportedLatinLanguages = [objc_opt_class() supportedLatinLanguages];
+  if ([supportedLatinLanguages containsObject:{-[PRLanguage localization](self, "localization")}])
   {
     return 1;
   }
 
-  v5 = [(PRLanguage *)self fallbackLocalization];
+  fallbackLocalization = [(PRLanguage *)self fallbackLocalization];
 
-  return [v3 containsObject:v5];
+  return [supportedLatinLanguages containsObject:fallbackLocalization];
 }
 
 - (BOOL)usesOrdinalPeriod
 {
-  v3 = [objc_opt_class() languagesUsingOrdinalPeriod];
-  if ([v3 containsObject:{-[PRLanguage localization](self, "localization")}])
+  languagesUsingOrdinalPeriod = [objc_opt_class() languagesUsingOrdinalPeriod];
+  if ([languagesUsingOrdinalPeriod containsObject:{-[PRLanguage localization](self, "localization")}])
   {
     return 1;
   }
 
-  v5 = [(PRLanguage *)self fallbackLocalization];
+  fallbackLocalization = [(PRLanguage *)self fallbackLocalization];
 
-  return [v3 containsObject:v5];
+  return [languagesUsingOrdinalPeriod containsObject:fallbackLocalization];
 }
 
 - (BOOL)usesSentencePieceModel
 {
-  v3 = [objc_opt_class() languagesUsingSentencePieceModel];
-  if ([v3 containsObject:{-[PRLanguage localization](self, "localization")}])
+  languagesUsingSentencePieceModel = [objc_opt_class() languagesUsingSentencePieceModel];
+  if ([languagesUsingSentencePieceModel containsObject:{-[PRLanguage localization](self, "localization")}])
   {
     return 1;
   }
 
-  v5 = [(PRLanguage *)self fallbackLocalization];
+  fallbackLocalization = [(PRLanguage *)self fallbackLocalization];
 
-  return [v3 containsObject:v5];
+  return [languagesUsingSentencePieceModel containsObject:fallbackLocalization];
 }
 
 - (BOOL)usesUnigramProbabilities
 {
-  v3 = [objc_opt_class() languagesUsingUnigramProbabilities];
-  if ([v3 containsObject:{-[PRLanguage localization](self, "localization")}])
+  languagesUsingUnigramProbabilities = [objc_opt_class() languagesUsingUnigramProbabilities];
+  if ([languagesUsingUnigramProbabilities containsObject:{-[PRLanguage localization](self, "localization")}])
   {
     return 1;
   }
 
-  v5 = [(PRLanguage *)self fallbackLocalization];
+  fallbackLocalization = [(PRLanguage *)self fallbackLocalization];
 
-  return [v3 containsObject:v5];
+  return [languagesUsingUnigramProbabilities containsObject:fallbackLocalization];
 }
 
 - (BOOL)usesArabicScript
 {
-  v3 = [objc_opt_class() arabicLanguages];
-  if ([v3 containsObject:{-[PRLanguage localization](self, "localization")}])
+  arabicLanguages = [objc_opt_class() arabicLanguages];
+  if ([arabicLanguages containsObject:{-[PRLanguage localization](self, "localization")}])
   {
     return 1;
   }
 
-  v5 = [(PRLanguage *)self fallbackLocalization];
+  fallbackLocalization = [(PRLanguage *)self fallbackLocalization];
 
-  return [v3 containsObject:v5];
+  return [arabicLanguages containsObject:fallbackLocalization];
 }
 
 - (BOOL)usesCyrillicScript
 {
-  v3 = [objc_opt_class() cyrillicLanguages];
-  if ([v3 containsObject:{-[PRLanguage localization](self, "localization")}])
+  cyrillicLanguages = [objc_opt_class() cyrillicLanguages];
+  if ([cyrillicLanguages containsObject:{-[PRLanguage localization](self, "localization")}])
   {
     return 1;
   }
 
-  v5 = [(PRLanguage *)self fallbackLocalization];
+  fallbackLocalization = [(PRLanguage *)self fallbackLocalization];
 
-  return [v3 containsObject:v5];
+  return [cyrillicLanguages containsObject:fallbackLocalization];
 }
 
 - (BOOL)usesDevanagariScript
 {
-  v3 = [objc_opt_class() devanagariLanguages];
-  if ([v3 containsObject:{-[PRLanguage localization](self, "localization")}])
+  devanagariLanguages = [objc_opt_class() devanagariLanguages];
+  if ([devanagariLanguages containsObject:{-[PRLanguage localization](self, "localization")}])
   {
     return 1;
   }
 
-  v5 = [(PRLanguage *)self fallbackLocalization];
+  fallbackLocalization = [(PRLanguage *)self fallbackLocalization];
 
-  return [v3 containsObject:v5];
+  return [devanagariLanguages containsObject:fallbackLocalization];
 }
 
 @end

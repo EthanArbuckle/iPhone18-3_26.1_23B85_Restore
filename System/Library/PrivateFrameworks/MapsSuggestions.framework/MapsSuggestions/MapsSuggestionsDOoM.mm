@@ -3,24 +3,24 @@
 - (NSDateInterval)_commuteWindow;
 - (NSString)uniqueName;
 - (_TtC15MapsSuggestions19MapsSuggestionsDOoM)init;
-- (_TtC15MapsSuggestions19MapsSuggestionsDOoM)initWithResourceDepot:(id)a3 triggers:(id)a4 conditions:(id)a5 engine:(id)a6;
+- (_TtC15MapsSuggestions19MapsSuggestionsDOoM)initWithResourceDepot:(id)depot triggers:(id)triggers conditions:(id)conditions engine:(id)engine;
 - (_TtP15MapsSuggestions39MapsSuggestionsDOoMNotificationDelegate_)notificationDelegate;
-- (id)_notificationDetailsWithTitle:(id)a3 message:(id)a4 destination:(id)a5;
+- (id)_notificationDetailsWithTitle:(id)title message:(id)message destination:(id)destination;
 - (id)_windowOverrideListernerBlock;
 - (void)_captureState;
 - (void)_clearEntryExitTimeKeys;
 - (void)_scheduleBackupTimer;
-- (void)_scheduleBackupTimer:(double)a3;
-- (void)_scheduleBackupTimerBasedOnEntryTime:(id)a3 :(double)a4;
+- (void)_scheduleBackupTimer:(double)timer;
+- (void)_scheduleBackupTimerBasedOnEntryTime:(id)time :(double)a4;
 - (void)_scheduleBackupTimerForCommuteWindowWakeup;
 - (void)_setupKeyListeners;
 - (void)_startStateCapture;
-- (void)commuteWindowChangedWithWindow:(id)a3 nextDestination:(id)a4 travelTime:(double)a5 haveBudgetForCommuteRequest:(BOOL)a6 exitTime:(id)a7 routeSet:(id)a8;
-- (void)setUniqueName:(id)a3;
-- (void)set_commuteWindow:(id)a3;
-- (void)set_doomDestination:(id)a3;
-- (void)set_wakeupTimer:(id)a3;
-- (void)set_windowOverrideListernerBlock:(id)a3;
+- (void)commuteWindowChangedWithWindow:(id)window nextDestination:(id)destination travelTime:(double)time haveBudgetForCommuteRequest:(BOOL)request exitTime:(id)exitTime routeSet:(id)set;
+- (void)setUniqueName:(id)name;
+- (void)set_commuteWindow:(id)window;
+- (void)set_doomDestination:(id)destination;
+- (void)set_wakeupTimer:(id)timer;
+- (void)set_windowOverrideListernerBlock:(id)block;
 @end
 
 @implementation MapsSuggestionsDOoM
@@ -43,9 +43,9 @@
   return v3;
 }
 
-- (void)setUniqueName:(id)a3
+- (void)setUniqueName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_1C529D72C();
     v6 = v5;
@@ -70,18 +70,18 @@
   return v2;
 }
 
-- (void)set_wakeupTimer:(id)a3
+- (void)set_wakeupTimer:(id)timer
 {
   v4 = *(self + OBJC_IVAR____TtC15MapsSuggestions19MapsSuggestionsDOoM__wakeupTimer);
-  *(self + OBJC_IVAR____TtC15MapsSuggestions19MapsSuggestionsDOoM__wakeupTimer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC15MapsSuggestions19MapsSuggestionsDOoM__wakeupTimer) = timer;
+  timerCopy = timer;
 }
 
-- (void)set_doomDestination:(id)a3
+- (void)set_doomDestination:(id)destination
 {
   v4 = *(self + OBJC_IVAR____TtC15MapsSuggestions19MapsSuggestionsDOoM__doomDestination);
-  *(self + OBJC_IVAR____TtC15MapsSuggestions19MapsSuggestionsDOoM__doomDestination) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC15MapsSuggestions19MapsSuggestionsDOoM__doomDestination) = destination;
+  destinationCopy = destination;
 }
 
 - (id)_windowOverrideListernerBlock
@@ -110,11 +110,11 @@
   return v9;
 }
 
-- (void)set_windowOverrideListernerBlock:(id)a3
+- (void)set_windowOverrideListernerBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C529D9BC();
     swift_unknownObjectRelease();
@@ -123,7 +123,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = OBJC_IVAR____TtC15MapsSuggestions19MapsSuggestionsDOoM__windowOverrideListernerBlock;
@@ -154,12 +154,12 @@
   return v10;
 }
 
-- (void)set_commuteWindow:(id)a3
+- (void)set_commuteWindow:(id)window
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC1566A0);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (window)
   {
     sub_1C529D1FC();
     v8 = sub_1C529D24C();
@@ -174,7 +174,7 @@
 
   v10 = OBJC_IVAR____TtC15MapsSuggestions19MapsSuggestionsDOoM__commuteWindow;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_1C526F7D8(v7, self + v10, &qword_1EC1566A0);
   swift_endAccess();
 }
@@ -187,58 +187,58 @@
   return Strong;
 }
 
-- (_TtC15MapsSuggestions19MapsSuggestionsDOoM)initWithResourceDepot:(id)a3 triggers:(id)a4 conditions:(id)a5 engine:(id)a6
+- (_TtC15MapsSuggestions19MapsSuggestionsDOoM)initWithResourceDepot:(id)depot triggers:(id)triggers conditions:(id)conditions engine:(id)engine
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC156368);
   v8 = sub_1C529D7DC();
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC1563D0);
   v9 = sub_1C529D7DC();
   swift_unknownObjectRetain();
-  return MapsSuggestionsDOoM.init(resourceDepot:triggers:conditions:engine:)(a3, v8, v9, a6);
+  return MapsSuggestionsDOoM.init(resourceDepot:triggers:conditions:engine:)(depot, v8, v9, engine);
 }
 
 - (void)_setupKeyListeners
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C526ACA4();
 }
 
 - (void)_captureState
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C526AF70();
 }
 
 - (void)_startStateCapture
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C526B2F0();
 }
 
 - (void)_scheduleBackupTimer
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C526B674();
 }
 
-- (void)_scheduleBackupTimer:(double)a3
+- (void)_scheduleBackupTimer:(double)timer
 {
-  v4 = self;
-  sub_1C526B9EC(a3);
+  selfCopy = self;
+  sub_1C526B9EC(timer);
 }
 
 - (void)_scheduleBackupTimerForCommuteWindowWakeup
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C526C0D8();
 }
 
-- (void)_scheduleBackupTimerBasedOnEntryTime:(id)a3 :(double)a4
+- (void)_scheduleBackupTimerBasedOnEntryTime:(id)time :(double)a4
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC156760);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v13 - v8;
-  if (a3)
+  if (time)
   {
     sub_1C529D37C();
     v10 = sub_1C529D3AC();
@@ -251,7 +251,7 @@
     (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   }
 
-  v12 = self;
+  selfCopy = self;
   sub_1C526C390(v9, a4);
 
   sub_1C5259230(v9, &unk_1EC156760);
@@ -264,16 +264,16 @@
   _GEOConfigRemoveValue();
 }
 
-- (void)commuteWindowChangedWithWindow:(id)a3 nextDestination:(id)a4 travelTime:(double)a5 haveBudgetForCommuteRequest:(BOOL)a6 exitTime:(id)a7 routeSet:(id)a8
+- (void)commuteWindowChangedWithWindow:(id)window nextDestination:(id)destination travelTime:(double)time haveBudgetForCommuteRequest:(BOOL)request exitTime:(id)exitTime routeSet:(id)set
 {
-  v10 = a6;
+  requestCopy = request;
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC156760);
   MEMORY[0x1EEE9AC00](v15 - 8);
   v17 = &v28 - v16;
   v18 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC1566A0);
   MEMORY[0x1EEE9AC00](v18 - 8);
   v20 = &v28 - v19;
-  if (a3)
+  if (window)
   {
     sub_1C529D1FC();
     v21 = sub_1C529D24C();
@@ -286,7 +286,7 @@
     (*(*(v22 - 8) + 56))(v20, 1, 1, v22);
   }
 
-  if (a7)
+  if (exitTime)
   {
     sub_1C529D37C();
     v23 = 0;
@@ -299,24 +299,24 @@
 
   v24 = sub_1C529D3AC();
   (*(*(v24 - 8) + 56))(v17, v23, 1, v24);
-  v25 = a4;
-  v26 = a8;
-  v27 = self;
-  sub_1C526CB90(v20, a4, v10, v17, a8, a5);
+  destinationCopy = destination;
+  setCopy = set;
+  selfCopy = self;
+  sub_1C526CB90(v20, destination, requestCopy, v17, set, time);
 
   sub_1C5259230(v17, &unk_1EC156760);
   sub_1C5259230(v20, &qword_1EC1566A0);
 }
 
-- (id)_notificationDetailsWithTitle:(id)a3 message:(id)a4 destination:(id)a5
+- (id)_notificationDetailsWithTitle:(id)title message:(id)message destination:(id)destination
 {
   v7 = sub_1C529D72C();
   v9 = v8;
   v10 = sub_1C529D72C();
   v12 = v11;
-  v13 = a5;
-  v14 = self;
-  v15 = sub_1C526E544(v7, v9, v10, v12, v13);
+  destinationCopy = destination;
+  selfCopy = self;
+  v15 = sub_1C526E544(v7, v9, v10, v12, destinationCopy);
 
   return v15;
 }

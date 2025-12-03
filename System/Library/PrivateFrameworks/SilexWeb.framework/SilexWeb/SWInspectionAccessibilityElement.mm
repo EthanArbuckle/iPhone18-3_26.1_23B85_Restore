@@ -1,24 +1,24 @@
 @interface SWInspectionAccessibilityElement
 - (CGRect)frame;
-- (SWInspectionAccessibilityElement)initWithObject:(id)a3;
+- (SWInspectionAccessibilityElement)initWithObject:(id)object;
 @end
 
 @implementation SWInspectionAccessibilityElement
 
-- (SWInspectionAccessibilityElement)initWithObject:(id)a3
+- (SWInspectionAccessibilityElement)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = SWInspectionAccessibilityElement;
   v5 = [(SWInspectionAccessibilityElement *)&v18 init];
   v6 = v5;
   v7 = 0;
-  if (v4 && v5)
+  if (objectCopy && v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v4;
+      v8 = objectCopy;
       v9 = [v8 objectForKey:@"type"];
       type = v6->_type;
       v6->_type = v9;

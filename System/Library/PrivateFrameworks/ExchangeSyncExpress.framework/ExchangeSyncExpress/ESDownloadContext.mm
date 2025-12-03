@@ -1,39 +1,39 @@
 @interface ESDownloadContext
-- (ESDownloadContext)initWithAttachmentUUID:(id)a3 accountID:(id)a4 queue:(id)a5 downloadProgressBlock:(id)a6 completionBlock:(id)a7;
-- (void)finishedWithError:(id)a3;
-- (void)updateProgressDownloadedByteCount:(int64_t)a3 totalByteCount:(int64_t)a4;
+- (ESDownloadContext)initWithAttachmentUUID:(id)d accountID:(id)iD queue:(id)queue downloadProgressBlock:(id)block completionBlock:(id)completionBlock;
+- (void)finishedWithError:(id)error;
+- (void)updateProgressDownloadedByteCount:(int64_t)count totalByteCount:(int64_t)byteCount;
 @end
 
 @implementation ESDownloadContext
 
-- (ESDownloadContext)initWithAttachmentUUID:(id)a3 accountID:(id)a4 queue:(id)a5 downloadProgressBlock:(id)a6 completionBlock:(id)a7
+- (ESDownloadContext)initWithAttachmentUUID:(id)d accountID:(id)iD queue:(id)queue downloadProgressBlock:(id)block completionBlock:(id)completionBlock
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v13)
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  if (!dCopy)
   {
     [ESDownloadContext initWithAttachmentUUID:accountID:queue:downloadProgressBlock:completionBlock:];
   }
 
-  if (!v14)
+  if (!iDCopy)
   {
     [ESDownloadContext initWithAttachmentUUID:accountID:queue:downloadProgressBlock:completionBlock:];
   }
 
-  v18 = v17;
+  v18 = completionBlockCopy;
   v26.receiver = self;
   v26.super_class = ESDownloadContext;
   v19 = [(ESDownloadContext *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_attachmentUUID, a3);
-    objc_storeStrong(&v20->_accountID, a4);
-    objc_storeStrong(&v20->_queue, a5);
-    v21 = [v16 copy];
+    objc_storeStrong(&v19->_attachmentUUID, d);
+    objc_storeStrong(&v20->_accountID, iD);
+    objc_storeStrong(&v20->_queue, queue);
+    v21 = [blockCopy copy];
     progressBlock = v20->_progressBlock;
     v20->_progressBlock = v21;
 
@@ -45,7 +45,7 @@
   return v20;
 }
 
-- (void)updateProgressDownloadedByteCount:(int64_t)a3 totalByteCount:(int64_t)a4
+- (void)updateProgressDownloadedByteCount:(int64_t)count totalByteCount:(int64_t)byteCount
 {
   v24 = *MEMORY[0x277D85DE8];
   v7 = DALoggingwithCategory();
@@ -59,9 +59,9 @@
     v18 = 2112;
     v19 = accountID;
     v20 = 2048;
-    v21 = a3;
+    countCopy = count;
     v22 = 2048;
-    v23 = a4;
+    byteCountCopy = byteCount;
     _os_log_impl(&dword_24A1B8000, v7, v8, "Download of attachment UUID %@ for accountID %@ progress: %lld bytes of %lld", buf, 0x2Au);
   }
 
@@ -84,18 +84,18 @@
     block[2] = __70__ESDownloadContext_updateProgressDownloadedByteCount_totalByteCount___block_invoke;
     block[3] = &unk_278FCFAF0;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = count;
+    block[6] = byteCount;
     dispatch_async(v12, block);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishedWithError:(id)a3
+- (void)finishedWithError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v5, v6))
@@ -128,7 +128,7 @@
     v13[2] = __39__ESDownloadContext_finishedWithError___block_invoke;
     v13[3] = &unk_278FCFB18;
     v13[4] = self;
-    v14 = v4;
+    v14 = errorCopy;
     dispatch_async(v11, v13);
   }
 

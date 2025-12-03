@@ -8,20 +8,20 @@
 - (void)_accessibilityElementsDescriptionProcess:()AXDebug tabCount:
 {
   v12 = a3;
-  v6 = [a1 accessibilityElementCount];
-  if (v6 >= 1)
+  accessibilityElementCount = [self accessibilityElementCount];
+  if (accessibilityElementCount >= 1)
   {
-    v7 = v6;
+    v7 = accessibilityElementCount;
     for (i = 0; i != v7; ++i)
     {
-      v9 = [a1 accessibilityElementAtIndex:i];
-      v10 = [MEMORY[0x1E696AD60] string];
+      v9 = [self accessibilityElementAtIndex:i];
+      string = [MEMORY[0x1E696AD60] string];
       v11 = a4;
       if (a4 >= 1)
       {
         do
         {
-          [v10 appendString:@"\t"];
+          [string appendString:@"\t"];
           --v11;
         }
 
@@ -30,12 +30,12 @@
 
       if ([v9 isAccessibilityElement])
       {
-        [v12 appendFormat:@"+%@%@\n", v10, v9];
+        [v12 appendFormat:@"+%@%@\n", string, v9];
       }
 
       else
       {
-        [v12 appendFormat:@"-%@%@\n", v10, v9];
+        [v12 appendFormat:@"-%@%@\n", string, v9];
         [v9 _accessibilityElementsDescriptionProcess:v12 tabCount:a4 + 1];
       }
     }
@@ -44,10 +44,10 @@
 
 - (id)_axElementsDescription
 {
-  v2 = [MEMORY[0x1E696AD60] string];
-  [a1 _accessibilityElementsDescriptionProcess:v2 tabCount:0];
+  string = [MEMORY[0x1E696AD60] string];
+  [self _accessibilityElementsDescriptionProcess:string tabCount:0];
 
-  return v2;
+  return string;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface AMSUIAssetLoader
 + (AMSUIAssetLoader)sharedLoader;
-- (id)fetchWithAssetURL:(id)a3;
+- (id)fetchWithAssetURL:(id)l;
 @end
 
 @implementation AMSUIAssetLoader
@@ -12,7 +12,7 @@
   return v2;
 }
 
-- (id)fetchWithAssetURL:(id)a3
+- (id)fetchWithAssetURL:(id)l
 {
   v4 = sub_1BB1DB398();
   v5 = *(v4 - 8);
@@ -20,7 +20,7 @@
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1BB1DB348();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_1BB12F6B8(v8);
 
   (*(v5 + 8))(v8, v4);

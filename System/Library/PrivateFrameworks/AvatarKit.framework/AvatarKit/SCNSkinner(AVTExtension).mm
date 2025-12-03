@@ -11,17 +11,17 @@
   v6[1] = a3;
   v6[2] = a4;
   v6[3] = a5;
-  return [a1 setBaseGeometryBindTransform:v6];
+  return [self setBaseGeometryBindTransform:v6];
 }
 
 + (id)avt_skinnerByInterpolatingFromSkinner:()AVTExtension toSkinner:factor:skeleton:
 {
-  v208 = a1;
+  selfCopy = self;
   v245 = *MEMORY[0x1E69E9840];
   v8 = a4;
   v9 = a5;
   v10 = a6;
-  v11 = v208.n128_f32[0];
+  v11 = selfCopy.n128_f32[0];
   v12 = v10;
   if (!v10)
   {
@@ -31,7 +31,7 @@
       [(SCNSkinner(AVTExtension) *)v13 avt_skinnerByInterpolatingFromSkinner:v14 toSkinner:v15 factor:v16 skeleton:v17, v18, v19, v20];
     }
 
-    v11 = v208.n128_f32[0];
+    v11 = selfCopy.n128_f32[0];
   }
 
   if (v11 == 0.0)
@@ -51,16 +51,16 @@ LABEL_9:
   }
 
   v224 = v12;
-  v25 = [v8 bones];
-  v26 = [v9 bones];
-  v211 = [v8 boneInverseBindTransforms];
-  v210 = [v9 boneInverseBindTransforms];
+  bones = [v8 bones];
+  bones2 = [v9 bones];
+  boneInverseBindTransforms = [v8 boneInverseBindTransforms];
+  boneInverseBindTransforms2 = [v9 boneInverseBindTransforms];
   v27 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v238 = 0u;
   v239 = 0u;
   v240 = 0u;
   v241 = 0u;
-  v226 = v25;
+  v226 = bones;
   v28 = [v226 countByEnumeratingWithState:&v238 objects:v244 count:16];
   if (v28)
   {
@@ -75,8 +75,8 @@ LABEL_9:
           objc_enumerationMutation(v226);
         }
 
-        v32 = [*(*(&v238 + 1) + 8 * i) name];
-        [v27 addObject:v32];
+        name = [*(*(&v238 + 1) + 8 * i) name];
+        [v27 addObject:name];
       }
 
       v29 = [v226 countByEnumeratingWithState:&v238 objects:v244 count:16];
@@ -91,7 +91,7 @@ LABEL_9:
   v237 = 0u;
   v234 = 0u;
   v235 = 0u;
-  v225 = v26;
+  v225 = bones2;
   v33 = [v225 countByEnumeratingWithState:&v234 objects:v243 count:16];
   if (v33)
   {
@@ -106,8 +106,8 @@ LABEL_9:
           objc_enumerationMutation(v225);
         }
 
-        v37 = [*(*(&v234 + 1) + 8 * j) name];
-        [v27 addObject:v37];
+        name2 = [*(*(&v234 + 1) + 8 * j) name];
+        [v27 addObject:name2];
       }
 
       v34 = [v225 countByEnumeratingWithState:&v234 objects:v243 count:16];
@@ -139,7 +139,7 @@ LABEL_9:
   {
     v44 = v42;
     *&v222 = *v231;
-    *v43.i32 = 1.0 - v208.n128_f32[0];
+    *v43.i32 = 1.0 - selfCopy.n128_f32[0];
     v207 = vdupq_lane_s32(v43, 0);
     do
     {
@@ -169,14 +169,14 @@ LABEL_9:
           if (v47 == 0x7FFFFFFFFFFFFFFFLL)
           {
             *&v212[8 * v48] = v49;
-            v62 = v210;
+            v62 = boneInverseBindTransforms2;
             v63 = v48;
           }
 
           else
           {
             *&v213[8 * v47] = v49;
-            v62 = v211;
+            v62 = boneInverseBindTransforms;
             v63 = v47;
           }
 
@@ -188,21 +188,21 @@ LABEL_9:
           v50 = v212;
           *&v213[8 * v47] = v49;
           *&v50[8 * v48] = v49;
-          v51 = [v211 objectAtIndexedSubscript:v47];
+          v51 = [boneInverseBindTransforms objectAtIndexedSubscript:v47];
           [v51 avt_float4x4Value];
           v218 = v52;
           v219 = v53;
           v220 = v54;
           v221 = v55;
 
-          v56 = [v210 objectAtIndexedSubscript:v48];
+          v56 = [boneInverseBindTransforms2 objectAtIndexedSubscript:v48];
           [v56 avt_float4x4Value];
           v214 = v57;
           v215 = v58;
           v216 = v59;
           v217 = v60;
 
-          v61 = [MEMORY[0x1E696B098] avt_valueWithFloat4x4:{*vmlaq_f32(vmulq_n_f32(v214, v208.n128_f32[0]), v218, v207).i64, *vmlaq_f32(vmulq_n_f32(v215, v208.n128_f32[0]), v219, v207).i64, *vmlaq_f32(vmulq_n_f32(v216, v208.n128_f32[0]), v220, v207).i64, *vmlaq_f32(vmulq_n_f32(v217, v208.n128_f32[0]), v221, v207).i64}];
+          v61 = [MEMORY[0x1E696B098] avt_valueWithFloat4x4:{*vmlaq_f32(vmulq_n_f32(v214, selfCopy.n128_f32[0]), v218, v207).i64, *vmlaq_f32(vmulq_n_f32(v215, selfCopy.n128_f32[0]), v219, v207).i64, *vmlaq_f32(vmulq_n_f32(v216, selfCopy.n128_f32[0]), v220, v207).i64, *vmlaq_f32(vmulq_n_f32(v217, selfCopy.n128_f32[0]), v221, v207).i64}];
         }
 
         v64 = v61;
@@ -219,20 +219,20 @@ LABEL_9:
   }
 
   v66 = v206;
-  v67 = [v206 boneWeights];
-  v217.i64[0] = [v67 bytesPerComponent];
-  v68 = [v67 data];
-  v216.i64[0] = [v68 bytes];
+  boneWeights = [v206 boneWeights];
+  v217.i64[0] = [boneWeights bytesPerComponent];
+  data = [boneWeights data];
+  v216.i64[0] = [data bytes];
 
-  v219.i64[0] = [v67 componentsPerVector];
-  v69 = [v66 boneIndices];
-  v215.i64[0] = [v69 bytesPerComponent];
-  v70 = [v69 data];
-  v214.i64[0] = [v70 bytes];
+  v219.i64[0] = [boneWeights componentsPerVector];
+  boneIndices = [v66 boneIndices];
+  v215.i64[0] = [boneIndices bytesPerComponent];
+  data2 = [boneIndices data];
+  v214.i64[0] = [data2 bytes];
 
-  if (v67)
+  if (boneWeights)
   {
-    _ZF = v69 == 0;
+    _ZF = boneIndices == 0;
   }
 
   else
@@ -241,7 +241,7 @@ LABEL_9:
   }
 
   v72 = _ZF;
-  v207.i64[0] = v69;
+  v207.i64[0] = boneIndices;
   if (_ZF)
   {
     v73 = [v226 count];
@@ -270,22 +270,22 @@ LABEL_9:
     v75 = v205;
   }
 
-  v84 = [v75 boneWeights];
-  v85 = [v84 bytesPerComponent];
-  v86 = [v84 data];
-  *&v222 = [v86 bytes];
+  boneWeights2 = [v75 boneWeights];
+  bytesPerComponent = [boneWeights2 bytesPerComponent];
+  data3 = [boneWeights2 data];
+  *&v222 = [data3 bytes];
 
-  v87 = [v84 componentsPerVector];
-  v88 = [v75 boneIndices];
-  v89 = [v88 bytesPerComponent];
-  v90 = [v88 data];
-  v221.i64[0] = [v90 bytes];
+  componentsPerVector = [boneWeights2 componentsPerVector];
+  boneIndices2 = [v75 boneIndices];
+  bytesPerComponent2 = [boneIndices2 bytesPerComponent];
+  data4 = [boneIndices2 data];
+  v221.i64[0] = [data4 bytes];
 
-  v202 = v88;
-  v203 = v84;
-  if (v84)
+  v202 = boneIndices2;
+  v203 = boneWeights2;
+  if (boneWeights2)
   {
-    v91 = v88 == 0;
+    v91 = boneIndices2 == 0;
   }
 
   else
@@ -305,11 +305,11 @@ LABEL_9:
       }
     }
 
-    v87 = 1;
+    componentsPerVector = 1;
   }
 
-  v101 = [v67 vectorCount];
-  v102 = MEMORY[0x1EEE9AC00](v101);
+  vectorCount = [boneWeights vectorCount];
+  v102 = MEMORY[0x1EEE9AC00](vectorCount);
   v106 = &v197 - v105;
   v107 = 0;
   v220.i64[0] = v102;
@@ -389,7 +389,7 @@ LABEL_86:
           while (v104);
         }
 
-        if (v87)
+        if (componentsPerVector)
         {
           break;
         }
@@ -423,8 +423,8 @@ LABEL_116:
       v125 = 0;
       while ((v92 & 1) == 0)
       {
-        v132 = v125 + v115 * v87;
-        switch(v85)
+        v132 = v125 + v115 * componentsPerVector;
+        switch(bytesPerComponent)
         {
           case 8:
             _S0 = *(v222 + 8 * v132);
@@ -443,7 +443,7 @@ LABEL_116:
 
         if (_S0 > 0.0)
         {
-          switch(v89)
+          switch(bytesPerComponent2)
           {
             case 4:
               v126 = *(v221.i64[0] + 4 * v132);
@@ -489,7 +489,7 @@ LABEL_104:
           }
         }
 
-        if (++v125 == v87)
+        if (++v125 == componentsPerVector)
         {
           goto LABEL_116;
         }
@@ -501,8 +501,8 @@ LABEL_104:
   }
 
 LABEL_123:
-  v198 = v89;
-  v201 = v67;
+  v198 = bytesPerComponent2;
+  v201 = boneWeights;
   v136 = v107 * v220.i64[0];
   v199 = 4 * v107 * v220.i64[0];
   v137 = malloc_type_malloc(v199, 0xBADA6A49uLL);
@@ -514,8 +514,8 @@ LABEL_123:
     v141 = v107;
     v142 = 0;
     v143 = 0;
-    v144 = v208.n128_f32[0];
-    *&v140 = 1.0 - v208.n128_f32[0];
+    v144 = selfCopy.n128_f32[0];
+    *&v140 = 1.0 - selfCopy.n128_f32[0];
     v145 = v137;
     v147 = v212;
     v146 = v213;
@@ -595,7 +595,7 @@ LABEL_141:
         while (v154);
       }
 
-      if (v87)
+      if (componentsPerVector)
       {
         break;
       }
@@ -631,8 +631,8 @@ LABEL_172:
     v163 = v143 * v141;
     while ((v92 & 1) == 0)
     {
-      v172 = v162 + v143 * v87;
-      switch(v85)
+      v172 = v162 + v143 * componentsPerVector;
+      switch(bytesPerComponent)
       {
         case 8:
           _S0 = *(v222 + 8 * v172);
@@ -705,7 +705,7 @@ LABEL_159:
         }
       }
 
-      if (++v162 == v87)
+      if (++v162 == componentsPerVector)
       {
         goto LABEL_172;
       }
@@ -716,7 +716,7 @@ LABEL_159:
     goto LABEL_149;
   }
 
-  *&v139 = 1.0 - v208.n128_f32[0];
+  *&v139 = 1.0 - selfCopy.n128_f32[0];
   v222 = v139;
 LABEL_178:
   v176 = MEMORY[0x1E697A878];
@@ -732,10 +732,10 @@ LABEL_178:
 
   v185 = MEMORY[0x1E697A8D0];
   v8 = v206;
-  v186 = [v206 baseGeometry];
+  baseGeometry = [v206 baseGeometry];
   v187 = v227;
   v188 = v223;
-  v22 = [v185 skinnerWithBaseGeometry:v186 bones:v227 boneInverseBindTransforms:v223 boneWeights:v180 boneIndices:v184];
+  v22 = [v185 skinnerWithBaseGeometry:baseGeometry bones:v227 boneInverseBindTransforms:v223 boneWeights:v180 boneIndices:v184];
 
   [v8 avt_simdBaseGeometryBindTransform];
   v218 = v189;
@@ -744,7 +744,7 @@ LABEL_178:
   v221 = v192;
   v9 = v205;
   [v205 avt_simdBaseGeometryBindTransform];
-  [v22 avt_setSimdBaseGeometryBindTransform:{*vmlaq_n_f32(vmulq_n_f32(v193, v208.n128_f32[0]), v218, *&v222).i64, *vmlaq_n_f32(vmulq_n_f32(v194, v208.n128_f32[0]), v219, *&v222).i64, *vmlaq_n_f32(vmulq_n_f32(v195, v208.n128_f32[0]), v220, *&v222).i64, *vmlaq_n_f32(vmulq_n_f32(v196, v208.n128_f32[0]), v221, *&v222).i64}];
+  [v22 avt_setSimdBaseGeometryBindTransform:{*vmlaq_n_f32(vmulq_n_f32(v193, selfCopy.n128_f32[0]), v218, *&v222).i64, *vmlaq_n_f32(vmulq_n_f32(v194, selfCopy.n128_f32[0]), v219, *&v222).i64, *vmlaq_n_f32(vmulq_n_f32(v195, selfCopy.n128_f32[0]), v220, *&v222).i64, *vmlaq_n_f32(vmulq_n_f32(v196, selfCopy.n128_f32[0]), v221, *&v222).i64}];
   v12 = v224;
   [v22 setSkeleton:v224];
 

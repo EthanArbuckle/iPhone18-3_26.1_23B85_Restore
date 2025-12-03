@@ -1,6 +1,6 @@
 @interface BlurViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI18BlurViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI18BlurViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation BlurViewController
@@ -19,7 +19,7 @@
   return v6;
 }
 
-- (_TtC9SeymourUI18BlurViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI18BlurViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

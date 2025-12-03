@@ -1,12 +1,12 @@
 @interface REMCDAlarm
 + (id)ckRecordType;
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)newCloudObjectForRecord:(id)a3 account:(id)a4 context:(id)a5;
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context;
++ (id)newCloudObjectForRecord:(id)record account:(id)account context:(id)context;
 + (id)recordTypes;
-- (BOOL)isConnectedToAccountObject:(id)a3;
+- (BOOL)isConnectedToAccountObject:(id)object;
 - (BOOL)isSnooze;
-- (BOOL)mergeWithLocalObject:(id)a3;
-- (id)existingLocalObjectToMergeWithPredicate:(id)a3;
+- (BOOL)mergeWithLocalObject:(id)object;
+- (id)existingLocalObjectToMergeWithPredicate:(id)predicate;
 - (id)modelObject;
 - (id)newlyCreatedRecord;
 - (id)objectsToBeDeletedBeforeThisObject;
@@ -15,8 +15,8 @@
 - (void)cleanUpAfterLocalObjectMerge;
 - (void)didSave;
 - (void)fixBrokenReferences;
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4;
-- (void)setReminder:(id)a3;
+- (void)mergeDataFromRecord:(id)record accountID:(id)d;
+- (void)setReminder:(id)reminder;
 - (void)willSave;
 @end
 
@@ -29,61 +29,61 @@
   return v0;
 }
 
-- (BOOL)isConnectedToAccountObject:(id)a3
+- (BOOL)isConnectedToAccountObject:(id)object
 {
-  v4 = a3;
-  v5 = [(REMCDAlarm *)self reminder];
-  v6 = [v5 isConnectedToAccountObject:v4];
+  objectCopy = object;
+  reminder = [(REMCDAlarm *)self reminder];
+  v6 = [reminder isConnectedToAccountObject:objectCopy];
 
   return v6;
 }
 
 - (id)modelObject
 {
-  v3 = [(REMCDAlarm *)self trigger];
-  v4 = [v3 modelObject];
+  trigger = [(REMCDAlarm *)self trigger];
+  modelObject = [trigger modelObject];
 
-  v5 = [(REMCDAlarm *)self identifier];
+  identifier = [(REMCDAlarm *)self identifier];
   v6 = [REMAlarm alloc];
-  v7 = [REMAlarm objectIDWithUUID:v5];
-  v8 = [v6 initWithTrigger:v4 objectID:v7];
+  v7 = [REMAlarm objectIDWithUUID:identifier];
+  v8 = [v6 initWithTrigger:modelObject objectID:v7];
 
   return v8;
 }
 
 - (int64_t)parentEffectiveMinimumSupportedVersion
 {
-  v3 = [(REMCDAlarm *)self reminder];
-  if (v3)
+  reminder = [(REMCDAlarm *)self reminder];
+  if (reminder)
   {
-    v4 = [(REMCDAlarm *)self reminder];
-    v5 = [v4 effectiveMinimumSupportedVersion];
+    reminder2 = [(REMCDAlarm *)self reminder];
+    effectiveMinimumSupportedVersion = [reminder2 effectiveMinimumSupportedVersion];
   }
 
   else
   {
-    v5 = kREMSupportedVersionUnset;
+    effectiveMinimumSupportedVersion = kREMSupportedVersionUnset;
   }
 
-  return v5;
+  return effectiveMinimumSupportedVersion;
 }
 
 - (BOOL)isSnooze
 {
-  v2 = [(REMCDAlarm *)self originalAlarmUID];
-  v3 = v2 != 0;
+  originalAlarmUID = [(REMCDAlarm *)self originalAlarmUID];
+  v3 = originalAlarmUID != 0;
 
   return v3;
 }
 
-- (void)setReminder:(id)a3
+- (void)setReminder:(id)reminder
 {
-  v4 = a3;
+  reminderCopy = reminder;
   [(REMCDObject *)self willChangeValueForKey:@"reminder"];
-  [(REMCDAlarm *)self setPrimitiveValue:v4 forKey:@"reminder"];
+  [(REMCDAlarm *)self setPrimitiveValue:reminderCopy forKey:@"reminder"];
 
-  v5 = [(REMCDAlarm *)self reminder];
-  [v5 updateDisplayDateWithAlarm:self];
+  reminder = [(REMCDAlarm *)self reminder];
+  [reminder updateDisplayDateWithAlarm:self];
 
   [(REMCDObject *)self didChangeValueForKey:@"reminder"];
 }
@@ -95,21 +95,21 @@
     [(REMCDAlarm *)self setDidHandleMarkingExtraneousAlarmDuringWillSave:1];
     if ([(REMCDAlarm *)self markedForDeletion])
     {
-      v3 = [(REMCDAlarm *)self reminder];
-      if (v3)
+      reminder = [(REMCDAlarm *)self reminder];
+      if (reminder)
       {
       }
 
       else
       {
-        v4 = [(REMCDAlarm *)self trigger];
-        if (v4)
+        trigger = [(REMCDAlarm *)self trigger];
+        if (trigger)
         {
-          v5 = v4;
-          v6 = [(REMCDAlarm *)self trigger];
-          if ([v6 markedForDeletion])
+          v5 = trigger;
+          trigger2 = [(REMCDAlarm *)self trigger];
+          if ([trigger2 markedForDeletion])
           {
-            v7 = [(REMCDAlarm *)self trigger];
+            trigger3 = [(REMCDAlarm *)self trigger];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -147,43 +147,43 @@
   return v2.super.isa;
 }
 
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   swift_getObjCClassMetadata();
-  v10 = a3;
-  v11 = a5;
-  v12 = static REMCDAlarm.existingCloudObject(for:accountID:managedObjectContext:)(v10, v7, v9, v11);
+  dCopy = d;
+  contextCopy = context;
+  v12 = static REMCDAlarm.existingCloudObject(for:accountID:managedObjectContext:)(dCopy, v7, v9, contextCopy);
 
   return v12;
 }
 
-+ (id)newCloudObjectForRecord:(id)a3 account:(id)a4 context:(id)a5
++ (id)newCloudObjectForRecord:(id)record account:(id)account context:(id)context
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = static REMCDAlarm.newCloudObject(for:account:managedObjectContext:)(v8, v9, v10);
+  recordCopy = record;
+  accountCopy = account;
+  contextCopy = context;
+  v11 = static REMCDAlarm.newCloudObject(for:account:managedObjectContext:)(recordCopy, accountCopy, contextCopy);
 
   return v11;
 }
 
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4
+- (void)mergeDataFromRecord:(id)record accountID:(id)d
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  recordCopy = record;
+  selfCopy = self;
   v11._countAndFlagsBits = v6;
   v11._object = v8;
-  REMCDAlarm.mergeData(from:accountID:)(v9, v11);
+  REMCDAlarm.mergeData(from:accountID:)(recordCopy, v11);
 }
 
 - (id)newlyCreatedRecord
 {
-  v2 = self;
+  selfCopy = self;
   v3 = REMCDAlarm.newlyCreatedRecord()();
 
   return v3;
@@ -191,24 +191,24 @@
 
 - (id)parentCloudObject
 {
-  v2 = [(REMCDAlarm *)self reminder];
+  reminder = [(REMCDAlarm *)self reminder];
 
-  return v2;
+  return reminder;
 }
 
-- (id)existingLocalObjectToMergeWithPredicate:(id)a3
+- (id)existingLocalObjectToMergeWithPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = self;
+  predicateCopy = predicate;
+  selfCopy = self;
   v6 = _sSo10REMCDAlarmC7reminddE26existingLocalObjectToMerge4withSo11REMCDObjectCSgSo11NSPredicateCSg_tF_0();
 
   return v6;
 }
 
-- (BOOL)mergeWithLocalObject:(id)a3
+- (BOOL)mergeWithLocalObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
+  objectCopy = object;
+  selfCopy = self;
   LOBYTE(self) = _sSo10REMCDAlarmC7reminddE5merge15withLocalObjectSbSo11REMCDObjectC_tF_0();
 
   return self & 1;
@@ -216,17 +216,17 @@
 
 - (void)cleanUpAfterLocalObjectMerge
 {
-  v2 = self;
+  selfCopy = self;
   REMCDAlarm.cleanUpAfterLocalObjectMerge()();
 }
 
 - (id)objectsToBeDeletedBeforeThisObject
 {
-  v2 = self;
-  v3 = [(REMCDAlarm *)v2 trigger];
-  if (v3)
+  selfCopy = self;
+  trigger = [(REMCDAlarm *)selfCopy trigger];
+  if (trigger)
   {
-    v4 = v3;
+    v4 = trigger;
     sub_1000F5104(&unk_100938E80, &unk_1007959D0);
     v5 = swift_allocObject();
     *(v5 + 16) = xmmword_100791300;
@@ -241,7 +241,7 @@
 
 - (void)fixBrokenReferences
 {
-  v2 = self;
+  selfCopy = self;
   REMCDAlarm.fixBrokenReferences()();
 }
 

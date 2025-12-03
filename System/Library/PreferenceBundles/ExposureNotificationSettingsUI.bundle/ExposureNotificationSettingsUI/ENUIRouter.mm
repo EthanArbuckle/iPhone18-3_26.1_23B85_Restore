@@ -1,67 +1,67 @@
 @interface ENUIRouter
-+ (unint64_t)routeForAnalyticsConsent:(id)a3;
-+ (unint64_t)routeForExposure:(id)a3;
-+ (unint64_t)routeForNKDPath:(id)a3;
-+ (unint64_t)routeForOnboarding:(id)a3;
-+ (unint64_t)routeForOnboardingDeepLink:(id)a3;
-+ (unint64_t)routeForPreAuthorize:(id)a3;
-+ (unint64_t)routeForRegion:(id)a3;
++ (unint64_t)routeForAnalyticsConsent:(id)consent;
++ (unint64_t)routeForExposure:(id)exposure;
++ (unint64_t)routeForNKDPath:(id)path;
++ (unint64_t)routeForOnboarding:(id)onboarding;
++ (unint64_t)routeForOnboardingDeepLink:(id)link;
++ (unint64_t)routeForPreAuthorize:(id)authorize;
++ (unint64_t)routeForRegion:(id)region;
 @end
 
 @implementation ENUIRouter
 
-+ (unint64_t)routeForNKDPath:(id)a3
++ (unint64_t)routeForNKDPath:(id)path
 {
-  v4 = [a3 pathComponents];
-  v5 = [v4 firstObject];
-  if ([v5 isEqualToString:@"ONBOARDING"])
+  pathComponents = [path pathComponents];
+  firstObject = [pathComponents firstObject];
+  if ([firstObject isEqualToString:@"ONBOARDING"])
   {
-    v6 = [a1 routeForOnboarding:v4];
+    v6 = [self routeForOnboarding:pathComponents];
 LABEL_11:
     v7 = v6;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:@"ONBOARDING-DEEPLINK"])
+  if ([firstObject isEqualToString:@"ONBOARDING-DEEPLINK"])
   {
-    v6 = [a1 routeForOnboardingDeepLink:v4];
+    v6 = [self routeForOnboardingDeepLink:pathComponents];
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"ANALYTICS-CONSENT"])
+  if ([firstObject isEqualToString:@"ANALYTICS-CONSENT"])
   {
-    v6 = [a1 routeForAnalyticsConsent:v4];
+    v6 = [self routeForAnalyticsConsent:pathComponents];
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"EXPOSURE"])
+  if ([firstObject isEqualToString:@"EXPOSURE"])
   {
-    v6 = [a1 routeForExposure:v4];
+    v6 = [self routeForExposure:pathComponents];
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"REGION"])
+  if ([firstObject isEqualToString:@"REGION"])
   {
-    v6 = [a1 routeForRegion:v4];
+    v6 = [self routeForRegion:pathComponents];
     goto LABEL_11;
   }
 
-  if ([v5 hasPrefix:@"TEST-VERIFICATION"])
+  if ([firstObject hasPrefix:@"TEST-VERIFICATION"])
   {
     v7 = 5;
   }
 
-  else if ([v5 isEqualToString:@"AUTHORIZE"])
+  else if ([firstObject isEqualToString:@"AUTHORIZE"])
   {
     v7 = 6;
   }
 
-  else if ([v5 isEqualToString:@"KEY-RELEASED"])
+  else if ([firstObject isEqualToString:@"KEY-RELEASED"])
   {
     v7 = 7;
   }
 
-  else if ([v5 isEqualToString:@"REPORT"])
+  else if ([firstObject isEqualToString:@"REPORT"])
   {
     v7 = 8;
   }
@@ -76,9 +76,9 @@ LABEL_12:
   return v7;
 }
 
-+ (unint64_t)routeForPreAuthorize:(id)a3
++ (unint64_t)routeForPreAuthorize:(id)authorize
 {
-  if ([a3 count] == &dword_0 + 1)
+  if ([authorize count] == &dword_0 + 1)
   {
     return 6;
   }
@@ -89,9 +89,9 @@ LABEL_12:
   }
 }
 
-+ (unint64_t)routeForOnboarding:(id)a3
++ (unint64_t)routeForOnboarding:(id)onboarding
 {
-  if ([a3 count] == &dword_0 + 2)
+  if ([onboarding count] == &dword_0 + 2)
   {
     return 0;
   }
@@ -102,15 +102,15 @@ LABEL_12:
   }
 }
 
-+ (unint64_t)routeForOnboardingDeepLink:(id)a3
++ (unint64_t)routeForOnboardingDeepLink:(id)link
 {
-  v3 = a3;
-  if ([v3 count] == &dword_0 + 1)
+  linkCopy = link;
+  if ([linkCopy count] == &dword_0 + 1)
   {
     v4 = 1;
   }
 
-  else if ([v3 count] == &dword_0 + 2)
+  else if ([linkCopy count] == &dword_0 + 2)
   {
     v4 = 1;
   }
@@ -123,9 +123,9 @@ LABEL_12:
   return v4;
 }
 
-+ (unint64_t)routeForAnalyticsConsent:(id)a3
++ (unint64_t)routeForAnalyticsConsent:(id)consent
 {
-  result = [a3 count];
+  result = [consent count];
   if (result != 2)
   {
     return 9;
@@ -134,9 +134,9 @@ LABEL_12:
   return result;
 }
 
-+ (unint64_t)routeForExposure:(id)a3
++ (unint64_t)routeForExposure:(id)exposure
 {
-  result = [a3 count];
+  result = [exposure count];
   if (result != 3)
   {
     return 9;
@@ -145,9 +145,9 @@ LABEL_12:
   return result;
 }
 
-+ (unint64_t)routeForRegion:(id)a3
++ (unint64_t)routeForRegion:(id)region
 {
-  if ([a3 count] == &dword_0 + 3)
+  if ([region count] == &dword_0 + 3)
   {
     return 4;
   }

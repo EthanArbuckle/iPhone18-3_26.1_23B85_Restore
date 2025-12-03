@@ -2,7 +2,7 @@
 - (CGRect)frame;
 - (CUIRenditionLayerReference)init;
 - (void)dealloc;
-- (void)setColorName:(id)a3;
+- (void)setColorName:(id)name;
 @end
 
 @implementation CUIRenditionLayerReference
@@ -39,13 +39,13 @@
   [(CUIRenditionLayerReference *)&v3 dealloc];
 }
 
-- (void)setColorName:(id)a3
+- (void)setColorName:(id)name
 {
   gradientOrColorName = self->_gradientOrColorName;
-  if (gradientOrColorName != a3)
+  if (gradientOrColorName != name)
   {
 
-    self->_gradientOrColorName = a3;
+    self->_gradientOrColorName = name;
   }
 }
 

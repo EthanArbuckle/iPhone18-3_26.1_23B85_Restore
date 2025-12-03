@@ -1,11 +1,11 @@
 @interface AchievementGroupView
-- (_TtC11AppStoreKit20AchievementGroupView)initWithCoder:(id)a3;
-- (_TtC11AppStoreKit20AchievementGroupView)initWithFrame:(CGRect)a3;
+- (_TtC11AppStoreKit20AchievementGroupView)initWithCoder:(id)coder;
+- (_TtC11AppStoreKit20AchievementGroupView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AchievementGroupView
 
-- (_TtC11AppStoreKit20AchievementGroupView)initWithCoder:(id)a3
+- (_TtC11AppStoreKit20AchievementGroupView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit20AchievementGroupView_achievement) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit20AchievementGroupView_secondAchievement) = 0;
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (_TtC11AppStoreKit20AchievementGroupView)initWithFrame:(CGRect)a3
+- (_TtC11AppStoreKit20AchievementGroupView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

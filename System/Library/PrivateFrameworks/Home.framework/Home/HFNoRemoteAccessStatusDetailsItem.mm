@@ -1,50 +1,50 @@
 @interface HFNoRemoteAccessStatusDetailsItem
 - (HFNoRemoteAccessStatusDetailsItem)init;
-- (HFNoRemoteAccessStatusDetailsItem)initWithHome:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFNoRemoteAccessStatusDetailsItem)initWithHome:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFNoRemoteAccessStatusDetailsItem
 
 - (HFNoRemoteAccessStatusDetailsItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFNoRemoteAccessStatusDetailsItem.m" lineNumber:23 description:{@"%s is unavailable; use %@ instead", "-[HFNoRemoteAccessStatusDetailsItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFNoRemoteAccessStatusDetailsItem.m" lineNumber:23 description:{@"%s is unavailable; use %@ instead", "-[HFNoRemoteAccessStatusDetailsItem init]", v5}];
 
   return 0;
 }
 
-- (HFNoRemoteAccessStatusDetailsItem)initWithHome:(id)a3
+- (HFNoRemoteAccessStatusDetailsItem)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = HFNoRemoteAccessStatusDetailsItem;
   v6 = [(HFNoRemoteAccessStatusDetailsItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
   }
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v57 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(HFMutableItemUpdateOutcome);
-  v5 = [(HFNoRemoteAccessStatusDetailsItem *)self home];
-  v6 = [v5 hf_remoteAccessState];
+  home = [(HFNoRemoteAccessStatusDetailsItem *)self home];
+  hf_remoteAccessState = [home hf_remoteAccessState];
 
   v7 = +[HFHomeKitDispatcher sharedDispatcher];
-  v8 = [v7 homeManager];
-  v9 = [v8 residentProvisioningStatus];
+  homeManager = [v7 homeManager];
+  residentProvisioningStatus = [homeManager residentProvisioningStatus];
 
-  if (v9)
+  if (residentProvisioningStatus)
   {
     [(HFMutableItemUpdateOutcome *)v4 setObject:&unk_282523B68 forKeyedSubscript:@"priority"];
-    if (v6 == 1)
+    if (hf_remoteAccessState == 1)
     {
       v16 = @"HFStatusDetailsNeedsTwoFactorAuthTitle";
     }
@@ -60,14 +60,14 @@
     v18 = _HFLocalizedStringWithDefaultValue(@"HFStatusDetailsNeedsTwoFactorAuthSettingsLink", @"HFStatusDetailsNeedsTwoFactorAuthSettingsLink", 1);
     v19 = _HFLocalizedStringWithDefaultValue(@"HFStatusDetailsNeedsTwoFactorAuthLearnMoreLink", @"HFStatusDetailsNeedsTwoFactorAuthLearnMoreLink", 1);
     v26 = HFLocalizedStringWithFormat(@"HFStatusDetailsNeedsTwoFactorAuthDescriptionFormat", @"%1$@ %2$@", v20, v21, v22, v23, v24, v25, v18);
-    v27 = [MEMORY[0x277CBEBC0] hf_openiCloudPasswordAndSecurityURL];
+    hf_openiCloudPasswordAndSecurityURL = [MEMORY[0x277CBEBC0] hf_openiCloudPasswordAndSecurityURL];
     v28 = [MEMORY[0x277CBEBC0] URLWithString:@"https://support.apple.com/kb/HT204915"];
-    v29 = [MEMORY[0x277CCA898] hf_attributedLinkStringForString:v26 linkString:v18 linkURL:v27];
+    v29 = [MEMORY[0x277CCA898] hf_attributedLinkStringForString:v26 linkString:v18 linkURL:hf_openiCloudPasswordAndSecurityURL];
     v30 = [MEMORY[0x277CCA898] hf_attributedLinkStringForAttributedString:v29 linkString:v19 linkURL:v28];
     [(HFMutableItemUpdateOutcome *)v4 setObject:v30 forKeyedSubscript:@"description"];
 
     v37 = HFLocalizedStringWithFormat(@"HFStatusDetailsNeedsTwoFactorAuthShortDescriptionFormat", @"%1$@", v31, v32, v33, v34, v35, v36, v18);
-    v38 = [MEMORY[0x277CCA898] hf_attributedLinkStringForString:v37 linkString:v18 linkURL:v27];
+    v38 = [MEMORY[0x277CCA898] hf_attributedLinkStringForString:v37 linkString:v18 linkURL:hf_openiCloudPasswordAndSecurityURL];
     [(HFMutableItemUpdateOutcome *)v4 setObject:v38 forKeyedSubscript:@"shortDescription"];
 
     [(HFMutableItemUpdateOutcome *)v4 setObject:v28 forKeyedSubscript:@"destinationURL"];
@@ -77,9 +77,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ((v9 & 2) == 0 || v6 != 1)
+  if ((residentProvisioningStatus & 2) == 0 || hf_remoteAccessState != 1)
   {
-    if (v6 != 1 || (-[HFNoRemoteAccessStatusDetailsItem home](self, "home"), v39 = objc_claimAutoreleasedReturnValue(), v40 = [v39 hf_isCurrentLocationHome], v39, v40))
+    if (hf_remoteAccessState != 1 || (-[HFNoRemoteAccessStatusDetailsItem home](self, "home"), v39 = objc_claimAutoreleasedReturnValue(), v40 = [v39 hf_isCurrentLocationHome], v39, v40))
     {
       [(HFMutableItemUpdateOutcome *)v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hidden"];
       goto LABEL_22;
@@ -113,13 +113,13 @@ LABEL_21:
   v10 = _HFLocalizedStringWithDefaultValue(@"HFStatusDetailsNoRemoteAccessNotAtHomeTitle", @"HFStatusDetailsNoRemoteAccessNotAtHomeTitle", 1);
   [(HFMutableItemUpdateOutcome *)v4 setObject:v10 forKeyedSubscript:@"title"];
 
-  v11 = [(HFNoRemoteAccessStatusDetailsItem *)self home];
-  v12 = [v11 hf_hasAppleTVs];
+  home2 = [(HFNoRemoteAccessStatusDetailsItem *)self home];
+  hf_hasAppleTVs = [home2 hf_hasAppleTVs];
 
-  v13 = [(HFNoRemoteAccessStatusDetailsItem *)self home];
-  v14 = [v13 hf_hasHomePods];
+  home3 = [(HFNoRemoteAccessStatusDetailsItem *)self home];
+  hf_hasHomePods = [home3 hf_hasHomePods];
 
-  if (v12 && v14)
+  if (hf_hasAppleTVs && hf_hasHomePods)
   {
     v15 = @"HFStatusDetailsNoRemoteAccessDescription_AppleTVHomePod";
 LABEL_20:
@@ -128,13 +128,13 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (v12)
+  if (hf_hasAppleTVs)
   {
     v15 = @"HFStatusDetailsNoRemoteAccessDescription_AppleTV";
     goto LABEL_20;
   }
 
-  if (v14)
+  if (hf_hasHomePods)
   {
     v15 = @"HFStatusDetailsNoRemoteAccessDescription_HomePod";
     goto LABEL_20;
@@ -144,7 +144,7 @@ LABEL_20:
   if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v56 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_20D9BF000, v52, OS_LOG_TYPE_ERROR, "%@ Asked to show 'No Remote Access' but there are no HomePods or Apple TVs in the home.", buf, 0xCu);
   }
 

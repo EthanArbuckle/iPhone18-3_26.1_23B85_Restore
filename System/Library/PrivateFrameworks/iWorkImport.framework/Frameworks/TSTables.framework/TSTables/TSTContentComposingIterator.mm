@@ -1,14 +1,14 @@
 @interface TSTContentComposingIterator
 - (TSTContentComposingIterator)init;
-- (TSUCellCoord)advanceToCellID:(TSUCellCoord)a3;
+- (TSUCellCoord)advanceToCellID:(TSUCellCoord)d;
 - (TSUCellCoord)getNext;
 - (id).cxx_construct;
 - (vector<TSUCellCoord,)cursorCellIDs;
-- (void)addIterator:(id)a3;
+- (void)addIterator:(id)iterator;
 - (void)setCursorCellIDs:()vector<TSUCellCoord;
 - (void)terminate;
-- (void)updateCellData:(id)a3;
-- (void)updateFormulaForCellData:(id)a3;
+- (void)updateCellData:(id)data;
+- (void)updateFormulaForCellData:(id)data;
 @end
 
 @implementation TSTContentComposingIterator
@@ -30,19 +30,19 @@
   return v3;
 }
 
-- (void)addIterator:(id)a3
+- (void)addIterator:(id)iterator
 {
-  v7 = a3;
-  if (v7)
+  iteratorCopy = iterator;
+  if (iteratorCopy)
   {
-    objc_msgSend_addObject_(self->_iterators, v4, v7, v5, v6);
+    objc_msgSend_addObject_(self->_iterators, v4, iteratorCopy, v5, v6);
   }
 }
 
-- (void)updateCellData:(id)a3
+- (void)updateCellData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -62,7 +62,7 @@
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_updateCellData_(*(*(&v13 + 1) + 8 * v12++), v7, v4, v8, v9, v13);
+        objc_msgSend_updateCellData_(*(*(&v13 + 1) + 8 * v12++), v7, dataCopy, v8, v9, v13);
       }
 
       while (v10 != v12);
@@ -73,10 +73,10 @@
   }
 }
 
-- (void)updateFormulaForCellData:(id)a3
+- (void)updateFormulaForCellData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -96,7 +96,7 @@
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_updateFormulaForCellData_(*(*(&v13 + 1) + 8 * v12++), v7, v4, v8, v9, v13);
+        objc_msgSend_updateFormulaForCellData_(*(*(&v13 + 1) + 8 * v12++), v7, dataCopy, v8, v9, v13);
       }
 
       while (v10 != v12);
@@ -241,20 +241,20 @@
   return v7;
 }
 
-- (TSUCellCoord)advanceToCellID:(TSUCellCoord)a3
+- (TSUCellCoord)advanceToCellID:(TSUCellCoord)d
 {
   v7 = 0x7FFF7FFFFFFFLL;
-  if (objc_msgSend_count(self->_iterators, a2, *&a3, v3, v4))
+  if (objc_msgSend_count(self->_iterators, a2, *&d, v3, v4))
   {
     v12 = 0;
     do
     {
       begin = self->_cursorCellIDs.__begin_;
       v14 = &begin[v12];
-      if (v14->row < a3.row || v14->row == a3.row && v14->column < a3.column)
+      if (v14->row < d.row || v14->row == d.row && v14->column < d.column)
       {
         v15 = objc_msgSend_objectAtIndexedSubscript_(self->_iterators, v8, v12, v10, v11);
-        objc_msgSend_advanceToCellID_(v15, v16, *&a3, v17, v18);
+        objc_msgSend_advanceToCellID_(v15, v16, *&d, v17, v18);
         self->_cursorCellIDs.__begin_[v12] = objc_msgSend_getNext(v15, v19, v20, v21, v22);
 
         begin = self->_cursorCellIDs.__begin_;

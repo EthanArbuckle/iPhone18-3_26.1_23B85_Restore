@@ -1,26 +1,26 @@
 @interface AAUIAuthKitRecoveryHook
 - (AKAppleIDServerUIDataHarvester)serverDataHarvester;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
 - (id)_cdpStateUIProvider;
-- (void)harvestDataFromResponse:(id)a3;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)harvestDataFromResponse:(id)response;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUIAuthKitRecoveryHook
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(AAUIAuthKitRecoveryHook *)self serverDataHarvester];
-  v7 = [v6 harvestedData];
+  completionCopy = completion;
+  serverDataHarvester = [(AAUIAuthKitRecoveryHook *)self serverDataHarvester];
+  harvestedData = [serverDataHarvester harvestedData];
 
   [(AAUIAuthKitRecoveryHook *)self setServerHookResponse:0];
   [(AAUIAuthKitRecoveryHook *)self setServerDataHarvester:0];
-  v8 = [MEMORY[0x1E698DC90] recoveryContextWithServerInfo:v7];
+  v8 = [MEMORY[0x1E698DC90] recoveryContextWithServerInfo:harvestedData];
   v9 = objc_alloc(MEMORY[0x1E698DD98]);
-  v10 = [(AAUIAuthKitRecoveryHook *)self _cdpStateUIProvider];
-  v11 = [v9 initWithContext:v8 uiProvider:v10];
+  _cdpStateUIProvider = [(AAUIAuthKitRecoveryHook *)self _cdpStateUIProvider];
+  v11 = [v9 initWithContext:v8 uiProvider:_cdpStateUIProvider];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -28,8 +28,8 @@
   v14[3] = &unk_1E820C748;
   v14[4] = self;
   v15 = v8;
-  v16 = v5;
-  v12 = v5;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = v8;
   [v11 presentNativeRecoveryUIWithCompletion:v14];
 }
@@ -83,8 +83,8 @@ void __57__AAUIAuthKitRecoveryHook_processObjectModel_completion___block_invoke(
 - (id)_cdpStateUIProvider
 {
   v3 = objc_alloc(MEMORY[0x1E6997850]);
-  v4 = [(AAUIAuthKitRecoveryHook *)self delegate];
-  v5 = [v4 presentationContextForHook:self];
+  delegate = [(AAUIAuthKitRecoveryHook *)self delegate];
+  v5 = [delegate presentationContextForHook:self];
   v6 = [v3 initWithPresentingViewController:v5];
 
   [v6 setForceInlinePresentation:1];
@@ -92,16 +92,16 @@ void __57__AAUIAuthKitRecoveryHook_processObjectModel_completion___block_invoke(
   return v6;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v4 = a3;
-  v5 = [(AAUIAuthKitRecoveryHook *)self serverDataHarvester];
-  [v5 harvestDataFromServerUIObjectModel:v4];
+  modelCopy = model;
+  serverDataHarvester = [(AAUIAuthKitRecoveryHook *)self serverDataHarvester];
+  [serverDataHarvester harvestDataFromServerUIObjectModel:modelCopy];
 
   objc_opt_class();
-  v6 = [(AAUIAuthKitRecoveryHook *)self serverDataHarvester];
-  v7 = [v6 harvestedData];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E698DB00]];
+  serverDataHarvester2 = [(AAUIAuthKitRecoveryHook *)self serverDataHarvester];
+  harvestedData = [serverDataHarvester2 harvestedData];
+  v8 = [harvestedData objectForKeyedSubscript:*MEMORY[0x1E698DB00]];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -125,11 +125,11 @@ void __57__AAUIAuthKitRecoveryHook_processObjectModel_completion___block_invoke(
   return v10;
 }
 
-- (void)harvestDataFromResponse:(id)a3
+- (void)harvestDataFromResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(AAUIAuthKitRecoveryHook *)self serverDataHarvester];
-  [v5 harvestDataFromServerHTTPResponse:v4];
+  responseCopy = response;
+  serverDataHarvester = [(AAUIAuthKitRecoveryHook *)self serverDataHarvester];
+  [serverDataHarvester harvestDataFromServerHTTPResponse:responseCopy];
 }
 
 - (AKAppleIDServerUIDataHarvester)serverDataHarvester

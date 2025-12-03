@@ -1,14 +1,14 @@
 @interface NEAppProxyUDPFlow
-- (NEAppProxyUDPFlow)initWithNEFlow:(_NEFlow *)a3 queue:(id)a4;
+- (NEAppProxyUDPFlow)initWithNEFlow:(_NEFlow *)flow queue:(id)queue;
 - (NWEndpoint)localEndpoint;
 - (id)description;
-- (void)openWithLocalEndpoint:(id)a3 completionHandler:(id)a4;
-- (void)openWithLocalFlowEndpoint:(id)a3 completionHandler:(id)a4;
-- (void)readDatagramsAndFlowEndpointsWithCompletionHandler:(id)a3;
+- (void)openWithLocalEndpoint:(id)endpoint completionHandler:(id)handler;
+- (void)openWithLocalFlowEndpoint:(id)endpoint completionHandler:(id)handler;
+- (void)readDatagramsAndFlowEndpointsWithCompletionHandler:(id)handler;
 - (void)readDatagramsWithCompletionHandler:(void *)completionHandler;
 - (void)resetLocalEndpoint;
 - (void)writeDatagrams:(NSArray *)datagrams sentByEndpoints:(NSArray *)remoteEndpoints completionHandler:(void *)completionHandler;
-- (void)writeDatagrams:(id)a3 sentByFlowEndpoints:(id)a4 completionHandler:(id)a5;
+- (void)writeDatagrams:(id)datagrams sentByFlowEndpoints:(id)endpoints completionHandler:(id)handler;
 @end
 
 @implementation NEAppProxyUDPFlow
@@ -16,12 +16,12 @@
 - (id)description
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(NEAppProxyFlow *)self metaData];
-  v6 = [(NEAppProxyUDPFlow *)self localFlowEndpoint];
-  if (v6)
+  metaData = [(NEAppProxyFlow *)self metaData];
+  localFlowEndpoint = [(NEAppProxyUDPFlow *)self localFlowEndpoint];
+  if (localFlowEndpoint)
   {
-    v2 = [(NEAppProxyUDPFlow *)self localFlowEndpoint];
-    port = nw_endpoint_get_port(v2);
+    localFlowEndpoint2 = [(NEAppProxyUDPFlow *)self localFlowEndpoint];
+    port = nw_endpoint_get_port(localFlowEndpoint2);
   }
 
   else
@@ -29,17 +29,17 @@
     port = 0;
   }
 
-  v8 = [(NEAppProxyFlow *)self networkInterface];
-  v9 = [(NEAppProxyFlow *)self isBound];
+  networkInterface = [(NEAppProxyFlow *)self networkInterface];
+  isBound = [(NEAppProxyFlow *)self isBound];
   v10 = &stru_1F3880810;
-  if (v9)
+  if (isBound)
   {
     v10 = @"(bound)";
   }
 
-  v11 = [v4 stringWithFormat:@"UDP %@ local port %u interface %@%@", v5, port, v8, v10];
+  v11 = [v4 stringWithFormat:@"UDP %@ local port %u interface %@%@", metaData, port, networkInterface, v10];
 
-  if (v6)
+  if (localFlowEndpoint)
   {
   }
 
@@ -48,12 +48,12 @@
 
 - (NWEndpoint)localEndpoint
 {
-  v3 = [(NEAppProxyUDPFlow *)self localFlowEndpoint];
-  if (v3)
+  localFlowEndpoint = [(NEAppProxyUDPFlow *)self localFlowEndpoint];
+  if (localFlowEndpoint)
   {
     v4 = MEMORY[0x1E6977E20];
-    v5 = [(NEAppProxyUDPFlow *)self localFlowEndpoint];
-    v6 = [v4 endpointWithCEndpoint:v5];
+    localFlowEndpoint2 = [(NEAppProxyUDPFlow *)self localFlowEndpoint];
+    v6 = [v4 endpointWithCEndpoint:localFlowEndpoint2];
   }
 
   else
@@ -343,22 +343,22 @@ void __70__NEAppProxyUDPFlow_writeDatagrams_sentByEndpoints_completionHandler___
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)writeDatagrams:(id)a3 sentByFlowEndpoints:(id)a4 completionHandler:(id)a5
+- (void)writeDatagrams:(id)datagrams sentByFlowEndpoints:(id)endpoints completionHandler:(id)handler
 {
   v81 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v50 = a5;
-  v10 = [v8 count];
-  v48 = v9;
-  v49 = v8;
-  if (v10 == [v9 count])
+  datagramsCopy = datagrams;
+  endpointsCopy = endpoints;
+  handlerCopy = handler;
+  v10 = [datagramsCopy count];
+  v48 = endpointsCopy;
+  v49 = datagramsCopy;
+  if (v10 == [endpointsCopy count])
   {
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v11 = v8;
+    v11 = datagramsCopy;
     v12 = [v11 countByEnumeratingWithState:&v67 objects:v74 count:16];
     if (v12)
     {
@@ -398,7 +398,7 @@ void __70__NEAppProxyUDPFlow_writeDatagrams_sentByEndpoints_completionHandler___
             v65[1] = 3221225472;
             v65[2] = __74__NEAppProxyUDPFlow_writeDatagrams_sentByFlowEndpoints_completionHandler___block_invoke_10;
             v65[3] = &unk_1E7F0B600;
-            v66 = v50;
+            v66 = handlerCopy;
             dispatch_async(v41, v65);
 
             goto LABEL_51;
@@ -419,7 +419,7 @@ void __70__NEAppProxyUDPFlow_writeDatagrams_sentByEndpoints_completionHandler___
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v16 = v9;
+    v16 = endpointsCopy;
     v17 = [v16 countByEnumeratingWithState:&v61 objects:v73 count:16];
     if (v17)
     {
@@ -459,7 +459,7 @@ void __70__NEAppProxyUDPFlow_writeDatagrams_sentByEndpoints_completionHandler___
             v59[1] = 3221225472;
             v59[2] = __74__NEAppProxyUDPFlow_writeDatagrams_sentByFlowEndpoints_completionHandler___block_invoke_11;
             v59[3] = &unk_1E7F0B600;
-            v60 = v50;
+            v60 = handlerCopy;
             dispatch_async(v45, v59);
 
             v11 = v16;
@@ -500,7 +500,7 @@ void __70__NEAppProxyUDPFlow_writeDatagrams_sentByEndpoints_completionHandler___
           v55 = 3221225472;
           v56 = __74__NEAppProxyUDPFlow_writeDatagrams_sentByFlowEndpoints_completionHandler___block_invoke_2;
           v57 = &unk_1E7F06AB0;
-          v58 = v50;
+          v58 = handlerCopy;
         }
 
         v28 = NEFlowWrite();
@@ -530,7 +530,7 @@ void __70__NEAppProxyUDPFlow_writeDatagrams_sentByEndpoints_completionHandler___
           block[1] = 3221225472;
           block[2] = __74__NEAppProxyUDPFlow_writeDatagrams_sentByFlowEndpoints_completionHandler___block_invoke_13;
           block[3] = &unk_1E7F0AB18;
-          v52 = v50;
+          v52 = handlerCopy;
           v53 = v29;
           dispatch_async(v33, block);
         }
@@ -554,9 +554,9 @@ void __70__NEAppProxyUDPFlow_writeDatagrams_sentByEndpoints_completionHandler___
       *buf = 136315650;
       v76 = "[NEAppProxyUDPFlow writeDatagrams:sentByFlowEndpoints:completionHandler:]";
       v77 = 2048;
-      v78 = [v8 count];
+      v78 = [datagramsCopy count];
       v79 = 2048;
-      v80 = [v9 count];
+      v80 = [endpointsCopy count];
       _os_log_error_impl(&dword_1BA83C000, v34, OS_LOG_TYPE_ERROR, "%s: Size of datagrams array (%lu) does not match size of remoteEndpoints array (%lu)", buf, 0x20u);
     }
 
@@ -575,7 +575,7 @@ void __70__NEAppProxyUDPFlow_writeDatagrams_sentByEndpoints_completionHandler___
     v71[1] = 3221225472;
     v71[2] = __74__NEAppProxyUDPFlow_writeDatagrams_sentByFlowEndpoints_completionHandler___block_invoke;
     v71[3] = &unk_1E7F0B600;
-    v72 = v50;
+    v72 = handlerCopy;
     dispatch_async(v37, v71);
 
     v11 = v72;
@@ -680,9 +680,9 @@ void __56__NEAppProxyUDPFlow_readDatagramsWithCompletionHandler___block_invoke_2
   (*(v1 + 16))(v1, 0, 0, v2);
 }
 
-- (void)readDatagramsAndFlowEndpointsWithCompletionHandler:(id)a3
+- (void)readDatagramsAndFlowEndpointsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self)
   {
     flow = self->super._flow;
@@ -692,7 +692,7 @@ void __56__NEAppProxyUDPFlow_readDatagramsWithCompletionHandler___block_invoke_2
   v16 = 3221225472;
   v17 = __72__NEAppProxyUDPFlow_readDatagramsAndFlowEndpointsWithCompletionHandler___block_invoke;
   v18 = &unk_1E7F06A88;
-  v6 = v4;
+  v6 = handlerCopy;
   v19 = v6;
   v7 = NEFlowAsyncDatagramsCopyNext();
   if (v7)
@@ -743,19 +743,19 @@ void __72__NEAppProxyUDPFlow_readDatagramsAndFlowEndpointsWithCompletionHandler_
   (*(v1 + 16))(v1, 0, 0, v2);
 }
 
-- (void)openWithLocalEndpoint:(id)a3 completionHandler:(id)a4
+- (void)openWithLocalEndpoint:(id)endpoint completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__NEAppProxyUDPFlow_openWithLocalEndpoint_completionHandler___block_invoke;
   v9[3] = &unk_1E7F0B628;
   v9[4] = self;
-  v10 = v6;
+  v10 = handlerCopy;
   v8.receiver = self;
   v8.super_class = NEAppProxyUDPFlow;
-  v7 = v6;
-  [(NEAppProxyFlow *)&v8 openWithLocalEndpoint:a3 completionHandler:v9];
+  v7 = handlerCopy;
+  [(NEAppProxyFlow *)&v8 openWithLocalEndpoint:endpoint completionHandler:v9];
 }
 
 void __61__NEAppProxyUDPFlow_openWithLocalEndpoint_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -768,32 +768,32 @@ void __61__NEAppProxyUDPFlow_openWithLocalEndpoint_completionHandler___block_inv
 
 - (void)resetLocalEndpoint
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 32);
+    v2 = *(self + 32);
     v5 = NEFlowCopyProperty();
     if (isa_nsdata(v5))
     {
       address = nw_endpoint_create_address([v5 bytes]);
-      v4 = *(a1 + 56);
-      *(a1 + 56) = address;
+      v4 = *(self + 56);
+      *(self + 56) = address;
     }
   }
 }
 
-- (void)openWithLocalFlowEndpoint:(id)a3 completionHandler:(id)a4
+- (void)openWithLocalFlowEndpoint:(id)endpoint completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__NEAppProxyUDPFlow_openWithLocalFlowEndpoint_completionHandler___block_invoke;
   v9[3] = &unk_1E7F0B628;
   v9[4] = self;
-  v10 = v6;
+  v10 = handlerCopy;
   v8.receiver = self;
   v8.super_class = NEAppProxyUDPFlow;
-  v7 = v6;
-  [(NEAppProxyFlow *)&v8 openWithLocalFlowEndpoint:a3 completionHandler:v9];
+  v7 = handlerCopy;
+  [(NEAppProxyFlow *)&v8 openWithLocalFlowEndpoint:endpoint completionHandler:v9];
 }
 
 void __65__NEAppProxyUDPFlow_openWithLocalFlowEndpoint_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -804,11 +804,11 @@ void __65__NEAppProxyUDPFlow_openWithLocalFlowEndpoint_completionHandler___block
   (*(*(a1 + 40) + 16))();
 }
 
-- (NEAppProxyUDPFlow)initWithNEFlow:(_NEFlow *)a3 queue:(id)a4
+- (NEAppProxyUDPFlow)initWithNEFlow:(_NEFlow *)flow queue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = NEAppProxyUDPFlow;
-  v4 = [(NEAppProxyFlow *)&v7 initWithNEFlow:a3 queue:a4];
+  v4 = [(NEAppProxyFlow *)&v7 initWithNEFlow:flow queue:queue];
   v5 = v4;
   if (v4)
   {

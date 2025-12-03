@@ -1,6 +1,6 @@
 @interface NotifierDelegate
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)start;
 @end
 
@@ -33,18 +33,18 @@
   [(NSXPCListener *)v6 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___FAFamilyNotifierAgentProtocol];
   v6 = objc_opt_class();
   v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
   [v5 setClasses:v7 forSelector:"pendingNotificationsWithIdentifier:replyBlock:" argumentIndex:0 ofReply:1];
 
-  [v4 setExportedInterface:v5];
-  v8 = [[NotifierInterface alloc] initWithXPCConnection:v4];
-  [v4 setExportedObject:v8];
-  [v4 resume];
+  [connectionCopy setExportedInterface:v5];
+  v8 = [[NotifierInterface alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v8];
+  [connectionCopy resume];
 
   return 1;
 }

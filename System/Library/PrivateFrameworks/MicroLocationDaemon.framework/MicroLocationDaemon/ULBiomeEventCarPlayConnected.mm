@@ -1,11 +1,11 @@
 @interface ULBiomeEventCarPlayConnected
 - (_TtC19MicroLocationDaemon28ULBiomeEventCarPlayConnected)init;
-- (_TtC19MicroLocationDaemon28ULBiomeEventCarPlayConnected)initWithTimestamp:(id)a3 starting:(BOOL)a4 reason:(int)a5;
+- (_TtC19MicroLocationDaemon28ULBiomeEventCarPlayConnected)initWithTimestamp:(id)timestamp starting:(BOOL)starting reason:(int)reason;
 @end
 
 @implementation ULBiomeEventCarPlayConnected
 
-- (_TtC19MicroLocationDaemon28ULBiomeEventCarPlayConnected)initWithTimestamp:(id)a3 starting:(BOOL)a4 reason:(int)a5
+- (_TtC19MicroLocationDaemon28ULBiomeEventCarPlayConnected)initWithTimestamp:(id)timestamp starting:(BOOL)starting reason:(int)reason
 {
   v8 = sub_259212160();
   v9 = *(v8 - 8);
@@ -14,8 +14,8 @@
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_259212140();
   (*(v9 + 16))(self + OBJC_IVAR____TtC19MicroLocationDaemon28ULBiomeEventCarPlayConnected_timestamp, v12, v8);
-  *(self + OBJC_IVAR____TtC19MicroLocationDaemon28ULBiomeEventCarPlayConnected_starting) = a4;
-  *(self + OBJC_IVAR____TtC19MicroLocationDaemon28ULBiomeEventCarPlayConnected_reason) = a5;
+  *(self + OBJC_IVAR____TtC19MicroLocationDaemon28ULBiomeEventCarPlayConnected_starting) = starting;
+  *(self + OBJC_IVAR____TtC19MicroLocationDaemon28ULBiomeEventCarPlayConnected_reason) = reason;
   v13 = type metadata accessor for ULBiomeEventCarPlayConnected(0);
   v16.receiver = self;
   v16.super_class = v13;

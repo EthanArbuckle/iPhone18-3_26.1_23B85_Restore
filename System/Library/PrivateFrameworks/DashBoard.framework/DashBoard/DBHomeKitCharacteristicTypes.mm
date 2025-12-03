@@ -1,7 +1,7 @@
 @interface DBHomeKitCharacteristicTypes
 + (NSDictionary)characteristicNameByType;
 + (NSDictionary)characteristicTypeByName;
-+ (id)characteristicNameForType:(id)a3;
++ (id)characteristicNameForType:(id)type;
 @end
 
 @implementation DBHomeKitCharacteristicTypes
@@ -622,15 +622,15 @@ void __56__DBHomeKitCharacteristicTypes_characteristicNameByType__block_invoke()
   characteristicNameByType__characteristicNameByType = v32;
 }
 
-+ (id)characteristicNameForType:(id)a3
++ (id)characteristicNameForType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 characteristicNameByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  characteristicNameByType = [self characteristicNameByType];
+  v6 = [characteristicNameByType objectForKeyedSubscript:typeCopy];
 
   if (!v6)
   {
-    v6 = v4;
+    v6 = typeCopy;
   }
 
   return v6;

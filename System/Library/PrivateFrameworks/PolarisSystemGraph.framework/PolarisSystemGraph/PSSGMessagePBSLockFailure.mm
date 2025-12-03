@@ -1,13 +1,13 @@
 @interface PSSGMessagePBSLockFailure
-+ (id)messageWithResourceKey:(id)a3;
++ (id)messageWithResourceKey:(id)key;
 @end
 
 @implementation PSSGMessagePBSLockFailure
 
-+ (id)messageWithResourceKey:(id)a3
++ (id)messageWithResourceKey:(id)key
 {
-  v3 = a3;
-  v4 = [(PSSGMessageBase *)[PSSGMessagePBSLockFailure alloc] initWithType:50 string1:v3];
+  keyCopy = key;
+  v4 = [(PSSGMessageBase *)[PSSGMessagePBSLockFailure alloc] initWithType:50 string1:keyCopy];
 
   return v4;
 }

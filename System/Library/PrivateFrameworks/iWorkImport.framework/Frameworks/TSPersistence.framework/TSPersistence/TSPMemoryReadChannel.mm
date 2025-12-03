@@ -1,12 +1,12 @@
 @interface TSPMemoryReadChannel
 - (BOOL)isValid;
 - (TSPMemoryReadChannel)init;
-- (TSPMemoryReadChannel)initWithDispatchData:(id)a3;
-- (TSPMemoryReadChannel)initWithNSData:(id)a3;
+- (TSPMemoryReadChannel)initWithDispatchData:(id)data;
+- (TSPMemoryReadChannel)initWithNSData:(id)data;
 - (void)_close;
 - (void)close;
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5;
-- (void)readWithHandler:(id)a3;
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation TSPMemoryReadChannel
@@ -28,16 +28,16 @@
   objc_exception_throw(v14);
 }
 
-- (TSPMemoryReadChannel)initWithDispatchData:(id)a3
+- (TSPMemoryReadChannel)initWithDispatchData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = TSPMemoryReadChannel;
   v6 = [(TSPMemoryReadChannel *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchData, a3);
+    objc_storeStrong(&v6->_dispatchData, data);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("TSPMemoryReadChannel.Read", v8);
     readQueue = v7->_readQueue;
@@ -49,41 +49,41 @@
   return v7;
 }
 
-- (TSPMemoryReadChannel)initWithNSData:(id)a3
+- (TSPMemoryReadChannel)initWithNSData:(id)data
 {
-  v4 = objc_msgSend_tsp_dispatchData(a3, a2, a3);
+  v4 = objc_msgSend_tsp_dispatchData(data, a2, data);
   v6 = objc_msgSend_initWithDispatchData_(self, v5, v4);
 
   return v6;
 }
 
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   readQueue = self->_readQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_2769C1814;
   v11[3] = &unk_27A6E3238;
-  v13 = a3;
-  v14 = a4;
+  offsetCopy = offset;
+  lengthCopy = length;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(readQueue, v11);
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   readQueue = self->_readQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2769C1960;
   v7[3] = &unk_27A6E3260;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(readQueue, v7);
 }
 

@@ -1,25 +1,25 @@
 @interface BKSHIDEventRedirectAttributes
 + (id)protobufSchema;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation BKSHIDEventRedirectAttributes
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6.receiver = self;
   v6.super_class = BKSHIDEventRedirectAttributes;
-  [(BKSHIDEventBaseAttributes *)&v6 appendDescriptionToFormatter:v4];
-  v5 = [v4 appendInteger:self->_pid withName:@"pid"];
+  [(BKSHIDEventBaseAttributes *)&v6 appendDescriptionToFormatter:formatterCopy];
+  v5 = [formatterCopy appendInteger:self->_pid withName:@"pid"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = BKSHIDEventRedirectAttributes;
-  result = [(BKSHIDEventBaseAttributes *)&v5 copyWithZone:a3];
+  result = [(BKSHIDEventBaseAttributes *)&v5 copyWithZone:zone];
   *(result + 14) = self->_pid;
   return result;
 }
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __47__BKSHIDEventRedirectAttributes_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_308 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_308, block);

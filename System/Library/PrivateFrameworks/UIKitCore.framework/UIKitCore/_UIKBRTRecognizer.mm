@@ -1,39 +1,39 @@
 @interface _UIKBRTRecognizer
-- (BOOL)addedToActiveTouches:(id)a3;
-- (BOOL)makeTouchActive:(id)a3;
-- (BOOL)notifyDelegateOfMovedTouch:(id)a3;
-- (BOOL)queryDelegateOfIgnoringTouch:(id)a3 forOtherTouch:(BOOL)a4;
-- (BOOL)queryDelegateToBeginTouch:(id)a3 forBeginState:(unint64_t)a4 restartIfNecessary:(BOOL)a5;
-- (BOOL)removedFromActiveTouches:(id)a3;
+- (BOOL)addedToActiveTouches:(id)touches;
+- (BOOL)makeTouchActive:(id)active;
+- (BOOL)notifyDelegateOfMovedTouch:(id)touch;
+- (BOOL)queryDelegateOfIgnoringTouch:(id)touch forOtherTouch:(BOOL)otherTouch;
+- (BOOL)queryDelegateToBeginTouch:(id)touch forBeginState:(unint64_t)state restartIfNecessary:(BOOL)necessary;
+- (BOOL)removedFromActiveTouches:(id)touches;
 - (CGSize)clusterRestHaloSize;
 - (_UIKBRTRecognizer)init;
-- (float)letRulesModifyNewTouchInfo:(id)a3;
-- (void)_doBeginTouchWithTouchInfo:(id)a3;
-- (void)_doCancelledTouchWithTouchInfo:(id)a3;
-- (void)_doEndedTouchWithTouchInfo:(id)a3;
-- (void)_doIgnoreTouchWithTouchInfo:(id)a3;
-- (void)_doMarkTouchProcessedWithTouchInfo:(id)a3;
-- (void)_doMovedTouchWithTouchInfo:(id)a3;
-- (void)cancelTouchOnLayoutWithTouchInfo:(id)a3;
-- (void)explicitlyIgnoreTouch:(id)a3 withIdentifier:(id)a4;
-- (void)letRulesModifyPendingTouchInfo:(id)a3;
-- (void)makeTouchIgnored:(id)a3 force:(BOOL)a4 because:(id)a5;
-- (void)makeTouchIgnored:(id)a3 force:(BOOL)a4 withMessage:(id)a5;
-- (void)markTouchProcessed:(id)a3 withIdentifier:(id)a4;
-- (void)notifyDelegateOfCancelledTouch:(id)a3;
-- (void)notifyDelegateOfIgnoringTouch:(id)a3;
-- (void)notifyDelegateOfMovedIgnoredTouch:(id)a3;
-- (void)notifyDelegateOfRestingTouch:(id)a3;
-- (void)notifyDelegateOfSuccessfulTouch:(id)a3;
-- (void)processTouchInfo:(id)a3;
+- (float)letRulesModifyNewTouchInfo:(id)info;
+- (void)_doBeginTouchWithTouchInfo:(id)info;
+- (void)_doCancelledTouchWithTouchInfo:(id)info;
+- (void)_doEndedTouchWithTouchInfo:(id)info;
+- (void)_doIgnoreTouchWithTouchInfo:(id)info;
+- (void)_doMarkTouchProcessedWithTouchInfo:(id)info;
+- (void)_doMovedTouchWithTouchInfo:(id)info;
+- (void)cancelTouchOnLayoutWithTouchInfo:(id)info;
+- (void)explicitlyIgnoreTouch:(id)touch withIdentifier:(id)identifier;
+- (void)letRulesModifyPendingTouchInfo:(id)info;
+- (void)makeTouchIgnored:(id)ignored force:(BOOL)force because:(id)because;
+- (void)makeTouchIgnored:(id)ignored force:(BOOL)force withMessage:(id)message;
+- (void)markTouchProcessed:(id)processed withIdentifier:(id)identifier;
+- (void)notifyDelegateOfCancelledTouch:(id)touch;
+- (void)notifyDelegateOfIgnoringTouch:(id)touch;
+- (void)notifyDelegateOfMovedIgnoredTouch:(id)touch;
+- (void)notifyDelegateOfRestingTouch:(id)touch;
+- (void)notifyDelegateOfSuccessfulTouch:(id)touch;
+- (void)processTouchInfo:(id)info;
 - (void)reset;
-- (void)setDisableHomeRowReturn:(BOOL)a3;
-- (void)setStandardKeyPixelSize:(CGSize)a3;
-- (void)touchCancelled:(id)a3 withIdentifier:(id)a4;
-- (void)touchDown:(id)a3 withIdentifier:(id)a4 canLogTouch:(BOOL)a5;
-- (void)touchDragged:(id)a3 withIdentifier:(id)a4;
-- (void)touchUp:(id)a3 withIdentifier:(id)a4;
-- (void)updateIgnoredTouchesForTouchInfo:(id)a3 whenTouchInfo:(id)a4 changesStateTo:(char)a5;
+- (void)setDisableHomeRowReturn:(BOOL)return;
+- (void)setStandardKeyPixelSize:(CGSize)size;
+- (void)touchCancelled:(id)cancelled withIdentifier:(id)identifier;
+- (void)touchDown:(id)down withIdentifier:(id)identifier canLogTouch:(BOOL)touch;
+- (void)touchDragged:(id)dragged withIdentifier:(id)identifier;
+- (void)touchUp:(id)up withIdentifier:(id)identifier;
+- (void)updateIgnoredTouchesForTouchInfo:(id)info whenTouchInfo:(id)touchInfo changesStateTo:(char)to;
 @end
 
 @implementation _UIKBRTRecognizer
@@ -102,7 +102,7 @@
   dispatch_async(touchQueue, block);
 }
 
-- (void)setStandardKeyPixelSize:(CGSize)a3
+- (void)setStandardKeyPixelSize:(CGSize)size
 {
   touchQueue = self->_touchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -110,11 +110,11 @@
   block[2] = __45___UIKBRTRecognizer_setStandardKeyPixelSize___block_invoke;
   block[3] = &unk_1E70F6848;
   block[4] = self;
-  v5 = a3;
+  sizeCopy = size;
   dispatch_async(touchQueue, block);
 }
 
-- (void)setDisableHomeRowReturn:(BOOL)a3
+- (void)setDisableHomeRowReturn:(BOOL)return
 {
   touchQueue = self->_touchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -122,14 +122,14 @@
   v4[2] = __45___UIKBRTRecognizer_setDisableHomeRowReturn___block_invoke;
   v4[3] = &unk_1E70F35E0;
   v4[4] = self;
-  v5 = a3;
+  returnCopy = return;
   dispatch_async(touchQueue, v4);
 }
 
-- (float)letRulesModifyNewTouchInfo:(id)a3
+- (float)letRulesModifyNewTouchInfo:(id)info
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -149,10 +149,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v35 + 1) + 8 * i) recognizer:self touchStateForNewTouchInfo:v4];
-        if (v10 != [v4 currentTouchState])
+        v10 = [*(*(&v35 + 1) + 8 * i) recognizer:self touchStateForNewTouchInfo:infoCopy];
+        if (v10 != [infoCopy currentTouchState])
         {
-          [v4 setCurrentTouchState:v10];
+          [infoCopy setCurrentTouchState:v10];
           goto LABEL_11;
         }
       }
@@ -194,7 +194,7 @@ LABEL_11:
             objc_enumerationMutation(v12);
           }
 
-          v20 = [*(*(&v31 + 1) + 8 * j) recognizer:self confidenceWhenPendingTouchInfo:v4];
+          v20 = [*(*(&v31 + 1) + 8 * j) recognizer:self confidenceWhenPendingTouchInfo:infoCopy];
           v21 = v20;
           if (v20)
           {
@@ -275,7 +275,7 @@ LABEL_11:
 
         if ((v29 / v15) > 0.5)
         {
-          [v4 setCurrentTouchState:v18 <= v17];
+          [infoCopy setCurrentTouchState:v18 <= v17];
         }
       }
     }
@@ -288,11 +288,11 @@ LABEL_11:
   return v11;
 }
 
-- (void)letRulesModifyPendingTouchInfo:(id)a3
+- (void)letRulesModifyPendingTouchInfo:(id)info
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 currentTouchState] == 3)
+  infoCopy = info;
+  if ([infoCopy currentTouchState] == 3)
   {
     v36 = 0u;
     v37 = 0u;
@@ -313,10 +313,10 @@ LABEL_11:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v34 + 1) + 8 * i) recognizer:self touchStateForPendingTouchInfo:v4];
-          if (v10 != [v4 currentTouchState])
+          v10 = [*(*(&v34 + 1) + 8 * i) recognizer:self touchStateForPendingTouchInfo:infoCopy];
+          if (v10 != [infoCopy currentTouchState])
           {
-            [v4 setCurrentTouchState:v10];
+            [infoCopy setCurrentTouchState:v10];
             goto LABEL_12;
           }
         }
@@ -334,7 +334,7 @@ LABEL_11:
 LABEL_12:
   }
 
-  if ([v4 currentTouchState] == 3)
+  if ([infoCopy currentTouchState] == 3)
   {
     v32 = 0u;
     v33 = 0u;
@@ -358,7 +358,7 @@ LABEL_12:
             objc_enumerationMutation(v11);
           }
 
-          v19 = [*(*(&v30 + 1) + 8 * j) recognizer:self confidenceWhenSettingTouchInfo:v4];
+          v19 = [*(*(&v30 + 1) + 8 * j) recognizer:self confidenceWhenSettingTouchInfo:infoCopy];
           v20 = v19;
           if (v19)
           {
@@ -420,18 +420,18 @@ LABEL_12:
         v27 = v17 >= v16 ? v17 : v16;
         if ((v27 / v14) > 0.5)
         {
-          v28 = v4;
+          v28 = infoCopy;
           if (v17 <= v16)
           {
-            if ([v4 preRuleTouchState] == 2)
+            if ([infoCopy preRuleTouchState] == 2)
             {
-              v28 = v4;
+              v28 = infoCopy;
               v29 = 2;
             }
 
             else
             {
-              v28 = v4;
+              v28 = infoCopy;
               v29 = 1;
             }
           }
@@ -451,30 +451,30 @@ LABEL_12:
     }
   }
 
-  if ([v4 currentTouchState] == 3)
+  if ([infoCopy currentTouchState] == 3)
   {
-    [v4 setCurrentTouchState:{objc_msgSend(v4, "preRuleTouchState")}];
-    [v4 setPreRuleTouchState:0xFFFFFFFFLL];
+    [infoCopy setCurrentTouchState:{objc_msgSend(infoCopy, "preRuleTouchState")}];
+    [infoCopy setPreRuleTouchState:0xFFFFFFFFLL];
   }
 }
 
-- (void)_doBeginTouchWithTouchInfo:(id)a3
+- (void)_doBeginTouchWithTouchInfo:(id)info
 {
   v107 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 touchIdentifier];
+  infoCopy = info;
+  touchIdentifier = [infoCopy touchIdentifier];
 
-  if (!v5)
+  if (!touchIdentifier)
   {
-    [(_UIKBRTRecognizer *)self makeTouchIgnored:v4 force:1];
+    [(_UIKBRTRecognizer *)self makeTouchIgnored:infoCopy force:1];
     goto LABEL_107;
   }
 
-  [(_UIKBRTRecognizer *)self kbStatusMessage:@"Beginning touch on %@", v4];
-  [v4 originalTimestamp];
+  [(_UIKBRTRecognizer *)self kbStatusMessage:@"Beginning touch on %@", infoCopy];
+  [infoCopy originalTimestamp];
   v7 = v6;
-  [(_UIKBRTRecognizerTouchPointTrackingProtocol *)self->_touchTracker addTouchInfo:v4];
-  [v4 currentTimestamp];
+  [(_UIKBRTRecognizerTouchPointTrackingProtocol *)self->_touchTracker addTouchInfo:infoCopy];
+  [infoCopy currentTimestamp];
   v9 = v8;
   touchInfos = self->_touchInfos;
   v102[0] = MEMORY[0x1E69E9820];
@@ -482,17 +482,17 @@ LABEL_12:
   v102[2] = __48___UIKBRTRecognizer__doBeginTouchWithTouchInfo___block_invoke;
   v102[3] = &__block_descriptor_40_e26_B16__0___UIKBRTTouchInfo_8l;
   *&v102[4] = v7;
-  [(NSMutableArray *)touchInfos _uikbrtInsert:v4 beforeItemPassingTest:v102];
-  [v4 currentTouchPoint];
+  [(NSMutableArray *)touchInfos _uikbrtInsert:infoCopy beforeItemPassingTest:v102];
+  [infoCopy currentTouchPoint];
   v12 = v11;
   v82 = objc_opt_new();
   v100 = 0u;
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v13 = [(NSMutableArray *)self->_touchInfos reverseObjectEnumerator];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_touchInfos reverseObjectEnumerator];
   v14 = 0;
-  v15 = [v13 countByEnumeratingWithState:&v98 objects:v106 count:16];
+  v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v98 objects:v106 count:16];
   if (!v15)
   {
     v81 = 0;
@@ -507,11 +507,11 @@ LABEL_12:
     {
       if (*v99 != v16)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v18 = *(*(&v98 + 1) + 8 * i);
-      if (v18 == v4)
+      if (v18 == infoCopy)
       {
         continue;
       }
@@ -557,11 +557,11 @@ LABEL_12:
           {
             [v18 currentTouchPoint];
             v27 = v26;
-            [v4 currentTouchPoint];
+            [infoCopy currentTouchPoint];
             if (vabdd_f64(v27, v28) < self->_clusterRestHaloSize.width)
             {
               [v18 currentTouchPoint];
-              if (vabdd_f64(v29, v12) < self->_clusterRestHaloSize.height && ![(_UIKBRTRecognizer *)self queryDelegateOfIgnoringTouch:v4 forOtherTouch:1])
+              if (vabdd_f64(v29, v12) < self->_clusterRestHaloSize.height && ![(_UIKBRTRecognizer *)self queryDelegateOfIgnoringTouch:infoCopy forOtherTouch:1])
               {
                 [v82 addObject:v18];
               }
@@ -576,7 +576,7 @@ LABEL_12:
       {
         [v18 currentTouchPoint];
         v31 = v30;
-        [v4 currentTouchPoint];
+        [infoCopy currentTouchPoint];
         if (vabdd_f64(v31, v32) >= self->_clusterRestHaloSize.width || ([v18 currentTouchPoint], vabdd_f64(v33, v12) >= self->_clusterRestHaloSize.height))
         {
           if (v25 != 5)
@@ -616,7 +616,7 @@ LABEL_36:
       }
     }
 
-    v15 = [v13 countByEnumeratingWithState:&v98 objects:v106 count:16];
+    v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v98 objects:v106 count:16];
   }
 
   while (v15);
@@ -655,7 +655,7 @@ LABEL_42:
     }
 
     dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_403);
-    [(_UIKBRTRecognizer *)self makeTouchIgnored:v4 force:1];
+    [(_UIKBRTRecognizer *)self makeTouchIgnored:infoCopy force:1];
     goto LABEL_106;
   }
 
@@ -665,8 +665,8 @@ LABEL_42:
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v43 = [(NSMutableArray *)self->_touchInfos reverseObjectEnumerator];
-    v44 = [v43 countByEnumeratingWithState:&v90 objects:v104 count:16];
+    reverseObjectEnumerator2 = [(NSMutableArray *)self->_touchInfos reverseObjectEnumerator];
+    v44 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v90 objects:v104 count:16];
     if (!v44)
     {
 LABEL_73:
@@ -683,7 +683,7 @@ LABEL_73:
 LABEL_55:
       if (*v91 != v46)
       {
-        objc_enumerationMutation(v43);
+        objc_enumerationMutation(reverseObjectEnumerator2);
       }
 
       v48 = *(*(&v90 + 1) + 8 * v47);
@@ -701,19 +701,19 @@ LABEL_55:
         goto LABEL_73;
       }
 
-      v53 = v48 == v4;
-      v54 = [v48 currentTouchState];
+      v53 = v48 == infoCopy;
+      currentTouchState = [v48 currentTouchState];
       v45 |= v53;
-      if (v54 >= 4)
+      if (currentTouchState >= 4)
       {
-        if (v54 == 7)
+        if (currentTouchState == 7)
         {
           v55 = v45;
         }
 
         else
         {
-          if (v54 == 5)
+          if (currentTouchState == 5)
           {
             goto LABEL_61;
           }
@@ -745,7 +745,7 @@ LABEL_61:
 
       if (v44 == ++v47)
       {
-        v56 = [v43 countByEnumeratingWithState:&v90 objects:v104 count:16];
+        v56 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v90 objects:v104 count:16];
         v44 = v56;
         if (v56)
         {
@@ -759,9 +759,9 @@ LABEL_61:
     }
   }
 
-  if (v81 && ![v4 currentTouchState])
+  if (v81 && ![infoCopy currentTouchState])
   {
-    [v4 setCurrentTouchState:2];
+    [infoCopy setCurrentTouchState:2];
   }
 
   if (_UIInternalPreferenceUsesDefault_1(&_UIInternalPreference__UIKBRT_SetDownTapInterval, @"_UIKBRT_SetDownTapInterval"))
@@ -774,64 +774,64 @@ LABEL_61:
     v57 = *&qword_1EA95E1A0;
   }
 
-  [v4 setPreRuleTouchState:{objc_msgSend(v4, "currentTouchState")}];
-  [(_UIKBRTRecognizer *)self letRulesModifyNewTouchInfo:v4];
+  [infoCopy setPreRuleTouchState:{objc_msgSend(infoCopy, "currentTouchState")}];
+  [(_UIKBRTRecognizer *)self letRulesModifyNewTouchInfo:infoCopy];
   v59 = v58;
   v60 = [MEMORY[0x1E695DFD8] set];
-  v61 = [v4 currentTouchState];
-  v62 = [v4 previousTouch];
+  currentTouchState2 = [infoCopy currentTouchState];
+  previousTouch = [infoCopy previousTouch];
 
-  if (v62)
+  if (previousTouch)
   {
-    v63 = [v4 previousTouch];
-    v64 = [v63 setOfTouchesToIgnoreWhenSettingTouchInfo:v4 toState:{objc_msgSend(v4, "currentTouchState")}];
+    previousTouch2 = [infoCopy previousTouch];
+    v64 = [previousTouch2 setOfTouchesToIgnoreWhenSettingTouchInfo:infoCopy toState:{objc_msgSend(infoCopy, "currentTouchState")}];
     v65 = [v60 setByAddingObjectsFromSet:v64];
 
     v60 = v65;
   }
 
-  v66 = [v4 nextTouch];
+  nextTouch = [infoCopy nextTouch];
 
-  if (v66)
+  if (nextTouch)
   {
-    v67 = [v4 nextTouch];
-    v68 = [v67 setOfTouchesToIgnoreWhenSettingTouchInfo:v4 toState:{objc_msgSend(v4, "currentTouchState")}];
+    nextTouch2 = [infoCopy nextTouch];
+    v68 = [nextTouch2 setOfTouchesToIgnoreWhenSettingTouchInfo:infoCopy toState:{objc_msgSend(infoCopy, "currentTouchState")}];
     v69 = [v60 setByAddingObjectsFromSet:v68];
 
     v60 = v69;
   }
 
-  if ([v4 currentTouchState] != v61)
+  if ([infoCopy currentTouchState] != currentTouchState2)
   {
-    v70 = [v4 previousTouch];
+    previousTouch3 = [infoCopy previousTouch];
 
-    if (v70)
+    if (previousTouch3)
     {
-      v71 = [v4 previousTouch];
-      v72 = [v71 setOfTouchesToIgnoreWhenSettingTouchInfo:v4 toState:{objc_msgSend(v4, "currentTouchState")}];
+      previousTouch4 = [infoCopy previousTouch];
+      v72 = [previousTouch4 setOfTouchesToIgnoreWhenSettingTouchInfo:infoCopy toState:{objc_msgSend(infoCopy, "currentTouchState")}];
       v73 = [v60 setByAddingObjectsFromSet:v72];
 
       v60 = v73;
     }
 
-    [(_UIKBRTRecognizer *)self letRulesModifyNewTouchInfo:v4];
+    [(_UIKBRTRecognizer *)self letRulesModifyNewTouchInfo:infoCopy];
     if (v59 >= v74)
     {
       v59 = v74;
     }
   }
 
-  if ([v4 currentTouchState] == 6)
+  if ([infoCopy currentTouchState] == 6)
   {
-    v75 = [v60 setByAddingObject:v4];
+    v75 = [v60 setByAddingObject:infoCopy];
 
     v60 = v75;
   }
 
   else if ([(NSMutableSet *)self->_definitiveRules count]|| [(NSMutableSet *)self->_averagingRules count])
   {
-    [v4 setPreRuleTouchState:{objc_msgSend(v4, "currentTouchState")}];
-    [v4 setCurrentTouchState:3];
+    [infoCopy setPreRuleTouchState:{objc_msgSend(infoCopy, "currentTouchState")}];
+    [infoCopy setCurrentTouchState:3];
   }
 
   v88 = 0u;
@@ -861,7 +861,7 @@ LABEL_61:
     while (v77);
   }
 
-  if ([v4 currentTouchState] <= 3)
+  if ([infoCopy currentTouchState] <= 3)
   {
     if (v59 < 1.0)
     {
@@ -875,7 +875,7 @@ LABEL_61:
     v83[2] = __48___UIKBRTRecognizer__doBeginTouchWithTouchInfo___block_invoke_4;
     v83[3] = &unk_1E71181A0;
     objc_copyWeak(&v84, &location);
-    [v4 setTimerWithTimeInterval:touchQueue onQueue:v83 do:v7 + v57 - v9];
+    [infoCopy setTimerWithTimeInterval:touchQueue onQueue:v83 do:v7 + v57 - v9];
     objc_destroyWeak(&v84);
     objc_destroyWeak(&location);
   }
@@ -884,9 +884,9 @@ LABEL_106:
 LABEL_107:
 }
 
-- (void)touchDown:(id)a3 withIdentifier:(id)a4 canLogTouch:(BOOL)a5
+- (void)touchDown:(id)down withIdentifier:(id)identifier canLogTouch:(BOOL)touch
 {
-  v6 = [_UIKBRTTouchInfo createTouchInfoForTouch:a3 withIdentifier:a4 canLogTouch:a5];
+  v6 = [_UIKBRTTouchInfo createTouchInfoForTouch:down withIdentifier:identifier canLogTouch:touch];
   [(_UIKBRTRecognizerTouchLoggingProtocol *)self->_touchLogger logTouchInfo:v6 withPhase:0];
   touchQueue = self->_touchQueue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -899,29 +899,29 @@ LABEL_107:
   dispatch_async(touchQueue, v9);
 }
 
-- (void)_doMovedTouchWithTouchInfo:(id)a3
+- (void)_doMovedTouchWithTouchInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (([(NSMutableArray *)self->_ignoredTouches containsObject:?]& 1) != 0)
   {
-    [(_UIKBRTRecognizer *)self notifyDelegateOfMovedIgnoredTouch:v4];
-    [(_UIKBRTRecognizerTouchPointTrackingProtocol *)self->_touchTracker moveTouchInfo:v4];
+    [(_UIKBRTRecognizer *)self notifyDelegateOfMovedIgnoredTouch:infoCopy];
+    [(_UIKBRTRecognizerTouchPointTrackingProtocol *)self->_touchTracker moveTouchInfo:infoCopy];
   }
 
   else
   {
-    [(_UIKBRTRecognizer *)self kbStatusMessage:@"Moving touch on %@", v4];
-    [(_UIKBRTRecognizerTouchPointTrackingProtocol *)self->_touchTracker moveTouchInfo:v4];
-    if (![(_UIKBRTRecognizer *)self notifyDelegateOfMovedTouch:v4])
+    [(_UIKBRTRecognizer *)self kbStatusMessage:@"Moving touch on %@", infoCopy];
+    [(_UIKBRTRecognizerTouchPointTrackingProtocol *)self->_touchTracker moveTouchInfo:infoCopy];
+    if (![(_UIKBRTRecognizer *)self notifyDelegateOfMovedTouch:infoCopy])
     {
-      [(_UIKBRTRecognizer *)self makeTouchIgnored:v4 force:1];
+      [(_UIKBRTRecognizer *)self makeTouchIgnored:infoCopy force:1];
     }
   }
 }
 
-- (void)touchDragged:(id)a3 withIdentifier:(id)a4
+- (void)touchDragged:(id)dragged withIdentifier:(id)identifier
 {
-  v5 = [_UIKBRTTouchInfo touchInfoForTouch:a3 withIdentifier:a4];
+  v5 = [_UIKBRTTouchInfo touchInfoForTouch:dragged withIdentifier:identifier];
   if (v5)
   {
     [(_UIKBRTRecognizerTouchLoggingProtocol *)self->_touchLogger logTouchInfo:v5 withPhase:1];
@@ -936,16 +936,16 @@ LABEL_107:
   }
 }
 
-- (void)_doEndedTouchWithTouchInfo:(id)a3
+- (void)_doEndedTouchWithTouchInfo:(id)info
 {
-  v4 = a3;
-  [(_UIKBRTRecognizer *)self letRulesModifyPendingTouchInfo:v4];
-  if (![(NSMutableArray *)self->_ignoredTouches containsObject:v4])
+  infoCopy = info;
+  [(_UIKBRTRecognizer *)self letRulesModifyPendingTouchInfo:infoCopy];
+  if (![(NSMutableArray *)self->_ignoredTouches containsObject:infoCopy])
   {
     v9 = &stru_1EFB14550;
-    v27 = [v4 touchIdentifier];
+    touchIdentifier = [infoCopy touchIdentifier];
 
-    if (!v27 || [v4 currentTouchState] || -[_UIKBRTRecognizer makeTouchActive:](self, "makeTouchActive:", v4))
+    if (!touchIdentifier || [infoCopy currentTouchState] || -[_UIKBRTRecognizer makeTouchActive:](self, "makeTouchActive:", infoCopy))
     {
       v26 = 0;
     }
@@ -953,7 +953,7 @@ LABEL_107:
     else
     {
       v26 = 1;
-      [(_UIKBRTRecognizer *)self makeTouchIgnored:v4 force:1];
+      [(_UIKBRTRecognizer *)self makeTouchIgnored:infoCopy force:1];
       v9 = @"initially-active ";
     }
 
@@ -966,24 +966,24 @@ LABEL_107:
   block[2] = __48___UIKBRTRecognizer__doEndedTouchWithTouchInfo___block_invoke;
   block[3] = &unk_1E70F35B8;
   block[4] = self;
-  v6 = v4;
+  v6 = infoCopy;
   v34 = v6;
   dispatch_sync(ignoredTouchesQueue, block);
 
   [v6 currentTimestamp];
   v8 = v7;
   v9 = @"ignored ";
-  v10 = [v6 touchIdentifier];
+  touchIdentifier2 = [v6 touchIdentifier];
 
-  if (!v10)
+  if (!touchIdentifier2)
   {
     goto LABEL_28;
   }
 
   v11 = _UIInternalPreferenceUsesDefault_1(&_UIInternalPreference__UIKBRT_MinimumRestHoldInterval, @"_UIKBRT_MinimumRestHoldInterval") ? 0.0 : *&qword_1EA95E1C0;
   v12 = _UIInternalPreferenceUsesDefault_1(&_UIInternalPreference__UIKBRT_MaximumRestHoldInterval, @"_UIKBRT_MaximumRestHoldInterval") ? 0.25 : *&qword_1EA95E1D0;
-  v13 = [v6 currentTouchState];
-  if (v13 != 1 && v13 != 6)
+  currentTouchState = [v6 currentTouchState];
+  if (currentTouchState != 1 && currentTouchState != 6)
   {
     goto LABEL_28;
   }
@@ -1028,29 +1028,29 @@ LABEL_28:
   }
 
 LABEL_29:
-  [(_UIKBRTRecognizer *)self queryDelegateToBeginTouch:v4 forBeginState:2 restartIfNecessary:0];
-  if ((v26 & 1) != 0 || ([v4 touchIdentifier], v31 = objc_claimAutoreleasedReturnValue(), v31, !v31))
+  [(_UIKBRTRecognizer *)self queryDelegateToBeginTouch:infoCopy forBeginState:2 restartIfNecessary:0];
+  if ((v26 & 1) != 0 || ([infoCopy touchIdentifier], v31 = objc_claimAutoreleasedReturnValue(), v31, !v31))
   {
-    v32 = [v4 touchIdentifier];
+    touchIdentifier3 = [infoCopy touchIdentifier];
 
-    if (v32)
+    if (touchIdentifier3)
     {
-      [(_UIKBRTRecognizer *)self notifyDelegateOfCancelledTouch:v4];
+      [(_UIKBRTRecognizer *)self notifyDelegateOfCancelledTouch:infoCopy];
     }
   }
 
   else
   {
-    [(_UIKBRTRecognizer *)self processTouchInfo:v4];
+    [(_UIKBRTRecognizer *)self processTouchInfo:infoCopy];
   }
 
-  [v4 cleanup];
-  [(_UIKBRTRecognizer *)self kbStatusMessage:@"Ended %@touch on %@", v9, v4];
+  [infoCopy cleanup];
+  [(_UIKBRTRecognizer *)self kbStatusMessage:@"Ended %@touch on %@", v9, infoCopy];
 }
 
-- (void)touchUp:(id)a3 withIdentifier:(id)a4
+- (void)touchUp:(id)up withIdentifier:(id)identifier
 {
-  v5 = [_UIKBRTTouchInfo touchInfoForTouch:a3 withIdentifier:a4];
+  v5 = [_UIKBRTTouchInfo touchInfoForTouch:up withIdentifier:identifier];
   if (v5)
   {
     [(_UIKBRTRecognizerTouchLoggingProtocol *)self->_touchLogger logTouchInfo:v5 withPhase:3];
@@ -1066,33 +1066,33 @@ LABEL_29:
   }
 }
 
-- (void)_doCancelledTouchWithTouchInfo:(id)a3
+- (void)_doCancelledTouchWithTouchInfo:(id)info
 {
-  v4 = a3;
-  [(_UIKBRTRecognizer *)self kbStatusMessage:@"Cancelling touch on %@", v4];
+  infoCopy = info;
+  [(_UIKBRTRecognizer *)self kbStatusMessage:@"Cancelling touch on %@", infoCopy];
   ignoredTouchesQueue = self->_ignoredTouchesQueue;
   block = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __52___UIKBRTRecognizer__doCancelledTouchWithTouchInfo___block_invoke;
   v11 = &unk_1E70F35B8;
-  v12 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = infoCopy;
   v13 = v6;
   dispatch_sync(ignoredTouchesQueue, &block);
-  v7 = [v6 touchIdentifier];
+  touchIdentifier = [v6 touchIdentifier];
 
-  if (v7)
+  if (touchIdentifier)
   {
     [(_UIKBRTRecognizer *)self cancelTouchOnLayoutWithTouchInfo:v6];
   }
 
-  [v4 cleanup];
-  [(_UIKBRTRecognizer *)self kbStatusMessage:@"Cancelled %@touch on %@", &stru_1EFB14550, v4, block, v9, v10, v11, v12];
+  [infoCopy cleanup];
+  [(_UIKBRTRecognizer *)self kbStatusMessage:@"Cancelled %@touch on %@", &stru_1EFB14550, infoCopy, block, v9, v10, v11, selfCopy];
 }
 
-- (void)touchCancelled:(id)a3 withIdentifier:(id)a4
+- (void)touchCancelled:(id)cancelled withIdentifier:(id)identifier
 {
-  v5 = [_UIKBRTTouchInfo touchInfoForTouch:a3 withIdentifier:a4];
+  v5 = [_UIKBRTTouchInfo touchInfoForTouch:cancelled withIdentifier:identifier];
   if (v5)
   {
     [(_UIKBRTRecognizerTouchLoggingProtocol *)self->_touchLogger logTouchInfo:v5 withPhase:4];
@@ -1108,23 +1108,23 @@ LABEL_29:
   }
 }
 
-- (void)_doMarkTouchProcessedWithTouchInfo:(id)a3
+- (void)_doMarkTouchProcessedWithTouchInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    [v4 invalidateTimer];
+    [infoCopy invalidateTimer];
     ignoredTouchesQueue = self->_ignoredTouchesQueue;
     v8 = MEMORY[0x1E69E9820];
     v9 = 3221225472;
     v10 = __56___UIKBRTRecognizer__doMarkTouchProcessedWithTouchInfo___block_invoke;
     v11 = &unk_1E70F35B8;
-    v12 = self;
+    selfCopy = self;
     v7 = v5;
     v13 = v7;
     dispatch_sync(ignoredTouchesQueue, &v8);
-    if ([(_UIKBRTRecognizer *)self removedFromActiveTouches:v7, v8, v9, v10, v11, v12])
+    if ([(_UIKBRTRecognizer *)self removedFromActiveTouches:v7, v8, v9, v10, v11, selfCopy])
     {
       [(_UIKBRTRecognizerTouchLoggingProtocol *)self->_touchLogger closeTouchInfo:v7];
     }
@@ -1133,9 +1133,9 @@ LABEL_29:
   }
 }
 
-- (void)markTouchProcessed:(id)a3 withIdentifier:(id)a4
+- (void)markTouchProcessed:(id)processed withIdentifier:(id)identifier
 {
-  v5 = [_UIKBRTTouchInfo touchInfoForTouch:a3 withIdentifier:a4];
+  v5 = [_UIKBRTTouchInfo touchInfoForTouch:processed withIdentifier:identifier];
   touchQueue = self->_touchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -1147,21 +1147,21 @@ LABEL_29:
   dispatch_async(touchQueue, v8);
 }
 
-- (void)_doIgnoreTouchWithTouchInfo:(id)a3
+- (void)_doIgnoreTouchWithTouchInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     touchLogger = self->_touchLogger;
-    v5 = a3;
-    [(_UIKBRTRecognizerTouchLoggingProtocol *)touchLogger logTouchInfo:v5 withPhase:4];
-    [v5 invalidateTimer];
-    [(_UIKBRTRecognizer *)self makeTouchIgnored:v5 force:1];
+    infoCopy = info;
+    [(_UIKBRTRecognizerTouchLoggingProtocol *)touchLogger logTouchInfo:infoCopy withPhase:4];
+    [infoCopy invalidateTimer];
+    [(_UIKBRTRecognizer *)self makeTouchIgnored:infoCopy force:1];
   }
 }
 
-- (void)explicitlyIgnoreTouch:(id)a3 withIdentifier:(id)a4
+- (void)explicitlyIgnoreTouch:(id)touch withIdentifier:(id)identifier
 {
-  v5 = [_UIKBRTTouchInfo touchInfoForTouch:a3 withIdentifier:a4];
+  v5 = [_UIKBRTTouchInfo touchInfoForTouch:touch withIdentifier:identifier];
   touchQueue = self->_touchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -1173,11 +1173,11 @@ LABEL_29:
   dispatch_async(touchQueue, v8);
 }
 
-- (void)updateIgnoredTouchesForTouchInfo:(id)a3 whenTouchInfo:(id)a4 changesStateTo:(char)a5
+- (void)updateIgnoredTouchesForTouchInfo:(id)info whenTouchInfo:(id)touchInfo changesStateTo:(char)to
 {
-  v5 = a5;
-  v8 = a3;
-  if ([v8 willChangeTouchInfo:a4 toState:v5])
+  toCopy = to;
+  infoCopy = info;
+  if ([infoCopy willChangeTouchInfo:touchInfo toState:toCopy])
   {
     ignoredTouchesQueue = self->_ignoredTouchesQueue;
     v10[0] = MEMORY[0x1E69E9820];
@@ -1185,17 +1185,17 @@ LABEL_29:
     v10[2] = __83___UIKBRTRecognizer_updateIgnoredTouchesForTouchInfo_whenTouchInfo_changesStateTo___block_invoke;
     v10[3] = &unk_1E70F35B8;
     v10[4] = self;
-    v11 = v8;
+    v11 = infoCopy;
     dispatch_sync(ignoredTouchesQueue, v10);
   }
 }
 
-- (void)processTouchInfo:(id)a3
+- (void)processTouchInfo:(id)info
 {
-  v10 = a3;
-  [v10 invalidateTimer];
-  v4 = [v10 currentTouchState];
-  if (v4 == 3 || v4 == 6)
+  infoCopy = info;
+  [infoCopy invalidateTimer];
+  currentTouchState = [infoCopy currentTouchState];
+  if (currentTouchState == 3 || currentTouchState == 6)
   {
     v6 = 0;
     v5 = 6;
@@ -1203,7 +1203,7 @@ LABEL_29:
 
   else
   {
-    if (v4 == 5)
+    if (currentTouchState == 5)
     {
       --self->_numProlongedTouches;
     }
@@ -1212,35 +1212,35 @@ LABEL_29:
     v6 = 1;
   }
 
-  if ([v10 currentTouchState] != v5)
+  if ([infoCopy currentTouchState] != v5)
   {
-    v7 = [v10 previousTouch];
-    [(_UIKBRTRecognizer *)self updateIgnoredTouchesForTouchInfo:v7 whenTouchInfo:v10 changesStateTo:v5];
+    previousTouch = [infoCopy previousTouch];
+    [(_UIKBRTRecognizer *)self updateIgnoredTouchesForTouchInfo:previousTouch whenTouchInfo:infoCopy changesStateTo:v5];
 
-    v8 = [v10 nextTouch];
-    [(_UIKBRTRecognizer *)self updateIgnoredTouchesForTouchInfo:v8 whenTouchInfo:v10 changesStateTo:v5];
+    nextTouch = [infoCopy nextTouch];
+    [(_UIKBRTRecognizer *)self updateIgnoredTouchesForTouchInfo:nextTouch whenTouchInfo:infoCopy changesStateTo:v5];
 
-    [v10 setCurrentTouchState:v5];
+    [infoCopy setCurrentTouchState:v5];
     if (v6)
     {
-      [(_UIKBRTRecognizer *)self notifyDelegateOfSuccessfulTouch:v10];
+      [(_UIKBRTRecognizer *)self notifyDelegateOfSuccessfulTouch:infoCopy];
     }
 
     else
     {
-      v9 = [v10 touchIdentifier];
+      touchIdentifier = [infoCopy touchIdentifier];
 
-      if (v9)
+      if (touchIdentifier)
       {
-        [(_UIKBRTRecognizer *)self notifyDelegateOfCancelledTouch:v10];
+        [(_UIKBRTRecognizer *)self notifyDelegateOfCancelledTouch:infoCopy];
       }
     }
   }
 }
 
-- (BOOL)addedToActiveTouches:(id)a3
+- (BOOL)addedToActiveTouches:(id)touches
 {
-  v4 = a3;
+  touchesCopy = touches;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1250,10 +1250,10 @@ LABEL_29:
   block[1] = 3221225472;
   block[2] = __42___UIKBRTRecognizer_addedToActiveTouches___block_invoke;
   block[3] = &unk_1E70FB728;
-  v9 = v4;
+  v9 = touchesCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = touchesCopy;
   dispatch_sync(activeTouchesQueue, block);
   LOBYTE(activeTouchesQueue) = *(v12 + 24);
 
@@ -1261,9 +1261,9 @@ LABEL_29:
   return activeTouchesQueue;
 }
 
-- (BOOL)removedFromActiveTouches:(id)a3
+- (BOOL)removedFromActiveTouches:(id)touches
 {
-  v4 = a3;
+  touchesCopy = touches;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1273,10 +1273,10 @@ LABEL_29:
   block[1] = 3221225472;
   block[2] = __46___UIKBRTRecognizer_removedFromActiveTouches___block_invoke;
   block[3] = &unk_1E70FB728;
-  v9 = v4;
+  v9 = touchesCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = touchesCopy;
   dispatch_sync(activeTouchesQueue, block);
   LOBYTE(activeTouchesQueue) = *(v12 + 24);
 
@@ -1284,9 +1284,9 @@ LABEL_29:
   return activeTouchesQueue;
 }
 
-- (BOOL)queryDelegateToBeginTouch:(id)a3 forBeginState:(unint64_t)a4 restartIfNecessary:(BOOL)a5
+- (BOOL)queryDelegateToBeginTouch:(id)touch forBeginState:(unint64_t)state restartIfNecessary:(BOOL)necessary
 {
-  v8 = a3;
+  touchCopy = touch;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -1301,11 +1301,11 @@ LABEL_29:
     v15[3] = &unk_1E71181F0;
     v15[4] = self;
     v18 = &v21;
-    v19 = a4;
-    v16 = v8;
+    stateCopy = state;
+    v16 = touchCopy;
     v11 = v9;
     v17 = v11;
-    v20 = a5;
+    necessaryCopy = necessary;
     dispatch_async(delegateQueue, v15);
     self->_isWaiting = 1;
     do
@@ -1334,27 +1334,27 @@ LABEL_29:
   return v13 & 1;
 }
 
-- (void)notifyDelegateOfSuccessfulTouch:(id)a3
+- (void)notifyDelegateOfSuccessfulTouch:(id)touch
 {
-  v5 = a3;
-  v6 = [v5 touchIdentifier];
+  touchCopy = touch;
+  touchIdentifier = [touchCopy touchIdentifier];
 
-  if (!v6)
+  if (!touchIdentifier)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:983 description:@"Can't succeed on a touch that we're supposed to be ignoring!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:983 description:@"Can't succeed on a touch that we're supposed to be ignoring!"];
   }
 
-  if (([(NSMutableSet *)self->_activeTouches containsObject:v5]& 1) == 0)
+  if (([(NSMutableSet *)self->_activeTouches containsObject:touchCopy]& 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:984 description:@"Can't succeed on a touch that isn't already active!"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:984 description:@"Can't succeed on a touch that isn't already active!"];
   }
 
-  if ([(NSMutableArray *)self->_ignoredTouches containsObject:v5])
+  if ([(NSMutableArray *)self->_ignoredTouches containsObject:touchCopy])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:985 description:@"Can't succeed on a touch that we're supposed to be ignoring!"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:985 description:@"Can't succeed on a touch that we're supposed to be ignoring!"];
   }
 
   if (self->_delegate)
@@ -1366,7 +1366,7 @@ LABEL_29:
     block[2] = __53___UIKBRTRecognizer_notifyDelegateOfSuccessfulTouch___block_invoke;
     block[3] = &unk_1E70F6228;
     block[4] = self;
-    v15 = v5;
+    v15 = touchCopy;
     v9 = v7;
     v16 = v9;
     dispatch_async(delegateQueue, block);
@@ -1386,18 +1386,18 @@ LABEL_29:
   }
 }
 
-- (void)notifyDelegateOfCancelledTouch:(id)a3
+- (void)notifyDelegateOfCancelledTouch:(id)touch
 {
-  v5 = a3;
-  v6 = [v5 touchIdentifier];
+  touchCopy = touch;
+  touchIdentifier = [touchCopy touchIdentifier];
 
-  if (!v6)
+  if (!touchIdentifier)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:1006 description:@"Can't succeed on a touch that we're supposed to be ignoring!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:1006 description:@"Can't succeed on a touch that we're supposed to be ignoring!"];
   }
 
-  if ([(NSMutableSet *)self->_activeTouches containsObject:v5]&& self->_delegate)
+  if ([(NSMutableSet *)self->_activeTouches containsObject:touchCopy]&& self->_delegate)
   {
     v7 = dispatch_semaphore_create(0);
     delegateQueue = self->_delegateQueue;
@@ -1406,7 +1406,7 @@ LABEL_29:
     block[2] = __52___UIKBRTRecognizer_notifyDelegateOfCancelledTouch___block_invoke;
     block[3] = &unk_1E70F6228;
     block[4] = self;
-    v13 = v5;
+    v13 = touchCopy;
     v9 = v7;
     v14 = v9;
     dispatch_async(delegateQueue, block);
@@ -1426,14 +1426,14 @@ LABEL_29:
   }
 }
 
-- (BOOL)notifyDelegateOfMovedTouch:(id)a3
+- (BOOL)notifyDelegateOfMovedTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  [(_UIKBRTRecognizer *)self queryDelegateToBeginTouch:v4 forBeginState:1 restartIfNecessary:0];
+  [(_UIKBRTRecognizer *)self queryDelegateToBeginTouch:touchCopy forBeginState:1 restartIfNecessary:0];
   if (self->_delegate)
   {
     v5 = dispatch_semaphore_create(0);
@@ -1443,7 +1443,7 @@ LABEL_29:
     v11[2] = __48___UIKBRTRecognizer_notifyDelegateOfMovedTouch___block_invoke;
     v11[3] = &unk_1E70FF0C8;
     v11[4] = self;
-    v12 = v4;
+    v12 = touchCopy;
     v14 = &v15;
     v7 = v5;
     v13 = v7;
@@ -1469,10 +1469,10 @@ LABEL_29:
   return v9;
 }
 
-- (void)notifyDelegateOfMovedIgnoredTouch:(id)a3
+- (void)notifyDelegateOfMovedIgnoredTouch:(id)touch
 {
-  v4 = a3;
-  [(_UIKBRTRecognizer *)self queryDelegateToBeginTouch:v4 forBeginState:0 restartIfNecessary:0];
+  touchCopy = touch;
+  [(_UIKBRTRecognizer *)self queryDelegateToBeginTouch:touchCopy forBeginState:0 restartIfNecessary:0];
   if (self->_delegate)
   {
     v5 = dispatch_semaphore_create(0);
@@ -1482,7 +1482,7 @@ LABEL_29:
     block[2] = __55___UIKBRTRecognizer_notifyDelegateOfMovedIgnoredTouch___block_invoke;
     block[3] = &unk_1E70F6228;
     block[4] = self;
-    v10 = v4;
+    v10 = touchCopy;
     v7 = v5;
     v11 = v7;
     dispatch_async(delegateQueue, block);
@@ -1502,14 +1502,14 @@ LABEL_29:
   }
 }
 
-- (BOOL)queryDelegateOfIgnoringTouch:(id)a3 forOtherTouch:(BOOL)a4
+- (BOOL)queryDelegateOfIgnoringTouch:(id)touch forOtherTouch:(BOOL)otherTouch
 {
-  v6 = a3;
+  touchCopy = touch;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 1;
-  [(_UIKBRTRecognizer *)self queryDelegateToBeginTouch:v6 forBeginState:0 restartIfNecessary:0];
+  [(_UIKBRTRecognizer *)self queryDelegateToBeginTouch:touchCopy forBeginState:0 restartIfNecessary:0];
   if (self->_delegate)
   {
     v7 = dispatch_semaphore_create(0);
@@ -1519,8 +1519,8 @@ LABEL_29:
     block[2] = __64___UIKBRTRecognizer_queryDelegateOfIgnoringTouch_forOtherTouch___block_invoke;
     block[3] = &unk_1E7118268;
     block[4] = self;
-    v17 = a4;
-    v14 = v6;
+    otherTouchCopy = otherTouch;
+    v14 = touchCopy;
     v16 = &v18;
     v9 = v7;
     v15 = v9;
@@ -1546,10 +1546,10 @@ LABEL_29:
   return v11;
 }
 
-- (void)notifyDelegateOfIgnoringTouch:(id)a3
+- (void)notifyDelegateOfIgnoringTouch:(id)touch
 {
-  v4 = a3;
-  [(_UIKBRTRecognizer *)self queryDelegateToBeginTouch:v4 forBeginState:0 restartIfNecessary:0];
+  touchCopy = touch;
+  [(_UIKBRTRecognizer *)self queryDelegateToBeginTouch:touchCopy forBeginState:0 restartIfNecessary:0];
   if (self->_delegate)
   {
     v5 = dispatch_semaphore_create(0);
@@ -1559,7 +1559,7 @@ LABEL_29:
     block[2] = __51___UIKBRTRecognizer_notifyDelegateOfIgnoringTouch___block_invoke;
     block[3] = &unk_1E70F6228;
     block[4] = self;
-    v10 = v4;
+    v10 = touchCopy;
     v7 = v5;
     v11 = v7;
     dispatch_async(delegateQueue, block);
@@ -1579,23 +1579,23 @@ LABEL_29:
   }
 }
 
-- (void)notifyDelegateOfRestingTouch:(id)a3
+- (void)notifyDelegateOfRestingTouch:(id)touch
 {
-  v7 = a3;
-  v5 = [v7 touchIdentifier];
+  touchCopy = touch;
+  touchIdentifier = [touchCopy touchIdentifier];
 
-  if (!v5)
+  if (!touchIdentifier)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:1132 description:@"Can't rest on a touch that we're supposed to be ignoring!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:1132 description:@"Can't rest on a touch that we're supposed to be ignoring!"];
   }
 
-  [(_UIKBRTRecognizer *)self makeTouchIgnored:v7 force:1];
+  [(_UIKBRTRecognizer *)self makeTouchIgnored:touchCopy force:1];
 }
 
-- (void)cancelTouchOnLayoutWithTouchInfo:(id)a3
+- (void)cancelTouchOnLayoutWithTouchInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (self->_delegate)
   {
     v5 = dispatch_semaphore_create(0);
@@ -1605,7 +1605,7 @@ LABEL_29:
     block[2] = __54___UIKBRTRecognizer_cancelTouchOnLayoutWithTouchInfo___block_invoke;
     block[3] = &unk_1E70F6228;
     block[4] = self;
-    v10 = v4;
+    v10 = infoCopy;
     v7 = v5;
     v11 = v7;
     dispatch_async(delegateQueue, block);
@@ -1625,29 +1625,29 @@ LABEL_29:
   }
 }
 
-- (BOOL)makeTouchActive:(id)a3
+- (BOOL)makeTouchActive:(id)active
 {
-  v5 = a3;
-  v6 = [v5 touchIdentifier];
+  activeCopy = active;
+  touchIdentifier = [activeCopy touchIdentifier];
 
-  if (!v6)
+  if (!touchIdentifier)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:1165 description:@"Can't rest on a touch that we're supposed to be ignoring!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:1165 description:@"Can't rest on a touch that we're supposed to be ignoring!"];
   }
 
-  if ([(NSMutableArray *)self->_ignoredTouches containsObject:v5])
+  if ([(NSMutableArray *)self->_ignoredTouches containsObject:activeCopy])
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:1166 description:@"Can't rest on a touch that we're supposed to be ignoring!"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIKBRTRecognizer.m" lineNumber:1166 description:@"Can't rest on a touch that we're supposed to be ignoring!"];
   }
 
-  [v5 invalidateTimer];
-  v7 = [(NSMutableSet *)self->_activeTouches containsObject:v5];
-  if ([(_UIKBRTRecognizer *)self queryDelegateToBeginTouch:v5 forBeginState:1 restartIfNecessary:0])
+  [activeCopy invalidateTimer];
+  v7 = [(NSMutableSet *)self->_activeTouches containsObject:activeCopy];
+  if ([(_UIKBRTRecognizer *)self queryDelegateToBeginTouch:activeCopy forBeginState:1 restartIfNecessary:0])
   {
-    [v5 setCurrentTouchState:4];
-    [v5 originalTimestamp];
+    [activeCopy setCurrentTouchState:4];
+    [activeCopy originalTimestamp];
     v9 = v8;
     objc_initWeak(&location, self);
     if (_UIInternalPreferenceUsesDefault_1(&_UIInternalPreference__UIKBRT_KeyHoldCancelInterval, @"_UIKBRT_KeyHoldCancelInterval"))
@@ -1677,7 +1677,7 @@ LABEL_29:
     v21[3] = &unk_1E7118290;
     objc_copyWeak(&v22, &location);
     v21[4] = self;
-    [v5 setTimerWithTimeInterval:touchQueue onQueue:v21 do:v15];
+    [activeCopy setTimerWithTimeInterval:touchQueue onQueue:v21 do:v15];
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
   }
@@ -1690,7 +1690,7 @@ LABEL_29:
       goto LABEL_16;
     }
 
-    [v5 setCurrentTouchState:4];
+    [activeCopy setCurrentTouchState:4];
   }
 
   v17 = 1;
@@ -1699,63 +1699,63 @@ LABEL_16:
   return v17;
 }
 
-- (void)makeTouchIgnored:(id)a3 force:(BOOL)a4 because:(id)a5
+- (void)makeTouchIgnored:(id)ignored force:(BOOL)force because:(id)because
 {
-  v5 = a4;
+  forceCopy = force;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a5;
-  v10 = a3;
-  v11 = [[v8 alloc] initWithFormat:v9 arguments:&v12];
+  becauseCopy = because;
+  ignoredCopy = ignored;
+  v11 = [[v8 alloc] initWithFormat:becauseCopy arguments:&v12];
 
-  [(_UIKBRTRecognizer *)self makeTouchIgnored:v10 force:v5 withMessage:v11];
+  [(_UIKBRTRecognizer *)self makeTouchIgnored:ignoredCopy force:forceCopy withMessage:v11];
 }
 
-- (void)makeTouchIgnored:(id)a3 force:(BOOL)a4 withMessage:(id)a5
+- (void)makeTouchIgnored:(id)ignored force:(BOOL)force withMessage:(id)message
 {
-  v5 = a4;
-  v7 = a3;
-  v8 = [(NSMutableArray *)self->_ignoredTouches containsObject:v7];
-  [v7 invalidateTimer];
-  v9 = [v7 currentTouchState];
-  if (v9 > 5)
+  forceCopy = force;
+  ignoredCopy = ignored;
+  v8 = [(NSMutableArray *)self->_ignoredTouches containsObject:ignoredCopy];
+  [ignoredCopy invalidateTimer];
+  currentTouchState = [ignoredCopy currentTouchState];
+  if (currentTouchState > 5)
   {
     goto LABEL_11;
   }
 
-  if (((1 << v9) & 0x31) == 0)
+  if (((1 << currentTouchState) & 0x31) == 0)
   {
-    v11 = [v7 touchIdentifier];
+    touchIdentifier = [ignoredCopy touchIdentifier];
 
-    if (v11)
+    if (touchIdentifier)
     {
-      [(_UIKBRTRecognizer *)self notifyDelegateOfIgnoringTouch:v7];
+      [(_UIKBRTRecognizer *)self notifyDelegateOfIgnoringTouch:ignoredCopy];
     }
 
     goto LABEL_11;
   }
 
-  v10 = [v7 touchIdentifier];
+  touchIdentifier2 = [ignoredCopy touchIdentifier];
 
-  if (!v10)
+  if (!touchIdentifier2)
   {
     goto LABEL_9;
   }
 
-  if (v5)
+  if (forceCopy)
   {
-    [(_UIKBRTRecognizer *)self notifyDelegateOfIgnoringTouch:v7];
+    [(_UIKBRTRecognizer *)self notifyDelegateOfIgnoringTouch:ignoredCopy];
     goto LABEL_9;
   }
 
-  if ([(_UIKBRTRecognizer *)self queryDelegateOfIgnoringTouch:v7 forOtherTouch:0])
+  if ([(_UIKBRTRecognizer *)self queryDelegateOfIgnoringTouch:ignoredCopy forOtherTouch:0])
   {
 LABEL_9:
-    if ([v7 currentTouchState] == 5)
+    if ([ignoredCopy currentTouchState] == 5)
     {
       v12 = 0;
       --self->_numProlongedTouches;
 LABEL_12:
-      v13 = 6;
+      currentTouchState2 = 6;
       goto LABEL_13;
     }
 
@@ -1764,11 +1764,11 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v13 = [v7 currentTouchState];
+  currentTouchState2 = [ignoredCopy currentTouchState];
   v12 = 1;
 LABEL_13:
-  [v7 setCurrentTouchState:v13];
-  if (v13 == 6)
+  [ignoredCopy setCurrentTouchState:currentTouchState2];
+  if (currentTouchState2 == 6)
   {
     v14 = v8;
   }
@@ -1785,11 +1785,11 @@ LABEL_13:
     v18 = 3221225472;
     v19 = __56___UIKBRTRecognizer_makeTouchIgnored_force_withMessage___block_invoke;
     v20 = &unk_1E70F35B8;
-    v21 = self;
-    v16 = v7;
+    selfCopy = self;
+    v16 = ignoredCopy;
     v22 = v16;
     dispatch_sync(ignoredTouchesQueue, &v17);
-    [(_UIKBRTRecognizerTouchPointTrackingProtocol *)self->_touchTracker ignoreTouchInfo:v16, v17, v18, v19, v20, v21];
+    [(_UIKBRTRecognizerTouchPointTrackingProtocol *)self->_touchTracker ignoreTouchInfo:v16, v17, v18, v19, v20, selfCopy];
   }
 }
 

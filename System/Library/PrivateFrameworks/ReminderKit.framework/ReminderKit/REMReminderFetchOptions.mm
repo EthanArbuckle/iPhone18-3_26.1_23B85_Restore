@@ -2,14 +2,14 @@
 + (REMReminderFetchOptions)defaultFetchOptions;
 + (id)fetchOptionsIncludingConcealed;
 + (id)fetchOptionsIncludingDueDateDeltaAlerts;
-- (BOOL)isEqual:(id)a3;
-- (REMReminderFetchOptions)initWithCoder:(id)a3;
-- (REMReminderFetchOptions)initWithIncludeConcealed:(BOOL)a3 includeDueDateDeltaAlerts:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMReminderFetchOptions)initWithCoder:(id)coder;
+- (REMReminderFetchOptions)initWithIncludeConcealed:(BOOL)concealed includeDueDateDeltaAlerts:(BOOL)alerts;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)fetchOptionsIncludingConcealed;
 - (id)fetchOptionsIncludingDueDateDeltaAlerts;
-- (void)copyFromFetchOptions:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)copyFromFetchOptions:(id)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMReminderFetchOptions
@@ -53,52 +53,52 @@
   return v2;
 }
 
-- (REMReminderFetchOptions)initWithIncludeConcealed:(BOOL)a3 includeDueDateDeltaAlerts:(BOOL)a4
+- (REMReminderFetchOptions)initWithIncludeConcealed:(BOOL)concealed includeDueDateDeltaAlerts:(BOOL)alerts
 {
   v7.receiver = self;
   v7.super_class = REMReminderFetchOptions;
   result = [(REMReminderFetchOptions *)&v7 init];
   if (result)
   {
-    result->_includeConcealed = a3;
-    result->_includeDueDateDeltaAlerts = a4;
+    result->_includeConcealed = concealed;
+    result->_includeDueDateDeltaAlerts = alerts;
   }
 
   return result;
 }
 
-- (void)copyFromFetchOptions:(id)a3
+- (void)copyFromFetchOptions:(id)options
 {
-  v4 = a3;
-  -[REMReminderFetchOptions setIncludeConcealed:](self, "setIncludeConcealed:", [v4 includeConcealed]);
-  v5 = [v4 includeDueDateDeltaAlerts];
+  optionsCopy = options;
+  -[REMReminderFetchOptions setIncludeConcealed:](self, "setIncludeConcealed:", [optionsCopy includeConcealed]);
+  includeDueDateDeltaAlerts = [optionsCopy includeDueDateDeltaAlerts];
 
-  [(REMReminderFetchOptions *)self setIncludeDueDateDeltaAlerts:v5];
+  [(REMReminderFetchOptions *)self setIncludeDueDateDeltaAlerts:includeDueDateDeltaAlerts];
 }
 
-- (REMReminderFetchOptions)initWithCoder:(id)a3
+- (REMReminderFetchOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = REMReminderFetchOptions;
   v5 = [(REMReminderFetchOptions *)&v7 init];
   if (v5)
   {
-    v5->_includeConcealed = [v4 decodeBoolForKey:@"includeConcealed"];
-    v5->_includeDueDateDeltaAlerts = [v4 decodeBoolForKey:@"includeDueDateDeltaAlerts"];
+    v5->_includeConcealed = [coderCopy decodeBoolForKey:@"includeConcealed"];
+    v5->_includeDueDateDeltaAlerts = [coderCopy decodeBoolForKey:@"includeDueDateDeltaAlerts"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[REMReminderFetchOptions includeConcealed](self forKey:{"includeConcealed"), @"includeConcealed"}];
-  [v4 encodeBool:-[REMReminderFetchOptions includeDueDateDeltaAlerts](self forKey:{"includeDueDateDeltaAlerts"), @"includeDueDateDeltaAlerts"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[REMReminderFetchOptions includeConcealed](self forKey:{"includeConcealed"), @"includeConcealed"}];
+  [coderCopy encodeBool:-[REMReminderFetchOptions includeDueDateDeltaAlerts](self forKey:{"includeDueDateDeltaAlerts"), @"includeDueDateDeltaAlerts"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setIncludeConcealed:{-[REMReminderFetchOptions includeConcealed](self, "includeConcealed")}];
@@ -106,23 +106,23 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v8) = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = [(REMReminderFetchOptions *)self includeConcealed], v7 == [(REMReminderFetchOptions *)v6 includeConcealed]))
     {
-      v9 = [(REMReminderFetchOptions *)self includeDueDateDeltaAlerts];
-      v8 = v9 ^ [(REMReminderFetchOptions *)v6 includeDueDateDeltaAlerts]^ 1;
+      includeDueDateDeltaAlerts = [(REMReminderFetchOptions *)self includeDueDateDeltaAlerts];
+      v8 = includeDueDateDeltaAlerts ^ [(REMReminderFetchOptions *)v6 includeDueDateDeltaAlerts]^ 1;
     }
 
     else

@@ -1,23 +1,23 @@
 @interface CLTelephonyStewieStateObserver
-- (CLTelephonyStewieStateObserver)initWithQueue:(id)a3 helperObj:(CLTelephonyStewieStateObserverHelper *)a4;
+- (CLTelephonyStewieStateObserver)initWithQueue:(id)queue helperObj:(CLTelephonyStewieStateObserverHelper *)obj;
 - (void)shutdown;
-- (void)stateChanged:(id)a3;
+- (void)stateChanged:(id)changed;
 @end
 
 @implementation CLTelephonyStewieStateObserver
 
-- (CLTelephonyStewieStateObserver)initWithQueue:(id)a3 helperObj:(CLTelephonyStewieStateObserverHelper *)a4
+- (CLTelephonyStewieStateObserver)initWithQueue:(id)queue helperObj:(CLTelephonyStewieStateObserverHelper *)obj
 {
   v12.receiver = self;
   v12.super_class = CLTelephonyStewieStateObserver;
   v6 = [(CLTelephonyStewieStateObserver *)&v12 init];
   if (v6)
   {
-    v7 = [[CTStewieStateMonitor alloc] initWithDelegate:v6 queue:a3];
+    v7 = [[CTStewieStateMonitor alloc] initWithDelegate:v6 queue:queue];
     v6->_fStewieStateObserver = v7;
     if (v7)
     {
-      v6->_fHelper = a4;
+      v6->_fHelper = obj;
       [(CTStewieStateMonitor *)v7 start];
       if (qword_1025D4870 != -1)
       {
@@ -61,19 +61,19 @@
   return v6;
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  if (a3)
+  if (changed)
   {
-    v5 = [a3 isStewieActive];
-    v17 = v5;
-    v6 = [a3 status];
-    v7 = [a3 reason];
-    v8 = [a3 allowedServices];
-    v9 = [a3 transportType];
+    isStewieActive = [changed isStewieActive];
+    v17 = isStewieActive;
+    status = [changed status];
+    reason = [changed reason];
+    allowedServices = [changed allowedServices];
+    transportType = [changed transportType];
     if (self->_fHelper)
     {
-      v10 = v9;
+      v10 = transportType;
       if (qword_1025D4870 != -1)
       {
         sub_1018C7FD0();
@@ -83,15 +83,15 @@
       if (os_log_type_enabled(qword_1025D4878, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67241216;
-        *&buf[4] = v6;
+        *&buf[4] = status;
         v28 = 1026;
-        v29 = v7;
+        v29 = reason;
         v30 = 1026;
-        v31 = v8;
+        v31 = allowedServices;
         v32 = 1026;
         v33 = v10;
         v34 = 1026;
-        v35 = v5;
+        v35 = isStewieActive;
         _os_log_impl(dword_100000000, v11, OS_LOG_TYPE_DEFAULT, "#CLT,CTStewieStateMonitor,status,%{public}d,reason,%{public}d,service,%{public}d,transport,%{public}d,usecaseactive,%{public}d", buf, 0x20u);
       }
 
@@ -104,15 +104,15 @@
         }
 
         LODWORD(values) = 67241216;
-        HIDWORD(values) = v6;
+        HIDWORD(values) = status;
         v19 = 1026;
-        v20 = v7;
+        v20 = reason;
         v21 = 1026;
-        v22 = v8;
+        v22 = allowedServices;
         v23 = 1026;
         v24 = v10;
         v25 = 1026;
-        v26 = v5;
+        v26 = isStewieActive;
         v16 = _os_log_send_and_compose_impl();
         sub_100152C7C("Generic", 1, 0, 2, "[CLTelephonyStewieStateObserver stateChanged:]", "%s\n", v16);
         if (v16 != buf)

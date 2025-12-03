@@ -1,18 +1,18 @@
 @interface MFPBrightnessContrastEffect
-- (MFPBrightnessContrastEffect)initWithBrightness:(int)a3 contrast:(int)a4;
+- (MFPBrightnessContrastEffect)initWithBrightness:(int)brightness contrast:(int)contrast;
 @end
 
 @implementation MFPBrightnessContrastEffect
 
-- (MFPBrightnessContrastEffect)initWithBrightness:(int)a3 contrast:(int)a4
+- (MFPBrightnessContrastEffect)initWithBrightness:(int)brightness contrast:(int)contrast
 {
   v7.receiver = self;
   v7.super_class = MFPBrightnessContrastEffect;
   result = [(MFPBrightnessContrastEffect *)&v7 init];
   if (result)
   {
-    result->mBrightness = a3;
-    result->mContrast = a4;
+    result->mBrightness = brightness;
+    result->mContrast = contrast;
   }
 
   return result;

@@ -1,12 +1,12 @@
 @interface MNWalkingRouteBackgroundLoader
 - (MNWalkingRouteBackgroundLoaderDelegate)delegate;
-- (id)_requestWalkingRouteWithHandler:(id)a3;
-- (unint64_t)_requestTypeForArrivalState:(int64_t)a3;
-- (void)_handleWalkingRouteResponse:(id)a3;
-- (void)_updateForLocation:(id)a3;
+- (id)_requestWalkingRouteWithHandler:(id)handler;
+- (unint64_t)_requestTypeForArrivalState:(int64_t)state;
+- (void)_handleWalkingRouteResponse:(id)response;
+- (void)_updateForLocation:(id)location;
 - (void)_updateWalkingRoute;
 - (void)dealloc;
-- (void)setNavigationSessionState:(id)a3;
+- (void)setNavigationSessionState:(id)state;
 - (void)start;
 - (void)stop;
 @end
@@ -20,14 +20,14 @@
   return WeakRetained;
 }
 
-- (void)_handleWalkingRouteResponse:(id)a3
+- (void)_handleWalkingRouteResponse:(id)response
 {
-  v9 = a3;
-  objc_storeStrong(&self->_walkingRouteInfo, a3);
-  if (v9)
+  responseCopy = response;
+  objc_storeStrong(&self->_walkingRouteInfo, response);
+  if (responseCopy)
   {
-    v5 = [(MNNavigationSessionState *)self->_navigationSessionState location];
-    [(MNWalkingRouteBackgroundLoader *)self _updateForLocation:v5];
+    location = [(MNNavigationSessionState *)self->_navigationSessionState location];
+    [(MNWalkingRouteBackgroundLoader *)self _updateForLocation:location];
   }
 
   pendingRequest = self->_pendingRequest;
@@ -38,20 +38,20 @@
   self->_dateSinceLastRouteRequest = v7;
 }
 
-- (void)_updateForLocation:(id)a3
+- (void)_updateForLocation:(id)location
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  locationCopy = location;
+  v5 = locationCopy;
   if (self->_isFetchingWalkingRoutes)
   {
     if (self->_walkingRouteInfo)
     {
-      v6 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:v4 course:-1.0];
+      v6 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:locationCopy course:-1.0];
       v7 = objc_alloc(MEMORY[0x1E69A2548]);
-      v8 = [(MNActiveRouteInfo *)self->_walkingRouteInfo route];
-      v9 = [(MNNavigationSessionState *)self->_navigationSessionState auditToken];
-      v10 = [v7 initWithRoute:v8 auditToken:v9];
+      route = [(MNActiveRouteInfo *)self->_walkingRouteInfo route];
+      auditToken = [(MNNavigationSessionState *)self->_navigationSessionState auditToken];
+      v10 = [v7 initWithRoute:route auditToken:auditToken];
 
       v11 = [v10 matchToRouteWithLocation:v6];
       GEOConfigGetDouble();
@@ -62,8 +62,8 @@
         v28 = +[MNDisplayETAInfo displayETAInfoForRouteInfo:routeCoordinate:](MNDisplayETAInfo, "displayETAInfoForRouteInfo:routeCoordinate:", self->_walkingRouteInfo, [v11 routeCoordinate]);
         if (v28)
         {
-          v29 = [(MNActiveRouteInfo *)self->_walkingRouteInfo displayETAInfo];
-          if (!v29 || (v30 = [v28 displayRemainingMinutesToEndOfRoute], v30 != objc_msgSend(v29, "displayRemainingMinutesToEndOfRoute")))
+          displayETAInfo = [(MNActiveRouteInfo *)self->_walkingRouteInfo displayETAInfo];
+          if (!displayETAInfo || (v30 = [v28 displayRemainingMinutesToEndOfRoute], v30 != objc_msgSend(displayETAInfo, "displayRemainingMinutesToEndOfRoute")))
           {
             [(MNActiveRouteInfo *)self->_walkingRouteInfo setDisplayETAInfo:v28];
             WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -98,7 +98,7 @@
       latitude = self->_lastFailedRequestCoordinate.latitude;
       if (latitude >= -90.0 && latitude <= 90.0 && !self->_pendingRequest)
       {
-        [v4 _navigation_geoCoordinate3D];
+        [locationCopy _navigation_geoCoordinate3D];
         v19 = v18;
         v21 = v20;
         v22 = self->_lastFailedRequestCoordinate.latitude;
@@ -149,8 +149,8 @@
 
     else
     {
-      v9 = [(MNNavigationSessionState *)self->_navigationSessionState location];
-      [v9 _navigation_geoCoordinate3D];
+      location = [(MNNavigationSessionState *)self->_navigationSessionState location];
+      [location _navigation_geoCoordinate3D];
       v11 = v10;
       v13 = v12;
       v15 = v14;
@@ -234,65 +234,65 @@ LABEL_7:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_requestWalkingRouteWithHandler:(id)a3
+- (id)_requestWalkingRouteWithHandler:(id)handler
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(MNNavigationSessionState *)self->_navigationSessionState location];
-    v6 = v5;
-    if (v5 && ([v5 coordinate], CLLocationCoordinate2DIsValid(v35)))
+    location = [(MNNavigationSessionState *)self->_navigationSessionState location];
+    v6 = location;
+    if (location && ([location coordinate], CLLocationCoordinate2DIsValid(v35)))
     {
-      v7 = [(MNNavigationSessionState *)self->_navigationSessionState currentWaypoint];
-      if (v7)
+      currentWaypoint = [(MNNavigationSessionState *)self->_navigationSessionState currentWaypoint];
+      if (currentWaypoint)
       {
-        v8 = [(MNNavigationSessionState *)self->_navigationSessionState currentRouteInfo];
-        v9 = [v8 route];
+        currentRouteInfo = [(MNNavigationSessionState *)self->_navigationSessionState currentRouteInfo];
+        route = [currentRouteInfo route];
 
-        if (v9)
+        if (route)
         {
           v10 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:v6];
           v11 = [objc_alloc(MEMORY[0x1E69A1CC8]) initWithLocation:v10 isCurrentLocation:1];
-          v28 = [v9 routeAttributes];
-          v12 = [v9 routeInitializerData];
-          v13 = [v12 directionsRequest];
-          [v13 commonOptions];
-          v14 = v29 = v7;
+          routeAttributes = [route routeAttributes];
+          routeInitializerData = [route routeInitializerData];
+          directionsRequest = [routeInitializerData directionsRequest];
+          [directionsRequest commonOptions];
+          v14 = v29 = currentWaypoint;
 
-          v15 = [(MNNavigationSessionState *)self->_navigationSessionState arrivalState];
+          arrivalState = [(MNNavigationSessionState *)self->_navigationSessionState arrivalState];
           v16 = objc_alloc_init(MEMORY[0x1E69A1D30]);
           v17 = MNNavigationQueue();
           [v16 setCallbackQueue:v17];
 
-          [v16 setRequestType:{-[MNWalkingRouteBackgroundLoader _requestTypeForArrivalState:](self, "_requestTypeForArrivalState:", v15)}];
+          [v16 setRequestType:{-[MNWalkingRouteBackgroundLoader _requestTypeForArrivalState:](self, "_requestTypeForArrivalState:", arrivalState)}];
           [v16 setCurrentLocation:v10];
           v33[0] = v11;
           v33[1] = v29;
           v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
           [v16 setWaypoints:v18];
 
-          [v16 setCurrentRoute:v9];
+          [v16 setCurrentRoute:route];
           [v16 setTransportType:2];
-          [v16 setRouteAttributes:v28];
+          [v16 setRouteAttributes:routeAttributes];
           [v16 setCommonOptions:v14];
           [v16 setMaxRouteCount:1];
-          [v16 setHasArrived:(v15 & 0xFFFFFFFFFFFFFFFDLL) == 4];
-          v19 = [(MNNavigationSessionState *)self->_navigationSessionState auditToken];
-          [v16 setAuditToken:v19];
+          [v16 setHasArrived:(arrivalState & 0xFFFFFFFFFFFFFFFDLL) == 4];
+          auditToken = [(MNNavigationSessionState *)self->_navigationSessionState auditToken];
+          [v16 setAuditToken:auditToken];
 
-          v20 = [(MNNavigationSessionState *)self->_navigationSessionState requestingAppIdentifier];
-          [v16 setRequestingAppIdentifier:v20];
+          requestingAppIdentifier = [(MNNavigationSessionState *)self->_navigationSessionState requestingAppIdentifier];
+          [v16 setRequestingAppIdentifier:requestingAppIdentifier];
 
-          v21 = [MEMORY[0x1E69A1D18] sharedService];
+          mEMORY[0x1E69A1D18] = [MEMORY[0x1E69A1D18] sharedService];
           v30[0] = MEMORY[0x1E69E9820];
           v30[1] = 3221225472;
           v30[2] = __66__MNWalkingRouteBackgroundLoader__requestWalkingRouteWithHandler___block_invoke;
           v30[3] = &unk_1E842EF50;
-          v31 = v4;
-          v22 = [v21 requestRoutes:v16 handler:v30];
+          v31 = handlerCopy;
+          v22 = [mEMORY[0x1E69A1D18] requestRoutes:v16 handler:v30];
 
-          v7 = v29;
+          currentWaypoint = v29;
         }
 
         else
@@ -304,7 +304,7 @@ LABEL_7:
             _os_log_impl(&dword_1D311E000, v25, OS_LOG_TYPE_ERROR, "Error requesting walking background route because the navigation session state's current route is invalid.", buf, 2u);
           }
 
-          (*(v4 + 2))(v4, 0, 0);
+          (*(handlerCopy + 2))(handlerCopy, 0, 0);
           v22 = 0;
         }
       }
@@ -318,7 +318,7 @@ LABEL_7:
           _os_log_impl(&dword_1D311E000, v24, OS_LOG_TYPE_ERROR, "Error requesting walking background route because the navigation session state's destination waypoint is invalid.", buf, 2u);
         }
 
-        (*(v4 + 2))(v4, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0);
         v22 = 0;
       }
     }
@@ -332,7 +332,7 @@ LABEL_7:
         _os_log_impl(&dword_1D311E000, v23, OS_LOG_TYPE_ERROR, "Error requesting walking background route because the navigation session state's location is invalid.", buf, 2u);
       }
 
-      (*(v4 + 2))(v4, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
       v22 = 0;
     }
   }
@@ -380,9 +380,9 @@ void __66__MNWalkingRouteBackgroundLoader__requestWalkingRouteWithHandler___bloc
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)_requestTypeForArrivalState:(int64_t)a3
+- (unint64_t)_requestTypeForArrivalState:(int64_t)state
 {
-  if (a3 == 5)
+  if (state == 5)
   {
     return 10;
   }
@@ -457,24 +457,24 @@ void __66__MNWalkingRouteBackgroundLoader__requestWalkingRouteWithHandler___bloc
   }
 }
 
-- (void)setNavigationSessionState:(id)a3
+- (void)setNavigationSessionState:(id)state
 {
-  v10 = a3;
-  v4 = [(MNNavigationSessionState *)self->_navigationSessionState location];
-  v5 = [v10 location];
+  stateCopy = state;
+  location = [(MNNavigationSessionState *)self->_navigationSessionState location];
+  location2 = [stateCopy location];
 
   v6 = [(MNWalkingRouteBackgroundLoader *)self _requestTypeForArrivalState:[(MNNavigationSessionState *)self->_navigationSessionState arrivalState]];
-  v7 = [v10 copy];
+  v7 = [stateCopy copy];
   navigationSessionState = self->_navigationSessionState;
   self->_navigationSessionState = v7;
 
-  if (v4 != v5 && self->_isFetchingWalkingRoutes)
+  if (location != location2 && self->_isFetchingWalkingRoutes)
   {
-    v9 = [(MNNavigationSessionState *)self->_navigationSessionState location];
-    [(MNWalkingRouteBackgroundLoader *)self _updateForLocation:v9];
+    location3 = [(MNNavigationSessionState *)self->_navigationSessionState location];
+    [(MNWalkingRouteBackgroundLoader *)self _updateForLocation:location3];
   }
 
-  if (v6 != -[MNWalkingRouteBackgroundLoader _requestTypeForArrivalState:](self, "_requestTypeForArrivalState:", [v10 arrivalState]))
+  if (v6 != -[MNWalkingRouteBackgroundLoader _requestTypeForArrivalState:](self, "_requestTypeForArrivalState:", [stateCopy arrivalState]))
   {
     [(MNWalkingRouteBackgroundLoader *)self _updateWalkingRoute];
   }

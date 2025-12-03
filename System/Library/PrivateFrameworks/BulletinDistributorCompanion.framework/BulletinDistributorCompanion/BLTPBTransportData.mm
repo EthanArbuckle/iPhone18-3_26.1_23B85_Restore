@@ -1,36 +1,36 @@
 @interface BLTPBTransportData
-+ (id)transportDataWithSequenceNumberManager:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)transportDataWithSequenceNumberManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)sessionUUID;
-- (int64_t)setSequenceNumberOnManager:(id)a3;
+- (int64_t)setSequenceNumberOnManager:(id)manager;
 - (unint64_t)backwardsCompatibleSessionState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsInitialSequenceNumber:(BOOL)a3;
-- (void)setHasSessionState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsInitialSequenceNumber:(BOOL)number;
+- (void)setHasSessionState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBTransportData
 
-+ (id)transportDataWithSequenceNumberManager:(id)a3
++ (id)transportDataWithSequenceNumberManager:(id)manager
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 nextSendSequenceNumber];
-  if (v4)
+  managerCopy = manager;
+  nextSendSequenceNumber = [managerCopy nextSendSequenceNumber];
+  if (nextSendSequenceNumber)
   {
     v5 = objc_alloc_init(BLTPBTransportData);
-    -[BLTPBTransportData setSequenceNumber:](v5, "setSequenceNumber:", [v4 unsignedLongLongValue]);
-    v6 = [v3 sessionState];
-    if (v6)
+    -[BLTPBTransportData setSequenceNumber:](v5, "setSequenceNumber:", [nextSendSequenceNumber unsignedLongLongValue]);
+    sessionState = [managerCopy sessionState];
+    if (sessionState)
     {
-      v7 = v6;
-      [(BLTPBTransportData *)v5 setSessionState:v6];
+      v7 = sessionState;
+      [(BLTPBTransportData *)v5 setSessionState:sessionState];
       if (v7 == 1)
       {
         [(BLTPBTransportData *)v5 setIsInitialSequenceNumber:1];
@@ -39,8 +39,8 @@
 
     v19[0] = 0;
     v19[1] = 0;
-    v8 = [v3 currentSessionIdentifier];
-    [v8 getUUIDBytes:v19];
+    currentSessionIdentifier = [managerCopy currentSessionIdentifier];
+    [currentSessionIdentifier getUUIDBytes:v19];
 
     v9 = [MEMORY[0x277CBEA90] dataWithBytes:v19 length:16];
     [(BLTPBTransportData *)v5 setSessionIdentifier:v9];
@@ -51,7 +51,7 @@
     v10 = blt_ids_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(BLTPBTransportData(SequenceNumberManager) *)v3 transportDataWithSequenceNumberManager:v10, v11, v12, v13, v14, v15, v16];
+      [(BLTPBTransportData(SequenceNumberManager) *)managerCopy transportDataWithSequenceNumberManager:v10, v11, v12, v13, v14, v15, v16];
     }
 
     v5 = 0;
@@ -67,8 +67,8 @@
   if ([(BLTPBTransportData *)self hasSessionIdentifier])
   {
     v3 = objc_alloc(MEMORY[0x277CCAD78]);
-    v4 = [(BLTPBTransportData *)self sessionIdentifier];
-    v5 = [v3 initWithUUIDBytes:{objc_msgSend(v4, "bytes")}];
+    sessionIdentifier = [(BLTPBTransportData *)self sessionIdentifier];
+    v5 = [v3 initWithUUIDBytes:{objc_msgSend(sessionIdentifier, "bytes")}];
   }
 
   else
@@ -96,19 +96,19 @@
   return 0;
 }
 
-- (int64_t)setSequenceNumberOnManager:(id)a3
+- (int64_t)setSequenceNumberOnManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(BLTPBTransportData *)self sequenceNumber];
-  v6 = [(BLTPBTransportData *)self sessionUUID];
-  v7 = [v4 setRecvSequenceNumber:v5 recvSessionIdentifier:v6 force:{-[BLTPBTransportData backwardsCompatibleSessionState](self, "backwardsCompatibleSessionState") == 1}];
+  managerCopy = manager;
+  sequenceNumber = [(BLTPBTransportData *)self sequenceNumber];
+  sessionUUID = [(BLTPBTransportData *)self sessionUUID];
+  v7 = [managerCopy setRecvSequenceNumber:sequenceNumber recvSessionIdentifier:sessionUUID force:{-[BLTPBTransportData backwardsCompatibleSessionState](self, "backwardsCompatibleSessionState") == 1}];
 
   return v7;
 }
 
-- (void)setHasIsInitialSequenceNumber:(BOOL)a3
+- (void)setHasIsInitialSequenceNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 4;
   }
@@ -121,9 +121,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSessionState:(BOOL)a3
+- (void)setHasSessionState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -142,20 +142,20 @@
   v8.receiver = self;
   v8.super_class = BLTPBTransportData;
   v4 = [(BLTPBTransportData *)&v8 description];
-  v5 = [(BLTPBTransportData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBTransportData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_sequenceNumber];
-    [v3 setObject:v5 forKey:@"sequenceNumber"];
+    [dictionary setObject:v5 forKey:@"sequenceNumber"];
 
     has = self->_has;
   }
@@ -163,40 +163,40 @@
   if ((has & 4) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_isInitialSequenceNumber];
-    [v3 setObject:v6 forKey:@"isInitialSequenceNumber"];
+    [dictionary setObject:v6 forKey:@"isInitialSequenceNumber"];
   }
 
   sessionIdentifier = self->_sessionIdentifier;
   if (sessionIdentifier)
   {
-    [v3 setObject:sessionIdentifier forKey:@"sessionIdentifier"];
+    [dictionary setObject:sessionIdentifier forKey:@"sessionIdentifier"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_sessionState];
-    [v3 setObject:v8 forKey:@"sessionState"];
+    [dictionary setObject:v8 forKey:@"sessionState"];
   }
 
   md5 = self->_md5;
   if (md5)
   {
-    [v3 setObject:md5 forKey:@"md5"];
+    [dictionary setObject:md5 forKey:@"md5"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     sequenceNumber = self->_sequenceNumber;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -204,69 +204,69 @@
   {
     isInitialSequenceNumber = self->_isInitialSequenceNumber;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sessionIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     sessionState = self->_sessionState;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_md5)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_sequenceNumber;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_sequenceNumber;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 36) = self->_isInitialSequenceNumber;
-    *(v4 + 40) |= 4u;
+    *(toCopy + 36) = self->_isInitialSequenceNumber;
+    *(toCopy + 40) |= 4u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_sessionIdentifier)
   {
-    [v4 setSessionIdentifier:?];
-    v4 = v6;
+    [toCopy setSessionIdentifier:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 8) = self->_sessionState;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 8) = self->_sessionState;
+    *(toCopy + 40) |= 2u;
   }
 
   if (self->_md5)
   {
     [v6 setMd5:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -282,7 +282,7 @@
     *(v5 + 40) |= 4u;
   }
 
-  v8 = [(NSData *)self->_sessionIdentifier copyWithZone:a3];
+  v8 = [(NSData *)self->_sessionIdentifier copyWithZone:zone];
   v9 = *(v6 + 24);
   *(v6 + 24) = v8;
 
@@ -292,65 +292,65 @@
     *(v6 + 40) |= 2u;
   }
 
-  v10 = [(NSData *)self->_md5 copyWithZone:a3];
+  v10 = [(NSData *)self->_md5 copyWithZone:zone];
   v11 = *(v6 + 16);
   *(v6 + 16) = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_sequenceNumber != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_sequenceNumber != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0)
+    if ((*(equalCopy + 40) & 4) == 0)
     {
       goto LABEL_24;
     }
 
-    v9 = *(v4 + 36);
+    v9 = *(equalCopy + 36);
     if (self->_isInitialSequenceNumber)
     {
-      if ((*(v4 + 36) & 1) == 0)
+      if ((*(equalCopy + 36) & 1) == 0)
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(v4 + 36))
+    else if (*(equalCopy + 36))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_24;
   }
 
   sessionIdentifier = self->_sessionIdentifier;
-  if (!(sessionIdentifier | *(v4 + 3)))
+  if (!(sessionIdentifier | *(equalCopy + 3)))
   {
     goto LABEL_12;
   }
@@ -364,22 +364,22 @@ LABEL_24:
 
   has = self->_has;
 LABEL_12:
-  v8 = *(v4 + 40);
+  v8 = *(equalCopy + 40);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_sessionState != *(v4 + 8))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_sessionState != *(equalCopy + 8))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_24;
   }
 
   md5 = self->_md5;
-  if (md5 | *(v4 + 2))
+  if (md5 | *(equalCopy + 2))
   {
     v11 = [(NSData *)md5 isEqual:?];
   }
@@ -432,40 +432,40 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5 ^ [(NSData *)self->_md5 hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if (v5)
   {
-    self->_sequenceNumber = *(v4 + 1);
+    self->_sequenceNumber = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_isInitialSequenceNumber = *(v4 + 36);
+    self->_isInitialSequenceNumber = *(fromCopy + 36);
     *&self->_has |= 4u;
   }
 
-  v6 = v4;
-  if (*(v4 + 3))
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(BLTPBTransportData *)self setSessionIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 40) & 2) != 0)
+  if ((*(fromCopy + 40) & 2) != 0)
   {
-    self->_sessionState = *(v4 + 8);
+    self->_sessionState = *(fromCopy + 8);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BLTPBTransportData *)self setMd5:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

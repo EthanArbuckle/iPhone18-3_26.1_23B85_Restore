@@ -1,37 +1,37 @@
 @interface CNStarkActionsController
 - (BOOL)_isMessagesDefaultAppImpl;
-- (CNStarkActionsController)initWithContact:(id)a3;
+- (CNStarkActionsController)initWithContact:(id)contact;
 - (UINavigationControllerDelegate)phoneNavigationControllerDelegate;
 - (UIViewController)disambiguationViewController;
-- (id)viewForActionType:(id)a3;
-- (void)actionViewTapped:(id)a3;
+- (id)viewForActionType:(id)type;
+- (void)actionViewTapped:(id)tapped;
 - (void)addForwardingDelegate;
-- (void)contactQuickActionsController:(id)a3 dismissDisambiguationViewController:(id)a4 forActionType:(id)a5;
-- (void)contactQuickActionsController:(id)a3 presentDisambiguationViewController:(id)a4 forActionType:(id)a5;
-- (void)forwardDelegateForNavigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)contactQuickActionsController:(id)controller dismissDisambiguationViewController:(id)viewController forActionType:(id)type;
+- (void)contactQuickActionsController:(id)controller presentDisambiguationViewController:(id)viewController forActionType:(id)type;
+- (void)forwardDelegateForNavigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)removeForwardingDelegate;
 - (void)resetLayoutConstraints;
 - (void)setupLayoutConstraints;
 - (void)setupViews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateViewConstraints;
 - (void)updateViews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CNStarkActionsController
 
 - (void)resetLayoutConstraints
 {
-  v3 = [(CNStarkActionsController *)self view];
-  v4 = [(CNStarkActionsController *)self layoutConstraints];
-  [v3 removeConstraints:v4];
+  view = [(CNStarkActionsController *)self view];
+  layoutConstraints = [(CNStarkActionsController *)self layoutConstraints];
+  [view removeConstraints:layoutConstraints];
 
   [(CNStarkActionsController *)self setLayoutConstraints:0];
-  v5 = [(CNStarkActionsController *)self view];
-  [v5 setNeedsUpdateConstraints];
+  view2 = [(CNStarkActionsController *)self view];
+  [view2 setNeedsUpdateConstraints];
 }
 
 - (void)updateViewConstraints
@@ -40,8 +40,8 @@
   v5.super_class = CNStarkActionsController;
   [(CNStarkActionsController *)&v5 updateViewConstraints];
   v3 = *MEMORY[0x1E6996530];
-  v4 = [(CNStarkActionsController *)self layoutConstraints];
-  LODWORD(v3) = (*(v3 + 16))(v3, v4);
+  layoutConstraints = [(CNStarkActionsController *)self layoutConstraints];
+  LODWORD(v3) = (*(v3 + 16))(v3, layoutConstraints);
 
   if (v3)
   {
@@ -61,91 +61,91 @@
 
   else
   {
-    v6 = [(CNStarkActionsController *)self view];
-    [v6 bounds];
+    view = [(CNStarkActionsController *)self view];
+    [view bounds];
     v5 = v7;
   }
 
   [(CNStarkActionsController *)self setWillTransitionToBoundsWidth:0.0];
   v8 = (v5 + -150.0) * 0.25 + 50.0;
-  v76 = [(CNStarkActionsController *)self messageActionView];
-  v70 = [v76 topAnchor];
-  v73 = [(CNStarkActionsController *)self view];
-  v67 = [v73 safeAreaLayoutGuide];
-  v64 = [v67 topAnchor];
-  v61 = [v70 constraintEqualToAnchor:v64];
+  messageActionView = [(CNStarkActionsController *)self messageActionView];
+  topAnchor = [messageActionView topAnchor];
+  view2 = [(CNStarkActionsController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v61 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v82[0] = v61;
-  v58 = [(CNStarkActionsController *)self messageActionView];
-  v52 = [v58 bottomAnchor];
-  v55 = [(CNStarkActionsController *)self view];
-  v49 = [v55 safeAreaLayoutGuide];
-  v46 = [v49 bottomAnchor];
-  v43 = [v52 constraintEqualToAnchor:v46];
+  messageActionView2 = [(CNStarkActionsController *)self messageActionView];
+  bottomAnchor = [messageActionView2 bottomAnchor];
+  view3 = [(CNStarkActionsController *)self view];
+  safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v43 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v82[1] = v43;
-  v9 = [(CNStarkActionsController *)self messageActionView];
-  v10 = [v9 centerXAnchor];
-  v11 = [(CNStarkActionsController *)self view];
-  v12 = [v11 safeAreaLayoutGuide];
-  v13 = [v12 centerXAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13 constant:-v8];
+  messageActionView3 = [(CNStarkActionsController *)self messageActionView];
+  centerXAnchor = [messageActionView3 centerXAnchor];
+  view4 = [(CNStarkActionsController *)self view];
+  safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide3 centerXAnchor];
+  v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:-v8];
   v82[2] = v14;
-  v15 = [(CNStarkActionsController *)self messageActionView];
-  v16 = [v15 widthAnchor];
-  v17 = [v16 constraintEqualToConstant:v8];
+  messageActionView4 = [(CNStarkActionsController *)self messageActionView];
+  widthAnchor = [messageActionView4 widthAnchor];
+  v17 = [widthAnchor constraintEqualToConstant:v8];
   v82[3] = v17;
   v78 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:4];
 
-  v74 = [(CNStarkActionsController *)self callActionView];
-  v68 = [v74 topAnchor];
-  v71 = [(CNStarkActionsController *)self view];
-  v65 = [v71 safeAreaLayoutGuide];
-  v62 = [v65 topAnchor];
-  v59 = [v68 constraintEqualToAnchor:v62];
+  callActionView = [(CNStarkActionsController *)self callActionView];
+  topAnchor3 = [callActionView topAnchor];
+  view5 = [(CNStarkActionsController *)self view];
+  safeAreaLayoutGuide4 = [view5 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide4 topAnchor];
+  v59 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v81[0] = v59;
-  v56 = [(CNStarkActionsController *)self callActionView];
-  v50 = [v56 bottomAnchor];
-  v53 = [(CNStarkActionsController *)self view];
-  v47 = [v53 safeAreaLayoutGuide];
-  v44 = [v47 bottomAnchor];
-  v41 = [v50 constraintEqualToAnchor:v44];
+  callActionView2 = [(CNStarkActionsController *)self callActionView];
+  bottomAnchor3 = [callActionView2 bottomAnchor];
+  view6 = [(CNStarkActionsController *)self view];
+  safeAreaLayoutGuide5 = [view6 safeAreaLayoutGuide];
+  bottomAnchor4 = [safeAreaLayoutGuide5 bottomAnchor];
+  v41 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v81[1] = v41;
-  v18 = [(CNStarkActionsController *)self callActionView];
-  v19 = [v18 centerXAnchor];
-  v20 = [(CNStarkActionsController *)self view];
-  v21 = [v20 safeAreaLayoutGuide];
-  v22 = [v21 centerXAnchor];
-  v23 = [v19 constraintEqualToAnchor:v22];
+  callActionView3 = [(CNStarkActionsController *)self callActionView];
+  centerXAnchor3 = [callActionView3 centerXAnchor];
+  view7 = [(CNStarkActionsController *)self view];
+  safeAreaLayoutGuide6 = [view7 safeAreaLayoutGuide];
+  centerXAnchor4 = [safeAreaLayoutGuide6 centerXAnchor];
+  v23 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v81[2] = v23;
-  v24 = [(CNStarkActionsController *)self callActionView];
-  v25 = [v24 widthAnchor];
-  v26 = [v25 constraintEqualToConstant:v8];
+  callActionView4 = [(CNStarkActionsController *)self callActionView];
+  widthAnchor2 = [callActionView4 widthAnchor];
+  v26 = [widthAnchor2 constraintEqualToConstant:v8];
   v81[3] = v26;
   v77 = [MEMORY[0x1E695DEC8] arrayWithObjects:v81 count:4];
 
-  v75 = [(CNStarkActionsController *)self directionsActionView];
-  v69 = [v75 topAnchor];
-  v72 = [(CNStarkActionsController *)self view];
-  v66 = [v72 safeAreaLayoutGuide];
-  v63 = [v66 topAnchor];
-  v60 = [v69 constraintEqualToAnchor:v63];
+  directionsActionView = [(CNStarkActionsController *)self directionsActionView];
+  topAnchor5 = [directionsActionView topAnchor];
+  view8 = [(CNStarkActionsController *)self view];
+  safeAreaLayoutGuide7 = [view8 safeAreaLayoutGuide];
+  topAnchor6 = [safeAreaLayoutGuide7 topAnchor];
+  v60 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v80[0] = v60;
-  v57 = [(CNStarkActionsController *)self directionsActionView];
-  v51 = [v57 bottomAnchor];
-  v54 = [(CNStarkActionsController *)self view];
-  v48 = [v54 safeAreaLayoutGuide];
-  v45 = [v48 bottomAnchor];
-  v42 = [v51 constraintEqualToAnchor:v45];
+  directionsActionView2 = [(CNStarkActionsController *)self directionsActionView];
+  bottomAnchor5 = [directionsActionView2 bottomAnchor];
+  view9 = [(CNStarkActionsController *)self view];
+  safeAreaLayoutGuide8 = [view9 safeAreaLayoutGuide];
+  bottomAnchor6 = [safeAreaLayoutGuide8 bottomAnchor];
+  v42 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v80[1] = v42;
-  v27 = [(CNStarkActionsController *)self directionsActionView];
-  v28 = [v27 centerXAnchor];
-  v29 = [(CNStarkActionsController *)self view];
-  v30 = [v29 safeAreaLayoutGuide];
-  v31 = [v30 centerXAnchor];
-  v32 = [v28 constraintEqualToAnchor:v31 constant:v8];
+  directionsActionView3 = [(CNStarkActionsController *)self directionsActionView];
+  centerXAnchor5 = [directionsActionView3 centerXAnchor];
+  view10 = [(CNStarkActionsController *)self view];
+  safeAreaLayoutGuide9 = [view10 safeAreaLayoutGuide];
+  centerXAnchor6 = [safeAreaLayoutGuide9 centerXAnchor];
+  v32 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6 constant:v8];
   v80[2] = v32;
-  v33 = [(CNStarkActionsController *)self directionsActionView];
-  v34 = [v33 widthAnchor];
-  v35 = [v34 constraintEqualToConstant:v8];
+  directionsActionView4 = [(CNStarkActionsController *)self directionsActionView];
+  widthAnchor3 = [directionsActionView4 widthAnchor];
+  v35 = [widthAnchor3 constraintEqualToConstant:v8];
   v80[3] = v35;
   v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:4];
 
@@ -153,24 +153,24 @@
   v79[1] = v77;
   v79[2] = v40;
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:3];
-  v37 = [v36 _cn_flatten];
-  [(CNStarkActionsController *)self setLayoutConstraints:v37];
+  _cn_flatten = [v36 _cn_flatten];
+  [(CNStarkActionsController *)self setLayoutConstraints:_cn_flatten];
 
-  v38 = [(CNStarkActionsController *)self view];
-  v39 = [(CNStarkActionsController *)self layoutConstraints];
-  [v38 addConstraints:v39];
+  view11 = [(CNStarkActionsController *)self view];
+  layoutConstraints = [(CNStarkActionsController *)self layoutConstraints];
+  [view11 addConstraints:layoutConstraints];
 }
 
 - (BOOL)_isMessagesDefaultAppImpl
 {
   v2 = +[CNUIContactsEnvironment currentEnvironment];
-  v3 = [v2 applicationWorkspace];
-  v4 = [v3 defaultApplicationForDefaultAppCategory:0];
+  applicationWorkspace = [v2 applicationWorkspace];
+  v4 = [applicationWorkspace defaultApplicationForDefaultAppCategory:0];
 
-  v5 = [v4 bundleIdentifier];
-  LOBYTE(v3) = [v5 isEqualToString:*MEMORY[0x1E695C130]];
+  bundleIdentifier = [v4 bundleIdentifier];
+  LOBYTE(applicationWorkspace) = [bundleIdentifier isEqualToString:*MEMORY[0x1E695C130]];
 
-  return v3;
+  return applicationWorkspace;
 }
 
 - (void)viewDidLoad
@@ -183,40 +183,40 @@
   if (![(CNStarkActionsController *)self isMessagesDefaultApp])
   {
     v3 = [(CNContactQuickActionsController *)self->_quickActionsController defaultTitleForActionType:*MEMORY[0x1E695C178]];
-    v4 = [(CNStarkActionsController *)self messageActionView];
-    [v4 setTitle:v3];
+    messageActionView = [(CNStarkActionsController *)self messageActionView];
+    [messageActionView setTitle:v3];
   }
 }
 
 - (void)setupViews
 {
-  v3 = [(CNStarkActionsController *)self messageActionView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  messageActionView = [(CNStarkActionsController *)self messageActionView];
+  [messageActionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(CNStarkActionsController *)self callActionView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  callActionView = [(CNStarkActionsController *)self callActionView];
+  [callActionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(CNStarkActionsController *)self directionsActionView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  directionsActionView = [(CNStarkActionsController *)self directionsActionView];
+  [directionsActionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(CNStarkActionsController *)self view];
-  v7 = [(CNStarkActionsController *)self messageActionView];
-  [v6 addSubview:v7];
+  view = [(CNStarkActionsController *)self view];
+  messageActionView2 = [(CNStarkActionsController *)self messageActionView];
+  [view addSubview:messageActionView2];
 
-  v8 = [(CNStarkActionsController *)self view];
-  v9 = [(CNStarkActionsController *)self callActionView];
-  [v8 addSubview:v9];
+  view2 = [(CNStarkActionsController *)self view];
+  callActionView2 = [(CNStarkActionsController *)self callActionView];
+  [view2 addSubview:callActionView2];
 
-  v11 = [(CNStarkActionsController *)self view];
-  v10 = [(CNStarkActionsController *)self directionsActionView];
-  [v11 addSubview:v10];
+  view3 = [(CNStarkActionsController *)self view];
+  directionsActionView2 = [(CNStarkActionsController *)self directionsActionView];
+  [view3 addSubview:directionsActionView2];
 }
 
 - (void)updateViews
 {
-  v4 = [(CNStarkActionsController *)self contact];
-  v3 = [(CNStarkActionsController *)self quickActionsController];
-  [v3 setContact:v4];
+  contact = [(CNStarkActionsController *)self contact];
+  quickActionsController = [(CNStarkActionsController *)self quickActionsController];
+  [quickActionsController setContact:contact];
 }
 
 - (UINavigationControllerDelegate)phoneNavigationControllerDelegate
@@ -235,85 +235,85 @@
 
 - (void)removeForwardingDelegate
 {
-  v3 = [(CNStarkActionsController *)self disambiguationViewController];
-  v5 = [v3 navigationController];
+  disambiguationViewController = [(CNStarkActionsController *)self disambiguationViewController];
+  navigationController = [disambiguationViewController navigationController];
 
-  v4 = [(CNStarkActionsController *)self phoneNavigationControllerDelegate];
-  [v5 setDelegate:v4];
+  phoneNavigationControllerDelegate = [(CNStarkActionsController *)self phoneNavigationControllerDelegate];
+  [navigationController setDelegate:phoneNavigationControllerDelegate];
 
   [(CNStarkActionsController *)self setPhoneNavigationControllerDelegate:0];
 }
 
-- (void)forwardDelegateForNavigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)forwardDelegateForNavigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v12 = a3;
-  v8 = a4;
-  v9 = [(CNStarkActionsController *)self phoneNavigationControllerDelegate];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  phoneNavigationControllerDelegate = [(CNStarkActionsController *)self phoneNavigationControllerDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CNStarkActionsController *)self phoneNavigationControllerDelegate];
-    [v11 navigationController:v12 willShowViewController:v8 animated:v5];
+    phoneNavigationControllerDelegate2 = [(CNStarkActionsController *)self phoneNavigationControllerDelegate];
+    [phoneNavigationControllerDelegate2 navigationController:controllerCopy willShowViewController:viewControllerCopy animated:animatedCopy];
   }
 }
 
 - (void)addForwardingDelegate
 {
-  v3 = [(CNStarkActionsController *)self navigationController];
-  v4 = [v3 delegate];
-  [(CNStarkActionsController *)self setPhoneNavigationControllerDelegate:v4];
+  navigationController = [(CNStarkActionsController *)self navigationController];
+  delegate = [navigationController delegate];
+  [(CNStarkActionsController *)self setPhoneNavigationControllerDelegate:delegate];
 
-  v5 = [(CNStarkActionsController *)self navigationController];
-  [v5 setDelegate:self];
+  navigationController2 = [(CNStarkActionsController *)self navigationController];
+  [navigationController2 setDelegate:self];
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v11 = a4;
-  [CNStarkActionsController forwardDelegateForNavigationController:"forwardDelegateForNavigationController:willShowViewController:animated:" willShowViewController:a3 animated:?];
-  v7 = [(CNStarkActionsController *)self disambiguationViewController];
+  viewControllerCopy = viewController;
+  [CNStarkActionsController forwardDelegateForNavigationController:"forwardDelegateForNavigationController:willShowViewController:animated:" willShowViewController:controller animated:?];
+  disambiguationViewController = [(CNStarkActionsController *)self disambiguationViewController];
 
-  if (v7)
+  if (disambiguationViewController)
   {
-    v8 = [(CNStarkActionsController *)self disambiguationViewController];
+    disambiguationViewController2 = [(CNStarkActionsController *)self disambiguationViewController];
 
-    if (v8 != v11)
+    if (disambiguationViewController2 != viewControllerCopy)
     {
       [(CNStarkActionsController *)self removeForwardingDelegate];
-      v9 = [(CNStarkActionsController *)self quickActionsController];
-      v10 = [(CNStarkActionsController *)self disambiguationViewController];
-      [v9 disambiguationViewControllerDismissedExternally:v10];
+      quickActionsController = [(CNStarkActionsController *)self quickActionsController];
+      disambiguationViewController3 = [(CNStarkActionsController *)self disambiguationViewController];
+      [quickActionsController disambiguationViewControllerDismissedExternally:disambiguationViewController3];
 
       [(CNStarkActionsController *)self setDisambiguationViewController:0];
     }
   }
 }
 
-- (void)contactQuickActionsController:(id)a3 dismissDisambiguationViewController:(id)a4 forActionType:(id)a5
+- (void)contactQuickActionsController:(id)controller dismissDisambiguationViewController:(id)viewController forActionType:(id)type
 {
-  v13 = a4;
-  v6 = [v13 presentingViewController];
+  viewControllerCopy = viewController;
+  presentingViewController = [viewControllerCopy presentingViewController];
 
-  if (v6 == self)
+  if (presentingViewController == self)
   {
     [(CNStarkActionsController *)self dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v7 = [v13 navigationController];
-    if (v7)
+    navigationController = [viewControllerCopy navigationController];
+    if (navigationController)
     {
-      v8 = v7;
-      v9 = [v13 navigationController];
-      v10 = [v9 topViewController];
+      v8 = navigationController;
+      navigationController2 = [viewControllerCopy navigationController];
+      topViewController = [navigationController2 topViewController];
 
-      if (v10 == v13)
+      if (topViewController == viewControllerCopy)
       {
-        v11 = [v13 navigationController];
-        v12 = [v11 popViewControllerAnimated:1];
+        navigationController3 = [viewControllerCopy navigationController];
+        v12 = [navigationController3 popViewControllerAnimated:1];
       }
     }
   }
@@ -322,32 +322,32 @@
   [(CNStarkActionsController *)self setDisambiguationViewController:0];
 }
 
-- (void)contactQuickActionsController:(id)a3 presentDisambiguationViewController:(id)a4 forActionType:(id)a5
+- (void)contactQuickActionsController:(id)controller presentDisambiguationViewController:(id)viewController forActionType:(id)type
 {
-  v6 = a4;
+  viewControllerCopy = viewController;
   [(CNStarkActionsController *)self addForwardingDelegate];
-  [(CNStarkActionsController *)self showViewController:v6 sender:0];
-  [(CNStarkActionsController *)self setDisambiguationViewController:v6];
+  [(CNStarkActionsController *)self showViewController:viewControllerCopy sender:0];
+  [(CNStarkActionsController *)self setDisambiguationViewController:viewControllerCopy];
 }
 
-- (id)viewForActionType:(id)a3
+- (id)viewForActionType:(id)type
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNStarkActionsController *)self messageActionView];
-  v14[0] = v5;
-  v6 = [(CNStarkActionsController *)self callActionView];
-  v14[1] = v6;
-  v7 = [(CNStarkActionsController *)self directionsActionView];
-  v14[2] = v7;
+  typeCopy = type;
+  messageActionView = [(CNStarkActionsController *)self messageActionView];
+  v14[0] = messageActionView;
+  callActionView = [(CNStarkActionsController *)self callActionView];
+  v14[1] = callActionView;
+  directionsActionView = [(CNStarkActionsController *)self directionsActionView];
+  v14[2] = directionsActionView;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __46__CNStarkActionsController_viewForActionType___block_invoke;
   v12[3] = &unk_1E74E5450;
-  v13 = v4;
-  v9 = v4;
+  v13 = typeCopy;
+  v9 = typeCopy;
   v10 = [v8 _cn_firstObjectPassingTest:v12];
 
   return v10;
@@ -361,30 +361,30 @@ uint64_t __46__CNStarkActionsController_viewForActionType___block_invoke(uint64_
   return v4;
 }
 
-- (void)actionViewTapped:(id)a3
+- (void)actionViewTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = *MEMORY[0x1E6996568];
-  v9 = v4;
-  v6 = [v4 actionType];
-  LOBYTE(v5) = (*(v5 + 16))(v5, v6);
+  v9 = tappedCopy;
+  actionType = [tappedCopy actionType];
+  LOBYTE(v5) = (*(v5 + 16))(v5, actionType);
 
   if ((v5 & 1) == 0)
   {
-    v7 = [(CNStarkActionsController *)self quickActionsController];
-    v8 = [v9 actionType];
-    [v7 executeTapBehaviorForActionType:v8];
+    quickActionsController = [(CNStarkActionsController *)self quickActionsController];
+    actionType2 = [v9 actionType];
+    [quickActionsController executeTapBehaviorForActionType:actionType2];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  width = a3.width;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CNStarkActionsController;
-  [(CNStarkActionsController *)&v9 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v6 = [(CNStarkActionsController *)self view];
-  [v6 bounds];
+  [(CNStarkActionsController *)&v9 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  view = [(CNStarkActionsController *)self view];
+  [view bounds];
   v8 = v7;
 
   if (width != v8)
@@ -394,25 +394,25 @@ uint64_t __46__CNStarkActionsController_viewForActionType___block_invoke(uint64_
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CNStarkActionsController;
-  [(CNStarkActionsController *)&v4 traitCollectionDidChange:a3];
+  [(CNStarkActionsController *)&v4 traitCollectionDidChange:change];
   [(CNStarkActionsController *)self resetLayoutConstraints];
 }
 
-- (CNStarkActionsController)initWithContact:(id)a3
+- (CNStarkActionsController)initWithContact:(id)contact
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contactCopy = contact;
   v24.receiver = self;
   v24.super_class = CNStarkActionsController;
   v6 = [(CNStarkActionsController *)&v24 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
+    objc_storeStrong(&v6->_contact, contact);
     v7->_isMessagesDefaultApp = [(CNStarkActionsController *)v7 _isMessagesDefaultAppImpl];
     if ([(CNStarkActionsController *)v7 isMessagesDefaultApp])
     {

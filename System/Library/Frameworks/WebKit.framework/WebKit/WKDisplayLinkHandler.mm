@@ -1,10 +1,10 @@
 @interface WKDisplayLinkHandler
-- (WKDisplayLinkHandler)initWithDrawingAreaProxy:(void *)a3;
+- (WKDisplayLinkHandler)initWithDrawingAreaProxy:(void *)proxy;
 - (unsigned)nominalFramesPerSecond;
 - (void)dealloc;
 - (void)didChangeNominalFramesPerSecond;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation WKDisplayLinkHandler
@@ -60,7 +60,7 @@ LABEL_10:
   return v10;
 }
 
-- (WKDisplayLinkHandler)initWithDrawingAreaProxy:(void *)a3
+- (WKDisplayLinkHandler)initWithDrawingAreaProxy:(void *)proxy
 {
   v18.receiver = self;
   v18.super_class = WKDisplayLinkHandler;
@@ -68,20 +68,20 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v4->_drawingAreaProxy = a3;
+    v4->_drawingAreaProxy = proxy;
     v6 = [MEMORY[0x1E6979330] displayLinkWithTarget:v4 selector:sel_displayLinkFired_];
     v5->_displayLink = v6;
-    v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v6 addToRunLoop:v7 forMode:*MEMORY[0x1E695DA28]];
-    v8 = [(CADisplayLink *)v5->_displayLink display];
-    [v8 addObserver:v5 forKeyPath:@"refreshRate" options:1 context:displayRefreshRateObservationContext];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v6 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
+    display = [(CADisplayLink *)v5->_displayLink display];
+    [display addObserver:v5 forKeyPath:@"refreshRate" options:1 context:displayRefreshRateObservationContext];
     [(CADisplayLink *)v5->_displayLink setPaused:1];
-    if (!a3)
+    if (!proxy)
     {
       goto LABEL_8;
     }
 
-    v10 = *(a3 + 5);
+    v10 = *(proxy + 5);
     if (!v10)
     {
       goto LABEL_8;
@@ -141,17 +141,17 @@ LABEL_8:
 
 - (void)invalidate
 {
-  v3 = [(CADisplayLink *)self->_displayLink display];
-  [v3 removeObserver:self forKeyPath:@"refreshRate" context:displayRefreshRateObservationContext];
+  display = [(CADisplayLink *)self->_displayLink display];
+  [display removeObserver:self forKeyPath:@"refreshRate" context:displayRefreshRateObservationContext];
   [(CADisplayLink *)self->_displayLink invalidate];
   self->_displayLink = 0;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (displayRefreshRateObservationContext == a6)
+  if (displayRefreshRateObservationContext == context)
   {
-    [(WKDisplayLinkHandler *)self didChangeNominalFramesPerSecond:a3];
+    [(WKDisplayLinkHandler *)self didChangeNominalFramesPerSecond:path];
   }
 }
 

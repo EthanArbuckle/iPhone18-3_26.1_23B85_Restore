@@ -1,20 +1,20 @@
 @interface BuddyMigrationError
-+ (id)_appendErrorInformationForInternal:(id)a3 error:(id)a4;
-+ (id)detailTextForErrorOnSource:(id)a3;
-+ (id)detailTextForErrorOnTarget:(id)a3 requiresErase:(BOOL)a4;
-+ (id)titleForError:(id)a3;
++ (id)_appendErrorInformationForInternal:(id)internal error:(id)error;
++ (id)detailTextForErrorOnSource:(id)source;
++ (id)detailTextForErrorOnTarget:(id)target requiresErase:(BOOL)erase;
++ (id)titleForError:(id)error;
 @end
 
 @implementation BuddyMigrationError
 
-+ (id)titleForError:(id)a3
++ (id)titleForError:(id)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] domain];
-  v4 = [v3 isEqualToString:@"MBErrorDomain"];
+  objc_storeStrong(location, error);
+  domain = [location[0] domain];
+  v4 = [domain isEqualToString:@"MBErrorDomain"];
 
   if ((v4 & 1) == 0)
   {
@@ -49,15 +49,15 @@ LABEL_7:
   return v8;
 }
 
-+ (id)detailTextForErrorOnSource:(id)a3
++ (id)detailTextForErrorOnSource:(id)source
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, source);
   v18 = 0;
-  v3 = [location[0] domain];
-  v4 = [v3 isEqualToString:@"MBErrorDomain"];
+  domain = [location[0] domain];
+  v4 = [domain isEqualToString:@"MBErrorDomain"];
 
   if (v4)
   {
@@ -95,16 +95,16 @@ LABEL_7:
   return v16;
 }
 
-+ (id)detailTextForErrorOnTarget:(id)a3 requiresErase:(BOOL)a4
++ (id)detailTextForErrorOnTarget:(id)target requiresErase:(BOOL)erase
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v36 = a4;
+  objc_storeStrong(location, target);
+  eraseCopy = erase;
   v35 = 0;
-  v5 = [location[0] domain];
-  v6 = [v5 isEqualToString:@"MBErrorDomain"];
+  domain = [location[0] domain];
+  v6 = [domain isEqualToString:@"MBErrorDomain"];
 
   if (v6)
   {
@@ -140,7 +140,7 @@ LABEL_7:
     v35 = v16;
   }
 
-  if (v36)
+  if (eraseCopy)
   {
     if (v35)
     {
@@ -169,10 +169,10 @@ LABEL_7:
     v27 = 0;
     if (!v35)
     {
-      v34 = [location[0] domain];
+      domain2 = [location[0] domain];
       v33 = 1;
       v27 = 0;
-      if ([v34 isEqualToString:@"MBErrorDomain"])
+      if ([domain2 isEqualToString:@"MBErrorDomain"])
       {
         v27 = [location[0] code] == 202;
       }
@@ -198,14 +198,14 @@ LABEL_7:
   return v31;
 }
 
-+ (id)_appendErrorInformationForInternal:(id)a3 error:(id)a4
++ (id)_appendErrorInformationForInternal:(id)internal error:(id)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, internal);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, error);
   if ((os_variant_has_internal_ui() & 1) != 0 && v7)
   {
     v9 = [NSString stringWithFormat:@"%@\n\nInternal: %@", location[0], v7];

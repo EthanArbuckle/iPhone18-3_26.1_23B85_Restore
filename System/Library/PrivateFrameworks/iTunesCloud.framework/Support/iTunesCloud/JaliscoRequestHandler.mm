@@ -1,72 +1,72 @@
 @interface JaliscoRequestHandler
-- (BOOL)isUpdateInProgressWithIsInitialImport:(BOOL *)a3;
-- (JaliscoRequestHandler)initWithConfiguration:(id)a3 updateTaskHelper:(id)a4;
+- (BOOL)isUpdateInProgressWithIsInitialImport:(BOOL *)import;
+- (JaliscoRequestHandler)initWithConfiguration:(id)configuration updateTaskHelper:(id)helper;
 - (float)updateProgress;
-- (id)_DAAPMediaKindFromJaliscoSupportedMediaKind:(int64_t)a3;
-- (id)jaliscoLibraryWithReason:(int64_t)a3;
-- (void)_updateJaliscoLibraryWithClientIdentity:(id)a3 completion:(id)a4;
-- (void)cancelOperationsWithCompletionHandler:(id)a3;
-- (void)cancelPendingChangesWithCompletion:(id)a3;
+- (id)_DAAPMediaKindFromJaliscoSupportedMediaKind:(int64_t)kind;
+- (id)jaliscoLibraryWithReason:(int64_t)reason;
+- (void)_updateJaliscoLibraryWithClientIdentity:(id)identity completion:(id)completion;
+- (void)cancelOperationsWithCompletionHandler:(id)handler;
+- (void)cancelPendingChangesWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)decreasePriorityForAllOperations;
-- (void)deprioritizeItemArtworkForPurchaseHistoryID:(unint64_t)a3;
-- (void)deprioritizeScreenshotForPurchaseHistoryID:(unint64_t)a3;
-- (void)hideItemsWithPurchaseHistoryIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)importItemArtworkForPurchaseHistoryID:(unint64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)importScreenshotForPurchaseHistoryID:(unint64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
+- (void)deprioritizeItemArtworkForPurchaseHistoryID:(unint64_t)d;
+- (void)deprioritizeScreenshotForPurchaseHistoryID:(unint64_t)d;
+- (void)hideItemsWithPurchaseHistoryIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)importItemArtworkForPurchaseHistoryID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)importScreenshotForPurchaseHistoryID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
 - (void)increasePriorityForAllOperations;
-- (void)isMediaKindDisabledForJaliscoLibrary:(int64_t)a3 withClientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)loadArtworkInfoForPurchaseHistoryIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)loadBooksForStoreIDs:(id)a3 clientIdentity:(id)a4 withCompletionHandler:(id)a5;
-- (void)loadScreenshotInfoForPurchaseHistoryIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)removeLibraryWithClientIdentity:(id)a3 completion:(id)a4;
-- (void)setItemProperties:(id)a3 forPurchaseHistoryID:(unint64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6;
-- (void)updateJaliscoLibraryByRemovingMediaKind:(int64_t)a3 withClientIdentity:(id)a4 completionHandler:(id)a5;
-- (void)updateJaliscoLibraryWithClientIdentity:(id)a3 byAddingMediaKind:(int64_t)a4 completionHandler:(id)a5;
-- (void)updateLibraryWithClientIdentity:(id)a3 reason:(int64_t)a4 completionHandler:(id)a5;
+- (void)isMediaKindDisabledForJaliscoLibrary:(int64_t)library withClientIdentity:(id)identity completionHandler:(id)handler;
+- (void)loadArtworkInfoForPurchaseHistoryIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)loadBooksForStoreIDs:(id)ds clientIdentity:(id)identity withCompletionHandler:(id)handler;
+- (void)loadScreenshotInfoForPurchaseHistoryIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)removeLibraryWithClientIdentity:(id)identity completion:(id)completion;
+- (void)setItemProperties:(id)properties forPurchaseHistoryID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler;
+- (void)updateJaliscoLibraryByRemovingMediaKind:(int64_t)kind withClientIdentity:(id)identity completionHandler:(id)handler;
+- (void)updateJaliscoLibraryWithClientIdentity:(id)identity byAddingMediaKind:(int64_t)kind completionHandler:(id)handler;
+- (void)updateLibraryWithClientIdentity:(id)identity reason:(int64_t)reason completionHandler:(id)handler;
 @end
 
 @implementation JaliscoRequestHandler
 
-- (id)_DAAPMediaKindFromJaliscoSupportedMediaKind:(int64_t)a3
+- (id)_DAAPMediaKindFromJaliscoSupportedMediaKind:(int64_t)kind
 {
-  if (a3 > 6)
+  if (kind > 6)
   {
     return &off_1001ED690;
   }
 
   else
   {
-    return off_1001DCA30[a3];
+    return off_1001DCA30[kind];
   }
 }
 
-- (void)_updateJaliscoLibraryWithClientIdentity:(id)a3 completion:(id)a4
+- (void)_updateJaliscoLibraryWithClientIdentity:(id)identity completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  identityCopy = identity;
   [(JaliscoRequestHandler *)self cancelPendingChanges];
   v7 = [(BaseRequestHandler *)ArtistImageRequestHandler handlerForConfiguration:self->_configuration];
   [v7 cancelAllOperations];
 
   [(JaliscoRequestHandler *)self cancelAllOperations];
-  [(JaliscoRequestHandler *)self updateLibraryWithClientIdentity:v8 reason:1001 completionHandler:v6];
+  [(JaliscoRequestHandler *)self updateLibraryWithClientIdentity:identityCopy reason:1001 completionHandler:completionCopy];
 }
 
-- (void)loadBooksForStoreIDs:(id)a3 clientIdentity:(id)a4 withCompletionHandler:(id)a5
+- (void)loadBooksForStoreIDs:(id)ds clientIdentity:(id)identity withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CloudLibraryOperation *)[JaliscoLoadBooksOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v9];
-  [(JaliscoLoadBooksOperation *)v11 setQueryStoreIDs:v8];
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
+  v11 = [(CloudLibraryOperation *)[JaliscoLoadBooksOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy];
+  [(JaliscoLoadBooksOperation *)v11 setQueryStoreIDs:dsCopy];
   objc_initWeak(&location, v11);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000AB358;
   v16[3] = &unk_1001DCA10;
   objc_copyWeak(&v18, &location);
-  v12 = v10;
+  v12 = handlerCopy;
   v17 = v12;
   [(JaliscoLoadBooksOperation *)v11 setCompletionBlock:v16];
   [(JaliscoLoadBooksOperation *)v11 setName:@"com.apple.itunescloudd.JaliscoRequestHandler.loadBooksOperation"];
@@ -82,61 +82,61 @@
   objc_destroyWeak(&location);
 }
 
-- (void)isMediaKindDisabledForJaliscoLibrary:(int64_t)a3 withClientIdentity:(id)a4 completionHandler:(id)a5
+- (void)isMediaKindDisabledForJaliscoLibrary:(int64_t)library withClientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
-  v11 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+  identityCopy = identity;
+  handlerCopy = handler;
+  userIdentityStore = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
+  userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000AB760;
   v14[3] = &unk_1001DC9C0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a3;
-  v12 = v8;
-  v13 = v9;
-  [v10 getPropertiesForUserIdentity:v11 completionHandler:v14];
+  v15 = identityCopy;
+  v16 = handlerCopy;
+  libraryCopy = library;
+  v12 = identityCopy;
+  v13 = handlerCopy;
+  [userIdentityStore getPropertiesForUserIdentity:userIdentity completionHandler:v14];
 }
 
-- (void)updateJaliscoLibraryByRemovingMediaKind:(int64_t)a3 withClientIdentity:(id)a4 completionHandler:(id)a5
+- (void)updateJaliscoLibraryByRemovingMediaKind:(int64_t)kind withClientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
-  v11 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+  identityCopy = identity;
+  handlerCopy = handler;
+  userIdentityStore = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
+  userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000ABAF0;
   v14[3] = &unk_1001DC9C0;
-  v16 = v9;
-  v17 = a3;
+  v16 = handlerCopy;
+  kindCopy = kind;
   v14[4] = self;
-  v15 = v8;
-  v12 = v8;
-  v13 = v9;
-  [v10 getPropertiesForUserIdentity:v11 completionHandler:v14];
+  v15 = identityCopy;
+  v12 = identityCopy;
+  v13 = handlerCopy;
+  [userIdentityStore getPropertiesForUserIdentity:userIdentity completionHandler:v14];
 }
 
-- (void)updateJaliscoLibraryWithClientIdentity:(id)a3 byAddingMediaKind:(int64_t)a4 completionHandler:(id)a5
+- (void)updateJaliscoLibraryWithClientIdentity:(id)identity byAddingMediaKind:(int64_t)kind completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
-  v11 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+  identityCopy = identity;
+  handlerCopy = handler;
+  userIdentityStore = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
+  userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000ABE5C;
   v14[3] = &unk_1001DC9C0;
-  v16 = v9;
-  v17 = a4;
+  v16 = handlerCopy;
+  kindCopy = kind;
   v14[4] = self;
-  v15 = v8;
-  v12 = v8;
-  v13 = v9;
-  [v10 getPropertiesForUserIdentity:v11 completionHandler:v14];
+  v15 = identityCopy;
+  v12 = identityCopy;
+  v13 = handlerCopy;
+  [userIdentityStore getPropertiesForUserIdentity:userIdentity completionHandler:v14];
 }
 
 - (void)increasePriorityForAllOperations
@@ -145,7 +145,7 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - increasePriorityForAllOperations", buf, 0xCu);
   }
 
@@ -155,11 +155,11 @@
     [v7 handleFailureInMethod:a2 object:self file:@"JaliscoRequestHandler.m" lineNumber:494 description:{@"Invalid parameter not satisfying: %@", @"MSVDeviceSupportsMultipleLibraries()"}];
   }
 
-  v5 = [(JaliscoRequestHandler *)self artworkImporter];
-  [v5 increasePriorityForAllOperations];
+  artworkImporter = [(JaliscoRequestHandler *)self artworkImporter];
+  [artworkImporter increasePriorityForAllOperations];
 
-  v6 = [(JaliscoRequestHandler *)self jaliscoLibrary];
-  [v6 increasePriorityForAllOperations];
+  jaliscoLibrary = [(JaliscoRequestHandler *)self jaliscoLibrary];
+  [jaliscoLibrary increasePriorityForAllOperations];
 }
 
 - (void)decreasePriorityForAllOperations
@@ -168,7 +168,7 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - decreasePriorityForAllOperations", buf, 0xCu);
   }
 
@@ -178,21 +178,21 @@
     [v7 handleFailureInMethod:a2 object:self file:@"JaliscoRequestHandler.m" lineNumber:487 description:{@"Invalid parameter not satisfying: %@", @"MSVDeviceSupportsMultipleLibraries()"}];
   }
 
-  v5 = [(JaliscoRequestHandler *)self artworkImporter];
-  [v5 decreasePriorityForAllOperations];
+  artworkImporter = [(JaliscoRequestHandler *)self artworkImporter];
+  [artworkImporter decreasePriorityForAllOperations];
 
-  v6 = [(JaliscoRequestHandler *)self jaliscoLibrary];
-  [v6 decreasePriorityForAllOperations];
+  jaliscoLibrary = [(JaliscoRequestHandler *)self jaliscoLibrary];
+  [jaliscoLibrary decreasePriorityForAllOperations];
 }
 
-- (void)cancelOperationsWithCompletionHandler:(id)a3
+- (void)cancelOperationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - cancelOperationsWithCompletion", buf, 0xCu);
   }
 
@@ -201,53 +201,53 @@
   v7[2] = sub_1000AC46C;
   v7[3] = &unk_1001DF5A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(JaliscoRequestHandler *)self cancelPendingChangesWithCompletion:v7];
 }
 
-- (void)removeLibraryWithClientIdentity:(id)a3 completion:(id)a4
+- (void)removeLibraryWithClientIdentity:(id)identity completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identityCopy = identity;
   v8 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - Removing purchase history due to user action", &v11, 0xCu);
   }
 
   [(JaliscoRequestHandler *)self cancelAllOperations];
-  v9 = [(CloudLibraryOperation *)[JaliscoDeauthenticateOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v7];
+  v9 = [(CloudLibraryOperation *)[JaliscoDeauthenticateOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy];
 
   [(JaliscoDeauthenticateOperation *)v9 main];
-  if (v6)
+  if (completionCopy)
   {
     if ([(CloudLibraryOperation *)v9 status]== 1)
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
       v10 = [NSError ic_cloudClientErrorWithCode:2002 userInfo:0];
-      (v6)[2](v6, v10);
+      (completionCopy)[2](completionCopy, v10);
     }
   }
 }
 
-- (void)loadScreenshotInfoForPurchaseHistoryIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)loadScreenshotInfoForPurchaseHistoryIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   v10 = objc_alloc_init(NSMutableArray);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v11 = v7;
+  v11 = dsCopy;
   v35 = [v11 countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (!v35)
   {
@@ -260,7 +260,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v29 = v9;
+  v29 = handlerCopy;
   v32 = 0;
   v34 = *v42;
   v33 = ML3TrackPropertyPurchaseHistoryID;
@@ -276,7 +276,7 @@ LABEL_3:
     }
 
     v13 = *(*(&v41 + 1) + 8 * v12);
-    [(ML3MusicLibrary *)self->_musicLibrary setClientIdentity:v8];
+    [(ML3MusicLibrary *)self->_musicLibrary setClientIdentity:identityCopy];
     v14 = [ML3ComparisonPredicate predicateWithProperty:v33 equalToValue:v13];
     v15 = [ML3Track anyInLibrary:self->_musicLibrary predicate:v14 options:3];
     v16 = [[ML3ArtworkTokenSet alloc] initWithEntity:v15 artworkType:2];
@@ -290,13 +290,13 @@ LABEL_3:
 
     else
     {
-      v20 = v8;
+      v20 = identityCopy;
       v21 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
-        v22 = [v15 persistentID];
+        persistentID = [v15 persistentID];
         *buf = 134217984;
-        v48 = v22;
+        v48 = persistentID;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_FAULT, "No purchase history artwork_token for screenshot item with persistent-id = %lld", buf, 0xCu);
       }
 
@@ -307,7 +307,7 @@ LABEL_3:
       v24 = [NSError ic_cloudClientErrorWithCode:2021 userInfo:v23];
 
       v32 = v24;
-      v8 = v20;
+      identityCopy = v20;
       v11 = v30;
       v10 = v31;
     }
@@ -332,7 +332,7 @@ LABEL_3:
   v25 = v10;
   v10 = 0;
   v26 = 0;
-  v9 = v29;
+  handlerCopy = v29;
   v27 = v32;
   if (v32)
   {
@@ -340,50 +340,50 @@ LABEL_3:
   }
 
 LABEL_18:
-  if (v9)
+  if (handlerCopy)
   {
     calloutQueue = self->_calloutQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000ACAA0;
     block[3] = &unk_1001DF5F0;
-    v40 = v9;
+    v40 = handlerCopy;
     v38 = v31;
     v39 = v26;
     dispatch_async(calloutQueue, block);
   }
 }
 
-- (void)loadArtworkInfoForPurchaseHistoryIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)loadArtworkInfoForPurchaseHistoryIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   v11 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v28 = self;
+    selfCopy2 = self;
     v29 = 2048;
-    v30 = [v8 count];
+    v30 = [dsCopy count];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ - Got load artwork info request for %lu purchase history IDs", buf, 0x16u);
   }
 
   v12 = +[ICCloudAvailabilityController sharedController];
-  v13 = [v12 shouldProhibitMusicActionForCurrentNetworkConditions];
+  shouldProhibitMusicActionForCurrentNetworkConditions = [v12 shouldProhibitMusicActionForCurrentNetworkConditions];
 
   v14 = +[ICCloudAvailabilityController sharedController];
-  v15 = [v14 shouldProhibitVideosActionForCurrentNetworkConditions];
+  shouldProhibitVideosActionForCurrentNetworkConditions = [v14 shouldProhibitVideosActionForCurrentNetworkConditions];
 
-  if ((v13 & v15) != 1)
+  if ((shouldProhibitMusicActionForCurrentNetworkConditions & shouldProhibitVideosActionForCurrentNetworkConditions) != 1)
   {
-    v18 = [(CloudLoadBulkArtworkInfoOperation *)[JaliscoLoadBulkItemArtworkInfoOperation alloc] initWithConfiguration:self->_configuration cloudIDs:v8];
+    v18 = [(CloudLoadBulkArtworkInfoOperation *)[JaliscoLoadBulkItemArtworkInfoOperation alloc] initWithConfiguration:self->_configuration cloudIDs:dsCopy];
     objc_initWeak(buf, v18);
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1000ACEA0;
     v22[3] = &unk_1001DCA10;
-    v19 = v10;
+    v19 = handlerCopy;
     v23 = v19;
     objc_copyWeak(&v24, buf);
     [(JaliscoLoadBulkItemArtworkInfoOperation *)v18 setCompletionBlock:v22];
@@ -404,98 +404,98 @@ LABEL_18:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ - No WiFi connection, skipping artwork load.", buf, 0xCu);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     calloutQueue = self->_calloutQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000ACE24;
     block[3] = &unk_1001DF5C8;
-    v26 = v10;
+    v26 = handlerCopy;
     dispatch_async(calloutQueue, block);
     v18 = v26;
 LABEL_9:
   }
 }
 
-- (void)deprioritizeScreenshotForPurchaseHistoryID:(unint64_t)a3
+- (void)deprioritizeScreenshotForPurchaseHistoryID:(unint64_t)d
 {
-  v4 = [(JaliscoRequestHandler *)self artworkImporter];
-  [v4 deprioritizeImportArtworkForCloudID:a3 artworkType:2];
+  artworkImporter = [(JaliscoRequestHandler *)self artworkImporter];
+  [artworkImporter deprioritizeImportArtworkForCloudID:d artworkType:2];
 }
 
-- (void)deprioritizeItemArtworkForPurchaseHistoryID:(unint64_t)a3
+- (void)deprioritizeItemArtworkForPurchaseHistoryID:(unint64_t)d
 {
-  v4 = [(JaliscoRequestHandler *)self artworkImporter];
-  [v4 deprioritizeImportArtworkForCloudID:a3 artworkType:1];
+  artworkImporter = [(JaliscoRequestHandler *)self artworkImporter];
+  [artworkImporter deprioritizeImportArtworkForCloudID:d artworkType:1];
 }
 
-- (void)importScreenshotForPurchaseHistoryID:(unint64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)importScreenshotForPurchaseHistoryID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
-  v11 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+  identityCopy = identity;
+  handlerCopy = handler;
+  userIdentityStore = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
+  userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000AD0E8;
   v14[3] = &unk_1001DC9C0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a3;
-  v12 = v9;
-  v13 = v8;
-  [v10 getPropertiesForUserIdentity:v11 completionHandler:v14];
+  v15 = identityCopy;
+  v16 = handlerCopy;
+  dCopy = d;
+  v12 = handlerCopy;
+  v13 = identityCopy;
+  [userIdentityStore getPropertiesForUserIdentity:userIdentity completionHandler:v14];
 }
 
-- (void)importItemArtworkForPurchaseHistoryID:(unint64_t)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)importItemArtworkForPurchaseHistoryID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
-  v11 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+  identityCopy = identity;
+  handlerCopy = handler;
+  userIdentityStore = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
+  userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000AD3E0;
   v14[3] = &unk_1001DC9C0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a3;
-  v12 = v9;
-  v13 = v8;
-  [v10 getPropertiesForUserIdentity:v11 completionHandler:v14];
+  v15 = identityCopy;
+  v16 = handlerCopy;
+  dCopy = d;
+  v12 = handlerCopy;
+  v13 = identityCopy;
+  [userIdentityStore getPropertiesForUserIdentity:userIdentity completionHandler:v14];
 }
 
-- (void)setItemProperties:(id)a3 forPurchaseHistoryID:(unint64_t)a4 clientIdentity:(id)a5 completionHandler:(id)a6
+- (void)setItemProperties:(id)properties forPurchaseHistoryID:(unint64_t)d clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  propertiesCopy = properties;
+  identityCopy = identity;
+  handlerCopy = handler;
   v13 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v23 = self;
+    selfCopy = self;
     v24 = 2048;
-    v25 = a4;
+    dCopy = d;
     v26 = 2114;
-    v27 = v10;
+    v27 = propertiesCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ - Received request to update item with purchaseHistoryID %llu properties: %{public}@", buf, 0x20u);
   }
 
-  v14 = [[JaliscoSetItemPropertyOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v11 purchaseHistoryID:a4 properties:v10];
+  v14 = [[JaliscoSetItemPropertyOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy purchaseHistoryID:d properties:propertiesCopy];
   objc_initWeak(buf, v14);
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_1000AD7E4;
   v19 = &unk_1001DCA10;
-  v15 = v12;
+  v15 = handlerCopy;
   v20 = v15;
   objc_copyWeak(&v21, buf);
   [(JaliscoSetItemPropertyOperation *)v14 setCompletionBlock:&v16];
@@ -506,28 +506,28 @@ LABEL_9:
   objc_destroyWeak(buf);
 }
 
-- (void)hideItemsWithPurchaseHistoryIDs:(id)a3 clientIdentity:(id)a4 completionHandler:(id)a5
+- (void)hideItemsWithPurchaseHistoryIDs:(id)ds clientIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   v11 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v8;
+    v23 = dsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ - Received request to hide purchaseHistoryIDs %{public}@", buf, 0x16u);
   }
 
-  v12 = [[JaliscoHideItemOperation alloc] initWithConfiguration:self->_configuration clientIdentity:v9 itemPurchaseHistoryIDs:v8];
+  v12 = [[JaliscoHideItemOperation alloc] initWithConfiguration:self->_configuration clientIdentity:identityCopy itemPurchaseHistoryIDs:dsCopy];
   objc_initWeak(buf, v12);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000ADAAC;
   v17[3] = &unk_1001DCA10;
-  v13 = v10;
+  v13 = handlerCopy;
   v18 = v13;
   objc_copyWeak(&v19, buf);
   [(JaliscoHideItemOperation *)v12 setCompletionBlock:v17];
@@ -544,16 +544,16 @@ LABEL_9:
   objc_destroyWeak(buf);
 }
 
-- (void)updateLibraryWithClientIdentity:(id)a3 reason:(int64_t)a4 completionHandler:(id)a5
+- (void)updateLibraryWithClientIdentity:(id)identity reason:(int64_t)reason completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identityCopy = identity;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = ICCloudClientGetStringForRequestReason();
     *buf = 138543618;
-    v62 = self;
+    selfCopy7 = self;
     v63 = 2114;
     v64 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - Got update library request with reason %{public}@", buf, 0x16u);
@@ -566,18 +566,18 @@ LABEL_9:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v62 = self;
+      selfCopy7 = self;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ - Purchase history import disabled via the preference", buf, 0xCu);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
       calloutQueue = self->_calloutQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000AE314;
       block[3] = &unk_1001DF5C8;
-      v58 = v9;
+      v58 = handlerCopy;
       dispatch_async(calloutQueue, block);
       v14 = v58;
 LABEL_39:
@@ -589,25 +589,25 @@ LABEL_39:
   }
 
   v15 = +[ICCloudAvailabilityController sharedController];
-  v16 = [v15 shouldProhibitMusicActionForCurrentNetworkConditions];
+  shouldProhibitMusicActionForCurrentNetworkConditions = [v15 shouldProhibitMusicActionForCurrentNetworkConditions];
 
   v17 = +[ICCloudAvailabilityController sharedController];
-  v18 = [v17 shouldProhibitVideosActionForCurrentNetworkConditions];
+  shouldProhibitVideosActionForCurrentNetworkConditions = [v17 shouldProhibitVideosActionForCurrentNetworkConditions];
 
-  if (!v16 || !v18)
+  if (!shouldProhibitMusicActionForCurrentNetworkConditions || !shouldProhibitVideosActionForCurrentNetworkConditions)
   {
-    v14 = [(JaliscoRequestHandler *)self jaliscoLibraryWithReason:a4];
+    v14 = [(JaliscoRequestHandler *)self jaliscoLibraryWithReason:reason];
     if (!v14)
     {
       v29 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v62 = self;
+        selfCopy7 = self;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%{public}@ - Could not initialize jalisco library", buf, 0xCu);
       }
 
-      if (!v9)
+      if (!handlerCopy)
       {
         v14 = 0;
         goto LABEL_39;
@@ -618,7 +618,7 @@ LABEL_39:
       v53[1] = 3221225472;
       v53[2] = sub_1000AE33C;
       v53[3] = &unk_1001DF5C8;
-      v54 = v9;
+      v54 = handlerCopy;
       dispatch_async(v30, v53);
       v26 = v54;
 LABEL_38:
@@ -626,10 +626,10 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v23 = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
-    v24 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+    userIdentityStore = [(ICConnectionConfiguration *)self->_configuration userIdentityStore];
+    userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
     v52 = 0;
-    v25 = [v23 getPropertiesForUserIdentity:v24 error:&v52];
+    v25 = [userIdentityStore getPropertiesForUserIdentity:userIdentity error:&v52];
     v26 = v52;
 
     if (!v25 || v26)
@@ -638,13 +638,13 @@ LABEL_38:
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v62 = self;
+        selfCopy7 = self;
         v63 = 2114;
         v64 = v26;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "%{public}@ - Could not load user identity properties. error=%{public}@", buf, 0x16u);
       }
 
-      if (!v9)
+      if (!handlerCopy)
       {
         goto LABEL_37;
       }
@@ -654,32 +654,32 @@ LABEL_38:
       v49[1] = 3221225472;
       v49[2] = sub_1000AE350;
       v49[3] = &unk_1001DF5A0;
-      v51 = v9;
+      v51 = handlerCopy;
       v50 = v26;
       dispatch_async(v32, v49);
 
-      v27 = v51;
+      dSID = v51;
     }
 
     else
     {
-      v27 = [v25 DSID];
-      if ([v27 longLongValue])
+      dSID = [v25 DSID];
+      if ([dSID longLongValue])
       {
-        v28 = [(JaliscoRequestHandler *)self updateLibraryQueue];
+        updateLibraryQueue = [(JaliscoRequestHandler *)self updateLibraryQueue];
         v39[0] = _NSConcreteStackBlock;
         v39[1] = 3221225472;
         v39[2] = sub_1000AE3DC;
         v39[3] = &unk_1001DC998;
         v39[4] = self;
-        v40 = v8;
-        v27 = v27;
-        v41 = v27;
+        v40 = identityCopy;
+        dSID = dSID;
+        v41 = dSID;
         v42 = v25;
-        v44 = v9;
-        v45 = a4;
+        v44 = handlerCopy;
+        reasonCopy = reason;
         v43 = v14;
-        dispatch_async(v28, v39);
+        dispatch_async(updateLibraryQueue, v39);
       }
 
       else
@@ -688,15 +688,15 @@ LABEL_38:
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v62 = self;
+          selfCopy7 = self;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%{public}@ - No account DSID - skipping update", buf, 0xCu);
         }
 
-        if (v9)
+        if (handlerCopy)
         {
           v59 = NSDebugDescriptionErrorKey;
-          v34 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
-          v35 = [NSString stringWithFormat:@"Unable update library [no DSID on user identity] - userIdentity=%@ - properties=%@", v34, v25];
+          userIdentity2 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+          v35 = [NSString stringWithFormat:@"Unable update library [no DSID on user identity] - userIdentity=%@ - properties=%@", userIdentity2, v25];
           v60 = v35;
           v36 = [NSDictionary dictionaryWithObjects:&v60 forKeys:&v59 count:1];
 
@@ -706,7 +706,7 @@ LABEL_38:
           v46[2] = sub_1000AE364;
           v46[3] = &unk_1001DF5A0;
           v47 = v36;
-          v48 = v9;
+          v48 = handlerCopy;
           v38 = v36;
           dispatch_async(v37, v46);
         }
@@ -722,33 +722,33 @@ LABEL_37:
   {
     v20 = ICCloudClientGetStringForRequestReason();
     *buf = 138543618;
-    v62 = self;
+    selfCopy7 = self;
     v63 = 2114;
     v64 = v20;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ - No WiFi connection, skipping update (reason = %{public}@)", buf, 0x16u);
   }
 
-  if (a4 == 2)
+  if (reason == 2)
   {
     v21 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v62 = self;
+      selfCopy7 = self;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ - Rescheduling push notification triggered update when WiFi becomes available.", buf, 0xCu);
     }
 
     [(ICDCloudMusicLibraryJaliscoUpdateTaskHelper *)self->_updateTaskHelper scheduleBackgroundTaskToUpdateLibraryType:0];
   }
 
-  if (v9)
+  if (handlerCopy)
   {
     v22 = self->_calloutQueue;
     v55[0] = _NSConcreteStackBlock;
     v55[1] = 3221225472;
     v55[2] = sub_1000AE328;
     v55[3] = &unk_1001DF5C8;
-    v56 = v9;
+    v56 = handlerCopy;
     dispatch_async(v22, v55);
     v14 = v56;
     goto LABEL_39;
@@ -763,21 +763,21 @@ LABEL_40:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(JaliscoRequestHandler *)self updateLibraryQueue];
+  updateLibraryQueue = [(JaliscoRequestHandler *)self updateLibraryQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000AEF24;
   v6[3] = &unk_1001DEF50;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(updateLibraryQueue, v6);
 
   v4 = v8[6];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (BOOL)isUpdateInProgressWithIsInitialImport:(BOOL *)a3
+- (BOOL)isUpdateInProgressWithIsInitialImport:(BOOL *)import
 {
   v13 = 0;
   v14 = &v13;
@@ -787,7 +787,7 @@ LABEL_40:
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(JaliscoRequestHandler *)self updateLibraryQueue];
+  updateLibraryQueue = [(JaliscoRequestHandler *)self updateLibraryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000AF080;
@@ -795,11 +795,11 @@ LABEL_40:
   block[4] = self;
   block[5] = &v13;
   block[6] = &v9;
-  dispatch_sync(v5, block);
+  dispatch_sync(updateLibraryQueue, block);
 
-  if (a3)
+  if (import)
   {
-    *a3 = *(v10 + 24);
+    *import = *(v10 + 24);
   }
 
   v6 = *(v14 + 24);
@@ -808,16 +808,16 @@ LABEL_40:
   return v6;
 }
 
-- (id)jaliscoLibraryWithReason:(int64_t)a3
+- (id)jaliscoLibraryWithReason:(int64_t)reason
 {
-  if (a3 == 1001 && self->_jaliscoLibrary)
+  if (reason == 1001 && self->_jaliscoLibrary)
   {
     v5 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = ICCloudClientGetStringForRequestReason();
       *buf = 138543618;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2114;
       v23 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - Clearing library for %{public}@", buf, 0x16u);
@@ -826,13 +826,13 @@ LABEL_40:
     jaliscoLibrary = self->_jaliscoLibrary;
     self->_jaliscoLibrary = 0;
 
-    v8 = [(JaliscoRequestHandler *)self updateLibraryQueue];
+    updateLibraryQueue = [(JaliscoRequestHandler *)self updateLibraryQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000AF368;
     block[3] = &unk_1001DF578;
     block[4] = self;
-    dispatch_sync(v8, block);
+    dispatch_sync(updateLibraryQueue, block);
   }
 
   if ([(CloudLibrary *)self->_jaliscoLibrary failedToConnect])
@@ -841,20 +841,20 @@ LABEL_40:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ - Clearing library which failed to connect", buf, 0xCu);
     }
 
     v10 = self->_jaliscoLibrary;
     self->_jaliscoLibrary = 0;
 
-    v11 = [(JaliscoRequestHandler *)self updateLibraryQueue];
+    updateLibraryQueue2 = [(JaliscoRequestHandler *)self updateLibraryQueue];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000AF3B0;
     v18[3] = &unk_1001DF578;
     v18[4] = self;
-    dispatch_sync(v11, v18);
+    dispatch_sync(updateLibraryQueue2, v18);
   }
 
   v12 = self->_jaliscoLibrary;
@@ -862,9 +862,9 @@ LABEL_40:
   {
     v13 = [(ICConnectionConfiguration *)self->_configuration copy];
     v14 = v13;
-    if (a3)
+    if (reason)
     {
-      [v13 setRequestReason:a3];
+      [v13 setRequestReason:reason];
     }
 
     v15 = [[JaliscoLibrary alloc] initWithConfiguration:v14];
@@ -877,33 +877,33 @@ LABEL_40:
   return v12;
 }
 
-- (void)cancelPendingChangesWithCompletion:(id)a3
+- (void)cancelPendingChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     jaliscoLibrary = self->_jaliscoLibrary;
-    v7 = [(CloudLibrary *)jaliscoLibrary pendingChangesCoordinator];
+    pendingChangesCoordinator = [(CloudLibrary *)jaliscoLibrary pendingChangesCoordinator];
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = jaliscoLibrary;
     v15 = 2112;
-    v16 = v7;
+    v16 = pendingChangesCoordinator;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - cancelPendingChangesWithCompletion: - Library=%@ - PendingChangesCoordinator:%@", &v11, 0x20u);
   }
 
   v8 = self->_jaliscoLibrary;
   if (v8 && ([(CloudLibrary *)v8 pendingChangesCoordinator], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v10 = [(CloudLibrary *)self->_jaliscoLibrary pendingChangesCoordinator];
-    [v10 removeAllPendingChangesWithCompletion:v4];
+    pendingChangesCoordinator2 = [(CloudLibrary *)self->_jaliscoLibrary pendingChangesCoordinator];
+    [pendingChangesCoordinator2 removeAllPendingChangesWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -913,7 +913,7 @@ LABEL_40:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%{public}@ - dealloc", buf, 0xCu);
   }
 
@@ -953,16 +953,16 @@ LABEL_40:
   [(JaliscoRequestHandler *)&v9 dealloc];
 }
 
-- (JaliscoRequestHandler)initWithConfiguration:(id)a3 updateTaskHelper:(id)a4
+- (JaliscoRequestHandler)initWithConfiguration:(id)configuration updateTaskHelper:(id)helper
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  helperCopy = helper;
   v22.receiver = self;
   v22.super_class = JaliscoRequestHandler;
   v9 = [(JaliscoRequestHandler *)&v22 init];
   if (v9)
   {
-    v10 = [[JaliscoArtworkImporter alloc] initWithConfiguration:v7];
+    v10 = [[JaliscoArtworkImporter alloc] initWithConfiguration:configurationCopy];
     artworkImporter = v9->_artworkImporter;
     v9->_artworkImporter = v10;
 
@@ -974,14 +974,14 @@ LABEL_40:
     calloutQueue = v9->_calloutQueue;
     v9->_calloutQueue = v14;
 
-    objc_storeStrong(&v9->_updateTaskHelper, a4);
+    objc_storeStrong(&v9->_updateTaskHelper, helper);
     v16 = objc_alloc_init(NSMutableArray);
     updateLibraryCompletionHandlers = v9->_updateLibraryCompletionHandlers;
     v9->_updateLibraryCompletionHandlers = v16;
 
-    objc_storeStrong(&v9->_configuration, a3);
-    v18 = [v7 userIdentity];
-    v19 = [ML3MusicLibrary musicLibraryForUserAccount:v18];
+    objc_storeStrong(&v9->_configuration, configuration);
+    userIdentity = [configurationCopy userIdentity];
+    v19 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity];
     musicLibrary = v9->_musicLibrary;
     v9->_musicLibrary = v19;
   }

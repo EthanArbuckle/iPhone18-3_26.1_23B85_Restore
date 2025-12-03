@@ -1,30 +1,30 @@
 @interface ADAMAudioDataReceiver
-- (ADAMAudioDataReceiver)initWithIdentifier:(id)a3;
+- (ADAMAudioDataReceiver)initWithIdentifier:(id)identifier;
 - (ADAMAudioDataReceiverDelegate)delegate;
 - (id)setupConnection;
 - (void)dealloc;
-- (void)handleAndLogError:(id)a3;
-- (void)receiveAudioSample:(id)a3;
+- (void)handleAndLogError:(id)error;
+- (void)receiveAudioSample:(id)sample;
 - (void)reconnect;
 - (void)reset;
-- (void)stopMeasuringAudioSampleType:(unsigned int)a3;
+- (void)stopMeasuringAudioSampleType:(unsigned int)type;
 @end
 
 @implementation ADAMAudioDataReceiver
 
-- (ADAMAudioDataReceiver)initWithIdentifier:(id)a3
+- (ADAMAudioDataReceiver)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = ADAMAudioDataReceiver;
   v6 = [(ADAMAudioDataReceiver *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
-    v8 = [(ADAMAudioDataReceiver *)v7 setupConnection];
+    objc_storeStrong(&v6->_name, identifier);
+    setupConnection = [(ADAMAudioDataReceiver *)v7 setupConnection];
     connection = v7->_connection;
-    v7->_connection = v8;
+    v7->_connection = setupConnection;
 
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     sensorStatus = v7->_sensorStatus;
@@ -148,11 +148,11 @@ uint64_t __73__ADAMAudioDataReceiver_startMeasuringAudioSampleType_withConfigura
   return result;
 }
 
-- (void)stopMeasuringAudioSampleType:(unsigned int)a3
+- (void)stopMeasuringAudioSampleType:(unsigned int)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [(ADAMAudioDataReceiver *)self verifyInvariants];
-  if (a3 == 1702260324 && v5)
+  verifyInvariants = [(ADAMAudioDataReceiver *)self verifyInvariants];
+  if (type == 1702260324 && verifyInvariants)
   {
     v6 = ADAFLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -288,36 +288,36 @@ intptr_t __59__ADAMAudioDataReceiver_isMeasurementOnForAudioSampleType___block_i
   return result;
 }
 
-- (void)receiveAudioSample:(id)a3
+- (void)receiveAudioSample:(id)sample
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sampleCopy = sample;
   v5 = ADAFLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = sampleCopy;
     _os_log_impl(&dword_241579000, v5, OS_LOG_TYPE_INFO, "receieved audio data analysis sample %@", &v12, 0xCu);
   }
 
-  v6 = [(ADAMAudioDataReceiver *)self delegate];
+  delegate = [(ADAMAudioDataReceiver *)self delegate];
 
-  if (v6)
+  if (delegate)
   {
     v7 = ADAFLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v4 uuid];
+      uuid = [sampleCopy uuid];
       WeakRetained = objc_loadWeakRetained(&self->delegate);
       v12 = 138412546;
-      v13 = v8;
+      v13 = uuid;
       v14 = 2112;
       v15 = WeakRetained;
       _os_log_impl(&dword_241579000, v7, OS_LOG_TYPE_INFO, "sending sample [%@] to delegate %@", &v12, 0x16u);
     }
 
-    v10 = [(ADAMAudioDataReceiver *)self delegate];
-    [v10 receiveAudioSample:v4];
+    delegate2 = [(ADAMAudioDataReceiver *)self delegate];
+    [delegate2 receiveAudioSample:sampleCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -464,26 +464,26 @@ uint64_t __34__ADAMAudioDataReceiver_reconnect__block_invoke_106(uint64_t result
   return result;
 }
 
-- (void)handleAndLogError:(id)a3
+- (void)handleAndLogError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
     goto LABEL_12;
   }
 
-  v6 = [v4 code];
-  if (v6 == 560164457)
+  code = [errorCopy code];
+  if (code == 560164457)
   {
 LABEL_5:
     [(ADAMAudioDataReceiver *)self reset];
     goto LABEL_9;
   }
 
-  if (v6 != 1969974894)
+  if (code != 1969974894)
   {
-    if (v6 != 560295540)
+    if (code != 560295540)
     {
       v7 = ADAFLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))

@@ -1,38 +1,38 @@
 @interface HUAnnounceSettingsViewController
-- (HUAnnounceSettingsViewController)initWithAccessoryGroupItem:(id)a3;
-- (HUAnnounceSettingsViewController)initWithAccessorySettingItem:(id)a3;
-- (HUAnnounceSettingsViewController)initWithAccessorySettingItem:(id)a3 module:(id)a4;
-- (HUAnnounceSettingsViewController)initWithHome:(id)a3;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (HUAnnounceSettingsViewController)initWithAccessoryGroupItem:(id)item;
+- (HUAnnounceSettingsViewController)initWithAccessorySettingItem:(id)item;
+- (HUAnnounceSettingsViewController)initWithAccessorySettingItem:(id)item module:(id)module;
+- (HUAnnounceSettingsViewController)initWithHome:(id)home;
+- (id)buildItemModuleControllerForModule:(id)module;
 @end
 
 @implementation HUAnnounceSettingsViewController
 
-- (HUAnnounceSettingsViewController)initWithAccessoryGroupItem:(id)a3
+- (HUAnnounceSettingsViewController)initWithAccessoryGroupItem:(id)item
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithAccessoryGroupItem_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUAnnounceSettingsViewController.m" lineNumber:25 description:{@"%s is unavailable; use %@ instead", "-[HUAnnounceSettingsViewController initWithAccessoryGroupItem:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAnnounceSettingsViewController.m" lineNumber:25 description:{@"%s is unavailable; use %@ instead", "-[HUAnnounceSettingsViewController initWithAccessoryGroupItem:]", v6}];
 
   return 0;
 }
 
-- (HUAnnounceSettingsViewController)initWithAccessorySettingItem:(id)a3
+- (HUAnnounceSettingsViewController)initWithAccessorySettingItem:(id)item
 {
-  v4 = [a3 homeKitSettingsVendor];
-  v5 = [v4 hf_home];
-  v6 = [(HUAnnounceSettingsViewController *)self initWithHome:v5];
+  homeKitSettingsVendor = [item homeKitSettingsVendor];
+  hf_home = [homeKitSettingsVendor hf_home];
+  v6 = [(HUAnnounceSettingsViewController *)self initWithHome:hf_home];
 
   return v6;
 }
 
-- (HUAnnounceSettingsViewController)initWithHome:(id)a3
+- (HUAnnounceSettingsViewController)initWithHome:(id)home
 {
-  v5 = a3;
-  if (!v5)
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HUAnnounceSettingsViewController.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAnnounceSettingsViewController.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
   }
 
   v6 = [objc_alloc(MEMORY[0x277D14B08]) initWithDelegate:self];
@@ -40,7 +40,7 @@
   v13[1] = 3221225472;
   v13[2] = __49__HUAnnounceSettingsViewController_initWithHome___block_invoke;
   v13[3] = &unk_277DB7478;
-  v7 = v5;
+  v7 = homeCopy;
   v14 = v7;
   [v6 setHomeCreator:v13];
   [v6 setItemModuleCreator:&__block_literal_global_255];
@@ -69,29 +69,29 @@ id __49__HUAnnounceSettingsViewController_initWithHome___block_invoke_2(uint64_t
   return v7;
 }
 
-- (HUAnnounceSettingsViewController)initWithAccessorySettingItem:(id)a3 module:(id)a4
+- (HUAnnounceSettingsViewController)initWithAccessorySettingItem:(id)item module:(id)module
 {
-  v5 = [a4 home];
-  v6 = [(HUAnnounceSettingsViewController *)self initWithHome:v5];
+  home = [module home];
+  v6 = [(HUAnnounceSettingsViewController *)self initWithHome:home];
 
   return v6;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_UnexpectedModu.isa, v4);
+    NSLog(&cfstr_UnexpectedModu.isa, moduleCopy);
   }
 
-  v5 = [(HUItemModuleController *)[HUAnnounceSettingsItemModuleController alloc] initWithModule:v4];
+  v5 = [(HUItemModuleController *)[HUAnnounceSettingsItemModuleController alloc] initWithModule:moduleCopy];
   [(HUAnnounceSettingsViewController *)self setModuleController:v5];
 
-  v6 = [(HUAnnounceSettingsViewController *)self moduleController];
+  moduleController = [(HUAnnounceSettingsViewController *)self moduleController];
 
-  return v6;
+  return moduleController;
 }
 
 @end

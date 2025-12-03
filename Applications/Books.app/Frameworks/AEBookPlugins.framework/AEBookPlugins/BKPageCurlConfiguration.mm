@@ -1,5 +1,5 @@
 @interface BKPageCurlConfiguration
-- (BKPageCurlConfiguration)initWithContext:(id)a3;
+- (BKPageCurlConfiguration)initWithContext:(id)context;
 - (IMFrameEnvironment)context;
 - (double)heightAllowanceScalar;
 - (void)_setupDefault;
@@ -8,16 +8,16 @@
 
 @implementation BKPageCurlConfiguration
 
-- (BKPageCurlConfiguration)initWithContext:(id)a3
+- (BKPageCurlConfiguration)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = BKPageCurlConfiguration;
   v5 = [(BKPageCurlConfiguration *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
+    objc_storeWeak(&v5->_context, contextCopy);
     [(BKPageCurlConfiguration *)v6 _setupPortraitCompactWidth];
     [(BKPageCurlConfiguration *)v6 _setupDefault];
   }
@@ -27,8 +27,8 @@
 
 - (double)heightAllowanceScalar
 {
-  v3 = [(BKPageCurlConfiguration *)self context];
-  [(BKPageCurlConfiguration *)self floatForKey:@"heightAllowanceScalar" context:v3];
+  context = [(BKPageCurlConfiguration *)self context];
+  [(BKPageCurlConfiguration *)self floatForKey:@"heightAllowanceScalar" context:context];
   v5 = v4;
 
   return v5;

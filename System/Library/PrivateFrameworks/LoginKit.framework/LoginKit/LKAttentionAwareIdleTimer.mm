@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (LKAttentionAwareIdleTimer)init;
 - (LKAttentionAwareIdleTimerDelegate)delegate;
-- (void)startMonitoringAttentionAwareIdleWithDelegate:(id)a3 timeout:(double)a4;
-- (void)stopMonitoringAttentionAwareIdleWithDelegate:(id)a3 timeout:(double)a4;
+- (void)startMonitoringAttentionAwareIdleWithDelegate:(id)delegate timeout:(double)timeout;
+- (void)stopMonitoringAttentionAwareIdleWithDelegate:(id)delegate timeout:(double)timeout;
 @end
 
 @implementation LKAttentionAwareIdleTimer
@@ -50,19 +50,19 @@ uint64_t __43__LKAttentionAwareIdleTimer_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)startMonitoringAttentionAwareIdleWithDelegate:(id)a3 timeout:(double)a4
+- (void)startMonitoringAttentionAwareIdleWithDelegate:(id)delegate timeout:(double)timeout
 {
-  v6 = a3;
-  v7 = [(LKAttentionAwareIdleTimer *)self queue];
+  delegateCopy = delegate;
+  queue = [(LKAttentionAwareIdleTimer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__LKAttentionAwareIdleTimer_startMonitoringAttentionAwareIdleWithDelegate_timeout___block_invoke;
   block[3] = &unk_2798262B8;
-  v12 = a4;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  timeoutCopy = timeout;
+  v10 = delegateCopy;
+  selfCopy = self;
+  v8 = delegateCopy;
+  dispatch_async(queue, block);
 }
 
 void __83__LKAttentionAwareIdleTimer_startMonitoringAttentionAwareIdleWithDelegate_timeout___block_invoke(uint64_t a1)
@@ -139,19 +139,19 @@ LABEL_13:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopMonitoringAttentionAwareIdleWithDelegate:(id)a3 timeout:(double)a4
+- (void)stopMonitoringAttentionAwareIdleWithDelegate:(id)delegate timeout:(double)timeout
 {
-  v6 = a3;
-  v7 = [(LKAttentionAwareIdleTimer *)self queue];
+  delegateCopy = delegate;
+  queue = [(LKAttentionAwareIdleTimer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__LKAttentionAwareIdleTimer_stopMonitoringAttentionAwareIdleWithDelegate_timeout___block_invoke;
   block[3] = &unk_2798262B8;
-  v11 = a4;
+  timeoutCopy = timeout;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = delegateCopy;
+  v8 = delegateCopy;
+  dispatch_async(queue, block);
 }
 
 void __82__LKAttentionAwareIdleTimer_stopMonitoringAttentionAwareIdleWithDelegate_timeout___block_invoke(uint64_t a1)

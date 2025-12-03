@@ -1,20 +1,20 @@
 @interface CGRemotePDFServiceProxy
 + (id)interface;
 + (id)sharedInstance;
-- (CGRemotePDFServiceProxy)initWithCGPDFServiceConnection:(id *)a3;
-- (CGRemotePDFServiceProxy)initWithConnection:(id)a3 error:(id *)a4;
-- (CGRemotePDFServiceProxy)initWithLoopbackListener:(id)a3 error:(id *)a4;
-- (id)newRemotePDFDocumentWithData:(id)a3 error:(id *)a4;
+- (CGRemotePDFServiceProxy)initWithCGPDFServiceConnection:(id *)connection;
+- (CGRemotePDFServiceProxy)initWithConnection:(id)connection error:(id *)error;
+- (CGRemotePDFServiceProxy)initWithLoopbackListener:(id)listener error:(id *)error;
+- (id)newRemotePDFDocumentWithData:(id)data error:(id *)error;
 - (void)dealloc;
-- (void)newRemotePDFDocumentProxyWithData:(id)a3 withReply:(id)a4;
-- (void)newRemotePDFDocumentWithData:(id)a3 completion:(id)a4;
+- (void)newRemotePDFDocumentProxyWithData:(id)data withReply:(id)reply;
+- (void)newRemotePDFDocumentWithData:(id)data completion:(id)completion;
 @end
 
 @implementation CGRemotePDFServiceProxy
 
-- (id)newRemotePDFDocumentWithData:(id)a3 error:(id *)a4
+- (id)newRemotePDFDocumentWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -39,11 +39,11 @@
   v11[2] = __62__CGRemotePDFServiceProxy_newRemotePDFDocumentWithData_error___block_invoke_2;
   v11[3] = &unk_1E6E33080;
   v11[4] = &v19;
-  [v8 newPDFDocumentWithData:v6 withReply:v11];
+  [v8 newPDFDocumentWithData:dataCopy withReply:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v9 = v20[5];
@@ -73,17 +73,17 @@ void __62__CGRemotePDFServiceProxy_newRemotePDFDocumentWithData_error___block_in
   }
 }
 
-- (void)newRemotePDFDocumentWithData:(id)a3 completion:(id)a4
+- (void)newRemotePDFDocumentWithData:(id)data completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   proxy = self->_proxy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__CGRemotePDFServiceProxy_newRemotePDFDocumentWithData_completion___block_invoke;
   v14[3] = &unk_1E6E336B8;
-  v8 = v6;
+  v8 = completionCopy;
   v15 = v8;
-  v9 = a3;
+  dataCopy = data;
   v10 = [(CGRemotePDFServiceProtocol *)proxy remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -91,7 +91,7 @@ void __62__CGRemotePDFServiceProxy_newRemotePDFDocumentWithData_error___block_in
   v12[3] = &unk_1E6E33058;
   v13 = v8;
   v11 = v8;
-  [v10 newPDFDocumentWithData:v9 withReply:v12];
+  [v10 newPDFDocumentWithData:dataCopy withReply:v12];
 }
 
 void __67__CGRemotePDFServiceProxy_newRemotePDFDocumentWithData_completion___block_invoke_2(uint64_t a1, void *a2)
@@ -110,16 +110,16 @@ void __67__CGRemotePDFServiceProxy_newRemotePDFDocumentWithData_completion___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)newRemotePDFDocumentProxyWithData:(id)a3 withReply:(id)a4
+- (void)newRemotePDFDocumentProxyWithData:(id)data withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__CGRemotePDFServiceProxy_newRemotePDFDocumentProxyWithData_withReply___block_invoke;
   v8[3] = &unk_1E6E33030;
-  v9 = v6;
-  v7 = v6;
-  [(CGRemotePDFServiceProxy *)self newRemotePDFDocumentWithData:a3 completion:v8];
+  v9 = replyCopy;
+  v7 = replyCopy;
+  [(CGRemotePDFServiceProxy *)self newRemotePDFDocumentWithData:data completion:v8];
 }
 
 - (void)dealloc
@@ -130,22 +130,22 @@ void __67__CGRemotePDFServiceProxy_newRemotePDFDocumentWithData_completion___blo
   [(CGRemotePDFServiceProxy *)&v3 dealloc];
 }
 
-- (CGRemotePDFServiceProxy)initWithLoopbackListener:(id)a3 error:(id *)a4
+- (CGRemotePDFServiceProxy)initWithLoopbackListener:(id)listener error:(id *)error
 {
-  v6 = a3;
+  listenerCopy = listener;
   v7 = MEMORY[0x1E696AF00];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__CGRemotePDFServiceProxy_initWithLoopbackListener_error___block_invoke;
   v14[3] = &unk_1E6E33008;
-  v15 = v6;
-  v8 = v6;
+  v15 = listenerCopy;
+  v8 = listenerCopy;
   [v7 detachNewThreadWithBlock:v14];
-  v9 = [v8 listener];
-  v10 = [v9 endpoint];
+  listener = [v8 listener];
+  endpoint = [listener endpoint];
 
-  v11 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v10];
-  v12 = [(CGRemotePDFServiceProxy *)self initWithConnection:v11 error:a4];
+  v11 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpoint];
+  v12 = [(CGRemotePDFServiceProxy *)self initWithConnection:v11 error:error];
 
   return v12;
 }
@@ -157,26 +157,26 @@ void __58__CGRemotePDFServiceProxy_initWithLoopbackListener_error___block_invoke
   abort();
 }
 
-- (CGRemotePDFServiceProxy)initWithCGPDFServiceConnection:(id *)a3
+- (CGRemotePDFServiceProxy)initWithCGPDFServiceConnection:(id *)connection
 {
   v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:@"com.apple.CoreGraphics.CGPDFService"];
-  v6 = [(CGRemotePDFServiceProxy *)self initWithConnection:v5 error:a3];
+  v6 = [(CGRemotePDFServiceProxy *)self initWithConnection:v5 error:connection];
 
   return v6;
 }
 
-- (CGRemotePDFServiceProxy)initWithConnection:(id)a3 error:(id *)a4
+- (CGRemotePDFServiceProxy)initWithConnection:(id)connection error:(id *)error
 {
-  v7 = a3;
+  connectionCopy = connection;
   v22.receiver = self;
   v22.super_class = CGRemotePDFServiceProxy;
   v8 = [(CGRemotePDFServiceProxy *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connection, a3);
-    v10 = [objc_opt_class() interface];
-    [(NSXPCConnection *)v9->_connection setRemoteObjectInterface:v10];
+    objc_storeStrong(&v8->_connection, connection);
+    interface = [objc_opt_class() interface];
+    [(NSXPCConnection *)v9->_connection setRemoteObjectInterface:interface];
 
     [(NSXPCConnection *)v9->_connection resume];
     v16 = 0;
@@ -199,9 +199,9 @@ void __58__CGRemotePDFServiceProxy_initWithLoopbackListener_error___block_invoke
     {
 
       v9 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v17[5];
+        *error = v17[5];
       }
     }
 

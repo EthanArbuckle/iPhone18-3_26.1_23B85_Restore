@@ -1,10 +1,10 @@
 @interface IMDBackgroundMessagingAPIListener
 + (id)sharedListener;
-- (BOOL)isConnectionEntitled:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)isConnectionEntitled:(id)entitled;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (IMDBackgroundMessagingAPIListener)init;
 - (void)dealloc;
-- (void)handleSMSSendResult:(id)a3 sent:(BOOL)a4;
+- (void)handleSMSSendResult:(id)result sent:(BOOL)sent;
 @end
 
 @implementation IMDBackgroundMessagingAPIListener
@@ -66,10 +66,10 @@
   [(IMDBackgroundMessagingAPIListener *)&v5 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -80,11 +80,11 @@
     }
   }
 
-  v9 = [(IMDBackgroundMessagingAPIListener *)self isConnectionEntitled:v7];
+  v9 = [(IMDBackgroundMessagingAPIListener *)self isConnectionEntitled:connectionCopy];
   if (v9)
   {
-    v10 = [[IMDBackgroundMessagingAPITargetHandler alloc] initWithXPCConnection:v7 targetQueue:self->_queue delegate:self];
-    v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "processIdentifier")}];
+    v10 = [[IMDBackgroundMessagingAPITargetHandler alloc] initWithXPCConnection:connectionCopy targetQueue:self->_queue delegate:self];
+    v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(connectionCopy, "processIdentifier")}];
     [(NSMutableDictionary *)self->_activeConnections setObject:v10 forKey:v11];
   }
 
@@ -101,27 +101,27 @@
   return v9;
 }
 
-- (BOOL)isConnectionEntitled:(id)a3
+- (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.developer.messages.critical-messaging"];
+  v3 = [entitled valueForEntitlement:@"com.apple.developer.messages.critical-messaging"];
   v4 = v3;
   v5 = v3 && ([v3 BOOLValue] & 1) != 0;
 
   return v5;
 }
 
-- (void)handleSMSSendResult:(id)a3 sent:(BOOL)a4
+- (void)handleSMSSendResult:(id)result sent:(BOOL)sent
 {
-  v6 = a3;
+  resultCopy = result;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22B619F28;
   block[3] = &unk_278706650;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = resultCopy;
+  sentCopy = sent;
+  v8 = resultCopy;
   dispatch_async(queue, block);
 }
 

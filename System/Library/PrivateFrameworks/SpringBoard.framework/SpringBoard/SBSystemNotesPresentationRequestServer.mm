@@ -1,7 +1,7 @@
 @interface SBSystemNotesPresentationRequestServer
 - (SBSystemNotesPresentationRequestServer)init;
 - (SBSystemNotesPresentationRequestServerDelegate)delegate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation SBSystemNotesPresentationRequestServer
@@ -46,15 +46,15 @@ void __46__SBSystemNotesPresentationRequestServer_init__block_invoke(uint64_t a1
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = SBLogAppQuitMonitor();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v28 = v6;
+    v28 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "Received Connection: %{public}@", buf, 0xCu);
   }
 
@@ -64,10 +64,10 @@ void __46__SBSystemNotesPresentationRequestServer_init__block_invoke(uint64_t a1
   if (v8)
   {
     clientAuthenticator = self->_clientAuthenticator;
-    v11 = [v6 remoteProcess];
-    v12 = [v11 auditToken];
+    remoteProcess = [connectionCopy remoteProcess];
+    auditToken = [remoteProcess auditToken];
     v25 = 0;
-    v13 = [(FBServiceClientAuthenticator *)clientAuthenticator authenticateAuditToken:v12 error:&v25];
+    v13 = [(FBServiceClientAuthenticator *)clientAuthenticator authenticateAuditToken:auditToken error:&v25];
     v14 = v25;
 
     if (v13)
@@ -77,8 +77,8 @@ void __46__SBSystemNotesPresentationRequestServer_init__block_invoke(uint64_t a1
       v20 = 3221225472;
       v21 = __84__SBSystemNotesPresentationRequestServer_listener_didReceiveConnection_withContext___block_invoke;
       v22 = &unk_2783A92D8;
-      v23 = self;
-      v16 = v6;
+      selfCopy = self;
+      v16 = connectionCopy;
       v24 = v16;
       dispatch_sync(queue, &v19);
       [v16 activate];
@@ -89,10 +89,10 @@ void __46__SBSystemNotesPresentationRequestServer_init__block_invoke(uint64_t a1
       v18 = SBLogSystemNotes();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        [SBSystemNotesPresentationRequestServer listener:v14 didReceiveConnection:v6 withContext:v18];
+        [SBSystemNotesPresentationRequestServer listener:v14 didReceiveConnection:connectionCopy withContext:v18];
       }
 
-      [v6 invalidate];
+      [connectionCopy invalidate];
     }
 
     v9 = v14;
@@ -106,7 +106,7 @@ void __46__SBSystemNotesPresentationRequestServer_init__block_invoke(uint64_t a1
       [SBSystemNotesPresentationRequestServer listener:v9 didReceiveConnection:v17 withContext:?];
     }
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 }
 

@@ -1,32 +1,32 @@
 @interface POConcatKDF
-+ (id)concatKDFWithKey:(id)a3 algorithm:(id)a4 partyUInfo:(id)a5 partyVInfo:(id)a6;
++ (id)concatKDFWithKey:(id)key algorithm:(id)algorithm partyUInfo:(id)info partyVInfo:(id)vInfo;
 @end
 
 @implementation POConcatKDF
 
-+ (id)concatKDFWithKey:(id)a3 algorithm:(id)a4 partyUInfo:(id)a5 partyVInfo:(id)a6
++ (id)concatKDFWithKey:(id)key algorithm:(id)algorithm partyUInfo:(id)info partyVInfo:(id)vInfo
 {
   v9 = MEMORY[0x277CBEB28];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  vInfoCopy = vInfo;
+  infoCopy = info;
+  algorithmCopy = algorithm;
+  keyCopy = key;
   v14 = objc_alloc_init(v9);
   v21 = 0x1000000;
   [v14 appendBytes:&v21 length:4];
-  [v14 appendData:v13];
+  [v14 appendData:keyCopy];
 
-  v20 = bswap32([v12 length]);
+  v20 = bswap32([algorithmCopy length]);
   [v14 appendBytes:&v20 length:4];
-  [v14 appendData:v12];
+  [v14 appendData:algorithmCopy];
 
-  v19 = bswap32([v11 length]);
+  v19 = bswap32([infoCopy length]);
   [v14 appendBytes:&v19 length:4];
-  [v14 appendData:v11];
+  [v14 appendData:infoCopy];
 
-  v18 = bswap32([v10 length]);
+  v18 = bswap32([vInfoCopy length]);
   [v14 appendBytes:&v18 length:4];
-  [v14 appendData:v10];
+  [v14 appendData:vInfoCopy];
 
   v17 = 0x10000;
   [v14 appendBytes:&v17 length:4];

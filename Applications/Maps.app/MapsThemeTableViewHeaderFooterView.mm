@@ -1,6 +1,6 @@
 @interface MapsThemeTableViewHeaderFooterView
 - (void)didMoveToWindow;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MapsThemeTableViewHeaderFooterView
@@ -10,34 +10,34 @@
   v4.receiver = self;
   v4.super_class = MapsThemeTableViewHeaderFooterView;
   [(MapsThemeTableViewHeaderFooterView *)&v4 didMoveToWindow];
-  v3 = [(MapsThemeTableViewHeaderFooterView *)self window];
+  window = [(MapsThemeTableViewHeaderFooterView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MapsThemeTableViewHeaderFooterView *)self updateTheme];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = MapsThemeTableViewHeaderFooterView;
-  [(MapsThemeTableViewHeaderFooterView *)&v9 traitCollectionDidChange:v5];
-  if (v5 && (v6 = [v5 userInterfaceStyle], -[MapsThemeTableViewHeaderFooterView traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
+  [(MapsThemeTableViewHeaderFooterView *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy && (v6 = [changeCopy userInterfaceStyle], -[MapsThemeTableViewHeaderFooterView traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
   {
   }
 
   else
   {
-    v7 = [(MapsThemeTableViewHeaderFooterView *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(MapsThemeTableViewHeaderFooterView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5)
+    if (changeCopy)
     {
     }
 
-    if (v8)
+    if (userInterfaceStyle)
     {
       [(MapsThemeTableViewHeaderFooterView *)self updateTheme];
     }

@@ -1,11 +1,11 @@
 @interface BWInferenceSchedulerResourceCoordinator
 - (BWInferenceSchedulerResourceCoordinator)init;
-- (id)formatsWithRequestedPoolsRemainingAfterSubtractingFormats:(id)a3;
-- (id)pixelBufferPoolForFormat:(id)a3;
-- (int)requestPixelBufferPoolForFormat:(id)a3 size:(unint64_t)a4;
-- (int)requestPixelBufferPoolForRequirement:(id)a3 size:(unint64_t)a4;
+- (id)formatsWithRequestedPoolsRemainingAfterSubtractingFormats:(id)formats;
+- (id)pixelBufferPoolForFormat:(id)format;
+- (int)requestPixelBufferPoolForFormat:(id)format size:(unint64_t)size;
+- (int)requestPixelBufferPoolForRequirement:(id)requirement size:(unint64_t)size;
 - (void)dealloc;
-- (void)preparePixelBufferPoolsWithBackPressureDrivenPipelining:(BOOL)a3;
+- (void)preparePixelBufferPoolsWithBackPressureDrivenPipelining:(BOOL)pipelining;
 @end
 
 @implementation BWInferenceSchedulerResourceCoordinator
@@ -31,14 +31,14 @@
   [(BWInferenceSchedulerResourceCoordinator *)&v3 dealloc];
 }
 
-- (int)requestPixelBufferPoolForRequirement:(id)a3 size:(unint64_t)a4
+- (int)requestPixelBufferPoolForRequirement:(id)requirement size:(unint64_t)size
 {
-  v6 = [a3 videoFormat];
+  videoFormat = [requirement videoFormat];
 
-  return [(BWInferenceSchedulerResourceCoordinator *)self requestPixelBufferPoolForFormat:v6 size:a4];
+  return [(BWInferenceSchedulerResourceCoordinator *)self requestPixelBufferPoolForFormat:videoFormat size:size];
 }
 
-- (int)requestPixelBufferPoolForFormat:(id)a3 size:(unint64_t)a4
+- (int)requestPixelBufferPoolForFormat:(id)format size:(unint64_t)size
 {
   if (self->_pixelBufferPoolByFormat)
   {
@@ -49,19 +49,19 @@
   else
   {
     v7 = [(NSMutableDictionary *)self->_requestedPoolSizeByFormat objectForKeyedSubscript:?];
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_requestedPoolSizeByFormat, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLong:{a4 + objc_msgSend(v7, "intValue")}], a3);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_requestedPoolSizeByFormat, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLong:{size + objc_msgSend(v7, "intValue")}], format);
     return 0;
   }
 }
 
-- (void)preparePixelBufferPoolsWithBackPressureDrivenPipelining:(BOOL)a3
+- (void)preparePixelBufferPoolsWithBackPressureDrivenPipelining:(BOOL)pipelining
 {
   if (self->_pixelBufferPoolByFormat)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Coordinator has already prepared shared pixel buffer pools!" userInfo:0]);
   }
 
-  v3 = a3;
+  pipeliningCopy = pipelining;
   v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17 = 0u;
   v18 = 0u;
@@ -85,8 +85,8 @@
         v9 = *(*(&v17 + 1) + 8 * i);
         v10 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_requestedPoolSizeByFormat objectForKeyedSubscript:{v9), "intValue"}];
         v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Inference pool for %@", objc_msgSend(v9, "description")];
-        LOBYTE(v13) = v3;
-        v12 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:clientProvidesPool:memoryPool:providesBackPressure:reportSlowBackPressureAllocations:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:clientProvidesPool:memoryPool:providesBackPressure:reportSlowBackPressureAllocations:", [v9 underlyingVideoFormat], v10, v11, 0, +[BWMemoryPool sharedMemoryPool](BWMemoryPool, "sharedMemoryPool"), v3, v13);
+        LOBYTE(v13) = pipeliningCopy;
+        v12 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:clientProvidesPool:memoryPool:providesBackPressure:reportSlowBackPressureAllocations:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:clientProvidesPool:memoryPool:providesBackPressure:reportSlowBackPressureAllocations:", [v9 underlyingVideoFormat], v10, v11, 0, +[BWMemoryPool sharedMemoryPool](BWMemoryPool, "sharedMemoryPool"), pipeliningCopy, v13);
         [v15 setObject:v12 forKeyedSubscript:v9];
       }
 
@@ -99,7 +99,7 @@
   self->_pixelBufferPoolByFormat = v15;
 }
 
-- (id)pixelBufferPoolForFormat:(id)a3
+- (id)pixelBufferPoolForFormat:(id)format
 {
   pixelBufferPoolByFormat = self->_pixelBufferPoolByFormat;
   if (!pixelBufferPoolByFormat)
@@ -107,13 +107,13 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Coordinator has not prepared shared pixel buffer pools!" userInfo:{0, v3, v4}]);
   }
 
-  return [(NSMutableDictionary *)pixelBufferPoolByFormat objectForKeyedSubscript:a3];
+  return [(NSMutableDictionary *)pixelBufferPoolByFormat objectForKeyedSubscript:format];
 }
 
-- (id)formatsWithRequestedPoolsRemainingAfterSubtractingFormats:(id)a3
+- (id)formatsWithRequestedPoolsRemainingAfterSubtractingFormats:(id)formats
 {
   v4 = [MEMORY[0x1E695DFA8] setWithArray:{-[NSMutableDictionary allKeys](self->_pixelBufferPoolByFormat, "allKeys")}];
-  [v4 minusSet:a3];
+  [v4 minusSet:formats];
 
   return [v4 allObjects];
 }

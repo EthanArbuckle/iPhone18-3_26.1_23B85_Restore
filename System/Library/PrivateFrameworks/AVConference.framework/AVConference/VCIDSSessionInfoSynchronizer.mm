@@ -1,24 +1,24 @@
 @interface VCIDSSessionInfoSynchronizer
-- (VCIDSSessionInfoSynchronizer)initWithDelegate:(id)a3 connectionManager:(id)a4 reportingAgent:(id)a5;
-- (void)checkVCIDSSessionInfoNeedUpdate:(unsigned __int8)a3;
+- (VCIDSSessionInfoSynchronizer)initWithDelegate:(id)delegate connectionManager:(id)manager reportingAgent:(id)agent;
+- (void)checkVCIDSSessionInfoNeedUpdate:(unsigned __int8)update;
 - (void)dealloc;
 - (void)deregisterPeriodicTask;
 - (void)flushRealTimeReportingStats;
-- (void)optInAllStreamsForConnection:(id)a3;
-- (void)optInStreamIDsForConnection:(id)a3;
-- (void)optInStreamIDsForNewPrimaryConnection:(id)a3 oldPrimaryConnection:(id)a4;
-- (void)optOutStreamIDsForNonPrimaryConnection:(id)a3 sentOnConnection:(id)a4;
-- (void)periodicTask:(void *)a3;
+- (void)optInAllStreamsForConnection:(id)connection;
+- (void)optInStreamIDsForConnection:(id)connection;
+- (void)optInStreamIDsForNewPrimaryConnection:(id)connection oldPrimaryConnection:(id)primaryConnection;
+- (void)optOutStreamIDsForNonPrimaryConnection:(id)connection sentOnConnection:(id)onConnection;
+- (void)periodicTask:(void *)task;
 - (void)registerPeriodicTask;
 - (void)resetParticipantGenerationCounter;
 - (void)resetPeerSubscribedStreams;
 - (void)retryVCIDSSessionInfoSubscribedStreamIDs;
-- (void)sendVCIDSSessionInfoSubscribedStreamIDs:(id)a3;
-- (void)setDuplicationLinkID:(id)a3;
-- (void)setPrimaryLinkID:(id)a3;
-- (void)setVCIDSSessionInfoPublishedStreamIDs:(id)a3;
-- (void)setVCIDSSessionInfoSubscribedStreamIDs:(id)a3;
-- (void)updateVCIDSSessionInfoResponse:(id)a3;
+- (void)sendVCIDSSessionInfoSubscribedStreamIDs:(id)ds;
+- (void)setDuplicationLinkID:(id)d;
+- (void)setPrimaryLinkID:(id)d;
+- (void)setVCIDSSessionInfoPublishedStreamIDs:(id)ds;
+- (void)setVCIDSSessionInfoSubscribedStreamIDs:(id)ds;
+- (void)updateVCIDSSessionInfoResponse:(id)response;
 @end
 
 @implementation VCIDSSessionInfoSynchronizer
@@ -40,17 +40,17 @@
   [(VCIDSSessionInfoSynchronizer *)&v3 dealloc];
 }
 
-- (void)setVCIDSSessionInfoSubscribedStreamIDs:(id)a3
+- (void)setVCIDSSessionInfoSubscribedStreamIDs:(id)ds
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (ds)
   {
     stateQueue = self->_stateQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __71__VCIDSSessionInfoSynchronizer_setVCIDSSessionInfoSubscribedStreamIDs___block_invoke;
     block[3] = &unk_1E85F37F0;
-    block[4] = a3;
+    block[4] = ds;
     block[5] = self;
     dispatch_async(stateQueue, block);
   }
@@ -192,7 +192,7 @@ void __72__VCIDSSessionInfoSynchronizer_retryVCIDSSessionInfoSubscribedStreamIDs
   }
 }
 
-- (void)sendVCIDSSessionInfoSubscribedStreamIDs:(id)a3
+- (void)sendVCIDSSessionInfoSubscribedStreamIDs:(id)ds
 {
   v18[4] = *MEMORY[0x1E69E9840];
   v5 = VCConnectionManager_CopyPrimaryConnection(self->_connectionManager);
@@ -218,7 +218,7 @@ void __72__VCIDSSessionInfoSynchronizer_retryVCIDSSessionInfoSubscribedStreamIDs
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v7];
   v11 = *MEMORY[0x1E69A4B28];
   v18[1] = v10;
-  v18[2] = a3;
+  v18[2] = ds;
   v12 = *MEMORY[0x1E69A4A88];
   v17[2] = v11;
   v17[3] = v12;
@@ -231,15 +231,15 @@ LABEL_9:
     return;
   }
 
-  v13 = [(VCConnectionManager *)self->_connectionManager secondaryConnection];
-  if (!VCConnection_IsEndToEndLink(v13))
+  secondaryConnection = [(VCConnectionManager *)self->_connectionManager secondaryConnection];
+  if (!VCConnection_IsEndToEndLink(secondaryConnection))
   {
-    v14 = VCConnectionIDS_LinkID(v13);
+    v14 = VCConnectionIDS_LinkID(secondaryConnection);
     v15[0] = v8;
     v16[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v14];
     v15[1] = v9;
     v16[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v14];
-    v16[2] = a3;
+    v16[2] = ds;
     v15[2] = v11;
     v15[3] = v12;
     v16[3] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_currentParticipantGenerationCounter];
@@ -257,17 +257,17 @@ LABEL_9:
   }
 }
 
-- (void)setVCIDSSessionInfoPublishedStreamIDs:(id)a3
+- (void)setVCIDSSessionInfoPublishedStreamIDs:(id)ds
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (ds)
   {
     stateQueue = self->_stateQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __70__VCIDSSessionInfoSynchronizer_setVCIDSSessionInfoPublishedStreamIDs___block_invoke;
     block[3] = &unk_1E85F37F0;
-    block[4] = a3;
+    block[4] = ds;
     block[5] = self;
     dispatch_async(stateQueue, block);
   }
@@ -346,7 +346,7 @@ LABEL_8:
   reportingUnregisterPeriodicTask();
 }
 
-- (VCIDSSessionInfoSynchronizer)initWithDelegate:(id)a3 connectionManager:(id)a4 reportingAgent:(id)a5
+- (VCIDSSessionInfoSynchronizer)initWithDelegate:(id)delegate connectionManager:(id)manager reportingAgent:(id)agent
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -356,8 +356,8 @@ LABEL_8:
   {
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
     v8->_stateQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCIDSSessionInfoSynchronizer.stateQueue", 0, CustomRootQueue);
-    objc_storeWeak(&v8->_delegate, a3);
-    objc_storeWeak(&v8->_reportingAgentWeak, a5);
+    objc_storeWeak(&v8->_delegate, delegate);
+    objc_storeWeak(&v8->_reportingAgentWeak, agent);
     [(VCIDSSessionInfoSynchronizer *)v8 registerPeriodicTask];
     v8->_peerSubscribedStreams = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8->_peerPublishedStreams = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -366,16 +366,16 @@ LABEL_8:
     v8->_currentParticipantGenerationCounter = 0;
     v8->_primaryLinkID = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:0];
     v8->_duplicationLinkID = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:0];
-    v8->_connectionManager = a4;
+    v8->_connectionManager = manager;
   }
 
   return v8;
 }
 
-- (void)setPrimaryLinkID:(id)a3
+- (void)setPrimaryLinkID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  self->_primaryLinkID = a3;
+  self->_primaryLinkID = d;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
@@ -389,16 +389,16 @@ LABEL_8:
       v10 = 1024;
       v11 = 225;
       v12 = 2112;
-      v13 = a3;
+      dCopy = d;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d set primaryLinkID: %@", &v6, 0x26u);
     }
   }
 }
 
-- (void)setDuplicationLinkID:(id)a3
+- (void)setDuplicationLinkID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  self->_duplicationLinkID = a3;
+  self->_duplicationLinkID = d;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
@@ -412,7 +412,7 @@ LABEL_8:
       v10 = 1024;
       v11 = 234;
       v12 = 2112;
-      v13 = a3;
+      dCopy = d;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d set duplicationLinkID: %@", &v6, 0x26u);
     }
   }
@@ -551,9 +551,9 @@ LABEL_18:
   }
 }
 
-- (void)checkVCIDSSessionInfoNeedUpdate:(unsigned __int8)a3
+- (void)checkVCIDSSessionInfoNeedUpdate:(unsigned __int8)update
 {
-  v3 = a3;
+  updateCopy = update;
   v23 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -569,14 +569,14 @@ LABEL_18:
       v17 = 1024;
       v18 = 262;
       v19 = 1024;
-      v20 = v3;
+      v20 = updateCopy;
       v21 = 1024;
       v22 = currentParticipantGenerationCounter;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d participantGenerationCounterLSByte = %d, %d", buf, 0x28u);
     }
   }
 
-  if (LOBYTE(self->_currentParticipantGenerationCounter) != v3)
+  if (LOBYTE(self->_currentParticipantGenerationCounter) != updateCopy)
   {
     v8 = VCConnectionManager_CopyPrimaryConnection(self->_connectionManager);
     if (v8)
@@ -599,7 +599,7 @@ LABEL_18:
   }
 }
 
-- (void)updateVCIDSSessionInfoResponse:(id)a3
+- (void)updateVCIDSSessionInfoResponse:(id)response
 {
   v59 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -615,13 +615,13 @@ LABEL_18:
       v51 = 1024;
       v52 = 279;
       v53 = 2112;
-      v54 = a3;
+      responseCopy = response;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d eventInfo=%@", buf, 0x26u);
     }
   }
 
   v7 = *MEMORY[0x1E69A46C8];
-  if ([a3 objectForKey:*MEMORY[0x1E69A46C8]])
+  if ([response objectForKey:*MEMORY[0x1E69A46C8]])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -629,7 +629,7 @@ LABEL_18:
       v9 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        v36 = [a3 objectForKeyedSubscript:v7];
+        v36 = [response objectForKeyedSubscript:v7];
         *buf = 136315906;
         v48 = v8;
         v49 = 2080;
@@ -637,12 +637,12 @@ LABEL_18:
         v51 = 1024;
         v52 = 282;
         v53 = 2112;
-        v54 = v36;
+        responseCopy = v36;
         _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d eventInfo has IDSDataChannelError, ERROR = %@", buf, 0x26u);
       }
     }
 
-    v10 = [objc_msgSend(a3 objectForKeyedSubscript:{v7), "code"}];
+    v10 = [objc_msgSend(response objectForKeyedSubscript:{v7), "code"}];
     if ((v10 - 2) < 2 || v10 == 8)
     {
       [(VCIDSSessionInfoSynchronizer *)self reportingAgent];
@@ -668,7 +668,7 @@ LABEL_18:
     v12[2](v12, 0);
   }
 
-  v13 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A46F0]];
+  v13 = [response objectForKeyedSubscript:*MEMORY[0x1E69A46F0]];
   if (v13)
   {
     v14 = v13;
@@ -709,7 +709,7 @@ LABEL_18:
         v51 = 1024;
         v52 = 320;
         v53 = 1024;
-        LODWORD(v54) = v18;
+        LODWORD(responseCopy) = v18;
         v29 = " [%s] %s:%d Getting duplicated participantGenerationCounter=%u";
         v30 = v28;
         v31 = 34;
@@ -746,9 +746,9 @@ LABEL_18:
         v51 = 1024;
         v52 = 320;
         v53 = 2112;
-        v54 = v19;
+        responseCopy = v19;
         v55 = 2048;
-        v56 = self;
+        selfCopy3 = self;
         v57 = 1024;
         LODWORD(v58) = v18;
         v29 = " [%s] %s:%d %@(%p) Getting duplicated participantGenerationCounter=%u";
@@ -801,7 +801,7 @@ LABEL_18:
           v51 = 1024;
           v52 = 354;
           v53 = 2112;
-          v54 = v25;
+          responseCopy = v25;
           v29 = " [%s] %s:%d Ignoring identical peerPublishedStreams=%@";
           v30 = v38;
           v31 = 38;
@@ -838,9 +838,9 @@ LABEL_18:
           v51 = 1024;
           v52 = 354;
           v53 = 2112;
-          v54 = v26;
+          responseCopy = v26;
           v55 = 2048;
-          v56 = self;
+          selfCopy3 = self;
           v57 = 2112;
           v58 = v25;
           v29 = " [%s] %s:%d %@(%p) Ignoring identical peerPublishedStreams=%@";
@@ -917,9 +917,9 @@ LABEL_18:
           v51 = 1024;
           v52 = 351;
           v53 = 2112;
-          v54 = v39;
+          responseCopy = v39;
           v55 = 2048;
-          v56 = self;
+          selfCopy3 = self;
           v29 = " [%s] %s:%d %@(%p) peerPublishedStreamCallback is not set up";
           v30 = v45;
           v31 = 48;
@@ -1086,10 +1086,10 @@ LABEL_26:
   }
 }
 
-- (void)optInStreamIDsForConnection:(id)a3
+- (void)optInStreamIDsForConnection:(id)connection
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (connection)
   {
     stateQueue = self->_stateQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1097,7 +1097,7 @@ LABEL_26:
     block[2] = __76__VCIDSSessionInfoSynchronizer_PrivateMethods__optInStreamIDsForConnection___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = connection;
     dispatch_async(stateQueue, block);
   }
 
@@ -1156,33 +1156,33 @@ uint64_t __76__VCIDSSessionInfoSynchronizer_PrivateMethods__optInStreamIDsForCon
   return result;
 }
 
-- (void)optInAllStreamsForConnection:(id)a3
+- (void)optInAllStreamsForConnection:(id)connection
 {
-  if (a3)
+  if (connection)
   {
     [(VCIDSSessionInfoSynchronizer *)self optInStreamIDsForConnection:?];
   }
 }
 
-- (void)optInStreamIDsForNewPrimaryConnection:(id)a3 oldPrimaryConnection:(id)a4
+- (void)optInStreamIDsForNewPrimaryConnection:(id)connection oldPrimaryConnection:(id)primaryConnection
 {
   [(VCIDSSessionInfoSynchronizer *)self optInStreamIDsForConnection:?];
-  if (a4 != a3)
+  if (primaryConnection != connection)
   {
 
-    [(VCIDSSessionInfoSynchronizer *)self optOutStreamIDsForNonPrimaryConnection:a4 sentOnConnection:a3];
+    [(VCIDSSessionInfoSynchronizer *)self optOutStreamIDsForNonPrimaryConnection:primaryConnection sentOnConnection:connection];
   }
 }
 
-- (void)optOutStreamIDsForNonPrimaryConnection:(id)a3 sentOnConnection:(id)a4
+- (void)optOutStreamIDsForNonPrimaryConnection:(id)connection sentOnConnection:(id)onConnection
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (connection && onConnection)
   {
     v19[0] = *MEMORY[0x1E69A4A40];
-    v20[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnectionIDS_LinkID(a4)];
+    v20[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnectionIDS_LinkID(onConnection)];
     v19[1] = *MEMORY[0x1E69A4A48];
-    v20[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnectionIDS_LinkID(a3)];
+    v20[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnectionIDS_LinkID(connection)];
     v19[2] = *MEMORY[0x1E69A4B28];
     v17 = *MEMORY[0x1E69A4A10];
     v18 = *MEMORY[0x1E69A4A60];
@@ -1221,7 +1221,7 @@ uint64_t __76__VCIDSSessionInfoSynchronizer_PrivateMethods__optInStreamIDsForCon
   }
 }
 
-- (void)periodicTask:(void *)a3
+- (void)periodicTask:(void *)task
 {
   v5 = micro();
   v6 = v5 - self->_lastUpdateTimestamp;
@@ -1291,15 +1291,15 @@ uint64_t __76__VCIDSSessionInfoSynchronizer_PrivateMethods__optInStreamIDsForCon
 
   self->_minReceivedRate = v19;
   self->_bytesReceivedToReport += v14;
-  if (a3)
+  if (task)
   {
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"SIMinBytesSent"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_maxSentRate), @"SIMaxBytesSent"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_bytesSentToReport), @"SIRawBytesSent"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_minReceivedRate), @"SIMinBytesReceived"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_maxReceivedRate), @"SIMaxBytesReceived"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_bytesReceivedToReport), @"SIRawBytesReceived"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_countResponseFailure), @"SyncIDSFailure"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"SIMinBytesSent"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_maxSentRate), @"SIMaxBytesSent"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_bytesSentToReport), @"SIRawBytesSent"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_minReceivedRate), @"SIMinBytesReceived"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_maxReceivedRate), @"SIMaxBytesReceived"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_bytesReceivedToReport), @"SIRawBytesReceived"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_countResponseFailure), @"SyncIDSFailure"}];
 
     [(VCIDSSessionInfoSynchronizer *)self flushRealTimeReportingStats];
   }

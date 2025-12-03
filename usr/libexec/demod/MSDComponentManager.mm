@@ -1,15 +1,15 @@
 @interface MSDComponentManager
-- (BOOL)waitForProcessingCompletionTillDate:(id)a3 outError:(id *)a4;
-- (MSDComponentManager)initWithComponents:(id)a3 andProcessor:(id)a4;
-- (unint64_t)_calculateFreeSpaceToReserve:(unint64_t)a3;
+- (BOOL)waitForProcessingCompletionTillDate:(id)date outError:(id *)error;
+- (MSDComponentManager)initWithComponents:(id)components andProcessor:(id)processor;
+- (unint64_t)_calculateFreeSpaceToReserve:(unint64_t)reserve;
 - (void)_cancelAllOperations;
-- (void)_dispatchComponent:(id)a3;
+- (void)_dispatchComponent:(id)component;
 - (void)_dispatchNextComponent;
 - (void)_enforceFreeDiskSpaceRequirement;
-- (void)_handleCompleteComponent:(id)a3;
-- (void)_handleNewOperationStagedForComponent:(id)a3;
-- (void)_handleRetryComponent:(id)a3 forComponent:(id)a4;
-- (void)_setupInterComponentDependencyOnRetry:(BOOL)a3;
+- (void)_handleCompleteComponent:(id)component;
+- (void)_handleNewOperationStagedForComponent:(id)component;
+- (void)_handleRetryComponent:(id)component forComponent:(id)forComponent;
+- (void)_setupInterComponentDependencyOnRetry:(BOOL)retry;
 - (void)abortProcessing;
 - (void)pauseProcessing;
 - (void)resumeProcessing;
@@ -18,10 +18,10 @@
 
 @implementation MSDComponentManager
 
-- (MSDComponentManager)initWithComponents:(id)a3 andProcessor:(id)a4
+- (MSDComponentManager)initWithComponents:(id)components andProcessor:(id)processor
 {
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  processorCopy = processor;
   v30.receiver = self;
   v30.super_class = MSDComponentManager;
   v8 = [(MSDComponentManager *)&v30 init];
@@ -36,15 +36,15 @@
     v11 = [[NSMutableArray alloc] initWithCapacity:0];
     [(MSDComponentManager *)v8 setRemovableComponents:v11];
 
-    v12 = [v6 mutableCopy];
+    v12 = [componentsCopy mutableCopy];
     [(MSDComponentManager *)v8 setPendingComponents:v12];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = [v6 reverseObjectEnumerator];
-    v14 = [v13 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    reverseObjectEnumerator = [componentsCopy reverseObjectEnumerator];
+    v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v14)
     {
       v15 = v14;
@@ -56,27 +56,27 @@
         {
           if (*v27 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
-          v18 = [*(*(&v26 + 1) + 8 * v17) createRemovableCounterpartComponent];
-          if (v18)
+          createRemovableCounterpartComponent = [*(*(&v26 + 1) + 8 * v17) createRemovableCounterpartComponent];
+          if (createRemovableCounterpartComponent)
           {
-            v19 = [(MSDComponentManager *)v8 removableComponents];
-            [v19 addObject:v18];
+            removableComponents = [(MSDComponentManager *)v8 removableComponents];
+            [removableComponents addObject:createRemovableCounterpartComponent];
           }
 
           v17 = v17 + 1;
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v15);
     }
 
-    [(MSDComponentManager *)v8 setComponentProcessor:v7];
+    [(MSDComponentManager *)v8 setComponentProcessor:processorCopy];
     [(MSDComponentManager *)v8 setComponentListLock:0];
     if (os_variant_has_internal_content() && (+[MSDTestPreferences sharedInstance](MSDTestPreferences, "sharedInstance"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 disableParallelProcessing], v20, v21))
     {
@@ -114,15 +114,15 @@
   os_unfair_lock_lock(&self->_componentListLock);
   [(MSDComponentManager *)self _enforceFreeDiskSpaceRequirement];
   [(MSDComponentManager *)self _startProcessingComponentsOnRetry:0];
-  v4 = [(MSDComponentManager *)self componentProcessor];
-  [v4 resume];
+  componentProcessor = [(MSDComponentManager *)self componentProcessor];
+  [componentProcessor resume];
 
   os_unfair_lock_unlock(&self->_componentListLock);
 }
 
-- (BOOL)waitForProcessingCompletionTillDate:(id)a3 outError:(id *)a4
+- (BOOL)waitForProcessingCompletionTillDate:(id)date outError:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   v7 = dispatch_semaphore_create(0);
   v32 = 0;
   v33 = &v32;
@@ -140,12 +140,12 @@
     *buf = 136315394;
     v39 = "[MSDComponentManager waitForProcessingCompletionTillDate:outError:]";
     v40 = 2114;
-    v41 = v6;
+    v41 = dateCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: entered with deadline %{public}@", buf, 0x16u);
   }
 
-  v9 = [(MSDComponentManager *)self activeComponents];
-  v10 = [v9 count] == 0;
+  activeComponents = [(MSDComponentManager *)self activeComponents];
+  v10 = [activeComponents count] == 0;
 
   if (!v10)
   {
@@ -161,9 +161,9 @@
     v25 = v13;
     v14 = [v11 addObserverForName:@"MSDComponentManagerComplete" object:0 queue:v12 usingBlock:v24];
 
-    if (v6)
+    if (dateCopy)
     {
-      [v6 timeIntervalSinceNow];
+      [dateCopy timeIntervalSinceNow];
       v16 = dispatch_time(0, (v15 * 1000000000.0));
       if (dispatch_semaphore_wait(v13, v16))
       {
@@ -181,7 +181,7 @@
         [(MSDComponentManager *)self _cancelAllOperations];
       }
 
-      if (!a4)
+      if (!error)
       {
 LABEL_10:
         if (!v14)
@@ -196,13 +196,13 @@ LABEL_10:
     else
     {
       dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
     }
 
-    *a4 = v33[5];
+    *error = v33[5];
     if (!v14)
     {
 LABEL_18:
@@ -251,8 +251,8 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s called.", &v5, 0xCu);
   }
 
-  v4 = [(MSDComponentManager *)self componentProcessor];
-  [v4 suspend];
+  componentProcessor = [(MSDComponentManager *)self componentProcessor];
+  [componentProcessor suspend];
 }
 
 - (void)resumeProcessing
@@ -265,8 +265,8 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s called.", &v5, 0xCu);
   }
 
-  v4 = [(MSDComponentManager *)self componentProcessor];
-  [v4 resume];
+  componentProcessor = [(MSDComponentManager *)self componentProcessor];
+  [componentProcessor resume];
 }
 
 - (void)abortProcessing
@@ -287,83 +287,83 @@ LABEL_21:
 - (void)_cancelAllOperations
 {
   os_unfair_lock_lock(&self->_componentListLock);
-  v3 = [(MSDComponentManager *)self activeComponents];
-  [v3 removeAllObjects];
+  activeComponents = [(MSDComponentManager *)self activeComponents];
+  [activeComponents removeAllObjects];
 
-  v4 = [(MSDComponentManager *)self retryableComponents];
-  [v4 removeAllObjects];
+  retryableComponents = [(MSDComponentManager *)self retryableComponents];
+  [retryableComponents removeAllObjects];
 
-  v5 = [(MSDComponentManager *)self removableComponents];
-  [v5 removeAllObjects];
+  removableComponents = [(MSDComponentManager *)self removableComponents];
+  [removableComponents removeAllObjects];
 
-  v6 = [(MSDComponentManager *)self pendingComponents];
-  [v6 removeAllObjects];
+  pendingComponents = [(MSDComponentManager *)self pendingComponents];
+  [pendingComponents removeAllObjects];
 
   os_unfair_lock_unlock(&self->_componentListLock);
-  v7 = [(MSDComponentManager *)self componentProcessor];
-  [v7 cancel];
+  componentProcessor = [(MSDComponentManager *)self componentProcessor];
+  [componentProcessor cancel];
 }
 
 - (void)_dispatchNextComponent
 {
-  v3 = [(MSDComponentManager *)self activeComponents];
-  v4 = [v3 firstObject];
+  activeComponents = [(MSDComponentManager *)self activeComponents];
+  firstObject = [activeComponents firstObject];
 
-  if (v4)
+  if (firstObject)
   {
     v5 = sub_100063A54();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 name];
+      name = [firstObject name];
       v7 = 138543362;
-      v8 = v6;
+      v8 = name;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Dispatching component %{public}@ ...", &v7, 0xCu);
     }
 
-    [(MSDComponentManager *)self _dispatchComponent:v4];
+    [(MSDComponentManager *)self _dispatchComponent:firstObject];
   }
 }
 
-- (void)_dispatchComponent:(id)a3
+- (void)_dispatchComponent:(id)component
 {
-  v4 = a3;
-  [v4 addObserver:self];
-  v5 = [(MSDComponentManager *)self componentProcessor];
-  [v5 process:v4];
+  componentCopy = component;
+  [componentCopy addObserver:self];
+  componentProcessor = [(MSDComponentManager *)self componentProcessor];
+  [componentProcessor process:componentCopy];
 }
 
-- (void)_handleNewOperationStagedForComponent:(id)a3
+- (void)_handleNewOperationStagedForComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = componentCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "New operation staged for component: %{public}@", &v7, 0xCu);
   }
 
-  v6 = [(MSDComponentManager *)self componentProcessor];
-  [v6 process:v4];
+  componentProcessor = [(MSDComponentManager *)self componentProcessor];
+  [componentProcessor process:componentCopy];
 }
 
-- (void)_handleCompleteComponent:(id)a3
+- (void)_handleCompleteComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138543362;
-    v22 = v4;
+    v22 = componentCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "All operations complete for component: %{public}@", &v21, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_componentListLock);
-  v6 = [(MSDComponentManager *)self activeComponents];
-  [v6 removeObject:v4];
+  activeComponents = [(MSDComponentManager *)self activeComponents];
+  [activeComponents removeObject:componentCopy];
 
-  v7 = [(MSDComponentManager *)self activeComponents];
-  v8 = [v7 count];
+  activeComponents2 = [(MSDComponentManager *)self activeComponents];
+  v8 = [activeComponents2 count];
 
   if (v8)
   {
@@ -375,8 +375,8 @@ LABEL_21:
     goto LABEL_15;
   }
 
-  v9 = [(MSDComponentManager *)self retryableComponents];
-  v10 = [v9 count];
+  retryableComponents = [(MSDComponentManager *)self retryableComponents];
+  v10 = [retryableComponents count];
 
   if (v10)
   {
@@ -387,22 +387,22 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Processing retryable components...", &v21, 2u);
     }
 
-    v12 = [(MSDComponentManager *)self activeComponents];
-    v13 = [(MSDComponentManager *)self retryableComponents];
-    [v12 addObjectsFromArray:v13];
+    activeComponents3 = [(MSDComponentManager *)self activeComponents];
+    retryableComponents2 = [(MSDComponentManager *)self retryableComponents];
+    [activeComponents3 addObjectsFromArray:retryableComponents2];
 
-    v14 = [(MSDComponentManager *)self retryableComponents];
-    [v14 removeAllObjects];
+    retryableComponents3 = [(MSDComponentManager *)self retryableComponents];
+    [retryableComponents3 removeAllObjects];
 
-    v15 = self;
+    selfCopy2 = self;
     v16 = 1;
 LABEL_14:
-    [(MSDComponentManager *)v15 _startProcessingComponentsOnRetry:v16];
+    [(MSDComponentManager *)selfCopy2 _startProcessingComponentsOnRetry:v16];
     goto LABEL_15;
   }
 
-  v17 = [(MSDComponentManager *)self pendingComponents];
-  v18 = [v17 count];
+  pendingComponents = [(MSDComponentManager *)self pendingComponents];
+  v18 = [pendingComponents count];
 
   v19 = sub_100063A54();
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
@@ -415,7 +415,7 @@ LABEL_14:
     }
 
     [(MSDComponentManager *)self _enforceFreeDiskSpaceRequirement];
-    v15 = self;
+    selfCopy2 = self;
     v16 = 0;
     goto LABEL_14;
   }
@@ -431,31 +431,31 @@ LABEL_15:
   os_unfair_lock_unlock(&self->_componentListLock);
 }
 
-- (void)_handleRetryComponent:(id)a3 forComponent:(id)a4
+- (void)_handleRetryComponent:(id)component forComponent:(id)forComponent
 {
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  forComponentCopy = forComponent;
   v8 = sub_100063A54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000C5C34(v6, v8);
+    sub_1000C5C34(componentCopy, v8);
   }
 
   os_unfair_lock_lock(&self->_componentListLock);
-  v9 = [(MSDComponentManager *)self retryableComponents];
-  [v9 addObject:v6];
+  retryableComponents = [(MSDComponentManager *)self retryableComponents];
+  [retryableComponents addObject:componentCopy];
 
   os_unfair_lock_unlock(&self->_componentListLock);
-  [(MSDComponentManager *)self _handleCompleteComponent:v7];
+  [(MSDComponentManager *)self _handleCompleteComponent:forComponentCopy];
 }
 
 - (void)_enforceFreeDiskSpaceRequirement
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = +[MSDTargetDevice sharedInstance];
-  v5 = [v4 getFreeSpace];
+  getFreeSpace = [v4 getFreeSpace];
 
-  v6 = [(MSDComponentManager *)self _calculateFreeSpaceToReserve:v5];
+  v6 = [(MSDComponentManager *)self _calculateFreeSpaceToReserve:getFreeSpace];
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -466,15 +466,15 @@ LABEL_15:
 
   *&v8 = 138543362;
   v31 = v8;
-  v32 = self;
+  selfCopy = self;
   while (1)
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v9 = [(MSDComponentManager *)self pendingComponents];
-    v10 = [v9 countByEnumeratingWithState:&v33 objects:v43 count:16];
+    pendingComponents = [(MSDComponentManager *)self pendingComponents];
+    v10 = [pendingComponents countByEnumeratingWithState:&v33 objects:v43 count:16];
     if (v10)
     {
       v11 = v10;
@@ -482,31 +482,31 @@ LABEL_15:
       while (2)
       {
         v13 = 0;
-        v14 = v5;
+        v14 = getFreeSpace;
         do
         {
           if (*v34 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(pendingComponents);
           }
 
           v15 = *(*(&v33 + 1) + 8 * v13);
-          v16 = [v15 diskSpaceRequired];
+          diskSpaceRequired = [v15 diskSpaceRequired];
           v17 = sub_100063A54();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543874;
             v38 = v15;
             v39 = 2048;
-            v40 = v16;
+            v40 = diskSpaceRequired;
             v41 = 2048;
             v42 = v14;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: Free space needed=%{iec-bytes}llu, Free space left=%{iec-bytes}llu", buf, 0x20u);
           }
 
-          v18 = v14 >= v16;
-          v5 = (v14 - v16);
-          if (v5 == 0 || !v18 || v5 <= v6)
+          v18 = v14 >= diskSpaceRequired;
+          getFreeSpace = (v14 - diskSpaceRequired);
+          if (getFreeSpace == 0 || !v18 || getFreeSpace <= v6)
           {
             v19 = sub_100063A54();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -516,19 +516,19 @@ LABEL_15:
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: Not enough free space left for this component.", buf, 0xCu);
             }
 
-            v5 = v14;
-            self = v32;
+            getFreeSpace = v14;
+            self = selfCopy;
             goto LABEL_20;
           }
 
           [v3 addObject:v15];
           v13 = v13 + 1;
-          v14 = v5;
+          v14 = getFreeSpace;
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v33 objects:v43 count:16];
-        self = v32;
+        v11 = [pendingComponents countByEnumeratingWithState:&v33 objects:v43 count:16];
+        self = selfCopy;
         if (v11)
         {
           continue;
@@ -542,33 +542,33 @@ LABEL_20:
 
     if ([v3 count])
     {
-      v28 = [(MSDComponentManager *)self activeComponents];
-      [v28 addObjectsFromArray:v3];
+      activeComponents = [(MSDComponentManager *)self activeComponents];
+      [activeComponents addObjectsFromArray:v3];
 
-      v21 = [(MSDComponentManager *)self pendingComponents];
-      [v21 removeObjectsInArray:v3];
+      pendingComponents2 = [(MSDComponentManager *)self pendingComponents];
+      [pendingComponents2 removeObjectsInArray:v3];
       goto LABEL_33;
     }
 
-    v20 = [(MSDComponentManager *)self removableComponents];
-    v21 = [v20 firstObject];
+    removableComponents = [(MSDComponentManager *)self removableComponents];
+    pendingComponents2 = [removableComponents firstObject];
 
-    if (v21)
+    if (pendingComponents2)
     {
       break;
     }
 
-    v22 = [(MSDComponentManager *)self pendingComponents];
-    v23 = [v22 firstObject];
+    pendingComponents3 = [(MSDComponentManager *)self pendingComponents];
+    firstObject = [pendingComponents3 firstObject];
 
-    v24 = sub_100063A54();
-    v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
-    if (!v23)
+    removableComponents2 = sub_100063A54();
+    v25 = os_log_type_enabled(removableComponents2, OS_LOG_TYPE_DEFAULT);
+    if (!firstObject)
     {
       if (v25)
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "No more pending component to discard.", buf, 2u);
+        _os_log_impl(&_mh_execute_header, removableComponents2, OS_LOG_TYPE_DEFAULT, "No more pending component to discard.", buf, 2u);
       }
 
       goto LABEL_32;
@@ -577,45 +577,45 @@ LABEL_20:
     if (v25)
     {
       *buf = v31;
-      v38 = v23;
-      _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Discarding one pending component due to insufficient disk space: %{public}@", buf, 0xCu);
+      v38 = firstObject;
+      _os_log_impl(&_mh_execute_header, removableComponents2, OS_LOG_TYPE_DEFAULT, "Discarding one pending component due to insufficient disk space: %{public}@", buf, 0xCu);
     }
 
-    v26 = [(MSDComponentManager *)self activeComponents];
-    [v26 addObject:v23];
+    activeComponents2 = [(MSDComponentManager *)self activeComponents];
+    [activeComponents2 addObject:firstObject];
 
-    v27 = [(MSDComponentManager *)self pendingComponents];
-    [v27 removeObject:v23];
+    pendingComponents4 = [(MSDComponentManager *)self pendingComponents];
+    [pendingComponents4 removeObject:firstObject];
 
-    [v23 discardStagedOperationsAndTriggerCompletion];
+    [firstObject discardStagedOperationsAndTriggerCompletion];
   }
 
   v29 = sub_100063A54();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = v31;
-    v38 = v21;
+    v38 = pendingComponents2;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Removing existing component to free up disk space: %{public}@", buf, 0xCu);
   }
 
-  v30 = [(MSDComponentManager *)self activeComponents];
-  [v30 addObject:v21];
+  activeComponents3 = [(MSDComponentManager *)self activeComponents];
+  [activeComponents3 addObject:pendingComponents2];
 
-  v24 = [(MSDComponentManager *)self removableComponents];
-  [v24 removeObject:v21];
+  removableComponents2 = [(MSDComponentManager *)self removableComponents];
+  [removableComponents2 removeObject:pendingComponents2];
 LABEL_32:
 
 LABEL_33:
 }
 
-- (unint64_t)_calculateFreeSpaceToReserve:(unint64_t)a3
+- (unint64_t)_calculateFreeSpaceToReserve:(unint64_t)reserve
 {
   v4 = MGCopyAnswer();
   v5 = [v4 objectForKey:kMGQDiskUsageAmountDataReserved];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
@@ -626,13 +626,13 @@ LABEL_33:
       sub_1000C5CAC(v8);
     }
 
-    v7 = 5 * a3 / 0x64;
+    unsignedLongLongValue = 5 * reserve / 0x64;
   }
 
-  return v7;
+  return unsignedLongLongValue;
 }
 
-- (void)_setupInterComponentDependencyOnRetry:(BOOL)a3
+- (void)_setupInterComponentDependencyOnRetry:(BOOL)retry
 {
   v10[0] = 0;
   v10[1] = v10;
@@ -646,15 +646,15 @@ LABEL_33:
   v8[3] = sub_100009A80;
   v8[4] = sub_100009A90;
   v9 = 0;
-  v5 = [(MSDComponentManager *)self activeComponents];
+  activeComponents = [(MSDComponentManager *)self activeComponents];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000AD18;
   v6[3] = &unk_100169DA8;
-  v7 = a3;
+  retryCopy = retry;
   v6[4] = v8;
   v6[5] = v10;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [activeComponents enumerateObjectsUsingBlock:v6];
 
   _Block_object_dispose(v8, 8);
   _Block_object_dispose(v10, 8);

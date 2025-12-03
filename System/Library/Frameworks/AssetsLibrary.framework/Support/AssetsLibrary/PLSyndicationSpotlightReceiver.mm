@@ -3,30 +3,30 @@
 - (id)supportedBundleIDs;
 - (id)supportedContentTypes;
 - (void)_recordSpotlightUpdate;
-- (void)_recordSpotlightUpdateWithDate:(id)a3;
-- (void)_signalBackgroundProcessingNeededForWellKnownLibraryIdentifier:(int64_t)a3;
-- (void)addOrUpdateSearchableItems:(id)a3 bundleID:(id)a4;
-- (void)deleteAllSearchableItemsWithBundleID:(id)a3;
-- (void)deleteSearchableItemsSinceDate:(id)a3 bundleID:(id)a4;
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 bundleID:(id)a4;
-- (void)deleteSearchableItemsWithIdentifiers:(id)a3 bundleID:(id)a4;
-- (void)purgeSearchableItemsWithIdentifiers:(id)a3 bundleID:(id)a4;
+- (void)_recordSpotlightUpdateWithDate:(id)date;
+- (void)_signalBackgroundProcessingNeededForWellKnownLibraryIdentifier:(int64_t)identifier;
+- (void)addOrUpdateSearchableItems:(id)items bundleID:(id)d;
+- (void)deleteAllSearchableItemsWithBundleID:(id)d;
+- (void)deleteSearchableItemsSinceDate:(id)date bundleID:(id)d;
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers bundleID:(id)d;
+- (void)deleteSearchableItemsWithIdentifiers:(id)identifiers bundleID:(id)d;
+- (void)purgeSearchableItemsWithIdentifiers:(id)identifiers bundleID:(id)d;
 - (void)start;
 @end
 
 @implementation PLSyndicationSpotlightReceiver
 
-- (void)purgeSearchableItemsWithIdentifiers:(id)a3 bundleID:(id)a4
+- (void)purgeSearchableItemsWithIdentifiers:(id)identifiers bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  dCopy = d;
   v8 = PLSyndicationGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218242;
-    v10 = [v6 count];
+    v10 = [identifiersCopy count];
     v11 = 2112;
-    v12 = v7;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[sync.spotlightReceiver] purgeSearchableItemsWithIdentifiers, identifiersCount:%lu, bundleID:%@", &v9, 0x16u);
   }
 
@@ -35,17 +35,17 @@
   [(PLSyndicationSpotlightReceiver *)self _signalBackgroundProcessingNeededForSPL];
 }
 
-- (void)deleteSearchableItemsSinceDate:(id)a3 bundleID:(id)a4
+- (void)deleteSearchableItemsSinceDate:(id)date bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  dCopy = d;
   v8 = PLSyndicationGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = dateCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[sync.spotlightReceiver] deleteSearchableItemsSinceDate, date:%@, bundleID:%@", &v9, 0x16u);
   }
 
@@ -54,14 +54,14 @@
   [(PLSyndicationSpotlightReceiver *)self _signalBackgroundProcessingNeededForSPL];
 }
 
-- (void)deleteAllSearchableItemsWithBundleID:(id)a3
+- (void)deleteAllSearchableItemsWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = PLSyndicationGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[sync.spotlightReceiver] deleteAllSearchableItemsWithBundleID, bundleID:%@", &v6, 0xCu);
   }
 
@@ -70,17 +70,17 @@
   [(PLSyndicationSpotlightReceiver *)self _signalBackgroundProcessingNeededForSPL];
 }
 
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 bundleID:(id)a4
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  dCopy = d;
   v8 = PLSyndicationGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218242;
-    v10 = [v6 count];
+    v10 = [identifiersCopy count];
     v11 = 2112;
-    v12 = v7;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[sync.spotlightReceiver] deleteSearchableItemsWithDomainIdentifiers, domainIdentifiersCount:%lu, bundleID:%@", &v9, 0x16u);
   }
 
@@ -89,18 +89,18 @@
   [(PLSyndicationSpotlightReceiver *)self _signalBackgroundProcessingNeededForSPL];
 }
 
-- (void)deleteSearchableItemsWithIdentifiers:(id)a3 bundleID:(id)a4
+- (void)deleteSearchableItemsWithIdentifiers:(id)identifiers bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  dCopy = d;
   v8 = PLSyndicationGetLog();
-  v9 = v6;
+  v9 = identifiersCopy;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v24 = [v6 count];
+    v24 = [identifiersCopy count];
     v25 = 2112;
-    v26 = v7;
+    v26 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[sync.spotlightReceiver] deleteSearchableItemsWithIdentifiers, identifiersCount:%lu, bundleID:%@", buf, 0x16u);
   }
 
@@ -118,14 +118,14 @@
     if (v15)
     {
       v17 = objc_alloc_init(PLXPCTransaction);
-      v18 = [v15 syndicationDeleteManager];
+      syndicationDeleteManager = [v15 syndicationDeleteManager];
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_10000C520;
       v20[3] = &unk_10002D458;
       v21 = v17;
       v19 = v17;
-      [v18 processDeletesForBundleID:v7 identifiers:v9 completion:v20];
+      [syndicationDeleteManager processDeletesForBundleID:dCopy identifiers:v9 completion:v20];
     }
 
     else
@@ -136,7 +136,7 @@
         *buf = 136315650;
         v24 = "[PLSyndicationSpotlightReceiver deleteSearchableItemsWithIdentifiers:bundleID:]";
         v25 = 2114;
-        v26 = v7;
+        v26 = dCopy;
         v27 = 2112;
         v28 = v16;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%s failed to process deletes for bundle ID %{public}@ error %@", buf, 0x20u);
@@ -153,17 +153,17 @@
   [(PLSyndicationSpotlightReceiver *)self _signalBackgroundProcessingNeededForSPL];
 }
 
-- (void)addOrUpdateSearchableItems:(id)a3 bundleID:(id)a4
+- (void)addOrUpdateSearchableItems:(id)items bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  dCopy = d;
   v8 = PLSyndicationGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v15 = [v6 count];
+    v15 = [itemsCopy count];
     v16 = 2112;
-    v17 = v7;
+    v17 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[sync.spotlightReceiver] addOrUpdateSearchableItems, itemCount:%lu, bundleID:%@", buf, 0x16u);
   }
 
@@ -192,8 +192,8 @@
   v10[2] = PLStickersBundleID;
   v2 = [NSArray arrayWithObjects:v10 count:3];
   v3 = PLSyndicationAllEquivalentFileProviderLocalAndCloudBundleIDs();
-  v4 = [v3 allObjects];
-  v5 = [v2 arrayByAddingObjectsFromArray:v4];
+  allObjects = [v3 allObjects];
+  v5 = [v2 arrayByAddingObjectsFromArray:allObjects];
 
   v6 = PLSyndicationGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -218,14 +218,14 @@
   return 0;
 }
 
-- (void)_recordSpotlightUpdateWithDate:(id)a3
+- (void)_recordSpotlightUpdateWithDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = PLSyndicationGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = dateCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[sync.spotlightReceiver] setting most recent update date: %@", &v5, 0xCu);
   }
 
@@ -238,37 +238,37 @@
   [(PLSyndicationSpotlightReceiver *)self _recordSpotlightUpdateWithDate:v3];
 }
 
-- (void)_signalBackgroundProcessingNeededForWellKnownLibraryIdentifier:(int64_t)a3
+- (void)_signalBackgroundProcessingNeededForWellKnownLibraryIdentifier:(int64_t)identifier
 {
   v11 = 0;
-  v4 = [PLLibraryServicesManager runningLibraryServicesManagerForWellKnownPhotoLibraryIdentifier:a3 error:&v11];
+  v4 = [PLLibraryServicesManager runningLibraryServicesManagerForWellKnownPhotoLibraryIdentifier:identifier error:&v11];
   v5 = v11;
-  v6 = [v4 backgroundJobService];
+  backgroundJobService = [v4 backgroundJobService];
 
   v7 = PLSyndicationGetLog();
-  v8 = v7;
-  if (v6)
+  backgroundJobService2 = v7;
+  if (backgroundJobService)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v13 = a3;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[sync.spotlightReceiver] signaling background processing needed due to new spotlight update for library %td", buf, 0xCu);
+      identifierCopy2 = identifier;
+      _os_log_impl(&_mh_execute_header, backgroundJobService2, OS_LOG_TYPE_DEFAULT, "[sync.spotlightReceiver] signaling background processing needed due to new spotlight update for library %td", buf, 0xCu);
     }
 
-    v8 = [v4 backgroundJobService];
-    v9 = [v4 libraryBundle];
+    backgroundJobService2 = [v4 backgroundJobService];
+    libraryBundle = [v4 libraryBundle];
     v10 = +[PLBackgroundJobWorkerTypes maskForSyndicationSync];
-    [v8 signalBackgroundProcessingNeededOnBundle:v9 workerTypes:v10];
+    [backgroundJobService2 signalBackgroundProcessingNeededOnBundle:libraryBundle workerTypes:v10];
   }
 
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218242;
-    v13 = a3;
+    identifierCopy2 = identifier;
     v14 = 2112;
     v15 = v5;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[sync.spotlightReceiver] unable to signal background processing needed for library %td: %@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, backgroundJobService2, OS_LOG_TYPE_ERROR, "[sync.spotlightReceiver] unable to signal background processing needed for library %td: %@", buf, 0x16u);
   }
 }
 
@@ -281,7 +281,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138412290;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[sync.spotlightReceiver] registered syndication spotlight receiver: %@", &v5, 0xCu);
     }
 

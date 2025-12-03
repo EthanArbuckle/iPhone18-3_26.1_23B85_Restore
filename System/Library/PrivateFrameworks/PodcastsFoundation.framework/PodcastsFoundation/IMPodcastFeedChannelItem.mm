@@ -1,5 +1,5 @@
 @interface IMPodcastFeedChannelItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
@@ -11,78 +11,78 @@
   v9.receiver = self;
   v9.super_class = IMPodcastFeedChannelItem;
   v4 = [(IMPodcastFeedChannelItem *)&v9 description];
-  v5 = [(IMPodcastFeedChannelItem *)self name];
-  v6 = [(IMPodcastFeedChannelItem *)self storeId];
-  v7 = [v3 stringWithFormat:@"%@ Name: %@ ID: %@", v4, v5, v6];
+  name = [(IMPodcastFeedChannelItem *)self name];
+  storeId = [(IMPodcastFeedChannelItem *)self storeId];
+  v7 = [v3 stringWithFormat:@"%@ Name: %@ ID: %@", v4, name, storeId];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IMPodcastFeedChannelItem *)self name];
-    v7 = [v5 name];
-    if ((v6 == v7 || [v6 isEqual:v7]) && (v8 = -[IMPodcastFeedChannelItem showCount](self, "showCount"), v8 == objc_msgSend(v5, "showCount")) && (v9 = -[IMPodcastFeedChannelItem availableShowCount](self, "availableShowCount"), v9 == objc_msgSend(v5, "availableShowCount")))
+    v5 = equalCopy;
+    name = [(IMPodcastFeedChannelItem *)self name];
+    name2 = [v5 name];
+    if ((name == name2 || [name isEqual:name2]) && (v8 = -[IMPodcastFeedChannelItem showCount](self, "showCount"), v8 == objc_msgSend(v5, "showCount")) && (v9 = -[IMPodcastFeedChannelItem availableShowCount](self, "availableShowCount"), v9 == objc_msgSend(v5, "availableShowCount")))
     {
-      v10 = [(IMPodcastFeedChannelItem *)self storeId];
-      v11 = [v5 storeId];
-      if (v10 == v11 || [v10 isEqual:v11])
+      storeId = [(IMPodcastFeedChannelItem *)self storeId];
+      storeId2 = [v5 storeId];
+      if (storeId == storeId2 || [storeId isEqual:storeId2])
       {
-        v12 = [(IMPodcastFeedChannelItem *)self displayType];
-        v13 = [v5 displayType];
-        if (v12 == v13 || [v12 isEqual:v13])
+        displayType = [(IMPodcastFeedChannelItem *)self displayType];
+        displayType2 = [v5 displayType];
+        if (displayType == displayType2 || [displayType isEqual:displayType2])
         {
-          v42 = v12;
-          v14 = [(IMPodcastFeedChannelItem *)self artworkURL];
-          v15 = [v5 artworkURL];
-          if (v14 == v15 || [v14 isEqual:v15])
+          v42 = displayType;
+          artworkURL = [(IMPodcastFeedChannelItem *)self artworkURL];
+          artworkURL2 = [v5 artworkURL];
+          if (artworkURL == artworkURL2 || [artworkURL isEqual:artworkURL2])
           {
-            v40 = v13;
-            v41 = v15;
-            v16 = [(IMPodcastFeedChannelItem *)self logoImageURL];
-            v17 = [v5 logoImageURL];
-            if (v16 == v17 || [v16 isEqual:v17])
+            v40 = displayType2;
+            v41 = artworkURL2;
+            logoImageURL = [(IMPodcastFeedChannelItem *)self logoImageURL];
+            logoImageURL2 = [v5 logoImageURL];
+            if (logoImageURL == logoImageURL2 || [logoImageURL isEqual:logoImageURL2])
             {
-              v38 = v10;
-              v39 = v17;
-              v18 = [(IMPodcastFeedChannelItem *)self backgroundColor];
-              v19 = [v5 backgroundColor];
-              v37 = v18;
-              if (v18 == v19 || [v18 isEqual:v19])
+              v38 = storeId;
+              v39 = logoImageURL2;
+              backgroundColor = [(IMPodcastFeedChannelItem *)self backgroundColor];
+              backgroundColor2 = [v5 backgroundColor];
+              v37 = backgroundColor;
+              if (backgroundColor == backgroundColor2 || [backgroundColor isEqual:backgroundColor2])
               {
-                v36 = v19;
+                v36 = backgroundColor2;
                 [(IMPodcastFeedChannelItem *)self logoImageHeight];
                 v21 = v20;
                 [v5 logoImageHeight];
                 if (v21 == v22 && (-[IMPodcastFeedChannelItem logoImageWidth](self, "logoImageWidth"), v24 = v23, [v5 logoImageWidth], v24 == v25))
                 {
-                  v26 = [(IMPodcastFeedChannelItem *)self uberBackgroundImageURL];
-                  v27 = [v5 uberBackgroundImageURL];
-                  if (v26 == v27 || [v26 isEqual:v27])
+                  uberBackgroundImageURL = [(IMPodcastFeedChannelItem *)self uberBackgroundImageURL];
+                  uberBackgroundImageURL2 = [v5 uberBackgroundImageURL];
+                  if (uberBackgroundImageURL == uberBackgroundImageURL2 || [uberBackgroundImageURL isEqual:uberBackgroundImageURL2])
                   {
-                    v28 = [(IMPodcastFeedChannelItem *)self uberBackgroundJoeColor];
-                    v29 = [v5 uberBackgroundJoeColor];
-                    if (v28 == v29)
+                    uberBackgroundJoeColor = [(IMPodcastFeedChannelItem *)self uberBackgroundJoeColor];
+                    uberBackgroundJoeColor2 = [v5 uberBackgroundJoeColor];
+                    if (uberBackgroundJoeColor == uberBackgroundJoeColor2)
                     {
-                      v32 = v28;
+                      v32 = uberBackgroundJoeColor;
                       v33 = 1;
                     }
 
                     else
                     {
-                      v30 = v29;
-                      v31 = [v28 isEqual:v29];
-                      v29 = v30;
-                      v32 = v28;
+                      v30 = uberBackgroundJoeColor2;
+                      v31 = [uberBackgroundJoeColor isEqual:uberBackgroundJoeColor2];
+                      uberBackgroundJoeColor2 = v30;
+                      v32 = uberBackgroundJoeColor;
                       v33 = v31;
                     }
 
-                    v27 = v35;
+                    uberBackgroundImageURL2 = v35;
                   }
 
                   else
@@ -96,7 +96,7 @@
                   v33 = 0;
                 }
 
-                v19 = v36;
+                backgroundColor2 = v36;
               }
 
               else
@@ -104,8 +104,8 @@
                 v33 = 0;
               }
 
-              v10 = v38;
-              v17 = v39;
+              storeId = v38;
+              logoImageURL2 = v39;
             }
 
             else
@@ -113,8 +113,8 @@
               v33 = 0;
             }
 
-            v13 = v40;
-            v15 = v41;
+            displayType2 = v40;
+            artworkURL2 = v41;
           }
 
           else
@@ -122,7 +122,7 @@
             v33 = 0;
           }
 
-          v12 = v42;
+          displayType = v42;
         }
 
         else

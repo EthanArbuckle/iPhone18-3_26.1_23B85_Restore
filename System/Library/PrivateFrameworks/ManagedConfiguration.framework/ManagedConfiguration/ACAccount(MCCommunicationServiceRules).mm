@@ -7,36 +7,36 @@
 
 - (id)communicationServiceRules
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 communicationServiceRules];
+    parentAccount2 = [self parentAccount];
+    communicationServiceRules = [parentAccount2 communicationServiceRules];
   }
 
   else
   {
-    v4 = [a1 accountPropertyForKey:@"MCAccountCommunicationServiceRules"];
+    communicationServiceRules = [self accountPropertyForKey:@"MCAccountCommunicationServiceRules"];
   }
 
-  return v4;
+  return communicationServiceRules;
 }
 
 - (void)setCommunicationServiceRules:()MCCommunicationServiceRules
 {
   v6 = a3;
-  v4 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [a1 parentAccount];
-    [v5 setCommunicationServiceRules:v6];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 setCommunicationServiceRules:v6];
   }
 
   else
   {
-    [a1 setAccountProperty:v6 forKey:@"MCAccountCommunicationServiceRules"];
+    [self setAccountProperty:v6 forKey:@"MCAccountCommunicationServiceRules"];
   }
 }
 

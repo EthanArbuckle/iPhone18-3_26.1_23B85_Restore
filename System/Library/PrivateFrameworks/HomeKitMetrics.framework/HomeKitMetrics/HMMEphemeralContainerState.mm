@@ -9,9 +9,9 @@
 - (BOOL)isActive
 {
   v2 = *(&self->super.isa + OBJC_IVAR___HMMEphemeralContainerState_lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 4);
-  v4 = *(&v3->super.isa + OBJC_IVAR___HMMEphemeralContainerState__isActive);
+  v4 = *(&selfCopy->super.isa + OBJC_IVAR___HMMEphemeralContainerState__isActive);
   os_unfair_lock_unlock(v2 + 4);
 
   return v4;
@@ -19,7 +19,7 @@
 
 - (double)activeDuration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22B0B9CC8();
 
   return v3;

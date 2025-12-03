@@ -1,42 +1,42 @@
 @interface HKGradient
 + (id)defaultGradient;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHKGradient:(id)a3;
-- (HKGradient)initWithColors:(id)a3 locations:(id)a4;
-- (HKGradient)initWithTopColor:(id)a3 bottomColor:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHKGradient:(id)gradient;
+- (HKGradient)initWithColors:(id)colors locations:(id)locations;
+- (HKGradient)initWithTopColor:(id)color bottomColor:(id)bottomColor;
 - (UIColor)bottomColor;
 - (UIColor)topColor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation HKGradient
 
-- (HKGradient)initWithColors:(id)a3 locations:(id)a4
+- (HKGradient)initWithColors:(id)colors locations:(id)locations
 {
-  v7 = a3;
-  v8 = a4;
+  colorsCopy = colors;
+  locationsCopy = locations;
   v12.receiver = self;
   v12.super_class = HKGradient;
   v9 = [(HKGradient *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_colors, a3);
-    objc_storeStrong(&v10->_locations, a4);
+    objc_storeStrong(&v9->_colors, colors);
+    objc_storeStrong(&v10->_locations, locations);
   }
 
   return v10;
 }
 
-- (HKGradient)initWithTopColor:(id)a3 bottomColor:(id)a4
+- (HKGradient)initWithTopColor:(id)color bottomColor:(id)bottomColor
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v12[0] = a3;
-  v12[1] = a4;
+  v12[0] = color;
+  v12[1] = bottomColor;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
+  bottomColorCopy = bottomColor;
+  colorCopy = color;
   v9 = [v6 arrayWithObjects:v12 count:2];
 
   v10 = [(HKGradient *)self initWithColors:v9 locations:&unk_1F4380FE8];
@@ -46,41 +46,41 @@
 + (id)defaultGradient
 {
   v2 = objc_alloc(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] redColor];
-  v4 = [MEMORY[0x1E69DC888] blueColor];
-  v5 = [v2 initWithTopColor:v3 bottomColor:v4];
+  redColor = [MEMORY[0x1E69DC888] redColor];
+  blueColor = [MEMORY[0x1E69DC888] blueColor];
+  v5 = [v2 initWithTopColor:redColor bottomColor:blueColor];
 
   return v5;
 }
 
 - (UIColor)topColor
 {
-  v2 = [(HKGradient *)self colors];
-  v3 = [v2 firstObject];
+  colors = [(HKGradient *)self colors];
+  firstObject = [colors firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (UIColor)bottomColor
 {
-  v2 = [(HKGradient *)self colors];
-  v3 = [v2 lastObject];
+  colors = [(HKGradient *)self colors];
+  lastObject = [colors lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (BOOL)isEqualToHKGradient:(id)a3
+- (BOOL)isEqualToHKGradient:(id)gradient
 {
-  v4 = a3;
-  if (v4)
+  gradientCopy = gradient;
+  if (gradientCopy)
   {
-    v5 = [(HKGradient *)self colors];
-    v6 = [v4 colors];
-    if ([v5 isEqualToArray:v6])
+    colors = [(HKGradient *)self colors];
+    colors2 = [gradientCopy colors];
+    if ([colors isEqualToArray:colors2])
     {
-      v7 = [(HKGradient *)self locations];
-      v8 = [v4 locations];
-      v9 = [v7 isEqualToArray:v8];
+      locations = [(HKGradient *)self locations];
+      locations2 = [gradientCopy locations];
+      v9 = [locations isEqualToArray:locations2];
     }
 
     else
@@ -97,10 +97,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -108,7 +108,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HKGradient *)self isEqualToHKGradient:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HKGradient *)self isEqualToHKGradient:equalCopy];
   }
 
   return v5;
@@ -116,25 +116,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HKGradient *)self colors];
-  v4 = [v3 hash];
-  v5 = [(HKGradient *)self locations];
-  v6 = [v5 hash];
+  colors = [(HKGradient *)self colors];
+  v4 = [colors hash];
+  locations = [(HKGradient *)self locations];
+  v6 = [locations hash];
 
   return v6 ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(HKGradient *)self colors];
-    v7 = [v6 copyWithZone:a3];
+    colors = [(HKGradient *)self colors];
+    v7 = [colors copyWithZone:zone];
     [v5 setColors:v7];
 
-    v8 = [(HKGradient *)self locations];
-    v9 = [v8 copyWithZone:a3];
+    locations = [(HKGradient *)self locations];
+    v9 = [locations copyWithZone:zone];
     [v5 setLocations:v9];
   }
 

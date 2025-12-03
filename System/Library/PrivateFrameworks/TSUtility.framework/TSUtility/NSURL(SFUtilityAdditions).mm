@@ -46,7 +46,7 @@
 
 + (id)relativeURLWithEscapes:()SFUtilityAdditions
 {
-  v1 = [a1 properlyEscapedString:?];
+  v1 = [self properlyEscapedString:?];
   v2 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v1];
 
   return v2;
@@ -54,7 +54,7 @@
 
 + (id)filePathURLWithEscapes:()SFUtilityAdditions
 {
-  v4 = [a1 properlyEscapedString:?];
+  v4 = [self properlyEscapedString:?];
   if ([a3 hasPrefix:@"/"])
   {
     v5 = @"file://localhost";
@@ -72,9 +72,9 @@
 
 - (uint64_t)isRelative
 {
-  if ([objc_msgSend(a1 "relativeString")])
+  if ([objc_msgSend(self "relativeString")])
   {
-    return [objc_msgSend(a1 "path")] ^ 1;
+    return [objc_msgSend(self "path")] ^ 1;
   }
 
   else

@@ -1,9 +1,9 @@
 @interface KMDeltaContactCollector
 - (KMDeltaContactCollector)init;
 - (void)reset;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation KMDeltaContactCollector
@@ -16,32 +16,32 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
   self->_deltaType = 3;
-  v4 = [a3 contactIdentifier];
+  contactIdentifier = [event contactIdentifier];
   contactIdentifier = self->_contactIdentifier;
-  self->_contactIdentifier = v4;
+  self->_contactIdentifier = contactIdentifier;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
   self->_deltaType = 2;
-  v6 = [a3 contact];
-  v4 = [v6 identifier];
+  contact = [event contact];
+  identifier = [contact identifier];
   contactIdentifier = self->_contactIdentifier;
-  self->_contactIdentifier = v4;
+  self->_contactIdentifier = identifier;
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
   self->_deltaType = 1;
-  v6 = [a3 contact];
-  v4 = [v6 identifier];
+  contact = [event contact];
+  identifier = [contact identifier];
   contactIdentifier = self->_contactIdentifier;
-  self->_contactIdentifier = v4;
+  self->_contactIdentifier = identifier;
 }
 
 - (KMDeltaContactCollector)init

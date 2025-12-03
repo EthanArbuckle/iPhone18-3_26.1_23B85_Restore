@@ -1,6 +1,6 @@
 @interface HPRFSeymourSubscriptionProvider
 - (HPRFSeymourSubscriptionProvider)init;
-- (void)fetchSubscriptionStatusWithCompletion:(id)a3;
+- (void)fetchSubscriptionStatusWithCompletion:(id)completion;
 @end
 
 @implementation HPRFSeymourSubscriptionProvider
@@ -22,12 +22,12 @@
   return v4;
 }
 
-- (void)fetchSubscriptionStatusWithCompletion:(id)a3
+- (void)fetchSubscriptionStatusWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_D1E4(sub_EB0C, v5);
 }
 

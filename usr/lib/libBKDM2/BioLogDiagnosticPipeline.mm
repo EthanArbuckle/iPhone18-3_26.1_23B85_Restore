@@ -74,9 +74,9 @@ LABEL_23:
   dispatch_source_set_event_handler(v10, handler);
   dispatch_activate(v3[2]);
 
-  v12 = [MEMORY[0x29EDBFD50] sharedInstance];
+  mEMORY[0x29EDBFD50] = [MEMORY[0x29EDBFD50] sharedInstance];
   userDefaults = v11->_userDefaults;
-  v11->_userDefaults = v12;
+  v11->_userDefaults = mEMORY[0x29EDBFD50];
 
   v14 = v11->_userDefaults;
   if (!v14)
@@ -116,8 +116,8 @@ LABEL_23:
 
   else
   {
-    v22 = [MEMORY[0x29EDB9FB8] defaultManager];
-    v23 = [v22 attributesOfItemAtPath:@"/Library/Logs/BioLog" error:0];
+    defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+    v23 = [defaultManager attributesOfItemAtPath:@"/Library/Logs/BioLog" error:0];
 
     v24 = [v23 objectForKeyedSubscript:*MEMORY[0x29EDB9E40]];
     v25 = v11->_submitFromDate;
@@ -168,25 +168,25 @@ uint64_t __32__BioLogDiagnosticPipeline_init__block_invoke(uint64_t a1)
 - (void)submit
 {
   v79[11] = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8DB0] date];
+  date = [MEMORY[0x29EDB8DB0] date];
   lastSubmitTry = self->_lastSubmitTry;
-  self->_lastSubmitTry = v3;
+  self->_lastSubmitTry = date;
 
-  v68 = v3;
+  v68 = date;
   location = &self->_submitFromDate;
   v70 = self->_submitFromDate;
-  v69 = [MEMORY[0x29EDBA140] UUID];
+  uUID = [MEMORY[0x29EDBA140] UUID];
   v5 = MEMORY[0x29EDBA0F8];
   v6 = +[BLHelper deviceSerialNumberString];
   [(NSDate *)v68 timeIntervalSince1970];
   v8 = v7;
-  v9 = [v69 UUIDString];
-  v64 = [v5 stringWithFormat:@"BioLogMeta_%@_%lu_%@.zip", v6, v8, v9];
+  uUIDString = [uUID UUIDString];
+  v64 = [v5 stringWithFormat:@"BioLogMeta_%@_%lu_%@.zip", v6, v8, uUIDString];
 
   v10 = NSTemporaryDirectory();
   v65 = [v10 stringByAppendingPathComponent:v64];
 
-  v67 = [MEMORY[0x29EDBA098] pipe];
+  pipe = [MEMORY[0x29EDBA098] pipe];
   v11 = objc_alloc_init(MEMORY[0x29EDBA100]);
   v12 = objc_alloc_init(MEMORY[0x29EDBA100]);
   v13 = [MEMORY[0x29EDB8E70] fileURLWithPath:@"/Library/Logs/BioLog"];
@@ -213,7 +213,7 @@ uint64_t __32__BioLogDiagnosticPipeline_init__block_invoke(uint64_t a1)
   v18 = [MEMORY[0x29EDB8D80] arrayWithObjects:v79 count:11];
   [v11 setArguments:v18];
 
-  [v11 setStandardOutput:v67];
+  [v11 setStandardOutput:pipe];
   obj = [MEMORY[0x29EDB8DB0] date];
   if (__osLog_BioLogDiagnosticPipeline)
   {
@@ -239,8 +239,8 @@ uint64_t __32__BioLogDiagnosticPipeline_init__block_invoke(uint64_t a1)
   v76[0] = @"com.apple.pearl.biolog_meta";
   v76[1] = &unk_2A1E038A0;
   v75[2] = @"bundle_id";
-  v20 = [v69 UUIDString];
-  v76[2] = v20;
+  uUIDString2 = [uUID UUIDString];
+  v76[2] = uUIDString2;
   v76[3] = @"iOS";
   v75[3] = @"device_category";
   v75[4] = @"device_serial";
@@ -331,7 +331,7 @@ LABEL_18:
   v39 = [MEMORY[0x29EDB8D80] arrayWithObjects:v74 count:13];
   [v12 setArguments:v39];
 
-  [v12 setStandardInput:v67];
+  [v12 setStandardInput:pipe];
   v72 = 0;
   LOBYTE(v39) = [v12 launchAndReturnError:&v72];
   v40 = v72;
@@ -405,12 +405,12 @@ LABEL_18:
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
       v46 = v45;
-      v47 = [v12 terminationStatus];
-      v48 = [v12 terminationReason];
+      terminationStatus = [v12 terminationStatus];
+      terminationReason = [v12 terminationReason];
       *buf = 67109376;
-      *v78 = v47;
+      *v78 = terminationStatus;
       *&v78[4] = 2048;
-      *&v78[6] = v48;
+      *&v78[6] = terminationReason;
       _os_log_impl(&dword_296CA4000, v46, OS_LOG_TYPE_ERROR, "ERROR: tarTask(find) -> %d (terminationReason:%ld)\n", buf, 0x12u);
     }
 
@@ -438,8 +438,8 @@ LABEL_57:
     goto LABEL_63;
   }
 
-  v49 = [MEMORY[0x29EDB9FB8] defaultManager];
-  v50 = [v49 fileExistsAtPath:v65];
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+  v50 = [defaultManager fileExistsAtPath:v65];
 
   if ((v50 & 1) == 0)
   {

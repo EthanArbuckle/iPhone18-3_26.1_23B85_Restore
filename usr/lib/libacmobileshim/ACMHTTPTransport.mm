@@ -8,20 +8,20 @@
 
 - (void)updateBackgroundTask
 {
-  v3 = [MEMORY[0x29EDC7938] sharedApplication];
-  v4 = [(ACFHTTPTransport *)self hasFinishedServerInvocations];
-  v5 = [(ACMHTTPTransport *)self identifier];
-  v6 = v5;
-  if (v4)
+  mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+  hasFinishedServerInvocations = [(ACFHTTPTransport *)self hasFinishedServerInvocations];
+  identifier = [(ACMHTTPTransport *)self identifier];
+  v6 = identifier;
+  if (hasFinishedServerInvocations)
   {
-    if (v5)
+    if (identifier)
     {
       if (qword_2A1EB8EC8 && (ACFLogSettingsGetLevelMask() & 0x40) != 0)
       {
         ACFLog(6, "[ACMHTTPTransport updateBackgroundTask]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMHTTPTransport.m", 43, 0, "Finishing background task");
       }
 
-      [v3 endBackgroundTask:{-[ACMHTTPTransport identifier](self, "identifier")}];
+      [mEMORY[0x29EDC7938] endBackgroundTask:{-[ACMHTTPTransport identifier](self, "identifier")}];
 
       [(ACMHTTPTransport *)self setIdentifier:0];
     }
@@ -34,7 +34,7 @@
     v7[2] = __40__ACMHTTPTransport_updateBackgroundTask__block_invoke;
     v7[3] = &unk_29EE91778;
     v7[4] = self;
-    -[ACMHTTPTransport setIdentifier:](self, "setIdentifier:", [v3 beginBackgroundTaskWithExpirationHandler:v7]);
+    -[ACMHTTPTransport setIdentifier:](self, "setIdentifier:", [mEMORY[0x29EDC7938] beginBackgroundTaskWithExpirationHandler:v7]);
     if (v6)
     {
       if (qword_2A1EB8EC8 && (ACFLogSettingsGetLevelMask() & 0x40) != 0)
@@ -42,7 +42,7 @@
         ACFLog(6, "[ACMHTTPTransport updateBackgroundTask]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMHTTPTransport.m", 33, 0, "Relaunched background task");
       }
 
-      [v3 endBackgroundTask:v6];
+      [mEMORY[0x29EDC7938] endBackgroundTask:v6];
     }
 
     else if (qword_2A1EB8EC8 && (ACFLogSettingsGetLevelMask() & 0x40) != 0)

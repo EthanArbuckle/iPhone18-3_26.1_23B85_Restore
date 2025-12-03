@@ -1,26 +1,26 @@
 @interface SXComponentNode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)dependencies;
 - (id)description;
 - (uint64_t)addComponentDependency:(uint64_t)result;
-- (uint64_t)hasDependencyToComponentIdentifier:(uint64_t)a3 attribute:;
-- (void)initWithComponentIdentifier:(uint64_t)a3 andAttribute:;
+- (uint64_t)hasDependencyToComponentIdentifier:(uint64_t)identifier attribute:;
+- (void)initWithComponentIdentifier:(uint64_t)identifier andAttribute:;
 @end
 
 @implementation SXComponentNode
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4->_attribute == self->_attribute)
+  else if (equalCopy->_attribute == self->_attribute)
   {
-    v6 = [(NSString *)v4->_componentIdentifier isEqualToString:self->_componentIdentifier];
+    v6 = [(NSString *)equalCopy->_componentIdentifier isEqualToString:self->_componentIdentifier];
   }
 
   else
@@ -53,34 +53,34 @@
   return v8;
 }
 
-- (void)initWithComponentIdentifier:(uint64_t)a3 andAttribute:
+- (void)initWithComponentIdentifier:(uint64_t)identifier andAttribute:
 {
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = SXComponentNode;
     v7 = objc_msgSendSuper2(&v15, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       objc_storeStrong(v7 + 1, a2);
-      a1[2] = a3;
+      self[2] = identifier;
       v8 = [MEMORY[0x1E695DFA8] set];
-      v9 = a1[3];
-      a1[3] = v8;
+      v9 = self[3];
+      self[3] = v8;
 
       v10 = [MEMORY[0x1E695DFA8] set];
-      v11 = a1[4];
-      a1[4] = v10;
+      v11 = self[4];
+      self[4] = v10;
 
       v12 = [MEMORY[0x1E695DFA8] set];
-      v13 = a1[5];
-      a1[5] = v12;
+      v13 = self[5];
+      self[5] = v12;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)addComponentDependency:(uint64_t)result
@@ -119,30 +119,30 @@ LABEL_6:
 
 - (id)dependencies
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[3];
+    self = self[3];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)hasDependencyToComponentIdentifier:(uint64_t)a3 attribute:
+- (uint64_t)hasDependencyToComponentIdentifier:(uint64_t)identifier attribute:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = 40;
-    if (a3 == 1)
+    if (identifier == 1)
     {
       v6 = 32;
     }
 
-    a1 = [*(a1 + v6) containsObject:v5];
+    self = [*(self + v6) containsObject:v5];
   }
 
-  return a1;
+  return self;
 }
 
 @end

@@ -1,40 +1,40 @@
 @interface PRPosterHomePosterHomeScreenAppearance
-- (BOOL)isEqual:(id)a3;
-- (PRPosterHomePosterHomeScreenAppearance)initWithBSXPCCoder:(id)a3;
-- (PRPosterHomePosterHomeScreenAppearance)initWithCoder:(id)a3;
-- (PRPosterHomePosterHomeScreenAppearance)initWithLegibilityBlurEnabled:(BOOL)a3 allowsModifyingLegibilityBlur:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (PRPosterHomePosterHomeScreenAppearance)initWithBSXPCCoder:(id)coder;
+- (PRPosterHomePosterHomeScreenAppearance)initWithCoder:(id)coder;
+- (PRPosterHomePosterHomeScreenAppearance)initWithLegibilityBlurEnabled:(BOOL)enabled allowsModifyingLegibilityBlur:(BOOL)blur;
 - (id)copyByTogglingLegibilityBlurEnabled;
-- (id)copyWithLegibilityBlurEnabled:(BOOL)a3;
+- (id)copyWithLegibilityBlurEnabled:(BOOL)enabled;
 - (id)description;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterHomePosterHomeScreenAppearance
 
-- (PRPosterHomePosterHomeScreenAppearance)initWithLegibilityBlurEnabled:(BOOL)a3 allowsModifyingLegibilityBlur:(BOOL)a4
+- (PRPosterHomePosterHomeScreenAppearance)initWithLegibilityBlurEnabled:(BOOL)enabled allowsModifyingLegibilityBlur:(BOOL)blur
 {
   v7.receiver = self;
   v7.super_class = PRPosterHomePosterHomeScreenAppearance;
   result = [(PRPosterHomePosterHomeScreenAppearance *)&v7 init];
   if (result)
   {
-    result->_legibilityBlurEnabled = a3;
-    result->_allowsModifyingLegibilityBlur = a4;
+    result->_legibilityBlurEnabled = enabled;
+    result->_allowsModifyingLegibilityBlur = blur;
   }
 
   return result;
 }
 
-- (id)copyWithLegibilityBlurEnabled:(BOOL)a3
+- (id)copyWithLegibilityBlurEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(PRPosterHomePosterHomeScreenAppearance *)self allowsModifyingLegibilityBlur];
+  allowsModifyingLegibilityBlur = [(PRPosterHomePosterHomeScreenAppearance *)self allowsModifyingLegibilityBlur];
 
-  return [v5 initWithLegibilityBlurEnabled:v3 allowsModifyingLegibilityBlur:v6];
+  return [v5 initWithLegibilityBlurEnabled:enabledCopy allowsModifyingLegibilityBlur:allowsModifyingLegibilityBlur];
 }
 
 - (id)copyByTogglingLegibilityBlurEnabled
@@ -44,10 +44,10 @@
   return [(PRPosterHomePosterHomeScreenAppearance *)self copyWithLegibilityBlurEnabled:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -95,7 +95,7 @@
   v8 = 3221225472;
   v9 = __53__PRPosterHomePosterHomeScreenAppearance_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -104,20 +104,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[PRPosterHomePosterHomeScreenAppearance isLegibilityBlurEnabled](self forKey:{"isLegibilityBlurEnabled"), @"legibilityBlurEnabled"}];
-  [v4 encodeBool:-[PRPosterHomePosterHomeScreenAppearance allowsModifyingLegibilityBlur](self forKey:{"allowsModifyingLegibilityBlur"), @"allowsModifyingLegibilityBlur"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[PRPosterHomePosterHomeScreenAppearance isLegibilityBlurEnabled](self forKey:{"isLegibilityBlurEnabled"), @"legibilityBlurEnabled"}];
+  [coderCopy encodeBool:-[PRPosterHomePosterHomeScreenAppearance allowsModifyingLegibilityBlur](self forKey:{"allowsModifyingLegibilityBlur"), @"allowsModifyingLegibilityBlur"}];
 }
 
-- (PRPosterHomePosterHomeScreenAppearance)initWithCoder:(id)a3
+- (PRPosterHomePosterHomeScreenAppearance)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"legibilityBlurEnabled"];
-  if ([v4 containsValueForKey:@"allowsModifyingLegibilityBlur"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"legibilityBlurEnabled"];
+  if ([coderCopy containsValueForKey:@"allowsModifyingLegibilityBlur"])
   {
-    v6 = [v4 decodeBoolForKey:@"allowsModifyingLegibilityBlur"];
+    v6 = [coderCopy decodeBoolForKey:@"allowsModifyingLegibilityBlur"];
   }
 
   else
@@ -130,20 +130,20 @@
   return v7;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[PRPosterHomePosterHomeScreenAppearance isLegibilityBlurEnabled](self forKey:{"isLegibilityBlurEnabled"), @"legibilityBlurEnabled"}];
-  [v4 encodeBool:-[PRPosterHomePosterHomeScreenAppearance allowsModifyingLegibilityBlur](self forKey:{"allowsModifyingLegibilityBlur"), @"allowsModifyingLegibilityBlur"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[PRPosterHomePosterHomeScreenAppearance isLegibilityBlurEnabled](self forKey:{"isLegibilityBlurEnabled"), @"legibilityBlurEnabled"}];
+  [coderCopy encodeBool:-[PRPosterHomePosterHomeScreenAppearance allowsModifyingLegibilityBlur](self forKey:{"allowsModifyingLegibilityBlur"), @"allowsModifyingLegibilityBlur"}];
 }
 
-- (PRPosterHomePosterHomeScreenAppearance)initWithBSXPCCoder:(id)a3
+- (PRPosterHomePosterHomeScreenAppearance)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"legibilityBlurEnabled"];
-  if ([v4 containsValueForKey:@"allowsModifyingLegibilityBlur"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"legibilityBlurEnabled"];
+  if ([coderCopy containsValueForKey:@"allowsModifyingLegibilityBlur"])
   {
-    v6 = [v4 decodeBoolForKey:@"allowsModifyingLegibilityBlur"];
+    v6 = [coderCopy decodeBoolForKey:@"allowsModifyingLegibilityBlur"];
   }
 
   else
@@ -156,11 +156,11 @@
   return v7;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  v4 = [v6 appendBool:-[PRPosterHomePosterHomeScreenAppearance isLegibilityBlurEnabled](self withName:{"isLegibilityBlurEnabled"), @"legibilityBlurEnabled"}];
-  v5 = [v6 appendBool:-[PRPosterHomePosterHomeScreenAppearance allowsModifyingLegibilityBlur](self withName:{"allowsModifyingLegibilityBlur"), @"allowsModifyingLegibilityBlur"}];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendBool:-[PRPosterHomePosterHomeScreenAppearance isLegibilityBlurEnabled](self withName:{"isLegibilityBlurEnabled"), @"legibilityBlurEnabled"}];
+  v5 = [formatterCopy appendBool:-[PRPosterHomePosterHomeScreenAppearance allowsModifyingLegibilityBlur](self withName:{"allowsModifyingLegibilityBlur"), @"allowsModifyingLegibilityBlur"}];
 }
 
 @end

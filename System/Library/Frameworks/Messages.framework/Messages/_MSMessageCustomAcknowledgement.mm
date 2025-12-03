@@ -1,61 +1,61 @@
 @interface _MSMessageCustomAcknowledgement
-- (_MSMessageCustomAcknowledgement)initWithCoder:(id)a3;
-- (_MSMessageCustomAcknowledgement)initWithSession:(id)a3 isFromMe:(BOOL)a4 time:(id)a5;
-- (id)_payloadDataFromAppName:(id)a3 adamID:(id)a4;
-- (id)_pluginPayloadWithSelectedMessage:(id)a3 appName:(id)a4 adamID:(id)a5;
+- (_MSMessageCustomAcknowledgement)initWithCoder:(id)coder;
+- (_MSMessageCustomAcknowledgement)initWithSession:(id)session isFromMe:(BOOL)me time:(id)time;
+- (id)_payloadDataFromAppName:(id)name adamID:(id)d;
+- (id)_pluginPayloadWithSelectedMessage:(id)message appName:(id)name adamID:(id)d;
 - (id)_sanitizedCopy;
 - (id)_shallowCopy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setURL:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setURL:(id)l;
 @end
 
 @implementation _MSMessageCustomAcknowledgement
 
-- (_MSMessageCustomAcknowledgement)initWithSession:(id)a3 isFromMe:(BOOL)a4 time:(id)a5
+- (_MSMessageCustomAcknowledgement)initWithSession:(id)session isFromMe:(BOOL)me time:(id)time
 {
-  v9 = a3;
-  v10 = a5;
+  sessionCopy = session;
+  timeCopy = time;
   v14.receiver = self;
   v14.super_class = _MSMessageCustomAcknowledgement;
   v11 = [(_MSMessageCustomAcknowledgement *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_session, a3);
-    v12->_isFromMe = a4;
-    objc_storeStrong(&v12->_time, a5);
+    objc_storeStrong(&v11->_session, session);
+    v12->_isFromMe = me;
+    objc_storeStrong(&v12->_time, time);
   }
 
   return v12;
 }
 
-- (_MSMessageCustomAcknowledgement)initWithCoder:(id)a3
+- (_MSMessageCustomAcknowledgement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = _MSMessageCustomAcknowledgement;
   v5 = [(_MSMessageCustomAcknowledgement *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"session"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"session"];
     session = v5->_session;
     v5->_session = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"time"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"time"];
     time = v5->_time;
     v5->_time = v10;
 
-    v5->_isFromMe = [v4 decodeBoolForKey:@"isFromMe"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderPID"];
+    v5->_isFromMe = [coderCopy decodeBoolForKey:@"isFromMe"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderPID"];
     senderParticipantIdentifier = v5->_senderParticipantIdentifier;
     v5->_senderParticipantIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderAddress"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderAddress"];
     senderAddress = v5->_senderAddress;
     v5->_senderAddress = v14;
   }
@@ -63,43 +63,43 @@
   return v5;
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   URL = self->_URL;
   p_URL = &self->_URL;
-  v17 = v5;
+  v17 = lCopy;
   if (([(NSURL *)URL isEqual:?]& 1) == 0)
   {
-    v8 = [v17 scheme];
-    if (!v8)
+    scheme = [v17 scheme];
+    if (!scheme)
     {
 LABEL_7:
-      objc_storeStrong(p_URL, a3);
+      objc_storeStrong(p_URL, l);
       goto LABEL_8;
     }
 
-    v9 = v8;
-    v10 = [v17 scheme];
-    v11 = [v10 lowercaseString];
-    if ([v11 isEqualToString:@"http"])
+    v9 = scheme;
+    scheme2 = [v17 scheme];
+    lowercaseString = [scheme2 lowercaseString];
+    if ([lowercaseString isEqualToString:@"http"])
     {
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    v12 = [v17 scheme];
-    v13 = [v12 lowercaseString];
-    if ([v13 isEqualToString:@"https"])
+    scheme3 = [v17 scheme];
+    lowercaseString2 = [scheme3 lowercaseString];
+    if ([lowercaseString2 isEqualToString:@"https"])
     {
 
       goto LABEL_6;
     }
 
-    v14 = [v17 scheme];
-    v15 = [v14 lowercaseString];
-    v16 = [v15 isEqualToString:@"data"];
+    scheme4 = [v17 scheme];
+    lowercaseString3 = [scheme4 lowercaseString];
+    v16 = [lowercaseString3 isEqualToString:@"data"];
 
     if (v16)
     {
@@ -110,11 +110,11 @@ LABEL_6:
 LABEL_8:
 }
 
-- (id)_pluginPayloadWithSelectedMessage:(id)a3 appName:(id)a4 adamID:(id)a5
+- (id)_pluginPayloadWithSelectedMessage:(id)message appName:(id)name adamID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  nameCopy = name;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2050000000;
@@ -149,7 +149,7 @@ LABEL_8:
   }
 
   v15 = objc_alloc_init(v11);
-  v16 = [(_MSMessageCustomAcknowledgement *)self _payloadDataFromAppName:v9 adamID:v10];
+  v16 = [(_MSMessageCustomAcknowledgement *)self _payloadDataFromAppName:nameCopy adamID:dCopy];
   if (v16)
   {
     [v15 setData:v16];
@@ -157,27 +157,27 @@ LABEL_8:
 
   [v15 setShouldExpire:0];
   [v15 setCustomAcknowledgement:1];
-  v17 = [v8 guid];
-  [v15 setAssociatedMessageGUID:v17];
+  guid = [messageCopy guid];
+  [v15 setAssociatedMessageGUID:guid];
 
-  [v15 setRequiresValidation:{objc_msgSend(v8, "requiresValidation")}];
+  [v15 setRequiresValidation:{objc_msgSend(messageCopy, "requiresValidation")}];
 
   return v15;
 }
 
-- (id)_payloadDataFromAppName:(id)a3 adamID:(id)a4
+- (id)_payloadDataFromAppName:(id)name adamID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [(_MSMessageCustomAcknowledgement *)self session];
-  v10 = [v9 identifier];
+  nameCopy = name;
+  dCopy = d;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  session = [(_MSMessageCustomAcknowledgement *)self session];
+  identifier = [session identifier];
 
-  if (v10)
+  if (identifier)
   {
-    v11 = [(_MSMessageCustomAcknowledgement *)self session];
-    v12 = [v11 identifier];
-    [v8 setObject:v12 forKey:*MEMORY[0x1E69A6F18]];
+    session2 = [(_MSMessageCustomAcknowledgement *)self session];
+    identifier2 = [session2 identifier];
+    [dictionary setObject:identifier2 forKey:*MEMORY[0x1E69A6F18]];
   }
 
   v13 = [(_MSMessageCustomAcknowledgement *)self URL];
@@ -185,45 +185,45 @@ LABEL_8:
   if (v13)
   {
     v14 = [(_MSMessageCustomAcknowledgement *)self URL];
-    [v8 setObject:v14 forKey:*MEMORY[0x1E69A6F10]];
+    [dictionary setObject:v14 forKey:*MEMORY[0x1E69A6F10]];
   }
 
-  v15 = [(_MSMessageCustomAcknowledgement *)self accessibilityLabel];
+  accessibilityLabel = [(_MSMessageCustomAcknowledgement *)self accessibilityLabel];
 
-  if (v15)
+  if (accessibilityLabel)
   {
-    v16 = [(_MSMessageCustomAcknowledgement *)self accessibilityLabel];
-    [v8 setObject:v16 forKey:*MEMORY[0x1E69A6EA8]];
+    accessibilityLabel2 = [(_MSMessageCustomAcknowledgement *)self accessibilityLabel];
+    [dictionary setObject:accessibilityLabel2 forKey:*MEMORY[0x1E69A6EA8]];
   }
 
-  if (v6)
+  if (nameCopy)
   {
-    [v8 setObject:v6 forKey:*MEMORY[0x1E69A6EC0]];
+    [dictionary setObject:nameCopy forKey:*MEMORY[0x1E69A6EC0]];
   }
 
-  if (v7)
+  if (dCopy)
   {
-    [v8 setObject:v7 forKey:*MEMORY[0x1E69A6EB0]];
+    [dictionary setObject:dCopy forKey:*MEMORY[0x1E69A6EB0]];
   }
 
-  v17 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+  v17 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dictionary requiringSecureCoding:1 error:0];
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [_MSMessageCustomAcknowledgement allocWithZone:?];
-  v6 = [(_MSMessageCustomAcknowledgement *)self session];
-  v7 = [(_MSMessageCustomAcknowledgement *)v5 initWithSession:v6 isFromMe:self->_isFromMe time:self->_time];
+  session = [(_MSMessageCustomAcknowledgement *)self session];
+  v7 = [(_MSMessageCustomAcknowledgement *)v5 initWithSession:session isFromMe:self->_isFromMe time:self->_time];
 
-  v8 = [(NSURL *)self->_URL copyWithZone:a3];
+  v8 = [(NSURL *)self->_URL copyWithZone:zone];
   [(_MSMessageCustomAcknowledgement *)v7 setURL:v8];
 
-  v9 = [(NSUUID *)self->_senderParticipantIdentifier copyWithZone:a3];
+  v9 = [(NSUUID *)self->_senderParticipantIdentifier copyWithZone:zone];
   [(_MSMessageCustomAcknowledgement *)v7 setSenderParticipantIdentifier:v9];
 
-  v10 = [(NSString *)self->_senderAddress copyWithZone:a3];
+  v10 = [(NSString *)self->_senderAddress copyWithZone:zone];
   [(_MSMessageCustomAcknowledgement *)v7 setSenderAddress:v10];
 
   return v7;
@@ -239,24 +239,24 @@ LABEL_8:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   session = self->_session;
-  v5 = a3;
-  [v5 encodeObject:session forKey:@"session"];
-  [v5 encodeObject:self->_URL forKey:@"URL"];
-  [v5 encodeObject:self->_time forKey:@"time"];
-  [v5 encodeBool:self->_isFromMe forKey:@"isFromMe"];
-  [v5 encodeObject:self->_senderParticipantIdentifier forKey:@"senderPID"];
-  [v5 encodeObject:self->_senderAddress forKey:@"senderAddress"];
+  coderCopy = coder;
+  [coderCopy encodeObject:session forKey:@"session"];
+  [coderCopy encodeObject:self->_URL forKey:@"URL"];
+  [coderCopy encodeObject:self->_time forKey:@"time"];
+  [coderCopy encodeBool:self->_isFromMe forKey:@"isFromMe"];
+  [coderCopy encodeObject:self->_senderParticipantIdentifier forKey:@"senderPID"];
+  [coderCopy encodeObject:self->_senderAddress forKey:@"senderAddress"];
 }
 
 - (id)_sanitizedCopy
 {
-  v2 = [(_MSMessageCustomAcknowledgement *)self _shallowCopy];
-  [v2 _sanitize];
+  _shallowCopy = [(_MSMessageCustomAcknowledgement *)self _shallowCopy];
+  [_shallowCopy _sanitize];
 
-  return v2;
+  return _shallowCopy;
 }
 
 - (void)_pluginPayloadWithSelectedMessage:(objc_class *)a1 appName:(NSObject *)a2 adamID:.cold.1(objc_class *a1, NSObject *a2)

@@ -1,19 +1,19 @@
 @interface CKCloudKitAccountRepairController
 - (Class)authenticationContextClass;
 - (id)AKSecurityUpgradeContextMessages;
-- (id)CDPUIDeviceToDeviceEncryptionHelperWithPresentingViewController:(id)a3;
+- (id)CDPUIDeviceToDeviceEncryptionHelperWithPresentingViewController:(id)controller;
 - (id)accountStore;
 - (id)authenticationContext;
 - (id)primaryAppleAccount;
-- (void)beginRepairWithPresentingViewController:(id)a3 completion:(id)a4;
-- (void)deviceToDeviceEncryptionHelper:(id)a3 shouldContinueUpgradingUserToHSA2WithCompletion:(id)a4;
+- (void)beginRepairWithPresentingViewController:(id)controller completion:(id)completion;
+- (void)deviceToDeviceEncryptionHelper:(id)helper shouldContinueUpgradingUserToHSA2WithCompletion:(id)completion;
 @end
 
 @implementation CKCloudKitAccountRepairController
 
-- (id)CDPUIDeviceToDeviceEncryptionHelperWithPresentingViewController:(id)a3
+- (id)CDPUIDeviceToDeviceEncryptionHelperWithPresentingViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   if (CDPUIDeviceToDeviceEncryptionHelperWithPresentingViewController__onceToken != -1)
   {
     [CKCloudKitAccountRepairController CDPUIDeviceToDeviceEncryptionHelperWithPresentingViewController:];
@@ -21,7 +21,7 @@
 
   if (CDPUIDeviceToDeviceEncryptionHelperWithPresentingViewController__sClass)
   {
-    v4 = [[CDPUIDeviceToDeviceEncryptionHelperWithPresentingViewController__sClass alloc] initWithPresentingViewController:v3];
+    v4 = [[CDPUIDeviceToDeviceEncryptionHelperWithPresentingViewController__sClass alloc] initWithPresentingViewController:controllerCopy];
   }
 
   else
@@ -121,12 +121,12 @@ void __69__CKCloudKitAccountRepairController_AKSecurityUpgradeContextMessages__b
 
 - (id)primaryAppleAccount
 {
-  v2 = [(CKCloudKitAccountRepairController *)self accountStore];
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = v3;
-  if (v3)
+  accountStore = [(CKCloudKitAccountRepairController *)self accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
+  v4 = aa_primaryAppleAccount;
+  if (aa_primaryAppleAccount)
   {
-    v5 = v3;
+    v5 = aa_primaryAppleAccount;
   }
 
   else if (IMOSLoggingEnabled())
@@ -177,20 +177,20 @@ uint64_t __63__CKCloudKitAccountRepairController_authenticationContextClass__blo
 
 - (id)authenticationContext
 {
-  v3 = [(CKCloudKitAccountRepairController *)self primaryAppleAccount];
-  if (!v3 || (v4 = [(CKCloudKitAccountRepairController *)self authenticationContextClass]) == 0)
+  primaryAppleAccount = [(CKCloudKitAccountRepairController *)self primaryAppleAccount];
+  if (!primaryAppleAccount || (v4 = [(CKCloudKitAccountRepairController *)self authenticationContextClass]) == 0)
   {
     v10 = 0;
     goto LABEL_17;
   }
 
   v5 = objc_alloc_init(v4);
-  v6 = [v3 aa_altDSID];
-  [v5 setAltDSID:v6];
+  aa_altDSID = [primaryAppleAccount aa_altDSID];
+  [v5 setAltDSID:aa_altDSID];
 
-  v7 = [v5 altDSID];
+  altDSID = [v5 altDSID];
 
-  if (!v7)
+  if (!altDSID)
   {
     if (IMOSLoggingEnabled())
     {
@@ -212,12 +212,12 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v8 = [(CKCloudKitAccountRepairController *)self AKSecurityUpgradeContextMessages];
-  [v5 setSecurityUpgradeContext:v8];
+  aKSecurityUpgradeContextMessages = [(CKCloudKitAccountRepairController *)self AKSecurityUpgradeContextMessages];
+  [v5 setSecurityUpgradeContext:aKSecurityUpgradeContextMessages];
 
-  v9 = [v5 securityUpgradeContext];
+  securityUpgradeContext = [v5 securityUpgradeContext];
 
-  if (!v9)
+  if (!securityUpgradeContext)
   {
     if (IMOSLoggingEnabled())
     {
@@ -244,13 +244,13 @@ LABEL_17:
   return v10;
 }
 
-- (void)beginRepairWithPresentingViewController:(id)a3 completion:(id)a4
+- (void)beginRepairWithPresentingViewController:(id)controller completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKCloudKitAccountRepairController *)self encryptionHelper];
-  if (v8)
+  controllerCopy = controller;
+  completionCopy = completion;
+  encryptionHelper = [(CKCloudKitAccountRepairController *)self encryptionHelper];
+  if (encryptionHelper)
   {
     if (IMOSLoggingEnabled())
     {
@@ -262,22 +262,22 @@ LABEL_17:
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
   else
   {
-    v10 = [(CKCloudKitAccountRepairController *)self authenticationContext];
-    v11 = [(CKCloudKitAccountRepairController *)self CDPUIDeviceToDeviceEncryptionHelperWithPresentingViewController:v6];
+    authenticationContext = [(CKCloudKitAccountRepairController *)self authenticationContext];
+    v11 = [(CKCloudKitAccountRepairController *)self CDPUIDeviceToDeviceEncryptionHelperWithPresentingViewController:controllerCopy];
     [(CKCloudKitAccountRepairController *)self setEncryptionHelper:v11];
 
-    v12 = [(CKCloudKitAccountRepairController *)self encryptionHelper];
+    encryptionHelper2 = [(CKCloudKitAccountRepairController *)self encryptionHelper];
 
     v13 = IMOSLoggingEnabled();
-    if (v12 && v10)
+    if (encryptionHelper2 && authenticationContext)
     {
       if (v13)
       {
@@ -297,14 +297,14 @@ LABEL_17:
       aBlock[2] = __88__CKCloudKitAccountRepairController_beginRepairWithPresentingViewController_completion___block_invoke;
       aBlock[3] = &unk_1E72F0178;
       aBlock[4] = self;
-      v23 = v6;
-      v24 = v7;
+      v23 = controllerCopy;
+      v24 = completionCopy;
       v17 = _Block_copy(aBlock);
-      v18 = [(CKCloudKitAccountRepairController *)self encryptionHelper];
-      [v18 setDelegate:self];
+      encryptionHelper3 = [(CKCloudKitAccountRepairController *)self encryptionHelper];
+      [encryptionHelper3 setDelegate:self];
 
-      v19 = [(CKCloudKitAccountRepairController *)self encryptionHelper];
-      [v19 performDeviceToDeviceEncryptionStateRepairForContext:v10 withCompletion:v17];
+      encryptionHelper4 = [(CKCloudKitAccountRepairController *)self encryptionHelper];
+      [encryptionHelper4 performDeviceToDeviceEncryptionStateRepairForContext:authenticationContext withCompletion:v17];
     }
 
     else
@@ -319,13 +319,13 @@ LABEL_17:
         }
       }
 
-      v21 = [(CKCloudKitAccountRepairController *)self encryptionHelper];
-      [v21 setDelegate:0];
+      encryptionHelper5 = [(CKCloudKitAccountRepairController *)self encryptionHelper];
+      [encryptionHelper5 setDelegate:0];
 
       [(CKCloudKitAccountRepairController *)self setEncryptionHelper:0];
-      if (v7)
+      if (completionCopy)
       {
-        (*(v7 + 2))(v7, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
       }
     }
   }
@@ -369,11 +369,11 @@ void __88__CKCloudKitAccountRepairController_beginRepairWithPresentingViewContro
   }
 }
 
-- (void)deviceToDeviceEncryptionHelper:(id)a3 shouldContinueUpgradingUserToHSA2WithCompletion:(id)a4
+- (void)deviceToDeviceEncryptionHelper:(id)helper shouldContinueUpgradingUserToHSA2WithCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 

@@ -1,16 +1,16 @@
 @interface _LSTypeEnumerator
-- (BOOL)_getObject:(id *)a3 atIndex:(unint64_t)a4 context:(LSContext *)a5;
-- (BOOL)_prepareWithContext:(LSContext *)a3 error:(id *)a4;
+- (BOOL)_getObject:(id *)object atIndex:(unint64_t)index context:(LSContext *)context;
+- (BOOL)_prepareWithContext:(LSContext *)context error:(id *)error;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _LSTypeEnumerator
 
-- (BOOL)_prepareWithContext:(LSContext *)a3 error:(id *)a4
+- (BOOL)_prepareWithContext:(LSContext *)context error:(id *)error
 {
   v6 = objc_autoreleasePoolPush();
-  db = a3->db;
+  db = context->db;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47___LSTypeEnumerator__prepareWithContext_error___block_invoke;
@@ -21,29 +21,29 @@
   return 1;
 }
 
-- (BOOL)_getObject:(id *)a3 atIndex:(unint64_t)a4 context:(LSContext *)a5
+- (BOOL)_getObject:(id *)object atIndex:(unint64_t)index context:(LSContext *)context
 {
   begin = self->_typeIDs.__begin_;
   v7 = self->_typeIDs.__end_ - begin;
-  if (v7 > a4)
+  if (v7 > index)
   {
-    v10 = begin[a4];
-    if (_UTTypeGet(a5->db))
+    v10 = begin[index];
+    if (_UTTypeGet(context->db))
     {
-      v11 = [(LSRecord *)[_UTDeclaredTypeRecord alloc] _initWithContext:a5 tableID:*([(_LSDatabase *)a5->db schema]+ 16) unitID:v10];
-      v12 = *a3;
-      *a3 = v11;
+      v11 = [(LSRecord *)[_UTDeclaredTypeRecord alloc] _initWithContext:context tableID:*([(_LSDatabase *)context->db schema]+ 16) unitID:v10];
+      v12 = *object;
+      *object = v11;
     }
   }
 
-  return v7 > a4;
+  return v7 > index;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = _LSTypeEnumerator;
-  v4 = [(_LSDBEnumerator *)&v8 copyWithZone:a3];
+  v4 = [(_LSDBEnumerator *)&v8 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

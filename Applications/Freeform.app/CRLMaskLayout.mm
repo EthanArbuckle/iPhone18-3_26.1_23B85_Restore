@@ -2,27 +2,27 @@
 - (BOOL)hasSmartPath;
 - (BOOL)shouldDisplayGuides;
 - (BOOL)shouldSnapWhileResizing;
-- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)a3;
+- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)space;
 - (CGAffineTransform)originalTransformForProvidingGuides;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
 - (CGRect)alignmentFrame;
 - (CGRect)alignmentFrameForProvidingGuidesInRoot;
 - (CGRect)p_cachedTightPathBounds;
 - (CGRect)p_cachedTightPathBoundsNoScale;
 - (CGRect)pathBounds;
-- (CRLMaskLayout)initWithInfo:(id)a3;
-- (id)computeInfoGeometryFromPureLayoutGeometry:(id)a3;
+- (CRLMaskLayout)initWithInfo:(id)info;
+- (id)computeInfoGeometryFromPureLayoutGeometry:(id)geometry;
 - (id)computeLayoutGeometry;
 - (id)dependentLayouts;
 - (id)infoGeometry;
 - (id)maskInfo;
 - (id)pathSource;
 - (unint64_t)numberOfControlKnobs;
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3;
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands;
 - (void)dealloc;
-- (void)dragBy:(CGPoint)a3;
+- (void)dragBy:(CGPoint)by;
 - (void)dynamicMovePathKnobDidBegin;
-- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)a3 withTracker:(id)a4;
+- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)to withTracker:(id)tracker;
 - (void)endDynamicOperation;
 - (void)invalidate;
 - (void)invalidatePath;
@@ -30,28 +30,28 @@
 - (void)p_calculateTightPathBoundsIfNecessary;
 - (void)p_createDynamicCopies;
 - (void)p_destroyDynamicCopies;
-- (void)p_setDynamicInfoGeometry:(id)a3;
-- (void)processChangedProperty:(unint64_t)a3;
+- (void)p_setDynamicInfoGeometry:(id)geometry;
+- (void)processChangedProperty:(unint64_t)property;
 - (void)resetDynamicGeometryToModel;
-- (void)resizeWithTransform:(CGAffineTransform *)a3;
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4;
-- (void)setPathScale:(double)a3;
-- (void)takeScaledMaskGeometry:(id)a3;
+- (void)resizeWithTransform:(CGAffineTransform *)transform;
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point;
+- (void)setPathScale:(double)scale;
+- (void)takeScaledMaskGeometry:(id)geometry;
 @end
 
 @implementation CRLMaskLayout
 
-- (CRLMaskLayout)initWithInfo:(id)a3
+- (CRLMaskLayout)initWithInfo:(id)info
 {
   v7.receiver = self;
   v7.super_class = CRLMaskLayout;
-  v3 = [(CRLCanvasLayout *)&v7 initWithInfo:a3];
+  v3 = [(CRLCanvasLayout *)&v7 initWithInfo:info];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CRLMaskLayout *)v3 maskInfo];
+    maskInfo = [(CRLMaskLayout *)v3 maskInfo];
 
-    if (v5)
+    if (maskInfo)
     {
       BYTE2(v4->super.mInfoGeometryBeforeDynamicOperation) |= 3u;
       *(&v4->mCachedTightPathBoundsNoScale.size.height + 2) = 1.0;
@@ -79,8 +79,8 @@
 
 - (id)dependentLayouts
 {
-  v2 = [(CRLCanvasAbstractLayout *)self parent];
-  v3 = [NSArray arrayWithObject:v2];
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v3 = [NSArray arrayWithObject:parent];
 
   return v3;
 }
@@ -92,14 +92,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CRLMaskLayout *)self infoGeometry];
-  [v11 position];
+  infoGeometry = [(CRLMaskLayout *)self infoGeometry];
+  [infoGeometry position];
   v13 = v12;
   memset(&v22, 0, sizeof(v22));
-  [v11 center];
-  if (v11)
+  [infoGeometry center];
+  if (infoGeometry)
   {
-    [v11 transformBasedOnPoint:sub_10011F334(v4 centeredAtPoint:{v6, v13)}];
+    [infoGeometry transformBasedOnPoint:sub_10011F334(v4 centeredAtPoint:{v6, v13)}];
   }
 
   else
@@ -119,38 +119,38 @@
   return v19;
 }
 
-- (id)computeInfoGeometryFromPureLayoutGeometry:(id)a3
+- (id)computeInfoGeometryFromPureLayoutGeometry:(id)geometry
 {
-  v4 = a3;
-  v5 = [(CRLCanvasLayout *)self originalGeometry];
-  v6 = v5;
-  if (v5)
+  geometryCopy = geometry;
+  originalGeometry = [(CRLCanvasLayout *)self originalGeometry];
+  v6 = originalGeometry;
+  if (originalGeometry)
   {
-    v7 = v5;
+    geometry = originalGeometry;
   }
 
   else
   {
-    v7 = [(CRLCanvasAbstractLayout *)self geometry];
+    geometry = [(CRLCanvasAbstractLayout *)self geometry];
   }
 
-  v8 = v7;
+  v8 = geometry;
 
-  v9 = [(CRLCanvasLayout *)self infoGeometryBeforeDynamicOperation];
-  v10 = v9;
-  if (v9)
+  infoGeometryBeforeDynamicOperation = [(CRLCanvasLayout *)self infoGeometryBeforeDynamicOperation];
+  v10 = infoGeometryBeforeDynamicOperation;
+  if (infoGeometryBeforeDynamicOperation)
   {
-    v11 = v9;
+    geometry2 = infoGeometryBeforeDynamicOperation;
   }
 
   else
   {
-    v12 = [(CRLCanvasLayout *)self info];
-    v11 = [v12 geometry];
+    info = [(CRLCanvasLayout *)self info];
+    geometry2 = [info geometry];
   }
 
-  v13 = [(CRLCanvasLayout *)self originalGeometry];
-  if (v13)
+  originalGeometry2 = [(CRLCanvasLayout *)self originalGeometry];
+  if (originalGeometry2)
   {
     v14 = *(&self->mPathScale + 2);
   }
@@ -165,9 +165,9 @@
   v16 = [v8 geometryByTransformingBy:&v23];
   v17 = v16;
   memset(&v23, 0, sizeof(v23));
-  if (v11)
+  if (geometry2)
   {
-    [v11 fullTransform];
+    [geometry2 fullTransform];
     if (v17)
     {
 LABEL_12:
@@ -190,9 +190,9 @@ LABEL_15:
   CGAffineTransformInvert(&t2, &v20);
   CGAffineTransformConcat(&v23, &t1, &t2);
   memset(&t1, 0, sizeof(t1));
-  if (v4)
+  if (geometryCopy)
   {
-    [v4 fullTransform];
+    [geometryCopy fullTransform];
   }
 
   else
@@ -208,33 +208,33 @@ LABEL_15:
   return v18;
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v12.receiver = self;
   v12.super_class = CRLMaskLayout;
   [(CRLCanvasLayout *)&v12 processChangedProperty:?];
-  if (a3 == 21)
+  if (property == 21)
   {
     [(CRLMaskLayout *)self invalidatePath];
     [(CRLCanvasLayout *)self invalidateFrame];
   }
 
-  else if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 6)
+  else if ((property & 0xFFFFFFFFFFFFFFFELL) != 6)
   {
     return;
   }
 
-  v5 = [(CRLMaskLayout *)self imageLayout];
-  v6 = [(CRLCanvasLayout *)self layoutController];
-  v7 = [v6 canvas];
+  imageLayout = [(CRLMaskLayout *)self imageLayout];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
 
-  v8 = [v7 canvasController];
+  canvasController = [canvas canvasController];
 
-  if (v8)
+  if (canvasController)
   {
-    v9 = [(CRLCanvasLayout *)self layoutController];
-    v10 = [v9 canvas];
-    v11 = [v10 repForLayout:v5];
+    layoutController2 = [(CRLCanvasLayout *)self layoutController];
+    canvas2 = [layoutController2 canvas];
+    v11 = [canvas2 repForLayout:imageLayout];
 
     [v11 processChangedProperty:40];
   }
@@ -246,8 +246,8 @@ LABEL_15:
   v6.super_class = CRLMaskLayout;
   [(CRLCanvasLayout *)&v6 invalidate];
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasAbstractLayout *)self parent];
-  v5 = sub_100014370(v3, v4);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v5 = sub_100014370(v3, parent);
   [v5 invalidateFrame];
 }
 
@@ -269,23 +269,23 @@ LABEL_15:
 
 - (CGRect)alignmentFrame
 {
-  v3 = [(CRLMaskLayout *)self imageLayout];
-  v4 = [v3 isResizingInMaskEditMode];
+  imageLayout = [(CRLMaskLayout *)self imageLayout];
+  isResizingInMaskEditMode = [imageLayout isResizingInMaskEditMode];
 
-  if (v4)
+  if (isResizingInMaskEditMode)
   {
-    v5 = [(CRLCanvasAbstractLayout *)self geometry];
-    [v5 size];
+    geometry = [(CRLCanvasAbstractLayout *)self geometry];
+    [geometry size];
     v6 = sub_10011ECB4();
     v8 = v7;
     v10 = v9;
     v12 = v11;
 
-    v13 = [(CRLMaskLayout *)self imageLayout];
-    v14 = v13;
-    if (v13)
+    imageLayout2 = [(CRLMaskLayout *)self imageLayout];
+    stroke = imageLayout2;
+    if (imageLayout2)
     {
-      [v13 layoutToMaskTransform];
+      [imageLayout2 layoutToMaskTransform];
     }
 
     else
@@ -309,19 +309,19 @@ LABEL_15:
     [(CRLCanvasAbstractLayout *)self frameInParent];
     width = v15;
     height = v17;
-    v19 = [(CRLCanvasAbstractLayout *)self parent];
-    [v19 frame];
+    parent = [(CRLCanvasAbstractLayout *)self parent];
+    [parent frame];
     x = v20;
     y = v22;
 
-    v24 = [(CRLMaskLayout *)self imageLayout];
-    v25 = [v24 imageInfo];
-    v14 = [v25 stroke];
+    imageLayout3 = [(CRLMaskLayout *)self imageLayout];
+    imageInfo = [imageLayout3 imageInfo];
+    stroke = [imageInfo stroke];
 
-    if (v14 && [v14 shouldRender])
+    if (stroke && [stroke shouldRender])
     {
-      v26 = [CRLBezierPath bezierPathWithRect:x, y, width, height];
-      [v26 boundsIncludingCRLStroke:v14];
+      height = [CRLBezierPath bezierPathWithRect:x, y, width, height];
+      [height boundsIncludingCRLStroke:stroke];
       v28 = sub_10011F31C(x, y, v27);
       x = sub_10011F334(x, y, v28);
       y = v29;
@@ -341,16 +341,16 @@ LABEL_15:
 
 - (CGAffineTransform)originalTransformForProvidingGuides
 {
-  v5 = [(CRLMaskLayout *)self imageLayout];
-  v6 = [v5 isResizingInMaskEditMode];
+  imageLayout = [(CRLMaskLayout *)self imageLayout];
+  isResizingInMaskEditMode = [imageLayout isResizingInMaskEditMode];
 
-  if (v6)
+  if (isResizingInMaskEditMode)
   {
-    v7 = [(CRLMaskLayout *)self imageLayout];
-    v8 = v7;
-    if (v7)
+    imageLayout2 = [(CRLMaskLayout *)self imageLayout];
+    v8 = imageLayout2;
+    if (imageLayout2)
     {
-      [v7 layoutToMaskTransform];
+      [imageLayout2 layoutToMaskTransform];
       [v8 originalTransformForProvidingGuides];
     }
 
@@ -382,11 +382,11 @@ LABEL_15:
     return 0;
   }
 
-  v3 = [(CRLCanvasAbstractLayout *)self parent];
-  v4 = v3;
-  if (v3)
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v4 = parent;
+  if (parent)
   {
-    [v3 transformInRoot];
+    [parent transformInRoot];
   }
 
   else
@@ -401,8 +401,8 @@ LABEL_15:
 
 - (CGRect)alignmentFrameForProvidingGuidesInRoot
 {
-  v2 = [(CRLMaskLayout *)self imageLayout];
-  [v2 alignmentFrameForProvidingGuidesInRoot];
+  imageLayout = [(CRLMaskLayout *)self imageLayout];
+  [imageLayout alignmentFrameForProvidingGuidesInRoot];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -419,28 +419,28 @@ LABEL_15:
   return result;
 }
 
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands
 {
   v4.receiver = self;
   v4.super_class = CRLMaskLayout;
-  [(CRLCanvasLayout *)&v4 beginDynamicOperationWithRealTimeCommands:a3];
+  [(CRLCanvasLayout *)&v4 beginDynamicOperationWithRealTimeCommands:commands];
   [(CRLMaskLayout *)self p_createDynamicCopies];
 }
 
-- (void)resizeWithTransform:(CGAffineTransform *)a3
+- (void)resizeWithTransform:(CGAffineTransform *)transform
 {
-  v5 = [(CRLMaskLayout *)self imageLayout];
-  if ([v5 isResizingInMaskEditMode])
+  imageLayout = [(CRLMaskLayout *)self imageLayout];
+  if ([imageLayout isResizingInMaskEditMode])
   {
 
 LABEL_4:
     memset(&v32, 0, sizeof(v32));
-    v8 = [(CRLMaskLayout *)self imageLayout];
-    v9 = [v8 originalImageGeometry];
-    v10 = v9;
-    if (v9)
+    imageLayout2 = [(CRLMaskLayout *)self imageLayout];
+    originalImageGeometry = [imageLayout2 originalImageGeometry];
+    v10 = originalImageGeometry;
+    if (originalImageGeometry)
     {
-      [v9 transform];
+      [originalImageGeometry transform];
     }
 
     else
@@ -449,24 +449,24 @@ LABEL_4:
     }
 
     t1 = v32;
-    v11 = *&a3->c;
-    *&t2.a = *&a3->a;
+    v11 = *&transform->c;
+    *&t2.a = *&transform->a;
     *&t2.c = v11;
-    *&t2.tx = *&a3->tx;
+    *&t2.tx = *&transform->tx;
     CGAffineTransformConcat(&v30, &t1, &t2);
     t1 = v32;
     CGAffineTransformInvert(&t2, &t1);
     CGAffineTransformConcat(&t1, &v30, &t2);
     v12 = *&t1.c;
-    *&a3->a = *&t1.a;
-    *&a3->c = v12;
-    *&a3->tx = *&t1.tx;
-    v13 = [(CRLCanvasLayout *)self originalGeometry];
-    v14 = *&a3->c;
-    *&t1.a = *&a3->a;
+    *&transform->a = *&t1.a;
+    *&transform->c = v12;
+    *&transform->tx = *&t1.tx;
+    originalGeometry = [(CRLCanvasLayout *)self originalGeometry];
+    v14 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v14;
-    *&t1.tx = *&a3->tx;
-    v15 = [v13 geometryByTransformingBy:&t1];
+    *&t1.tx = *&transform->tx;
+    v15 = [originalGeometry geometryByTransformingBy:&t1];
 
     v16 = [(CRLMaskLayout *)self computeInfoGeometryFromPureLayoutGeometry:v15];
     [(CRLMaskLayout *)self p_setDynamicInfoGeometry:v16];
@@ -474,21 +474,21 @@ LABEL_4:
     return;
   }
 
-  v6 = [(CRLMaskLayout *)self imageLayout];
-  v7 = [v6 isRotatingInMaskEditMode];
+  imageLayout3 = [(CRLMaskLayout *)self imageLayout];
+  isRotatingInMaskEditMode = [imageLayout3 isRotatingInMaskEditMode];
 
-  if (v7)
+  if (isRotatingInMaskEditMode)
   {
     goto LABEL_4;
   }
 
   memset(&v32, 0, sizeof(v32));
-  v17 = [(CRLMaskLayout *)self imageLayout];
-  v18 = [v17 originalImageGeometry];
-  v19 = v18;
-  if (v18)
+  imageLayout4 = [(CRLMaskLayout *)self imageLayout];
+  originalImageGeometry2 = [imageLayout4 originalImageGeometry];
+  v19 = originalImageGeometry2;
+  if (originalImageGeometry2)
   {
-    [v18 transform];
+    [originalImageGeometry2 transform];
   }
 
   else
@@ -498,39 +498,39 @@ LABEL_4:
 
   memset(&t1, 0, sizeof(t1));
   t2 = v32;
-  v20 = *&a3->c;
-  *&v28.a = *&a3->a;
+  v20 = *&transform->c;
+  *&v28.a = *&transform->a;
   *&v28.c = v20;
-  *&v28.tx = *&a3->tx;
+  *&v28.tx = *&transform->tx;
   CGAffineTransformConcat(&v30, &t2, &v28);
   sub_100139A38(&v30, &t1);
-  v21 = *&a3->c;
-  *&v30.a = *&a3->a;
+  v21 = *&transform->c;
+  *&v30.a = *&transform->a;
   *&v30.c = v21;
-  v23 = *&a3->a;
-  v22 = *&a3->c;
-  *&v30.tx = *&a3->tx;
+  v23 = *&transform->a;
+  v22 = *&transform->c;
+  *&v30.tx = *&transform->tx;
   t2 = v32;
   *&v28.a = v23;
   *&v28.c = v22;
-  *&v28.tx = *&a3->tx;
+  *&v28.tx = *&transform->tx;
   CGAffineTransformConcat(&v30, &t2, &v28);
   t2 = t1;
   CGAffineTransformInvert(&v28, &t2);
   v27 = v30;
   CGAffineTransformConcat(&t2, &v27, &v28);
   v30 = t2;
-  v24 = [(CRLCanvasLayout *)self originalGeometry];
+  originalGeometry2 = [(CRLCanvasLayout *)self originalGeometry];
   t2 = v30;
-  v25 = [v24 geometryByTransformingBy:&t2];
+  v25 = [originalGeometry2 geometryByTransformingBy:&t2];
 
   v26 = [(CRLMaskLayout *)self computeInfoGeometryFromPureLayoutGeometry:v25];
   [(CRLMaskLayout *)self p_setDynamicInfoGeometry:v26];
 }
 
-- (void)takeScaledMaskGeometry:(id)a3
+- (void)takeScaledMaskGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   if ((BYTE2(self->mDynamicPathSource) & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -560,7 +560,7 @@ LABEL_4:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:242 isFatal:0 description:"wrong mode"];
   }
 
-  [(CRLMaskLayout *)self p_setDynamicInfoGeometry:v4];
+  [(CRLMaskLayout *)self p_setDynamicInfoGeometry:geometryCopy];
 }
 
 - (void)endDynamicOperation
@@ -602,22 +602,22 @@ LABEL_4:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:254 isFatal:0 description:"Should only be called when we have a dynamic info geometry to reset!"];
   }
 
-  v6 = [(CRLMaskLayout *)self maskInfo];
-  v7 = [v6 geometry];
-  [(CRLMaskLayout *)self p_setDynamicInfoGeometry:v7];
+  maskInfo = [(CRLMaskLayout *)self maskInfo];
+  geometry = [maskInfo geometry];
+  [(CRLMaskLayout *)self p_setDynamicInfoGeometry:geometry];
 }
 
-- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)a3
+- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)space
 {
-  v6 = [(CRLMaskLayout *)self imageLayout];
-  v7 = v6;
-  if (v6)
+  imageLayout = [(CRLMaskLayout *)self imageLayout];
+  v7 = imageLayout;
+  if (imageLayout)
   {
     v8 = *&a4->c;
     v10[0] = *&a4->a;
     v10[1] = v8;
     v10[2] = *&a4->tx;
-    [v6 layoutTransformInInfoSpace:v10];
+    [imageLayout layoutTransformInInfoSpace:v10];
   }
 
   else
@@ -630,14 +630,14 @@ LABEL_4:
   return result;
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLMaskLayout *)self imageLayout];
-  v7 = [v6 isDraggingInMaskEditMode];
+  y = by.y;
+  x = by.x;
+  imageLayout = [(CRLMaskLayout *)self imageLayout];
+  isDraggingInMaskEditMode = [imageLayout isDraggingInMaskEditMode];
 
-  if ((v7 & 1) == 0)
+  if ((isDraggingInMaskEditMode & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -666,12 +666,12 @@ LABEL_4:
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:273 isFatal:0 description:"should be called only when dragging in mask mode"];
   }
 
-  v11 = [(CRLMaskLayout *)self imageLayout];
-  v12 = [v11 imageGeometry];
-  v13 = v12;
-  if (v12)
+  imageLayout2 = [(CRLMaskLayout *)self imageLayout];
+  imageGeometry = [imageLayout2 imageGeometry];
+  v13 = imageGeometry;
+  if (imageGeometry)
   {
-    [v12 transform];
+    [imageGeometry transform];
   }
 
   else
@@ -683,7 +683,7 @@ LABEL_4:
   v14 = sub_10012119C(&v22, x, y);
 
   v15 = [*(&self->mOriginalPathScale + 2) mutableCopy];
-  if ([v11 maskEditModeForDragging] == 3)
+  if ([imageLayout2 maskEditModeForDragging] == 3)
   {
     [v15 position];
     v18 = sub_10011F31C(v16, v17, v14);
@@ -692,7 +692,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ([v11 maskEditModeForDragging] == 2)
+  if ([imageLayout2 maskEditModeForDragging] == 2)
   {
     [v15 position];
     v18 = sub_10011F334(v19, v20, v14);
@@ -705,8 +705,8 @@ LABEL_19:
 
 - (BOOL)shouldDisplayGuides
 {
-  v3 = [(CRLMaskLayout *)self imageLayout];
-  if ([v3 isResizingInMaskEditMode])
+  imageLayout = [(CRLMaskLayout *)self imageLayout];
+  if ([imageLayout isResizingInMaskEditMode])
   {
 
     return 0;
@@ -719,10 +719,10 @@ LABEL_19:
     return 0;
   }
 
-  v6 = [(CRLMaskLayout *)self imageLayout];
-  v7 = [v6 isDraggingInMaskEditMode];
+  imageLayout2 = [(CRLMaskLayout *)self imageLayout];
+  isDraggingInMaskEditMode = [imageLayout2 isDraggingInMaskEditMode];
 
-  if (v7)
+  if (isDraggingInMaskEditMode)
   {
     return 1;
   }
@@ -735,8 +735,8 @@ LABEL_19:
 - (id)maskInfo
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }
@@ -756,49 +756,49 @@ LABEL_19:
   v2 = *(&self->mDynamicInfoGeometry + 2);
   if (v2)
   {
-    v3 = v2;
+    pathSource = v2;
   }
 
   else
   {
-    v4 = [(CRLMaskLayout *)self maskInfo];
-    v3 = [v4 pathSource];
+    maskInfo = [(CRLMaskLayout *)self maskInfo];
+    pathSource = [maskInfo pathSource];
   }
 
-  return v3;
+  return pathSource;
 }
 
-- (void)setPathScale:(double)a3
+- (void)setPathScale:(double)scale
 {
-  if (*(&self->mCachedTightPathBoundsNoScale.size.height + 2) != a3)
+  if (*(&self->mCachedTightPathBoundsNoScale.size.height + 2) != scale)
   {
-    *(&self->mCachedTightPathBoundsNoScale.size.height + 2) = a3;
+    *(&self->mCachedTightPathBoundsNoScale.size.height + 2) = scale;
     [(CRLMaskLayout *)self invalidatePath];
-    v5 = [(CRLCanvasAbstractLayout *)self geometry];
-    [(CRLCanvasAbstractLayout *)self setGeometry:v5];
+    geometry = [(CRLCanvasAbstractLayout *)self geometry];
+    [(CRLCanvasAbstractLayout *)self setGeometry:geometry];
   }
 }
 
 - (void)dynamicMovePathKnobDidBegin
 {
-  v5 = [(CRLMaskLayout *)self pathSource];
-  v3 = [v5 copy];
+  pathSource = [(CRLMaskLayout *)self pathSource];
+  v3 = [pathSource copy];
   v4 = *(&self->mDynamicInfoGeometry + 2);
   *(&self->mDynamicInfoGeometry + 2) = v3;
 }
 
-- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)a3 withTracker:(id)a4
+- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)to withTracker:(id)tracker
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = to.y;
+  x = to.x;
+  trackerCopy = tracker;
   [(CRLMaskLayout *)self pathScale];
   v9 = sub_10011F340(x, y, 1.0 / v8);
   v11 = v10;
   v12 = *(&self->mDynamicInfoGeometry + 2);
-  v13 = [v7 knob];
+  knob = [trackerCopy knob];
 
-  v14 = [v13 tag];
+  v14 = [knob tag];
   [(CRLMaskLayout *)self pathBounds];
   [v12 setControlKnobPosition:v14 toPoint:{sub_10011F334(v9, v11, v15)}];
 
@@ -809,42 +809,42 @@ LABEL_19:
 
 - (BOOL)hasSmartPath
 {
-  v2 = [(CRLMaskLayout *)self pathSource];
+  pathSource = [(CRLMaskLayout *)self pathSource];
   v3 = objc_opt_class();
-  v9 = sub_1003038E0(v2, v3, 1, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLSmartPathSource);
+  v9 = sub_1003038E0(pathSource, v3, 1, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLSmartPathSource);
 
   return v9 != 0;
 }
 
 - (unint64_t)numberOfControlKnobs
 {
-  v2 = [(CRLMaskLayout *)self pathSource];
+  pathSource = [(CRLMaskLayout *)self pathSource];
   v3 = objc_opt_class();
-  v9 = sub_1003038E0(v2, v3, 1, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLSmartPathSource);
+  v9 = sub_1003038E0(pathSource, v3, 1, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLSmartPathSource);
 
-  v10 = [v9 numberOfControlKnobs];
-  return v10;
+  numberOfControlKnobs = [v9 numberOfControlKnobs];
+  return numberOfControlKnobs;
 }
 
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(CRLMaskLayout *)self pathSource];
+  y = point.y;
+  x = point.x;
+  pathSource = [(CRLMaskLayout *)self pathSource];
   v9 = objc_opt_class();
-  v16 = sub_1003038E0(v8, v9, 1, v10, v11, v12, v13, v14, &OBJC_PROTOCOL___CRLSmartPathSource);
+  v16 = sub_1003038E0(pathSource, v9, 1, v10, v11, v12, v13, v14, &OBJC_PROTOCOL___CRLSmartPathSource);
 
   [(CRLMaskLayout *)self pathBounds];
-  [v16 setControlKnobPosition:a3 toPoint:{sub_10011F334(x, y, v15)}];
+  [v16 setControlKnobPosition:position toPoint:{sub_10011F334(x, y, v15)}];
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  v5 = [(CRLMaskLayout *)self pathSource];
+  pathSource = [(CRLMaskLayout *)self pathSource];
   v6 = objc_opt_class();
-  v12 = sub_1003038E0(v5, v6, 1, v7, v8, v9, v10, v11, &OBJC_PROTOCOL___CRLSmartPathSource);
+  v12 = sub_1003038E0(pathSource, v6, 1, v7, v8, v9, v10, v11, &OBJC_PROTOCOL___CRLSmartPathSource);
 
-  [v12 getControlKnobPosition:a3];
+  [v12 getControlKnobPosition:position];
   v14 = v13;
   v16 = v15;
   [(CRLMaskLayout *)self pathScale];
@@ -866,16 +866,16 @@ LABEL_19:
   v2 = *(&self->mOriginalPathScale + 2);
   if (v2)
   {
-    v3 = v2;
+    geometry = v2;
   }
 
   else
   {
-    v4 = [(CRLCanvasLayout *)self info];
-    v3 = [v4 geometry];
+    info = [(CRLCanvasLayout *)self info];
+    geometry = [info geometry];
   }
 
-  return v3;
+  return geometry;
 }
 
 - (void)p_calculateCachedPathIfNecessary
@@ -886,9 +886,9 @@ LABEL_19:
     v4 = v3;
     [(CRLMaskLayout *)self pathScale];
     CGAffineTransformMakeScale(&v8, v4, v5);
-    v6 = [(CRLMaskLayout *)self pathSource];
-    v7 = [v6 bezierPath];
-    *(&self->mCachedPath + 2) = CGPathCreateCopy([v7 CGPath]);
+    pathSource = [(CRLMaskLayout *)self pathSource];
+    bezierPath = [pathSource bezierPath];
+    *(&self->mCachedPath + 2) = CGPathCreateCopy([bezierPath CGPath]);
 
     *(&self->mMaskInvalidFlags + 2) = CGPathCreateCopyByTransformingPath(*(&self->mCachedPath + 2), &v8);
     BYTE2(self->super.mInfoGeometryBeforeDynamicOperation) &= ~1u;
@@ -1004,16 +1004,16 @@ LABEL_19:
 
   [(CRLMaskLayout *)self pathScale];
   *(&self->mPathScale + 2) = v9;
-  v10 = [(CRLMaskLayout *)self maskInfo];
-  v11 = [(CRLCanvasAbstractLayout *)self geometry];
-  v12 = [(CRLMaskLayout *)self computeInfoGeometryFromPureLayoutGeometry:v11];
+  maskInfo = [(CRLMaskLayout *)self maskInfo];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v12 = [(CRLMaskLayout *)self computeInfoGeometryFromPureLayoutGeometry:geometry];
   v13 = *(&self->mOriginalPathScale + 2);
   *(&self->mOriginalPathScale + 2) = v12;
 
   [(CRLMaskLayout *)self setPathScale:1.0];
   [(CRLMaskLayout *)self invalidatePath];
-  v14 = [v10 pathSource];
-  v15 = [v14 copy];
+  pathSource = [maskInfo pathSource];
+  v15 = [pathSource copy];
   v16 = *(&self->mDynamicInfoGeometry + 2);
   *(&self->mDynamicInfoGeometry + 2) = v15;
 
@@ -1022,13 +1022,13 @@ LABEL_19:
   [v17 scaleToNaturalSize:?];
 }
 
-- (void)p_setDynamicInfoGeometry:(id)a3
+- (void)p_setDynamicInfoGeometry:(id)geometry
 {
-  v13 = a3;
-  objc_storeStrong((&self->mOriginalPathScale + 2), a3);
-  v5 = [(CRLMaskLayout *)self maskInfo];
-  v6 = [v5 pathSource];
-  v7 = [v6 copy];
+  geometryCopy = geometry;
+  objc_storeStrong((&self->mOriginalPathScale + 2), geometry);
+  maskInfo = [(CRLMaskLayout *)self maskInfo];
+  pathSource = [maskInfo pathSource];
+  v7 = [pathSource copy];
   v8 = *(&self->mDynamicInfoGeometry + 2);
   *(&self->mDynamicInfoGeometry + 2) = v7;
 

@@ -1,23 +1,23 @@
 @interface _UIPageIndicatorImageView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (CGSize)sizeForImage:(id)a3 traits:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UIPageIndicatorImageView)initWithCoder:(id)a3;
-- (_UIPageIndicatorImageView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (CGSize)sizeForImage:(id)image traits:(id)traits;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UIPageIndicatorImageView)initWithCoder:(id)coder;
+- (_UIPageIndicatorImageView)initWithFrame:(CGRect)frame;
 - (void)_updateSymbolConfiguration;
 - (void)invalidateIntrinsicContentSize;
 - (void)prepare;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation _UIPageIndicatorImageView
 
 - (void)_updateSymbolConfiguration
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  switch(v4)
+  switch(userInterfaceIdiom)
   {
     case 8:
       goto LABEL_4;
@@ -65,11 +65,11 @@ LABEL_8:
   [(UIView *)&v7 invalidateIntrinsicContentSize];
 }
 
-- (_UIPageIndicatorImageView)initWithFrame:(CGRect)a3
+- (_UIPageIndicatorImageView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIPageIndicatorImageView;
-  v3 = [(UIImageView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIImageView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -79,11 +79,11 @@ LABEL_8:
   return v4;
 }
 
-- (_UIPageIndicatorImageView)initWithCoder:(id)a3
+- (_UIPageIndicatorImageView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UIPageIndicatorImageView;
-  v3 = [(UIImageView *)&v6 initWithCoder:a3];
+  v3 = [(UIImageView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -93,20 +93,20 @@ LABEL_8:
   return v4;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(UIImageView *)self image];
-  v6 = [v4 isEqual:v5];
+  imageCopy = image;
+  image = [(UIImageView *)self image];
+  v6 = [imageCopy isEqual:image];
 
   if ((v6 & 1) == 0)
   {
     __asm { FMOV            V0.2D, #-1.0 }
 
     self->_cachedSize = _Q0;
-    if (([v4 isSymbolImage] & 1) == 0)
+    if (([imageCopy isSymbolImage] & 1) == 0)
     {
-      v12 = v4;
+      v12 = imageCopy;
       [v12 size];
       if (v13 > 42.0 || v14 > 42.0)
       {
@@ -133,12 +133,12 @@ LABEL_8:
 
       v19 = v15;
 
-      v4 = [v19 imageWithRenderingMode:2];
+      imageCopy = [v19 imageWithRenderingMode:2];
     }
 
     v21.receiver = self;
     v21.super_class = _UIPageIndicatorImageView;
-    [(UIImageView *)&v21 setImage:v4];
+    [(UIImageView *)&v21 setImage:imageCopy];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __38___UIPageIndicatorImageView_setImage___block_invoke;
@@ -148,9 +148,9 @@ LABEL_8:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(UIImageView *)self image:a3.width];
+  v4 = [(UIImageView *)self image:fits.width];
   [(_UIPageIndicatorImageView *)self sizeForImage:v4 traits:0];
   v6 = v5;
   v8 = v7;
@@ -162,31 +162,31 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)sizeForImage:(id)a3 traits:(id)a4
+- (CGSize)sizeForImage:(id)image traits:(id)traits
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIImageView *)self image];
-  v9 = [v8 isEqual:v6];
+  imageCopy = image;
+  traitsCopy = traits;
+  image = [(UIImageView *)self image];
+  v9 = [image isEqual:imageCopy];
   if (!v9)
   {
 
 LABEL_12:
-    if (v7)
+    if (traitsCopy)
     {
-      v12 = [(UIView *)self _contentSizeCategoryLimitedTraitCollection:v7];
+      v12 = [(UIView *)self _contentSizeCategoryLimitedTraitCollection:traitsCopy];
     }
 
     else
     {
-      v16 = [(UIView *)self traitCollection];
-      v12 = [(UIView *)self _contentSizeCategoryLimitedTraitCollection:v16];
+      traitCollection = [(UIView *)self traitCollection];
+      v12 = [(UIView *)self _contentSizeCategoryLimitedTraitCollection:traitCollection];
     }
 
     goto LABEL_15;
   }
 
-  if (!v7)
+  if (!traitsCopy)
   {
 
 LABEL_7:
@@ -200,23 +200,23 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v10 = [(UIView *)self traitCollection];
-  v11 = [v10 isEqual:v7];
+  traitCollection2 = [(UIView *)self traitCollection];
+  v11 = [traitCollection2 isEqual:traitsCopy];
 
   if (v11)
   {
     goto LABEL_7;
   }
 
-  v12 = [(UIView *)self _contentSizeCategoryLimitedTraitCollection:v7];
+  v12 = [(UIView *)self _contentSizeCategoryLimitedTraitCollection:traitsCopy];
   v9 = 0;
 LABEL_15:
-  v17 = [(UIImageView *)self _symbolConfigurationForImage:v6];
+  v17 = [(UIImageView *)self _symbolConfigurationForImage:imageCopy];
   v18 = [v17 configurationWithTraitCollection:v12];
 
-  if (([v6 isSymbolImage] & 1) == 0)
+  if (([imageCopy isSymbolImage] & 1) == 0)
   {
-    v19 = v6;
+    v19 = imageCopy;
     [v19 size];
     if (v20 > 42.0 || v21 > 42.0)
     {
@@ -241,10 +241,10 @@ LABEL_15:
       v22 = v19;
     }
 
-    v6 = v22;
+    imageCopy = v22;
   }
 
-  v26 = [v6 imageWithConfiguration:v18];
+  v26 = [imageCopy imageWithConfiguration:v18];
   [v26 size];
   width = v27;
   height = v28;
@@ -263,10 +263,10 @@ LABEL_27:
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.vibrantColorMatrix.inputColorMatrix"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.vibrantColorMatrix.inputColorMatrix"])
   {
     v5 = 1;
   }
@@ -275,7 +275,7 @@ LABEL_27:
   {
     v7.receiver = self;
     v7.super_class = _UIPageIndicatorImageView;
-    v5 = [(UIImageView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(UIImageView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

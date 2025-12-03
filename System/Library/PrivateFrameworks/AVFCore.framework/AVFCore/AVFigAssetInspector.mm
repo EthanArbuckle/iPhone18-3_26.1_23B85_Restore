@@ -2,11 +2,11 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minimumTimeOffsetFromLive;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)overallDurationHint;
-- (AVFigAssetInspector)initWithFigAsset:(OpaqueFigAsset *)a3;
+- (AVFigAssetInspector)initWithFigAsset:(OpaqueFigAsset *)asset;
 - (BOOL)_hasQTSaveRestriction;
 - (BOOL)_isDefunct;
 - (BOOL)_isStreaming;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)preferredTransform;
 - (CGSize)maximumVideoResolution;
 - (CGSize)naturalSize;
@@ -22,7 +22,7 @@
 - (id)httpSessionIdentifier;
 - (id)identifyingTagClass;
 - (id)lyrics;
-- (id)metadataForFormat:(id)a3;
+- (id)metadataForFormat:(id)format;
 - (id)preferredDisplayCriteria;
 - (id)propertyListForProxy;
 - (id)uniqueIdentifier;
@@ -30,8 +30,8 @@
 - (int64_t)trackCount;
 - (unint64_t)downloadToken;
 - (unint64_t)hash;
-- (void)_valueAsCFTypeForProperty:(__CFString *)a3;
-- (void)_valueAsCFTypeForProperty:(__CFString *)a3 propertyString:(id)a4;
+- (void)_valueAsCFTypeForProperty:(__CFString *)property;
+- (void)_valueAsCFTypeForProperty:(__CFString *)property propertyString:(id)string;
 - (void)dealloc;
 @end
 
@@ -84,7 +84,7 @@ uint64_t __35__AVFigAssetInspector__isStreaming__block_invoke(uint64_t a1)
   return [v2 count];
 }
 
-- (AVFigAssetInspector)initWithFigAsset:(OpaqueFigAsset *)a3
+- (AVFigAssetInspector)initWithFigAsset:(OpaqueFigAsset *)asset
 {
   v7.receiver = self;
   v7.super_class = AVFigAssetInspector;
@@ -92,9 +92,9 @@ uint64_t __35__AVFigAssetInspector__isStreaming__block_invoke(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (asset)
     {
-      v4->_figAsset = CFRetain(a3);
+      v4->_figAsset = CFRetain(asset);
       v5->_checkIsStreamingOnce = objc_alloc_init(AVDispatchOnce);
       v5->_makeDisplayCriteriaOnce = objc_alloc_init(AVDispatchOnce);
     }
@@ -123,7 +123,7 @@ uint64_t __35__AVFigAssetInspector__isStreaming__block_invoke(uint64_t a1)
   [(AVFigAssetInspector *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -131,20 +131,20 @@ uint64_t __35__AVFigAssetInspector__isStreaming__block_invoke(uint64_t a1)
     return 0;
   }
 
-  v5 = [(AVFigAssetInspector *)self _figAsset];
-  v6 = [a3 _figAsset];
-  if (v5 == v6)
+  _figAsset = [(AVFigAssetInspector *)self _figAsset];
+  _figAsset2 = [equal _figAsset];
+  if (_figAsset == _figAsset2)
   {
     return 1;
   }
 
-  v7 = v6;
+  v7 = _figAsset2;
   result = 0;
-  if (v5)
+  if (_figAsset)
   {
     if (v7)
     {
-      return CFEqual(v5, v7) != 0;
+      return CFEqual(_figAsset, v7) != 0;
     }
   }
 
@@ -153,11 +153,11 @@ uint64_t __35__AVFigAssetInspector__isStreaming__block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [(AVFigAssetInspector *)self _figAsset];
-  if (v3)
+  _figAsset = [(AVFigAssetInspector *)self _figAsset];
+  if (_figAsset)
   {
 
-    return CFHash(v3);
+    return CFHash(_figAsset);
   }
 
   else
@@ -191,21 +191,21 @@ uint64_t __35__AVFigAssetInspector__isStreaming__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_valueAsCFTypeForProperty:(__CFString *)a3 propertyString:(id)a4
+- (void)_valueAsCFTypeForProperty:(__CFString *)property propertyString:(id)string
 {
   cf = 0;
   v11 = 0;
-  v6 = [(AVFigAssetInspector *)self _figAsset];
-  if (v6)
+  _figAsset = [(AVFigAssetInspector *)self _figAsset];
+  if (_figAsset)
   {
-    v7 = v6;
+    v7 = _figAsset;
     v8 = *(*(CMBaseObjectGetVTable() + 16) + 112);
     if (v8)
     {
-      v8(v7, a3, *MEMORY[0x1E695E480], &v11, &cf);
+      v8(v7, property, *MEMORY[0x1E695E480], &v11, &cf);
       if (cf)
       {
-        AVLogRuntimeIssueIndicatingAssetPropertyLoadHangRisk(a4);
+        AVLogRuntimeIssueIndicatingAssetPropertyLoadHangRisk(string);
         CFRelease(cf);
       }
     }
@@ -214,7 +214,7 @@ uint64_t __35__AVFigAssetInspector__isStreaming__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (void)_valueAsCFTypeForProperty:(__CFString *)a3
+- (void)_valueAsCFTypeForProperty:(__CFString *)property
 {
   v7 = 0;
   result = [(AVFigAssetInspector *)self _figAsset];
@@ -224,7 +224,7 @@ uint64_t __35__AVFigAssetInspector__isStreaming__block_invoke(uint64_t a1)
     v6 = *(*(CMBaseObjectGetVTable() + 8) + 48);
     if (v6)
     {
-      v6(CMBaseObject, a3, *MEMORY[0x1E695E480], &v7);
+      v6(CMBaseObject, property, *MEMORY[0x1E695E480], &v7);
       return v7;
     }
 
@@ -335,10 +335,10 @@ uint64_t __35__AVFigAssetInspector__isStreaming__block_invoke(uint64_t a1)
 {
   valuePtr = 0;
   number = 0;
-  v2 = [(AVFigAssetInspector *)self _copyFormatReader];
-  if (v2)
+  _copyFormatReader = [(AVFigAssetInspector *)self _copyFormatReader];
+  if (_copyFormatReader)
   {
-    v3 = v2;
+    v3 = _copyFormatReader;
     FigBaseObject = FigFormatReaderGetFigBaseObject();
     v5 = *(*(CMBaseObjectGetVTable() + 8) + 48);
     if (v5)
@@ -355,10 +355,10 @@ uint64_t __35__AVFigAssetInspector__isStreaming__block_invoke(uint64_t a1)
     }
 
     CFRelease(v3);
-    LODWORD(v2) = valuePtr;
+    LODWORD(_copyFormatReader) = valuePtr;
   }
 
-  return v2;
+  return _copyFormatReader;
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minimumTimeOffsetFromLive
@@ -518,11 +518,11 @@ uint64_t __35__AVFigAssetInspector__isStreaming__block_invoke(uint64_t a1)
   return [(AVFigObjectInspector *)self _nonNilArrayForProperty:v3 propertyString:v4];
 }
 
-- (id)metadataForFormat:(id)a3
+- (id)metadataForFormat:(id)format
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
-  if ([a3 isEqualToString:@"com.apple.quicktime.udta"])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([format isEqualToString:@"com.apple.quicktime.udta"])
   {
     v6 = MEMORY[0x1E69712E0];
 LABEL_15:
@@ -530,25 +530,25 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([a3 isEqualToString:@"org.mp4ra"])
+  if ([format isEqualToString:@"org.mp4ra"])
   {
     v6 = MEMORY[0x1E6971268];
     goto LABEL_15;
   }
 
-  if ([a3 isEqualToString:@"com.apple.quicktime.mdta"])
+  if ([format isEqualToString:@"com.apple.quicktime.mdta"])
   {
     v6 = MEMORY[0x1E69712D8];
     goto LABEL_15;
   }
 
-  if ([a3 isEqualToString:@"com.apple.itunes"])
+  if ([format isEqualToString:@"com.apple.itunes"])
   {
     v6 = MEMORY[0x1E6971310];
     goto LABEL_15;
   }
 
-  if ([a3 isEqualToString:@"org.id3"])
+  if ([format isEqualToString:@"org.id3"])
   {
     v7 = MEMORY[0x1E6971258];
     v8 = dyld_program_sdk_at_least();
@@ -561,18 +561,18 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if ([a3 isEqualToString:0x1F0A8DC70])
+  if ([format isEqualToString:0x1F0A8DC70])
   {
     v6 = MEMORY[0x1E6971258];
     goto LABEL_15;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E6971EF8]])
+  if ([format isEqualToString:*MEMORY[0x1E6971EF8]])
   {
     v9 = @"assetProperty_VorbisCommentMetadata";
   }
 
-  else if ([a3 isEqualToString:@"com.apple.quicktime.HLS"])
+  else if ([format isEqualToString:@"com.apple.quicktime.HLS"])
   {
     v9 = *MEMORY[0x1E6971248];
   }
@@ -606,7 +606,7 @@ LABEL_16:
         v15 = [AVMetadataItem _metadataItemWithFigMetadataDictionary:*(*(&v17 + 1) + 8 * v14) containerURL:[(AVFigAssetInspector *)self URL] securityOptions:0];
         if (v15)
         {
-          [v5 addObject:v15];
+          [array addObject:v15];
         }
 
         ++v14;
@@ -619,7 +619,7 @@ LABEL_16:
     while (v12);
   }
 
-  return v5;
+  return array;
 }
 
 - (BOOL)_hasQTSaveRestriction
@@ -658,7 +658,7 @@ LABEL_16:
 
 - (NSArray)contentKeySpecifiersEligibleForPreloading
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [(AVFigAssetInspector *)self _valueAsCFTypeForProperty:*MEMORY[0x1E6971250]];
   if (v4)
   {
@@ -685,7 +685,7 @@ LABEL_16:
         v11 = [AVContentKeySpecifier contentKeySpecifierForKeySystem:v10 identifier:FigContentKeySpecifierGetIdentifier() options:v9];
         if (v11)
         {
-          [(NSArray *)v3 addObject:v11];
+          [(NSArray *)array addObject:v11];
         }
 
         ++v8;
@@ -697,7 +697,7 @@ LABEL_16:
     CFRelease(v5);
   }
 
-  return v3;
+  return array;
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)overallDurationHint
@@ -722,45 +722,45 @@ LABEL_16:
 
 - (id)_nameForProxy
 {
-  v3 = [(NSString *)[(NSURL *)[(AVFigAssetInspector *)self resolvedURL] path] lastPathComponent];
-  v4 = [(AVFigAssetInspector *)self identifyingTag];
-  if (!v4)
+  lastPathComponent = [(NSString *)[(NSURL *)[(AVFigAssetInspector *)self resolvedURL] path] lastPathComponent];
+  identifyingTag = [(AVFigAssetInspector *)self identifyingTag];
+  if (!identifyingTag)
   {
-    return v3;
+    return lastPathComponent;
   }
 
-  v5 = v4;
+  v5 = identifyingTag;
   v6 = [(AVFigObjectInspector *)self _SInt32ForProperty:*MEMORY[0x1E6971290]];
   if (v6 != 4)
   {
     if (v6 != 2)
     {
-      return v3;
+      return lastPathComponent;
     }
 
     v5 = [objc_msgSend(MEMORY[0x1E6982C40] typeWithMIMEType:{v5), "identifier"}];
     if (!v5)
     {
-      return v3;
+      return lastPathComponent;
     }
   }
 
-  return AVFileNameWithExtensionThatAccordsWithUTI(v3, v5);
+  return AVFileNameWithExtensionThatAccordsWithUTI(lastPathComponent, v5);
 }
 
 - (id)propertyListForProxy
 {
   v3 = [(AVFigObjectInspector *)self _dataForProperty:*MEMORY[0x1E69712B0]];
   v4 = ([(AVFigObjectInspector *)self _longLongForProperty:*MEMORY[0x1E69711E8]]>> 8) & 1;
-  v5 = [(AVFigAssetInspector *)self _nameForProxy];
+  _nameForProxy = [(AVFigAssetInspector *)self _nameForProxy];
 
-  return [AVAssetProxy makePropertyListForMovieProxyHeader:v3 name:v5 prefersNominalDurations:v4];
+  return [AVAssetProxy makePropertyListForMovieProxyHeader:v3 name:_nameForProxy prefersNominalDurations:v4];
 }
 
 - (BOOL)_isDefunct
 {
   v8 = 0;
-  v2 = [(AVFigAssetInspector *)self _figAsset];
+  _figAsset = [(AVFigAssetInspector *)self _figAsset];
   v3 = *(CMBaseObjectGetVTable() + 8);
   if (*v3 < 5uLL)
   {
@@ -773,7 +773,7 @@ LABEL_16:
     v4 = v3[11];
     if (v4)
     {
-      LOBYTE(v4) = v4(v2, &v8) == 0;
+      LOBYTE(v4) = v4(_figAsset, &v8) == 0;
       v5 = v8;
     }
 

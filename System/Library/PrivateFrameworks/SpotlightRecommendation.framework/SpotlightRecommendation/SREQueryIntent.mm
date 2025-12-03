@@ -1,21 +1,21 @@
 @interface SREQueryIntent
-+ (id)queryIntentWithGenres:(id)a3;
++ (id)queryIntentWithGenres:(id)genres;
 - (SREQueryIntent)init;
 @end
 
 @implementation SREQueryIntent
 
-+ (id)queryIntentWithGenres:(id)a3
++ (id)queryIntentWithGenres:(id)genres
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  genresCopy = genres;
   v4 = objc_alloc_init(SREQueryIntent);
-  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v3, "count")}];
+  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(genresCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v3;
+  v6 = genresCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {

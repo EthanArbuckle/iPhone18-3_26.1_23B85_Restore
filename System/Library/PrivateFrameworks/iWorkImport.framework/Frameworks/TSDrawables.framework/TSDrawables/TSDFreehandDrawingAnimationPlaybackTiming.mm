@@ -1,23 +1,23 @@
 @interface TSDFreehandDrawingAnimationPlaybackTiming
-- (BOOL)shouldParameterizeStrokesWithDuration:(double)a3 framesPerSecond:(double)a4;
-- (TSDFreehandDrawingAnimationPlaybackTiming)initWithFreehandDrawingInfo:(id)a3;
-- (double)visibilityOfChild:(id)a3 atPercent:(double)a4;
+- (BOOL)shouldParameterizeStrokesWithDuration:(double)duration framesPerSecond:(double)second;
+- (TSDFreehandDrawingAnimationPlaybackTiming)initWithFreehandDrawingInfo:(id)info;
+- (double)visibilityOfChild:(id)child atPercent:(double)percent;
 - (id)p_fillTimingCurve;
 @end
 
 @implementation TSDFreehandDrawingAnimationPlaybackTiming
 
-- (TSDFreehandDrawingAnimationPlaybackTiming)initWithFreehandDrawingInfo:(id)a3
+- (TSDFreehandDrawingAnimationPlaybackTiming)initWithFreehandDrawingInfo:(id)info
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  infoCopy = info;
   v32.receiver = self;
   v32.super_class = TSDFreehandDrawingAnimationPlaybackTiming;
   v6 = [(TSDFreehandDrawingAnimationPlaybackTiming *)&v32 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_freehandDrawingInfo, a3);
+    objc_storeStrong(&v6->_freehandDrawingInfo, info);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v29 = 0u;
@@ -76,21 +76,21 @@
   return v7;
 }
 
-- (BOOL)shouldParameterizeStrokesWithDuration:(double)a3 framesPerSecond:(double)a4
+- (BOOL)shouldParameterizeStrokesWithDuration:(double)duration framesPerSecond:(double)second
 {
   v8 = objc_msgSend_count(self->_strokeShapes, a2, v4);
   if (v8)
   {
-    LOBYTE(v8) = a3 / objc_msgSend_count(self->_strokeShapes, v9, v10) > 4.0 / a4;
+    LOBYTE(v8) = duration / objc_msgSend_count(self->_strokeShapes, v9, v10) > 4.0 / second;
   }
 
   return v8;
 }
 
-- (double)visibilityOfChild:(id)a3 atPercent:(double)a4
+- (double)visibilityOfChild:(id)child atPercent:(double)percent
 {
-  v6 = a3;
-  isTreatedAsFillForFreehandDrawing = objc_msgSend_isTreatedAsFillForFreehandDrawing(v6, v7, v8);
+  childCopy = child;
+  isTreatedAsFillForFreehandDrawing = objc_msgSend_isTreatedAsFillForFreehandDrawing(childCopy, v7, v8);
   v12 = objc_msgSend_count(self->_strokeShapes, v10, v11);
   if (isTreatedAsFillForFreehandDrawing)
   {
@@ -100,7 +100,7 @@
       v15 = 1.0;
     }
 
-    v16 = (a4 - (1.0 - v15)) / v15;
+    v16 = (percent - (1.0 - v15)) / v15;
     v17 = objc_msgSend_count(self->_fillShapes, v13, v14);
     v18 = 0.0;
     if (v16 > 0.0)
@@ -118,7 +118,7 @@
         v23 = v19 - 1;
       }
 
-      v24 = objc_msgSend_indexOfObjectIdenticalTo_(self->_fillShapes, v20, v6);
+      v24 = objc_msgSend_indexOfObjectIdenticalTo_(self->_fillShapes, v20, childCopy);
       if (v24 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v26 = MEMORY[0x277D81150];
@@ -152,7 +152,7 @@ LABEL_12:
   {
     TSUMix();
     v32 = v31;
-    v34 = objc_msgSend_indexOfObjectIdenticalTo_(self->_strokeShapes, v33, v6);
+    v34 = objc_msgSend_indexOfObjectIdenticalTo_(self->_strokeShapes, v33, childCopy);
     if (v34 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v36 = MEMORY[0x277D81150];

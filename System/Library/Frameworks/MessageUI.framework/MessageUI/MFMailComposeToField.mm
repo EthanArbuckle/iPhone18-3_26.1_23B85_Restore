@@ -1,13 +1,13 @@
 @interface MFMailComposeToField
 - (MFComposeSMIMELockButton)SMIMEButton;
 - (MFMailComposeToFieldDelegate)toFieldDelegate;
-- (id)_textContainerExclusionPathsWithAddButton:(BOOL)a3;
-- (void)_setSMIMEButtonVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)_tappedSMIMEButton:(id)a3;
+- (id)_textContainerExclusionPathsWithAddButton:(BOOL)button;
+- (void)_setSMIMEButtonVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)_tappedSMIMEButton:(id)button;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setExpanded:(BOOL)a3;
-- (void)setWantsEncryption:(BOOL)a3 canEncrypt:(BOOL)a4 animated:(BOOL)a5;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setWantsEncryption:(BOOL)encryption canEncrypt:(BOOL)encrypt animated:(BOOL)animated;
 @end
 
 @implementation MFMailComposeToField
@@ -27,11 +27,11 @@
   [(CNComposeRecipientTextView *)&v10 layoutSubviews];
   if (self->_smimeButton)
   {
-    v3 = [(CNComposeRecipientTextView *)self _useRightToLeftLayout];
-    v4 = [(CNComposeRecipientTextView *)self addButton];
-    [v4 center];
+    _useRightToLeftLayout = [(CNComposeRecipientTextView *)self _useRightToLeftLayout];
+    addButton = [(CNComposeRecipientTextView *)self addButton];
+    [addButton center];
     v6 = v5;
-    if (v3)
+    if (_useRightToLeftLayout)
     {
       *&v7 = 40.0;
     }
@@ -43,8 +43,8 @@
 
     v8 = *&v7;
 
-    v9 = [(CNComposeRecipientTextView *)self addButton];
-    [v9 center];
+    addButton2 = [(CNComposeRecipientTextView *)self addButton];
+    [addButton2 center];
     [(MFComposeSMIMELockButton *)self->_smimeButton setCenter:v6 + v8];
 
     [(MFComposeSMIMELockButton *)self->_smimeButton frame];
@@ -59,8 +59,8 @@
   if (!smimeButton)
   {
     v4 = [MFComposeSMIMELockButton alloc];
-    v5 = [(CNComposeRecipientTextView *)self addButton];
-    [v5 frame];
+    addButton = [(CNComposeRecipientTextView *)self addButton];
+    [addButton frame];
     v6 = [(MFComposeSMIMELockButton *)v4 initWithFrame:?];
     v7 = self->_smimeButton;
     self->_smimeButton = v6;
@@ -76,76 +76,76 @@
   return smimeButton;
 }
 
-- (void)_tappedSMIMEButton:(id)a3
+- (void)_tappedSMIMEButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_toFieldDelegate);
   [WeakRetained tappedSMIMEButton];
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  v4 = a3;
+  expandedCopy = expanded;
   v7.receiver = self;
   v7.super_class = MFMailComposeToField;
   [(CNComposeRecipientTextView *)&v7 setExpanded:?];
-  if (v4)
+  if (expandedCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_toFieldDelegate);
-    v6 = [WeakRetained shouldShowSMIMEButton];
+    shouldShowSMIMEButton = [WeakRetained shouldShowSMIMEButton];
   }
 
   else
   {
-    v6 = 0;
+    shouldShowSMIMEButton = 0;
   }
 
-  [(MFMailComposeToField *)self _setSMIMEButtonVisible:v6 animated:[(MFMailComposeToField *)self smimeButtonVisible]^ v4];
-  if (v4)
+  [(MFMailComposeToField *)self _setSMIMEButtonVisible:shouldShowSMIMEButton animated:[(MFMailComposeToField *)self smimeButtonVisible]^ expandedCopy];
+  if (expandedCopy)
   {
   }
 }
 
-- (void)setWantsEncryption:(BOOL)a3 canEncrypt:(BOOL)a4 animated:(BOOL)a5
+- (void)setWantsEncryption:(BOOL)encryption canEncrypt:(BOOL)encrypt animated:(BOOL)animated
 {
-  self->_wantsEncryption = a3;
-  self->_canEncrypt = a4;
+  self->_wantsEncryption = encryption;
+  self->_canEncrypt = encrypt;
   [MFComposeSMIMELockButton setWantsEncryption:"setWantsEncryption:canEncrypt:animated:" canEncrypt:? animated:?];
 }
 
-- (void)_setSMIMEButtonVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setSMIMEButtonVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(MFMailComposeToField *)self smimeButtonVisible]!= a3)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  if ([(MFMailComposeToField *)self smimeButtonVisible]!= visible)
   {
-    [(MFMailComposeToField *)self setSmimeButtonVisible:v5];
-    if (v5 || self->_smimeButton)
+    [(MFMailComposeToField *)self setSmimeButtonVisible:visibleCopy];
+    if (visibleCopy || self->_smimeButton)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __56__MFMailComposeToField__setSMIMEButtonVisible_animated___block_invoke;
       aBlock[3] = &unk_1E806CDA8;
       aBlock[4] = self;
-      v20 = v5;
+      v20 = visibleCopy;
       v7 = _Block_copy(aBlock);
       v8 = v7;
-      if (v4)
+      if (animatedCopy)
       {
-        v9 = [(MFMailComposeToField *)self SMIMEButton];
-        v10 = v9;
+        sMIMEButton = [(MFMailComposeToField *)self SMIMEButton];
+        v10 = sMIMEButton;
         v11 = 1.0;
-        if (v5)
+        if (visibleCopy)
         {
           v11 = 0.0;
         }
 
-        [v9 setAlpha:v11];
+        [sMIMEButton setAlpha:v11];
 
-        v12 = [(CNComposeRecipientTextView *)self _useRightToLeftLayout];
-        if (v5)
+        _useRightToLeftLayout = [(CNComposeRecipientTextView *)self _useRightToLeftLayout];
+        if (visibleCopy)
         {
           v13 = 2.0;
-          if (v12)
+          if (_useRightToLeftLayout)
           {
             v13 = -2.0;
           }
@@ -161,9 +161,9 @@
           *&v18.tx = *(MEMORY[0x1E695EFD0] + 32);
         }
 
-        v15 = [(MFMailComposeToField *)self SMIMEButton];
+        sMIMEButton2 = [(MFMailComposeToField *)self SMIMEButton];
         v17 = v18;
-        [v15 setTransform:&v17];
+        [sMIMEButton2 setTransform:&v17];
 
         [MEMORY[0x1E69DD250] animateWithDuration:v8 animations:0.25];
       }
@@ -173,8 +173,8 @@
         (*(v7 + 2))(v7);
       }
 
-      v16 = [(MFMailComposeToField *)self SMIMEButton];
-      [(MFMailComposeToField *)self bringSubviewToFront:v16];
+      sMIMEButton3 = [(MFMailComposeToField *)self SMIMEButton];
+      [(MFMailComposeToField *)self bringSubviewToFront:sMIMEButton3];
 
       [(CNComposeRecipientTextView *)self _invalidateTextContainerExclusionPaths];
     }
@@ -204,17 +204,17 @@ void __56__MFMailComposeToField__setSMIMEButtonVisible_animated___block_invoke(u
   [v4 setTransform:v6];
 }
 
-- (id)_textContainerExclusionPathsWithAddButton:(BOOL)a3
+- (id)_textContainerExclusionPathsWithAddButton:(BOOL)button
 {
   v23.receiver = self;
   v23.super_class = MFMailComposeToField;
-  v4 = [(CNComposeRecipientTextView *)&v23 _textContainerExclusionPathsWithAddButton:a3];
+  v4 = [(CNComposeRecipientTextView *)&v23 _textContainerExclusionPathsWithAddButton:button];
   if ([(MFMailComposeToField *)self smimeButtonVisible])
   {
     v5 = [v4 mutableCopy];
-    v6 = [(CNComposeRecipientTextView *)self _useRightToLeftLayout];
+    _useRightToLeftLayout = [(CNComposeRecipientTextView *)self _useRightToLeftLayout];
     smimeButton = self->_smimeButton;
-    if (v6)
+    if (_useRightToLeftLayout)
     {
       [(MFComposeSMIMELockButton *)smimeButton frame];
       MaxX = CGRectGetMaxX(v25);
@@ -231,8 +231,8 @@ void __56__MFMailComposeToField__setSMIMEButtonVisible_animated___block_invoke(u
 
     [(MFComposeSMIMELockButton *)self->_smimeButton frame];
     MaxY = CGRectGetMaxY(v27);
-    v12 = [(CNComposeRecipientTextView *)self textView];
-    [(MFMailComposeToField *)self convertRect:v12 toView:MinX, 0.0, MaxX, MaxY];
+    textView = [(CNComposeRecipientTextView *)self textView];
+    [(MFMailComposeToField *)self convertRect:textView toView:MinX, 0.0, MaxX, MaxY];
     v14 = v13;
     v16 = v15;
     v18 = v17;

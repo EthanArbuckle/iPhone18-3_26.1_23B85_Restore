@@ -1,32 +1,32 @@
 @interface SXJSONAdvertisementSettings
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4;
-- (unint64_t)bannerTypeWithValue:(id)a3 withType:(int)a4;
++ (Class)classForProtocolProperty:(id)property withValue:(id)value;
+- (unint64_t)bannerTypeWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXJSONAdvertisementSettings
 
-- (unint64_t)bannerTypeWithValue:(id)a3 withType:(int)a4
+- (unint64_t)bannerTypeWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEqualToString:@"any"])
+    if ([valueCopy isEqualToString:@"any"])
     {
       v5 = 1;
     }
 
-    else if ([v4 isEqualToString:@"standard"])
+    else if ([valueCopy isEqualToString:@"standard"])
     {
       v5 = 2;
     }
 
-    else if ([v4 isEqualToString:@"double_height"])
+    else if ([valueCopy isEqualToString:@"double_height"])
     {
       v5 = 3;
     }
 
-    else if ([v4 isEqualToString:@"large"])
+    else if ([valueCopy isEqualToString:@"large"])
     {
       v5 = 4;
     }
@@ -50,20 +50,20 @@
   return v5;
 }
 
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4
++ (Class)classForProtocolProperty:(id)property withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"layout"])
+  propertyCopy = property;
+  valueCopy = value;
+  if ([propertyCopy isEqualToString:@"layout"])
   {
     v8 = objc_opt_class();
   }
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___SXJSONAdvertisementSettings;
-    v8 = objc_msgSendSuper2(&v11, sel_classForProtocolProperty_withValue_, v6, v7);
+    v8 = objc_msgSendSuper2(&v11, sel_classForProtocolProperty_withValue_, propertyCopy, valueCopy);
   }
 
   v9 = v8;

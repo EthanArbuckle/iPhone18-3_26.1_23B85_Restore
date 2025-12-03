@@ -1,23 +1,23 @@
 @interface CarFocusGuideDebugView
-- (CarFocusGuideDebugView)initWithDirection:(unint64_t)a3;
-- (id)_colorForDirection:(unint64_t)a3;
+- (CarFocusGuideDebugView)initWithDirection:(unint64_t)direction;
+- (id)_colorForDirection:(unint64_t)direction;
 - (void)_updateColors;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation CarFocusGuideDebugView
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = CarFocusGuideDebugView;
-  [(CarFocusGuideDebugView *)&v4 setUserInteractionEnabled:a3];
+  [(CarFocusGuideDebugView *)&v4 setUserInteractionEnabled:enabled];
   [(CarFocusGuideDebugView *)self _updateColors];
 }
 
-- (id)_colorForDirection:(unint64_t)a3
+- (id)_colorForDirection:(unint64_t)direction
 {
-  if (a3)
+  if (direction)
   {
     +[UIColor systemDarkPinkColor];
   }
@@ -47,32 +47,32 @@
   [(CarFocusGuideDebugView *)self setBackgroundColor:v3];
 
   v4 = [v8 colorWithAlphaComponent:0.300000012];
-  v5 = [v4 CGColor];
-  v6 = [(CarFocusGuideDebugView *)self layer];
-  [v6 setBorderColor:v5];
+  cGColor = [v4 CGColor];
+  layer = [(CarFocusGuideDebugView *)self layer];
+  [layer setBorderColor:cGColor];
 
   v7 = [v8 colorWithAlphaComponent:0.5];
   [(UILabel *)self->_directionLabel setTextColor:v7];
 }
 
-- (CarFocusGuideDebugView)initWithDirection:(unint64_t)a3
+- (CarFocusGuideDebugView)initWithDirection:(unint64_t)direction
 {
   v19.receiver = self;
   v19.super_class = CarFocusGuideDebugView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(CarFocusGuideDebugView *)&v19 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v8 = v7;
-  if (v7)
+  height = [(CarFocusGuideDebugView *)&v19 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v8 = height;
+  if (height)
   {
-    v7->_direction = a3;
+    height->_direction = direction;
     v9 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     directionLabel = v8->_directionLabel;
     v8->_directionLabel = v9;
 
     [(UILabel *)v8->_directionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    if (a3)
+    if (direction)
     {
       v11 = +[NSMutableString string];
       v23[0] = 0;
@@ -88,32 +88,32 @@
       v22 = v23;
       v13 = objc_retainBlock(v20);
       v14 = v13;
-      if (a3)
+      if (direction)
       {
         (v13[2])(v13, @"Up");
       }
 
-      if ((a3 & 2) != 0)
+      if ((direction & 2) != 0)
       {
         (v14)[2](v14, @"Down");
       }
 
-      if ((a3 & 4) != 0)
+      if ((direction & 4) != 0)
       {
         (v14)[2](v14, @"Left");
       }
 
-      if ((a3 & 8) != 0)
+      if ((direction & 8) != 0)
       {
         (v14)[2](v14, @"Right");
       }
 
-      if ((a3 & 0x20) != 0)
+      if ((direction & 0x20) != 0)
       {
         (v14)[2](v14, @"Previous");
       }
 
-      if ((a3 & 0x10) != 0)
+      if ((direction & 0x10) != 0)
       {
         (v14)[2](v14, @"Next");
       }
@@ -136,8 +136,8 @@
     [NSLayoutConstraint activateConstraints:v16];
 
     [(CarFocusGuideDebugView *)v8 setUserInteractionEnabled:1];
-    v17 = [(CarFocusGuideDebugView *)v8 layer];
-    [v17 setBorderWidth:1.0];
+    layer = [(CarFocusGuideDebugView *)v8 layer];
+    [layer setBorderWidth:1.0];
 
     [(CarFocusGuideDebugView *)v8 _updateColors];
   }

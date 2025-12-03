@@ -2,7 +2,7 @@
 + (id)defaultEscherWordArtProperties;
 + (id)defaultProperties;
 - (BOOL)isAnchorCenter;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLeftToRightColumns;
 - (BOOL)isUpright;
 - (BOOL)isWarped;
@@ -25,11 +25,11 @@
 - (unsigned)textAnchorType;
 - (unsigned)verticalOverflowType;
 - (unsigned)wrapType;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 - (void)removeUnnecessaryOverrides;
-- (void)setIsAnchorCenter:(BOOL)a3;
-- (void)setIsLeftToRightColumns:(BOOL)a3;
-- (void)setIsUpright:(BOOL)a3;
+- (void)setIsAnchorCenter:(BOOL)center;
+- (void)setIsLeftToRightColumns:(BOOL)columns;
+- (void)setIsUpright:(BOOL)upright;
 @end
 
 @implementation OADTextBodyProperties
@@ -57,11 +57,11 @@
 {
   v13.receiver = self;
   v13.super_class = OADTextBodyProperties;
-  v2 = [(OADProperties *)&v13 initWithDefaults];
-  v3 = v2;
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v13 initWithDefaults];
+  v3 = initWithDefaults;
+  if (initWithDefaults)
   {
-    [(OADTextBodyProperties *)v2 setRespectLastFirstLineSpacing:1];
+    [(OADTextBodyProperties *)initWithDefaults setRespectLastFirstLineSpacing:1];
     LODWORD(v4) = 1080452710;
     [(OADTextBodyProperties *)v3 setTopInset:v4];
     LODWORD(v5) = 1088841318;
@@ -95,22 +95,22 @@
 
 - (void)removeUnnecessaryOverrides
 {
-  v3 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
 
-  if (!v3)
+  if (!parent)
   {
     return;
   }
 
-  v4 = [(OADProperties *)self isMerged];
-  v5 = [(OADProperties *)self isMergedWithParent];
+  isMerged = [(OADProperties *)self isMerged];
+  isMergedWithParent = [(OADProperties *)self isMergedWithParent];
   [(OADProperties *)self setMerged:0];
   [(OADProperties *)self setMergedWithParent:0];
   if ([(OADTextBodyProperties *)self hasRespectLastFirstLineSpacing])
   {
-    v6 = [(OADProperties *)self parent];
-    v7 = [(OADTextBodyProperties *)self respectLastFirstLineSpacing];
-    if (v7 == [v6 respectLastFirstLineSpacing])
+    parent2 = [(OADProperties *)self parent];
+    respectLastFirstLineSpacing = [(OADTextBodyProperties *)self respectLastFirstLineSpacing];
+    if (respectLastFirstLineSpacing == [parent2 respectLastFirstLineSpacing])
     {
       [(OADTextBodyProperties *)self setRespectLastFirstLineSpacing:0];
       *(self + 75) &= ~1u;
@@ -119,10 +119,10 @@
 
   if ([(OADTextBodyProperties *)self hasTopInset])
   {
-    v8 = [(OADProperties *)self parent];
+    parent3 = [(OADProperties *)self parent];
     [(OADTextBodyProperties *)self topInset];
     v10 = v9;
-    [v8 topInset];
+    [parent3 topInset];
     if (v10 == v11)
     {
       [(OADTextBodyProperties *)self setTopInset:0.0];
@@ -132,10 +132,10 @@
 
   if ([(OADTextBodyProperties *)self hasLeftInset])
   {
-    v12 = [(OADProperties *)self parent];
+    parent4 = [(OADProperties *)self parent];
     [(OADTextBodyProperties *)self leftInset];
     v14 = v13;
-    [v12 leftInset];
+    [parent4 leftInset];
     if (v14 == v15)
     {
       [(OADTextBodyProperties *)self setLeftInset:0.0];
@@ -145,10 +145,10 @@
 
   if ([(OADTextBodyProperties *)self hasRightInset])
   {
-    v16 = [(OADProperties *)self parent];
+    parent5 = [(OADProperties *)self parent];
     [(OADTextBodyProperties *)self rightInset];
     v18 = v17;
-    [v16 rightInset];
+    [parent5 rightInset];
     if (v18 == v19)
     {
       [(OADTextBodyProperties *)self setRightInset:0.0];
@@ -158,10 +158,10 @@
 
   if ([(OADTextBodyProperties *)self hasBottomInset])
   {
-    v20 = [(OADProperties *)self parent];
+    parent6 = [(OADProperties *)self parent];
     [(OADTextBodyProperties *)self bottomInset];
     v22 = v21;
-    [v20 bottomInset];
+    [parent6 bottomInset];
     if (v22 == v23)
     {
       [(OADTextBodyProperties *)self setBottomInset:0.0];
@@ -171,9 +171,9 @@
 
   if ([(OADTextBodyProperties *)self hasColumnCount])
   {
-    v24 = [(OADProperties *)self parent];
-    v25 = [(OADTextBodyProperties *)self columnCount];
-    if (v25 == [v24 columnCount])
+    parent7 = [(OADProperties *)self parent];
+    columnCount = [(OADTextBodyProperties *)self columnCount];
+    if (columnCount == [parent7 columnCount])
     {
       [(OADTextBodyProperties *)self setColumnCount:0];
       *(self + 74) &= ~0x20u;
@@ -182,10 +182,10 @@
 
   if ([(OADTextBodyProperties *)self hasColumnSpacing])
   {
-    v26 = [(OADProperties *)self parent];
+    parent8 = [(OADProperties *)self parent];
     [(OADTextBodyProperties *)self columnSpacing];
     v28 = v27;
-    [v26 columnSpacing];
+    [parent8 columnSpacing];
     if (v28 == v29)
     {
       [(OADTextBodyProperties *)self setColumnSpacing:0.0];
@@ -195,9 +195,9 @@
 
   if ([(OADTextBodyProperties *)self hasIsLeftToRightColumns])
   {
-    v30 = [(OADProperties *)self parent];
-    v31 = [(OADTextBodyProperties *)self isLeftToRightColumns];
-    if (v31 == [v30 isLeftToRightColumns])
+    parent9 = [(OADProperties *)self parent];
+    isLeftToRightColumns = [(OADTextBodyProperties *)self isLeftToRightColumns];
+    if (isLeftToRightColumns == [parent9 isLeftToRightColumns])
     {
       [(OADTextBodyProperties *)self setIsLeftToRightColumns:0];
       *(self + 74) &= ~0x80u;
@@ -206,30 +206,30 @@
 
   if ([(OADTextBodyProperties *)self hasAutoFit])
   {
-    v32 = [(OADProperties *)self parent];
-    v33 = [(OADTextBodyProperties *)self autoFit];
-    v34 = [v32 autoFit];
+    parent10 = [(OADProperties *)self parent];
+    autoFit = [(OADTextBodyProperties *)self autoFit];
+    autoFit2 = [parent10 autoFit];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v33 removeUnnecessaryOverrides];
+      [(objc_object *)autoFit removeUnnecessaryOverrides];
       v35 = objc_opt_class();
       if (v35 != objc_opt_class())
       {
         goto LABEL_41;
       }
 
-      v36 = [(objc_object *)v33 isMergedWithParent];
-      [(objc_object *)v33 setMergedWithParent:0];
-      v37 = [(objc_object *)v33 isAnythingOverridden];
-      [(objc_object *)v33 setMergedWithParent:v36];
-      if (v37)
+      isMergedWithParent2 = [(objc_object *)autoFit isMergedWithParent];
+      [(objc_object *)autoFit setMergedWithParent:0];
+      isAnythingOverridden = [(objc_object *)autoFit isAnythingOverridden];
+      [(objc_object *)autoFit setMergedWithParent:isMergedWithParent2];
+      if (isAnythingOverridden)
       {
         goto LABEL_41;
       }
     }
 
-    else if (!TCObjectEqual(v33, v34))
+    else if (!TCObjectEqual(autoFit, autoFit2))
     {
 LABEL_41:
 
@@ -245,9 +245,9 @@ LABEL_41:
 LABEL_42:
   if ([(OADTextBodyProperties *)self hasFlowType])
   {
-    v39 = [(OADProperties *)self parent];
-    v40 = [(OADTextBodyProperties *)self flowType];
-    if (v40 == [v39 flowType])
+    parent11 = [(OADProperties *)self parent];
+    flowType = [(OADTextBodyProperties *)self flowType];
+    if (flowType == [parent11 flowType])
     {
       [(OADTextBodyProperties *)self setFlowType:0];
       *(self + 73) &= ~0x80u;
@@ -256,9 +256,9 @@ LABEL_42:
 
   if ([(OADTextBodyProperties *)self hasWrapType])
   {
-    v41 = [(OADProperties *)self parent];
-    v42 = [(OADTextBodyProperties *)self wrapType];
-    if (v42 == [v41 wrapType])
+    parent12 = [(OADProperties *)self parent];
+    wrapType = [(OADTextBodyProperties *)self wrapType];
+    if (wrapType == [parent12 wrapType])
     {
       [(OADTextBodyProperties *)self setWrapType:0];
       *(self + 74) &= ~1u;
@@ -267,9 +267,9 @@ LABEL_42:
 
   if ([(OADTextBodyProperties *)self hasVerticalOverflowType])
   {
-    v43 = [(OADProperties *)self parent];
-    v44 = [(OADTextBodyProperties *)self verticalOverflowType];
-    if (v44 == [v43 verticalOverflowType])
+    parent13 = [(OADProperties *)self parent];
+    verticalOverflowType = [(OADTextBodyProperties *)self verticalOverflowType];
+    if (verticalOverflowType == [parent13 verticalOverflowType])
     {
       [(OADTextBodyProperties *)self setVerticalOverflowType:0];
       *(self + 73) &= ~0x10u;
@@ -278,9 +278,9 @@ LABEL_42:
 
   if ([(OADTextBodyProperties *)self hasTextBodyId])
   {
-    v45 = [(OADProperties *)self parent];
-    v46 = [(OADTextBodyProperties *)self textBodyId];
-    if (v46 == [v45 textBodyId])
+    parent14 = [(OADProperties *)self parent];
+    textBodyId = [(OADTextBodyProperties *)self textBodyId];
+    if (textBodyId == [parent14 textBodyId])
     {
       [(OADTextBodyProperties *)self setTextBodyId:0];
       *(self + 73) &= ~0x40u;
@@ -292,24 +292,24 @@ LABEL_42:
     goto LABEL_66;
   }
 
-  v47 = [(OADProperties *)self parent];
-  v48 = [(OADTextBodyProperties *)self textWarp];
-  v49 = [v47 textWarp];
+  parent15 = [(OADProperties *)self parent];
+  textWarp = [(OADTextBodyProperties *)self textWarp];
+  textWarp2 = [parent15 textWarp];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v48 removeUnnecessaryOverrides];
+    [(objc_object *)textWarp removeUnnecessaryOverrides];
     v50 = objc_opt_class();
     if (v50 != objc_opt_class())
     {
       goto LABEL_65;
     }
 
-    v51 = [(objc_object *)v48 isMergedWithParent];
-    [(objc_object *)v48 setMergedWithParent:0];
-    v52 = [(objc_object *)v48 isAnythingOverridden];
-    [(objc_object *)v48 setMergedWithParent:v51];
-    if (v52)
+    isMergedWithParent3 = [(objc_object *)textWarp isMergedWithParent];
+    [(objc_object *)textWarp setMergedWithParent:0];
+    isAnythingOverridden2 = [(objc_object *)textWarp isAnythingOverridden];
+    [(objc_object *)textWarp setMergedWithParent:isMergedWithParent3];
+    if (isAnythingOverridden2)
     {
       goto LABEL_65;
     }
@@ -317,7 +317,7 @@ LABEL_42:
     goto LABEL_64;
   }
 
-  if (TCObjectEqual(v48, v49))
+  if (TCObjectEqual(textWarp, textWarp2))
   {
 LABEL_64:
     mTextWarp = self->mTextWarp;
@@ -329,9 +329,9 @@ LABEL_65:
 LABEL_66:
   if ([(OADTextBodyProperties *)self hasIsAnchorCenter])
   {
-    v54 = [(OADProperties *)self parent];
-    v55 = [(OADTextBodyProperties *)self isAnchorCenter];
-    if (v55 == [v54 isAnchorCenter])
+    parent16 = [(OADProperties *)self parent];
+    isAnchorCenter = [(OADTextBodyProperties *)self isAnchorCenter];
+    if (isAnchorCenter == [parent16 isAnchorCenter])
     {
       [(OADTextBodyProperties *)self setIsAnchorCenter:0];
       *(self + 74) &= ~4u;
@@ -340,9 +340,9 @@ LABEL_66:
 
   if ([(OADTextBodyProperties *)self hasTextAnchorType])
   {
-    v56 = [(OADProperties *)self parent];
-    v57 = [(OADTextBodyProperties *)self textAnchorType];
-    if (v57 == [v56 textAnchorType])
+    parent17 = [(OADProperties *)self parent];
+    textAnchorType = [(OADTextBodyProperties *)self textAnchorType];
+    if (textAnchorType == [parent17 textAnchorType])
     {
       [(OADTextBodyProperties *)self setTextAnchorType:0];
       *(self + 74) &= ~2u;
@@ -351,9 +351,9 @@ LABEL_66:
 
   if ([(OADTextBodyProperties *)self hasIsUpright])
   {
-    v58 = [(OADProperties *)self parent];
-    v59 = [(OADTextBodyProperties *)self isUpright];
-    if (v59 == [v58 isUpright])
+    parent18 = [(OADProperties *)self parent];
+    isUpright = [(OADTextBodyProperties *)self isUpright];
+    if (isUpright == [parent18 isUpright])
     {
       [(OADTextBodyProperties *)self setIsUpright:0];
       *(self + 74) &= ~8u;
@@ -362,10 +362,10 @@ LABEL_66:
 
   if ([(OADTextBodyProperties *)self hasRotation])
   {
-    v60 = [(OADProperties *)self parent];
+    parent19 = [(OADProperties *)self parent];
     [(OADTextBodyProperties *)self rotation];
     v62 = v61;
-    [v60 rotation];
+    [parent19 rotation];
     if (v62 == v63)
     {
       [(OADTextBodyProperties *)self setRotation:0.0];
@@ -373,8 +373,8 @@ LABEL_66:
     }
   }
 
-  [(OADProperties *)self setMerged:v4];
-  [(OADProperties *)self setMergedWithParent:v5];
+  [(OADProperties *)self setMerged:isMerged];
+  [(OADProperties *)self setMergedWithParent:isMergedWithParent];
   v64.receiver = self;
   v64.super_class = OADTextBodyProperties;
   [(OADProperties *)&v64 removeUnnecessaryOverrides];
@@ -537,9 +537,9 @@ void __42__OADTextBodyProperties_defaultProperties__block_invoke()
   return v3 & 1;
 }
 
-- (void)setIsLeftToRightColumns:(BOOL)a3
+- (void)setIsLeftToRightColumns:(BOOL)columns
 {
-  if (a3)
+  if (columns)
   {
     v3 = 8;
   }
@@ -563,16 +563,16 @@ void __42__OADTextBodyProperties_defaultProperties__block_invoke()
 
 - (BOOL)isWarped
 {
-  v2 = [(OADTextBodyProperties *)self textWarp];
+  textWarp = [(OADTextBodyProperties *)self textWarp];
   v3 = +[OADTextWarp nullWarp];
-  v4 = [v2 isEqual:v3];
+  v4 = [textWarp isEqual:v3];
 
   return v4 ^ 1;
 }
 
-- (void)setIsAnchorCenter:(BOOL)a3
+- (void)setIsAnchorCenter:(BOOL)center
 {
-  if (a3)
+  if (center)
   {
     v3 = 4;
   }
@@ -586,9 +586,9 @@ void __42__OADTextBodyProperties_defaultProperties__block_invoke()
   *(self + 74) |= 4u;
 }
 
-- (void)setIsUpright:(BOOL)a3
+- (void)setIsUpright:(BOOL)upright
 {
-  if (a3)
+  if (upright)
   {
     v3 = 2;
   }
@@ -633,39 +633,39 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
   [+[OADTextBodyProperties defaultEscherWordArtProperties]::defaultProperties setRotation:0.0];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v69.receiver = self;
   v69.super_class = OADTextBodyProperties;
-  [(OADProperties *)&v69 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ([(OADTextBodyProperties *)self hasAutoFit]|| ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v69 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ([(OADTextBodyProperties *)self hasAutoFit]|| ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
     v6 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasAutoFit];
 
     if (v6)
     {
-      v7 = [(OADTextBodyProperties *)self autoFit];
+      autoFit = [(OADTextBodyProperties *)self autoFit];
     }
 
     else
     {
-      v7 = 0;
+      autoFit = 0;
     }
 
-    v8 = [v4 possiblyInexistentOverrideForSelector:sel_hasAutoFit];
+    v8 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasAutoFit];
 
     if (v8)
     {
-      v9 = [v4 autoFit];
+      autoFit2 = [valuesCopy autoFit];
     }
 
     else
     {
-      v9 = 0;
+      autoFit2 = 0;
     }
 
-    v10 = TCObjectEqual(v7, v9);
+    v10 = TCObjectEqual(autoFit, autoFit2);
     mAutoFit = self->mAutoFit;
     if (v10)
     {
@@ -674,37 +674,37 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
 
     else if (!mAutoFit && v6)
     {
-      [(OADTextBodyProperties *)self setAutoFit:v7];
+      [(OADTextBodyProperties *)self setAutoFit:autoFit];
     }
   }
 
-  if ([(OADTextBodyProperties *)self hasTextWarp]|| ([(OADProperties *)self parent], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != v4))
+  if ([(OADTextBodyProperties *)self hasTextWarp]|| ([(OADProperties *)self parent], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != valuesCopy))
   {
     v13 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasTextWarp];
 
     if (v13)
     {
-      v14 = [(OADTextBodyProperties *)self textWarp];
+      textWarp = [(OADTextBodyProperties *)self textWarp];
     }
 
     else
     {
-      v14 = 0;
+      textWarp = 0;
     }
 
-    v15 = [v4 possiblyInexistentOverrideForSelector:sel_hasTextWarp];
+    v15 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasTextWarp];
 
     if (v15)
     {
-      v16 = [v4 textWarp];
+      textWarp2 = [valuesCopy textWarp];
     }
 
     else
     {
-      v16 = 0;
+      textWarp2 = 0;
     }
 
-    v17 = TCObjectEqual(v14, v16);
+    v17 = TCObjectEqual(textWarp, textWarp2);
     mTextWarp = self->mTextWarp;
     if (v17)
     {
@@ -713,15 +713,15 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
 
     else if (!mTextWarp && v13)
     {
-      [(OADTextBodyProperties *)self setTextWarp:v14];
+      [(OADTextBodyProperties *)self setTextWarp:textWarp];
     }
   }
 
-  if ((*(self + 75) & 2) != 0 || ([(OADProperties *)self parent], v19 = objc_claimAutoreleasedReturnValue(), v19, v19 != v4))
+  if ((*(self + 75) & 2) != 0 || ([(OADProperties *)self parent], v19 = objc_claimAutoreleasedReturnValue(), v19, v19 != valuesCopy))
   {
     [(OADTextBodyProperties *)self topInset];
     v21 = v20;
-    [v4 topInset];
+    [valuesCopy topInset];
     if (v21 == v22)
     {
       *(self + 75) &= ~2u;
@@ -734,11 +734,11 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 75) & 4) != 0 || ([(OADProperties *)self parent], v23 = objc_claimAutoreleasedReturnValue(), v23, v23 != v4))
+  if ((*(self + 75) & 4) != 0 || ([(OADProperties *)self parent], v23 = objc_claimAutoreleasedReturnValue(), v23, v23 != valuesCopy))
   {
     [(OADTextBodyProperties *)self leftInset];
     v25 = v24;
-    [v4 leftInset];
+    [valuesCopy leftInset];
     if (v25 == v26)
     {
       *(self + 75) &= ~4u;
@@ -751,11 +751,11 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 75) & 0x10) != 0 || ([(OADProperties *)self parent], v27 = objc_claimAutoreleasedReturnValue(), v27, v27 != v4))
+  if ((*(self + 75) & 0x10) != 0 || ([(OADProperties *)self parent], v27 = objc_claimAutoreleasedReturnValue(), v27, v27 != valuesCopy))
   {
     [(OADTextBodyProperties *)self bottomInset];
     v29 = v28;
-    [v4 bottomInset];
+    [valuesCopy bottomInset];
     if (v29 == v30)
     {
       *(self + 75) &= ~0x10u;
@@ -768,11 +768,11 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 75) & 8) != 0 || ([(OADProperties *)self parent], v31 = objc_claimAutoreleasedReturnValue(), v31, v31 != v4))
+  if ((*(self + 75) & 8) != 0 || ([(OADProperties *)self parent], v31 = objc_claimAutoreleasedReturnValue(), v31, v31 != valuesCopy))
   {
     [(OADTextBodyProperties *)self rightInset];
     v33 = v32;
-    [v4 rightInset];
+    [valuesCopy rightInset];
     if (v33 == v34)
     {
       *(self + 75) &= ~8u;
@@ -785,11 +785,11 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 74) & 0x10) != 0 || ([(OADProperties *)self parent], v35 = objc_claimAutoreleasedReturnValue(), v35, v35 != v4))
+  if ((*(self + 74) & 0x10) != 0 || ([(OADProperties *)self parent], v35 = objc_claimAutoreleasedReturnValue(), v35, v35 != valuesCopy))
   {
     [(OADTextBodyProperties *)self rotation];
     v37 = v36;
-    [v4 rotation];
+    [valuesCopy rotation];
     if (v37 == v38)
     {
       *(self + 74) &= ~0x10u;
@@ -802,11 +802,11 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 74) & 0x40) != 0 || ([(OADProperties *)self parent], v39 = objc_claimAutoreleasedReturnValue(), v39, v39 != v4))
+  if ((*(self + 74) & 0x40) != 0 || ([(OADProperties *)self parent], v39 = objc_claimAutoreleasedReturnValue(), v39, v39 != valuesCopy))
   {
     [(OADTextBodyProperties *)self columnSpacing];
     v41 = v40;
-    [v4 columnSpacing];
+    [valuesCopy columnSpacing];
     if (v41 == v42)
     {
       *(self + 74) &= ~0x40u;
@@ -819,10 +819,10 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 74) & 0x20) != 0 || ([(OADProperties *)self parent], v43 = objc_claimAutoreleasedReturnValue(), v43, v43 != v4))
+  if ((*(self + 74) & 0x20) != 0 || ([(OADProperties *)self parent], v43 = objc_claimAutoreleasedReturnValue(), v43, v43 != valuesCopy))
   {
-    v44 = [(OADTextBodyProperties *)self columnCount];
-    if (v44 == [v4 columnCount])
+    columnCount = [(OADTextBodyProperties *)self columnCount];
+    if (columnCount == [valuesCopy columnCount])
     {
       *(self + 74) &= ~0x20u;
     }
@@ -833,10 +833,10 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 73) & 0x40) != 0 || ([(OADProperties *)self parent], v45 = objc_claimAutoreleasedReturnValue(), v45, v45 != v4))
+  if ((*(self + 73) & 0x40) != 0 || ([(OADProperties *)self parent], v45 = objc_claimAutoreleasedReturnValue(), v45, v45 != valuesCopy))
   {
-    v46 = [(OADTextBodyProperties *)self textBodyId];
-    if (v46 == [v4 textBodyId])
+    textBodyId = [(OADTextBodyProperties *)self textBodyId];
+    if (textBodyId == [valuesCopy textBodyId])
     {
       *(self + 73) &= ~0x40u;
     }
@@ -847,10 +847,10 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 74) & 2) != 0 || ([(OADProperties *)self parent], v47 = objc_claimAutoreleasedReturnValue(), v47, v47 != v4))
+  if ((*(self + 74) & 2) != 0 || ([(OADProperties *)self parent], v47 = objc_claimAutoreleasedReturnValue(), v47, v47 != valuesCopy))
   {
-    v48 = [(OADTextBodyProperties *)self textAnchorType];
-    if (v48 == [v4 textAnchorType])
+    textAnchorType = [(OADTextBodyProperties *)self textAnchorType];
+    if (textAnchorType == [valuesCopy textAnchorType])
     {
       *(self + 74) &= ~2u;
     }
@@ -861,12 +861,12 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if (*(self + 73) < 0 || ([(OADProperties *)self parent], v49 = objc_claimAutoreleasedReturnValue(), v49, v49 != v4))
+  if (*(self + 73) < 0 || ([(OADProperties *)self parent], v49 = objc_claimAutoreleasedReturnValue(), v49, v49 != valuesCopy))
   {
-    v50 = [(OADTextBodyProperties *)self flowType];
-    v51 = [v4 flowType];
+    flowType = [(OADTextBodyProperties *)self flowType];
+    flowType2 = [valuesCopy flowType];
     v52 = *(self + 73);
-    if (v50 == v51)
+    if (flowType == flowType2)
     {
       *(self + 73) = v52 & 0x7F;
     }
@@ -877,10 +877,10 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 74) & 1) != 0 || ([(OADProperties *)self parent], v53 = objc_claimAutoreleasedReturnValue(), v53, v53 != v4))
+  if ((*(self + 74) & 1) != 0 || ([(OADProperties *)self parent], v53 = objc_claimAutoreleasedReturnValue(), v53, v53 != valuesCopy))
   {
-    v54 = [(OADTextBodyProperties *)self wrapType];
-    if (v54 == [v4 wrapType])
+    wrapType = [(OADTextBodyProperties *)self wrapType];
+    if (wrapType == [valuesCopy wrapType])
     {
       *(self + 74) &= ~1u;
     }
@@ -891,10 +891,10 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 73) & 0x10) != 0 || ([(OADProperties *)self parent], v55 = objc_claimAutoreleasedReturnValue(), v55, v55 != v4))
+  if ((*(self + 73) & 0x10) != 0 || ([(OADProperties *)self parent], v55 = objc_claimAutoreleasedReturnValue(), v55, v55 != valuesCopy))
   {
-    v56 = [(OADTextBodyProperties *)self verticalOverflowType];
-    if (v56 == [v4 verticalOverflowType])
+    verticalOverflowType = [(OADTextBodyProperties *)self verticalOverflowType];
+    if (verticalOverflowType == [valuesCopy verticalOverflowType])
     {
       *(self + 73) &= ~0x10u;
     }
@@ -905,10 +905,10 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 73) & 0x20) != 0 || ([(OADProperties *)self parent], v57 = objc_claimAutoreleasedReturnValue(), v57, v57 != v4))
+  if ((*(self + 73) & 0x20) != 0 || ([(OADProperties *)self parent], v57 = objc_claimAutoreleasedReturnValue(), v57, v57 != valuesCopy))
   {
-    v58 = [(OADTextBodyProperties *)self horizontalOverflowType];
-    if (v58 == [v4 horizontalOverflowType])
+    horizontalOverflowType = [(OADTextBodyProperties *)self horizontalOverflowType];
+    if (horizontalOverflowType == [valuesCopy horizontalOverflowType])
     {
       *(self + 73) &= ~0x20u;
     }
@@ -919,10 +919,10 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 75) & 1) != 0 || ([(OADProperties *)self parent], v59 = objc_claimAutoreleasedReturnValue(), v59, v59 != v4))
+  if ((*(self + 75) & 1) != 0 || ([(OADProperties *)self parent], v59 = objc_claimAutoreleasedReturnValue(), v59, v59 != valuesCopy))
   {
-    v60 = [(OADTextBodyProperties *)self respectLastFirstLineSpacing];
-    if (v60 == [v4 respectLastFirstLineSpacing])
+    respectLastFirstLineSpacing = [(OADTextBodyProperties *)self respectLastFirstLineSpacing];
+    if (respectLastFirstLineSpacing == [valuesCopy respectLastFirstLineSpacing])
     {
       *(self + 75) &= ~1u;
     }
@@ -933,10 +933,10 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 74) & 8) != 0 || ([(OADProperties *)self parent], v61 = objc_claimAutoreleasedReturnValue(), v61, v61 != v4))
+  if ((*(self + 74) & 8) != 0 || ([(OADProperties *)self parent], v61 = objc_claimAutoreleasedReturnValue(), v61, v61 != valuesCopy))
   {
-    v62 = [(OADTextBodyProperties *)self isUpright];
-    if (v62 == [v4 isUpright])
+    isUpright = [(OADTextBodyProperties *)self isUpright];
+    if (isUpright == [valuesCopy isUpright])
     {
       *(self + 74) &= ~8u;
     }
@@ -947,10 +947,10 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if ((*(self + 74) & 4) != 0 || ([(OADProperties *)self parent], v63 = objc_claimAutoreleasedReturnValue(), v63, v63 != v4))
+  if ((*(self + 74) & 4) != 0 || ([(OADProperties *)self parent], v63 = objc_claimAutoreleasedReturnValue(), v63, v63 != valuesCopy))
   {
-    v64 = [(OADTextBodyProperties *)self isAnchorCenter];
-    if (v64 == [v4 isAnchorCenter])
+    isAnchorCenter = [(OADTextBodyProperties *)self isAnchorCenter];
+    if (isAnchorCenter == [valuesCopy isAnchorCenter])
     {
       *(self + 74) &= ~4u;
     }
@@ -961,12 +961,12 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
     }
   }
 
-  if (*(self + 74) < 0 || ([(OADProperties *)self parent], v65 = objc_claimAutoreleasedReturnValue(), v65, v65 != v4))
+  if (*(self + 74) < 0 || ([(OADProperties *)self parent], v65 = objc_claimAutoreleasedReturnValue(), v65, v65 != valuesCopy))
   {
-    v66 = [(OADTextBodyProperties *)self isLeftToRightColumns];
-    v67 = [v4 isLeftToRightColumns];
+    isLeftToRightColumns = [(OADTextBodyProperties *)self isLeftToRightColumns];
+    isLeftToRightColumns2 = [valuesCopy isLeftToRightColumns];
     v68 = *(self + 74);
-    if (v66 == v67)
+    if (isLeftToRightColumns == isLeftToRightColumns2)
     {
       *(self + 74) = v68 & 0x7F;
     }
@@ -997,12 +997,12 @@ void __55__OADTextBodyProperties_defaultEscherWordArtProperties__block_invoke()
   return v3 ^ v15 ^ mTopInset ^ mLeftInset ^ mBottomInset ^ mRightInset ^ mRotation ^ mColumnSpacing ^ mColumnCount ^ mTextBodyId ^ v11 ^ v12 ^ [(OADProperties *)&v16 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(OADTextBodyProperties *)self hash];
     if (v6 == [v5 hash]
       && (v7 = [v5 hasRespectLastFirstLineSpacing], v7 == -[OADTextBodyProperties hasRespectLastFirstLineSpacing](self, "hasRespectLastFirstLineSpacing"))

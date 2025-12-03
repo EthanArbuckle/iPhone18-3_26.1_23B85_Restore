@@ -1,21 +1,21 @@
 @interface MLPMatrixLayer
-- (MLPMatrixLayer)initWithLayerType:(unint64_t)a3 name:(id)a4 neuronType:(int)a5 neuronParams:(id)a6;
-- (MLPMatrixLayer)initWithLayerType:(unint64_t)a3 name:(id)a4 parameters:(id *)a5;
+- (MLPMatrixLayer)initWithLayerType:(unint64_t)type name:(id)name neuronType:(int)neuronType neuronParams:(id)params;
+- (MLPMatrixLayer)initWithLayerType:(unint64_t)type name:(id)name parameters:(id *)parameters;
 - (void)allocateInputDictionaries;
-- (void)updateInputMatrixToFirstKernel:(id)a3 index:(id)a4 inference:(BOOL)a5;
-- (void)updateInputMatrixToSecondKernel:(id)a3 index:(id)a4 inference:(BOOL)a5;
+- (void)updateInputMatrixToFirstKernel:(id)kernel index:(id)index inference:(BOOL)inference;
+- (void)updateInputMatrixToSecondKernel:(id)kernel index:(id)index inference:(BOOL)inference;
 @end
 
 @implementation MLPMatrixLayer
 
-- (MLPMatrixLayer)initWithLayerType:(unint64_t)a3 name:(id)a4 neuronType:(int)a5 neuronParams:(id)a6
+- (MLPMatrixLayer)initWithLayerType:(unint64_t)type name:(id)name neuronType:(int)neuronType neuronParams:(id)params
 {
-  v7 = *&a5;
-  v10 = a4;
-  v11 = a6;
+  v7 = *&neuronType;
+  nameCopy = name;
+  paramsCopy = params;
   v18.receiver = self;
   v18.super_class = MLPMatrixLayer;
-  v12 = [(MLPLayer *)&v18 initWithLayerType:a3 name:v10 neuronType:v7 neuronParams:v11];
+  v12 = [(MLPLayer *)&v18 initWithLayerType:type name:nameCopy neuronType:v7 neuronParams:paramsCopy];
   v16 = v12;
   if (v12)
   {
@@ -25,12 +25,12 @@
   return v16;
 }
 
-- (MLPMatrixLayer)initWithLayerType:(unint64_t)a3 name:(id)a4 parameters:(id *)a5
+- (MLPMatrixLayer)initWithLayerType:(unint64_t)type name:(id)name parameters:(id *)parameters
 {
-  v8 = a4;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = MLPMatrixLayer;
-  v9 = [(MLPLayer *)&v15 initWithLayerType:a3 name:v8 parameters:a5];
+  v9 = [(MLPLayer *)&v15 initWithLayerType:type name:nameCopy parameters:parameters];
   v13 = v9;
   if (v9)
   {
@@ -49,27 +49,27 @@
   objc_msgSend_setInputMatrixToFirstKernel_(self, v10, v13, v11);
 }
 
-- (void)updateInputMatrixToFirstKernel:(id)a3 index:(id)a4 inference:(BOOL)a5
+- (void)updateInputMatrixToFirstKernel:(id)kernel index:(id)index inference:(BOOL)inference
 {
-  v17 = a3;
-  v11 = a4;
-  if (!a5)
+  kernelCopy = kernel;
+  indexCopy = index;
+  if (!inference)
   {
-    objc_msgSend_incrementReadCount(v17, v8, v9, v10);
+    objc_msgSend_incrementReadCount(kernelCopy, v8, v9, v10);
     v15 = objc_msgSend_inputMatrixToFirstKernel(self, v12, v13, v14);
-    objc_msgSend_setObject_forKeyedSubscript_(v15, v16, v17, v11);
+    objc_msgSend_setObject_forKeyedSubscript_(v15, v16, kernelCopy, indexCopy);
   }
 }
 
-- (void)updateInputMatrixToSecondKernel:(id)a3 index:(id)a4 inference:(BOOL)a5
+- (void)updateInputMatrixToSecondKernel:(id)kernel index:(id)index inference:(BOOL)inference
 {
-  v17 = a3;
-  v11 = a4;
-  if (!a5)
+  kernelCopy = kernel;
+  indexCopy = index;
+  if (!inference)
   {
-    objc_msgSend_incrementReadCount(v17, v8, v9, v10);
+    objc_msgSend_incrementReadCount(kernelCopy, v8, v9, v10);
     v15 = objc_msgSend_inputMatrixToSecondKernel(self, v12, v13, v14);
-    objc_msgSend_setObject_forKeyedSubscript_(v15, v16, v17, v11);
+    objc_msgSend_setObject_forKeyedSubscript_(v15, v16, kernelCopy, indexCopy);
   }
 }
 

@@ -1,29 +1,29 @@
 @interface SSMutableSoftwareUpdatesContext
-- (SSMutableSoftwareUpdatesContext)initWithXPCEncoding:(id)a3;
+- (SSMutableSoftwareUpdatesContext)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (void)setClientIdentifierHeader:(id)a3;
-- (void)setSoftwareTypes:(id)a3;
+- (void)setClientIdentifierHeader:(id)header;
+- (void)setSoftwareTypes:(id)types;
 @end
 
 @implementation SSMutableSoftwareUpdatesContext
 
-- (void)setClientIdentifierHeader:(id)a3
+- (void)setClientIdentifierHeader:(id)header
 {
   clientIdentifierHeader = self->super._clientIdentifierHeader;
-  if (clientIdentifierHeader != a3)
+  if (clientIdentifierHeader != header)
   {
 
-    self->super._clientIdentifierHeader = [a3 copy];
+    self->super._clientIdentifierHeader = [header copy];
   }
 }
 
-- (void)setSoftwareTypes:(id)a3
+- (void)setSoftwareTypes:(id)types
 {
   softwareTypes = self->super._softwareTypes;
-  if (softwareTypes != a3)
+  if (softwareTypes != types)
   {
 
-    self->super._softwareTypes = [a3 copy];
+    self->super._softwareTypes = [types copy];
   }
 }
 
@@ -34,11 +34,11 @@
   return [(SSSoftwareUpdatesContext *)&v3 copyXPCEncoding];
 }
 
-- (SSMutableSoftwareUpdatesContext)initWithXPCEncoding:(id)a3
+- (SSMutableSoftwareUpdatesContext)initWithXPCEncoding:(id)encoding
 {
   v4.receiver = self;
   v4.super_class = SSMutableSoftwareUpdatesContext;
-  return [(SSSoftwareUpdatesContext *)&v4 initWithXPCEncoding:a3];
+  return [(SSSoftwareUpdatesContext *)&v4 initWithXPCEncoding:encoding];
 }
 
 @end

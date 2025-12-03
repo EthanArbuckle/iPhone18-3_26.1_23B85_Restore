@@ -18,17 +18,17 @@
 
 - (__CFString)stringByNormalizingParagraphBreaks
 {
-  v1 = a1;
-  v2 = [(__CFString *)a1 length];
-  v32 = v1;
+  selfCopy = self;
+  v2 = [(__CFString *)self length];
+  v32 = selfCopy;
   v35 = 0;
   v36 = v2;
-  CharactersPtr = CFStringGetCharactersPtr(v1);
+  CharactersPtr = CFStringGetCharactersPtr(selfCopy);
   CStringPtr = 0;
   v33 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(v1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(selfCopy, 0x600u);
   }
 
   v34 = CStringPtr;
@@ -180,8 +180,8 @@ LABEL_23:
           if (!v8)
           {
 LABEL_45:
-            v8 = [(__CFString *)v1 mutableCopyWithZone:0];
-            v1 = v8;
+            v8 = [(__CFString *)selfCopy mutableCopyWithZone:0];
+            selfCopy = v8;
             if (!v7)
             {
 LABEL_46:
@@ -191,16 +191,16 @@ LABEL_46:
 
 LABEL_26:
             [(__CFString *)v8 replaceCharactersInRange:v9 withString:v20, v7];
-            v2 = [(__CFString *)v1 length];
-            v32 = v1;
+            v2 = [(__CFString *)selfCopy length];
+            v32 = selfCopy;
             v35 = 0;
             v36 = v2;
-            v21 = CFStringGetCharactersPtr(v1);
+            v21 = CFStringGetCharactersPtr(selfCopy);
             v22 = 0;
             v33 = v21;
             if (!v21)
             {
-              v22 = CFStringGetCStringPtr(v1, 0x600u);
+              v22 = CFStringGetCStringPtr(selfCopy, 0x600u);
             }
 
             v6 = 0;
@@ -238,12 +238,12 @@ LABEL_14:
   v7 = 0;
 LABEL_56:
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)findIndexOfCharacter:()TSWPAdditions range:
 {
-  v36.length = [(__CFString *)a1 length];
+  v36.length = [(__CFString *)self length];
   v34.location = a4;
   v34.length = a5;
   v36.location = 0;
@@ -251,10 +251,10 @@ LABEL_56:
   if (v9.length)
   {
     location = v9.location;
-    theString = a1;
+    theString = self;
     v31 = v9;
-    CharactersPtr = CFStringGetCharactersPtr(a1);
-    v11 = CharactersPtr ? 0 : CFStringGetCStringPtr(a1, 0x600u);
+    CharactersPtr = CFStringGetCharactersPtr(self);
+    v11 = CharactersPtr ? 0 : CFStringGetCStringPtr(self, 0x600u);
     v32 = 0;
     v33 = 0;
     v30 = v11;
@@ -349,8 +349,8 @@ LABEL_15:
 
 - (uint64_t)rangeOfCharactersFromSet:()TSWPAdditions index:
 {
-  v7 = [a1 length];
-  v8 = [a1 rangeOfCharacterFromSet:a3 options:0 range:{a4, v7 - a4}];
+  v7 = [self length];
+  v8 = [self rangeOfCharacterFromSet:a3 options:0 range:{a4, v7 - a4}];
   v10 = v9;
   if (v9)
   {
@@ -359,7 +359,7 @@ LABEL_15:
     {
       do
       {
-        if (![a3 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", v11)}])
+        if (![a3 characterIsMember:{objc_msgSend(self, "characterAtIndex:", v11)}])
         {
           break;
         }
@@ -378,7 +378,7 @@ LABEL_15:
 - (CFIndex)rangeOfWordAtCharacterIndex:()TSWPAdditions range:includePreviousWord:
 {
   v11 = *MEMORY[0x277D6C268];
-  v12 = [(__CFString *)a1 length];
+  v12 = [(__CFString *)self length];
   v13 = a4 + a5;
   if (a3 < a4 || a3 - a4 >= a5)
   {
@@ -392,20 +392,20 @@ LABEL_15:
 
     else
     {
-      v21 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSWPAdditions) rangeOfWordAtCharacterIndex:range:includePreviousWord:]"];
-      [v21 handleFailureInFunction:v22 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"), 1067, @"Specified range is out of range of string"}];
+      [currentHandler handleFailureInFunction:v22 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"), 1067, @"Specified range is out of range of string"}];
       if (v13 == a3)
       {
         return v11;
       }
     }
 
-    v25 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSWPAdditions) rangeOfWordAtCharacterIndex:range:includePreviousWord:]"];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"];
     v17 = @"Character index out of range";
-    v18 = v25;
+    v18 = currentHandler2;
     v19 = v26;
     v20 = 1068;
     goto LABEL_14;
@@ -413,11 +413,11 @@ LABEL_15:
 
   if (v12 < v13)
   {
-    v14 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSWPAdditions) rangeOfWordAtCharacterIndex:range:includePreviousWord:]"];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"];
     v17 = @"Specified range is out of range of string";
-    v18 = v14;
+    v18 = currentHandler3;
     v19 = v15;
     v20 = 1067;
 LABEL_14:
@@ -426,14 +426,14 @@ LABEL_14:
   }
 
 LABEL_9:
-  if (CFStringGetLength(a1) <= a3)
+  if (CFStringGetLength(self) <= a3)
   {
     LOBYTE(v24) = 0;
   }
 
   else
   {
-    CharacterAtIndex = CFStringGetCharacterAtIndex(a1, a3);
+    CharacterAtIndex = CFStringGetCharacterAtIndex(self, a3);
     LOBYTE(v24) = 0;
     if (CharacterAtIndex && v13 > a3)
     {
@@ -445,7 +445,7 @@ LABEL_9:
   {
     if (a3 > a4)
     {
-      v28 = CFStringGetCharacterAtIndex(a1, a3 - 1);
+      v28 = CFStringGetCharacterAtIndex(self, a3 - 1);
       v29 = IsWhitespaceCharacter(v28);
       LOBYTE(v24) = v29 ^ 1 | v24;
       if (!v29)
@@ -461,7 +461,7 @@ LABEL_9:
     {
       v36.location = a4;
       v36.length = a5;
-      v30 = CFStringTokenizerCreate(0, a1, v36, 4uLL, 0);
+      v30 = CFStringTokenizerCreate(0, self, v36, 4uLL, 0);
       if (v30)
       {
         v31 = v30;
@@ -490,16 +490,16 @@ LABEL_9:
 
 - (BOOL)isAllWhitespaceInRange:()TSWPAdditions
 {
-  v34.length = [(__CFString *)a1 length];
+  v34.length = [(__CFString *)self length];
   v32.location = a3;
   v32.length = a4;
   v34.location = 0;
   v7 = NSIntersectionRange(v32, v34);
   if (v7.length)
   {
-    theString = a1;
+    theString = self;
     v29 = v7;
-    CharactersPtr = CFStringGetCharactersPtr(a1);
+    CharactersPtr = CFStringGetCharactersPtr(self);
     if (CharactersPtr)
     {
       CStringPtr = 0;
@@ -507,7 +507,7 @@ LABEL_9:
 
     else
     {
-      CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+      CStringPtr = CFStringGetCStringPtr(self, 0x600u);
     }
 
     v30 = 0;
@@ -611,19 +611,19 @@ LABEL_16:
 {
   if (!a5)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSWPAdditions) replaceOccurrencesOfCharactersInSet:minimumConsecutiveLength:replaceString:]"];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"), 1152, @"invalid nil value for '%s'", "replaceString"}];
+    [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"), 1152, @"invalid nil value for '%s'", "replaceString"}];
   }
 
   v61 = 0;
   v62 = 0;
   v63 = 0;
-  v10 = [(__CFString *)a1 length];
-  theString = a1;
+  v10 = [(__CFString *)self length];
+  theString = self;
   range.location = 0;
   range.length = v10;
-  CharactersPtr = CFStringGetCharactersPtr(a1);
+  CharactersPtr = CFStringGetCharactersPtr(self);
   if (CharactersPtr)
   {
     CStringPtr = 0;
@@ -631,13 +631,13 @@ LABEL_16:
 
   else
   {
-    CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(self, 0x600u);
   }
 
   v59 = 0;
   length = 0;
   v57 = CStringPtr;
-  v52 = a1;
+  selfCopy = self;
   if (v10 && range.length >= 1)
   {
     if (CharactersPtr)
@@ -878,12 +878,12 @@ LABEL_46:
 LABEL_59:
   if (v62 == v61)
   {
-    v45 = v52;
+    v45 = selfCopy;
   }
 
   else
   {
-    v41 = [(__CFString *)v52 mutableCopy];
+    v41 = [(__CFString *)selfCopy mutableCopy];
     for (i = v62; i != v61; i -= 16)
     {
       v43 = *(i - 2);
@@ -934,19 +934,19 @@ LABEL_59:
   {
     if (((1 << a4) & 0x1C0) != 0)
     {
-      v11 = [v6 uppercaseString];
+      uppercaseString = [v6 uppercaseString];
       goto LABEL_20;
     }
 
     if (((1 << a4) & 0xE00) != 0)
     {
-      v9 = v6;
+      uppercaseString2 = v6;
       goto LABEL_24;
     }
 
     if (((1 << a4) & 0x7000) != 0)
     {
-      v9 = [v6 uppercaseString];
+      uppercaseString2 = [v6 uppercaseString];
 LABEL_24:
     }
   }
@@ -957,13 +957,13 @@ LABEL_24:
     {
     }
 
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[NSString(TSWPAdditions) numberForString:withListNumberFormat:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"), 1288, @"Label format (%d) not recognized.", a4}];
+    [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"), 1288, @"Label format (%d) not recognized.", a4}];
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v11 = v6;
+  uppercaseString = v6;
 LABEL_20:
 }
 
@@ -986,20 +986,20 @@ LABEL_20:
     {
       if (a4 == 3)
       {
-        v8 = v6;
+        uppercaseString = v6;
         goto LABEL_17;
       }
 
       if (a4 == 4)
       {
-        v8 = [v6 uppercaseString];
+        uppercaseString = [v6 uppercaseString];
 LABEL_17:
       }
 
       goto LABEL_23;
     }
 
-    v9 = [v6 uppercaseString];
+    uppercaseString2 = [v6 uppercaseString];
 LABEL_13:
   }
 
@@ -1008,13 +1008,13 @@ LABEL_13:
     if (a4 != 1)
     {
 LABEL_23:
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[NSString(TSWPAdditions) numberForString:withPageNumberFormat:]"];
-      [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"), 1332, @"Number format (%d) not recognized.", a4}];
+      [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"), 1332, @"Number format (%d) not recognized.", a4}];
       return 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v9 = v6;
+    uppercaseString2 = v6;
     goto LABEL_13;
   }
 }
@@ -1068,17 +1068,17 @@ LABEL_23:
     case 12:
       v7 = MEMORY[0x277CCACA8];
 LABEL_35:
-      v8 = [v32 lowercaseString];
+      lowercaseString = [v32 lowercaseString];
       goto LABEL_72;
     case 13:
       v9 = MEMORY[0x277CCACA8];
 LABEL_37:
-      v12 = [v24 lowercaseString];
+      lowercaseString2 = [v24 lowercaseString];
       goto LABEL_87;
     case 14:
       v18 = MEMORY[0x277CCACA8];
 LABEL_53:
-      v33 = [v39 lowercaseString];
+      lowercaseString3 = [v39 lowercaseString];
       goto LABEL_82;
     case 15:
       v7 = MEMORY[0x277CCACA8];
@@ -1305,7 +1305,7 @@ LABEL_78:
       v44 = 22;
 LABEL_71:
 LABEL_72:
-      v45 = [v7 stringWithFormat:@"%@.", v8];
+      v45 = [v7 stringWithFormat:@"%@.", lowercaseString];
       goto LABEL_88;
     case 59:
       v9 = MEMORY[0x277CCACA8];
@@ -1313,7 +1313,7 @@ LABEL_72:
       v15 = 22;
 LABEL_86:
 LABEL_87:
-      v45 = [v9 stringWithFormat:@"(%@)", v12];
+      v45 = [v9 stringWithFormat:@"(%@)", lowercaseString2];
       goto LABEL_88;
     case 60:
       v18 = MEMORY[0x277CCACA8];
@@ -1321,7 +1321,7 @@ LABEL_87:
       v37 = 22;
 LABEL_80:
 LABEL_82:
-      v45 = [v18 stringWithFormat:@"%@"], v33);
+      v45 = [v18 stringWithFormat:@"%@"], lowercaseString3);
       goto LABEL_88;
     case 61:
       v40 = MEMORY[0x277CCACA8];
@@ -1340,9 +1340,9 @@ LABEL_88:
 
       goto LABEL_91;
     default:
-      v48 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[NSString(TSWPAdditions) stringForValue:withListNumberFormat:includeFormatting:]"];
-      [v48 handleFailureInFunction:v49 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"), 1543, @"Label format (%d) invalid for numeric list.", a4}];
+      [currentHandler handleFailureInFunction:v49 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"), 1543, @"Label format (%d) invalid for numeric list.", a4}];
       v46 = &stru_287D36338;
       if (a5)
       {
@@ -1363,25 +1363,25 @@ LABEL_91:
 
 - (uint64_t)contentsScript
 {
-  v2 = [a1 length];
+  v2 = [self length];
 
-  return [a1 contentsScriptInRange:{0, v2}];
+  return [self contentsScriptInRange:{0, v2}];
 }
 
 - (uint64_t)contentsScriptInRange:()TSWPAdditions
 {
-  if (!a4 || a3 >= [(__CFString *)a1 length])
+  if (!a4 || a3 >= [(__CFString *)self length])
   {
     return 0;
   }
 
-  v7 = TSWPScriptForCharacter([(__CFString *)a1 characterAtIndex:a3]);
+  v7 = TSWPScriptForCharacter([(__CFString *)self characterAtIndex:a3]);
   if (v7)
   {
-    theString = a1;
+    theString = self;
     v27 = a3 + 1;
     v28 = a4 - 1;
-    CharactersPtr = CFStringGetCharactersPtr(a1);
+    CharactersPtr = CFStringGetCharactersPtr(self);
     if (CharactersPtr)
     {
       CStringPtr = 0;
@@ -1389,7 +1389,7 @@ LABEL_91:
 
     else
     {
-      CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+      CStringPtr = CFStringGetCStringPtr(self, 0x600u);
     }
 
     v10 = 0;
@@ -1517,24 +1517,24 @@ LABEL_12:
 
 - (uint64_t)utf32CharacterAtIndex:()TSWPAdditions
 {
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5 <= a3)
   {
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSWPAdditions) utf32CharacterAtIndex:]"];
-    [v15 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"), 1643, @"index out of bounds"}];
+    [currentHandler handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"), 1643, @"index out of bounds"}];
     return 0;
   }
 
   v6 = v5;
-  v7 = [a1 characterAtIndex:a3];
+  v7 = [self characterAtIndex:a3];
   if ((v7 & 0xFC00) == 0xDC00)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSWPAdditions) utf32CharacterAtIndex:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"];
     v11 = @"index inside surrogate pair";
-    v12 = v8;
+    v12 = currentHandler2;
     v13 = v9;
     v14 = 1648;
 LABEL_4:
@@ -1544,17 +1544,17 @@ LABEL_4:
 
   if (a3 + 1 < v6 && (v7 & 0xFC00) == 0xD800)
   {
-    v18 = [a1 characterAtIndex:?];
+    v18 = [self characterAtIndex:?];
     if ((v18 & 0xFC00) == 0xDC00)
     {
       return (v18 + (v7 << 10) - 56613888);
     }
 
-    v19 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSWPAdditions) utf32CharacterAtIndex:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/NSStringAdditions.mm"];
     v11 = @"invalid surrogate pair";
-    v12 = v19;
+    v12 = currentHandler3;
     v13 = v20;
     v14 = 1653;
     goto LABEL_4;

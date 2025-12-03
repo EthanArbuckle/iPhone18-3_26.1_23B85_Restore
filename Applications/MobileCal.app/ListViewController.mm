@@ -1,108 +1,108 @@
 @interface ListViewController
 - (BOOL)_isVisible;
 - (BOOL)_processScrollingMessagesOnEveryFrameFromListViewController;
-- (BOOL)_rowDrawsBackground:(id)a3;
+- (BOOL)_rowDrawsBackground:(id)background;
 - (BOOL)_selectedDateIsVisible;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)eventViewDelegateShouldShowNextOccurrenceOfEvent:(id)a3 forward:(BOOL)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)eventViewDelegateShouldShowNextOccurrenceOfEvent:(id)event forward:(BOOL)forward;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)hasContent;
 - (CGSize)scrubberCellSize;
-- (ListViewController)initWithModel:(id)a3 window:(id)a4;
+- (ListViewController)initWithModel:(id)model window:(id)window;
 - (NSString)description;
 - (double)contentInset;
 - (id)_dateForFirstVisibleRow;
-- (id)_eventForRowAtIndexPath:(id)a3;
-- (id)_indexPathForDate:(id)a3;
+- (id)_eventForRowAtIndexPath:(id)path;
+- (id)_indexPathForDate:(id)date;
 - (id)backButtonTitleForEventDetails;
-- (id)contentUnavailableConfigurationForState:(id)a3;
+- (id)contentUnavailableConfigurationForState:(id)state;
 - (id)defaultEventForSelectedDate;
 - (id)pasteboardManager;
 - (id)sceneTitle;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addAllObservers;
-- (void)_contentCategorySizeChangedNotification:(id)a3;
-- (void)_deleteEventAtIndexPath:(id)a3 withCompletionHandler:(id)a4;
-- (void)_deselectAllSelectedRowsAnimated:(BOOL)a3;
-- (void)_deselectRowAtIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)_localeChanged:(id)a3;
-- (void)_multiSelect:(id)a3;
-- (void)_selectRowAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5;
+- (void)_contentCategorySizeChangedNotification:(id)notification;
+- (void)_deleteEventAtIndexPath:(id)path withCompletionHandler:(id)handler;
+- (void)_deselectAllSelectedRowsAnimated:(BOOL)animated;
+- (void)_deselectRowAtIndexPath:(id)path animated:(BOOL)animated;
+- (void)_localeChanged:(id)changed;
+- (void)_multiSelect:(id)select;
+- (void)_selectRowAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(int64_t)position;
 - (void)_selectTodayDate;
-- (void)_selectedOccurrencesChanged:(id)a3;
+- (void)_selectedOccurrencesChanged:(id)changed;
 - (void)_setTopVisibleDateAsSelectedDate;
-- (void)_showEvent:(id)a3 viewController:(id)a4 animated:(BOOL)a5 showComments:(BOOL)a6 modal:(BOOL)a7;
-- (void)_timeChangedSignificantly:(id)a3;
-- (void)_updateBackButtonOnBackViewControllerToDate:(id)a3;
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)_updateNavigationTitleToDate:(id)a3;
+- (void)_showEvent:(id)event viewController:(id)controller animated:(BOOL)animated showComments:(BOOL)comments modal:(BOOL)modal;
+- (void)_timeChangedSignificantly:(id)significantly;
+- (void)_updateBackButtonOnBackViewControllerToDate:(id)date;
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)_updateNavigationTitleToDate:(id)date;
 - (void)_updatePaletteWeekDayHeaderDayFrames;
-- (void)_updateSeparatorVisibilityForOccurrenceCell:(id)a3 atIndexPath:(id)a4;
-- (void)_updateSeparatorVisibilityForRowAtIndexPath:(id)a3;
-- (void)_weekNumberChanged:(id)a3;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
+- (void)_updateSeparatorVisibilityForOccurrenceCell:(id)cell atIndexPath:(id)path;
+- (void)_updateSeparatorVisibilityForRowAtIndexPath:(id)path;
+- (void)_weekNumberChanged:(id)changed;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 completionHandler:(id)a5;
-- (void)eventIconButtonPressed:(id)a3;
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)eventViewController:(id)a3 requestsShowEvent:(id)a4;
-- (void)eventViewControllerNextButtonWasTapped:(id)a3;
-- (void)eventViewControllerPreviousButtonWasTapped:(id)a3;
-- (void)eventViewDelegateShowNextOccurrenceOfEvent:(id)a3 forward:(BOOL)a4;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action completionHandler:(id)handler;
+- (void)eventIconButtonPressed:(id)pressed;
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action;
+- (void)eventViewController:(id)controller requestsShowEvent:(id)event;
+- (void)eventViewControllerNextButtonWasTapped:(id)tapped;
+- (void)eventViewControllerPreviousButtonWasTapped:(id)tapped;
+- (void)eventViewDelegateShowNextOccurrenceOfEvent:(id)event forward:(BOOL)forward;
 - (void)loadView;
-- (void)paste:(id)a3;
-- (void)pasteboardManager:(id)a3 didFinishPasteWithResult:(unint64_t)a4 willOpenEditor:(BOOL)a5;
+- (void)paste:(id)paste;
+- (void)pasteboardManager:(id)manager didFinishPasteWithResult:(unint64_t)result willOpenEditor:(BOOL)editor;
 - (void)refresh;
 - (void)refreshIfNeeded;
-- (void)scrollToDate:(id)a3 animated:(BOOL)a4;
-- (void)scrollToTodayAnimated:(BOOL)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)selectDate:(id)a3 animated:(BOOL)a4;
-- (void)selectEvent:(id)a3 animated:(BOOL)a4;
-- (void)setNeedsRefresh:(BOOL)a3;
-- (void)setSelectedDateAndFirstVisibleHeaderDate:(id)a3;
+- (void)scrollToDate:(id)date animated:(BOOL)animated;
+- (void)scrollToTodayAnimated:(BOOL)animated;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)selectDate:(id)date animated:(BOOL)animated;
+- (void)selectEvent:(id)event animated:(BOOL)animated;
+- (void)setNeedsRefresh:(BOOL)refresh;
+- (void)setSelectedDateAndFirstVisibleHeaderDate:(id)date;
 - (void)setUpViewConstraints;
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didEndDisplayingHeaderView:(id)a4 forSection:(int64_t)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
-- (void)tableView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5;
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)updatePalette:(id)a3;
-- (void)updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:(id)a3;
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndDisplayingHeaderView:(id)headerView forSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
+- (void)tableView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator;
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)updatePalette:(id)palette;
+- (void)updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:(id)path;
 - (void)updateUIToTopHeaderDate;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ListViewController
 
-- (ListViewController)initWithModel:(id)a3 window:(id)a4
+- (ListViewController)initWithModel:(id)model window:(id)window
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  modelCopy = model;
+  windowCopy = window;
+  if (!modelCopy)
   {
     v12 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"Non-nil 'model' required." userInfo:0];
     objc_exception_throw(v12);
   }
 
-  v8 = v7;
+  v8 = windowCopy;
   v13.receiver = self;
   v13.super_class = ListViewController;
-  v9 = [(MainViewController *)&v13 initWithWindow:v7 model:v6];
+  v9 = [(MainViewController *)&v13 initWithWindow:windowCopy model:modelCopy];
   v10 = v9;
   if (v9)
   {
@@ -121,18 +121,18 @@
   v4 = [(ListViewController *)&v9 description];
   v5 = [v3 initWithSuperclassDescription:v4];
 
-  v6 = [(MainViewController *)self model];
-  [v5 setKey:@"model" withObject:v6];
+  model = [(MainViewController *)self model];
+  [v5 setKey:@"model" withObject:model];
 
-  v7 = [v5 build];
+  build = [v5 build];
 
-  return v7;
+  return build;
 }
 
 - (void)dealloc
 {
-  v3 = [(ListViewController *)self tableView];
-  [v3 setDelegate:0];
+  tableView = [(ListViewController *)self tableView];
+  [tableView setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = ListViewController;
@@ -152,10 +152,10 @@
   if (!self->_dateToShowWhenVisible)
   {
     v3 = CUIKTodayDate();
-    v4 = [(MainViewController *)self model];
-    v5 = [v4 calendar];
-    v6 = [v5 timeZone];
-    v7 = [EKCalendarDate calendarDateWithDate:v3 timeZone:v6];
+    model = [(MainViewController *)self model];
+    calendar = [model calendar];
+    timeZone = [calendar timeZone];
+    v7 = [EKCalendarDate calendarDateWithDate:v3 timeZone:timeZone];
     dateToShowWhenVisible = self->_dateToShowWhenVisible;
     self->_dateToShowWhenVisible = v7;
   }
@@ -209,70 +209,70 @@
   [(UITapGestureRecognizer *)self->_multiSelectGestureRecognizer setAllowedTouchTypes:&off_100219F18];
   [(UITapGestureRecognizer *)self->_multiSelectGestureRecognizer setDelegate:self];
   [(ListTableView *)v9 addGestureRecognizer:self->_multiSelectGestureRecognizer];
-  v22 = [(ListViewController *)self view];
-  [v22 addSubview:v9];
+  view = [(ListViewController *)self view];
+  [view addSubview:v9];
 
-  v23 = [(ListViewController *)self cellFactory];
-  if (v23)
+  cellFactory = [(ListViewController *)self cellFactory];
+  if (cellFactory)
   {
     v24 = [[DayNavigationViewController alloc] initWithModel:self->super._model];
     scrubberController = self->_scrubberController;
     self->_scrubberController = v24;
 
-    [(DayNavigationViewController *)self->_scrubberController setCellFactory:v23];
+    [(DayNavigationViewController *)self->_scrubberController setCellFactory:cellFactory];
     [(DayNavigationViewController *)self->_scrubberController setDelegate:self];
     [(ListViewController *)self addChildViewController:self->_scrubberController];
     [(DayNavigationViewController *)self->_scrubberController didMoveToParentViewController:self];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = ListViewController;
-  [(ListViewController *)&v16 viewWillAppear:a3];
+  [(ListViewController *)&v16 viewWillAppear:appear];
   [(ListViewController *)self setUpViewConstraints];
   self->_isVisible = 1;
   [(ListViewController *)self _addAllObservers];
   [(ListViewController *)self refresh];
-  v4 = [(ListViewController *)self tableView];
-  v5 = [v4 indexPathsForVisibleRows];
+  tableView = [(ListViewController *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-  if ([v5 count])
+  if ([indexPathsForVisibleRows count])
   {
-    v6 = [v5 objectAtIndex:0];
-    v7 = [v6 section];
-    v8 = [(MainViewController *)self model];
-    [v8 fetchCachedDaysInBackgroundStartingFromSection:v7 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+    v6 = [indexPathsForVisibleRows objectAtIndex:0];
+    section = [v6 section];
+    model = [(MainViewController *)self model];
+    [model fetchCachedDaysInBackgroundStartingFromSection:section usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
   }
 
-  v9 = [(CUIKCalendarModel *)self->super._model selectedDay];
-  v10 = [v9 date];
+  selectedDay = [(CUIKCalendarModel *)self->super._model selectedDay];
+  date = [selectedDay date];
   firstVisibleHeaderDate = self->_firstVisibleHeaderDate;
-  self->_firstVisibleHeaderDate = v10;
+  self->_firstVisibleHeaderDate = date;
 
-  v12 = [(MainViewController *)self model];
-  v13 = [(CUIKCalendarModel *)self->super._model selectedDay];
-  v14 = [v13 date];
-  self->_cachedTopHeaderSection = [v12 sectionForCachedOccurrencesOnDate:v14 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+  model2 = [(MainViewController *)self model];
+  selectedDay2 = [(CUIKCalendarModel *)self->super._model selectedDay];
+  date2 = [selectedDay2 date];
+  self->_cachedTopHeaderSection = [model2 sectionForCachedOccurrencesOnDate:date2 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
   if (CalSolariumEnabled())
   {
-    v15 = [(CUIKCalendarModel *)self->super._model selectedDay];
-    [(ListViewController *)self _updateNavigationTitleToDate:v15];
+    selectedDay3 = [(CUIKCalendarModel *)self->super._model selectedDay];
+    [(ListViewController *)self _updateNavigationTitleToDate:selectedDay3];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = ListViewController;
-  [(MainViewController *)&v6 viewDidAppear:a3];
+  [(MainViewController *)&v6 viewDidAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"ListViewController_ViewDidAppearNotification" object:self];
 
-  v5 = [(MainViewController *)self model];
-  [v5 startNotificationMonitor];
+  model = [(MainViewController *)self model];
+  [model startNotificationMonitor];
 
   [(CUIKCalendarModel *)self->super._model simulateFirstLoadFinished];
   [(ListViewController *)self setPreventScrollingForNextViewAppear:0];
@@ -280,29 +280,29 @@
 
 - (void)setUpViewConstraints
 {
-  v3 = [(ListViewController *)self tableView];
-  v9 = [v3 superview];
+  tableView = [(ListViewController *)self tableView];
+  superview = [tableView superview];
 
-  if (v9)
+  if (superview)
   {
-    v4 = [(ListViewController *)self tableView];
-    v5 = [(ListViewController *)self tableView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    tableView2 = [(ListViewController *)self tableView];
+    tableView3 = [(ListViewController *)self tableView];
+    [tableView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [NSLayoutConstraint constraintWithItem:v4 attribute:3 relatedBy:0 toItem:v9 attribute:3 multiplier:1.0 constant:0.0];
+    v6 = [NSLayoutConstraint constraintWithItem:tableView2 attribute:3 relatedBy:0 toItem:superview attribute:3 multiplier:1.0 constant:0.0];
     [v6 setActive:1];
 
-    v7 = [NSLayoutConstraint constraintWithItem:v9 attribute:4 relatedBy:0 toItem:v4 attribute:4 multiplier:1.0 constant:0.0];
+    v7 = [NSLayoutConstraint constraintWithItem:superview attribute:4 relatedBy:0 toItem:tableView2 attribute:4 multiplier:1.0 constant:0.0];
     [v7 setActive:1];
 
-    v8 = [NSLayoutConstraint constraintWithItem:v9 attribute:7 relatedBy:0 toItem:v4 attribute:7 multiplier:1.0 constant:0.0];
+    v8 = [NSLayoutConstraint constraintWithItem:superview attribute:7 relatedBy:0 toItem:tableView2 attribute:7 multiplier:1.0 constant:0.0];
     [v8 setActive:1];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   self->_isVisible = 0;
   self->_userIsScrolling = 0;
   v5 = +[NSNotificationCenter defaultCenter];
@@ -315,49 +315,49 @@
 
   v6.receiver = self;
   v6.super_class = ListViewController;
-  [(ListViewController *)&v6 viewWillDisappear:v3];
+  [(ListViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ListViewController;
-  [(ListViewController *)&v4 viewDidDisappear:a3];
+  [(ListViewController *)&v4 viewDidDisappear:disappear];
   [(ListViewController *)self _deselectAllSelectedRowsAnimated:0];
 }
 
-- (void)setSelectedDateAndFirstVisibleHeaderDate:(id)a3
+- (void)setSelectedDateAndFirstVisibleHeaderDate:(id)date
 {
-  v4 = a3;
-  v5 = [(ListViewController *)self delegate];
+  dateCopy = date;
+  delegate = [(ListViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ListViewController *)self delegate];
-    v8 = [v4 date];
-    [v7 listViewController:self didScrollToDate:v8];
+    delegate2 = [(ListViewController *)self delegate];
+    date = [dateCopy date];
+    [delegate2 listViewController:self didScrollToDate:date];
   }
 
   else
   {
-    [(CUIKCalendarModel *)self->super._model setSelectedDate:v4];
+    [(CUIKCalendarModel *)self->super._model setSelectedDate:dateCopy];
   }
 
-  v9 = [v4 date];
+  date2 = [dateCopy date];
 
   firstVisibleHeaderDate = self->_firstVisibleHeaderDate;
-  self->_firstVisibleHeaderDate = v9;
+  self->_firstVisibleHeaderDate = date2;
 }
 
-- (void)updatePalette:(id)a3
+- (void)updatePalette:(id)palette
 {
-  v4 = a3;
-  [v4 setTodayButtonVisible:0];
-  [v4 setDateStringVisible:0];
-  [v4 setWeekdayHeaderVisible:0];
-  [v4 setDividerLineVisible:0];
-  [v4 setDayScrubberController:0];
+  paletteCopy = palette;
+  [paletteCopy setTodayButtonVisible:0];
+  [paletteCopy setDateStringVisible:0];
+  [paletteCopy setWeekdayHeaderVisible:0];
+  [paletteCopy setDividerLineVisible:0];
+  [paletteCopy setDayScrubberController:0];
   if (CalSolariumEnabled())
   {
     v3 = 3;
@@ -368,7 +368,7 @@
     v3 = 1;
   }
 
-  [v4 setFocusBannerPlacement:v3];
+  [paletteCopy setFocusBannerPlacement:v3];
 }
 
 - (void)_updatePaletteWeekDayHeaderDayFrames
@@ -408,8 +408,8 @@
 
 - (CGSize)scrubberCellSize
 {
-  v2 = [(DayNavigationViewController *)self->_scrubberController weekScrollView];
-  [v2 cellSize];
+  weekScrollView = [(DayNavigationViewController *)self->_scrubberController weekScrollView];
+  [weekScrollView cellSize];
   v4 = v3;
   v6 = v5;
 
@@ -420,18 +420,18 @@
   return result;
 }
 
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
-  v8 = a4;
-  v20 = a3;
-  v10 = a6;
-  v11 = [(ListViewController *)self parentViewController];
-  if (![v11 conformsToProtocol:&OBJC_PROTOCOL___ListViewControllerDelegate])
+  animatedCopy = animated;
+  eventCopy = event;
+  contextCopy = context;
+  parentViewController = [(ListViewController *)self parentViewController];
+  if (![parentViewController conformsToProtocol:&OBJC_PROTOCOL___ListViewControllerDelegate])
   {
     goto LABEL_6;
   }
 
-  v12 = [(ListViewController *)self parentViewController];
+  parentViewController2 = [(ListViewController *)self parentViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -440,76 +440,76 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v13 = [(ListViewController *)self parentViewController];
-  v14 = [v13 listViewControllerContainerHandlesShowEvent];
+  parentViewController3 = [(ListViewController *)self parentViewController];
+  listViewControllerContainerHandlesShowEvent = [parentViewController3 listViewControllerContainerHandlesShowEvent];
 
-  if (v14)
+  if (listViewControllerContainerHandlesShowEvent)
   {
-    v15 = [(ListViewController *)self parentViewController];
-    [v15 showEvent:v20 animated:v8 showMode:a5 context:v10];
+    parentViewController4 = [(ListViewController *)self parentViewController];
+    [parentViewController4 showEvent:eventCopy animated:animatedCopy showMode:mode context:contextCopy];
     goto LABEL_16;
   }
 
 LABEL_7:
-  if (!a5)
+  if (!mode)
   {
-    v15 = 0;
+    parentViewController4 = 0;
 LABEL_14:
     v18 = 0;
-    v17 = v20;
+    v17 = eventCopy;
     goto LABEL_15;
   }
 
-  if (a5 != 3)
+  if (mode != 3)
   {
-    v19 = [(MainViewController *)self augmentEventDetailsContext:v10];
-    v15 = [EKEventViewController eventDetailViewControllerWithEvent:v20 delegate:self context:v19 canvasView:3];
+    v19 = [(MainViewController *)self augmentEventDetailsContext:contextCopy];
+    parentViewController4 = [EKEventViewController eventDetailViewControllerWithEvent:eventCopy delegate:self context:v19 canvasView:3];
     if ((CalSystemSolariumEnabled() & 1) == 0)
     {
-      [v15 ekui_adjustNavBarToTransparentStyle];
+      [parentViewController4 ekui_adjustNavBarToTransparentStyle];
     }
 
     goto LABEL_14;
   }
 
-  v16 = [AddEventViewController editOrAddViewControllerForEventOrIntegrationWithEvent:v20 model:self->super._model creationMethod:0 viewStart:3 eventEditViewDelegate:self];
-  v17 = v20;
-  v15 = v16;
+  v16 = [AddEventViewController editOrAddViewControllerForEventOrIntegrationWithEvent:eventCopy model:self->super._model creationMethod:0 viewStart:3 eventEditViewDelegate:self];
+  v17 = eventCopy;
+  parentViewController4 = v16;
   v18 = 1;
 LABEL_15:
-  [(ListViewController *)self _showEvent:v17 viewController:v15 animated:v8 showComments:a5 == 2 modal:v18];
+  [(ListViewController *)self _showEvent:v17 viewController:parentViewController4 animated:animatedCopy showComments:mode == 2 modal:v18];
 LABEL_16:
 }
 
-- (void)_showEvent:(id)a3 viewController:(id)a4 animated:(BOOL)a5 showComments:(BOOL)a6 modal:(BOOL)a7
+- (void)_showEvent:(id)event viewController:(id)controller animated:(BOOL)animated showComments:(BOOL)comments modal:(BOOL)modal
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = [v12 startCalendarDate];
-  [(ListViewController *)self setSelectedDateAndFirstVisibleHeaderDate:v14];
+  modalCopy = modal;
+  commentsCopy = comments;
+  animatedCopy = animated;
+  eventCopy = event;
+  controllerCopy = controller;
+  startCalendarDate = [eventCopy startCalendarDate];
+  [(ListViewController *)self setSelectedDateAndFirstVisibleHeaderDate:startCalendarDate];
 
-  [(CUIKCalendarModel *)self->super._model setSelectedOccurrence:v12];
+  [(CUIKCalendarModel *)self->super._model setSelectedOccurrence:eventCopy];
   [(MainViewController *)self setSceneTitleNeedsUpdate];
-  if (!v13)
+  if (!controllerCopy)
   {
-    [(ListViewController *)self selectEvent:v12 animated:v9];
+    [(ListViewController *)self selectEvent:eventCopy animated:animatedCopy];
     goto LABEL_10;
   }
 
-  if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!commentsCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v15 = 0;
-    if (!v7)
+    if (!modalCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_7:
-    v16 = [(ListViewController *)self navigationController];
-    [v16 presentViewController:v13 animated:v9 completion:v15];
+    navigationController = [(ListViewController *)self navigationController];
+    [navigationController presentViewController:controllerCopy animated:animatedCopy completion:v15];
 
     goto LABEL_8;
   }
@@ -518,59 +518,59 @@ LABEL_7:
   v17[1] = 3221225472;
   v17[2] = sub_10001AFC8;
   v17[3] = &unk_10020EB00;
-  v18 = v13;
+  v18 = controllerCopy;
   v15 = objc_retainBlock(v17);
 
-  if (v7)
+  if (modalCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  [(ListViewController *)self showViewController:v13 sender:self animated:v9 completion:v15];
+  [(ListViewController *)self showViewController:controllerCopy sender:self animated:animatedCopy completion:v15];
 LABEL_8:
 
 LABEL_10:
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(ListViewController *)self parentViewController];
-  v14 = [v13 navigationItem];
-  v15 = [(ListViewController *)self backButtonTitleForEventDetails];
-  [v14 setBackButtonTitle:v15];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  senderCopy = sender;
+  completionCopy = completion;
+  parentViewController = [(ListViewController *)self parentViewController];
+  navigationItem = [parentViewController navigationItem];
+  backButtonTitleForEventDetails = [(ListViewController *)self backButtonTitleForEventDetails];
+  [navigationItem setBackButtonTitle:backButtonTitleForEventDetails];
 
   if ([(ListViewController *)self isMemberOfClass:objc_opt_class()]&& CalSolariumEnabled())
   {
-    [(ListViewController *)self presentViewController:v10 animated:1 completion:v12];
+    [(ListViewController *)self presentViewController:controllerCopy animated:1 completion:completionCopy];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = ListViewController;
-    [(MainViewController *)&v16 showViewController:v10 sender:v11 animated:v7 completion:v12];
+    [(MainViewController *)&v16 showViewController:controllerCopy sender:senderCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
 - (id)backButtonTitleForEventDetails
 {
-  v3 = [(CUIKCalendarModel *)self->super._model selectedDate];
-  v4 = [v3 dayComponents];
-  v5 = [(CUIKCalendarModel *)self->super._model calendar];
+  selectedDate = [(CUIKCalendarModel *)self->super._model selectedDate];
+  dayComponents = [selectedDate dayComponents];
+  calendar = [(CUIKCalendarModel *)self->super._model calendar];
   v6 = CUIKStringForDateComponents();
 
   return v6;
 }
 
-- (void)selectDate:(id)a3 animated:(BOOL)a4
+- (void)selectDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  dateCopy = date;
   [(ListViewController *)self setSelectedDateAndFirstVisibleHeaderDate:?];
   [(MainViewController *)self setSceneTitleNeedsUpdate];
   [(ListViewController *)self setNeedsRefresh:1];
@@ -579,12 +579,12 @@ LABEL_10:
     dateToShowWhenVisible = self->_dateToShowWhenVisible;
     self->_dateToShowWhenVisible = 0;
 
-    [(ListViewController *)self scrollToSelectedDateAnimated:v4];
+    [(ListViewController *)self scrollToSelectedDateAnimated:animatedCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_dateToShowWhenVisible, a3);
+    objc_storeStrong(&self->_dateToShowWhenVisible, date);
   }
 
   [(ListViewController *)self updateUIToTopHeaderDate];
@@ -593,11 +593,11 @@ LABEL_10:
 - (void)_selectTodayDate
 {
   v7 = CUIKTodayDate();
-  v3 = [(MainViewController *)self model];
-  v4 = [v3 eventStore];
-  v5 = [v4 timeZone];
+  model = [(MainViewController *)self model];
+  eventStore = [model eventStore];
+  timeZone = [eventStore timeZone];
 
-  v6 = [[EKCalendarDate alloc] initWithDate:v7 timeZone:v5];
+  v6 = [[EKCalendarDate alloc] initWithDate:v7 timeZone:timeZone];
   [(ListViewController *)self selectDate:v6 animated:0];
 }
 
@@ -645,14 +645,14 @@ LABEL_10:
     if (self->_needsRefresh)
     {
       [(ListViewController *)self setNeedsRefresh:0];
-      v3 = [(ListViewController *)self tableView];
-      v4 = [v3 indexPathsForSelectedRows];
-      [v3 reloadData];
+      tableView = [(ListViewController *)self tableView];
+      indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+      [tableView reloadData];
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = v4;
+      v5 = indexPathsForSelectedRows;
       v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
@@ -681,8 +681,8 @@ LABEL_10:
         [(ListViewController *)self scrollToDate:self->_firstVisibleHeaderDate animated:0];
       }
 
-      v10 = [v3 numberOfSections];
-      if (v3)
+      numberOfSections = [tableView numberOfSections];
+      if (tableView)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -691,7 +691,7 @@ LABEL_10:
         }
       }
 
-      if (v10 && self->_dateToShowWhenVisible)
+      if (numberOfSections && self->_dateToShowWhenVisible)
       {
         if ([(ListViewController *)self shouldAutoScrollToSelectedDateAfterFirstRefresh])
         {
@@ -716,25 +716,25 @@ LABEL_10:
   }
 }
 
-- (void)setNeedsRefresh:(BOOL)a3
+- (void)setNeedsRefresh:(BOOL)refresh
 {
-  if (self->_needsRefresh != a3)
+  if (self->_needsRefresh != refresh)
   {
-    self->_needsRefresh = a3;
+    self->_needsRefresh = refresh;
   }
 }
 
 - (BOOL)hasContent
 {
-  v2 = [(ListViewController *)self tableView];
-  v3 = [v2 numberOfSections] != 0;
+  tableView = [(ListViewController *)self tableView];
+  v3 = [tableView numberOfSections] != 0;
 
   return v3;
 }
 
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   if ([(ListViewController *)self hasContent])
   {
     [(ListViewController *)self _setContentUnavailableConfiguration:0];
@@ -742,46 +742,46 @@ LABEL_10:
 
   else
   {
-    v4 = [(ListViewController *)self contentUnavailableConfigurationForState:v5];
+    v4 = [(ListViewController *)self contentUnavailableConfigurationForState:stateCopy];
     [(ListViewController *)self _setContentUnavailableConfiguration:v4];
   }
 }
 
-- (id)contentUnavailableConfigurationForState:(id)a3
+- (id)contentUnavailableConfigurationForState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = +[UIContentUnavailableConfiguration emptyConfiguration];
-  v5 = [v4 updatedConfigurationForState:v3];
+  v5 = [v4 updatedConfigurationForState:stateCopy];
 
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"No Events" value:&stru_1002133B8 table:0];
   [v5 setText:v7];
 
   v8 = +[UIColor secondaryLabelColor];
-  v9 = [v5 textProperties];
-  [v9 setColor:v8];
+  textProperties = [v5 textProperties];
+  [textProperties setColor:v8];
 
   return v5;
 }
 
 - (BOOL)_selectedDateIsVisible
 {
-  v3 = [(ListViewController *)self tableView];
-  v4 = [v3 indexPathsForVisibleRows];
-  if ([v4 count])
+  tableView = [(ListViewController *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
+  if ([indexPathsForVisibleRows count])
   {
-    v5 = [(MainViewController *)self model];
+    model = [(MainViewController *)self model];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = v4;
+    v6 = indexPathsForVisibleRows;
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
-      v17 = v4;
-      v18 = v3;
+      v17 = indexPathsForVisibleRows;
+      v18 = tableView;
       v9 = *v20;
       while (2)
       {
@@ -792,10 +792,10 @@ LABEL_10:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [v5 dateForCachedOccurrencesInSection:objc_msgSend(*(*(&v19 + 1) + 8 * i) usingFilter:{"section", v17, v18, v19), -[ListViewController showFilteredData](self, "showFilteredData")}];
-          v12 = [v5 selectedDay];
-          v13 = [v12 date];
-          v14 = [v11 isEqualToDate:v13];
+          v11 = [model dateForCachedOccurrencesInSection:objc_msgSend(*(*(&v19 + 1) + 8 * i) usingFilter:{"section", v17, v18, v19), -[ListViewController showFilteredData](self, "showFilteredData")}];
+          selectedDay = [model selectedDay];
+          date = [selectedDay date];
+          v14 = [v11 isEqualToDate:date];
 
           if (v14)
           {
@@ -815,8 +815,8 @@ LABEL_10:
 
       v15 = 0;
 LABEL_12:
-      v4 = v17;
-      v3 = v18;
+      indexPathsForVisibleRows = v17;
+      tableView = v18;
     }
 
     else
@@ -835,12 +835,12 @@ LABEL_12:
 
 - (id)_dateForFirstVisibleRow
 {
-  v3 = [(ListViewController *)self tableView];
-  v4 = [v3 indexPathsForVisibleRows];
+  tableView = [(ListViewController *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-  if ([v4 count])
+  if ([indexPathsForVisibleRows count])
   {
-    v5 = [v4 objectAtIndex:0];
+    v5 = [indexPathsForVisibleRows objectAtIndex:0];
     v6 = -[CUIKCalendarModel dateForCachedOccurrencesInSection:usingFilter:](self->super._model, "dateForCachedOccurrencesInSection:usingFilter:", [v5 section], -[ListViewController showFilteredData](self, "showFilteredData"));
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -858,20 +858,20 @@ LABEL_12:
   return v6;
 }
 
-- (void)scrollToTodayAnimated:(BOOL)a3
+- (void)scrollToTodayAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = CUIKTodayDate();
-  [(ListViewController *)self scrollToDate:v5 animated:v3];
+  [(ListViewController *)self scrollToDate:v5 animated:animatedCopy];
 }
 
-- (void)scrollToDate:(id)a3 animated:(BOOL)a4
+- (void)scrollToDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  dateCopy = date;
+  if (dateCopy)
   {
-    v29 = v6;
+    v29 = dateCopy;
     if ([(ListViewController *)self _isVisible]&& [(CUIKCalendarModel *)self->super._model numberOfDaysWithCachedOccurrencesUsingFilter:[(ListViewController *)self showFilteredData]]>= 1)
     {
       v7 = CUIKTodayDate();
@@ -885,14 +885,14 @@ LABEL_12:
         v29 = v12;
       }
 
-      v13 = [(ListViewController *)self _dateForFirstVisibleRow];
-      if (v13)
+      _dateForFirstVisibleRow = [(ListViewController *)self _dateForFirstVisibleRow];
+      if (_dateForFirstVisibleRow)
       {
-        v14 = v13;
-        v15 = [(MainViewController *)self model];
-        v16 = [v15 calendar];
-        v17 = [(ListViewController *)self _dateForFirstVisibleRow];
-        v18 = [v16 components:16 fromDate:v17 toDate:v29 options:0];
+        v14 = _dateForFirstVisibleRow;
+        model = [(MainViewController *)self model];
+        calendar = [model calendar];
+        _dateForFirstVisibleRow2 = [(ListViewController *)self _dateForFirstVisibleRow];
+        v18 = [calendar components:16 fromDate:_dateForFirstVisibleRow2 toDate:v29 options:0];
         v19 = [v18 day];
 
         if (v19 >= 0)
@@ -908,12 +908,12 @@ LABEL_12:
         v21 = v29;
         if (v20 < 7)
         {
-          v4 = v4;
+          animatedCopy = animatedCopy;
         }
 
         else
         {
-          v4 = 0;
+          animatedCopy = 0;
         }
       }
 
@@ -925,34 +925,34 @@ LABEL_12:
       v22 = [(ListViewController *)self _indexPathForDate:v21];
       if ([v22 row] != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v23 = [(ListViewController *)self tableView];
-        [v23 scrollToRowAtIndexPath:v22 atScrollPosition:1 animated:v4];
+        tableView = [(ListViewController *)self tableView];
+        [tableView scrollToRowAtIndexPath:v22 atScrollPosition:1 animated:animatedCopy];
       }
 
       v24 = [(ListViewController *)self _indexPathForDate:v29];
-      v25 = [v24 section];
-      v26 = [(ListViewController *)self tableView];
-      v27 = [v26 numberOfSections];
+      section = [v24 section];
+      tableView2 = [(ListViewController *)self tableView];
+      numberOfSections = [tableView2 numberOfSections];
 
-      if (v25 <= v27)
+      if (section <= numberOfSections)
       {
-        v28 = [(ListViewController *)self tableView];
-        [v28 scrollToRowAtIndexPath:v24 atScrollPosition:1 animated:v4];
+        tableView3 = [(ListViewController *)self tableView];
+        [tableView3 scrollToRowAtIndexPath:v24 atScrollPosition:1 animated:animatedCopy];
       }
     }
 
-    v6 = v29;
+    dateCopy = v29;
   }
 }
 
-- (id)_indexPathForDate:(id)a3
+- (id)_indexPathForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(CUIKCalendarModel *)self->super._model numberOfDaysWithCachedOccurrencesUsingFilter:[(ListViewController *)self showFilteredData]])
   {
-    v5 = [(CUIKCalendarModel *)self->super._model eventStore];
-    v6 = [v5 timeZone];
-    v7 = [v4 dateForDayInTimeZone:v6];
+    eventStore = [(CUIKCalendarModel *)self->super._model eventStore];
+    timeZone = [eventStore timeZone];
+    v7 = [dateCopy dateForDayInTimeZone:timeZone];
 
     v8 = [NSIndexPath indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:[(CUIKCalendarModel *)self->super._model sectionForCachedOccurrencesOnDate:v7 usingFilter:[(ListViewController *)self showFilteredData]]];
   }
@@ -970,49 +970,49 @@ LABEL_12:
   if ([(ListViewController *)self shouldUpdateModelSelectedDate])
   {
     v10 = self->_firstVisibleHeaderDate;
-    v3 = [(MainViewController *)self model];
+    model = [(MainViewController *)self model];
     if (v10)
     {
-      v4 = [v3 selectedDate];
-      v5 = [v4 date];
-      v6 = [(NSDate *)v10 compare:v5];
+      selectedDate = [model selectedDate];
+      date = [selectedDate date];
+      v6 = [(NSDate *)v10 compare:date];
 
       if (v6)
       {
-        v7 = [v3 calendar];
-        v8 = [v7 timeZone];
+        calendar = [model calendar];
+        timeZone = [calendar timeZone];
 
-        v9 = [EKCalendarDate calendarDateWithDate:v10 timeZone:v8];
+        v9 = [EKCalendarDate calendarDateWithDate:v10 timeZone:timeZone];
         [(ListViewController *)self setSelectedDateAndFirstVisibleHeaderDate:v9];
       }
     }
   }
 }
 
-- (void)_updateBackButtonOnBackViewControllerToDate:(id)a3
+- (void)_updateBackButtonOnBackViewControllerToDate:(id)date
 {
-  v5 = a3;
-  v4 = [(ListViewController *)self navigationController];
+  dateCopy = date;
+  navigationController = [(ListViewController *)self navigationController];
   if (objc_opt_respondsToSelector())
   {
-    [v4 updateBackButtonToDate:v5];
+    [navigationController updateBackButtonToDate:dateCopy];
   }
 }
 
-- (void)_updateNavigationTitleToDate:(id)a3
+- (void)_updateNavigationTitleToDate:(id)date
 {
-  v5 = a3;
-  v4 = [(ListViewController *)self navigationController];
+  dateCopy = date;
+  navigationController = [(ListViewController *)self navigationController];
   if (objc_opt_respondsToSelector())
   {
-    [v4 updateTitleToDate:v5];
+    [navigationController updateTitleToDate:dateCopy];
   }
 }
 
 - (double)contentInset
 {
-  v2 = [(ListViewController *)self tableView];
-  [v2 contentInset];
+  tableView = [(ListViewController *)self tableView];
+  [tableView contentInset];
   v4 = v3;
 
   return v4;
@@ -1020,11 +1020,11 @@ LABEL_12:
 
 - (BOOL)_processScrollingMessagesOnEveryFrameFromListViewController
 {
-  v3 = [(ListViewController *)self delegate];
+  delegate = [(ListViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(ListViewController *)self delegate];
-    v5 = [v4 wantsScrollingMessagesOnEveryFrameFromListViewController:self];
+    delegate2 = [(ListViewController *)self delegate];
+    v5 = [delegate2 wantsScrollingMessagesOnEveryFrameFromListViewController:self];
   }
 
   else
@@ -1037,8 +1037,8 @@ LABEL_12:
 
 - (id)defaultEventForSelectedDate
 {
-  v3 = [(ListViewController *)self _dateForFirstVisibleRow];
-  v4 = [(ListViewController *)self _indexPathForDate:v3];
+  _dateForFirstVisibleRow = [(ListViewController *)self _dateForFirstVisibleRow];
+  v4 = [(ListViewController *)self _indexPathForDate:_dateForFirstVisibleRow];
   v5 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", 0, [v4 section]);
 
   if ([v5 section] == 0x7FFFFFFFFFFFFFFFLL)
@@ -1053,11 +1053,11 @@ LABEL_12:
   return v7;
 }
 
-- (void)selectEvent:(id)a3 animated:(BOOL)a4
+- (void)selectEvent:(id)event animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CUIKCalendarModel *)self->super._model indexPathsForOccurrence:v6 usingFilter:[(ListViewController *)self showFilteredData]];
+  animatedCopy = animated;
+  eventCopy = event;
+  v7 = [(CUIKCalendarModel *)self->super._model indexPathsForOccurrence:eventCopy usingFilter:[(ListViewController *)self showFilteredData]];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1077,7 +1077,7 @@ LABEL_12:
           objc_enumerationMutation(v7);
         }
 
-        [(ListViewController *)self _selectRowAtIndexPath:*(*(&v12 + 1) + 8 * v11) animated:v4 scrollPosition:0];
+        [(ListViewController *)self _selectRowAtIndexPath:*(*(&v12 + 1) + 8 * v11) animated:animatedCopy scrollPosition:0];
         v11 = v11 + 1;
       }
 
@@ -1089,16 +1089,16 @@ LABEL_12:
   }
 }
 
-- (void)updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:(id)a3
+- (void)updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:(id)path
 {
-  v5 = a3;
-  if ([v5 row] >= 1)
+  pathCopy = path;
+  if ([pathCopy row] >= 1)
   {
-    v4 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v5 row] - 1, objc_msgSend(v5, "section"));
+    v4 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row] - 1, objc_msgSend(pathCopy, "section"));
     [(ListViewController *)self _updateSeparatorVisibilityForRowAtIndexPath:v4];
   }
 
-  [(ListViewController *)self _updateSeparatorVisibilityForRowAtIndexPath:v5];
+  [(ListViewController *)self _updateSeparatorVisibilityForRowAtIndexPath:pathCopy];
 }
 
 - (void)_addAllObservers
@@ -1112,44 +1112,44 @@ LABEL_12:
   [v3 addObserver:self selector:"_contentCategorySizeChangedNotification:" name:UIContentSizeCategoryDidChangeNotification object:0];
 }
 
-- (void)_timeChangedSignificantly:(id)a3
+- (void)_timeChangedSignificantly:(id)significantly
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:CUIKCalendarModelSignificantTimeChangeNotificationDayChangedKey];
+  userInfo = [significantly userInfo];
+  v6 = [userInfo objectForKey:CUIKCalendarModelSignificantTimeChangeNotificationDayChangedKey];
 
   if (([v6 BOOLValue] & 1) != 0 || !v6)
   {
-    v5 = [(ListViewController *)self tableView];
-    [v5 reloadData];
+    tableView = [(ListViewController *)self tableView];
+    [tableView reloadData];
   }
 
   _objc_release_x1();
 }
 
-- (void)_localeChanged:(id)a3
+- (void)_localeChanged:(id)changed
 {
-  v3 = [(ListViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(ListViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)_weekNumberChanged:(id)a3
+- (void)_weekNumberChanged:(id)changed
 {
-  v3 = [(ListViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(ListViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)_selectedOccurrencesChanged:(id)a3
+- (void)_selectedOccurrencesChanged:(id)changed
 {
-  v4 = [(MainViewController *)self model];
-  v5 = [v4 selectedOccurrences];
-  v6 = [NSSet setWithArray:v5];
+  model = [(MainViewController *)self model];
+  selectedOccurrences = [model selectedOccurrences];
+  v6 = [NSSet setWithArray:selectedOccurrences];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = [(ListTableView *)self->_tableView indexPathsForSelectedRows];
-  v8 = [v7 countByEnumeratingWithState:&v36 objects:v42 count:16];
+  indexPathsForSelectedRows = [(ListTableView *)self->_tableView indexPathsForSelectedRows];
+  v8 = [indexPathsForSelectedRows countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1161,12 +1161,12 @@ LABEL_12:
       {
         if (*v37 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         v12 = *(*(&v36 + 1) + 8 * v11);
-        v13 = [(MainViewController *)self model];
-        v14 = [v13 cachedOccurrenceAtIndexPath:v12];
+        model2 = [(MainViewController *)self model];
+        v14 = [model2 cachedOccurrenceAtIndexPath:v12];
 
         if (([v6 containsObject:v14] & 1) == 0)
         {
@@ -1177,7 +1177,7 @@ LABEL_12:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v36 objects:v42 count:16];
+      v9 = [indexPathsForSelectedRows countByEnumeratingWithState:&v36 objects:v42 count:16];
     }
 
     while (v9);
@@ -1204,8 +1204,8 @@ LABEL_12:
         }
 
         v20 = *(*(&v32 + 1) + 8 * v19);
-        v21 = [(MainViewController *)self model];
-        v22 = [v21 indexPathsForOccurrence:v20 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+        model3 = [(MainViewController *)self model];
+        v22 = [model3 indexPathsForOccurrence:v20 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
         v30 = 0u;
         v31 = 0u;
@@ -1249,61 +1249,61 @@ LABEL_12:
   }
 }
 
-- (void)_contentCategorySizeChangedNotification:(id)a3
+- (void)_contentCategorySizeChangedNotification:(id)notification
 {
-  v6 = [(ListViewController *)self _dateForFirstVisibleRow];
-  v4 = [(ListViewController *)self tableView];
-  [v4 reloadData];
+  _dateForFirstVisibleRow = [(ListViewController *)self _dateForFirstVisibleRow];
+  tableView = [(ListViewController *)self tableView];
+  [tableView reloadData];
 
-  v5 = v6;
-  if (v6)
+  v5 = _dateForFirstVisibleRow;
+  if (_dateForFirstVisibleRow)
   {
-    [(ListViewController *)self scrollToDate:v6 animated:0];
-    v5 = v6;
+    [(ListViewController *)self scrollToDate:_dateForFirstVisibleRow animated:0];
+    v5 = _dateForFirstVisibleRow;
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(MainViewController *)self model];
-  v6 = [v5 numberOfDaysWithCachedOccurrencesUsingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+  viewCopy = view;
+  model = [(MainViewController *)self model];
+  v6 = [model numberOfDaysWithCachedOccurrencesUsingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
   swipedRow = self->_swipedRow;
   if (swipedRow)
   {
-    v6 = ((__PAIR128__(v6, [(ListViewController *)self tableView:v4 numberOfRowsInSection:[(NSIndexPath *)swipedRow section]]) - 1) >> 64);
+    v6 = ((__PAIR128__(v6, [(ListViewController *)self tableView:viewCopy numberOfRowsInSection:[(NSIndexPath *)swipedRow section]]) - 1) >> 64);
   }
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(MainViewController *)self model];
-  v7 = [v6 numberOfCachedOccurrencesInSection:a4 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+  model = [(MainViewController *)self model];
+  v7 = [model numberOfCachedOccurrencesInSection:section usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
   swipedRow = self->_swipedRow;
   if (swipedRow)
   {
-    return v7 - ([(NSIndexPath *)swipedRow section]== a4);
+    return v7 - ([(NSIndexPath *)swipedRow section]== section);
   }
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MainViewController *)self model];
-  v9 = [v8 cachedOccurrenceAtIndexPath:v7 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+  viewCopy = view;
+  pathCopy = path;
+  model = [(MainViewController *)self model];
+  v9 = [model cachedOccurrenceAtIndexPath:pathCopy usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
-  v43 = -[CUIKCalendarModel dateForCachedOccurrencesInSection:usingFilter:](self->super._model, "dateForCachedOccurrencesInSection:usingFilter:", [v7 section], -[ListViewController showFilteredData](self, "showFilteredData"));
-  v10 = [v9 endDate];
+  v43 = -[CUIKCalendarModel dateForCachedOccurrencesInSection:usingFilter:](self->super._model, "dateForCachedOccurrencesInSection:usingFilter:", [pathCopy section], -[ListViewController showFilteredData](self, "showFilteredData"));
+  endDate = [v9 endDate];
   v11 = CUIKNowDate();
   v12 = CUIKCalendar();
-  if ([v10 isBeforeDate:v11])
+  if ([endDate isBeforeDate:v11])
   {
     v13 = 1;
   }
@@ -1317,7 +1317,7 @@ LABEL_12:
   {
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v6 dequeueReusableCellWithIdentifier:v15 forIndexPath:v7];
+    v16 = [viewCopy dequeueReusableCellWithIdentifier:v15 forIndexPath:pathCopy];
 
     [v16 setDelegate:self];
 LABEL_8:
@@ -1329,23 +1329,23 @@ LABEL_8:
   {
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v16 = [v6 dequeueReusableCellWithIdentifier:v18 forIndexPath:v7];
+    v16 = [viewCopy dequeueReusableCellWithIdentifier:v18 forIndexPath:pathCopy];
 
     goto LABEL_8;
   }
 
   v19 = objc_opt_class();
   v20 = NSStringFromClass(v19);
-  v16 = [v6 dequeueReusableCellWithIdentifier:v20 forIndexPath:v7];
+  v16 = [viewCopy dequeueReusableCellWithIdentifier:v20 forIndexPath:pathCopy];
 
-  v21 = [v9 startDate];
+  startDate = [v9 startDate];
   [v9 endDateUnadjustedForLegacyClients];
   HIDWORD(v42) = v13;
   v22 = v11;
-  v24 = v23 = v10;
-  LODWORD(v42) = [v12 cal_isMultidayEventForUIWithStartDate:v21 endDate:v24];
+  v24 = v23 = endDate;
+  LODWORD(v42) = [v12 cal_isMultidayEventForUIWithStartDate:startDate endDate:v24];
 
-  v10 = v23;
+  endDate = v23;
   v11 = v22;
 
   [v16 updateWithEvent:v9 isMultiday:v42 occurrenceStartDate:v43 dimmed:HIDWORD(v42)];
@@ -1356,7 +1356,7 @@ LABEL_10:
   v30 = v29;
   v32 = v31;
   IsLeftToRight = CalInterfaceIsLeftToRight();
-  [v6 safeAreaInsets];
+  [viewCopy safeAreaInsets];
   if (IsLeftToRight)
   {
     v36 = v34;
@@ -1368,7 +1368,7 @@ LABEL_10:
   }
 
   v37 = CalInterfaceIsLeftToRight();
-  [v6 safeAreaInsets];
+  [viewCopy safeAreaInsets];
   if (v37)
   {
     v40 = v39;
@@ -1381,37 +1381,37 @@ LABEL_10:
 
   [v16 setSeparatorInset:{v26, v28 + v36, v30, v32 + v40, v42}];
   [v16 setDrawsOwnRowSeparators:1];
-  [(ListViewController *)self _updateSeparatorVisibilityForOccurrenceCell:v16 atIndexPath:v7];
+  [(ListViewController *)self _updateSeparatorVisibilityForOccurrenceCell:v16 atIndexPath:pathCopy];
 
   return v16;
 }
 
-- (void)_updateSeparatorVisibilityForRowAtIndexPath:(id)a3
+- (void)_updateSeparatorVisibilityForRowAtIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v4 = [(ListTableView *)self->_tableView cellForRowAtIndexPath:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ListViewController *)self _updateSeparatorVisibilityForOccurrenceCell:v4 atIndexPath:v5];
+    [(ListViewController *)self _updateSeparatorVisibilityForOccurrenceCell:v4 atIndexPath:pathCopy];
   }
 }
 
-- (void)_updateSeparatorVisibilityForOccurrenceCell:(id)a3 atIndexPath:(id)a4
+- (void)_updateSeparatorVisibilityForOccurrenceCell:(id)cell atIndexPath:(id)path
 {
-  v13 = a4;
-  v6 = a3;
-  v7 = [(MainViewController *)self model];
-  v8 = [v7 numberOfCachedOccurrencesInSection:objc_msgSend(v13 usingFilter:{"section"), -[ListViewController showFilteredData](self, "showFilteredData")}];
+  pathCopy = path;
+  cellCopy = cell;
+  model = [(MainViewController *)self model];
+  v8 = [model numberOfCachedOccurrencesInSection:objc_msgSend(pathCopy usingFilter:{"section"), -[ListViewController showFilteredData](self, "showFilteredData")}];
 
-  if ([v13 row] >= (v8 - 1) || -[ListViewController _rowDrawsBackground:](self, "_rowDrawsBackground:", v13))
+  if ([pathCopy row] >= (v8 - 1) || -[ListViewController _rowDrawsBackground:](self, "_rowDrawsBackground:", pathCopy))
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v13 row] + 1, objc_msgSend(v13, "section"));
+    v10 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row] + 1, objc_msgSend(pathCopy, "section"));
     v11 = [(ListViewController *)self _rowDrawsBackground:v10];
 
     if (v11)
@@ -1425,7 +1425,7 @@ LABEL_10:
     }
   }
 
-  if ([v13 row])
+  if ([pathCopy row])
   {
     v12 = v9;
   }
@@ -1435,23 +1435,23 @@ LABEL_10:
     v12 = v9 + 1;
   }
 
-  [v6 setSeparatorEdges:v12];
+  [cellCopy setSeparatorEdges:v12];
 }
 
-- (BOOL)_rowDrawsBackground:(id)a3
+- (BOOL)_rowDrawsBackground:(id)background
 {
-  v4 = a3;
-  v5 = [(ListTableView *)self->_tableView indexPathsForSelectedRows];
-  v6 = v5;
-  if (v5 && ([v5 containsObject:v4] & 1) != 0)
+  backgroundCopy = background;
+  indexPathsForSelectedRows = [(ListTableView *)self->_tableView indexPathsForSelectedRows];
+  v6 = indexPathsForSelectedRows;
+  if (indexPathsForSelectedRows && ([indexPathsForSelectedRows containsObject:backgroundCopy] & 1) != 0)
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(MainViewController *)self model];
-    v9 = [v8 cachedOccurrenceAtIndexPath:v4 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+    model = [(MainViewController *)self model];
+    v9 = [model cachedOccurrenceAtIndexPath:backgroundCopy usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
     v7 = [EKUIListViewCell drawsBackgroundForEvent:v9];
   }
@@ -1459,64 +1459,64 @@ LABEL_10:
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(MainViewController *)self model];
-  v8 = [v7 dateForCachedOccurrencesInSection:a4 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+  viewCopy = view;
+  model = [(MainViewController *)self model];
+  v8 = [model dateForCachedOccurrencesInSection:section usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
-  v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"ListViewSectionHeaderView"];
+  v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"ListViewSectionHeaderView"];
 
-  v10 = [(MainViewController *)self model];
-  v11 = [v10 calendar];
-  v12 = [v11 timeZone];
-  [v9 configureWithDate:v8 timeZone:v12];
+  model2 = [(MainViewController *)self model];
+  calendar = [model2 calendar];
+  timeZone = [calendar timeZone];
+  [v9 configureWithDate:v8 timeZone:timeZone];
 
   return v9;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v16 = a3;
-  v8 = a4;
+  viewCopy = view;
+  headerViewCopy = headerView;
   if (self->_userIsScrolling)
   {
-    if (self->_cachedTopHeaderSection > a5)
+    if (self->_cachedTopHeaderSection > section)
     {
-      v9 = [(CUIKCalendarModel *)self->super._model dateForCachedOccurrencesInSection:a5 usingFilter:[(ListViewController *)self showFilteredData]];
-      v10 = [(CUIKCalendarModel *)self->super._model calendar];
-      v11 = [v10 timeZone];
-      v12 = [EKCalendarDate calendarDateWithDate:v9 timeZone:v11];
+      v9 = [(CUIKCalendarModel *)self->super._model dateForCachedOccurrencesInSection:section usingFilter:[(ListViewController *)self showFilteredData]];
+      calendar = [(CUIKCalendarModel *)self->super._model calendar];
+      timeZone = [calendar timeZone];
+      v12 = [EKCalendarDate calendarDateWithDate:v9 timeZone:timeZone];
 
       [(ListViewController *)self setSelectedDateAndFirstVisibleHeaderDate:v12];
       [(ListViewController *)self updateUIToTopHeaderDate];
     }
 
-    v13 = [(ListViewController *)self tableView];
-    v14 = [v13 indexPathsForVisibleRows];
+    tableView = [(ListViewController *)self tableView];
+    indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-    v15 = [v14 firstObject];
-    if ([v15 section] >= a5)
+    firstObject = [indexPathsForVisibleRows firstObject];
+    if ([firstObject section] >= section)
     {
-      self->_cachedTopHeaderSection = a5;
+      self->_cachedTopHeaderSection = section;
     }
   }
 }
 
-- (void)tableView:(id)a3 didEndDisplayingHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view didEndDisplayingHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v18 = a3;
-  v8 = a4;
-  if (self->_userIsScrolling && self->_cachedTopHeaderSection >= a5)
+  viewCopy = view;
+  headerViewCopy = headerView;
+  if (self->_userIsScrolling && self->_cachedTopHeaderSection >= section)
   {
-    v9 = [(ListViewController *)self tableView];
-    v10 = [v9 indexPathsForVisibleRows];
+    tableView = [(ListViewController *)self tableView];
+    indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-    v11 = [v10 firstObject];
-    v12 = v11;
-    if (v11)
+    firstObject = [indexPathsForVisibleRows firstObject];
+    v12 = firstObject;
+    if (firstObject)
     {
-      cachedTopHeaderSection = [v11 section];
+      cachedTopHeaderSection = [firstObject section];
     }
 
     else
@@ -1526,9 +1526,9 @@ LABEL_10:
 
     self->_cachedTopHeaderSection = cachedTopHeaderSection;
     v14 = [(CUIKCalendarModel *)self->super._model dateForCachedOccurrencesInSection:cachedTopHeaderSection usingFilter:[(ListViewController *)self showFilteredData]];
-    v15 = [(CUIKCalendarModel *)self->super._model calendar];
-    v16 = [v15 timeZone];
-    v17 = [EKCalendarDate calendarDateWithDate:v14 timeZone:v16];
+    calendar = [(CUIKCalendarModel *)self->super._model calendar];
+    timeZone = [calendar timeZone];
+    v17 = [EKCalendarDate calendarDateWithDate:v14 timeZone:timeZone];
 
     [(ListViewController *)self setSelectedDateAndFirstVisibleHeaderDate:v17];
     [(ListViewController *)self updateUIToTopHeaderDate];
@@ -1540,100 +1540,100 @@ LABEL_10:
   if (![(ListViewController *)self _processScrollingMessagesOnEveryFrameFromListViewController])
   {
     v3 = CalSolariumEnabled();
-    v4 = [(CUIKCalendarModel *)self->super._model selectedDate];
+    selectedDate = [(CUIKCalendarModel *)self->super._model selectedDate];
     if (v3)
     {
-      [(ListViewController *)self _updateNavigationTitleToDate:v4];
+      [(ListViewController *)self _updateNavigationTitleToDate:selectedDate];
     }
 
     else
     {
-      [(ListViewController *)self _updateBackButtonOnBackViewControllerToDate:v4];
+      [(ListViewController *)self _updateBackButtonOnBackViewControllerToDate:selectedDate];
     }
 
     [(MainViewController *)self setSceneTitleNeedsUpdate];
   }
 
-  v5 = [(PaletteView *)self->_palette dayScrubberController];
-  [v5 setSelectedDate:self->_firstVisibleHeaderDate animated:1];
+  dayScrubberController = [(PaletteView *)self->_palette dayScrubberController];
+  [dayScrubberController setSelectedDate:self->_firstVisibleHeaderDate animated:1];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  v5 = [(ListViewController *)self presentedViewController];
+  pathCopy = path;
+  presentedViewController = [(ListViewController *)self presentedViewController];
 
-  if (!v5)
+  if (!presentedViewController)
   {
     [(ListViewController *)self setPreventScrollingForNextViewAppear:1];
-    v6 = [(MainViewController *)self model];
-    v7 = [v6 cachedOccurrenceAtIndexPath:v8 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+    model = [(MainViewController *)self model];
+    v7 = [model cachedOccurrenceAtIndexPath:pathCopy usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
     [(ListViewController *)self showEvent:v7 animated:1 showMode:1 context:0];
   }
 
-  [(ListViewController *)self updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:v8];
+  [(ListViewController *)self updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:pathCopy];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(ListViewController *)self showFilteredData])
   {
-    [(ListViewController *)self tableView:v9 didSelectRowAtIndexPath:v6];
+    [(ListViewController *)self tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 
   else
   {
-    v7 = [(MainViewController *)self model];
-    v8 = [v7 cachedOccurrenceAtIndexPath:v6 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+    model = [(MainViewController *)self model];
+    v8 = [model cachedOccurrenceAtIndexPath:pathCopy usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
     [(CUIKCalendarModel *)self->super._model deselectOccurrence:v8];
-    [(ListViewController *)self updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:v6];
+    [(ListViewController *)self updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:pathCopy];
   }
 }
 
-- (void)_deselectRowAtIndexPath:(id)a3 animated:(BOOL)a4
+- (void)_deselectRowAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   tableView = self->_tableView;
-  v7 = a3;
-  [(ListTableView *)tableView deselectRowAtIndexPath:v7 animated:v4];
-  [(ListViewController *)self updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:v7];
+  pathCopy = path;
+  [(ListTableView *)tableView deselectRowAtIndexPath:pathCopy animated:animatedCopy];
+  [(ListViewController *)self updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:pathCopy];
 }
 
-- (void)_selectRowAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5
+- (void)_selectRowAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(int64_t)position
 {
-  v6 = a4;
+  animatedCopy = animated;
   tableView = self->_tableView;
-  v9 = a3;
-  [(ListTableView *)tableView selectRowAtIndexPath:v9 animated:v6 scrollPosition:a5];
-  [(ListViewController *)self updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:v9];
+  pathCopy = path;
+  [(ListTableView *)tableView selectRowAtIndexPath:pathCopy animated:animatedCopy scrollPosition:position];
+  [(ListViewController *)self updateSeparatorVisibiltyForSelectionChangeForRowAtIndexPath:pathCopy];
 }
 
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  v5 = a3;
-  [v5 setDelegate:0];
-  v6 = [(ListViewController *)self navigationController];
-  [v6 popViewControllersAfterAndIncluding:v5 animated:!self->_editorDismissedFromDelete];
+  controllerCopy = controller;
+  [controllerCopy setDelegate:0];
+  navigationController = [(ListViewController *)self navigationController];
+  [navigationController popViewControllersAfterAndIncluding:controllerCopy animated:!self->_editorDismissedFromDelete];
 
   self->_editorDismissedFromDelete = 0;
 }
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 completionHandler:(id)a5
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     v9 = _NSConcreteStackBlock;
     v10 = 3221225472;
     v11 = sub_10001D9BC;
     v12 = &unk_10020EBC8;
-    v13 = self;
-    v14 = v6;
+    selfCopy = self;
+    v14 = handlerCopy;
     v8 = objc_retainBlock(&v9);
   }
 
@@ -1646,25 +1646,25 @@ LABEL_10:
   [(ListViewController *)self dismissViewControllerAnimated:1 completion:v8];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     self->_userIsScrolling = 0;
   }
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8 && (-[ListViewController presentedViewController](self, "presentedViewController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isBeingDismissed], v9, (v10 & 1) == 0))
+  viewCopy = view;
+  pathCopy = path;
+  if (pathCopy && (-[ListViewController presentedViewController](self, "presentedViewController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isBeingDismissed], v9, (v10 & 1) == 0))
   {
-    v12 = [(ListViewController *)self _eventForRowAtIndexPath:v8];
+    v12 = [(ListViewController *)self _eventForRowAtIndexPath:pathCopy];
     if (v12)
     {
-      v13 = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
-      v14 = [v13 containsObject:v12];
+      selectedOccurrences = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
+      v14 = [selectedOccurrences containsObject:v12];
 
       if ((v14 & 1) == 0)
       {
@@ -1683,7 +1683,7 @@ LABEL_10:
       v17[2] = sub_10001DC6C;
       v17[3] = &unk_10020EC40;
       v17[4] = self;
-      v11 = [UIContextMenuConfiguration configurationWithIdentifier:v8 previewProvider:v18 actionProvider:v17];
+      v11 = [UIContextMenuConfiguration configurationWithIdentifier:pathCopy previewProvider:v18 actionProvider:v17];
     }
 
     else
@@ -1700,72 +1700,72 @@ LABEL_10:
   return v11;
 }
 
-- (id)tableView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4
+- (id)tableView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 identifier];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  configurationCopy = configuration;
+  viewCopy = view;
+  identifier = [configurationCopy identifier];
+  v8 = [viewCopy cellForRowAtIndexPath:identifier];
 
-  v9 = [v5 identifier];
+  identifier2 = [configurationCopy identifier];
 
-  v16 = v9;
+  v16 = identifier2;
   v10 = [NSArray arrayWithObjects:&v16 count:1];
-  [v6 reloadRowsAtIndexPaths:v10 withRowAnimation:100];
+  [viewCopy reloadRowsAtIndexPaths:v10 withRowAnimation:100];
 
   if (v8)
   {
-    v11 = [v8 window];
+    window = [v8 window];
 
-    if (v11)
+    if (window)
     {
       v12 = [UITargetedPreview alloc];
-      v13 = [v8 contentView];
+      contentView = [v8 contentView];
       v14 = objc_alloc_init(UIPreviewParameters);
-      v11 = [v12 initWithView:v13 parameters:v14];
+      window = [v12 initWithView:contentView parameters:v14];
     }
   }
 
   else
   {
-    v11 = 0;
+    window = 0;
   }
 
-  return v11;
+  return window;
 }
 
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
-  v7 = [v6 previewViewController];
+  animatorCopy = animator;
+  previewViewController = [animatorCopy previewViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 previewViewController];
+    previewViewController2 = [animatorCopy previewViewController];
   }
 
   else
   {
-    v8 = 0;
+    previewViewController2 = 0;
   }
 
-  v9 = [v8 event];
-  [v8 willCommitPreview];
-  if (v9)
+  event = [previewViewController2 event];
+  [previewViewController2 willCommitPreview];
+  if (event)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10001E038;
     v10[3] = &unk_10020EC68;
     v10[4] = self;
-    v11 = v9;
-    [v6 addAnimations:v10];
+    v11 = event;
+    [animatorCopy addAnimations:v10];
   }
 }
 
-- (void)tableView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5
+- (void)tableView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [(CUIKCalendarModel *)self->super._model selectedOccurrences:a3];
+  v6 = [(CUIKCalendarModel *)self->super._model selectedOccurrences:view];
   v7 = [v6 count];
 
   if (v7 == 1)
@@ -1776,31 +1776,31 @@ LABEL_10:
   }
 }
 
-- (id)_eventForRowAtIndexPath:(id)a3
+- (id)_eventForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MainViewController *)self model];
-  v6 = [v5 cachedOccurrenceAtIndexPath:v4 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+  pathCopy = path;
+  model = [(MainViewController *)self model];
+  v6 = [model cachedOccurrenceAtIndexPath:pathCopy usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  pathCopy = path;
   v10 = +[CUIKPreferences sharedPreferences];
-  v11 = [v10 swipeToDeleteEnabled];
+  swipeToDeleteEnabled = [v10 swipeToDeleteEnabled];
 
-  if (a4 == 1 && v11)
+  if (style == 1 && swipeToDeleteEnabled)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10001E2FC;
     v13[3] = &unk_10020EC90;
     v13[4] = self;
-    v14 = v9;
-    v15 = v8;
+    v14 = pathCopy;
+    v15 = viewCopy;
     [(ListViewController *)self _deleteEventAtIndexPath:v14 withCompletionHandler:v13];
   }
 
@@ -1811,10 +1811,10 @@ LABEL_10:
   }
 }
 
-- (void)_deleteEventAtIndexPath:(id)a3 withCompletionHandler:(id)a4
+- (void)_deleteEventAtIndexPath:(id)path withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ListViewController *)self _eventForRowAtIndexPath:a3];
+  handlerCopy = handler;
+  v7 = [(ListViewController *)self _eventForRowAtIndexPath:path];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"Delete" value:&stru_1002133B8 table:0];
   v14[0] = _NSConcreteStackBlock;
@@ -1823,17 +1823,17 @@ LABEL_10:
   v14[3] = &unk_10020ECB8;
   v14[4] = self;
   v15 = v7;
-  v16 = v6;
-  v10 = v6;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
   v11 = v7;
   v12 = [EKUIRecurrenceAlertController presentDeleteAlertWithOptions:0 viewController:self barButtonItem:0 forEvent:v11 stringForDeleteButton:v9 withCompletionHandler:v14];
   recurrenceAlertController = self->_recurrenceAlertController;
   self->_recurrenceAlertController = v12;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(ListViewController *)self _eventForRowAtIndexPath:a4];
+  v4 = [(ListViewController *)self _eventForRowAtIndexPath:path];
   v5 = +[CUIKPreferences sharedPreferences];
   if (![v5 swipeToDeleteEnabled])
   {
@@ -1841,9 +1841,9 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  v6 = [v4 isEditable];
+  isEditable = [v4 isEditable];
 
-  if ((v6 & 1) == 0)
+  if ((isEditable & 1) == 0)
   {
 LABEL_5:
     v7 = 0;
@@ -1856,31 +1856,31 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)eventViewDelegateShouldShowNextOccurrenceOfEvent:(id)a3 forward:(BOOL)a4
+- (BOOL)eventViewDelegateShouldShowNextOccurrenceOfEvent:(id)event forward:(BOOL)forward
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  forwardCopy = forward;
+  eventCopy = event;
+  v7 = eventCopy;
+  if (forwardCopy)
   {
-    v8 = [v6 nextOccurrence];
-    if (v8)
+    nextOccurrence = [eventCopy nextOccurrence];
+    if (nextOccurrence)
     {
-      v9 = [(ListViewController *)self tableView];
-      v10 = [(ListViewController *)self numberOfSectionsInTableView:v9];
+      tableView = [(ListViewController *)self tableView];
+      v10 = [(ListViewController *)self numberOfSectionsInTableView:tableView];
 
-      v11 = [(ListViewController *)self tableView];
-      v12 = [(ListViewController *)self tableView:v11 numberOfRowsInSection:--v10];
+      tableView2 = [(ListViewController *)self tableView];
+      v12 = [(ListViewController *)self tableView:tableView2 numberOfRowsInSection:--v10];
 
       v23 = v10;
       v24 = v12 - 1;
       v13 = [NSIndexPath indexPathWithIndexes:&v23 length:2];
-      v14 = [(MainViewController *)self model];
-      v15 = [v14 cachedOccurrenceAtIndexPath:v13 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+      model = [(MainViewController *)self model];
+      v15 = [model cachedOccurrenceAtIndexPath:v13 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
-      v16 = [v8 startDate];
-      v17 = [v15 startDate];
-      v18 = [v16 isBeforeDate:v17];
+      startDate = [nextOccurrence startDate];
+      startDate2 = [v15 startDate];
+      v18 = [startDate isBeforeDate:startDate2];
 LABEL_8:
       v20 = v18;
 
@@ -1890,19 +1890,19 @@ LABEL_8:
 
   else
   {
-    v19 = [v6 previousOccurrence];
-    v8 = v19;
-    if (v19 && [v19 reminderOccurrenceType] != 1)
+    previousOccurrence = [eventCopy previousOccurrence];
+    nextOccurrence = previousOccurrence;
+    if (previousOccurrence && [previousOccurrence reminderOccurrenceType] != 1)
     {
       v23 = 0;
       v24 = 0;
       v13 = [NSIndexPath indexPathWithIndexes:&v23 length:2];
-      v21 = [(MainViewController *)self model];
-      v15 = [v21 cachedOccurrenceAtIndexPath:v13 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+      model2 = [(MainViewController *)self model];
+      v15 = [model2 cachedOccurrenceAtIndexPath:v13 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
-      v16 = [v8 startDate];
-      v17 = [v15 startDate];
-      v18 = [v16 isAfterDate:v17];
+      startDate = [nextOccurrence startDate];
+      startDate2 = [v15 startDate];
+      v18 = [startDate isAfterDate:startDate2];
       goto LABEL_8;
     }
   }
@@ -1913,98 +1913,98 @@ LABEL_9:
   return v20;
 }
 
-- (void)eventViewDelegateShowNextOccurrenceOfEvent:(id)a3 forward:(BOOL)a4
+- (void)eventViewDelegateShowNextOccurrenceOfEvent:(id)event forward:(BOOL)forward
 {
-  v4 = a4;
-  v6 = a3;
-  v10 = v6;
-  if (v4)
+  forwardCopy = forward;
+  eventCopy = event;
+  v10 = eventCopy;
+  if (forwardCopy)
   {
-    [v6 nextOccurrence];
+    [eventCopy nextOccurrence];
   }
 
   else
   {
-    [v6 previousOccurrence];
+    [eventCopy previousOccurrence];
   }
   v7 = ;
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 startCalendarDate];
-    [(ListViewController *)self selectDate:v9 animated:1];
+    startCalendarDate = [v7 startCalendarDate];
+    [(ListViewController *)self selectDate:startCalendarDate animated:1];
 
     [(ListViewController *)self selectEvent:v8 animated:1];
   }
 }
 
-- (void)eventViewControllerNextButtonWasTapped:(id)a3
+- (void)eventViewControllerNextButtonWasTapped:(id)tapped
 {
-  v7 = a3;
-  v4 = [v7 event];
-  v5 = [v4 nextOccurrence];
+  tappedCopy = tapped;
+  event = [tappedCopy event];
+  nextOccurrence = [event nextOccurrence];
 
-  if (v5)
+  if (nextOccurrence)
   {
-    [(ListViewController *)self eventViewController:v7 didCompleteWithAction:0];
-    v6 = [v7 context];
-    [(ListViewController *)self showEvent:v5 animated:1 showMode:1 context:v6];
+    [(ListViewController *)self eventViewController:tappedCopy didCompleteWithAction:0];
+    context = [tappedCopy context];
+    [(ListViewController *)self showEvent:nextOccurrence animated:1 showMode:1 context:context];
   }
 }
 
-- (void)eventViewControllerPreviousButtonWasTapped:(id)a3
+- (void)eventViewControllerPreviousButtonWasTapped:(id)tapped
 {
-  v7 = a3;
-  v4 = [v7 event];
-  v5 = [v4 previousOccurrence];
+  tappedCopy = tapped;
+  event = [tappedCopy event];
+  previousOccurrence = [event previousOccurrence];
 
-  if (v5)
+  if (previousOccurrence)
   {
-    [(ListViewController *)self eventViewController:v7 didCompleteWithAction:0];
-    v6 = [v7 context];
-    [(ListViewController *)self showEvent:v5 animated:1 showMode:1 context:v6];
+    [(ListViewController *)self eventViewController:tappedCopy didCompleteWithAction:0];
+    context = [tappedCopy context];
+    [(ListViewController *)self showEvent:previousOccurrence animated:1 showMode:1 context:context];
   }
 }
 
-- (void)eventViewController:(id)a3 requestsShowEvent:(id)a4
+- (void)eventViewController:(id)controller requestsShowEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  [(ListViewController *)self eventViewController:v7 didCompleteWithAction:0];
-  v8 = [v7 context];
+  eventCopy = event;
+  controllerCopy = controller;
+  [(ListViewController *)self eventViewController:controllerCopy didCompleteWithAction:0];
+  context = [controllerCopy context];
 
-  [(ListViewController *)self showEvent:v6 animated:1 showMode:1 context:v8];
+  [(ListViewController *)self showEvent:eventCopy animated:1 showMode:1 context:context];
 }
 
 - (id)pasteboardManager
 {
-  v2 = [(MainViewController *)self model];
-  v3 = [v2 pasteboardManager];
+  model = [(MainViewController *)self model];
+  pasteboardManager = [model pasteboardManager];
 
-  return v3;
+  return pasteboardManager;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   multiSelectGestureRecognizer = self->_multiSelectGestureRecognizer;
-  v6 = multiSelectGestureRecognizer != v4 || ([(UITapGestureRecognizer *)multiSelectGestureRecognizer modifierFlags]& 0x120000) != 0;
+  v6 = multiSelectGestureRecognizer != beginCopy || ([(UITapGestureRecognizer *)multiSelectGestureRecognizer modifierFlags]& 0x120000) != 0;
 
   return v6;
 }
 
-- (void)_multiSelect:(id)a3
+- (void)_multiSelect:(id)select
 {
-  [a3 locationInView:self->_tableView];
+  [select locationInView:self->_tableView];
   v4 = [(ListTableView *)self->_tableView indexPathForRowAtPoint:?];
   if (v4)
   {
     v8 = v4;
-    v5 = [(ListTableView *)self->_tableView indexPathsForSelectedRows];
-    v6 = [(MainViewController *)self model];
-    v7 = [v6 cachedOccurrenceAtIndexPath:v8 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
+    indexPathsForSelectedRows = [(ListTableView *)self->_tableView indexPathsForSelectedRows];
+    model = [(MainViewController *)self model];
+    v7 = [model cachedOccurrenceAtIndexPath:v8 usingFilter:{-[ListViewController showFilteredData](self, "showFilteredData")}];
 
-    if ([v5 containsObject:v8])
+    if ([indexPathsForSelectedRows containsObject:v8])
     {
       [(ListViewController *)self _deselectRowAtIndexPath:v8 animated:1];
       [(CUIKCalendarModel *)self->super._model deselectOccurrence:v7];
@@ -2020,14 +2020,14 @@ LABEL_9:
   _objc_release_x1();
 }
 
-- (void)_deselectAllSelectedRowsAnimated:(BOOL)a3
+- (void)_deselectAllSelectedRowsAnimated:(BOOL)animated
 {
-  v4 = [(ListTableView *)self->_tableView indexPathsForSelectedRows];
+  indexPathsForSelectedRows = [(ListTableView *)self->_tableView indexPathsForSelectedRows];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [indexPathsForSelectedRows countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2039,7 +2039,7 @@ LABEL_9:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         [(ListViewController *)self _deselectRowAtIndexPath:*(*(&v9 + 1) + 8 * v8) animated:1];
@@ -2047,108 +2047,108 @@ LABEL_9:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [indexPathsForSelectedRows countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (([CUIKPasteboardUtilities declinesToPerformCutCopyPasteAction:a3 withSender:v6]& 1) == 0)
+  senderCopy = sender;
+  if (([CUIKPasteboardUtilities declinesToPerformCutCopyPasteAction:action withSender:senderCopy]& 1) == 0)
   {
-    if ("paste:" == a3)
+    if ("paste:" == action)
     {
-      v8 = [(CUIKCalendarModel *)self->super._model pasteboardManager];
-      v7 = [v8 canPerformPaste];
+      pasteboardManager = [(CUIKCalendarModel *)self->super._model pasteboardManager];
+      canPerformPaste = [pasteboardManager canPerformPaste];
 
       goto LABEL_11;
     }
 
-    if ("copy:" == a3)
+    if ("copy:" == action)
     {
-      v9 = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
+      selectedOccurrences = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
       v10 = 1;
     }
 
     else
     {
-      if ("cut:" != a3)
+      if ("cut:" != action)
       {
         v12.receiver = self;
         v12.super_class = ListViewController;
-        v7 = [(ListViewController *)&v12 canPerformAction:a3 withSender:v6];
+        canPerformPaste = [(ListViewController *)&v12 canPerformAction:action withSender:senderCopy];
         goto LABEL_11;
       }
 
-      v9 = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
+      selectedOccurrences = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
       v10 = 0;
     }
 
-    v7 = [CUIKPasteboardUtilities allEventsValidForAction:v10 fromEvents:v9];
+    canPerformPaste = [CUIKPasteboardUtilities allEventsValidForAction:v10 fromEvents:selectedOccurrences];
 
     goto LABEL_11;
   }
 
-  v7 = 0;
+  canPerformPaste = 0;
 LABEL_11:
 
-  return v7;
+  return canPerformPaste;
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v6 = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
-  if ([v6 count])
+  selectedOccurrences = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
+  if ([selectedOccurrences count])
   {
-    v4 = [(CUIKCalendarModel *)self->super._model pasteboardManager];
-    v5 = [NSSet setWithArray:v6];
-    [v4 cutEvents:v5 delegate:self];
+    pasteboardManager = [(CUIKCalendarModel *)self->super._model pasteboardManager];
+    v5 = [NSSet setWithArray:selectedOccurrences];
+    [pasteboardManager cutEvents:v5 delegate:self];
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v6 = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
-  if ([v6 count])
+  selectedOccurrences = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
+  if ([selectedOccurrences count])
   {
-    v4 = [(CUIKCalendarModel *)self->super._model pasteboardManager];
-    v5 = [NSSet setWithArray:v6];
-    [v4 copyEvents:v5 delegate:self];
+    pasteboardManager = [(CUIKCalendarModel *)self->super._model pasteboardManager];
+    v5 = [NSSet setWithArray:selectedOccurrences];
+    [pasteboardManager copyEvents:v5 delegate:self];
   }
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v7 = [(CUIKCalendarModel *)self->super._model selectedOccurrence];
-  if (v7)
+  selectedOccurrence = [(CUIKCalendarModel *)self->super._model selectedOccurrence];
+  if (selectedOccurrence)
   {
-    v4 = [(CUIKCalendarModel *)self->super._model pasteboardManager];
-    v5 = [v7 startDate];
-    [v4 setDateForPaste:v5];
+    pasteboardManager = [(CUIKCalendarModel *)self->super._model pasteboardManager];
+    startDate = [selectedOccurrence startDate];
+    [pasteboardManager setDateForPaste:startDate];
   }
 
-  v6 = [(CUIKCalendarModel *)self->super._model pasteboardManager];
-  [v6 pasteEventsWithDateMode:0 delegate:self];
+  pasteboardManager2 = [(CUIKCalendarModel *)self->super._model pasteboardManager];
+  [pasteboardManager2 pasteEventsWithDateMode:0 delegate:self];
 }
 
-- (void)pasteboardManager:(id)a3 didFinishPasteWithResult:(unint64_t)a4 willOpenEditor:(BOOL)a5
+- (void)pasteboardManager:(id)manager didFinishPasteWithResult:(unint64_t)result willOpenEditor:(BOOL)editor
 {
-  if (!a4 && !a5)
+  if (!result && !editor)
   {
     [(MainViewController *)self attemptDisplayReviewPrompt];
   }
 }
 
-- (void)eventIconButtonPressed:(id)a3
+- (void)eventIconButtonPressed:(id)pressed
 {
-  v4 = [a3 event];
-  [v4 setCompleted:{objc_msgSend(v4, "completed") ^ 1}];
-  v5 = [(ListViewController *)self EKUI_editor];
+  event = [pressed event];
+  [event setCompleted:{objc_msgSend(event, "completed") ^ 1}];
+  eKUI_editor = [(ListViewController *)self EKUI_editor];
   v9 = 0;
-  v6 = [v5 saveEvent:v4 span:0 error:&v9];
+  v6 = [eKUI_editor saveEvent:event span:0 error:&v9];
   v7 = v9;
 
   if ((v6 & 1) == 0)

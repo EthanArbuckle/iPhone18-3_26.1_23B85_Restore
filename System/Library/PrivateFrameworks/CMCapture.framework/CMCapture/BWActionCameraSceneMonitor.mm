@@ -1,22 +1,22 @@
 @interface BWActionCameraSceneMonitor
-- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)a3 frameStatisticsByPortType:(id)a4 sceneFlags:(unint64_t)a5 flashOrTorchWillBeActive:(BOOL)a6 digitalFlashWillFire:(BOOL)a7 thermalPressureLevel:(int)a8 peakPowerPressureLevel:(int)a9 effectStatus:(int *)a10 stagePreviewStatus:(int *)a11;
-- (BWActionCameraSceneMonitor)initWithTuningParametersByPortType:(id)a3 videoStabilizationStrength:(int)a4 bravoTelephotoEnabled:(BOOL)a5 attachDebugFrameStatistics:(BOOL)a6;
+- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)buffer frameStatisticsByPortType:(id)type sceneFlags:(unint64_t)flags flashOrTorchWillBeActive:(BOOL)active digitalFlashWillFire:(BOOL)fire thermalPressureLevel:(int)level peakPowerPressureLevel:(int)pressureLevel effectStatus:(int *)self0 stagePreviewStatus:(int *)self1;
+- (BWActionCameraSceneMonitor)initWithTuningParametersByPortType:(id)type videoStabilizationStrength:(int)strength bravoTelephotoEnabled:(BOOL)enabled attachDebugFrameStatistics:(BOOL)statistics;
 - (void)dealloc;
 - (void)focusScanDidComplete;
-- (void)setAutoFocusInProgress:(BOOL)a3 focusLocked:(BOOL)a4 oneShotFocusScanInProgress:(BOOL)a5;
+- (void)setAutoFocusInProgress:(BOOL)progress focusLocked:(BOOL)locked oneShotFocusScanInProgress:(BOOL)inProgress;
 @end
 
 @implementation BWActionCameraSceneMonitor
 
-- (BWActionCameraSceneMonitor)initWithTuningParametersByPortType:(id)a3 videoStabilizationStrength:(int)a4 bravoTelephotoEnabled:(BOOL)a5 attachDebugFrameStatistics:(BOOL)a6
+- (BWActionCameraSceneMonitor)initWithTuningParametersByPortType:(id)type videoStabilizationStrength:(int)strength bravoTelephotoEnabled:(BOOL)enabled attachDebugFrameStatistics:(BOOL)statistics
 {
-  if (a4 <= 2)
+  if (strength <= 2)
   {
     [BWActionCameraSceneMonitor initWithTuningParametersByPortType:? videoStabilizationStrength:? bravoTelephotoEnabled:? attachDebugFrameStatistics:?];
     return 0;
   }
 
-  v6 = a5;
+  enabledCopy = enabled;
   v27.receiver = self;
   v27.super_class = BWActionCameraSceneMonitor;
   v9 = [(BWActionCameraSceneMonitor *)&v27 init];
@@ -26,7 +26,7 @@
     v9->_sceneTooDarkMonitoringEnabled = 1;
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v12 = off_1E798A0D8;
-    if (a4 == 3)
+    if (strength == 3)
     {
       v26 = 300;
       v13 = 10;
@@ -36,7 +36,7 @@
 
     else
     {
-      if (a4 != 4)
+      if (strength != 4)
       {
         goto LABEL_17;
       }
@@ -48,7 +48,7 @@
     }
 
     v16 = *off_1E798A0D0;
-    v17 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798A0D0), "objectForKeyedSubscript:", v15), "objectForKeyedSubscript:", @"TooDarkLuxLevelThreshold", "intValue"}];
+    v17 = [objc_msgSend(objc_msgSend(objc_msgSend(type objectForKeyedSubscript:{*off_1E798A0D0), "objectForKeyedSubscript:", v15), "objectForKeyedSubscript:", @"TooDarkLuxLevelThreshold", "intValue"}];
     if (v17)
     {
       v18 = v17;
@@ -61,7 +61,7 @@
 
     -[NSDictionary setObject:forKeyedSubscript:](v11, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:v18], v16);
     v19 = *off_1E798A0C0;
-    v20 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798A0C0), "objectForKeyedSubscript:", v15), "objectForKeyedSubscript:", @"TooDarkLuxLevelThreshold", "intValue"}];
+    v20 = [objc_msgSend(objc_msgSend(objc_msgSend(type objectForKeyedSubscript:{*off_1E798A0C0), "objectForKeyedSubscript:", v15), "objectForKeyedSubscript:", @"TooDarkLuxLevelThreshold", "intValue"}];
     if (v20)
     {
       v21 = v20;
@@ -75,7 +75,7 @@
     -[NSDictionary setObject:forKeyedSubscript:](v11, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:v21], v19);
     v12 = off_1E798A0D8;
     v22 = *off_1E798A0D8;
-    v23 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798A0D8), "objectForKeyedSubscript:", v15), "objectForKeyedSubscript:", @"TooDarkLuxLevelThreshold", "intValue"}];
+    v23 = [objc_msgSend(objc_msgSend(objc_msgSend(type objectForKeyedSubscript:{*off_1E798A0D8), "objectForKeyedSubscript:", v15), "objectForKeyedSubscript:", @"TooDarkLuxLevelThreshold", "intValue"}];
     if (v23)
     {
       v24 = v23;
@@ -88,7 +88,7 @@
 
     -[NSDictionary setObject:forKeyedSubscript:](v11, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:v24], v22);
 LABEL_17:
-    if (v6)
+    if (enabledCopy)
     {
       [(NSDictionary *)v11 setObject:0 forKeyedSubscript:*v12];
     }
@@ -106,11 +106,11 @@ LABEL_17:
   [(BWActionCameraSceneMonitor *)&v3 dealloc];
 }
 
-- (void)setAutoFocusInProgress:(BOOL)a3 focusLocked:(BOOL)a4 oneShotFocusScanInProgress:(BOOL)a5
+- (void)setAutoFocusInProgress:(BOOL)progress focusLocked:(BOOL)locked oneShotFocusScanInProgress:(BOOL)inProgress
 {
-  if (a3 || a4 || a5)
+  if (progress || locked || inProgress)
   {
-    self->_oneShotFocusScanInProgress = !a3 && !a4;
+    self->_oneShotFocusScanInProgress = !progress && !locked;
   }
 }
 
@@ -122,10 +122,10 @@ LABEL_17:
   }
 }
 
-- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)a3 frameStatisticsByPortType:(id)a4 sceneFlags:(unint64_t)a5 flashOrTorchWillBeActive:(BOOL)a6 digitalFlashWillFire:(BOOL)a7 thermalPressureLevel:(int)a8 peakPowerPressureLevel:(int)a9 effectStatus:(int *)a10 stagePreviewStatus:(int *)a11
+- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)buffer frameStatisticsByPortType:(id)type sceneFlags:(unint64_t)flags flashOrTorchWillBeActive:(BOOL)active digitalFlashWillFire:(BOOL)fire thermalPressureLevel:(int)level peakPowerPressureLevel:(int)pressureLevel effectStatus:(int *)self0 stagePreviewStatus:(int *)self1
 {
-  v13 = [CMGetAttachment(a3 *off_1E798A3C8];
-  v14 = [a4 objectForKeyedSubscript:v13];
+  v13 = [CMGetAttachment(buffer *off_1E798A3C8];
+  v14 = [type objectForKeyedSubscript:v13];
   v15 = [-[NSDictionary objectForKeyedSubscript:](self->_luxThresholdsByPortType objectForKeyedSubscript:{v13), "intValue"}];
   oneShotFocusScanInProgress = self->_oneShotFocusScanInProgress;
   if (oneShotFocusScanInProgress)
@@ -159,7 +159,7 @@ LABEL_10:
   }
 
 LABEL_11:
-  if (a10)
+  if (status)
   {
     if (self->_sceneIsTooDark)
     {
@@ -171,12 +171,12 @@ LABEL_11:
       v19 = 0;
     }
 
-    *a10 = v19;
+    *status = v19;
   }
 
-  if (a11)
+  if (previewStatus)
   {
-    *a11 = 0;
+    *previewStatus = 0;
   }
 
   return !oneShotFocusScanInProgress;

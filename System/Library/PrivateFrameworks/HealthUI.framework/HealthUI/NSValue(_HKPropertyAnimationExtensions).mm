@@ -9,33 +9,33 @@
 
 - (uint64_t)hk_animatable
 {
-  if ([a1 _hk_isCGPoint])
+  if ([self _hk_isCGPoint])
   {
     return 1;
   }
 
-  return [a1 _hk_isHKLinearTransform];
+  return [self _hk_isHKLinearTransform];
 }
 
 - (id)hk_midPointToValue:()_HKPropertyAnimationExtensions percentage:
 {
   v6 = a4;
-  if ([a1 _hk_isCGPoint])
+  if ([self _hk_isCGPoint])
   {
-    v7 = [a1 _hk_CGPointMidPointToValue:v6 percentage:a2];
+    selfCopy = [self _hk_CGPointMidPointToValue:v6 percentage:a2];
   }
 
-  else if ([a1 _hk_isHKLinearTransform])
+  else if ([self _hk_isHKLinearTransform])
   {
-    v7 = [a1 _hk_HKLinearTransformMidPointToValue:v6 percentage:a2];
+    selfCopy = [self _hk_HKLinearTransformMidPointToValue:v6 percentage:a2];
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   return v8;
 }
@@ -43,7 +43,7 @@
 - (uint64_t)_hk_HKLinearTransformMidPointToValue:()_HKPropertyAnimationExtensions percentage:
 {
   v6 = a4;
-  [a1 HKLinearTransformValue];
+  [self HKLinearTransformValue];
   v8 = v7;
   v10 = v9;
   [v6 HKLinearTransformValue];
@@ -67,7 +67,7 @@
 - (uint64_t)_hk_CGPointMidPointToValue:()_HKPropertyAnimationExtensions percentage:
 {
   v6 = a4;
-  [a1 CGPointValue];
+  [self CGPointValue];
   v8 = v7;
   v10 = v9;
   [v6 CGPointValue];

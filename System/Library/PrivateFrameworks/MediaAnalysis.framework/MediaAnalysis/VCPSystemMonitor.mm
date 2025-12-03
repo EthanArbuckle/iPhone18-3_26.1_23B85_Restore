@@ -342,10 +342,10 @@ LABEL_15:
 {
   v3 = +[NSFileManager defaultManager];
   v4 = +[PHPhotoLibrary vcp_defaultPhotoLibrary];
-  v5 = [v4 vcp_mediaAnalysisDirectory];
-  v6 = [v5 stringByDeletingLastPathComponent];
+  vcp_mediaAnalysisDirectory = [v4 vcp_mediaAnalysisDirectory];
+  stringByDeletingLastPathComponent = [vcp_mediaAnalysisDirectory stringByDeletingLastPathComponent];
 
-  v7 = [v3 attributesOfFileSystemForPath:v6 error:0];
+  v7 = [v3 attributesOfFileSystemForPath:stringByDeletingLastPathComponent error:0];
   v8 = v7;
   if (!v7 || ([v7 objectForKey:NSFileSystemFreeSize], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
@@ -382,9 +382,9 @@ LABEL_15:
       v12 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v12))
       {
-        v13 = [v10 unsignedLongLongValue];
+        unsignedLongLongValue = [v10 unsignedLongLongValue];
         v15 = 134217984;
-        v16 = *&v13;
+        v16 = *&unsignedLongLongValue;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v12, "Insufficient free space (%llu bytes)", &v15, 0xCu);
       }
     }
@@ -435,7 +435,7 @@ LABEL_14:
     v18[3] = &unk_1002886D8;
     objc_copyWeak(&v19, buf);
     notify_register_dispatch("com.apple.system.powersources.timeremaining", &self->_chargedToken, &_dispatch_main_q, v18);
-    v5 = [(VCPSystemMonitor *)self checkFullyCharged];
+    checkFullyCharged = [(VCPSystemMonitor *)self checkFullyCharged];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1001AC564;

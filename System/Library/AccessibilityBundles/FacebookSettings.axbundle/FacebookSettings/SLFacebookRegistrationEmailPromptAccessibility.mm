@@ -1,6 +1,6 @@
 @interface SLFacebookRegistrationEmailPromptAccessibility
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -15,38 +15,38 @@
   [v3 setIsAccessibilityElement:0];
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   v11.receiver = self;
   v11.super_class = SLFacebookRegistrationEmailPromptAccessibility;
-  v6 = [(SLFacebookRegistrationEmailPromptAccessibility *)&v11 tableView:a3 titleForFooterInSection:?];
+  v6 = [(SLFacebookRegistrationEmailPromptAccessibility *)&v11 tableView:view titleForFooterInSection:?];
   v7 = v6;
-  if (!a4 && [v6 isEqualToString:@" "])
+  if (!section && [v6 isEqualToString:@" "])
   {
     v8 = [(SLFacebookRegistrationEmailPromptAccessibility *)self safeValueForKey:@"_orLabel"];
-    v9 = [v8 accessibilityLabel];
+    accessibilityLabel = [v8 accessibilityLabel];
 
-    v7 = v9;
+    v7 = accessibilityLabel;
   }
 
   return v7;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
   v12.receiver = self;
   v12.super_class = SLFacebookRegistrationEmailPromptAccessibility;
-  v10 = [(SLFacebookRegistrationEmailPromptAccessibility *)&v12 textField:v9 shouldChangeCharactersInRange:location replacementString:length, a5];
-  if (!v10 && [v9 tag] == 1)
+  string = [(SLFacebookRegistrationEmailPromptAccessibility *)&v12 textField:fieldCopy shouldChangeCharactersInRange:location replacementString:length, string];
+  if (!string && [fieldCopy tag] == 1)
   {
     MEMORY[0x29C2D5C80](*MEMORY[0x29EDC7458]);
     UIAccessibilityPostNotification(*MEMORY[0x29EDC75C8], 0);
   }
 
-  return v10;
+  return string;
 }
 
 @end

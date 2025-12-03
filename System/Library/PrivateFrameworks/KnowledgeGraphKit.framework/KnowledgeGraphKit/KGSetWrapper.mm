@@ -1,7 +1,7 @@
 @interface KGSetWrapper
-- (BOOL)isEqual:(id)a3;
-- (KGSetWrapper)initWithArray:(id)a3;
-- (KGSetWrapper)initWithSet:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (KGSetWrapper)initWithArray:(id)array;
+- (KGSetWrapper)initWithSet:(id)set;
 - (unint64_t)hash;
 @end
 
@@ -48,10 +48,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -59,31 +59,31 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSSet *)self->_set isEqualToSet:v4->_set];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSSet *)self->_set isEqualToSet:equalCopy->_set];
   }
 
   return v5;
 }
 
-- (KGSetWrapper)initWithArray:(id)a3
+- (KGSetWrapper)initWithArray:(id)array
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithArray:v5];
+  arrayCopy = array;
+  v6 = [[v4 alloc] initWithArray:arrayCopy];
 
   v7 = [(KGSetWrapper *)self initWithSet:v6];
   return v7;
 }
 
-- (KGSetWrapper)initWithSet:(id)a3
+- (KGSetWrapper)initWithSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v9.receiver = self;
   v9.super_class = KGSetWrapper;
   v5 = [(KGSetWrapper *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [setCopy copy];
     set = v5->_set;
     v5->_set = v6;
   }

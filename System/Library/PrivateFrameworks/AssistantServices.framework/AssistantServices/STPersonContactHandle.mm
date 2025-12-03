@@ -1,92 +1,92 @@
 @interface STPersonContactHandle
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPersonContactHandle:(id)a3;
-- (STPersonContactHandle)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPersonContactHandle:(id)handle;
+- (STPersonContactHandle)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STPersonContactHandle
 
-- (STPersonContactHandle)initWithCoder:(id)a3
+- (STPersonContactHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = STPersonContactHandle;
   v5 = [(STPersonContactHandle *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_handle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_handle"];
     handle = v5->_handle;
     v5->_handle = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_label"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_label"];
     label = v5->_label;
     v5->_label = v8;
 
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   handle = self->_handle;
-  v5 = a3;
-  [v5 encodeObject:handle forKey:@"_handle"];
-  [v5 encodeObject:self->_label forKey:@"_label"];
-  [v5 encodeInteger:self->_type forKey:@"_type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:handle forKey:@"_handle"];
+  [coderCopy encodeObject:self->_label forKey:@"_label"];
+  [coderCopy encodeInteger:self->_type forKey:@"_type"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(STPersonContactHandle *)self type];
-  v4 = [(STPersonContactHandle *)self label];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(STPersonContactHandle *)self handle];
-  v7 = [v6 hash];
+  type = [(STPersonContactHandle *)self type];
+  label = [(STPersonContactHandle *)self label];
+  v5 = [label hash] ^ type;
+  handle = [(STPersonContactHandle *)self handle];
+  v7 = [handle hash];
 
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STPersonContactHandle *)self isEqualToPersonContactHandle:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STPersonContactHandle *)self isEqualToPersonContactHandle:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPersonContactHandle:(id)a3
+- (BOOL)isEqualToPersonContactHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(STPersonContactHandle *)self type];
-  if (v5 != [v4 type])
+  handleCopy = handle;
+  type = [(STPersonContactHandle *)self type];
+  if (type != [handleCopy type])
   {
     goto LABEL_11;
   }
 
-  v6 = [(STPersonContactHandle *)self label];
-  if (v6)
+  label = [(STPersonContactHandle *)self label];
+  if (label)
   {
   }
 
   else
   {
-    v14 = [v4 label];
+    label2 = [handleCopy label];
 
-    if (v14)
+    if (label2)
     {
       goto LABEL_11;
     }
   }
 
-  v7 = [(STPersonContactHandle *)self label];
-  v8 = [v4 label];
-  v9 = [v7 isEqualToString:v8];
+  label3 = [(STPersonContactHandle *)self label];
+  label4 = [handleCopy label];
+  v9 = [label3 isEqualToString:label4];
 
   if (!v9)
   {
@@ -95,12 +95,12 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v10 = [(STPersonContactHandle *)self handle];
-  if (!v10)
+  handle = [(STPersonContactHandle *)self handle];
+  if (!handle)
   {
-    v15 = [v4 handle];
+    handle2 = [handleCopy handle];
 
-    if (!v15)
+    if (!handle2)
     {
       goto LABEL_7;
     }
@@ -109,9 +109,9 @@ LABEL_11:
   }
 
 LABEL_7:
-  v11 = [(STPersonContactHandle *)self handle];
-  v12 = [v4 handle];
-  v13 = [v11 isEqualToString:v12];
+  handle3 = [(STPersonContactHandle *)self handle];
+  handle4 = [handleCopy handle];
+  v13 = [handle3 isEqualToString:handle4];
 
 LABEL_12:
   return v13;
@@ -121,9 +121,9 @@ LABEL_12:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(STPersonContactHandle *)self handle];
-  v6 = [(STPersonContactHandle *)self label];
-  v7 = [v3 stringWithFormat:@"<%@: %p handle=%@ (%@)>", v4, self, v5, v6];;
+  handle = [(STPersonContactHandle *)self handle];
+  label = [(STPersonContactHandle *)self label];
+  v7 = [v3 stringWithFormat:@"<%@: %p handle=%@ (%@)>", v4, self, handle, label];;
 
   return v7;
 }

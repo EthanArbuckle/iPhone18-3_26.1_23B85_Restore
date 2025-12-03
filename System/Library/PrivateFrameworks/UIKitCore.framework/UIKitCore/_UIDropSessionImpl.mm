@@ -1,26 +1,26 @@
 @interface _UIDropSessionImpl
 - (BOOL)_allowsItemsToUpdate;
-- (BOOL)canLoadObjectsOfClass:(Class)a3;
-- (BOOL)hasItemsConformingToTypeIdentifiers:(id)a3;
-- (CGPoint)_previewCenterForVisibleItem:(id)a3 inView:(id)a4;
-- (CGPoint)locationInView:(id)a3;
-- (CGSize)_previewSizeForVisibleItem:(id)a3;
+- (BOOL)canLoadObjectsOfClass:(Class)class;
+- (BOOL)hasItemsConformingToTypeIdentifiers:(id)identifiers;
+- (CGPoint)_previewCenterForVisibleItem:(id)item inView:(id)view;
+- (CGPoint)locationInView:(id)view;
+- (CGSize)_previewSizeForVisibleItem:(id)item;
 - (NSArray)items;
-- (_UIDropSessionImpl)initWithSessionDestination:(id)a3;
-- (id)_createItemsOfClass:(Class)a3 synchronouslyIfPossible:(BOOL)a4 completion:(id)a5;
-- (id)loadObjectsOfClass:(Class)a3 completion:(id)a4;
-- (void)requestVisibleItems:(id)a3;
+- (_UIDropSessionImpl)initWithSessionDestination:(id)destination;
+- (id)_createItemsOfClass:(Class)class synchronouslyIfPossible:(BOOL)possible completion:(id)completion;
+- (id)loadObjectsOfClass:(Class)class completion:(id)completion;
+- (void)requestVisibleItems:(id)items;
 @end
 
 @implementation _UIDropSessionImpl
 
-- (_UIDropSessionImpl)initWithSessionDestination:(id)a3
+- (_UIDropSessionImpl)initWithSessionDestination:(id)destination
 {
-  v6 = a3;
-  if (!v6)
+  destinationCopy = destination;
+  if (!destinationCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UIDragSession.m" lineNumber:465 description:{@"Invalid parameter not satisfying: %@", @"sessionDestination"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDragSession.m" lineNumber:465 description:{@"Invalid parameter not satisfying: %@", @"sessionDestination"}];
   }
 
   v13.receiver = self;
@@ -29,10 +29,10 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_sessionDestination, a3);
+    objc_storeStrong(&v7->_sessionDestination, destination);
     v8->_progressIndicatorStyle = 1;
     [(_UIInternalDraggingSessionDestination *)v8->_sessionDestination setProgressIndicatorStyle:1];
-    v9 = [_UIDragSessionImpl _localDragSessionForSessionDestination:v6];
+    v9 = [_UIDragSessionImpl _localDragSessionForSessionDestination:destinationCopy];
     localDragSession = v8->_localDragSession;
     v8->_localDragSession = v9;
   }
@@ -47,15 +47,15 @@
   if (!items || (v4 = -[NSArray count](items, "count"), -[_UIInternalDraggingSessionDestination internalItems](self->_sessionDestination, "internalItems"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4 != v6))
   {
     v7 = objc_alloc(MEMORY[0x1E695DF70]);
-    v8 = [(_UIInternalDraggingSessionDestination *)self->_sessionDestination internalItems];
-    v9 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+    internalItems = [(_UIInternalDraggingSessionDestination *)self->_sessionDestination internalItems];
+    v9 = [v7 initWithCapacity:{objc_msgSend(internalItems, "count")}];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [(_UIInternalDraggingSessionDestination *)self->_sessionDestination internalItems];
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    internalItems2 = [(_UIInternalDraggingSessionDestination *)self->_sessionDestination internalItems];
+    v11 = [internalItems2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -66,7 +66,7 @@
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(internalItems2);
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
@@ -74,7 +74,7 @@
           [(NSArray *)v9 addObject:v15];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v12 = [internalItems2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v12);
@@ -89,15 +89,15 @@
   return v17;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  if (!v4)
+  viewCopy = view;
+  if (!viewCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"View must be non-null"];
   }
 
-  [(_UIInternalDraggingSessionDestination *)self->_sessionDestination draggingLocationInCoordinateSpace:v4];
+  [(_UIInternalDraggingSessionDestination *)self->_sessionDestination draggingLocationInCoordinateSpace:viewCopy];
   v6 = v5;
   v8 = v7;
 
@@ -108,44 +108,44 @@
   return result;
 }
 
-- (BOOL)hasItemsConformingToTypeIdentifiers:(id)a3
+- (BOOL)hasItemsConformingToTypeIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(_UIDropSessionImpl *)self items];
-  hasItemsConformingToTypeIdentifiers = _hasItemsConformingToTypeIdentifiers(v5, v4);
+  identifiersCopy = identifiers;
+  items = [(_UIDropSessionImpl *)self items];
+  hasItemsConformingToTypeIdentifiers = _hasItemsConformingToTypeIdentifiers(items, identifiersCopy);
 
   return hasItemsConformingToTypeIdentifiers;
 }
 
-- (BOOL)canLoadObjectsOfClass:(Class)a3
+- (BOOL)canLoadObjectsOfClass:(Class)class
 {
-  v4 = [(_UIDropSessionImpl *)self items];
-  LOBYTE(a3) = _canLoadObjectsOfClass(v4, a3);
+  items = [(_UIDropSessionImpl *)self items];
+  LOBYTE(class) = _canLoadObjectsOfClass(items, class);
 
-  return a3;
+  return class;
 }
 
-- (CGSize)_previewSizeForVisibleItem:(id)a3
+- (CGSize)_previewSizeForVisibleItem:(id)item
 {
-  [a3 _visibleDropItemSize];
+  [item _visibleDropItemSize];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGPoint)_previewCenterForVisibleItem:(id)a3 inView:(id)a4
+- (CGPoint)_previewCenterForVisibleItem:(id)item inView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  itemCopy = item;
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"UIDragSession.m" lineNumber:561 description:{@"Invalid parameter not satisfying: %@", @"view"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDragSession.m" lineNumber:561 description:{@"Invalid parameter not satisfying: %@", @"view"}];
   }
 
   sessionDestination = self->_sessionDestination;
-  v10 = [v8 coordinateSpace];
-  [(_UIInternalDraggingSessionDestination *)sessionDestination previewCenterForVisibleItem:v7 inCoordinateSpace:v10];
+  coordinateSpace = [viewCopy coordinateSpace];
+  [(_UIInternalDraggingSessionDestination *)sessionDestination previewCenterForVisibleItem:itemCopy inCoordinateSpace:coordinateSpace];
   v12 = v11;
   v14 = v13;
 
@@ -156,25 +156,25 @@
   return result;
 }
 
-- (id)loadObjectsOfClass:(Class)a3 completion:(id)a4
+- (id)loadObjectsOfClass:(Class)class completion:(id)completion
 {
-  v7 = a4;
-  if (!v7)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIDragSession.m" lineNumber:578 description:{@"Invalid parameter not satisfying: %@", @"completion != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDragSession.m" lineNumber:578 description:{@"Invalid parameter not satisfying: %@", @"completion != nil"}];
   }
 
-  v8 = [(_UIDropSessionImpl *)self _createItemsOfClass:a3 synchronouslyIfPossible:0 completion:v7];
+  v8 = [(_UIDropSessionImpl *)self _createItemsOfClass:class synchronouslyIfPossible:0 completion:completionCopy];
 
   return v8;
 }
 
-- (void)requestVisibleItems:(id)a3
+- (void)requestVisibleItems:(id)items
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemsCopy = items;
+  v5 = itemsCopy;
+  if (itemsCopy)
   {
     sessionDestination = self->_sessionDestination;
     v7[0] = MEMORY[0x1E69E9820];
@@ -182,18 +182,18 @@
     v7[2] = __42___UIDropSessionImpl_requestVisibleItems___block_invoke;
     v7[3] = &unk_1E70FD790;
     v7[4] = self;
-    v8 = v4;
+    v8 = itemsCopy;
     [(_UIInternalDraggingSessionDestination *)sessionDestination requestVisibleItems:v7];
   }
 }
 
-- (id)_createItemsOfClass:(Class)a3 synchronouslyIfPossible:(BOOL)a4 completion:(id)a5
+- (id)_createItemsOfClass:(Class)class synchronouslyIfPossible:(BOOL)possible completion:(id)completion
 {
-  v27 = a4;
+  possibleCopy = possible;
   v50 = *MEMORY[0x1E69E9840];
-  v28 = a5;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v29 = [MEMORY[0x1E695DF70] array];
+  completionCopy = completion;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
   group = dispatch_group_create();
   v44 = 0u;
   v45 = 0u;
@@ -215,27 +215,27 @@
           objc_enumerationMutation(obj);
         }
 
-        v13 = [*(*(&v44 + 1) + 8 * i) itemProvider];
-        if ([v13 canLoadObjectOfClass:a3])
+        itemProvider = [*(*(&v44 + 1) + 8 * i) itemProvider];
+        if ([itemProvider canLoadObjectOfClass:class])
         {
           dispatch_group_enter(group);
           v40[0] = MEMORY[0x1E69E9820];
           v40[1] = 3221225472;
           v40[2] = __77___UIDropSessionImpl__createItemsOfClass_synchronouslyIfPossible_completion___block_invoke;
           v40[3] = &unk_1E71064B8;
-          v14 = v7;
-          v41 = v7;
+          v14 = dictionary;
+          v41 = dictionary;
           v43 = v10;
           v42 = group;
-          v15 = [v13 loadObjectOfClass:a3 completionHandler:v40];
+          v15 = [itemProvider loadObjectOfClass:class completionHandler:v40];
           if (v15)
           {
-            [v29 addObject:v15];
+            [array addObject:v15];
           }
 
           ++v10;
 
-          v7 = v14;
+          dictionary = v14;
         }
       }
 
@@ -245,12 +245,12 @@
     while (v9);
   }
 
-  v16 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(v29, "count")}];
+  v16 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(array, "count")}];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v17 = v29;
+  v17 = array;
   v18 = [v17 countByEnumeratingWithState:&v36 objects:v48 count:16];
   if (v18)
   {
@@ -274,11 +274,11 @@
     while (v19);
   }
 
-  if (v27 && (v22 = dispatch_time(0, 50000000), !dispatch_group_wait(group, v22)))
+  if (possibleCopy && (v22 = dispatch_time(0, 50000000), !dispatch_group_wait(group, v22)))
   {
-    v25 = arrayOfItemsFromDictionaryOfItemsByIndex(v7);
-    v24 = v28;
-    (*(v28 + 2))(v28, v25);
+    v25 = arrayOfItemsFromDictionaryOfItemsByIndex(dictionary);
+    v24 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, v25);
   }
 
   else
@@ -289,9 +289,9 @@
     block[2] = __77___UIDropSessionImpl__createItemsOfClass_synchronouslyIfPossible_completion___block_invoke_2;
     block[3] = &unk_1E70FCE28;
     v33 = group;
-    v34 = v7;
-    v24 = v28;
-    v35 = v28;
+    v34 = dictionary;
+    v24 = completionCopy;
+    v35 = completionCopy;
     dispatch_async(v23, block);
 
     v25 = v33;
@@ -302,8 +302,8 @@
 
 - (BOOL)_allowsItemsToUpdate
 {
-  v2 = [(_UIDropSessionImpl *)self _internalSession];
-  v3 = v2 != 0;
+  _internalSession = [(_UIDropSessionImpl *)self _internalSession];
+  v3 = _internalSession != 0;
 
   return v3;
 }

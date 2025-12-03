@@ -1,19 +1,19 @@
 @interface _SBIdleTimerGlobalSettingMonitor
 - (BOOL)_updateCache;
-- (_SBIdleTimerGlobalSettingMonitor)initWithLabel:(id)a3 delegate:(id)a4;
+- (_SBIdleTimerGlobalSettingMonitor)initWithLabel:(id)label delegate:(id)delegate;
 - (_SBIdleTimerGlobalSettingMonitorDelegate)delegate;
 @end
 
 @implementation _SBIdleTimerGlobalSettingMonitor
 
-- (_SBIdleTimerGlobalSettingMonitor)initWithLabel:(id)a3 delegate:(id)a4
+- (_SBIdleTimerGlobalSettingMonitor)initWithLabel:(id)label delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  labelCopy = label;
+  delegateCopy = delegate;
+  v9 = delegateCopy;
+  if (labelCopy)
   {
-    if (v8)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
@@ -35,7 +35,7 @@ LABEL_3:
   v10 = [(_SBIdleTimerGlobalSettingMonitor *)&v14 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [labelCopy copy];
     label = v10->_label;
     v10->_label = v11;
 

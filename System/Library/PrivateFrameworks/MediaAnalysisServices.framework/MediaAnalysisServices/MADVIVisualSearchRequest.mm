@@ -1,38 +1,38 @@
 @interface MADVIVisualSearchRequest
-- (MADVIVisualSearchRequest)initWithCoder:(id)a3;
-- (MADVIVisualSearchRequest)initWithGatingResultItems:(id)a3 payload:(id)a4 documentObservations:(id)a5;
+- (MADVIVisualSearchRequest)initWithCoder:(id)coder;
+- (MADVIVisualSearchRequest)initWithGatingResultItems:(id)items payload:(id)payload documentObservations:(id)observations;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVIVisualSearchRequest
 
-- (MADVIVisualSearchRequest)initWithGatingResultItems:(id)a3 payload:(id)a4 documentObservations:(id)a5
+- (MADVIVisualSearchRequest)initWithGatingResultItems:(id)items payload:(id)payload documentObservations:(id)observations
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemsCopy = items;
+  payloadCopy = payload;
+  observationsCopy = observations;
   v15.receiver = self;
   v15.super_class = MADVIVisualSearchRequest;
   v12 = [(MADVIVisualSearchRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_gatingResultItems, a3);
-    objc_storeStrong(&v13->_gatingPayload, a4);
-    objc_storeStrong(&v13->_documentObservations, a5);
+    objc_storeStrong(&v12->_gatingResultItems, items);
+    objc_storeStrong(&v13->_gatingPayload, payload);
+    objc_storeStrong(&v13->_documentObservations, observations);
   }
 
   return v13;
 }
 
-- (MADVIVisualSearchRequest)initWithCoder:(id)a3
+- (MADVIVisualSearchRequest)initWithCoder:(id)coder
 {
   v51[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = MADVIVisualSearchRequest;
-  v5 = [(MADRequest *)&v43 initWithCoder:v4];
+  v5 = [(MADRequest *)&v43 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -41,35 +41,35 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"GatingResultItems"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"GatingResultItems"];
     gatingResultItems = v5->_gatingResultItems;
     v5->_gatingResultItems = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GatingPayload"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GatingPayload"];
     gatingPayload = v5->_gatingPayload;
     v5->_gatingPayload = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"QueryID"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"QueryID"];
     queryID = v5->_queryID;
     v5->_queryID = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIScale"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIScale"];
     uiScale = v5->_uiScale;
     v5->_uiScale = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Location"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Location"];
     location = v5->_location;
     v5->_location = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ImageURL"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ImageURL"];
     imageURL = v5->_imageURL;
     v5->_imageURL = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReferralURL"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReferralURL"];
     referralURL = v5->_referralURL;
     v5->_referralURL = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ImageType"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ImageType"];
     imageType = v5->_imageType;
     v5->_imageType = v23;
 
@@ -79,11 +79,11 @@
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
     v27 = [v25 setWithArray:v26];
 
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"CatalogIDs"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"CatalogIDs"];
     catalogIDs = v5->_catalogIDs;
     v5->_catalogIDs = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FeatureIdentifier"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FeatureIdentifier"];
     featureIdentifier = v5->_featureIdentifier;
     v5->_featureIdentifier = v30;
 
@@ -112,11 +112,11 @@
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
     v37 = [v32 setWithArray:v36];
 
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"DocumentObservations"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"DocumentObservations"];
     documentObservations = v5->_documentObservations;
     v5->_documentObservations = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EngagementSuggestionType"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EngagementSuggestionType"];
     engagementSuggestionType = v5->_engagementSuggestionType;
     v5->_engagementSuggestionType = v40;
   }
@@ -124,92 +124,92 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADVIVisualSearchRequest;
-  v4 = a3;
-  [(MADRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_gatingResultItems forKey:{@"GatingResultItems", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_gatingPayload forKey:@"GatingPayload"];
-  [v4 encodeObject:self->_queryID forKey:@"QueryID"];
-  [v4 encodeObject:self->_uiScale forKey:@"UIScale"];
-  [v4 encodeObject:self->_location forKey:@"Location"];
-  [v4 encodeObject:self->_imageURL forKey:@"ImageURL"];
-  [v4 encodeObject:self->_referralURL forKey:@"ReferralURL"];
-  [v4 encodeObject:self->_imageType forKey:@"ImageType"];
-  [v4 encodeObject:self->_catalogIDs forKey:@"CatalogIDs"];
-  [v4 encodeObject:self->_featureIdentifier forKey:@"FeatureIdentifier"];
-  [v4 encodeObject:self->_documentObservations forKey:@"DocumentObservations"];
-  [v4 encodeObject:self->_engagementSuggestionType forKey:@"EngagementSuggestionType"];
+  coderCopy = coder;
+  [(MADRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_gatingResultItems forKey:{@"GatingResultItems", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_gatingPayload forKey:@"GatingPayload"];
+  [coderCopy encodeObject:self->_queryID forKey:@"QueryID"];
+  [coderCopy encodeObject:self->_uiScale forKey:@"UIScale"];
+  [coderCopy encodeObject:self->_location forKey:@"Location"];
+  [coderCopy encodeObject:self->_imageURL forKey:@"ImageURL"];
+  [coderCopy encodeObject:self->_referralURL forKey:@"ReferralURL"];
+  [coderCopy encodeObject:self->_imageType forKey:@"ImageType"];
+  [coderCopy encodeObject:self->_catalogIDs forKey:@"CatalogIDs"];
+  [coderCopy encodeObject:self->_featureIdentifier forKey:@"FeatureIdentifier"];
+  [coderCopy encodeObject:self->_documentObservations forKey:@"DocumentObservations"];
+  [coderCopy encodeObject:self->_engagementSuggestionType forKey:@"EngagementSuggestionType"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"gatingResultItems: %@, ", self->_gatingResultItems];
-  [v3 appendFormat:@"gatingPayload: %@, ", self->_gatingPayload];
+  [string appendFormat:@"gatingResultItems: %@, ", self->_gatingResultItems];
+  [string appendFormat:@"gatingPayload: %@, ", self->_gatingPayload];
   if (self->_queryID)
   {
-    [v3 appendFormat:@"queryID: %@, ", self->_queryID];
+    [string appendFormat:@"queryID: %@, ", self->_queryID];
   }
 
   if (self->_uiScale)
   {
-    [v3 appendFormat:@"uiScale: %@, ", self->_uiScale];
+    [string appendFormat:@"uiScale: %@, ", self->_uiScale];
   }
 
   if (self->_location)
   {
-    [v3 appendFormat:@"location: %@, ", self->_location];
+    [string appendFormat:@"location: %@, ", self->_location];
   }
 
   if (self->_imageURL)
   {
-    [v3 appendFormat:@"imageURL: <redacted>, "];
+    [string appendFormat:@"imageURL: <redacted>, "];
   }
 
   if (self->_referralURL)
   {
-    [v3 appendFormat:@"referralURL: <redacted>, "];
+    [string appendFormat:@"referralURL: <redacted>, "];
   }
 
   if (self->_imageType)
   {
-    [v3 appendFormat:@"imageType: %@, ", self->_imageType];
+    [string appendFormat:@"imageType: %@, ", self->_imageType];
   }
 
   if (self->_catalogIDs)
   {
-    [v3 appendFormat:@"catalogIDs: %@, ", self->_catalogIDs];
+    [string appendFormat:@"catalogIDs: %@, ", self->_catalogIDs];
   }
 
   if (self->_featureIdentifier)
   {
-    [v3 appendFormat:@"featureIdentifier: %@, ", self->_featureIdentifier];
+    [string appendFormat:@"featureIdentifier: %@, ", self->_featureIdentifier];
   }
 
   if (self->_documentObservations)
   {
-    [v3 appendFormat:@"documentObservations: %@, ", self->_documentObservations];
+    [string appendFormat:@"documentObservations: %@, ", self->_documentObservations];
   }
 
   if (self->_engagementSuggestionType)
   {
-    [v3 appendFormat:@"engagementSuggestionType: %@, ", self->_engagementSuggestionType];
+    [string appendFormat:@"engagementSuggestionType: %@, ", self->_engagementSuggestionType];
   }
 
-  v6 = [(MADRequest *)self results];
-  [v3 appendFormat:@"results: %@, ", v6];
+  results = [(MADRequest *)self results];
+  [string appendFormat:@"results: %@, ", results];
 
-  v7 = [(MADRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v7];
+  error = [(MADRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 @end

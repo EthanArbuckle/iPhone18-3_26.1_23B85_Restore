@@ -1,20 +1,20 @@
 @interface SYShowBacklinkIndicatorCommandPhoneImpl
-- (SYShowBacklinkIndicatorCommandPhoneImpl)initWithDomainIdentifiers:(id)a3 linkIdentifiers:(id)a4;
-- (void)runWithCompletion:(id)a3;
+- (SYShowBacklinkIndicatorCommandPhoneImpl)initWithDomainIdentifiers:(id)identifiers linkIdentifiers:(id)linkIdentifiers;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation SYShowBacklinkIndicatorCommandPhoneImpl
 
-- (SYShowBacklinkIndicatorCommandPhoneImpl)initWithDomainIdentifiers:(id)a3 linkIdentifiers:(id)a4
+- (SYShowBacklinkIndicatorCommandPhoneImpl)initWithDomainIdentifiers:(id)identifiers linkIdentifiers:(id)linkIdentifiers
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  linkIdentifiersCopy = linkIdentifiers;
   v12.receiver = self;
   v12.super_class = SYShowBacklinkIndicatorCommandPhoneImpl;
   v8 = [(SYShowBacklinkIndicatorCommandPhoneImpl *)&v12 init];
   if (v8)
   {
-    v9 = SYMakeUserActivity(@"com.apple.notes.activity.show-backlink", v6, v7);
+    v9 = SYMakeUserActivity(@"com.apple.notes.activity.show-backlink", identifiersCopy, linkIdentifiersCopy);
     userActivity = v8->_userActivity;
     v8->_userActivity = v9;
   }
@@ -22,15 +22,15 @@
   return v8;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __61__SYShowBacklinkIndicatorCommandPhoneImpl_runWithCompletion___block_invoke;
   v36[3] = &unk_27856C208;
-  v5 = v4;
+  v5 = completionCopy;
   v37 = v5;
   v6 = MEMORY[0x22AA6A360](v36);
   if (SYIsQuickNoteOnPhoneEnabled())
@@ -91,7 +91,7 @@ LABEL_10:
 
       [v11 setFrontBoardOptions:v15];
       objc_initWeak(buf, self);
-      v16 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
       v17 = self->_userActivity;
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
@@ -99,7 +99,7 @@ LABEL_10:
       v31[3] = &unk_27856C230;
       objc_copyWeak(&v33, buf);
       v32 = v6;
-      [v16 openUserActivity:v17 usingApplicationRecord:v7 configuration:v11 completionHandler:v31];
+      [defaultWorkspace openUserActivity:v17 usingApplicationRecord:v7 configuration:v11 completionHandler:v31];
 
       objc_destroyWeak(&v33);
       objc_destroyWeak(buf);
@@ -137,10 +137,10 @@ LABEL_10:
     if (v18)
     {
 LABEL_25:
-      v23 = [v18 currentState];
-      v24 = [v23 isRunning];
+      currentState = [v18 currentState];
+      isRunning = [currentState isRunning];
 
-      if (v24)
+      if (isRunning)
       {
         if (!v29)
         {

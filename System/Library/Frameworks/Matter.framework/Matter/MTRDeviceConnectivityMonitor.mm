@@ -1,53 +1,53 @@
 @interface MTRDeviceConnectivityMonitor
 + (_DNSServiceRef_t)_sharedResolverConnection;
-- (MTRDeviceConnectivityMonitor)initWithCompressedFabricID:(id)a3 nodeID:(id)a4;
-- (MTRDeviceConnectivityMonitor)initWithInstanceName:(id)a3;
+- (MTRDeviceConnectivityMonitor)initWithCompressedFabricID:(id)d nodeID:(id)iD;
+- (MTRDeviceConnectivityMonitor)initWithInstanceName:(id)name;
 - (id).cxx_construct;
 - (void)_callHandler;
 - (void)_stopMonitoring;
 - (void)dealloc;
-- (void)handleResolvedHostname:(const char *)a3 port:(unsigned __int16)a4 error:(int)a5;
-- (void)startMonitoringWithHandler:(id)a3 queue:(id)a4;
+- (void)handleResolvedHostname:(const char *)hostname port:(unsigned __int16)port error:(int)error;
+- (void)startMonitoringWithHandler:(id)handler queue:(id)queue;
 - (void)stopMonitoring;
 @end
 
 @implementation MTRDeviceConnectivityMonitor
 
-- (MTRDeviceConnectivityMonitor)initWithInstanceName:(id)a3
+- (MTRDeviceConnectivityMonitor)initWithInstanceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = MTRDeviceConnectivityMonitor;
   v5 = [(MTRDeviceConnectivityMonitor *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     instanceName = v5->_instanceName;
     v5->_instanceName = v6;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     connections = v5->_connections;
-    v5->_connections = v8;
+    v5->_connections = dictionary;
   }
 
   return v5;
 }
 
-- (MTRDeviceConnectivityMonitor)initWithCompressedFabricID:(id)a3 nodeID:(id)a4
+- (MTRDeviceConnectivityMonitor)initWithCompressedFabricID:(id)d nodeID:(id)iD
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 unsignedLongLongValue];
-  v14[0] = [v7 unsignedLongLongValue];
-  v14[1] = v8;
+  dCopy = d;
+  iDCopy = iD;
+  unsignedLongLongValue = [dCopy unsignedLongLongValue];
+  v14[0] = [iDCopy unsignedLongLongValue];
+  v14[1] = unsignedLongLongValue;
   if (sub_23948BE1C(v17, 0x35uLL, v14))
   {
     v9 = sub_2393D9044(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_238DAE000, v9, OS_LOG_TYPE_ERROR, "%@ could not make instance name", buf, 0xCu);
     }
 
@@ -56,7 +56,7 @@
       sub_2393D5320(0, 1);
     }
 
-    v10 = 0;
+    selfCopy2 = 0;
   }
 
   else
@@ -64,11 +64,11 @@
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:v17];
     self = [(MTRDeviceConnectivityMonitor *)self initWithInstanceName:v11];
 
-    v10 = self;
+    selfCopy2 = self;
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v10;
+  return selfCopy2;
 }
 
 - (void)dealloc
@@ -100,7 +100,7 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        LODWORD(v14) = v5;
+        LODWORD(selfCopy) = v5;
         _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_ERROR, "MTRDeviceConnectivityMonitor: DNSServiceCreateConnection failed %d", buf, 8u);
       }
 
@@ -127,7 +127,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v14 = a1;
+        selfCopy = self;
         _os_log_impl(&dword_238DAE000, v10, OS_LOG_TYPE_ERROR, "%@ cannot set dispatch queue on resolve", buf, 0xCu);
       }
 
@@ -162,26 +162,26 @@ LABEL_14:
   }
 }
 
-- (void)handleResolvedHostname:(const char *)a3 port:(unsigned __int16)a4 error:(int)a5
+- (void)handleResolvedHostname:(const char *)hostname port:(unsigned __int16)port error:(int)error
 {
-  v6 = a4;
+  portCopy = port;
   v33 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&unk_27DF775E8);
-  if (a3)
+  if (hostname)
   {
-    if (a5 == -65563)
+    if (error == -65563)
     {
       v9 = sub_2393D9044(0);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v28 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_238DAE000, v9, OS_LOG_TYPE_ERROR, "%@ disconnected from dns-sd subsystem", buf, 0xCu);
       }
 
       if (sub_2393D5398(1u))
       {
-        v21 = self;
+        selfCopy2 = self;
         sub_2393D5320(0, 1);
       }
 
@@ -190,13 +190,13 @@ LABEL_14:
 
     else
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+      v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:hostname];
       v12 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:v11];
 
       if (!v12)
       {
-        snprintf(__str, 6uLL, "%d", __rev16(v6));
-        host = nw_endpoint_create_host(a3, __str);
+        snprintf(__str, 6uLL, "%d", __rev16(portCopy));
+        host = nw_endpoint_create_host(hostname, __str);
         if (host)
         {
           secure_udp = nw_parameters_create_secure_udp(*MEMORY[0x277CD9238], *MEMORY[0x277CD9230]);
@@ -233,9 +233,9 @@ LABEL_14:
               if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412802;
-                v28 = self;
+                selfCopy6 = self;
                 v29 = 2080;
-                v30 = a3;
+                hostnameCopy2 = hostname;
                 v31 = 2080;
                 v32 = __str;
                 _os_log_impl(&dword_238DAE000, v19, OS_LOG_TYPE_ERROR, "%@ failed to create connection for %s:%s", buf, 0x20u);
@@ -254,7 +254,7 @@ LABEL_14:
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v28 = self;
+              selfCopy6 = self;
               _os_log_impl(&dword_238DAE000, v18, OS_LOG_TYPE_ERROR, "%@ failed to create udp parameters", buf, 0xCu);
             }
 
@@ -271,9 +271,9 @@ LABEL_14:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412802;
-            v28 = self;
+            selfCopy6 = self;
             v29 = 2080;
-            v30 = a3;
+            hostnameCopy2 = hostname;
             v31 = 2080;
             v32 = __str;
             _os_log_impl(&dword_238DAE000, v17, OS_LOG_TYPE_ERROR, "%@ failed to create endpoint for %s:%s", buf, 0x20u);
@@ -294,7 +294,7 @@ LABEL_14:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v28 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_238DAE000, v10, OS_LOG_TYPE_ERROR, "%@ NULL host resolved, ignoring", buf, 0xCu);
     }
 
@@ -308,17 +308,17 @@ LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startMonitoringWithHandler:(id)a3 queue:(id)a4
+- (void)startMonitoringWithHandler:(id)handler queue:(id)queue
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  queueCopy = queue;
   os_unfair_lock_lock(&unk_27DF775E8);
-  v8 = MEMORY[0x23EE78590](v6);
+  v8 = MEMORY[0x23EE78590](handlerCopy);
   monitorHandler = self->_monitorHandler;
   self->_monitorHandler = v8;
 
-  objc_storeStrong(&self->_handlerQueue, a4);
+  objc_storeStrong(&self->_handlerQueue, queue);
   begin = self->_resolvers.__begin_;
   end = self->_resolvers.__end_;
   p_resolvers = &self->_resolvers;
@@ -330,7 +330,7 @@ LABEL_14:
     {
       instanceName = self->_instanceName;
       *buf = 138412802;
-      v43 = self;
+      selfCopy6 = self;
       v44 = 2112;
       v45 = instanceName;
       v46 = 2048;
@@ -342,19 +342,19 @@ LABEL_14:
     {
       v36 = self->_instanceName;
       v38 = qword_27DF77600;
-      v34 = self;
+      selfCopy2 = self;
       sub_2393D5320(0, 2);
     }
 
-    v16 = [MTRDeviceConnectivityMonitor _sharedResolverConnection:v34];
+    v16 = [MTRDeviceConnectivityMonitor _sharedResolverConnection:selfCopy2];
     if (v16)
     {
-      v40 = v7;
+      v40 = queueCopy;
       for (i = 0; i != 2; ++i)
       {
         v18 = off_278A74488[i];
         sdRef = v16;
-        v19 = DNSServiceResolve(&sdRef, 0x4000u, 0, [(NSString *)self->_instanceName UTF8String:v35], "_matter._tcp", v18, sub_2392966A0, self);
+        v19 = DNSServiceResolve(&sdRef, 0x4000u, 0, [(NSString *)self->_instanceName UTF8String:selfCopy4], "_matter._tcp", v18, sub_2392966A0, self);
         if (v19)
         {
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -370,7 +370,7 @@ LABEL_14:
               v20 = "(null)";
             }
 
-            v43 = self;
+            selfCopy6 = self;
             v44 = 2080;
             v45 = v20;
             v46 = 1024;
@@ -392,7 +392,7 @@ LABEL_14:
 
             v37 = v21;
             v39 = v19;
-            v35 = self;
+            selfCopy4 = self;
             sub_2393D5320(0, 1);
           }
         }
@@ -457,7 +457,7 @@ LABEL_14:
         }
       }
 
-      v7 = v40;
+      queueCopy = v40;
       if (self->_resolvers.__end_ != self->_resolvers.__begin_)
       {
         ++qword_27DF77600;
@@ -469,7 +469,7 @@ LABEL_14:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v43 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_238DAE000, v13, OS_LOG_TYPE_ERROR, "%@ failed to get shared resolver connection", buf, 0xCu);
       }
 
@@ -485,7 +485,7 @@ LABEL_14:
     if (v14)
     {
       *buf = 138412290;
-      v43 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_238DAE000, v13, OS_LOG_TYPE_DEFAULT, "%@ connectivity monitor already running", buf, 0xCu);
     }
 
@@ -572,7 +572,7 @@ LABEL_14:
   {
     instanceName = self->_instanceName;
     *buf = 138412546;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 2112;
     v11 = instanceName;
     _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ stop connectivity monitoring for %@", buf, 0x16u);
@@ -600,7 +600,7 @@ LABEL_14:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ shared resolver connection already stopped - nothing to do", buf, 0xCu);
     }
 

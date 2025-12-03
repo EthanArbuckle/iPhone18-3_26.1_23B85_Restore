@@ -1,39 +1,39 @@
 @interface UNCNotificationTopicRecordMapper
-- (UNCNotificationTopicRecordMapper)initWithBundle:(id)a3;
-- (id)notificationTopicForNotificationTopicRecord:(id)a3;
+- (UNCNotificationTopicRecordMapper)initWithBundle:(id)bundle;
+- (id)notificationTopicForNotificationTopicRecord:(id)record;
 @end
 
 @implementation UNCNotificationTopicRecordMapper
 
-- (UNCNotificationTopicRecordMapper)initWithBundle:(id)a3
+- (UNCNotificationTopicRecordMapper)initWithBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = UNCNotificationTopicRecordMapper;
   v6 = [(UNCNotificationTopicRecordMapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundle, a3);
+    objc_storeStrong(&v6->_bundle, bundle);
   }
 
   return v7;
 }
 
-- (id)notificationTopicForNotificationTopicRecord:(id)a3
+- (id)notificationTopicForNotificationTopicRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  recordCopy = record;
+  identifier = [recordCopy identifier];
   v6 = MEMORY[0x1E6983200];
-  v7 = [v4 displayNameLocalizationKey];
-  v8 = [(BSCFBundle *)self->_bundle cfBundle];
-  v9 = [v4 displayName];
-  v10 = [v6 localizedUserNotificationStringForKey:v7 arguments:0 cfBundle:v8 defaultValue:v9];
+  displayNameLocalizationKey = [recordCopy displayNameLocalizationKey];
+  cfBundle = [(BSCFBundle *)self->_bundle cfBundle];
+  displayName = [recordCopy displayName];
+  v10 = [v6 localizedUserNotificationStringForKey:displayNameLocalizationKey arguments:0 cfBundle:cfBundle defaultValue:displayName];
 
-  v11 = [v4 priority];
-  v12 = [v4 sortIdentifier];
+  priority = [recordCopy priority];
+  sortIdentifier = [recordCopy sortIdentifier];
 
-  v13 = [MEMORY[0x1E69832C0] topicWithIdentifier:v5 displayName:v10 priority:v11 sortIdentifier:v12];
+  v13 = [MEMORY[0x1E69832C0] topicWithIdentifier:identifier displayName:v10 priority:priority sortIdentifier:sortIdentifier];
 
   return v13;
 }

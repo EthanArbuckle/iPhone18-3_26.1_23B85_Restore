@@ -1,25 +1,25 @@
 @interface INStorageSummaryResponse
-- (INStorageSummaryResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
-- (id)_parseSpecifierInfo:(id)a3;
-- (id)_parseSubscriptionInfo:(id)a3;
-- (id)_parseTip:(id)a3;
-- (id)_parseTipAction:(id)a3;
-- (id)_parseTipActionLink:(id)a3;
-- (id)_parseTipCriteria:(id)a3;
-- (id)_parseTipIcon:(id)a3;
-- (id)_parseTips:(id)a3;
-- (id)_parseUsageByMedia:(id)a3;
-- (id)_parseiCloudPlusFeature:(id)a3;
+- (INStorageSummaryResponse)initWithHTTPResponse:(id)response data:(id)data;
+- (id)_parseSpecifierInfo:(id)info;
+- (id)_parseSubscriptionInfo:(id)info;
+- (id)_parseTip:(id)tip;
+- (id)_parseTipAction:(id)action;
+- (id)_parseTipActionLink:(id)link;
+- (id)_parseTipCriteria:(id)criteria;
+- (id)_parseTipIcon:(id)icon;
+- (id)_parseTips:(id)tips;
+- (id)_parseUsageByMedia:(id)media;
+- (id)_parseiCloudPlusFeature:(id)feature;
 - (void)_parseResponseDict;
 @end
 
 @implementation INStorageSummaryResponse
 
-- (INStorageSummaryResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (INStorageSummaryResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v9.receiver = self;
   v9.super_class = INStorageSummaryResponse;
-  v4 = [(INStorageSummaryResponse *)&v9 initWithHTTPResponse:a3 data:a4 bodyIsPlist:0];
+  v4 = [(INStorageSummaryResponse *)&v9 initWithHTTPResponse:response data:data bodyIsPlist:0];
   v5 = v4;
   if (v4)
   {
@@ -199,24 +199,24 @@
   }
 }
 
-- (id)_parseTips:(id)a3
+- (id)_parseTips:(id)tips
 {
-  v4 = a3;
+  tipsCopy = tips;
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100007CB8;
   v14 = &unk_1000553B8;
-  v15 = self;
+  selfCopy = self;
   v5 = objc_opt_new();
   v16 = v5;
-  [v4 enumerateObjectsUsingBlock:&v11];
-  v6 = [v4 count];
+  [tipsCopy enumerateObjectsUsingBlock:&v11];
+  v6 = [tipsCopy count];
   if (v6 > [v5 count])
   {
     v7 = _INLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100035454(v4, v5);
+      sub_100035454(tipsCopy, v5);
     }
   }
 
@@ -226,26 +226,26 @@
   return v5;
 }
 
-- (id)_parseTip:(id)a3
+- (id)_parseTip:(id)tip
 {
-  v4 = a3;
+  tipCopy = tip;
   v5 = objc_alloc_init(ICQInlineTip);
-  v6 = [v4 objectForKeyedSubscript:@"id"];
+  v6 = [tipCopy objectForKeyedSubscript:@"id"];
   [v5 setId:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"anchor"];
+  v7 = [tipCopy objectForKeyedSubscript:@"anchor"];
   [v5 setAnchor:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"arrowConfiguration"];
+  v8 = [tipCopy objectForKeyedSubscript:@"arrowConfiguration"];
   [v5 setArrowConfiguration:v8];
 
-  v9 = [v4 objectForKeyedSubscript:@"title"];
+  v9 = [tipCopy objectForKeyedSubscript:@"title"];
   [v5 setTitle:v9];
 
-  v10 = [v4 objectForKeyedSubscript:@"subTitle"];
+  v10 = [tipCopy objectForKeyedSubscript:@"subTitle"];
   [v5 setSubTitle:v10];
 
-  v11 = [v4 objectForKeyedSubscript:@"button"];
+  v11 = [tipCopy objectForKeyedSubscript:@"button"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -255,7 +255,7 @@
     v27 = &unk_1000553B8;
     v12 = objc_opt_new();
     v28 = v12;
-    v29 = self;
+    selfCopy = self;
     [v11 enumerateObjectsUsingBlock:&v24];
     v13 = [v11 count];
     if (v13 > [v12 count])
@@ -270,7 +270,7 @@
     [v5 setActions:v12];
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"criteria"];
+  v15 = [tipCopy objectForKeyedSubscript:@"criteria"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -278,7 +278,7 @@
     [v5 setCriteria:v16];
   }
 
-  v17 = [v4 objectForKeyedSubscript:@"icon"];
+  v17 = [tipCopy objectForKeyedSubscript:@"icon"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -286,7 +286,7 @@
     [v5 setIcon:v18];
   }
 
-  v19 = [v4 objectForKeyedSubscript:@"dismissURL"];
+  v19 = [tipCopy objectForKeyedSubscript:@"dismissURL"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -294,7 +294,7 @@
     [v5 setDismissURL:v20];
   }
 
-  v21 = [v4 objectForKeyedSubscript:@"displayURL"];
+  v21 = [tipCopy objectForKeyedSubscript:@"displayURL"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -305,47 +305,47 @@
   return v5;
 }
 
-- (id)_parseTipAction:(id)a3
+- (id)_parseTipAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_alloc_init(ICQInlineTipAction);
-  v6 = [v4 objectForKeyedSubscript:@"text"];
+  v6 = [actionCopy objectForKeyedSubscript:@"text"];
   [v5 setButtonTitle:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"action"];
+  v7 = [actionCopy objectForKeyedSubscript:@"action"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [v4 objectForKeyedSubscript:@"action"];
+    v9 = [actionCopy objectForKeyedSubscript:@"action"];
     [v5 setActionName:v9];
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"url"];
+  v10 = [actionCopy objectForKeyedSubscript:@"url"];
   objc_opt_class();
   v11 = objc_opt_isKindOfClass();
 
   if (v11)
   {
-    v12 = [v4 objectForKeyedSubscript:@"url"];
+    v12 = [actionCopy objectForKeyedSubscript:@"url"];
     v13 = [NSURL URLWithString:v12];
     [v5 setActionURL:v13];
   }
 
-  v14 = [(INStorageSummaryResponse *)self _parseTipActionLink:v4];
+  v14 = [(INStorageSummaryResponse *)self _parseTipActionLink:actionCopy];
   [v5 setLink:v14];
 
-  v15 = [v5 actionName];
-  if (v15)
+  actionName = [v5 actionName];
+  if (actionName)
   {
   }
 
   else
   {
-    v16 = [v5 actionURL];
+    actionURL = [v5 actionURL];
 
-    if (!v16)
+    if (!actionURL)
     {
       v17 = _INLogSystem();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -358,13 +358,13 @@
   return v5;
 }
 
-- (id)_parseTipActionLink:(id)a3
+- (id)_parseTipActionLink:(id)link
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"actionParameters"];
-  v5 = [v3 objectForKeyedSubscript:@"text"];
-  v6 = [v3 objectForKeyedSubscript:@"action"];
-  v7 = [v3 objectForKeyedSubscript:@"url"];
+  linkCopy = link;
+  v4 = [linkCopy objectForKeyedSubscript:@"actionParameters"];
+  v5 = [linkCopy objectForKeyedSubscript:@"text"];
+  v6 = [linkCopy objectForKeyedSubscript:@"action"];
+  v7 = [linkCopy objectForKeyedSubscript:@"url"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -405,21 +405,21 @@
   return v11;
 }
 
-- (id)_parseTipCriteria:(id)a3
+- (id)_parseTipCriteria:(id)criteria
 {
-  v3 = a3;
+  criteriaCopy = criteria;
   v4 = objc_alloc_init(ICQTipCriteria);
-  v5 = [v3 objectForKeyedSubscript:@"minimumDeviceStorageInBytes"];
+  v5 = [criteriaCopy objectForKeyedSubscript:@"minimumDeviceStorageInBytes"];
   [v4 setMinimumRange:v5];
 
-  v6 = [v3 objectForKeyedSubscript:@"maximumDeviceStorageInBytes"];
+  v6 = [criteriaCopy objectForKeyedSubscript:@"maximumDeviceStorageInBytes"];
   [v4 setMaximumRange:v6];
 
-  v7 = [v3 objectForKeyedSubscript:@"url"];
+  v7 = [criteriaCopy objectForKeyedSubscript:@"url"];
   v8 = [NSURL URLWithString:v7];
   [v4 setCriteriaURL:v8];
 
-  v9 = [v3 objectForKeyedSubscript:@"excludeApps"];
+  v9 = [criteriaCopy objectForKeyedSubscript:@"excludeApps"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -438,15 +438,15 @@
   return v4;
 }
 
-- (id)_parseTipIcon:(id)a3
+- (id)_parseTipIcon:(id)icon
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"type"];
+  iconCopy = icon;
+  v4 = [iconCopy objectForKeyedSubscript:@"type"];
   if ([v4 isEqualToString:@"IMAGE"])
   {
     v5 = objc_alloc_init(ICQTipIconURL);
     [v5 setType:v4];
-    v6 = [v3 objectForKeyedSubscript:@"urls"];
+    v6 = [iconCopy objectForKeyedSubscript:@"urls"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -461,13 +461,13 @@
   {
     v5 = objc_alloc_init(ICQTipIconSymbol);
     [v5 setType:v4];
-    v8 = [v3 objectForKeyedSubscript:@"path"];
+    v8 = [iconCopy objectForKeyedSubscript:@"path"];
     [v5 setPath:v8];
 
-    v9 = [v3 objectForKeyedSubscript:@"color"];
+    v9 = [iconCopy objectForKeyedSubscript:@"color"];
     [v5 setSystemColorName:v9];
 
-    v6 = [v3 objectForKeyedSubscript:@"id"];
+    v6 = [iconCopy objectForKeyedSubscript:@"id"];
     [v5 setId:v6];
 LABEL_6:
 
@@ -486,15 +486,15 @@ LABEL_10:
   return v5;
 }
 
-- (id)_parseSubscriptionInfo:(id)a3
+- (id)_parseSubscriptionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc_init(ICQSubscriptionInfo);
-  v6 = [v4 objectForKeyedSubscript:@"isiCloudPlusSubscriber"];
-  v7 = [v6 BOOLValue];
+  v6 = [infoCopy objectForKeyedSubscript:@"isiCloudPlusSubscriber"];
+  bOOLValue = [v6 BOOLValue];
 
-  [v5 setICloudPlusSubscriber:v7];
-  v8 = [v4 objectForKeyedSubscript:@"specifiers"];
+  [v5 setICloudPlusSubscriber:bOOLValue];
+  v8 = [infoCopy objectForKeyedSubscript:@"specifiers"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -504,7 +504,7 @@ LABEL_10:
     v14 = sub_100008AEC;
     v15 = &unk_1000553B8;
     v16 = objc_alloc_init(NSMutableArray);
-    v17 = self;
+    selfCopy = self;
     v9 = v16;
     [v8 enumerateObjectsUsingBlock:&v12];
     v10 = [v9 copy];
@@ -514,10 +514,10 @@ LABEL_10:
   return v5;
 }
 
-- (id)_parseSpecifierInfo:(id)a3
+- (id)_parseSpecifierInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"type"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -525,7 +525,7 @@ LABEL_10:
     if ([v5 isEqualToString:@"ICLOUD_PLUS_CELL"])
     {
       v7 = objc_alloc_init(ICQiCloudPlusSpecifierInfo);
-      v8 = [v4 objectForKeyedSubscript:@"featureList"];
+      v8 = [infoCopy objectForKeyedSubscript:@"featureList"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -534,7 +534,7 @@ LABEL_10:
         v32[2] = sub_10000903C;
         v32[3] = &unk_1000553B8;
         v33 = objc_alloc_init(NSMutableArray);
-        v34 = self;
+        selfCopy = self;
         v9 = v33;
         [v8 enumerateObjectsUsingBlock:v32];
         v10 = [v9 copy];
@@ -546,7 +546,7 @@ LABEL_10:
     {
       v7 = objc_alloc_init(ICQSpecifierInfo);
       [v7 setType:v5];
-      v11 = [v4 objectForKeyedSubscript:@"iconURLs"];
+      v11 = [infoCopy objectForKeyedSubscript:@"iconURLs"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -555,7 +555,7 @@ LABEL_10:
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"actionURL"];
+    v13 = [infoCopy objectForKeyedSubscript:@"actionURL"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -567,39 +567,39 @@ LABEL_10:
     }
 
     [v7 setType:{v5, v13}];
-    v15 = [v4 objectForKeyedSubscript:@"identifier"];
+    v15 = [infoCopy objectForKeyedSubscript:@"identifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v7 setIdentifier:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"title"];
+    v16 = [infoCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v7 setTitle:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"subTitle"];
+    v17 = [infoCopy objectForKeyedSubscript:@"subTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v7 setSubTitle:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"actionType"];
+    v18 = [infoCopy objectForKeyedSubscript:@"actionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v7 actionURL];
+      actionURL = [v7 actionURL];
 
       v20 = [ICQLink alloc];
       v21 = v20;
-      if (v19)
+      if (actionURL)
       {
-        v22 = [v7 actionURL];
-        v23 = [v21 initWithActionString:v18 url:v22];
+        actionURL2 = [v7 actionURL];
+        v23 = [v21 initWithActionString:v18 url:actionURL2];
 
         v6 = &MKBDeviceUnlockedSinceBoot_ptr;
       }
@@ -614,7 +614,7 @@ LABEL_10:
 
     v24 = v6[439];
     v25 = objc_opt_new();
-    v26 = [v4 objectForKeyedSubscript:@"actions"];
+    v26 = [infoCopy objectForKeyedSubscript:@"actions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -643,25 +643,25 @@ LABEL_10:
   return v7;
 }
 
-- (id)_parseiCloudPlusFeature:(id)a3
+- (id)_parseiCloudPlusFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   v4 = objc_alloc_init(ICQiCloudPlusFeature);
-  v5 = [v3 objectForKeyedSubscript:@"label"];
+  v5 = [featureCopy objectForKeyedSubscript:@"label"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setLabel:v5];
   }
 
-  v6 = [v3 objectForKeyedSubscript:@"subLabel"];
+  v6 = [featureCopy objectForKeyedSubscript:@"subLabel"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setSublabel:v6];
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"iconURLs"];
+  v7 = [featureCopy objectForKeyedSubscript:@"iconURLs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -672,15 +672,15 @@ LABEL_10:
   return v4;
 }
 
-- (id)_parseUsageByMedia:(id)a3
+- (id)_parseUsageByMedia:(id)media
 {
-  v3 = a3;
+  mediaCopy = media;
   v4 = +[NSMutableArray array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v3;
+  obj = mediaCopy;
   v5 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {

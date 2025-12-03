@@ -1,58 +1,58 @@
 @interface SBHClockApplicationIconImageView
 + (BOOL)sweepsSecondsHand;
-+ (id)clockIconBackgroundTypeIdentifierForNumberingSystem:(id)a3;
++ (id)clockIconBackgroundTypeIdentifierForNumberingSystem:(id)system;
 + (id)clockIconBackgroundTypeIdentifierForSystemNumberingSystem;
 + (id)effectiveDate;
-+ (id)hoursMinutesHandColorWithImageAppearance:(id)a3;
-+ (id)imageSetForMetrics:(const SBHClockApplicationIconImageMetrics *)a3 imageAppearance:(id)a4;
-+ (id)makeComponentImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)a3 size:(CGSize)a4 actions:(id)a5;
-+ (id)makeComponentImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)a3 size:(CGSize)a4 path:(CGPath *)a5 fillColor:(id)a6 options:(unint64_t)a7;
-+ (id)makeDotImageWithOuterDiameter:(double)a3 innerDiameter:(double)a4 color:(id)a5 isSeconds:(BOOL)a6 metrics:(const SBHClockApplicationIconImageMetrics *)a7;
-+ (id)makeDotLayerWithOuterDiameter:(double)a3 innerDiameter:(double)a4 isSeconds:(BOOL)a5 imageSet:(id)a6;
-+ (id)makeHoursHandImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)a3 imageAppearance:(id)a4;
-+ (id)makeHoursHandLayerWithImageSet:(id)a3;
-+ (id)makeImageSetForMetrics:(const SBHClockApplicationIconImageMetrics *)a3 imageAppearance:(id)a4;
-+ (id)makeMinutesHandImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)a3 imageAppearance:(id)a4;
-+ (id)makeMinutesHandLayerWithImageSet:(id)a3;
-+ (id)makeSecondsHandImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)a3 imageAppearance:(id)a4;
-+ (id)makeSecondsHandLayerWithImageSet:(id)a3;
-+ (id)secondsHandColorWithImageAppearance:(id)a3;
++ (id)hoursMinutesHandColorWithImageAppearance:(id)appearance;
++ (id)imageSetForMetrics:(const SBHClockApplicationIconImageMetrics *)metrics imageAppearance:(id)appearance;
++ (id)makeComponentImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)metrics size:(CGSize)size actions:(id)actions;
++ (id)makeComponentImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)metrics size:(CGSize)size path:(CGPath *)path fillColor:(id)color options:(unint64_t)options;
++ (id)makeDotImageWithOuterDiameter:(double)diameter innerDiameter:(double)innerDiameter color:(id)color isSeconds:(BOOL)seconds metrics:(const SBHClockApplicationIconImageMetrics *)metrics;
++ (id)makeDotLayerWithOuterDiameter:(double)diameter innerDiameter:(double)innerDiameter isSeconds:(BOOL)seconds imageSet:(id)set;
++ (id)makeHoursHandImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)metrics imageAppearance:(id)appearance;
++ (id)makeHoursHandLayerWithImageSet:(id)set;
++ (id)makeImageSetForMetrics:(const SBHClockApplicationIconImageMetrics *)metrics imageAppearance:(id)appearance;
++ (id)makeMinutesHandImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)metrics imageAppearance:(id)appearance;
++ (id)makeMinutesHandLayerWithImageSet:(id)set;
++ (id)makeSecondsHandImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)metrics imageAppearance:(id)appearance;
++ (id)makeSecondsHandLayerWithImageSet:(id)set;
++ (id)secondsHandColorWithImageAppearance:(id)appearance;
 + (id)systemNumberingSystem;
-+ (void)_displayLinkFired:(id)a3;
-+ (void)_handleTimeChange:(id)a3;
-+ (void)_tickTimerFired:(id)a3;
-+ (void)configureHandLayer:(id)a3 metrics:(const SBHClockApplicationIconImageMetrics *)a4;
-+ (void)getMetrics:(SBHClockApplicationIconImageMetrics *)a3 forIconImageInfo:(SBIconImageInfo *)a4;
++ (void)_displayLinkFired:(id)fired;
++ (void)_handleTimeChange:(id)change;
++ (void)_tickTimerFired:(id)fired;
++ (void)configureHandLayer:(id)layer metrics:(const SBHClockApplicationIconImageMetrics *)metrics;
++ (void)getMetrics:(SBHClockApplicationIconImageMetrics *)metrics forIconImageInfo:(SBIconImageInfo *)info;
 + (void)hidesSecondHandDidChange;
 + (void)initialize;
-+ (void)precacheDataWithIconImageInfo:(SBIconImageInfo *)a3 appearance:(id)a4;
-+ (void)setHidesSecondsHand:(BOOL)a3;
-+ (void)setOverrideDate:(id)a3;
++ (void)precacheDataWithIconImageInfo:(SBIconImageInfo *)info appearance:(id)appearance;
++ (void)setHidesSecondsHand:(BOOL)hand;
++ (void)setOverrideDate:(id)date;
 - (BOOL)areOngoingAnimationsAllowed;
 - (BOOL)shouldShowSecondsHand;
-- (SBHClockApplicationIconImageView)initWithFrame:(CGRect)a3;
+- (SBHClockApplicationIconImageView)initWithFrame:(CGRect)frame;
 - (float)hourMinuteHandOpacity;
 - (float)secondsHandOpacity;
 - (id)clockIconBackgroundTypeIdentifierForCurrentNumberingSystem;
 - (id)iconForImage;
-- (void)_setAnimating:(BOOL)a3;
-- (void)_timerFiredWithComponents:(id)a3 flags:(unint64_t)a4;
-- (void)_updateUnanimatedWithComponents:(id)a3;
-- (void)applyMetrics:(const SBHClockApplicationIconImageMetrics *)a3;
+- (void)_setAnimating:(BOOL)animating;
+- (void)_timerFiredWithComponents:(id)components flags:(unint64_t)flags;
+- (void)_updateUnanimatedWithComponents:(id)components;
+- (void)applyMetrics:(const SBHClockApplicationIconImageMetrics *)metrics;
 - (void)clearCachedImages;
-- (void)controller:(id)a3 didChangeOverrideDateFromDate:(id)a4;
+- (void)controller:(id)controller didChangeOverrideDateFromDate:(id)date;
 - (void)didAnimateIconImageInfoChange;
-- (void)getMetrics:(SBHClockApplicationIconImageMetrics *)a3;
+- (void)getMetrics:(SBHClockApplicationIconImageMetrics *)metrics;
 - (void)iconImageInfoDidChange;
 - (void)layoutSubviews;
-- (void)localeDidChange:(id)a3;
+- (void)localeDidChange:(id)change;
 - (void)noteIconLayerTintColorUpdated;
 - (void)prepareForReuse;
 - (void)resetForegroundLayers;
-- (void)setHandsHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIcon:(id)a3 location:(id)a4 animated:(BOOL)a5;
-- (void)setPaused:(BOOL)a3;
-- (void)updateImageAnimated:(BOOL)a3;
+- (void)setHandsHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setIcon:(id)icon location:(id)location animated:(BOOL)animated;
+- (void)setPaused:(BOOL)paused;
+- (void)updateImageAnimated:(BOOL)animated;
 - (void)updateOngoingAnimationState;
 - (void)updateSecondsHandHidden;
 - (void)updateUnanimated;
@@ -63,20 +63,20 @@
 
 - (BOOL)areOngoingAnimationsAllowed
 {
-  v3 = [objc_opt_class() overrideDate];
-  if (v3)
+  overrideDate = [objc_opt_class() overrideDate];
+  if (overrideDate)
   {
-    v4 = 0;
+    areOngoingAnimationsAllowed = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SBHClockApplicationIconImageView;
-    v4 = [(SBIconImageView *)&v6 areOngoingAnimationsAllowed];
+    areOngoingAnimationsAllowed = [(SBIconImageView *)&v6 areOngoingAnimationsAllowed];
   }
 
-  return v4;
+  return areOngoingAnimationsAllowed;
 }
 
 - (void)updateOngoingAnimationState
@@ -86,11 +86,11 @@
   [(SBIconImageView *)&v6 updateOngoingAnimationState];
   if ([(SBHClockApplicationIconImageView *)self areOngoingAnimationsAllowed])
   {
-    v3 = [(SBIconImageView *)self icon];
-    if (v3)
+    icon = [(SBIconImageView *)self icon];
+    if (icon)
     {
-      v4 = [objc_opt_class() overrideDate];
-      v5 = v4 == 0;
+      overrideDate = [objc_opt_class() overrideDate];
+      v5 = overrideDate == 0;
     }
 
     else
@@ -123,9 +123,9 @@
 + (id)systemNumberingSystem
 {
   v2 = MEMORY[0x1E69AAE08];
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v3 localeIdentifier];
-  v5 = [v2 numberingSystemForLocaleID:v4];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v5 = [v2 numberingSystemForLocaleID:localeIdentifier];
 
   return v5;
 }
@@ -159,8 +159,8 @@
   v6.super_class = SBHClockApplicationIconImageView;
   [(SBLiveIconImageView *)&v6 updateUnanimated];
   v3 = _SBClockIconGetCalendar();
-  v4 = [objc_opt_class() effectiveDate];
-  v5 = [v3 components:224 fromDate:v4];
+  effectiveDate = [objc_opt_class() effectiveDate];
+  v5 = [v3 components:224 fromDate:effectiveDate];
 
   [(SBHClockApplicationIconImageView *)self _updateUnanimatedWithComponents:v5];
 }
@@ -169,31 +169,31 @@
 {
   if (__hasSBFDateTimeOverride)
   {
-    v2 = [MEMORY[0x1E69D3FB8] sharedInstance];
-    v3 = [v2 currentDate];
+    mEMORY[0x1E69D3FB8] = [MEMORY[0x1E69D3FB8] sharedInstance];
+    currentDate = [mEMORY[0x1E69D3FB8] currentDate];
   }
 
   else
   {
-    v3 = [objc_opt_class() overrideDate];
+    currentDate = [objc_opt_class() overrideDate];
   }
 
   [objc_opt_class() overrideDateOffset];
   v5 = v4;
-  if (v3)
+  if (currentDate)
   {
-    v6 = v3;
+    date = currentDate;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v7 = v6;
+  v7 = date;
   if (v5 != 0.0)
   {
-    v8 = [v6 dateByAddingTimeInterval:v5];
+    v8 = [date dateByAddingTimeInterval:v5];
 
     v7 = v8;
   }
@@ -211,9 +211,9 @@
   [(SBHClockApplicationIconImageView *)self getMetrics:v8];
   if (!self->_minutes)
   {
-    v3 = [(SBIconImageView *)self icon];
+    icon = [(SBIconImageView *)self icon];
 
-    if (v3)
+    if (icon)
     {
       [(SBHClockApplicationIconImageView *)self applyMetrics:v8];
       [(SBHClockApplicationIconImageView *)self updateUnanimated];
@@ -232,9 +232,9 @@
 
 - (float)hourMinuteHandOpacity
 {
-  v2 = [(SBHClockApplicationIconImageView *)self shouldShowHourMinuteHands];
+  shouldShowHourMinuteHands = [(SBHClockApplicationIconImageView *)self shouldShowHourMinuteHands];
   result = 0.0;
-  if (v2)
+  if (shouldShowHourMinuteHands)
   {
     return 1.0;
   }
@@ -244,9 +244,9 @@
 
 - (float)secondsHandOpacity
 {
-  v2 = [(SBHClockApplicationIconImageView *)self shouldShowSecondsHand];
+  shouldShowSecondsHand = [(SBHClockApplicationIconImageView *)self shouldShowSecondsHand];
   result = 0.0;
-  if (v2)
+  if (shouldShowSecondsHand)
   {
     return 1.0;
   }
@@ -266,7 +266,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = MGGetBoolAnswer();
     v5 = 10.0;
@@ -283,29 +283,29 @@
     *(&xmmword_1ED7EE3A8 + 1) = 0x3FF0000000000000;
     qword_1ED7EE3D8 = 0x3FF0000000000000;
     qword_1ED7EE400 = 0x3FF0000000000000;
-    v7 = [MEMORY[0x1E69D3FB8] sharedInstance];
-    __hasSBFDateTimeOverride = [v7 hasDateOverride];
+    mEMORY[0x1E69D3FB8] = [MEMORY[0x1E69D3FB8] sharedInstance];
+    __hasSBFDateTimeOverride = [mEMORY[0x1E69D3FB8] hasDateOverride];
     __hidesSecondsHand = SBHPerformanceFlagEnabled(11);
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:a1 selector:sel_lowPowerModeDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_lowPowerModeDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
   }
 }
 
-+ (void)setOverrideDate:(id)a3
++ (void)setOverrideDate:(id)date
 {
-  v3 = [a3 copy];
+  v3 = [date copy];
   v4 = __overrideDate;
   __overrideDate = v3;
 
   MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-+ (void)setHidesSecondsHand:(BOOL)a3
++ (void)setHidesSecondsHand:(BOOL)hand
 {
-  if (__hidesSecondsHand != a3)
+  if (__hidesSecondsHand != hand)
   {
-    __hidesSecondsHand = a3;
-    [a1 hidesSecondHandDidChange];
+    __hidesSecondsHand = hand;
+    [self hidesSecondHandDidChange];
   }
 }
 
@@ -347,13 +347,13 @@
 
 + (BOOL)sweepsSecondsHand
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  return v3 ^ 1;
+  return isLowPowerModeEnabled ^ 1;
 }
 
-+ (void)_displayLinkFired:(id)a3
++ (void)_displayLinkFired:(id)fired
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = *&__secondFrameRange_2;
@@ -386,8 +386,8 @@
   }
 
   __frameCount = v7;
-  v9 = [a1 effectiveDate];
-  v10 = [__calendar components:v8 fromDate:v9];
+  effectiveDate = [self effectiveDate];
+  v10 = [__calendar components:v8 fromDate:effectiveDate];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -417,18 +417,18 @@
   }
 }
 
-+ (void)_tickTimerFired:(id)a3
++ (void)_tickTimerFired:(id)fired
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 fireDate];
+  firedCopy = fired;
+  fireDate = [firedCopy fireDate];
   v5 = 224;
-  v6 = [__calendar components:224 fromDate:v4];
-  v7 = [v3 userInfo];
-  if (v7)
+  v6 = [__calendar components:224 fromDate:fireDate];
+  userInfo = [firedCopy userInfo];
+  if (userInfo)
   {
-    v8 = [v6 hour];
-    if (v8 == [v7 hour])
+    hour = [v6 hour];
+    if (hour == [userInfo hour])
     {
       v9 = 192;
     }
@@ -438,8 +438,8 @@
       v9 = 224;
     }
 
-    v10 = [v6 minute];
-    if (v10 == [v7 minute])
+    minute = [v6 minute];
+    if (minute == [userInfo minute])
     {
       v5 = v9 & 0xFFFFFFFFFFFFFFBFLL;
     }
@@ -481,15 +481,15 @@
   _SBClockIconResetTickTimer();
 }
 
-+ (void)_handleTimeChange:(id)a3
++ (void)_handleTimeChange:(id)change
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = _SBClockIconGetCalendar();
-  v5 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  [v4 setTimeZone:v5];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  [v4 setTimeZone:systemTimeZone];
 
-  v6 = [a1 effectiveDate];
-  v7 = [v4 components:224 fromDate:v6];
+  effectiveDate = [self effectiveDate];
+  v7 = [v4 components:224 fromDate:effectiveDate];
 
   v15 = 0u;
   v16 = 0u;
@@ -522,65 +522,65 @@
   }
 }
 
-- (SBHClockApplicationIconImageView)initWithFrame:(CGRect)a3
+- (SBHClockApplicationIconImageView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SBHClockApplicationIconImageView;
-  v3 = [(SBIconImageView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBIconImageView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel_localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
 
-    v5 = [objc_opt_class() systemNumberingSystem];
-    v6 = [v5 copy];
+    systemNumberingSystem = [objc_opt_class() systemNumberingSystem];
+    v6 = [systemNumberingSystem copy];
     currentNumberingSystem = v3->_currentNumberingSystem;
     v3->_currentNumberingSystem = v6;
 
-    v8 = [(SBHClockApplicationIconImageView *)v3 layer];
-    [v8 setNeedsLayoutOnGeometryChange:0];
+    layer = [(SBHClockApplicationIconImageView *)v3 layer];
+    [layer setNeedsLayoutOnGeometryChange:0];
   }
 
   return v3;
 }
 
-- (void)setIcon:(id)a3 location:(id)a4 animated:(BOOL)a5
+- (void)setIcon:(id)icon location:(id)location animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v8 = MEMORY[0x1E69D3FB8];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 sharedInstance];
+  locationCopy = location;
+  iconCopy = icon;
+  sharedInstance = [v8 sharedInstance];
   v12.receiver = self;
   v12.super_class = SBHClockApplicationIconImageView;
-  [(SBLiveIconImageView *)&v12 setIcon:v10 location:v9 animated:v5];
+  [(SBLiveIconImageView *)&v12 setIcon:iconCopy location:locationCopy animated:animatedCopy];
 
-  if (v10)
+  if (iconCopy)
   {
-    [v11 addObserver:self];
+    [sharedInstance addObserver:self];
     [(SBHClockApplicationIconImageView *)self setNeedsLayout];
   }
 
   else
   {
-    [v11 removeObserver:self];
+    [sharedInstance removeObserver:self];
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
-  if ([(SBIconImageView *)self isPaused]!= a3)
+  pausedCopy = paused;
+  if ([(SBIconImageView *)self isPaused]!= paused)
   {
     v12.receiver = self;
     v12.super_class = SBHClockApplicationIconImageView;
-    [(SBIconImageView *)&v12 setPaused:v3];
-    v5 = [(SBHClockApplicationIconImageView *)self shouldShowSecondsHand];
+    [(SBIconImageView *)&v12 setPaused:pausedCopy];
+    shouldShowSecondsHand = [(SBHClockApplicationIconImageView *)self shouldShowSecondsHand];
     v6 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
     [v6 setDuration:0.2];
     [v6 setFromValue:&unk_1F3DB2B38];
     v7 = -1.0;
-    if (v5)
+    if (shouldShowSecondsHand)
     {
       v7 = 1.0;
       v8 = 1.0;
@@ -604,32 +604,32 @@
   }
 }
 
-- (void)setHandsHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHandsHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (self->_handsHidden != a3)
+  if (self->_handsHidden != hidden)
   {
-    v4 = a4;
-    self->_handsHidden = a3;
-    v6 = [(SBHClockApplicationIconImageView *)self shouldShowSecondsHand];
-    v8 = v6 ? 1.0 : 0.0;
+    animatedCopy = animated;
+    self->_handsHidden = hidden;
+    shouldShowSecondsHand = [(SBHClockApplicationIconImageView *)self shouldShowSecondsHand];
+    v8 = shouldShowSecondsHand ? 1.0 : 0.0;
     *&v7 = v8;
     [(CALayer *)self->_seconds setOpacity:v7];
     *&v9 = v8;
     [(CALayer *)self->_secondDot setOpacity:v9];
-    v10 = [(SBHClockApplicationIconImageView *)self shouldShowHourMinuteHands];
-    v12 = v10 ? 1.0 : 0.0;
+    shouldShowHourMinuteHands = [(SBHClockApplicationIconImageView *)self shouldShowHourMinuteHands];
+    v12 = shouldShowHourMinuteHands ? 1.0 : 0.0;
     *&v11 = v12;
     [(CALayer *)self->_minutes setOpacity:v11];
     *&v13 = v12;
     [(CALayer *)self->_hours setOpacity:v13];
     *&v14 = v12;
     [(CALayer *)self->_hourMinuteDot setOpacity:v14];
-    if (v4)
+    if (animatedCopy)
     {
       v20 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
       [v20 setDuration:0.2];
       [v20 setFromValue:&unk_1F3DB2B38];
-      if (v6)
+      if (shouldShowSecondsHand)
       {
         v15 = 1.0;
       }
@@ -648,7 +648,7 @@
       v17 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
       [v17 setDuration:0.2];
       [v17 setFromValue:&unk_1F3DB2B38];
-      if (v10)
+      if (shouldShowHourMinuteHands)
       {
         v18 = 1.0;
       }
@@ -671,9 +671,9 @@
 
 - (void)updateSecondsHandHidden
 {
-  v3 = [objc_opt_class() hidesSecondsHand];
+  hidesSecondsHand = [objc_opt_class() hidesSecondsHand];
   seconds = self->_seconds;
-  if (v3)
+  if (hidesSecondsHand)
   {
     if (seconds)
     {
@@ -695,34 +695,34 @@
   }
 }
 
-+ (id)secondsHandColorWithImageAppearance:(id)a3
++ (id)secondsHandColorWithImageAppearance:(id)appearance
 {
-  v3 = a3;
-  v4 = [v3 appearanceType];
-  if (v4 > 6)
+  appearanceCopy = appearance;
+  appearanceType = [appearanceCopy appearanceType];
+  if (appearanceType > 6)
   {
     v6 = 0;
   }
 
   else
   {
-    if (((1 << v4) & 0x1C) != 0)
+    if (((1 << appearanceType) & 0x1C) != 0)
     {
-      v5 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
       goto LABEL_6;
     }
 
-    if (((1 << v4) & 0x43) != 0)
+    if (((1 << appearanceType) & 0x43) != 0)
     {
-      v5 = [MEMORY[0x1E69DC888] orangeColor];
+      whiteColor = [MEMORY[0x1E69DC888] orangeColor];
 LABEL_6:
-      v6 = v5;
+      v6 = whiteColor;
       goto LABEL_7;
     }
 
-    v8 = [v3 tintColor];
+    tintColor = [appearanceCopy tintColor];
     v9 = [MEMORY[0x1E69DC888] colorWithWhite:0.745098039 alpha:1.0];
-    v6 = [v8 _colorBlendedWithColor:v9 compositingFilter:*MEMORY[0x1E6979CA0]];
+    v6 = [tintColor _colorBlendedWithColor:v9 compositingFilter:*MEMORY[0x1E6979CA0]];
   }
 
 LABEL_7:
@@ -730,20 +730,20 @@ LABEL_7:
   return v6;
 }
 
-+ (id)hoursMinutesHandColorWithImageAppearance:(id)a3
++ (id)hoursMinutesHandColorWithImageAppearance:(id)appearance
 {
-  v3 = a3;
-  v4 = [v3 appearanceType];
+  appearanceCopy = appearance;
+  appearanceType = [appearanceCopy appearanceType];
   v5 = 0;
-  if (v4 > 4)
+  if (appearanceType > 4)
   {
-    if (v4 == 5)
+    if (appearanceType == 5)
     {
-      v6 = [v3 tintColor];
+      tintColor = [appearanceCopy tintColor];
       goto LABEL_4;
     }
 
-    if (v4 == 6)
+    if (appearanceType == 6)
     {
       goto LABEL_3;
     }
@@ -751,18 +751,18 @@ LABEL_7:
 
   else
   {
-    if ((v4 - 1) < 4)
+    if ((appearanceType - 1) < 4)
     {
 LABEL_3:
-      v6 = [MEMORY[0x1E69DC888] whiteColor];
+      tintColor = [MEMORY[0x1E69DC888] whiteColor];
 LABEL_4:
-      v5 = v6;
+      v5 = tintColor;
       goto LABEL_5;
     }
 
-    if (!v4)
+    if (!appearanceType)
     {
-      v6 = [MEMORY[0x1E69DC888] blackColor];
+      tintColor = [MEMORY[0x1E69DC888] blackColor];
       goto LABEL_4;
     }
   }
@@ -772,23 +772,23 @@ LABEL_5:
   return v5;
 }
 
-+ (void)configureHandLayer:(id)a3 metrics:(const SBHClockApplicationIconImageMetrics *)a4
++ (void)configureHandLayer:(id)layer metrics:(const SBHClockApplicationIconImageMetrics *)metrics
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  [v5 setAllowsEdgeAntialiasing:1];
-  [v5 setContentsScale:a4->contentsScale];
+  layerCopy = layer;
+  [layerCopy setAllowsEdgeAntialiasing:1];
+  [layerCopy setContentsScale:metrics->contentsScale];
   v9[0] = @"transform";
-  v6 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v9[1] = @"transform.rotation";
-  v10[0] = v6;
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v10[1] = v7;
+  v10[0] = null;
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v10[1] = null2;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  [v5 setActions:v8];
+  [layerCopy setActions:v8];
 }
 
-+ (void)getMetrics:(SBHClockApplicationIconImageMetrics *)a3 forIconImageInfo:(SBIconImageInfo *)a4
++ (void)getMetrics:(SBHClockApplicationIconImageMetrics *)metrics forIconImageInfo:(SBIconImageInfo *)info
 {
   v8 = v4.f64[0] * 0.00263671875;
   v9 = 1.0;
@@ -797,46 +797,46 @@ LABEL_5:
     v8 = 1.0;
   }
 
-  a3->secondsHandWidth = v8;
-  a3->secondsHandLength = v4.f64[0] * 0.392578125;
-  a3->secondsHandleLength = v4.f64[0] * 0.04296875;
+  metrics->secondsHandWidth = v8;
+  metrics->secondsHandLength = v4.f64[0] * 0.392578125;
+  metrics->secondsHandleLength = v4.f64[0] * 0.04296875;
   v10 = vmulq_n_f64(xmmword_1BEE862A0, v4.f64[0]);
-  *&a3->secondsHandRingDiameter = v10;
+  *&metrics->secondsHandRingDiameter = v10;
   v11 = v4.f64[0] * 0.33984375;
   v12 = v4.f64[0] * 0.05078125;
-  a3->minutesHandRingDiameter = v4.f64[0] * 0.05078125;
-  a3->minutesHandRingKnockoutDiameter = v10.f64[0];
+  metrics->minutesHandRingDiameter = v4.f64[0] * 0.05078125;
+  metrics->minutesHandRingKnockoutDiameter = v10.f64[0];
   v13 = v4.f64[0] * 0.17578125;
   if (v4.f64[0] * 0.0068359375 >= 1.0)
   {
     v9 = v4.f64[0] * 0.0068359375;
   }
 
-  a3->shadowRadius = v9;
-  a3->shadowInset = 3.0;
-  a3->separatorWidth = v4.f64[0] * 0.015625;
+  metrics->shadowRadius = v9;
+  metrics->shadowInset = 3.0;
+  metrics->separatorWidth = v4.f64[0] * 0.015625;
   v14 = vmulq_n_f64(xmmword_1BEE862B0, v4.f64[0]);
-  a3->minutesHandWidth = v14.f64[0];
-  a3->minutesHandLength = v11;
-  a3->hoursHandWidth = v14.f64[0];
-  a3->hoursHandLength = v13;
-  a3->secondsHandBounds.width = v10.f64[0];
-  a3->secondsHandBounds.height = v4.f64[0] * 0.04296875 + v4.f64[0] * 0.392578125 + v10.f64[0];
-  a3->minutesHandBounds.width = v12;
-  a3->minutesHandBounds.height = v14.f64[0] + v11 + v12;
-  a3->hoursHandBounds.width = v12;
-  a3->hoursHandBounds.height = v14.f64[0] + v13 + v12;
-  a3->contentsScale = v6;
-  a3->iconImageInfo.size.width = v4.f64[0];
+  metrics->minutesHandWidth = v14.f64[0];
+  metrics->minutesHandLength = v11;
+  metrics->hoursHandWidth = v14.f64[0];
+  metrics->hoursHandLength = v13;
+  metrics->secondsHandBounds.width = v10.f64[0];
+  metrics->secondsHandBounds.height = v4.f64[0] * 0.04296875 + v4.f64[0] * 0.392578125 + v10.f64[0];
+  metrics->minutesHandBounds.width = v12;
+  metrics->minutesHandBounds.height = v14.f64[0] + v11 + v12;
+  metrics->hoursHandBounds.width = v12;
+  metrics->hoursHandBounds.height = v14.f64[0] + v13 + v12;
+  metrics->contentsScale = v6;
+  metrics->iconImageInfo.size.width = v4.f64[0];
   v4.f64[1] = v4.f64[0] / 60.0;
-  *&a3->separatorLength = v14;
-  *&a3->faceRadius = vmulq_f64(v4, xmmword_1BEE862C0);
-  a3->iconImageInfo.size.height = v5;
-  a3->iconImageInfo.scale = v6;
-  a3->iconImageInfo.continuousCornerRadius = v7;
+  *&metrics->separatorLength = v14;
+  *&metrics->faceRadius = vmulq_f64(v4, xmmword_1BEE862C0);
+  metrics->iconImageInfo.size.height = v5;
+  metrics->iconImageInfo.scale = v6;
+  metrics->iconImageInfo.continuousCornerRadius = v7;
 }
 
-- (void)getMetrics:(SBHClockApplicationIconImageMetrics *)a3
+- (void)getMetrics:(SBHClockApplicationIconImageMetrics *)metrics
 {
   [(SBIconImageView *)self iconImageInfo];
   v5 = v4;
@@ -845,31 +845,31 @@ LABEL_5:
   v11 = v10;
   v12 = objc_opt_class();
 
-  [v12 getMetrics:a3 forIconImageInfo:{v5, v7, v9, v11}];
+  [v12 getMetrics:metrics forIconImageInfo:{v5, v7, v9, v11}];
 }
 
-+ (id)makeComponentImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)a3 size:(CGSize)a4 actions:(id)a5
++ (id)makeComponentImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)metrics size:(CGSize)size actions:(id)actions
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = MEMORY[0x1E69DCA80];
-  v9 = a5;
+  actionsCopy = actions;
   v10 = objc_alloc_init(v8);
-  [v10 setScale:a3->contentsScale];
+  [v10 setScale:metrics->contentsScale];
   v11 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v10 format:{width, height}];
-  v12 = [v11 imageWithActions:v9];
+  v12 = [v11 imageWithActions:actionsCopy];
 
   return v12;
 }
 
-+ (id)makeComponentImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)a3 size:(CGSize)a4 path:(CGPath *)a5 fillColor:(id)a6 options:(unint64_t)a7
++ (id)makeComponentImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)metrics size:(CGSize)size path:(CGPath *)path fillColor:(id)color options:(unint64_t)options
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a6;
-  if (a7)
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
+  if (options)
   {
-    v14 = a3->shadowInset + a3->shadowInset;
+    v14 = metrics->shadowInset + metrics->shadowInset;
     width = width + v14;
     height = height + v14;
   }
@@ -878,13 +878,13 @@ LABEL_5:
   v18[1] = 3221225472;
   v18[2] = __94__SBHClockApplicationIconImageView_makeComponentImageWithMetrics_size_path_fillColor_options___block_invoke;
   v18[3] = &unk_1E808D6B0;
-  v23 = a7 & 1;
-  v19 = v13;
-  v20 = a3;
-  v21 = a5;
-  v22 = a7;
-  v15 = v13;
-  v16 = [a1 makeComponentImageWithMetrics:a3 size:v18 actions:{width, height}];
+  v23 = options & 1;
+  v19 = colorCopy;
+  metricsCopy = metrics;
+  pathCopy = path;
+  optionsCopy = options;
+  v15 = colorCopy;
+  v16 = [self makeComponentImageWithMetrics:metrics size:v18 actions:{width, height}];
 
   return v16;
 }
@@ -912,22 +912,22 @@ void __94__SBHClockApplicationIconImageView_makeComponentImageWithMetrics_size_p
   CGContextDrawPath(v4, v6);
 }
 
-+ (id)makeDotImageWithOuterDiameter:(double)a3 innerDiameter:(double)a4 color:(id)a5 isSeconds:(BOOL)a6 metrics:(const SBHClockApplicationIconImageMetrics *)a7
++ (id)makeDotImageWithOuterDiameter:(double)diameter innerDiameter:(double)innerDiameter color:(id)color isSeconds:(BOOL)seconds metrics:(const SBHClockApplicationIconImageMetrics *)metrics
 {
-  v8 = a6;
-  v12 = a5;
+  secondsCopy = seconds;
+  colorCopy = color;
   Mutable = CGPathCreateMutable();
-  v18.origin.x = (a3 - a4) * 0.5;
+  v18.origin.x = (diameter - innerDiameter) * 0.5;
   v18.origin.y = v18.origin.x;
-  v18.size.width = a4;
-  v18.size.height = a4;
+  v18.size.width = innerDiameter;
+  v18.size.height = innerDiameter;
   CGPathAddEllipseInRect(Mutable, 0, v18);
   v19.origin.x = 0.0;
   v19.origin.y = 0.0;
-  v19.size.width = a3;
-  v19.size.height = a3;
+  v19.size.width = diameter;
+  v19.size.height = diameter;
   CGPathAddEllipseInRect(Mutable, 0, v19);
-  if (v8)
+  if (secondsCopy)
   {
     v14 = 2;
   }
@@ -937,72 +937,72 @@ void __94__SBHClockApplicationIconImageView_makeComponentImageWithMetrics_size_p
     v14 = 3;
   }
 
-  v15 = [a1 makeComponentImageWithMetrics:a7 size:Mutable path:v12 fillColor:v14 options:{a3, a3}];
+  v15 = [self makeComponentImageWithMetrics:metrics size:Mutable path:colorCopy fillColor:v14 options:{diameter, diameter}];
 
   CGPathRelease(Mutable);
 
   return v15;
 }
 
-+ (id)makeDotLayerWithOuterDiameter:(double)a3 innerDiameter:(double)a4 isSeconds:(BOOL)a5 imageSet:(id)a6
++ (id)makeDotLayerWithOuterDiameter:(double)diameter innerDiameter:(double)innerDiameter isSeconds:(BOOL)seconds imageSet:(id)set
 {
-  v8 = a6;
-  v9 = [MEMORY[0x1E6979398] layer];
-  if (a5)
+  setCopy = set;
+  layer = [MEMORY[0x1E6979398] layer];
+  if (seconds)
   {
-    [v8 secondDot];
+    [setCopy secondDot];
   }
 
   else
   {
-    [v8 hourMinuteDot];
+    [setCopy hourMinuteDot];
   }
   v10 = ;
-  [v9 setContents:{objc_msgSend(v10, "CGImage")}];
+  [layer setContents:{objc_msgSend(v10, "CGImage")}];
   [v10 size];
-  [v9 setBounds:{0.0, 0.0, v11, v12}];
+  [layer setBounds:{0.0, 0.0, v11, v12}];
   [v10 scale];
-  [v9 setContentsScale:?];
+  [layer setContentsScale:?];
   v15 = 0;
   memset(v14, 0, sizeof(v14));
-  [v8 getMetrics:v14];
-  [a1 configureHandLayer:v9 metrics:v14];
+  [setCopy getMetrics:v14];
+  [self configureHandLayer:layer metrics:v14];
 
-  return v9;
+  return layer;
 }
 
-+ (id)makeSecondsHandImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)a3 imageAppearance:(id)a4
++ (id)makeSecondsHandImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)metrics imageAppearance:(id)appearance
 {
-  v6 = [a1 secondsHandColorWithImageAppearance:a4];
-  v7 = a3->secondsHandRingDiameter * 0.5;
+  v6 = [self secondsHandColorWithImageAppearance:appearance];
+  v7 = metrics->secondsHandRingDiameter * 0.5;
   Mutable = CGPathCreateMutable();
-  v12.size.width = a3->secondsHandWidth;
-  v12.size.height = a3->secondsHandLength;
-  v12.origin.x = v7 - a3->secondsHandWidth * 0.5;
+  v12.size.width = metrics->secondsHandWidth;
+  v12.size.height = metrics->secondsHandLength;
+  v12.origin.x = v7 - metrics->secondsHandWidth * 0.5;
   v12.origin.y = 0.0;
   CGPathAddRect(Mutable, 0, v12);
-  v13.size.width = a3->secondsHandWidth;
-  v13.origin.x = v7 - a3->secondsHandWidth * 0.5;
-  v13.size.height = a3->secondsHandleLength;
-  v13.origin.y = a3->secondsHandLength + a3->secondsHandRingDiameter;
+  v13.size.width = metrics->secondsHandWidth;
+  v13.origin.x = v7 - metrics->secondsHandWidth * 0.5;
+  v13.size.height = metrics->secondsHandleLength;
+  v13.origin.y = metrics->secondsHandLength + metrics->secondsHandRingDiameter;
   CGPathAddRect(Mutable, 0, v13);
-  v9 = [a1 makeComponentImageWithMetrics:a3 size:Mutable path:v6 fillColor:0 options:{a3->secondsHandBounds.width, a3->secondsHandBounds.height}];
+  v9 = [self makeComponentImageWithMetrics:metrics size:Mutable path:v6 fillColor:0 options:{metrics->secondsHandBounds.width, metrics->secondsHandBounds.height}];
   CGPathRelease(Mutable);
 
   return v9;
 }
 
-+ (id)makeSecondsHandLayerWithImageSet:(id)a3
++ (id)makeSecondsHandLayerWithImageSet:(id)set
 {
   v4 = MEMORY[0x1E6979398];
-  v5 = a3;
-  v6 = [v4 layer];
-  v7 = [v5 seconds];
-  [v6 setContents:{objc_msgSend(v7, "CGImage")}];
-  [v7 size];
-  [v6 setBounds:{0.0, 0.0, v8, v9}];
-  [v7 scale];
-  [v6 setContentsScale:?];
+  setCopy = set;
+  layer = [v4 layer];
+  seconds = [setCopy seconds];
+  [layer setContents:{objc_msgSend(seconds, "CGImage")}];
+  [seconds size];
+  [layer setBounds:{0.0, 0.0, v8, v9}];
+  [seconds scale];
+  [layer setContentsScale:?];
   v25 = 0;
   v23 = 0u;
   v24 = 0u;
@@ -1018,49 +1018,49 @@ void __94__SBHClockApplicationIconImageView_makeComponentImageWithMetrics_size_p
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  [v5 getMetrics:&v11];
+  [setCopy getMetrics:&v11];
 
-  [v6 setAnchorPoint:{0.5, (*(&v11 + 1) + *(&v12 + 1) * 0.5) / *&v14}];
-  [a1 configureHandLayer:v6 metrics:&v11];
+  [layer setAnchorPoint:{0.5, (*(&v11 + 1) + *(&v12 + 1) * 0.5) / *&v14}];
+  [self configureHandLayer:layer metrics:&v11];
 
-  return v6;
+  return layer;
 }
 
-+ (id)makeMinutesHandImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)a3 imageAppearance:(id)a4
++ (id)makeMinutesHandImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)metrics imageAppearance:(id)appearance
 {
-  v6 = [a1 hoursMinutesHandColorWithImageAppearance:a4];
-  v7 = a3->minutesHandRingDiameter * 0.5;
+  v6 = [self hoursMinutesHandColorWithImageAppearance:appearance];
+  v7 = metrics->minutesHandRingDiameter * 0.5;
   Mutable = CGPathCreateMutable();
-  v15.size.width = a3->separatorWidth;
+  v15.size.width = metrics->separatorWidth;
   v15.origin.x = v7 - v15.size.width * 0.5;
-  separatorExtraLength = a3->separatorExtraLength;
-  v15.origin.y = a3->minutesHandLength - separatorExtraLength;
-  v15.size.height = separatorExtraLength + separatorExtraLength + a3->separatorLength;
+  separatorExtraLength = metrics->separatorExtraLength;
+  v15.origin.y = metrics->minutesHandLength - separatorExtraLength;
+  v15.size.height = separatorExtraLength + separatorExtraLength + metrics->separatorLength;
   CGPathAddRect(Mutable, 0, v15);
-  minutesHandWidth = a3->minutesHandWidth;
+  minutesHandWidth = metrics->minutesHandWidth;
   v11 = minutesHandWidth * 0.5;
   CGPathMoveToPoint(Mutable, 0, v7 - minutesHandWidth * 0.5, minutesHandWidth);
   CGPathAddArc(Mutable, 0, v7, v11, v11, 3.14159265, 0.0, 0);
-  CGPathAddLineToPoint(Mutable, 0, v7 + v11, a3->minutesHandLength - a3->minutesHandWidth);
-  CGPathAddArc(Mutable, 0, v7, a3->minutesHandLength - v11, v11, 0.0, 3.14159265, 0);
+  CGPathAddLineToPoint(Mutable, 0, v7 + v11, metrics->minutesHandLength - metrics->minutesHandWidth);
+  CGPathAddArc(Mutable, 0, v7, metrics->minutesHandLength - v11, v11, 0.0, 3.14159265, 0);
   CGPathCloseSubpath(Mutable);
-  v12 = [a1 makeComponentImageWithMetrics:a3 size:Mutable path:v6 fillColor:1 options:{a3->minutesHandBounds.width, a3->minutesHandBounds.height}];
+  v12 = [self makeComponentImageWithMetrics:metrics size:Mutable path:v6 fillColor:1 options:{metrics->minutesHandBounds.width, metrics->minutesHandBounds.height}];
   CGPathRelease(Mutable);
 
   return v12;
 }
 
-+ (id)makeMinutesHandLayerWithImageSet:(id)a3
++ (id)makeMinutesHandLayerWithImageSet:(id)set
 {
   v4 = MEMORY[0x1E6979398];
-  v5 = a3;
-  v6 = [v4 layer];
-  v7 = [v5 minutes];
-  [v6 setContents:{objc_msgSend(v7, "CGImage")}];
-  [v7 size];
-  [v6 setBounds:{0.0, 0.0, v8, v9}];
-  [v7 scale];
-  [v6 setContentsScale:?];
+  setCopy = set;
+  layer = [v4 layer];
+  minutes = [setCopy minutes];
+  [layer setContents:{objc_msgSend(minutes, "CGImage")}];
+  [minutes size];
+  [layer setBounds:{0.0, 0.0, v8, v9}];
+  [minutes scale];
+  [layer setContentsScale:?];
   v22 = 0;
   v20 = 0u;
   v21 = 0u;
@@ -1073,49 +1073,49 @@ void __94__SBHClockApplicationIconImageView_makeComponentImageWithMetrics_size_p
   v12 = 0u;
   v13 = 0u;
   memset(v11, 0, sizeof(v11));
-  [v5 getMetrics:v11];
+  [setCopy getMetrics:v11];
 
-  [v6 setAnchorPoint:{0.5, (*&v15 + *&v12 + *&v18 + *(&v12 + 1) * 0.5) / (*&v15 + *&v15 + *&v14)}];
-  [a1 configureHandLayer:v6 metrics:v11];
+  [layer setAnchorPoint:{0.5, (*&v15 + *&v12 + *&v18 + *(&v12 + 1) * 0.5) / (*&v15 + *&v15 + *&v14)}];
+  [self configureHandLayer:layer metrics:v11];
 
-  return v6;
+  return layer;
 }
 
-+ (id)makeHoursHandImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)a3 imageAppearance:(id)a4
++ (id)makeHoursHandImageWithMetrics:(const SBHClockApplicationIconImageMetrics *)metrics imageAppearance:(id)appearance
 {
-  v6 = [a1 hoursMinutesHandColorWithImageAppearance:a4];
-  v7 = a3->minutesHandRingDiameter * 0.5;
+  v6 = [self hoursMinutesHandColorWithImageAppearance:appearance];
+  v7 = metrics->minutesHandRingDiameter * 0.5;
   Mutable = CGPathCreateMutable();
-  v15.size.width = a3->separatorWidth;
+  v15.size.width = metrics->separatorWidth;
   v15.origin.x = v7 - v15.size.width * 0.5;
-  separatorExtraLength = a3->separatorExtraLength;
-  v15.origin.y = a3->hoursHandLength - separatorExtraLength;
-  v15.size.height = separatorExtraLength + separatorExtraLength + a3->separatorLength;
+  separatorExtraLength = metrics->separatorExtraLength;
+  v15.origin.y = metrics->hoursHandLength - separatorExtraLength;
+  v15.size.height = separatorExtraLength + separatorExtraLength + metrics->separatorLength;
   CGPathAddRect(Mutable, 0, v15);
-  hoursHandWidth = a3->hoursHandWidth;
+  hoursHandWidth = metrics->hoursHandWidth;
   v11 = hoursHandWidth * 0.5;
   CGPathMoveToPoint(Mutable, 0, v7 - hoursHandWidth * 0.5, hoursHandWidth);
   CGPathAddArc(Mutable, 0, v7, v11, v11, 3.14159265, 0.0, 0);
-  CGPathAddLineToPoint(Mutable, 0, v7 + v11, a3->hoursHandLength - a3->hoursHandWidth);
-  CGPathAddArc(Mutable, 0, v7, a3->hoursHandLength - v11, v11, 0.0, 3.14159265, 0);
+  CGPathAddLineToPoint(Mutable, 0, v7 + v11, metrics->hoursHandLength - metrics->hoursHandWidth);
+  CGPathAddArc(Mutable, 0, v7, metrics->hoursHandLength - v11, v11, 0.0, 3.14159265, 0);
   CGPathCloseSubpath(Mutable);
-  v12 = [a1 makeComponentImageWithMetrics:a3 size:Mutable path:v6 fillColor:1 options:{a3->hoursHandBounds.width, a3->hoursHandBounds.height}];
+  v12 = [self makeComponentImageWithMetrics:metrics size:Mutable path:v6 fillColor:1 options:{metrics->hoursHandBounds.width, metrics->hoursHandBounds.height}];
   CGPathRelease(Mutable);
 
   return v12;
 }
 
-+ (id)makeHoursHandLayerWithImageSet:(id)a3
++ (id)makeHoursHandLayerWithImageSet:(id)set
 {
   v4 = MEMORY[0x1E6979398];
-  v5 = a3;
-  v6 = [v4 layer];
-  v7 = [v5 hours];
-  [v6 setContents:{objc_msgSend(v7, "CGImage")}];
-  [v7 size];
-  [v6 setBounds:{0.0, 0.0, v8, v9}];
-  [v7 scale];
-  [v6 setContentsScale:?];
+  setCopy = set;
+  layer = [v4 layer];
+  hours = [setCopy hours];
+  [layer setContents:{objc_msgSend(hours, "CGImage")}];
+  [hours size];
+  [layer setBounds:{0.0, 0.0, v8, v9}];
+  [hours scale];
+  [layer setContentsScale:?];
   v22 = 0;
   v20 = 0u;
   v21 = 0u;
@@ -1128,56 +1128,56 @@ void __94__SBHClockApplicationIconImageView_makeComponentImageWithMetrics_size_p
   v12 = 0u;
   v13 = 0u;
   memset(v11, 0, sizeof(v11));
-  [v5 getMetrics:v11];
+  [setCopy getMetrics:v11];
 
-  [v6 setAnchorPoint:{0.5, (*&v15 + *&v16 + *&v18 + *(&v12 + 1) * 0.5) / (*&v15 + *&v15 + *&v17)}];
-  [a1 configureHandLayer:v6 metrics:v11];
+  [layer setAnchorPoint:{0.5, (*&v15 + *&v16 + *&v18 + *(&v12 + 1) * 0.5) / (*&v15 + *&v15 + *&v17)}];
+  [self configureHandLayer:layer metrics:v11];
 
-  return v6;
+  return layer;
 }
 
-+ (id)makeImageSetForMetrics:(const SBHClockApplicationIconImageMetrics *)a3 imageAppearance:(id)a4
++ (id)makeImageSetForMetrics:(const SBHClockApplicationIconImageMetrics *)metrics imageAppearance:(id)appearance
 {
-  v6 = a4;
+  appearanceCopy = appearance;
   v7 = objc_alloc_init(SBHClockHandsImageSet);
-  [(SBHClockHandsImageSet *)v7 setMetrics:a3];
-  v8 = [a1 makeHoursHandImageWithMetrics:a3 imageAppearance:v6];
+  [(SBHClockHandsImageSet *)v7 setMetrics:metrics];
+  v8 = [self makeHoursHandImageWithMetrics:metrics imageAppearance:appearanceCopy];
   [(SBHClockHandsImageSet *)v7 setHours:v8];
-  v9 = [a1 makeMinutesHandImageWithMetrics:a3 imageAppearance:v6];
+  v9 = [self makeMinutesHandImageWithMetrics:metrics imageAppearance:appearanceCopy];
   [(SBHClockHandsImageSet *)v7 setMinutes:v9];
-  if (([a1 hidesSecondsHand] & 1) == 0)
+  if (([self hidesSecondsHand] & 1) == 0)
   {
-    v10 = [a1 makeSecondsHandImageWithMetrics:a3 imageAppearance:v6];
+    v10 = [self makeSecondsHandImageWithMetrics:metrics imageAppearance:appearanceCopy];
     [(SBHClockHandsImageSet *)v7 setSeconds:v10];
   }
 
-  v11 = [a1 hoursMinutesHandColorWithImageAppearance:v6];
-  v12 = [a1 makeDotImageWithOuterDiameter:v11 innerDiameter:0 color:a3 isSeconds:a3->minutesHandRingDiameter metrics:a3->minutesHandRingKnockoutDiameter];
+  v11 = [self hoursMinutesHandColorWithImageAppearance:appearanceCopy];
+  v12 = [self makeDotImageWithOuterDiameter:v11 innerDiameter:0 color:metrics isSeconds:metrics->minutesHandRingDiameter metrics:metrics->minutesHandRingKnockoutDiameter];
   [(SBHClockHandsImageSet *)v7 setHourMinuteDot:v12];
-  if (([a1 hidesSecondsHand] & 1) == 0)
+  if (([self hidesSecondsHand] & 1) == 0)
   {
-    v13 = [a1 secondsHandColorWithImageAppearance:v6];
-    v14 = [a1 makeDotImageWithOuterDiameter:v13 innerDiameter:1 color:a3 isSeconds:a3->secondsHandRingDiameter metrics:a3->secondsHandRingKnockoutDiameter];
+    v13 = [self secondsHandColorWithImageAppearance:appearanceCopy];
+    v14 = [self makeDotImageWithOuterDiameter:v13 innerDiameter:1 color:metrics isSeconds:metrics->secondsHandRingDiameter metrics:metrics->secondsHandRingKnockoutDiameter];
     [(SBHClockHandsImageSet *)v7 setSecondDot:v14];
   }
 
   return v7;
 }
 
-+ (id)imageSetForMetrics:(const SBHClockApplicationIconImageMetrics *)a3 imageAppearance:(id)a4
++ (id)imageSetForMetrics:(const SBHClockApplicationIconImageMetrics *)metrics imageAppearance:(id)appearance
 {
-  v6 = a4;
+  appearanceCopy = appearance;
   v7 = +[SBHIconImageAppearanceStore defaultIcon];
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3->iconImageInfo.size.width];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:metrics->iconImageInfo.size.width];
   v9 = [imageSetForMetrics_imageAppearance___cachedImageSets objectForKey:v8];
-  v10 = [(SBHIconImageAppearanceStore *)v9 imageForIcon:v7 appearance:v6];
+  v10 = [(SBHIconImageAppearanceStore *)v9 imageForIcon:v7 appearance:appearanceCopy];
   if (v10)
   {
     v11 = v10;
     goto LABEL_6;
   }
 
-  v11 = [a1 makeImageSetForMetrics:a3 imageAppearance:v6];
+  v11 = [self makeImageSetForMetrics:metrics imageAppearance:appearanceCopy];
   if (!imageSetForMetrics_imageAppearance___cachedImageSets)
   {
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1201,35 +1201,35 @@ LABEL_10:
   }
 
 LABEL_5:
-  [(SBHIconImageAppearanceStore *)v9 setImage:v11 forIcon:v7 appearance:v6];
+  [(SBHIconImageAppearanceStore *)v9 setImage:v11 forIcon:v7 appearance:appearanceCopy];
 LABEL_6:
 
   return v11;
 }
 
-- (void)applyMetrics:(const SBHClockApplicationIconImageMetrics *)a3
+- (void)applyMetrics:(const SBHClockApplicationIconImageMetrics *)metrics
 {
-  v24 = [(SBIconImageView *)self effectiveIconImageAppearance];
-  v5 = [(SBHClockApplicationIconImageView *)self layer];
-  v6 = [objc_opt_class() imageSetForMetrics:a3 imageAppearance:v24];
+  effectiveIconImageAppearance = [(SBIconImageView *)self effectiveIconImageAppearance];
+  layer = [(SBHClockApplicationIconImageView *)self layer];
+  v6 = [objc_opt_class() imageSetForMetrics:metrics imageAppearance:effectiveIconImageAppearance];
   [(SBHClockApplicationIconImageView *)self hourMinuteHandOpacity];
   v8 = v7;
   v9 = [objc_opt_class() makeHoursHandLayerWithImageSet:v6];
   LODWORD(v10) = v8;
   [v9 setOpacity:v10];
-  [v5 addSublayer:v9];
+  [layer addSublayer:v9];
   [(CALayer *)self->_hours removeFromSuperlayer];
   objc_storeStrong(&self->_hours, v9);
   v11 = [objc_opt_class() makeMinutesHandLayerWithImageSet:v6];
   LODWORD(v12) = v8;
   [v11 setOpacity:v12];
-  [v5 addSublayer:v11];
+  [layer addSublayer:v11];
   [(CALayer *)self->_minutes removeFromSuperlayer];
   objc_storeStrong(&self->_minutes, v11);
-  v13 = [objc_opt_class() makeDotLayerWithOuterDiameter:0 innerDiameter:v6 isSeconds:a3->minutesHandRingDiameter imageSet:a3->minutesHandRingKnockoutDiameter];
+  v13 = [objc_opt_class() makeDotLayerWithOuterDiameter:0 innerDiameter:v6 isSeconds:metrics->minutesHandRingDiameter imageSet:metrics->minutesHandRingKnockoutDiameter];
   LODWORD(v14) = v8;
   [v13 setOpacity:v14];
-  [v5 addSublayer:v13];
+  [layer addSublayer:v13];
   [(CALayer *)self->_hourMinuteDot removeFromSuperlayer];
   objc_storeStrong(&self->_hourMinuteDot, v13);
   if (([objc_opt_class() hidesSecondsHand] & 1) == 0)
@@ -1239,47 +1239,47 @@ LABEL_6:
     v17 = [objc_opt_class() makeSecondsHandLayerWithImageSet:v6];
     LODWORD(v18) = v16;
     [(CALayer *)v17 setOpacity:v18];
-    [v5 addSublayer:v17];
+    [layer addSublayer:v17];
     [(CALayer *)self->_seconds removeFromSuperlayer];
     seconds = self->_seconds;
     self->_seconds = v17;
     v20 = v17;
 
-    v21 = [objc_opt_class() makeDotLayerWithOuterDiameter:1 innerDiameter:v6 isSeconds:a3->secondsHandRingDiameter imageSet:a3->secondsHandRingKnockoutDiameter];
+    v21 = [objc_opt_class() makeDotLayerWithOuterDiameter:1 innerDiameter:v6 isSeconds:metrics->secondsHandRingDiameter imageSet:metrics->secondsHandRingKnockoutDiameter];
     LODWORD(v22) = v16;
     [(CALayer *)v21 setOpacity:v22];
-    [v5 addSublayer:v21];
+    [layer addSublayer:v21];
     [(CALayer *)self->_secondDot removeFromSuperlayer];
     secondDot = self->_secondDot;
     self->_secondDot = v21;
   }
 
-  [(SBHClockApplicationIconImageView *)self setDisplayedHandsAppearance:v24];
+  [(SBHClockApplicationIconImageView *)self setDisplayedHandsAppearance:effectiveIconImageAppearance];
   [(SBIconImageView *)self didAddSublayer];
 }
 
-+ (void)precacheDataWithIconImageInfo:(SBIconImageInfo *)a3 appearance:(id)a4
++ (void)precacheDataWithIconImageInfo:(SBIconImageInfo *)info appearance:(id)appearance
 {
   v8 = v7;
   v9 = v6;
   v10 = v5;
   v11 = v4;
-  v13 = a3;
-  [a1 precacheDataWithIconImageInfo:v13 appearance:1 options:{v11, v10, v9, v8}];
-  [a1 precacheDataWithIconImageInfo:v13 appearance:0 options:{v11, v10, v9, v8}];
+  infoCopy = info;
+  [self precacheDataWithIconImageInfo:infoCopy appearance:1 options:{v11, v10, v9, v8}];
+  [self precacheDataWithIconImageInfo:infoCopy appearance:0 options:{v11, v10, v9, v8}];
 }
 
-+ (id)clockIconBackgroundTypeIdentifierForNumberingSystem:(id)a3
++ (id)clockIconBackgroundTypeIdentifierForNumberingSystem:(id)system
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 caseInsensitiveCompare:@"latn"])
+  systemCopy = system;
+  v4 = systemCopy;
+  if (systemCopy && [systemCopy caseInsensitiveCompare:@"latn"])
   {
     v5 = [@"com.apple.application-icon.clock.base" stringByAppendingFormat:@".%@", v4];
     v6 = [MEMORY[0x1E69636B0] typeRecordWithIdentifier:v5];
-    v7 = [v6 isDeclared];
+    isDeclared = [v6 isDeclared];
 
-    if (v7)
+    if (isDeclared)
     {
       if (v5)
       {
@@ -1300,8 +1300,8 @@ LABEL_8:
 
 + (id)clockIconBackgroundTypeIdentifierForSystemNumberingSystem
 {
-  v3 = [a1 systemNumberingSystem];
-  v4 = [a1 clockIconBackgroundTypeIdentifierForNumberingSystem:v3];
+  systemNumberingSystem = [self systemNumberingSystem];
+  v4 = [self clockIconBackgroundTypeIdentifierForNumberingSystem:systemNumberingSystem];
 
   return v4;
 }
@@ -1309,19 +1309,19 @@ LABEL_8:
 - (id)clockIconBackgroundTypeIdentifierForCurrentNumberingSystem
 {
   v3 = objc_opt_class();
-  v4 = [(SBHClockApplicationIconImageView *)self currentNumberingSystem];
-  v5 = [v3 clockIconBackgroundTypeIdentifierForNumberingSystem:v4];
+  currentNumberingSystem = [(SBHClockApplicationIconImageView *)self currentNumberingSystem];
+  v5 = [v3 clockIconBackgroundTypeIdentifierForNumberingSystem:currentNumberingSystem];
 
   return v5;
 }
 
-- (void)updateImageAnimated:(BOOL)a3
+- (void)updateImageAnimated:(BOOL)animated
 {
   v6.receiver = self;
   v6.super_class = SBHClockApplicationIconImageView;
-  [(SBIconImageView *)&v6 updateImageAnimated:a3];
-  v4 = [(SBIconImageView *)self effectiveIconImageAppearance];
-  v5 = [(SBHClockApplicationIconImageView *)self displayedHandsAppearance];
+  [(SBIconImageView *)&v6 updateImageAnimated:animated];
+  effectiveIconImageAppearance = [(SBIconImageView *)self effectiveIconImageAppearance];
+  displayedHandsAppearance = [(SBHClockApplicationIconImageView *)self displayedHandsAppearance];
   if ((BSEqualObjects() & 1) == 0)
   {
     [(SBHClockApplicationIconImageView *)self resetForegroundLayers];
@@ -1331,67 +1331,67 @@ LABEL_8:
 
 - (id)iconForImage
 {
-  v3 = [(SBIconImageView *)self icon];
+  icon = [(SBIconImageView *)self icon];
 
-  if (v3)
+  if (icon)
   {
-    v4 = [(SBHClockApplicationIconImageView *)self clockBackgroundIcon];
-    if (!v4)
+    clockBackgroundIcon = [(SBHClockApplicationIconImageView *)self clockBackgroundIcon];
+    if (!clockBackgroundIcon)
     {
-      v5 = [(SBHClockApplicationIconImageView *)self currentNumberingSystem];
-      if (!v5)
+      currentNumberingSystem = [(SBHClockApplicationIconImageView *)self currentNumberingSystem];
+      if (!currentNumberingSystem)
       {
-        v5 = [objc_opt_class() systemNumberingSystem];
-        [(SBHClockApplicationIconImageView *)self setCurrentNumberingSystem:v5];
+        currentNumberingSystem = [objc_opt_class() systemNumberingSystem];
+        [(SBHClockApplicationIconImageView *)self setCurrentNumberingSystem:currentNumberingSystem];
       }
 
       v6 = [SBLeafIcon alloc];
-      v7 = [objc_opt_class() clockIconBackgroundTypeIdentifierForNumberingSystem:v5];
-      v4 = [(SBLeafIcon *)v6 initWithLeafIdentifier:v7 applicationBundleID:0];
+      v7 = [objc_opt_class() clockIconBackgroundTypeIdentifierForNumberingSystem:currentNumberingSystem];
+      clockBackgroundIcon = [(SBLeafIcon *)v6 initWithLeafIdentifier:v7 applicationBundleID:0];
 
       v8 = objc_alloc_init(SBHClockBackgroundIconDataSource);
-      [(SBLeafIcon *)v4 addIconDataSource:v8];
-      [(SBHClockApplicationIconImageView *)self setClockBackgroundIcon:v4];
+      [(SBLeafIcon *)clockBackgroundIcon addIconDataSource:v8];
+      [(SBHClockApplicationIconImageView *)self setClockBackgroundIcon:clockBackgroundIcon];
     }
   }
 
   else
   {
-    v4 = 0;
+    clockBackgroundIcon = 0;
   }
 
-  return v4;
+  return clockBackgroundIcon;
 }
 
-- (void)_setAnimating:(BOOL)a3
+- (void)_setAnimating:(BOOL)animating
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (animating)
   {
     [(SBHClockApplicationIconImageView *)self updateUnanimated];
-    v4 = self;
+    selfCopy = self;
     if (_SBClockIconInitialize___once != -1)
     {
       _SBClockIconGetCalendar_cold_1();
     }
 
-    if (([__tickClients containsObject:v4] & 1) == 0)
+    if (([__tickClients containsObject:selfCopy] & 1) == 0)
     {
       v5 = SBLogClock();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 134218240;
-        v13 = v4;
+        v13 = selfCopy;
         v14 = 2048;
         v15 = [__tickClients count] + 1;
         _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "Add clock icon tick client: %p/%lu", &v12, 0x16u);
       }
 
-      [__tickClients addObject:v4];
-      v6 = [(SBHClockApplicationIconImageView *)v4 hidesSecondHand];
-      if (v6 != +[SBHClockApplicationIconImageView hidesSecondsHand])
+      [__tickClients addObject:selfCopy];
+      hidesSecondHand = [(SBHClockApplicationIconImageView *)selfCopy hidesSecondHand];
+      if (hidesSecondHand != +[SBHClockApplicationIconImageView hidesSecondsHand])
       {
-        [(SBHClockApplicationIconImageView *)v4 updateSecondsHandHidden];
+        [(SBHClockApplicationIconImageView *)selfCopy updateSecondsHandHidden];
       }
 
       _SBClockIconResetTimer();
@@ -1400,20 +1400,20 @@ LABEL_8:
 
   else
   {
-    v7 = self;
-    if ([__tickClients containsObject:v7])
+    selfCopy2 = self;
+    if ([__tickClients containsObject:selfCopy2])
     {
       v8 = SBLogClock();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 134218240;
-        v13 = v7;
+        v13 = selfCopy2;
         v14 = 2048;
         v15 = [__tickClients count] - 1;
         _os_log_impl(&dword_1BEB18000, v8, OS_LOG_TYPE_DEFAULT, "Remove clock icon tick client: %p/%lu", &v12, 0x16u);
       }
 
-      [__tickClients removeObject:v7];
+      [__tickClients removeObject:selfCopy2];
       if (![__tickClients count])
       {
         [__displayLink invalidate];
@@ -1435,15 +1435,15 @@ LABEL_8:
   }
 }
 
-- (void)_updateUnanimatedWithComponents:(id)a3
+- (void)_updateUnanimatedWithComponents:(id)components
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  componentsCopy = components;
   [v4 timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [objc_opt_class() overrideDate];
+  overrideDate = [objc_opt_class() overrideDate];
   v9 = v7 - trunc(v7);
-  if (v8)
+  if (overrideDate)
   {
     v10 = 0.0;
   }
@@ -1453,9 +1453,9 @@ LABEL_8:
     v10 = v9;
   }
 
-  v11 = v10 + [v5 second];
-  v12 = v11 / 60.0 + [v5 minute];
-  v13 = [v5 hour];
+  v11 = v10 + [componentsCopy second];
+  v12 = v11 / 60.0 + [componentsCopy minute];
+  hour = [componentsCopy hour];
 
   v14 = fmod(v11 / 30.0 * 3.14159265, 6.28318531);
   v15 = __sincos_stret(v14);
@@ -1489,7 +1489,7 @@ LABEL_8:
   v25 = xmmword_1ED7EE3A8;
   v26 = unk_1ED7EE3B8;
   [(CALayer *)minutes setTransform:&v23];
-  v20 = fmod((v12 / 60.0 + v13) / 6.0 * 3.14159265, 6.28318531);
+  v20 = fmod((v12 / 60.0 + hour) / 6.0 * 3.14159265, 6.28318531);
   v21 = __sincos_stret(v20);
   *&__cachedTransform = v21.__cosval;
   *(&__cachedTransform + 1) = *&v21.__sinval;
@@ -1507,15 +1507,15 @@ LABEL_8:
   [(CALayer *)hours setTransform:&v23];
 }
 
-- (void)_timerFiredWithComponents:(id)a3 flags:(unint64_t)a4
+- (void)_timerFiredWithComponents:(id)components flags:(unint64_t)flags
 {
-  v4 = a4;
-  v6 = a3;
+  flagsCopy = flags;
+  componentsCopy = components;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v8 = 0.0;
-  if (v4 < 0 && self->_seconds)
+  if (flagsCopy < 0 && self->_seconds)
   {
-    v9 = v7 - trunc(v7) + [v6 second];
+    v9 = v7 - trunc(v7) + [componentsCopy second];
     v8 = v9;
     v10 = fmod(v9 / 30.0 * 3.14159265, 6.28318531);
     v11 = __sincos_stret(v10);
@@ -1535,9 +1535,9 @@ LABEL_8:
     [(CALayer *)seconds setTransform:&v22];
   }
 
-  if ((v4 & 0x40) != 0)
+  if ((flagsCopy & 0x40) != 0)
   {
-    v13 = v8 / 60.0 + [v6 minute];
+    v13 = v8 / 60.0 + [componentsCopy minute];
     v14 = v13;
     v15 = fmod(v13 / 30.0 * 3.14159265, 6.28318531);
     v16 = __sincos_stret(v15);
@@ -1555,9 +1555,9 @@ LABEL_8:
     v24 = xmmword_1ED7EE3A8;
     v25 = unk_1ED7EE3B8;
     [(CALayer *)minutes setTransform:&v22];
-    if ((v4 & 0x20) != 0)
+    if ((flagsCopy & 0x20) != 0)
     {
-      v18 = v14 / 60.0 + [v6 hour];
+      v18 = v14 / 60.0 + [componentsCopy hour];
       v19 = fmod(v18 / 6.0 * 3.14159265, 6.28318531);
       v20 = __sincos_stret(v19);
       *&__cachedTransform = v20.__cosval;
@@ -1586,15 +1586,15 @@ LABEL_8:
   [(SBHClockApplicationIconImageView *)self setClockBackgroundIcon:0];
 }
 
-- (void)localeDidChange:(id)a3
+- (void)localeDidChange:(id)change
 {
-  v5 = [objc_opt_class() systemNumberingSystem];
-  v4 = [(SBHClockApplicationIconImageView *)self currentNumberingSystem];
-  if (!v4 || ([v5 isEqualToString:v4] & 1) == 0)
+  systemNumberingSystem = [objc_opt_class() systemNumberingSystem];
+  currentNumberingSystem = [(SBHClockApplicationIconImageView *)self currentNumberingSystem];
+  if (!currentNumberingSystem || ([systemNumberingSystem isEqualToString:currentNumberingSystem] & 1) == 0)
   {
     [(SBHClockApplicationIconImageView *)self clearCachedImages];
     [(SBHClockApplicationIconImageView *)self updateImageAnimated:0];
-    [(SBHClockApplicationIconImageView *)self setCurrentNumberingSystem:v5];
+    [(SBHClockApplicationIconImageView *)self setCurrentNumberingSystem:systemNumberingSystem];
   }
 }
 
@@ -1634,9 +1634,9 @@ LABEL_8:
   [(SBHClockApplicationIconImageView *)self layoutIfNeeded];
 }
 
-- (void)controller:(id)a3 didChangeOverrideDateFromDate:(id)a4
+- (void)controller:(id)controller didChangeOverrideDateFromDate:(id)date
 {
-  __hasSBFDateTimeOverride = [a3 hasDateOverride];
+  __hasSBFDateTimeOverride = [controller hasDateOverride];
   [(SBHClockApplicationIconImageView *)self updateOngoingAnimationState];
 
   [(SBHClockApplicationIconImageView *)self updateUnanimated];

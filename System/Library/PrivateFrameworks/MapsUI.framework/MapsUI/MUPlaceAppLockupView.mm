@@ -1,6 +1,6 @@
 @interface MUPlaceAppLockupView
 + (CGSize)appIconSize;
-- (MUPlaceAppLockupView)initWithFrame:(CGRect)a3;
+- (MUPlaceAppLockupView)initWithFrame:(CGRect)frame;
 - (MUPlaceAppLockupViewDelegate)delegate;
 - (double)scaledHeight;
 - (void)_punchOutButtonSelected;
@@ -8,7 +8,7 @@
 - (void)_setupSubviews;
 - (void)_updateAppearance;
 - (void)_updateHeightConstraint;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUPlaceAppLockupView
@@ -46,30 +46,30 @@
 
 - (void)_updateAppearance
 {
-  v3 = [(MUAppLockupViewModel *)self->_viewModel titleText];
-  [(UILabel *)self->_titleLabel setText:v3];
+  titleText = [(MUAppLockupViewModel *)self->_viewModel titleText];
+  [(UILabel *)self->_titleLabel setText:titleText];
 
-  v4 = [(MUAppLockupViewModel *)self->_viewModel subtitleText];
-  [(UILabel *)self->_subtitleLabel setText:v4];
+  subtitleText = [(MUAppLockupViewModel *)self->_viewModel subtitleText];
+  [(UILabel *)self->_subtitleLabel setText:subtitleText];
 
   punchoutButton = self->_punchoutButton;
-  v6 = [(MUAppLockupViewModel *)self->_viewModel actionButtonText];
-  [(UIButton *)punchoutButton setTitle:v6 forState:0];
+  actionButtonText = [(MUAppLockupViewModel *)self->_viewModel actionButtonText];
+  [(UIButton *)punchoutButton setTitle:actionButtonText forState:0];
 
-  v7 = [(MUPlaceAppLockupView *)self window];
-  v8 = [v7 screen];
-  if (v8)
+  window = [(MUPlaceAppLockupView *)self window];
+  screen = [window screen];
+  if (screen)
   {
-    v9 = [(MUPlaceAppLockupView *)self window];
-    v10 = [v9 screen];
-    [v10 scale];
+    window2 = [(MUPlaceAppLockupView *)self window];
+    screen2 = [window2 screen];
+    [screen2 scale];
     v12 = v11;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696F3B8] sharedInstance];
-    [v9 screenScale];
+    window2 = [MEMORY[0x1E696F3B8] sharedInstance];
+    [window2 screenScale];
     v12 = v13;
   }
 
@@ -107,114 +107,114 @@ void __41__MUPlaceAppLockupView__updateAppearance__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_viewModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_viewModel, model);
     [(MUPlaceAppLockupView *)self _updateAppearance];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
 - (void)_setupConstraints
 {
   v75[23] = *MEMORY[0x1E69E9840];
-  v3 = [(MUPlaceAppLockupView *)self heightAnchor];
+  heightAnchor = [(MUPlaceAppLockupView *)self heightAnchor];
   [(MUPlaceAppLockupView *)self scaledHeight];
-  v4 = [v3 constraintEqualToConstant:?];
+  v4 = [heightAnchor constraintEqualToConstant:?];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v4;
 
   v51 = MEMORY[0x1E696ACD8];
-  v74 = [(UIImageView *)self->_appLockupImageView heightAnchor];
-  v73 = [v74 constraintEqualToConstant:48.0];
+  heightAnchor2 = [(UIImageView *)self->_appLockupImageView heightAnchor];
+  v73 = [heightAnchor2 constraintEqualToConstant:48.0];
   v75[0] = v73;
-  v72 = [(UIImageView *)self->_appLockupImageView widthAnchor];
-  v71 = [(UIImageView *)self->_appLockupImageView heightAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  widthAnchor = [(UIImageView *)self->_appLockupImageView widthAnchor];
+  heightAnchor3 = [(UIImageView *)self->_appLockupImageView heightAnchor];
+  v70 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
   v75[1] = v70;
-  v69 = [(UIImageView *)self->_appLockupImageView leadingAnchor];
-  v68 = [(MUPlaceAppLockupView *)self leadingAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68 constant:16.0];
+  leadingAnchor = [(UIImageView *)self->_appLockupImageView leadingAnchor];
+  leadingAnchor2 = [(MUPlaceAppLockupView *)self leadingAnchor];
+  v67 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v75[2] = v67;
-  v66 = [(UIImageView *)self->_appLockupImageView trailingAnchor];
-  v65 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide leadingAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65 constant:-10.0];
+  trailingAnchor = [(UIImageView *)self->_appLockupImageView trailingAnchor];
+  leadingAnchor3 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide leadingAnchor];
+  v64 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-10.0];
   v75[3] = v64;
-  v63 = [(UIImageView *)self->_appLockupImageView topAnchor];
-  v62 = [(MUPlaceAppLockupView *)self topAnchor];
-  v61 = [v63 constraintGreaterThanOrEqualToAnchor:v62 constant:14.0];
+  topAnchor = [(UIImageView *)self->_appLockupImageView topAnchor];
+  topAnchor2 = [(MUPlaceAppLockupView *)self topAnchor];
+  v61 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:14.0];
   v75[4] = v61;
-  v60 = [(UIImageView *)self->_appLockupImageView bottomAnchor];
-  v59 = [(MUPlaceAppLockupView *)self bottomAnchor];
-  v58 = [v60 constraintLessThanOrEqualToAnchor:v59 constant:-14.0];
+  bottomAnchor = [(UIImageView *)self->_appLockupImageView bottomAnchor];
+  bottomAnchor2 = [(MUPlaceAppLockupView *)self bottomAnchor];
+  v58 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-14.0];
   v75[5] = v58;
-  v57 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v56 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide leadingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  leadingAnchor4 = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor5 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide leadingAnchor];
+  v55 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v75[6] = v55;
-  v54 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v53 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide trailingAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  trailingAnchor2 = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor3 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide trailingAnchor];
+  v52 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v75[7] = v52;
-  v50 = [(UILabel *)self->_titleLabel topAnchor];
-  v49 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide topAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  topAnchor3 = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor4 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide topAnchor];
+  v48 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v75[8] = v48;
-  v47 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v46 = [(UILabel *)self->_subtitleLabel topAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  bottomAnchor3 = [(UILabel *)self->_titleLabel bottomAnchor];
+  topAnchor5 = [(UILabel *)self->_subtitleLabel topAnchor];
+  v45 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5];
   v75[9] = v45;
-  v44 = [(UILabel *)self->_subtitleLabel leadingAnchor];
-  v43 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide leadingAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  leadingAnchor6 = [(UILabel *)self->_subtitleLabel leadingAnchor];
+  leadingAnchor7 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide leadingAnchor];
+  v42 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v75[10] = v42;
-  v41 = [(UILabel *)self->_subtitleLabel trailingAnchor];
-  v40 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide trailingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  trailingAnchor4 = [(UILabel *)self->_subtitleLabel trailingAnchor];
+  trailingAnchor5 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide trailingAnchor];
+  v39 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v75[11] = v39;
-  v38 = [(UILabel *)self->_subtitleLabel bottomAnchor];
-  v37 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide bottomAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  bottomAnchor4 = [(UILabel *)self->_subtitleLabel bottomAnchor];
+  bottomAnchor5 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide bottomAnchor];
+  v36 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v75[12] = v36;
-  v35 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide topAnchor];
-  v34 = [(MUPlaceAppLockupView *)self topAnchor];
-  v33 = [v35 constraintGreaterThanOrEqualToAnchor:v34 constant:14.0];
+  topAnchor6 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide topAnchor];
+  topAnchor7 = [(MUPlaceAppLockupView *)self topAnchor];
+  v33 = [topAnchor6 constraintGreaterThanOrEqualToAnchor:topAnchor7 constant:14.0];
   v75[13] = v33;
-  v32 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide bottomAnchor];
-  v31 = [(MUPlaceAppLockupView *)self bottomAnchor];
-  v30 = [v32 constraintLessThanOrEqualToAnchor:v31 constant:-14.0];
+  bottomAnchor6 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide bottomAnchor];
+  bottomAnchor7 = [(MUPlaceAppLockupView *)self bottomAnchor];
+  v30 = [bottomAnchor6 constraintLessThanOrEqualToAnchor:bottomAnchor7 constant:-14.0];
   v75[14] = v30;
-  v29 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide trailingAnchor];
-  v28 = [(UIButton *)self->_punchoutButton leadingAnchor];
-  v27 = [v29 constraintLessThanOrEqualToAnchor:v28 constant:-16.0];
+  trailingAnchor6 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide trailingAnchor];
+  leadingAnchor8 = [(UIButton *)self->_punchoutButton leadingAnchor];
+  v27 = [trailingAnchor6 constraintLessThanOrEqualToAnchor:leadingAnchor8 constant:-16.0];
   v75[15] = v27;
-  v26 = [(UIButton *)self->_punchoutButton trailingAnchor];
-  v25 = [(MUPlaceAppLockupView *)self trailingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:-16.0];
+  trailingAnchor7 = [(UIButton *)self->_punchoutButton trailingAnchor];
+  trailingAnchor8 = [(MUPlaceAppLockupView *)self trailingAnchor];
+  v24 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-16.0];
   v75[16] = v24;
-  v23 = [(UIButton *)self->_punchoutButton topAnchor];
-  v22 = [(MUPlaceAppLockupView *)self topAnchor];
-  v21 = [v23 constraintGreaterThanOrEqualToAnchor:v22 constant:24.0];
+  topAnchor8 = [(UIButton *)self->_punchoutButton topAnchor];
+  topAnchor9 = [(MUPlaceAppLockupView *)self topAnchor];
+  v21 = [topAnchor8 constraintGreaterThanOrEqualToAnchor:topAnchor9 constant:24.0];
   v75[17] = v21;
-  v20 = [(UIButton *)self->_punchoutButton bottomAnchor];
-  v19 = [(MUPlaceAppLockupView *)self bottomAnchor];
-  v18 = [v20 constraintLessThanOrEqualToAnchor:v19 constant:-24.0];
+  bottomAnchor8 = [(UIButton *)self->_punchoutButton bottomAnchor];
+  bottomAnchor9 = [(MUPlaceAppLockupView *)self bottomAnchor];
+  v18 = [bottomAnchor8 constraintLessThanOrEqualToAnchor:bottomAnchor9 constant:-24.0];
   v75[18] = v18;
-  v6 = [(UIImageView *)self->_appLockupImageView centerYAnchor];
-  v7 = [(MUPlaceAppLockupView *)self centerYAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  centerYAnchor = [(UIImageView *)self->_appLockupImageView centerYAnchor];
+  centerYAnchor2 = [(MUPlaceAppLockupView *)self centerYAnchor];
+  v8 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v75[19] = v8;
-  v9 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide centerYAnchor];
-  v10 = [(MUPlaceAppLockupView *)self centerYAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  centerYAnchor3 = [(UILayoutGuide *)self->_titleSubtitleLayoutGuide centerYAnchor];
+  centerYAnchor4 = [(MUPlaceAppLockupView *)self centerYAnchor];
+  v11 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v75[20] = v11;
-  v12 = [(UIButton *)self->_punchoutButton centerYAnchor];
-  v13 = [(MUPlaceAppLockupView *)self centerYAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  centerYAnchor5 = [(UIButton *)self->_punchoutButton centerYAnchor];
+  centerYAnchor6 = [(MUPlaceAppLockupView *)self centerYAnchor];
+  v14 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v15 = self->_heightConstraint;
   v75[21] = v14;
   v75[22] = v15;
@@ -264,8 +264,8 @@ void __41__MUPlaceAppLockupView__updateAppearance__block_invoke(uint64_t a1, voi
 
   [(UILabel *)self->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_subtitleLabel setNumberOfLines:1];
-  v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_subtitleLabel setTextColor:v18];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_subtitleLabel setTextColor:secondaryLabelColor];
 
   v19 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
   [(UILabel *)self->_subtitleLabel setFont:v19];
@@ -273,19 +273,19 @@ void __41__MUPlaceAppLockupView__updateAppearance__block_invoke(uint64_t a1, voi
   [(UILabel *)self->_subtitleLabel setAdjustsFontForContentSizeCategory:1];
   [(UILabel *)self->_subtitleLabel setAccessibilityIdentifier:@"PlaceAppLockupSubtitle"];
   [(MUPlaceAppLockupView *)self addSubview:self->_subtitleLabel];
-  v20 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
   v21 = +[MUInfoCardStyle tokenBackgroundColor];
-  v22 = [v20 background];
-  [v22 setBackgroundColor:v21];
+  background = [filledButtonConfiguration background];
+  [background setBackgroundColor:v21];
 
-  [v20 setCornerStyle:4];
-  [v20 setTitleTextAttributesTransformer:&__block_literal_global_324];
+  [filledButtonConfiguration setCornerStyle:4];
+  [filledButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_324];
   v23 = [MEMORY[0x1E69DC738] buttonWithType:0];
   punchoutButton = self->_punchoutButton;
   self->_punchoutButton = v23;
 
   [(UIButton *)self->_punchoutButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIButton *)self->_punchoutButton setConfiguration:v20];
+  [(UIButton *)self->_punchoutButton setConfiguration:filledButtonConfiguration];
   LODWORD(v25) = 1148846080;
   [(UIButton *)self->_punchoutButton setContentCompressionResistancePriority:0 forAxis:v25];
   LODWORD(v26) = 1148846080;
@@ -321,11 +321,11 @@ id __38__MUPlaceAppLockupView__setupSubviews__block_invoke(uint64_t a1, void *a2
   return v6;
 }
 
-- (MUPlaceAppLockupView)initWithFrame:(CGRect)a3
+- (MUPlaceAppLockupView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUPlaceAppLockupView;
-  v3 = [(MUPlaceAppLockupView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPlaceAppLockupView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

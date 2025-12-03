@@ -1,25 +1,25 @@
 @interface MPModelForYouRecommendationMusicKitGroupBuilder
 + (id)allSupportedGroupProperties;
-- (MPModelForYouRecommendationMusicKitGroupBuilder)initWithRequestedGroupPropertySet:(id)a3 requestedItemPropertySet:(id)a4 storeItemMetadataResults:(id)a5 flatSectionedItems:(id)a6 storeURLBag:(id)a7 isListenNow:(BOOL)a8;
-- (id)modelObjectForItemsArray:(id)a3 userIdentity:(id)a4;
-- (id)modelObjectForRecentlyPlayedArray:(id)a3 userIdentity:(id)a4;
-- (id)modelObjectForRecommendationDictionary:(id)a3 userIdentity:(id)a4;
+- (MPModelForYouRecommendationMusicKitGroupBuilder)initWithRequestedGroupPropertySet:(id)set requestedItemPropertySet:(id)propertySet storeItemMetadataResults:(id)results flatSectionedItems:(id)items storeURLBag:(id)bag isListenNow:(BOOL)now;
+- (id)modelObjectForItemsArray:(id)array userIdentity:(id)identity;
+- (id)modelObjectForRecentlyPlayedArray:(id)array userIdentity:(id)identity;
+- (id)modelObjectForRecommendationDictionary:(id)dictionary userIdentity:(id)identity;
 - (void)initializeRequestedGroupProperties;
 @end
 
 @implementation MPModelForYouRecommendationMusicKitGroupBuilder
 
-- (id)modelObjectForRecommendationDictionary:(id)a3 userIdentity:(id)a4
+- (id)modelObjectForRecommendationDictionary:(id)dictionary userIdentity:(id)identity
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  identityCopy = identity;
   if ((*&self->_requestedGroupProperties & 1) == 0)
   {
     [(MPModelForYouRecommendationMusicKitGroupBuilder *)self initializeRequestedGroupProperties];
   }
 
-  v8 = [v6 objectForKey:@"id"];
+  v8 = [dictionaryCopy objectForKey:@"id"];
   if (_NSIsNSString())
   {
     v9 = v8;
@@ -31,7 +31,7 @@
       v24[1] = 3221225472;
       v24[2] = __103__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecommendationDictionary_userIdentity___block_invoke;
       v24[3] = &unk_1E767EE00;
-      v12 = v7;
+      v12 = identityCopy;
       v25 = v12;
       v26 = v9;
       v13 = [(MPIdentifierSet *)v10 initWithSource:@"ForYou" modelKind:v11 block:v24];
@@ -42,7 +42,7 @@
       v21[2] = __103__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecommendationDictionary_userIdentity___block_invoke_3;
       v21[3] = &unk_1E767CFD8;
       v21[4] = self;
-      v22 = v6;
+      v22 = dictionaryCopy;
       v23 = v12;
       v15 = [(MPModelObject *)v14 initWithIdentifiers:v13 block:v21];
     }
@@ -58,9 +58,9 @@
     v15 = 0;
   }
 
-  v16 = [(MPModelForYouRecommendationGroup *)v15 title];
+  title = [(MPModelForYouRecommendationGroup *)v15 title];
 
-  if (v16)
+  if (title)
   {
     if ([(MPModelForYouRecommendationGroup *)v15 groupType]== 4 || [(MPModelForYouRecommendationGroup *)v15 numberOfItems])
     {
@@ -72,7 +72,7 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v28 = v6;
+      v28 = dictionaryCopy;
       v19 = "Dropping empty node: %{public}@";
       goto LABEL_17;
     }
@@ -84,7 +84,7 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v28 = v6;
+      v28 = dictionaryCopy;
       v19 = "Dropping node without title: %{public}@";
 LABEL_17:
       _os_log_impl(&dword_1A238D000, v18, OS_LOG_TYPE_ERROR, v19, buf, 0xCu);
@@ -721,10 +721,10 @@ LABEL_115:
   }
 }
 
-- (id)modelObjectForItemsArray:(id)a3 userIdentity:(id)a4
+- (id)modelObjectForItemsArray:(id)array userIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  identityCopy = identity;
   if ((*&self->_requestedGroupProperties & 1) == 0)
   {
     [(MPModelForYouRecommendationMusicKitGroupBuilder *)self initializeRequestedGroupProperties];
@@ -737,10 +737,10 @@ LABEL_115:
   v14[2] = __89__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForItemsArray_userIdentity___block_invoke;
   v14[3] = &unk_1E767CFD8;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = arrayCopy;
+  v16 = identityCopy;
+  v10 = identityCopy;
+  v11 = arrayCopy;
   v12 = [(MPModelObject *)v8 initWithIdentifiers:v9 block:v14];
 
   return v12;
@@ -863,10 +863,10 @@ void __89__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForItemsAr
   [*(*(a1 + 32) + 72) appendItems:v24];
 }
 
-- (id)modelObjectForRecentlyPlayedArray:(id)a3 userIdentity:(id)a4
+- (id)modelObjectForRecentlyPlayedArray:(id)array userIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  identityCopy = identity;
   if ((*&self->_requestedGroupProperties & 1) == 0)
   {
     [(MPModelForYouRecommendationMusicKitGroupBuilder *)self initializeRequestedGroupProperties];
@@ -879,10 +879,10 @@ void __89__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForItemsAr
   v14[2] = __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentlyPlayedArray_userIdentity___block_invoke;
   v14[3] = &unk_1E767CFD8;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = arrayCopy;
+  v16 = identityCopy;
+  v10 = identityCopy;
+  v11 = arrayCopy;
   v12 = [(MPModelObject *)v8 initWithIdentifiers:v9 block:v14];
 
   return v12;
@@ -998,8 +998,8 @@ void __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentl
 
 - (void)initializeRequestedGroupProperties
 {
-  v22 = [(MPPropertySet *)self->_requestedGroupPropertySet properties];
-  if ([v22 containsObject:@"MPModelForYouRecommendationGroupPropertyGroupType"])
+  properties = [(MPPropertySet *)self->_requestedGroupPropertySet properties];
+  if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyGroupType"])
   {
     v3 = 2;
   }
@@ -1010,7 +1010,7 @@ void __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentl
   }
 
   *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xFFFD | v3;
-  if ([v22 containsObject:@"MPModelForYouRecommendationGroupPropertyLastUpdatedDate"])
+  if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyLastUpdatedDate"])
   {
     v4 = 4;
   }
@@ -1021,7 +1021,7 @@ void __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentl
   }
 
   *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xFFFB | v4;
-  if ([v22 containsObject:@"MPModelForYouRecommendationGroupPropertyTitle"])
+  if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyTitle"])
   {
     v5 = 8;
   }
@@ -1032,7 +1032,7 @@ void __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentl
   }
 
   *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xFFF7 | v5;
-  if ([v22 containsObject:@"MPModelForYouRecommendationGroupPropertyLoadAdditionalContentURL"])
+  if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyLoadAdditionalContentURL"])
   {
     v6 = 32;
   }
@@ -1043,7 +1043,7 @@ void __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentl
   }
 
   *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xFFDF | v6;
-  if ([v22 containsObject:@"MPModelForYouRecommendationGroupPropertyHrefURL"])
+  if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyHrefURL"])
   {
     v7 = 64;
   }
@@ -1054,7 +1054,7 @@ void __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentl
   }
 
   *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xFFBF | v7;
-  if ([v22 containsObject:@"MPModelForYouRecommendationGroupPropertyRefreshURL"])
+  if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyRefreshURL"])
   {
     v8 = 128;
   }
@@ -1065,7 +1065,7 @@ void __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentl
   }
 
   *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xFF7F | v8;
-  if ([v22 containsObject:@"MPModelForYouRecommendationGroupPropertyTraits"])
+  if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyTraits"])
   {
     v9 = 256;
   }
@@ -1076,7 +1076,7 @@ void __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentl
   }
 
   *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xFEFF | v9;
-  if ([v22 containsObject:@"MPModelForYouRecommendationGroupPropertyDisplaysAsGridCellInCarPlay"])
+  if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyDisplaysAsGridCellInCarPlay"])
   {
     v10 = 512;
   }
@@ -1087,7 +1087,7 @@ void __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentl
   }
 
   *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xFDFF | v10;
-  if ([v22 containsObject:@"MPModelForYouRecommendationGroupPropertyDisplaysAsTitledSectionWithRowsInCarPlay"])
+  if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyDisplaysAsTitledSectionWithRowsInCarPlay"])
   {
     v11 = 1024;
   }
@@ -1098,7 +1098,7 @@ void __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentl
   }
 
   *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xFBFF | v11;
-  if ([v22 containsObject:@"MPModelForYouRecommendationGroupPropertyDecorations"])
+  if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyDecorations"])
   {
     v12 = 2048;
   }
@@ -1109,8 +1109,8 @@ void __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentl
   }
 
   *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xF7FF | v12;
-  v13 = [(MPPropertySet *)self->_requestedItemPropertySet relationships];
-  v14 = [v13 objectForKey:@"MPModelForYouRecommendationItemRelationshipSubgroup"];
+  relationships = [(MPPropertySet *)self->_requestedItemPropertySet relationships];
+  v14 = [relationships objectForKey:@"MPModelForYouRecommendationItemRelationshipSubgroup"];
   *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xFFEF | (16 * (v14 != 0));
 
   v15 = [[MPModelForYouRecommendationMusicKitItemBuilder alloc] initWithRequestedPropertySet:self->_requestedItemPropertySet storeItemMetadataResults:self->_storeItemMetadataResults flatSectionedItems:self->_flatSectionedItems storeURLBag:self->_storeURLBag isListenNow:self->_isListenNow];
@@ -1138,33 +1138,33 @@ void __98__MPModelForYouRecommendationMusicKitGroupBuilder_modelObjectForRecentl
   *&self->_requestedGroupProperties = requestedGroupProperties | 1;
 }
 
-- (MPModelForYouRecommendationMusicKitGroupBuilder)initWithRequestedGroupPropertySet:(id)a3 requestedItemPropertySet:(id)a4 storeItemMetadataResults:(id)a5 flatSectionedItems:(id)a6 storeURLBag:(id)a7 isListenNow:(BOOL)a8
+- (MPModelForYouRecommendationMusicKitGroupBuilder)initWithRequestedGroupPropertySet:(id)set requestedItemPropertySet:(id)propertySet storeItemMetadataResults:(id)results flatSectionedItems:(id)items storeURLBag:(id)bag isListenNow:(BOOL)now
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  setCopy = set;
+  propertySetCopy = propertySet;
+  resultsCopy = results;
+  itemsCopy = items;
+  bagCopy = bag;
   v27.receiver = self;
   v27.super_class = MPModelForYouRecommendationMusicKitGroupBuilder;
   v19 = [(MPModelForYouRecommendationMusicKitGroupBuilder *)&v27 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [setCopy copy];
     requestedGroupPropertySet = v19->_requestedGroupPropertySet;
     v19->_requestedGroupPropertySet = v20;
 
-    v22 = [v15 copy];
+    v22 = [propertySetCopy copy];
     requestedItemPropertySet = v19->_requestedItemPropertySet;
     v19->_requestedItemPropertySet = v22;
 
-    v24 = [v16 copy];
+    v24 = [resultsCopy copy];
     storeItemMetadataResults = v19->_storeItemMetadataResults;
     v19->_storeItemMetadataResults = v24;
 
-    objc_storeStrong(&v19->_flatSectionedItems, a6);
-    objc_storeStrong(&v19->_storeURLBag, a7);
-    v19->_isListenNow = a8;
+    objc_storeStrong(&v19->_flatSectionedItems, items);
+    objc_storeStrong(&v19->_storeURLBag, bag);
+    v19->_isListenNow = now;
   }
 
   return v19;

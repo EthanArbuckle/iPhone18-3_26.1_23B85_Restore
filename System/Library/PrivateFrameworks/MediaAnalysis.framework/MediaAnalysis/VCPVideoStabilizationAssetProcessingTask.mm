@@ -1,7 +1,7 @@
 @interface VCPVideoStabilizationAssetProcessingTask
-+ (BOOL)deserializeStabilizationRecipeInAttributes:(id)a3;
-+ (id)taskWithAssets:(id)a3 andOptions:(id)a4 andCompletionHandler:(id)a5;
-- (VCPVideoStabilizationAssetProcessingTask)initWithAssets:(id)a3 andOptions:(id)a4 andCompletionHandler:(id)a5;
++ (BOOL)deserializeStabilizationRecipeInAttributes:(id)attributes;
++ (id)taskWithAssets:(id)assets andOptions:(id)options andCompletionHandler:(id)handler;
+- (VCPVideoStabilizationAssetProcessingTask)initWithAssets:(id)assets andOptions:(id)options andCompletionHandler:(id)handler;
 - (int)main;
 - (int)run;
 - (void)dealloc;
@@ -9,11 +9,11 @@
 
 @implementation VCPVideoStabilizationAssetProcessingTask
 
-- (VCPVideoStabilizationAssetProcessingTask)initWithAssets:(id)a3 andOptions:(id)a4 andCompletionHandler:(id)a5
+- (VCPVideoStabilizationAssetProcessingTask)initWithAssets:(id)assets andOptions:(id)options andCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetsCopy = assets;
+  optionsCopy = options;
+  handlerCopy = handler;
   v31.receiver = self;
   v31.super_class = VCPVideoStabilizationAssetProcessingTask;
   v12 = [(VCPVideoStabilizationAssetProcessingTask *)&v31 init];
@@ -25,9 +25,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v11)
+  if (handlerCopy)
   {
-    v14 = v11;
+    v14 = handlerCopy;
   }
 
   else
@@ -39,34 +39,34 @@ LABEL_15:
   completionHandler = v12->_completionHandler;
   v12->_completionHandler = v15;
 
-  if ([v9 count])
+  if ([assetsCopy count])
   {
-    objc_storeStrong(&v12->_assets, a3);
+    objc_storeStrong(&v12->_assets, assets);
     v17 = [(NSArray *)v12->_assets objectAtIndexedSubscript:0];
-    v18 = [v17 photoLibrary];
+    photoLibrary = [v17 photoLibrary];
     photoLibrary = v13->_photoLibrary;
-    v13->_photoLibrary = v18;
+    v13->_photoLibrary = photoLibrary;
 
     v20 = [VCPDatabaseReader databaseForPhotoLibrary:v13->_photoLibrary];
     database = v13->_database;
     v13->_database = v20;
 
-    v22 = [v10 objectForKeyedSubscript:@"AllowOnDemandPixel"];
+    v22 = [optionsCopy objectForKeyedSubscript:@"AllowOnDemandPixel"];
     v13->_onDemandPixel = [v22 BOOLValue];
 
-    v23 = [v10 objectForKeyedSubscript:@"AllowOnDemandGyro"];
+    v23 = [optionsCopy objectForKeyedSubscript:@"AllowOnDemandGyro"];
     v13->_onDemandGyro = [v23 BOOLValue];
 
-    v24 = [v10 objectForKeyedSubscript:VCPVideoStabilizationProcessing_GyroKey];
-    if (v24 && ([v10 objectForKeyedSubscript:VCPVideoStabilizationProcessing_PixelKey], v25 = objc_claimAutoreleasedReturnValue(), v25, v24, !v25))
+    v24 = [optionsCopy objectForKeyedSubscript:VCPVideoStabilizationProcessing_GyroKey];
+    if (v24 && ([optionsCopy objectForKeyedSubscript:VCPVideoStabilizationProcessing_PixelKey], v25 = objc_claimAutoreleasedReturnValue(), v25, v24, !v25))
     {
       v28 = 0x10000000;
     }
 
     else
     {
-      v26 = [v10 objectForKeyedSubscript:VCPVideoStabilizationProcessing_PixelKey];
-      if (v26 && ([v10 objectForKeyedSubscript:VCPVideoStabilizationProcessing_GyroKey], v27 = objc_claimAutoreleasedReturnValue(), v27, v26, !v27))
+      v26 = [optionsCopy objectForKeyedSubscript:VCPVideoStabilizationProcessing_PixelKey];
+      if (v26 && ([optionsCopy objectForKeyedSubscript:VCPVideoStabilizationProcessing_GyroKey], v27 = objc_claimAutoreleasedReturnValue(), v27, v26, !v27))
       {
         v28 = 0x4000000;
       }
@@ -87,12 +87,12 @@ LABEL_16:
   return v29;
 }
 
-+ (id)taskWithAssets:(id)a3 andOptions:(id)a4 andCompletionHandler:(id)a5
++ (id)taskWithAssets:(id)assets andOptions:(id)options andCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(objc_opt_class()) initWithAssets:v7 andOptions:v8 andCompletionHandler:v9];
+  assetsCopy = assets;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v10 = [objc_alloc(objc_opt_class()) initWithAssets:assetsCopy andOptions:optionsCopy andCompletionHandler:handlerCopy];
 
   return v10;
 }
@@ -121,23 +121,23 @@ LABEL_16:
   [(VCPVideoStabilizationAssetProcessingTask *)&v9 dealloc];
 }
 
-+ (BOOL)deserializeStabilizationRecipeInAttributes:(id)a3
++ (BOOL)deserializeStabilizationRecipeInAttributes:(id)attributes
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"stabilizationRecipe"];
+  attributesCopy = attributes;
+  v4 = [attributesCopy objectForKeyedSubscript:@"stabilizationRecipe"];
 
   if (v4)
   {
     v5 = [VCPProtoMovieStabilizationRecipe alloc];
-    v6 = [v3 objectForKeyedSubscript:@"stabilizationRecipe"];
+    v6 = [attributesCopy objectForKeyedSubscript:@"stabilizationRecipe"];
     v7 = [(VCPProtoMovieStabilizationRecipe *)v5 initWithData:v6];
 
-    v8 = [(VCPProtoMovieStabilizationRecipe *)v7 exportToLegacyDictionary];
-    v9 = v8 != 0;
-    if (v8)
+    exportToLegacyDictionary = [(VCPProtoMovieStabilizationRecipe *)v7 exportToLegacyDictionary];
+    v9 = exportToLegacyDictionary != 0;
+    if (exportToLegacyDictionary)
     {
-      [v3 removeObjectForKey:@"stabilizationRecipe"];
-      [v3 addEntriesFromDictionary:v8];
+      [attributesCopy removeObjectForKey:@"stabilizationRecipe"];
+      [attributesCopy addEntriesFromDictionary:exportToLegacyDictionary];
     }
   }
 
@@ -159,17 +159,17 @@ LABEL_16:
 
   if (+[MADManagedPhotosAsset isMACDReadEnabled])
   {
-    v3 = [(NSArray *)self->_assets firstObject];
-    v4 = [v3 photoLibrary];
-    v35 = [v4 mad_fetchRequest];
+    firstObject = [(NSArray *)self->_assets firstObject];
+    photoLibrary = [firstObject photoLibrary];
+    mad_fetchRequest = [photoLibrary mad_fetchRequest];
   }
 
   else
   {
-    v35 = 0;
+    mad_fetchRequest = 0;
   }
 
-  v37 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
@@ -199,30 +199,30 @@ LABEL_8:
 
       if (+[MADManagedPhotosAsset isMACDReadEnabled])
       {
-        v10 = [v8 localIdentifier];
-        [v35 fetchAnalysisWithLocalIdentifier:v10 predicate:0];
+        localIdentifier = [v8 localIdentifier];
+        [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier predicate:0];
       }
 
       else
       {
         database = self->_database;
-        v10 = [v8 localIdentifier];
-        [(VCPDatabaseReader *)database queryAnalysisForAsset:v10];
+        localIdentifier = [v8 localIdentifier];
+        [(VCPDatabaseReader *)database queryAnalysisForAsset:localIdentifier];
       }
       v12 = ;
 
-      v13 = [v12 vcp_results];
-      v14 = [v13 objectForKeyedSubscript:@"VideoStabilizationResults"];
+      vcp_results = [v12 vcp_results];
+      v14 = [vcp_results objectForKeyedSubscript:@"VideoStabilizationResults"];
 
       if (v14)
       {
         v15 = [v14 objectAtIndexedSubscript:0];
         v16 = [v15 objectForKeyedSubscript:@"attributes"];
         v17 = [v16 objectForKeyedSubscript:@"gyroStabilization"];
-        v18 = [v17 BOOLValue];
+        bOOLValue = [v17 BOOLValue];
 
         stabilizationType = self->_stabilizationType;
-        if (v18)
+        if (bOOLValue)
         {
           if ((stabilizationType & 0x10000000) == 0)
           {
@@ -274,8 +274,8 @@ LABEL_22:
         v40[3] = &unk_1E834C078;
         v40[4] = self;
         v27 = [(VCPMovieAnalyzer *)v25 analyzeAsset:v40 streamed:0];
-        v28 = [v27 vcp_results];
-        v14 = [v28 objectForKeyedSubscript:@"VideoStabilizationResults"];
+        vcp_results2 = [v27 vcp_results];
+        v14 = [vcp_results2 objectForKeyedSubscript:@"VideoStabilizationResults"];
       }
 
       if (v14)
@@ -294,8 +294,8 @@ LABEL_42:
           goto LABEL_45;
         }
 
-        v32 = [v8 localIdentifier];
-        [v37 setObject:v31 forKeyedSubscript:v32];
+        localIdentifier2 = [v8 localIdentifier];
+        [dictionary setObject:v31 forKeyedSubscript:localIdentifier2];
       }
 
       if (v38 == ++v7)
@@ -311,9 +311,9 @@ LABEL_42:
     }
   }
 
-  if ([v37 count])
+  if ([dictionary count])
   {
-    v33 = v37;
+    v33 = dictionary;
   }
 
   else
@@ -322,7 +322,7 @@ LABEL_42:
     v33 = 0;
   }
 
-  v37 = v33;
+  dictionary = v33;
   (*(self->_completionHandler + 2))();
   v5 = 0;
 LABEL_45:
@@ -345,7 +345,7 @@ LABEL_45:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "VCPVideoStabilizationAssetProcessingTask", "", v16, 2u);
   }
 
-  v7 = [(VCPVideoStabilizationAssetProcessingTask *)self main];
+  main = [(VCPVideoStabilizationAssetProcessingTask *)self main];
   v8 = VCPSignPostLog();
   v9 = v8;
   if (v4 - 1 < 0xFFFFFFFFFFFFFFFELL && os_signpost_enabled(v8))
@@ -354,7 +354,7 @@ LABEL_45:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v9, OS_SIGNPOST_INTERVAL_END, v4, "VCPVideoStabilizationAssetProcessingTask", "", v16, 2u);
   }
 
-  if (v7)
+  if (main)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -368,11 +368,11 @@ LABEL_45:
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video stabilization processing failed"];
     v18[0] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-    v14 = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:v7 userInfo:v13];
+    v14 = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:main userInfo:v13];
     completionHandler[2](completionHandler, 0, v14);
   }
 
-  return v7;
+  return main;
 }
 
 @end

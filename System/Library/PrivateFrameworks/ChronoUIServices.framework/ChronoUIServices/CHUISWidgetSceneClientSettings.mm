@@ -3,8 +3,8 @@
 - (BOOL)containsInteractiveControls;
 - (NSData)lightingImageData;
 - (NSString)entryContentID;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)entryContentType;
 @end
 
@@ -12,8 +12,8 @@
 
 - (BOOL)containsInteractiveControls
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:88888];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:88888];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -21,8 +21,8 @@
 
 - (BOOL)baseContentTouchedDown
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:88889];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:88889];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -30,39 +30,39 @@
 
 - (unint64_t)entryContentType
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88891];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88891];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (NSData)lightingImageData
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88890];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88890];
 
   return v3;
 }
 
 - (NSString)entryContentID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88892];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88892];
 
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHUISMutableWidgetSceneClientSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 88888 >= 5)
+  if (setting - 88888 >= 5)
   {
     v8 = v3;
     v9 = v4;
@@ -73,7 +73,7 @@
 
   else
   {
-    v5 = off_1E8575300[a3 - 88888];
+    v5 = off_1E8575300[setting - 88888];
   }
 
   return v5;

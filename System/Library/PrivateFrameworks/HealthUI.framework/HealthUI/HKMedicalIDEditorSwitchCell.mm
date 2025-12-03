@@ -1,16 +1,16 @@
 @interface HKMedicalIDEditorSwitchCell
-- (HKMedicalIDEditorSwitchCell)initWithTitle:(id)a3 defaultState:(BOOL)a4;
+- (HKMedicalIDEditorSwitchCell)initWithTitle:(id)title defaultState:(BOOL)state;
 - (HKMedicalIDEditorSwitchDelegate)delegate;
-- (void)_switchSwitched:(id)a3;
+- (void)_switchSwitched:(id)switched;
 - (void)setUIDisabled;
 @end
 
 @implementation HKMedicalIDEditorSwitchCell
 
-- (HKMedicalIDEditorSwitchCell)initWithTitle:(id)a3 defaultState:(BOOL)a4
+- (HKMedicalIDEditorSwitchCell)initWithTitle:(id)title defaultState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
+  stateCopy = state;
+  titleCopy = title;
   v16.receiver = self;
   v16.super_class = HKMedicalIDEditorSwitchCell;
   v7 = [(HKMedicalIDEditorSwitchCell *)&v16 initWithStyle:0 reuseIdentifier:@"HKMedicalIDEditorSwitchCellIdentifier"];
@@ -24,36 +24,36 @@
 
     [(UISwitch *)v8->_switch addTarget:v8 action:sel__switchSwitched_ forControlEvents:4096];
     [(HKMedicalIDEditorSwitchCell *)v8 setAccessoryView:v8->_switch];
-    v11 = [(HKMedicalIDEditorSwitchCell *)v8 textLabel];
-    [v11 setText:v6];
+    textLabel = [(HKMedicalIDEditorSwitchCell *)v8 textLabel];
+    [textLabel setText:titleCopy];
 
-    v12 = [(HKMedicalIDEditorSwitchCell *)v8 textLabel];
-    [v12 setNumberOfLines:0];
+    textLabel2 = [(HKMedicalIDEditorSwitchCell *)v8 textLabel];
+    [textLabel2 setNumberOfLines:0];
 
     v13 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    v14 = [(HKMedicalIDEditorSwitchCell *)v8 textLabel];
-    [v14 setFont:v13];
+    textLabel3 = [(HKMedicalIDEditorSwitchCell *)v8 textLabel];
+    [textLabel3 setFont:v13];
 
-    [(UISwitch *)v8->_switch setOn:v4];
+    [(UISwitch *)v8->_switch setOn:stateCopy];
   }
 
   return v8;
 }
 
-- (void)_switchSwitched:(id)a3
+- (void)_switchSwitched:(id)switched
 {
-  v4 = a3;
+  switchedCopy = switched;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [v4 isOn];
+  isOn = [switchedCopy isOn];
 
-  [WeakRetained switchWasChanged:v5];
+  [WeakRetained switchWasChanged:isOn];
 }
 
 - (void)setUIDisabled
 {
   [(HKMedicalIDEditorSwitchCell *)self setUserInteractionEnabled:0];
-  v3 = [(HKMedicalIDEditorSwitchCell *)self textLabel];
-  [v3 setEnabled:0];
+  textLabel = [(HKMedicalIDEditorSwitchCell *)self textLabel];
+  [textLabel setEnabled:0];
 
   v4 = self->_switch;
 

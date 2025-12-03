@@ -1,29 +1,29 @@
 @interface CPSClipCleanupManager
-+ (id)_parentBundleIDsFromAppRecord:(id)a3;
++ (id)_parentBundleIDsFromAppRecord:(id)record;
 + (id)sharedManager;
-- (BOOL)_shouldDeleteClipWithRecord:(id)a3 parentRecord:(id)a4;
+- (BOOL)_shouldDeleteClipWithRecord:(id)record parentRecord:(id)parentRecord;
 - (CPSClipCleanupManager)init;
-- (id)_allAppClipsForPlaceholderOnly:(BOOL)a3;
-- (void)_applicationsDidChange:(id)a3 operationHandler:(id)a4;
-- (void)_deleteClipWhenBackgrounded:(id)a3 completionHandler:(id)a4;
-- (void)_didReceiveApplicationChangedNotification:(id)a3 operationHandler:(id)a4;
-- (void)_didReceiveApplicationRegisteredNotification:(id)a3;
-- (void)_didReceiveApplicationUnregisteredNotification:(id)a3;
-- (void)_didReceiveMCSettingsChangedNotification:(id)a3;
-- (void)_handleNewInstalledAppWithBundleID:(id)a3;
-- (void)_handleNewUninstalledAppWithBundleID:(id)a3;
+- (id)_allAppClipsForPlaceholderOnly:(BOOL)only;
+- (void)_applicationsDidChange:(id)change operationHandler:(id)handler;
+- (void)_deleteClipWhenBackgrounded:(id)backgrounded completionHandler:(id)handler;
+- (void)_didReceiveApplicationChangedNotification:(id)notification operationHandler:(id)handler;
+- (void)_didReceiveApplicationRegisteredNotification:(id)notification;
+- (void)_didReceiveApplicationUnregisteredNotification:(id)notification;
+- (void)_didReceiveMCSettingsChangedNotification:(id)notification;
+- (void)_handleNewInstalledAppWithBundleID:(id)d;
+- (void)_handleNewUninstalledAppWithBundleID:(id)d;
 - (void)_registerDistributedNotificationHandler;
 - (void)_registerLocalNotifications;
-- (void)_removeClipCancellingPendingRemovalIfNeeded:(id)a3 completionHandler:(id)a4;
-- (void)_transferTCCPermissionsFromClipWithBundleID:(id)a3 toParentAppWithBundleID:(id)a4;
-- (void)_uninstallClipWithBundleIdentifier:(id)a3 deletionPromise:(id)a4;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)assertionTargetProcessDidExit:(id)a3;
+- (void)_removeClipCancellingPendingRemovalIfNeeded:(id)needed completionHandler:(id)handler;
+- (void)_transferTCCPermissionsFromClipWithBundleID:(id)d toParentAppWithBundleID:(id)iD;
+- (void)_uninstallClipWithBundleIdentifier:(id)identifier deletionPromise:(id)promise;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)assertionTargetProcessDidExit:(id)exit;
 - (void)dealloc;
-- (void)removeClipsByUser:(id)a3 completionHandler:(id)a4;
-- (void)removeFailedClipInstallsWithCompletionHandler:(id)a3;
-- (void)uninstallClipsWithParentAppInstalledWithCompletionHandler:(id)a3;
+- (void)removeClipsByUser:(id)user completionHandler:(id)handler;
+- (void)removeFailedClipInstallsWithCompletionHandler:(id)handler;
+- (void)uninstallClipsWithParentAppInstalledWithCompletionHandler:(id)handler;
 @end
 
 @implementation CPSClipCleanupManager
@@ -69,8 +69,8 @@ uint64_t __38__CPSClipCleanupManager_sharedManager__block_invoke()
 
     [(CPSClipCleanupManager *)v2 _registerLocalNotifications];
     [(CPSClipCleanupManager *)v2 _registerDistributedNotificationHandler];
-    v10 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v10 addObserver:v2];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:v2];
 
     v11 = v2;
   }
@@ -81,15 +81,15 @@ uint64_t __38__CPSClipCleanupManager_sharedManager__block_invoke()
 - (void)dealloc
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(NSMutableDictionary *)self->_pendingTerminationAssertionsByBundleIDs allValues];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  allValues = [(NSMutableDictionary *)self->_pendingTerminationAssertionsByBundleIDs allValues];
+  v5 = [allValues countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -100,7 +100,7 @@ uint64_t __38__CPSClipCleanupManager_sharedManager__block_invoke()
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
@@ -108,7 +108,7 @@ uint64_t __38__CPSClipCleanupManager_sharedManager__block_invoke()
         [v9 invalidate];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v6);
@@ -118,8 +118,8 @@ uint64_t __38__CPSClipCleanupManager_sharedManager__block_invoke()
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(NSMutableDictionary *)self->_clipDeletionPromisesByBundleIDs allValues];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_clipDeletionPromisesByBundleIDs allValues];
+  v11 = [allValues2 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
@@ -130,7 +130,7 @@ uint64_t __38__CPSClipCleanupManager_sharedManager__block_invoke()
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues2);
         }
 
         v15 = *(*(&v19 + 1) + 8 * j);
@@ -138,7 +138,7 @@ uint64_t __38__CPSClipCleanupManager_sharedManager__block_invoke()
         [v15 finishWithError:v16];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v12 = [allValues2 countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v12);
@@ -150,16 +150,16 @@ uint64_t __38__CPSClipCleanupManager_sharedManager__block_invoke()
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeClipsByUser:(id)a3 completionHandler:(id)a4
+- (void)removeClipsByUser:(id)user completionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  handlerCopy = handler;
   v8 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v18 = v6;
+    v18 = userCopy;
     _os_log_impl(&dword_2436ED000, v8, OS_LOG_TYPE_DEFAULT, "CPSClipCleanupManager: user deleting clips (%{private}@)", buf, 0xCu);
   }
 
@@ -168,11 +168,11 @@ uint64_t __38__CPSClipCleanupManager_sharedManager__block_invoke()
   v13[1] = 3221225472;
   v13[2] = __61__CPSClipCleanupManager_removeClipsByUser_completionHandler___block_invoke;
   v13[3] = &unk_278DCDCA8;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = userCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = userCopy;
   [v9 removeWebClipsWithApplicationBundleIdentifiers:v11 completionHandler:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -272,20 +272,20 @@ void __61__CPSClipCleanupManager_removeClipsByUser_completionHandler___block_inv
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_removeClipCancellingPendingRemovalIfNeeded:(id)a3 completionHandler:(id)a4
+- (void)_removeClipCancellingPendingRemovalIfNeeded:(id)needed completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__CPSClipCleanupManager__removeClipCancellingPendingRemovalIfNeeded_completionHandler___block_invoke;
   block[3] = &unk_278DCDCF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = neededCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = neededCopy;
   dispatch_async(queue, block);
 }
 
@@ -329,9 +329,9 @@ void __87__CPSClipCleanupManager__removeClipCancellingPendingRemovalIfNeeded_com
   }
 }
 
-- (void)removeFailedClipInstallsWithCompletionHandler:(id)a3
+- (void)removeFailedClipInstallsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CBEB58] set];
   v6 = dispatch_group_create();
   v7 = +[CPSWebClipStore sharedStore];
@@ -341,9 +341,9 @@ void __87__CPSClipCleanupManager__removeClipCancellingPendingRemovalIfNeeded_com
   v11[3] = &unk_278DCDD48;
   v12 = v6;
   v13 = v5;
-  v14 = self;
-  v15 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v8 = handlerCopy;
   v9 = v5;
   v10 = v6;
   [v7 fetchAppClipsWithCompletionHandler:v11];
@@ -549,17 +549,17 @@ uint64_t __71__CPSClipCleanupManager_removeFailedClipInstallsWithCompletionHandl
   return result;
 }
 
-- (void)uninstallClipsWithParentAppInstalledWithCompletionHandler:(id)a3
+- (void)uninstallClipsWithParentAppInstalledWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__CPSClipCleanupManager_uninstallClipsWithParentAppInstalledWithCompletionHandler___block_invoke;
   v7[3] = &unk_278DCDD70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -780,38 +780,38 @@ LABEL_17:
 
 - (void)_registerLocalNotifications
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMCEffectiveSettingsChangedNotification(void)"];
-  [v0 handleFailureInFunction:v1 file:@"CPSClipCleanupManager.m" lineNumber:29 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"CPSClipCleanupManager.m" lineNumber:29 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
-- (void)_didReceiveApplicationRegisteredNotification:(id)a3
+- (void)_didReceiveApplicationRegisteredNotification:(id)notification
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __70__CPSClipCleanupManager__didReceiveApplicationRegisteredNotification___block_invoke;
   v3[3] = &unk_278DCDDC0;
   v3[4] = self;
-  [(CPSClipCleanupManager *)self _didReceiveApplicationChangedNotification:a3 operationHandler:v3];
+  [(CPSClipCleanupManager *)self _didReceiveApplicationChangedNotification:notification operationHandler:v3];
 }
 
-- (void)_didReceiveApplicationUnregisteredNotification:(id)a3
+- (void)_didReceiveApplicationUnregisteredNotification:(id)notification
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __72__CPSClipCleanupManager__didReceiveApplicationUnregisteredNotification___block_invoke;
   v3[3] = &unk_278DCDDC0;
   v3[4] = self;
-  [(CPSClipCleanupManager *)self _didReceiveApplicationChangedNotification:a3 operationHandler:v3];
+  [(CPSClipCleanupManager *)self _didReceiveApplicationChangedNotification:notification operationHandler:v3];
 }
 
-- (void)_didReceiveApplicationChangedNotification:(id)a3 operationHandler:(id)a4
+- (void)_didReceiveApplicationChangedNotification:(id)notification operationHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 userInfo];
-  if (([v7 safari_BOOLForKey:@"isPlaceholder"] & 1) == 0)
+  handlerCopy = handler;
+  userInfo = [notification userInfo];
+  if (([userInfo safari_BOOLForKey:@"isPlaceholder"] & 1) == 0)
   {
     v8 = CPS_LOG_CHANNEL_PREFIXClipServices();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -820,8 +820,8 @@ LABEL_17:
       _os_log_impl(&dword_2436ED000, v8, OS_LOG_TYPE_DEFAULT, "CPSClipCleanupManager: Received app registered (non-placeholder) notification", buf, 2u);
     }
 
-    v9 = [v7 safari_arrayForKey:@"bundleIDs"];
-    v10 = [v9 firstObject];
+    v9 = [userInfo safari_arrayForKey:@"bundleIDs"];
+    firstObject = [v9 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -833,7 +833,7 @@ LABEL_17:
       v21[2] = __84__CPSClipCleanupManager__didReceiveApplicationChangedNotification_operationHandler___block_invoke;
       v21[3] = &unk_278DCDD70;
       v22 = v9;
-      v23 = v6;
+      v23 = handlerCopy;
       dispatch_async(queue, v21);
     }
 
@@ -886,9 +886,9 @@ void __84__CPSClipCleanupManager__didReceiveApplicationChangedNotification_opera
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_allAppClipsForPlaceholderOnly:(BOOL)a3
+- (id)_allAppClipsForPlaceholderOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     v3 = 64;
   }
@@ -919,7 +919,7 @@ uint64_t __56__CPSClipCleanupManager__allAppClipsForPlaceholderOnly___block_invo
   return v3;
 }
 
-- (void)_didReceiveMCSettingsChangedNotification:(id)a3
+- (void)_didReceiveMCSettingsChangedNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1116,37 +1116,37 @@ LABEL_10:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __48__CPSClipCleanupManager_applicationsDidInstall___block_invoke;
   v3[3] = &unk_278DCDDC0;
   v3[4] = self;
-  [(CPSClipCleanupManager *)self _applicationsDidChange:a3 operationHandler:v3];
+  [(CPSClipCleanupManager *)self _applicationsDidChange:install operationHandler:v3];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __50__CPSClipCleanupManager_applicationsDidUninstall___block_invoke;
   v3[3] = &unk_278DCDDC0;
   v3[4] = self;
-  [(CPSClipCleanupManager *)self _applicationsDidChange:a3 operationHandler:v3];
+  [(CPSClipCleanupManager *)self _applicationsDidChange:uninstall operationHandler:v3];
 }
 
-- (void)assertionTargetProcessDidExit:(id)a3
+- (void)assertionTargetProcessDidExit:(id)exit
 {
-  v4 = a3;
+  exitCopy = exit;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__CPSClipCleanupManager_assertionTargetProcessDidExit___block_invoke;
   v7[3] = &unk_278DCDE58;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = exitCopy;
+  selfCopy = self;
+  v6 = exitCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1221,19 +1221,19 @@ void __55__CPSClipCleanupManager_assertionTargetProcessDidExit___block_invoke(ui
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_applicationsDidChange:(id)a3 operationHandler:(id)a4
+- (void)_applicationsDidChange:(id)change operationHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = [a3 safari_mapObjectsUsingBlock:&__block_literal_global_56];
+    v7 = [change safari_mapObjectsUsingBlock:&__block_literal_global_56];
     queue = self->_queue;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __65__CPSClipCleanupManager__applicationsDidChange_operationHandler___block_invoke_2;
     v10[3] = &unk_278DCDD70;
     v11 = v7;
-    v12 = v6;
+    v12 = handlerCopy;
     v9 = v7;
     dispatch_async(queue, v10);
   }
@@ -1277,12 +1277,12 @@ void __65__CPSClipCleanupManager__applicationsDidChange_operationHandler___block
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_parentBundleIDsFromAppRecord:(id)a3
++ (id)_parentBundleIDsFromAppRecord:(id)record
 {
-  v3 = [a3 appClipMetadata];
-  v4 = [v3 parentApplicationIdentifiers];
+  appClipMetadata = [record appClipMetadata];
+  parentApplicationIdentifiers = [appClipMetadata parentApplicationIdentifiers];
 
-  v5 = [v4 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_59];
+  v5 = [parentApplicationIdentifiers safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_59];
 
   return v5;
 }
@@ -1294,11 +1294,11 @@ id __55__CPSClipCleanupManager__parentBundleIDsFromAppRecord___block_invoke()
   return 0;
 }
 
-- (BOOL)_shouldDeleteClipWithRecord:(id)a3 parentRecord:(id)a4
+- (BOOL)_shouldDeleteClipWithRecord:(id)record parentRecord:(id)parentRecord
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  recordCopy = record;
+  parentRecordCopy = parentRecord;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1318,13 +1318,13 @@ id __55__CPSClipCleanupManager__parentBundleIDsFromAppRecord___block_invoke()
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v5 iTunesMetadata];
-        v13 = [v12 sourceApp];
-        if ([v13 isEqualToString:v11])
+        iTunesMetadata = [recordCopy iTunesMetadata];
+        sourceApp = [iTunesMetadata sourceApp];
+        if ([sourceApp isEqualToString:v11])
         {
-          v14 = [v6 iTunesMetadata];
-          v15 = [v14 sourceApp];
-          v16 = [v15 isEqualToString:v11];
+          iTunesMetadata2 = [parentRecordCopy iTunesMetadata];
+          sourceApp2 = [iTunesMetadata2 sourceApp];
+          v16 = [sourceApp2 isEqualToString:v11];
 
           if (v16)
           {
@@ -1351,41 +1351,41 @@ LABEL_13:
   return v17;
 }
 
-- (void)_handleNewInstalledAppWithBundleID:(id)a3
+- (void)_handleNewInstalledAppWithBundleID:(id)d
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v41 = self;
+  dCopy = d;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_queue);
   v40 = os_transaction_create();
-  v5 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
+  v5 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:0];
   v6 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v56 = v4;
+    v56 = dCopy;
     _os_log_impl(&dword_2436ED000, v6, OS_LOG_TYPE_DEFAULT, "CPSClipCleanupManager: Detected installation of new app (%{private}@)", buf, 0xCu);
   }
 
-  v7 = [v5 appClipMetadata];
+  appClipMetadata = [v5 appClipMetadata];
 
-  if (v7)
+  if (appClipMetadata)
   {
     v8 = +[CPSWebClipStore sharedStore];
-    v9 = [v5 localizedName];
+    localizedName = [v5 localizedName];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __60__CPSClipCleanupManager__handleNewInstalledAppWithBundleID___block_invoke;
     v52[3] = &unk_278DCDEC0;
-    v53 = v4;
-    [v8 updateWebClipTitle:v9 forAppClipBundleIdentifier:v53 completionHandler:v52];
+    v53 = dCopy;
+    [v8 updateWebClipTitle:localizedName forAppClipBundleIdentifier:v53 completionHandler:v52];
   }
 
   v10 = [MEMORY[0x277CC1E70] enumeratorWithOptions:0];
   v11 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_69];
   [v10 setPredicate:v11];
 
-  v37 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
@@ -1408,13 +1408,13 @@ LABEL_13:
         }
 
         v17 = *(*(&v48 + 1) + 8 * i);
-        v18 = [v17 bundleIdentifier];
-        if ([v18 hasPrefix:v4])
+        bundleIdentifier = [v17 bundleIdentifier];
+        if ([bundleIdentifier hasPrefix:dCopy])
         {
           v19 = [CPSClipCleanupManager _parentBundleIDsFromAppRecord:v17];
-          if ([v19 containsObject:v4])
+          if ([v19 containsObject:dCopy])
           {
-            v20 = [(CPSClipCleanupManager *)v41 _shouldDeleteClipWithRecord:v17 parentRecord:v5];
+            v20 = [(CPSClipCleanupManager *)selfCopy _shouldDeleteClipWithRecord:v17 parentRecord:v5];
             v21 = CPS_LOG_CHANNEL_PREFIXClipServices();
             v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
             if (v20)
@@ -1422,13 +1422,13 @@ LABEL_13:
               if (v22)
               {
                 *buf = 138478083;
-                v56 = v18;
+                v56 = bundleIdentifier;
                 v57 = 2113;
-                v58 = v4;
+                v58 = dCopy;
                 _os_log_impl(&dword_2436ED000, v21, OS_LOG_TYPE_DEFAULT, "CPSClipCleanupManager: Found clip (%{private}@) matching %{private}@ to delete", buf, 0x16u);
               }
 
-              [v37 addObject:v18];
+              [array addObject:bundleIdentifier];
               v12 = v38;
             }
 
@@ -1438,9 +1438,9 @@ LABEL_13:
               if (v22)
               {
                 *buf = 138478083;
-                v56 = v18;
+                v56 = bundleIdentifier;
                 v57 = 2113;
-                v58 = v4;
+                v58 = dCopy;
                 _os_log_impl(&dword_2436ED000, v21, OS_LOG_TYPE_DEFAULT, "CPSClipCleanupManager: Clip (%{private}@) matching %{private}@ should not be deleted", buf, 0x16u);
               }
             }
@@ -1466,9 +1466,9 @@ LABEL_13:
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138478083;
-            v56 = v18;
+            v56 = bundleIdentifier;
             v57 = 2117;
-            v58 = v4;
+            v58 = dCopy;
             _os_log_impl(&dword_2436ED000, v23, OS_LOG_TYPE_DEFAULT, "CPSClipCleanupManager: Clip bundleID (%{private}@) prefix does not match %{sensitive}@", buf, 0x16u);
           }
         }
@@ -1486,7 +1486,7 @@ LABEL_13:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v37;
+  obj = array;
   v27 = [obj countByEnumeratingWithState:&v44 objects:v54 count:16];
   if (v27)
   {
@@ -1511,10 +1511,10 @@ LABEL_13:
         v42[2] = __60__CPSClipCleanupManager__handleNewInstalledAppWithBundleID___block_invoke_71;
         v42[3] = &unk_278DCDEE8;
         v43 = v40;
-        [v33 redirectPoweredByWebClipsWithApplicationBundleIdentifier:v31 toParentApplicationBundleIdentifier:v4 completionHandler:v42];
+        [v33 redirectPoweredByWebClipsWithApplicationBundleIdentifier:v31 toParentApplicationBundleIdentifier:dCopy completionHandler:v42];
 
-        [(CPSClipCleanupManager *)v41 _transferTCCPermissionsFromClipWithBundleID:v31 toParentAppWithBundleID:v4];
-        [(CPSClipCleanupManager *)v41 _deleteClipWhenBackgrounded:v31 completionHandler:0];
+        [(CPSClipCleanupManager *)selfCopy _transferTCCPermissionsFromClipWithBundleID:v31 toParentAppWithBundleID:dCopy];
+        [(CPSClipCleanupManager *)selfCopy _deleteClipWhenBackgrounded:v31 completionHandler:0];
       }
 
       v28 = [obj countByEnumeratingWithState:&v44 objects:v54 count:16];
@@ -1547,11 +1547,11 @@ BOOL __60__CPSClipCleanupManager__handleNewInstalledAppWithBundleID___block_invo
   return v3;
 }
 
-- (void)_transferTCCPermissionsFromClipWithBundleID:(id)a3 toParentAppWithBundleID:(id)a4
+- (void)_transferTCCPermissionsFromClipWithBundleID:(id)d toParentAppWithBundleID:(id)iD
 {
   v29[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v7 = MEMORY[0x277CBEB98];
   v8 = *MEMORY[0x277D6C1A8];
   v29[0] = *MEMORY[0x277D6C120];
@@ -1560,7 +1560,7 @@ BOOL __60__CPSClipCleanupManager__handleNewInstalledAppWithBundleID___block_invo
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:3];
   v10 = [v7 setWithArray:v9];
 
-  v23 = v5;
+  v23 = dCopy;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -1604,15 +1604,15 @@ BOOL __60__CPSClipCleanupManager__handleNewInstalledAppWithBundleID___block_invo
 
   if ([MEMORY[0x277CBFC10] authorizationStatusForBundleIdentifier:v23] == 2)
   {
-    [MEMORY[0x277CBFC10] setAuthorizationStatusByType:2 forBundleIdentifier:v6];
+    [MEMORY[0x277CBFC10] setAuthorizationStatusByType:2 forBundleIdentifier:iDCopy];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleNewUninstalledAppWithBundleID:(id)a3
+- (void)_handleNewUninstalledAppWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
   v5 = os_transaction_create();
   v6 = +[CPSWebClipStore sharedStore];
@@ -1620,7 +1620,7 @@ BOOL __60__CPSClipCleanupManager__handleNewInstalledAppWithBundleID___block_invo
   v19[1] = 3221225472;
   v19[2] = __62__CPSClipCleanupManager__handleNewUninstalledAppWithBundleID___block_invoke;
   v19[3] = &unk_278DCDF10;
-  v7 = v4;
+  v7 = dCopy;
   v20 = v7;
   v8 = v5;
   v21 = v8;
@@ -1666,34 +1666,34 @@ void __62__CPSClipCleanupManager__handleNewUninstalledAppWithBundleID___block_in
   }
 }
 
-- (void)_deleteClipWhenBackgrounded:(id)a3 completionHandler:(id)a4
+- (void)_deleteClipWhenBackgrounded:(id)backgrounded completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  backgroundedCopy = backgrounded;
+  handlerCopy = handler;
   v8 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v24 = v6;
+    v24 = backgroundedCopy;
     _os_log_impl(&dword_2436ED000, v8, OS_LOG_TYPE_DEFAULT, "CPSClipCleanupManager: will delete clip when backgrounded: %{private}@", buf, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  v9 = [(NSMutableDictionary *)self->_clipDeletionPromisesByBundleIDs objectForKeyedSubscript:v6];
+  v9 = [(NSMutableDictionary *)self->_clipDeletionPromisesByBundleIDs objectForKeyedSubscript:backgroundedCopy];
   v10 = v9;
   if (!v9)
   {
     v10 = +[CPSPromise promise];
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __71__CPSClipCleanupManager__deleteClipWhenBackgrounded_completionHandler___block_invoke;
     v21[3] = &unk_278DCDCD0;
-    v22 = v7;
+    v22 = handlerCopy;
     [v10 addCompletionBlock:v21];
   }
 
@@ -1702,7 +1702,7 @@ void __62__CPSClipCleanupManager__handleNewUninstalledAppWithBundleID___block_in
     v11 = objc_alloc_init(MEMORY[0x277D47010]);
     [v11 setExplanation:@"Terminate clip before uninstallation"];
     [v11 setMaximumTerminationResistance:30];
-    v12 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:v6];
+    v12 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:backgroundedCopy];
     v13 = [objc_alloc(MEMORY[0x277D47020]) initWithPredicate:v12 context:v11];
     [v13 addObserver:self];
     v20 = 0;
@@ -1710,8 +1710,8 @@ void __62__CPSClipCleanupManager__handleNewUninstalledAppWithBundleID___block_in
     v15 = v20;
     if (v14)
     {
-      [(NSMutableDictionary *)self->_pendingTerminationAssertionsByBundleIDs setObject:v13 forKeyedSubscript:v6];
-      [(NSMutableDictionary *)self->_clipDeletionPromisesByBundleIDs setObject:v10 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_pendingTerminationAssertionsByBundleIDs setObject:v13 forKeyedSubscript:backgroundedCopy];
+      [(NSMutableDictionary *)self->_clipDeletionPromisesByBundleIDs setObject:v10 forKeyedSubscript:backgroundedCopy];
       if (!self->_deletionTransaction)
       {
         v16 = os_transaction_create();
@@ -1725,10 +1725,10 @@ void __62__CPSClipCleanupManager__handleNewUninstalledAppWithBundleID___block_in
       v18 = CPS_LOG_CHANNEL_PREFIXClipServices();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        [CPSClipCleanupManager _deleteClipWhenBackgrounded:v6 completionHandler:?];
+        [CPSClipCleanupManager _deleteClipWhenBackgrounded:backgroundedCopy completionHandler:?];
       }
 
-      [(CPSClipCleanupManager *)self _uninstallClipWithBundleIdentifier:v6 deletionPromise:v10];
+      [(CPSClipCleanupManager *)self _uninstallClipWithBundleIdentifier:backgroundedCopy deletionPromise:v10];
       [v13 removeObserver:self];
       [v13 invalidate];
     }
@@ -1737,18 +1737,18 @@ void __62__CPSClipCleanupManager__handleNewUninstalledAppWithBundleID___block_in
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_uninstallClipWithBundleIdentifier:(id)a3 deletionPromise:(id)a4
+- (void)_uninstallClipWithBundleIdentifier:(id)identifier deletionPromise:(id)promise
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  promiseCopy = promise;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__CPSClipCleanupManager__uninstallClipWithBundleIdentifier_deletionPromise___block_invoke;
   v9[3] = &unk_278DCDD20;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = identifierCopy;
+  v11 = promiseCopy;
+  v7 = promiseCopy;
+  v8 = identifierCopy;
   [CPSUtilities uninstallAppWithBundleIdentifier:v8 completion:v9];
 }
 

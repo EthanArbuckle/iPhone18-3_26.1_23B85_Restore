@@ -1,8 +1,8 @@
 @interface ATXGlobalSmartSuppression
-+ (int)decodeAssociationScoreForContext:(unint64_t)a3 forEncodedScore:(int)a4;
-+ (int)decodeGeoAssociationScoreAtGeoHashResolution:(unint64_t)a3 forEncodedScore:(int)a4;
++ (int)decodeAssociationScoreForContext:(unint64_t)context forEncodedScore:(int)score;
++ (int)decodeGeoAssociationScoreAtGeoHashResolution:(unint64_t)resolution forEncodedScore:(int)score;
 - (ATXGlobalSmartSuppression)init;
-- (id)fetchContextualAssociationScoresForBundleId:(id)a3;
+- (id)fetchContextualAssociationScoresForBundleId:(id)id;
 @end
 
 @implementation ATXGlobalSmartSuppression
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (id)fetchContextualAssociationScoresForBundleId:(id)a3
+- (id)fetchContextualAssociationScoresForBundleId:(id)id
 {
-  v3 = [(_PASCFBurstTrie *)self->_associationScoresTrie payloadForString:a3];
+  v3 = [(_PASCFBurstTrie *)self->_associationScoresTrie payloadForString:id];
   v4 = objc_opt_new();
   v5 = [MEMORY[0x277CCABB0] numberWithInt:{+[ATXGlobalSmartSuppression decodeAssociationScoreForContext:forEncodedScore:](ATXGlobalSmartSuppression, "decodeAssociationScoreForContext:forEncodedScore:", 1, v3)}];
   [v4 setObject:v5 forKeyedSubscript:@"LOIType"];
@@ -49,26 +49,26 @@
   return v11;
 }
 
-+ (int)decodeAssociationScoreForContext:(unint64_t)a3 forEncodedScore:(int)a4
++ (int)decodeAssociationScoreForContext:(unint64_t)context forEncodedScore:(int)score
 {
   result = 0;
-  if (a3 > 1)
+  if (context > 1)
   {
-    if (a3 == 2)
+    if (context == 2)
     {
-      v9 = 1759218605 * (a4 % 100000);
+      v9 = 1759218605 * (score % 100000);
       v6 = v9 >> 63;
       v7 = v9 >> 44;
     }
 
     else
     {
-      if (a3 != 3)
+      if (context != 3)
       {
         return result;
       }
 
-      v5 = 351843721 * (a4 % 1000000);
+      v5 = 351843721 * (score % 1000000);
       v6 = v5 >> 63;
       v7 = v5 >> 45;
     }
@@ -76,11 +76,11 @@
     return v7 + v6;
   }
 
-  if (a3)
+  if (context)
   {
-    if (a3 == 1)
+    if (context == 1)
     {
-      return (((33555 * (a4 % 10000)) >> 16) >> 9) + (((a4 % 10000 + ((-31981 * (a4 % 10000)) >> 16)) & 0x8000) >> 15);
+      return (((33555 * (score % 10000)) >> 16) >> 9) + (((score % 10000 + ((-31981 * (score % 10000)) >> 16)) & 0x8000) >> 15);
     }
   }
 
@@ -98,17 +98,17 @@
   return result;
 }
 
-+ (int)decodeGeoAssociationScoreAtGeoHashResolution:(unint64_t)a3 forEncodedScore:(int)a4
++ (int)decodeGeoAssociationScoreAtGeoHashResolution:(unint64_t)resolution forEncodedScore:(int)score
 {
-  switch(a3)
+  switch(resolution)
   {
     case 0uLL:
-      return a4 % 10;
+      return score % 10;
     case 1uLL:
-      v6 = 103 * (a4 - 100 * (((1374389535 * a4) >> 37) + (1374389535 * a4 < 0)));
+      v6 = 103 * (score - 100 * (((1374389535 * score) >> 37) + (1374389535 * score < 0)));
       return ((v6 >> 15) & 1) + (v6 >> 10);
     case 2uLL:
-      v4 = 5243 * (a4 - 1000 * (((274877907 * a4) >> 38) + ((274877907 * a4) >> 63)));
+      v4 = 5243 * (score - 1000 * (((274877907 * score) >> 38) + ((274877907 * score) >> 63)));
       return (v4 >> 19) + (v4 >> 31);
     default:
       return 0;

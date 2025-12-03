@@ -1,34 +1,34 @@
 @interface MSNScopedExceptionsServer
-+ (id)proxiesForException:(id)a3;
-+ (id)proxyForMachServiceName:(id)a3;
++ (id)proxiesForException:(id)exception;
++ (id)proxyForMachServiceName:(id)name;
 + (id)sharedCamProxy;
 + (id)sharedMicProxy;
 + (id)sharedProxy;
 + (id)validEntitlements;
 + (id)validExceptions;
-- (BOOL)isConnectionAllowedToAssertException:(id)a3;
-- (BOOL)isExceptionInEffect:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MSNScopedExceptionsServer)initWithQueue:(id)a3;
-- (void)beginException:(id)a3;
-- (void)endException:(id)a3;
+- (BOOL)isConnectionAllowedToAssertException:(id)exception;
+- (BOOL)isExceptionInEffect:(id)effect;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MSNScopedExceptionsServer)initWithQueue:(id)queue;
+- (void)beginException:(id)exception;
+- (void)endException:(id)exception;
 @end
 
 @implementation MSNScopedExceptionsServer
 
-- (MSNScopedExceptionsServer)initWithQueue:(id)a3
+- (MSNScopedExceptionsServer)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = MSNScopedExceptionsServer;
   v6 = [(MSNScopedExceptionsServer *)&v14 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     activeExceptions = v6->_activeExceptions;
-    v6->_activeExceptions = v7;
+    v6->_activeExceptions = array;
 
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     if (g_serverMode == 2)
     {
       v9 = [@"com.apple.mediasafetynet.exceptions" stringByAppendingString:@".cam"];
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = __46__MSNScopedExceptionsServer_validEntitlements__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (validEntitlements_onceToken != -1)
   {
     dispatch_once(&validEntitlements_onceToken, block);
@@ -155,10 +155,10 @@ void __44__MSNScopedExceptionsServer_validExceptions__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionCopy = connection;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -178,25 +178,25 @@ void __44__MSNScopedExceptionsServer_validExceptions__block_invoke()
           objc_enumerationMutation(v6);
         }
 
-        v11 = [v5 valueForEntitlement:*(*(&v25 + 1) + 8 * i)];
-        v12 = [v11 BOOLValue];
+        v11 = [connectionCopy valueForEntitlement:*(*(&v25 + 1) + 8 * i)];
+        bOOLValue = [v11 BOOLValue];
 
-        if (v12)
+        if (bOOLValue)
         {
 
           v14 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2869B5CE8];
-          [v5 setExportedInterface:v14];
+          [connectionCopy setExportedInterface:v14];
 
-          [v5 setExportedObject:self];
+          [connectionCopy setExportedObject:self];
           v19 = MEMORY[0x277D85DD0];
           v20 = 3221225472;
           v21 = __64__MSNScopedExceptionsServer_listener_shouldAcceptNewConnection___block_invoke;
           v22 = &unk_2798A3D18;
-          v23 = self;
-          v15 = v5;
+          selfCopy = self;
+          v15 = connectionCopy;
           v24 = v15;
           v16 = MEMORY[0x259C893D0](&v19);
-          [v15 setInterruptionHandler:{v16, v19, v20, v21, v22, v23}];
+          [v15 setInterruptionHandler:{v16, v19, v20, v21, v22, selfCopy}];
           [v15 setInvalidationHandler:v16];
           [v15 resume];
 
@@ -299,39 +299,39 @@ void __64__MSNScopedExceptionsServer_listener_shouldAcceptNewConnection___block_
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isConnectionAllowedToAssertException:(id)a3
+- (BOOL)isConnectionAllowedToAssertException:(id)exception
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  exceptionCopy = exception;
+  if (exceptionCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [MEMORY[0x277CCAE80] currentConnection];
-    v5 = [@"com.apple.private.mediasafetynet.exception." stringByAppendingString:v3];
-    v6 = [v4 valueForEntitlement:v5];
-    v7 = [v6 BOOLValue];
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v5 = [@"com.apple.private.mediasafetynet.exception." stringByAppendingString:exceptionCopy];
+    v6 = [currentConnection valueForEntitlement:v5];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)beginException:(id)a3
+- (void)beginException:(id)exception
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAE80] currentConnection];
-  if ([(MSNScopedExceptionsServer *)self isConnectionAllowedToAssertException:v4])
+  exceptionCopy = exception;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if ([(MSNScopedExceptionsServer *)self isConnectionAllowedToAssertException:exceptionCopy])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __44__MSNScopedExceptionsServer_beginException___block_invoke;
     block[3] = &unk_2798A3DE0;
-    v15 = v4;
-    v16 = v5;
-    v17 = self;
+    v15 = exceptionCopy;
+    v16 = currentConnection;
+    selfCopy = self;
     dispatch_async(queue, block);
   }
 
@@ -340,10 +340,10 @@ void __64__MSNScopedExceptionsServer_listener_shouldAcceptNewConnection___block_
     v7 = MSNLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(MSNScopedExceptionsServer *)v4 beginException:v7, v8, v9, v10, v11, v12, v13];
+      [(MSNScopedExceptionsServer *)exceptionCopy beginException:v7, v8, v9, v10, v11, v12, v13];
     }
 
-    [v5 invalidate];
+    [currentConnection invalidate];
   }
 }
 
@@ -369,11 +369,11 @@ void __44__MSNScopedExceptionsServer_beginException___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endException:(id)a3
+- (void)endException:(id)exception
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAE80] currentConnection];
-  if ([(MSNScopedExceptionsServer *)self isConnectionAllowedToAssertException:v4])
+  exceptionCopy = exception;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if ([(MSNScopedExceptionsServer *)self isConnectionAllowedToAssertException:exceptionCopy])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -381,8 +381,8 @@ void __44__MSNScopedExceptionsServer_beginException___block_invoke(uint64_t a1)
     block[2] = __42__MSNScopedExceptionsServer_endException___block_invoke;
     block[3] = &unk_2798A3DE0;
     block[4] = self;
-    v9 = v5;
-    v10 = v4;
+    v9 = currentConnection;
+    v10 = exceptionCopy;
     dispatch_async(queue, block);
   }
 
@@ -391,10 +391,10 @@ void __44__MSNScopedExceptionsServer_beginException___block_invoke(uint64_t a1)
     v7 = MSNLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(MSNScopedExceptionsServer *)v4 endException:v5];
+      [(MSNScopedExceptionsServer *)exceptionCopy endException:currentConnection];
     }
 
-    [v5 invalidate];
+    [currentConnection invalidate];
   }
 }
 
@@ -465,10 +465,10 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isExceptionInEffect:(id)a3
+- (BOOL)isExceptionInEffect:(id)effect
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  effectCopy = effect;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -488,8 +488,8 @@ LABEL_9:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) exception];
-        v11 = [v10 isEqual:v4];
+        exception = [*(*(&v16 + 1) + 8 * i) exception];
+        v11 = [exception isEqual:effectCopy];
 
         if (v11)
         {
@@ -497,7 +497,7 @@ LABEL_9:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
             *buf = 138543362;
-            v21 = v4;
+            v21 = effectCopy;
             _os_log_impl(&dword_258731000, v13, OS_LOG_TYPE_INFO, "Found exception %{public}@", buf, 0xCu);
           }
 
@@ -519,7 +519,7 @@ LABEL_9:
   v5 = MSNLog();
   if (os_log_type_enabled(&v5->super.super, OS_LOG_TYPE_DEBUG))
   {
-    [(MSNScopedExceptionsServer *)v4 isExceptionInEffect:?];
+    [(MSNScopedExceptionsServer *)effectCopy isExceptionInEffect:?];
   }
 
   v12 = 0;
@@ -529,10 +529,10 @@ LABEL_15:
   return v12;
 }
 
-+ (id)proxyForMachServiceName:(id)a3
++ (id)proxyForMachServiceName:(id)name
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:v3 options:0];
+  nameCopy = name;
+  v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:nameCopy options:0];
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2869B5CE8];
   [v4 setRemoteObjectInterface:v5];
 
@@ -540,7 +540,7 @@ LABEL_15:
   v15[1] = 3221225472;
   v15[2] = __53__MSNScopedExceptionsServer_proxyForMachServiceName___block_invoke;
   v15[3] = &unk_2798A3D68;
-  v6 = v3;
+  v6 = nameCopy;
   v16 = v6;
   [v4 setInterruptionHandler:v15];
   v10 = MEMORY[0x277D85DD0];
@@ -551,9 +551,9 @@ LABEL_15:
   v7 = v6;
   [v4 setInvalidationHandler:&v10];
   [v4 resume];
-  v8 = [v4 remoteObjectProxy];
+  remoteObjectProxy = [v4 remoteObjectProxy];
 
-  return v8;
+  return remoteObjectProxy;
 }
 
 void __53__MSNScopedExceptionsServer_proxyForMachServiceName___block_invoke(uint64_t a1)
@@ -592,7 +592,7 @@ void __53__MSNScopedExceptionsServer_proxyForMachServiceName___block_invoke_85(u
   block[1] = 3221225472;
   block[2] = __40__MSNScopedExceptionsServer_sharedProxy__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedProxy_onceToken != -1)
   {
     dispatch_once(&sharedProxy_onceToken, block);
@@ -616,7 +616,7 @@ uint64_t __40__MSNScopedExceptionsServer_sharedProxy__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __43__MSNScopedExceptionsServer_sharedMicProxy__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedMicProxy_onceToken != -1)
   {
     dispatch_once(&sharedMicProxy_onceToken, block);
@@ -640,7 +640,7 @@ uint64_t __43__MSNScopedExceptionsServer_sharedMicProxy__block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __43__MSNScopedExceptionsServer_sharedCamProxy__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCamProxy_onceToken != -1)
   {
     dispatch_once(&sharedCamProxy_onceToken, block);
@@ -666,13 +666,13 @@ void __43__MSNScopedExceptionsServer_sharedCamProxy__block_invoke(uint64_t a1)
   sharedCamProxy_sharedProxy = v3;
 }
 
-+ (id)proxiesForException:(id)a3
++ (id)proxiesForException:(id)exception
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  exceptionCopy = exception;
   if (_os_feature_enabled_impl() & 1) != 0 || (_os_feature_enabled_impl())
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -704,8 +704,8 @@ void __43__MSNScopedExceptionsServer_sharedCamProxy__block_invoke(uint64_t a1)
     v49[12] = @"continuitycapture";
     v50[12] = &unk_2869B4B30;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:13];
-    v7 = v4;
-    v8 = [v6 objectForKeyedSubscript:v4];
+    v7 = exceptionCopy;
+    v8 = [v6 objectForKeyedSubscript:exceptionCopy];
 
     v9 = [v8 countByEnumeratingWithState:&v41 objects:v51 count:16];
     if (v9)
@@ -728,8 +728,8 @@ void __43__MSNScopedExceptionsServer_sharedCamProxy__block_invoke(uint64_t a1)
           v15 = MSNLog();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v19 = [v14 integerValue];
-            if (v19 >= 3)
+            integerValue = [v14 integerValue];
+            if (integerValue >= 3)
             {
               qword_27F958928 = "Unknown mode";
               v25 = MSNLog();
@@ -743,7 +743,7 @@ LABEL_29:
               abort();
             }
 
-            v20 = off_2798A4060[v19 & 3];
+            v20 = off_2798A4060[integerValue & 3];
             *buf = v40;
             v46 = v7;
             v47 = 2080;
@@ -751,15 +751,15 @@ LABEL_29:
             _os_log_debug_impl(&dword_258731000, v15, OS_LOG_TYPE_DEBUG, "Exception %@ with uses server %s", buf, 0x16u);
           }
 
-          v16 = [v14 integerValue];
-          if (v16 == 1)
+          integerValue2 = [v14 integerValue];
+          if (integerValue2 == 1)
           {
-            v17 = [a1 sharedMicProxy];
+            sharedMicProxy = [self sharedMicProxy];
           }
 
           else
           {
-            if (v16 != 2)
+            if (integerValue2 != 2)
             {
               qword_27F958928 = "Only Cam and Mic servers can be requested.";
               v25 = MSNLog();
@@ -771,11 +771,11 @@ LABEL_29:
               goto LABEL_29;
             }
 
-            v17 = [a1 sharedCamProxy];
+            sharedMicProxy = [self sharedCamProxy];
           }
 
-          v18 = v17;
-          [v5 addObject:{v17, v40}];
+          v18 = sharedMicProxy;
+          [array addObject:{sharedMicProxy, v40}];
 
           ++v13;
         }
@@ -788,33 +788,33 @@ LABEL_29:
       while (v21);
     }
 
-    v22 = MSNLog();
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
+    sharedProxy = MSNLog();
+    if (os_log_type_enabled(sharedProxy, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v4 = v7;
+      exceptionCopy = v7;
       v46 = v7;
       v47 = 2112;
-      v48 = v5;
-      _os_log_impl(&dword_258731000, v22, OS_LOG_TYPE_INFO, "Asserting exception %@ with servers %@", buf, 0x16u);
+      v48 = array;
+      _os_log_impl(&dword_258731000, sharedProxy, OS_LOG_TYPE_INFO, "Asserting exception %@ with servers %@", buf, 0x16u);
     }
 
     else
     {
-      v4 = v7;
+      exceptionCopy = v7;
     }
   }
 
   else
   {
-    v22 = [a1 sharedProxy];
-    v52[0] = v22;
-    v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:1];
+    sharedProxy = [self sharedProxy];
+    v52[0] = sharedProxy;
+    array = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:1];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
 - (void)initWithQueue:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

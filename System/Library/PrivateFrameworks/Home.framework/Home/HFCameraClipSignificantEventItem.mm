@@ -1,28 +1,28 @@
 @interface HFCameraClipSignificantEventItem
-- (HFCameraClipSignificantEventItem)initWithSignificantEvent:(id)a3 home:(id)a4;
+- (HFCameraClipSignificantEventItem)initWithSignificantEvent:(id)event home:(id)home;
 - (id)_homeKitObjectFetch;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 @end
 
 @implementation HFCameraClipSignificantEventItem
 
-- (HFCameraClipSignificantEventItem)initWithSignificantEvent:(id)a3 home:(id)a4
+- (HFCameraClipSignificantEventItem)initWithSignificantEvent:(id)event home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  homeCopy = home;
   v12.receiver = self;
   v12.super_class = HFCameraClipSignificantEventItem;
-  v8 = [(HFFetchedHomeKitObjectItem *)&v12 initWithHomeKitObject:v6];
+  v8 = [(HFFetchedHomeKitObjectItem *)&v12 initWithHomeKitObject:eventCopy];
   if (v8)
   {
-    v9 = [v7 hf_cameraProfileForSignificantEvent:v6];
+    v9 = [homeCopy hf_cameraProfileForSignificantEvent:eventCopy];
     cameraProfile = v8->_cameraProfile;
     v8->_cameraProfile = v9;
 
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
   }
 
   return v8;
@@ -34,8 +34,8 @@
   v8.super_class = HFCameraClipSignificantEventItem;
   v3 = [(HFItem *)&v8 description];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(HFCameraClipSignificantEventItem *)self event];
-  v6 = [v4 stringWithFormat:@"%@ event:%@", v3, v5];
+  event = [(HFCameraClipSignificantEventItem *)self event];
+  v6 = [v4 stringWithFormat:@"%@ event:%@", v3, event];
 
   return v6;
 }
@@ -45,27 +45,27 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HFFetchedHomeKitObjectItem *)self homeKitObject];
-  v7 = [v3 stringWithFormat:@"<%@: %p, %@>", v5, self, v6];
+  homeKitObject = [(HFFetchedHomeKitObjectItem *)self homeKitObject];
+  v7 = [v3 stringWithFormat:@"<%@: %p, %@>", v5, self, homeKitObject];
 
   return v7;
 }
 
 - (id)_homeKitObjectFetch
 {
-  v3 = [(HFCameraClipSignificantEventItem *)self cameraProfile];
-  v4 = [(HFCameraClipSignificantEventItem *)self event];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v3 hf_significantEventWithIdentifier:v5];
+  cameraProfile = [(HFCameraClipSignificantEventItem *)self cameraProfile];
+  event = [(HFCameraClipSignificantEventItem *)self event];
+  uniqueIdentifier = [event uniqueIdentifier];
+  v6 = [cameraProfile hf_significantEventWithIdentifier:uniqueIdentifier];
 
   return v6;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = HFCameraClipSignificantEventItem;
-  v4 = [(HFFetchedHomeKitObjectItem *)&v8 _subclass_updateWithOptions:a3];
+  v4 = [(HFFetchedHomeKitObjectItem *)&v8 _subclass_updateWithOptions:options];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HFCameraClipSignificantEventItem__subclass_updateWithOptions___block_invoke;
@@ -109,12 +109,12 @@ id __64__HFCameraClipSignificantEventItem__subclass_updateWithOptions___block_in
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFCameraClipSignificantEventItem *)self event];
-  v6 = [(HFCameraClipSignificantEventItem *)self home];
-  v7 = [v4 initWithSignificantEvent:v5 home:v6];
+  event = [(HFCameraClipSignificantEventItem *)self event];
+  home = [(HFCameraClipSignificantEventItem *)self home];
+  v7 = [v4 initWithSignificantEvent:event home:home];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;

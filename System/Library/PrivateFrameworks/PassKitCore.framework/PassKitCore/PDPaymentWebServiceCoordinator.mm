@@ -1,108 +1,108 @@
 @interface PDPaymentWebServiceCoordinator
-- (BOOL)_queue_automaticDeviceCheckInRequiredForRegion:(id)a3;
+- (BOOL)_queue_automaticDeviceCheckInRequiredForRegion:(id)region;
 - (BOOL)shouldStartConsistencyCheck;
 - (BOOL)synchronizeWithTSM;
 - (PDAppletSubcredentialManager)credentialManager;
 - (PDAppletSubcredentialManager)subcredentialManager;
-- (PDPaymentWebServiceCoordinator)initWithPushNotificationManager:(id)a3 databaseManager:(id)a4 passStore:(id)a5 assertionManager:(id)a6 cloudStoreCoordinator:(id)a7 idsManager:(id)a8 tapToRadarDelegate:(id)a9 receiptFileManager:(id)a10 expressPassManager:(id)a11 familyCircleManager:(id)a12;
+- (PDPaymentWebServiceCoordinator)initWithPushNotificationManager:(id)manager databaseManager:(id)databaseManager passStore:(id)store assertionManager:(id)assertionManager cloudStoreCoordinator:(id)coordinator idsManager:(id)idsManager tapToRadarDelegate:(id)delegate receiptFileManager:(id)self0 expressPassManager:(id)self1 familyCircleManager:(id)self2;
 - (PDPushProvisioningManager)pushProvisioningManager;
 - (PDUserNotificationManager)userNotificationManager;
 - (PKPaymentWebServiceContext)sharedWebServiceContext;
 - (double)_queue_deviceCheckInRepeatInterval;
-- (id)_userNotificationFromResponse:(id)a3;
+- (id)_userNotificationFromResponse:(id)response;
 - (id)accountServicePushTopics;
 - (id)applyServicePushTopics;
 - (id)paymentOffersServicePushTopics;
 - (id)paymentPasses;
 - (id)pushNotificationTopics;
 - (id)sharedWebService;
-- (void)_accessObserversWithHandler:(id)a3;
-- (void)_fetchPassesIfNecessaryForPushTopic:(id)a3;
-- (void)_handleDeviceCheckInAction:(int64_t)a3 region:(id)a4 completion:(id)a5;
-- (void)_handleDownloadedPass:(id)a3;
-- (void)_paymentHardwareStatusWithType:(unint64_t)a3 completion:(id)a4;
-- (void)_performDeviceCheckInTask:(id)a3;
-- (void)_performNotificationActionWithUserInfo:(id)a3;
-- (void)_processValueAddedServiceTransaction:(id)a3;
+- (void)_accessObserversWithHandler:(id)handler;
+- (void)_fetchPassesIfNecessaryForPushTopic:(id)topic;
+- (void)_handleDeviceCheckInAction:(int64_t)action region:(id)region completion:(id)completion;
+- (void)_handleDownloadedPass:(id)pass;
+- (void)_paymentHardwareStatusWithType:(unint64_t)type completion:(id)completion;
+- (void)_performDeviceCheckInTask:(id)task;
+- (void)_performNotificationActionWithUserInfo:(id)info;
+- (void)_processValueAddedServiceTransaction:(id)transaction;
 - (void)_queue_cancelAllDeviceCheckInTasks;
-- (void)_queue_checkContextForDeviceCheckInAuthRequirement:(id)a3 completion:(id)a4;
-- (void)_queue_coeleaseDeviceCheckInCompletion:(id)a3;
-- (void)_queue_completeDeviceCheckInTask:(id)a3 success:(BOOL)a4 error:(id)a5;
+- (void)_queue_checkContextForDeviceCheckInAuthRequirement:(id)requirement completion:(id)completion;
+- (void)_queue_coeleaseDeviceCheckInCompletion:(id)completion;
+- (void)_queue_completeDeviceCheckInTask:(id)task success:(BOOL)success error:(id)error;
 - (void)_queue_completeDeviceUpgradeTasks;
-- (void)_queue_enqueueDeviceCheckInTask:(id)a3;
-- (void)_queue_handleCheckInForRegion:(id)a3 action:(int64_t)a4 completion:(id)a5;
-- (void)_queue_performContactInformationFetchTaskWithCompletion:(id)a3;
-- (void)_queue_performOwnershipTokensRequestWithUserInfo:(id)a3;
-- (void)_queue_performRegistrationForBrokerURL:(id)a3 force:(BOOL)a4 completion:(id)a5;
-- (void)_queue_performRegistrationForRegion:(id)a3 force:(BOOL)a4 completion:(id)a5;
+- (void)_queue_enqueueDeviceCheckInTask:(id)task;
+- (void)_queue_handleCheckInForRegion:(id)region action:(int64_t)action completion:(id)completion;
+- (void)_queue_performContactInformationFetchTaskWithCompletion:(id)completion;
+- (void)_queue_performOwnershipTokensRequestWithUserInfo:(id)info;
+- (void)_queue_performRegistrationForBrokerURL:(id)l force:(BOOL)force completion:(id)completion;
+- (void)_queue_performRegistrationForRegion:(id)region force:(BOOL)force completion:(id)completion;
 - (void)_queue_provisionPushProvisioningSharingIdentifiers;
-- (void)_queue_registerDeviceAtBrokerURL:(id)a3 completion:(id)a4;
-- (void)_queue_scheduleDeviceCheckInWithStartTimeOffset:(double)a3 repeatInterval:(double)a4 randomizeTimes:(BOOL)a5;
-- (void)_queue_setupBackgroundWebServiceWithCompletion:(id)a3;
+- (void)_queue_registerDeviceAtBrokerURL:(id)l completion:(id)completion;
+- (void)_queue_scheduleDeviceCheckInWithStartTimeOffset:(double)offset repeatInterval:(double)interval randomizeTimes:(BOOL)times;
+- (void)_queue_setupBackgroundWebServiceWithCompletion:(id)completion;
 - (void)_queue_unscheduleDeviceCheckIn;
 - (void)_runDeviceUpgradeTasks;
-- (void)_scheduleDeviceUpgradeTaskActivityWithRandomizeStartDate:(BOOL)a3;
-- (void)_updateWebServiceConfigurationWithCompletion:(id)a3;
-- (void)_updateWebServiceConfigurationWithSupportedRegionTimeInterval:(double)a3 unsupportedRegionTimeInterval:(double)a4 completion:(id)a5;
-- (void)accountAttestationAnonymizationSaltWithCompletion:(id)a3;
-- (void)applyPushNotificationToken:(id)a3;
-- (void)assertionManager:(id)a3 didAcquireAssertion:(id)a4;
-- (void)backgroundRegisterCredentialWithRequest:(id)a3;
-- (void)checkFPANCredentialEligibility:(id)a3 completion:(id)a4;
+- (void)_scheduleDeviceUpgradeTaskActivityWithRandomizeStartDate:(BOOL)date;
+- (void)_updateWebServiceConfigurationWithCompletion:(id)completion;
+- (void)_updateWebServiceConfigurationWithSupportedRegionTimeInterval:(double)interval unsupportedRegionTimeInterval:(double)timeInterval completion:(id)completion;
+- (void)accountAttestationAnonymizationSaltWithCompletion:(id)completion;
+- (void)applyPushNotificationToken:(id)token;
+- (void)assertionManager:(id)manager didAcquireAssertion:(id)assertion;
+- (void)backgroundRegisterCredentialWithRequest:(id)request;
+- (void)checkFPANCredentialEligibility:(id)eligibility completion:(id)completion;
 - (void)connect;
 - (void)dealloc;
-- (void)deleteSharedWebServiceWithDiagnosticReason:(id)a3;
-- (void)deviceStateWithCompletion:(id)a3;
-- (void)didDownloadPaymentPass:(id)a3;
-- (void)downloadReceiptForTransaction:(id)a3;
-- (void)handleDeletionForPassTypeIdentifier:(id)a3 serialNumber:(id)a4;
-- (void)handleInsertionForPaymentPass:(id)a3;
-- (void)handlePushNotificationForTopic:(id)a3 userInfo:(id)a4;
-- (void)handleRequestedActions:(id)a3 completion:(id)a4;
+- (void)deleteSharedWebServiceWithDiagnosticReason:(id)reason;
+- (void)deviceStateWithCompletion:(id)completion;
+- (void)didDownloadPaymentPass:(id)pass;
+- (void)downloadReceiptForTransaction:(id)transaction;
+- (void)handleDeletionForPassTypeIdentifier:(id)identifier serialNumber:(id)number;
+- (void)handleInsertionForPaymentPass:(id)pass;
+- (void)handlePushNotificationForTopic:(id)topic userInfo:(id)info;
+- (void)handleRequestedActions:(id)actions completion:(id)completion;
 - (void)initiateDevicePassesDownload;
 - (void)noteAccountChanged;
 - (void)noteWebServiceDidChange;
-- (void)passAdded:(id)a3;
-- (void)passWillBeRemoved:(id)a3 withDiagnosticReason:(id)a4;
-- (void)paymentHardwareStatusWithType:(unint64_t)a3 completion:(id)a4;
-- (void)paymentWebService:(id)a3 didDownloadPass:(id)a4 cloudStoreCoordinatorDelegate:(id)a5;
-- (void)paymentWebService:(id)a3 didDownloadPassRemoteAssets:(id)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 didDownloadSerialNumbersForInstalledPasses:(id)a4 inRegion:(id)a5;
-- (void)paymentWebService:(id)a3 didRegisterCredentialWithIdentifier:(id)a4 response:(id)a5 error:(id)a6;
-- (void)paymentWebServiceBackgroundSessionDidBecomeInvalid:(id)a3;
+- (void)passAdded:(id)added;
+- (void)passWillBeRemoved:(id)removed withDiagnosticReason:(id)reason;
+- (void)paymentHardwareStatusWithType:(unint64_t)type completion:(id)completion;
+- (void)paymentWebService:(id)service didDownloadPass:(id)pass cloudStoreCoordinatorDelegate:(id)delegate;
+- (void)paymentWebService:(id)service didDownloadPassRemoteAssets:(id)assets completion:(id)completion;
+- (void)paymentWebService:(id)service didDownloadSerialNumbersForInstalledPasses:(id)passes inRegion:(id)region;
+- (void)paymentWebService:(id)service didRegisterCredentialWithIdentifier:(id)identifier response:(id)response error:(id)error;
+- (void)paymentWebServiceBackgroundSessionDidBecomeInvalid:(id)invalid;
 - (void)performConsistencyCheck;
-- (void)performDeviceCheckInWithCompletion:(id)a3;
-- (void)performHandlerOnSharedWebServiceQueue:(id)a3;
-- (void)performRegistrationForBrokerURL:(id)a3 force:(BOOL)a4 completion:(id)a5;
-- (void)performRegistrationForMemberOfRegions:(id)a3 force:(BOOL)a4 completion:(id)a5;
-- (void)performRegistrationForRegion:(id)a3 force:(BOOL)a4 completion:(id)a5;
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4;
-- (void)processValueAddedServiceTransaction:(id)a3;
-- (void)receivedXPCEvent:(id)a3 forEventStream:(id)a4;
-- (void)registerCredentialWithRequest:(id)a3 completion:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)scheduleConsistencyCheck:(id)a3 pluggedIn:(BOOL)a4 backoffLevel:(id)a5;
+- (void)performDeviceCheckInWithCompletion:(id)completion;
+- (void)performHandlerOnSharedWebServiceQueue:(id)queue;
+- (void)performRegistrationForBrokerURL:(id)l force:(BOOL)force completion:(id)completion;
+- (void)performRegistrationForMemberOfRegions:(id)regions force:(BOOL)force completion:(id)completion;
+- (void)performRegistrationForRegion:(id)region force:(BOOL)force completion:(id)completion;
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria;
+- (void)processValueAddedServiceTransaction:(id)transaction;
+- (void)receivedXPCEvent:(id)event forEventStream:(id)stream;
+- (void)registerCredentialWithRequest:(id)request completion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)scheduleConsistencyCheck:(id)check pluggedIn:(BOOL)in backoffLevel:(id)level;
 - (void)scheduleConsistencyCheckIfNecessary;
 - (void)scheduleDeviceCheckInIfNecessary;
-- (void)scheduleDeviceCheckInWithStartTimeOffset:(double)a3;
-- (void)scheduleDeviceUpgradeTasksIfNecessaryWithRandomizeStartDate:(BOOL)a3;
-- (void)setAccountAttestationAnonymizationSalt:(id)a3 withCompletion:(id)a4;
-- (void)setAccountManager:(id)a3;
-- (void)setDeviceCheckInContextBuildVersion:(id)a3 outstandingAction:(int64_t)a4 forRegion:(id)a5;
-- (void)setDeviceUpgradeTasksContextBuildVersion:(id)a3 upgradeTaskVersion:(int64_t)a4 retryCount:(int64_t)a5;
-- (void)setSharedWebService:(id)a3;
-- (void)setUserNotificationManager:(id)a3;
-- (void)startBackgroundVerificationObserverForPass:(id)a3 verificationMethod:(id)a4;
+- (void)scheduleDeviceCheckInWithStartTimeOffset:(double)offset;
+- (void)scheduleDeviceUpgradeTasksIfNecessaryWithRandomizeStartDate:(BOOL)date;
+- (void)setAccountAttestationAnonymizationSalt:(id)salt withCompletion:(id)completion;
+- (void)setAccountManager:(id)manager;
+- (void)setDeviceCheckInContextBuildVersion:(id)version outstandingAction:(int64_t)action forRegion:(id)region;
+- (void)setDeviceUpgradeTasksContextBuildVersion:(id)version upgradeTaskVersion:(int64_t)taskVersion retryCount:(int64_t)count;
+- (void)setSharedWebService:(id)service;
+- (void)setUserNotificationManager:(id)manager;
+- (void)startBackgroundVerificationObserverForPass:(id)pass verificationMethod:(id)method;
 - (void)startTasksIfNecessary;
-- (void)submitVerificationCode:(id)a3 verificationData:(id)a4 forPass:(id)a5 handler:(id)a6;
-- (void)unregisterObserver:(id)a3;
+- (void)submitVerificationCode:(id)code verificationData:(id)data forPass:(id)pass handler:(id)handler;
+- (void)unregisterObserver:(id)observer;
 - (void)unscheduleDeviceCheckIn;
 - (void)unscheduleDeviceUpgradeTaskActivity;
-- (void)updateSharedWebServiceContext:(id)a3;
-- (void)updateWebServiceConfigurationWithCompletion:(id)a3;
-- (void)validatePreconditionsWithCompletion:(id)a3;
-- (void)verificationObserver:(id)a3 didObserveVerificationCode:(id)a4;
-- (void)verificationObserverDidTimeout:(id)a3;
+- (void)updateSharedWebServiceContext:(id)context;
+- (void)updateWebServiceConfigurationWithCompletion:(id)completion;
+- (void)validatePreconditionsWithCompletion:(id)completion;
+- (void)verificationObserver:(id)observer didObserveVerificationCode:(id)code;
+- (void)verificationObserverDidTimeout:(id)timeout;
 @end
 
 @implementation PDPaymentWebServiceCoordinator
@@ -110,26 +110,26 @@
 - (PKPaymentWebServiceContext)sharedWebServiceContext
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(PKPaymentWebService *)self->_sharedWebService context];
+  context = [(PKPaymentWebService *)self->_sharedWebService context];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return context;
 }
 
-- (PDPaymentWebServiceCoordinator)initWithPushNotificationManager:(id)a3 databaseManager:(id)a4 passStore:(id)a5 assertionManager:(id)a6 cloudStoreCoordinator:(id)a7 idsManager:(id)a8 tapToRadarDelegate:(id)a9 receiptFileManager:(id)a10 expressPassManager:(id)a11 familyCircleManager:(id)a12
+- (PDPaymentWebServiceCoordinator)initWithPushNotificationManager:(id)manager databaseManager:(id)databaseManager passStore:(id)store assertionManager:(id)assertionManager cloudStoreCoordinator:(id)coordinator idsManager:(id)idsManager tapToRadarDelegate:(id)delegate receiptFileManager:(id)self0 expressPassManager:(id)self1 familyCircleManager:(id)self2
 {
-  v58 = a3;
-  v57 = a4;
-  v56 = a5;
-  v47 = a6;
-  v55 = a6;
-  v54 = a7;
-  v48 = a8;
-  v53 = a8;
-  v52 = a9;
-  v51 = a10;
-  v50 = a11;
-  v49 = a12;
+  managerCopy = manager;
+  databaseManagerCopy = databaseManager;
+  storeCopy = store;
+  assertionManagerCopy = assertionManager;
+  assertionManagerCopy2 = assertionManager;
+  coordinatorCopy = coordinator;
+  idsManagerCopy = idsManager;
+  idsManagerCopy2 = idsManager;
+  delegateCopy = delegate;
+  fileManagerCopy = fileManager;
+  passManagerCopy = passManager;
+  circleManagerCopy = circleManager;
   v59.receiver = self;
   v59.super_class = PDPaymentWebServiceCoordinator;
   v18 = [(PDPaymentWebServiceCoordinator *)&v59 init];
@@ -144,17 +144,17 @@
     replyQueue = v18->_replyQueue;
     v18->_replyQueue = v22;
 
-    objc_storeStrong(&v18->_pushNotificationManager, a3);
-    objc_storeStrong(&v18->_databaseManager, a4);
+    objc_storeStrong(&v18->_pushNotificationManager, manager);
+    objc_storeStrong(&v18->_databaseManager, databaseManager);
     [(PDDatabaseManager *)v18->_databaseManager setPaymentServicesDelegate:v18];
     v24 = +[PKSecureElement sharedSecureElement];
     secureElement = v18->_secureElement;
     v18->_secureElement = v24;
 
-    objc_storeStrong(&v18->_passStore, a5);
-    objc_storeStrong(&v18->_tapToRadarDelegate, a9);
-    objc_storeStrong(&v18->_receiptFileManager, a10);
-    objc_storeStrong(&v18->_expressPassManager, a11);
+    objc_storeStrong(&v18->_passStore, store);
+    objc_storeStrong(&v18->_tapToRadarDelegate, delegate);
+    objc_storeStrong(&v18->_receiptFileManager, fileManager);
+    objc_storeStrong(&v18->_expressPassManager, passManager);
     v26 = PKSharedWebServiceContextPath();
     v27 = [PKPaymentWebServiceContext contextWithArchive:v26];
 
@@ -175,10 +175,10 @@
     fpanCardImportManager = v18->_fpanCardImportManager;
     v18->_fpanCardImportManager = v35;
 
-    objc_storeStrong(&v18->_assertionManager, v47);
-    objc_storeStrong(&v18->_familyCircleManager, a12);
-    objc_storeStrong(&v18->_cloudStoreCoordinator, a7);
-    objc_storeStrong(&v18->_idsManager, v48);
+    objc_storeStrong(&v18->_assertionManager, assertionManagerCopy);
+    objc_storeStrong(&v18->_familyCircleManager, circleManager);
+    objc_storeStrong(&v18->_cloudStoreCoordinator, coordinator);
+    objc_storeStrong(&v18->_idsManager, idsManagerCopy);
     v37 = +[NSHashTable pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v18->_observers;
     v18->_observers = v37;
@@ -211,61 +211,61 @@
   [(PDPaymentWebServiceCoordinator *)&v3 dealloc];
 }
 
-- (void)setAccountManager:(id)a3
+- (void)setAccountManager:(id)manager
 {
-  objc_storeStrong(&self->_accountManager, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_accountManager, manager);
+  managerCopy = manager;
   [(PDPaymentSetupFeaturesCoordinator *)self->_paymentSetupFeaturesCoordinator setAccountManager:self->_accountManager];
 }
 
-- (void)setUserNotificationManager:(id)a3
+- (void)setUserNotificationManager:(id)manager
 {
-  v4 = a3;
-  objc_storeWeak(&self->_userNotificationManager, v4);
-  [(PDPaymentSetupFeaturesCoordinator *)self->_paymentSetupFeaturesCoordinator setUserNotificationManager:v4];
+  managerCopy = manager;
+  objc_storeWeak(&self->_userNotificationManager, managerCopy);
+  [(PDPaymentSetupFeaturesCoordinator *)self->_paymentSetupFeaturesCoordinator setUserNotificationManager:managerCopy];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_observersLock);
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_observersLock);
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_observersLock);
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_observersLock);
   }
 }
 
-- (void)_accessObserversWithHandler:(id)a3
+- (void)_accessObserversWithHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     __break(1u);
   }
 
-  v5 = v4;
+  v5 = handlerCopy;
   os_unfair_lock_lock(&self->_observersLock);
-  v6 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_observersLock);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v6;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -320,57 +320,57 @@
   }
 }
 
-- (void)updateWebServiceConfigurationWithCompletion:(id)a3
+- (void)updateWebServiceConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000384C8;
   v7[3] = &unk_10083DCB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(sharedWebServiceQueue, v7);
 }
 
-- (void)_updateWebServiceConfigurationWithCompletion:(id)a3
+- (void)_updateWebServiceConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
-  if ([v5 needsConfiguration])
+  completionCopy = completion;
+  sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+  if ([sharedWebService needsConfiguration])
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10003859C;
     v6[3] = &unk_10083DCE0;
-    v7 = v4;
-    [v5 configurePaymentServiceWithCompletion:v6];
+    v7 = completionCopy;
+    [sharedWebService configurePaymentServiceWithCompletion:v6];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_updateWebServiceConfigurationWithSupportedRegionTimeInterval:(double)a3 unsupportedRegionTimeInterval:(double)a4 completion:(id)a5
+- (void)_updateWebServiceConfigurationWithSupportedRegionTimeInterval:(double)interval unsupportedRegionTimeInterval:(double)timeInterval completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
-  if ([v9 needsConfigurationWithSupportedRegionTimeInterval:a3 unsupportedRegionTimeInterval:a4])
+  completionCopy = completion;
+  sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+  if ([sharedWebService needsConfigurationWithSupportedRegionTimeInterval:interval unsupportedRegionTimeInterval:timeInterval])
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100038760;
     v10[3] = &unk_10083DCE0;
-    v11 = v8;
-    [v9 configurePaymentServiceWithCompletion:v10];
+    v11 = completionCopy;
+    [sharedWebService configurePaymentServiceWithCompletion:v10];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -383,30 +383,30 @@
   return v3;
 }
 
-- (void)setSharedWebService:(id)a3
+- (void)setSharedWebService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   os_unfair_lock_lock(&self->_lock);
   sharedWebService = self->_sharedWebService;
-  self->_sharedWebService = v4;
+  self->_sharedWebService = serviceCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updateSharedWebServiceContext:(id)a3
+- (void)updateSharedWebServiceContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(PKPaymentWebService *)self->_sharedWebService context];
-    v6 = [v5 deviceID];
+    context = [(PKPaymentWebService *)self->_sharedWebService context];
+    deviceID = [context deviceID];
 
-    if (v6)
+    if (deviceID)
     {
-      v7 = [v4 deviceID];
+      deviceID2 = [contextCopy deviceID];
 
-      if (!v7)
+      if (!deviceID2)
       {
         v8 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -421,26 +421,26 @@
       }
     }
 
-    v10 = [(PKPaymentWebService *)self->_sharedWebService context];
-    v11 = [v10 pushToken];
+    context2 = [(PKPaymentWebService *)self->_sharedWebService context];
+    pushToken = [context2 pushToken];
 
-    [(PKPaymentWebService *)self->_sharedWebService setContext:v4];
-    if (v11)
+    [(PKPaymentWebService *)self->_sharedWebService setContext:contextCopy];
+    if (pushToken)
     {
-      v12 = [(PKPaymentWebService *)self->_sharedWebService context];
-      v13 = [v12 pushToken];
-      v14 = [v11 isEqualToString:v13];
+      context3 = [(PKPaymentWebService *)self->_sharedWebService context];
+      pushToken2 = [context3 pushToken];
+      v14 = [pushToken isEqualToString:pushToken2];
 
       if ((v14 & 1) == 0)
       {
-        v15 = [(PKPaymentWebService *)self->_sharedWebService context];
-        [v15 setPushToken:v11];
+        context4 = [(PKPaymentWebService *)self->_sharedWebService context];
+        [context4 setPushToken:pushToken];
       }
     }
 
     archiver = self->_archiver;
-    v17 = [(PKPaymentWebService *)self->_sharedWebService context];
-    [(PDPaymentWebServiceArchiver *)archiver archiveContext:v17];
+    context5 = [(PKPaymentWebService *)self->_sharedWebService context];
+    [(PDPaymentWebServiceArchiver *)archiver archiveContext:context5];
 
     os_unfair_lock_unlock(&self->_lock);
     [(PDPushNotificationManager *)self->_pushNotificationManager recalculatePushTopics];
@@ -448,26 +448,26 @@
 
   else
   {
-    v6 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    deviceID = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(deviceID, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v18) = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Error: Refusing to update webservice context with nil.", &v18, 2u);
+      _os_log_impl(&_mh_execute_header, deviceID, OS_LOG_TYPE_DEFAULT, "Error: Refusing to update webservice context with nil.", &v18, 2u);
     }
   }
 }
 
-- (void)performHandlerOnSharedWebServiceQueue:(id)a3
+- (void)performHandlerOnSharedWebServiceQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100038BC0;
   v7[3] = &unk_10083C820;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_async(sharedWebServiceQueue, v7);
 }
 
@@ -478,37 +478,37 @@
   [(PDPaymentWebServiceCoordinator *)self scheduleDeviceUpgradeTasksIfNecessary];
 }
 
-- (void)deleteSharedWebServiceWithDiagnosticReason:(id)a3
+- (void)deleteSharedWebServiceWithDiagnosticReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100038D04;
   v7[3] = &unk_10083C420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = reasonCopy;
+  selfCopy = self;
+  v6 = reasonCopy;
   dispatch_sync(sharedWebServiceQueue, v7);
 }
 
-- (void)submitVerificationCode:(id)a3 verificationData:(id)a4 forPass:(id)a5 handler:(id)a6
+- (void)submitVerificationCode:(id)code verificationData:(id)data forPass:(id)pass handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  codeCopy = code;
+  dataCopy = data;
+  passCopy = pass;
+  handlerCopy = handler;
   v14 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v12 passTypeIdentifier];
-    v16 = [v12 serialNumber];
+    passTypeIdentifier = [passCopy passTypeIdentifier];
+    serialNumber = [passCopy serialNumber];
     *buf = 138412802;
-    v32 = v10;
+    v32 = codeCopy;
     v33 = 2112;
-    v34 = v15;
+    v34 = passTypeIdentifier;
     v35 = 2112;
-    v36 = v16;
+    v36 = serialNumber;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Submitting verification code (%@) for pass (%@,%@)", buf, 0x20u);
   }
 
@@ -519,15 +519,15 @@
   v24[2] = sub_1000393C4;
   v24[3] = &unk_10083DD98;
   v25 = v17;
-  v26 = self;
-  v27 = v10;
-  v28 = v11;
-  v29 = v12;
-  v30 = v13;
-  v19 = v13;
-  v20 = v12;
-  v21 = v11;
-  v22 = v10;
+  selfCopy = self;
+  v27 = codeCopy;
+  v28 = dataCopy;
+  v29 = passCopy;
+  v30 = handlerCopy;
+  v19 = handlerCopy;
+  v20 = passCopy;
+  v21 = dataCopy;
+  v22 = codeCopy;
   v23 = v17;
   dispatch_async(sharedWebServiceQueue, v24);
 }
@@ -554,51 +554,51 @@
   dispatch_async(sharedWebServiceQueue, block);
 }
 
-- (void)processValueAddedServiceTransaction:(id)a3
+- (void)processValueAddedServiceTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = PDDefaultQueue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100039C00;
   v7[3] = &unk_10083C420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = transactionCopy;
+  selfCopy = self;
+  v6 = transactionCopy;
   dispatch_async(v5, v7);
 }
 
 - (id)applyServicePushTopics
 {
-  v2 = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
-  v3 = [v2 applyServicePushTopics];
+  sharedWebServiceContext = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
+  applyServicePushTopics = [sharedWebServiceContext applyServicePushTopics];
 
-  return v3;
+  return applyServicePushTopics;
 }
 
 - (id)accountServicePushTopics
 {
-  v2 = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
-  v3 = [v2 accountServicePushTopics];
+  sharedWebServiceContext = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
+  accountServicePushTopics = [sharedWebServiceContext accountServicePushTopics];
 
-  return v3;
+  return accountServicePushTopics;
 }
 
 - (id)paymentOffersServicePushTopics
 {
-  v2 = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
-  v3 = [v2 paymentOffersServicePushTopics];
+  sharedWebServiceContext = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
+  paymentOffersServicePushTopics = [sharedWebServiceContext paymentOffersServicePushTopics];
 
-  return v3;
+  return paymentOffersServicePushTopics;
 }
 
-- (void)downloadReceiptForTransaction:(id)a3
+- (void)downloadReceiptForTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 associatedReceiptUniqueID];
-  v6 = [v4 receiptProviderURL];
-  v7 = [v4 cardNumberSuffix];
-  if (v5 && v6)
+  transactionCopy = transaction;
+  associatedReceiptUniqueID = [transactionCopy associatedReceiptUniqueID];
+  receiptProviderURL = [transactionCopy receiptProviderURL];
+  cardNumberSuffix = [transactionCopy cardNumberSuffix];
+  if (associatedReceiptUniqueID && receiptProviderURL)
   {
     sharedWebServiceQueue = self->_sharedWebServiceQueue;
     block[0] = _NSConcreteStackBlock;
@@ -606,34 +606,34 @@
     block[2] = sub_100039F7C;
     block[3] = &unk_10083DE38;
     block[4] = self;
-    v10 = v5;
-    v11 = v7;
-    v12 = v4;
-    v13 = v6;
+    v10 = associatedReceiptUniqueID;
+    v11 = cardNumberSuffix;
+    v12 = transactionCopy;
+    v13 = receiptProviderURL;
     dispatch_async(sharedWebServiceQueue, block);
   }
 }
 
-- (void)paymentHardwareStatusWithType:(unint64_t)a3 completion:(id)a4
+- (void)paymentHardwareStatusWithType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003A9F4;
   block[3] = &unk_10083DED8;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(sharedWebServiceQueue, block);
 }
 
-- (void)_paymentHardwareStatusWithType:(unint64_t)a3 completion:(id)a4
+- (void)_paymentHardwareStatusWithType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_alloc_init(PKPaymentHardwareStatus);
-  [v7 setType:a3];
+  [v7 setType:type];
   [v7 setHasSecureElement:PKSecureElementIsAvailable() != 0];
   if (PKIsHandoffClient())
   {
@@ -649,8 +649,8 @@
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v8 = [(PKIDSManager *)self->_idsManager remoteDevices];
-      v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      remoteDevices = [(PKIDSManager *)self->_idsManager remoteDevices];
+      v9 = [remoteDevices countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v9)
       {
         v10 = v9;
@@ -661,7 +661,7 @@
           {
             if (*v14 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(remoteDevices);
             }
 
             if ([*(*(&v13 + 1) + 8 * i) canMakePayments])
@@ -671,7 +671,7 @@
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v10 = [remoteDevices countByEnumeratingWithState:&v13 objects:v17 count:16];
           if (v10)
           {
             continue;
@@ -685,22 +685,22 @@ LABEL_14:
     }
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     [v7 setIsSRD:PKIsSRD()];
     [v7 setInFailForward:{+[PKSecureElement isInFailForward](PKSecureElement, "isInFailForward")}];
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, v7);
+    completionCopy[2](completionCopy, v7);
   }
 }
 
-- (void)validatePreconditionsWithCompletion:(id)a3
+- (void)validatePreconditionsWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (v3)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (!PKSecureElementIsAvailable() || (PKCurrentUserIsGuestUser() & 1) != 0 || (PKCurrentUserIsInSharingMode() & 1) != 0 || !PKHasVerifiedPrimaryAppleAccount() || !PKPasscodeEnabled())
     {
@@ -715,7 +715,7 @@ LABEL_14:
 LABEL_14:
 
 LABEL_15:
-        v3[2](v3, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_16;
       }
 
@@ -728,7 +728,7 @@ LABEL_15:
     {
       if (!PKIsBeneficiaryAccount())
       {
-        v3[2](v3, 1);
+        completionCopy[2](completionCopy, 1);
         goto LABEL_16;
       }
 
@@ -750,189 +750,189 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)accountAttestationAnonymizationSaltWithCompletion:(id)a3
+- (void)accountAttestationAnonymizationSaltWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     sharedWebServiceQueue = self->_sharedWebServiceQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10003AD80;
     block[3] = &unk_10083D648;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(sharedWebServiceQueue, block);
   }
 }
 
-- (void)setAccountAttestationAnonymizationSalt:(id)a3 withCompletion:(id)a4
+- (void)setAccountAttestationAnonymizationSalt:(id)salt withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  saltCopy = salt;
+  completionCopy = completion;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10003AEB8;
   v11[3] = &unk_10083DCB8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = saltCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = saltCopy;
   dispatch_async(sharedWebServiceQueue, v11);
 }
 
-- (void)registerCredentialWithRequest:(id)a3 completion:(id)a4
+- (void)registerCredentialWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003AFE8;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(sharedWebServiceQueue, block);
 }
 
-- (void)backgroundRegisterCredentialWithRequest:(id)a3
+- (void)backgroundRegisterCredentialWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003B0D4;
   v7[3] = &unk_10083C420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(sharedWebServiceQueue, v7);
 }
 
 - (id)pushNotificationTopics
 {
-  v2 = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
-  v3 = [v2 notificationPushTopics];
+  sharedWebServiceContext = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
+  notificationPushTopics = [sharedWebServiceContext notificationPushTopics];
 
-  if (![v3 count])
+  if (![notificationPushTopics count])
   {
     v4 = [NSSet setWithObject:@"com.apple.passd"];
 
-    v3 = v4;
+    notificationPushTopics = v4;
   }
 
-  return v3;
+  return notificationPushTopics;
 }
 
-- (void)handlePushNotificationForTopic:(id)a3 userInfo:(id)a4
+- (void)handlePushNotificationForTopic:(id)topic userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  topicCopy = topic;
+  infoCopy = info;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003B388;
   block[3] = &unk_10083C4C0;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = topicCopy;
+  v13 = infoCopy;
+  selfCopy = self;
+  v9 = infoCopy;
+  v10 = topicCopy;
   dispatch_async(sharedWebServiceQueue, block);
 }
 
-- (void)applyPushNotificationToken:(id)a3
+- (void)applyPushNotificationToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003BAF8;
   v7[3] = &unk_10083C420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = tokenCopy;
+  selfCopy = self;
+  v6 = tokenCopy;
   dispatch_async(sharedWebServiceQueue, v7);
 }
 
-- (void)passWillBeRemoved:(id)a3 withDiagnosticReason:(id)a4
+- (void)passWillBeRemoved:(id)removed withDiagnosticReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  removedCopy = removed;
+  reasonCopy = reason;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003BFE0;
   block[3] = &unk_10083C4C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = removedCopy;
+  selfCopy = self;
+  v14 = reasonCopy;
+  v9 = reasonCopy;
+  v10 = removedCopy;
   dispatch_async(sharedWebServiceQueue, block);
 }
 
-- (void)passAdded:(id)a3
+- (void)passAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v5 = dispatch_get_global_queue(0, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10003C20C;
   v8[3] = &unk_10083C420;
-  v9 = v4;
-  v10 = self;
+  v9 = addedCopy;
+  selfCopy = self;
   v6 = v8;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000055C4;
   block[3] = &unk_10083D648;
   v12 = v6;
-  v7 = v4;
+  v7 = addedCopy;
   dispatch_async(v5, block);
 }
 
-- (void)paymentWebService:(id)a3 didDownloadPass:(id)a4 cloudStoreCoordinatorDelegate:(id)a5
+- (void)paymentWebService:(id)service didDownloadPass:(id)pass cloudStoreCoordinatorDelegate:(id)delegate
 {
-  v8 = a4;
-  [a3 backgroundDownloadRemotePassAssets:v8 forSuffixesAndScreenScales:0 cloudStoreCoordinatorDelegate:a5];
+  passCopy = pass;
+  [service backgroundDownloadRemotePassAssets:passCopy forSuffixesAndScreenScales:0 cloudStoreCoordinatorDelegate:delegate];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10003C6F4;
   v10[3] = &unk_10083E060;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
+  v11 = passCopy;
+  v9 = passCopy;
   [(PDPaymentWebServiceCoordinator *)self _accessObserversWithHandler:v10];
 }
 
-- (void)paymentWebService:(id)a3 didDownloadPassRemoteAssets:(id)a4 completion:(id)a5
+- (void)paymentWebService:(id)service didDownloadPassRemoteAssets:(id)assets completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  [v7 reloadDisplayProfileOfType:0];
+  assetsCopy = assets;
+  completionCopy = completion;
+  [assetsCopy reloadDisplayProfileOfType:0];
   v9 = PDDefaultQueue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003C834;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = assetsCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = assetsCopy;
   dispatch_async(v9, block);
 }
 
-- (void)paymentWebService:(id)a3 didDownloadSerialNumbersForInstalledPasses:(id)a4 inRegion:(id)a5
+- (void)paymentWebService:(id)service didDownloadSerialNumbersForInstalledPasses:(id)passes inRegion:(id)region
 {
-  v25 = a3;
-  v8 = a4;
-  v9 = a5;
+  serviceCopy = service;
+  passesCopy = passes;
+  regionCopy = region;
   v10 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -941,7 +941,7 @@ LABEL_16:
   }
 
   v26 = objc_alloc_init(NSMutableArray);
-  v24 = self;
+  selfCopy = self;
   v11 = [(PDDatabaseManager *)self->_databaseManager passesOfType:1];
   v32 = 0u;
   v33 = 0u;
@@ -962,11 +962,11 @@ LABEL_16:
         }
 
         v16 = *(*(&v32 + 1) + 8 * i);
-        v17 = [v16 passTypeIdentifier];
-        if ([v17 isEqualToString:v9])
+        passTypeIdentifier = [v16 passTypeIdentifier];
+        if ([passTypeIdentifier isEqualToString:regionCopy])
         {
-          v18 = [v16 serialNumber];
-          v19 = [v8 containsObject:v18];
+          serialNumber = [v16 serialNumber];
+          v19 = [passesCopy containsObject:serialNumber];
 
           if ((v19 & 1) == 0)
           {
@@ -985,73 +985,73 @@ LABEL_16:
     while (v13);
   }
 
-  sharedWebServiceQueue = v24->_sharedWebServiceQueue;
+  sharedWebServiceQueue = selfCopy->_sharedWebServiceQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003CBCC;
   block[3] = &unk_10083E088;
   v28 = v26;
-  v29 = v9;
-  v30 = v24;
-  v31 = v8;
-  v21 = v8;
-  v22 = v9;
+  v29 = regionCopy;
+  v30 = selfCopy;
+  v31 = passesCopy;
+  v21 = passesCopy;
+  v22 = regionCopy;
   v23 = v26;
   dispatch_async(sharedWebServiceQueue, block);
 }
 
-- (void)paymentWebService:(id)a3 didRegisterCredentialWithIdentifier:(id)a4 response:(id)a5 error:(id)a6
+- (void)paymentWebService:(id)service didRegisterCredentialWithIdentifier:(id)identifier response:(id)response error:(id)error
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10003CFA0;
   v11[3] = &unk_10083E0B0;
-  v12 = self;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v8 = v15;
-  v9 = v14;
-  v10 = v13;
-  [(PDPaymentWebServiceCoordinator *)v12 _accessObserversWithHandler:v11];
+  selfCopy = self;
+  identifierCopy = identifier;
+  responseCopy = response;
+  errorCopy = error;
+  v8 = errorCopy;
+  v9 = responseCopy;
+  v10 = identifierCopy;
+  [(PDPaymentWebServiceCoordinator *)selfCopy _accessObserversWithHandler:v11];
 }
 
-- (void)paymentWebServiceBackgroundSessionDidBecomeInvalid:(id)a3
+- (void)paymentWebServiceBackgroundSessionDidBecomeInvalid:(id)invalid
 {
-  v4 = a3;
+  invalidCopy = invalid;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003D09C;
   v7[3] = &unk_10083C420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = invalidCopy;
+  selfCopy = self;
+  v6 = invalidCopy;
   dispatch_async(sharedWebServiceQueue, v7);
 }
 
-- (void)startBackgroundVerificationObserverForPass:(id)a3 verificationMethod:(id)a4
+- (void)startBackgroundVerificationObserverForPass:(id)pass verificationMethod:(id)method
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  methodCopy = method;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003D26C;
   block[3] = &unk_10083C4C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = passCopy;
+  v13 = methodCopy;
+  v9 = methodCopy;
+  v10 = passCopy;
   dispatch_async(sharedWebServiceQueue, block);
 }
 
-- (void)performRegistrationForMemberOfRegions:(id)a3 force:(BOOL)a4 completion:(id)a5
+- (void)performRegistrationForMemberOfRegions:(id)regions force:(BOOL)force completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8 && [v8 count])
+  regionsCopy = regions;
+  completionCopy = completion;
+  if (regionsCopy && [regionsCopy count])
   {
     sharedWebServiceQueue = self->_sharedWebServiceQueue;
     block[0] = _NSConcreteStackBlock;
@@ -1059,9 +1059,9 @@ LABEL_16:
     block[2] = sub_10003D524;
     block[3] = &unk_10083E128;
     block[4] = self;
-    v15 = v8;
-    v17 = a4;
-    v16 = v9;
+    v15 = regionsCopy;
+    forceCopy = force;
+    v16 = completionCopy;
     dispatch_async(sharedWebServiceQueue, block);
 
     v11 = v15;
@@ -1077,14 +1077,14 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "PDPaymentWebServiceCoordinator: ignoring request to register among zero regions.", buf, 2u);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v13 = PDDefaultQueue();
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10003D510;
     v18[3] = &unk_10083D648;
-    v19 = v9;
+    v19 = completionCopy;
     dispatch_async(v13, v18);
 
     v11 = v19;
@@ -1094,32 +1094,32 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)performRegistrationForRegion:(id)a3 force:(BOOL)a4 completion:(id)a5
+- (void)performRegistrationForRegion:(id)region force:(BOOL)force completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  regionCopy = region;
+  completionCopy = completion;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10003DC24;
   v13[3] = &unk_10083E128;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = regionCopy;
+  forceCopy = force;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = regionCopy;
   dispatch_async(sharedWebServiceQueue, v13);
 }
 
-- (void)_queue_performRegistrationForRegion:(id)a3 force:(BOOL)a4 completion:(id)a5
+- (void)_queue_performRegistrationForRegion:(id)region force:(BOOL)force completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
-  v11 = [v10 context];
-  if (v8)
+  forceCopy = force;
+  regionCopy = region;
+  completionCopy = completion;
+  sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+  context = [sharedWebService context];
+  if (regionCopy)
   {
     if (!PKRegistrationSupportedInRegionForWebService())
     {
@@ -1130,31 +1130,31 @@ LABEL_9:
       }
 
       *buf = 138543362;
-      v33 = v8;
+      v33 = regionCopy;
       v18 = "PDPaymentWebServiceCoordinator: cannot register for region %{public}@ - not supported.";
       goto LABEL_18;
     }
 
-    v12 = [v11 configuration];
-    v13 = [v12 brokerURLForRegion:v8];
+    configuration = [context configuration];
+    v13 = [configuration brokerURLForRegion:regionCopy];
 
     if (v13)
     {
-      if ([v11 isRegistered] & 1) != 0 || (objc_msgSend(v10, "primaryBrokerURL"), v14 = objc_claimAutoreleasedReturnValue(), v15 = PKEqualObjects(), v14, (v15))
+      if ([context isRegistered] & 1) != 0 || (objc_msgSend(sharedWebService, "primaryBrokerURL"), v14 = objc_claimAutoreleasedReturnValue(), v15 = PKEqualObjects(), v14, (v15))
       {
         v16 = PKLogFacilityTypeGetObject();
         if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
 LABEL_13:
 
-          [(PDPaymentWebServiceCoordinator *)self _queue_performRegistrationForBrokerURL:v13 force:v6 completion:v9];
+          [(PDPaymentWebServiceCoordinator *)self _queue_performRegistrationForBrokerURL:v13 force:forceCopy completion:completionCopy];
 LABEL_24:
 
           goto LABEL_25;
         }
 
         *buf = 138543362;
-        v33 = v8;
+        v33 = regionCopy;
       }
 
       else
@@ -1167,7 +1167,7 @@ LABEL_24:
           if (v23)
           {
             *buf = 138543362;
-            v33 = v8;
+            v33 = regionCopy;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "PDPaymentWebServiceCoordinator: initially registering for device region as precondition for registration to region %{public}@.", buf, 0xCu);
           }
 
@@ -1175,11 +1175,11 @@ LABEL_24:
           v26[1] = 3221225472;
           v26[2] = sub_10003E098;
           v26[3] = &unk_10083E150;
-          v27 = v8;
-          v28 = self;
+          v27 = regionCopy;
+          selfCopy = self;
           v29 = v13;
-          v31 = v6;
-          v30 = v9;
+          v31 = forceCopy;
+          v30 = completionCopy;
           v13 = v13;
           [(PDPaymentWebServiceCoordinator *)self _queue_performRegistrationForBrokerURL:0 force:0 completion:v26];
 
@@ -1192,7 +1192,7 @@ LABEL_24:
         }
 
         *buf = 138543362;
-        v33 = v8;
+        v33 = regionCopy;
       }
 
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "PDPaymentWebServiceCoordinator: registering for region %{public}@.", buf, 0xCu);
@@ -1203,7 +1203,7 @@ LABEL_24:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v33 = v8;
+      v33 = regionCopy;
       v18 = "PDPaymentWebServiceCoordinator: cannot register for region %{public}@ - could not resolve broker URL.";
 LABEL_18:
       v19 = v17;
@@ -1217,7 +1217,7 @@ LABEL_21:
   {
     if (PKRegistrationSupportedInCurrentRegionForWebService())
     {
-      [v11 isRegistered];
+      [context isRegistered];
       v16 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
@@ -1242,14 +1242,14 @@ LABEL_21:
 
 LABEL_22:
 
-  if (v9)
+  if (completionCopy)
   {
     v21 = PDDefaultQueue();
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_10003E238;
     v24[3] = &unk_10083D648;
-    v25 = v9;
+    v25 = completionCopy;
     dispatch_async(v21, v24);
 
     v13 = v25;
@@ -1259,33 +1259,33 @@ LABEL_22:
 LABEL_25:
 }
 
-- (void)performRegistrationForBrokerURL:(id)a3 force:(BOOL)a4 completion:(id)a5
+- (void)performRegistrationForBrokerURL:(id)l force:(BOOL)force completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  completionCopy = completion;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10003E318;
   v13[3] = &unk_10083E128;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = lCopy;
+  forceCopy = force;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = lCopy;
   dispatch_async(sharedWebServiceQueue, v13);
 }
 
-- (void)_queue_performRegistrationForBrokerURL:(id)a3 force:(BOOL)a4 completion:(id)a5
+- (void)_queue_performRegistrationForBrokerURL:(id)l force:(BOOL)force completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
-  v11 = v10;
-  if (v8)
+  lCopy = l;
+  completionCopy = completion;
+  sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+  v11 = sharedWebService;
+  if (lCopy)
   {
-    if (!a4 && ([v10 needsRegistrationForBrokerURL:v8] & 1) == 0)
+    if (!force && ([sharedWebService needsRegistrationForBrokerURL:lCopy] & 1) == 0)
     {
       v12 = PKLogFacilityTypeGetObject();
       if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1294,7 +1294,7 @@ LABEL_25:
       }
 
       *buf = 138412290;
-      v26 = v8;
+      v26 = lCopy;
       v13 = "PDPaymentWebServiceCoordinator: skipping registration at %@ - already registered.";
       goto LABEL_11;
     }
@@ -1302,11 +1302,11 @@ LABEL_25:
     goto LABEL_15;
   }
 
-  v14 = [v10 primaryBrokerURL];
-  v8 = v14;
-  if (!v14 || a4)
+  primaryBrokerURL = [sharedWebService primaryBrokerURL];
+  lCopy = primaryBrokerURL;
+  if (!primaryBrokerURL || force)
   {
-    if (!v14)
+    if (!primaryBrokerURL)
     {
       v17 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1315,9 +1315,9 @@ LABEL_25:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "PDPaymentWebServiceCoordinator: cannot register with primary region - broker URL not found.", buf, 2u);
       }
 
-      if (!v9)
+      if (!completionCopy)
       {
-        v8 = 0;
+        lCopy = 0;
         goto LABEL_17;
       }
 
@@ -1327,10 +1327,10 @@ LABEL_25:
       v19[2] = sub_10003E668;
       v19[3] = &unk_10083D648;
       v16 = &v20;
-      v20 = v9;
+      v20 = completionCopy;
       dispatch_async(v18, v19);
 
-      v8 = 0;
+      lCopy = 0;
       goto LABEL_16;
     }
 
@@ -1345,8 +1345,8 @@ LABEL_15:
     v23[2] = sub_10003E63C;
     v23[3] = &unk_10083C7F8;
     v16 = &v24;
-    v24 = v9;
-    [(PDPaymentWebServiceCoordinator *)self _queue_registerDeviceAtBrokerURL:v8 completion:v23];
+    v24 = completionCopy;
+    [(PDPaymentWebServiceCoordinator *)self _queue_registerDeviceAtBrokerURL:lCopy completion:v23];
     goto LABEL_16;
   }
 
@@ -1357,13 +1357,13 @@ LABEL_15:
   }
 
   *buf = 138412290;
-  v26 = v8;
+  v26 = lCopy;
   v13 = "PDPaymentWebServiceCoordinator: skipping primary region registration at %@ - already registered.";
 LABEL_11:
   _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, v13, buf, 0xCu);
 LABEL_12:
 
-  if (v9)
+  if (completionCopy)
   {
     v15 = PDDefaultQueue();
     block[0] = _NSConcreteStackBlock;
@@ -1371,7 +1371,7 @@ LABEL_12:
     block[2] = sub_10003E654;
     block[3] = &unk_10083D648;
     v16 = &v22;
-    v22 = v9;
+    v22 = completionCopy;
     dispatch_async(v15, block);
 
 LABEL_16:
@@ -1380,29 +1380,29 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)_queue_registerDeviceAtBrokerURL:(id)a3 completion:(id)a4
+- (void)_queue_registerDeviceAtBrokerURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = lCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "PDPaymentWebServiceCoordinator: registering with the broker at %@.", buf, 0xCu);
   }
 
-  v9 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+  sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10003E7DC;
   v12[3] = &unk_10083E1A0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 registerDeviceAtBrokerURL:v11 consistencyCheckResults:0 completion:v12];
+  v13 = lCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = lCopy;
+  [sharedWebService registerDeviceAtBrokerURL:v11 consistencyCheckResults:0 completion:v12];
 }
 
 - (void)scheduleDeviceCheckInIfNecessary
@@ -1416,7 +1416,7 @@ LABEL_17:
   dispatch_async(sharedWebServiceQueue, block);
 }
 
-- (void)scheduleDeviceCheckInWithStartTimeOffset:(double)a3
+- (void)scheduleDeviceCheckInWithStartTimeOffset:(double)offset
 {
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -1424,29 +1424,29 @@ LABEL_17:
   v4[2] = sub_10003EFAC;
   v4[3] = &unk_10083D700;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = offset;
   dispatch_async(sharedWebServiceQueue, v4);
 }
 
-- (void)_queue_scheduleDeviceCheckInWithStartTimeOffset:(double)a3 repeatInterval:(double)a4 randomizeTimes:(BOOL)a5
+- (void)_queue_scheduleDeviceCheckInWithStartTimeOffset:(double)offset repeatInterval:(double)interval randomizeTimes:(BOOL)times
 {
   [(PDPaymentWebServiceCoordinator *)self connect];
   v8 = PDScheduledActivityGetCriteria();
   if (!v8)
   {
-    if (a5)
+    if (times)
     {
-      v11 = arc4random_uniform(0xE10u) + a3;
+      v11 = arc4random_uniform(0xE10u) + offset;
       v12 = arc4random_uniform(0xE10u);
     }
 
     else
     {
       v12 = 0.0;
-      v11 = a3 + 0.0;
+      v11 = offset + 0.0;
     }
 
-    v13 = v12 + a4;
+    v13 = v12 + interval;
     v9 = [NSDate dateWithTimeIntervalSinceNow:v11];
     v10 = [PDScheduledActivityCriteria priorityActivityCriteriaWithStartDate:v9];
     [v10 setRequireNetworkConnectivity:1];
@@ -1477,25 +1477,25 @@ LABEL_10:
   }
 }
 
-- (BOOL)_queue_automaticDeviceCheckInRequiredForRegion:(id)a3
+- (BOOL)_queue_automaticDeviceCheckInRequiredForRegion:(id)region
 {
-  v3 = a3;
-  v4 = [v3 deviceCheckInPushTopic];
-  v5 = [v4 length];
+  regionCopy = region;
+  deviceCheckInPushTopic = [regionCopy deviceCheckInPushTopic];
+  v5 = [deviceCheckInPushTopic length];
 
   if (v5)
   {
     v6 = PKDeviceBuildVersion();
-    v7 = [v3 lastDeviceCheckInBuildVersion];
-    v8 = v7;
-    if (v6 && v7 && ![v6 compare:v7 options:1])
+    lastDeviceCheckInBuildVersion = [regionCopy lastDeviceCheckInBuildVersion];
+    v8 = lastDeviceCheckInBuildVersion;
+    if (v6 && lastDeviceCheckInBuildVersion && ![v6 compare:lastDeviceCheckInBuildVersion options:1])
     {
       v9 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v3 regionCode];
+        regionCode = [regionCopy regionCode];
         v14 = 138412802;
-        v15 = v13;
+        v15 = regionCode;
         v16 = 2112;
         v17 = v6;
         v18 = 2112;
@@ -1511,9 +1511,9 @@ LABEL_10:
       v9 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v3 regionCode];
+        regionCode2 = [regionCopy regionCode];
         v14 = 138412802;
-        v15 = v10;
+        v15 = regionCode2;
         v16 = 2112;
         v17 = v6;
         v18 = 2112;
@@ -1542,11 +1542,11 @@ LABEL_10:
 
 - (double)_queue_deviceCheckInRepeatInterval
 {
-  v2 = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
-  v3 = [v2 configuration];
-  v4 = [v2 primaryRegion];
-  v5 = [v4 regionCode];
-  [v3 deviceCheckInIntervalForRegion:v5];
+  sharedWebServiceContext = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
+  configuration = [sharedWebServiceContext configuration];
+  primaryRegion = [sharedWebServiceContext primaryRegion];
+  regionCode = [primaryRegion regionCode];
+  [configuration deviceCheckInIntervalForRegion:regionCode];
   if (v6 <= 0.0)
   {
     v7 = 21600.0;
@@ -1584,24 +1584,24 @@ LABEL_10:
   PDScheduledActivityRemove();
 }
 
-- (void)performDeviceCheckInWithCompletion:(id)a3
+- (void)performDeviceCheckInWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003F6E8;
   v7[3] = &unk_10083DCB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(sharedWebServiceQueue, v7);
 }
 
-- (void)_queue_enqueueDeviceCheckInTask:(id)a3
+- (void)_queue_enqueueDeviceCheckInTask:(id)task
 {
-  v4 = a3;
-  [(NSMutableArray *)self->_deviceCheckInTasks addObject:v4];
+  taskCopy = task;
+  [(NSMutableArray *)self->_deviceCheckInTasks addObject:taskCopy];
   deviceCheckInRunning = self->_deviceCheckInRunning;
   v6 = PKLogFacilityTypeGetObject();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -1622,30 +1622,30 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Device check in not running starting immediately", buf, 2u);
     }
 
-    [(PDPaymentWebServiceCoordinator *)self _performDeviceCheckInTask:v4];
+    [(PDPaymentWebServiceCoordinator *)self _performDeviceCheckInTask:taskCopy];
   }
 }
 
-- (void)_queue_coeleaseDeviceCheckInCompletion:(id)a3
+- (void)_queue_coeleaseDeviceCheckInCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(NSMutableArray *)self->_deviceCheckInTasks lastObject];
-  if (!v4)
+  completionCopy = completion;
+  lastObject = [(NSMutableArray *)self->_deviceCheckInTasks lastObject];
+  if (!lastObject)
   {
-    v4 = objc_alloc_init(PDDeviceCheckInTask);
-    [(NSMutableArray *)self->_deviceCheckInTasks addObject:v4];
+    lastObject = objc_alloc_init(PDDeviceCheckInTask);
+    [(NSMutableArray *)self->_deviceCheckInTasks addObject:lastObject];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v5 = [(PDDeviceCheckInTask *)v4 completionHandlers];
-    v6 = objc_retainBlock(v7);
-    [v5 addObject:v6];
+    completionHandlers = [(PDDeviceCheckInTask *)lastObject completionHandlers];
+    v6 = objc_retainBlock(completionCopy);
+    [completionHandlers addObject:v6];
   }
 
   if (!self->_deviceCheckInRunning)
   {
-    [(PDPaymentWebServiceCoordinator *)self _performDeviceCheckInTask:v4];
+    [(PDPaymentWebServiceCoordinator *)self _performDeviceCheckInTask:lastObject];
   }
 }
 
@@ -1683,9 +1683,9 @@ LABEL_10:
   }
 }
 
-- (void)_performDeviceCheckInTask:(id)a3
+- (void)_performDeviceCheckInTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1699,34 +1699,34 @@ LABEL_10:
   v8[2] = sub_10003FC00;
   v8[3] = &unk_10083C4C0;
   v9 = PDOSTransactionCreate("PDPaymentWebServiceCoordinator.check_in.pre_configure");
-  v10 = self;
-  v11 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v11 = taskCopy;
+  v6 = taskCopy;
   v7 = v9;
   [(PDPaymentWebServiceCoordinator *)self _updateWebServiceConfigurationWithCompletion:v8];
 }
 
-- (void)_queue_completeDeviceCheckInTask:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)_queue_completeDeviceCheckInTask:(id)task success:(BOOL)success error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  [(NSMutableArray *)self->_deviceCheckInTasks removeObject:v8];
+  taskCopy = task;
+  errorCopy = error;
+  [(NSMutableArray *)self->_deviceCheckInTasks removeObject:taskCopy];
   replyQueue = self->_replyQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100040840;
   block[3] = &unk_10083E328;
-  v11 = v8;
+  v11 = taskCopy;
   v24 = v11;
-  v26 = a4;
-  v12 = v9;
+  successCopy = success;
+  v12 = errorCopy;
   v25 = v12;
   dispatch_async(replyQueue, block);
-  v13 = [(NSMutableArray *)self->_deviceCheckInTasks firstObject];
-  v14 = v13;
-  if (v13)
+  firstObject = [(NSMutableArray *)self->_deviceCheckInTasks firstObject];
+  v14 = firstObject;
+  if (firstObject)
   {
-    if ([v13 cancelled])
+    if ([firstObject cancelled])
     {
       [(PDPaymentWebServiceCoordinator *)self _queue_completeDeviceCheckInTask:v14 success:0 error:0];
     }
@@ -1749,17 +1749,17 @@ LABEL_10:
     self->_deviceCheckInRunning = 0;
     if (v12)
     {
-      a4 = 0;
+      success = 0;
     }
 
     v16 = 0;
-    if (!a4)
+    if (!success)
     {
       [(PDPaymentWebServiceCoordinator *)self _queue_deviceCheckInRepeatInterval];
       v16 = v17;
     }
 
-    v18 = !a4;
+    v18 = !success;
     v19 = PDDefaultQueue();
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -1772,24 +1772,24 @@ LABEL_10:
   }
 }
 
-- (void)_queue_checkContextForDeviceCheckInAuthRequirement:(id)a3 completion:(id)a4
+- (void)_queue_checkContextForDeviceCheckInAuthRequirement:(id)requirement completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requirementCopy = requirement;
+  completionCopy = completion;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if ([v6 canPromptForAuth])
+  if ([requirementCopy canPromptForAuth])
   {
-    v8 = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
-    v9 = [v8 regions];
+    sharedWebServiceContext = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
+    regions = [sharedWebServiceContext regions];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100040BA0;
     v15[3] = &unk_10083E350;
     v15[4] = &v16;
-    [v9 enumerateKeysAndObjectsUsingBlock:v15];
+    [regions enumerateKeysAndObjectsUsingBlock:v15];
   }
 
   if (v17[3])
@@ -1801,42 +1801,42 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Requesting grand slam token renew for device check in", buf, 2u);
     }
 
-    v11 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+    sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100040C88;
     v12[3] = &unk_10083E3A0;
     v12[4] = self;
-    v13 = v7;
-    [v11 _renewAppleAccountWithCompletionHandler:v12];
+    v13 = completionCopy;
+    [sharedWebService _renewAppleAccountWithCompletionHandler:v12];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)_queue_handleCheckInForRegion:(id)a3 action:(int64_t)a4 completion:(id)a5
+- (void)_queue_handleCheckInForRegion:(id)region action:(int64_t)action completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  regionCopy = region;
+  completionCopy = completion;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000410C8;
   v22[3] = &unk_10083E3F0;
-  v10 = v8;
+  v10 = regionCopy;
   v23 = v10;
-  v24 = self;
-  v11 = v9;
+  selfCopy = self;
+  v11 = completionCopy;
   v25 = v11;
   v12 = objc_retainBlock(v22);
   v13 = v12;
-  if (a4)
+  if (action)
   {
-    (v12[2])(v12, a4);
+    (v12[2])(v12, action);
   }
 
   else
@@ -1850,7 +1850,7 @@ LABEL_10:
     }
 
     v15 = PDOSTransactionCreate("PDPaymentWebServiceCoordinator.check_in");
-    v16 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+    sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100041218;
@@ -1859,46 +1859,46 @@ LABEL_10:
     v20 = v11;
     v21 = v13;
     v17 = v15;
-    [v16 deviceCheckInDeviceCheckInForRegion:v10 completion:v18];
+    [sharedWebService deviceCheckInDeviceCheckInForRegion:v10 completion:v18];
   }
 }
 
-- (void)_handleDeviceCheckInAction:(int64_t)a3 region:(id)a4 completion:(id)a5
+- (void)_handleDeviceCheckInAction:(int64_t)action region:(id)region completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
-  if (a3 <= 2)
+  regionCopy = region;
+  completionCopy = completion;
+  sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+  if (action <= 2)
   {
-    if (a3)
+    if (action)
     {
-      if (a3 == 1)
+      if (action == 1)
       {
         sharedWebServiceQueue = self->_sharedWebServiceQueue;
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_100041C0C;
         v21[3] = &unk_10083D320;
-        v22 = v8;
-        v23 = v10;
-        v24 = v9;
+        v22 = regionCopy;
+        v23 = sharedWebService;
+        v24 = completionCopy;
         dispatch_async(sharedWebServiceQueue, v21);
 
         v12 = v22;
         goto LABEL_16;
       }
 
-      if (a3 == 2)
+      if (action == 2)
       {
         v11 = self->_sharedWebServiceQueue;
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_10004196C;
         block[3] = &unk_10083E468;
-        v26 = v8;
-        v27 = self;
-        v28 = v10;
-        v29 = v9;
+        v26 = regionCopy;
+        selfCopy = self;
+        v28 = sharedWebService;
+        v29 = completionCopy;
         dispatch_async(v11, block);
 
         v12 = v26;
@@ -1915,30 +1915,30 @@ LABEL_16:
     {
 LABEL_20:
 
-      if (v9)
+      if (completionCopy)
       {
-        (*(v9 + 2))(v9, 1);
+        (*(completionCopy + 2))(completionCopy, 1);
       }
 
       goto LABEL_22;
     }
 
     *buf = 138412290;
-    v39 = v8;
+    v39 = regionCopy;
     v15 = "No action taken from device check in for: %@";
 LABEL_19:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, v15, buf, 0xCu);
     goto LABEL_20;
   }
 
-  switch(a3)
+  switch(action)
   {
     case 5:
       v16 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v39 = v8;
+        v39 = regionCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Device check in requested reregister for peer payment: %@", buf, 0xCu);
       }
 
@@ -1949,7 +1949,7 @@ LABEL_19:
       v30[2] = sub_100041954;
       v30[3] = &unk_10083E490;
       v31 = v17;
-      v32 = v9;
+      v32 = completionCopy;
       v19 = v17;
       [(PDPeerPaymentWebServiceCoordinator *)peerPaymentWebServiceCoordinator registerDeviceWithReason:@"Registering peer payment for device check in" completion:v30];
 
@@ -1962,7 +1962,7 @@ LABEL_19:
       }
 
       *buf = 138412290;
-      v39 = v8;
+      v39 = regionCopy;
       v15 = "Device check in requires auth for: %@";
       goto LABEL_19;
     case 3:
@@ -1971,10 +1971,10 @@ LABEL_19:
       v33[1] = 3221225472;
       v33[2] = sub_1000416B8;
       v33[3] = &unk_10083E468;
-      v34 = v8;
-      v35 = self;
-      v36 = v10;
-      v37 = v9;
+      v34 = regionCopy;
+      selfCopy2 = self;
+      v36 = sharedWebService;
+      v37 = completionCopy;
       dispatch_async(v13, v33);
 
       v12 = v34;
@@ -1984,42 +1984,42 @@ LABEL_19:
 LABEL_22:
 }
 
-- (void)setDeviceCheckInContextBuildVersion:(id)a3 outstandingAction:(int64_t)a4 forRegion:(id)a5
+- (void)setDeviceCheckInContextBuildVersion:(id)version outstandingAction:(int64_t)action forRegion:(id)region
 {
-  v8 = a3;
-  v9 = a5;
+  versionCopy = version;
+  regionCopy = region;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100041EB4;
   v13[3] = &unk_10083C3F8;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = regionCopy;
+  v15 = versionCopy;
+  actionCopy = action;
+  v11 = versionCopy;
+  v12 = regionCopy;
   dispatch_async(sharedWebServiceQueue, v13);
 }
 
-- (void)verificationObserver:(id)a3 didObserveVerificationCode:(id)a4
+- (void)verificationObserver:(id)observer didObserveVerificationCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  codeCopy = code;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000420C8;
   block[3] = &unk_10083C4C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  selfCopy = self;
+  v14 = codeCopy;
+  v9 = codeCopy;
+  v10 = observerCopy;
   dispatch_async(sharedWebServiceQueue, block);
 }
 
-- (void)verificationObserverDidTimeout:(id)a3
+- (void)verificationObserverDidTimeout:(id)timeout
 {
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   block[0] = _NSConcreteStackBlock;
@@ -2030,9 +2030,9 @@ LABEL_22:
   dispatch_async(sharedWebServiceQueue, block);
 }
 
-- (void)handleInsertionForPaymentPass:(id)a3
+- (void)handleInsertionForPaymentPass:(id)pass
 {
-  if (a3)
+  if (pass)
   {
     [(PDPushNotificationManager *)self->_pushNotificationManager recalculatePushTopics];
     v4 = [NSDate dateWithTimeIntervalSinceNow:180.0];
@@ -2040,9 +2040,9 @@ LABEL_22:
   }
 }
 
-- (void)handleDeletionForPassTypeIdentifier:(id)a3 serialNumber:(id)a4
+- (void)handleDeletionForPassTypeIdentifier:(id)identifier serialNumber:(id)number
 {
-  if ([a3 hasPrefix:{@"paymentpass", a4}])
+  if ([identifier hasPrefix:{@"paymentpass", number}])
   {
     pushNotificationManager = self->_pushNotificationManager;
 
@@ -2050,36 +2050,36 @@ LABEL_22:
   }
 }
 
-- (void)assertionManager:(id)a3 didAcquireAssertion:(id)a4
+- (void)assertionManager:(id)manager didAcquireAssertion:(id)assertion
 {
-  v5 = a4;
+  assertionCopy = assertion;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100042698;
   v8[3] = &unk_10083C420;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = assertionCopy;
+  selfCopy = self;
+  v7 = assertionCopy;
   dispatch_async(sharedWebServiceQueue, v8);
 }
 
 - (BOOL)synchronizeWithTSM
 {
-  v3 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
-  v4 = [v3 context];
-  v5 = [v4 isRegistered];
+  sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+  context = [sharedWebService context];
+  isRegistered = [context isRegistered];
 
-  if (v5)
+  if (isRegistered)
   {
-    v6 = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
-    v7 = [v6 TSMPushTopics];
+    sharedWebServiceContext = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
+    tSMPushTopics = [sharedWebServiceContext TSMPushTopics];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v7;
+    v8 = tSMPushTopics;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v9)
     {
@@ -2125,34 +2125,34 @@ LABEL_22:
   return v14;
 }
 
-- (void)didDownloadPaymentPass:(id)a3
+- (void)didDownloadPaymentPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   v5 = PDDefaultQueue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000429C4;
   v7[3] = &unk_10083C420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = passCopy;
+  v6 = passCopy;
   dispatch_sync(v5, v7);
 }
 
 - (id)paymentPasses
 {
   v2 = [(PDDatabaseManager *)self->_databaseManager passesOfType:1];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (void)deviceStateWithCompletion:(id)a3
+- (void)deviceStateWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (v3)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v23 = v3;
+    v23 = completionCopy;
     v39 = 0;
     v40 = &v39;
     v41 = 0x3032000000;
@@ -2160,21 +2160,21 @@ LABEL_22:
     v43 = sub_10000B0C4;
     v44 = objc_alloc_init(PKSecureElementConsistencyCheckDeviceState);
     v4 = v40[5];
-    v5 = [(PDDatabaseManager *)self->_databaseManager deviceSpecificPaymentApplications];
-    v6 = [v5 allObjects];
-    [v4 setDevicePaymentApplications:v6];
+    deviceSpecificPaymentApplications = [(PDDatabaseManager *)self->_databaseManager deviceSpecificPaymentApplications];
+    allObjects = [deviceSpecificPaymentApplications allObjects];
+    [v4 setDevicePaymentApplications:allObjects];
 
-    v27 = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
+    secureElementIdentifiers = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
     v7 = objc_alloc_init(NSMutableDictionary);
     v37 = 0u;
     v38 = 0u;
     v36 = 0u;
     v35 = 0u;
-    v8 = [(PDDatabaseManager *)self->_databaseManager passesWithISO18013Credentials];
-    v9 = [v8 countByEnumeratingWithState:&v35 objects:v46 count:16];
+    passesWithISO18013Credentials = [(PDDatabaseManager *)self->_databaseManager passesWithISO18013Credentials];
+    v9 = [passesWithISO18013Credentials countByEnumeratingWithState:&v35 objects:v46 count:16];
     if (v9)
     {
-      obj = v8;
+      obj = passesWithISO18013Credentials;
       v26 = *v36;
       do
       {
@@ -2185,7 +2185,7 @@ LABEL_22:
             objc_enumerationMutation(obj);
           }
 
-          v11 = [*(*(&v35 + 1) + 8 * i) iso18013BlobsForSecureElementIdentifiers:{v27, v23}];
+          v11 = [*(*(&v35 + 1) + 8 * i) iso18013BlobsForSecureElementIdentifiers:{secureElementIdentifiers, v23}];
           v33 = 0u;
           v34 = 0u;
           v31 = 0u;
@@ -2206,9 +2206,9 @@ LABEL_22:
 
                 v16 = *(*(&v31 + 1) + 8 * j);
                 v17 = [v12 objectForKey:v16];
-                v18 = [v17 SHA256Hash];
-                v19 = [v16 identifier];
-                [v7 setObject:v18 forKeyedSubscript:v19];
+                sHA256Hash = [v17 SHA256Hash];
+                identifier = [v16 identifier];
+                [v7 setObject:sHA256Hash forKeyedSubscript:identifier];
               }
 
               v13 = [v12 countByEnumeratingWithState:&v31 objects:v45 count:16];
@@ -2218,7 +2218,7 @@ LABEL_22:
           }
         }
 
-        v8 = obj;
+        passesWithISO18013Credentials = obj;
         v9 = [obj countByEnumeratingWithState:&v35 objects:v46 count:16];
       }
 
@@ -2243,25 +2243,25 @@ LABEL_22:
     [(PDSharingManager *)sharingManager pendingCredentialsBeingProvisioned:v28];
 
     _Block_object_dispose(&v39, 8);
-    v3 = v23;
+    completionCopy = v23;
   }
 }
 
-- (void)scheduleConsistencyCheck:(id)a3 pluggedIn:(BOOL)a4 backoffLevel:(id)a5
+- (void)scheduleConsistencyCheck:(id)check pluggedIn:(BOOL)in backoffLevel:(id)level
 {
-  v8 = a3;
-  v9 = a5;
+  checkCopy = check;
+  levelCopy = level;
   v10 = PDDefaultQueue();
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100043114;
   v13[3] = &unk_10083E5D0;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = checkCopy;
+  inCopy = in;
+  v15 = levelCopy;
+  v11 = levelCopy;
+  v12 = checkCopy;
   dispatch_async(v10, v13);
 }
 
@@ -2285,10 +2285,10 @@ LABEL_22:
   return IsAvailable;
 }
 
-- (void)handleRequestedActions:(id)a3 completion:(id)a4
+- (void)handleRequestedActions:(id)actions completion:(id)completion
 {
-  v6 = a3;
-  v36 = a4;
+  actionsCopy = actions;
+  completionCopy = completion;
   v7 = objc_alloc_init(NSMutableArray);
   v38 = objc_alloc_init(NSMutableArray);
   v42 = objc_alloc_init(NSMutableSet);
@@ -2300,7 +2300,7 @@ LABEL_22:
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = v6;
+  obj = actionsCopy;
   v8 = [obj countByEnumeratingWithState:&v77 objects:v83 count:16];
   if (!v8)
   {
@@ -2320,62 +2320,62 @@ LABEL_22:
       }
 
       v11 = *(*(&v77 + 1) + 8 * i);
-      v12 = [v11 deviceCredential];
-      v13 = [v11 actions];
-      v14 = [v12 type];
-      if (v14 == 2)
+      deviceCredential = [v11 deviceCredential];
+      actions = [v11 actions];
+      type = [deviceCredential type];
+      if (type == 2)
       {
-        v18 = [v12 isoProperties];
-        v15 = [v18 isoIdentifier];
+        isoProperties = [deviceCredential isoProperties];
+        isoIdentifier = [isoProperties isoIdentifier];
 
-        if ((v13 & 8) != 0)
+        if ((actions & 8) != 0)
         {
-          [v43 safelyAddObject:v15];
+          [v43 safelyAddObject:isoIdentifier];
         }
 
-        if ((v13 & 0x10) != 0)
+        if ((actions & 0x10) != 0)
         {
-          [v41 safelyAddObject:v15];
+          [v41 safelyAddObject:isoIdentifier];
         }
 
-        if ((v13 & 0x20) != 0)
+        if ((actions & 0x20) != 0)
         {
-          [v40 safelyAddObject:v15];
+          [v40 safelyAddObject:isoIdentifier];
         }
 
-        if ((v13 & 0x40) != 0)
+        if ((actions & 0x40) != 0)
         {
-          v19 = [v11 address];
-          [v37 safelyAddObject:v19];
+          address = [v11 address];
+          [v37 safelyAddObject:address];
         }
 
-        v44 |= (v13 >> 7) & 1;
+        v44 |= (actions >> 7) & 1;
         goto LABEL_25;
       }
 
-      if (v14 == 1)
+      if (type == 1)
       {
-        v17 = [v12 address];
-        v15 = [v17 subcredentialIdentifier];
+        address2 = [deviceCredential address];
+        isoIdentifier = [address2 subcredentialIdentifier];
 
-        if ((v13 & 4) != 0)
+        if ((actions & 4) != 0)
         {
-          [v38 safelyAddObject:v15];
+          [v38 safelyAddObject:isoIdentifier];
         }
 
-        if ((v13 & 8) != 0 && v15)
+        if ((actions & 8) != 0 && isoIdentifier)
         {
-          [v42 addObject:v15];
+          [v42 addObject:isoIdentifier];
         }
 
         goto LABEL_25;
       }
 
-      if (!v14 && (v13 & 8) != 0)
+      if (!type && (actions & 8) != 0)
       {
-        v15 = [v12 address];
-        v16 = [v15 appletIdentifier];
-        [v7 safelyAddObject:v16];
+        isoIdentifier = [deviceCredential address];
+        appletIdentifier = [isoIdentifier appletIdentifier];
+        [v7 safelyAddObject:appletIdentifier];
 
 LABEL_25:
       }
@@ -2431,7 +2431,7 @@ LABEL_30:
         v67[4] = self;
         v67[5] = v25;
         v67[6] = v75;
-        [v20 addOperation:{v67, v34, v36}];
+        [v20 addOperation:{v67, v34, completionCopy}];
       }
 
       v22 = [v21 countByEnumeratingWithState:&v68 objects:v82 count:16];
@@ -2539,7 +2539,7 @@ LABEL_30:
   v46[1] = 3221225472;
   v46[2] = sub_100044800;
   v46[3] = &unk_10083C8E8;
-  v32 = v36;
+  v32 = completionCopy;
   v47 = v32;
   v48 = v75;
   v33 = [v20 evaluateWithInput:v31 completion:v46];
@@ -2547,19 +2547,19 @@ LABEL_30:
   _Block_object_dispose(v75, 8);
 }
 
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Handling Scheduled Activity: %@", buf, 0xCu);
   }
 
-  if ([v6 isEqualToString:@"ConsistencyCheck"])
+  if ([identifierCopy isEqualToString:@"ConsistencyCheck"])
   {
     v9 = [(PDAssertionManager *)self->_assertionManager assertionsOfType:1];
     v10 = [v9 count];
@@ -2582,9 +2582,9 @@ LABEL_30:
     }
   }
 
-  else if ([v6 hasPrefix:@"VASTransactionProcessor."])
+  else if ([identifierCopy hasPrefix:@"VASTransactionProcessor."])
   {
-    v12 = [v6 substringFromIndex:{objc_msgSend(@"VASTransactionProcessor.", "length")}];
+    v12 = [identifierCopy substringFromIndex:{objc_msgSend(@"VASTransactionProcessor.", "length")}];
     v13 = [(PDDatabaseManager *)self->_databaseManager valueAddedServiceTransactionWithIdentifier:v12];
     if (v13)
     {
@@ -2601,7 +2601,7 @@ LABEL_30:
     }
   }
 
-  else if ([v6 isEqualToString:@"DeviceCheckIn"])
+  else if ([identifierCopy isEqualToString:@"DeviceCheckIn"])
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -2618,7 +2618,7 @@ LABEL_30:
     dispatch_async(sharedWebServiceQueue, block);
   }
 
-  else if ([v6 isEqualToString:@"DeviceUpgradeTasks"])
+  else if ([identifierCopy isEqualToString:@"DeviceUpgradeTasks"])
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -2630,39 +2630,39 @@ LABEL_30:
   }
 }
 
-- (void)_processValueAddedServiceTransaction:(id)a3
+- (void)_processValueAddedServiceTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100044C24;
   v7[3] = &unk_10083E728;
-  v8 = [[PKValueAddedServiceWebService alloc] initWithValueAddedServiceTransaction:v4];
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v8 = [[PKValueAddedServiceWebService alloc] initWithValueAddedServiceTransaction:transactionCopy];
+  v9 = transactionCopy;
+  selfCopy = self;
+  v5 = transactionCopy;
   v6 = v8;
   [v6 downloadMerchantPayloadWithCompletion:v7];
 }
 
-- (void)_performNotificationActionWithUserInfo:(id)a3
+- (void)_performNotificationActionWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100044FB0;
   v7[3] = &unk_10083C420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = infoCopy;
+  selfCopy = self;
+  v6 = infoCopy;
   dispatch_async(sharedWebServiceQueue, v7);
 }
 
-- (id)_userNotificationFromResponse:(id)a3
+- (id)_userNotificationFromResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 aps];
+  responseCopy = response;
+  v4 = [responseCopy aps];
   v5 = [v4 objectForKey:@"alert"];
 
   objc_opt_class();
@@ -2706,13 +2706,13 @@ LABEL_8:
 LABEL_12:
   if ([v8 length])
   {
-    v10 = [v3 requestID];
-    if ([v10 length])
+    requestID = [responseCopy requestID];
+    if ([requestID length])
     {
-      v11 = [v3 action];
-      if ([v11 isEqualToString:PKNotificationActionOpenIDMSCardOnFile])
+      action = [responseCopy action];
+      if ([action isEqualToString:PKNotificationActionOpenIDMSCardOnFile])
       {
-        v12 = [NSString stringWithFormat:@"%@/%@", PKURLActionPaymentSetupIDMSCardOnFile, v10];
+        v12 = [NSString stringWithFormat:@"%@/%@", PKURLActionPaymentSetupIDMSCardOnFile, requestID];
         v13 = [(PDGenericUserNotification *)[PDWalletUserNotification alloc] initWithMessage:v8];
         v14 = v13;
         if (v12)
@@ -2726,12 +2726,12 @@ LABEL_12:
         v12 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v3 action];
-          v17 = [v3 requestID];
+          action2 = [responseCopy action];
+          requestID2 = [responseCopy requestID];
           *buf = 138412546;
-          v20 = v16;
+          v20 = action2;
           v21 = 2112;
-          v22 = v17;
+          v22 = requestID2;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Unsupported action found:%@ for requestID:%@", buf, 0x16u);
         }
 
@@ -2741,11 +2741,11 @@ LABEL_12:
 
     else
     {
-      v11 = PKLogFacilityTypeGetObject();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      action = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(action, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "No requestID in response", buf, 2u);
+        _os_log_impl(&_mh_execute_header, action, OS_LOG_TYPE_DEFAULT, "No requestID in response", buf, 2u);
       }
 
       v14 = 0;
@@ -2754,13 +2754,13 @@ LABEL_12:
 
   else
   {
-    v10 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    requestID = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(requestID, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v3 requestID];
+      requestID3 = [responseCopy requestID];
       *buf = 138412290;
-      v20 = v15;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "No valid message found in response for requestID :%@", buf, 0xCu);
+      v20 = requestID3;
+      _os_log_impl(&_mh_execute_header, requestID, OS_LOG_TYPE_DEFAULT, "No valid message found in response for requestID :%@", buf, 0xCu);
     }
 
     v14 = 0;
@@ -2769,69 +2769,69 @@ LABEL_12:
   return v14;
 }
 
-- (void)_fetchPassesIfNecessaryForPushTopic:(id)a3
+- (void)_fetchPassesIfNecessaryForPushTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100045540;
   v7[3] = &unk_10083C420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = topicCopy;
+  v6 = topicCopy;
   dispatch_async(sharedWebServiceQueue, v7);
 }
 
-- (void)_handleDownloadedPass:(id)a3
+- (void)_handleDownloadedPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   v5 = PDOSTransactionCreate("PDPaymentWebServiceCoordinator");
   v6 = objc_autoreleasePoolPush();
-  if ([v4 isIdentityPass] && (objc_msgSend(v4, "devicePrimaryPaymentApplication"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "paymentType"), v7, v8 == 1002) && (databaseManager = self->_databaseManager, objc_msgSend(v4, "uniqueID"), v10 = objc_claimAutoreleasedReturnValue(), LOBYTE(databaseManager) = -[PDDatabaseManager passExistsWithUniqueID:](databaseManager, "passExistsWithUniqueID:", v10), v10, (databaseManager & 1) == 0))
+  if ([passCopy isIdentityPass] && (objc_msgSend(passCopy, "devicePrimaryPaymentApplication"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "paymentType"), v7, v8 == 1002) && (databaseManager = self->_databaseManager, objc_msgSend(passCopy, "uniqueID"), v10 = objc_claimAutoreleasedReturnValue(), LOBYTE(databaseManager) = -[PDDatabaseManager passExistsWithUniqueID:](databaseManager, "passExistsWithUniqueID:", v10), v10, (databaseManager & 1) == 0))
   {
     v11 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v4 uniqueID];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412290;
-      v19 = v12;
+      v19 = uniqueID;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Removing stale pass %@", buf, 0xCu);
     }
 
-    v13 = [[PKPaymentDeprovisionRequest alloc] initWithPaymentPass:v4];
-    v14 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+    v13 = [[PKPaymentDeprovisionRequest alloc] initWithPaymentPass:passCopy];
+    sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100045B88;
     v16[3] = &unk_10083E010;
     v17 = v13;
     v15 = v13;
-    [v14 diagnosticSessionWithReason:@"pass previously deleted" sessionHandler:v16];
+    [sharedWebService diagnosticSessionWithReason:@"pass previously deleted" sessionHandler:v16];
   }
 
   else
   {
-    [(PDCardFileManager *)self->_passStore writeCard:v4 source:1 error:0];
+    [(PDCardFileManager *)self->_passStore writeCard:passCopy source:1 error:0];
   }
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)_queue_setupBackgroundWebServiceWithCompletion:(id)a3
+- (void)_queue_setupBackgroundWebServiceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKBackgroundWebServiceContextPath();
   v7 = [PKPaymentWebServiceBackgroundContext contextWithArchive:v5];
 
-  v6 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
-  [v6 startBackgroundURLSessionWithIdentifier:@"com.apple.passd" context:v7 backgroundDelegate:self completion:v4];
+  sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+  [sharedWebService startBackgroundURLSessionWithIdentifier:@"com.apple.passd" context:v7 backgroundDelegate:self completion:completionCopy];
 }
 
 - (void)noteAccountChanged
 {
-  v2 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
-  [v2 _resetSupportInRegionCache];
+  sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+  [sharedWebService _resetSupportInRegionCache];
 }
 
 - (void)noteWebServiceDidChange
@@ -2855,33 +2855,33 @@ LABEL_12:
   }
 }
 
-- (void)_queue_performOwnershipTokensRequestWithUserInfo:(id)a3
+- (void)_queue_performOwnershipTokensRequestWithUserInfo:(id)info
 {
-  v4 = [a3 objectForKey:@"reason"];
+  v4 = [info objectForKey:@"reason"];
   v5 = PKPaymentSendOwnershipTokensRequestReasonFromString();
 
-  v6 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
-  [v6 sendOwnershipTokensForReason:v5 completion:&stru_10083E798];
+  sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+  [sharedWebService sendOwnershipTokensForReason:v5 completion:&stru_10083E798];
 }
 
-- (void)checkFPANCredentialEligibility:(id)a3 completion:(id)a4
+- (void)checkFPANCredentialEligibility:(id)eligibility completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eligibilityCopy = eligibility;
+  completionCopy = completion;
   v8 = PDDefaultQueue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004600C;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eligibilityCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = eligibilityCopy;
   dispatch_async(v8, block);
 }
 
-- (void)scheduleDeviceUpgradeTasksIfNecessaryWithRandomizeStartDate:(BOOL)a3
+- (void)scheduleDeviceUpgradeTasksIfNecessaryWithRandomizeStartDate:(BOOL)date
 {
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -2889,11 +2889,11 @@ LABEL_12:
   v4[2] = sub_1000460A0;
   v4[3] = &unk_10083CF10;
   v4[4] = self;
-  v5 = a3;
+  dateCopy = date;
   dispatch_async(sharedWebServiceQueue, v4);
 }
 
-- (void)_scheduleDeviceUpgradeTaskActivityWithRandomizeStartDate:(BOOL)a3
+- (void)_scheduleDeviceUpgradeTaskActivityWithRandomizeStartDate:(BOOL)date
 {
   v5 = PDDefaultQueue();
   v6[0] = _NSConcreteStackBlock;
@@ -2901,7 +2901,7 @@ LABEL_12:
   v6[2] = sub_1000463C8;
   v6[3] = &unk_10083CF10;
   v6[4] = self;
-  v7 = a3;
+  dateCopy = date;
   dispatch_async(v5, v6);
 }
 
@@ -2919,9 +2919,9 @@ LABEL_12:
 - (void)_queue_completeDeviceUpgradeTasks
 {
   PDSetUpgradeTasksRetryCount();
-  v3 = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
-  [v3 atomicallyUpdatePrimaryRegion:&stru_10083E7B8];
-  [(PDPaymentWebServiceArchiver *)self->_archiver archiveContext:v3];
+  sharedWebServiceContext = [(PDPaymentWebServiceCoordinator *)self sharedWebServiceContext];
+  [sharedWebServiceContext atomicallyUpdatePrimaryRegion:&stru_10083E7B8];
+  [(PDPaymentWebServiceArchiver *)self->_archiver archiveContext:sharedWebServiceContext];
   [(PDPaymentWebServiceCoordinator *)self unscheduleDeviceUpgradeTaskActivity];
 }
 
@@ -2936,38 +2936,38 @@ LABEL_12:
   dispatch_async(sharedWebServiceQueue, block);
 }
 
-- (void)setDeviceUpgradeTasksContextBuildVersion:(id)a3 upgradeTaskVersion:(int64_t)a4 retryCount:(int64_t)a5
+- (void)setDeviceUpgradeTasksContextBuildVersion:(id)version upgradeTaskVersion:(int64_t)taskVersion retryCount:(int64_t)count
 {
-  v8 = a3;
+  versionCopy = version;
   sharedWebServiceQueue = self->_sharedWebServiceQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000474F4;
   v11[3] = &unk_10083E8D0;
-  v13 = a4;
-  v14 = a5;
+  taskVersionCopy = taskVersion;
+  countCopy = count;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = versionCopy;
+  v10 = versionCopy;
   dispatch_async(sharedWebServiceQueue, v11);
 }
 
-- (void)_queue_performContactInformationFetchTaskWithCompletion:(id)a3
+- (void)_queue_performContactInformationFetchTaskWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PDDatabaseManager *)self->_databaseManager passExistsWithPassType:1])
   {
     v5 = +[PKContactInformation contactInformationFromKeychain];
     if (!v5)
     {
       v8 = objc_alloc_init(PKContactInformationRequest);
-      v9 = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
+      sharedWebService = [(PDPaymentWebServiceCoordinator *)self sharedWebService];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_100047760;
       v10[3] = &unk_10083E8F8;
-      v11 = v4;
-      [v9 contactInformationWithRequest:v8 completion:v10];
+      v11 = completionCopy;
+      [sharedWebService contactInformationWithRequest:v8 completion:v10];
 
       goto LABEL_9;
     }
@@ -2991,11 +2991,11 @@ LABEL_12:
     }
   }
 
-  (*(v4 + 2))(v4, 1);
+  (*(completionCopy + 2))(completionCopy, 1);
 LABEL_9:
 }
 
-- (void)receivedXPCEvent:(id)a3 forEventStream:(id)a4
+- (void)receivedXPCEvent:(id)event forEventStream:(id)stream
 {
   dispatch_assert_queue_V2(self->_sharedWebServiceQueue);
 

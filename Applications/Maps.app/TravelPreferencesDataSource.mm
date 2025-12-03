@@ -1,8 +1,8 @@
 @interface TravelPreferencesDataSource
-+ (void)registerCellsInCollectionView:(id)a3;
++ (void)registerCellsInCollectionView:(id)view;
 - (SupplementaryElementsDataSourceDelegate)privacyDelegate;
 - (TravelPreferencesDataSource)init;
-- (double)heightOfViewAtSection:(int64_t)a3 collectionView:(id)a4;
+- (double)heightOfViewAtSection:(int64_t)section collectionView:(id)view;
 - (id)_cyclingSectionTitle;
 - (id)_directionsSectionTitle;
 - (id)_distancesSectionTitle;
@@ -14,41 +14,41 @@
 - (id)_settingsRowTitle;
 - (id)_transitSectionTitle;
 - (id)_walkingSectionTitle;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (void)dealloc;
 - (void)fetchPhotoCreditPreferences;
 - (void)loadPreferences;
 - (void)prepareContent;
 - (void)privacyTextTapped;
-- (void)sendBiomeDiscoverabilitySignalsWithContext:(id)a3;
-- (void)updatePhotoCreditPreferencesWithCompletion:(id)a3;
+- (void)sendBiomeDiscoverabilitySignalsWithContext:(id)context;
+- (void)updatePhotoCreditPreferencesWithCompletion:(id)completion;
 @end
 
 @implementation TravelPreferencesDataSource
 
-+ (void)registerCellsInCollectionView:(id)a3
++ (void)registerCellsInCollectionView:(id)view
 {
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___TravelPreferencesDataSource;
-  v3 = a3;
-  objc_msgSendSuper2(&v15, "registerCellsInCollectionView:", v3);
+  viewCopy = view;
+  objc_msgSendSuper2(&v15, "registerCellsInCollectionView:", viewCopy);
   v4 = objc_opt_class();
   v5 = _UICollectionViewListLayoutElementKindSectionHeader;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v3 registerClass:v4 forSupplementaryViewOfKind:v5 withReuseIdentifier:{v7, v15.receiver, v15.super_class}];
+  [viewCopy registerClass:v4 forSupplementaryViewOfKind:v5 withReuseIdentifier:{v7, v15.receiver, v15.super_class}];
 
   v8 = objc_opt_class();
   v9 = _UICollectionViewListLayoutElementKindSectionFooter;
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v3 registerClass:v8 forSupplementaryViewOfKind:v9 withReuseIdentifier:v11];
+  [viewCopy registerClass:v8 forSupplementaryViewOfKind:v9 withReuseIdentifier:v11];
 
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  [v3 registerClass:v12 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v14];
+  [viewCopy registerClass:v12 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v14];
 }
 
 - (SupplementaryElementsDataSourceDelegate)privacyDelegate
@@ -58,30 +58,30 @@
   return WeakRetained;
 }
 
-- (void)sendBiomeDiscoverabilitySignalsWithContext:(id)a3
+- (void)sendBiomeDiscoverabilitySignalsWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = dispatch_get_global_queue(9, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100751190;
   block[3] = &unk_101661B18;
-  v7 = v3;
-  v5 = v3;
+  v7 = contextCopy;
+  v5 = contextCopy;
   dispatch_async(v4, block);
 }
 
 - (id)_notificationsRowTitle
 {
-  v3 = [(TravelPreferencesDataSource *)self notificationSettings];
+  notificationSettings = [(TravelPreferencesDataSource *)self notificationSettings];
   v4 = @"[User Profile] Notification Settings";
-  if (v3)
+  if (notificationSettings)
   {
-    v5 = v3;
-    v6 = [(TravelPreferencesDataSource *)self notificationSettings];
-    v7 = [v6 authorizationStatus];
+    v5 = notificationSettings;
+    notificationSettings2 = [(TravelPreferencesDataSource *)self notificationSettings];
+    authorizationStatus = [notificationSettings2 authorizationStatus];
 
-    if (!v7)
+    if (!authorizationStatus)
     {
       v4 = @"[User Profile] Enable Notifications";
     }
@@ -165,53 +165,53 @@
   return v3;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = TravelPreferencesDataSource;
-  v4 = [(PreferenceValuesDataSource *)&v8 collectionView:a3 cellForItemAtIndexPath:a4];
+  v4 = [(PreferenceValuesDataSource *)&v8 collectionView:view cellForItemAtIndexPath:path];
   v5 = +[UIBackgroundConfiguration listCellConfiguration];
-  v6 = [v5 backgroundColor];
-  [v4 setBackgroundColor:v6];
+  backgroundColor = [v5 backgroundColor];
+  [v4 setBackgroundColor:backgroundColor];
 
   return v4;
 }
 
-- (double)heightOfViewAtSection:(int64_t)a3 collectionView:(id)a4
+- (double)heightOfViewAtSection:(int64_t)section collectionView:(id)view
 {
-  [a4 frame];
+  [view frame];
   v7 = v6;
   v8 = [[UserProfilePreferencesHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-  v9 = [(TravelPreferencesDataSource *)self _directionsSectionTitle];
-  v10 = [(TravelPreferencesDataSource *)self _drivingSectionTitle];
-  v11 = [(TravelPreferencesDataSource *)self _walkingSectionTitle];
-  v12 = [NSMutableArray arrayWithObjects:v9, v10, v11, 0];
+  _directionsSectionTitle = [(TravelPreferencesDataSource *)self _directionsSectionTitle];
+  _drivingSectionTitle = [(TravelPreferencesDataSource *)self _drivingSectionTitle];
+  _walkingSectionTitle = [(TravelPreferencesDataSource *)self _walkingSectionTitle];
+  v12 = [NSMutableArray arrayWithObjects:_directionsSectionTitle, _drivingSectionTitle, _walkingSectionTitle, 0];
 
   if (sub_10072B0F0())
   {
-    v13 = [(TravelPreferencesDataSource *)self _ebikeSectionTitle];
-    [v12 addObject:v13];
+    _ebikeSectionTitle = [(TravelPreferencesDataSource *)self _ebikeSectionTitle];
+    [v12 addObject:_ebikeSectionTitle];
   }
 
   height = UILayoutFittingExpandedSize.height;
   if (sub_10072B16C())
   {
-    v15 = [(TravelPreferencesDataSource *)self _cyclingSectionTitle];
-    [v12 addObject:v15];
+    _cyclingSectionTitle = [(TravelPreferencesDataSource *)self _cyclingSectionTitle];
+    [v12 addObject:_cyclingSectionTitle];
   }
 
-  v16 = [(TravelPreferencesDataSource *)self _transitSectionTitle];
-  [v12 addObject:v16];
+  _transitSectionTitle = [(TravelPreferencesDataSource *)self _transitSectionTitle];
+  [v12 addObject:_transitSectionTitle];
 
-  v17 = [(TravelPreferencesDataSource *)self _distancesSectionTitle];
-  [v12 addObject:v17];
+  _distancesSectionTitle = [(TravelPreferencesDataSource *)self _distancesSectionTitle];
+  [v12 addObject:_distancesSectionTitle];
 
-  v18 = [(TravelPreferencesDataSource *)self _settingsRowTitle];
-  [v12 addObject:v18];
+  _settingsRowTitle = [(TravelPreferencesDataSource *)self _settingsRowTitle];
+  [v12 addObject:_settingsRowTitle];
 
-  v19 = [v12 objectAtIndexedSubscript:a3];
-  v20 = [(UserProfilePreferencesHeaderView *)v8 textLabel];
-  [v20 setText:v19];
+  v19 = [v12 objectAtIndexedSubscript:section];
+  textLabel = [(UserProfilePreferencesHeaderView *)v8 textLabel];
+  [textLabel setText:v19];
 
   LODWORD(v21) = 1148846080;
   LODWORD(v22) = 1132068864;
@@ -223,35 +223,35 @@
 
 - (void)privacyTextTapped
 {
-  v2 = [(TravelPreferencesDataSource *)self privacyDelegate];
-  [v2 didTapOnPrivacyText];
+  privacyDelegate = [(TravelPreferencesDataSource *)self privacyDelegate];
+  [privacyDelegate didTapOnPrivacyText];
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
   v11 = _UICollectionViewListLayoutElementKindSectionHeader;
-  if ([v9 isEqualToString:_UICollectionViewListLayoutElementKindSectionHeader])
+  if ([kindCopy isEqualToString:_UICollectionViewListLayoutElementKindSectionHeader])
   {
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_100751F04;
     v44[3] = &unk_1016282F0;
     v12 = &v45;
-    v45 = v8;
+    v45 = viewCopy;
     v13 = &v46;
-    v14 = v9;
+    v14 = kindCopy;
     v46 = v14;
-    v15 = v10;
+    v15 = pathCopy;
     v47 = v15;
     v16 = objc_retainBlock(v44);
     v17 = [(PreferenceValuesDataSource *)self sectionAtIndexPath:v15];
     if ([v14 isEqualToString:v11])
     {
-      v18 = [v17 title];
-      v19 = (v16[2])(v16, v18, 0);
+      title = [v17 title];
+      v19 = (v16[2])(v16, title, 0);
     }
 
     else
@@ -266,10 +266,10 @@
     v41[1] = 3221225472;
     v41[2] = sub_100752000;
     v41[3] = &unk_1016285B8;
-    v20 = v8;
+    v20 = viewCopy;
     v42 = v20;
     v13 = v43;
-    v21 = v10;
+    v21 = pathCopy;
     v43[0] = v21;
     v43[1] = self;
     v22 = objc_retainBlock(v41);
@@ -325,30 +325,30 @@
   [v3 addObject:&off_1016E6AD0];
   [v3 addObject:&off_1016E6AE8];
   [v3 addObject:&off_1016E6B00];
-  v4 = [(TravelPreferencesDataSource *)self _directionsSectionTitle];
+  _directionsSectionTitle = [(TravelPreferencesDataSource *)self _directionsSectionTitle];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_1007527C4;
   v42[3] = &unk_1016612C8;
   v5 = v3;
   v43 = v5;
-  [(PreferenceValuesDataSource *)self addSectionWithTitle:v4 content:v42];
+  [(PreferenceValuesDataSource *)self addSectionWithTitle:_directionsSectionTitle content:v42];
 
-  v6 = [(TravelPreferencesDataSource *)self _drivingSectionTitle];
+  _drivingSectionTitle = [(TravelPreferencesDataSource *)self _drivingSectionTitle];
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_100752868;
   v40[3] = &unk_10165E0A8;
   objc_copyWeak(&v41, &location);
-  [(PreferenceValuesDataSource *)self addSectionWithTitle:v6 content:v40];
+  [(PreferenceValuesDataSource *)self addSectionWithTitle:_drivingSectionTitle content:v40];
 
-  v7 = [(TravelPreferencesDataSource *)self _walkingSectionTitle];
+  _walkingSectionTitle = [(TravelPreferencesDataSource *)self _walkingSectionTitle];
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_100752A38;
   v38[3] = &unk_10165E0A8;
   objc_copyWeak(&v39, &location);
-  [(PreferenceValuesDataSource *)self addSectionWithTitle:v7 content:v38];
+  [(PreferenceValuesDataSource *)self addSectionWithTitle:_walkingSectionTitle content:v38];
 
   if (!self->_countryObserver)
   {
@@ -369,75 +369,75 @@
 
   if (sub_10072B0F0())
   {
-    v13 = [(TravelPreferencesDataSource *)self _ebikeSectionTitle];
-    [(PreferenceValuesDataSource *)self addSectionWithTitle:v13 content:&stru_1016281C0];
+    _ebikeSectionTitle = [(TravelPreferencesDataSource *)self _ebikeSectionTitle];
+    [(PreferenceValuesDataSource *)self addSectionWithTitle:_ebikeSectionTitle content:&stru_1016281C0];
   }
 
   if (sub_10072B16C())
   {
-    v14 = [(TravelPreferencesDataSource *)self _cyclingSectionTitle];
+    _cyclingSectionTitle = [(TravelPreferencesDataSource *)self _cyclingSectionTitle];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_100752D18;
     v34[3] = &unk_10165E0A8;
     objc_copyWeak(&v35, &location);
-    [(PreferenceValuesDataSource *)self addSectionWithTitle:v14 content:v34];
+    [(PreferenceValuesDataSource *)self addSectionWithTitle:_cyclingSectionTitle content:v34];
 
     objc_destroyWeak(&v35);
   }
 
   v15 = objc_loadWeakRetained(&location);
-  v16 = [v15 transitDataSource];
+  transitDataSource = [v15 transitDataSource];
 
-  v17 = [v16 numberOfSections];
-  if (v17 >= 1)
+  numberOfSections = [transitDataSource numberOfSections];
+  if (numberOfSections >= 1)
   {
     v18 = 0;
     do
     {
-      v19 = [v16 numberOfRowsInSection:v18];
-      v20 = [(TravelPreferencesDataSource *)self _transitSectionTitle];
+      v19 = [transitDataSource numberOfRowsInSection:v18];
+      _transitSectionTitle = [(TravelPreferencesDataSource *)self _transitSectionTitle];
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_100752EE8;
       v31[3] = &unk_101628268;
       v33[1] = v19;
-      v32 = v16;
+      v32 = transitDataSource;
       v33[2] = v18;
       objc_copyWeak(v33, &location);
-      [(PreferenceValuesDataSource *)self addSectionWithTitle:v20 content:v31];
+      [(PreferenceValuesDataSource *)self addSectionWithTitle:_transitSectionTitle content:v31];
 
       objc_destroyWeak(v33);
       ++v18;
     }
 
-    while (v17 != v18);
+    while (numberOfSections != v18);
   }
 
   if (MapsFeature_IsEnabled_SydneyARP() && self->_lagunaBeachSupported)
   {
-    v21 = [(TravelPreferencesDataSource *)self _photoCreditSectionTitle];
+    _photoCreditSectionTitle = [(TravelPreferencesDataSource *)self _photoCreditSectionTitle];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_10075306C;
     v29[3] = &unk_10165E0A8;
     objc_copyWeak(&v30, &location);
-    [(PreferenceValuesDataSource *)self addSectionWithTitle:v21 content:v29];
+    [(PreferenceValuesDataSource *)self addSectionWithTitle:_photoCreditSectionTitle content:v29];
 
     objc_destroyWeak(&v30);
   }
 
   v22 = objc_alloc_init(MapsDebugTableSection);
-  v23 = [(TravelPreferencesDataSource *)self _settingsRowTitle];
-  v24 = [(MapsDebugTableSection *)v22 addButtonRowWithTitle:v23 action:&stru_1016282C8];
+  _settingsRowTitle = [(TravelPreferencesDataSource *)self _settingsRowTitle];
+  v24 = [(MapsDebugTableSection *)v22 addButtonRowWithTitle:_settingsRowTitle action:&stru_1016282C8];
 
-  v25 = [(TravelPreferencesDataSource *)self _notificationsRowTitle];
+  _notificationsRowTitle = [(TravelPreferencesDataSource *)self _notificationsRowTitle];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10075330C;
   v27[3] = &unk_101661B98;
   objc_copyWeak(&v28, &location);
-  v26 = [(MapsDebugTableSection *)v22 addButtonRowWithTitle:v25 action:v27];
+  v26 = [(MapsDebugTableSection *)v22 addButtonRowWithTitle:_notificationsRowTitle action:v27];
 
   [(PreferenceValuesDataSource *)self addSection:v22];
   objc_destroyWeak(&v28);
@@ -505,15 +505,15 @@ LABEL_7:
   return v11;
 }
 
-- (void)updatePhotoCreditPreferencesWithCompletion:(id)a3
+- (void)updatePhotoCreditPreferencesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_didChangeAttributionPreferences)
   {
-    v6 = [(TravelPreferencesDataSource *)self _photoCreditNameValidationErrorMessage];
-    v7 = v6;
-    if (!self->_photoCredit || v6 == 0)
+    _photoCreditNameValidationErrorMessage = [(TravelPreferencesDataSource *)self _photoCreditNameValidationErrorMessage];
+    v7 = _photoCreditNameValidationErrorMessage;
+    if (!self->_photoCredit || _photoCreditNameValidationErrorMessage == 0)
     {
       v9 = +[UGCPhotoAttributionPreferencesManager sharedManager];
       photoCredit = self->_photoCredit;
@@ -528,13 +528,13 @@ LABEL_7:
 
     else
     {
-      v5[2](v5, v6);
+      v5[2](v5, _photoCreditNameValidationErrorMessage);
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

@@ -1,9 +1,9 @@
 @interface CPSStoreAuthenticationRequest
-- (CPSStoreAuthenticationRequest)initWithCoder:(id)a3;
-- (CPSStoreAuthenticationRequest)initWithXPCDictionary:(id)a3;
+- (CPSStoreAuthenticationRequest)initWithCoder:(id)coder;
+- (CPSStoreAuthenticationRequest)initWithXPCDictionary:(id)dictionary;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation CPSStoreAuthenticationRequest
@@ -13,25 +13,25 @@
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_authenticationRequest withName:@"authenticationRequest"];
   v5 = [v3 appendObject:self->_account withName:@"account"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (CPSStoreAuthenticationRequest)initWithCoder:(id)a3
+- (CPSStoreAuthenticationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CPSStoreAuthenticationRequest;
-  v5 = [(CPSAuthenticationRequest *)&v12 initWithCoder:v4];
+  v5 = [(CPSAuthenticationRequest *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:getAMSDelegateAuthenticateRequestClass() forKey:@"authenticationRequest"];
+    v6 = [coderCopy decodeObjectOfClass:getAMSDelegateAuthenticateRequestClass() forKey:@"authenticationRequest"];
     authenticationRequest = v5->_authenticationRequest;
     v5->_authenticationRequest = v6;
 
     v8 = objc_opt_self();
-    v9 = [v4 decodeObjectOfClass:v8 forKey:@"account"];
+    v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"account"];
     account = v5->_account;
     v5->_account = v9;
   }
@@ -39,47 +39,47 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CPSStoreAuthenticationRequest;
-  v4 = a3;
-  [(CPSAuthenticationRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_authenticationRequest forKey:{@"authenticationRequest", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_account forKey:@"account"];
+  coderCopy = coder;
+  [(CPSAuthenticationRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_authenticationRequest forKey:{@"authenticationRequest", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_account forKey:@"account"];
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v10 = [MEMORY[0x277CF0D20] coderWithMessage:a3];
-  v4 = [(CPSAuthenticationRequest *)self identifier];
-  [v10 encodeObject:v4 forKey:@"identifier"];
+  v10 = [MEMORY[0x277CF0D20] coderWithMessage:dictionary];
+  identifier = [(CPSAuthenticationRequest *)self identifier];
+  [v10 encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(AMSDelegateAuthenticateRequest *)self->_authenticationRequest challenge];
-  [v10 encodeObject:v5 forKey:@"authenticationRequestChallenge"];
+  challenge = [(AMSDelegateAuthenticateRequest *)self->_authenticationRequest challenge];
+  [v10 encodeObject:challenge forKey:@"authenticationRequestChallenge"];
 
-  v6 = [(AMSDelegateAuthenticateRequest *)self->_authenticationRequest userAgent];
-  [v10 encodeObject:v6 forKey:@"authenticationRequestUserAgent"];
+  userAgent = [(AMSDelegateAuthenticateRequest *)self->_authenticationRequest userAgent];
+  [v10 encodeObject:userAgent forKey:@"authenticationRequestUserAgent"];
 
-  v7 = [(ACAccount *)self->_account ams_altDSID];
-  [v10 encodeObject:v7 forKey:@"accountAltDSID"];
+  ams_altDSID = [(ACAccount *)self->_account ams_altDSID];
+  [v10 encodeObject:ams_altDSID forKey:@"accountAltDSID"];
 
-  v8 = [(ACAccount *)self->_account ams_DSID];
-  [v10 encodeObject:v8 forKey:@"accountDSID"];
+  ams_DSID = [(ACAccount *)self->_account ams_DSID];
+  [v10 encodeObject:ams_DSID forKey:@"accountDSID"];
 
-  v9 = [(ACAccount *)self->_account username];
-  [v10 encodeObject:v9 forKey:@"accountUsername"];
+  username = [(ACAccount *)self->_account username];
+  [v10 encodeObject:username forKey:@"accountUsername"];
 }
 
-- (CPSStoreAuthenticationRequest)initWithXPCDictionary:(id)a3
+- (CPSStoreAuthenticationRequest)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = CPSStoreAuthenticationRequest;
   v5 = [(CPSAuthenticationRequest *)&v22 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CF0D20] coderWithMessage:v4];
+    v6 = [MEMORY[0x277CF0D20] coderWithMessage:dictionaryCopy];
     v7 = [v6 decodeStringForKey:@"identifier"];
     [(CPSAuthenticationRequest *)v5 setIdentifier:v7];
 

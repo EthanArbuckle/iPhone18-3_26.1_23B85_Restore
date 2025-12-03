@@ -1,6 +1,6 @@
 @interface MTAllPropertyChangesQueryObserver
-- (id)addResultsChangedHandler:(id)a3;
-- (void)controllerDidChangeContent:(id)a3;
+- (id)addResultsChangedHandler:(id)handler;
+- (void)controllerDidChangeContent:(id)content;
 - (void)notifyObservers;
 - (void)startObserving;
 @end
@@ -20,13 +20,13 @@
   if (!self->_inCallback)
   {
     self->_inCallback = 1;
-    v3 = [(MTBaseQueryObserver *)self handlers];
+    handlers = [(MTBaseQueryObserver *)self handlers];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __52__MTAllPropertyChangesQueryObserver_notifyObservers__block_invoke;
     v4[3] = &unk_1E856B328;
     v4[4] = self;
-    [v3 enumerateKeysAndObjectsUsingBlock:v4];
+    [handlers enumerateKeysAndObjectsUsingBlock:v4];
 
     self->_inCallback = 0;
   }
@@ -38,9 +38,9 @@ void __52__MTAllPropertyChangesQueryObserver_notifyObservers__block_invoke(uint6
   [*(a1 + 32) results:v4];
 }
 
-- (id)addResultsChangedHandler:(id)a3
+- (id)addResultsChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v7.receiver = self;
   v7.super_class = MTAllPropertyChangesQueryObserver;
   v5 = [(MTBaseQueryObserver *)&v7 addResultsChangedHandler:v4];
@@ -48,11 +48,11 @@ void __52__MTAllPropertyChangesQueryObserver_notifyObservers__block_invoke(uint6
   return v5;
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v4 = [a3 delegate];
+  delegate = [content delegate];
 
-  if (v4)
+  if (delegate)
   {
 
     [(MTAllPropertyChangesQueryObserver *)self notifyObservers];

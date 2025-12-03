@@ -1,25 +1,25 @@
 @interface RTVisitPipelineModuleMotionStateTrimmer
-- (RTVisitPipelineModuleMotionStateTrimmer)initWithMotionActivityManager:(id)a3 defaultsManager:(id)a4;
-- (id)_fetchActivitiesWithinDateInterval:(id)a3 error:(id *)a4;
-- (id)_trimVisitClusterForMotionActivity:(id)a3;
-- (id)process:(id)a3;
+- (RTVisitPipelineModuleMotionStateTrimmer)initWithMotionActivityManager:(id)manager defaultsManager:(id)defaultsManager;
+- (id)_fetchActivitiesWithinDateInterval:(id)interval error:(id *)error;
+- (id)_trimVisitClusterForMotionActivity:(id)activity;
+- (id)process:(id)process;
 @end
 
 @implementation RTVisitPipelineModuleMotionStateTrimmer
 
-- (RTVisitPipelineModuleMotionStateTrimmer)initWithMotionActivityManager:(id)a3 defaultsManager:(id)a4
+- (RTVisitPipelineModuleMotionStateTrimmer)initWithMotionActivityManager:(id)manager defaultsManager:(id)defaultsManager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  managerCopy = manager;
+  defaultsManagerCopy = defaultsManager;
+  v9 = defaultsManagerCopy;
+  if (!managerCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -30,7 +30,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!defaultsManagerCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -49,24 +49,24 @@ LABEL_12:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_motionActivityManager, a3);
+    objc_storeStrong(&v10->_motionActivityManager, manager);
     v12 = [[RTVisitPipelineMotionAccumulatorParams alloc] initWithDefaultsManager:v9];
     motionAccumulatorParams = v11->_motionAccumulatorParams;
     v11->_motionAccumulatorParams = v12;
   }
 
   self = v11;
-  v14 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)_fetchActivitiesWithinDateInterval:(id)a3 error:(id *)a4
+- (id)_fetchActivitiesWithinDateInterval:(id)interval error:(id *)error
 {
   v78[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  intervalCopy = interval;
+  if (intervalCopy)
   {
     aSelector = a2;
     *v66 = 0;
@@ -83,8 +83,8 @@ LABEL_10:
     v65 = 0;
     v8 = dispatch_semaphore_create(0);
     motionActivityManager = self->_motionActivityManager;
-    v10 = [v7 startDate];
-    v11 = [v7 endDate];
+    startDate = [intervalCopy startDate];
+    endDate = [intervalCopy endDate];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInterval_error___block_invoke;
@@ -93,7 +93,7 @@ LABEL_10:
     v59 = &v60;
     v12 = v8;
     v57 = v12;
-    [(RTMotionActivityManager *)motionActivityManager fetchMotionActivitiesFromStartDate:v10 endDate:v11 handler:v56];
+    [(RTMotionActivityManager *)motionActivityManager fetchMotionActivitiesFromStartDate:startDate endDate:endDate handler:v56];
 
     dsema = v12;
     v13 = [MEMORY[0x277CBEAA8] now];
@@ -105,11 +105,11 @@ LABEL_10:
       v17 = v16;
       v18 = objc_opt_new();
       v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_84];
-      v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v21 = [v20 filteredArrayUsingPredicate:v19];
-      v22 = [v21 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+      firstObject = [v21 firstObject];
 
-      [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+      [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
       v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
       {
@@ -136,7 +136,7 @@ LABEL_10:
 
     v30 = v26;
     v31 = v30;
-    if (a4 && v30)
+    if (error && v30)
     {
       v32 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -154,12 +154,12 @@ LABEL_10:
       }
 
       v33 = v31;
-      *a4 = v31;
+      *error = v31;
     }
 
     else
     {
-      if (!a4 || !v61[5])
+      if (!error || !v61[5])
       {
         v29 = objc_opt_new();
         v54 = 0u;
@@ -181,8 +181,8 @@ LABEL_10:
               }
 
               v39 = *(*(&v52 + 1) + 8 * i);
-              v40 = [v39 startDate];
-              v41 = [v7 containsDate:v40];
+              startDate2 = [v39 startDate];
+              v41 = [intervalCopy containsDate:startDate2];
 
               if (v41)
               {
@@ -215,7 +215,7 @@ LABEL_10:
         _os_log_error_impl(&dword_2304B3000, v34, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
       }
 
-      *a4 = v61[5];
+      *error = v61[5];
     }
 
     v29 = *(v67 + 5);
@@ -234,10 +234,10 @@ LABEL_33:
     _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: dateInterval", v66, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"dateInterval");
-    *a4 = v29 = 0;
+    *error = v29 = 0;
   }
 
   else
@@ -267,10 +267,10 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_trimVisitClusterForMotionActivity:(id)a3
+- (id)_trimVisitClusterForMotionActivity:(id)activity
 {
   v185 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  activityCopy = activity;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
@@ -279,34 +279,34 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
       v92 = objc_opt_class();
       v93 = NSStringFromClass(v92);
       v94 = NSStringFromSelector(a2);
-      v95 = [v3 visit];
-      v96 = [v95 entry];
-      v97 = [v3 visit];
-      v98 = [v97 exit];
+      visit = [activityCopy visit];
+      entry = [visit entry];
+      visit2 = [activityCopy visit];
+      exit = [visit2 exit];
       *buf = 138413058;
       v167 = v93;
       v168 = 2112;
       v169 = v94;
       v170 = 2112;
-      v171 = v96;
+      v171 = entry;
       v172 = 2112;
-      v173 = v98;
+      v173 = exit;
       _os_log_debug_impl(&dword_2304B3000, v4, OS_LOG_TYPE_DEBUG, "%@ %@: Trimming input cluster for motion, between %@ and %@", buf, 0x2Au);
     }
   }
 
-  v5 = [v3 visit];
-  v151 = [v5 entry];
+  visit3 = [activityCopy visit];
+  entry2 = [visit3 entry];
 
-  v6 = [v3 visit];
-  v150 = [v6 exit];
+  visit4 = [activityCopy visit];
+  exit2 = [visit4 exit];
 
   v7 = objc_alloc(MEMORY[0x277CBEAA8]);
   [(RTVisitPipelineMotionAccumulatorParams *)self->_motionAccumulatorParams maxTimeToTrim];
   v9 = v8;
-  v10 = [v3 points];
-  v11 = [v10 firstDate];
-  v12 = [v7 initWithTimeInterval:v11 sinceDate:v9];
+  points = [activityCopy points];
+  firstDate = [points firstDate];
+  v12 = [v7 initWithTimeInterval:firstDate sinceDate:v9];
 
   [(RTVisitPipelineMotionAccumulatorParams *)self->_motionAccumulatorParams maxTimeToTrim];
   v14 = v13;
@@ -332,7 +332,7 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
       v170 = 2112;
       v171 = v17;
       v172 = 2112;
-      v173 = v3;
+      v173 = activityCopy;
       _os_log_debug_impl(&dword_2304B3000, v18, OS_LOG_TYPE_DEBUG, "%@ %@: Failed to fetch motion activities at start, error, %@, for cluster %@", buf, 0x2Au);
     }
   }
@@ -343,8 +343,8 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
   v163 = 0u;
   v164 = 0u;
   v141 = v16;
-  v20 = [v16 reverseObjectEnumerator];
-  v21 = [v20 countByEnumeratingWithState:&v161 objects:v184 count:16];
+  reverseObjectEnumerator = [v16 reverseObjectEnumerator];
+  v21 = [reverseObjectEnumerator countByEnumeratingWithState:&v161 objects:v184 count:16];
   if (v21)
   {
     v22 = v21;
@@ -355,28 +355,28 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
       {
         if (*v162 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         [(RTVisitPipelineMotionAccumulator *)v19 processMotionActivity:*(*(&v161 + 1) + 8 * i)];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v161 objects:v184 count:16];
+      v22 = [reverseObjectEnumerator countByEnumeratingWithState:&v161 objects:v184 count:16];
     }
 
     while (v22);
   }
 
-  v25 = [v144 startDate];
-  [(RTVisitPipelineMotionAccumulator *)v19 finishMotionObservations:v25];
+  startDate = [v144 startDate];
+  [(RTVisitPipelineMotionAccumulator *)v19 finishMotionObservations:startDate];
 
-  v26 = [(RTVisitPipelineMotionAccumulator *)v19 getTrimDate];
-  v138 = v26;
-  if (v26)
+  getTrimDate = [(RTVisitPipelineMotionAccumulator *)v19 getTrimDate];
+  v138 = getTrimDate;
+  if (getTrimDate)
   {
-    v27 = [v26 laterDate:v151];
+    v27 = [getTrimDate laterDate:entry2];
 
-    v151 = v27;
+    entry2 = v27;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -401,15 +401,15 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
   v29 = objc_alloc(MEMORY[0x277CBEAA8]);
   [(RTVisitPipelineMotionAccumulatorParams *)self->_motionAccumulatorParams maxTimeToTrim];
   v31 = -v30;
-  v32 = [v3 visit];
-  v33 = [v32 exit];
-  v34 = [v29 initWithTimeInterval:v33 sinceDate:v31];
+  visit5 = [activityCopy visit];
+  exit3 = [visit5 exit];
+  v34 = [v29 initWithTimeInterval:exit3 sinceDate:v31];
 
   v35 = v34;
   v36 = objc_alloc(MEMORY[0x277CCA970]);
-  v37 = [v3 visit];
-  v38 = [v37 entry];
-  v39 = [v35 laterDate:v38];
+  visit6 = [activityCopy visit];
+  entry3 = [visit6 entry];
+  v39 = [v35 laterDate:entry3];
   [(RTVisitPipelineMotionAccumulatorParams *)self->_motionAccumulatorParams maxTimeToTrim];
   v41 = v40;
   [(RTVisitPipelineMotionAccumulatorParams *)self->_motionAccumulatorParams motionLookWindowOutsideVisit];
@@ -435,7 +435,7 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
       v170 = 2112;
       v171 = v45;
       v172 = 2112;
-      v173 = v3;
+      v173 = activityCopy;
       _os_log_debug_impl(&dword_2304B3000, v46, OS_LOG_TYPE_DEBUG, "%@ %@: Failed to fetch motion activities at end, error, %@, for cluster %@", buf, 0x2Au);
     }
   }
@@ -470,16 +470,16 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
   }
 
   v53 = v143;
-  v54 = [v143 endDate];
-  [(RTVisitPipelineMotionAccumulator *)v47 finishMotionObservations:v54];
+  endDate = [v143 endDate];
+  [(RTVisitPipelineMotionAccumulator *)v47 finishMotionObservations:endDate];
 
-  v55 = [(RTVisitPipelineMotionAccumulator *)v47 getTrimDate];
-  v137 = v55;
-  if (v55)
+  getTrimDate2 = [(RTVisitPipelineMotionAccumulator *)v47 getTrimDate];
+  v137 = getTrimDate2;
+  if (getTrimDate2)
   {
-    v56 = [v55 earlierDate:v150];
+    v56 = [getTrimDate2 earlierDate:exit2];
 
-    v150 = v56;
+    exit2 = v56;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -504,8 +504,8 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
     }
   }
 
-  v142 = v3;
-  if ([v151 isOnOrBefore:v150])
+  v142 = activityCopy;
+  if ([entry2 isOnOrBefore:exit2])
   {
     v130 = v35;
     v131 = v45;
@@ -514,10 +514,10 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
     v153 = 0u;
     v154 = 0u;
     v155 = 0u;
-    v58 = [v3 points];
-    v59 = [v58 locations];
+    points2 = [activityCopy points];
+    locations = [points2 locations];
 
-    v60 = [v59 countByEnumeratingWithState:&v152 objects:v182 count:16];
+    v60 = [locations countByEnumeratingWithState:&v152 objects:v182 count:16];
     if (v60)
     {
       v61 = v60;
@@ -528,17 +528,17 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
         {
           if (*v153 != v62)
           {
-            objc_enumerationMutation(v59);
+            objc_enumerationMutation(locations);
           }
 
           v64 = *(*(&v152 + 1) + 8 * k);
-          v65 = [v64 date];
-          v66 = [v65 compare:v151];
+          date = [v64 date];
+          v66 = [date compare:entry2];
 
           if (v66 != -1)
           {
-            v67 = [v64 date];
-            v68 = [v150 compare:v67];
+            date2 = [v64 date];
+            v68 = [exit2 compare:date2];
 
             if (v68 != -1)
             {
@@ -547,7 +547,7 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
           }
         }
 
-        v61 = [v59 countByEnumeratingWithState:&v152 objects:v182 count:16];
+        v61 = [locations countByEnumeratingWithState:&v152 objects:v182 count:16];
       }
 
       while (v61);
@@ -564,31 +564,31 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
           v71 = objc_opt_class();
           v146 = NSStringFromClass(v71);
           aSelectora = NSStringFromSelector(a2);
-          v128 = [v142 visit];
-          v126 = [v128 entry];
-          v72 = [v126 stringFromDate];
-          v73 = [v151 stringFromDate];
-          v125 = [v142 visit];
-          v124 = [v125 exit];
-          v74 = [v124 stringFromDate];
-          v75 = [v150 stringFromDate];
-          v123 = [v142 points];
-          v76 = [v123 locations];
+          visit7 = [v142 visit];
+          entry4 = [visit7 entry];
+          stringFromDate = [entry4 stringFromDate];
+          stringFromDate2 = [entry2 stringFromDate];
+          visit8 = [v142 visit];
+          exit4 = [visit8 exit];
+          stringFromDate3 = [exit4 stringFromDate];
+          stringFromDate4 = [exit2 stringFromDate];
+          points3 = [v142 points];
+          locations2 = [points3 locations];
           v77 = v70;
-          v78 = [v76 count];
+          v78 = [locations2 count];
           v79 = [log count];
           *buf = 138414082;
           v167 = v146;
           v168 = 2112;
           v169 = aSelectora;
           v170 = 2112;
-          v171 = v72;
+          v171 = stringFromDate;
           v172 = 2112;
-          v173 = v73;
+          v173 = stringFromDate2;
           v174 = 2112;
-          v175 = v74;
+          v175 = stringFromDate3;
           v176 = 2112;
-          v177 = v75;
+          v177 = stringFromDate4;
           v178 = 2048;
           v179 = v78;
           v70 = v77;
@@ -601,17 +601,17 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
       }
 
       v129 = objc_alloc(MEMORY[0x277D01428]);
-      v147 = [v69 visit];
-      v127 = [v147 type];
+      visit9 = [v69 visit];
+      type = [visit9 type];
       aSelectorb = [v69 visit];
-      v80 = [aSelectorb location];
+      location = [aSelectorb location];
       v81 = [log count];
-      v82 = [v69 visit];
-      [v82 confidence];
+      visit10 = [v69 visit];
+      [visit10 confidence];
       v84 = v83;
-      v85 = [v69 visit];
-      v86 = [v85 placeInference];
-      v87 = [v129 initWithDate:v151 type:v127 location:v80 entry:v151 exit:v150 dataPointCount:v81 confidence:v84 placeInference:v86];
+      visit11 = [v69 visit];
+      placeInference = [visit11 placeInference];
+      v87 = [v129 initWithDate:entry2 type:type location:location entry:entry2 exit:exit2 dataPointCount:v81 confidence:v84 placeInference:placeInference];
 
       v88 = [RTVisitCluster alloc];
       v35 = v130;
@@ -643,9 +643,9 @@ void __84__RTVisitPipelineModuleMotionStateTrimmer__fetchActivitiesWithinDateInt
         v168 = 2112;
         v169 = v122;
         v170 = 2112;
-        v171 = v151;
+        v171 = entry2;
         v172 = 2112;
-        v173 = v150;
+        v173 = exit2;
         _os_log_debug_impl(&dword_2304B3000, v87, OS_LOG_TYPE_DEBUG, "%@ %@: Visit culled, no locations between %@ and %@", buf, 0x2Au);
       }
 
@@ -669,18 +669,18 @@ LABEL_68:
     v114 = objc_opt_class();
     v115 = NSStringFromClass(v114);
     aSelectorc = NSStringFromSelector(a2);
-    [v3 visit];
-    v148 = v116 = v3;
-    v117 = [v148 entry];
-    v118 = [v116 visit];
-    [v118 exit];
+    [activityCopy visit];
+    v148 = v116 = activityCopy;
+    entry5 = [v148 entry];
+    visit12 = [v116 visit];
+    [visit12 exit];
     v119 = v132 = v45;
     *buf = 138413058;
     v167 = v115;
     v168 = 2112;
     v169 = aSelectorc;
     v170 = 2112;
-    v171 = v117;
+    v171 = entry5;
     v172 = 2112;
     v173 = v119;
     _os_log_debug_impl(&dword_2304B3000, log, OS_LOG_TYPE_DEBUG, "%@ %@: Visit culled, only motion between %@ and %@", buf, 0x2Au);
@@ -696,23 +696,23 @@ LABEL_70:
   return v90;
 }
 
-- (id)process:(id)a3
+- (id)process:(id)process
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  processCopy = process;
+  if ([processCopy count])
   {
     v5 = objc_opt_new();
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v6 = v4;
+    v6 = processCopy;
     v7 = [v6 countByEnumeratingWithState:&v31 objects:v41 count:16];
     if (v7)
     {
       v8 = v7;
-      v27 = v4;
+      v27 = processCopy;
       v9 = *v32;
       v10 = MEMORY[0x277D86220];
       do
@@ -725,11 +725,11 @@ LABEL_70:
           }
 
           v12 = *(*(&v31 + 1) + 8 * i);
-          v13 = [v12 visit];
-          v14 = [v13 entry];
+          visit = [v12 visit];
+          entry = [visit entry];
 
           v15 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
-          if (v14)
+          if (entry)
           {
             if (v15)
             {
@@ -788,7 +788,7 @@ LABEL_70:
       }
 
       while (v8);
-      v4 = v27;
+      processCopy = v27;
     }
   }
 

@@ -44,7 +44,7 @@
   }
 
   [v7 setQueryItems:v8];
-  v17 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v18 = [v7 URL];
   v19 = objc_opt_new();
   v23[0] = MEMORY[0x277D85DD0];
@@ -53,7 +53,7 @@
   v23[3] = &unk_278A0E898;
   v24 = v7;
   v20 = v7;
-  [v17 openURL:v18 configuration:v19 completionHandler:v23];
+  [defaultWorkspace openURL:v18 configuration:v19 completionHandler:v23];
 
   v21 = *MEMORY[0x277D85DE8];
 }

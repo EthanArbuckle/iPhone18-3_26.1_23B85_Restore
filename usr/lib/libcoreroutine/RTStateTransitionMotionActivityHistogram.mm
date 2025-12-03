@@ -1,17 +1,17 @@
 @interface RTStateTransitionMotionActivityHistogram
-- (RTStateTransitionMotionActivityHistogram)initWithMotionActivities:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5;
+- (RTStateTransitionMotionActivityHistogram)initWithMotionActivities:(id)activities fromStartDate:(id)date toEndDate:(id)endDate;
 - (unint64_t)getDominantMotionActivityType;
-- (void)addActivity:(id)a3 withInterval:(double)a4;
+- (void)addActivity:(id)activity withInterval:(double)interval;
 - (void)show;
 @end
 
 @implementation RTStateTransitionMotionActivityHistogram
 
-- (RTStateTransitionMotionActivityHistogram)initWithMotionActivities:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5
+- (RTStateTransitionMotionActivityHistogram)initWithMotionActivities:(id)activities fromStartDate:(id)date toEndDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activitiesCopy = activities;
+  dateCopy = date;
+  endDateCopy = endDate;
   v27.receiver = self;
   v27.super_class = RTStateTransitionMotionActivityHistogram;
   v11 = [(RTStateTransitionMotionActivityHistogram *)&v27 init];
@@ -23,9 +23,9 @@
 
     v11->_activityChangeCount = 0;
     v11->_cumulativeInterval = 0.0;
-    [v9 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v15 = v14;
-    [v10 timeIntervalSinceReferenceDate];
+    [endDateCopy timeIntervalSinceReferenceDate];
     v17 = v16;
     v25[0] = 0;
     v25[1] = v25;
@@ -39,7 +39,7 @@
     v19[3] = &unk_2788CF2D8;
     v22 = v25;
     v23 = v15;
-    v20 = v8;
+    v20 = activitiesCopy;
     v24 = v17;
     v21 = v11;
     [v20 enumerateObjectsUsingBlock:v19];
@@ -115,10 +115,10 @@ void __93__RTStateTransitionMotionActivityHistogram_initWithMotionActivities_fro
   *(v6 + 40) = v26;
 }
 
-- (void)addActivity:(id)a3 withInterval:(double)a4
+- (void)addActivity:(id)activity withInterval:(double)interval
 {
-  v6 = a3;
-  if (v6)
+  activityCopy = activity;
+  if (activityCopy)
   {
     v23 = 0;
     v24 = &v23;
@@ -130,16 +130,16 @@ void __93__RTStateTransitionMotionActivityHistogram_initWithMotionActivities_fro
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v7 = [(RTStateTransitionMotionActivityHistogram *)self histogramBins];
+    histogramBins = [(RTStateTransitionMotionActivityHistogram *)self histogramBins];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __69__RTStateTransitionMotionActivityHistogram_addActivity_withInterval___block_invoke;
     v15[3] = &unk_2788CA750;
-    v8 = v6;
+    v8 = activityCopy;
     v16 = v8;
     v17 = &v23;
     v18 = &v19;
-    [v7 enumerateObjectsUsingBlock:v15];
+    [histogramBins enumerateObjectsUsingBlock:v15];
 
     v9 = v24[5];
     if (!v9)
@@ -152,14 +152,14 @@ void __93__RTStateTransitionMotionActivityHistogram_initWithMotionActivities_fro
     }
 
     [v9 interval];
-    [v9 setInterval:v12 + a4];
+    [v9 setInterval:v12 + interval];
     [(RTStateTransitionMotionActivityHistogram *)self cumulativeInterval];
-    [(RTStateTransitionMotionActivityHistogram *)self setCumulativeInterval:v13 + a4];
+    [(RTStateTransitionMotionActivityHistogram *)self setCumulativeInterval:v13 + interval];
     [(RTStateTransitionMotionActivityHistogram *)self setActivityChangeCount:[(RTStateTransitionMotionActivityHistogram *)self activityChangeCount]+ 1];
     if ((v20[3] & 1) == 0)
     {
-      v14 = [(RTStateTransitionMotionActivityHistogram *)self histogramBins];
-      [v14 addObject:v24[5]];
+      histogramBins2 = [(RTStateTransitionMotionActivityHistogram *)self histogramBins];
+      [histogramBins2 addObject:v24[5]];
     }
 
     _Block_object_dispose(&v19, 8);
@@ -186,8 +186,8 @@ void __69__RTStateTransitionMotionActivityHistogram_addActivity_withInterval___b
   v13 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    v3 = [(RTStateTransitionMotionActivityHistogram *)self histogramBins];
-    v4 = [v3 count];
+    histogramBins = [(RTStateTransitionMotionActivityHistogram *)self histogramBins];
+    v4 = [histogramBins count];
 
     if (v4)
     {
@@ -196,18 +196,18 @@ void __69__RTStateTransitionMotionActivityHistogram_addActivity_withInterval___b
         v5 = _rt_log_facility_get_os_log(RTLogFacilityStateModel);
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
         {
-          v7 = [(RTStateTransitionMotionActivityHistogram *)self activityChangeCount];
+          activityChangeCount = [(RTStateTransitionMotionActivityHistogram *)self activityChangeCount];
           [(RTStateTransitionMotionActivityHistogram *)self cumulativeInterval];
           v9 = 134218240;
-          v10 = v7;
+          v10 = activityChangeCount;
           v11 = 2048;
           v12 = v8;
           _os_log_debug_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEBUG, "change count, %ld, cumulative interval, %f", &v9, 0x16u);
         }
       }
 
-      v6 = [(RTStateTransitionMotionActivityHistogram *)self histogramBins];
-      [v6 enumerateObjectsUsingBlock:&__block_literal_global_62];
+      histogramBins2 = [(RTStateTransitionMotionActivityHistogram *)self histogramBins];
+      [histogramBins2 enumerateObjectsUsingBlock:&__block_literal_global_62];
     }
   }
 }
@@ -247,7 +247,7 @@ void __48__RTStateTransitionMotionActivityHistogram_show__block_invoke(uint64_t 
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v3 = [(RTStateTransitionMotionActivityHistogram *)self histogramBins];
+  histogramBins = [(RTStateTransitionMotionActivityHistogram *)self histogramBins];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __73__RTStateTransitionMotionActivityHistogram_getDominantMotionActivityType__block_invoke;
@@ -255,7 +255,7 @@ void __48__RTStateTransitionMotionActivityHistogram_show__block_invoke(uint64_t 
   v17[4] = &v26;
   v17[5] = &v18;
   v17[6] = &v22;
-  [v3 enumerateObjectsUsingBlock:v17];
+  [histogramBins enumerateObjectsUsingBlock:v17];
 
   [(RTStateTransitionMotionActivityHistogram *)self cumulativeInterval];
   v4 = 0.0;

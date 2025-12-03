@@ -1,19 +1,19 @@
 @interface MapsSuggestionsSignalPipeline
-- (BOOL)addFeeler:(id)a3;
-- (BOOL)feeler:(id)a3 sendsSignalPack:(id)a4;
-- (BOOL)removeFeeler:(id)a3;
-- (BOOL)setAlgorithm:(id)a3;
+- (BOOL)addFeeler:(id)feeler;
+- (BOOL)feeler:(id)feeler sendsSignalPack:(id)pack;
+- (BOOL)removeFeeler:(id)feeler;
+- (BOOL)setAlgorithm:(id)algorithm;
 - (BOOL)start;
 - (BOOL)stop;
-- (MapsSuggestionsSignalPipeline)initWithNetworkRequester:(id)a3;
+- (MapsSuggestionsSignalPipeline)initWithNetworkRequester:(id)requester;
 - (MapsSuggestionsSignalPipelineUpdater)updaterDelegate;
 - (NSString)uniqueName;
-- (char)guessTransportModesForDestinationEntry:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5;
-- (char)guessTransportModesForDestinationMapItem:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5;
+- (char)guessTransportModesForDestinationEntry:(id)entry originCoordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler;
+- (char)guessTransportModesForDestinationMapItem:(id)item originCoordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler;
 - (id).cxx_construct;
 - (id)mergedCommonSignalPack;
-- (id)mergedSignalPackForDestinationEntry:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4;
-- (id)mergedSignalPackForDestinationMapItem:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4;
+- (id)mergedSignalPackForDestinationEntry:(id)entry originCoordinate:(CLLocationCoordinate2D)coordinate;
+- (id)mergedSignalPackForDestinationMapItem:(id)item originCoordinate:(CLLocationCoordinate2D)coordinate;
 - (void)dealloc;
 - (void)resetData;
 @end
@@ -60,9 +60,9 @@
   return [v2 description];
 }
 
-- (MapsSuggestionsSignalPipeline)initWithNetworkRequester:(id)a3
+- (MapsSuggestionsSignalPipeline)initWithNetworkRequester:(id)requester
 {
-  v5 = a3;
+  requesterCopy = requester;
   v25.receiver = self;
   v25.super_class = MapsSuggestionsSignalPipeline;
   v6 = [(MapsSuggestionsSignalPipeline *)&v25 init];
@@ -96,7 +96,7 @@
     v19 = *(v6 + 8);
     *(v6 + 8) = v18;
 
-    objc_storeStrong(v6 + 9, a3);
+    objc_storeStrong(v6 + 9, requester);
     objc_initWeak(&location, v6);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -119,18 +119,18 @@
   [(MapsSuggestionsSignalPipeline *)&v3 dealloc];
 }
 
-- (BOOL)addFeeler:(id)a3
+- (BOOL)addFeeler:(id)feeler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  feelerCopy = feeler;
+  v5 = feelerCopy;
+  if (feelerCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000E664;
     v9[3] = &unk_100075280;
     v9[4] = self;
-    v10 = v4;
+    v10 = feelerCopy;
     v6 = sub_10000313C(&self->_queue, v9);
   }
 
@@ -156,18 +156,18 @@
   return v6;
 }
 
-- (BOOL)removeFeeler:(id)a3
+- (BOOL)removeFeeler:(id)feeler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  feelerCopy = feeler;
+  v5 = feelerCopy;
+  if (feelerCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000E8D8;
     v9[3] = &unk_100075280;
     v9[4] = self;
-    v10 = v4;
+    v10 = feelerCopy;
     v6 = sub_10000313C(&self->_queue, v9);
   }
 
@@ -193,18 +193,18 @@
   return v6;
 }
 
-- (BOOL)setAlgorithm:(id)a3
+- (BOOL)setAlgorithm:(id)algorithm
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  algorithmCopy = algorithm;
+  v5 = algorithmCopy;
+  if (algorithmCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000EAF0;
     v9[3] = &unk_100075280;
     v9[4] = self;
-    v10 = v4;
+    v10 = algorithmCopy;
     v6 = sub_10000313C(&self->_queue, v9);
   }
 
@@ -257,20 +257,20 @@
   objc_destroyWeak(&location);
 }
 
-- (id)mergedSignalPackForDestinationEntry:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4
+- (id)mergedSignalPackForDestinationEntry:(id)entry originCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  entryCopy = entry;
+  v8 = entryCopy;
+  if (entryCopy)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10000F044;
     v12[3] = &unk_1000752D0;
     v12[4] = self;
-    v13 = v7;
+    v13 = entryCopy;
     v14 = latitude;
     v15 = longitude;
     v9 = sub_100005B00(&self->_queue, v12);
@@ -298,20 +298,20 @@
   return v9;
 }
 
-- (id)mergedSignalPackForDestinationMapItem:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4
+- (id)mergedSignalPackForDestinationMapItem:(id)item originCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  itemCopy = item;
+  v8 = itemCopy;
+  if (itemCopy)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10000F2AC;
     v12[3] = &unk_1000752D0;
     v12[4] = self;
-    v13 = v7;
+    v13 = itemCopy;
     v14 = latitude;
     v15 = longitude;
     v9 = sub_100005B00(&self->_queue, v12);
@@ -339,13 +339,13 @@
   return v9;
 }
 
-- (char)guessTransportModesForDestinationMapItem:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5
+- (char)guessTransportModesForDestinationMapItem:(id)item originCoordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  itemCopy = item;
+  handlerCopy = handler;
+  v11 = handlerCopy;
   if (!self->_algorithm)
   {
     v13 = GEOFindOrCreateLog();
@@ -365,7 +365,7 @@
     goto LABEL_13;
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -384,7 +384,7 @@
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!itemCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -411,7 +411,7 @@ LABEL_13:
   v15[2] = sub_10000F764;
   v15[3] = &unk_1000752F8;
   v15[4] = self;
-  v16 = v9;
+  v16 = itemCopy;
   v18 = latitude;
   v19 = longitude;
   v17 = v11;
@@ -421,13 +421,13 @@ LABEL_14:
   return v12;
 }
 
-- (char)guessTransportModesForDestinationEntry:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5
+- (char)guessTransportModesForDestinationEntry:(id)entry originCoordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  entryCopy = entry;
+  handlerCopy = handler;
+  v11 = handlerCopy;
   if (!self->_algorithm)
   {
     v13 = GEOFindOrCreateLog();
@@ -447,7 +447,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -466,7 +466,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!entryCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -493,7 +493,7 @@ LABEL_13:
   v15[2] = sub_10000FDBC;
   v15[3] = &unk_1000752F8;
   v15[4] = self;
-  v16 = v9;
+  v16 = entryCopy;
   v18 = latitude;
   v19 = longitude;
   v17 = v11;
@@ -503,11 +503,11 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)feeler:(id)a3 sendsSignalPack:(id)a4
+- (BOOL)feeler:(id)feeler sendsSignalPack:(id)pack
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  feelerCopy = feeler;
+  packCopy = pack;
+  if (feelerCopy)
   {
     objc_initWeak(location, self);
     block[0] = _NSConcreteStackBlock;
@@ -515,8 +515,8 @@ LABEL_14:
     block[2] = sub_1000102E8;
     block[3] = &unk_1000750D8;
     objc_copyWeak(&v13, location);
-    v11 = v7;
-    v12 = self;
+    v11 = packCopy;
+    selfCopy = self;
     dispatch_async(self->_queue._innerQueue, block);
 
     objc_destroyWeak(&v13);
@@ -540,7 +540,7 @@ LABEL_14:
     }
   }
 
-  return v6 != 0;
+  return feelerCopy != 0;
 }
 
 - (id).cxx_construct

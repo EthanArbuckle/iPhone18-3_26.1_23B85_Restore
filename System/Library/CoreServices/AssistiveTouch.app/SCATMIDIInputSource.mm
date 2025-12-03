@@ -1,8 +1,8 @@
 @interface SCATMIDIInputSource
 - (SCATMIDIInputSource)init;
-- (int64_t)_switchKeyForEvent:(id)a3;
-- (int64_t)switchKeyForSwitch:(id)a3;
-- (void)_handleMIDIEvent:(id)a3 device:(id)a4 entity:(id)a5 endpoint:(id)a6;
+- (int64_t)_switchKeyForEvent:(id)event;
+- (int64_t)switchKeyForSwitch:(id)switch;
+- (void)_handleMIDIEvent:(id)event device:(id)device entity:(id)entity endpoint:(id)endpoint;
 @end
 
 @implementation SCATMIDIInputSource
@@ -33,26 +33,26 @@
   return v2;
 }
 
-- (int64_t)_switchKeyForEvent:(id)a3
+- (int64_t)_switchKeyForEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 channel];
-  v5 = [v3 note];
+  eventCopy = event;
+  channel = [eventCopy channel];
+  note = [eventCopy note];
 
-  return v5 | (v4 << 8);
+  return note | (channel << 8);
 }
 
-- (void)_handleMIDIEvent:(id)a3 device:(id)a4 entity:(id)a5 endpoint:(id)a6
+- (void)_handleMIDIEvent:(id)event device:(id)device entity:(id)entity endpoint:(id)endpoint
 {
-  v7 = a3;
-  v6 = v7;
+  eventCopy = event;
+  v6 = eventCopy;
   AXPerformBlockOnMainThread();
 }
 
-- (int64_t)switchKeyForSwitch:(id)a3
+- (int64_t)switchKeyForSwitch:(id)switch
 {
-  v4 = [a3 midiEvent];
-  v5 = [(SCATMIDIInputSource *)self _switchKeyForEvent:v4];
+  midiEvent = [switch midiEvent];
+  v5 = [(SCATMIDIInputSource *)self _switchKeyForEvent:midiEvent];
 
   return v5;
 }

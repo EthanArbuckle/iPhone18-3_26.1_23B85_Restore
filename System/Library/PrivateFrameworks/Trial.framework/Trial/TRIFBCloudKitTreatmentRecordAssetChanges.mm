@@ -1,23 +1,23 @@
 @interface TRIFBCloudKitTreatmentRecordAssetChanges
-- (void)replaceTreatmentId:(id)a3;
+- (void)replaceTreatmentId:(id)id;
 @end
 
 @implementation TRIFBCloudKitTreatmentRecordAssetChanges
 
-- (void)replaceTreatmentId:(id)a3
+- (void)replaceTreatmentId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   self->_changeTypeTreatmentId = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = idCopy;
+  if (!idCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:780 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:780 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    idCopy = 0;
   }
 
-  self->_replacementTreatmentId = [v5 unsignedIntValue];
+  self->_replacementTreatmentId = [idCopy unsignedIntValue];
 }
 
 @end

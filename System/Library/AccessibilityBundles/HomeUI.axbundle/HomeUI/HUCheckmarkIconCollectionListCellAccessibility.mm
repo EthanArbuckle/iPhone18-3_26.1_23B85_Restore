@@ -1,16 +1,16 @@
 @interface HUCheckmarkIconCollectionListCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation HUCheckmarkIconCollectionListCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUCheckmarkIconCollectionListCell" hasInstanceMethod:@"hidesCheckmark" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HUCheckmarkIconCollectionListCell" hasInstanceMethod:@"checkmarkAccessoryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUCheckmarkAccessoryView" hasInstanceMethod:@"checked" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUCheckmarkIconCollectionListCell" hasInstanceMethod:@"hidesCheckmark" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HUCheckmarkIconCollectionListCell" hasInstanceMethod:@"checkmarkAccessoryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUCheckmarkAccessoryView" hasInstanceMethod:@"checked" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel

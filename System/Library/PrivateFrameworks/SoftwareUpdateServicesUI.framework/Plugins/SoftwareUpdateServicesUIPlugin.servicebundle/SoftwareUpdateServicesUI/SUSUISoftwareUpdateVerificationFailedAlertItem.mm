@@ -11,12 +11,12 @@
 {
   v14[2] = self;
   v14[1] = a2;
-  v5 = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
+  descriptor = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
   v12 = 0;
   v10 = 0;
   v8 = 0;
   v6 = 0;
-  if (([(SUDescriptor *)v5 isSplatOnly]& 1) != 0)
+  if (([(SUDescriptor *)descriptor isSplatOnly]& 1) != 0)
   {
     v13 = sub_BDE0();
     v12 = 1;
@@ -59,20 +59,20 @@
 
 - (id)message
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   v10 = sub_BDE0();
   v9 = [v10 localizedStringForKey:@"SOFTWARE_UPDATE_VERIFICATION_FAILED_ALERT_BODY" value:&stru_62DF0 table:@"ui_alerts"];
-  v8 = [(SUSUIBaseSoftwareUpdateAlertItem *)v16 updateName];
-  v15[0] = [NSString stringWithFormat:v9, v8];
+  updateName = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy updateName];
+  v15[0] = [NSString stringWithFormat:v9, updateName];
 
   v11 = +[BSPlatform sharedInstance];
-  v12 = [(BSPlatform *)v11 isInternalInstall];
+  isInternalInstall = [(BSPlatform *)v11 isInternalInstall];
 
-  if (v12)
+  if (isInternalInstall)
   {
-    v7 = [*(&v16->super.super._controller + 2) userInfo];
-    v14 = [v7 objectForKey:NSLocalizedRecoverySuggestionErrorKey];
+    userInfo = [*(&selfCopy->super.super._controller + 2) userInfo];
+    v14 = [userInfo objectForKey:NSLocalizedRecoverySuggestionErrorKey];
 
     if (v14)
     {
@@ -81,7 +81,7 @@
 
     else
     {
-      v6 = *(&v16->super.super._controller + 2);
+      v6 = *(&selfCopy->super.super._controller + 2);
     }
 
     v13 = [NSString stringWithFormat:@"\n\n[Internal Only]\n%@", v6];
@@ -101,12 +101,12 @@
 
 - (id)buttons
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
   v22[0] = 0;
   if (![(SUSUIBaseAlertItem *)self isUILocked])
   {
-    v21 = v23;
+    v21 = selfCopy;
     v6 = [SUSUIAlertButtonDefinition alloc];
     v8 = sub_BDE0();
     v7 = [v8 localizedStringForKey:@"SOFTWARE_UPDATE_INSTALL_FAILURE_ACTION_DETAILS" value:? table:?];
@@ -145,8 +145,8 @@
 
 - (id)graphicIcon
 {
-  v4 = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
-  if (([(SUDescriptor *)v4 isSplatOnly]& 1) != 0)
+  descriptor = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
+  if (([(SUDescriptor *)descriptor isSplatOnly]& 1) != 0)
   {
     v2 = @"com.apple.graphic-icon.background-security-improvements";
   }

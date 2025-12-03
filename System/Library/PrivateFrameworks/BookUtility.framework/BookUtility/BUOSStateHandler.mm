@@ -1,22 +1,22 @@
 @interface BUOSStateHandler
-- (BUOSStateHandler)initWithTitle:(id)a3 queue:(id)a4 block:(id)a5;
+- (BUOSStateHandler)initWithTitle:(id)title queue:(id)queue block:(id)block;
 - (void)dealloc;
 @end
 
 @implementation BUOSStateHandler
 
-- (BUOSStateHandler)initWithTitle:(id)a3 queue:(id)a4 block:(id)a5
+- (BUOSStateHandler)initWithTitle:(id)title queue:(id)queue block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  queueCopy = queue;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = BUOSStateHandler;
   v11 = [(BUOSStateHandler *)&v15 init];
   if (v11)
   {
-    v13 = v8;
-    v14 = v10;
+    v13 = titleCopy;
+    v14 = blockCopy;
     v11->_osStateHandle = os_state_add_handler();
   }
 

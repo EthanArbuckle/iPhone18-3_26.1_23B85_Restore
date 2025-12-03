@@ -1,43 +1,43 @@
 @interface HUHomePodAlarmItemModuleController
 - (BOOL)_shouldAllowCellSelection;
-- (HUHomePodAlarmItemModuleController)initWithModule:(id)a3;
+- (HUHomePodAlarmItemModuleController)initWithModule:(id)module;
 - (HUHomePodAlarmItemModuleControllerDelegate)delegate;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)_significantTimeChange:(id)a3;
-- (void)setAlarmEnabled:(BOOL)a3 forCell:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (unint64_t)didSelectItem:(id)item;
+- (void)_significantTimeChange:(id)change;
+- (void)setAlarmEnabled:(BOOL)enabled forCell:(id)cell;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUHomePodAlarmItemModuleController
 
-- (HUHomePodAlarmItemModuleController)initWithModule:(id)a3
+- (HUHomePodAlarmItemModuleController)initWithModule:(id)module
 {
   v8.receiver = self;
   v8.super_class = HUHomePodAlarmItemModuleController;
-  v3 = [(HUItemModuleController *)&v8 initWithModule:a3];
+  v3 = [(HUItemModuleController *)&v8 initWithModule:module];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     cellToItemMap = v3->_cellToItemMap;
-    v3->_cellToItemMap = v4;
+    v3->_cellToItemMap = weakToWeakObjectsMapTable;
 
     v3->_allowsCellSelection = [(HUHomePodAlarmItemModuleController *)v3 _shouldAllowCellSelection];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v3 selector:sel__significantTimeChange_ name:*MEMORY[0x277D766F0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__significantTimeChange_ name:*MEMORY[0x277D766F0] object:0];
   }
 
   return v3;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v10.receiver = self;
   v10.super_class = HUHomePodAlarmItemModuleController;
-  [(HUItemModuleController *)&v10 setupCell:v6 forItem:a4];
+  [(HUItemModuleController *)&v10 setupCell:cellCopy forItem:item];
   objc_opt_class();
-  v7 = v6;
+  v7 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -57,62 +57,62 @@
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v11 = a3;
-  v9 = [(HUHomePodAlarmItemModuleController *)self cellToItemMap];
-  [v9 setObject:v8 forKey:v11];
+  animatedCopy = animated;
+  itemCopy = item;
+  cellCopy = cell;
+  cellToItemMap = [(HUHomePodAlarmItemModuleController *)self cellToItemMap];
+  [cellToItemMap setObject:itemCopy forKey:cellCopy];
 
-  v10 = [v8 alarm];
+  alarm = [itemCopy alarm];
 
-  [v11 refreshUI:v10 roomName:0 animated:v5];
-  [v11 setDelegate:self];
+  [cellCopy refreshUI:alarm roomName:0 animated:animatedCopy];
+  [cellCopy setDelegate:self];
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUHomePodAlarmItemModuleController *)self delegate];
+  itemCopy = item;
+  delegate = [(HUHomePodAlarmItemModuleController *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(HUHomePodAlarmItemModuleController *)self delegate];
-    [v6 alarmItemModuleController:self didSelectAlarmItem:v4];
+    delegate2 = [(HUHomePodAlarmItemModuleController *)self delegate];
+    [delegate2 alarmItemModuleController:self didSelectAlarmItem:itemCopy];
   }
 
   return 0;
 }
 
-- (void)setAlarmEnabled:(BOOL)a3 forCell:(id)a4
+- (void)setAlarmEnabled:(BOOL)enabled forCell:(id)cell
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(HUHomePodAlarmItemModuleController *)self cellToItemMap];
-  v13 = [v7 objectForKey:v6];
+  enabledCopy = enabled;
+  cellCopy = cell;
+  cellToItemMap = [(HUHomePodAlarmItemModuleController *)self cellToItemMap];
+  v13 = [cellToItemMap objectForKey:cellCopy];
 
-  v8 = [v13 alarm];
-  v9 = [v8 mutableCopy];
-  [v9 setEnabled:v4];
-  v10 = [(HUItemModuleController *)self module];
-  v11 = [v10 mobileTimerAdapterForAlarmItem:v13];
+  alarm = [v13 alarm];
+  v9 = [alarm mutableCopy];
+  [v9 setEnabled:enabledCopy];
+  module = [(HUItemModuleController *)self module];
+  v11 = [module mobileTimerAdapterForAlarmItem:v13];
   v12 = [v11 updateAlarm:v9];
 }
 
 - (BOOL)_shouldAllowCellSelection
 {
-  v2 = [MEMORY[0x277D14670] sharedInstance];
-  if ([v2 hostProcess] == 100)
+  mEMORY[0x277D14670] = [MEMORY[0x277D14670] sharedInstance];
+  if ([mEMORY[0x277D14670] hostProcess] == 100)
   {
   }
 
   else
   {
-    v3 = [MEMORY[0x277D14670] sharedInstance];
-    v4 = [v3 hostProcess];
+    mEMORY[0x277D14670]2 = [MEMORY[0x277D14670] sharedInstance];
+    hostProcess = [mEMORY[0x277D14670]2 hostProcess];
 
-    if (v4 != 3)
+    if (hostProcess != 3)
     {
       return 1;
     }
@@ -123,17 +123,17 @@
   return [v5 isDeviceUnlocked];
 }
 
-- (void)_significantTimeChange:(id)a3
+- (void)_significantTimeChange:(id)change
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [(HUHomePodAlarmItemModuleController *)self cellToItemMap];
-  v5 = [v4 keyEnumerator];
+  cellToItemMap = [(HUHomePodAlarmItemModuleController *)self cellToItemMap];
+  keyEnumerator = [cellToItemMap keyEnumerator];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = keyEnumerator;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -150,13 +150,13 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [(HUHomePodAlarmItemModuleController *)self cellToItemMap];
-        v13 = [v12 objectForKey:v11];
+        cellToItemMap2 = [(HUHomePodAlarmItemModuleController *)self cellToItemMap];
+        v13 = [cellToItemMap2 objectForKey:v11];
 
         if (v13)
         {
-          v14 = [v13 alarm];
-          [v11 refreshUI:v14 roomName:0 animated:0];
+          alarm = [v13 alarm];
+          [v11 refreshUI:alarm roomName:0 animated:0];
         }
 
         ++v10;

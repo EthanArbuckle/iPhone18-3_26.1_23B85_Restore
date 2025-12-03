@@ -1,45 +1,45 @@
 @interface _UISearchPresentationController
-+ (BOOL)shouldExciseSearchBar:(id)a3 duringPresentationWithPresenter:(id)a4;
-- (BOOL)_requiresDeferralToCoordinateWithNavigationTransitionAnimated:(BOOL)a3;
++ (BOOL)shouldExciseSearchBar:(id)bar duringPresentationWithPresenter:(id)presenter;
+- (BOOL)_requiresDeferralToCoordinateWithNavigationTransitionAnimated:(BOOL)animated;
 - (BOOL)_shouldAnchorSearchTextFieldToKeyboard;
 - (BOOL)_shouldUsePassthroughInteractionForDismissal;
-- (BOOL)passthroughScrollInteraction:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5;
+- (BOOL)passthroughScrollInteraction:(id)interaction shouldInteractAtLocation:(CGPoint)location withEvent:(id)event;
 - (CGRect)finalFrameForContainerView;
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_UISearchPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (double)_visibleRefreshControlHeightForTableView:(id)a3;
-- (id)_constraintCopyOfConstraint:(id)a3 replaceItem:(id)a4 withItem:(id)a5;
-- (id)_createVisualStyleForProvider:(id)a3;
-- (id)_presentationControllerForTraitCollection:(id)a3;
-- (void)_dismissalTransitionWithSearchBarHostedByNavBarDidEnd:(BOOL)a3;
+- (_UISearchPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (double)_visibleRefreshControlHeightForTableView:(id)view;
+- (id)_constraintCopyOfConstraint:(id)constraint replaceItem:(id)item withItem:(id)withItem;
+- (id)_createVisualStyleForProvider:(id)provider;
+- (id)_presentationControllerForTraitCollection:(id)collection;
+- (void)_dismissalTransitionWithSearchBarHostedByNavBarDidEnd:(BOOL)end;
 - (void)_dismissalTransitionWithSearchBarHostedByNavBarWillBegin;
-- (void)_dismissalTransitionWithSearchBarNotHostedByNavBarDidEnd:(BOOL)a3;
+- (void)_dismissalTransitionWithSearchBarNotHostedByNavBarDidEnd:(BOOL)end;
 - (void)_dismissalTransitionWithSearchBarNotHostedByNavBarWillBegin;
 - (void)_exciseSearchBarFromCurrentContext;
-- (void)_layoutPresentationWithSize:(CGSize)a3 transitionCoordinator:(id)a4;
+- (void)_layoutPresentationWithSize:(CGSize)size transitionCoordinator:(id)coordinator;
 - (void)_placeSearchBarBackIntoOriginalContext;
-- (void)_presentationTransitionWithSearchBarHostedByNavBarDidEnd:(BOOL)a3;
+- (void)_presentationTransitionWithSearchBarHostedByNavBarDidEnd:(BOOL)end;
 - (void)_presentationTransitionWithSearchBarHostedByNavBarWillBegin;
-- (void)_presentationTransitionWithSearchBarNotHostedByNavBarDidEnd:(BOOL)a3;
+- (void)_presentationTransitionWithSearchBarNotHostedByNavBarDidEnd:(BOOL)end;
 - (void)_presentationTransitionWithSearchBarNotHostedByNavBarWillBegin;
-- (void)_transitionToPresentationController:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)_transitionToPresentationController:(id)controller withTransitionCoordinator:(id)coordinator;
 - (void)_updateContainerFinalFrameForNonExcisedSearchBar;
-- (void)_updatePresentingViewControllerContentScrollViewWithOffsets:(CGSize)a3 transitionCoordinator:(id)a4;
+- (void)_updatePresentingViewControllerContentScrollViewWithOffsets:(CGSize)offsets transitionCoordinator:(id)coordinator;
 - (void)containerViewWillLayoutSubviews;
 - (void)contentSizeCategoryOrLegibilityWeightChanged;
 - (void)dealloc;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
 - (void)hideBackgroundObscuringView;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 - (void)showBackgroundObscuringView;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _UISearchPresentationController
 
-- (_UISearchPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_UISearchPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v11[2] = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -50,11 +50,11 @@
 
   v10.receiver = self;
   v10.super_class = _UISearchPresentationController;
-  v8 = [(UIPresentationController *)&v10 initWithPresentedViewController:a3 presentingViewController:a4];
+  v8 = [(UIPresentationController *)&v10 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v8)
   {
     v8->_assistant = [[_UISearchPresentationAssistant alloc] initWithSearchPresentationController:v8];
-    v8->_searchController = a3;
+    v8->_searchController = controller;
     v11[0] = 0x1EFE32440;
     v11[1] = 0x1EFE324A0;
     -[UIPresentationController _registerForTraitTokenChanges:withTarget:action:](v8, "_registerForTraitTokenChanges:withTarget:action:", [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2], v8, sel_contentSizeCategoryOrLegibilityWeightChanged);
@@ -76,52 +76,52 @@
   [(UIPresentationController *)&v3 dealloc];
 }
 
-+ (BOOL)shouldExciseSearchBar:(id)a3 duringPresentationWithPresenter:(id)a4
++ (BOOL)shouldExciseSearchBar:(id)bar duringPresentationWithPresenter:(id)presenter
 {
-  v6 = [a3 window];
-  if (v6)
+  window = [bar window];
+  if (window)
   {
     objc_opt_class();
-    if (!a3)
+    if (!bar)
     {
       objc_opt_class();
       objc_opt_class();
-      if (a4)
+      if (presenter)
       {
 LABEL_16:
-        LODWORD(v6) = [objc_msgSend(a4 "_existingView")];
-        if (!v6)
+        LODWORD(window) = [objc_msgSend(presenter "_existingView")];
+        if (!window)
         {
-          return v6;
+          return window;
         }
       }
 
 LABEL_17:
-      LOBYTE(v6) = 1;
-      return v6;
+      LOBYTE(window) = 1;
+      return window;
     }
 
-    v7 = a3;
+    barCopy = bar;
     while ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [v7 superview];
-      if (!v7)
+      barCopy = [barCopy superview];
+      if (!barCopy)
       {
         objc_opt_class();
-        v8 = a3;
+        barCopy2 = bar;
         while ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v8 = [v8 superview];
-          if (!v8)
+          barCopy2 = [barCopy2 superview];
+          if (!barCopy2)
           {
             objc_opt_class();
-            v9 = a3;
+            barCopy3 = bar;
             while ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v9 = [v9 superview];
-              if (!v9)
+              barCopy3 = [barCopy3 superview];
+              if (!barCopy3)
               {
-                if (a4)
+                if (presenter)
                 {
                   goto LABEL_16;
                 }
@@ -139,35 +139,35 @@ LABEL_17:
     }
 
 LABEL_14:
-    LOBYTE(v6) = 0;
+    LOBYTE(window) = 0;
   }
 
-  return v6;
+  return window;
 }
 
 - (void)_updateContainerFinalFrameForNonExcisedSearchBar
 {
-  v3 = [(UISearchController *)self->_searchController searchBar];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
   objc_opt_class();
-  if (v3)
+  if (searchBar)
   {
-    v4 = v3;
+    superview = searchBar;
     while ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v4 = [(UIView *)v4 superview];
-      if (!v4)
+      superview = [(UIView *)superview superview];
+      if (!superview)
       {
         goto LABEL_5;
       }
     }
 
-    v5 = v4;
+    v5 = superview;
   }
 
   else
   {
 LABEL_5:
-    if (![(UISearchBar *)v3 _containedInNavigationPalette])
+    if (![(UISearchBar *)searchBar _containedInNavigationPalette])
     {
       return;
     }
@@ -184,34 +184,34 @@ LABEL_5:
 
 - (void)showBackgroundObscuringView
 {
-  v2 = [(_UISearchPresentationAssistant *)self->_assistant dimmingView];
+  dimmingView = [(_UISearchPresentationAssistant *)self->_assistant dimmingView];
 
-  [v2 display:1];
+  [dimmingView display:1];
 }
 
 - (void)hideBackgroundObscuringView
 {
-  v2 = [(_UISearchPresentationAssistant *)self->_assistant dimmingView];
+  dimmingView = [(_UISearchPresentationAssistant *)self->_assistant dimmingView];
 
-  [v2 display:0];
+  [dimmingView display:0];
 }
 
 - (BOOL)_shouldAnchorSearchTextFieldToKeyboard
 {
-  v3 = [(UISearchController *)self->_searchController _prefersSearchTextFieldAnchoredToKeyboard];
-  if (v3)
+  _prefersSearchTextFieldAnchoredToKeyboard = [(UISearchController *)self->_searchController _prefersSearchTextFieldAnchoredToKeyboard];
+  if (_prefersSearchTextFieldAnchoredToKeyboard)
   {
-    LOBYTE(v3) = [(UIPresentationController *)self presentationStyle]== UIModalPresentationCustom;
+    LOBYTE(_prefersSearchTextFieldAnchoredToKeyboard) = [(UIPresentationController *)self presentationStyle]== UIModalPresentationCustom;
   }
 
-  return v3;
+  return _prefersSearchTextFieldAnchoredToKeyboard;
 }
 
 - (void)_presentationTransitionWithSearchBarNotHostedByNavBarWillBegin
 {
   v55 = *MEMORY[0x1E69E9840];
   [(UIPresentationController *)self _setContainerIgnoresDirectTouchEvents:1];
-  v3 = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
+  transitionCoordinator = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
   if ([(_UISearchPresentationController *)self _shouldAnchorSearchTextFieldToKeyboard])
   {
     [(UISearchController *)self->_searchController _setInlineSearchAccessoryEnabled:1];
@@ -222,10 +222,10 @@ LABEL_5:
     [(_UISearchPresentationAssistant *)self->_assistant ensureAppropriatelySizedSearchBar:[(UISearchController *)self->_searchController searchBar]];
   }
 
-  v4 = [(UISearchController *)self->_searchController searchBar];
-  v5 = [_UISearchPresentationController shouldExciseSearchBar:v4 duringPresentationWithPresenter:[(UIPresentationController *)self presentingViewController]];
-  v6 = [(_UISearchPresentationAssistant *)self->_assistant searchBarWillResizeForScopeBar];
-  if ([(UIView *)v4 window])
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  v5 = [_UISearchPresentationController shouldExciseSearchBar:searchBar duringPresentationWithPresenter:[(UIPresentationController *)self presentingViewController]];
+  searchBarWillResizeForScopeBar = [(_UISearchPresentationAssistant *)self->_assistant searchBarWillResizeForScopeBar];
+  if ([(UIView *)searchBar window])
   {
     v7 = !v5;
   }
@@ -238,16 +238,16 @@ LABEL_5:
   v8 = &OBJC_IVAR____UIPreviewActionSheetItemView__label;
   if (v7)
   {
-    v46 = 0;
+    _refreshControl = 0;
     v9 = 0.0;
   }
 
   else
   {
     objc_opt_class();
-    if (v4)
+    if (searchBar)
     {
-      v10 = v4;
+      superview = searchBar;
       do
       {
         if (objc_opt_isKindOfClass())
@@ -255,56 +255,56 @@ LABEL_5:
           break;
         }
 
-        v10 = [(UIView *)v10 superview];
+        superview = [(UIView *)superview superview];
       }
 
-      while (v10);
+      while (superview);
     }
 
     else
     {
-      v10 = 0;
+      superview = 0;
     }
 
-    [(_UISearchPresentationController *)self _visibleRefreshControlHeightForTableView:v10];
+    [(_UISearchPresentationController *)self _visibleRefreshControlHeightForTableView:superview];
     v9 = v11;
-    v45 = v3;
-    v43 = v6;
+    v45 = transitionCoordinator;
+    v43 = searchBarWillResizeForScopeBar;
     v44 = v5;
     if (fabs(v11) >= 2.22044605e-16)
     {
-      v46 = [(UISearchBar *)v10 _refreshControl];
+      _refreshControl = [(UISearchBar *)superview _refreshControl];
     }
 
     else
     {
-      v46 = 0;
+      _refreshControl = 0;
     }
 
-    v12 = [(UIView *)v4 superview];
-    v13 = [(_UISearchPresentationController *)self searchBarContainerView];
-    v14 = [(UIViewController *)[(UIPresentationController *)self presentingViewController] view];
+    superview2 = [(UIView *)searchBar superview];
+    searchBarContainerView = [(_UISearchPresentationController *)self searchBarContainerView];
+    view = [(UIViewController *)[(UIPresentationController *)self presentingViewController] view];
     if ([(UISearchController *)self->_searchController _searchbarWasTableHeaderView])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(UISearchBar *)v4 _setMaskActive:0];
-        [(UIView *)v14 adjustedContentInset];
-        [(UIView *)v13 frame];
-        [(UIView *)v13 setFrame:?];
+        [(UISearchBar *)searchBar _setMaskActive:0];
+        [(UIView *)view adjustedContentInset];
+        [(UIView *)searchBarContainerView frame];
+        [(UIView *)searchBarContainerView setFrame:?];
       }
     }
 
-    if ([(UISearchBar *)v4 isFirstResponder])
+    if ([(UISearchBar *)searchBar isFirstResponder])
     {
-      [UIView _setIsResponderAncestorOfFirstResponder:v12 startingAtFirstResponder:?];
+      [UIView _setIsResponderAncestorOfFirstResponder:superview2 startingAtFirstResponder:?];
     }
 
     [(_UISearchPresentationController *)self _exciseSearchBarFromCurrentContext];
-    [(UISearchBar *)v4 _setTransplanting:1];
-    [(UIView *)v4 removeFromSuperview];
-    [(UIView *)v12 addSubview:self->_placeholderView];
+    [(UISearchBar *)searchBar _setTransplanting:1];
+    [(UIView *)searchBar removeFromSuperview];
+    [(UIView *)superview2 addSubview:self->_placeholderView];
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
@@ -334,40 +334,40 @@ LABEL_5:
     }
 
     self->_placeholderConstraitMap = 0;
-    if (v10)
+    if (superview)
     {
-      v3 = v45;
-      v6 = v43;
+      transitionCoordinator = v45;
+      searchBarWillResizeForScopeBar = v43;
       v5 = v44;
       v8 = &OBJC_IVAR____UIPreviewActionSheetItemView__label;
-      if ([(UISearchBar *)v10 tableHeaderView]== v4)
+      if ([(UISearchBar *)superview tableHeaderView]== searchBar)
       {
         *&self->_controllerFlags |= 1u;
-        [(UISearchBar *)v10 setTableHeaderView:self->_placeholderView];
+        [(UISearchBar *)superview setTableHeaderView:self->_placeholderView];
       }
     }
 
     else
     {
-      v3 = v45;
-      v6 = v43;
+      transitionCoordinator = v45;
+      searchBarWillResizeForScopeBar = v43;
       v5 = v44;
       v8 = &OBJC_IVAR____UIPreviewActionSheetItemView__label;
     }
   }
 
-  -[_UISearchPresentationAssistant setPresentationWasAnimated:](self->_assistant, "setPresentationWasAnimated:", [v3 isAnimated]);
+  -[_UISearchPresentationAssistant setPresentationWasAnimated:](self->_assistant, "setPresentationWasAnimated:", [transitionCoordinator isAnimated]);
   if ([(UISearchController *)self->_searchController obscuresBackgroundDuringPresentation]&& ![(_UISearchPresentationAssistant *)self->_assistant presentationIsPopoverToOverFullScreenAdaptation])
   {
     [(UIView *)[(UIPresentationController *)self containerView] addSubview:[(_UISearchPresentationController *)self backgroundObscuringView]];
-    if ([v3 isAnimated])
+    if ([transitionCoordinator isAnimated])
     {
       v49[0] = MEMORY[0x1E69E9820];
       v49[1] = 3221225472;
       v49[2] = __97___UISearchPresentationController__presentationTransitionWithSearchBarNotHostedByNavBarWillBegin__block_invoke;
       v49[3] = &unk_1E711EC78;
       v49[4] = self;
-      [v3 animateAlongsideTransition:v49 completion:0];
+      [transitionCoordinator animateAlongsideTransition:v49 completion:0];
     }
 
     else
@@ -378,11 +378,11 @@ LABEL_5:
 
   if ([(UISearchController *)self->_searchController _hidesNavigationBarDuringPresentationRespectingInlineSearch])
   {
-    v20 = [(_UISearchPresentationAssistant *)self->_assistant locatePresentingNavigationController];
-    if (v20)
+    locatePresentingNavigationController = [(_UISearchPresentationAssistant *)self->_assistant locatePresentingNavigationController];
+    if (locatePresentingNavigationController)
     {
-      v21 = v20;
-      if (([v20 isNavigationBarHidden] & 1) == 0)
+      v21 = locatePresentingNavigationController;
+      if (([locatePresentingNavigationController isNavigationBarHidden] & 1) == 0)
       {
         [v21 _setNavigationBarHidesCompletelyOffscreen:1];
         [v21 _setSearchHidNavigationBar:1];
@@ -397,8 +397,8 @@ LABEL_5:
           self->_finalFrameForContainerView.size.height = v26;
           if ([v22 _supportsSpecialSearchBarTransitions])
           {
-            v27 = [v22 _searchBar];
-            [v27 _barHeightForBarMetrics:objc_msgSend(v27 barPosition:{"_barMetricsForOrientation:", objc_msgSend(v27, "_expectedInterfaceOrientation")), 3}];
+            _searchBar = [v22 _searchBar];
+            [_searchBar _barHeightForBarMetrics:objc_msgSend(_searchBar barPosition:{"_barMetricsForOrientation:", objc_msgSend(_searchBar, "_expectedInterfaceOrientation")), 3}];
             self->_finalFrameForContainerView.size.height = v28;
           }
 
@@ -443,7 +443,7 @@ LABEL_5:
           v33 = 0;
         }
 
-        if ([v3 isAnimated])
+        if ([transitionCoordinator isAnimated])
         {
           v47[0] = MEMORY[0x1E69E9820];
           v47[1] = 3221225472;
@@ -456,8 +456,8 @@ LABEL_5:
           *&v47[8] = v30;
           *&v47[9] = v32;
           *&v47[10] = v31;
-          v47[6] = v46;
-          [v3 animateAlongsideTransition:v47 completion:0];
+          v47[6] = _refreshControl;
+          [transitionCoordinator animateAlongsideTransition:v47 completion:0];
         }
 
         else
@@ -477,10 +477,10 @@ LABEL_5:
     [(_UISearchPresentationController *)self _updateContainerFinalFrameForNonExcisedSearchBar];
   }
 
-  if (v6)
+  if (searchBarWillResizeForScopeBar)
   {
     [(UISearchBar *)[(UISearchController *)self->_searchController searchBar] _scopeBarHeight];
-    [(_UISearchPresentationController *)self _updatePresentingViewControllerContentScrollViewWithOffsets:v3 transitionCoordinator:0.0, v34];
+    [(_UISearchPresentationController *)self _updatePresentingViewControllerContentScrollViewWithOffsets:transitionCoordinator transitionCoordinator:0.0, v34];
   }
 
   if (v5)
@@ -496,9 +496,9 @@ LABEL_5:
   *(&self->super.super.isa + v8[488]) = *(&self->super.super.isa + v8[488]) & 0xFD | v35;
 }
 
-- (void)_presentationTransitionWithSearchBarNotHostedByNavBarDidEnd:(BOOL)a3
+- (void)_presentationTransitionWithSearchBarNotHostedByNavBarDidEnd:(BOOL)end
 {
-  if (!a3)
+  if (!end)
   {
     [(_UISearchPresentationController *)self _placeSearchBarBackIntoOriginalContext];
     if ([(UISearchController *)self->_searchController obscuresBackgroundDuringPresentation]&& ![(_UISearchPresentationAssistant *)self->_assistant presentationIsPopoverToOverFullScreenAdaptation])
@@ -508,11 +508,11 @@ LABEL_5:
 
     if ([(UISearchController *)self->_searchController _hidesNavigationBarDuringPresentationRespectingInlineSearch])
     {
-      v4 = [(_UISearchPresentationAssistant *)self->_assistant locatePresentingNavigationController];
-      if (v4)
+      locatePresentingNavigationController = [(_UISearchPresentationAssistant *)self->_assistant locatePresentingNavigationController];
+      if (locatePresentingNavigationController)
       {
-        v5 = v4;
-        if ([v4 _searchHidNavigationBar])
+        v5 = locatePresentingNavigationController;
+        if ([locatePresentingNavigationController _searchHidNavigationBar])
         {
           [v5 setNavigationBarHidden:0 animated:0];
         }
@@ -527,11 +527,11 @@ LABEL_5:
 
 - (void)_dismissalTransitionWithSearchBarNotHostedByNavBarWillBegin
 {
-  v3 = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
-  v4 = [(UISearchController *)self->_searchController searchBar];
-  if ([(UISearchBar *)v4 _scopeBarIsVisible])
+  transitionCoordinator = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  if ([(UISearchBar *)searchBar _scopeBarIsVisible])
   {
-    v5 = ![(UISearchBar *)v4 _shouldCombineLandscapeBars];
+    v5 = ![(UISearchBar *)searchBar _shouldCombineLandscapeBars];
   }
 
   else
@@ -541,14 +541,14 @@ LABEL_5:
 
   if ([(UISearchController *)self->_searchController obscuresBackgroundDuringPresentation]&& ![(_UISearchPresentationAssistant *)self->_assistant presentationIsPopoverToOverFullScreenAdaptation])
   {
-    if ([v3 isAnimated])
+    if ([transitionCoordinator isAnimated])
     {
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __94___UISearchPresentationController__dismissalTransitionWithSearchBarNotHostedByNavBarWillBegin__block_invoke;
       v29[3] = &unk_1E711EC78;
       v29[4] = self;
-      [v3 animateAlongsideTransition:v29 completion:0];
+      [transitionCoordinator animateAlongsideTransition:v29 completion:0];
     }
 
     else
@@ -559,13 +559,13 @@ LABEL_5:
 
   if ([(UISearchController *)self->_searchController _hidesNavigationBarDuringPresentationRespectingInlineSearch])
   {
-    v6 = [(_UISearchPresentationAssistant *)self->_assistant locatePresentingNavigationController];
-    if (v6)
+    locatePresentingNavigationController = [(_UISearchPresentationAssistant *)self->_assistant locatePresentingNavigationController];
+    if (locatePresentingNavigationController)
     {
-      v7 = v6;
-      if ([v6 _searchHidNavigationBar])
+      v7 = locatePresentingNavigationController;
+      if ([locatePresentingNavigationController _searchHidNavigationBar])
       {
-        if ([(UISearchBar *)v4 _containedInNavigationPalette])
+        if ([(UISearchBar *)searchBar _containedInNavigationPalette])
         {
           v8 = [v7 existingPaletteForEdge:2];
           [v8 frame];
@@ -575,8 +575,8 @@ LABEL_5:
           self->_finalFrameForContainerView.size.height = v12;
           if ([v8 _supportsSpecialSearchBarTransitions])
           {
-            v13 = [v8 _searchBar];
-            [v13 _barHeightForBarMetrics:objc_msgSend(v13 barPosition:{"_barMetricsForOrientation:", objc_msgSend(v13, "_expectedInterfaceOrientation")), 2}];
+            _searchBar = [v8 _searchBar];
+            [_searchBar _barHeightForBarMetrics:objc_msgSend(_searchBar barPosition:{"_barMetricsForOrientation:", objc_msgSend(_searchBar, "_expectedInterfaceOrientation")), 2}];
             self->_finalFrameForContainerView.size.height = v14;
           }
 
@@ -614,7 +614,7 @@ LABEL_5:
           v17 = *(MEMORY[0x1E695F058] + 24);
         }
 
-        if ([v3 isAnimated])
+        if ([transitionCoordinator isAnimated])
         {
           v28[0] = MEMORY[0x1E69E9820];
           v28[1] = 3221225472;
@@ -631,7 +631,7 @@ LABEL_5:
           v27[2] = __94___UISearchPresentationController__dismissalTransitionWithSearchBarNotHostedByNavBarWillBegin__block_invoke_3;
           v27[3] = &unk_1E711EC78;
           v27[4] = v7;
-          [v3 animateAlongsideTransition:v28 completion:v27];
+          [transitionCoordinator animateAlongsideTransition:v28 completion:v27];
         }
 
         else
@@ -656,18 +656,18 @@ LABEL_5:
 
   if (v5)
   {
-    [(UISearchBar *)v4 _scopeBarHeight];
-    [(_UISearchPresentationController *)self _updatePresentingViewControllerContentScrollViewWithOffsets:v3 transitionCoordinator:0.0, -v19];
+    [(UISearchBar *)searchBar _scopeBarHeight];
+    [(_UISearchPresentationController *)self _updatePresentingViewControllerContentScrollViewWithOffsets:transitionCoordinator transitionCoordinator:0.0, -v19];
   }
 }
 
-- (void)_dismissalTransitionWithSearchBarNotHostedByNavBarDidEnd:(BOOL)a3
+- (void)_dismissalTransitionWithSearchBarNotHostedByNavBarDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
-    v4 = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
+    transitionCoordinator = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
     searchController = self->_searchController;
-    v6 = [(UISearchController *)searchController searchBar];
+    searchBar = [(UISearchController *)searchController searchBar];
     [(UIPresentationController *)self _setContainerIgnoresDirectTouchEvents:0];
     [(_UISearchPresentationController *)self _placeSearchBarBackIntoOriginalContext];
     if ([(UISearchController *)searchController obscuresBackgroundDuringPresentation]&& ![(_UISearchPresentationAssistant *)self->_assistant presentationIsPopoverToOverFullScreenAdaptation])
@@ -676,22 +676,22 @@ LABEL_5:
     }
 
     [(_UISearchPresentationAssistant *)self->_assistant removeContainerViewFromSuperview];
-    if ([(UISearchBar *)v6 _containedInNavigationPalette]&& [(UISearchController *)searchController _hidesNavigationBarDuringPresentationRespectingInlineSearch])
+    if ([(UISearchBar *)searchBar _containedInNavigationPalette]&& [(UISearchController *)searchController _hidesNavigationBarDuringPresentationRespectingInlineSearch])
     {
       [objc_msgSend(-[_UISearchPresentationAssistant locatePresentingNavigationController](self->_assistant "locatePresentingNavigationController")];
     }
 
-    if (([v4 isAnimated] & 1) == 0)
+    if (([transitionCoordinator isAnimated] & 1) == 0)
     {
       if ([(UISearchController *)searchController _previousSearchBarPosition]!= -1)
       {
-        [(UISearchBar *)v6 _setBarPosition:[(UISearchController *)searchController _previousSearchBarPosition]];
-        v7 = [(UISearchBar *)v6 barPosition]== 3 && [(UISearchController *)searchController _previousSearchBarPosition]!= 3;
-        [(UISearchBar *)v6 _setMaskActive:v7];
+        [(UISearchBar *)searchBar _setBarPosition:[(UISearchController *)searchController _previousSearchBarPosition]];
+        v7 = [(UISearchBar *)searchBar barPosition]== 3 && [(UISearchController *)searchController _previousSearchBarPosition]!= 3;
+        [(UISearchBar *)searchBar _setMaskActive:v7];
         [(UISearchController *)searchController set_previousSearchBarPosition:-1];
       }
 
-      [(UISearchBar *)v6 _setScopeBarHidden:1];
+      [(UISearchBar *)searchBar _setScopeBarHidden:1];
     }
   }
 
@@ -710,19 +710,19 @@ LABEL_5:
   v47 = *MEMORY[0x1E69E9840];
   [(UIPresentationController *)self _setContainerIgnoresDirectTouchEvents:1];
   [(_UISearchPresentationAssistant *)self->_assistant searchBarWillResizeForScopeBar];
-  v3 = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
-  -[_UISearchPresentationAssistant setPresentationWasAnimated:](self->_assistant, "setPresentationWasAnimated:", [v3 isAnimated]);
+  transitionCoordinator = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
+  -[_UISearchPresentationAssistant setPresentationWasAnimated:](self->_assistant, "setPresentationWasAnimated:", [transitionCoordinator isAnimated]);
   if ([(UISearchController *)self->_searchController obscuresBackgroundDuringPresentation]&& ![(_UISearchPresentationAssistant *)self->_assistant presentationIsPopoverToOverFullScreenAdaptation])
   {
     [(UIView *)[(UIPresentationController *)self containerView] addSubview:[(_UISearchPresentationController *)self backgroundObscuringView]];
-    if ([v3 isAnimated])
+    if ([transitionCoordinator isAnimated])
     {
       v40[0] = MEMORY[0x1E69E9820];
       v40[1] = 3221225472;
       v40[2] = __94___UISearchPresentationController__presentationTransitionWithSearchBarHostedByNavBarWillBegin__block_invoke;
       v40[3] = &unk_1E711EC78;
       v40[4] = self;
-      [v3 animateAlongsideTransition:v40 completion:0];
+      [transitionCoordinator animateAlongsideTransition:v40 completion:0];
     }
 
     else
@@ -739,27 +739,27 @@ LABEL_5:
     [(UIView *)[(UIPresentationController *)self containerView] addInteraction:self->_passthroughInteraction];
   }
 
-  v5 = [(_UISearchPresentationAssistant *)self->_assistant locatePresentingNavigationController];
+  locatePresentingNavigationController = [(_UISearchPresentationAssistant *)self->_assistant locatePresentingNavigationController];
   v6 = [-[_UISearchPresentationAssistant locateOriginNavigationController](self->_assistant "locateOriginNavigationController")];
-  v7 = [v6 topItem];
-  [objc_msgSend(v5 "navigationBar")];
+  topItem = [v6 topItem];
+  [objc_msgSend(locatePresentingNavigationController "navigationBar")];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v34 = __94___UISearchPresentationController__presentationTransitionWithSearchBarHostedByNavBarWillBegin__block_invoke_2;
   v35 = &unk_1E711ECF0;
-  v36 = v3;
-  v37 = self;
+  v36 = transitionCoordinator;
+  selfCopy = self;
   v38 = v6;
-  v39 = v5;
-  v8 = [(UINavigationItem *)v7 _searchControllerIfAllowed];
+  v39 = locatePresentingNavigationController;
+  _searchControllerIfAllowed = [(UINavigationItem *)topItem _searchControllerIfAllowed];
   searchController = self->_searchController;
-  if (v8 == searchController)
+  if (_searchControllerIfAllowed == searchController)
   {
-    v10 = [(_UINavigationBarItemStackEntry *)[(UINavigationItem *)v7 _stackEntry] isSearchActive];
+    isSearchActive = [(_UINavigationBarItemStackEntry *)[(UINavigationItem *)topItem _stackEntry] isSearchActive];
     searchController = self->_searchController;
-    if (!v10)
+    if (!isSearchActive)
     {
-      if (v7 != [(UISearchController *)searchController _navigationItemCurrentlyDisplayingSearchController])
+      if (topItem != [(UISearchController *)searchController _navigationItemCurrentlyDisplayingSearchController])
       {
         if (os_variant_has_internal_diagnostics())
         {
@@ -767,13 +767,13 @@ LABEL_5:
           if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
           {
             v31 = self->_searchController;
-            v32 = [(UISearchController *)v31 _navigationItemCurrentlyDisplayingSearchController];
+            _navigationItemCurrentlyDisplayingSearchController = [(UISearchController *)v31 _navigationItemCurrentlyDisplayingSearchController];
             *buf = 138412802;
             v42 = v31;
             v43 = 2112;
-            v44 = v32;
+            v44 = _navigationItemCurrentlyDisplayingSearchController;
             v45 = 2112;
-            v46 = v7;
+            v46 = topItem;
             _os_log_fault_impl(&dword_188A29000, v30, OS_LOG_TYPE_FAULT, "SearchController and navigation top item aren't correctly associated. Will assign the item to the search controller. \n\tSearchController=%@\n\tSearchController's navigation item=%@\n\tTop navigation item = %@", buf, 0x20u);
           }
         }
@@ -784,28 +784,28 @@ LABEL_5:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             v22 = self->_searchController;
-            v23 = [(UISearchController *)v22 _navigationItemCurrentlyDisplayingSearchController];
+            _navigationItemCurrentlyDisplayingSearchController2 = [(UISearchController *)v22 _navigationItemCurrentlyDisplayingSearchController];
             *buf = 138412802;
             v42 = v22;
             v43 = 2112;
-            v44 = v23;
+            v44 = _navigationItemCurrentlyDisplayingSearchController2;
             v45 = 2112;
-            v46 = v7;
+            v46 = topItem;
             _os_log_impl(&dword_188A29000, v21, OS_LOG_TYPE_ERROR, "SearchController and navigation top item aren't correctly associated. Will assign the item to the search controller. \n\tSearchController=%@\n\tSearchController's navigation item=%@\n\tTop navigation item = %@", buf, 0x20u);
           }
         }
 
-        [(UINavigationItem *)v7 setSearchController:self->_searchController];
+        [(UINavigationItem *)topItem setSearchController:self->_searchController];
       }
 
       goto LABEL_30;
     }
   }
 
-  v11 = [(UISearchController *)searchController _navigationItemCurrentlyDisplayingSearchController];
-  v12 = [(UISearchController *)self->_searchController _navigationItemCurrentlyDisplayingSearchBar];
-  v13 = v12;
-  if (!v7)
+  _navigationItemCurrentlyDisplayingSearchController3 = [(UISearchController *)searchController _navigationItemCurrentlyDisplayingSearchController];
+  _navigationItemCurrentlyDisplayingSearchBar = [(UISearchController *)self->_searchController _navigationItemCurrentlyDisplayingSearchBar];
+  v13 = _navigationItemCurrentlyDisplayingSearchBar;
+  if (!topItem)
   {
     if ([(UIViewController *)[(UIPresentationController *)self presentingViewController] _tabBarControllerEnforcingClass:1])
     {
@@ -846,7 +846,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v12 || v12 != v7)
+  if (!_navigationItemCurrentlyDisplayingSearchBar || _navigationItemCurrentlyDisplayingSearchBar != topItem)
   {
     if (!os_variant_has_internal_diagnostics())
     {
@@ -856,9 +856,9 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      v15 = [v6 items];
+      items = [v6 items];
       *buf = 138412546;
-      v42 = v15;
+      v42 = items;
       v43 = 2112;
       v44 = v13;
       v16 = "Surprise! Activating a search controller whose navigation item for the search bar is not at the top of the stack. This case needs examination in UIKit. items = %@,\nsearch bar hosting item = %@";
@@ -872,9 +872,9 @@ LABEL_35:
     v24 = __UIFaultDebugAssertLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
     {
-      v25 = [v6 items];
+      items2 = [v6 items];
       *buf = 138412546;
-      v42 = v25;
+      v42 = items2;
       v43 = 2112;
       v44 = v13;
       v26 = "Surprise! Activating a search controller whose navigation item for the search bar is not at the top of the stack. This case needs examination in UIKit. items = %@,\nsearch bar hosting item = %@";
@@ -889,22 +889,22 @@ LABEL_44:
   }
 
 LABEL_19:
-  if (v13 == v11)
+  if (v13 == _navigationItemCurrentlyDisplayingSearchController3)
   {
-    [(_UINavigationBarItemStackEntry *)[(UINavigationItem *)v11 _stackEntry] setSearchActive:1];
+    [(_UINavigationBarItemStackEntry *)[(UINavigationItem *)_navigationItemCurrentlyDisplayingSearchController3 _stackEntry] setSearchActive:1];
 LABEL_28:
     [(UISearchBar *)[(UISearchController *)self->_searchController searchBar] _driveTransitionToSearchLayoutState:3];
     goto LABEL_31;
   }
 
-  if (![(_UINavigationBarItemStackEntry *)[(UINavigationItem *)v13 _stackEntry] isSearchActive]|| ![(_UINavigationBarItemStackEntry *)[(UINavigationItem *)v11 _stackEntry] isSearchActive])
+  if (![(_UINavigationBarItemStackEntry *)[(UINavigationItem *)v13 _stackEntry] isSearchActive]|| ![(_UINavigationBarItemStackEntry *)[(UINavigationItem *)_navigationItemCurrentlyDisplayingSearchController3 _stackEntry] isSearchActive])
   {
-    v19 = [v5 navigationBar];
-    if ([v19 topItem] == v11)
+    navigationBar = [locatePresentingNavigationController navigationBar];
+    if ([navigationBar topItem] == _navigationItemCurrentlyDisplayingSearchController3)
     {
-      if (![(_UINavigationBarItemStackEntry *)[(UINavigationItem *)v11 _stackEntry] isSearchActive])
+      if (![(_UINavigationBarItemStackEntry *)[(UINavigationItem *)_navigationItemCurrentlyDisplayingSearchController3 _stackEntry] isSearchActive])
       {
-        v34(v33, v19);
+        v34(v33, navigationBar);
       }
 
       if (![(_UINavigationBarItemStackEntry *)[(UINavigationItem *)v13 _stackEntry] isSearchActive])
@@ -922,9 +922,9 @@ LABEL_31:
   *&self->_controllerFlags &= ~2u;
 }
 
-- (void)_presentationTransitionWithSearchBarHostedByNavBarDidEnd:(BOOL)a3
+- (void)_presentationTransitionWithSearchBarHostedByNavBarDidEnd:(BOOL)end
 {
-  if (!a3 && [(UISearchController *)self->_searchController obscuresBackgroundDuringPresentation]&& ![(_UISearchPresentationAssistant *)self->_assistant presentationIsPopoverToOverFullScreenAdaptation])
+  if (!end && [(UISearchController *)self->_searchController obscuresBackgroundDuringPresentation]&& ![(_UISearchPresentationAssistant *)self->_assistant presentationIsPopoverToOverFullScreenAdaptation])
   {
     [(UIView *)[(_UISearchPresentationController *)self backgroundObscuringView] removeFromSuperview];
   }
@@ -936,17 +936,17 @@ LABEL_31:
 
 - (void)_dismissalTransitionWithSearchBarHostedByNavBarWillBegin
 {
-  v3 = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
+  transitionCoordinator = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
   if ([(UISearchController *)self->_searchController obscuresBackgroundDuringPresentation]&& ![(_UISearchPresentationAssistant *)self->_assistant presentationIsPopoverToOverFullScreenAdaptation])
   {
-    if ([v3 isAnimated])
+    if ([transitionCoordinator isAnimated])
     {
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __91___UISearchPresentationController__dismissalTransitionWithSearchBarHostedByNavBarWillBegin__block_invoke;
       v28[3] = &unk_1E711EC78;
       v28[4] = self;
-      [v3 animateAlongsideTransition:v28 completion:0];
+      [transitionCoordinator animateAlongsideTransition:v28 completion:0];
     }
 
     else
@@ -962,20 +962,20 @@ LABEL_31:
     self->_passthroughInteraction = 0;
   }
 
-  v5 = [(_UISearchPresentationAssistant *)self->_assistant locatePresentingNavigationController];
+  locatePresentingNavigationController = [(_UISearchPresentationAssistant *)self->_assistant locatePresentingNavigationController];
   v6 = [-[_UISearchPresentationAssistant locateOriginNavigationController](self->_assistant "locateOriginNavigationController")];
-  v7 = [v6 topItem];
+  topItem = [v6 topItem];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v24 = __91___UISearchPresentationController__dismissalTransitionWithSearchBarHostedByNavBarWillBegin__block_invoke_2;
   v25 = &unk_1E711ED40;
-  v26 = v3;
-  v27 = v5;
-  v8 = [v7 _searchControllerIfAllowed];
+  v26 = transitionCoordinator;
+  v27 = locatePresentingNavigationController;
+  _searchControllerIfAllowed = [topItem _searchControllerIfAllowed];
   searchController = self->_searchController;
-  if (v8 == searchController)
+  if (_searchControllerIfAllowed == searchController)
   {
-    if ([objc_msgSend(v7 "_stackEntry")])
+    if ([objc_msgSend(topItem "_stackEntry")])
     {
       v24(v23, v6, 0);
       return;
@@ -984,18 +984,18 @@ LABEL_31:
     searchController = self->_searchController;
   }
 
-  v10 = [(UISearchController *)searchController _navigationItemCurrentlyDisplayingSearchController];
-  v11 = [(UISearchController *)self->_searchController _navigationItemCurrentlyDisplayingSearchBar];
+  _navigationItemCurrentlyDisplayingSearchController = [(UISearchController *)searchController _navigationItemCurrentlyDisplayingSearchController];
+  _navigationItemCurrentlyDisplayingSearchBar = [(UISearchController *)self->_searchController _navigationItemCurrentlyDisplayingSearchBar];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __91___UISearchPresentationController__dismissalTransitionWithSearchBarHostedByNavBarWillBegin__block_invoke_4;
   v19 = &unk_1E7105CC8;
-  v20 = v10;
-  v21 = v11;
-  v22 = self;
-  if (v11 == v10)
+  v20 = _navigationItemCurrentlyDisplayingSearchController;
+  v21 = _navigationItemCurrentlyDisplayingSearchBar;
+  selfCopy = self;
+  if (_navigationItemCurrentlyDisplayingSearchBar == _navigationItemCurrentlyDisplayingSearchController)
   {
-    v15 = v10;
+    v15 = _navigationItemCurrentlyDisplayingSearchController;
 LABEL_19:
     if (![(_UINavigationBarItemStackEntry *)[(UINavigationItem *)v15 _stackEntry:v16] isSearchActive])
     {
@@ -1005,16 +1005,16 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v12 = v11;
-  v13 = [v5 navigationBar];
-  v14 = [v13 topItem];
-  if (v14 == v10 && [(_UINavigationBarItemStackEntry *)[(UINavigationItem *)v14 _stackEntry] isSearchActive])
+  v12 = _navigationItemCurrentlyDisplayingSearchBar;
+  navigationBar = [locatePresentingNavigationController navigationBar];
+  topItem2 = [navigationBar topItem];
+  if (topItem2 == _navigationItemCurrentlyDisplayingSearchController && [(_UINavigationBarItemStackEntry *)[(UINavigationItem *)topItem2 _stackEntry] isSearchActive])
   {
-    v24(v23, v13, v12);
+    v24(v23, navigationBar, v12);
     return;
   }
 
-  if (![(_UINavigationBarItemStackEntry *)[(UINavigationItem *)v10 _stackEntry] isSearchActive])
+  if (![(_UINavigationBarItemStackEntry *)[(UINavigationItem *)_navigationItemCurrentlyDisplayingSearchController _stackEntry] isSearchActive])
   {
     v15 = v12;
     goto LABEL_19;
@@ -1024,13 +1024,13 @@ LABEL_20:
   v18(&v16);
 }
 
-- (void)_dismissalTransitionWithSearchBarHostedByNavBarDidEnd:(BOOL)a3
+- (void)_dismissalTransitionWithSearchBarHostedByNavBarDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
-    v4 = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
+    transitionCoordinator = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
     searchController = self->_searchController;
-    v6 = [(UISearchController *)searchController searchBar];
+    searchBar = [(UISearchController *)searchController searchBar];
     [(UIPresentationController *)self _setContainerIgnoresDirectTouchEvents:0];
     [(_UISearchPresentationController *)self _placeSearchBarBackIntoOriginalContext];
     if ([(UISearchController *)searchController obscuresBackgroundDuringPresentation]&& ![(_UISearchPresentationAssistant *)self->_assistant presentationIsPopoverToOverFullScreenAdaptation])
@@ -1039,13 +1039,13 @@ LABEL_20:
     }
 
     [(_UISearchPresentationAssistant *)self->_assistant removeContainerViewFromSuperview];
-    if (([v4 isAnimated] & 1) == 0)
+    if (([transitionCoordinator isAnimated] & 1) == 0)
     {
       if ([(UISearchController *)searchController _previousSearchBarPosition]!= -1)
       {
-        [(UISearchBar *)v6 _setBarPosition:[(UISearchController *)searchController _previousSearchBarPosition]];
-        v7 = [(UISearchBar *)v6 barPosition]== 3 && [(UISearchController *)searchController _previousSearchBarPosition]!= 3;
-        [(UISearchBar *)v6 _setMaskActive:v7];
+        [(UISearchBar *)searchBar _setBarPosition:[(UISearchController *)searchController _previousSearchBarPosition]];
+        v7 = [(UISearchBar *)searchBar barPosition]== 3 && [(UISearchController *)searchController _previousSearchBarPosition]!= 3;
+        [(UISearchBar *)searchBar _setMaskActive:v7];
         [(UISearchController *)searchController set_previousSearchBarPosition:-1];
       }
 
@@ -1063,7 +1063,7 @@ LABEL_20:
         }
 
 LABEL_15:
-        [(UISearchBar *)v6 _setScopeBarHidden:1];
+        [(UISearchBar *)searchBar _setScopeBarHidden:1];
       }
     }
   }
@@ -1073,17 +1073,17 @@ LABEL_15:
   self->_finalFrameForContainerView.size = v9;
 }
 
-- (BOOL)_requiresDeferralToCoordinateWithNavigationTransitionAnimated:(BOOL)a3
+- (BOOL)_requiresDeferralToCoordinateWithNavigationTransitionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(UISearchController *)self->_searchController _navigationItemCurrentlyDisplayingSearchController])
   {
     v6.receiver = self;
     v6.super_class = _UISearchPresentationController;
-    LOBYTE(v3) = [(UIPresentationController *)&v6 _requiresDeferralToCoordinateWithNavigationTransitionAnimated:v3];
+    LOBYTE(animatedCopy) = [(UIPresentationController *)&v6 _requiresDeferralToCoordinateWithNavigationTransitionAnimated:animatedCopy];
   }
 
-  return v3;
+  return animatedCopy;
 }
 
 - (void)presentationTransitionWillBegin
@@ -1097,9 +1097,9 @@ LABEL_3:
     return;
   }
 
-  v3 = [objc_opt_class() _forceSearchBarHostedInNavigationBar];
+  _forceSearchBarHostedInNavigationBar = [objc_opt_class() _forceSearchBarHostedInNavigationBar];
   controllerFlags = self->_controllerFlags;
-  if (v3)
+  if (_forceSearchBarHostedInNavigationBar)
   {
     *&self->_controllerFlags = controllerFlags | 8;
     if (os_variant_has_internal_diagnostics())
@@ -1134,16 +1134,16 @@ LABEL_3:
   [(_UISearchPresentationController *)self _presentationTransitionWithSearchBarNotHostedByNavBarWillBegin];
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
   if ((*&self->_controllerFlags & 8) != 0)
   {
-    [(_UISearchPresentationController *)self _presentationTransitionWithSearchBarHostedByNavBarDidEnd:a3];
+    [(_UISearchPresentationController *)self _presentationTransitionWithSearchBarHostedByNavBarDidEnd:end];
   }
 
   else
   {
-    [(_UISearchPresentationController *)self _presentationTransitionWithSearchBarNotHostedByNavBarDidEnd:a3];
+    [(_UISearchPresentationController *)self _presentationTransitionWithSearchBarNotHostedByNavBarDidEnd:end];
   }
 }
 
@@ -1160,32 +1160,32 @@ LABEL_3:
   }
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
   if ((*&self->_controllerFlags & 8) != 0)
   {
-    [(_UISearchPresentationController *)self _dismissalTransitionWithSearchBarHostedByNavBarDidEnd:a3];
+    [(_UISearchPresentationController *)self _dismissalTransitionWithSearchBarHostedByNavBarDidEnd:end];
   }
 
   else
   {
-    [(_UISearchPresentationController *)self _dismissalTransitionWithSearchBarNotHostedByNavBarDidEnd:a3];
+    [(_UISearchPresentationController *)self _dismissalTransitionWithSearchBarNotHostedByNavBarDidEnd:end];
   }
 }
 
-- (void)_transitionToPresentationController:(id)a3 withTransitionCoordinator:(id)a4
+- (void)_transitionToPresentationController:(id)controller withTransitionCoordinator:(id)coordinator
 {
   v18.receiver = self;
   v18.super_class = _UISearchPresentationController;
-  [(UIPresentationController *)&v18 _transitionToPresentationController:a3 withTransitionCoordinator:a4];
+  [(UIPresentationController *)&v18 _transitionToPresentationController:controller withTransitionCoordinator:coordinator];
   if ([(UIViewController *)self->_searchController modalPresentationStyle]!= UIModalPresentationPopover)
   {
-    [objc_msgSend(a3 "searchBarContainerView")];
-    [a3 resultsControllerContentOffset];
+    [objc_msgSend(controller "searchBarContainerView")];
+    [controller resultsControllerContentOffset];
     v7 = v6;
-    v8 = [(UISearchController *)self->_searchController searchResultsController];
-    v9 = [(UIViewController *)v8 _contentOrObservableScrollViewForEdge:1];
-    if (v8)
+    searchResultsController = [(UISearchController *)self->_searchController searchResultsController];
+    v9 = [(UIViewController *)searchResultsController _contentOrObservableScrollViewForEdge:1];
+    if (searchResultsController)
     {
       v10 = v9 == 0;
     }
@@ -1198,7 +1198,7 @@ LABEL_3:
     if (!v10)
     {
       v11 = v9;
-      if ([(UIViewController *)v8 automaticallyAdjustsScrollViewInsets])
+      if ([(UIViewController *)searchResultsController automaticallyAdjustsScrollViewInsets])
       {
         [v11 contentOffset];
         v13 = v12;
@@ -1212,29 +1212,29 @@ LABEL_3:
   }
 }
 
-- (id)_constraintCopyOfConstraint:(id)a3 replaceItem:(id)a4 withItem:(id)a5
+- (id)_constraintCopyOfConstraint:(id)constraint replaceItem:(id)item withItem:(id)withItem
 {
-  v8 = [a3 firstItem];
-  v9 = [a3 secondItem];
-  if (v8 == a4)
+  withItemCopy = [constraint firstItem];
+  secondItem = [constraint secondItem];
+  if (withItemCopy == item)
   {
-    v8 = a5;
+    withItemCopy = withItem;
   }
 
-  if (v9 != a4)
+  if (secondItem != item)
   {
-    a5 = v9;
+    withItem = secondItem;
   }
 
   v10 = MEMORY[0x1E69977A0];
-  v11 = [a3 firstAttribute];
-  v12 = [a3 relation];
-  v13 = [a3 secondAttribute];
-  [a3 multiplier];
+  firstAttribute = [constraint firstAttribute];
+  relation = [constraint relation];
+  secondAttribute = [constraint secondAttribute];
+  [constraint multiplier];
   v15 = v14;
-  [a3 constant];
-  v17 = [v10 constraintWithItem:v8 attribute:v11 relatedBy:v12 toItem:a5 attribute:v13 multiplier:v15 constant:v16];
-  [a3 priority];
+  [constraint constant];
+  v17 = [v10 constraintWithItem:withItemCopy attribute:firstAttribute relatedBy:relation toItem:withItem attribute:secondAttribute multiplier:v15 constant:v16];
+  [constraint priority];
   [v17 setPriority:?];
   return v17;
 }
@@ -1242,19 +1242,19 @@ LABEL_3:
 - (void)_exciseSearchBarFromCurrentContext
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [(UISearchController *)self->_searchController searchBar];
-  *&self->_controllerFlags = *&self->_controllerFlags & 0xFB | (*&v3->super._viewFlags >> 55) & 4;
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  *&self->_controllerFlags = *&self->_controllerFlags & 0xFB | (*&searchBar->super._viewFlags >> 55) & 4;
   v4 = [UIView alloc];
-  [(UIView *)v3 frame];
+  [(UIView *)searchBar frame];
   v5 = [(UIView *)v4 initWithFrame:?];
   self->_placeholderView = v5;
-  [(UIView *)v5 setTranslatesAutoresizingMaskIntoConstraints:[(UIView *)v3 translatesAutoresizingMaskIntoConstraints]];
-  if ([(UIView *)v3 translatesAutoresizingMaskIntoConstraints])
+  [(UIView *)v5 setTranslatesAutoresizingMaskIntoConstraints:[(UIView *)searchBar translatesAutoresizingMaskIntoConstraints]];
+  if ([(UIView *)searchBar translatesAutoresizingMaskIntoConstraints])
   {
-    v6 = [(UIView *)v3 autoresizingMask];
+    autoresizingMask = [(UIView *)searchBar autoresizingMask];
     placeholderView = self->_placeholderView;
 
-    [(UIView *)placeholderView setAutoresizingMask:v6];
+    [(UIView *)placeholderView setAutoresizingMask:autoresizingMask];
   }
 
   else
@@ -1265,10 +1265,10 @@ LABEL_3:
     v31[1] = 3221225472;
     v31[2] = __69___UISearchPresentationController__exciseSearchBarFromCurrentContext__block_invoke;
     v31[3] = &unk_1E711ED68;
-    v31[4] = v3;
+    v31[4] = searchBar;
     v31[5] = self;
     v9 = [(_UIViewBlockVisitor *)v8 initWithTraversalDirection:1 visitorBlock:v31];
-    [(UIView *)v3 _receiveVisitor:v9];
+    [(UIView *)searchBar _receiveVisitor:v9];
 
     self->_placeholderConstraitMap = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:517 valueOptions:512 capacity:0];
     v27 = 0u;
@@ -1312,14 +1312,14 @@ LABEL_3:
                 }
 
                 v17 = *(*(&v23 + 1) + 8 * i);
-                v18 = [(NSMapTable *)self->_placeholderConstraitMap objectForKey:v11];
-                if (!v18)
+                array = [(NSMapTable *)self->_placeholderConstraitMap objectForKey:v11];
+                if (!array)
                 {
-                  v18 = [MEMORY[0x1E695DF70] array];
-                  [(NSMapTable *)self->_placeholderConstraitMap setObject:v18 forKey:v11];
+                  array = [MEMORY[0x1E695DF70] array];
+                  [(NSMapTable *)self->_placeholderConstraitMap setObject:array forKey:v11];
                 }
 
-                [v18 addObject:{-[_UISearchPresentationController _constraintCopyOfConstraint:replaceItem:withItem:](self, "_constraintCopyOfConstraint:replaceItem:withItem:", v17, v3, self->_placeholderView)}];
+                [array addObject:{-[_UISearchPresentationController _constraintCopyOfConstraint:replaceItem:withItem:](self, "_constraintCopyOfConstraint:replaceItem:withItem:", v17, searchBar, self->_placeholderView)}];
               }
 
               v14 = [v12 countByEnumeratingWithState:&v23 objects:v32 count:16];
@@ -1346,8 +1346,8 @@ LABEL_3:
   placeholderView = self->_placeholderView;
   if (placeholderView)
   {
-    v4 = [(UIView *)placeholderView superview];
-    v5 = [(UISearchController *)self->_searchController searchBar];
+    superview = [(UIView *)placeholderView superview];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
     if (*&self->_controllerFlags)
     {
       v6 = self->_placeholderView;
@@ -1370,26 +1370,26 @@ LABEL_3:
     controllerFlags = self->_controllerFlags;
     if ((controllerFlags & 4) == 0)
     {
-      [(UIView *)v5 removeFromSuperview];
-      *&v5->super._viewFlags &= ~0x200000000000000uLL;
+      [(UIView *)searchBar removeFromSuperview];
+      *&searchBar->super._viewFlags &= ~0x200000000000000uLL;
       controllerFlags = self->_controllerFlags;
     }
 
     if (controllerFlags)
     {
-      [(UIView *)v6 setTableHeaderView:v5];
+      [(UIView *)v6 setTableHeaderView:searchBar];
       *&self->_controllerFlags &= ~1u;
     }
 
     else
     {
-      [(UIView *)v4 addSubview:v5];
+      [(UIView *)superview addSubview:searchBar];
     }
 
     if ([(UIView *)self->_placeholderView translatesAutoresizingMaskIntoConstraints])
     {
       [(UIView *)self->_placeholderView frame];
-      [(UISearchBar *)v5 setFrame:?];
+      [(UISearchBar *)searchBar setFrame:?];
     }
 
     else
@@ -1428,16 +1428,16 @@ LABEL_3:
   }
 }
 
-- (double)_visibleRefreshControlHeightForTableView:(id)a3
+- (double)_visibleRefreshControlHeightForTableView:(id)view
 {
-  if (!a3 || ![a3 _refreshControl] || objc_msgSend(objc_msgSend(a3, "_refreshControl"), "refreshControlState") != 2 && objc_msgSend(objc_msgSend(a3, "_refreshControl"), "refreshControlState") != 3)
+  if (!view || ![view _refreshControl] || objc_msgSend(objc_msgSend(view, "_refreshControl"), "refreshControlState") != 2 && objc_msgSend(objc_msgSend(view, "_refreshControl"), "refreshControlState") != 3)
   {
     return 0.0;
   }
 
-  v4 = [a3 _refreshControl];
+  _refreshControl = [view _refreshControl];
 
-  [v4 _visibleHeight];
+  [_refreshControl _visibleHeight];
   return result;
 }
 
@@ -1453,7 +1453,7 @@ LABEL_3:
   v10 = *MEMORY[0x1E695F058];
   if ([(_UISearchPresentationAssistant *)self->_assistant presentationIsPopoverToOverFullScreenAdaptation])
   {
-    v11 = [(UIPresentationController *)self presentingViewController];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
     objc_opt_class();
     v7 = v6;
     v8 = v5;
@@ -1461,13 +1461,13 @@ LABEL_3:
     v10 = v3;
     if (objc_opt_isKindOfClass())
     {
-      [[(UIViewController *)v11 view] frame];
+      [[(UIViewController *)presentingViewController view] frame];
       v10 = v12;
       v8 = v13;
       v15 = v14;
-      [-[UIViewController navigationBar](v11 "navigationBar")];
+      [-[UIViewController navigationBar](presentingViewController "navigationBar")];
       MaxY = CGRectGetMaxY(v31);
-      [-[UIViewController navigationBar](v11 "navigationBar")];
+      [-[UIViewController navigationBar](presentingViewController "navigationBar")];
       v7 = v15 - CGRectGetHeight(v32);
     }
   }
@@ -1482,23 +1482,23 @@ LABEL_3:
   v35.size.height = v6;
   if (CGRectEqualToRect(v33, v35))
   {
-    v16 = [(_UISearchPresentationAssistant *)self->_assistant locatePresentingNavigationController];
+    locatePresentingNavigationController = [(_UISearchPresentationAssistant *)self->_assistant locatePresentingNavigationController];
     [[(UIViewController *)[(UIPresentationController *)self presentingViewController] view] frame];
     v10 = v17;
     MaxY = v18;
     v8 = v19;
     v7 = v20;
-    v21 = [v16 _shouldNavigationBarInsetViewController:{-[UIPresentationController presentingViewController](self, "presentingViewController")}];
-    if (-[UISearchController _hidesNavigationBarDuringPresentationRespectingInlineSearch](self->_searchController, "_hidesNavigationBarDuringPresentationRespectingInlineSearch") && [v16 _searchHidNavigationBar] && ((-[UIViewController edgesForExtendedLayout](-[UIPresentationController presentingViewController](self, "presentingViewController"), "edgesForExtendedLayout") & 1) == 0) | v21 & 1)
+    v21 = [locatePresentingNavigationController _shouldNavigationBarInsetViewController:{-[UIPresentationController presentingViewController](self, "presentingViewController")}];
+    if (-[UISearchController _hidesNavigationBarDuringPresentationRespectingInlineSearch](self->_searchController, "_hidesNavigationBarDuringPresentationRespectingInlineSearch") && [locatePresentingNavigationController _searchHidNavigationBar] && ((-[UIViewController edgesForExtendedLayout](-[UIPresentationController presentingViewController](self, "presentingViewController"), "edgesForExtendedLayout") & 1) == 0) | v21 & 1)
     {
-      [v16 _frameForViewController:{-[UIPresentationController presentingViewController](self, "presentingViewController")}];
+      [locatePresentingNavigationController _frameForViewController:{-[UIPresentationController presentingViewController](self, "presentingViewController")}];
       MaxY = MaxY - v22;
       v7 = v7 + v22;
     }
 
     else if (![(UISearchController *)self->_searchController _hidesNavigationBarDuringPresentationRespectingInlineSearch]&& [(_UISearchPresentationController *)self forceObeyNavigationBarInsets]&& v21)
     {
-      [v16 _frameForViewController:{-[UIPresentationController presentingViewController](self, "presentingViewController")}];
+      [locatePresentingNavigationController _frameForViewController:{-[UIPresentationController presentingViewController](self, "presentingViewController")}];
       v10 = v23;
       MaxY = v24;
       v8 = v25;
@@ -1529,24 +1529,24 @@ LABEL_3:
 - (void)contentSizeCategoryOrLegibilityWeightChanged
 {
   [(UIView *)[(UISearchController *)self->_searchController searchBar] layoutIfNeeded];
-  v3 = [(UIPresentationController *)self containerView];
+  containerView = [(UIPresentationController *)self containerView];
 
-  [(UIView *)v3 setNeedsLayout];
+  [(UIView *)containerView setNeedsLayout];
 }
 
-- (void)_layoutPresentationWithSize:(CGSize)a3 transitionCoordinator:(id)a4
+- (void)_layoutPresentationWithSize:(CGSize)size transitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(_UISearchPresentationAssistant *)self->_assistant setTransitioningToSizeCoordinator:?];
-  v8 = [(UISearchController *)self->_searchController searchBar];
-  v9 = [(UISearchBar *)v8 _scopeBarIsVisible];
-  if (v9)
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  _scopeBarIsVisible = [(UISearchBar *)searchBar _scopeBarIsVisible];
+  if (_scopeBarIsVisible)
   {
-    [(UISearchBar *)v8 _setScopeBarPosition:0];
-    if ([(UISearchBar *)v8 _wouldCombineLandscapeBarsForSize:width, height])
+    [(UISearchBar *)searchBar _setScopeBarPosition:0];
+    if ([(UISearchBar *)searchBar _wouldCombineLandscapeBarsForSize:width, height])
     {
-      if ([(UISearchBar *)v8 _shouldCombineLandscapeBarsForOrientation:[(UIWindow *)[(UIView *)[(UIPresentationController *)self containerView] window] _toWindowOrientation]])
+      if ([(UISearchBar *)searchBar _shouldCombineLandscapeBarsForOrientation:[(UIWindow *)[(UIView *)[(UIPresentationController *)self containerView] window] _toWindowOrientation]])
       {
         v10 = 1;
       }
@@ -1562,13 +1562,13 @@ LABEL_3:
       v10 = 2;
     }
 
-    [(UISearchBar *)v8 _setScopeBarPosition:v10];
+    [(UISearchBar *)searchBar _setScopeBarPosition:v10];
   }
 
   if ([(_UISearchPresentationController *)self searchBarToBecomeTopAttached])
   {
-    [(UISearchController *)self->_searchController set_previousSearchBarPosition:[(UISearchBar *)v8 barPosition]];
-    [(UISearchBar *)v8 _setBarPosition:3];
+    [(UISearchController *)self->_searchController set_previousSearchBarPosition:[(UISearchBar *)searchBar barPosition]];
+    [(UISearchBar *)searchBar _setBarPosition:3];
   }
 
   [(_UISearchPresentationAssistant *)self->_assistant updateSearchBarContainerFrame];
@@ -1578,10 +1578,10 @@ LABEL_3:
   {
     [(_UISearchPresentationAssistant *)self->_assistant statusBarAdjustment];
     v17 = v16;
-    if (v9)
+    if (_scopeBarIsVisible)
     {
-      [(UIView *)v8 sizeToFit];
-      [(UIView *)v8 frame];
+      [(UIView *)searchBar sizeToFit];
+      [(UIView *)searchBar frame];
       v19 = v18;
       v21 = v20;
       v23 = v22;
@@ -1595,7 +1595,7 @@ LABEL_3:
         v24 = 0.0;
       }
 
-      [(UISearchBar *)v8 setFrame:v19, v24, v21, v23];
+      [(UISearchBar *)searchBar setFrame:v19, v24, v21, v23];
     }
 
     [(UISearchController *)self->_searchController _updateSearchResultsControllerWithDelta:v13, v14];
@@ -1605,10 +1605,10 @@ LABEL_3:
       v14 = v14 + v25 - v17;
     }
 
-    [(_UISearchPresentationController *)self _updatePresentingViewControllerContentScrollViewWithOffsets:a4 transitionCoordinator:v13, v14];
+    [(_UISearchPresentationController *)self _updatePresentingViewControllerContentScrollViewWithOffsets:coordinator transitionCoordinator:v13, v14];
     if (self->_placeholderView)
     {
-      [(UIView *)v8 frame];
+      [(UIView *)searchBar frame];
       v26 = CGRectGetHeight(v46);
       [(UIView *)self->_placeholderView frame];
       x = v47.origin.x;
@@ -1623,45 +1623,45 @@ LABEL_3:
 
   if ([(UISearchController *)self->_searchController _barPresentationStyle]== 2)
   {
-    v30 = [(UISearchController *)self->_searchController searchBar];
+    searchBar2 = [(UISearchController *)self->_searchController searchBar];
     objc_opt_class();
-    if (v30)
+    if (searchBar2)
     {
       while ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v30 = [(UIView *)v30 superview];
-        if (!v30)
+        searchBar2 = [(UIView *)searchBar2 superview];
+        if (!searchBar2)
         {
           goto LABEL_43;
         }
       }
 
-      v31 = [(UIView *)[(UIPresentationController *)self containerView] window];
-      if (!v31)
+      window = [(UIView *)[(UIPresentationController *)self containerView] window];
+      if (!window)
       {
-        v31 = [(UIViewController *)[(UIPresentationController *)self presentingViewController] _window];
+        window = [(UIViewController *)[(UIPresentationController *)self presentingViewController] _window];
       }
 
-      v32 = [(UIWindow *)v31 _fromWindowOrientation];
-      v33 = [(UIWindow *)v31 _toWindowOrientation];
-      [UINavigationBar defaultSizeForOrientation:v33];
+      _fromWindowOrientation = [(UIWindow *)window _fromWindowOrientation];
+      _toWindowOrientation = [(UIWindow *)window _toWindowOrientation];
+      [UINavigationBar defaultSizeForOrientation:_toWindowOrientation];
       v35 = v34;
-      [(UIView *)v30 frame];
+      [(UIView *)searchBar2 frame];
       v36 = v35 - CGRectGetHeight(v48);
-      if ((([__UIStatusBarManagerForWindow(v31) isStatusBarHidden] & 1) != 0 || (objc_msgSend(__UIStatusBarManagerForWindow(v31), "defaultStatusBarHeightInOrientation:", v33), v37 == 0.0)) && (objc_msgSend(__UIStatusBarManagerForWindow(v31), "isStatusBarHidden") & 1) == 0 && (objc_msgSend(__UIStatusBarManagerForWindow(v31), "defaultStatusBarHeightInOrientation:", v32), v38 != 0.0))
+      if ((([__UIStatusBarManagerForWindow(window) isStatusBarHidden] & 1) != 0 || (objc_msgSend(__UIStatusBarManagerForWindow(window), "defaultStatusBarHeightInOrientation:", _toWindowOrientation), v37 == 0.0)) && (objc_msgSend(__UIStatusBarManagerForWindow(window), "isStatusBarHidden") & 1) == 0 && (objc_msgSend(__UIStatusBarManagerForWindow(window), "defaultStatusBarHeightInOrientation:", _fromWindowOrientation), v38 != 0.0))
       {
-        [__UIStatusBarManagerForWindow(v31) defaultStatusBarHeightInOrientation:v32];
+        [__UIStatusBarManagerForWindow(window) defaultStatusBarHeightInOrientation:_fromWindowOrientation];
         v36 = v36 - v42;
       }
 
-      else if (([__UIStatusBarManagerForWindow(v31) isStatusBarHidden] & 1) == 0)
+      else if (([__UIStatusBarManagerForWindow(window) isStatusBarHidden] & 1) == 0)
       {
-        [__UIStatusBarManagerForWindow(v31) defaultStatusBarHeightInOrientation:v33];
+        [__UIStatusBarManagerForWindow(window) defaultStatusBarHeightInOrientation:_toWindowOrientation];
         if (v39 != 0.0)
         {
-          if (([__UIStatusBarManagerForWindow(v31) isStatusBarHidden] & 1) != 0 || (objc_msgSend(__UIStatusBarManagerForWindow(v31), "defaultStatusBarHeightInOrientation:", v32), v40 == 0.0))
+          if (([__UIStatusBarManagerForWindow(window) isStatusBarHidden] & 1) != 0 || (objc_msgSend(__UIStatusBarManagerForWindow(window), "defaultStatusBarHeightInOrientation:", _fromWindowOrientation), v40 == 0.0))
           {
-            [__UIStatusBarManagerForWindow(v31) defaultStatusBarHeightInOrientation:v33];
+            [__UIStatusBarManagerForWindow(window) defaultStatusBarHeightInOrientation:_toWindowOrientation];
             v36 = v36 + v41;
           }
         }
@@ -1686,20 +1686,20 @@ LABEL_43:
   [(_UISearchPresentationAssistant *)assistant setTransitioningToSizeCoordinator:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [_UISearchPresentationController _layoutPresentationWithSize:"_layoutPresentationWithSize:transitionCoordinator:" transitionCoordinator:?];
   v8.receiver = self;
   v8.super_class = _UISearchPresentationController;
-  [(UIPresentationController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(UIPresentationController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
 }
 
-- (void)_updatePresentingViewControllerContentScrollViewWithOffsets:(CGSize)a3 transitionCoordinator:(id)a4
+- (void)_updatePresentingViewControllerContentScrollViewWithOffsets:(CGSize)offsets transitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = offsets.height;
+  width = offsets.width;
   v7 = [(UIViewController *)[(UIPresentationController *)self presentingViewController] _contentOrObservableScrollViewForEdge:1];
   if (v7)
   {
@@ -1713,9 +1713,9 @@ LABEL_43:
       v12 = v8;
       v13 = width;
       v14 = height;
-      if ([a4 isAnimated])
+      if ([coordinator isAnimated])
       {
-        [a4 animateAlongsideTransition:v9 completion:0];
+        [coordinator animateAlongsideTransition:v9 completion:0];
       }
 
       else
@@ -1726,9 +1726,9 @@ LABEL_43:
   }
 }
 
-- (id)_presentationControllerForTraitCollection:(id)a3
+- (id)_presentationControllerForTraitCollection:(id)collection
 {
-  if (-[UIViewController modalPresentationStyle](-[UIPresentationController presentedViewController](self, "presentedViewController"), "modalPresentationStyle") != UIModalPresentationPopover || [a3 horizontalSizeClass] != 2)
+  if (-[UIViewController modalPresentationStyle](-[UIPresentationController presentedViewController](self, "presentedViewController"), "modalPresentationStyle") != UIModalPresentationPopover || [collection horizontalSizeClass] != 2)
   {
     return self;
   }
@@ -1738,14 +1738,14 @@ LABEL_43:
   return v5;
 }
 
-- (id)_createVisualStyleForProvider:(id)a3
+- (id)_createVisualStyleForProvider:(id)provider
 {
-  result = [a3 styleForSearchPresentationController:self];
+  result = [provider styleForSearchPresentationController:self];
   if (!result)
   {
     v6.receiver = self;
     v6.super_class = _UISearchPresentationController;
-    return [(UIPresentationController *)&v6 _createVisualStyleForProvider:a3];
+    return [(UIPresentationController *)&v6 _createVisualStyleForProvider:provider];
   }
 
   return result;
@@ -1753,30 +1753,30 @@ LABEL_43:
 
 - (BOOL)_shouldUsePassthroughInteractionForDismissal
 {
-  v2 = [(UIView *)[(UISearchController *)self->_searchController searchBar] traitCollection];
+  traitCollection = [(UIView *)[(UISearchController *)self->_searchController searchBar] traitCollection];
   v3 = _UISolariumEnabled();
   if (v3)
   {
-    LOBYTE(v3) = [(UITraitCollection *)v2 userInterfaceIdiom]== UIUserInterfaceIdiomPad;
+    LOBYTE(v3) = [(UITraitCollection *)traitCollection userInterfaceIdiom]== UIUserInterfaceIdiomPad;
   }
 
   return v3;
 }
 
-- (BOOL)passthroughScrollInteraction:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5
+- (BOOL)passthroughScrollInteraction:(id)interaction shouldInteractAtLocation:(CGPoint)location withEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v32 = *MEMORY[0x1E69E9840];
-  v10 = [(UISearchController *)self->_searchController searchBar];
-  if ([(UISearchTextField *)[(UISearchBar *)v10 searchTextField] _hasContent])
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  if ([(UISearchTextField *)[(UISearchBar *)searchBar searchTextField] _hasContent])
   {
     goto LABEL_4;
   }
 
-  v11 = [a3 view];
-  [v11 convertPoint:v10 toView:{x, y}];
-  if ([(UIView *)v10 pointInside:a5 withEvent:?]|| [(UISearchTextField *)[(UISearchBar *)[(UISearchController *)self->_searchController searchBar] searchTextField] _alwaysShowsClearButtonWhenEmptyAndActive])
+  view = [interaction view];
+  [view convertPoint:searchBar toView:{x, y}];
+  if ([(UIView *)searchBar pointInside:event withEvent:?]|| [(UISearchTextField *)[(UISearchBar *)[(UISearchController *)self->_searchController searchBar] searchTextField] _alwaysShowsClearButtonWhenEmptyAndActive])
   {
     goto LABEL_4;
   }
@@ -1785,8 +1785,8 @@ LABEL_43:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = [(UIViewController *)self->_searchController childViewControllers];
-  v14 = [(NSArray *)v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  childViewControllers = [(UIViewController *)self->_searchController childViewControllers];
+  v14 = [(NSArray *)childViewControllers countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1797,21 +1797,21 @@ LABEL_8:
     {
       if (*v28 != v16)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(childViewControllers);
       }
 
-      v18 = [*(*(&v27 + 1) + 8 * v17) viewIfLoaded];
-      [v11 convertPoint:v18 toView:{x, y}];
+      viewIfLoaded = [*(*(&v27 + 1) + 8 * v17) viewIfLoaded];
+      [view convertPoint:viewIfLoaded toView:{x, y}];
       v20 = v19;
       v22 = v21;
-      if ([v18 isHidden] & 1) == 0 && (objc_msgSend(v18, "pointInside:withEvent:", a5, v20, v22))
+      if ([viewIfLoaded isHidden] & 1) == 0 && (objc_msgSend(viewIfLoaded, "pointInside:withEvent:", event, v20, v22))
       {
         goto LABEL_4;
       }
 
       if (v15 == ++v17)
       {
-        v15 = [(NSArray *)v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v15 = [(NSArray *)childViewControllers countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v15)
         {
           goto LABEL_8;
@@ -1822,13 +1822,13 @@ LABEL_8:
     }
   }
 
-  v23 = [(UINavigationItem *)[(UISearchController *)self->_searchController _navigationItemCurrentlyDisplayingSearchBar] _navigationBar];
-  [v11 convertPoint:v23 toView:{x, y}];
-  if ([(UIView *)v23 pointInside:a5 withEvent:?])
+  _navigationBar = [(UINavigationItem *)[(UISearchController *)self->_searchController _navigationItemCurrentlyDisplayingSearchBar] _navigationBar];
+  [view convertPoint:_navigationBar toView:{x, y}];
+  if ([(UIView *)_navigationBar pointInside:event withEvent:?])
   {
-    v24 = [(UINavigationBar *)v23 _tabBarHostedView];
-    [v11 convertPoint:v24 toView:{x, y}];
-    if ([(_UITabContainerView *)v24 hitTest:a5 withEvent:?])
+    _tabBarHostedView = [(UINavigationBar *)_navigationBar _tabBarHostedView];
+    [view convertPoint:_tabBarHostedView toView:{x, y}];
+    if ([(_UITabContainerView *)_tabBarHostedView hitTest:event withEvent:?])
     {
 LABEL_4:
       LOBYTE(v12) = 0;
@@ -1836,7 +1836,7 @@ LABEL_4:
     }
   }
 
-  if (!-[UISearchController _hasVisibleSuggestionsMenu](self->_searchController, "_hasVisibleSuggestionsMenu") && !-[UISearchTextField _isPresentingEditMenu](-[UISearchBar searchTextField](v10, "searchTextField"), "_isPresentingEditMenu") || (v25 = -[UIView window](v10, "window"), [v11 convertPoint:0 toView:{x, y}], v12 = -[UIView isDescendantOfView:](-[UIView hitTest:withEvent:](v25, "hitTest:withEvent:", a5), "isDescendantOfView:", -[UIViewController view](-[UIWindow rootViewController](v25, "rootViewController"), "view"))))
+  if (!-[UISearchController _hasVisibleSuggestionsMenu](self->_searchController, "_hasVisibleSuggestionsMenu") && !-[UISearchTextField _isPresentingEditMenu](-[UISearchBar searchTextField](searchBar, "searchTextField"), "_isPresentingEditMenu") || (v25 = -[UIView window](searchBar, "window"), [view convertPoint:0 toView:{x, y}], v12 = -[UIView isDescendantOfView:](-[UIView hitTest:withEvent:](v25, "hitTest:withEvent:", event), "isDescendantOfView:", -[UIViewController view](-[UIWindow rootViewController](v25, "rootViewController"), "view"))))
   {
     LOBYTE(v12) = 1;
   }

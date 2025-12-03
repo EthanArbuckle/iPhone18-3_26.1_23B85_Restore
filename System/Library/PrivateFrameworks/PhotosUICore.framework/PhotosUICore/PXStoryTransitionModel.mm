@@ -3,10 +3,10 @@
 - ($5A4ED22E2CF2C812F70E33C35343ABA3)orderInCompositionInfo;
 - ($5A4ED22E2CF2C812F70E33C35343ABA3)orderOutCompositionInfo;
 - ($D23540E3B197441F7781E3353E3BC035)transitionInfo;
-- (PXStoryTransitionModel)initWithSegmentTransitionInfo:(id)a3 orderOutCompositionInfo:(id *)a4 orderInCompositionInfo:(id *)a5 transitionInfo:(id *)a6;
-- (void)addClipWithIdentifier:(int64_t)a3 info:(id *)a4 event:(int64_t)a5;
+- (PXStoryTransitionModel)initWithSegmentTransitionInfo:(id)info orderOutCompositionInfo:(id *)compositionInfo orderInCompositionInfo:(id *)inCompositionInfo transitionInfo:(id *)transitionInfo;
+- (void)addClipWithIdentifier:(int64_t)identifier info:(id *)info event:(int64_t)event;
 - (void)dealloc;
-- (void)enumerateClipIdentifiersUsingBlock:(id)a3;
+- (void)enumerateClipIdentifiersUsingBlock:(id)block;
 @end
 
 @implementation PXStoryTransitionModel
@@ -55,7 +55,7 @@
   [(PXStoryTransitionModel *)&v3 dealloc];
 }
 
-- (void)enumerateClipIdentifiersUsingBlock:(id)a3
+- (void)enumerateClipIdentifiersUsingBlock:(id)block
 {
   v13 = 0;
   if (self->_count >= 1)
@@ -68,9 +68,9 @@
       v8 = *(v7 - 97);
       memcpy(__dst, v7 - 96, sizeof(__dst));
       v9 = *v7;
-      v10 = *(a3 + 2);
+      v10 = *(block + 2);
       memcpy(v11, __dst, sizeof(v11));
-      v10(a3, v8, v11, v9, &v13);
+      v10(block, v8, v11, v9, &v13);
       if (v13 == 1)
       {
         break;
@@ -84,7 +84,7 @@
   }
 }
 
-- (void)addClipWithIdentifier:(int64_t)a3 info:(id *)a4 event:(int64_t)a5
+- (void)addClipWithIdentifier:(int64_t)identifier info:(id *)info event:(int64_t)event
 {
   capacity = self->_capacity;
   ++self->_count;
@@ -92,10 +92,10 @@
   _PXGArrayCapacityResizeToCount();
 }
 
-- (PXStoryTransitionModel)initWithSegmentTransitionInfo:(id)a3 orderOutCompositionInfo:(id *)a4 orderInCompositionInfo:(id *)a5 transitionInfo:(id *)a6
+- (PXStoryTransitionModel)initWithSegmentTransitionInfo:(id)info orderOutCompositionInfo:(id *)compositionInfo orderInCompositionInfo:(id *)inCompositionInfo transitionInfo:(id *)transitionInfo
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = info.var1;
+  var0 = info.var0;
   v18.receiver = self;
   v18.super_class = PXStoryTransitionModel;
   result = [(PXStoryTransitionModel *)&v18 init];
@@ -103,19 +103,19 @@
   {
     result->_segmentTransitionInfo.fromSegmentIdentifier = var0;
     result->_segmentTransitionInfo.toSegmentIdentifier = var1;
-    v12 = *&a6->var0;
-    v13 = *&a6->var2.var1;
-    *&result->_transitionInfo.fallbackFromTransitionKind = *&a6->var3;
+    v12 = *&transitionInfo->var0;
+    v13 = *&transitionInfo->var2.var1;
+    *&result->_transitionInfo.fallbackFromTransitionKind = *&transitionInfo->var3;
     *&result->_transitionInfo.orderOutTransition = v12;
     *&result->_transitionInfo.duration.timescale = v13;
-    v14 = *&a4->var0;
-    v15 = *&a4->var2;
-    *&result->_orderOutCompositionInfo.mainDividerSplitRatio = a4->var4;
+    v14 = *&compositionInfo->var0;
+    v15 = *&compositionInfo->var2;
+    *&result->_orderOutCompositionInfo.mainDividerSplitRatio = compositionInfo->var4;
     *&result->_orderOutCompositionInfo.clipFramesExtendToBounds = v15;
     *&result->_transitionInfo.var1.scaleRelativeFactor = v14;
-    v16 = *&a5->var0;
-    v17 = *&a5->var2;
-    *&result->_orderInCompositionInfo.mainDividerSplitRatio = a5->var4;
+    v16 = *&inCompositionInfo->var0;
+    v17 = *&inCompositionInfo->var2;
+    *&result->_orderInCompositionInfo.mainDividerSplitRatio = inCompositionInfo->var4;
     *&result->_orderOutCompositionInfo.numberOfAssets = v16;
     *&result->_orderInCompositionInfo.clipFramesExtendToBounds = v17;
   }

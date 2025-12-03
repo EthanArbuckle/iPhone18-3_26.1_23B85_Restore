@@ -6,7 +6,7 @@
 
 - (char)pf_hexadecimalEncodedString
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2 < 0)
   {
     v5 = 0;
@@ -20,13 +20,13 @@
     if (v5)
     {
       v6 = v5;
-      v7 = [a1 bytes];
+      bytes = [self bytes];
       if (v3)
       {
         v8 = v6 + 1;
         do
         {
-          v9 = *v7++;
+          v9 = *bytes++;
           *(v8 - 1) = a0123456789abcd[v9 >> 4];
           *v8 = a0123456789abcd[v9 & 0xF];
           v8 += 2;

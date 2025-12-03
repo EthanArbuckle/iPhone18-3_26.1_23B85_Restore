@@ -2,63 +2,63 @@
 - (BOOL)_hasPlusButtonView;
 - (CGRect)plusButtonFrame;
 - (CGSize)intrinsicContentSize;
-- (PKPaletteAdditionalOptionsView)initWithFrame:(CGRect)a3;
+- (PKPaletteAdditionalOptionsView)initWithFrame:(CGRect)frame;
 - (PKPaletteAdditionalOptionsViewDelegate)delegate;
 - (PKPalettePopoverPresenting)palettePopoverPresenting;
 - (id)_keyboardButtonGroupViewButtons;
-- (void)_didSelectEllipsisButton:(id)a3;
+- (void)_didSelectEllipsisButton:(id)button;
 - (void)_handleAutoRefineSettingsDidChange;
 - (void)_handleKeyboardButton;
 - (void)_handleProofreadingSettingsDidChange;
 - (void)_handleReturnKeyButton;
-- (void)_handleSceneWillDeactivateNotification:(id)a3;
+- (void)_handleSceneWillDeactivateNotification:(id)notification;
 - (void)_pencilInteractionPrefersPencilOnlyDrawsDidChange;
-- (void)_setPlusButton:(id)a3;
+- (void)_setPlusButton:(id)button;
 - (void)_updateMoreOptionsViewControllerAutoRefineState;
 - (void)_updateMoreOptionsViewControllerProofreadingState;
 - (void)_updateUI;
 - (void)didMoveToWindow;
-- (void)dismissPalettePopoverWithCompletion:(id)a3;
-- (void)moreOptionsViewControllerDidSelectOpenPencilSettings:(id)a3;
-- (void)moreOptionsViewControllerDidSelectResetHandwritingEducationPane:(id)a3;
-- (void)moreOptionsViewControllerDidSelectTapToRadar:(id)a3;
-- (void)moreOptionsViewControllerDidToggleAutoHide:(id)a3;
-- (void)moreOptionsViewControllerDidToggleAutoRefine:(id)a3;
-- (void)moreOptionsViewControllerDidToggleFingerDraws:(id)a3;
-- (void)moreOptionsViewControllerDidToggleProofreading:(id)a3;
-- (void)setEdgeLocation:(unint64_t)a3;
-- (void)setEnableKeyboardButtons:(BOOL)a3;
-- (void)setFloatingKeyboardType:(int64_t)a3;
-- (void)setPlusButton:(id)a3;
-- (void)setScalingFactor:(double)a3;
-- (void)setShouldAlwaysShowAutoRefineControls:(BOOL)a3;
-- (void)setShouldShowFingerDrawsOption:(BOOL)a3;
-- (void)setShouldShowResetHandwritingEducationPane:(BOOL)a3;
-- (void)setShouldShowTapToRadarOption:(BOOL)a3;
-- (void)setShowsPlusButton:(BOOL)a3;
-- (void)setShowsShapeButton:(BOOL)a3;
-- (void)setShowsTextButton:(BOOL)a3;
-- (void)setWantsEllipsisButtonVisible:(BOOL)a3;
-- (void)setWantsInputAssistantViewVisible:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)dismissPalettePopoverWithCompletion:(id)completion;
+- (void)moreOptionsViewControllerDidSelectOpenPencilSettings:(id)settings;
+- (void)moreOptionsViewControllerDidSelectResetHandwritingEducationPane:(id)pane;
+- (void)moreOptionsViewControllerDidSelectTapToRadar:(id)radar;
+- (void)moreOptionsViewControllerDidToggleAutoHide:(id)hide;
+- (void)moreOptionsViewControllerDidToggleAutoRefine:(id)refine;
+- (void)moreOptionsViewControllerDidToggleFingerDraws:(id)draws;
+- (void)moreOptionsViewControllerDidToggleProofreading:(id)proofreading;
+- (void)setEdgeLocation:(unint64_t)location;
+- (void)setEnableKeyboardButtons:(BOOL)buttons;
+- (void)setFloatingKeyboardType:(int64_t)type;
+- (void)setPlusButton:(id)button;
+- (void)setScalingFactor:(double)factor;
+- (void)setShouldAlwaysShowAutoRefineControls:(BOOL)controls;
+- (void)setShouldShowFingerDrawsOption:(BOOL)option;
+- (void)setShouldShowResetHandwritingEducationPane:(BOOL)pane;
+- (void)setShouldShowTapToRadarOption:(BOOL)option;
+- (void)setShowsPlusButton:(BOOL)button;
+- (void)setShowsShapeButton:(BOOL)button;
+- (void)setShowsTextButton:(BOOL)button;
+- (void)setWantsEllipsisButtonVisible:(BOOL)visible;
+- (void)setWantsInputAssistantViewVisible:(BOOL)visible;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updatePopoverUI;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PKPaletteAdditionalOptionsView
 
-- (PKPaletteAdditionalOptionsView)initWithFrame:(CGRect)a3
+- (PKPaletteAdditionalOptionsView)initWithFrame:(CGRect)frame
 {
   v83[4] = *MEMORY[0x1E69E9840];
   v81.receiver = self;
   v81.super_class = PKPaletteAdditionalOptionsView;
-  v3 = [(PKPaletteAdditionalOptionsView *)&v81 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaletteAdditionalOptionsView *)&v81 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_scalingFactor = 1.0;
-    v5 = [(PKPaletteAdditionalOptionsView *)v3 traitCollection];
-    if ([v5 userInterfaceIdiom])
+    traitCollection = [(PKPaletteAdditionalOptionsView *)v3 traitCollection];
+    if ([traitCollection userInterfaceIdiom])
     {
       v6 = [MEMORY[0x1E69DCD58] prefersPencilOnlyDrawing] ^ 1;
     }
@@ -112,21 +112,21 @@
     [(UIStackView *)v4->_contentStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PKPaletteAdditionalOptionsView *)v4 addSubview:v4->_contentStackView];
     v68 = MEMORY[0x1E696ACD8];
-    v73 = [(UIStackView *)v4->_contentStackView topAnchor];
-    v72 = [(PKPaletteAdditionalOptionsView *)v4 topAnchor];
-    v71 = [v73 constraintEqualToAnchor:v72];
+    topAnchor = [(UIStackView *)v4->_contentStackView topAnchor];
+    topAnchor2 = [(PKPaletteAdditionalOptionsView *)v4 topAnchor];
+    v71 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v83[0] = v71;
-    v70 = [(UIStackView *)v4->_contentStackView leadingAnchor];
-    v69 = [(PKPaletteAdditionalOptionsView *)v4 leadingAnchor];
-    v18 = [v70 constraintEqualToAnchor:v69];
+    leadingAnchor = [(UIStackView *)v4->_contentStackView leadingAnchor];
+    leadingAnchor2 = [(PKPaletteAdditionalOptionsView *)v4 leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v83[1] = v18;
-    v19 = [(UIStackView *)v4->_contentStackView bottomAnchor];
-    v20 = [(PKPaletteAdditionalOptionsView *)v4 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    bottomAnchor = [(UIStackView *)v4->_contentStackView bottomAnchor];
+    bottomAnchor2 = [(PKPaletteAdditionalOptionsView *)v4 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v83[2] = v21;
-    v22 = [(UIStackView *)v4->_contentStackView trailingAnchor];
-    v23 = [(PKPaletteAdditionalOptionsView *)v4 trailingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    trailingAnchor = [(UIStackView *)v4->_contentStackView trailingAnchor];
+    trailingAnchor2 = [(PKPaletteAdditionalOptionsView *)v4 trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v83[3] = v24;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:4];
     [v68 activateConstraints:v25];
@@ -134,14 +134,14 @@
     v26 = +[PKPaletteButton keyboardButton];
     [(PKPaletteAdditionalOptionsView *)v4 setKeyboardButton:v26];
 
-    v27 = [(PKPaletteAdditionalOptionsView *)v4 keyboardButton];
-    [v27 addTarget:v4 action:sel__handleKeyboardButton forControlEvents:64];
+    keyboardButton = [(PKPaletteAdditionalOptionsView *)v4 keyboardButton];
+    [keyboardButton addTarget:v4 action:sel__handleKeyboardButton forControlEvents:64];
 
     v28 = +[PKPaletteButton returnKeyButton];
     [(PKPaletteAdditionalOptionsView *)v4 setReturnKeyButton:v28];
 
-    v29 = [(PKPaletteAdditionalOptionsView *)v4 returnKeyButton];
-    [v29 addTarget:v4 action:sel__handleReturnKeyButton forControlEvents:64];
+    returnKeyButton = [(PKPaletteAdditionalOptionsView *)v4 returnKeyButton];
+    [returnKeyButton addTarget:v4 action:sel__handleReturnKeyButton forControlEvents:64];
 
     v30 = objc_alloc_init(PKPaletteButtonGroupView);
     keyboardButtonGroupView = v4->_keyboardButtonGroupView;
@@ -168,13 +168,13 @@
 
     [(PKPaletteButton *)v4->_textButton setAccessibilityIdentifier:@"Text Button"];
     [(UIStackView *)v4->_textShapeStackView addArrangedSubview:v4->_textButton];
-    v37 = [(PKPaletteButton *)v4->_textButton widthAnchor];
-    v38 = [v37 constraintEqualToConstant:0.0];
+    widthAnchor = [(PKPaletteButton *)v4->_textButton widthAnchor];
+    v38 = [widthAnchor constraintEqualToConstant:0.0];
     textButtonWidthConstraint = v4->_textButtonWidthConstraint;
     v4->_textButtonWidthConstraint = v38;
 
-    v40 = [(PKPaletteButton *)v4->_textButton heightAnchor];
-    v41 = [v40 constraintEqualToConstant:0.0];
+    heightAnchor = [(PKPaletteButton *)v4->_textButton heightAnchor];
+    v41 = [heightAnchor constraintEqualToConstant:0.0];
     textButtonHeightConstraint = v4->_textButtonHeightConstraint;
     v4->_textButtonHeightConstraint = v41;
 
@@ -188,13 +188,13 @@
 
     [(PKPaletteButton *)v4->_shapeButton setAccessibilityIdentifier:@"Shape Button"];
     [(UIStackView *)v4->_textShapeStackView addArrangedSubview:v4->_shapeButton];
-    v47 = [(PKPaletteButton *)v4->_shapeButton widthAnchor];
-    v48 = [v47 constraintEqualToConstant:0.0];
+    widthAnchor2 = [(PKPaletteButton *)v4->_shapeButton widthAnchor];
+    v48 = [widthAnchor2 constraintEqualToConstant:0.0];
     shapeButtonWidthConstraint = v4->_shapeButtonWidthConstraint;
     v4->_shapeButtonWidthConstraint = v48;
 
-    v50 = [(PKPaletteButton *)v4->_shapeButton heightAnchor];
-    v51 = [v50 constraintEqualToConstant:0.0];
+    heightAnchor2 = [(PKPaletteButton *)v4->_shapeButton heightAnchor];
+    v51 = [heightAnchor2 constraintEqualToConstant:0.0];
     shapeButtonHeightConstraint = v4->_shapeButtonHeightConstraint;
     v4->_shapeButtonHeightConstraint = v51;
 
@@ -210,13 +210,13 @@
     [(PKPaletteButton *)v4->_ellipsisButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PKPaletteButton *)v4->_ellipsisButton addTarget:v4 action:sel__didSelectEllipsisButton_ forControlEvents:64];
     [(UIStackView *)v4->_contentStackView addArrangedSubview:v4->_ellipsisButton];
-    v57 = [(PKPaletteButton *)v4->_ellipsisButton widthAnchor];
-    v58 = [v57 constraintEqualToConstant:0.0];
+    widthAnchor3 = [(PKPaletteButton *)v4->_ellipsisButton widthAnchor];
+    v58 = [widthAnchor3 constraintEqualToConstant:0.0];
     ellipsisButtonWidthConstraint = v4->_ellipsisButtonWidthConstraint;
     v4->_ellipsisButtonWidthConstraint = v58;
 
-    v60 = [(PKPaletteButton *)v4->_ellipsisButton heightAnchor];
-    v61 = [v60 constraintEqualToConstant:0.0];
+    heightAnchor3 = [(PKPaletteButton *)v4->_ellipsisButton heightAnchor];
+    v61 = [heightAnchor3 constraintEqualToConstant:0.0];
     ellipsisButtonHeightConstraint = v4->_ellipsisButtonHeightConstraint;
     v4->_ellipsisButtonHeightConstraint = v61;
 
@@ -286,11 +286,11 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
   [WeakRetained _handleProofreadingSettingsDidChange];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v5 = [(PKPaletteAdditionalOptionsView *)self superview];
+  superview = [(PKPaletteAdditionalOptionsView *)self superview];
 
-  if (!a3 && v5)
+  if (!superview && superview)
   {
 
     [(PKPaletteAdditionalOptionsView *)self dismissPalettePopoverWithCompletion:0];
@@ -300,9 +300,9 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
 - (void)didMoveToWindow
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaletteAdditionalOptionsView *)self window];
+  window = [(PKPaletteAdditionalOptionsView *)self window];
 
-  if (v3)
+  if (window)
   {
     v4 = os_log_create("com.apple.pencilkit", "AdditionalOptions");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -313,15 +313,15 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
       _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "didMoveToWindow, didTapOnPencilSettings: %{private}d", v10, 8u);
     }
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v7 = *MEMORY[0x1E69DE358];
-    v8 = [(PKPaletteAdditionalOptionsView *)self window];
-    v9 = [v8 windowScene];
-    [v6 addObserver:self selector:sel__handleSceneWillDeactivateNotification_ name:v7 object:v9];
+    window2 = [(PKPaletteAdditionalOptionsView *)self window];
+    windowScene = [window2 windowScene];
+    [defaultCenter addObserver:self selector:sel__handleSceneWillDeactivateNotification_ name:v7 object:windowScene];
   }
 }
 
-- (void)_handleSceneWillDeactivateNotification:(id)a3
+- (void)_handleSceneWillDeactivateNotification:(id)notification
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.pencilkit", "AdditionalOptions");
@@ -343,17 +343,17 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
       _os_log_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_DEFAULT, "dismissis More Options popover", v8, 2u);
     }
 
-    v7 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    [v7 dismissViewControllerAnimated:0 completion:0];
+    moreOptionsViewController = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    [moreOptionsViewController dismissViewControllerAnimated:0 completion:0];
   }
 }
 
 - (void)_pencilInteractionPrefersPencilOnlyDrawsDidChange
 {
   self->_isFingerDrawsOn = [MEMORY[0x1E69DCD58] prefersPencilOnlyDrawing] ^ 1;
-  v3 = [(PKPaletteAdditionalOptionsView *)self isFingerDrawsOn];
-  v4 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-  [v4 setIsFingerDrawsOn:v3];
+  isFingerDrawsOn = [(PKPaletteAdditionalOptionsView *)self isFingerDrawsOn];
+  moreOptionsViewController = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+  [moreOptionsViewController setIsFingerDrawsOn:isFingerDrawsOn];
 }
 
 - (void)_handleAutoRefineSettingsDidChange
@@ -380,9 +380,9 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
   [(PKPaletteAdditionalOptionsView *)self _updateMoreOptionsViewControllerProofreadingState];
 }
 
-- (void)setPlusButton:(id)a3
+- (void)setPlusButton:(id)button
 {
-  if (self->_plusButton != a3)
+  if (self->_plusButton != button)
   {
     [(PKPaletteAdditionalOptionsView *)self _setPlusButton:?];
 
@@ -390,10 +390,10 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
   }
 }
 
-- (void)_setPlusButton:(id)a3
+- (void)_setPlusButton:(id)button
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  buttonCopy = button;
   if (self->_plusButton)
   {
     v18[0] = MEMORY[0x1E69E9820];
@@ -410,18 +410,18 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
     plusButton = 0;
   }
 
-  self->_plusButton = v4;
-  v6 = v4;
+  self->_plusButton = buttonCopy;
+  v6 = buttonCopy;
 
   [(PKPaletteButton *)self->_plusButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_contentStackView addArrangedSubview:self->_plusButton];
-  v7 = [(PKPaletteButton *)self->_plusButton widthAnchor];
-  v8 = [v7 constraintEqualToConstant:0.0];
+  widthAnchor = [(PKPaletteButton *)self->_plusButton widthAnchor];
+  v8 = [widthAnchor constraintEqualToConstant:0.0];
   plusButtonWidthConstraint = self->_plusButtonWidthConstraint;
   self->_plusButtonWidthConstraint = v8;
 
-  v10 = [(PKPaletteButton *)self->_plusButton heightAnchor];
-  v11 = [v10 constraintEqualToConstant:0.0];
+  heightAnchor = [(PKPaletteButton *)self->_plusButton heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:0.0];
   plusButtonHeightConstraint = self->_plusButtonHeightConstraint;
   self->_plusButtonHeightConstraint = v11;
 
@@ -438,109 +438,109 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
   [(PKPaletteButton *)self->_plusButton setContentHuggingPriority:1 forAxis:v17];
 }
 
-- (void)setShowsPlusButton:(BOOL)a3
+- (void)setShowsPlusButton:(BOOL)button
 {
-  if (self->_showsPlusButton != a3)
+  if (self->_showsPlusButton != button)
   {
-    self->_showsPlusButton = a3;
+    self->_showsPlusButton = button;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
-- (void)setShowsTextButton:(BOOL)a3
+- (void)setShowsTextButton:(BOOL)button
 {
-  if (self->_showsTextButton != a3)
+  if (self->_showsTextButton != button)
   {
-    self->_showsTextButton = a3;
+    self->_showsTextButton = button;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
-- (void)setShowsShapeButton:(BOOL)a3
+- (void)setShowsShapeButton:(BOOL)button
 {
-  if (self->_showsShapeButton != a3)
+  if (self->_showsShapeButton != button)
   {
-    self->_showsShapeButton = a3;
+    self->_showsShapeButton = button;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
-- (void)setWantsEllipsisButtonVisible:(BOOL)a3
+- (void)setWantsEllipsisButtonVisible:(BOOL)visible
 {
-  if (self->_wantsEllipsisButtonVisible != a3)
+  if (self->_wantsEllipsisButtonVisible != visible)
   {
-    self->_wantsEllipsisButtonVisible = a3;
+    self->_wantsEllipsisButtonVisible = visible;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
-- (void)setWantsInputAssistantViewVisible:(BOOL)a3
+- (void)setWantsInputAssistantViewVisible:(BOOL)visible
 {
-  if (self->_wantsInputAssistantViewVisible != a3)
+  if (self->_wantsInputAssistantViewVisible != visible)
   {
-    self->_wantsInputAssistantViewVisible = a3;
+    self->_wantsInputAssistantViewVisible = visible;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
-- (void)setEnableKeyboardButtons:(BOOL)a3
+- (void)setEnableKeyboardButtons:(BOOL)buttons
 {
-  if (self->_enableKeyboardButtons != a3)
+  if (self->_enableKeyboardButtons != buttons)
   {
-    self->_enableKeyboardButtons = a3;
+    self->_enableKeyboardButtons = buttons;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
-- (void)setFloatingKeyboardType:(int64_t)a3
+- (void)setFloatingKeyboardType:(int64_t)type
 {
-  if (self->_floatingKeyboardType != a3)
+  if (self->_floatingKeyboardType != type)
   {
-    self->_floatingKeyboardType = a3;
+    self->_floatingKeyboardType = type;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
-- (void)setShouldShowFingerDrawsOption:(BOOL)a3
+- (void)setShouldShowFingerDrawsOption:(BOOL)option
 {
-  if (self->_shouldShowFingerDrawsOption != a3)
+  if (self->_shouldShowFingerDrawsOption != option)
   {
-    self->_shouldShowFingerDrawsOption = a3;
+    self->_shouldShowFingerDrawsOption = option;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
-- (void)setShouldAlwaysShowAutoRefineControls:(BOOL)a3
+- (void)setShouldAlwaysShowAutoRefineControls:(BOOL)controls
 {
-  if (self->_shouldAlwaysShowAutoRefineControls != a3)
+  if (self->_shouldAlwaysShowAutoRefineControls != controls)
   {
-    self->_shouldAlwaysShowAutoRefineControls = a3;
+    self->_shouldAlwaysShowAutoRefineControls = controls;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
-- (void)setShouldShowTapToRadarOption:(BOOL)a3
+- (void)setShouldShowTapToRadarOption:(BOOL)option
 {
-  if (self->_shouldShowTapToRadarOption != a3)
+  if (self->_shouldShowTapToRadarOption != option)
   {
-    self->_shouldShowTapToRadarOption = a3;
+    self->_shouldShowTapToRadarOption = option;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
-- (void)setShouldShowResetHandwritingEducationPane:(BOOL)a3
+- (void)setShouldShowResetHandwritingEducationPane:(BOOL)pane
 {
-  if (self->_shouldShowResetHandwritingEducationPane != a3)
+  if (self->_shouldShowResetHandwritingEducationPane != pane)
   {
-    self->_shouldShowResetHandwritingEducationPane = a3;
+    self->_shouldShowResetHandwritingEducationPane = pane;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(PKPaletteAdditionalOptionsView *)self contentStackView];
-  [v2 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
+  contentStackView = [(PKPaletteAdditionalOptionsView *)self contentStackView];
+  [contentStackView systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
   v4 = v3;
   v6 = v5;
 
@@ -553,10 +553,10 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
 
 - (BOOL)_hasPlusButtonView
 {
-  v3 = [(PKPaletteAdditionalOptionsView *)self contentStackView];
-  v4 = [v3 subviews];
-  v5 = [(PKPaletteAdditionalOptionsView *)self plusButton];
-  v6 = [v4 containsObject:v5];
+  contentStackView = [(PKPaletteAdditionalOptionsView *)self contentStackView];
+  subviews = [contentStackView subviews];
+  plusButton = [(PKPaletteAdditionalOptionsView *)self plusButton];
+  v6 = [subviews containsObject:plusButton];
 
   return v6;
 }
@@ -564,10 +564,10 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
 - (void)_updateUI
 {
   [(PKPaletteAdditionalOptionsView *)self invalidateIntrinsicContentSize];
-  v3 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
-  v4 = [(PKPaletteAdditionalOptionsView *)self window];
-  v5 = [v4 windowScene];
-  v6 = PKUseCompactSize(v3, v5);
+  traitCollection = [(PKPaletteAdditionalOptionsView *)self traitCollection];
+  window = [(PKPaletteAdditionalOptionsView *)self window];
+  windowScene = [window windowScene];
+  v6 = PKUseCompactSize(traitCollection, windowScene);
 
   if ([MEMORY[0x1E69DD250] _isInAnimationBlock])
   {
@@ -610,77 +610,77 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
     v9 = 36.0;
   }
 
-  v11 = [(PKPaletteAdditionalOptionsView *)self contentStackView];
-  [v11 setSpacing:v7];
+  contentStackView = [(PKPaletteAdditionalOptionsView *)self contentStackView];
+  [contentStackView setSpacing:v7];
 
-  v12 = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
-  v14 = v12 == 2 || v12 == 8;
-  v15 = [(PKPaletteAdditionalOptionsView *)self contentStackView];
-  [v15 setAxis:v14];
+  edgeLocation = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
+  v14 = edgeLocation == 2 || edgeLocation == 8;
+  contentStackView2 = [(PKPaletteAdditionalOptionsView *)self contentStackView];
+  [contentStackView2 setAxis:v14];
 
-  v16 = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
-  v18 = v16 != 2 && v16 != 8;
-  v19 = [(PKPaletteAdditionalOptionsView *)self textShapeStackView];
-  [v19 setAxis:v18];
+  edgeLocation2 = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
+  v18 = edgeLocation2 != 2 && edgeLocation2 != 8;
+  textShapeStackView = [(PKPaletteAdditionalOptionsView *)self textShapeStackView];
+  [textShapeStackView setAxis:v18];
 
   [(PKPaletteAdditionalOptionsView *)self scalingFactor];
   v21 = v20 * 12.0;
-  v22 = [(PKPaletteAdditionalOptionsView *)self textShapeStackView];
-  [v22 setSpacing:v21];
+  textShapeStackView2 = [(PKPaletteAdditionalOptionsView *)self textShapeStackView];
+  [textShapeStackView2 setSpacing:v21];
 
   [(PKPaletteAdditionalOptionsView *)self scalingFactor];
   v24 = v9 * v23;
   v25 = v9 * v23;
-  v26 = [(PKPaletteAdditionalOptionsView *)self plusButtonWidthConstraint];
-  [v26 setConstant:v24];
+  plusButtonWidthConstraint = [(PKPaletteAdditionalOptionsView *)self plusButtonWidthConstraint];
+  [plusButtonWidthConstraint setConstant:v24];
 
-  v27 = [(PKPaletteAdditionalOptionsView *)self plusButtonHeightConstraint];
-  [v27 setConstant:v25];
+  plusButtonHeightConstraint = [(PKPaletteAdditionalOptionsView *)self plusButtonHeightConstraint];
+  [plusButtonHeightConstraint setConstant:v25];
 
-  v28 = [(PKPaletteAdditionalOptionsView *)self ellipsisButtonWidthConstraint];
-  [v28 setConstant:v24];
+  ellipsisButtonWidthConstraint = [(PKPaletteAdditionalOptionsView *)self ellipsisButtonWidthConstraint];
+  [ellipsisButtonWidthConstraint setConstant:v24];
 
-  v29 = [(PKPaletteAdditionalOptionsView *)self ellipsisButtonHeightConstraint];
-  [v29 setConstant:v25];
+  ellipsisButtonHeightConstraint = [(PKPaletteAdditionalOptionsView *)self ellipsisButtonHeightConstraint];
+  [ellipsisButtonHeightConstraint setConstant:v25];
 
-  v30 = [(PKPaletteAdditionalOptionsView *)self textButtonWidthConstraint];
-  [v30 setConstant:v24];
+  textButtonWidthConstraint = [(PKPaletteAdditionalOptionsView *)self textButtonWidthConstraint];
+  [textButtonWidthConstraint setConstant:v24];
 
-  v31 = [(PKPaletteAdditionalOptionsView *)self textButtonHeightConstraint];
-  [v31 setConstant:v25];
+  textButtonHeightConstraint = [(PKPaletteAdditionalOptionsView *)self textButtonHeightConstraint];
+  [textButtonHeightConstraint setConstant:v25];
 
-  v32 = [(PKPaletteAdditionalOptionsView *)self shapeButtonWidthConstraint];
-  [v32 setConstant:v24];
+  shapeButtonWidthConstraint = [(PKPaletteAdditionalOptionsView *)self shapeButtonWidthConstraint];
+  [shapeButtonWidthConstraint setConstant:v24];
 
-  v33 = [(PKPaletteAdditionalOptionsView *)self shapeButtonHeightConstraint];
-  [v33 setConstant:v25];
+  shapeButtonHeightConstraint = [(PKPaletteAdditionalOptionsView *)self shapeButtonHeightConstraint];
+  [shapeButtonHeightConstraint setConstant:v25];
 
   [(PKPaletteAdditionalOptionsView *)self scalingFactor];
   v35 = v34;
-  v36 = [(PKPaletteAdditionalOptionsView *)self textButton];
-  [v36 setScalingFactor:v35];
+  textButton = [(PKPaletteAdditionalOptionsView *)self textButton];
+  [textButton setScalingFactor:v35];
 
   [(PKPaletteAdditionalOptionsView *)self scalingFactor];
   v38 = v37;
-  v39 = [(PKPaletteAdditionalOptionsView *)self shapeButton];
-  [v39 setScalingFactor:v38];
+  shapeButton = [(PKPaletteAdditionalOptionsView *)self shapeButton];
+  [shapeButton setScalingFactor:v38];
 
   [(PKPaletteAdditionalOptionsView *)self scalingFactor];
   v41 = v40;
-  v42 = [(PKPaletteAdditionalOptionsView *)self keyboardButtonGroupView];
-  [v42 setScalingFactor:v41];
+  keyboardButtonGroupView = [(PKPaletteAdditionalOptionsView *)self keyboardButtonGroupView];
+  [keyboardButtonGroupView setScalingFactor:v41];
 
-  v43 = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
-  v45 = v43 != 2 && v43 != 8;
-  v46 = [(PKPaletteAdditionalOptionsView *)self keyboardButtonGroupView];
-  [v46 setAxis:v45];
+  edgeLocation3 = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
+  v45 = edgeLocation3 != 2 && edgeLocation3 != 8;
+  keyboardButtonGroupView2 = [(PKPaletteAdditionalOptionsView *)self keyboardButtonGroupView];
+  [keyboardButtonGroupView2 setAxis:v45];
 
-  v47 = [(PKPaletteAdditionalOptionsView *)self keyboardButtonGroupView];
-  [v47 removeAllButtons];
+  keyboardButtonGroupView3 = [(PKPaletteAdditionalOptionsView *)self keyboardButtonGroupView];
+  [keyboardButtonGroupView3 removeAllButtons];
 
-  v48 = [(PKPaletteAdditionalOptionsView *)self keyboardButtonGroupView];
-  v49 = [(PKPaletteAdditionalOptionsView *)self _keyboardButtonGroupViewButtons];
-  [v48 addButtonsFromArray:v49];
+  keyboardButtonGroupView4 = [(PKPaletteAdditionalOptionsView *)self keyboardButtonGroupView];
+  _keyboardButtonGroupViewButtons = [(PKPaletteAdditionalOptionsView *)self _keyboardButtonGroupViewButtons];
+  [keyboardButtonGroupView4 addButtonsFromArray:_keyboardButtonGroupViewButtons];
 
   v51 = *MEMORY[0x1E69DC5C0];
   v50 = *(MEMORY[0x1E69DC5C0] + 8);
@@ -688,8 +688,8 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
   v53 = *(MEMORY[0x1E69DC5C0] + 24);
   if (!v6 && ([(PKPaletteAdditionalOptionsView *)self showsShapeButton]|| [(PKPaletteAdditionalOptionsView *)self showsTextButton]))
   {
-    v54 = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
-    v55 = v54 == 8 || v54 == 2;
+    edgeLocation4 = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
+    v55 = edgeLocation4 == 8 || edgeLocation4 == 2;
     v50 = 0.0;
     v53 = 6.0;
     if (v55)
@@ -702,8 +702,8 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
       v52 = 0.0;
     }
 
-    v56 = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
-    if (v56 != 4 && v56 != 1)
+    edgeLocation5 = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
+    if (edgeLocation5 != 4 && edgeLocation5 != 1)
     {
       v53 = 0.0;
     }
@@ -711,35 +711,35 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
     v51 = 0.0;
   }
 
-  v58 = [(PKPaletteAdditionalOptionsView *)self keyboardButtonGroupView];
-  [v58 setAdditionalContentMargins:{v51, v50, v52, v53}];
+  keyboardButtonGroupView5 = [(PKPaletteAdditionalOptionsView *)self keyboardButtonGroupView];
+  [keyboardButtonGroupView5 setAdditionalContentMargins:{v51, v50, v52, v53}];
 
-  v59 = [(PKPaletteAdditionalOptionsView *)self floatingKeyboardType];
-  v60 = [(PKPaletteAdditionalOptionsView *)self keyboardButton];
-  [v60 setFloatingKeyboardType:v59];
+  floatingKeyboardType = [(PKPaletteAdditionalOptionsView *)self floatingKeyboardType];
+  keyboardButton = [(PKPaletteAdditionalOptionsView *)self keyboardButton];
+  [keyboardButton setFloatingKeyboardType:floatingKeyboardType];
 
-  v61 = [(PKPaletteAdditionalOptionsView *)self delegate];
-  v62 = [v61 keyboardSelectionMenuForAdditionalOptionsView:self];
-  v63 = [(PKPaletteAdditionalOptionsView *)self keyboardButton];
-  [v63 setKeyboardSelectionMenu:v62];
+  delegate = [(PKPaletteAdditionalOptionsView *)self delegate];
+  v62 = [delegate keyboardSelectionMenuForAdditionalOptionsView:self];
+  keyboardButton2 = [(PKPaletteAdditionalOptionsView *)self keyboardButton];
+  [keyboardButton2 setKeyboardSelectionMenu:v62];
 
-  v64 = [(PKPaletteAdditionalOptionsView *)self enableKeyboardButtons];
-  v65 = [(PKPaletteAdditionalOptionsView *)self keyboardButton];
-  [v65 setEnableKeyboardToggle:v64];
+  enableKeyboardButtons = [(PKPaletteAdditionalOptionsView *)self enableKeyboardButtons];
+  keyboardButton3 = [(PKPaletteAdditionalOptionsView *)self keyboardButton];
+  [keyboardButton3 setEnableKeyboardToggle:enableKeyboardButtons];
 
-  v66 = [(PKPaletteAdditionalOptionsView *)self enableKeyboardButtons];
-  v67 = [(PKPaletteAdditionalOptionsView *)self returnKeyButton];
-  [v67 setEnabled:v66];
+  enableKeyboardButtons2 = [(PKPaletteAdditionalOptionsView *)self enableKeyboardButtons];
+  returnKeyButton = [(PKPaletteAdditionalOptionsView *)self returnKeyButton];
+  [returnKeyButton setEnabled:enableKeyboardButtons2];
 
-  v68 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
-  if ([v68 userInterfaceIdiom])
+  traitCollection2 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
+  if ([traitCollection2 userInterfaceIdiom])
   {
     goto LABEL_46;
   }
 
-  v69 = [MEMORY[0x1E696AAE8] mainBundle];
-  v70 = [v69 bundleIdentifier];
-  v71 = [v70 isEqualToString:@"com.apple.ScreenshotServicesService"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v71 = [bundleIdentifier isEqualToString:@"com.apple.ScreenshotServicesService"];
 
   if (!v71)
   {
@@ -750,35 +750,35 @@ void __48__PKPaletteAdditionalOptionsView_initWithFrame___block_invoke_5(uint64_
 
   if ((v72 & 1) == 0)
   {
-    v73 = [(PKPaletteAdditionalOptionsView *)self plusButton];
-    [v73 setOverrideUserInterfaceStyle:2];
+    plusButton = [(PKPaletteAdditionalOptionsView *)self plusButton];
+    [plusButton setOverrideUserInterfaceStyle:2];
 
-    v74 = [(PKPaletteAdditionalOptionsView *)self ellipsisButton];
-    [v74 setOverrideUserInterfaceStyle:2];
+    ellipsisButton = [(PKPaletteAdditionalOptionsView *)self ellipsisButton];
+    [ellipsisButton setOverrideUserInterfaceStyle:2];
 
-    v75 = [(PKPaletteAdditionalOptionsView *)self textButton];
-    [v75 setOverrideUserInterfaceStyle:2];
+    textButton2 = [(PKPaletteAdditionalOptionsView *)self textButton];
+    [textButton2 setOverrideUserInterfaceStyle:2];
 
-    v68 = [(PKPaletteAdditionalOptionsView *)self shapeButton];
-    [v68 setOverrideUserInterfaceStyle:2];
+    traitCollection2 = [(PKPaletteAdditionalOptionsView *)self shapeButton];
+    [traitCollection2 setOverrideUserInterfaceStyle:2];
 LABEL_46:
   }
 
-  v76 = [(PKPaletteAdditionalOptionsView *)self shouldShowFingerDrawsOption];
-  v77 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-  [v77 setShouldShowFingerDrawsOption:v76];
+  shouldShowFingerDrawsOption = [(PKPaletteAdditionalOptionsView *)self shouldShowFingerDrawsOption];
+  moreOptionsViewController = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+  [moreOptionsViewController setShouldShowFingerDrawsOption:shouldShowFingerDrawsOption];
 
-  v78 = [(PKPaletteAdditionalOptionsView *)self shouldShowTapToRadarOption];
-  v79 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-  [v79 setShouldShowTapToRadarOption:v78];
+  shouldShowTapToRadarOption = [(PKPaletteAdditionalOptionsView *)self shouldShowTapToRadarOption];
+  moreOptionsViewController2 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+  [moreOptionsViewController2 setShouldShowTapToRadarOption:shouldShowTapToRadarOption];
 
-  v80 = [(PKPaletteAdditionalOptionsView *)self shouldShowResetHandwritingEducationPane];
-  v81 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-  [v81 setShouldShowResetHandwritingEducationPane:v80];
+  shouldShowResetHandwritingEducationPane = [(PKPaletteAdditionalOptionsView *)self shouldShowResetHandwritingEducationPane];
+  moreOptionsViewController3 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+  [moreOptionsViewController3 setShouldShowResetHandwritingEducationPane:shouldShowResetHandwritingEducationPane];
 
-  v82 = [(PKPaletteAdditionalOptionsView *)self shouldAlwaysShowAutoRefineControls];
-  v83 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-  [v83 setShouldAlwaysShowAutoRefineControls:v82];
+  shouldAlwaysShowAutoRefineControls = [(PKPaletteAdditionalOptionsView *)self shouldAlwaysShowAutoRefineControls];
+  moreOptionsViewController4 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+  [moreOptionsViewController4 setShouldAlwaysShowAutoRefineControls:shouldAlwaysShowAutoRefineControls];
 }
 
 void __43__PKPaletteAdditionalOptionsView__updateUI__block_invoke_2(uint64_t a1)
@@ -956,22 +956,22 @@ void __43__PKPaletteAdditionalOptionsView__updateUI__block_invoke_2(uint64_t a1)
 - (id)_keyboardButtonGroupViewButtons
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
-  if (v3 == 2 || v3 == 8)
+  edgeLocation = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
+  if (edgeLocation == 2 || edgeLocation == 8)
   {
-    v4 = [(PKPaletteAdditionalOptionsView *)self returnKeyButton];
-    v10[0] = v4;
-    v5 = [(PKPaletteAdditionalOptionsView *)self keyboardButton];
-    v10[1] = v5;
+    returnKeyButton = [(PKPaletteAdditionalOptionsView *)self returnKeyButton];
+    v10[0] = returnKeyButton;
+    keyboardButton = [(PKPaletteAdditionalOptionsView *)self keyboardButton];
+    v10[1] = keyboardButton;
     v6 = v10;
   }
 
   else
   {
-    v4 = [(PKPaletteAdditionalOptionsView *)self keyboardButton];
-    v9[0] = v4;
-    v5 = [(PKPaletteAdditionalOptionsView *)self returnKeyButton];
-    v9[1] = v5;
+    returnKeyButton = [(PKPaletteAdditionalOptionsView *)self keyboardButton];
+    v9[0] = returnKeyButton;
+    keyboardButton = [(PKPaletteAdditionalOptionsView *)self returnKeyButton];
+    v9[1] = keyboardButton;
     v6 = v9;
   }
 
@@ -980,47 +980,47 @@ void __43__PKPaletteAdditionalOptionsView__updateUI__block_invoke_2(uint64_t a1)
   return v7;
 }
 
-- (void)setEdgeLocation:(unint64_t)a3
+- (void)setEdgeLocation:(unint64_t)location
 {
-  if (self->_edgeLocation != a3)
+  if (self->_edgeLocation != location)
   {
-    self->_edgeLocation = a3;
+    self->_edgeLocation = location;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
   scalingFactor = self->_scalingFactor;
-  if (scalingFactor != a3 && vabdd_f64(scalingFactor, a3) >= fabs(a3 * 0.000000999999997))
+  if (scalingFactor != factor && vabdd_f64(scalingFactor, factor) >= fabs(factor * 0.000000999999997))
   {
-    self->_scalingFactor = a3;
+    self->_scalingFactor = factor;
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 }
 
-- (void)_didSelectEllipsisButton:(id)a3
+- (void)_didSelectEllipsisButton:(id)button
 {
-  v93 = a3;
-  v4 = [(PKPaletteAdditionalOptionsView *)self palettePopoverPresenting];
-  v5 = [v4 palettePopoverPresentingController];
+  buttonCopy = button;
+  palettePopoverPresenting = [(PKPaletteAdditionalOptionsView *)self palettePopoverPresenting];
+  palettePopoverPresentingController = [palettePopoverPresenting palettePopoverPresentingController];
 
-  if (v5)
+  if (palettePopoverPresentingController)
   {
-    v6 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-    if (v6)
+    presentedPopoverViewController = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+    if (presentedPopoverViewController)
     {
-      v7 = v6;
-      if ([v6 isBeingPresented])
+      presentedPopoverViewController11 = presentedPopoverViewController;
+      if ([presentedPopoverViewController isBeingPresented])
       {
 
 LABEL_27:
         goto LABEL_28;
       }
 
-      v8 = [v7 isBeingDismissed];
+      isBeingDismissed = [presentedPopoverViewController11 isBeingDismissed];
 
-      if (v8)
+      if (isBeingDismissed)
       {
         goto LABEL_28;
       }
@@ -1029,64 +1029,64 @@ LABEL_27:
     v9 = objc_alloc_init(PKPaletteMoreOptionsViewController);
     [(PKPaletteAdditionalOptionsView *)self setMoreOptionsViewController:v9];
 
-    v10 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    [(PKPaletteAdditionalOptionsView *)self setPresentedPopoverViewController:v10];
+    moreOptionsViewController = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    [(PKPaletteAdditionalOptionsView *)self setPresentedPopoverViewController:moreOptionsViewController];
 
-    v11 = [(PKPaletteAdditionalOptionsView *)self shouldShowTapToRadarOption];
-    v12 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    [v12 setShouldShowTapToRadarOption:v11];
+    shouldShowTapToRadarOption = [(PKPaletteAdditionalOptionsView *)self shouldShowTapToRadarOption];
+    moreOptionsViewController2 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    [moreOptionsViewController2 setShouldShowTapToRadarOption:shouldShowTapToRadarOption];
 
-    v13 = [(PKPaletteAdditionalOptionsView *)self shouldShowResetHandwritingEducationPane];
-    v14 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    [v14 setShouldShowResetHandwritingEducationPane:v13];
+    shouldShowResetHandwritingEducationPane = [(PKPaletteAdditionalOptionsView *)self shouldShowResetHandwritingEducationPane];
+    moreOptionsViewController3 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    [moreOptionsViewController3 setShouldShowResetHandwritingEducationPane:shouldShowResetHandwritingEducationPane];
 
     v15 = PKCurrentDeviceSupportsPencil();
-    v16 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    [v16 setShouldShowOpenPencilSettingsOption:v15];
+    moreOptionsViewController4 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    [moreOptionsViewController4 setShouldShowOpenPencilSettingsOption:v15];
 
-    v17 = [(PKPaletteAdditionalOptionsView *)self isAutoHideOn];
-    v18 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    [v18 setAutoHideOn:v17];
+    isAutoHideOn = [(PKPaletteAdditionalOptionsView *)self isAutoHideOn];
+    moreOptionsViewController5 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    [moreOptionsViewController5 setAutoHideOn:isAutoHideOn];
 
-    v19 = [(PKPaletteAdditionalOptionsView *)self isFingerDrawsOn];
-    v20 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    [v20 setIsFingerDrawsOn:v19];
+    isFingerDrawsOn = [(PKPaletteAdditionalOptionsView *)self isFingerDrawsOn];
+    moreOptionsViewController6 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    [moreOptionsViewController6 setIsFingerDrawsOn:isFingerDrawsOn];
 
     [(PKPaletteAdditionalOptionsView *)self _updateMoreOptionsViewControllerAutoRefineState];
     [(PKPaletteAdditionalOptionsView *)self _updateMoreOptionsViewControllerProofreadingState];
-    v21 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
-    v22 = [(PKPaletteAdditionalOptionsView *)self window];
-    v23 = [v22 windowScene];
-    v24 = PKUseCompactSize(v21, v23);
-    v25 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    [v25 setShouldShowAutoMinimizeOption:!v24];
+    traitCollection = [(PKPaletteAdditionalOptionsView *)self traitCollection];
+    window = [(PKPaletteAdditionalOptionsView *)self window];
+    windowScene = [window windowScene];
+    v24 = PKUseCompactSize(traitCollection, windowScene);
+    moreOptionsViewController7 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    [moreOptionsViewController7 setShouldShowAutoMinimizeOption:!v24];
 
-    v26 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    [v26 setDelegate:self];
+    moreOptionsViewController8 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    [moreOptionsViewController8 setDelegate:self];
 
-    v27 = [(PKPaletteAdditionalOptionsView *)self shouldShowFingerDrawsOption];
-    v28 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    [v28 setShouldShowFingerDrawsOption:v27];
+    shouldShowFingerDrawsOption = [(PKPaletteAdditionalOptionsView *)self shouldShowFingerDrawsOption];
+    moreOptionsViewController9 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    [moreOptionsViewController9 setShouldShowFingerDrawsOption:shouldShowFingerDrawsOption];
 
-    v29 = [(PKPaletteAdditionalOptionsView *)self shouldAlwaysShowAutoRefineControls];
-    v30 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    [v30 setShouldAlwaysShowAutoRefineControls:v29];
+    shouldAlwaysShowAutoRefineControls = [(PKPaletteAdditionalOptionsView *)self shouldAlwaysShowAutoRefineControls];
+    moreOptionsViewController10 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    [moreOptionsViewController10 setShouldAlwaysShowAutoRefineControls:shouldAlwaysShowAutoRefineControls];
 
-    v31 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    v32 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
-    [v31 updateUIForTraitCollection:v32];
+    moreOptionsViewController11 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    traitCollection2 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
+    [moreOptionsViewController11 updateUIForTraitCollection:traitCollection2];
 
-    v33 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-    [v33 setModalPresentationStyle:7];
+    presentedPopoverViewController2 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+    [presentedPopoverViewController2 setModalPresentationStyle:7];
 
-    v34 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-    v35 = [v34 popoverPresentationController];
-    [v35 setDelegate:self];
+    presentedPopoverViewController3 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+    popoverPresentationController = [presentedPopoverViewController3 popoverPresentationController];
+    [popoverPresentationController setDelegate:self];
 
-    v36 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
-    v37 = [(PKPaletteAdditionalOptionsView *)self window];
-    v38 = [v37 windowScene];
-    if (PKUseCompactSize(v36, v38))
+    traitCollection3 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
+    window2 = [(PKPaletteAdditionalOptionsView *)self window];
+    windowScene2 = [window2 windowScene];
+    if (PKUseCompactSize(traitCollection3, windowScene2))
     {
       v39 = 2;
     }
@@ -1096,11 +1096,11 @@ LABEL_27:
       v39 = PKUIPopoverPermittedArrowDirectionsForEdge([(PKPaletteAdditionalOptionsView *)self edgeLocation]);
     }
 
-    v40 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-    v41 = [v40 popoverPresentationController];
-    [v41 setPermittedArrowDirections:v39];
+    presentedPopoverViewController4 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+    popoverPresentationController2 = [presentedPopoverViewController4 popoverPresentationController];
+    [popoverPresentationController2 setPermittedArrowDirections:v39];
 
-    [v93 bounds];
+    [buttonCopy bounds];
     v96 = CGRectInset(v95, -5.0, -5.0);
     x = v96.origin.x;
     y = v96.origin.y;
@@ -1108,28 +1108,28 @@ LABEL_27:
     height = v96.size.height;
     if (_UISolariumEnabled())
     {
-      [v93 bounds];
+      [buttonCopy bounds];
       v47 = v46;
       v49 = v48;
       v51 = v50;
       v53 = v52;
-      v54 = [(PKPaletteAdditionalOptionsView *)self palettePopoverPresenting];
-      v55 = [v54 palettePopoverClippingView];
+      palettePopoverPresenting2 = [(PKPaletteAdditionalOptionsView *)self palettePopoverPresenting];
+      palettePopoverClippingView = [palettePopoverPresenting2 palettePopoverClippingView];
 
-      [v55 frame];
+      [palettePopoverClippingView frame];
       v57 = v56;
       v59 = v58;
       v61 = v60;
       v63 = v62;
-      v64 = [v55 superview];
-      [v93 convertRect:v64 fromView:{v57, v59, v61, v63}];
+      superview = [palettePopoverClippingView superview];
+      [buttonCopy convertRect:superview fromView:{v57, v59, v61, v63}];
       v66 = v65;
       v68 = v67;
       v70 = v69;
       v72 = v71;
 
-      v73 = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
-      if (v73 == 8)
+      edgeLocation = [(PKPaletteAdditionalOptionsView *)self edgeLocation];
+      if (edgeLocation == 8)
       {
         v74 = v66;
       }
@@ -1139,7 +1139,7 @@ LABEL_27:
         v74 = v47;
       }
 
-      if (v73 == 8)
+      if (edgeLocation == 8)
       {
         v75 = v49;
       }
@@ -1149,7 +1149,7 @@ LABEL_27:
         v75 = v68;
       }
 
-      if (v73 == 8)
+      if (edgeLocation == 8)
       {
         v76 = v70;
       }
@@ -1159,7 +1159,7 @@ LABEL_27:
         v76 = v51;
       }
 
-      if (v73 == 8)
+      if (edgeLocation == 8)
       {
         v77 = v53;
       }
@@ -1169,7 +1169,7 @@ LABEL_27:
         v77 = v72;
       }
 
-      if (v73 == 2)
+      if (edgeLocation == 2)
       {
         v74 = v66;
         v75 = v49;
@@ -1182,41 +1182,41 @@ LABEL_27:
       y = v97.origin.y;
       width = v97.size.width;
       height = v97.size.height;
-      v78 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-      v79 = [v78 popoverPresentationController];
-      [v79 _setShouldHideArrow:1];
+      presentedPopoverViewController5 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+      popoverPresentationController3 = [presentedPopoverViewController5 popoverPresentationController];
+      [popoverPresentationController3 _setShouldHideArrow:1];
     }
 
-    v80 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-    v81 = [v80 popoverPresentationController];
-    [v81 setSourceRect:{x, y, width, height}];
+    presentedPopoverViewController6 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+    popoverPresentationController4 = [presentedPopoverViewController6 popoverPresentationController];
+    [popoverPresentationController4 setSourceRect:{x, y, width, height}];
 
-    v82 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-    v83 = [v82 popoverPresentationController];
-    [v83 setSourceView:v93];
+    presentedPopoverViewController7 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+    popoverPresentationController5 = [presentedPopoverViewController7 popoverPresentationController];
+    [popoverPresentationController5 setSourceView:buttonCopy];
 
-    v84 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-    v85 = [v84 popoverPresentationController];
-    [v85 _setShouldDisableInteractionDuringTransitions:0];
+    presentedPopoverViewController8 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+    popoverPresentationController6 = [presentedPopoverViewController8 popoverPresentationController];
+    [popoverPresentationController6 _setShouldDisableInteractionDuringTransitions:0];
 
-    v86 = [(PKPaletteAdditionalOptionsView *)self palettePopoverPresenting];
-    v87 = [v86 palettePopoverPassthroughViews];
-    v88 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-    v89 = [v88 popoverPresentationController];
-    [v89 setPassthroughViews:v87];
+    palettePopoverPresenting3 = [(PKPaletteAdditionalOptionsView *)self palettePopoverPresenting];
+    palettePopoverPassthroughViews = [palettePopoverPresenting3 palettePopoverPassthroughViews];
+    presentedPopoverViewController9 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+    popoverPresentationController7 = [presentedPopoverViewController9 popoverPresentationController];
+    [popoverPresentationController7 setPassthroughViews:palettePopoverPassthroughViews];
 
-    v90 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-    v91 = [v90 popoverPresentationController];
-    [v91 _setIgnoresKeyboardNotifications:1];
+    presentedPopoverViewController10 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+    popoverPresentationController8 = [presentedPopoverViewController10 popoverPresentationController];
+    [popoverPresentationController8 _setIgnoresKeyboardNotifications:1];
 
     [(PKPaletteAdditionalOptionsView *)self updatePopoverUI];
-    v92 = [(PKPaletteAdditionalOptionsView *)self palettePopoverPresenting];
-    LODWORD(v91) = [v92 shouldPalettePresentPopover];
+    palettePopoverPresenting4 = [(PKPaletteAdditionalOptionsView *)self palettePopoverPresenting];
+    LODWORD(popoverPresentationController8) = [palettePopoverPresenting4 shouldPalettePresentPopover];
 
-    if (v91)
+    if (popoverPresentationController8)
     {
-      v7 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-      [v5 presentViewController:v7 animated:1 completion:0];
+      presentedPopoverViewController11 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+      [palettePopoverPresentingController presentViewController:presentedPopoverViewController11 animated:1 completion:0];
       goto LABEL_27;
     }
   }
@@ -1226,35 +1226,35 @@ LABEL_28:
 
 - (void)updatePopoverUI
 {
-  v4 = [(PKPaletteAdditionalOptionsView *)self palettePopoverPresenting];
-  v3 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-  [v4 updatePalettePopover:v3];
+  palettePopoverPresenting = [(PKPaletteAdditionalOptionsView *)self palettePopoverPresenting];
+  presentedPopoverViewController = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+  [palettePopoverPresenting updatePalettePopover:presentedPopoverViewController];
 }
 
 - (void)_updateMoreOptionsViewControllerAutoRefineState
 {
   v3 = +[PKSettingsDaemon autoRefineEnabled];
-  v4 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-  [v4 setIsAutoRefineOn:v3];
+  moreOptionsViewController = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+  [moreOptionsViewController setIsAutoRefineOn:v3];
 }
 
 - (void)_updateMoreOptionsViewControllerProofreadingState
 {
   v3 = +[PKSettingsDaemon proofreadingEnabled];
-  v4 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-  [v4 setIsProofreadingOn:v3];
+  moreOptionsViewController = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+  [moreOptionsViewController setIsProofreadingOn:v3];
 }
 
-- (void)moreOptionsViewControllerDidToggleAutoHide:(id)a3
+- (void)moreOptionsViewControllerDidToggleAutoHide:(id)hide
 {
-  -[PKPaletteAdditionalOptionsView setAutoHideOn:](self, "setAutoHideOn:", [a3 isAutoHideOn]);
-  v4 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+  -[PKPaletteAdditionalOptionsView setAutoHideOn:](self, "setAutoHideOn:", [hide isAutoHideOn]);
+  moreOptionsViewController = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __77__PKPaletteAdditionalOptionsView_moreOptionsViewControllerDidToggleAutoHide___block_invoke;
   v5[3] = &unk_1E82D7148;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [moreOptionsViewController dismissViewControllerAnimated:1 completion:v5];
 }
 
 void __77__PKPaletteAdditionalOptionsView_moreOptionsViewControllerDidToggleAutoHide___block_invoke(uint64_t a1)
@@ -1263,17 +1263,17 @@ void __77__PKPaletteAdditionalOptionsView_moreOptionsViewControllerDidToggleAuto
   [v2 additionalOptionsView:*(a1 + 32) didToggleAutoHideOption:{objc_msgSend(*(a1 + 32), "isAutoHideOn")}];
 }
 
-- (void)moreOptionsViewControllerDidToggleFingerDraws:(id)a3
+- (void)moreOptionsViewControllerDidToggleFingerDraws:(id)draws
 {
-  v4 = [a3 isFingerDrawsOn];
-  v5 = v4;
-  [(PKPaletteAdditionalOptionsView *)self setIsFingerDrawsOn:v4];
+  isFingerDrawsOn = [draws isFingerDrawsOn];
+  v5 = isFingerDrawsOn;
+  [(PKPaletteAdditionalOptionsView *)self setIsFingerDrawsOn:isFingerDrawsOn];
   [PKSettingsDaemon setPrefersPencilOnlyDrawing:v5 ^ 1u];
   v6 = +[PKStatisticsManager sharedStatisticsManager];
   [PKStatisticsManager recordDrawWithFingerToggle:v6];
 }
 
-- (void)moreOptionsViewControllerDidSelectOpenPencilSettings:(id)a3
+- (void)moreOptionsViewControllerDidSelectOpenPencilSettings:(id)settings
 {
   self->_didTapOnPencilSettings = 1;
   +[PKSettingsDaemon openPencilPreferences];
@@ -1281,15 +1281,15 @@ void __77__PKPaletteAdditionalOptionsView_moreOptionsViewControllerDidToggleAuto
   [(PKStatisticsManager *)v3 recordJumpToSettings];
 }
 
-- (void)moreOptionsViewControllerDidSelectTapToRadar:(id)a3
+- (void)moreOptionsViewControllerDidSelectTapToRadar:(id)radar
 {
-  v4 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+  moreOptionsViewController = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __79__PKPaletteAdditionalOptionsView_moreOptionsViewControllerDidSelectTapToRadar___block_invoke;
   v5[3] = &unk_1E82D7148;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [moreOptionsViewController dismissViewControllerAnimated:1 completion:v5];
 }
 
 void __79__PKPaletteAdditionalOptionsView_moreOptionsViewControllerDidSelectTapToRadar___block_invoke(uint64_t a1)
@@ -1298,93 +1298,93 @@ void __79__PKPaletteAdditionalOptionsView_moreOptionsViewControllerDidSelectTapT
   [v2 additionalOptionsViewDidPressTapToRadarButton:*(a1 + 32)];
 }
 
-- (void)moreOptionsViewControllerDidToggleAutoRefine:(id)a3
+- (void)moreOptionsViewControllerDidToggleAutoRefine:(id)refine
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  refineCopy = refine;
   v4 = os_log_create("com.apple.pencilkit", "PKPaletteAdditionalOptionsView");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5[0] = 67109120;
-    v5[1] = [v3 isAutoRefineOn];
+    v5[1] = [refineCopy isAutoRefineOn];
     _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Did toggle AutoRefine to %{BOOL}d", v5, 8u);
   }
 
-  +[PKSettingsDaemon setAutoRefineEnabled:](PKSettingsDaemon, "setAutoRefineEnabled:", [v3 isAutoRefineOn]);
+  +[PKSettingsDaemon setAutoRefineEnabled:](PKSettingsDaemon, "setAutoRefineEnabled:", [refineCopy isAutoRefineOn]);
 }
 
-- (void)moreOptionsViewControllerDidToggleProofreading:(id)a3
+- (void)moreOptionsViewControllerDidToggleProofreading:(id)proofreading
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  proofreadingCopy = proofreading;
   v4 = os_log_create("com.apple.pencilkit", "PKPaletteAdditionalOptionsView");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5[0] = 67109120;
-    v5[1] = [v3 isProofreadingOn];
+    v5[1] = [proofreadingCopy isProofreadingOn];
     _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Did toggle Proofreading to %{BOOL}d", v5, 8u);
   }
 
-  +[PKSettingsDaemon setProofreadingEnabled:](PKSettingsDaemon, "setProofreadingEnabled:", [v3 isProofreadingOn]);
+  +[PKSettingsDaemon setProofreadingEnabled:](PKSettingsDaemon, "setProofreadingEnabled:", [proofreadingCopy isProofreadingOn]);
 }
 
-- (void)moreOptionsViewControllerDidSelectResetHandwritingEducationPane:(id)a3
+- (void)moreOptionsViewControllerDidSelectResetHandwritingEducationPane:(id)pane
 {
   +[PKWelcomeController resetEducationPane];
-  v4 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  moreOptionsViewController = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+  [moreOptionsViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = PKPaletteAdditionalOptionsView;
-  [(PKPaletteAdditionalOptionsView *)&v13 traitCollectionDidChange:v4];
-  v5 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
-  v6 = [v5 horizontalSizeClass];
-  v7 = [v4 horizontalSizeClass];
+  [(PKPaletteAdditionalOptionsView *)&v13 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPaletteAdditionalOptionsView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-  if (v6 != v7)
+  if (horizontalSizeClass != horizontalSizeClass2)
   {
-    v8 = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
-    v9 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
-    [v8 updateUIForTraitCollection:v9];
+    moreOptionsViewController = [(PKPaletteAdditionalOptionsView *)self moreOptionsViewController];
+    traitCollection2 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
+    [moreOptionsViewController updateUIForTraitCollection:traitCollection2];
 
     [(PKPaletteAdditionalOptionsView *)self _updateUI];
   }
 
-  v10 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
-  v11 = [v10 userInterfaceStyle];
-  v12 = [v4 userInterfaceStyle];
+  traitCollection3 = [(PKPaletteAdditionalOptionsView *)self traitCollection];
+  userInterfaceStyle = [traitCollection3 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v11 != v12)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(PKPaletteAdditionalOptionsView *)self updatePopoverUI];
   }
 }
 
-- (void)dismissPalettePopoverWithCompletion:(id)a3
+- (void)dismissPalettePopoverWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+  completionCopy = completion;
+  presentedPopoverViewController = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
 
-  if (v4)
+  if (presentedPopoverViewController)
   {
-    v5 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
-    [v5 dismissViewControllerAnimated:1 completion:v6];
+    presentedPopoverViewController2 = [(PKPaletteAdditionalOptionsView *)self presentedPopoverViewController];
+    [presentedPopoverViewController2 dismissViewControllerAnimated:1 completion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2]();
+    completionCopy[2]();
   }
 }
 
 - (CGRect)plusButtonFrame
 {
-  v2 = [(PKPaletteAdditionalOptionsView *)self plusButton];
-  [v2 frame];
+  plusButton = [(PKPaletteAdditionalOptionsView *)self plusButton];
+  [plusButton frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1403,25 +1403,25 @@ void __79__PKPaletteAdditionalOptionsView_moreOptionsViewControllerDidSelectTapT
 
 - (void)_handleKeyboardButton
 {
-  v3 = [(PKPaletteAdditionalOptionsView *)self delegate];
+  delegate = [(PKPaletteAdditionalOptionsView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PKPaletteAdditionalOptionsView *)self delegate];
-    [v5 additionalOptionsViewDidPressKeyboardButton:self];
+    delegate2 = [(PKPaletteAdditionalOptionsView *)self delegate];
+    [delegate2 additionalOptionsViewDidPressKeyboardButton:self];
   }
 }
 
 - (void)_handleReturnKeyButton
 {
-  v3 = [(PKPaletteAdditionalOptionsView *)self delegate];
+  delegate = [(PKPaletteAdditionalOptionsView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PKPaletteAdditionalOptionsView *)self delegate];
-    [v5 additionalOptionsViewDidPressReturnKeyButton:self];
+    delegate2 = [(PKPaletteAdditionalOptionsView *)self delegate];
+    [delegate2 additionalOptionsViewDidPressReturnKeyButton:self];
   }
 }
 

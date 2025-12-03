@@ -1,6 +1,6 @@
 @interface SBSyncServiceIDSDelegate
 - (SBSyncServiceIDSDelegate)init;
-- (void)completeSetupWithResponseParameters:(id)a3 handler:(id)a4;
+- (void)completeSetupWithResponseParameters:(id)parameters handler:(id)handler;
 - (void)setupOperationFailed;
 @end
 
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (void)completeSetupWithResponseParameters:(id)a3 handler:(id)a4
+- (void)completeSetupWithResponseParameters:(id)parameters handler:(id)handler
 {
   v6 = +[IMRGLog registration];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -32,13 +32,13 @@
   }
 
   IDSAuthenticationDelegatePrintLoginDelegatesBag();
-  [a4 copy];
+  [handler copy];
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_F14;
   block[3] = &unk_4148;
-  block[4] = a3;
+  block[4] = parameters;
   dispatch_async(global_queue, block);
   v8 = +[IMRGLog registration];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))

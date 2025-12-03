@@ -1,9 +1,9 @@
 @interface KTVerifierResult
-+ (id)resultsForUris:(id)a3 application:(id)a4 failure:(id)a5;
++ (id)resultsForUris:(id)uris application:(id)application failure:(id)failure;
 - (BOOL)sentToIDS;
-- (KTVerifierResult)initWithUri:(id)a3 application:(id)a4 ktResult:(unint64_t)a5 transparentData:(id)a6 loggableDatas:(id)a7;
+- (KTVerifierResult)initWithUri:(id)uri application:(id)application ktResult:(unint64_t)result transparentData:(id)data loggableDatas:(id)datas;
 - (unint64_t)optInTernaryState;
-- (void)setOptInTernaryState:(unint64_t)a3;
+- (void)setOptInTernaryState:(unint64_t)state;
 @end
 
 @implementation KTVerifierResult
@@ -11,36 +11,36 @@
 - (unint64_t)optInTernaryState
 {
   v2 = objc_getAssociatedObject(self, @"optInKey");
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setOptInTernaryState:(unint64_t)a3
+- (void)setOptInTernaryState:(unint64_t)state
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:state];
   objc_setAssociatedObject(self, @"optInKey", v4, 1);
 }
 
 - (BOOL)sentToIDS
 {
   v2 = objc_getAssociatedObject(self, @"sentToIdsKey");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-+ (id)resultsForUris:(id)a3 application:(id)a4 failure:(id)a5
++ (id)resultsForUris:(id)uris application:(id)application failure:(id)failure
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+  urisCopy = uris;
+  applicationCopy = application;
+  failureCopy = failure;
+  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [urisCopy count]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v7;
+  v11 = urisCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -57,7 +57,7 @@
 
         v16 = *(*(&v20 + 1) + 8 * i);
         v17 = [KTVerifierResult alloc];
-        v18 = [v17 initWithUri:v16 application:v8 failure:{v9, v20}];
+        v18 = [v17 initWithUri:v16 application:applicationCopy failure:{failureCopy, v20}];
         [v10 addObject:v18];
       }
 
@@ -70,26 +70,26 @@
   return v10;
 }
 
-- (KTVerifierResult)initWithUri:(id)a3 application:(id)a4 ktResult:(unint64_t)a5 transparentData:(id)a6 loggableDatas:(id)a7
+- (KTVerifierResult)initWithUri:(id)uri application:(id)application ktResult:(unint64_t)result transparentData:(id)data loggableDatas:(id)datas
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = [(KTVerifierResult *)self initWithUri:a3 application:a4 ktResult:a5];
+  dataCopy = data;
+  datasCopy = datas;
+  v14 = [(KTVerifierResult *)self initWithUri:uri application:application ktResult:result];
   if (v14)
   {
-    v15 = [v12 currentPublicID];
-    [(KTVerifierResult *)v14 setPublicID:v15];
+    currentPublicID = [dataCopy currentPublicID];
+    [(KTVerifierResult *)v14 setPublicID:currentPublicID];
 
-    -[KTVerifierResult setStaticAccountKeyEnforced:](v14, "setStaticAccountKeyEnforced:", [v12 staticKeyEnforced]);
-    -[KTVerifierResult setStaticAccountKeyStatus:](v14, "setStaticAccountKeyStatus:", [v12 staticKeyStatus]);
-    v16 = [v12 currentPublicID];
-    v17 = [v16 publicKeyInfo];
+    -[KTVerifierResult setStaticAccountKeyEnforced:](v14, "setStaticAccountKeyEnforced:", [dataCopy staticKeyEnforced]);
+    -[KTVerifierResult setStaticAccountKeyStatus:](v14, "setStaticAccountKeyStatus:", [dataCopy staticKeyStatus]);
+    currentPublicID2 = [dataCopy currentPublicID];
+    publicKeyInfo = [currentPublicID2 publicKeyInfo];
 
-    -[KTVerifierResult setEverOptedIn:](v14, "setEverOptedIn:", [v12 accountEverOptedIn:v17] == 1);
-    -[KTVerifierResult setRecentlyOptedIn:](v14, "setRecentlyOptedIn:", [v12 accountRecentlyOptedIn:v17] == 1);
-    -[KTVerifierResult setOptedIn:](v14, "setOptedIn:", [v12 currentAccountOptInState] == 1);
-    -[KTVerifierResult setOptInTernaryState:](v14, "setOptInTernaryState:", [v12 currentAccountOptInState]);
-    [(KTVerifierResult *)v14 setLoggableDatas:v13];
+    -[KTVerifierResult setEverOptedIn:](v14, "setEverOptedIn:", [dataCopy accountEverOptedIn:publicKeyInfo] == 1);
+    -[KTVerifierResult setRecentlyOptedIn:](v14, "setRecentlyOptedIn:", [dataCopy accountRecentlyOptedIn:publicKeyInfo] == 1);
+    -[KTVerifierResult setOptedIn:](v14, "setOptedIn:", [dataCopy currentAccountOptInState] == 1);
+    -[KTVerifierResult setOptInTernaryState:](v14, "setOptInTernaryState:", [dataCopy currentAccountOptInState]);
+    [(KTVerifierResult *)v14 setLoggableDatas:datasCopy];
   }
 
   return v14;

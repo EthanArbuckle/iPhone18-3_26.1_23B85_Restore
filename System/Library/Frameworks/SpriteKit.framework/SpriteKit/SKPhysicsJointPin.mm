@@ -11,11 +11,11 @@
   x = anchor.x;
   v8 = bodyA;
   v9 = bodyB;
-  v10 = [(SKPhysicsBody *)v8 node];
-  [v10 updatePhysicsPositionAndScaleFromSprite];
+  node = [(SKPhysicsBody *)v8 node];
+  [node updatePhysicsPositionAndScaleFromSprite];
 
-  v11 = [(SKPhysicsBody *)v9 node];
-  [v11 updatePhysicsPositionAndScaleFromSprite];
+  node2 = [(SKPhysicsBody *)v9 node];
+  [node2 updatePhysicsPositionAndScaleFromSprite];
 
   v12 = [MEMORY[0x277D3D158] jointWithBodyA:v8 bodyB:v9 anchor:{x, y}];
 

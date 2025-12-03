@@ -1,56 +1,56 @@
 @interface _OUFrame
-- (_OUFrame)initWithDictionary:(id)a3;
-- (_OUFrame)initWithFrame:(id)a3;
+- (_OUFrame)initWithDictionary:(id)dictionary;
+- (_OUFrame)initWithFrame:(id)frame;
 - (__CVBuffer)GetSceneColorBufferBGRA;
-- (__n128)initWithSceneYUV:(__n128)a3 sceneDepth:(__n128)a4 referenceOriginTranform:(__n128)a5 OUCamera:(uint64_t)a6;
+- (__n128)initWithSceneYUV:(__n128)v sceneDepth:(__n128)depth referenceOriginTranform:(__n128)tranform OUCamera:(uint64_t)camera;
 - (__n128)referenceOriginTransform;
-- (__n128)setReferenceOriginTransform:(__n128)a3;
+- (__n128)setReferenceOriginTransform:(__n128)transform;
 - (__n64)GetSceneRgbToDepthRatio;
 - (double)GetCameraPoseInVisionWorld;
 - (double)GetProjectionMatrixInVisionWorld;
 - (double)GetSceneCameraPoseInVisionWorld;
 - (double)GetSceneCameraProjectionMatrixInVisionWorld;
-- (id)LoadDepth:(id)a3;
-- (id)LoadLabel:(id)a3;
-- (id)LoadRgb:(id)a3;
-- (id)LoadVote:(id)a3;
+- (id)LoadDepth:(id)depth;
+- (id)LoadLabel:(id)label;
+- (id)LoadRgb:(id)rgb;
+- (id)LoadVote:(id)vote;
 - (void)ReleaseBuffer;
 - (void)dealloc;
 @end
 
 @implementation _OUFrame
 
-- (_OUFrame)initWithFrame:(id)a3
+- (_OUFrame)initWithFrame:(id)frame
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  frameCopy = frame;
   v24.receiver = self;
   v24.super_class = _OUFrame;
   v5 = [(_OUFrame *)&v24 init];
   if (v5)
   {
-    [v4 timestamp];
+    [frameCopy timestamp];
     v5->_timestamp = v6;
-    v7 = [v4 camera];
+    camera = [frameCopy camera];
     camera = v5->_camera;
-    v5->_camera = v7;
+    v5->_camera = camera;
 
-    [v4 referenceOriginTransform];
+    [frameCopy referenceOriginTransform];
     *&v5[1].super.isa = v9;
     *&v5[1]._timestamp = v10;
     *&v5[1]._colorBuffer = v11;
     *&v5[1]._sceneColorBuffer = v12;
-    v5->_colorBuffer = CVPixelBufferRetain([v4 colorBuffer]);
-    v13 = [v4 sceneCamera];
+    v5->_colorBuffer = CVPixelBufferRetain([frameCopy colorBuffer]);
+    sceneCamera = [frameCopy sceneCamera];
     sceneCamera = v5->_sceneCamera;
-    v5->_sceneCamera = v13;
+    v5->_sceneCamera = sceneCamera;
 
-    v5->_sceneColorBuffer = CVPixelBufferRetain([v4 sceneColorBuffer]);
-    v5->_sceneDepthBuffer = CVPixelBufferRetain([v4 sceneDepthBuffer]);
-    v5->_sceneDepthConfidenceBuffer = CVPixelBufferRetain([v4 sceneDepthConfidenceBuffer]);
-    v5->_semanticLabelBuffer = CVPixelBufferRetain([v4 semanticLabelBuffer]);
-    v5->_semanticConfidenceBuffer = CVPixelBufferRetain([v4 semanticConfidenceBuffer]);
-    v5->_deviceOrientation = [v4 deviceOrientation];
+    v5->_sceneColorBuffer = CVPixelBufferRetain([frameCopy sceneColorBuffer]);
+    v5->_sceneDepthBuffer = CVPixelBufferRetain([frameCopy sceneDepthBuffer]);
+    v5->_sceneDepthConfidenceBuffer = CVPixelBufferRetain([frameCopy sceneDepthConfidenceBuffer]);
+    v5->_semanticLabelBuffer = CVPixelBufferRetain([frameCopy semanticLabelBuffer]);
+    v5->_semanticConfidenceBuffer = CVPixelBufferRetain([frameCopy semanticConfidenceBuffer]);
+    v5->_deviceOrientation = [frameCopy deviceOrientation];
     v5->_semanticLabelBufferOnWideCamera = 0;
     v5->sceneColorBufferBGRA = 0;
     v15 = _OULoggingGetOSLogForCategoryObjectUnderstanding();
@@ -82,10 +82,10 @@
   return v5;
 }
 
-- (_OUFrame)initWithDictionary:(id)a3
+- (_OUFrame)initWithDictionary:(id)dictionary
 {
   v103[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v101.receiver = self;
   v101.super_class = _OUFrame;
   v5 = [(_OUFrame *)&v101 init];
@@ -94,54 +94,54 @@
     goto LABEL_36;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"timestamp"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
   [v6 doubleValue];
   *(v5 + 2) = v7;
 
-  v8 = [v4 objectForKeyedSubscript:@"reference_origin_transform"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"reference_origin_transform"];
   LOBYTE(v6) = v8 == 0;
 
   if ((v6 & 1) == 0)
   {
-    v9 = [v4 objectForKeyedSubscript:@"reference_origin_transform"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"reference_origin_transform"];
     float4x4FromNSArray(v9, (v5 + 112));
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"vio_tracking_state"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"vio_tracking_state"];
   v11 = v10 == 0;
 
   if (!v11)
   {
-    v12 = [v4 objectForKeyedSubscript:@"vio_tracking_state"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"vio_tracking_state"];
     *(v5 + 11) = [v12 intValue];
   }
 
-  v13 = [v4 objectForKeyedSubscript:@"device_orientation"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"device_orientation"];
   v14 = v13 == 0;
 
   if (!v14)
   {
-    v15 = [v4 objectForKeyedSubscript:@"device_orientation"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"device_orientation"];
     *(v5 + 12) = [v15 intValue];
   }
 
-  v16 = [v4 objectForKeyedSubscript:@"camera"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"camera"];
   v17 = v16 == 0;
 
   if (!v17)
   {
-    v18 = [v4 objectForKeyedSubscript:@"camera"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"camera"];
     v19 = OUCameraFromDictionary(v18);
     v20 = *(v5 + 3);
     *(v5 + 3) = v19;
   }
 
-  v21 = [v4 objectForKeyedSubscript:@"scene_camera"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"scene_camera"];
   v22 = v21 == 0;
 
   if (!v22)
   {
-    v23 = [v4 objectForKeyedSubscript:@"scene_camera"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"scene_camera"];
     v24 = OUCameraFromDictionary(v23);
     v25 = *(v5 + 5);
     *(v5 + 5) = v24;
@@ -150,24 +150,24 @@
   v102 = *MEMORY[0x277CC4DE8];
   v103[0] = MEMORY[0x277CBEC10];
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v103 forKeys:&v102 count:1];
-  v27 = [v4 objectForKeyedSubscript:@"color_buffer"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"color_buffer"];
   v28 = v27 == 0;
 
   v29 = MEMORY[0x277CBECE8];
   if (!v28)
   {
-    v30 = [v4 objectForKeyedSubscript:@"color_width"];
-    v31 = [v30 unsignedIntegerValue];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"color_width"];
+    unsignedIntegerValue = [v30 unsignedIntegerValue];
 
-    v32 = [v4 objectForKeyedSubscript:@"color_height"];
-    v33 = [v32 unsignedIntegerValue];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"color_height"];
+    unsignedIntegerValue2 = [v32 unsignedIntegerValue];
 
-    if (CVPixelBufferCreate(*v29, v31, v33, 0x34323066u, v26, v5 + 4))
+    if (CVPixelBufferCreate(*v29, unsignedIntegerValue, unsignedIntegerValue2, 0x34323066u, v26, v5 + 4))
     {
       goto LABEL_33;
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"color_buffer"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"color_buffer"];
     CVPixelBufferLockBaseAddress(*(v5 + 4), 0);
     BaseAddress = CVPixelBufferGetBaseAddress(*(v5 + 4));
     DataSize = CVPixelBufferGetDataSize(*(v5 + 4));
@@ -176,23 +176,23 @@
     CVPixelBufferUnlockBaseAddress(*(v5 + 4), 0);
   }
 
-  v38 = [v4 objectForKeyedSubscript:@"scene_color_buffer"];
+  v38 = [dictionaryCopy objectForKeyedSubscript:@"scene_color_buffer"];
   v39 = v38 == 0;
 
   if (!v39)
   {
-    v40 = [v4 objectForKeyedSubscript:@"scene_color_width"];
-    v41 = [v40 unsignedIntegerValue];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"scene_color_width"];
+    unsignedIntegerValue3 = [v40 unsignedIntegerValue];
 
-    v42 = [v4 objectForKeyedSubscript:@"scene_color_height"];
-    v43 = [v42 unsignedIntegerValue];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"scene_color_height"];
+    unsignedIntegerValue4 = [v42 unsignedIntegerValue];
 
-    if (CVPixelBufferCreate(*v29, v41, v43, 0x34323066u, v26, v5 + 6))
+    if (CVPixelBufferCreate(*v29, unsignedIntegerValue3, unsignedIntegerValue4, 0x34323066u, v26, v5 + 6))
     {
       goto LABEL_33;
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"scene_color_buffer"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"scene_color_buffer"];
     CVPixelBufferLockBaseAddress(*(v5 + 6), 0);
     v45 = CVPixelBufferGetBaseAddress(*(v5 + 6));
     v46 = CVPixelBufferGetDataSize(*(v5 + 6));
@@ -201,7 +201,7 @@
     CVPixelBufferUnlockBaseAddress(*(v5 + 6), 0);
   }
 
-  v48 = [v4 objectForKeyedSubscript:@"scene_color_buffer_bgra"];
+  v48 = [dictionaryCopy objectForKeyedSubscript:@"scene_color_buffer_bgra"];
   v49 = v48 == 0;
 
   if (v49)
@@ -211,18 +211,18 @@
 
   else
   {
-    v50 = [v4 objectForKeyedSubscript:@"scene_color_width"];
-    v51 = [v50 unsignedIntegerValue];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"scene_color_width"];
+    unsignedIntegerValue5 = [v50 unsignedIntegerValue];
 
-    v52 = [v4 objectForKeyedSubscript:@"scene_color_height"];
-    v53 = [v52 unsignedIntegerValue];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"scene_color_height"];
+    unsignedIntegerValue6 = [v52 unsignedIntegerValue];
 
-    if (CVPixelBufferCreate(*v29, v51, v53, 0x42475241u, v26, v5 + 1))
+    if (CVPixelBufferCreate(*v29, unsignedIntegerValue5, unsignedIntegerValue6, 0x42475241u, v26, v5 + 1))
     {
       goto LABEL_33;
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"scene_color_buffer_bgra"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"scene_color_buffer_bgra"];
     CVPixelBufferLockBaseAddress(*(v5 + 1), 0);
     v55 = CVPixelBufferGetBaseAddress(*(v5 + 1));
     v56 = CVPixelBufferGetDataSize(*(v5 + 1));
@@ -231,23 +231,23 @@
     CVPixelBufferUnlockBaseAddress(*(v5 + 1), 0);
   }
 
-  v58 = [v4 objectForKeyedSubscript:@"semantic_label_buffer"];
+  v58 = [dictionaryCopy objectForKeyedSubscript:@"semantic_label_buffer"];
   v59 = v58 == 0;
 
   if (!v59)
   {
-    v60 = [v4 objectForKeyedSubscript:@"semantic_label_width"];
-    v61 = [v60 unsignedIntegerValue];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"semantic_label_width"];
+    unsignedIntegerValue7 = [v60 unsignedIntegerValue];
 
-    v62 = [v4 objectForKeyedSubscript:@"semantic_label_height"];
-    v63 = [v62 unsignedIntegerValue];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"semantic_label_height"];
+    unsignedIntegerValue8 = [v62 unsignedIntegerValue];
 
-    if (CVPixelBufferCreate(*v29, v61, v63, 0x4C303038u, v26, v5 + 9))
+    if (CVPixelBufferCreate(*v29, unsignedIntegerValue7, unsignedIntegerValue8, 0x4C303038u, v26, v5 + 9))
     {
       goto LABEL_33;
     }
 
-    v64 = [v4 objectForKeyedSubscript:@"semantic_label_buffer"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"semantic_label_buffer"];
     CVPixelBufferLockBaseAddress(*(v5 + 9), 0);
     v65 = CVPixelBufferGetBaseAddress(*(v5 + 9));
     v66 = CVPixelBufferGetDataSize(*(v5 + 9));
@@ -256,23 +256,23 @@
     CVPixelBufferUnlockBaseAddress(*(v5 + 9), 0);
   }
 
-  v68 = [v4 objectForKeyedSubscript:@"semantic_confidence_buffer"];
+  v68 = [dictionaryCopy objectForKeyedSubscript:@"semantic_confidence_buffer"];
   v69 = v68 == 0;
 
   if (!v69)
   {
-    v70 = [v4 objectForKeyedSubscript:@"semantic_confidence_width"];
-    v71 = [v70 unsignedIntegerValue];
+    v70 = [dictionaryCopy objectForKeyedSubscript:@"semantic_confidence_width"];
+    unsignedIntegerValue9 = [v70 unsignedIntegerValue];
 
-    v72 = [v4 objectForKeyedSubscript:@"semantic_confidence_height"];
-    v73 = [v72 unsignedIntegerValue];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"semantic_confidence_height"];
+    unsignedIntegerValue10 = [v72 unsignedIntegerValue];
 
-    if (CVPixelBufferCreate(*v29, v71, v73, 0x4C303066u, v26, v5 + 10))
+    if (CVPixelBufferCreate(*v29, unsignedIntegerValue9, unsignedIntegerValue10, 0x4C303066u, v26, v5 + 10))
     {
       goto LABEL_33;
     }
 
-    v74 = [v4 objectForKeyedSubscript:@"semantic_confidence_buffer"];
+    v74 = [dictionaryCopy objectForKeyedSubscript:@"semantic_confidence_buffer"];
     CVPixelBufferLockBaseAddress(*(v5 + 10), 0);
     v75 = CVPixelBufferGetBaseAddress(*(v5 + 10));
     v76 = CVPixelBufferGetDataSize(*(v5 + 10));
@@ -281,29 +281,29 @@
     CVPixelBufferUnlockBaseAddress(*(v5 + 10), 0);
   }
 
-  v78 = [v4 objectForKeyedSubscript:@"scene_depth_buffer"];
+  v78 = [dictionaryCopy objectForKeyedSubscript:@"scene_depth_buffer"];
   v79 = v78 == 0;
 
   if (v79)
   {
 LABEL_31:
-    v88 = [v4 objectForKeyedSubscript:@"scene_depth_confidence_buffer"];
+    v88 = [dictionaryCopy objectForKeyedSubscript:@"scene_depth_confidence_buffer"];
     v89 = v88 == 0;
 
     if (!v89)
     {
-      v90 = [v4 objectForKeyedSubscript:@"scene_depth_confidence_width"];
-      v91 = [v90 unsignedIntegerValue];
+      v90 = [dictionaryCopy objectForKeyedSubscript:@"scene_depth_confidence_width"];
+      unsignedIntegerValue11 = [v90 unsignedIntegerValue];
 
-      v92 = [v4 objectForKeyedSubscript:@"scene_depth_confidence_height"];
-      v93 = [v92 unsignedIntegerValue];
+      v92 = [dictionaryCopy objectForKeyedSubscript:@"scene_depth_confidence_height"];
+      unsignedIntegerValue12 = [v92 unsignedIntegerValue];
 
-      if (CVPixelBufferCreate(*v29, v91, v93, 0x66646570u, v26, v5 + 8))
+      if (CVPixelBufferCreate(*v29, unsignedIntegerValue11, unsignedIntegerValue12, 0x66646570u, v26, v5 + 8))
       {
         goto LABEL_33;
       }
 
-      v95 = [v4 objectForKeyedSubscript:@"scene_depth_confidence_buffer"];
+      v95 = [dictionaryCopy objectForKeyedSubscript:@"scene_depth_confidence_buffer"];
       CVPixelBufferLockBaseAddress(*(v5 + 8), 0);
       v96 = CVPixelBufferGetBaseAddress(*(v5 + 8));
       v97 = CVPixelBufferGetDataSize(*(v5 + 8));
@@ -317,15 +317,15 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v80 = [v4 objectForKeyedSubscript:@"scene_depth_width"];
-  v81 = [v80 unsignedIntegerValue];
+  v80 = [dictionaryCopy objectForKeyedSubscript:@"scene_depth_width"];
+  unsignedIntegerValue13 = [v80 unsignedIntegerValue];
 
-  v82 = [v4 objectForKeyedSubscript:@"scene_depth_height"];
-  v83 = [v82 unsignedIntegerValue];
+  v82 = [dictionaryCopy objectForKeyedSubscript:@"scene_depth_height"];
+  unsignedIntegerValue14 = [v82 unsignedIntegerValue];
 
-  if (!CVPixelBufferCreate(*v29, v81, v83, 0x66646570u, v26, v5 + 7))
+  if (!CVPixelBufferCreate(*v29, unsignedIntegerValue13, unsignedIntegerValue14, 0x66646570u, v26, v5 + 7))
   {
-    v84 = [v4 objectForKeyedSubscript:@"scene_depth_buffer"];
+    v84 = [dictionaryCopy objectForKeyedSubscript:@"scene_depth_buffer"];
     CVPixelBufferLockBaseAddress(*(v5 + 7), 0);
     v85 = CVPixelBufferGetBaseAddress(*(v5 + 7));
     v86 = CVPixelBufferGetDataSize(*(v5 + 7));
@@ -418,7 +418,7 @@ LABEL_37:
   v20 = *algn_28155B050;
   v14 = unk_28155B070;
   v16 = xmmword_28155B060;
-  v27 = __invert_f4(*(a1 + 112));
+  v27 = __invert_f4(*(self + 112));
   v2 = 0;
   v22 = v27;
   do
@@ -432,7 +432,7 @@ LABEL_37:
   v21 = v24;
   v15 = v26;
   v17 = v25;
-  [*(a1 + 24) transform];
+  [*(self + 24) transform];
   v3 = 0;
   v22.columns[0] = v4;
   v22.columns[1] = v5;
@@ -467,7 +467,7 @@ LABEL_37:
   v20 = *algn_28155B050;
   v14 = unk_28155B070;
   v16 = xmmword_28155B060;
-  v27 = __invert_f4(*(a1 + 112));
+  v27 = __invert_f4(*(self + 112));
   v2 = 0;
   v22 = v27;
   do
@@ -481,7 +481,7 @@ LABEL_37:
   v21 = v24;
   v15 = v26;
   v17 = v25;
-  [*(a1 + 40) transform];
+  [*(self + 40) transform];
   v3 = 0;
   v22.columns[0] = v4;
   v22.columns[1] = v5;
@@ -512,14 +512,14 @@ LABEL_37:
 
 - (double)GetProjectionMatrixInVisionWorld
 {
-  [a1[3] intrinsics];
+  [self[3] intrinsics];
   v2.i32[3] = 0;
   v3.i32[3] = 0;
   v8 = v3;
   v9 = v2;
   v4.i32[3] = 0;
   v7 = v4;
-  [a1 GetCameraPoseInVisionWorld];
+  [self GetCameraPoseInVisionWorld];
   v13 = __invert_f4(v12);
   v5 = 0;
   v10 = v13;
@@ -535,14 +535,14 @@ LABEL_37:
 
 - (double)GetSceneCameraProjectionMatrixInVisionWorld
 {
-  [a1[5] intrinsics];
+  [self[5] intrinsics];
   v2.i32[3] = 0;
   v3.i32[3] = 0;
   v8 = v3;
   v9 = v2;
   v4.i32[3] = 0;
   v7 = v4;
-  [a1 GetSceneCameraPoseInVisionWorld];
+  [self GetSceneCameraPoseInVisionWorld];
   v13 = __invert_f4(v12);
   v5 = 0;
   v10 = v13;
@@ -558,10 +558,10 @@ LABEL_37:
 
 - (__n64)GetSceneRgbToDepthRatio
 {
-  Width = CVPixelBufferGetWidth(*(a1 + 48));
-  Height = CVPixelBufferGetHeight(*(a1 + 48));
-  v4 = CVPixelBufferGetWidth(*(a1 + 56));
-  v5 = CVPixelBufferGetHeight(*(a1 + 56));
+  Width = CVPixelBufferGetWidth(*(self + 48));
+  Height = CVPixelBufferGetHeight(*(self + 48));
+  v4 = CVPixelBufferGetWidth(*(self + 56));
+  v5 = CVPixelBufferGetHeight(*(self + 56));
   result.n64_f32[0] = Width / v4;
   result.n64_f32[1] = Height / v5;
   return result;
@@ -594,26 +594,26 @@ LABEL_37:
 
 - (__n128)referenceOriginTransform
 {
-  result = *(a1 + 112);
-  v2 = *(a1 + 128);
-  v3 = *(a1 + 144);
-  v4 = *(a1 + 160);
+  result = *(self + 112);
+  v2 = *(self + 128);
+  v3 = *(self + 144);
+  v4 = *(self + 160);
   return result;
 }
 
-- (__n128)setReferenceOriginTransform:(__n128)a3
+- (__n128)setReferenceOriginTransform:(__n128)transform
 {
   result[7] = a2;
-  result[8] = a3;
+  result[8] = transform;
   result[9] = a4;
   result[10] = a5;
   return result;
 }
 
-- (__n128)initWithSceneYUV:(__n128)a3 sceneDepth:(__n128)a4 referenceOriginTranform:(__n128)a5 OUCamera:(uint64_t)a6
+- (__n128)initWithSceneYUV:(__n128)v sceneDepth:(__n128)depth referenceOriginTranform:(__n128)tranform OUCamera:(uint64_t)camera
 {
   v13 = a9;
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = _OUFrame;
   v14 = [(_OUFrame *)&v21 init];
   v15 = v14;
@@ -623,47 +623,47 @@ LABEL_37:
     v14->_sceneDepthBuffer = a8;
     objc_storeStrong(&v14->_sceneCamera, a9);
     v15[7] = a2;
-    v15[8] = a3;
-    v15[9] = a4;
-    v15[10] = a5;
+    v15[8] = v;
+    v15[9] = depth;
+    v15[10] = tranform;
     v15->n128_u64[1] = 0;
   }
 
   return v15;
 }
 
-- (id)LoadDepth:(id)a3
+- (id)LoadDepth:(id)depth
 {
-  v3 = a3;
+  depthCopy = depth;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  LoadDepthToDictionary(v3, v4);
+  LoadDepthToDictionary(depthCopy, v4);
 
   return v4;
 }
 
-- (id)LoadRgb:(id)a3
+- (id)LoadRgb:(id)rgb
 {
-  v3 = a3;
+  rgbCopy = rgb;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  LoadRGBToDictionary(v3, v4);
+  LoadRGBToDictionary(rgbCopy, v4);
 
   return v4;
 }
 
-- (id)LoadLabel:(id)a3
+- (id)LoadLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  LoadSemanticToDictionary(v3, v4);
+  LoadSemanticToDictionary(labelCopy, v4);
 
   return v4;
 }
 
-- (id)LoadVote:(id)a3
+- (id)LoadVote:(id)vote
 {
-  v3 = a3;
+  voteCopy = vote;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  LoadSemanticConfToDictionary(v3, v4);
+  LoadSemanticConfToDictionary(voteCopy, v4);
 
   return v4;
 }

@@ -1,26 +1,26 @@
 @interface AXBackTapUIServer
 + (id)sharedInstance;
 - (AXBackTapUIServer)init;
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
-- (void)_addBackTapViewController:(id)a3;
-- (void)_confirmFalsePositiveReportForFilename:(id)a3;
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
+- (void)_addBackTapViewController:(id)controller;
+- (void)_confirmFalsePositiveReportForFilename:(id)filename;
 - (void)_hideContentViewController;
 - (void)_registerForBackTapEvents;
 - (void)_serverEnabled;
-- (void)_showContentViewController:(id)a3;
+- (void)_showContentViewController:(id)controller;
 - (void)_startGestureDetector;
 - (void)_stopGestureDetector;
 - (void)_unregisterForBackTapEvents;
-- (void)_updateBackTapPolicy:(unint64_t)a3;
+- (void)_updateBackTapPolicy:(unint64_t)policy;
 - (void)_updateClickSpeed;
-- (void)alertWithIdentifierDidDisappear:(id)a3;
-- (void)alertWithIdentifierWasActivated:(id)a3 userInfo:(id)a4;
+- (void)alertWithIdentifierDidDisappear:(id)disappear;
+- (void)alertWithIdentifierWasActivated:(id)activated userInfo:(id)info;
 - (void)dealloc;
-- (void)phoenixClassifierDidLogFile:(id)a3;
-- (void)phoenixGestureDetector:(id)a3 failedWithError:(id)a4;
-- (void)phoenixGestureDetector:(id)a3 stoppedWithError:(id)a4;
-- (void)phoenixGestureDetectorDidDetectDoubleTap:(id)a3;
-- (void)phoenixGestureDetectorDidDetectTripleTap:(id)a3;
+- (void)phoenixClassifierDidLogFile:(id)file;
+- (void)phoenixGestureDetector:(id)detector failedWithError:(id)error;
+- (void)phoenixGestureDetector:(id)detector stoppedWithError:(id)error;
+- (void)phoenixGestureDetectorDidDetectDoubleTap:(id)tap;
+- (void)phoenixGestureDetectorDidDetectTripleTap:(id)tap;
 @end
 
 @implementation AXBackTapUIServer
@@ -116,32 +116,32 @@
     }
   }
 
-  v8 = [(AXBackTapUIServer *)self gestureDetector];
+  gestureDetector = [(AXBackTapUIServer *)self gestureDetector];
   *&v7 = v5;
-  [v8 setTapSpeed:v7];
+  [gestureDetector setTapSpeed:v7];
 }
 
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  if (a4 > 10001)
+  messageCopy = message;
+  withIdentifierCopy = withIdentifier;
+  if (identifier > 10001)
   {
-    if (a4 == 10002)
+    if (identifier == 10002)
     {
-      v11 = [(AXBackTapUIServer *)self gestureDetector];
-      [(AXBackTapUIServer *)self phoenixGestureDetectorDidDetectDoubleTap:v11];
+      gestureDetector = [(AXBackTapUIServer *)self gestureDetector];
+      [(AXBackTapUIServer *)self phoenixGestureDetectorDidDetectDoubleTap:gestureDetector];
     }
 
     else
     {
-      if (a4 != 10003)
+      if (identifier != 10003)
       {
         goto LABEL_12;
       }
 
-      v11 = [(AXBackTapUIServer *)self gestureDetector];
-      [(AXBackTapUIServer *)self phoenixGestureDetectorDidDetectTripleTap:v11];
+      gestureDetector = [(AXBackTapUIServer *)self gestureDetector];
+      [(AXBackTapUIServer *)self phoenixGestureDetectorDidDetectTripleTap:gestureDetector];
     }
 
 LABEL_11:
@@ -149,20 +149,20 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a4 == 10000)
+  if (identifier == 10000)
   {
-    v11 = [v9 objectForKey:AXBackTapClientRegistrationKeyPolicy];
+    gestureDetector = [messageCopy objectForKey:AXBackTapClientRegistrationKeyPolicy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[AXBackTapUIServer _updateBackTapPolicy:](self, "_updateBackTapPolicy:", [v11 unsignedIntegerValue]);
+      -[AXBackTapUIServer _updateBackTapPolicy:](self, "_updateBackTapPolicy:", [gestureDetector unsignedIntegerValue]);
       [(AXBackTapUIServer *)self _startGestureDetector];
     }
 
     goto LABEL_11;
   }
 
-  if (a4 == 10001)
+  if (identifier == 10001)
   {
     [(AXBackTapUIServer *)self _stopGestureDetector];
   }
@@ -172,14 +172,14 @@ LABEL_12:
   return 0;
 }
 
-- (void)_updateBackTapPolicy:(unint64_t)a3
+- (void)_updateBackTapPolicy:(unint64_t)policy
 {
-  v3 = a3 & 3;
-  v4 = [(AXBackTapUIServer *)self gestureDetector];
-  v5 = v4;
+  v3 = policy & 3;
+  gestureDetector = [(AXBackTapUIServer *)self gestureDetector];
+  v5 = gestureDetector;
   if (v3 == 2)
   {
-    [v4 setTripleTapPolicy];
+    [gestureDetector setTripleTapPolicy];
 
     v6 = AXLogBackTap();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -193,7 +193,7 @@ LABEL_12:
 
   else if (v3 == 1)
   {
-    [v4 setDoubleTapPolicy];
+    [gestureDetector setDoubleTapPolicy];
 
     v6 = AXLogBackTap();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -208,7 +208,7 @@ LABEL_9:
 
   else
   {
-    [v4 setGeneralPolicy];
+    [gestureDetector setGeneralPolicy];
 
     v6 = AXLogBackTap();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -233,14 +233,14 @@ LABEL_9:
     }
 
     objc_initWeak(buf, self);
-    v4 = [(AXBackTapUIServer *)self gestureDetector];
+    gestureDetector = [(AXBackTapUIServer *)self gestureDetector];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_1CB8;
     v5[3] = &unk_8338;
     objc_copyWeak(&v6, buf);
     v5[4] = self;
-    [v4 startWithCompletion:v5];
+    [gestureDetector startWithCompletion:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(buf);
@@ -258,30 +258,30 @@ LABEL_9:
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Stopping gesture detector from AXBackTap", buf, 2u);
     }
 
-    v4 = [(AXBackTapUIServer *)self gestureDetector];
+    gestureDetector = [(AXBackTapUIServer *)self gestureDetector];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_1E18;
     v5[3] = &unk_8360;
     v5[4] = self;
-    [v4 stopWithCompletion:v5];
+    [gestureDetector stopWithCompletion:v5];
   }
 }
 
 - (void)_serverEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 backTapDoubleTapAction];
+  backTapDoubleTapAction = [v2 backTapDoubleTapAction];
   v4 = AXASTSiriShortcutPrefixName;
-  if ([v3 hasPrefix:AXASTSiriShortcutPrefixName])
+  if ([backTapDoubleTapAction hasPrefix:AXASTSiriShortcutPrefixName])
   {
   }
 
   else
   {
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 backTapTripleTapAction];
-    v7 = [v6 hasPrefix:v4];
+    backTapTripleTapAction = [v5 backTapTripleTapAction];
+    v7 = [backTapTripleTapAction hasPrefix:v4];
 
     if (!v7)
     {
@@ -302,11 +302,11 @@ LABEL_5:
   }
 }
 
-- (void)alertWithIdentifierDidDisappear:(id)a3
+- (void)alertWithIdentifierDidDisappear:(id)disappear
 {
-  v4 = a3;
-  v5 = [(AXBackTapUIServer *)self activeAlertIdentifier];
-  v6 = [v5 isEqualToString:v4];
+  disappearCopy = disappear;
+  activeAlertIdentifier = [(AXBackTapUIServer *)self activeAlertIdentifier];
+  v6 = [activeAlertIdentifier isEqualToString:disappearCopy];
 
   if (v6)
   {
@@ -315,18 +315,18 @@ LABEL_5:
   }
 }
 
-- (void)alertWithIdentifierWasActivated:(id)a3 userInfo:(id)a4
+- (void)alertWithIdentifierWasActivated:(id)activated userInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
+  infoCopy = info;
+  activatedCopy = activated;
   v8 = +[AXUIDisplayManager sharedDisplayManager];
-  v9 = [(AXBackTapUIServer *)self activeAlertIdentifier];
-  [v8 hideAlertWithIdentifier:v9 forService:self];
+  activeAlertIdentifier = [(AXBackTapUIServer *)self activeAlertIdentifier];
+  [v8 hideAlertWithIdentifier:activeAlertIdentifier forService:self];
 
-  v10 = [(AXBackTapUIServer *)self reportAlertIdentifier];
-  LODWORD(v9) = [v7 isEqualToString:v10];
+  reportAlertIdentifier = [(AXBackTapUIServer *)self reportAlertIdentifier];
+  LODWORD(activeAlertIdentifier) = [activatedCopy isEqualToString:reportAlertIdentifier];
 
-  if (v9)
+  if (activeAlertIdentifier)
   {
     v11 = accessibilityLocalizedString(@"confirm.alert.message.title");
     v12 = +[AXSettings sharedInstance];
@@ -352,31 +352,31 @@ LABEL_5:
     v22 = 3221225472;
     v23 = sub_2314;
     v24 = &unk_83B0;
-    v25 = self;
-    v26 = v6;
+    selfCopy = self;
+    v26 = infoCopy;
     v19 = [UIAlertAction actionWithTitle:v18 style:0 handler:&v21];
 
-    [v15 addAction:{v19, v21, v22, v23, v24, v25}];
-    v20 = [(AXBackTapUIServer *)self backTapViewController];
-    [v20 presentViewController:v15 animated:1 completion:0];
+    [v15 addAction:{v19, v21, v22, v23, v24, selfCopy}];
+    backTapViewController = [(AXBackTapUIServer *)self backTapViewController];
+    [backTapViewController presentViewController:v15 animated:1 completion:0];
   }
 }
 
-- (void)_confirmFalsePositiveReportForFilename:(id)a3
+- (void)_confirmFalsePositiveReportForFilename:(id)filename
 {
-  v4 = a3;
-  if ([v4 length])
+  filenameCopy = filename;
+  if ([filenameCopy length])
   {
     v5 = AXLogBackTap();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v4;
+      v12 = filenameCopy;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Tapped on false positive alert for filename: %@", buf, 0xCu);
     }
 
-    v6 = [(AXBackTapUIServer *)self gestureDetector];
-    [v6 reportFalsePositive:v4];
+    gestureDetector = [(AXBackTapUIServer *)self gestureDetector];
+    [gestureDetector reportFalsePositive:filenameCopy];
 
     v7 = +[AXUIDisplayManager sharedDisplayManager];
     v8 = accessibilityLocalizedString(@"confirmation.alert.message.title");
@@ -386,29 +386,29 @@ LABEL_5:
   }
 }
 
-- (void)_addBackTapViewController:(id)a3
+- (void)_addBackTapViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(AXBackTapUIServer *)self gestureDetectorRunning])
   {
-    [(AXBackTapUIServer *)self _showContentViewController:v4];
+    [(AXBackTapUIServer *)self _showContentViewController:controllerCopy];
   }
 
   else
   {
     [(AXBackTapUIServer *)self _hideContentViewController];
-    if (v4)
+    if (controllerCopy)
     {
-      v4[2]();
+      controllerCopy[2]();
     }
   }
 }
 
-- (void)_showContentViewController:(id)a3
+- (void)_showContentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AXBackTapUIServer *)self backTapViewController];
-  if (!v5)
+  controllerCopy = controller;
+  backTapViewController = [(AXBackTapUIServer *)self backTapViewController];
+  if (!backTapViewController)
   {
     v6 = AXLogBackTap();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -425,10 +425,10 @@ LABEL_5:
     v9[2] = sub_26F4;
     v9[3] = &unk_83D8;
     objc_copyWeak(&v12, buf);
-    v5 = v7;
-    v10 = v5;
-    v11 = v4;
-    [v8 addContentViewController:v5 withUserInteractionEnabled:1 forService:self context:0 completion:v9];
+    backTapViewController = v7;
+    v10 = backTapViewController;
+    v11 = controllerCopy;
+    [v8 addContentViewController:backTapViewController withUserInteractionEnabled:1 forService:self context:0 completion:v9];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(buf);
@@ -437,8 +437,8 @@ LABEL_5:
 
 - (void)_hideContentViewController
 {
-  v3 = [(AXBackTapUIServer *)self backTapViewController];
-  if (v3)
+  backTapViewController = [(AXBackTapUIServer *)self backTapViewController];
+  if (backTapViewController)
   {
     v4 = AXLogBackTap();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -448,28 +448,28 @@ LABEL_5:
     }
 
     v5 = +[AXUIDisplayManager sharedDisplayManager];
-    [v5 removeContentViewController:v3 withUserInteractionEnabled:0 forService:self];
+    [v5 removeContentViewController:backTapViewController withUserInteractionEnabled:0 forService:self];
 
     [(AXBackTapUIServer *)self setBackTapViewController:0];
   }
 }
 
-- (void)phoenixClassifierDidLogFile:(id)a3
+- (void)phoenixClassifierDidLogFile:(id)file
 {
-  v4 = a3;
-  v3 = v4;
+  fileCopy = file;
+  v3 = fileCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 
-- (void)phoenixGestureDetectorDidDetectDoubleTap:(id)a3
+- (void)phoenixGestureDetectorDidDetectDoubleTap:(id)tap
 {
   v3 = +[AXSettings sharedInstance];
   if ([v3 backTapConfirmationBannerEnabled])
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 backTapFalsePositiveAlertsEnabled];
+    backTapFalsePositiveAlertsEnabled = [v4 backTapFalsePositiveAlertsEnabled];
 
-    if ((v5 & 1) == 0)
+    if ((backTapFalsePositiveAlertsEnabled & 1) == 0)
     {
       AXPerformBlockAsynchronouslyOnMainThread();
     }
@@ -484,20 +484,20 @@ LABEL_5:
   [v7 sendHIDSystemEvent:v6 senderID:0x8000000817319381];
 
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 backTapUsageCount];
+  backTapUsageCount = [v8 backTapUsageCount];
   v10 = +[AXSettings sharedInstance];
-  [v10 setBackTapUsageCount:v9 + 1];
+  [v10 setBackTapUsageCount:backTapUsageCount + 1];
 }
 
-- (void)phoenixGestureDetectorDidDetectTripleTap:(id)a3
+- (void)phoenixGestureDetectorDidDetectTripleTap:(id)tap
 {
   v3 = +[AXSettings sharedInstance];
   if ([v3 backTapConfirmationBannerEnabled])
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 backTapFalsePositiveAlertsEnabled];
+    backTapFalsePositiveAlertsEnabled = [v4 backTapFalsePositiveAlertsEnabled];
 
-    if ((v5 & 1) == 0)
+    if ((backTapFalsePositiveAlertsEnabled & 1) == 0)
     {
       AXPerformBlockAsynchronouslyOnMainThread();
     }
@@ -512,29 +512,29 @@ LABEL_5:
   [v7 sendHIDSystemEvent:v6 senderID:0x8000000817319381];
 
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 backTapUsageCount];
+  backTapUsageCount = [v8 backTapUsageCount];
   v10 = +[AXSettings sharedInstance];
-  [v10 setBackTapUsageCount:v9 + 1];
+  [v10 setBackTapUsageCount:backTapUsageCount + 1];
 }
 
-- (void)phoenixGestureDetector:(id)a3 failedWithError:(id)a4
+- (void)phoenixGestureDetector:(id)detector failedWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = AXLogBackTap();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_32F8(v4, v5, v6, v7, v8, v9, v10, v11);
+    sub_32F8(errorCopy, v5, v6, v7, v8, v9, v10, v11);
   }
 }
 
-- (void)phoenixGestureDetector:(id)a3 stoppedWithError:(id)a4
+- (void)phoenixGestureDetector:(id)detector stoppedWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = AXLogBackTap();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Phoenix gesture detector stopped: %@", &v6, 0xCu);
   }
 }

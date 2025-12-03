@@ -1,11 +1,11 @@
 @interface OZCopyFootageInfo
-+ (id)fileURLToFootageInfoMap:(void *)a3 includeUnused:(BOOL)a4 destination:(id)a5;
-+ (id)fileURLsForNode:(void *)a3;
-+ (unint64_t)fileCount:(id)a3;
-+ (unint64_t)totalSizeInBytes:(id)a3 forceUpdate:(BOOL)a4;
-+ (void)reconnectFootage:(id)a3 scene:(void *)a4;
-+ (void)updateSizes:(id)a3 forceUpdate:(BOOL)a4;
-- (BOOL)updateSize:(BOOL)a3 error:(id *)a4;
++ (id)fileURLToFootageInfoMap:(void *)map includeUnused:(BOOL)unused destination:(id)destination;
++ (id)fileURLsForNode:(void *)node;
++ (unint64_t)fileCount:(id)count;
++ (unint64_t)totalSizeInBytes:(id)bytes forceUpdate:(BOOL)update;
++ (void)reconnectFootage:(id)footage scene:(void *)scene;
++ (void)updateSizes:(id)sizes forceUpdate:(BOOL)update;
+- (BOOL)updateSize:(BOOL)size error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -18,16 +18,16 @@
   [(OZCopyFootageInfo *)&v3 dealloc];
 }
 
-+ (void)updateSizes:(id)a3 forceUpdate:(BOOL)a4
++ (void)updateSizes:(id)sizes forceUpdate:(BOOL)update
 {
-  v4 = a4;
+  updateCopy = update;
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a3 keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  keyEnumerator = [sizes keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -39,32 +39,32 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
-        [objc_msgSend(a3 objectForKey:{*(*(&v11 + 1) + 8 * v10++)), "updateSize:error:", v4, 0}];
+        [objc_msgSend(sizes objectForKey:{*(*(&v11 + 1) + 8 * v10++)), "updateSize:error:", updateCopy, 0}];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (BOOL)updateSize:(BOOL)a3 error:(id *)a4
+- (BOOL)updateSize:(BOOL)size error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (self->_sizeIsValid && !a3)
+  if (self->_sizeIsValid && !size)
   {
     return 1;
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   self->_sizeInBytes = 0;
-  v8 = [(NSURL *)self->_sourceURL OZ_imageSequenceURLs];
-  if ([(NSOrderedSet *)v8 count])
+  oZ_imageSequenceURLs = [(NSURL *)self->_sourceURL OZ_imageSequenceURLs];
+  if ([(NSOrderedSet *)oZ_imageSequenceURLs count])
   {
     v26 = 0;
     v27 = &v26;
@@ -78,11 +78,11 @@
     v21[1] = *"";
     v21[2] = __38__OZCopyFootageInfo_updateSize_error___block_invoke;
     v21[3] = &unk_279AAA3B0;
-    v21[4] = v7;
+    v21[4] = defaultManager;
     v21[5] = &v26;
     v21[6] = &v22;
-    v21[7] = a4;
-    [(NSOrderedSet *)v8 enumerateObjectsUsingBlock:v21];
+    v21[7] = error;
+    [(NSOrderedSet *)oZ_imageSequenceURLs enumerateObjectsUsingBlock:v21];
     if (*(v23 + 24) == 1)
     {
       self->_sizeInBytes = v27[3];
@@ -98,7 +98,7 @@
     return 0;
   }
 
-  v10 = [v7 OZ_sizeOfItemAtPath:-[NSURL path](self->_sourceURL error:{"path"), a4}];
+  v10 = [defaultManager OZ_sizeOfItemAtPath:-[NSURL path](self->_sourceURL error:{"path"), error}];
   if (!v10)
   {
     return 0;
@@ -109,8 +109,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [(NSMutableDictionary *)self->_associatedFilesSourceDestPaths keyEnumerator];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v30 count:16];
+  keyEnumerator = [(NSMutableDictionary *)self->_associatedFilesSourceDestPaths keyEnumerator];
+  v12 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v30 count:16];
   if (v12)
   {
     v13 = *v18;
@@ -120,17 +120,17 @@
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(keyEnumerator);
         }
 
-        v15 = [v7 OZ_sizeOfItemAtPath:*(*(&v17 + 1) + 8 * i) error:a4];
+        v15 = [defaultManager OZ_sizeOfItemAtPath:*(*(&v17 + 1) + 8 * i) error:error];
         if (v15)
         {
           self->_sizeInBytes += [v15 unsignedIntegerValue];
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v30 count:16];
+      v12 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v30 count:16];
     }
 
     while (v12);
@@ -159,18 +159,18 @@ uint64_t __38__OZCopyFootageInfo_updateSize_error___block_invoke(uint64_t a1, vo
   return result;
 }
 
-+ (id)fileURLsForNode:(void *)a3
++ (id)fileURLsForNode:(void *)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v23[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (node)
   {
-    v4 = *(a3 + 1);
+    v4 = *(node + 1);
     *cf = xmmword_260348470;
     if (OZFactory::isKindOfClass(v4, cf))
     {
-      v6 = *(v3 - 25);
-      v5 = v3 - 25;
+      v6 = *(nodeCopy - 25);
+      v5 = nodeCopy - 25;
       v7 = (*(v6 + 1232))(v5);
       PCURL::getAsFileSystemString(v7, cf);
       v8 = PCString::ns_str(cf);
@@ -205,17 +205,17 @@ uint64_t __38__OZCopyFootageInfo_updateSize_error___block_invoke(uint64_t a1, vo
 
     else
     {
-      v15 = v3[1];
+      v15 = nodeCopy[1];
       *cf = xmmword_2603473A0;
-      if (OZFactory::isKindOfClass(v15, cf) && (*(*(v3 - 25) + 296))(v3 - 25))
+      if (OZFactory::isKindOfClass(v15, cf) && (*(*(nodeCopy - 25) + 296))(nodeCopy - 25))
       {
-        return (*(*(v3 - 25) + 888))(v3 - 25);
+        return (*(*(nodeCopy - 25) + 888))(nodeCopy - 25);
       }
 
-      v3 = v16;
+      nodeCopy = v16;
       if (!v16)
       {
-        return v3;
+        return nodeCopy;
       }
 
       if (OZFootage::isInUseByUnreplacedDropZonesOnly(v16, 0))
@@ -223,7 +223,7 @@ uint64_t __38__OZCopyFootageInfo_updateSize_error___block_invoke(uint64_t a1, vo
         return 0;
       }
 
-      (*(*v3 + 1232))(&v19, v3);
+      (*(*nodeCopy + 1232))(&v19, nodeCopy);
       PCURL::getAsFileSystemString(&v19, cf);
       v17 = PCString::ns_str(cf);
       PCString::~PCString(cf);
@@ -233,30 +233,30 @@ uint64_t __38__OZCopyFootageInfo_updateSize_error___block_invoke(uint64_t a1, vo
         return 0;
       }
 
-      (*(*v3 + 1232))(cf, v3);
+      (*(*nodeCopy + 1232))(cf, nodeCopy);
       v21 = CFRetain(cf[0]);
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
     }
 
-    v3 = v14;
+    nodeCopy = v14;
     PCURL::~PCURL(cf);
   }
 
-  return v3;
+  return nodeCopy;
 }
 
-+ (id)fileURLToFootageInfoMap:(void *)a3 includeUnused:(BOOL)a4 destination:(id)a5
++ (id)fileURLToFootageInfoMap:(void *)map includeUnused:(BOOL)unused destination:(id)destination
 {
   v98 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!map)
   {
     return 0;
   }
 
   v56 = 0;
-  if (a5)
+  if (destination)
   {
-    v6 = *(a3 + 3);
+    v6 = *(map + 3);
     if (v6)
     {
       v56 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:0 valueOptions:0];
@@ -289,7 +289,7 @@ uint64_t __38__OZCopyFootageInfo_updateSize_error___block_invoke(uint64_t a1, vo
       {
         v10 = *(v89[0] + 16);
         v55 = v10[20];
-        if (a4)
+        if (unused)
         {
           goto LABEL_16;
         }
@@ -349,7 +349,7 @@ LABEL_16:
                       v22 = objc_alloc_init(OZCopyFootageInfo);
                       [(OZCopyFootageInfo *)v22 setSourceURL:v21];
                       v23 = [objc_msgSend(v21 "path")];
-                      -[OZCopyFootageInfo setDestinationURL:](v22, "setDestinationURL:", [MEMORY[0x277CBEBC0] fileURLWithPath:{objc_msgSend(a5, "stringByAppendingPathComponent:", v23)}]);
+                      -[OZCopyFootageInfo setDestinationURL:](v22, "setDestinationURL:", [MEMORY[0x277CBEBC0] fileURLWithPath:{objc_msgSend(destination, "stringByAppendingPathComponent:", v23)}]);
                       -[OZCopyFootageInfo setAssociatedFilesSourceDestPaths:](v22, "setAssociatedFilesSourceDestPaths:", [MEMORY[0x277CBEB38] dictionary]);
                       [v56 setObject:v22 forKey:v21];
                     }
@@ -371,7 +371,7 @@ LABEL_16:
                           {
                             if ([(__CFString *)v27 length])
                             {
-                              v28 = [a5 stringByAppendingPathComponent:{-[__CFString lastPathComponent](v27, "lastPathComponent")}];
+                              v28 = [destination stringByAppendingPathComponent:{-[__CFString lastPathComponent](v27, "lastPathComponent")}];
                               if (([(__CFString *)v27 isEqualToString:v28]& 1) == 0)
                               {
                                 [(NSMutableDictionary *)[(OZCopyFootageInfo *)v22 associatedFilesSourceDestPaths] setObject:v28 forKeyedSubscript:v27];
@@ -390,8 +390,8 @@ LABEL_16:
 
                     if ([(OZCopyFootageInfo *)v22 nodeIDs])
                     {
-                      v29 = [(OZCopyFootageInfo *)v22 nodeIDs];
-                      v30 = -[NSSet setByAddingObject:](v29, "setByAddingObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:v55]);
+                      nodeIDs = [(OZCopyFootageInfo *)v22 nodeIDs];
+                      v30 = -[NSSet setByAddingObject:](nodeIDs, "setByAddingObject:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:v55]);
                     }
 
                     else
@@ -419,8 +419,8 @@ LABEL_16:
       v73 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v32 = [v56 keyEnumerator];
-      v33 = [v32 countByEnumeratingWithState:&v70 objects:v96 count:16];
+      keyEnumerator = [v56 keyEnumerator];
+      v33 = [keyEnumerator countByEnumeratingWithState:&v70 objects:v96 count:16];
       if (v33)
       {
         v34 = *v71;
@@ -430,7 +430,7 @@ LABEL_16:
           {
             if (*v71 != v34)
             {
-              objc_enumerationMutation(v32);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             v36 = [v56 objectForKey:{*(*(&v70 + 1) + 8 * j), v52}];
@@ -453,7 +453,7 @@ LABEL_16:
             }
           }
 
-          v33 = [v32 countByEnumeratingWithState:&v70 objects:v96 count:16];
+          v33 = [keyEnumerator countByEnumeratingWithState:&v70 objects:v96 count:16];
         }
 
         while (v33);
@@ -464,8 +464,8 @@ LABEL_16:
       v69 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v41 = [v31 keyEnumerator];
-      v42 = [v41 countByEnumeratingWithState:&v66 objects:v95 count:16];
+      keyEnumerator2 = [v31 keyEnumerator];
+      v42 = [keyEnumerator2 countByEnumeratingWithState:&v66 objects:v95 count:16];
       if (v42)
       {
         v43 = *v67;
@@ -475,13 +475,13 @@ LABEL_16:
           {
             if (*v67 != v43)
             {
-              objc_enumerationMutation(v41);
+              objc_enumerationMutation(keyEnumerator2);
             }
 
             [v40 addObject:*(*(&v66 + 1) + 8 * k)];
           }
 
-          v42 = [v41 countByEnumeratingWithState:&v66 objects:v95 count:16];
+          v42 = [keyEnumerator2 countByEnumeratingWithState:&v66 objects:v95 count:16];
         }
 
         while (v42);
@@ -491,8 +491,8 @@ LABEL_16:
       v63 = 0u;
       v64 = 0u;
       v62 = 0u;
-      v45 = [v31 keyEnumerator];
-      v46 = [v45 countByEnumeratingWithState:&v62 objects:v94 count:16];
+      keyEnumerator3 = [v31 keyEnumerator];
+      v46 = [keyEnumerator3 countByEnumeratingWithState:&v62 objects:v94 count:16];
       if (v46)
       {
         v47 = *v63;
@@ -502,7 +502,7 @@ LABEL_16:
           {
             if (*v63 != v47)
             {
-              objc_enumerationMutation(v45);
+              objc_enumerationMutation(keyEnumerator3);
             }
 
             v49 = *(*(&v62 + 1) + 8 * m);
@@ -522,7 +522,7 @@ LABEL_16:
             _Block_object_dispose(&v58, 8);
           }
 
-          v46 = [v45 countByEnumeratingWithState:&v62 objects:v94 count:16];
+          v46 = [keyEnumerator3 countByEnumeratingWithState:&v62 objects:v94 count:16];
         }
 
         while (v46);
@@ -593,15 +593,15 @@ uint64_t __71__OZCopyFootageInfo_fileURLToFootageInfoMap_includeUnused_destinati
   return result;
 }
 
-+ (unint64_t)fileCount:(id)a3
++ (unint64_t)fileCount:(id)count
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [a3 keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  keyEnumerator = [count keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v5)
   {
     return 0;
@@ -616,14 +616,14 @@ uint64_t __71__OZCopyFootageInfo_fileURLToFootageInfoMap_includeUnused_destinati
     {
       if (*v15 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v10 = *(*(&v14 + 1) + 8 * i);
-      v11 = [v10 OZ_imageSequenceURLs];
-      if ([v11 count])
+      oZ_imageSequenceURLs = [v10 OZ_imageSequenceURLs];
+      if ([oZ_imageSequenceURLs count])
       {
-        v12 = [v11 count];
+        v12 = [oZ_imageSequenceURLs count];
       }
 
       else
@@ -631,26 +631,26 @@ uint64_t __71__OZCopyFootageInfo_fileURLToFootageInfoMap_includeUnused_destinati
         v12 = 1;
       }
 
-      v7 += v12 + [objc_msgSend(objc_msgSend(objc_msgSend(a3 objectForKey:{v10), "associatedFilesSourceDestPaths"), "allKeys"), "count"}];
+      v7 += v12 + [objc_msgSend(objc_msgSend(objc_msgSend(count objectForKey:{v10), "associatedFilesSourceDestPaths"), "allKeys"), "count"}];
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v6 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   }
 
   while (v6);
   return v7;
 }
 
-+ (unint64_t)totalSizeInBytes:(id)a3 forceUpdate:(BOOL)a4
++ (unint64_t)totalSizeInBytes:(id)bytes forceUpdate:(BOOL)update
 {
   v18 = *MEMORY[0x277D85DE8];
-  [OZCopyFootageInfo updateSizes:a3 forceUpdate:a4];
+  [OZCopyFootageInfo updateSizes:bytes forceUpdate:update];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  keyEnumerator = [bytes keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v6)
   {
     return 0;
@@ -665,33 +665,33 @@ uint64_t __71__OZCopyFootageInfo_fileURLToFootageInfoMap_includeUnused_destinati
     {
       if (*v14 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(keyEnumerator);
       }
 
-      v11 = [a3 objectForKey:*(*(&v13 + 1) + 8 * i)];
+      v11 = [bytes objectForKey:*(*(&v13 + 1) + 8 * i)];
       if ([v11 sizeIsValid])
       {
         v8 += [v11 sizeInBytes];
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v7 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   }
 
   while (v7);
   return v8;
 }
 
-+ (void)reconnectFootage:(id)a3 scene:(void *)a4
++ (void)reconnectFootage:(id)footage scene:(void *)scene
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (scene)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v6 = [footage countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -703,23 +703,23 @@ uint64_t __71__OZCopyFootageInfo_fileURLToFootageInfoMap_includeUnused_destinati
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(footage);
           }
 
-          v10 = [a3 objectForKey:*(*(&v13 + 1) + 8 * v9)];
-          v11 = [v10 nodeIDs];
+          v10 = [footage objectForKey:*(*(&v13 + 1) + 8 * v9)];
+          nodeIDs = [v10 nodeIDs];
           v12[0] = MEMORY[0x277D85DD0];
           v12[1] = *"";
           v12[2] = __44__OZCopyFootageInfo_reconnectFootage_scene___block_invoke;
           v12[3] = &unk_279AAA400;
           v12[4] = v10;
-          v12[5] = a4;
-          [v11 enumerateObjectsUsingBlock:v12];
+          v12[5] = scene;
+          [nodeIDs enumerateObjectsUsingBlock:v12];
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [footage countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);

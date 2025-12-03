@@ -1,24 +1,24 @@
 @interface UCRemotePasteboardGeneration
-- (UCRemotePasteboardGeneration)initWithRequester:(id)a3;
+- (UCRemotePasteboardGeneration)initWithRequester:(id)requester;
 - (id)stateAsString;
 - (void)dealloc;
-- (void)requestRemotePasteboardData:(id)a3;
-- (void)requestRemoteTypeInfo:(id)a3;
-- (void)updateState:(unint64_t)a3;
+- (void)requestRemotePasteboardData:(id)data;
+- (void)requestRemoteTypeInfo:(id)info;
+- (void)updateState:(unint64_t)state;
 @end
 
 @implementation UCRemotePasteboardGeneration
 
-- (UCRemotePasteboardGeneration)initWithRequester:(id)a3
+- (UCRemotePasteboardGeneration)initWithRequester:(id)requester
 {
-  v4 = a3;
+  requesterCopy = requester;
   v13.receiver = self;
   v13.super_class = UCRemotePasteboardGeneration;
   v5 = [(UCRemotePasteboardGeneration *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(UCRemotePasteboardGeneration *)v5 setDataRequester:v4];
+    [(UCRemotePasteboardGeneration *)v5 setDataRequester:requesterCopy];
     [(UCRemotePasteboardGeneration *)v6 setDataRequested:0];
     v7 = +[NSUUID UUID];
     [(UCRemotePasteboardGeneration *)v6 setUuid:v7];
@@ -31,9 +31,9 @@
     v10 = sub_100001A30(@"pasteboard-fetch");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(UCRemotePasteboardGeneration *)v6 uuid];
+      uuid = [(UCRemotePasteboardGeneration *)v6 uuid];
       *buf = 138543362;
-      v15 = v11;
+      v15 = uuid;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Created remote generation %{public}@", buf, 0xCu);
     }
   }
@@ -43,28 +43,28 @@
 
 - (id)stateAsString
 {
-  v2 = [(UCRemotePasteboardGeneration *)self state];
-  if (v2 - 1 > 5)
+  state = [(UCRemotePasteboardGeneration *)self state];
+  if (state - 1 > 5)
   {
     return @"New";
   }
 
   else
   {
-    return *(&off_1000C5368 + v2 - 1);
+    return *(&off_1000C5368 + state - 1);
   }
 }
 
-- (void)updateState:(unint64_t)a3
+- (void)updateState:(unint64_t)state
 {
-  v5 = [(UCRemotePasteboardGeneration *)self state];
-  if (v5 == 6 || v5 == 1)
+  state = [(UCRemotePasteboardGeneration *)self state];
+  if (state == 6 || state == 1)
   {
     v6 = sub_100001A30(@"pasteboard-fetch");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = [NSNumber numberWithUnsignedInteger:[(UCRemotePasteboardGeneration *)self state]];
-      v8 = [NSNumber numberWithUnsignedInteger:a3];
+      v8 = [NSNumber numberWithUnsignedInteger:state];
       v9 = 138412546;
       v10 = v7;
       v11 = 2112;
@@ -76,7 +76,7 @@
   else
   {
 
-    [(UCRemotePasteboardGeneration *)self setState:a3];
+    [(UCRemotePasteboardGeneration *)self setState:state];
   }
 }
 
@@ -85,35 +85,35 @@
   v3 = sub_100001A30(@"pasteboard-fetch");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(UCRemotePasteboardGeneration *)self uuid];
-    v5 = [(UCRemotePasteboardGeneration *)self stateAsString];
+    uuid = [(UCRemotePasteboardGeneration *)self uuid];
+    stateAsString = [(UCRemotePasteboardGeneration *)self stateAsString];
     *buf = 138543618;
-    v9 = v4;
+    v9 = uuid;
     v10 = 2112;
-    v11 = v5;
+    v11 = stateAsString;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Remote generation dealloc (type requested, data requested): %{public}@ %@", buf, 0x16u);
   }
 
-  v6 = [(UCRemotePasteboardGeneration *)self respQueue];
-  dispatch_activate(v6);
+  respQueue = [(UCRemotePasteboardGeneration *)self respQueue];
+  dispatch_activate(respQueue);
 
   v7.receiver = self;
   v7.super_class = UCRemotePasteboardGeneration;
   [(UCRemotePasteboardGeneration *)&v7 dealloc];
 }
 
-- (void)requestRemoteTypeInfo:(id)a3
+- (void)requestRemoteTypeInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(UCRemotePasteboardGeneration *)self respQueue];
+  infoCopy = info;
+  respQueue = [(UCRemotePasteboardGeneration *)self respQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002916C;
   block[3] = &unk_1000C52F8;
   block[4] = self;
-  v6 = v4;
+  v6 = infoCopy;
   v18 = v6;
-  dispatch_async(v5, block);
+  dispatch_async(respQueue, block);
 
   if ([(UCRemotePasteboardGeneration *)self state]<= 1)
   {
@@ -127,26 +127,26 @@
     v8 = objc_alloc_init(UARemotePasteboardTypeInfoRequestedEvent);
     v9 = mach_absolute_time();
     [(UCRemotePasteboardGeneration *)self updateState:2];
-    v10 = [(UCRemotePasteboardGeneration *)self dataRequester];
+    dataRequester = [(UCRemotePasteboardGeneration *)self dataRequester];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100029294;
     v12[3] = &unk_1000C5320;
-    v14 = self;
+    selfCopy = self;
     v15 = v9;
     v13 = v8;
     v11 = v8;
-    [v10 requestRemotePasteboardInfo:v12];
+    [dataRequester requestRemotePasteboardInfo:v12];
   }
 }
 
-- (void)requestRemotePasteboardData:(id)a3
+- (void)requestRemotePasteboardData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(UCRemotePasteboardGeneration *)self state]== 6)
   {
     v5 = [NSError errorWithDomain:UAContinuityErrorDomain code:-125 userInfo:0];
-    v4[2](v4, 0, v5);
+    dataCopy[2](dataCopy, 0, v5);
   }
 
   else
@@ -200,7 +200,7 @@
 
     if (v23[5])
     {
-      (v4[2])(v4, 0);
+      (dataCopy[2])(dataCopy, 0);
     }
 
     else
@@ -208,14 +208,14 @@
       [(UCRemotePasteboardGeneration *)self setDataRequested:1];
       if ([(UCRemotePasteboardGeneration *)self streamProtocolVersion]== 2)
       {
-        v14 = [(UCRemotePasteboardGeneration *)self dataRequester];
-        [v14 requestStreamEndpointDataV2:v4];
+        dataRequester = [(UCRemotePasteboardGeneration *)self dataRequester];
+        [dataRequester requestStreamEndpointDataV2:dataCopy];
       }
 
       else
       {
-        v14 = [(UCRemotePasteboardGeneration *)self dataRequester];
-        [v14 requestStreamEndpointData:v4];
+        dataRequester = [(UCRemotePasteboardGeneration *)self dataRequester];
+        [dataRequester requestStreamEndpointData:dataCopy];
       }
     }
 

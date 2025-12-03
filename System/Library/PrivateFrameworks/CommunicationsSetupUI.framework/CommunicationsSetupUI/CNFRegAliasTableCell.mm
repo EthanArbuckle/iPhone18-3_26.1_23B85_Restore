@@ -1,18 +1,18 @@
 @interface CNFRegAliasTableCell
-- (CNFRegAliasTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNFRegAliasTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)visibleLeadingViewForState;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)setUpViews;
 - (void)updateViews;
 @end
 
 @implementation CNFRegAliasTableCell
 
-- (CNFRegAliasTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNFRegAliasTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CNFRegAliasTableCell;
-  v4 = [(PSTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -48,8 +48,8 @@
     v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
     [(UILabel *)self->_secondaryLabel setFont:v10];
 
-    v11 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)self->_secondaryLabel setTextColor:v11];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)self->_secondaryLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)self->_secondaryLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)self->_secondaryLabel setNumberOfLines:0];
@@ -96,8 +96,8 @@
     temporaryIconView = self->_temporaryIconView;
     self->_temporaryIconView = v32;
 
-    v34 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    [(UIImageView *)self->_temporaryIconView setTintColor:v34];
+    tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+    [(UIImageView *)self->_temporaryIconView setTintColor:tertiaryLabelColor];
 
     [(UIImageView *)self->_temporaryIconView setContentMode:1];
     LODWORD(v35) = 1148846080;
@@ -118,36 +118,36 @@
     [(UIStackView *)self->_mainStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)self->_mainStackView setSpacing:1.17549435e-38];
     [(UIStackView *)self->_mainStackView setCustomSpacing:self->_leadingContainerView afterView:16.0];
-    v43 = [(CNFRegAliasTableCell *)self contentView];
-    [v43 addSubview:self->_mainStackView];
+    contentView = [(CNFRegAliasTableCell *)self contentView];
+    [contentView addSubview:self->_mainStackView];
 
     v58 = MEMORY[0x277CCAAD0];
-    v67 = [(UIStackView *)self->_mainStackView leadingAnchor];
-    v68 = [(CNFRegAliasTableCell *)self contentView];
-    v66 = [v68 layoutMarginsGuide];
-    v65 = [v66 leadingAnchor];
-    v64 = [v67 constraintEqualToAnchor:v65];
+    leadingAnchor = [(UIStackView *)self->_mainStackView leadingAnchor];
+    contentView2 = [(CNFRegAliasTableCell *)self contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v64 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v70[0] = v64;
-    v62 = [(UIStackView *)self->_mainStackView trailingAnchor];
-    v63 = [(CNFRegAliasTableCell *)self contentView];
-    v61 = [v63 layoutMarginsGuide];
-    v60 = [v61 trailingAnchor];
-    v59 = [v62 constraintEqualToAnchor:v60];
+    trailingAnchor = [(UIStackView *)self->_mainStackView trailingAnchor];
+    contentView3 = [(CNFRegAliasTableCell *)self contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v59 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v70[1] = v59;
-    v56 = [(UIStackView *)self->_mainStackView topAnchor];
-    v57 = [(CNFRegAliasTableCell *)self contentView];
-    v55 = [v57 layoutMarginsGuide];
-    v44 = [v55 topAnchor];
-    v45 = [v56 constraintEqualToAnchor:v44];
+    topAnchor = [(UIStackView *)self->_mainStackView topAnchor];
+    contentView4 = [(CNFRegAliasTableCell *)self contentView];
+    layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v70[2] = v45;
-    v46 = [(UIStackView *)self->_mainStackView bottomAnchor];
-    v47 = [(CNFRegAliasTableCell *)self contentView];
-    v48 = [v47 layoutMarginsGuide];
-    v49 = [v48 bottomAnchor];
-    v50 = [v46 constraintEqualToAnchor:v49];
+    bottomAnchor = [(UIStackView *)self->_mainStackView bottomAnchor];
+    contentView5 = [(CNFRegAliasTableCell *)self contentView];
+    layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v50 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v70[3] = v50;
-    v51 = [(UIView *)self->_leadingContainerView widthAnchor];
-    v52 = [v51 constraintEqualToConstant:20.0];
+    widthAnchor = [(UIView *)self->_leadingContainerView widthAnchor];
+    v52 = [widthAnchor constraintEqualToConstant:20.0];
     v70[4] = v52;
     v53 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:5];
     [v58 activateConstraints:v53];
@@ -175,8 +175,8 @@
   v3 = ;
   [(UIImageView *)self->_checkmarkView setTintColor:v3];
 
-  v4 = [(UILabel *)self->_secondaryLabel text];
-  v5 = [v4 length];
+  text = [(UILabel *)self->_secondaryLabel text];
+  v5 = [text length];
 
   if (v5)
   {
@@ -188,18 +188,18 @@
     [(UILabel *)self->_secondaryLabel removeFromSuperview];
   }
 
-  v6 = [(CNFRegAliasTableCell *)self visibleLeadingViewForState];
-  v7 = [(UIView *)self->_leadingContainerView subviews];
-  v8 = [v7 firstObject];
+  visibleLeadingViewForState = [(CNFRegAliasTableCell *)self visibleLeadingViewForState];
+  subviews = [(UIView *)self->_leadingContainerView subviews];
+  firstObject = [subviews firstObject];
 
-  if (v6 != v8)
+  if (visibleLeadingViewForState != firstObject)
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v9 = [(UIView *)self->_leadingContainerView subviews];
-    v10 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    subviews2 = [(UIView *)self->_leadingContainerView subviews];
+    v10 = [subviews2 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v10)
     {
       v11 = v10;
@@ -211,47 +211,47 @@
         {
           if (*v35 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subviews2);
           }
 
           [*(*(&v34 + 1) + 8 * v13++) removeFromSuperview];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v11 = [subviews2 countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v11);
     }
 
-    if (v6)
+    if (visibleLeadingViewForState)
     {
-      [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [visibleLeadingViewForState setTranslatesAutoresizingMaskIntoConstraints:0];
       LODWORD(v14) = 1148846080;
-      [v6 setContentCompressionResistancePriority:1 forAxis:v14];
+      [visibleLeadingViewForState setContentCompressionResistancePriority:1 forAxis:v14];
       LODWORD(v15) = 1148846080;
-      [v6 setContentCompressionResistancePriority:0 forAxis:v15];
-      [(UIView *)self->_leadingContainerView addSubview:v6];
+      [visibleLeadingViewForState setContentCompressionResistancePriority:0 forAxis:v15];
+      [(UIView *)self->_leadingContainerView addSubview:visibleLeadingViewForState];
       v27 = MEMORY[0x277CCAAD0];
-      v33 = [v6 leadingAnchor];
-      v32 = [(UIView *)self->_leadingContainerView leadingAnchor];
-      v31 = [v33 constraintGreaterThanOrEqualToAnchor:v32];
+      leadingAnchor = [visibleLeadingViewForState leadingAnchor];
+      leadingAnchor2 = [(UIView *)self->_leadingContainerView leadingAnchor];
+      v31 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
       v38[0] = v31;
-      v30 = [v6 trailingAnchor];
-      v29 = [(UIView *)self->_leadingContainerView trailingAnchor];
-      v28 = [v30 constraintLessThanOrEqualToAnchor:v29];
+      trailingAnchor = [visibleLeadingViewForState trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_leadingContainerView trailingAnchor];
+      v28 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
       v38[1] = v28;
-      v26 = [v6 centerXAnchor];
-      v25 = [(UIView *)self->_leadingContainerView centerXAnchor];
-      v16 = [v26 constraintEqualToAnchor:v25];
+      centerXAnchor = [visibleLeadingViewForState centerXAnchor];
+      centerXAnchor2 = [(UIView *)self->_leadingContainerView centerXAnchor];
+      v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v38[2] = v16;
-      v17 = [v6 topAnchor];
-      v18 = [(UIView *)self->_leadingContainerView topAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18];
+      topAnchor = [visibleLeadingViewForState topAnchor];
+      topAnchor2 = [(UIView *)self->_leadingContainerView topAnchor];
+      v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v38[3] = v19;
-      v20 = [v6 bottomAnchor];
-      v21 = [(UIView *)self->_leadingContainerView bottomAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      bottomAnchor = [visibleLeadingViewForState bottomAnchor];
+      bottomAnchor2 = [(UIView *)self->_leadingContainerView bottomAnchor];
+      v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v38[4] = v22;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:5];
       [v27 activateConstraints:v23];
@@ -294,38 +294,38 @@ LABEL_7:
   return v3;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v15.receiver = self;
   v15.super_class = CNFRegAliasTableCell;
-  v4 = a3;
-  [(PSTableCell *)&v15 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v15 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(CNFRegAliasTableCell *)self textLabel:v15.receiver];
   [v5 setHidden:1];
 
-  v6 = [(CNFRegAliasTableCell *)self detailTextLabel];
-  [v6 setHidden:1];
+  detailTextLabel = [(CNFRegAliasTableCell *)self detailTextLabel];
+  [detailTextLabel setHidden:1];
 
-  v7 = [v4 objectForKeyedSubscript:@"cnfreg-alias-spinning"];
+  v7 = [specifierCopy objectForKeyedSubscript:@"cnfreg-alias-spinning"];
   self->_isLoading = [v7 BOOLValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"cnfreg-alias-checked"];
+  v8 = [specifierCopy objectForKeyedSubscript:@"cnfreg-alias-checked"];
   self->_hasCheckmark = [v8 BOOLValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"cnfreg-alias-temporary"];
+  v9 = [specifierCopy objectForKeyedSubscript:@"cnfreg-alias-temporary"];
   self->_isTemporary = [v9 BOOLValue];
 
-  v10 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3FF38]];
+  v10 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277D3FF38]];
   self->_isRestricted = [v10 BOOLValue] ^ 1;
 
-  v11 = [v4 name];
+  name = [specifierCopy name];
   primaryText = self->_primaryText;
-  self->_primaryText = v11;
+  self->_primaryText = name;
 
-  v13 = [v4 performGetter];
+  performGetter = [specifierCopy performGetter];
 
   secondaryText = self->_secondaryText;
-  self->_secondaryText = v13;
+  self->_secondaryText = performGetter;
 
   [(CNFRegAliasTableCell *)self updateViews];
 }

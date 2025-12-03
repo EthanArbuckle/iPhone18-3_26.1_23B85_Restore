@@ -20,7 +20,7 @@
 + (id)storeConfigurationForIntent;
 + (id)storeConfigurationForInteractionHistory;
 + (id)storeConfigurationForMessageHistory;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)syncPolicyForAssistantSuggestions;
 + (id)syncPolicyForAudioHistory;
 + (id)syncPolicyForCallHistory;
@@ -34,7 +34,7 @@
 + (id)MessageHistory
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForMessageHistory];
+  configurationForMessageHistory = [self configurationForMessageHistory];
   v3 = +[BMSiriMessageHistory columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -46,7 +46,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.Remembers.MessageHistory" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.MessageHistory" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.MessageHistory" schema:v9 configuration:configurationForMessageHistory];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -56,7 +56,7 @@
 + (id)CallHistory
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForCallHistory];
+  configurationForCallHistory = [self configurationForCallHistory];
   v3 = +[BMSiriCallHistory columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -68,7 +68,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.Remembers.CallHistory" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.CallHistory" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.CallHistory" schema:v9 configuration:configurationForCallHistory];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -78,8 +78,8 @@
 + (id)configurationForCallHistory
 {
   v30[6] = *MEMORY[0x1E69E9840];
-  v29 = [a1 storeConfigurationForCallHistory];
-  v28 = [a1 syncPolicyForCallHistory];
+  storeConfigurationForCallHistory = [self storeConfigurationForCallHistory];
+  syncPolicyForCallHistory = [self syncPolicyForCallHistory];
   v3 = objc_alloc(MEMORY[0x1E698F330]);
   v27 = [MEMORY[0x1E696AE18] predicateWithFormat:@"$uninstalled == interaction.appBundleId" argumentArray:0];
   v26 = [v3 initWithIdentifier:@"app-uninstall" predicate:v27];
@@ -110,7 +110,7 @@
   v20 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"F31A4964-E2CE-4AE1-A0B9-7BF60EFCD204"];
   BYTE2(v24) = 1;
   LOWORD(v24) = 1;
-  v21 = [v19 _libraryStreamConfigurationWithUUID:v20 streamIdentifier:@"Siri.Remembers.CallHistory" eventClass:objc_opt_class() storeConfig:v29 syncPolicy:v28 legacyNames:0 internalMetadata:0 enableSubscriptions:v24 enableSubscriptionSubstream:0 enableTombstoneSubstream:v18 allowedClients:@"com.apple.siriinferenced" pruningTriggers:? spaceAttributionOwner:?];
+  v21 = [v19 _libraryStreamConfigurationWithUUID:v20 streamIdentifier:@"Siri.Remembers.CallHistory" eventClass:objc_opt_class() storeConfig:storeConfigurationForCallHistory syncPolicy:syncPolicyForCallHistory legacyNames:0 internalMetadata:0 enableSubscriptions:v24 enableSubscriptionSubstream:0 enableTombstoneSubstream:v18 allowedClients:@"com.apple.siriinferenced" pruningTriggers:? spaceAttributionOwner:?];
 
   v22 = *MEMORY[0x1E69E9840];
 
@@ -165,7 +165,7 @@
 + (id)InteractionHistory
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForInteractionHistory];
+  configurationForInteractionHistory = [self configurationForInteractionHistory];
   v3 = +[BMSiriInteractionHistory columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -177,7 +177,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.Remembers.InteractionHistory" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.InteractionHistory" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.InteractionHistory" schema:v9 configuration:configurationForInteractionHistory];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -232,8 +232,8 @@
 + (id)configurationForInteractionHistory
 {
   v30[6] = *MEMORY[0x1E69E9840];
-  v29 = [a1 storeConfigurationForInteractionHistory];
-  v28 = [a1 syncPolicyForInteractionHistory];
+  storeConfigurationForInteractionHistory = [self storeConfigurationForInteractionHistory];
+  syncPolicyForInteractionHistory = [self syncPolicyForInteractionHistory];
   v3 = objc_alloc(MEMORY[0x1E698F330]);
   v27 = [MEMORY[0x1E696AE18] predicateWithFormat:@"$uninstalled == interaction.appBundleId" argumentArray:0];
   v26 = [v3 initWithIdentifier:@"app-uninstall" predicate:v27];
@@ -264,7 +264,7 @@
   v20 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"5270D95A-22C7-4BF1-95E8-DD85C54B8813"];
   BYTE2(v24) = 1;
   LOWORD(v24) = 1;
-  v21 = [v19 _libraryStreamConfigurationWithUUID:v20 streamIdentifier:@"Siri.Remembers.InteractionHistory" eventClass:objc_opt_class() storeConfig:v29 syncPolicy:v28 legacyNames:0 internalMetadata:0 enableSubscriptions:v24 enableSubscriptionSubstream:0 enableTombstoneSubstream:v18 allowedClients:@"com.apple.siriinferenced" pruningTriggers:? spaceAttributionOwner:?];
+  v21 = [v19 _libraryStreamConfigurationWithUUID:v20 streamIdentifier:@"Siri.Remembers.InteractionHistory" eventClass:objc_opt_class() storeConfig:storeConfigurationForInteractionHistory syncPolicy:syncPolicyForInteractionHistory legacyNames:0 internalMetadata:0 enableSubscriptions:v24 enableSubscriptionSubstream:0 enableTombstoneSubstream:v18 allowedClients:@"com.apple.siriinferenced" pruningTriggers:? spaceAttributionOwner:?];
 
   v22 = *MEMORY[0x1E69E9840];
 
@@ -274,8 +274,8 @@
 + (id)configurationForMessageHistory
 {
   v30[6] = *MEMORY[0x1E69E9840];
-  v29 = [a1 storeConfigurationForMessageHistory];
-  v28 = [a1 syncPolicyForMessageHistory];
+  storeConfigurationForMessageHistory = [self storeConfigurationForMessageHistory];
+  syncPolicyForMessageHistory = [self syncPolicyForMessageHistory];
   v3 = objc_alloc(MEMORY[0x1E698F330]);
   v27 = [MEMORY[0x1E696AE18] predicateWithFormat:@"$uninstalled == interaction.appBundleId" argumentArray:0];
   v26 = [v3 initWithIdentifier:@"app-uninstall" predicate:v27];
@@ -306,7 +306,7 @@
   v20 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"6F5F436A-25E2-4C0C-86E6-BB4A82C3502E"];
   BYTE2(v24) = 1;
   LOWORD(v24) = 1;
-  v21 = [v19 _libraryStreamConfigurationWithUUID:v20 streamIdentifier:@"Siri.Remembers.MessageHistory" eventClass:objc_opt_class() storeConfig:v29 syncPolicy:v28 legacyNames:0 internalMetadata:0 enableSubscriptions:v24 enableSubscriptionSubstream:0 enableTombstoneSubstream:v18 allowedClients:@"com.apple.siriinferenced" pruningTriggers:? spaceAttributionOwner:?];
+  v21 = [v19 _libraryStreamConfigurationWithUUID:v20 streamIdentifier:@"Siri.Remembers.MessageHistory" eventClass:objc_opt_class() storeConfig:storeConfigurationForMessageHistory syncPolicy:syncPolicyForMessageHistory legacyNames:0 internalMetadata:0 enableSubscriptions:v24 enableSubscriptionSubstream:0 enableTombstoneSubstream:v18 allowedClients:@"com.apple.siriinferenced" pruningTriggers:? spaceAttributionOwner:?];
 
   v22 = *MEMORY[0x1E69E9840];
 
@@ -362,7 +362,7 @@
 + (id)AssistantSuggestions
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAssistantSuggestions];
+  configurationForAssistantSuggestions = [self configurationForAssistantSuggestions];
   v3 = +[BMSiriAssistantSuggestions columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -374,7 +374,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.Remembers.AssistantSuggestions" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.AssistantSuggestions" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.AssistantSuggestions" schema:v9 configuration:configurationForAssistantSuggestions];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -384,8 +384,8 @@
 + (id)configurationForAssistantSuggestions
 {
   v24[4] = *MEMORY[0x1E69E9840];
-  v23 = [a1 storeConfigurationForAssistantSuggestions];
-  v22 = [a1 syncPolicyForAssistantSuggestions];
+  storeConfigurationForAssistantSuggestions = [self storeConfigurationForAssistantSuggestions];
+  syncPolicyForAssistantSuggestions = [self syncPolicyForAssistantSuggestions];
   v3 = objc_alloc(MEMORY[0x1E698F330]);
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"$uninstalled == interaction.appBundleId" argumentArray:0];
   v5 = [v3 initWithIdentifier:@"app-uninstall" predicate:v4];
@@ -408,7 +408,7 @@
   v17 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"2CC2F1F2-28F6-4E22-9042-95AD00BBB2E2"];
   BYTE2(v21) = 1;
   LOWORD(v21) = 1;
-  v18 = [v16 _libraryStreamConfigurationWithUUID:v17 streamIdentifier:@"Siri.Remembers.AssistantSuggestions" eventClass:objc_opt_class() storeConfig:v23 syncPolicy:v22 legacyNames:0 internalMetadata:0 enableSubscriptions:v21 enableSubscriptionSubstream:0 enableTombstoneSubstream:v15 allowedClients:@"com.apple.siriinferenced" pruningTriggers:? spaceAttributionOwner:?];
+  v18 = [v16 _libraryStreamConfigurationWithUUID:v17 streamIdentifier:@"Siri.Remembers.AssistantSuggestions" eventClass:objc_opt_class() storeConfig:storeConfigurationForAssistantSuggestions syncPolicy:syncPolicyForAssistantSuggestions legacyNames:0 internalMetadata:0 enableSubscriptions:v21 enableSubscriptionSubstream:0 enableTombstoneSubstream:v15 allowedClients:@"com.apple.siriinferenced" pruningTriggers:? spaceAttributionOwner:?];
 
   v19 = *MEMORY[0x1E69E9840];
 
@@ -470,7 +470,7 @@
 + (id)AudioHistory
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAudioHistory];
+  configurationForAudioHistory = [self configurationForAudioHistory];
   v3 = +[BMSiriAudioHistory columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -482,7 +482,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.Remembers.AudioHistory" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.AudioHistory" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.AudioHistory" schema:v9 configuration:configurationForAudioHistory];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -492,8 +492,8 @@
 + (id)configurationForAudioHistory
 {
   v30[6] = *MEMORY[0x1E69E9840];
-  v29 = [a1 storeConfigurationForAudioHistory];
-  v28 = [a1 syncPolicyForAudioHistory];
+  storeConfigurationForAudioHistory = [self storeConfigurationForAudioHistory];
+  syncPolicyForAudioHistory = [self syncPolicyForAudioHistory];
   v3 = objc_alloc(MEMORY[0x1E698F330]);
   v27 = [MEMORY[0x1E696AE18] predicateWithFormat:@"$uninstalled == interaction.appBundleId" argumentArray:0];
   v26 = [v3 initWithIdentifier:@"app-uninstall" predicate:v27];
@@ -524,7 +524,7 @@
   v20 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"80C15BA8-7E6F-4985-BC29-6335B88D590A"];
   BYTE2(v24) = 1;
   LOWORD(v24) = 1;
-  v21 = [v19 _libraryStreamConfigurationWithUUID:v20 streamIdentifier:@"Siri.Remembers.AudioHistory" eventClass:objc_opt_class() storeConfig:v29 syncPolicy:v28 legacyNames:0 internalMetadata:0 enableSubscriptions:v24 enableSubscriptionSubstream:0 enableTombstoneSubstream:v18 allowedClients:@"com.apple.siriinferenced" pruningTriggers:? spaceAttributionOwner:?];
+  v21 = [v19 _libraryStreamConfigurationWithUUID:v20 streamIdentifier:@"Siri.Remembers.AudioHistory" eventClass:objc_opt_class() storeConfig:storeConfigurationForAudioHistory syncPolicy:syncPolicyForAudioHistory legacyNames:0 internalMetadata:0 enableSubscriptions:v24 enableSubscriptionSubstream:0 enableTombstoneSubstream:v18 allowedClients:@"com.apple.siriinferenced" pruningTriggers:? spaceAttributionOwner:?];
 
   v22 = *MEMORY[0x1E69E9840];
 
@@ -586,7 +586,7 @@
 + (id)Intent
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForIntent];
+  configurationForIntent = [self configurationForIntent];
   v3 = +[BMSiriIntent columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -598,7 +598,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.Remembers.Intent" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.Intent" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.Intent" schema:v9 configuration:configurationForIntent];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -608,8 +608,8 @@
 + (id)configurationForIntent
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForIntent];
-  v4 = [a1 syncPolicyForIntent];
+  storeConfigurationForIntent = [self storeConfigurationForIntent];
+  syncPolicyForIntent = [self syncPolicyForIntent];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"TRUEPREDICATE" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"delete-siri-dictation-history" predicate:v6];
@@ -624,7 +624,7 @@
   v13 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"E1411DC0-1A96-4FC2-9402-68BB4BC8E19D"];
   BYTE2(v17) = 1;
   LOWORD(v17) = 1;
-  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"Siri.Remembers.Intent" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EC300 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:@"com.apple.siriinferenced" pruningTriggers:v18[0] spaceAttributionOwner:?];
+  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"Siri.Remembers.Intent" eventClass:objc_opt_class() storeConfig:storeConfigurationForIntent syncPolicy:syncPolicyForIntent legacyNames:&unk_1EF3EC300 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:@"com.apple.siriinferenced" pruningTriggers:v18[0] spaceAttributionOwner:?];
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -639,50 +639,50 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"AssistantSuggestions"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AssistantSuggestions"])
   {
-    v5 = [a1 AssistantSuggestions];
+    assistantSuggestions = [self AssistantSuggestions];
 LABEL_15:
-    v6 = v5;
+    v6 = assistantSuggestions;
     goto LABEL_16;
   }
 
-  if ([v4 isEqualToString:@"AudioHistory"])
+  if ([nameCopy isEqualToString:@"AudioHistory"])
   {
-    v5 = [a1 AudioHistory];
+    assistantSuggestions = [self AudioHistory];
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"CallHistory"])
+  if ([nameCopy isEqualToString:@"CallHistory"])
   {
-    v5 = [a1 CallHistory];
+    assistantSuggestions = [self CallHistory];
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"HomeHistory"])
+  if ([nameCopy isEqualToString:@"HomeHistory"])
   {
-    v5 = [a1 HomeHistory];
+    assistantSuggestions = [self HomeHistory];
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"Intent"])
+  if ([nameCopy isEqualToString:@"Intent"])
   {
-    v5 = [a1 Intent];
+    assistantSuggestions = [self Intent];
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"InteractionHistory"])
+  if ([nameCopy isEqualToString:@"InteractionHistory"])
   {
-    v5 = [a1 InteractionHistory];
+    assistantSuggestions = [self InteractionHistory];
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"MessageHistory"])
+  if ([nameCopy isEqualToString:@"MessageHistory"])
   {
-    v5 = [a1 MessageHistory];
+    assistantSuggestions = [self MessageHistory];
     goto LABEL_15;
   }
 
@@ -723,13 +723,13 @@ LABEL_16:
 
 + (id)configurationForHomeHistory
 {
-  v3 = [a1 storeConfigurationForHomeHistory];
-  v4 = [a1 syncPolicyForHomeHistory];
+  storeConfigurationForHomeHistory = [self storeConfigurationForHomeHistory];
+  syncPolicyForHomeHistory = [self syncPolicyForHomeHistory];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"2A547182-AF14-4DCE-BF23-C42E38DBEC9B"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.Remembers.HomeHistory" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.siriinferenced" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.Remembers.HomeHistory" eventClass:objc_opt_class() storeConfig:storeConfigurationForHomeHistory syncPolicy:syncPolicyForHomeHistory legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.siriinferenced" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -745,7 +745,7 @@ LABEL_16:
 + (id)HomeHistory
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForHomeHistory];
+  configurationForHomeHistory = [self configurationForHomeHistory];
   v3 = +[BMSiriHomeHistory columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -757,7 +757,7 @@ LABEL_16:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.Remembers.HomeHistory" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.HomeHistory" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Remembers.HomeHistory" schema:v9 configuration:configurationForHomeHistory];
 
   v11 = *MEMORY[0x1E69E9840];
 

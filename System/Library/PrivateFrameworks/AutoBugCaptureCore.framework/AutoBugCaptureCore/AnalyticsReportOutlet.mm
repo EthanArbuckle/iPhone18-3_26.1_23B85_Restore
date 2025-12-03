@@ -1,14 +1,14 @@
 @interface AnalyticsReportOutlet
-- (BOOL)publishReportForCase:(id)a3 options:(id)a4;
+- (BOOL)publishReportForCase:(id)case options:(id)options;
 @end
 
 @implementation AnalyticsReportOutlet
 
-- (BOOL)publishReportForCase:(id)a3 options:(id)a4
+- (BOOL)publishReportForCase:(id)case options:(id)options
 {
-  v4 = a3;
+  caseCopy = case;
   v5 = +[AnalyticsAgent sharedInstance];
-  [v5 postDiagnosticIncidentReportForCase:v4];
+  [v5 postDiagnosticIncidentReportForCase:caseCopy];
 
   return 1;
 }

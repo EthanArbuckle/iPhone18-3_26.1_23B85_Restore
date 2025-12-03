@@ -1,19 +1,19 @@
 @interface TSMTIEValue
-- (TSMTIEValue)initWithObservationInterval:(double)a3 andMTIE:(double)a4;
+- (TSMTIEValue)initWithObservationInterval:(double)interval andMTIE:(double)e;
 - (id)description;
 @end
 
 @implementation TSMTIEValue
 
-- (TSMTIEValue)initWithObservationInterval:(double)a3 andMTIE:(double)a4
+- (TSMTIEValue)initWithObservationInterval:(double)interval andMTIE:(double)e
 {
   v7.receiver = self;
   v7.super_class = TSMTIEValue;
   result = [(TSMTIEValue *)&v7 init];
   if (result)
   {
-    result->_observationInterval = a3;
-    result->_mtie = a4;
+    result->_observationInterval = interval;
+    result->_mtie = e;
   }
 
   return result;

@@ -1,14 +1,14 @@
 @interface _SBSceneManagerPolicyAggregator
-- (BOOL)allowsCapability:(int64_t)a3 explanation:(id *)a4;
+- (BOOL)allowsCapability:(int64_t)capability explanation:(id *)explanation;
 @end
 
 @implementation _SBSceneManagerPolicyAggregator
 
-- (BOOL)allowsCapability:(int64_t)a3 explanation:(id *)a4
+- (BOOL)allowsCapability:(int64_t)capability explanation:(id *)explanation
 {
-  if (a4)
+  if (explanation)
   {
-    *a4 = @"The base scene manager does not support any capabilities";
+    *explanation = @"The base scene manager does not support any capabilities";
   }
 
   return 0;

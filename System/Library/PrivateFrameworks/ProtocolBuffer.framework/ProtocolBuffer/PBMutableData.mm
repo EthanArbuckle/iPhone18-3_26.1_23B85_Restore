@@ -1,8 +1,8 @@
 @interface PBMutableData
-- (PBMutableData)initWithCapacity:(unint64_t)a3;
-- (void)_pb_growCapacityBy:(void *)a1;
+- (PBMutableData)initWithCapacity:(unint64_t)capacity;
+- (void)_pb_growCapacityBy:(void *)by;
 - (void)dealloc;
-- (void)setLength:(unint64_t)a3;
+- (void)setLength:(unint64_t)length;
 @end
 
 @implementation PBMutableData
@@ -15,26 +15,26 @@
   [(PBMutableData *)&v3 dealloc];
 }
 
-- (void)setLength:(unint64_t)a3
+- (void)setLength:(unint64_t)length
 {
   buffer = self->buffer;
   v6 = (self->end - buffer);
-  if (a3 > v6)
+  if (length > v6)
   {
     [(PBMutableData *)self _pb_growCapacityBy:?];
     buffer = self->buffer;
   }
 
-  self->p = &buffer[a3];
+  self->p = &buffer[length];
 }
 
-- (void)_pb_growCapacityBy:(void *)a1
+- (void)_pb_growCapacityBy:(void *)by
 {
-  if (a1)
+  if (by)
   {
-    v4 = [a1 length];
-    v5 = a1[2];
-    v6 = a1[3] - v5 + a2;
+    v4 = [by length];
+    v5 = by[2];
+    v6 = by[3] - v5 + a2;
     v7 = malloc_type_realloc(v5, v6, 0x175D3A40uLL);
     if (!v7)
     {
@@ -42,18 +42,18 @@
       [v8 raise];
     }
 
-    a1[2] = v7;
-    a1[3] = &v7[v6];
-    a1[1] = &v7[v4];
+    by[2] = v7;
+    by[3] = &v7[v6];
+    by[1] = &v7[v4];
   }
 }
 
-- (PBMutableData)initWithCapacity:(unint64_t)a3
+- (PBMutableData)initWithCapacity:(unint64_t)capacity
 {
   v6.receiver = self;
   v6.super_class = PBMutableData;
   v4 = [(PBMutableData *)&v6 init];
-  [(PBMutableData *)v4 _pb_growCapacityBy:a3];
+  [(PBMutableData *)v4 _pb_growCapacityBy:capacity];
   return v4;
 }
 

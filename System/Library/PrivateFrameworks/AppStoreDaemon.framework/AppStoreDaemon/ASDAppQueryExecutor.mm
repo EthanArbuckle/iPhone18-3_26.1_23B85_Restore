@@ -1,22 +1,22 @@
 @interface ASDAppQueryExecutor
-+ (void)_executeQueryWithPredicate:(char)a3 isForUpdates:(char)a4 reloadingFromServer:(void *)a5 onPairedDevice:(void *)a6 remoteDeviceID:(void *)a7 usingServiceBroker:(void *)a8 withResultHandler:;
-- (ASDAppQueryExecutor)initWithServiceBroker:(id)a3;
-- (void)executeQueryWithPredicate:(id)a3 onPairedDevice:(id)a4 remoteDeviceID:(id)a5 withResultHandler:(id)a6;
-- (void)executeUpdatesQueryWithPredicateReloadingFromServer:(BOOL)a3 onPairedDevice:(id)a4 remoteDeviceID:(id)a5 withResultHandler:(id)a6;
++ (void)_executeQueryWithPredicate:(char)predicate isForUpdates:(char)updates reloadingFromServer:(void *)server onPairedDevice:(void *)device remoteDeviceID:(void *)d usingServiceBroker:(void *)broker withResultHandler:;
+- (ASDAppQueryExecutor)initWithServiceBroker:(id)broker;
+- (void)executeQueryWithPredicate:(id)predicate onPairedDevice:(id)device remoteDeviceID:(id)d withResultHandler:(id)handler;
+- (void)executeUpdatesQueryWithPredicateReloadingFromServer:(BOOL)server onPairedDevice:(id)device remoteDeviceID:(id)d withResultHandler:(id)handler;
 @end
 
 @implementation ASDAppQueryExecutor
 
-- (ASDAppQueryExecutor)initWithServiceBroker:(id)a3
+- (ASDAppQueryExecutor)initWithServiceBroker:(id)broker
 {
-  v5 = a3;
+  brokerCopy = broker;
   v13.receiver = self;
   v13.super_class = ASDAppQueryExecutor;
   v6 = [(ASDAppQueryExecutor *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceBroker, a3);
+    objc_storeStrong(&v6->_serviceBroker, broker);
     v8 = [[ASDDispatchQueue alloc] initWithName:@"com.apple.AppStoreDaemon.ASDAppQuery.executor"];
     dispatchQueue = v7->_dispatchQueue;
     v7->_dispatchQueue = v8;
@@ -29,26 +29,26 @@
   return v7;
 }
 
-- (void)executeQueryWithPredicate:(id)a3 onPairedDevice:(id)a4 remoteDeviceID:(id)a5 withResultHandler:(id)a6
+- (void)executeQueryWithPredicate:(id)predicate onPairedDevice:(id)device remoteDeviceID:(id)d withResultHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  predicateCopy = predicate;
+  deviceCopy = device;
+  dCopy = d;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __97__ASDAppQueryExecutor_executeQueryWithPredicate_onPairedDevice_remoteDeviceID_withResultHandler___block_invoke;
   v19[3] = &unk_1E7CDCA90;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = self;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = predicateCopy;
+  v21 = deviceCopy;
+  v22 = dCopy;
+  selfCopy = self;
+  v24 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = dCopy;
+  v17 = deviceCopy;
+  v18 = predicateCopy;
   [(ASDDispatchQueue *)dispatchQueue syncUsingBlock:v19];
 }
 
@@ -162,15 +162,15 @@ uint64_t __97__ASDAppQueryExecutor_executeQueryWithPredicate_onPairedDevice_remo
   return result;
 }
 
-+ (void)_executeQueryWithPredicate:(char)a3 isForUpdates:(char)a4 reloadingFromServer:(void *)a5 onPairedDevice:(void *)a6 remoteDeviceID:(void *)a7 usingServiceBroker:(void *)a8 withResultHandler:
++ (void)_executeQueryWithPredicate:(char)predicate isForUpdates:(char)updates reloadingFromServer:(void *)server onPairedDevice:(void *)device remoteDeviceID:(void *)d usingServiceBroker:(void *)broker withResultHandler:
 {
   v14 = a2;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  serverCopy = server;
+  deviceCopy = device;
+  dCopy = d;
+  brokerCopy = broker;
   v19 = objc_opt_self();
-  if (v17)
+  if (dCopy)
   {
     v20 = v19;
     v32[0] = 0;
@@ -184,12 +184,12 @@ uint64_t __97__ASDAppQueryExecutor_executeQueryWithPredicate_onPairedDevice_remo
     v23 = v14;
     v28 = v32;
     v29 = v20;
-    v30 = a3;
-    v31 = a4;
-    v24 = v15;
-    v25 = v16;
-    v26 = v17;
-    v27 = v18;
+    predicateCopy = predicate;
+    updatesCopy = updates;
+    v24 = serverCopy;
+    v25 = deviceCopy;
+    v26 = dCopy;
+    v27 = brokerCopy;
     [v26 getLibraryServiceWithCompletionHandler:v22];
 
     _Block_object_dispose(v32, 8);
@@ -198,7 +198,7 @@ uint64_t __97__ASDAppQueryExecutor_executeQueryWithPredicate_onPairedDevice_remo
   else
   {
     v21 = __ErrorWithUnderlyingErrorAndPredicate(0, v14);
-    (*(v18 + 2))(v18, 0, v21);
+    (*(brokerCopy + 2))(brokerCopy, 0, v21);
   }
 }
 
@@ -239,24 +239,24 @@ void __97__ASDAppQueryExecutor_executeQueryWithPredicate_onPairedDevice_remoteDe
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)executeUpdatesQueryWithPredicateReloadingFromServer:(BOOL)a3 onPairedDevice:(id)a4 remoteDeviceID:(id)a5 withResultHandler:(id)a6
+- (void)executeUpdatesQueryWithPredicateReloadingFromServer:(BOOL)server onPairedDevice:(id)device remoteDeviceID:(id)d withResultHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  deviceCopy = device;
+  dCopy = d;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __123__ASDAppQueryExecutor_executeUpdatesQueryWithPredicateReloadingFromServer_onPairedDevice_remoteDeviceID_withResultHandler___block_invoke;
   v17[3] = &unk_1E7CDCAE0;
-  v21 = a3;
+  serverCopy = server;
   v17[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = deviceCopy;
+  v19 = dCopy;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = dCopy;
+  v16 = deviceCopy;
   [(ASDDispatchQueue *)dispatchQueue syncUsingBlock:v17];
 }
 

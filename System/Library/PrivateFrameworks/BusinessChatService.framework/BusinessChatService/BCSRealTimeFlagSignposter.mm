@@ -1,13 +1,13 @@
 @interface BCSRealTimeFlagSignposter
-+ (id)signposterForBCSType:(uint64_t)a1;
-+ (id)signposterForItemIdentifier:(uint64_t)a1;
-+ (id)signposterForShardIdentifier:(uint64_t)a1;
-- (void)flagMeasurementDidChange:(BOOL)a3 forMeasurement:(id)a4;
++ (id)signposterForBCSType:(uint64_t)type;
++ (id)signposterForItemIdentifier:(uint64_t)identifier;
++ (id)signposterForShardIdentifier:(uint64_t)identifier;
+- (void)flagMeasurementDidChange:(BOOL)change forMeasurement:(id)measurement;
 @end
 
 @implementation BCSRealTimeFlagSignposter
 
-+ (id)signposterForBCSType:(uint64_t)a1
++ (id)signposterForBCSType:(uint64_t)type
 {
   objc_opt_self();
   v3 = [(BCSRealTimeSignposter *)[BCSRealTimeFlagSignposter alloc] _initWithType:a2 signpostIdentifier:a2];
@@ -15,45 +15,45 @@
   return v3;
 }
 
-+ (id)signposterForShardIdentifier:(uint64_t)a1
++ (id)signposterForShardIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
   v3 = [BCSRealTimeFlagSignposter alloc];
-  v4 = [v2 type];
+  type = [v2 type];
 
-  v5 = [(BCSRealTimeShardSignposter *)v3 _initWithShardType:v4 signpostIdentifier:v2];
+  v5 = [(BCSRealTimeShardSignposter *)v3 _initWithShardType:type signpostIdentifier:v2];
 
   return v5;
 }
 
-+ (id)signposterForItemIdentifier:(uint64_t)a1
++ (id)signposterForItemIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
   v3 = [BCSRealTimeFlagSignposter alloc];
-  v4 = [v2 type];
+  type = [v2 type];
 
-  v5 = [(BCSRealTimeSignposter *)v3 _initWithType:v4 signpostIdentifier:v2];
+  v5 = [(BCSRealTimeSignposter *)v3 _initWithType:type signpostIdentifier:v2];
 
   return v5;
 }
 
-- (void)flagMeasurementDidChange:(BOOL)a3 forMeasurement:(id)a4
+- (void)flagMeasurementDidChange:(BOOL)change forMeasurement:(id)measurement
 {
-  v4 = a3;
+  changeCopy = change;
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  measurementCopy = measurement;
   if (self)
   {
     signposterType = self->_signposterType;
     if (signposterType == 2)
     {
-      v39 = v6;
+      v39 = measurementCopy;
       v18 = ABSLogSignpost();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        if (v4)
+        if (changeCopy)
         {
           v35 = "_ItemCacheHit";
         }
@@ -71,13 +71,13 @@
         _os_log_debug_impl(&dword_242072000, v18, OS_LOG_TYPE_DEBUG, "Signposting %s for type: %@", buf, 0x16u);
       }
 
-      v19 = [(BCSRealTimeSignposter *)self type];
+      type = [(BCSRealTimeSignposter *)self type];
       v10 = ABSLogCommon();
-      v11 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-      v20 = v11 - 1;
-      if (v4)
+      signpostIdentifier = [(BCSRealTimeSignposter *)self signpostIdentifier];
+      v20 = signpostIdentifier - 1;
+      if (changeCopy)
       {
-        if (v19 == 2)
+        if (type == 2)
         {
           if (v20 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
           {
@@ -100,7 +100,7 @@
         }
       }
 
-      else if (v19 == 2)
+      else if (type == 2)
       {
         if (v20 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
         {
@@ -132,11 +132,11 @@
         goto LABEL_95;
       }
 
-      v39 = v6;
+      v39 = measurementCopy;
       v8 = ABSLogSignpost();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        if (v4)
+        if (changeCopy)
         {
           v37 = "_ConfigCacheHit";
         }
@@ -154,13 +154,13 @@
         _os_log_debug_impl(&dword_242072000, v8, OS_LOG_TYPE_DEBUG, "Signposting %s for type: %@", buf, 0x16u);
       }
 
-      v9 = [(BCSRealTimeSignposter *)self type];
+      type2 = [(BCSRealTimeSignposter *)self type];
       v10 = ABSLogCommon();
-      v11 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-      v12 = v11 - 1;
-      if (v4)
+      signpostIdentifier = [(BCSRealTimeSignposter *)self signpostIdentifier];
+      v12 = signpostIdentifier - 1;
+      if (changeCopy)
       {
-        if (v9 == 2)
+        if (type2 == 2)
         {
           if (v12 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
           {
@@ -183,7 +183,7 @@
         }
       }
 
-      else if (v9 == 2)
+      else if (type2 == 2)
       {
         if (v12 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
         {
@@ -206,18 +206,18 @@
       }
 
 LABEL_93:
-      _os_signpost_emit_with_name_impl(&dword_242072000, v10, OS_SIGNPOST_EVENT, v11, v13, "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_242072000, v10, OS_SIGNPOST_EVENT, signpostIdentifier, v13, "", buf, 2u);
 LABEL_94:
 
-      v6 = v39;
+      measurementCopy = v39;
       goto LABEL_95;
     }
 
-    v39 = v6;
+    v39 = measurementCopy;
     v14 = ABSLogSignpost();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      if (v4)
+      if (changeCopy)
       {
         v33 = "_ShardCacheHit";
       }
@@ -235,21 +235,21 @@ LABEL_94:
       _os_log_debug_impl(&dword_242072000, v14, OS_LOG_TYPE_DEBUG, "Signposting %s for shard type: %@", buf, 0x16u);
     }
 
-    v15 = [(BCSRealTimeShardSignposter *)self shardType];
-    if (v4)
+    shardType = [(BCSRealTimeShardSignposter *)self shardType];
+    if (changeCopy)
     {
-      if (v15 > 3)
+      if (shardType > 3)
       {
-        if (v15 == 4)
+        if (shardType == 4)
         {
           v10 = ABSLogCommon();
-          v26 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-          if (v26 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier2 = [(BCSRealTimeSignposter *)self signpostIdentifier];
+          if (signpostIdentifier2 - 1 > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_94;
           }
 
-          v11 = v26;
+          signpostIdentifier = signpostIdentifier2;
           if (!os_signpost_enabled(v10))
           {
             goto LABEL_94;
@@ -260,16 +260,16 @@ LABEL_94:
           goto LABEL_93;
         }
 
-        if (v15 == 5)
+        if (shardType == 5)
         {
           v10 = ABSLogCommon();
-          v30 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-          if (v30 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [(BCSRealTimeSignposter *)self signpostIdentifier];
+          if (signpostIdentifier3 - 1 > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_94;
           }
 
-          v11 = v30;
+          signpostIdentifier = signpostIdentifier3;
           if (!os_signpost_enabled(v10))
           {
             goto LABEL_94;
@@ -280,18 +280,18 @@ LABEL_94:
           goto LABEL_93;
         }
 
-        v16 = v15 == 6;
-        v6 = v39;
+        v16 = shardType == 6;
+        measurementCopy = v39;
         if (v16)
         {
           v10 = ABSLogCommon();
-          v22 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-          if (v22 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [(BCSRealTimeSignposter *)self signpostIdentifier];
+          if (signpostIdentifier4 - 1 > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_94;
           }
 
-          v11 = v22;
+          signpostIdentifier = signpostIdentifier4;
           if (!os_signpost_enabled(v10))
           {
             goto LABEL_94;
@@ -305,16 +305,16 @@ LABEL_94:
 
       else
       {
-        if (v15 == 1)
+        if (shardType == 1)
         {
           v10 = ABSLogCommon();
-          v24 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-          if (v24 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [(BCSRealTimeSignposter *)self signpostIdentifier];
+          if (signpostIdentifier5 - 1 > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_94;
           }
 
-          v11 = v24;
+          signpostIdentifier = signpostIdentifier5;
           if (!os_signpost_enabled(v10))
           {
             goto LABEL_94;
@@ -325,16 +325,16 @@ LABEL_94:
           goto LABEL_93;
         }
 
-        if (v15 == 2)
+        if (shardType == 2)
         {
           v10 = ABSLogCommon();
-          v28 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-          if (v28 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier6 = [(BCSRealTimeSignposter *)self signpostIdentifier];
+          if (signpostIdentifier6 - 1 > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_94;
           }
 
-          v11 = v28;
+          signpostIdentifier = signpostIdentifier6;
           if (!os_signpost_enabled(v10))
           {
             goto LABEL_94;
@@ -345,18 +345,18 @@ LABEL_94:
           goto LABEL_93;
         }
 
-        v16 = v15 == 3;
-        v6 = v39;
+        v16 = shardType == 3;
+        measurementCopy = v39;
         if (v16)
         {
           v10 = ABSLogCommon();
-          v17 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-          if (v17 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier7 = [(BCSRealTimeSignposter *)self signpostIdentifier];
+          if (signpostIdentifier7 - 1 > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_94;
           }
 
-          v11 = v17;
+          signpostIdentifier = signpostIdentifier7;
           if (!os_signpost_enabled(v10))
           {
             goto LABEL_94;
@@ -369,18 +369,18 @@ LABEL_94:
       }
     }
 
-    else if (v15 > 3)
+    else if (shardType > 3)
     {
-      if (v15 == 4)
+      if (shardType == 4)
       {
         v10 = ABSLogCommon();
-        v27 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-        if (v27 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier8 = [(BCSRealTimeSignposter *)self signpostIdentifier];
+        if (signpostIdentifier8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_94;
         }
 
-        v11 = v27;
+        signpostIdentifier = signpostIdentifier8;
         if (!os_signpost_enabled(v10))
         {
           goto LABEL_94;
@@ -391,16 +391,16 @@ LABEL_94:
         goto LABEL_93;
       }
 
-      if (v15 == 5)
+      if (shardType == 5)
       {
         v10 = ABSLogCommon();
-        v31 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-        if (v31 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier9 = [(BCSRealTimeSignposter *)self signpostIdentifier];
+        if (signpostIdentifier9 - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_94;
         }
 
-        v11 = v31;
+        signpostIdentifier = signpostIdentifier9;
         if (!os_signpost_enabled(v10))
         {
           goto LABEL_94;
@@ -411,18 +411,18 @@ LABEL_94:
         goto LABEL_93;
       }
 
-      v16 = v15 == 6;
-      v6 = v39;
+      v16 = shardType == 6;
+      measurementCopy = v39;
       if (v16)
       {
         v10 = ABSLogCommon();
-        v23 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-        if (v23 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier10 = [(BCSRealTimeSignposter *)self signpostIdentifier];
+        if (signpostIdentifier10 - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_94;
         }
 
-        v11 = v23;
+        signpostIdentifier = signpostIdentifier10;
         if (!os_signpost_enabled(v10))
         {
           goto LABEL_94;
@@ -436,16 +436,16 @@ LABEL_94:
 
     else
     {
-      if (v15 == 1)
+      if (shardType == 1)
       {
         v10 = ABSLogCommon();
-        v25 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-        if (v25 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier11 = [(BCSRealTimeSignposter *)self signpostIdentifier];
+        if (signpostIdentifier11 - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_94;
         }
 
-        v11 = v25;
+        signpostIdentifier = signpostIdentifier11;
         if (!os_signpost_enabled(v10))
         {
           goto LABEL_94;
@@ -456,16 +456,16 @@ LABEL_94:
         goto LABEL_93;
       }
 
-      if (v15 == 2)
+      if (shardType == 2)
       {
         v10 = ABSLogCommon();
-        v29 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-        if (v29 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier12 = [(BCSRealTimeSignposter *)self signpostIdentifier];
+        if (signpostIdentifier12 - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_94;
         }
 
-        v11 = v29;
+        signpostIdentifier = signpostIdentifier12;
         if (!os_signpost_enabled(v10))
         {
           goto LABEL_94;
@@ -476,18 +476,18 @@ LABEL_94:
         goto LABEL_93;
       }
 
-      v16 = v15 == 3;
-      v6 = v39;
+      v16 = shardType == 3;
+      measurementCopy = v39;
       if (v16)
       {
         v10 = ABSLogCommon();
-        v21 = [(BCSRealTimeSignposter *)self signpostIdentifier];
-        if (v21 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier13 = [(BCSRealTimeSignposter *)self signpostIdentifier];
+        if (signpostIdentifier13 - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_94;
         }
 
-        v11 = v21;
+        signpostIdentifier = signpostIdentifier13;
         if (!os_signpost_enabled(v10))
         {
           goto LABEL_94;

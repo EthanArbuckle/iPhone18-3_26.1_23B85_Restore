@@ -1,47 +1,47 @@
 @interface GKContactsIntegrationConsentViewController
-- (GKContactsIntegrationConsentViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (GKContactsIntegrationConsentViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation GKContactsIntegrationConsentViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ContactsIntegrationConsentViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  ContactsIntegrationConsentViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  ContactsIntegrationConsentViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  ContactsIntegrationConsentViewController.viewIsAppearing(_:)(a3);
+  selfCopy = self;
+  ContactsIntegrationConsentViewController.viewIsAppearing(_:)(appearing);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  ContactsIntegrationConsentViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  ContactsIntegrationConsentViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  ContactsIntegrationConsentViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  ContactsIntegrationConsentViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (GKContactsIntegrationConsentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (GKContactsIntegrationConsentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_24E347CF8();
     v7 = v6;
@@ -53,8 +53,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return ContactsIntegrationConsentViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return ContactsIntegrationConsentViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

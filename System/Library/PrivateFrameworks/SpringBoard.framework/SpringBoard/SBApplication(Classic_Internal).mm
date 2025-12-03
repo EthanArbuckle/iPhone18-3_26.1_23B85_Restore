@@ -6,9 +6,9 @@
 
 - (BOOL)_calculateSupportedTypesLazilyIfNecessary
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  *a1 = v2;
-  return [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  *self = currentDevice;
+  return [currentDevice userInterfaceIdiom] == 1;
 }
 
 @end

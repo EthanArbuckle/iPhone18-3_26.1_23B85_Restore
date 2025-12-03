@@ -1,7 +1,7 @@
 @interface _UICollectionViewOutlineCellDisclosureConfiguration
 - (_UICollectionViewOutlineCellDisclosureConfiguration)init;
-- (_UICollectionViewOutlineCellDisclosureConfiguration)initWithImage:(id)a3 alignment:(int64_t)a4 animationRotationAngle:(double)a5 disclosureColor:(id)a6 disclosureWasTappedHandler:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UICollectionViewOutlineCellDisclosureConfiguration)initWithImage:(id)image alignment:(int64_t)alignment animationRotationAngle:(double)angle disclosureColor:(id)color disclosureWasTappedHandler:(id)handler;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _UICollectionViewOutlineCellDisclosureConfiguration
@@ -14,22 +14,22 @@
   return v4;
 }
 
-- (_UICollectionViewOutlineCellDisclosureConfiguration)initWithImage:(id)a3 alignment:(int64_t)a4 animationRotationAngle:(double)a5 disclosureColor:(id)a6 disclosureWasTappedHandler:(id)a7
+- (_UICollectionViewOutlineCellDisclosureConfiguration)initWithImage:(id)image alignment:(int64_t)alignment animationRotationAngle:(double)angle disclosureColor:(id)color disclosureWasTappedHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  imageCopy = image;
+  colorCopy = color;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = _UICollectionViewOutlineCellDisclosureConfiguration;
   v16 = [(_UICollectionViewOutlineCellDisclosureConfiguration *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_image, a3);
-    v17->_alignment = a4;
-    v17->_animationRotationAngle = a5;
-    objc_storeStrong(&v17->_disclosureColor, a6);
-    v18 = [v15 copy];
+    objc_storeStrong(&v16->_image, image);
+    v17->_alignment = alignment;
+    v17->_animationRotationAngle = angle;
+    objc_storeStrong(&v17->_disclosureColor, color);
+    v18 = [handlerCopy copy];
     disclosureWasTappedHandler = v17->_disclosureWasTappedHandler;
     v17->_disclosureWasTappedHandler = v18;
   }
@@ -37,9 +37,9 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   image = self->_image;
   alignment = self->_alignment;
   animationRotationAngle = self->_animationRotationAngle;

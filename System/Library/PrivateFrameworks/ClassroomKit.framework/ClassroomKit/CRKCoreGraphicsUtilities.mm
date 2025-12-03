@@ -1,20 +1,20 @@
 @interface CRKCoreGraphicsUtilities
-+ (CGContext)createImageContextForSize:(CGSize)a3;
-+ (CGImage)createResizedImageFromImage:(CGImage *)a3 newSize:(CGSize)a4;
-+ (id)imageDataFromImage:(CGImage *)a3;
++ (CGContext)createImageContextForSize:(CGSize)size;
++ (CGImage)createResizedImageFromImage:(CGImage *)image newSize:(CGSize)size;
++ (id)imageDataFromImage:(CGImage *)image;
 @end
 
 @implementation CRKCoreGraphicsUtilities
 
-+ (id)imageDataFromImage:(CGImage *)a3
++ (id)imageDataFromImage:(CGImage *)image
 {
   v4 = objc_opt_new();
-  v5 = [*MEMORY[0x277CE1E10] identifier];
-  v6 = CGImageDestinationCreateWithData(v4, v5, 1uLL, 0);
+  identifier = [*MEMORY[0x277CE1E10] identifier];
+  v6 = CGImageDestinationCreateWithData(v4, identifier, 1uLL, 0);
 
   if (v6)
   {
-    CGImageDestinationAddImage(v6, a3, 0);
+    CGImageDestinationAddImage(v6, image, 0);
     v7 = CGImageDestinationFinalize(v6);
     CFRelease(v6);
     if (v7)
@@ -45,16 +45,16 @@ LABEL_9:
   return v8;
 }
 
-+ (CGImage)createResizedImageFromImage:(CGImage *)a3 newSize:(CGSize)a4
++ (CGImage)createResizedImageFromImage:(CGImage *)image newSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a4.width;
-  v8 = a4.height;
-  BitsPerComponent = CGImageGetBitsPerComponent(a3);
-  BytesPerRow = CGImageGetBytesPerRow(a3);
-  ColorSpace = CGImageGetColorSpace(a3);
-  BitmapInfo = CGImageGetBitmapInfo(a3);
+  height = size.height;
+  width = size.width;
+  v7 = size.width;
+  v8 = size.height;
+  BitsPerComponent = CGImageGetBitsPerComponent(image);
+  BytesPerRow = CGImageGetBytesPerRow(image);
+  ColorSpace = CGImageGetColorSpace(image);
+  BitmapInfo = CGImageGetBitmapInfo(image);
   result = CGBitmapContextCreate(0, v7, v8, BitsPerComponent, BytesPerRow, ColorSpace, BitmapInfo);
   if (result)
   {
@@ -64,7 +64,7 @@ LABEL_9:
     v16.origin.y = 0.0;
     v16.size.width = width;
     v16.size.height = height;
-    CGContextDrawImage(v14, v16, a3);
+    CGContextDrawImage(v14, v16, image);
     Image = CGBitmapContextCreateImage(v14);
     CGContextRelease(v14);
     return Image;
@@ -73,10 +73,10 @@ LABEL_9:
   return result;
 }
 
-+ (CGContext)createImageContextForSize:(CGSize)a3
++ (CGContext)createImageContextForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   result = CGColorSpaceCreateDeviceRGB();
   if (result)
   {

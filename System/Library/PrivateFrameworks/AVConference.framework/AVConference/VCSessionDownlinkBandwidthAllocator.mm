@@ -1,23 +1,23 @@
 @interface VCSessionDownlinkBandwidthAllocator
-+ (id)sortMediaEntriesGroupIds:(id)a3;
-- (VCSessionDownlinkBandwidthAllocator)initWithReportingAgent:(opaqueRTCReporting *)a3;
-- (id)distributeBitrate:(unsigned int)a3;
++ (id)sortMediaEntriesGroupIds:(id)ids;
+- (VCSessionDownlinkBandwidthAllocator)initWithReportingAgent:(opaqueRTCReporting *)agent;
+- (id)distributeBitrate:(unsigned int)bitrate;
 - (unint64_t)simultaneousTalkers;
-- (unsigned)requiredAudioBitrate:(unsigned int)a3 highestAudioBitrates:(id)a4;
-- (void)client:(id)a3 didActualNetworkBitrateChangeForStreamGroupID:(unsigned int)a4;
+- (unsigned)requiredAudioBitrate:(unsigned int)bitrate highestAudioBitrates:(id)bitrates;
+- (void)client:(id)client didActualNetworkBitrateChangeForStreamGroupID:(unsigned int)d;
 - (void)dealloc;
-- (void)deregisterForBandwidthAllocationWithClient:(id)a3;
-- (void)registerForBandwidthAllocationWithClient:(id)a3;
-- (void)reportingSessionParticipantEventBitrateChanged:(id)a3 optedInNetworkBitrate:(unsigned int)a4 actualNetworkBitrate:(unsigned int)a5 optedInStreamID:(id)a6 actualStreamID:(id)a7;
+- (void)deregisterForBandwidthAllocationWithClient:(id)client;
+- (void)registerForBandwidthAllocationWithClient:(id)client;
+- (void)reportingSessionParticipantEventBitrateChanged:(id)changed optedInNetworkBitrate:(unsigned int)bitrate actualNetworkBitrate:(unsigned int)networkBitrate optedInStreamID:(id)d actualStreamID:(id)iD;
 - (void)reset;
 - (void)sortMediaEntries;
-- (void)updateHighestAudioBitrates:(id)a3 bitrate:(unsigned int)a4;
-- (void)updateSelectedMediaEntriesForClientWithUUID:(id)a3;
+- (void)updateHighestAudioBitrates:(id)bitrates bitrate:(unsigned int)bitrate;
+- (void)updateSelectedMediaEntriesForClientWithUUID:(id)d;
 @end
 
 @implementation VCSessionDownlinkBandwidthAllocator
 
-- (VCSessionDownlinkBandwidthAllocator)initWithReportingAgent:(opaqueRTCReporting *)a3
+- (VCSessionDownlinkBandwidthAllocator)initWithReportingAgent:(opaqueRTCReporting *)agent
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -26,10 +26,10 @@
   if (v4)
   {
     v4->_clients = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v4->_reportingAgent = a3;
-    if (a3)
+    v4->_reportingAgent = agent;
+    if (agent)
     {
-      CFRetain(a3);
+      CFRetain(agent);
     }
 
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
@@ -59,39 +59,39 @@
   [(VCSessionDownlinkBandwidthAllocator *)&v4 dealloc];
 }
 
-+ (id)sortMediaEntriesGroupIds:(id)a3
++ (id)sortMediaEntriesGroupIds:(id)ids
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] arrayWithArray:a3];
-  if ([a3 containsObject:&unk_1F579B2E0])
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = [MEMORY[0x1E695DF70] arrayWithArray:ids];
+  if ([ids containsObject:&unk_1F579B2E0])
   {
-    [v4 addObject:&unk_1F579B2E0];
+    [array addObject:&unk_1F579B2E0];
   }
 
-  if ([a3 containsObject:&unk_1F579B2F8])
+  if ([ids containsObject:&unk_1F579B2F8])
   {
-    [v4 addObject:&unk_1F579B2F8];
+    [array addObject:&unk_1F579B2F8];
   }
 
-  if ([a3 containsObject:&unk_1F579B310])
+  if ([ids containsObject:&unk_1F579B310])
   {
-    [v4 addObject:&unk_1F579B310];
+    [array addObject:&unk_1F579B310];
   }
 
-  if ([a3 containsObject:&unk_1F579B328])
+  if ([ids containsObject:&unk_1F579B328])
   {
-    [v4 addObject:&unk_1F579B328];
+    [array addObject:&unk_1F579B328];
   }
 
-  [v5 removeObjectsInArray:v4];
+  [v5 removeObjectsInArray:array];
   [v5 sortUsingSelector:sel_compare_];
-  [v4 addObjectsFromArray:v5];
-  return v4;
+  [array addObjectsFromArray:v5];
+  return array;
 }
 
 - (void)sortMediaEntries
 {
-  v2 = self;
+  selfCopy = self;
   v84 = *MEMORY[0x1E69E9840];
   [(VCSessionDownlinkBandwidthAllocator *)self reset];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -99,9 +99,9 @@
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  obj = v2->_clients;
+  obj = selfCopy->_clients;
   v51 = [(NSMutableArray *)obj countByEnumeratingWithState:&v80 objects:v79 count:16];
-  v52 = v2;
+  v52 = selfCopy;
   if (!v51)
   {
     v49 = 0;
@@ -127,8 +127,8 @@
       v77 = 0u;
       v78 = 0u;
       v53 = v6;
-      v7 = [v6 mediaEntries];
-      v8 = [v7 countByEnumeratingWithState:&v75 objects:v74 count:16];
+      mediaEntries = [v6 mediaEntries];
+      v8 = [mediaEntries countByEnumeratingWithState:&v75 objects:v74 count:16];
       if (v8)
       {
         v9 = v8;
@@ -141,7 +141,7 @@
           {
             if (*v76 != v11)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(mediaEntries);
             }
 
             v13 = *(*(&v75 + 1) + 8 * j);
@@ -157,7 +157,7 @@
             [v15 addObject:v13];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v75 objects:v74 count:16];
+          v9 = [mediaEntries countByEnumeratingWithState:&v75 objects:v74 count:16];
         }
 
         while (v9);
@@ -165,12 +165,12 @@
         if (v10)
         {
           ++v49;
-          v2 = v52;
+          selfCopy = v52;
           continue;
         }
       }
 
-      v2 = v52;
+      selfCopy = v52;
       if (objc_opt_class() == v52)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -179,8 +179,8 @@
           v25 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [v53 uuid];
-            v27 = [v53 mediaEntries];
+            uuid = [v53 uuid];
+            mediaEntries2 = [v53 mediaEntries];
             *buf = v47;
             v61 = v24;
             v62 = 2080;
@@ -188,9 +188,9 @@
             v64 = 1024;
             v65 = 122;
             v66 = 2112;
-            v67 = v26;
+            v67 = uuid;
             v68 = 2112;
-            v69 = v27;
+            v69 = mediaEntries2;
             v21 = v25;
             v22 = "VCBandwidth [%s] %s:%d No audio entry for client=%@ mediaEntries=%@";
             v23 = 48;
@@ -213,8 +213,8 @@
           v18 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v53 uuid];
-            v20 = [v53 mediaEntries];
+            uuid2 = [v53 uuid];
+            mediaEntries3 = [v53 mediaEntries];
             *buf = 136316674;
             v61 = v17;
             v62 = 2080;
@@ -226,9 +226,9 @@
             v68 = 2048;
             v69 = v52;
             v70 = 2112;
-            v71 = v19;
+            v71 = uuid2;
             v72 = 2112;
-            v73 = v20;
+            v73 = mediaEntries3;
             v21 = v18;
             v22 = "VCBandwidth [%s] %s:%d %@(%p) No audio entry for client=%@ mediaEntries=%@";
             v23 = 68;
@@ -267,7 +267,7 @@ LABEL_31:
 
         v34 = [v3 objectForKeyedSubscript:*(*(&v56 + 1) + 8 * k)];
         [v34 sortUsingSelector:sel_compare_];
-        [(NSMutableArray *)v2->_sortedMediaEntries addObjectsFromArray:v34];
+        [(NSMutableArray *)selfCopy->_sortedMediaEntries addObjectsFromArray:v34];
       }
 
       v30 = [v28 countByEnumeratingWithState:&v56 objects:v55 count:16];
@@ -281,14 +281,14 @@ LABEL_31:
     v32 = v49;
   }
 
-  [(NSMutableArray *)v2->_sortedMediaEntries sortUsingSelector:sel_compare_];
+  [(NSMutableArray *)selfCopy->_sortedMediaEntries sortUsingSelector:sel_compare_];
   if (v32)
   {
     v35 = 0;
     v36 = v32;
     do
     {
-      if ([-[NSMutableArray objectAtIndexedSubscript:](v2->_sortedMediaEntries objectAtIndexedSubscript:{v35), "type"}] != 1)
+      if ([-[NSMutableArray objectAtIndexedSubscript:](selfCopy->_sortedMediaEntries objectAtIndexedSubscript:{v35), "type"}] != 1)
       {
         if (objc_opt_class() == v52)
         {
@@ -361,47 +361,47 @@ LABEL_31:
 
 LABEL_53:
       ++v35;
-      v2 = v52;
+      selfCopy = v52;
     }
 
     while (v36 != v35);
   }
 }
 
-- (unsigned)requiredAudioBitrate:(unsigned int)a3 highestAudioBitrates:(id)a4
+- (unsigned)requiredAudioBitrate:(unsigned int)bitrate highestAudioBitrates:(id)bitrates
 {
-  v6 = [a4 count];
+  v6 = [bitrates count];
   if (v6)
   {
-    if ([objc_msgSend(a4 objectAtIndexedSubscript:{0), "unsignedIntValue"}] >= a3)
+    if ([objc_msgSend(bitrates objectAtIndexedSubscript:{0), "unsignedIntValue"}] >= bitrate)
     {
       LODWORD(v6) = 0;
     }
 
     else
     {
-      LODWORD(v6) = a3 - [objc_msgSend(a4 objectAtIndexedSubscript:{0), "unsignedIntValue"}];
+      LODWORD(v6) = bitrate - [objc_msgSend(bitrates objectAtIndexedSubscript:{0), "unsignedIntValue"}];
     }
   }
 
   return v6;
 }
 
-- (void)updateHighestAudioBitrates:(id)a3 bitrate:(unsigned int)a4
+- (void)updateHighestAudioBitrates:(id)bitrates bitrate:(unsigned int)bitrate
 {
-  v4 = *&a4;
-  if ([(VCSessionDownlinkBandwidthAllocator *)self requiredAudioBitrate:*&a4 highestAudioBitrates:a3])
+  v4 = *&bitrate;
+  if ([(VCSessionDownlinkBandwidthAllocator *)self requiredAudioBitrate:*&bitrate highestAudioBitrates:bitrates])
   {
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] atIndexedSubscript:{"numberWithUnsignedInt:", v4), 0}];
+    [bitrates setObject:objc_msgSend(MEMORY[0x1E696AD98] atIndexedSubscript:{"numberWithUnsignedInt:", v4), 0}];
 
-    [a3 sortUsingSelector:sel_compare_];
+    [bitrates sortUsingSelector:sel_compare_];
   }
 }
 
 - (unint64_t)simultaneousTalkers
 {
   v3 = [(NSMutableArray *)self->_clients count];
-  v4 = [+[VCDefaults sharedInstance](VCDefaults minParticipantCountSendVoiceActiveOnly];
+  minParticipantCountSendVoiceActiveOnly = [+[VCDefaults sharedInstance](VCDefaults minParticipantCountSendVoiceActiveOnly];
   result = [(NSMutableArray *)self->_clients count];
   v6 = (result + 1) >> 1;
   if (v6 >= 4)
@@ -409,7 +409,7 @@ LABEL_53:
     LODWORD(v6) = 4;
   }
 
-  if (v3 >= v4)
+  if (v3 >= minParticipantCountSendVoiceActiveOnly)
   {
     return v6;
   }
@@ -417,20 +417,20 @@ LABEL_53:
   return result;
 }
 
-- (id)distributeBitrate:(unsigned int)a3
+- (id)distributeBitrate:(unsigned int)bitrate
 {
   v49 = *MEMORY[0x1E69E9840];
   if (self->_forceFullBandwidth)
   {
-    v3 = 2000000;
+    bitrateCopy = 2000000;
   }
 
   else
   {
-    v3 = a3;
+    bitrateCopy = bitrate;
   }
 
-  if (!v3)
+  if (!bitrateCopy)
   {
     return 0;
   }
@@ -446,7 +446,7 @@ LABEL_53:
   block[1] = 3221225472;
   block[2] = __57__VCSessionDownlinkBandwidthAllocator_distributeBitrate___block_invoke;
   block[3] = &unk_1E85F64A0;
-  v24 = v3;
+  v24 = bitrateCopy;
   block[4] = self;
   block[5] = &v25;
   dispatch_sync(clientQueue, block);
@@ -463,7 +463,7 @@ LABEL_53:
       v35 = 1024;
       v36 = 310;
       v37 = 1024;
-      LODWORD(v38) = v3;
+      LODWORD(v38) = bitrateCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCBandwidth [%s] %s:%d bitrate=%d, selectedMediaEntries", buf, 0x22u);
     }
   }
@@ -1692,7 +1692,7 @@ LABEL_202:
   return result;
 }
 
-- (void)updateSelectedMediaEntriesForClientWithUUID:(id)a3
+- (void)updateSelectedMediaEntriesForClientWithUUID:(id)d
 {
   v30 = *MEMORY[0x1E69E9840];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
@@ -1700,7 +1700,7 @@ LABEL_202:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_allocatedMediaEntriesForClients objectForKeyedSubscript:{a3), "allValues"}];
+  v6 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_allocatedMediaEntriesForClients objectForKeyedSubscript:{d), "allValues"}];
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (!v7)
   {
@@ -1750,7 +1750,7 @@ LABEL_11:
           *&v21[22] = 1024;
           LODWORD(v22) = 334;
           WORD2(v22) = 2112;
-          *(&v22 + 6) = a3;
+          *(&v22 + 6) = d;
           v16 = "VCBandwidth [%s] %s:%d No audio entry for client=%@";
           v17 = v15;
           v18 = 38;
@@ -1787,9 +1787,9 @@ LABEL_21:
           WORD2(v22) = 2112;
           *(&v22 + 6) = v13;
           HIWORD(v22) = 2048;
-          v23 = self;
+          selfCopy = self;
           LOWORD(v24) = 2112;
-          *(&v24 + 2) = a3;
+          *(&v24 + 2) = d;
           v16 = "VCBandwidth [%s] %s:%d %@(%p) No audio entry for client=%@";
           v17 = v20;
           v18 = 58;
@@ -1799,7 +1799,7 @@ LABEL_21:
     }
   }
 
-  [(NSMutableDictionary *)self->_selectedMediaEntriesForClients setObject:v5 forKeyedSubscript:a3, *v21, *&v21[16], v22, v23, v24];
+  [(NSMutableDictionary *)self->_selectedMediaEntriesForClients setObject:v5 forKeyedSubscript:d, *v21, *&v21[16], v22, selfCopy, v24];
 }
 
 - (void)reset
@@ -1811,7 +1811,7 @@ LABEL_21:
   [(NSMutableDictionary *)selectedMediaEntriesForClients removeAllObjects];
 }
 
-- (void)registerForBandwidthAllocationWithClient:(id)a3
+- (void)registerForBandwidthAllocationWithClient:(id)client
 {
   block[6] = *MEMORY[0x1E69E9840];
   clientQueue = self->_clientQueue;
@@ -1820,7 +1820,7 @@ LABEL_21:
   block[2] = __80__VCSessionDownlinkBandwidthAllocator_registerForBandwidthAllocationWithClient___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = client;
   dispatch_async(clientQueue, block);
 }
 
@@ -1838,36 +1838,36 @@ uint64_t __80__VCSessionDownlinkBandwidthAllocator_registerForBandwidthAllocatio
   return result;
 }
 
-- (void)reportingSessionParticipantEventBitrateChanged:(id)a3 optedInNetworkBitrate:(unsigned int)a4 actualNetworkBitrate:(unsigned int)a5 optedInStreamID:(id)a6 actualStreamID:(id)a7
+- (void)reportingSessionParticipantEventBitrateChanged:(id)changed optedInNetworkBitrate:(unsigned int)bitrate actualNetworkBitrate:(unsigned int)networkBitrate optedInStreamID:(id)d actualStreamID:(id)iD
 {
-  v9 = *&a5;
-  v10 = *&a4;
+  v9 = *&networkBitrate;
+  v10 = *&bitrate;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  CFDictionaryAddValue(Mutable, @"VCSPUUID", a3);
+  CFDictionaryAddValue(Mutable, @"VCSPUUID", changed);
   CFDictionaryAddValue(Mutable, @"VCSPActualBitrate", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v9]);
   CFDictionaryAddValue(Mutable, @"VCSPOptedInBitrate", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v10]);
-  if (a7)
+  if (iD)
   {
-    v13 = a7;
+    iDCopy = iD;
   }
 
   else
   {
-    v13 = &unk_1F579B340;
+    iDCopy = &unk_1F579B340;
   }
 
-  CFDictionaryAddValue(Mutable, @"VCSPActiveStreamID", v13);
-  if (a6)
+  CFDictionaryAddValue(Mutable, @"VCSPActiveStreamID", iDCopy);
+  if (d)
   {
-    v14 = a6;
+    dCopy = d;
   }
 
   else
   {
-    v14 = &unk_1F579B340;
+    dCopy = &unk_1F579B340;
   }
 
-  CFDictionaryAddValue(Mutable, @"VCSPOptedInStreamID", v14);
+  CFDictionaryAddValue(Mutable, @"VCSPOptedInStreamID", dCopy);
   reportingGenericEvent();
   if (Mutable)
   {
@@ -1876,7 +1876,7 @@ uint64_t __80__VCSessionDownlinkBandwidthAllocator_registerForBandwidthAllocatio
   }
 }
 
-- (void)deregisterForBandwidthAllocationWithClient:(id)a3
+- (void)deregisterForBandwidthAllocationWithClient:(id)client
 {
   block[6] = *MEMORY[0x1E69E9840];
   clientQueue = self->_clientQueue;
@@ -1885,7 +1885,7 @@ uint64_t __80__VCSessionDownlinkBandwidthAllocator_registerForBandwidthAllocatio
   block[2] = __82__VCSessionDownlinkBandwidthAllocator_deregisterForBandwidthAllocationWithClient___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = client;
   dispatch_async(clientQueue, block);
 }
 
@@ -1903,16 +1903,16 @@ uint64_t __82__VCSessionDownlinkBandwidthAllocator_deregisterForBandwidthAllocat
   return result;
 }
 
-- (void)client:(id)a3 didActualNetworkBitrateChangeForStreamGroupID:(unsigned int)a4
+- (void)client:(id)client didActualNetworkBitrateChangeForStreamGroupID:(unsigned int)d
 {
-  v4 = *&a4;
-  v7 = [a3 optedInStreamIDForStreamGroupID:*&a4];
-  v8 = [a3 activeDownlinkStreamIDForStreamGroupID:v4];
-  v9 = [a3 actualNetworkBitrateForStreamGroup:v4];
-  v10 = [a3 optedInNetworkBitrateForStreamGroup:v4];
-  v11 = [a3 uuid];
+  v4 = *&d;
+  v7 = [client optedInStreamIDForStreamGroupID:*&d];
+  v8 = [client activeDownlinkStreamIDForStreamGroupID:v4];
+  v9 = [client actualNetworkBitrateForStreamGroup:v4];
+  v10 = [client optedInNetworkBitrateForStreamGroup:v4];
+  uuid = [client uuid];
 
-  [(VCSessionDownlinkBandwidthAllocator *)self reportingSessionParticipantEventBitrateChanged:v11 optedInNetworkBitrate:v10 actualNetworkBitrate:v9 optedInStreamID:v7 actualStreamID:v8];
+  [(VCSessionDownlinkBandwidthAllocator *)self reportingSessionParticipantEventBitrateChanged:uuid optedInNetworkBitrate:v10 actualNetworkBitrate:v9 optedInStreamID:v7 actualStreamID:v8];
 }
 
 void __57__VCSessionDownlinkBandwidthAllocator_distributeBitrate___block_invoke_cold_1(uint64_t a1)

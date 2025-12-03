@@ -1,17 +1,17 @@
 @interface HMDNotificationConditionConverter
-+ (BOOL)_isTimePredicate:(id)a3;
-+ (id)_presencePredicatesFromPredicate:(id)a3;
-+ (id)_sunriseSunsetTimePeriodElementFromComparisonPredicate:(id)a3;
-+ (id)_timeOfDayTimePeriodElementFromComparisonPredicate:(id)a3;
-+ (id)_timePredicatesFromPredicate:(id)a3;
-+ (id)conditionsFromPredicate:(id)a3;
++ (BOOL)_isTimePredicate:(id)predicate;
++ (id)_presencePredicatesFromPredicate:(id)predicate;
++ (id)_sunriseSunsetTimePeriodElementFromComparisonPredicate:(id)predicate;
++ (id)_timeOfDayTimePeriodElementFromComparisonPredicate:(id)predicate;
++ (id)_timePredicatesFromPredicate:(id)predicate;
++ (id)conditionsFromPredicate:(id)predicate;
 + (id)logCategory;
-+ (id)negateOffsetDateComponents:(id)a3;
-+ (id)predicateFromPresenceCondition:(id)a3;
-+ (id)predicateFromTimePeriodCondition:(id)a3;
-+ (id)predicatesFromConditions:(id)a3;
-+ (id)presenceNotificationConditionFromPredicate:(id)a3;
-+ (id)timePeriodNotificationConditionFromPredicate:(id)a3;
++ (id)negateOffsetDateComponents:(id)components;
++ (id)predicateFromPresenceCondition:(id)condition;
++ (id)predicateFromTimePeriodCondition:(id)condition;
++ (id)predicatesFromConditions:(id)conditions;
++ (id)presenceNotificationConditionFromPredicate:(id)predicate;
++ (id)timePeriodNotificationConditionFromPredicate:(id)predicate;
 @end
 
 @implementation HMDNotificationConditionConverter
@@ -36,21 +36,21 @@ void __48__HMDNotificationConditionConverter_logCategory__block_invoke()
   logCategory__hmf_once_v22_200719 = v1;
 }
 
-+ (id)predicateFromTimePeriodCondition:(id)a3
++ (id)predicateFromTimePeriodCondition:(id)condition
 {
   v62[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 startElement];
+  conditionCopy = condition;
+  startElement = [conditionCopy startElement];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [v4 startElement];
+  startElement2 = [conditionCopy startElement];
   if (isKindOfClass)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = startElement2;
     }
 
     else
@@ -60,11 +60,11 @@ void __48__HMDNotificationConditionConverter_logCategory__block_invoke()
 
     v9 = v8;
 
-    v10 = [v4 endElement];
+    endElement = [conditionCopy endElement];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = endElement;
     }
 
     else
@@ -74,20 +74,20 @@ void __48__HMDNotificationConditionConverter_logCategory__block_invoke()
 
     v12 = v11;
 
-    v13 = [v9 hour];
-    v14 = [v9 minute] + 60 * v13;
-    v15 = [v12 hour];
-    v16 = [v12 minute] + 60 * v15;
+    hour = [v9 hour];
+    v14 = [v9 minute] + 60 * hour;
+    hour2 = [v12 hour];
+    v16 = [v12 minute] + 60 * hour2;
     v17 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v17 setHour:{objc_msgSend(v9, "hour")}];
-    v18 = [v9 minute];
+    minute = [v9 minute];
 
-    [v17 setMinute:v18];
+    [v17 setMinute:minute];
     v19 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v19 setHour:{objc_msgSend(v12, "hour")}];
-    v20 = [v12 minute];
+    minute2 = [v12 minute];
 
-    [v19 setMinute:v20];
+    [v19 setMinute:minute2];
     v21 = [MEMORY[0x277CD19F8] predicateForEvaluatingTriggerOccurringAfterDateWithComponents:v17];
     v22 = [MEMORY[0x277CD19F8] predicateForEvaluatingTriggerOccurringBeforeDateWithComponents:v19];
     v57 = MEMORY[0x277D85DD0];
@@ -116,11 +116,11 @@ void __48__HMDNotificationConditionConverter_logCategory__block_invoke()
 
   if (v27)
   {
-    v28 = [v4 startElement];
+    startElement3 = [conditionCopy startElement];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v29 = v28;
+      v29 = startElement3;
     }
 
     else
@@ -130,11 +130,11 @@ void __48__HMDNotificationConditionConverter_logCategory__block_invoke()
 
     v17 = v29;
 
-    v30 = [v4 endElement];
+    endElement2 = [conditionCopy endElement];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v31 = v30;
+      v31 = endElement2;
     }
 
     else
@@ -144,28 +144,28 @@ void __48__HMDNotificationConditionConverter_logCategory__block_invoke()
 
     v19 = v31;
 
-    v32 = [v17 significantEvent];
+    significantEvent = [v17 significantEvent];
     v33 = *MEMORY[0x277CD0FA8];
-    if ([v32 isEqualToString:*MEMORY[0x277CD0FA8]])
+    if ([significantEvent isEqualToString:*MEMORY[0x277CD0FA8]])
     {
-      v34 = [v19 significantEvent];
+      significantEvent2 = [v19 significantEvent];
       v35 = *MEMORY[0x277CD0FB0];
-      v36 = [v34 isEqualToString:*MEMORY[0x277CD0FB0]];
+      v36 = [significantEvent2 isEqualToString:*MEMORY[0x277CD0FB0]];
 
       if (v36)
       {
         v37 = 1;
 LABEL_32:
         v43 = objc_alloc(MEMORY[0x277CD1E00]);
-        v44 = [v17 significantEvent];
-        v45 = [v17 offset];
-        v21 = [v43 initWithSignificantEvent:v44 offset:v45];
+        significantEvent3 = [v17 significantEvent];
+        offset = [v17 offset];
+        v21 = [v43 initWithSignificantEvent:significantEvent3 offset:offset];
 
         v22 = [MEMORY[0x277CD19F8] predicateForEvaluatingTriggerOccurringAfterSignificantEvent:v21];
         v46 = objc_alloc(MEMORY[0x277CD1E00]);
-        v47 = [v19 significantEvent];
-        v48 = [v19 offset];
-        v49 = [v46 initWithSignificantEvent:v47 offset:v48];
+        significantEvent4 = [v19 significantEvent];
+        offset2 = [v19 offset];
+        v49 = [v46 initWithSignificantEvent:significantEvent4 offset:offset2];
 
         v50 = [MEMORY[0x277CD19F8] predicateForEvaluatingTriggerOccurringBeforeSignificantEvent:v49];
         v51 = objc_alloc(MEMORY[0x277CCA920]);
@@ -187,11 +187,11 @@ LABEL_13:
       v35 = *MEMORY[0x277CD0FB0];
     }
 
-    v40 = [v17 significantEvent];
-    if ([v40 isEqualToString:v35])
+    significantEvent5 = [v17 significantEvent];
+    if ([significantEvent5 isEqualToString:v35])
     {
-      v41 = [v19 significantEvent];
-      v42 = [v41 isEqualToString:v33];
+      significantEvent6 = [v19 significantEvent];
+      v42 = [significantEvent6 isEqualToString:v33];
 
       if (v42)
       {
@@ -205,7 +205,7 @@ LABEL_13:
     }
 
     v53 = objc_autoreleasePoolPush();
-    v54 = a1;
+    selfCopy = self;
     v55 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
     {
@@ -241,24 +241,24 @@ uint64_t __70__HMDNotificationConditionConverter_predicateFromTimePeriodConditio
   }
 }
 
-+ (id)predicateFromPresenceCondition:(id)a3
++ (id)predicateFromPresenceCondition:(id)condition
 {
   v26[5] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 presenceEventType];
-  [v3 presenceEventUserType];
-  v4 = [v3 userUUIDs];
+  conditionCopy = condition;
+  [conditionCopy presenceEventType];
+  [conditionCopy presenceEventUserType];
+  userUUIDs = [conditionCopy userUUIDs];
 
-  v5 = [v4 na_map:&__block_literal_global_25_200734];
+  v5 = [userUUIDs na_map:&__block_literal_global_25_200734];
 
   v6 = presenceTypeForEventTypeAndGranularity();
   v7 = [MEMORY[0x277CD1D28] activationGranularityWithValue:granularityForEventType()];
   v8 = MEMORY[0x277CBEB38];
   v25[0] = *MEMORY[0x277CD2340];
-  v9 = [MEMORY[0x277CCAD78] hmf_zeroUUID];
-  v10 = [v9 UUIDString];
+  hmf_zeroUUID = [MEMORY[0x277CCAD78] hmf_zeroUUID];
+  uUIDString = [hmf_zeroUUID UUIDString];
   v11 = *MEMORY[0x277CD22A0];
-  v26[0] = v10;
+  v26[0] = uUIDString;
   v26[1] = &unk_283E73D90;
   v12 = *MEMORY[0x277CD22F0];
   v25[1] = v11;
@@ -269,15 +269,15 @@ uint64_t __70__HMDNotificationConditionConverter_predicateFromTimePeriodConditio
   v14 = *MEMORY[0x277CD24C0];
   v25[3] = v13;
   v25[4] = v14;
-  v15 = [v7 number];
-  v26[4] = v15;
+  number = [v7 number];
+  v26[4] = number;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:5];
   v17 = [v8 dictionaryWithDictionary:v16];
 
   if (([v5 hmf_isEmpty] & 1) == 0)
   {
-    v18 = [v5 allObjects];
-    [v17 setObject:v18 forKeyedSubscript:*MEMORY[0x277CD24D0]];
+    allObjects = [v5 allObjects];
+    [v17 setObject:allObjects forKeyedSubscript:*MEMORY[0x277CD24D0]];
   }
 
   v19 = MEMORY[0x277CCAC30];
@@ -290,50 +290,50 @@ uint64_t __70__HMDNotificationConditionConverter_predicateFromTimePeriodConditio
   return v22;
 }
 
-+ (id)negateOffsetDateComponents:(id)a3
++ (id)negateOffsetDateComponents:(id)components
 {
-  v3 = a3;
+  componentsCopy = components;
   v4 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  if ([v3 minute] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([componentsCopy minute] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v4 setMinute:{-objc_msgSend(v3, "minute")}];
+    [v4 setMinute:{-objc_msgSend(componentsCopy, "minute")}];
   }
 
-  if ([v3 hour] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([componentsCopy hour] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v4 setHour:{-objc_msgSend(v3, "hour")}];
+    [v4 setHour:{-objc_msgSend(componentsCopy, "hour")}];
   }
 
   return v4;
 }
 
-+ (id)_timeOfDayTimePeriodElementFromComparisonPredicate:(id)a3
++ (id)_timeOfDayTimePeriodElementFromComparisonPredicate:(id)predicate
 {
-  v3 = a3;
-  if ([v3 predicateOperatorType] > 4)
+  predicateCopy = predicate;
+  if ([predicateCopy predicateOperatorType] > 4)
   {
     v7 = 0;
     goto LABEL_12;
   }
 
-  v4 = [v3 leftExpression];
-  v5 = [v3 rightExpression];
-  if ([v4 expressionType] != 4)
+  leftExpression = [predicateCopy leftExpression];
+  rightExpression = [predicateCopy rightExpression];
+  if ([leftExpression expressionType] != 4)
   {
     goto LABEL_10;
   }
 
-  v6 = [v4 function];
-  if ([v6 isEqualToString:@"now"] && !objc_msgSend(v5, "expressionType"))
+  function = [leftExpression function];
+  if ([function isEqualToString:@"now"] && !objc_msgSend(rightExpression, "expressionType"))
   {
-    v8 = [v5 constantValue];
+    constantValue = [rightExpression constantValue];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v6 = [v5 constantValue];
-      v7 = -[HMDTimeOfDayTimePeriodElement initWithHour:minute:]([HMDTimeOfDayTimePeriodElement alloc], "initWithHour:minute:", [v6 hour], objc_msgSend(v6, "minute"));
+      function = [rightExpression constantValue];
+      v7 = -[HMDTimeOfDayTimePeriodElement initWithHour:minute:]([HMDTimeOfDayTimePeriodElement alloc], "initWithHour:minute:", [function hour], objc_msgSend(function, "minute"));
       goto LABEL_6;
     }
 
@@ -351,19 +351,19 @@ LABEL_12:
   return v7;
 }
 
-+ (id)_sunriseSunsetTimePeriodElementFromComparisonPredicate:(id)a3
++ (id)_sunriseSunsetTimePeriodElementFromComparisonPredicate:(id)predicate
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 predicateOperatorType] > 3)
+  predicateCopy = predicate;
+  if ([predicateCopy predicateOperatorType] > 3)
   {
     v23 = 0;
   }
 
   else
   {
-    v5 = [v4 leftExpression];
-    if ([v5 expressionType] != 3)
+    leftExpression = [predicateCopy leftExpression];
+    if ([leftExpression expressionType] != 3)
     {
       goto LABEL_21;
     }
@@ -372,65 +372,65 @@ LABEL_12:
     v28[0] = *MEMORY[0x277CD0FA8];
     v28[1] = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
-    v8 = [v5 keyPath];
-    v9 = [v7 containsObject:v8];
+    keyPath = [leftExpression keyPath];
+    v9 = [v7 containsObject:keyPath];
 
     if (v9)
     {
-      v10 = [v5 keyPath];
+      keyPath2 = [leftExpression keyPath];
       v11 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-      v12 = [v4 rightExpression];
-      if ([v12 expressionType] == 4)
+      rightExpression = [predicateCopy rightExpression];
+      if ([rightExpression expressionType] == 4)
       {
-        v13 = [v12 function];
-        v14 = [v13 isEqualToString:@"add:to:"];
+        function = [rightExpression function];
+        v14 = [function isEqualToString:@"add:to:"];
 
         if (v14)
         {
-          v15 = [v12 arguments];
-          v16 = [v15 firstObject];
-          if ([v16 expressionType] == 4)
+          arguments = [rightExpression arguments];
+          firstObject = [arguments firstObject];
+          if ([firstObject expressionType] == 4)
           {
-            v17 = [v16 function];
-            v18 = [v17 isEqualToString:@"now"];
+            function2 = [firstObject function];
+            v18 = [function2 isEqualToString:@"now"];
 
             if (v18)
             {
-              v19 = [v15 lastObject];
-              if (![v19 expressionType])
+              lastObject = [arguments lastObject];
+              if (![lastObject expressionType])
               {
-                [v19 constantValue];
-                v20 = v27 = v19;
+                [lastObject constantValue];
+                v20 = v27 = lastObject;
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
                 {
-                  v19 = v27;
-                  v26 = [v27 constantValue];
-                  if ([v26 hour] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v26, "minute") != 0x7FFFFFFFFFFFFFFFLL)
+                  lastObject = v27;
+                  constantValue = [v27 constantValue];
+                  if ([constantValue hour] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(constantValue, "minute") != 0x7FFFFFFFFFFFFFFFLL)
                   {
-                    v22 = [v27 constantValue];
+                    constantValue2 = [v27 constantValue];
 
-                    if ([v22 hour] != 0x7FFFFFFFFFFFFFFFLL && !objc_msgSend(v22, "hour"))
+                    if ([constantValue2 hour] != 0x7FFFFFFFFFFFFFFFLL && !objc_msgSend(constantValue2, "hour"))
                     {
-                      [v22 setHour:0x7FFFFFFFFFFFFFFFLL];
+                      [constantValue2 setHour:0x7FFFFFFFFFFFFFFFLL];
                     }
 
-                    if ([v22 minute] != 0x7FFFFFFFFFFFFFFFLL && !objc_msgSend(v22, "minute"))
+                    if ([constantValue2 minute] != 0x7FFFFFFFFFFFFFFFLL && !objc_msgSend(constantValue2, "minute"))
                     {
-                      [v22 setMinute:0x7FFFFFFFFFFFFFFFLL];
+                      [constantValue2 setMinute:0x7FFFFFFFFFFFFFFFLL];
                     }
 
-                    v11 = [a1 negateOffsetDateComponents:v22];
+                    v11 = [self negateOffsetDateComponents:constantValue2];
 
-                    v19 = v27;
+                    lastObject = v27;
                   }
                 }
 
                 else
                 {
-                  v19 = v27;
+                  lastObject = v27;
                 }
               }
             }
@@ -438,7 +438,7 @@ LABEL_12:
         }
       }
 
-      v23 = [[HMDSunriseSunsetTimePeriodElement alloc] initWithSignificantEvent:v10 offset:v11];
+      v23 = [[HMDSunriseSunsetTimePeriodElement alloc] initWithSignificantEvent:keyPath2 offset:v11];
     }
 
     else
@@ -453,16 +453,16 @@ LABEL_21:
   return v23;
 }
 
-+ (id)_timePredicatesFromPredicate:(id)a3
++ (id)_timePredicatesFromPredicate:(id)predicate
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = [MEMORY[0x277CBEB58] set];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    if ([a1 _isTimePredicate:v6])
+    v6 = predicateCopy;
+    if ([self _isTimePredicate:v6])
     {
       [v5 addObject:v6];
     }
@@ -473,8 +473,8 @@ LABEL_21:
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v7 = [v6 subpredicates];
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      subpredicates = [v6 subpredicates];
+      v8 = [subpredicates countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         v9 = v8;
@@ -485,14 +485,14 @@ LABEL_21:
           {
             if (*v17 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(subpredicates);
             }
 
-            v12 = [a1 _timePredicatesFromPredicate:*(*(&v16 + 1) + 8 * i)];
+            v12 = [self _timePredicatesFromPredicate:*(*(&v16 + 1) + 8 * i)];
             [v5 unionSet:v12];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v9 = [subpredicates countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v9);
@@ -507,13 +507,13 @@ LABEL_21:
   return v13;
 }
 
-+ (BOOL)_isTimePredicate:(id)a3
++ (BOOL)_isTimePredicate:(id)predicate
 {
-  v3 = a3;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = predicateCopy;
   }
 
   else
@@ -525,8 +525,8 @@ LABEL_21:
   v6 = v5;
   if (v5 && ([v5 subpredicates], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 == 2))
   {
-    v9 = [v6 subpredicates];
-    v10 = [v9 na_filter:&__block_literal_global_14_200754];
+    subpredicates = [v6 subpredicates];
+    v10 = [subpredicates na_filter:&__block_literal_global_14_200754];
 
     v11 = [v10 count] == 2;
   }
@@ -608,10 +608,10 @@ uint64_t __54__HMDNotificationConditionConverter__isTimePredicate___block_invoke
   return v10 & 1;
 }
 
-+ (id)_presencePredicatesFromPredicate:(id)a3
++ (id)_presencePredicatesFromPredicate:(id)predicate
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = [MEMORY[0x277CBEB58] set];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -620,8 +620,8 @@ uint64_t __54__HMDNotificationConditionConverter__isTimePredicate___block_invoke
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v6 = [v4 subpredicates];
-    v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    subpredicates = [predicateCopy subpredicates];
+    v7 = [subpredicates countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
@@ -632,14 +632,14 @@ uint64_t __54__HMDNotificationConditionConverter__isTimePredicate___block_invoke
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subpredicates);
           }
 
-          v11 = [a1 _presencePredicatesFromPredicate:*(*(&v22 + 1) + 8 * i)];
+          v11 = [self _presencePredicatesFromPredicate:*(*(&v22 + 1) + 8 * i)];
           [v5 unionSet:v11];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v8 = [subpredicates countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v8);
@@ -651,19 +651,19 @@ uint64_t __54__HMDNotificationConditionConverter__isTimePredicate___block_invoke
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v4;
-      v13 = [v12 rightExpression];
-      v14 = [v12 leftExpression];
-      if ([v14 expressionType] == 3)
+      v12 = predicateCopy;
+      rightExpression = [v12 rightExpression];
+      leftExpression = [v12 leftExpression];
+      if ([leftExpression expressionType] == 3)
       {
-        v15 = [v14 keyPath];
-        v16 = [v15 isEqualToString:*MEMORY[0x277CD0C40]];
+        keyPath = [leftExpression keyPath];
+        v16 = [keyPath isEqualToString:*MEMORY[0x277CD0C40]];
 
         if (v16)
         {
-          if (![v13 expressionType])
+          if (![rightExpression expressionType])
           {
-            v17 = [v13 constantValue];
+            constantValue = [rightExpression constantValue];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -684,15 +684,15 @@ uint64_t __54__HMDNotificationConditionConverter__isTimePredicate___block_invoke
   return v19;
 }
 
-+ (id)timePeriodNotificationConditionFromPredicate:(id)a3
++ (id)timePeriodNotificationConditionFromPredicate:(id)predicate
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 _timePredicatesFromPredicate:v4];
+  predicateCopy = predicate;
+  v5 = [self _timePredicatesFromPredicate:predicateCopy];
   if ([v5 hmf_isEmpty])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -715,7 +715,7 @@ LABEL_7:
   if ([v5 count] >= 2)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -738,11 +738,11 @@ LABEL_8:
     goto LABEL_30;
   }
 
-  v15 = [v5 allObjects];
-  v16 = [v15 firstObject];
+  allObjects = [v5 allObjects];
+  firstObject = [allObjects firstObject];
 
   v17 = objc_autoreleasePoolPush();
-  v18 = a1;
+  selfCopy3 = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
@@ -750,7 +750,7 @@ LABEL_8:
     *buf = 138543618;
     v36 = v20;
     v37 = 2112;
-    v38 = v16;
+    v38 = firstObject;
     _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Converting time range predicate: %@", buf, 0x16u);
   }
 
@@ -759,10 +759,10 @@ LABEL_8:
   aBlock[1] = 3221225472;
   aBlock[2] = __82__HMDNotificationConditionConverter_timePeriodNotificationConditionFromPredicate___block_invoke;
   aBlock[3] = &__block_descriptor_40_e53___HMDTimePeriodElement_16__0__NSComparisonPredicate_8l;
-  aBlock[4] = v18;
+  aBlock[4] = selfCopy3;
   v21 = _Block_copy(aBlock);
-  v22 = [v16 subpredicates];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  subpredicates = [firstObject subpredicates];
+  v23 = [subpredicates objectAtIndexedSubscript:0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -782,8 +782,8 @@ LABEL_8:
     v26 = v21[2](v21, v25);
     if (v26)
     {
-      v27 = [v16 subpredicates];
-      v28 = [v27 objectAtIndexedSubscript:1];
+      subpredicates2 = [firstObject subpredicates];
+      v28 = [subpredicates2 objectAtIndexedSubscript:1];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -847,15 +847,15 @@ id __82__HMDNotificationConditionConverter_timePeriodNotificationConditionFromPr
   return v4;
 }
 
-+ (id)presenceNotificationConditionFromPredicate:(id)a3
++ (id)presenceNotificationConditionFromPredicate:(id)predicate
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 _presencePredicatesFromPredicate:v4];
+  predicateCopy = predicate;
+  v5 = [self _presencePredicatesFromPredicate:predicateCopy];
   if ([v5 hmf_isEmpty])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -878,7 +878,7 @@ LABEL_7:
   if ([v5 count] >= 2)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -901,12 +901,12 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v34 = v4;
-  v15 = [v5 allObjects];
-  v16 = [v15 firstObject];
+  v34 = predicateCopy;
+  allObjects = [v5 allObjects];
+  firstObject = [allObjects firstObject];
 
   v17 = objc_autoreleasePoolPush();
-  v18 = a1;
+  selfCopy3 = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
@@ -914,27 +914,27 @@ LABEL_8:
     *buf = 138543618;
     v36 = v20;
     v37 = 2112;
-    v38 = v16;
+    v38 = firstObject;
     _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Converting presence predicate: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v17);
-  v21 = [v16 rightExpression];
-  v22 = [v21 constantValue];
+  rightExpression = [firstObject rightExpression];
+  constantValue = [rightExpression constantValue];
 
-  v23 = [v22 hmf_stringForKey:*MEMORY[0x277CD24C8]];
-  v33 = [MEMORY[0x277CD1D28] activationGranularityWithDict:v22];
+  v23 = [constantValue hmf_stringForKey:*MEMORY[0x277CD24C8]];
+  v33 = [MEMORY[0x277CD1D28] activationGranularityWithDict:constantValue];
   [v33 value];
-  v24 = [v22 hmf_arrayForKey:*MEMORY[0x277CD24D0]];
+  v24 = [constantValue hmf_arrayForKey:*MEMORY[0x277CD24D0]];
   v25 = [v24 na_map:&__block_literal_global_200767];
   v26 = eventTypeForPresenceTypeAndGranularity();
   v27 = userTypeForPresenceTypeAndGranularity();
   v28 = [HMDPresenceNotificationCondition alloc];
   [MEMORY[0x277CBEB98] setWithArray:v25];
-  v30 = v29 = v16;
+  v30 = v29 = firstObject;
   v14 = [(HMDPresenceNotificationCondition *)v28 initWithPresenceEventType:v26 presenceEventUserType:v27 userUUIDs:v30];
 
-  v4 = v34;
+  predicateCopy = v34;
 LABEL_12:
 
   v31 = *MEMORY[0x277D85DE8];
@@ -951,18 +951,18 @@ id __80__HMDNotificationConditionConverter_presenceNotificationConditionFromPred
   return v4;
 }
 
-+ (id)predicatesFromConditions:(id)a3
++ (id)predicatesFromConditions:(id)conditions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  conditionsCopy = conditions;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__HMDNotificationConditionConverter_predicatesFromConditions___block_invoke;
   v12[3] = &__block_descriptor_40_e34__16__0__HMDNotificationCondition_8l;
-  v12[4] = a1;
-  v5 = [v4 na_map:v12];
+  v12[4] = self;
+  v5 = [conditionsCopy na_map:v12];
   v6 = objc_autoreleasePoolPush();
-  v7 = a1;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -970,7 +970,7 @@ id __80__HMDNotificationConditionConverter_presenceNotificationConditionFromPred
     *buf = 138543874;
     v14 = v9;
     v15 = 2112;
-    v16 = v4;
+    v16 = conditionsCopy;
     v17 = 2112;
     v18 = v5;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_DEBUG, "%{public}@Converted conditions: %@ to predicates: %@", buf, 0x20u);
@@ -1055,27 +1055,27 @@ LABEL_15:
   return v12;
 }
 
-+ (id)conditionsFromPredicate:(id)a3
++ (id)conditionsFromPredicate:(id)predicate
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
     v5 = [MEMORY[0x277CBEB58] set];
-    v6 = [a1 presenceNotificationConditionFromPredicate:v4];
+    v6 = [self presenceNotificationConditionFromPredicate:predicateCopy];
     if (v6)
     {
       [v5 addObject:v6];
     }
 
-    v7 = [a1 timePeriodNotificationConditionFromPredicate:v4];
+    v7 = [self timePeriodNotificationConditionFromPredicate:predicateCopy];
     if (v7)
     {
       [v5 addObject:v7];
     }
 
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -1083,7 +1083,7 @@ LABEL_15:
       v19 = 138543874;
       v20 = v11;
       v21 = 2112;
-      v22 = v4;
+      v22 = predicateCopy;
       v23 = 2112;
       v24 = v5;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Converted predicate: %@ to conditions: %@", &v19, 0x20u);
@@ -1096,7 +1096,7 @@ LABEL_15:
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {

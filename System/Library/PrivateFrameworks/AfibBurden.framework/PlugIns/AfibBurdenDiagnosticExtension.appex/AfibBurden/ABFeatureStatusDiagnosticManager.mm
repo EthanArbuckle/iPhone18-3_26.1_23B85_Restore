@@ -1,23 +1,23 @@
 @interface ABFeatureStatusDiagnosticManager
-- (ABFeatureStatusDiagnosticManager)initWithLoggingDirectoryPath:(id)a3 healthStore:(id)a4;
+- (ABFeatureStatusDiagnosticManager)initWithLoggingDirectoryPath:(id)path healthStore:(id)store;
 - (id)_retrievePrettyPrintedFeatureStatusDiagnostics;
 - (id)_retrievePrettyPrintedRegionAvailabilityDiagnostics;
 - (id)extractDiagnosticContent;
-- (void)_addSectionToString:(id)a3 withTitle:(id)a4;
+- (void)_addSectionToString:(id)string withTitle:(id)title;
 @end
 
 @implementation ABFeatureStatusDiagnosticManager
 
-- (ABFeatureStatusDiagnosticManager)initWithLoggingDirectoryPath:(id)a3 healthStore:(id)a4
+- (ABFeatureStatusDiagnosticManager)initWithLoggingDirectoryPath:(id)path healthStore:(id)store
 {
-  v7 = a4;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = ABFeatureStatusDiagnosticManager;
-  v8 = [(ABDiagnosticManager *)&v11 initWithDiagnosticName:@"FeatureStatus" loggingDirectoryPath:a3];
+  v8 = [(ABDiagnosticManager *)&v11 initWithDiagnosticName:@"FeatureStatus" loggingDirectoryPath:path];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_healthStore, a4);
+    objc_storeStrong(&v8->_healthStore, store);
   }
 
   return v9;
@@ -29,17 +29,17 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Starting feature status diagnostics", &v12, 0xCu);
   }
 
   v4 = objc_alloc_init(NSMutableString);
   [(ABFeatureStatusDiagnosticManager *)self _addSectionToString:v4 withTitle:@"Feature Status"];
-  v5 = [(ABFeatureStatusDiagnosticManager *)self _retrievePrettyPrintedFeatureStatusDiagnostics];
-  v6 = v5;
-  if (v5)
+  _retrievePrettyPrintedFeatureStatusDiagnostics = [(ABFeatureStatusDiagnosticManager *)self _retrievePrettyPrintedFeatureStatusDiagnostics];
+  v6 = _retrievePrettyPrintedFeatureStatusDiagnostics;
+  if (_retrievePrettyPrintedFeatureStatusDiagnostics)
   {
-    v7 = v5;
+    v7 = _retrievePrettyPrintedFeatureStatusDiagnostics;
   }
 
   else
@@ -51,11 +51,11 @@
 
   [v4 appendString:@"\n\n"];
   [(ABFeatureStatusDiagnosticManager *)self _addSectionToString:v4 withTitle:@"Region Availability"];
-  v8 = [(ABFeatureStatusDiagnosticManager *)self _retrievePrettyPrintedRegionAvailabilityDiagnostics];
-  v9 = v8;
-  if (v8)
+  _retrievePrettyPrintedRegionAvailabilityDiagnostics = [(ABFeatureStatusDiagnosticManager *)self _retrievePrettyPrintedRegionAvailabilityDiagnostics];
+  v9 = _retrievePrettyPrintedRegionAvailabilityDiagnostics;
+  if (_retrievePrettyPrintedRegionAvailabilityDiagnostics)
   {
-    v10 = v8;
+    v10 = _retrievePrettyPrintedRegionAvailabilityDiagnostics;
   }
 
   else
@@ -68,11 +68,11 @@
   return v4;
 }
 
-- (void)_addSectionToString:(id)a3 withTitle:(id)a4
+- (void)_addSectionToString:(id)string withTitle:(id)title
 {
-  v5 = a3;
-  [v5 appendFormat:@"%@\n", a4];
-  [v5 appendString:@"======================================\n"];
+  stringCopy = string;
+  [stringCopy appendFormat:@"%@\n", title];
+  [stringCopy appendString:@"======================================\n"];
 }
 
 - (id)_retrievePrettyPrintedFeatureStatusDiagnostics
@@ -84,7 +84,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Retrieving feature status", buf, 0xCu);
   }
 
@@ -119,7 +119,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Retrieving region availability", buf, 0xCu);
   }
 
@@ -128,7 +128,7 @@
   v7 = v11;
   if (v6)
   {
-    v8 = [v6 prettyPrintedDescription];
+    prettyPrintedDescription = [v6 prettyPrintedDescription];
   }
 
   else
@@ -139,10 +139,10 @@
       sub_100002D38();
     }
 
-    v8 = 0;
+    prettyPrintedDescription = 0;
   }
 
-  return v8;
+  return prettyPrintedDescription;
 }
 
 @end

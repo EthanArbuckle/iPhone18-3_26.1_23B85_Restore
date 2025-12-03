@@ -1,20 +1,20 @@
 @interface ICDocCamSaveButton
-- (ICDocCamSaveButton)initWithFrame:(CGRect)a3;
+- (ICDocCamSaveButton)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
-- (id)saveButtonCountStringForDocumentCount:(unint64_t)a3;
-- (id)saveButtonTitleForDocumentCount:(unint64_t)a3;
+- (id)saveButtonCountStringForDocumentCount:(unint64_t)count;
+- (id)saveButtonTitleForDocumentCount:(unint64_t)count;
 - (void)layoutSubviews;
-- (void)setDocumentCount:(int64_t)a3;
+- (void)setDocumentCount:(int64_t)count;
 @end
 
 @implementation ICDocCamSaveButton
 
-- (ICDocCamSaveButton)initWithFrame:(CGRect)a3
+- (ICDocCamSaveButton)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = ICDocCamSaveButton;
-  v3 = [(ICDocCamSaveButton *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICDocCamSaveButton *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,8 +24,8 @@
     countLabel = v4->_countLabel;
     v4->_countLabel = v5;
 
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v4->_countLabel setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v4->_countLabel setBackgroundColor:clearColor];
 
     v8 = v4->_countLabel;
     v9 = [(ICDocCamSaveButton *)v4 saveButtonCountStringForDocumentCount:v4->_documentCount];
@@ -36,8 +36,8 @@
     saveLabel = v4->_saveLabel;
     v4->_saveLabel = v10;
 
-    v12 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v4->_saveLabel setBackgroundColor:v12];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v4->_saveLabel setBackgroundColor:clearColor2];
 
     v13 = v4->_saveLabel;
     v14 = [(ICDocCamSaveButton *)v4 saveButtonTitleForDocumentCount:v4->_documentCount];
@@ -46,10 +46,10 @@
     v15 = MEMORY[0x277D74420];
     if ((DCDebugInterfaceEnabled() & 1) == 0)
     {
-      v16 = [MEMORY[0x277D75418] currentDevice];
-      v17 = [v16 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v17 != 1)
+      if (userInterfaceIdiom != 1)
       {
         v15 = MEMORY[0x277D74418];
       }
@@ -63,28 +63,28 @@
     [(UILabel *)v4->_countLabel setFont:v20];
 
     [(UILabel *)v4->_saveLabel setLineBreakMode:4];
-    v21 = [(ICDocCamSaveButton *)v4 layer];
-    [v21 setCornerRadius:14.0];
+    layer = [(ICDocCamSaveButton *)v4 layer];
+    [layer setCornerRadius:14.0];
 
     [(ICDocCamSaveButton *)v4 setClipsToBounds:1];
-    v22 = [MEMORY[0x277D75348] whiteColor];
-    [(ICDocCamSaveButton *)v4 setBackgroundColor:v22];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(ICDocCamSaveButton *)v4 setBackgroundColor:whiteColor];
 
-    v23 = [(ICDocCamSaveButton *)v4 heightAnchor];
-    v24 = [v23 constraintEqualToConstant:28.0];
+    heightAnchor = [(ICDocCamSaveButton *)v4 heightAnchor];
+    v24 = [heightAnchor constraintEqualToConstant:28.0];
     [v24 setActive:1];
 
     [(UILabel *)v4->_countLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ICDocCamSaveButton *)v4 addSubview:v4->_countLabel];
     [(UILabel *)v4->_saveLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ICDocCamSaveButton *)v4 addSubview:v4->_saveLabel];
-    v25 = [MEMORY[0x277D75348] blackColor];
-    v26 = [(ICDocCamSaveButton *)v4 countLabel];
-    [v26 setTextColor:v25];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    countLabel = [(ICDocCamSaveButton *)v4 countLabel];
+    [countLabel setTextColor:blackColor];
 
-    v27 = [MEMORY[0x277D75348] blackColor];
-    v28 = [(ICDocCamSaveButton *)v4 saveLabel];
-    [v28 setTextColor:v27];
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    saveLabel = [(ICDocCamSaveButton *)v4 saveLabel];
+    [saveLabel setTextColor:blackColor2];
   }
 
   return v4;
@@ -92,31 +92,31 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(ICDocCamSaveButton *)self window];
-  v4 = [v3 windowScene];
-  v5 = [v4 interfaceOrientation];
+  window = [(ICDocCamSaveButton *)self window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v7)
+  if (userInterfaceIdiom)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = (v5 - 1) > 1;
+    v8 = (interfaceOrientation - 1) > 1;
   }
 
   if (v8)
   {
-    v9 = 2147483650.0;
+    maxWidthForPortraitIPhone = 2147483650.0;
   }
 
   else
   {
-    v9 = [(ICDocCamSaveButton *)self maxWidthForPortraitIPhone];
+    maxWidthForPortraitIPhone = [(ICDocCamSaveButton *)self maxWidthForPortraitIPhone];
   }
 
   if ([(ICDocCamSaveButton *)self documentCount]>= 2)
@@ -144,33 +144,33 @@
   while (1)
   {
     --v13;
-    if (!v7)
+    if (!userInterfaceIdiom)
     {
       v14 = [MEMORY[0x277D74300] systemFontOfSize:v13 weight:v12];
-      v15 = [(ICDocCamSaveButton *)self saveLabel];
-      [v15 setFont:v14];
+      saveLabel = [(ICDocCamSaveButton *)self saveLabel];
+      [saveLabel setFont:v14];
 
       v16 = [MEMORY[0x277D74300] systemFontOfSize:v13 weight:v12];
-      v17 = [(ICDocCamSaveButton *)self countLabel];
-      [v17 setFont:v16];
+      countLabel = [(ICDocCamSaveButton *)self countLabel];
+      [countLabel setFont:v16];
     }
 
-    v18 = [(ICDocCamSaveButton *)self countLabel];
-    [v18 sizeToFit];
+    countLabel2 = [(ICDocCamSaveButton *)self countLabel];
+    [countLabel2 sizeToFit];
 
-    v19 = [(ICDocCamSaveButton *)self saveLabel];
-    [v19 sizeToFit];
+    saveLabel2 = [(ICDocCamSaveButton *)self saveLabel];
+    [saveLabel2 sizeToFit];
 
-    v20 = [(ICDocCamSaveButton *)self countLabel];
-    [v20 frame];
+    countLabel3 = [(ICDocCamSaveButton *)self countLabel];
+    [countLabel3 frame];
     v22 = v21;
 
-    v23 = [(ICDocCamSaveButton *)self saveLabel];
-    [v23 frame];
+    saveLabel3 = [(ICDocCamSaveButton *)self saveLabel];
+    [saveLabel3 frame];
     v25 = v24;
 
     v26 = v10 + v22 + v25 + v11 * 2.0;
-    if (v26 <= v9)
+    if (v26 <= maxWidthForPortraitIPhone)
     {
       break;
     }
@@ -182,106 +182,106 @@
 
     if (v13 <= 0xF)
     {
-      v25 = v25 - (v26 - v9);
+      v25 = v25 - (v26 - maxWidthForPortraitIPhone);
       break;
     }
   }
 
-  v27 = [(ICDocCamSaveButton *)self layoutConstraints];
+  layoutConstraints = [(ICDocCamSaveButton *)self layoutConstraints];
 
-  if (v27)
+  if (layoutConstraints)
   {
     v28 = MEMORY[0x277CCAAD0];
-    v29 = [(ICDocCamSaveButton *)self layoutConstraints];
-    [v28 deactivateConstraints:v29];
+    layoutConstraints2 = [(ICDocCamSaveButton *)self layoutConstraints];
+    [v28 deactivateConstraints:layoutConstraints2];
 
-    v30 = [(ICDocCamSaveButton *)self layoutConstraints];
-    [v30 removeAllObjects];
+    layoutConstraints3 = [(ICDocCamSaveButton *)self layoutConstraints];
+    [layoutConstraints3 removeAllObjects];
   }
 
   else
   {
-    v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(ICDocCamSaveButton *)self setLayoutConstraints:v30];
+    layoutConstraints3 = objc_alloc_init(MEMORY[0x277CBEB18]);
+    [(ICDocCamSaveButton *)self setLayoutConstraints:layoutConstraints3];
   }
 
-  v31 = [(ICDocCamSaveButton *)self layoutConstraints];
-  v32 = [(ICDocCamSaveButton *)self countLabel];
-  v33 = [v32 trailingAnchor];
-  v34 = [(ICDocCamSaveButton *)self trailingAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34 constant:-v11];
-  [v31 addObject:v35];
+  layoutConstraints4 = [(ICDocCamSaveButton *)self layoutConstraints];
+  countLabel4 = [(ICDocCamSaveButton *)self countLabel];
+  trailingAnchor = [countLabel4 trailingAnchor];
+  trailingAnchor2 = [(ICDocCamSaveButton *)self trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v11];
+  [layoutConstraints4 addObject:v35];
 
-  v36 = [(ICDocCamSaveButton *)self layoutConstraints];
-  v37 = [(ICDocCamSaveButton *)self countLabel];
-  v38 = [v37 widthAnchor];
-  v39 = [v38 constraintEqualToConstant:v22];
-  [v36 addObject:v39];
+  layoutConstraints5 = [(ICDocCamSaveButton *)self layoutConstraints];
+  countLabel5 = [(ICDocCamSaveButton *)self countLabel];
+  widthAnchor = [countLabel5 widthAnchor];
+  v39 = [widthAnchor constraintEqualToConstant:v22];
+  [layoutConstraints5 addObject:v39];
 
-  v40 = [(ICDocCamSaveButton *)self layoutConstraints];
-  v41 = [(ICDocCamSaveButton *)self countLabel];
-  v42 = [v41 centerYAnchor];
-  v43 = [(ICDocCamSaveButton *)self centerYAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
-  [v40 addObject:v44];
+  layoutConstraints6 = [(ICDocCamSaveButton *)self layoutConstraints];
+  countLabel6 = [(ICDocCamSaveButton *)self countLabel];
+  centerYAnchor = [countLabel6 centerYAnchor];
+  centerYAnchor2 = [(ICDocCamSaveButton *)self centerYAnchor];
+  v44 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [layoutConstraints6 addObject:v44];
 
-  v45 = [(ICDocCamSaveButton *)self layoutConstraints];
-  v46 = [(ICDocCamSaveButton *)self saveLabel];
-  v47 = [v46 trailingAnchor];
-  v48 = [(ICDocCamSaveButton *)self countLabel];
-  v49 = [v48 leadingAnchor];
-  v50 = [v47 constraintEqualToAnchor:v49 constant:-v10];
-  [v45 addObject:v50];
+  layoutConstraints7 = [(ICDocCamSaveButton *)self layoutConstraints];
+  saveLabel4 = [(ICDocCamSaveButton *)self saveLabel];
+  trailingAnchor3 = [saveLabel4 trailingAnchor];
+  countLabel7 = [(ICDocCamSaveButton *)self countLabel];
+  leadingAnchor = [countLabel7 leadingAnchor];
+  v50 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor constant:-v10];
+  [layoutConstraints7 addObject:v50];
 
-  v51 = [(ICDocCamSaveButton *)self layoutConstraints];
-  v52 = [(ICDocCamSaveButton *)self saveLabel];
-  v53 = [v52 widthAnchor];
-  v54 = [v53 constraintEqualToConstant:v25];
-  [v51 addObject:v54];
+  layoutConstraints8 = [(ICDocCamSaveButton *)self layoutConstraints];
+  saveLabel5 = [(ICDocCamSaveButton *)self saveLabel];
+  widthAnchor2 = [saveLabel5 widthAnchor];
+  v54 = [widthAnchor2 constraintEqualToConstant:v25];
+  [layoutConstraints8 addObject:v54];
 
-  v55 = [(ICDocCamSaveButton *)self layoutConstraints];
-  v56 = [(ICDocCamSaveButton *)self saveLabel];
-  v57 = [v56 centerYAnchor];
-  v58 = [(ICDocCamSaveButton *)self centerYAnchor];
-  v59 = [v57 constraintEqualToAnchor:v58];
-  [v55 addObject:v59];
+  layoutConstraints9 = [(ICDocCamSaveButton *)self layoutConstraints];
+  saveLabel6 = [(ICDocCamSaveButton *)self saveLabel];
+  centerYAnchor3 = [saveLabel6 centerYAnchor];
+  centerYAnchor4 = [(ICDocCamSaveButton *)self centerYAnchor];
+  v59 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+  [layoutConstraints9 addObject:v59];
 
-  v60 = [(ICDocCamSaveButton *)self layoutConstraints];
-  v61 = [(ICDocCamSaveButton *)self widthAnchor];
-  v62 = [v61 constraintEqualToConstant:v10 + v25 + v22 + v11 * 2.0];
-  [v60 addObject:v62];
+  layoutConstraints10 = [(ICDocCamSaveButton *)self layoutConstraints];
+  widthAnchor3 = [(ICDocCamSaveButton *)self widthAnchor];
+  v62 = [widthAnchor3 constraintEqualToConstant:v10 + v25 + v22 + v11 * 2.0];
+  [layoutConstraints10 addObject:v62];
 
   v63 = MEMORY[0x277CCAAD0];
-  v64 = [(ICDocCamSaveButton *)self layoutConstraints];
-  [v63 activateConstraints:v64];
+  layoutConstraints11 = [(ICDocCamSaveButton *)self layoutConstraints];
+  [v63 activateConstraints:layoutConstraints11];
 }
 
-- (void)setDocumentCount:(int64_t)a3
+- (void)setDocumentCount:(int64_t)count
 {
-  self->_documentCount = a3;
+  self->_documentCount = count;
   v4 = [(ICDocCamSaveButton *)self saveButtonTitleForDocumentCount:?];
-  v5 = [(ICDocCamSaveButton *)self saveLabel];
-  [v5 setText:v4];
+  saveLabel = [(ICDocCamSaveButton *)self saveLabel];
+  [saveLabel setText:v4];
 
   v6 = [(ICDocCamSaveButton *)self saveButtonCountStringForDocumentCount:self->_documentCount];
-  v7 = [(ICDocCamSaveButton *)self countLabel];
-  [v7 setText:v6];
+  countLabel = [(ICDocCamSaveButton *)self countLabel];
+  [countLabel setText:v6];
 
   [(ICDocCamSaveButton *)self setNeedsLayout];
 
   [(ICDocCamSaveButton *)self layoutIfNeeded];
 }
 
-- (id)saveButtonTitleForDocumentCount:(unint64_t)a3
+- (id)saveButtonTitleForDocumentCount:(unint64_t)count
 {
   v3 = [DCLocalization localizedStringForKey:@"Save" value:@"Save" table:@"Localizable"];
 
   return v3;
 }
 
-- (id)saveButtonCountStringForDocumentCount:(unint64_t)a3
+- (id)saveButtonCountStringForDocumentCount:(unint64_t)count
 {
-  if (a3 < 2)
+  if (count < 2)
   {
     v6 = &stru_285C55A80;
   }
@@ -290,7 +290,7 @@
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = [DCLocalization localizedStringForKey:@"SAVE_%lu_SCANNED_IMAGES_COUNT" value:@"SAVE_%lu_SCANNED_IMAGES_COUNT" table:@"Localizable"];
-    v6 = [v4 localizedStringWithFormat:v5, a3];
+    v6 = [v4 localizedStringWithFormat:v5, count];
   }
 
   return v6;
@@ -311,8 +311,8 @@
   v7[2] = *MEMORY[0x277D85DE8];
   v3 = [DCLocalization localizedStringForKey:@"Save" value:@"Save" table:@"Localizable"];
   v7[0] = v3;
-  v4 = [(ICDocCamSaveButton *)self accessibilityLabel];
-  v7[1] = v4;
+  accessibilityLabel = [(ICDocCamSaveButton *)self accessibilityLabel];
+  v7[1] = accessibilityLabel;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
 
   return v5;

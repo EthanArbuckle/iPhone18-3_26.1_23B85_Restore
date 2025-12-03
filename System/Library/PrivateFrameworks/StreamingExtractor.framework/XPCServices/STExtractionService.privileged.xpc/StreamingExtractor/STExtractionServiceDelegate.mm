@@ -1,25 +1,25 @@
 @interface STExtractionServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation STExtractionServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  __chkstk_darwin(self, a2, a3, a4);
+  __chkstk_darwin(self, a2, listener, connection);
   v5 = v4;
-  v6 = [v5 processIdentifier];
-  v7 = proc_pidpath(v6, buffer, 0x1000u);
+  processIdentifier = [v5 processIdentifier];
+  v7 = proc_pidpath(processIdentifier, buffer, 0x1000u);
   if (v7 < 1)
   {
-    v10 = [NSString stringWithFormat:@"Unknown Process Name (pid %d)", v6];
+    v10 = [NSString stringWithFormat:@"Unknown Process Name (pid %d)", processIdentifier];
   }
 
   else
   {
     v8 = [[NSString alloc] initWithBytes:buffer length:v7 encoding:4];
-    v9 = [v8 lastPathComponent];
-    v10 = [NSString stringWithFormat:@"%@ (pid %d)", v9, v6];
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = [NSString stringWithFormat:@"%@ (pid %d)", lastPathComponent, processIdentifier];
   }
 
   [v5 processIdentifier];
@@ -30,11 +30,11 @@
   }
 
   v11 = [v5 valueForEntitlement:@"com.apple.private.STRemoteExtractor.privileged"];
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
 
   v13 = sub_100000DA8();
   v14 = v13;
-  if (v12)
+  if (bOOLValue)
   {
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -125,7 +125,7 @@ LABEL_25:
   [v5 invalidate];
 LABEL_27:
 
-  return v12;
+  return bOOLValue;
 }
 
 @end

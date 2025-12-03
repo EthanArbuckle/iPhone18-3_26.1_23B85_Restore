@@ -1,17 +1,17 @@
 @interface FCTagsFetchOperation
-- (FCTagsFetchOperation)initWithTagIDs:(id)a3 tagRecordSource:(id)a4 assetManager:(id)a5 configuration:(id)a6 delegate:(id)a7;
+- (FCTagsFetchOperation)initWithTagIDs:(id)ds tagRecordSource:(id)source assetManager:(id)manager configuration:(id)configuration delegate:(id)delegate;
 - (id)completeFetchOperation;
-- (id)fetchChildTagRecordsWithCompletion:(id)a3;
-- (id)fetchParentTagRecordsWithCompletion:(id)a3;
-- (id)fetchTagRecordsWithCompletion:(id)a3;
-- (void)customizeChildOperation:(id)a3 forFetchStep:(SEL)a4;
+- (id)fetchChildTagRecordsWithCompletion:(id)completion;
+- (id)fetchParentTagRecordsWithCompletion:(id)completion;
+- (id)fetchTagRecordsWithCompletion:(id)completion;
+- (void)customizeChildOperation:(id)operation forFetchStep:(SEL)step;
 @end
 
 @implementation FCTagsFetchOperation
 
 - (id)completeFetchOperation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self)
   {
     heldTagRecords = self->_heldTagRecords;
@@ -27,7 +27,7 @@
   v22[2] = __46__FCTagsFetchOperation_completeFetchOperation__block_invoke;
   v22[3] = &unk_1E7C37B48;
   v22[4] = self;
-  v5 = v3;
+  v5 = dictionary;
   v23 = v5;
   [(FCHeldRecords *)heldTagRecords enumerateRecordsAndInterestTokensWithBlock:v22];
   if (self)
@@ -62,7 +62,7 @@
   v15 = 3221225472;
   v16 = __46__FCTagsFetchOperation_completeFetchOperation__block_invoke_3;
   v17 = &unk_1E7C37B48;
-  v18 = self;
+  selfCopy = self;
   v9 = v7;
   v19 = v9;
   [(FCHeldRecords *)heldChildTagRecords enumerateRecordsAndInterestTokensWithBlock:&v14];
@@ -71,8 +71,8 @@
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained)
     {
-      v11 = [v9 allValues];
-      [WeakRetained tagsFetchOperation:self didFetchTags:v11];
+      allValues = [v9 allValues];
+      [WeakRetained tagsFetchOperation:self didFetchTags:allValues];
     }
   }
 
@@ -114,15 +114,15 @@ void __46__FCTagsFetchOperation_completeFetchOperation__block_invoke(uint64_t a1
   [v14 setObject:v13 forKey:v15];
 }
 
-- (FCTagsFetchOperation)initWithTagIDs:(id)a3 tagRecordSource:(id)a4 assetManager:(id)a5 configuration:(id)a6 delegate:(id)a7
+- (FCTagsFetchOperation)initWithTagIDs:(id)ds tagRecordSource:(id)source assetManager:(id)manager configuration:(id)configuration delegate:(id)delegate
 {
   v36 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  sourceCopy = source;
+  managerCopy = manager;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagIDs"];
     *buf = 136315906;
@@ -135,13 +135,13 @@ void __46__FCTagsFetchOperation_completeFetchOperation__block_invoke(uint64_t a1
     v35 = v24;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v14)
+    if (managerCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v14)
+  else if (managerCopy)
   {
     goto LABEL_6;
   }
@@ -161,7 +161,7 @@ void __46__FCTagsFetchOperation_completeFetchOperation__block_invoke(uint64_t a1
   }
 
 LABEL_6:
-  if (!v13 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!sourceCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagRecordSource"];
     *buf = 136315906;
@@ -180,14 +180,14 @@ LABEL_6:
   v17 = [(FCMultiStepFetchOperation *)&v27 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [dsCopy copy];
     tagIDs = v17->_tagIDs;
     v17->_tagIDs = v18;
 
-    objc_storeStrong(&v17->_assetManager, a5);
-    objc_storeStrong(&v17->_tagRecordSource, a4);
-    objc_storeWeak(&v17->_delegate, v16);
-    v20 = [v15 copy];
+    objc_storeStrong(&v17->_assetManager, manager);
+    objc_storeStrong(&v17->_tagRecordSource, source);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    v20 = [configurationCopy copy];
     configuration = v17->_configuration;
     v17->_configuration = v20;
 
@@ -200,24 +200,24 @@ LABEL_6:
   return v17;
 }
 
-- (void)customizeChildOperation:(id)a3 forFetchStep:(SEL)a4
+- (void)customizeChildOperation:(id)operation forFetchStep:(SEL)step
 {
-  v6 = a3;
+  operationCopy = operation;
   v7.receiver = self;
   v7.super_class = FCTagsFetchOperation;
-  [(FCMultiStepFetchOperation *)&v7 customizeChildOperation:v6 forFetchStep:a4];
-  if (sel_fetchTagRecordsWithCompletion_ == a4 && [(FCTagsFetchOperation *)self overrideTargetsCachePolicy])
+  [(FCMultiStepFetchOperation *)&v7 customizeChildOperation:operationCopy forFetchStep:step];
+  if (sel_fetchTagRecordsWithCompletion_ == step && [(FCTagsFetchOperation *)self overrideTargetsCachePolicy])
   {
-    [v6 setCachePolicy:{-[FCTagsFetchOperation targetsCachePolicy](self, "targetsCachePolicy")}];
+    [operationCopy setCachePolicy:{-[FCTagsFetchOperation targetsCachePolicy](self, "targetsCachePolicy")}];
     [(FCTagsFetchOperation *)self targetsMaximumCachedAge];
 LABEL_7:
-    [v6 setMaximumCachedAge:?];
+    [operationCopy setMaximumCachedAge:?];
     goto LABEL_8;
   }
 
-  if (sel_fetchChildTagRecordsWithCompletion_ == a4 && [(FCTagsFetchOperation *)self overrideChildrenCachePolicy])
+  if (sel_fetchChildTagRecordsWithCompletion_ == step && [(FCTagsFetchOperation *)self overrideChildrenCachePolicy])
   {
-    [v6 setCachePolicy:{-[FCTagsFetchOperation childrenCachePolicy](self, "childrenCachePolicy")}];
+    [operationCopy setCachePolicy:{-[FCTagsFetchOperation childrenCachePolicy](self, "childrenCachePolicy")}];
     [(FCTagsFetchOperation *)self childrenMaximumCachedAge];
     goto LABEL_7;
   }
@@ -225,9 +225,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)fetchTagRecordsWithCompletion:(id)a3
+- (id)fetchTagRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self)
   {
     v5 = self->_tagRecordSource;
@@ -248,8 +248,8 @@ LABEL_8:
   v10[2] = __54__FCTagsFetchOperation_fetchTagRecordsWithCompletion___block_invoke;
   v10[3] = &unk_1E7C37B98;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [v7 setFetchCompletionBlock:v10];
 
   return v7;
@@ -268,11 +268,11 @@ void __54__FCTagsFetchOperation_fetchTagRecordsWithCompletion___block_invoke(uin
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)fetchParentTagRecordsWithCompletion:(id)a3
+- (id)fetchParentTagRecordsWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  completionCopy = completion;
+  array = [MEMORY[0x1E695DF70] array];
   if ([(FCTagsFetchOperation *)self includeParents])
   {
     v22 = 0u;
@@ -289,8 +289,8 @@ void __54__FCTagsFetchOperation_fetchTagRecordsWithCompletion___block_invoke(uin
       heldTagRecords = 0;
     }
 
-    v7 = [(FCHeldRecords *)heldTagRecords allRecords];
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    allRecords = [(FCHeldRecords *)heldTagRecords allRecords];
+    v8 = [allRecords countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -301,24 +301,24 @@ void __54__FCTagsFetchOperation_fetchTagRecordsWithCompletion___block_invoke(uin
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allRecords);
           }
 
-          v12 = [*(*(&v20 + 1) + 8 * i) parentID];
-          if (v12)
+          parentID = [*(*(&v20 + 1) + 8 * i) parentID];
+          if (parentID)
           {
-            [v5 addObject:v12];
+            [array addObject:parentID];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v9 = [allRecords countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v9);
     }
   }
 
-  if ([v5 count])
+  if ([array count])
   {
     if (self)
     {
@@ -330,21 +330,21 @@ void __54__FCTagsFetchOperation_fetchTagRecordsWithCompletion___block_invoke(uin
       tagRecordSource = 0;
     }
 
-    v14 = [(FCRecordSource *)tagRecordSource fetchOperationForRecordsWithIDs:v5];
+    v14 = [(FCRecordSource *)tagRecordSource fetchOperationForRecordsWithIDs:array];
     [v14 setCachePolicy:{-[FCFetchOperation cachePolicy](self, "cachePolicy")}];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __60__FCTagsFetchOperation_fetchParentTagRecordsWithCompletion___block_invoke;
     v18[3] = &unk_1E7C37B98;
     v18[4] = self;
-    v19 = v4;
+    v19 = completionCopy;
     [v14 setFetchCompletionBlock:v18];
     v15 = v14;
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
     v15 = 0;
   }
 
@@ -366,11 +366,11 @@ void __60__FCTagsFetchOperation_fetchParentTagRecordsWithCompletion___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)fetchChildTagRecordsWithCompletion:(id)a3
+- (id)fetchChildTagRecordsWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  completionCopy = completion;
+  array = [MEMORY[0x1E695DF70] array];
   if ([(FCTagsFetchOperation *)self includeChildren])
   {
     v22 = 0u;
@@ -387,8 +387,8 @@ void __60__FCTagsFetchOperation_fetchParentTagRecordsWithCompletion___block_invo
       heldTagRecords = 0;
     }
 
-    v7 = [(FCHeldRecords *)heldTagRecords allRecords];
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    allRecords = [(FCHeldRecords *)heldTagRecords allRecords];
+    v8 = [allRecords countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -399,21 +399,21 @@ void __60__FCTagsFetchOperation_fetchParentTagRecordsWithCompletion___block_invo
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allRecords);
           }
 
-          v12 = [*(*(&v20 + 1) + 8 * i) channelSectionIDs];
-          [v5 addObjectsFromArray:v12];
+          channelSectionIDs = [*(*(&v20 + 1) + 8 * i) channelSectionIDs];
+          [array addObjectsFromArray:channelSectionIDs];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v9 = [allRecords countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v9);
     }
   }
 
-  if ([v5 count])
+  if ([array count])
   {
     if (self)
     {
@@ -425,21 +425,21 @@ void __60__FCTagsFetchOperation_fetchParentTagRecordsWithCompletion___block_invo
       tagRecordSource = 0;
     }
 
-    v14 = [(FCRecordSource *)tagRecordSource fetchOperationForRecordsWithIDs:v5];
+    v14 = [(FCRecordSource *)tagRecordSource fetchOperationForRecordsWithIDs:array];
     [v14 setCachePolicy:{-[FCFetchOperation cachePolicy](self, "cachePolicy")}];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __59__FCTagsFetchOperation_fetchChildTagRecordsWithCompletion___block_invoke;
     v18[3] = &unk_1E7C37B98;
     v18[4] = self;
-    v19 = v4;
+    v19 = completionCopy;
     [v14 setFetchCompletionBlock:v18];
     v15 = v14;
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
     v15 = 0;
   }
 

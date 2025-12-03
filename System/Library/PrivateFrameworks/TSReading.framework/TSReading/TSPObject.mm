@@ -1,11 +1,11 @@
 @interface TSPObject
 - (BOOL)isComponentRoot;
 - (TSPObject)init;
-- (TSPObject)initWithContext:(id)a3;
+- (TSPObject)initWithContext:(id)context;
 - (TSPObjectContext)context;
 - (TSPObjectDelegate)tsp_delegate;
 - (id)documentRoot;
-- (id)initDocumentObjectWithContext:(id)a3;
+- (id)initDocumentObjectWithContext:(id)context;
 - (int64_t)tsp_identifier;
 @end
 
@@ -13,10 +13,10 @@
 
 - (TSPObject)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObject init]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObject.mm"];
-  [v2 handleFailureInFunction:v3 file:v4 lineNumber:54 description:@"Do not call method"];
+  [currentHandler handleFailureInFunction:v3 file:v4 lineNumber:54 description:@"Do not call method"];
 
   v5 = MEMORY[0x277CBEAD8];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %s", @"Do not call method", "-[TSPObject init]"];
@@ -29,34 +29,34 @@
 - (TSPObjectContext)context
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained context];
+  context = [WeakRetained context];
 
-  return v3;
+  return context;
 }
 
-- (TSPObject)initWithContext:(id)a3
+- (TSPObject)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = TSPObject;
   v5 = [(TSPObject *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_delegate, v4);
-    v6->_modifyObjectToken = [v4 modifyObjectTokenForNewObject];
+    v7 = objc_storeWeak(&v5->_delegate, contextCopy);
+    v6->_modifyObjectToken = [contextCopy modifyObjectTokenForNewObject];
   }
 
   return v6;
 }
 
-- (id)initDocumentObjectWithContext:(id)a3
+- (id)initDocumentObjectWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(TSPObject *)self initWithContext:v4];
+  contextCopy = context;
+  v5 = [(TSPObject *)self initWithContext:contextCopy];
   if (v5)
   {
-    [v4 setDocumentObject:v5];
+    [contextCopy setDocumentObject:v5];
   }
 
   return v5;
@@ -64,8 +64,8 @@
 
 - (BOOL)isComponentRoot
 {
-  v3 = [(TSPObject *)self packageLocator];
-  if (v3)
+  packageLocator = [(TSPObject *)self packageLocator];
+  if (packageLocator)
   {
     v4 = 1;
   }
@@ -84,10 +84,10 @@
   if (!result)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [WeakRetained newObjectIdentifier];
+    newObjectIdentifier = [WeakRetained newObjectIdentifier];
 
     v6 = 0;
-    atomic_compare_exchange_strong(&self->_identifier, &v6, v5);
+    atomic_compare_exchange_strong(&self->_identifier, &v6, newObjectIdentifier);
     return self->_identifier;
   }
 
@@ -103,9 +103,9 @@
 
 - (id)documentRoot
 {
-  v2 = [(TSPObject *)self context];
+  context = [(TSPObject *)self context];
 
-  return [(TSPObjectContext *)v2 documentRoot];
+  return [(TSPObjectContext *)context documentRoot];
 }
 
 @end

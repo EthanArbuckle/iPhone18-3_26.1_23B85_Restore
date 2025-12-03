@@ -1,38 +1,38 @@
 @interface RTITextOperations
 + (id)customInfoDictionary;
-+ (void)registerCustomInfoClasses:(id)a3 forType:(id)a4;
-+ (void)unregisterCustomInfoType:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (void)registerCustomInfoClasses:(id)classes forType:(id)type;
++ (void)unregisterCustomInfoType:(id)type;
+- (BOOL)isEqual:(id)equal;
 - (NSAttributedString)attributedInsertionText;
 - (NSString)description;
-- (RTITextOperations)initWithCoder:(id)a3;
-- (RTITextOperations)initWithTargetSessionUUID:(id)a3;
+- (RTITextOperations)initWithCoder:(id)coder;
+- (RTITextOperations)initWithTargetSessionUUID:(id)d;
 - (SEL)editingActionSelector;
 - (_NSRange)selectionRangeToAssert;
 - (_NSRange)textCheckingAnnotationRange;
 - (_NSRange)textCheckingAnnotationRemovalRange;
 - (_NSRange)textCheckingReplacementRange;
 - (void)_createAttributedPlaceholdersIfNecessary;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAdaptiveImageGlyphsUsingBlock:(id)a3;
-- (void)enumerateImagesAndUserInfosUsingBlock:(id)a3;
-- (void)enumerateImagesUsingBlock:(id)a3;
-- (void)enumerateTextAttachmentsUsingBlock:(id)a3;
-- (void)insertAdaptiveImageGlyph:(id)a3;
-- (void)insertAttributedText:(id)a3;
-- (void)insertAttributedText:(id)a3 replacementRange:(_NSRange)a4;
-- (void)insertImageWithFileHandle:(id)a3 typeIdentifier:(id)a4 imageUserInfo:(id)a5;
-- (void)insertText:(id)a3 replacementRange:(_NSRange)a4;
-- (void)insertTextAttachment:(id)a3;
-- (void)setEditingActionSelector:(SEL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAdaptiveImageGlyphsUsingBlock:(id)block;
+- (void)enumerateImagesAndUserInfosUsingBlock:(id)block;
+- (void)enumerateImagesUsingBlock:(id)block;
+- (void)enumerateTextAttachmentsUsingBlock:(id)block;
+- (void)insertAdaptiveImageGlyph:(id)glyph;
+- (void)insertAttributedText:(id)text;
+- (void)insertAttributedText:(id)text replacementRange:(_NSRange)range;
+- (void)insertImageWithFileHandle:(id)handle typeIdentifier:(id)identifier imageUserInfo:(id)info;
+- (void)insertText:(id)text replacementRange:(_NSRange)range;
+- (void)insertTextAttachment:(id)attachment;
+- (void)setEditingActionSelector:(SEL)selector;
 @end
 
 @implementation RTITextOperations
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The coder must allow keyed coding."];
   }
@@ -40,31 +40,31 @@
   keyboardOutput = self->_keyboardOutput;
   if (keyboardOutput)
   {
-    [v4 encodeObject:keyboardOutput forKey:@"keyboardOutput"];
+    [coderCopy encodeObject:keyboardOutput forKey:@"keyboardOutput"];
   }
 
   intermediateText = self->_intermediateText;
   if (intermediateText)
   {
-    [v4 encodeObject:intermediateText forKey:@"intermediateText"];
+    [coderCopy encodeObject:intermediateText forKey:@"intermediateText"];
   }
 
   styledIntermediateText = self->_styledIntermediateText;
   if (styledIntermediateText)
   {
-    [v4 encodeObject:styledIntermediateText forKey:@"styledIntermediateText"];
+    [coderCopy encodeObject:styledIntermediateText forKey:@"styledIntermediateText"];
   }
 
   textToAssert = self->_textToAssert;
   if (textToAssert)
   {
-    [v4 encodeObject:textToAssert forKey:@"textToAssert"];
+    [coderCopy encodeObject:textToAssert forKey:@"textToAssert"];
   }
 
   if (self->_selectionRangeToAssert.location != 0x7FFFFFFFFFFFFFFFLL || self->_selectionRangeToAssert.length)
   {
     v9 = [MEMORY[0x1E696B098] valueWithRange:?];
-    [v4 encodeObject:v9 forKey:@"selectionRangeToAssert"];
+    [coderCopy encodeObject:v9 forKey:@"selectionRangeToAssert"];
   }
 
   editingActionSelector = self->_editingActionSelector;
@@ -72,31 +72,31 @@
   {
     v11 = self->_editingActionSelector;
     v12 = NSStringFromSelector(editingActionSelector);
-    [v4 encodeObject:v12 forKey:@"editingActionSelector"];
+    [coderCopy encodeObject:v12 forKey:@"editingActionSelector"];
   }
 
   multilingualLanguages = self->_multilingualLanguages;
   if (multilingualLanguages)
   {
-    [v4 encodeObject:multilingualLanguages forKey:@"multilingualLanguages"];
+    [coderCopy encodeObject:multilingualLanguages forKey:@"multilingualLanguages"];
   }
 
   inputSourceState = self->_inputSourceState;
   if (inputSourceState)
   {
-    [v4 encodeObject:inputSourceState forKey:@"inputSourceState"];
+    [coderCopy encodeObject:inputSourceState forKey:@"inputSourceState"];
   }
 
   attributedPlaceholders = self->_attributedPlaceholders;
   if (attributedPlaceholders)
   {
-    [v4 encodeObject:attributedPlaceholders forKey:@"attributedPlaceholders"];
+    [coderCopy encodeObject:attributedPlaceholders forKey:@"attributedPlaceholders"];
   }
 
   enumeratedInsertionAnimationStyle = self->_enumeratedInsertionAnimationStyle;
   if (enumeratedInsertionAnimationStyle)
   {
-    [v4 encodeInteger:enumeratedInsertionAnimationStyle forKey:@"insertionAnimationStyle"];
+    [coderCopy encodeInteger:enumeratedInsertionAnimationStyle forKey:@"insertionAnimationStyle"];
   }
 
   textCheckingAnnotatedString = self->_textCheckingAnnotatedString;
@@ -105,43 +105,43 @@
     v18 = +[RTIUtilities _textAnnotationAttributes];
     v19 = [(NSAttributedString *)textCheckingAnnotatedString _ti_attributedStringByKeepingAttributes:v18];
 
-    [v4 encodeObject:v19 forKey:@"textCheckingAnnotatedString"];
+    [coderCopy encodeObject:v19 forKey:@"textCheckingAnnotatedString"];
   }
 
   if (self->_textCheckingAnnotationRange.location != 0x7FFFFFFFFFFFFFFFLL || self->_textCheckingAnnotationRange.length)
   {
     v20 = [MEMORY[0x1E696B098] valueWithRange:?];
-    [v4 encodeObject:v20 forKey:@"textCheckingAnnotationRange"];
+    [coderCopy encodeObject:v20 forKey:@"textCheckingAnnotationRange"];
   }
 
   if (self->_textCheckingReplacementRange.location != 0x7FFFFFFFFFFFFFFFLL || self->_textCheckingReplacementRange.length)
   {
     v21 = [MEMORY[0x1E696B098] valueWithRange:?];
-    [v4 encodeObject:v21 forKey:@"textCheckingReplacementRange"];
+    [coderCopy encodeObject:v21 forKey:@"textCheckingReplacementRange"];
   }
 
   if (self->_textCheckingAnnotationRemovalRange.location != 0x7FFFFFFFFFFFFFFFLL || self->_textCheckingAnnotationRemovalRange.length)
   {
     v22 = [MEMORY[0x1E696B098] valueWithRange:?];
-    [v4 encodeObject:v22 forKey:@"textCheckingAnnotationRemovalRange"];
+    [coderCopy encodeObject:v22 forKey:@"textCheckingAnnotationRemovalRange"];
   }
 
   textCheckingAnnotationToRemove = self->_textCheckingAnnotationToRemove;
   if (textCheckingAnnotationToRemove)
   {
-    [v4 encodeObject:textCheckingAnnotationToRemove forKey:@"textCheckingAnnotationToRemove"];
+    [coderCopy encodeObject:textCheckingAnnotationToRemove forKey:@"textCheckingAnnotationToRemove"];
   }
 
   customInfoType = self->_customInfoType;
   if (customInfoType)
   {
-    [v4 encodeObject:customInfoType forKey:@"customInfoType"];
+    [coderCopy encodeObject:customInfoType forKey:@"customInfoType"];
   }
 
   customInfo = self->_customInfo;
   if (customInfo)
   {
-    [v4 encodeObject:customInfo forKey:@"customInfo"];
+    [coderCopy encodeObject:customInfo forKey:@"customInfo"];
   }
 
   fileHandles = self->_fileHandles;
@@ -155,9 +155,9 @@
         v28 = [(NSMutableArray *)self->_fileHandles count];
         if (v28 == [(NSMutableArray *)self->_imageUserInfos count])
         {
-          [v4 encodeObject:self->_fileHandles forKey:@"fileHandles"];
-          [v4 encodeObject:self->_typeIdentifiers forKey:@"typeIdentifiers"];
-          [v4 encodeObject:self->_imageUserInfos forKey:@"imgUserInfo"];
+          [coderCopy encodeObject:self->_fileHandles forKey:@"fileHandles"];
+          [coderCopy encodeObject:self->_typeIdentifiers forKey:@"typeIdentifiers"];
+          [coderCopy encodeObject:self->_imageUserInfos forKey:@"imgUserInfo"];
         }
       }
     }
@@ -176,9 +176,9 @@
           v31 = [(NSMutableArray *)self->_attachmentClasses count];
           if (v31 == [(NSMutableArray *)self->_typeIdentifiers count])
           {
-            [v4 encodeObject:self->_attachmentDatas forKey:@"attachmentDatas"];
-            [v4 encodeObject:self->_attachmentClasses forKey:@"attachmentClasses"];
-            [v4 encodeObject:self->_typeIdentifiers forKey:@"typeIdentifiers"];
+            [coderCopy encodeObject:self->_attachmentDatas forKey:@"attachmentDatas"];
+            [coderCopy encodeObject:self->_attachmentClasses forKey:@"attachmentClasses"];
+            [coderCopy encodeObject:self->_typeIdentifiers forKey:@"typeIdentifiers"];
           }
         }
       }
@@ -188,23 +188,23 @@
   imageGlyphs = self->_imageGlyphs;
   if (imageGlyphs)
   {
-    [v4 encodeObject:imageGlyphs forKey:@"imageGlyphs"];
+    [coderCopy encodeObject:imageGlyphs forKey:@"imageGlyphs"];
   }
 
   targetSessionUUID = self->_targetSessionUUID;
   if (targetSessionUUID)
   {
-    [v4 encodeObject:targetSessionUUID forKey:@"targetSessionUUID"];
+    [coderCopy encodeObject:targetSessionUUID forKey:@"targetSessionUUID"];
   }
 
-  [v4 encodeBool:self->_isExplicitAutoFillInvocation forKey:@"isExplicitAutoFillInvocation"];
-  [v4 encodeBool:self->_isAutoFillTextOperation forKey:@"isAutoFillTextOperation"];
+  [coderCopy encodeBool:self->_isExplicitAutoFillInvocation forKey:@"isExplicitAutoFillInvocation"];
+  [coderCopy encodeBool:self->_isAutoFillTextOperation forKey:@"isAutoFillTextOperation"];
 }
 
-- (RTITextOperations)initWithCoder:(id)a3
+- (RTITextOperations)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The decoder must allow keyed coding."];
   }
@@ -212,7 +212,7 @@
   v5 = [(RTITextOperations *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardOutput"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardOutput"];
     keyboardOutput = v5->_keyboardOutput;
     v5->_keyboardOutput = v6;
 
@@ -223,35 +223,35 @@
       v5->_keyboardOutput = v8;
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intermediateText"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intermediateText"];
     intermediateText = v5->_intermediateText;
     v5->_intermediateText = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"styledIntermediateText"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"styledIntermediateText"];
     styledIntermediateText = v5->_styledIntermediateText;
     v5->_styledIntermediateText = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textToAssert"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textToAssert"];
     v15 = [v14 copy];
     textToAssert = v5->_textToAssert;
     v5->_textToAssert = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectionRangeToAssert"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectionRangeToAssert"];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 rangeValue];
+      rangeValue = [v17 rangeValue];
     }
 
     else
     {
       v20 = 0;
-      v19 = 0x7FFFFFFFFFFFFFFFLL;
+      rangeValue = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v5->_selectionRangeToAssert.location = v19;
+    v5->_selectionRangeToAssert.location = rangeValue;
     v5->_selectionRangeToAssert.length = v20;
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"editingActionSelector"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"editingActionSelector"];
     v22 = [v21 copy];
 
     if (v22)
@@ -274,11 +274,11 @@
     v25 = MEMORY[0x1E695DFD8];
     v26 = objc_opt_class();
     v27 = [v25 setWithObjects:{v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"multilingualLanguages"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"multilingualLanguages"];
     multilingualLanguages = v5->_multilingualLanguages;
     v5->_multilingualLanguages = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputSourceState"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputSourceState"];
     inputSourceState = v5->_inputSourceState;
     v5->_inputSourceState = v30;
 
@@ -305,65 +305,65 @@
     v37 = v36;
     _Block_object_dispose(&v115, 8);
     v38 = [v32 setWithObjects:{v33, v34, v35, objc_opt_class(), 0}];
-    v39 = [v4 decodeObjectOfClasses:v38 forKey:@"attributedPlaceholders"];
+    v39 = [coderCopy decodeObjectOfClasses:v38 forKey:@"attributedPlaceholders"];
     attributedPlaceholders = v5->_attributedPlaceholders;
     v5->_attributedPlaceholders = v39;
 
-    v5->_enumeratedInsertionAnimationStyle = [v4 decodeIntegerForKey:@"insertionAnimationStyle"];
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textCheckingAnnotationRange"];
+    v5->_enumeratedInsertionAnimationStyle = [coderCopy decodeIntegerForKey:@"insertionAnimationStyle"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textCheckingAnnotationRange"];
     v107 = v41;
     if (v41)
     {
-      v42 = [v41 rangeValue];
+      rangeValue2 = [v41 rangeValue];
     }
 
     else
     {
       v43 = 0;
-      v42 = 0x7FFFFFFFFFFFFFFFLL;
+      rangeValue2 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v5->_textCheckingAnnotationRange.location = v42;
+    v5->_textCheckingAnnotationRange.location = rangeValue2;
     v5->_textCheckingAnnotationRange.length = v43;
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textCheckingReplacementRange"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textCheckingReplacementRange"];
     v106 = v44;
     if (v44)
     {
-      v45 = [v44 rangeValue];
+      rangeValue3 = [v44 rangeValue];
     }
 
     else
     {
       v46 = 0;
-      v45 = 0x7FFFFFFFFFFFFFFFLL;
+      rangeValue3 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v5->_textCheckingReplacementRange.location = v45;
+    v5->_textCheckingReplacementRange.location = rangeValue3;
     v5->_textCheckingReplacementRange.length = v46;
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textCheckingAnnotatedString"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textCheckingAnnotatedString"];
     textCheckingAnnotatedString = v5->_textCheckingAnnotatedString;
     v5->_textCheckingAnnotatedString = v47;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textCheckingAnnotationRemovalRange"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textCheckingAnnotationRemovalRange"];
     v105 = v49;
     if (v49)
     {
-      v50 = [v49 rangeValue];
+      rangeValue4 = [v49 rangeValue];
     }
 
     else
     {
       v51 = 0;
-      v50 = 0x7FFFFFFFFFFFFFFFLL;
+      rangeValue4 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v5->_textCheckingAnnotationRemovalRange.location = v50;
+    v5->_textCheckingAnnotationRemovalRange.location = rangeValue4;
     v5->_textCheckingAnnotationRemovalRange.length = v51;
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textCheckingAnnotationToRemove"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textCheckingAnnotationToRemove"];
     textCheckingAnnotationToRemove = v5->_textCheckingAnnotationToRemove;
     v5->_textCheckingAnnotationToRemove = v52;
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customInfoType"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customInfoType"];
     customInfoType = v5->_customInfoType;
     v5->_customInfoType = v54;
 
@@ -373,7 +373,7 @@
       v57 = [RTIUtilities customInfoClassesForType:v56 forClass:objc_opt_class()];
       if ([v57 count])
       {
-        v58 = [v4 decodeObjectOfClasses:v57 forKey:@"customInfo"];
+        v58 = [coderCopy decodeObjectOfClasses:v57 forKey:@"customInfo"];
         customInfo = v5->_customInfo;
         v5->_customInfo = v58;
       }
@@ -383,7 +383,7 @@
     v60 = MEMORY[0x1E695DFD8];
     v61 = objc_opt_class();
     v62 = [v60 setWithObjects:{v61, objc_opt_class(), 0}];
-    v63 = [v4 decodeObjectOfClasses:v62 forKey:@"fileHandles"];
+    v63 = [coderCopy decodeObjectOfClasses:v62 forKey:@"fileHandles"];
     v64 = [v63 mutableCopy];
     fileHandles = v5->_fileHandles;
     v5->_fileHandles = v64;
@@ -391,7 +391,7 @@
     v66 = MEMORY[0x1E695DFD8];
     v67 = objc_opt_class();
     v68 = [v66 setWithObjects:{v67, objc_opt_class(), 0}];
-    v69 = [v4 decodeObjectOfClasses:v68 forKey:@"typeIdentifiers"];
+    v69 = [coderCopy decodeObjectOfClasses:v68 forKey:@"typeIdentifiers"];
     v70 = [v69 mutableCopy];
     typeIdentifiers = v5->_typeIdentifiers;
     v5->_typeIdentifiers = v70;
@@ -402,7 +402,7 @@
     v75 = objc_opt_class();
     v76 = objc_opt_class();
     v77 = [v72 setWithObjects:{v73, v74, v75, v76, objc_opt_class(), 0}];
-    v78 = [v4 decodeObjectOfClasses:v77 forKey:@"imgUserInfo"];
+    v78 = [coderCopy decodeObjectOfClasses:v77 forKey:@"imgUserInfo"];
     v79 = [v78 mutableCopy];
     imageUserInfos = v5->_imageUserInfos;
     v5->_imageUserInfos = v79;
@@ -410,7 +410,7 @@
     v81 = MEMORY[0x1E695DFD8];
     v82 = objc_opt_class();
     v83 = [v81 setWithObjects:{v82, objc_opt_class(), 0}];
-    v84 = [v4 decodeObjectOfClasses:v83 forKey:@"attachmentDatas"];
+    v84 = [coderCopy decodeObjectOfClasses:v83 forKey:@"attachmentDatas"];
     v85 = [v84 mutableCopy];
     attachmentDatas = v5->_attachmentDatas;
     v5->_attachmentDatas = v85;
@@ -418,7 +418,7 @@
     v87 = MEMORY[0x1E695DFD8];
     v88 = objc_opt_class();
     v89 = [v87 setWithObjects:{v88, objc_opt_class(), 0}];
-    v90 = [v4 decodeObjectOfClasses:v89 forKey:@"attachmentClasses"];
+    v90 = [coderCopy decodeObjectOfClasses:v89 forKey:@"attachmentClasses"];
     v91 = [v90 mutableCopy];
     attachmentClasses = v5->_attachmentClasses;
     v5->_attachmentClasses = v91;
@@ -445,25 +445,25 @@
     _Block_object_dispose(&v115, 8);
     v97 = objc_opt_class();
     v98 = [v93 setWithObjects:{v94, v95, v97, objc_opt_class(), 0}];
-    v99 = [v4 decodeObjectOfClasses:v98 forKey:@"imageGlyphs"];
+    v99 = [coderCopy decodeObjectOfClasses:v98 forKey:@"imageGlyphs"];
     v100 = [v99 mutableCopy];
     imageGlyphs = v5->_imageGlyphs;
     v5->_imageGlyphs = v100;
 
-    v102 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetSessionUUID"];
+    v102 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetSessionUUID"];
     targetSessionUUID = v5->_targetSessionUUID;
     v5->_targetSessionUUID = v102;
 
-    v5->_isExplicitAutoFillInvocation = [v4 decodeBoolForKey:@"isExplicitAutoFillInvocation"];
-    v5->_isAutoFillTextOperation = [v4 decodeBoolForKey:@"isAutoFillTextOperation"];
+    v5->_isExplicitAutoFillInvocation = [coderCopy decodeBoolForKey:@"isExplicitAutoFillInvocation"];
+    v5->_isAutoFillTextOperation = [coderCopy decodeBoolForKey:@"isAutoFillTextOperation"];
   }
 
   return v5;
 }
 
-- (RTITextOperations)initWithTargetSessionUUID:(id)a3
+- (RTITextOperations)initWithTargetSessionUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = RTITextOperations;
   v6 = [(RTITextOperations *)&v10 init];
@@ -477,7 +477,7 @@
     v6->_textCheckingAnnotationRange = xmmword_19A2CBC70;
     v6->_textCheckingReplacementRange = xmmword_19A2CBC70;
     v6->_textCheckingAnnotationRemovalRange = xmmword_19A2CBC70;
-    objc_storeStrong(&v6->_targetSessionUUID, a3);
+    objc_storeStrong(&v6->_targetSessionUUID, d);
   }
 
   return v6;
@@ -486,38 +486,38 @@
 - (NSString)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(RTITextOperations *)self keyboardOutput];
-  [v3 appendFormat:@"; keyboardOutput = %@", v4];
+  keyboardOutput = [(RTITextOperations *)self keyboardOutput];
+  [v3 appendFormat:@"; keyboardOutput = %@", keyboardOutput];
 
-  v5 = [(RTITextOperations *)self intermediateText];
+  intermediateText = [(RTITextOperations *)self intermediateText];
 
-  if (v5)
+  if (intermediateText)
   {
-    v6 = [(RTITextOperations *)self intermediateText];
-    [v3 appendFormat:@"; intermediateText = %@", v6];
+    intermediateText2 = [(RTITextOperations *)self intermediateText];
+    [v3 appendFormat:@"; intermediateText = %@", intermediateText2];
   }
 
-  v7 = [(RTITextOperations *)self styledIntermediateText];
+  styledIntermediateText = [(RTITextOperations *)self styledIntermediateText];
 
-  if (v7)
+  if (styledIntermediateText)
   {
-    v8 = [(RTITextOperations *)self styledIntermediateText];
-    [v3 appendFormat:@"; styledIntermediateText = %@", v8];
+    styledIntermediateText2 = [(RTITextOperations *)self styledIntermediateText];
+    [v3 appendFormat:@"; styledIntermediateText = %@", styledIntermediateText2];
   }
 
-  v9 = [(RTITextOperations *)self textToAssert];
+  textToAssert = [(RTITextOperations *)self textToAssert];
 
-  if (v9)
+  if (textToAssert)
   {
-    v10 = [(RTITextOperations *)self textToAssert];
-    [v3 appendFormat:@"; textToAssert = %@", v10];
+    textToAssert2 = [(RTITextOperations *)self textToAssert];
+    [v3 appendFormat:@"; textToAssert = %@", textToAssert2];
   }
 
   if ([(RTITextOperations *)self selectionRangeToAssert]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = MEMORY[0x1E696B098];
-    v12 = [(RTITextOperations *)self selectionRangeToAssert];
-    v14 = [v11 valueWithRange:{v12, v13}];
+    selectionRangeToAssert = [(RTITextOperations *)self selectionRangeToAssert];
+    v14 = [v11 valueWithRange:{selectionRangeToAssert, v13}];
     [v3 appendFormat:@"; selectionRangeToAssert = %@", v14];
   }
 
@@ -527,76 +527,76 @@
     [v3 appendFormat:@"; editingActionSelector = %@", v15];
   }
 
-  v16 = [(RTITextOperations *)self multilingualLanguages];
+  multilingualLanguages = [(RTITextOperations *)self multilingualLanguages];
 
-  if (v16)
+  if (multilingualLanguages)
   {
-    v17 = [(RTITextOperations *)self multilingualLanguages];
-    [v3 appendFormat:@"; multilingualLanguages = %@", v17];
+    multilingualLanguages2 = [(RTITextOperations *)self multilingualLanguages];
+    [v3 appendFormat:@"; multilingualLanguages = %@", multilingualLanguages2];
   }
 
-  v18 = [(RTITextOperations *)self inputSourceState];
+  inputSourceState = [(RTITextOperations *)self inputSourceState];
 
-  if (v18)
+  if (inputSourceState)
   {
-    v19 = [(RTITextOperations *)self inputSourceState];
-    [v3 appendFormat:@"; inputSourceState = %@", v19];
+    inputSourceState2 = [(RTITextOperations *)self inputSourceState];
+    [v3 appendFormat:@"; inputSourceState = %@", inputSourceState2];
   }
 
   if ([(RTITextOperations *)self textCheckingAnnotationRange]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     v20 = MEMORY[0x1E696B098];
-    v21 = [(RTITextOperations *)self textCheckingAnnotationRange];
-    v23 = [v20 valueWithRange:{v21, v22}];
+    textCheckingAnnotationRange = [(RTITextOperations *)self textCheckingAnnotationRange];
+    v23 = [v20 valueWithRange:{textCheckingAnnotationRange, v22}];
     [v3 appendFormat:@"; textCheckingAnnotationRange = %@", v23];
   }
 
   if ([(RTITextOperations *)self textCheckingReplacementRange]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     v24 = MEMORY[0x1E696B098];
-    v25 = [(RTITextOperations *)self textCheckingReplacementRange];
-    v27 = [v24 valueWithRange:{v25, v26}];
+    textCheckingReplacementRange = [(RTITextOperations *)self textCheckingReplacementRange];
+    v27 = [v24 valueWithRange:{textCheckingReplacementRange, v26}];
     [v3 appendFormat:@"; textCheckingReplacementRange = %@", v27];
   }
 
-  v28 = [(RTITextOperations *)self textCheckingAnnotatedString];
+  textCheckingAnnotatedString = [(RTITextOperations *)self textCheckingAnnotatedString];
 
-  if (v28)
+  if (textCheckingAnnotatedString)
   {
-    v29 = [(RTITextOperations *)self textCheckingAnnotatedString];
-    [v3 appendFormat:@"; textCheckingAnnotatedString = %p", v29];
+    textCheckingAnnotatedString2 = [(RTITextOperations *)self textCheckingAnnotatedString];
+    [v3 appendFormat:@"; textCheckingAnnotatedString = %p", textCheckingAnnotatedString2];
   }
 
   if ([(RTITextOperations *)self textCheckingAnnotationRemovalRange]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     v30 = MEMORY[0x1E696B098];
-    v31 = [(RTITextOperations *)self textCheckingAnnotationRemovalRange];
-    v33 = [v30 valueWithRange:{v31, v32}];
+    textCheckingAnnotationRemovalRange = [(RTITextOperations *)self textCheckingAnnotationRemovalRange];
+    v33 = [v30 valueWithRange:{textCheckingAnnotationRemovalRange, v32}];
     [v3 appendFormat:@"; textCheckingAnnotationRemovalRange = %@", v33];
   }
 
-  v34 = [(RTITextOperations *)self textCheckingAnnotationToRemove];
+  textCheckingAnnotationToRemove = [(RTITextOperations *)self textCheckingAnnotationToRemove];
 
-  if (v34)
+  if (textCheckingAnnotationToRemove)
   {
-    v35 = [(RTITextOperations *)self textCheckingAnnotationToRemove];
-    [v3 appendFormat:@"; textCheckingAnnotationToRemove = %@", v35];
+    textCheckingAnnotationToRemove2 = [(RTITextOperations *)self textCheckingAnnotationToRemove];
+    [v3 appendFormat:@"; textCheckingAnnotationToRemove = %@", textCheckingAnnotationToRemove2];
   }
 
-  v36 = [(RTITextOperations *)self customInfoType];
+  customInfoType = [(RTITextOperations *)self customInfoType];
 
-  if (v36)
+  if (customInfoType)
   {
-    v37 = [(RTITextOperations *)self customInfoType];
-    [v3 appendFormat:@"; customInfoType = %@", v37];
+    customInfoType2 = [(RTITextOperations *)self customInfoType];
+    [v3 appendFormat:@"; customInfoType = %@", customInfoType2];
   }
 
-  v38 = [(RTITextOperations *)self customInfo];
+  customInfo = [(RTITextOperations *)self customInfo];
 
-  if (v38)
+  if (customInfo)
   {
-    v39 = [(RTITextOperations *)self customInfo];
-    [v3 appendFormat:@"; customInfo = %@", v39];
+    customInfo2 = [(RTITextOperations *)self customInfo];
+    [v3 appendFormat:@"; customInfo = %@", customInfo2];
   }
 
   if ([(RTITextOperations *)self enumeratedInsertionAnimationStyle])
@@ -604,49 +604,49 @@
     [v3 appendFormat:@"; enumeratedInsertionAnimationStyle = %ld", -[RTITextOperations enumeratedInsertionAnimationStyle](self, "enumeratedInsertionAnimationStyle")];
   }
 
-  v40 = [(RTITextOperations *)self fileHandles];
-  if ([v40 count])
+  fileHandles = [(RTITextOperations *)self fileHandles];
+  if ([fileHandles count])
   {
-    v41 = [(RTITextOperations *)self typeIdentifiers];
-    v42 = [v41 count];
+    typeIdentifiers = [(RTITextOperations *)self typeIdentifiers];
+    v42 = [typeIdentifiers count];
 
     if (!v42)
     {
       goto LABEL_35;
     }
 
-    v40 = [(RTITextOperations *)self typeIdentifiers];
-    [v3 appendFormat:@"; fileHandles with types = %@", v40];
+    fileHandles = [(RTITextOperations *)self typeIdentifiers];
+    [v3 appendFormat:@"; fileHandles with types = %@", fileHandles];
   }
 
 LABEL_35:
-  v43 = [(RTITextOperations *)self attachmentDatas];
-  if ([v43 count])
+  attachmentDatas = [(RTITextOperations *)self attachmentDatas];
+  if ([attachmentDatas count])
   {
-    v44 = [(RTITextOperations *)self attachmentClasses];
-    v45 = [v44 count];
+    attachmentClasses = [(RTITextOperations *)self attachmentClasses];
+    v45 = [attachmentClasses count];
 
     if (!v45)
     {
       goto LABEL_39;
     }
 
-    v43 = [(RTITextOperations *)self attachmentClasses];
-    [v3 appendFormat:@"; textAttachments = %@", v43];
+    attachmentDatas = [(RTITextOperations *)self attachmentClasses];
+    [v3 appendFormat:@"; textAttachments = %@", attachmentDatas];
   }
 
 LABEL_39:
-  v46 = [(RTITextOperations *)self imageGlyphs];
-  v47 = [v46 count];
+  imageGlyphs = [(RTITextOperations *)self imageGlyphs];
+  v47 = [imageGlyphs count];
 
   if (v47)
   {
-    v48 = [(RTITextOperations *)self imageGlyphs];
-    [v3 appendFormat:@"; %lu adaptiveImageGlyphs", objc_msgSend(v48, "count")];
+    imageGlyphs2 = [(RTITextOperations *)self imageGlyphs];
+    [v3 appendFormat:@"; %lu adaptiveImageGlyphs", objc_msgSend(imageGlyphs2, "count")];
   }
 
-  v49 = [(RTITextOperations *)self targetSessionUUID];
-  [v3 appendFormat:@"; targetSessionUUID = %@", v49];
+  targetSessionUUID = [(RTITextOperations *)self targetSessionUUID];
+  [v3 appendFormat:@"; targetSessionUUID = %@", targetSessionUUID];
 
   if ([(RTITextOperations *)self isExplicitAutoFillInvocation])
   {
@@ -674,10 +674,10 @@ LABEL_39:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -687,19 +687,19 @@ LABEL_39:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTITextOperations *)self keyboardOutput];
-      v7 = [(RTITextOperations *)v5 keyboardOutput];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      keyboardOutput = [(RTITextOperations *)self keyboardOutput];
+      keyboardOutput2 = [(RTITextOperations *)v5 keyboardOutput];
+      v8 = keyboardOutput2;
+      if (keyboardOutput == keyboardOutput2)
       {
       }
 
       else
       {
-        v9 = [(RTITextOperations *)self keyboardOutput];
-        v10 = [(RTITextOperations *)v5 keyboardOutput];
-        v11 = [v9 isEqual:v10];
+        keyboardOutput3 = [(RTITextOperations *)self keyboardOutput];
+        keyboardOutput4 = [(RTITextOperations *)v5 keyboardOutput];
+        v11 = [keyboardOutput3 isEqual:keyboardOutput4];
 
         if (!v11)
         {
@@ -707,18 +707,18 @@ LABEL_39:
         }
       }
 
-      v13 = [(RTITextOperations *)self intermediateText];
-      v14 = [(RTITextOperations *)v5 intermediateText];
-      v15 = v14;
-      if (v13 == v14)
+      intermediateText = [(RTITextOperations *)self intermediateText];
+      intermediateText2 = [(RTITextOperations *)v5 intermediateText];
+      v15 = intermediateText2;
+      if (intermediateText == intermediateText2)
       {
       }
 
       else
       {
-        v16 = [(RTITextOperations *)self intermediateText];
-        v17 = [(RTITextOperations *)v5 intermediateText];
-        v18 = [v16 isEqual:v17];
+        intermediateText3 = [(RTITextOperations *)self intermediateText];
+        intermediateText4 = [(RTITextOperations *)v5 intermediateText];
+        v18 = [intermediateText3 isEqual:intermediateText4];
 
         if (!v18)
         {
@@ -726,18 +726,18 @@ LABEL_39:
         }
       }
 
-      v19 = [(RTITextOperations *)self styledIntermediateText];
-      v20 = [(RTITextOperations *)v5 styledIntermediateText];
-      v21 = v20;
-      if (v19 == v20)
+      styledIntermediateText = [(RTITextOperations *)self styledIntermediateText];
+      styledIntermediateText2 = [(RTITextOperations *)v5 styledIntermediateText];
+      v21 = styledIntermediateText2;
+      if (styledIntermediateText == styledIntermediateText2)
       {
       }
 
       else
       {
-        v22 = [(RTITextOperations *)self styledIntermediateText];
-        v23 = [(RTITextOperations *)v5 styledIntermediateText];
-        v24 = [v22 isEqual:v23];
+        styledIntermediateText3 = [(RTITextOperations *)self styledIntermediateText];
+        styledIntermediateText4 = [(RTITextOperations *)v5 styledIntermediateText];
+        v24 = [styledIntermediateText3 isEqual:styledIntermediateText4];
 
         if (!v24)
         {
@@ -746,41 +746,41 @@ LABEL_39:
       }
 
       v25 = MEMORY[0x1E696AEC0];
-      v26 = [(RTITextOperations *)self textToAssert];
-      v27 = [(RTITextOperations *)v5 textToAssert];
-      v12 = [v25 _string:v26 matchesString:v27];
+      textToAssert = [(RTITextOperations *)self textToAssert];
+      textToAssert2 = [(RTITextOperations *)v5 textToAssert];
+      v12 = [v25 _string:textToAssert matchesString:textToAssert2];
 
       if (!v12)
       {
         goto LABEL_22;
       }
 
-      v28 = [(RTITextOperations *)self selectionRangeToAssert];
+      selectionRangeToAssert = [(RTITextOperations *)self selectionRangeToAssert];
       v30 = v29;
       LOBYTE(v12) = 0;
-      if (v28 != [(RTITextOperations *)v5 selectionRangeToAssert]|| v30 != v31)
+      if (selectionRangeToAssert != [(RTITextOperations *)v5 selectionRangeToAssert]|| v30 != v31)
       {
         goto LABEL_22;
       }
 
-      v32 = [(RTITextOperations *)self editingActionSelector];
-      if (v32 != [(RTITextOperations *)v5 editingActionSelector])
+      editingActionSelector = [(RTITextOperations *)self editingActionSelector];
+      if (editingActionSelector != [(RTITextOperations *)v5 editingActionSelector])
       {
         goto LABEL_21;
       }
 
-      v34 = [(RTITextOperations *)self multilingualLanguages];
-      v35 = [(RTITextOperations *)v5 multilingualLanguages];
-      v36 = v35;
-      if (v34 == v35)
+      multilingualLanguages = [(RTITextOperations *)self multilingualLanguages];
+      multilingualLanguages2 = [(RTITextOperations *)v5 multilingualLanguages];
+      v36 = multilingualLanguages2;
+      if (multilingualLanguages == multilingualLanguages2)
       {
       }
 
       else
       {
-        v37 = [(RTITextOperations *)self multilingualLanguages];
-        v38 = [(RTITextOperations *)v5 multilingualLanguages];
-        v39 = [v37 isEqualToArray:v38];
+        multilingualLanguages3 = [(RTITextOperations *)self multilingualLanguages];
+        multilingualLanguages4 = [(RTITextOperations *)v5 multilingualLanguages];
+        v39 = [multilingualLanguages3 isEqualToArray:multilingualLanguages4];
 
         if (!v39)
         {
@@ -788,18 +788,18 @@ LABEL_39:
         }
       }
 
-      v40 = [(RTITextOperations *)self inputSourceState];
-      v41 = [(RTITextOperations *)v5 inputSourceState];
-      v42 = v41;
-      if (v40 == v41)
+      inputSourceState = [(RTITextOperations *)self inputSourceState];
+      inputSourceState2 = [(RTITextOperations *)v5 inputSourceState];
+      v42 = inputSourceState2;
+      if (inputSourceState == inputSourceState2)
       {
       }
 
       else
       {
-        v43 = [(RTITextOperations *)self inputSourceState];
-        v44 = [(RTITextOperations *)v5 inputSourceState];
-        v45 = [v43 isEqual:v44];
+        inputSourceState3 = [(RTITextOperations *)self inputSourceState];
+        inputSourceState4 = [(RTITextOperations *)v5 inputSourceState];
+        v45 = [inputSourceState3 isEqual:inputSourceState4];
 
         if (!v45)
         {
@@ -807,10 +807,10 @@ LABEL_39:
         }
       }
 
-      v46 = [(RTITextOperations *)self textCheckingAnnotationRange];
+      textCheckingAnnotationRange = [(RTITextOperations *)self textCheckingAnnotationRange];
       v48 = v47;
       LOBYTE(v12) = 0;
-      if (v46 != [(RTITextOperations *)v5 textCheckingAnnotationRange])
+      if (textCheckingAnnotationRange != [(RTITextOperations *)v5 textCheckingAnnotationRange])
       {
         goto LABEL_22;
       }
@@ -820,26 +820,26 @@ LABEL_39:
         goto LABEL_22;
       }
 
-      v50 = [(RTITextOperations *)self textCheckingReplacementRange];
+      textCheckingReplacementRange = [(RTITextOperations *)self textCheckingReplacementRange];
       v52 = v51;
       LOBYTE(v12) = 0;
-      if (v50 != [(RTITextOperations *)v5 textCheckingReplacementRange]|| v52 != v53)
+      if (textCheckingReplacementRange != [(RTITextOperations *)v5 textCheckingReplacementRange]|| v52 != v53)
       {
         goto LABEL_22;
       }
 
-      v54 = [(RTITextOperations *)self textCheckingAnnotatedString];
-      v55 = [(RTITextOperations *)v5 textCheckingAnnotatedString];
-      v56 = v55;
-      if (v54 == v55)
+      textCheckingAnnotatedString = [(RTITextOperations *)self textCheckingAnnotatedString];
+      textCheckingAnnotatedString2 = [(RTITextOperations *)v5 textCheckingAnnotatedString];
+      v56 = textCheckingAnnotatedString2;
+      if (textCheckingAnnotatedString == textCheckingAnnotatedString2)
       {
       }
 
       else
       {
-        v57 = [(RTITextOperations *)self textCheckingAnnotatedString];
-        v58 = [(RTITextOperations *)v5 textCheckingAnnotatedString];
-        v59 = [v57 isEqual:v58];
+        textCheckingAnnotatedString3 = [(RTITextOperations *)self textCheckingAnnotatedString];
+        textCheckingAnnotatedString4 = [(RTITextOperations *)v5 textCheckingAnnotatedString];
+        v59 = [textCheckingAnnotatedString3 isEqual:textCheckingAnnotatedString4];
 
         if (!v59)
         {
@@ -847,26 +847,26 @@ LABEL_39:
         }
       }
 
-      v60 = [(RTITextOperations *)self textCheckingAnnotationRemovalRange];
+      textCheckingAnnotationRemovalRange = [(RTITextOperations *)self textCheckingAnnotationRemovalRange];
       v62 = v61;
       LOBYTE(v12) = 0;
-      if (v60 != [(RTITextOperations *)v5 textCheckingAnnotationRemovalRange]|| v62 != v63)
+      if (textCheckingAnnotationRemovalRange != [(RTITextOperations *)v5 textCheckingAnnotationRemovalRange]|| v62 != v63)
       {
         goto LABEL_22;
       }
 
-      v64 = [(RTITextOperations *)self textCheckingAnnotationToRemove];
-      v65 = [(RTITextOperations *)v5 textCheckingAnnotationToRemove];
-      v66 = v65;
-      if (v64 == v65)
+      textCheckingAnnotationToRemove = [(RTITextOperations *)self textCheckingAnnotationToRemove];
+      textCheckingAnnotationToRemove2 = [(RTITextOperations *)v5 textCheckingAnnotationToRemove];
+      v66 = textCheckingAnnotationToRemove2;
+      if (textCheckingAnnotationToRemove == textCheckingAnnotationToRemove2)
       {
       }
 
       else
       {
-        v67 = [(RTITextOperations *)self textCheckingAnnotationToRemove];
-        v68 = [(RTITextOperations *)v5 textCheckingAnnotationToRemove];
-        v69 = [v67 isEqual:v68];
+        textCheckingAnnotationToRemove3 = [(RTITextOperations *)self textCheckingAnnotationToRemove];
+        textCheckingAnnotationToRemove4 = [(RTITextOperations *)v5 textCheckingAnnotationToRemove];
+        v69 = [textCheckingAnnotationToRemove3 isEqual:textCheckingAnnotationToRemove4];
 
         if (!v69)
         {
@@ -874,18 +874,18 @@ LABEL_39:
         }
       }
 
-      v70 = [(RTITextOperations *)self customInfoType];
-      v71 = [(RTITextOperations *)v5 customInfoType];
-      v72 = v71;
-      if (v70 == v71)
+      customInfoType = [(RTITextOperations *)self customInfoType];
+      customInfoType2 = [(RTITextOperations *)v5 customInfoType];
+      v72 = customInfoType2;
+      if (customInfoType == customInfoType2)
       {
       }
 
       else
       {
-        v73 = [(RTITextOperations *)self customInfoType];
-        v74 = [(RTITextOperations *)v5 customInfoType];
-        v75 = [v73 isEqual:v74];
+        customInfoType3 = [(RTITextOperations *)self customInfoType];
+        customInfoType4 = [(RTITextOperations *)v5 customInfoType];
+        v75 = [customInfoType3 isEqual:customInfoType4];
 
         if (!v75)
         {
@@ -893,18 +893,18 @@ LABEL_39:
         }
       }
 
-      v76 = [(RTITextOperations *)self customInfo];
-      v77 = [(RTITextOperations *)v5 customInfo];
-      v78 = v77;
-      if (v76 == v77)
+      customInfo = [(RTITextOperations *)self customInfo];
+      customInfo2 = [(RTITextOperations *)v5 customInfo];
+      v78 = customInfo2;
+      if (customInfo == customInfo2)
       {
       }
 
       else
       {
-        v79 = [(RTITextOperations *)self customInfo];
-        v80 = [(RTITextOperations *)v5 customInfo];
-        v81 = [v79 isEqual:v80];
+        customInfo3 = [(RTITextOperations *)self customInfo];
+        customInfo4 = [(RTITextOperations *)v5 customInfo];
+        v81 = [customInfo3 isEqual:customInfo4];
 
         if (!v81)
         {
@@ -912,22 +912,22 @@ LABEL_39:
         }
       }
 
-      v82 = [(RTITextOperations *)self enumeratedInsertionAnimationStyle];
-      if (v82 == [(RTITextOperations *)v5 enumeratedInsertionAnimationStyle])
+      enumeratedInsertionAnimationStyle = [(RTITextOperations *)self enumeratedInsertionAnimationStyle];
+      if (enumeratedInsertionAnimationStyle == [(RTITextOperations *)v5 enumeratedInsertionAnimationStyle])
       {
-        v83 = [(RTITextOperations *)self fileHandles];
-        v84 = [(RTITextOperations *)v5 fileHandles];
-        v85 = v84;
-        if (v83 == v84)
+        fileHandles = [(RTITextOperations *)self fileHandles];
+        fileHandles2 = [(RTITextOperations *)v5 fileHandles];
+        v85 = fileHandles2;
+        if (fileHandles == fileHandles2)
         {
         }
 
         else
         {
-          v86 = [(RTITextOperations *)self fileHandles];
-          v87 = [v86 count];
-          v88 = [(RTITextOperations *)v5 fileHandles];
-          v89 = [v88 count];
+          fileHandles3 = [(RTITextOperations *)self fileHandles];
+          v87 = [fileHandles3 count];
+          fileHandles4 = [(RTITextOperations *)v5 fileHandles];
+          v89 = [fileHandles4 count];
 
           if (v87 != v89)
           {
@@ -935,18 +935,18 @@ LABEL_39:
           }
         }
 
-        v90 = [(RTITextOperations *)self typeIdentifiers];
-        v91 = [(RTITextOperations *)v5 typeIdentifiers];
-        v92 = v91;
-        if (v90 == v91)
+        typeIdentifiers = [(RTITextOperations *)self typeIdentifiers];
+        typeIdentifiers2 = [(RTITextOperations *)v5 typeIdentifiers];
+        v92 = typeIdentifiers2;
+        if (typeIdentifiers == typeIdentifiers2)
         {
         }
 
         else
         {
-          v93 = [(RTITextOperations *)self typeIdentifiers];
-          v94 = [(RTITextOperations *)v5 typeIdentifiers];
-          v95 = [v93 isEqualToArray:v94];
+          typeIdentifiers3 = [(RTITextOperations *)self typeIdentifiers];
+          typeIdentifiers4 = [(RTITextOperations *)v5 typeIdentifiers];
+          v95 = [typeIdentifiers3 isEqualToArray:typeIdentifiers4];
 
           if (!v95)
           {
@@ -954,18 +954,18 @@ LABEL_39:
           }
         }
 
-        v96 = [(RTITextOperations *)self imageUserInfos];
-        v97 = [(RTITextOperations *)v5 imageUserInfos];
-        v98 = v97;
-        if (v96 == v97)
+        imageUserInfos = [(RTITextOperations *)self imageUserInfos];
+        imageUserInfos2 = [(RTITextOperations *)v5 imageUserInfos];
+        v98 = imageUserInfos2;
+        if (imageUserInfos == imageUserInfos2)
         {
         }
 
         else
         {
-          v99 = [(RTITextOperations *)self imageUserInfos];
-          v100 = [(RTITextOperations *)v5 imageUserInfos];
-          v101 = [v99 isEqualToArray:v100];
+          imageUserInfos3 = [(RTITextOperations *)self imageUserInfos];
+          imageUserInfos4 = [(RTITextOperations *)v5 imageUserInfos];
+          v101 = [imageUserInfos3 isEqualToArray:imageUserInfos4];
 
           if (!v101)
           {
@@ -973,18 +973,18 @@ LABEL_39:
           }
         }
 
-        v102 = [(RTITextOperations *)self attachmentDatas];
-        v103 = [(RTITextOperations *)v5 attachmentDatas];
-        v104 = v103;
-        if (v102 == v103)
+        attachmentDatas = [(RTITextOperations *)self attachmentDatas];
+        attachmentDatas2 = [(RTITextOperations *)v5 attachmentDatas];
+        v104 = attachmentDatas2;
+        if (attachmentDatas == attachmentDatas2)
         {
         }
 
         else
         {
-          v105 = [(RTITextOperations *)self attachmentDatas];
-          v106 = [(RTITextOperations *)v5 attachmentDatas];
-          v107 = [v105 isEqualToArray:v106];
+          attachmentDatas3 = [(RTITextOperations *)self attachmentDatas];
+          attachmentDatas4 = [(RTITextOperations *)v5 attachmentDatas];
+          v107 = [attachmentDatas3 isEqualToArray:attachmentDatas4];
 
           if (!v107)
           {
@@ -992,18 +992,18 @@ LABEL_39:
           }
         }
 
-        v108 = [(RTITextOperations *)self attachmentClasses];
-        v109 = [(RTITextOperations *)v5 attachmentClasses];
-        v110 = v109;
-        if (v108 == v109)
+        attachmentClasses = [(RTITextOperations *)self attachmentClasses];
+        attachmentClasses2 = [(RTITextOperations *)v5 attachmentClasses];
+        v110 = attachmentClasses2;
+        if (attachmentClasses == attachmentClasses2)
         {
         }
 
         else
         {
-          v111 = [(RTITextOperations *)self attachmentClasses];
-          v112 = [(RTITextOperations *)v5 attachmentClasses];
-          v113 = [v111 isEqualToArray:v112];
+          attachmentClasses3 = [(RTITextOperations *)self attachmentClasses];
+          attachmentClasses4 = [(RTITextOperations *)v5 attachmentClasses];
+          v113 = [attachmentClasses3 isEqualToArray:attachmentClasses4];
 
           if (!v113)
           {
@@ -1011,18 +1011,18 @@ LABEL_39:
           }
         }
 
-        v114 = [(RTITextOperations *)self imageGlyphs];
-        v115 = [(RTITextOperations *)v5 imageGlyphs];
-        v116 = v115;
-        if (v114 == v115)
+        imageGlyphs = [(RTITextOperations *)self imageGlyphs];
+        imageGlyphs2 = [(RTITextOperations *)v5 imageGlyphs];
+        v116 = imageGlyphs2;
+        if (imageGlyphs == imageGlyphs2)
         {
         }
 
         else
         {
-          v117 = [(RTITextOperations *)self imageGlyphs];
-          v118 = [(RTITextOperations *)v5 imageGlyphs];
-          v119 = [v117 isEqualToArray:v118];
+          imageGlyphs3 = [(RTITextOperations *)self imageGlyphs];
+          imageGlyphs4 = [(RTITextOperations *)v5 imageGlyphs];
+          v119 = [imageGlyphs3 isEqualToArray:imageGlyphs4];
 
           if (!v119)
           {
@@ -1030,18 +1030,18 @@ LABEL_39:
           }
         }
 
-        v120 = [(RTITextOperations *)self targetSessionUUID];
-        v121 = [(RTITextOperations *)v5 targetSessionUUID];
-        v122 = v121;
-        if (v120 == v121)
+        targetSessionUUID = [(RTITextOperations *)self targetSessionUUID];
+        targetSessionUUID2 = [(RTITextOperations *)v5 targetSessionUUID];
+        v122 = targetSessionUUID2;
+        if (targetSessionUUID == targetSessionUUID2)
         {
         }
 
         else
         {
-          v123 = [(RTITextOperations *)self targetSessionUUID];
-          v124 = [(RTITextOperations *)v5 targetSessionUUID];
-          v125 = [v123 isEqual:v124];
+          targetSessionUUID3 = [(RTITextOperations *)self targetSessionUUID];
+          targetSessionUUID4 = [(RTITextOperations *)v5 targetSessionUUID];
+          v125 = [targetSessionUUID3 isEqual:targetSessionUUID4];
 
           if (!v125)
           {
@@ -1049,11 +1049,11 @@ LABEL_39:
           }
         }
 
-        v126 = [(RTITextOperations *)self isExplicitAutoFillInvocation];
-        if (v126 == [(RTITextOperations *)v5 isExplicitAutoFillInvocation])
+        isExplicitAutoFillInvocation = [(RTITextOperations *)self isExplicitAutoFillInvocation];
+        if (isExplicitAutoFillInvocation == [(RTITextOperations *)v5 isExplicitAutoFillInvocation])
         {
-          v127 = [(RTITextOperations *)self isAutoFillTextOperation];
-          v12 = v127 ^ [(RTITextOperations *)v5 isAutoFillTextOperation]^ 1;
+          isAutoFillTextOperation = [(RTITextOperations *)self isAutoFillTextOperation];
+          v12 = isAutoFillTextOperation ^ [(RTITextOperations *)v5 isAutoFillTextOperation]^ 1;
           goto LABEL_22;
         }
       }
@@ -1092,27 +1092,27 @@ uint64_t __41__RTITextOperations_customInfoDictionary__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)registerCustomInfoClasses:(id)a3 forType:(id)a4
++ (void)registerCustomInfoClasses:(id)classes forType:(id)type
 {
-  v5 = a4;
-  v6 = a3;
-  [RTIUtilities registerCustomInfoClasses:v6 forType:v5 forClass:objc_opt_class()];
+  typeCopy = type;
+  classesCopy = classes;
+  [RTIUtilities registerCustomInfoClasses:classesCopy forType:typeCopy forClass:objc_opt_class()];
 }
 
-+ (void)unregisterCustomInfoType:(id)a3
++ (void)unregisterCustomInfoType:(id)type
 {
-  v3 = a3;
-  [RTIUtilities unregisterCustomInfoType:v3 forClass:objc_opt_class()];
+  typeCopy = type;
+  [RTIUtilities unregisterCustomInfoType:typeCopy forClass:objc_opt_class()];
 }
 
-- (void)insertText:(id)a3 replacementRange:(_NSRange)a4
+- (void)insertText:(id)text replacementRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   [(RTITextOperations *)self setSelectionRangeToAssert:location, length];
-  v8 = [(RTITextOperations *)self keyboardOutput];
-  [v8 insertText:v7];
+  keyboardOutput = [(RTITextOperations *)self keyboardOutput];
+  [keyboardOutput insertText:textCopy];
 }
 
 - (void)_createAttributedPlaceholdersIfNecessary
@@ -1127,53 +1127,53 @@ uint64_t __41__RTITextOperations_customInfoDictionary__block_invoke()
   }
 }
 
-- (void)insertAttributedText:(id)a3
+- (void)insertAttributedText:(id)text
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"NSTextAlternatives";
   v12[1] = @"NSTextAnimation";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  textCopy = text;
   v6 = [v4 arrayWithObjects:v12 count:2];
-  v7 = [RTIUtilities _codableAttributedString:v5 validAttributes:v6];
+  v7 = [RTIUtilities _codableAttributedString:textCopy validAttributes:v6];
 
   [(RTITextOperations *)self _createAttributedPlaceholdersIfNecessary];
-  v8 = [v7 string];
-  v9 = [(RTITextOperations *)self mutableAttributedPlaceholders];
-  [v9 setObject:v7 forKey:v8];
+  string = [v7 string];
+  mutableAttributedPlaceholders = [(RTITextOperations *)self mutableAttributedPlaceholders];
+  [mutableAttributedPlaceholders setObject:v7 forKey:string];
 
-  v10 = [(RTITextOperations *)self keyboardOutput];
-  [v10 insertText:v8];
+  keyboardOutput = [(RTITextOperations *)self keyboardOutput];
+  [keyboardOutput insertText:string];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertAttributedText:(id)a3 replacementRange:(_NSRange)a4
+- (void)insertAttributedText:(id)text replacementRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   [(RTITextOperations *)self setSelectionRangeToAssert:location, length];
-  [(RTITextOperations *)self insertAttributedText:v7];
+  [(RTITextOperations *)self insertAttributedText:textCopy];
 }
 
 - (NSAttributedString)attributedInsertionText
 {
   if (self->_attributedPlaceholders)
   {
-    v3 = [(RTITextOperations *)self keyboardOutput];
-    v4 = [v3 insertionText];
+    keyboardOutput = [(RTITextOperations *)self keyboardOutput];
+    insertionText = [keyboardOutput insertionText];
 
-    v5 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v4];
+    v5 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:insertionText];
     attributedPlaceholders = self->_attributedPlaceholders;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __44__RTITextOperations_attributedInsertionText__block_invoke;
     v12[3] = &unk_1E7514B00;
-    v13 = v4;
+    v13 = insertionText;
     v7 = v5;
     v14 = v7;
-    v8 = v4;
+    v8 = insertionText;
     [(NSDictionary *)attributedPlaceholders enumerateKeysAndObjectsUsingBlock:v12];
     v9 = v14;
     v10 = v7;
@@ -1198,11 +1198,11 @@ void __44__RTITextOperations_attributedInsertionText__block_invoke(uint64_t a1, 
   [*(a1 + 40) replaceCharactersInRange:v7 withAttributedString:{v9, v10}];
 }
 
-- (void)insertImageWithFileHandle:(id)a3 typeIdentifier:(id)a4 imageUserInfo:(id)a5
+- (void)insertImageWithFileHandle:(id)handle typeIdentifier:(id)identifier imageUserInfo:(id)info
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  infoCopy = info;
   if (!self->_fileHandles)
   {
     v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
@@ -1221,14 +1221,14 @@ void __44__RTITextOperations_attributedInsertionText__block_invoke(uint64_t a1, 
     [(RTITextOperations *)self setImageUserInfos:v12];
   }
 
-  v13 = [(RTITextOperations *)self fileHandles];
-  if ([v13 count])
+  fileHandles = [(RTITextOperations *)self fileHandles];
+  if ([fileHandles count])
   {
     goto LABEL_10;
   }
 
-  v14 = [(RTITextOperations *)self typeIdentifiers];
-  if ([v14 count])
+  typeIdentifiers = [(RTITextOperations *)self typeIdentifiers];
+  if ([typeIdentifiers count])
   {
 
 LABEL_10:
@@ -1239,8 +1239,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v16 = [(RTITextOperations *)self imageUserInfos];
-  v17 = [v16 count];
+  imageUserInfos = [(RTITextOperations *)self imageUserInfos];
+  v17 = [imageUserInfos count];
 
   if (v17)
   {
@@ -1248,20 +1248,20 @@ LABEL_11:
   }
 
 LABEL_12:
-  [(NSMutableArray *)self->_fileHandles addObject:v18];
-  [(NSMutableArray *)self->_typeIdentifiers addObject:v8];
-  if (!v9)
+  [(NSMutableArray *)self->_fileHandles addObject:handleCopy];
+  [(NSMutableArray *)self->_typeIdentifiers addObject:identifierCopy];
+  if (!infoCopy)
   {
-    v9 = MEMORY[0x1E695E0F8];
+    infoCopy = MEMORY[0x1E695E0F8];
   }
 
-  [(NSMutableArray *)self->_imageUserInfos addObject:v9];
+  [(NSMutableArray *)self->_imageUserInfos addObject:infoCopy];
 }
 
-- (void)insertTextAttachment:(id)a3
+- (void)insertTextAttachment:(id)attachment
 {
-  v11 = a3;
-  if (v11)
+  attachmentCopy = attachment;
+  if (attachmentCopy)
   {
     if (!self->_attachmentDatas)
     {
@@ -1283,24 +1283,24 @@ LABEL_12:
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v11 contents];
-    v10 = [v11 fileType];
-    if (v9)
+    contents = [attachmentCopy contents];
+    fileType = [attachmentCopy fileType];
+    if (contents)
     {
-      [(NSMutableArray *)self->_attachmentDatas addObject:v9];
+      [(NSMutableArray *)self->_attachmentDatas addObject:contents];
       [(NSMutableArray *)self->_attachmentClasses addObject:v8];
-      [(NSMutableArray *)self->_typeIdentifiers addObject:v10];
+      [(NSMutableArray *)self->_typeIdentifiers addObject:fileType];
     }
   }
 }
 
-- (void)insertAdaptiveImageGlyph:(id)a3
+- (void)insertAdaptiveImageGlyph:(id)glyph
 {
-  v4 = a3;
-  if (v4)
+  glyphCopy = glyph;
+  if (glyphCopy)
   {
     imageGlyphs = self->_imageGlyphs;
-    v7 = v4;
+    v7 = glyphCopy;
     if (!imageGlyphs)
     {
       v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
@@ -1315,11 +1315,11 @@ LABEL_12:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)enumerateImagesUsingBlock:(id)a3
+- (void)enumerateImagesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     fileHandles = self->_fileHandles;
     v7[0] = MEMORY[0x1E69E9820];
@@ -1327,7 +1327,7 @@ LABEL_12:
     v7[2] = __47__RTITextOperations_enumerateImagesUsingBlock___block_invoke;
     v7[3] = &unk_1E7514B28;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     [(NSMutableArray *)fileHandles enumerateObjectsUsingBlock:v7];
   }
 }
@@ -1340,11 +1340,11 @@ void __47__RTITextOperations_enumerateImagesUsingBlock___block_invoke(uint64_t a
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)enumerateImagesAndUserInfosUsingBlock:(id)a3
+- (void)enumerateImagesAndUserInfosUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     fileHandles = self->_fileHandles;
     v7[0] = MEMORY[0x1E69E9820];
@@ -1352,7 +1352,7 @@ void __47__RTITextOperations_enumerateImagesUsingBlock___block_invoke(uint64_t a
     v7[2] = __59__RTITextOperations_enumerateImagesAndUserInfosUsingBlock___block_invoke;
     v7[3] = &unk_1E7514B28;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     [(NSMutableArray *)fileHandles enumerateObjectsUsingBlock:v7];
   }
 }
@@ -1366,11 +1366,11 @@ void __59__RTITextOperations_enumerateImagesAndUserInfosUsingBlock___block_invok
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)enumerateTextAttachmentsUsingBlock:(id)a3
+- (void)enumerateTextAttachmentsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     attachmentDatas = self->_attachmentDatas;
     v7[0] = MEMORY[0x1E69E9820];
@@ -1378,7 +1378,7 @@ void __59__RTITextOperations_enumerateImagesAndUserInfosUsingBlock___block_invok
     v7[2] = __56__RTITextOperations_enumerateTextAttachmentsUsingBlock___block_invoke;
     v7[3] = &unk_1E7514B50;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     [(NSMutableArray *)attachmentDatas enumerateObjectsUsingBlock:v7];
   }
 }
@@ -1419,18 +1419,18 @@ void __56__RTITextOperations_enumerateTextAttachmentsUsingBlock___block_invoke(u
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)enumerateAdaptiveImageGlyphsUsingBlock:(id)a3
+- (void)enumerateAdaptiveImageGlyphsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     imageGlyphs = self->_imageGlyphs;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __60__RTITextOperations_enumerateAdaptiveImageGlyphsUsingBlock___block_invoke;
     v7[3] = &unk_1E7514B78;
-    v8 = v4;
+    v8 = blockCopy;
     [(NSMutableArray *)imageGlyphs enumerateObjectsUsingBlock:v7];
   }
 }
@@ -1457,19 +1457,19 @@ void __56__RTITextOperations_enumerateTextAttachmentsUsingBlock___block_invoke(u
   }
 }
 
-- (void)setEditingActionSelector:(SEL)a3
+- (void)setEditingActionSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_editingActionSelector = v3;
+  self->_editingActionSelector = selectorCopy;
 }
 
 - (_NSRange)textCheckingAnnotationRange

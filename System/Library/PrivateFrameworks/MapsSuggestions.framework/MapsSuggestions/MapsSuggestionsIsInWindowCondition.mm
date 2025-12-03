@@ -1,9 +1,9 @@
 @interface MapsSuggestionsIsInWindowCondition
 - (BOOL)isTrue;
 - (NSDate)entryTime;
-- (_TtC15MapsSuggestions34MapsSuggestionsIsInWindowCondition)initWithName:(id)a3;
+- (_TtC15MapsSuggestions34MapsSuggestionsIsInWindowCondition)initWithName:(id)name;
 - (id)window;
-- (void)setEntryTime:(id)a3;
+- (void)setEntryTime:(id)time;
 @end
 
 @implementation MapsSuggestionsIsInWindowCondition
@@ -30,12 +30,12 @@
   return v10;
 }
 
-- (void)setEntryTime:(id)a3
+- (void)setEntryTime:(id)time
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC156760);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (time)
   {
     sub_1C529D37C();
     v8 = sub_1C529D3AC();
@@ -50,14 +50,14 @@
 
   v10 = OBJC_IVAR____TtC15MapsSuggestions34MapsSuggestionsIsInWindowCondition_entryTime;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_1C525F304(v7, self + v10);
   swift_endAccess();
 }
 
 - (BOOL)isTrue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C528653C();
 
   return v3 & 1;
@@ -68,7 +68,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC1566A0);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_1C52867C4(v5);
 
   v7 = sub_1C529D24C();
@@ -85,7 +85,7 @@
   return v10;
 }
 
-- (_TtC15MapsSuggestions34MapsSuggestionsIsInWindowCondition)initWithName:(id)a3
+- (_TtC15MapsSuggestions34MapsSuggestionsIsInWindowCondition)initWithName:(id)name
 {
   sub_1C529D72C();
   v4 = OBJC_IVAR____TtC15MapsSuggestions34MapsSuggestionsIsInWindowCondition_before;

@@ -1,19 +1,19 @@
 @interface TSUDecimalFormatter
-+ (id)createHarmonizedDecimalFormatterOfStyle:(int64_t)a3 locale:(id)a4 formattingSymbols:(id)a5;
++ (id)createHarmonizedDecimalFormatterOfStyle:(int64_t)style locale:(id)locale formattingSymbols:(id)symbols;
 - (NSString)currencySymbol;
 - (NSString)exponentSymbol;
 - (NSString)minusSign;
-- (TSUDecimalFormatter)initWithLocale:(id)a3 style:(int64_t)a4;
-- (id)createStringWithValue:(double)a3;
+- (TSUDecimalFormatter)initWithLocale:(id)locale style:(int64_t)style;
+- (id)createStringWithValue:(double)value;
 - (void)dealloc;
-- (void)setMinFractionDigits:(int)a3 maxFractionDigits:(int)a4;
+- (void)setMinFractionDigits:(int)digits maxFractionDigits:(int)fractionDigits;
 @end
 
 @implementation TSUDecimalFormatter
 
-- (TSUDecimalFormatter)initWithLocale:(id)a3 style:(int64_t)a4
+- (TSUDecimalFormatter)initWithLocale:(id)locale style:(int64_t)style
 {
-  v5 = a3;
+  localeCopy = locale;
   v7.receiver = self;
   v7.super_class = TSUDecimalFormatter;
   if ([(TSUDecimalFormatter *)&v7 init])
@@ -37,17 +37,17 @@
   [(TSUDecimalFormatter *)&v4 dealloc];
 }
 
-- (id)createStringWithValue:(double)a3
+- (id)createStringWithValue:(double)value
 {
   formatter = self->_formatter;
-  valuePtr = a3;
+  valuePtr = value;
   return CFNumberFormatterCreateStringWithValue(*MEMORY[0x277CBECE8], formatter->var1, kCFNumberDoubleType, &valuePtr);
 }
 
-- (void)setMinFractionDigits:(int)a3 maxFractionDigits:(int)a4
+- (void)setMinFractionDigits:(int)digits maxFractionDigits:(int)fractionDigits
 {
-  v4 = *&a4;
-  sub_2770DDAA4(self->_formatter, *&a3);
+  v4 = *&fractionDigits;
+  sub_2770DDAA4(self->_formatter, *&digits);
   formatter = self->_formatter;
 
   sub_2770DDB7C(formatter, v4);
@@ -74,13 +74,13 @@
   return v2;
 }
 
-+ (id)createHarmonizedDecimalFormatterOfStyle:(int64_t)a3 locale:(id)a4 formattingSymbols:(id)a5
++ (id)createHarmonizedDecimalFormatterOfStyle:(int64_t)style locale:(id)locale formattingSymbols:(id)symbols
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [[TSUDecimalFormatter alloc] initWithLocale:v7 style:a3];
-  v10 = [(TSUDecimalFormatter *)v9 formatter];
-  sub_2770DE238(v10, v11, a3, v8);
+  localeCopy = locale;
+  symbolsCopy = symbols;
+  v9 = [[TSUDecimalFormatter alloc] initWithLocale:localeCopy style:style];
+  formatter = [(TSUDecimalFormatter *)v9 formatter];
+  sub_2770DE238(formatter, v11, style, symbolsCopy);
 
   return v9;
 }

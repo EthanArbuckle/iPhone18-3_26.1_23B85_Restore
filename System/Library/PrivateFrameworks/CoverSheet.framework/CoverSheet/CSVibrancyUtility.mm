@@ -1,24 +1,24 @@
 @interface CSVibrancyUtility
-+ (void)updateVibrantView:(id)a3 backgroundView:(id)a4 colorProvider:(id)a5;
++ (void)updateVibrantView:(id)view backgroundView:(id)backgroundView colorProvider:(id)provider;
 @end
 
 @implementation CSVibrancyUtility
 
-+ (void)updateVibrantView:(id)a3 backgroundView:(id)a4 colorProvider:(id)a5
++ (void)updateVibrantView:(id)view backgroundView:(id)backgroundView colorProvider:(id)provider
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v14 = [v9 legibilitySettings];
-  v10 = [v7 averageColorForCurrentWallpaper];
-  [v9 setBackgroundColor:v10];
-  [v9 setBackgroundView:v8];
+  providerCopy = provider;
+  backgroundViewCopy = backgroundView;
+  viewCopy = view;
+  legibilitySettings = [viewCopy legibilitySettings];
+  averageColorForCurrentWallpaper = [providerCopy averageColorForCurrentWallpaper];
+  [viewCopy setBackgroundColor:averageColorForCurrentWallpaper];
+  [viewCopy setBackgroundView:backgroundViewCopy];
 
-  [v7 contrastForCurrentWallpaper];
+  [providerCopy contrastForCurrentWallpaper];
   v12 = v11;
 
-  v13 = [MEMORY[0x277D66018] vibrantSettingsWithReferenceColor:v10 referenceContrast:v14 legibilitySettings:v12];
-  [v9 setVibrantSettings:v13];
+  v13 = [MEMORY[0x277D66018] vibrantSettingsWithReferenceColor:averageColorForCurrentWallpaper referenceContrast:legibilitySettings legibilitySettings:v12];
+  [viewCopy setVibrantSettings:v13];
 }
 
 @end

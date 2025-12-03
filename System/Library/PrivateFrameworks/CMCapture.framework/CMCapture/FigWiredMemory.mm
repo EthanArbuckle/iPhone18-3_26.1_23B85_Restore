@@ -1,6 +1,6 @@
 @interface FigWiredMemory
 + (void)initialize;
-- (FigWiredMemory)initWithLength:(unint64_t)a3;
+- (FigWiredMemory)initWithLength:(unint64_t)length;
 - (void)dealloc;
 @end
 
@@ -8,7 +8,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -17,7 +17,7 @@
   }
 }
 
-- (FigWiredMemory)initWithLength:(unint64_t)a3
+- (FigWiredMemory)initWithLength:(unint64_t)length
 {
   v12.receiver = self;
   v12.super_class = FigWiredMemory;
@@ -25,7 +25,7 @@
   v5 = v4;
   if (v4)
   {
-    v6 = (a3 + *MEMORY[0x1E69E9AC8] - 1) & -*MEMORY[0x1E69E9AC8];
+    v6 = (length + *MEMORY[0x1E69E9AC8] - 1) & -*MEMORY[0x1E69E9AC8];
     *(v4 + 3) = v6;
     if (vm_allocate(*MEMORY[0x1E69E9A60], v4 + 1, v6, 1694498817) || (bytes = v5->_bytes) == 0)
     {
@@ -55,7 +55,7 @@
       }
 
       v5->_isWired = v9;
-      v5->_length = a3;
+      v5->_length = length;
     }
   }
 

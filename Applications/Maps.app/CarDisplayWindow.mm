@@ -1,48 +1,48 @@
 @interface CarDisplayWindow
-- (CarDisplayWindow)initWithFrame:(CGRect)a3;
+- (CarDisplayWindow)initWithFrame:(CGRect)frame;
 - (void)becomeKeyWindow;
 - (void)notificationLayoutGuideDidChange;
-- (void)registerEventTap:(id)a3;
+- (void)registerEventTap:(id)tap;
 - (void)resignKeyWindow;
-- (void)sendEvent:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setRootViewController:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)sendEvent:(id)event;
+- (void)setHidden:(BOOL)hidden;
+- (void)setRootViewController:(id)controller;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CarDisplayWindow
 
 - (void)notificationLayoutGuideDidChange
 {
-  v3 = [(CarDisplayWindow *)self rootViewController];
+  rootViewController = [(CarDisplayWindow *)self rootViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(CarDisplayWindow *)self notificationLayoutGuide];
-    v5 = [(CarDisplayWindow *)self rootViewController];
-    [v5 setNotificationLayoutGuide:v6];
+    notificationLayoutGuide = [(CarDisplayWindow *)self notificationLayoutGuide];
+    rootViewController2 = [(CarDisplayWindow *)self rootViewController];
+    [rootViewController2 setNotificationLayoutGuide:notificationLayoutGuide];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(CarDisplayWindow *)self traitCollection];
+    traitCollection = [(CarDisplayWindow *)self traitCollection];
     *buf = 138412546;
-    v9 = v4;
+    v9 = changeCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = traitCollection;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[Car] Changing trait collection from %@ to %@", buf, 0x16u);
   }
 
   v7.receiver = self;
   v7.super_class = CarDisplayWindow;
-  [(CarDisplayWindow *)&v7 traitCollectionDidChange:v4];
+  [(CarDisplayWindow *)&v7 traitCollectionDidChange:changeCopy];
   dispatch_async(&_dispatch_main_q, &stru_10165FDA0);
 }
 
@@ -54,10 +54,10 @@
   v3 = sub_100006E1C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -65,22 +65,22 @@
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarDisplayWindow *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarDisplayWindow *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] resignKeyWindow", buf, 0xCu);
   }
 }
@@ -93,10 +93,10 @@ LABEL_10:
   v3 = sub_100006E1C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -104,39 +104,39 @@ LABEL_10:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarDisplayWindow *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarDisplayWindow *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] becomeKeyWindow", buf, 0xCu);
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v12.receiver = self;
   v12.super_class = CarDisplayWindow;
   [(CarDisplayWindow *)&v12 setHidden:?];
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -144,51 +144,51 @@ LABEL_10:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CarDisplayWindow *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(CarDisplayWindow *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v14 = v11;
+    v14 = selfCopy;
     v15 = 1024;
-    v16 = v3;
+    v16 = hiddenCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] setHidden:%d", buf, 0x12u);
   }
 }
 
-- (void)registerEventTap:(id)a3
+- (void)registerEventTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   eventTaps = self->_eventTaps;
-  v8 = v4;
+  v8 = tapCopy;
   if (!eventTaps)
   {
     v6 = +[NSHashTable weakObjectsHashTable];
     v7 = self->_eventTaps;
     self->_eventTaps = v6;
 
-    v4 = v8;
+    tapCopy = v8;
     eventTaps = self->_eventTaps;
   }
 
-  [(NSHashTable *)eventTaps addObject:v4];
+  [(NSHashTable *)eventTaps addObject:tapCopy];
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[CarDisplayController sharedInstance];
-  v6 = [v5 _shouldSendEvent:v4 toCarDisplayWindow:self];
+  v6 = [v5 _shouldSendEvent:eventCopy toCarDisplayWindow:self];
 
   if ((v6 & 1) == 0)
   {
@@ -200,10 +200,10 @@ LABEL_60:
       goto LABEL_61;
     }
 
-    v49 = self;
-    if (!v49)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v55 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_59;
     }
 
@@ -211,28 +211,28 @@ LABEL_60:
     v51 = NSStringFromClass(v50);
     if (objc_opt_respondsToSelector())
     {
-      v52 = v4;
-      v53 = [(CarDisplayWindow *)v49 performSelector:"accessibilityIdentifier"];
+      v52 = eventCopy;
+      v53 = [(CarDisplayWindow *)selfCopy performSelector:"accessibilityIdentifier"];
       v54 = v53;
       if (v53 && ![v53 isEqualToString:v51])
       {
-        v55 = [NSString stringWithFormat:@"%@<%p, %@>", v51, v49, v54];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v51, selfCopy, v54];
 
-        v4 = v52;
+        eventCopy = v52;
         goto LABEL_57;
       }
 
-      v4 = v52;
+      eventCopy = v52;
     }
 
-    v55 = [NSString stringWithFormat:@"%@<%p>", v51, v49];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v51, selfCopy];
 LABEL_57:
 
 LABEL_59:
     *buf = 138543618;
-    v70 = v55;
+    v70 = selfCopy;
     v71 = 2112;
-    v72 = v4;
+    v72 = eventCopy;
     _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_INFO, "[%{public}@] Not handling UIEvent because CarDisplayController rejected it: %@", buf, 0x16u);
 
     goto LABEL_60;
@@ -242,7 +242,7 @@ LABEL_59:
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v59 = self;
+  selfCopy2 = self;
   v7 = self->_eventTaps;
   v8 = [(NSHashTable *)v7 countByEnumeratingWithState:&v65 objects:v76 count:16];
   if (v8)
@@ -258,7 +258,7 @@ LABEL_59:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v65 + 1) + 8 * i) sendEvent:v4];
+        [*(*(&v65 + 1) + 8 * i) sendEvent:eventCopy];
       }
 
       v9 = [(NSHashTable *)v7 countByEnumeratingWithState:&v65 objects:v76 count:16];
@@ -271,15 +271,15 @@ LABEL_59:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v56 = v4;
-  v12 = [(__CFString *)v4 allTouches];
-  v13 = [v12 countByEnumeratingWithState:&v61 objects:v75 count:16];
+  v56 = eventCopy;
+  allTouches = [(__CFString *)eventCopy allTouches];
+  v13 = [allTouches countByEnumeratingWithState:&v61 objects:v75 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = *v62;
     v57 = *v62;
-    v58 = v12;
+    v58 = allTouches;
     do
     {
       v16 = 0;
@@ -287,7 +287,7 @@ LABEL_59:
       {
         if (*v62 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allTouches);
         }
 
         v17 = *(*(&v61 + 1) + 8 * v16);
@@ -302,8 +302,8 @@ LABEL_59:
           {
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
             {
-              v22 = v59;
-              if (v59)
+              v22 = selfCopy2;
+              if (selfCopy2)
               {
                 v23 = objc_opt_class();
                 v24 = NSStringFromClass(v23);
@@ -333,12 +333,12 @@ LABEL_22:
               }
 
               v34 = v27;
-              v35 = [v17 view];
-              v36 = [v35 accessibilityIdentifier];
-              v37 = v36;
-              if (v36)
+              view = [v17 view];
+              accessibilityIdentifier = [view accessibilityIdentifier];
+              v37 = accessibilityIdentifier;
+              if (accessibilityIdentifier)
               {
-                v38 = v36;
+                v38 = accessibilityIdentifier;
               }
 
               else
@@ -346,20 +346,20 @@ LABEL_22:
                 v38 = &stru_1016631F0;
               }
 
-              v39 = [v17 view];
+              view2 = [v17 view];
 
-              v40 = [v39 recursiveDescription];
+              recursiveDescription = [view2 recursiveDescription];
               *buf = 138543874;
               v70 = v27;
               v71 = 2112;
               v72 = v38;
               v73 = 2112;
-              v74 = v40;
+              v74 = recursiveDescription;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "[%{public}@] Touch ended with view %@:\n%@", buf, 0x20u);
 
 LABEL_42:
               v15 = v57;
-              v12 = v58;
+              allTouches = v58;
             }
 
 LABEL_43:
@@ -372,8 +372,8 @@ LABEL_43:
             goto LABEL_43;
           }
 
-          v28 = v59;
-          if (v59)
+          v28 = selfCopy2;
+          if (selfCopy2)
           {
             v29 = objc_opt_class();
             v30 = NSStringFromClass(v29);
@@ -403,12 +403,12 @@ LABEL_30:
           }
 
           v41 = v33;
-          v42 = [v17 view];
-          v43 = [v42 accessibilityIdentifier];
-          v44 = v43;
-          if (v43)
+          view3 = [v17 view];
+          accessibilityIdentifier2 = [view3 accessibilityIdentifier];
+          v44 = accessibilityIdentifier2;
+          if (accessibilityIdentifier2)
           {
-            v45 = v43;
+            v45 = accessibilityIdentifier2;
           }
 
           else
@@ -416,14 +416,14 @@ LABEL_30:
             v45 = &stru_1016631F0;
           }
 
-          v46 = [v17 view];
+          view4 = [v17 view];
 
           *buf = 138543874;
           v70 = v33;
           v71 = 2112;
           v72 = v45;
           v73 = 2112;
-          v74 = v46;
+          v74 = view4;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}@] Touch ended with view %@:\n%@", buf, 0x20u);
 
           goto LABEL_42;
@@ -434,24 +434,24 @@ LABEL_44:
       }
 
       while (v14 != v16);
-      v47 = [v12 countByEnumeratingWithState:&v61 objects:v75 count:16];
+      v47 = [allTouches countByEnumeratingWithState:&v61 objects:v75 count:16];
       v14 = v47;
     }
 
     while (v47);
   }
 
-  v60.receiver = v59;
+  v60.receiver = selfCopy2;
   v60.super_class = CarDisplayWindow;
-  v4 = v56;
+  eventCopy = v56;
   [(CarDisplayWindow *)&v60 sendEvent:v56];
 LABEL_61:
 }
 
-- (void)setRootViewController:(id)a3
+- (void)setRootViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CarDisplayWindow *)self rootViewController];
+  controllerCopy = controller;
+  rootViewController = [(CarDisplayWindow *)self rootViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -463,21 +463,21 @@ LABEL_61:
 
   if ((isKindOfClass & 1) == 0)
   {
-    v5 = [(CarDisplayWindow *)self rootViewController];
-    [v5 setNotificationLayoutGuide:0];
+    rootViewController = [(CarDisplayWindow *)self rootViewController];
+    [rootViewController setNotificationLayoutGuide:0];
 LABEL_4:
   }
 
   v7.receiver = self;
   v7.super_class = CarDisplayWindow;
-  [(CarDisplayWindow *)&v7 setRootViewController:v4];
+  [(CarDisplayWindow *)&v7 setRootViewController:controllerCopy];
 }
 
-- (CarDisplayWindow)initWithFrame:(CGRect)a3
+- (CarDisplayWindow)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CarDisplayWindow;
-  v3 = [(CarDisplayWindow *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarDisplayWindow *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor _externalSystemSuperDarkGrayColor];

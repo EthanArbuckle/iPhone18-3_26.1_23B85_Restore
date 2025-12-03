@@ -31,12 +31,12 @@
   v41 = [v4 numberWithDouble:?];
   v48[5] = v41;
   v47[6] = @"approveClientBundleID";
-  v5 = [(SFWatchAuthenticationEvent *)self approveClientBundleID];
-  v40 = v5;
+  approveClientBundleID = [(SFWatchAuthenticationEvent *)self approveClientBundleID];
+  v40 = approveClientBundleID;
   v6 = &stru_1F1D30528;
-  if (v5)
+  if (approveClientBundleID)
   {
-    v6 = v5;
+    v6 = approveClientBundleID;
   }
 
   v48[6] = v6;
@@ -86,11 +86,11 @@
   v19 = [v18 numberWithDouble:?];
   v48[15] = v19;
   v47[16] = @"watchHardwareModel";
-  v20 = [(SFWatchAuthenticationEvent *)self watchHardwareModel];
-  v21 = v20;
-  if (v20)
+  watchHardwareModel = [(SFWatchAuthenticationEvent *)self watchHardwareModel];
+  v21 = watchHardwareModel;
+  if (watchHardwareModel)
   {
-    v22 = v20;
+    v22 = watchHardwareModel;
   }
 
   else
@@ -100,11 +100,11 @@
 
   v48[16] = v22;
   v47[17] = @"watchSoftwareVersion";
-  v23 = [(SFWatchAuthenticationEvent *)self watchSoftwareVersion];
-  v24 = v23;
-  if (v23)
+  watchSoftwareVersion = [(SFWatchAuthenticationEvent *)self watchSoftwareVersion];
+  v24 = watchSoftwareVersion;
+  if (watchSoftwareVersion)
   {
-    v25 = v23;
+    v25 = watchSoftwareVersion;
   }
 
   else
@@ -114,11 +114,11 @@
 
   v48[17] = v25;
   v47[18] = @"remoteHardwareModel";
-  v26 = [(SFWatchAuthenticationEvent *)self remoteHardwareModel];
-  v27 = v26;
-  if (v26)
+  remoteHardwareModel = [(SFWatchAuthenticationEvent *)self remoteHardwareModel];
+  v27 = remoteHardwareModel;
+  if (remoteHardwareModel)
   {
-    v28 = v26;
+    v28 = remoteHardwareModel;
   }
 
   else
@@ -128,11 +128,11 @@
 
   v48[18] = v28;
   v47[19] = @"remoteSoftwareVersion";
-  v29 = [(SFWatchAuthenticationEvent *)self remoteSoftwareVersion];
-  v30 = v29;
-  if (v29)
+  remoteSoftwareVersion = [(SFWatchAuthenticationEvent *)self remoteSoftwareVersion];
+  v30 = remoteSoftwareVersion;
+  if (remoteSoftwareVersion)
   {
-    v31 = v29;
+    v31 = remoteSoftwareVersion;
   }
 
   else
@@ -151,8 +151,8 @@
 - (void)submitEvent
 {
   v4 = +[SFWatchAuthenticationEvent eventName];
-  v3 = [(SFWatchAuthenticationEvent *)self eventPayload];
-  SFMetricsLog(v4, v3);
+  eventPayload = [(SFWatchAuthenticationEvent *)self eventPayload];
+  SFMetricsLog(v4, eventPayload);
 }
 
 @end

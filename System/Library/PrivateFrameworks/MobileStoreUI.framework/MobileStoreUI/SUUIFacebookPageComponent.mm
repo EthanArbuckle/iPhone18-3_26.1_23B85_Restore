@@ -1,14 +1,14 @@
 @interface SUUIFacebookPageComponent
-- (SUUIFacebookPageComponent)initWithViewElement:(id)a3;
+- (SUUIFacebookPageComponent)initWithViewElement:(id)element;
 @end
 
 @implementation SUUIFacebookPageComponent
 
-- (SUUIFacebookPageComponent)initWithViewElement:(id)a3
+- (SUUIFacebookPageComponent)initWithViewElement:(id)element
 {
   v4.receiver = self;
   v4.super_class = SUUIFacebookPageComponent;
-  return [(SUUIPageComponent *)&v4 initWithViewElement:a3];
+  return [(SUUIPageComponent *)&v4 initWithViewElement:element];
 }
 
 @end

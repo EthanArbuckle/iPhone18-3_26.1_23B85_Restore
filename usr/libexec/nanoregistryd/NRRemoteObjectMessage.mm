@@ -1,21 +1,21 @@
 @interface NRRemoteObjectMessage
-- (NRRemoteObjectMessage)initWithProtobuf:(id)a3 andIDSBTUUID:(id)a4;
+- (NRRemoteObjectMessage)initWithProtobuf:(id)protobuf andIDSBTUUID:(id)d;
 @end
 
 @implementation NRRemoteObjectMessage
 
-- (NRRemoteObjectMessage)initWithProtobuf:(id)a3 andIDSBTUUID:(id)a4
+- (NRRemoteObjectMessage)initWithProtobuf:(id)protobuf andIDSBTUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  protobufCopy = protobuf;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = NRRemoteObjectMessage;
   v9 = [(NRRemoteObjectMessage *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_protobuf, a3);
-    objc_storeStrong(&v10->_idsBTUUID, a4);
+    objc_storeStrong(&v9->_protobuf, protobuf);
+    objc_storeStrong(&v10->_idsBTUUID, d);
   }
 
   return v10;

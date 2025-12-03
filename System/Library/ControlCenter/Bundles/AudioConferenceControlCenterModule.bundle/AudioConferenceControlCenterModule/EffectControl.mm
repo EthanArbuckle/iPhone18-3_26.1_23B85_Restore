@@ -1,5 +1,5 @@
 @interface EffectControl
-- (_TtC34AudioConferenceControlCenterModule13EffectControl)initWithFrame:(CGRect)a3;
+- (_TtC34AudioConferenceControlCenterModule13EffectControl)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -16,7 +16,7 @@
   [v3 _setContinuousCornerRadius:?];
 }
 
-- (_TtC34AudioConferenceControlCenterModule13EffectControl)initWithFrame:(CGRect)a3
+- (_TtC34AudioConferenceControlCenterModule13EffectControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,21 +1,21 @@
 @interface _HKAnnotatedHorizontalLineBlockCoordinate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)endPoint;
 - (CGPoint)startPoint;
-- (_HKAnnotatedHorizontalLineBlockCoordinate)initWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 styleIdentifier:(int64_t)a5 userInfo:(id)a6;
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
+- (_HKAnnotatedHorizontalLineBlockCoordinate)initWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint styleIdentifier:(int64_t)identifier userInfo:(id)info;
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
 - (unint64_t)hash;
 @end
 
 @implementation _HKAnnotatedHorizontalLineBlockCoordinate
 
-- (_HKAnnotatedHorizontalLineBlockCoordinate)initWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 styleIdentifier:(int64_t)a5 userInfo:(id)a6
+- (_HKAnnotatedHorizontalLineBlockCoordinate)initWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint styleIdentifier:(int64_t)identifier userInfo:(id)info
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
-  v13 = a6;
+  y = endPoint.y;
+  x = endPoint.x;
+  v10 = point.y;
+  v11 = point.x;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = _HKAnnotatedHorizontalLineBlockCoordinate;
   v14 = [(_HKAnnotatedHorizontalLineBlockCoordinate *)&v17 init];
@@ -26,24 +26,24 @@
     v14->_startPoint.y = v10;
     v14->_endPoint.x = x;
     v14->_endPoint.y = y;
-    v14->_styleIdentifier = a5;
-    objc_storeStrong(&v14->_userInfo, a6);
+    v14->_styleIdentifier = identifier;
+    objc_storeStrong(&v14->_userInfo, info);
   }
 
   return v15;
 }
 
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
-  v4 = a4;
+  scaleCopy = scale;
   [(_HKAnnotatedHorizontalLineBlockCoordinate *)self startPoint];
-  v22 = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, v7), *&a3->a, v8));
+  v22 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v7), *&transform->a, v8));
   [(_HKAnnotatedHorizontalLineBlockCoordinate *)self endPoint];
-  v11 = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, v9), *&a3->a, v10));
+  v11 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v9), *&transform->a, v10));
   v12 = v11.f64[1];
   v13 = v22.f64[1];
   v21 = v11.f64[0];
-  if (v4)
+  if (scaleCopy)
   {
     v22.f64[0] = HKUIFloorCGPointToScreenScale(v22.f64[0], v22.f64[1]);
     v13 = v14;
@@ -52,20 +52,20 @@
   }
 
   v16 = [_HKAnnotatedHorizontalLineBlockCoordinate alloc];
-  v17 = [(_HKAnnotatedHorizontalLineBlockCoordinate *)self styleIdentifier];
-  v18 = [(_HKAnnotatedHorizontalLineBlockCoordinate *)self userInfo];
-  v19 = [(_HKAnnotatedHorizontalLineBlockCoordinate *)v16 initWithStartPoint:v17 endPoint:v18 styleIdentifier:v22.f64[0] userInfo:v13, v21, v12];
+  styleIdentifier = [(_HKAnnotatedHorizontalLineBlockCoordinate *)self styleIdentifier];
+  userInfo = [(_HKAnnotatedHorizontalLineBlockCoordinate *)self userInfo];
+  v19 = [(_HKAnnotatedHorizontalLineBlockCoordinate *)v16 initWithStartPoint:styleIdentifier endPoint:userInfo styleIdentifier:v22.f64[0] userInfo:v13, v21, v12];
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(_HKAnnotatedHorizontalLineBlockCoordinate *)self startPoint];
     v7 = llround(v6 / 0.0000000115);
     [v5 startPoint];

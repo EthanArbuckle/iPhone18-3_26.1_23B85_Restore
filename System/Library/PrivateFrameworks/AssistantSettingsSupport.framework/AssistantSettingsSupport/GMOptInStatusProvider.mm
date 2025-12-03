@@ -1,7 +1,7 @@
 @interface GMOptInStatusProvider
 - (BOOL)userOptInStatus;
 - (_TtC24AssistantSettingsSupport21GMOptInStatusProvider)init;
-- (void)setUserOptInStatus:(BOOL)a3;
+- (void)setUserOptInStatus:(BOOL)status;
 @end
 
 @implementation GMOptInStatusProvider
@@ -15,7 +15,7 @@
   return v3 & 1;
 }
 
-- (void)setUserOptInStatus:(BOOL)a3
+- (void)setUserOptInStatus:(BOOL)status
 {
   v4 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E542718, &qword_241412930) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
@@ -29,7 +29,7 @@
   v9 = swift_allocObject();
   *(v9 + 16) = 0;
   *(v9 + 24) = 0;
-  *(v9 + 32) = a3;
+  *(v9 + 32) = status;
   sub_2413E7730(0, 0, v6, &unk_2414129B8, v9);
 }
 

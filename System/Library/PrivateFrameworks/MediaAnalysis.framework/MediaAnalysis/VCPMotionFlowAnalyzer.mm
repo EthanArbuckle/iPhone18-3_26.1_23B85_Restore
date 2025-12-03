@@ -1,13 +1,13 @@
 @interface VCPMotionFlowAnalyzer
 - (VCPMotionFlowAnalyzer)init;
 - (id).cxx_construct;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 withFrame:(void *)a4 withTimestamp:(id *)a5 andDuration:(id *)a6 cancel:(id)a7;
-- (int)convertFlow:(__CVBuffer *)a3;
-- (int)convertPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 withPixelFormat:(int)a5;
-- (int)createPixelBufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(int)a5 pixelBuffer:(__CVBuffer *)a6;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer withFrame:(void *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration cancel:(id)cancel;
+- (int)convertFlow:(__CVBuffer *)flow;
+- (int)convertPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer withPixelFormat:(int)format;
+- (int)createPixelBufferWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(int)format pixelBuffer:(__CVBuffer *)buffer;
 - (int)generateMotionFlow;
-- (int)preProcessing:(__CVBuffer *)a3;
-- (int)prepareAnalyzerWithCVPixelBuffer:(__CVBuffer *)a3 cancel:(id)a4;
+- (int)preProcessing:(__CVBuffer *)processing;
+- (int)prepareAnalyzerWithCVPixelBuffer:(__CVBuffer *)buffer cancel:(id)cancel;
 - (void)dealloc;
 @end
 
@@ -83,12 +83,12 @@
   [(VCPMotionFlowAnalyzer *)&v10 dealloc];
 }
 
-- (int)prepareAnalyzerWithCVPixelBuffer:(__CVBuffer *)a3 cancel:(id)a4
+- (int)prepareAnalyzerWithCVPixelBuffer:(__CVBuffer *)buffer cancel:(id)cancel
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  cancelCopy = cancel;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   self->_frameWidth = Width;
   self->_frameHeight = Height;
   if (Width <= Height)
@@ -153,7 +153,7 @@
     v22[2] = &unk_1F49BE638;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:3];
 
-    v17 = [[VCPMotionFlowRequest alloc] initWithOptions:v16 cancel:v6];
+    v17 = [[VCPMotionFlowRequest alloc] initWithOptions:v16 cancel:cancelCopy];
     moflowRequest = self->_moflowRequest;
     self->_moflowRequest = v17;
 
@@ -169,18 +169,18 @@
   return v19;
 }
 
-- (int)convertFlow:(__CVBuffer *)a3
+- (int)convertFlow:(__CVBuffer *)flow
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  Width = CVPixelBufferGetWidth(flow);
+  Height = CVPixelBufferGetHeight(flow);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(flow);
   flow = self->_flow;
-  pixelBuffer = a3;
+  pixelBuffer = flow;
   unlockFlags = 1;
-  if (a3)
+  if (flow)
   {
     v9 = BytesPerRow;
-    v10 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v10 = CVPixelBufferLockBaseAddress(flow, 1uLL);
     v26 = v10;
     if (v10)
     {
@@ -193,7 +193,7 @@
 
     else
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
+      BaseAddress = CVPixelBufferGetBaseAddress(flow);
       if (Height >= 1)
       {
         v14 = 0;
@@ -250,53 +250,53 @@
   return v11;
 }
 
-- (int)createPixelBufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(int)a5 pixelBuffer:(__CVBuffer *)a6
+- (int)createPixelBufferWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(int)format pixelBuffer:(__CVBuffer *)buffer
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13 = *MEMORY[0x1E69660D8];
   v14[0] = MEMORY[0x1E695E0F8];
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  v11 = CVPixelBufferCreate(0, a3, a4, a5, v10, a6);
-  if (v11 && *a6)
+  v11 = CVPixelBufferCreate(0, width, height, format, v10, buffer);
+  if (v11 && *buffer)
   {
-    CFRelease(*a6);
-    *a6 = 0;
+    CFRelease(*buffer);
+    *buffer = 0;
   }
 
   return v11;
 }
 
-- (int)convertPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 withPixelFormat:(int)a5
+- (int)convertPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer withPixelFormat:(int)format
 {
-  v5 = *&a5;
+  v5 = *&format;
   if (self->_transferSession || (result = VTPixelTransferSessionCreate(0, &self->_transferSession)) == 0)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    result = [(VCPMotionFlowAnalyzer *)self createPixelBufferWithWidth:Width height:CVPixelBufferGetHeight(a3) pixelFormat:v5 pixelBuffer:a4];
+    Width = CVPixelBufferGetWidth(buffer);
+    result = [(VCPMotionFlowAnalyzer *)self createPixelBufferWithWidth:Width height:CVPixelBufferGetHeight(buffer) pixelFormat:v5 pixelBuffer:pixelBuffer];
     if (!result)
     {
       transferSession = self->_transferSession;
-      v12 = *a4;
+      v12 = *pixelBuffer;
 
-      return VTPixelTransferSessionTransferImage(transferSession, a3, v12);
+      return VTPixelTransferSessionTransferImage(transferSession, buffer, v12);
     }
   }
 
   return result;
 }
 
-- (int)preProcessing:(__CVBuffer *)a3
+- (int)preProcessing:(__CVBuffer *)processing
 {
   v11 = 0;
-  Width = CVPixelBufferGetWidth(a3);
-  if (*&self->_frameWidth != __PAIR64__(CVPixelBufferGetHeight(a3), Width))
+  Width = CVPixelBufferGetWidth(processing);
+  if (*&self->_frameWidth != __PAIR64__(CVPixelBufferGetHeight(processing), Width))
   {
     return -50;
   }
 
   if (self->_scale)
   {
-    Scaler::Scale(&self->_scaler, a3, &v11, self->_downScaleWidth, self->_downScaleHeight, 875704438);
+    Scaler::Scale(&self->_scaler, processing, &v11, self->_downScaleWidth, self->_downScaleHeight, 875704438);
     if (result)
     {
       return result;
@@ -305,7 +305,7 @@
 
   else
   {
-    result = [(VCPMotionFlowAnalyzer *)self convertPixelBuffer:a3 toPixelBuffer:&v11 withPixelFormat:875704438];
+    result = [(VCPMotionFlowAnalyzer *)self convertPixelBuffer:processing toPixelBuffer:&v11 withPixelFormat:875704438];
     if (result)
     {
       return result;
@@ -396,24 +396,24 @@ LABEL_14:
   return v13;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 withFrame:(void *)a4 withTimestamp:(id *)a5 andDuration:(id *)a6 cancel:(id)a7
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer withFrame:(void *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration cancel:(id)cancel
 {
-  v10 = a7;
-  if (self->_initialized || (v11 = [(VCPMotionFlowAnalyzer *)self prepareAnalyzerWithCVPixelBuffer:a3 cancel:v10]) == 0)
+  cancelCopy = cancel;
+  if (self->_initialized || (generateMotionFlow = [(VCPMotionFlowAnalyzer *)self prepareAnalyzerWithCVPixelBuffer:buffer cancel:cancelCopy]) == 0)
   {
-    v11 = [(VCPMotionFlowAnalyzer *)self preProcessing:a3];
-    if (!v11)
+    generateMotionFlow = [(VCPMotionFlowAnalyzer *)self preProcessing:buffer];
+    if (!generateMotionFlow)
     {
-      v11 = [(VCPMotionFlowAnalyzer *)self generateMotionFlow];
-      if (!v11)
+      generateMotionFlow = [(VCPMotionFlowAnalyzer *)self generateMotionFlow];
+      if (!generateMotionFlow)
       {
-        *(a4 + 42) = self->_flow;
+        *(frame + 42) = self->_flow;
         ++self->_frameNum;
       }
     }
   }
 
-  return v11;
+  return generateMotionFlow;
 }
 
 - (id).cxx_construct

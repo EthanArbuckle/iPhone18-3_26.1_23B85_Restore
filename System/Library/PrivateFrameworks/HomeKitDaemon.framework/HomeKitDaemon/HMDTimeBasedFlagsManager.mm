@@ -1,12 +1,12 @@
 @interface HMDTimeBasedFlagsManager
 + (NSSet)allowedSpecifierClasses;
-- (HMDTimeBasedFlagsManager)initWithDateProvider:(id)a3;
-- (HMDTimeBasedFlagsManager)initWithStorage:(id)a3 dateProvider:(id)a4;
+- (HMDTimeBasedFlagsManager)initWithDateProvider:(id)provider;
+- (HMDTimeBasedFlagsManager)initWithStorage:(id)storage dateProvider:(id)provider;
 - (id)_fetchAllFlags;
-- (id)flagForName:(id)a3 homeUUID:(id)a4 periodicity:(int64_t)a5;
-- (id)flagForName:(id)a3 periodicity:(int64_t)a4;
-- (id)flagForSpecifier:(id)a3 periodicity:(int64_t)a4;
-- (id)newFlagForPeriodicity:(int64_t)a3;
+- (id)flagForName:(id)name homeUUID:(id)d periodicity:(int64_t)periodicity;
+- (id)flagForName:(id)name periodicity:(int64_t)periodicity;
+- (id)flagForSpecifier:(id)specifier periodicity:(int64_t)periodicity;
+- (id)newFlagForPeriodicity:(int64_t)periodicity;
 - (id)unarchiveFlags;
 - (id)unarchiveLegacyFlags;
 - (void)_save;
@@ -18,18 +18,18 @@
 - (id)unarchiveLegacyFlags
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDTimeBasedFlagsManager *)self flagsStorage];
-  v4 = [v3 unarchiveLegacyEventFlags];
+  flagsStorage = [(HMDTimeBasedFlagsManager *)self flagsStorage];
+  unarchiveLegacyEventFlags = [flagsStorage unarchiveLegacyEventFlags];
 
-  if (v4)
+  if (unarchiveLegacyEventFlags)
   {
-    v5 = [v4 objectForKeyedSubscript:@"HMDEventFlagsArchivedEventFlagsKey"];
-    v6 = [v4 objectForKeyedSubscript:@"HMDEventFlagsArchivedEventFlagsSaveTimeKey"];
+    v5 = [unarchiveLegacyEventFlags objectForKeyedSubscript:@"HMDEventFlagsArchivedEventFlagsKey"];
+    v6 = [unarchiveLegacyEventFlags objectForKeyedSubscript:@"HMDEventFlagsArchivedEventFlagsSaveTimeKey"];
     v7 = v6;
     if (v5 && v6)
     {
-      v33 = v4;
-      v38 = [MEMORY[0x277CBEB38] dictionary];
+      v33 = unarchiveLegacyEventFlags;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
@@ -56,9 +56,9 @@
             v41 = 0u;
             v42 = 0u;
             v10 = [v5 objectForKeyedSubscript:v9];
-            v11 = [v10 allKeys];
+            allKeys = [v10 allKeys];
 
-            v12 = [v11 countByEnumeratingWithState:&v39 objects:v47 count:16];
+            v12 = [allKeys countByEnumeratingWithState:&v39 objects:v47 count:16];
             if (v12)
             {
               v13 = v12;
@@ -69,7 +69,7 @@
                 {
                   if (*v40 != v14)
                   {
-                    objc_enumerationMutation(v11);
+                    objc_enumerationMutation(allKeys);
                   }
 
                   v16 = *(*(&v39 + 1) + 8 * i);
@@ -80,11 +80,11 @@
                   if (v19)
                   {
                     v20 = [HMDTimeBasedFlagNameSpecifier specifierWithFlagName:v16];
-                    [v38 setObject:v19 forKey:v20];
+                    [dictionary setObject:v19 forKey:v20];
                   }
                 }
 
-                v13 = [v11 countByEnumeratingWithState:&v39 objects:v47 count:16];
+                v13 = [allKeys countByEnumeratingWithState:&v39 objects:v47 count:16];
               }
 
               while (v13);
@@ -100,9 +100,9 @@
         while (v36);
       }
 
-      if ([v38 count])
+      if ([dictionary count])
       {
-        v21 = v38;
+        v21 = dictionary;
       }
 
       else
@@ -112,13 +112,13 @@
 
       v22 = v21;
 
-      v4 = v33;
+      unarchiveLegacyEventFlags = v33;
     }
 
     else
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
@@ -136,7 +136,7 @@
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy2 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -158,17 +158,17 @@
 - (id)unarchiveFlags
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDTimeBasedFlagsManager *)self flagsStorage];
-  v5 = [v4 unarchive];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  flagsStorage = [(HMDTimeBasedFlagsManager *)self flagsStorage];
+  unarchive = [flagsStorage unarchive];
 
-  if (v5)
+  if (unarchive)
   {
     goto LABEL_6;
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -179,22 +179,22 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDTimeBasedFlagsManager *)v7 unarchiveLegacyFlags];
-  if (v10)
+  unarchiveLegacyFlags = [(HMDTimeBasedFlagsManager *)selfCopy unarchiveLegacyFlags];
+  if (unarchiveLegacyFlags)
   {
-    v5 = v10;
+    unarchive = unarchiveLegacyFlags;
 LABEL_6:
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __42__HMDTimeBasedFlagsManager_unarchiveFlags__block_invoke;
     v17[3] = &unk_27866F6C8;
     v17[4] = self;
-    v18 = v3;
-    [v5 enumerateKeysAndObjectsUsingBlock:v17];
+    v18 = dictionary;
+    [unarchive enumerateKeysAndObjectsUsingBlock:v17];
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy2 = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -202,14 +202,14 @@ LABEL_6:
     *buf = 138543618;
     v20 = v14;
     v21 = 2112;
-    v22 = v3;
+    v22 = dictionary;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Final restored flags: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 void __42__HMDTimeBasedFlagsManager_unarchiveFlags__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -252,16 +252,16 @@ void __42__HMDTimeBasedFlagsManager_unarchiveFlags__block_invoke(uint64_t a1, vo
 - (void)_save
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(HMDTimeBasedFlagsManager *)self _fetchAllFlags];
-  v4 = [(HMDTimeBasedFlagsManager *)self workQueue];
+  _fetchAllFlags = [(HMDTimeBasedFlagsManager *)self _fetchAllFlags];
+  workQueue = [(HMDTimeBasedFlagsManager *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__HMDTimeBasedFlagsManager__save__block_invoke;
   v6[3] = &unk_27868A750;
   v6[4] = self;
-  v7 = v3;
-  v5 = v3;
-  dispatch_async(v4, v6);
+  v7 = _fetchAllFlags;
+  v5 = _fetchAllFlags;
+  dispatch_async(workQueue, v6);
 }
 
 void __33__HMDTimeBasedFlagsManager__save__block_invoke(uint64_t a1)
@@ -273,14 +273,14 @@ void __33__HMDTimeBasedFlagsManager__save__block_invoke(uint64_t a1)
 - (id)_fetchAllFlags
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   flags = self->_flags;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__HMDTimeBasedFlagsManager__fetchAllFlags__block_invoke;
   v8[3] = &unk_27866F6A0;
-  v9 = v3;
-  v5 = v3;
+  v9 = dictionary;
+  v5 = dictionary;
   [(NSMutableDictionary *)flags enumerateKeysAndObjectsUsingBlock:v8];
   v6 = [v5 copy];
 
@@ -305,26 +305,26 @@ void __42__HMDTimeBasedFlagsManager__fetchAllFlags__block_invoke(uint64_t a1, vo
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)newFlagForPeriodicity:(int64_t)a3
+- (id)newFlagForPeriodicity:(int64_t)periodicity
 {
-  if (a3 != 1)
+  if (periodicity != 1)
   {
     return 0;
   }
 
   v4 = [HMDTimeBasedFlagDaily alloc];
-  v5 = [(HMDTimeBasedFlagsManager *)self dateProvider];
-  v6 = [(HMDTimeBasedFlagDaily *)v4 initWithContext:self dateProvider:v5];
+  dateProvider = [(HMDTimeBasedFlagsManager *)self dateProvider];
+  v6 = [(HMDTimeBasedFlagDaily *)v4 initWithContext:self dateProvider:dateProvider];
 
   return v6;
 }
 
-- (id)flagForSpecifier:(id)a3 periodicity:(int64_t)a4
+- (id)flagForSpecifier:(id)specifier periodicity:(int64_t)periodicity
 {
-  v6 = a3;
+  specifierCopy = specifier;
   os_unfair_lock_lock_with_options();
-  v7 = [(HMDTimeBasedFlagsManager *)self flags];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  flags = [(HMDTimeBasedFlagsManager *)self flags];
+  v8 = [flags objectForKeyedSubscript:specifierCopy];
 
   if (!v8)
   {
@@ -341,9 +341,9 @@ void __42__HMDTimeBasedFlagsManager__fetchAllFlags__block_invoke(uint64_t a1, vo
       objc_exception_throw(v15);
     }
 
-    v8 = [(HMDTimeBasedFlagsManager *)self newFlagForPeriodicity:a4];
-    v11 = [(HMDTimeBasedFlagsManager *)self flags];
-    [v11 setObject:v8 forKeyedSubscript:v6];
+    v8 = [(HMDTimeBasedFlagsManager *)self newFlagForPeriodicity:periodicity];
+    flags2 = [(HMDTimeBasedFlagsManager *)self flags];
+    [flags2 setObject:v8 forKeyedSubscript:specifierCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -351,56 +351,56 @@ void __42__HMDTimeBasedFlagsManager__fetchAllFlags__block_invoke(uint64_t a1, vo
   return v8;
 }
 
-- (id)flagForName:(id)a3 homeUUID:(id)a4 periodicity:(int64_t)a5
+- (id)flagForName:(id)name homeUUID:(id)d periodicity:(int64_t)periodicity
 {
-  v7 = [HMDTimeBasedFlagNameAndHomeSpecifier specifierWithFlagName:a3 homeUUID:a4];
-  v8 = [(HMDTimeBasedFlagsManager *)self flagForSpecifier:v7 periodicity:a5];
+  v7 = [HMDTimeBasedFlagNameAndHomeSpecifier specifierWithFlagName:name homeUUID:d];
+  v8 = [(HMDTimeBasedFlagsManager *)self flagForSpecifier:v7 periodicity:periodicity];
 
   return v8;
 }
 
-- (id)flagForName:(id)a3 periodicity:(int64_t)a4
+- (id)flagForName:(id)name periodicity:(int64_t)periodicity
 {
-  v6 = [HMDTimeBasedFlagNameSpecifier specifierWithFlagName:a3];
-  v7 = [(HMDTimeBasedFlagsManager *)self flagForSpecifier:v6 periodicity:a4];
+  v6 = [HMDTimeBasedFlagNameSpecifier specifierWithFlagName:name];
+  v7 = [(HMDTimeBasedFlagsManager *)self flagForSpecifier:v6 periodicity:periodicity];
 
   return v7;
 }
 
-- (HMDTimeBasedFlagsManager)initWithStorage:(id)a3 dateProvider:(id)a4
+- (HMDTimeBasedFlagsManager)initWithStorage:(id)storage dateProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  providerCopy = provider;
   v20.receiver = self;
   v20.super_class = HMDTimeBasedFlagsManager;
   v9 = [(HMDTimeBasedFlagsManager *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_flagsStorage, a3);
-    objc_storeStrong(&v10->_dateProvider, a4);
+    objc_storeStrong(&v9->_flagsStorage, storage);
+    objc_storeStrong(&v10->_dateProvider, provider);
     v11 = HMDispatchQueueNameString();
-    v12 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_attr_make_with_qos_class(v13, QOS_CLASS_BACKGROUND, 0);
-    v15 = dispatch_queue_create(v12, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
     workQueue = v10->_workQueue;
     v10->_workQueue = v15;
 
-    v17 = [(HMDTimeBasedFlagsManager *)v10 unarchiveFlags];
+    unarchiveFlags = [(HMDTimeBasedFlagsManager *)v10 unarchiveFlags];
     flags = v10->_flags;
-    v10->_flags = v17;
+    v10->_flags = unarchiveFlags;
   }
 
   return v10;
 }
 
-- (HMDTimeBasedFlagsManager)initWithDateProvider:(id)a3
+- (HMDTimeBasedFlagsManager)initWithDateProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_alloc_init(HMDPersistentStore);
   v6 = [[HMDTimeBasedFlagsPersistentStore alloc] initWithPersistentStore:v5];
-  v7 = [(HMDTimeBasedFlagsManager *)self initWithStorage:v6 dateProvider:v4];
+  v7 = [(HMDTimeBasedFlagsManager *)self initWithStorage:v6 dateProvider:providerCopy];
 
   if (v7)
   {

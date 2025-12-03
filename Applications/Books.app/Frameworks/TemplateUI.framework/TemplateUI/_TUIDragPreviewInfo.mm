@@ -1,21 +1,21 @@
 @interface _TUIDragPreviewInfo
-- (_TUIDragPreviewInfo)initWithDragInfo:(id)a3 view:(id)a4;
+- (_TUIDragPreviewInfo)initWithDragInfo:(id)info view:(id)view;
 @end
 
 @implementation _TUIDragPreviewInfo
 
-- (_TUIDragPreviewInfo)initWithDragInfo:(id)a3 view:(id)a4
+- (_TUIDragPreviewInfo)initWithDragInfo:(id)info view:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = _TUIDragPreviewInfo;
   v9 = [(_TUIDragPreviewInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dragInfo, a3);
-    objc_storeStrong(&v10->_view, a4);
+    objc_storeStrong(&v9->_dragInfo, info);
+    objc_storeStrong(&v10->_view, view);
   }
 
   return v10;

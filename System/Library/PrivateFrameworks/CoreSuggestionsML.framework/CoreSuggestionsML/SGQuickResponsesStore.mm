@@ -1,52 +1,52 @@
 @interface SGQuickResponsesStore
-+ (BOOL)isProfane:(id)a3 inLocales:(id)a4;
++ (BOOL)isProfane:(id)profane inLocales:(id)locales;
 + (SGQuickResponsesStore)sharedInstance;
 + (id)instanceInMemory;
-+ (id)keyWithLanguage:(id)a3 andResponse:(id)a4;
++ (id)keyWithLanguage:(id)language andResponse:(id)response;
 + (void)warmup;
-- (BOOL)addingMessageExceedsBatchLimit:(unint64_t)a3 tableLimit:(unint64_t)a4 message:(id)a5 language:(id)a6 prompt:(id)a7 recipientHandle:(id)a8 sentAt:(id)a9;
-- (BOOL)deltaForResponsesOnRow:(id)a3 completion:(id)a4;
-- (BOOL)frailReadTransaction:(id)a3;
-- (BOOL)frailWriteTransaction:(id)a3;
-- (BOOL)resetDbIfNeededCompareWithCompatibilityVersion:(unint64_t)a3;
-- (double)getPerRecipientCountForReply:(id)a3 language:(id)a4 recipient:(id)a5;
-- (double)getUsageSpreadForReply:(id)a3 language:(id)a4;
-- (id)_recordsForResponses:(id)a3 language:(id)a4;
-- (id)embeddingForPrompt:(id)a3 language:(id)a4 embedder:(id)a5;
+- (BOOL)addingMessageExceedsBatchLimit:(unint64_t)limit tableLimit:(unint64_t)tableLimit message:(id)message language:(id)language prompt:(id)prompt recipientHandle:(id)handle sentAt:(id)at;
+- (BOOL)deltaForResponsesOnRow:(id)row completion:(id)completion;
+- (BOOL)frailReadTransaction:(id)transaction;
+- (BOOL)frailWriteTransaction:(id)transaction;
+- (BOOL)resetDbIfNeededCompareWithCompatibilityVersion:(unint64_t)version;
+- (double)getPerRecipientCountForReply:(id)reply language:(id)language recipient:(id)recipient;
+- (double)getUsageSpreadForReply:(id)reply language:(id)language;
+- (id)_recordsForResponses:(id)responses language:(id)language;
+- (id)embeddingForPrompt:(id)prompt language:(id)language embedder:(id)embedder;
 - (id)getModelVersion;
 - (id)getProfanityLocale;
-- (id)initInDirectory:(id)a3 inMemory:(BOOL)a4 withMigration:(BOOL)a5 forTools:(BOOL)a6;
-- (id)messagesForEval:(id)a3;
-- (id)nearestCustomResponsesAndScoresToPromptEmbedding:(id)a3 recipient:(id)a4 limit:(unint64_t)a5 withinRadius:(float)a6 responseCountExponent:(float)a7 minimumDecayedCount:(float)a8 compatibilityVersion:(unint64_t)a9 language:(id)a10 locale:(id)a11 allowProfanity:(BOOL)a12 minimumTimeInterval:(double)a13 usageSpreadExponent:(float)a14;
-- (id)nearestCustomResponsesToPromptEmbedding:(id)a3 recipient:(id)a4 limit:(unint64_t)a5 withinRadius:(float)a6 responseCountExponent:(float)a7 minimumDecayedCount:(float)a8 compatibilityVersion:(unint64_t)a9 language:(id)a10 locale:(id)a11 allowProfanity:(BOOL)a12 minimumTimeInterval:(double)a13 usageSpreadExponent:(float)a14;
-- (id)recordsForResponses:(id)a3 language:(id)a4;
-- (id)recordsForResponsesInternal:(id)a3 language:(id)a4;
-- (unint64_t)countCustomResponsesAfterPruningWithMinimumCountThreshold:(double)a3;
-- (unint64_t)countCustomResponsesAfterTruncatingTable:(unint64_t)a3;
-- (unint64_t)designateFilteringBatch:(unint64_t)a3;
-- (void)_addCustomResponseToDb:(id)a3 reply:(id)a4 language:(id)a5 embedding:(id)a6 sentAt:(double)a7 recipient:(id)a8 messagesRowId:(int64_t)a9 onError:(id)a10;
-- (void)_incrementCustomResponseInDb:(id)a3 reply:(id)a4 language:(id)a5 embedding:(id)a6 sentAt:(double)a7 recipient:(id)a8 messagesRowId:(int64_t)a9 onError:(id)a10;
-- (void)addDisplayedToResponses:(id)a3 language:(id)a4;
-- (void)addSelectedToResponse:(id)a3 language:(id)a4;
-- (void)addWrittenToResponse:(id)a3 language:(id)a4 isMatch:(BOOL)a5;
+- (id)initInDirectory:(id)directory inMemory:(BOOL)memory withMigration:(BOOL)migration forTools:(BOOL)tools;
+- (id)messagesForEval:(id)eval;
+- (id)nearestCustomResponsesAndScoresToPromptEmbedding:(id)embedding recipient:(id)recipient limit:(unint64_t)limit withinRadius:(float)radius responseCountExponent:(float)exponent minimumDecayedCount:(float)count compatibilityVersion:(unint64_t)version language:(id)self0 locale:(id)self1 allowProfanity:(BOOL)self2 minimumTimeInterval:(double)self3 usageSpreadExponent:(float)self4;
+- (id)nearestCustomResponsesToPromptEmbedding:(id)embedding recipient:(id)recipient limit:(unint64_t)limit withinRadius:(float)radius responseCountExponent:(float)exponent minimumDecayedCount:(float)count compatibilityVersion:(unint64_t)version language:(id)self0 locale:(id)self1 allowProfanity:(BOOL)self2 minimumTimeInterval:(double)self3 usageSpreadExponent:(float)self4;
+- (id)recordsForResponses:(id)responses language:(id)language;
+- (id)recordsForResponsesInternal:(id)internal language:(id)language;
+- (unint64_t)countCustomResponsesAfterPruningWithMinimumCountThreshold:(double)threshold;
+- (unint64_t)countCustomResponsesAfterTruncatingTable:(unint64_t)table;
+- (unint64_t)designateFilteringBatch:(unint64_t)batch;
+- (void)_addCustomResponseToDb:(id)db reply:(id)reply language:(id)language embedding:(id)embedding sentAt:(double)at recipient:(id)recipient messagesRowId:(int64_t)id onError:(id)self0;
+- (void)_incrementCustomResponseInDb:(id)db reply:(id)reply language:(id)language embedding:(id)embedding sentAt:(double)at recipient:(id)recipient messagesRowId:(int64_t)id onError:(id)self0;
+- (void)addDisplayedToResponses:(id)responses language:(id)language;
+- (void)addSelectedToResponse:(id)response language:(id)language;
+- (void)addWrittenToResponse:(id)response language:(id)language isMatch:(BOOL)match;
 - (void)calculateUsageSpreads;
-- (void)decayAllCustomResponsesWithDecayFactor:(double)a3 filteringBatchSize:(unint64_t)a4;
+- (void)decayAllCustomResponsesWithDecayFactor:(double)factor filteringBatchSize:(unint64_t)size;
 - (void)destroyInstanceInMemory;
-- (void)filterBatchWithMinimumDistinctRecipients:(unint64_t)a3 minimumReplyOccurences:(unint64_t)a4;
-- (void)prunePerRecipientTableWithMaxRows:(unint64_t)a3;
-- (void)recordKnownCustomResponsesInBatchWithEmbedder:(id)a3 compatibilityVersion:(unint64_t)a4;
-- (void)recordMessagesInBatchAsCustomResponsesWithEmbedder:(id)a3 compatibilityVersion:(unint64_t)a4;
-- (void)resetCustomResponsesAndResetMessages:(BOOL)a3;
-- (void)resetCustomResponsesForEval:(id)a3;
-- (void)setProfanityLocale:(id)a3 andModelVersion:(int64_t)a4;
+- (void)filterBatchWithMinimumDistinctRecipients:(unint64_t)recipients minimumReplyOccurences:(unint64_t)occurences;
+- (void)prunePerRecipientTableWithMaxRows:(unint64_t)rows;
+- (void)recordKnownCustomResponsesInBatchWithEmbedder:(id)embedder compatibilityVersion:(unint64_t)version;
+- (void)recordMessagesInBatchAsCustomResponsesWithEmbedder:(id)embedder compatibilityVersion:(unint64_t)version;
+- (void)resetCustomResponsesAndResetMessages:(BOOL)messages;
+- (void)resetCustomResponsesForEval:(id)eval;
+- (void)setProfanityLocale:(id)locale andModelVersion:(int64_t)version;
 @end
 
 @implementation SGQuickResponsesStore
 
-- (double)getUsageSpreadForReply:(id)a3 language:(id)a4
+- (double)getUsageSpreadForReply:(id)reply language:(id)language
 {
-  v6 = a3;
-  v7 = a4;
+  replyCopy = reply;
+  languageCopy = language;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -55,9 +55,9 @@
   v12[1] = 3221225472;
   v12[2] = __57__SGQuickResponsesStore_getUsageSpreadForReply_language___block_invoke;
   v12[3] = &unk_278EB8110;
-  v8 = v6;
+  v8 = replyCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = languageCopy;
   v14 = v9;
   v15 = @"SELECT usage_spread FROM custom_responses WHERE reply=$reply AND language=$language";
   v16 = &v17;
@@ -100,11 +100,11 @@ uint64_t __57__SGQuickResponsesStore_getUsageSpreadForReply_language___block_inv
   return *MEMORY[0x277D42698];
 }
 
-- (double)getPerRecipientCountForReply:(id)a3 language:(id)a4 recipient:(id)a5
+- (double)getPerRecipientCountForReply:(id)reply language:(id)language recipient:(id)recipient
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  replyCopy = reply;
+  languageCopy = language;
+  recipientCopy = recipient;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -113,11 +113,11 @@ uint64_t __57__SGQuickResponsesStore_getUsageSpreadForReply_language___block_inv
   v16[1] = 3221225472;
   v16[2] = __73__SGQuickResponsesStore_getPerRecipientCountForReply_language_recipient___block_invoke;
   v16[3] = &unk_278EB80E8;
-  v11 = v8;
+  v11 = replyCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = languageCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = recipientCopy;
   v19 = v13;
   v20 = @"SELECT decayed_times_used FROM cr_per_recipient_counts WHERE reply=$reply AND language=$language AND recipient=$recipient";
   v21 = &v22;
@@ -197,22 +197,22 @@ void __48__SGQuickResponsesStore_destroyInstanceInMemory__block_invoke(uint64_t 
   }
 }
 
-- (BOOL)deltaForResponsesOnRow:(id)a3 completion:(id)a4
+- (BOOL)deltaForResponsesOnRow:(id)row completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  rowCopy = row;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__SGQuickResponsesStore_deltaForResponsesOnRow_completion___block_invoke;
   v11[3] = &unk_278EB8098;
-  v16 = v6;
-  v17 = v7;
+  v16 = rowCopy;
+  v17 = completionCopy;
   v12 = @"SELECT t1.lang_response AS lang_response        ,CASE            WHEN t2.displayed IS NULL THEN t1.displayed            ELSE t1.displayed - t2.displayed         END AS displayed        ,CASE            WHEN t2.selected IS NULL THEN t1.selected            ELSE t1.selected - t2.selected         END AS selected        ,CASE            WHEN t2.matched IS NULL THEN t1.matched            ELSE t1.matched - t2.matched         END AS matched FROM responses t1 LEFT JOIN responses_snapshot t2     ON t1.lang_response = t2.lang_response ORDER BY RANDOM() ";
   v13 = @"DROP TABLE responses_snapshot";
   v14 = @"CREATE TABLE responses_snapshot AS     SELECT *     FROM responses ";
   v15 = @"CREATE INDEX idx_responses_snapshot_lang_response ON responses_snapshot (lang_response)";
-  v8 = v7;
-  v9 = v6;
+  v8 = completionCopy;
+  v9 = rowCopy;
   LOBYTE(self) = [(SGQuickResponsesStore *)self frailWriteTransaction:v11];
 
   return self;
@@ -368,7 +368,7 @@ LABEL_26:
   return v14;
 }
 
-- (unint64_t)countCustomResponsesAfterTruncatingTable:(unint64_t)a3
+- (unint64_t)countCustomResponsesAfterTruncatingTable:(unint64_t)table
 {
   v16 = 0;
   v17 = &v16;
@@ -382,17 +382,17 @@ LABEL_26:
   v15 = &v16;
   [(SGQuickResponsesStore *)self frailReadTransaction:v13];
   v5 = v17[3];
-  if (v5 > a3)
+  if (v5 > table)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __66__SGQuickResponsesStore_countCustomResponsesAfterTruncatingTable___block_invoke_3;
     v10[3] = &unk_278EB7D20;
     v11 = @"DELETE FROM custom_responses ORDER BY decayed_times_used ASC LIMIT $table_limit";
-    v12 = v5 - a3;
+    v12 = v5 - table;
     if ([(SGQuickResponsesStore *)self frailWriteTransaction:v10])
     {
-      v17[3] = a3;
+      v17[3] = table;
     }
 
     else
@@ -446,13 +446,13 @@ uint64_t __66__SGQuickResponsesStore_countCustomResponsesAfterTruncatingTable___
   return [a2 prepAndRunQuery:v4 onPrep:0 onRow:v6 onError:a3];
 }
 
-- (unint64_t)countCustomResponsesAfterPruningWithMinimumCountThreshold:(double)a3
+- (unint64_t)countCustomResponsesAfterPruningWithMinimumCountThreshold:(double)threshold
 {
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __83__SGQuickResponsesStore_countCustomResponsesAfterPruningWithMinimumCountThreshold___block_invoke;
   v13[3] = &unk_278EB7D20;
-  v15 = a3;
+  thresholdCopy = threshold;
   v14 = @"DELETE FROM custom_responses WHERE decayed_times_used < $threshold";
   [(SGQuickResponsesStore *)self frailWriteTransaction:v13];
   v9 = 0;
@@ -494,9 +494,9 @@ uint64_t __83__SGQuickResponsesStore_countCustomResponsesAfterPruningWithMinimum
   return [a2 prepAndRunQuery:v4 onPrep:0 onRow:v6 onError:a3];
 }
 
-- (void)decayAllCustomResponsesWithDecayFactor:(double)a3 filteringBatchSize:(unint64_t)a4
+- (void)decayAllCustomResponsesWithDecayFactor:(double)factor filteringBatchSize:(unint64_t)size
 {
-  v5 = pow(a3, a4);
+  v5 = pow(factor, size);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __83__SGQuickResponsesStore_decayAllCustomResponsesWithDecayFactor_filteringBatchSize___block_invoke;
@@ -584,11 +584,11 @@ void __83__SGQuickResponsesStore_decayAllCustomResponsesWithDecayFactor_filterin
   [v5 bindNamedParam:"$rowid" toInt64:*(a1 + 48)];
 }
 
-- (id)nearestCustomResponsesToPromptEmbedding:(id)a3 recipient:(id)a4 limit:(unint64_t)a5 withinRadius:(float)a6 responseCountExponent:(float)a7 minimumDecayedCount:(float)a8 compatibilityVersion:(unint64_t)a9 language:(id)a10 locale:(id)a11 allowProfanity:(BOOL)a12 minimumTimeInterval:(double)a13 usageSpreadExponent:(float)a14
+- (id)nearestCustomResponsesToPromptEmbedding:(id)embedding recipient:(id)recipient limit:(unint64_t)limit withinRadius:(float)radius responseCountExponent:(float)exponent minimumDecayedCount:(float)count compatibilityVersion:(unint64_t)version language:(id)self0 locale:(id)self1 allowProfanity:(BOOL)self2 minimumTimeInterval:(double)self3 usageSpreadExponent:(float)self4
 {
   v30 = *MEMORY[0x277D85DE8];
-  LOBYTE(v24) = a12;
-  v14 = [SGQuickResponsesStore nearestCustomResponsesAndScoresToPromptEmbedding:"nearestCustomResponsesAndScoresToPromptEmbedding:recipient:limit:withinRadius:responseCountExponent:minimumDecayedCount:compatibilityVersion:language:locale:allowProfanity:minimumTimeInterval:usageSpreadExponent:" recipient:a3 limit:a4 withinRadius:a5 responseCountExponent:a9 minimumDecayedCount:a10 compatibilityVersion:a11 language:v24 locale:? allowProfanity:? minimumTimeInterval:? usageSpreadExponent:?];
+  LOBYTE(v24) = profanity;
+  v14 = [SGQuickResponsesStore nearestCustomResponsesAndScoresToPromptEmbedding:"nearestCustomResponsesAndScoresToPromptEmbedding:recipient:limit:withinRadius:responseCountExponent:minimumDecayedCount:compatibilityVersion:language:locale:allowProfanity:minimumTimeInterval:usageSpreadExponent:" recipient:embedding limit:recipient withinRadius:limit responseCountExponent:version minimumDecayedCount:language compatibilityVersion:locale language:v24 locale:? allowProfanity:? minimumTimeInterval:? usageSpreadExponent:?];
   v15 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
@@ -609,8 +609,8 @@ void __83__SGQuickResponsesStore_decayAllCustomResponsesWithDecayFactor_filterin
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v25 + 1) + 8 * i) first];
-        [v15 addObject:v21];
+        first = [*(*(&v25 + 1) + 8 * i) first];
+        [v15 addObject:first];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -624,21 +624,21 @@ void __83__SGQuickResponsesStore_decayAllCustomResponsesWithDecayFactor_filterin
   return v15;
 }
 
-- (id)nearestCustomResponsesAndScoresToPromptEmbedding:(id)a3 recipient:(id)a4 limit:(unint64_t)a5 withinRadius:(float)a6 responseCountExponent:(float)a7 minimumDecayedCount:(float)a8 compatibilityVersion:(unint64_t)a9 language:(id)a10 locale:(id)a11 allowProfanity:(BOOL)a12 minimumTimeInterval:(double)a13 usageSpreadExponent:(float)a14
+- (id)nearestCustomResponsesAndScoresToPromptEmbedding:(id)embedding recipient:(id)recipient limit:(unint64_t)limit withinRadius:(float)radius responseCountExponent:(float)exponent minimumDecayedCount:(float)count compatibilityVersion:(unint64_t)version language:(id)self0 locale:(id)self1 allowProfanity:(BOOL)self2 minimumTimeInterval:(double)self3 usageSpreadExponent:(float)self4
 {
   v103 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v26 = a4;
-  v27 = a10;
-  v83 = a11;
-  v28 = [(SGQuickResponsesStore *)self getModelVersion];
-  v29 = [v28 integerValue];
+  embeddingCopy = embedding;
+  recipientCopy = recipient;
+  languageCopy = language;
+  localeCopy = locale;
+  getModelVersion = [(SGQuickResponsesStore *)self getModelVersion];
+  integerValue = [getModelVersion integerValue];
 
-  if (v29 == a9)
+  if (integerValue == version)
   {
-    v81 = v27;
-    v82 = a5;
-    v30 = [objc_alloc(MEMORY[0x277D41F20]) initWithNumbers:v25];
+    v81 = languageCopy;
+    limitCopy = limit;
+    v30 = [objc_alloc(MEMORY[0x277D41F20]) initWithNumbers:embeddingCopy];
     v31 = objc_opt_new();
     v32 = sgLogHandle();
     v33 = os_signpost_id_generate(v32);
@@ -655,16 +655,16 @@ void __83__SGQuickResponsesStore_decayAllCustomResponsesWithDecayFactor_filterin
     v88[1] = 3221225472;
     v88[2] = __237__SGQuickResponsesStore_nearestCustomResponsesAndScoresToPromptEmbedding_recipient_limit_withinRadius_responseCountExponent_minimumDecayedCount_compatibilityVersion_language_locale_allowProfanity_minimumTimeInterval_usageSpreadExponent___block_invoke;
     v88[3] = &unk_278EB7F98;
-    v89 = v27;
-    v96 = a8;
-    v95 = a13;
+    v89 = languageCopy;
+    countCopy = count;
+    intervalCopy = interval;
     v77 = v30;
     v90 = v77;
-    v91 = v26;
-    v92 = self;
-    v97 = a14;
-    v98 = a7;
-    v99 = a6;
+    v91 = recipientCopy;
+    selfCopy = self;
+    spreadExponentCopy = spreadExponent;
+    exponentCopy = exponent;
+    radiusCopy = radius;
     v79 = v31;
     v93 = v79;
     v94 = @"SELECT reply, prompt_embedding, decayed_times_used, usage_spread FROM custom_responses WHERE language = $language   AND decayed_times_used >= $minimum_decayed_count   AND last_seen - first_seen >= $minimum_time_interval";
@@ -688,7 +688,7 @@ void __83__SGQuickResponsesStore_decayAllCustomResponsesWithDecayFactor_filterin
       _os_signpost_emit_with_name_impl(&dword_24799E000, v41, OS_SIGNPOST_INTERVAL_BEGIN, v39, "SortCustomResponses", &unk_2479DB655, buf, 2u);
     }
 
-    v80 = v26;
+    v80 = recipientCopy;
 
     v42 = v79;
     [v79 sortUsingComparator:&__block_literal_global_216];
@@ -722,19 +722,19 @@ void __83__SGQuickResponsesStore_decayAllCustomResponsesWithDecayFactor_filterin
       _os_signpost_emit_with_name_impl(&dword_24799E000, v51, OS_SIGNPOST_INTERVAL_END, v46, "DedupeCustomResponses", &unk_2479DB655, buf, 2u);
     }
 
-    v52 = [(SGQuickResponsesStore *)self getProfanityLocale];
-    v53 = v52;
-    if (!v83 || a12 || ([v52 isEqualToString:v83] & 1) != 0)
+    getProfanityLocale = [(SGQuickResponsesStore *)self getProfanityLocale];
+    v53 = getProfanityLocale;
+    if (!localeCopy || profanity || ([getProfanityLocale isEqualToString:localeCopy] & 1) != 0)
     {
       v54 = v78;
-      if ([v78 count] <= v82)
+      if ([v78 count] <= limitCopy)
       {
         v55 = v78;
       }
 
       else
       {
-        v55 = [v78 subarrayWithRange:{0, v82}];
+        v55 = [v78 subarrayWithRange:{0, limitCopy}];
       }
 
       v56 = v55;
@@ -744,7 +744,7 @@ void __83__SGQuickResponsesStore_decayAllCustomResponsesWithDecayFactor_filterin
     else
     {
       v75 = v53;
-      v76 = v25;
+      v76 = embeddingCopy;
       v58 = sgLogHandle();
       v59 = os_signpost_id_generate(v58);
 
@@ -777,15 +777,15 @@ LABEL_33:
           }
 
           v67 = *(*(&v84 + 1) + 8 * v66);
-          v68 = [v67 first];
-          v101 = v83;
+          first = [v67 first];
+          v101 = localeCopy;
           v69 = [MEMORY[0x277CBEA60] arrayWithObjects:&v101 count:1];
-          v70 = [SGQuickResponsesStore isProfane:v68 inLocales:v69];
+          v70 = [SGQuickResponsesStore isProfane:first inLocales:v69];
 
           if (!v70)
           {
             [v56 addObject:v67];
-            if ([v56 count] == v82)
+            if ([v56 count] == limitCopy)
             {
               break;
             }
@@ -812,10 +812,10 @@ LABEL_33:
         _os_signpost_emit_with_name_impl(&dword_24799E000, v72, OS_SIGNPOST_INTERVAL_END, v59, "RemoveProfaneCustomResponses", &unk_2479DB655, buf, 2u);
       }
 
-      v25 = v76;
+      embeddingCopy = v76;
       v57 = v77;
-      v26 = v80;
-      v27 = v81;
+      recipientCopy = v80;
+      languageCopy = v81;
       v54 = v78;
       v42 = v79;
       v53 = v75;
@@ -1046,7 +1046,7 @@ LABEL_28:
   return *MEMORY[0x277D42690];
 }
 
-- (void)prunePerRecipientTableWithMaxRows:(unint64_t)a3
+- (void)prunePerRecipientTableWithMaxRows:(unint64_t)rows
 {
   v74 = *MEMORY[0x277D85DE8];
   v67 = 0;
@@ -1060,7 +1060,7 @@ LABEL_28:
   v65 = @"SELECT COUNT(ROWID) as n FROM cr_per_recipient_counts";
   v66 = &v67;
   [(SGQuickResponsesStore *)self frailReadTransaction:v64];
-  if (v68[3] > a3)
+  if (v68[3] > rows)
   {
     v4 = objc_opt_new();
     v61[0] = MEMORY[0x277D85DD0];
@@ -1112,8 +1112,8 @@ LABEL_28:
 
     v14 = v68[3];
     v15 = [v48 count];
-    v16 = v14 - a3;
-    if (v14 != a3)
+    v16 = v14 - rows;
+    if (v14 != rows)
     {
       v17 = v15;
       v42 = v15 - 1;
@@ -1130,15 +1130,15 @@ LABEL_28:
           {
             v19 = j - 1;
             v20 = [v48 objectAtIndexedSubscript:j - 1];
-            v45 = [v20 first];
-            v21 = [v46 objectForKeyedSubscript:v45];
-            v22 = [v21 integerValue];
+            first = [v20 first];
+            v21 = [v46 objectForKeyedSubscript:first];
+            integerValue = [v21 integerValue];
             v23 = [v48 objectAtIndexedSubscript:j];
-            v24 = [v23 first];
-            v25 = [v46 objectForKeyedSubscript:v24];
-            LOBYTE(v22) = v22 == [v25 integerValue];
+            first2 = [v23 first];
+            v25 = [v46 objectForKeyedSubscript:first2];
+            LOBYTE(integerValue) = integerValue == [v25 integerValue];
 
-            if ((v22 & 1) == 0)
+            if ((integerValue & 1) == 0)
             {
               goto LABEL_17;
             }
@@ -1151,18 +1151,18 @@ LABEL_17:
         while ((v19 & 0x80000000) == 0)
         {
           v26 = [v48 objectAtIndexedSubscript:v19];
-          v27 = [v26 first];
+          first3 = [v26 first];
 
-          if (!v27)
+          if (!first3)
           {
-            v31 = [MEMORY[0x277CCA890] currentHandler];
-            [v31 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesStore.m" lineNumber:846 description:{@"Invalid parameter not satisfying: %@", @"k"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesStore.m" lineNumber:846 description:{@"Invalid parameter not satisfying: %@", @"k"}];
           }
 
           v28 = MEMORY[0x277CCABB0];
-          v29 = [v46 objectForKeyedSubscript:v27];
+          v29 = [v46 objectForKeyedSubscript:first3];
           v30 = [v28 numberWithInteger:{objc_msgSend(v29, "integerValue") - 1}];
-          [v46 setObject:v30 forKeyedSubscript:v27];
+          [v46 setObject:v30 forKeyedSubscript:first3];
 
           --v19;
           if (!--v16)
@@ -1194,17 +1194,17 @@ LABEL_21:
 
           v36 = *(*(&v53 + 1) + 8 * k);
           v37 = [obj objectForKeyedSubscript:v36];
-          v38 = [v37 integerValue];
+          integerValue2 = [v37 integerValue];
           v39 = [v32 objectForKeyedSubscript:v36];
-          v40 = [v39 integerValue];
+          integerValue3 = [v39 integerValue];
 
-          if (v38 - v40 >= 1)
+          if (integerValue2 - integerValue3 >= 1)
           {
             v50[0] = MEMORY[0x277D85DD0];
             v50[1] = 3221225472;
             v50[2] = __59__SGQuickResponsesStore_prunePerRecipientTableWithMaxRows___block_invoke_5;
             v50[3] = &unk_278EB7ED0;
-            v52 = v38 - v40;
+            v52 = integerValue2 - integerValue3;
             v50[4] = v36;
             v51 = @"DELETE FROM cr_per_recipient_counts WHERE reply=$reply AND language=$language ORDER BY decayed_times_used ASC LIMIT $n_rows ";
             [(SGQuickResponsesStore *)self frailWriteTransaction:v50];
@@ -1295,19 +1295,19 @@ uint64_t __59__SGQuickResponsesStore_prunePerRecipientTableWithMaxRows___block_i
   [(SGQuickResponsesStore *)self frailWriteTransaction:v2];
 }
 
-- (void)recordMessagesInBatchAsCustomResponsesWithEmbedder:(id)a3 compatibilityVersion:(unint64_t)a4
+- (void)recordMessagesInBatchAsCustomResponsesWithEmbedder:(id)embedder compatibilityVersion:(unint64_t)version
 {
-  v6 = a3;
-  if (![(SGQuickResponsesStore *)self resetDbIfNeededCompareWithCompatibilityVersion:a4])
+  embedderCopy = embedder;
+  if (![(SGQuickResponsesStore *)self resetDbIfNeededCompareWithCompatibilityVersion:version])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __97__SGQuickResponsesStore_recordMessagesInBatchAsCustomResponsesWithEmbedder_compatibilityVersion___block_invoke;
     v7[3] = &unk_278EB7D70;
     v8 = @"SELECT rowid, reply, language, prompt, sent_at, recipient FROM messages WHERE filtering AND NOT filtered";
-    v9 = self;
+    selfCopy = self;
     v10 = @"SELECT prompt_embedding FROM custom_responses WHERE reply=$reply AND language=$language";
-    v11 = v6;
+    v11 = embedderCopy;
     [(SGQuickResponsesStore *)self frailWriteTransaction:v7];
   }
 }
@@ -1422,9 +1422,9 @@ uint64_t __97__SGQuickResponsesStore_recordMessagesInBatchAsCustomResponsesWithE
   return *MEMORY[0x277D42690];
 }
 
-- (id)messagesForEval:(id)a3
+- (id)messagesForEval:(id)eval
 {
-  v4 = a3;
+  evalCopy = eval;
   v5 = objc_opt_new();
   v19 = 0;
   v20 = &v19;
@@ -1438,7 +1438,7 @@ uint64_t __97__SGQuickResponsesStore_recordMessagesInBatchAsCustomResponsesWithE
   v18 = &v19;
   [(SGQuickResponsesStore *)self frailReadTransaction:v16];
   v6 = v20[3];
-  [v4 doubleValue];
+  [evalCopy doubleValue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __41__SGQuickResponsesStore_messagesForEval___block_invoke_3;
@@ -1497,9 +1497,9 @@ uint64_t __41__SGQuickResponsesStore_messagesForEval___block_invoke_5(uint64_t a
   return *v8;
 }
 
-- (void)resetCustomResponsesForEval:(id)a3
+- (void)resetCustomResponsesForEval:(id)eval
 {
-  v4 = a3;
+  evalCopy = eval;
   [(SGQuickResponsesStore *)self resetCustomResponsesAndResetMessages:0];
   v13 = 0;
   v14 = &v13;
@@ -1513,7 +1513,7 @@ uint64_t __41__SGQuickResponsesStore_messagesForEval___block_invoke_5(uint64_t a
   v12 = &v13;
   [(SGQuickResponsesStore *)self frailReadTransaction:v10];
   v5 = v14[3];
-  [v4 doubleValue];
+  [evalCopy doubleValue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SGQuickResponsesStore_resetCustomResponsesForEval___block_invoke_3;
@@ -1547,9 +1547,9 @@ uint64_t __53__SGQuickResponsesStore_resetCustomResponsesForEval___block_invoke_
   return [a2 prepAndRunQuery:v4 onPrep:v6 onRow:0 onError:a3];
 }
 
-- (void)resetCustomResponsesAndResetMessages:(BOOL)a3
+- (void)resetCustomResponsesAndResetMessages:(BOOL)messages
 {
-  v3 = a3;
+  messagesCopy = messages;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__SGQuickResponsesStore_resetCustomResponsesAndResetMessages___block_invoke;
@@ -1562,7 +1562,7 @@ uint64_t __53__SGQuickResponsesStore_resetCustomResponsesForEval___block_invoke_
   v11[3] = &unk_278EB7E80;
   v12 = @"DELETE FROM custom_responses_version";
   [(SGQuickResponsesStore *)self frailWriteTransaction:v11];
-  if (v3)
+  if (messagesCopy)
   {
     v5 = v10;
     v10[0] = MEMORY[0x277D85DD0];
@@ -1586,13 +1586,13 @@ uint64_t __53__SGQuickResponsesStore_resetCustomResponsesForEval___block_invoke_
   [(SGQuickResponsesStore *)self frailWriteTransaction:v5, v8, v9];
 }
 
-- (BOOL)resetDbIfNeededCompareWithCompatibilityVersion:(unint64_t)a3
+- (BOOL)resetDbIfNeededCompareWithCompatibilityVersion:(unint64_t)version
 {
-  v5 = [(SGQuickResponsesStore *)self getModelVersion];
-  v6 = v5;
-  if (v5)
+  getModelVersion = [(SGQuickResponsesStore *)self getModelVersion];
+  v6 = getModelVersion;
+  if (getModelVersion)
   {
-    v7 = [v5 integerValue] != a3;
+    v7 = [getModelVersion integerValue] != version;
   }
 
   else
@@ -1600,10 +1600,10 @@ uint64_t __53__SGQuickResponsesStore_resetCustomResponsesForEval___block_invoke_
     v7 = 0;
   }
 
-  v8 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v9 = [v8 firstObject];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  if (v7 || (-[SGQuickResponsesStore getProfanityLocale](self, "getProfanityLocale"), (v10 = objc_claimAutoreleasedReturnValue()) != 0) && (v11 = v10, v12 = [v10 isEqualToString:v9], v11, (v12 & 1) == 0))
+  if (v7 || (-[SGQuickResponsesStore getProfanityLocale](self, "getProfanityLocale"), (v10 = objc_claimAutoreleasedReturnValue()) != 0) && (v11 = v10, v12 = [v10 isEqualToString:firstObject], v11, (v12 & 1) == 0))
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -1620,7 +1620,7 @@ uint64_t __53__SGQuickResponsesStore_resetCustomResponsesForEval___block_invoke_
 
     v13 = 1;
 LABEL_10:
-    [(SGQuickResponsesStore *)self setProfanityLocale:v9 andModelVersion:a3];
+    [(SGQuickResponsesStore *)self setProfanityLocale:firstObject andModelVersion:version];
     v14 = v13;
     goto LABEL_11;
   }
@@ -1637,9 +1637,9 @@ LABEL_11:
   return v14;
 }
 
-- (void)setProfanityLocale:(id)a3 andModelVersion:(int64_t)a4
+- (void)setProfanityLocale:(id)locale andModelVersion:(int64_t)version
 {
-  v6 = a3;
+  localeCopy = locale;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__SGQuickResponsesStore_setProfanityLocale_andModelVersion___block_invoke;
@@ -1650,10 +1650,10 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = __60__SGQuickResponsesStore_setProfanityLocale_andModelVersion___block_invoke_2;
   v8[3] = &unk_278EB7ED0;
-  v9 = v6;
+  v9 = localeCopy;
   v10 = @"INSERT INTO custom_responses_version (current_version, profanity_locale) VALUES($current_version, $profanity_locale)";
-  v11 = a4;
-  v7 = v6;
+  versionCopy = version;
+  v7 = localeCopy;
   [(SGQuickResponsesStore *)self frailWriteTransaction:v8];
 }
 
@@ -1763,15 +1763,15 @@ uint64_t __43__SGQuickResponsesStore_getProfanityLocale__block_invoke_2(uint64_t
   return *MEMORY[0x277D42698];
 }
 
-- (void)filterBatchWithMinimumDistinctRecipients:(unint64_t)a3 minimumReplyOccurences:(unint64_t)a4
+- (void)filterBatchWithMinimumDistinctRecipients:(unint64_t)recipients minimumReplyOccurences:(unint64_t)occurences
 {
   v35 = *MEMORY[0x277D85DE8];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __89__SGQuickResponsesStore_filterBatchWithMinimumDistinctRecipients_minimumReplyOccurences___block_invoke;
   v30[3] = &unk_278EB7DE0;
-  v32 = a3;
-  v33 = a4;
+  recipientsCopy = recipients;
+  occurencesCopy = occurences;
   v31 = @"UPDATE messages SET filtering = false, filtered = true WHERE filtering AND reply IN (SELECT reply FROM messages GROUP BY reply HAVING COUNT(DISTINCT(recipient)) < $recipients OR COUNT(reply) < $replies)";
   [(SGQuickResponsesStore *)self frailWriteTransaction:v30];
   v24 = 0;
@@ -1780,18 +1780,18 @@ uint64_t __43__SGQuickResponsesStore_getProfanityLocale__block_invoke_2(uint64_t
   v27 = __Block_byref_object_copy__579;
   v28 = __Block_byref_object_dispose__580;
   v29 = objc_opt_new();
-  v5 = [(SGQuickResponsesStore *)self getProfanityLocale];
-  if (!v5)
+  getProfanityLocale = [(SGQuickResponsesStore *)self getProfanityLocale];
+  if (!getProfanityLocale)
   {
-    v6 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v5 = [v6 firstObject];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    getProfanityLocale = [preferredLanguages firstObject];
   }
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __89__SGQuickResponsesStore_filterBatchWithMinimumDistinctRecipients_minimumReplyOccurences___block_invoke_3;
   v20[3] = &unk_278EB7E30;
-  v7 = v5;
+  v7 = getProfanityLocale;
   v23 = &v24;
   v21 = v7;
   v22 = @"SELECT rowid, reply FROM messages WHERE filtering";
@@ -1925,7 +1925,7 @@ void __89__SGQuickResponsesStore_filterBatchWithMinimumDistinctRecipients_minimu
   [v4 bindNamedParam:"$replies" toInt64:*(a1 + 40)];
 }
 
-- (unint64_t)designateFilteringBatch:(unint64_t)a3
+- (unint64_t)designateFilteringBatch:(unint64_t)batch
 {
   v10 = 0;
   v11 = &v10;
@@ -1936,7 +1936,7 @@ void __89__SGQuickResponsesStore_filterBatchWithMinimumDistinctRecipients_minimu
   v5[2] = __49__SGQuickResponsesStore_designateFilteringBatch___block_invoke;
   v5[3] = &unk_278EB7D98;
   v8 = &v10;
-  v9 = a3;
+  batchCopy = batch;
   v6 = @"UPDATE messages SET filtering = true WHERE NOT filtered ORDER BY sent_at LIMIT $limit";
   v7 = @"SELECT changes();";
   [(SGQuickResponsesStore *)self frailWriteTransaction:v5];
@@ -1968,10 +1968,10 @@ void __49__SGQuickResponsesStore_designateFilteringBatch___block_invoke(void *a1
   }
 }
 
-- (void)recordKnownCustomResponsesInBatchWithEmbedder:(id)a3 compatibilityVersion:(unint64_t)a4
+- (void)recordKnownCustomResponsesInBatchWithEmbedder:(id)embedder compatibilityVersion:(unint64_t)version
 {
-  v6 = a3;
-  if (![(SGQuickResponsesStore *)self resetDbIfNeededCompareWithCompatibilityVersion:a4])
+  embedderCopy = embedder;
+  if (![(SGQuickResponsesStore *)self resetDbIfNeededCompareWithCompatibilityVersion:version])
   {
     v7 = objc_opt_new();
     v9[0] = MEMORY[0x277D85DD0];
@@ -1981,7 +1981,7 @@ void __49__SGQuickResponsesStore_designateFilteringBatch___block_invoke(void *a1
     v9[4] = self;
     v10 = v7;
     v11 = @"SELECT m.rowid, m.filtering, m.filtered, m.recipient, m.prompt, m.language, m.reply, m.sent_at, cr.prompt_embedding FROM messages as m, (SELECT reply, language, prompt_embedding from custom_responses) as cr WHERE m.filtering AND NOT m.filtered AND m.reply = cr.reply AND m.language = cr.language";
-    v12 = v6;
+    v12 = embedderCopy;
     v8 = v7;
     [(SGQuickResponsesStore *)self frailWriteTransaction:v9];
   }
@@ -2108,13 +2108,13 @@ LABEL_20:
   return v16;
 }
 
-- (id)embeddingForPrompt:(id)a3 language:(id)a4 embedder:(id)a5
+- (id)embeddingForPrompt:(id)prompt language:(id)language embedder:(id)embedder
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  promptCopy = prompt;
+  languageCopy = language;
+  embedderCopy = embedder;
   v10 = objc_autoreleasePoolPush();
-  v11 = v9[2](v9, v7, v8);
+  v11 = embedderCopy[2](embedderCopy, promptCopy, languageCopy);
   if (v11)
   {
     v12 = [objc_alloc(MEMORY[0x277D41F20]) initWithNumbers:v11];
@@ -2130,42 +2130,42 @@ LABEL_20:
   return v12;
 }
 
-- (BOOL)addingMessageExceedsBatchLimit:(unint64_t)a3 tableLimit:(unint64_t)a4 message:(id)a5 language:(id)a6 prompt:(id)a7 recipientHandle:(id)a8 sentAt:(id)a9
+- (BOOL)addingMessageExceedsBatchLimit:(unint64_t)limit tableLimit:(unint64_t)tableLimit message:(id)message language:(id)language prompt:(id)prompt recipientHandle:(id)handle sentAt:(id)at
 {
   v51[2] = *MEMORY[0x277D85DE8];
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  if (![v13 length])
+  messageCopy = message;
+  languageCopy = language;
+  promptCopy = prompt;
+  handleCopy = handle;
+  atCopy = at;
+  if (![messageCopy length])
   {
     goto LABEL_9;
   }
 
-  if ([v15 length] >= 0x119)
+  if ([promptCopy length] >= 0x119)
   {
-    v18 = [v15 substringToIndex:140];
-    v19 = [v15 substringFromIndex:{objc_msgSend(v15, "length") - 140}];
+    v18 = [promptCopy substringToIndex:140];
+    v19 = [promptCopy substringFromIndex:{objc_msgSend(promptCopy, "length") - 140}];
     v20 = [v18 stringByAppendingString:v19];
     v21 = _PASRepairString();
 
-    v15 = v21;
+    promptCopy = v21;
   }
 
-  if ([v15 length])
+  if ([promptCopy length])
   {
-    v22 = [(SGQuickResponsesStore *)self getProfanityLocale];
-    if (!v22)
+    getProfanityLocale = [(SGQuickResponsesStore *)self getProfanityLocale];
+    if (!getProfanityLocale)
     {
-      v23 = [MEMORY[0x277CBEAF8] preferredLanguages];
-      v22 = [v23 firstObject];
+      preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+      getProfanityLocale = [preferredLanguages firstObject];
     }
 
-    v51[0] = v14;
-    v51[1] = v22;
+    v51[0] = languageCopy;
+    v51[1] = getProfanityLocale;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
-    v25 = [SGQuickResponsesStore isProfane:v13 inLocales:v24];
+    v25 = [SGQuickResponsesStore isProfane:messageCopy inLocales:v24];
 
     if (v25)
     {
@@ -2174,17 +2174,17 @@ LABEL_20:
 
     else
     {
-      [v17 timeIntervalSinceReferenceDate];
+      [atCopy timeIntervalSinceReferenceDate];
       v28 = v27;
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __114__SGQuickResponsesStore_addingMessageExceedsBatchLimit_tableLimit_message_language_prompt_recipientHandle_sentAt___block_invoke;
       v44[3] = &unk_278EB7CF8;
-      v45 = v13;
-      v46 = v14;
-      v47 = v15;
+      v45 = messageCopy;
+      v46 = languageCopy;
+      v47 = promptCopy;
       v50 = v28;
-      v48 = v16;
+      v48 = handleCopy;
       v49 = @"INSERT INTO messages (reply, language, prompt, recipient, sent_at, filtering, filtered) VALUES($reply, $language, $prompt, $recipient, $sent_at, false, false)";
       [(SGQuickResponsesStore *)self frailWriteTransaction:v44];
       v41[0] = MEMORY[0x277D85DD0];
@@ -2192,7 +2192,7 @@ LABEL_20:
       v41[2] = __114__SGQuickResponsesStore_addingMessageExceedsBatchLimit_tableLimit_message_language_prompt_recipientHandle_sentAt___block_invoke_3;
       v41[3] = &unk_278EB7D20;
       v42 = @"DELETE FROM messages ORDER BY sent_at DESC LIMIT -1 OFFSET $table_limit";
-      v43 = a4;
+      tableLimitCopy = tableLimit;
       [(SGQuickResponsesStore *)self frailWriteTransaction:v41];
       v37 = 0;
       v38 = &v37;
@@ -2275,26 +2275,26 @@ void __114__SGQuickResponsesStore_addingMessageExceedsBatchLimit_tableLimit_mess
   [v4 bindNamedParam:"$sent_at" toDouble:*(a1 + 64)];
 }
 
-- (void)_incrementCustomResponseInDb:(id)a3 reply:(id)a4 language:(id)a5 embedding:(id)a6 sentAt:(double)a7 recipient:(id)a8 messagesRowId:(int64_t)a9 onError:(id)a10
+- (void)_incrementCustomResponseInDb:(id)db reply:(id)reply language:(id)language embedding:(id)embedding sentAt:(double)at recipient:(id)recipient messagesRowId:(int64_t)id onError:(id)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
+  replyCopy = reply;
+  languageCopy = language;
+  embeddingCopy = embedding;
+  recipientCopy = recipient;
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __118__SGQuickResponsesStore__incrementCustomResponseInDb_reply_language_embedding_sentAt_recipient_messagesRowId_onError___block_invoke;
   v34[3] = &unk_278EB7C60;
-  v20 = v16;
+  v20 = replyCopy;
   v35 = v20;
-  v21 = v17;
+  v21 = languageCopy;
   v36 = v21;
-  v37 = v18;
-  v38 = a7;
-  v22 = v18;
-  v23 = a10;
-  v24 = a3;
-  [v24 prepAndRunQuery:@"UPDATE custom_responses SET prompt_embedding = $prompt_embedding onPrep:decayed_times_used = decayed_times_used + 1 onRow:first_seen = MIN($sent_at onError:{first_seen), last_seen = MAX($sent_at, last_seen) WHERE language = $language AND reply = $reply", v34, 0, v23}];
+  v37 = embeddingCopy;
+  atCopy = at;
+  v22 = embeddingCopy;
+  errorCopy = error;
+  dbCopy = db;
+  [dbCopy prepAndRunQuery:@"UPDATE custom_responses SET prompt_embedding = $prompt_embedding onPrep:decayed_times_used = decayed_times_used + 1 onRow:first_seen = MIN($sent_at onError:{first_seen), last_seen = MAX($sent_at, last_seen) WHERE language = $language AND reply = $reply", v34, 0, errorCopy}];
   v25 = perRecipientCountUpsertQuery;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -2302,17 +2302,17 @@ void __114__SGQuickResponsesStore_addingMessageExceedsBatchLimit_tableLimit_mess
   v30[3] = &unk_278EB7C88;
   v31 = v20;
   v32 = v21;
-  v33 = v19;
-  v26 = v19;
+  v33 = recipientCopy;
+  v26 = recipientCopy;
   v27 = v21;
   v28 = v20;
-  [v24 prepAndRunQuery:v25 onPrep:v30 onRow:0 onError:v23];
+  [dbCopy prepAndRunQuery:v25 onPrep:v30 onRow:0 onError:errorCopy];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __118__SGQuickResponsesStore__incrementCustomResponseInDb_reply_language_embedding_sentAt_recipient_messagesRowId_onError___block_invoke_3;
   v29[3] = &__block_descriptor_40_e29_v16__0___PASSqliteStatement_8l;
-  v29[4] = a9;
-  [v24 prepAndRunQuery:markFilteredQuery onPrep:v29 onRow:0 onError:v23];
+  v29[4] = id;
+  [dbCopy prepAndRunQuery:markFilteredQuery onPrep:v29 onRow:0 onError:errorCopy];
 }
 
 void __118__SGQuickResponsesStore__incrementCustomResponseInDb_reply_language_embedding_sentAt_recipient_messagesRowId_onError___block_invoke(uint64_t a1, void *a2)
@@ -2336,26 +2336,26 @@ void __118__SGQuickResponsesStore__incrementCustomResponseInDb_reply_language_em
   [v4 bindNamedParam:"$recipient" toNSString:a1[6]];
 }
 
-- (void)_addCustomResponseToDb:(id)a3 reply:(id)a4 language:(id)a5 embedding:(id)a6 sentAt:(double)a7 recipient:(id)a8 messagesRowId:(int64_t)a9 onError:(id)a10
+- (void)_addCustomResponseToDb:(id)db reply:(id)reply language:(id)language embedding:(id)embedding sentAt:(double)at recipient:(id)recipient messagesRowId:(int64_t)id onError:(id)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
+  replyCopy = reply;
+  languageCopy = language;
+  embeddingCopy = embedding;
+  recipientCopy = recipient;
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __112__SGQuickResponsesStore__addCustomResponseToDb_reply_language_embedding_sentAt_recipient_messagesRowId_onError___block_invoke;
   v34[3] = &unk_278EB7C60;
-  v20 = v16;
+  v20 = replyCopy;
   v35 = v20;
-  v21 = v17;
+  v21 = languageCopy;
   v36 = v21;
-  v37 = v18;
-  v38 = a7;
-  v22 = v18;
-  v23 = a10;
-  v24 = a3;
-  [v24 prepAndRunQuery:@"INSERT INTO custom_responses (reply onPrep:language onRow:prompt_embedding onError:{decayed_times_used, first_seen, last_seen)                       VALUES($reply, $language, $prompt_embedding, 1, $sent_at, $sent_at)", v34, 0, v23}];
+  v37 = embeddingCopy;
+  atCopy = at;
+  v22 = embeddingCopy;
+  errorCopy = error;
+  dbCopy = db;
+  [dbCopy prepAndRunQuery:@"INSERT INTO custom_responses (reply onPrep:language onRow:prompt_embedding onError:{decayed_times_used, first_seen, last_seen)                       VALUES($reply, $language, $prompt_embedding, 1, $sent_at, $sent_at)", v34, 0, errorCopy}];
   v25 = perRecipientCountUpsertQuery;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -2363,17 +2363,17 @@ void __118__SGQuickResponsesStore__incrementCustomResponseInDb_reply_language_em
   v30[3] = &unk_278EB7C88;
   v31 = v20;
   v32 = v21;
-  v33 = v19;
-  v26 = v19;
+  v33 = recipientCopy;
+  v26 = recipientCopy;
   v27 = v21;
   v28 = v20;
-  [v24 prepAndRunQuery:v25 onPrep:v30 onRow:0 onError:v23];
+  [dbCopy prepAndRunQuery:v25 onPrep:v30 onRow:0 onError:errorCopy];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __112__SGQuickResponsesStore__addCustomResponseToDb_reply_language_embedding_sentAt_recipient_messagesRowId_onError___block_invoke_3;
   v29[3] = &__block_descriptor_40_e29_v16__0___PASSqliteStatement_8l;
-  v29[4] = a9;
-  [v24 prepAndRunQuery:markFilteredQuery onPrep:v29 onRow:0 onError:v23];
+  v29[4] = id;
+  [dbCopy prepAndRunQuery:markFilteredQuery onPrep:v29 onRow:0 onError:errorCopy];
 }
 
 void __112__SGQuickResponsesStore__addCustomResponseToDb_reply_language_embedding_sentAt_recipient_messagesRowId_onError___block_invoke(uint64_t a1, void *a2)
@@ -2397,22 +2397,22 @@ void __112__SGQuickResponsesStore__addCustomResponseToDb_reply_language_embeddin
   [v4 bindNamedParam:"$recipient" toNSString:a1[6]];
 }
 
-- (void)addWrittenToResponse:(id)a3 language:(id)a4 isMatch:(BOOL)a5
+- (void)addWrittenToResponse:(id)response language:(id)language isMatch:(BOOL)match
 {
-  v8 = a4;
-  v9 = [SGQuickResponsesReplies normalizeReplyText:a3];
+  languageCopy = language;
+  v9 = [SGQuickResponsesReplies normalizeReplyText:response];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__SGQuickResponsesStore_addWrittenToResponse_language_isMatch___block_invoke;
   v12[3] = &unk_278EB7C38;
-  v18 = a5;
-  v13 = v8;
+  matchCopy = match;
+  v13 = languageCopy;
   v14 = v9;
   v15 = @"INSERT INTO responses (lang_response, matched) VALUES($lang_response,1) ON CONFLICT(lang_response) DO UPDATE SET matched=matched+1";
   v16 = @"INSERT INTO responses_totals (language, matched) VALUES ($language,1) ON CONFLICT(language) DO UPDATE SET matched=matched+1";
   v17 = @"INSERT INTO responses_totals (language, unmatched) VALUES ($language,1) ON CONFLICT(language) DO UPDATE SET unmatched=unmatched+1";
   v10 = v9;
-  v11 = v8;
+  v11 = languageCopy;
   [(SGQuickResponsesStore *)self frailWriteTransaction:v12];
 }
 
@@ -2459,20 +2459,20 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)addSelectedToResponse:(id)a3 language:(id)a4
+- (void)addSelectedToResponse:(id)response language:(id)language
 {
-  v6 = a4;
-  v7 = [SGQuickResponsesReplies normalizeReplyText:a3];
+  languageCopy = language;
+  v7 = [SGQuickResponsesReplies normalizeReplyText:response];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__SGQuickResponsesStore_addSelectedToResponse_language___block_invoke;
   v10[3] = &unk_278EB7C10;
-  v11 = v6;
+  v11 = languageCopy;
   v12 = v7;
   v13 = @"INSERT INTO responses (lang_response, selected) VALUES($lang_response,1) ON CONFLICT(lang_response) DO UPDATE SET selected=selected+1";
   v14 = @"INSERT INTO responses_totals (language, selected) VALUES ($language,1) ON CONFLICT(language) DO UPDATE SET selected=selected+1";
   v8 = v7;
-  v9 = v6;
+  v9 = languageCopy;
   [(SGQuickResponsesStore *)self frailWriteTransaction:v10];
 }
 
@@ -2502,19 +2502,19 @@ void __56__SGQuickResponsesStore_addSelectedToResponse_language___block_invoke(u
   }
 }
 
-- (void)addDisplayedToResponses:(id)a3 language:(id)a4
+- (void)addDisplayedToResponses:(id)responses language:(id)language
 {
-  v6 = a4;
-  v7 = [a3 _pas_mappedArrayWithTransform:&__block_literal_global_54];
+  languageCopy = language;
+  v7 = [responses _pas_mappedArrayWithTransform:&__block_literal_global_54];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__SGQuickResponsesStore_addDisplayedToResponses_language___block_invoke_2;
   v10[3] = &unk_278EB7C10;
   v11 = v7;
-  v12 = v6;
+  v12 = languageCopy;
   v13 = @"INSERT INTO responses (lang_response, displayed) VALUES($lang_response,1) ON CONFLICT(lang_response) DO UPDATE SET displayed=displayed+1";
   v14 = @"INSERT INTO responses_totals (language, opportunities, displayed) VALUES ($language,1,$count) ON CONFLICT(language) DO UPDATE SET opportunities=opportunities+1, displayed=displayed+$count";
-  v8 = v6;
+  v8 = languageCopy;
   v9 = v7;
   [(SGQuickResponsesStore *)self frailWriteTransaction:v10];
 }
@@ -2598,10 +2598,10 @@ void __58__SGQuickResponsesStore_addDisplayedToResponses_language___block_invoke
   [v4 bindNamedParam:"$count" toInt64:{objc_msgSend(*(a1 + 40), "count")}];
 }
 
-- (id)_recordsForResponses:(id)a3 language:(id)a4
+- (id)_recordsForResponses:(id)responses language:(id)language
 {
-  v6 = a3;
-  v7 = a4;
+  responsesCopy = responses;
+  languageCopy = language;
   v8 = objc_opt_new();
   v45 = 0;
   v46 = &v45;
@@ -2627,9 +2627,9 @@ void __58__SGQuickResponsesStore_addDisplayedToResponses_language___block_invoke
   v16 = 3221225472;
   v17 = __55__SGQuickResponsesStore__recordsForResponses_language___block_invoke;
   v18 = &unk_278EB7BC0;
-  v9 = v6;
+  v9 = responsesCopy;
   v19 = v9;
-  v10 = v7;
+  v10 = languageCopy;
   v20 = v10;
   v21 = @"SELECT * FROM responses WHERE lang_response=$lang_response";
   v11 = v8;
@@ -2790,27 +2790,27 @@ uint64_t __55__SGQuickResponsesStore__recordsForResponses_language___block_invok
   return *MEMORY[0x277D42698];
 }
 
-- (id)recordsForResponsesInternal:(id)a3 language:(id)a4
+- (id)recordsForResponsesInternal:(id)internal language:(id)language
 {
-  v6 = a4;
-  v7 = [a3 _pas_mappedArrayWithTransform:&__block_literal_global_32];
-  v8 = [(SGQuickResponsesStore *)self _recordsForResponses:v7 language:v6];
+  languageCopy = language;
+  v7 = [internal _pas_mappedArrayWithTransform:&__block_literal_global_32];
+  v8 = [(SGQuickResponsesStore *)self _recordsForResponses:v7 language:languageCopy];
 
   return v8;
 }
 
-- (id)recordsForResponses:(id)a3 language:(id)a4
+- (id)recordsForResponses:(id)responses language:(id)language
 {
-  v6 = a4;
-  v7 = [a3 _pas_mappedArrayWithTransform:&__block_literal_global_29];
-  v8 = [(SGQuickResponsesStore *)self _recordsForResponses:v7 language:v6];
+  languageCopy = language;
+  v7 = [responses _pas_mappedArrayWithTransform:&__block_literal_global_29];
+  v8 = [(SGQuickResponsesStore *)self _recordsForResponses:v7 language:languageCopy];
 
   return v8;
 }
 
-- (BOOL)frailWriteTransaction:(id)a3
+- (BOOL)frailWriteTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -2822,7 +2822,7 @@ uint64_t __55__SGQuickResponsesStore__recordsForResponses_language___block_invok
   v9[2] = __47__SGQuickResponsesStore_frailWriteTransaction___block_invoke;
   v9[3] = &unk_278EB7B00;
   v11 = &v12;
-  v7 = v4;
+  v7 = transactionCopy;
   v10 = v7;
   [(_PASLock *)readerWriter runWithLockAcquired:v9];
 
@@ -2888,9 +2888,9 @@ uint64_t __47__SGQuickResponsesStore_frailWriteTransaction___block_invoke_3(uint
   return *MEMORY[0x277D42698];
 }
 
-- (BOOL)frailReadTransaction:(id)a3
+- (BOOL)frailReadTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -2902,7 +2902,7 @@ uint64_t __47__SGQuickResponsesStore_frailWriteTransaction___block_invoke_3(uint
   v9[2] = __46__SGQuickResponsesStore_frailReadTransaction___block_invoke;
   v9[3] = &unk_278EB7B00;
   v11 = &v12;
-  v7 = v4;
+  v7 = transactionCopy;
   v10 = v7;
   [(_PASLock *)readerWriter runWithLockAcquired:v9];
 
@@ -2968,9 +2968,9 @@ uint64_t __46__SGQuickResponsesStore_frailReadTransaction___block_invoke_3(uint6
   return *MEMORY[0x277D42698];
 }
 
-- (id)initInDirectory:(id)a3 inMemory:(BOOL)a4 withMigration:(BOOL)a5 forTools:(BOOL)a6
+- (id)initInDirectory:(id)directory inMemory:(BOOL)memory withMigration:(BOOL)migration forTools:(BOOL)tools
 {
-  v10 = a3;
+  directoryCopy = directory;
   v26.receiver = self;
   v26.super_class = SGQuickResponsesStore;
   v11 = [(SGQuickResponsesStore *)&v26 init];
@@ -2982,10 +2982,10 @@ uint64_t __46__SGQuickResponsesStore_frailReadTransaction___block_invoke_3(uint6
     v19 = 3221225472;
     v20 = __73__SGQuickResponsesStore_initInDirectory_inMemory_withMigration_forTools___block_invoke;
     v21 = &unk_278EB7A68;
-    v22 = v10;
-    v23 = a4;
-    v24 = a5;
-    v25 = a6;
+    v22 = directoryCopy;
+    memoryCopy = memory;
+    migrationCopy = migration;
+    toolsCopy = tools;
     v14 = [(SGLazyInit *)v13 initWithInitializer:&v18 destructor:&__block_literal_global_24];
     v15 = [v12 initWithGuardedData:{v14, v18, v19, v20, v21}];
     readerWriter = v11->_readerWriter;
@@ -3008,32 +3008,32 @@ void __73__SGQuickResponsesStore_initInDirectory_inMemory_withMigration_forTools
   [v2 closePermanently];
 }
 
-+ (id)keyWithLanguage:(id)a3 andResponse:(id)a4
++ (id)keyWithLanguage:(id)language andResponse:(id)response
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 length];
+  responseCopy = response;
+  languageCopy = language;
+  v7 = [languageCopy length];
   v8 = [@"|" length];
-  v9 = v7 + [v5 length];
+  v9 = v7 + [responseCopy length];
   v10 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:v8 + v9];
-  [v10 appendString:v6];
+  [v10 appendString:languageCopy];
 
   [v10 appendString:@"|"];
-  [v10 appendString:v5];
+  [v10 appendString:responseCopy];
 
   return v10;
 }
 
-+ (BOOL)isProfane:(id)a3 inLocales:(id)a4
++ (BOOL)isProfane:(id)profane inLocales:(id)locales
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [SGTokenizerML tokenize:a3];
+  localesCopy = locales;
+  v6 = [SGTokenizerML tokenize:profane];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = localesCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -3105,8 +3105,8 @@ void __39__SGQuickResponsesStore_sharedInstance__block_invoke()
   v6 = v4;
   if (!v4)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:a1 file:@"SGQuickResponsesStore.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"store"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesStore.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"store"}];
 
     v4 = 0;
   }

@@ -1,9 +1,9 @@
 @interface TSDMagicMoveTextureZOrdererMatch
-- (BOOL)intersectsZOrdererMatch:(id)a3;
-- (BOOL)intersectsZOrdererMatch:(id)a3 withAttemptedZIndex:(int64_t)a4;
+- (BOOL)intersectsZOrdererMatch:(id)match;
+- (BOOL)intersectsZOrdererMatch:(id)match withAttemptedZIndex:(int64_t)index;
 - (TSDMagicMoveTextureZOrdererMatch)init;
-- (TSDMagicMoveTextureZOrdererMatch)initWithAnimationMatch:(id)a3;
-- (double)intersectionPercentWithZOrdererMatch:(id)a3;
+- (TSDMagicMoveTextureZOrdererMatch)initWithAnimationMatch:(id)match;
+- (double)intersectionPercentWithZOrdererMatch:(id)match;
 - (id)description;
 @end
 
@@ -26,9 +26,9 @@
   objc_exception_throw(v14);
 }
 
-- (TSDMagicMoveTextureZOrdererMatch)initWithAnimationMatch:(id)a3
+- (TSDMagicMoveTextureZOrdererMatch)initWithAnimationMatch:(id)match
 {
-  v5 = a3;
+  matchCopy = match;
   v28.receiver = self;
   v28.super_class = TSDMagicMoveTextureZOrdererMatch;
   v6 = [(TSDMagicMoveTextureZOrdererMatch *)&v28 init];
@@ -37,11 +37,11 @@
   {
     v6->_outgoingZIndex = -1;
     v6->_incomingZIndex = -1;
-    v10 = objc_msgSend_outgoingTexture(v5, v7, v8);
-    v14 = objc_msgSend_incomingTexture(v5, v11, v12);
+    v10 = objc_msgSend_outgoingTexture(matchCopy, v7, v8);
+    v14 = objc_msgSend_incomingTexture(matchCopy, v11, v12);
     if (v10 | v14)
     {
-      objc_storeStrong(&v9->_animationMatch, a3);
+      objc_storeStrong(&v9->_animationMatch, match);
       if (v10)
       {
         objc_storeStrong(&v9->_outgoingTexture, v10);
@@ -69,7 +69,7 @@
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v23, v20, v22, 897, 0, "incomingTexture and outgoingTexture are both nil!");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25);
-      objc_storeStrong(&v9->_animationMatch, a3);
+      objc_storeStrong(&v9->_animationMatch, match);
     }
 
     objc_storeStrong(&v9->_incomingTexture, v10);
@@ -88,10 +88,10 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)intersectsZOrdererMatch:(id)a3 withAttemptedZIndex:(int64_t)a4
+- (BOOL)intersectsZOrdererMatch:(id)match withAttemptedZIndex:(int64_t)index
 {
-  v6 = a3;
-  if (objc_msgSend_outgoingZIndex(v6, v7, v8) == -1 || objc_msgSend_incomingZIndex(v6, v9, v10) == -1)
+  matchCopy = match;
+  if (objc_msgSend_outgoingZIndex(matchCopy, v7, v8) == -1 || objc_msgSend_incomingZIndex(matchCopy, v9, v10) == -1)
   {
     v28 = 0;
   }
@@ -99,7 +99,7 @@ LABEL_11:
   else
   {
     v13 = objc_msgSend_outgoingZIndex(self, v11, v12);
-    v16 = 2 * a4 - 1;
+    v16 = 2 * index - 1;
     if (v13 >= 0)
     {
       v17 = 2 * v13;
@@ -116,8 +116,8 @@ LABEL_11:
       v16 = 2 * v18;
     }
 
-    v21 = objc_msgSend_outgoingZIndex(v6, v19, v20);
-    v24 = objc_msgSend_incomingZIndex(v6, v22, v23);
+    v21 = objc_msgSend_outgoingZIndex(matchCopy, v19, v20);
+    v24 = objc_msgSend_incomingZIndex(matchCopy, v22, v23);
     v25 = v16 > 2 * v24;
     if (v16 < 2 * v24)
     {
@@ -137,11 +137,11 @@ LABEL_11:
   return v28;
 }
 
-- (BOOL)intersectsZOrdererMatch:(id)a3
+- (BOOL)intersectsZOrdererMatch:(id)match
 {
-  v4 = a3;
-  v7 = v4;
-  if (self->_outgoingZIndex == -1 || self->_incomingZIndex == -1 || objc_msgSend_outgoingZIndex(v4, v5, v6) == -1 || objc_msgSend_incomingZIndex(v7, v8, v9) == -1)
+  matchCopy = match;
+  v7 = matchCopy;
+  if (self->_outgoingZIndex == -1 || self->_incomingZIndex == -1 || objc_msgSend_outgoingZIndex(matchCopy, v5, v6) == -1 || objc_msgSend_incomingZIndex(v7, v8, v9) == -1)
   {
     v20 = 0;
   }
@@ -174,11 +174,11 @@ LABEL_11:
   return v20;
 }
 
-- (double)intersectionPercentWithZOrdererMatch:(id)a3
+- (double)intersectionPercentWithZOrdererMatch:(id)match
 {
   outgoingZIndex = self->_outgoingZIndex;
-  v5 = a3;
-  v8 = objc_msgSend_outgoingZIndex(v5, v6, v7);
+  matchCopy = match;
+  v8 = objc_msgSend_outgoingZIndex(matchCopy, v6, v7);
   if (outgoingZIndex - v8 >= 0)
   {
     v11 = outgoingZIndex - v8;
@@ -190,7 +190,7 @@ LABEL_11:
   }
 
   incomingZIndex = self->_incomingZIndex;
-  v13 = objc_msgSend_incomingZIndex(v5, v9, v10);
+  v13 = objc_msgSend_incomingZIndex(matchCopy, v9, v10);
 
   v14 = incomingZIndex - v13;
   if (incomingZIndex - v13 < 0)

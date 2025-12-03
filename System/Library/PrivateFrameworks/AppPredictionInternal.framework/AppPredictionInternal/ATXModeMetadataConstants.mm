@@ -1,7 +1,7 @@
 @interface ATXModeMetadataConstants
 + (id)sharedInstance;
 - (ATXModeMetadataConstants)init;
-- (id)_invertDictionary:(id)a3;
+- (id)_invertDictionary:(id)dictionary;
 - (id)defaultAppGenreModeAffinities;
 - (id)defaultAppGenreModeAffinities_v2;
 - (id)getCategoryScoresV1;
@@ -20,12 +20,12 @@
   v2 = [(ATXModeMetadataConstants *)&v24 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEB6A8] sharedInstance];
+    mEMORY[0x277CEB6A8] = [MEMORY[0x277CEB6A8] sharedInstance];
     modeEntityTrialClientWrapper = v2->_modeEntityTrialClientWrapper;
-    v2->_modeEntityTrialClientWrapper = v3;
+    v2->_modeEntityTrialClientWrapper = mEMORY[0x277CEB6A8];
 
-    v5 = [(ATXModeEntityTrialClientWrapper *)v2->_modeEntityTrialClientWrapper modeAffinityAppCategoryScores];
-    v6 = [v5 count];
+    modeAffinityAppCategoryScores = [(ATXModeEntityTrialClientWrapper *)v2->_modeEntityTrialClientWrapper modeAffinityAppCategoryScores];
+    v6 = [modeAffinityAppCategoryScores count];
 
     if (v6)
     {
@@ -36,9 +36,9 @@
         _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "ATXModeMetadataConstants: Loaded mode affinity app category scores from Trial", v23, 2u);
       }
 
-      v8 = [(ATXModeEntityTrialClientWrapper *)v2->_modeEntityTrialClientWrapper modeAffinityAppCategoryScores];
+      modeAffinityAppCategoryScores2 = [(ATXModeEntityTrialClientWrapper *)v2->_modeEntityTrialClientWrapper modeAffinityAppCategoryScores];
       appCategoryScores_V2 = v2->_appCategoryScores_V2;
-      v2->_appCategoryScores_V2 = v8;
+      v2->_appCategoryScores_V2 = modeAffinityAppCategoryScores2;
     }
 
     else
@@ -55,11 +55,11 @@
     v2->_appCategoryScores_V1 = v13;
 
     v25[0] = @"DefaultAppGenreModeAffinities";
-    v15 = [(ATXModeMetadataConstants *)v2 getCategoryScoresV1];
+    getCategoryScoresV1 = [(ATXModeMetadataConstants *)v2 getCategoryScoresV1];
     v25[1] = @"DefaultAppGenreModeAffinities_v2";
-    v26[0] = v15;
-    v16 = [(ATXModeMetadataConstants *)v2 getCategoryScoresV2];
-    v26[1] = v16;
+    v26[0] = getCategoryScoresV1;
+    getCategoryScoresV2 = [(ATXModeMetadataConstants *)v2 getCategoryScoresV2];
+    v26[1] = getCategoryScoresV2;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
     parameters = v2->_parameters;
     v2->_parameters = v17;
@@ -84,7 +84,7 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = self->_appCategoryScores_V2;
   v21 = [(NSDictionary *)obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v21)
@@ -107,7 +107,7 @@
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v7 = [(NSDictionary *)v23->_appCategoryScores_V2 objectForKeyedSubscript:v6];
+        v7 = [(NSDictionary *)selfCopy->_appCategoryScores_V2 objectForKeyedSubscript:v6];
         v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v8)
         {
@@ -123,7 +123,7 @@
               }
 
               v12 = *(*(&v24 + 1) + 8 * i);
-              v13 = [(NSDictionary *)v23->_appCategoryScores_V2 objectForKeyedSubscript:v6];
+              v13 = [(NSDictionary *)selfCopy->_appCategoryScores_V2 objectForKeyedSubscript:v6];
               v14 = [v13 objectForKeyedSubscript:v12];
               v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x277CEB350], "appDirectoryCategoryStringToAppDirectoryCategoryID:", v12)}];
               [v5 setObject:v14 forKey:v15];
@@ -163,7 +163,7 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = self->_appCategoryScores_V1;
   v21 = [(NSDictionary *)obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v21)
@@ -186,7 +186,7 @@
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v7 = [(NSDictionary *)v23->_appCategoryScores_V1 objectForKeyedSubscript:v6];
+        v7 = [(NSDictionary *)selfCopy->_appCategoryScores_V1 objectForKeyedSubscript:v6];
         v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v8)
         {
@@ -202,7 +202,7 @@
               }
 
               v12 = *(*(&v24 + 1) + 8 * i);
-              v13 = [(NSDictionary *)v23->_appCategoryScores_V1 objectForKeyedSubscript:v6];
+              v13 = [(NSDictionary *)selfCopy->_appCategoryScores_V1 objectForKeyedSubscript:v6];
               v14 = [v13 objectForKeyedSubscript:v12];
               v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x277CEB350], "appDirectoryCategoryStringToAppDirectoryCategoryID:", v12)}];
               [v5 setObject:v14 forKey:v15];
@@ -321,16 +321,16 @@ void __42__ATXModeMetadataConstants_sharedInstance__block_invoke()
   }
 }
 
-- (id)_invertDictionary:(id)a3
+- (id)_invertDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v22 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v22)
   {

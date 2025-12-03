@@ -1,35 +1,35 @@
 @interface PKVirtualCardEnrollmentViewController
-- (PKVirtualCardEnrollmentViewController)initWithPaymentPass:(id)a3 context:(int64_t)a4 delegate:(id)a5;
+- (PKVirtualCardEnrollmentViewController)initWithPaymentPass:(id)pass context:(int64_t)context delegate:(id)delegate;
 - (PKVirtualCardEnrollmentViewControllerDelegate)delegate;
 - (void)_beginReportingIfNecessary;
 - (void)_endReportingIfNecessary;
 - (void)dealloc;
-- (void)explanationViewControllerDidSelectCancel:(id)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
+- (void)explanationViewControllerDidSelectCancel:(id)cancel;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
 - (void)loadView;
 - (void)passDidNotUpdateInTime;
 - (void)passDidUpdate;
-- (void)paymentAuthorizationViewController:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationViewControllerDidFinish:(id)a3;
-- (void)receivedPassUpdatedNotification:(id)a3;
+- (void)paymentAuthorizationViewController:(id)controller didAuthorizePayment:(id)payment handler:(id)handler;
+- (void)paymentAuthorizationViewControllerDidFinish:(id)finish;
+- (void)receivedPassUpdatedNotification:(id)notification;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)waitForPassToUpdate;
 @end
 
 @implementation PKVirtualCardEnrollmentViewController
 
-- (PKVirtualCardEnrollmentViewController)initWithPaymentPass:(id)a3 context:(int64_t)a4 delegate:(id)a5
+- (PKVirtualCardEnrollmentViewController)initWithPaymentPass:(id)pass context:(int64_t)context delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(PKExplanationViewController *)self initWithContext:a4];
+  passCopy = pass;
+  delegateCopy = delegate;
+  v11 = [(PKExplanationViewController *)self initWithContext:context];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_paymentPass, a3);
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeStrong(&v11->_paymentPass, pass);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     v13 = [[PKHeroCardExplanationHeaderView alloc] initWithImage:0];
     heroCardView = v12->_heroCardView;
     v12->_heroCardView = v13;
@@ -42,8 +42,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self];
   v4.receiver = self;
@@ -57,11 +57,11 @@
   v11.super_class = PKVirtualCardEnrollmentViewController;
   [(PKExplanationViewController *)&v11 loadView];
   [(PKExplanationViewController *)self setExplanationViewControllerDelegate:self];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  [v3 setShowPrivacyView:0];
-  [v3 setDelegate:self];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setDelegate:self];
   v4 = PKLocalizedVirtualCardString(&cfstr_VirtualCardSet_0.isa);
-  [v3 setTitleText:v4];
+  [explanationView setTitleText:v4];
 
   if (PKFPANAutoFillEnabled())
   {
@@ -74,14 +74,14 @@
   }
 
   v6 = PKLocalizedVirtualCardString(&v5->isa);
-  [v3 setBodyText:v6];
+  [explanationView setBodyText:v6];
 
-  [v3 setForceShowSetupLaterButton:1];
-  v7 = [v3 dockView];
-  v8 = [v7 footerView];
-  v9 = [v8 setUpLaterButton];
+  [explanationView setForceShowSetupLaterButton:1];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
+  setUpLaterButton = [footerView setUpLaterButton];
   v10 = PKLocalizedVirtualCardString(&cfstr_VirtualCardSet_3.isa);
-  [v9 setTitle:v10 forState:0];
+  [setUpLaterButton setTitle:v10 forState:0];
 }
 
 - (void)viewDidLoad
@@ -90,12 +90,12 @@
   v23.receiver = self;
   v23.super_class = PKVirtualCardEnrollmentViewController;
   [(PKExplanationViewController *)&v23 viewDidLoad];
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 addObserver:self selector:sel_receivedPassUpdatedNotification_ name:*MEMORY[0x1E69BBBE0] object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_receivedPassUpdatedNotification_ name:*MEMORY[0x1E69BBBE0] object:0];
 
-  v4 = [(PKExplanationViewController *)self explanationView];
-  v5 = [(PKHeroCardExplanationHeaderView *)self->_heroCardView backgroundColor];
-  [v4 setTopBackgroundColor:v5];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  backgroundColor = [(PKHeroCardExplanationHeaderView *)self->_heroCardView backgroundColor];
+  [explanationView setTopBackgroundColor:backgroundColor];
 
   +[PKHeroCardExplanationHeaderView recommendedCardImageSize];
   v7 = v6;
@@ -107,7 +107,7 @@
   v21[2] = __52__PKVirtualCardEnrollmentViewController_viewDidLoad__block_invoke;
   v21[3] = &unk_1E8010AB0;
   v21[4] = self;
-  v12 = v4;
+  v12 = explanationView;
   v22 = v12;
   [v10 snapshotWithPass:paymentPass size:v21 completion:{v7, v9}];
 
@@ -115,10 +115,10 @@
   [(PKExplanationViewController *)self setShowCloseButton:1];
   v13 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   [v13 configureWithTransparentBackground];
-  v14 = [(PKVirtualCardEnrollmentViewController *)self navigationItem];
-  [v14 setStandardAppearance:v13];
-  [v14 setCompactAppearance:v13];
-  [v14 setScrollEdgeAppearance:v13];
+  navigationItem = [(PKVirtualCardEnrollmentViewController *)self navigationItem];
+  [navigationItem setStandardAppearance:v13];
+  [navigationItem setCompactAppearance:v13];
+  [navigationItem setScrollEdgeAppearance:v13];
   [(PKVirtualCardEnrollmentViewController *)self _beginReportingIfNecessary];
   v15 = objc_alloc(MEMORY[0x1E695DF90]);
   v16 = *MEMORY[0x1E69BABE8];
@@ -163,11 +163,11 @@ uint64_t __52__PKVirtualCardEnrollmentViewController_viewDidLoad__block_invoke_2
   return [v2 setHeroView:v3];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKVirtualCardEnrollmentViewController;
-  [(PKVirtualCardEnrollmentViewController *)&v4 viewWillDisappear:a3];
+  [(PKVirtualCardEnrollmentViewController *)&v4 viewWillDisappear:disappear];
   [(PKVirtualCardEnrollmentViewController *)self _endReportingIfNecessary];
 }
 
@@ -204,30 +204,30 @@ uint64_t __52__PKVirtualCardEnrollmentViewController_viewDidLoad__block_invoke_2
   }
 
   [(PKVirtualCardEnrollmentViewController *)self setModalInPresentation:1];
-  v4 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   v5 = PKLocalizedVirtualCardString(&cfstr_VirtualCardSet_4.isa);
-  [v4 setTitleText:v5];
+  [explanationView setTitleText:v5];
 
   v6 = PKLocalizedVirtualCardString(&cfstr_VirtualCardSet_5.isa);
-  [v4 setBodyText:v6];
+  [explanationView setBodyText:v6];
 
-  [v4 setShowSpinner:1];
-  v7 = [v4 dockView];
-  [v7 setHidden:1];
+  [explanationView setShowSpinner:1];
+  dockView = [explanationView dockView];
+  [dockView setHidden:1];
 
   [(PKVirtualCardEnrollmentViewController *)self performSelector:sel_passDidNotUpdateInTime withObject:0 afterDelay:10.0];
 }
 
-- (void)receivedPassUpdatedNotification:(id)a3
+- (void)receivedPassUpdatedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = v4;
+  notificationCopy = notification;
+  v5 = notificationCopy;
   if (self->_state == 1)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69BBC18]];
-    v8 = [(PKPaymentPass *)self->_paymentPass uniqueID];
-    v9 = [v7 isEqualToString:v8];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BBC18]];
+    uniqueID = [(PKPaymentPass *)self->_paymentPass uniqueID];
+    v9 = [v7 isEqualToString:uniqueID];
 
     v10 = PKLogFacilityTypeGetObject();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -299,12 +299,12 @@ uint64_t __52__PKVirtualCardEnrollmentViewController_viewDidLoad__block_invoke_2
 
     self->_state = 2;
     [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self];
-    v4 = [(PKExplanationViewController *)self explanationView];
+    explanationView = [(PKExplanationViewController *)self explanationView];
     v5 = PKLocalizedVirtualCardString(&cfstr_VirtualCardSet_6.isa);
-    [v4 setTitleText:v5];
+    [explanationView setTitleText:v5];
 
     LODWORD(v5) = PKFPANAutoFillEnabled();
-    v6 = [(PKPaymentPass *)self->_paymentPass localizedDescription];
+    localizedDescription = [(PKPaymentPass *)self->_paymentPass localizedDescription];
     if (v5)
     {
       v7 = @"VIRTUAL_CARD_SET_UP_COMPLETE_BODY_FPAN";
@@ -315,23 +315,23 @@ uint64_t __52__PKVirtualCardEnrollmentViewController_viewDidLoad__block_invoke_2
       v7 = @"VIRTUAL_CARD_SET_UP_COMPLETE_BODY";
     }
 
-    v8 = PKLocalizedVirtualCardString(&v7->isa, &stru_1F3BD5BF0.isa, v6);
-    [v4 setBodyText:v8];
+    v8 = PKLocalizedVirtualCardString(&v7->isa, &stru_1F3BD5BF0.isa, localizedDescription);
+    [explanationView setBodyText:v8];
 
-    v9 = [(PKExplanationViewController *)self explanationView];
-    [v9 setShowSpinner:0];
+    explanationView2 = [(PKExplanationViewController *)self explanationView];
+    [explanationView2 setShowSpinner:0];
 
-    v10 = [(PKExplanationViewController *)self explanationView];
-    [v10 setShowCheckmark:1];
+    explanationView3 = [(PKExplanationViewController *)self explanationView];
+    [explanationView3 setShowCheckmark:1];
 
-    v11 = [v4 dockView];
-    v12 = [v11 primaryButton];
+    dockView = [explanationView dockView];
+    primaryButton = [dockView primaryButton];
     v13 = PKLocalizedVirtualCardString(&cfstr_VirtualCardSet_9.isa);
-    [v12 setTitle:v13 forState:0];
+    [primaryButton setTitle:v13 forState:0];
 
-    [v4 setForceShowSetupLaterButton:0];
-    v14 = [v4 dockView];
-    [v14 setHidden:0];
+    [explanationView setForceShowSetupLaterButton:0];
+    dockView2 = [explanationView dockView];
+    [dockView2 setHidden:0];
 
     v15 = MEMORY[0x1E69B8540];
     v16 = *MEMORY[0x1E69BB6F8];
@@ -346,14 +346,14 @@ uint64_t __52__PKVirtualCardEnrollmentViewController_viewDidLoad__block_invoke_2
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   v24[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  continueCopy = continue;
   if (self->_state == 2)
   {
-    v5 = [(PKVirtualCardEnrollmentViewController *)self delegate];
-    [v5 virtualCardEnrollmentViewController:self didCompleteWithSuccess:1];
+    delegate = [(PKVirtualCardEnrollmentViewController *)self delegate];
+    [delegate virtualCardEnrollmentViewController:self didCompleteWithSuccess:1];
 
     v6 = MEMORY[0x1E69B8540];
     v7 = *MEMORY[0x1E69BB6F8];
@@ -399,11 +399,11 @@ uint64_t __52__PKVirtualCardEnrollmentViewController_viewDidLoad__block_invoke_2
   }
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v4 = [(PKVirtualCardEnrollmentViewController *)self delegate];
-  [v4 virtualCardEnrollmentViewController:self didCompleteWithSuccess:0];
+  delegate = [(PKVirtualCardEnrollmentViewController *)self delegate];
+  [delegate virtualCardEnrollmentViewController:self didCompleteWithSuccess:0];
 
   v5 = MEMORY[0x1E69B8540];
   v6 = *MEMORY[0x1E69BB6F8];
@@ -420,11 +420,11 @@ uint64_t __52__PKVirtualCardEnrollmentViewController_viewDidLoad__block_invoke_2
   [v5 subject:v6 sendEvent:v10];
 }
 
-- (void)explanationViewControllerDidSelectCancel:(id)a3
+- (void)explanationViewControllerDidSelectCancel:(id)cancel
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v4 = [(PKVirtualCardEnrollmentViewController *)self delegate];
-  [v4 virtualCardEnrollmentViewController:self didCompleteWithSuccess:0];
+  delegate = [(PKVirtualCardEnrollmentViewController *)self delegate];
+  [delegate virtualCardEnrollmentViewController:self didCompleteWithSuccess:0];
 
   v5 = MEMORY[0x1E69B8540];
   v6 = *MEMORY[0x1E69BB6F8];
@@ -441,9 +441,9 @@ uint64_t __52__PKVirtualCardEnrollmentViewController_viewDidLoad__block_invoke_2
   [v5 subject:v6 sendEvent:v10];
 }
 
-- (void)paymentAuthorizationViewController:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationViewController:(id)controller didAuthorizePayment:(id)payment handler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -455,10 +455,10 @@ uint64_t __52__PKVirtualCardEnrollmentViewController_viewDidLoad__block_invoke_2
   [(PKExplanationViewController *)self setShowCloseButton:0];
   v8 = objc_alloc(MEMORY[0x1E69B8B80]);
   v9 = [v8 initWithStatus:0 errors:MEMORY[0x1E695E0F0]];
-  v6[2](v6, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
-- (void)paymentAuthorizationViewControllerDidFinish:(id)a3
+- (void)paymentAuthorizationViewControllerDidFinish:(id)finish
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;

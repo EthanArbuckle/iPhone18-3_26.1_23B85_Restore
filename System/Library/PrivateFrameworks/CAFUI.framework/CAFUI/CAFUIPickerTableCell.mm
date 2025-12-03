@@ -1,15 +1,15 @@
 @interface CAFUIPickerTableCell
 - (BOOL)canBecomeFocused;
-- (_TtC5CAFUI20CAFUIPickerTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC5CAFUI20CAFUIPickerTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation CAFUIPickerTableCell
 
-- (_TtC5CAFUI20CAFUIPickerTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC5CAFUI20CAFUIPickerTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -18,12 +18,12 @@
     v6 = 0;
   }
 
-  return CAFUIPickerTableCell.init(style:reuseIdentifier:)(a3, a4, v6);
+  return CAFUIPickerTableCell.init(style:reuseIdentifier:)(style, identifier, v6);
 }
 
 - (BOOL)canBecomeFocused
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFUIPickerTableCell.isHighlightable.getter();
 
   return v3 & 1;

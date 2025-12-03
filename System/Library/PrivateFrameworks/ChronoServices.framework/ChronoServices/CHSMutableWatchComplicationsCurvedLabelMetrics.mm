@@ -1,30 +1,30 @@
 @interface CHSMutableWatchComplicationsCurvedLabelMetrics
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setBezierPath:(id)a3;
-- (void)setTextColor:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setBezierPath:(id)path;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation CHSMutableWatchComplicationsCurvedLabelMetrics
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHSWatchComplicationsCurvedLabelMetrics alloc];
 
   return [(CHSWatchComplicationsCurvedLabelMetrics *)v4 _initWithInstance:self];
 }
 
-- (void)setBezierPath:(id)a3
+- (void)setBezierPath:(id)path
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  pathCopy = path;
+  v4 = [pathCopy copy];
   bezierPath = self->super._bezierPath;
   self->super._bezierPath = v4;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  colorCopy = color;
+  v4 = [colorCopy copy];
   textColor = self->super._textColor;
   self->super._textColor = v4;
 }

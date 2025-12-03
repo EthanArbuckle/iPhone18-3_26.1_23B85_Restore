@@ -2,20 +2,20 @@
 + (id)sharedHandler;
 + (id)siriEnablementSessionAssertionUUID;
 - (CSSecureSessionHandler)init;
-- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)a3;
-- (void)CSSiriEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4;
-- (void)CSSystemDaemonStateMonitorDidReceiveSysDaemonCrash:(id)a3;
+- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)crash;
+- (void)CSSiriEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled;
+- (void)CSSystemDaemonStateMonitorDidReceiveSysDaemonCrash:(id)crash;
 - (void)_activateSecureSessionIfNeeded;
 - (void)_deactivateSecureSessionIfNeeded;
-- (void)acquireSecureSessionAssertionWithUUID:(id)a3;
+- (void)acquireSecureSessionAssertionWithUUID:(id)d;
 - (void)releaseAllSecureSessionAssertions;
-- (void)releaseSecureSessionAssertionWithUUID:(id)a3;
+- (void)releaseSecureSessionAssertionWithUUID:(id)d;
 - (void)start;
 @end
 
 @implementation CSSecureSessionHandler
 
-- (void)CSSystemDaemonStateMonitorDidReceiveSysDaemonCrash:(id)a3
+- (void)CSSystemDaemonStateMonitorDidReceiveSysDaemonCrash:(id)crash
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = CSLogContextFacilityCoreSpeech;
@@ -30,7 +30,7 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)crash
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = CSLogContextFacilityCoreSpeech;
@@ -45,11 +45,11 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)CSSiriEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4
+- (void)CSSiriEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v6 = +[CSSecureSessionHandler siriEnablementSessionAssertionUUID];
-  if (v4)
+  if (enabledCopy)
   {
     [(CSSecureSessionHandler *)self acquireSecureSessionAssertionWithUUID:v6];
   }
@@ -155,17 +155,17 @@ uint64_t __59__CSSecureSessionHandler_releaseAllSecureSessionAssertions__block_i
   return [v2 _deactivateSecureSessionIfNeeded];
 }
 
-- (void)releaseSecureSessionAssertionWithUUID:(id)a3
+- (void)releaseSecureSessionAssertionWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__CSSecureSessionHandler_releaseSecureSessionAssertionWithUUID___block_invoke;
   v7[3] = &unk_1E865C970;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -236,17 +236,17 @@ LABEL_10:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)acquireSecureSessionAssertionWithUUID:(id)a3
+- (void)acquireSecureSessionAssertionWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__CSSecureSessionHandler_acquireSecureSessionAssertionWithUUID___block_invoke;
   v7[3] = &unk_1E865C970;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
   dispatch_sync(queue, v7);
 }
 

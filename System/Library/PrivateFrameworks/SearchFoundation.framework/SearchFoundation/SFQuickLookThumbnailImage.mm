@@ -1,12 +1,12 @@
 @interface SFQuickLookThumbnailImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFQuickLookThumbnailImage)initWithCoder:(id)a3;
-- (SFQuickLookThumbnailImage)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFQuickLookThumbnailImage)initWithCoder:(id)coder;
+- (SFQuickLookThumbnailImage)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFQuickLookThumbnailImage
@@ -16,36 +16,36 @@
   v11.receiver = self;
   v11.super_class = SFQuickLookThumbnailImage;
   v3 = [(SFImage *)&v11 hash];
-  v4 = [(SFQuickLookThumbnailImage *)self filePath];
-  v5 = [v4 hash];
-  v6 = [(SFQuickLookThumbnailImage *)self coreSpotlightIdentifier];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFQuickLookThumbnailImage *)self fileProviderIdentifier];
-  v9 = v7 ^ [v8 hash];
+  filePath = [(SFQuickLookThumbnailImage *)self filePath];
+  v5 = [filePath hash];
+  coreSpotlightIdentifier = [(SFQuickLookThumbnailImage *)self coreSpotlightIdentifier];
+  v7 = v5 ^ [coreSpotlightIdentifier hash];
+  fileProviderIdentifier = [(SFQuickLookThumbnailImage *)self fileProviderIdentifier];
+  v9 = v7 ^ [fileProviderIdentifier hash];
 
   return v9 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFQuickLookThumbnailImage *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFQuickLookThumbnailImage *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v32.receiver = self;
       v32.super_class = SFQuickLookThumbnailImage;
-      if ([(SFImage *)&v32 isEqual:v5])
+      if ([(SFImage *)&v32 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFQuickLookThumbnailImage *)self filePath];
-        v8 = [(SFQuickLookThumbnailImage *)v6 filePath];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        filePath = [(SFQuickLookThumbnailImage *)self filePath];
+        filePath2 = [(SFQuickLookThumbnailImage *)v6 filePath];
+        if ((filePath != 0) == (filePath2 == 0))
         {
           v11 = 0;
 LABEL_31:
@@ -53,63 +53,63 @@ LABEL_31:
           goto LABEL_32;
         }
 
-        v9 = [(SFQuickLookThumbnailImage *)self filePath];
-        if (v9)
+        filePath3 = [(SFQuickLookThumbnailImage *)self filePath];
+        if (filePath3)
         {
-          v3 = [(SFQuickLookThumbnailImage *)self filePath];
-          v10 = [(SFQuickLookThumbnailImage *)v6 filePath];
-          if (![v3 isEqual:v10])
+          filePath4 = [(SFQuickLookThumbnailImage *)self filePath];
+          filePath5 = [(SFQuickLookThumbnailImage *)v6 filePath];
+          if (![filePath4 isEqual:filePath5])
           {
             v11 = 0;
             goto LABEL_29;
           }
 
-          v31 = v10;
+          v31 = filePath5;
         }
 
-        v12 = [(SFQuickLookThumbnailImage *)self coreSpotlightIdentifier];
-        v13 = [(SFQuickLookThumbnailImage *)v6 coreSpotlightIdentifier];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        coreSpotlightIdentifier = [(SFQuickLookThumbnailImage *)self coreSpotlightIdentifier];
+        coreSpotlightIdentifier2 = [(SFQuickLookThumbnailImage *)v6 coreSpotlightIdentifier];
+        v14 = coreSpotlightIdentifier2;
+        if ((coreSpotlightIdentifier != 0) == (coreSpotlightIdentifier2 == 0))
         {
 
           v11 = 0;
           goto LABEL_28;
         }
 
-        v15 = [(SFQuickLookThumbnailImage *)self coreSpotlightIdentifier];
-        if (v15)
+        coreSpotlightIdentifier3 = [(SFQuickLookThumbnailImage *)self coreSpotlightIdentifier];
+        if (coreSpotlightIdentifier3)
         {
-          v25 = v12;
-          v16 = [(SFQuickLookThumbnailImage *)self coreSpotlightIdentifier];
-          v27 = [(SFQuickLookThumbnailImage *)v6 coreSpotlightIdentifier];
-          v28 = v16;
-          if (![v16 isEqual:?])
+          v25 = coreSpotlightIdentifier;
+          coreSpotlightIdentifier4 = [(SFQuickLookThumbnailImage *)self coreSpotlightIdentifier];
+          coreSpotlightIdentifier5 = [(SFQuickLookThumbnailImage *)v6 coreSpotlightIdentifier];
+          v28 = coreSpotlightIdentifier4;
+          if (![coreSpotlightIdentifier4 isEqual:?])
           {
             v11 = 0;
-            v12 = v25;
+            coreSpotlightIdentifier = v25;
             goto LABEL_26;
           }
 
-          v29 = v15;
-          v30 = v3;
-          v12 = v25;
+          v29 = coreSpotlightIdentifier3;
+          v30 = filePath4;
+          coreSpotlightIdentifier = v25;
         }
 
         else
         {
           v29 = 0;
-          v30 = v3;
+          v30 = filePath4;
         }
 
-        v17 = [(SFQuickLookThumbnailImage *)self fileProviderIdentifier];
-        v18 = [(SFQuickLookThumbnailImage *)v6 fileProviderIdentifier];
-        if ((v17 != 0) == (v18 == 0))
+        fileProviderIdentifier = [(SFQuickLookThumbnailImage *)self fileProviderIdentifier];
+        fileProviderIdentifier2 = [(SFQuickLookThumbnailImage *)v6 fileProviderIdentifier];
+        if ((fileProviderIdentifier != 0) == (fileProviderIdentifier2 == 0))
         {
 
           v11 = 0;
-          v15 = v29;
-          v3 = v30;
+          coreSpotlightIdentifier3 = v29;
+          filePath4 = v30;
           if (!v29)
           {
             goto LABEL_27;
@@ -118,16 +118,16 @@ LABEL_31:
 
         else
         {
-          v24 = v17;
-          v26 = v18;
-          v19 = [(SFQuickLookThumbnailImage *)self fileProviderIdentifier];
-          v15 = v29;
-          if (v19)
+          v24 = fileProviderIdentifier;
+          v26 = fileProviderIdentifier2;
+          fileProviderIdentifier3 = [(SFQuickLookThumbnailImage *)self fileProviderIdentifier];
+          coreSpotlightIdentifier3 = v29;
+          if (fileProviderIdentifier3)
           {
-            v23 = v19;
-            v22 = [(SFQuickLookThumbnailImage *)self fileProviderIdentifier];
-            v20 = [(SFQuickLookThumbnailImage *)v6 fileProviderIdentifier];
-            v11 = [v22 isEqual:?];
+            v23 = fileProviderIdentifier3;
+            fileProviderIdentifier4 = [(SFQuickLookThumbnailImage *)self fileProviderIdentifier];
+            fileProviderIdentifier5 = [(SFQuickLookThumbnailImage *)v6 fileProviderIdentifier];
+            v11 = [fileProviderIdentifier4 isEqual:?];
           }
 
           else
@@ -136,7 +136,7 @@ LABEL_31:
             v11 = 1;
           }
 
-          v3 = v30;
+          filePath4 = v30;
           if (!v29)
           {
             goto LABEL_27;
@@ -147,8 +147,8 @@ LABEL_26:
 
 LABEL_27:
 LABEL_28:
-        v10 = v31;
-        if (!v9)
+        filePath5 = v31;
+        if (!filePath3)
         {
 LABEL_30:
 
@@ -169,21 +169,21 @@ LABEL_32:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = SFQuickLookThumbnailImage;
-  v4 = [(SFImage *)&v12 copyWithZone:a3];
-  v5 = [(SFQuickLookThumbnailImage *)self filePath];
-  v6 = [v5 copy];
+  v4 = [(SFImage *)&v12 copyWithZone:zone];
+  filePath = [(SFQuickLookThumbnailImage *)self filePath];
+  v6 = [filePath copy];
   [v4 setFilePath:v6];
 
-  v7 = [(SFQuickLookThumbnailImage *)self coreSpotlightIdentifier];
-  v8 = [v7 copy];
+  coreSpotlightIdentifier = [(SFQuickLookThumbnailImage *)self coreSpotlightIdentifier];
+  v8 = [coreSpotlightIdentifier copy];
   [v4 setCoreSpotlightIdentifier:v8];
 
-  v9 = [(SFQuickLookThumbnailImage *)self fileProviderIdentifier];
-  v10 = [v9 copy];
+  fileProviderIdentifier = [(SFQuickLookThumbnailImage *)self fileProviderIdentifier];
+  v10 = [fileProviderIdentifier copy];
   [v4 setFileProviderIdentifier:v10];
 
   return v4;
@@ -192,31 +192,31 @@ LABEL_32:
 - (NSData)jsonData
 {
   v2 = [[_SFPBQuickLookThumbnailImage alloc] initWithFacade:self];
-  v3 = [(_SFPBQuickLookThumbnailImage *)v2 jsonData];
+  jsonData = [(_SFPBQuickLookThumbnailImage *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBQuickLookThumbnailImage alloc] initWithFacade:self];
-  v3 = [(_SFPBQuickLookThumbnailImage *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBQuickLookThumbnailImage *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBImage alloc] initWithFacade:self];
-  v5 = [(_SFPBImage *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBImage *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFQuickLookThumbnailImage)initWithCoder:(id)a3
+- (SFQuickLookThumbnailImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBImage alloc] initWithData:v5];
   v9.receiver = self;
@@ -226,37 +226,37 @@ LABEL_32:
   return v7;
 }
 
-- (SFQuickLookThumbnailImage)initWithProtobuf:(id)a3
+- (SFQuickLookThumbnailImage)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v15.receiver = self;
   v15.super_class = SFQuickLookThumbnailImage;
   v5 = [(SFQuickLookThumbnailImage *)&v15 init];
   if (v5)
   {
-    v6 = [v4 filePath];
+    filePath = [protobufCopy filePath];
 
-    if (v6)
+    if (filePath)
     {
-      v7 = [v4 filePath];
-      v8 = _SFPBURLHandwrittenTranslator(v7);
+      filePath2 = [protobufCopy filePath];
+      v8 = _SFPBURLHandwrittenTranslator(filePath2);
       [(SFQuickLookThumbnailImage *)v5 setFilePath:v8];
     }
 
-    v9 = [v4 coreSpotlightIdentifier];
+    coreSpotlightIdentifier = [protobufCopy coreSpotlightIdentifier];
 
-    if (v9)
+    if (coreSpotlightIdentifier)
     {
-      v10 = [v4 coreSpotlightIdentifier];
-      [(SFQuickLookThumbnailImage *)v5 setCoreSpotlightIdentifier:v10];
+      coreSpotlightIdentifier2 = [protobufCopy coreSpotlightIdentifier];
+      [(SFQuickLookThumbnailImage *)v5 setCoreSpotlightIdentifier:coreSpotlightIdentifier2];
     }
 
-    v11 = [v4 fileProviderIdentifier];
+    fileProviderIdentifier = [protobufCopy fileProviderIdentifier];
 
-    if (v11)
+    if (fileProviderIdentifier)
     {
-      v12 = [v4 fileProviderIdentifier];
-      [(SFQuickLookThumbnailImage *)v5 setFileProviderIdentifier:v12];
+      fileProviderIdentifier2 = [protobufCopy fileProviderIdentifier];
+      [(SFQuickLookThumbnailImage *)v5 setFileProviderIdentifier:fileProviderIdentifier2];
     }
 
     v13 = v5;

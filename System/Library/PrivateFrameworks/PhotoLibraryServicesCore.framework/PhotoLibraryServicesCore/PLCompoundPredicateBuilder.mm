@@ -1,11 +1,11 @@
 @interface PLCompoundPredicateBuilder
 - (PLCompoundPredicateBuilder)init;
-- (id)_joinSubpredicatesWithNilOnEmpty:(BOOL)a3 block:(id)a4;
+- (id)_joinSubpredicatesWithNilOnEmpty:(BOOL)empty block:(id)block;
 - (id)buildAndPredicate;
 - (id)buildAndPredicateOrNil;
 - (id)buildOrPredicate;
 - (id)buildOrPredicateOrNil;
-- (void)addPredicate:(id)a3;
+- (void)addPredicate:(id)predicate;
 @end
 
 @implementation PLCompoundPredicateBuilder
@@ -39,9 +39,9 @@
   return v2;
 }
 
-- (id)_joinSubpredicatesWithNilOnEmpty:(BOOL)a3 block:(id)a4
+- (id)_joinSubpredicatesWithNilOnEmpty:(BOOL)empty block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   if ([(NSMutableArray *)self->_subpredicates count])
   {
     if ([(NSMutableArray *)self->_subpredicates count]== 1)
@@ -51,14 +51,14 @@
 
     else
     {
-      v6[2](v6);
+      blockCopy[2](blockCopy);
     }
     v7 = ;
   }
 
   else
   {
-    if (a3)
+    if (empty)
     {
       v8 = 0;
       goto LABEL_10;
@@ -109,9 +109,9 @@ LABEL_10:
   return v2;
 }
 
-- (void)addPredicate:(id)a3
+- (void)addPredicate:(id)predicate
 {
-  if (a3)
+  if (predicate)
   {
     [(NSMutableArray *)self->_subpredicates addObject:?];
   }

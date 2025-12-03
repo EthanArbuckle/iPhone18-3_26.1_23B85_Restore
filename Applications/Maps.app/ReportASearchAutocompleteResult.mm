@@ -1,6 +1,6 @@
 @interface ReportASearchAutocompleteResult
 - (CLLocationCoordinate2D)coordinate;
-- (ReportASearchAutocompleteResult)initWithTitle:(id)a3;
+- (ReportASearchAutocompleteResult)initWithTitle:(id)title;
 @end
 
 @implementation ReportASearchAutocompleteResult
@@ -14,16 +14,16 @@
   return result;
 }
 
-- (ReportASearchAutocompleteResult)initWithTitle:(id)a3
+- (ReportASearchAutocompleteResult)initWithTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = ReportASearchAutocompleteResult;
   v6 = [(ReportASearchAutocompleteResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userVisibleTitle, a3);
+    objc_storeStrong(&v6->_userVisibleTitle, title);
   }
 
   return v7;

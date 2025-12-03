@@ -1,14 +1,14 @@
 @interface WBSPasswordAutoFillUtilities
-+ (BOOL)mayAutoFillPasswordOnHost:(id)a3;
++ (BOOL)mayAutoFillPasswordOnHost:(id)host;
 @end
 
 @implementation WBSPasswordAutoFillUtilities
 
-+ (BOOL)mayAutoFillPasswordOnHost:(id)a3
++ (BOOL)mayAutoFillPasswordOnHost:(id)host
 {
-  v3 = a3;
-  v4 = [v3 safari_highLevelDomainFromHost];
-  v5 = ![v4 safari_isCaseInsensitiveEqualToString:@"google.com"] || (objc_msgSend(v3, "isEqualToString:", @"accounts.google.com") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"myaccount.google.com");
+  hostCopy = host;
+  safari_highLevelDomainFromHost = [hostCopy safari_highLevelDomainFromHost];
+  v5 = ![safari_highLevelDomainFromHost safari_isCaseInsensitiveEqualToString:@"google.com"] || (objc_msgSend(hostCopy, "isEqualToString:", @"accounts.google.com") & 1) != 0 || objc_msgSend(hostCopy, "isEqualToString:", @"myaccount.google.com");
 
   return v5;
 }

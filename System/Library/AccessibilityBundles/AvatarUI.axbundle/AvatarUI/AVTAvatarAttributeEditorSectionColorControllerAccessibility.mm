@@ -1,51 +1,51 @@
 @interface AVTAvatarAttributeEditorSectionColorControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)collectionView;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axLoadAccessibilityForAttributeCell:(id)a3 atIndexPath:(id)a4;
-- (void)colorDataSource:(id)a3 didChangeDisplayMode:(int64_t)a4 previousDisplayMode:(int64_t)a5;
+- (void)_axLoadAccessibilityForAttributeCell:(id)cell atIndexPath:(id)path;
+- (void)colorDataSource:(id)source didChangeDisplayMode:(int64_t)mode previousDisplayMode:(int64_t)displayMode;
 @end
 
 @implementation AVTAvatarAttributeEditorSectionColorControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTAttributeCollectionViewCell"];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionColorItem"];
-  [v3 validateClass:@"AVTCoreModelColor"];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionColorDataSource"];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionColorItem" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTCoreModelColor" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAttributeCollectionViewCell" hasInstanceMethod:@"attributeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionColorController" hasInstanceMethod:@"selectedIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionColorController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionColorController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionColorController" hasInstanceMethod:@"sliderContainerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarColorSliderContainerView" hasInstanceMethod:@"slider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionColorController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionColorController" hasInstanceMethod:@"colorDataSource:didChangeDisplayMode:previousDisplayMode:" withFullSignature:{"v", "@", "q", "q", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionColorDataSource" hasInstanceMethod:@"sectionItemAtIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionCoordinator"];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionCoordinator" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorDataSource" hasInstanceMethod:@"categories" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorDataSource" hasInstanceMethod:@"currentCategoryIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorCategory" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorCategory" hasInstanceMethod:@"sections" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"AVTAvatarAttributeEditorSection" hasRequiredInstanceMethod:@"localizedName"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTAttributeCollectionViewCell"];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionColorItem"];
+  [validationsCopy validateClass:@"AVTCoreModelColor"];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionColorDataSource"];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionColorItem" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTCoreModelColor" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAttributeCollectionViewCell" hasInstanceMethod:@"attributeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionColorController" hasInstanceMethod:@"selectedIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionColorController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionColorController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionColorController" hasInstanceMethod:@"sliderContainerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarColorSliderContainerView" hasInstanceMethod:@"slider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionColorController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionColorController" hasInstanceMethod:@"colorDataSource:didChangeDisplayMode:previousDisplayMode:" withFullSignature:{"v", "@", "q", "q", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionColorDataSource" hasInstanceMethod:@"sectionItemAtIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionCoordinator"];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionCoordinator" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorDataSource" hasInstanceMethod:@"categories" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorDataSource" hasInstanceMethod:@"currentCategoryIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorCategory" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorCategory" hasInstanceMethod:@"sections" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"AVTAvatarAttributeEditorSection" hasRequiredInstanceMethod:@"localizedName"];
 }
 
-- (void)_axLoadAccessibilityForAttributeCell:(id)a3 atIndexPath:(id)a4
+- (void)_axLoadAccessibilityForAttributeCell:(id)cell atIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  pathCopy = path;
   MEMORY[0x29C2CABD0](@"AVTAttributeCollectionViewCell");
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = v5;
+    v7 = pathCopy;
+    v8 = cellCopy;
     AXPerformSafeBlock();
   }
 }
@@ -80,8 +80,8 @@ void __112__AVTAvatarAttributeEditorSectionColorControllerAccessibility__axLoadA
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 visibleCells];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  visibleCells = [v4 visibleCells];
+  v6 = [visibleCells countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -92,7 +92,7 @@ void __112__AVTAvatarAttributeEditorSectionColorControllerAccessibility__axLoadA
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -100,7 +100,7 @@ void __112__AVTAvatarAttributeEditorSectionColorControllerAccessibility__axLoadA
         [(AVTAvatarAttributeEditorSectionColorControllerAccessibility *)self _axLoadAccessibilityForAttributeCell:v10 atIndexPath:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v7);
@@ -113,8 +113,8 @@ void __112__AVTAvatarAttributeEditorSectionColorControllerAccessibility__axLoadA
 {
   v18.receiver = self;
   v18.super_class = AVTAvatarAttributeEditorSectionColorControllerAccessibility;
-  v3 = [(AVTAvatarAttributeEditorSectionColorControllerAccessibility *)&v18 collectionView];
-  [v3 setAccessibilityContainerType:4];
+  collectionView = [(AVTAvatarAttributeEditorSectionColorControllerAccessibility *)&v18 collectionView];
+  [collectionView setAccessibilityContainerType:4];
   v4 = [(AVTAvatarAttributeEditorSectionColorControllerAccessibility *)self safeValueForKey:@"section"];
   v5 = [v4 safeStringForKey:@"localizedName"];
   if (v5)
@@ -163,30 +163,30 @@ LABEL_10:
     v14 = MEMORY[0x29EDBA0F8];
     v15 = accessibilityLocalizedString(@"section.name.color");
     v16 = [v14 localizedStringWithFormat:v15, v5];
-    [v3 setAccessibilityLabel:v16];
+    [collectionView setAccessibilityLabel:v16];
   }
 
-  return v3;
+  return collectionView;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = AVTAvatarAttributeEditorSectionColorControllerAccessibility;
-  v6 = a4;
-  v7 = [(AVTAvatarAttributeEditorSectionColorControllerAccessibility *)&v9 collectionView:a3 cellForItemAtIndexPath:v6];
-  [(AVTAvatarAttributeEditorSectionColorControllerAccessibility *)self _axLoadAccessibilityForAttributeCell:v7 atIndexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  v7 = [(AVTAvatarAttributeEditorSectionColorControllerAccessibility *)&v9 collectionView:view cellForItemAtIndexPath:pathCopy];
+  [(AVTAvatarAttributeEditorSectionColorControllerAccessibility *)self _axLoadAccessibilityForAttributeCell:v7 atIndexPath:pathCopy, v9.receiver, v9.super_class];
 
   return v7;
 }
 
-- (void)colorDataSource:(id)a3 didChangeDisplayMode:(int64_t)a4 previousDisplayMode:(int64_t)a5
+- (void)colorDataSource:(id)source didChangeDisplayMode:(int64_t)mode previousDisplayMode:(int64_t)displayMode
 {
-  v8 = a3;
+  sourceCopy = source;
   v15.receiver = self;
   v15.super_class = AVTAvatarAttributeEditorSectionColorControllerAccessibility;
-  [(AVTAvatarAttributeEditorSectionColorControllerAccessibility *)&v15 colorDataSource:v8 didChangeDisplayMode:a4 previousDisplayMode:a5];
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  [(AVTAvatarAttributeEditorSectionColorControllerAccessibility *)&v15 colorDataSource:sourceCopy didChangeDisplayMode:mode previousDisplayMode:displayMode];
+  if ((mode & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     v9 = [(AVTAvatarAttributeEditorSectionColorControllerAccessibility *)self safeValueForKeyPath:@"sliderContainerView.slider"];
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v9);

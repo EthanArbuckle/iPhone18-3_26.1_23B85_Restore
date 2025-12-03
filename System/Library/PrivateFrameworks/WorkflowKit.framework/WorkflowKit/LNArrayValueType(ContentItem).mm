@@ -15,28 +15,28 @@
     v4 = a3;
     v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
 
-    v6 = [v5 teamIdentifier];
+    teamIdentifier = [v5 teamIdentifier];
   }
 
   else
   {
-    v6 = 0;
+    teamIdentifier = 0;
   }
 
-  return v6;
+  return teamIdentifier;
 }
 
 - (id)wf_contentCollectionFromLinkValue:()ContentItem appBundleIdentifier:displayedBundleIdentifier:disclosureLevel:
 {
   v10 = a4;
   v11 = a5;
-  v12 = [a3 value];
-  if (v12)
+  value = [a3 value];
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v12;
+      v13 = value;
     }
 
     else
@@ -62,7 +62,7 @@
     v15 = v10;
   }
 
-  v16 = [a1 teamIdentifierForBundleIdentifier:v15];
+  v16 = [self teamIdentifierForBundleIdentifier:v15];
   v17 = MEMORY[0x1E6996D40];
   v25 = MEMORY[0x1E69E9820];
   v26 = 3221225472;
@@ -95,8 +95,8 @@
 - (id)wf_contentItemClassesWithAppBundleIdentifier:()ContentItem
 {
   v4 = a3;
-  v5 = [a1 memberValueType];
-  v6 = [v5 wf_contentItemClassesWithAppBundleIdentifier:v4];
+  memberValueType = [self memberValueType];
+  v6 = [memberValueType wf_contentItemClassesWithAppBundleIdentifier:v4];
 
   return v6;
 }
@@ -104,8 +104,8 @@
 - (id)wf_contentItemClassWithAppBundleIdentifier:()ContentItem
 {
   v4 = a3;
-  v5 = [a1 memberValueType];
-  v6 = [v5 wf_contentItemClassWithAppBundleIdentifier:v4];
+  memberValueType = [self memberValueType];
+  v6 = [memberValueType wf_contentItemClassWithAppBundleIdentifier:v4];
 
   return v6;
 }

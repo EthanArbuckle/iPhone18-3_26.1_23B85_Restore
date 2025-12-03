@@ -1,42 +1,42 @@
 @interface ASFApplication
-- (ASFApplication)initWithBundleId:(id)a3 localizedName:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (int64_t)compareByName:(id)a3;
+- (ASFApplication)initWithBundleId:(id)id localizedName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (int64_t)compareByName:(id)name;
 @end
 
 @implementation ASFApplication
 
-- (ASFApplication)initWithBundleId:(id)a3 localizedName:(id)a4
+- (ASFApplication)initWithBundleId:(id)id localizedName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = ASFApplication;
   v9 = [(ASFApplication *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleId, a3);
-    objc_storeStrong(&v10->_localizedName, a4);
+    objc_storeStrong(&v9->_bundleId, id);
+    objc_storeStrong(&v10->_localizedName, name);
   }
 
   return v10;
 }
 
-- (int64_t)compareByName:(id)a3
+- (int64_t)compareByName:(id)name
 {
-  v4 = a3;
-  v5 = [(ASFApplication *)self localizedName];
-  v6 = [v4 localizedName];
+  nameCopy = name;
+  localizedName = [(ASFApplication *)self localizedName];
+  localizedName2 = [nameCopy localizedName];
 
-  v7 = [v5 compare:v6];
+  v7 = [localizedName compare:localizedName2];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -46,14 +46,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ASFApplication *)v5 bundleId];
+      v5 = equalCopy;
+      bundleId = [(ASFApplication *)v5 bundleId];
       bundleId = self->_bundleId;
-      if (bundleId == v6 || [(NSString *)bundleId isEqual:v6])
+      if (bundleId == bundleId || [(NSString *)bundleId isEqual:bundleId])
       {
-        v8 = [(ASFApplication *)v5 localizedName];
+        localizedName = [(ASFApplication *)v5 localizedName];
         localizedName = self->_localizedName;
-        v10 = localizedName == v8 || [(NSString *)localizedName isEqual:v8];
+        v10 = localizedName == localizedName || [(NSString *)localizedName isEqual:localizedName];
       }
 
       else

@@ -1,19 +1,19 @@
 @interface FPVendorDefinedActionOperation
-- (FPVendorDefinedActionOperation)initWithActionIdentifier:(id)a3 providerDomainID:(id)a4 itemIdentifiers:(id)a5;
+- (FPVendorDefinedActionOperation)initWithActionIdentifier:(id)identifier providerDomainID:(id)d itemIdentifiers:(id)identifiers;
 - (void)actionMain;
 - (void)cancel;
 @end
 
 @implementation FPVendorDefinedActionOperation
 
-- (FPVendorDefinedActionOperation)initWithActionIdentifier:(id)a3 providerDomainID:(id)a4 itemIdentifiers:(id)a5
+- (FPVendorDefinedActionOperation)initWithActionIdentifier:(id)identifier providerDomainID:(id)d itemIdentifiers:(id)identifiers
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v11 count])
+  identifierCopy = identifier;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    if (v10)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -22,7 +22,7 @@
   else
   {
     [FPVendorDefinedActionOperation initWithActionIdentifier:providerDomainID:itemIdentifiers:];
-    if (v10)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -32,16 +32,16 @@
 LABEL_3:
   v17.receiver = self;
   v17.super_class = FPVendorDefinedActionOperation;
-  v12 = [(FPActionOperation *)&v17 initWithProvider:v10 action:0];
+  v12 = [(FPActionOperation *)&v17 initWithProvider:dCopy action:0];
   v13 = v12;
   if (v12)
   {
     [(FPActionOperation *)v12 setSetupRemoteOperationService:1];
-    objc_storeStrong(&v13->_actionIdentifier, a3);
-    objc_storeStrong(&v13->_itemIdentifiers, a5);
-    v14 = [v10 fp_toDomainIdentifier];
+    objc_storeStrong(&v13->_actionIdentifier, identifier);
+    objc_storeStrong(&v13->_itemIdentifiers, identifiers);
+    fp_toDomainIdentifier = [dCopy fp_toDomainIdentifier];
     domainIdentifier = v13->_domainIdentifier;
-    v13->_domainIdentifier = v14;
+    v13->_domainIdentifier = fp_toDomainIdentifier;
   }
 
   return v13;
@@ -49,7 +49,7 @@ LABEL_3:
 
 - (void)actionMain
 {
-  v3 = [(FPActionOperation *)self remoteServiceProxy];
+  remoteServiceProxy = [(FPActionOperation *)self remoteServiceProxy];
   actionIdentifier = self->_actionIdentifier;
   itemIdentifiers = self->_itemIdentifiers;
   domainIdentifier = self->_domainIdentifier;
@@ -58,7 +58,7 @@ LABEL_3:
   v9[2] = __44__FPVendorDefinedActionOperation_actionMain__block_invoke;
   v9[3] = &unk_1E7939C00;
   v9[4] = self;
-  v7 = [v3 performActionWithIdentifier:actionIdentifier onItemsWithIdentifiers:itemIdentifiers domainIdentifier:domainIdentifier completionHandler:v9];
+  v7 = [remoteServiceProxy performActionWithIdentifier:actionIdentifier onItemsWithIdentifiers:itemIdentifiers domainIdentifier:domainIdentifier completionHandler:v9];
   remoteProgress = self->_remoteProgress;
   self->_remoteProgress = v7;
 }

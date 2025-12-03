@@ -1,10 +1,10 @@
 @interface VNModelFilesCache
-+ (BOOL)useFOpenForModelWithPath:(id)a3;
++ (BOOL)useFOpenForModelWithPath:(id)path;
 + (id)sharedInstance;
 - (VNModelFilesCache)init;
-- (id)load:(id)a3;
+- (id)load:(id)load;
 - (void)purgeAll;
-- (void)unload:(id)a3;
+- (void)unload:(id)unload;
 @end
 
 @implementation VNModelFilesCache
@@ -31,11 +31,11 @@
   std::mutex::unlock((ptr + 40));
 }
 
-- (void)unload:(id)a3
+- (void)unload:(id)unload
 {
-  v4 = a3;
+  unloadCopy = unload;
   ptr = self->m_impl.__ptr_;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(__p, [unloadCopy UTF8String]);
   std::mutex::lock((ptr + 40));
   v6 = std::__hash_table<std::__hash_value_type<std::string,vision::mod::ImageClassfier_GraphNode *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,vision::mod::ImageClassfier_GraphNode *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,vision::mod::ImageClassfier_GraphNode *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,vision::mod::ImageClassfier_GraphNode *>>>::find<std::string>(ptr, __p);
   if (v6)
@@ -52,13 +52,13 @@
   }
 }
 
-- (id)load:(id)a3
+- (id)load:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   v5 = [VNModelFileImpl alloc];
   ptr = self->m_impl.__ptr_;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
-  v7 = [objc_opt_class() useFOpenForModelWithPath:v4];
+  std::string::basic_string[abi:ne200100]<0>(__p, [loadCopy UTF8String]);
+  v7 = [objc_opt_class() useFOpenForModelWithPath:loadCopy];
   std::mutex::lock((ptr + 40));
   v8 = std::__hash_table<std::__hash_value_type<std::string,vision::mod::ImageClassfier_GraphNode *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,vision::mod::ImageClassfier_GraphNode *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,vision::mod::ImageClassfier_GraphNode *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,vision::mod::ImageClassfier_GraphNode *>>>::find<std::string>(ptr, __p);
   if (!v8)
@@ -93,10 +93,10 @@
   return self;
 }
 
-+ (BOOL)useFOpenForModelWithPath:(id)a3
++ (BOOL)useFOpenForModelWithPath:(id)path
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -114,7 +114,7 @@
           objc_enumerationMutation(&unk_1F19C20C8);
         }
 
-        if ([v3 containsString:*(*(&v9 + 1) + 8 * i)])
+        if ([pathCopy containsString:*(*(&v9 + 1) + 8 * i)])
         {
           v7 = 1;
           goto LABEL_11;

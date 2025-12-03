@@ -1,7 +1,7 @@
 @interface FBFOspreyConnectionConfiguration
 - (NSDictionary)extraHeaders;
-- (void)prepare:(id)a3;
-- (void)setExtraHeaders:(id)a3;
+- (void)prepare:(id)prepare;
+- (void)setExtraHeaders:(id)headers;
 @end
 
 @implementation FBFOspreyConnectionConfiguration
@@ -14,18 +14,18 @@
   return v2.super.isa;
 }
 
-- (void)setExtraHeaders:(id)a3
+- (void)setExtraHeaders:(id)headers
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1000A2514(v4);
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000A28E8(v4);
+  prepareCopy = prepare;
+  selfCopy = self;
+  sub_1000A28E8(prepareCopy);
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface PKAccountWebServiceAccountTransactionAnswerRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceAccountTransactionAnswerRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  informationCopy = information;
   if (!PKRunningInPassd())
   {
     v23 = 0;
@@ -35,7 +35,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v21 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -96,8 +96,8 @@ LABEL_28:
     v42[3] = transactionIdentifier;
     v42[4] = @"answer";
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:5];
-    v33 = v4;
-    v9 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v8 queryParameters:0 appleAccountInformation:v4];
+    v33 = informationCopy;
+    v9 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v8 queryParameters:0 appleAccountInformation:informationCopy];
 
     [v9 setHTTPMethod:@"POST"];
     v32 = v9;
@@ -155,7 +155,7 @@ LABEL_28:
 
     v23 = [v32 copy];
 
-    v4 = v33;
+    informationCopy = v33;
     goto LABEL_30;
   }
 

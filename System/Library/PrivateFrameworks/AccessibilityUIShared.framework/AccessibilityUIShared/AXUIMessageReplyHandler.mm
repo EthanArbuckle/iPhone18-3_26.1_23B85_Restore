@@ -1,49 +1,49 @@
 @interface AXUIMessageReplyHandler
-+ (id)createReplyObject:(id)a3 fromMessage:(id)a4 withError:(id)a5;
-+ (void)sendReply:(id)a3 withError:(id)a4 andOriginalXPCMessage:(id)a5 usingConnection:(id)a6 customDataAddingBlock:(id)a7;
++ (id)createReplyObject:(id)object fromMessage:(id)message withError:(id)error;
++ (void)sendReply:(id)reply withError:(id)error andOriginalXPCMessage:(id)message usingConnection:(id)connection customDataAddingBlock:(id)block;
 @end
 
 @implementation AXUIMessageReplyHandler
 
-+ (id)createReplyObject:(id)a3 fromMessage:(id)a4 withError:(id)a5
++ (id)createReplyObject:(id)object fromMessage:(id)message withError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7 || (v17 = v9, v10 = [MEMORY[0x277CE69B8] copyXPCMessageFromDictionary:v7 inReplyToXPCMessage:v8 error:&v17], v11 = v17, v9, v9 = v11, !v10))
+  objectCopy = object;
+  messageCopy = message;
+  errorCopy = error;
+  if (!objectCopy || (v17 = errorCopy, v10 = [MEMORY[0x277CE69B8] copyXPCMessageFromDictionary:objectCopy inReplyToXPCMessage:messageCopy error:&v17], v11 = v17, errorCopy, errorCopy = v11, !v10))
   {
-    reply = xpc_dictionary_create_reply(v8);
+    reply = xpc_dictionary_create_reply(messageCopy);
     v10 = reply;
     if (reply)
     {
-      if (v7 | v9)
+      if (objectCopy | errorCopy)
       {
-        v13 = [v9 domain];
-        v14 = [v9 localizedDescription];
-        if (!v13)
+        domain = [errorCopy domain];
+        localizedDescription = [errorCopy localizedDescription];
+        if (!domain)
         {
-          v13 = @"AXUIErrorDomainCommunication";
+          domain = @"AXUIErrorDomainCommunication";
         }
 
-        if (!v14)
+        if (!localizedDescription)
         {
-          v14 = @"Unexpected error converting reply to an XPC object.";
+          localizedDescription = @"Unexpected error converting reply to an XPC object.";
         }
 
         v15 = AXLogUI();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          [AXUIMessageReplyHandler createReplyObject:v13 fromMessage:v14 withError:v15];
+          [AXUIMessageReplyHandler createReplyObject:domain fromMessage:localizedDescription withError:v15];
         }
 
-        xpc_dictionary_set_string(v10, _AXUIMessageReplyKeyErrorDomain[0], [(__CFString *)v13 UTF8String]);
-        xpc_dictionary_set_string(v10, _AXUIMessageReplyKeyErrorDescription[0], [(__CFString *)v14 UTF8String]);
+        xpc_dictionary_set_string(v10, _AXUIMessageReplyKeyErrorDomain[0], [(__CFString *)domain UTF8String]);
+        xpc_dictionary_set_string(v10, _AXUIMessageReplyKeyErrorDescription[0], [(__CFString *)localizedDescription UTF8String]);
       }
 
       else
       {
         xpc_dictionary_set_BOOL(reply, _AXUIMessageReplyKeyDidSucceed[0], 1);
-        v9 = 0;
+        errorCopy = 0;
       }
     }
   }
@@ -51,32 +51,32 @@
   return v10;
 }
 
-+ (void)sendReply:(id)a3 withError:(id)a4 andOriginalXPCMessage:(id)a5 usingConnection:(id)a6 customDataAddingBlock:(id)a7
++ (void)sendReply:(id)reply withError:(id)error andOriginalXPCMessage:(id)message usingConnection:(id)connection customDataAddingBlock:(id)block
 {
-  v18 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [a1 createReplyObject:a3 fromMessage:v18 withError:a4];
+  messageCopy = message;
+  connectionCopy = connection;
+  blockCopy = block;
+  v14 = [self createReplyObject:reply fromMessage:messageCopy withError:error];
   if (v14)
   {
-    if (v13)
+    if (blockCopy)
     {
-      v13[2](v13, v14);
+      blockCopy[2](blockCopy, v14);
     }
 
-    v15 = [v12 connection];
+    connection = [connectionCopy connection];
 
-    if (v15)
+    if (connection)
     {
-      v16 = [v12 connection];
-      xpc_connection_send_message(v16, v14);
+      connection2 = [connectionCopy connection];
+      xpc_connection_send_message(connection2, v14);
     }
 
     else
     {
-      v16 = [v12 serviceConnection];
-      v17 = [(_xpc_connection_s *)v16 remoteTarget];
-      [v17 sendBoardServiceMessage:v18 callback:&__block_literal_global_0];
+      connection2 = [connectionCopy serviceConnection];
+      remoteTarget = [(_xpc_connection_s *)connection2 remoteTarget];
+      [remoteTarget sendBoardServiceMessage:messageCopy callback:&__block_literal_global_0];
     }
   }
 }

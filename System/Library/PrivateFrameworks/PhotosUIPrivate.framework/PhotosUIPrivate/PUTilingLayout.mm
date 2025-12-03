@@ -2,18 +2,18 @@
 - (CGPoint)coordinateSystemOrigin;
 - (CGRect)contentBounds;
 - (CGRect)visibleRect;
-- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)a3 scrollPosition:(int64_t)a4;
+- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)path scrollPosition:(int64_t)position;
 - (PUTilingCoordinateSystem)parentCoordinateSystem;
-- (PUTilingLayout)initWithDataSource:(id)a3;
+- (PUTilingLayout)initWithDataSource:(id)source;
 - (PUTilingView)tilingView;
 - (id)description;
-- (id)layoutInfoForTileWithIndexPath:(id)a3 kind:(id)a4;
-- (id)layoutInfosForTilesInRect:(CGRect)a3;
-- (id)tileIdentifierForTileWithIndexPath:(id)a3 kind:(id)a4;
-- (void)invalidateLayoutWithContext:(id)a3 updateImmediately:(BOOL)a4;
+- (id)layoutInfoForTileWithIndexPath:(id)path kind:(id)kind;
+- (id)layoutInfosForTilesInRect:(CGRect)rect;
+- (id)tileIdentifierForTileWithIndexPath:(id)path kind:(id)kind;
+- (void)invalidateLayoutWithContext:(id)context updateImmediately:(BOOL)immediately;
 - (void)prepareLayout;
-- (void)setCoordinateSystemOrigin:(CGPoint)a3;
-- (void)setParentCoordinateSystem:(id)a3;
+- (void)setCoordinateSystemOrigin:(CGPoint)origin;
+- (void)setParentCoordinateSystem:(id)system;
 @end
 
 @implementation PUTilingLayout
@@ -59,80 +59,80 @@
   v7.receiver = self;
   v7.super_class = PUTilingLayout;
   v3 = [(PUTilingLayout *)&v7 description];
-  v4 = [(PUTilingLayout *)self dataSource];
-  v5 = [v3 stringByAppendingFormat:@" dataSource:%@", v4];
+  dataSource = [(PUTilingLayout *)self dataSource];
+  v5 = [v3 stringByAppendingFormat:@" dataSource:%@", dataSource];
 
   return v5;
 }
 
-- (void)setCoordinateSystemOrigin:(CGPoint)a3
+- (void)setCoordinateSystemOrigin:(CGPoint)origin
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != self->_coordinateSystemOrigin.x || a3.y != self->_coordinateSystemOrigin.y)
+  y = origin.y;
+  x = origin.x;
+  if (origin.x != self->_coordinateSystemOrigin.x || origin.y != self->_coordinateSystemOrigin.y)
   {
-    self->_coordinateSystemOrigin = a3;
-    v6 = [(PUTilingLayout *)self coordinateSystem];
-    [v6 setCoordinateSystemOrigin:{x, y}];
+    self->_coordinateSystemOrigin = origin;
+    coordinateSystem = [(PUTilingLayout *)self coordinateSystem];
+    [coordinateSystem setCoordinateSystemOrigin:{x, y}];
   }
 }
 
-- (void)setParentCoordinateSystem:(id)a3
+- (void)setParentCoordinateSystem:(id)system
 {
-  obj = a3;
+  obj = system;
   WeakRetained = objc_loadWeakRetained(&self->_parentCoordinateSystem);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_parentCoordinateSystem, obj);
-    v5 = [(PUTilingLayout *)self coordinateSystem];
-    [v5 setParentCoordinateSystem:obj];
+    coordinateSystem = [(PUTilingLayout *)self coordinateSystem];
+    [coordinateSystem setParentCoordinateSystem:obj];
   }
 }
 
-- (id)tileIdentifierForTileWithIndexPath:(id)a3 kind:(id)a4
+- (id)tileIdentifierForTileWithIndexPath:(id)path kind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_tileIdentifierByIndexPathByKind objectForKeyedSubscript:v7];
+  pathCopy = path;
+  kindCopy = kind;
+  v8 = [(NSMutableDictionary *)self->_tileIdentifierByIndexPathByKind objectForKeyedSubscript:kindCopy];
   if (!v8)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->_tileIdentifierByIndexPathByKind setObject:v8 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_tileIdentifierByIndexPathByKind setObject:v8 forKeyedSubscript:kindCopy];
   }
 
-  v9 = [v8 objectForKeyedSubscript:v6];
+  v9 = [v8 objectForKeyedSubscript:pathCopy];
   if (!v9)
   {
     v10 = [PUTileIdentifier alloc];
-    v11 = [(PUTilingLayout *)self dataSource];
-    v12 = [v11 identifier];
-    v9 = [(PUTileIdentifier *)v10 initWithIndexPath:v6 tileKind:v7 dataSourceIdentifier:v12];
+    dataSource = [(PUTilingLayout *)self dataSource];
+    identifier = [dataSource identifier];
+    v9 = [(PUTileIdentifier *)v10 initWithIndexPath:pathCopy tileKind:kindCopy dataSourceIdentifier:identifier];
 
-    [v8 setObject:v9 forKeyedSubscript:v6];
+    [v8 setObject:v9 forKeyedSubscript:pathCopy];
   }
 
   return v9;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3 updateImmediately:(BOOL)a4
+- (void)invalidateLayoutWithContext:(id)context updateImmediately:(BOOL)immediately
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PUTilingLayout *)self tilingView];
-  [v7 invalidateLayout:self withContext:v6];
+  immediatelyCopy = immediately;
+  contextCopy = context;
+  tilingView = [(PUTilingLayout *)self tilingView];
+  [tilingView invalidateLayout:self withContext:contextCopy];
 
-  if (v4)
+  if (immediatelyCopy)
   {
-    v8 = [(PUTilingLayout *)self tilingView];
-    [v8 layoutIfNeeded];
+    tilingView2 = [(PUTilingLayout *)self tilingView];
+    [tilingView2 layoutIfNeeded];
   }
 }
 
-- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)a3 scrollPosition:(int64_t)a4
+- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)path scrollPosition:(int64_t)position
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PUTilingLayout.m" lineNumber:58 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingLayout.m" lineNumber:58 description:@"must be implemented by concrete subclass"];
 
   v7 = *MEMORY[0x1E695F050];
   v8 = *(MEMORY[0x1E695F050] + 8);
@@ -145,26 +145,26 @@
   return result;
 }
 
-- (id)layoutInfoForTileWithIndexPath:(id)a3 kind:(id)a4
+- (id)layoutInfoForTileWithIndexPath:(id)path kind:(id)kind
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PUTilingLayout.m" lineNumber:53 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingLayout.m" lineNumber:53 description:@"must be implemented by concrete subclass"];
 
   return 0;
 }
 
-- (id)layoutInfosForTilesInRect:(CGRect)a3
+- (id)layoutInfosForTilesInRect:(CGRect)rect
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PUTilingLayout.m" lineNumber:48 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingLayout.m" lineNumber:48 description:@"must be implemented by concrete subclass"];
 
   return 0;
 }
 
 - (CGRect)contentBounds
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUTilingLayout.m" lineNumber:43 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingLayout.m" lineNumber:43 description:@"must be implemented by concrete subclass"];
 
   v5 = *MEMORY[0x1E695F058];
   v6 = *(MEMORY[0x1E695F058] + 8);
@@ -179,25 +179,25 @@
 
 - (void)prepareLayout
 {
-  v4 = [(PUTilingLayout *)self dataSource];
+  dataSource = [(PUTilingLayout *)self dataSource];
 
-  if (!v4)
+  if (!dataSource)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUTilingLayout.m" lineNumber:39 description:@"data source must be set"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingLayout.m" lineNumber:39 description:@"data source must be set"];
   }
 }
 
-- (PUTilingLayout)initWithDataSource:(id)a3
+- (PUTilingLayout)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = PUTilingLayout;
   v6 = [(PUTilingLayout *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     v8 = objc_alloc_init(PUTilingLayoutCoordinateSystem);
     coordinateSystem = v7->_coordinateSystem;
     v7->_coordinateSystem = v8;

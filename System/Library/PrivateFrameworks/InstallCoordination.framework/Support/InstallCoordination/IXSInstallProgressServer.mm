@@ -1,25 +1,25 @@
 @interface IXSInstallProgressServer
-- (void)progressServer:(id)a3 requestCancelForIdentity:(id)a4 withReason:(id)a5 fromClient:(unint64_t)a6;
+- (void)progressServer:(id)server requestCancelForIdentity:(id)identity withReason:(id)reason fromClient:(unint64_t)client;
 @end
 
 @implementation IXSInstallProgressServer
 
-- (void)progressServer:(id)a3 requestCancelForIdentity:(id)a4 withReason:(id)a5 fromClient:(unint64_t)a6
+- (void)progressServer:(id)server requestCancelForIdentity:(id)identity withReason:(id)reason fromClient:(unint64_t)client
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 personaUniqueString];
+  reasonCopy = reason;
+  identityCopy = identity;
+  personaUniqueString = [identityCopy personaUniqueString];
   v11 = [IXApplicationIdentity alloc];
-  v12 = [v9 bundleIdentifier];
+  bundleIdentifier = [identityCopy bundleIdentifier];
 
-  if (v10)
+  if (personaUniqueString)
   {
-    v13 = [(IXApplicationIdentity *)v11 initWithBundleIdentifier:v12 personaUniqueString:v10];
+    v13 = [(IXApplicationIdentity *)v11 initWithBundleIdentifier:bundleIdentifier personaUniqueString:personaUniqueString];
   }
 
   else
   {
-    v13 = [(IXApplicationIdentity *)v11 initWithBundleIdentifier:v12];
+    v13 = [(IXApplicationIdentity *)v11 initWithBundleIdentifier:bundleIdentifier];
   }
 
   v14 = v13;
@@ -29,7 +29,7 @@
 
   if (v16)
   {
-    [v16 cancelForReason:v8 client:a6 error:0];
+    [v16 cancelForReason:reasonCopy client:client error:0];
   }
 
   else

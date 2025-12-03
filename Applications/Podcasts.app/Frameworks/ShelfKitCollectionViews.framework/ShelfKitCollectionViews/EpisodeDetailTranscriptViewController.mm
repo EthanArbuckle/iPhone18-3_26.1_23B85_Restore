@@ -1,57 +1,57 @@
 @interface EpisodeDetailTranscriptViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (_TtC23ShelfKitCollectionViews37EpisodeDetailTranscriptViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)textDraggableView:(id)a3 itemsForDrag:(id)a4;
-- (id)textView:(id)a3 editMenuForTextInRange:(_NSRange)a4 suggestedActions:(id)a5;
-- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (_TtC23ShelfKitCollectionViews37EpisodeDetailTranscriptViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)textDraggableView:(id)view itemsForDrag:(id)drag;
+- (id)textView:(id)view editMenuForTextInRange:(_NSRange)range suggestedActions:(id)actions;
+- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)state;
 - (void)beginFindInteraction;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)copy:(id)a3;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)copy:(id)copy;
 - (void)customCopyAction;
-- (void)highlightParagraph:(id)a3;
+- (void)highlightParagraph:(id)paragraph;
 - (void)keyboardWillHide;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardWillShow:(id)show;
 - (void)presentTranslation;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)textViewDidChangeSelection:(id)selection;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EpisodeDetailTranscriptViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD6BC();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_1BE99C(a3);
+  selfCopy = self;
+  sub_1BE99C(appearing);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1BF9FC(a3);
+  selfCopy = self;
+  sub_1BF9FC(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(EpisodeDetailTranscriptViewController *)&v5 viewDidDisappear:v3];
+  [(EpisodeDetailTranscriptViewController *)&v5 viewDidDisappear:disappearCopy];
   if (*(*&v4[OBJC_IVAR____TtC23ShelfKitCollectionViews37EpisodeDetailTranscriptViewController_viewModel] + OBJC_IVAR____TtCC23ShelfKitCollectionViews37EpisodeDetailTranscriptViewController9ViewModel_menuBarProvider))
   {
     swift_getObjectType();
@@ -68,13 +68,13 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C01FC();
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -87,30 +87,30 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  sub_1C05F4(v10, a4, v8, v9);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1C05F4(controllerCopy, animated, v8, v9);
   sub_1EBD0(v8);
 }
 
-- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)state
 {
   v4 = sub_304C08();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_304BF8();
-  v8 = self;
+  selfCopy = self;
   sub_1C080C();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  if (a3)
+  if (copy)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_30D448();
     swift_unknownObjectRelease();
@@ -119,7 +119,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1C0E44();
@@ -127,47 +127,47 @@
   sub_EB68(v6, &unk_3FBB70);
 }
 
-- (void)highlightParagraph:(id)a3
+- (void)highlightParagraph:(id)paragraph
 {
-  v5 = a3;
-  v6 = self;
-  sub_1C1F60(a3);
+  paragraphCopy = paragraph;
+  selfCopy = self;
+  sub_1C1F60(paragraph);
 }
 
-- (_TtC23ShelfKitCollectionViews37EpisodeDetailTranscriptViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23ShelfKitCollectionViews37EpisodeDetailTranscriptViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_1C4EC4();
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   sub_1C52A4();
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v9 = sub_301CB8();
   v10 = *(v9 - 8);
   __chkstk_darwin(v9);
   v12 = &v22 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_301C38();
-  if (!a6)
+  if (!interaction)
   {
     v13 = objc_opt_self();
-    v14 = a3;
-    v15 = self;
-    v16 = [v13 sharedApplication];
+    viewCopy = view;
+    selfCopy = self;
+    sharedApplication = [v13 sharedApplication];
     sub_301C08(v17);
     v19 = v18;
     sub_2D6B88(_swiftEmptyArrayStorage);
@@ -175,52 +175,52 @@
     sub_1C8AD8(&unk_404010, 255, type metadata accessor for OpenExternalURLOptionsKey);
     isa = sub_30BF88().super.isa;
 
-    [v16 openURL:v19 options:isa completionHandler:0];
+    [sharedApplication openURL:v19 options:isa completionHandler:0];
   }
 
   (*(v10 + 8))(v12, v9);
-  return a6 != 0;
+  return interaction != 0;
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C55D8(v4);
+  selectionCopy = selection;
+  selfCopy = self;
+  sub_1C55D8(selectionCopy);
 }
 
-- (id)textView:(id)a3 editMenuForTextInRange:(_NSRange)a4 suggestedActions:(id)a5
+- (id)textView:(id)view editMenuForTextInRange:(_NSRange)range suggestedActions:(id)actions
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   sub_124C4(0, &qword_408010);
   v9 = sub_30C368();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_1C56F4(v10, location, length, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_1C56F4(viewCopy, location, length, v9);
 
   return v12;
 }
 
 - (void)viewLayoutMarginsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5D98();
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C60B4(a3);
+  selfCopy = self;
+  sub_1C60B4(builder);
   swift_unknownObjectRelease();
 }
 
-- (id)textDraggableView:(id)a3 itemsForDrag:(id)a4
+- (id)textDraggableView:(id)view itemsForDrag:(id)drag
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1C7AE4();
 
   swift_unknownObjectRelease();
@@ -232,53 +232,53 @@
 
 - (void)customCopyAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C0E44();
 }
 
 - (void)beginFindInteraction
 {
-  v4 = self;
+  selfCopy = self;
   v2 = sub_1BC9F4();
-  v3 = [v2 findInteraction];
+  findInteraction = [v2 findInteraction];
 
-  if (v3)
+  if (findInteraction)
   {
-    [v3 presentFindNavigatorShowingReplace:0];
+    [findInteraction presentFindNavigatorShowingReplace:0];
   }
 }
 
 - (void)presentTranslation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C6E64();
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C71DC(v4);
+  showCopy = show;
+  selfCopy = self;
+  sub_1C71DC(showCopy);
 }
 
 - (void)keyboardWillHide
 {
-  v4 = self;
+  selfCopy = self;
   v2 = sub_1BC9F4();
   [v2 setContentInset:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
 
-  v3 = *(&v4->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews37EpisodeDetailTranscriptViewController____lazy_storage___textView);
+  v3 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews37EpisodeDetailTranscriptViewController____lazy_storage___textView);
   [v3 contentInset];
   [v3 setScrollIndicatorInsets:?];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a3;
-  v6 = self;
+  recognizerCopy = recognizer;
+  selfCopy = self;
   v7 = sub_1BCB44();
 
-  if (v7 == v5)
+  if (v7 == recognizerCopy)
   {
     v9 = sub_1BC9F4();
     [v9 selectedRange];

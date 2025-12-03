@@ -1,7 +1,7 @@
 @interface OFPropertyAnimationLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
 - (OFPropertyAnimationLayer)init;
-- (OFPropertyAnimationLayer)initWithLayer:(id)a3;
+- (OFPropertyAnimationLayer)initWithLayer:(id)layer;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   return [(OFPropertyAnimationLayer *)&v3 init];
 }
 
-- (OFPropertyAnimationLayer)initWithLayer:(id)a3
+- (OFPropertyAnimationLayer)initWithLayer:(id)layer
 {
   v5.receiver = self;
   v5.super_class = OFPropertyAnimationLayer;
@@ -35,16 +35,16 @@
   [(OFPropertyAnimationLayer *)&v2 dealloc];
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
-  if ([a3 isEqualToString:@"animatedPoint"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"animatedFloat"))
+  if ([key isEqualToString:@"animatedPoint"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"animatedFloat"))
   {
     return 1;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___OFPropertyAnimationLayer;
-  return objc_msgSendSuper2(&v6, sel_needsDisplayForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_needsDisplayForKey_, key);
 }
 
 @end

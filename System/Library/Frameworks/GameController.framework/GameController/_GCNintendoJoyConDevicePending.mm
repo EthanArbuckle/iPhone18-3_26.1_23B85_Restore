@@ -1,25 +1,25 @@
 @interface _GCNintendoJoyConDevicePending
 - (_GCNintendoJoyConDevicePending)init;
-- (_GCNintendoJoyConDevicePending)initWithHIDService:(id)a3 manager:(id)a4;
-- (void)_onqueue_prepareDeviceWithConnection:(uint64_t)a1;
+- (_GCNintendoJoyConDevicePending)initWithHIDService:(id)service manager:(id)manager;
+- (void)_onqueue_prepareDeviceWithConnection:(uint64_t)connection;
 - (void)dealloc;
-- (void)setDriverConnection:(id)a3 invalidatingPrevious:(BOOL)a4;
-- (void)setFilterConnection:(id)a3 invalidatingPrevious:(BOOL)a4;
+- (void)setDriverConnection:(id)connection invalidatingPrevious:(BOOL)previous;
+- (void)setFilterConnection:(id)connection invalidatingPrevious:(BOOL)previous;
 @end
 
 @implementation _GCNintendoJoyConDevicePending
 
-- (_GCNintendoJoyConDevicePending)initWithHIDService:(id)a3 manager:(id)a4
+- (_GCNintendoJoyConDevicePending)initWithHIDService:(id)service manager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  managerCopy = manager;
   v24.receiver = self;
   v24.super_class = _GCNintendoJoyConDevicePending;
   v9 = [(_GCNintendoJoyConDevicePending *)&v24 init];
-  if (!v7)
+  if (!serviceCopy)
   {
     [_GCNintendoJoyConDevicePending initWithHIDService:a2 manager:v9];
-    if (v8)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
@@ -29,7 +29,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!managerCopy)
   {
     goto LABEL_5;
   }
@@ -41,12 +41,12 @@ LABEL_3:
   v9->_queue = v11;
 
   serviceInfo = v9->_serviceInfo;
-  v9->_serviceInfo = v7;
-  v14 = v7;
+  v9->_serviceInfo = serviceCopy;
+  v14 = serviceCopy;
 
   manager = v9->_manager;
-  v9->_manager = v8;
-  v16 = v8;
+  v9->_manager = managerCopy;
+  v16 = managerCopy;
 
   v17 = MEMORY[0x1E69A06D0];
   v22[0] = MEMORY[0x1E69E9820];
@@ -77,56 +77,56 @@ LABEL_3:
   [(_GCNintendoJoyConDevicePending *)&v3 dealloc];
 }
 
-- (void)setDriverConnection:(id)a3 invalidatingPrevious:(BOOL)a4
+- (void)setDriverConnection:(id)connection invalidatingPrevious:(BOOL)previous
 {
-  v7 = a3;
-  v8 = self;
-  objc_sync_enter(v8);
-  if ([v7 isEqual:v8->_driverConnection])
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([connectionCopy isEqual:selfCopy->_driverConnection])
   {
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v9 = v8->_driverConnection;
-    [(_GCNintendoJoyConDevicePending *)v8 willChangeValueForKey:@"driverConnection"];
-    objc_setProperty_atomic(v8, a2, v7, 48);
-    [(_GCNintendoJoyConDevicePending *)v8 didChangeValueForKey:@"driverConnection"];
-    objc_sync_exit(v8);
+    v9 = selfCopy->_driverConnection;
+    [(_GCNintendoJoyConDevicePending *)selfCopy willChangeValueForKey:@"driverConnection"];
+    objc_setProperty_atomic(selfCopy, a2, connectionCopy, 48);
+    [(_GCNintendoJoyConDevicePending *)selfCopy didChangeValueForKey:@"driverConnection"];
+    objc_sync_exit(selfCopy);
 
-    queue = v8->_queue;
+    queue = selfCopy->_queue;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __75___GCNintendoJoyConDevicePending_setDriverConnection_invalidatingPrevious___block_invoke;
     v12[3] = &unk_1E841AC48;
-    v12[4] = v8;
-    v13 = v7;
+    v12[4] = selfCopy;
+    v13 = connectionCopy;
     v14 = v9;
-    v15 = a4;
+    previousCopy = previous;
     v11 = v9;
     dispatch_async(queue, v12);
   }
 }
 
-- (void)_onqueue_prepareDeviceWithConnection:(uint64_t)a1
+- (void)_onqueue_prepareDeviceWithConnection:(uint64_t)connection
 {
   v3 = a2;
-  if (a1)
+  if (connection)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
+    dispatch_assert_queue_V2(*(connection + 8));
     v4 = _os_activity_create(&dword_1D2CD5000, "[JoyCon Physical Device (Pending)] Prepare Device", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v4, &state);
     if (v3)
     {
-      if ([v3 isInvalid] & 1) != 0 || (objc_msgSend(*(a1 + 24), "isCancelled"))
+      if ([v3 isInvalid] & 1) != 0 || (objc_msgSend(*(connection + 24), "isCancelled"))
       {
         goto LABEL_18;
       }
 
-      v5 = [*(a1 + 56) stringPropertyForKey:@"JoyConControllerType"];
+      v5 = [*(connection + 56) stringPropertyForKey:@"JoyConControllerType"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -135,19 +135,19 @@ LABEL_3:
           v6 = 1;
 LABEL_10:
 
-          v7 = [[_GCNintendoJoyConDevice alloc] initWithHIDDevice:*(a1 + 56) manager:*(a1 + 32) type:v6];
+          currentHandler = [[_GCNintendoJoyConDevice alloc] initWithHIDDevice:*(connection + 56) manager:*(connection + 32) type:v6];
 LABEL_11:
           if (objc_opt_respondsToSelector())
           {
-            [(_GCNintendoJoyConDevice *)v7 setDriverConnection:*(a1 + 48)];
+            [(_GCNintendoJoyConDevice *)currentHandler setDriverConnection:*(connection + 48)];
           }
 
-          if ((objc_opt_respondsToSelector() & 1) != 0 && *(a1 + 40))
+          if ((objc_opt_respondsToSelector() & 1) != 0 && *(connection + 40))
           {
-            [(_GCNintendoJoyConDevice *)v7 setFilterConnection:?];
+            [(_GCNintendoJoyConDevice *)currentHandler setFilterConnection:?];
           }
 
-          [*(a1 + 24) succeedWithResult:v7];
+          [*(connection + 24) succeedWithResult:currentHandler];
           goto LABEL_17;
         }
 
@@ -160,8 +160,8 @@ LABEL_11:
         if ([v5 isEqualToString:@"Pro Controller"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"NES Controller (L)") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"NES Controller (R)") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"SNES Controller") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"N64 Controller"))
         {
 
-          v7 = [[_GCDefaultPhysicalDevice alloc] initWithHIDDevice:*(a1 + 56) manager:*(a1 + 32)];
-          [(_GCNintendoJoyConDevice *)v7 setDelegate:objc_opt_class()];
+          currentHandler = [[_GCDefaultPhysicalDevice alloc] initWithHIDDevice:*(connection + 56) manager:*(connection + 32)];
+          [(_GCNintendoJoyConDevice *)currentHandler setDelegate:objc_opt_class()];
           goto LABEL_11;
         }
       }
@@ -171,17 +171,17 @@ LABEL_11:
         goto LABEL_18;
       }
 
-      v7 = getGCLogger();
-      if (os_log_type_enabled(&v7->super, OS_LOG_TYPE_ERROR))
+      currentHandler = getGCLogger();
+      if (os_log_type_enabled(&currentHandler->super, OS_LOG_TYPE_ERROR))
       {
-        [(_GCNintendoJoyConDevicePending *)a1 _onqueue_prepareDeviceWithConnection:?];
+        [(_GCNintendoJoyConDevicePending *)connection _onqueue_prepareDeviceWithConnection:?];
       }
     }
 
     else
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [(_GCNintendoJoyConDevice *)v7 handleFailureInMethod:sel__onqueue_prepareDeviceWithConnection_ object:a1 file:@"_GCNintendoJoyConDevicePending.m" lineNumber:158 description:@"Invalid parameter not satisfying: %s", "connection != nil"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [(_GCNintendoJoyConDevice *)currentHandler handleFailureInMethod:sel__onqueue_prepareDeviceWithConnection_ object:connection file:@"_GCNintendoJoyConDevicePending.m" lineNumber:158 description:@"Invalid parameter not satisfying: %s", "connection != nil"];
     }
 
 LABEL_17:
@@ -191,33 +191,33 @@ LABEL_18:
   }
 }
 
-- (void)setFilterConnection:(id)a3 invalidatingPrevious:(BOOL)a4
+- (void)setFilterConnection:(id)connection invalidatingPrevious:(BOOL)previous
 {
-  v7 = a3;
-  v8 = self;
-  objc_sync_enter(v8);
-  if ([v7 isEqual:v8->_filterConnection])
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([connectionCopy isEqual:selfCopy->_filterConnection])
   {
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v9 = v8->_filterConnection;
-    [(_GCNintendoJoyConDevicePending *)v8 willChangeValueForKey:@"filterConnection"];
-    objc_setProperty_atomic(v8, a2, v7, 40);
-    [(_GCNintendoJoyConDevicePending *)v8 didChangeValueForKey:@"filterConnection"];
-    objc_sync_exit(v8);
+    v9 = selfCopy->_filterConnection;
+    [(_GCNintendoJoyConDevicePending *)selfCopy willChangeValueForKey:@"filterConnection"];
+    objc_setProperty_atomic(selfCopy, a2, connectionCopy, 40);
+    [(_GCNintendoJoyConDevicePending *)selfCopy didChangeValueForKey:@"filterConnection"];
+    objc_sync_exit(selfCopy);
 
-    queue = v8->_queue;
+    queue = selfCopy->_queue;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __75___GCNintendoJoyConDevicePending_setFilterConnection_invalidatingPrevious___block_invoke;
     v12[3] = &unk_1E841AC48;
-    v12[4] = v8;
-    v13 = v7;
+    v12[4] = selfCopy;
+    v13 = connectionCopy;
     v14 = v9;
-    v15 = a4;
+    previousCopy = previous;
     v11 = v9;
     dispatch_async(queue, v12);
   }

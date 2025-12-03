@@ -1,22 +1,22 @@
 @interface CHNonTerminal
-- (CHNonTerminal)initWithName:(id)a3 leftNode:(id)a4 rightNode:(id)a5;
+- (CHNonTerminal)initWithName:(id)name leftNode:(id)node rightNode:(id)rightNode;
 - (id)description;
 - (int64_t)getTerminalsCount;
 @end
 
 @implementation CHNonTerminal
 
-- (CHNonTerminal)initWithName:(id)a3 leftNode:(id)a4 rightNode:(id)a5
+- (CHNonTerminal)initWithName:(id)name leftNode:(id)node rightNode:(id)rightNode
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  location = objc_msgSend_inputRange(v9, v11, v12, v13, v14, v15);
-  if (v10)
+  nameCopy = name;
+  nodeCopy = node;
+  rightNodeCopy = rightNode;
+  location = objc_msgSend_inputRange(nodeCopy, v11, v12, v13, v14, v15);
+  if (rightNodeCopy)
   {
-    v22 = objc_msgSend_inputRange(v9, length, v18, v19, v20, v21);
+    v22 = objc_msgSend_inputRange(nodeCopy, length, v18, v19, v20, v21);
     v24 = v23;
-    v36.location = objc_msgSend_inputRange(v10, v23, v25, v26, v27, v28);
+    v36.location = objc_msgSend_inputRange(rightNodeCopy, v23, v25, v26, v27, v28);
     v36.length = v29;
     v35.location = v22;
     v35.length = v24;
@@ -27,12 +27,12 @@
 
   v34.receiver = self;
   v34.super_class = CHNonTerminal;
-  v31 = [(CHParseTreeNode *)&v34 initWithName:v8 inputRange:location, length];
+  v31 = [(CHParseTreeNode *)&v34 initWithName:nameCopy inputRange:location, length];
   v32 = v31;
   if (v31)
   {
-    objc_storeStrong(&v31->_leftNode, a4);
-    objc_storeStrong(&v32->_rightNode, a5);
+    objc_storeStrong(&v31->_leftNode, node);
+    objc_storeStrong(&v32->_rightNode, rightNode);
   }
 
   return v32;

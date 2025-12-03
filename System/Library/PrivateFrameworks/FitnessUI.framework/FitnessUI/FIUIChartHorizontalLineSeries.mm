@@ -1,5 +1,5 @@
 @interface FIUIChartHorizontalLineSeries
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)layoutSubviews;
 @end
 
@@ -10,19 +10,19 @@
   v6.receiver = self;
   v6.super_class = FIUIChartHorizontalLineSeries;
   [(FIUIChartSeries *)&v6 layoutSubviews];
-  v3 = [(FIUIChartNumericSeries *)self CGPointsFromDataSet];
+  cGPointsFromDataSet = [(FIUIChartNumericSeries *)self CGPointsFromDataSet];
   dataPoints = self->_dataPoints;
-  self->_dataPoints = v3;
+  self->_dataPoints = cGPointsFromDataSet;
 
-  v5 = [(FIUIChartHorizontalLineSeries *)self layer];
-  [v5 setNeedsDisplay];
+  layer = [(FIUIChartHorizontalLineSeries *)self layer];
+  [layer setNeedsDisplay];
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  UIGraphicsPushContext(a4);
-  CGContextBeginPath(a4);
+  UIGraphicsPushContext(context);
+  CGContextBeginPath(context);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -45,9 +45,9 @@
 
         [*(*(&v19 + 1) + 8 * v10) CGPointValue];
         v12 = v11;
-        CGContextMoveToPoint(a4, self->_sidePadding, v11);
+        CGContextMoveToPoint(context, self->_sidePadding, v11);
         [(FIUIChartSeries *)self insetBounds];
-        CGContextAddLineToPoint(a4, v13 + self->_sidePadding * -2.0, v12);
+        CGContextAddLineToPoint(context, v13 + self->_sidePadding * -2.0, v12);
         ++v10;
       }
 
@@ -58,30 +58,30 @@
     while (v8);
   }
 
-  CGContextClosePath(a4);
+  CGContextClosePath(context);
   lineWidth = self->_lineWidth;
   color = self->_color;
   if (color)
   {
-    v16 = color;
+    whiteColor = color;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  v17 = v16;
+  v17 = whiteColor;
   v18 = 1.0;
   if (lineWidth > 2.22044605e-16)
   {
     v18 = lineWidth;
   }
 
-  CGContextSetLineWidth(a4, v18);
-  CGContextSetStrokeColorWithColor(a4, [(UIColor *)v17 CGColor]);
-  CGContextSetLineCap(a4, kCGLineCapRound);
-  CGContextDrawPath(a4, kCGPathStroke);
+  CGContextSetLineWidth(context, v18);
+  CGContextSetStrokeColorWithColor(context, [(UIColor *)v17 CGColor]);
+  CGContextSetLineCap(context, kCGLineCapRound);
+  CGContextDrawPath(context, kCGPathStroke);
   UIGraphicsPopContext();
 }
 

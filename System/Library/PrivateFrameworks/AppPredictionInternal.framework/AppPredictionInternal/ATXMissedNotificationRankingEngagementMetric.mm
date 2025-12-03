@@ -1,21 +1,21 @@
 @interface ATXMissedNotificationRankingEngagementMetric
 - (id)coreAnalyticsDictionary;
-- (void)populateMetricsFromRanking:(id)a3;
+- (void)populateMetricsFromRanking:(id)ranking;
 @end
 
 @implementation ATXMissedNotificationRankingEngagementMetric
 
-- (void)populateMetricsFromRanking:(id)a3
+- (void)populateMetricsFromRanking:(id)ranking
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 digestTimeline];
-  v6 = [v5 firstUpcomingViewTimestamp];
-  if (v6)
+  rankingCopy = ranking;
+  digestTimeline = [rankingCopy digestTimeline];
+  firstUpcomingViewTimestamp = [digestTimeline firstUpcomingViewTimestamp];
+  if (firstUpcomingViewTimestamp)
   {
-    v7 = [v4 digestTimeline];
-    v8 = [v7 firstUpcomingViewTimestamp];
-    [v8 timeIntervalSinceReferenceDate];
+    digestTimeline2 = [rankingCopy digestTimeline];
+    firstUpcomingViewTimestamp2 = [digestTimeline2 firstUpcomingViewTimestamp];
+    [firstUpcomingViewTimestamp2 timeIntervalSinceReferenceDate];
     [(ATXMissedNotificationRankingEngagementMetric *)self setCreatedTimestamp:?];
   }
 
@@ -24,13 +24,13 @@
     [(ATXMissedNotificationRankingEngagementMetric *)self setCreatedTimestamp:0.0];
   }
 
-  v9 = [v4 digestTimeline];
-  v10 = [v9 firstScheduledViewTimestamp];
-  if (v10)
+  digestTimeline3 = [rankingCopy digestTimeline];
+  firstScheduledViewTimestamp = [digestTimeline3 firstScheduledViewTimestamp];
+  if (firstScheduledViewTimestamp)
   {
-    v11 = [v4 digestTimeline];
-    v12 = [v11 firstScheduledViewTimestamp];
-    [v12 timeIntervalSinceReferenceDate];
+    digestTimeline4 = [rankingCopy digestTimeline];
+    firstScheduledViewTimestamp2 = [digestTimeline4 firstScheduledViewTimestamp];
+    [firstScheduledViewTimestamp2 timeIntervalSinceReferenceDate];
     [(ATXMissedNotificationRankingEngagementMetric *)self setShowTimestamp:?];
   }
 
@@ -39,13 +39,13 @@
     [(ATXMissedNotificationRankingEngagementMetric *)self setShowTimestamp:0.0];
   }
 
-  v13 = [v4 digestTimeline];
-  v14 = [v13 digestRemovedTimestamp];
-  if (v14)
+  digestTimeline5 = [rankingCopy digestTimeline];
+  digestRemovedTimestamp = [digestTimeline5 digestRemovedTimestamp];
+  if (digestRemovedTimestamp)
   {
-    v15 = [v4 digestTimeline];
-    v16 = [v15 digestRemovedTimestamp];
-    [v16 timeIntervalSinceReferenceDate];
+    digestTimeline6 = [rankingCopy digestTimeline];
+    digestRemovedTimestamp2 = [digestTimeline6 digestRemovedTimestamp];
+    [digestRemovedTimestamp2 timeIntervalSinceReferenceDate];
     [(ATXMissedNotificationRankingEngagementMetric *)self setExpireTimestamp:?];
   }
 
@@ -54,12 +54,12 @@
     [(ATXMissedNotificationRankingEngagementMetric *)self setExpireTimestamp:0.0];
   }
 
-  v17 = [v4 uuid];
-  v18 = [v17 UUIDString];
-  [(ATXMissedNotificationRankingEngagementMetric *)self setMnbUUID:v18];
+  uuid = [rankingCopy uuid];
+  uUIDString = [uuid UUIDString];
+  [(ATXMissedNotificationRankingEngagementMetric *)self setMnbUUID:uUIDString];
 
-  v19 = [v4 modeIdString];
-  [(ATXMissedNotificationRankingEngagementMetric *)self setPreviousModeSemanticType:v19];
+  modeIdString = [rankingCopy modeIdString];
+  [(ATXMissedNotificationRankingEngagementMetric *)self setPreviousModeSemanticType:modeIdString];
 
   [(ATXMissedNotificationRankingEngagementMetric *)self setNextModeSemanticType:0];
   [(ATXMissedNotificationRankingEngagementMetric *)self setNumMessageGroups:0];
@@ -72,8 +72,8 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v20 = [v4 rankedGroups];
-  v21 = [v20 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  rankedGroups = [rankingCopy rankedGroups];
+  v21 = [rankedGroups countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v21)
   {
     v22 = v21;
@@ -84,19 +84,19 @@
       {
         if (*v38 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(rankedGroups);
         }
 
         v25 = *(*(&v37 + 1) + 8 * i);
-        v26 = [v25 digestEngagementTrackingMetrics];
-        v27 = [v26 numEngagementsAfterExpiration];
-        v28 = [v26 numEngagementsInScheduled] + v27;
-        v29 = v28 + [v26 numEngagementsInUpcoming];
+        digestEngagementTrackingMetrics = [v25 digestEngagementTrackingMetrics];
+        numEngagementsAfterExpiration = [digestEngagementTrackingMetrics numEngagementsAfterExpiration];
+        v28 = [digestEngagementTrackingMetrics numEngagementsInScheduled] + numEngagementsAfterExpiration;
+        v29 = v28 + [digestEngagementTrackingMetrics numEngagementsInUpcoming];
         if ([v25 isCommunicationGroup])
         {
           [(ATXMissedNotificationRankingEngagementMetric *)self setNumMessageGroups:[(ATXMissedNotificationRankingEngagementMetric *)self numMessageGroups]+ 1];
-          v30 = [v25 rankedNotifications];
-          -[ATXMissedNotificationRankingEngagementMetric setNumMessageNotifications:](self, "setNumMessageNotifications:", -[ATXMissedNotificationRankingEngagementMetric numMessageNotifications](self, "numMessageNotifications") + [v30 count]);
+          rankedNotifications = [v25 rankedNotifications];
+          -[ATXMissedNotificationRankingEngagementMetric setNumMessageNotifications:](self, "setNumMessageNotifications:", -[ATXMissedNotificationRankingEngagementMetric numMessageNotifications](self, "numMessageNotifications") + [rankedNotifications count]);
 
           [(ATXMissedNotificationRankingEngagementMetric *)self setNumMessageEngagements:[(ATXMissedNotificationRankingEngagementMetric *)self numMessageEngagements]+ v29];
         }
@@ -104,30 +104,30 @@
         else
         {
           [(ATXMissedNotificationRankingEngagementMetric *)self setNumOtherGroups:[(ATXMissedNotificationRankingEngagementMetric *)self numOtherGroups]+ 1];
-          v31 = [v25 rankedNotifications];
-          -[ATXMissedNotificationRankingEngagementMetric setNumOtherNotifications:](self, "setNumOtherNotifications:", -[ATXMissedNotificationRankingEngagementMetric numOtherNotifications](self, "numOtherNotifications") + [v31 count]);
+          rankedNotifications2 = [v25 rankedNotifications];
+          -[ATXMissedNotificationRankingEngagementMetric setNumOtherNotifications:](self, "setNumOtherNotifications:", -[ATXMissedNotificationRankingEngagementMetric numOtherNotifications](self, "numOtherNotifications") + [rankedNotifications2 count]);
 
           [(ATXMissedNotificationRankingEngagementMetric *)self setNumOtherEngagements:[(ATXMissedNotificationRankingEngagementMetric *)self numOtherEngagements]+ v29];
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v22 = [rankedGroups countByEnumeratingWithState:&v37 objects:v41 count:16];
     }
 
     while (v22);
   }
 
-  v32 = [v4 digestEngagementTrackingMetrics];
-  -[ATXMissedNotificationRankingEngagementMetric setNumEngagementsInUpcoming:](self, "setNumEngagementsInUpcoming:", [v32 numEngagementsInUpcoming]);
+  digestEngagementTrackingMetrics2 = [rankingCopy digestEngagementTrackingMetrics];
+  -[ATXMissedNotificationRankingEngagementMetric setNumEngagementsInUpcoming:](self, "setNumEngagementsInUpcoming:", [digestEngagementTrackingMetrics2 numEngagementsInUpcoming]);
 
-  v33 = [v4 digestEngagementTrackingMetrics];
-  -[ATXMissedNotificationRankingEngagementMetric setNumEngagementsAfterShow:](self, "setNumEngagementsAfterShow:", [v33 numEngagementsInScheduled]);
+  digestEngagementTrackingMetrics3 = [rankingCopy digestEngagementTrackingMetrics];
+  -[ATXMissedNotificationRankingEngagementMetric setNumEngagementsAfterShow:](self, "setNumEngagementsAfterShow:", [digestEngagementTrackingMetrics3 numEngagementsInScheduled]);
 
-  v34 = [v4 digestEngagementTrackingMetrics];
-  -[ATXMissedNotificationRankingEngagementMetric setNumEngagementsAfterExpiration:](self, "setNumEngagementsAfterExpiration:", [v34 numEngagementsAfterExpiration]);
+  digestEngagementTrackingMetrics4 = [rankingCopy digestEngagementTrackingMetrics];
+  -[ATXMissedNotificationRankingEngagementMetric setNumEngagementsAfterExpiration:](self, "setNumEngagementsAfterExpiration:", [digestEngagementTrackingMetrics4 numEngagementsAfterExpiration]);
 
-  v35 = [v4 digestEngagementTrackingMetrics];
-  -[ATXMissedNotificationRankingEngagementMetric setNumExpansions:](self, "setNumExpansions:", [v35 numExpansions]);
+  digestEngagementTrackingMetrics5 = [rankingCopy digestEngagementTrackingMetrics];
+  -[ATXMissedNotificationRankingEngagementMetric setNumExpansions:](self, "setNumExpansions:", [digestEngagementTrackingMetrics5 numExpansions]);
 
   v36 = *MEMORY[0x277D85DE8];
 }
@@ -151,38 +151,38 @@
   v30 = [v5 numberWithDouble:?];
   v34[2] = v30;
   v33[3] = @"mnbUUID";
-  v6 = [(ATXMissedNotificationRankingEngagementMetric *)self mnbUUID];
-  v7 = v6;
-  if (!v6)
+  mnbUUID = [(ATXMissedNotificationRankingEngagementMetric *)self mnbUUID];
+  v7 = mnbUUID;
+  if (!mnbUUID)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    mnbUUID = [MEMORY[0x277CBEB68] null];
   }
 
-  v25 = v6;
-  v34[3] = v6;
+  v25 = mnbUUID;
+  v34[3] = mnbUUID;
   v33[4] = @"previousModeSemanticType";
-  v8 = [(ATXMissedNotificationRankingEngagementMetric *)self previousModeSemanticType];
-  v9 = v8;
-  if (!v8)
+  previousModeSemanticType = [(ATXMissedNotificationRankingEngagementMetric *)self previousModeSemanticType];
+  v9 = previousModeSemanticType;
+  if (!previousModeSemanticType)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    previousModeSemanticType = [MEMORY[0x277CBEB68] null];
   }
 
   v28 = v9;
   v29 = v7;
-  v24 = v8;
-  v34[4] = v8;
+  v24 = previousModeSemanticType;
+  v34[4] = previousModeSemanticType;
   v33[5] = @"nextModeSemanticType";
-  v10 = [(ATXMissedNotificationRankingEngagementMetric *)self nextModeSemanticType];
-  v11 = v10;
-  if (!v10)
+  nextModeSemanticType = [(ATXMissedNotificationRankingEngagementMetric *)self nextModeSemanticType];
+  v11 = nextModeSemanticType;
+  if (!nextModeSemanticType)
   {
-    v10 = [MEMORY[0x277CBEB68] null];
+    nextModeSemanticType = [MEMORY[0x277CBEB68] null];
   }
 
-  v34[5] = v10;
+  v34[5] = nextModeSemanticType;
   v33[6] = @"numMessageGroups";
-  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXMissedNotificationRankingEngagementMetric numMessageGroups](self, "numMessageGroups", v10)}];
+  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXMissedNotificationRankingEngagementMetric numMessageGroups](self, "numMessageGroups", nextModeSemanticType)}];
   v34[6] = v27;
   v33[7] = @"numOtherGroups";
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXMissedNotificationRankingEngagementMetric numOtherGroups](self, "numOtherGroups")}];

@@ -1,28 +1,28 @@
 @interface PVOrientationEffect
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4;
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
-- (HGRef<HGXForm>)rotationNodeForPercent:(float)a3 atCenter:(CGPoint)a4;
++ (void)registerEffectWithID:(id)d displayName:(id)name;
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
+- (HGRef<HGXForm>)rotationNodeForPercent:(float)percent atCenter:(CGPoint)center;
 - (PVEffectTimeNotificationDelegate)timeNotificationDelegate;
-- (PVOrientationEffect)initWithEffectID:(id)a3;
-- (id)inputsForTime:(id *)a3;
+- (PVOrientationEffect)initWithEffectID:(id)d;
+- (id)inputsForTime:(id *)time;
 - (void)dealloc;
-- (void)orientationChangeRequest:(id)a3;
-- (void)setInputID:(unsigned int)a3;
-- (void)setShowAlt:(BOOL)a3;
+- (void)orientationChangeRequest:(id)request;
+- (void)setInputID:(unsigned int)d;
+- (void)setShowAlt:(BOOL)alt;
 @end
 
 @implementation PVOrientationEffect
 
-- (PVOrientationEffect)initWithEffectID:(id)a3
+- (PVOrientationEffect)initWithEffectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = PVOrientationEffect;
-  v5 = [(PVEffect *)&v8 initWithEffectID:v4];
+  v5 = [(PVEffect *)&v8 initWithEffectID:dCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v5 selector:sel_orientationChangeRequest_ name:@"PVOrientationEffectChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_orientationChangeRequest_ name:@"PVOrientationEffectChange" object:0];
   }
 
   return v5;
@@ -30,26 +30,26 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PVOrientationEffect;
   [(PVEffect *)&v4 dealloc];
 }
 
-- (void)orientationChangeRequest:(id)a3
+- (void)orientationChangeRequest:(id)request
 {
-  v12 = [a3 userInfo];
-  v4 = [v12 objectForKeyedSubscript:@"seconds"];
-  v5 = [v12 objectForKeyedSubscript:@"alt"];
-  v6 = [v12 objectForKeyedSubscript:@"inputID"];
+  userInfo = [request userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"seconds"];
+  v5 = [userInfo objectForKeyedSubscript:@"alt"];
+  v6 = [userInfo objectForKeyedSubscript:@"inputID"];
   v7 = v6;
   if (v5)
   {
-    v8 = [(PVOrientationEffect *)self showAlt];
+    showAlt = [(PVOrientationEffect *)self showAlt];
     -[PVOrientationEffect setShowAlt:](self, "setShowAlt:", [v5 BOOLValue]);
-    [(PVOrientationEffect *)self setOldShowAlt:v8];
+    [(PVOrientationEffect *)self setOldShowAlt:showAlt];
     if (!v7)
     {
       goto LABEL_6;
@@ -61,14 +61,14 @@
     goto LABEL_7;
   }
 
-  v9 = [(PVOrientationEffect *)self inputID];
+  inputID = [(PVOrientationEffect *)self inputID];
   -[PVOrientationEffect setInputID:](self, "setInputID:", [v7 intValue]);
-  [(PVOrientationEffect *)self setOldInputID:v9 != 0];
+  [(PVOrientationEffect *)self setOldInputID:inputID != 0];
 LABEL_6:
   [v4 doubleValue];
   [(PVOrientationEffect *)self setSwitchTime:?];
 LABEL_7:
-  v10 = [v12 objectForKeyedSubscript:@"timeDelegate"];
+  v10 = [userInfo objectForKeyedSubscript:@"timeDelegate"];
   if (v10)
   {
     if (objc_opt_respondsToSelector())
@@ -85,13 +85,13 @@ LABEL_7:
   }
 }
 
-- (void)setShowAlt:(BOOL)a3
+- (void)setShowAlt:(BOOL)alt
 {
-  v3 = a3;
+  altCopy = alt;
   [(PVOrientationEffect *)self animationTime];
   if (v5 > 0.0)
   {
-    if (self->_showAlt != v3)
+    if (self->_showAlt != altCopy)
     {
       [(PVOrientationEffect *)self setSwitchTime:-1.0];
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
@@ -107,85 +107,85 @@ LABEL_6:
     }
   }
 
-  self->_oldShowAlt = v3;
-  self->_showAlt = v3;
+  self->_oldShowAlt = altCopy;
+  self->_showAlt = altCopy;
 }
 
-- (void)setInputID:(unsigned int)a3
+- (void)setInputID:(unsigned int)d
 {
   [(PVOrientationEffect *)self animationTime];
-  if (v5 > 0.0 && self->_inputID != a3)
+  if (v5 > 0.0 && self->_inputID != d)
   {
     [(PVOrientationEffect *)self setSwitchTime:-1.0];
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     [(PVOrientationEffect *)self setSwitchSetTime:?];
   }
 
-  self->_oldInputID = a3;
-  self->_inputID = a3;
+  self->_oldInputID = d;
+  self->_inputID = d;
 }
 
-- (id)inputsForTime:(id *)a3
+- (id)inputsForTime:(id *)time
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v11 = *a3;
+  v11 = *time;
   Seconds = CMTimeGetSeconds(&v11);
   v5 = MEMORY[0x277CCABB0];
   [(PVOrientationEffect *)self switchTime];
   if (v6 <= Seconds)
   {
-    v7 = [(PVOrientationEffect *)self inputID];
+    inputID = [(PVOrientationEffect *)self inputID];
   }
 
   else
   {
-    v7 = [(PVOrientationEffect *)self oldInputID];
+    inputID = [(PVOrientationEffect *)self oldInputID];
   }
 
-  v8 = [v5 numberWithUnsignedInt:v7];
+  v8 = [v5 numberWithUnsignedInt:inputID];
   v12[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
 
   return v9;
 }
 
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4
++ (void)registerEffectWithID:(id)d displayName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v6, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.compositor", @"FFEffectProperty_EffectType", 0}];
-  [PVEffect registerEffectClass:a1 forEffectID:v10 withProperties:v7];
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v6, @"displayName", @"BuiltIn", @"contentGroup", 0}];
+  dCopy = d;
+  nameCopy = name;
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{nameCopy, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.compositor", @"FFEffectProperty_EffectType", 0}];
+  [PVEffect registerEffectClass:self forEffectID:dCopy withProperties:v7];
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{nameCopy, @"displayName", @"BuiltIn", @"contentGroup", 0}];
   v9 = +[PVContentRegistry sharedInstance];
-  [v9 registerContentClass:objc_opt_class() forID:v10 type:@"effect.video.compositor" withProperties:v8];
+  [v9 registerContentClass:objc_opt_class() forID:dCopy type:@"effect.video.compositor" withProperties:v8];
 }
 
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v11 = v6;
   v60[2] = *MEMORY[0x277D85DE8];
-  time = *a3;
-  v12 = [(PVOrientationEffect *)self inputsForTime:&time, a4, a5];
-  v13 = [v12 firstObject];
-  v14 = [v13 intValue];
+  time = *time;
+  renderer = [(PVOrientationEffect *)self inputsForTime:&time, inputs, renderer];
+  firstObject = [renderer firstObject];
+  intValue = [firstObject intValue];
 
-  v15 = [(PVOrientationEffect *)self timeNotificationDelegate];
-  LOBYTE(v12) = v15 == 0;
+  timeNotificationDelegate = [(PVOrientationEffect *)self timeNotificationDelegate];
+  LOBYTE(renderer) = timeNotificationDelegate == 0;
 
-  if ((v12 & 1) == 0)
+  if ((renderer & 1) == 0)
   {
-    v16 = [(PVOrientationEffect *)self timeNotificationDelegate];
-    time = *a3;
-    [v16 effectRenderedTime:&time];
+    timeNotificationDelegate2 = [(PVOrientationEffect *)self timeNotificationDelegate];
+    time = *time;
+    [timeNotificationDelegate2 effectRenderedTime:&time];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v59[0] = @"seconds";
     v59[1] = @"timeDelegate";
     v60[0] = &unk_28732D1D8;
-    v18 = [MEMORY[0x277CBEB68] null];
-    v60[1] = v18;
+    null = [MEMORY[0x277CBEB68] null];
+    v60[1] = null;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:2];
-    [v17 postNotificationName:@"PVOrientationEffectChange" object:0 userInfo:v19];
+    [defaultCenter postNotificationName:@"PVOrientationEffectChange" object:0 userInfo:v19];
   }
 
   [(PVOrientationEffect *)self animationTime];
@@ -203,7 +203,7 @@ LABEL_6:
       [(PVOrientationEffect *)self switchTime];
       if (v28 == -1.0)
       {
-        time = *a3;
+        time = *time;
         Seconds = CMTimeGetSeconds(&time);
         if (Seconds == 0.0)
         {
@@ -219,7 +219,7 @@ LABEL_6:
         [(PVOrientationEffect *)self setSwitchTime:v30];
       }
 
-      time = *a3;
+      time = *time;
       v32 = CMTimeGetSeconds(&time);
       [(PVOrientationEffect *)self switchTime];
       v34 = v33;
@@ -233,9 +233,9 @@ LABEL_6:
     }
   }
 
-  v39 = (*(**a6.m_Obj + 40))();
+  v39 = (*(**context.m_Obj + 40))();
   v41 = v40;
-  v42 = (*(**a6.m_Obj + 48))();
+  v42 = (*(**context.m_Obj + 48))();
   v43 = v39 * v42 * 0.5;
   v44 = v41 * v42 * 0.5;
   if (v20 == 1.0)
@@ -245,7 +245,7 @@ LABEL_6:
       LODWORD(v45) = 1.0;
       [(PVOrientationEffect *)self rotationNodeForPercent:v45 atCenter:v43, v44];
       value = time.value;
-      PVInputHGNodeMap<unsigned int>::GetNode(a4, v14, &v57);
+      PVInputHGNodeMap<unsigned int>::GetNode(inputs, intValue, &v57);
       (*(*value + 120))(value, 0, v57);
       v47 = v57;
       if (v57)
@@ -258,7 +258,7 @@ LABEL_6:
 
     else
     {
-      return PVInputHGNodeMap<unsigned int>::GetNode(a4, v14, v11);
+      return PVInputHGNodeMap<unsigned int>::GetNode(inputs, intValue, v11);
     }
 
     return v47;
@@ -266,16 +266,16 @@ LABEL_6:
 
   v48 = HGObject::operator new(0x280uLL);
   HGHWMultiBlend::HGHWMultiBlend(v48);
-  PVInputHGNodeMap<unsigned int>::MapKeys(a4, &time);
+  PVInputHGNodeMap<unsigned int>::MapKeys(inputs, &time);
   v49 = time.value;
   if (time.value != *&time.timescale)
   {
     while (1)
     {
       v50 = *v49;
-      PVInputHGNodeMap<unsigned int>::GetNode(a4, *v49, &v57);
-      v51 = [(PVOrientationEffect *)self showAlt];
-      if (v51 != [(PVOrientationEffect *)self oldShowAlt])
+      PVInputHGNodeMap<unsigned int>::GetNode(inputs, *v49, &v57);
+      showAlt = [(PVOrientationEffect *)self showAlt];
+      if (showAlt != [(PVOrientationEffect *)self oldShowAlt])
       {
         *&v52 = v20;
         [(PVOrientationEffect *)self rotationNodeForPercent:v52 atCenter:v43, v44];
@@ -306,9 +306,9 @@ LABEL_6:
       }
 
 LABEL_30:
-      v54 = [(PVOrientationEffect *)self inputID];
+      inputID = [(PVOrientationEffect *)self inputID];
       v55.n128_f32[0] = v20;
-      if (v54 != v50)
+      if (inputID != v50)
       {
         if ([(PVOrientationEffect *)self oldInputID]== v50)
         {
@@ -346,21 +346,21 @@ LABEL_30:
   return v47;
 }
 
-- (HGRef<HGXForm>)rotationNodeForPercent:(float)a3 atCenter:(CGPoint)a4
+- (HGRef<HGXForm>)rotationNodeForPercent:(float)percent atCenter:(CGPoint)center
 {
-  y = a4.y;
-  x = a4.x;
+  y = center.y;
+  x = center.x;
   v9 = v4;
   HGTransform::HGTransform(v14);
   HGTransform::Translate(v14, -x, -y, 0.0);
-  v10 = [(PVOrientationEffect *)self showAlt];
-  v11 = 1.0 - a3;
-  if (v10)
+  showAlt = [(PVOrientationEffect *)self showAlt];
+  percentCopy = 1.0 - percent;
+  if (showAlt)
   {
-    v11 = a3;
+    percentCopy = percent;
   }
 
-  HGTransform::Rotate(v14, (v11 * -90.0), 0.0, 0.0, 1.0);
+  HGTransform::Rotate(v14, (percentCopy * -90.0), 0.0, 0.0, 1.0);
   HGTransform::Translate(v14, x, y, 0.0);
   v12 = HGObject::operator new(0x210uLL);
   HGXForm::HGXForm(v12);

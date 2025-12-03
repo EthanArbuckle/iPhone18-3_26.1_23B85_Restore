@@ -1,17 +1,17 @@
 @interface CAMLWriter
-+ (id)writerWithData:(id)a3;
-- (CAMLWriter)initWithData:(id)a3;
-- (id)URLStringForResource:(id)a3;
-- (void)_writeElementTree:(_CAMLWriterElement *)a3;
-- (void)beginElement:(unsigned int)a3;
-- (void)beginPropertyElement:(id)a3;
++ (id)writerWithData:(id)data;
+- (CAMLWriter)initWithData:(id)data;
+- (id)URLStringForResource:(id)resource;
+- (void)_writeElementTree:(_CAMLWriterElement *)tree;
+- (void)beginElement:(unsigned int)element;
+- (void)beginPropertyElement:(id)element;
 - (void)dealloc;
-- (void)encodeObject:(id)a3 conditionally:(BOOL)a4;
+- (void)encodeObject:(id)object conditionally:(BOOL)conditionally;
 - (void)endElement;
-- (void)setBaseURL:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setElementAttribute:(id)a3 forKey:(id)a4;
-- (void)setElementContent:(id)a3;
+- (void)setBaseURL:(id)l;
+- (void)setDelegate:(id)delegate;
+- (void)setElementAttribute:(id)attribute forKey:(id)key;
+- (void)setElementContent:(id)content;
 @end
 
 @implementation CAMLWriter
@@ -70,24 +70,24 @@
   [(CAMLWriter *)&v9 dealloc];
 }
 
-- (void)_writeElementTree:(_CAMLWriterElement *)a3
+- (void)_writeElementTree:(_CAMLWriterElement *)tree
 {
   CAMLWriterNewline(self->_priv->var0, self->_priv->var7);
-  if (a3->var1)
+  if (tree->var1)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = a3->var8 == 0;
+    v5 = tree->var8 == 0;
   }
 
   priv = self->_priv;
-  if (a3->var6)
+  if (tree->var6)
   {
-    CAMLWriterPrintf(priv, "<%S", a3->var5);
-    var6 = a3->var6;
+    CAMLWriterPrintf(priv, "<%S", tree->var5);
+    var6 = tree->var6;
     if (var6)
     {
       if (v5)
@@ -130,10 +130,10 @@
       v12 = "/>";
     }
 
-    CAMLWriterPrintf(priv, "<%S%s", a3->var5, v12);
+    CAMLWriterPrintf(priv, "<%S%s", tree->var5, v12);
   }
 
-  var1 = a3->var1;
+  var1 = tree->var1;
   if (var1)
   {
     ++self->_priv->var7;
@@ -147,21 +147,21 @@
     --self->_priv->var7;
   }
 
-  else if (a3->var8)
+  else if (tree->var8)
   {
-    CAMLWriterPrintf(self->_priv, "%S", a3->var8);
+    CAMLWriterPrintf(self->_priv, "%S", tree->var8);
   }
 
   if (!v5)
   {
     v14 = self->_priv;
-    if (!a3->var8)
+    if (!tree->var8)
     {
       CAMLWriterNewline(v14->var0, v14->var7);
       v14 = self->_priv;
     }
 
-    CAMLWriterPrintf(v14, "</%S>", a3->var5);
+    CAMLWriterPrintf(v14, "</%S>", tree->var5);
   }
 }
 
@@ -468,9 +468,9 @@ LABEL_51:
   CAMLWriterFreeElementList(var3);
 }
 
-- (id)URLStringForResource:(id)a3
+- (id)URLStringForResource:(id)resource
 {
-  if (!a3)
+  if (!resource)
   {
     return 0;
   }
@@ -481,7 +481,7 @@ LABEL_51:
     return 0;
   }
 
-  v4 = [priv->var2 CAMLWriter:self URLForResource:a3];
+  v4 = [priv->var2 CAMLWriter:self URLForResource:resource];
   if (!v4)
   {
     return 0;
@@ -514,9 +514,9 @@ LABEL_51:
 
     v14 = [v8 subarrayWithRange:{v12, v9 - v12}];
     v15 = [MEMORY[0x1E696AEC0] pathWithComponents:v14];
-    v16 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
 
-    return [v15 stringByAddingPercentEncodingWithAllowedCharacters:v16];
+    return [v15 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
   }
 
   else
@@ -527,11 +527,11 @@ LABEL_17:
   }
 }
 
-- (void)setElementContent:(id)a3
+- (void)setElementContent:(id)content
 {
   var3 = self->_priv->var3;
   var8 = var3->var8;
-  if (var8 != a3)
+  if (var8 != content)
   {
     if (var8)
     {
@@ -539,19 +539,19 @@ LABEL_17:
     }
 
     Copy = 0;
-    if (a3)
+    if (content)
     {
-      Copy = CFStringCreateCopy(0, a3);
+      Copy = CFStringCreateCopy(0, content);
     }
 
     var3->var8 = Copy;
   }
 }
 
-- (void)setElementAttribute:(id)a3 forKey:(id)a4
+- (void)setElementAttribute:(id)attribute forKey:(id)key
 {
   var3 = self->_priv->var3;
-  v6 = CAInternAtom(a4, 1);
+  v6 = CAInternAtom(key, 1);
   v7 = v6;
   p_var6 = &var3->var6;
   do
@@ -575,7 +575,7 @@ LABEL_17:
 
   while (*(p_var6 + 2) != v6);
   v9 = *(p_var6 + 2);
-  if (v9 == a3)
+  if (v9 == attribute)
   {
     return;
   }
@@ -583,17 +583,17 @@ LABEL_17:
   CFRelease(v9);
   *(p_var6 + 2) = 0;
 LABEL_9:
-  *(p_var6 + 2) = CFStringCreateCopy(0, a3);
+  *(p_var6 + 2) = CFStringCreateCopy(0, attribute);
 }
 
-- (void)beginPropertyElement:(id)a3
+- (void)beginPropertyElement:(id)element
 {
   [(CAMLWriter *)self beginElement:2];
 
-  [(CAMLWriter *)self setElementAttribute:a3 forKey:@"key"];
+  [(CAMLWriter *)self setElementAttribute:element forKey:@"key"];
 }
 
-- (void)beginElement:(unsigned int)a3
+- (void)beginElement:(unsigned int)element
 {
   priv = self->_priv;
   if (x_malloc_get_zone::once != -1)
@@ -614,10 +614,10 @@ LABEL_9:
     v6->var6 = 0;
     v6->var7 = &v6->var6;
     v6->var8 = 0;
-    v6->var9 = 1 << a3;
+    v6->var9 = 1 << element;
     if (priv->var4)
     {
-      if (a3 == 1)
+      if (element == 1)
       {
         [CAMLWriter setElementAttribute:"setElementAttribute:forKey:" forKey:?];
       }
@@ -627,7 +627,7 @@ LABEL_9:
   }
 }
 
-- (void)encodeObject:(id)a3 conditionally:(BOOL)a4
+- (void)encodeObject:(id)object conditionally:(BOOL)conditionally
 {
   priv = self->_priv;
   if (priv->var3)
@@ -635,7 +635,7 @@ LABEL_9:
     v8 = *(priv + 60);
     if ((v8 & 8) != 0)
     {
-      if (![priv->var2 CAMLWriter:self shouldEncodeObject:a3])
+      if (![priv->var2 CAMLWriter:self shouldEncodeObject:object])
       {
         return;
       }
@@ -643,25 +643,25 @@ LABEL_9:
       v8 = *(priv + 60);
     }
 
-    if (a3 && (v8 & 2) != 0 && (v9 = [priv->var2 CAMLWriter:self IDForObject:a3]) != 0 && (Copy = CFStringCreateCopy(0, v9)) != 0)
+    if (object && (v8 & 2) != 0 && (v9 = [priv->var2 CAMLWriter:self IDForObject:object]) != 0 && (Copy = CFStringCreateCopy(0, v9)) != 0)
     {
       v11 = Copy;
       var5 = priv->var5;
       if (var5 && CFSetContainsValue(var5, v11))
       {
-        if ((*(priv + 60) & 1) == 0 || (v13 = [priv->var2 CAMLWriter:self typeForObject:a3]) == 0)
+        if ((*(priv + 60) & 1) == 0 || (cAMLType = [priv->var2 CAMLWriter:self typeForObject:object]) == 0)
         {
-          v13 = [a3 CAMLType];
+          cAMLType = [object CAMLType];
         }
 
         [(CAMLWriter *)self beginElement:1];
-        [(CAMLWriter *)self setElementAttribute:v13 forKey:@"type"];
+        [(CAMLWriter *)self setElementAttribute:cAMLType forKey:@"type"];
         [(CAMLWriter *)self setElementAttribute:v11 forKey:@"object"];
         [(CAMLWriter *)self endElement];
         goto LABEL_34;
       }
 
-      if (a4)
+      if (conditionally)
       {
 LABEL_34:
 
@@ -683,7 +683,7 @@ LABEL_34:
 
     else
     {
-      if (a4)
+      if (conditionally)
       {
         return;
       }
@@ -700,7 +700,7 @@ LABEL_34:
       priv->var6 = var6;
     }
 
-    if (!a3 || CFSetContainsValue(var6, a3))
+    if (!object || CFSetContainsValue(var6, object))
     {
       if (v14)
       {
@@ -710,18 +710,18 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    CFSetAddValue(priv->var6, a3);
-    if ((*(priv + 60) & 1) == 0 || (v17 = [priv->var2 CAMLWriter:self typeForObject:a3]) == 0)
+    CFSetAddValue(priv->var6, object);
+    if ((*(priv + 60) & 1) == 0 || (cAMLType2 = [priv->var2 CAMLWriter:self typeForObject:object]) == 0)
     {
-      v17 = [a3 CAMLType];
+      cAMLType2 = [object CAMLType];
     }
 
     [(CAMLWriter *)self beginElement:1];
-    priv->var3->var4 = CFRetain(a3);
-    [(CAMLWriter *)self setElementAttribute:v17 forKey:@"type"];
-    [a3 encodeWithCAMLWriter:self];
+    priv->var3->var4 = CFRetain(object);
+    [(CAMLWriter *)self setElementAttribute:cAMLType2 forKey:@"type"];
+    [object encodeWithCAMLWriter:self];
     [(CAMLWriter *)self endElement];
-    CFSetRemoveValue(priv->var6, a3);
+    CFSetRemoveValue(priv->var6, object);
     if ((v14 & 1) == 0)
     {
       goto LABEL_34;
@@ -730,20 +730,20 @@ LABEL_34:
 
   else
   {
-    [(CAMLWriter *)self beginElement:0, a4];
+    [(CAMLWriter *)self beginElement:0, conditionally];
     [(CAMLWriter *)self setElementAttribute:@"http://www.apple.com/CoreAnimation/1.0" forKey:@"xmlns"];
-    [(CAMLWriter *)self encodeObject:a3];
+    [(CAMLWriter *)self encodeObject:object];
 
     [(CAMLWriter *)self endElement];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   priv = self->_priv;
-  if (priv->var2 != a3)
+  if (priv->var2 != delegate)
   {
-    priv->var2 = a3;
+    priv->var2 = delegate;
     *(self->_priv + 60) = *(self->_priv + 60) & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -781,30 +781,30 @@ LABEL_34:
   }
 }
 
-- (void)setBaseURL:(id)a3
+- (void)setBaseURL:(id)l
 {
   priv = self->_priv;
   var1 = priv->var1;
-  if (var1 != a3)
+  if (var1 != l)
   {
     if (var1)
     {
       CFRelease(var1);
     }
 
-    priv->var1 = a3;
-    if (a3)
+    priv->var1 = l;
+    if (l)
     {
 
-      CFRetain(a3);
+      CFRetain(l);
     }
   }
 }
 
-- (CAMLWriter)initWithData:(id)a3
+- (CAMLWriter)initWithData:(id)data
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!data)
   {
 
     return 0;
@@ -824,7 +824,7 @@ LABEL_34:
     v4->_priv = v5;
     if (v5)
     {
-      v4->_priv->var0 = CFRetain(a3);
+      v4->_priv->var0 = CFRetain(data);
       return v4;
     }
 
@@ -834,9 +834,9 @@ LABEL_34:
   return v4;
 }
 
-+ (id)writerWithData:(id)a3
++ (id)writerWithData:(id)data
 {
-  v3 = [[a1 alloc] initWithData:a3];
+  v3 = [[self alloc] initWithData:data];
 
   return v3;
 }

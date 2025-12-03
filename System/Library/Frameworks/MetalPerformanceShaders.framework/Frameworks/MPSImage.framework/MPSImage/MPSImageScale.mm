@@ -1,8 +1,8 @@
 @interface MPSImageScale
 - (MPSImageScale)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageScale)initWithDevice:(id)device;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 - (void)setScaleTransform:(const MPSScaleTransform *)scaleTransform;
 @end
 
@@ -25,11 +25,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MPSImageScale;
-  result = [(MPSUnaryImageKernel *)&v8 copyWithZone:a3 device:a4];
+  result = [(MPSUnaryImageKernel *)&v8 copyWithZone:zone device:device];
   if (result)
   {
     if (self->_scaleTransform)
@@ -132,7 +132,7 @@ LABEL_14:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v22.receiver = self;
@@ -141,10 +141,10 @@ LABEL_14:
   scaleTransform = self->_scaleTransform;
   if (scaleTransform)
   {
-    objc_msgSend_encodeDouble_forKey_(a3, v5, @"MPSImageScaleScaleX", v6, v7, v8, scaleTransform->scaleX);
-    objc_msgSend_encodeDouble_forKey_(a3, v10, @"MPSImageScaleScaleY", v11, v12, v13, self->_scaleTransform->scaleY);
-    objc_msgSend_encodeDouble_forKey_(a3, v14, @"MPSImageScaleTranslateX", v15, v16, v17, self->_scaleTransform->translateX);
-    objc_msgSend_encodeDouble_forKey_(a3, v18, @"MPSImageScaleTranslateY", v19, v20, v21, self->_scaleTransform->translateY);
+    objc_msgSend_encodeDouble_forKey_(coder, v5, @"MPSImageScaleScaleX", v6, v7, v8, scaleTransform->scaleX);
+    objc_msgSend_encodeDouble_forKey_(coder, v10, @"MPSImageScaleScaleY", v11, v12, v13, self->_scaleTransform->scaleY);
+    objc_msgSend_encodeDouble_forKey_(coder, v14, @"MPSImageScaleTranslateX", v15, v16, v17, self->_scaleTransform->translateX);
+    objc_msgSend_encodeDouble_forKey_(coder, v18, @"MPSImageScaleTranslateY", v19, v20, v21, self->_scaleTransform->translateY);
   }
 }
 

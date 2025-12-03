@@ -1,13 +1,13 @@
 @interface CKScheduledUpdater
 - (BOOL)isHoldingUpdates;
-- (BOOL)isHoldingUpdatesForKey:(id)a3;
-- (CKScheduledUpdater)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)isHoldingUpdatesForKey:(id)key;
+- (CKScheduledUpdater)initWithTarget:(id)target action:(SEL)action;
 - (id)description;
-- (void)beginHoldingUpdatesForKey:(id)a3;
+- (void)beginHoldingUpdatesForKey:(id)key;
 - (void)dealloc;
 - (void)endHoldingAllUpdates;
-- (void)endHoldingAllUpdatesForKey:(id)a3;
-- (void)endHoldingUpdatesForKey:(id)a3;
+- (void)endHoldingAllUpdatesForKey:(id)key;
+- (void)endHoldingUpdatesForKey:(id)key;
 - (void)invalidate;
 - (void)setNeedsUpdate;
 - (void)updateIfNeeded;
@@ -39,8 +39,8 @@
 
 - (BOOL)isHoldingUpdates
 {
-  v2 = [(CKScheduledUpdater *)self holdingUpdatesKeys];
-  v3 = [v2 count] != 0;
+  holdingUpdatesKeys = [(CKScheduledUpdater *)self holdingUpdatesKeys];
+  v3 = [holdingUpdatesKeys count] != 0;
 
   return v3;
 }
@@ -69,25 +69,25 @@
   v10.receiver = self;
   v10.super_class = CKScheduledUpdater;
   v4 = [(CKManualUpdater *)&v10 description];
-  v5 = [(CKManualUpdater *)self needsUpdate];
-  v6 = [(CKScheduledUpdater *)self isHoldingUpdates];
-  v7 = [(CKScheduledUpdater *)self holdingUpdatesKeys];
-  v8 = [v3 stringWithFormat:@"%@ needsUpdate:%d isHoldingUpdates:%d holdingUpdatesKeys:%@", v4, v5, v6, v7];
+  needsUpdate = [(CKManualUpdater *)self needsUpdate];
+  isHoldingUpdates = [(CKScheduledUpdater *)self isHoldingUpdates];
+  holdingUpdatesKeys = [(CKScheduledUpdater *)self holdingUpdatesKeys];
+  v8 = [v3 stringWithFormat:@"%@ needsUpdate:%d isHoldingUpdates:%d holdingUpdatesKeys:%@", v4, needsUpdate, isHoldingUpdates, holdingUpdatesKeys];
 
   return v8;
 }
 
-- (CKScheduledUpdater)initWithTarget:(id)a3 action:(SEL)a4
+- (CKScheduledUpdater)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v11.receiver = self;
   v11.super_class = CKScheduledUpdater;
   v7 = [(CKScheduledUpdater *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    [(CKManualUpdater *)v7 setTarget:v6];
-    [(CKManualUpdater *)v8 setAction:a4];
+    [(CKManualUpdater *)v7 setTarget:targetCopy];
+    [(CKManualUpdater *)v8 setAction:action];
     v9 = objc_alloc_init(MEMORY[0x1E696AB50]);
     [(CKScheduledUpdater *)v8 setHoldingUpdatesKeys:v9];
   }
@@ -95,18 +95,18 @@
   return v8;
 }
 
-- (void)beginHoldingUpdatesForKey:(id)a3
+- (void)beginHoldingUpdatesForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKScheduledUpdater *)self holdingUpdatesKeys];
-  [v5 addObject:v4];
+  keyCopy = key;
+  holdingUpdatesKeys = [(CKScheduledUpdater *)self holdingUpdatesKeys];
+  [holdingUpdatesKeys addObject:keyCopy];
 }
 
-- (void)endHoldingUpdatesForKey:(id)a3
+- (void)endHoldingUpdatesForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKScheduledUpdater *)self holdingUpdatesKeys];
-  [v5 removeObject:v4];
+  keyCopy = key;
+  holdingUpdatesKeys = [(CKScheduledUpdater *)self holdingUpdatesKeys];
+  [holdingUpdatesKeys removeObject:keyCopy];
 
   if (![(CKScheduledUpdater *)self isHoldingUpdates]&& [(CKManualUpdater *)self needsUpdate])
   {
@@ -115,16 +115,16 @@
   }
 }
 
-- (BOOL)isHoldingUpdatesForKey:(id)a3
+- (BOOL)isHoldingUpdatesForKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(CKScheduledUpdater *)self holdingUpdatesKeys];
-  v6 = [v5 countForObject:v4];
+  keyCopy = key;
+  holdingUpdatesKeys = [(CKScheduledUpdater *)self holdingUpdatesKeys];
+  v6 = [holdingUpdatesKeys countForObject:keyCopy];
 
   v7 = v6 != 0;
   return v7;
@@ -138,16 +138,16 @@
   [(CKManualUpdater *)self setAction:0];
 }
 
-- (void)endHoldingAllUpdatesForKey:(id)a3
+- (void)endHoldingAllUpdatesForKey:(id)key
 {
-  v7 = a3;
-  v4 = [(CKScheduledUpdater *)self holdingUpdatesKeys];
-  v5 = [v4 countForObject:v7];
+  keyCopy = key;
+  holdingUpdatesKeys = [(CKScheduledUpdater *)self holdingUpdatesKeys];
+  v5 = [holdingUpdatesKeys countForObject:keyCopy];
 
   for (; v5; --v5)
   {
-    v6 = [(CKScheduledUpdater *)self holdingUpdatesKeys];
-    [v6 removeObject:v7];
+    holdingUpdatesKeys2 = [(CKScheduledUpdater *)self holdingUpdatesKeys];
+    [holdingUpdatesKeys2 removeObject:keyCopy];
   }
 
   if (![(CKScheduledUpdater *)self isHoldingUpdates]&& [(CKManualUpdater *)self needsUpdate])
@@ -158,8 +158,8 @@
 
 - (void)endHoldingAllUpdates
 {
-  v3 = [(CKScheduledUpdater *)self holdingUpdatesKeys];
-  [v3 removeAllObjects];
+  holdingUpdatesKeys = [(CKScheduledUpdater *)self holdingUpdatesKeys];
+  [holdingUpdatesKeys removeAllObjects];
 
   if (![(CKScheduledUpdater *)self isHoldingUpdates]&& [(CKManualUpdater *)self needsUpdate])
   {

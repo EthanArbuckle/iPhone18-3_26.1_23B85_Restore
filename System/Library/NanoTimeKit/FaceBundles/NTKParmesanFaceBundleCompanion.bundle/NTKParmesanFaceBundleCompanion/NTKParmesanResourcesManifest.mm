@@ -1,20 +1,20 @@
 @interface NTKParmesanResourcesManifest
-- (BOOL)_resourceIsValidMediaAsset:(id)a3 ofType:(id)a4;
-- (BOOL)validateImageListItem:(id)a3 withError:(id *)a4;
+- (BOOL)_resourceIsValidMediaAsset:(id)asset ofType:(id)type;
+- (BOOL)validateImageListItem:(id)item withError:(id *)error;
 @end
 
 @implementation NTKParmesanResourcesManifest
 
-- (BOOL)validateImageListItem:(id)a3 withError:(id *)a4
+- (BOOL)validateImageListItem:(id)item withError:(id *)error
 {
   v105 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v9 = objc_msgSend_logObject(NTKParmesanFaceBundle, v6, v7, v8);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v13 = objc_msgSend_resourceDirectoryURL(self, v10, v11, v12);
     v17 = objc_msgSend_lastPathComponent(v13, v14, v15, v16);
-    v20 = objc_msgSend_objectForKeyedSubscript_(v5, v18, @"localIdentifier", v19);
+    v20 = objc_msgSend_objectForKeyedSubscript_(itemCopy, v18, @"localIdentifier", v19);
     *buf = 138412546;
     v102 = v17;
     v103 = 2112;
@@ -22,14 +22,14 @@
     _os_log_impl(&dword_23BF0C000, v9, OS_LOG_TYPE_DEFAULT, "[SANITIZER:%@]: validating image list item: %@", buf, 0x16u);
   }
 
-  v23 = objc_msgSend_decodeFromDictionary_(NTKParmesanAsset, v21, v5, v22);
+  v23 = objc_msgSend_decodeFromDictionary_(NTKParmesanAsset, v21, itemCopy, v22);
   v27 = v23;
   if (!v23)
   {
     v48 = objc_msgSend_logObject(NTKParmesanFaceBundle, v24, v25, v26);
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
-      sub_23BFF8860(self, v5, v48, v92);
+      sub_23BFF8860(self, itemCopy, v48, v92);
     }
 
 LABEL_22:
@@ -44,7 +44,7 @@ LABEL_22:
 
   if (v36)
   {
-    v100 = v5;
+    v100 = itemCopy;
     v40 = 0;
     while (1)
     {
@@ -98,7 +98,7 @@ LABEL_22:
       if (v40 >= v90)
       {
         v91 = 1;
-        v5 = v100;
+        itemCopy = v100;
         goto LABEL_23;
       }
     }
@@ -110,7 +110,7 @@ LABEL_22:
     }
 
 LABEL_21:
-    v5 = v100;
+    itemCopy = v100;
 
     goto LABEL_22;
   }
@@ -121,12 +121,12 @@ LABEL_23:
   return v91;
 }
 
-- (BOOL)_resourceIsValidMediaAsset:(id)a3 ofType:(id)a4
+- (BOOL)_resourceIsValidMediaAsset:(id)asset ofType:(id)type
 {
-  v6 = a3;
-  if (objc_msgSend_resourceWithName_isValidMediaAssetOfType_withMinFileSize_maxFileSize_(self, v7, v6, a4, 1000, 4000000))
+  assetCopy = asset;
+  if (objc_msgSend_resourceWithName_isValidMediaAssetOfType_withMinFileSize_maxFileSize_(self, v7, assetCopy, type, 1000, 4000000))
   {
-    IsValidImage = objc_msgSend_resourceWithNameIsValidImage_(self, v8, v6, v9);
+    IsValidImage = objc_msgSend_resourceWithNameIsValidImage_(self, v8, assetCopy, v9);
   }
 
   else

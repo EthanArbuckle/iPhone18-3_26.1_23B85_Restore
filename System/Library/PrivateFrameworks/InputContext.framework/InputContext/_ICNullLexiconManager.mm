@@ -1,8 +1,8 @@
 @interface _ICNullLexiconManager
 - (_ICNullLexiconManager)init;
-- (id)addContactObserver:(id)a3;
-- (id)addNamedEntitiesUpdateObserver:(id)a3;
-- (void)removeContactObserver:(id)a3;
+- (id)addContactObserver:(id)observer;
+- (id)addNamedEntitiesUpdateObserver:(id)observer;
+- (void)removeContactObserver:(id)observer;
 @end
 
 @implementation _ICNullLexiconManager
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (id)addContactObserver:(id)a3
+- (id)addContactObserver:(id)observer
 {
-  v4 = [a3 copy];
+  v4 = [observer copy];
   contactObservers = self->_contactObservers;
   v6 = MEMORY[0x259C27030]();
   [(NSMutableArray *)contactObservers addObject:v6];
@@ -34,16 +34,16 @@
   return v7;
 }
 
-- (void)removeContactObserver:(id)a3
+- (void)removeContactObserver:(id)observer
 {
   contactObservers = self->_contactObservers;
-  v4 = MEMORY[0x259C27030](a3, a2);
+  v4 = MEMORY[0x259C27030](observer, a2);
   [(NSMutableArray *)contactObservers removeObject:v4];
 }
 
-- (id)addNamedEntitiesUpdateObserver:(id)a3
+- (id)addNamedEntitiesUpdateObserver:(id)observer
 {
-  v3 = [a3 copy];
+  v3 = [observer copy];
 
   return v3;
 }

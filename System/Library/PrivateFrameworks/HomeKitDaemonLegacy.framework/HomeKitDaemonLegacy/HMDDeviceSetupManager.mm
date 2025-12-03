@@ -1,7 +1,7 @@
 @interface HMDDeviceSetupManager
 + (id)sharedManager;
 - (BOOL)isRunning;
-- (HMDDeviceSetupManager)initWithNotificationCenter:(id)a3 followUpManager:(id)a4 darwinNotificationProvider:(id)a5;
+- (HMDDeviceSetupManager)initWithNotificationCenter:(id)center followUpManager:(id)manager darwinNotificationProvider:(id)provider;
 - (void)dealloc;
 @end
 
@@ -18,17 +18,17 @@
 - (void)dealloc
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  v3 = v2;
-  if (v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy)
   {
-    v4 = [(HMDDeviceSetupManager *)v2 darwinNotificationProvider];
-    v5 = [v4 notifyIsValidToken:v3[3]];
+    darwinNotificationProvider = [(HMDDeviceSetupManager *)selfCopy darwinNotificationProvider];
+    v5 = [darwinNotificationProvider notifyIsValidToken:v3[3]];
 
     if (v5)
     {
-      v6 = [v3 darwinNotificationProvider];
-      v7 = [v6 notifyCancel:v3[3]];
+      darwinNotificationProvider2 = [v3 darwinNotificationProvider];
+      v7 = [darwinNotificationProvider2 notifyCancel:v3[3]];
 
       if (v7)
       {
@@ -59,12 +59,12 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDDeviceSetupManager)initWithNotificationCenter:(id)a3 followUpManager:(id)a4 darwinNotificationProvider:(id)a5
+- (HMDDeviceSetupManager)initWithNotificationCenter:(id)center followUpManager:(id)manager darwinNotificationProvider:(id)provider
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  centerCopy = center;
+  managerCopy = manager;
+  providerCopy = provider;
   v25.receiver = self;
   v25.super_class = HMDDeviceSetupManager;
   v12 = [(HMDDeviceSetupManager *)&v25 init];
@@ -72,25 +72,25 @@
   if (v12)
   {
     v12->_proxSetupNotificationToken = -1;
-    objc_storeStrong(&v12->_notificationCenter, a3);
-    objc_storeStrong(&v13->_followUpManager, a4);
-    objc_storeStrong(&v13->_darwinNotificationProvider, a5);
+    objc_storeStrong(&v12->_notificationCenter, center);
+    objc_storeStrong(&v13->_followUpManager, manager);
+    objc_storeStrong(&v13->_darwinNotificationProvider, provider);
     v14 = v13;
     v15 = v14;
     if (v13->_proxSetupNotificationToken == -1)
     {
       objc_initWeak(&location, v14);
-      v16 = [(HMDDeviceSetupManager *)v15 darwinNotificationProvider];
-      v17 = [@"com.apple.sharing.wha-prox-setup" UTF8String];
+      darwinNotificationProvider = [(HMDDeviceSetupManager *)v15 darwinNotificationProvider];
+      uTF8String = [@"com.apple.sharing.wha-prox-setup" UTF8String];
       v18 = MEMORY[0x277D85CD0];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = ____HMDDeviceSetupManagerRegisterForProxSetupNotifications_block_invoke;
       v26[3] = &unk_27972FE68;
       objc_copyWeak(&v27, &location);
-      LODWORD(v17) = [v16 notifyRegisterDispatch:v17 outToken:&v13->_proxSetupNotificationToken queue:MEMORY[0x277D85CD0] handler:v26];
+      LODWORD(uTF8String) = [darwinNotificationProvider notifyRegisterDispatch:uTF8String outToken:&v13->_proxSetupNotificationToken queue:MEMORY[0x277D85CD0] handler:v26];
 
-      if (v17)
+      if (uTF8String)
       {
         v19 = objc_autoreleasePoolPush();
         v20 = v15;

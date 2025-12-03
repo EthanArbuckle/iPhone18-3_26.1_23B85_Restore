@@ -1,5 +1,5 @@
 @interface HFAccessoryItem
-+ (id)itemWithAccessoryRepresentableObject:(id)a3 valueSource:(id)a4;
++ (id)itemWithAccessoryRepresentableObject:(id)object valueSource:(id)source;
 - (BOOL)_shouldComputeMultiServiceDescription;
 - (BOOL)actionsMayRequireDeviceUnlock;
 - (BOOL)containsActions;
@@ -13,7 +13,7 @@
 - (BOOL)shouldReduceOptionItemsForNotifyingCharacteristics;
 - (BOOL)shouldShowMutedMicIcon;
 - (HFAccessoryItem)init;
-- (HFAccessoryItem)initWithAccessory:(id)a3 valueSource:(id)a4;
+- (HFAccessoryItem)initWithAccessory:(id)accessory valueSource:(id)source;
 - (HFHomeKitObject)primaryHomeKitObject;
 - (HFMediaAccessoryCommonSettingsManager)commonSettingsManager;
 - (HMHome)home;
@@ -23,63 +23,63 @@
 - (id)_buildControlDescription;
 - (id)_buildControlItems;
 - (id)_buildServiceItems;
-- (id)_buildTileDescription:(BOOL)a3 title:(id)a4;
+- (id)_buildTileDescription:(BOOL)description title:(id)title;
 - (id)_collectAllChildItems;
-- (id)_mostCommonValueForResultsKey:(id)a3 inServiceItems:(id)a4;
-- (id)_mostCommonValueInServiceItems:(id)a3 valueProvider:(id)a4;
+- (id)_mostCommonValueForResultsKey:(id)key inServiceItems:(id)items;
+- (id)_mostCommonValueInServiceItems:(id)items valueProvider:(id)provider;
 - (id)_repeatingDescriptionsToCoalesce;
 - (id)_sortDescriptorsForServiceItems;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)_unanimousValueForResultsKey:(id)a3 inServiceItems:(id)a4;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)_unanimousValueForResultsKey:(id)key inServiceItems:(id)items;
 - (id)accessories;
-- (id)controlItemsForService:(id)a3;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)currentStateActionBuildersForHome:(id)a3;
-- (id)iconDescriptorFor:(id)a3;
+- (id)controlItemsForService:(id)service;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)currentStateActionBuildersForHome:(id)home;
+- (id)iconDescriptorFor:(id)for;
 - (id)namingComponentForHomeKitObject;
-- (id)serviceItemForService:(id)a3;
-- (id)serviceLikeBuilderInHome:(id)a3;
-- (id)setSiriDisabled:(BOOL)a3;
+- (id)serviceItemForService:(id)service;
+- (id)serviceLikeBuilderInHome:(id)home;
+- (id)setSiriDisabled:(BOOL)disabled;
 - (unint64_t)numberOfCompoundItems;
 @end
 
 @implementation HFAccessoryItem
 
-- (id)iconDescriptorFor:(id)a3
+- (id)iconDescriptorFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = _sSo15HFAccessoryItemC4HomeE14iconDescriptor3forSo011HFImageIconE0CSo11HMAccessoryC_tF_0(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = _sSo15HFAccessoryItemC4HomeE14iconDescriptor3forSo011HFImageIconE0CSo11HMAccessoryC_tF_0(forCopy);
 
   return v6;
 }
 
-- (HFAccessoryItem)initWithAccessory:(id)a3 valueSource:(id)a4
+- (HFAccessoryItem)initWithAccessory:(id)accessory valueSource:(id)source
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  accessoryCopy = accessory;
+  sourceCopy = source;
   v19.receiver = self;
   v19.super_class = HFAccessoryItem;
   v9 = [(HFAccessoryItem *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accessory, a3);
-    objc_storeStrong(&v10->_valueSource, a4);
+    objc_storeStrong(&v9->_accessory, accessory);
+    objc_storeStrong(&v10->_valueSource, source);
     v11 = HFLogForCategory(0x41uLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [(HFAccessoryItem *)v10 isSiriEndpointAccessory];
-      v15 = [(HFAccessoryItem *)v10 accessories];
-      v16 = [v15 anyObject];
-      v17 = [v16 mediaProfile];
-      v18 = [v17 hf_siriLanguageOptionsManager];
+      isSiriEndpointAccessory = [(HFAccessoryItem *)v10 isSiriEndpointAccessory];
+      accessories = [(HFAccessoryItem *)v10 accessories];
+      anyObject = [accessories anyObject];
+      mediaProfile = [anyObject mediaProfile];
+      hf_siriLanguageOptionsManager = [mediaProfile hf_siriLanguageOptionsManager];
       *buf = 67109378;
-      v21 = v14;
+      v21 = isSiriEndpointAccessory;
       v22 = 2112;
-      v23 = v18;
+      v23 = hf_siriLanguageOptionsManager;
       _os_log_debug_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEBUG, "isSiriEndPoint %{BOOL}d siriLanguageOptionsManager = %@", buf, 0x12u);
     }
   }
@@ -90,26 +90,26 @@
 
 - (HFAccessoryItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAccessoryItem.m" lineNumber:60 description:@"Use -initWithAccessory:valueSource:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryItem.m" lineNumber:60 description:@"Use -initWithAccessory:valueSource:"];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFAccessoryItem *)self valueSource];
-  v5 = [(HFAccessoryItem *)self copyWithValueSource:v4];
+  valueSource = [(HFAccessoryItem *)self valueSource];
+  v5 = [(HFAccessoryItem *)self copyWithValueSource:valueSource];
 
   return v5;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFAccessoryItem *)self accessory];
-  v7 = [v5 initWithAccessory:v6 valueSource:v4];
+  accessory = [(HFAccessoryItem *)self accessory];
+  v7 = [v5 initWithAccessory:accessory valueSource:sourceCopy];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;
@@ -120,26 +120,26 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HFAccessoryItem *)self accessory];
-  v7 = [v6 hf_prettyDescription];
-  v8 = [(HFItem *)self latestResults];
-  v9 = [v3 stringWithFormat:@"<%@: %p, %@ %@>", v5, self, v7, v8];
+  accessory = [(HFAccessoryItem *)self accessory];
+  hf_prettyDescription = [accessory hf_prettyDescription];
+  latestResults = [(HFItem *)self latestResults];
+  v9 = [v3 stringWithFormat:@"<%@: %p, %@ %@>", v5, self, hf_prettyDescription, latestResults];
 
   return v9;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HFAccessoryItem *)self _buildServiceItems];
-  [(HFAccessoryItem *)self setServiceItems:v6];
-  v7 = [MEMORY[0x277CBEB18] array];
+  optionsCopy = options;
+  _buildServiceItems = [(HFAccessoryItem *)self _buildServiceItems];
+  [(HFAccessoryItem *)self setServiceItems:_buildServiceItems];
+  array = [MEMORY[0x277CBEB18] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = v6;
+  v8 = _buildServiceItems;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v41 count:16];
   if (v9)
   {
@@ -154,8 +154,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v31 + 1) + 8 * i) updateWithOptions:v5];
-        [v7 na_safeAddObject:v13];
+        v13 = [*(*(&v31 + 1) + 8 * i) updateWithOptions:optionsCopy];
+        [array na_safeAddObject:v13];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v31 objects:v41 count:16];
@@ -165,20 +165,20 @@
   }
 
   v14 = [HFServiceLikeItemUpdateRequest alloc];
-  v15 = [(HFAccessoryItem *)self accessory];
-  v16 = [(HFAccessoryItem *)self valueSource];
+  accessory = [(HFAccessoryItem *)self accessory];
+  valueSource = [(HFAccessoryItem *)self valueSource];
   v17 = [MEMORY[0x277CBEB98] set];
-  v18 = [(HFServiceLikeItemUpdateRequest *)v14 initWithAccessory:v15 valueSource:v16 characteristics:v17];
+  v18 = [(HFServiceLikeItemUpdateRequest *)v14 initWithAccessory:accessory valueSource:valueSource characteristics:v17];
 
   if (v18)
   {
-    v19 = [(HFServiceLikeItemUpdateRequest *)v18 updateWithOptions:v5];
+    v19 = [(HFServiceLikeItemUpdateRequest *)v18 updateWithOptions:optionsCopy];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __47__HFAccessoryItem__subclass_updateWithOptions___block_invoke;
     v27[3] = &unk_277DF9428;
-    v28 = v7;
-    v29 = self;
+    v28 = array;
+    selfCopy = self;
     v30 = v8;
     v20 = [v19 flatMap:v27];
   }
@@ -189,13 +189,13 @@
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v25 = NSStringFromSelector(a2);
-      v26 = [(HFAccessoryItem *)self accessory];
+      accessory2 = [(HFAccessoryItem *)self accessory];
       *buf = 138412802;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2112;
       v38 = v25;
       v39 = 2112;
-      v40 = v26;
+      v40 = accessory2;
       _os_log_error_impl(&dword_20D9BF000, v21, OS_LOG_TYPE_ERROR, "%@:%@ Failed to create HFServiceLikeItemUpdateRequest. Accessory: %@ ", buf, 0x20u);
     }
 
@@ -736,8 +736,8 @@ void *__47__HFAccessoryItem__subclass_updateWithOptions___block_invoke_5(uint64_
 
 - (BOOL)shouldShowMutedMicIcon
 {
-  v3 = [(HFAccessoryItem *)self commonSettingsManager];
-  v4 = [v3 settingValueForKeyPath:HFAllowHeySiriSettingKeyPath];
+  commonSettingsManager = [(HFAccessoryItem *)self commonSettingsManager];
+  v4 = [commonSettingsManager settingValueForKeyPath:HFAllowHeySiriSettingKeyPath];
 
   if (v4)
   {
@@ -749,12 +749,12 @@ void *__47__HFAccessoryItem__subclass_updateWithOptions___block_invoke_5(uint64_
     v5 = 0;
   }
 
-  v6 = [(HFAccessoryItem *)self accessory];
-  v7 = [v6 supportsAudioAnalysis];
+  accessory = [(HFAccessoryItem *)self accessory];
+  supportsAudioAnalysis = [accessory supportsAudioAnalysis];
 
-  if (!v7 || !v5)
+  if (!supportsAudioAnalysis || !v5)
   {
-    if (((v7 ^ 1) & v5) == 1)
+    if (((supportsAudioAnalysis ^ 1) & v5) == 1)
     {
       goto LABEL_7;
     }
@@ -770,21 +770,21 @@ LABEL_9:
   }
 
 LABEL_7:
-  v8 = [(HFAccessoryItem *)self home];
-  v9 = [v8 audioAnalysisClassifierOptions] != 0;
+  home = [(HFAccessoryItem *)self home];
+  v9 = [home audioAnalysisClassifierOptions] != 0;
 
 LABEL_10:
   return v9;
 }
 
-- (id)controlItemsForService:(id)a3
+- (id)controlItemsForService:(id)service
 {
-  v3 = [(HFAccessoryItem *)self serviceItemForService:a3];
+  v3 = [(HFAccessoryItem *)self serviceItemForService:service];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 latestResults];
-    v6 = [v5 objectForKeyedSubscript:@"childItems"];
+    latestResults = [v3 latestResults];
+    v6 = [latestResults objectForKeyedSubscript:@"childItems"];
   }
 
   else
@@ -795,17 +795,17 @@ LABEL_10:
   return v6;
 }
 
-- (id)serviceItemForService:(id)a3
+- (id)serviceItemForService:(id)service
 {
-  v4 = a3;
-  v5 = [(HFAccessoryItem *)self serviceItems];
+  serviceCopy = service;
+  serviceItems = [(HFAccessoryItem *)self serviceItems];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41__HFAccessoryItem_serviceItemForService___block_invoke;
   v9[3] = &unk_277DF9450;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = serviceCopy;
+  v6 = serviceCopy;
+  v7 = [serviceItems na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -820,8 +820,8 @@ uint64_t __41__HFAccessoryItem_serviceItemForService___block_invoke(uint64_t a1,
 
 - (id)_buildControlItems
 {
-  v3 = [(HFAccessoryItem *)self serviceItems];
-  v4 = [v3 count];
+  serviceItems = [(HFAccessoryItem *)self serviceItems];
+  v4 = [serviceItems count];
 
   if (!v4)
   {
@@ -832,12 +832,12 @@ uint64_t __41__HFAccessoryItem_serviceItemForService___block_invoke(uint64_t a1,
   if (v4 != 1)
   {
 LABEL_8:
-    v10 = [(HFAccessoryItem *)self accessory];
-    v11 = [v10 hf_primaryService];
-    v8 = [(HFAccessoryItem *)self serviceItemForService:v11];
+    accessory = [(HFAccessoryItem *)self accessory];
+    hf_primaryService = [accessory hf_primaryService];
+    v8 = [(HFAccessoryItem *)self serviceItemForService:hf_primaryService];
 
-    v12 = [v8 latestResults];
-    v13 = [v12 objectForKeyedSubscript:@"childItems"];
+    latestResults = [v8 latestResults];
+    v13 = [latestResults objectForKeyedSubscript:@"childItems"];
 
     if ([v13 na_any:&__block_literal_global_37_3] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
@@ -846,15 +846,15 @@ LABEL_8:
 
     else
     {
-      v16 = [(HFAccessoryItem *)self serviceItems];
-      v17 = [v16 na_any:&__block_literal_global_44_0];
+      serviceItems2 = [(HFAccessoryItem *)self serviceItems];
+      v17 = [serviceItems2 na_any:&__block_literal_global_44_0];
 
       if (v17)
       {
         v18 = [HFAccessoryControlItem alloc];
-        v19 = [(HFAccessoryItem *)self valueSource];
-        v20 = [(HFAccessoryItem *)self accessory];
-        v21 = [(HFAccessoryControlItem *)v18 initWithValueSource:v19 parentAccessory:v20 displayResults:MEMORY[0x277CBEC10]];
+        valueSource = [(HFAccessoryItem *)self valueSource];
+        accessory2 = [(HFAccessoryItem *)self accessory];
+        v21 = [(HFAccessoryControlItem *)v18 initWithValueSource:valueSource parentAccessory:accessory2 displayResults:MEMORY[0x277CBEC10]];
 
         v9 = [MEMORY[0x277CBEB58] setWithObject:v21];
 
@@ -870,10 +870,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v5 = [(HFAccessoryItem *)self serviceItems];
-  v6 = [v5 anyObject];
-  v7 = [v6 latestResults];
-  v8 = [v7 objectForKeyedSubscript:@"childItems"];
+  serviceItems3 = [(HFAccessoryItem *)self serviceItems];
+  anyObject = [serviceItems3 anyObject];
+  latestResults2 = [anyObject latestResults];
+  v8 = [latestResults2 objectForKeyedSubscript:@"childItems"];
 
   if ([v8 count] != 1)
   {
@@ -933,17 +933,17 @@ uint64_t __37__HFAccessoryItem__buildControlItems__block_invoke_5(uint64_t a1, v
 - (id)_collectAllChildItems
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = [(HFAccessoryItem *)self serviceItems];
-  v5 = [v3 setWithCapacity:{objc_msgSend(v4, "count")}];
+  serviceItems = [(HFAccessoryItem *)self serviceItems];
+  v5 = [v3 setWithCapacity:{objc_msgSend(serviceItems, "count")}];
 
-  v6 = [(HFAccessoryItem *)self serviceItems];
+  serviceItems2 = [(HFAccessoryItem *)self serviceItems];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __40__HFAccessoryItem__collectAllChildItems__block_invoke;
   v9[3] = &unk_277DF94E0;
   v7 = v5;
   v10 = v7;
-  [v6 na_each:v9];
+  [serviceItems2 na_each:v9];
 
   return v7;
 }
@@ -970,14 +970,14 @@ void __40__HFAccessoryItem__collectAllChildItems__block_invoke_2(uint64_t a1, vo
 
 - (id)_buildServiceItems
 {
-  v3 = [(HFAccessoryItem *)self accessory];
-  v4 = [v3 hf_visibleServices];
+  accessory = [(HFAccessoryItem *)self accessory];
+  hf_visibleServices = [accessory hf_visibleServices];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__HFAccessoryItem__buildServiceItems__block_invoke;
   v7[3] = &unk_277DF4A10;
   v7[4] = self;
-  v5 = [v4 na_map:v7];
+  v5 = [hf_visibleServices na_map:v7];
 
   return v5;
 }
@@ -994,34 +994,34 @@ id __37__HFAccessoryItem__buildServiceItems__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)containsActions
 {
-  v2 = [(HFAccessoryItem *)self _buildServiceItems];
-  v3 = [v2 na_any:&__block_literal_global_54_1];
+  _buildServiceItems = [(HFAccessoryItem *)self _buildServiceItems];
+  v3 = [_buildServiceItems na_any:&__block_literal_global_54_1];
 
   return v3;
 }
 
 - (BOOL)actionsMayRequireDeviceUnlock
 {
-  v2 = [(HFAccessoryItem *)self _buildServiceItems];
-  v3 = [v2 na_any:&__block_literal_global_56];
+  _buildServiceItems = [(HFAccessoryItem *)self _buildServiceItems];
+  v3 = [_buildServiceItems na_any:&__block_literal_global_56];
 
   return v3;
 }
 
-- (id)currentStateActionBuildersForHome:(id)a3
+- (id)currentStateActionBuildersForHome:(id)home
 {
   v37 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  homeCopy = home;
   v26 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [(HFAccessoryItem *)self accessory];
-  v6 = [v5 hf_visibleServices];
+  accessory = [(HFAccessoryItem *)self accessory];
+  hf_visibleServices = [accessory hf_visibleServices];
 
-  v7 = [v6 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v7 = [hf_visibleServices countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1033,19 +1033,19 @@ id __37__HFAccessoryItem__buildServiceItems__block_invoke(uint64_t a1, void *a2)
       {
         if (*v33 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(hf_visibleServices);
         }
 
         v11 = *(*(&v32 + 1) + 8 * v10);
-        v12 = [(HFAccessoryItem *)self valueSource];
-        v13 = [HFServiceItem serviceItemForService:v11 valueSource:v12];
+        valueSource = [(HFAccessoryItem *)self valueSource];
+        v13 = [HFServiceItem serviceItemForService:v11 valueSource:valueSource];
 
         if (v13)
         {
-          v14 = [v13 currentStateActionBuildersForHome:v27];
+          v14 = [v13 currentStateActionBuildersForHome:homeCopy];
           if (v14)
           {
-            [v4 addObject:v14];
+            [array addObject:v14];
           }
         }
 
@@ -1053,15 +1053,15 @@ id __37__HFAccessoryItem__buildServiceItems__block_invoke(uint64_t a1, void *a2)
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v8 = [hf_visibleServices countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v8);
   }
 
   v15 = MEMORY[0x277D2C900];
-  v16 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v17 = [v15 combineAllFutures:v4 ignoringErrors:0 scheduler:v16];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v17 = [v15 combineAllFutures:array ignoringErrors:0 scheduler:mainThreadScheduler];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -1125,98 +1125,98 @@ void __53__HFAccessoryItem_currentStateActionBuildersForHome___block_invoke(uint
 
 - (HMHome)home
 {
-  v2 = [(HFAccessoryItem *)self accessory];
-  v3 = [v2 home];
+  accessory = [(HFAccessoryItem *)self accessory];
+  home = [accessory home];
 
-  return v3;
+  return home;
 }
 
 - (NSSet)services
 {
-  v2 = [(HFAccessoryItem *)self accessory];
-  v3 = [v2 hf_visibleServices];
+  accessory = [(HFAccessoryItem *)self accessory];
+  hf_visibleServices = [accessory hf_visibleServices];
 
-  return v3;
+  return hf_visibleServices;
 }
 
 - (BOOL)shouldReduceOptionItemsForNotifyingCharacteristics
 {
-  v2 = [(HFAccessoryItem *)self accessory];
-  v3 = [v2 hf_isProgrammableSwitch];
+  accessory = [(HFAccessoryItem *)self accessory];
+  hf_isProgrammableSwitch = [accessory hf_isProgrammableSwitch];
 
-  return v3 ^ 1;
+  return hf_isProgrammableSwitch ^ 1;
 }
 
 - (id)accessories
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFAccessoryItem *)self accessory];
-  v4 = [v2 na_setWithSafeObject:v3];
+  accessory = [(HFAccessoryItem *)self accessory];
+  v4 = [v2 na_setWithSafeObject:accessory];
 
   return v4;
 }
 
-- (id)serviceLikeBuilderInHome:(id)a3
+- (id)serviceLikeBuilderInHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = [HFAccessoryBuilder alloc];
-  v6 = [(HFAccessoryItem *)self homeKitObject];
-  v7 = [(HFAccessoryBuilder *)v5 initWithExistingObject:v6 inHome:v4];
+  homeKitObject = [(HFAccessoryItem *)self homeKitObject];
+  v7 = [(HFAccessoryBuilder *)v5 initWithExistingObject:homeKitObject inHome:homeCopy];
 
   return v7;
 }
 
 - (id)namingComponentForHomeKitObject
 {
-  v2 = [(HFAccessoryItem *)self accessory];
-  v3 = [HFNamingComponents namingComponentFromAccessory:v2];
+  accessory = [(HFAccessoryItem *)self accessory];
+  v3 = [HFNamingComponents namingComponentFromAccessory:accessory];
 
   return v3;
 }
 
 - (unint64_t)numberOfCompoundItems
 {
-  v2 = [(HFAccessoryItem *)self accessory];
-  v3 = [v2 hf_visibleServices];
-  v4 = [v3 count];
+  accessory = [(HFAccessoryItem *)self accessory];
+  hf_visibleServices = [accessory hf_visibleServices];
+  v4 = [hf_visibleServices count];
 
   return v4;
 }
 
 - (HFHomeKitObject)primaryHomeKitObject
 {
-  v2 = [(HFAccessoryItem *)self accessory];
-  v3 = [v2 hf_primaryService];
+  accessory = [(HFAccessoryItem *)self accessory];
+  hf_primaryService = [accessory hf_primaryService];
 
-  return v3;
+  return hf_primaryService;
 }
 
 - (NSArray)allHomeKitObjects
 {
-  v2 = [(HFAccessoryItem *)self accessory];
-  v3 = [v2 hf_visibleServices];
-  v4 = [v3 allObjects];
-  v5 = [MEMORY[0x277CD1D90] hf_serviceComparator];
-  v6 = [v4 sortedArrayUsingComparator:v5];
+  accessory = [(HFAccessoryItem *)self accessory];
+  hf_visibleServices = [accessory hf_visibleServices];
+  allObjects = [hf_visibleServices allObjects];
+  hf_serviceComparator = [MEMORY[0x277CD1D90] hf_serviceComparator];
+  v6 = [allObjects sortedArrayUsingComparator:hf_serviceComparator];
 
   return v6;
 }
 
 - (HFMediaAccessoryCommonSettingsManager)commonSettingsManager
 {
-  v2 = [(HFAccessoryItem *)self accessory];
-  v3 = [v2 mediaProfile];
-  v4 = [v3 hf_mediaAccessoryCommonSettingsManager];
+  accessory = [(HFAccessoryItem *)self accessory];
+  mediaProfile = [accessory mediaProfile];
+  hf_mediaAccessoryCommonSettingsManager = [mediaProfile hf_mediaAccessoryCommonSettingsManager];
 
-  return v4;
+  return hf_mediaAccessoryCommonSettingsManager;
 }
 
 - (BOOL)isSiriEndpointAccessory
 {
-  v2 = [(HFAccessoryItem *)self accessory];
-  v3 = [v2 hf_isSiriEndpoint];
+  accessory = [(HFAccessoryItem *)self accessory];
+  hf_isSiriEndpoint = [accessory hf_isSiriEndpoint];
 
-  return v3;
+  return hf_isSiriEndpoint;
 }
 
 - (BOOL)isAnnounceEnabled
@@ -1226,23 +1226,23 @@ void __53__HFAccessoryItem_currentStateActionBuildersForHome___block_invoke(uint
     return 0;
   }
 
-  v3 = [(HFAccessoryItem *)self commonSettingsManager];
-  v4 = [v3 settingValueForKeyPath:HFAnnounceEnabledKeyPath];
+  commonSettingsManager = [(HFAccessoryItem *)self commonSettingsManager];
+  v4 = [commonSettingsManager settingValueForKeyPath:HFAnnounceEnabledKeyPath];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)isSiriDisabled
 {
-  v2 = [(HFAccessoryItem *)self commonSettingsManager];
-  v3 = [v2 settingValueForKeyPath:HFAllowHeySiriSettingKeyPath];
+  commonSettingsManager = [(HFAccessoryItem *)self commonSettingsManager];
+  v3 = [commonSettingsManager settingValueForKeyPath:HFAllowHeySiriSettingKeyPath];
 
   if (v3)
   {
@@ -1257,29 +1257,29 @@ void __53__HFAccessoryItem_currentStateActionBuildersForHome___block_invoke(uint
   return v4;
 }
 
-- (id)setSiriDisabled:(BOOL)a3
+- (id)setSiriDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v5 = [(HFAccessoryItem *)self accessory];
-  v6 = [v5 uniqueIdentifier];
+  disabledCopy = disabled;
+  accessory = [(HFAccessoryItem *)self accessory];
+  uniqueIdentifier = [accessory uniqueIdentifier];
 
   if ([(HFAccessoryItem *)self isSiriEndpointAccessory])
   {
-    v7 = [(HFAccessoryItem *)self commonSettingsManager];
-    v8 = [(HFAccessoryItem *)self accessory];
-    v9 = [v8 home];
-    v10 = [v9 uniqueIdentifier];
+    commonSettingsManager = [(HFAccessoryItem *)self commonSettingsManager];
+    accessory2 = [(HFAccessoryItem *)self accessory];
+    home = [accessory2 home];
+    uniqueIdentifier2 = [home uniqueIdentifier];
     v11 = HFAllowHeySiriSettingKeyPath;
-    v12 = [MEMORY[0x277CCABB0] numberWithInt:!v3];
-    v13 = [v7 updateAccessorySettingWithHomeIdentifier:v10 accessoryIdentifier:v6 keyPath:v11 rawSettingValue:v12];
+    v12 = [MEMORY[0x277CCABB0] numberWithInt:!disabledCopy];
+    futureWithNoResult = [commonSettingsManager updateAccessorySettingWithHomeIdentifier:uniqueIdentifier2 accessoryIdentifier:uniqueIdentifier keyPath:v11 rawSettingValue:v12];
   }
 
   else
   {
-    v13 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v13;
+  return futureWithNoResult;
 }
 
 - (BOOL)isAudioAnalysisEnabled
@@ -1289,17 +1289,17 @@ void __53__HFAccessoryItem_currentStateActionBuildersForHome___block_invoke(uint
     return 0;
   }
 
-  v3 = [(HFAccessoryItem *)self commonSettingsManager];
-  v4 = [v3 settingValueForKeyPath:HFAudioAnalysisEnabledKeyPath];
+  commonSettingsManager = [(HFAccessoryItem *)self commonSettingsManager];
+  v4 = [commonSettingsManager settingValueForKeyPath:HFAudioAnalysisEnabledKeyPath];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)isDoorbellChimeEnabled
@@ -1309,38 +1309,38 @@ void __53__HFAccessoryItem_currentStateActionBuildersForHome___block_invoke(uint
     return 0;
   }
 
-  v3 = [(HFAccessoryItem *)self commonSettingsManager];
-  v4 = [v3 settingValueForKeyPath:HFDoorbellChimeEnabledKeyPath];
+  commonSettingsManager = [(HFAccessoryItem *)self commonSettingsManager];
+  v4 = [commonSettingsManager settingValueForKeyPath:HFDoorbellChimeEnabledKeyPath];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)_buildTileDescription:(BOOL)a3 title:(id)a4
+- (id)_buildTileDescription:(BOOL)description title:(id)title
 {
-  v4 = a3;
+  descriptionCopy = description;
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (![(HFAccessoryItem *)self _shouldComputeMultiServiceDescription]|| !v4)
+  titleCopy = title;
+  if (![(HFAccessoryItem *)self _shouldComputeMultiServiceDescription]|| !descriptionCopy)
   {
-    v29 = [(HFAccessoryItem *)self accessory];
-    v30 = [v29 hf_primaryService];
-    v31 = [(HFAccessoryItem *)self serviceItemForService:v30];
+    accessory = [(HFAccessoryItem *)self accessory];
+    hf_primaryService = [accessory hf_primaryService];
+    v31 = [(HFAccessoryItem *)self serviceItemForService:hf_primaryService];
 
-    v32 = [v31 latestResults];
-    v33 = [v32 objectForKeyedSubscript:@"description"];
+    latestResults = [v31 latestResults];
+    v33 = [latestResults objectForKeyedSubscript:@"description"];
 
     v34 = 0;
     goto LABEL_49;
   }
 
-  v66 = v6;
+  v66 = titleCopy;
   v69 = objc_opt_new();
   v7 = objc_opt_new();
   v68 = objc_opt_new();
@@ -1348,8 +1348,8 @@ void __53__HFAccessoryItem_currentStateActionBuildersForHome___block_invoke(uint
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v8 = [(HFAccessoryItem *)self serviceItems];
-  v9 = [v8 countByEnumeratingWithState:&v70 objects:v74 count:16];
+  serviceItems = [(HFAccessoryItem *)self serviceItems];
+  v9 = [serviceItems countByEnumeratingWithState:&v70 objects:v74 count:16];
   if (!v9)
   {
     v12 = 1;
@@ -1362,14 +1362,14 @@ void __53__HFAccessoryItem_currentStateActionBuildersForHome___block_invoke(uint
   v12 = 1;
   v13 = &stru_2824B1A78;
   v14 = off_277DF0000;
-  v67 = v8;
+  v67 = serviceItems;
   do
   {
     for (i = 0; i != v10; ++i)
     {
       if (*v71 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(serviceItems);
       }
 
       v16 = *(*(&v70 + 1) + 8 * i);
@@ -1400,12 +1400,12 @@ void __53__HFAccessoryItem_currentStateActionBuildersForHome___block_invoke(uint
                 continue;
               }
 
-              v23 = [v16 latestResults];
-              v24 = [v23 objectForKeyedSubscript:@"state"];
-              v25 = [v24 integerValue];
+              latestResults2 = [v16 latestResults];
+              v24 = [latestResults2 objectForKeyedSubscript:@"state"];
+              integerValue = [v24 integerValue];
 
-              v8 = v67;
-              v26 = v25 == 2;
+              serviceItems = v67;
+              v26 = integerValue == 2;
               v14 = off_277DF0000;
               if (v26)
               {
@@ -1424,17 +1424,17 @@ void __53__HFAccessoryItem_currentStateActionBuildersForHome___block_invoke(uint
       [v19 addObject:v16];
       if (![(__CFString *)v13 length])
       {
-        v27 = [v16 service];
-        [v27 serviceType];
-        v13 = v28 = v13;
+        service = [v16 service];
+        [service serviceType];
+        v13 = serviceType = v13;
         goto LABEL_20;
       }
 
       if (v12)
       {
-        v27 = [v16 service];
-        v28 = [v27 serviceType];
-        v12 = [(__CFString *)v13 isEqualToString:v28];
+        service = [v16 service];
+        serviceType = [service serviceType];
+        v12 = [(__CFString *)v13 isEqualToString:serviceType];
 LABEL_20:
 
         continue;
@@ -1443,7 +1443,7 @@ LABEL_20:
       v12 = 0;
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v70 objects:v74 count:16];
+    v10 = [serviceItems countByEnumeratingWithState:&v70 objects:v74 count:16];
   }
 
   while (v10);
@@ -1567,7 +1567,7 @@ LABEL_42:
     v47 = v69;
   }
 
-  v49 = [v47 firstObject];
+  firstObject = [v47 firstObject];
   objc_opt_class();
   v50 = HFResultDisplayDescriptionKey;
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1579,44 +1579,44 @@ LABEL_42:
     }
   }
 
-  v51 = [v49 latestResults];
-  v33 = [v51 objectForKeyedSubscript:*v50];
+  latestResults3 = [firstObject latestResults];
+  v33 = [latestResults3 objectForKeyedSubscript:*v50];
 
 LABEL_47:
   v34 = 0;
 LABEL_48:
-  v6 = v66;
+  titleCopy = v66;
 
 LABEL_49:
-  v52 = [MEMORY[0x277CCA898] hf_attributedStringWithInflectableAccessoryStatus:v33 accessoryName:v6 forcePluralAgreement:v34];
-  v53 = [v52 string];
+  v52 = [MEMORY[0x277CCA898] hf_attributedStringWithInflectableAccessoryStatus:v33 accessoryName:titleCopy forcePluralAgreement:v34];
+  string = [v52 string];
 
   v54 = *MEMORY[0x277D85DE8];
 
-  return v53;
+  return string;
 }
 
 - (id)_buildControlDescription
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:0 ascending:0 comparator:&__block_literal_global_96_0];
-  v4 = [(HFAccessoryItem *)self serviceItems];
-  v5 = [v4 allObjects];
+  serviceItems = [(HFAccessoryItem *)self serviceItems];
+  allObjects = [serviceItems allObjects];
   v22[0] = v3;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  v7 = [v5 sortedArrayUsingDescriptors:v6];
+  v7 = [allObjects sortedArrayUsingDescriptors:v6];
   v8 = [v7 mutableCopy];
 
-  v9 = [(HFAccessoryItem *)self accessory];
-  v10 = [v9 hf_primaryService];
+  accessory = [(HFAccessoryItem *)self accessory];
+  hf_primaryService = [accessory hf_primaryService];
 
-  if (v10)
+  if (hf_primaryService)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __43__HFAccessoryItem__buildControlDescription__block_invoke_2;
     v20[3] = &unk_277DF9450;
-    v21 = v10;
+    v21 = hf_primaryService;
     v11 = [v8 na_firstObjectPassingTest:v20];
     if (v11 && [v8 containsObject:v11])
     {
@@ -1625,13 +1625,13 @@ LABEL_49:
     }
   }
 
-  v12 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __43__HFAccessoryItem__buildControlDescription__block_invoke_3;
   v18[3] = &unk_277DF9550;
   v18[4] = self;
-  v13 = v12;
+  v13 = string;
   v19 = v13;
   [v8 na_each:v18];
   v14 = v19;
@@ -1743,8 +1743,8 @@ LABEL_15:
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v7 = [v3 setWithArray:v6];
 
-  v8 = [(HFAccessoryItem *)self accessory];
-  LODWORD(v4) = [v8 hf_isTelevision];
+  accessory = [(HFAccessoryItem *)self accessory];
+  LODWORD(v4) = [accessory hf_isTelevision];
 
   if (v4)
   {
@@ -1761,11 +1761,11 @@ LABEL_15:
 
 - (BOOL)isMultiSensorDevice
 {
-  v3 = [(HFAccessoryItem *)self accessory];
-  if ([v3 hf_isMultiServiceAccessory])
+  accessory = [(HFAccessoryItem *)self accessory];
+  if ([accessory hf_isMultiServiceAccessory])
   {
-    v4 = [(HFAccessoryItem *)self serviceItems];
-    v5 = [v4 na_all:&__block_literal_global_112_0];
+    serviceItems = [(HFAccessoryItem *)self serviceItems];
+    v5 = [serviceItems na_all:&__block_literal_global_112_0];
   }
 
   else
@@ -1796,11 +1796,11 @@ uint64_t __38__HFAccessoryItem_isMultiSensorDevice__block_invoke(uint64_t a1, vo
 
 - (BOOL)isMultiLightDevice
 {
-  v3 = [(HFAccessoryItem *)self accessory];
-  if ([v3 hf_isMultiServiceAccessory])
+  accessory = [(HFAccessoryItem *)self accessory];
+  if ([accessory hf_isMultiServiceAccessory])
   {
-    v4 = [(HFAccessoryItem *)self serviceItems];
-    v5 = [v4 na_all:&__block_literal_global_114_1];
+    serviceItems = [(HFAccessoryItem *)self serviceItems];
+    v5 = [serviceItems na_all:&__block_literal_global_114_1];
   }
 
   else
@@ -1822,9 +1822,9 @@ uint64_t __37__HFAccessoryItem_isMultiLightDevice__block_invoke(uint64_t a1, voi
 
 - (BOOL)_shouldComputeMultiServiceDescription
 {
-  v2 = [(HFAccessoryItem *)self accessory];
-  v3 = [v2 hf_visibleServices];
-  v4 = [v3 na_filter:&__block_literal_global_118_0];
+  accessory = [(HFAccessoryItem *)self accessory];
+  hf_visibleServices = [accessory hf_visibleServices];
+  v4 = [hf_visibleServices na_filter:&__block_literal_global_118_0];
   v5 = [v4 count] != 1;
 
   return v5;
@@ -1846,16 +1846,16 @@ uint64_t __56__HFAccessoryItem__shouldComputeMultiServiceDescription__block_invo
   return v3;
 }
 
-- (id)_unanimousValueForResultsKey:(id)a3 inServiceItems:(id)a4
+- (id)_unanimousValueForResultsKey:(id)key inServiceItems:(id)items
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  keyCopy = key;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  itemsCopy = items;
+  v7 = [itemsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1867,11 +1867,11 @@ uint64_t __56__HFAccessoryItem__shouldComputeMultiServiceDescription__block_invo
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemsCopy);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * i) latestResults];
-        v13 = [v12 objectForKeyedSubscript:v5];
+        latestResults = [*(*(&v17 + 1) + 8 * i) latestResults];
+        v13 = [latestResults objectForKeyedSubscript:keyCopy];
 
         if (v13)
         {
@@ -1892,7 +1892,7 @@ uint64_t __56__HFAccessoryItem__shouldComputeMultiServiceDescription__block_invo
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [itemsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -1912,16 +1912,16 @@ LABEL_16:
   return v14;
 }
 
-- (id)_mostCommonValueForResultsKey:(id)a3 inServiceItems:(id)a4
+- (id)_mostCommonValueForResultsKey:(id)key inServiceItems:(id)items
 {
-  v6 = a3;
+  keyCopy = key;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__HFAccessoryItem__mostCommonValueForResultsKey_inServiceItems___block_invoke;
   v10[3] = &unk_277DF9578;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(HFAccessoryItem *)self _mostCommonValueInServiceItems:a4 valueProvider:v10];
+  v11 = keyCopy;
+  v7 = keyCopy;
+  v8 = [(HFAccessoryItem *)self _mostCommonValueInServiceItems:items valueProvider:v10];
 
   return v8;
 }
@@ -1934,19 +1934,19 @@ id __64__HFAccessoryItem__mostCommonValueForResultsKey_inServiceItems___block_in
   return v4;
 }
 
-- (id)_mostCommonValueInServiceItems:(id)a3 valueProvider:(id)a4
+- (id)_mostCommonValueInServiceItems:(id)items valueProvider:(id)provider
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  itemsCopy = items;
+  providerCopy = provider;
+  if (providerCopy)
   {
     v7 = [MEMORY[0x277CCA940] set];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v5;
+    v8 = itemsCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -1961,7 +1961,7 @@ id __64__HFAccessoryItem__mostCommonValueForResultsKey_inServiceItems___block_in
             objc_enumerationMutation(v8);
           }
 
-          v13 = v6[2](v6, *(*(&v17 + 1) + 8 * i));
+          v13 = providerCopy[2](providerCopy, *(*(&v17 + 1) + 8 * i));
           if (v13)
           {
             [v7 addObject:{v13, v17}];
@@ -1974,17 +1974,17 @@ id __64__HFAccessoryItem__mostCommonValueForResultsKey_inServiceItems___block_in
       while (v10);
     }
 
-    v14 = [v7 na_mostCommonObject];
+    na_mostCommonObject = [v7 na_mostCommonObject];
   }
 
   else
   {
-    v14 = 0;
+    na_mostCommonObject = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return na_mostCommonObject;
 }
 
 - (id)_sortDescriptorsForServiceItems
@@ -2122,14 +2122,14 @@ uint64_t __50__HFAccessoryItem__sortDescriptorsForServiceItems__block_invoke_2(u
   return v15;
 }
 
-+ (id)itemWithAccessoryRepresentableObject:(id)a3 valueSource:(id)a4
++ (id)itemWithAccessoryRepresentableObject:(id)object valueSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  objectCopy = object;
   v8 = objc_opt_class();
-  v9 = [v7 hf_homeKitObject];
+  hf_homeKitObject = [objectCopy hf_homeKitObject];
 
-  v10 = v9;
+  v10 = hf_homeKitObject;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -2148,15 +2148,15 @@ uint64_t __50__HFAccessoryItem__sortDescriptorsForServiceItems__block_invoke_2(u
       goto LABEL_8;
     }
 
-    v13 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v13 handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
   }
 
   v12 = 0;
 LABEL_8:
 
-  v15 = [[a1 alloc] initWithAccessory:v12 valueSource:v6];
+  v15 = [[self alloc] initWithAccessory:v12 valueSource:sourceCopy];
 
   return v15;
 }

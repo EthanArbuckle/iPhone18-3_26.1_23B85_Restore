@@ -1,5 +1,5 @@
 @interface MessageListDataSourceUpdateRequest
-- (MessageListDataSourceUpdateRequest)initWithSectionUpdates:(id)a3 sectionsToRemove:(id)a4 startsWithEmptySnapshot:(BOOL)a5;
+- (MessageListDataSourceUpdateRequest)initWithSectionUpdates:(id)updates sectionsToRemove:(id)remove startsWithEmptySnapshot:(BOOL)snapshot;
 - (NSString)ef_publicDescription;
 @end
 
@@ -8,26 +8,26 @@
 - (NSString)ef_publicDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MessageListDataSourceUpdateRequest *)self sectionsToUpdate];
-  v5 = [(MessageListDataSourceUpdateRequest *)self sectionsToRemove];
-  v6 = [v3 stringWithFormat:@"<%p: MessageListDataSourceUpdateRequest> sectionsToUpdate=%@, sectionsToRemove=%@, startsWithEmptySnapshot=%d", self, v4, v5, -[MessageListDataSourceUpdateRequest startsWithEmptySnapshot](self, "startsWithEmptySnapshot")];
+  sectionsToUpdate = [(MessageListDataSourceUpdateRequest *)self sectionsToUpdate];
+  sectionsToRemove = [(MessageListDataSourceUpdateRequest *)self sectionsToRemove];
+  v6 = [v3 stringWithFormat:@"<%p: MessageListDataSourceUpdateRequest> sectionsToUpdate=%@, sectionsToRemove=%@, startsWithEmptySnapshot=%d", self, sectionsToUpdate, sectionsToRemove, -[MessageListDataSourceUpdateRequest startsWithEmptySnapshot](self, "startsWithEmptySnapshot")];
 
   return v6;
 }
 
-- (MessageListDataSourceUpdateRequest)initWithSectionUpdates:(id)a3 sectionsToRemove:(id)a4 startsWithEmptySnapshot:(BOOL)a5
+- (MessageListDataSourceUpdateRequest)initWithSectionUpdates:(id)updates sectionsToRemove:(id)remove startsWithEmptySnapshot:(BOOL)snapshot
 {
-  v9 = a3;
-  v10 = a4;
+  updatesCopy = updates;
+  removeCopy = remove;
   v14.receiver = self;
   v14.super_class = MessageListDataSourceUpdateRequest;
   v11 = [(MessageListDataSourceUpdateRequest *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sectionsToUpdate, a3);
-    objc_storeStrong(&v12->_sectionsToRemove, a4);
-    v12->_startsWithEmptySnapshot = a5;
+    objc_storeStrong(&v11->_sectionsToUpdate, updates);
+    objc_storeStrong(&v12->_sectionsToRemove, remove);
+    v12->_startsWithEmptySnapshot = snapshot;
   }
 
   return v12;

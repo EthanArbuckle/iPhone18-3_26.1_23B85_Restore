@@ -33,9 +33,9 @@
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
       v17[0] = 67109120;
-      v17[1] = v13;
+      v17[1] = bOOLValue;
       _os_log_impl(&dword_23E5E3000, v12, OS_LOG_TYPE_DEFAULT, "Syncing new user defaults setup key:  %{BOOL}d", v17, 8u);
     }
 

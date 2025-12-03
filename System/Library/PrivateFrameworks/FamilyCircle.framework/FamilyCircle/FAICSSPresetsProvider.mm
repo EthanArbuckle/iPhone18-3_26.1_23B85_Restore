@@ -1,18 +1,18 @@
 @interface FAICSSPresetsProvider
-- (FAICSSPresetsProvider)initWithNetworkService:(id)a3 storeFrontProvider:(id)a4;
-- (id)availablePresetsWithStoreFront:(id)a3 version:(id)a4;
-- (void)currentConfigurationForDSID:(id)a3 completion:(id)a4;
+- (FAICSSPresetsProvider)initWithNetworkService:(id)service storeFrontProvider:(id)provider;
+- (id)availablePresetsWithStoreFront:(id)front version:(id)version;
+- (void)currentConfigurationForDSID:(id)d completion:(id)completion;
 @end
 
 @implementation FAICSSPresetsProvider
 
-- (FAICSSPresetsProvider)initWithNetworkService:(id)a3 storeFrontProvider:(id)a4
+- (FAICSSPresetsProvider)initWithNetworkService:(id)service storeFrontProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = FAICSSPresetsProvider;
-  v8 = [(FANetworkClient *)&v14 initWithNetworkService:v6];
+  v8 = [(FANetworkClient *)&v14 initWithNetworkService:serviceCopy];
   if (v8)
   {
     v16 = 0;
@@ -37,23 +37,23 @@
     stPresetsClient = v8->_stPresetsClient;
     v8->_stPresetsClient = v11;
 
-    objc_storeStrong(&v8->_storeFrontProvider, a4);
+    objc_storeStrong(&v8->_storeFrontProvider, provider);
   }
 
   return v8;
 }
 
-- (id)availablePresetsWithStoreFront:(id)a3 version:(id)a4
+- (id)availablePresetsWithStoreFront:(id)front version:(id)version
 {
-  v6 = a3;
-  v7 = a4;
+  frontCopy = front;
+  versionCopy = version;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = frontCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = versionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fetching available presets from icss. storeFront: %@, version: %@", buf, 0x16u);
   }
 
@@ -64,26 +64,26 @@
   v32 = sub_10000F190;
   v33 = sub_10000F1A0;
   v34 = 0;
-  v22 = [(FAICSSPresetsProvider *)self storeFrontProvider];
-  v10 = [v22 fetchCurrentStoreFrontWithSelectedStoreFront:v6];
-  v11 = [v10 then];
+  storeFrontProvider = [(FAICSSPresetsProvider *)self storeFrontProvider];
+  v10 = [storeFrontProvider fetchCurrentStoreFrontWithSelectedStoreFront:frontCopy];
+  then = [v10 then];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_10000F1A8;
   v29[3] = &unk_1000A63C8;
   v29[4] = self;
-  v12 = v7;
+  v12 = versionCopy;
   v30 = v12;
-  v13 = (v11)[2](v11, v29);
-  v14 = [v13 then];
+  v13 = (then)[2](then, v29);
+  then2 = [v13 then];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10000F2B4;
   v28[3] = &unk_1000A6880;
   v28[4] = self;
   v28[5] = buf;
-  v15 = (v14)[2](v14, v28);
-  v16 = [v15 then];
+  v15 = (then2)[2](then2, v28);
+  then3 = [v15 then];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10000F340;
@@ -91,21 +91,21 @@
   v17 = v9;
   v24 = v17;
   v27 = buf;
-  v18 = v6;
+  v18 = frontCopy;
   v25 = v18;
   v19 = v12;
   v26 = v19;
-  v20 = (v16)[2](v16, v23);
+  v20 = (then3)[2](then3, v23);
 
   _Block_object_dispose(buf, 8);
 
   return v20;
 }
 
-- (void)currentConfigurationForDSID:(id)a3 completion:(id)a4
+- (void)currentConfigurationForDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -131,15 +131,15 @@
 
   v10 = v9;
   _Block_object_dispose(&v21, 8);
-  v11 = [[v9 alloc] initWithDSID:v6];
-  v12 = [(FAICSSPresetsProvider *)self stPresetsClient];
+  v11 = [[v9 alloc] initWithDSID:dCopy];
+  stPresetsClient = [(FAICSSPresetsProvider *)self stPresetsClient];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000F634;
   v14[3] = &unk_1000A68F0;
-  v15 = v7;
-  v13 = v7;
-  [v12 currentConfigurationForUserID:v11 completionHandler:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [stPresetsClient currentConfigurationForUserID:v11 completionHandler:v14];
 }
 
 @end

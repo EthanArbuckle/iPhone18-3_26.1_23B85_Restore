@@ -1,23 +1,23 @@
 @interface APDBExperimentationReport
-- (BOOL)removeReportsThatAreNotInDays:(id)a3;
-- (id)_getColumnNameForType:(int64_t)a3;
-- (id)_getReportForTriggerRowId:(id)a3 day:(int64_t)a4 source:(id)a5 adFormatType:(id)a6 slot:(id)a7;
-- (id)getOrInsertReportForTriggerRowId:(id)a3 day:(int64_t)a4 source:(id)a5 adFormatType:(id)a6 slot:(id)a7;
-- (id)sumAggregatesForType:(int64_t)a3 triggerRowId:(id)a4 days:(id)a5 source:(id)a6 adFormatType:(id)a7 slot:(id)a8;
-- (id)sumAllMetricsForTriggerRowId:(id)a3 days:(id)a4 source:(id)a5 adFormatType:(id)a6 slot:(id)a7;
+- (BOOL)removeReportsThatAreNotInDays:(id)days;
+- (id)_getColumnNameForType:(int64_t)type;
+- (id)_getReportForTriggerRowId:(id)id day:(int64_t)day source:(id)source adFormatType:(id)type slot:(id)slot;
+- (id)getOrInsertReportForTriggerRowId:(id)id day:(int64_t)day source:(id)source adFormatType:(id)type slot:(id)slot;
+- (id)sumAggregatesForType:(int64_t)type triggerRowId:(id)id days:(id)days source:(id)source adFormatType:(id)formatType slot:(id)slot;
+- (id)sumAllMetricsForTriggerRowId:(id)id days:(id)days source:(id)source adFormatType:(id)type slot:(id)slot;
 @end
 
 @implementation APDBExperimentationReport
 
-- (id)getOrInsertReportForTriggerRowId:(id)a3 day:(int64_t)a4 source:(id)a5 adFormatType:(id)a6 slot:(id)a7
+- (id)getOrInsertReportForTriggerRowId:(id)id day:(int64_t)day source:(id)source adFormatType:(id)type slot:(id)slot
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(APDBExperimentationReport *)self manager];
+  idCopy = id;
+  sourceCopy = source;
+  typeCopy = type;
+  slotCopy = slot;
+  manager = [(APDBExperimentationReport *)self manager];
 
-  if (!v16)
+  if (!manager)
   {
     v19 = APLogForCategory();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -35,7 +35,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v13 || !v12 || !v14)
+  if (!sourceCopy || !idCopy || !typeCopy)
   {
     v19 = APLogForCategory();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -50,12 +50,12 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v17 = [(APDBExperimentationReport *)self _getReportForTriggerRowId:v12 day:a4 source:v13 adFormatType:v14 slot:v15];
+  v17 = [(APDBExperimentationReport *)self _getReportForTriggerRowId:idCopy day:day source:sourceCopy adFormatType:typeCopy slot:slotCopy];
   if (!v17)
   {
     v23 = [APDBExperimentationReportRow alloc];
-    v24 = [NSNumber numberWithInteger:a4];
-    v19 = [(APDBExperimentationReportRow *)v23 initWithTriggerRowId:v12 day:v24 source:v13 adFormatType:v14 slot:v15 table:self];
+    v24 = [NSNumber numberWithInteger:day];
+    v19 = [(APDBExperimentationReportRow *)v23 initWithTriggerRowId:idCopy day:v24 source:sourceCopy adFormatType:typeCopy slot:slotCopy table:self];
 
     if ([v19 save])
     {
@@ -86,33 +86,33 @@ LABEL_16:
   return v22;
 }
 
-- (id)sumAggregatesForType:(int64_t)a3 triggerRowId:(id)a4 days:(id)a5 source:(id)a6 adFormatType:(id)a7 slot:(id)a8
+- (id)sumAggregatesForType:(int64_t)type triggerRowId:(id)id days:(id)days source:(id)source adFormatType:(id)formatType slot:(id)slot
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(APDBExperimentationReport *)self manager];
+  idCopy = id;
+  daysCopy = days;
+  sourceCopy = source;
+  formatTypeCopy = formatType;
+  slotCopy = slot;
+  manager = [(APDBExperimentationReport *)self manager];
 
-  if (v19)
+  if (manager)
   {
-    if (v16 && v14 && v15 && v17)
+    if (sourceCopy && idCopy && daysCopy && formatTypeCopy)
     {
-      v20 = [(APDBExperimentationReport *)self _getColumnNameForType:a3];
-      v39 = v14;
-      v21 = [[APDatabaseColumn alloc] initWithName:@"triggerRowId" forColumnType:0 withValue:v14];
-      v22 = [[APDatabaseColumn alloc] initWithName:@"source" forColumnType:0 withValue:v16];
-      v23 = [[APDatabaseColumn alloc] initWithName:@"adFormatType" forColumnType:0 withValue:v17];
-      v36 = v15;
-      v24 = [v15 jsonStringWithOptions:0];
+      v20 = [(APDBExperimentationReport *)self _getColumnNameForType:type];
+      v39 = idCopy;
+      v21 = [[APDatabaseColumn alloc] initWithName:@"triggerRowId" forColumnType:0 withValue:idCopy];
+      v22 = [[APDatabaseColumn alloc] initWithName:@"source" forColumnType:0 withValue:sourceCopy];
+      v23 = [[APDatabaseColumn alloc] initWithName:@"adFormatType" forColumnType:0 withValue:formatTypeCopy];
+      v36 = daysCopy;
+      v24 = [daysCopy jsonStringWithOptions:0];
       v37 = v22;
       v38 = v21;
       v40[0] = v21;
       v40[1] = v22;
       v40[2] = v23;
       [NSArray arrayWithObjects:v40 count:3];
-      v26 = v25 = v18;
+      v26 = v25 = slotCopy;
       v27 = [NSMutableArray arrayWithArray:v26];
 
       if (v25)
@@ -129,12 +129,12 @@ LABEL_16:
       }
 
       v33 = [NSString stringWithFormat:@"SELECT SUM(%@) FROM (SELECT %@ FROM APDBExperimentationReport WHERE triggerRowId = ? AND source = ? AND adFormatType = ? AND day IN (SELECT e.value FROM json_each('%@') e)%@)", v20, v20, v24, v29];
-      v34 = [(APDBExperimentationReport *)self manager];
-      v32 = [v34 executeSelectNumberQuery:v33 withParameters:v27];
+      manager2 = [(APDBExperimentationReport *)self manager];
+      v32 = [manager2 executeSelectNumberQuery:v33 withParameters:v27];
 
-      v18 = v25;
-      v14 = v39;
-      v15 = v36;
+      slotCopy = v25;
+      idCopy = v39;
+      daysCopy = v36;
       goto LABEL_16;
     }
 
@@ -169,24 +169,24 @@ LABEL_16:
   return v32;
 }
 
-- (id)sumAllMetricsForTriggerRowId:(id)a3 days:(id)a4 source:(id)a5 adFormatType:(id)a6 slot:(id)a7
+- (id)sumAllMetricsForTriggerRowId:(id)id days:(id)days source:(id)source adFormatType:(id)type slot:(id)slot
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(APDBExperimentationReport *)self manager];
+  idCopy = id;
+  daysCopy = days;
+  sourceCopy = source;
+  typeCopy = type;
+  slotCopy = slot;
+  manager = [(APDBExperimentationReport *)self manager];
 
-  if (v17)
+  if (manager)
   {
-    if (v14 && v12 && v13 && v15)
+    if (sourceCopy && idCopy && daysCopy && typeCopy)
     {
-      v34 = v12;
-      v18 = [[APDatabaseColumn alloc] initWithName:@"triggerRowId" forColumnType:0 withValue:v12];
-      v19 = [[APDatabaseColumn alloc] initWithName:@"source" forColumnType:0 withValue:v14];
-      v20 = [[APDatabaseColumn alloc] initWithName:@"adFormatType" forColumnType:0 withValue:v15];
-      v21 = [v13 jsonStringWithOptions:0];
+      v34 = idCopy;
+      v18 = [[APDatabaseColumn alloc] initWithName:@"triggerRowId" forColumnType:0 withValue:idCopy];
+      v19 = [[APDatabaseColumn alloc] initWithName:@"source" forColumnType:0 withValue:sourceCopy];
+      v20 = [[APDatabaseColumn alloc] initWithName:@"adFormatType" forColumnType:0 withValue:typeCopy];
+      v21 = [daysCopy jsonStringWithOptions:0];
       v35[0] = v18;
       v35[1] = v19;
       v32 = v20;
@@ -195,9 +195,9 @@ LABEL_16:
       v22 = [NSArray arrayWithObjects:v35 count:3];
       v23 = [NSMutableArray arrayWithArray:v22];
 
-      if (v16)
+      if (slotCopy)
       {
-        v24 = [[APDatabaseColumn alloc] initWithName:@"slot" forColumnType:0 withValue:v16];
+        v24 = [[APDatabaseColumn alloc] initWithName:@"slot" forColumnType:0 withValue:slotCopy];
         [v23 addObject:v24];
 
         v25 = @" AND slot = ?";
@@ -209,10 +209,10 @@ LABEL_16:
       }
 
       v29 = [NSString stringWithFormat:@"SELECT SUM(val) FROM (SELECT (slotVisibleAdCount + impressionCount + clickCount + downloadCount + redownloadCount + preOrderPlacedCount + viewDownloadCount + viewRedownloadCount + viewPreorderPlacedCount) AS val FROM APDBExperimentationReport WHERE triggerRowId = ? AND source = ? AND adFormatType = ? AND day IN (SELECT e.value FROM json_each('%@') e)%@)", v21, v25];
-      v30 = [(APDBExperimentationReport *)self manager];
-      v28 = [v30 executeSelectNumberQuery:v29 withParameters:v23];
+      manager2 = [(APDBExperimentationReport *)self manager];
+      v28 = [manager2 executeSelectNumberQuery:v29 withParameters:v23];
 
-      v12 = v34;
+      idCopy = v34;
       goto LABEL_16;
     }
 
@@ -247,12 +247,12 @@ LABEL_16:
   return v28;
 }
 
-- (BOOL)removeReportsThatAreNotInDays:(id)a3
+- (BOOL)removeReportsThatAreNotInDays:(id)days
 {
-  v4 = a3;
-  v5 = [(APDBExperimentationReport *)self manager];
+  daysCopy = days;
+  manager = [(APDBExperimentationReport *)self manager];
 
-  if (!v5)
+  if (!manager)
   {
     v10 = APLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -271,7 +271,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!daysCopy)
   {
     v10 = APLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -286,29 +286,29 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v6 = [v4 jsonStringWithOptions:0];
+  v6 = [daysCopy jsonStringWithOptions:0];
   v7 = [NSString stringWithFormat:@"DELETE FROM APDBExperimentationReport WHERE day NOT IN (SELECT e.value FROM json_each('%@') e)", v6];
-  v8 = [(APDBExperimentationReport *)self manager];
-  v9 = [v8 executeQuery:v7 withParameters:&__NSArray0__struct];
+  manager2 = [(APDBExperimentationReport *)self manager];
+  v9 = [manager2 executeQuery:v7 withParameters:&__NSArray0__struct];
 
 LABEL_10:
   return v9;
 }
 
-- (id)_getReportForTriggerRowId:(id)a3 day:(int64_t)a4 source:(id)a5 adFormatType:(id)a6 slot:(id)a7
+- (id)_getReportForTriggerRowId:(id)id day:(int64_t)day source:(id)source adFormatType:(id)type slot:(id)slot
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [[APDatabaseColumn alloc] initWithName:@"triggerRowId" forColumnType:0 withValue:v15];
+  slotCopy = slot;
+  typeCopy = type;
+  sourceCopy = source;
+  idCopy = id;
+  v16 = [[APDatabaseColumn alloc] initWithName:@"triggerRowId" forColumnType:0 withValue:idCopy];
 
   v17 = [APDatabaseColumn alloc];
-  v18 = [NSNumber numberWithInteger:a4];
+  v18 = [NSNumber numberWithInteger:day];
   v19 = [v17 initWithName:@"day" forColumnType:0 withValue:v18];
 
-  v20 = [[APDatabaseColumn alloc] initWithName:@"source" forColumnType:0 withValue:v14];
-  v21 = [[APDatabaseColumn alloc] initWithName:@"adFormatType" forColumnType:0 withValue:v13];
+  v20 = [[APDatabaseColumn alloc] initWithName:@"source" forColumnType:0 withValue:sourceCopy];
+  v21 = [[APDatabaseColumn alloc] initWithName:@"adFormatType" forColumnType:0 withValue:typeCopy];
 
   v32 = v16;
   v33[0] = v16;
@@ -318,9 +318,9 @@ LABEL_10:
   v22 = [NSArray arrayWithObjects:v33 count:4];
   v23 = [NSMutableArray arrayWithArray:v22];
 
-  if (v12)
+  if (slotCopy)
   {
-    v24 = [[APDatabaseColumn alloc] initWithName:@"slot" forColumnType:0 withValue:v12];
+    v24 = [[APDatabaseColumn alloc] initWithName:@"slot" forColumnType:0 withValue:slotCopy];
     [v23 addObject:v24];
 
     v25 = @" AND slot = ?";
@@ -332,28 +332,28 @@ LABEL_10:
   }
 
   v26 = [NSString stringWithFormat:@"SELECT rowid, * FROM APDBExperimentationReport WHERE triggerRowId = ? AND source = ? AND adFormatType = ? AND day = ?%@", v25];
-  v27 = [(APDBExperimentationReport *)self manager];
+  manager = [(APDBExperimentationReport *)self manager];
   v28 = [NSArray arrayWithArray:v23];
-  v29 = [v27 executeSelectQuery:v26 forTable:self withParameters:v28];
+  v29 = [manager executeSelectQuery:v26 forTable:self withParameters:v28];
 
   if (v29)
   {
-    v30 = [v29 firstObject];
+    firstObject = [v29 firstObject];
   }
 
   else
   {
-    v30 = 0;
+    firstObject = 0;
   }
 
-  return v30;
+  return firstObject;
 }
 
-- (id)_getColumnNameForType:(int64_t)a3
+- (id)_getColumnNameForType:(int64_t)type
 {
-  if ((a3 - 250) < 0xA)
+  if ((type - 250) < 0xA)
   {
-    return off_100478AD0[a3 - 250];
+    return off_100478AD0[type - 250];
   }
 
   v4 = APLogForCategory();

@@ -1,23 +1,23 @@
 @interface NTKChronographFace
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_chronoDefaultOption;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKChronographFace
 
 - (id)_faceDescription
 {
-  v2 = [(NTKChronographFace *)self _faceDescriptionKey];
-  v3 = [NTKChronographFaceBundle localizedStringForKey:v2 comment:v2];
+  _faceDescriptionKey = [(NTKChronographFace *)self _faceDescriptionKey];
+  v3 = [NTKChronographFaceBundle localizedStringForKey:_faceDescriptionKey comment:_faceDescriptionKey];
 
   return v3;
 }
@@ -61,44 +61,44 @@
   return v2;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 11)
+  slotCopy = slot;
+  if (mode == 11)
   {
-    v8 = [(NTKChronographFace *)self device];
-    v7 = [NTKTimeScaleEditOption optionWithTimeScale:0 forDevice:v8];
+    device = [(NTKChronographFace *)self device];
+    _chronoDefaultOption = [NTKTimeScaleEditOption optionWithTimeScale:0 forDevice:device];
   }
 
-  else if (a3 == 10)
+  else if (mode == 10)
   {
-    v7 = [(NTKChronographFace *)self _chronoDefaultOption];
+    _chronoDefaultOption = [(NTKChronographFace *)self _chronoDefaultOption];
   }
 
   else
   {
-    v7 = 0;
+    _chronoDefaultOption = 0;
   }
 
-  return v7;
+  return _chronoDefaultOption;
 }
 
 - (id)_chronoDefaultOption
 {
-  v3 = [(NTKChronographFace *)self device];
-  v4 = NTKDefaultPaletteColorForDeviceCollection(v3, 18);
+  device = [(NTKChronographFace *)self device];
+  v4 = NTKDefaultPaletteColorForDeviceCollection(device, 18);
 
-  v5 = [(NTKChronographFace *)self device];
-  v6 = [NTKPaletteColorEditOption optionWithPaletteColor:v4 forDevice:v5];
+  device2 = [(NTKChronographFace *)self device];
+  v6 = [NTKPaletteColorEditOption optionWithPaletteColor:v4 forDevice:device2];
 
   return v6;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 11)
+  if (mode == 11)
   {
-    v4 = [@"EDIT_MODE_LABEL_CHRONO_DENSITY" stringByAppendingString:{@"_COMPANION", a4}];
+    v4 = [@"EDIT_MODE_LABEL_CHRONO_DENSITY" stringByAppendingString:{@"_COMPANION", device}];
     v5 = [NTKChronographFaceBundle localizedStringForKey:v4 comment:@"Timescale"];
   }
 
@@ -110,37 +110,37 @@
   return v5;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKChronographFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKChronographFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKChronographFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKChronographFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKChronographFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKChronographFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKChronographFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKChronographFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKChronographFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKChronographFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKChronographFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKChronographFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 10 || a3 == 11)
+  if (mode == 10 || mode == 11)
   {
     v4 = objc_opt_class();
   }
@@ -153,15 +153,15 @@
   return v4;
 }
 
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index
 {
   v3 = 11;
-  if (a3 != 1)
+  if (index != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (index)
   {
     return v3;
   }

@@ -1,5 +1,5 @@
 @interface CDBPreferences
-+ (id)preferencesForDirectory:(id)a3;
++ (id)preferencesForDirectory:(id)directory;
 + (id)sharedReadOnly;
 + (id)sharedReadWrite;
 - (BOOL)has_DefaultAllDayAlarmOffset;
@@ -20,15 +20,15 @@
 - (BOOL)has_sqlProfileLoggingEnabled;
 - (BOOL)has_suggestEventLocations;
 - (BOOL)has_suggestedLocationsTestMode;
-- (CDBPreferences)initWithPreferences:(id)a3;
+- (CDBPreferences)initWithPreferences:(id)preferences;
 - (NSNumber)get_DefaultAllDayAlarmOffset;
 - (NSNumber)get_DefaultTimedAlarmOffset;
 - (NSString)get_defaultCalendarChangedReason;
 - (NSString)get_defaultCalendarID;
-- (void)set_DefaultAllDayAlarmOffset:(id)a3;
-- (void)set_DefaultTimedAlarmOffset:(id)a3;
-- (void)set_defaultCalendarChangedReason:(id)a3;
-- (void)set_defaultCalendarID:(id)a3;
+- (void)set_DefaultAllDayAlarmOffset:(id)offset;
+- (void)set_DefaultTimedAlarmOffset:(id)offset;
+- (void)set_defaultCalendarChangedReason:(id)reason;
+- (void)set_defaultCalendarID:(id)d;
 @end
 
 @implementation CDBPreferences
@@ -87,9 +87,9 @@ uint64_t __33__CDBPreferences_sharedReadWrite__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)preferencesForDirectory:(id)a3
++ (id)preferencesForDirectory:(id)directory
 {
-  v3 = [MEMORY[0x1E6993000] preferencesStoreForPath:a3];
+  v3 = [MEMORY[0x1E6993000] preferencesStoreForPath:directory];
   v4 = objc_alloc(MEMORY[0x1E6993020]);
   v5 = [v4 initWithDomain:*MEMORY[0x1E6993168] store:v3];
   v6 = [[CDBPreferences alloc] initWithPreferences:v5];
@@ -97,16 +97,16 @@ uint64_t __33__CDBPreferences_sharedReadWrite__block_invoke()
   return v6;
 }
 
-- (CDBPreferences)initWithPreferences:(id)a3
+- (CDBPreferences)initWithPreferences:(id)preferences
 {
-  v5 = a3;
+  preferencesCopy = preferences;
   v9.receiver = self;
   v9.super_class = CDBPreferences;
   v6 = [(CDBPreferences *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preferences, a3);
+    objc_storeStrong(&v6->_preferences, preferences);
     [(CalPreferences *)v7->_preferences registerReflectionForPreferenceWithNotificationName:@"com.apple.calendar.database.preference.notification.enableTravelAdvisoriesForAutomaticBehavior"];
     [(CalPreferences *)v7->_preferences registerReflectionForPreferenceWithNotificationName:@"com.apple.calendar.database.preference.notification.suggestEventLocations"];
     [(CalPreferences *)v7->_preferences registerReflectionForPreferenceWithNotificationName:@"com.apple.calendar.database.preference.notification.sqlProfileLoggingEnabled"];
@@ -240,10 +240,10 @@ uint64_t __33__CDBPreferences_sharedReadWrite__block_invoke()
   return v3;
 }
 
-- (void)set_defaultCalendarID:(id)a3
+- (void)set_defaultCalendarID:(id)d
 {
   preferences = self->_preferences;
-  v4 = [a3 copy];
+  v4 = [d copy];
   [(CalPreferences *)preferences setValueForPreference:@"defaultCalendarID" value:v4 notificationName:@"com.apple.calendar.database.preference.notification.defaultCalendarID"];
 }
 
@@ -267,10 +267,10 @@ uint64_t __33__CDBPreferences_sharedReadWrite__block_invoke()
   return v3;
 }
 
-- (void)set_defaultCalendarChangedReason:(id)a3
+- (void)set_defaultCalendarChangedReason:(id)reason
 {
   preferences = self->_preferences;
-  v4 = [a3 copy];
+  v4 = [reason copy];
   [(CalPreferences *)preferences setValueForPreference:@"defaultCalendarChangedReason" value:v4 notificationName:@"com.apple.calendar.database.preference.notification.defaultCalendarChangedReason"];
 }
 
@@ -290,10 +290,10 @@ uint64_t __33__CDBPreferences_sharedReadWrite__block_invoke()
   return [(CalPreferences *)preferences getValueForPreference:@"DefaultTimedAlarmOffset" expectedClass:v3];
 }
 
-- (void)set_DefaultTimedAlarmOffset:(id)a3
+- (void)set_DefaultTimedAlarmOffset:(id)offset
 {
   preferences = self->_preferences;
-  v4 = [a3 copy];
+  v4 = [offset copy];
   [(CalPreferences *)preferences setValueForPreference:@"DefaultTimedAlarmOffset" value:v4 notificationName:@"com.apple.calendar.database.preference.notification.DefaultTimedAlarmOffset"];
 }
 
@@ -313,10 +313,10 @@ uint64_t __33__CDBPreferences_sharedReadWrite__block_invoke()
   return [(CalPreferences *)preferences getValueForPreference:@"DefaultAllDayAlarmOffset" expectedClass:v3];
 }
 
-- (void)set_DefaultAllDayAlarmOffset:(id)a3
+- (void)set_DefaultAllDayAlarmOffset:(id)offset
 {
   preferences = self->_preferences;
-  v4 = [a3 copy];
+  v4 = [offset copy];
   [(CalPreferences *)preferences setValueForPreference:@"DefaultAllDayAlarmOffset" value:v4 notificationName:@"com.apple.calendar.database.preference.notification.DefaultAllDayAlarmOffset"];
 }
 

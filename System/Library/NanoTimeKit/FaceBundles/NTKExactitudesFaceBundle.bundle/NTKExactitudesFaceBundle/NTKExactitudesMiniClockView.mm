@@ -1,31 +1,31 @@
 @interface NTKExactitudesMiniClockView
-- (NTKExactitudesMiniClockView)initWithDevice:(id)a3 clockTimer:(id)a4;
+- (NTKExactitudesMiniClockView)initWithDevice:(id)device clockTimer:(id)timer;
 - (id)_dummyColors;
-- (id)_hourHandInlayColorForConfiguration:(id)a3 enteringAOD:(BOOL)a4;
-- (id)_hourHandOutlineColorForConfiguration:(id)a3 enteringAOD:(BOOL)a4;
-- (id)_minuteHandInlayColorForConfiguration:(id)a3 enteringAOD:(BOOL)a4;
-- (id)_minuteHandOutlineColorForConfiguration:(id)a3 enteringAOD:(BOOL)a4;
-- (void)_applyColorsToHandsViewWithConfiguration:(id)a3;
+- (id)_hourHandInlayColorForConfiguration:(id)configuration enteringAOD:(BOOL)d;
+- (id)_hourHandOutlineColorForConfiguration:(id)configuration enteringAOD:(BOOL)d;
+- (id)_minuteHandInlayColorForConfiguration:(id)configuration enteringAOD:(BOOL)d;
+- (id)_minuteHandOutlineColorForConfiguration:(id)configuration enteringAOD:(BOOL)d;
+- (void)_applyColorsToHandsViewWithConfiguration:(id)configuration;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
-- (void)traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)setConfiguration:(id)configuration;
+- (void)traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 @end
 
 @implementation NTKExactitudesMiniClockView
 
-- (NTKExactitudesMiniClockView)initWithDevice:(id)a3 clockTimer:(id)a4
+- (NTKExactitudesMiniClockView)initWithDevice:(id)device clockTimer:(id)timer
 {
-  v6 = a3;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = NTKExactitudesMiniClockView;
-  v7 = [(NTKExactitudesMiniClockView *)&v14 initWithDevice:v6 clockTimer:a4];
+  v7 = [(NTKExactitudesMiniClockView *)&v14 initWithDevice:deviceCopy clockTimer:timer];
   v8 = v7;
   if (v7)
   {
-    v9 = [(NTKExactitudesMiniClockView *)v7 _dummyColors];
+    _dummyColors = [(NTKExactitudesMiniClockView *)v7 _dummyColors];
     v10 = [NTKExactitudesFaceDialsView alloc];
     [(NTKExactitudesMiniClockView *)v8 bounds];
-    v11 = [(NTKExactitudesFaceDialsView *)v10 initForMiniClockWithFrame:v6 device:v9 colorsWrapper:?];
+    v11 = [(NTKExactitudesFaceDialsView *)v10 initForMiniClockWithFrame:deviceCopy device:_dummyColors colorsWrapper:?];
     dials = v8->_dials;
     v8->_dials = v11;
 
@@ -45,47 +45,47 @@
   [(NTKExactitudesFaceDialsView *)self->_dials setCenter:?];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v9.receiver = self;
   v9.super_class = NTKExactitudesMiniClockView;
-  v4 = a3;
-  [(NTKExactitudesMiniClockView *)&v9 setConfiguration:v4];
+  configurationCopy = configuration;
+  [(NTKExactitudesMiniClockView *)&v9 setConfiguration:configurationCopy];
   dials = self->_dials;
-  v6 = [v4 colorsWrapper];
-  [(NTKExactitudesFaceDialsView *)dials setColorsWrapper:v6];
+  colorsWrapper = [configurationCopy colorsWrapper];
+  [(NTKExactitudesFaceDialsView *)dials setColorsWrapper:colorsWrapper];
 
-  v7 = [v4 backgroundOn];
+  backgroundOn = [configurationCopy backgroundOn];
   v8 = 0.0;
-  if (v7)
+  if (backgroundOn)
   {
     v8 = 1.0;
   }
 
   [(NTKExactitudesFaceDialsView *)self->_dials allDialsSetBackgroundStyleTransitionProgress:v8];
-  [(NTKExactitudesMiniClockView *)self _applyColorsToHandsViewWithConfiguration:v4];
+  [(NTKExactitudesMiniClockView *)self _applyColorsToHandsViewWithConfiguration:configurationCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(NTKExactitudesMiniClockView *)self traitCollection];
-  v7 = [v6 activeAppearance];
-  v8 = [v5 activeAppearance];
+  collectionCopy = collection;
+  traitCollection = [(NTKExactitudesMiniClockView *)self traitCollection];
+  activeAppearance = [traitCollection activeAppearance];
+  activeAppearance2 = [collectionCopy activeAppearance];
 
-  if (v7 != v8)
+  if (activeAppearance != activeAppearance2)
   {
-    v9 = [(NTKExactitudesMiniClockView *)self traitCollection];
-    v10 = [v9 activeAppearance];
-    v11 = v10 == 0;
+    traitCollection2 = [(NTKExactitudesMiniClockView *)self traitCollection];
+    activeAppearance3 = [traitCollection2 activeAppearance];
+    v11 = activeAppearance3 == 0;
 
-    v25 = [(NTKExactitudesMiniClockView *)self configuration];
-    v12 = [(NTKExactitudesMiniClockView *)self handsView];
-    v13 = [(NTKExactitudesMiniClockView *)self _hourHandInlayColorForConfiguration:v25 enteringAOD:v11];
-    v14 = [(NTKExactitudesMiniClockView *)self _hourHandOutlineColorForConfiguration:v25 enteringAOD:v11];
-    v15 = [(NTKExactitudesMiniClockView *)self _minuteHandInlayColorForConfiguration:v25 enteringAOD:v11];
-    v16 = [(NTKExactitudesMiniClockView *)self _minuteHandOutlineColorForConfiguration:v25 enteringAOD:v11];
-    if (v10)
+    configuration = [(NTKExactitudesMiniClockView *)self configuration];
+    handsView = [(NTKExactitudesMiniClockView *)self handsView];
+    v13 = [(NTKExactitudesMiniClockView *)self _hourHandInlayColorForConfiguration:configuration enteringAOD:v11];
+    v14 = [(NTKExactitudesMiniClockView *)self _hourHandOutlineColorForConfiguration:configuration enteringAOD:v11];
+    v15 = [(NTKExactitudesMiniClockView *)self _minuteHandInlayColorForConfiguration:configuration enteringAOD:v11];
+    v16 = [(NTKExactitudesMiniClockView *)self _minuteHandOutlineColorForConfiguration:configuration enteringAOD:v11];
+    if (activeAppearance3)
     {
       v17 = v15;
     }
@@ -96,18 +96,18 @@
     }
 
     v18 = v17;
-    [v12 setHourInlayColor:v13];
-    [v12 setMinuteInlayColor:v15];
-    v19 = [v12 minuteHandView];
-    [v19 setColor:v16];
+    [handsView setHourInlayColor:v13];
+    [handsView setMinuteInlayColor:v15];
+    minuteHandView = [handsView minuteHandView];
+    [minuteHandView setColor:v16];
 
-    v20 = [v12 hourHandView];
-    [v20 setColor:v14];
+    hourHandView = [handsView hourHandView];
+    [hourHandView setColor:v14];
 
-    v21 = [v12 minuteHandView];
-    [v21 setHandDotColor:v18];
+    minuteHandView2 = [handsView minuteHandView];
+    [minuteHandView2 setHandDotColor:v18];
 
-    if (v10)
+    if (activeAppearance3)
     {
       v22 = 1.0;
     }
@@ -117,10 +117,10 @@
       v22 = 0.0;
     }
 
-    v23 = [v12 secondHandView];
-    [v23 setAlpha:v22];
+    secondHandView = [handsView secondHandView];
+    [secondHandView setAlpha:v22];
 
-    if ([v25 backgroundOn])
+    if ([configuration backgroundOn])
     {
       v24 = 1.0;
     }
@@ -130,7 +130,7 @@
       v24 = 0.0;
     }
 
-    if (!v10)
+    if (!activeAppearance3)
     {
       v24 = 0.0;
     }
@@ -139,11 +139,11 @@
   }
 }
 
-- (void)_applyColorsToHandsViewWithConfiguration:(id)a3
+- (void)_applyColorsToHandsViewWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v16 = +[UIColor blackColor];
-  if ([v4 backgroundOn])
+  if ([configurationCopy backgroundOn])
   {
     v5 = 0.85;
   }
@@ -153,25 +153,25 @@
     v5 = 0.5;
   }
 
-  v6 = [(NTKExactitudesMiniClockView *)self handsView];
-  v7 = [v4 hourHandOutlineColor];
-  v8 = [v4 hourHandInlayColor];
-  [v6 applyHourHandColor:v7 inlayColor:v8 backdropInlayColor:v16 alpha:v5];
-  v9 = [v4 minuteHandOutlineColor];
-  v10 = [v4 minuteHandInlayColor];
-  [v6 applyMinuteHandColor:v9 inlayColor:v10 backdropInlayColor:v16 alpha:v5];
-  v11 = [v4 secondHandColor];
-  [v6 applySecondHandColor:v11];
-  v12 = [v4 handDotColor];
+  handsView = [(NTKExactitudesMiniClockView *)self handsView];
+  hourHandOutlineColor = [configurationCopy hourHandOutlineColor];
+  hourHandInlayColor = [configurationCopy hourHandInlayColor];
+  [handsView applyHourHandColor:hourHandOutlineColor inlayColor:hourHandInlayColor backdropInlayColor:v16 alpha:v5];
+  minuteHandOutlineColor = [configurationCopy minuteHandOutlineColor];
+  minuteHandInlayColor = [configurationCopy minuteHandInlayColor];
+  [handsView applyMinuteHandColor:minuteHandOutlineColor inlayColor:minuteHandInlayColor backdropInlayColor:v16 alpha:v5];
+  secondHandColor = [configurationCopy secondHandColor];
+  [handsView applySecondHandColor:secondHandColor];
+  handDotColor = [configurationCopy handDotColor];
 
-  v13 = [v6 hourHandView];
-  [v13 setHandDotColor:v12];
+  hourHandView = [handsView hourHandView];
+  [hourHandView setHandDotColor:handDotColor];
 
-  v14 = [v6 minuteHandView];
-  [v14 setHandDotColor:v12];
+  minuteHandView = [handsView minuteHandView];
+  [minuteHandView setHandDotColor:handDotColor];
 
-  v15 = [v6 secondHandView];
-  [v15 setHandDotColor:v12];
+  secondHandView = [handsView secondHandView];
+  [secondHandView setHandDotColor:handDotColor];
 }
 
 - (id)_dummyColors
@@ -185,64 +185,64 @@
   return v6;
 }
 
-- (id)_hourHandInlayColorForConfiguration:(id)a3 enteringAOD:(BOOL)a4
+- (id)_hourHandInlayColorForConfiguration:(id)configuration enteringAOD:(BOOL)d
 {
-  if (a4)
+  if (d)
   {
-    [a3 inactiveHourHandInlayColor];
+    [configuration inactiveHourHandInlayColor];
   }
 
   else
   {
-    [a3 hourHandInlayColor];
+    [configuration hourHandInlayColor];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)_minuteHandInlayColorForConfiguration:(id)a3 enteringAOD:(BOOL)a4
+- (id)_minuteHandInlayColorForConfiguration:(id)configuration enteringAOD:(BOOL)d
 {
-  if (a4)
+  if (d)
   {
-    [a3 inactiveMinuteHandInlayColor];
+    [configuration inactiveMinuteHandInlayColor];
   }
 
   else
   {
-    [a3 minuteHandInlayColor];
+    [configuration minuteHandInlayColor];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)_hourHandOutlineColorForConfiguration:(id)a3 enteringAOD:(BOOL)a4
+- (id)_hourHandOutlineColorForConfiguration:(id)configuration enteringAOD:(BOOL)d
 {
-  if (a4)
+  if (d)
   {
-    [a3 inactiveHourHandOutlineColor];
+    [configuration inactiveHourHandOutlineColor];
   }
 
   else
   {
-    [a3 hourHandOutlineColor];
+    [configuration hourHandOutlineColor];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)_minuteHandOutlineColorForConfiguration:(id)a3 enteringAOD:(BOOL)a4
+- (id)_minuteHandOutlineColorForConfiguration:(id)configuration enteringAOD:(BOOL)d
 {
-  if (a4)
+  if (d)
   {
-    [a3 inactiveMinuteHandOutlineColor];
+    [configuration inactiveMinuteHandOutlineColor];
   }
 
   else
   {
-    [a3 minuteHandOutlineColor];
+    [configuration minuteHandOutlineColor];
   }
   v4 = ;
 

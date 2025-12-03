@@ -1,14 +1,14 @@
 @interface SFAdjustedImageView
-- (void)updateViewForAssetType:(int)a3 adjustmentsURL:(id)a4;
+- (void)updateViewForAssetType:(int)type adjustmentsURL:(id)l;
 @end
 
 @implementation SFAdjustedImageView
 
-- (void)updateViewForAssetType:(int)a3 adjustmentsURL:(id)a4
+- (void)updateViewForAssetType:(int)type adjustmentsURL:(id)l
 {
-  v6 = SFAdjustmentFiltersForAssetTypeAndURL(a3, a4);
-  v5 = [(SFAdjustedImageView *)self layer];
-  [v5 setFilters:v6];
+  v6 = SFAdjustmentFiltersForAssetTypeAndURL(type, l);
+  layer = [(SFAdjustedImageView *)self layer];
+  [layer setFilters:v6];
 }
 
 @end

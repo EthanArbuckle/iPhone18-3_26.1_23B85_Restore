@@ -1,24 +1,24 @@
 @interface UAFPlatform
-+ (id)configurationManagers:(id)a3;
-+ (id)platformAssetVersion:(id)a3;
-+ (id)versionComponentFromString:(id)a3;
-+ (id)versionComponentsFromString:(id)a3;
-+ (int64_t)compareVersion:(id)a3 with:(id)a4;
++ (id)configurationManagers:(id)managers;
++ (id)platformAssetVersion:(id)version;
++ (id)versionComponentFromString:(id)string;
++ (id)versionComponentsFromString:(id)string;
++ (int64_t)compareVersion:(id)version with:(id)with;
 @end
 
 @implementation UAFPlatform
 
-+ (id)versionComponentFromString:(id)a3
++ (id)versionComponentFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-    v5 = [v4 invertedSet];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    invertedSet = [decimalDigitCharacterSet invertedSet];
 
-    if ([v3 rangeOfCharacterFromSet:v5] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([stringCopy rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "integerValue")}];
+      v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(stringCopy, "integerValue")}];
     }
 
     else
@@ -35,11 +35,11 @@
   return v6;
 }
 
-+ (id)versionComponentsFromString:(id)a3
++ (id)versionComponentsFromString:(id)string
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@"."];
+  stringCopy = string;
+  v4 = [stringCopy componentsSeparatedByString:@"."];
   v5 = v4;
   if (v4 && [v4 count])
   {
@@ -110,11 +110,11 @@ LABEL_18:
   return v14;
 }
 
-+ (int64_t)compareVersion:(id)a3 with:(id)a4
++ (int64_t)compareVersion:(id)version with:(id)with
 {
-  v5 = a4;
-  v6 = [UAFPlatform versionComponentsFromString:a3];
-  v7 = [UAFPlatform versionComponentsFromString:v5];
+  withCopy = with;
+  v6 = [UAFPlatform versionComponentsFromString:version];
+  v7 = [UAFPlatform versionComponentsFromString:withCopy];
   v8 = v7;
   if (v6)
   {
@@ -138,22 +138,22 @@ LABEL_18:
     while (v10 < [v8 count])
     {
       v12 = [v6 objectAtIndexedSubscript:v10];
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
       v14 = [v8 objectAtIndexedSubscript:v10];
-      v15 = [v14 integerValue];
+      integerValue2 = [v14 integerValue];
 
-      if (v13 < v15)
+      if (integerValue < integerValue2)
       {
         v11 = -1;
         goto LABEL_23;
       }
 
       v16 = [v6 objectAtIndexedSubscript:v10];
-      v17 = [v16 integerValue];
+      integerValue3 = [v16 integerValue];
       v18 = [v8 objectAtIndexedSubscript:v10];
-      v19 = [v18 integerValue];
+      integerValue4 = [v18 integerValue];
 
-      if (v17 > v19)
+      if (integerValue3 > integerValue4)
       {
         goto LABEL_23;
       }
@@ -194,9 +194,9 @@ LABEL_12:
     for (i = [v21 count]; i < objc_msgSend(v22, "count"); ++i)
     {
       v26 = [v22 objectAtIndexedSubscript:i];
-      v27 = [v26 integerValue];
+      integerValue5 = [v26 integerValue];
 
-      if (v27)
+      if (integerValue5)
       {
         goto LABEL_21;
       }
@@ -211,26 +211,26 @@ LABEL_23:
   return v11;
 }
 
-+ (id)configurationManagers:(id)a3
++ (id)configurationManagers:(id)managers
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 assetNamed:@"com.apple.siri.uaf.osupdates"];
+  managersCopy = managers;
+  v4 = [managersCopy assetNamed:@"com.apple.siri.uaf.osupdates"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 location];
+    location = [v4 location];
 
-    if (v6)
+    if (location)
     {
-      v34 = v3;
-      v7 = [MEMORY[0x1E696AC08] defaultManager];
+      v34 = managersCopy;
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v33 = v5;
-      v8 = [v5 location];
+      location2 = [v5 location];
       v9 = *MEMORY[0x1E695DB78];
       v53[0] = *MEMORY[0x1E695DB78];
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:1];
-      v11 = [v7 enumeratorAtURL:v8 includingPropertiesForKeys:v10 options:1 errorHandler:0];
+      v11 = [defaultManager enumeratorAtURL:location2 includingPropertiesForKeys:v10 options:1 errorHandler:0];
 
       v37 = [UAFCommonUtilities mobileGestaltQuery:@"ProductVersion"];
       v41 = 0u;
@@ -276,13 +276,13 @@ LABEL_23:
             if (v22 && [v21 BOOLValue])
             {
               v23 = v12;
-              v24 = [v19 lastPathComponent];
-              v25 = [v19 lastPathComponent];
-              v26 = [UAFPlatform versionComponentsFromString:v25];
+              lastPathComponent = [v19 lastPathComponent];
+              lastPathComponent2 = [v19 lastPathComponent];
+              v26 = [UAFPlatform versionComponentsFromString:lastPathComponent2];
 
               if (v26)
               {
-                if ([a1 compareVersion:v24 with:v37] == -1)
+                if ([self compareVersion:lastPathComponent with:v37] == -1)
                 {
                   v29 = UAFGetLogCategory(&UAFLogContextClient);
                   v12 = v23;
@@ -291,7 +291,7 @@ LABEL_23:
                     *buf = 136315650;
                     v47 = "+[UAFPlatform configurationManagers:]";
                     v48 = 2114;
-                    v49 = v24;
+                    v49 = lastPathComponent;
                     v50 = 2114;
                     v51 = v37;
                     _os_log_impl(&dword_1BCF2C000, v29, OS_LOG_TYPE_INFO, "%s Skipping platform directory: %{public}@ < %{public}@", buf, 0x20u);
@@ -315,7 +315,7 @@ LABEL_23:
                     }
 
                     v35 = v30;
-                    [v30 setObject:v29 forKeyedSubscript:v24];
+                    [v30 setObject:v29 forKeyedSubscript:lastPathComponent];
                   }
                 }
 
@@ -342,36 +342,36 @@ LABEL_23:
         v35 = 0;
       }
 
-      v6 = v35;
+      location = v35;
       v5 = v33;
-      v3 = v34;
+      managersCopy = v34;
     }
   }
 
   else
   {
-    v6 = 0;
+    location = 0;
   }
 
   v31 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return location;
 }
 
-+ (id)platformAssetVersion:(id)a3
++ (id)platformAssetVersion:(id)version
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 assetNamed:@"com.apple.siri.uaf.osupdates"];
+  versionCopy = version;
+  v4 = [versionCopy assetNamed:@"com.apple.siri.uaf.osupdates"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 metadata];
-    v7 = [v5 metadata];
+    metadata = [v4 metadata];
+    metadata2 = [v5 metadata];
 
-    if (v7)
+    if (metadata2)
     {
-      v8 = [v6 objectForKeyedSubscript:@"AssetVersion"];
+      v8 = [metadata objectForKeyedSubscript:@"AssetVersion"];
       if ([v8 length])
       {
         v8 = v8;
@@ -405,15 +405,15 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v6 = UAFGetLogCategory(&UAFLogContextClient);
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  metadata = UAFGetLogCategory(&UAFLogContextClient);
+  if (os_log_type_enabled(metadata, OS_LOG_TYPE_ERROR))
   {
-    v13 = [v3 assetSetId];
+    assetSetId = [versionCopy assetSetId];
     v14 = 136315394;
     v15 = "+[UAFPlatform platformAssetVersion:]";
     v16 = 2112;
-    v17 = v13;
-    _os_log_error_impl(&dword_1BCF2C000, v6, OS_LOG_TYPE_ERROR, "%s Platform asset missing from asset set id %@", &v14, 0x16u);
+    v17 = assetSetId;
+    _os_log_error_impl(&dword_1BCF2C000, metadata, OS_LOG_TYPE_ERROR, "%s Platform asset missing from asset set id %@", &v14, 0x16u);
   }
 
   v9 = 0;

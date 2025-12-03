@@ -1,31 +1,31 @@
 @interface ASCMiniProductPageMediaView
-- (ASCMiniProductPageMediaView)initWithCoder:(id)a3;
-- (ASCMiniProductPageMediaView)initWithFrame:(CGRect)a3;
+- (ASCMiniProductPageMediaView)initWithCoder:(id)coder;
+- (ASCMiniProductPageMediaView)initWithFrame:(CGRect)frame;
 - (BOOL)shouldPeekNextScreenshot;
 - (CGSize)intrinsicContentSize;
 - (CGSize)preferredScreenshotSize;
-- (CGSize)screenshotSizeForBoundingSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)screenshotSizeForBoundingSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)firstScreenshotVerticalFraction;
-- (double)widthOfScreenshotCount:(unint64_t)a3;
+- (double)widthOfScreenshotCount:(unint64_t)count;
 - (id)preferredScreenshotDisplayConfiguration;
 - (unint64_t)actualScreenshotCount;
 - (unint64_t)preferredScreenshotCount;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3 atIndex:(int64_t)a4;
-- (void)setPlaceholderColor:(id)a3;
-- (void)setScreenshots:(id)a3 andTrailers:(id)a4;
-- (void)setShowsPlaceholderContent:(BOOL)a3;
+- (void)setImage:(id)image atIndex:(int64_t)index;
+- (void)setPlaceholderColor:(id)color;
+- (void)setScreenshots:(id)screenshots andTrailers:(id)trailers;
+- (void)setShowsPlaceholderContent:(BOOL)content;
 - (void)updateImageViews;
 @end
 
 @implementation ASCMiniProductPageMediaView
 
-- (ASCMiniProductPageMediaView)initWithFrame:(CGRect)a3
+- (ASCMiniProductPageMediaView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = ASCMiniProductPageMediaView;
-  v3 = [(ASCMiniProductPageMediaView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCMiniProductPageMediaView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
@@ -38,35 +38,35 @@
   return v3;
 }
 
-- (ASCMiniProductPageMediaView)initWithCoder:(id)a3
+- (ASCMiniProductPageMediaView)initWithCoder:(id)coder
 {
   [(ASCMiniProductPageMediaView *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (void)setImage:(id)a3 atIndex:(int64_t)a4
+- (void)setImage:(id)image atIndex:(int64_t)index
 {
-  v10 = a3;
-  v6 = [(ASCMiniProductPageMediaView *)self imageViews];
-  v7 = [v6 count];
+  imageCopy = image;
+  imageViews = [(ASCMiniProductPageMediaView *)self imageViews];
+  v7 = [imageViews count];
 
-  if (v7 > a4)
+  if (v7 > index)
   {
-    v8 = [(ASCMiniProductPageMediaView *)self imageViews];
-    v9 = [v8 objectAtIndexedSubscript:a4];
-    [v9 setImage:v10];
+    imageViews2 = [(ASCMiniProductPageMediaView *)self imageViews];
+    v9 = [imageViews2 objectAtIndexedSubscript:index];
+    [v9 setImage:imageCopy];
   }
 }
 
-- (void)setScreenshots:(id)a3 andTrailers:(id)a4
+- (void)setScreenshots:(id)screenshots andTrailers:(id)trailers
 {
-  v8 = a3;
-  v6 = a4;
+  screenshotsCopy = screenshots;
+  trailersCopy = trailers;
   screenshots = self->_screenshots;
-  if (!v8 || !screenshots)
+  if (!screenshotsCopy || !screenshots)
   {
-    if (screenshots == v8)
+    if (screenshots == screenshotsCopy)
     {
       goto LABEL_7;
     }
@@ -74,10 +74,10 @@
     goto LABEL_6;
   }
 
-  if (![(ASCScreenshots *)screenshots isEqual:v8])
+  if (![(ASCScreenshots *)screenshots isEqual:screenshotsCopy])
   {
 LABEL_6:
-    [(ASCMiniProductPageMediaView *)self setScreenshots:v8];
+    [(ASCMiniProductPageMediaView *)self setScreenshots:screenshotsCopy];
     [(ASCMiniProductPageMediaView *)self updateImageViews];
     [(ASCMiniProductPageMediaView *)self invalidateIntrinsicContentSize];
     [(ASCMiniProductPageMediaView *)self setNeedsLayout];
@@ -86,11 +86,11 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setShowsPlaceholderContent:(BOOL)a3
+- (void)setShowsPlaceholderContent:(BOOL)content
 {
-  if (self->_showsPlaceholderContent != a3)
+  if (self->_showsPlaceholderContent != content)
   {
-    self->_showsPlaceholderContent = a3;
+    self->_showsPlaceholderContent = content;
     [(ASCMiniProductPageMediaView *)self updateImageViews];
     [(ASCMiniProductPageMediaView *)self invalidateIntrinsicContentSize];
 
@@ -98,14 +98,14 @@ LABEL_7:
   }
 }
 
-- (void)setPlaceholderColor:(id)a3
+- (void)setPlaceholderColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   v5 = self->_placeholderColor;
-  if (!v7 || !v5)
+  if (!colorCopy || !v5)
   {
 
-    if (v5 == v7)
+    if (v5 == colorCopy)
     {
       goto LABEL_7;
     }
@@ -113,12 +113,12 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  v6 = [(UIColor *)v5 isEqual:v7];
+  v6 = [(UIColor *)v5 isEqual:colorCopy];
 
   if ((v6 & 1) == 0)
   {
 LABEL_6:
-    objc_storeStrong(&self->_placeholderColor, a3);
+    objc_storeStrong(&self->_placeholderColor, color);
     [(ASCMiniProductPageMediaView *)self updateImageViews];
     [(ASCMiniProductPageMediaView *)self invalidateIntrinsicContentSize];
     [(ASCMiniProductPageMediaView *)self setNeedsLayout];
@@ -127,10 +127,10 @@ LABEL_6:
 LABEL_7:
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(ASCMiniProductPageMediaView *)self screenshotSizeForBoundingSize:a3.width, a3.height];
+  width = fits.width;
+  [(ASCMiniProductPageMediaView *)self screenshotSizeForBoundingSize:fits.width, fits.height];
   v5 = width;
   result.height = v4;
   result.width = v5;
@@ -161,9 +161,9 @@ LABEL_7:
   [(ASCMiniProductPageMediaView *)self preferredScreenshotSize];
   v12 = v11;
   v14 = v13;
-  v15 = [(ASCMiniProductPageMediaView *)self actualScreenshotCount];
+  actualScreenshotCount = [(ASCMiniProductPageMediaView *)self actualScreenshotCount];
   v16 = v4;
-  if (v15 < [(ASCMiniProductPageMediaView *)self preferredScreenshotCount])
+  if (actualScreenshotCount < [(ASCMiniProductPageMediaView *)self preferredScreenshotCount])
   {
     [(ASCMiniProductPageMediaView *)self widthOfScreenshotCount:[(ASCMiniProductPageMediaView *)self actualScreenshotCount]];
     v18 = v17;
@@ -175,8 +175,8 @@ LABEL_7:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v20 = [(ASCMiniProductPageMediaView *)self imageViews];
-  v21 = [v20 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  imageViews = [(ASCMiniProductPageMediaView *)self imageViews];
+  v21 = [imageViews countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v21)
   {
     v22 = v21;
@@ -188,7 +188,7 @@ LABEL_7:
       {
         if (*v28 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(imageViews);
         }
 
         v25 = *(*(&v27 + 1) + 8 * v24);
@@ -200,7 +200,7 @@ LABEL_7:
       }
 
       while (v22 != v24);
-      v22 = [v20 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v22 = [imageViews countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v22);
@@ -209,13 +209,13 @@ LABEL_7:
 
 - (unint64_t)preferredScreenshotCount
 {
-  v3 = [(ASCMiniProductPageMediaView *)self screenshots];
-  v4 = [v3 artwork];
-  v5 = [v4 firstObject];
+  screenshots = [(ASCMiniProductPageMediaView *)self screenshots];
+  artwork = [screenshots artwork];
+  firstObject = [artwork firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    if ([v5 isPortrait])
+    if ([firstObject isPortrait])
     {
       v6 = 3;
     }
@@ -228,8 +228,8 @@ LABEL_7:
 
   else if ([(ASCMiniProductPageMediaView *)self showsPlaceholderContent])
   {
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    if ([v7 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
       v6 = 1;
     }
@@ -250,8 +250,8 @@ LABEL_7:
 
 - (unint64_t)actualScreenshotCount
 {
-  v3 = [(ASCMiniProductPageMediaView *)self screenshots];
-  if (v3)
+  screenshots = [(ASCMiniProductPageMediaView *)self screenshots];
+  if (screenshots)
   {
 
     goto LABEL_7;
@@ -260,9 +260,9 @@ LABEL_7:
   if (![(ASCMiniProductPageMediaView *)self showsPlaceholderContent])
   {
 LABEL_7:
-    v5 = [(ASCMiniProductPageMediaView *)self screenshots];
-    v6 = [v5 artwork];
-    v7 = [v6 count];
+    screenshots2 = [(ASCMiniProductPageMediaView *)self screenshots];
+    artwork = [screenshots2 artwork];
+    v7 = [artwork count];
 
     result = [(ASCMiniProductPageMediaView *)self preferredScreenshotCount];
     if (v7 < result)
@@ -278,23 +278,23 @@ LABEL_7:
 
 - (BOOL)shouldPeekNextScreenshot
 {
-  v9 = self;
-  v2 = [(ASCMiniProductPageMediaView *)self screenshots];
-  v3 = [v2 artwork];
-  v4 = [v3 firstObject];
+  selfCopy = self;
+  screenshots = [(ASCMiniProductPageMediaView *)self screenshots];
+  artwork = [screenshots artwork];
+  firstObject = [artwork firstObject];
 
-  v5 = [(ASCMiniProductPageMediaView *)v9 screenshots];
-  v6 = [v5 artwork];
-  v7 = [v6 count];
-  v8 = [(ASCMiniProductPageMediaView *)v9 actualScreenshotCount];
+  screenshots2 = [(ASCMiniProductPageMediaView *)selfCopy screenshots];
+  artwork2 = [screenshots2 artwork];
+  v7 = [artwork2 count];
+  actualScreenshotCount = [(ASCMiniProductPageMediaView *)selfCopy actualScreenshotCount];
 
-  LOBYTE(v9) = 0;
-  if (v7 > v8 && v4)
+  LOBYTE(selfCopy) = 0;
+  if (v7 > actualScreenshotCount && firstObject)
   {
-    LODWORD(v9) = [v4 isPortrait] ^ 1;
+    LODWORD(selfCopy) = [firstObject isPortrait] ^ 1;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (CGSize)preferredScreenshotSize
@@ -307,18 +307,18 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)screenshotSizeForBoundingSize:(CGSize)a3
+- (CGSize)screenshotSizeForBoundingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(ASCMiniProductPageMediaView *)self firstScreenshotVerticalFraction];
   v7 = v6;
-  v8 = [(ASCMiniProductPageMediaView *)self preferredScreenshotCount];
+  preferredScreenshotCount = [(ASCMiniProductPageMediaView *)self preferredScreenshotCount];
   v9 = *MEMORY[0x277CBF3A8];
   v10 = *(MEMORY[0x277CBF3A8] + 8);
-  if ((height != v10 || width != v9) && v7 > 2.22044605e-16 && v8 != 0)
+  if ((height != v10 || width != v9) && v7 > 2.22044605e-16 && preferredScreenshotCount != 0)
   {
-    v14 = v8;
+    v14 = preferredScreenshotCount;
     [(ASCMiniProductPageMediaView *)self screenshotSpacing];
     v16 = (width - v15 * (v14 - 1)) / v14;
     v17 = v7 * v16;
@@ -333,33 +333,33 @@ LABEL_7:
 
 - (double)firstScreenshotVerticalFraction
 {
-  v3 = [(ASCMiniProductPageMediaView *)self screenshots];
-  v4 = [v3 artwork];
-  v5 = [v4 firstObject];
+  screenshots = [(ASCMiniProductPageMediaView *)self screenshots];
+  artwork = [screenshots artwork];
+  firstObject = [artwork firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    [v5 height];
+    [firstObject height];
     v7 = v6;
-    [v5 width];
+    [firstObject width];
     v9 = v7 / v8;
   }
 
   else
   {
-    v10 = [(ASCMiniProductPageMediaView *)self window];
-    v11 = [v10 windowScene];
-    v12 = [v11 screen];
+    window = [(ASCMiniProductPageMediaView *)self window];
+    windowScene = [window windowScene];
+    screen = [windowScene screen];
 
-    if (v12)
+    if (screen)
     {
-      [v12 bounds];
+      [screen bounds];
       v14 = v13;
       v16 = v15;
-      v17 = [MEMORY[0x277D75418] currentDevice];
-      v18 = [v17 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v18)
+      if (userInterfaceIdiom)
       {
         if (v14 >= v16)
         {
@@ -419,15 +419,15 @@ LABEL_7:
 
 - (id)preferredScreenshotDisplayConfiguration
 {
-  v3 = [(ASCMiniProductPageMediaView *)self screenshots];
+  screenshots = [(ASCMiniProductPageMediaView *)self screenshots];
 
-  if (v3)
+  if (screenshots)
   {
-    v4 = [(ASCMiniProductPageMediaView *)self screenshots];
-    v5 = [v4 mediaPlatform];
-    v6 = [v5 deviceCornerRadiusFactor];
+    screenshots2 = [(ASCMiniProductPageMediaView *)self screenshots];
+    mediaPlatform = [screenshots2 mediaPlatform];
+    deviceCornerRadiusFactor = [mediaPlatform deviceCornerRadiusFactor];
 
-    v7 = [[ASCScreenshotDisplayConfiguration alloc] initWithDeviceCornerRadiusFactor:v6];
+    v7 = [[ASCScreenshotDisplayConfiguration alloc] initWithDeviceCornerRadiusFactor:deviceCornerRadiusFactor];
   }
 
   else
@@ -438,26 +438,26 @@ LABEL_7:
   return v7;
 }
 
-- (double)widthOfScreenshotCount:(unint64_t)a3
+- (double)widthOfScreenshotCount:(unint64_t)count
 {
-  if (!a3)
+  if (!count)
   {
     return 0.0;
   }
 
   [(ASCMiniProductPageMediaView *)self preferredScreenshotSize];
-  v6 = v5 * a3;
+  v6 = v5 * count;
   [(ASCMiniProductPageMediaView *)self screenshotSpacing];
-  return v6 + v7 * (a3 - 1);
+  return v6 + v7 * (count - 1);
 }
 
 - (void)updateImageViews
 {
-  v3 = [(ASCMiniProductPageMediaView *)self shouldPeekNextScreenshot];
-  v4 = [(ASCMiniProductPageMediaView *)self actualScreenshotCount]+ v3;
-  v38 = [(ASCMiniProductPageMediaView *)self preferredScreenshotDisplayConfiguration];
-  v5 = [(ASCMiniProductPageMediaView *)self imageViews];
-  v6 = [v5 count];
+  shouldPeekNextScreenshot = [(ASCMiniProductPageMediaView *)self shouldPeekNextScreenshot];
+  v4 = [(ASCMiniProductPageMediaView *)self actualScreenshotCount]+ shouldPeekNextScreenshot;
+  preferredScreenshotDisplayConfiguration = [(ASCMiniProductPageMediaView *)self preferredScreenshotDisplayConfiguration];
+  imageViews = [(ASCMiniProductPageMediaView *)self imageViews];
+  v6 = [imageViews count];
 
   if (v6 >= v4)
   {
@@ -474,27 +474,27 @@ LABEL_7:
     v8 = 0;
     do
     {
-      v9 = [(ASCMiniProductPageMediaView *)self screenshots];
+      screenshots = [(ASCMiniProductPageMediaView *)self screenshots];
 
-      if (!v9)
+      if (!screenshots)
       {
-        v10 = [(ASCMiniProductPageMediaView *)self imageViews];
-        v11 = [v10 objectAtIndexedSubscript:v8];
+        imageViews2 = [(ASCMiniProductPageMediaView *)self imageViews];
+        v11 = [imageViews2 objectAtIndexedSubscript:v8];
         [v11 setImage:0];
       }
 
-      v12 = [(ASCMiniProductPageMediaView *)self imageViews];
-      v13 = [v12 objectAtIndexedSubscript:v8];
-      [v13 setScreenshotDisplayConfiguration:v38];
+      imageViews3 = [(ASCMiniProductPageMediaView *)self imageViews];
+      v13 = [imageViews3 objectAtIndexedSubscript:v8];
+      [v13 setScreenshotDisplayConfiguration:preferredScreenshotDisplayConfiguration];
 
-      v14 = [(ASCMiniProductPageMediaView *)self placeholderColor];
-      v15 = [(ASCMiniProductPageMediaView *)self imageViews];
-      v16 = [v15 objectAtIndexedSubscript:v8];
-      [v16 setPlaceholderColor:v14];
+      placeholderColor = [(ASCMiniProductPageMediaView *)self placeholderColor];
+      imageViews4 = [(ASCMiniProductPageMediaView *)self imageViews];
+      v16 = [imageViews4 objectAtIndexedSubscript:v8];
+      [v16 setPlaceholderColor:placeholderColor];
 
       ++v8;
-      v17 = [(ASCMiniProductPageMediaView *)self imageViews];
-      v18 = [v17 count];
+      imageViews5 = [(ASCMiniProductPageMediaView *)self imageViews];
+      v18 = [imageViews5 count];
 
       if (v18 >= v4)
       {
@@ -510,8 +510,8 @@ LABEL_7:
     while (v19 > v8);
   }
 
-  v20 = [(ASCMiniProductPageMediaView *)self imageViews];
-  v21 = [v20 count];
+  imageViews6 = [(ASCMiniProductPageMediaView *)self imageViews];
+  v21 = [imageViews6 count];
 
   if (v21 != v4)
   {
@@ -522,45 +522,45 @@ LABEL_7:
     v26 = *MEMORY[0x277D76560];
     do
     {
-      v27 = [(ASCMiniProductPageMediaView *)self imageViews];
-      v28 = [v27 count];
+      imageViews7 = [(ASCMiniProductPageMediaView *)self imageViews];
+      v28 = [imageViews7 count];
 
       if (v28 >= v4)
       {
-        v34 = [(ASCMiniProductPageMediaView *)self imageViews];
-        v29 = [v34 lastObject];
+        imageViews8 = [(ASCMiniProductPageMediaView *)self imageViews];
+        lastObject = [imageViews8 lastObject];
 
-        if (v29)
+        if (lastObject)
         {
-          v35 = [(ASCMiniProductPageMediaView *)self imageViews];
-          [v35 removeLastObject];
+          imageViews9 = [(ASCMiniProductPageMediaView *)self imageViews];
+          [imageViews9 removeLastObject];
 
-          [(ASCArtworkView *)v29 removeFromSuperview];
+          [(ASCArtworkView *)lastObject removeFromSuperview];
         }
       }
 
       else
       {
-        v29 = [[ASCArtworkView alloc] initWithFrame:v22, v23, v24, v25];
-        [(ASCArtworkView *)v29 setScreenshotDisplayConfiguration:v38];
-        [(ASCArtworkView *)v29 setDecoration:@"screenshot"];
-        v30 = [(ASCMiniProductPageMediaView *)self placeholderColor];
-        [(ASCArtworkView *)v29 setPlaceholderColor:v30];
+        lastObject = [[ASCArtworkView alloc] initWithFrame:v22, v23, v24, v25];
+        [(ASCArtworkView *)lastObject setScreenshotDisplayConfiguration:preferredScreenshotDisplayConfiguration];
+        [(ASCArtworkView *)lastObject setDecoration:@"screenshot"];
+        placeholderColor2 = [(ASCMiniProductPageMediaView *)self placeholderColor];
+        [(ASCArtworkView *)lastObject setPlaceholderColor:placeholderColor2];
 
-        [(ASCArtworkView *)v29 setUserInteractionEnabled:0];
-        [(ASCArtworkView *)v29 setIsAccessibilityElement:1];
-        [(ASCArtworkView *)v29 setAccessibilityTraits:v26];
+        [(ASCArtworkView *)lastObject setUserInteractionEnabled:0];
+        [(ASCArtworkView *)lastObject setIsAccessibilityElement:1];
+        [(ASCArtworkView *)lastObject setAccessibilityTraits:v26];
         v32 = ASCLocalizedString(@"AX_ARTWORK", v31);
-        [(ASCArtworkView *)v29 setAccessibilityLabel:v32];
+        [(ASCArtworkView *)lastObject setAccessibilityLabel:v32];
 
-        v33 = [(ASCMiniProductPageMediaView *)self imageViews];
-        [v33 addObject:v29];
+        imageViews10 = [(ASCMiniProductPageMediaView *)self imageViews];
+        [imageViews10 addObject:lastObject];
 
-        [(ASCMiniProductPageMediaView *)self addSubview:v29];
+        [(ASCMiniProductPageMediaView *)self addSubview:lastObject];
       }
 
-      v36 = [(ASCMiniProductPageMediaView *)self imageViews];
-      v37 = [v36 count];
+      imageViews11 = [(ASCMiniProductPageMediaView *)self imageViews];
+      v37 = [imageViews11 count];
     }
 
     while (v37 != v4);

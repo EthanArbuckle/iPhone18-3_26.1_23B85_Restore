@@ -1,24 +1,24 @@
 @interface SFInteractiveDismissController
-- (BOOL)popGesture:(id)a3 withRemainingDuration:(double)a4 shouldPopWithVelocity:(double *)a5;
+- (BOOL)popGesture:(id)gesture withRemainingDuration:(double)duration shouldPopWithVelocity:(double *)velocity;
 - (CGPoint)translationForStatistics;
 - (CGPoint)velocityForStatistics;
 - (SFInteractiveDismissController)init;
 - (SFInteractiveDismissControllerDelegate)delegate;
 - (UIViewController)viewControllerToBeDismissed;
-- (double)_percentComplete:(id)a3;
+- (double)_percentComplete:(id)complete;
 - (double)_translationCoefficient;
-- (id)interactionControllerForDismissal:(id)a3;
+- (id)interactionControllerForDismissal:(id)dismissal;
 - (void)_animateDismissalCancelTransition;
 - (void)_animateDismissalCompleteTransition;
-- (void)_dismissAnimateTransition:(id)a3;
-- (void)_presentAnimateTransition:(id)a3;
-- (void)_updateStatistics:(id)a3 firstSample:(BOOL)a4 finalSample:(BOOL)a5;
-- (void)animateTransition:(id)a3;
+- (void)_dismissAnimateTransition:(id)transition;
+- (void)_presentAnimateTransition:(id)transition;
+- (void)_updateStatistics:(id)statistics firstSample:(BOOL)sample finalSample:(BOOL)finalSample;
+- (void)animateTransition:(id)transition;
 - (void)cancelInteractiveTransition;
 - (void)finishInteractiveTransition;
-- (void)setEdgeSwipeView:(id)a3;
-- (void)startInteractiveTransition:(id)a3;
-- (void)swiped:(id)a3;
+- (void)setEdgeSwipeView:(id)view;
+- (void)startInteractiveTransition:(id)transition;
+- (void)swiped:(id)swiped;
 @end
 
 @implementation SFInteractiveDismissController
@@ -44,13 +44,13 @@
   return v2;
 }
 
-- (void)startInteractiveTransition:(id)a3
+- (void)startInteractiveTransition:(id)transition
 {
-  v4 = a3;
-  objc_storeWeak(&self->_transitionContext, v4);
+  transitionCopy = transition;
+  objc_storeWeak(&self->_transitionContext, transitionCopy);
   v5.receiver = self;
   v5.super_class = SFInteractiveDismissController;
-  [(UIPercentDrivenInteractiveTransition *)&v5 startInteractiveTransition:v4];
+  [(UIPercentDrivenInteractiveTransition *)&v5 startInteractiveTransition:transitionCopy];
 }
 
 - (void)cancelInteractiveTransition
@@ -71,13 +71,13 @@
   self->_dismissMode = 0;
 }
 
-- (void)swiped:(id)a3
+- (void)swiped:(id)swiped
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if (v5 > 3)
+  swipedCopy = swiped;
+  state = [swipedCopy state];
+  if (state > 3)
   {
-    if ((v5 - 4) >= 2)
+    if ((state - 4) >= 2)
     {
       goto LABEL_14;
     }
@@ -86,18 +86,18 @@
     goto LABEL_9;
   }
 
-  switch(v5)
+  switch(state)
   {
     case 1:
       self->_interactionState = 1;
       self->_dismissMode = 1;
       WeakRetained = objc_loadWeakRetained(&self->_viewControllerToBeDismissed);
       [WeakRetained dismissViewControllerAnimated:1 completion:0];
-      v11 = [WeakRetained view];
-      [v11 bounds];
+      view = [WeakRetained view];
+      [view bounds];
       self->_totalDistance = CGRectGetWidth(v14);
 
-      [(SFInteractiveDismissController *)self _updateStatistics:v4 firstSample:1 finalSample:0];
+      [(SFInteractiveDismissController *)self _updateStatistics:swipedCopy firstSample:1 finalSample:0];
       v12 = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
       {
@@ -107,17 +107,17 @@
       break;
     case 2:
       self->_interactionState = 2;
-      [(SFInteractiveDismissController *)self _percentComplete:v4];
+      [(SFInteractiveDismissController *)self _percentComplete:swipedCopy];
       [(UIPercentDrivenInteractiveTransition *)self updateInteractiveTransition:?];
-      [(SFInteractiveDismissController *)self _updateStatistics:v4 firstSample:0 finalSample:0];
+      [(SFInteractiveDismissController *)self _updateStatistics:swipedCopy firstSample:0 finalSample:0];
       break;
     case 3:
-      [(SFInteractiveDismissController *)self _updateStatistics:v4 firstSample:0 finalSample:1];
+      [(SFInteractiveDismissController *)self _updateStatistics:swipedCopy firstSample:0 finalSample:1];
       [(UIPercentDrivenInteractiveTransition *)self duration];
       v7 = v6;
       [(UIPercentDrivenInteractiveTransition *)self percentComplete];
       v13 = 0;
-      v9 = [(SFInteractiveDismissController *)self popGesture:v4 withRemainingDuration:&v13 shouldPopWithVelocity:v7 * (1.0 - v8)];
+      v9 = [(SFInteractiveDismissController *)self popGesture:swipedCopy withRemainingDuration:&v13 shouldPopWithVelocity:v7 * (1.0 - v8)];
       self->_interactionState = 3;
       if (v9)
       {
@@ -133,20 +133,20 @@ LABEL_9:
 LABEL_14:
 }
 
-- (double)_percentComplete:(id)a3
+- (double)_percentComplete:(id)complete
 {
   edgeSwipeGestureRecognizer = self->_edgeSwipeGestureRecognizer;
-  v5 = a3;
-  v6 = [v5 view];
-  [(UIScreenEdgePanGestureRecognizer *)edgeSwipeGestureRecognizer translationInView:v6];
+  completeCopy = complete;
+  view = [completeCopy view];
+  [(UIScreenEdgePanGestureRecognizer *)edgeSwipeGestureRecognizer translationInView:view];
   v8 = v7;
 
   [(SFInteractiveDismissController *)self _translationCoefficient];
   v10 = v8 * v9;
-  v11 = [v5 view];
+  view2 = [completeCopy view];
 
-  v12 = [v11 window];
-  [v12 bounds];
+  window = [view2 window];
+  [window bounds];
   v13 = v10 / CGRectGetWidth(v16);
   if (v13 < 0.0001)
   {
@@ -163,7 +163,7 @@ LABEL_14:
   WeakRetained = objc_loadWeakRetained(&self->_transitionContext);
   v4 = [WeakRetained viewForKey:*MEMORY[0x1E69DE770]];
   v5 = [WeakRetained viewForKey:*MEMORY[0x1E69DE780]];
-  v6 = [WeakRetained containerView];
+  containerView = [WeakRetained containerView];
   [(UIPercentDrivenInteractiveTransition *)self percentComplete];
   v8 = v7;
   [v4 bounds];
@@ -180,17 +180,17 @@ LABEL_14:
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v4 layer];
-  [v23 removeAnimationForKey:@"position"];
+  layer = [v4 layer];
+  [layer removeAnimationForKey:@"position"];
 
-  v24 = [v5 layer];
-  [v24 removeAnimationForKey:@"position"];
+  layer2 = [v5 layer];
+  [layer2 removeAnimationForKey:@"position"];
 
-  v25 = [v6 layer];
-  [v25 setBeginTime:0.0];
-  [v25 setTimeOffset:0.0];
+  layer3 = [containerView layer];
+  [layer3 setBeginTime:0.0];
+  [layer3 setTimeOffset:0.0];
   LODWORD(v26) = 1.0;
-  [v25 setSpeed:v26];
+  [layer3 setSpeed:v26];
   v27 = MEMORY[0x1E69DD250];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
@@ -280,7 +280,7 @@ void __67__SFInteractiveDismissController__animateDismissalCancelTransition__blo
   v52 = v6;
   v9 = v8;
   v53 = v10;
-  v11 = [WeakRetained containerView];
+  containerView = [WeakRetained containerView];
   [(UIPercentDrivenInteractiveTransition *)self percentComplete];
   v13 = v12;
   [v4 bounds];
@@ -298,17 +298,17 @@ void __67__SFInteractiveDismissController__animateDismissalCancelTransition__blo
   v25 = v24;
   v50 = v24;
   v27 = v26;
-  v28 = [v4 layer];
-  [v28 removeAnimationForKey:@"position"];
+  layer = [v4 layer];
+  [layer removeAnimationForKey:@"position"];
 
-  v29 = [v5 layer];
-  [v29 removeAnimationForKey:@"position"];
+  layer2 = [v5 layer];
+  [layer2 removeAnimationForKey:@"position"];
 
-  v30 = [v11 layer];
-  [v30 setBeginTime:0.0];
-  [v30 setTimeOffset:0.0];
+  layer3 = [containerView layer];
+  [layer3 setBeginTime:0.0];
+  [layer3 setTimeOffset:0.0];
   LODWORD(v31) = 1.0;
-  [v30 setSpeed:v31];
+  [layer3 setSpeed:v31];
   v32 = MEMORY[0x1E69DD250];
   v68[0] = MEMORY[0x1E69E9820];
   v68[1] = 3221225472;
@@ -423,8 +423,8 @@ uint64_t __69__SFInteractiveDismissController__animateDismissalCompleteTransitio
 - (double)_translationCoefficient
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewControllerToBeDismissed);
-  v3 = [WeakRetained view];
-  if ([v3 _sf_usesLeftToRightLayout])
+  view = [WeakRetained view];
+  if ([view _sf_usesLeftToRightLayout])
   {
     v4 = 1.0;
   }
@@ -440,8 +440,8 @@ uint64_t __69__SFInteractiveDismissController__animateDismissalCompleteTransitio
 - (CGPoint)translationForStatistics
 {
   edgeSwipeGestureRecognizer = self->_edgeSwipeGestureRecognizer;
-  v3 = [(UIScreenEdgePanGestureRecognizer *)edgeSwipeGestureRecognizer view];
-  [(UIScreenEdgePanGestureRecognizer *)edgeSwipeGestureRecognizer translationInView:v3];
+  view = [(UIScreenEdgePanGestureRecognizer *)edgeSwipeGestureRecognizer view];
+  [(UIScreenEdgePanGestureRecognizer *)edgeSwipeGestureRecognizer translationInView:view];
   v5 = v4;
   v7 = v6;
 
@@ -455,8 +455,8 @@ uint64_t __69__SFInteractiveDismissController__animateDismissalCompleteTransitio
 - (CGPoint)velocityForStatistics
 {
   edgeSwipeGestureRecognizer = self->_edgeSwipeGestureRecognizer;
-  v3 = [(UIScreenEdgePanGestureRecognizer *)edgeSwipeGestureRecognizer view];
-  [(UIScreenEdgePanGestureRecognizer *)edgeSwipeGestureRecognizer velocityInView:v3];
+  view = [(UIScreenEdgePanGestureRecognizer *)edgeSwipeGestureRecognizer view];
+  [(UIScreenEdgePanGestureRecognizer *)edgeSwipeGestureRecognizer velocityInView:view];
   v5 = v4;
   v7 = v6;
 
@@ -467,9 +467,9 @@ uint64_t __69__SFInteractiveDismissController__animateDismissalCompleteTransitio
   return result;
 }
 
-- (void)_updateStatistics:(id)a3 firstSample:(BOOL)a4 finalSample:(BOOL)a5
+- (void)_updateStatistics:(id)statistics firstSample:(BOOL)sample finalSample:(BOOL)finalSample
 {
-  v5 = a4;
+  sampleCopy = sample;
   Current = CFAbsoluteTimeGetCurrent();
   [(SFInteractiveDismissController *)self _translationCoefficient];
   v9 = v8;
@@ -485,7 +485,7 @@ uint64_t __69__SFInteractiveDismissController__animateDismissalCompleteTransitio
   }
 
   v16 = v13 / totalDistance;
-  if (v5)
+  if (sampleCopy)
   {
     self->_previousTimeStamp = Current;
     self->_skipTimeStamp = Current;
@@ -560,14 +560,14 @@ uint64_t __69__SFInteractiveDismissController__animateDismissalCompleteTransitio
   }
 }
 
-- (BOOL)popGesture:(id)a3 withRemainingDuration:(double)a4 shouldPopWithVelocity:(double *)a5
+- (BOOL)popGesture:(id)gesture withRemainingDuration:(double)duration shouldPopWithVelocity:(double *)velocity
 {
-  v8 = a3;
-  v9 = v8;
+  gestureCopy = gesture;
+  v9 = gestureCopy;
   if (self->_sampleCount >= 3 && self->_interactionState == 2)
   {
     [(UIPercentDrivenInteractiveTransition *)self percentComplete];
-    v11 = v10 + self->_averageVelocity * a4 + self->_averageAcceleration * 0.5 * a4 * a4;
+    v11 = v10 + self->_averageVelocity * duration + self->_averageAcceleration * 0.5 * duration * duration;
     if (v10 >= 0.5)
     {
       v12 = v11 >= 0.3;
@@ -583,21 +583,21 @@ uint64_t __69__SFInteractiveDismissController__animateDismissalCompleteTransitio
 
   else
   {
-    v14 = [v8 view];
-    [v9 velocityInView:v14];
+    view = [gestureCopy view];
+    [v9 velocityInView:view];
     v13 = v15;
 
     v12 = self->_averageVelocity > 0.0 && self->_interactionState != 1;
   }
 
-  *a5 = v13;
+  *velocity = v13;
 
   return v12;
 }
 
-- (void)setEdgeSwipeView:(id)a3
+- (void)setEdgeSwipeView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   edgeSwipeView = self->_edgeSwipeView;
   if (edgeSwipeView)
   {
@@ -605,8 +605,8 @@ uint64_t __69__SFInteractiveDismissController__animateDismissalCompleteTransitio
   }
 
   v6 = self->_edgeSwipeView;
-  self->_edgeSwipeView = v4;
-  v8 = v4;
+  self->_edgeSwipeView = viewCopy;
+  v8 = viewCopy;
 
   if ([(UIView *)self->_edgeSwipeView _sf_usesLeftToRightLayout])
   {
@@ -622,35 +622,35 @@ uint64_t __69__SFInteractiveDismissController__animateDismissalCompleteTransitio
   [(UIView *)self->_edgeSwipeView addGestureRecognizer:self->_edgeSwipeGestureRecognizer];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v4 = *MEMORY[0x1E69DE778];
-  v7 = a3;
-  v5 = [v7 viewControllerForKey:v4];
-  v6 = [v5 isBeingPresented];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:v4];
+  isBeingPresented = [v5 isBeingPresented];
 
-  if (v6)
+  if (isBeingPresented)
   {
-    [(SFInteractiveDismissController *)self _presentAnimateTransition:v7];
+    [(SFInteractiveDismissController *)self _presentAnimateTransition:transitionCopy];
   }
 
   else
   {
-    [(SFInteractiveDismissController *)self _dismissAnimateTransition:v7];
+    [(SFInteractiveDismissController *)self _dismissAnimateTransition:transitionCopy];
   }
 }
 
-- (void)_dismissAnimateTransition:(id)a3
+- (void)_dismissAnimateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewForKey:*MEMORY[0x1E69DE770]];
-  v6 = [v4 viewForKey:*MEMORY[0x1E69DE780]];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewForKey:*MEMORY[0x1E69DE770]];
+  v6 = [transitionCopy viewForKey:*MEMORY[0x1E69DE780]];
   [v5 frame];
   v34 = v7;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [(SFInteractiveDismissController *)self transitionDuration:v4];
+  [(SFInteractiveDismissController *)self transitionDuration:transitionCopy];
   v32 = v14;
   if (!self->_dimmingView)
   {
@@ -659,17 +659,17 @@ uint64_t __69__SFInteractiveDismissController__animateDismissalCompleteTransitio
     self->_dimmingView = v15;
   }
 
-  v17 = [v4 containerView];
-  [v17 insertSubview:v6 belowSubview:v5];
-  [v17 bounds];
+  containerView = [transitionCopy containerView];
+  [containerView insertSubview:v6 belowSubview:v5];
+  [containerView bounds];
   [(UIView *)self->_dimmingView setFrame:?];
-  v18 = [MEMORY[0x1E69DC888] blackColor];
-  [(UIView *)self->_dimmingView setBackgroundColor:v18];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(UIView *)self->_dimmingView setBackgroundColor:blackColor];
 
   [(UIView *)self->_dimmingView setAlpha:0.25];
   [(UIView *)self->_dimmingView removeFromSuperview];
-  [v17 insertSubview:self->_dimmingView belowSubview:v5];
-  [v17 bounds];
+  [containerView insertSubview:self->_dimmingView belowSubview:v5];
+  [containerView bounds];
   y = v52.origin.y;
   width = v52.size.width;
   height = v52.size.height;
@@ -695,16 +695,16 @@ uint64_t __69__SFInteractiveDismissController__animateDismissalCompleteTransitio
   v26 = v6;
   v43 = v26;
   v27 = _Block_copy(aBlock);
-  v28 = [v4 isInteractive];
+  isInteractive = [transitionCopy isInteractive];
   v29 = MEMORY[0x1E69DD250];
-  if (v28)
+  if (isInteractive)
   {
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __60__SFInteractiveDismissController__dismissAnimateTransition___block_invoke_2;
     v38[3] = &unk_1E848FCC0;
     v30 = &v39;
-    v39 = v4;
+    v39 = transitionCopy;
     v40 = v25;
     [v29 animateWithDuration:196608 delay:v27 options:v38 animations:v33 completion:0.0];
     v31 = v40;
@@ -717,7 +717,7 @@ uint64_t __69__SFInteractiveDismissController__animateDismissalCompleteTransitio
     v35[2] = __60__SFInteractiveDismissController__dismissAnimateTransition___block_invoke_3;
     v35[3] = &unk_1E8491FC8;
     v30 = v36;
-    v36[0] = v4;
+    v36[0] = transitionCopy;
     v36[1] = self;
     v37 = v25;
     [v29 _animateUsingSpringWithDuration:4 delay:v27 options:v35 mass:0.5 stiffness:0.0 damping:3.0 initialVelocity:1000.0 animations:500.0 completion:0.0];
@@ -766,14 +766,14 @@ void __60__SFInteractiveDismissController__dismissAnimateTransition___block_invo
   *(v2 + 184) = 0;
 }
 
-- (void)_presentAnimateTransition:(id)a3
+- (void)_presentAnimateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewForKey:*MEMORY[0x1E69DE780]];
-  v7 = [v4 viewForKey:*MEMORY[0x1E69DE770]];
-  [v5 addSubview:v6];
-  [v5 bounds];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v6 = [transitionCopy viewForKey:*MEMORY[0x1E69DE780]];
+  v7 = [transitionCopy viewForKey:*MEMORY[0x1E69DE770]];
+  [containerView addSubview:v6];
+  [containerView bounds];
   y = v49.origin.y;
   width = v49.size.width;
   height = v49.size.height;
@@ -788,14 +788,14 @@ void __60__SFInteractiveDismissController__dismissAnimateTransition___block_invo
     self->_dimmingView = v13;
   }
 
-  [v5 bounds];
+  [containerView bounds];
   [(UIView *)self->_dimmingView setFrame:?];
-  v15 = [MEMORY[0x1E69DC888] blackColor];
-  [(UIView *)self->_dimmingView setBackgroundColor:v15];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(UIView *)self->_dimmingView setBackgroundColor:blackColor];
 
   [(UIView *)self->_dimmingView setAlpha:0.0];
   [(UIView *)self->_dimmingView removeFromSuperview];
-  [v5 insertSubview:self->_dimmingView belowSubview:v6];
+  [containerView insertSubview:self->_dimmingView belowSubview:v6];
   [v7 frame];
   v17 = v16;
   v19 = v18;
@@ -811,7 +811,7 @@ void __60__SFInteractiveDismissController__dismissAnimateTransition___block_invo
   v43 = width;
   v44 = height;
   v38 = v6;
-  v39 = self;
+  selfCopy = self;
   v45 = v16;
   v46 = v20;
   v47 = v22;
@@ -821,15 +821,15 @@ void __60__SFInteractiveDismissController__dismissAnimateTransition___block_invo
   v29[1] = 3221225472;
   v29[2] = __60__SFInteractiveDismissController__presentAnimateTransition___block_invoke_2;
   v29[3] = &unk_1E8495AF0;
-  v30 = v4;
-  v31 = self;
+  v30 = transitionCopy;
+  selfCopy2 = self;
   v32 = v40;
   v33 = v17;
   v34 = v21;
   v35 = v23;
   v36 = v19;
   v25 = v40;
-  v26 = v4;
+  v26 = transitionCopy;
   v27 = v6;
   [v24 _animateUsingSpringWithDuration:4 delay:v37 options:v29 mass:0.5 stiffness:0.0 damping:3.0 initialVelocity:1000.0 animations:500.0 completion:0.0];
 }
@@ -863,7 +863,7 @@ void __60__SFInteractiveDismissController__presentAnimateTransition___block_invo
   *(v2 + 184) = 0;
 }
 
-- (id)interactionControllerForDismissal:(id)a3
+- (id)interactionControllerForDismissal:(id)dismissal
 {
   if (!self->_dismissMode)
   {

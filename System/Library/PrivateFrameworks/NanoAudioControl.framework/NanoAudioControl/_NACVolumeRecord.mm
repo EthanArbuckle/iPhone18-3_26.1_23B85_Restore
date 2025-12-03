@@ -1,48 +1,48 @@
 @interface _NACVolumeRecord
 - (NSMutableSet)observers;
-- (_NACVolumeRecord)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_NACVolumeRecord)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NACVolumeRecord
 
-- (_NACVolumeRecord)initWithCoder:(id)a3
+- (_NACVolumeRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _NACVolumeRecord;
   v5 = [(_NACVolumeRecord *)&v11 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_volumeValue);
-    [v4 decodeFloatForKey:v6];
+    [coderCopy decodeFloatForKey:v6];
     v5->_volumeValue = v7;
 
     v8 = NSStringFromSelector(sel_isVolumeControlAvailable);
-    v5->_volumeControlAvailable = [v4 decodeBoolForKey:v8];
+    v5->_volumeControlAvailable = [coderCopy decodeBoolForKey:v8];
 
     v9 = NSStringFromSelector(sel_isMuted);
-    v5->_muted = [v4 decodeBoolForKey:v9];
+    v5->_muted = [coderCopy decodeBoolForKey:v9];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   volumeValue = self->_volumeValue;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_volumeValue);
   *&v7 = volumeValue;
-  [v5 encodeFloat:v6 forKey:v7];
+  [coderCopy encodeFloat:v6 forKey:v7];
 
   volumeControlAvailable = self->_volumeControlAvailable;
   v9 = NSStringFromSelector(sel_isVolumeControlAvailable);
-  [v5 encodeBool:volumeControlAvailable forKey:v9];
+  [coderCopy encodeBool:volumeControlAvailable forKey:v9];
 
   muted = self->_muted;
   v11 = NSStringFromSelector(sel_isMuted);
-  [v5 encodeBool:muted forKey:v11];
+  [coderCopy encodeBool:muted forKey:v11];
 }
 
 - (NSMutableSet)observers

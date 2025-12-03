@@ -1,17 +1,17 @@
 @interface MTMPCAssistantGenericPlaybackQueue
-- (MTMPCAssistantGenericPlaybackQueue)initWithContextID:(id)a3 playbackQueueRef:(_MRSystemAppPlaybackQueue *)a4;
+- (MTMPCAssistantGenericPlaybackQueue)initWithContextID:(id)d playbackQueueRef:(_MRSystemAppPlaybackQueue *)ref;
 @end
 
 @implementation MTMPCAssistantGenericPlaybackQueue
 
-- (MTMPCAssistantGenericPlaybackQueue)initWithContextID:(id)a3 playbackQueueRef:(_MRSystemAppPlaybackQueue *)a4
+- (MTMPCAssistantGenericPlaybackQueue)initWithContextID:(id)d playbackQueueRef:(_MRSystemAppPlaybackQueue *)ref
 {
   v6.receiver = self;
   v6.super_class = MTMPCAssistantGenericPlaybackQueue;
-  result = [(MTMPCAssistantGenericPlaybackQueue *)&v6 initWithContextID:a3];
+  result = [(MTMPCAssistantGenericPlaybackQueue *)&v6 initWithContextID:d];
   if (result)
   {
-    result->_playbackQueueRef = a4;
+    result->_playbackQueueRef = ref;
   }
 
   return result;

@@ -1,18 +1,18 @@
 @interface _MPCModelStorePlaybackItemsRequestAccumulator_Legacy
-- (BOOL)_importSODPayloadData:(id)a3 userIdentity:(id)a4;
-- (BOOL)handleContainerPayload:(id)a3 itemPayload:(id)a4 userIdentity:(id)a5;
+- (BOOL)_importSODPayloadData:(id)data userIdentity:(id)identity;
+- (BOOL)handleContainerPayload:(id)payload itemPayload:(id)itemPayload userIdentity:(id)identity;
 - (ICURLAggregatedPerformanceMetrics)performanceMetrics;
 - (MPCModelStorePlaybackItemsRequestAccumulatorResult)_locked_accumulatorResult;
 - (MPCModelStorePlaybackItemsRequestAccumulatorResult)accumulatorResult;
-- (MPCModelStorePlaybackItemsRequestAccumulatorResult)handlePaginatedResponse:(id)a3 error:(id)a4;
-- (MPCModelStorePlaybackItemsRequestAccumulatorResult)handleResponse:(id)a3 error:(id)a4;
+- (MPCModelStorePlaybackItemsRequestAccumulatorResult)handlePaginatedResponse:(id)response error:(id)error;
+- (MPCModelStorePlaybackItemsRequestAccumulatorResult)handleResponse:(id)response error:(id)error;
 - (MPSectionedCollection)unpersonalizedContentDescriptors;
-- (_MPCModelStorePlaybackItemsRequestAccumulator_Legacy)initWithRequest:(id)a3;
-- (_MPCModelStorePlaybackItemsRequestAccumulator_Legacy)initWithRequest:(id)a3 serverObjectDatabase:(id)a4;
-- (id)_locked_mergedObjectWithRequestedObjectIfNeeded:(id)a3 forIndexPath:(id)a4;
-- (id)_locked_requestIdentifierForIdentifierSet:(id)a1;
-- (id)_playlistEntryForObject:(id)a3 containerUniqueID:(id)a4;
-- (id)_serverObjectFromPlaceholderContentDescriptor:(id)a3 propertySet:(id)a4 error:(id *)a5;
+- (_MPCModelStorePlaybackItemsRequestAccumulator_Legacy)initWithRequest:(id)request;
+- (_MPCModelStorePlaybackItemsRequestAccumulator_Legacy)initWithRequest:(id)request serverObjectDatabase:(id)database;
+- (id)_locked_mergedObjectWithRequestedObjectIfNeeded:(id)needed forIndexPath:(id)path;
+- (id)_locked_requestIdentifierForIdentifierSet:(id)set;
+- (id)_playlistEntryForObject:(id)object containerUniqueID:(id)d;
+- (id)_serverObjectFromPlaceholderContentDescriptor:(id)descriptor propertySet:(id)set error:(id *)error;
 - (id)accumulatedResults;
 - (id)newStoreItemMetadataRequest;
 - (id)nextPaginatedStoreItemMetadataRequest;
@@ -24,36 +24,36 @@
 
 @implementation _MPCModelStorePlaybackItemsRequestAccumulator_Legacy
 
-- (id)_locked_mergedObjectWithRequestedObjectIfNeeded:(id)a3 forIndexPath:(id)a4
+- (id)_locked_mergedObjectWithRequestedObjectIfNeeded:(id)needed forIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && self->_requestUsesSectionedModelObjects)
+  neededCopy = needed;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (neededCopy && self->_requestUsesSectionedModelObjects)
   {
-    v9 = [v7 length];
-    v10 = [(MPCModelStorePlaybackItemsRequest *)self->_request sectionedModelObjects];
-    v11 = v10;
+    v9 = [pathCopy length];
+    sectionedModelObjects = [(MPCModelStorePlaybackItemsRequest *)self->_request sectionedModelObjects];
+    v11 = sectionedModelObjects;
     if (v9 == 1)
     {
-      [v10 sectionAtIndex:{objc_msgSend(v8, "indexAtPosition:", 0)}];
+      [sectionedModelObjects sectionAtIndex:{objc_msgSend(v8, "indexAtPosition:", 0)}];
     }
 
     else
     {
-      [v10 itemAtIndexPath:v8];
+      [sectionedModelObjects itemAtIndexPath:v8];
     }
     v13 = ;
 
     v14 = [MEMORY[0x1E6970670] genericObjectWithModelObject:v13];
     if ([v14 type] == 5)
     {
-      v15 = [v14 playlistEntry];
-      v16 = [v15 anyObject];
+      playlistEntry = [v14 playlistEntry];
+      anyObject = [playlistEntry anyObject];
 
-      if (!v16)
+      if (!anyObject)
       {
-        v17 = [v6 anyObject];
+        anyObject2 = [neededCopy anyObject];
         v18 = objc_opt_class();
         if (!v18)
         {
@@ -61,41 +61,41 @@
         }
 
         v19 = [v18 alloc];
-        v20 = [v14 identifiers];
-        v16 = [v19 initWithIdentifiers:v20];
+        identifiers = [v14 identifiers];
+        anyObject = [v19 initWithIdentifiers:identifiers];
       }
 
-      v21 = [MEMORY[0x1E6970670] genericObjectWithModelObject:v16];
+      v21 = [MEMORY[0x1E6970670] genericObjectWithModelObject:anyObject];
 
       v14 = v21;
     }
 
-    v22 = [v14 mergeWithObject:v6];
+    v22 = [v14 mergeWithObject:neededCopy];
 
     v12 = v22;
   }
 
   else
   {
-    v12 = v6;
+    v12 = neededCopy;
   }
 
   return v12;
 }
 
-- (id)_serverObjectFromPlaceholderContentDescriptor:(id)a3 propertySet:(id)a4 error:(id *)a5
+- (id)_serverObjectFromPlaceholderContentDescriptor:(id)descriptor propertySet:(id)set error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  descriptorCopy = descriptor;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    identifiers2 = descriptorCopy;
     v9 = 0;
-    if (v8)
+    if (identifiers2)
     {
 LABEL_3:
-      v10 = [(MPServerObjectDatabase *)self->_sod modelObjectMatchingIdentifierSet:v8 propertySet:self->_requestPropertySet error:a5];
+      v10 = [(MPServerObjectDatabase *)self->_sod modelObjectMatchingIdentifierSet:identifiers2 propertySet:self->_requestPropertySet error:error];
       goto LABEL_15;
     }
   }
@@ -105,14 +105,14 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v7;
-      v11 = [v9 identifiers];
-      v12 = [v11 isPlaceholder];
+      v9 = descriptorCopy;
+      identifiers = [v9 identifiers];
+      isPlaceholder = [identifiers isPlaceholder];
 
-      if (v12)
+      if (isPlaceholder)
       {
-        v8 = [v9 identifiers];
-        if (v8)
+        identifiers2 = [v9 identifiers];
+        if (identifiers2)
         {
           goto LABEL_3;
         }
@@ -120,7 +120,7 @@ LABEL_3:
 
       else
       {
-        v8 = 0;
+        identifiers2 = 0;
       }
     }
 
@@ -135,14 +135,14 @@ LABEL_3:
           v14 = objc_opt_class();
           v15 = NSStringFromClass(v14);
           v17 = 134218242;
-          v18 = self;
+          selfCopy = self;
           v19 = 2114;
           v20 = v15;
           _os_log_impl(&dword_1C5C61000, v13, OS_LOG_TYPE_ERROR, "[PIA] %p _serverObjectFromPlaceholderContentDescriptor | failed to generate IdentifierSet from unsupported contentDescriptor %{public}@", &v17, 0x16u);
         }
       }
 
-      v8 = 0;
+      identifiers2 = 0;
       v9 = 0;
     }
   }
@@ -162,11 +162,11 @@ LABEL_15:
     unpersonalizedContentDescriptors = self->_unpersonalizedContentDescriptors;
     self->_unpersonalizedContentDescriptors = 0;
 
-    v5 = [MEMORY[0x1E696AD50] indexSet];
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [MEMORY[0x1E695DFA0] orderedSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
+    array = [MEMORY[0x1E695DF70] array];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     pendingStoreIDs = self->_pendingStoreIDs;
-    self->_pendingStoreIDs = v7;
+    self->_pendingStoreIDs = orderedSet;
 
     progressiveContentDescriptors = self->_progressiveContentDescriptors;
     v49[0] = MEMORY[0x1E69E9820];
@@ -174,7 +174,7 @@ LABEL_15:
     v49[2] = __114___MPCModelStorePlaybackItemsRequestAccumulator_Legacy__locked_resolveContentDescriptorsUsingServerObjectDatabase__block_invoke;
     v49[3] = &unk_1E82339E0;
     v49[4] = self;
-    v10 = v5;
+    v10 = indexSet;
     v50 = v10;
     [(MPMutableSectionedCollection *)progressiveContentDescriptors replaceSectionsUsingBlock:v49];
     if (!self->_accumulationError)
@@ -185,13 +185,13 @@ LABEL_15:
       v46[2] = __114___MPCModelStorePlaybackItemsRequestAccumulator_Legacy__locked_resolveContentDescriptorsUsingServerObjectDatabase__block_invoke_92;
       v46[3] = &unk_1E8233A08;
       v46[4] = self;
-      v12 = v6;
+      v12 = array;
       v47 = v12;
       v48 = a2;
       [(MPMutableSectionedCollection *)v11 replaceItemsUsingBlock:v46];
       if (!self->_accumulationError)
       {
-        v32 = v6;
+        v32 = array;
         v33 = a2;
         if ([v12 count])
         {
@@ -225,19 +225,19 @@ LABEL_15:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                v31 = [MEMORY[0x1E696AAA8] currentHandler];
-                [v31 handleFailureInMethod:v33 object:self file:@"MPCModelStorePlaybackItemsRequestAccumulator_Legacy.m" lineNumber:982 description:{@"Attempting to promote section for non model object: %@", v18}];
+                currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+                [currentHandler handleFailureInMethod:v33 object:self file:@"MPCModelStorePlaybackItemsRequestAccumulator_Legacy.m" lineNumber:982 description:{@"Attempting to promote section for non model object: %@", v18}];
               }
 
-              v19 = [v15 item];
-              v20 = [v16 section];
-              v21 = v20;
+              item = [v15 item];
+              section = [v16 section];
+              v21 = section;
               v39 = v16;
               v40 = v13;
-              if (v19)
+              if (item)
               {
-                v21 = v20 + 1;
-                [(MPMutableSectionedCollection *)self->_progressiveContentDescriptors insertSection:v18 atIndex:v20 + 1];
+                v21 = section + 1;
+                [(MPMutableSectionedCollection *)self->_progressiveContentDescriptors insertSection:v18 atIndex:section + 1];
                 v22 = 1;
               }
 
@@ -248,8 +248,8 @@ LABEL_15:
               }
 
               v38 = v18;
-              v23 = [v18 identifiers];
-              v24 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_requestIdentifierForIdentifierSet:v23];
+              identifiers = [v18 identifiers];
+              v24 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_requestIdentifierForIdentifierSet:identifiers];
 
               [(NSMutableOrderedSet *)self->_pendingStoreIDs addObject:v24];
               [(MPMutableSectionedCollection *)self->_progressiveContentDescriptors removeItemAtIndexPath:v15];
@@ -258,8 +258,8 @@ LABEL_15:
               if (v25 >= 1)
               {
                 v26 = self->_progressiveContentDescriptors;
-                v27 = [MEMORY[0x1E696AFB0] UUID];
-                [(MPMutableSectionedCollection *)v26 insertSection:v27 atIndex:v21 + 1];
+                uUID = [MEMORY[0x1E696AFB0] UUID];
+                [(MPMutableSectionedCollection *)v26 insertSection:uUID atIndex:v21 + 1];
 
                 for (j = 0; j != v25; ++j)
                 {
@@ -291,41 +291,41 @@ LABEL_15:
         v41[5] = v33;
         [v10 enumerateIndexesUsingBlock:v41];
         [(NSMutableOrderedSet *)self->_pendingStoreIDs minusSet:self->_failedStoreIDs];
-        v6 = v32;
+        array = v32;
       }
     }
   }
 }
 
-- (id)_locked_requestIdentifierForIdentifierSet:(id)a1
+- (id)_locked_requestIdentifierForIdentifierSet:(id)set
 {
-  v2 = a1;
-  if (a1)
+  setCopy = set;
+  if (set)
   {
     v3 = a2;
-    os_unfair_lock_assert_owner(v2 + 22);
-    v4 = [v3 prioritizedStoreStringIdentifiersForPersonID:*(v2 + 3)];
+    os_unfair_lock_assert_owner(setCopy + 22);
+    v4 = [v3 prioritizedStoreStringIdentifiersForPersonID:*(setCopy + 3)];
 
     v5 = [v4 mutableCopy];
-    v6 = [*(v2 + 6) allObjects];
-    [v5 removeObjectsInArray:v6];
+    allObjects = [*(setCopy + 6) allObjects];
+    [v5 removeObjectsInArray:allObjects];
 
-    v7 = [v5 firstObject];
-    v8 = v7;
-    if (v7)
+    firstObject = [v5 firstObject];
+    v8 = firstObject;
+    if (firstObject)
     {
-      v9 = v7;
+      firstObject2 = firstObject;
     }
 
     else
     {
-      v9 = [v4 firstObject];
+      firstObject2 = [v4 firstObject];
     }
 
-    v2 = v9;
+    setCopy = firstObject2;
   }
 
-  return v2;
+  return setCopy;
 }
 
 - (void)_resolveContentDescriptorsUsingServerObjectDatabase
@@ -336,48 +336,48 @@ LABEL_15:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_playlistEntryForObject:(id)a3 containerUniqueID:(id)a4
+- (id)_playlistEntryForObject:(id)object containerUniqueID:(id)d
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 identifiers];
+  objectCopy = object;
+  dCopy = d;
+  identifiers = [objectCopy identifiers];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __98___MPCModelStorePlaybackItemsRequestAccumulator_Legacy__playlistEntryForObject_containerUniqueID___block_invoke;
   v37[3] = &unk_1E82389D8;
-  v10 = v8;
+  v10 = dCopy;
   v38 = v10;
-  v11 = [v9 copyWithSource:@"Accumulator-PlaylistEntry" block:v37];
-  v12 = [v7 copyWithIdentifiers:v11];
+  v11 = [identifiers copyWithSource:@"Accumulator-PlaylistEntry" block:v37];
+  v12 = [objectCopy copyWithIdentifiers:v11];
 
-  v13 = [v12 identifiers];
-  if (![v13 isPlaceholder])
+  identifiers2 = [v12 identifiers];
+  if (![identifiers2 isPlaceholder])
   {
 
     goto LABEL_5;
   }
 
-  v14 = [v12 type];
+  type = [v12 type];
 
-  if (v14)
+  if (type)
   {
 LABEL_5:
     v30 = a2;
-    v16 = [v7 identifiers];
-    v17 = [v16 modelKind];
+    identifiers3 = [objectCopy identifiers];
+    modelKind = [identifiers3 modelKind];
 
-    if (v17)
+    if (modelKind)
     {
       v18 = MEMORY[0x1E6970720];
-      v39[0] = v17;
+      v39[0] = modelKind;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
-      v20 = [v18 kindWithKinds:v19];
+      identityKind = [v18 kindWithKinds:v19];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E6970728] identityKind];
+      identityKind = [MEMORY[0x1E6970728] identityKind];
     }
 
     v21 = objc_alloc(MEMORY[0x1E6970550]);
@@ -386,22 +386,22 @@ LABEL_5:
     v35[2] = __98___MPCModelStorePlaybackItemsRequestAccumulator_Legacy__playlistEntryForObject_containerUniqueID___block_invoke_2;
     v35[3] = &unk_1E82389D8;
     v36 = v10;
-    v22 = [v21 initWithSource:@"Accumulator-PlaylistEntry" modelKind:v20 block:v35];
-    v23 = [v7 identifiers];
-    v24 = [v23 unionSet:v22];
+    v22 = [v21 initWithSource:@"Accumulator-PlaylistEntry" modelKind:identityKind block:v35];
+    identifiers4 = [objectCopy identifiers];
+    v24 = [identifiers4 unionSet:v22];
 
-    v25 = [v7 type];
+    type2 = [objectCopy type];
     v26 = MEMORY[0x1E6970670];
-    if (v25)
+    if (type2)
     {
       v27 = objc_alloc(MEMORY[0x1E6970720]);
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __98___MPCModelStorePlaybackItemsRequestAccumulator_Legacy__playlistEntryForObject_containerUniqueID___block_invoke_3;
       v31[3] = &unk_1E8233AA0;
-      v33 = self;
+      selfCopy = self;
       v34 = v30;
-      v32 = v7;
+      v32 = objectCopy;
       v28 = [v27 initWithIdentifiers:v24 block:v31];
       v15 = [v26 genericObjectWithModelObject:v28];
     }
@@ -431,8 +431,8 @@ LABEL_12:
   aBlock[4] = self;
   v34 = _Block_copy(aBlock);
   v36 = objc_alloc_init(MEMORY[0x1E69709C8]);
-  v3 = [(MPCModelStorePlaybackItemsRequest *)self->_request clientIdentifier];
-  [v36 setClientIdentifier:v3];
+  clientIdentifier = [(MPCModelStorePlaybackItemsRequest *)self->_request clientIdentifier];
+  [v36 setClientIdentifier:clientIdentifier];
 
   [v36 setReason:3];
   [v36 setTimeoutInterval:&unk_1F4599AC0];
@@ -446,15 +446,15 @@ LABEL_12:
 
   v37 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSMutableOrderedSet count](self->_pendingStoreIDs, "count", v34)}];
   v4 = [(NSMutableOrderedSet *)self->_pendingStoreIDs mutableCopy];
-  v5 = [(MPMutableSectionedCollection *)self->_progressiveContentDescriptors allSections];
-  v6 = [v5 mutableCopy];
+  allSections = [(MPMutableSectionedCollection *)self->_progressiveContentDescriptors allSections];
+  v6 = [allSections mutableCopy];
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = [(MPCModelStorePlaybackItemsRequest *)self->_request playbackPrioritizedIndexPaths];
-  v8 = [v7 countByEnumeratingWithState:&v43 objects:v53 count:16];
+  playbackPrioritizedIndexPaths = [(MPCModelStorePlaybackItemsRequest *)self->_request playbackPrioritizedIndexPaths];
+  v8 = [playbackPrioritizedIndexPaths countByEnumeratingWithState:&v43 objects:v53 count:16];
   if (v8)
   {
     v9 = *v44;
@@ -464,14 +464,14 @@ LABEL_12:
       {
         if (*v44 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(playbackPrioritizedIndexPaths);
         }
 
         v11 = [(MPMutableSectionedCollection *)self->_progressiveContentDescriptors itemAtIndexPath:*(*(&v43 + 1) + 8 * i)];
         [v6 addObject:v11];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v43 objects:v53 count:16];
+      v8 = [playbackPrioritizedIndexPaths countByEnumeratingWithState:&v43 objects:v53 count:16];
     }
 
     while (v8);
@@ -515,9 +515,9 @@ LABEL_12:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v16 identifiers];
+            identifiers = [v16 identifiers];
 
-            v17 = v18;
+            v17 = identifiers;
           }
 
           v19 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_requestIdentifierForIdentifierSet:v17];
@@ -554,49 +554,49 @@ LABEL_12:
 
   if ([v37 count])
   {
-    v23 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    array = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (os_log_type_enabled(array, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v37 msv_compactDescription];
+      msv_compactDescription = [v37 msv_compactDescription];
       *buf = 134218242;
-      v49 = self;
+      selfCopy = self;
       v50 = 2112;
-      v51 = v24;
-      _os_log_impl(&dword_1C5C61000, v23, OS_LOG_TYPE_DEFAULT, "[PIA] %p Only requesting prioritized IDs requestedIDs=[%@]", buf, 0x16u);
+      v51 = msv_compactDescription;
+      _os_log_impl(&dword_1C5C61000, array, OS_LOG_TYPE_DEFAULT, "[PIA] %p Only requesting prioritized IDs requestedIDs=[%@]", buf, 0x16u);
     }
   }
 
   else
   {
-    v23 = [v4 array];
-    if ([v23 count]>= 0x33)
+    array = [v4 array];
+    if ([array count]>= 0x33)
     {
-      v25 = [v23 subarrayWithRange:0, 50];
+      v25 = [array subarrayWithRange:0, 50];
 
-      v23 = v25;
+      array = v25;
     }
 
-    [v37 addObjectsFromArray:v23];
+    [v37 addObjectsFromArray:array];
   }
 
   [v36 setItemIdentifiers:v37];
-  v26 = [(MPCModelStorePlaybackItemsRequest *)self->_request playbackRequestEnvironment];
-  v27 = [v26 _createStoreRequestContext];
+  playbackRequestEnvironment = [(MPCModelStorePlaybackItemsRequest *)self->_request playbackRequestEnvironment];
+  _createStoreRequestContext = [playbackRequestEnvironment _createStoreRequestContext];
 
-  v28 = [v27 clientInfo];
-  [v36 setClientInfo:v28];
+  clientInfo = [_createStoreRequestContext clientInfo];
+  [v36 setClientInfo:clientInfo];
 
-  v29 = [v27 delegatedIdentity];
-  [v36 setDelegatedUserIdentity:v29];
+  delegatedIdentity = [_createStoreRequestContext delegatedIdentity];
+  [v36 setDelegatedUserIdentity:delegatedIdentity];
 
-  v30 = [v27 identity];
-  [v36 setUserIdentity:v30];
+  identity = [_createStoreRequestContext identity];
+  [v36 setUserIdentity:identity];
 
-  v31 = [v27 identityStore];
-  [v36 setUserIdentityStore:v31];
+  identityStore = [_createStoreRequestContext identityStore];
+  [v36 setUserIdentityStore:identityStore];
 
-  v32 = [(MPCModelStorePlaybackItemsRequest *)self->_request requestContextTag];
-  [v36 mpc_setRequestContextTag:v32];
+  requestContextTag = [(MPCModelStorePlaybackItemsRequest *)self->_request requestContextTag];
+  [v36 mpc_setRequestContextTag:requestContextTag];
 
   v35[2]();
 
@@ -614,8 +614,8 @@ LABEL_12:
   aBlock[4] = self;
   v29 = _Block_copy(aBlock);
   v30 = objc_alloc_init(MEMORY[0x1E69709C8]);
-  v3 = [(MPCModelStorePlaybackItemsRequest *)self->_request clientIdentifier];
-  [v30 setClientIdentifier:v3];
+  clientIdentifier = [(MPCModelStorePlaybackItemsRequest *)self->_request clientIdentifier];
+  [v30 setClientIdentifier:clientIdentifier];
 
   [v30 setReason:3];
   [v30 setTimeoutInterval:&unk_1F4599AC0];
@@ -644,8 +644,8 @@ LABEL_12:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = [(MPCModelStorePlaybackItemsRequest *)self->_request playbackPrioritizedIndexPaths];
-  v9 = [v8 countByEnumeratingWithState:&v32 objects:v44 count:16];
+  playbackPrioritizedIndexPaths = [(MPCModelStorePlaybackItemsRequest *)self->_request playbackPrioritizedIndexPaths];
+  v9 = [playbackPrioritizedIndexPaths countByEnumeratingWithState:&v32 objects:v44 count:16];
   if (v9)
   {
     v10 = *v33;
@@ -655,15 +655,15 @@ LABEL_12:
       {
         if (*v33 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(playbackPrioritizedIndexPaths);
         }
 
         v12 = *(*(&v32 + 1) + 8 * i);
-        v13 = [(MPCModelStorePlaybackItemsRequest *)self->_request sectionedModelObjects];
-        v14 = [v13 itemAtIndexPath:v12];
+        sectionedModelObjects = [(MPCModelStorePlaybackItemsRequest *)self->_request sectionedModelObjects];
+        v14 = [sectionedModelObjects itemAtIndexPath:v12];
 
-        v15 = [v14 identifiers];
-        v16 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_requestIdentifierForIdentifierSet:v15];
+        identifiers = [v14 identifiers];
+        v16 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_requestIdentifierForIdentifierSet:identifiers];
 
         v17 = [v7 indexOfObject:v16];
         if (v17 != 0x7FFFFFFFFFFFFFFFLL)
@@ -675,7 +675,7 @@ LABEL_12:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v32 objects:v44 count:16];
+      v9 = [playbackPrioritizedIndexPaths countByEnumeratingWithState:&v32 objects:v44 count:16];
     }
 
     while (v9);
@@ -683,52 +683,52 @@ LABEL_12:
 
   if ([v31 count])
   {
-    v19 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    array = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (os_log_type_enabled(array, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v31 msv_compactDescription];
+      msv_compactDescription = [v31 msv_compactDescription];
       *buf = 134218242;
-      v41 = self;
+      selfCopy = self;
       v42 = 2112;
-      v43 = v20;
-      _os_log_impl(&dword_1C5C61000, v19, OS_LOG_TYPE_DEFAULT, "[PIA] %p Only requesting prioritized IDs requestedIDs=[%@]", buf, 0x16u);
+      v43 = msv_compactDescription;
+      _os_log_impl(&dword_1C5C61000, array, OS_LOG_TYPE_DEFAULT, "[PIA] %p Only requesting prioritized IDs requestedIDs=[%@]", buf, 0x16u);
     }
   }
 
   else
   {
-    v19 = [v7 array];
-    [v31 addObjectsFromArray:v19];
+    array = [v7 array];
+    [v31 addObjectsFromArray:array];
   }
 
   [v30 setItemIdentifiers:v31];
-  v21 = [(MPCModelStorePlaybackItemsRequest *)self->_request playbackRequestEnvironment];
-  v22 = [v21 _createStoreRequestContext];
+  playbackRequestEnvironment = [(MPCModelStorePlaybackItemsRequest *)self->_request playbackRequestEnvironment];
+  _createStoreRequestContext = [playbackRequestEnvironment _createStoreRequestContext];
 
-  v23 = [v22 clientInfo];
-  [v30 setClientInfo:v23];
+  clientInfo = [_createStoreRequestContext clientInfo];
+  [v30 setClientInfo:clientInfo];
 
-  v24 = [v22 delegatedIdentity];
-  [v30 setDelegatedUserIdentity:v24];
+  delegatedIdentity = [_createStoreRequestContext delegatedIdentity];
+  [v30 setDelegatedUserIdentity:delegatedIdentity];
 
-  v25 = [v22 identity];
-  [v30 setUserIdentity:v25];
+  identity = [_createStoreRequestContext identity];
+  [v30 setUserIdentity:identity];
 
-  v26 = [v22 identityStore];
-  [v30 setUserIdentityStore:v26];
+  identityStore = [_createStoreRequestContext identityStore];
+  [v30 setUserIdentityStore:identityStore];
 
-  v27 = [(MPCModelStorePlaybackItemsRequest *)self->_request requestContextTag];
-  [v30 mpc_setRequestContextTag:v27];
+  requestContextTag = [(MPCModelStorePlaybackItemsRequest *)self->_request requestContextTag];
+  [v30 mpc_setRequestContextTag:requestContextTag];
 
   v29[2]();
   return v30;
 }
 
-- (MPCModelStorePlaybackItemsRequestAccumulatorResult)handlePaginatedResponse:(id)a3 error:(id)a4
+- (MPCModelStorePlaybackItemsRequestAccumulatorResult)handlePaginatedResponse:(id)response error:(id)error
 {
   v89 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v71 = a4;
+  responseCopy = response;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -737,65 +737,65 @@ LABEL_12:
   aBlock[4] = self;
   v70 = _Block_copy(aBlock);
   v7 = *MEMORY[0x1E696A978];
-  v8 = [v71 msv_errorByUnwrappingDomain:*MEMORY[0x1E696A978] code:-1009];
-  LOBYTE(a4) = v8 == 0;
+  v8 = [errorCopy msv_errorByUnwrappingDomain:*MEMORY[0x1E696A978] code:-1009];
+  LOBYTE(error) = v8 == 0;
 
-  if (a4 & 1) != 0 || ([MEMORY[0x1E69E4428] sharedMonitor], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isRemoteServerReachable"), v9, (v10))
+  if (error & 1) != 0 || ([MEMORY[0x1E69E4428] sharedMonitor], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isRemoteServerReachable"), v9, (v10))
   {
-    v69 = [v6 lastBatchItemIdentifiers];
-    if (![v69 count])
+    lastBatchItemIdentifiers = [responseCopy lastBatchItemIdentifiers];
+    if (![lastBatchItemIdentifiers count])
     {
 LABEL_44:
-      v35 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_accumulatorResult];
+      _locked_accumulatorResult = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_accumulatorResult];
 
       goto LABEL_45;
     }
 
-    v11 = [v6 lastBatchStoreItemDictionaries];
-    v67 = [v11 count];
-    v68 = v11;
-    if ([v11 count])
+    lastBatchStoreItemDictionaries = [responseCopy lastBatchStoreItemDictionaries];
+    v67 = [lastBatchStoreItemDictionaries count];
+    v68 = lastBatchStoreItemDictionaries;
+    if ([lastBatchStoreItemDictionaries count])
     {
       v12 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v11 count];
-        v14 = [v69 count];
-        v15 = [v69 msv_compactDescription];
+        v13 = [lastBatchStoreItemDictionaries count];
+        v14 = [lastBatchItemIdentifiers count];
+        msv_compactDescription = [lastBatchItemIdentifiers msv_compactDescription];
         *buf = 134219010;
-        v80 = self;
+        selfCopy4 = self;
         v81 = 2048;
-        v82 = v6;
+        v82 = responseCopy;
         v83 = 2048;
         v84 = v13;
         v85 = 2048;
         v86 = v14;
         v87 = 2112;
-        v88 = v15;
+        v88 = msv_compactDescription;
         _os_log_impl(&dword_1C5C61000, v12, OS_LOG_TYPE_DEFAULT, "[PIA] %p Importing paginated response %p storeDictionaryCount=%ld requestedIDs=(:%llu)[%@]", buf, 0x34u);
       }
 
       v16 = [objc_alloc(MEMORY[0x1E6970968]) initWithPayload:v68];
       v17 = self->_request;
-      v18 = [(MPCModelStorePlaybackItemsRequest *)v17 playbackRequestEnvironment];
-      v19 = [v18 delegationProperties];
-      v20 = [v19 storeAccountID];
+      playbackRequestEnvironment = [(MPCModelStorePlaybackItemsRequest *)v17 playbackRequestEnvironment];
+      delegationProperties = [playbackRequestEnvironment delegationProperties];
+      storeAccountID = [delegationProperties storeAccountID];
 
-      if (v20)
+      if (storeAccountID)
       {
         v21 = MEMORY[0x1E69E4680];
-        v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v20];
-        v23 = [v21 specificAccountWithDSID:v22];
-        v24 = [v23 identityAllowingDelegation:1];
+        playbackRequestEnvironment2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:storeAccountID];
+        v23 = [v21 specificAccountWithDSID:playbackRequestEnvironment2];
+        userIdentity = [v23 identityAllowingDelegation:1];
       }
 
       else
       {
-        v22 = [(MPCModelStorePlaybackItemsRequest *)v17 playbackRequestEnvironment];
-        v24 = [v22 userIdentity];
+        playbackRequestEnvironment2 = [(MPCModelStorePlaybackItemsRequest *)v17 playbackRequestEnvironment];
+        userIdentity = [playbackRequestEnvironment2 userIdentity];
       }
 
-      [v16 setUserIdentity:v24];
+      [v16 setUserIdentity:userIdentity];
       sod = self->_sod;
       v76 = 0;
       v37 = [(MPServerObjectDatabase *)sod importObjectsFromRequest:v16 options:0 error:&v76];
@@ -807,9 +807,9 @@ LABEL_44:
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
           *buf = 134218498;
-          v80 = self;
+          selfCopy4 = self;
           v81 = 2048;
-          v82 = v6;
+          v82 = responseCopy;
           v83 = 2114;
           v84 = v39;
           _os_log_impl(&dword_1C5C61000, v40, OS_LOG_TYPE_ERROR, "[PIA] %p Failed to import paginated response %p. error=%{public}@", buf, 0x20u);
@@ -819,16 +819,16 @@ LABEL_44:
       [(NSMutableArray *)self->_importResults addObject:v37];
     }
 
-    if (v71)
+    if (errorCopy)
     {
-      v41 = v71;
+      v41 = errorCopy;
       v42 = [v41 msv_errorByUnwrappingDomain:v7];
-      v43 = [v42 code];
+      code = [v42 code];
 
       v44 = [v41 msv_errorByUnwrappingDomain:*MEMORY[0x1E69E4198]];
-      v45 = [v44 code];
+      code2 = [v44 code];
 
-      if ((v43 + 1009) <= 0xA && ((1 << (v43 - 15)) & 0x501) != 0)
+      if ((code + 1009) <= 0xA && ((1 << (code - 15)) & 0x501) != 0)
       {
         v46 = 1;
       }
@@ -836,9 +836,9 @@ LABEL_44:
       else
       {
         v46 = 1;
-        if (v45 != -7100 && v45 != -7007)
+        if (code2 != -7100 && code2 != -7007)
         {
-          v46 = v45 == -7003;
+          v46 = code2 == -7003;
         }
       }
     }
@@ -848,12 +848,12 @@ LABEL_44:
       v46 = 0;
     }
 
-    v47 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v69, "count")}];
+    v47 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(lastBatchItemIdentifiers, "count")}];
     v74 = 0u;
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v48 = v69;
+    v48 = lastBatchItemIdentifiers;
     v49 = [v48 countByEnumeratingWithState:&v72 objects:v78 count:16];
     if (v49)
     {
@@ -868,7 +868,7 @@ LABEL_44:
           }
 
           v52 = *(*(&v72 + 1) + 8 * i);
-          v53 = [v6 storeItemMetadataForItemIdentifier:v52];
+          v53 = [responseCopy storeItemMetadataForItemIdentifier:v52];
           if (v53)
           {
             v54 = 1;
@@ -896,17 +896,17 @@ LABEL_44:
       v55 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
       {
-        v56 = [v6 performanceMetrics];
-        v57 = [v56 urlMetrics];
-        v58 = [v57 valueForKey:@"jingleCorrelationKey"];
-        v59 = [v58 msv_compactDescription];
-        v60 = [v47 msv_compactDescription];
+        performanceMetrics = [responseCopy performanceMetrics];
+        urlMetrics = [performanceMetrics urlMetrics];
+        v58 = [urlMetrics valueForKey:@"jingleCorrelationKey"];
+        msv_compactDescription2 = [v58 msv_compactDescription];
+        msv_compactDescription3 = [v47 msv_compactDescription];
         *buf = 134218498;
-        v80 = self;
+        selfCopy4 = self;
         v81 = 2114;
-        v82 = v59;
+        v82 = msv_compactDescription2;
         v83 = 2114;
-        v84 = v60;
+        v84 = msv_compactDescription3;
         _os_log_impl(&dword_1C5C61000, v55, OS_LOG_TYPE_ERROR, "[PIA] %p marking items as failed [missing from response] correlationKey=%{public}@ identifiers=[%{public}@]", buf, 0x20u);
       }
 
@@ -918,8 +918,8 @@ LABEL_44:
 LABEL_43:
       v61 = MEMORY[0x1E69E4648];
       performanceMetrics = self->_performanceMetrics;
-      v63 = [v6 performanceMetrics];
-      v64 = [v61 aggregatedMetricsFromAggregatedMetrics:performanceMetrics addingAggregatedMetrics:v63];
+      performanceMetrics2 = [responseCopy performanceMetrics];
+      v64 = [v61 aggregatedMetricsFromAggregatedMetrics:performanceMetrics addingAggregatedMetrics:performanceMetrics2];
       v65 = self->_performanceMetrics;
       self->_performanceMetrics = v64;
 
@@ -933,55 +933,55 @@ LABEL_43:
   v25 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
-    v26 = [v6 lastBatchItemIdentifiers];
-    v27 = [v26 msv_compactDescription];
+    lastBatchItemIdentifiers2 = [responseCopy lastBatchItemIdentifiers];
+    msv_compactDescription4 = [lastBatchItemIdentifiers2 msv_compactDescription];
     *buf = 134218498;
-    v80 = self;
+    selfCopy4 = self;
     v81 = 2048;
-    v82 = v6;
+    v82 = responseCopy;
     v83 = 2114;
-    v84 = v27;
+    v84 = msv_compactDescription4;
     _os_log_impl(&dword_1C5C61000, v25, OS_LOG_TYPE_ERROR, "[PIA] %p Handling paginated response=%p marking remaining IDs as failed [EnvironmentMonitor.isRemoteServerReachable returned NO] failedIDs=%{public}@", buf, 0x20u);
   }
 
   v28 = MEMORY[0x1E69E4648];
   v29 = self->_performanceMetrics;
-  v30 = [v6 performanceMetrics];
-  v31 = [v28 aggregatedMetricsFromAggregatedMetrics:v29 addingAggregatedMetrics:v30];
+  performanceMetrics3 = [responseCopy performanceMetrics];
+  v31 = [v28 aggregatedMetricsFromAggregatedMetrics:v29 addingAggregatedMetrics:performanceMetrics3];
   v32 = self->_performanceMetrics;
   self->_performanceMetrics = v31;
 
-  v33 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:56 underlyingError:v71 debugDescription:@"EnvironmentMonitor.isRemoteServerReachable returned NO"];
+  v33 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:56 underlyingError:errorCopy debugDescription:@"EnvironmentMonitor.isRemoteServerReachable returned NO"];
   accumulationError = self->_accumulationError;
   self->_accumulationError = v33;
 
-  v35 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_accumulatorResult];
+  _locked_accumulatorResult = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_accumulatorResult];
 LABEL_45:
   v70[2]();
 
-  return v35;
+  return _locked_accumulatorResult;
 }
 
-- (BOOL)handleContainerPayload:(id)a3 itemPayload:(id)a4 userIdentity:(id)a5
+- (BOOL)handleContainerPayload:(id)payload itemPayload:(id)itemPayload userIdentity:(id)identity
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  payloadCopy = payload;
+  itemPayloadCopy = itemPayload;
+  identityCopy = identity;
   v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 134218496;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = [v8 length];
+    v18 = [payloadCopy length];
     v19 = 2048;
-    v20 = [v9 length];
+    v20 = [itemPayloadCopy length];
     _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "[PIA] %p importing container/item payloads [] containerPayload.length=%{bytes}lu itemPayload.length=%{bytes}lu", &v15, 0x20u);
   }
 
-  v12 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _importSODPayloadData:v8 userIdentity:v10];
-  v13 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _importSODPayloadData:v9 userIdentity:v10];
+  v12 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _importSODPayloadData:payloadCopy userIdentity:identityCopy];
+  v13 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _importSODPayloadData:itemPayloadCopy userIdentity:identityCopy];
 
   if (v12 || v13)
   {
@@ -991,13 +991,13 @@ LABEL_45:
   return v12 || v13;
 }
 
-- (BOOL)_importSODPayloadData:(id)a3 userIdentity:(id)a4
+- (BOOL)_importSODPayloadData:(id)data userIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  dataCopy = data;
+  identityCopy = identity;
+  if ([dataCopy length])
   {
-    v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v6 options:0 error:0];
+    v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:0];
     if (!v8 || !_NSIsNSDictionary())
     {
       v14 = 0;
@@ -1036,10 +1036,10 @@ LABEL_16:
     if (v18)
     {
       v19 = v18;
-      [v18 setUserIdentity:v7];
+      [v18 setUserIdentity:identityCopy];
       v20 = [(MPServerObjectDatabase *)self->_sod importObjectsFromRequest:v19 options:0 error:0];
-      v21 = [v20 error];
-      v14 = v21 == 0;
+      error = [v20 error];
+      v14 = error == 0;
 
       v8 = v9;
 LABEL_15:
@@ -1059,11 +1059,11 @@ LABEL_17:
   return v14;
 }
 
-- (MPCModelStorePlaybackItemsRequestAccumulatorResult)handleResponse:(id)a3 error:(id)a4
+- (MPCModelStorePlaybackItemsRequestAccumulatorResult)handleResponse:(id)response error:(id)error
 {
   v92 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v78 = a4;
+  responseCopy = response;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1072,52 +1072,52 @@ LABEL_17:
   aBlock[4] = self;
   v77 = _Block_copy(aBlock);
   v7 = *MEMORY[0x1E696A978];
-  v8 = [v78 msv_errorByUnwrappingDomain:*MEMORY[0x1E696A978] code:-1009];
-  LOBYTE(a4) = v8 == 0;
+  v8 = [errorCopy msv_errorByUnwrappingDomain:*MEMORY[0x1E696A978] code:-1009];
+  LOBYTE(error) = v8 == 0;
 
-  if (a4 & 1) != 0 || ([MEMORY[0x1E69E4428] sharedMonitor], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isRemoteServerReachable"), v9, (v10))
+  if (error & 1) != 0 || ([MEMORY[0x1E69E4428] sharedMonitor], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isRemoteServerReachable"), v9, (v10))
   {
-    v76 = [v6 lastBatchStoreItemDictionaries];
-    if ([v76 count])
+    lastBatchStoreItemDictionaries = [responseCopy lastBatchStoreItemDictionaries];
+    if ([lastBatchStoreItemDictionaries count])
     {
       v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v76 count];
-        v13 = [v6 requestItemIdentifiers];
-        v14 = [v13 msv_compactDescription];
+        v12 = [lastBatchStoreItemDictionaries count];
+        requestItemIdentifiers = [responseCopy requestItemIdentifiers];
+        msv_compactDescription = [requestItemIdentifiers msv_compactDescription];
         *buf = 134218754;
-        v87 = self;
+        selfCopy7 = self;
         v88 = 2048;
-        v89 = v6;
+        v89 = responseCopy;
         v90 = 2048;
         *v91 = v12;
         *&v91[8] = 2112;
-        *&v91[10] = v14;
+        *&v91[10] = msv_compactDescription;
         _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "[PIA] %p Importing response %p storeDictionaryCount=%ld requestedIDs=[%@]", buf, 0x2Au);
       }
 
-      v15 = [objc_alloc(MEMORY[0x1E6970968]) initWithPayload:v76];
+      v15 = [objc_alloc(MEMORY[0x1E6970968]) initWithPayload:lastBatchStoreItemDictionaries];
       v16 = self->_request;
-      v17 = [(MPCModelStorePlaybackItemsRequest *)v16 playbackRequestEnvironment];
-      v18 = [v17 delegationProperties];
-      v19 = [v18 storeAccountID];
+      playbackRequestEnvironment = [(MPCModelStorePlaybackItemsRequest *)v16 playbackRequestEnvironment];
+      delegationProperties = [playbackRequestEnvironment delegationProperties];
+      storeAccountID = [delegationProperties storeAccountID];
 
-      if (v19)
+      if (storeAccountID)
       {
         v20 = MEMORY[0x1E69E4680];
-        v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v19];
-        v22 = [v20 specificAccountWithDSID:v21];
-        v23 = [v22 identityAllowingDelegation:1];
+        playbackRequestEnvironment2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:storeAccountID];
+        v22 = [v20 specificAccountWithDSID:playbackRequestEnvironment2];
+        userIdentity = [v22 identityAllowingDelegation:1];
       }
 
       else
       {
-        v21 = [(MPCModelStorePlaybackItemsRequest *)v16 playbackRequestEnvironment];
-        v23 = [v21 userIdentity];
+        playbackRequestEnvironment2 = [(MPCModelStorePlaybackItemsRequest *)v16 playbackRequestEnvironment];
+        userIdentity = [playbackRequestEnvironment2 userIdentity];
       }
 
-      [v15 setUserIdentity:v23];
+      [v15 setUserIdentity:userIdentity];
       sod = self->_sod;
       v83 = 0;
       v36 = [(MPServerObjectDatabase *)sod importObjectsFromRequest:v15 options:0 error:&v83];
@@ -1129,9 +1129,9 @@ LABEL_17:
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
           *buf = 134218498;
-          v87 = self;
+          selfCopy7 = self;
           v88 = 2048;
-          v89 = v6;
+          v89 = responseCopy;
           v90 = 2114;
           *v91 = v38;
           _os_log_impl(&dword_1C5C61000, v39, OS_LOG_TYPE_ERROR, "[PIA] %p Failed to import response %p. error=%{public}@", buf, 0x20u);
@@ -1141,16 +1141,16 @@ LABEL_17:
       [(NSMutableArray *)self->_importResults addObject:v36];
     }
 
-    if (v78)
+    if (errorCopy)
     {
-      v40 = v78;
+      v40 = errorCopy;
       v41 = [v40 msv_errorByUnwrappingDomain:v7];
-      v42 = [v41 code];
+      code = [v41 code];
 
       v43 = [v40 msv_errorByUnwrappingDomain:*MEMORY[0x1E69E4198]];
-      v44 = [v43 code];
+      code2 = [v43 code];
 
-      if ((v42 + 1009) <= 0xA && ((1 << (v42 - 15)) & 0x501) != 0)
+      if ((code + 1009) <= 0xA && ((1 << (code - 15)) & 0x501) != 0)
       {
         v45 = 0;
       }
@@ -1158,9 +1158,9 @@ LABEL_17:
       else
       {
         v45 = 0;
-        if (v44 != -7100 && v44 != -7007)
+        if (code2 != -7100 && code2 != -7007)
         {
-          v45 = v44 != -7003;
+          v45 = code2 != -7003;
         }
       }
 
@@ -1168,9 +1168,9 @@ LABEL_17:
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218754;
-        v87 = self;
+        selfCopy7 = self;
         v88 = 2048;
-        v89 = v6;
+        v89 = responseCopy;
         v90 = 1024;
         *v91 = v45;
         *&v91[4] = 2114;
@@ -1184,13 +1184,13 @@ LABEL_17:
       v45 = 1;
     }
 
-    v47 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v81 = 0u;
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v48 = [v6 lastBatchItemIdentifiers];
-    v49 = [v48 countByEnumeratingWithState:&v79 objects:v85 count:16];
+    lastBatchItemIdentifiers = [responseCopy lastBatchItemIdentifiers];
+    v49 = [lastBatchItemIdentifiers countByEnumeratingWithState:&v79 objects:v85 count:16];
     if (v49)
     {
       v50 = *v80;
@@ -1200,11 +1200,11 @@ LABEL_17:
         {
           if (*v80 != v50)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(lastBatchItemIdentifiers);
           }
 
           v52 = *(*(&v79 + 1) + 8 * i);
-          v53 = [v6 storeItemMetadataForItemIdentifier:v52];
+          v53 = [responseCopy storeItemMetadataForItemIdentifier:v52];
           v54 = !v45;
           if (v53)
           {
@@ -1213,73 +1213,73 @@ LABEL_17:
 
           if ((v54 & 1) == 0)
           {
-            [v47 addObject:v52];
+            [array addObject:v52];
           }
         }
 
-        v49 = [v48 countByEnumeratingWithState:&v79 objects:v85 count:16];
+        v49 = [lastBatchItemIdentifiers countByEnumeratingWithState:&v79 objects:v85 count:16];
       }
 
       while (v49);
     }
 
-    if ([v47 count])
+    if ([array count])
     {
       v55 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
       {
-        v56 = [(ICURLAggregatedPerformanceMetrics *)self->_performanceMetrics urlMetrics];
-        v57 = [v56 valueForKey:@"jingleCorrelationKey"];
-        v58 = [v57 msv_compactDescription];
-        v59 = [v47 msv_compactDescription];
+        urlMetrics = [(ICURLAggregatedPerformanceMetrics *)self->_performanceMetrics urlMetrics];
+        v57 = [urlMetrics valueForKey:@"jingleCorrelationKey"];
+        msv_compactDescription2 = [v57 msv_compactDescription];
+        msv_compactDescription3 = [array msv_compactDescription];
         *buf = 134218498;
-        v87 = self;
+        selfCopy7 = self;
         v88 = 2114;
-        v89 = v58;
+        v89 = msv_compactDescription2;
         v90 = 2114;
-        *v91 = v59;
+        *v91 = msv_compactDescription3;
         _os_log_impl(&dword_1C5C61000, v55, OS_LOG_TYPE_ERROR, "[PIA] %p marking items as failed [missing from response] correlationKey=%{public}@ identifiers=[%{public}@]", buf, 0x20u);
       }
 
-      [(NSMutableSet *)self->_failedStoreIDs addObjectsFromArray:v47];
+      [(NSMutableSet *)self->_failedStoreIDs addObjectsFromArray:array];
     }
 
     [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_resolveContentDescriptorsUsingServerObjectDatabase];
-    if ([v6 isFinalResponse])
+    if ([responseCopy isFinalResponse])
     {
       v60 = MEMORY[0x1E695DFA8];
-      v61 = [v6 requestItemIdentifiers];
-      v62 = [v60 setWithArray:v61];
+      requestItemIdentifiers2 = [responseCopy requestItemIdentifiers];
+      v62 = [v60 setWithArray:requestItemIdentifiers2];
 
       v63 = [(NSMutableOrderedSet *)self->_pendingStoreIDs set];
       [v62 intersectSet:v63];
 
-      v64 = [v62 allObjects];
-      v65 = v64;
-      if (v45 && [v64 count])
+      allObjects = [v62 allObjects];
+      v65 = allObjects;
+      if (v45 && [allObjects count])
       {
         v66 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         v67 = os_log_type_enabled(v66, OS_LOG_TYPE_ERROR);
-        if (v78)
+        if (errorCopy)
         {
           if (v67)
           {
-            v68 = [v65 msv_compactDescription];
+            msv_compactDescription4 = [v65 msv_compactDescription];
             *buf = 134218242;
-            v87 = self;
+            selfCopy7 = self;
             v88 = 2114;
-            v89 = v68;
+            v89 = msv_compactDescription4;
             _os_log_impl(&dword_1C5C61000, v66, OS_LOG_TYPE_ERROR, "[PIA] %p Permanently failed items: [fatal final response] identifiers=[%{public}@]", buf, 0x16u);
           }
         }
 
         else if (v67)
         {
-          v69 = [v65 msv_compactDescription];
+          msv_compactDescription5 = [v65 msv_compactDescription];
           *buf = 134218242;
-          v87 = self;
+          selfCopy7 = self;
           v88 = 2114;
-          v89 = v69;
+          v89 = msv_compactDescription5;
           _os_log_impl(&dword_1C5C61000, v66, OS_LOG_TYPE_ERROR, "[PIA] %p Permanently failed items: [final response succeeded] identifiers=[%{public}@]", buf, 0x16u);
         }
 
@@ -1291,12 +1291,12 @@ LABEL_17:
 
     v70 = MEMORY[0x1E69E4648];
     performanceMetrics = self->_performanceMetrics;
-    v72 = [v6 performanceMetrics];
-    v73 = [v70 aggregatedMetricsFromAggregatedMetrics:performanceMetrics addingAggregatedMetrics:v72];
+    performanceMetrics = [responseCopy performanceMetrics];
+    v73 = [v70 aggregatedMetricsFromAggregatedMetrics:performanceMetrics addingAggregatedMetrics:performanceMetrics];
     v74 = self->_performanceMetrics;
     self->_performanceMetrics = v73;
 
-    v34 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_accumulatorResult];
+    _locked_accumulatorResult = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_accumulatorResult];
   }
 
   else
@@ -1304,34 +1304,34 @@ LABEL_17:
     v24 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v25 = [v6 requestItemIdentifiers];
-      v26 = [v25 msv_compactDescription];
+      requestItemIdentifiers3 = [responseCopy requestItemIdentifiers];
+      msv_compactDescription6 = [requestItemIdentifiers3 msv_compactDescription];
       *buf = 134218498;
-      v87 = self;
+      selfCopy7 = self;
       v88 = 2048;
-      v89 = v6;
+      v89 = responseCopy;
       v90 = 2114;
-      *v91 = v26;
+      *v91 = msv_compactDescription6;
       _os_log_impl(&dword_1C5C61000, v24, OS_LOG_TYPE_ERROR, "[PIA] %p Handling SP response=%p marking remaining IDs as failed [EnvironmentMonitor.isRemoteServerReachable returned NO] failedIDs=%{public}@", buf, 0x20u);
     }
 
     v27 = MEMORY[0x1E69E4648];
     v28 = self->_performanceMetrics;
-    v29 = [v6 performanceMetrics];
-    v30 = [v27 aggregatedMetricsFromAggregatedMetrics:v28 addingAggregatedMetrics:v29];
+    performanceMetrics2 = [responseCopy performanceMetrics];
+    v30 = [v27 aggregatedMetricsFromAggregatedMetrics:v28 addingAggregatedMetrics:performanceMetrics2];
     v31 = self->_performanceMetrics;
     self->_performanceMetrics = v30;
 
-    v32 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:56 underlyingError:v78 debugDescription:@"EnvironmentMonitor.isRemoteServerReachable returned NO"];
+    v32 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:56 underlyingError:errorCopy debugDescription:@"EnvironmentMonitor.isRemoteServerReachable returned NO"];
     accumulationError = self->_accumulationError;
     self->_accumulationError = v32;
 
-    v34 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_accumulatorResult];
+    _locked_accumulatorResult = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self _locked_accumulatorResult];
   }
 
   v77[2]();
 
-  return v34;
+  return _locked_accumulatorResult;
 }
 
 - (MPCModelStorePlaybackItemsRequestAccumulatorResult)_locked_accumulatorResult
@@ -1353,14 +1353,14 @@ LABEL_17:
 
     else
     {
-      v5 = [(MPCModelStorePlaybackItemsRequest *)self->_request playbackPrioritizedIndexPaths];
-      if (![v5 count])
+      playbackPrioritizedIndexPaths = [(MPCModelStorePlaybackItemsRequest *)self->_request playbackPrioritizedIndexPaths];
+      if (![playbackPrioritizedIndexPaths count])
       {
         v6 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
         v30[0] = v6;
         v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
 
-        v5 = v7;
+        playbackPrioritizedIndexPaths = v7;
       }
 
       v15[0] = MEMORY[0x1E69E9820];
@@ -1369,7 +1369,7 @@ LABEL_17:
       v15[3] = &unk_1E8233990;
       v15[4] = self;
       v15[5] = &v16;
-      [v5 enumerateObjectsUsingBlock:v15];
+      [playbackPrioritizedIndexPaths enumerateObjectsUsingBlock:v15];
     }
 
     v8 = [(NSMutableOrderedSet *)self->_pendingStoreIDs count];
@@ -1380,9 +1380,9 @@ LABEL_17:
       v10 = v8 == 0;
       v11 = *(v17 + 24);
       v12 = [(NSMutableOrderedSet *)self->_pendingStoreIDs count];
-      v13 = [(NSMutableOrderedSet *)self->_pendingStoreIDs array];
+      array = [(NSMutableOrderedSet *)self->_pendingStoreIDs array];
       *buf = 134219010;
-      v21 = self;
+      selfCopy = self;
       v22 = 1024;
       v23 = v10;
       v24 = 1024;
@@ -1390,7 +1390,7 @@ LABEL_17:
       v26 = 2048;
       v27 = v12;
       v28 = 2114;
-      v29 = v13;
+      v29 = array;
       _os_log_impl(&dword_1C5C61000, v9, OS_LOG_TYPE_DEFAULT, "[PIA] %p computed accumulatorResult didFinishEntireRequest=%{BOOL}u didFinishPrioritizedBatch=%{BOOL}u pendingStoreIDs=(:%llu)[%{public}@]", buf, 0x2Cu);
     }
 
@@ -1403,18 +1403,18 @@ LABEL_17:
 
 - (MPCModelStorePlaybackItemsRequestAccumulatorResult)accumulatorResult
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_lock);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __73___MPCModelStorePlaybackItemsRequestAccumulator_Legacy_accumulatorResult__block_invoke;
   aBlock[3] = &unk_1E8239298;
-  aBlock[4] = v2;
+  aBlock[4] = selfCopy;
   v3 = _Block_copy(aBlock);
-  LOWORD(v2) = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)v2 _locked_accumulatorResult];
+  LOWORD(selfCopy) = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)selfCopy _locked_accumulatorResult];
   v3[2](v3);
 
-  return v2;
+  return selfCopy;
 }
 
 - (MPSectionedCollection)unpersonalizedContentDescriptors
@@ -1489,38 +1489,38 @@ LABEL_6:
 
 - (id)accumulatedResults
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"MPCModelStorePlaybackItemsRequestAccumulator_Legacy.m" lineNumber:287 description:@"Cannot produce accumulated result from legacy PIA"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPCModelStorePlaybackItemsRequestAccumulator_Legacy.m" lineNumber:287 description:@"Cannot produce accumulated result from legacy PIA"];
 
   return 0;
 }
 
-- (_MPCModelStorePlaybackItemsRequestAccumulator_Legacy)initWithRequest:(id)a3 serverObjectDatabase:(id)a4
+- (_MPCModelStorePlaybackItemsRequestAccumulator_Legacy)initWithRequest:(id)request serverObjectDatabase:(id)database
 {
   v73 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  databaseCopy = database;
   v71.receiver = self;
   v71.super_class = _MPCModelStorePlaybackItemsRequestAccumulator_Legacy;
   v8 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)&v71 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [requestCopy copy];
     request = v8->_request;
     v8->_request = v9;
 
-    v11 = [(MPCModelStorePlaybackItemsRequest *)v8->_request sectionedModelObjects];
-    v8->_requestUsesSectionedModelObjects = v11 != 0;
+    sectionedModelObjects = [(MPCModelStorePlaybackItemsRequest *)v8->_request sectionedModelObjects];
+    v8->_requestUsesSectionedModelObjects = sectionedModelObjects != 0;
 
-    objc_storeStrong(&v8->_sod, a4);
+    objc_storeStrong(&v8->_sod, database);
     v12 = [MEMORY[0x1E695DFA8] set];
     failedStoreIDs = v8->_failedStoreIDs;
     v8->_failedStoreIDs = v12;
 
     v8->_lock._os_unfair_lock_opaque = 0;
     v14 = MSVNanoIDCreateWithCharacters();
-    v15 = [v14 UTF8String];
-    v16 = (v15[1] << 16) | (*v15 << 24) | (v15[2] << 8) | v15[3];
+    uTF8String = [v14 UTF8String];
+    v16 = (uTF8String[1] << 16) | (*uTF8String << 24) | (uTF8String[2] << 8) | uTF8String[3];
 
     v8->_piaTag = v16;
     v17 = objc_alloc_init(MEMORY[0x1E696ADC8]);
@@ -1529,17 +1529,17 @@ LABEL_6:
 
     [(NSOperationQueue *)v8->_operationQueue setQualityOfService:25];
     [(NSOperationQueue *)v8->_operationQueue setMaxConcurrentOperationCount:1];
-    v19 = [MEMORY[0x1E6970920] sharedRestrictionsMonitor];
-    v8->_allowsExplicitContent = [v19 allowsExplicitContent];
+    mEMORY[0x1E6970920] = [MEMORY[0x1E6970920] sharedRestrictionsMonitor];
+    v8->_allowsExplicitContent = [mEMORY[0x1E6970920] allowsExplicitContent];
 
-    v20 = [v6 playbackRequestEnvironment];
-    v21 = [v20 delegationProperties];
-    v22 = [v21 storeAccountID];
+    playbackRequestEnvironment = [requestCopy playbackRequestEnvironment];
+    delegationProperties = [playbackRequestEnvironment delegationProperties];
+    storeAccountID = [delegationProperties storeAccountID];
 
-    if (v22)
+    if (storeAccountID)
     {
       v23 = &v73 + 1;
-      quot = v22;
+      quot = storeAccountID;
       do
       {
         v25 = lldiv(quot, 10);
@@ -1560,7 +1560,7 @@ LABEL_6:
       }
 
       while (v25.quot);
-      if (v22 < 0)
+      if (storeAccountID < 0)
       {
         *(v23 - 2) = 45;
         v27 = (v23 - 2);
@@ -1573,23 +1573,23 @@ LABEL_6:
 
     else
     {
-      v30 = [v6 playbackRequestEnvironment];
-      personID = [v30 userIdentity];
+      playbackRequestEnvironment2 = [requestCopy playbackRequestEnvironment];
+      personID = [playbackRequestEnvironment2 userIdentity];
 
-      v31 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-      v32 = [v31 DSIDForUserIdentity:personID outError:0];
+      defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+      v32 = [defaultIdentityStore DSIDForUserIdentity:personID outError:0];
 
       if (personID && v32)
       {
-        v33 = [v32 longLongValue];
-        if (v33)
+        longLongValue = [v32 longLongValue];
+        if (longLongValue)
         {
-          v34 = v33;
+          v34 = longLongValue;
           v35 = &v73 + 1;
           do
           {
-            v36 = lldiv(v33, 10);
-            v33 = v36.quot;
+            v36 = lldiv(longLongValue, 10);
+            longLongValue = v36.quot;
             if (v36.rem >= 0)
             {
               LOBYTE(v37) = v36.rem;
@@ -1624,8 +1624,8 @@ LABEL_6:
         v8->_personID = &v39->isa;
 
         v43 = MEMORY[0x1E6970548];
-        v44 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-        v41 = [v43 userMonitorWithUserIdentity:personID fromUserIdentityStore:v44];
+        defaultIdentityStore2 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+        v41 = [v43 userMonitorWithUserIdentity:personID fromUserIdentityStore:defaultIdentityStore2];
 
         if ([MEMORY[0x1E6970538] isCurrentDeviceValidHomeAccessory] && v41)
         {
@@ -1645,13 +1645,13 @@ LABEL_6:
     requestPropertySet = v8->_requestPropertySet;
     v8->_requestPropertySet = v45;
 
-    v47 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     importResults = v8->_importResults;
-    v8->_importResults = v47;
+    v8->_importResults = array;
 
-    v49 = [(MPCModelStorePlaybackItemsRequest *)v8->_request playbackRequestEnvironment];
-    v50 = [v49 delegationProperties];
-    v51 = v50 == 0;
+    playbackRequestEnvironment3 = [(MPCModelStorePlaybackItemsRequest *)v8->_request playbackRequestEnvironment];
+    delegationProperties2 = [playbackRequestEnvironment3 delegationProperties];
+    v51 = delegationProperties2 == 0;
 
     v8->_defaultLibraryPersonalizationStyle = v51;
     v8->_unknownEndpointLibraryPersonalizationStyle = 2 * v51;
@@ -1661,29 +1661,29 @@ LABEL_6:
 
     if (v8->_requestUsesSectionedModelObjects)
     {
-      v54 = [(MPCModelStorePlaybackItemsRequest *)v8->_request sectionedModelObjects];
+      sectionedModelObjects2 = [(MPCModelStorePlaybackItemsRequest *)v8->_request sectionedModelObjects];
       v68[0] = MEMORY[0x1E69E9820];
       v68[1] = 3221225472;
       v68[2] = __93___MPCModelStorePlaybackItemsRequestAccumulator_Legacy_initWithRequest_serverObjectDatabase___block_invoke;
       v68[3] = &unk_1E8233918;
       v69 = v8;
-      v70 = v54;
-      v55 = v54;
-      [v55 enumerateSectionsUsingBlock:v68];
+      v70 = sectionedModelObjects2;
+      storeIDs = sectionedModelObjects2;
+      [storeIDs enumerateSectionsUsingBlock:v68];
     }
 
     else
     {
       v56 = v8->_progressiveContentDescriptors;
-      v57 = [MEMORY[0x1E696AFB0] UUID];
-      [(MPMutableSectionedCollection *)v56 appendSection:v57];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      [(MPMutableSectionedCollection *)v56 appendSection:uUID];
 
       v66 = 0u;
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v55 = [(MPCModelStorePlaybackItemsRequest *)v8->_request storeIDs];
-      v58 = [v55 countByEnumeratingWithState:&v64 objects:v72 count:16];
+      storeIDs = [(MPCModelStorePlaybackItemsRequest *)v8->_request storeIDs];
+      v58 = [storeIDs countByEnumeratingWithState:&v64 objects:v72 count:16];
       if (v58)
       {
         v59 = v58;
@@ -1694,14 +1694,14 @@ LABEL_6:
           {
             if (*v65 != v60)
             {
-              objc_enumerationMutation(v55);
+              objc_enumerationMutation(storeIDs);
             }
 
             v62 = _MPCCreateIdentifiersForOpaqueID(*(*(&v64 + 1) + 8 * i), v8->_personID, 1);
             [(MPMutableSectionedCollection *)v8->_progressiveContentDescriptors appendItem:v62];
           }
 
-          v59 = [v55 countByEnumeratingWithState:&v64 objects:v72 count:16];
+          v59 = [storeIDs countByEnumeratingWithState:&v64 objects:v72 count:16];
         }
 
         while (v59);
@@ -1714,12 +1714,12 @@ LABEL_6:
   return v8;
 }
 
-- (_MPCModelStorePlaybackItemsRequestAccumulator_Legacy)initWithRequest:(id)a3
+- (_MPCModelStorePlaybackItemsRequestAccumulator_Legacy)initWithRequest:(id)request
 {
   v4 = MEMORY[0x1E6970950];
-  v5 = a3;
-  v6 = [v4 sharedServerObjectDatabase];
-  v7 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self initWithRequest:v5 serverObjectDatabase:v6];
+  requestCopy = request;
+  sharedServerObjectDatabase = [v4 sharedServerObjectDatabase];
+  v7 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Legacy *)self initWithRequest:requestCopy serverObjectDatabase:sharedServerObjectDatabase];
 
   return v7;
 }

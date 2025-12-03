@@ -1,14 +1,14 @@
 @interface FLDaemon
-+ (id)daemonWithErrorHandler:(id)a3;
++ (id)daemonWithErrorHandler:(id)handler;
 + (id)sharedInstance;
-- (FLDaemon)daemonWithErrorHandler:(id)a3;
+- (FLDaemon)daemonWithErrorHandler:(id)handler;
 - (FLDaemon)init;
 - (id)connection;
 - (id)remoteObjectInterface;
-- (id)synchronousDaemonWithErrorHandler:(id)a3;
+- (id)synchronousDaemonWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidateConnection;
-- (void)setDaemonXPCEndpoint:(id)a3;
+- (void)setDaemonXPCEndpoint:(id)endpoint;
 @end
 
 @implementation FLDaemon
@@ -47,15 +47,15 @@
     self->_conn = v6;
 
     v8 = self->_conn;
-    v9 = [(FLDaemon *)self remoteObjectInterface];
-    [(NSXPCConnection *)v8 setRemoteObjectInterface:v9];
+    remoteObjectInterface = [(FLDaemon *)self remoteObjectInterface];
+    [(NSXPCConnection *)v8 setRemoteObjectInterface:remoteObjectInterface];
 
     v16[0] = 0;
     v16[1] = v16;
     v16[2] = 0x3032000000;
     v16[3] = __Block_byref_object_copy_;
     v16[4] = __Block_byref_object_dispose_;
-    v17 = self;
+    selfCopy = self;
     v10 = self->_conn;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -116,11 +116,11 @@ uint64_t __26__FLDaemon_sharedInstance__block_invoke()
   return v2;
 }
 
-+ (id)daemonWithErrorHandler:(id)a3
++ (id)daemonWithErrorHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[FLDaemon sharedInstance];
-  v5 = [v4 daemonWithErrorHandler:v3];
+  v5 = [v4 daemonWithErrorHandler:handlerCopy];
 
   return v5;
 }
@@ -178,14 +178,14 @@ uint64_t __22__FLDaemon_connection__block_invoke_6(uint64_t result)
   return result;
 }
 
-- (void)setDaemonXPCEndpoint:(id)a3
+- (void)setDaemonXPCEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   [(FLDaemon *)self invalidateConnection];
   [(NSLock *)self->_connLock lock];
   daemonXPCEndpoint = self->_daemonXPCEndpoint;
-  self->_daemonXPCEndpoint = v4;
-  v6 = v4;
+  self->_daemonXPCEndpoint = endpointCopy;
+  v6 = endpointCopy;
 
   [(NSLock *)self->_connLock unlock];
 }
@@ -202,20 +202,20 @@ uint64_t __22__FLDaemon_connection__block_invoke_6(uint64_t result)
   [(NSLock *)connLock unlock];
 }
 
-- (FLDaemon)daemonWithErrorHandler:(id)a3
+- (FLDaemon)daemonWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FLDaemon *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(FLDaemon *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)synchronousDaemonWithErrorHandler:(id)a3
+- (id)synchronousDaemonWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FLDaemon *)self connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(FLDaemon *)self connection];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

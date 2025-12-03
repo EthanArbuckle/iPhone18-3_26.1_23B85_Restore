@@ -1,33 +1,33 @@
 @interface ABCPersistentStoreController
 - (ABCPersistentStoreController)init;
-- (ABCPersistentStoreController)initWithName:(id)a3 inDirectory:(id)a4;
+- (ABCPersistentStoreController)initWithName:(id)name inDirectory:(id)directory;
 - (ABCPersistentStoreControllerDelegate)delegate;
 - (AnalyticsWorkspace)workspace;
-- (BOOL)prepareWorkspaceWithDirectoryPath:(id)a3;
+- (BOOL)prepareWorkspaceWithDirectoryPath:(id)path;
 - (id)caseStorageAnalytics;
 - (id)caseSummaryAnalytics;
 - (id)caseUsageAnalytics;
-- (id)prepareDataDirectoryWithName:(id)a3 containerPath:(id)a4;
+- (id)prepareDataDirectoryWithName:(id)name containerPath:(id)path;
 - (id)uploadRecordAnalytics;
-- (void)caseAttachmentsForAllDiagnosticCasesWithQueue:(id)a3 reply:(id)a4;
-- (void)caseAttachmentsForDiagnosticCaseIDs:(id)a3 queue:(id)a4 reply:(id)a5;
+- (void)caseAttachmentsForAllDiagnosticCasesWithQueue:(id)queue reply:(id)reply;
+- (void)caseAttachmentsForDiagnosticCaseIDs:(id)ds queue:(id)queue reply:(id)reply;
 - (void)cleanupDiagnosticCaseStorage;
 - (void)cleanupDiagnosticCaseSummary;
 - (void)cleanupDiagnosticCaseUsage;
 - (void)cleanupUploadRecord;
 - (void)removeAllCaseStorages;
-- (void)removeCaseStorageWithID:(id)a3;
-- (void)removeCaseStoragesWithCaseIDs:(id)a3;
-- (void)removeCaseStoragesWithUUIDs:(id)a3;
-- (void)save:(BOOL)a3;
+- (void)removeCaseStorageWithID:(id)d;
+- (void)removeCaseStoragesWithCaseIDs:(id)ds;
+- (void)removeCaseStoragesWithUUIDs:(id)ds;
+- (void)save:(BOOL)save;
 @end
 
 @implementation ABCPersistentStoreController
 
-- (ABCPersistentStoreController)initWithName:(id)a3 inDirectory:(id)a4
+- (ABCPersistentStoreController)initWithName:(id)name inDirectory:(id)directory
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  directoryCopy = directory;
   v20.receiver = self;
   v20.super_class = ABCPersistentStoreController;
   v8 = [(ABCPersistentStoreController *)&v20 init];
@@ -38,7 +38,7 @@
     storeQueue = v8->storeQueue;
     v8->storeQueue = v10;
 
-    v12 = [(ABCPersistentStoreController *)v8 prepareDataDirectoryWithName:v6 containerPath:v7];
+    v12 = [(ABCPersistentStoreController *)v8 prepareDataDirectoryWithName:nameCopy containerPath:directoryCopy];
     if ([v12 length])
     {
       v13 = v8->storeQueue;
@@ -92,27 +92,27 @@
   return v4;
 }
 
-- (id)prepareDataDirectoryWithName:(id)a3 containerPath:(id)a4
+- (id)prepareDataDirectoryWithName:(id)name containerPath:(id)path
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length])
+  nameCopy = name;
+  pathCopy = path;
+  if ([pathCopy length])
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    if (v5)
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if (nameCopy)
     {
-      v8 = [v6 stringByAppendingPathComponent:v5];
+      v8 = [pathCopy stringByAppendingPathComponent:nameCopy];
     }
 
     else
     {
-      v8 = v6;
+      v8 = pathCopy;
     }
 
     v10 = v8;
     v18 = 0;
-    v11 = [v7 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v18];
+    v11 = [defaultManager createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v18];
     v12 = v18;
     v13 = persistenceLogHandle();
     v14 = v13;
@@ -132,11 +132,11 @@
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v12 localizedFailureReason];
+        localizedFailureReason = [v12 localizedFailureReason];
         *buf = 138412546;
         v20 = v10;
         v21 = 2112;
-        v22 = v15;
+        v22 = localizedFailureReason;
         _os_log_impl(&dword_241804000, v14, OS_LOG_TYPE_ERROR, "Unable to create ABC data directory: %@ (%@)", buf, 0x16u);
       }
 
@@ -146,12 +146,12 @@
 
   else
   {
-    v7 = persistenceLogHandle();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    defaultManager = persistenceLogHandle();
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v20 = v6;
-      _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_ERROR, "Invalid container directory specified: %@", buf, 0xCu);
+      v20 = pathCopy;
+      _os_log_impl(&dword_241804000, defaultManager, OS_LOG_TYPE_ERROR, "Invalid container directory specified: %@", buf, 0xCu);
     }
 
     v9 = 0;
@@ -162,10 +162,10 @@
   return v9;
 }
 
-- (BOOL)prepareWorkspaceWithDirectoryPath:(id)a3
+- (BOOL)prepareWorkspaceWithDirectoryPath:(id)path
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   if (!self->tempWorkspace)
   {
     v5 = persistenceLogHandle();
@@ -176,7 +176,7 @@
     }
 
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v7 = [AnalyticsWorkspace workspaceWithName:@"autobugcapture" atPath:v4 objectModelName:@"AutoBugCapture" objectModelBundle:v6 useReadOnly:0];
+    v7 = [AnalyticsWorkspace workspaceWithName:@"autobugcapture" atPath:pathCopy objectModelName:@"AutoBugCapture" objectModelBundle:v6 useReadOnly:0];
     tempWorkspace = self->tempWorkspace;
     self->tempWorkspace = v7;
   }
@@ -189,8 +189,8 @@
     _os_log_impl(&dword_241804000, v9, OS_LOG_TYPE_DEFAULT, "Bootstrapping persistent store", buf, 2u);
   }
 
-  v10 = [(AnalyticsWorkspace *)self->tempWorkspace save];
-  if (v10)
+  save = [(AnalyticsWorkspace *)self->tempWorkspace save];
+  if (save)
   {
     objc_storeStrong(&self->_workspace, self->tempWorkspace);
     self->workspaceReady = 1;
@@ -201,10 +201,10 @@
       _os_log_impl(&dword_241804000, v11, OS_LOG_TYPE_DEFAULT, "Workspace and persistent store is ready for use", buf, 2u);
     }
 
-    v12 = [(ABCPersistentStoreController *)self delegate];
+    delegate = [(ABCPersistentStoreController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [(__CFString *)v12 persistentStoreControllerReadyForUse:self];
+      [(__CFString *)delegate persistentStoreControllerReadyForUse:self];
     }
   }
 
@@ -212,19 +212,19 @@
   {
     if (prepareWorkspaceWithDirectoryPath__attempts < 2)
     {
-      v12 = &stru_285368168;
+      delegate = &stru_285368168;
     }
 
     else
     {
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@" (%ld attempts)", prepareWorkspaceWithDirectoryPath__attempts];
+      delegate = [MEMORY[0x277CCACA8] stringWithFormat:@" (%ld attempts)", prepareWorkspaceWithDirectoryPath__attempts];
     }
 
     v13 = persistenceLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v24 = v12;
+      v24 = delegate;
       _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_ERROR, "Workspace and persistent store failed to initialize.%@", buf, 0xCu);
     }
 
@@ -256,13 +256,13 @@
       block[2] = __66__ABCPersistentStoreController_prepareWorkspaceWithDirectoryPath___block_invoke;
       block[3] = &unk_278CF04F8;
       block[4] = self;
-      v22 = v4;
+      v22 = pathCopy;
       dispatch_after(v16, storeQueue, block);
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
-  return v10;
+  return save;
 }
 
 uint64_t __66__ABCPersistentStoreController_prepareWorkspaceWithDirectoryPath___block_invoke(uint64_t a1)
@@ -369,10 +369,10 @@ uint64_t __66__ABCPersistentStoreController_prepareWorkspaceWithDirectoryPath___
   return v3;
 }
 
-- (void)save:(BOOL)a3
+- (void)save:(BOOL)save
 {
   storeQueue = self->storeQueue;
-  if (a3)
+  if (save)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -575,20 +575,20 @@ void __51__ABCPersistentStoreController_cleanupUploadRecord__block_invoke(uint64
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)caseAttachmentsForAllDiagnosticCasesWithQueue:(id)a3 reply:(id)a4
+- (void)caseAttachmentsForAllDiagnosticCasesWithQueue:(id)queue reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  replyCopy = reply;
   storeQueue = self->storeQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__ABCPersistentStoreController_caseAttachmentsForAllDiagnosticCasesWithQueue_reply___block_invoke;
   block[3] = &unk_278CF21A8;
-  v12 = v6;
-  v13 = v7;
+  v12 = queueCopy;
+  v13 = replyCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = queueCopy;
+  v10 = replyCopy;
   dispatch_async(storeQueue, block);
 }
 
@@ -613,12 +613,12 @@ void __84__ABCPersistentStoreController_caseAttachmentsForAllDiagnosticCasesWith
   }
 }
 
-- (void)caseAttachmentsForDiagnosticCaseIDs:(id)a3 queue:(id)a4 reply:(id)a5
+- (void)caseAttachmentsForDiagnosticCaseIDs:(id)ds queue:(id)queue reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  dsCopy = ds;
+  queueCopy = queue;
+  replyCopy = reply;
+  if ([dsCopy count])
   {
     storeQueue = self->storeQueue;
     v12[0] = MEMORY[0x277D85DD0];
@@ -626,9 +626,9 @@ void __84__ABCPersistentStoreController_caseAttachmentsForAllDiagnosticCasesWith
     v12[2] = __80__ABCPersistentStoreController_caseAttachmentsForDiagnosticCaseIDs_queue_reply___block_invoke;
     v12[3] = &unk_278CF21D0;
     v12[4] = self;
-    v13 = v8;
-    v15 = v10;
-    v14 = v9;
+    v13 = dsCopy;
+    v15 = replyCopy;
+    v14 = queueCopy;
     dispatch_async(storeQueue, v12);
   }
 }
@@ -692,18 +692,18 @@ void __80__ABCPersistentStoreController_caseAttachmentsForDiagnosticCaseIDs_queu
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeCaseStoragesWithUUIDs:(id)a3
+- (void)removeCaseStoragesWithUUIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     storeQueue = self->storeQueue;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __60__ABCPersistentStoreController_removeCaseStoragesWithUUIDs___block_invoke;
     v6[3] = &unk_278CF04F8;
-    v7 = v4;
-    v8 = self;
+    v7 = dsCopy;
+    selfCopy = self;
     dispatch_async(storeQueue, v6);
   }
 }
@@ -749,10 +749,10 @@ void __60__ABCPersistentStoreController_removeCaseStoragesWithUUIDs___block_invo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeCaseStoragesWithCaseIDs:(id)a3
+- (void)removeCaseStoragesWithCaseIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     storeQueue = self->storeQueue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -760,7 +760,7 @@ void __60__ABCPersistentStoreController_removeCaseStoragesWithUUIDs___block_invo
     v6[2] = __62__ABCPersistentStoreController_removeCaseStoragesWithCaseIDs___block_invoke;
     v6[3] = &unk_278CF04F8;
     v6[4] = self;
-    v7 = v4;
+    v7 = dsCopy;
     dispatch_async(storeQueue, v6);
   }
 }
@@ -809,17 +809,17 @@ void __62__ABCPersistentStoreController_removeCaseStoragesWithCaseIDs___block_in
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeCaseStorageWithID:(id)a3
+- (void)removeCaseStorageWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   storeQueue = self->storeQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__ABCPersistentStoreController_removeCaseStorageWithID___block_invoke;
   v7[3] = &unk_278CF04F8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
   dispatch_async(storeQueue, v7);
 }
 

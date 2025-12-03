@@ -1,28 +1,28 @@
 @interface PXEditAssetDiagnostics
-- (PXEditAssetDiagnostics)initWithAsset:(id)a3 contentEditingInput:(id)a4 compositionController:(id)a5 originalComposition:(id)a6;
-- (id)_renameFileAt:(id)a3 usingPrefix:(id)a4;
-- (void)_renderAssetWithCompositionController:(id)a3 attachmentPrefix:(id)a4 scalePolicy:(id)a5 completion:(id)a6;
-- (void)collectDiagnosticsToTTRContainer:(id)a3;
-- (void)collectDiagnosticsWithOptions:(id)a3 completion:(id)a4;
+- (PXEditAssetDiagnostics)initWithAsset:(id)asset contentEditingInput:(id)input compositionController:(id)controller originalComposition:(id)composition;
+- (id)_renameFileAt:(id)at usingPrefix:(id)prefix;
+- (void)_renderAssetWithCompositionController:(id)controller attachmentPrefix:(id)prefix scalePolicy:(id)policy completion:(id)completion;
+- (void)collectDiagnosticsToTTRContainer:(id)container;
+- (void)collectDiagnosticsWithOptions:(id)options completion:(id)completion;
 - (void)deleteCollectedFiles;
 @end
 
 @implementation PXEditAssetDiagnostics
 
-- (id)_renameFileAt:(id)a3 usingPrefix:(id)a4
+- (id)_renameFileAt:(id)at usingPrefix:(id)prefix
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 lastPathComponent];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v6, v7];
+  atCopy = at;
+  prefixCopy = prefix;
+  lastPathComponent = [atCopy lastPathComponent];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", prefixCopy, lastPathComponent];
 
-  v9 = [v5 URLByDeletingLastPathComponent];
-  v10 = [v9 URLByAppendingPathComponent:v8];
+  uRLByDeletingLastPathComponent = [atCopy URLByDeletingLastPathComponent];
+  v10 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v8];
 
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v17 = 0;
-  v12 = [v11 moveItemAtURL:v5 toURL:v10 error:&v17];
+  v12 = [defaultManager moveItemAtURL:atCopy toURL:v10 error:&v17];
   v13 = v17;
 
   if (v12)
@@ -36,7 +36,7 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v19 = v5;
+      v19 = atCopy;
       v20 = 2112;
       v21 = v13;
       _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_ERROR, "Could not prefix URL: %@ - Error: %@", buf, 0x16u);
@@ -51,15 +51,15 @@
 - (void)deleteCollectedFiles
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(PXEditAssetDiagnostics *)self diagnosticsPackage];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  diagnosticsPackage = [(PXEditAssetDiagnostics *)self diagnosticsPackage];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __46__PXEditAssetDiagnostics_deleteCollectedFiles__block_invoke;
   aBlock[3] = &unk_1E773DF50;
-  v5 = v4;
+  v5 = diagnosticsPackage;
   v19 = v5;
-  v6 = v3;
+  v6 = defaultManager;
   v20 = v6;
   v7 = _Block_copy(aBlock);
   v7[2](v7, @"OriginalAssetURL");
@@ -113,25 +113,25 @@ void __46__PXEditAssetDiagnostics_deleteCollectedFiles__block_invoke(uint64_t a1
   }
 }
 
-- (void)collectDiagnosticsToTTRContainer:(id)a3
+- (void)collectDiagnosticsToTTRContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(PXEditAssetDiagnostics *)self diagnosticsPackage];
+  containerCopy = container;
+  diagnosticsPackage = [(PXEditAssetDiagnostics *)self diagnosticsPackage];
 
-  if (v5)
+  if (diagnosticsPackage)
   {
     NSLog(&cfstr_ThereIsNoNeedT.isa);
   }
 
-  v6 = [v4 beginCollectionOperationWithName:@"Edit Diagnostics Operation" timeout:180.0];
+  v6 = [containerCopy beginCollectionOperationWithName:@"Edit Diagnostics Operation" timeout:180.0];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__PXEditAssetDiagnostics_collectDiagnosticsToTTRContainer___block_invoke;
   v9[3] = &unk_1E7747D28;
   v10 = v6;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = containerCopy;
+  v7 = containerCopy;
   v8 = v6;
   [(PXEditAssetDiagnostics *)self collectDiagnosticsWithOptions:0 completion:v9];
 }
@@ -215,45 +215,45 @@ void __59__PXEditAssetDiagnostics_collectDiagnosticsToTTRContainer___block_invok
   }
 }
 
-- (void)_renderAssetWithCompositionController:(id)a3 attachmentPrefix:(id)a4 scalePolicy:(id)a5 completion:(id)a6
+- (void)_renderAssetWithCompositionController:(id)controller attachmentPrefix:(id)prefix scalePolicy:(id)policy completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  prefixCopy = prefix;
+  policyCopy = policy;
+  completionCopy = completion;
   v14 = MEMORY[0x1E69C4300];
-  v15 = [(PXEditAssetDiagnostics *)self contentEditingInput];
-  v16 = [(PXEditAssetDiagnostics *)self asset];
-  v17 = [v14 contentEditingOutputForContentEditingInput:v15 compositionController:v10 asset:v16 async:1 onlyChangingOriginalChoice:0];
+  contentEditingInput = [(PXEditAssetDiagnostics *)self contentEditingInput];
+  asset = [(PXEditAssetDiagnostics *)self asset];
+  v17 = [v14 contentEditingOutputForContentEditingInput:contentEditingInput compositionController:controllerCopy asset:asset async:1 onlyChangingOriginalChoice:0];
 
   v18 = objc_alloc_init(MEMORY[0x1E69C4308]);
   v19 = v18;
-  if (v12)
+  if (policyCopy)
   {
-    [v18 setScalePolicy:v12];
+    [v18 setScalePolicy:policyCopy];
   }
 
   else
   {
-    v20 = [MEMORY[0x1E69B3A88] oneToOneScalePolicy];
-    [v19 setScalePolicy:v20];
+    oneToOneScalePolicy = [MEMORY[0x1E69B3A88] oneToOneScalePolicy];
+    [v19 setScalePolicy:oneToOneScalePolicy];
   }
 
   [v19 setApplyVideoOrientationAsMetadata:1];
   v21 = MEMORY[0x1E69C4300];
-  v22 = [(PXEditAssetDiagnostics *)self renderQueue];
+  renderQueue = [(PXEditAssetDiagnostics *)self renderQueue];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __104__PXEditAssetDiagnostics__renderAssetWithCompositionController_attachmentPrefix_scalePolicy_completion___block_invoke;
   v27[3] = &unk_1E774AD10;
   v28 = v17;
-  v29 = self;
-  v30 = v11;
-  v31 = v13;
-  v23 = v13;
-  v24 = v11;
+  selfCopy = self;
+  v30 = prefixCopy;
+  v31 = completionCopy;
+  v23 = completionCopy;
+  v24 = prefixCopy;
   v25 = v17;
-  v26 = [v21 exportCompositionController:v10 forContentEditingOutput:v25 settings:v19 completionQueue:v22 completion:v27];
+  v26 = [v21 exportCompositionController:controllerCopy forContentEditingOutput:v25 settings:v19 completionQueue:renderQueue completion:v27];
 }
 
 void __104__PXEditAssetDiagnostics__renderAssetWithCompositionController_attachmentPrefix_scalePolicy_completion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -334,13 +334,13 @@ LABEL_18:
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)collectDiagnosticsWithOptions:(id)a3 completion:(id)a4
+- (void)collectDiagnosticsWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!optionsCopy)
   {
-    v6 = objc_alloc_init(PXEditAssetDiagnosticsOptions);
+    optionsCopy = objc_alloc_init(PXEditAssetDiagnosticsOptions);
   }
 
   diagnosticsQueue = self->_diagnosticsQueue;
@@ -349,10 +349,10 @@ LABEL_18:
   block[2] = __67__PXEditAssetDiagnostics_collectDiagnosticsWithOptions_completion___block_invoke;
   block[3] = &unk_1E774A0E0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = optionsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = optionsCopy;
   dispatch_async(diagnosticsQueue, block);
 }
 
@@ -629,30 +629,30 @@ uint64_t __67__PXEditAssetDiagnostics_collectDiagnosticsWithOptions_completion__
   return result;
 }
 
-- (PXEditAssetDiagnostics)initWithAsset:(id)a3 contentEditingInput:(id)a4 compositionController:(id)a5 originalComposition:(id)a6
+- (PXEditAssetDiagnostics)initWithAsset:(id)asset contentEditingInput:(id)input compositionController:(id)controller originalComposition:(id)composition
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  inputCopy = input;
+  controllerCopy = controller;
+  compositionCopy = composition;
   v28.receiver = self;
   v28.super_class = PXEditAssetDiagnostics;
   v14 = [(PXEditAssetDiagnostics *)&v28 init];
   asset = v14->_asset;
-  v14->_asset = v10;
-  v16 = v10;
+  v14->_asset = assetCopy;
+  v16 = assetCopy;
 
   contentEditingInput = v14->_contentEditingInput;
-  v14->_contentEditingInput = v11;
-  v18 = v11;
+  v14->_contentEditingInput = inputCopy;
+  v18 = inputCopy;
 
   compositionController = v14->_compositionController;
-  v14->_compositionController = v12;
-  v20 = v12;
+  v14->_compositionController = controllerCopy;
+  v20 = controllerCopy;
 
   originalComposition = v14->_originalComposition;
-  v14->_originalComposition = v13;
-  v22 = v13;
+  v14->_originalComposition = compositionCopy;
+  v22 = compositionCopy;
 
   v23 = dispatch_queue_create("PXEditAssetDiagnostics", 0);
   diagnosticsQueue = v14->_diagnosticsQueue;

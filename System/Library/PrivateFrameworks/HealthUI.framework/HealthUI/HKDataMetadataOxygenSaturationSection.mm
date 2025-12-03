@@ -1,34 +1,34 @@
 @interface HKDataMetadataOxygenSaturationSection
-- (HKDataMetadataOxygenSaturationSection)initWithSample:(id)a3 healthStore:(id)a4 displayTypeController:(id)a5 unitController:(id)a6 subsampleDelegate:(id)a7;
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4;
-- (id)displayNameForSampleType:(id)a3 displayTypeController:(id)a4;
-- (id)formattedHeartRateFromSample:(id)a3;
-- (id)heartRateFromSample:(id)a3;
+- (HKDataMetadataOxygenSaturationSection)initWithSample:(id)sample healthStore:(id)store displayTypeController:(id)controller unitController:(id)unitController subsampleDelegate:(id)delegate;
+- (id)cellForIndex:(unint64_t)index tableView:(id)view;
+- (id)displayNameForSampleType:(id)type displayTypeController:(id)controller;
+- (id)formattedHeartRateFromSample:(id)sample;
+- (id)heartRateFromSample:(id)sample;
 - (id)sectionTitle;
 - (void)queryForData;
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5;
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation HKDataMetadataOxygenSaturationSection
 
-- (HKDataMetadataOxygenSaturationSection)initWithSample:(id)a3 healthStore:(id)a4 displayTypeController:(id)a5 unitController:(id)a6 subsampleDelegate:(id)a7
+- (HKDataMetadataOxygenSaturationSection)initWithSample:(id)sample healthStore:(id)store displayTypeController:(id)controller unitController:(id)unitController subsampleDelegate:(id)delegate
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  sampleCopy = sample;
+  storeCopy = store;
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = HKDataMetadataOxygenSaturationSection;
   v17 = [(HKDataMetadataOxygenSaturationSection *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_sample, a3);
-    objc_storeStrong(&v18->_healthStore, a4);
-    objc_storeStrong(&v18->_displayTypeController, a5);
-    objc_storeStrong(&v18->_unitController, a6);
-    objc_storeWeak(&v18->_subsampleDelegate, v16);
+    objc_storeStrong(&v17->_sample, sample);
+    objc_storeStrong(&v18->_healthStore, store);
+    objc_storeStrong(&v18->_displayTypeController, controller);
+    objc_storeStrong(&v18->_unitController, unitController);
+    objc_storeWeak(&v18->_subsampleDelegate, delegateCopy);
   }
 
   return v18;
@@ -42,9 +42,9 @@
   return v3;
 }
 
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4
+- (id)cellForIndex:(unint64_t)index tableView:(id)view
 {
-  v5 = [a4 dequeueReusableCellWithIdentifier:@"heartRateCell"];
+  v5 = [view dequeueReusableCellWithIdentifier:@"heartRateCell"];
   cell = self->_cell;
   self->_cell = v5;
 
@@ -61,14 +61,14 @@
   v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v13 = [v12 localizedStringForKey:@"SUBSAMPLE_TYPE_AVERAGE %@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   v14 = [v11 stringWithFormat:v13, v10];
-  v15 = [(HKDataMetadataSimpleTableViewCell *)self->_cell subtitleTextLabel];
-  [v15 setText:v14];
+  subtitleTextLabel = [(HKDataMetadataSimpleTableViewCell *)self->_cell subtitleTextLabel];
+  [subtitleTextLabel setText:v14];
 
   if (self->_heartRateSample)
   {
     v16 = [(HKDataMetadataOxygenSaturationSection *)self formattedHeartRateFromSample:?];
-    v17 = [(HKDataMetadataSimpleTableViewCell *)self->_cell titleTextLabel];
-    [v17 setText:v16];
+    titleTextLabel = [(HKDataMetadataSimpleTableViewCell *)self->_cell titleTextLabel];
+    [titleTextLabel setText:v16];
 
     [(HKDataMetadataSimpleTableViewCell *)self->_cell setAccessoryType:1];
   }
@@ -77,8 +77,8 @@
   {
     v18 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v19 = [v18 localizedStringForKey:@"NO_AVERAGE_BEATS_PER_MINUTE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Scandium"];
-    v20 = [(HKDataMetadataSimpleTableViewCell *)self->_cell titleTextLabel];
-    [v20 setText:v19];
+    titleTextLabel2 = [(HKDataMetadataSimpleTableViewCell *)self->_cell titleTextLabel];
+    [titleTextLabel2 setText:v19];
 
     [(HKDataMetadataSimpleTableViewCell *)self->_cell setAccessoryType:0];
     [(HKDataMetadataOxygenSaturationSection *)self queryForData];
@@ -90,31 +90,31 @@
   return v21;
 }
 
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  if (!a3 && self->_heartRateSample)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  if (!index && self->_heartRateSample)
   {
-    v14 = v8;
+    v14 = controllerCopy;
     v9 = [MEMORY[0x1E696C3D0] quantityTypeForIdentifier:*MEMORY[0x1E696BD30]];
     v10 = [MEMORY[0x1E696C378] predicateForSamplesAssociatedWithSample:self->_sample];
     v11 = [(HKDataMetadataOxygenSaturationSection *)self displayNameForSampleType:v9 displayTypeController:self->_displayTypeController];
     WeakRetained = objc_loadWeakRetained(&self->_subsampleDelegate);
     v13 = [WeakRetained viewControllerForSampleType:v9 subSamplePredicate:v10 title:v11];
 
-    [v14 hk_showViewController:v13 animated:v5];
-    v8 = v14;
+    [v14 hk_showViewController:v13 animated:animatedCopy];
+    controllerCopy = v14;
   }
 }
 
-- (id)formattedHeartRateFromSample:(id)a3
+- (id)formattedHeartRateFromSample:(id)sample
 {
-  v4 = a3;
-  if (v4)
+  sampleCopy = sample;
+  if (sampleCopy)
   {
     v5 = [MEMORY[0x1E696C3D0] quantityTypeForIdentifier:*MEMORY[0x1E696BD30]];
-    v6 = [(HKDataMetadataOxygenSaturationSection *)self heartRateFromSample:v4];
+    v6 = [(HKDataMetadataOxygenSaturationSection *)self heartRateFromSample:sampleCopy];
     v7 = [(HKDisplayTypeController *)self->_displayTypeController displayTypeForObjectType:v5];
     v8 = HKFormattedStringFromValue(v6, v7, self->_unitController, 0, 0);
     v9 = [(HKUnitPreferenceController *)self->_unitController localizedDisplayNameForDisplayType:v7 value:v6];
@@ -210,30 +210,30 @@ void __53__HKDataMetadataOxygenSaturationSection_queryForData__block_invoke_321(
   [*(WeakRetained + 6) setAccessoryType:1];
 }
 
-- (id)displayNameForSampleType:(id)a3 displayTypeController:(id)a4
+- (id)displayNameForSampleType:(id)type displayTypeController:(id)controller
 {
-  v4 = [a4 displayTypeForObjectType:a3];
+  v4 = [controller displayTypeForObjectType:type];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 localization];
-    v7 = [v6 displayName];
+    localization = [v4 localization];
+    displayName = [localization displayName];
   }
 
   else
   {
-    v7 = 0;
+    displayName = 0;
   }
 
-  return v7;
+  return displayName;
 }
 
-- (id)heartRateFromSample:(id)a3
+- (id)heartRateFromSample:(id)sample
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [a3 quantity];
-  v5 = [MEMORY[0x1E696C510] _countPerMinuteUnit];
-  [v4 doubleValueForUnit:v5];
+  quantity = [sample quantity];
+  _countPerMinuteUnit = [MEMORY[0x1E696C510] _countPerMinuteUnit];
+  [quantity doubleValueForUnit:_countPerMinuteUnit];
   v6 = [v3 numberWithDouble:?];
 
   return v6;

@@ -1,66 +1,66 @@
 @interface CRKCardSectionViewConfiguration
-- (void)_setDebugModeEnabled:(BOOL)a3;
-- (void)_setDebugOverlayView:(id)a3;
-- (void)_setProviderIdentifier:(id)a3;
-- (void)_updateDebugOverlayViewText:(id)a3;
-- (void)setCardSection:(id)a3;
-- (void)setCardSectionView:(id)a3;
+- (void)_setDebugModeEnabled:(BOOL)enabled;
+- (void)_setDebugOverlayView:(id)view;
+- (void)_setProviderIdentifier:(id)identifier;
+- (void)_updateDebugOverlayViewText:(id)text;
+- (void)setCardSection:(id)section;
+- (void)setCardSectionView:(id)view;
 @end
 
 @implementation CRKCardSectionViewConfiguration
 
-- (void)_setDebugOverlayView:(id)a3
+- (void)_setDebugOverlayView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   debugOverlayView = self->_debugOverlayView;
-  if (debugOverlayView != v5)
+  if (debugOverlayView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(_CRKDebugOverlayView *)debugOverlayView removeFromSuperview];
-    objc_storeStrong(&self->_debugOverlayView, a3);
-    v7 = [(CRKCardSectionViewConfiguration *)self cardSectionView];
-    [v7 addSubview:v8];
+    objc_storeStrong(&self->_debugOverlayView, view);
+    cardSectionView = [(CRKCardSectionViewConfiguration *)self cardSectionView];
+    [cardSectionView addSubview:v8];
 
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](debugOverlayView, v5);
+  MEMORY[0x2821F96F8](debugOverlayView, viewCopy);
 }
 
-- (void)setCardSectionView:(id)a3
+- (void)setCardSectionView:(id)view
 {
-  v5 = a3;
-  if (self->_cardSectionView != v5)
+  viewCopy = view;
+  if (self->_cardSectionView != viewCopy)
   {
-    v6 = v5;
+    v6 = viewCopy;
     [(_CRKDebugOverlayView *)self->_debugOverlayView removeFromSuperview];
-    objc_storeStrong(&self->_cardSectionView, a3);
+    objc_storeStrong(&self->_cardSectionView, view);
     [(CRKCardSectionView *)v6 addSubview:self->_debugOverlayView];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)_setDebugModeEnabled:(BOOL)a3
+- (void)_setDebugModeEnabled:(BOOL)enabled
 {
-  if (self->_debugModeEnabled == a3)
+  if (self->_debugModeEnabled == enabled)
   {
     return;
   }
 
-  v4 = a3;
+  enabledCopy = enabled;
   [(_CRKDebugOverlayView *)self->_debugOverlayView removeFromSuperview];
-  self->_debugModeEnabled = v4;
+  self->_debugModeEnabled = enabledCopy;
   if (!self->_debugOverlayView)
   {
     v7 = objc_alloc_init(_CRKDebugOverlayView);
     [(CRKCardSectionViewConfiguration *)self _updateDebugOverlayViewText:v7];
-    v8 = [MEMORY[0x277D75348] redColor];
-    [(_CRKDebugOverlayView *)v7 setColor:v8];
+    redColor = [MEMORY[0x277D75348] redColor];
+    [(_CRKDebugOverlayView *)v7 setColor:redColor];
 
     debugOverlayView = self->_debugOverlayView;
     self->_debugOverlayView = v7;
 
-    if (!v4)
+    if (!enabledCopy)
     {
       goto LABEL_5;
     }
@@ -68,65 +68,65 @@
     goto LABEL_4;
   }
 
-  if (v4)
+  if (enabledCopy)
   {
 LABEL_4:
-    v6 = [(CRKCardSectionViewConfiguration *)self cardSectionView];
-    [v6 addSubview:self->_debugOverlayView];
+    cardSectionView = [(CRKCardSectionViewConfiguration *)self cardSectionView];
+    [cardSectionView addSubview:self->_debugOverlayView];
   }
 
 LABEL_5:
-  v10 = [(CRKCardSectionViewConfiguration *)self cardSectionView];
-  [v10 setNeedsLayout];
+  cardSectionView2 = [(CRKCardSectionViewConfiguration *)self cardSectionView];
+  [cardSectionView2 setNeedsLayout];
 }
 
-- (void)setCardSection:(id)a3
+- (void)setCardSection:(id)section
 {
-  v5 = a3;
+  sectionCopy = section;
   p_cardSection = &self->_cardSection;
-  if (self->_cardSection != v5)
+  if (self->_cardSection != sectionCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_cardSection, a3);
-    v7 = [(CRKCardSectionViewConfiguration *)self _debugOverlayView];
-    [(CRKCardSectionViewConfiguration *)self _updateDebugOverlayViewText:v7];
+    v9 = sectionCopy;
+    objc_storeStrong(p_cardSection, section);
+    _debugOverlayView = [(CRKCardSectionViewConfiguration *)self _debugOverlayView];
+    [(CRKCardSectionViewConfiguration *)self _updateDebugOverlayViewText:_debugOverlayView];
 
-    v8 = [(CRKCardSectionViewConfiguration *)self cardSectionView];
-    [v8 setNeedsLayout];
+    cardSectionView = [(CRKCardSectionViewConfiguration *)self cardSectionView];
+    [cardSectionView setNeedsLayout];
 
-    v5 = v9;
+    sectionCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](p_cardSection, v5);
+  MEMORY[0x2821F96F8](p_cardSection, sectionCopy);
 }
 
-- (void)_setProviderIdentifier:(id)a3
+- (void)_setProviderIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   if (![(NSString *)self->_providerIdentifier isEqualToString:?])
   {
-    objc_storeStrong(&self->_providerIdentifier, a3);
-    v5 = [(CRKCardSectionViewConfiguration *)self _debugOverlayView];
-    [(CRKCardSectionViewConfiguration *)self _updateDebugOverlayViewText:v5];
+    objc_storeStrong(&self->_providerIdentifier, identifier);
+    _debugOverlayView = [(CRKCardSectionViewConfiguration *)self _debugOverlayView];
+    [(CRKCardSectionViewConfiguration *)self _updateDebugOverlayViewText:_debugOverlayView];
 
-    v6 = [(CRKCardSectionViewConfiguration *)self cardSectionView];
-    [v6 setNeedsLayout];
+    cardSectionView = [(CRKCardSectionViewConfiguration *)self cardSectionView];
+    [cardSectionView setNeedsLayout];
   }
 }
 
-- (void)_updateDebugOverlayViewText:(id)a3
+- (void)_updateDebugOverlayViewText:(id)text
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(CRKCardSectionViewConfiguration *)self cardSection];
+  textCopy = text;
+  cardSection = [(CRKCardSectionViewConfiguration *)self cardSection];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(CRKCardSectionViewConfiguration *)self _providerIdentifier];
-  v10 = [v9 componentsSeparatedByString:@"."];
-  v11 = [v10 lastObject];
-  v12 = [v4 stringWithFormat:@"%@\n%@", v8, v11];
+  _providerIdentifier = [(CRKCardSectionViewConfiguration *)self _providerIdentifier];
+  v10 = [_providerIdentifier componentsSeparatedByString:@"."];
+  lastObject = [v10 lastObject];
+  v12 = [v4 stringWithFormat:@"%@\n%@", v8, lastObject];
 
-  [v5 setDebugText:v12];
+  [textCopy setDebugText:v12];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface ContentOffsetScrollDisplayLinkTarget
-- (void)frame:(id)a3;
+- (void)frame:(id)frame;
 @end
 
 @implementation ContentOffsetScrollDisplayLinkTarget
 
-- (void)frame:(id)a3
+- (void)frame:(id)frame
 {
-  v3 = a3;
+  frameCopy = frame;
 
-  sub_216E67C88(v3);
+  sub_216E67C88(frameCopy);
 }
 
 @end

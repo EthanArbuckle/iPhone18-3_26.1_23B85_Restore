@@ -1,89 +1,89 @@
 @interface NTKFaceSnapshotResultCachedFile
-- (NTKFaceSnapshotResultCachedFile)initWithCoder:(id)a3;
-- (NTKFaceSnapshotResultCachedFile)initWithFileURL:(id)a3 format:(int64_t)a4;
-- (id)_cachedFileForGalleryLiteStoredWithin:(id)a3 withError:(id *)a4;
-- (id)cachedFileForGalleryLiteUsingDevice:(id)a3 withError:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (NTKFaceSnapshotResultCachedFile)initWithCoder:(id)coder;
+- (NTKFaceSnapshotResultCachedFile)initWithFileURL:(id)l format:(int64_t)format;
+- (id)_cachedFileForGalleryLiteStoredWithin:(id)within withError:(id *)error;
+- (id)cachedFileForGalleryLiteUsingDevice:(id)device withError:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKFaceSnapshotResultCachedFile
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fileFormat = self->_fileFormat;
-  v5 = a3;
-  [v5 encodeInteger:fileFormat forKey:@"format"];
-  [v5 encodeObject:self->_fileURL forKey:@"fileURL"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:fileFormat forKey:@"format"];
+  [coderCopy encodeObject:self->_fileURL forKey:@"fileURL"];
 }
 
-- (NTKFaceSnapshotResultCachedFile)initWithCoder:(id)a3
+- (NTKFaceSnapshotResultCachedFile)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"format"];
-  if (v5)
+  coderCopy = coder;
+  selfCopy = [coderCopy decodeIntegerForKey:@"format"];
+  if (selfCopy)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
     if (v6)
     {
-      self = [(NTKFaceSnapshotResultCachedFile *)self initWithFileURL:v6 format:v5];
-      v5 = self;
+      self = [(NTKFaceSnapshotResultCachedFile *)self initWithFileURL:v6 format:selfCopy];
+      selfCopy = self;
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (NTKFaceSnapshotResultCachedFile)initWithFileURL:(id)a3 format:(int64_t)a4
+- (NTKFaceSnapshotResultCachedFile)initWithFileURL:(id)l format:(int64_t)format
 {
-  v6 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = NTKFaceSnapshotResultCachedFile;
   v7 = [(NTKFaceSnapshotResultCachedFile *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [lCopy copy];
     fileURL = v7->_fileURL;
     v7->_fileURL = v8;
 
-    v7->_fileFormat = a4;
+    v7->_fileFormat = format;
   }
 
   return v7;
 }
 
-- (id)cachedFileForGalleryLiteUsingDevice:(id)a3 withError:(id *)a4
+- (id)cachedFileForGalleryLiteUsingDevice:(id)device withError:(id *)error
 {
-  v6 = [MEMORY[0x277CBEBC0] galleryLiteSupportDirectoryForDevice:a3];
-  v7 = [(NTKFaceSnapshotResultCachedFile *)self _cachedFileForGalleryLiteStoredWithin:v6 withError:a4];
+  v6 = [MEMORY[0x277CBEBC0] galleryLiteSupportDirectoryForDevice:device];
+  v7 = [(NTKFaceSnapshotResultCachedFile *)self _cachedFileForGalleryLiteStoredWithin:v6 withError:error];
 
   return v7;
 }
 
-- (id)_cachedFileForGalleryLiteStoredWithin:(id)a3 withError:(id *)a4
+- (id)_cachedFileForGalleryLiteStoredWithin:(id)within withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(NTKFaceSnapshotResultCachedFile *)self fileURL];
-  v8 = [v7 lastPathComponent];
-  v9 = [v6 URLByAppendingPathComponent:v8];
+  withinCopy = within;
+  fileURL = [(NTKFaceSnapshotResultCachedFile *)self fileURL];
+  lastPathComponent = [fileURL lastPathComponent];
+  v9 = [withinCopy URLByAppendingPathComponent:lastPathComponent];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __103__NTKFaceSnapshotResultCachedFile_ReplicationSupport___cachedFileForGalleryLiteStoredWithin_withError___block_invoke;
   block[3] = &unk_27877DB10;
-  v10 = v6;
+  v10 = withinCopy;
   v31 = v10;
   if (_cachedFileForGalleryLiteStoredWithin_withError__onceToken != -1)
   {
     dispatch_once(&_cachedFileForGalleryLiteStoredWithin_withError__onceToken, block);
   }
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v29 = 0;
-  v12 = [v11 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:&v29];
+  v12 = [defaultManager createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:&v29];
   v13 = v29;
 
   if ((v12 & 1) == 0)
@@ -91,17 +91,17 @@
     goto LABEL_12;
   }
 
-  v25 = self;
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
+  selfCopy = self;
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v28 = v13;
-  v15 = [v14 copyItemAtURL:v7 toURL:v9 error:&v28];
+  v15 = [defaultManager2 copyItemAtURL:fileURL toURL:v9 error:&v28];
   v16 = v28;
 
   if ((v15 & 1) == 0)
   {
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
     v27 = v16;
-    v18 = [v17 replaceItemAtURL:v9 withItemAtURL:v7 backupItemName:0 options:0 resultingItemURL:0 error:&v27];
+    v18 = [defaultManager3 replaceItemAtURL:v9 withItemAtURL:fileURL backupItemName:0 options:0 resultingItemURL:0 error:&v27];
     v13 = v27;
 
     if (v18)
@@ -110,11 +110,11 @@
     }
 
 LABEL_12:
-    if (a4)
+    if (error)
     {
       v23 = v13;
       v22 = 0;
-      *a4 = v13;
+      *error = v13;
     }
 
     else
@@ -139,7 +139,7 @@ LABEL_7:
     }
   }
 
-  v22 = [[NTKFaceSnapshotResultCachedFile alloc] initWithFileURL:v9 format:[(NTKFaceSnapshotResultCachedFile *)v25 fileFormat]];
+  v22 = [[NTKFaceSnapshotResultCachedFile alloc] initWithFileURL:v9 format:[(NTKFaceSnapshotResultCachedFile *)selfCopy fileFormat]];
 
 LABEL_15:
 

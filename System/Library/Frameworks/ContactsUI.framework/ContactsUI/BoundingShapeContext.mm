@@ -1,48 +1,48 @@
 @interface BoundingShapeContext
 - (_TtC10ContactsUI20BoundingShapeContext)init;
-- (_TtC10ContactsUI20BoundingShapeContext)initWithContact:(id)a3 showName:(BOOL)a4;
-- (_TtC10ContactsUI20BoundingShapeContext)initWithNameVariations:(id)a3 preferredNameStyle:(unint64_t)a4 horizontalTitleBoundingRect:(CGRect)a5 verticalTitleBoundingRect:(CGRect)a6 imageAssetID:(id)a7 personalPoster:(BOOL)a8;
+- (_TtC10ContactsUI20BoundingShapeContext)initWithContact:(id)contact showName:(BOOL)name;
+- (_TtC10ContactsUI20BoundingShapeContext)initWithNameVariations:(id)variations preferredNameStyle:(unint64_t)style horizontalTitleBoundingRect:(CGRect)rect verticalTitleBoundingRect:(CGRect)boundingRect imageAssetID:(id)d personalPoster:(BOOL)poster;
 @end
 
 @implementation BoundingShapeContext
 
-- (_TtC10ContactsUI20BoundingShapeContext)initWithNameVariations:(id)a3 preferredNameStyle:(unint64_t)a4 horizontalTitleBoundingRect:(CGRect)a5 verticalTitleBoundingRect:(CGRect)a6 imageAssetID:(id)a7 personalPoster:(BOOL)a8
+- (_TtC10ContactsUI20BoundingShapeContext)initWithNameVariations:(id)variations preferredNameStyle:(unint64_t)style horizontalTitleBoundingRect:(CGRect)rect verticalTitleBoundingRect:(CGRect)boundingRect imageAssetID:(id)d personalPoster:(BOOL)poster
 {
-  v8 = a8;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a5.size.height;
-  v14 = a5.size.width;
-  v15 = a5.origin.y;
-  v16 = a5.origin.x;
-  if (a7)
+  posterCopy = poster;
+  height = boundingRect.size.height;
+  width = boundingRect.size.width;
+  y = boundingRect.origin.y;
+  x = boundingRect.origin.x;
+  v13 = rect.size.height;
+  v14 = rect.size.width;
+  v15 = rect.origin.y;
+  v16 = rect.origin.x;
+  if (d)
   {
     sub_199DF9F8C();
-    v20 = a3;
+    variationsCopy = variations;
     v21 = sub_199DF9F5C();
   }
 
   else
   {
-    v22 = a3;
+    variationsCopy2 = variations;
     v21 = 0;
   }
 
   v25.receiver = self;
   v25.super_class = type metadata accessor for BoundingShapeContext();
-  v23 = [(CNPRUISIncomingCallPosterContext *)&v25 initWithNameVariations:a3 preferredNameStyle:a4 horizontalTitleBoundingRect:v21 verticalTitleBoundingRect:v8 imageAssetID:v16 personalPoster:v15, v14, v13, x, y, width, height];
+  height = [(CNPRUISIncomingCallPosterContext *)&v25 initWithNameVariations:variations preferredNameStyle:style horizontalTitleBoundingRect:v21 verticalTitleBoundingRect:posterCopy imageAssetID:v16 personalPoster:v15, v14, v13, x, y, width, height];
 
-  return v23;
+  return height;
 }
 
-- (_TtC10ContactsUI20BoundingShapeContext)initWithContact:(id)a3 showName:(BOOL)a4
+- (_TtC10ContactsUI20BoundingShapeContext)initWithContact:(id)contact showName:(BOOL)name
 {
-  v4 = a4;
+  nameCopy = name;
   v7.receiver = self;
   v7.super_class = type metadata accessor for BoundingShapeContext();
-  return [(CNPRUISIncomingCallPosterContext *)&v7 initWithContact:a3 showName:v4];
+  return [(CNPRUISIncomingCallPosterContext *)&v7 initWithContact:contact showName:nameCopy];
 }
 
 - (_TtC10ContactsUI20BoundingShapeContext)init

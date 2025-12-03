@@ -29,8 +29,8 @@
   }
 
   v6 = options;
-  v7 = [(ASDRequestOptions *)v6 adamIds];
-  v8 = [v7 count];
+  adamIds = [(ASDRequestOptions *)v6 adamIds];
+  v8 = [adamIds count];
   v9 = dispatch_semaphore_create(0);
   v10 = sub_100005CD4();
   if (v8)
@@ -39,10 +39,10 @@
     v26 = 3221225472;
     v27 = sub_100370730;
     v28 = &unk_10051FA18;
-    v29 = self;
+    selfCopy = self;
     v30 = v9;
     v11 = v9;
-    sub_100349D3C(v10, v7, v3, &v25);
+    sub_100349D3C(v10, adamIds, v3, &v25);
 
     v12 = dispatch_time(0, 60000000000);
     v13 = dispatch_semaphore_wait(v11, v12);
@@ -77,10 +77,10 @@
       self->super.super._success = 0;
     }
 
-    v20 = [NSError errorWithDomain:@"IAPInfoRequestOperationErrorDomain" code:1 userInfo:0, v25, v26, v27, v28, v29];
+    selfCopy = [NSError errorWithDomain:@"IAPInfoRequestOperationErrorDomain" code:1 userInfo:0, v25, v26, v27, v28, selfCopy];
     if (self)
     {
-      objc_setProperty_atomic_copy(self, v19, v20, 32);
+      objc_setProperty_atomic_copy(self, v19, selfCopy, 32);
     }
 
     v21 = ASDLogHandleForCategory();

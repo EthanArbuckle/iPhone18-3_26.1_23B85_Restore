@@ -1,10 +1,10 @@
 @interface GDRemoteViewAccessRequester
 + (BOOL)currentProcessIsSandboxed;
-+ (unint64_t)_machTimeToMilliseconds:(unint64_t)a3;
++ (unint64_t)_machTimeToMilliseconds:(unint64_t)milliseconds;
 - (GDRemoteViewAccessRequester)init;
-- (id)_requestAssertionForViewName:(id)a3 useCase:(id)a4 error:(id *)a5;
-- (id)requestAssertionForViewName:(id)a3 useCase:(id)a4 error:(id *)a5;
-- (id)requestInfoForViewName:(id)a3 useCase:(id)a4 error:(id *)a5;
+- (id)_requestAssertionForViewName:(id)name useCase:(id)case error:(id *)error;
+- (id)requestAssertionForViewName:(id)name useCase:(id)case error:(id *)error;
+- (id)requestInfoForViewName:(id)name useCase:(id)case error:(id *)error;
 @end
 
 @implementation GDRemoteViewAccessRequester
@@ -30,12 +30,12 @@
   return v2;
 }
 
-- (id)requestAssertionForViewName:(id)a3 useCase:(id)a4 error:(id *)a5
+- (id)requestAssertionForViewName:(id)name useCase:(id)case error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  nameCopy = name;
   v9 = GDSignpostLog();
-  v10 = a4;
+  caseCopy = case;
   v11 = os_signpost_id_generate(v9);
 
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
@@ -46,7 +46,7 @@
 
   v12 = mach_absolute_time();
   v34 = 0;
-  v13 = [(GDRemoteViewAccessRequester *)self _requestAssertionForViewName:v8 useCase:v10 error:&v34];
+  v13 = [(GDRemoteViewAccessRequester *)self _requestAssertionForViewName:nameCopy useCase:caseCopy error:&v34];
 
   v14 = v34;
   v15 = objc_opt_class();
@@ -61,7 +61,7 @@
   }
 
   [v17 setObject:qword_1ED87C3D0 forKeyedSubscript:@"processName"];
-  [v17 setObject:v8 forKeyedSubscript:@"viewName"];
+  [v17 setObject:nameCopy forKeyedSubscript:@"viewName"];
   if (v13)
   {
     [v17 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"success"];
@@ -72,8 +72,8 @@
     [v17 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"success"];
     if (v14)
     {
-      v19 = [v14 domain];
-      [v17 setObject:v19 forKeyedSubscript:@"errorDomain"];
+      domain = [v14 domain];
+      [v17 setObject:domain forKeyedSubscript:@"errorDomain"];
 
       v20 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v14, "code")}];
       [v17 setObject:v20 forKeyedSubscript:@"errorCode"];
@@ -91,25 +91,25 @@
       if (v14)
       {
 LABEL_13:
-        v23 = v8;
+        v23 = nameCopy;
         v24 = v11;
-        v25 = a5;
-        v26 = [v14 domain];
-        v27 = [v26 isEqualToString:@"com.apple.intelligenceplatform.IntelligencePlatformCore.ViewXPC.AccessError"];
+        errorCopy = error;
+        domain2 = [v14 domain];
+        v27 = [domain2 isEqualToString:@"com.apple.intelligenceplatform.IntelligencePlatformCore.ViewXPC.AccessError"];
 
         if (v27)
         {
-          v28 = [v14 code];
+          code = [v14 code];
         }
 
         else
         {
-          v28 = -1;
+          code = -1;
         }
 
-        a5 = v25;
+        error = errorCopy;
         v11 = v24;
-        v8 = v23;
+        nameCopy = v23;
         goto LABEL_25;
       }
     }
@@ -124,16 +124,16 @@ LABEL_13:
       }
     }
 
-    v28 = 0;
+    code = 0;
 LABEL_25:
     if (v21 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
     {
       *buf = 138543874;
-      v36 = v8;
+      v36 = nameCopy;
       v37 = 2114;
       v38 = v22;
       v39 = 2050;
-      v40 = v28;
+      v40 = code;
       _os_signpost_emit_with_name_impl(&dword_1ABA78000, v9, OS_SIGNPOST_INTERVAL_END, v11, "viewServing", "viewName=%{signpost.telemetry:string1,public}@ result=%{signpost.telemetry:string2,public}@ errorCode=%{signpost.telemetry:number1,public}ld enableTelemetry=YES ", buf, 0x20u);
     }
 
@@ -150,7 +150,7 @@ LABEL_25:
     }
 
     *buf = 138543618;
-    v36 = v8;
+    v36 = nameCopy;
     v37 = 2114;
     v38 = v29;
     _os_signpost_emit_with_name_impl(&dword_1ABA78000, v9, OS_SIGNPOST_INTERVAL_END, v11, "viewServing", "viewName=%{signpost.telemetry:string1,public}@ result=%{signpost.telemetry:string2,public}@ enableTelemetry=YES ", buf, 0x16u);
@@ -159,10 +159,10 @@ LABEL_25:
   v22 = v9;
 LABEL_29:
 
-  if (a5 && !v13)
+  if (error && !v13)
   {
     v30 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -170,10 +170,10 @@ LABEL_29:
   return v13;
 }
 
-- (id)requestInfoForViewName:(id)a3 useCase:(id)a4 error:(id *)a5
+- (id)requestInfoForViewName:(id)name useCase:(id)case error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  caseCopy = case;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -192,17 +192,17 @@ LABEL_29:
   v16[2] = sub_1ABF05184;
   v16[3] = &unk_1E7962198;
   v20 = &v28;
-  v11 = v8;
+  v11 = nameCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = caseCopy;
   v18 = v12;
-  v19 = self;
+  selfCopy = self;
   v21 = &v22;
   [(_PASLock *)lock runWithLockAcquired:v16];
   v13 = v29[5];
-  if (a5 && !v13)
+  if (error && !v13)
   {
-    *a5 = v23[5];
+    *error = v23[5];
     v13 = v29[5];
   }
 
@@ -214,10 +214,10 @@ LABEL_29:
   return v14;
 }
 
-- (id)_requestAssertionForViewName:(id)a3 useCase:(id)a4 error:(id *)a5
+- (id)_requestAssertionForViewName:(id)name useCase:(id)case error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  caseCopy = case;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -236,17 +236,17 @@ LABEL_29:
   v16[2] = sub_1ABF054FC;
   v16[3] = &unk_1E7962198;
   v20 = &v28;
-  v11 = v8;
+  v11 = nameCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = caseCopy;
   v18 = v12;
-  v19 = self;
+  selfCopy = self;
   v21 = &v22;
   [(_PASLock *)lock runWithLockAcquired:v16];
   v13 = v29[5];
-  if (a5 && !v13)
+  if (error && !v13)
   {
-    *a5 = v23[5];
+    *error = v23[5];
     v13 = v29[5];
   }
 
@@ -258,14 +258,14 @@ LABEL_29:
   return v14;
 }
 
-+ (unint64_t)_machTimeToMilliseconds:(unint64_t)a3
++ (unint64_t)_machTimeToMilliseconds:(unint64_t)milliseconds
 {
   if (qword_1ED87C3C8 != -1)
   {
     dispatch_once(&qword_1ED87C3C8, &unk_1F20A1AB8);
   }
 
-  return dword_1ED87C3C0 * a3 / *algn_1ED87C3C4 / 0xF4240;
+  return dword_1ED87C3C0 * milliseconds / *algn_1ED87C3C4 / 0xF4240;
 }
 
 + (BOOL)currentProcessIsSandboxed

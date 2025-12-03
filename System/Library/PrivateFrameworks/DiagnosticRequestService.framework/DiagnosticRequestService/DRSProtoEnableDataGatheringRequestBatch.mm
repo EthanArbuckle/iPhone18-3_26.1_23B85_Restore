@@ -1,32 +1,32 @@
 @interface DRSProtoEnableDataGatheringRequestBatch
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addDataGatheringRequests:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDataGatheringRequests:(id)requests;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DRSProtoEnableDataGatheringRequestBatch
 
-- (void)addDataGatheringRequests:(id)a3
+- (void)addDataGatheringRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   dataGatheringRequests = self->_dataGatheringRequests;
-  v8 = v4;
+  v8 = requestsCopy;
   if (!dataGatheringRequests)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_dataGatheringRequests;
     self->_dataGatheringRequests = v6;
 
-    v4 = v8;
+    requestsCopy = v8;
     dataGatheringRequests = self->_dataGatheringRequests;
   }
 
-  [(NSMutableArray *)dataGatheringRequests addObject:v4];
+  [(NSMutableArray *)dataGatheringRequests addObject:requestsCopy];
 }
 
 - (NSString)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = DRSProtoEnableDataGatheringRequestBatch;
   v4 = [(DRSProtoEnableDataGatheringRequestBatch *)&v8 description];
-  v5 = [(DRSProtoEnableDataGatheringRequestBatch *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DRSProtoEnableDataGatheringRequestBatch *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   clientMetadata = self->_clientMetadata;
   if (clientMetadata)
   {
-    v5 = [(DRSProtoClientDeviceMetadata *)clientMetadata dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"client_metadata"];
+    dictionaryRepresentation = [(DRSProtoClientDeviceMetadata *)clientMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"client_metadata"];
   }
 
   if ([(NSMutableArray *)self->_dataGatheringRequests count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -84,18 +84,18 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"data_gathering_requests"];
+    [dictionary setObject:v6 forKey:@"data_gathering_requests"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_clientMetadata)
   {
     PBDataWriterWriteSubmessage();
@@ -136,35 +136,35 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_clientMetadata)
   {
-    [v8 setClientMetadata:?];
+    [toCopy setClientMetadata:?];
   }
 
   if ([(DRSProtoEnableDataGatheringRequestBatch *)self dataGatheringRequestsCount])
   {
-    [v8 clearDataGatheringRequests];
-    v4 = [(DRSProtoEnableDataGatheringRequestBatch *)self dataGatheringRequestsCount];
-    if (v4)
+    [toCopy clearDataGatheringRequests];
+    dataGatheringRequestsCount = [(DRSProtoEnableDataGatheringRequestBatch *)self dataGatheringRequestsCount];
+    if (dataGatheringRequestsCount)
     {
-      v5 = v4;
+      v5 = dataGatheringRequestsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(DRSProtoEnableDataGatheringRequestBatch *)self dataGatheringRequestsAtIndex:i];
-        [v8 addDataGatheringRequests:v7];
+        [toCopy addDataGatheringRequests:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(DRSProtoClientDeviceMetadata *)self->_clientMetadata copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(DRSProtoClientDeviceMetadata *)self->_clientMetadata copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -188,7 +188,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addDataGatheringRequests:v13];
 
         ++v12;
@@ -205,13 +205,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((clientMetadata = self->_clientMetadata, !(clientMetadata | v4[1])) || -[DRSProtoClientDeviceMetadata isEqual:](clientMetadata, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((clientMetadata = self->_clientMetadata, !(clientMetadata | equalCopy[1])) || -[DRSProtoClientDeviceMetadata isEqual:](clientMetadata, "isEqual:")))
   {
     dataGatheringRequests = self->_dataGatheringRequests;
-    if (dataGatheringRequests | v4[2])
+    if (dataGatheringRequests | equalCopy[2])
     {
       v7 = [(NSMutableArray *)dataGatheringRequests isEqual:?];
     }
@@ -230,12 +230,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   clientMetadata = self->_clientMetadata;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (clientMetadata)
   {
     if (v6)
@@ -253,7 +253,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

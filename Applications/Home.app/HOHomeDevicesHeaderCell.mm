@@ -1,30 +1,30 @@
 @interface HOHomeDevicesHeaderCell
-- (HOHomeDevicesHeaderCell)initWithFrame:(CGRect)a3;
+- (HOHomeDevicesHeaderCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HOHomeDevicesHeaderCell
 
-- (HOHomeDevicesHeaderCell)initWithFrame:(CGRect)a3
+- (HOHomeDevicesHeaderCell)initWithFrame:(CGRect)frame
 {
   v34.receiver = self;
   v34.super_class = HOHomeDevicesHeaderCell;
-  v3 = [(HOHomeDevicesHeaderCell *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HOHomeDevicesHeaderCell *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[NSMutableArray array];
     v5 = objc_alloc_init(UILabel);
     [(HOHomeDevicesHeaderCell *)v3 setDevicesLabel:v5];
 
-    v6 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    devicesLabel = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
+    [devicesLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    v8 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
-    [v8 setFont:v7];
+    devicesLabel2 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
+    [devicesLabel2 setFont:v7];
 
     v9 = [UIColor colorWithWhite:0.5 alpha:1.0];
-    v10 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
-    [v10 setTextColor:v9];
+    devicesLabel3 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
+    [devicesLabel3 setTextColor:v9];
 
     v11 = +[NSBundle mainBundle];
     v12 = @"HODeviceGridTitle";
@@ -96,22 +96,22 @@ LABEL_5:
       v12 = v13;
     }
 
-    v22 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
-    [v22 setText:v12];
+    devicesLabel4 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
+    [devicesLabel4 setText:v12];
 
-    v23 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
-    [(HOHomeDevicesHeaderCell *)v3 addSubview:v23];
+    devicesLabel5 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
+    [(HOHomeDevicesHeaderCell *)v3 addSubview:devicesLabel5];
 
-    v24 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
-    v25 = [v24 bottomAnchor];
-    v26 = [(HOHomeDevicesHeaderCell *)v3 bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:-6.0];
+    devicesLabel6 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
+    bottomAnchor = [devicesLabel6 bottomAnchor];
+    bottomAnchor2 = [(HOHomeDevicesHeaderCell *)v3 bottomAnchor];
+    v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-6.0];
     [v4 addObject:v27];
 
-    v28 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
-    v29 = [v28 leadingAnchor];
-    v30 = [(HOHomeDevicesHeaderCell *)v3 leadingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:14.0];
+    devicesLabel7 = [(HOHomeDevicesHeaderCell *)v3 devicesLabel];
+    leadingAnchor = [devicesLabel7 leadingAnchor];
+    leadingAnchor2 = [(HOHomeDevicesHeaderCell *)v3 leadingAnchor];
+    v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:14.0];
     [v4 addObject:v31];
 
     [NSLayoutConstraint activateConstraints:v4];

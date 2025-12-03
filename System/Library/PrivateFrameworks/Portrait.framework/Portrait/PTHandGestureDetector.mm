@@ -1,20 +1,20 @@
 @interface PTHandGestureDetector
-- (BOOL)detectGesturesFromBuffer:(__CVBuffer *)a3 timeStamp:(id *)a4 withRotationDegrees:(int)a5 withDetectedHands:(id)a6 withDetectedFaces:(id)a7 asyncWork:(id)a8;
+- (BOOL)detectGesturesFromBuffer:(__CVBuffer *)buffer timeStamp:(id *)stamp withRotationDegrees:(int)degrees withDetectedHands:(id)hands withDetectedFaces:(id)faces asyncWork:(id)work;
 - (CGSize)frameSize;
 - (PTHandGestureDelegate)delegate;
-- (PTHandGestureDetector)initWithFrameSize:(CGSize)a3 asyncInitQueue:(id)a4 externalHandDetectionsEnabled:(BOOL)a5 externalCamera:(BOOL)a6;
+- (PTHandGestureDetector)initWithFrameSize:(CGSize)size asyncInitQueue:(id)queue externalHandDetectionsEnabled:(BOOL)enabled externalCamera:(BOOL)camera;
 - (void)dealloc;
 @end
 
 @implementation PTHandGestureDetector
 
-- (PTHandGestureDetector)initWithFrameSize:(CGSize)a3 asyncInitQueue:(id)a4 externalHandDetectionsEnabled:(BOOL)a5 externalCamera:(BOOL)a6
+- (PTHandGestureDetector)initWithFrameSize:(CGSize)size asyncInitQueue:(id)queue externalHandDetectionsEnabled:(BOOL)enabled externalCamera:(BOOL)camera
 {
-  v6 = a6;
-  height = a3.height;
-  width = a3.width;
+  cameraCopy = camera;
+  height = size.height;
+  width = size.width;
   v28 = *MEMORY[0x277D85DE8];
-  v11 = a4;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = PTHandGestureDetector;
   v12 = [(PTHandGestureDetector *)&v21 init];
@@ -24,8 +24,8 @@
     v12->_frameSize.width = width;
     v12->_frameSize.height = height;
     v12->_numPendingRequests = 0;
-    v12->_externalCamera = v6;
-    v12->_useExternalHandDetections = a5;
+    v12->_externalCamera = cameraCopy;
+    v12->_useExternalHandDetections = enabled;
     v13 = _PTLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -43,7 +43,7 @@
 
       v23 = v15;
       v24 = 1024;
-      v25 = v6;
+      v25 = cameraCopy;
       v26 = 2048;
       v27 = v12;
       _os_log_impl(&dword_2243FB000, v13, OS_LOG_TYPE_DEFAULT, "GestureDetector: Using hand detection from %@ externalCamera %i instance %p", buf, 0x1Cu);
@@ -58,7 +58,7 @@
     v20[1] = *&width;
     v20[2] = *&height;
     v16 = MEMORY[0x22AA50020](v19);
-    dispatch_async(v11, v16);
+    dispatch_async(queueCopy, v16);
     v17 = v12;
 
     objc_destroyWeak(v20);
@@ -210,42 +210,42 @@ void __103__PTHandGestureDetector_initWithFrameSize_asyncInitQueue_externalHandD
   return result;
 }
 
-- (BOOL)detectGesturesFromBuffer:(__CVBuffer *)a3 timeStamp:(id *)a4 withRotationDegrees:(int)a5 withDetectedHands:(id)a6 withDetectedFaces:(id)a7 asyncWork:(id)a8
+- (BOOL)detectGesturesFromBuffer:(__CVBuffer *)buffer timeStamp:(id *)stamp withRotationDegrees:(int)degrees withDetectedHands:(id)hands withDetectedFaces:(id)faces asyncWork:(id)work
 {
-  v10 = *&a5;
+  v10 = *&degrees;
   v92 = *MEMORY[0x277D85DE8];
-  v67 = a6;
-  v68 = a7;
-  v65 = a8;
+  handsCopy = hands;
+  facesCopy = faces;
+  workCopy = work;
   val = self;
-  v12 = [(PTHandGestureDetector *)self vcpHandGestureRequest];
+  vcpHandGestureRequest = [(PTHandGestureDetector *)self vcpHandGestureRequest];
 
-  v13 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_numPendingRequestsLock);
   numPendingRequests = self->_numPendingRequests;
-  os_unfair_lock_unlock(&v13->_numPendingRequestsLock);
+  os_unfair_lock_unlock(&selfCopy->_numPendingRequestsLock);
   v15 = 0;
-  if (!v12 || numPendingRequests > 0)
+  if (!vcpHandGestureRequest || numPendingRequests > 0)
   {
     goto LABEL_49;
   }
 
-  v66 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16 = [MEMORY[0x277CCABB0] numberWithInt:v10];
   v17 = getVCPRequestRotationInDegreesPropertyKey();
-  [v66 setObject:v16 forKeyedSubscript:v17];
+  [dictionary setObject:v16 forKeyedSubscript:v17];
 
-  if (!v67 || !val->_useExternalHandDetections)
+  if (!handsCopy || !val->_useExternalHandDetections)
   {
     goto LABEL_27;
   }
 
-  v70 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v88 = 0u;
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v18 = v67;
+  v18 = handsCopy;
   v19 = [v18 countByEnumeratingWithState:&v86 objects:v91 count:16];
   if (!v19)
   {
@@ -325,7 +325,7 @@ void __103__PTHandGestureDetector_initWithFrameSize_asyncInitQueue_externalHandD
           *&v31 = [v27 intValue] / 1000.0;
           [v25 setConfidence:v31];
 
-          [v70 addObject:v25];
+          [array addObject:v25];
           goto LABEL_22;
         }
       }
@@ -347,20 +347,20 @@ LABEL_22:
   while (v19);
 LABEL_24:
 
-  if ([v70 count])
+  if ([array count])
   {
     v32 = getVCPRequestHandObjectsPropertyKey();
-    [v66 setObject:v70 forKeyedSubscript:v32];
+    [dictionary setObject:array forKeyedSubscript:v32];
   }
 
 LABEL_27:
-  v33 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v68, "count")}];
-  v34 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v68, "count")}];
+  v33 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(facesCopy, "count")}];
+  v34 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(facesCopy, "count")}];
   v84 = 0u;
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v35 = v68;
+  v35 = facesCopy;
   v36 = [v35 countByEnumeratingWithState:&v82 objects:v90 count:16];
   if (v36)
   {
@@ -407,25 +407,25 @@ LABEL_27:
   }
 
   v53 = getVCPRequestFaceRectsPropertyKey();
-  [v66 setObject:v33 forKeyedSubscript:v53];
+  [dictionary setObject:v33 forKeyedSubscript:v53];
 
   v54 = getVCPRequestFaceYawsPropertyKey();
-  [v66 setObject:v34 forKeyedSubscript:v54];
+  [dictionary setObject:v34 forKeyedSubscript:v54];
 
   v79[0] = MEMORY[0x277D85DD0];
   v79[1] = 3221225472;
   v79[2] = __126__PTHandGestureDetector_detectGesturesFromBuffer_timeStamp_withRotationDegrees_withDetectedHands_withDetectedFaces_asyncWork___block_invoke;
   v79[3] = &unk_278523678;
-  v80 = *&a4->var0;
-  var3 = a4->var3;
+  v80 = *&stamp->var0;
+  var3 = stamp->var3;
   v79[4] = val;
   v81 = var3;
   v56 = MEMORY[0x22AA50020](v79);
   pixelBufferOut = 0;
-  if (!val->_useExternalHandDetections && ![v67 count])
+  if (!val->_useExternalHandDetections && ![handsCopy count])
   {
-    pixelBufferOut = a3;
-    CVPixelBufferRetain(a3);
+    pixelBufferOut = buffer;
+    CVPixelBufferRetain(buffer);
 LABEL_47:
     objc_initWeak(&location, val);
     v71[0] = MEMORY[0x277D85DD0];
@@ -434,16 +434,16 @@ LABEL_47:
     v71[3] = &unk_2785236A0;
     objc_copyWeak(v74, &location);
     v74[1] = pixelBufferOut;
-    v75 = *&a4->var0;
-    v76 = a4->var3;
-    v72 = v66;
+    v75 = *&stamp->var0;
+    v76 = stamp->var3;
+    v72 = dictionary;
     v73 = v56;
     v60 = MEMORY[0x22AA50020](v71);
     os_unfair_lock_lock(&val->_numPendingRequestsLock);
     ++val->_numPendingRequests;
     os_unfair_lock_unlock(&val->_numPendingRequestsLock);
     v61 = MEMORY[0x22AA50020](v60);
-    [v65 addObject:v61];
+    [workCopy addObject:v61];
 
     objc_destroyWeak(v74);
     objc_destroyWeak(&location);
@@ -463,8 +463,8 @@ LABEL_47:
     goto LABEL_45;
   }
 
-  CVBufferPropagateAttachments(a3, pixelBufferOut);
-  v59 = [(PTMSRResize *)val->_msrResize transform:a3 crop:0 rotationDegree:pixelBufferOut toDest:0 synchronous:0.0];
+  CVBufferPropagateAttachments(buffer, pixelBufferOut);
+  v59 = [(PTMSRResize *)val->_msrResize transform:buffer crop:0 rotationDegree:pixelBufferOut toDest:0 synchronous:0.0];
   if (!v59)
   {
     goto LABEL_47;

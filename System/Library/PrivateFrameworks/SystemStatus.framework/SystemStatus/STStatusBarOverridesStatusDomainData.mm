@@ -1,22 +1,22 @@
 @interface STStatusBarOverridesStatusDomainData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)suppressedBackgroundActivityIdentifiers;
 - (STStatusBarOverridesStatusDomainData)init;
-- (STStatusBarOverridesStatusDomainData)initWithCoder:(id)a3;
-- (STStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)a3;
-- (STStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)a3 suppressedBackgroundActivityIdentifierListData:(id)a4;
-- (STStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)a3 suppressedBackgroundActivityIdentifiers:(id)a4;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)_initWithCustomOverrides:(void *)a3 suppressedBackgroundActivityIdentifierListData:;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
-- (id)initWithData:(void *)a1;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (STStatusBarOverridesStatusDomainData)initWithCoder:(id)coder;
+- (STStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)overrides;
+- (STStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)overrides suppressedBackgroundActivityIdentifierListData:(id)data;
+- (STStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)overrides suppressedBackgroundActivityIdentifiers:(id)identifiers;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)_initWithCustomOverrides:(void *)overrides suppressedBackgroundActivityIdentifierListData:;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
+- (id)initWithData:(void *)data;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STStatusBarOverridesStatusDomainData
@@ -29,185 +29,185 @@
   return v4;
 }
 
-- (STStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)a3
+- (STStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)overrides
 {
-  v4 = a3;
+  overridesCopy = overrides;
   v11.receiver = self;
   v11.super_class = STStatusBarOverridesStatusDomainData;
   v5 = [(STStatusBarOverridesStatusDomainData *)&v11 init];
   if (v5)
   {
-    v6 = [v4 immutableCopy];
+    immutableCopy = [overridesCopy immutableCopy];
     customOverrides = v5->_customOverrides;
-    v5->_customOverrides = v6;
+    v5->_customOverrides = immutableCopy;
   }
 
   v8 = [MEMORY[0x1E695DFD8] set];
-  v9 = [(STStatusBarOverridesStatusDomainData *)v5 initWithCustomOverrides:v4 suppressedBackgroundActivityIdentifiers:v8];
+  v9 = [(STStatusBarOverridesStatusDomainData *)v5 initWithCustomOverrides:overridesCopy suppressedBackgroundActivityIdentifiers:v8];
 
   return v9;
 }
 
-- (STStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)a3 suppressedBackgroundActivityIdentifiers:(id)a4
+- (STStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)overrides suppressedBackgroundActivityIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  v7 = a3;
+  identifiersCopy = identifiers;
+  overridesCopy = overrides;
   v8 = [STListData alloc];
-  v9 = [v6 allObjects];
+  allObjects = [identifiersCopy allObjects];
 
-  v10 = [(STListData *)v8 initWithObjects:v9];
-  v11 = [(STStatusBarOverridesStatusDomainData *)self initWithCustomOverrides:v7 suppressedBackgroundActivityIdentifierListData:v10];
+  v10 = [(STListData *)v8 initWithObjects:allObjects];
+  v11 = [(STStatusBarOverridesStatusDomainData *)self initWithCustomOverrides:overridesCopy suppressedBackgroundActivityIdentifierListData:v10];
 
   return v11;
 }
 
-- (id)initWithData:(void *)a1
+- (id)initWithData:(void *)data
 {
-  v2 = a1;
-  if (a1)
+  dataCopy = data;
+  if (data)
   {
     v3 = a2;
-    v4 = [v3 customOverrides];
-    v5 = [v3 suppressedBackgroundActivityIdentifierListData];
+    customOverrides = [v3 customOverrides];
+    suppressedBackgroundActivityIdentifierListData = [v3 suppressedBackgroundActivityIdentifierListData];
 
-    v2 = [v2 initWithCustomOverrides:v4 suppressedBackgroundActivityIdentifierListData:v5];
+    dataCopy = [dataCopy initWithCustomOverrides:customOverrides suppressedBackgroundActivityIdentifierListData:suppressedBackgroundActivityIdentifierListData];
   }
 
-  return v2;
+  return dataCopy;
 }
 
-- (STStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)a3 suppressedBackgroundActivityIdentifierListData:(id)a4
+- (STStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)overrides suppressedBackgroundActivityIdentifierListData:(id)data
 {
-  v6 = a3;
-  v7 = [a4 copy];
-  v8 = [(STStatusBarOverridesStatusDomainData *)&self->super.isa _initWithCustomOverrides:v6 suppressedBackgroundActivityIdentifierListData:v7];
+  overridesCopy = overrides;
+  v7 = [data copy];
+  v8 = [(STStatusBarOverridesStatusDomainData *)&self->super.isa _initWithCustomOverrides:overridesCopy suppressedBackgroundActivityIdentifierListData:v7];
 
   return v8;
 }
 
-- (id)_initWithCustomOverrides:(void *)a3 suppressedBackgroundActivityIdentifierListData:
+- (id)_initWithCustomOverrides:(void *)overrides suppressedBackgroundActivityIdentifierListData:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  overridesCopy = overrides;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = STStatusBarOverridesStatusDomainData;
-    a1 = objc_msgSendSuper2(&v10, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v10, sel_init);
+    if (self)
     {
-      v7 = [v5 immutableCopy];
-      v8 = a1[2];
-      a1[2] = v7;
+      immutableCopy = [v5 immutableCopy];
+      v8 = self[2];
+      self[2] = immutableCopy;
 
-      objc_storeStrong(a1 + 1, a3);
+      objc_storeStrong(self + 1, overrides);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (NSSet)suppressedBackgroundActivityIdentifiers
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(STListData *)self->_suppressedBackgroundActivityIdentifierListData objects];
-  v4 = [v2 setWithArray:v3];
+  objects = [(STListData *)self->_suppressedBackgroundActivityIdentifierListData objects];
+  v4 = [v2 setWithArray:objects];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
-  v7 = [(STStatusBarOverridesStatusDomainData *)self customOverrides];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
+  customOverrides = [(STStatusBarOverridesStatusDomainData *)self customOverrides];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __48__STStatusBarOverridesStatusDomainData_isEqual___block_invoke;
   v19[3] = &unk_1E85DEFB0;
   v8 = v6;
   v20 = v8;
-  v9 = [v5 appendObject:v7 counterpart:v19];
+  v9 = [v5 appendObject:customOverrides counterpart:v19];
 
-  v10 = [(STStatusBarOverridesStatusDomainData *)self suppressedBackgroundActivityIdentifierListData];
+  suppressedBackgroundActivityIdentifierListData = [(STStatusBarOverridesStatusDomainData *)self suppressedBackgroundActivityIdentifierListData];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __48__STStatusBarOverridesStatusDomainData_isEqual___block_invoke_2;
   v17 = &unk_1E85DEFD8;
   v18 = v8;
   v11 = v8;
-  v12 = [v5 appendObject:v10 counterpart:&v14];
+  v12 = [v5 appendObject:suppressedBackgroundActivityIdentifierListData counterpart:&v14];
 
-  LOBYTE(v10) = [v5 isEqual];
-  return v10;
+  LOBYTE(suppressedBackgroundActivityIdentifierListData) = [v5 isEqual];
+  return suppressedBackgroundActivityIdentifierListData;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STStatusBarOverridesStatusDomainData *)self customOverrides];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  customOverrides = [(STStatusBarOverridesStatusDomainData *)self customOverrides];
+  v5 = [builder appendObject:customOverrides];
 
-  v6 = [(STStatusBarOverridesStatusDomainData *)self suppressedBackgroundActivityIdentifierListData];
-  v7 = [v3 appendObject:v6];
+  suppressedBackgroundActivityIdentifierListData = [(STStatusBarOverridesStatusDomainData *)self suppressedBackgroundActivityIdentifierListData];
+  v7 = [builder appendObject:suppressedBackgroundActivityIdentifierListData];
 
-  v8 = [(STStatusBarOverridesStatusDomainData *)self editedKeys];
-  v9 = [v3 appendObject:v8];
+  editedKeys = [(STStatusBarOverridesStatusDomainData *)self editedKeys];
+  v9 = [builder appendObject:editedKeys];
 
-  v10 = [(STStatusBarOverridesStatusDomainData *)self editedIdentifiers];
-  v11 = [v3 appendObject:v10];
+  editedIdentifiers = [(STStatusBarOverridesStatusDomainData *)self editedIdentifiers];
+  v11 = [builder appendObject:editedIdentifiers];
 
-  v12 = [v3 hash];
+  v12 = [builder hash];
   return v12;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableStatusBarOverridesStatusDomainData allocWithZone:a3];
+  v4 = [STMutableStatusBarOverridesStatusDomainData allocWithZone:zone];
 
   return [(STStatusBarOverridesStatusDomainData *)v4 initWithData:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STStatusBarOverridesStatusDomainData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STStatusBarOverridesStatusDomainData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusBarOverridesStatusDomainData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STStatusBarOverridesStatusDomainData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusBarOverridesStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STStatusBarOverridesStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __88__STStatusBarOverridesStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;
@@ -242,13 +242,13 @@ void __88__STStatusBarOverridesStatusDomainData__descriptionBuilderWithMultiline
   [v11 appendArraySection:v12 withName:@"suppressedBackgroundActivityIdentifiers" multilinePrefix:v13 skipIfEmpty:1 objectTransformer:&__block_literal_global_17];
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STStatusBarOverridesStatusDomainDataDiff diffFromData:v4 toData:self];
+    v5 = [STStatusBarOverridesStatusDomainDataDiff diffFromData:dataCopy toData:self];
   }
 
   else
@@ -259,13 +259,13 @@ void __88__STStatusBarOverridesStatusDomainData__descriptionBuilderWithMultiline
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STStatusBarOverridesStatusDomainData *)self copy];
     }
@@ -273,7 +273,7 @@ void __88__STStatusBarOverridesStatusDomainData__descriptionBuilderWithMultiline
     else
     {
       v5 = [(STStatusBarOverridesStatusDomainData *)self mutableCopy];
-      [v4 applyToMutableData:v5];
+      [diffCopy applyToMutableData:v5];
     }
   }
 
@@ -285,21 +285,21 @@ void __88__STStatusBarOverridesStatusDomainData__descriptionBuilderWithMultiline
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STStatusBarOverridesStatusDomainData *)self customOverrides];
-  [v4 encodeObject:v5 forKey:@"customOverrides"];
+  coderCopy = coder;
+  customOverrides = [(STStatusBarOverridesStatusDomainData *)self customOverrides];
+  [coderCopy encodeObject:customOverrides forKey:@"customOverrides"];
 
-  v6 = [(STStatusBarOverridesStatusDomainData *)self suppressedBackgroundActivityIdentifierListData];
-  [v4 encodeObject:v6 forKey:@"suppressedBackgroundActivityIdentifierListData"];
+  suppressedBackgroundActivityIdentifierListData = [(STStatusBarOverridesStatusDomainData *)self suppressedBackgroundActivityIdentifierListData];
+  [coderCopy encodeObject:suppressedBackgroundActivityIdentifierListData forKey:@"suppressedBackgroundActivityIdentifierListData"];
 }
 
-- (STStatusBarOverridesStatusDomainData)initWithCoder:(id)a3
+- (STStatusBarOverridesStatusDomainData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customOverrides"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suppressedBackgroundActivityIdentifierListData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customOverrides"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suppressedBackgroundActivityIdentifierListData"];
 
   v7 = [(STStatusBarOverridesStatusDomainData *)self initWithCustomOverrides:v5 suppressedBackgroundActivityIdentifierListData:v6];
   return v7;

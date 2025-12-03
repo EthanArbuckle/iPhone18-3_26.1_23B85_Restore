@@ -1,8 +1,8 @@
 @interface TUIPressAndHoldViewCell
-- (TUIPressAndHoldViewCell)initWithFrame:(CGRect)a3;
+- (TUIPressAndHoldViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAccentVariant:(id)a3;
-- (void)setAccentVariantNumber:(unint64_t)a3;
+- (void)setAccentVariant:(id)variant;
+- (void)setAccentVariantNumber:(unint64_t)number;
 - (void)updateColors;
 - (void)updateLabels;
 @end
@@ -13,25 +13,25 @@
 {
   if (([(TUIPressAndHoldViewCell *)self isSelected]& 1) != 0 || ([(TUIPressAndHoldViewCell *)self isHighlighted]& 1) != 0)
   {
-    v3 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
     v4 = 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] clearColor];
     v4 = 0;
   }
 
-  [(TUIPressAndHoldViewCell *)self setBackgroundColor:v3];
+  [(TUIPressAndHoldViewCell *)self setBackgroundColor:systemBlueColor];
 
-  v5 = [(TUIPressAndHoldViewCell *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection = [(TUIPressAndHoldViewCell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v6 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)self->_textLabel setTextColor:v7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)self->_textLabel setTextColor:whiteColor];
 
     if ((v4 & 1) == 0)
     {
@@ -39,34 +39,34 @@
     }
 
 LABEL_10:
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
     goto LABEL_13;
   }
 
   if (v4)
   {
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)self->_textLabel setTextColor:v8];
+    whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)self->_textLabel setTextColor:whiteColor3];
 
     goto LABEL_10;
   }
 
-  v10 = [MEMORY[0x1E69DC888] blackColor];
-  [(UILabel *)self->_textLabel setTextColor:v10];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(UILabel *)self->_textLabel setTextColor:blackColor];
 
 LABEL_12:
-  v9 = [MEMORY[0x1E69DC888] systemGrayColor];
+  whiteColor2 = [MEMORY[0x1E69DC888] systemGrayColor];
 LABEL_13:
-  v11 = v9;
-  [(UILabel *)self->_accentVariantNumberLabel setTextColor:v9];
+  v11 = whiteColor2;
+  [(UILabel *)self->_accentVariantNumberLabel setTextColor:whiteColor2];
 }
 
 - (void)updateLabels
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v3 = [(TUIPressAndHoldViewCell *)self accentVariant];
+  accentVariant = [(TUIPressAndHoldViewCell *)self accentVariant];
 
-  if (v3)
+  if (accentVariant)
   {
     [(TUIPressAndHoldViewCell *)self bounds];
     v4 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -75,16 +75,16 @@ LABEL_13:
     v10 = v9 - (v4 + *(MEMORY[0x1E69DDCE0] + 24));
     v12 = v11 - (*MEMORY[0x1E69DDCE0] + *(MEMORY[0x1E69DDCE0] + 16));
     v25 = *MEMORY[0x1E69DB648];
-    v13 = [(UILabel *)self->_textLabel font];
-    v26[0] = v13;
+    font = [(UILabel *)self->_textLabel font];
+    v26[0] = font;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
 
-    v15 = [(UILabel *)self->_textLabel text];
-    [v15 sizeWithAttributes:v14];
+    text = [(UILabel *)self->_textLabel text];
+    [text sizeWithAttributes:v14];
     v17 = v16;
 
-    v18 = [(UILabel *)self->_textLabel text];
-    [v18 sizeWithAttributes:v14];
+    text2 = [(UILabel *)self->_textLabel text];
+    [text2 sizeWithAttributes:v14];
     v20 = v19;
 
     v27.origin.x = v6;
@@ -111,35 +111,35 @@ LABEL_13:
   [(TUIPressAndHoldViewCell *)self updateColors];
 }
 
-- (void)setAccentVariantNumber:(unint64_t)a3
+- (void)setAccentVariantNumber:(unint64_t)number
 {
-  if (self->_accentVariantNumber != a3)
+  if (self->_accentVariantNumber != number)
   {
-    self->_accentVariantNumber = a3;
+    self->_accentVariantNumber = number;
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-    v7 = [v5 stringValue];
+    stringValue = [v5 stringValue];
 
-    v6 = [(TUIPressAndHoldViewCell *)self accentVariantNumberLabel];
-    [v6 setText:v7];
+    accentVariantNumberLabel = [(TUIPressAndHoldViewCell *)self accentVariantNumberLabel];
+    [accentVariantNumberLabel setText:stringValue];
 
     [(TUIPressAndHoldViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setAccentVariant:(id)a3
+- (void)setAccentVariant:(id)variant
 {
-  v5 = a3;
+  variantCopy = variant;
   accentVariant = self->_accentVariant;
-  if (accentVariant != v5)
+  if (accentVariant != variantCopy)
   {
-    v8 = v5;
+    v8 = variantCopy;
     if (([(NSString *)accentVariant isEqual:?]& 1) == 0)
     {
-      objc_storeStrong(&self->_accentVariant, a3);
+      objc_storeStrong(&self->_accentVariant, variant);
       if ([(NSString *)v8 length]|| self->_textLabel)
       {
-        v7 = [(TUIPressAndHoldViewCell *)self textLabel];
-        [v7 setText:v8];
+        textLabel = [(TUIPressAndHoldViewCell *)self textLabel];
+        [textLabel setText:v8];
       }
 
       [(TUIPressAndHoldViewCell *)self setNeedsLayout];
@@ -149,11 +149,11 @@ LABEL_13:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (TUIPressAndHoldViewCell)initWithFrame:(CGRect)a3
+- (TUIPressAndHoldViewCell)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = TUIPressAndHoldViewCell;
-  v3 = [(TUIPressAndHoldViewCell *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIPressAndHoldViewCell *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -170,8 +170,8 @@ LABEL_13:
 
     [(UILabel *)v4->_textLabel setAdjustsFontSizeToFitWidth:0];
     [(UILabel *)v4->_textLabel setTextAlignment:1];
-    v9 = [(TUIPressAndHoldViewCell *)v4 contentView];
-    [v9 addSubview:v4->_textLabel];
+    contentView = [(TUIPressAndHoldViewCell *)v4 contentView];
+    [contentView addSubview:v4->_textLabel];
 
     v10 = objc_alloc(MEMORY[0x1E69DCC10]);
     v11 = [v10 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -179,8 +179,8 @@ LABEL_13:
     v4->_accentVariantNumberLabel = v11;
 
     [(UILabel *)v4->_accentVariantNumberLabel setTextAlignment:1];
-    v13 = [(TUIPressAndHoldViewCell *)v4 contentView];
-    [v13 addSubview:v4->_accentVariantNumberLabel];
+    contentView2 = [(TUIPressAndHoldViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_accentVariantNumberLabel];
   }
 
   return v4;

@@ -1,40 +1,40 @@
 @interface AMSUserNotificationAction
-- (AMSUserNotificationAction)initWithTitle:(id)a3 style:(int64_t)a4;
-- (AMSUserNotificationAction)initWithUserInfoAction:(id)a3;
+- (AMSUserNotificationAction)initWithTitle:(id)title style:(int64_t)style;
+- (AMSUserNotificationAction)initWithUserInfoAction:(id)action;
 - (id)generateUserInfoAction;
 @end
 
 @implementation AMSUserNotificationAction
 
-- (AMSUserNotificationAction)initWithTitle:(id)a3 style:(int64_t)a4
+- (AMSUserNotificationAction)initWithTitle:(id)title style:(int64_t)style
 {
-  v7 = a3;
+  titleCopy = title;
   v14.receiver = self;
   v14.super_class = AMSUserNotificationAction;
   v8 = [(AMSUserNotificationAction *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_title, a3);
-    v9->_style = a4;
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
+    objc_storeStrong(&v8->_title, title);
+    v9->_style = style;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v9->_identifier;
-    v9->_identifier = v11;
+    v9->_identifier = uUIDString;
   }
 
   return v9;
 }
 
-- (AMSUserNotificationAction)initWithUserInfoAction:(id)a3
+- (AMSUserNotificationAction)initWithUserInfoAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v33.receiver = self;
   v33.super_class = AMSUserNotificationAction;
   v5 = [(AMSUserNotificationAction *)&v33 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [actionCopy mutableCopy];
     v7 = [(NSDictionary *)v6 objectForKeyedSubscript:@"_AMSIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
@@ -75,7 +75,7 @@
 
     if (v21)
     {
-      v32 = v4;
+      v32 = actionCopy;
       v22 = [(NSDictionary *)v6 objectForKeyedSubscript:@"_AMSRequestMethod"];
       v23 = [(NSDictionary *)v6 objectForKeyedSubscript:@"_AMSRequestHeaders"];
       v24 = [(NSDictionary *)v6 objectForKeyedSubscript:@"_AMSRequestBody"];
@@ -98,7 +98,7 @@
       request = v5->_request;
       v5->_request = v28;
 
-      v4 = v32;
+      actionCopy = v32;
     }
 
     [(NSDictionary *)v6 removeObjectForKey:@"_AMSDefaultURL"];
@@ -119,8 +119,8 @@
 
 - (id)generateUserInfoAction
 {
-  v3 = [(AMSUserNotificationAction *)self userInfo];
-  v4 = [v3 mutableCopy];
+  userInfo = [(AMSUserNotificationAction *)self userInfo];
+  v4 = [userInfo mutableCopy];
   v5 = v4;
   if (v4)
   {
@@ -134,70 +134,70 @@
 
   v7 = v6;
 
-  v8 = [(AMSUserNotificationAction *)self identifier];
+  identifier = [(AMSUserNotificationAction *)self identifier];
 
-  if (v8)
+  if (identifier)
   {
-    v9 = [(AMSUserNotificationAction *)self identifier];
-    [v7 setObject:v9 forKeyedSubscript:@"_AMSIdentifier"];
+    identifier2 = [(AMSUserNotificationAction *)self identifier];
+    [v7 setObject:identifier2 forKeyedSubscript:@"_AMSIdentifier"];
   }
 
-  v10 = [(AMSUserNotificationAction *)self title];
+  title = [(AMSUserNotificationAction *)self title];
 
-  if (v10)
+  if (title)
   {
-    v11 = [(AMSUserNotificationAction *)self title];
-    [v7 setObject:v11 forKeyedSubscript:@"_AMSTitle"];
+    title2 = [(AMSUserNotificationAction *)self title];
+    [v7 setObject:title2 forKeyedSubscript:@"_AMSTitle"];
   }
 
-  v12 = [(AMSUserNotificationAction *)self defaultURL];
+  defaultURL = [(AMSUserNotificationAction *)self defaultURL];
 
-  if (v12)
+  if (defaultURL)
   {
-    v13 = [(AMSUserNotificationAction *)self defaultURL];
-    v14 = [v13 absoluteString];
-    [v7 setObject:v14 forKeyedSubscript:@"_AMSDefaultURL"];
+    defaultURL2 = [(AMSUserNotificationAction *)self defaultURL];
+    absoluteString = [defaultURL2 absoluteString];
+    [v7 setObject:absoluteString forKeyedSubscript:@"_AMSDefaultURL"];
   }
 
-  v15 = [(AMSUserNotificationAction *)self metricsEvent];
+  metricsEvent = [(AMSUserNotificationAction *)self metricsEvent];
 
-  if (v15)
+  if (metricsEvent)
   {
-    v16 = [(AMSUserNotificationAction *)self metricsEvent];
-    v17 = [v16 underlyingDictionary];
-    [v7 setObject:v17 forKeyedSubscript:@"_AMSMetrics"];
+    metricsEvent2 = [(AMSUserNotificationAction *)self metricsEvent];
+    underlyingDictionary = [metricsEvent2 underlyingDictionary];
+    [v7 setObject:underlyingDictionary forKeyedSubscript:@"_AMSMetrics"];
   }
 
-  v18 = [(AMSUserNotificationAction *)self request];
+  request = [(AMSUserNotificationAction *)self request];
 
-  if (v18)
+  if (request)
   {
-    v19 = [(AMSUserNotificationAction *)self request];
-    v20 = [v19 URL];
-    v21 = [v20 absoluteString];
-    [v7 setObject:v21 forKeyedSubscript:@"_AMSRequestURL"];
+    request2 = [(AMSUserNotificationAction *)self request];
+    v20 = [request2 URL];
+    absoluteString2 = [v20 absoluteString];
+    [v7 setObject:absoluteString2 forKeyedSubscript:@"_AMSRequestURL"];
 
-    v22 = [(AMSUserNotificationAction *)self request];
-    v23 = [v22 HTTPMethod];
-    v24 = v23;
-    v25 = v23 ? v23 : @"GET";
+    request3 = [(AMSUserNotificationAction *)self request];
+    hTTPMethod = [request3 HTTPMethod];
+    v24 = hTTPMethod;
+    v25 = hTTPMethod ? hTTPMethod : @"GET";
     [v7 setObject:v25 forKeyedSubscript:@"_AMSRequestMethod"];
 
-    v26 = [(AMSUserNotificationAction *)self request];
-    v27 = [v26 allHTTPHeaderFields];
-    v28 = v27;
-    v29 = v27 ? v27 : MEMORY[0x1E695E0F8];
+    request4 = [(AMSUserNotificationAction *)self request];
+    allHTTPHeaderFields = [request4 allHTTPHeaderFields];
+    v28 = allHTTPHeaderFields;
+    v29 = allHTTPHeaderFields ? allHTTPHeaderFields : MEMORY[0x1E695E0F8];
     [v7 setObject:v29 forKeyedSubscript:@"_AMSRequestHeaders"];
 
-    v30 = [(AMSUserNotificationAction *)self request];
-    v31 = [v30 HTTPBody];
+    request5 = [(AMSUserNotificationAction *)self request];
+    hTTPBody = [request5 HTTPBody];
 
-    if (v31)
+    if (hTTPBody)
     {
       v32 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v33 = [(AMSUserNotificationAction *)self request];
-      v34 = [v33 HTTPBody];
-      v35 = [v32 initWithData:v34 encoding:4];
+      request6 = [(AMSUserNotificationAction *)self request];
+      hTTPBody2 = [request6 HTTPBody];
+      v35 = [v32 initWithData:hTTPBody2 encoding:4];
       [v7 setObject:v35 forKeyedSubscript:@"_AMSRequestBody"];
     }
   }

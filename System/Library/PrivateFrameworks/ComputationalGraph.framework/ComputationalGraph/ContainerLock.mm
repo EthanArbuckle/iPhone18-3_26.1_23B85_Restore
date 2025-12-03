@@ -2,7 +2,7 @@
 - (NSOperationQueue)presentedItemOperationQueue;
 - (NSURL)presentedItemURL;
 - (_TtC18ComputationalGraph13ContainerLock)init;
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3;
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler;
 @end
 
 @implementation ContainerLock
@@ -33,13 +33,13 @@
   return v3;
 }
 
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC1F9A70, &qword_1C6EF75A8);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -55,7 +55,7 @@
   v13[3] = 0;
   v13[4] = &unk_1C6EF75C8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1C6ED8AC0(0, 0, v8, &unk_1C6EF75D8, v13);
 }
 

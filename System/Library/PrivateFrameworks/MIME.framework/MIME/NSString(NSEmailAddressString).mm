@@ -14,17 +14,17 @@
 - (void)mf_emailAddressesWithEquivalentDomains
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [a1 mf_rangeOfAddressDomain];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL)
+  mf_rangeOfAddressDomain = [self mf_rangeOfAddressDomain];
+  if (mf_rangeOfAddressDomain == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v5 = v2;
+    v5 = mf_rangeOfAddressDomain;
     v6 = v3;
-    if ([&unk_1F4F3B350 containsObject:{objc_msgSend(objc_msgSend(a1, "substringWithRange:", v2, v3), "lowercaseString")}])
+    if ([&unk_1F4F3B350 containsObject:{objc_msgSend(objc_msgSend(self, "substringWithRange:", mf_rangeOfAddressDomain, v3), "lowercaseString")}])
     {
       v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(&unk_1F4F3B350, "count")}];
       v14 = 0u;
@@ -45,8 +45,8 @@
               objc_enumerationMutation(&unk_1F4F3B350);
             }
 
-            v11 = [a1 stringByReplacingCharactersInRange:v5 withString:{v6, *(*(&v14 + 1) + 8 * i)}];
-            if ([v11 isEqualToString:a1])
+            v11 = [self stringByReplacingCharactersInRange:v5 withString:{v6, *(*(&v14 + 1) + 8 * i)}];
+            if ([v11 isEqualToString:self])
             {
               [v4 insertObject:v11 atIndex:0];
             }
@@ -66,8 +66,8 @@
 
     else
     {
-      v18 = a1;
-      v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
+      selfCopy = self;
+      v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy count:1];
     }
   }
 
@@ -77,26 +77,26 @@
 
 - (uint64_t)mf_copyUncommentedAddress
 {
-  v1 = [a1 ea_uncommentedAddress];
+  ea_uncommentedAddress = [self ea_uncommentedAddress];
 
-  return [v1 copy];
+  return [ea_uncommentedAddress copy];
 }
 
 - (uint64_t)mf_copyAddressComment
 {
-  v1 = [a1 ea_addressComment];
+  ea_addressComment = [self ea_addressComment];
 
-  return [v1 copy];
+  return [ea_addressComment copy];
 }
 
 + (void)mf_formattedAddressWithName:()NSEmailAddressString email:useQuotes:
 {
-  v8 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v9 = [(__CFString *)a3 length];
   if (v9)
   {
     v10 = v9;
-    [v8 appendString:a3];
+    [string appendString:a3];
     if (a5)
     {
       if (![(__CFString *)a3 hasPrefix:@"]|| ([(__CFString *)a3 hasSuffix:@"]& 1) == 0)
@@ -124,10 +124,10 @@
         v16.length = v10;
         if (CFStringFindCharacterFromSet(a3, v11, v16, 0, 0))
         {
-          [v8 replaceOccurrencesOfString:@"\ withString:@"\\\ options:0 range:{0, objc_msgSend(v8, "length")}];
-          [v8 replaceOccurrencesOfString:@" withString:@"\ options:0 range:{0, objc_msgSend(v8, "length")}];
-          [v8 replaceCharactersInRange:0 withString:{0, @""}];
-          [v8 replaceCharactersInRange:objc_msgSend(v8 withString:{"length"), 0, @""}];
+          [string replaceOccurrencesOfString:@"\ withString:@"\\\ options:0 range:{0, objc_msgSend(string, "length")}];
+          [string replaceOccurrencesOfString:@" withString:@"\ options:0 range:{0, objc_msgSend(string, "length")}];
+          [string replaceCharactersInRange:0 withString:{0, @""}];
+          [string replaceCharactersInRange:objc_msgSend(string withString:{"length"), 0, @""}];
         }
       }
     }
@@ -135,38 +135,38 @@
 
   if ([(__CFString *)a4 length])
   {
-    if ([v8 length])
+    if ([string length])
     {
-      [v8 appendString:@" <"];
-      [v8 appendString:a4];
+      [string appendString:@" <"];
+      [string appendString:a4];
       v13 = @">";
-      v14 = v8;
+      v14 = string;
     }
 
     else
     {
-      v14 = v8;
+      v14 = string;
       v13 = a4;
     }
 
     [v14 appendString:v13];
   }
 
-  return v8;
+  return string;
 }
 
 - (uint64_t)mf_addressDomain
 {
-  v1 = [a1 mf_copyUncommentedAddress];
-  v2 = [v1 rangeOfString:@"@"];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL || (v4 = v2 + v3, v2 + v3 >= [v1 length]))
+  mf_copyUncommentedAddress = [self mf_copyUncommentedAddress];
+  v2 = [mf_copyUncommentedAddress rangeOfString:@"@"];
+  if (v2 == 0x7FFFFFFFFFFFFFFFLL || (v4 = v2 + v3, v2 + v3 >= [mf_copyUncommentedAddress length]))
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v1 substringFromIndex:v4];
+    v5 = [mf_copyUncommentedAddress substringFromIndex:v4];
   }
 
   return v5;
@@ -174,8 +174,8 @@
 
 - (id)mf_copyDisplayEmailAddress
 {
-  v2 = [a1 mf_rangeOfAddressDomain];
-  v4 = [a1 mf_copyDisplayStringInRange:{v2, v3}];
+  mf_rangeOfAddressDomain = [self mf_rangeOfAddressDomain];
+  v4 = [self mf_copyDisplayStringInRange:{mf_rangeOfAddressDomain, v3}];
   if (![v4 containsString:&stru_1F4F33B00])
   {
     return v4;
@@ -188,14 +188,14 @@
 
 - (uint64_t)mf_copyIDNADecodedEmailAddress
 {
-  v1 = [MEMORY[0x1E699AFD0] idnaDecodedAddressForAddress:a1];
+  v1 = [MEMORY[0x1E699AFD0] idnaDecodedAddressForAddress:self];
 
   return [v1 copy];
 }
 
 - (uint64_t)mf_copyIDNAEncodedEmailAddress
 {
-  v1 = [MEMORY[0x1E699AFD0] idnaEncodedAddressForAddress:a1];
+  v1 = [MEMORY[0x1E699AFD0] idnaEncodedAddressForAddress:self];
 
   return [v1 copy];
 }

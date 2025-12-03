@@ -1,5 +1,5 @@
 @interface PUPXPhotoKitPlaybackRateActionPerformer
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
 - (void)performUserInteractionTask;
 @end
 
@@ -7,7 +7,7 @@
 
 - (void)performUserInteractionTask
 {
-  v4 = [(PXPhotoKitAssetActionPerformer *)self assets];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
   v5 = PFFilter();
   if ([v5 count])
   {
@@ -24,26 +24,26 @@
       if (objc_opt_isKindOfClass())
       {
 LABEL_4:
-        v8 = [(PXActionPerformer *)self undoManager];
-        [v7 executeWithUndoManager:v8 completionHandler:&__block_literal_global_734];
+        undoManager = [(PXActionPerformer *)self undoManager];
+        [v7 executeWithUndoManager:undoManager completionHandler:&__block_literal_global_734];
 
         [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
         goto LABEL_8;
       }
 
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = objc_opt_class();
       v12 = NSStringFromClass(v13);
-      v14 = [v7 px_descriptionForAssertionMessage];
-      [v10 handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:1724 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[PUPXPhotoKitBatchActionPerformer newEditActionForPerformer:self class:PXEditBatchPlaybackRateAction.class assets:validAssets prepareAction:^(PXEditBatchPlaybackRateAction *preparePlaybackRateAction) { preparePlaybackRateAction.playbackRate = self.playbackRate; }]", v12, v14}];
+      px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:1724 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[PUPXPhotoKitBatchActionPerformer newEditActionForPerformer:self class:PXEditBatchPlaybackRateAction.class assets:validAssets prepareAction:^(PXEditBatchPlaybackRateAction *preparePlaybackRateAction) { preparePlaybackRateAction.playbackRate = self.playbackRate; }]", v12, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      [v10 handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:1724 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[PUPXPhotoKitBatchActionPerformer newEditActionForPerformer:self class:PXEditBatchPlaybackRateAction.class assets:validAssets prepareAction:^(PXEditBatchPlaybackRateAction *preparePlaybackRateAction) { preparePlaybackRateAction.playbackRate = self.playbackRate; }]", v12}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:1724 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[PUPXPhotoKitBatchActionPerformer newEditActionForPerformer:self class:PXEditBatchPlaybackRateAction.class assets:validAssets prepareAction:^(PXEditBatchPlaybackRateAction *preparePlaybackRateAction) { preparePlaybackRateAction.playbackRate = self.playbackRate; }]", v12}];
     }
 
     goto LABEL_4;
@@ -84,12 +84,12 @@ uint64_t __69__PUPXPhotoKitPlaybackRateActionPerformer_performUserInteractionTas
   return v3;
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isAnyItemSelected])
+  snapshotCopy = snapshot;
+  personCopy = person;
+  groupCopy = group;
+  if ([snapshotCopy isAnyItemSelected])
   {
     v14 = 0;
     v15 = &v14;
@@ -100,8 +100,8 @@ uint64_t __69__PUPXPhotoKitPlaybackRateActionPerformer_performUserInteractionTas
     v13[2] = __94__PUPXPhotoKitPlaybackRateActionPerformer_canPerformWithSelectionSnapshot_person_socialGroup___block_invoke;
     v13[3] = &unk_1E7B7A828;
     v13[4] = &v14;
-    v13[5] = a1;
-    [v8 enumerateSelectedObjectsUsingBlock:v13];
+    v13[5] = self;
+    [snapshotCopy enumerateSelectedObjectsUsingBlock:v13];
     v11 = *(v15 + 24);
     _Block_object_dispose(&v14, 8);
   }

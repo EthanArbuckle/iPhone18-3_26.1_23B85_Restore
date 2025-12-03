@@ -1,30 +1,30 @@
 @interface IXSDefaultAppDownloadAlert
-- (BOOL)openDefaultAppStoreWithError:(id *)a3;
-- (IXSDefaultAppDownloadAlert)initWithAppRecord:(id)a3 removability:(unint64_t)a4 defaultAppType:(unint64_t)a5;
-- (id)_bundleIDForDefaultAppMarketplace:(id *)a3;
+- (BOOL)openDefaultAppStoreWithError:(id *)error;
+- (IXSDefaultAppDownloadAlert)initWithAppRecord:(id)record removability:(unint64_t)removability defaultAppType:(unint64_t)type;
+- (id)_bundleIDForDefaultAppMarketplace:(id *)marketplace;
 - (id)_localizedNameForDefaultAppMarketplace;
 - (id)cancelButtonLabel;
 - (id)defaultButtonLabel;
 - (id)message;
 - (id)title;
-- (void)displayAlertWithCompletion:(id)a3;
+- (void)displayAlertWithCompletion:(id)completion;
 @end
 
 @implementation IXSDefaultAppDownloadAlert
 
-- (IXSDefaultAppDownloadAlert)initWithAppRecord:(id)a3 removability:(unint64_t)a4 defaultAppType:(unint64_t)a5
+- (IXSDefaultAppDownloadAlert)initWithAppRecord:(id)record removability:(unint64_t)removability defaultAppType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = [v8 bundleIdentifier];
+  recordCopy = record;
+  bundleIdentifier = [recordCopy bundleIdentifier];
   v12.receiver = self;
   v12.super_class = IXSDefaultAppDownloadAlert;
-  v10 = [(IXSUninstallAlert *)&v12 initWithAppRecord:v8 bundleIdentifier:v9 removability:a4 deletionIsRestricted:0];
+  v10 = [(IXSUninstallAlert *)&v12 initWithAppRecord:recordCopy bundleIdentifier:bundleIdentifier removability:removability deletionIsRestricted:0];
 
   if (v10)
   {
     [(IXSUninstallAlert *)v10 setTypeDescription:@"Download Default App"];
     [(IXSUninstallAlert *)v10 setDefaultButtonAppearsDestructive:0];
-    v10->_appType = a5;
+    v10->_appType = type;
   }
 
   return v10;
@@ -32,8 +32,8 @@
 
 - (id)title
 {
-  v3 = [(IXSDefaultAppDownloadAlert *)self appType];
-  switch(v3)
+  appType = [(IXSDefaultAppDownloadAlert *)self appType];
+  switch(appType)
   {
     case 3uLL:
       v4 = @"DEFAULT_APP_MESSAGING_NOT_AVAILABLE_DELETE_APP_UI_ALERT_TITLE";
@@ -59,8 +59,8 @@ LABEL_9:
 
 - (id)message
 {
-  v3 = [(IXSDefaultAppDownloadAlert *)self appType];
-  switch(v3)
+  appType = [(IXSDefaultAppDownloadAlert *)self appType];
+  switch(appType)
   {
     case 3uLL:
       v4 = [(IXSUninstallAlert *)self localizedStringForKey:@"DEFAULT_APP_DOWNLOAD_MESSAGING_APP_UI_ALERT_BODY_FIRST" withFormatHint:@"At least one messaging app is required on this iPhone."];
@@ -78,9 +78,9 @@ LABEL_9:
       v6 = @"Download another browser app, and then you can delete “%@”.";
 LABEL_7:
       v7 = [(IXSUninstallAlert *)self localizedStringForKey:v5 withFormatHint:v6];
-      v8 = [(IXSUninstallAlert *)self appRecord];
-      v9 = [v8 localizedName];
-      v10 = [NSString localizedStringWithFormat:v7, v9];
+      appRecord = [(IXSUninstallAlert *)self appRecord];
+      localizedName = [appRecord localizedName];
+      v10 = [NSString localizedStringWithFormat:v7, localizedName];
 
       v11 = [NSString stringWithFormat:@"%@ %@", v4, v10];
 
@@ -97,11 +97,11 @@ LABEL_9:
 {
   if (([(IXSDefaultAppDownloadAlert *)self appType]| 2) == 3)
   {
-    v3 = [(IXSDefaultAppDownloadAlert *)self _localizedNameForDefaultAppMarketplace];
-    if (v3)
+    _localizedNameForDefaultAppMarketplace = [(IXSDefaultAppDownloadAlert *)self _localizedNameForDefaultAppMarketplace];
+    if (_localizedNameForDefaultAppMarketplace)
     {
       v4 = [(IXSUninstallAlert *)self localizedStringForKey:@"DEFAULT_APP_NOT_AVAILABLE_DELETE_APP_OPEN_APP_MARKETPLACE" withFormatHint:@"Open %@"];
-      v5 = [NSString localizedStringWithFormat:v4, v3];
+      v5 = [NSString localizedStringWithFormat:v4, _localizedNameForDefaultAppMarketplace];
     }
 
     else
@@ -147,7 +147,7 @@ LABEL_9:
     v4 = v8;
     if (v3)
     {
-      v5 = [v3 localizedName];
+      localizedName = [v3 localizedName];
     }
 
     else
@@ -158,19 +158,19 @@ LABEL_9:
         sub_10009FA30();
       }
 
-      v5 = 0;
+      localizedName = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    localizedName = 0;
   }
 
-  return v5;
+  return localizedName;
 }
 
-- (id)_bundleIDForDefaultAppMarketplace:(id *)a3
+- (id)_bundleIDForDefaultAppMarketplace:(id *)marketplace
 {
   v4 = +[LSApplicationWorkspace defaultWorkspace];
   v17 = 0;
@@ -182,7 +182,7 @@ LABEL_9:
     if ([v5 count])
     {
       v7 = [v5 objectAtIndexedSubscript:0];
-      if (!a3)
+      if (!marketplace)
       {
         goto LABEL_14;
       }
@@ -216,7 +216,7 @@ LABEL_9:
 
   v7 = 0;
   v6 = v13;
-  if (!a3)
+  if (!marketplace)
   {
     goto LABEL_14;
   }
@@ -225,7 +225,7 @@ LABEL_12:
   if (!v7)
   {
     v14 = v6;
-    *a3 = v6;
+    *marketplace = v6;
   }
 
 LABEL_14:
@@ -233,9 +233,9 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)openDefaultAppStoreWithError:(id *)a3
+- (BOOL)openDefaultAppStoreWithError:(id *)error
 {
-  v3 = [(IXSDefaultAppDownloadAlert *)self _bundleIDForDefaultAppMarketplace:a3];
+  v3 = [(IXSDefaultAppDownloadAlert *)self _bundleIDForDefaultAppMarketplace:error];
   if (v3)
   {
     v4 = +[LSApplicationWorkspace defaultWorkspace];
@@ -250,34 +250,34 @@ LABEL_14:
   return v3 != 0;
 }
 
-- (void)displayAlertWithCompletion:(id)a3
+- (void)displayAlertWithCompletion:(id)completion
 {
-  v12 = a3;
+  completionCopy = completion;
   v4 = [IXSUninstallAlertConfiguration alloc];
-  v5 = [(IXSDefaultAppDownloadAlert *)self title];
-  v6 = [(IXSDefaultAppDownloadAlert *)self message];
-  v7 = [(IXSUninstallAlertConfiguration *)v4 initWithTitle:v5 message:v6];
+  title = [(IXSDefaultAppDownloadAlert *)self title];
+  message = [(IXSDefaultAppDownloadAlert *)self message];
+  v7 = [(IXSUninstallAlertConfiguration *)v4 initWithTitle:title message:message];
 
-  v8 = [(IXSDefaultAppDownloadAlert *)self defaultButtonLabel];
-  if (v8)
+  defaultButtonLabel = [(IXSDefaultAppDownloadAlert *)self defaultButtonLabel];
+  if (defaultButtonLabel)
   {
-    v9 = [[IXSUninstallButtonConfiguration alloc] initWithTitle:v8 buttonType:0];
+    v9 = [[IXSUninstallButtonConfiguration alloc] initWithTitle:defaultButtonLabel buttonType:0];
     [(IXSUninstallAlertConfiguration *)v7 addButtonDefinition:v9 forAction:&stru_1001027F8];
     [(IXSUninstallButtonConfiguration *)v9 setIsPreferredButton:1];
   }
 
-  v10 = [(IXSDefaultAppDownloadAlert *)self cancelButtonLabel];
-  if (v10)
+  cancelButtonLabel = [(IXSDefaultAppDownloadAlert *)self cancelButtonLabel];
+  if (cancelButtonLabel)
   {
-    v11 = [[IXSUninstallButtonConfiguration alloc] initWithTitle:v10 buttonType:2];
+    v11 = [[IXSUninstallButtonConfiguration alloc] initWithTitle:cancelButtonLabel buttonType:2];
     [(IXSUninstallAlertConfiguration *)v7 addButtonDefinition:v11 forAction:&stru_100102818];
-    if (!v8)
+    if (!defaultButtonLabel)
     {
       [(IXSUninstallButtonConfiguration *)v11 setIsPreferredButton:1];
     }
   }
 
-  [(IXSUninstallAlert *)self displayAlertWithCompletion:v12 uninstallAlertConfiguration:v7];
+  [(IXSUninstallAlert *)self displayAlertWithCompletion:completionCopy uninstallAlertConfiguration:v7];
 }
 
 @end

@@ -24,7 +24,7 @@
 
 - (BOOL)isFinished
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100319E38();
 
   return v3 & 1;
@@ -32,7 +32,7 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_100319F7C();
 }
 

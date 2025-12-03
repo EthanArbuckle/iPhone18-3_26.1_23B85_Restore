@@ -2,30 +2,30 @@
 - (GKTurnBasedMatchDetailViewController)init;
 - (GKTurnBasedMatchDetailViewControllerDelegate)delegate;
 - (id)preferredFocusEnvironments;
-- (void)acceptInvitation:(id)a3;
+- (void)acceptInvitation:(id)invitation;
 - (void)addBackgroundVisualEffect;
-- (void)buyButtonPressed:(id)a3;
-- (void)chooseMatch:(id)a3;
+- (void)buyButtonPressed:(id)pressed;
+- (void)chooseMatch:(id)match;
 - (void)configureDataSource;
-- (void)configureHeader:(id)a3 indexPath:(id)a4;
-- (void)configureMatchDetailHeader:(id)a3;
+- (void)configureHeader:(id)header indexPath:(id)path;
+- (void)configureMatchDetailHeader:(id)header;
 - (void)configureViewFactories;
 - (void)dealloc;
-- (void)declineInvitation:(id)a3;
+- (void)declineInvitation:(id)invitation;
 - (void)didUpdateModel;
-- (void)handleTurnBasedEvent:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)quitMatch:(id)a3;
-- (void)removeMatch:(id)a3;
-- (void)setActionButtonEnabled:(BOOL)a3;
-- (void)setMatch:(id)a3;
+- (void)handleTurnBasedEvent:(id)event;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)quitMatch:(id)match;
+- (void)removeMatch:(id)match;
+- (void)setActionButtonEnabled:(BOOL)enabled;
+- (void)setMatch:(id)match;
 - (void)setupActionButton;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateUIBasedOnTraitCollection;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation GKTurnBasedMatchDetailViewController
@@ -48,38 +48,38 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKTurnBasedMatchDetailViewController;
   [(GKCollectionViewController *)&v4 dealloc];
 }
 
-- (void)setMatch:(id)a3
+- (void)setMatch:(id)match
 {
-  v5 = a3;
-  if (self->_match != v5)
+  matchCopy = match;
+  if (self->_match != matchCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_match, a3);
+    v6 = matchCopy;
+    objc_storeStrong(&self->_match, match);
     [(GKTurnBasedMatchDetailViewController *)self didUpdateModel];
-    v5 = v6;
+    matchCopy = v6;
   }
 }
 
 - (void)configureDataSource
 {
-  v3 = [(GKCollectionViewController *)self dataSource];
+  dataSource = [(GKCollectionViewController *)self dataSource];
 
-  if (!v3)
+  if (!dataSource)
   {
     v4 = objc_alloc_init(GKTurnBasedParticipantsDataSource);
     participantsDataSource = self->_participantsDataSource;
     self->_participantsDataSource = v4;
 
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = +[GKSectionMetrics metricsForIdiom:](GKSectionMetrics, "metricsForIdiom:", [v6 userInterfaceIdiom]);
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v7 = +[GKSectionMetrics metricsForIdiom:](GKSectionMetrics, "metricsForIdiom:", [currentDevice userInterfaceIdiom]);
 
     [v7 sectionHeaderHeight];
     self->_initialSectionHeaderHeight = v8;
@@ -87,14 +87,14 @@
     v9 = +[GKSupplementaryViewMetrics supplementaryMetrics];
     [v9 setKind:@"GKTurnBasedMatchDetailHeaderKind"];
     [v9 setShouldPin:0];
-    v10 = [(GKCollectionViewDataSource *)self->_participantsDataSource dataSourceMetrics];
-    [v10 insertSupplementaryMetrics:v9 forKey:@"detailHeader" atLocation:0];
+    dataSourceMetrics = [(GKCollectionViewDataSource *)self->_participantsDataSource dataSourceMetrics];
+    [dataSourceMetrics insertSupplementaryMetrics:v9 forKey:@"detailHeader" atLocation:0];
 
-    v11 = [(GKTurnBasedMatchDetailViewController *)self participantsDataSource];
-    [v11 addObserver:self forKeyPath:@"match" options:1 context:0];
+    participantsDataSource = [(GKTurnBasedMatchDetailViewController *)self participantsDataSource];
+    [participantsDataSource addObserver:self forKeyPath:@"match" options:1 context:0];
 
-    v12 = [(GKTurnBasedMatchDetailViewController *)self match];
-    [(GKTurnBasedParticipantsDataSource *)self->_participantsDataSource setMatch:v12];
+    match = [(GKTurnBasedMatchDetailViewController *)self match];
+    [(GKTurnBasedParticipantsDataSource *)self->_participantsDataSource setMatch:match];
 
     [(GKBasicCollectionViewController *)self setDataSource:self->_participantsDataSource];
     v13.receiver = self;
@@ -108,62 +108,62 @@
   v5.receiver = self;
   v5.super_class = GKTurnBasedMatchDetailViewController;
   [(GKCollectionViewController *)&v5 configureViewFactories];
-  v3 = [(GKCollectionViewController *)self collectionView];
-  [v3 _gkRegisterClass:objc_opt_class() forSupplementaryViewOfKind:@"GKTurnBasedMatchDetailHeaderKind"];
+  collectionView = [(GKCollectionViewController *)self collectionView];
+  [collectionView _gkRegisterClass:objc_opt_class() forSupplementaryViewOfKind:@"GKTurnBasedMatchDetailHeaderKind"];
 
   [(GKCollectionViewDataSource *)self->_participantsDataSource registerSupplementaryViewOfKind:@"GKTurnBasedMatchDetailHeaderKind" withClass:objc_opt_class() target:self configurator:sel_configureMatchDetailHeader_];
-  v4 = [(GKCollectionViewController *)self collectionView];
-  [v4 _gkRegisterClass:objc_opt_class() forSupplementaryViewOfKind:@"SectionHeader"];
+  collectionView2 = [(GKCollectionViewController *)self collectionView];
+  [collectionView2 _gkRegisterClass:objc_opt_class() forSupplementaryViewOfKind:@"SectionHeader"];
 
   [(GKCollectionViewDataSource *)self->_participantsDataSource registerSupplementaryViewOfKind:@"SectionHeader" withClass:objc_opt_class() target:self configurator:sel_configureHeader_indexPath_];
 }
 
-- (void)configureMatchDetailHeader:(id)a3
+- (void)configureMatchDetailHeader:(id)header
 {
-  v4 = a3;
-  [(GKTurnBasedMatchDetailViewController *)self setHeaderView:v4];
-  [v4 setActionTarget:self];
+  headerCopy = header;
+  [(GKTurnBasedMatchDetailViewController *)self setHeaderView:headerCopy];
+  [headerCopy setActionTarget:self];
 
   [(GKTurnBasedMatchDetailViewController *)self updateUIBasedOnTraitCollection];
 
   [(GKTurnBasedMatchDetailViewController *)self didUpdateModel];
 }
 
-- (void)configureHeader:(id)a3 indexPath:(id)a4
+- (void)configureHeader:(id)header indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(GKTurnBasedMatchDetailViewController *)self participantsDataSource];
-  v7 = [v6 sectionTitle];
-  v8 = [v7 localizedUppercaseString];
-  [v5 setLeftText:v8];
+  headerCopy = header;
+  participantsDataSource = [(GKTurnBasedMatchDetailViewController *)self participantsDataSource];
+  sectionTitle = [participantsDataSource sectionTitle];
+  localizedUppercaseString = [sectionTitle localizedUppercaseString];
+  [headerCopy setLeftText:localizedUppercaseString];
 
   v9 = [MEMORY[0x277D74300] _gkPreferredFontForTextStyle:*MEMORY[0x277D76968] symbolicTraits:2];
-  v10 = [v5 leftLabel];
-  [v10 setFont:v9];
+  leftLabel = [headerCopy leftLabel];
+  [leftLabel setFont:v9];
 
-  v11 = [v5 leftLabel];
-  v12 = [v11 textColor];
-  v13 = [v12 colorWithAlphaComponent:0.600000024];
-  v14 = [v5 leftLabel];
-  [v14 setTextColor:v13];
+  leftLabel2 = [headerCopy leftLabel];
+  textColor = [leftLabel2 textColor];
+  v13 = [textColor colorWithAlphaComponent:0.600000024];
+  leftLabel3 = [headerCopy leftLabel];
+  [leftLabel3 setTextColor:v13];
 
   v15 = *MEMORY[0x277CDA5E8];
-  v16 = [v5 leftLabel];
-  v17 = [v16 layer];
-  [v17 setCompositingFilter:v15];
+  leftLabel4 = [headerCopy leftLabel];
+  layer = [leftLabel4 layer];
+  [layer setCompositingFilter:v15];
 
-  v18 = [v5 underlineView];
+  underlineView = [headerCopy underlineView];
 
-  [v18 setHidden:1];
+  [underlineView setHidden:1];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqual:{@"match", a4, a5, a6}])
+  if ([path isEqual:{@"match", object, change, context}])
   {
-    v8 = [(GKTurnBasedMatchDetailViewController *)self participantsDataSource];
-    v7 = [v8 match];
-    [(GKTurnBasedMatchDetailViewController *)self setMatch:v7];
+    participantsDataSource = [(GKTurnBasedMatchDetailViewController *)self participantsDataSource];
+    match = [participantsDataSource match];
+    [(GKTurnBasedMatchDetailViewController *)self setMatch:match];
   }
 }
 
@@ -172,27 +172,27 @@
   v13.receiver = self;
   v13.super_class = GKTurnBasedMatchDetailViewController;
   [(GKCollectionViewController *)&v13 viewDidLoad];
-  v3 = [(GKTurnBasedMatchDetailViewController *)self navigationController];
-  [v3 makeNavigationBarBackgroundTranslucent];
+  navigationController = [(GKTurnBasedMatchDetailViewController *)self navigationController];
+  [navigationController makeNavigationBarBackgroundTranslucent];
 
-  v4 = [(GKCollectionViewController *)self collectionView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView = [(GKCollectionViewController *)self collectionView];
+  [collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(GKCollectionViewController *)self collectionView];
-  [v5 setShowsVerticalScrollIndicator:0];
+  collectionView2 = [(GKCollectionViewController *)self collectionView];
+  [collectionView2 setShowsVerticalScrollIndicator:0];
 
   v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_doneButtonPressed_];
-  v7 = [(GKTurnBasedMatchDetailViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(GKTurnBasedMatchDetailViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
-  v8 = [(GKTurnBasedMatchDetailViewController *)self match];
-  v9 = [v8 matchTitle];
-  v10 = [(GKTurnBasedMatchDetailViewController *)self navigationItem];
-  [v10 setTitle:v9];
+  match = [(GKTurnBasedMatchDetailViewController *)self match];
+  matchTitle = [match matchTitle];
+  navigationItem2 = [(GKTurnBasedMatchDetailViewController *)self navigationItem];
+  [navigationItem2 setTitle:matchTitle];
 
-  v11 = [(GKTurnBasedMatchDetailViewController *)self match];
-  v12 = [v11 matchTitle];
-  [(GKTurnBasedMatchDetailViewController *)self setTitle:v12];
+  match2 = [(GKTurnBasedMatchDetailViewController *)self match];
+  matchTitle2 = [match2 matchTitle];
+  [(GKTurnBasedMatchDetailViewController *)self setTitle:matchTitle2];
 
   [(GKTurnBasedMatchDetailViewController *)self addBackgroundVisualEffect];
 }
@@ -200,176 +200,176 @@
 - (void)addBackgroundVisualEffect
 {
   v22 = objc_alloc_init(MEMORY[0x277D75D68]);
-  v3 = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
-  [v22 setBackgroundEffects:v3];
+  _gkGameLayerBackgroundVisualEffect = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
+  [v22 setBackgroundEffects:_gkGameLayerBackgroundVisualEffect];
 
-  v4 = [(GKTurnBasedMatchDetailViewController *)self view];
-  [v4 bounds];
+  view = [(GKTurnBasedMatchDetailViewController *)self view];
+  [view bounds];
   [v22 setFrame:?];
 
   [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(GKTurnBasedMatchDetailViewController *)self view];
-  [v5 insertSubview:v22 atIndex:0];
+  view2 = [(GKTurnBasedMatchDetailViewController *)self view];
+  [view2 insertSubview:v22 atIndex:0];
 
-  v6 = [v22 topAnchor];
-  v7 = [(GKTurnBasedMatchDetailViewController *)self view];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  topAnchor = [v22 topAnchor];
+  view3 = [(GKTurnBasedMatchDetailViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [v22 bottomAnchor];
-  v11 = [(GKTurnBasedMatchDetailViewController *)self view];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  bottomAnchor = [v22 bottomAnchor];
+  view4 = [(GKTurnBasedMatchDetailViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v13 setActive:1];
 
-  v14 = [v22 leadingAnchor];
-  v15 = [(GKTurnBasedMatchDetailViewController *)self view];
-  v16 = [v15 leadingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  leadingAnchor = [v22 leadingAnchor];
+  view5 = [(GKTurnBasedMatchDetailViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v17 setActive:1];
 
-  v18 = [v22 trailingAnchor];
-  v19 = [(GKTurnBasedMatchDetailViewController *)self view];
-  v20 = [v19 trailingAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  trailingAnchor = [v22 trailingAnchor];
+  view6 = [(GKTurnBasedMatchDetailViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v21 setActive:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = GKTurnBasedMatchDetailViewController;
-  [(GKCollectionViewController *)&v4 viewWillAppear:a3];
+  [(GKCollectionViewController *)&v4 viewWillAppear:appear];
   [(GKTurnBasedMatchDetailViewController *)self didUpdateModel];
   [(GKTurnBasedMatchDetailViewController *)self setActionButtonEnabled:1];
   [(GKTurnBasedMatchDetailHeaderView *)self->_headerView setLabelAlpha:1.0];
   [(GKTurnBasedMatchDetailViewController *)self updateUIBasedOnTraitCollection];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(GKTurnBasedMatchDetailViewController *)self navigationController];
-  v6 = [v5 navigationBar];
-  [(GKTurnBasedMatchDetailViewController *)self _gkConfigureFocusGuidesForNavigationBar:v6];
+  appearCopy = appear;
+  navigationController = [(GKTurnBasedMatchDetailViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [(GKTurnBasedMatchDetailViewController *)self _gkConfigureFocusGuidesForNavigationBar:navigationBar];
 
-  v7 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v7 addObserver:self selector:sel_handleTurnBasedEvent_ name:*MEMORY[0x277D0BB70] object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleTurnBasedEvent_ name:*MEMORY[0x277D0BB70] object:0];
 
   v8.receiver = self;
   v8.super_class = GKTurnBasedMatchDetailViewController;
-  [(GKCollectionViewController *)&v8 viewDidAppear:v3];
+  [(GKCollectionViewController *)&v8 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v5 removeObserver:self];
+  disappearCopy = disappear;
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = GKTurnBasedMatchDetailViewController;
-  [(GKCollectionViewController *)&v6 viewWillDisappear:v3];
+  [(GKCollectionViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
 - (void)updateUIBasedOnTraitCollection
 {
-  v3 = [(GKTurnBasedMatchDetailViewController *)self traitCollection];
-  v4 = [v3 verticalSizeClass];
+  traitCollection = [(GKTurnBasedMatchDetailViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  v5 = [(GKCollectionViewController *)self collectionView];
-  [v5 _gkRemoveAllConstraints];
+  collectionView = [(GKCollectionViewController *)self collectionView];
+  [collectionView _gkRemoveAllConstraints];
 
-  v6 = [(GKCollectionViewController *)self collectionView];
-  v7 = v6;
-  if (v4 == 1)
+  collectionView2 = [(GKCollectionViewController *)self collectionView];
+  collectionView3 = collectionView2;
+  if (verticalSizeClass == 1)
   {
-    v8 = [v6 widthAnchor];
-    v9 = [v8 constraintEqualToConstant:500.0];
-    [v9 setActive:1];
+    widthAnchor = [collectionView2 widthAnchor];
+    view2 = [widthAnchor constraintEqualToConstant:500.0];
+    [view2 setActive:1];
   }
 
   else
   {
-    v10 = [v6 leftAnchor];
-    v11 = [(GKTurnBasedMatchDetailViewController *)self view];
-    v12 = [v11 leftAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12 constant:16.0];
+    leftAnchor = [collectionView2 leftAnchor];
+    view = [(GKTurnBasedMatchDetailViewController *)self view];
+    leftAnchor2 = [view leftAnchor];
+    v13 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:16.0];
     [v13 setActive:1];
 
-    v7 = [(GKCollectionViewController *)self collectionView];
-    v8 = [v7 rightAnchor];
-    v9 = [(GKTurnBasedMatchDetailViewController *)self view];
-    v14 = [v9 rightAnchor];
-    v15 = [v8 constraintEqualToAnchor:v14 constant:-16.0];
+    collectionView3 = [(GKCollectionViewController *)self collectionView];
+    widthAnchor = [collectionView3 rightAnchor];
+    view2 = [(GKTurnBasedMatchDetailViewController *)self view];
+    rightAnchor = [view2 rightAnchor];
+    v15 = [widthAnchor constraintEqualToAnchor:rightAnchor constant:-16.0];
     [v15 setActive:1];
   }
 
-  v16 = [(GKCollectionViewController *)self collectionView];
-  v17 = [v16 centerXAnchor];
-  v18 = [(GKTurnBasedMatchDetailViewController *)self view];
-  v19 = [v18 centerXAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  collectionView4 = [(GKCollectionViewController *)self collectionView];
+  centerXAnchor = [collectionView4 centerXAnchor];
+  view3 = [(GKTurnBasedMatchDetailViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v20 setActive:1];
 
-  v21 = [(GKCollectionViewController *)self collectionView];
-  v22 = [v21 topAnchor];
-  v23 = [(GKTurnBasedMatchDetailViewController *)self view];
-  v24 = [v23 topAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  collectionView5 = [(GKCollectionViewController *)self collectionView];
+  topAnchor = [collectionView5 topAnchor];
+  view4 = [(GKTurnBasedMatchDetailViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v25 setActive:1];
 
-  v26 = [(GKCollectionViewController *)self collectionView];
-  v27 = [v26 bottomAnchor];
-  v28 = [(GKTurnBasedMatchDetailViewController *)self view];
-  v29 = [v28 bottomAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  collectionView6 = [(GKCollectionViewController *)self collectionView];
+  bottomAnchor = [collectionView6 bottomAnchor];
+  view5 = [(GKTurnBasedMatchDetailViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v30 setActive:1];
 
-  v31 = [(GKCollectionViewController *)self collectionView];
-  [v31 setNeedsLayout];
+  collectionView7 = [(GKCollectionViewController *)self collectionView];
+  [collectionView7 setNeedsLayout];
 
-  v42 = [(GKCollectionViewDataSource *)self->_participantsDataSource defaultSectionMetrics];
+  defaultSectionMetrics = [(GKCollectionViewDataSource *)self->_participantsDataSource defaultSectionMetrics];
   +[GKTurnParticipantCell defaultRowHeight];
   v33 = v32;
-  v34 = [(GKTurnBasedMatchDetailViewController *)self traitCollection];
-  v35 = [v34 preferredContentSizeCategory];
-  LODWORD(v28) = UIContentSizeCategoryIsAccessibilityCategory(v35);
+  traitCollection2 = [(GKTurnBasedMatchDetailViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+  LODWORD(view5) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  if (v28)
+  if (view5)
   {
     v33 = v33 * 1.7;
-    [v42 setSectionHeadersShouldPin:0];
+    [defaultSectionMetrics setSectionHeadersShouldPin:0];
   }
 
-  v36 = [MEMORY[0x277D75520] defaultMetrics];
-  [v36 scaledValueForValue:v33];
-  [v42 setDesiredItemHeight:?];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics scaledValueForValue:v33];
+  [defaultSectionMetrics setDesiredItemHeight:?];
 
-  [v42 setItemHeightList:0];
-  v37 = [MEMORY[0x277D75520] defaultMetrics];
-  [v37 scaledValueForValue:self->_initialSectionHeaderHeight];
-  [v42 setSectionHeaderHeight:?];
+  [defaultSectionMetrics setItemHeightList:0];
+  defaultMetrics2 = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics2 scaledValueForValue:self->_initialSectionHeaderHeight];
+  [defaultSectionMetrics setSectionHeaderHeight:?];
 
-  v38 = [(GKCollectionViewDataSource *)self->_participantsDataSource dataSourceMetrics];
-  v39 = [v38 supplementaryMetricsForKey:@"detailHeader"];
+  dataSourceMetrics = [(GKCollectionViewDataSource *)self->_participantsDataSource dataSourceMetrics];
+  v39 = [dataSourceMetrics supplementaryMetricsForKey:@"detailHeader"];
 
-  v40 = [MEMORY[0x277D75520] defaultMetrics];
-  [v40 scaledValueForValue:255.0];
+  defaultMetrics3 = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics3 scaledValueForValue:255.0];
   [v39 setDesiredHeight:?];
 
-  v41 = [(GKCollectionViewDataSource *)self->_participantsDataSource dataSourceMetrics];
-  [v41 replaceSupplementaryMetrics:v39 forKey:@"detailHeader"];
+  dataSourceMetrics2 = [(GKCollectionViewDataSource *)self->_participantsDataSource dataSourceMetrics];
+  [dataSourceMetrics2 replaceSupplementaryMetrics:v39 forKey:@"detailHeader"];
 
   [(GKCollectionViewController *)self _gkSetContentsNeedUpdateWithHandler:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = GKTurnBasedMatchDetailViewController;
-  [(GKCollectionViewController *)&v4 traitCollectionDidChange:a3];
+  [(GKCollectionViewController *)&v4 traitCollectionDidChange:change];
   [(GKTurnBasedMatchDetailViewController *)self updateUIBasedOnTraitCollection];
 }
 
@@ -380,17 +380,17 @@
   [(GKTurnBasedMatchDetailHeaderView *)self->_headerView setInfoText:0];
   if (![(GKGame *)self->_game isInstalled])
   {
-    v4 = [MEMORY[0x277D0C1D8] shared];
-    v5 = [v4 isAppInstallationRestricted];
+    mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+    isAppInstallationRestricted = [mEMORY[0x277D0C1D8] isAppInstallationRestricted];
 
-    if (v5)
+    if (isAppInstallationRestricted)
     {
       v6 = MEMORY[0x277CCACA8];
       v7 = GKGameCenterUIFrameworkBundle();
       v8 = GKGetLocalizedStringFromTableInBundle();
-      v9 = [(GKTurnBasedMatchDetailViewController *)self game];
-      v10 = [v9 name];
-      v11 = [v6 stringWithFormat:v8, v10];
+      game = [(GKTurnBasedMatchDetailViewController *)self game];
+      name = [game name];
+      v11 = [v6 stringWithFormat:v8, name];
       [(GKTurnBasedMatchDetailHeaderView *)self->_headerView setInfoText:v11];
 
       goto LABEL_12;
@@ -404,10 +404,10 @@
     goto LABEL_11;
   }
 
-  v3 = [(GKTurnBasedMatch *)self->_match state];
-  if (v3 > 3)
+  state = [(GKTurnBasedMatch *)self->_match state];
+  if (state > 3)
   {
-    if (v3 == 4 || v3 == 5)
+    if (state == 4 || state == 5)
     {
       goto LABEL_10;
     }
@@ -415,7 +415,7 @@
 
   else
   {
-    if ((v3 - 2) < 2)
+    if ((state - 2) < 2)
     {
 LABEL_10:
       v15 = GKGameCenterUIFrameworkBundle();
@@ -428,7 +428,7 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (v3 == 1)
+    if (state == 1)
     {
       v17 = GKGameCenterUIFrameworkBundle();
       v18 = GKGetLocalizedStringFromTableInBundle();
@@ -444,17 +444,17 @@ LABEL_12:
   [(GKTurnBasedMatchDetailViewController *)self setupActionButton];
   if (!self->_shouldShowPlay)
   {
-    v19 = [(GKTurnBasedMatchDetailHeaderView *)self->_headerView actionButton];
-    [v19 setHidden:1];
+    actionButton = [(GKTurnBasedMatchDetailHeaderView *)self->_headerView actionButton];
+    [actionButton setHidden:1];
   }
 }
 
 - (void)setupActionButton
 {
-  v3 = [(GKTurnBasedMatch *)self->_match state];
-  if (v3 > 3)
+  state = [(GKTurnBasedMatch *)self->_match state];
+  if (state > 3)
   {
-    if (v3 == 4)
+    if (state == 4)
     {
       v8 = GKGameCenterUIFrameworkBundle();
       v16 = GKGetLocalizedStringFromTableInBundle();
@@ -468,7 +468,7 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    if (v3 == 5)
+    if (state == 5)
     {
       v6 = GKGameCenterUIFrameworkBundle();
       v16 = GKGetLocalizedStringFromTableInBundle();
@@ -484,9 +484,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ((v3 - 2) >= 2)
+  if ((state - 2) >= 2)
   {
-    if (v3 == 1)
+    if (state == 1)
     {
       v7 = GKGameCenterUIFrameworkBundle();
       v16 = GKGetLocalizedStringFromTableInBundle();
@@ -512,78 +512,78 @@ LABEL_8:
 LABEL_12:
   if (!self->_shouldShowQuit && ([(GKTurnBasedMatch *)self->_match isMyTurn]& 1) != 0)
   {
-    v9 = [(GKTurnBasedMatchDetailViewController *)self navigationItem];
-    [v9 setRightBarButtonItem:0];
+    navigationItem = [(GKTurnBasedMatchDetailViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
     goto LABEL_18;
   }
 
 LABEL_16:
-  v11 = [(GKTurnBasedMatchDetailViewController *)self navigationItem];
-  v12 = [v11 rightBarButtonItem];
-  v13 = [v12 title];
-  v14 = [v13 isEqualToString:v16];
+  navigationItem2 = [(GKTurnBasedMatchDetailViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  title = [rightBarButtonItem title];
+  v14 = [title isEqualToString:v16];
 
   if (v14)
   {
     goto LABEL_19;
   }
 
-  v9 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v16 style:0 target:self action:v5];
-  v15 = [(GKTurnBasedMatchDetailViewController *)self navigationItem];
-  [v15 setRightBarButtonItem:v9];
+  navigationItem = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v16 style:0 target:self action:v5];
+  navigationItem3 = [(GKTurnBasedMatchDetailViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:navigationItem];
 
 LABEL_18:
 LABEL_19:
 }
 
-- (void)setActionButtonEnabled:(BOOL)a3
+- (void)setActionButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(GKTurnBasedMatchDetailViewController *)self navigationItem];
-  v4 = [v5 rightBarButtonItem];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  navigationItem = [(GKTurnBasedMatchDetailViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:enabledCopy];
 }
 
-- (void)acceptInvitation:(id)a3
+- (void)acceptInvitation:(id)invitation
 {
   [(GKTurnBasedMatchDetailViewController *)self setActionButtonEnabled:0];
-  v4 = [(GKTurnBasedMatchDetailViewController *)self delegate];
-  [v4 turnBasedMatchDetailViewControllerDidAcceptInvitation:self];
+  delegate = [(GKTurnBasedMatchDetailViewController *)self delegate];
+  [delegate turnBasedMatchDetailViewControllerDidAcceptInvitation:self];
 }
 
-- (void)declineInvitation:(id)a3
+- (void)declineInvitation:(id)invitation
 {
   [(GKTurnBasedMatchDetailViewController *)self setActionButtonEnabled:0];
-  v4 = [(GKTurnBasedMatchDetailViewController *)self delegate];
-  [v4 turnBasedMatchDetailViewControllerDidDeclineInvitation:self];
+  delegate = [(GKTurnBasedMatchDetailViewController *)self delegate];
+  [delegate turnBasedMatchDetailViewControllerDidDeclineInvitation:self];
 }
 
-- (void)chooseMatch:(id)a3
+- (void)chooseMatch:(id)match
 {
   [(GKTurnBasedMatchDetailViewController *)self setActionButtonEnabled:0];
-  v4 = [(GKTurnBasedMatchDetailViewController *)self delegate];
-  [v4 turnBasedMatchDetailViewControllerDidChooseMatch:self];
+  delegate = [(GKTurnBasedMatchDetailViewController *)self delegate];
+  [delegate turnBasedMatchDetailViewControllerDidChooseMatch:self];
 }
 
-- (void)quitMatch:(id)a3
+- (void)quitMatch:(id)match
 {
   [(GKTurnBasedMatchDetailViewController *)self setActionButtonEnabled:0];
-  v4 = [(GKTurnBasedMatchDetailViewController *)self delegate];
-  [v4 turnBasedMatchDetailViewControllerDidQuitMatch:self];
+  delegate = [(GKTurnBasedMatchDetailViewController *)self delegate];
+  [delegate turnBasedMatchDetailViewControllerDidQuitMatch:self];
 }
 
-- (void)removeMatch:(id)a3
+- (void)removeMatch:(id)match
 {
   [(GKTurnBasedMatchDetailViewController *)self setActionButtonEnabled:0];
-  v4 = [(GKTurnBasedMatchDetailViewController *)self delegate];
-  [v4 turnBasedMatchDetailViewControllerDidRemoveMatch:self];
+  delegate = [(GKTurnBasedMatchDetailViewController *)self delegate];
+  [delegate turnBasedMatchDetailViewControllerDidRemoveMatch:self];
 }
 
-- (void)handleTurnBasedEvent:(id)a3
+- (void)handleTurnBasedEvent:(id)event
 {
-  v6 = [a3 object];
-  v4 = [(GKTurnBasedMatch *)self->_match matchID];
-  v5 = [v6 isEqual:v4];
+  object = [event object];
+  matchID = [(GKTurnBasedMatch *)self->_match matchID];
+  v5 = [object isEqual:matchID];
 
   if (v5)
   {
@@ -591,17 +591,17 @@ LABEL_19:
   }
 }
 
-- (void)buyButtonPressed:(id)a3
+- (void)buyButtonPressed:(id)pressed
 {
-  v4 = [(GKTurnBasedMatchDetailViewController *)self delegate];
-  [v4 turnBasedMatchDetailViewControllerDidShowStore:self];
+  delegate = [(GKTurnBasedMatchDetailViewController *)self delegate];
+  [delegate turnBasedMatchDetailViewControllerDidShowStore:self];
 }
 
 - (id)preferredFocusEnvironments
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = [(GKTurnBasedMatchDetailViewController *)self headerView];
-  v5[0] = v2;
+  headerView = [(GKTurnBasedMatchDetailViewController *)self headerView];
+  v5[0] = headerView;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
 
   return v3;

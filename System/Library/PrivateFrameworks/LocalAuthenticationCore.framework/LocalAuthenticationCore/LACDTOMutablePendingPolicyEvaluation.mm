@@ -1,15 +1,15 @@
 @interface LACDTOMutablePendingPolicyEvaluation
 - (BOOL)hasNotifiedUserAboutCompletion;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInvalidated;
-- (BOOL)isNotificationScheduledForDate:(id)a3;
+- (BOOL)isNotificationScheduledForDate:(id)date;
 - (NSString)description;
 - (NSString)identifier;
 - (NSURL)callbackURL;
 - (_TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation)init;
-- (_TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation)initWithIdentifier:(id)a3;
-- (void)setCallbackURL:(id)a3;
-- (void)setIsInvalidated:(BOOL)a3;
+- (_TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation)initWithIdentifier:(id)identifier;
+- (void)setCallbackURL:(id)l;
+- (void)setIsInvalidated:(BOOL)invalidated;
 @end
 
 @implementation LACDTOMutablePendingPolicyEvaluation
@@ -31,11 +31,11 @@
   return *(self + v3);
 }
 
-- (void)setIsInvalidated:(BOOL)a3
+- (void)setIsInvalidated:(BOOL)invalidated
 {
   v5 = OBJC_IVAR____TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation_isInvalidated;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = invalidated;
 }
 
 - (NSURL)callbackURL
@@ -62,13 +62,13 @@
   return v11;
 }
 
-- (void)setCallbackURL:(id)a3
+- (void)setCallbackURL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation3URLVSgMd, &_s10Foundation3URLVSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for URL();
@@ -83,20 +83,20 @@
 
   v11 = OBJC_IVAR____TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation_callbackURL;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   outlined assign with take of URL?(v8, self + v11, &_s10Foundation3URLVSgMd, &_s10Foundation3URLVSgMR);
   swift_endAccess();
 }
 
 - (BOOL)hasNotifiedUserAboutCompletion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LACDTOMutablePendingPolicyEvaluation.hasNotifiedUserAboutCompletion.getter();
 
   return v3 & 1;
 }
 
-- (_TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation)initWithIdentifier:(id)a3
+- (_TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation)initWithIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -123,7 +123,7 @@
   return [(LACDTOMutablePendingPolicyEvaluation *)&v16 init];
 }
 
-- (BOOL)isNotificationScheduledForDate:(id)a3
+- (BOOL)isNotificationScheduledForDate:(id)date
 {
   v4 = type metadata accessor for Date();
   v5 = *(v4 - 8);
@@ -131,7 +131,7 @@
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   v10 = LACDTOMutablePendingPolicyEvaluation.isNotificationScheduled(for:)(v8);
 
   (*(v5 + 8))(v8, v4);
@@ -147,7 +147,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LACDTOMutablePendingPolicyEvaluation.description.getter();
   v5 = v4;
 
@@ -156,11 +156,11 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -169,7 +169,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = LACDTOMutablePendingPolicyEvaluation.isEqual(_:)(v8);

@@ -4,22 +4,22 @@
 - (unint64_t)verticalShift;
 - (void)checkFields;
 - (void)dealloc;
-- (void)disableControls:(BOOL)a3;
+- (void)disableControls:(BOOL)controls;
 - (void)focus;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ACMSignInDialogSimple
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(ACMSignInDialog *)self controlsWillChangeState:1];
   v5.receiver = self;
   v5.super_class = ACMSignInDialogSimple;
-  [(ACMSignInDialog *)&v5 viewWillDisappear:v3];
+  [(ACMSignInDialog *)&v5 viewWillDisappear:disappearCopy];
   [(ACMSignInDialog *)self controlsDidChangeState:1];
 }
 
@@ -51,54 +51,54 @@
 
 - (void)checkFields
 {
-  v3 = [(ACMSignInDialog *)self canSignIn];
-  v4 = [(ACMSignInDialogSimple *)self loginButton];
+  canSignIn = [(ACMSignInDialog *)self canSignIn];
+  loginButton = [(ACMSignInDialogSimple *)self loginButton];
 
-  [(UIButton *)v4 setEnabled:v3];
+  [(UIButton *)loginButton setEnabled:canSignIn];
 }
 
 - (void)focus
 {
   if ([(NSString *)[(UITextField *)[(ACMSignInDialog *)self accountNameField] text] length])
   {
-    v3 = [(ACMSignInDialog *)self passwordField];
+    passwordField = [(ACMSignInDialog *)self passwordField];
   }
 
   else
   {
-    v3 = [(ACMSignInDialog *)self accountNameField];
+    passwordField = [(ACMSignInDialog *)self accountNameField];
   }
 
-  [(UITextField *)v3 becomeFirstResponder];
+  [(UITextField *)passwordField becomeFirstResponder];
 
   [(ACMSignInDialogSimple *)self checkFields];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ACMSignInDialogSimple;
-  [(ACMSignInDialog *)&v4 viewWillAppear:a3];
+  [(ACMSignInDialog *)&v4 viewWillAppear:appear];
   [(ACMSignInDialogSimple *)self focus];
 }
 
-- (void)disableControls:(BOOL)a3
+- (void)disableControls:(BOOL)controls
 {
-  v3 = a3;
+  controlsCopy = controls;
   [(ACMSignInDialog *)self controlsWillChangeState:?];
   v5.receiver = self;
   v5.super_class = ACMSignInDialogSimple;
-  [(ACMSignInDialog *)&v5 disableControls:v3];
-  [(UIButton *)[(ACMSignInDialogSimple *)self loginButton] setEnabled:v3 ^ 1];
-  [(UIButton *)[(ACMSignInDialogSimple *)self cancelButton] setEnabled:v3 ^ 1];
-  [(UITextField *)[(ACMSignInDialog *)self accountNameField] setEnabled:v3 ^ 1];
-  [(UITextField *)[(ACMSignInDialog *)self passwordField] setEnabled:v3 ^ 1];
-  if (!v3)
+  [(ACMSignInDialog *)&v5 disableControls:controlsCopy];
+  [(UIButton *)[(ACMSignInDialogSimple *)self loginButton] setEnabled:controlsCopy ^ 1];
+  [(UIButton *)[(ACMSignInDialogSimple *)self cancelButton] setEnabled:controlsCopy ^ 1];
+  [(UITextField *)[(ACMSignInDialog *)self accountNameField] setEnabled:controlsCopy ^ 1];
+  [(UITextField *)[(ACMSignInDialog *)self passwordField] setEnabled:controlsCopy ^ 1];
+  if (!controlsCopy)
   {
     [(ACMSignInDialogSimple *)self focus];
   }
 
-  [(ACMSignInDialog *)self controlsDidChangeState:v3];
+  [(ACMSignInDialog *)self controlsDidChangeState:controlsCopy];
 }
 
 - (unint64_t)verticalShift
@@ -114,16 +114,16 @@
 
 - (NSString)passwordString
 {
-  v2 = [(ACMSignInDialog *)self passwordField];
+  passwordField = [(ACMSignInDialog *)self passwordField];
 
-  return [(UITextField *)v2 text];
+  return [(UITextField *)passwordField text];
 }
 
 - (NSString)userNameString
 {
-  v2 = [(ACMSignInDialog *)self accountNameField];
+  accountNameField = [(ACMSignInDialog *)self accountNameField];
 
-  return [(UITextField *)v2 text];
+  return [(UITextField *)accountNameField text];
 }
 
 @end

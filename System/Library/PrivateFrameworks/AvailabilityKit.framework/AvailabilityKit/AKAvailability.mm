@@ -1,8 +1,8 @@
 @interface AKAvailability
 + (id)logger;
-- (AKAvailability)initWithAvailable:(BOOL)a3 activityIdentifierString:(id)a4;
-- (AKAvailability)initWithPublishedStatus:(id)a3;
-- (AKAvailability)initWithStatusPayload:(id)a3 invitationPayload:(id)a4;
+- (AKAvailability)initWithAvailable:(BOOL)available activityIdentifierString:(id)string;
+- (AKAvailability)initWithPublishedStatus:(id)status;
+- (AKAvailability)initWithStatusPayload:(id)payload invitationPayload:(id)invitationPayload;
 - (NSUUID)activityIdentifier;
 - (id)_payloadDictionary;
 - (id)statusPublishRequest;
@@ -10,17 +10,17 @@
 
 @implementation AKAvailability
 
-- (AKAvailability)initWithAvailable:(BOOL)a3 activityIdentifierString:(id)a4
+- (AKAvailability)initWithAvailable:(BOOL)available activityIdentifierString:(id)string
 {
-  v7 = a4;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = AKAvailability;
   v8 = [(AKAvailability *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_available = a3;
-    objc_storeStrong(&v8->_activityIdentifierString, a4);
+    v8->_available = available;
+    objc_storeStrong(&v8->_activityIdentifierString, string);
   }
 
   return v9;
@@ -41,15 +41,15 @@
   return v3;
 }
 
-- (AKAvailability)initWithPublishedStatus:(id)a3
+- (AKAvailability)initWithPublishedStatus:(id)status
 {
-  v4 = a3;
-  v5 = [v4 statusPayload];
-  v6 = [v4 invitationPayload];
+  statusCopy = status;
+  statusPayload = [statusCopy statusPayload];
+  invitationPayload = [statusCopy invitationPayload];
 
-  if (v5)
+  if (statusPayload)
   {
-    v7 = [(AKAvailability *)self initWithStatusPayload:v5 invitationPayload:v6];
+    v7 = [(AKAvailability *)self initWithStatusPayload:statusPayload invitationPayload:invitationPayload];
     self = v7;
   }
 
@@ -63,8 +63,8 @@
 
 - (id)statusPublishRequest
 {
-  v2 = [(AKAvailability *)self _payloadDictionary];
-  v3 = [objc_alloc(MEMORY[0x277D68128]) initWithDictionary:v2];
+  _payloadDictionary = [(AKAvailability *)self _payloadDictionary];
+  v3 = [objc_alloc(MEMORY[0x277D68128]) initWithDictionary:_payloadDictionary];
   v4 = [objc_alloc(MEMORY[0x277D68138]) initWithStatusPayload:v3];
 
   return v4;
@@ -76,10 +76,10 @@
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[AKAvailability isAvailable](self, "isAvailable")}];
   [v3 setObject:v4 forKeyedSubscript:@"a"];
 
-  v5 = [(AKAvailability *)self activityIdentifierString];
-  if ([v5 length])
+  activityIdentifierString = [(AKAvailability *)self activityIdentifierString];
+  if ([activityIdentifierString length])
   {
-    [v3 setObject:v5 forKeyedSubscript:@"i"];
+    [v3 setObject:activityIdentifierString forKeyedSubscript:@"i"];
   }
 
   v6 = [v3 copy];
@@ -87,13 +87,13 @@
   return v6;
 }
 
-- (AKAvailability)initWithStatusPayload:(id)a3 invitationPayload:(id)a4
+- (AKAvailability)initWithStatusPayload:(id)payload invitationPayload:(id)invitationPayload
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 payloadDictionary];
-  v8 = [v7 availabilityKit_BOOLForKey:@"a" defaultValue:1];
-  v9 = [v7 availabilityKit_stringForKey:@"i"];
+  invitationPayloadCopy = invitationPayload;
+  payloadDictionary = [payload payloadDictionary];
+  v8 = [payloadDictionary availabilityKit_BOOLForKey:@"a" defaultValue:1];
+  v9 = [payloadDictionary availabilityKit_stringForKey:@"i"];
   v10 = [v9 length];
   p_super = +[AKAvailability logger];
   v12 = os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT);
@@ -106,27 +106,27 @@
       _os_log_impl(&dword_24192F000, p_super, OS_LOG_TYPE_DEFAULT, "Availability payload has an activity identifier %@, looking at invitation to see if they may be available or unavailable to me for this activity", buf, 0xCu);
     }
 
-    if (v6)
+    if (invitationPayloadCopy)
     {
-      v13 = [[AKAvailabilityInvitation alloc] initWithStatusKitInvitationPayload:v6];
+      v13 = [[AKAvailabilityInvitation alloc] initWithStatusKitInvitationPayload:invitationPayloadCopy];
       p_super = &v13->super;
       if (!v13)
       {
-        v14 = +[AKAvailability logger];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        availableDuringActivityIdentifiers = +[AKAvailability logger];
+        if (os_log_type_enabled(availableDuringActivityIdentifiers, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_24192F000, v14, OS_LOG_TYPE_DEFAULT, "Not overriding personalizedAvailability, users invitation payload is not a well formed AKAvailabilityInvitation", buf, 2u);
+          _os_log_impl(&dword_24192F000, availableDuringActivityIdentifiers, OS_LOG_TYPE_DEFAULT, "Not overriding personalizedAvailability, users invitation payload is not a well formed AKAvailabilityInvitation", buf, 2u);
         }
 
         v18 = v8;
         goto LABEL_37;
       }
 
-      v14 = [(AKAvailabilityInvitation *)v13 availableDuringActivityIdentifiers];
-      if ([v14 count])
+      availableDuringActivityIdentifiers = [(AKAvailabilityInvitation *)v13 availableDuringActivityIdentifiers];
+      if ([availableDuringActivityIdentifiers count])
       {
-        v15 = [v14 containsObject:v9];
+        v15 = [availableDuringActivityIdentifiers containsObject:v9];
         v16 = +[AKAvailability logger];
         v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
         if (v15)
@@ -136,7 +136,7 @@
             *buf = 138412546;
             v32 = v9;
             v33 = 2112;
-            v34 = v14;
+            v34 = availableDuringActivityIdentifiers;
             _os_log_impl(&dword_24192F000, v16, OS_LOG_TYPE_DEFAULT, "Overriding personalizedAvailability, users active activity identifier %@ is on my list of invited availableDuringActivityIdentifiers: %@", buf, 0x16u);
           }
 
@@ -149,7 +149,7 @@
           *buf = 138412546;
           v32 = v9;
           v33 = 2112;
-          v34 = v14;
+          v34 = availableDuringActivityIdentifiers;
           v20 = "Not overriding personalizedAvailability, users active activity identifier %@ is not on my list of invited availableDuringActivityIdentifiers: %@";
           v21 = v16;
           v22 = 22;
@@ -174,11 +174,11 @@ LABEL_24:
       v18 = v8;
 LABEL_26:
 
-      v23 = [p_super unavailableDuringActivityIdentifiers];
-      if ([v23 count])
+      unavailableDuringActivityIdentifiers = [p_super unavailableDuringActivityIdentifiers];
+      if ([unavailableDuringActivityIdentifiers count])
       {
-        v30 = self;
-        v24 = [v23 containsObject:v9];
+        selfCopy = self;
+        v24 = [unavailableDuringActivityIdentifiers containsObject:v9];
         v25 = +[AKAvailability logger];
         v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
         if (v24)
@@ -188,7 +188,7 @@ LABEL_26:
             *buf = 138412546;
             v32 = v9;
             v33 = 2112;
-            v34 = v14;
+            v34 = availableDuringActivityIdentifiers;
             _os_log_impl(&dword_24192F000, v25, OS_LOG_TYPE_DEFAULT, "Overriding personalizedAvailability, users active activity identifier %@ is on my list of invited unavailableDuringActivityIdentifiers: %@", buf, 0x16u);
           }
 
@@ -200,11 +200,11 @@ LABEL_26:
           *buf = 138412546;
           v32 = v9;
           v33 = 2112;
-          v34 = v14;
+          v34 = availableDuringActivityIdentifiers;
           _os_log_impl(&dword_24192F000, v25, OS_LOG_TYPE_DEFAULT, "Not overriding personalizedAvailability, users active activity identifier %@ is not on my list of invited unavailableDuringActivityIdentifiers: %@", buf, 0x16u);
         }
 
-        self = v30;
+        self = selfCopy;
       }
 
       else

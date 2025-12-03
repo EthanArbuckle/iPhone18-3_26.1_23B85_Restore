@@ -6,13 +6,13 @@
 
 - (uint64_t)wf_containsFirstResponder
 {
-  v2 = [a1 window];
-  v3 = [v2 firstResponder];
+  window = [self window];
+  firstResponder = [window firstResponder];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 isDescendantOfView:a1];
+    v4 = [firstResponder isDescendantOfView:self];
   }
 
   else

@@ -1,25 +1,25 @@
 @interface MediaSocialStatusPollingCoordinator
-- (MediaSocialStatusPollingCoordinator)initWithDispatchQueue:(id)a3;
+- (MediaSocialStatusPollingCoordinator)initWithDispatchQueue:(id)queue;
 - (MediaSocialStatusPollingDelegate)delegate;
 - (void)_addBackgroundTaskJob;
-- (void)_finishRequests:(id)a3 withResponses:(id)a4;
-- (void)_handleBackgroundTaskEvent:(id)a3;
-- (void)addPollRequest:(id)a3;
+- (void)_finishRequests:(id)requests withResponses:(id)responses;
+- (void)_handleBackgroundTaskEvent:(id)event;
+- (void)addPollRequest:(id)request;
 - (void)dealloc;
 @end
 
 @implementation MediaSocialStatusPollingCoordinator
 
-- (MediaSocialStatusPollingCoordinator)initWithDispatchQueue:(id)a3
+- (MediaSocialStatusPollingCoordinator)initWithDispatchQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = MediaSocialStatusPollingCoordinator;
   v6 = [(MediaSocialStatusPollingCoordinator *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
     v8 = objc_alloc_init(NSMutableArray);
     requests = v7->_requests;
     v7->_requests = v8;
@@ -61,17 +61,17 @@
   [(MediaSocialStatusPollingCoordinator *)&v4 dealloc];
 }
 
-- (void)addPollRequest:(id)a3
+- (void)addPollRequest:(id)request
 {
-  v11 = a3;
+  requestCopy = request;
   v4 = [(NSMutableArray *)self->_requests count];
-  v5 = [v11 copy];
+  v5 = [requestCopy copy];
   [(NSMutableArray *)self->_requests addObject:v5];
-  [v11 pollingInterval];
+  [requestCopy pollingInterval];
   v6 = 15.0;
   if (v7 > 15.0)
   {
-    [v11 pollingInterval];
+    [requestCopy pollingInterval];
     v6 = v8;
   }
 
@@ -97,7 +97,7 @@
 LABEL_8:
 }
 
-- (void)_handleBackgroundTaskEvent:(id)a3
+- (void)_handleBackgroundTaskEvent:(id)event
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -119,19 +119,19 @@ LABEL_8:
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v7 &= 2u;
   }
@@ -151,7 +151,7 @@ LABEL_8:
 
   if (v10)
   {
-    v8 = [NSString stringWithCString:v10 encoding:4, v15, v14, *v15, *&v15[16]];
+    oSLogObject = [NSString stringWithCString:v10 encoding:4, v15, v14, *v15, *&v15[16]];
     free(v10);
     SSFileLog();
 LABEL_11:
@@ -168,22 +168,22 @@ LABEL_11:
   [v11 addBackgroundTaskWithRequest:v13];
 }
 
-- (void)_finishRequests:(id)a3 withResponses:(id)a4
+- (void)_finishRequests:(id)requests withResponses:(id)responses
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ISOperationQueue *)self->_operationQueue operationCount];
+  requestsCopy = requests;
+  responsesCopy = responses;
+  operationCount = [(ISOperationQueue *)self->_operationQueue operationCount];
   dispatchQueue = self->_dispatchQueue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10023064C;
   v12[3] = &unk_10032CE98;
-  v13 = v6;
-  v14 = v7;
-  v15 = self;
-  v16 = v8 == 1;
-  v10 = v7;
-  v11 = v6;
+  v13 = requestsCopy;
+  v14 = responsesCopy;
+  selfCopy = self;
+  v16 = operationCount == 1;
+  v10 = responsesCopy;
+  v11 = requestsCopy;
   dispatch_async(dispatchQueue, v12);
 }
 

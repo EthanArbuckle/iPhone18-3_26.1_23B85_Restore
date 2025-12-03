@@ -1,14 +1,14 @@
 @interface _PXAudioAssetArrayFetchResult
 - (NSString)description;
-- (_PXAudioAssetArrayFetchResult)initWithArray:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
+- (_PXAudioAssetArrayFetchResult)initWithArray:(id)array;
+- (void)enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation _PXAudioAssetArrayFetchResult
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8 = 0;
   if ([(_PXAudioAssetArrayFetchResult *)self count])
   {
@@ -16,7 +16,7 @@
     do
     {
       v6 = [(NSArray *)self->_assets objectAtIndexedSubscript:v5];
-      v4[2](v4, v6, v5, &v8);
+      blockCopy[2](blockCopy, v6, v5, &v8);
       v7 = v8;
 
       if (v7 == 1)
@@ -38,15 +38,15 @@
   return v2;
 }
 
-- (_PXAudioAssetArrayFetchResult)initWithArray:(id)a3
+- (_PXAudioAssetArrayFetchResult)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = _PXAudioAssetArrayFetchResult;
   v5 = [(_PXAudioAssetArrayFetchResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [arrayCopy copy];
     assets = v5->_assets;
     v5->_assets = v6;
   }

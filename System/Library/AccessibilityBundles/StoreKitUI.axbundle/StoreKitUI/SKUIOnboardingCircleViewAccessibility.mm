@@ -1,5 +1,5 @@
 @interface SKUIOnboardingCircleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityRemoveCircle;
 - (BOOL)_accessibilityScrollToVisible;
 - (id)_accessibilityPhysicalCirclesViewSuperview;
@@ -12,13 +12,13 @@
 
 @implementation SKUIOnboardingCircleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIOnboardingCircleView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SKUIOnboardingCircleView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPhysicsBody" hasInstanceMethod:@"applyForce:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"SKUIPhysicalCirclesView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIOnboardingCircleView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SKUIOnboardingCircleView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPhysicsBody" hasInstanceMethod:@"applyForce:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"SKUIPhysicalCirclesView"];
 }
 
 - (id)accessibilityPath
@@ -47,7 +47,7 @@
 - (BOOL)_accessibilityScrollToVisible
 {
   v17 = 0;
-  v3 = [(SKUIOnboardingCircleViewAccessibility *)self superview];
+  superview = [(SKUIOnboardingCircleViewAccessibility *)self superview];
   v4 = __UIAccessibilitySafeClass();
 
   [(SKUIOnboardingCircleViewAccessibility *)self frame];
@@ -91,9 +91,9 @@ void __70__SKUIOnboardingCircleViewAccessibility__accessibilityScrollToVisible__
 - (id)accessibilityLabel
 {
   v2 = [(SKUIOnboardingCircleViewAccessibility *)self safeValueForKey:@"titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityCustomActions
@@ -110,31 +110,31 @@ void __70__SKUIOnboardingCircleViewAccessibility__accessibilityScrollToVisible__
 
 - (id)accessibilityValue
 {
-  v3 = [(SKUIOnboardingCircleViewAccessibility *)self _accessibilityPhysicalCirclesViewSuperview];
-  v4 = [v3 _accessibilityValueForCircle:self];
+  _accessibilityPhysicalCirclesViewSuperview = [(SKUIOnboardingCircleViewAccessibility *)self _accessibilityPhysicalCirclesViewSuperview];
+  v4 = [_accessibilityPhysicalCirclesViewSuperview _accessibilityValueForCircle:self];
 
   return v4;
 }
 
 - (BOOL)_accessibilityRemoveCircle
 {
-  v3 = [(SKUIOnboardingCircleViewAccessibility *)self _accessibilityPhysicalCirclesViewSuperview];
-  [v3 _accessibilityDeleteCircle:self];
+  _accessibilityPhysicalCirclesViewSuperview = [(SKUIOnboardingCircleViewAccessibility *)self _accessibilityPhysicalCirclesViewSuperview];
+  [_accessibilityPhysicalCirclesViewSuperview _accessibilityDeleteCircle:self];
 
   return 1;
 }
 
 - (void)_accessibilityActivateCircle
 {
-  v3 = [(SKUIOnboardingCircleViewAccessibility *)self _accessibilityPhysicalCirclesViewSuperview];
-  [v3 _accessibilityActivateCircle:self];
+  _accessibilityPhysicalCirclesViewSuperview = [(SKUIOnboardingCircleViewAccessibility *)self _accessibilityPhysicalCirclesViewSuperview];
+  [_accessibilityPhysicalCirclesViewSuperview _accessibilityActivateCircle:self];
 }
 
 - (id)_accessibilityPhysicalCirclesViewSuperview
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 superview];
+  superview = [v2 superview];
   v4 = __UIAccessibilitySafeClass();
 
   return v4;

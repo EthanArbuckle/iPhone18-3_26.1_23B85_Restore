@@ -1,19 +1,19 @@
 @interface UIStatusBarForegroundViewAccessibility
-- (void)_setStatusBarData:(id)a3 actions:(int)a4 animated:(BOOL)a5;
+- (void)_setStatusBarData:(id)data actions:(int)actions animated:(BOOL)animated;
 @end
 
 @implementation UIStatusBarForegroundViewAccessibility
 
-- (void)_setStatusBarData:(id)a3 actions:(int)a4 animated:(BOOL)a5
+- (void)_setStatusBarData:(id)data actions:(int)actions animated:(BOOL)animated
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v30 = a4;
-  v29 = a5;
+  objc_storeStrong(location, data);
+  actionsCopy = actions;
+  animatedCopy = animated;
   v28 = 0;
-  v27 = [(UIStatusBarForegroundViewAccessibility *)v32 safeIvarForKey:@"_itemIsEnabled"];
+  v27 = [(UIStatusBarForegroundViewAccessibility *)selfCopy safeIvarForKey:@"_itemIsEnabled"];
   for (i = 0; i < 46; ++i)
   {
     v20 = 0;
@@ -41,9 +41,9 @@
     }
   }
 
-  v11.receiver = v32;
+  v11.receiver = selfCopy;
   v11.super_class = UIStatusBarForegroundViewAccessibility;
-  [(UIStatusBarForegroundViewAccessibility *)&v11 _setStatusBarData:location[0] actions:v30 animated:v29];
+  [(UIStatusBarForegroundViewAccessibility *)&v11 _setStatusBarData:location[0] actions:actionsCopy animated:animatedCopy];
   v9 = 0;
   objc_opt_class();
   v8 = __UIAccessibilityCastAsClass();

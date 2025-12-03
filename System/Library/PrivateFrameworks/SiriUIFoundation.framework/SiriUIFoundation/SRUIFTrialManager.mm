@@ -1,8 +1,8 @@
 @interface SRUIFTrialManager
-- (SRUIFTrialManager)initWithNamespace:(id)a3 projectId:(int)a4;
-- (id)_levelForFactor:(id)a3;
-- (void)BOOLValueForFactor:(id)a3 defaultValueIfNoFactorsFilePresent:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)BOOLValueForFactor:(id)a3 withCompletionHandler:(id)a4;
+- (SRUIFTrialManager)initWithNamespace:(id)namespace projectId:(int)id;
+- (id)_levelForFactor:(id)factor;
+- (void)BOOLValueForFactor:(id)factor defaultValueIfNoFactorsFilePresent:(BOOL)present withCompletionHandler:(id)handler;
+- (void)BOOLValueForFactor:(id)factor withCompletionHandler:(id)handler;
 - (void)_initializeTrialClient;
 - (void)_refreshTreatments;
 @end
@@ -58,9 +58,9 @@ void __43__SRUIFTrialManager__initializeTrialClient__block_invoke(uint64_t a1)
   }
 }
 
-- (SRUIFTrialManager)initWithNamespace:(id)a3 projectId:(int)a4
+- (SRUIFTrialManager)initWithNamespace:(id)namespace projectId:(int)id
 {
-  v7 = a3;
+  namespaceCopy = namespace;
   v12.receiver = self;
   v12.super_class = SRUIFTrialManager;
   v8 = [(SRUIFTrialManager *)&v12 init];
@@ -70,22 +70,22 @@ void __43__SRUIFTrialManager__initializeTrialClient__block_invoke(uint64_t a1)
     queue = v8->_queue;
     v8->_queue = v9;
 
-    objc_storeStrong(&v8->_trialNamespaceName, a3);
-    v8->_trialProjectId = a4;
+    objc_storeStrong(&v8->_trialNamespaceName, namespace);
+    v8->_trialProjectId = id;
     [(SRUIFTrialManager *)v8 _initializeTrialClient];
   }
 
   return v8;
 }
 
-- (id)_levelForFactor:(id)a3
+- (id)_levelForFactor:(id)factor
 {
-  v4 = a3;
+  factorCopy = factor;
   [(SRUIFTrialManager *)self _refreshTreatments];
   trialClient = self->_trialClient;
   if (trialClient)
   {
-    v6 = [(TRIClient *)trialClient levelForFactor:v4 withNamespaceName:self->_trialNamespaceName];
+    v6 = [(TRIClient *)trialClient levelForFactor:factorCopy withNamespaceName:self->_trialNamespaceName];
   }
 
   else
@@ -96,10 +96,10 @@ void __43__SRUIFTrialManager__initializeTrialClient__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)BOOLValueForFactor:(id)a3 withCompletionHandler:(id)a4
+- (void)BOOLValueForFactor:(id)factor withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  factorCopy = factor;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -107,10 +107,10 @@ void __43__SRUIFTrialManager__initializeTrialClient__block_invoke(uint64_t a1)
   v11[2] = __62__SRUIFTrialManager_BOOLValueForFactor_withCompletionHandler___block_invoke;
   v11[3] = &unk_279C618C0;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = factorCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = factorCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -169,10 +169,10 @@ void __62__SRUIFTrialManager_BOOLValueForFactor_withCompletionHandler___block_in
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)BOOLValueForFactor:(id)a3 defaultValueIfNoFactorsFilePresent:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)BOOLValueForFactor:(id)factor defaultValueIfNoFactorsFilePresent:(BOOL)present withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  factorCopy = factor;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -180,11 +180,11 @@ void __62__SRUIFTrialManager_BOOLValueForFactor_withCompletionHandler___block_in
   block[2] = __97__SRUIFTrialManager_BOOLValueForFactor_defaultValueIfNoFactorsFilePresent_withCompletionHandler___block_invoke;
   block[3] = &unk_279C629A8;
   objc_copyWeak(&v16, &location);
-  v14 = v8;
-  v15 = v9;
-  v17 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = factorCopy;
+  v15 = handlerCopy;
+  presentCopy = present;
+  v11 = handlerCopy;
+  v12 = factorCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);

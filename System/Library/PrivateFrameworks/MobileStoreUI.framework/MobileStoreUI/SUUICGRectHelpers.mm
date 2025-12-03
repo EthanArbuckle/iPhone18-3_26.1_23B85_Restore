@@ -1,19 +1,19 @@
 @interface SUUICGRectHelpers
-+ (CGRect)rect:(CGRect)a3 withFlippedOriginXRelativeTo:(CGRect)a4;
++ (CGRect)rect:(CGRect)rect withFlippedOriginXRelativeTo:(CGRect)to;
 @end
 
 @implementation SUUICGRectHelpers
 
-+ (CGRect)rect:(CGRect)a3 withFlippedOriginXRelativeTo:(CGRect)a4
++ (CGRect)rect:(CGRect)rect withFlippedOriginXRelativeTo:(CGRect)to
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  rect = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  rect = rect.size.height;
+  v8 = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
   memset(&v16, 0, sizeof(v16));
   CGAffineTransformMakeScale(&v16, -1.0, 1.0);
   memset(&v15, 0, sizeof(v15));

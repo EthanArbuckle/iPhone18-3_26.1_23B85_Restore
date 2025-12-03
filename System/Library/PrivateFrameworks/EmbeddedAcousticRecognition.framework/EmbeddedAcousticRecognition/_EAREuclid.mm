@@ -1,11 +1,11 @@
 @interface _EAREuclid
 + (void)initialize;
-- (_EAREuclid)initWithConfiguration:(id)a3 euclidEncoderType:(int64_t)a4 initFlag:(int64_t)a5 language:(id)a6 overrides:(id)a7;
-- (id)computeEmbedding:(id)a3;
-- (id)computeEmbeddings:(id)a3;
-- (id)distanceBetweenSource:(id)a3 target:(id)a4;
+- (_EAREuclid)initWithConfiguration:(id)configuration euclidEncoderType:(int64_t)type initFlag:(int64_t)flag language:(id)language overrides:(id)overrides;
+- (id)computeEmbedding:(id)embedding;
+- (id)computeEmbeddings:(id)embeddings;
+- (id)distanceBetweenSource:(id)source target:(id)target;
 - (id)embeddingDim;
-- (id)findNearestNeighbors:(id)a3 numberOfNeighbors:(int64_t)a4;
+- (id)findNearestNeighbors:(id)neighbors numberOfNeighbors:(int64_t)ofNeighbors;
 - (id)fullVersion;
 - (id)majorVersion;
 - (id)maxInputLength;
@@ -18,29 +18,29 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (_EAREuclid)initWithConfiguration:(id)a3 euclidEncoderType:(int64_t)a4 initFlag:(int64_t)a5 language:(id)a6 overrides:(id)a7
+- (_EAREuclid)initWithConfiguration:(id)configuration euclidEncoderType:(int64_t)type initFlag:(int64_t)flag language:(id)language overrides:(id)overrides
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a7;
+  configurationCopy = configuration;
+  languageCopy = language;
+  overridesCopy = overrides;
   quasar::SystemConfig::SystemConfig(v13);
 }
 
-- (id)findNearestNeighbors:(id)a3 numberOfNeighbors:(int64_t)a4
+- (id)findNearestNeighbors:(id)neighbors numberOfNeighbors:(int64_t)ofNeighbors
 {
-  v6 = a3;
-  v7 = v6;
+  neighborsCopy = neighbors;
+  v7 = neighborsCopy;
   ptr = self->_quasarEuclid.__ptr_;
-  if (v6)
+  if (neighborsCopy)
   {
-    [v6 ear_toString];
+    [neighborsCopy ear_toString];
   }
 
   else
@@ -50,7 +50,7 @@
     v23 = 0;
   }
 
-  v9 = (*(*ptr + 16))(&v24, ptr, &__p, a4, 0);
+  v9 = (*(*ptr + 16))(&v24, ptr, &__p, ofNeighbors, 0);
   if (SHIBYTE(v23) < 0)
   {
     operator delete(__p);
@@ -95,16 +95,16 @@
   return v19;
 }
 
-- (id)distanceBetweenSource:(id)a3 target:(id)a4
+- (id)distanceBetweenSource:(id)source target:(id)target
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  sourceCopy = source;
+  targetCopy = target;
+  v8 = targetCopy;
   v9 = MEMORY[0x1E696AD98];
   ptr = self->_quasarEuclid.__ptr_;
-  if (v6)
+  if (sourceCopy)
   {
-    [v6 ear_toString];
+    [sourceCopy ear_toString];
     if (v8)
     {
 LABEL_3:
@@ -118,7 +118,7 @@ LABEL_3:
     v16[0] = 0;
     v16[1] = 0;
     v17 = 0;
-    if (v7)
+    if (targetCopy)
     {
       goto LABEL_3;
     }
@@ -143,16 +143,16 @@ LABEL_6:
   return v12;
 }
 
-- (id)computeEmbedding:(id)a3
+- (id)computeEmbedding:(id)embedding
 {
-  v4 = a3;
+  embeddingCopy = embedding;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v4 length])
+  if ([embeddingCopy length])
   {
     ptr = self->_quasarEuclid.__ptr_;
-    if (v4)
+    if (embeddingCopy)
     {
-      [v4 ear_toString];
+      [embeddingCopy ear_toString];
     }
 
     else
@@ -205,18 +205,18 @@ LABEL_14:
   return v5;
 }
 
-- (id)computeEmbeddings:(id)a3
+- (id)computeEmbeddings:(id)embeddings
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  embeddingsCopy = embeddings;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(embeddingsCopy, "count")}];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __32___EAREuclid_computeEmbeddings___block_invoke;
   v9[3] = &unk_1E7C1AA78;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v4 enumerateObjectsUsingBlock:v9];
+  selfCopy = self;
+  [embeddingsCopy enumerateObjectsUsingBlock:v9];
   v7 = v6;
 
   return v6;

@@ -11,9 +11,9 @@
   LOBYTE(v5) = 0;
   if (a3 <= 4 && ((1 << a3) & 0x1A) != 0)
   {
-    v6 = [a1 navigationType];
-    v5 = 0x2Fu >> (v6 + 1);
-    if ((v6 + 1) > 5)
+    navigationType = [self navigationType];
+    v5 = 0x2Fu >> (navigationType + 1);
+    if ((navigationType + 1) > 5)
     {
       LOBYTE(v5) = 0;
     }
@@ -24,27 +24,27 @@
 
 - (BOOL)safari_isNewWindowNavigationActionSpecifiedByAnchorTargetAttribute
 {
-  v1 = [a1 targetFrame];
-  v2 = v1 == 0;
+  targetFrame = [self targetFrame];
+  v2 = targetFrame == 0;
 
   return v2;
 }
 
 - (uint64_t)safari_shouldProhibitNavigationToSafariSpecificURL
 {
-  v2 = [a1 request];
-  v3 = [v2 URL];
+  request = [self request];
+  v3 = [request URL];
 
   if ([v3 safari_isSafariSpecificURL])
   {
-    if ([a1 safari_isNewWindowNavigationActionSpecifiedByAnchorTargetAttribute])
+    if ([self safari_isNewWindowNavigationActionSpecifiedByAnchorTargetAttribute])
     {
-      [a1 sourceFrame];
+      [self sourceFrame];
     }
 
     else
     {
-      [a1 targetFrame];
+      [self targetFrame];
     }
     v5 = ;
     v4 = [v5 isMainFrame] ^ 1;

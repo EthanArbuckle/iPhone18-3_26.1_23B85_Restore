@@ -1,31 +1,31 @@
 @interface SUCoreSpace
-+ (BOOL)_isUserVolume:(id)a3;
-+ (id)cacheDeleteUrgencyName:(int)a3;
++ (BOOL)_isUserVolume:(id)volume;
++ (id)cacheDeleteUrgencyName:(int)name;
 + (id)sharedSpaceManager;
-+ (int64_t)cacheDeleteGetReserveSpace:(id *)a3 withError:(id *)a4;
-+ (unint64_t)getFreeSpaceAvailableForSoftwareUpdate:(id)a3;
-+ (unint64_t)getVolumeUsedSpace:(id)a3;
-+ (void)_issuePurgeCompletion:(id)a3 withCompletionQueue:(id)a4 haveEnoughSpace:(BOOL)a5 amountPurged:(unint64_t)a6 error:(id)a7 transaction:(id)a8 transactionName:(id)a9;
-+ (void)_issuePurgeableCompletion:(id)a3 withCompletionQueue:(id)a4 haveEnoughSpace:(BOOL)a5 amountPurgeable:(unint64_t)a6 error:(id)a7 transaction:(id)a8 transactionName:(id)a9;
-+ (void)_issueSpaceCheckCompletion:(id)a3 withCompletionQueue:(id)a4 haveEnoughSpace:(BOOL)a5 haveTotalRequired:(BOOL)a6 freeSpaceAvailable:(unint64_t)a7 error:(id)a8 releasingTransaction:(id)a9;
-+ (void)_spaceCheckPhaseError:(id)a3 checkingFromBase:(id)a4 withIdentier:(id)a5 completion:(id)a6;
-+ (void)_trackSpaceBegin:(id)a3 withIdentifier:(id)a4;
-+ (void)_trackSpaceEnd:(id)a3 withIdentifier:(id)a4 withResult:(int64_t)a5 withError:(id)a6;
++ (int64_t)cacheDeleteGetReserveSpace:(id *)space withError:(id *)error;
++ (unint64_t)getFreeSpaceAvailableForSoftwareUpdate:(id)update;
++ (unint64_t)getVolumeUsedSpace:(id)space;
++ (void)_issuePurgeCompletion:(id)completion withCompletionQueue:(id)queue haveEnoughSpace:(BOOL)space amountPurged:(unint64_t)purged error:(id)error transaction:(id)transaction transactionName:(id)name;
++ (void)_issuePurgeableCompletion:(id)completion withCompletionQueue:(id)queue haveEnoughSpace:(BOOL)space amountPurgeable:(unint64_t)purgeable error:(id)error transaction:(id)transaction transactionName:(id)name;
++ (void)_issueSpaceCheckCompletion:(id)completion withCompletionQueue:(id)queue haveEnoughSpace:(BOOL)space haveTotalRequired:(BOOL)required freeSpaceAvailable:(unint64_t)available error:(id)error releasingTransaction:(id)transaction;
++ (void)_spaceCheckPhaseError:(id)error checkingFromBase:(id)base withIdentier:(id)identier completion:(id)completion;
++ (void)_trackSpaceBegin:(id)begin withIdentifier:(id)identifier;
++ (void)_trackSpaceEnd:(id)end withIdentifier:(id)identifier withResult:(int64_t)result withError:(id)error;
 + (void)cacheDeleteDisableReserveSpace;
-+ (void)cacheDeletePauseReserveSpace:(id)a3 unentitledSpace:(id)a4 withPurpose:(id)a5;
++ (void)cacheDeletePauseReserveSpace:(id)space unentitledSpace:(id)unentitledSpace withPurpose:(id)purpose;
 + (void)cacheDeleteResumeReserveSpace;
-+ (void)cacheDeleteSetReserveSpace:(id)a3 systemGrowthMarginSize:(id)a4;
-+ (void)cacheDeleteSetReserveSpaceWithInfo:(id)a3;
-+ (void)checkAvailableFreeSpace:(unint64_t)a3 checkingFromBase:(id)a4 withIdentifier:(id)a5 userInitiated:(BOOL)a6 completion:(id)a7;
-+ (void)checkAvailableSpace:(unint64_t)a3 allowPurgeWithUrgency:(int)a4 purgingFromBase:(id)a5 minimalRequiredFreeSpace:(unint64_t)a6 withCompletionQueue:(id)a7 completion:(id)a8;
-+ (void)checkPurgeableSpaceCacheDelete:(unint64_t)a3 fromBasePath:(id)a4 cacheDeleteUrgency:(int)a5 timeout:(int)a6 additionalOptions:(id)a7 withCompletionQueue:(id)a8 completion:(id)a9;
-+ (void)checkPurgeableSpaceOffloadApps:(unint64_t)a3 cacheDeleteUrgency:(int64_t)a4 withCompletionQueue:(id)a5 completion:(id)a6;
-+ (void)checkPurgeableSpaceOffloadApps:(unint64_t)a3 fromBasePath:(id)a4 cacheDeleteUrgency:(int64_t)a5 onlyAvailableBySkippingLaunchCheck:(BOOL)a6 withCompletionQueue:(id)a7 completion:(id)a8;
-+ (void)mobileAssetEstimateEvictable:(unint64_t)a3 completionQueue:(id)a4 completion:(id)a5;
-+ (void)mobileAssetResumeWithCompletionQueue:(id)a3 completion:(id)a4;
-+ (void)mobileAssetSuspend:(unint64_t)a3 completionQueue:(id)a4 completion:(id)a5;
-+ (void)offloadAppsPurge:(unint64_t)a3 cacheDeleteUrgency:(int64_t)a4 withCompletionQueue:(id)a5 completion:(id)a6;
-+ (void)offloadAppsPurge:(unint64_t)a3 fromBasePath:(id)a4 cacheDeleteUrgency:(int64_t)a5 withCompletionQueue:(id)a6 completion:(id)a7;
++ (void)cacheDeleteSetReserveSpace:(id)space systemGrowthMarginSize:(id)size;
++ (void)cacheDeleteSetReserveSpaceWithInfo:(id)info;
++ (void)checkAvailableFreeSpace:(unint64_t)space checkingFromBase:(id)base withIdentifier:(id)identifier userInitiated:(BOOL)initiated completion:(id)completion;
++ (void)checkAvailableSpace:(unint64_t)space allowPurgeWithUrgency:(int)urgency purgingFromBase:(id)base minimalRequiredFreeSpace:(unint64_t)freeSpace withCompletionQueue:(id)queue completion:(id)completion;
++ (void)checkPurgeableSpaceCacheDelete:(unint64_t)delete fromBasePath:(id)path cacheDeleteUrgency:(int)urgency timeout:(int)timeout additionalOptions:(id)options withCompletionQueue:(id)queue completion:(id)completion;
++ (void)checkPurgeableSpaceOffloadApps:(unint64_t)apps cacheDeleteUrgency:(int64_t)urgency withCompletionQueue:(id)queue completion:(id)completion;
++ (void)checkPurgeableSpaceOffloadApps:(unint64_t)apps fromBasePath:(id)path cacheDeleteUrgency:(int64_t)urgency onlyAvailableBySkippingLaunchCheck:(BOOL)check withCompletionQueue:(id)queue completion:(id)completion;
++ (void)mobileAssetEstimateEvictable:(unint64_t)evictable completionQueue:(id)queue completion:(id)completion;
++ (void)mobileAssetResumeWithCompletionQueue:(id)queue completion:(id)completion;
++ (void)mobileAssetSuspend:(unint64_t)suspend completionQueue:(id)queue completion:(id)completion;
++ (void)offloadAppsPurge:(unint64_t)purge cacheDeleteUrgency:(int64_t)urgency withCompletionQueue:(id)queue completion:(id)completion;
++ (void)offloadAppsPurge:(unint64_t)purge fromBasePath:(id)path cacheDeleteUrgency:(int64_t)urgency withCompletionQueue:(id)queue completion:(id)completion;
 - (SUCoreSpace)init;
 @end
 
@@ -77,34 +77,34 @@ uint64_t __33__SUCoreSpace_sharedSpaceManager__block_invoke()
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x277CCACA8]);
-    v4 = [MEMORY[0x277D643F8] sharedCore];
-    v5 = [v4 commonDomain];
-    v6 = [v3 initWithFormat:@"%@.%@", v5, @"core.space.operation"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    commonDomain = [mEMORY[0x277D643F8] commonDomain];
+    v6 = [v3 initWithFormat:@"%@.%@", commonDomain, @"core.space.operation"];
 
-    v7 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v9 = dispatch_queue_create(v7, v8);
+    v9 = dispatch_queue_create(uTF8String, v8);
     spaceQueue = v2->_spaceQueue;
     v2->_spaceQueue = v9;
 
     if (v2->_spaceQueue)
     {
-      v11 = [MEMORY[0x277D64460] sharedLogger];
-      v12 = [v11 oslog];
+      mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460] oslog];
 
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
         v18 = v6;
-        _os_log_impl(&dword_23193C000, v12, OS_LOG_TYPE_DEFAULT, "[SPACE] DISPATCH: created dispatch queue domain(%{public}@)", buf, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] DISPATCH: created dispatch queue domain(%{public}@)", buf, 0xCu);
       }
     }
 
     else
     {
-      v12 = [MEMORY[0x277D64428] sharedDiag];
+      oslog = [MEMORY[0x277D64428] sharedDiag];
       v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unable to create dispatch queue domain(%@)", v6];
-      [v12 trackError:@"[SPACE]" forReason:v13 withResult:8100 withError:0];
+      [oslog trackError:@"[SPACE]" forReason:v13 withResult:8100 withError:0];
     }
   }
 
@@ -112,51 +112,51 @@ uint64_t __33__SUCoreSpace_sharedSpaceManager__block_invoke()
   return v2;
 }
 
-+ (void)checkAvailableSpace:(unint64_t)a3 allowPurgeWithUrgency:(int)a4 purgingFromBase:(id)a5 minimalRequiredFreeSpace:(unint64_t)a6 withCompletionQueue:(id)a7 completion:(id)a8
++ (void)checkAvailableSpace:(unint64_t)space allowPurgeWithUrgency:(int)urgency purgingFromBase:(id)base minimalRequiredFreeSpace:(unint64_t)freeSpace withCompletionQueue:(id)queue completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a7;
-  v14 = a8;
+  baseCopy = base;
+  queueCopy = queue;
+  completionCopy = completion;
   [SUCoreSpace _trackSpaceBegin:@"checkAvailableSpace" withIdentifier:@"total"];
   v15 = [MEMORY[0x277D643F8] beginTransactionWithName:@"space.CheckAvailableSpace"];
-  v16 = [MEMORY[0x277D64460] sharedLogger];
-  v17 = [v16 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v18 = @"NIL";
-    if (v12)
+    if (baseCopy)
     {
-      v18 = v12;
+      v18 = baseCopy;
     }
 
     *buf = 138543618;
     v36 = v18;
     v37 = 2048;
-    v38 = a3;
-    _os_log_impl(&dword_23193C000, v17, OS_LOG_TYPE_DEFAULT, "[SPACE] Checking available space from base path %{public}@. Required free space: %lld", buf, 0x16u);
+    spaceCopy = space;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] Checking available space from base path %{public}@. Required free space: %lld", buf, 0x16u);
   }
 
-  v19 = a4 == 4;
+  v19 = urgency == 4;
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __129__SUCoreSpace_checkAvailableSpace_allowPurgeWithUrgency_purgingFromBase_minimalRequiredFreeSpace_withCompletionQueue_completion___block_invoke;
   v26[3] = &unk_27892E898;
-  v27 = v13;
+  v27 = queueCopy;
   v28 = v15;
-  v33 = a4;
-  v31 = a3;
-  v32 = a6;
-  v29 = v12;
-  v30 = v14;
-  v34 = a4 == 4;
-  v20 = v12;
+  urgencyCopy = urgency;
+  spaceCopy2 = space;
+  freeSpaceCopy = freeSpace;
+  v29 = baseCopy;
+  v30 = completionCopy;
+  v34 = urgency == 4;
+  v20 = baseCopy;
   v21 = v15;
-  v22 = v13;
-  v23 = v14;
-  [SUCoreSpace checkAvailableFreeSpace:a3 checkingFromBase:v20 withIdentifier:@"total" userInitiated:v19 completion:v26];
+  v22 = queueCopy;
+  v23 = completionCopy;
+  [SUCoreSpace checkAvailableFreeSpace:space checkingFromBase:v20 withIdentifier:@"total" userInitiated:v19 completion:v26];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -397,25 +397,25 @@ uint64_t __129__SUCoreSpace_checkAvailableSpace_allowPurgeWithUrgency_purgingFro
   return result;
 }
 
-+ (void)checkAvailableFreeSpace:(unint64_t)a3 checkingFromBase:(id)a4 withIdentifier:(id)a5 userInitiated:(BOOL)a6 completion:(id)a7
++ (void)checkAvailableFreeSpace:(unint64_t)space checkingFromBase:(id)base withIdentifier:(id)identifier userInitiated:(BOOL)initiated completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a7;
+  baseCopy = base;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v13 = +[SUCoreSpace sharedSpaceManager];
-  v14 = [v13 spaceQueue];
+  spaceQueue = [v13 spaceQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __96__SUCoreSpace_checkAvailableFreeSpace_checkingFromBase_withIdentifier_userInitiated_completion___block_invoke;
   v18[3] = &unk_27892E8E8;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = a3;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  dispatch_async(v14, v18);
+  v19 = baseCopy;
+  v20 = identifierCopy;
+  v21 = completionCopy;
+  spaceCopy = space;
+  v15 = completionCopy;
+  v16 = identifierCopy;
+  v17 = baseCopy;
+  dispatch_async(spaceQueue, v18);
 }
 
 void __96__SUCoreSpace_checkAvailableFreeSpace_checkingFromBase_withIdentifier_userInitiated_completion___block_invoke(uint64_t a1)
@@ -588,13 +588,13 @@ LABEL_16:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)getFreeSpaceAvailableForSoftwareUpdate:(id)a3
++ (unint64_t)getFreeSpaceAvailableForSoftwareUpdate:(id)update
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  updateCopy = update;
+  if (updateCopy)
   {
-    v4 = v3;
+    v4 = updateCopy;
   }
 
   else
@@ -614,24 +614,24 @@ LABEL_16:
       v8 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_ENTITLED_RESERVATION_FREE"];
       if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v9 = [v8 unsignedLongLongValue];
+        unsignedLongLongValue = [v8 unsignedLongLongValue];
       }
 
       else
       {
-        v9 = 0;
+        unsignedLongLongValue = 0;
       }
 
       v17 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_EXTRA_SHARED_FREE"];
       v40 = v17;
       if (v17 && (v18 = v17, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v16 = [v18 unsignedLongLongValue];
+        unsignedLongLongValue2 = [v18 unsignedLongLongValue];
       }
 
       else
       {
-        v16 = 0;
+        unsignedLongLongValue2 = 0;
       }
 
       v19 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_UNENTITLED_RESERVATION"];
@@ -639,18 +639,18 @@ LABEL_16:
       v39 = v19;
       v21 = v19 && (v20 = v19, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v20 unsignedLongLongValue] != 0;
       v22 = +[SUCoreSpace sharedSpaceManager];
-      v23 = [v22 entitledSpaceDisabled];
+      entitledSpaceDisabled = [v22 entitledSpaceDisabled];
 
-      if (v23)
+      if (entitledSpaceDisabled)
       {
-        v24 = [MEMORY[0x277D64460] sharedLogger];
-        v25 = [v24 oslog];
+        mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+        oslog = [mEMORY[0x277D64460] oslog];
 
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           buf.f_bsize = 134217984;
-          *&buf.f_iosize = v16;
-          _os_log_impl(&dword_23193C000, v25, OS_LOG_TYPE_DEFAULT, "[SPACE] entitled space is already disabled, return sharedFreeSpace as available for software update. sharedFreeSpace= %llu", &buf, 0xCu);
+          *&buf.f_iosize = unsignedLongLongValue2;
+          _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] entitled space is already disabled, return sharedFreeSpace as available for software update. sharedFreeSpace= %llu", &buf, 0xCu);
         }
       }
 
@@ -658,37 +658,37 @@ LABEL_16:
       {
         if (!v21)
         {
-          v25 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_UNENTITLED_CD_THRESHOLD"];
-          if (!v25 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v29 = [v25 unsignedLongLongValue]) == 0)
+          oslog = [v6 objectForKeyedSubscript:@"CACHE_DELETE_UNENTITLED_CD_THRESHOLD"];
+          if (!oslog || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v29 = [oslog unsignedLongLongValue]) == 0)
           {
-            v30 = [MEMORY[0x277D64460] sharedLogger];
-            v31 = [v30 oslog];
+            mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+            oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-            if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
             {
               LOWORD(buf.f_bsize) = 0;
-              _os_log_impl(&dword_23193C000, v31, OS_LOG_TYPE_DEFAULT, "[SPACE] unentitled threshold from CD is 0!", &buf, 2u);
+              _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[SPACE] unentitled threshold from CD is 0!", &buf, 2u);
             }
 
             v29 = 0;
           }
 
-          v32 = v16 - v29;
-          if (v16 >= v29)
+          v32 = unsignedLongLongValue2 - v29;
+          if (unsignedLongLongValue2 >= v29)
           {
-            v36 = [MEMORY[0x277D64460] sharedLogger];
-            v35 = [v36 oslog];
+            mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+            oslog3 = [mEMORY[0x277D64460]3 oslog];
 
             v27 = v41;
-            if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
             {
               buf.f_bsize = 134218496;
-              *&buf.f_iosize = v16;
+              *&buf.f_iosize = unsignedLongLongValue2;
               WORD2(buf.f_blocks) = 2048;
               *(&buf.f_blocks + 6) = v29;
               HIWORD(buf.f_bfree) = 2048;
-              buf.f_bavail = v16 - v29;
-              _os_log_impl(&dword_23193C000, v35, OS_LOG_TYPE_DEFAULT, "[SPACE] Entitled secured space is empty, let's deduct the unentitled threshold from the shared space, sharedFreeSpace= %llu, unentitledThreshold= %llu, freeSpaceAvilableForSoftwareUpdate= %llu", &buf, 0x20u);
+              buf.f_bavail = unsignedLongLongValue2 - v29;
+              _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "[SPACE] Entitled secured space is empty, let's deduct the unentitled threshold from the shared space, sharedFreeSpace= %llu, unentitledThreshold= %llu, freeSpaceAvilableForSoftwareUpdate= %llu", &buf, 0x20u);
             }
           }
 
@@ -697,45 +697,45 @@ LABEL_16:
             v33 = +[SUCoreSpace sharedSpaceManager];
             [v33 setEntitledSpaceDisabled:1];
 
-            v34 = [MEMORY[0x277D64460] sharedLogger];
-            v35 = [v34 oslog];
+            mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+            oslog3 = [mEMORY[0x277D64460]4 oslog];
 
             v27 = v41;
-            if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
             {
               buf.f_bsize = 134218496;
-              *&buf.f_iosize = v16;
+              *&buf.f_iosize = unsignedLongLongValue2;
               WORD2(buf.f_blocks) = 2048;
               *(&buf.f_blocks + 6) = v29;
               HIWORD(buf.f_bfree) = 2048;
-              buf.f_bavail = v16;
-              _os_log_impl(&dword_23193C000, v35, OS_LOG_TYPE_DEFAULT, "[SPACE] free space is less than unentitled threshold, disable setting entitled space for software update. sharedFreeSpace= %llu, unentitledThreshold= %llu, freeSpaceAvilableForSoftwareUpdate= %llu", &buf, 0x20u);
+              buf.f_bavail = unsignedLongLongValue2;
+              _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "[SPACE] free space is less than unentitled threshold, disable setting entitled space for software update. sharedFreeSpace= %llu, unentitledThreshold= %llu, freeSpaceAvilableForSoftwareUpdate= %llu", &buf, 0x20u);
             }
 
-            v32 = v16;
+            v32 = unsignedLongLongValue2;
           }
 
           v28 = v39;
 
-          v16 = v32;
+          unsignedLongLongValue2 = v32;
           goto LABEL_47;
         }
 
-        v26 = [MEMORY[0x277D64460] sharedLogger];
-        v25 = [v26 oslog];
+        mEMORY[0x277D64460]5 = [MEMORY[0x277D64460] sharedLogger];
+        oslog = [mEMORY[0x277D64460]5 oslog];
 
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           buf.f_bsize = 134218496;
-          *&buf.f_iosize = v16;
+          *&buf.f_iosize = unsignedLongLongValue2;
           WORD2(buf.f_blocks) = 2048;
-          *(&buf.f_blocks + 6) = v9;
+          *(&buf.f_blocks + 6) = unsignedLongLongValue;
           HIWORD(buf.f_bfree) = 2048;
-          buf.f_bavail = v16 + v9;
-          _os_log_impl(&dword_23193C000, v25, OS_LOG_TYPE_DEFAULT, "[SPACE] Entitled secured space is taken into account, sharedFreeSpace= %llu, entitledFreeSpace= %llu, freeSpaceAvailableForSoftwareUpdate= %llu", &buf, 0x20u);
+          buf.f_bavail = unsignedLongLongValue2 + unsignedLongLongValue;
+          _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] Entitled secured space is taken into account, sharedFreeSpace= %llu, entitledFreeSpace= %llu, freeSpaceAvailableForSoftwareUpdate= %llu", &buf, 0x20u);
         }
 
-        v16 += v9;
+        unsignedLongLongValue2 += unsignedLongLongValue;
       }
 
       v27 = v41;
@@ -752,22 +752,22 @@ LABEL_47:
     v6 = 0;
   }
 
-  v10 = [MEMORY[0x277D64460] sharedLogger];
-  v11 = [v10 oslog];
+  mEMORY[0x277D64460]6 = [MEMORY[0x277D64460] sharedLogger];
+  oslog4 = [mEMORY[0x277D64460]6 oslog];
 
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(buf.f_bsize) = 0;
-    _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "[SPACE] Calculating Free space using statfs", &buf, 2u);
+    _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "[SPACE] Calculating Free space using statfs", &buf, 2u);
   }
 
   bzero(&buf, 0x878uLL);
   if (statfs([(__CFString *)v4 fileSystemRepresentation], &buf))
   {
-    v12 = [MEMORY[0x277D64460] sharedLogger];
-    v13 = [v12 oslog];
+    mEMORY[0x277D64460]7 = [MEMORY[0x277D64460] sharedLogger];
+    oslog5 = [mEMORY[0x277D64460]7 oslog];
 
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
     {
       v14 = __error();
       v15 = strerror(*v14);
@@ -775,24 +775,24 @@ LABEL_47:
       v45 = "/";
       v46 = 2082;
       v47 = v15;
-      _os_log_impl(&dword_23193C000, v13, OS_LOG_TYPE_DEFAULT, "unable to stat volume: %{public}s : %{public}s", v44, 0x16u);
+      _os_log_impl(&dword_23193C000, oslog5, OS_LOG_TYPE_DEFAULT, "unable to stat volume: %{public}s : %{public}s", v44, 0x16u);
     }
 
-    v16 = 0;
+    unsignedLongLongValue2 = 0;
   }
 
   else
   {
-    v16 = buf.f_bavail * buf.f_bsize;
+    unsignedLongLongValue2 = buf.f_bavail * buf.f_bsize;
   }
 
 LABEL_48:
 
   v37 = *MEMORY[0x277D85DE8];
-  return v16;
+  return unsignedLongLongValue2;
 }
 
-+ (int64_t)cacheDeleteGetReserveSpace:(id *)a3 withError:(id *)a4
++ (int64_t)cacheDeleteGetReserveSpace:(id *)space withError:(id *)error
 {
   if (!_os_feature_enabled_impl())
   {
@@ -809,7 +809,7 @@ LABEL_48:
       v9 = 0;
       v10 = 0;
       v11 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_11;
       }
@@ -826,23 +826,23 @@ LABEL_48:
   }
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"result provided by CacheDeleteGetReserveSpace is %@ - ignored", v12];
-  v13 = [MEMORY[0x277D643F8] sharedCore];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
   v10 = 8112;
-  v11 = [v13 buildError:8112 underlying:0 description:v9];
+  v11 = [mEMORY[0x277D643F8] buildError:8112 underlying:0 description:v9];
 
   v7 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_10:
     v14 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_11:
-  if (a3)
+  if (space)
   {
     v15 = v7;
-    *a3 = v7;
+    *space = v7;
   }
 
   return v10;
@@ -850,55 +850,55 @@ LABEL_11:
 
 + (void)cacheDeleteDisableReserveSpace
 {
-  v2 = [MEMORY[0x277D64460] sharedLogger];
-  v3 = [v2 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_23193C000, v3, OS_LOG_TYPE_DEFAULT, "[SPACE] Disabling reserve space", v4, 2u);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] Disabling reserve space", v4, 2u);
   }
 
   CacheDeleteDisableReserveSpace();
 }
 
-+ (void)cacheDeleteSetReserveSpace:(id)a3 systemGrowthMarginSize:(id)a4
++ (void)cacheDeleteSetReserveSpace:(id)space systemGrowthMarginSize:(id)size
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"CACHE_DELETE_RESERVE_SPACE_AMOUNT";
   v10[1] = @"CACHE_DELETE_EXPECTED_SYSTEM_GROWTH_AMOUNT";
-  v11[0] = a3;
-  v11[1] = a4;
+  v11[0] = space;
+  v11[1] = size;
   v5 = MEMORY[0x277CBEAC0];
-  v6 = a4;
-  v7 = a3;
+  sizeCopy = size;
+  spaceCopy = space;
   v8 = [v5 dictionaryWithObjects:v11 forKeys:v10 count:2];
   [SUCoreSpace cacheDeleteSetReserveSpaceWithInfo:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)cacheDeleteSetReserveSpaceWithInfo:(id)a3
++ (void)cacheDeleteSetReserveSpaceWithInfo:(id)info
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   if (_os_feature_enabled_impl())
   {
     v4 = +[SUCoreSpace sharedSpaceManager];
-    v5 = [v4 reserveSpacePaused];
+    reserveSpacePaused = [v4 reserveSpacePaused];
 
-    if (v5)
+    if (reserveSpacePaused)
     {
-      v6 = [MEMORY[0x277D64460] sharedLogger];
-      v7 = [v6 oslog];
+      mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460] oslog];
 
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 136446466;
         v10 = "+[SUCoreSpace cacheDeleteSetReserveSpaceWithInfo:]";
         v11 = 2114;
-        v12 = v3;
-        _os_log_impl(&dword_23193C000, v7, OS_LOG_TYPE_DEFAULT, "[SPACE] %{public}s: trying to set reserve space while in paused state, %{public}@", &v9, 0x16u);
+        v12 = infoCopy;
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] %{public}s: trying to set reserve space while in paused state, %{public}@", &v9, 0x16u);
       }
     }
 
@@ -919,55 +919,55 @@ LABEL_11:
   if (_os_feature_enabled_impl())
   {
     v2 = +[SUCoreSpace sharedSpaceManager];
-    v3 = [v2 reserveSpacePaused];
+    reserveSpacePaused = [v2 reserveSpacePaused];
 
-    v4 = [MEMORY[0x277D64460] sharedLogger];
-    v5 = [v4 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    v6 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
+    if (reserveSpacePaused)
     {
       if (v6)
       {
         v8 = 136315138;
         v9 = "+[SUCoreSpace cacheDeleteResumeReserveSpace]";
-        _os_log_impl(&dword_23193C000, v5, OS_LOG_TYPE_DEFAULT, "[SPACE] %s: resuming CacheDelete purgeable monitor", &v8, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] %s: resuming CacheDelete purgeable monitor", &v8, 0xCu);
       }
 
       CacheDeleteSetEntitledReservation();
-      v5 = +[SUCoreSpace sharedSpaceManager];
-      [v5 setReserveSpacePaused:0];
+      oslog = +[SUCoreSpace sharedSpaceManager];
+      [oslog setReserveSpacePaused:0];
     }
 
     else if (v6)
     {
       v8 = 136315138;
       v9 = "+[SUCoreSpace cacheDeleteResumeReserveSpace]";
-      _os_log_impl(&dword_23193C000, v5, OS_LOG_TYPE_DEFAULT, "[SPACE] %s: trying to resume reserve space while the monitor is not paused", &v8, 0xCu);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] %s: trying to resume reserve space while the monitor is not paused", &v8, 0xCu);
     }
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)cacheDeletePauseReserveSpace:(id)a3 unentitledSpace:(id)a4 withPurpose:(id)a5
++ (void)cacheDeletePauseReserveSpace:(id)space unentitledSpace:(id)unentitledSpace withPurpose:(id)purpose
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  spaceCopy = space;
+  unentitledSpaceCopy = unentitledSpace;
+  purposeCopy = purpose;
   if (_os_feature_enabled_impl())
   {
     v10 = +[SUCoreSpace sharedSpaceManager];
-    v11 = [v10 entitledSpaceDisabled];
+    entitledSpaceDisabled = [v10 entitledSpaceDisabled];
 
-    v12 = [MEMORY[0x277D64460] sharedLogger];
-    v13 = [v12 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v14 = @"Enabled";
-      if (v11)
+      if (entitledSpaceDisabled)
       {
         v14 = @"Disabled";
       }
@@ -976,12 +976,12 @@ LABEL_11:
       v33 = "+[SUCoreSpace cacheDeletePauseReserveSpace:unentitledSpace:withPurpose:]";
       v34 = 2114;
       v35 = v14;
-      _os_log_impl(&dword_23193C000, v13, OS_LOG_TYPE_DEFAULT, "[SPACE] %s: APFS entitled space is %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] %s: APFS entitled space is %{public}@", buf, 0x16u);
     }
 
-    if (v7)
+    if (spaceCopy)
     {
-      v15 = v11;
+      v15 = entitledSpaceDisabled;
     }
 
     else
@@ -989,24 +989,24 @@ LABEL_11:
       v15 = 1;
     }
 
-    if ((v15 & 1) != 0 || ![(__CFString *)v7 unsignedLongLongValue])
+    if ((v15 & 1) != 0 || ![(__CFString *)spaceCopy unsignedLongLongValue])
     {
-      v21 = [MEMORY[0x277D64460] sharedLogger];
-      v22 = [v21 oslog];
+      mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+      oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_23193C000, v22, OS_LOG_TYPE_DEFAULT, "[SPACE] Pause cache delete reserve space monitoring", buf, 2u);
+        _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[SPACE] Pause cache delete reserve space monitoring", buf, 2u);
       }
 
       CacheDeletePauseReserveSpaceMonitoring();
       goto LABEL_32;
     }
 
-    if (!v9)
+    if (!purposeCopy)
     {
-      v9 = @"com.apple.SUCore:totalRequired";
+      purposeCopy = @"com.apple.SUCore:totalRequired";
     }
 
     v30 = 0;
@@ -1016,37 +1016,37 @@ LABEL_11:
     v18 = v30;
     if (v16)
     {
-      v19 = [MEMORY[0x277D64460] sharedLogger];
-      v20 = [v19 oslog];
+      mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+      oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v33 = v18;
-        _os_log_impl(&dword_23193C000, v20, OS_LOG_TYPE_DEFAULT, "[SPACE] Unable to get reserve space info from cache delete, Error: %@", buf, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "[SPACE] Unable to get reserve space info from cache delete, Error: %@", buf, 0xCu);
       }
     }
 
     else
     {
-      v20 = [v17 objectForKeyedSubscript:@"CACHE_DELETE_ENTITLED_RESERVATION"];
-      if (v20)
+      oslog3 = [v17 objectForKeyedSubscript:@"CACHE_DELETE_ENTITLED_RESERVATION"];
+      if (oslog3)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v23 = [v20 unsignedLongLongValue];
-          if (v23 && [(__CFString *)v7 unsignedLongLongValue]> v23)
+          unsignedLongLongValue = [oslog3 unsignedLongLongValue];
+          if (unsignedLongLongValue && [(__CFString *)spaceCopy unsignedLongLongValue]> unsignedLongLongValue)
           {
-            v24 = [MEMORY[0x277D64460] sharedLogger];
-            oslog = [v24 oslog];
+            mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+            oslog = [mEMORY[0x277D64460]4 oslog];
 
             if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v33 = v20;
+              v33 = oslog3;
               v34 = 2112;
-              v35 = v7;
+              v35 = spaceCopy;
               _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] Clearing APFS entitled reserve space because we got a bigger space to reserve, existingEntitledSpace:%@, entitledSpace:%@", buf, 0x16u);
             }
 
@@ -1058,26 +1058,26 @@ LABEL_11:
       }
     }
 
-    v23 = 0;
+    unsignedLongLongValue = 0;
 LABEL_27:
 
-    if ([(__CFString *)v7 unsignedLongLongValue]> v23)
+    if ([(__CFString *)spaceCopy unsignedLongLongValue]> unsignedLongLongValue)
     {
-      v25 = [MEMORY[0x277D64460] sharedLogger];
-      v26 = [v25 oslog];
+      mEMORY[0x277D64460]5 = [MEMORY[0x277D64460] sharedLogger];
+      oslog4 = [mEMORY[0x277D64460]5 oslog];
 
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218498;
-        v33 = v23;
+        v33 = unsignedLongLongValue;
         v34 = 2112;
-        v35 = v7;
+        v35 = spaceCopy;
         v36 = 2112;
-        v37 = v9;
-        _os_log_impl(&dword_23193C000, v26, OS_LOG_TYPE_DEFAULT, "[SPACE] Pause cache delete reserve space monitoring and set entitled reservation, existingEntitledSpace:%llu entitledSpace:%@ with purpose:%@", buf, 0x20u);
+        v37 = purposeCopy;
+        _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "[SPACE] Pause cache delete reserve space monitoring and set entitled reservation, existingEntitledSpace:%llu entitledSpace:%@ with purpose:%@", buf, 0x20u);
       }
 
-      [(__CFString *)v9 UTF8String];
+      [(__CFString *)purposeCopy UTF8String];
       CacheDeleteSetEntitledAndUnentitledReservation();
     }
 
@@ -1089,30 +1089,30 @@ LABEL_32:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)checkPurgeableSpaceCacheDelete:(unint64_t)a3 fromBasePath:(id)a4 cacheDeleteUrgency:(int)a5 timeout:(int)a6 additionalOptions:(id)a7 withCompletionQueue:(id)a8 completion:(id)a9
++ (void)checkPurgeableSpaceCacheDelete:(unint64_t)delete fromBasePath:(id)path cacheDeleteUrgency:(int)urgency timeout:(int)timeout additionalOptions:(id)options withCompletionQueue:(id)queue completion:(id)completion
 {
   v64[3] = *MEMORY[0x277D85DE8];
-  v56 = a4;
-  v55 = a7;
-  v14 = a9;
-  v15 = a8;
+  pathCopy = path;
+  optionsCopy = options;
+  completionCopy = completion;
+  queueCopy = queue;
   [SUCoreSpace _trackSpaceBegin:@"CacheDeleteCopyPurgeableSpaceWithInfo"];
   v16 = [MEMORY[0x277D643F8] beginTransactionWithName:@"space.CacheDeletePurgeable"];
   v17 = _os_feature_enabled_impl();
-  v18 = 0;
-  v54 = a3;
-  if (a5 == 4 && v17)
+  unsignedLongLongValue = 0;
+  deleteCopy = delete;
+  if (urgency == 4 && v17)
   {
     v19 = v16;
-    v20 = v15;
-    v21 = v14;
-    v22 = [MEMORY[0x277D64460] sharedLogger];
-    v23 = [v22 oslog];
+    v20 = queueCopy;
+    v21 = completionCopy;
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_23193C000, v23, OS_LOG_TYPE_DEFAULT, "[SPACE] Checking reserved space in the update volume from CacheDelete", buf, 2u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] Checking reserved space in the update volume from CacheDelete", buf, 2u);
     }
 
     v57 = 0;
@@ -1122,117 +1122,117 @@ LABEL_32:
     v26 = v57;
     if (v24)
     {
-      v27 = [MEMORY[0x277D64460] sharedLogger];
-      v28 = [v27 oslog];
+      mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+      oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v60 = v26;
-        _os_log_impl(&dword_23193C000, v28, OS_LOG_TYPE_DEFAULT, "[SPACE] Unable to get reserve space, error: %@", buf, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[SPACE] Unable to get reserve space, error: %@", buf, 0xCu);
       }
     }
 
     else
     {
-      v28 = [v25 objectForKey:@"CACHE_DELETE_RESERVE_SPACE_FILESYSTEM_AMOUNT"];
-      if (v28)
+      oslog2 = [v25 objectForKey:@"CACHE_DELETE_RESERVE_SPACE_FILESYSTEM_AMOUNT"];
+      if (oslog2)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [v28 unsignedLongLongValue];
+          unsignedLongLongValue = [oslog2 unsignedLongLongValue];
 LABEL_15:
-          v14 = v21;
+          completionCopy = v21;
 
-          v15 = v20;
+          queueCopy = v20;
           v16 = v19;
-          a3 = v54;
+          delete = deleteCopy;
           goto LABEL_16;
         }
       }
 
-      v29 = [MEMORY[0x277D64460] sharedLogger];
-      v30 = [v29 oslog];
+      mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+      oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_23193C000, v30, OS_LOG_TYPE_DEFAULT, "[SPACE] Invalid reserved type", buf, 2u);
+        _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "[SPACE] Invalid reserved type", buf, 2u);
       }
     }
 
-    v18 = 0;
+    unsignedLongLongValue = 0;
     goto LABEL_15;
   }
 
 LABEL_16:
-  if (v18 >= a3)
+  if (unsignedLongLongValue >= delete)
   {
-    v46 = [MEMORY[0x277D64460] sharedLogger];
-    v35 = [v46 oslog];
+    mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+    oslog4 = [mEMORY[0x277D64460]4 oslog];
 
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_23193C000, v35, OS_LOG_TYPE_DEFAULT, "[SPACE] reserved space is enough, skip checking for purgeable content", buf, 2u);
+      _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "[SPACE] reserved space is enough, skip checking for purgeable content", buf, 2u);
     }
 
-    v44 = 0;
+    deleteCopy = 0;
     v45 = 0;
     v47 = 0;
     v48 = 1;
     goto LABEL_41;
   }
 
-  v53 = v14;
-  if (a6 >= 1)
+  v53 = completionCopy;
+  if (timeout >= 1)
   {
-    v31 = a6;
+    timeoutCopy = timeout;
   }
 
   else
   {
-    v31 = 300;
+    timeoutCopy = 300;
   }
 
-  v64[0] = v56;
+  v64[0] = pathCopy;
   v63[0] = @"CACHE_DELETE_VOLUME";
   v63[1] = @"CACHE_DELETE_URGENCY";
-  v32 = [MEMORY[0x277CCABB0] numberWithLongLong:a5];
+  v32 = [MEMORY[0x277CCABB0] numberWithLongLong:urgency];
   v64[1] = v32;
   v63[2] = @"CACHE_DELETE_PURGE_TIMEOUT";
-  v33 = [MEMORY[0x277CCABB0] numberWithInt:v31];
+  v33 = [MEMORY[0x277CCABB0] numberWithInt:timeoutCopy];
   v64[2] = v33;
   v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v64 forKeys:v63 count:3];
-  v35 = [v34 mutableCopy];
+  oslog4 = [v34 mutableCopy];
 
-  if (v55)
+  if (optionsCopy)
   {
-    [v35 addEntriesFromDictionary:?];
+    [oslog4 addEntriesFromDictionary:?];
   }
 
-  v36 = [MEMORY[0x277D64460] sharedLogger];
-  v37 = [v36 oslog];
+  mEMORY[0x277D64460]5 = [MEMORY[0x277D64460] sharedLogger];
+  oslog5 = [mEMORY[0x277D64460]5 oslog];
 
-  if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v60 = v35;
-    _os_log_impl(&dword_23193C000, v37, OS_LOG_TYPE_DEFAULT, "[SPACE] triggering cache delete purgeable check with options: %{public}@", buf, 0xCu);
+    v60 = oslog4;
+    _os_log_impl(&dword_23193C000, oslog5, OS_LOG_TYPE_DEFAULT, "[SPACE] triggering cache delete purgeable check with options: %{public}@", buf, 0xCu);
   }
 
   v38 = CacheDeleteCopyPurgeableSpaceWithInfo();
   if (!v38)
   {
-    v44 = @"no results provided on cache delete purgeable complete";
+    deleteCopy = @"no results provided on cache delete purgeable complete";
 LABEL_37:
     v45 = 8603;
 LABEL_40:
-    v14 = v53;
+    completionCopy = v53;
 
-    v35 = [MEMORY[0x277D643F8] sharedCore];
-    v47 = [v35 buildError:v45 underlying:0 description:v44];
+    oslog4 = [MEMORY[0x277D643F8] sharedCore];
+    v47 = [oslog4 buildError:v45 underlying:0 description:deleteCopy];
     v48 = 0;
     goto LABEL_41;
   }
@@ -1241,93 +1241,93 @@ LABEL_40:
   TypeID = CFDictionaryGetTypeID();
   if (TypeID != CFGetTypeID(v39))
   {
-    v49 = [MEMORY[0x277D64428] sharedDiag];
-    [v49 trackAnomaly:@"cacheDeletePurgeable" forReason:@"result provided by CacheDeleteCopyPurgeableSpaceWithInfo is not CFDictionary type - ignored" withResult:8112 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"cacheDeletePurgeable" forReason:@"result provided by CacheDeleteCopyPurgeableSpaceWithInfo is not CFDictionary type - ignored" withResult:8112 withError:0];
 
     CFRelease(v39);
-    v44 = @"invalid results type provided on cache delete purgeable complete";
+    deleteCopy = @"invalid results type provided on cache delete purgeable complete";
     goto LABEL_37;
   }
 
-  v41 = [MEMORY[0x277D64460] sharedLogger];
-  v42 = [v41 oslog];
+  mEMORY[0x277D64460]6 = [MEMORY[0x277D64460] sharedLogger];
+  oslog6 = [mEMORY[0x277D64460]6 oslog];
 
-  if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v60 = v39;
-    _os_log_impl(&dword_23193C000, v42, OS_LOG_TYPE_DEFAULT, "[SPACE] cache delete purgeable results: %@", buf, 0xCu);
+    _os_log_impl(&dword_23193C000, oslog6, OS_LOG_TYPE_DEFAULT, "[SPACE] cache delete purgeable results: %@", buf, 0xCu);
   }
 
   v43 = [v39 objectForKey:@"CACHE_DELETE_AMOUNT"];
   if (!v43 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v44 = @"no amount of purgeable space provided on cache delete purgeable complete";
+    deleteCopy = @"no amount of purgeable space provided on cache delete purgeable complete";
     v45 = 8603;
     goto LABEL_39;
   }
 
-  v18 += [v43 unsignedLongLongValue];
-  if (v18 < v54)
+  unsignedLongLongValue += [v43 unsignedLongLongValue];
+  if (unsignedLongLongValue < deleteCopy)
   {
-    v44 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"purgeable %lld but needed to purge %lld (not enough space)", v18, v54];
+    deleteCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"purgeable %lld but needed to purge %lld (not enough space)", unsignedLongLongValue, deleteCopy];
     v45 = 8600;
 LABEL_39:
 
     goto LABEL_40;
   }
 
-  v51 = [MEMORY[0x277D64460] sharedLogger];
-  v52 = [v51 oslog];
+  mEMORY[0x277D64460]7 = [MEMORY[0x277D64460] sharedLogger];
+  oslog7 = [mEMORY[0x277D64460]7 oslog];
 
-  if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v60 = v18;
+    v60 = unsignedLongLongValue;
     v61 = 2048;
-    v62 = v54;
-    _os_log_impl(&dword_23193C000, v52, OS_LOG_TYPE_DEFAULT, "[SPACE] purgeable %lld when needed to purge %lld (have enough space)", buf, 0x16u);
+    v62 = deleteCopy;
+    _os_log_impl(&dword_23193C000, oslog7, OS_LOG_TYPE_DEFAULT, "[SPACE] purgeable %lld when needed to purge %lld (have enough space)", buf, 0x16u);
   }
 
-  v44 = 0;
+  deleteCopy = 0;
   v45 = 0;
   v47 = 0;
   v48 = 1;
-  v14 = v53;
+  completionCopy = v53;
 LABEL_41:
 
   [SUCoreSpace _trackSpaceEnd:@"CacheDeleteCopyPurgeableSpaceWithInfo" withResult:v45 withError:v47];
-  [SUCoreSpace _issuePurgeableCompletion:v14 withCompletionQueue:v15 haveEnoughSpace:v48 amountPurgeable:v18 error:v47 transaction:v16 transactionName:@"space.CacheDeletePurgeable"];
+  [SUCoreSpace _issuePurgeableCompletion:completionCopy withCompletionQueue:queueCopy haveEnoughSpace:v48 amountPurgeable:unsignedLongLongValue error:v47 transaction:v16 transactionName:@"space.CacheDeletePurgeable"];
 
   v50 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)cacheDeleteUrgencyName:(int)a3
++ (id)cacheDeleteUrgencyName:(int)name
 {
-  if ((a3 + 1) > 5)
+  if ((name + 1) > 5)
   {
     return @"UNKNOWN TYPE";
   }
 
   else
   {
-    return off_27892EAC0[a3 + 1];
+    return off_27892EAC0[name + 1];
   }
 }
 
-+ (unint64_t)getVolumeUsedSpace:(id)a3
++ (unint64_t)getVolumeUsedSpace:(id)space
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  spaceCopy = space;
   bzero(&v11, 0x878uLL);
-  if (statfs([v3 fileSystemRepresentation], &v11))
+  if (statfs([spaceCopy fileSystemRepresentation], &v11))
   {
-    v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"check for available space failed (unable to statfs basePath=%@)", v3];
-    v5 = [MEMORY[0x277D643F8] sharedCore];
-    v6 = [v5 buildError:8602 underlying:0 description:v4];
+    spaceCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"check for available space failed (unable to statfs basePath=%@)", spaceCopy];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v6 = [mEMORY[0x277D643F8] buildError:8602 underlying:0 description:spaceCopy];
 
-    v7 = [MEMORY[0x277D64428] sharedDiag];
-    [v7 trackError:@"[SPACE]" forReason:v4 withResult:objc_msgSend(v6 withError:{"code"), v6}];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackError:@"[SPACE]" forReason:spaceCopy withResult:objc_msgSend(v6 withError:{"code"), v6}];
 
     v8 = 0;
   }
@@ -1341,18 +1341,18 @@ LABEL_41:
   return v8;
 }
 
-+ (void)checkPurgeableSpaceOffloadApps:(unint64_t)a3 fromBasePath:(id)a4 cacheDeleteUrgency:(int64_t)a5 onlyAvailableBySkippingLaunchCheck:(BOOL)a6 withCompletionQueue:(id)a7 completion:(id)a8
++ (void)checkPurgeableSpaceOffloadApps:(unint64_t)apps fromBasePath:(id)path cacheDeleteUrgency:(int64_t)urgency onlyAvailableBySkippingLaunchCheck:(BOOL)check withCompletionQueue:(id)queue completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v13 = a7;
-  v14 = a8;
-  v15 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
+  pathCopy = path;
   [SUCoreSpace _trackSpaceBegin:@"ASDPurgeableAppRequest"];
   v16 = [MEMORY[0x277D643F8] beginTransactionWithName:@"space.AppOffloadPurgeable"];
   v17 = objc_alloc(MEMORY[0x277CEC470]);
-  if (v15)
+  if (pathCopy)
   {
-    v18 = v15;
+    v18 = pathCopy;
   }
 
   else
@@ -1360,17 +1360,17 @@ LABEL_41:
     v18 = @"/var/mobile/";
   }
 
-  v19 = [v17 initWithVolume:v18 urgency:a5];
+  v19 = [v17 initWithVolume:v18 urgency:urgency];
 
   [v19 setSkipLaunchCheck:1];
-  v20 = [MEMORY[0x277D64460] sharedLogger];
-  v21 = [v20 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v34 = v19;
-    _os_log_impl(&dword_23193C000, v21, OS_LOG_TYPE_DEFAULT, "[SPACE] triggering app offload purgeable check with options: %{public}@", buf, 0xCu);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] triggering app offload purgeable check with options: %{public}@", buf, 0xCu);
   }
 
   v22 = [objc_alloc(MEMORY[0x277CEC468]) initWithOptions:v19];
@@ -1380,10 +1380,10 @@ LABEL_41:
     v27[1] = 3221225472;
     v27[2] = __144__SUCoreSpace_checkPurgeableSpaceOffloadApps_fromBasePath_cacheDeleteUrgency_onlyAvailableBySkippingLaunchCheck_withCompletionQueue_completion___block_invoke;
     v27[3] = &unk_27892E960;
-    v32 = a6;
-    v31 = a3;
-    v30 = v14;
-    v28 = v13;
+    checkCopy = check;
+    appsCopy = apps;
+    v30 = completionCopy;
+    v28 = queueCopy;
     v29 = v16;
     [v22 startWithCompletionBlock:v27];
 
@@ -1392,14 +1392,14 @@ LABEL_41:
 
   else
   {
-    v24 = [MEMORY[0x277D64428] sharedDiag];
-    [v24 trackAnomaly:@"ASDPurgeableAppRequest" forReason:@"Failed to create ASDPurgeableAppRequest instance" withResult:8100 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"ASDPurgeableAppRequest" forReason:@"Failed to create ASDPurgeableAppRequest instance" withResult:8100 withError:0];
 
-    v25 = [MEMORY[0x277D643F8] sharedCore];
-    v23 = [v25 buildError:8605 underlying:0 description:@"Failed to create ASDPurgeAppsRequest instance"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v23 = [mEMORY[0x277D643F8] buildError:8605 underlying:0 description:@"Failed to create ASDPurgeAppsRequest instance"];
 
     [SUCoreSpace _trackSpaceEnd:@"ASDPurgeAppsRequest" withResult:8605 withError:v23];
-    [SUCoreSpace _issuePurgeableCompletion:v14 withCompletionQueue:v13 haveEnoughSpace:0 amountPurgeable:0 error:v23 transaction:v16 transactionName:@"space.AppOffloadPurgeable"];
+    [SUCoreSpace _issuePurgeableCompletion:completionCopy withCompletionQueue:queueCopy haveEnoughSpace:0 amountPurgeable:0 error:v23 transaction:v16 transactionName:@"space.AppOffloadPurgeable"];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -1520,44 +1520,44 @@ LABEL_28:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)checkPurgeableSpaceOffloadApps:(unint64_t)a3 cacheDeleteUrgency:(int64_t)a4 withCompletionQueue:(id)a5 completion:(id)a6
++ (void)checkPurgeableSpaceOffloadApps:(unint64_t)apps cacheDeleteUrgency:(int64_t)urgency withCompletionQueue:(id)queue completion:(id)completion
 {
-  v9 = a5;
-  v10 = a6;
+  queueCopy = queue;
+  completionCopy = completion;
   if ([SUCoreSpace _isUserVolume:@"/var/mobile/"])
   {
     v11 = [MEMORY[0x277D643F8] beginTransactionWithName:@"space.AppOffloadPurgeable"];
-    v12 = [MEMORY[0x277D643F8] sharedCore];
-    v13 = [v12 selectCompletionQueue:v9];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v13 = [mEMORY[0x277D643F8] selectCompletionQueue:queueCopy];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __96__SUCoreSpace_checkPurgeableSpaceOffloadApps_cacheDeleteUrgency_withCompletionQueue_completion___block_invoke;
     v15[3] = &unk_27892E938;
-    v18 = v10;
-    v16 = v9;
+    v18 = completionCopy;
+    v16 = queueCopy;
     v17 = v11;
     v14 = v11;
-    [SUCoreSpace checkPurgeableSpaceOffloadApps:a3 fromBasePath:@"/var/mobile/" cacheDeleteUrgency:a4 withCompletionQueue:v13 completion:v15];
+    [SUCoreSpace checkPurgeableSpaceOffloadApps:apps fromBasePath:@"/var/mobile/" cacheDeleteUrgency:urgency withCompletionQueue:v13 completion:v15];
   }
 
   else
   {
-    [SUCoreSpace checkPurgeableSpaceOffloadApps:a3 cacheDeleteUrgency:a4 withCompletionQueue:v9 completion:v10];
+    [SUCoreSpace checkPurgeableSpaceOffloadApps:apps cacheDeleteUrgency:urgency withCompletionQueue:queueCopy completion:completionCopy];
   }
 }
 
-+ (void)offloadAppsPurge:(unint64_t)a3 fromBasePath:(id)a4 cacheDeleteUrgency:(int64_t)a5 withCompletionQueue:(id)a6 completion:(id)a7
++ (void)offloadAppsPurge:(unint64_t)purge fromBasePath:(id)path cacheDeleteUrgency:(int64_t)urgency withCompletionQueue:(id)queue completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v11 = a6;
-  v12 = a7;
-  v13 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
+  pathCopy = path;
   [SUCoreSpace _trackSpaceBegin:@"ASDPurgeAppsRequest"];
   v14 = [MEMORY[0x277D643F8] beginTransactionWithName:@"space.AppOffloadPurge"];
   v15 = objc_alloc(MEMORY[0x277CEC460]);
-  if (v13)
+  if (pathCopy)
   {
-    v16 = v13;
+    v16 = pathCopy;
   }
 
   else
@@ -1565,20 +1565,20 @@ LABEL_28:
     v16 = @"/var/mobile/";
   }
 
-  v17 = [v15 initWithVolume:v16 urgency:a5];
+  v17 = [v15 initWithVolume:v16 urgency:urgency];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:purge];
   [v17 setDesiredPurgeAmount:v18];
 
   [v17 setSkipLaunchCheck:1];
-  v19 = [MEMORY[0x277D64460] sharedLogger];
-  v20 = [v19 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v32 = v17;
-    _os_log_impl(&dword_23193C000, v20, OS_LOG_TYPE_DEFAULT, "[SPACE] triggering app offload purge with options: %{public}@", buf, 0xCu);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] triggering app offload purge with options: %{public}@", buf, 0xCu);
   }
 
   v21 = [objc_alloc(MEMORY[0x277CEC458]) initWithOptions:v17];
@@ -1588,9 +1588,9 @@ LABEL_28:
     v26[1] = 3221225472;
     v26[2] = __95__SUCoreSpace_offloadAppsPurge_fromBasePath_cacheDeleteUrgency_withCompletionQueue_completion___block_invoke;
     v26[3] = &unk_27892E988;
-    v30 = a3;
-    v29 = v12;
-    v27 = v11;
+    purgeCopy = purge;
+    v29 = completionCopy;
+    v27 = queueCopy;
     v28 = v14;
     [v21 startWithCompletionBlock:v26];
 
@@ -1599,14 +1599,14 @@ LABEL_28:
 
   else
   {
-    v23 = [MEMORY[0x277D64428] sharedDiag];
-    [v23 trackAnomaly:@"ASDPurgeAppsRequest" forReason:@"Failed to create ASDPurgeAppsRequest instance" withResult:8100 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"ASDPurgeAppsRequest" forReason:@"Failed to create ASDPurgeAppsRequest instance" withResult:8100 withError:0];
 
-    v24 = [MEMORY[0x277D643F8] sharedCore];
-    v22 = [v24 buildError:8607 underlying:0 description:@"Failed to create ASDPurgeAppsRequest instance"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v22 = [mEMORY[0x277D643F8] buildError:8607 underlying:0 description:@"Failed to create ASDPurgeAppsRequest instance"];
 
     [SUCoreSpace _trackSpaceEnd:@"ASDPurgeAppsRequest" withResult:8607 withError:v22];
-    [SUCoreSpace _issuePurgeCompletion:v12 withCompletionQueue:v11 haveEnoughSpace:0 amountPurged:0 error:v22 transaction:v14 transactionName:@"space.AppOffloadPurge"];
+    [SUCoreSpace _issuePurgeCompletion:completionCopy withCompletionQueue:queueCopy haveEnoughSpace:0 amountPurged:0 error:v22 transaction:v14 transactionName:@"space.AppOffloadPurge"];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1760,29 +1760,29 @@ LABEL_28:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)offloadAppsPurge:(unint64_t)a3 cacheDeleteUrgency:(int64_t)a4 withCompletionQueue:(id)a5 completion:(id)a6
++ (void)offloadAppsPurge:(unint64_t)purge cacheDeleteUrgency:(int64_t)urgency withCompletionQueue:(id)queue completion:(id)completion
 {
-  v9 = a5;
-  v10 = a6;
+  queueCopy = queue;
+  completionCopy = completion;
   if ([SUCoreSpace _isUserVolume:@"/var/mobile/"])
   {
     v11 = [MEMORY[0x277D643F8] beginTransactionWithName:@"space.AppOffloadPurge"];
     v12 = +[SUCoreSpace sharedSpaceManager];
-    v13 = [v12 spaceQueue];
+    spaceQueue = [v12 spaceQueue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __82__SUCoreSpace_offloadAppsPurge_cacheDeleteUrgency_withCompletionQueue_completion___block_invoke;
     v15[3] = &unk_27892E938;
-    v18 = v10;
-    v16 = v9;
+    v18 = completionCopy;
+    v16 = queueCopy;
     v17 = v11;
     v14 = v11;
-    [SUCoreSpace offloadAppsPurge:a3 fromBasePath:@"/var/mobile/" cacheDeleteUrgency:a4 withCompletionQueue:v13 completion:v15];
+    [SUCoreSpace offloadAppsPurge:purge fromBasePath:@"/var/mobile/" cacheDeleteUrgency:urgency withCompletionQueue:spaceQueue completion:v15];
   }
 
   else
   {
-    [SUCoreSpace offloadAppsPurge:a3 fromBasePath:@"/var/mobile/" cacheDeleteUrgency:a4 withCompletionQueue:v9 completion:v10];
+    [SUCoreSpace offloadAppsPurge:purge fromBasePath:@"/var/mobile/" cacheDeleteUrgency:urgency withCompletionQueue:queueCopy completion:completionCopy];
   }
 }
 
@@ -1861,31 +1861,31 @@ void __176__SUCoreSpace__checkMinimumRequiredSpace_purgingFromBase_userInitiated
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_spaceCheckPhaseError:(id)a3 checkingFromBase:(id)a4 withIdentier:(id)a5 completion:(id)a6
++ (void)_spaceCheckPhaseError:(id)error checkingFromBase:(id)base withIdentier:(id)identier completion:(id)completion
 {
-  v9 = a3;
-  v10 = a6;
+  errorCopy = error;
+  completionCopy = completion;
   v11 = MEMORY[0x277D64428];
-  v12 = a5;
-  v13 = a4;
-  v14 = [v11 sharedDiag];
-  v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"space check from base(%@) phase(%@) failed", v13, v12];
+  identierCopy = identier;
+  baseCopy = base;
+  sharedDiag = [v11 sharedDiag];
+  identierCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"space check from base(%@) phase(%@) failed", baseCopy, identierCopy];
 
-  [v14 trackError:@"[SPACE]" forReason:v15 withResult:objc_msgSend(v9 withError:{"code"), v9}];
-  v16 = [MEMORY[0x277D643F8] sharedCore];
-  v17 = [v16 completionQueue];
+  [sharedDiag trackError:@"[SPACE]" forReason:identierCopy withResult:objc_msgSend(errorCopy withError:{"code"), errorCopy}];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  completionQueue = [mEMORY[0x277D643F8] completionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__SUCoreSpace__spaceCheckPhaseError_checkingFromBase_withIdentier_completion___block_invoke;
   block[3] = &unk_27892CA88;
-  v21 = v9;
-  v22 = v10;
-  v18 = v9;
-  v19 = v10;
-  dispatch_async(v17, block);
+  v21 = errorCopy;
+  v22 = completionCopy;
+  v18 = errorCopy;
+  v19 = completionCopy;
+  dispatch_async(completionQueue, block);
 }
 
-+ (BOOL)_isUserVolume:(id)a3
++ (BOOL)_isUserVolume:(id)volume
 {
   v11 = *MEMORY[0x277D85DE8];
   bzero(v9, 0x40CuLL);
@@ -1893,7 +1893,7 @@ void __176__SUCoreSpace__checkMinimumRequiredSpace_purgingFromBase_userInitiated
   v8[0] = 5;
   v8[1] = 2147491840;
   result = 0;
-  if (getattrlist([a3 fileSystemRepresentation], v8, v9, 0x40CuLL, 0) != -1)
+  if (getattrlist([volume fileSystemRepresentation], v8, v9, 0x40CuLL, 0) != -1)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithCString:v10 + v10[0] encoding:4];
     v5 = [v4 isEqualToString:@"User"];
@@ -1908,25 +1908,25 @@ void __176__SUCoreSpace__checkMinimumRequiredSpace_purgingFromBase_userInitiated
   return result;
 }
 
-+ (void)mobileAssetEstimateEvictable:(unint64_t)a3 completionQueue:(id)a4 completion:(id)a5
++ (void)mobileAssetEstimateEvictable:(unint64_t)evictable completionQueue:(id)queue completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (completionCopy)
   {
     [SUCoreSpace _trackSpaceBegin:@"MobileAssetEstimateEvictable"];
     v9 = [MEMORY[0x277D643F8] beginTransactionWithName:@"space.MobileAssetEstimateEvictable"];
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v22 = "+[SUCoreSpace mobileAssetEstimateEvictable:completionQueue:completion:]";
       v23 = 2048;
-      v24 = a3;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "[SPACE] %s: requesting MA to estimate evictable bytes: bytesNeeded = %llu", buf, 0x16u);
+      evictableCopy = evictable;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] %s: requesting MA to estimate evictable bytes: bytesNeeded = %llu", buf, 0x16u);
     }
 
     v12 = MEMORY[0x277D289E0];
@@ -1934,22 +1934,22 @@ void __176__SUCoreSpace__checkMinimumRequiredSpace_purgingFromBase_userInitiated
     v16[1] = 3221225472;
     v16[2] = __71__SUCoreSpace_mobileAssetEstimateEvictable_completionQueue_completion___block_invoke;
     v16[3] = &unk_27892E9D8;
-    v20 = a3;
-    v19 = v8;
-    v17 = v7;
+    evictableCopy2 = evictable;
+    v19 = completionCopy;
+    v17 = queueCopy;
     v18 = v9;
-    v13 = v9;
+    oslog2 = v9;
     [v12 estimateEvictableBytesForSoftwareUpdateWithCompletion:v16];
   }
 
   else
   {
-    v14 = [MEMORY[0x277D64460] sharedLogger];
-    v13 = [v14 oslog];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
     {
-      [SUCoreSpace mobileAssetEstimateEvictable:v13 completionQueue:? completion:?];
+      [SUCoreSpace mobileAssetEstimateEvictable:oslog2 completionQueue:? completion:?];
     }
   }
 
@@ -2005,23 +2005,23 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)mobileAssetSuspend:(unint64_t)a3 completionQueue:(id)a4 completion:(id)a5
++ (void)mobileAssetSuspend:(unint64_t)suspend completionQueue:(id)queue completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   [SUCoreSpace _trackSpaceBegin:@"MobileAssetSuspend"];
   v9 = [MEMORY[0x277D643F8] beginTransactionWithName:@"space.MobileAssetSuspend"];
-  v10 = [MEMORY[0x277D64460] sharedLogger];
-  v11 = [v10 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v23 = "+[SUCoreSpace mobileAssetSuspend:completionQueue:completion:]";
     v24 = 2048;
-    v25 = a3;
-    _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "[SPACE] %s: requesting MA to suspend: bytesNeeded = %llu", buf, 0x16u);
+    suspendCopy = suspend;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] %s: requesting MA to suspend: bytesNeeded = %llu", buf, 0x16u);
   }
 
   v12 = MEMORY[0x277D289E0];
@@ -2029,14 +2029,14 @@ LABEL_10:
   v17[1] = 3221225472;
   v17[2] = __61__SUCoreSpace_mobileAssetSuspend_completionQueue_completion___block_invoke;
   v17[3] = &unk_27892EA00;
-  v20 = v8;
-  v21 = a3;
-  v18 = v7;
+  v20 = completionCopy;
+  suspendCopy2 = suspend;
+  v18 = queueCopy;
   v19 = v9;
   v13 = v9;
-  v14 = v7;
-  v15 = v8;
-  [v12 suspendForSoftwareUpdateWithNeededBytes:a3 completion:v17];
+  v14 = queueCopy;
+  v15 = completionCopy;
+  [v12 suspendForSoftwareUpdateWithNeededBytes:suspend completion:v17];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -2090,20 +2090,20 @@ void __61__SUCoreSpace_mobileAssetSuspend_completionQueue_completion___block_inv
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)mobileAssetResumeWithCompletionQueue:(id)a3 completion:(id)a4
++ (void)mobileAssetResumeWithCompletionQueue:(id)queue completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   [SUCoreSpace _trackSpaceBegin:@"MobileAssetResume"];
-  v7 = [MEMORY[0x277D64460] sharedLogger];
-  v8 = [v7 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v17 = "+[SUCoreSpace mobileAssetResumeWithCompletionQueue:completion:]";
-    _os_log_impl(&dword_23193C000, v8, OS_LOG_TYPE_DEFAULT, "[SPACE] %s: requesting MA to resume", buf, 0xCu);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[SPACE] %s: requesting MA to resume", buf, 0xCu);
   }
 
   v9 = MEMORY[0x277D289E0];
@@ -2111,10 +2111,10 @@ void __61__SUCoreSpace_mobileAssetSuspend_completionQueue_completion___block_inv
   v13[1] = 3221225472;
   v13[2] = __63__SUCoreSpace_mobileAssetResumeWithCompletionQueue_completion___block_invoke;
   v13[3] = &unk_27892EA50;
-  v14 = v5;
-  v15 = v6;
-  v10 = v5;
-  v11 = v6;
+  v14 = queueCopy;
+  v15 = completionCopy;
+  v10 = queueCopy;
+  v11 = completionCopy;
   [v9 resumeFromSoftwareUpdateWithCompletion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -2177,33 +2177,33 @@ void __63__SUCoreSpace_mobileAssetResumeWithCompletionQueue_completion___block_i
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_issueSpaceCheckCompletion:(id)a3 withCompletionQueue:(id)a4 haveEnoughSpace:(BOOL)a5 haveTotalRequired:(BOOL)a6 freeSpaceAvailable:(unint64_t)a7 error:(id)a8 releasingTransaction:(id)a9
++ (void)_issueSpaceCheckCompletion:(id)completion withCompletionQueue:(id)queue haveEnoughSpace:(BOOL)space haveTotalRequired:(BOOL)required freeSpaceAvailable:(unint64_t)available error:(id)error releasingTransaction:(id)transaction
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  v17 = a9;
-  v18 = v17;
-  if (v14)
+  completionCopy = completion;
+  queueCopy = queue;
+  errorCopy = error;
+  transactionCopy = transaction;
+  v18 = transactionCopy;
+  if (completionCopy)
   {
-    v19 = [MEMORY[0x277D643F8] sharedCore];
-    v20 = [v19 selectCompletionQueue:v15];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v20 = [mEMORY[0x277D643F8] selectCompletionQueue:queueCopy];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __142__SUCoreSpace__issueSpaceCheckCompletion_withCompletionQueue_haveEnoughSpace_haveTotalRequired_freeSpaceAvailable_error_releasingTransaction___block_invoke;
     block[3] = &unk_27892EA78;
-    v26 = a5;
-    v27 = a6;
-    v24 = v14;
-    v25 = a7;
-    v22 = v16;
+    spaceCopy = space;
+    requiredCopy = required;
+    v24 = completionCopy;
+    availableCopy = available;
+    v22 = errorCopy;
     v23 = v18;
     dispatch_async(v20, block);
   }
 
-  else if (v17)
+  else if (transactionCopy)
   {
-    [MEMORY[0x277D643F8] endTransaction:v17 withName:@"space.CheckAvailableSpace"];
+    [MEMORY[0x277D643F8] endTransaction:transactionCopy withName:@"space.CheckAvailableSpace"];
   }
 }
 
@@ -2224,33 +2224,33 @@ uint64_t __142__SUCoreSpace__issueSpaceCheckCompletion_withCompletionQueue_haveE
   return result;
 }
 
-+ (void)_issuePurgeableCompletion:(id)a3 withCompletionQueue:(id)a4 haveEnoughSpace:(BOOL)a5 amountPurgeable:(unint64_t)a6 error:(id)a7 transaction:(id)a8 transactionName:(id)a9
++ (void)_issuePurgeableCompletion:(id)completion withCompletionQueue:(id)queue haveEnoughSpace:(BOOL)space amountPurgeable:(unint64_t)purgeable error:(id)error transaction:(id)transaction transactionName:(id)name
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  if (v14)
+  completionCopy = completion;
+  queueCopy = queue;
+  errorCopy = error;
+  transactionCopy = transaction;
+  nameCopy = name;
+  if (completionCopy)
   {
-    v19 = [MEMORY[0x277D643F8] sharedCore];
-    v20 = [v19 selectCompletionQueue:v15];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v20 = [mEMORY[0x277D643F8] selectCompletionQueue:queueCopy];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __127__SUCoreSpace__issuePurgeableCompletion_withCompletionQueue_haveEnoughSpace_amountPurgeable_error_transaction_transactionName___block_invoke;
     v21[3] = &unk_27892EAA0;
-    v27 = a5;
-    v25 = v14;
-    v26 = a6;
-    v22 = v16;
-    v23 = v17;
-    v24 = v18;
+    spaceCopy = space;
+    v25 = completionCopy;
+    purgeableCopy = purgeable;
+    v22 = errorCopy;
+    v23 = transactionCopy;
+    v24 = nameCopy;
     dispatch_async(v20, v21);
   }
 
-  else if (v17)
+  else if (transactionCopy)
   {
-    [MEMORY[0x277D643F8] endTransaction:v17 withName:v18];
+    [MEMORY[0x277D643F8] endTransaction:transactionCopy withName:nameCopy];
   }
 }
 
@@ -2271,33 +2271,33 @@ uint64_t __127__SUCoreSpace__issuePurgeableCompletion_withCompletionQueue_haveEn
   return result;
 }
 
-+ (void)_issuePurgeCompletion:(id)a3 withCompletionQueue:(id)a4 haveEnoughSpace:(BOOL)a5 amountPurged:(unint64_t)a6 error:(id)a7 transaction:(id)a8 transactionName:(id)a9
++ (void)_issuePurgeCompletion:(id)completion withCompletionQueue:(id)queue haveEnoughSpace:(BOOL)space amountPurged:(unint64_t)purged error:(id)error transaction:(id)transaction transactionName:(id)name
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  if (v14)
+  completionCopy = completion;
+  queueCopy = queue;
+  errorCopy = error;
+  transactionCopy = transaction;
+  nameCopy = name;
+  if (completionCopy)
   {
-    v19 = [MEMORY[0x277D643F8] sharedCore];
-    v20 = [v19 selectCompletionQueue:v15];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v20 = [mEMORY[0x277D643F8] selectCompletionQueue:queueCopy];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __120__SUCoreSpace__issuePurgeCompletion_withCompletionQueue_haveEnoughSpace_amountPurged_error_transaction_transactionName___block_invoke;
     v21[3] = &unk_27892EAA0;
-    v27 = a5;
-    v25 = v14;
-    v26 = a6;
-    v22 = v16;
-    v23 = v17;
-    v24 = v18;
+    spaceCopy = space;
+    v25 = completionCopy;
+    purgedCopy = purged;
+    v22 = errorCopy;
+    v23 = transactionCopy;
+    v24 = nameCopy;
     dispatch_async(v20, v21);
   }
 
-  else if (v17)
+  else if (transactionCopy)
   {
-    [MEMORY[0x277D643F8] endTransaction:v17 withName:v18];
+    [MEMORY[0x277D643F8] endTransaction:transactionCopy withName:nameCopy];
   }
 }
 
@@ -2318,23 +2318,23 @@ uint64_t __120__SUCoreSpace__issuePurgeCompletion_withCompletionQueue_haveEnough
   return result;
 }
 
-+ (void)_trackSpaceBegin:(id)a3 withIdentifier:(id)a4
++ (void)_trackSpaceBegin:(id)begin withIdentifier:(id)identifier
 {
   v5 = MEMORY[0x277D64428];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDiag];
-  [v8 trackBegin:v7 atLevel:1 forModule:@"space" withIdentifier:v6];
+  identifierCopy = identifier;
+  beginCopy = begin;
+  sharedDiag = [v5 sharedDiag];
+  [sharedDiag trackBegin:beginCopy atLevel:1 forModule:@"space" withIdentifier:identifierCopy];
 }
 
-+ (void)_trackSpaceEnd:(id)a3 withIdentifier:(id)a4 withResult:(int64_t)a5 withError:(id)a6
++ (void)_trackSpaceEnd:(id)end withIdentifier:(id)identifier withResult:(int64_t)result withError:(id)error
 {
   v9 = MEMORY[0x277D64428];
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v9 sharedDiag];
-  [v13 trackEnd:v12 atLevel:1 forModule:@"space" withIdentifier:v11 withResult:a5 withError:v10];
+  errorCopy = error;
+  identifierCopy = identifier;
+  endCopy = end;
+  sharedDiag = [v9 sharedDiag];
+  [sharedDiag trackEnd:endCopy atLevel:1 forModule:@"space" withIdentifier:identifierCopy withResult:result withError:errorCopy];
 }
 
 + (void)mobileAssetEstimateEvictable:(os_log_t)log completionQueue:completion:.cold.1(os_log_t log)

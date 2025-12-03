@@ -1,26 +1,26 @@
 @interface BWAutoFocusPositionSensorMonitor
 + (id)sharedInstance;
 + (void)clientHasBeenBackgrounded;
-+ (void)logStillImageAPSStatistics:(id)a3;
-+ (void)logVideoRecordingAPSStatistics:(BWAPSStatistics *)a3;
-+ (void)processAPSOffsetEstimatorInfo:(id)a3 portType:(id)a4;
++ (void)logStillImageAPSStatistics:(id)statistics;
++ (void)logVideoRecordingAPSStatistics:(BWAPSStatistics *)statistics;
++ (void)processAPSOffsetEstimatorInfo:(id)info portType:(id)type;
 - (BWAutoFocusPositionSensorMonitor)init;
-- (uint64_t)_appendApsMotionData:(void *)a3 sphereMotionData:(void *)a4 toDataString:;
-- (uint64_t)_highMagneticFieldCountOfOtherCameras:(void *)a3 portType:;
+- (uint64_t)_appendApsMotionData:(void *)data sphereMotionData:(void *)motionData toDataString:;
+- (uint64_t)_highMagneticFieldCountOfOtherCameras:(void *)cameras portType:;
 - (uint64_t)_reportStillImageAPSStatisticsToAggd:(uint64_t)result;
 - (uint64_t)_reportVideoRecordingAPSStatisticsToAggd:(uint64_t)result;
 - (void)_getLogFileHandle;
-- (void)_logAPSOffsetEstimatorInfo:(void *)a3 portType:;
-- (void)_logStillImageAPSStatistics:(uint64_t)a1;
-- (void)_logVideoRecordingAPSStatistics:(uint64_t)a1;
+- (void)_logAPSOffsetEstimatorInfo:(void *)info portType:;
+- (void)_logStillImageAPSStatistics:(uint64_t)statistics;
+- (void)_logVideoRecordingAPSStatistics:(uint64_t)statistics;
 - (void)_postMagneticDetectionUserNotification;
-- (void)_processAPSOffsetEstimatorInfo:(void *)a3 portType:;
-- (void)_reportAPSOffsetEstimatorInfoToAggdAndCoreAnalytics:(void *)a3 portType:;
+- (void)_processAPSOffsetEstimatorInfo:(void *)info portType:;
+- (void)_reportAPSOffsetEstimatorInfoToAggdAndCoreAnalytics:(void *)analytics portType:;
 - (void)clientHasBeenBackgrounded;
 - (void)dealloc;
-- (void)logStillImageAPSStatistics:(uint64_t)a1;
-- (void)logVideoRecordingAPSStatistics:(uint64_t)a1;
-- (void)processAPSOffsetEstimatorInfo:(uint64_t)a1 portType:;
+- (void)logStillImageAPSStatistics:(uint64_t)statistics;
+- (void)logVideoRecordingAPSStatistics:(uint64_t)statistics;
+- (void)processAPSOffsetEstimatorInfo:(uint64_t)info portType:;
 @end
 
 @implementation BWAutoFocusPositionSensorMonitor
@@ -42,18 +42,18 @@ BWAutoFocusPositionSensorMonitor *__50__BWAutoFocusPositionSensorMonitor_sharedI
   return result;
 }
 
-+ (void)processAPSOffsetEstimatorInfo:(id)a3 portType:(id)a4
++ (void)processAPSOffsetEstimatorInfo:(id)info portType:(id)type
 {
   v4 = +[BWAutoFocusPositionSensorMonitor sharedInstance];
 
   [BWAutoFocusPositionSensorMonitor processAPSOffsetEstimatorInfo:v4 portType:?];
 }
 
-+ (void)logStillImageAPSStatistics:(id)a3
++ (void)logStillImageAPSStatistics:(id)statistics
 {
-  v4 = [a3 objectForKeyedSubscript:*off_1E798B188];
-  v5 = [a3 objectForKeyedSubscript:*off_1E798B6A8];
-  v6 = [a3 objectForKeyedSubscript:*off_1E798B230];
+  v4 = [statistics objectForKeyedSubscript:*off_1E798B188];
+  v5 = [statistics objectForKeyedSubscript:*off_1E798B6A8];
+  v6 = [statistics objectForKeyedSubscript:*off_1E798B230];
   if (v4)
   {
     v7 = v5 == 0;
@@ -72,7 +72,7 @@ BWAutoFocusPositionSensorMonitor *__50__BWAutoFocusPositionSensorMonitor_sharedI
   }
 }
 
-+ (void)logVideoRecordingAPSStatistics:(BWAPSStatistics *)a3
++ (void)logVideoRecordingAPSStatistics:(BWAPSStatistics *)statistics
 {
   v3 = +[BWAutoFocusPositionSensorMonitor sharedInstance];
 
@@ -171,9 +171,9 @@ void __74__BWAutoFocusPositionSensorMonitor__postMagneticDetectionUserNotificati
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)processAPSOffsetEstimatorInfo:(uint64_t)a1 portType:
+- (void)processAPSOffsetEstimatorInfo:(uint64_t)info portType:
 {
-  if (a1)
+  if (info)
   {
     OUTLINED_FUNCTION_3_80();
     v6 = 3221225472;
@@ -186,18 +186,18 @@ void __74__BWAutoFocusPositionSensorMonitor__postMagneticDetectionUserNotificati
   }
 }
 
-- (void)logStillImageAPSStatistics:(uint64_t)a1
+- (void)logStillImageAPSStatistics:(uint64_t)statistics
 {
-  if (a1)
+  if (statistics)
   {
     OUTLINED_FUNCTION_2_91();
     OUTLINED_FUNCTION_10_42(v1, v2, v3, v4, 3221225472, v5, v6, v7, v8);
   }
 }
 
-- (void)logVideoRecordingAPSStatistics:(uint64_t)a1
+- (void)logVideoRecordingAPSStatistics:(uint64_t)statistics
 {
-  if (a1)
+  if (statistics)
   {
     OUTLINED_FUNCTION_2_91();
     OUTLINED_FUNCTION_10_42(v1, v2, v3, v4, 3221225472, v5, v6, v7, v8);
@@ -206,7 +206,7 @@ void __74__BWAutoFocusPositionSensorMonitor__postMagneticDetectionUserNotificati
 
 - (void)clientHasBeenBackgrounded
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_3_80();
     v4 = 3221225472;
@@ -217,14 +217,14 @@ void __74__BWAutoFocusPositionSensorMonitor__postMagneticDetectionUserNotificati
   }
 }
 
-- (void)_processAPSOffsetEstimatorInfo:(void *)a3 portType:
+- (void)_processAPSOffsetEstimatorInfo:(void *)info portType:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if ([a3 isEqualToString:*off_1E798A0C0])
+  if ([info isEqualToString:*off_1E798A0C0])
   {
     v7 = @"BackHighMagneticFieldCount";
     v8 = @"BackLowMagneticFieldCount";
@@ -232,7 +232,7 @@ void __74__BWAutoFocusPositionSensorMonitor__postMagneticDetectionUserNotificati
     goto LABEL_12;
   }
 
-  if ([a3 isEqualToString:*off_1E798A0D8])
+  if ([info isEqualToString:*off_1E798A0D8])
   {
     v7 = @"BackTelephotoHighMagneticFieldCount";
     v8 = @"BackTelephotoLowMagneticFieldCount";
@@ -240,7 +240,7 @@ void __74__BWAutoFocusPositionSensorMonitor__postMagneticDetectionUserNotificati
     goto LABEL_12;
   }
 
-  if ([a3 isEqualToString:*off_1E798A0D0])
+  if ([info isEqualToString:*off_1E798A0D0])
   {
     v7 = @"BackSuperWideHighMagneticFieldCount";
     v8 = @"BackSuperWideLowMagneticFieldCount";
@@ -297,14 +297,14 @@ LABEL_12:
       v29 = [objc_msgSend(v6 objectForKeyedSubscript:{v20), "intValue"}];
       v30 = [MEMORY[0x1E696AD98] numberWithInt:(v19 + 1)];
       v38 = [OUTLINED_FUNCTION_8_47(v30 v31];
-      if (v19 < 9 || v17 - v29 <= 86400.0 || (v46 = [OUTLINED_FUNCTION_9_48(v38 v39], objc_msgSend(OUTLINED_FUNCTION_9_48(v46, v47, v48, v49, v50, v51, v52, v53, v65, v68, v71, valuea), "setObject:forKeyedSubscript:"), -[BWAutoFocusPositionSensorMonitor _highMagneticFieldCountOfOtherCameras:portType:](a1, v6, a3)))
+      if (v19 < 9 || v17 - v29 <= 86400.0 || (v46 = [OUTLINED_FUNCTION_9_48(v38 v39], objc_msgSend(OUTLINED_FUNCTION_9_48(v46, v47, v48, v49, v50, v51, v52, v53, v65, v68, v71, valuea), "setObject:forKeyedSubscript:"), -[BWAutoFocusPositionSensorMonitor _highMagneticFieldCountOfOtherCameras:portType:](self, v6, info)))
       {
 LABEL_31:
         CFPreferencesSetValue(@"AutoFocusPositionSensorMonitorInfo", value, @"com.apple.cameracapture.volatile", v10, v11);
         CFPreferencesSynchronize(@"com.apple.cameracapture.volatile", v10, v11);
 LABEL_32:
-        [(BWAutoFocusPositionSensorMonitor *)a1 _reportAPSOffsetEstimatorInfoToAggdAndCoreAnalytics:a2 portType:a3];
-        [(BWAutoFocusPositionSensorMonitor *)a1 _logAPSOffsetEstimatorInfo:a2 portType:a3];
+        [(BWAutoFocusPositionSensorMonitor *)self _reportAPSOffsetEstimatorInfoToAggdAndCoreAnalytics:a2 portType:info];
+        [(BWAutoFocusPositionSensorMonitor *)self _logAPSOffsetEstimatorInfo:a2 portType:info];
         goto LABEL_6;
       }
 
@@ -355,9 +355,9 @@ LABEL_6:
   return result;
 }
 
-- (void)_logStillImageAPSStatistics:(uint64_t)a1
+- (void)_logStillImageAPSStatistics:(uint64_t)statistics
 {
-  if (a1 && MGGetBoolAnswer())
+  if (statistics && MGGetBoolAnswer())
   {
     v3 = *off_1E798B188;
     v4 = [a2 objectForKeyedSubscript:*off_1E798B188];
@@ -366,7 +366,7 @@ LABEL_6:
     v7 = [a2 objectForKeyedSubscript:*off_1E798B230];
     if (v4 && v6 && (v8 = v7) != 0)
     {
-      LogFile = [(BWAutoFocusPositionSensorMonitor *)a1 _getLogFileHandle];
+      LogFile = [(BWAutoFocusPositionSensorMonitor *)statistics _getLogFileHandle];
       if (LogFile)
       {
         v31 = LogFile;
@@ -397,14 +397,14 @@ LABEL_6:
         [v13 appendFormat:@"<GyroMax>%f</GyroMax>, ", OUTLINED_FUNCTION_0_93(v19)];
         [objc_msgSend(v8 objectForKeyedSubscript:{*off_1E798AD10), "floatValue"}];
         [v13 appendFormat:@"<GyroMin>%f</GyroMin>, ", OUTLINED_FUNCTION_0_93(v20)];
-        [(BWAutoFocusPositionSensorMonitor *)a1 _appendApsMotionData:v4 sphereMotionData:v6 toDataString:v13];
+        [(BWAutoFocusPositionSensorMonitor *)statistics _appendApsMotionData:v4 sphereMotionData:v6 toDataString:v13];
         v21 = [a2 objectForKeyedSubscript:*off_1E798B730];
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v22 = [v21 allKeys];
-        v23 = [v22 countByEnumeratingWithState:&v35 objects:v34 count:16];
+        allKeys = [v21 allKeys];
+        v23 = [allKeys countByEnumeratingWithState:&v35 objects:v34 count:16];
         if (v23)
         {
           v24 = v23;
@@ -416,7 +416,7 @@ LABEL_6:
             {
               if (*v36 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(allKeys);
               }
 
               v27 = [v21 objectForKeyedSubscript:*(*(&v35 + 1) + 8 * v26)];
@@ -428,7 +428,7 @@ LABEL_6:
                 if (v29)
                 {
                   [v13 appendFormat:@"SlaveCamera (%@), ", v32];
-                  [(BWAutoFocusPositionSensorMonitor *)a1 _appendApsMotionData:v28 sphereMotionData:v30 toDataString:v13];
+                  [(BWAutoFocusPositionSensorMonitor *)statistics _appendApsMotionData:v28 sphereMotionData:v30 toDataString:v13];
                 }
               }
 
@@ -436,7 +436,7 @@ LABEL_6:
             }
 
             while (v24 != v26);
-            v24 = [v22 countByEnumeratingWithState:&v35 objects:v34 count:16];
+            v24 = [allKeys countByEnumeratingWithState:&v35 objects:v34 count:16];
           }
 
           while (v24);
@@ -492,13 +492,13 @@ LABEL_6:
   return result;
 }
 
-- (void)_logVideoRecordingAPSStatistics:(uint64_t)a1
+- (void)_logVideoRecordingAPSStatistics:(uint64_t)statistics
 {
-  if (a1 && MGGetBoolAnswer())
+  if (statistics && MGGetBoolAnswer())
   {
     if (a2)
     {
-      LogFile = [(BWAutoFocusPositionSensorMonitor *)a1 _getLogFileHandle];
+      LogFile = [(BWAutoFocusPositionSensorMonitor *)statistics _getLogFileHandle];
       if (LogFile)
       {
         v5 = LogFile;
@@ -549,7 +549,7 @@ LABEL_6:
 
 - (void)_postMagneticDetectionUserNotification
 {
-  if (a1)
+  if (self)
   {
     v1 = *MEMORY[0x1E695E8B8];
     v2 = *MEMORY[0x1E695E898];
@@ -608,11 +608,11 @@ LABEL_6:
   }
 }
 
-- (uint64_t)_highMagneticFieldCountOfOtherCameras:(void *)a3 portType:
+- (uint64_t)_highMagneticFieldCountOfOtherCameras:(void *)cameras portType:
 {
   if (result)
   {
-    if ([a3 isEqualToString:*off_1E798A0C0])
+    if ([cameras isEqualToString:*off_1E798A0C0])
     {
       v5 = @"BackSuperWideHighMagneticFieldCount";
       v6 = @"BackTelephotoHighMagneticFieldCount";
@@ -620,14 +620,14 @@ LABEL_6:
 
     else
     {
-      if ([a3 isEqualToString:*off_1E798A0D8])
+      if ([cameras isEqualToString:*off_1E798A0D8])
       {
         v5 = @"BackSuperWideHighMagneticFieldCount";
       }
 
       else
       {
-        result = [a3 isEqualToString:*off_1E798A0D0];
+        result = [cameras isEqualToString:*off_1E798A0D0];
         if (!result)
         {
           return result;
@@ -646,9 +646,9 @@ LABEL_6:
   return result;
 }
 
-- (void)_reportAPSOffsetEstimatorInfoToAggdAndCoreAnalytics:(void *)a3 portType:
+- (void)_reportAPSOffsetEstimatorInfoToAggdAndCoreAnalytics:(void *)analytics portType:
 {
-  if (a1)
+  if (self)
   {
     if (a2)
     {
@@ -665,13 +665,13 @@ LABEL_6:
       v35 = [objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798AB98), "intValue"}];
       v12 = [objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798AB28), "intValue"}];
       v37 = CFPreferencesCopyValue(@"AutoFocusPositionSensorMonitorInfo", @"com.apple.cameracapture.volatile", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
-      v31 = a3;
-      if ([a3 isEqualToString:*off_1E798A0C0])
+      analyticsCopy = analytics;
+      if ([analytics isEqualToString:*off_1E798A0C0])
       {
         v13 = @"BackLastSessionOffset";
       }
 
-      else if ([a3 isEqualToString:*off_1E798A0D0])
+      else if ([analytics isEqualToString:*off_1E798A0D0])
       {
         v13 = @"BackSuperWideLastSessionOffset";
       }
@@ -703,7 +703,7 @@ LABEL_6:
       v19 = (v11 >> 5) & 1;
       [v21 reportAPSOffsetEstimatorForPortType:v18 accelMotion:v28 gyroMotion:v29 inSessionOffset:? deltaOffsetFC:? deltaOffsetMI:? deltaOffsetFATP:? deltaOffsetLastSession:? errorHeadroomViolated:? errorConvergenceFailed:? errorMotionTooLarge:? errorConfidenceTooLow:? errorOffsetTooLarge:? errorDeltaTooLarge:? errorSaturated:? errorCouldNotRun:? successRun:? startAPSVoltage:? modeGCOL:? modeOL:?];
       v22 = objc_alloc_init(BWStartupCalibrationAnalyticsPayload);
-      [(BWStartupCalibrationAnalyticsPayload *)v22 setPortType:v31];
+      [(BWStartupCalibrationAnalyticsPayload *)v22 setPortType:analyticsCopy];
       LODWORD(v23) = v6;
       [(BWStartupCalibrationAnalyticsPayload *)v22 setAccelStandardDeviation:v23];
       LODWORD(v24) = v8;
@@ -748,9 +748,9 @@ LABEL_6:
   }
 }
 
-- (void)_logAPSOffsetEstimatorInfo:(void *)a3 portType:
+- (void)_logAPSOffsetEstimatorInfo:(void *)info portType:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -759,7 +759,7 @@ LABEL_6:
   {
     if (a2)
     {
-      LogFile = [(BWAutoFocusPositionSensorMonitor *)a1 _getLogFileHandle];
+      LogFile = [(BWAutoFocusPositionSensorMonitor *)self _getLogFileHandle];
       if (LogFile)
       {
         v7 = LogFile;
@@ -770,7 +770,7 @@ LABEL_6:
         v10 = objc_alloc_init(MEMORY[0x1E696AD60]);
         [v10 appendFormat:@"%@, ", v9];
         [v10 appendFormat:@"OffsetEstimatorInfo, "];
-        v32 = a3;
+        infoCopy = info;
         [v10 appendFormat:@"%@, "];
         [objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798AB40), "floatValue"}];
         v12 = v11;
@@ -784,12 +784,12 @@ LABEL_6:
         v16 = *MEMORY[0x1E695E8B8];
         v17 = *MEMORY[0x1E695E898];
         v18 = CFPreferencesCopyValue(@"AutoFocusPositionSensorMonitorInfo", @"com.apple.cameracapture.volatile", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
-        if ([a3 isEqualToString:*off_1E798A0C0])
+        if ([info isEqualToString:*off_1E798A0C0])
         {
           v19 = @"BackLastSessionOffset";
         }
 
-        else if ([a3 isEqualToString:*off_1E798A0D0])
+        else if ([info isEqualToString:*off_1E798A0D0])
         {
           v19 = @"BackSuperWideLastSessionOffset";
         }
@@ -854,7 +854,7 @@ LABEL_17:
 
 - (void)_getLogFileHandle
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -903,22 +903,22 @@ LABEL_11:
   return v8;
 }
 
-- (uint64_t)_appendApsMotionData:(void *)a3 sphereMotionData:(void *)a4 toDataString:
+- (uint64_t)_appendApsMotionData:(void *)data sphereMotionData:(void *)motionData toDataString:
 {
   if (result)
   {
     [objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798AB20), "floatValue"}];
-    [a4 appendFormat:@"<AFStd>%f</AFStd>, ", OUTLINED_FUNCTION_0_93(v7)];
+    [motionData appendFormat:@"<AFStd>%f</AFStd>, ", OUTLINED_FUNCTION_0_93(v7)];
     [objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798AB10), "floatValue"}];
-    [a4 appendFormat:@"<AFMax>%f</AFMax>, ", OUTLINED_FUNCTION_0_93(v8)];
+    [motionData appendFormat:@"<AFMax>%f</AFMax>, ", OUTLINED_FUNCTION_0_93(v8)];
     [objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798AB18), "floatValue"}];
-    [a4 appendFormat:@"<AFMin>%f</AFMin>, ", OUTLINED_FUNCTION_0_93(v9)];
-    [objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798C460), "floatValue"}];
-    [a4 appendFormat:@"<OISStd>%f</OISStd>, ", OUTLINED_FUNCTION_0_93(v10)];
-    [objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798C450), "floatValue"}];
-    [a4 appendFormat:@"<OISMax>%f</OISMax>, ", OUTLINED_FUNCTION_0_93(v11)];
-    [objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798C458), "floatValue"}];
-    return [a4 appendFormat:@"<OISMin>%f</OISMin>, ", OUTLINED_FUNCTION_0_93(v12)];
+    [motionData appendFormat:@"<AFMin>%f</AFMin>, ", OUTLINED_FUNCTION_0_93(v9)];
+    [objc_msgSend(data objectForKeyedSubscript:{*off_1E798C460), "floatValue"}];
+    [motionData appendFormat:@"<OISStd>%f</OISStd>, ", OUTLINED_FUNCTION_0_93(v10)];
+    [objc_msgSend(data objectForKeyedSubscript:{*off_1E798C450), "floatValue"}];
+    [motionData appendFormat:@"<OISMax>%f</OISMax>, ", OUTLINED_FUNCTION_0_93(v11)];
+    [objc_msgSend(data objectForKeyedSubscript:{*off_1E798C458), "floatValue"}];
+    return [motionData appendFormat:@"<OISMin>%f</OISMin>, ", OUTLINED_FUNCTION_0_93(v12)];
   }
 
   return result;

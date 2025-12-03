@@ -31,10 +31,10 @@
 
 - (BOOL)cdp_isCDPErrorWithCode:()CoreCDP
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:@"CDPStateError"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"CDPStateError"])
   {
-    v6 = [a1 code] == a3;
+    v6 = [self code] == a3;
   }
 
   else

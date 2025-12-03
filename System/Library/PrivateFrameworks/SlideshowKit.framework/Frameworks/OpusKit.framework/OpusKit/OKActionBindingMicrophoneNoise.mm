@@ -1,13 +1,13 @@
 @interface OKActionBindingMicrophoneNoise
 + (id)supportedSettings;
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
 - (OKActionBindingMicrophoneNoise)init;
-- (OKActionBindingMicrophoneNoise)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_updateAudioLevels:(id)a3;
+- (OKActionBindingMicrophoneNoise)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_updateAudioLevels:(id)levels;
 - (void)dealloc;
-- (void)handleLongPress:(id)a3;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
+- (void)handleLongPress:(id)press;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
 - (void)unload;
 @end
 
@@ -34,20 +34,20 @@
   return result;
 }
 
-- (OKActionBindingMicrophoneNoise)initWithSettings:(id)a3
+- (OKActionBindingMicrophoneNoise)initWithSettings:(id)settings
 {
   v9.receiver = self;
   v9.super_class = OKActionBindingMicrophoneNoise;
   v4 = [(OKActionBinding *)&v9 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"numberOfTouchesRequired"];
+    v5 = [settings objectForKey:@"numberOfTouchesRequired"];
     if (v5)
     {
       v4->_numberOfTouchesRequired = [v5 unsignedIntegerValue];
     }
 
-    v6 = [a3 objectForKey:@"interval"];
+    v6 = [settings objectForKey:@"interval"];
     if (v6)
     {
       [v6 doubleValue];
@@ -99,11 +99,11 @@
   [(OKActionBinding *)&v7 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingMicrophoneNoise;
-  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:a3];
+  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -117,7 +117,7 @@
 + (id)supportedSettings
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OKActionBindingMicrophoneNoise;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v5, sel_supportedSettings)}];
   v10[0] = @"numberOfTouchesRequired";
@@ -137,14 +137,14 @@
   return v2;
 }
 
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
-  v7 = [(OKActionBindingProxy *)self scope];
+  scope = [(OKActionBindingProxy *)self scope];
   result = 0;
-  if (([a3 scope] & v7) != 0)
+  if (([action scope] & scope) != 0)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (a4 || [a3 touchCount] == self->_numberOfTouchesRequired))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (agnostic || [action touchCount] == self->_numberOfTouchesRequired))
     {
       return 1;
     }
@@ -153,20 +153,20 @@
   return result;
 }
 
-- (void)_updateAudioLevels:(id)a3
+- (void)_updateAudioLevels:(id)levels
 {
-  v3 = self;
+  selfCopy = self;
   v36 = *MEMORY[0x277D85DE8];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = [(AVCaptureSession *)self->_session outputs];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v29 objects:v35 count:16];
+  outputs = [(AVCaptureSession *)self->_session outputs];
+  v5 = [(NSArray *)outputs countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v5)
   {
     v6 = v5;
-    v23 = v3;
+    v23 = selfCopy;
     v7 = 0;
     v8 = *v30;
     v9 = 0.0;
@@ -176,7 +176,7 @@
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(outputs);
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
@@ -184,8 +184,8 @@
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v12 = [v11 connections];
-        v13 = [v12 countByEnumeratingWithState:&v25 objects:v34 count:16];
+        connections = [v11 connections];
+        v13 = [connections countByEnumeratingWithState:&v25 objects:v34 count:16];
         if (v13)
         {
           v14 = v13;
@@ -196,7 +196,7 @@
             {
               if (*v26 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(connections);
               }
 
               v17 = *(*(&v25 + 1) + 8 * j);
@@ -215,14 +215,14 @@
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v25 objects:v34 count:16];
+            v14 = [connections countByEnumeratingWithState:&v25 objects:v34 count:16];
           }
 
           while (v14);
         }
       }
 
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v29 objects:v35 count:16];
+      v6 = [(NSArray *)outputs countByEnumeratingWithState:&v29 objects:v35 count:16];
     }
 
     while (v6);
@@ -236,7 +236,7 @@
       v19 = 0.0;
     }
 
-    v3 = v23;
+    selfCopy = v23;
   }
 
   else
@@ -244,35 +244,35 @@
     v19 = 0.0;
   }
 
-  if (v3->_shouldForwardMotion)
+  if (selfCopy->_shouldForwardMotion)
   {
-    if (v3->_actionContext)
+    if (selfCopy->_actionContext)
     {
-      v3->_actionContext = objc_alloc_init(MEMORY[0x277CBEB38]);
+      selfCopy->_actionContext = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
 
-    v20 = [(OKActionBindingMicrophoneNoise *)v3 numberOfTouchesRequired];
+    numberOfTouchesRequired = [(OKActionBindingMicrophoneNoise *)selfCopy numberOfTouchesRequired];
     *&v21 = v19;
-    v22 = [OKActionMicrophoneNoise microphoneNoiseActionWithState:2 location:v20 touchCount:v3->_actionContext meanAudioLevel:v3->_lastLocation.x context:v3->_lastLocation.y, v21];
-    if (![(OKActionBindingMicrophoneNoise *)v3 numberOfTouchesRequired])
+    v22 = [OKActionMicrophoneNoise microphoneNoiseActionWithState:2 location:numberOfTouchesRequired touchCount:selfCopy->_actionContext meanAudioLevel:selfCopy->_lastLocation.x context:selfCopy->_lastLocation.y, v21];
+    if (![(OKActionBindingMicrophoneNoise *)selfCopy numberOfTouchesRequired])
     {
       [v22 setIsInstantaneous:1];
     }
 
-    [(OKActionBindingProxy *)v3 performAction:v22];
+    [(OKActionBindingProxy *)selfCopy performAction:v22];
   }
 
-  v3->_lastMeanAudioLevel = v19;
+  selfCopy->_lastMeanAudioLevel = v19;
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
-  v4 = a4;
+  scopeCopy = scope;
   v16.receiver = self;
   v16.super_class = OKActionBindingMicrophoneNoise;
   [OKActionBindingProxy loadForResponder:sel_loadForResponder_scope_ scope:?];
   v7 = +[OKRuntime currentPlatform];
-  if ((v4 & 1) != 0 && v7 != 8)
+  if ((scopeCopy & 1) != 0 && v7 != 8)
   {
     v8 = [MEMORY[0x277CE5AC8] devicesWithMediaType:*MEMORY[0x277CE5E48]];
     if ([v8 count])
@@ -308,10 +308,10 @@
         [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer setNumberOfTapsRequired:0];
         [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer setMinimumPressDuration:0.25];
         [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer setAllowableMovement:0.0];
-        v14 = [a3 actionView];
-        if (v14)
+        actionView = [responder actionView];
+        if (actionView)
         {
-          [v14 addGestureRecognizer:self->_longPressGestureRecognizer];
+          [actionView addGestureRecognizer:self->_longPressGestureRecognizer];
         }
       }
 
@@ -372,9 +372,9 @@
   }
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  if ([a3 state] == 1)
+  if ([press state] == 1)
   {
     v5 = 1;
 LABEL_9:
@@ -383,20 +383,20 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([a3 state] == 2)
+  if ([press state] == 2)
   {
     v6 = 1;
     goto LABEL_10;
   }
 
-  if ([a3 state] == 3 || objc_msgSend(a3, "state") == 5 || (v6 = 0, objc_msgSend(a3, "state") == 4))
+  if ([press state] == 3 || objc_msgSend(press, "state") == 5 || (v6 = 0, objc_msgSend(press, "state") == 4))
   {
     v5 = 0;
     goto LABEL_9;
   }
 
 LABEL_10:
-  [(OKActionBindingProxy *)self locationForActionFromGesture:a3];
+  [(OKActionBindingProxy *)self locationForActionFromGesture:press];
   self->_lastLocation.x = v7;
   self->_lastLocation.y = v8;
   if ((v6 & 1) == 0)

@@ -1,29 +1,29 @@
 @interface NRDevicePairingManagerMuxEntry
-- (void)initWithPairingManager:(void *)a1;
+- (void)initWithPairingManager:(void *)manager;
 @end
 
 @implementation NRDevicePairingManagerMuxEntry
 
-- (void)initWithPairingManager:(void *)a1
+- (void)initWithPairingManager:(void *)manager
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (manager)
   {
-    v24.receiver = a1;
+    v24.receiver = manager;
     v24.super_class = NRDevicePairingManagerMuxEntry;
     v5 = objc_msgSendSuper2(&v24, sel_init);
     if (v5)
     {
-      a1 = v5;
+      manager = v5;
       objc_storeStrong(v5 + 1, a2);
       v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v7 = a1[2];
-      a1[2] = v6;
+      v7 = manager[2];
+      manager[2] = v6;
 
       v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v9 = a1[5];
-      a1[5] = v8;
+      v9 = manager[5];
+      manager[5] = v8;
 
       goto LABEL_4;
     }
@@ -61,7 +61,7 @@ LABEL_9:
 LABEL_4:
 
   v10 = *MEMORY[0x277D85DE8];
-  return a1;
+  return manager;
 }
 
 @end

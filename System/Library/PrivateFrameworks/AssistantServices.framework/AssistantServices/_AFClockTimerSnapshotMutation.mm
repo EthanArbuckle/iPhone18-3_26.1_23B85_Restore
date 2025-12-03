@@ -1,5 +1,5 @@
 @interface _AFClockTimerSnapshotMutation
-- (_AFClockTimerSnapshotMutation)initWithBase:(id)a3;
+- (_AFClockTimerSnapshotMutation)initWithBase:(id)base;
 - (id)getDate;
 - (id)getNotifiedFiringTimerIDs;
 - (id)getTimersByID;
@@ -25,57 +25,57 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_date;
+    date = self->_date;
   }
 
   else
   {
-    v2 = [(AFClockTimerSnapshot *)self->_base date];
+    date = [(AFClockTimerSnapshot *)self->_base date];
   }
 
-  return v2;
+  return date;
 }
 
 - (id)getTimersByID
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_timersByID;
+    timersByID = self->_timersByID;
   }
 
   else
   {
-    v2 = [(AFClockTimerSnapshot *)self->_base timersByID];
+    timersByID = [(AFClockTimerSnapshot *)self->_base timersByID];
   }
 
-  return v2;
+  return timersByID;
 }
 
 - (id)getNotifiedFiringTimerIDs
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_notifiedFiringTimerIDs;
+    notifiedFiringTimerIDs = self->_notifiedFiringTimerIDs;
   }
 
   else
   {
-    v2 = [(AFClockTimerSnapshot *)self->_base notifiedFiringTimerIDs];
+    notifiedFiringTimerIDs = [(AFClockTimerSnapshot *)self->_base notifiedFiringTimerIDs];
   }
 
-  return v2;
+  return notifiedFiringTimerIDs;
 }
 
-- (_AFClockTimerSnapshotMutation)initWithBase:(id)a3
+- (_AFClockTimerSnapshotMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFClockTimerSnapshotMutation;
   v6 = [(_AFClockTimerSnapshotMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -8,19 +8,19 @@
 - (id)hd_extensionContainerBundleProxy
 {
   v1 = MEMORY[0x277CC1ED8];
-  v2 = [a1 identifier];
-  v3 = [v1 pluginKitProxyForIdentifier:v2];
-  v4 = [v3 containingBundle];
+  identifier = [self identifier];
+  v3 = [v1 pluginKitProxyForIdentifier:identifier];
+  containingBundle = [v3 containingBundle];
 
-  return v4;
+  return containingBundle;
 }
 
 - (id)hd_extensionContainerBundleIdentifier
 {
-  v1 = [a1 hd_extensionContainerBundleProxy];
-  v2 = [v1 bundleIdentifier];
+  hd_extensionContainerBundleProxy = [self hd_extensionContainerBundleProxy];
+  bundleIdentifier = [hd_extensionContainerBundleProxy bundleIdentifier];
 
-  return v2;
+  return bundleIdentifier;
 }
 
 @end

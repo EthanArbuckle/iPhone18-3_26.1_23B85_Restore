@@ -1,47 +1,47 @@
 @interface TVPMediaItemLoader
-+ (id)loaderForMediaItem:(id)a3;
++ (id)loaderForMediaItem:(id)item;
 + (id)tempDirURL;
 + (void)_mediaServicesResetDidTimeout;
-+ (void)_mediaServicesWereLost:(id)a3;
-+ (void)_mediaServicesWereReset:(id)a3;
++ (void)_mediaServicesWereLost:(id)lost;
++ (void)_mediaServicesWereReset:(id)reset;
 + (void)initialize;
 + (void)removeTemporaryDownloadDirectory;
 - (AVURLAsset)AVAsset;
 - (BOOL)_needToLoadBlockingMetadataKeys;
 - (BOOL)containsStreamingAVAsset;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
 - (NSString)description;
 - (TVPContentKeySession)contentKeySession;
-- (TVPMediaItemLoader)initWithMediaItem:(id)a3;
-- (id)_advisoryInfoFromMetadata:(id)a3 keyIdentifierMap:(id)a4 withTotalCount:(unint64_t)a5;
-- (id)_advisoryKeyNamesWithCount:(unint64_t)a3;
+- (TVPMediaItemLoader)initWithMediaItem:(id)item;
+- (id)_advisoryInfoFromMetadata:(id)metadata keyIdentifierMap:(id)map withTotalCount:(unint64_t)count;
+- (id)_advisoryKeyNamesWithCount:(unint64_t)count;
 - (id)_avAssetOptions;
 - (id)_contentKeyLoader;
-- (id)_contentKeyRequestParamsFromBase64String:(id)a3;
-- (id)_numberValueForKey:(id)a3 fromMetadata:(id)a4 andKeyIdentifierMap:(id)a5;
-- (id)_productPlacementInfoFromMetadata:(id)a3 keyIdentifierMap:(id)a4;
-- (id)_promoInfoFromMetadata:(id)a3 keyIdentifierMap:(id)a4 forSkipKey:(id)a5 skipCounter:(unint64_t)a6;
-- (id)_rollInfoFromMetadata:(id)a3 keyIdentifierMap:(id)a4 forType:(unint64_t)a5 withTotalCount:(unint64_t)a6;
-- (id)_rollKeyNameFromType:(unint64_t)a3;
-- (id)_rollKeyNamesForType:(unint64_t)a3 withCount:(unint64_t)a4;
-- (id)_skipInfoFromMetadata:(id)a3 keyIdentifierMap:(id)a4 forType:(unint64_t)a5 withTotalCount:(unint64_t)a6;
-- (id)_skipKeyNameFromType:(unint64_t)a3;
-- (id)_skipKeyNamesForType:(unint64_t)a3 withCount:(unint64_t)a4;
-- (id)_stringValueForKey:(id)a3 fromMetadata:(id)a4 andKeyIdentifierMap:(id)a5;
-- (id)_tomatoFreshnessFromString:(id)a3;
+- (id)_contentKeyRequestParamsFromBase64String:(id)string;
+- (id)_numberValueForKey:(id)key fromMetadata:(id)metadata andKeyIdentifierMap:(id)map;
+- (id)_productPlacementInfoFromMetadata:(id)metadata keyIdentifierMap:(id)map;
+- (id)_promoInfoFromMetadata:(id)metadata keyIdentifierMap:(id)map forSkipKey:(id)key skipCounter:(unint64_t)counter;
+- (id)_rollInfoFromMetadata:(id)metadata keyIdentifierMap:(id)map forType:(unint64_t)type withTotalCount:(unint64_t)count;
+- (id)_rollKeyNameFromType:(unint64_t)type;
+- (id)_rollKeyNamesForType:(unint64_t)type withCount:(unint64_t)count;
+- (id)_skipInfoFromMetadata:(id)metadata keyIdentifierMap:(id)map forType:(unint64_t)type withTotalCount:(unint64_t)count;
+- (id)_skipKeyNameFromType:(unint64_t)type;
+- (id)_skipKeyNamesForType:(unint64_t)type withCount:(unint64_t)count;
+- (id)_stringValueForKey:(id)key fromMetadata:(id)metadata andKeyIdentifierMap:(id)map;
+- (id)_tomatoFreshnessFromString:(id)string;
 - (id)newPlayerItem;
-- (unint64_t)_rollTypeFromMetadataItemKey:(id)a3;
+- (unint64_t)_rollTypeFromMetadataItemKey:(id)key;
 - (void)_cleanUp;
 - (void)_loadMediaItemMetadataAsynchronously;
-- (void)_mediaItemPlaybackErrorDidOccur:(id)a3;
-- (void)_mediaItemStopPlayback:(id)a3;
-- (void)_onAssetInternalAccessQueue_updateContentKeySessionWithContentKeyLoader:(id)a3;
+- (void)_mediaItemPlaybackErrorDidOccur:(id)occur;
+- (void)_mediaItemStopPlayback:(id)playback;
+- (void)_onAssetInternalAccessQueue_updateContentKeySessionWithContentKeyLoader:(id)loader;
 - (void)_registerStateMachineHandlers;
-- (void)_tvpMediaServicesWereReset:(id)a3;
+- (void)_tvpMediaServicesWereReset:(id)reset;
 - (void)cleanupIfNecessary;
 - (void)dealloc;
 - (void)loadIfNecessary;
-- (void)loadSHA1DigestWithCompletion:(id)a3;
+- (void)loadSHA1DigestWithCompletion:(id)completion;
 - (void)prepareForPlaybackInitiation;
 @end
 
@@ -53,7 +53,7 @@
   block[1] = 3221225472;
   block[2] = __32__TVPMediaItemLoader_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken_9 != -1)
   {
     dispatch_once(&initialize_onceToken_9, block);
@@ -88,19 +88,19 @@ void __32__TVPMediaItemLoader_initialize__block_invoke(uint64_t a1)
 
 + (id)tempDirURL
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 URLsForDirectory:13 inDomains:1];
-  v4 = [v3 firstObject];
-  v5 = [v4 URLByAppendingPathComponent:@"com.apple.TVPlayback" isDirectory:1];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager URLsForDirectory:13 inDomains:1];
+  firstObject = [v3 firstObject];
+  v5 = [firstObject URLByAppendingPathComponent:@"com.apple.TVPlayback" isDirectory:1];
 
   return v5;
 }
 
-+ (id)loaderForMediaItem:(id)a3
++ (id)loaderForMediaItem:(id)item
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
+  itemCopy = item;
+  v4 = itemCopy;
   if (loaderForMediaItem__onceToken != -1)
   {
     +[TVPMediaItemLoader loaderForMediaItem:];
@@ -114,7 +114,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v3)
+  if (!itemCopy)
   {
     goto LABEL_15;
   }
@@ -124,8 +124,8 @@ LABEL_3:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [sLoaderHashTable allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allObjects = [sLoaderHashTable allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -136,12 +136,12 @@ LABEL_5:
     {
       if (*v17 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allObjects);
       }
 
       v10 = *(*(&v16 + 1) + 8 * v9);
-      v11 = [v10 mediaItem];
-      v12 = [v11 isEqualToMediaItem:v4];
+      mediaItem = [v10 mediaItem];
+      v12 = [mediaItem isEqualToMediaItem:v4];
 
       if (v12)
       {
@@ -150,7 +150,7 @@ LABEL_5:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v7)
         {
           goto LABEL_5;
@@ -189,7 +189,7 @@ uint64_t __41__TVPMediaItemLoader_loaderForMediaItem___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)_mediaServicesWereLost:(id)a3
++ (void)_mediaServicesWereLost:(id)lost
 {
   v4 = sMediaItemLoaderLogObject;
   if (os_log_type_enabled(sMediaItemLoaderLogObject, OS_LOG_TYPE_DEFAULT))
@@ -203,7 +203,7 @@ uint64_t __41__TVPMediaItemLoader_loaderForMediaItem___block_invoke()
   block[1] = 3221225472;
   block[2] = __45__TVPMediaItemLoader__mediaServicesWereLost___block_invoke_2;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -216,10 +216,10 @@ uint64_t __41__TVPMediaItemLoader_loaderForMediaItem___block_invoke()
     _os_log_impl(&dword_26CEDD000, v3, OS_LOG_TYPE_DEFAULT, "Timed out waiting for media services to reset.  Manually triggering notification", v4, 2u);
   }
 
-  [a1 _mediaServicesWereReset:0];
+  [self _mediaServicesWereReset:0];
 }
 
-+ (void)_mediaServicesWereReset:(id)a3
++ (void)_mediaServicesWereReset:(id)reset
 {
   v4 = sMediaItemLoaderLogObject;
   if (os_log_type_enabled(sMediaItemLoaderLogObject, OS_LOG_TYPE_DEFAULT))
@@ -233,7 +233,7 @@ uint64_t __41__TVPMediaItemLoader_loaderForMediaItem___block_invoke()
   block[1] = 3221225472;
   block[2] = __46__TVPMediaItemLoader__mediaServicesWereReset___block_invoke_2;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -251,9 +251,9 @@ void __46__TVPMediaItemLoader__mediaServicesWereReset___block_invoke_2(uint64_t 
   [v3 postNotificationName:@"TVPMediaItemLoaderMediaServicesWereResetNotification" object:0];
 }
 
-- (TVPMediaItemLoader)initWithMediaItem:(id)a3
+- (TVPMediaItemLoader)initWithMediaItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v31.receiver = self;
   v31.super_class = TVPMediaItemLoader;
   v6 = [(TVPMediaItemLoader *)&v31 init];
@@ -262,16 +262,16 @@ void __46__TVPMediaItemLoader__mediaServicesWereReset___block_invoke_2(uint64_t 
     v7 = MEMORY[0x277CCACA8];
     v8 = objc_opt_class();
     v9 = initWithMediaItem__instanceNumber++;
-    v10 = [v7 stringWithFormat:@"%@ %ld (%@)", v8, v9, v5];
+    itemCopy = [v7 stringWithFormat:@"%@ %ld (%@)", v8, v9, itemCopy];
     objc_initWeak(&location, v6);
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(v6 + 2, item);
     v11 = *(v6 + 3);
     *(v6 + 3) = @"Cleaned up";
 
     *(v6 + 9) = 257;
     v12 = objc_alloc_init(MEMORY[0x277CCAD78]);
-    v13 = [v12 UUIDString];
-    v14 = [v13 copy];
+    uUIDString = [v12 UUIDString];
+    v14 = [uUIDString copy];
     v15 = *(v6 + 15);
     *(v6 + 15) = v14;
 
@@ -289,21 +289,21 @@ void __46__TVPMediaItemLoader__mediaServicesWereReset___block_invoke_2(uint64_t 
     v28[2] = __40__TVPMediaItemLoader_initWithMediaItem___block_invoke;
     v28[3] = &unk_279D7BB80;
     objc_copyWeak(&v29, &location);
-    v21 = [(TVPStateMachine *)v20 initWithName:v10 initialState:@"Cleaned up" mode:0 stateChangeHandler:v28];
+    v21 = [(TVPStateMachine *)v20 initWithName:itemCopy initialState:@"Cleaned up" mode:0 stateChangeHandler:v28];
     v22 = *(v6 + 9);
     *(v6 + 9) = v21;
 
-    v23 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v23 addObserver:v6 selector:sel__stopBackgroundCaching_ name:@"com.apple.TVPMediaItemLoader.TVPMediaItemLoaderStopBackgroundCaching" object:0 suspensionBehavior:4];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__stopBackgroundCaching_ name:@"com.apple.TVPMediaItemLoader.TVPMediaItemLoaderStopBackgroundCaching" object:0 suspensionBehavior:4];
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v6 selector:sel__mediaItemPlaybackErrorDidOccur_ name:@"TVPMediaItemPlaybackErrorDidOccurNotification" object:v5];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__mediaItemPlaybackErrorDidOccur_ name:@"TVPMediaItemPlaybackErrorDidOccurNotification" object:itemCopy];
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:v6 selector:sel__mediaItemStopPlayback_ name:@"TVPMediaItemStopPlaybackNotification" object:v5];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v6 selector:sel__mediaItemStopPlayback_ name:@"TVPMediaItemStopPlaybackNotification" object:itemCopy];
 
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v6 selector:sel__tvpMediaServicesWereReset_ name:@"TVPMediaItemLoaderMediaServicesWereResetNotification" object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v6 selector:sel__tvpMediaServicesWereReset_ name:@"TVPMediaItemLoaderMediaServicesWereResetNotification" object:0];
 
     [*(v6 + 9) setCallsStateChangeHandlerSynchronously:1];
     [*(v6 + 9) setLogObject:sMediaItemLoaderLogObject];
@@ -345,11 +345,11 @@ void __40__TVPMediaItemLoader_initWithMediaItem___block_invoke(uint64_t a1, uint
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
   [(TVPMediaItemLoader *)self _cleanUp];
   [(TVPStateMachine *)self->_stateMachine deregisterHandlers];
@@ -360,12 +360,12 @@ void __40__TVPMediaItemLoader_initWithMediaItem___block_invoke(uint64_t a1, uint
 
 - (void)loadIfNecessary
 {
-  v3 = [(TVPMediaItemLoader *)self refCount];
-  [(TVPMediaItemLoader *)self setRefCount:v3 + 1];
-  if (!v3)
+  refCount = [(TVPMediaItemLoader *)self refCount];
+  [(TVPMediaItemLoader *)self setRefCount:refCount + 1];
+  if (!refCount)
   {
-    v4 = [(TVPMediaItemLoader *)self stateMachine];
-    [v4 postEvent:@"Load"];
+    stateMachine = [(TVPMediaItemLoader *)self stateMachine];
+    [stateMachine postEvent:@"Load"];
   }
 }
 
@@ -376,16 +376,16 @@ void __40__TVPMediaItemLoader_initWithMediaItem___block_invoke(uint64_t a1, uint
     [(TVPMediaItemLoader *)self setRefCount:[(TVPMediaItemLoader *)self refCount]- 1];
     if (![(TVPMediaItemLoader *)self refCount])
     {
-      v3 = [(TVPMediaItemLoader *)self stateMachine];
-      [v3 postEvent:@"Clean up"];
+      stateMachine = [(TVPMediaItemLoader *)self stateMachine];
+      [stateMachine postEvent:@"Clean up"];
     }
   }
 }
 
 - (void)prepareForPlaybackInitiation
 {
-  v2 = [(TVPMediaItemLoader *)self stateMachine];
-  [v2 postEvent:@"Prepare for playback initiation"];
+  stateMachine = [(TVPMediaItemLoader *)self stateMachine];
+  [stateMachine postEvent:@"Prepare for playback initiation"];
 }
 
 - (NSString)description
@@ -396,20 +396,20 @@ void __40__TVPMediaItemLoader_initWithMediaItem___block_invoke(uint64_t a1, uint
   v14 = __Block_byref_object_copy__3;
   v15 = __Block_byref_object_dispose__3;
   v16 = 0;
-  v3 = [(TVPMediaItemLoader *)self assetInternalAccessQueue];
+  assetInternalAccessQueue = [(TVPMediaItemLoader *)self assetInternalAccessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__TVPMediaItemLoader_description__block_invoke;
   block[3] = &unk_279D7D9F0;
   block[4] = self;
   block[5] = &v11;
-  dispatch_sync(v3, block);
+  dispatch_sync(assetInternalAccessQueue, block);
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(TVPMediaItemLoader *)self mediaItem];
+  mediaItem = [(TVPMediaItemLoader *)self mediaItem];
   v6 = v12[5];
-  v7 = [(TVPMediaItemLoader *)self state];
-  v8 = [v4 stringWithFormat:@"TVPMediaItem: %@ AVAsset: %@ State: %@", v5, v6, v7];
+  state = [(TVPMediaItemLoader *)self state];
+  v8 = [v4 stringWithFormat:@"TVPMediaItem: %@ AVAsset: %@ State: %@", mediaItem, v6, state];
 
   _Block_object_dispose(&v11, 8);
 
@@ -434,19 +434,19 @@ uint64_t __33__TVPMediaItemLoader_description__block_invoke(uint64_t a1)
   v12 = __Block_byref_object_copy__3;
   v13 = __Block_byref_object_dispose__3;
   v14 = 0;
-  v3 = [(TVPMediaItemLoader *)self stateMachine];
-  v4 = [v3 currentState];
+  stateMachine = [(TVPMediaItemLoader *)self stateMachine];
+  currentState = [stateMachine currentState];
 
-  if (([v4 isEqualToString:@"AVAsset keys loaded"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Preparing for playback initiation") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"Ready for playback"))
+  if (([currentState isEqualToString:@"AVAsset keys loaded"] & 1) != 0 || (objc_msgSend(currentState, "isEqualToString:", @"Preparing for playback initiation") & 1) != 0 || objc_msgSend(currentState, "isEqualToString:", @"Ready for playback"))
   {
-    v5 = [(TVPMediaItemLoader *)self assetInternalAccessQueue];
+    assetInternalAccessQueue = [(TVPMediaItemLoader *)self assetInternalAccessQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __29__TVPMediaItemLoader_AVAsset__block_invoke;
     v8[3] = &unk_279D7D9F0;
     v8[4] = self;
     v8[5] = &v9;
-    dispatch_sync(v5, v8);
+    dispatch_sync(assetInternalAccessQueue, v8);
   }
 
   v6 = v10[5];
@@ -474,17 +474,17 @@ uint64_t __29__TVPMediaItemLoader_AVAsset__block_invoke(uint64_t a1)
   v14 = __Block_byref_object_copy__3;
   v15 = __Block_byref_object_dispose__3;
   v16 = 0;
-  v3 = [(TVPMediaItemLoader *)self _contentKeyLoader];
-  v4 = [(TVPMediaItemLoader *)self assetInternalAccessQueue];
+  _contentKeyLoader = [(TVPMediaItemLoader *)self _contentKeyLoader];
+  assetInternalAccessQueue = [(TVPMediaItemLoader *)self assetInternalAccessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__TVPMediaItemLoader_contentKeySession__block_invoke;
   block[3] = &unk_279D7DA18;
   block[4] = self;
-  v9 = v3;
+  v9 = _contentKeyLoader;
   v10 = &v11;
-  v5 = v3;
-  dispatch_sync(v4, block);
+  v5 = _contentKeyLoader;
+  dispatch_sync(assetInternalAccessQueue, block);
 
   v6 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -503,48 +503,48 @@ void __39__TVPMediaItemLoader_contentKeySession__block_invoke(uint64_t a1)
 
 - (BOOL)containsStreamingAVAsset
 {
-  v3 = [(TVPMediaItemLoader *)self stateMachine];
-  v4 = [v3 currentState];
+  stateMachine = [(TVPMediaItemLoader *)self stateMachine];
+  currentState = [stateMachine currentState];
 
-  if (([v4 isEqualToString:@"AVAsset keys loaded"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Preparing for playback initiation") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"Ready for playback"))
+  if (([currentState isEqualToString:@"AVAsset keys loaded"] & 1) != 0 || (objc_msgSend(currentState, "isEqualToString:", @"Preparing for playback initiation") & 1) != 0 || objc_msgSend(currentState, "isEqualToString:", @"Ready for playback"))
   {
-    v5 = [(TVPMediaItemLoader *)self AVAsset];
-    v6 = [v5 _isStreaming];
+    aVAsset = [(TVPMediaItemLoader *)self AVAsset];
+    _isStreaming = [aVAsset _isStreaming];
   }
 
   else
   {
-    v6 = 0;
+    _isStreaming = 0;
   }
 
-  return v6;
+  return _isStreaming;
 }
 
 - (id)newPlayerItem
 {
-  v3 = [(TVPMediaItemLoader *)self stateMachine];
-  v4 = [v3 currentState];
+  stateMachine = [(TVPMediaItemLoader *)self stateMachine];
+  currentState = [stateMachine currentState];
 
-  if (([v4 isEqualToString:@"AVAsset keys loaded"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"Preparing for playback initiation") & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", @"Ready for playback"))
+  if (([currentState isEqualToString:@"AVAsset keys loaded"] & 1) == 0 && (objc_msgSend(currentState, "isEqualToString:", @"Preparing for playback initiation") & 1) == 0 && !objc_msgSend(currentState, "isEqualToString:", @"Ready for playback"))
   {
     v6 = 0;
     goto LABEL_42;
   }
 
-  v40 = v4;
-  v5 = [(TVPMediaItemLoader *)self AVAsset];
-  v6 = [[TVPPlayerItem alloc] initWithAsset:v5];
+  v40 = currentState;
+  aVAsset = [(TVPMediaItemLoader *)self AVAsset];
+  v6 = [[TVPPlayerItem alloc] initWithAsset:aVAsset];
   [(TVPPlayerItem *)v6 setMediaItemLoader:self];
-  v7 = [(TVPMediaItemLoader *)self mediaItem];
+  mediaItem = [(TVPMediaItemLoader *)self mediaItem];
   [(TVPPlayerItem *)v6 setContinuesPlayingDuringPrerollForSeek:0];
-  if ([v7 hasTrait:@"TVPMediaItemTraitMinimizeNetworkUsageWhilePaused"])
+  if ([mediaItem hasTrait:@"TVPMediaItemTraitMinimizeNetworkUsageWhilePaused"])
   {
     [(TVPPlayerItem *)v6 setPreferredForwardBufferDuration:50.0];
   }
 
   if (![(TVPMediaItemLoader *)self containsStreamingAVAsset])
   {
-    v8 = [v5 tracksWithMediaType:*MEMORY[0x277CE5EA8]];
+    v8 = [aVAsset tracksWithMediaType:*MEMORY[0x277CE5EA8]];
     v9 = [v8 count];
 
     if (!v9)
@@ -553,8 +553,8 @@ void __39__TVPMediaItemLoader_contentKeySession__block_invoke(uint64_t a1)
     }
   }
 
-  v10 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataForwardPlaybackEndTime"];
-  v11 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataReversePlaybackEndTime"];
+  v10 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataForwardPlaybackEndTime"];
+  v11 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataReversePlaybackEndTime"];
   if (v10)
   {
     memset(&v42, 0, sizeof(v42));
@@ -574,7 +574,7 @@ void __39__TVPMediaItemLoader_contentKeySession__block_invoke(uint64_t a1)
   }
 
   v38 = v10;
-  v14 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataAutomaticallyHandlesInterstitialEvents"];
+  v14 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataAutomaticallyHandlesInterstitialEvents"];
   v15 = v14;
   if (v14)
   {
@@ -582,7 +582,7 @@ void __39__TVPMediaItemLoader_contentKeySession__block_invoke(uint64_t a1)
   }
 
   v36 = v15;
-  v16 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataTimeToPauseBuffering"];
+  v16 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataTimeToPauseBuffering"];
   v17 = v16;
   if (v16)
   {
@@ -590,7 +590,7 @@ void __39__TVPMediaItemLoader_contentKeySession__block_invoke(uint64_t a1)
     [(TVPPlayerItem *)v6 setTimeToPauseBuffering:&v42];
   }
 
-  v18 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataTimeToPausePlayback"];
+  v18 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataTimeToPausePlayback"];
 
   if (v18)
   {
@@ -598,18 +598,18 @@ void __39__TVPMediaItemLoader_contentKeySession__block_invoke(uint64_t a1)
     [(TVPPlayerItem *)v6 setTimeToPausePlayback:&v42];
   }
 
-  v19 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataDateRangeCollector"];
+  v19 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataDateRangeCollector"];
   if (v19)
   {
     [(TVPPlayerItem *)v6 addMediaDataCollector:v19];
-    [v7 removeMediaItemMetadataForProperty:@"TVPMediaItemMetadataDateRangeCollector"];
+    [mediaItem removeMediaItemMetadataForProperty:@"TVPMediaItemMetadataDateRangeCollector"];
   }
 
   v34 = v19;
   v35 = v18;
   v37 = v11;
-  v39 = v5;
-  v20 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataWebVTTStyles"];
+  v39 = aVAsset;
+  v20 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataWebVTTStyles"];
   if (v20)
   {
     v21 = [MEMORY[0x277CE6638] textStyleRulesFromPropertyList:v20];
@@ -617,11 +617,11 @@ void __39__TVPMediaItemLoader_contentKeySession__block_invoke(uint64_t a1)
   }
 
   v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v23 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataGaplessHeuristicInfo"];
-  v24 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataGaplessEncodingDelayInFrames"];
-  v25 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataGaplessEncodingDrainInFrames"];
-  v26 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataGaplessDurationInFrames"];
-  v27 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataGaplessLastPacketsResync"];
+  v23 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataGaplessHeuristicInfo"];
+  v24 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataGaplessEncodingDelayInFrames"];
+  v25 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataGaplessEncodingDrainInFrames"];
+  v26 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataGaplessDurationInFrames"];
+  v27 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataGaplessLastPacketsResync"];
   if (v23)
   {
     [v22 setObject:v23 forKey:*MEMORY[0x277CE60F0]];
@@ -652,19 +652,19 @@ void __39__TVPMediaItemLoader_contentKeySession__block_invoke(uint64_t a1)
     [(TVPPlayerItem *)v6 setGaplessInfo:v22];
   }
 
-  v28 = [v7 mediaItemMetadataForProperty:@"TVPMediaItemMetadataMaxHLSVideoResolution"];
+  v28 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataMaxHLSVideoResolution"];
   v29 = v28;
   if (v28)
   {
-    v30 = [v28 integerValue];
-    if (!v30)
+    integerValue = [v28 integerValue];
+    if (!integerValue)
     {
       v31 = 576.0;
       v32 = 1024.0;
       goto LABEL_40;
     }
 
-    if (v30 == 1)
+    if (integerValue == 1)
     {
       v31 = 1080.0;
       v32 = 1920.0;
@@ -675,38 +675,38 @@ LABEL_40:
 
   [(TVPPlayerItem *)v6 setAllowedAudioSpatializationFormats:7];
 
-  v4 = v40;
+  currentState = v40;
 LABEL_42:
 
   return v6;
 }
 
-- (void)loadSHA1DigestWithCompletion:(id)a3
+- (void)loadSHA1DigestWithCompletion:(id)completion
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TVPMediaItemLoader *)self stateMachine];
-  v6 = [v5 currentState];
+  completionCopy = completion;
+  stateMachine = [(TVPMediaItemLoader *)self stateMachine];
+  currentState = [stateMachine currentState];
 
-  if (([v6 isEqualToString:@"AVAsset keys loaded"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"Preparing for playback initiation") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"Ready for playback"))
+  if (([currentState isEqualToString:@"AVAsset keys loaded"] & 1) != 0 || (objc_msgSend(currentState, "isEqualToString:", @"Preparing for playback initiation") & 1) != 0 || objc_msgSend(currentState, "isEqualToString:", @"Ready for playback"))
   {
-    v7 = [(TVPMediaItemLoader *)self AVAssetInternal];
+    aVAssetInternal = [(TVPMediaItemLoader *)self AVAssetInternal];
     v17[0] = @"SHA1Digest";
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __51__TVPMediaItemLoader_loadSHA1DigestWithCompletion___block_invoke;
     v13[3] = &unk_279D7D370;
-    v14 = v7;
+    v14 = aVAssetInternal;
     v15 = @"SHA1Digest";
-    v16 = v4;
-    v9 = v7;
+    v16 = completionCopy;
+    v9 = aVAssetInternal;
     [v9 loadValuesAsynchronouslyForKeys:v8 completionHandler:v13];
   }
 
   else
   {
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
@@ -715,7 +715,7 @@ LABEL_42:
     v11[1] = 3221225472;
     v11[2] = __51__TVPMediaItemLoader_loadSHA1DigestWithCompletion___block_invoke_3;
     v11[3] = &unk_279D7BF30;
-    v12 = v4;
+    v12 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v11);
     v9 = v12;
   }
@@ -762,7 +762,7 @@ void __51__TVPMediaItemLoader_loadSHA1DigestWithCompletion___block_invoke_2(uint
 - (void)_registerStateMachineHandlers
 {
   v64[2] = *MEMORY[0x277D85DE8];
-  v3 = [(TVPMediaItemLoader *)self stateMachine];
+  stateMachine = [(TVPMediaItemLoader *)self stateMachine];
   objc_initWeak(&location, self);
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
@@ -781,7 +781,7 @@ void __51__TVPMediaItemLoader_loadSHA1DigestWithCompletion___block_invoke_2(uint
   v53[2] = __51__TVPMediaItemLoader__registerStateMachineHandlers__block_invoke_127;
   v53[3] = &unk_279D7DB08;
   objc_copyWeak(&v56, &location);
-  v6 = v3;
+  v6 = stateMachine;
   v54 = v6;
   v21 = v5;
   v55 = v21;
@@ -2270,15 +2270,15 @@ __CFString *__51__TVPMediaItemLoader__registerStateMachineHandlers__block_invoke
 
 - (id)_contentKeyLoader
 {
-  v3 = [(TVPMediaItemLoader *)self mediaItem];
-  if ([v3 conformsToProtocol:&unk_287E7B4E8])
+  mediaItem = [(TVPMediaItemLoader *)self mediaItem];
+  if ([mediaItem conformsToProtocol:&unk_287E7B4E8])
   {
-    v4 = [(TVPMediaItemLoader *)self mediaItem];
-    v5 = [v4 hasTrait:@"TVPMediaItemTraitAirPlayedContent"];
+    mediaItem2 = [(TVPMediaItemLoader *)self mediaItem];
+    v5 = [mediaItem2 hasTrait:@"TVPMediaItemTraitAirPlayedContent"];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(TVPMediaItemLoader *)self mediaItem];
+      mediaItem3 = [(TVPMediaItemLoader *)self mediaItem];
       goto LABEL_6;
     }
   }
@@ -2287,16 +2287,16 @@ __CFString *__51__TVPMediaItemLoader__registerStateMachineHandlers__block_invoke
   {
   }
 
-  v6 = 0;
+  mediaItem3 = 0;
 LABEL_6:
 
-  return v6;
+  return mediaItem3;
 }
 
-- (void)_onAssetInternalAccessQueue_updateContentKeySessionWithContentKeyLoader:(id)a3
+- (void)_onAssetInternalAccessQueue_updateContentKeySessionWithContentKeyLoader:(id)loader
 {
-  v4 = a3;
-  v5 = v4;
+  loaderCopy = loader;
+  v5 = loaderCopy;
   if (self->_contentKeySession)
   {
     v6 = sMediaItemLoaderLogObject;
@@ -2312,7 +2312,7 @@ LABEL_4:
 
   else
   {
-    if (!v4)
+    if (!loaderCopy)
     {
       v6 = sMediaItemLoaderLogObject;
       if (!os_log_type_enabled(sMediaItemLoaderLogObject, OS_LOG_TYPE_DEFAULT))
@@ -2354,16 +2354,16 @@ LABEL_14:
     [TVPMediaItemLoader _avAssetOptions];
   }
 
-  v3 = [(TVPMediaItemLoader *)self mediaItem];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  mediaItem = [(TVPMediaItemLoader *)self mediaItem];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = _avAssetOptions_metadataKeysToAVAssetKeysMappings;
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __37__TVPMediaItemLoader__avAssetOptions__block_invoke_2;
   v52[3] = &unk_279D7DBD0;
-  v6 = v3;
+  v6 = mediaItem;
   v53 = v6;
-  v7 = v4;
+  v7 = dictionary;
   v54 = v7;
   [v5 enumerateKeysAndObjectsUsingBlock:v52];
   v8 = _avAssetOptions_traitsKeysToAVAssetKeysMappings;
@@ -2405,7 +2405,7 @@ LABEL_14:
     if (v18)
     {
       v19 = [MEMORY[0x277D43FE0] newHierarchyTokenFromParentToken:v18];
-      v20 = [(TVPMediaItemLoader *)self mediaItem];
+      mediaItem2 = [(TVPMediaItemLoader *)self mediaItem];
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __37__TVPMediaItemLoader__avAssetOptions__block_invoke_277;
@@ -2414,7 +2414,7 @@ LABEL_14:
       v47 = v18;
       v15 = v19;
       v48 = v15;
-      [v20 performMediaItemMetadataTransactionWithBlock:v46];
+      [mediaItem2 performMediaItemMetadataTransactionWithBlock:v46];
 
       v14 = v45;
     }
@@ -2471,10 +2471,10 @@ LABEL_14:
     if (v23)
     {
       v24 = [MEMORY[0x277D6C478] accountWithDSID:v23];
-      v25 = [v24 ams_cookies];
-      if (v25)
+      ams_cookies = [v24 ams_cookies];
+      if (ams_cookies)
       {
-        [v10 setObject:v25 forKey:*MEMORY[0x277CE6218]];
+        [v10 setObject:ams_cookies forKey:*MEMORY[0x277CE6218]];
       }
     }
   }
@@ -2485,12 +2485,12 @@ LABEL_14:
     [v10 setObject:v26 forKey:*MEMORY[0x277CE6290]];
   }
 
-  v27 = [(TVPMediaItemLoader *)self allowsCellularUsage];
+  allowsCellularUsage = [(TVPMediaItemLoader *)self allowsCellularUsage];
   v28 = sMediaItemLoaderLogObject;
   if (os_log_type_enabled(sMediaItemLoaderLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v29 = @"not ";
-    if (v27)
+    if (allowsCellularUsage)
     {
       v29 = &stru_287E49338;
     }
@@ -2500,7 +2500,7 @@ LABEL_14:
     _os_log_impl(&dword_26CEDD000, v28, OS_LOG_TYPE_DEFAULT, "Cellular usage is %@allowed for this media item loader", buf, 0xCu);
   }
 
-  if (v27)
+  if (allowsCellularUsage)
   {
     v30 = [v9 hasTrait:@"TVPMediaItemTraitCellularPlaybackProhibited"];
     v31 = sMediaItemLoaderLogObject;
@@ -2517,13 +2517,13 @@ LABEL_14:
       _os_log_impl(&dword_26CEDD000, v31, OS_LOG_TYPE_DEFAULT, "Cellular usage is %@prohibited for this media item", buf, 0xCu);
     }
 
-    v27 = v30 ^ 1u;
+    allowsCellularUsage = v30 ^ 1u;
   }
 
   v33 = sMediaItemLoaderLogObject;
   if (os_log_type_enabled(sMediaItemLoaderLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    if (v27)
+    if (allowsCellularUsage)
     {
       v34 = @"Allowing";
     }
@@ -2538,15 +2538,15 @@ LABEL_14:
     _os_log_impl(&dword_26CEDD000, v33, OS_LOG_TYPE_DEFAULT, "%@ cellular playback of this media item", buf, 0xCu);
   }
 
-  v35 = [MEMORY[0x277CCABB0] numberWithBool:v27];
+  v35 = [MEMORY[0x277CCABB0] numberWithBool:allowsCellularUsage];
   [v10 setObject:v35 forKey:*MEMORY[0x277CE61B8]];
 
-  v36 = [(TVPMediaItemLoader *)self allowsConstrainedNetworkUsage];
+  allowsConstrainedNetworkUsage = [(TVPMediaItemLoader *)self allowsConstrainedNetworkUsage];
   v37 = sMediaItemLoaderLogObject;
   if (os_log_type_enabled(sMediaItemLoaderLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v38 = @"not ";
-    if (v36)
+    if (allowsConstrainedNetworkUsage)
     {
       v38 = &stru_287E49338;
     }
@@ -2560,7 +2560,7 @@ LABEL_14:
   if (os_log_type_enabled(sMediaItemLoaderLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v40 = @"Not allowing";
-    if (v36)
+    if (allowsConstrainedNetworkUsage)
     {
       v40 = @"Allowing";
     }
@@ -2570,7 +2570,7 @@ LABEL_14:
     _os_log_impl(&dword_26CEDD000, v39, OS_LOG_TYPE_DEFAULT, "%@ constrained network playback of this media item", buf, 0xCu);
   }
 
-  v41 = [MEMORY[0x277CCABB0] numberWithBool:v36];
+  v41 = [MEMORY[0x277CCABB0] numberWithBool:allowsConstrainedNetworkUsage];
   [v10 setObject:v41 forKey:*MEMORY[0x277CE61C0]];
 
   v42 = v10;
@@ -2645,19 +2645,19 @@ void __37__TVPMediaItemLoader__avAssetOptions__block_invoke_277(uint64_t a1)
   [v3 setMediaItemMetadata:*(a1 + 48) forProperty:@"TVPMediaItemMetadataRTCChildHierarchyToken"];
 }
 
-- (void)_tvpMediaServicesWereReset:(id)a3
+- (void)_tvpMediaServicesWereReset:(id)reset
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = sMediaItemLoaderLogObject;
   if (os_log_type_enabled(sMediaItemLoaderLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CEDD000, v4, OS_LOG_TYPE_DEFAULT, "%@ received TVPMediaItemLoaderMediaServicesWereResetNotification", &v7, 0xCu);
   }
 
-  v5 = [(TVPMediaItemLoader *)self stateMachine];
-  [v5 postEvent:@"Media services were reset"];
+  stateMachine = [(TVPMediaItemLoader *)self stateMachine];
+  [stateMachine postEvent:@"Media services were reset"];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -2671,25 +2671,25 @@ void __37__TVPMediaItemLoader__avAssetOptions__block_invoke_277(uint64_t a1)
   v24 = __Block_byref_object_copy__3;
   v25 = __Block_byref_object_dispose__3;
   v26 = 0;
-  v3 = [(TVPMediaItemLoader *)self assetInternalAccessQueue];
+  assetInternalAccessQueue = [(TVPMediaItemLoader *)self assetInternalAccessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__TVPMediaItemLoader__needToLoadBlockingMetadataKeys__block_invoke;
   block[3] = &unk_279D7D9F0;
   block[4] = self;
   block[5] = &v21;
-  dispatch_sync(v3, block);
+  dispatch_sync(assetInternalAccessQueue, block);
 
   v4 = v22[5];
   if (v4 && [v4 statusOfValueForKey:@"metadata" error:0] == 2)
   {
-    v5 = [(TVPMediaItemLoader *)self _metadataKeysToLoad];
+    _metadataKeysToLoad = [(TVPMediaItemLoader *)self _metadataKeysToLoad];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [v22[5] metadata];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v29 count:16];
+    metadata = [v22[5] metadata];
+    v7 = [metadata countByEnumeratingWithState:&v16 objects:v29 count:16];
     if (v7)
     {
       v8 = *v17;
@@ -2699,11 +2699,11 @@ void __37__TVPMediaItemLoader__avAssetOptions__block_invoke_277(uint64_t a1)
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(metadata);
           }
 
           v10 = [*(*(&v16 + 1) + 8 * i) key];
-          v11 = [v5 containsObject:v10];
+          v11 = [_metadataKeysToLoad containsObject:v10];
 
           if (v11)
           {
@@ -2712,7 +2712,7 @@ void __37__TVPMediaItemLoader__avAssetOptions__block_invoke_277(uint64_t a1)
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v16 objects:v29 count:16];
+        v7 = [metadata countByEnumeratingWithState:&v16 objects:v29 count:16];
         if (v7)
         {
           continue;
@@ -2760,176 +2760,176 @@ uint64_t __53__TVPMediaItemLoader__needToLoadBlockingMetadataKeys__block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_rollKeyNamesForType:(unint64_t)a3 withCount:(unint64_t)a4
+- (id)_rollKeyNamesForType:(unint64_t)type withCount:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
-    v8 = [(TVPMediaItemLoader *)self _rollKeyNameFromType:a3];
+    array = [MEMORY[0x277CBEB18] array];
+    v8 = [(TVPMediaItemLoader *)self _rollKeyNameFromType:type];
     if ([v8 length])
     {
       v9 = 0;
       do
       {
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.start", v8, v9];
-        [v7 addObject:v10];
+        [array addObject:v10];
 
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.duration", v8, v9];
-        [v7 addObject:v11];
+        [array addObject:v11];
 
         v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.skippable", v8, v9];
-        [v7 addObject:v12];
+        [array addObject:v12];
 
-        if ((a3 | 2) == 3)
+        if ((type | 2) == 3)
         {
           v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.adam-id", v8, v9];
-          [v7 addObject:v13];
+          [array addObject:v13];
 
-          if (a3 == 1)
+          if (type == 1)
           {
             v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.dynamic-slot.data-set-id", v8, v9];
-            [v7 addObject:v14];
+            [array addObject:v14];
           }
         }
 
         ++v9;
       }
 
-      while (a4 != v9);
+      while (count != v9);
     }
   }
 
   else
   {
-    v7 = 0;
+    array = 0;
   }
 
-  v15 = [v7 copy];
+  v15 = [array copy];
 
   return v15;
 }
 
-- (id)_skipKeyNamesForType:(unint64_t)a3 withCount:(unint64_t)a4
+- (id)_skipKeyNamesForType:(unint64_t)type withCount:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
-    v8 = [(TVPMediaItemLoader *)self _skipKeyNameFromType:a3];
+    array = [MEMORY[0x277CBEB18] array];
+    v8 = [(TVPMediaItemLoader *)self _skipKeyNameFromType:type];
     if ([v8 length])
     {
       v9 = 0;
       do
       {
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.start", v8, v9];
-        [v7 addObject:v10];
+        [array addObject:v10];
 
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.duration", v8, v9];
-        [v7 addObject:v11];
+        [array addObject:v11];
 
         v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.target", v8, v9];
-        [v7 addObject:v12];
+        [array addObject:v12];
 
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.label", v8, v9];
-        [v7 addObject:v13];
+        [array addObject:v13];
 
         v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.type", v8, v9];
-        [v7 addObject:v14];
+        [array addObject:v14];
 
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.enabled", v8, v9];
-        [v7 addObject:v15];
+        [array addObject:v15];
 
         v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.image", v8, v9];
-        [v7 addObject:v16];
+        [array addObject:v16];
 
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.image-width", v8, v9];
-        [v7 addObject:v17];
+        [array addObject:v17];
 
         v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.image-height", v8, v9];
-        [v7 addObject:v18];
+        [array addObject:v18];
 
         v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.title", v8, v9];
-        [v7 addObject:v19];
+        [array addObject:v19];
 
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.genre", v8, v9];
-        [v7 addObject:v20];
+        [array addObject:v20];
 
         v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.rating-display-name", v8, v9];
-        [v7 addObject:v21];
+        [array addObject:v21];
 
         v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.rating-system", v8, v9];
-        [v7 addObject:v22];
+        [array addObject:v22];
 
         v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.canonical-id", v8, v9];
-        [v7 addObject:v23];
+        [array addObject:v23];
 
         v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.runtime", v8, v9];
-        [v7 addObject:v24];
+        [array addObject:v24];
 
         v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.up-next.is-added", v8, v9];
-        [v7 addObject:v25];
+        [array addObject:v25];
 
         v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.up-next.add-label", v8, v9];
-        [v7 addObject:v26];
+        [array addObject:v26];
 
         v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.up-next.added-label", v8, v9];
-        [v7 addObject:v27];
+        [array addObject:v27];
 
         ++v9;
       }
 
-      while (a4 != v9);
+      while (count != v9);
     }
   }
 
   else
   {
-    v7 = 0;
+    array = 0;
   }
 
-  v28 = [v7 copy];
+  v28 = [array copy];
 
   return v28;
 }
 
-- (id)_advisoryKeyNamesWithCount:(unint64_t)a3
+- (id)_advisoryKeyNamesWithCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = 0;
     do
     {
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.advisory-info.%lu.key", v5];
-      [v4 addObject:v6];
+      [array addObject:v6];
 
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.advisory-info.%lu.value", v5];
-      [v4 addObject:v7];
+      [array addObject:v7];
 
       ++v5;
     }
 
-    while (a3 != v5);
+    while (count != v5);
   }
 
   else
   {
-    v4 = 0;
+    array = 0;
   }
 
-  v8 = [v4 copy];
+  v8 = [array copy];
 
   return v8;
 }
 
-- (id)_tomatoFreshnessFromString:(id)a3
+- (id)_tomatoFreshnessFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FRESH"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Fresh"))
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"FRESH"] & 1) != 0 || (objc_msgSend(stringCopy, "isEqualToString:", @"Fresh"))
   {
     v4 = &unk_287E59A80;
   }
 
-  else if (([v3 isEqualToString:@"CERTIFIED_FRESH"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"CertifiedFresh"))
+  else if (([stringCopy isEqualToString:@"CERTIFIED_FRESH"] & 1) != 0 || objc_msgSend(stringCopy, "isEqualToString:", @"CertifiedFresh"))
   {
     v4 = &unk_287E59A98;
   }
@@ -2942,14 +2942,14 @@ uint64_t __53__TVPMediaItemLoader__needToLoadBlockingMetadataKeys__block_invoke(
   return v4;
 }
 
-- (id)_contentKeyRequestParamsFromBase64String:(id)a3
+- (id)_contentKeyRequestParamsFromBase64String:(id)string
 {
   v59 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v3 length])
+  if ([stringCopy length])
   {
-    v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v3 options:1];
+    v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:stringCopy options:1];
     if ([v4 length])
     {
       v56 = 0;
@@ -2963,7 +2963,7 @@ uint64_t __53__TVPMediaItemLoader__needToLoadBlockingMetadataKeys__block_invoke(
           v32 = v6;
           v33 = v5;
           v34 = v4;
-          v35 = v3;
+          v35 = stringCopy;
           v52 = 0u;
           v53 = 0u;
           v54 = 0u;
@@ -3059,13 +3059,13 @@ LABEL_22:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v26 = [v24 integerValue];
-                    if (v26 < 1)
+                    integerValue = [v24 integerValue];
+                    if (integerValue < 1)
                     {
                       goto LABEL_26;
                     }
 
-                    v25 = [MEMORY[0x277CCABB0] numberWithInteger:v26];
+                    v25 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
                     goto LABEL_22;
                   }
 
@@ -3111,7 +3111,7 @@ LABEL_34:
 LABEL_36:
 
               v4 = v34;
-              v3 = v35;
+              stringCopy = v35;
               v6 = v32;
               v5 = v33;
               goto LABEL_41;
@@ -3159,14 +3159,14 @@ LABEL_41:
   v41 = __Block_byref_object_dispose__3;
   v42 = 0;
   objc_initWeak(&location, self);
-  v3 = [(TVPMediaItemLoader *)self assetInternalAccessQueue];
+  assetInternalAccessQueue = [(TVPMediaItemLoader *)self assetInternalAccessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__TVPMediaItemLoader__loadMediaItemMetadataAsynchronously__block_invoke;
   block[3] = &unk_279D7DBF8;
   block[4] = &v37;
   objc_copyWeak(&v35, &location);
-  dispatch_sync(v3, block);
+  dispatch_sync(assetInternalAccessQueue, block);
 
   v4 = v38[5];
   if (v4 && [v4 statusOfValueForKey:@"metadata" error:0] == 2)
@@ -3186,23 +3186,23 @@ LABEL_41:
     v30 = v6;
     v31 = v32;
     v7 = MEMORY[0x26D6B0400](v29);
-    v8 = [v38[5] metadata];
-    if ([v8 count])
+    metadata = [v38[5] metadata];
+    if ([metadata count])
     {
       v28[0] = 0;
       v28[1] = v28;
       v28[2] = 0x2020000000;
       v28[3] = 0;
-      v9 = [(TVPMediaItemLoader *)self assetLoadContextAccessQueue];
+      assetLoadContextAccessQueue = [(TVPMediaItemLoader *)self assetLoadContextAccessQueue];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __58__TVPMediaItemLoader__loadMediaItemMetadataAsynchronously__block_invoke_501;
       v27[3] = &unk_279D7D9F0;
       v27[4] = self;
       v27[5] = v28;
-      dispatch_sync(v9, v27);
+      dispatch_sync(assetLoadContextAccessQueue, v27);
 
-      v10 = [(TVPMediaItemLoader *)self _metadataKeysToLoad];
+      _metadataKeysToLoad = [(TVPMediaItemLoader *)self _metadataKeysToLoad];
       v11 = sMediaItemLoaderLogObject;
       if (os_log_type_enabled(sMediaItemLoaderLogObject, OS_LOG_TYPE_DEFAULT))
       {
@@ -3210,7 +3210,7 @@ LABEL_41:
         _os_log_impl(&dword_26CEDD000, v11, OS_LOG_TYPE_DEFAULT, "Loading the counts for AVAsset metadata items.", buf, 2u);
       }
 
-      (v7)[2](v7, v8, v10);
+      (v7)[2](v7, metadata, _metadataKeysToLoad);
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __58__TVPMediaItemLoader__loadMediaItemMetadataAsynchronously__block_invoke_502;
@@ -3218,12 +3218,12 @@ LABEL_41:
       objc_copyWeak(&v25, &location);
       v22 = v32;
       v23 = &v37;
-      v18 = v8;
-      v19 = v10;
+      v18 = metadata;
+      v19 = _metadataKeysToLoad;
       v21 = v7;
       v20 = v6;
       v24 = v28;
-      v12 = v10;
+      v12 = _metadataKeysToLoad;
       dispatch_group_notify(v20, MEMORY[0x277D85CD0], v17);
 
       objc_destroyWeak(&v25);
@@ -3233,8 +3233,8 @@ LABEL_41:
     else
     {
       v15 = objc_loadWeakRetained(&location);
-      v16 = [v15 stateMachine];
-      [v16 postEvent:@"AVAsset metadata did load successfully"];
+      stateMachine = [v15 stateMachine];
+      [stateMachine postEvent:@"AVAsset metadata did load successfully"];
     }
 
     _Block_object_dispose(v32, 8);
@@ -3243,8 +3243,8 @@ LABEL_41:
   else
   {
     v13 = objc_loadWeakRetained(&location);
-    v14 = [v13 stateMachine];
-    [v14 postEvent:@"AVAsset metadata did load successfully"];
+    stateMachine2 = [v13 stateMachine];
+    [stateMachine2 postEvent:@"AVAsset metadata did load successfully"];
   }
 
   objc_destroyWeak(&v35);
@@ -3989,27 +3989,27 @@ LABEL_41:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_rollInfoFromMetadata:(id)a3 keyIdentifierMap:(id)a4 forType:(unint64_t)a5 withTotalCount:(unint64_t)a6
+- (id)_rollInfoFromMetadata:(id)metadata keyIdentifierMap:(id)map forType:(unint64_t)type withTotalCount:(unint64_t)count
 {
-  v10 = a3;
-  v41 = a4;
-  v39 = v10;
-  if (a6)
+  metadataCopy = metadata;
+  mapCopy = map;
+  v39 = metadataCopy;
+  if (count)
   {
-    v11 = [(TVPMediaItemLoader *)self _rollKeyNameFromType:a5];
+    v11 = [(TVPMediaItemLoader *)self _rollKeyNameFromType:type];
     if ([v11 length])
     {
       [MEMORY[0x277CBEB18] array];
-      v38 = v37 = a6;
+      v38 = v37 = count;
       v12 = 0;
-      v36 = a5;
+      typeCopy = type;
       do
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.start", v11, v12];
-        v14 = [(TVPMediaItemLoader *)self _numberValueForKey:v13 fromMetadata:v10 andKeyIdentifierMap:v41];
+        v14 = [(TVPMediaItemLoader *)self _numberValueForKey:v13 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.duration", v11, v12];
-        v16 = [(TVPMediaItemLoader *)self _numberValueForKey:v15 fromMetadata:v10 andKeyIdentifierMap:v41];
+        v16 = [(TVPMediaItemLoader *)self _numberValueForKey:v15 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
         if (v14)
         {
@@ -4027,9 +4027,9 @@ LABEL_41:
           [v14 doubleValue];
           v20 = v19;
           [v16 doubleValue];
-          v22 = [(TVPMediaItemRollInfo *)v18 initWithType:a5 start:v20 duration:v21];
+          v22 = [(TVPMediaItemRollInfo *)v18 initWithType:type start:v20 duration:v21];
           v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.adam-id", v11, v12];
-          [(TVPMediaItemLoader *)self _numberValueForKey:v23 fromMetadata:v10 andKeyIdentifierMap:v41];
+          [(TVPMediaItemLoader *)self _numberValueForKey:v23 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
           v24 = v11;
           v26 = v25 = self;
 
@@ -4039,34 +4039,34 @@ LABEL_41:
           v11 = v24;
           [(TVPMediaItemRollInfo *)v22 setAdamID:v27];
           v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.skippable", v24, v12];
-          v29 = [(TVPMediaItemLoader *)self _stringValueForKey:v28 fromMetadata:v10 andKeyIdentifierMap:v41];
+          v29 = [(TVPMediaItemLoader *)self _stringValueForKey:v28 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
           if ([v29 length])
           {
-            v30 = [v29 BOOLValue];
+            bOOLValue = [v29 BOOLValue];
           }
 
           else
           {
-            v30 = 1;
+            bOOLValue = 1;
           }
 
-          [(TVPMediaItemRollInfo *)v22 setSkippable:v30];
+          [(TVPMediaItemRollInfo *)v22 setSkippable:bOOLValue];
           v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.dynamic-slot.data-set-id", v11, v12];
-          v32 = [(TVPMediaItemLoader *)self _stringValueForKey:v31 fromMetadata:v10 andKeyIdentifierMap:v41];
+          v32 = [(TVPMediaItemLoader *)self _stringValueForKey:v31 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
           [(TVPMediaItemRollInfo *)v22 setDynamicSlotDataSetId:v32];
           [v38 addObject:v22];
 
-          v10 = v39;
-          a5 = v36;
-          a6 = v37;
+          metadataCopy = v39;
+          type = typeCopy;
+          count = v37;
         }
 
         ++v12;
       }
 
-      while (a6 != v12);
+      while (count != v12);
       v33 = v38;
     }
 
@@ -4086,35 +4086,35 @@ LABEL_41:
   return v34;
 }
 
-- (id)_skipInfoFromMetadata:(id)a3 keyIdentifierMap:(id)a4 forType:(unint64_t)a5 withTotalCount:(unint64_t)a6
+- (id)_skipInfoFromMetadata:(id)metadata keyIdentifierMap:(id)map forType:(unint64_t)type withTotalCount:(unint64_t)count
 {
-  v37 = a3;
-  v36 = a4;
-  if (a6)
+  metadataCopy = metadata;
+  mapCopy = map;
+  if (count)
   {
-    v10 = [(TVPMediaItemLoader *)self _skipKeyNameFromType:a5];
+    v10 = [(TVPMediaItemLoader *)self _skipKeyNameFromType:type];
     if ([v10 length])
     {
-      v33 = a5;
-      v34 = [MEMORY[0x277CBEB18] array];
-      v35 = a6;
+      typeCopy = type;
+      array = [MEMORY[0x277CBEB18] array];
+      countCopy = count;
       for (i = 0; i != v19; ++i)
       {
         v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.start", v10, i];
-        v13 = [(TVPMediaItemLoader *)self _numberValueForKey:v12 fromMetadata:v37 andKeyIdentifierMap:v36];
+        v13 = [(TVPMediaItemLoader *)self _numberValueForKey:v12 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
         v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.duration", v10, i];
-        v15 = [(TVPMediaItemLoader *)self _numberValueForKey:v14 fromMetadata:v37 andKeyIdentifierMap:v36];
+        v15 = [(TVPMediaItemLoader *)self _numberValueForKey:v14 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
         v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.target", v10, i];
-        v17 = [(TVPMediaItemLoader *)self _numberValueForKey:v16 fromMetadata:v37 andKeyIdentifierMap:v36];
+        v17 = [(TVPMediaItemLoader *)self _numberValueForKey:v16 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
         v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.label", v10, i];
-        v38 = [(TVPMediaItemLoader *)self _stringValueForKey:v18 fromMetadata:v37 andKeyIdentifierMap:v36];
+        v38 = [(TVPMediaItemLoader *)self _stringValueForKey:v18 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
-        v19 = v35;
+        v19 = countCopy;
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.type", v10, i];
-        v21 = [(TVPMediaItemLoader *)self _stringValueForKey:v20 fromMetadata:v37 andKeyIdentifierMap:v36];
+        v21 = [(TVPMediaItemLoader *)self _stringValueForKey:v20 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
         if (v13 && v15 && v17)
         {
@@ -4124,20 +4124,20 @@ LABEL_41:
           [v15 doubleValue];
           v26 = v25;
           [v17 doubleValue];
-          v28 = [(TVPMediaItemSkipInfo *)v22 initWithType:v33 start:v38 duration:v21 target:v24 localizedTitle:v26 skipIntroReportingType:v27];
-          v29 = [(TVPMediaItemLoader *)self _promoInfoFromMetadata:v37 keyIdentifierMap:v36 forSkipKey:v10 skipCounter:i];
+          v28 = [(TVPMediaItemSkipInfo *)v22 initWithType:typeCopy start:v38 duration:v21 target:v24 localizedTitle:v26 skipIntroReportingType:v27];
+          v29 = [(TVPMediaItemLoader *)self _promoInfoFromMetadata:metadataCopy keyIdentifierMap:mapCopy forSkipKey:v10 skipCounter:i];
           if (v29)
           {
             [(TVPMediaItemSkipInfo *)v28 setPromoInfo:v29];
           }
 
-          [v34 addObject:v28];
+          [array addObject:v28];
 
-          v19 = v35;
+          v19 = countCopy;
         }
       }
 
-      v30 = v34;
+      v30 = array;
     }
 
     else
@@ -4156,21 +4156,21 @@ LABEL_41:
   return v31;
 }
 
-- (id)_promoInfoFromMetadata:(id)a3 keyIdentifierMap:(id)a4 forSkipKey:(id)a5 skipCounter:(unint64_t)a6
+- (id)_promoInfoFromMetadata:(id)metadata keyIdentifierMap:(id)map forSkipKey:(id)key skipCounter:(unint64_t)counter
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.enabled", v12, a6];
-  v14 = [(TVPMediaItemLoader *)self _stringValueForKey:v13 fromMetadata:v10 andKeyIdentifierMap:v11];
+  metadataCopy = metadata;
+  mapCopy = map;
+  keyCopy = key;
+  counter = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.enabled", keyCopy, counter];
+  v14 = [(TVPMediaItemLoader *)self _stringValueForKey:counter fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
   if (v14 && [v14 length] && objc_msgSend(v14, "BOOLValue"))
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.image", v12, a6];
-    v50 = [(TVPMediaItemLoader *)self _stringValueForKey:v15 fromMetadata:v10 andKeyIdentifierMap:v11];
+    counter2 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.image", keyCopy, counter];
+    v50 = [(TVPMediaItemLoader *)self _stringValueForKey:counter2 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.image-width", v12, a6];
-    v17 = [(TVPMediaItemLoader *)self _stringValueForKey:v16 fromMetadata:v10 andKeyIdentifierMap:v11];
+    counter3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.image-width", keyCopy, counter];
+    v17 = [(TVPMediaItemLoader *)self _stringValueForKey:counter3 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
     v18 = 0.0;
     v19 = 0.0;
@@ -4181,8 +4181,8 @@ LABEL_41:
     }
 
     v48 = v17;
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.image-height", v12, a6];
-    v22 = [(TVPMediaItemLoader *)self _stringValueForKey:v21 fromMetadata:v10 andKeyIdentifierMap:v11];
+    counter4 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.image-height", keyCopy, counter];
+    v22 = [(TVPMediaItemLoader *)self _stringValueForKey:counter4 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
     if (v22)
     {
@@ -4191,46 +4191,46 @@ LABEL_41:
     }
 
     v47 = v22;
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.title", v12, a6];
-    v49 = [(TVPMediaItemLoader *)self _stringValueForKey:v24 fromMetadata:v10 andKeyIdentifierMap:v11];
+    counter5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.title", keyCopy, counter];
+    v49 = [(TVPMediaItemLoader *)self _stringValueForKey:counter5 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
-    v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.genre", v12, a6];
-    v46 = [(TVPMediaItemLoader *)self _stringValueForKey:v25 fromMetadata:v10 andKeyIdentifierMap:v11];
+    counter6 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.genre", keyCopy, counter];
+    v46 = [(TVPMediaItemLoader *)self _stringValueForKey:counter6 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
-    v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.rating-display-name", v12, a6];
-    v45 = [(TVPMediaItemLoader *)self _stringValueForKey:v26 fromMetadata:v10 andKeyIdentifierMap:v11];
+    counter7 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.rating-display-name", keyCopy, counter];
+    v45 = [(TVPMediaItemLoader *)self _stringValueForKey:counter7 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
-    v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.rating-system", v12, a6];
-    v44 = [(TVPMediaItemLoader *)self _stringValueForKey:v27 fromMetadata:v10 andKeyIdentifierMap:v11];
+    counter8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.rating-system", keyCopy, counter];
+    v44 = [(TVPMediaItemLoader *)self _stringValueForKey:counter8 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
-    v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.runtime", v12, a6];
-    v43 = [(TVPMediaItemLoader *)self _stringValueForKey:v28 fromMetadata:v10 andKeyIdentifierMap:v11];
+    counter9 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.runtime", keyCopy, counter];
+    v43 = [(TVPMediaItemLoader *)self _stringValueForKey:counter9 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
-    v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.canonical-id", v12, a6];
-    v41 = [(TVPMediaItemLoader *)self _stringValueForKey:v29 fromMetadata:v10 andKeyIdentifierMap:v11];
+    counter10 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.canonical-id", keyCopy, counter];
+    v41 = [(TVPMediaItemLoader *)self _stringValueForKey:counter10 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
-    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.up-next.is-added", v12, a6];
-    v31 = [(TVPMediaItemLoader *)self _stringValueForKey:v30 fromMetadata:v10 andKeyIdentifierMap:v11];
+    counter11 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.up-next.is-added", keyCopy, counter];
+    v31 = [(TVPMediaItemLoader *)self _stringValueForKey:counter11 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
     v42 = v14;
     v40 = v31;
     if (v31 && [v31 length])
     {
-      v32 = [v31 BOOLValue];
+      bOOLValue = [v31 BOOLValue];
     }
 
     else
     {
-      v32 = 0;
+      bOOLValue = 0;
     }
 
-    v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.up-next.add-label", v12, a6];
-    v39 = [(TVPMediaItemLoader *)self _stringValueForKey:v35 fromMetadata:v10 andKeyIdentifierMap:v11];
+    counter12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.up-next.add-label", keyCopy, counter];
+    v39 = [(TVPMediaItemLoader *)self _stringValueForKey:counter12 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
-    v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.up-next.added-label", v12, a6];
-    v37 = [(TVPMediaItemLoader *)self _stringValueForKey:v36 fromMetadata:v10 andKeyIdentifierMap:v11];
+    counter13 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.%@.%lu.promo.up-next.added-label", keyCopy, counter];
+    v37 = [(TVPMediaItemLoader *)self _stringValueForKey:counter13 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
-    LOBYTE(v38) = v32;
+    LOBYTE(v38) = bOOLValue;
     v33 = [[TVPMediaItemPromoInfo alloc] initWithTitleImageURL:v50 originalTitleImageWidth:v49 originalTitleImageHeight:v46 title:v45 genre:v44 ratingDisplayName:v43 ratingSystem:v19 movieRuntime:v18 canonicalId:v41 isAddedToUpNext:v38 addToUpNextLabelString:v39 addedToUpNextLabelString:v37];
 
     v14 = v42;
@@ -4244,21 +4244,21 @@ LABEL_41:
   return v33;
 }
 
-- (id)_advisoryInfoFromMetadata:(id)a3 keyIdentifierMap:(id)a4 withTotalCount:(unint64_t)a5
+- (id)_advisoryInfoFromMetadata:(id)metadata keyIdentifierMap:(id)map withTotalCount:(unint64_t)count
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  metadataCopy = metadata;
+  mapCopy = map;
+  if (count)
   {
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v11 = 0;
     do
     {
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.advisory-info.%lu.value", v11];
-      v13 = [(TVPMediaItemLoader *)self _stringValueForKey:v12 fromMetadata:v8 andKeyIdentifierMap:v9];
+      v13 = [(TVPMediaItemLoader *)self _stringValueForKey:v12 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.hls.advisory-info.%lu.key", v11];
-      v15 = [(TVPMediaItemLoader *)self _stringValueForKey:v14 fromMetadata:v8 andKeyIdentifierMap:v9];
+      v15 = [(TVPMediaItemLoader *)self _stringValueForKey:v14 fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
       if ([v13 length])
       {
@@ -4268,100 +4268,100 @@ LABEL_41:
           [(TVPMediaItemAdvisoryInfo *)v16 setRatingName:v15];
         }
 
-        [v10 addObject:v16];
+        [array addObject:v16];
       }
 
       ++v11;
     }
 
-    while (a5 != v11);
+    while (count != v11);
   }
 
   else
   {
-    v10 = 0;
+    array = 0;
   }
 
-  v17 = [v10 copy];
+  v17 = [array copy];
 
   return v17;
 }
 
-- (id)_productPlacementInfoFromMetadata:(id)a3 keyIdentifierMap:(id)a4
+- (id)_productPlacementInfoFromMetadata:(id)metadata keyIdentifierMap:(id)map
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TVPMediaItemLoader *)self _stringValueForKey:@"com.apple.hls.product-placement-info.text" fromMetadata:v7 andKeyIdentifierMap:v6];
-  v9 = [(TVPMediaItemLoader *)self _numberValueForKey:@"com.apple.hls.product-placement-info.duration" fromMetadata:v7 andKeyIdentifierMap:v6];
-  v10 = [(TVPMediaItemLoader *)self _stringValueForKey:@"com.apple.hls.product-placement-info.image" fromMetadata:v7 andKeyIdentifierMap:v6];
+  mapCopy = map;
+  metadataCopy = metadata;
+  v8 = [(TVPMediaItemLoader *)self _stringValueForKey:@"com.apple.hls.product-placement-info.text" fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
+  v9 = [(TVPMediaItemLoader *)self _numberValueForKey:@"com.apple.hls.product-placement-info.duration" fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
+  v10 = [(TVPMediaItemLoader *)self _stringValueForKey:@"com.apple.hls.product-placement-info.image" fromMetadata:metadataCopy andKeyIdentifierMap:mapCopy];
 
   v11 = [[TVPMediaItemProductPlacementInfo alloc] initWithLocalizedProductPlacementInfoString:v8 duration:v9 andImageURLStringFormat:v10];
 
   return v11;
 }
 
-- (id)_numberValueForKey:(id)a3 fromMetadata:(id)a4 andKeyIdentifierMap:(id)a5
+- (id)_numberValueForKey:(id)key fromMetadata:(id)metadata andKeyIdentifierMap:(id)map
 {
-  v7 = a4;
-  v8 = [a5 objectForKeyedSubscript:a3];
+  metadataCopy = metadata;
+  v8 = [map objectForKeyedSubscript:key];
   if (v8)
   {
-    v9 = [MEMORY[0x277CE6520] metadataItemsFromArray:v7 filteredByIdentifier:v8];
-    v10 = [v9 firstObject];
+    v9 = [MEMORY[0x277CE6520] metadataItemsFromArray:metadataCopy filteredByIdentifier:v8];
+    firstObject = [v9 firstObject];
 
-    v11 = 0;
-    if ([v10 statusOfValueForKey:@"value" error:0] == 2)
+    tvp_numberValue = 0;
+    if ([firstObject statusOfValueForKey:@"value" error:0] == 2)
     {
-      v11 = [v10 tvp_numberValue];
+      tvp_numberValue = [firstObject tvp_numberValue];
     }
   }
 
   else
   {
-    v11 = 0;
+    tvp_numberValue = 0;
   }
 
-  return v11;
+  return tvp_numberValue;
 }
 
-- (id)_stringValueForKey:(id)a3 fromMetadata:(id)a4 andKeyIdentifierMap:(id)a5
+- (id)_stringValueForKey:(id)key fromMetadata:(id)metadata andKeyIdentifierMap:(id)map
 {
-  v7 = a4;
-  v8 = [a5 objectForKeyedSubscript:a3];
+  metadataCopy = metadata;
+  v8 = [map objectForKeyedSubscript:key];
   if (v8)
   {
-    v9 = [MEMORY[0x277CE6520] metadataItemsFromArray:v7 filteredByIdentifier:v8];
-    v10 = [v9 firstObject];
+    v9 = [MEMORY[0x277CE6520] metadataItemsFromArray:metadataCopy filteredByIdentifier:v8];
+    firstObject = [v9 firstObject];
 
-    v11 = 0;
-    if ([v10 statusOfValueForKey:@"value" error:0] == 2)
+    stringValue = 0;
+    if ([firstObject statusOfValueForKey:@"value" error:0] == 2)
     {
-      v11 = [v10 stringValue];
+      stringValue = [firstObject stringValue];
     }
   }
 
   else
   {
-    v11 = 0;
+    stringValue = 0;
   }
 
-  return v11;
+  return stringValue;
 }
 
-- (unint64_t)_rollTypeFromMetadataItemKey:(id)a3
+- (unint64_t)_rollTypeFromMetadataItemKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.hls.pre-roll.count"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"com.apple.hls.pre-roll.count"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.hls.mid-roll.count"])
+  else if ([keyCopy isEqualToString:@"com.apple.hls.mid-roll.count"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.hls.post-roll.count"])
+  else if ([keyCopy isEqualToString:@"com.apple.hls.post-roll.count"])
   {
     v4 = 3;
   }
@@ -4374,22 +4374,22 @@ LABEL_41:
   return v4;
 }
 
-- (id)_rollKeyNameFromType:(unint64_t)a3
+- (id)_rollKeyNameFromType:(unint64_t)type
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_279D7DCE0[a3 - 1];
+    return off_279D7DCE0[type - 1];
   }
 }
 
-- (id)_skipKeyNameFromType:(unint64_t)a3
+- (id)_skipKeyNameFromType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"skip";
   }
@@ -4400,27 +4400,27 @@ LABEL_41:
   }
 }
 
-- (void)_mediaItemPlaybackErrorDidOccur:(id)a3
+- (void)_mediaItemPlaybackErrorDidOccur:(id)occur
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"TVPMediaItemPlaybackErrorKey"];
+  occurCopy = occur;
+  userInfo = [occurCopy userInfo];
+  v6 = [userInfo objectForKey:@"TVPMediaItemPlaybackErrorKey"];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [occurCopy userInfo];
 
-  v8 = [v7 objectForKey:@"TVPMediaItemPlaybackErrorShouldStopKey"];
+  v8 = [userInfo2 objectForKey:@"TVPMediaItemPlaybackErrorShouldStopKey"];
 
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277CBEB38]);
-    v10 = [v6 userInfo];
-    v11 = [v9 initWithDictionary:v10];
+    userInfo3 = [v6 userInfo];
+    v11 = [v9 initWithDictionary:userInfo3];
 
     [v11 setObject:v8 forKey:@"TVPMediaItemPlaybackErrorShouldStopKey"];
     v12 = objc_alloc(MEMORY[0x277CCA9B8]);
-    v13 = [v6 domain];
-    v14 = [v12 initWithDomain:v13 code:objc_msgSend(v6 userInfo:{"code"), v11}];
+    domain = [v6 domain];
+    v14 = [v12 initWithDomain:domain code:objc_msgSend(v6 userInfo:{"code"), v11}];
 
     v6 = v14;
   }
@@ -4445,13 +4445,13 @@ LABEL_41:
     _os_log_impl(&dword_26CEDD000, v16, OS_LOG_TYPE_DEFAULT, "Media item playback error did occur: %@", &v19, 0xCu);
   }
 
-  v17 = [(TVPMediaItemLoader *)self stateMachine];
-  [v17 postEvent:@"Failure" withContext:0 userInfo:v15];
+  stateMachine = [(TVPMediaItemLoader *)self stateMachine];
+  [stateMachine postEvent:@"Failure" withContext:0 userInfo:v15];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_mediaItemStopPlayback:(id)a3
+- (void)_mediaItemStopPlayback:(id)playback
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277CCA9B8]);
@@ -4464,17 +4464,17 @@ LABEL_41:
   if (os_log_type_enabled(sMediaItemLoaderLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(TVPMediaItemLoader *)self mediaItem];
+    mediaItem = [(TVPMediaItemLoader *)self mediaItem];
     *buf = 138412290;
-    v16 = v9;
+    v16 = mediaItem;
     _os_log_impl(&dword_26CEDD000, v8, OS_LOG_TYPE_DEFAULT, "Media item requested stop: %@", buf, 0xCu);
   }
 
-  v10 = [(TVPMediaItemLoader *)self stateMachine];
+  stateMachine = [(TVPMediaItemLoader *)self stateMachine];
   v13 = @"error";
   v14 = v6;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-  [v10 postEvent:@"Failure" withContext:0 userInfo:v11];
+  [stateMachine postEvent:@"Failure" withContext:0 userInfo:v11];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -4484,28 +4484,28 @@ LABEL_41:
   v15 = *MEMORY[0x277D85DE8];
   if (![(TVPMediaItemLoader *)self cleanedUp])
   {
-    v3 = [(TVPMediaItemLoader *)self diskSpaceMonitorTimer];
-    [v3 invalidate];
+    diskSpaceMonitorTimer = [(TVPMediaItemLoader *)self diskSpaceMonitorTimer];
+    [diskSpaceMonitorTimer invalidate];
 
     [(TVPMediaItemLoader *)self setDiskSpaceMonitorTimer:0];
-    v4 = [(TVPMediaItemLoader *)self assetLoadContextAccessQueue];
+    assetLoadContextAccessQueue = [(TVPMediaItemLoader *)self assetLoadContextAccessQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __30__TVPMediaItemLoader__cleanUp__block_invoke;
     block[3] = &unk_279D7BDC8;
     block[4] = self;
-    dispatch_sync(v4, block);
+    dispatch_sync(assetLoadContextAccessQueue, block);
 
-    v5 = [(TVPMediaItemLoader *)self assetInternalAccessQueue];
+    assetInternalAccessQueue = [(TVPMediaItemLoader *)self assetInternalAccessQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __30__TVPMediaItemLoader__cleanUp__block_invoke_2;
     v11[3] = &unk_279D7BDC8;
     v11[4] = self;
-    dispatch_sync(v5, v11);
+    dispatch_sync(assetInternalAccessQueue, v11);
 
-    v6 = [(TVPMediaItemLoader *)self mediaItem];
-    v7 = [v6 hasTrait:@"TVPMediaItemTraitUseTempDownload"];
+    mediaItem = [(TVPMediaItemLoader *)self mediaItem];
+    v7 = [mediaItem hasTrait:@"TVPMediaItemTraitUseTempDownload"];
 
     if (v7)
     {
@@ -4513,18 +4513,18 @@ LABEL_41:
     }
 
     [(TVPMediaItemLoader *)self setTimingData:0];
-    v8 = [(TVPMediaItemLoader *)self mediaItem];
+    mediaItem2 = [(TVPMediaItemLoader *)self mediaItem];
     if (objc_opt_respondsToSelector())
     {
       v9 = sMediaItemLoaderLogObject;
       if (os_log_type_enabled(sMediaItemLoaderLogObject, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v14 = v8;
+        v14 = mediaItem2;
         _os_log_impl(&dword_26CEDD000, v9, OS_LOG_TYPE_DEFAULT, "Calling cleanUpMediaItem for media item %@", buf, 0xCu);
       }
 
-      [v8 cleanUpMediaItem];
+      [mediaItem2 cleanUpMediaItem];
     }
 
     [(TVPMediaItemLoader *)self setCleanedUp:1];
@@ -4558,41 +4558,41 @@ void __30__TVPMediaItemLoader__cleanUp__block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
-  v5 = a4;
-  v6 = [v5 request];
-  v7 = [v6 URL];
-  v8 = [v7 scheme];
-  if ([v8 isEqualToString:@"skd"])
+  resourceCopy = resource;
+  request = [resourceCopy request];
+  v7 = [request URL];
+  scheme = [v7 scheme];
+  if ([scheme isEqualToString:@"skd"])
   {
 
 LABEL_6:
-    v14 = [(TVPMediaItemLoader *)self mediaItem];
+    mediaItem = [(TVPMediaItemLoader *)self mediaItem];
     v13 = objc_opt_respondsToSelector();
     if (v13)
     {
-      v15 = [[TVPSecureKeyRequest alloc] initWithAssetResourceLoadingRequest:v5];
-      v16 = [(TVPMediaItemLoader *)self mediaItem];
-      v17 = [v16 hasTrait:@"TVPMediaItemTraitIsRental"];
+      v15 = [[TVPSecureKeyRequest alloc] initWithAssetResourceLoadingRequest:resourceCopy];
+      mediaItem2 = [(TVPMediaItemLoader *)self mediaItem];
+      v17 = [mediaItem2 hasTrait:@"TVPMediaItemTraitIsRental"];
 
       if (v17)
       {
-        v18 = [(TVPMediaItemLoader *)self mediaItem];
-        v19 = [v18 mediaItemMetadataForProperty:@"TVPMediaItemMetadataRentalID"];
+        mediaItem3 = [(TVPMediaItemLoader *)self mediaItem];
+        v19 = [mediaItem3 mediaItemMetadataForProperty:@"TVPMediaItemMetadataRentalID"];
 
         [(TVPSecureKeyRequest *)v15 setRentalID:v19];
       }
 
-      [v14 loadStreamingKeyForRequest:v15];
+      [mediaItem loadStreamingKeyForRequest:v15];
     }
 
     goto LABEL_11;
   }
 
   v9 = MEMORY[0x277CCAD10];
-  v10 = [v5 request];
-  v11 = [v9 _protocolClassForRequest:v10];
+  request2 = [resourceCopy request];
+  v11 = [v9 _protocolClassForRequest:request2];
 
   if (!v11)
   {

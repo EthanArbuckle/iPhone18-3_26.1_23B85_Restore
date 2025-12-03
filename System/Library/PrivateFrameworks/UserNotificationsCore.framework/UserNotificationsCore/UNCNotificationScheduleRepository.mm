@@ -1,13 +1,13 @@
 @interface UNCNotificationScheduleRepository
-- (UNCNotificationScheduleRepository)initWithDirectory:(id)a3 librarian:(id)a4;
+- (UNCNotificationScheduleRepository)initWithDirectory:(id)directory librarian:(id)librarian;
 - (id)_dateFormatter;
-- (id)_queue_scheduleForBundleIdentifier:(id)a3;
+- (id)_queue_scheduleForBundleIdentifier:(id)identifier;
 - (id)allBundleIdentifiers;
-- (id)scheduleForBundleIdentifier:(id)a3;
-- (void)_queue_setSchedule:(id)a3 forBundleIdentifier:(id)a4;
-- (void)notificationSourcesDidUninstall:(id)a3;
-- (void)removeScheduleForBundleIdentifier:(id)a3;
-- (void)setSchedule:(id)a3 forBundleIdentifier:(id)a4;
+- (id)scheduleForBundleIdentifier:(id)identifier;
+- (void)_queue_setSchedule:(id)schedule forBundleIdentifier:(id)identifier;
+- (void)notificationSourcesDidUninstall:(id)uninstall;
+- (void)removeScheduleForBundleIdentifier:(id)identifier;
+- (void)setSchedule:(id)schedule forBundleIdentifier:(id)identifier;
 @end
 
 @implementation UNCNotificationScheduleRepository
@@ -35,11 +35,11 @@ uint64_t __51__UNCNotificationScheduleRepository__dateFormatter__block_invoke()
   return [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss'.'SSS Z"];
 }
 
-- (UNCNotificationScheduleRepository)initWithDirectory:(id)a3 librarian:(id)a4
+- (UNCNotificationScheduleRepository)initWithDirectory:(id)directory librarian:(id)librarian
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[UNCKeyedDictionaryRepository alloc] initWithDirectory:v7 fileName:@"Schedule" pathExtension:@"plist" librarian:v6];
+  librarianCopy = librarian;
+  directoryCopy = directory;
+  v8 = [[UNCKeyedDictionaryRepository alloc] initWithDirectory:directoryCopy fileName:@"Schedule" pathExtension:@"plist" librarian:librarianCopy];
 
   v14.receiver = self;
   v14.super_class = UNCNotificationScheduleRepository;
@@ -89,9 +89,9 @@ uint64_t __57__UNCNotificationScheduleRepository_allBundleIdentifiers__block_inv
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)scheduleForBundleIdentifier:(id)a3
+- (id)scheduleForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -103,10 +103,10 @@ uint64_t __57__UNCNotificationScheduleRepository_allBundleIdentifiers__block_inv
   block[1] = 3221225472;
   block[2] = __65__UNCNotificationScheduleRepository_scheduleForBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F48;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -125,48 +125,48 @@ uint64_t __65__UNCNotificationScheduleRepository_scheduleForBundleIdentifier___b
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSchedule:(id)a3 forBundleIdentifier:(id)a4
+- (void)setSchedule:(id)schedule forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  scheduleCopy = schedule;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__UNCNotificationScheduleRepository_setSchedule_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = scheduleCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = scheduleCopy;
   dispatch_async(queue, block);
 }
 
-- (void)removeScheduleForBundleIdentifier:(id)a3
+- (void)removeScheduleForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__UNCNotificationScheduleRepository_removeScheduleForBundleIdentifier___block_invoke;
   v7[3] = &unk_1E85D6E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)notificationSourcesDidUninstall:(id)a3
+- (void)notificationSourcesDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__UNCNotificationScheduleRepository_notificationSourcesDidUninstall___block_invoke;
   v7[3] = &unk_1E85D6E70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = uninstallCopy;
+  selfCopy = self;
+  v6 = uninstallCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -210,11 +210,11 @@ void __69__UNCNotificationScheduleRepository_notificationSourcesDidUninstall___b
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_queue_scheduleForBundleIdentifier:(id)a3
+- (id)_queue_scheduleForBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UNCKeyedDictionaryRepository *)self->_repository dictionaryForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(UNCKeyedDictionaryRepository *)self->_repository dictionaryForKey:identifierCopy];
   if (v5)
   {
     v6 = (*(UNSDictionaryToUNCNotificationSchedule + 2))(UNSDictionaryToUNCNotificationSchedule, v5);
@@ -225,11 +225,11 @@ void __69__UNCNotificationScheduleRepository_notificationSourcesDidUninstall___b
     v6 = 0;
   }
 
-  v7 = [v6 previousTriggerDate];
-  if (v7)
+  previousTriggerDate = [v6 previousTriggerDate];
+  if (previousTriggerDate)
   {
-    v8 = [(UNCNotificationScheduleRepository *)self _dateFormatter];
-    v9 = [v8 stringFromDate:v7];
+    _dateFormatter = [(UNCNotificationScheduleRepository *)self _dateFormatter];
+    v9 = [_dateFormatter stringFromDate:previousTriggerDate];
   }
 
   else
@@ -241,7 +241,7 @@ void __69__UNCNotificationScheduleRepository_notificationSourcesDidUninstall___b
   if (os_log_type_enabled(*MEMORY[0x1E6983378], OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
-    v14 = v4;
+    v14 = identifierCopy;
     v15 = 2114;
     v16 = v9;
     _os_log_impl(&dword_1DA7A9000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Load last local notification fire date: %{public}@", &v13, 0x16u);
@@ -252,14 +252,14 @@ void __69__UNCNotificationScheduleRepository_notificationSourcesDidUninstall___b
   return v6;
 }
 
-- (void)_queue_setSchedule:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_setSchedule:(id)schedule forBundleIdentifier:(id)identifier
 {
   repository = self->_repository;
   v6 = UNCNotificationScheduleToDictionary;
   v7 = *(UNCNotificationScheduleToDictionary + 2);
-  v8 = a4;
-  v9 = v7(v6, a3);
-  [(UNCKeyedDictionaryRepository *)repository setDictionary:v9 forKey:v8];
+  identifierCopy = identifier;
+  v9 = v7(v6, schedule);
+  [(UNCKeyedDictionaryRepository *)repository setDictionary:v9 forKey:identifierCopy];
 }
 
 @end

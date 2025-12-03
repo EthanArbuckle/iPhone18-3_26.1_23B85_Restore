@@ -1,72 +1,72 @@
 @interface TRIAssetStoreDatabase
-- (BOOL)addReferenceToAutoAssetId:(id)a3 forLifetimeOfPath:(id)a4;
-- (BOOL)dropTableWithName:(id)a3 transaction:(id)a4;
-- (BOOL)enumerateAllAutoAssetReferencesWithBlock:(id)a3;
-- (TRIAssetStoreDatabase)initWithPaths:(id)a3 assetStorePath:(id)a4 storageManagement:(id)a5;
-- (TRIAssetStoreDatabase)initWithPaths:(id)a3 databasePath:(id)a4 storageManagement:(id)a5 performMigrations:(BOOL)a6;
-- (TRIAssetStoreDatabase)initWithPaths:(id)a3 storageManagement:(id)a4;
+- (BOOL)addReferenceToAutoAssetId:(id)id forLifetimeOfPath:(id)path;
+- (BOOL)dropTableWithName:(id)name transaction:(id)transaction;
+- (BOOL)enumerateAllAutoAssetReferencesWithBlock:(id)block;
+- (TRIAssetStoreDatabase)initWithPaths:(id)paths assetStorePath:(id)path storageManagement:(id)management;
+- (TRIAssetStoreDatabase)initWithPaths:(id)paths databasePath:(id)path storageManagement:(id)management performMigrations:(BOOL)migrations;
+- (TRIAssetStoreDatabase)initWithPaths:(id)paths storageManagement:(id)management;
 - (id)migrations;
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3;
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version;
 - (void)_disableQueryPlanLogging;
 - (void)_enableQueryPlanLogging;
 - (void)_updateQueryPlanLogging;
 - (void)closePermanently;
-- (void)enumerateAssetIdsWithoutLiveReferencesUsingBlock:(id)a3;
-- (void)enumerateOnDiskMAReferencesWithoutCorrespondingDatabaseEntriesUsingBlock:(id)a3;
+- (void)enumerateAssetIdsWithoutLiveReferencesUsingBlock:(id)block;
+- (void)enumerateOnDiskMAReferencesWithoutCorrespondingDatabaseEntriesUsingBlock:(id)block;
 @end
 
 @implementation TRIAssetStoreDatabase
 
-- (TRIAssetStoreDatabase)initWithPaths:(id)a3 storageManagement:(id)a4
+- (TRIAssetStoreDatabase)initWithPaths:(id)paths storageManagement:(id)management
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  pathsCopy = paths;
+  managementCopy = management;
+  if (!pathsCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIAssetStoreDatabase.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"paths"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAssetStoreDatabase.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"paths"}];
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [v7 assetStore];
-  v11 = [v10 stringByAppendingPathComponent:@"assets.db"];
+  assetStore = [pathsCopy assetStore];
+  v11 = [assetStore stringByAppendingPathComponent:@"assets.db"];
 
   objc_autoreleasePoolPop(v9);
-  v12 = [(TRIAssetStoreDatabase *)self initWithPaths:v7 databasePath:v11 storageManagement:v8 performMigrations:1];
+  v12 = [(TRIAssetStoreDatabase *)self initWithPaths:pathsCopy databasePath:v11 storageManagement:managementCopy performMigrations:1];
 
   return v12;
 }
 
-- (TRIAssetStoreDatabase)initWithPaths:(id)a3 assetStorePath:(id)a4 storageManagement:(id)a5
+- (TRIAssetStoreDatabase)initWithPaths:(id)paths assetStorePath:(id)path storageManagement:(id)management
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  pathsCopy = paths;
+  pathCopy = path;
+  managementCopy = management;
+  if (!pathsCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRIAssetStoreDatabase.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"paths"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAssetStoreDatabase.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"paths"}];
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = [v10 stringByAppendingPathComponent:@"assets.db"];
+  v13 = [pathCopy stringByAppendingPathComponent:@"assets.db"];
   objc_autoreleasePoolPop(v12);
-  v14 = [(TRIAssetStoreDatabase *)self initWithPaths:v9 databasePath:v13 storageManagement:v11 performMigrations:1];
+  v14 = [(TRIAssetStoreDatabase *)self initWithPaths:pathsCopy databasePath:v13 storageManagement:managementCopy performMigrations:1];
 
   return v14;
 }
 
-- (TRIAssetStoreDatabase)initWithPaths:(id)a3 databasePath:(id)a4 storageManagement:(id)a5 performMigrations:(BOOL)a6
+- (TRIAssetStoreDatabase)initWithPaths:(id)paths databasePath:(id)path storageManagement:(id)management performMigrations:(BOOL)migrations
 {
-  v6 = a6;
+  migrationsCopy = migrations;
   v59 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v12)
+  pathsCopy = paths;
+  pathCopy = path;
+  managementCopy = management;
+  if (!pathCopy)
   {
-    v45 = [MEMORY[0x277CCA890] currentHandler];
-    [v45 handleFailureInMethod:a2 object:self file:@"TRIAssetStoreDatabase.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"databasePath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAssetStoreDatabase.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"databasePath"}];
   }
 
   v51.receiver = self;
@@ -78,9 +78,9 @@
     goto LABEL_24;
   }
 
-  objc_storeStrong(&v14->_paths, a3);
-  objc_storeStrong(&v15->_storageManagement, a5);
-  objc_storeStrong(&v15->_databasePath, a4);
+  objc_storeStrong(&v14->_paths, paths);
+  objc_storeStrong(&v15->_storageManagement, management);
+  objc_storeStrong(&v15->_databasePath, path);
   if (([MEMORY[0x277D42630] isInMemoryPath:v15->_databasePath] & 1) == 0 && objc_msgSend(MEMORY[0x277D42598], "isClassCLocked"))
   {
     v16 = TRILogCategory_Server();
@@ -97,9 +97,9 @@
   {
     if (([MEMORY[0x277D42630] isInMemoryPath:v15->_databasePath] & 1) == 0)
     {
-      v20 = [(NSString *)v15->_databasePath stringByDeletingLastPathComponent];
-      v21 = [MEMORY[0x277CCAA00] defaultManager];
-      [v21 createDirectoryAtPath:v20 withIntermediateDirectories:1 attributes:0 error:0];
+      stringByDeletingLastPathComponent = [(NSString *)v15->_databasePath stringByDeletingLastPathComponent];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
     }
 
     v19 = 1;
@@ -186,9 +186,9 @@ LABEL_35:
     }
   }
 
-  v31 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   defaults = v15->_defaults;
-  v15->_defaults = v31;
+  v15->_defaults = standardUserDefaults;
 
   v33 = objc_opt_new();
   kvoHandler = v15->_kvoHandler;
@@ -205,7 +205,7 @@ LABEL_35:
   objc_copyWeak(&v48, &buf);
   [(_PASKVOHandler *)v35 reactAfterChangesToKeyPath:@"queryPlanLoggingEnabled" ofObject:v36 usingBlock:v47];
   [(TRIAssetStoreDatabase *)v15 _updateQueryPlanLogging];
-  if (v6 && ![(TRIAssetStoreDatabase *)v15 migrateToVersion:*MEMORY[0x277D426A0]])
+  if (migrationsCopy && ![(TRIAssetStoreDatabase *)v15 migrateToVersion:*MEMORY[0x277D426A0]])
   {
     v43 = TRILogCategory_Server();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -253,15 +253,15 @@ uint64_t __31__TRIAssetStoreDatabase_vacuum__block_invoke(uint64_t a1, void *a2)
   return *MEMORY[0x277D42698];
 }
 
-- (BOOL)dropTableWithName:(id)a3 transaction:(id)a4
+- (BOOL)dropTableWithName:(id)name transaction:(id)transaction
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  nameCopy = name;
+  transactionCopy = transaction;
+  v9 = transactionCopy;
+  if (!nameCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIAssetStoreDatabase.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAssetStoreDatabase.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
     if (v9)
     {
@@ -269,21 +269,21 @@ uint64_t __31__TRIAssetStoreDatabase_vacuum__block_invoke(uint64_t a1, void *a2)
     }
 
 LABEL_5:
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TRIAssetStoreDatabase.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIAssetStoreDatabase.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!transactionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DROP TABLE %@;", v7];
+  nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DROP TABLE %@;", nameCopy];
   v11 = [v9 db];
-  v12 = [v11 prepAndRunQuery:v10 onPrep:0 onRow:0 onError:0];
+  v12 = [v11 prepAndRunQuery:nameCopy onPrep:0 onRow:0 onError:0];
 
   return v12;
 }
@@ -316,23 +316,23 @@ LABEL_3:
   paths = self->_paths;
   if (paths)
   {
-    v5 = [(TRIPaths *)paths logDir];
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:0];
+    logDir = [(TRIPaths *)paths logDir];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager createDirectoryAtPath:logDir withIntermediateDirectories:1 attributes:0 error:0];
 
     v7 = objc_opt_new();
     [v7 setFormatOptions:51];
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
     v9 = objc_opt_new();
     v10 = [v7 stringFromDate:v9];
-    v11 = [MEMORY[0x277CCAC38] processInfo];
-    v12 = [v8 initWithFormat:@"assets-explainQueryPlan-%@-pid_%d-handle_%p.log", v10, objc_msgSend(v11, "processIdentifier"), self->_db];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v12 = [v8 initWithFormat:@"assets-explainQueryPlan-%@-pid_%d-handle_%p.log", v10, objc_msgSend(processInfo, "processIdentifier"), self->_db];
 
-    v13 = [v5 stringByAppendingPathComponent:v12];
-    LODWORD(v11) = [(_PASSqliteDatabase *)self->_db enableQueryPlanLoggingWithPath:v13];
+    v13 = [logDir stringByAppendingPathComponent:v12];
+    LODWORD(processInfo) = [(_PASSqliteDatabase *)self->_db enableQueryPlanLoggingWithPath:v13];
     v14 = TRILogCategory_Server();
     v15 = v14;
-    if (v11)
+    if (processInfo)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
@@ -357,11 +357,11 @@ LABEL_3:
 
   else
   {
-    v5 = TRILogCategory_Server();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    logDir = TRILogCategory_Server();
+    if (os_log_type_enabled(logDir, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_26F567000, v5, OS_LOG_TYPE_ERROR, "Can't enable query plan logging, TRIPaths not available", buf, 2u);
+      _os_log_error_impl(&dword_26F567000, logDir, OS_LOG_TYPE_ERROR, "Can't enable query plan logging, TRIPaths not available", buf, 2u);
     }
   }
 
@@ -404,20 +404,20 @@ LABEL_3:
   return v3;
 }
 
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version
 {
-  if (a3)
+  if (version)
   {
-    *a3 = 0;
+    *version = 0;
   }
 
   return MEMORY[0x277CBEBF8];
 }
 
-- (BOOL)addReferenceToAutoAssetId:(id)a3 forLifetimeOfPath:(id)a4
+- (BOOL)addReferenceToAutoAssetId:(id)id forLifetimeOfPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  pathCopy = path;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -427,11 +427,11 @@ LABEL_3:
   v13[2] = __69__TRIAssetStoreDatabase_addReferenceToAutoAssetId_forLifetimeOfPath___block_invoke;
   v13[3] = &unk_279DE2488;
   v17 = &v19;
-  v9 = v7;
+  v9 = idCopy;
   v18 = a2;
   v14 = v9;
-  v15 = self;
-  v10 = v8;
+  selfCopy = self;
+  v10 = pathCopy;
   v16 = v10;
   v11 = MEMORY[0x2743948D0](v13);
   [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:v11];
@@ -530,9 +530,9 @@ void __69__TRIAssetStoreDatabase_addReferenceToAutoAssetId_forLifetimeOfPath___b
   [v4 bindNamedParam:":path" toNonnullNSString:*(a1 + 32)];
 }
 
-- (BOOL)enumerateAllAutoAssetReferencesWithBlock:(id)a3
+- (BOOL)enumerateAllAutoAssetReferencesWithBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -542,12 +542,12 @@ void __69__TRIAssetStoreDatabase_addReferenceToAutoAssetId_forLifetimeOfPath___b
   v11 = __66__TRIAssetStoreDatabase_enumerateAllAutoAssetReferencesWithBlock___block_invoke;
   v12 = &unk_279DE24B0;
   v16 = a2;
-  v13 = self;
-  v6 = v5;
+  selfCopy = self;
+  v6 = blockCopy;
   v14 = v6;
   v15 = &v17;
   v7 = MEMORY[0x2743948D0](&v9);
-  [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:{v7, v9, v10, v11, v12, v13}];
+  [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:{v7, v9, v10, v11, v12, selfCopy}];
   LOBYTE(self) = *(v18 + 24);
 
   _Block_object_dispose(&v17, 8);
@@ -631,22 +631,22 @@ uint64_t __66__TRIAssetStoreDatabase_enumerateAllAutoAssetReferencesWithBlock___
   return *MEMORY[0x277D42698];
 }
 
-- (void)enumerateOnDiskMAReferencesWithoutCorrespondingDatabaseEntriesUsingBlock:(id)a3
+- (void)enumerateOnDiskMAReferencesWithoutCorrespondingDatabaseEntriesUsingBlock:(id)block
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  blockCopy = block;
   paths = self->_paths;
   if (paths)
   {
-    v7 = paths;
+    mEMORY[0x277D737E0] = paths;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D737E0] sharedPaths];
+    mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
   }
 
-  v8 = v7;
+  v8 = mEMORY[0x277D737E0];
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -663,18 +663,18 @@ uint64_t __66__TRIAssetStoreDatabase_enumerateAllAutoAssetReferencesWithBlock___
   v27 = MEMORY[0x2743948D0](v28);
   [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:v27];
   v9 = [MEMORY[0x277CBEB58] setWithArray:v30[5]];
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [(TRIPaths *)v8 treatmentsDir];
-  v12 = [v10 enumeratorAtPath:v11];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  treatmentsDir = [(TRIPaths *)v8 treatmentsDir];
+  v12 = [defaultManager enumeratorAtPath:treatmentsDir];
 
   if (!v12)
   {
     v13 = TRILogCategory_Server();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v26 = [(TRIPaths *)v8 treatmentsDir];
+      treatmentsDir2 = [(TRIPaths *)v8 treatmentsDir];
       *buf = 138543362;
-      v36 = v26;
+      v36 = treatmentsDir2;
       _os_log_error_impl(&dword_26F567000, v13, OS_LOG_TYPE_ERROR, "Unable to find subpaths of treatments dir %{public}@", buf, 0xCu);
     }
   }
@@ -683,25 +683,25 @@ uint64_t __66__TRIAssetStoreDatabase_enumerateAllAutoAssetReferencesWithBlock___
   do
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = [v12 nextObject];
-    v17 = v16;
-    if (v16)
+    nextObject = [v12 nextObject];
+    v17 = nextObject;
+    if (nextObject)
     {
-      if ([v16 containsString:@"maRefs/"])
+      if ([nextObject containsString:@"maRefs/"])
       {
-        v18 = [v12 fileAttributes];
-        v19 = [v18 fileType];
-        v20 = v19 == v14;
+        fileAttributes = [v12 fileAttributes];
+        fileType = [fileAttributes fileType];
+        v20 = fileType == v14;
 
         if (v20)
         {
-          v21 = [(TRIPaths *)v8 treatmentsDir];
-          v22 = [v21 stringByAppendingPathComponent:v17];
+          treatmentsDir3 = [(TRIPaths *)v8 treatmentsDir];
+          v22 = [treatmentsDir3 stringByAppendingPathComponent:v17];
 
           v23 = [v9 member:v22];
-          LODWORD(v21) = v23 == 0;
+          LODWORD(treatmentsDir3) = v23 == 0;
 
-          if (v21)
+          if (treatmentsDir3)
           {
             v24 = TRILogCategory_Server();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -711,7 +711,7 @@ uint64_t __66__TRIAssetStoreDatabase_enumerateAllAutoAssetReferencesWithBlock___
               _os_log_error_impl(&dword_26F567000, v24, OS_LOG_TYPE_ERROR, "Found missing MA ref db entry: %{public}@", buf, 0xCu);
             }
 
-            v5[2](v5, v22);
+            blockCopy[2](blockCopy, v22);
           }
         }
       }
@@ -753,17 +753,17 @@ uint64_t __98__TRIAssetStoreDatabase_enumerateOnDiskMAReferencesWithoutCorrespon
   return *v4;
 }
 
-- (void)enumerateAssetIdsWithoutLiveReferencesUsingBlock:(id)a3
+- (void)enumerateAssetIdsWithoutLiveReferencesUsingBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __74__TRIAssetStoreDatabase_enumerateAssetIdsWithoutLiveReferencesUsingBlock___block_invoke;
   v8[3] = &unk_279DE2550;
-  v9 = v5;
+  v9 = blockCopy;
   v10 = a2;
   v8[4] = self;
-  v6 = v5;
+  v6 = blockCopy;
   v7 = MEMORY[0x2743948D0](v8);
   [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:v7];
 }

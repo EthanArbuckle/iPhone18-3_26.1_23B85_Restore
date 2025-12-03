@@ -1,7 +1,7 @@
 @interface WMFReader
-- (int)checkBytesAvailable:(unsigned int)a3;
-- (int)moveDataCursor:(unsigned int)a3;
-- (int)play:(id)a3;
+- (int)checkBytesAvailable:(unsigned int)available;
+- (int)moveDataCursor:(unsigned int)cursor;
+- (int)play:(id)play;
 - (int)playHeaders;
 - (int)playRecord;
 @end
@@ -73,23 +73,23 @@ LABEL_4:
   return v4;
 }
 
-- (int)play:(id)a3
+- (int)play:(id)play
 {
-  v4 = a3;
-  self->m_pBuffer = [v4 bytes];
-  self->m_length = [v4 length];
+  playCopy = play;
+  self->m_pBuffer = [playCopy bytes];
+  self->m_length = [playCopy length];
   self->m_cursor = 0;
   self->m_recordsRead = 0;
-  v5 = [(WMFReader *)self playHeaders];
-  if (!v5)
+  playHeaders = [(WMFReader *)self playHeaders];
+  if (!playHeaders)
   {
     while (1)
     {
-      v6 = [(WMFReader *)self playRecord];
-      LOBYTE(v5) = (v6 == -7) | v5;
-      if (v6 != -7)
+      playRecord = [(WMFReader *)self playRecord];
+      LOBYTE(playHeaders) = (playRecord == -7) | playHeaders;
+      if (playRecord != -7)
       {
-        if (v6)
+        if (playRecord)
         {
           break;
         }
@@ -98,25 +98,25 @@ LABEL_4:
       ++self->m_recordsRead;
     }
 
-    if (v5)
+    if (playHeaders)
     {
-      v5 = -7;
+      playHeaders = -7;
     }
 
     else
     {
-      v5 = v6;
+      playHeaders = playRecord;
     }
   }
 
   [(WMFPlayer *)self->m_player done];
 
-  return v5;
+  return playHeaders;
 }
 
-- (int)checkBytesAvailable:(unsigned int)a3
+- (int)checkBytesAvailable:(unsigned int)available
 {
-  v4 = self->m_cursor + a3;
+  v4 = self->m_cursor + available;
   result = -2;
   if (!HIDWORD(v4))
   {
@@ -134,10 +134,10 @@ LABEL_4:
   return result;
 }
 
-- (int)moveDataCursor:(unsigned int)a3
+- (int)moveDataCursor:(unsigned int)cursor
 {
-  self->m_pBuffer += a3;
-  self->m_cursor += a3;
+  self->m_pBuffer += cursor;
+  self->m_cursor += cursor;
   return 0;
 }
 

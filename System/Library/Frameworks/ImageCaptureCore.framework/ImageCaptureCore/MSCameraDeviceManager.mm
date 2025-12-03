@@ -1,32 +1,32 @@
 @interface MSCameraDeviceManager
-- (CGSize)cropThumbSize:(CGSize)a3 fullSize:(CGSize)a4 finalSize:(CGSize)a5;
+- (CGSize)cropThumbSize:(CGSize)size fullSize:(CGSize)fullSize finalSize:(CGSize)finalSize;
 - (id)deviceManagerConnection;
-- (int64_t)checkFile:(id)a3 andDevice:(id)a4;
-- (void)deleteFileImp:(id)a3;
-- (void)downloadFileImp:(id)a3;
-- (void)ejectImp:(id)a3;
-- (void)executeCompletionBlockWithErrorCode:(int64_t)a3 info:(id)a4 file:(id)a5 completionDict:(id)a6 completionBlk:(id)a7;
-- (void)getFileDataImp:(id)a3;
-- (void)getFileMetadataImp:(id)a3;
-- (void)getFileThumbnailImp:(id)a3;
-- (void)getFingerprintImp:(id)a3;
-- (void)getSecurityScopedURLImp:(id)a3;
-- (void)notifyAddedItems:(id)a3;
-- (void)notifyRemovedItems:(id)a3;
-- (void)notifyStatus:(id)a3;
-- (void)notifyUpdatedItems:(id)a3;
-- (void)refreshObjectHandleInfoImp:(id)a3;
-- (void)startDeviceWithHandle:(id)a3;
-- (void)syncClockImp:(id)a3;
+- (int64_t)checkFile:(id)file andDevice:(id)device;
+- (void)deleteFileImp:(id)imp;
+- (void)downloadFileImp:(id)imp;
+- (void)ejectImp:(id)imp;
+- (void)executeCompletionBlockWithErrorCode:(int64_t)code info:(id)info file:(id)file completionDict:(id)dict completionBlk:(id)blk;
+- (void)getFileDataImp:(id)imp;
+- (void)getFileMetadataImp:(id)imp;
+- (void)getFileThumbnailImp:(id)imp;
+- (void)getFingerprintImp:(id)imp;
+- (void)getSecurityScopedURLImp:(id)imp;
+- (void)notifyAddedItems:(id)items;
+- (void)notifyRemovedItems:(id)items;
+- (void)notifyStatus:(id)status;
+- (void)notifyUpdatedItems:(id)items;
+- (void)refreshObjectHandleInfoImp:(id)imp;
+- (void)startDeviceWithHandle:(id)handle;
+- (void)syncClockImp:(id)imp;
 @end
 
 @implementation MSCameraDeviceManager
 
 - (id)deviceManagerConnection
 {
-  v3 = [(ICDeviceManager *)self managerConnection];
+  managerConnection = [(ICDeviceManager *)self managerConnection];
 
-  if (!v3)
+  if (!managerConnection)
   {
     v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:@"com.apple.mscamerad-xpc"];
     [(ICDeviceManager *)self setManagerConnection:v4];
@@ -35,12 +35,12 @@
   return [(ICDeviceManager *)self managerConnection];
 }
 
-- (void)startDeviceWithHandle:(id)a3
+- (void)startDeviceWithHandle:(id)handle
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICDeviceManager *)self devices];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  handleCopy = handle;
+  devices = [(ICDeviceManager *)self devices];
+  v6 = [devices objectForKeyedSubscript:handleCopy];
 
   if (v6)
   {
@@ -52,27 +52,27 @@
       v7 = [v8 stringByAppendingString:@".."];
     }
 
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%12s : %@", "starting", v4];
+    handleCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%12s : %@", "starting", handleCopy];
     v10 = *MEMORY[0x1E69A8B08];
     if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
     {
       v11 = v7;
       v12 = v10;
       *buf = 136446466;
-      v19 = [(__CFString *)v7 UTF8String];
+      uTF8String = [(__CFString *)v7 UTF8String];
       v20 = 2114;
-      v21 = v9;
+      v21 = handleCopy;
       _os_log_impl(&dword_1C6F19000, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    v13 = [v6 remoteCamera];
+    remoteCamera = [v6 remoteCamera];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __47__MSCameraDeviceManager_startDeviceWithHandle___block_invoke;
     v15[3] = &unk_1E829C960;
     v16 = v6;
-    v17 = self;
-    [v13 requestStartUsingDeviceWithReply:v15];
+    selfCopy = self;
+    [remoteCamera requestStartUsingDeviceWithReply:v15];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -172,18 +172,18 @@ void __47__MSCameraDeviceManager_startDeviceWithHandle___block_invoke(uint64_t a
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ejectImp:(id)a3
+- (void)ejectImp:(id)imp
 {
-  v4 = a3;
-  v9 = [v4 objectForKeyedSubscript:@"device"];
-  v5 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  impCopy = imp;
+  v9 = [impCopy objectForKeyedSubscript:@"device"];
+  v5 = [impCopy objectForKeyedSubscript:@"cbBlock"];
 
   v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v9, @"device", 0}];
-  v7 = [(ICDeviceManager *)self remoteManager];
-  if (v7)
+  remoteManager = [(ICDeviceManager *)self remoteManager];
+  if (remoteManager)
   {
-    v8 = [v9 internalUUID];
-    [v7 ejectDevice:v8 withReply:&__block_literal_global_0];
+    internalUUID = [v9 internalUUID];
+    [remoteManager ejectDevice:internalUUID withReply:&__block_literal_global_0];
   }
 
   [v6 setObject:&unk_1F46971B0 forKeyedSubscript:@"errCode"];
@@ -193,12 +193,12 @@ void __47__MSCameraDeviceManager_startDeviceWithHandle___block_invoke(uint64_t a
   }
 }
 
-- (void)syncClockImp:(id)a3
+- (void)syncClockImp:(id)imp
 {
-  v3 = a3;
-  v9 = [v3 objectForKeyedSubscript:@"device"];
-  v4 = [v3 objectForKeyedSubscript:@"info"];
-  v5 = [v3 objectForKeyedSubscript:@"cbBlock"];
+  impCopy = imp;
+  v9 = [impCopy objectForKeyedSubscript:@"device"];
+  v4 = [impCopy objectForKeyedSubscript:@"info"];
+  v5 = [impCopy objectForKeyedSubscript:@"cbBlock"];
 
   v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v9, @"device", 0}];
   v7 = v6;
@@ -216,18 +216,18 @@ void __47__MSCameraDeviceManager_startDeviceWithHandle___block_invoke(uint64_t a
   }
 }
 
-- (void)getFileThumbnailImp:(id)a3
+- (void)getFileThumbnailImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = -9922;
-  v5 = [v4 objectForKeyedSubscript:@"file"];
-  v6 = [v4 objectForKeyedSubscript:@"info"];
-  v7 = [v4 objectForKeyedSubscript:@"device"];
-  v8 = [v4 objectForKeyedSubscript:@"cbBlock"];
-  v9 = [v4 objectForKeyedSubscript:@"options"];
+  v5 = [impCopy objectForKeyedSubscript:@"file"];
+  v6 = [impCopy objectForKeyedSubscript:@"info"];
+  v7 = [impCopy objectForKeyedSubscript:@"device"];
+  v8 = [impCopy objectForKeyedSubscript:@"cbBlock"];
+  v9 = [impCopy objectForKeyedSubscript:@"options"];
   v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696E100]];
 
   v11 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v7, @"device", v5, @"file", 0}];
@@ -398,17 +398,17 @@ void __45__MSCameraDeviceManager_getFileThumbnailImp___block_invoke_3(uint64_t a
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getFileMetadataImp:(id)a3
+- (void)getFileMetadataImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"info"];
-  v7 = [v4 objectForKeyedSubscript:@"file"];
-  v8 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"info"];
+  v7 = [impCopy objectForKeyedSubscript:@"file"];
+  v8 = [impCopy objectForKeyedSubscript:@"cbBlock"];
   v9 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", v7, @"file", 0}];
   v10 = [(MSCameraDeviceManager *)self checkFile:v7 andDevice:v5];
   v21[3] = v10;
@@ -499,18 +499,18 @@ void __44__MSCameraDeviceManager_getFileMetadataImp___block_invoke_3(uint64_t a1
   [*(a1 + 40) executeCompletionBlockWithErrorCode:v4 info:*(a1 + 48) file:*(a1 + 56) completionDict:*(a1 + 32) completionBlk:*(a1 + 64)];
 }
 
-- (void)getFileDataImp:(id)a3
+- (void)getFileDataImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v21 = [v4 objectForKeyedSubscript:@"info"];
-  v5 = [v4 objectForKeyedSubscript:@"file"];
-  v6 = [v4 objectForKeyedSubscript:@"cbBlock"];
-  v7 = [v4 objectForKeyedSubscript:@"device"];
-  v8 = [v4 objectForKeyedSubscript:@"options"];
+  v21 = [impCopy objectForKeyedSubscript:@"info"];
+  v5 = [impCopy objectForKeyedSubscript:@"file"];
+  v6 = [impCopy objectForKeyedSubscript:@"cbBlock"];
+  v7 = [impCopy objectForKeyedSubscript:@"device"];
+  v8 = [impCopy objectForKeyedSubscript:@"options"];
   v9 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v7, @"device", 0}];
   v10 = [(MSCameraDeviceManager *)self checkFile:v5 andDevice:v7];
   v31[3] = v10;
@@ -525,9 +525,9 @@ void __44__MSCameraDeviceManager_getFileMetadataImp___block_invoke_3(uint64_t a1
     if (v11)
     {
       v12 = [v8 objectForKeyedSubscript:@"ICReadOffset"];
-      v13 = [v12 unsignedLongLongValue];
+      unsignedLongLongValue = [v12 unsignedLongLongValue];
 
-      v20 = v13 != 0x7FFFFFFFFFFFFFFFLL;
+      v20 = unsignedLongLongValue != 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
@@ -628,20 +628,20 @@ void __40__MSCameraDeviceManager_getFileDataImp___block_invoke_3(uint64_t a1, vo
   [*(a1 + 32) executeCompletionBlockWithErrorCode:*(*(*(a1 + 64) + 8) + 24) info:*(a1 + 40) file:*(a1 + 48) completionDict:v7 completionBlk:*(a1 + 56)];
 }
 
-- (void)deleteFileImp:(id)a3
+- (void)deleteFileImp:(id)imp
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  impCopy = imp;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
   v46 = -9922;
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v34 = [v4 objectForKeyedSubscript:@"info"];
-  v6 = [v4 objectForKeyedSubscript:@"file"];
-  v33 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v34 = [impCopy objectForKeyedSubscript:@"info"];
+  v6 = [impCopy objectForKeyedSubscript:@"file"];
+  v33 = [impCopy objectForKeyedSubscript:@"cbBlock"];
   v7 = MEMORY[0x1E695DF90];
-  v8 = [v4 objectForKeyedSubscript:@"opts"];
+  v8 = [impCopy objectForKeyedSubscript:@"opts"];
   v32 = [v7 dictionaryWithDictionary:v8];
 
   v9 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", v6, @"file", 0}];
@@ -658,17 +658,17 @@ void __40__MSCameraDeviceManager_getFileDataImp___block_invoke_3(uint64_t a1, vo
   }
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v6 name];
-  v14 = [v12 stringWithFormat:@"MSCameraDeviceManager - %@", v13];
+  name = [v6 name];
+  v14 = [v12 stringWithFormat:@"MSCameraDeviceManager - %@", name];
 
   v15 = MEMORY[0x1E69A8B08];
   v16 = *MEMORY[0x1E69A8B08];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = v11;
-    v18 = [(__CFString *)v11 UTF8String];
+    uTF8String = [(__CFString *)v11 UTF8String];
     *buf = 136446466;
-    v48 = v18;
+    v48 = uTF8String;
     v49 = 2114;
     v50 = v14;
     _os_log_impl(&dword_1C6F19000, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -691,16 +691,16 @@ void __40__MSCameraDeviceManager_getFileDataImp___block_invoke_3(uint64_t a1, vo
     }
 
     v24 = MEMORY[0x1E696AEC0];
-    v25 = [v6 name];
-    v26 = [v24 stringWithFormat:@"File Check Failed - %@", v25];
+    name2 = [v6 name];
+    v26 = [v24 stringWithFormat:@"File Check Failed - %@", name2];
 
     v27 = *v15;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       v28 = v21;
-      v29 = [(__CFString *)v21 UTF8String];
+      uTF8String2 = [(__CFString *)v21 UTF8String];
       *buf = 136446466;
-      v48 = v29;
+      v48 = uTF8String2;
       v49 = 2114;
       v50 = v26;
       _os_log_impl(&dword_1C6F19000, v27, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -853,33 +853,33 @@ uint64_t __39__MSCameraDeviceManager_deleteFileImp___block_invoke_123(uint64_t a
   return result;
 }
 
-- (void)downloadFileImp:(id)a3
+- (void)downloadFileImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"info"];
-  v7 = [v4 objectForKeyedSubscript:@"file"];
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"info"];
+  v7 = [impCopy objectForKeyedSubscript:@"file"];
   v8 = MEMORY[0x1E695DF90];
-  v9 = [v4 objectForKeyedSubscript:@"opts"];
+  v9 = [impCopy objectForKeyedSubscript:@"opts"];
   v10 = [v8 dictionaryWithDictionary:v9];
 
   v11 = [v10 objectForKeyedSubscript:@"ICDownloadsDirectoryURL"];
-  v12 = [v11 path];
+  path = [v11 path];
 
-  v13 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  v13 = [impCopy objectForKeyedSubscript:@"cbBlock"];
   v14 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", 0}];
   v15 = [(MSCameraDeviceManager *)self checkFile:v7 andDevice:v5];
   v16 = v28;
   v28[3] = v15;
   if (!v15)
   {
-    if (v12)
+    if (path)
     {
-      [v10 setObject:v12 forKeyedSubscript:@"ICDownloadsDirectoryURL"];
+      [v10 setObject:path forKeyedSubscript:@"ICDownloadsDirectoryURL"];
       v17 = MEMORY[0x1E696AAE0];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
@@ -962,17 +962,17 @@ uint64_t __41__MSCameraDeviceManager_downloadFileImp___block_invoke_3(void *a1, 
   return [v5 executeCompletionBlockWithErrorCode:v4 info:v6 file:v7 completionDict:v8 completionBlk:v9];
 }
 
-- (void)getSecurityScopedURLImp:(id)a3
+- (void)getSecurityScopedURLImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"info"];
-  v7 = [v4 objectForKeyedSubscript:@"file"];
-  v8 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"info"];
+  v7 = [impCopy objectForKeyedSubscript:@"file"];
+  v8 = [impCopy objectForKeyedSubscript:@"cbBlock"];
   v9 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", 0}];
   v10 = [(MSCameraDeviceManager *)self checkFile:v7 andDevice:v5];
   v21[3] = v10;
@@ -1052,17 +1052,17 @@ void __49__MSCameraDeviceManager_getSecurityScopedURLImp___block_invoke_3(uint64
   [*(a1 + 32) executeCompletionBlockWithErrorCode:v4 info:*(a1 + 40) file:*(a1 + 48) completionDict:v7 completionBlk:*(a1 + 56)];
 }
 
-- (void)refreshObjectHandleInfoImp:(id)a3
+- (void)refreshObjectHandleInfoImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"info"];
-  v7 = [v4 objectForKeyedSubscript:@"file"];
-  v8 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"info"];
+  v7 = [impCopy objectForKeyedSubscript:@"file"];
+  v8 = [impCopy objectForKeyedSubscript:@"cbBlock"];
   v9 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", 0}];
   v10 = [(MSCameraDeviceManager *)self checkFile:v7 andDevice:v5];
   v21[3] = v10;
@@ -1147,17 +1147,17 @@ void __52__MSCameraDeviceManager_refreshObjectHandleInfoImp___block_invoke_3(uin
   [*(a1 + 40) executeCompletionBlockWithErrorCode:*(*(*(a1 + 64) + 8) + 24) info:*(a1 + 48) file:*(a1 + 32) completionDict:v8 completionBlk:*(a1 + 56)];
 }
 
-- (void)getFingerprintImp:(id)a3
+- (void)getFingerprintImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"info"];
-  v7 = [v4 objectForKeyedSubscript:@"file"];
-  v8 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"info"];
+  v7 = [impCopy objectForKeyedSubscript:@"file"];
+  v8 = [impCopy objectForKeyedSubscript:@"cbBlock"];
   v9 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", 0}];
   v10 = [(MSCameraDeviceManager *)self checkFile:v7 andDevice:v5];
   v21[3] = v10;
@@ -1230,9 +1230,9 @@ void __43__MSCameraDeviceManager_getFingerprintImp___block_invoke_3(uint64_t a1,
   [*(a1 + 32) executeCompletionBlockWithErrorCode:v4 info:*(a1 + 40) file:*(a1 + 48) completionDict:v5 completionBlk:*(a1 + 56)];
 }
 
-- (int64_t)checkFile:(id)a3 andDevice:(id)a4
+- (int64_t)checkFile:(id)file andDevice:(id)device
 {
-  if (a3)
+  if (file)
   {
     v4 = 0;
   }
@@ -1242,7 +1242,7 @@ void __43__MSCameraDeviceManager_getFingerprintImp___block_invoke_3(uint64_t a1,
     v4 = -21450;
   }
 
-  if ([a4 hasOpenSession])
+  if ([device hasOpenSession])
   {
     return v4;
   }
@@ -1253,37 +1253,37 @@ void __43__MSCameraDeviceManager_getFingerprintImp___block_invoke_3(uint64_t a1,
   }
 }
 
-- (void)executeCompletionBlockWithErrorCode:(int64_t)a3 info:(id)a4 file:(id)a5 completionDict:(id)a6 completionBlk:(id)a7
+- (void)executeCompletionBlockWithErrorCode:(int64_t)code info:(id)info file:(id)file completionDict:(id)dict completionBlk:(id)blk
 {
-  v15 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  if (v15)
+  infoCopy = info;
+  fileCopy = file;
+  dictCopy = dict;
+  blkCopy = blk;
+  if (infoCopy)
   {
-    [v12 setObject:v15 forKeyedSubscript:@"info"];
+    [dictCopy setObject:infoCopy forKeyedSubscript:@"info"];
   }
 
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v12 setObject:v14 forKeyedSubscript:@"errCode"];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:code];
+  [dictCopy setObject:v14 forKeyedSubscript:@"errCode"];
 
-  if (v13)
+  if (blkCopy)
   {
-    v13[2](v13, v11, v12);
+    blkCopy[2](blkCopy, fileCopy, dictCopy);
   }
 }
 
-- (void)notifyAddedItems:(id)a3
+- (void)notifyAddedItems:(id)items
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
+  itemsCopy = items;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
-  v26 = [(ICDeviceManager *)self deviceForConnection:v5];
+  v26 = [(ICDeviceManager *)self deviceForConnection:currentConnection];
   if (v22[5])
   {
     v6 = MEMORY[0x1E696AAE0];
@@ -1291,7 +1291,7 @@ void __43__MSCameraDeviceManager_getFingerprintImp___block_invoke_3(uint64_t a1,
     v16 = 3221225472;
     v17 = __42__MSCameraDeviceManager_notifyAddedItems___block_invoke;
     v18 = &unk_1E829CAC0;
-    v19 = v4;
+    v19 = itemsCopy;
     v20 = &v21;
     v7 = [v6 blockOperationWithBlock:&v15];
     [(ICDeviceManager *)self addInteractiveOperation:v7, v15, v16, v17, v18];
@@ -1318,9 +1318,9 @@ void __43__MSCameraDeviceManager_getFingerprintImp___block_invoke_3(uint64_t a1,
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v8;
-      v13 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       *buf = 136446466;
-      v28 = v13;
+      v28 = uTF8String;
       v29 = 2114;
       v30 = v10;
       _os_log_impl(&dword_1C6F19000, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1428,17 +1428,17 @@ LABEL_20:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyRemovedItems:(id)a3
+- (void)notifyRemovedItems:(id)items
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
+  itemsCopy = items;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
-  v26 = [(ICDeviceManager *)self deviceForConnection:v5];
+  v26 = [(ICDeviceManager *)self deviceForConnection:currentConnection];
   if (v22[5])
   {
     v6 = MEMORY[0x1E696AAE0];
@@ -1446,7 +1446,7 @@ LABEL_20:
     v16 = 3221225472;
     v17 = __44__MSCameraDeviceManager_notifyRemovedItems___block_invoke;
     v18 = &unk_1E829CAC0;
-    v19 = v4;
+    v19 = itemsCopy;
     v20 = &v21;
     v7 = [v6 blockOperationWithBlock:&v15];
     [(ICDeviceManager *)self addInteractiveOperation:v7, v15, v16, v17, v18];
@@ -1473,9 +1473,9 @@ LABEL_20:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v8;
-      v13 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       *buf = 136446466;
-      v28 = v13;
+      v28 = uTF8String;
       v29 = 2114;
       v30 = v10;
       _os_log_impl(&dword_1C6F19000, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1497,17 +1497,17 @@ uint64_t __44__MSCameraDeviceManager_notifyRemovedItems___block_invoke(uint64_t 
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)notifyUpdatedItems:(id)a3
+- (void)notifyUpdatedItems:(id)items
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
+  itemsCopy = items;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
-  v26 = [(ICDeviceManager *)self deviceForConnection:v5];
+  v26 = [(ICDeviceManager *)self deviceForConnection:currentConnection];
   if (v22[5])
   {
     v6 = MEMORY[0x1E696AAE0];
@@ -1515,7 +1515,7 @@ uint64_t __44__MSCameraDeviceManager_notifyRemovedItems___block_invoke(uint64_t 
     v16 = 3221225472;
     v17 = __44__MSCameraDeviceManager_notifyUpdatedItems___block_invoke;
     v18 = &unk_1E829CAC0;
-    v19 = v4;
+    v19 = itemsCopy;
     v20 = &v21;
     v7 = [v6 blockOperationWithBlock:&v15];
     [(ICDeviceManager *)self addInteractiveOperation:v7, v15, v16, v17, v18];
@@ -1542,9 +1542,9 @@ uint64_t __44__MSCameraDeviceManager_notifyRemovedItems___block_invoke(uint64_t 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v8;
-      v13 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       *buf = 136446466;
-      v28 = v13;
+      v28 = uTF8String;
       v29 = 2114;
       v30 = v10;
       _os_log_impl(&dword_1C6F19000, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1596,17 +1596,17 @@ void __44__MSCameraDeviceManager_notifyUpdatedItems___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyStatus:(id)a3
+- (void)notifyStatus:(id)status
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
+  statusCopy = status;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
-  v26 = [(ICDeviceManager *)self deviceForConnection:v5];
+  v26 = [(ICDeviceManager *)self deviceForConnection:currentConnection];
   if (v22[5])
   {
     v6 = MEMORY[0x1E696AAE0];
@@ -1614,7 +1614,7 @@ void __44__MSCameraDeviceManager_notifyUpdatedItems___block_invoke(uint64_t a1)
     v16 = 3221225472;
     v17 = __38__MSCameraDeviceManager_notifyStatus___block_invoke;
     v18 = &unk_1E829CAC0;
-    v19 = v4;
+    v19 = statusCopy;
     v20 = &v21;
     v7 = [v6 blockOperationWithBlock:&v15];
     [(ICDeviceManager *)self addInteractiveOperation:v7, v15, v16, v17, v18];
@@ -1641,9 +1641,9 @@ void __44__MSCameraDeviceManager_notifyUpdatedItems___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v8;
-      v13 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       *buf = 136446466;
-      v28 = v13;
+      v28 = uTF8String;
       v29 = 2114;
       v30 = v10;
       _os_log_impl(&dword_1C6F19000, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1664,20 +1664,20 @@ uint64_t __38__MSCameraDeviceManager_notifyStatus___block_invoke(uint64_t result
   return result;
 }
 
-- (CGSize)cropThumbSize:(CGSize)a3 fullSize:(CGSize)a4 finalSize:(CGSize)a5
+- (CGSize)cropThumbSize:(CGSize)size fullSize:(CGSize)fullSize finalSize:(CGSize)finalSize
 {
-  v5 = a3.width / a3.height;
-  v6 = a4.width / a4.height;
-  v7 = vabdd_f64(v6, a3.width / a3.height);
+  v5 = size.width / size.height;
+  v6 = fullSize.width / fullSize.height;
+  v7 = vabdd_f64(v6, size.width / size.height);
   v8 = 1.0;
-  if (a3.width / a3.height <= 1.0 || v6 <= 1.0)
+  if (size.width / size.height <= 1.0 || v6 <= 1.0)
   {
     if (v5 < 1.0 && v6 < 1.0)
     {
       if (v7 > 0.0001)
       {
-        a3.width = floor(a3.height * v6);
-        v8 = a5.height / a3.height;
+        size.width = floor(size.height * v6);
+        v8 = finalSize.height / size.height;
       }
     }
 
@@ -1687,8 +1687,8 @@ uint64_t __38__MSCameraDeviceManager_notifyStatus___block_invoke(uint64_t result
       {
         if (v7 > 0.0001)
         {
-          a3.height = floor(a3.width * v6);
-          v8 = a5.width / a3.width;
+          size.height = floor(size.width * v6);
+          v8 = finalSize.width / size.width;
         }
       }
 
@@ -1697,34 +1697,34 @@ uint64_t __38__MSCameraDeviceManager_notifyStatus___block_invoke(uint64_t result
         v13 = v5 > 1.0 && v6 == 1.0;
         if (v13)
         {
-          v8 = a5.width / a3.width;
-          a3.width = a3.height;
+          v8 = finalSize.width / size.width;
+          size.width = size.height;
         }
 
         else if (v5 <= 1.0 && v6 == 1.0)
         {
-          v8 = a5.height / a3.height;
-          a3.height = a3.width;
+          v8 = finalSize.height / size.height;
+          size.height = size.width;
         }
       }
     }
 
     else if (v7 > 0.0001)
     {
-      v8 = a5.height / a3.height;
-      a3.width = floor(a3.height / v6);
+      v8 = finalSize.height / size.height;
+      size.width = floor(size.height / v6);
     }
   }
 
   else if (v7 > 0.0001)
   {
-    v8 = a5.width / a3.width;
-    a3.height = floor(a3.width / v6);
+    v8 = finalSize.width / size.width;
+    size.height = floor(size.width / v6);
   }
 
-  v15 = a3.height * v8;
+  v15 = size.height * v8;
   v16 = floor(v15);
-  v17 = v8 * a3.width;
+  v17 = v8 * size.width;
   v18 = vcvtmd_s64_f64(v15);
   v19 = floor(v17);
   v20 = v16 + -1.0;

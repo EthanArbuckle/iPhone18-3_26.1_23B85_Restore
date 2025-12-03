@@ -1,20 +1,20 @@
 @interface PommesSearchService
-- (void)invalidateWithCachedResponse:(id)a3;
-- (void)searchInfiEntityWithRequest:(_TtC21SiriInformationSearch22PommesSearchRequestXPC *)a3 completionHandler:(id)a4;
-- (void)searchToolGlobalSearchWithRequest:(_TtC21SiriInformationSearch26SearchToolGlobalRequestXPC *)a3 completionHandler:(id)a4;
+- (void)invalidateWithCachedResponse:(id)response;
+- (void)searchInfiEntityWithRequest:(_TtC21SiriInformationSearch22PommesSearchRequestXPC *)request completionHandler:(id)handler;
+- (void)searchToolGlobalSearchWithRequest:(_TtC21SiriInformationSearch26SearchToolGlobalRequestXPC *)request completionHandler:(id)handler;
 @end
 
 @implementation PommesSearchService
 
-- (void)searchInfiEntityWithRequest:(_TtC21SiriInformationSearch22PommesSearchRequestXPC *)a3 completionHandler:(id)a4
+- (void)searchInfiEntityWithRequest:(_TtC21SiriInformationSearch22PommesSearchRequestXPC *)request completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = request;
   v13[3] = v12;
   v13[4] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -29,27 +29,27 @@
   v16[3] = 0;
   v16[4] = &_sIeghH_IeAgH_TRTA_54Tu;
   v16[5] = v15;
-  v17 = a3;
+  requestCopy = request;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v11, &_sIeAgH_ytIeAgHr_TRTA_59Tu, v16);
 }
 
-- (void)invalidateWithCachedResponse:(id)a3
+- (void)invalidateWithCachedResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
 
-  PommesSearchService.invalidate(cachedResponse:)(v3);
+  PommesSearchService.invalidate(cachedResponse:)(responseCopy);
 }
 
-- (void)searchToolGlobalSearchWithRequest:(_TtC21SiriInformationSearch26SearchToolGlobalRequestXPC *)a3 completionHandler:(id)a4
+- (void)searchToolGlobalSearchWithRequest:(_TtC21SiriInformationSearch26SearchToolGlobalRequestXPC *)request completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = request;
   v13[3] = v12;
   v13[4] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -64,7 +64,7 @@
   v16[3] = 0;
   v16[4] = &_sIeghH_IeAgH_TRTATu;
   v16[5] = v15;
-  v17 = a3;
+  requestCopy = request;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v11, &_sIeAgH_ytIeAgHr_TRTATu, v16);
 }

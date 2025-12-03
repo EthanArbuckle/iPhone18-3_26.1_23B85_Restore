@@ -1,8 +1,8 @@
 @interface HDHeartRateSummaryQueryServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 - (void)_queue_start;
 - (void)_queue_stop;
-- (void)activityCacheManager:(id)a3 changedHeartRateSummary:(id)a4 isToday:(BOOL)a5;
+- (void)activityCacheManager:(id)manager changedHeartRateSummary:(id)summary isToday:(BOOL)today;
 @end
 
 @implementation HDHeartRateSummaryQueryServer
@@ -25,40 +25,40 @@
   [WeakRetained removeActivityCacheObserver:self];
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 activityCacheInterface];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  activityCacheInterface = [profile activityCacheInterface];
 
-  if (v16)
+  if (activityCacheInterface)
   {
-    v17 = [(HDQueryServer *)[HDHeartRateSummaryQueryServer alloc] initWithUUID:v11 configuration:v12 client:v13 delegate:v14];
+    v17 = [(HDQueryServer *)[HDHeartRateSummaryQueryServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
     v18 = v17;
     if (v17)
     {
-      objc_storeWeak(&v17->_activityCacheInterface, v16);
+      objc_storeWeak(&v17->_activityCacheInterface, activityCacheInterface);
     }
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a7 code:100 description:@"Activity cache manager is unavailable"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Activity cache manager is unavailable"];
     v18 = 0;
   }
 
   return v18;
 }
 
-- (void)activityCacheManager:(id)a3 changedHeartRateSummary:(id)a4 isToday:(BOOL)a5
+- (void)activityCacheManager:(id)manager changedHeartRateSummary:(id)summary isToday:(BOOL)today
 {
-  v5 = a5;
+  todayCopy = today;
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (v5)
+  summaryCopy = summary;
+  if (todayCopy)
   {
     _HKInitializeLogging();
     v9 = MEMORY[0x277CCC2D0];
@@ -69,16 +69,16 @@
       *v23 = 138412546;
       *&v23[4] = objc_opt_class();
       *&v23[12] = 2112;
-      *&v23[14] = v8;
+      *&v23[14] = summaryCopy;
       v12 = *&v23[4];
       _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_DEFAULT, "%@ received updated summary: %@", v23, 0x16u);
     }
 
-    if (([(HKHeartRateSummary *)self->_latestSummary isEqual:v8, *v23, *&v23[16], v24]& 1) == 0)
+    if (([(HKHeartRateSummary *)self->_latestSummary isEqual:summaryCopy, *v23, *&v23[16], v24]& 1) == 0)
     {
-      objc_storeStrong(&self->_latestSummary, a4);
-      v17 = [(HDQueryServer *)self clientProxy];
-      v14 = [v17 remoteObjectProxy];
+      objc_storeStrong(&self->_latestSummary, summary);
+      clientProxy = [(HDQueryServer *)self clientProxy];
+      remoteObjectProxy = [clientProxy remoteObjectProxy];
 
       _HKInitializeLogging();
       v18 = *v9;
@@ -89,13 +89,13 @@
         *v23 = 138412546;
         *&v23[4] = v21;
         *&v23[12] = 2112;
-        *&v23[14] = v14;
+        *&v23[14] = remoteObjectProxy;
         v22 = v21;
         _os_log_debug_impl(&dword_228986000, v20, OS_LOG_TYPE_DEBUG, "%@ notifying client: %@", v23, 0x16u);
       }
 
-      v16 = [(HDQueryServer *)self queryUUID];
-      [v14 client_deliverSummary:v8 queryUUID:v16];
+      queryUUID = [(HDQueryServer *)self queryUUID];
+      [remoteObjectProxy client_deliverSummary:summaryCopy queryUUID:queryUUID];
       goto LABEL_10;
     }
 
@@ -103,12 +103,12 @@
     v13 = *v9;
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEBUG))
     {
-      v14 = v13;
+      remoteObjectProxy = v13;
       v15 = objc_opt_class();
       *v23 = 138412290;
       *&v23[4] = v15;
-      v16 = v15;
-      _os_log_debug_impl(&dword_228986000, v14, OS_LOG_TYPE_DEBUG, "%@ ignoring summary because nothing changed", v23, 0xCu);
+      queryUUID = v15;
+      _os_log_debug_impl(&dword_228986000, remoteObjectProxy, OS_LOG_TYPE_DEBUG, "%@ ignoring summary because nothing changed", v23, 0xCu);
 LABEL_10:
     }
   }

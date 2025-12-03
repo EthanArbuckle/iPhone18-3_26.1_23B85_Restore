@@ -1,18 +1,18 @@
 @interface PLJPEGThumbnailDecode
 + (id)decodeSessionOptions;
-+ (id)decodeSessionOptionsForMaxPixelSize:(id)a3;
++ (id)decodeSessionOptionsForMaxPixelSize:(id)size;
 @end
 
 @implementation PLJPEGThumbnailDecode
 
-+ (id)decodeSessionOptionsForMaxPixelSize:(id)a3
++ (id)decodeSessionOptionsForMaxPixelSize:(id)size
 {
-  v4 = a3;
-  v5 = [a1 _baseSessionOptions];
-  v6 = v5;
-  if (v4)
+  sizeCopy = size;
+  _baseSessionOptions = [self _baseSessionOptions];
+  v6 = _baseSessionOptions;
+  if (sizeCopy)
   {
-    [v5 setObject:v4 forKey:*MEMORY[0x1E6991AE0]];
+    [_baseSessionOptions setObject:sizeCopy forKey:*MEMORY[0x1E6991AE0]];
   }
 
   return v6;

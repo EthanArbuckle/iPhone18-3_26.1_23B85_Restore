@@ -1,12 +1,12 @@
 @interface CADRealCalendarDatabaseDataProvider
 + (id)realDataProvider;
-- (BOOL)isStoreDelegate:(void *)a3 inDatabase:(CalDatabase *)a4;
-- (id)accountIDForStore:(void *)a3 inDatabase:(CalDatabase *)a4;
-- (id)storeIDForStore:(void *)a3 inDatabase:(CalDatabase *)a4;
-- (id)storesInDatabase:(CalDatabase *)a3;
-- (int)naturalLanguageSuggestionsCalendarRowIDInDatabase:(CalDatabase *)a3;
-- (int)suggestionsCalendarRowIDInDatabase:(CalDatabase *)a3;
-- (void)gatherCalendarRowIDs:(id)a3 inStore:(void *)a4 inDatabase:(CalDatabase *)a5;
+- (BOOL)isStoreDelegate:(void *)delegate inDatabase:(CalDatabase *)database;
+- (id)accountIDForStore:(void *)store inDatabase:(CalDatabase *)database;
+- (id)storeIDForStore:(void *)store inDatabase:(CalDatabase *)database;
+- (id)storesInDatabase:(CalDatabase *)database;
+- (int)naturalLanguageSuggestionsCalendarRowIDInDatabase:(CalDatabase *)database;
+- (int)suggestionsCalendarRowIDInDatabase:(CalDatabase *)database;
+- (void)gatherCalendarRowIDs:(id)ds inStore:(void *)store inDatabase:(CalDatabase *)database;
 @end
 
 @implementation CADRealCalendarDatabaseDataProvider
@@ -31,14 +31,14 @@ uint64_t __55__CADRealCalendarDatabaseDataProvider_realDataProvider__block_invok
   return MEMORY[0x2821F96F8](v0);
 }
 
-- (id)storesInDatabase:(CalDatabase *)a3
+- (id)storesInDatabase:(CalDatabase *)database
 {
   v3 = CalDatabaseCopyOfAllStores();
 
   return v3;
 }
 
-- (BOOL)isStoreDelegate:(void *)a3 inDatabase:(CalDatabase *)a4
+- (BOOL)isStoreDelegate:(void *)delegate inDatabase:(CalDatabase *)database
 {
   v4 = CalStoreCopyDelegatedAccountOwnerStoreID();
   v5 = v4 != 0;
@@ -46,7 +46,7 @@ uint64_t __55__CADRealCalendarDatabaseDataProvider_realDataProvider__block_invok
   return v5;
 }
 
-- (id)accountIDForStore:(void *)a3 inDatabase:(CalDatabase *)a4
+- (id)accountIDForStore:(void *)store inDatabase:(CalDatabase *)database
 {
   if (CalStoreGetType() - 1 > 1)
   {
@@ -61,17 +61,17 @@ uint64_t __55__CADRealCalendarDatabaseDataProvider_realDataProvider__block_invok
   return v4;
 }
 
-- (id)storeIDForStore:(void *)a3 inDatabase:(CalDatabase *)a4
+- (id)storeIDForStore:(void *)store inDatabase:(CalDatabase *)database
 {
   v4 = CalStoreCopyUUID();
 
   return v4;
 }
 
-- (void)gatherCalendarRowIDs:(id)a3 inStore:(void *)a4 inDatabase:(CalDatabase *)a5
+- (void)gatherCalendarRowIDs:(id)ds inStore:(void *)store inDatabase:(CalDatabase *)database
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dsCopy = ds;
   v6 = CalStoreCopyCalendars();
   if (v6)
   {
@@ -84,7 +84,7 @@ uint64_t __55__CADRealCalendarDatabaseDataProvider_realDataProvider__block_invok
       {
         CFArrayGetValueAtIndex(v7, i);
         v11 = [MEMORY[0x277CCABB0] numberWithInt:CalCalendarGetUID()];
-        [v5 addObject:v11];
+        [dsCopy addObject:v11];
       }
     }
 
@@ -106,7 +106,7 @@ uint64_t __55__CADRealCalendarDatabaseDataProvider_realDataProvider__block_invok
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (int)naturalLanguageSuggestionsCalendarRowIDInDatabase:(CalDatabase *)a3
+- (int)naturalLanguageSuggestionsCalendarRowIDInDatabase:(CalDatabase *)database
 {
   v3 = CalDatabaseCopyNaturalLanguageSuggestionsCalendar();
   if (!v3)
@@ -120,7 +120,7 @@ uint64_t __55__CADRealCalendarDatabaseDataProvider_realDataProvider__block_invok
   return UID;
 }
 
-- (int)suggestionsCalendarRowIDInDatabase:(CalDatabase *)a3
+- (int)suggestionsCalendarRowIDInDatabase:(CalDatabase *)database
 {
   v3 = CalDatabaseCopySuggestionsCalendar();
   if (!v3)

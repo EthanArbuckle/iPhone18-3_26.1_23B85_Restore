@@ -1,9 +1,9 @@
 @interface SBVoiceCommandButton
 - (BOOL)_isPermittedToBegin;
 - (SBVoiceCommandButton)init;
-- (void)performActionsForButtonDown:(id)a3;
-- (void)performActionsForButtonLongPress:(id)a3;
-- (void)performActionsForButtonUp:(id)a3;
+- (void)performActionsForButtonDown:(id)down;
+- (void)performActionsForButtonLongPress:(id)press;
+- (void)performActionsForButtonUp:(id)up;
 @end
 
 @implementation SBVoiceCommandButton
@@ -25,8 +25,8 @@
 
     [(SBHIDButtonStateArbiter *)v2->_buttonArbiter setDelegate:v2];
     v7 = v2->_buttonArbiter;
-    v8 = [(SBSiriHardwareButtonInteraction *)v2->_siriHardwareButtonInteraction hardwareButtonGestureParameters];
-    [v8 longPressTimeInterval];
+    hardwareButtonGestureParameters = [(SBSiriHardwareButtonInteraction *)v2->_siriHardwareButtonInteraction hardwareButtonGestureParameters];
+    [hardwareButtonGestureParameters longPressTimeInterval];
     [(SBHIDButtonStateArbiter *)v7 setLongPressTimeout:?];
   }
 
@@ -35,14 +35,14 @@
 
 - (BOOL)_isPermittedToBegin
 {
-  v3 = [(SBVoiceCommandButton *)self hardwareButtonCoordinator];
-  v4 = [(SBVoiceCommandButton *)self hardwareButtonIdentifier];
-  v5 = [v3 buttonShouldStart:v4];
+  hardwareButtonCoordinator = [(SBVoiceCommandButton *)self hardwareButtonCoordinator];
+  hardwareButtonIdentifier = [(SBVoiceCommandButton *)self hardwareButtonIdentifier];
+  v5 = [hardwareButtonCoordinator buttonShouldStart:hardwareButtonIdentifier];
 
   return v5;
 }
 
-- (void)performActionsForButtonDown:(id)a3
+- (void)performActionsForButtonDown:(id)down
 {
   if ([(SBVoiceCommandButton *)self _isPermittedToBegin])
   {
@@ -63,7 +63,7 @@
   }
 }
 
-- (void)performActionsForButtonLongPress:(id)a3
+- (void)performActionsForButtonLongPress:(id)press
 {
   if ([(SBVoiceCommandButton *)self _isPermittedToBegin])
   {
@@ -84,13 +84,13 @@
   }
 }
 
-- (void)performActionsForButtonUp:(id)a3
+- (void)performActionsForButtonUp:(id)up
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = [(SBVoiceCommandButton *)self _isPermittedToBegin];
+  _isPermittedToBegin = [(SBVoiceCommandButton *)self _isPermittedToBegin];
   v5 = SBLogButtonsCombo();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (_isPermittedToBegin)
   {
     if (v6)
     {

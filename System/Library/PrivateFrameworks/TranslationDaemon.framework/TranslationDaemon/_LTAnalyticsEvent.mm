@@ -1,19 +1,19 @@
 @interface _LTAnalyticsEvent
-+ (id)timedEventWithName:(id)a3;
-- (_LTAnalyticsEvent)initWithName:(id)a3;
-- (void)addFieldsFromDictionary:(id)a3 internalOnly:(BOOL)a4;
-- (void)addFieldsWithError:(id)a3;
++ (id)timedEventWithName:(id)name;
+- (_LTAnalyticsEvent)initWithName:(id)name;
+- (void)addFieldsFromDictionary:(id)dictionary internalOnly:(BOOL)only;
+- (void)addFieldsWithError:(id)error;
 - (void)markEnd;
 - (void)markStart;
 - (void)sendLazy;
-- (void)timestampWithName:(id)a3;
+- (void)timestampWithName:(id)name;
 @end
 
 @implementation _LTAnalyticsEvent
 
-- (_LTAnalyticsEvent)initWithName:(id)a3
+- (_LTAnalyticsEvent)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = _LTAnalyticsEvent;
   v5 = [(_LTAnalyticsEvent *)&v15 init];
@@ -21,17 +21,17 @@
   if (v5)
   {
     *&v5->_startTime = xmmword_233005A50;
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"com.apple.translation", v4];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"com.apple.translation", nameCopy];
     eventName = v6->_eventName;
-    v6->_eventName = v7;
+    v6->_eventName = nameCopy;
 
     v9 = dispatch_queue_create("com.apple.translation.analytics-event", 0);
     queue = v6->_queue;
     v6->_queue = v9;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     fields = v6->_fields;
-    v6->_fields = v11;
+    v6->_fields = dictionary;
 
     v13 = v6;
   }
@@ -39,10 +39,10 @@
   return v6;
 }
 
-+ (id)timedEventWithName:(id)a3
++ (id)timedEventWithName:(id)name
 {
-  v3 = a3;
-  v4 = [[_LTAnalyticsEvent alloc] initWithName:v3];
+  nameCopy = name;
+  v4 = [[_LTAnalyticsEvent alloc] initWithName:nameCopy];
 
   [(_LTAnalyticsEvent *)v4 markStart];
 
@@ -51,23 +51,23 @@
 
 - (void)markStart
 {
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  [v4 systemUptime];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  [processInfo systemUptime];
   self->_startTime = v3;
 }
 
 - (void)markEnd
 {
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  [v4 systemUptime];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  [processInfo systemUptime];
   self->_endTime = v3;
 }
 
-- (void)timestampWithName:(id)a3
+- (void)timestampWithName:(id)name
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAC38] processInfo];
-  [v5 systemUptime];
+  nameCopy = name;
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  [processInfo systemUptime];
   v7 = v6;
 
   v8 = v7 - self->_startTime;
@@ -78,20 +78,20 @@
   v11[2] = __39___LTAnalyticsEvent_timestampWithName___block_invoke;
   v11[3] = &unk_2789B5260;
   objc_copyWeak(v13, &location);
-  v12 = v4;
+  v12 = nameCopy;
   v13[1] = *&v8;
-  v10 = v4;
+  v10 = nameCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)addFieldsFromDictionary:(id)a3 internalOnly:(BOOL)a4
+- (void)addFieldsFromDictionary:(id)dictionary internalOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v4 || _LTIsInternalInstall())
+  onlyCopy = only;
+  dictionaryCopy = dictionary;
+  if (!onlyCopy || _LTIsInternalInstall())
   {
     objc_initWeak(&location, self);
     queue = self->_queue;
@@ -100,7 +100,7 @@
     block[2] = __58___LTAnalyticsEvent_addFieldsFromDictionary_internalOnly___block_invoke;
     block[3] = &unk_2789B5288;
     objc_copyWeak(&v10, &location);
-    v9 = v6;
+    v9 = dictionaryCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v10);
@@ -108,23 +108,23 @@
   }
 }
 
-- (void)addFieldsWithError:(id)a3
+- (void)addFieldsWithError:(id)error
 {
   v12[3] = *MEMORY[0x277D85DE8];
   v11[0] = @"errorDomain";
-  v4 = a3;
-  v5 = [v4 domain];
-  v12[0] = v5;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v12[0] = domain;
   v11[1] = @"errorCode";
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "code")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
   v12[1] = v6;
   v11[2] = @"errorDescription";
-  v7 = [v4 localizedDescription];
+  localizedDescription = [errorCopy localizedDescription];
 
   v8 = &stru_284834138;
-  if (v7)
+  if (localizedDescription)
   {
-    v8 = v7;
+    v8 = localizedDescription;
   }
 
   v12[2] = v8;

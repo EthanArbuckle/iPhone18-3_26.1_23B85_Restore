@@ -1,18 +1,18 @@
 @interface SOSCrashDetectionFeedbackController
-- (_TtC11SOSSettings35SOSCrashDetectionFeedbackController)initWithDelegate:(id)a3 legalText:(id)a4;
-- (_TtC11SOSSettings35SOSCrashDetectionFeedbackController)initWithDelegate:(id)a3 legalText:(id)a4 uuid:(id)a5;
+- (_TtC11SOSSettings35SOSCrashDetectionFeedbackController)initWithDelegate:(id)delegate legalText:(id)text;
+- (_TtC11SOSSettings35SOSCrashDetectionFeedbackController)initWithDelegate:(id)delegate legalText:(id)text uuid:(id)uuid;
 @end
 
 @implementation SOSCrashDetectionFeedbackController
 
-- (_TtC11SOSSettings35SOSCrashDetectionFeedbackController)initWithDelegate:(id)a3 legalText:(id)a4 uuid:(id)a5
+- (_TtC11SOSSettings35SOSCrashDetectionFeedbackController)initWithDelegate:(id)delegate legalText:(id)text uuid:(id)uuid
 {
-  v5 = a5;
-  if (!a4)
+  uuidCopy = uuid;
+  if (!text)
   {
     v6 = 0;
     v8 = 0;
-    if (a5)
+    if (uuid)
     {
       goto LABEL_3;
     }
@@ -24,22 +24,22 @@ LABEL_5:
 
   v6 = sub_146D4();
   v8 = v7;
-  if (!v5)
+  if (!uuidCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v5 = sub_146D4();
+  uuidCopy = sub_146D4();
   v10 = v9;
 LABEL_6:
   v11 = swift_unknownObjectRetain();
-  v12 = sub_13D3C(v11, v6, v8, v5, v10);
+  v12 = sub_13D3C(v11, v6, v8, uuidCopy, v10);
   swift_unknownObjectRelease();
   return v12;
 }
 
-- (_TtC11SOSSettings35SOSCrashDetectionFeedbackController)initWithDelegate:(id)a3 legalText:(id)a4
+- (_TtC11SOSSettings35SOSCrashDetectionFeedbackController)initWithDelegate:(id)delegate legalText:(id)text
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

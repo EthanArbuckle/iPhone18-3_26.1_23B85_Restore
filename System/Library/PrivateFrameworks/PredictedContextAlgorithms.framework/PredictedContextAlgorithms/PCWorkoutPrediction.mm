@@ -1,24 +1,24 @@
 @interface PCWorkoutPrediction
-- (BOOL)computeWithLocationHistory:(id)a3 workoutHistory:(id)a4 LOIs:(id)a5 atTime:(double)a6 error:(id *)a7;
+- (BOOL)computeWithLocationHistory:(id)history workoutHistory:(id)workoutHistory LOIs:(id)is atTime:(double)time error:(id *)error;
 - (PCWorkoutPrediction)init;
-- (PCWorkoutPrediction)initWithCoder:(id)a3;
-- (id)_annotateEventBundlesWithStartDate:(id)a3 endDate:(id)a4 allEvents:(id)a5;
-- (id)_bundleEvents:(id)a3;
-- (id)_bundleEvents:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (id)_createEmbeddingFromVisitEvent:(id)a3 atTime:(double)a4;
-- (id)_createEventFromVisit:(id)a3 loiMap:(id)a4;
-- (id)_createEventFromWorkout:(id)a3;
+- (PCWorkoutPrediction)initWithCoder:(id)coder;
+- (id)_annotateEventBundlesWithStartDate:(id)date endDate:(id)endDate allEvents:(id)events;
+- (id)_bundleEvents:(id)events;
+- (id)_bundleEvents:(id)events startDate:(id)date endDate:(id)endDate;
+- (id)_createEmbeddingFromVisitEvent:(id)event atTime:(double)time;
+- (id)_createEventFromVisit:(id)visit loiMap:(id)map;
+- (id)_createEventFromWorkout:(id)workout;
 - (id)_decodeClustersFromProtobuf;
 - (id)_decodeEmbeddingsFromProtobuf;
-- (id)_predictWorkoutsForVisit:(id)a3 atTime:(double)a4;
+- (id)_predictWorkoutsForVisit:(id)visit atTime:(double)time;
 - (id)fetchClusters;
 - (id)fetchEmbeddings;
 - (id)fetchPCPEmbeddings;
-- (void)_generateClustersFromBundles:(id)a3;
-- (void)_updateProtobufCluster:(id)a3 withNewFeatures:(id)a4;
-- (void)addEmbedding:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)predictWithLocationHistory:(id)a3 workoutHistory:(id)a4 LOIs:(id)a5 atTime:(double)a6 workoutPredictions:(id *)a7;
+- (void)_generateClustersFromBundles:(id)bundles;
+- (void)_updateProtobufCluster:(id)cluster withNewFeatures:(id)features;
+- (void)addEmbedding:(id)embedding;
+- (void)encodeWithCoder:(id)coder;
+- (void)predictWithLocationHistory:(id)history workoutHistory:(id)workoutHistory LOIs:(id)is atTime:(double)time workoutPredictions:(id *)predictions;
 @end
 
 @implementation PCWorkoutPrediction
@@ -56,10 +56,10 @@
   return v2;
 }
 
-- (PCWorkoutPrediction)initWithCoder:(id)a3
+- (PCWorkoutPrediction)initWithCoder:(id)coder
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PCWorkoutPrediction *)self init];
   v6 = v5;
   if (v5)
@@ -79,8 +79,8 @@
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v61 setWithObjects:{v59, v56, v54, v52, v7, v8, v9, v10, v11, v12, v13, v14, objc_opt_class(), 0}];
-    v62 = v4;
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"workoutEmbeddings"];
+    v62 = coderCopy;
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"workoutEmbeddings"];
 
     v60 = v16;
     if (v16)
@@ -148,7 +148,7 @@
     v33 = objc_opt_class();
     v34 = objc_opt_class();
     v35 = [v57 setWithObjects:{v55, v53, v27, v28, v29, v30, v31, v32, v33, v34, objc_opt_class(), 0}];
-    v4 = v62;
+    coderCopy = v62;
     v36 = [v62 decodeObjectOfClasses:v35 forKey:@"workoutClusters"];
 
     if (v36)
@@ -204,7 +204,7 @@
         objc_storeStrong(&v63->_clusters, v37);
       }
 
-      v4 = v62;
+      coderCopy = v62;
       v36 = v58;
     }
 
@@ -226,10 +226,10 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   embeddings = self->_embeddings;
   if (embeddings && [(NSMutableArray *)embeddings count])
   {
@@ -257,8 +257,8 @@
           v12 = *(*(&v33 + 1) + 8 * v11);
           v13 = objc_alloc_init(MEMORY[0x1E69C65C0]);
           [v12 writeTo:v13];
-          v14 = [v13 data];
-          [v6 addObject:v14];
+          data = [v13 data];
+          [v6 addObject:data];
 
           ++v11;
         }
@@ -270,7 +270,7 @@
       while (v9);
     }
 
-    [v4 encodeObject:v6 forKey:@"workoutEmbeddings"];
+    [coderCopy encodeObject:v6 forKey:@"workoutEmbeddings"];
   }
 
   clusters = self->_clusters;
@@ -300,8 +300,8 @@
           v22 = *(*(&v29 + 1) + 8 * v21);
           v23 = objc_alloc_init(MEMORY[0x1E69C65C0]);
           [v22 writeTo:{v23, v29}];
-          v24 = [v23 data];
-          [v16 addObject:v24];
+          data2 = [v23 data];
+          [v16 addObject:data2];
 
           ++v21;
         }
@@ -313,7 +313,7 @@
       while (v19);
     }
 
-    [v4 encodeObject:v16 forKey:@"workoutClusters"];
+    [coderCopy encodeObject:v16 forKey:@"workoutClusters"];
   }
 
   v25 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
@@ -331,40 +331,40 @@
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)computeWithLocationHistory:(id)a3 workoutHistory:(id)a4 LOIs:(id)a5 atTime:(double)a6 error:(id *)a7
+- (BOOL)computeWithLocationHistory:(id)history workoutHistory:(id)workoutHistory LOIs:(id)is atTime:(double)time error:(id *)error
 {
   v114 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  historyCopy = history;
+  workoutHistoryCopy = workoutHistory;
+  isCopy = is;
   v14 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349568;
-    v109 = [v11 count];
+    v109 = [historyCopy count];
     v110 = 2050;
-    v111 = [v13 count];
+    v111 = [isCopy count];
     v112 = 2050;
-    v113 = [v12 count];
+    v113 = [workoutHistoryCopy count];
     _os_log_impl(&dword_1CEE74000, v14, OS_LOG_TYPE_DEFAULT, "WorkoutPrediction: Compute Workout Clusters BEGIN. (visits=%{public}lu, loi=%{public}lu, workouts=%{public}lu)", buf, 0x20u);
   }
 
-  v15 = [v12 count];
+  v15 = [workoutHistoryCopy count];
   v16 = v15;
   if (v15)
   {
-    v78 = self;
+    selfCopy = self;
     v74 = v15;
-    v77 = v11;
-    v76 = v12;
-    v73 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count") + objc_msgSend(v11, "count")}];
-    v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v13, "count")}];
+    v77 = historyCopy;
+    v76 = workoutHistoryCopy;
+    v73 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(workoutHistoryCopy, "count") + objc_msgSend(historyCopy, "count")}];
+    v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(isCopy, "count")}];
     v97 = 0u;
     v98 = 0u;
     v99 = 0u;
     v100 = 0u;
-    v75 = v13;
-    v18 = v13;
+    v75 = isCopy;
+    v18 = isCopy;
     v19 = [v18 countByEnumeratingWithState:&v97 objects:v105 count:16];
     if (v19)
     {
@@ -387,8 +387,8 @@
           if ([v25 hasLoiIdentifier])
           {
             v26 = *(v23 + 1944);
-            v27 = [v25 loiIdentifier];
-            v28 = [v26 uuidStringFromData:v27];
+            loiIdentifier = [v25 loiIdentifier];
+            v28 = [v26 uuidStringFromData:loiIdentifier];
 
             v29 = [v17 objectForKeyedSubscript:v28];
 
@@ -467,7 +467,7 @@
           v43 = *(*(&v93 + 1) + 8 * i);
           if ([v43 hasExitTimeCFAbsolute])
           {
-            v44 = [(PCWorkoutPrediction *)v78 _createEventFromVisit:v43 loiMap:v17];
+            v44 = [(PCWorkoutPrediction *)selfCopy _createEventFromVisit:v43 loiMap:v17];
             [v39 addObject:v44];
           }
         }
@@ -497,7 +497,7 @@
             objc_enumerationMutation(v45);
           }
 
-          v50 = [(PCWorkoutPrediction *)v78 _createEventFromWorkout:*(*(&v89 + 1) + 8 * j), v73];
+          v50 = [(PCWorkoutPrediction *)selfCopy _createEventFromWorkout:*(*(&v89 + 1) + 8 * j), v73];
           if (v50)
           {
             [v39 addObject:v50];
@@ -533,10 +533,10 @@
           v56 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
           if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
           {
-            v57 = [v55 eventIdentifier];
+            eventIdentifier = [v55 eventIdentifier];
             v58 = [v55 description];
             *buf = 138412546;
-            v109 = v57;
+            v109 = eventIdentifier;
             v110 = 2112;
             v111 = v58;
             _os_log_impl(&dword_1CEE74000, v56, OS_LOG_TYPE_DEBUG, "WorkoutPrediction: Event id, %@, description, %@", buf, 0x16u);
@@ -549,7 +549,7 @@
       while (v52);
     }
 
-    v59 = [(PCWorkoutPrediction *)v78 _bundleEvents:obj];
+    v59 = [(PCWorkoutPrediction *)selfCopy _bundleEvents:obj];
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
@@ -572,12 +572,12 @@
           v65 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
           if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
           {
-            v66 = [v64 bundleIdentifier];
-            v67 = [v64 sensitiveDescription];
+            bundleIdentifier = [v64 bundleIdentifier];
+            sensitiveDescription = [v64 sensitiveDescription];
             *buf = 138412547;
-            v109 = v66;
+            v109 = bundleIdentifier;
             v110 = 2117;
-            v111 = v67;
+            v111 = sensitiveDescription;
             _os_log_impl(&dword_1CEE74000, v65, OS_LOG_TYPE_DEBUG, "WorkoutPrediction: eventBundle.id=%@, description=%{sensitive}@", buf, 0x16u);
           }
         }
@@ -588,7 +588,7 @@
       while (v61);
     }
 
-    [(PCWorkoutPrediction *)v78 _generateClustersFromBundles:v59, v73];
+    [(PCWorkoutPrediction *)selfCopy _generateClustersFromBundles:v59, v73];
     v68 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
     {
@@ -596,10 +596,10 @@
       _os_log_impl(&dword_1CEE74000, v68, OS_LOG_TYPE_DEFAULT, "WorkoutPrediction: Compute Workout Clusters END", buf, 2u);
     }
 
-    v12 = v76;
-    v11 = v77;
+    workoutHistoryCopy = v76;
+    historyCopy = v77;
     v16 = v74;
-    v13 = v75;
+    isCopy = v75;
     goto LABEL_62;
   }
 
@@ -610,13 +610,13 @@
     _os_log_impl(&dword_1CEE74000, v69, OS_LOG_TYPE_DEFAULT, "WorkoutPrediction: No workouts found, do nothing", buf, 2u);
   }
 
-  if (a7)
+  if (error)
   {
     v70 = objc_alloc(MEMORY[0x1E696ABC0]);
     v106 = *MEMORY[0x1E696A578];
     v107 = @"No workouts available. Unable to create clusters";
     obj = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v107 forKeys:&v106 count:1];
-    *a7 = [v70 initWithDomain:@"PCErrorDomain" code:4 userInfo:?];
+    *error = [v70 initWithDomain:@"PCErrorDomain" code:4 userInfo:?];
 LABEL_62:
   }
 
@@ -624,15 +624,15 @@ LABEL_62:
   return v16 != 0;
 }
 
-- (id)_createEventFromVisit:(id)a3 loiMap:(id)a4
+- (id)_createEventFromVisit:(id)visit loiMap:(id)map
 {
   v84 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v65 = a4;
-  if ([v5 hasLoiIdentifier])
+  visitCopy = visit;
+  mapCopy = map;
+  if ([visitCopy hasLoiIdentifier])
   {
-    v6 = [v5 loiIdentifier];
-    v7 = [PCAlgorithmsCommonUtils uuidStringFromData:v6];
+    loiIdentifier = [visitCopy loiIdentifier];
+    v7 = [PCAlgorithmsCommonUtils uuidStringFromData:loiIdentifier];
   }
 
   else
@@ -640,15 +640,15 @@ LABEL_62:
     v7 = 0;
   }
 
-  if ([v5 hasIdentifier])
+  if ([visitCopy hasIdentifier])
   {
-    v8 = [v5 identifier];
-    v9 = [PCAlgorithmsCommonUtils uuidStringFromData:v8];
+    identifier = [visitCopy identifier];
+    v9 = [PCAlgorithmsCommonUtils uuidStringFromData:identifier];
 
     if (v7)
     {
 LABEL_6:
-      v10 = [v65 objectForKeyedSubscript:v7];
+      v10 = [mapCopy objectForKeyedSubscript:v7];
       goto LABEL_9;
     }
   }
@@ -665,12 +665,12 @@ LABEL_6:
   v10 = 0;
 LABEL_9:
   v11 = MEMORY[0x1E695DF00];
-  [v5 entryTimeCFAbsolute];
+  [visitCopy entryTimeCFAbsolute];
   v12 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
-  if ([v5 hasExitTimeCFAbsolute])
+  if ([visitCopy hasExitTimeCFAbsolute])
   {
     v13 = MEMORY[0x1E695DF00];
-    [v5 exitTimeCFAbsolute];
+    [visitCopy exitTimeCFAbsolute];
     v14 = [v13 dateWithTimeIntervalSinceReferenceDate:?];
   }
 
@@ -688,83 +688,83 @@ LABEL_9:
   }
 
   v16 = [PCEvent alloc];
-  v17 = [MEMORY[0x1E696AFB0] UUID];
-  v18 = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  date = [MEMORY[0x1E695DF00] date];
   v64 = v12;
-  v19 = [(PCEvent *)v16 initWithEventIdentifier:v17 startDate:v12 endDate:v14 creationDate:v18 provider:2 category:1];
+  v19 = [(PCEvent *)v16 initWithEventIdentifier:uUID startDate:v12 endDate:v14 creationDate:date provider:2 category:1];
 
   [(PCEvent *)v19 setIdentifierFromProvider:v9];
-  v20 = [v5 location];
+  location = [visitCopy location];
 
-  if (v20)
+  if (location)
   {
-    v21 = [v5 location];
-    v22 = [(PCEvent *)v19 routineEvent];
-    [v22 setLocation:v21];
+    location2 = [visitCopy location];
+    routineEvent = [(PCEvent *)v19 routineEvent];
+    [routineEvent setLocation:location2];
   }
 
   if (v10)
   {
-    v23 = [v10 placeMapItem];
-    v24 = [v23 placeName];
-    v25 = [(PCEvent *)v19 routineEvent];
-    [v25 setPlaceName:v24];
+    placeMapItem = [v10 placeMapItem];
+    placeName = [placeMapItem placeName];
+    routineEvent2 = [(PCEvent *)v19 routineEvent];
+    [routineEvent2 setPlaceName:placeName];
 
-    v26 = [v10 placeType];
-    v27 = [(PCEvent *)v19 routineEvent];
-    [v27 setPlaceUserType:v26];
+    placeType = [v10 placeType];
+    routineEvent3 = [(PCEvent *)v19 routineEvent];
+    [routineEvent3 setPlaceUserType:placeType];
 
-    v28 = [v10 placeMapItem];
-    v29 = [v28 placeType];
-    v30 = [(PCEvent *)v19 routineEvent];
-    [v30 setMapItemPlaceType:v29];
+    placeMapItem2 = [v10 placeMapItem];
+    placeType2 = [placeMapItem2 placeType];
+    routineEvent4 = [(PCEvent *)v19 routineEvent];
+    [routineEvent4 setMapItemPlaceType:placeType2];
 
-    v31 = [v10 placeMapItem];
-    v32 = [v31 mapItemMUID];
-    v33 = [(PCEvent *)v19 routineEvent];
-    [v33 setMapItemID:v32];
+    placeMapItem3 = [v10 placeMapItem];
+    mapItemMUID = [placeMapItem3 mapItemMUID];
+    routineEvent5 = [(PCEvent *)v19 routineEvent];
+    [routineEvent5 setMapItemID:mapItemMUID];
 
-    v34 = [v10 placeMapItem];
-    v35 = [v34 category];
-    v36 = [(PCEvent *)v19 routineEvent];
-    [v36 setPoiCategory:v35];
+    placeMapItem4 = [v10 placeMapItem];
+    category = [placeMapItem4 category];
+    routineEvent6 = [(PCEvent *)v19 routineEvent];
+    [routineEvent6 setPoiCategory:category];
 
-    v37 = [v10 placeMapItem];
-    v38 = [v37 placeSource];
-    v39 = [(PCEvent *)v19 routineEvent];
-    [v39 setPlaceSource:v38];
+    placeMapItem5 = [v10 placeMapItem];
+    placeSource = [placeMapItem5 placeSource];
+    routineEvent7 = [(PCEvent *)v19 routineEvent];
+    [routineEvent7 setPlaceSource:placeSource];
   }
 
   else
   {
-    v37 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+    placeMapItem5 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
+    if (os_log_type_enabled(placeMapItem5, OS_LOG_TYPE_ERROR))
     {
-      v40 = [(PCEvent *)v19 startDate];
-      v41 = [(PCEvent *)v19 endDate];
+      startDate = [(PCEvent *)v19 startDate];
+      endDate = [(PCEvent *)v19 endDate];
       *buf = 138544130;
       v67 = v9;
       v68 = 2114;
       v69 = v7;
       v70 = 2114;
-      v71 = v40;
+      v71 = startDate;
       v72 = 2114;
-      v73 = v41;
-      _os_log_impl(&dword_1CEE74000, v37, OS_LOG_TYPE_ERROR, "WorkoutPrediction: No matching Visit LOI found - visitID, %{public}@, loiID, %{public}@, startDate, %{public}@, endDate, %{public}@", buf, 0x2Au);
+      v73 = endDate;
+      _os_log_impl(&dword_1CEE74000, placeMapItem5, OS_LOG_TYPE_ERROR, "WorkoutPrediction: No matching Visit LOI found - visitID, %{public}@, loiID, %{public}@, startDate, %{public}@, endDate, %{public}@", buf, 0x2Au);
     }
   }
 
   v42 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
   {
-    v60 = [(PCEvent *)v19 eventIdentifier];
-    v59 = [v10 placeMapItem];
-    v57 = [v59 mapItemMUID];
-    v58 = [v10 placeMapItem];
-    v43 = [v58 placeType];
-    v63 = v5;
+    eventIdentifier = [(PCEvent *)v19 eventIdentifier];
+    placeMapItem6 = [v10 placeMapItem];
+    mapItemMUID2 = [placeMapItem6 mapItemMUID];
+    placeMapItem7 = [v10 placeMapItem];
+    placeType3 = [placeMapItem7 placeType];
+    v63 = visitCopy;
     v44 = @"PlaceType_Unknown";
-    switch(v43)
+    switch(placeType3)
     {
       case 0:
         break;
@@ -829,62 +829,62 @@ LABEL_9:
         v44 = @"Division";
         break;
       default:
-        if (v43 == 1000)
+        if (placeType3 == 1000)
         {
           v44 = @"Undefined";
         }
 
         else
         {
-          v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v43];
+          v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", placeType3];
         }
 
         break;
     }
 
     v56 = v44;
-    v45 = [v10 placeType];
+    placeType4 = [v10 placeType];
     log = v42;
     v62 = v14;
-    if (v45 >= 5)
+    if (placeType4 >= 5)
     {
-      v55 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v45];
+      v55 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", placeType4];
     }
 
     else
     {
-      v55 = off_1E83B8278[v45];
+      v55 = off_1E83B8278[placeType4];
     }
 
-    v54 = [v10 placeMapItem];
-    v46 = [v54 placeName];
-    v47 = [v10 placeMapItem];
-    v48 = [v47 category];
-    v49 = [v10 placeMapItem];
-    v50 = [v49 placeSource];
-    v51 = [(PCEvent *)v19 identifierFromProvider];
+    placeMapItem8 = [v10 placeMapItem];
+    placeName2 = [placeMapItem8 placeName];
+    placeMapItem9 = [v10 placeMapItem];
+    category2 = [placeMapItem9 category];
+    placeMapItem10 = [v10 placeMapItem];
+    placeSource2 = [placeMapItem10 placeSource];
+    identifierFromProvider = [(PCEvent *)v19 identifierFromProvider];
     *buf = 138414339;
-    v67 = v60;
+    v67 = eventIdentifier;
     v68 = 2112;
     v69 = v7;
     v70 = 2048;
-    v71 = v57;
+    v71 = mapItemMUID2;
     v72 = 2112;
     v73 = v56;
     v74 = 2112;
     v75 = v55;
     v76 = 2117;
-    v77 = v46;
+    v77 = placeName2;
     v78 = 2112;
-    v79 = v48;
+    v79 = category2;
     v80 = 2048;
-    v81 = v50;
+    v81 = placeSource2;
     v82 = 2112;
-    v83 = v51;
+    v83 = identifierFromProvider;
     _os_log_impl(&dword_1CEE74000, log, OS_LOG_TYPE_DEBUG, "WorkoutPrediction: Created Visit, eventID, %@, loi, %@, mapItemID, %llu, mapItemPlaceType, %@, userType, %@, name, %{sensitive}@, category, %@, source, %llu, identifierFromProvider, %@", buf, 0x5Cu);
 
     v42 = log;
-    v5 = v63;
+    visitCopy = v63;
     v14 = v62;
   }
 
@@ -893,24 +893,24 @@ LABEL_9:
   return v19;
 }
 
-- (id)_createEventFromWorkout:(id)a3
+- (id)_createEventFromWorkout:(id)workout
 {
   v61 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  workoutCopy = workout;
   v4 = [PCEvent alloc];
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v6 = MEMORY[0x1E695DF00];
-  [v3 startTimeCFAbsolute];
+  [workoutCopy startTimeCFAbsolute];
   v7 = [v6 dateWithTimeIntervalSinceReferenceDate:?];
   v8 = MEMORY[0x1E695DF00];
-  [v3 endTimeCFAbsolute];
+  [workoutCopy endTimeCFAbsolute];
   v9 = [v8 dateWithTimeIntervalSinceReferenceDate:?];
-  v10 = [MEMORY[0x1E695DF00] date];
-  v11 = [(PCEvent *)v4 initWithEventIdentifier:v5 startDate:v7 endDate:v9 creationDate:v10 provider:1 category:2];
+  date = [MEMORY[0x1E695DF00] date];
+  v11 = [(PCEvent *)v4 initWithEventIdentifier:uUID startDate:v7 endDate:v9 creationDate:date provider:1 category:2];
 
-  v12 = [v3 workoutActivityType];
+  workoutActivityType = [workoutCopy workoutActivityType];
   v13 = @"AmericanFootball";
-  switch(v12)
+  switch(workoutActivityType)
   {
     case 1:
       break;
@@ -1163,7 +1163,7 @@ LABEL_9:
       v13 = @"UnderwaterDiving";
       break;
     default:
-      if (v12 == 3000)
+      if (workoutActivityType == 3000)
       {
         v13 = @"Other";
       }
@@ -1171,7 +1171,7 @@ LABEL_9:
       else
       {
 LABEL_5:
-        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(Unknown: %llu)", v12];
+        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(Unknown: %llu)", workoutActivityType];
       }
 
       break;
@@ -1184,9 +1184,9 @@ LABEL_5:
 
   else
   {
-    v15 = [v3 workoutActivityType];
+    workoutActivityType2 = [workoutCopy workoutActivityType];
     v16 = @"AmericanFootball";
-    switch(v15)
+    switch(workoutActivityType2)
     {
       case 1:
         break;
@@ -1439,7 +1439,7 @@ LABEL_5:
         v16 = @"UnderwaterDiving";
         break;
       default:
-        if (v15 == 3000)
+        if (workoutActivityType2 == 3000)
         {
           v16 = @"Other";
         }
@@ -1447,75 +1447,75 @@ LABEL_5:
         else
         {
 LABEL_93:
-          v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(Unknown: %llu)", v15];
+          v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(Unknown: %llu)", workoutActivityType2];
         }
 
         break;
     }
 
-    v17 = [(PCEvent *)v11 workoutEvent];
-    [v17 setWorkoutType:v16];
+    workoutEvent = [(PCEvent *)v11 workoutEvent];
+    [workoutEvent setWorkoutType:v16];
 
-    v18 = [v3 sourceBundleIdentifier];
-    v19 = [(PCEvent *)v11 workoutEvent];
-    [v19 setSourceBundleIdentifier:v18];
+    sourceBundleIdentifier = [workoutCopy sourceBundleIdentifier];
+    workoutEvent2 = [(PCEvent *)v11 workoutEvent];
+    [workoutEvent2 setSourceBundleIdentifier:sourceBundleIdentifier];
 
-    v20 = [v3 workoutStartLocation];
-    v21 = [(PCEvent *)v11 workoutEvent];
-    [v21 setWorkoutLocationStart:v20];
+    workoutStartLocation = [workoutCopy workoutStartLocation];
+    workoutEvent3 = [(PCEvent *)v11 workoutEvent];
+    [workoutEvent3 setWorkoutLocationStart:workoutStartLocation];
 
-    if ([v3 hasSessionLocationType])
+    if ([workoutCopy hasSessionLocationType])
     {
-      v22 = [v3 sessionLocationType];
-      v23 = [(PCEvent *)v11 workoutEvent];
-      [v23 setWorkoutSessionLocationType:v22];
+      sessionLocationType = [workoutCopy sessionLocationType];
+      workoutEvent4 = [(PCEvent *)v11 workoutEvent];
+      [workoutEvent4 setWorkoutSessionLocationType:sessionLocationType];
     }
 
-    if ([v3 hasSwimmingLocationType])
+    if ([workoutCopy hasSwimmingLocationType])
     {
-      v24 = [v3 swimmingLocationType];
-      v25 = [(PCEvent *)v11 workoutEvent];
-      [v25 setWorkoutSwimmingLocationType:v24];
+      swimmingLocationType = [workoutCopy swimmingLocationType];
+      workoutEvent5 = [(PCEvent *)v11 workoutEvent];
+      [workoutEvent5 setWorkoutSwimmingLocationType:swimmingLocationType];
     }
 
     v26 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v27 = [v3 hkObjectUUID];
-    v28 = [v26 initWithUUIDBytes:{objc_msgSend(v27, "bytes")}];
-    v29 = [(PCEvent *)v11 workoutEvent];
-    [v29 setHkObjectIdentifier:v28];
+    hkObjectUUID = [workoutCopy hkObjectUUID];
+    v28 = [v26 initWithUUIDBytes:{objc_msgSend(hkObjectUUID, "bytes")}];
+    workoutEvent6 = [(PCEvent *)v11 workoutEvent];
+    [workoutEvent6 setHkObjectIdentifier:v28];
 
     v30 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      v46 = [(PCEvent *)v11 eventIdentifier];
-      v45 = [(PCEvent *)v11 workoutEvent];
-      v31 = [v45 workoutType];
-      v43 = [(PCEvent *)v11 workoutEvent];
-      v32 = [v43 sourceBundleIdentifier];
-      v42 = [(PCEvent *)v11 workoutEvent];
-      v33 = [v42 workoutLocationStart];
-      v41 = [(PCEvent *)v11 workoutEvent];
-      v34 = [v41 hkObjectIdentifier];
-      v35 = [(PCEvent *)v11 workoutEvent];
+      eventIdentifier = [(PCEvent *)v11 eventIdentifier];
+      workoutEvent7 = [(PCEvent *)v11 workoutEvent];
+      workoutType = [workoutEvent7 workoutType];
+      workoutEvent8 = [(PCEvent *)v11 workoutEvent];
+      sourceBundleIdentifier2 = [workoutEvent8 sourceBundleIdentifier];
+      workoutEvent9 = [(PCEvent *)v11 workoutEvent];
+      workoutLocationStart = [workoutEvent9 workoutLocationStart];
+      workoutEvent10 = [(PCEvent *)v11 workoutEvent];
+      hkObjectIdentifier = [workoutEvent10 hkObjectIdentifier];
+      workoutEvent11 = [(PCEvent *)v11 workoutEvent];
       v36 = v13;
-      v37 = [v35 workoutSessionLocationType];
+      workoutSessionLocationType = [workoutEvent11 workoutSessionLocationType];
       [(PCEvent *)v11 workoutEvent];
       v38 = v44 = v11;
       *buf = 138413827;
-      v48 = v46;
+      v48 = eventIdentifier;
       v49 = 2112;
-      v50 = v31;
+      v50 = workoutType;
       v51 = 2112;
-      v52 = v32;
+      v52 = sourceBundleIdentifier2;
       v53 = 2117;
-      v54 = v33;
+      v54 = workoutLocationStart;
       v55 = 2112;
-      v56 = v34;
+      v56 = hkObjectIdentifier;
       v57 = 1024;
-      v58 = v37;
+      v58 = workoutSessionLocationType;
       v13 = v36;
       v59 = 1024;
-      v60 = [v38 workoutSwimmingLocationType];
+      workoutSwimmingLocationType = [v38 workoutSwimmingLocationType];
       _os_log_impl(&dword_1CEE74000, v30, OS_LOG_TYPE_DEBUG, "WorkoutPrediction: Created Workout eventID, %@, workoutType, %@, sourceBundleIdentifier, %@, workoutLocationStart, %{sensitive}@, hkObjectIdentifier, %@, workoutSessionLocationType, %d, workoutSwimmingLocationType, %d", buf, 0x40u);
 
       v11 = v44;
@@ -1529,37 +1529,37 @@ LABEL_93:
   return v14;
 }
 
-- (id)_bundleEvents:(id)a3
+- (id)_bundleEvents:(id)events
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  eventsCopy = events;
   v6 = [v4 now];
   v7 = [v6 dateByAddingTimeInterval:-4838400.0];
-  v8 = [(PCWorkoutPrediction *)self _bundleEvents:v5 startDate:v7 endDate:v6];
+  v8 = [(PCWorkoutPrediction *)self _bundleEvents:eventsCopy startDate:v7 endDate:v6];
 
   return v8;
 }
 
-- (id)_bundleEvents:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (id)_bundleEvents:(id)events startDate:(id)date endDate:(id)endDate
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v9 endDate:v10];
-  v12 = [v11 startDate];
-  v13 = [v11 endDate];
-  v14 = [(PCWorkoutPrediction *)self _annotateEventBundlesWithStartDate:v12 endDate:v13 allEvents:v8];
+  eventsCopy = events;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v11 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:dateCopy endDate:endDateCopy];
+  startDate = [v11 startDate];
+  endDate = [v11 endDate];
+  v14 = [(PCWorkoutPrediction *)self _annotateEventBundlesWithStartDate:startDate endDate:endDate allEvents:eventsCopy];
 
   v15 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138544130;
-    v20 = v9;
+    v20 = dateCopy;
     v21 = 2114;
-    v22 = v10;
+    v22 = endDateCopy;
     v23 = 2050;
-    v24 = [v8 count];
+    v24 = [eventsCopy count];
     v25 = 2050;
     v26 = [v14 count];
     _os_log_impl(&dword_1CEE74000, v15, OS_LOG_TYPE_DEFAULT, "WorkoutPrediction: Bundling - startDate, %{public}@, endDate, %{public}@, eventCount, %{public}lu, bundleCount, %{public}lu", &v19, 0x2Au);
@@ -1571,12 +1571,12 @@ LABEL_93:
   return v16;
 }
 
-- (id)_annotateEventBundlesWithStartDate:(id)a3 endDate:(id)a4 allEvents:(id)a5
+- (id)_annotateEventBundlesWithStartDate:(id)date endDate:(id)endDate allEvents:(id)events
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = a5;
+  eventsCopy = events;
   v6 = objc_opt_new();
-  v7 = [MEMORY[0x1E695DEC8] arrayWithArray:v5];
+  v7 = [MEMORY[0x1E695DEC8] arrayWithArray:eventsCopy];
 
   v8 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"startDate" ascending:1];
   v17[0] = v8;
@@ -1603,14 +1603,14 @@ LABEL_93:
   return v14;
 }
 
-- (void)_generateClustersFromBundles:(id)a3
+- (void)_generateClustersFromBundles:(id)bundles
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v43 = self;
-  v5 = [(PCWorkoutPrediction *)self clusteringManager];
-  v44 = v4;
-  v6 = [v5 getEmbeddingsFromBundles:v4 forEmbeddingType:2];
+  bundlesCopy = bundles;
+  selfCopy = self;
+  clusteringManager = [(PCWorkoutPrediction *)self clusteringManager];
+  v44 = bundlesCopy;
+  v6 = [clusteringManager getEmbeddingsFromBundles:bundlesCopy forEmbeddingType:2];
 
   v7 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1644,9 +1644,9 @@ LABEL_93:
         v14 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          v15 = [v13 sensitiveDescription];
+          sensitiveDescription = [v13 sensitiveDescription];
           *buf = 138739971;
-          v59 = v15;
+          v59 = sensitiveDescription;
           _os_log_impl(&dword_1CEE74000, v14, OS_LOG_TYPE_DEBUG, "WorkoutPrediction: IN Embedding, %{sensitive}@", buf, 0xCu);
         }
 
@@ -1675,15 +1675,15 @@ LABEL_93:
   }
 
   v20 = v44;
-  embeddings = v43->_embeddings;
-  v43->_embeddings = v19;
+  embeddings = selfCopy->_embeddings;
+  selfCopy->_embeddings = v19;
 
-  v22 = [(PCWorkoutPrediction *)v43 clusteringManager];
-  [v22 runHDBSCANClusteringOn:obj];
+  clusteringManager2 = [(PCWorkoutPrediction *)selfCopy clusteringManager];
+  [clusteringManager2 runHDBSCANClusteringOn:obj];
 
-  v23 = [(PCWorkoutPrediction *)v43 clusteringManager];
+  clusteringManager3 = [(PCWorkoutPrediction *)selfCopy clusteringManager];
   v51 = 0;
-  v24 = [v23 generateClusters:v44 withEmbeddings:obj error:&v51];
+  v24 = [clusteringManager3 generateClusters:v44 withEmbeddings:obj error:&v51];
   v25 = v51;
 
   v26 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
@@ -1735,9 +1735,9 @@ LABEL_93:
             v34 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
             {
-              v35 = [v33 sensitiveDescription];
+              sensitiveDescription2 = [v33 sensitiveDescription];
               *buf = 138739971;
-              v59 = v35;
+              v59 = sensitiveDescription2;
               _os_log_impl(&dword_1CEE74000, v34, OS_LOG_TYPE_DEBUG, "WorkoutPrediction: IN Cluster, %{sensitive}@", buf, 0xCu);
             }
 
@@ -1760,8 +1760,8 @@ LABEL_93:
       }
 
       v39 = [p_super copy];
-      clusters = v43->_clusters;
-      v43->_clusters = v39;
+      clusters = selfCopy->_clusters;
+      selfCopy->_clusters = v39;
 
       v20 = v44;
       v25 = 0;
@@ -1770,8 +1770,8 @@ LABEL_93:
 
     else
     {
-      p_super = &v43->_clusters->super.super;
-      v43->_clusters = 0;
+      p_super = &selfCopy->_clusters->super.super;
+      selfCopy->_clusters = 0;
     }
   }
 
@@ -1816,9 +1816,9 @@ LABEL_93:
         v12 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          v13 = [(PCCluster *)v11 sensitiveDescription];
+          sensitiveDescription = [(PCCluster *)v11 sensitiveDescription];
           *buf = 138739971;
-          v22 = v13;
+          v22 = sensitiveDescription;
           _os_log_impl(&dword_1CEE74000, v12, OS_LOG_TYPE_DEBUG, "WorkoutPrediction: OUT Cluster, %{sensitive}@", buf, 0xCu);
         }
       }
@@ -1834,12 +1834,12 @@ LABEL_93:
   return v3;
 }
 
-- (void)predictWithLocationHistory:(id)a3 workoutHistory:(id)a4 LOIs:(id)a5 atTime:(double)a6 workoutPredictions:(id *)a7
+- (void)predictWithLocationHistory:(id)history workoutHistory:(id)workoutHistory LOIs:(id)is atTime:(double)time workoutPredictions:(id *)predictions
 {
   v104 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  historyCopy = history;
+  workoutHistoryCopy = workoutHistory;
+  isCopy = is;
   v16 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -1847,24 +1847,24 @@ LABEL_93:
     *buf = 138544386;
     v95 = v17;
     v96 = 2050;
-    v97 = [v13 count];
+    v97 = [historyCopy count];
     v98 = 2050;
-    v99 = [v15 count];
+    v99 = [isCopy count];
     v100 = 2050;
-    v101 = [v14 count];
+    v101 = [workoutHistoryCopy count];
     v102 = 2050;
-    v103 = a6;
+    timeCopy = time;
     _os_log_impl(&dword_1CEE74000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ (visits=%{public}lu, loi=%{public}lu, workouts=%{public}lu, currentTime=%{public}.2f)", buf, 0x34u);
   }
 
-  *a7 = objc_alloc_init(MEMORY[0x1E695DF70]);
+  *predictions = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (self->_embeddings && self->_clusters)
   {
-    v75 = self;
+    selfCopy = self;
     v18 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"entryTimeCFAbsolute" ascending:0];
     v93 = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v93 count:1];
-    v20 = [v13 sortedArrayUsingDescriptors:v19];
+    v20 = [historyCopy sortedArrayUsingDescriptors:v19];
 
     v88 = 0u;
     v89 = 0u;
@@ -1910,11 +1910,11 @@ LABEL_7:
         goto LABEL_48;
       }
 
-      v74 = a7;
+      predictionsCopy = predictions;
       v70 = v21;
       v71 = v18;
-      v72 = v14;
-      v69 = v13;
+      v72 = workoutHistoryCopy;
+      v69 = historyCopy;
       v28 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
@@ -1925,13 +1925,13 @@ LABEL_7:
 
       v73 = v27;
 
-      v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+      v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(isCopy, "count")}];
       v82 = 0u;
       v83 = 0u;
       v84 = 0u;
       v85 = 0u;
-      v68 = v15;
-      v30 = v15;
+      v68 = isCopy;
+      v30 = isCopy;
       v31 = [v30 countByEnumeratingWithState:&v82 objects:v91 count:16];
       if (v31)
       {
@@ -1954,8 +1954,8 @@ LABEL_7:
             if ([v37 hasLoiIdentifier])
             {
               v38 = *(v35 + 1944);
-              v39 = [v37 loiIdentifier];
-              v40 = [v38 uuidStringFromData:v39];
+              loiIdentifier = [v37 loiIdentifier];
+              v40 = [v38 uuidStringFromData:loiIdentifier];
 
               v41 = [v29 objectForKeyedSubscript:v40];
 
@@ -2011,20 +2011,20 @@ LABEL_7:
         while (v32);
       }
 
-      v49 = v73;
-      v50 = [(PCWorkoutPrediction *)v75 _createEventFromVisit:v73 loiMap:v29];
-      v51 = [(PCWorkoutPrediction *)v75 _predictWorkoutsForVisit:v50 atTime:a6];
+      lastObject = v73;
+      v50 = [(PCWorkoutPrediction *)selfCopy _createEventFromVisit:v73 loiMap:v29];
+      v51 = [(PCWorkoutPrediction *)selfCopy _predictWorkoutsForVisit:v50 atTime:time];
       v52 = [v51 copy];
-      *v74 = v52;
+      *predictionsCopy = v52;
       if (v52 && [v52 count])
       {
         v53 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
         v18 = v71;
-        v14 = v72;
+        workoutHistoryCopy = v72;
         v21 = v70;
         if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
         {
-          v54 = [*v74 count];
+          v54 = [*predictionsCopy count];
           *buf = 134349056;
           v95 = v54;
           _os_log_impl(&dword_1CEE74000, v53, OS_LOG_TYPE_DEFAULT, "--- Workout Predictions (%{public}lu) ---", buf, 0xCu);
@@ -2034,7 +2034,7 @@ LABEL_7:
         v81 = 0u;
         v78 = 0u;
         v79 = 0u;
-        v55 = *v74;
+        v55 = *predictionsCopy;
         v56 = [v55 countByEnumeratingWithState:&v78 objects:v90 count:16];
         if (v56)
         {
@@ -2064,20 +2064,20 @@ LABEL_7:
           }
 
           while (v57);
-          v15 = v68;
-          v13 = v69;
+          isCopy = v68;
+          historyCopy = v69;
           v18 = v71;
-          v14 = v72;
+          workoutHistoryCopy = v72;
           v21 = v70;
-          v49 = v73;
+          lastObject = v73;
           v51 = v76;
         }
 
         else
         {
-          v15 = v68;
-          v13 = v69;
-          v49 = v73;
+          isCopy = v68;
+          historyCopy = v69;
+          lastObject = v73;
         }
       }
 
@@ -2085,7 +2085,7 @@ LABEL_7:
       {
         v55 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
         v18 = v71;
-        v14 = v72;
+        workoutHistoryCopy = v72;
         v21 = v70;
         if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
         {
@@ -2093,8 +2093,8 @@ LABEL_7:
           _os_log_impl(&dword_1CEE74000, v55, OS_LOG_TYPE_DEFAULT, "No Workout Predictions to log", buf, 2u);
         }
 
-        v15 = v68;
-        v13 = v69;
+        isCopy = v68;
+        historyCopy = v69;
       }
     }
 
@@ -2103,15 +2103,15 @@ LABEL_7:
 LABEL_13:
 
 LABEL_48:
-      v49 = [v21 lastObject];
+      lastObject = [v21 lastObject];
       v29 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        v62 = [v49 identifier];
-        v63 = [PCAlgorithmsCommonUtils uuidStringFromData:v62];
-        [v49 entryTimeCFAbsolute];
+        identifier = [lastObject identifier];
+        v63 = [PCAlgorithmsCommonUtils uuidStringFromData:identifier];
+        [lastObject entryTimeCFAbsolute];
         v65 = v64;
-        [v49 exitTimeCFAbsolute];
+        [lastObject exitTimeCFAbsolute];
         *buf = 138412802;
         v95 = v63;
         v96 = 2048;
@@ -2136,15 +2136,15 @@ LABEL_48:
   v67 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_predictWorkoutsForVisit:(id)a3 atTime:(double)a4
+- (id)_predictWorkoutsForVisit:(id)visit atTime:(double)time
 {
-  v6 = [(PCWorkoutPrediction *)self _createEmbeddingFromVisitEvent:a3 atTime:?];
+  v6 = [(PCWorkoutPrediction *)self _createEmbeddingFromVisitEvent:visit atTime:?];
   if (v6)
   {
-    v7 = [(PCWorkoutPrediction *)self _decodeClustersFromProtobuf];
-    v8 = [(PCWorkoutPrediction *)self _decodeEmbeddingsFromProtobuf];
-    v9 = [(PCWorkoutPredictionAlgorithm *)self->_predictionAlgorithm calculateClusterProbabilities:v6 embeddings:v8 clusters:v7];
-    v10 = [(PCWorkoutPredictionAlgorithm *)self->_predictionAlgorithm generateWorkoutPredictionsFromProbabilities:v9 atTime:v6 currentVisit:v8 embeddings:v7 clusters:a4];
+    _decodeClustersFromProtobuf = [(PCWorkoutPrediction *)self _decodeClustersFromProtobuf];
+    _decodeEmbeddingsFromProtobuf = [(PCWorkoutPrediction *)self _decodeEmbeddingsFromProtobuf];
+    v9 = [(PCWorkoutPredictionAlgorithm *)self->_predictionAlgorithm calculateClusterProbabilities:v6 embeddings:_decodeEmbeddingsFromProtobuf clusters:_decodeClustersFromProtobuf];
+    v10 = [(PCWorkoutPredictionAlgorithm *)self->_predictionAlgorithm generateWorkoutPredictionsFromProbabilities:v9 atTime:v6 currentVisit:_decodeEmbeddingsFromProtobuf embeddings:_decodeClustersFromProtobuf clusters:time];
   }
 
   else
@@ -2162,74 +2162,74 @@ LABEL_48:
   return v10;
 }
 
-- (id)_createEmbeddingFromVisitEvent:(id)a3 atTime:(double)a4
+- (id)_createEmbeddingFromVisitEvent:(id)event atTime:(double)time
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eventCopy = event;
   v6 = [PCEventBundle alloc];
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [MEMORY[0x1E695DF00] date];
-  v9 = [(PCEventBundle *)v6 initWithBundleIdentifier:v7 creationDate:v8];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  date = [MEMORY[0x1E695DF00] date];
+  v9 = [(PCEventBundle *)v6 initWithBundleIdentifier:uUID creationDate:date];
 
   [(PCEventBundle *)v9 setInterfaceType:2];
   [(PCEventBundle *)v9 setBundleSuperType:1];
   [(PCEventBundle *)v9 setBundleSubType:2];
   [(PCEventBundle *)v9 setActivityType:&stru_1F4BD0910];
-  v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a4];
+  v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:time];
   [(PCEventBundle *)v9 setStartDate:v10];
-  v11 = [v5 endDate];
-  [(PCEventBundle *)v9 setEndDate:v11];
+  endDate = [eventCopy endDate];
+  [(PCEventBundle *)v9 setEndDate:endDate];
 
   v12 = objc_alloc_init(PCTimeZoneManager);
-  v13 = [v5 startDate];
-  v14 = [v5 endDate];
-  v15 = [PCTime timeFromStartDate:v13 endDate:v14 timeZoneManager:v12];
+  startDate = [eventCopy startDate];
+  endDate2 = [eventCopy endDate];
+  v15 = [PCTime timeFromStartDate:startDate endDate:endDate2 timeZoneManager:v12];
   [(PCEventBundle *)v9 setTime:v15];
 
-  v16 = [v5 routineEvent];
-  v17 = [v16 location];
-  [(PCEventBundle *)v9 setLocation:v17];
+  routineEvent = [eventCopy routineEvent];
+  location = [routineEvent location];
+  [(PCEventBundle *)v9 setLocation:location];
 
-  v18 = [v5 routineEvent];
-  v19 = [v18 placeName];
-  [(PCEventBundle *)v9 setPlaceName:v19];
+  routineEvent2 = [eventCopy routineEvent];
+  placeName = [routineEvent2 placeName];
+  [(PCEventBundle *)v9 setPlaceName:placeName];
 
   [(PCEventBundle *)v9 setEnclosingArea:0];
-  v20 = [v5 routineEvent];
-  -[PCEventBundle setPlaceType:](v9, "setPlaceType:", [v20 mapItemPlaceType]);
+  routineEvent3 = [eventCopy routineEvent];
+  -[PCEventBundle setPlaceType:](v9, "setPlaceType:", [routineEvent3 mapItemPlaceType]);
 
-  v21 = [v5 routineEvent];
-  -[PCEventBundle setPlaceUserType:](v9, "setPlaceUserType:", [v21 placeUserType]);
+  routineEvent4 = [eventCopy routineEvent];
+  -[PCEventBundle setPlaceUserType:](v9, "setPlaceUserType:", [routineEvent4 placeUserType]);
 
-  v22 = [v5 routineEvent];
-  v23 = [v22 poiCategory];
-  [(PCEventBundle *)v9 setPoiCategory:v23];
+  routineEvent5 = [eventCopy routineEvent];
+  poiCategory = [routineEvent5 poiCategory];
+  [(PCEventBundle *)v9 setPoiCategory:poiCategory];
 
   v24 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v37 = [v5 startDate];
-    v25 = [PCEvent formatDate:v37];
+    startDate2 = [eventCopy startDate];
+    v25 = [PCEvent formatDate:startDate2];
     v39 = v10;
-    v26 = [v5 endDate];
-    v27 = [PCEvent formatDate:v26];
-    v28 = [(PCEventBundle *)v9 poiCategory];
-    v29 = [(PCEventBundle *)v9 placeUserType];
+    endDate3 = [eventCopy endDate];
+    v27 = [PCEvent formatDate:endDate3];
+    poiCategory2 = [(PCEventBundle *)v9 poiCategory];
+    placeUserType = [(PCEventBundle *)v9 placeUserType];
     [(PCEventBundle *)v9 placeName];
     v30 = v38 = v12;
-    v31 = [(PCEventBundle *)v9 location];
+    location2 = [(PCEventBundle *)v9 location];
     *buf = 138544643;
     v41 = v25;
     v42 = 2114;
     v43 = v27;
     v44 = 2114;
-    v45 = v28;
+    v45 = poiCategory2;
     v46 = 1026;
-    v47 = v29;
+    v47 = placeUserType;
     v48 = 2117;
     v49 = v30;
     v50 = 2117;
-    v51 = v31;
+    v51 = location2;
     _os_log_impl(&dword_1CEE74000, v24, OS_LOG_TYPE_DEFAULT, "WorkoutPrediction: Real-Time Visit: startDate, %{public}@, endDate, %{public}@, poiCategory, %{public}@, placeUserType, %{public}d, placeName, %{sensitive}@, location, %{sensitive}@", buf, 0x3Au);
 
     v12 = v38;
@@ -2240,9 +2240,9 @@ LABEL_48:
   v33 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
   {
-    v34 = [(PCEmbedding *)v32 sensitiveDescription];
+    sensitiveDescription = [(PCEmbedding *)v32 sensitiveDescription];
     *buf = 138739971;
-    v41 = v34;
+    v41 = sensitiveDescription;
     _os_log_impl(&dword_1CEE74000, v33, OS_LOG_TYPE_INFO, "WorkoutPrediction: Created visit embedding for prediction: %{sensitive}@", buf, 0xCu);
   }
 
@@ -2258,7 +2258,7 @@ LABEL_48:
   if (clusters && [(NSMutableArray *)clusters count])
   {
     v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSMutableArray count](self->_clusters, "count")}];
-    v28 = [(PCWorkoutPrediction *)self _decodeEmbeddingsFromProtobuf];
+    _decodeEmbeddingsFromProtobuf = [(PCWorkoutPrediction *)self _decodeEmbeddingsFromProtobuf];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -2287,7 +2287,7 @@ LABEL_48:
         [v11 timeOfDayCircularStd];
         if (v12 == 0.0 && ([v11 latLongCircularStd], v13 == 0.0))
         {
-          [PCEmbeddingDistanceCalculator calculateCircularStandardDeviationsForCluster:v11 fromEmbeddings:v28];
+          [PCEmbeddingDistanceCalculator calculateCircularStandardDeviationsForCluster:v11 fromEmbeddings:_decodeEmbeddingsFromProtobuf];
           [(PCWorkoutPrediction *)self _updateProtobufCluster:v10 withNewFeatures:v11];
           v14 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
           if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -2295,12 +2295,12 @@ LABEL_48:
             goto LABEL_15;
           }
 
-          v15 = [v11 identifier];
+          identifier = [v11 identifier];
           [v11 timeOfDayCircularStd];
           v17 = v16;
           [v11 latLongCircularStd];
           *buf = 138412802;
-          v35 = v15;
+          v35 = identifier;
           v36 = 2048;
           v37 = v17;
           v38 = 2048;
@@ -2318,12 +2318,12 @@ LABEL_48:
             goto LABEL_15;
           }
 
-          v15 = [v11 identifier];
+          identifier = [v11 identifier];
           [v11 timeOfDayCircularStd];
           v23 = v22;
           [v11 latLongCircularStd];
           *buf = 138412802;
-          v35 = v15;
+          v35 = identifier;
           v36 = 2048;
           v37 = v23;
           v38 = 2048;
@@ -2425,30 +2425,30 @@ LABEL_21:
   return v13;
 }
 
-- (void)_updateProtobufCluster:(id)a3 withNewFeatures:(id)a4
+- (void)_updateProtobufCluster:(id)cluster withNewFeatures:(id)features
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 clusterPhenotype];
-  if (!v7)
+  clusterCopy = cluster;
+  featuresCopy = features;
+  clusterPhenotype = [clusterCopy clusterPhenotype];
+  if (!clusterPhenotype)
   {
-    v7 = objc_alloc_init(PCPClusterPhenotype);
+    clusterPhenotype = objc_alloc_init(PCPClusterPhenotype);
   }
 
-  [v6 timeOfDayCircularStd];
-  [(PCPClusterPhenotype *)v7 setTimeOfDayCircularStd:?];
-  [v6 latLongCircularStd];
+  [featuresCopy timeOfDayCircularStd];
+  [(PCPClusterPhenotype *)clusterPhenotype setTimeOfDayCircularStd:?];
+  [featuresCopy latLongCircularStd];
   v9 = v8;
 
-  [(PCPClusterPhenotype *)v7 setLatLongCircularStd:v9];
-  [v5 setClusterPhenotype:v7];
+  [(PCPClusterPhenotype *)clusterPhenotype setLatLongCircularStd:v9];
+  [clusterCopy setClusterPhenotype:clusterPhenotype];
   v10 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [v5 identifier];
+    identifier = [clusterCopy identifier];
     v13 = 138412290;
-    v14 = v11;
+    v14 = identifier;
     _os_log_impl(&dword_1CEE74000, v10, OS_LOG_TYPE_DEBUG, "Updated protobuf cluster %@ with computed circular std values", &v13, 0xCu);
   }
 
@@ -2493,9 +2493,9 @@ LABEL_21:
         v12 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          v13 = [(PCEmbedding *)v11 sensitiveDescription];
+          sensitiveDescription = [(PCEmbedding *)v11 sensitiveDescription];
           *buf = 138739971;
-          v22 = v13;
+          v22 = sensitiveDescription;
           _os_log_impl(&dword_1CEE74000, v12, OS_LOG_TYPE_DEBUG, "WorkoutPrediction: OUT Embedding, %{sensitive}@", buf, 0xCu);
         }
       }
@@ -2511,13 +2511,13 @@ LABEL_21:
   return v3;
 }
 
-- (void)addEmbedding:(id)a3
+- (void)addEmbedding:(id)embedding
 {
-  v4 = a3;
-  if (v4)
+  embeddingCopy = embedding;
+  if (embeddingCopy)
   {
     embeddings = self->_embeddings;
-    v8 = v4;
+    v8 = embeddingCopy;
     if (!embeddings)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);

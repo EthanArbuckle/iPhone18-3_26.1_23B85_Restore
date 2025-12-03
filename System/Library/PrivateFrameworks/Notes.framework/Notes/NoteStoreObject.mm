@@ -8,11 +8,11 @@
 - (NoteStoreObject)parentStore;
 - (id)basicAccountIdentifier;
 - (id)collectionInfo;
-- (id)notesForGUIDs:(id)a3;
-- (id)notesForIntegerIds:(id)a3;
-- (id)notesForServerIds:(id)a3;
+- (id)notesForGUIDs:(id)ds;
+- (id)notesForIntegerIds:(id)ids;
+- (id)notesForServerIds:(id)ids;
 - (id)titleForTableViewCell;
-- (unint64_t)minimumSequenceNumberForServerIntIds:(id)a3;
+- (unint64_t)minimumSequenceNumberForServerIntIds:(id)ids;
 - (unsigned)maximumServerIntId;
 @end
 
@@ -20,30 +20,30 @@
 
 - (NoteStoreObject)parentStore
 {
-  v3 = [(NoteStoreObject *)self externalIdentifier];
+  externalIdentifier = [(NoteStoreObject *)self externalIdentifier];
 
-  if (v3)
+  if (externalIdentifier)
   {
     v4 = MEMORY[0x277CBEBC0];
-    v5 = [(NoteStoreObject *)self externalIdentifier];
-    v6 = [v4 URLWithString:v5];
+    externalIdentifier2 = [(NoteStoreObject *)self externalIdentifier];
+    v6 = [v4 URLWithString:externalIdentifier2];
 
-    v7 = [v6 URLByDeletingLastPathComponent];
-    v8 = [v7 absoluteString];
-    if ([v8 hasSuffix:@"/"])
+    uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
+    absoluteString = [uRLByDeletingLastPathComponent absoluteString];
+    if ([absoluteString hasSuffix:@"/"])
     {
-      v9 = [v8 substringToIndex:{objc_msgSend(v8, "length") - 1}];
+      v9 = [absoluteString substringToIndex:{objc_msgSend(absoluteString, "length") - 1}];
 
-      v8 = v9;
+      absoluteString = v9;
     }
 
-    v10 = [(NoteStoreObject *)self account];
-    v11 = [v10 storeForExternalId:v8];
+    account = [(NoteStoreObject *)self account];
+    v11 = [account storeForExternalId:absoluteString];
 
-    v12 = [v11 account];
-    v13 = [v12 defaultStore];
+    account2 = [v11 account];
+    defaultStore = [account2 defaultStore];
 
-    if (v11 == v13)
+    if (v11 == defaultStore)
     {
       v14 = 0;
     }
@@ -64,80 +64,80 @@
 
 - (NSArray)ancestorStores
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(NoteStoreObject *)self parentStore];
-  if (v4)
+  array = [MEMORY[0x277CBEB18] array];
+  parentStore = [(NoteStoreObject *)self parentStore];
+  if (parentStore)
   {
-    v5 = v4;
+    v5 = parentStore;
     do
     {
-      [v3 addObject:v5];
-      v6 = [v5 parentStore];
+      [array addObject:v5];
+      parentStore2 = [v5 parentStore];
 
-      v5 = v6;
+      v5 = parentStore2;
     }
 
-    while (v6);
+    while (parentStore2);
   }
 
-  v7 = [v3 copy];
+  v7 = [array copy];
 
   return v7;
 }
 
-- (id)notesForServerIds:(id)a3
+- (id)notesForServerIds:(id)ids
 {
   v4 = MEMORY[0x277CBE428];
-  v5 = a3;
+  idsCopy = ids;
   v6 = objc_alloc_init(v4);
   v7 = MEMORY[0x277CBE408];
-  v8 = [(NoteStoreObject *)self managedObjectContext];
-  v9 = [v7 entityForName:@"Note" inManagedObjectContext:v8];
+  managedObjectContext = [(NoteStoreObject *)self managedObjectContext];
+  v9 = [v7 entityForName:@"Note" inManagedObjectContext:managedObjectContext];
 
   [v6 setEntity:v9];
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(store == %@) AND (serverId IN %@)", self, v5];
+  idsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(store == %@) AND (serverId IN %@)", self, idsCopy];
 
-  [v6 setPredicate:v10];
-  v11 = [(NoteStoreObject *)self managedObjectContext];
-  v12 = [v11 executeFetchRequest:v6 error:0];
+  [v6 setPredicate:idsCopy];
+  managedObjectContext2 = [(NoteStoreObject *)self managedObjectContext];
+  v12 = [managedObjectContext2 executeFetchRequest:v6 error:0];
 
   return v12;
 }
 
-- (id)notesForIntegerIds:(id)a3
+- (id)notesForIntegerIds:(id)ids
 {
   v4 = MEMORY[0x277CBE428];
-  v5 = a3;
+  idsCopy = ids;
   v6 = objc_alloc_init(v4);
   v7 = MEMORY[0x277CBE408];
-  v8 = [(NoteStoreObject *)self managedObjectContext];
-  v9 = [v7 entityForName:@"Note" inManagedObjectContext:v8];
+  managedObjectContext = [(NoteStoreObject *)self managedObjectContext];
+  v9 = [v7 entityForName:@"Note" inManagedObjectContext:managedObjectContext];
 
   [v6 setEntity:v9];
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(store == %@) AND (integerId IN %@)", self, v5];
+  idsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(store == %@) AND (integerId IN %@)", self, idsCopy];
 
-  [v6 setPredicate:v10];
-  v11 = [(NoteStoreObject *)self managedObjectContext];
-  v12 = [v11 executeFetchRequest:v6 error:0];
+  [v6 setPredicate:idsCopy];
+  managedObjectContext2 = [(NoteStoreObject *)self managedObjectContext];
+  v12 = [managedObjectContext2 executeFetchRequest:v6 error:0];
 
   return v12;
 }
 
-- (id)notesForGUIDs:(id)a3
+- (id)notesForGUIDs:(id)ds
 {
   v4 = MEMORY[0x277CBE428];
-  v5 = a3;
+  dsCopy = ds;
   v6 = objc_alloc_init(v4);
   v7 = MEMORY[0x277CBE408];
-  v8 = [(NoteStoreObject *)self managedObjectContext];
-  v9 = [v7 entityForName:@"Note" inManagedObjectContext:v8];
+  managedObjectContext = [(NoteStoreObject *)self managedObjectContext];
+  v9 = [v7 entityForName:@"Note" inManagedObjectContext:managedObjectContext];
 
   [v6 setEntity:v9];
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(store == %@) AND (guid IN %@)", self, v5];
+  dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(store == %@) AND (guid IN %@)", self, dsCopy];
 
-  [v6 setPredicate:v10];
-  v11 = [(NoteStoreObject *)self managedObjectContext];
-  v12 = [v11 executeFetchRequest:v6 error:0];
+  [v6 setPredicate:dsCopy];
+  managedObjectContext2 = [(NoteStoreObject *)self managedObjectContext];
+  v12 = [managedObjectContext2 executeFetchRequest:v6 error:0];
 
   return v12;
 }
@@ -146,116 +146,116 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CBE428]);
   v4 = MEMORY[0x277CBE408];
-  v5 = [(NoteStoreObject *)self managedObjectContext];
-  v6 = [v4 entityForName:@"Note" inManagedObjectContext:v5];
+  managedObjectContext = [(NoteStoreObject *)self managedObjectContext];
+  v6 = [v4 entityForName:@"Note" inManagedObjectContext:managedObjectContext];
 
   [v3 setEntity:v6];
-  v7 = [(NoteStoreObject *)self predicateForNotes];
-  [v3 setPredicate:v7];
+  predicateForNotes = [(NoteStoreObject *)self predicateForNotes];
+  [v3 setPredicate:predicateForNotes];
 
   v8 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"externalServerIntId" ascending:0];
   v9 = [MEMORY[0x277CBEA60] arrayWithObject:v8];
   [v3 setSortDescriptors:v9];
 
   [v3 setFetchLimit:1];
-  v10 = [(NoteStoreObject *)self managedObjectContext];
+  managedObjectContext2 = [(NoteStoreObject *)self managedObjectContext];
   v18 = 0;
-  v11 = [v10 executeFetchRequest:v3 error:&v18];
+  v11 = [managedObjectContext2 executeFetchRequest:v3 error:&v18];
   v12 = v18;
 
   if (v12)
   {
-    v13 = [v12 userInfo];
-    NSLog(&cfstr_UnresolvedErro.isa, self, v12, v13);
+    userInfo = [v12 userInfo];
+    NSLog(&cfstr_UnresolvedErro.isa, self, v12, userInfo);
 
     v14 = 0;
   }
 
   else
   {
-    v15 = [v11 lastObject];
-    v16 = [v15 serverIntId];
+    lastObject = [v11 lastObject];
+    serverIntId = [lastObject serverIntId];
 
-    v14 = v16 & ~(v16 >> 63);
+    v14 = serverIntId & ~(serverIntId >> 63);
   }
 
   return v14;
 }
 
-- (unint64_t)minimumSequenceNumberForServerIntIds:(id)a3
+- (unint64_t)minimumSequenceNumberForServerIntIds:(id)ids
 {
   v4 = MEMORY[0x277CBE428];
-  v5 = a3;
+  idsCopy = ids;
   v6 = objc_alloc_init(v4);
   v7 = MEMORY[0x277CBE408];
-  v8 = [(NoteStoreObject *)self managedObjectContext];
-  v9 = [v7 entityForName:@"Note" inManagedObjectContext:v8];
+  managedObjectContext = [(NoteStoreObject *)self managedObjectContext];
+  v9 = [v7 entityForName:@"Note" inManagedObjectContext:managedObjectContext];
 
   [v6 setEntity:v9];
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(store == %@) AND (externalServerIntId IN %@)", self, v5];
+  idsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(store == %@) AND (externalServerIntId IN %@)", self, idsCopy];
 
-  [v6 setPredicate:v10];
+  [v6 setPredicate:idsCopy];
   v11 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"externalSequenceNumber" ascending:1];
   v12 = [MEMORY[0x277CBEA60] arrayWithObject:v11];
   [v6 setSortDescriptors:v12];
 
   [v6 setFetchLimit:1];
-  v13 = [(NoteStoreObject *)self managedObjectContext];
+  managedObjectContext2 = [(NoteStoreObject *)self managedObjectContext];
   v19 = 0;
-  v14 = [v13 executeFetchRequest:v6 error:&v19];
+  v14 = [managedObjectContext2 executeFetchRequest:v6 error:&v19];
   v15 = v19;
 
   if (v15)
   {
-    v16 = [v15 userInfo];
-    NSLog(&cfstr_UnresolvedErro_0.isa, self, v15, v16);
-    v17 = 0;
+    userInfo = [v15 userInfo];
+    NSLog(&cfstr_UnresolvedErro_0.isa, self, v15, userInfo);
+    sequenceNumber = 0;
   }
 
   else
   {
-    v16 = [v14 lastObject];
-    v17 = [v16 sequenceNumber];
+    userInfo = [v14 lastObject];
+    sequenceNumber = [userInfo sequenceNumber];
   }
 
-  return v17;
+  return sequenceNumber;
 }
 
 - (id)collectionInfo
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
   [v3 setValue:@"Store" forKey:@"NoteCollectionType"];
-  v4 = [(NoteStoreObject *)self account];
-  v5 = [v4 accountIdentifier];
-  [v3 setValue:v5 forKey:@"NoteCollectionPrimaryIdentifier"];
+  account = [(NoteStoreObject *)self account];
+  accountIdentifier = [account accountIdentifier];
+  [v3 setValue:accountIdentifier forKey:@"NoteCollectionPrimaryIdentifier"];
 
-  v6 = [(NoteStoreObject *)self externalIdentifier];
-  [v3 setValue:v6 forKey:@"NoteCollectionSecondaryIdentifier"];
+  externalIdentifier = [(NoteStoreObject *)self externalIdentifier];
+  [v3 setValue:externalIdentifier forKey:@"NoteCollectionSecondaryIdentifier"];
 
   return v3;
 }
 
 - (id)basicAccountIdentifier
 {
-  v2 = [(NoteStoreObject *)self account];
-  v3 = [v2 accountIdentifier];
+  account = [(NoteStoreObject *)self account];
+  accountIdentifier = [account accountIdentifier];
 
-  return v3;
+  return accountIdentifier;
 }
 
 - (NSString)searchDomainIdentifier
 {
-  v2 = [(NoteStoreObject *)self account];
-  v3 = [v2 searchDomainIdentifier];
+  account = [(NoteStoreObject *)self account];
+  searchDomainIdentifier = [account searchDomainIdentifier];
 
-  return v3;
+  return searchDomainIdentifier;
 }
 
 - (id)titleForTableViewCell
 {
-  v3 = [(NoteStoreObject *)self account];
-  v4 = [v3 defaultStore];
-  v5 = [(NoteStoreObject *)self isEqual:v4];
+  account = [(NoteStoreObject *)self account];
+  defaultStore = [account defaultStore];
+  v5 = [(NoteStoreObject *)self isEqual:defaultStore];
 
   if (v5)
   {
@@ -273,19 +273,19 @@
 
 - (BOOL)isHiddenFromIndexing
 {
-  v2 = [(NoteStoreObject *)self account];
-  v3 = [v2 didChooseToMigrate];
+  account = [(NoteStoreObject *)self account];
+  didChooseToMigrate = [account didChooseToMigrate];
 
-  return v3;
+  return didChooseToMigrate;
 }
 
 - (NSString)searchIndexingIdentifier
 {
-  v2 = [(NoteStoreObject *)self objectID];
-  v3 = [v2 URIRepresentation];
-  v4 = [v3 absoluteString];
+  objectID = [(NoteStoreObject *)self objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 - (CSSearchableItemAttributeSet)userActivityContentAttributeSet
@@ -297,16 +297,16 @@
 
 - (CSSearchableItemAttributeSet)searchableItemAttributeSet
 {
-  v3 = [(NoteStoreObject *)self userActivityContentAttributeSet];
-  v4 = [(NoteStoreObject *)self name];
-  [v3 setDisplayName:v4];
+  userActivityContentAttributeSet = [(NoteStoreObject *)self userActivityContentAttributeSet];
+  name = [(NoteStoreObject *)self name];
+  [userActivityContentAttributeSet setDisplayName:name];
 
-  v5 = [(NoteStoreObject *)self name];
-  [v3 setTextContent:v5];
+  name2 = [(NoteStoreObject *)self name];
+  [userActivityContentAttributeSet setTextContent:name2];
 
-  [v3 setIc_searchResultType:3];
-  v6 = [(NoteStoreObject *)self account];
-  if ([v6 preventMovingNotesToOtherAccounts])
+  [userActivityContentAttributeSet setIc_searchResultType:3];
+  account = [(NoteStoreObject *)self account];
+  if ([account preventMovingNotesToOtherAccounts])
   {
     v7 = &unk_286E32AC8;
   }
@@ -316,15 +316,15 @@
     v7 = &unk_286E32AE0;
   }
 
-  [v3 setDataOwnerType:v7];
+  [userActivityContentAttributeSet setDataOwnerType:v7];
 
-  [v3 ic_populateValuesForSpecializedFields];
+  [userActivityContentAttributeSet ic_populateValuesForSpecializedFields];
   if (objc_opt_respondsToSelector())
   {
-    [(NoteStoreObject *)self associateAppEntityWithSearchableItemAttributeSet:v3];
+    [(NoteStoreObject *)self associateAppEntityWithSearchableItemAttributeSet:userActivityContentAttributeSet];
   }
 
-  return v3;
+  return userActivityContentAttributeSet;
 }
 
 @end

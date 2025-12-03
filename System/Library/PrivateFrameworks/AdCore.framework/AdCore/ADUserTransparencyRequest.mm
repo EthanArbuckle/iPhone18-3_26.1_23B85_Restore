@@ -1,14 +1,14 @@
 @interface ADUserTransparencyRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLimitAdTracking:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLimitAdTracking:(BOOL)tracking;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ADUserTransparencyRequest
@@ -31,9 +31,9 @@ void __36__ADUserTransparencyRequest_options__block_invoke()
   options_sOptions_12 = &unk_285104E20;
 }
 
-- (void)setHasLimitAdTracking:(BOOL)a3
+- (void)setHasLimitAdTracking:(BOOL)tracking
 {
-  if (a3)
+  if (tracking)
   {
     v3 = 2;
   }
@@ -52,20 +52,20 @@ void __36__ADUserTransparencyRequest_options__block_invoke()
   v8.receiver = self;
   v8.super_class = ADUserTransparencyRequest;
   v4 = [(ADUserTransparencyRequest *)&v8 description];
-  v5 = [(ADUserTransparencyRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADUserTransparencyRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   dPID = self->_dPID;
   if (dPID)
   {
-    [v3 setObject:dPID forKey:@"DPID"];
+    [dictionary setObject:dPID forKey:@"DPID"];
   }
 
   localeIdentifier = self->_localeIdentifier;
@@ -110,38 +110,38 @@ void __36__ADUserTransparencyRequest_options__block_invoke()
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_dPID)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_localeIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_iAdID)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_contentiAdID)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_iTunesStore)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -149,7 +149,7 @@ void __36__ADUserTransparencyRequest_options__block_invoke()
   {
     limitAdTracking = self->_limitAdTracking;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -157,79 +157,79 @@ void __36__ADUserTransparencyRequest_options__block_invoke()
   {
     isSignedInToiTunes = self->_isSignedInToiTunes;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_dPID)
   {
-    [v4 setDPID:?];
-    v4 = v6;
+    [toCopy setDPID:?];
+    toCopy = v6;
   }
 
   if (self->_localeIdentifier)
   {
     [v6 setLocaleIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_iAdID)
   {
     [v6 setIAdID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_contentiAdID)
   {
     [v6 setContentiAdID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_iTunesStore)
   {
     [v6 setITunesStore:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[49] = self->_limitAdTracking;
-    v4[52] |= 2u;
+    toCopy[49] = self->_limitAdTracking;
+    toCopy[52] |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[48] = self->_isSignedInToiTunes;
-    v4[52] |= 1u;
+    toCopy[48] = self->_isSignedInToiTunes;
+    toCopy[52] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_dPID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_dPID copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_localeIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_localeIdentifier copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSData *)self->_iAdID copyWithZone:a3];
+  v10 = [(NSData *)self->_iAdID copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
-  v12 = [(NSData *)self->_contentiAdID copyWithZone:a3];
+  v12 = [(NSData *)self->_contentiAdID copyWithZone:zone];
   v13 = *(v5 + 8);
   *(v5 + 8) = v12;
 
-  v14 = [(NSString *)self->_iTunesStore copyWithZone:a3];
+  v14 = [(NSString *)self->_iTunesStore copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
@@ -250,16 +250,16 @@ void __36__ADUserTransparencyRequest_options__block_invoke()
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   dPID = self->_dPID;
-  if (dPID | *(v4 + 2))
+  if (dPID | *(equalCopy + 2))
   {
     if (![(NSData *)dPID isEqual:?])
     {
@@ -268,7 +268,7 @@ void __36__ADUserTransparencyRequest_options__block_invoke()
   }
 
   localeIdentifier = self->_localeIdentifier;
-  if (localeIdentifier | *(v4 + 5))
+  if (localeIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)localeIdentifier isEqual:?])
     {
@@ -277,7 +277,7 @@ void __36__ADUserTransparencyRequest_options__block_invoke()
   }
 
   iAdID = self->_iAdID;
-  if (iAdID | *(v4 + 3))
+  if (iAdID | *(equalCopy + 3))
   {
     if (![(NSData *)iAdID isEqual:?])
     {
@@ -286,7 +286,7 @@ void __36__ADUserTransparencyRequest_options__block_invoke()
   }
 
   contentiAdID = self->_contentiAdID;
-  if (contentiAdID | *(v4 + 1))
+  if (contentiAdID | *(equalCopy + 1))
   {
     if (![(NSData *)contentiAdID isEqual:?])
     {
@@ -295,7 +295,7 @@ void __36__ADUserTransparencyRequest_options__block_invoke()
   }
 
   iTunesStore = self->_iTunesStore;
-  if (iTunesStore | *(v4 + 4))
+  if (iTunesStore | *(equalCopy + 4))
   {
     if (![(NSString *)iTunesStore isEqual:?])
     {
@@ -305,7 +305,7 @@ void __36__ADUserTransparencyRequest_options__block_invoke()
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 52) & 2) == 0)
+    if ((*(equalCopy + 52) & 2) == 0)
     {
       goto LABEL_14;
     }
@@ -315,40 +315,40 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ((*(v4 + 52) & 2) == 0)
+  if ((*(equalCopy + 52) & 2) == 0)
   {
     goto LABEL_20;
   }
 
-  v12 = *(v4 + 49);
+  v12 = *(equalCopy + 49);
   if (self->_limitAdTracking)
   {
-    if ((*(v4 + 49) & 1) == 0)
+    if ((*(equalCopy + 49) & 1) == 0)
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 49))
+  else if (*(equalCopy + 49))
   {
     goto LABEL_20;
   }
 
 LABEL_14:
-  v10 = (*(v4 + 52) & 1) == 0;
+  v10 = (*(equalCopy + 52) & 1) == 0;
   if (*&self->_has)
   {
-    if (*(v4 + 52))
+    if (*(equalCopy + 52))
     {
       if (self->_isSignedInToiTunes)
       {
-        if (*(v4 + 48))
+        if (*(equalCopy + 48))
         {
           goto LABEL_28;
         }
       }
 
-      else if (!*(v4 + 48))
+      else if (!*(equalCopy + 48))
       {
 LABEL_28:
         v10 = 1;
@@ -395,51 +395,51 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(ADUserTransparencyRequest *)self setDPID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ADUserTransparencyRequest *)self setLocaleIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ADUserTransparencyRequest *)self setIAdID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ADUserTransparencyRequest *)self setContentiAdID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ADUserTransparencyRequest *)self setITunesStore:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = v4[52];
+  v5 = fromCopy[52];
   if ((v5 & 2) != 0)
   {
-    self->_limitAdTracking = v4[49];
+    self->_limitAdTracking = fromCopy[49];
     *&self->_has |= 2u;
-    v5 = v4[52];
+    v5 = fromCopy[52];
   }
 
   if (v5)
   {
-    self->_isSignedInToiTunes = v4[48];
+    self->_isSignedInToiTunes = fromCopy[48];
     *&self->_has |= 1u;
   }
 }

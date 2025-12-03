@@ -1,8 +1,8 @@
 @interface IDSIncomingNiceMessage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isTrustedSender;
 - (BOOL)wantsDeliveryStatus;
-- (IDSIncomingNiceMessage)initWithMessageDictionary:(id)a3 topic:(id)a4;
+- (IDSIncomingNiceMessage)initWithMessageDictionary:(id)dictionary topic:(id)topic;
 - (IDSPushToken)senderPushToken;
 - (IDSURI)fromURI;
 - (IDSURI)toURI;
@@ -57,18 +57,18 @@
 
 @implementation IDSIncomingNiceMessage
 
-- (IDSIncomingNiceMessage)initWithMessageDictionary:(id)a3 topic:(id)a4
+- (IDSIncomingNiceMessage)initWithMessageDictionary:(id)dictionary topic:(id)topic
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  topicCopy = topic;
   v12.receiver = self;
   v12.super_class = IDSIncomingNiceMessage;
   v9 = [(IDSIncomingNiceMessage *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_messageDictionary, a3);
-    objc_storeStrong(&v10->_topic, a4);
+    objc_storeStrong(&v9->_messageDictionary, dictionary);
+    objc_storeStrong(&v10->_topic, topic);
   }
 
   return v10;
@@ -90,16 +90,16 @@
   return cachedDescription;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_6;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
 LABEL_7:
     v7 = 1;
@@ -491,18 +491,18 @@ LABEL_7:
   v4 = sub_1A7B0A20C(v3, self->_messageDictionary, @"htu");
   v5 = objc_opt_class();
   v6 = sub_1A7B0A20C(v5, self->_messageDictionary, @"htu");
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (unint64_t)ifUnknownAction
 {
   v3 = objc_opt_class();
   v4 = sub_1A7B0A20C(v3, self->_messageDictionary, @"siu");
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (NSData)payloadMetadataData
@@ -838,9 +838,9 @@ LABEL_7:
   v4 = sub_1A7B0A20C(v3, self->_messageDictionary, @"D");
   v5 = objc_opt_class();
   v6 = sub_1A7B0A20C(v5, self->_messageDictionary, @"D");
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (NSNumber)snapTrustedUser

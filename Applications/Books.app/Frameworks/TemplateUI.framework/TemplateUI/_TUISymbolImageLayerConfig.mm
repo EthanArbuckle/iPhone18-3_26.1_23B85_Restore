@@ -1,28 +1,28 @@
 @interface _TUISymbolImageLayerConfig
-- (BOOL)isEqualToConfig:(id)a3;
-- (_TUISymbolImageLayerConfig)initWithContentsScale:(double)a3 image:(id)a4 color:(id)a5 hflip:(BOOL)a6 blendMode:(id)a7;
+- (BOOL)isEqualToConfig:(id)config;
+- (_TUISymbolImageLayerConfig)initWithContentsScale:(double)scale image:(id)image color:(id)color hflip:(BOOL)hflip blendMode:(id)mode;
 - (id)compositingFilter;
-- (void)configureLayer:(id)a3;
+- (void)configureLayer:(id)layer;
 @end
 
 @implementation _TUISymbolImageLayerConfig
 
-- (_TUISymbolImageLayerConfig)initWithContentsScale:(double)a3 image:(id)a4 color:(id)a5 hflip:(BOOL)a6 blendMode:(id)a7
+- (_TUISymbolImageLayerConfig)initWithContentsScale:(double)scale image:(id)image color:(id)color hflip:(BOOL)hflip blendMode:(id)mode
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  imageCopy = image;
+  colorCopy = color;
+  modeCopy = mode;
   v21.receiver = self;
   v21.super_class = _TUISymbolImageLayerConfig;
   v16 = [(_TUISymbolImageLayerConfig *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    v16->_contentsScale = a3;
-    objc_storeStrong(&v16->_image, a4);
-    objc_storeStrong(&v17->_color, a5);
-    v17->_hflip = a6;
-    v18 = [v15 copy];
+    v16->_contentsScale = scale;
+    objc_storeStrong(&v16->_image, image);
+    objc_storeStrong(&v17->_color, color);
+    v17->_hflip = hflip;
+    v18 = [modeCopy copy];
     blendMode = v17->_blendMode;
     v17->_blendMode = v18;
   }
@@ -30,10 +30,10 @@
   return v17;
 }
 
-- (BOOL)isEqualToConfig:(id)a3
+- (BOOL)isEqualToConfig:(id)config
 {
-  v4 = a3;
-  if (self == v4)
+  configCopy = config;
+  if (self == configCopy)
   {
     v7 = 1;
     goto LABEL_7;
@@ -43,7 +43,7 @@
   if (v5 == objc_opt_class())
   {
     v9 = objc_opt_class();
-    v10 = TUIDynamicCast(v9, v4);
+    v10 = TUIDynamicCast(v9, configCopy);
     v6 = v10;
     if (v10)
     {
@@ -85,15 +85,15 @@ LABEL_7:
   return v7;
 }
 
-- (void)configureLayer:(id)a3
+- (void)configureLayer:(id)layer
 {
   contentsScale = self->_contentsScale;
-  v5 = a3;
-  [v5 setContentsScale:contentsScale];
-  [v5 setFlipsHorizontalAxis:self->_hflip];
-  [v5 updateContentAndBoundsWithImage:self->_image color:self->_color];
-  v6 = [(_TUISymbolImageLayerConfig *)self compositingFilter];
-  [v5 setContentCompositingFilter:v6];
+  layerCopy = layer;
+  [layerCopy setContentsScale:contentsScale];
+  [layerCopy setFlipsHorizontalAxis:self->_hflip];
+  [layerCopy updateContentAndBoundsWithImage:self->_image color:self->_color];
+  compositingFilter = [(_TUISymbolImageLayerConfig *)self compositingFilter];
+  [layerCopy setContentCompositingFilter:compositingFilter];
 }
 
 - (id)compositingFilter

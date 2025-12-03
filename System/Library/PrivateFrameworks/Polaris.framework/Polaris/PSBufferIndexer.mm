@@ -1,5 +1,5 @@
 @interface PSBufferIndexer
-- (PSBufferIndexer)initWithResourceStream:(id)a3;
+- (PSBufferIndexer)initWithResourceStream:(id)stream;
 - (uint64_t)allocateResources;
 - (void)allocateResources;
 @end
@@ -15,34 +15,34 @@
     v4 = [(PSResourceStreamProtocol *)self->_resourceStream key];
     [PSConstants getBufferDepthsForKey:v4 writerDepth:&v14 + 4 readerDepth:&v14];
 
-    v5 = [(PSResourceStreamProtocol *)self->_resourceStream resourceClass];
-    if (v5 == 8 || v5 == 7 || v5 == 4)
+    resourceClass = [(PSResourceStreamProtocol *)self->_resourceStream resourceClass];
+    if (resourceClass == 8 || resourceClass == 7 || resourceClass == 4)
     {
       v6 = *p_resourceStream;
-      v7 = [(PSResourceStreamProtocol *)v6 allocator];
-      v8 = v7(*p_resourceStream, (HIDWORD(v14) + v14));
+      allocator = [(PSResourceStreamProtocol *)v6 allocator];
+      v8 = allocator(*p_resourceStream, (HIDWORD(v14) + v14));
       resPointerArr = self->_resPointerArr;
       self->_resPointerArr = v8;
     }
 
     else
     {
-      v10 = [(PSBufferIndexer *)&v13 allocateResources];
-      [(PSBufferIndexer *)v10 initWithResourceStream:v11, v12];
+      allocateResources = [(PSBufferIndexer *)&v13 allocateResources];
+      [(PSBufferIndexer *)allocateResources initWithResourceStream:v11, v12];
     }
   }
 }
 
-- (PSBufferIndexer)initWithResourceStream:(id)a3
+- (PSBufferIndexer)initWithResourceStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = PSBufferIndexer;
   v6 = [(PSBufferIndexer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resourceStream, a3);
+    objc_storeStrong(&v6->_resourceStream, stream);
     v7->_currentIndex = 0;
   }
 
@@ -52,9 +52,9 @@
 - (uint64_t)allocateResources
 {
   v24 = *MEMORY[0x277D85DE8];
-  *a1 = 0;
+  *self = 0;
   v4 = [*a2 key];
-  asprintf(a1, "Unsupported resource stream type sent to allocator for key:%s", [v4 UTF8String]);
+  asprintf(self, "Unsupported resource stream type sent to allocator for key:%s", [v4 UTF8String]);
 
   v5 = __PLSLogSharedInstance();
   if (OUTLINED_FUNCTION_5(v5))

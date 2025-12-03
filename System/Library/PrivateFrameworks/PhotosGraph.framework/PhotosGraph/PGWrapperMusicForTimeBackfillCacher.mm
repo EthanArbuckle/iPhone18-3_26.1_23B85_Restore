@@ -1,19 +1,19 @@
 @interface PGWrapperMusicForTimeBackfillCacher
-+ (void)cacheMusicForMomentsInPhotoLibrary:(id)a3 forceCaching:(BOOL)a4 progressReporter:(id)a5 completionHandler:(id)a6;
++ (void)cacheMusicForMomentsInPhotoLibrary:(id)library forceCaching:(BOOL)caching progressReporter:(id)reporter completionHandler:(id)handler;
 - (PGWrapperMusicForTimeBackfillCacher)init;
 @end
 
 @implementation PGWrapperMusicForTimeBackfillCacher
 
-+ (void)cacheMusicForMomentsInPhotoLibrary:(id)a3 forceCaching:(BOOL)a4 progressReporter:(id)a5 completionHandler:(id)a6
++ (void)cacheMusicForMomentsInPhotoLibrary:(id)library forceCaching:(BOOL)caching progressReporter:(id)reporter completionHandler:(id)handler
 {
-  v7 = a4;
-  v9 = _Block_copy(a6);
+  cachingCopy = caching;
+  v9 = _Block_copy(handler);
   ObjCClassMetadata = swift_getObjCClassMetadata();
   _Block_copy(v9);
-  v11 = a3;
-  v12 = a5;
-  sub_22F2915DC(v11, v7, v12, ObjCClassMetadata, v9);
+  libraryCopy = library;
+  reporterCopy = reporter;
+  sub_22F2915DC(libraryCopy, cachingCopy, reporterCopy, ObjCClassMetadata, v9);
   _Block_release(v9);
   _Block_release(v9);
 }

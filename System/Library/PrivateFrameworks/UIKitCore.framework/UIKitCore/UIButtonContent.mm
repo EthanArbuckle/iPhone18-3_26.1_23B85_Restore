@@ -1,56 +1,56 @@
 @interface UIButtonContent
-- (BOOL)updateVariableLengthStringForView:(id)a3;
-- (UIButtonContent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)updateVariableLengthStringForView:(id)view;
+- (UIButtonContent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTitle:(id)title;
 @end
 
 @implementation UIButtonContent
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(UIButtonContent *)self title];
-  [v4 setTitle:v5];
+  title = [(UIButtonContent *)self title];
+  [v4 setTitle:title];
 
-  v6 = [(UIButtonContent *)self attributedTitle];
-  [v4 setAttributedTitle:v6];
+  attributedTitle = [(UIButtonContent *)self attributedTitle];
+  [v4 setAttributedTitle:attributedTitle];
 
-  v7 = [(UIButtonContent *)self image];
-  [v4 setImage:v7];
+  image = [(UIButtonContent *)self image];
+  [v4 setImage:image];
 
-  v8 = [(UIButtonContent *)self background];
-  [v4 setBackground:v8];
+  background = [(UIButtonContent *)self background];
+  [v4 setBackground:background];
 
-  v9 = [(UIButtonContent *)self titleColor];
-  [v4 setTitleColor:v9];
+  titleColor = [(UIButtonContent *)self titleColor];
+  [v4 setTitleColor:titleColor];
 
-  v10 = [(UIButtonContent *)self imageColor];
-  [v4 setImageColor:v10];
+  imageColor = [(UIButtonContent *)self imageColor];
+  [v4 setImageColor:imageColor];
 
-  v11 = [(UIButtonContent *)self shadowColor];
-  [v4 setShadowColor:v11];
+  shadowColor = [(UIButtonContent *)self shadowColor];
+  [v4 setShadowColor:shadowColor];
 
-  v12 = [(UIButtonContent *)self drawingStroke];
-  [v4 setDrawingStroke:v12];
+  drawingStroke = [(UIButtonContent *)self drawingStroke];
+  [v4 setDrawingStroke:drawingStroke];
 
-  v13 = [(UIButtonContent *)self preferredSymbolConfiguration];
-  [v4 setPreferredSymbolConfiguration:v13];
+  preferredSymbolConfiguration = [(UIButtonContent *)self preferredSymbolConfiguration];
+  [v4 setPreferredSymbolConfiguration:preferredSymbolConfiguration];
 
   return v4;
 }
 
-- (UIButtonContent)initWithCoder:(id)a3
+- (UIButtonContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = UIButtonContent;
   v5 = [(UIButtonContent *)&v28 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UITitle"];
+    v6 = [coderCopy decodeObjectForKey:@"UITitle"];
     v7 = [v6 length];
     if (v7)
     {
@@ -60,9 +60,9 @@
     title = v5->title;
     v5->title = v7;
 
-    v9 = [v4 decodeObjectForKey:@"UIAttributedTitle"];
-    v10 = [v9 string];
-    v11 = [v10 length];
+    v9 = [coderCopy decodeObjectForKey:@"UIAttributedTitle"];
+    string = [v9 string];
+    v11 = [string length];
     if (v11)
     {
       v11 = [v9 copy];
@@ -71,31 +71,31 @@
     attributedTitle = v5->attributedTitle;
     v5->attributedTitle = v11;
 
-    v13 = [v4 decodeObjectForKey:@"UIImage"];
+    v13 = [coderCopy decodeObjectForKey:@"UIImage"];
     image = v5->image;
     v5->image = v13;
 
-    v15 = [v4 decodeObjectForKey:@"UIImageSymbolConfiguration"];
+    v15 = [coderCopy decodeObjectForKey:@"UIImageSymbolConfiguration"];
     preferredSymbolConfiguration = v5->preferredSymbolConfiguration;
     v5->preferredSymbolConfiguration = v15;
 
-    v17 = [v4 decodeObjectForKey:@"UIBackgroundImage"];
+    v17 = [coderCopy decodeObjectForKey:@"UIBackgroundImage"];
     background = v5->background;
     v5->background = v17;
 
-    v19 = [v4 decodeObjectForKey:@"UITitleColor"];
+    v19 = [coderCopy decodeObjectForKey:@"UITitleColor"];
     titleColor = v5->titleColor;
     v5->titleColor = v19;
 
-    v21 = [v4 decodeObjectForKey:@"UIImageColor"];
+    v21 = [coderCopy decodeObjectForKey:@"UIImageColor"];
     imageColor = v5->imageColor;
     v5->imageColor = v21;
 
-    v23 = [v4 decodeObjectForKey:@"UIShadowColor"];
+    v23 = [coderCopy decodeObjectForKey:@"UIShadowColor"];
     shadowColor = v5->shadowColor;
     v5->shadowColor = v23;
 
-    v25 = [v4 decodeObjectForKey:@"UIDrawingStroke"];
+    v25 = [coderCopy decodeObjectForKey:@"UIDrawingStroke"];
     drawingStroke = v5->drawingStroke;
     v5->drawingStroke = v25;
   }
@@ -103,83 +103,83 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   title = self->title;
-  v14 = v4;
+  v14 = coderCopy;
   if (title)
   {
-    [v4 encodeObject:title forKey:@"UITitle"];
-    v4 = v14;
+    [coderCopy encodeObject:title forKey:@"UITitle"];
+    coderCopy = v14;
   }
 
   attributedTitle = self->attributedTitle;
   if (attributedTitle)
   {
     [v14 encodeObject:attributedTitle forKey:@"UIAttributedTitle"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   image = self->image;
   if (image)
   {
     [v14 encodeObject:image forKey:@"UIImage"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   preferredSymbolConfiguration = self->preferredSymbolConfiguration;
   if (preferredSymbolConfiguration)
   {
     [v14 encodeObject:preferredSymbolConfiguration forKey:@"UIImageSymbolConfiguration"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   background = self->background;
   if (background)
   {
     [v14 encodeObject:background forKey:@"UIBackgroundImage"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   titleColor = self->titleColor;
   if (titleColor)
   {
     [v14 encodeObject:titleColor forKey:@"UITitleColor"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   imageColor = self->imageColor;
   if (imageColor)
   {
     [v14 encodeObject:imageColor forKey:@"UIImageColor"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   shadowColor = self->shadowColor;
   if (shadowColor)
   {
     [v14 encodeObject:shadowColor forKey:@"UIShadowColor"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   drawingStroke = self->drawingStroke;
   if (drawingStroke)
   {
     [v14 encodeObject:drawingStroke forKey:@"UIDrawingStroke"];
-    v4 = v14;
+    coderCopy = v14;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (self->title != v5)
+  titleCopy = title;
+  if (self->title != titleCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->title, a3);
+    v7 = titleCopy;
+    objc_storeStrong(&self->title, title);
     IsWidthVariant = _NSStringIsWidthVariant(self->title);
-    v5 = v7;
+    titleCopy = v7;
     self->isWidthVariant = IsWidthVariant;
   }
 }
@@ -194,14 +194,14 @@
   return v6;
 }
 
-- (BOOL)updateVariableLengthStringForView:(id)a3
+- (BOOL)updateVariableLengthStringForView:(id)view
 {
   if (!self->isWidthVariant)
   {
     return 0;
   }
 
-  v4 = _UIAdaptLocalizedStringForView(self->title, a3);
+  v4 = _UIAdaptLocalizedStringForView(self->title, view);
   v5 = [(NSString *)self->title isEqualToString:v4];
   if (!v5)
   {

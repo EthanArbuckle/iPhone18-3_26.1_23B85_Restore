@@ -1,22 +1,22 @@
 @interface MTSettingsWithActionHeaderView
 - (CGRect)_contentViewLayoutRect;
-- (MTSettingsWithActionHeaderView)initWithReuseIdentifier:(id)a3;
-- (id)_actionButtonDisplayTitleForActionTitle:(id)a3;
+- (MTSettingsWithActionHeaderView)initWithReuseIdentifier:(id)identifier;
+- (id)_actionButtonDisplayTitleForActionTitle:(id)title;
 - (void)_reloadActionButtonContent;
 - (void)_updateButtonFontAndTextAlignment;
-- (void)actionButtonTapped:(id)a3;
+- (void)actionButtonTapped:(id)tapped;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAction:(id)a3;
+- (void)setAction:(id)action;
 @end
 
 @implementation MTSettingsWithActionHeaderView
 
-- (MTSettingsWithActionHeaderView)initWithReuseIdentifier:(id)a3
+- (MTSettingsWithActionHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = MTSettingsWithActionHeaderView;
-  v3 = [(MTSettingsWithActionHeaderView *)&v8 initWithReuseIdentifier:a3];
+  v3 = [(MTSettingsWithActionHeaderView *)&v8 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = [UIButton buttonWithType:1];
@@ -24,29 +24,29 @@
     v3->_actionButton = v4;
 
     [(UIButton *)v3->_actionButton addTarget:v3 action:"actionButtonTapped:" forControlEvents:64];
-    v6 = [(MTSettingsWithActionHeaderView *)v3 contentView];
-    [v6 addSubview:v3->_actionButton];
+    contentView = [(MTSettingsWithActionHeaderView *)v3 contentView];
+    [contentView addSubview:v3->_actionButton];
   }
 
   return v3;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v5 = a3;
-  if (self->_action != v5)
+  actionCopy = action;
+  if (self->_action != actionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_action, a3);
+    v6 = actionCopy;
+    objc_storeStrong(&self->_action, action);
     [(MTSettingsWithActionHeaderView *)self _reloadActionButtonContent];
-    v5 = v6;
+    actionCopy = v6;
   }
 }
 
-- (void)actionButtonTapped:(id)a3
+- (void)actionButtonTapped:(id)tapped
 {
-  v3 = [(MTSettingsWithActionHeaderView *)self action];
-  [v3 performAction];
+  action = [(MTSettingsWithActionHeaderView *)self action];
+  [action performAction];
 }
 
 - (void)prepareForReuse
@@ -66,46 +66,46 @@
   width = v27.size.width;
   height = v27.size.height;
   v7 = CGRectGetWidth(v27);
-  v8 = [(MTSettingsWithActionHeaderView *)self actionButton];
-  [v8 frame];
+  actionButton = [(MTSettingsWithActionHeaderView *)self actionButton];
+  [actionButton frame];
   [(MTSettingsWithActionHeaderView *)self setMaxTitleWidth:v7 - CGRectGetWidth(v28) + -12.0];
 
   v26.receiver = self;
   v26.super_class = MTSettingsWithActionHeaderView;
   [(MTSettingsWithActionHeaderView *)&v26 layoutSubviews];
-  LODWORD(v8) = [(MTSettingsWithActionHeaderView *)self mt_isRTL];
-  v9 = [(MTSettingsWithActionHeaderView *)self actionButton];
-  [v9 frame];
-  v14 = sub_100146EDC(v8, 3, 3, v10, v11, v12, v13, x, y, width, height);
+  LODWORD(actionButton) = [(MTSettingsWithActionHeaderView *)self mt_isRTL];
+  actionButton2 = [(MTSettingsWithActionHeaderView *)self actionButton];
+  [actionButton2 frame];
+  v14 = sub_100146EDC(actionButton, 3, 3, v10, v11, v12, v13, x, y, width, height);
   v16 = v15;
   v18 = v17;
 
-  v19 = [(MTSettingsWithActionHeaderView *)self textLabel];
-  [v19 mt_baselineOriginY];
+  textLabel = [(MTSettingsWithActionHeaderView *)self textLabel];
+  [textLabel mt_baselineOriginY];
   v21 = v20;
-  v22 = [(MTSettingsWithActionHeaderView *)self actionButton];
-  [v22 mt_firstBaselineOffsetFromTop];
+  actionButton3 = [(MTSettingsWithActionHeaderView *)self actionButton];
+  [actionButton3 mt_firstBaselineOffsetFromTop];
   v24 = v21 - v23;
 
-  v25 = [(MTSettingsWithActionHeaderView *)self actionButton];
-  [v25 setFrame:{v14, v24, v16, v18}];
+  actionButton4 = [(MTSettingsWithActionHeaderView *)self actionButton];
+  [actionButton4 setFrame:{v14, v24, v16, v18}];
 }
 
 - (void)_reloadActionButtonContent
 {
-  v3 = [(MTSettingsWithActionHeaderView *)self actionButton];
-  v4 = [(MTSettingsWithActionHeaderView *)self action];
-  v5 = [v4 title];
-  v6 = [(MTSettingsWithActionHeaderView *)self _actionButtonDisplayTitleForActionTitle:v5];
+  actionButton = [(MTSettingsWithActionHeaderView *)self actionButton];
+  action = [(MTSettingsWithActionHeaderView *)self action];
+  title = [action title];
+  v6 = [(MTSettingsWithActionHeaderView *)self _actionButtonDisplayTitleForActionTitle:title];
 
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_1000919C4;
   v12 = &unk_1004D8798;
-  v13 = v3;
+  v13 = actionButton;
   v14 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = actionButton;
   [UIView performWithoutAnimation:&v9];
   [(MTSettingsWithActionHeaderView *)self setNeedsLayout:v9];
 }
@@ -122,36 +122,36 @@
     v3 = 0;
   }
 
-  v4 = [(MTSettingsWithActionHeaderView *)self actionButton];
-  v5 = [v4 titleLabel];
-  [v5 setTextAlignment:v3];
+  actionButton = [(MTSettingsWithActionHeaderView *)self actionButton];
+  titleLabel = [actionButton titleLabel];
+  [titleLabel setTextAlignment:v3];
 
-  v12 = [(MTSettingsWithActionHeaderView *)self actionButton];
-  v6 = [(MTSettingsWithActionHeaderView *)self textLabel];
-  v7 = [v6 font];
+  actionButton2 = [(MTSettingsWithActionHeaderView *)self actionButton];
+  textLabel = [(MTSettingsWithActionHeaderView *)self textLabel];
+  font = [textLabel font];
 
-  if (v7)
+  if (font)
   {
-    v8 = [v12 titleLabel];
-    v9 = [v8 font];
-    v10 = [v7 isEqual:v9];
+    titleLabel2 = [actionButton2 titleLabel];
+    font2 = [titleLabel2 font];
+    v10 = [font isEqual:font2];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [v12 titleLabel];
-      [v11 setFont:v7];
+      titleLabel3 = [actionButton2 titleLabel];
+      [titleLabel3 setFont:font];
 
-      [v12 sizeToFit];
+      [actionButton2 sizeToFit];
     }
   }
 }
 
 - (CGRect)_contentViewLayoutRect
 {
-  v2 = [(MTSettingsWithActionHeaderView *)self contentView];
-  [v2 bounds];
-  [v2 layoutMargins];
-  [v2 layoutMargins];
+  contentView = [(MTSettingsWithActionHeaderView *)self contentView];
+  [contentView bounds];
+  [contentView layoutMargins];
+  [contentView layoutMargins];
   UIRectInset();
   v4 = v3;
   v6 = v5;
@@ -169,11 +169,11 @@
   return result;
 }
 
-- (id)_actionButtonDisplayTitleForActionTitle:(id)a3
+- (id)_actionButtonDisplayTitleForActionTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = +[NSLocale currentLocale];
-  v5 = [v3 uppercaseStringWithLocale:v4];
+  v5 = [titleCopy uppercaseStringWithLocale:v4];
 
   return v5;
 }

@@ -1,6 +1,6 @@
 @interface THImageInfo
 - (void)dealloc;
-- (void)setPopUpInfo:(id)a3;
+- (void)setPopUpInfo:(id)info;
 @end
 
 @implementation THImageInfo
@@ -12,13 +12,13 @@
   [(THImageInfo *)&v3 dealloc];
 }
 
-- (void)setPopUpInfo:(id)a3
+- (void)setPopUpInfo:(id)info
 {
   mPopUpInfo = self->mPopUpInfo;
-  if (mPopUpInfo != a3)
+  if (mPopUpInfo != info)
   {
 
-    self->mPopUpInfo = a3;
+    self->mPopUpInfo = info;
   }
 }
 

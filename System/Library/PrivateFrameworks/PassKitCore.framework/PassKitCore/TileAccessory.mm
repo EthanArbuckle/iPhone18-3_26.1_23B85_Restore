@@ -1,32 +1,32 @@
 @interface TileAccessory
-+ (id)insertAccessory:(id)a3 inDatabase:(id)a4;
++ (id)insertAccessory:(id)accessory inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
-- (TileAccessory)initWithAccessory:(id)a3 inDatabase:(id)a4;
+- (TileAccessory)initWithAccessory:(id)accessory inDatabase:(id)database;
 - (id)passTileAccessory;
 - (int64_t)type;
 @end
 
 @implementation TileAccessory
 
-- (TileAccessory)initWithAccessory:(id)a3 inDatabase:(id)a4
+- (TileAccessory)initWithAccessory:(id)accessory inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
+  databaseCopy = database;
+  accessoryCopy = accessory;
   v8 = objc_alloc_init(NSMutableDictionary);
-  [v7 type];
+  [accessoryCopy type];
 
   v9 = PKPassTileAccessoryTypeToString();
   [v8 setObjectOrNull:v9 forKey:@"type"];
 
-  v10 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:v6];
+  v10 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:databaseCopy];
   return v10;
 }
 
-+ (id)insertAccessory:(id)a3 inDatabase:(id)a4
++ (id)insertAccessory:(id)accessory inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  accessoryCopy = accessory;
+  databaseCopy = database;
+  if (accessoryCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -38,9 +38,9 @@
     v10[1] = 3221225472;
     v10[2] = sub_10009C5BC;
     v10[3] = &unk_100840570;
-    v14 = a1;
-    v11 = v6;
-    v12 = v7;
+    selfCopy = self;
+    v11 = accessoryCopy;
+    v12 = databaseCopy;
     v13 = &v15;
     sub_1005D4424(v12, v10);
     v8 = v16[5];
@@ -58,10 +58,10 @@
 
 - (BOOL)deleteFromDatabase
 {
-  v3 = [(TileAccessory *)self type];
-  if (v3 <= 2)
+  type = [(TileAccessory *)self type];
+  if (type <= 2)
   {
-    [(__objc2_class *)*off_100841828[v3] deleteEntitiesForBaseAccessory:self inDatabase:self->super._database];
+    [(__objc2_class *)*off_100841828[type] deleteEntitiesForBaseAccessory:self inDatabase:self->super._database];
   }
 
   v5.receiver = self;
@@ -79,34 +79,34 @@
 
 - (id)passTileAccessory
 {
-  v3 = [(TileAccessory *)self type];
-  v4 = [PKPassTileAccessory _createForType:v3 resolved:0];
+  type = [(TileAccessory *)self type];
+  v4 = [PKPassTileAccessory _createForType:type resolved:0];
   v5 = v4;
-  if (v3 == 2)
+  if (type == 2)
   {
     v6 = TileAccessoryImage;
-    v7 = [v4 accessoryTypeImage];
+    accessoryTypeImage = [v4 accessoryTypeImage];
   }
 
-  else if (v3 == 1)
+  else if (type == 1)
   {
     v6 = TileAccessorySpinner;
-    v7 = [v4 accessoryTypeSpinner];
+    accessoryTypeImage = [v4 accessoryTypeSpinner];
   }
 
   else
   {
-    if (v3)
+    if (type)
     {
       goto LABEL_8;
     }
 
     v6 = TileAccessoryButton;
-    v7 = [v4 accessoryTypeButton];
+    accessoryTypeImage = [v4 accessoryTypeButton];
   }
 
-  v8 = v7;
-  [(__objc2_class *)v6 inflateAccessory:v7 forBaseAccessory:self inDatabase:self->super._database];
+  v8 = accessoryTypeImage;
+  [(__objc2_class *)v6 inflateAccessory:accessoryTypeImage forBaseAccessory:self inDatabase:self->super._database];
 
 LABEL_8:
 

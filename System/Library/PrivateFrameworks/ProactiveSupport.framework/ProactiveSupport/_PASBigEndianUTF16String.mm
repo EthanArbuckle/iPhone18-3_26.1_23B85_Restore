@@ -1,70 +1,70 @@
 @interface _PASBigEndianUTF16String
-- (id)initWithLength:(void *)a3 buffer:(void *)a4 backingObject:;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)_implGetCharacters:(uint64_t)a3 range:(uint64_t)a4;
+- (id)initWithLength:(void *)length buffer:(void *)buffer backingObject:;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)_implGetCharacters:(uint64_t)characters range:(uint64_t)range;
 @end
 
 @implementation _PASBigEndianUTF16String
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   __dst = 0;
-  [(_PASBigEndianUTF16String *)self _implGetCharacters:a3 range:1];
+  [(_PASBigEndianUTF16String *)self _implGetCharacters:index range:1];
   return __dst;
 }
 
-- (void)_implGetCharacters:(uint64_t)a3 range:(uint64_t)a4
+- (void)_implGetCharacters:(uint64_t)characters range:(uint64_t)range
 {
   if (result)
   {
-    v4 = a4;
-    if ((a3 + a4) > result[1])
+    rangeCopy = range;
+    if ((characters + range) > result[1])
     {
       v6 = MEMORY[0x1E695DF30];
       v7 = *MEMORY[0x1E695DA20];
-      v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Range {%tu, %tu} out of bounds; string length %tu", a3, a4, result[1]];
+      v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Range {%tu, %tu} out of bounds; string length %tu", characters, range, result[1]];
       v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
       v10 = v9;
 
       objc_exception_throw(v9);
     }
 
-    if (a4)
+    if (range)
     {
       v5 = __dst;
-      result = memcpy(__dst, (result[2] + 2 * a3), 2 * a4);
+      result = memcpy(__dst, (result[2] + 2 * characters), 2 * range);
       do
       {
         *v5 = bswap32(*v5) >> 16;
         ++v5;
-        --v4;
+        --rangeCopy;
       }
 
-      while (v4);
+      while (rangeCopy);
     }
   }
 
   return result;
 }
 
-- (id)initWithLength:(void *)a3 buffer:(void *)a4 backingObject:
+- (id)initWithLength:(void *)length buffer:(void *)buffer backingObject:
 {
-  v8 = a4;
-  if (a1)
+  bufferCopy = buffer;
+  if (self)
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = _PASBigEndianUTF16String;
     v9 = objc_msgSendSuper2(&v11, sel_init);
-    a1 = v9;
+    self = v9;
     if (v9)
     {
       v9[1] = a2;
-      v9[2] = a3;
-      objc_storeStrong(v9 + 3, a4);
+      v9[2] = length;
+      objc_storeStrong(v9 + 3, buffer);
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

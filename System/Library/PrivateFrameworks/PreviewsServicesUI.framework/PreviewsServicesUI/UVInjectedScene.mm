@@ -1,40 +1,40 @@
 @interface UVInjectedScene
-+ (id)_baseSceneSettings:(id)a3 sceneIdentifier:(id)a4 parentSettings:(id)a5;
-+ (id)_injectInProcessHandle:(id)a3 error:(id *)a4;
-+ (id)injectInRunningTarget:(id)a3 error:(id *)a4;
-- (BOOL)_computeAndUpdateSceneSettings:(id *)a3;
-- (BOOL)setMaximizedWithParent:(id)a3 error:(id *)a4;
-- (BOOL)setMinimizedWithParent:(id)a3 size:(CGSize)a4 maximumSize:(CGSize)a5 error:(id *)a6;
++ (id)_baseSceneSettings:(id)settings sceneIdentifier:(id)identifier parentSettings:(id)parentSettings;
++ (id)_injectInProcessHandle:(id)handle error:(id *)error;
++ (id)injectInRunningTarget:(id)target error:(id *)error;
+- (BOOL)_computeAndUpdateSceneSettings:(id *)settings;
+- (BOOL)setMaximizedWithParent:(id)parent error:(id *)error;
+- (BOOL)setMinimizedWithParent:(id)parent size:(CGSize)size maximumSize:(CGSize)maximumSize error:(id *)error;
 - (CGSize)sceneSize;
 - (NSString)description;
-- (id)_computeSceneSettingsUsing:(id)a3 error:(id *)a4;
-- (id)_initWithScene:(id)a3;
-- (void)_handleActionsFromHostedScene:(id)a3;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
-- (void)_setParentScene:(id)a3;
-- (void)_updateSceneSettings:(id)a3 transitionContext:(id)a4;
+- (id)_computeSceneSettingsUsing:(id)using error:(id *)error;
+- (id)_initWithScene:(id)scene;
+- (void)_handleActionsFromHostedScene:(id)scene;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
+- (void)_setParentScene:(id)scene;
+- (void)_updateSceneSettings:(id)settings transitionContext:(id)context;
 - (void)dealloc;
 - (void)invalidate;
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
-- (void)sceneDidInvalidate:(id)a3;
-- (void)sendAction:(id)a3;
-- (void)setActionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
-- (void)setSceneResizeHandler:(id)a3;
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context;
+- (void)sceneDidInvalidate:(id)invalidate;
+- (void)sendAction:(id)action;
+- (void)setActionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
+- (void)setSceneResizeHandler:(id)handler;
 @end
 
 @implementation UVInjectedScene
 
-- (id)_initWithScene:(id)a3
+- (id)_initWithScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   v10.receiver = self;
   v10.super_class = UVInjectedScene;
   v6 = [(UVInjectedScene *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scene, a3);
+    objc_storeStrong(&v6->_scene, scene);
     v7->_maximized = 1;
     v8 = *MEMORY[0x277CBF3A8];
     v7->_overrideSceneSize = *MEMORY[0x277CBF3A8];
@@ -50,8 +50,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(FBScene *)self->_scene identifier];
-  v7 = [v3 stringWithFormat:@"<%@ %p, identifier: %@>", v5, self, v6];
+  identifier = [(FBScene *)self->_scene identifier];
+  v7 = [v3 stringWithFormat:@"<%@ %p, identifier: %@>", v5, self, identifier];
 
   return v7;
 }
@@ -61,7 +61,7 @@
   v9 = *MEMORY[0x277D85DE8];
   v0 = objc_opt_class();
   v1 = NSStringFromClass(v0);
-  v8 = [MEMORY[0x277CCACC8] callStackSymbols];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
   OUTLINED_FUNCTION_0();
   _os_log_fault_impl(v2, v3, v4, v5, v6, 0x16u);
 
@@ -77,20 +77,20 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25F542000, v3, OS_LOG_TYPE_DEFAULT, "Invalidation of %@", &v13, 0xCu);
     }
 
     self->_invalidated = 1;
     [(FBScene *)self->_scene setDelegate:0];
-    v4 = [MEMORY[0x277D0AAD8] sharedInstance];
-    v5 = [(FBScene *)self->_scene identifier];
-    v6 = [v4 sceneWithIdentifier:v5];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+    identifier = [(FBScene *)self->_scene identifier];
+    v6 = [mEMORY[0x277D0AAD8] sceneWithIdentifier:identifier];
 
     if (v6)
     {
-      v7 = [(FBScene *)self->_scene identifier];
-      [v4 destroyScene:v7 withTransitionContext:0];
+      identifier2 = [(FBScene *)self->_scene identifier];
+      [mEMORY[0x277D0AAD8] destroyScene:identifier2 withTransitionContext:0];
     }
 
     [(UVInjectedScene *)self _setParentScene:0];
@@ -118,37 +118,37 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_invalidated)
   {
-    if (!v4)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
-    v7 = v4;
-    v4[2]();
+    v7 = handlerCopy;
+    handlerCopy[2]();
   }
 
   else
   {
-    v7 = v4;
-    v5 = _Block_copy(v4);
+    v7 = handlerCopy;
+    v5 = _Block_copy(handlerCopy);
     invalidationHandler = self->_invalidationHandler;
     self->_invalidationHandler = v5;
   }
 
-  v4 = v7;
+  handlerCopy = v7;
 LABEL_6:
 }
 
-- (void)setSceneResizeHandler:(id)a3
+- (void)setSceneResizeHandler:(id)handler
 {
   if (!self->_invalidated)
   {
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(handler);
     sceneResizeHandler = self->_sceneResizeHandler;
     self->_sceneResizeHandler = v5;
 
@@ -156,11 +156,11 @@ LABEL_6:
   }
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
   if (!self->_invalidated)
   {
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(handler);
     actionHandler = self->_actionHandler;
     self->_actionHandler = v5;
 
@@ -168,25 +168,25 @@ LABEL_6:
   }
 }
 
-- (void)sendAction:(id)a3
+- (void)sendAction:(id)action
 {
   scene = self->_scene;
-  v4 = [MEMORY[0x277CBEB98] setWithObject:a3];
+  v4 = [MEMORY[0x277CBEB98] setWithObject:action];
   [(FBScene *)scene sendActions:v4];
 }
 
-- (void)_handleActionsFromHostedScene:(id)a3
+- (void)_handleActionsFromHostedScene:(id)scene
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  sceneCopy = scene;
+  v5 = sceneCopy;
   if (self->_actionHandler)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [sceneCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -217,20 +217,20 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context
 {
-  v7 = [a6 actions];
-  [(UVInjectedScene *)self _handleActionsFromHostedScene:v7];
+  actions = [context actions];
+  [(UVInjectedScene *)self _handleActionsFromHostedScene:actions];
 }
 
-- (void)sceneDidInvalidate:(id)a3
+- (void)sceneDidInvalidate:(id)invalidate
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = UVLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25F542000, v4, OS_LOG_TYPE_DEFAULT, "Scene triggered invalidation of %@", &v6, 0xCu);
   }
 
@@ -238,71 +238,71 @@ LABEL_6:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v13 = a7;
-  v10 = [a4 settings];
-  v11 = [(UVInjectedScene *)self _computeSceneSettingsUsing:v10 error:0];
+  contextCopy = context;
+  settings = [sScene settings];
+  v11 = [(UVInjectedScene *)self _computeSceneSettingsUsing:settings error:0];
 
   if (v11)
   {
-    v12 = [v13 copy];
+    v12 = [contextCopy copy];
 
     [v12 setActions:0];
     [(UVInjectedScene *)self _updateSceneSettings:v11 transitionContext:v12];
-    v13 = v12;
+    contextCopy = v12;
   }
 }
 
-- (void)_setParentScene:(id)a3
+- (void)_setParentScene:(id)scene
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  sceneCopy = scene;
   parentScene = self->_parentScene;
-  if (parentScene != v5)
+  if (parentScene != sceneCopy)
   {
-    v7 = [(FBScene *)self->_scene identifier];
-    [(UIWindowScene *)parentScene _unregisterSettingsDiffActionArrayForKey:v7];
+    identifier = [(FBScene *)self->_scene identifier];
+    [(UIWindowScene *)parentScene _unregisterSettingsDiffActionArrayForKey:identifier];
 
-    objc_storeStrong(&self->_parentScene, a3);
+    objc_storeStrong(&self->_parentScene, scene);
     v8 = self->_parentScene;
     v12[0] = self;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-    v10 = [(FBScene *)self->_scene identifier];
-    [(UIWindowScene *)v8 _registerSettingsDiffActionArray:v9 forKey:v10];
+    identifier2 = [(FBScene *)self->_scene identifier];
+    [(UIWindowScene *)v8 _registerSettingsDiffActionArray:v9 forKey:identifier2];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setMaximizedWithParent:(id)a3 error:(id *)a4
+- (BOOL)setMaximizedWithParent:(id)parent error:(id *)error
 {
-  [(UVInjectedScene *)self _setParentScene:a3];
+  [(UVInjectedScene *)self _setParentScene:parent];
   self->_maximized = 1;
 
-  return [(UVInjectedScene *)self _computeAndUpdateSceneSettings:a4];
+  return [(UVInjectedScene *)self _computeAndUpdateSceneSettings:error];
 }
 
-- (BOOL)setMinimizedWithParent:(id)a3 size:(CGSize)a4 maximumSize:(CGSize)a5 error:(id *)a6
+- (BOOL)setMinimizedWithParent:(id)parent size:(CGSize)size maximumSize:(CGSize)maximumSize error:(id *)error
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.height;
-  v10 = a4.width;
-  [(UVInjectedScene *)self _setParentScene:a3];
+  height = maximumSize.height;
+  width = maximumSize.width;
+  v9 = size.height;
+  v10 = size.width;
+  [(UVInjectedScene *)self _setParentScene:parent];
   self->_maximized = 0;
   self->_overrideSceneSize.width = v10;
   self->_overrideSceneSize.height = v9;
   self->_overrideMaximumSize.width = width;
   self->_overrideMaximumSize.height = height;
 
-  return [(UVInjectedScene *)self _computeAndUpdateSceneSettings:a6];
+  return [(UVInjectedScene *)self _computeAndUpdateSceneSettings:error];
 }
 
 - (CGSize)sceneSize
 {
-  v2 = [(FBScene *)self->_scene settings];
-  [v2 frame];
+  settings = [(FBScene *)self->_scene settings];
+  [settings frame];
   v4 = v3;
   v6 = v5;
 
@@ -313,12 +313,12 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_computeAndUpdateSceneSettings:(id *)a3
+- (BOOL)_computeAndUpdateSceneSettings:(id *)settings
 {
-  v5 = [(UIWindowScene *)self->_parentScene _FBSScene];
-  v6 = [v5 settings];
+  _FBSScene = [(UIWindowScene *)self->_parentScene _FBSScene];
+  settings = [_FBSScene settings];
 
-  v7 = [(UVInjectedScene *)self _computeSceneSettingsUsing:v6 error:a3];
+  v7 = [(UVInjectedScene *)self _computeSceneSettingsUsing:settings error:settings];
   if (v7)
   {
     [(UVInjectedScene *)self _updateSceneSettings:v7 transitionContext:0];
@@ -327,18 +327,18 @@ LABEL_6:
   return v7 != 0;
 }
 
-- (id)_computeSceneSettingsUsing:(id)a3 error:(id *)a4
+- (id)_computeSceneSettingsUsing:(id)using error:(id *)error
 {
-  v6 = a3;
-  v14 = v6;
-  if (v6)
+  usingCopy = using;
+  v14 = usingCopy;
+  if (usingCopy)
   {
-    v15 = v6;
+    v15 = usingCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = [v15 displayConfiguration];
-      if (v23)
+      displayConfiguration = [v15 displayConfiguration];
+      if (displayConfiguration)
       {
         if (self->_maximized)
         {
@@ -350,7 +350,7 @@ LABEL_6:
 
         else
         {
-          v24 = [objc_opt_class() _baseSceneSettings:v23 sceneIdentifier:0 parentSettings:0];
+          v24 = [objc_opt_class() _baseSceneSettings:displayConfiguration sceneIdentifier:0 parentSettings:0];
           [(UVMutablePreviewSceneSettings *)v24 setInterruptionPolicy:1];
           -[UVMutablePreviewSceneSettings setForeground:](v24, "setForeground:", [v15 isForeground]);
           -[UVMutablePreviewSceneSettings setUserInterfaceStyle:](v24, "setUserInterfaceStyle:", [v15 userInterfaceStyle]);
@@ -390,28 +390,28 @@ LABEL_6:
         [UVInjectedScene _computeSceneSettingsUsing:v40 error:?];
       }
 
-      if (a4)
+      if (error)
       {
         v42 = v40;
-        *a4 = v40;
+        *error = v40;
       }
     }
 
     else
     {
       v30 = objc_opt_class();
-      v23 = UVPreviewsServicesError(@"cannot compute settings from parent scene with non-UI settings: %@", v31, v32, v33, v34, v35, v36, v37, v30);
+      displayConfiguration = UVPreviewsServicesError(@"cannot compute settings from parent scene with non-UI settings: %@", v31, v32, v33, v34, v35, v36, v37, v30);
       v38 = UVLog();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
       {
-        [UVInjectedScene _computeSceneSettingsUsing:v23 error:?];
+        [UVInjectedScene _computeSceneSettingsUsing:displayConfiguration error:?];
       }
 
-      if (a4)
+      if (error)
       {
-        v39 = v23;
+        v39 = displayConfiguration;
         v29 = 0;
-        *a4 = v23;
+        *error = displayConfiguration;
 LABEL_28:
 
         goto LABEL_29;
@@ -429,11 +429,11 @@ LABEL_28:
     [UVInjectedScene _computeSceneSettingsUsing:v15 error:?];
   }
 
-  if (a4)
+  if (error)
   {
     v28 = v15;
     v29 = 0;
-    *a4 = v15;
+    *error = v15;
   }
 
   else
@@ -446,16 +446,16 @@ LABEL_29:
   return v29;
 }
 
-- (void)_updateSceneSettings:(id)a3 transitionContext:(id)a4
+- (void)_updateSceneSettings:(id)settings transitionContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  settingsCopy = settings;
   [(UVInjectedScene *)self sceneSize];
   v9 = v8;
   v11 = v10;
-  v15 = [(UVInjectedScene *)self _prepareSceneSettingsForUpdate:v7];
+  v15 = [(UVInjectedScene *)self _prepareSceneSettingsForUpdate:settingsCopy];
 
-  [(FBScene *)self->_scene updateSettings:v15 withTransitionContext:v6];
+  [(FBScene *)self->_scene updateSettings:v15 withTransitionContext:contextCopy];
   [(UVInjectedScene *)self sceneSize];
   if (v9 != v13 || v11 != v12)
   {
@@ -467,27 +467,27 @@ LABEL_29:
   }
 }
 
-+ (id)_baseSceneSettings:(id)a3 sceneIdentifier:(id)a4 parentSettings:(id)a5
++ (id)_baseSceneSettings:(id)settings sceneIdentifier:(id)identifier parentSettings:(id)parentSettings
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(FBSSettings *)[UVMutablePreviewSceneSettings alloc] initWithSettings:v8];
+  identifierCopy = identifier;
+  parentSettingsCopy = parentSettings;
+  settingsCopy = settings;
+  v10 = [(FBSSettings *)[UVMutablePreviewSceneSettings alloc] initWithSettings:parentSettingsCopy];
 
-  if (v7)
+  if (identifierCopy)
   {
-    v12 = UVSceneIdentifierToPersistenceIdentifier(v7, v11);
+    v12 = UVSceneIdentifierToPersistenceIdentifier(identifierCopy, v11);
     [(UVMutablePreviewSceneSettings *)v10 setPersistenceIdentifier:v12];
   }
 
-  [(UVMutablePreviewSceneSettings *)v10 setDisplayConfiguration:v9];
+  [(UVMutablePreviewSceneSettings *)v10 setDisplayConfiguration:settingsCopy];
   [(UVMutablePreviewSceneSettings *)v10 setLevel:1.0];
   [(UVMutablePreviewSceneSettings *)v10 setForeground:1];
   [(UVMutablePreviewSceneSettings *)v10 setInterfaceOrientation:1];
   [(UVMutablePreviewSceneSettings *)v10 setStatusBarDisabled:1];
-  [v9 bounds];
+  [settingsCopy bounds];
   [(UVMutablePreviewSceneSettings *)v10 setFrame:?];
-  [v9 bounds];
+  [settingsCopy bounds];
   v14 = v13;
   v16 = v15;
 
@@ -496,35 +496,35 @@ LABEL_29:
   return v10;
 }
 
-+ (id)injectInRunningTarget:(id)a3 error:(id *)a4
++ (id)injectInRunningTarget:(id)target error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:v6];
+  targetCopy = target;
+  v7 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:targetCopy];
   v17 = 0;
   v8 = [MEMORY[0x277D46F48] handleForPredicate:v7 error:&v17];
   v9 = v17;
   if (v8)
   {
-    v10 = [a1 _injectInProcessHandle:v8 error:a4];
+    v10 = [self _injectInProcessHandle:v8 error:error];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to get process handle for %@: %@", v6, v9];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to get process handle for %@: %@", targetCopy, v9];
     v12 = UVLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       +[UVInjectedScene injectInRunningTarget:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v18 = *MEMORY[0x277CCA450];
       v19[0] = v11;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      *a4 = [v13 errorWithDomain:@"UVErrorDomain" code:1 userInfo:v14];
+      *error = [v13 errorWithDomain:@"UVErrorDomain" code:1 userInfo:v14];
     }
 
     v10 = 0;
@@ -535,16 +535,16 @@ LABEL_29:
   return v10;
 }
 
-+ (id)_injectInProcessHandle:(id)a3 error:(id *)a4
++ (id)_injectInProcessHandle:(id)handle error:(id *)error
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277D0AAC0] sharedInstance];
-  v34 = v6;
-  v32 = a4;
-  if (v6)
+  handleCopy = handle;
+  mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstance];
+  v34 = handleCopy;
+  errorCopy = error;
+  if (handleCopy)
   {
-    [v6 auditToken];
+    [handleCopy auditToken];
   }
 
   else
@@ -552,33 +552,33 @@ LABEL_29:
     memset(v35, 0, sizeof(v35));
   }
 
-  v8 = [v7 registerProcessForAuditToken:v35];
+  v8 = [mEMORY[0x277D0AAC0] registerProcessForAuditToken:v35];
 
   v9 = MEMORY[0x277D0ADA8];
-  v10 = [v8 identity];
-  v11 = [v9 identityForProcessIdentity:v10];
+  identity = [v8 identity];
+  v11 = [v9 identityForProcessIdentity:identity];
 
   v12 = MEMORY[0x277CCACA8];
   v13 = getpid();
   v14 = [v12 stringWithFormat:@"%@-(%d)-%d", @"UV-InjectedScene", v13, ++_NextIdentifier_identifier];
   v15 = +[(FBSSceneSpecification *)UVInjectedSceneSpecification];
   v16 = [MEMORY[0x277D0AD50] parametersForSpecification:v15];
-  v17 = [MEMORY[0x277D759A0] mainScreen];
-  v18 = [v17 displayConfiguration];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  displayConfiguration = [mainScreen displayConfiguration];
 
-  v33 = v18;
-  v19 = [a1 _baseSceneSettings:v18 sceneIdentifier:v14 parentSettings:0];
+  v33 = displayConfiguration;
+  v19 = [self _baseSceneSettings:displayConfiguration sceneIdentifier:v14 parentSettings:0];
   v20 = [v19 copy];
   [v16 setSettings:v20];
 
-  v21 = [MEMORY[0x277D0AD48] definition];
+  definition = [MEMORY[0x277D0AD48] definition];
   v22 = [MEMORY[0x277D0ADC0] identityForIdentifier:v14];
-  [v21 setIdentity:v22];
+  [definition setIdentity:v22];
 
-  [v21 setClientIdentity:v11];
-  [v21 setSpecification:v15];
-  v23 = [MEMORY[0x277D0AAD8] sharedInstance];
-  v24 = [v23 createSceneWithDefinition:v21 initialParameters:v16];
+  [definition setClientIdentity:v11];
+  [definition setSpecification:v15];
+  mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+  v24 = [mEMORY[0x277D0AAD8] createSceneWithDefinition:definition initialParameters:v16];
 
   if (v24)
   {
@@ -594,13 +594,13 @@ LABEL_29:
       +[UVInjectedScene injectInRunningTarget:error:];
     }
 
-    if (v32)
+    if (errorCopy)
     {
       v31 = MEMORY[0x277CCA9B8];
       v36 = *MEMORY[0x277CCA450];
       v37[0] = v26;
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
-      *v32 = [v31 errorWithDomain:@"UVErrorDomain" code:2 userInfo:v28];
+      *errorCopy = [v31 errorWithDomain:@"UVErrorDomain" code:2 userInfo:v28];
     }
 
     v25 = 0;

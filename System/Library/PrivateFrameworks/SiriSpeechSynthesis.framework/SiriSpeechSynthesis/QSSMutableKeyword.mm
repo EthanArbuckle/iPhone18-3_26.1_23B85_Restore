@@ -1,16 +1,16 @@
 @interface QSSMutableKeyword
 - (QSSMutableKeyword)init;
 - (double)posterior;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setKeyword_orthography:(id)a3;
-- (void)setPosterior:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setKeyword_orthography:(id)keyword_orthography;
+- (void)setPosterior:(double)posterior;
 @end
 
 @implementation QSSMutableKeyword
 
-- (void)setPosterior:(double)a3
+- (void)setPosterior:(double)posterior
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:posterior];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
@@ -23,15 +23,15 @@
   return v4;
 }
 
-- (void)setKeyword_orthography:(id)a3
+- (void)setKeyword_orthography:(id)keyword_orthography
 {
-  v4 = [a3 copy];
+  v4 = [keyword_orthography copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -46,9 +46,9 @@
   v2 = [(QSSMutableKeyword *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

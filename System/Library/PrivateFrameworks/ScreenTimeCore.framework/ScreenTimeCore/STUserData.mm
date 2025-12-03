@@ -1,31 +1,31 @@
 @interface STUserData
-- (STUserData)initWithIdentifier:(id)a3 givenName:(id)a4 isParent:(BOOL)a5 isRemote:(BOOL)a6 hasPasscode:(BOOL)a7 screenTimeEnabled:(BOOL)a8 syncingEnabled:(BOOL)a9 checkForUnsafePhotos:(BOOL)a10 communicationSafetyNotificationEnabled:(BOOL)a11 communicationSafetyAnalyticsEnabled:(BOOL)a12 familyMemberType:(id)a13;
+- (STUserData)initWithIdentifier:(id)identifier givenName:(id)name isParent:(BOOL)parent isRemote:(BOOL)remote hasPasscode:(BOOL)passcode screenTimeEnabled:(BOOL)enabled syncingEnabled:(BOOL)syncingEnabled checkForUnsafePhotos:(BOOL)self0 communicationSafetyNotificationEnabled:(BOOL)self1 communicationSafetyAnalyticsEnabled:(BOOL)self2 familyMemberType:(id)self3;
 @end
 
 @implementation STUserData
 
-- (STUserData)initWithIdentifier:(id)a3 givenName:(id)a4 isParent:(BOOL)a5 isRemote:(BOOL)a6 hasPasscode:(BOOL)a7 screenTimeEnabled:(BOOL)a8 syncingEnabled:(BOOL)a9 checkForUnsafePhotos:(BOOL)a10 communicationSafetyNotificationEnabled:(BOOL)a11 communicationSafetyAnalyticsEnabled:(BOOL)a12 familyMemberType:(id)a13
+- (STUserData)initWithIdentifier:(id)identifier givenName:(id)name isParent:(BOOL)parent isRemote:(BOOL)remote hasPasscode:(BOOL)passcode screenTimeEnabled:(BOOL)enabled syncingEnabled:(BOOL)syncingEnabled checkForUnsafePhotos:(BOOL)self0 communicationSafetyNotificationEnabled:(BOOL)self1 communicationSafetyAnalyticsEnabled:(BOOL)self2 familyMemberType:(id)self3
 {
-  v20 = a3;
-  v21 = a4;
-  v22 = a13;
+  identifierCopy = identifier;
+  nameCopy = name;
+  typeCopy = type;
   v28.receiver = self;
   v28.super_class = STUserData;
   v23 = [(STUserData *)&v28 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_identifier, a3);
-    objc_storeStrong(&v24->_givenName, a4);
-    v24->_isParent = a5;
-    v24->_isRemote = a6;
-    v24->_hasPasscode = a7;
-    v24->_screenTimeEnabled = a8;
-    v24->_syncingEnabled = a9;
-    v24->_checkForUnsafePhotos = a10;
-    v24->_isCommunicationSafetyNotificationEnabled = a11;
-    v24->_isCommunicationSafetyAnalyticsEnabled = a12;
-    v25 = [v22 copy];
+    objc_storeStrong(&v23->_identifier, identifier);
+    objc_storeStrong(&v24->_givenName, name);
+    v24->_isParent = parent;
+    v24->_isRemote = remote;
+    v24->_hasPasscode = passcode;
+    v24->_screenTimeEnabled = enabled;
+    v24->_syncingEnabled = syncingEnabled;
+    v24->_checkForUnsafePhotos = photos;
+    v24->_isCommunicationSafetyNotificationEnabled = notificationEnabled;
+    v24->_isCommunicationSafetyAnalyticsEnabled = analyticsEnabled;
+    v25 = [typeCopy copy];
     familyMemberType = v24->_familyMemberType;
     v24->_familyMemberType = v25;
   }

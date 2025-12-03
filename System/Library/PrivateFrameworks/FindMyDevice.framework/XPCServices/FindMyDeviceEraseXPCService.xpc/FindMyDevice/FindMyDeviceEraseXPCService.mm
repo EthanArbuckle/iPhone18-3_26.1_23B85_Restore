@@ -1,43 +1,43 @@
 @interface FindMyDeviceEraseXPCService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (double)estimatedResetApplePayTimeout;
-- (void)_performEraseWithOptions:(id)a3 completion:(id)a4;
-- (void)eraseDeviceWithOptions:(id)a3 completion:(id)a4;
-- (void)resetPassKitCardsWithCompletion:(id)a3;
+- (void)_performEraseWithOptions:(id)options completion:(id)completion;
+- (void)eraseDeviceWithOptions:(id)options completion:(id)completion;
+- (void)resetPassKitCardsWithCompletion:(id)completion;
 @end
 
 @implementation FindMyDeviceEraseXPCService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sub_100000E18();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received new XPC connection %@", &v9, 0xCu);
   }
 
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___FindMyDeviceEraseXPCServiceProtocol];
-  [v5 setExportedInterface:v7];
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedInterface:v7];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)eraseDeviceWithOptions:(id)a3 completion:(id)a4
+- (void)eraseDeviceWithOptions:(id)options completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v9 = sub_100000E18();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v22 = "[FindMyDeviceEraseXPCService eraseDeviceWithOptions:completion:]";
     v23 = 2114;
-    v24 = v7;
+    v24 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "FRAMEWORK API: %s, Erasing device requested with options - %{public}@", buf, 0x16u);
   }
 
@@ -46,7 +46,7 @@
 
   if (v11 && ([&__kCFBooleanTrue isEqual:v11] & 1) != 0)
   {
-    [(FindMyDeviceEraseXPCService *)self _performEraseWithOptions:v7 completion:v8];
+    [(FindMyDeviceEraseXPCService *)self _performEraseWithOptions:optionsCopy completion:completionCopy];
   }
 
   else
@@ -78,18 +78,18 @@
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Failure message - %@", buf, 0xCu);
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, v17);
+      completionCopy[2](completionCopy, v17);
     }
   }
 }
 
-- (void)_performEraseWithOptions:(id)a3 completion:(id)a4
+- (void)_performEraseWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 brickDevice])
+  optionsCopy = options;
+  completionCopy = completion;
+  if ([optionsCopy brickDevice])
   {
     v8 = sub_100000E18();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -107,9 +107,9 @@
 
   v10 = *v9;
   v11 = +[FMDFMIPManager sharedInstance];
-  v12 = [v11 _postWipePrefPath];
+  _postWipePrefPath = [v11 _postWipePrefPath];
 
-  v38 = v12;
+  v38 = _postWipePrefPath;
   v13 = [NSArray arrayWithObjects:&v38 count:1];
   v14 = [NSPredicate predicateWithBlock:&stru_100008E78];
   v15 = [v13 filteredArrayUsingPredicate:v14];
@@ -122,7 +122,7 @@
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Excluding these files from the wipe: %@", buf, 0xCu);
   }
 
-  [v6 customDelay];
+  [optionsCopy customDelay];
   if (v17 >= 3.0)
   {
     v18 = v17;
@@ -139,10 +139,10 @@
     v18 = v19;
   }
 
-  [v6 maxDelayInterval];
+  [optionsCopy maxDelayInterval];
   if (v20 > 0.0)
   {
-    [v6 maxDelayInterval];
+    [optionsCopy maxDelayInterval];
     if (v18 >= v21)
     {
       v18 = v21;
@@ -174,8 +174,8 @@
   v32[1] = 3221225472;
   v32[2] = sub_100001FF8;
   v32[3] = &unk_100008EC0;
-  v33 = v7;
-  v26 = v7;
+  v33 = completionCopy;
+  v26 = completionCopy;
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1000021D4;
@@ -191,22 +191,22 @@
 - (double)estimatedResetApplePayTimeout
 {
   v2 = +[PKPassLibrary sharedInstance];
-  v3 = [v2 estimatedTimeToResetApplePay];
+  estimatedTimeToResetApplePay = [v2 estimatedTimeToResetApplePay];
 
   v4 = sub_100000E18();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = v3;
+    v7 = estimatedTimeToResetApplePay;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Apple pay reset may take - %f seconds", &v6, 0xCu);
   }
 
-  return v3;
+  return estimatedTimeToResetApplePay;
 }
 
-- (void)resetPassKitCardsWithCompletion:(id)a3
+- (void)resetPassKitCardsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = sub_100000E18();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -219,8 +219,8 @@
   block[1] = 3221225472;
   block[2] = sub_1000023FC;
   block[3] = &unk_100008F10;
-  v8 = v3;
-  v6 = v3;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 }
 

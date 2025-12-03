@@ -1,18 +1,18 @@
 @interface HDCloudSyncShareParticipantManagerTaskServer
-- (void)remote_fetchAllShareParticipantEmailAddressesForSharingType:(unint64_t)a3 completion:(id)a4;
-- (void)remote_fetchSharingParticipantStatus:(id)a3;
-- (void)remote_revokeAccessForAllShareParticipantsForSharingType:(unint64_t)a3 completion:(id)a4;
-- (void)remote_tearDownHealthSharingForProfile:(id)a3 completion:(id)a4;
+- (void)remote_fetchAllShareParticipantEmailAddressesForSharingType:(unint64_t)type completion:(id)completion;
+- (void)remote_fetchSharingParticipantStatus:(id)status;
+- (void)remote_revokeAccessForAllShareParticipantsForSharingType:(unint64_t)type completion:(id)completion;
+- (void)remote_tearDownHealthSharingForProfile:(id)profile completion:(id)completion;
 @end
 
 @implementation HDCloudSyncShareParticipantManagerTaskServer
 
-- (void)remote_fetchSharingParticipantStatus:(id)a3
+- (void)remote_fetchSharingParticipantStatus:(id)status
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = HDTinkerProtectedKeyValueDomainWithProfile(v5);
+  statusCopy = status;
+  profile = [(HDStandardTaskServer *)self profile];
+  v6 = HDTinkerProtectedKeyValueDomainWithProfile(profile);
 
   v19 = 0;
   v20 = &v19;
@@ -20,8 +20,8 @@
   v22 = __Block_byref_object_copy__121;
   v23 = __Block_byref_object_dispose__121;
   v24 = 0;
-  v7 = [(HDStandardTaskServer *)self profile];
-  v8 = [v7 database];
+  profile2 = [(HDStandardTaskServer *)self profile];
+  database = [profile2 database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__HDCloudSyncShareParticipantManagerTaskServer_remote_fetchSharingParticipantStatus___block_invoke;
@@ -30,13 +30,13 @@
   v18 = 0;
   v9 = v6;
   v16 = v9;
-  [v8 performHighPriorityTransactionsWithError:&v18 block:v15];
+  [database performHighPriorityTransactionsWithError:&v18 block:v15];
   v10 = v18;
 
   v11 = v20[5];
   if (v11)
   {
-    v12 = [v11 integerValue];
+    integerValue = [v11 integerValue];
   }
 
   else
@@ -46,16 +46,16 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v26 = self;
+      selfCopy = self;
       v27 = 2114;
       v28 = v10;
       _os_log_error_impl(&dword_228986000, v13, OS_LOG_TYPE_ERROR, "%{public}@ Failed to fetch participant share status. Error: %{public}@", buf, 0x16u);
     }
 
-    v12 = 0;
+    integerValue = 0;
   }
 
-  v4[2](v4, v12);
+  statusCopy[2](statusCopy, integerValue);
 
   _Block_object_dispose(&v19, 8);
   v14 = *MEMORY[0x277D85DE8];
@@ -71,10 +71,10 @@ uint64_t __85__HDCloudSyncShareParticipantManagerTaskServer_remote_fetchSharingP
   return 1;
 }
 
-- (void)remote_fetchAllShareParticipantEmailAddressesForSharingType:(unint64_t)a3 completion:(id)a4
+- (void)remote_fetchAllShareParticipantEmailAddressesForSharingType:(unint64_t)type completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  completionCopy = completion;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
@@ -82,22 +82,22 @@ uint64_t __85__HDCloudSyncShareParticipantManagerTaskServer_remote_fetchSharingP
     v9 = v8;
     v10 = NSStringFromSelector(a2);
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
     v21 = v10;
     _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@", buf, 0x16u);
   }
 
-  v11 = [(HDStandardTaskServer *)self profile];
-  v12 = [v11 cloudSyncManager];
+  profile = [(HDStandardTaskServer *)self profile];
+  cloudSyncManager = [profile cloudSyncManager];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __119__HDCloudSyncShareParticipantManagerTaskServer_remote_fetchAllShareParticipantEmailAddressesForSharingType_completion___block_invoke;
   v16[3] = &unk_27861B2F8;
   v16[4] = self;
-  v17 = v7;
-  v13 = v7;
-  v14 = [v12 fetchShareParticipantsForSharingType:a3 completion:v16];
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = [cloudSyncManager fetchShareParticipantsForSharingType:type completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -226,10 +226,10 @@ void __119__HDCloudSyncShareParticipantManagerTaskServer_remote_fetchAllSharePar
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_revokeAccessForAllShareParticipantsForSharingType:(unint64_t)a3 completion:(id)a4
+- (void)remote_revokeAccessForAllShareParticipantsForSharingType:(unint64_t)type completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  completionCopy = completion;
   _HKInitializeLogging();
   v8 = MEMORY[0x277CCC328];
   v9 = *MEMORY[0x277CCC328];
@@ -238,20 +238,20 @@ void __119__HDCloudSyncShareParticipantManagerTaskServer_remote_fetchAllSharePar
     v10 = v9;
     v11 = NSStringFromSelector(a2);
     v21 = 138543618;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2114;
     v24 = v11;
     _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@", &v21, 0x16u);
   }
 
-  v12 = [(HDStandardTaskServer *)self profile];
-  v13 = [v12 profileType];
+  profile = [(HDStandardTaskServer *)self profile];
+  profileType = [profile profileType];
 
-  if (v13 == 1)
+  if (profileType == 1)
   {
-    v14 = [(HDStandardTaskServer *)self profile];
-    v15 = [v14 cloudSyncManager];
-    v16 = [v15 removeAllParticipantsForSharingType:a3 completion:v7];
+    profile2 = [(HDStandardTaskServer *)self profile];
+    cloudSyncManager = [profile2 cloudSyncManager];
+    v16 = [cloudSyncManager removeAllParticipantsForSharingType:type completion:completionCopy];
   }
 
   else
@@ -263,24 +263,24 @@ void __119__HDCloudSyncShareParticipantManagerTaskServer_remote_fetchAllSharePar
       v19 = v17;
       v20 = NSStringFromSelector(a2);
       v21 = 138543618;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2114;
       v24 = v20;
       _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "%{public}@ %{public}@ Called on non-primary profile. Abort.", &v21, 0x16u);
     }
 
-    v14 = [MEMORY[0x277CCA9B8] hk_error:127 class:objc_opt_class() selector:a2 format:@"Revoke access for all share participants called on non-primary profile."];
-    v7[2](v7, 0, v14);
+    profile2 = [MEMORY[0x277CCA9B8] hk_error:127 class:objc_opt_class() selector:a2 format:@"Revoke access for all share participants called on non-primary profile."];
+    completionCopy[2](completionCopy, 0, profile2);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_tearDownHealthSharingForProfile:(id)a3 completion:(id)a4
+- (void)remote_tearDownHealthSharingForProfile:(id)profile completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  completionCopy = completion;
   _HKInitializeLogging();
   v9 = MEMORY[0x277CCC328];
   v10 = *MEMORY[0x277CCC328];
@@ -289,38 +289,38 @@ void __119__HDCloudSyncShareParticipantManagerTaskServer_remote_fetchAllSharePar
     v11 = v10;
     v12 = NSStringFromSelector(a2);
     *buf = 138543874;
-    v36 = self;
+    selfCopy3 = self;
     v37 = 2114;
     v38 = v12;
     v39 = 2114;
-    v40 = v7;
+    v40 = profileCopy;
     _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ called for profile %{public}@", buf, 0x20u);
   }
 
-  v13 = [(HDStandardTaskServer *)self profile];
-  v14 = [v13 profileType];
+  profile = [(HDStandardTaskServer *)self profile];
+  profileType = [profile profileType];
 
-  if (v14 == 1)
+  if (profileType == 1)
   {
-    v15 = [(HDStandardTaskServer *)self profile];
-    v16 = [v15 daemon];
-    v17 = [v16 profileManager];
+    profile2 = [(HDStandardTaskServer *)self profile];
+    daemon = [profile2 daemon];
+    profileManager = [daemon profileManager];
 
-    v18 = [v17 profileForIdentifier:v7];
+    v18 = [profileManager profileForIdentifier:profileCopy];
     v19 = v18;
     if (v18)
     {
       if ([v18 profileType] != 1)
       {
-        v24 = [v19 cloudSyncManager];
+        cloudSyncManager = [v19 cloudSyncManager];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __98__HDCloudSyncShareParticipantManagerTaskServer_remote_tearDownHealthSharingForProfile_completion___block_invoke;
         v31[3] = &unk_278613150;
-        v32 = v17;
-        v33 = v7;
-        v34 = v8;
-        v25 = [v24 leaveSharesWithCompletion:v31];
+        v32 = profileManager;
+        v33 = profileCopy;
+        v34 = completionCopy;
+        v25 = [cloudSyncManager leaveSharesWithCompletion:v31];
 
         v23 = v32;
         goto LABEL_15;
@@ -333,7 +333,7 @@ void __119__HDCloudSyncShareParticipantManagerTaskServer_remote_fetchAllSharePar
         v29 = v20;
         v30 = NSStringFromSelector(a2);
         *buf = 138543618;
-        v36 = self;
+        selfCopy3 = self;
         v37 = 2114;
         v38 = v30;
         _os_log_error_impl(&dword_228986000, v29, OS_LOG_TYPE_ERROR, "%{public}@ %{public}@ Called for primary profile. Abort.", buf, 0x16u);
@@ -344,11 +344,11 @@ void __119__HDCloudSyncShareParticipantManagerTaskServer_remote_fetchAllSharePar
 
     else
     {
-      v21 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"No profile for identifier %@.", v7}];
+      v21 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"No profile for identifier %@.", profileCopy}];
     }
 
     v23 = v21;
-    (*(v8 + 2))(v8, 0, v21);
+    (*(completionCopy + 2))(completionCopy, 0, v21);
 LABEL_15:
 
     goto LABEL_16;
@@ -361,14 +361,14 @@ LABEL_15:
     v27 = v22;
     v28 = NSStringFromSelector(a2);
     *buf = 138543618;
-    v36 = self;
+    selfCopy3 = self;
     v37 = 2114;
     v38 = v28;
     _os_log_error_impl(&dword_228986000, v27, OS_LOG_TYPE_ERROR, "%{public}@ %{public}@ Must be called on primary profile participant manager. Abort.", buf, 0x16u);
   }
 
-  v17 = [MEMORY[0x277CCA9B8] hk_error:127 class:objc_opt_class() selector:a2 format:@"Tear down health sharing not called on primary profile participant manager."];
-  (*(v8 + 2))(v8, 0, v17);
+  profileManager = [MEMORY[0x277CCA9B8] hk_error:127 class:objc_opt_class() selector:a2 format:@"Tear down health sharing not called on primary profile participant manager."];
+  (*(completionCopy + 2))(completionCopy, 0, profileManager);
 LABEL_16:
 
   v26 = *MEMORY[0x277D85DE8];

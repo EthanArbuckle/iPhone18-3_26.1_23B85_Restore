@@ -2,7 +2,7 @@
 + (id)sharedLogger;
 - (PowerLogger)init;
 - (void)flush;
-- (void)logCacheDuetEvent:(unint64_t)a3 urgencyLevel:(int)a4 serviceName:(id)a5 startFromUptime:(double)a6 duration:(double)a7 requestedBytes:(unint64_t)a8 purgedBytes:(unint64_t)a9;
+- (void)logCacheDuetEvent:(unint64_t)event urgencyLevel:(int)level serviceName:(id)name startFromUptime:(double)uptime duration:(double)duration requestedBytes:(unint64_t)bytes purgedBytes:(unint64_t)purgedBytes;
 @end
 
 @implementation PowerLogger
@@ -50,24 +50,24 @@ void __27__PowerLogger_sharedLogger__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (void)logCacheDuetEvent:(unint64_t)a3 urgencyLevel:(int)a4 serviceName:(id)a5 startFromUptime:(double)a6 duration:(double)a7 requestedBytes:(unint64_t)a8 purgedBytes:(unint64_t)a9
+- (void)logCacheDuetEvent:(unint64_t)event urgencyLevel:(int)level serviceName:(id)name startFromUptime:(double)uptime duration:(double)duration requestedBytes:(unint64_t)bytes purgedBytes:(unint64_t)purgedBytes
 {
-  v16 = a5;
-  v17 = [(PowerLogger *)self queue];
+  nameCopy = name;
+  queue = [(PowerLogger *)self queue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = __110__PowerLogger_logCacheDuetEvent_urgencyLevel_serviceName_startFromUptime_duration_requestedBytes_purgedBytes___block_invoke;
   v19[3] = &unk_100062078;
-  v21 = self;
-  v22 = a3;
-  v27 = a4;
-  v23 = a6;
-  v24 = a7;
-  v25 = a8;
-  v26 = a9;
-  v20 = v16;
-  v18 = v16;
-  dispatch_async(v17, v19);
+  selfCopy = self;
+  eventCopy = event;
+  levelCopy = level;
+  uptimeCopy = uptime;
+  durationCopy = duration;
+  bytesCopy = bytes;
+  purgedBytesCopy = purgedBytes;
+  v20 = nameCopy;
+  v18 = nameCopy;
+  dispatch_async(queue, v19);
 }
 
 void __110__PowerLogger_logCacheDuetEvent_urgencyLevel_serviceName_startFromUptime_duration_requestedBytes_purgedBytes___block_invoke(uint64_t a1)
@@ -107,13 +107,13 @@ void __110__PowerLogger_logCacheDuetEvent_urgencyLevel_serviceName_startFromUpti
 
 - (void)flush
 {
-  v3 = [(PowerLogger *)self queue];
+  queue = [(PowerLogger *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __20__PowerLogger_flush__block_invoke;
   block[3] = &unk_100060D58;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __20__PowerLogger_flush__block_invoke(uint64_t a1)

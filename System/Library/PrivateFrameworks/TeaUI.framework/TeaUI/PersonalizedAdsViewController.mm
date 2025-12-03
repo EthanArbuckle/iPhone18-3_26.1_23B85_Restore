@@ -1,6 +1,6 @@
 @interface PersonalizedAdsViewController
-- (_TtC5TeaUI29PersonalizedAdsViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC5TeaUI29PersonalizedAdsViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC5TeaUI29PersonalizedAdsViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC5TeaUI29PersonalizedAdsViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)didTapLearnMore;
 - (void)didTapTurnOff;
 - (void)didTapTurnOn;
@@ -12,30 +12,30 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D817B250();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D817BE60();
 }
 
-- (_TtC5TeaUI29PersonalizedAdsViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5TeaUI29PersonalizedAdsViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   sub_1D8190F14();
-  if (a4)
+  if (text)
   {
     sub_1D8190F14();
-    if (!a5)
+    if (!name)
     {
 LABEL_3:
       sub_1D817C43C();
     }
   }
 
-  else if (!a5)
+  else if (!name)
   {
     goto LABEL_3;
   }
@@ -44,33 +44,33 @@ LABEL_3:
   sub_1D817C43C();
 }
 
-- (_TtC5TeaUI29PersonalizedAdsViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5TeaUI29PersonalizedAdsViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   sub_1D8190F14();
-  if (a4)
+  if (text)
   {
     sub_1D8190F14();
   }
 
-  v8 = a5;
+  iconCopy = icon;
   sub_1D817C4B0();
 }
 
 - (void)didTapLearnMore
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D817C5AC();
 }
 
 - (void)didTapTurnOn
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D817C758(&OBJC_IVAR____TtC5TeaUI29PersonalizedAdsViewController_turnOnCallback);
 }
 
 - (void)didTapTurnOff
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D817C758(&OBJC_IVAR____TtC5TeaUI29PersonalizedAdsViewController_turnOffCallback);
 }
 

@@ -1,35 +1,35 @@
 @interface __NSCFLocalizedAttributedString
-+ (__CFString)copyStringWithMarkdown:(__CFString *)a3 formatConfiguration:(__CFDictionary *)a4 bundle:(__CFBundle *)a5 tableURL:(__CFURL *)a6;
-+ (__CFString)createStringRequiringInflectionWithFormat:(__CFString *)a3 formatOptions:(__CFDictionary *)a4 arguments:(char *)a5;
-+ (id)stringEncapsulatingBaseAttributedString:(id)a3;
-- (__NSCFLocalizedAttributedString)initWithAttributedStringMarkdown:(id)a3 formatConfiguration:(id)a4 bundle:(__CFBundle *)a5 tableURL:(id)a6;
-- (id)_initWithAttributedString:(id)a3;
++ (__CFString)copyStringWithMarkdown:(__CFString *)markdown formatConfiguration:(__CFDictionary *)configuration bundle:(__CFBundle *)bundle tableURL:(__CFURL *)l;
++ (__CFString)createStringRequiringInflectionWithFormat:(__CFString *)format formatOptions:(__CFDictionary *)options arguments:(char *)arguments;
++ (id)stringEncapsulatingBaseAttributedString:(id)string;
+- (__NSCFLocalizedAttributedString)initWithAttributedStringMarkdown:(id)markdown formatConfiguration:(id)configuration bundle:(__CFBundle *)bundle tableURL:(id)l;
+- (id)_initWithAttributedString:(id)string;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation __NSCFLocalizedAttributedString
 
-+ (__CFString)copyStringWithMarkdown:(__CFString *)a3 formatConfiguration:(__CFDictionary *)a4 bundle:(__CFBundle *)a5 tableURL:(__CFURL *)a6
++ (__CFString)copyStringWithMarkdown:(__CFString *)markdown formatConfiguration:(__CFDictionary *)configuration bundle:(__CFBundle *)bundle tableURL:(__CFURL *)l
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
 
-  return [v10 initWithAttributedStringMarkdown:a3 formatConfiguration:a4 bundle:a5 tableURL:a6];
+  return [v10 initWithAttributedStringMarkdown:markdown formatConfiguration:configuration bundle:bundle tableURL:l];
 }
 
-+ (__CFString)createStringRequiringInflectionWithFormat:(__CFString *)a3 formatOptions:(__CFDictionary *)a4 arguments:(char *)a5
++ (__CFString)createStringRequiringInflectionWithFormat:(__CFString *)format formatOptions:(__CFDictionary *)options arguments:(char *)arguments
 {
-  result = [(__CFString *)a3 __baseAttributedString];
+  result = [(__CFString *)format __baseAttributedString];
   if (result)
   {
     v8 = result;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      a4 = 0;
+      options = 0;
     }
 
-    v9 = [[NSAttributedString alloc] _initWithFormat:v8 options:0 locale:a4 arguments:a5];
+    v9 = [[NSAttributedString alloc] _initWithFormat:v8 options:0 locale:options arguments:arguments];
     v10 = [objc_msgSend(v9 "string")];
 
     return v10;
@@ -38,15 +38,15 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *MEMORY[0x1E69E9840];
   v3.receiver = self;
   v3.super_class = __NSCFLocalizedAttributedString;
-  [(NSString *)&v3 encodeWithCoder:a3];
+  [(NSString *)&v3 encodeWithCoder:coder];
 }
 
-- (__NSCFLocalizedAttributedString)initWithAttributedStringMarkdown:(id)a3 formatConfiguration:(id)a4 bundle:(__CFBundle *)a5 tableURL:(id)a6
+- (__NSCFLocalizedAttributedString)initWithAttributedStringMarkdown:(id)markdown formatConfiguration:(id)configuration bundle:(__CFBundle *)bundle tableURL:(id)l
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -54,26 +54,26 @@
   v10 = [(NSString *)&v13 init];
   if (v10)
   {
-    v11 = _NSStringCreateByParsingMarkdownAndOptionallyInflecting(a3, a5, a6, a4, 0, 0);
+    v11 = _NSStringCreateByParsingMarkdownAndOptionallyInflecting(markdown, bundle, l, configuration, 0, 0);
     v10->_original = &v11->super;
     if (v11)
     {
-      a3 = [-[NSAttributedString _inflectedAttributedString](v11 "_inflectedAttributedString")];
+      markdown = [-[NSAttributedString _inflectedAttributedString](v11 "_inflectedAttributedString")];
     }
 
     else
     {
-      v10->_original = [[NSAttributedString alloc] initWithString:a3];
+      v10->_original = [[NSAttributedString alloc] initWithString:markdown];
     }
 
-    v10->_apparentString = [a3 copy];
-    v10->_formatConfiguration = [a4 copy];
+    v10->_apparentString = [markdown copy];
+    v10->_formatConfiguration = [configuration copy];
   }
 
   return v10;
 }
 
-- (id)_initWithAttributedString:(id)a3
+- (id)_initWithAttributedString:(id)string
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -81,7 +81,7 @@
   v4 = [(NSString *)&v7 init];
   if (v4)
   {
-    v5 = [a3 copy];
+    v5 = [string copy];
     v4->_original = v5;
     v4->_apparentString = [objc_msgSend(-[NSAttributedString _inflectedAttributedString](v5 "_inflectedAttributedString")];
     v4->_formatConfiguration = [MEMORY[0x1E695E0F8] copy];
@@ -90,9 +90,9 @@
   return v4;
 }
 
-+ (id)stringEncapsulatingBaseAttributedString:(id)a3
++ (id)stringEncapsulatingBaseAttributedString:(id)string
 {
-  v3 = [[a1 alloc] _initWithAttributedString:a3];
+  v3 = [[self alloc] _initWithAttributedString:string];
 
   return v3;
 }

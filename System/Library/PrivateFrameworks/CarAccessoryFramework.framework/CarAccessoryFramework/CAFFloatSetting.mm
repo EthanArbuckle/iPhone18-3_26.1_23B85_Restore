@@ -13,26 +13,26 @@
 - (NSString)minimumSymbolName;
 - (float)value;
 - (id)name;
-- (void)registerObserver:(id)a3;
-- (void)setValue:(float)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)setValue:(float)value;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFFloatSetting
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFFloatSetting;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846A5928])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846A5928])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -45,12 +45,12 @@
   [(CAFAutomakerSetting *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846A5928])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846A5928])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -65,40 +65,40 @@
 
 - (id)name
 {
-  v3 = [(CAFService *)self typeName];
-  v4 = [(CAFAutomakerSetting *)self categoryCharacteristic];
-  v5 = [v4 formattedValue];
+  typeName = [(CAFService *)self typeName];
+  categoryCharacteristic = [(CAFAutomakerSetting *)self categoryCharacteristic];
+  formattedValue = [categoryCharacteristic formattedValue];
 
-  if ([v5 length])
+  if ([formattedValue length])
   {
-    v6 = [v3 stringByAppendingFormat:@"-%@", v5];
+    v6 = [typeName stringByAppendingFormat:@"-%@", formattedValue];
 
-    v3 = v6;
+    typeName = v6;
   }
 
-  v7 = [(CAFAutomakerSetting *)self userVisibleLabelCharacteristic];
-  v8 = [v7 formattedValue];
+  userVisibleLabelCharacteristic = [(CAFAutomakerSetting *)self userVisibleLabelCharacteristic];
+  formattedValue2 = [userVisibleLabelCharacteristic formattedValue];
 
-  if ([v8 length])
+  if ([formattedValue2 length])
   {
-    v9 = [v3 stringByAppendingFormat:@"-%@", v8];
+    v9 = [typeName stringByAppendingFormat:@"-%@", formattedValue2];
 
-    v3 = v9;
+    typeName = v9;
   }
 
-  return v3;
+  return typeName;
 }
 
 - (CAFFloatCharacteristic)valueCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000006"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000006"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000006"];
@@ -117,38 +117,38 @@
 
 - (float)value
 {
-  v2 = [(CAFFloatSetting *)self valueCharacteristic];
-  [v2 floatValue];
+  valueCharacteristic = [(CAFFloatSetting *)self valueCharacteristic];
+  [valueCharacteristic floatValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setValue:(float)a3
+- (void)setValue:(float)value
 {
-  v5 = [(CAFFloatSetting *)self valueCharacteristic];
-  *&v4 = a3;
-  [v5 setFloatValue:v4];
+  valueCharacteristic = [(CAFFloatSetting *)self valueCharacteristic];
+  *&v4 = value;
+  [valueCharacteristic setFloatValue:v4];
 }
 
 - (CAFFloatRange)valueRange
 {
-  v2 = [(CAFFloatSetting *)self valueCharacteristic];
-  v3 = [v2 range];
+  valueCharacteristic = [(CAFFloatSetting *)self valueCharacteristic];
+  range = [valueCharacteristic range];
 
-  return v3;
+  return range;
 }
 
 - (CAFStringCharacteristic)maximumSymbolNameCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000036000026"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000036000026"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000036000026"];
@@ -167,16 +167,16 @@
 
 - (NSString)maximumSymbolName
 {
-  v2 = [(CAFFloatSetting *)self maximumSymbolNameCharacteristic];
-  v3 = [v2 stringValue];
+  maximumSymbolNameCharacteristic = [(CAFFloatSetting *)self maximumSymbolNameCharacteristic];
+  stringValue = [maximumSymbolNameCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (BOOL)hasMaximumSymbolName
 {
-  v2 = [(CAFFloatSetting *)self maximumSymbolNameCharacteristic];
-  v3 = v2 != 0;
+  maximumSymbolNameCharacteristic = [(CAFFloatSetting *)self maximumSymbolNameCharacteristic];
+  v3 = maximumSymbolNameCharacteristic != 0;
 
   return v3;
 }
@@ -184,13 +184,13 @@
 - (CAFStringCharacteristic)minimumSymbolNameCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000036000025"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000036000025"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000036000025"];
@@ -209,16 +209,16 @@
 
 - (NSString)minimumSymbolName
 {
-  v2 = [(CAFFloatSetting *)self minimumSymbolNameCharacteristic];
-  v3 = [v2 stringValue];
+  minimumSymbolNameCharacteristic = [(CAFFloatSetting *)self minimumSymbolNameCharacteristic];
+  stringValue = [minimumSymbolNameCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (BOOL)hasMinimumSymbolName
 {
-  v2 = [(CAFFloatSetting *)self minimumSymbolNameCharacteristic];
-  v3 = v2 != 0;
+  minimumSymbolNameCharacteristic = [(CAFFloatSetting *)self minimumSymbolNameCharacteristic];
+  v3 = minimumSymbolNameCharacteristic != 0;
 
   return v3;
 }
@@ -226,13 +226,13 @@
 - (BOOL)registeredForFloatValue
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000006"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000006"];
 
   return v10;
 }
@@ -240,13 +240,13 @@
 - (BOOL)registeredForMaximumSymbolName
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000036000026"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000036000026"];
 
   return v10;
 }
@@ -254,13 +254,13 @@
 - (BOOL)registeredForMinimumSymbolName
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000036000025"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000036000025"];
 
   return v10;
 }

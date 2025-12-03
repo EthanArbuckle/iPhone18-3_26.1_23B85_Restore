@@ -1,8 +1,8 @@
 @interface CellularProductExperimentsManager
 - (CellularProductExperimentsManager)init;
 - (void)notifyRegisteredClientsForExperimentEnd;
-- (void)notifyRegisteredClientsForExperimentStart:(id)a3;
-- (void)readParametersFromPlist:(id)a3;
+- (void)notifyRegisteredClientsForExperimentStart:(id)start;
+- (void)readParametersFromPlist:(id)plist;
 - (void)subscribeToTrial;
 - (void)updateTreatment;
 @end
@@ -26,11 +26,11 @@
   return v2;
 }
 
-- (void)readParametersFromPlist:(id)a3
+- (void)readParametersFromPlist:(id)plist
 {
-  v3 = a3;
+  plistCopy = plist;
   v11 = 0;
-  v4 = [[NSDictionary alloc] initWithContentsOfURL:v3 error:&v11];
+  v4 = [[NSDictionary alloc] initWithContentsOfURL:plistCopy error:&v11];
 
   v5 = v11;
   if ([v4 count])
@@ -65,11 +65,11 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)notifyRegisteredClientsForExperimentStart:(id)a3
+- (void)notifyRegisteredClientsForExperimentStart:(id)start
 {
-  v4 = a3;
-  [WCM_Logging logLevel:22 message:@"CellularProductExperimentsManager: Experiment Start: set parameters from plist at %@", v4];
-  [(CellularProductExperimentsManager *)self readParametersFromPlist:v4];
+  startCopy = start;
+  [WCM_Logging logLevel:22 message:@"CellularProductExperimentsManager: Experiment Start: set parameters from plist at %@", startCopy];
+  [(CellularProductExperimentsManager *)self readParametersFromPlist:startCopy];
 }
 
 - (void)notifyRegisteredClientsForExperimentEnd
@@ -91,35 +91,35 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v4 = [v3 experimentId];
-  v5 = [v20 deploymentId];
-  v6 = [v20 treatmentId];
-  [WCM_Logging logLevel:22 message:@"CellularProductExperimentsManager: experimentIdentifiers are: experimentId: %@, deploymentId: %d, treatmentId: %@", v4, v5, v6];
+  experimentId = [v3 experimentId];
+  deploymentId = [v20 deploymentId];
+  treatmentId = [v20 treatmentId];
+  [WCM_Logging logLevel:22 message:@"CellularProductExperimentsManager: experimentIdentifiers are: experimentId: %@, deploymentId: %d, treatmentId: %@", experimentId, deploymentId, treatmentId];
 
   v7 = [(TRIClient *)self->trialClient levelForFactor:off_1002B76B8 withNamespaceName:@"WIRELESS_DATA_ANALYTICS_CELLULAR_PRODUCT_EXPERIMENTATION_INTERNAL"];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 fileValue];
-    v10 = [v9 path];
-    if (v10)
+    fileValue = [v7 fileValue];
+    path = [fileValue path];
+    if (path)
     {
-      v11 = v10;
-      v12 = [v8 fileValue];
-      v13 = [v12 path];
-      v14 = [v13 length];
+      v11 = path;
+      fileValue2 = [v8 fileValue];
+      path2 = [fileValue2 path];
+      v14 = [path2 length];
 
       if (v14)
       {
-        v15 = [v8 fileValue];
-        v16 = [v15 path];
-        v17 = [NSURL fileURLWithPath:v16];
+        fileValue3 = [v8 fileValue];
+        path3 = [fileValue3 path];
+        v17 = [NSURL fileURLWithPath:path3];
 
         if (v17)
         {
-          v18 = [v8 fileValue];
-          v19 = [v18 path];
-          [WCM_Logging logLevel:22 message:@"CellularProductExperimentsManager: activateTreatment: Trial Asset path: %@", v19];
+          fileValue4 = [v8 fileValue];
+          path4 = [fileValue4 path];
+          [WCM_Logging logLevel:22 message:@"CellularProductExperimentsManager: activateTreatment: Trial Asset path: %@", path4];
 
           [(CellularProductExperimentsManager *)self notifyRegisteredClientsForExperimentStart:v17];
         }

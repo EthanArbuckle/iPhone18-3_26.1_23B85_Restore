@@ -1,7 +1,7 @@
 @interface NUImageAccumulationNode
 - ($0AC6E346AE4835514AAA8AC86D8F4844)imageSize;
-- (NUImageAccumulationNode)initWithImageSize:(id)a3 tileSize:(id)a4 borderSize:(id)a5 pixelFormat:(id)a6 colorSpace:(id)a7 headroom:(float)a8 input:(id)a9;
-- (NUImageAccumulationNode)initWithSettings:(id)a3 inputs:(id)a4;
+- (NUImageAccumulationNode)initWithImageSize:(id)size tileSize:(id)tileSize borderSize:(id)borderSize pixelFormat:(id)format colorSpace:(id)space headroom:(float)headroom input:(id)input;
+- (NUImageAccumulationNode)initWithSettings:(id)settings inputs:(id)inputs;
 - (NUMutablePurgeableImage)image;
 - (id)_image;
 - (id)_newImage;
@@ -24,17 +24,17 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NUMutablePurgeableImage *)self->_image performSelector:sel_debugQuickLookObject];
+    debugQuickLookObject = [(NUMutablePurgeableImage *)self->_image performSelector:sel_debugQuickLookObject];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = NUImageAccumulationNode;
-    v3 = [(NURenderNode *)&v5 debugQuickLookObject];
+    debugQuickLookObject = [(NURenderNode *)&v5 debugQuickLookObject];
   }
 
-  return v3;
+  return debugQuickLookObject;
 }
 
 - (id)_newImage
@@ -82,8 +82,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -99,8 +99,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -120,10 +120,10 @@ LABEL_14:
   image = self->_image;
   if (!image)
   {
-    v4 = [(NUImageAccumulationNode *)self _newImage];
-    v5 = [v4 mutablePurgeableImageCopy];
+    _newImage = [(NUImageAccumulationNode *)self _newImage];
+    mutablePurgeableImageCopy = [_newImage mutablePurgeableImageCopy];
     v6 = self->_image;
-    self->_image = v5;
+    self->_image = mutablePurgeableImageCopy;
 
     if (!self->_image)
     {
@@ -146,8 +146,8 @@ LABEL_14:
           v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v16 = MEMORY[0x1E696AF00];
           v17 = v15;
-          v18 = [v16 callStackSymbols];
-          v19 = [v18 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v16 callStackSymbols];
+          v19 = [callStackSymbols componentsJoinedByString:@"\n"];
           *v24 = 138543618;
           *&v24[4] = v15;
           v25 = 2114;
@@ -158,8 +158,8 @@ LABEL_14:
 
       else if (v12)
       {
-        v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v14 = [v13 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *v24 = 138543362;
         *&v24[4] = v14;
         _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v24, 0xCu);
@@ -206,18 +206,18 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (NUImageAccumulationNode)initWithImageSize:(id)a3 tileSize:(id)a4 borderSize:(id)a5 pixelFormat:(id)a6 colorSpace:(id)a7 headroom:(float)a8 input:(id)a9
+- (NUImageAccumulationNode)initWithImageSize:(id)size tileSize:(id)tileSize borderSize:(id)borderSize pixelFormat:(id)format colorSpace:(id)space headroom:(float)headroom input:(id)input
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v11 = a4.var1;
-  v12 = a4.var0;
-  v13 = a3.var1;
-  v14 = a3.var0;
+  var1 = borderSize.var1;
+  var0 = borderSize.var0;
+  v11 = tileSize.var1;
+  v12 = tileSize.var0;
+  v13 = size.var1;
+  v14 = size.var0;
   v126 = *MEMORY[0x1E69E9840];
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
+  formatCopy = format;
+  spaceCopy = space;
+  inputCopy = input;
   v115 = v14;
   if (v14 < 1 || v13 <= 0)
   {
@@ -240,8 +240,8 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
         v73 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v74 = MEMORY[0x1E696AF00];
         v75 = v73;
-        v76 = [v74 callStackSymbols];
-        v77 = [v76 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v74 callStackSymbols];
+        v77 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v123 = v73;
         v124 = 2114;
@@ -252,8 +252,8 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
 
     else if (v49)
     {
-      v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v51 = [v50 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v51 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v123 = v51;
       _os_log_error_impl(&dword_1C0184000, v48, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -262,7 +262,7 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
     _NUAssertFailHandler("[NUImageAccumulationNode initWithImageSize:tileSize:borderSize:pixelFormat:colorSpace:headroom:input:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUImageAccumulationNode.m", 36, @"Invalid parameter not satisfying: %s", v78, v79, v80, v81, "imageSize.width > 0 && imageSize.height > 0");
   }
 
-  if (!v15)
+  if (!formatCopy)
   {
     v52 = NUAssertLogger_31147();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -283,8 +283,8 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
         v82 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v83 = MEMORY[0x1E696AF00];
         v84 = v82;
-        v85 = [v83 callStackSymbols];
-        v86 = [v85 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v83 callStackSymbols];
+        v86 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v123 = v82;
         v124 = 2114;
@@ -295,8 +295,8 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
 
     else if (v56)
     {
-      v57 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v58 = [v57 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v58 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v123 = v58;
       _os_log_error_impl(&dword_1C0184000, v55, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -305,7 +305,7 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
     _NUAssertFailHandler("[NUImageAccumulationNode initWithImageSize:tileSize:borderSize:pixelFormat:colorSpace:headroom:input:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUImageAccumulationNode.m", 37, @"Invalid parameter not satisfying: %s", v87, v88, v89, v90, "format != nil");
   }
 
-  if (!v16)
+  if (!spaceCopy)
   {
     v59 = NUAssertLogger_31147();
     if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
@@ -326,8 +326,8 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
         v91 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v92 = MEMORY[0x1E696AF00];
         v93 = v91;
-        v94 = [v92 callStackSymbols];
-        v95 = [v94 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v92 callStackSymbols];
+        v95 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v123 = v91;
         v124 = 2114;
@@ -338,8 +338,8 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
 
     else if (v63)
     {
-      v64 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v65 = [v64 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v65 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v123 = v65;
       _os_log_error_impl(&dword_1C0184000, v62, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -348,8 +348,8 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
     _NUAssertFailHandler("[NUImageAccumulationNode initWithImageSize:tileSize:borderSize:pixelFormat:colorSpace:headroom:input:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUImageAccumulationNode.m", 38, @"Invalid parameter not satisfying: %s", v96, v97, v98, v99, "space != nil");
   }
 
-  v19 = v17;
-  if (!v17)
+  v19 = inputCopy;
+  if (!inputCopy)
   {
     v66 = NUAssertLogger_31147();
     if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
@@ -370,8 +370,8 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
         v100 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v101 = MEMORY[0x1E696AF00];
         v102 = v100;
-        v103 = [v101 callStackSymbols];
-        v104 = [v103 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v101 callStackSymbols];
+        v104 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v123 = v100;
         v124 = 2114;
@@ -382,8 +382,8 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
 
     else if (v70)
     {
-      v71 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v72 = [v71 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v72 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v123 = v72;
       _os_log_error_impl(&dword_1C0184000, v69, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -394,12 +394,12 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
 
   v120[0] = @"space";
   v120[1] = @"format";
-  v113 = v16;
-  v121[0] = v16;
-  v121[1] = v15;
-  v111 = v15;
+  v113 = spaceCopy;
+  v121[0] = spaceCopy;
+  v121[1] = formatCopy;
+  v111 = formatCopy;
   v120[2] = @"headroom";
-  *&v18 = a8;
+  *&v18 = headroom;
   [MEMORY[0x1E696AD98] numberWithFloat:v18];
   v21 = v20 = v13;
   v121[2] = v21;
@@ -440,16 +440,16 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
 
   if (var0 && v24)
   {
-    v35 = [NUImageLayout overlappingTiledLayoutForImageSize:v115 tileSize:v109 borderSize:v110, v112, var0, v24];
+    v112 = [NUImageLayout overlappingTiledLayoutForImageSize:v115 tileSize:v109 borderSize:v110, v112, var0, v24];
   }
 
   else
   {
-    v35 = [NUImageLayout tiledLayoutForImageSize:v115 tileSize:v109, v110, v112];
+    v112 = [NUImageLayout tiledLayoutForImageSize:v115 tileSize:v109, v110, v112];
   }
 
   layout = v33->_layout;
-  v33->_layout = v35;
+  v33->_layout = v112;
 
   pixelFormat = v33->_pixelFormat;
   v33->_pixelFormat = v111;
@@ -459,7 +459,7 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
   v33->_colorSpace = v113;
   v40 = v113;
 
-  v33->_contentHeadroom = a8;
+  v33->_contentHeadroom = headroom;
   v41 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v42 = dispatch_queue_create("NUImageNode", v41);
   queue = v33->_queue;
@@ -468,11 +468,11 @@ uint64_t __32__NUImageAccumulationNode_image__block_invoke(uint64_t a1)
   return v33;
 }
 
-- (NUImageAccumulationNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUImageAccumulationNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_31131);
@@ -516,8 +516,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -533,8 +533,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

@@ -1,24 +1,24 @@
 @interface HROnboardingElectrocardiogramFeatureLimitationsViewController
-- (BOOL)_hasOnboardedBeforeWithStore:(id)a3;
-- (id)_makeSpeedBumpItemForUpdateOnboarding:(BOOL)a3;
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4;
-- (void)setDelegate:(id)a3;
+- (BOOL)_hasOnboardedBeforeWithStore:(id)store;
+- (id)_makeSpeedBumpItemForUpdateOnboarding:(BOOL)onboarding;
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version;
+- (void)setDelegate:(id)delegate;
 - (void)viewControllerDidLeaveAdaptiveModal;
 - (void)viewControllerWillEnterAdaptiveModal;
 @end
 
 @implementation HROnboardingElectrocardiogramFeatureLimitationsViewController
 
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version
 {
-  v4 = a3;
+  onboardingCopy = onboarding;
   v9.receiver = self;
   v9.super_class = HROnboardingElectrocardiogramFeatureLimitationsViewController;
-  v5 = [(HRSpeedBumpViewController *)&v9 initWithSpeedBumpItem:0 onboarding:a3 upgradingFromAlgorithmVersion:a4];
+  v5 = [(HRSpeedBumpViewController *)&v9 initWithSpeedBumpItem:0 onboarding:onboarding upgradingFromAlgorithmVersion:version];
   v6 = v5;
   if (v5)
   {
-    v7 = !v4;
+    v7 = !onboardingCopy;
   }
 
   else
@@ -34,31 +34,31 @@
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = HROnboardingElectrocardiogramFeatureLimitationsViewController;
-  v4 = a3;
-  [(HROnboardingElectrocardiogramFeatureLimitationsViewController *)&v8 setDelegate:v4];
-  v5 = [v4 healthStore];
+  delegateCopy = delegate;
+  [(HROnboardingElectrocardiogramFeatureLimitationsViewController *)&v8 setDelegate:delegateCopy];
+  healthStore = [delegateCopy healthStore];
 
-  v6 = [(HROnboardingElectrocardiogramFeatureLimitationsViewController *)self _hasOnboardedBeforeWithStore:v5];
+  v6 = [(HROnboardingElectrocardiogramFeatureLimitationsViewController *)self _hasOnboardedBeforeWithStore:healthStore];
   v7 = [(HROnboardingElectrocardiogramFeatureLimitationsViewController *)self _makeSpeedBumpItemForUpdateOnboarding:v6];
   [(HRSpeedBumpViewController *)self setItem:v7];
 }
 
-- (BOOL)_hasOnboardedBeforeWithStore:(id)a3
+- (BOOL)_hasOnboardedBeforeWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   if ([(HROnboardingElectrocardiogramFeatureLimitationsViewController *)self isOnboarding])
   {
-    v5 = [MEMORY[0x277CCD380] versionWithHealthStore:v4 error:0];
+    onboardingCompletion = [MEMORY[0x277CCD380] versionWithHealthStore:storeCopy error:0];
   }
 
   else
   {
     v6 = objc_alloc(MEMORY[0x277CCD438]);
-    v7 = [v6 initWithFeatureIdentifier:*MEMORY[0x277CCC010] healthStore:v4];
+    v7 = [v6 initWithFeatureIdentifier:*MEMORY[0x277CCC010] healthStore:storeCopy];
     v12 = 0;
     v8 = [v7 featureOnboardingRecordWithError:&v12];
     v9 = v12;
@@ -72,16 +72,16 @@
       }
     }
 
-    v5 = [v8 onboardingCompletion];
+    onboardingCompletion = [v8 onboardingCompletion];
   }
 
-  return v5 != 0;
+  return onboardingCompletion != 0;
 }
 
-- (id)_makeSpeedBumpItemForUpdateOnboarding:(BOOL)a3
+- (id)_makeSpeedBumpItemForUpdateOnboarding:(BOOL)onboarding
 {
   v19[4] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (onboarding)
   {
     v3 = @"ECG_V2_ONBOARDING_4_TITLE";
   }
@@ -126,8 +126,8 @@
   v5 = [v4 actionWithHandler:&v8];
   v6 = [v3 initWithBarButtonSystemItem:0 primaryAction:{v5, v8, v9, v10, v11}];
 
-  v7 = [(HROnboardingElectrocardiogramFeatureLimitationsViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(HROnboardingElectrocardiogramFeatureLimitationsViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -141,8 +141,8 @@ void __101__HROnboardingElectrocardiogramFeatureLimitationsViewController_viewCo
 
 - (void)viewControllerDidLeaveAdaptiveModal
 {
-  v2 = [(HROnboardingElectrocardiogramFeatureLimitationsViewController *)self navigationItem];
-  [v2 setLeftBarButtonItem:0];
+  navigationItem = [(HROnboardingElectrocardiogramFeatureLimitationsViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 }
 
 - (void)_hasOnboardedBeforeWithStore:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

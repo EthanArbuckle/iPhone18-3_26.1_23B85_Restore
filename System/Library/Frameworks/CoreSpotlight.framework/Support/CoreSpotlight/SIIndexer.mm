@@ -1,62 +1,62 @@
 @interface SIIndexer
-+ (id)indexerWithPath:(id)a3 options:(unint64_t)a4;
-+ (id)indexerWithPath:(id)a3 rootPath:(id)a4;
-+ (id)indexerWithPath:(id)a3 rootPath:(id)a4 options:(unint64_t)a5;
++ (id)indexerWithPath:(id)path options:(unint64_t)options;
++ (id)indexerWithPath:(id)path rootPath:(id)rootPath;
++ (id)indexerWithPath:(id)path rootPath:(id)rootPath options:(unint64_t)options;
 + (void)initialize;
-+ (void)setLogLevel:(int)a3 forCategory:(char *)a4;
-- (BOOL)openWithOptions:(unint64_t)a3;
++ (void)setLogLevel:(int)level forCategory:(char *)category;
+- (BOOL)openWithOptions:(unint64_t)options;
 - (NSDictionary)indexProperties;
 - (NSDictionary)propertyMap;
 - (NSDictionary)propertyNumMap;
 - (SIIndexer)init;
 - (_opaque_pthread_rwlock_t)queryTasksRdWrLock;
 - (id)allQueryTasks;
-- (id)getAttributes:(id)a3 forOid:(int64_t)a4;
-- (id)getQueryTaskForID:(id)a3;
-- (id)path:(int64_t)a3;
-- (id)propertyName:(unint64_t)a3;
-- (id)resultsForPommesUserQuery:(id)a3 withFields:(id)a4 maxCount:(int64_t)a5 languages:(id)a6 liftingRules:(id)a7 scope:(id)a8 pommesBundles:(id)a9 clientBundleID:(id)a10;
-- (id)termIndex:(unint64_t)a3;
-- (int64_t)oidForPath:(const char *)a3 allowCreate:(BOOL)a4;
-- (unint64_t)oidForDocID:(unint64_t)a3;
+- (id)getAttributes:(id)attributes forOid:(int64_t)oid;
+- (id)getQueryTaskForID:(id)d;
+- (id)path:(int64_t)path;
+- (id)propertyName:(unint64_t)name;
+- (id)resultsForPommesUserQuery:(id)query withFields:(id)fields maxCount:(int64_t)count languages:(id)languages liftingRules:(id)rules scope:(id)scope pommesBundles:(id)bundles clientBundleID:(id)self0;
+- (id)termIndex:(unint64_t)index;
+- (int64_t)oidForPath:(const char *)path allowCreate:(BOOL)create;
+- (unint64_t)oidForDocID:(unint64_t)d;
 - (unint64_t)termIndexCount;
-- (unsigned)groupForDocID:(unint64_t)a3;
-- (unsigned)relativeDocID:(unint64_t)a3;
+- (unsigned)groupForDocID:(unint64_t)d;
+- (unsigned)relativeDocID:(unint64_t)d;
 - (void)_indexFinalize;
-- (void)_reopen:(const char *)a3;
-- (void)addRecords:(id)a3 forIDs:(unint64_t *)a4 completionHandler:(id)a5;
-- (void)bulkSetCSAttributes:(id)a3 bundle:(id)a4;
+- (void)_reopen:(const char *)_reopen;
+- (void)addRecords:(id)records forIDs:(unint64_t *)ds completionHandler:(id)handler;
+- (void)bulkSetCSAttributes:(id)attributes bundle:(id)bundle;
 - (void)close;
 - (void)dealloc;
-- (void)deleteFilesInDirectory:(int)a3;
-- (void)deleteOID:(int64_t)a3;
+- (void)deleteFilesInDirectory:(int)directory;
+- (void)deleteOID:(int64_t)d;
 - (void)fullMerge;
 - (void)issueCommit;
-- (void)iterateTermIndexes:(id)a3;
-- (void)iterateTermIndexes:(int64_t)a3 block:(id)a4;
+- (void)iterateTermIndexes:(id)indexes;
+- (void)iterateTermIndexes:(int64_t)indexes block:(id)block;
 - (void)merge;
-- (void)oidParents:(id)a3;
-- (void)removeRecordsForIDs:(unint64_t *)a3 count:(unint64_t)a4 completionHandler:(id)a5;
-- (void)rename:(const char *)a3 toPath:(const char *)a4;
-- (void)setProperty:(id)a3 forKey:(id)a4;
-- (void)setQueryTask:(id)a3 forID:(id)a4;
-- (void)setQueryTasksRdWrLock:(_opaque_pthread_rwlock_t *)a3;
+- (void)oidParents:(id)parents;
+- (void)removeRecordsForIDs:(unint64_t *)ds count:(unint64_t)count completionHandler:(id)handler;
+- (void)rename:(const char *)rename toPath:(const char *)path;
+- (void)setProperty:(id)property forKey:(id)key;
+- (void)setQueryTask:(id)task forID:(id)d;
+- (void)setQueryTasksRdWrLock:(_opaque_pthread_rwlock_t *)lock;
 - (void)split;
-- (void)updateRecords:(id)a3 forIDs:(unint64_t *)a4 completionHandler:(id)a5;
+- (void)updateRecords:(id)records forIDs:(unint64_t *)ds completionHandler:(id)handler;
 - (void)verify;
-- (void)waitFor:(int)a3;
+- (void)waitFor:(int)for;
 @end
 
 @implementation SIIndexer
 
-+ (void)setLogLevel:(int)a3 forCategory:(char *)a4
++ (void)setLogLevel:(int)level forCategory:(char *)category
 {
-  if ((a3 + 3) > 8)
+  if ((level + 3) > 8)
   {
     return;
   }
 
-  if (!a4 || (v5 = *a4, !*a4))
+  if (!category || (v5 = *category, !*category))
   {
     SISetLogging();
     SISetLogging();
@@ -71,12 +71,12 @@
     goto LABEL_19;
   }
 
-  if (!strcmp(a4, "general"))
+  if (!strcmp(category, "general"))
   {
     goto LABEL_20;
   }
 
-  if (!strcmp(a4, "query"))
+  if (!strcmp(category, "query"))
   {
 LABEL_19:
     SISetLogging();
@@ -86,7 +86,7 @@ LABEL_20:
     return;
   }
 
-  if (!strcmp(a4, "scheduler") || !strcmp(a4, "store") || !strcmp(a4, "fetch") || !strcmp(a4, "path") || !strcmp(a4, "sdb") || v5 == 99 && a4[1] == 105 && !a4[2] || !strcmp(a4, "state") || !strcmp(a4, "power") || !strcmp(a4, "qos"))
+  if (!strcmp(category, "scheduler") || !strcmp(category, "store") || !strcmp(category, "fetch") || !strcmp(category, "path") || !strcmp(category, "sdb") || v5 == 99 && category[1] == 105 && !category[2] || !strcmp(category, "state") || !strcmp(category, "power") || !strcmp(category, "qos"))
   {
     goto LABEL_20;
   }
@@ -94,45 +94,45 @@ LABEL_20:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     [SIIndexer setLogLevel:3 forCategory:0];
   }
 }
 
-+ (id)indexerWithPath:(id)a3 rootPath:(id)a4
++ (id)indexerWithPath:(id)path rootPath:(id)rootPath
 {
-  v5 = a4;
-  v6 = a3;
+  rootPathCopy = rootPath;
+  pathCopy = path;
   v7 = objc_alloc_init(SIIndexer);
-  [(SIIndexer *)v7 setPath:v6];
+  [(SIIndexer *)v7 setPath:pathCopy];
 
-  [(SIIndexer *)v7 setRootPath:v5];
+  [(SIIndexer *)v7 setRootPath:rootPathCopy];
 
   return v7;
 }
 
-+ (id)indexerWithPath:(id)a3 rootPath:(id)a4 options:(unint64_t)a5
++ (id)indexerWithPath:(id)path rootPath:(id)rootPath options:(unint64_t)options
 {
-  v7 = a4;
-  v8 = a3;
+  rootPathCopy = rootPath;
+  pathCopy = path;
   v9 = objc_alloc_init(SIIndexer);
-  [(SIIndexer *)v9 setPath:v8];
+  [(SIIndexer *)v9 setPath:pathCopy];
 
-  [(SIIndexer *)v9 setRootPath:v7];
-  [(SIIndexer *)v9 openWithOptions:a5];
+  [(SIIndexer *)v9 setRootPath:rootPathCopy];
+  [(SIIndexer *)v9 openWithOptions:options];
 
   return v9;
 }
 
-+ (id)indexerWithPath:(id)a3 options:(unint64_t)a4
++ (id)indexerWithPath:(id)path options:(unint64_t)options
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = objc_alloc_init(SIIndexer);
-  [(SIIndexer *)v6 setPath:v5];
+  [(SIIndexer *)v6 setPath:pathCopy];
 
-  [(SIIndexer *)v6 openWithOptions:a4];
+  [(SIIndexer *)v6 openWithOptions:options];
 
   return v6;
 }
@@ -163,9 +163,9 @@ LABEL_20:
   [(SIIndexer *)&v3 dealloc];
 }
 
-- (void)deleteFilesInDirectory:(int)a3
+- (void)deleteFilesInDirectory:(int)directory
 {
-  v4 = dup(a3);
+  v4 = dup(directory);
   v5 = fdopendir(v4);
   if (v5)
   {
@@ -180,7 +180,7 @@ LABEL_20:
 
       if (v7->d_type != 4)
       {
-        unlinkat(a3, v7->d_name, 0);
+        unlinkat(directory, v7->d_name, 0);
       }
     }
 
@@ -188,38 +188,38 @@ LABEL_20:
   }
 }
 
-- (BOOL)openWithOptions:(unint64_t)a3
+- (BOOL)openWithOptions:(unint64_t)options
 {
-  v3 = a3;
-  if ((a3 & 0x30) == 0)
+  optionsCopy = options;
+  if ((options & 0x30) == 0)
   {
     if (self->_readOnly)
     {
-      v5 = a3 | 0x20;
+      optionsCopy2 = options | 0x20;
     }
 
     else
     {
-      v5 = a3;
+      optionsCopy2 = options;
     }
 
     if (self->_permissions)
     {
-      v3 = v5 | 0x10;
+      optionsCopy = optionsCopy2 | 0x10;
     }
 
     else
     {
-      v3 = v5;
+      optionsCopy = optionsCopy2;
     }
   }
 
-  self->_readOnly = (v3 & 0x20) != 0;
-  self->_permissions = (v3 & 0x10) != 0;
-  if ((v3 & 0xF) != 0 || [(SIIndexer *)self isSpotlightIndex])
+  self->_readOnly = (optionsCopy & 0x20) != 0;
+  self->_permissions = (optionsCopy & 0x10) != 0;
+  if ((optionsCopy & 0xF) != 0 || [(SIIndexer *)self isSpotlightIndex])
   {
 LABEL_15:
-    if ((v3 & 0x80) != 0)
+    if ((optionsCopy & 0x80) != 0)
     {
       goto LABEL_37;
     }
@@ -229,20 +229,20 @@ LABEL_15:
 
   if ([(SIIndexer *)self isCoreSpotlight])
   {
-    v3 |= 2u;
-    if ((v3 & 0x80) != 0)
+    optionsCopy |= 2u;
+    if ((optionsCopy & 0x80) != 0)
     {
       goto LABEL_37;
     }
 
 LABEL_16:
-    if ((v3 & 0x100) != 0)
+    if ((optionsCopy & 0x100) != 0)
     {
       goto LABEL_38;
     }
 
 LABEL_17:
-    if ((v3 & 0x200) != 0)
+    if ((optionsCopy & 0x200) != 0)
     {
       goto LABEL_39;
     }
@@ -252,34 +252,34 @@ LABEL_17:
 
   if ([(SIIndexer *)self isFSOnly])
   {
-    v3 |= 4u;
+    optionsCopy |= 4u;
     goto LABEL_15;
   }
 
   if ([(SIIndexer *)self isXcodeIndex])
   {
-    v3 |= 8u;
+    optionsCopy |= 8u;
   }
 
-  if ((v3 & 0x80) == 0)
+  if ((optionsCopy & 0x80) == 0)
   {
     goto LABEL_16;
   }
 
 LABEL_37:
   self->_persistentFileIDs = 1;
-  if ((v3 & 0x100) == 0)
+  if ((optionsCopy & 0x100) == 0)
   {
     goto LABEL_17;
   }
 
 LABEL_38:
   self->_isHFS = 1;
-  if ((v3 & 0x200) != 0)
+  if ((optionsCopy & 0x200) != 0)
   {
 LABEL_39:
     self->_isAPFS = 1;
-    if ((v3 & 4) != 0)
+    if ((optionsCopy & 4) != 0)
     {
       goto LABEL_40;
     }
@@ -288,7 +288,7 @@ LABEL_39:
   }
 
 LABEL_18:
-  if ((v3 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
 LABEL_40:
     v14 = 0;
@@ -303,11 +303,11 @@ LABEL_19:
   }
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [(SIIndexer *)self path];
+  path = [(SIIndexer *)self path];
   v41 = 0;
-  if (![v6 fileExistsAtPath:v7 isDirectory:&v41])
+  if (![v6 fileExistsAtPath:path isDirectory:&v41])
   {
-    if ((v3 & 0x40) == 0)
+    if ((optionsCopy & 0x40) == 0)
     {
       goto LABEL_30;
     }
@@ -315,23 +315,23 @@ LABEL_19:
     goto LABEL_25;
   }
 
-  if ((v3 & 0x40) != 0 && (v41 & 1) == 0)
+  if ((optionsCopy & 0x40) != 0 && (v41 & 1) == 0)
   {
 LABEL_25:
-    if ([v6 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0])
+    if ([v6 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:0])
     {
       goto LABEL_26;
     }
 
 LABEL_30:
-    NSLog(@"### Expected directory at %@", v7);
+    NSLog(@"### Expected directory at %@", path);
 LABEL_32:
 
     return 0;
   }
 
 LABEL_26:
-  v8 = [v6 fileSystemRepresentationWithPath:v7];
+  v8 = [v6 fileSystemRepresentationWithPath:path];
   v9 = open(v8, 0x8000);
   if (v9 == -1)
   {
@@ -343,7 +343,7 @@ LABEL_26:
   v10 = v9;
   self->_cancel = 0;
   readOnly = self->_readOnly;
-  if ((v3 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     if (self->_readOnly)
     {
@@ -364,7 +364,7 @@ LABEL_26:
     goto LABEL_88;
   }
 
-  self->_indexType = (v3 >> 3) & 1;
+  self->_indexType = (optionsCopy >> 3) & 1;
   v12 = malloc_type_malloc(0x98uLL, 0x800407567D3B1uLL);
   *&v12->var12 = *&off_100035228;
   *&v12->var14 = *&off_100035238;
@@ -470,7 +470,7 @@ LABEL_64:
   }
 
 LABEL_70:
-  if ((v3 & 0x40) != 0 && !self->_readOnly)
+  if ((optionsCopy & 0x40) != 0 && !self->_readOnly)
   {
     v26 = self->_psid;
     if (v26)
@@ -588,7 +588,7 @@ LABEL_88:
   return result;
 }
 
-- (id)path:(int64_t)a3
+- (id)path:(int64_t)path
 {
   context = objc_autoreleasePoolPush();
   v5 = objc_opt_new();
@@ -598,14 +598,14 @@ LABEL_88:
   v25 = v5;
   do
   {
-    v9 = [(SIIndexer *)self getAttributes:v6 forOid:a3];
+    v9 = [(SIIndexer *)self getAttributes:v6 forOid:path];
     v10 = v7[435];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || [v9 count] != 3)
     {
       v16 = 1;
 LABEL_9:
-      v15 = [v8[398] stringWithFormat:@"<%lld>", a3];
+      path = [v8[398] stringWithFormat:@"<%lld>", path];
       goto LABEL_10;
     }
 
@@ -625,17 +625,17 @@ LABEL_9:
     {
       v11 = v13;
 LABEL_7:
-      v15 = v11;
-      v13 = v15;
+      path = v11;
+      v13 = path;
       goto LABEL_13;
     }
 
-    v15 = 0;
+    path = 0;
 LABEL_13:
-    v16 = (a3 & 0xFFFFFFFFFFFFFFFDLL) == 0;
-    if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+    v16 = (path & 0xFFFFFFFFFFFFFFFDLL) == 0;
+    if ((path & 0xFFFFFFFFFFFFFFFDLL) != 0)
     {
-      v17 = self;
+      selfCopy = self;
       v18 = v8;
       v19 = v6;
       v20 = v7;
@@ -643,23 +643,23 @@ LABEL_13:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        a3 = [v21 integerValue];
+        path = [v21 integerValue];
       }
 
       v7 = v20;
       v6 = v19;
       v8 = v18;
-      self = v17;
+      self = selfCopy;
       v5 = v25;
     }
 
-    if (!v15)
+    if (!path)
     {
       goto LABEL_9;
     }
 
 LABEL_10:
-    [v5 insertObject:v15 atIndex:0];
+    [v5 insertObject:path atIndex:0];
   }
 
   while (!v16);
@@ -675,23 +675,23 @@ LABEL_10:
   return v22;
 }
 
-- (id)termIndex:(unint64_t)a3
+- (id)termIndex:(unint64_t)index
 {
-  if ([(SIIndexer *)self termIndexCount]<= a3)
+  if ([(SIIndexer *)self termIndexCount]<= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(SIIndexer *)self termIndex];
-    v6 = v5;
-    if (!v5 || [(TermIndex *)v5 cindex]!= a3)
+    termIndex = [(SIIndexer *)self termIndex];
+    v6 = termIndex;
+    if (!termIndex || [(TermIndex *)termIndex cindex]!= index)
     {
       v7 = [TermIndex alloc];
       index = self->_index;
-      v9 = [(SIIndexer *)self path];
-      v10 = -[TermIndex initWithIndex:cindex:atPath:coreSpotlight:](v7, "initWithIndex:cindex:atPath:coreSpotlight:", index, a3, [v9 UTF8String], -[SIIndexer isCoreSpotlight](self, "isCoreSpotlight"));
+      path = [(SIIndexer *)self path];
+      v10 = -[TermIndex initWithIndex:cindex:atPath:coreSpotlight:](v7, "initWithIndex:cindex:atPath:coreSpotlight:", index, index, [path UTF8String], -[SIIndexer isCoreSpotlight](self, "isCoreSpotlight"));
 
       [(SIIndexer *)self setTermIndex:v10];
       v6 = v10;
@@ -703,20 +703,20 @@ LABEL_10:
   return v11;
 }
 
-- (void)iterateTermIndexes:(id)a3
+- (void)iterateTermIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(SIIndexer *)self termIndexCount];
+  indexesCopy = indexes;
+  termIndexCount = [(SIIndexer *)self termIndexCount];
   v9 = 0;
-  if (v5)
+  if (termIndexCount)
   {
-    v6 = v5;
+    v6 = termIndexCount;
     for (i = 0; i < v6; ++i)
     {
       v8 = [(SIIndexer *)self termIndex:i];
       if (v8)
       {
-        v4[2](v4, v8, &v9);
+        indexesCopy[2](indexesCopy, v8, &v9);
       }
 
       if (v9)
@@ -727,19 +727,19 @@ LABEL_10:
   }
 }
 
-- (void)iterateTermIndexes:(int64_t)a3 block:(id)a4
+- (void)iterateTermIndexes:(int64_t)indexes block:(id)block
 {
-  v6 = a4;
-  v7 = [(SIIndexer *)self termIndex:a3];
+  blockCopy = block;
+  v7 = [(SIIndexer *)self termIndex:indexes];
   if (v7)
   {
     v8 = 0;
-    v6[2](v6, v7, &v8);
+    blockCopy[2](blockCopy, v7, &v8);
   }
 
   else
   {
-    [(SIIndexer *)self iterateTermIndexes:v6];
+    [(SIIndexer *)self iterateTermIndexes:blockCopy];
   }
 }
 
@@ -779,13 +779,13 @@ LABEL_10:
   propertyNumMap = self->_propertyNumMap;
   if (!propertyNumMap)
   {
-    v4 = [(SIIndexer *)self propertyMap];
-    v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+    propertyMap = [(SIIndexer *)self propertyMap];
+    v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [propertyMap count]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v4;
+    v6 = propertyMap;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -822,11 +822,11 @@ LABEL_10:
   return propertyNumMap;
 }
 
-- (id)propertyName:(unint64_t)a3
+- (id)propertyName:(unint64_t)name
 {
-  v4 = [(SIIndexer *)self propertyNumMap];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  propertyNumMap = [(SIIndexer *)self propertyNumMap];
+  v5 = [NSNumber numberWithUnsignedInteger:name];
+  v6 = [propertyNumMap objectForKey:v5];
 
   return v6;
 }
@@ -845,9 +845,9 @@ LABEL_10:
   }
 }
 
-- (void)addRecords:(id)a3 forIDs:(unint64_t *)a4 completionHandler:(id)a5
+- (void)addRecords:(id)records forIDs:(unint64_t *)ds completionHandler:(id)handler
 {
-  v5 = __chkstk_darwin(self, a2, a3, a4, a5);
+  v5 = __chkstk_darwin(self, a2, records, ds, handler);
   v7 = v6;
   v9 = v8;
   v10 = v5;
@@ -875,15 +875,15 @@ LABEL_10:
   bzero(v41, 0x2008uLL);
   v19 = v40;
   bzero(v40, 0x2008uLL);
-  v20 = [v10 isXcodeIndex];
-  if (!v20)
+  isXcodeIndex = [v10 isXcodeIndex];
+  if (!isXcodeIndex)
   {
     v19 = 0;
   }
 
   if (v17 >= 0x401)
   {
-    v21 = v20;
+    v21 = isXcodeIndex;
     v22 = malloc_type_malloc(8 * v17 + 8, 0x100004000313F17uLL);
     v23 = v22;
     if ((v21 & 1) == 0)
@@ -990,9 +990,9 @@ LABEL_32:
   }
 }
 
-- (void)updateRecords:(id)a3 forIDs:(unint64_t *)a4 completionHandler:(id)a5
+- (void)updateRecords:(id)records forIDs:(unint64_t *)ds completionHandler:(id)handler
 {
-  v5 = __chkstk_darwin(self, a2, a3, a4, a5);
+  v5 = __chkstk_darwin(self, a2, records, ds, handler);
   v7 = v6;
   v9 = v8;
   v10 = v5;
@@ -1094,9 +1094,9 @@ LABEL_19:
   }
 }
 
-- (void)removeRecordsForIDs:(unint64_t *)a3 count:(unint64_t)a4 completionHandler:(id)a5
+- (void)removeRecordsForIDs:(unint64_t *)ds count:(unint64_t)count completionHandler:(id)handler
 {
-  v5 = __chkstk_darwin(self, a2, a3, a4, a5);
+  v5 = __chkstk_darwin(self, a2, ds, count, handler);
   v7 = v6;
   v9 = v8;
   v10 = v5;
@@ -1193,7 +1193,7 @@ LABEL_15:
   }
 }
 
-- (void)setProperty:(id)a3 forKey:(id)a4
+- (void)setProperty:(id)property forKey:(id)key
 {
   if (self->_index)
   {
@@ -1231,9 +1231,9 @@ LABEL_15:
   }
 }
 
-- (void)oidParents:(id)a3
+- (void)oidParents:(id)parents
 {
-  v5 = a3;
+  parentsCopy = parents;
   if (([(SIIndexer *)self isSpotlightIndex]|| [(SIIndexer *)self isCoreSpotlight]) && ([(SIIndexer *)self isOpen]|| [(SIIndexer *)self openWithOptions:0]))
   {
     index = self->_index;
@@ -1241,11 +1241,11 @@ LABEL_15:
   }
 }
 
-- (unsigned)relativeDocID:(unint64_t)a3
+- (unsigned)relativeDocID:(unint64_t)d
 {
-  v5 = [(SIIndexer *)self termIndex];
-  v6 = v5;
-  if (!v5 || [v5 base] >= a3 || (v7 = a3 - objc_msgSend(v6, "base"), v7 >= objc_msgSend(v6, "doc_ids_limit")))
+  termIndex = [(SIIndexer *)self termIndex];
+  v6 = termIndex;
+  if (!termIndex || [termIndex base] >= d || (v7 = d - objc_msgSend(v6, "base"), v7 >= objc_msgSend(v6, "doc_ids_limit")))
   {
     v8 = sub_10001C58C(self->_index);
     if (v8 < 1)
@@ -1263,7 +1263,7 @@ LABEL_8:
         v11 = v6;
         v6 = [(SIIndexer *)self termIndex:v10];
 
-        v12 = a3 - [v6 base];
+        v12 = d - [v6 base];
         if (v12 < [v6 doc_ids_limit])
         {
           break;
@@ -1282,15 +1282,15 @@ LABEL_8:
   return v7;
 }
 
-- (unint64_t)oidForDocID:(unint64_t)a3
+- (unint64_t)oidForDocID:(unint64_t)d
 {
-  v5 = [(SIIndexer *)self termIndex];
-  v6 = v5;
-  if (v5)
+  termIndex = [(SIIndexer *)self termIndex];
+  v6 = termIndex;
+  if (termIndex)
   {
-    if ([v5 base] < a3)
+    if ([termIndex base] < d)
     {
-      v7 = a3 - [v6 base];
+      v7 = d - [v6 base];
       if (v7 < [v6 doc_ids_limit])
       {
         v8 = v6;
@@ -1312,7 +1312,7 @@ LABEL_11:
       v13 = v6;
       v6 = [(SIIndexer *)self termIndex:v12];
 
-      v14 = a3 - [v6 base];
+      v14 = d - [v6 base];
       if (v14 < [v6 doc_ids_limit])
       {
         break;
@@ -1336,15 +1336,15 @@ LABEL_12:
   return v15;
 }
 
-- (unsigned)groupForDocID:(unint64_t)a3
+- (unsigned)groupForDocID:(unint64_t)d
 {
-  v5 = [(SIIndexer *)self termIndex];
-  v6 = v5;
-  if (v5)
+  termIndex = [(SIIndexer *)self termIndex];
+  v6 = termIndex;
+  if (termIndex)
   {
-    if ([v5 base] < a3)
+    if ([termIndex base] < d)
     {
-      v7 = a3 - [v6 base];
+      v7 = d - [v6 base];
       if (v7 < [v6 doc_ids_limit])
       {
         v8 = v6;
@@ -1366,7 +1366,7 @@ LABEL_11:
       v13 = v6;
       v6 = [(SIIndexer *)self termIndex:v12];
 
-      v14 = a3 - [v6 base];
+      v14 = d - [v6 base];
       if (v14 < [v6 doc_ids_limit])
       {
         break;
@@ -1390,7 +1390,7 @@ LABEL_12:
   return v15;
 }
 
-- (int64_t)oidForPath:(const char *)a3 allowCreate:(BOOL)a4
+- (int64_t)oidForPath:(const char *)path allowCreate:(BOOL)create
 {
   result = self->_psid;
   if (result)
@@ -1401,7 +1401,7 @@ LABEL_12:
   return result;
 }
 
-- (void)rename:(const char *)a3 toPath:(const char *)a4
+- (void)rename:(const char *)rename toPath:(const char *)path
 {
   if (self->_psid)
   {
@@ -1409,7 +1409,7 @@ LABEL_12:
   }
 }
 
-- (void)deleteOID:(int64_t)a3
+- (void)deleteOID:(int64_t)d
 {
   if (self->_psid)
   {
@@ -1417,10 +1417,10 @@ LABEL_12:
   }
 }
 
-- (id)getAttributes:(id)a3 forOid:(int64_t)a4
+- (id)getAttributes:(id)attributes forOid:(int64_t)oid
 {
-  v5 = a3;
-  if (![v5 count] || !-[SIIndexer isOpen](self, "isOpen") && !-[SIIndexer openWithOptions:](self, "openWithOptions:", 0))
+  attributesCopy = attributes;
+  if (![attributesCopy count] || !-[SIIndexer isOpen](self, "isOpen") && !-[SIIndexer openWithOptions:](self, "openWithOptions:", 0))
   {
     v9 = 0;
     goto LABEL_13;
@@ -1466,33 +1466,33 @@ LABEL_13:
   self->_index = 0;
 }
 
-- (void)_reopen:(const char *)a3
+- (void)_reopen:(const char *)_reopen
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     v4 = 136315138;
-    v5 = a3;
+    _reopenCopy = _reopen;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Exit from bad index state %s", &v4, 0xCu);
   }
 
   exit(0);
 }
 
-- (void)setQueryTask:(id)a3 forID:(id)a4
+- (void)setQueryTask:(id)task forID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  taskCopy = task;
   pthread_rwlock_wrlock(&self->_queryTasksRdWrLock);
-  [(NSMutableDictionary *)self->_queryTasks setObject:v7 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_queryTasks setObject:taskCopy forKeyedSubscript:dCopy];
 
   pthread_rwlock_unlock(&self->_queryTasksRdWrLock);
 }
 
-- (id)getQueryTaskForID:(id)a3
+- (id)getQueryTaskForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   pthread_rwlock_rdlock(&self->_queryTasksRdWrLock);
-  v5 = [(NSMutableDictionary *)self->_queryTasks objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_queryTasks objectForKeyedSubscript:dCopy];
 
   pthread_rwlock_unlock(&self->_queryTasksRdWrLock);
 
@@ -1502,13 +1502,13 @@ LABEL_13:
 - (id)allQueryTasks
 {
   pthread_rwlock_rdlock(&self->_queryTasksRdWrLock);
-  v3 = [(NSMutableDictionary *)self->_queryTasks allValues];
+  allValues = [(NSMutableDictionary *)self->_queryTasks allValues];
   pthread_rwlock_unlock(&self->_queryTasksRdWrLock);
 
-  return v3;
+  return allValues;
 }
 
-- (void)waitFor:(int)a3
+- (void)waitFor:(int)for
 {
   group = dispatch_group_create();
   dispatch_group_enter(group);
@@ -1517,46 +1517,46 @@ LABEL_13:
   dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)bulkSetCSAttributes:(id)a3 bundle:(id)a4
+- (void)bulkSetCSAttributes:(id)attributes bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  bundleCopy = bundle;
   v8 = [[NSConditionLock alloc] initWithCondition:0];
   index = self->_index;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_10000D72C;
   v17 = &unk_1000351A8;
-  v18 = self;
-  v19 = v7;
-  v20 = v6;
+  selfCopy = self;
+  v19 = bundleCopy;
+  v20 = attributesCopy;
   v21 = v8;
   v10 = v8;
-  v11 = v6;
-  v12 = v7;
+  v11 = attributesCopy;
+  v12 = bundleCopy;
   v13 = [&v14 copy];
   _SIScheduleBackgroundOperation();
 
-  [v10 lockWhenCondition:{1, v14, v15, v16, v17, v18}];
+  [v10 lockWhenCondition:{1, v14, v15, v16, v17, selfCopy}];
   [v10 unlock];
 }
 
-- (id)resultsForPommesUserQuery:(id)a3 withFields:(id)a4 maxCount:(int64_t)a5 languages:(id)a6 liftingRules:(id)a7 scope:(id)a8 pommesBundles:(id)a9 clientBundleID:(id)a10
+- (id)resultsForPommesUserQuery:(id)query withFields:(id)fields maxCount:(int64_t)count languages:(id)languages liftingRules:(id)rules scope:(id)scope pommesBundles:(id)bundles clientBundleID:(id)self0
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v36 = v16;
+  queryCopy = query;
+  fieldsCopy = fields;
+  languagesCopy = languages;
+  rulesCopy = rules;
+  scopeCopy = scope;
+  bundlesCopy = bundles;
+  dCopy = d;
+  v36 = languagesCopy;
   v21 = SIUserCtxCreateWithLanguages();
-  [NSString stringWithFormat:@"**=%@*cwdt", v14];
-  v37 = v15;
-  v35 = v17;
+  [NSString stringWithFormat:@"**=%@*cwdt", queryCopy];
+  v37 = fieldsCopy;
+  v35 = rulesCopy;
   CFAbsoluteTimeGetCurrent();
-  v34 = v19;
+  v34 = bundlesCopy;
   if (SIQueryCreateWithParameters())
   {
     SIResultQueueCreate();
@@ -1651,27 +1651,27 @@ LABEL_9:
   return self;
 }
 
-- (void)setQueryTasksRdWrLock:(_opaque_pthread_rwlock_t *)a3
+- (void)setQueryTasksRdWrLock:(_opaque_pthread_rwlock_t *)lock
 {
-  *&self->_queryTasksRdWrLock.__sig = *&a3->__sig;
-  v3 = *&a3->__opaque[8];
-  v4 = *&a3->__opaque[24];
-  v5 = *&a3->__opaque[40];
-  *&self->_queryTasksRdWrLock.__opaque[56] = *&a3->__opaque[56];
+  *&self->_queryTasksRdWrLock.__sig = *&lock->__sig;
+  v3 = *&lock->__opaque[8];
+  v4 = *&lock->__opaque[24];
+  v5 = *&lock->__opaque[40];
+  *&self->_queryTasksRdWrLock.__opaque[56] = *&lock->__opaque[56];
   *&self->_queryTasksRdWrLock.__opaque[40] = v5;
   *&self->_queryTasksRdWrLock.__opaque[24] = v4;
   *&self->_queryTasksRdWrLock.__opaque[8] = v3;
-  v6 = *&a3->__opaque[72];
-  v7 = *&a3->__opaque[88];
-  v8 = *&a3->__opaque[120];
-  *&self->_queryTasksRdWrLock.__opaque[104] = *&a3->__opaque[104];
+  v6 = *&lock->__opaque[72];
+  v7 = *&lock->__opaque[88];
+  v8 = *&lock->__opaque[120];
+  *&self->_queryTasksRdWrLock.__opaque[104] = *&lock->__opaque[104];
   *&self->_queryTasksRdWrLock.__opaque[120] = v8;
   *&self->_queryTasksRdWrLock.__opaque[88] = v7;
   *&self->_queryTasksRdWrLock.__opaque[72] = v6;
-  v9 = *&a3->__opaque[136];
-  v10 = *&a3->__opaque[152];
-  v11 = *&a3->__opaque[168];
-  *&self->_queryTasksRdWrLock.__opaque[184] = *&a3->__opaque[184];
+  v9 = *&lock->__opaque[136];
+  v10 = *&lock->__opaque[152];
+  v11 = *&lock->__opaque[168];
+  *&self->_queryTasksRdWrLock.__opaque[184] = *&lock->__opaque[184];
   *&self->_queryTasksRdWrLock.__opaque[152] = v10;
   *&self->_queryTasksRdWrLock.__opaque[168] = v11;
   *&self->_queryTasksRdWrLock.__opaque[136] = v9;

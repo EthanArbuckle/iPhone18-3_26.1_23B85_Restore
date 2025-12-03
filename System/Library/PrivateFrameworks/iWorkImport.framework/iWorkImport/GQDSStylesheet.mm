@@ -1,15 +1,15 @@
 @interface GQDSStylesheet
-- (GQDSStylesheet)initWithRoot:(id)a3;
+- (GQDSStylesheet)initWithRoot:(id)root;
 - (__CFArray)retainedArrayOfIdentifiedStyles;
-- (id)styleWithIdentifier:(const char *)a3;
-- (void)addStyle:(id)a3 needingParentResolution:(const char *)a4 resolveInParent:(BOOL)a5;
+- (id)styleWithIdentifier:(const char *)identifier;
+- (void)addStyle:(id)style needingParentResolution:(const char *)resolution resolveInParent:(BOOL)parent;
 - (void)dealloc;
 - (void)resolveStyleParents;
 @end
 
 @implementation GQDSStylesheet
 
-- (GQDSStylesheet)initWithRoot:(id)a3
+- (GQDSStylesheet)initWithRoot:(id)root
 {
   v7.receiver = self;
   v7.super_class = GQDSStylesheet;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->mRoot = a3;
+    v4->mRoot = root;
     v4->mIdentifiedStyles = CFDictionaryCreateMutable(0, 0, &unk_85100, &kCFTypeDictionaryValueCallBacks);
     v5->mStylesNeedingParentResolution = CFArrayCreateMutable(0, 0, &kCFTypeArrayCallBacks);
     v5->mStylesNeedingParentResolutionInParent = CFArrayCreateMutable(0, 0, &kCFTypeArrayCallBacks);
@@ -48,29 +48,29 @@
   [(GQDSStylesheet *)&v5 dealloc];
 }
 
-- (id)styleWithIdentifier:(const char *)a3
+- (id)styleWithIdentifier:(const char *)identifier
 {
-  result = CFDictionaryGetValue(self->mIdentifiedStyles, a3);
+  result = CFDictionaryGetValue(self->mIdentifiedStyles, identifier);
   if (!result)
   {
     result = self->mParent;
     if (result)
     {
 
-      return [result styleWithIdentifier:a3];
+      return [result styleWithIdentifier:identifier];
     }
   }
 
   return result;
 }
 
-- (void)addStyle:(id)a3 needingParentResolution:(const char *)a4 resolveInParent:(BOOL)a5
+- (void)addStyle:(id)style needingParentResolution:(const char *)resolution resolveInParent:(BOOL)parent
 {
-  v5 = a5;
-  v7 = [[GQDSParentResolutionEntry alloc] initWithStyle:a3 parentIdentifier:a4];
+  parentCopy = parent;
+  v7 = [[GQDSParentResolutionEntry alloc] initWithStyle:style parentIdentifier:resolution];
   v9 = v7;
   v8 = 40;
-  if (v5)
+  if (parentCopy)
   {
     v8 = 32;
   }

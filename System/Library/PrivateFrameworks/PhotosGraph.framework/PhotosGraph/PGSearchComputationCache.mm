@@ -1,29 +1,29 @@
 @interface PGSearchComputationCache
-+ (id)persistentStoreURLWithManager:(id)a3;
-- (BOOL)momentAssetPairs:(id)a3 areValidWithAssociatedMomentUUIDs:(id)a4;
-- (PGSearchComputationCache)initWithPersistentStoreURL:(id)a3 photoLibrary:(id)a4;
-- (id)curationInformationForNode:(id)a3;
-- (id)keyAssetLocalIdentifierForNodeIdentifier:(id)a3 withAssociatedMomentUUIDs:(id)a4;
-- (id)locationInformationForLocationNode:(id)a3 locationMask:(unint64_t)a4;
++ (id)persistentStoreURLWithManager:(id)manager;
+- (BOOL)momentAssetPairs:(id)pairs areValidWithAssociatedMomentUUIDs:(id)ds;
+- (PGSearchComputationCache)initWithPersistentStoreURL:(id)l photoLibrary:(id)library;
+- (id)curationInformationForNode:(id)node;
+- (id)keyAssetLocalIdentifierForNodeIdentifier:(id)identifier withAssociatedMomentUUIDs:(id)ds;
+- (id)locationInformationForLocationNode:(id)node locationMask:(unint64_t)mask;
 - (void)invalidateCache;
 - (void)save;
-- (void)setCurationInformation:(id)a3 forNode:(id)a4;
-- (void)setKeyAssetLocalIdentifier:(id)a3 forNodeIdentifier:(id)a4 withAssociatedMomentUUID:(id)a5;
-- (void)setLocationInformation:(id)a3 forLocationNode:(id)a4 locationMask:(unint64_t)a5;
+- (void)setCurationInformation:(id)information forNode:(id)node;
+- (void)setKeyAssetLocalIdentifier:(id)identifier forNodeIdentifier:(id)nodeIdentifier withAssociatedMomentUUID:(id)d;
+- (void)setLocationInformation:(id)information forLocationNode:(id)node locationMask:(unint64_t)mask;
 @end
 
 @implementation PGSearchComputationCache
 
-- (id)locationInformationForLocationNode:(id)a3 locationMask:(unint64_t)a4
+- (id)locationInformationForLocationNode:(id)node locationMask:(unint64_t)mask
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 UUID];
-  if (v7 || ([v6 name], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  nodeCopy = node;
+  uUID = [nodeCopy UUID];
+  if (uUID || ([nodeCopy name], (uUID = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v8 = v7;
-    v9 = [(NSMutableDictionary *)self->_locationInformationByNodeUUID objectForKeyedSubscript:v7];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v8 = uUID;
+    v9 = [(NSMutableDictionary *)self->_locationInformationByNodeUUID objectForKeyedSubscript:uUID];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mask];
     v11 = [v9 objectForKeyedSubscript:v10];
   }
 
@@ -32,7 +32,7 @@
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = nodeCopy;
       _os_log_error_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot get unique UUID for node %@", &v14, 0xCu);
     }
 
@@ -44,94 +44,94 @@
   return v11;
 }
 
-- (void)setLocationInformation:(id)a3 forLocationNode:(id)a4 locationMask:(unint64_t)a5
+- (void)setLocationInformation:(id)information forLocationNode:(id)node locationMask:(unint64_t)mask
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 UUID];
-  if (v10 || ([v9 name], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  informationCopy = information;
+  nodeCopy = node;
+  uUID = [nodeCopy UUID];
+  if (uUID || ([nodeCopy name], (uUID = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v11 = v10;
-    v12 = [(NSMutableDictionary *)self->_locationInformationByNodeUUID objectForKeyedSubscript:v10];
-    if (!v12)
+    v11 = uUID;
+    dictionary = [(NSMutableDictionary *)self->_locationInformationByNodeUUID objectForKeyedSubscript:uUID];
+    if (!dictionary)
     {
-      v12 = [MEMORY[0x277CBEB38] dictionary];
-      [(NSMutableDictionary *)self->_locationInformationByNodeUUID setObject:v12 forKeyedSubscript:v11];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(NSMutableDictionary *)self->_locationInformationByNodeUUID setObject:dictionary forKeyedSubscript:v11];
     }
 
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-    [v12 setObject:v8 forKeyedSubscript:v13];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mask];
+    [dictionary setObject:informationCopy forKeyedSubscript:v13];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v15 = 138412290;
-    v16 = v9;
+    v16 = nodeCopy;
     _os_log_error_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot get unique UUID for node %@", &v15, 0xCu);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)curationInformationForNode:(id)a3
+- (id)curationInformationForNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 UUID];
-  v6 = v5;
-  if (v5)
+  nodeCopy = node;
+  uUID = [nodeCopy UUID];
+  v6 = uUID;
+  if (uUID)
   {
-    v7 = v5;
+    name = uUID;
   }
 
   else
   {
-    v7 = [v4 name];
+    name = [nodeCopy name];
   }
 
-  v8 = v7;
+  v8 = name;
 
   v9 = [(NSMutableDictionary *)self->_curationInformationByNodeUUID objectForKeyedSubscript:v8];
 
   return v9;
 }
 
-- (void)setCurationInformation:(id)a3 forNode:(id)a4
+- (void)setCurationInformation:(id)information forNode:(id)node
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 UUID];
-  if (v8 || ([v7 name], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  informationCopy = information;
+  nodeCopy = node;
+  uUID = [nodeCopy UUID];
+  if (uUID || ([nodeCopy name], (uUID = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v9 = v8;
-    [(NSMutableDictionary *)self->_curationInformationByNodeUUID setObject:v6 forKeyedSubscript:v8];
+    v9 = uUID;
+    [(NSMutableDictionary *)self->_curationInformationByNodeUUID setObject:informationCopy forKeyedSubscript:uUID];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v11 = 138412290;
-    v12 = v7;
+    v12 = nodeCopy;
     _os_log_error_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot get unique UUID for node %@", &v11, 0xCu);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)momentAssetPairs:(id)a3 areValidWithAssociatedMomentUUIDs:(id)a4
+- (BOOL)momentAssetPairs:(id)pairs areValidWithAssociatedMomentUUIDs:(id)ds
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] && objc_msgSend(v7, "count"))
+  pairsCopy = pairs;
+  dsCopy = ds;
+  if ([pairsCopy count] && objc_msgSend(dsCopy, "count"))
   {
-    v26 = self;
+    selfCopy = self;
     v8 = [MEMORY[0x277CBEB58] set];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v9 = v6;
+    v9 = pairsCopy;
     v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v10)
     {
@@ -147,13 +147,13 @@
           }
 
           v14 = *(*(&v27 + 1) + 8 * i);
-          v15 = [v14 momentUUID];
-          v16 = [v7 containsObject:v15];
+          momentUUID = [v14 momentUUID];
+          v16 = [dsCopy containsObject:momentUUID];
 
           if (v16)
           {
-            v17 = [v14 assetUUID];
-            [v8 addObject:v17];
+            assetUUID = [v14 assetUUID];
+            [v8 addObject:assetUUID];
           }
         }
 
@@ -166,15 +166,15 @@
     if ([v8 count])
     {
       v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid IN %@", v8];
-      v19 = [(PHPhotoLibrary *)v26->_photoLibrary librarySpecificFetchOptions];
-      [v19 setInternalPredicate:v18];
+      librarySpecificFetchOptions = [(PHPhotoLibrary *)selfCopy->_photoLibrary librarySpecificFetchOptions];
+      [librarySpecificFetchOptions setInternalPredicate:v18];
       v31 = *MEMORY[0x277CD9AA8];
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
-      [v19 setFetchPropertySets:v20];
+      [librarySpecificFetchOptions setFetchPropertySets:v20];
 
-      [v19 setShouldPrefetchCount:1];
-      [v19 setIncludeAssetSourceTypes:5];
-      v21 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v19];
+      [librarySpecificFetchOptions setShouldPrefetchCount:1];
+      [librarySpecificFetchOptions setIncludeAssetSourceTypes:5];
+      v21 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
       v22 = [v21 count];
       v23 = v22 == [v8 count];
     }
@@ -194,27 +194,27 @@
   return v23;
 }
 
-- (id)keyAssetLocalIdentifierForNodeIdentifier:(id)a3 withAssociatedMomentUUIDs:(id)a4
+- (id)keyAssetLocalIdentifierForNodeIdentifier:(id)identifier withAssociatedMomentUUIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  dsCopy = ds;
+  if (identifierCopy)
   {
-    v8 = [(NSMutableDictionary *)self->_momentAssetPairsByNodeUUID objectForKeyedSubscript:v6];
+    v8 = [(NSMutableDictionary *)self->_momentAssetPairsByNodeUUID objectForKeyedSubscript:identifierCopy];
     if (v8)
     {
-      if ([(PGSearchComputationCache *)self momentAssetPairs:v8 areValidWithAssociatedMomentUUIDs:v7])
+      if ([(PGSearchComputationCache *)self momentAssetPairs:v8 areValidWithAssociatedMomentUUIDs:dsCopy])
       {
-        v9 = [v8 firstObject];
-        v10 = [v9 assetUUID];
+        firstObject = [v8 firstObject];
+        assetUUID = [firstObject assetUUID];
 
-        v11 = [MEMORY[0x277CD97A8] localIdentifierWithUUID:v10];
+        v11 = [MEMORY[0x277CD97A8] localIdentifierWithUUID:assetUUID];
 
 LABEL_10:
         goto LABEL_11;
       }
 
-      [(NSMutableDictionary *)self->_momentAssetPairsByNodeUUID removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_momentAssetPairsByNodeUUID removeObjectForKey:identifierCopy];
     }
 
     v11 = 0;
@@ -233,22 +233,22 @@ LABEL_11:
   return v11;
 }
 
-- (void)setKeyAssetLocalIdentifier:(id)a3 forNodeIdentifier:(id)a4 withAssociatedMomentUUID:(id)a5
+- (void)setKeyAssetLocalIdentifier:(id)identifier forNodeIdentifier:(id)nodeIdentifier withAssociatedMomentUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  nodeIdentifierCopy = nodeIdentifier;
+  dCopy = d;
+  if (nodeIdentifierCopy)
   {
-    v11 = [(NSMutableDictionary *)self->_momentAssetPairsByNodeUUID objectForKeyedSubscript:v9];
+    v11 = [(NSMutableDictionary *)self->_momentAssetPairsByNodeUUID objectForKeyedSubscript:nodeIdentifierCopy];
     if (!v11)
     {
       v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      [(NSMutableDictionary *)self->_momentAssetPairsByNodeUUID setObject:v11 forKeyedSubscript:v9];
+      [(NSMutableDictionary *)self->_momentAssetPairsByNodeUUID setObject:v11 forKeyedSubscript:nodeIdentifierCopy];
     }
 
-    v12 = [MEMORY[0x277CD97A8] uuidFromLocalIdentifier:v8];
-    v13 = [[PGSearchThumbnailMomentAssetPairUUID alloc] initWithAssetUUID:v12 momentUUID:v10];
+    v12 = [MEMORY[0x277CD97A8] uuidFromLocalIdentifier:identifierCopy];
+    v13 = [[PGSearchThumbnailMomentAssetPairUUID alloc] initWithAssetUUID:v12 momentUUID:dCopy];
     [v11 addObject:v13];
   }
 
@@ -289,38 +289,38 @@ LABEL_11:
   else
   {
     v7 = +[PGLogging sharedLogging];
-    v8 = [v7 loggingConnection];
+    loggingConnection = [v7 loggingConnection];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v12 = v6;
-      _os_log_error_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_ERROR, "Error writing zero keyword cache error: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Error writing zero keyword cache error: %@", buf, 0xCu);
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (PGSearchComputationCache)initWithPersistentStoreURL:(id)a3 photoLibrary:(id)a4
+- (PGSearchComputationCache)initWithPersistentStoreURL:(id)l photoLibrary:(id)library
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  libraryCopy = library;
   v44.receiver = self;
   v44.super_class = PGSearchComputationCache;
   v9 = [(PGSearchComputationCache *)&v44 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a4);
-    objc_storeStrong(&v10->_persistentStoreURL, a3);
+    objc_storeStrong(&v9->_photoLibrary, library);
+    objc_storeStrong(&v10->_persistentStoreURL, l);
     v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v10->_persistentStoreURL];
     v12 = 0x277CBE000uLL;
     if (v11)
     {
-      v41 = v8;
-      v42 = v7;
+      v41 = libraryCopy;
+      v42 = lCopy;
       v40 = MEMORY[0x277CCAAC8];
       v13 = MEMORY[0x277CBEB98];
       v14 = objc_opt_class();
@@ -338,18 +338,18 @@ LABEL_11:
       if (v22)
       {
         v23 = +[PGLogging sharedLogging];
-        v24 = [v23 loggingConnection];
+        loggingConnection = [v23 loggingConnection];
 
-        if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v46 = v22;
-          _os_log_error_impl(&dword_22F0FC000, v24, OS_LOG_TYPE_ERROR, "Error loading the search computation cache error: %@", buf, 0xCu);
+          _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Error loading the search computation cache error: %@", buf, 0xCu);
         }
       }
 
-      v8 = v41;
-      v7 = v42;
+      libraryCopy = v41;
+      lCopy = v42;
       v12 = 0x277CBE000;
     }
 
@@ -362,56 +362,56 @@ LABEL_11:
     v26 = v25;
     if (v25)
     {
-      v27 = v25;
+      dictionary = v25;
     }
 
     else
     {
-      v27 = [*(v12 + 2872) dictionary];
+      dictionary = [*(v12 + 2872) dictionary];
     }
 
     momentAssetPairsByNodeUUID = v10->_momentAssetPairsByNodeUUID;
-    v10->_momentAssetPairsByNodeUUID = v27;
+    v10->_momentAssetPairsByNodeUUID = dictionary;
 
     v29 = [v21 objectForKeyedSubscript:@"curations"];
     v30 = v29;
     if (v29)
     {
-      v31 = v29;
+      dictionary2 = v29;
     }
 
     else
     {
-      v31 = [*(v12 + 2872) dictionary];
+      dictionary2 = [*(v12 + 2872) dictionary];
     }
 
     curationInformationByNodeUUID = v10->_curationInformationByNodeUUID;
-    v10->_curationInformationByNodeUUID = v31;
+    v10->_curationInformationByNodeUUID = dictionary2;
 
     v33 = [v21 objectForKeyedSubscript:@"locations"];
     v34 = v33;
     if (v33)
     {
-      v35 = v33;
+      dictionary3 = v33;
     }
 
     else
     {
-      v35 = [*(v12 + 2872) dictionary];
+      dictionary3 = [*(v12 + 2872) dictionary];
     }
 
     locationInformationByNodeUUID = v10->_locationInformationByNodeUUID;
-    v10->_locationInformationByNodeUUID = v35;
+    v10->_locationInformationByNodeUUID = dictionary3;
   }
 
   v37 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-+ (id)persistentStoreURLWithManager:(id)a3
++ (id)persistentStoreURLWithManager:(id)manager
 {
-  v3 = [a3 graphPersistenceParentDirectoryURL];
-  v4 = [v3 URLByAppendingPathComponent:@"PGSearchComputationCache.plist"];
+  graphPersistenceParentDirectoryURL = [manager graphPersistenceParentDirectoryURL];
+  v4 = [graphPersistenceParentDirectoryURL URLByAppendingPathComponent:@"PGSearchComputationCache.plist"];
 
   return v4;
 }

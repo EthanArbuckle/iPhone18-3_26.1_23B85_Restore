@@ -1,22 +1,22 @@
 @interface CKConversationListTipManagerSwift
 - (CKConversationListTipManagerSwift)init;
-- (CKConversationListTipManagerSwift)initWithConversationListController:(id)a3;
+- (CKConversationListTipManagerSwift)initWithConversationListController:(id)controller;
 - (UIView)miniTipUIView;
 - (int64_t)presentedTip;
 - (uint64_t)updateKtTipRules;
 - (void)conversationListControllerDidAppear;
 - (void)conversationListControllerDidDisappear;
-- (void)setMiniTipUIView:(id)a3;
-- (void)setPresentedTip:(int64_t)a3;
-- (void)updateCloudTipRulesFor:(id)a3;
+- (void)setMiniTipUIView:(id)view;
+- (void)setPresentedTip:(int64_t)tip;
+- (void)updateCloudTipRulesFor:(id)for;
 - (void)userDidPinConversation;
 @end
 
 @implementation CKConversationListTipManagerSwift
 
-- (CKConversationListTipManagerSwift)initWithConversationListController:(id)a3
+- (CKConversationListTipManagerSwift)initWithConversationListController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = sub_190220610();
 
   return v4;
@@ -31,7 +31,7 @@
 
 - (void)conversationListControllerDidAppear
 {
-  v2 = self;
+  selfCopy = self;
   sub_19022EC68();
 }
 
@@ -42,27 +42,27 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setMiniTipUIView:(id)a3
+- (void)setMiniTipUIView:(id)view
 {
   v5 = OBJC_IVAR___CKConversationListTipManagerSwift_miniTipUIView;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = view;
+  viewCopy = view;
 }
 
-- (void)setPresentedTip:(int64_t)a3
+- (void)setPresentedTip:(int64_t)tip
 {
   v5 = OBJC_IVAR___CKConversationListTipManagerSwift_presentedTip;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = tip;
 }
 
-- (void)updateCloudTipRulesFor:(id)a3
+- (void)updateCloudTipRulesFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_190859390(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_190859390(forCopy);
 }
 
 - (void)conversationListControllerDidDisappear
@@ -70,14 +70,14 @@
   v3 = OBJC_IVAR___CKConversationListTipManagerSwift_tipObservationTask;
   if (*(&self->super.isa + OBJC_IVAR___CKConversationListTipManagerSwift_tipObservationTask))
   {
-    v4 = self;
+    selfCopy = self;
     sub_190D50920();
     sub_190D57330();
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
   *(&self->super.isa + v3) = 0;
@@ -89,7 +89,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = v9 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   v9[0] = sub_190230C1C();
   v9[1] = v8;
   (*(v4 + 104))(v6, *MEMORY[0x1E6982AE0], v3);

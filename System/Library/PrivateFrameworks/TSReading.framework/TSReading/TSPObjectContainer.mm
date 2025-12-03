@@ -1,20 +1,20 @@
 @interface TSPObjectContainer
-+ (int64_t)objectIdentifierForPackageIdentifier:(unsigned __int8)a3;
-- (TSPObjectContainer)initWithContext:(id)a3;
-- (TSPObjectContainer)initWithContext:(id)a3 packageIdentifier:(unsigned __int8)a4;
++ (int64_t)objectIdentifierForPackageIdentifier:(unsigned __int8)identifier;
+- (TSPObjectContainer)initWithContext:(id)context;
+- (TSPObjectContainer)initWithContext:(id)context packageIdentifier:(unsigned __int8)identifier;
 - (int64_t)tsp_identifier;
-- (void)prepareForComponentWriteWithDelayedObjects:(id)a3;
+- (void)prepareForComponentWriteWithDelayedObjects:(id)objects;
 @end
 
 @implementation TSPObjectContainer
 
-- (TSPObjectContainer)initWithContext:(id)a3
+- (TSPObjectContainer)initWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  contextCopy = context;
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContainer initWithContext:]"];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContainer.mm"];
-  [v4 handleFailureInFunction:v5 file:v6 lineNumber:25 description:@"Do not call method"];
+  [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:25 description:@"Do not call method"];
 
   v7 = MEMORY[0x277CBEAD8];
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %s", @"Do not call method", "-[TSPObjectContainer initWithContext:]"];
@@ -24,39 +24,39 @@
   objc_exception_throw(v9);
 }
 
-- (TSPObjectContainer)initWithContext:(id)a3 packageIdentifier:(unsigned __int8)a4
+- (TSPObjectContainer)initWithContext:(id)context packageIdentifier:(unsigned __int8)identifier
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  contextCopy = context;
+  if (!identifierCopy)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContainer initWithContext:packageIdentifier:]"];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContainer.mm"];
-    [v7 handleFailureInFunction:v8 file:v9 lineNumber:30 description:@"Unexpected package identifier."];
+    [currentHandler handleFailureInFunction:v8 file:v9 lineNumber:30 description:@"Unexpected package identifier."];
   }
 
   v13.receiver = self;
   v13.super_class = TSPObjectContainer;
-  v10 = [(TSPObject *)&v13 initWithContext:v6];
+  v10 = [(TSPObject *)&v13 initWithContext:contextCopy];
   v11 = v10;
   if (v10)
   {
-    v10->_packageIdentifier = v4;
+    v10->_packageIdentifier = identifierCopy;
   }
 
   return v11;
 }
 
-+ (int64_t)objectIdentifierForPackageIdentifier:(unsigned __int8)a3
++ (int64_t)objectIdentifierForPackageIdentifier:(unsigned __int8)identifier
 {
-  if (a3 == 2)
+  if (identifier == 2)
   {
     v3 = &UnsafePointer;
     return *v3;
   }
 
-  if (a3 == 1)
+  if (identifier == 1)
   {
     v3 = &UnsafePointer;
     return *v3;
@@ -70,10 +70,10 @@
   result = [objc_opt_class() objectIdentifierForPackageIdentifier:self->_packageIdentifier];
   if (!result)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContainer tsp_identifier]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContainer.mm"];
-    [v4 handleFailureInFunction:v5 file:v6 lineNumber:100 description:{@"Unexpected package identifier: %d", self->_packageIdentifier}];
+    [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:100 description:{@"Unexpected package identifier: %d", self->_packageIdentifier}];
 
     v7.receiver = self;
     v7.super_class = TSPObjectContainer;
@@ -83,18 +83,18 @@
   return result;
 }
 
-- (void)prepareForComponentWriteWithDelayedObjects:(id)a3
+- (void)prepareForComponentWriteWithDelayedObjects:(id)objects
 {
-  v9 = a3;
+  objectsCopy = objects;
   if (self->_childObjects)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContainer prepareForComponentWriteWithDelayedObjects:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContainer.mm"];
-    [v4 handleFailureInFunction:v5 file:v6 lineNumber:124 description:{@"expected nil value for '%s'", "_childObjects"}];
+    [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:124 description:{@"expected nil value for '%s'", "_childObjects"}];
   }
 
-  v7 = [v9 copy];
+  v7 = [objectsCopy copy];
   childObjects = self->_childObjects;
   self->_childObjects = v7;
 }

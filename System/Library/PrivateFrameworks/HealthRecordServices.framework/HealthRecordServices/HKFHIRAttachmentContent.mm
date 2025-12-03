@@ -1,27 +1,27 @@
 @interface HKFHIRAttachmentContent
-- (BOOL)isEqual:(id)a3;
-- (HKFHIRAttachmentContent)initWithCoder:(id)a3;
-- (HKFHIRAttachmentContent)initWithContent:(id)a3 contentType:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HKFHIRAttachmentContent)initWithCoder:(id)coder;
+- (HKFHIRAttachmentContent)initWithContent:(id)content contentType:(id)type;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFHIRAttachmentContent
 
-- (HKFHIRAttachmentContent)initWithContent:(id)a3 contentType:(id)a4
+- (HKFHIRAttachmentContent)initWithContent:(id)content contentType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = HKFHIRAttachmentContent;
   v8 = [(HKFHIRAttachmentContent *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [contentCopy copy];
     content = v8->_content;
     v8->_content = v9;
 
-    v11 = [v7 copy];
+    v11 = [typeCopy copy];
     contentType = v8->_contentType;
     v8->_contentType = v11;
   }
@@ -29,10 +29,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -42,16 +42,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = equalCopy;
       content = self->_content;
-      v9 = [(HKFHIRAttachmentContent *)v7 content];
-      if (content == v9)
+      content = [(HKFHIRAttachmentContent *)v7 content];
+      if (content == content)
       {
         goto LABEL_9;
       }
 
-      v10 = [(HKFHIRAttachmentContent *)v7 content];
-      if (!v10)
+      content2 = [(HKFHIRAttachmentContent *)v7 content];
+      if (!content2)
       {
         v12 = 0;
 LABEL_17:
@@ -59,16 +59,16 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v3 = v10;
+      v3 = content2;
       v11 = self->_content;
-      v4 = [(HKFHIRAttachmentContent *)v7 content];
-      if ([(NSData *)v11 isEqual:v4])
+      content3 = [(HKFHIRAttachmentContent *)v7 content];
+      if ([(NSData *)v11 isEqual:content3])
       {
 LABEL_9:
         contentType = self->_contentType;
-        v14 = [(HKFHIRAttachmentContent *)v7 contentType];
-        v15 = v14;
-        if (contentType == v14)
+        contentType = [(HKFHIRAttachmentContent *)v7 contentType];
+        v15 = contentType;
+        if (contentType == contentType)
         {
 
           v12 = 1;
@@ -76,13 +76,13 @@ LABEL_9:
 
         else
         {
-          v16 = [(HKFHIRAttachmentContent *)v7 contentType];
-          if (v16)
+          contentType2 = [(HKFHIRAttachmentContent *)v7 contentType];
+          if (contentType2)
           {
-            v17 = v16;
+            v17 = contentType2;
             v18 = self->_contentType;
-            v19 = [(HKFHIRAttachmentContent *)v7 contentType];
-            v12 = [(NSString *)v18 isEqualToString:v19];
+            contentType3 = [(HKFHIRAttachmentContent *)v7 contentType];
+            v12 = [(NSString *)v18 isEqualToString:contentType3];
           }
 
           else
@@ -92,7 +92,7 @@ LABEL_9:
           }
         }
 
-        if (content == v9)
+        if (content == content)
         {
           goto LABEL_17;
         }
@@ -124,22 +124,22 @@ LABEL_18:
   return v6;
 }
 
-- (HKFHIRAttachmentContent)initWithCoder:(id)a3
+- (HKFHIRAttachmentContent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Content"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ContentType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Content"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContentType"];
 
   v7 = [(HKFHIRAttachmentContent *)self initWithContent:v5 contentType:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   content = self->_content;
-  v5 = a3;
-  [v5 encodeObject:content forKey:@"Content"];
-  [v5 encodeObject:self->_contentType forKey:@"ContentType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:content forKey:@"Content"];
+  [coderCopy encodeObject:self->_contentType forKey:@"ContentType"];
 }
 
 @end

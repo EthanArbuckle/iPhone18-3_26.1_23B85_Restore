@@ -1,13 +1,13 @@
 @interface PinnedBarView
-- (_TtC7SwiftUI13PinnedBarView)initWithCoder:(id)a3;
-- (_TtC7SwiftUI13PinnedBarView)initWithFrame:(CGRect)a3;
+- (_TtC7SwiftUI13PinnedBarView)initWithCoder:(id)coder;
+- (_TtC7SwiftUI13PinnedBarView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PinnedBarView
 
-- (_TtC7SwiftUI13PinnedBarView)initWithCoder:(id)a3
+- (_TtC7SwiftUI13PinnedBarView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -28,13 +28,13 @@
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for PinnedBarView();
   v4 = v8.receiver;
-  v5 = a3;
-  [(PinnedBarView *)&v8 willMoveToWindow:v5];
+  windowCopy = window;
+  [(PinnedBarView *)&v8 willMoveToWindow:windowCopy];
   v6 = UIView.containingHostingScrollView.getter();
   if (v6)
   {
@@ -43,7 +43,7 @@
   }
 }
 
-- (_TtC7SwiftUI13PinnedBarView)initWithFrame:(CGRect)a3
+- (_TtC7SwiftUI13PinnedBarView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

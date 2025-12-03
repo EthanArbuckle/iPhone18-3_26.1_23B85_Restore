@@ -32,7 +32,7 @@
     v7 = AccessLevel;
   }
 
-  v8 = [a1 initWithHREF:v2 commonName:v3 inviteStatus:v5 access:v7];
+  v8 = [self initWithHREF:v2 commonName:v3 inviteStatus:v5 access:v7];
 
   return v8;
 }
@@ -41,47 +41,47 @@
 {
   Sharee = CalDatabaseCreateSharee();
   CalShareeSetOwner();
-  v3 = [a1 acceptedURL];
+  acceptedURL = [self acceptedURL];
 
-  if (v3)
+  if (acceptedURL)
   {
-    v4 = [a1 acceptedURL];
+    acceptedURL2 = [self acceptedURL];
   }
 
   else
   {
-    v4 = [a1 href];
-    [v4 payloadAsFullURL];
+    acceptedURL2 = [self href];
+    [acceptedURL2 payloadAsFullURL];
   }
 
   CalShareeSetAddress();
 
-  v5 = [a1 firstName];
-  if (v5 && (v6 = v5, [a1 lastName], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  firstName = [self firstName];
+  if (firstName && (v6 = firstName, [self lastName], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [a1 firstName];
+    firstName2 = [self firstName];
     CalShareeSetFirstName();
 
-    v9 = [a1 lastName];
+    lastName = [self lastName];
     CalShareeSetLastName();
   }
 
   else
   {
-    v9 = [a1 commonName];
-    [v9 payloadAsString];
+    lastName = [self commonName];
+    [lastName payloadAsString];
     CalShareeSetDisplayName();
   }
 
-  v10 = [a1 inviteStatus];
-  v11 = [v10 name];
-  _calDAVCalendarServerInviteStatusFromString(v11);
+  inviteStatus = [self inviteStatus];
+  name = [inviteStatus name];
+  _calDAVCalendarServerInviteStatusFromString(name);
   CalShareeSetStatus();
 
-  v12 = [a1 access];
-  v13 = [v12 accessLevel];
-  v14 = [v13 name];
-  _calDAVCalendarServerAccessLevelFromString(v14);
+  access = [self access];
+  accessLevel = [access accessLevel];
+  name2 = [accessLevel name];
+  _calDAVCalendarServerAccessLevelFromString(name2);
   CalShareeSetAccessLevel();
 
   return Sharee;
@@ -89,30 +89,30 @@
 
 - (uint64_t)updateCalSharee:()ShareeConversion
 {
-  v2 = [a1 commonName];
-  v3 = [v2 payloadAsString];
+  commonName = [self commonName];
+  payloadAsString = [commonName payloadAsString];
 
   v4 = CalShareeCopyDisplayName();
   Name = CalShareeCopyFirstName();
   v6 = CalShareeCopyLastName();
-  if ([v3 length] && (objc_msgSend(v3, "isEqualToString:", v4) & 1) == 0)
+  if ([payloadAsString length] && (objc_msgSend(payloadAsString, "isEqualToString:", v4) & 1) == 0)
   {
     CalShareeSetDisplayName();
     v11 = 1;
     goto LABEL_14;
   }
 
-  v7 = [a1 firstName];
-  if ([v7 length])
+  firstName = [self firstName];
+  if ([firstName length])
   {
-    v8 = [a1 lastName];
-    if ([v8 length])
+    lastName = [self lastName];
+    if ([lastName length])
     {
-      v9 = [a1 firstName];
-      if ([v9 isEqualToString:Name])
+      firstName2 = [self firstName];
+      if ([firstName2 isEqualToString:Name])
       {
-        v10 = [a1 lastName];
-        v25 = [v10 isEqualToString:v6];
+        lastName2 = [self lastName];
+        v25 = [lastName2 isEqualToString:v6];
 
         if (v25)
         {
@@ -124,10 +124,10 @@
       {
       }
 
-      v12 = [a1 firstName];
+      firstName3 = [self firstName];
       CalShareeSetFirstName();
 
-      v7 = [a1 lastName];
+      firstName = [self lastName];
       CalShareeSetLastName();
     }
 
@@ -139,9 +139,9 @@
 LABEL_13:
   v11 = 0;
 LABEL_14:
-  v13 = [a1 inviteStatus];
-  v14 = [v13 name];
-  v15 = _calDAVCalendarServerInviteStatusFromString(v14);
+  inviteStatus = [self inviteStatus];
+  name = [inviteStatus name];
+  v15 = _calDAVCalendarServerInviteStatusFromString(name);
 
   Status = CalShareeGetStatus();
   if ((Status - 1) >= 5)
@@ -160,10 +160,10 @@ LABEL_14:
     v11 = 1;
   }
 
-  v18 = [a1 access];
-  v19 = [v18 accessLevel];
-  v20 = [v19 name];
-  v21 = _calDAVCalendarServerAccessLevelFromString(v20);
+  access = [self access];
+  accessLevel = [access accessLevel];
+  name2 = [accessLevel name];
+  v21 = _calDAVCalendarServerAccessLevelFromString(name2);
 
   AccessLevel = CalShareeGetAccessLevel();
   if ((AccessLevel - 1) >= 3)

@@ -1,18 +1,18 @@
 @interface MTLIOAccelDebugCommandEncoder
-- (MTLIOAccelDebugCommandEncoder)initWithCommandBuffer:(id)a3;
-- (unsigned)addDebugResourceListInfo:(IOAccelResourceInfo *)a3 flag:(unsigned int)a4;
-- (void)addAPIResource:(id)a3;
+- (MTLIOAccelDebugCommandEncoder)initWithCommandBuffer:(id)buffer;
+- (unsigned)addDebugResourceListInfo:(IOAccelResourceInfo *)info flag:(unsigned int)flag;
+- (void)addAPIResource:(id)resource;
 - (void)dealloc;
-- (void)debugBytes:(const char *)a3 length:(unint64_t)a4 output_type:(unsigned int)a5;
-- (void)debugResourceBytes:(unsigned int)a3 length:(unint64_t)a4 output_type:(unsigned int)a5;
+- (void)debugBytes:(const char *)bytes length:(unint64_t)length output_type:(unsigned int)output_type;
+- (void)debugResourceBytes:(unsigned int)bytes length:(unint64_t)length output_type:(unsigned int)output_type;
 - (void)endEncoding;
-- (void)reserveKernelCommandBufferSpace:(unint64_t)a3;
+- (void)reserveKernelCommandBufferSpace:(unint64_t)space;
 - (void)restartDebugPass;
 @end
 
 @implementation MTLIOAccelDebugCommandEncoder
 
-- (MTLIOAccelDebugCommandEncoder)initWithCommandBuffer:(id)a3
+- (MTLIOAccelDebugCommandEncoder)initWithCommandBuffer:(id)buffer
 {
   v7.receiver = self;
   v7.super_class = MTLIOAccelDebugCommandEncoder;
@@ -20,10 +20,10 @@
   v5 = v4;
   if (v4)
   {
-    [a3 getCurrentKernelCommandBufferPointer:&v4->_kernelCommandBufferCurrent end:&v4->_kernelCommandBufferEnd];
-    [a3 beginSegment:v5->_kernelCommandBufferCurrent];
-    v5->_resourceList = [a3 ioAccelResourceList];
-    v5->_api_resourceList = [a3 akResourceList];
+    [buffer getCurrentKernelCommandBufferPointer:&v4->_kernelCommandBufferCurrent end:&v4->_kernelCommandBufferEnd];
+    [buffer beginSegment:v5->_kernelCommandBufferCurrent];
+    v5->_resourceList = [buffer ioAccelResourceList];
+    v5->_api_resourceList = [buffer akResourceList];
   }
 
   return v5;
@@ -40,19 +40,19 @@
   [(_MTLCommandEncoder *)&v2 dealloc];
 }
 
-- (void)reserveKernelCommandBufferSpace:(unint64_t)a3
+- (void)reserveKernelCommandBufferSpace:(unint64_t)space
 {
   kernelCommandBufferEnd = self->_kernelCommandBufferEnd;
   result = self->_kernelCommandBufferCurrent;
-  if (kernelCommandBufferEnd - result < a3)
+  if (kernelCommandBufferEnd - result < space)
   {
     commandBuffer = self->super.super._commandBuffer;
-    [(MTLCommandBuffer *)commandBuffer growKernelCommandBuffer:a3];
+    [(MTLCommandBuffer *)commandBuffer growKernelCommandBuffer:space];
     [(MTLCommandBuffer *)commandBuffer getCurrentKernelCommandBufferPointer:&self->_kernelCommandBufferCurrent end:&self->_kernelCommandBufferEnd];
     result = self->_kernelCommandBufferCurrent;
   }
 
-  self->_kernelCommandBufferCurrent = result + a3;
+  self->_kernelCommandBufferCurrent = result + space;
   return result;
 }
 
@@ -80,7 +80,7 @@
   [(_MTLCommandEncoder *)&v4 endEncoding];
 }
 
-- (unsigned)addDebugResourceListInfo:(IOAccelResourceInfo *)a3 flag:(unsigned int)a4
+- (unsigned)addDebugResourceListInfo:(IOAccelResourceInfo *)info flag:(unsigned int)flag
 {
   resourceList = self->_resourceList;
   result = IOAccelResourceListAddResource();
@@ -95,41 +95,41 @@
   return result;
 }
 
-- (void)debugBytes:(const char *)a3 length:(unint64_t)a4 output_type:(unsigned int)a5
+- (void)debugBytes:(const char *)bytes length:(unint64_t)length output_type:(unsigned int)output_type
 {
-  v8 = (a4 + 19) & 0xFFFFFFFC;
-  v9 = [(MTLIOAccelDebugCommandEncoder *)self reserveKernelCommandBufferSpace:(a4 + 19) & 0xFFFFFFFFFFFFFFFCLL];
-  *v9 = 0;
-  v9[1] = v8;
-  v9[2] = a5;
-  v9[3] = a4;
-  v10 = v9 + 4;
+  v8 = (length + 19) & 0xFFFFFFFC;
+  0xFFFFFFFFFFFFFFFCLL = [(MTLIOAccelDebugCommandEncoder *)self reserveKernelCommandBufferSpace:(length + 19) & 0xFFFFFFFFFFFFFFFCLL];
+  *0xFFFFFFFFFFFFFFFCLL = 0;
+  0xFFFFFFFFFFFFFFFCLL[1] = v8;
+  0xFFFFFFFFFFFFFFFCLL[2] = output_type;
+  0xFFFFFFFFFFFFFFFCLL[3] = length;
+  v10 = 0xFFFFFFFFFFFFFFFCLL + 4;
 
-  memcpy(v10, a3, a4);
+  memcpy(v10, bytes, length);
 }
 
-- (void)debugResourceBytes:(unsigned int)a3 length:(unint64_t)a4 output_type:(unsigned int)a5
+- (void)debugResourceBytes:(unsigned int)bytes length:(unint64_t)length output_type:(unsigned int)output_type
 {
-  v6 = a4;
-  v10[2] = a3;
+  lengthCopy = length;
+  v10[2] = bytes;
   v10[0] = 0;
-  v10[1] = a4 & 0xFFFFFFFFFFFFFFLL;
+  v10[1] = length & 0xFFFFFFFFFFFFFFLL;
   v8 = [(MTLIOAccelDebugCommandEncoder *)self addDebugResourceListInfo:v10 flag:16];
   v9 = [(MTLIOAccelDebugCommandEncoder *)self reserveKernelCommandBufferSpace:24];
   *v9 = 0x1800000001;
-  v9[2] = a5;
-  v9[3] = v6;
+  v9[2] = output_type;
+  v9[3] = lengthCopy;
   v9[4] = v8;
   v9[5] = 0;
   [(MTLIOAccelDebugCommandEncoder *)self restartDebugPass];
 }
 
-- (void)addAPIResource:(id)a3
+- (void)addAPIResource:(id)resource
 {
   api_resourceList = self->_api_resourceList;
   if (api_resourceList)
   {
-    MTLResourceListAddResource(api_resourceList, a3);
+    MTLResourceListAddResource(api_resourceList, resource);
   }
 }
 

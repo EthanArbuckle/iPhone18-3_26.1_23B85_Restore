@@ -1,9 +1,9 @@
 @interface ICSearchUserInput
 + (id)emptyInput;
-- (BOOL)isEqual:(id)a3;
-- (ICSearchUserInput)initWithSearchString:(id)a3 tokens:(id)a4 keyboardLanguage:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (ICSearchUserInput)initWithSearchString:(id)string tokens:(id)tokens keyboardLanguage:(id)language;
 - (NSString)displayString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_configureEmptyInput;
 @end
@@ -18,26 +18,26 @@
   return v2;
 }
 
-- (ICSearchUserInput)initWithSearchString:(id)a3 tokens:(id)a4 keyboardLanguage:(id)a5
+- (ICSearchUserInput)initWithSearchString:(id)string tokens:(id)tokens keyboardLanguage:(id)language
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stringCopy = string;
+  tokensCopy = tokens;
+  languageCopy = language;
   v17.receiver = self;
   v17.super_class = ICSearchUserInput;
   v12 = [(ICSearchUserInput *)&v17 init];
   if (v12)
   {
-    if (v10)
+    if (tokensCopy)
     {
-      if ([v9 length])
+      if ([stringCopy length])
       {
         v13 = 0;
       }
 
       else
       {
-        v13 = [v10 count] == 0;
+        v13 = [tokensCopy count] == 0;
       }
     }
 
@@ -49,12 +49,12 @@
     v12->_isEmpty = v13;
     if (![(ICSearchUserInput *)v12 isEmpty])
     {
-      objc_storeStrong(&v12->_searchString, a3);
-      v14 = [v10 copy];
+      objc_storeStrong(&v12->_searchString, string);
+      v14 = [tokensCopy copy];
       tokens = v12->_tokens;
       v12->_tokens = v14;
 
-      objc_storeStrong(&v12->_keyboardLanguage, a5);
+      objc_storeStrong(&v12->_keyboardLanguage, language);
     }
   }
 
@@ -71,23 +71,23 @@
   self->_tokens = 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = ICDynamicCast();
 
   if (v5)
   {
-    v6 = [(ICSearchUserInput *)self searchString];
-    v7 = [v6 ic_trimmedString];
-    v8 = [v5 searchString];
-    v9 = [v8 ic_trimmedString];
-    if ([v7 isEqual:v9])
+    searchString = [(ICSearchUserInput *)self searchString];
+    ic_trimmedString = [searchString ic_trimmedString];
+    searchString2 = [v5 searchString];
+    ic_trimmedString2 = [searchString2 ic_trimmedString];
+    if ([ic_trimmedString isEqual:ic_trimmedString2])
     {
-      v10 = [(ICSearchUserInput *)self tokens];
-      v11 = [v5 tokens];
-      v12 = [v10 isEqualToArray:v11];
+      tokens = [(ICSearchUserInput *)self tokens];
+      tokens2 = [v5 tokens];
+      v12 = [tokens isEqualToArray:tokens2];
     }
 
     else
@@ -109,53 +109,53 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICSearchUserInput *)self searchString];
-  v7 = [(ICSearchUserInput *)self tokens];
-  v8 = [v3 stringWithFormat:@"%@ - searchString: %@, tokens: %@", v5, v6, v7];
+  searchString = [(ICSearchUserInput *)self searchString];
+  tokens = [(ICSearchUserInput *)self tokens];
+  v8 = [v3 stringWithFormat:@"%@ - searchString: %@, tokens: %@", v5, searchString, tokens];
 
   return v8;
 }
 
 - (NSString)displayString
 {
-  v3 = [(ICSearchUserInput *)self searchString];
-  v4 = [v3 ic_trimmedString];
+  searchString = [(ICSearchUserInput *)self searchString];
+  ic_trimmedString = [searchString ic_trimmedString];
 
-  if ([v4 length])
+  if ([ic_trimmedString length])
   {
-    v5 = v4;
+    title = ic_trimmedString;
   }
 
   else
   {
-    v6 = [(ICSearchUserInput *)self tokens];
-    v7 = [v6 count];
+    tokens = [(ICSearchUserInput *)self tokens];
+    v7 = [tokens count];
 
     if (v7 == 1)
     {
-      v8 = [(ICSearchUserInput *)self tokens];
-      v9 = [v8 firstObject];
-      v5 = [v9 title];
+      tokens2 = [(ICSearchUserInput *)self tokens];
+      firstObject = [tokens2 firstObject];
+      title = [firstObject title];
     }
 
     else
     {
-      v5 = 0;
+      title = 0;
     }
   }
 
-  return v5;
+  return title;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ICSearchUserInput allocWithZone:a3];
-  v5 = [(ICSearchUserInput *)self searchString];
-  v6 = [v5 copy];
-  v7 = [(ICSearchUserInput *)self tokens];
-  v8 = [v7 copy];
-  v9 = [(ICSearchUserInput *)self keyboardLanguage];
-  v10 = [v9 copy];
+  v4 = [ICSearchUserInput allocWithZone:zone];
+  searchString = [(ICSearchUserInput *)self searchString];
+  v6 = [searchString copy];
+  tokens = [(ICSearchUserInput *)self tokens];
+  v8 = [tokens copy];
+  keyboardLanguage = [(ICSearchUserInput *)self keyboardLanguage];
+  v10 = [keyboardLanguage copy];
   v11 = [(ICSearchUserInput *)v4 initWithSearchString:v6 tokens:v8 keyboardLanguage:v10];
 
   return v11;

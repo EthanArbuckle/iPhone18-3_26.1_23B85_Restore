@@ -1,51 +1,51 @@
 @interface NPKProtoFeatureApplicationsForAccountIdentifierResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addDeprecatedFeatureApplications:(id)a3;
-- (void)addFeatureApplications:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDeprecatedFeatureApplications:(id)applications;
+- (void)addFeatureApplications:(id)applications;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoFeatureApplicationsForAccountIdentifierResponse
 
-- (void)addDeprecatedFeatureApplications:(id)a3
+- (void)addDeprecatedFeatureApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   deprecatedFeatureApplications = self->_deprecatedFeatureApplications;
-  v8 = v4;
+  v8 = applicationsCopy;
   if (!deprecatedFeatureApplications)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_deprecatedFeatureApplications;
     self->_deprecatedFeatureApplications = v6;
 
-    v4 = v8;
+    applicationsCopy = v8;
     deprecatedFeatureApplications = self->_deprecatedFeatureApplications;
   }
 
-  [(NSMutableArray *)deprecatedFeatureApplications addObject:v4];
+  [(NSMutableArray *)deprecatedFeatureApplications addObject:applicationsCopy];
 }
 
-- (void)addFeatureApplications:(id)a3
+- (void)addFeatureApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   featureApplications = self->_featureApplications;
-  v8 = v4;
+  v8 = applicationsCopy;
   if (!featureApplications)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_featureApplications;
     self->_featureApplications = v6;
 
-    v4 = v8;
+    applicationsCopy = v8;
     featureApplications = self->_featureApplications;
   }
 
-  [(NSMutableArray *)featureApplications addObject:v4];
+  [(NSMutableArray *)featureApplications addObject:applicationsCopy];
 }
 
 - (id)description
@@ -54,20 +54,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoFeatureApplicationsForAccountIdentifierResponse;
   v4 = [(NPKProtoFeatureApplicationsForAccountIdentifierResponse *)&v8 description];
-  v5 = [(NPKProtoFeatureApplicationsForAccountIdentifierResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoFeatureApplicationsForAccountIdentifierResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   deprecatedFeatureApplications = self->_deprecatedFeatureApplications;
   if (deprecatedFeatureApplications)
   {
-    [v3 setObject:deprecatedFeatureApplications forKey:@"deprecatedFeatureApplications"];
+    [dictionary setObject:deprecatedFeatureApplications forKey:@"deprecatedFeatureApplications"];
   }
 
   featureApplications = self->_featureApplications;
@@ -79,10 +79,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -150,44 +150,44 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(NPKProtoFeatureApplicationsForAccountIdentifierResponse *)self deprecatedFeatureApplicationsCount])
   {
-    [v12 clearDeprecatedFeatureApplications];
-    v4 = [(NPKProtoFeatureApplicationsForAccountIdentifierResponse *)self deprecatedFeatureApplicationsCount];
-    if (v4)
+    [toCopy clearDeprecatedFeatureApplications];
+    deprecatedFeatureApplicationsCount = [(NPKProtoFeatureApplicationsForAccountIdentifierResponse *)self deprecatedFeatureApplicationsCount];
+    if (deprecatedFeatureApplicationsCount)
     {
-      v5 = v4;
+      v5 = deprecatedFeatureApplicationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoFeatureApplicationsForAccountIdentifierResponse *)self deprecatedFeatureApplicationsAtIndex:i];
-        [v12 addDeprecatedFeatureApplications:v7];
+        [toCopy addDeprecatedFeatureApplications:v7];
       }
     }
   }
 
   if ([(NPKProtoFeatureApplicationsForAccountIdentifierResponse *)self featureApplicationsCount])
   {
-    [v12 clearFeatureApplications];
-    v8 = [(NPKProtoFeatureApplicationsForAccountIdentifierResponse *)self featureApplicationsCount];
-    if (v8)
+    [toCopy clearFeatureApplications];
+    featureApplicationsCount = [(NPKProtoFeatureApplicationsForAccountIdentifierResponse *)self featureApplicationsCount];
+    if (featureApplicationsCount)
     {
-      v9 = v8;
+      v9 = featureApplicationsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NPKProtoFeatureApplicationsForAccountIdentifierResponse *)self featureApplicationsAtIndex:j];
-        [v12 addFeatureApplications:v11];
+        [toCopy addFeatureApplications:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -208,7 +208,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addDeprecatedFeatureApplications:v11];
 
         ++v10;
@@ -241,7 +241,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addFeatureApplications:v17];
 
         ++v16;
@@ -258,13 +258,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((deprecatedFeatureApplications = self->_deprecatedFeatureApplications, !(deprecatedFeatureApplications | v4[1])) || -[NSMutableArray isEqual:](deprecatedFeatureApplications, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((deprecatedFeatureApplications = self->_deprecatedFeatureApplications, !(deprecatedFeatureApplications | equalCopy[1])) || -[NSMutableArray isEqual:](deprecatedFeatureApplications, "isEqual:")))
   {
     featureApplications = self->_featureApplications;
-    if (featureApplications | v4[2])
+    if (featureApplications | equalCopy[2])
     {
       v7 = [(NSMutableArray *)featureApplications isEqual:?];
     }
@@ -283,15 +283,15 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -321,7 +321,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4[2];
+  v10 = fromCopy[2];
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

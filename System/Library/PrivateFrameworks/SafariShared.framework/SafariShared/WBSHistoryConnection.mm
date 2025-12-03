@@ -1,27 +1,27 @@
 @interface WBSHistoryConnection
-- (WBSHistoryConnection)initWithHistoryService:(id)a3;
-- (void)beginURLCompletionSession:(id)a3;
-- (void)connectWithOptions:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (void)finishClearingHistoryIfNecessaryWithCompletionHandler:(id)a3;
-- (void)getCompletionListItemsForQuery:(id)a3 completionHandler:(id)a4;
-- (void)getServiceInfo:(id)a3;
-- (void)initializeCloudHistoryWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)queryMemoryFootprint:(id)a3;
-- (void)releaseCloudHistory:(id)a3;
+- (WBSHistoryConnection)initWithHistoryService:(id)service;
+- (void)beginURLCompletionSession:(id)session;
+- (void)connectWithOptions:(id)options delegate:(id)delegate completionHandler:(id)handler;
+- (void)finishClearingHistoryIfNecessaryWithCompletionHandler:(id)handler;
+- (void)getCompletionListItemsForQuery:(id)query completionHandler:(id)handler;
+- (void)getServiceInfo:(id)info;
+- (void)initializeCloudHistoryWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)queryMemoryFootprint:(id)footprint;
+- (void)releaseCloudHistory:(id)history;
 @end
 
 @implementation WBSHistoryConnection
 
-- (WBSHistoryConnection)initWithHistoryService:(id)a3
+- (WBSHistoryConnection)initWithHistoryService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = WBSHistoryConnection;
   v6 = [(WBSHistoryConnection *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_historyService, a3);
+    objc_storeStrong(&v6->_historyService, service);
     v8 = dispatch_queue_create("com.apple.SafariShared.WBSHistoryConnection", 0);
     internalQueue = v7->_internalQueue;
     v7->_internalQueue = v8;
@@ -32,39 +32,39 @@
   return v7;
 }
 
-- (void)getServiceInfo:(id)a3
+- (void)getServiceInfo:(id)info
 {
-  v8 = a3;
+  infoCopy = info;
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v5 = [v4 infoDictionary];
+  infoDictionary = [v4 infoDictionary];
 
-  if (v5)
+  if (infoDictionary)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"SafariShared"];
+    [v3 setObject:infoDictionary forKeyedSubscript:@"SafariShared"];
   }
 
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
-  v7 = [v6 infoDictionary];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary2 = [mainBundle infoDictionary];
 
-  if (v7)
+  if (infoDictionary2)
   {
-    [v3 setObject:v7 forKeyedSubscript:@"SafariHistory"];
+    [v3 setObject:infoDictionary2 forKeyedSubscript:@"SafariHistory"];
   }
 
-  v8[2](v8, v3, 0);
+  infoCopy[2](infoCopy, v3, 0);
 }
 
-- (void)beginURLCompletionSession:(id)a3
+- (void)beginURLCompletionSession:(id)session
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
-  v6 = [v5 valueForEntitlement:@"com.apple.private.Safari.History"];
+  sessionCopy = session;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v6 = [currentConnection valueForEntitlement:@"com.apple.private.Safari.History"];
   if (v6)
   {
     v7 = [[WBSHistoryURLCompletionSession alloc] initWithHistoryService:self->_historyService];
-    v4[2](v4, v7, 0);
+    sessionCopy[2](sessionCopy, v7, 0);
   }
 
   else
@@ -72,32 +72,32 @@
     v8 = WBS_LOG_CHANNEL_PREFIXHistory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      -[WBSHistoryConnection beginURLCompletionSession:].cold.1(v10, [v5 processIdentifier], v8);
+      -[WBSHistoryConnection beginURLCompletionSession:].cold.1(v10, [currentConnection processIdentifier], v8);
     }
 
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:0];
-    (v4)[2](v4, 0, v9);
+    (sessionCopy)[2](sessionCopy, 0, v9);
   }
 }
 
-- (void)queryMemoryFootprint:(id)a3
+- (void)queryMemoryFootprint:(id)footprint
 {
-  v3 = a3;
+  footprintCopy = footprint;
   v6 = 0;
   v4 = [objc_alloc(MEMORY[0x1E69C88E0]) initWithError:&v6];
   v5 = v6;
-  v3[2](v3, v4, v5);
+  footprintCopy[2](footprintCopy, v4, v5);
 }
 
-- (void)connectWithOptions:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (void)connectWithOptions:(id)options delegate:(id)delegate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696B0B8] currentConnection];
-  if (v9)
+  optionsCopy = options;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  if (delegateCopy)
   {
-    v12 = [[WBSHistoryServiceDatabaseDelegateProxy alloc] initWithProxy:v9];
+    v12 = [[WBSHistoryServiceDatabaseDelegateProxy alloc] initWithProxy:delegateCopy];
   }
 
   else
@@ -111,14 +111,14 @@
   block[2] = __70__WBSHistoryConnection_connectWithOptions_delegate_completionHandler___block_invoke;
   block[3] = &unk_1E7FC6AA0;
   block[4] = self;
-  v19 = v8;
+  v19 = optionsCopy;
   v21 = v12;
-  v22 = v10;
-  v20 = v11;
+  v22 = handlerCopy;
+  v20 = currentConnection;
   v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  v17 = v8;
+  v15 = handlerCopy;
+  v16 = currentConnection;
+  v17 = optionsCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -175,20 +175,20 @@ void __70__WBSHistoryConnection_connectWithOptions_delegate_completionHandler___
   }
 }
 
-- (void)finishClearingHistoryIfNecessaryWithCompletionHandler:(id)a3
+- (void)finishClearingHistoryIfNecessaryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
+  handlerCopy = handler;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__WBSHistoryConnection_finishClearingHistoryIfNecessaryWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7FB7CC0;
   block[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = currentConnection;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = currentConnection;
   dispatch_async(internalQueue, block);
 }
 
@@ -225,14 +225,14 @@ void __78__WBSHistoryConnection_finishClearingHistoryIfNecessaryWithCompletionHa
   }
 }
 
-- (void)initializeCloudHistoryWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)initializeCloudHistoryWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 safari_isSafariFamilyApplicationBundle];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  safari_isSafariFamilyApplicationBundle = [mainBundle safari_isSafariFamilyApplicationBundle];
 
-  if (v9)
+  if (safari_isSafariFamilyApplicationBundle)
   {
     v10 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -241,12 +241,12 @@ void __78__WBSHistoryConnection_finishClearingHistoryIfNecessaryWithCompletionHa
     }
 
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:14 userInfo:0];
-    v7[2](v7, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696B0B8] currentConnection];
+    currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
     v13 = os_transaction_create();
     internalQueue = self->_internalQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -254,12 +254,12 @@ void __78__WBSHistoryConnection_finishClearingHistoryIfNecessaryWithCompletionHa
     block[2] = __82__WBSHistoryConnection_initializeCloudHistoryWithConfiguration_completionHandler___block_invoke;
     block[3] = &unk_1E7FC6B18;
     block[4] = self;
-    v17 = v6;
+    v17 = configurationCopy;
     v19 = v13;
-    v20 = v7;
-    v18 = v12;
+    v20 = handlerCopy;
+    v18 = currentConnection;
     v15 = v13;
-    v11 = v12;
+    v11 = currentConnection;
     dispatch_async(internalQueue, block);
   }
 }
@@ -371,9 +371,9 @@ void __82__WBSHistoryConnection_initializeCloudHistoryWithConfiguration_completi
   }
 }
 
-- (void)releaseCloudHistory:(id)a3
+- (void)releaseCloudHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   MEMORY[0x1BFB144F0]();
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -381,8 +381,8 @@ void __82__WBSHistoryConnection_initializeCloudHistoryWithConfiguration_completi
   v7[2] = __44__WBSHistoryConnection_releaseCloudHistory___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = historyCopy;
+  v6 = historyCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -401,16 +401,16 @@ void __44__WBSHistoryConnection_releaseCloudHistory___block_invoke(uint64_t a1)
   JUMPOUT(0x1BFB14500);
 }
 
-- (void)getCompletionListItemsForQuery:(id)a3 completionHandler:(id)a4
+- (void)getCompletionListItemsForQuery:(id)query completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSHistoryService *)self->_historyService completionListProvider];
+  queryCopy = query;
+  handlerCopy = handler;
+  completionListProvider = [(WBSHistoryService *)self->_historyService completionListProvider];
 
-  if (v8)
+  if (completionListProvider)
   {
-    v9 = [(WBSHistoryService *)self->_historyService completionListProvider];
-    [v9 getCompletionListItemsForQuery:v6 completionHandler:v7];
+    completionListProvider2 = [(WBSHistoryService *)self->_historyService completionListProvider];
+    [completionListProvider2 getCompletionListItemsForQuery:queryCopy completionHandler:handlerCopy];
   }
 
   else
@@ -421,7 +421,7 @@ void __44__WBSHistoryConnection_releaseCloudHistory___block_invoke(uint64_t a1)
       [WBSHistoryConnection getCompletionListItemsForQuery:v10 completionHandler:?];
     }
 
-    v7[2](v7, MEMORY[0x1E695E0F0]);
+    handlerCopy[2](handlerCopy, MEMORY[0x1E695E0F0]);
   }
 }
 

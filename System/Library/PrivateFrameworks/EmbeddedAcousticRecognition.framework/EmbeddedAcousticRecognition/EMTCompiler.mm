@@ -1,14 +1,14 @@
 @interface EMTCompiler
-- (EMTCompiler)initWithModelURLs:(id)a3;
+- (EMTCompiler)initWithModelURLs:(id)ls;
 - (id).cxx_construct;
 @end
 
 @implementation EMTCompiler
 
-- (EMTCompiler)initWithModelURLs:(id)a3
+- (EMTCompiler)initWithModelURLs:(id)ls
 {
   v20 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  lsCopy = ls;
   v18.receiver = self;
   v18.super_class = EMTCompiler;
   v5 = [(EMTCompiler *)&v18 init];
@@ -22,7 +22,7 @@
     v16[5] = &unk_1B5CADD23;
     memset(v17, 0, sizeof(v17));
     memset(v15, 0, sizeof(v15));
-    v6 = v10;
+    v6 = lsCopy;
     if ([v6 countByEnumeratingWithState:v15 objects:v19 count:{16, v3}])
     {
       [**(&v15[0] + 1) URLByAppendingPathComponent:@"mt-quasar-config.json"];

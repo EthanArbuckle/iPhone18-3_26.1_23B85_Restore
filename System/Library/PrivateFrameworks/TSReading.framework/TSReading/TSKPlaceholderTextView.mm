@@ -1,30 +1,30 @@
 @interface TSKPlaceholderTextView
 - (BOOL)becomeFirstResponder;
-- (TSKPlaceholderTextView)initWithFrame:(CGRect)a3;
+- (TSKPlaceholderTextView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)didMoveToSuperview;
-- (void)p_textDidChange:(id)a3;
+- (void)p_textDidChange:(id)change;
 - (void)removeFromSuperview;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPlaceholder:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation TSKPlaceholderTextView
 
-- (TSKPlaceholderTextView)initWithFrame:(CGRect)a3
+- (TSKPlaceholderTextView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TSKPlaceholderTextView;
-  v3 = [(TSKPlaceholderTextView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TSKPlaceholderTextView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     -[TSKPlaceholderTextView setFont:](v3, "setFont:", [MEMORY[0x277D74300] systemFontOfSize:17.0]);
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel_p_textDidChange_ name:*MEMORY[0x277D77218] object:v3];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_p_textDidChange_ name:*MEMORY[0x277D77218] object:v3];
   }
 
   return v3;
@@ -32,8 +32,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D77218] object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D77218] object:self];
 
   self->mPlaceholderView = 0;
   v4.receiver = self;
@@ -41,7 +41,7 @@
   [(TSKPlaceholderTextView *)&v4 dealloc];
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
   mPlaceholderView = self->mPlaceholderView;
   if (!mPlaceholderView)
@@ -61,19 +61,19 @@
     mPlaceholderView = self->mPlaceholderView;
   }
 
-  [(UILabel *)mPlaceholderView setText:a3];
+  [(UILabel *)mPlaceholderView setText:placeholder];
   v6 = [-[TSKPlaceholderTextView text](self "text")] != 0;
   v7 = self->mPlaceholderView;
 
   [(UILabel *)v7 setHidden:v6];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = TSKPlaceholderTextView;
   [(TSKPlaceholderTextView *)&v8 setFrame:?];
@@ -85,28 +85,28 @@
   [(UILabel *)self->mPlaceholderView setFrame:v10.origin.x, v10.origin.y, v10.size.width, v10.size.height];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   v5.receiver = self;
   v5.super_class = TSKPlaceholderTextView;
   [(TSKPlaceholderTextView *)&v5 setTextAlignment:?];
-  [(UILabel *)self->mPlaceholderView setTextAlignment:a3];
+  [(UILabel *)self->mPlaceholderView setTextAlignment:alignment];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v5.receiver = self;
   v5.super_class = TSKPlaceholderTextView;
   [(TSKPlaceholderTextView *)&v5 setFont:?];
-  [(UILabel *)self->mPlaceholderView setFont:a3];
+  [(UILabel *)self->mPlaceholderView setFont:font];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = TSKPlaceholderTextView;
   [(TSKPlaceholderTextView *)&v5 setTextColor:?];
-  [(UILabel *)self->mPlaceholderView setTextColor:a3];
+  [(UILabel *)self->mPlaceholderView setTextColor:color];
 }
 
 - (void)removeFromSuperview
@@ -125,15 +125,15 @@
   [-[TSKPlaceholderTextView superview](self "superview")];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = TSKPlaceholderTextView;
-  [(TSKPlaceholderTextView *)&v4 setText:a3];
+  [(TSKPlaceholderTextView *)&v4 setText:text];
   -[UILabel setHidden:](self->mPlaceholderView, "setHidden:", [-[TSKPlaceholderTextView text](self "text")] != 0);
 }
 
-- (void)p_textDidChange:(id)a3
+- (void)p_textDidChange:(id)change
 {
   v4 = [-[TSKPlaceholderTextView text](self text] != 0;
   mPlaceholderView = self->mPlaceholderView;
@@ -143,15 +143,15 @@
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(TSKPlaceholderTextView *)self isUserInteractionEnabled];
-  if (v3)
+  isUserInteractionEnabled = [(TSKPlaceholderTextView *)self isUserInteractionEnabled];
+  if (isUserInteractionEnabled)
   {
     v5.receiver = self;
     v5.super_class = TSKPlaceholderTextView;
-    LOBYTE(v3) = [(TSKPlaceholderTextView *)&v5 becomeFirstResponder];
+    LOBYTE(isUserInteractionEnabled) = [(TSKPlaceholderTextView *)&v5 becomeFirstResponder];
   }
 
-  return v3;
+  return isUserInteractionEnabled;
 }
 
 @end

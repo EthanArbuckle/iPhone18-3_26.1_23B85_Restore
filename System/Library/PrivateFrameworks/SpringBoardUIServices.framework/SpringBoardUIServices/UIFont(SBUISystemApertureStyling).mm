@@ -9,8 +9,8 @@
 
 + (id)sbui_systemAperturePreferredFontForTextStyle:()SBUISystemApertureStyling
 {
-  v5 = [MEMORY[0x1E69DD1B8] sbui_bestTraitCollection];
-  v6 = [a1 sbui_systemAperturePreferredFontForTextStyle:a3 compatibleWithTraitCollection:v5];
+  sbui_bestTraitCollection = [MEMORY[0x1E69DD1B8] sbui_bestTraitCollection];
+  v6 = [self sbui_systemAperturePreferredFontForTextStyle:a3 compatibleWithTraitCollection:sbui_bestTraitCollection];
 
   return v6;
 }
@@ -102,8 +102,8 @@ LABEL_18:
 
 + (id)sbui_systemAperturePreferredTextButtonFont
 {
-  v2 = [MEMORY[0x1E69DD1B8] sbui_bestTraitCollection];
-  v3 = [a1 sbui_systemAperturePreferredTextButtonFontCompatibleWithTraitCollection:v2];
+  sbui_bestTraitCollection = [MEMORY[0x1E69DD1B8] sbui_bestTraitCollection];
+  v3 = [self sbui_systemAperturePreferredTextButtonFontCompatibleWithTraitCollection:sbui_bestTraitCollection];
 
   return v3;
 }
@@ -115,11 +115,11 @@ LABEL_18:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 preferredContentSizeCategory];
-    v7 = UIContentSizeCategoryClip(v6, *MEMORY[0x1E69DDC70], *MEMORY[0x1E69DDC50]);
+    preferredContentSizeCategory = [v4 preferredContentSizeCategory];
+    v7 = UIContentSizeCategoryClip(preferredContentSizeCategory, *MEMORY[0x1E69DDC70], *MEMORY[0x1E69DDC50]);
 
-    v8 = [v5 preferredContentSizeCategory];
-    v9 = [v7 isEqualToString:v8];
+    preferredContentSizeCategory2 = [v5 preferredContentSizeCategory];
+    v9 = [v7 isEqualToString:preferredContentSizeCategory2];
 
     if ((v9 & 1) == 0)
     {
@@ -134,7 +134,7 @@ LABEL_18:
     }
   }
 
-  v14 = [a1 sbui_systemAperturePreferredFontForTextStyle:2 compatibleWithTraitCollection:v5];
+  v14 = [self sbui_systemAperturePreferredFontForTextStyle:2 compatibleWithTraitCollection:v5];
 
   return v14;
 }

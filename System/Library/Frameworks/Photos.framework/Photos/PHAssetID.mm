@@ -1,25 +1,25 @@
 @interface PHAssetID
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)loadFromAsset:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)loadFromAsset:(id)asset;
 - (void)prepareForReuse;
 @end
 
 @implementation PHAssetID
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PHAssetID);
-  v5 = [(PHAssetID *)self uuid];
-  [(PHAssetID *)v4 setUuid:v5];
+  uuid = [(PHAssetID *)self uuid];
+  [(PHAssetID *)v4 setUuid:uuid];
 
-  v6 = [(PHAssetID *)self directory];
-  [(PHAssetID *)v4 setDirectory:v6];
+  directory = [(PHAssetID *)self directory];
+  [(PHAssetID *)v4 setDirectory:directory];
 
-  v7 = [(PHAssetID *)self filename];
-  [(PHAssetID *)v4 setFilename:v7];
+  filename = [(PHAssetID *)self filename];
+  [(PHAssetID *)v4 setFilename:filename];
 
-  v8 = [(PHAssetID *)self libraryID];
-  [(PHAssetID *)v4 setLibraryID:v8];
+  libraryID = [(PHAssetID *)self libraryID];
+  [(PHAssetID *)v4 setLibraryID:libraryID];
 
   [(PHAssetID *)v4 setBundleScope:[(PHAssetID *)self bundleScope]];
   return v4;
@@ -42,31 +42,31 @@
   self->_bundleScope = 0;
 }
 
-- (void)loadFromAsset:(id)a3
+- (void)loadFromAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [v5 copy];
+  assetCopy = asset;
+  uuid = [assetCopy uuid];
+  v6 = [uuid copy];
   uuid = self->_uuid;
   self->_uuid = v6;
 
-  v8 = [v4 directory];
-  v9 = [v8 copy];
+  directory = [assetCopy directory];
+  v9 = [directory copy];
   directory = self->_directory;
   self->_directory = v9;
 
-  v11 = [v4 filename];
-  v12 = [v11 copy];
+  filename = [assetCopy filename];
+  v12 = [filename copy];
   filename = self->_filename;
   self->_filename = v12;
 
-  v14 = [v4 libraryID];
-  v15 = [v14 copy];
+  libraryID = [assetCopy libraryID];
+  v15 = [libraryID copy];
   libraryID = self->_libraryID;
   self->_libraryID = v15;
 
-  LOWORD(v14) = [v4 bundleScope];
-  self->_bundleScope = v14;
+  LOWORD(libraryID) = [assetCopy bundleScope];
+  self->_bundleScope = libraryID;
 }
 
 @end

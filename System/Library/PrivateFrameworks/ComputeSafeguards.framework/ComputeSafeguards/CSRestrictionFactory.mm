@@ -1,29 +1,29 @@
 @interface CSRestrictionFactory
-+ (id)_cpuTimeRestrictionWithBand:(id)a3 errors:(id)a4;
-+ (id)_cpuTimeRestrictionWithProperties:(id)a3 errors:(id)a4;
-+ (id)restrictionForClass:(id)a3 withProperties:(id)a4 errors:(id)a5;
++ (id)_cpuTimeRestrictionWithBand:(id)band errors:(id)errors;
++ (id)_cpuTimeRestrictionWithProperties:(id)properties errors:(id)errors;
++ (id)restrictionForClass:(id)class withProperties:(id)properties errors:(id)errors;
 @end
 
 @implementation CSRestrictionFactory
 
-+ (id)restrictionForClass:(id)a3 withProperties:(id)a4 errors:(id)a5
++ (id)restrictionForClass:(id)class withProperties:(id)properties errors:(id)errors
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  classCopy = class;
+  propertiesCopy = properties;
+  errorsCopy = errors;
+  if (classCopy)
   {
-    if ([v7 isEqualToString:@"CPUTimeRestriction"])
+    if ([classCopy isEqualToString:@"CPUTimeRestriction"])
     {
-      v10 = [CSRestrictionFactory _cpuTimeRestrictionWithProperties:v8 errors:v9];
+      v10 = [CSRestrictionFactory _cpuTimeRestrictionWithProperties:propertiesCopy errors:errorsCopy];
 LABEL_9:
       v19 = v10;
       goto LABEL_11;
     }
 
-    if ([v7 isEqualToString:@"CPUTimeRestrictionBand"])
+    if ([classCopy isEqualToString:@"CPUTimeRestrictionBand"])
     {
-      v10 = [CSRestrictionFactory _cpuTimeRestrictionWithBand:v8 errors:v9];
+      v10 = [CSRestrictionFactory _cpuTimeRestrictionWithBand:propertiesCopy errors:errorsCopy];
       goto LABEL_9;
     }
   }
@@ -43,13 +43,13 @@ LABEL_11:
   return v19;
 }
 
-+ (id)_cpuTimeRestrictionWithProperties:(id)a3 errors:(id)a4
++ (id)_cpuTimeRestrictionWithProperties:(id)properties errors:(id)errors
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = CSNumberForKeyWithErrors(v6, @"Threshold", v5);
-  v8 = CSNumberForKeyWithErrors(v6, @"TimeWindow", v5);
-  v9 = CSNumberForKeyWithErrors(v6, @"Fatal", v5);
+  errorsCopy = errors;
+  propertiesCopy = properties;
+  v7 = CSNumberForKeyWithErrors(propertiesCopy, @"Threshold", errorsCopy);
+  v8 = CSNumberForKeyWithErrors(propertiesCopy, @"TimeWindow", errorsCopy);
+  v9 = CSNumberForKeyWithErrors(propertiesCopy, @"Fatal", errorsCopy);
 
   if (v7 && v8)
   {
@@ -96,18 +96,18 @@ LABEL_15:
   return v27;
 }
 
-+ (id)_cpuTimeRestrictionWithBand:(id)a3 errors:(id)a4
++ (id)_cpuTimeRestrictionWithBand:(id)band errors:(id)errors
 {
-  v5 = a3;
-  v6 = a4;
+  bandCopy = band;
+  errorsCopy = errors;
   if (!_cpuTimeRestrictionWithBand_errors__restrictionsByBand)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v8 = _cpuTimeRestrictionWithBand_errors__restrictionsByBand;
-    _cpuTimeRestrictionWithBand_errors__restrictionsByBand = v7;
+    _cpuTimeRestrictionWithBand_errors__restrictionsByBand = dictionary;
   }
 
-  v9 = CSNumberForKeyWithErrors(v5, @"Band", v6);
+  v9 = CSNumberForKeyWithErrors(bandCopy, @"Band", errorsCopy);
   v10 = [_cpuTimeRestrictionWithBand_errors__restrictionsByBand objectForKey:v9];
   if (!v10)
   {

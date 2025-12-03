@@ -1,60 +1,60 @@
 @interface CRNeuralRecognizerConfiguration
-+ (id)cachedConfigurationWithLocale:(id)a3 imageReaderOptions:(id)a4 error:(id *)a5;
++ (id)cachedConfigurationWithLocale:(id)locale imageReaderOptions:(id)options error:(id *)error;
 - (BOOL)filterWithLM;
 - (BOOL)usesAppleNeuralEngine;
 - (CRConfidenceThresholds)confidenceThresholds;
-- (CRNeuralRecognizerConfiguration)initWithLocale:(id)a3 imageReaderOptions:(id)a4 error:(id *)a5;
-- (id)initV3DefaultConfigWithOptions:(id)a3;
-- (int64_t)bestFitWidthIndexForAspectRatio:(double)a3;
+- (CRNeuralRecognizerConfiguration)initWithLocale:(id)locale imageReaderOptions:(id)options error:(id *)error;
+- (id)initV3DefaultConfigWithOptions:(id)options;
+- (int64_t)bestFitWidthIndexForAspectRatio:(double)ratio;
 @end
 
 @implementation CRNeuralRecognizerConfiguration
 
-- (CRNeuralRecognizerConfiguration)initWithLocale:(id)a3 imageReaderOptions:(id)a4 error:(id *)a5
+- (CRNeuralRecognizerConfiguration)initWithLocale:(id)locale imageReaderOptions:(id)options error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  localeCopy = locale;
+  optionsCopy = options;
   v34.receiver = self;
   v34.super_class = CRNeuralRecognizerConfiguration;
-  v11 = [(CRRecognizerConfiguration *)&v34 initWithImageReaderOptions:v10 error:a5];
+  v11 = [(CRRecognizerConfiguration *)&v34 initWithImageReaderOptions:optionsCopy error:error];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_locale, a3);
-    v13 = [v10 objectForKeyedSubscript:@"CRImageReaderDisableLanguageCorrection"];
-    v14 = [v13 BOOLValue];
+    objc_storeStrong(&v11->_locale, locale);
+    v13 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderDisableLanguageCorrection"];
+    bOOLValue = [v13 BOOLValue];
 
-    if (v14)
+    if (bOOLValue)
     {
       v12->_decodeWithLM = 0;
     }
 
-    v15 = [v10 objectForKeyedSubscript:@"CRImageReaderDynamicLexicon"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderDynamicLexicon"];
     if (v15)
     {
       v16 = v15;
-      v17 = [v10 objectForKeyedSubscript:@"CRImageReaderDynamicLexicon"];
+      v17 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderDynamicLexicon"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v19 = [v10 objectForKeyedSubscript:@"CRImageReaderDynamicLexicon"];
+        v19 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderDynamicLexicon"];
         customWords = v12->_customWords;
         v12->_customWords = v19;
       }
     }
 
-    v21 = [v10 objectForKeyedSubscript:@"CRImageReaderPrecisionThresholdKey"];
+    v21 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderPrecisionThresholdKey"];
 
     if (v21)
     {
-      v22 = [v10 objectForKeyedSubscript:@"CRImageReaderPrecisionThresholdKey"];
+      v22 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderPrecisionThresholdKey"];
       [v22 floatValue];
       v12->_precisionThreshold = v23;
     }
 
-    v24 = [v10 objectForKeyedSubscript:@"CRImageReaderRecognizerModelPath"];
+    v24 = [optionsCopy objectForKeyedSubscript:@"CRImageReaderRecognizerModelPath"];
     if (v24)
     {
       v25 = [MEMORY[0x1E695DFF8] fileURLWithPath:v24];
@@ -97,10 +97,10 @@
       v12->_titleParameters = v29;
     }
 
-    v31 = [(CRRecognizerConfiguration *)v12 revision];
+    revision = [(CRRecognizerConfiguration *)v12 revision];
     v12->_mediumConfidenceThreshold = 0.0;
     v12->_highConfidenceThreshold = 0.0;
-    if ((v31 - 1) > 2)
+    if ((revision - 1) > 2)
     {
       v12->_mediumConfidenceThreshold = 0.0;
       v32 = 0;
@@ -124,13 +124,13 @@
   return v12;
 }
 
-+ (id)cachedConfigurationWithLocale:(id)a3 imageReaderOptions:(id)a4 error:(id *)a5
++ (id)cachedConfigurationWithLocale:(id)locale imageReaderOptions:(id)options error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a1;
-  objc_sync_enter(v11);
-  if (qword_1ED95F5D8 != v9)
+  localeCopy = locale;
+  optionsCopy = options;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (qword_1ED95F5D8 != localeCopy)
   {
     goto LABEL_2;
   }
@@ -143,17 +143,17 @@
 
   v16 = WeakRetained;
   v17 = objc_loadWeakRetained(&qword_1ED95F5E0);
-  if (v17 != v10)
+  if (v17 != optionsCopy)
   {
 
 LABEL_2:
     v12 = qword_1ED95F5E8;
     qword_1ED95F5E8 = 0;
 
-    v13 = [objc_alloc(objc_opt_class()) initWithLocale:v9 imageReaderOptions:v10 error:a5];
+    v13 = [objc_alloc(objc_opt_class()) initWithLocale:localeCopy imageReaderOptions:optionsCopy error:error];
     objc_storeStrong(&qword_1ED95F5E8, v13);
-    objc_storeStrong(&qword_1ED95F5D8, a3);
-    objc_storeWeak(&qword_1ED95F5E0, v10);
+    objc_storeStrong(&qword_1ED95F5D8, locale);
+    objc_storeWeak(&qword_1ED95F5E0, optionsCopy);
     goto LABEL_3;
   }
 
@@ -166,7 +166,7 @@ LABEL_2:
 
   v13 = qword_1ED95F5E8;
 LABEL_3:
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
@@ -181,11 +181,11 @@ LABEL_3:
   return deviceHasAppleNeuralEngine();
 }
 
-- (id)initV3DefaultConfigWithOptions:(id)a3
+- (id)initV3DefaultConfigWithOptions:(id)options
 {
   v9.receiver = self;
   v9.super_class = CRNeuralRecognizerConfiguration;
-  v3 = [(CRRecognizerConfiguration *)&v9 initV3DefaultConfigWithOptions:a3];
+  v3 = [(CRRecognizerConfiguration *)&v9 initV3DefaultConfigWithOptions:options];
   v4 = v3;
   if (v3)
   {
@@ -210,13 +210,13 @@ LABEL_3:
 
 - (BOOL)filterWithLM
 {
-  v3 = [(CRNeuralRecognizerConfiguration *)self decodeWithLM];
-  if (v3)
+  decodeWithLM = [(CRNeuralRecognizerConfiguration *)self decodeWithLM];
+  if (decodeWithLM)
   {
-    LOBYTE(v3) = ![(CRRecognizerConfiguration *)self falsePositiveFilteringDisabled];
+    LOBYTE(decodeWithLM) = ![(CRRecognizerConfiguration *)self falsePositiveFilteringDisabled];
   }
 
-  return v3;
+  return decodeWithLM;
 }
 
 - (CRConfidenceThresholds)confidenceThresholds
@@ -239,7 +239,7 @@ LABEL_3:
   return v6;
 }
 
-- (int64_t)bestFitWidthIndexForAspectRatio:(double)a3
+- (int64_t)bestFitWidthIndexForAspectRatio:(double)ratio
 {
   v25 = *MEMORY[0x1E69E9840];
   [(CRNeuralRecognizerConfiguration *)self inputWidths];
@@ -266,7 +266,7 @@ LABEL_3:
       v12 = v11;
       [v10 floatValue];
       v14 = v12 / v13;
-      if (v14 * 1.1 < a3)
+      if (v14 * 1.1 < ratio)
       {
         break;
       }
@@ -300,7 +300,7 @@ LABEL_9:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v23 = a3;
+    ratioCopy = ratio;
     _os_log_impl(&dword_1B40D2000, v16, OS_LOG_TYPE_DEBUG, "Could not determine an appropriate width index for aspect ratio %.4f", buf, 0xCu);
   }
 

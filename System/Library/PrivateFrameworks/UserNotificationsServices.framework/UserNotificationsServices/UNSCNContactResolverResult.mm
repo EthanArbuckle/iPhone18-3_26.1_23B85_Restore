@@ -1,10 +1,10 @@
 @interface UNSCNContactResolverResult
-- (BOOL)isStrongerMatchThanOtherMatch:(id)a3;
+- (BOOL)isStrongerMatchThanOtherMatch:(id)match;
 - (BOOL)isStrongestMatch;
-- (id)_initWithCNContactIdentifier:(id)a3 cnContactFullname:(id)a4 suggestedContact:(BOOL)a5 matchType:(unint64_t)a6 matchTypeSuggested:(BOOL)a7 identifierOfMatchLabel:(id)a8;
-- (id)_stringForMatchType:(unint64_t)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithCNContactIdentifier:(id)identifier cnContactFullname:(id)fullname suggestedContact:(BOOL)contact matchType:(unint64_t)type matchTypeSuggested:(BOOL)suggested identifierOfMatchLabel:(id)label;
+- (id)_stringForMatchType:(unint64_t)type;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -13,29 +13,29 @@
 
 - (id)succinctDescription
 {
-  v2 = [(UNSCNContactResolverResult *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UNSCNContactResolverResult *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(UNSCNContactResolverResult *)self cnContactIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"cnContactIdentifier"];
+  cnContactIdentifier = [(UNSCNContactResolverResult *)self cnContactIdentifier];
+  v5 = [v3 appendObject:cnContactIdentifier withName:@"cnContactIdentifier"];
 
-  v6 = [(UNSCNContactResolverResult *)self cnContactFullname];
-  v7 = [v6 un_logDigest];
-  v8 = [v3 appendObject:v7 withName:@"cnContactFullname"];
+  cnContactFullname = [(UNSCNContactResolverResult *)self cnContactFullname];
+  un_logDigest = [cnContactFullname un_logDigest];
+  v8 = [v3 appendObject:un_logDigest withName:@"cnContactFullname"];
 
   v9 = [v3 appendBool:-[UNSCNContactResolverResult isSuggestedContact](self withName:{"isSuggestedContact"), @"isSuggestedContact"}];
   v10 = [(UNSCNContactResolverResult *)self _stringForMatchType:[(UNSCNContactResolverResult *)self matchType]];
   [v3 appendString:v10 withName:@"matchType"];
 
   v11 = [v3 appendBool:-[UNSCNContactResolverResult isMatchTypeSuggested](self withName:{"isMatchTypeSuggested"), @"matchTypeSuggested"}];
-  v12 = [(UNSCNContactResolverResult *)self identifierOfMatchLabel];
-  v13 = [v3 appendBool:v12 != 0 withName:@"identifierOfMatchLabelExists"];
+  identifierOfMatchLabel = [(UNSCNContactResolverResult *)self identifierOfMatchLabel];
+  v13 = [v3 appendBool:identifierOfMatchLabel != 0 withName:@"identifierOfMatchLabelExists"];
 
   return v3;
 }
@@ -53,47 +53,47 @@
   }
 }
 
-- (id)_initWithCNContactIdentifier:(id)a3 cnContactFullname:(id)a4 suggestedContact:(BOOL)a5 matchType:(unint64_t)a6 matchTypeSuggested:(BOOL)a7 identifierOfMatchLabel:(id)a8
+- (id)_initWithCNContactIdentifier:(id)identifier cnContactFullname:(id)fullname suggestedContact:(BOOL)contact matchType:(unint64_t)type matchTypeSuggested:(BOOL)suggested identifierOfMatchLabel:(id)label
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
+  identifierCopy = identifier;
+  fullnameCopy = fullname;
+  labelCopy = label;
   v21.receiver = self;
   v21.super_class = UNSCNContactResolverResult;
   v18 = [(UNSCNContactResolverResult *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_cnContactIdentifier, a3);
-    v19->_suggestedContact = a5;
-    v19->_matchType = a6;
-    v19->_matchTypeSuggested = a7;
-    objc_storeStrong(&v19->_identifierOfMatchLabel, a8);
-    objc_storeStrong(&v19->_cnContactFullname, a4);
+    objc_storeStrong(&v18->_cnContactIdentifier, identifier);
+    v19->_suggestedContact = contact;
+    v19->_matchType = type;
+    v19->_matchTypeSuggested = suggested;
+    objc_storeStrong(&v19->_identifierOfMatchLabel, label);
+    objc_storeStrong(&v19->_cnContactFullname, fullname);
   }
 
   return v19;
 }
 
-- (BOOL)isStrongerMatchThanOtherMatch:(id)a3
+- (BOOL)isStrongerMatchThanOtherMatch:(id)match
 {
-  v4 = a3;
-  if (v4)
+  matchCopy = match;
+  if (matchCopy)
   {
-    if (-[UNSCNContactResolverResult isSuggestedContact](self, "isSuggestedContact") || ([v4 isSuggestedContact] & 1) != 0)
+    if (-[UNSCNContactResolverResult isSuggestedContact](self, "isSuggestedContact") || ([matchCopy isSuggestedContact] & 1) != 0)
     {
       if (![(UNSCNContactResolverResult *)self isSuggestedContact])
       {
-        v5 = [v4 isSuggestedContact];
+        isSuggestedContact = [matchCopy isSuggestedContact];
 LABEL_10:
-        v6 = v5;
+        v6 = isSuggestedContact;
         goto LABEL_11;
       }
     }
 
     else if (![(UNSCNContactResolverResult *)self isMatchTypeSuggested])
     {
-      v5 = [v4 isMatchTypeSuggested];
+      isSuggestedContact = [matchCopy isMatchTypeSuggested];
       goto LABEL_10;
     }
 
@@ -110,18 +110,18 @@ LABEL_11:
   return v6;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UNSCNContactResolverResult *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UNSCNContactResolverResult *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -129,8 +129,8 @@ LABEL_11:
   v10[3] = &unk_279E142D8;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -158,16 +158,16 @@ void __68__UNSCNContactResolverResult_descriptionBuilderWithMultilinePrefix___bl
   v14 = [v13 appendBool:v15 != 0 withName:@"identifierOfMatchLabelExists"];
 }
 
-- (id)_stringForMatchType:(unint64_t)a3
+- (id)_stringForMatchType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_279E142F8[a3];
+    return off_279E142F8[type];
   }
 }
 

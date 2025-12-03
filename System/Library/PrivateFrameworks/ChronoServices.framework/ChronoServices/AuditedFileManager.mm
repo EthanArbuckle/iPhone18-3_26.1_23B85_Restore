@@ -1,25 +1,25 @@
 @interface AuditedFileManager
-- (BOOL)createDirectoryAtPath:(id)a3 withIntermediateDirectories:(BOOL)a4 attributes:(id)a5 error:(id *)a6;
-- (BOOL)createDirectoryAtURL:(id)a3 withIntermediateDirectories:(BOOL)a4 attributes:(id)a5 error:(id *)a6;
-- (BOOL)createFileAtPath:(id)a3 contents:(id)a4 attributes:(id)a5;
-- (BOOL)removeItemAtPath:(id)a3 error:(id *)a4;
-- (BOOL)removeItemAtURL:(id)a3 error:(id *)a4;
+- (BOOL)createDirectoryAtPath:(id)path withIntermediateDirectories:(BOOL)directories attributes:(id)attributes error:(id *)error;
+- (BOOL)createDirectoryAtURL:(id)l withIntermediateDirectories:(BOOL)directories attributes:(id)attributes error:(id *)error;
+- (BOOL)createFileAtPath:(id)path contents:(id)contents attributes:(id)attributes;
+- (BOOL)removeItemAtPath:(id)path error:(id *)error;
+- (BOOL)removeItemAtURL:(id)l error:(id *)error;
 - (_TtC14ChronoServices18AuditedFileManager)init;
-- (id)URLForDirectory:(unint64_t)a3 inDomain:(unint64_t)a4 appropriateForURL:(id)a5 create:(BOOL)a6 error:(id *)a7;
+- (id)URLForDirectory:(unint64_t)directory inDomain:(unint64_t)domain appropriateForURL:(id)l create:(BOOL)create error:(id *)error;
 @end
 
 @implementation AuditedFileManager
 
-- (BOOL)createFileAtPath:(id)a3 contents:(id)a4 attributes:(id)a5
+- (BOOL)createFileAtPath:(id)path contents:(id)contents attributes:(id)attributes
 {
   v8 = sub_195FA08B8();
   v10 = v9;
-  if (!a4)
+  if (!contents)
   {
-    v17 = a5;
-    v18 = self;
+    attributesCopy = attributes;
+    selfCopy = self;
     v15 = 0xF000000000000000;
-    if (a5)
+    if (attributes)
     {
       goto LABEL_3;
     }
@@ -29,13 +29,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v11 = a5;
-  v12 = self;
-  v13 = a4;
-  a4 = sub_195FA04D8();
+  attributesCopy2 = attributes;
+  selfCopy2 = self;
+  contentsCopy = contents;
+  contents = sub_195FA04D8();
   v15 = v14;
 
-  if (!a5)
+  if (!attributes)
   {
     goto LABEL_5;
   }
@@ -46,14 +46,14 @@ LABEL_3:
   v16 = sub_195FA0808();
 
 LABEL_6:
-  v19 = sub_195F3B7B0(v8, v10, a4, v15, v16);
+  v19 = sub_195F3B7B0(v8, v10, contents, v15, v16);
 
-  sub_195EC5A34(a4, v15);
+  sub_195EC5A34(contents, v15);
 
   return v19 & 1;
 }
 
-- (BOOL)createDirectoryAtURL:(id)a3 withIntermediateDirectories:(BOOL)a4 attributes:(id)a5 error:(id *)a6
+- (BOOL)createDirectoryAtURL:(id)l withIntermediateDirectories:(BOOL)directories attributes:(id)attributes error:(id *)error
 {
   v9 = sub_195FA0478();
   v10 = *(v9 - 8);
@@ -61,38 +61,38 @@ LABEL_6:
   MEMORY[0x1EEE9AC00](v9);
   v13 = &v16 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_195FA0428();
-  if (a5)
+  if (attributes)
   {
     type metadata accessor for FileAttributeKey(0);
     sub_195F3ECD8();
-    a5 = sub_195FA0808();
+    attributes = sub_195FA0808();
   }
 
-  v14 = self;
-  sub_195F3BA78(v13, a4, a5);
+  selfCopy = self;
+  sub_195F3BA78(v13, directories, attributes);
   (*(v10 + 8))(v13, v9);
 
   return 1;
 }
 
-- (BOOL)createDirectoryAtPath:(id)a3 withIntermediateDirectories:(BOOL)a4 attributes:(id)a5 error:(id *)a6
+- (BOOL)createDirectoryAtPath:(id)path withIntermediateDirectories:(BOOL)directories attributes:(id)attributes error:(id *)error
 {
   v9 = sub_195FA08B8();
   v11 = v10;
-  if (a5)
+  if (attributes)
   {
     type metadata accessor for FileAttributeKey(0);
     sub_195F3ECD8();
-    a5 = sub_195FA0808();
+    attributes = sub_195FA0808();
   }
 
-  v12 = self;
-  sub_195F3BE44(v9, v11, a4, a5);
+  selfCopy = self;
+  sub_195F3BE44(v9, v11, directories, attributes);
 
   return 1;
 }
 
-- (BOOL)removeItemAtURL:(id)a3 error:(id *)a4
+- (BOOL)removeItemAtURL:(id)l error:(id *)error
 {
   v5 = sub_195FA0478();
   v6 = *(v5 - 8);
@@ -100,26 +100,26 @@ LABEL_6:
   MEMORY[0x1EEE9AC00](v5);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_195FA0428();
-  v10 = self;
+  selfCopy = self;
   sub_195F3C148();
   (*(v6 + 8))(v9, v5);
 
   return 1;
 }
 
-- (BOOL)removeItemAtPath:(id)a3 error:(id *)a4
+- (BOOL)removeItemAtPath:(id)path error:(id *)error
 {
   sub_195FA08B8();
-  v5 = self;
+  selfCopy = self;
   sub_195F3C4C0();
 
   return 1;
 }
 
-- (id)URLForDirectory:(unint64_t)a3 inDomain:(unint64_t)a4 appropriateForURL:(id)a5 create:(BOOL)a6 error:(id *)a7
+- (id)URLForDirectory:(unint64_t)directory inDomain:(unint64_t)domain appropriateForURL:(id)l create:(BOOL)create error:(id *)error
 {
-  v27[0] = a7;
-  v7 = a6;
+  v27[0] = error;
+  createCopy = create;
   v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAEEDAC8, &unk_195FACC70);
   v13 = *(*(v12 - 8) + 64);
   MEMORY[0x1EEE9AC00](v12 - 8);
@@ -131,7 +131,7 @@ LABEL_6:
   v21 = v27 - ((v20 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v19);
   v23 = v27 - v22;
-  if (a5)
+  if (l)
   {
     sub_195FA0428();
     (*(v17 + 32))(v15, v21, v16);
@@ -143,8 +143,8 @@ LABEL_6:
     (*(v17 + 56))(v15, 1, 1, v16);
   }
 
-  v24 = self;
-  sub_195F3D14C(a3, a4, v15, v7, v23);
+  selfCopy = self;
+  sub_195F3D14C(directory, domain, v15, createCopy, v23);
   sub_195F3AE44(v15);
 
   v25 = sub_195FA0398();

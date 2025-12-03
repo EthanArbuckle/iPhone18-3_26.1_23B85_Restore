@@ -1,78 +1,78 @@
 @interface RTTripClusterRoute
-+ (id)createWithManagedObject:(id)a3;
-+ (id)createWithTripClusterLocationsMO:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRoute:(id)a3;
++ (id)createWithManagedObject:(id)object;
++ (id)createWithTripClusterLocationsMO:(id)o;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRoute:(id)route;
 - (NSString)description;
-- (RTTripClusterRoute)initWithClusterID:(id)a3 clRoadID:(unint64_t)a4 latitude:(double)a5 longitude:(double)a6 course:(double)a7 sequence:(unsigned __int16)a8 followedByUTurn:(BOOL)a9;
-- (RTTripClusterRoute)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTTripClusterRoute)initWithClusterID:(id)d clRoadID:(unint64_t)iD latitude:(double)latitude longitude:(double)longitude course:(double)course sequence:(unsigned __int16)sequence followedByUTurn:(BOOL)turn;
+- (RTTripClusterRoute)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (id)managedObjectWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)managedObjectWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTTripClusterRoute
 
-- (RTTripClusterRoute)initWithClusterID:(id)a3 clRoadID:(unint64_t)a4 latitude:(double)a5 longitude:(double)a6 course:(double)a7 sequence:(unsigned __int16)a8 followedByUTurn:(BOOL)a9
+- (RTTripClusterRoute)initWithClusterID:(id)d clRoadID:(unint64_t)iD latitude:(double)latitude longitude:(double)longitude course:(double)course sequence:(unsigned __int16)sequence followedByUTurn:(BOOL)turn
 {
-  v17 = a3;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = RTTripClusterRoute;
   v18 = [(RTTripClusterRoute *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    v18->_clRoadID = a4;
-    objc_storeStrong(&v18->_clusterID, a3);
-    v19->_latitude = a5;
-    v19->_longitude = a6;
-    v19->_sequence = a8;
-    v19->_course = a7;
-    v19->_followedByUTurn = a9;
+    v18->_clRoadID = iD;
+    objc_storeStrong(&v18->_clusterID, d);
+    v19->_latitude = latitude;
+    v19->_longitude = longitude;
+    v19->_sequence = sequence;
+    v19->_course = course;
+    v19->_followedByUTurn = turn;
   }
 
   return v19;
 }
 
-- (RTTripClusterRoute)initWithCoder:(id)a3
+- (RTTripClusterRoute)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"clRoadID"];
-  v6 = [v4 decodeObjectForKey:@"clusterID"];
-  [v4 decodeDoubleForKey:@"latitude"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"clRoadID"];
+  v6 = [coderCopy decodeObjectForKey:@"clusterID"];
+  [coderCopy decodeDoubleForKey:@"latitude"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"longitude"];
+  [coderCopy decodeDoubleForKey:@"longitude"];
   v10 = v9;
-  [v4 decodeDoubleForKey:@"course"];
+  [coderCopy decodeDoubleForKey:@"course"];
   v12 = v11;
-  v13 = [v4 decodeIntForKey:@"sequence"];
-  v14 = [v4 decodeBoolForKey:@"uturn"];
+  v13 = [coderCopy decodeIntForKey:@"sequence"];
+  v14 = [coderCopy decodeBoolForKey:@"uturn"];
 
   v15 = [(RTTripClusterRoute *)self initWithClusterID:v6 clRoadID:v5 latitude:v13 longitude:v14 course:v8 sequence:v10 followedByUTurn:v12];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInt64:-[RTTripClusterRoute clRoadID](self forKey:{"clRoadID"), @"clRoadID"}];
-  v4 = [(RTTripClusterRoute *)self clusterID];
-  [v5 encodeObject:v4 forKey:@"clusterID"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[RTTripClusterRoute clRoadID](self forKey:{"clRoadID"), @"clRoadID"}];
+  clusterID = [(RTTripClusterRoute *)self clusterID];
+  [coderCopy encodeObject:clusterID forKey:@"clusterID"];
 
   [(RTTripClusterRoute *)self latitude];
-  [v5 encodeDouble:@"latitude" forKey:?];
+  [coderCopy encodeDouble:@"latitude" forKey:?];
   [(RTTripClusterRoute *)self longitude];
-  [v5 encodeDouble:@"longitude" forKey:?];
+  [coderCopy encodeDouble:@"longitude" forKey:?];
   [(RTTripClusterRoute *)self course];
-  [v5 encodeDouble:@"course" forKey:?];
-  [v5 encodeInt:-[RTTripClusterRoute sequence](self forKey:{"sequence"), @"sequence"}];
-  [v5 encodeBool:-[RTTripClusterRoute followedByUTurn](self forKey:{"followedByUTurn"), @"uturn"}];
+  [coderCopy encodeDouble:@"course" forKey:?];
+  [coderCopy encodeInt:-[RTTripClusterRoute sequence](self forKey:{"sequence"), @"sequence"}];
+  [coderCopy encodeBool:-[RTTripClusterRoute followedByUTurn](self forKey:{"followedByUTurn"), @"uturn"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   clRoadID = self->_clRoadID;
   clusterID = self->_clusterID;
   latitude = self->_latitude;
@@ -84,15 +84,15 @@
   return [v4 initWithClusterID:clusterID clRoadID:clRoadID latitude:sequence longitude:followedByUTurn course:latitude sequence:longitude followedByUTurn:course];
 }
 
-- (BOOL)isEqualToRoute:(id)a3
+- (BOOL)isEqualToRoute:(id)route
 {
-  v4 = a3;
-  v5 = [(RTTripClusterRoute *)self clusterID];
-  v6 = [v4 clusterID];
-  if (v5 == v6 && (v7 = -[RTTripClusterRoute clRoadID](self, "clRoadID"), v7 == [v4 clRoadID]) && (-[RTTripClusterRoute latitude](self, "latitude"), v9 = v8, objc_msgSend(v4, "latitude"), vabdd_f64(v9, v10) < 0.0000001) && (-[RTTripClusterRoute longitude](self, "longitude"), v12 = v11, objc_msgSend(v4, "longitude"), vabdd_f64(v12, v13) < 0.0000001) && (-[RTTripClusterRoute course](self, "course"), v15 = v14, objc_msgSend(v4, "course"), vabdd_f64(v15, v16) < 0.001) && (v17 = -[RTTripClusterRoute sequence](self, "sequence"), v17 == objc_msgSend(v4, "sequence")))
+  routeCopy = route;
+  clusterID = [(RTTripClusterRoute *)self clusterID];
+  clusterID2 = [routeCopy clusterID];
+  if (clusterID == clusterID2 && (v7 = -[RTTripClusterRoute clRoadID](self, "clRoadID"), v7 == [routeCopy clRoadID]) && (-[RTTripClusterRoute latitude](self, "latitude"), v9 = v8, objc_msgSend(routeCopy, "latitude"), vabdd_f64(v9, v10) < 0.0000001) && (-[RTTripClusterRoute longitude](self, "longitude"), v12 = v11, objc_msgSend(routeCopy, "longitude"), vabdd_f64(v12, v13) < 0.0000001) && (-[RTTripClusterRoute course](self, "course"), v15 = v14, objc_msgSend(routeCopy, "course"), vabdd_f64(v15, v16) < 0.001) && (v17 = -[RTTripClusterRoute sequence](self, "sequence"), v17 == objc_msgSend(routeCopy, "sequence")))
   {
-    v18 = [(RTTripClusterRoute *)self followedByUTurn];
-    v19 = v18 ^ [v4 followedByUTurn] ^ 1;
+    followedByUTurn = [(RTTripClusterRoute *)self followedByUTurn];
+    v19 = followedByUTurn ^ [routeCopy followedByUTurn] ^ 1;
   }
 
   else
@@ -103,18 +103,18 @@
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripClusterRoute *)self isEqualToRoute:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripClusterRoute *)self isEqualToRoute:v5];
   }
 
   return v6;
@@ -123,16 +123,16 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTTripClusterRoute *)self clusterID];
-  v5 = [v4 UUIDString];
-  v6 = [(RTTripClusterRoute *)self clRoadID];
-  v7 = [(RTTripClusterRoute *)self sequence];
+  clusterID = [(RTTripClusterRoute *)self clusterID];
+  uUIDString = [clusterID UUIDString];
+  clRoadID = [(RTTripClusterRoute *)self clRoadID];
+  sequence = [(RTTripClusterRoute *)self sequence];
   [(RTTripClusterRoute *)self latitude];
   v9 = v8;
   [(RTTripClusterRoute *)self longitude];
   v11 = v10;
   [(RTTripClusterRoute *)self course];
-  v13 = [v3 stringWithFormat:@"clusterID, %@, clRoadID, %llu, sequence, %d, lat, %.7f, lon, %.7f, course, %.3f, uturn, %d", v5, v6, v7, v9, v11, v12, -[RTTripClusterRoute followedByUTurn](self, "followedByUTurn")];
+  v13 = [v3 stringWithFormat:@"clusterID, %@, clRoadID, %llu, sequence, %d, lat, %.7f, lon, %.7f, course, %.3f, uturn, %d", uUIDString, clRoadID, sequence, v9, v11, v12, -[RTTripClusterRoute followedByUTurn](self, "followedByUTurn")];
 
   return v13;
 }
@@ -163,16 +163,16 @@
   return v10;
 }
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = objectCopy;
       v6 = [objc_opt_class() createWithTripClusterLocationsMO:v5];
 
       goto LABEL_8;
@@ -186,7 +186,7 @@
       v11 = v9;
       v12 = 2112;
       v14 = 2080;
-      v13 = v4;
+      v13 = objectCopy;
       v15 = "+[RTTripClusterRoute(RTCoreDataTransformable) createWithManagedObject:]";
       v16 = 1024;
       v17 = 33;
@@ -200,48 +200,48 @@ LABEL_8:
   return v6;
 }
 
-+ (id)createWithTripClusterLocationsMO:(id)a3
++ (id)createWithTripClusterLocationsMO:(id)o
 {
-  v3 = a3;
-  if ([v3 clRoadID])
+  oCopy = o;
+  if ([oCopy clRoadID])
   {
-    v4 = [v3 clRoadID];
+    clRoadID = [oCopy clRoadID];
   }
 
   else
   {
-    v4 = 0;
+    clRoadID = 0;
   }
 
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v3 clusterID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  clusterID = [oCopy clusterID];
 
-  if (v6)
+  if (clusterID)
   {
-    v7 = [v3 clusterID];
+    clusterID2 = [oCopy clusterID];
 
-    v5 = v7;
+    uUID = clusterID2;
   }
 
-  [v3 latitude];
+  [oCopy latitude];
   v8 = 0.0;
   v9 = 0.0;
   if (v10 != 0.0)
   {
-    [v3 latitude];
+    [oCopy latitude];
     v9 = v11;
   }
 
-  [v3 longitude];
+  [oCopy longitude];
   if (v12 != 0.0)
   {
-    [v3 longitude];
+    [oCopy longitude];
     v8 = v13;
   }
 
-  if (v3)
+  if (oCopy)
   {
-    [v3 course];
+    [oCopy course];
     v15 = v14;
   }
 
@@ -250,36 +250,36 @@ LABEL_8:
     v15 = -1.0;
   }
 
-  if ([v3 sequence])
+  if ([oCopy sequence])
   {
-    v16 = [v3 sequence];
+    sequence = [oCopy sequence];
   }
 
   else
   {
-    v16 = 0;
+    sequence = 0;
   }
 
-  if ([v3 followedByUTurn])
+  if ([oCopy followedByUTurn])
   {
-    v17 = [v3 followedByUTurn];
+    followedByUTurn = [oCopy followedByUTurn];
   }
 
   else
   {
-    v17 = 0;
+    followedByUTurn = 0;
   }
 
-  v18 = [[RTTripClusterRoute alloc] initWithClusterID:v5 clRoadID:v4 latitude:v16 longitude:v17 course:v9 sequence:v8 followedByUTurn:v15];
+  v18 = [[RTTripClusterRoute alloc] initWithClusterID:uUID clRoadID:clRoadID latitude:sequence longitude:followedByUTurn course:v9 sequence:v8 followedByUTurn:v15];
 
   return v18;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = [RTTripClusterRouteMO managedObjectWithTripClusterLocations:self inManagedObjectContext:a3];
+    v3 = [RTTripClusterRouteMO managedObjectWithTripClusterLocations:self inManagedObjectContext:context];
   }
 
   else

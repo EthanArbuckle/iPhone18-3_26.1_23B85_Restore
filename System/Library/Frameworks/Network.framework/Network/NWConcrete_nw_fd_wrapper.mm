@@ -1,6 +1,6 @@
 @interface NWConcrete_nw_fd_wrapper
 - (NSString)description;
-- (_DWORD)initWithFileDescriptor:(void *)a1;
+- (_DWORD)initWithFileDescriptor:(void *)descriptor;
 - (void)dealloc;
 @end
 
@@ -27,15 +27,15 @@
   return v3;
 }
 
-- (_DWORD)initWithFileDescriptor:(void *)a1
+- (_DWORD)initWithFileDescriptor:(void *)descriptor
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!descriptor)
   {
     return 0;
   }
 
-  v16.receiver = a1;
+  v16.receiver = descriptor;
   v16.super_class = NWConcrete_nw_fd_wrapper;
   v3 = objc_msgSendSuper2(&v16, sel_init);
   v4 = v3;

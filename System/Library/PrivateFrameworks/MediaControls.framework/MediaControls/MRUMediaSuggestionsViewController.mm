@@ -1,34 +1,34 @@
 @interface MRUMediaSuggestionsViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (MRUMediaSuggestionsViewController)initWithMediaSuggestions:(id)a3;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (MRUMediaSuggestionsViewController)initWithMediaSuggestions:(id)suggestions;
 - (MRUMediaSuggestionsViewControllerDelegate)delegate;
 - (UIEdgeInsets)contentEdgeInsets;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadView;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setLayout:(int64_t)a3;
-- (void)setMediaSuggestions:(id)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setSupportsHorizontalLayout:(BOOL)a3;
-- (void)updateCell:(id)a3 forIdentifier:(id)a4;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setLayout:(int64_t)layout;
+- (void)setMediaSuggestions:(id)suggestions;
+- (void)setStylingProvider:(id)provider;
+- (void)setSupportsHorizontalLayout:(BOOL)layout;
+- (void)updateCell:(id)cell forIdentifier:(id)identifier;
 - (void)updateSuggestions;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MRUMediaSuggestionsViewController
 
-- (MRUMediaSuggestionsViewController)initWithMediaSuggestions:(id)a3
+- (MRUMediaSuggestionsViewController)initWithMediaSuggestions:(id)suggestions
 {
-  v5 = a3;
+  suggestionsCopy = suggestions;
   v9.receiver = self;
   v9.super_class = MRUMediaSuggestionsViewController;
   v6 = [(MRUMediaSuggestionsViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaSuggestions, a3);
+    objc_storeStrong(&v6->_mediaSuggestions, suggestions);
   }
 
   return v7;
@@ -47,23 +47,23 @@
   v28.super_class = MRUMediaSuggestionsViewController;
   [(MRUMediaSuggestionsViewController *)&v28 viewDidLoad];
   layout = self->_layout;
-  v4 = [(MRUMediaSuggestionsViewController *)self view];
-  [v4 setLayout:layout];
+  view = [(MRUMediaSuggestionsViewController *)self view];
+  [view setLayout:layout];
 
   supportsHorizontalLayout = self->_supportsHorizontalLayout;
-  v6 = [(MRUMediaSuggestionsViewController *)self view];
-  [v6 setSupportsHorizontalLayout:supportsHorizontalLayout];
+  view2 = [(MRUMediaSuggestionsViewController *)self view];
+  [view2 setSupportsHorizontalLayout:supportsHorizontalLayout];
 
   top = self->_contentEdgeInsets.top;
   left = self->_contentEdgeInsets.left;
   bottom = self->_contentEdgeInsets.bottom;
   right = self->_contentEdgeInsets.right;
-  v11 = [(MRUMediaSuggestionsViewController *)self view];
-  [v11 setContentEdgeInsets:{top, left, bottom, right}];
+  view3 = [(MRUMediaSuggestionsViewController *)self view];
+  [view3 setContentEdgeInsets:{top, left, bottom, right}];
 
-  v12 = [(MRUMediaSuggestionsViewController *)self view];
-  v13 = [v12 collectionView];
-  [v13 setDelegate:self];
+  view4 = [(MRUMediaSuggestionsViewController *)self view];
+  collectionView = [view4 collectionView];
+  [collectionView setDelegate:self];
 
   objc_initWeak(&location, self);
   v14 = MEMORY[0x1E69DC800];
@@ -75,15 +75,15 @@
   objc_copyWeak(&v26, &location);
   v16 = [v14 registrationWithCellClass:v15 configurationHandler:v25];
   v17 = objc_alloc(MEMORY[0x1E69DC820]);
-  v18 = [(MRUMediaSuggestionsViewController *)self view];
-  v19 = [v18 collectionView];
+  view5 = [(MRUMediaSuggestionsViewController *)self view];
+  collectionView2 = [view5 collectionView];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __48__MRUMediaSuggestionsViewController_viewDidLoad__block_invoke_2;
   v23[3] = &unk_1E76646B0;
   v20 = v16;
   v24 = v20;
-  v21 = [v17 initWithCollectionView:v19 cellProvider:v23];
+  v21 = [v17 initWithCollectionView:collectionView2 cellProvider:v23];
   dataSource = self->_dataSource;
   self->_dataSource = v21;
 
@@ -100,24 +100,24 @@ void __48__MRUMediaSuggestionsViewController_viewDidLoad__block_invoke(uint64_t 
   [WeakRetained updateCell:v7 forIdentifier:v6];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = MRUMediaSuggestionsViewController;
-  [(MRUMediaSuggestionsViewController *)&v9 viewWillAppear:a3];
-  v4 = [(MRUMediaSuggestionsViewController *)self view];
-  [v4 updateCollectionViewLayout];
+  [(MRUMediaSuggestionsViewController *)&v9 viewWillAppear:appear];
+  view = [(MRUMediaSuggestionsViewController *)self view];
+  [view updateCollectionViewLayout];
 
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
-  v7 = [(MRUMediaSuggestionsViewController *)self view];
-  v8 = [v7 collectionView];
-  [v8 setContentOffset:{v5, v6}];
+  view2 = [(MRUMediaSuggestionsViewController *)self view];
+  collectionView = [view2 collectionView];
+  [collectionView setContentOffset:{v5, v6}];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v21 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = MRUMediaSuggestionsViewController;
@@ -126,11 +126,11 @@ void __48__MRUMediaSuggestionsViewController_viewDidLoad__block_invoke(uint64_t 
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(MRUMediaSuggestionsViewController *)self view];
-  v6 = [v5 collectionView];
-  v7 = [v6 indexPathsForSelectedItems];
+  view = [(MRUMediaSuggestionsViewController *)self view];
+  collectionView = [view collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  v8 = [indexPathsForSelectedItems countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -142,28 +142,28 @@ void __48__MRUMediaSuggestionsViewController_viewDidLoad__block_invoke(uint64_t 
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        v13 = [(MRUMediaSuggestionsViewController *)self view];
-        v14 = [v13 collectionView];
-        [v14 deselectItemAtIndexPath:v12 animated:v3];
+        view2 = [(MRUMediaSuggestionsViewController *)self view];
+        collectionView2 = [view2 collectionView];
+        [collectionView2 deselectItemAtIndexPath:v12 animated:disappearCopy];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v9 = [indexPathsForSelectedItems countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)setMediaSuggestions:(id)a3
+- (void)setMediaSuggestions:(id)suggestions
 {
-  objc_storeStrong(&self->_mediaSuggestions, a3);
+  objc_storeStrong(&self->_mediaSuggestions, suggestions);
   if ([(MRUMediaSuggestionsViewController *)self isViewLoaded])
   {
 
@@ -171,20 +171,20 @@ void __48__MRUMediaSuggestionsViewController_viewDidLoad__block_invoke(uint64_t 
   }
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_stylingProvider, a3);
+  providerCopy = provider;
+  objc_storeStrong(&self->_stylingProvider, provider);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(MRUMediaSuggestionsViewController *)self view];
-  v7 = [v6 collectionView];
-  v8 = [v7 visibleCells];
+  view = [(MRUMediaSuggestionsViewController *)self view];
+  collectionView = [view collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -196,72 +196,72 @@ void __48__MRUMediaSuggestionsViewController_viewDidLoad__block_invoke(uint64_t 
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(visibleCells);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) setStylingProvider:v5];
+        [*(*(&v13 + 1) + 8 * v12++) setStylingProvider:providerCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)setLayout:(int64_t)a3
+- (void)setLayout:(int64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
-    v5 = [(MRUMediaSuggestionsViewController *)self viewIfLoaded];
-    [v5 setLayout:a3];
+    self->_layout = layout;
+    viewIfLoaded = [(MRUMediaSuggestionsViewController *)self viewIfLoaded];
+    [viewIfLoaded setLayout:layout];
   }
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentEdgeInsets.top, v3), vceqq_f64(*&self->_contentEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentEdgeInsets = a3;
-    right = a3.right;
-    left = a3.left;
-    bottom = a3.bottom;
-    top = a3.top;
-    v8 = [(MRUMediaSuggestionsViewController *)self viewIfLoaded];
-    [v8 setContentEdgeInsets:{top, left, bottom, right}];
+    self->_contentEdgeInsets = insets;
+    right = insets.right;
+    left = insets.left;
+    bottom = insets.bottom;
+    top = insets.top;
+    viewIfLoaded = [(MRUMediaSuggestionsViewController *)self viewIfLoaded];
+    [viewIfLoaded setContentEdgeInsets:{top, left, bottom, right}];
   }
 }
 
-- (void)setSupportsHorizontalLayout:(BOOL)a3
+- (void)setSupportsHorizontalLayout:(BOOL)layout
 {
-  if (self->_supportsHorizontalLayout != a3)
+  if (self->_supportsHorizontalLayout != layout)
   {
-    v4 = a3;
-    self->_supportsHorizontalLayout = a3;
-    v5 = [(MRUMediaSuggestionsViewController *)self viewIfLoaded];
-    [v5 setSupportsHorizontalLayout:v4];
+    layoutCopy = layout;
+    self->_supportsHorizontalLayout = layout;
+    viewIfLoaded = [(MRUMediaSuggestionsViewController *)self viewIfLoaded];
+    [viewIfLoaded setSupportsHorizontalLayout:layoutCopy];
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v4 = [a3 indexPathsForSelectedItems];
-  v5 = [v4 count] == 0;
+  indexPathsForSelectedItems = [view indexPathsForSelectedItems];
+  v5 = [indexPathsForSelectedItems count] == 0;
 
   return v5;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = self->_dataSource;
-  v8 = [(UICollectionViewDiffableDataSource *)v7 itemIdentifierForIndexPath:a4];
+  v8 = [(UICollectionViewDiffableDataSource *)v7 itemIdentifierForIndexPath:path];
   v9 = [(NSDictionary *)self->_suggestions objectForKeyedSubscript:v8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v14[0] = MEMORY[0x1E69E9820];
@@ -270,8 +270,8 @@ void __48__MRUMediaSuggestionsViewController_viewDidLoad__block_invoke(uint64_t 
   v14[3] = &unk_1E7663D30;
   v15 = v7;
   v16 = v8;
-  v17 = v6;
-  v11 = v6;
+  v17 = viewCopy;
+  v11 = viewCopy;
   v12 = v8;
   v13 = v7;
   [WeakRetained mediaSuggestionsViewController:self didSelectSuggestion:v9 completion:v14];
@@ -308,15 +308,15 @@ void __77__MRUMediaSuggestionsViewController_collectionView_didSelectItemAtIndex
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 identifier];
+        identifier = [v10 identifier];
 
-        if (v11)
+        if (identifier)
         {
-          v12 = [v10 identifier];
-          [v3 addObject:v12];
+          identifier2 = [v10 identifier];
+          [v3 addObject:identifier2];
 
-          v13 = [v10 identifier];
-          [v4 setObject:v10 forKeyedSubscript:v13];
+          identifier3 = [v10 identifier];
+          [v4 setObject:v10 forKeyedSubscript:identifier3];
         }
       }
 
@@ -336,40 +336,40 @@ void __77__MRUMediaSuggestionsViewController_collectionView_didSelectItemAtIndex
   [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v16 animatingDifferences:0];
 }
 
-- (void)updateCell:(id)a3 forIdentifier:(id)a4
+- (void)updateCell:(id)cell forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSDictionary *)self->_suggestions objectForKeyedSubscript:v7];
-  [v6 setSuggestionIdentifier:v7];
-  v9 = [v8 title];
-  [v6 setTitle:v9];
+  cellCopy = cell;
+  identifierCopy = identifier;
+  v8 = [(NSDictionary *)self->_suggestions objectForKeyedSubscript:identifierCopy];
+  [cellCopy setSuggestionIdentifier:identifierCopy];
+  title = [v8 title];
+  [cellCopy setTitle:title];
 
-  v10 = [v8 artist];
-  [v6 setSubtitle:v10];
+  artist = [v8 artist];
+  [cellCopy setSubtitle:artist];
 
   v11 = +[MRUMediaSuggestionsCache sharedCache];
   v12 = [v11 artworkForMediaSuggestion:v8];
-  [v6 setArtworkImage:v12];
+  [cellCopy setArtworkImage:v12];
 
   v13 = +[MRUAssetsProvider sharedAssetsProvider];
-  v14 = [v8 bundleID];
-  v15 = [(MRUMediaSuggestionsViewController *)self view];
-  v16 = [v15 traitCollection];
+  bundleID = [v8 bundleID];
+  view = [(MRUMediaSuggestionsViewController *)self view];
+  traitCollection = [view traitCollection];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __62__MRUMediaSuggestionsViewController_updateCell_forIdentifier___block_invoke;
   v21[3] = &unk_1E76646D8;
-  v22 = v6;
-  v23 = v7;
+  v22 = cellCopy;
+  v23 = identifierCopy;
   v24 = v8;
   v17 = v8;
-  v18 = v7;
-  v19 = v6;
-  [v13 applicationIconForBundleIdentifier:v14 traitCollection:v16 completion:v21];
+  v18 = identifierCopy;
+  v19 = cellCopy;
+  [v13 applicationIconForBundleIdentifier:bundleID traitCollection:traitCollection completion:v21];
 
-  v20 = [(MRUMediaSuggestionsViewController *)self stylingProvider];
-  [v19 setStylingProvider:v20];
+  stylingProvider = [(MRUMediaSuggestionsViewController *)self stylingProvider];
+  [v19 setStylingProvider:stylingProvider];
 
   [v19 setLayout:self->_layout];
 }

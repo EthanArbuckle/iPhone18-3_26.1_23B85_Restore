@@ -1,19 +1,19 @@
 @interface CSRemoteDarwinDeviceInfo
 + (id)sharedInstance;
-- (BOOL)_isRemoteDarwinConnectedWithUUID:(id)a3;
+- (BOOL)_isRemoteDarwinConnectedWithUUID:(id)d;
 - (BOOL)hasDarwinDeviceConnected;
 - (BOOL)hasDarwinDeviceHandleVoiceTrigger;
-- (BOOL)isPrimaryVoiceTriggerDeviceWithUUID:(id)a3;
-- (BOOL)isRemoteDarwinConnectedWithUUID:(id)a3;
+- (BOOL)isPrimaryVoiceTriggerDeviceWithUUID:(id)d;
+- (BOOL)isRemoteDarwinConnectedWithUUID:(id)d;
 - (CSRemoteDarwinDeviceInfo)init;
-- (id)fetchDeviceUUIDStringFromUID:(id)a3;
-- (id)fetchRichDeviceUIDStringFromUUID:(id)a3;
-- (void)addDeviceIDPairToMapTable:(id)a3 withDeviceUID:(id)a4;
+- (id)fetchDeviceUUIDStringFromUID:(id)d;
+- (id)fetchRichDeviceUIDStringFromUUID:(id)d;
+- (void)addDeviceIDPairToMapTable:(id)table withDeviceUID:(id)d;
 - (void)allDeviceDisconnected;
-- (void)deviceConnectedWithUUID:(id)a3;
-- (void)deviceDisconnectedWithUUID:(id)a3;
-- (void)notifyVoiceTriggerDisabledWithDeviceUUID:(id)a3;
-- (void)notifyVoiceTriggerEnabledWithDeviceUUID:(id)a3;
+- (void)deviceConnectedWithUUID:(id)d;
+- (void)deviceDisconnectedWithUUID:(id)d;
+- (void)notifyVoiceTriggerDisabledWithDeviceUUID:(id)d;
+- (void)notifyVoiceTriggerEnabledWithDeviceUUID:(id)d;
 @end
 
 @implementation CSRemoteDarwinDeviceInfo
@@ -56,20 +56,20 @@ uint64_t __52__CSRemoteDarwinDeviceInfo_hasDarwinDeviceConnected__block_invoke(u
   return result;
 }
 
-- (void)addDeviceIDPairToMapTable:(id)a3 withDeviceUID:(id)a4
+- (void)addDeviceIDPairToMapTable:(id)table withDeviceUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  tableCopy = table;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__CSRemoteDarwinDeviceInfo_addDeviceIDPairToMapTable_withDeviceUID___block_invoke;
   block[3] = &unk_1E865C778;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = tableCopy;
+  v13 = dCopy;
+  selfCopy = self;
+  v9 = dCopy;
+  v10 = tableCopy;
   dispatch_async(queue, block);
 }
 
@@ -95,7 +95,7 @@ uint64_t __68__CSRemoteDarwinDeviceInfo_addDeviceIDPairToMapTable_withDeviceUID_
   return result;
 }
 
-- (BOOL)_isRemoteDarwinConnectedWithUUID:(id)a3
+- (BOOL)_isRemoteDarwinConnectedWithUUID:(id)d
 {
   deviceUIDMapTable = self->_deviceUIDMapTable;
   if (!deviceUIDMapTable)
@@ -103,15 +103,15 @@ uint64_t __68__CSRemoteDarwinDeviceInfo_addDeviceIDPairToMapTable_withDeviceUID_
     return 0;
   }
 
-  v4 = [(NSMutableDictionary *)deviceUIDMapTable objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)deviceUIDMapTable objectForKeyedSubscript:d];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (BOOL)isRemoteDarwinConnectedWithUUID:(id)a3
+- (BOOL)isRemoteDarwinConnectedWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -121,10 +121,10 @@ uint64_t __68__CSRemoteDarwinDeviceInfo_addDeviceIDPairToMapTable_withDeviceUID_
   block[1] = 3221225472;
   block[2] = __60__CSRemoteDarwinDeviceInfo_isRemoteDarwinConnectedWithUUID___block_invoke;
   block[3] = &unk_1E865CC08;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_async_and_wait(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -139,12 +139,12 @@ uint64_t __60__CSRemoteDarwinDeviceInfo_isRemoteDarwinConnectedWithUUID___block_
   return result;
 }
 
-- (id)fetchRichDeviceUIDStringFromUUID:(id)a3
+- (id)fetchRichDeviceUIDStringFromUUID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     *&v21 = 0;
     *(&v21 + 1) = &v21;
@@ -159,7 +159,7 @@ uint64_t __60__CSRemoteDarwinDeviceInfo_isRemoteDarwinConnectedWithUUID___block_
     block[3] = &unk_1E865CC08;
     v16 = &v21;
     block[4] = self;
-    v7 = v4;
+    v7 = dCopy;
     v15 = v7;
     dispatch_async_and_wait(queue, block);
     v8 = *(*(&v21 + 1) + 40);
@@ -222,9 +222,9 @@ uint64_t __61__CSRemoteDarwinDeviceInfo_fetchRichDeviceUIDStringFromUUID___block
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isPrimaryVoiceTriggerDeviceWithUUID:(id)a3
+- (BOOL)isPrimaryVoiceTriggerDeviceWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -235,9 +235,9 @@ uint64_t __61__CSRemoteDarwinDeviceInfo_fetchRichDeviceUIDStringFromUUID___block
   block[2] = __64__CSRemoteDarwinDeviceInfo_isPrimaryVoiceTriggerDeviceWithUUID___block_invoke;
   block[3] = &unk_1E865CC08;
   block[4] = self;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_async_and_wait(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -277,12 +277,12 @@ void __64__CSRemoteDarwinDeviceInfo_isPrimaryVoiceTriggerDeviceWithUUID___block_
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fetchDeviceUUIDStringFromUID:(id)a3
+- (id)fetchDeviceUUIDStringFromUID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     *&v21 = 0;
     *(&v21 + 1) = &v21;
@@ -296,7 +296,7 @@ void __64__CSRemoteDarwinDeviceInfo_isPrimaryVoiceTriggerDeviceWithUUID___block_
     block[2] = __57__CSRemoteDarwinDeviceInfo_fetchDeviceUUIDStringFromUID___block_invoke;
     block[3] = &unk_1E865CC08;
     block[4] = self;
-    v7 = v4;
+    v7 = dCopy;
     v15 = v7;
     v16 = &v21;
     dispatch_async_and_wait(queue, block);
@@ -462,11 +462,11 @@ void __49__CSRemoteDarwinDeviceInfo_allDeviceDisconnected__block_invoke(uint64_t
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deviceDisconnectedWithUUID:(id)a3
+- (void)deviceDisconnectedWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -474,7 +474,7 @@ void __49__CSRemoteDarwinDeviceInfo_allDeviceDisconnected__block_invoke(uint64_t
     v7[2] = __55__CSRemoteDarwinDeviceInfo_deviceDisconnectedWithUUID___block_invoke;
     v7[3] = &unk_1E865C970;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -488,11 +488,11 @@ void __55__CSRemoteDarwinDeviceInfo_deviceDisconnectedWithUUID___block_invoke(ui
   [v3 removeObject:*(a1 + 40)];
 }
 
-- (void)notifyVoiceTriggerDisabledWithDeviceUUID:(id)a3
+- (void)notifyVoiceTriggerDisabledWithDeviceUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -500,7 +500,7 @@ void __55__CSRemoteDarwinDeviceInfo_deviceDisconnectedWithUUID___block_invoke(ui
     v7[2] = __69__CSRemoteDarwinDeviceInfo_notifyVoiceTriggerDisabledWithDeviceUUID___block_invoke;
     v7[3] = &unk_1E865C970;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -511,11 +511,11 @@ void __69__CSRemoteDarwinDeviceInfo_notifyVoiceTriggerDisabledWithDeviceUUID___b
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)notifyVoiceTriggerEnabledWithDeviceUUID:(id)a3
+- (void)notifyVoiceTriggerEnabledWithDeviceUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -523,7 +523,7 @@ void __69__CSRemoteDarwinDeviceInfo_notifyVoiceTriggerDisabledWithDeviceUUID___b
     v7[2] = __68__CSRemoteDarwinDeviceInfo_notifyVoiceTriggerEnabledWithDeviceUUID___block_invoke;
     v7[3] = &unk_1E865C970;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -534,15 +534,15 @@ void __68__CSRemoteDarwinDeviceInfo_notifyVoiceTriggerEnabledWithDeviceUUID___bl
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)deviceConnectedWithUUID:(id)a3
+- (void)deviceConnectedWithUUID:(id)d
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v25[0] = 0;
     v25[1] = 0;
-    v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v4];
+    v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:dCopy];
     [v5 getUUIDBytes:v25];
     v6 = remote_device_copy_device_with_uuid();
     if (v6)
@@ -559,9 +559,9 @@ void __68__CSRemoteDarwinDeviceInfo_notifyVoiceTriggerEnabledWithDeviceUUID___bl
           block[1] = 3221225472;
           block[2] = __52__CSRemoteDarwinDeviceInfo_deviceConnectedWithUUID___block_invoke;
           block[3] = &unk_1E865C778;
-          v16 = v4;
+          v16 = dCopy;
           v17 = v8;
-          v18 = self;
+          selfCopy = self;
           dispatch_async(queue, block);
         }
 
@@ -587,7 +587,7 @@ void __68__CSRemoteDarwinDeviceInfo_notifyVoiceTriggerEnabledWithDeviceUUID___bl
           v21 = 2114;
           v22 = @"UniqueDeviceID";
           v23 = 2114;
-          v24 = v4;
+          v24 = dCopy;
           _os_log_error_impl(&dword_1DDA4B000, v12, OS_LOG_TYPE_ERROR, "%s Failed to fetch property of %{public}@ from deviceUUID %{public}@", buf, 0x20u);
         }
       }
@@ -601,7 +601,7 @@ void __68__CSRemoteDarwinDeviceInfo_notifyVoiceTriggerEnabledWithDeviceUUID___bl
         *buf = 136315394;
         v20 = "[CSRemoteDarwinDeviceInfo deviceConnectedWithUUID:]";
         v21 = 2114;
-        v22 = v4;
+        v22 = dCopy;
         _os_log_error_impl(&dword_1DDA4B000, v11, OS_LOG_TYPE_ERROR, "%s Remote device not found with UUID %{public}@", buf, 0x16u);
       }
     }
@@ -650,13 +650,13 @@ uint64_t __52__CSRemoteDarwinDeviceInfo_deviceConnectedWithUUID___block_invoke(v
   v2 = [(CSRemoteDarwinDeviceInfo *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     deviceUIDMapTable = v2->_deviceUIDMapTable;
-    v2->_deviceUIDMapTable = v3;
+    v2->_deviceUIDMapTable = dictionary;
 
-    v5 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     voiceTriggerEnabledDevices = v2->_voiceTriggerEnabledDevices;
-    v2->_voiceTriggerEnabledDevices = v5;
+    v2->_voiceTriggerEnabledDevices = orderedSet;
 
     v7 = dispatch_queue_create("CSRemoteDarwinDeviceInfo Queue", 0);
     queue = v2->_queue;

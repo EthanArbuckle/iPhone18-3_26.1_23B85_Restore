@@ -1,10 +1,10 @@
 @interface UAStreamHandler
-- (BOOL)dataHasMessage:(id)a3;
-- (BOOL)writeMessage:(id)a3 tag:(int64_t)a4;
-- (BOOL)writeRawData:(id)a3;
-- (UAStreamHandler)initWithInputStream:(id)a3 outputStream:(id)a4 delegate:(id)a5;
+- (BOOL)dataHasMessage:(id)message;
+- (BOOL)writeMessage:(id)message tag:(int64_t)tag;
+- (BOOL)writeRawData:(id)data;
+- (UAStreamHandler)initWithInputStream:(id)stream outputStream:(id)outputStream delegate:(id)delegate;
 - (UAStreamHandlerDelegate)delegate;
-- (id)trimFirstBytes:(unint64_t)a3 ofData:(id)a4;
+- (id)trimFirstBytes:(unint64_t)bytes ofData:(id)data;
 - (int64_t)handleSpaceAvailable;
 - (int64_t)queueCount;
 - (int64_t)tryWriteMessage;
@@ -16,26 +16,26 @@
 - (void)processHeader;
 - (void)start;
 - (void)stop;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 - (void)tryStop;
 @end
 
 @implementation UAStreamHandler
 
-- (UAStreamHandler)initWithInputStream:(id)a3 outputStream:(id)a4 delegate:(id)a5
+- (UAStreamHandler)initWithInputStream:(id)stream outputStream:(id)outputStream delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = UAStreamHandler;
   v11 = [(UAStreamHandler *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    [(UAStreamHandler *)v11 setDelegate:v10];
-    [(UAStreamHandler *)v12 setInStream:v8];
-    [(UAStreamHandler *)v12 setOutStream:v9];
+    [(UAStreamHandler *)v11 setDelegate:delegateCopy];
+    [(UAStreamHandler *)v12 setInStream:streamCopy];
+    [(UAStreamHandler *)v12 setOutStream:outputStreamCopy];
     [(UAStreamHandler *)v12 setInputState:0];
     [(UAStreamHandler *)v12 setOutputMode:0];
     v13 = [[NSMutableArray alloc] initWithCapacity:5];
@@ -62,12 +62,12 @@
 
 - (int64_t)queueCount
 {
-  v3 = [(UAStreamHandler *)self messageQueue];
-  v4 = [v3 count];
+  messageQueue = [(UAStreamHandler *)self messageQueue];
+  v4 = [messageQueue count];
 
-  v5 = [(UAStreamHandler *)self outMessage];
+  outMessage = [(UAStreamHandler *)self outMessage];
 
-  if (v5)
+  if (outMessage)
   {
     return v4 + 1;
   }
@@ -87,10 +87,10 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[STREAM HAND] Starting Streams", &v20, 2u);
   }
 
-  v4 = [(UAStreamHandler *)self inStream];
-  v5 = [v4 streamStatus];
+  inStream = [(UAStreamHandler *)self inStream];
+  streamStatus = [inStream streamStatus];
 
-  if (!v5)
+  if (!streamStatus)
   {
     v6 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -99,21 +99,21 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[STREAM HAND] Starting Input Stream", &v20, 2u);
     }
 
-    v7 = [(UAStreamHandler *)self inStream];
+    inStream2 = [(UAStreamHandler *)self inStream];
     v8 = +[NSRunLoop mainRunLoop];
-    [v7 scheduleInRunLoop:v8 forMode:NSDefaultRunLoopMode];
+    [inStream2 scheduleInRunLoop:v8 forMode:NSDefaultRunLoopMode];
 
     v9 = [(UAStreamHandler *)self inStream:0];
     CFReadStreamSetClient(v9, 0x1BuLL, sub_100033140, &v20);
 
-    v10 = [(UAStreamHandler *)self inStream];
-    [v10 open];
+    inStream3 = [(UAStreamHandler *)self inStream];
+    [inStream3 open];
   }
 
-  v11 = [(UAStreamHandler *)self outStream];
-  v12 = [v11 streamStatus];
+  outStream = [(UAStreamHandler *)self outStream];
+  streamStatus2 = [outStream streamStatus];
 
-  if (!v12)
+  if (!streamStatus2)
   {
     v13 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -122,15 +122,15 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[STREAM HAND] Starting Output Stream", &v20, 2u);
     }
 
-    v14 = [(UAStreamHandler *)self outStream];
+    outStream2 = [(UAStreamHandler *)self outStream];
     v15 = +[NSRunLoop mainRunLoop];
-    [v14 scheduleInRunLoop:v15 forMode:NSDefaultRunLoopMode];
+    [outStream2 scheduleInRunLoop:v15 forMode:NSDefaultRunLoopMode];
 
-    v16 = [(UAStreamHandler *)self outStream];
-    [v16 setDelegate:self];
+    outStream3 = [(UAStreamHandler *)self outStream];
+    [outStream3 setDelegate:self];
 
-    v17 = [(UAStreamHandler *)self outStream];
-    [v17 open];
+    outStream4 = [(UAStreamHandler *)self outStream];
+    [outStream4 open];
   }
 
   v18 = [[UATimedPowerAssertions alloc] initWithName:@"clipboardReadStream" delta:&_dispatch_main_q queue:60.0];
@@ -149,12 +149,12 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[STREAM HAND] Call to stop streams", v6, 2u);
   }
 
-  v4 = [(UAStreamHandler *)self assertionForRead];
-  [v4 releaseAssertion];
+  assertionForRead = [(UAStreamHandler *)self assertionForRead];
+  [assertionForRead releaseAssertion];
 
   [(UAStreamHandler *)self setAssertionForWrite:0];
-  v5 = [(UAStreamHandler *)self assertionForWrite];
-  [v5 releaseAssertion];
+  assertionForWrite = [(UAStreamHandler *)self assertionForWrite];
+  [assertionForWrite releaseAssertion];
 
   [(UAStreamHandler *)self setAssertionForWrite:0];
   [(UAStreamHandler *)self setShouldStop:1];
@@ -172,23 +172,23 @@
 
   if ([(UAStreamHandler *)self shouldStop])
   {
-    v4 = [(UAStreamHandler *)self outputStreamData];
-    if ([v4 length])
+    outputStreamData = [(UAStreamHandler *)self outputStreamData];
+    if ([outputStreamData length])
     {
 LABEL_7:
 
       return;
     }
 
-    v5 = [(UAStreamHandler *)self outMessage];
-    if (v5)
+    outMessage = [(UAStreamHandler *)self outMessage];
+    if (outMessage)
     {
 
       goto LABEL_7;
     }
 
-    v6 = [(UAStreamHandler *)self messageQueue];
-    v7 = [v6 count];
+    messageQueue = [(UAStreamHandler *)self messageQueue];
+    v7 = [messageQueue count];
 
     if (!v7)
     {
@@ -206,56 +206,56 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[STREAM HAND] Stoping streams", v14, 2u);
   }
 
-  v4 = [(UAStreamHandler *)self inStream];
+  inStream = [(UAStreamHandler *)self inStream];
 
-  if (v4)
+  if (inStream)
   {
-    v5 = [(UAStreamHandler *)self inStream];
-    [v5 close];
+    inStream2 = [(UAStreamHandler *)self inStream];
+    [inStream2 close];
 
-    v6 = [(UAStreamHandler *)self inStream];
-    [v6 setDelegate:0];
+    inStream3 = [(UAStreamHandler *)self inStream];
+    [inStream3 setDelegate:0];
 
     [(UAStreamHandler *)self setInStream:0];
   }
 
-  v7 = [(UAStreamHandler *)self outStream];
+  outStream = [(UAStreamHandler *)self outStream];
 
-  if (v7)
+  if (outStream)
   {
-    v8 = [(UAStreamHandler *)self outStream];
-    [v8 close];
+    outStream2 = [(UAStreamHandler *)self outStream];
+    [outStream2 close];
 
-    v9 = [(UAStreamHandler *)self outStream];
-    [v9 setDelegate:0];
+    outStream3 = [(UAStreamHandler *)self outStream];
+    [outStream3 setDelegate:0];
 
     [(UAStreamHandler *)self setOutStream:0];
   }
 
-  v10 = [(UAStreamHandler *)self delegate];
+  delegate = [(UAStreamHandler *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(UAStreamHandler *)self delegate];
-    v13 = [(UAStreamHandler *)self streamError];
-    [v12 streamsDidClose:self withError:v13];
+    delegate2 = [(UAStreamHandler *)self delegate];
+    streamError = [(UAStreamHandler *)self streamError];
+    [delegate2 streamsDidClose:self withError:streamError];
   }
 }
 
-- (BOOL)writeRawData:(id)a3
+- (BOOL)writeRawData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v12 = 134217984;
-    v13 = [v4 length];
+    v13 = [dataCopy length];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[STREAM HAND] Write raw data of length: %ld", &v12, 0xCu);
   }
 
-  v6 = [(UAStreamHandler *)self outputMode];
-  if (v6 == 1)
+  outputMode = [(UAStreamHandler *)self outputMode];
+  if (outputMode == 1)
   {
     v10 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -272,36 +272,36 @@ LABEL_7:
       [(UAStreamHandler *)self setOutputMode:2];
     }
 
-    v7 = [(UAStreamHandler *)self outputStreamData];
-    [v7 appendData:v4];
+    outputStreamData = [(UAStreamHandler *)self outputStreamData];
+    [outputStreamData appendData:dataCopy];
 
-    v8 = [(UAStreamHandler *)self outStream];
-    v9 = [v8 hasSpaceAvailable];
+    outStream = [(UAStreamHandler *)self outStream];
+    hasSpaceAvailable = [outStream hasSpaceAvailable];
 
-    if (v9)
+    if (hasSpaceAvailable)
     {
       [(UAStreamHandler *)self tryWriteRawData];
     }
   }
 
-  return v6 != 1;
+  return outputMode != 1;
 }
 
-- (BOOL)writeMessage:(id)a3 tag:(int64_t)a4
+- (BOOL)writeMessage:(id)message tag:(int64_t)tag
 {
-  v6 = a3;
+  messageCopy = message;
   v7 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218240;
-    v20 = a4;
+    tagCopy = tag;
     v21 = 2048;
-    v22 = [v6 length];
+    v22 = [messageCopy length];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[STREAM HAND] Write message tagged %ld of length: %ld", buf, 0x16u);
   }
 
-  v8 = [(UAStreamHandler *)self outputMode];
-  if (v8 != 2)
+  outputMode = [(UAStreamHandler *)self outputMode];
+  if (outputMode != 2)
   {
     if (![(UAStreamHandler *)self outputMode])
     {
@@ -312,27 +312,27 @@ LABEL_7:
     v9 = [[NSMutableData alloc] initWithBytes:&v18 length:1];
     v17 = 1;
     [v9 appendBytes:&v17 length:1];
-    *buf = bswap32(a4);
+    *buf = bswap32(tag);
     [v9 appendBytes:buf length:4];
-    v16 = bswap32([v6 length]);
+    v16 = bswap32([messageCopy length]);
     [v9 appendBytes:&v16 length:4];
-    [v9 appendData:v6];
-    v10 = [(UAStreamHandler *)self messageQueue];
-    objc_sync_enter(v10);
-    v11 = [(UAStreamHandler *)self messageQueue];
-    [v11 addObject:v9];
+    [v9 appendData:messageCopy];
+    messageQueue = [(UAStreamHandler *)self messageQueue];
+    objc_sync_enter(messageQueue);
+    messageQueue2 = [(UAStreamHandler *)self messageQueue];
+    [messageQueue2 addObject:v9];
 
-    objc_sync_exit(v10);
-    v12 = [(UAStreamHandler *)self outStream];
-    if ([v12 hasSpaceAvailable])
+    objc_sync_exit(messageQueue);
+    outStream = [(UAStreamHandler *)self outStream];
+    if ([outStream hasSpaceAvailable])
     {
     }
 
     else
     {
-      v14 = [(UAStreamHandler *)self shouldTryWrite];
+      shouldTryWrite = [(UAStreamHandler *)self shouldTryWrite];
 
-      if ((v14 & 1) == 0)
+      if ((shouldTryWrite & 1) == 0)
       {
 LABEL_13:
 
@@ -352,30 +352,30 @@ LABEL_13:
   }
 
 LABEL_14:
-  return v8 != 2;
+  return outputMode != 2;
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  v7 = self;
-  v8 = v7;
-  if (a4 <= 3)
+  streamCopy = stream;
+  selfCopy = self;
+  v8 = selfCopy;
+  if (event <= 3)
   {
-    if (a4 == 1)
+    if (event == 1)
     {
-      [(UAStreamHandler *)v7 handleOpenCompleted];
+      [(UAStreamHandler *)selfCopy handleOpenCompleted];
     }
 
-    else if (a4 == 2)
+    else if (event == 2)
     {
-      [(UAStreamHandler *)v7 handleBytesAvailable];
+      [(UAStreamHandler *)selfCopy handleBytesAvailable];
     }
   }
 
-  else if (a4 == 4)
+  else if (event == 4)
   {
-    if ([(UAStreamHandler *)v7 handleSpaceAvailable])
+    if ([(UAStreamHandler *)selfCopy handleSpaceAvailable])
     {
       v9 = v8;
       v10 = 0;
@@ -399,24 +399,24 @@ LABEL_14:
 
   else
   {
-    if (a4 == 8)
+    if (event == 8)
     {
-      v11 = [v6 streamError];
-      [(UAStreamHandler *)v8 setStreamError:v11];
+      streamError = [streamCopy streamError];
+      [(UAStreamHandler *)v8 setStreamError:streamError];
 
       v12 = sub_100001A30(@"pasteboard-server");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [(UAStreamHandler *)v8 streamError];
+        streamError2 = [(UAStreamHandler *)v8 streamError];
         v15 = 138543618;
-        v16 = v6;
+        v16 = streamCopy;
         v17 = 2114;
-        v18 = v13;
+        v18 = streamError2;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "[STREAM HAND] Received error on stream %{public}@: %{public}@", &v15, 0x16u);
       }
     }
 
-    else if (a4 != 16)
+    else if (event != 16)
     {
       goto LABEL_20;
     }
@@ -429,17 +429,17 @@ LABEL_20:
 
 - (void)handleOpenCompleted
 {
-  v6 = [(UAStreamHandler *)self inStream];
-  if ([v6 streamStatus] <= 1)
+  inStream = [(UAStreamHandler *)self inStream];
+  if ([inStream streamStatus] <= 1)
   {
   }
 
   else
   {
-    v3 = [(UAStreamHandler *)self outStream];
-    v4 = [v3 streamStatus];
+    outStream = [(UAStreamHandler *)self outStream];
+    streamStatus = [outStream streamStatus];
 
-    if (v4 >= 2)
+    if (streamStatus >= 2)
     {
       v5 = sub_100001A30(@"pasteboard-server");
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -466,16 +466,16 @@ LABEL_20:
       return;
     }
 
-    v4 = [(UAStreamHandler *)self inMessageLength];
-    v5 = [(UAStreamHandler *)self bytesRead];
-    v6 = v4 - v5;
+    inMessageLength = [(UAStreamHandler *)self inMessageLength];
+    bytesRead = [(UAStreamHandler *)self bytesRead];
+    v6 = inMessageLength - bytesRead;
     v3 = 0x10000;
-    if ((v4 - v5) >= 0x10000)
+    if ((inMessageLength - bytesRead) >= 0x10000)
     {
       v6 = 0x10000;
     }
 
-    if (v4 == v5)
+    if (inMessageLength == bytesRead)
     {
       goto LABEL_11;
     }
@@ -493,13 +493,13 @@ LABEL_5:
   v3 = 0x10000;
 LABEL_11:
   v7 = &v21 - ((v3 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = [(UAStreamHandler *)self inStream];
-  v9 = [v8 read:v7 maxLength:v3];
+  inStream = [(UAStreamHandler *)self inStream];
+  v9 = [inStream read:v7 maxLength:v3];
 
   if (v9 >= 1)
   {
-    v10 = [(UAStreamHandler *)self inData];
-    [v10 appendBytes:v7 length:v9];
+    inData = [(UAStreamHandler *)self inData];
+    [inData appendBytes:v7 length:v9];
 
     [(UAStreamHandler *)self setBytesRead:[(UAStreamHandler *)self bytesRead]+ v9];
     [(UAStreamHandler *)self setTotalBytesReceived:[(UAStreamHandler *)self totalBytesReceived]+ v9];
@@ -507,8 +507,8 @@ LABEL_11:
     {
       if ([(UAStreamHandler *)self inputState]== 1)
       {
-        v11 = [(UAStreamHandler *)self bytesRead];
-        if (v11 == [(UAStreamHandler *)self inMessageLength])
+        bytesRead2 = [(UAStreamHandler *)self bytesRead];
+        if (bytesRead2 == [(UAStreamHandler *)self inMessageLength])
         {
           [(UAStreamHandler *)self handleMessageRead];
         }
@@ -522,8 +522,8 @@ LABEL_11:
 
     else if ([(UAStreamHandler *)self bytesRead]== 10)
     {
-      v12 = [(UAStreamHandler *)self inData];
-      v13 = [(UAStreamHandler *)self dataHasMessage:v12];
+      inData2 = [(UAStreamHandler *)self inData];
+      v13 = [(UAStreamHandler *)self dataHasMessage:inData2];
 
       if (v13)
       {
@@ -538,65 +538,65 @@ LABEL_11:
 
     if ([(UAStreamHandler *)self inputState]== 2)
     {
-      v14 = [(UAStreamHandler *)self inData];
-      v15 = [v14 copy];
+      inData3 = [(UAStreamHandler *)self inData];
+      v15 = [inData3 copy];
 
-      v16 = [(UAStreamHandler *)self inData];
-      [v16 setLength:0];
+      inData4 = [(UAStreamHandler *)self inData];
+      [inData4 setLength:0];
 
-      v17 = [(UAStreamHandler *)self delegate];
+      delegate = [(UAStreamHandler *)self delegate];
       v18 = objc_opt_respondsToSelector();
 
       if (v18)
       {
-        v19 = [(UAStreamHandler *)self delegate];
-        [v19 streams:self didReadRawData:v15];
+        delegate2 = [(UAStreamHandler *)self delegate];
+        [delegate2 streams:self didReadRawData:v15];
       }
     }
 
-    v20 = [(UAStreamHandler *)self assertionForRead];
-    [v20 updateTimeUntilAssertionRelease:60.0];
+    assertionForRead = [(UAStreamHandler *)self assertionForRead];
+    [assertionForRead updateTimeUntilAssertionRelease:60.0];
   }
 }
 
 - (void)processHeader
 {
-  v3 = [(UAStreamHandler *)self inData];
-  -[UAStreamHandler setInMessageTag:](self, "setInMessageTag:", bswap32(*([v3 bytes] + 2)));
+  inData = [(UAStreamHandler *)self inData];
+  -[UAStreamHandler setInMessageTag:](self, "setInMessageTag:", bswap32(*([inData bytes] + 2)));
 
-  v4 = [(UAStreamHandler *)self inData];
-  -[UAStreamHandler setInMessageLength:](self, "setInMessageLength:", bswap32(*([v4 bytes] + 6)));
+  inData2 = [(UAStreamHandler *)self inData];
+  -[UAStreamHandler setInMessageLength:](self, "setInMessageLength:", bswap32(*([inData2 bytes] + 6)));
 
   [(UAStreamHandler *)self setBytesRead:[(UAStreamHandler *)self bytesRead]- 10];
   [(UAStreamHandler *)self setInputState:1];
-  v5 = [(UAStreamHandler *)self inData];
-  [v5 setLength:0];
+  inData3 = [(UAStreamHandler *)self inData];
+  [inData3 setLength:0];
 }
 
-- (BOOL)dataHasMessage:(id)a3
+- (BOOL)dataHasMessage:(id)message
 {
-  v3 = a3;
-  v4 = *[v3 bytes];
-  v5 = [v3 bytes];
+  messageCopy = message;
+  v4 = *[messageCopy bytes];
+  bytes = [messageCopy bytes];
 
-  return v4 == 67 && v5[1] == 1;
+  return v4 == 67 && bytes[1] == 1;
 }
 
 - (void)handleMessageRead
 {
-  v3 = [(UAStreamHandler *)self inData];
-  v4 = [v3 copy];
+  inData = [(UAStreamHandler *)self inData];
+  v4 = [inData copy];
   [(UAStreamHandler *)self setInMessage:v4];
 
-  v5 = [(UAStreamHandler *)self delegate];
-  v6 = [(UAStreamHandler *)self inMessage];
-  [v5 streams:self didReadMessage:v6 withTag:{-[UAStreamHandler inMessageTag](self, "inMessageTag")}];
+  delegate = [(UAStreamHandler *)self delegate];
+  inMessage = [(UAStreamHandler *)self inMessage];
+  [delegate streams:self didReadMessage:inMessage withTag:{-[UAStreamHandler inMessageTag](self, "inMessageTag")}];
 
   [(UAStreamHandler *)self setBytesRead:0];
   [(UAStreamHandler *)self setInMessageTag:0];
   [(UAStreamHandler *)self setInMessageLength:0];
-  v7 = [(UAStreamHandler *)self inData];
-  [v7 setLength:0];
+  inData2 = [(UAStreamHandler *)self inData];
+  [inData2 setLength:0];
 
   [(UAStreamHandler *)self setInputState:0];
 }
@@ -623,16 +623,16 @@ LABEL_11:
 
 - (int64_t)tryWriteRawData
 {
-  v3 = [(UAStreamHandler *)self outputStreamData];
-  v4 = [v3 length];
+  outputStreamData = [(UAStreamHandler *)self outputStreamData];
+  v4 = [outputStreamData length];
 
   if (v4)
   {
-    v5 = [(UAStreamHandler *)self outStream];
-    v6 = [(UAStreamHandler *)self outputStreamData];
-    v7 = [v6 bytes];
-    v8 = [(UAStreamHandler *)self outputStreamData];
-    v9 = [v5 write:v7 maxLength:{objc_msgSend(v8, "length")}];
+    outStream = [(UAStreamHandler *)self outStream];
+    outputStreamData2 = [(UAStreamHandler *)self outputStreamData];
+    bytes = [outputStreamData2 bytes];
+    outputStreamData3 = [(UAStreamHandler *)self outputStreamData];
+    v9 = [outStream write:bytes maxLength:{objc_msgSend(outputStreamData3, "length")}];
 
     v10 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -645,27 +645,27 @@ LABEL_11:
     if (v9 >= 1)
     {
       [(UAStreamHandler *)self setTotalBytesSent:[(UAStreamHandler *)self totalBytesSent]+ v9];
-      v11 = [(UAStreamHandler *)self outputStreamData];
-      v12 = [(UAStreamHandler *)self trimFirstBytes:v9 ofData:v11];
+      outputStreamData4 = [(UAStreamHandler *)self outputStreamData];
+      v12 = [(UAStreamHandler *)self trimFirstBytes:v9 ofData:outputStreamData4];
       [(UAStreamHandler *)self setOutputStreamData:v12];
 
-      v13 = [(UAStreamHandler *)self outputStreamData];
-      v14 = [v13 length];
+      outputStreamData5 = [(UAStreamHandler *)self outputStreamData];
+      v14 = [outputStreamData5 length];
 
       if (!v14)
       {
-        v15 = [(UAStreamHandler *)self delegate];
+        delegate = [(UAStreamHandler *)self delegate];
         v16 = objc_opt_respondsToSelector();
 
         if (v16)
         {
-          v17 = [(UAStreamHandler *)self delegate];
-          [v17 streamsDidWriteRawDataBuffer:self];
+          delegate2 = [(UAStreamHandler *)self delegate];
+          [delegate2 streamsDidWriteRawDataBuffer:self];
         }
       }
 
-      v18 = [(UAStreamHandler *)self assertionForWrite];
-      [v18 updateTimeUntilAssertionRelease:60.0];
+      assertionForWrite = [(UAStreamHandler *)self assertionForWrite];
+      [assertionForWrite updateTimeUntilAssertionRelease:60.0];
     }
   }
 
@@ -680,17 +680,17 @@ LABEL_11:
 
 - (int64_t)tryWriteMessage
 {
-  v3 = [(UAStreamHandler *)self outStream];
-  objc_sync_enter(v3);
-  v4 = [(UAStreamHandler *)self outMessage];
-  if (v4)
+  outStream = [(UAStreamHandler *)self outStream];
+  objc_sync_enter(outStream);
+  outMessage = [(UAStreamHandler *)self outMessage];
+  if (outMessage)
   {
   }
 
   else
   {
-    v5 = [(UAStreamHandler *)self messageQueue];
-    v6 = [v5 count];
+    messageQueue = [(UAStreamHandler *)self messageQueue];
+    v6 = [messageQueue count];
 
     if (!v6)
     {
@@ -698,47 +698,47 @@ LABEL_11:
     }
   }
 
-  v7 = [(UAStreamHandler *)self outMessage];
+  outMessage2 = [(UAStreamHandler *)self outMessage];
 
-  if (!v7)
+  if (!outMessage2)
   {
-    v8 = [(UAStreamHandler *)self messageQueue];
-    objc_sync_enter(v8);
-    v9 = [(UAStreamHandler *)self messageQueue];
-    v10 = [v9 firstObject];
-    [(UAStreamHandler *)self setOutMessage:v10];
+    messageQueue2 = [(UAStreamHandler *)self messageQueue];
+    objc_sync_enter(messageQueue2);
+    messageQueue3 = [(UAStreamHandler *)self messageQueue];
+    firstObject = [messageQueue3 firstObject];
+    [(UAStreamHandler *)self setOutMessage:firstObject];
 
-    v11 = [(UAStreamHandler *)self messageQueue];
-    [v11 removeObjectAtIndex:0];
+    messageQueue4 = [(UAStreamHandler *)self messageQueue];
+    [messageQueue4 removeObjectAtIndex:0];
 
-    v12 = [(UAStreamHandler *)self outMessage];
-    -[UAStreamHandler setOutMessageTag:](self, "setOutMessageTag:", bswap32(*([v12 bytes] + 2)));
+    outMessage3 = [(UAStreamHandler *)self outMessage];
+    -[UAStreamHandler setOutMessageTag:](self, "setOutMessageTag:", bswap32(*([outMessage3 bytes] + 2)));
 
     [(UAStreamHandler *)self setByteIndex:0];
-    objc_sync_exit(v8);
+    objc_sync_exit(messageQueue2);
   }
 
-  v13 = [(UAStreamHandler *)self outMessage];
-  v14 = [v13 bytes];
+  outMessage4 = [(UAStreamHandler *)self outMessage];
+  bytes = [outMessage4 bytes];
 
-  v15 = [(UAStreamHandler *)self byteIndex];
-  v16 = [(UAStreamHandler *)self outMessage];
-  v17 = [v16 length];
-  v18 = [(UAStreamHandler *)self byteIndex];
+  byteIndex = [(UAStreamHandler *)self byteIndex];
+  outMessage5 = [(UAStreamHandler *)self outMessage];
+  v17 = [outMessage5 length];
+  byteIndex2 = [(UAStreamHandler *)self byteIndex];
 
-  v19 = [(UAStreamHandler *)self outStream];
-  v20 = v19;
-  if (&v17[-v18] >= 0x10000)
+  outStream2 = [(UAStreamHandler *)self outStream];
+  v20 = outStream2;
+  if (&v17[-byteIndex2] >= 0x10000)
   {
     v21 = 0x10000;
   }
 
   else
   {
-    v21 = &v17[-v18];
+    v21 = &v17[-byteIndex2];
   }
 
-  v22 = [v19 write:&v14[v15] maxLength:v21];
+  v22 = [outStream2 write:&bytes[byteIndex] maxLength:v21];
 
   if (v22 < 1)
   {
@@ -747,10 +747,10 @@ LABEL_11:
       v33 = sub_100001A30(@"pasteboard-server");
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
-        v34 = [(UAStreamHandler *)self outStream];
-        v35 = [v34 streamError];
+        outStream3 = [(UAStreamHandler *)self outStream];
+        streamError = [outStream3 streamError];
         v37 = 138543362;
-        v38 = v35;
+        v38 = streamError;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "[STREAM HAND] Error writing message: %{public}@", &v37, 0xCu);
       }
 
@@ -771,17 +771,17 @@ LABEL_17:
 
   [(UAStreamHandler *)self setByteIndex:[(UAStreamHandler *)self byteIndex]+ v22];
   [(UAStreamHandler *)self setTotalBytesSent:[(UAStreamHandler *)self totalBytesSent]+ v22];
-  v23 = [(UAStreamHandler *)self byteIndex];
-  v24 = [(UAStreamHandler *)self outMessage];
-  v25 = [v24 length];
+  byteIndex3 = [(UAStreamHandler *)self byteIndex];
+  outMessage6 = [(UAStreamHandler *)self outMessage];
+  v25 = [outMessage6 length];
 
-  if (v23 != v25)
+  if (byteIndex3 != v25)
   {
-    v30 = [(UAStreamHandler *)self byteIndex];
-    v31 = [(UAStreamHandler *)self outMessage];
-    v32 = [v31 length];
+    byteIndex4 = [(UAStreamHandler *)self byteIndex];
+    outMessage7 = [(UAStreamHandler *)self outMessage];
+    v32 = [outMessage7 length];
 
-    if (v30 <= v32)
+    if (byteIndex4 <= v32)
     {
       goto LABEL_25;
     }
@@ -800,26 +800,26 @@ LABEL_24:
 
   [(UAStreamHandler *)self setOutMessage:0];
   [(UAStreamHandler *)self setByteIndex:0];
-  v26 = [(UAStreamHandler *)self delegate];
+  delegate = [(UAStreamHandler *)self delegate];
   v27 = objc_opt_respondsToSelector();
 
   if (v27)
   {
-    v28 = [(UAStreamHandler *)self delegate];
-    [v28 streams:self didWriteMessageWithTag:{-[UAStreamHandler outMessageTag](self, "outMessageTag")}];
+    delegate2 = [(UAStreamHandler *)self delegate];
+    [delegate2 streams:self didWriteMessageWithTag:{-[UAStreamHandler outMessageTag](self, "outMessageTag")}];
   }
 
 LABEL_25:
-  objc_sync_exit(v3);
+  objc_sync_exit(outStream);
 
   [(UAStreamHandler *)self tryStop];
   return v22;
 }
 
-- (id)trimFirstBytes:(unint64_t)a3 ofData:(id)a4
+- (id)trimFirstBytes:(unint64_t)bytes ofData:(id)data
 {
-  v5 = a4;
-  v6 = [v5 subdataWithRange:{a3, objc_msgSend(v5, "length") - a3}];
+  dataCopy = data;
+  v6 = [dataCopy subdataWithRange:{bytes, objc_msgSend(dataCopy, "length") - bytes}];
 
   v7 = [NSMutableData dataWithData:v6];
 

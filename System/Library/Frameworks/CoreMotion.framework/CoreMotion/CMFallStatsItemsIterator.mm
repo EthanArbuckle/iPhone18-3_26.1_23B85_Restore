@@ -1,15 +1,15 @@
 @interface CMFallStatsItemsIterator
-- (CMFallStatsItemsIterator)initWithData:(id)a3;
+- (CMFallStatsItemsIterator)initWithData:(id)data;
 - (id).cxx_construct;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
 @end
 
 @implementation CMFallStatsItemsIterator
 
-- (CMFallStatsItemsIterator)initWithData:(id)a3
+- (CMFallStatsItemsIterator)initWithData:(id)data
 {
-  if (!objc_msgSend_length(a3, a2, a3))
+  if (!objc_msgSend_length(data, a2, data))
   {
     return 0;
   }
@@ -19,7 +19,7 @@
   v5 = [(CMFallStatsItemsIterator *)&v7 init];
   if (v5)
   {
-    v5->_data = a3;
+    v5->_data = data;
     v5->_item = 0;
   }
 
@@ -33,18 +33,18 @@
   [(CMFallStatsItemsIterator *)&v3 dealloc];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v175[1] = *MEMORY[0x1E69E9840];
-  a3->var1 = a4;
-  a3->var2 = self;
+  state->var1 = objects;
+  state->var2 = self;
   if (!self->_data)
   {
     goto LABEL_70;
   }
 
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = state->var0;
+  if (!state->var0)
   {
     if (sub_19B508DD0(&self->fMslReader))
     {
@@ -61,7 +61,7 @@
       sub_19B508B88(buf, &self->fMslReader);
     }
 
-    var0 = a3->var0;
+    var0 = state->var0;
   }
 
   if (var0 != 1 || sub_19B508DD0(&self->fMslReader))
@@ -76,7 +76,7 @@
         {
           v174 = @"meta";
           v172[0] = @"timestamp";
-          v173[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, a3, *(ptr + 87));
+          v173[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, state, *(ptr + 87));
           v172[1] = @"crownUpDown";
           v173[1] = objc_msgSend_numberWithInt_(MEMORY[0x1E696AD98], v17, *(*(*(ptr + 139) + 88) + 8));
           v172[2] = @"isNearFall";
@@ -106,7 +106,7 @@
         {
           v170 = @"accel";
           v168[0] = @"timestamp";
-          v169[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, a3, *(ptr + 87));
+          v169[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, state, *(ptr + 87));
           v168[1] = @"x";
           LODWORD(v33) = *(*(*(ptr + 139) + 8) + 20);
           v169[1] = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v34, v35, v33);
@@ -125,7 +125,7 @@
         {
           v166 = @"fastAccel";
           v164[0] = @"timestamp";
-          v165[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, a3, *(ptr + 87));
+          v165[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, state, *(ptr + 87));
           v164[1] = @"x";
           LODWORD(v44) = *(*(*(ptr + 139) + 16) + 20);
           v165[1] = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v45, v46, v44);
@@ -144,7 +144,7 @@
         {
           v162 = @"gyro";
           v160[0] = @"timestamp";
-          v161[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, a3, *(ptr + 87));
+          v161[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, state, *(ptr + 87));
           v160[1] = @"x";
           LODWORD(v55) = *(*(*(ptr + 139) + 64) + 28);
           v161[1] = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v56, v57, v55);
@@ -163,7 +163,7 @@
         {
           v158 = @"fastGyro";
           v156[0] = @"timestamp";
-          v157[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, a3, *(ptr + 87));
+          v157[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, state, *(ptr + 87));
           v156[1] = @"x";
           LODWORD(v66) = *(*(*(ptr + 139) + 72) + 28);
           v157[1] = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v67, v68, v66);
@@ -182,7 +182,7 @@
         {
           v154 = @"deviceMotion";
           v152[0] = @"timestamp";
-          v153[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, a3, *(ptr + 87));
+          v153[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, state, *(ptr + 87));
           v152[1] = @"qx";
           v153[1] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v77, v78, *(*(*(ptr + 139) + 32) + 16));
           v152[2] = @"qy";
@@ -200,7 +200,7 @@
         {
           v150 = @"pressure";
           v148[0] = @"timestamp";
-          v149[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, a3, *(ptr + 87));
+          v149[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, state, *(ptr + 87));
           v148[1] = @"pressure";
           if ((*(*(*(ptr + 139) + 104) + 16) & 0x7FFFFFFFu) >= 0x7F800000)
           {
@@ -222,7 +222,7 @@
         {
           v146 = @"heartRate";
           v144[0] = @"timestamp";
-          v145[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, a3, *(ptr + 87));
+          v145[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, state, *(ptr + 87));
           v144[1] = @"heartRate";
           v94 = *(*(*(*(ptr + 139) + 80) + 8) + 16);
           if ((*&v94 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
@@ -248,7 +248,7 @@
         {
           v142 = @"wristState";
           v140[0] = @"timestamp";
-          v141[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, a3, *(ptr + 87));
+          v141[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, state, *(ptr + 87));
           v140[1] = @"onWrist";
           v141[1] = objc_msgSend_numberWithUnsignedInt_(MEMORY[0x1E696AD98], v100, *(*(*(ptr + 139) + 120) + 24));
           v140[2] = @"onWristSensor";
@@ -270,7 +270,7 @@
         {
           v138 = @"state";
           v136[0] = @"timestamp";
-          v137[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, a3, *(ptr + 87));
+          v137[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, state, *(ptr + 87));
           v136[1] = @"aopTsSensor";
           v137[1] = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], v108, *(*(*(ptr + 139) + 48) + 16));
           v136[2] = @"state";
@@ -288,7 +288,7 @@
         {
           v134 = @"impact";
           v132[0] = @"timestamp";
-          v133[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, a3, *(ptr + 87));
+          v133[0] = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, state, *(ptr + 87));
           v132[1] = @"aopTsSensor";
           v133[1] = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], v114, *(*(*(ptr + 139) + 56) + 16));
           v132[2] = @"fallType";

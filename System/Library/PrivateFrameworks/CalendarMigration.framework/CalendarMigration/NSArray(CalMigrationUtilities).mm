@@ -21,7 +21,7 @@
   v6[3] = &unk_278D6D4B8;
   v7 = v4;
   v5 = v4;
-  [a1 enumerateObjectsUsingBlock:v6];
+  [self enumerateObjectsUsingBlock:v6];
 }
 
 - (void)enumerateCalTaskRefsUsingBlock:()CalMigrationUtilities
@@ -33,7 +33,7 @@
   v6[3] = &unk_278D6D4B8;
   v7 = v4;
   v5 = v4;
-  [a1 enumerateObjectsUsingBlock:v6];
+  [self enumerateObjectsUsingBlock:v6];
 }
 
 - (void)enumerateCalCalendarRefsUsingBlock:()CalMigrationUtilities
@@ -45,7 +45,7 @@
   v6[3] = &unk_278D6D4B8;
   v7 = v4;
   v5 = v4;
-  [a1 enumerateObjectsUsingBlock:v6];
+  [self enumerateObjectsUsingBlock:v6];
 }
 
 - (void)enumerateCalStoreRefsUsingBlock:()CalMigrationUtilities
@@ -57,7 +57,7 @@
   v6[3] = &unk_278D6D4B8;
   v7 = v4;
   v5 = v4;
-  [a1 enumerateObjectsUsingBlock:v6];
+  [self enumerateObjectsUsingBlock:v6];
 }
 
 - (void)enumerateCalAttendeeRefsUsingBlock:()CalMigrationUtilities
@@ -69,7 +69,7 @@
   v6[3] = &unk_278D6D4B8;
   v7 = v4;
   v5 = v4;
-  [a1 enumerateObjectsUsingBlock:v6];
+  [self enumerateObjectsUsingBlock:v6];
 }
 
 - (void)enumerateCalAttachmentRefsUsingBlock:()CalMigrationUtilities
@@ -81,7 +81,7 @@
   v6[3] = &unk_278D6D4B8;
   v7 = v4;
   v5 = v4;
-  [a1 enumerateObjectsUsingBlock:v6];
+  [self enumerateObjectsUsingBlock:v6];
 }
 
 - (void)enumerateCalNotificationRefsUsingBlock:()CalMigrationUtilities
@@ -93,7 +93,7 @@
   v6[3] = &unk_278D6D4B8;
   v7 = v4;
   v5 = v4;
-  [a1 enumerateObjectsUsingBlock:v6];
+  [self enumerateObjectsUsingBlock:v6];
 }
 
 - (void)enumerateCalResourceChangeRefsUsingBlock:()CalMigrationUtilities
@@ -105,7 +105,7 @@
   v6[3] = &unk_278D6D4B8;
   v7 = v4;
   v5 = v4;
-  [a1 enumerateObjectsUsingBlock:v6];
+  [self enumerateObjectsUsingBlock:v6];
 }
 
 - (void)enumerateCalAlarmRefsUsingBlock:()CalMigrationUtilities
@@ -117,7 +117,7 @@
   v6[3] = &unk_278D6D4B8;
   v7 = v4;
   v5 = v4;
-  [a1 enumerateObjectsUsingBlock:v6];
+  [self enumerateObjectsUsingBlock:v6];
 }
 
 @end

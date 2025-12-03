@@ -1,40 +1,40 @@
 @interface _MPCQueueControllerBehaviorPodcasts
-+ (id)makeExtensionWithInvalidatable:(id)a3;
-- (BOOL)isExportableSessionType:(id)a3 forContentItemID:(id)a4 extension:(id)a5 reason:(id *)a6;
-- (BOOL)isOneShotExportableSessionForContentItemID:(id)a3 reason:(id *)a4;
-- (BOOL)isSupportedInsertionPosition:(int64_t)a3 fromContentItemID:(id)a4 reason:(id *)a5;
-- (BOOL)itemExistsForContentItemID:(id)a3;
++ (id)makeExtensionWithInvalidatable:(id)invalidatable;
+- (BOOL)isExportableSessionType:(id)type forContentItemID:(id)d extension:(id)extension reason:(id *)reason;
+- (BOOL)isOneShotExportableSessionForContentItemID:(id)d reason:(id *)reason;
+- (BOOL)isSupportedInsertionPosition:(int64_t)position fromContentItemID:(id)d reason:(id *)reason;
+- (BOOL)itemExistsForContentItemID:(id)d;
 - (MPCQueueControllerBehaviorHost)host;
 - (NSArray)queueTrackIdentifiers;
 - (NSString)sessionID;
-- (_MPCQueueControllerBehaviorPodcasts)initWithCoder:(id)a3;
-- (_MPCQueueControllerBehaviorPodcasts)initWithSessionID:(id)a3;
-- (id)_itemForContentItemID:(id)a3 allowReuse:(BOOL)a4;
-- (id)_stateDictionaryIncludingQueue:(BOOL)a3;
-- (id)componentsForContentItemID:(id)a3;
-- (id)contentItemIDEnumeratorStartingAfterContentItemID:(id)a3 mode:(int64_t)a4 options:(unint64_t)a5;
-- (id)finalizeStateRestorationWithTargetContentItemID:(id)a3 completion:(id)a4;
-- (id)performLoadCommand:(id)a3 completion:(id)a4;
-- (id)tailInsertionContentItemIDForTargetContentItemID:(id)a3;
+- (_MPCQueueControllerBehaviorPodcasts)initWithCoder:(id)coder;
+- (_MPCQueueControllerBehaviorPodcasts)initWithSessionID:(id)d;
+- (id)_itemForContentItemID:(id)d allowReuse:(BOOL)reuse;
+- (id)_stateDictionaryIncludingQueue:(BOOL)queue;
+- (id)componentsForContentItemID:(id)d;
+- (id)contentItemIDEnumeratorStartingAfterContentItemID:(id)d mode:(int64_t)mode options:(unint64_t)options;
+- (id)finalizeStateRestorationWithTargetContentItemID:(id)d completion:(id)completion;
+- (id)performLoadCommand:(id)command completion:(id)completion;
+- (id)tailInsertionContentItemIDForTargetContentItemID:(id)d;
 - (int64_t)displayItemCount;
 - (int64_t)preferredUpcomingItemCount;
 - (uint64_t)canPreviousItemFromContentItemID:reason:;
-- (void)canReuseQueue:(id)a3 completion:(id)a4;
-- (void)clearUpNextAfterContentItemID:(id)a3;
-- (void)currentItemDidChangeFromContentItemID:(id)a3 toContentItemID:(id)a4;
-- (void)didReachEndOfQueueWithReason:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadAdditionalUpcomingItems:(int64_t)a3 completion:(id)a4;
-- (void)perShowSettingsDidChange:(id)a3;
-- (void)performInsertCommand:(id)a3 targetContentItemID:(id)a4 completion:(id)a5;
-- (void)removeContentItemID:(id)a3 completion:(id)a4;
-- (void)setHost:(id)a3;
-- (void)setSessionID:(id)a3;
+- (void)canReuseQueue:(id)queue completion:(id)completion;
+- (void)clearUpNextAfterContentItemID:(id)d;
+- (void)currentItemDidChangeFromContentItemID:(id)d toContentItemID:(id)iD;
+- (void)didReachEndOfQueueWithReason:(id)reason;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadAdditionalUpcomingItems:(int64_t)items completion:(id)completion;
+- (void)perShowSettingsDidChange:(id)change;
+- (void)performInsertCommand:(id)command targetContentItemID:(id)d completion:(id)completion;
+- (void)removeContentItemID:(id)d completion:(id)completion;
+- (void)setHost:(id)host;
+- (void)setSessionID:(id)d;
 @end
 
 @implementation _MPCQueueControllerBehaviorPodcasts
 
-+ (id)makeExtensionWithInvalidatable:(id)a3
++ (id)makeExtensionWithInvalidatable:(id)invalidatable
 {
   swift_unknownObjectRetain();
   v3 = static QueueControllerBehaviorPodcasts.makeExtension(with:)();
@@ -58,10 +58,10 @@
   return v2;
 }
 
-- (void)setSessionID:(id)a3
+- (void)setSessionID:(id)d
 {
   sub_1C6016940();
-  v4 = self;
+  selfCopy = self;
   sub_1C5D15F8C();
 }
 
@@ -72,23 +72,23 @@
   return v2;
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C5D16144(a3);
+  selfCopy = self;
+  sub_1C5D16144(host);
 }
 
-- (_MPCQueueControllerBehaviorPodcasts)initWithCoder:(id)a3
+- (_MPCQueueControllerBehaviorPodcasts)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   QueueControllerBehaviorPodcasts.init(coder:)();
   return result;
 }
 
-- (_MPCQueueControllerBehaviorPodcasts)initWithSessionID:(id)a3
+- (_MPCQueueControllerBehaviorPodcasts)initWithSessionID:(id)d
 {
-  if (a3)
+  if (d)
   {
     sub_1C6016940();
   }
@@ -98,7 +98,7 @@
 
 - (NSArray)queueTrackIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5D1771C();
 
   v3 = sub_1C6016AF0();
@@ -106,23 +106,23 @@
   return v3;
 }
 
-- (void)canReuseQueue:(id)a3 completion:(id)a4
+- (void)canReuseQueue:(id)queue completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_1C5D1F224(v7, v8, v6);
+  queueCopy = queue;
+  selfCopy = self;
+  sub_1C5D1F224(queueCopy, selfCopy, v6);
   _Block_release(v6);
 }
 
-- (id)performLoadCommand:(id)a3 completion:(id)a4
+- (id)performLoadCommand:(id)command completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_1C5D1F830(v7, v8, v6);
+  commandCopy = command;
+  selfCopy = self;
+  sub_1C5D1F830(commandCopy, selfCopy, v6);
   v10 = v9;
   _Block_release(v6);
 
@@ -139,30 +139,30 @@
   return v11;
 }
 
-- (id)componentsForContentItemID:(id)a3
+- (id)componentsForContentItemID:(id)d
 {
   v4 = sub_1C6016940();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1C5D20910(v4, v6);
 
   return v8;
 }
 
-- (BOOL)itemExistsForContentItemID:(id)a3
+- (BOOL)itemExistsForContentItemID:(id)d
 {
   v4 = sub_1C6016940();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v4) = sub_1C5D20B0C(v4, v6);
 
   return v4 & 1;
 }
 
-- (id)contentItemIDEnumeratorStartingAfterContentItemID:(id)a3 mode:(int64_t)a4 options:(unint64_t)a5
+- (id)contentItemIDEnumeratorStartingAfterContentItemID:(id)d mode:(int64_t)mode options:(unint64_t)options
 {
-  v5 = a5;
-  if (a3)
+  optionsCopy = options;
+  if (d)
   {
     v8 = sub_1C6016940();
     v10 = v9;
@@ -174,15 +174,15 @@
     v10 = 0;
   }
 
-  v11 = self;
-  v12 = sub_1C5D20CB0(v8, v10, a4, v5);
+  selfCopy = self;
+  v12 = sub_1C5D20CB0(v8, v10, mode, optionsCopy);
 
   return v12;
 }
 
-- (id)_stateDictionaryIncludingQueue:(BOOL)a3
+- (id)_stateDictionaryIncludingQueue:(BOOL)queue
 {
-  v3 = self;
+  selfCopy = self;
   sub_1C5D20F54();
 
   v4 = sub_1C6016840();
@@ -190,43 +190,43 @@
   return v4;
 }
 
-- (void)currentItemDidChangeFromContentItemID:(id)a3 toContentItemID:(id)a4
+- (void)currentItemDidChangeFromContentItemID:(id)d toContentItemID:(id)iD
 {
   v5 = sub_1C6016940();
   v7 = v6;
   v8 = sub_1C6016940();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   sub_1C5D2119C(v5, v7, v8, v10);
 }
 
-- (id)_itemForContentItemID:(id)a3 allowReuse:(BOOL)a4
+- (id)_itemForContentItemID:(id)d allowReuse:(BOOL)reuse
 {
   v6 = sub_1C6016940();
   v8 = v7;
-  v9 = self;
-  sub_1C5D21418(v6, v8, a4);
+  selfCopy = self;
+  sub_1C5D21418(v6, v8, reuse);
   v11 = v10;
 
   return v11;
 }
 
-- (void)perShowSettingsDidChange:(id)a3
+- (void)perShowSettingsDidChange:(id)change
 {
   v4 = sub_1C6014C70();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C6014C30();
-  v8 = self;
+  selfCopy = self;
   sub_1C5D21E3C();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (id)tailInsertionContentItemIDForTargetContentItemID:(id)a3
+- (id)tailInsertionContentItemIDForTargetContentItemID:(id)d
 {
-  if (a3)
+  if (d)
   {
     sub_1C6016940();
   }
@@ -248,22 +248,22 @@
   return v7;
 }
 
-- (BOOL)isSupportedInsertionPosition:(int64_t)a3 fromContentItemID:(id)a4 reason:(id *)a5
+- (BOOL)isSupportedInsertionPosition:(int64_t)position fromContentItemID:(id)d reason:(id *)reason
 {
   sub_1C6016940();
-  v7 = self;
-  LOBYTE(a3) = QueueControllerBehaviorPodcasts.isSupportedInsertionPosition(_:fromContentItemID:reason:)(a3);
+  selfCopy = self;
+  LOBYTE(position) = QueueControllerBehaviorPodcasts.isSupportedInsertionPosition(_:fromContentItemID:reason:)(position);
 
-  return a3 & 1;
+  return position & 1;
 }
 
-- (void)performInsertCommand:(id)a3 targetContentItemID:(id)a4 completion:(id)a5
+- (void)performInsertCommand:(id)command targetContentItemID:(id)d completion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(completion);
+  if (d)
   {
     v9 = sub_1C6016940();
-    a4 = v10;
+    d = v10;
   }
 
   else
@@ -272,28 +272,28 @@
   }
 
   _Block_copy(v8);
-  v11 = a3;
-  v12 = self;
-  sub_1C5D2267C(v11, v9, a4, v12, v8);
+  commandCopy = command;
+  selfCopy = self;
+  sub_1C5D2267C(commandCopy, v9, d, selfCopy, v8);
   _Block_release(v8);
 }
 
-- (void)removeContentItemID:(id)a3 completion:(id)a4
+- (void)removeContentItemID:(id)d completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_1C6016940();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  sub_1C5D24BF0(v6, v8, v9, v5);
+  selfCopy = self;
+  sub_1C5D24BF0(v6, v8, selfCopy, v5);
   _Block_release(v5);
 }
 
-- (void)clearUpNextAfterContentItemID:(id)a3
+- (void)clearUpNextAfterContentItemID:(id)d
 {
   v4 = sub_1C6016940();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   QueueControllerBehaviorPodcasts.clearUpNext(afterContentItemID:)(v8);
@@ -301,7 +301,7 @@
 
 - (int64_t)displayItemCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = QueueControllerBehaviorPodcasts.displayItemCount()();
 
   return v3;
@@ -309,22 +309,22 @@
 
 - (int64_t)preferredUpcomingItemCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = QueueControllerBehaviorPodcasts.preferredUpcomingItemCount.getter();
 
   return v3;
 }
 
-- (void)loadAdditionalUpcomingItems:(int64_t)a3 completion:(id)a4
+- (void)loadAdditionalUpcomingItems:(int64_t)items completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = self;
-  sub_1C5D254A4(a3, v7, v6);
+  selfCopy = self;
+  sub_1C5D254A4(items, selfCopy, v6);
   _Block_release(v6);
 }
 
-- (void)didReachEndOfQueueWithReason:(id)a3
+- (void)didReachEndOfQueueWithReason:(id)reason
 {
   sub_1C6016940();
   v4._countAndFlagsBits = self;
@@ -332,47 +332,47 @@
   QueueControllerBehaviorPodcasts.didReachEndOfQueue(withReason:)(v4);
 }
 
-- (id)finalizeStateRestorationWithTargetContentItemID:(id)a3 completion:(id)a4
+- (id)finalizeStateRestorationWithTargetContentItemID:(id)d completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  if (a3)
+  v6 = _Block_copy(completion);
+  if (d)
   {
     sub_1C6016940();
   }
 
   *(swift_allocObject() + 16) = v6;
-  v7 = self;
+  selfCopy = self;
   QueueControllerBehaviorPodcasts.finalizeStateRestoration(withTargetContentItemID:completion:)();
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  QueueControllerBehaviorPodcasts.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  QueueControllerBehaviorPodcasts.encode(with:)(coderCopy);
 }
 
-- (BOOL)isExportableSessionType:(id)a3 forContentItemID:(id)a4 extension:(id)a5 reason:(id *)a6
+- (BOOL)isExportableSessionType:(id)type forContentItemID:(id)d extension:(id)extension reason:(id *)reason
 {
   v9 = sub_1C6016940();
   v11 = v10;
-  v12 = a3;
+  typeCopy = type;
   swift_unknownObjectRetain();
-  v13 = self;
-  LOBYTE(a6) = QueueControllerBehaviorPodcasts.isExportableSessionType(_:forContentItemID:extension:reason:)(v12, v9, v11, v14, a6);
+  selfCopy = self;
+  LOBYTE(reason) = QueueControllerBehaviorPodcasts.isExportableSessionType(_:forContentItemID:extension:reason:)(typeCopy, v9, v11, v14, reason);
 
   swift_unknownObjectRelease();
 
-  return a6 & 1;
+  return reason & 1;
 }
 
-- (BOOL)isOneShotExportableSessionForContentItemID:(id)a3 reason:(id *)a4
+- (BOOL)isOneShotExportableSessionForContentItemID:(id)d reason:(id *)reason
 {
   v5 = sub_1C6016940();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   LOBYTE(v5) = QueueControllerBehaviorPodcasts.isOneShotExportableSession(forContentItemID:reason:)(v5, v7);
 
   return v5 & 1;

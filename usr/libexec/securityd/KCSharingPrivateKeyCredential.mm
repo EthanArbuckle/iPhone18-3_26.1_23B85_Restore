@@ -1,37 +1,37 @@
 @interface KCSharingPrivateKeyCredential
 + (NSSet)requiredAttributeKeys;
-- (BOOL)isEqual:(id)a3;
-- (KCSharingPrivateKeyCredential)initWithAttributes:(id)a3 error:(id *)a4;
-- (KCSharingPrivateKeyCredential)initWithDatabaseItem:(SecDbItem *)a3 error:(id *)a4;
-- (KCSharingPrivateKeyCredential)initWithProto:(id)a3 sharingGroup:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (KCSharingPrivateKeyCredential)initWithAttributes:(id)attributes error:(id *)error;
+- (KCSharingPrivateKeyCredential)initWithDatabaseItem:(SecDbItem *)item error:(id *)error;
+- (KCSharingPrivateKeyCredential)initWithProto:(id)proto sharingGroup:(id)group error:(id *)error;
 - (NSString)description;
-- (id)attributesWithAccessGroups:(id)a3 error:(id *)a4;
+- (id)attributesWithAccessGroups:(id)groups error:(id *)error;
 - (id)proto;
 - (unint64_t)hash;
 @end
 
 @implementation KCSharingPrivateKeyCredential
 
-- (id)attributesWithAccessGroups:(id)a3 error:(id *)a4
+- (id)attributesWithAccessGroups:(id)groups error:(id *)error
 {
   v41[0] = kSecAttrSharingGroup;
-  v40 = [(KCSharingPrivateKeyCredential *)self sharingGroup:a3];
+  v40 = [(KCSharingPrivateKeyCredential *)self sharingGroup:groups];
   v42[0] = v40;
   v41[1] = kSecAttrKeyType;
   v39 = [NSNumber numberWithInteger:[(KCSharingPrivateKeyCredential *)self keyType]];
   v42[1] = v39;
   v41[2] = kSecAttrApplicationTag;
-  v38 = [(KCSharingPrivateKeyCredential *)self applicationTag];
-  v42[2] = v38;
+  applicationTag = [(KCSharingPrivateKeyCredential *)self applicationTag];
+  v42[2] = applicationTag;
   v41[3] = kSecAttrLabel;
-  v37 = [(KCSharingPrivateKeyCredential *)self label];
-  v42[3] = v37;
+  label = [(KCSharingPrivateKeyCredential *)self label];
+  v42[3] = label;
   v41[4] = kSecAttrApplicationLabel;
-  v5 = [(KCSharingPrivateKeyCredential *)self applicationLabel];
-  v42[4] = v5;
+  applicationLabel = [(KCSharingPrivateKeyCredential *)self applicationLabel];
+  v42[4] = applicationLabel;
   v41[5] = kSecValueData;
-  v6 = [(KCSharingPrivateKeyCredential *)self keyMaterial];
-  v42[5] = v6;
+  keyMaterial = [(KCSharingPrivateKeyCredential *)self keyMaterial];
+  v42[5] = keyMaterial;
   v41[6] = kSecAttrKeySizeInBits;
   v7 = [NSNumber numberWithInteger:[(KCSharingPrivateKeyCredential *)self keySizeInBits]];
   v42[6] = v7;
@@ -39,35 +39,35 @@
   v8 = [NSNumber numberWithInteger:[(KCSharingPrivateKeyCredential *)self effectiveKeySize]];
   v42[7] = v8;
   v41[8] = kSecAttrCreationDate;
-  v9 = [(KCSharingPrivateKeyCredential *)self creationDate];
-  v42[8] = v9;
+  creationDate = [(KCSharingPrivateKeyCredential *)self creationDate];
+  v42[8] = creationDate;
   v41[9] = kSecAttrModificationDate;
-  v10 = [(KCSharingPrivateKeyCredential *)self modificationDate];
-  v42[9] = v10;
+  modificationDate = [(KCSharingPrivateKeyCredential *)self modificationDate];
+  v42[9] = modificationDate;
   v42[10] = &__kCFBooleanFalse;
   v41[10] = kSecAttrSynchronizable;
   v41[11] = kSecAttrAccessible;
   v42[11] = kSecAttrAccessibleWhenUnlocked;
   v41[12] = kSecAttrAccessGroup;
-  v11 = [(KCSharingPrivateKeyCredential *)self accessGroup];
-  v42[12] = v11;
+  accessGroup = [(KCSharingPrivateKeyCredential *)self accessGroup];
+  v42[12] = accessGroup;
   v12 = [NSDictionary dictionaryWithObjects:v42 forKeys:v41 count:13];
   v13 = [v12 mutableCopy];
 
-  v14 = [(KCSharingPrivateKeyCredential *)self alias];
-  [v13 setObject:v14 forKeyedSubscript:kSecAttrAlias];
+  alias = [(KCSharingPrivateKeyCredential *)self alias];
+  [v13 setObject:alias forKeyedSubscript:kSecAttrAlias];
 
   v15 = [NSNumber numberWithInteger:[(KCSharingPrivateKeyCredential *)self creator]];
   [v13 setObject:v15 forKeyedSubscript:kSecAttrKeyCreator];
 
-  v16 = [(KCSharingPrivateKeyCredential *)self startDate];
-  [v13 setObject:v16 forKeyedSubscript:kSecAttrStartDate];
+  startDate = [(KCSharingPrivateKeyCredential *)self startDate];
+  [v13 setObject:startDate forKeyedSubscript:kSecAttrStartDate];
 
-  v17 = [(KCSharingPrivateKeyCredential *)self endDate];
-  [v13 setObject:v17 forKeyedSubscript:kSecAttrEndDate];
+  endDate = [(KCSharingPrivateKeyCredential *)self endDate];
+  [v13 setObject:endDate forKeyedSubscript:kSecAttrEndDate];
 
-  v18 = [(KCSharingPrivateKeyCredential *)self viewHint];
-  [v13 setObject:v18 forKeyedSubscript:kSecAttrSyncViewHint];
+  viewHint = [(KCSharingPrivateKeyCredential *)self viewHint];
+  [v13 setObject:viewHint forKeyedSubscript:kSecAttrSyncViewHint];
 
   v19 = [NSNumber numberWithInteger:[(KCSharingPrivateKeyCredential *)self keyClass]];
   [v13 setObject:v19 forKeyedSubscript:kSecAttrKeyClass];
@@ -126,46 +126,46 @@
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(KCSharingPrivateKeyCredential *)self accessGroup];
-  [v3 setAccessGroup:v4];
+  accessGroup = [(KCSharingPrivateKeyCredential *)self accessGroup];
+  [v3 setAccessGroup:accessGroup];
 
   [v3 setKeyType:{-[KCSharingPrivateKeyCredential keyType](self, "keyType")}];
-  v5 = [(KCSharingPrivateKeyCredential *)self applicationTag];
-  [v3 setApplicationTag:v5];
+  applicationTag = [(KCSharingPrivateKeyCredential *)self applicationTag];
+  [v3 setApplicationTag:applicationTag];
 
-  v6 = [(KCSharingPrivateKeyCredential *)self label];
-  [v3 setLabel:v6];
+  label = [(KCSharingPrivateKeyCredential *)self label];
+  [v3 setLabel:label];
 
-  v7 = [(KCSharingPrivateKeyCredential *)self applicationLabel];
-  [v3 setApplicationLabel:v7];
+  applicationLabel = [(KCSharingPrivateKeyCredential *)self applicationLabel];
+  [v3 setApplicationLabel:applicationLabel];
 
-  v8 = [(KCSharingPrivateKeyCredential *)self keyMaterial];
-  [v3 setKeyMaterial:v8];
+  keyMaterial = [(KCSharingPrivateKeyCredential *)self keyMaterial];
+  [v3 setKeyMaterial:keyMaterial];
 
   [v3 setKeySizeInBits:{-[KCSharingPrivateKeyCredential keySizeInBits](self, "keySizeInBits")}];
   [v3 setEffectiveKeySize:{-[KCSharingPrivateKeyCredential effectiveKeySize](self, "effectiveKeySize")}];
-  v9 = [(KCSharingPrivateKeyCredential *)self creationDate];
-  [v9 timeIntervalSinceReferenceDate];
+  creationDate = [(KCSharingPrivateKeyCredential *)self creationDate];
+  [creationDate timeIntervalSinceReferenceDate];
   [v3 setCreationDate:?];
 
-  v10 = [(KCSharingPrivateKeyCredential *)self modificationDate];
-  [v10 timeIntervalSinceReferenceDate];
+  modificationDate = [(KCSharingPrivateKeyCredential *)self modificationDate];
+  [modificationDate timeIntervalSinceReferenceDate];
   [v3 setModificationDate:?];
 
-  v11 = [(KCSharingPrivateKeyCredential *)self alias];
-  [v3 setAlias:v11];
+  alias = [(KCSharingPrivateKeyCredential *)self alias];
+  [v3 setAlias:alias];
 
   [v3 setCreator:{-[KCSharingPrivateKeyCredential creator](self, "creator")}];
-  v12 = [(KCSharingPrivateKeyCredential *)self startDate];
-  [v12 timeIntervalSinceReferenceDate];
+  startDate = [(KCSharingPrivateKeyCredential *)self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   [v3 setStartDate:?];
 
-  v13 = [(KCSharingPrivateKeyCredential *)self endDate];
-  [v13 timeIntervalSinceReferenceDate];
+  endDate = [(KCSharingPrivateKeyCredential *)self endDate];
+  [endDate timeIntervalSinceReferenceDate];
   [v3 setEndDate:?];
 
-  v14 = [(KCSharingPrivateKeyCredential *)self viewHint];
-  [v3 setViewHint:v14];
+  viewHint = [(KCSharingPrivateKeyCredential *)self viewHint];
+  [v3 setViewHint:viewHint];
 
   [v3 setKeyClass:{-[KCSharingPrivateKeyCredential keyClass](self, "keyClass")}];
   [v3 setIsPermanent:{-[KCSharingPrivateKeyCredential isPermanent](self, "isPermanent")}];
@@ -190,181 +190,181 @@
 
 - (NSString)description
 {
-  v35 = [(KCSharingPrivateKeyCredential *)self sharingGroup];
-  v34 = [(KCSharingPrivateKeyCredential *)self accessGroup];
-  v33 = [(KCSharingPrivateKeyCredential *)self keyType];
-  v32 = [(KCSharingPrivateKeyCredential *)self applicationTag];
-  v31 = [(KCSharingPrivateKeyCredential *)self label];
-  v30 = [(KCSharingPrivateKeyCredential *)self applicationLabel];
-  v29 = [(KCSharingPrivateKeyCredential *)self alias];
-  v28 = [(KCSharingPrivateKeyCredential *)self startDate];
-  v27 = [(KCSharingPrivateKeyCredential *)self endDate];
-  v14 = [(KCSharingPrivateKeyCredential *)self viewHint];
-  v26 = [(KCSharingPrivateKeyCredential *)self keyClass];
-  v25 = [(KCSharingPrivateKeyCredential *)self isPermanent];
-  v24 = [(KCSharingPrivateKeyCredential *)self isPrivate];
-  v23 = [(KCSharingPrivateKeyCredential *)self isModifiable];
-  v22 = [(KCSharingPrivateKeyCredential *)self isSensitive];
-  v21 = [(KCSharingPrivateKeyCredential *)self wasAlwaysSensitive];
-  v20 = [(KCSharingPrivateKeyCredential *)self isExtractable];
-  v19 = [(KCSharingPrivateKeyCredential *)self wasNeverExtractable];
-  v18 = [(KCSharingPrivateKeyCredential *)self canEncrypt];
-  v17 = [(KCSharingPrivateKeyCredential *)self canDecrypt];
-  v16 = [(KCSharingPrivateKeyCredential *)self canDerive];
-  v15 = [(KCSharingPrivateKeyCredential *)self canSign];
-  v3 = [(KCSharingPrivateKeyCredential *)self canVerify];
-  v4 = [(KCSharingPrivateKeyCredential *)self canSignRecover];
-  v5 = [(KCSharingPrivateKeyCredential *)self canVerifyRecover];
-  v6 = [(KCSharingPrivateKeyCredential *)self canWrap];
-  v7 = [(KCSharingPrivateKeyCredential *)self canUnwrap];
-  v8 = [(KCSharingPrivateKeyCredential *)self creator];
-  v9 = [(KCSharingPrivateKeyCredential *)self keySizeInBits];
-  v10 = [(KCSharingPrivateKeyCredential *)self effectiveKeySize];
-  v13 = [(KCSharingPrivateKeyCredential *)self creationDate];
-  v11 = [(KCSharingPrivateKeyCredential *)self modificationDate];
-  v36 = [NSString stringWithFormat:@"KCSharingPrivateKeyCredential(sharingGroup:%@, accessGroup:%@, keyType:%ld, applicationTag:%@, label:%@, applicationLabel:%@, alias:%@, startDate:%@, endDate:%@, viewHint:%@, keyClass:%ld, isPermanent:%ld, isPrivate:%ld, isModifiable:%ld, isSensitive:%ld, wasAlwaysSensitive:%ld, isExtractable:%ld, wasNeverExtractable:%ld, canEncrypt:%ld, canDecrypt:%ld, canDerive:%ld, canSign:%ld, canVerify:%ld, canSignRecover:%ld, canVerifyRecover:%ld, canWrap:%ld, canUnwrap:%ld, creator:%ld, keySizeInBits:%ld, effectiveKeySize:%ld, creationDate:%@, modificationDate:%@)", v35, v34, v33, v32, v31, v30, v29, v28, v27, v14, v26, v25, v24, v23, v22, v21, v20, v19, v18, v17, v16, v15, v3, v4, v5, v6, v7, v8, v9, v10, v13, v11];
+  sharingGroup = [(KCSharingPrivateKeyCredential *)self sharingGroup];
+  accessGroup = [(KCSharingPrivateKeyCredential *)self accessGroup];
+  keyType = [(KCSharingPrivateKeyCredential *)self keyType];
+  applicationTag = [(KCSharingPrivateKeyCredential *)self applicationTag];
+  label = [(KCSharingPrivateKeyCredential *)self label];
+  applicationLabel = [(KCSharingPrivateKeyCredential *)self applicationLabel];
+  alias = [(KCSharingPrivateKeyCredential *)self alias];
+  startDate = [(KCSharingPrivateKeyCredential *)self startDate];
+  endDate = [(KCSharingPrivateKeyCredential *)self endDate];
+  viewHint = [(KCSharingPrivateKeyCredential *)self viewHint];
+  keyClass = [(KCSharingPrivateKeyCredential *)self keyClass];
+  isPermanent = [(KCSharingPrivateKeyCredential *)self isPermanent];
+  isPrivate = [(KCSharingPrivateKeyCredential *)self isPrivate];
+  isModifiable = [(KCSharingPrivateKeyCredential *)self isModifiable];
+  isSensitive = [(KCSharingPrivateKeyCredential *)self isSensitive];
+  wasAlwaysSensitive = [(KCSharingPrivateKeyCredential *)self wasAlwaysSensitive];
+  isExtractable = [(KCSharingPrivateKeyCredential *)self isExtractable];
+  wasNeverExtractable = [(KCSharingPrivateKeyCredential *)self wasNeverExtractable];
+  canEncrypt = [(KCSharingPrivateKeyCredential *)self canEncrypt];
+  canDecrypt = [(KCSharingPrivateKeyCredential *)self canDecrypt];
+  canDerive = [(KCSharingPrivateKeyCredential *)self canDerive];
+  canSign = [(KCSharingPrivateKeyCredential *)self canSign];
+  canVerify = [(KCSharingPrivateKeyCredential *)self canVerify];
+  canSignRecover = [(KCSharingPrivateKeyCredential *)self canSignRecover];
+  canVerifyRecover = [(KCSharingPrivateKeyCredential *)self canVerifyRecover];
+  canWrap = [(KCSharingPrivateKeyCredential *)self canWrap];
+  canUnwrap = [(KCSharingPrivateKeyCredential *)self canUnwrap];
+  creator = [(KCSharingPrivateKeyCredential *)self creator];
+  keySizeInBits = [(KCSharingPrivateKeyCredential *)self keySizeInBits];
+  effectiveKeySize = [(KCSharingPrivateKeyCredential *)self effectiveKeySize];
+  creationDate = [(KCSharingPrivateKeyCredential *)self creationDate];
+  modificationDate = [(KCSharingPrivateKeyCredential *)self modificationDate];
+  v36 = [NSString stringWithFormat:@"KCSharingPrivateKeyCredential(sharingGroup:%@, accessGroup:%@, keyType:%ld, applicationTag:%@, label:%@, applicationLabel:%@, alias:%@, startDate:%@, endDate:%@, viewHint:%@, keyClass:%ld, isPermanent:%ld, isPrivate:%ld, isModifiable:%ld, isSensitive:%ld, wasAlwaysSensitive:%ld, isExtractable:%ld, wasNeverExtractable:%ld, canEncrypt:%ld, canDecrypt:%ld, canDerive:%ld, canSign:%ld, canVerify:%ld, canSignRecover:%ld, canVerifyRecover:%ld, canWrap:%ld, canUnwrap:%ld, creator:%ld, keySizeInBits:%ld, effectiveKeySize:%ld, creationDate:%@, modificationDate:%@)", sharingGroup, accessGroup, keyType, applicationTag, label, applicationLabel, alias, startDate, endDate, viewHint, keyClass, isPermanent, isPrivate, isModifiable, isSensitive, wasAlwaysSensitive, isExtractable, wasNeverExtractable, canEncrypt, canDecrypt, canDerive, canSign, canVerify, canSignRecover, canVerifyRecover, canWrap, canUnwrap, creator, keySizeInBits, effectiveKeySize, creationDate, modificationDate];
 
   return v36;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v42 = 1;
   }
 
-  else if ([(KCSharingPrivateKeyCredential *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(KCSharingPrivateKeyCredential *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(KCSharingPrivateKeyCredential *)self sharingGroup];
-    v7 = [(KCSharingPrivateKeyCredential *)v5 sharingGroup];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    sharingGroup = [(KCSharingPrivateKeyCredential *)self sharingGroup];
+    sharingGroup2 = [(KCSharingPrivateKeyCredential *)v5 sharingGroup];
+    if ([sharingGroup isEqualToString:sharingGroup2])
     {
-      v8 = [(KCSharingPrivateKeyCredential *)self accessGroup];
-      v9 = [(KCSharingPrivateKeyCredential *)v5 accessGroup];
-      if ([v8 isEqualToString:v9] && (v10 = -[KCSharingPrivateKeyCredential keyType](self, "keyType"), v10 == -[KCSharingPrivateKeyCredential keyType](v5, "keyType")))
+      accessGroup = [(KCSharingPrivateKeyCredential *)self accessGroup];
+      accessGroup2 = [(KCSharingPrivateKeyCredential *)v5 accessGroup];
+      if ([accessGroup isEqualToString:accessGroup2] && (v10 = -[KCSharingPrivateKeyCredential keyType](self, "keyType"), v10 == -[KCSharingPrivateKeyCredential keyType](v5, "keyType")))
       {
-        v11 = [(KCSharingPrivateKeyCredential *)self applicationTag];
-        v12 = [(KCSharingPrivateKeyCredential *)v5 applicationTag];
-        if ([v11 isEqualToData:v12])
+        applicationTag = [(KCSharingPrivateKeyCredential *)self applicationTag];
+        applicationTag2 = [(KCSharingPrivateKeyCredential *)v5 applicationTag];
+        if ([applicationTag isEqualToData:applicationTag2])
         {
-          v13 = [(KCSharingPrivateKeyCredential *)self label];
-          v61 = [(KCSharingPrivateKeyCredential *)v5 label];
-          if ([v13 isEqualToString:?])
+          label = [(KCSharingPrivateKeyCredential *)self label];
+          label2 = [(KCSharingPrivateKeyCredential *)v5 label];
+          if ([label isEqualToString:?])
           {
-            v60 = v11;
-            v14 = [(KCSharingPrivateKeyCredential *)self applicationLabel];
+            v60 = applicationTag;
+            applicationLabel = [(KCSharingPrivateKeyCredential *)self applicationLabel];
             [(KCSharingPrivateKeyCredential *)v5 applicationLabel];
-            v58 = v59 = v14;
-            if ([v14 isEqualToData:?])
+            v58 = v59 = applicationLabel;
+            if ([applicationLabel isEqualToData:?])
             {
-              v15 = [(KCSharingPrivateKeyCredential *)self keyMaterial];
-              v56 = [(KCSharingPrivateKeyCredential *)v5 keyMaterial];
-              v57 = v15;
-              v16 = [v15 isEqualToData:?];
-              v11 = v60;
+              keyMaterial = [(KCSharingPrivateKeyCredential *)self keyMaterial];
+              keyMaterial2 = [(KCSharingPrivateKeyCredential *)v5 keyMaterial];
+              v57 = keyMaterial;
+              v16 = [keyMaterial isEqualToData:?];
+              applicationTag = v60;
               if (v16)
               {
-                v55 = v13;
-                v17 = [(KCSharingPrivateKeyCredential *)self keySizeInBits];
-                if (v17 == [(KCSharingPrivateKeyCredential *)v5 keySizeInBits]&& (v18 = [(KCSharingPrivateKeyCredential *)self effectiveKeySize], v18 == [(KCSharingPrivateKeyCredential *)v5 effectiveKeySize]))
+                v55 = label;
+                keySizeInBits = [(KCSharingPrivateKeyCredential *)self keySizeInBits];
+                if (keySizeInBits == [(KCSharingPrivateKeyCredential *)v5 keySizeInBits]&& (v18 = [(KCSharingPrivateKeyCredential *)self effectiveKeySize], v18 == [(KCSharingPrivateKeyCredential *)v5 effectiveKeySize]))
                 {
-                  v19 = [(KCSharingPrivateKeyCredential *)self creationDate];
-                  v53 = [(KCSharingPrivateKeyCredential *)v5 creationDate];
-                  v54 = v19;
-                  v20 = [v19 isEqualToDate:?];
-                  v13 = v55;
+                  creationDate = [(KCSharingPrivateKeyCredential *)self creationDate];
+                  creationDate2 = [(KCSharingPrivateKeyCredential *)v5 creationDate];
+                  v54 = creationDate;
+                  v20 = [creationDate isEqualToDate:?];
+                  label = v55;
                   if (v20)
                   {
-                    v52 = [(KCSharingPrivateKeyCredential *)self modificationDate];
-                    v51 = [(KCSharingPrivateKeyCredential *)v5 modificationDate];
-                    if ([v52 isEqualToDate:?])
+                    modificationDate = [(KCSharingPrivateKeyCredential *)self modificationDate];
+                    modificationDate2 = [(KCSharingPrivateKeyCredential *)v5 modificationDate];
+                    if ([modificationDate isEqualToDate:?])
                     {
-                      v50 = [(KCSharingPrivateKeyCredential *)self alias];
-                      v49 = [(KCSharingPrivateKeyCredential *)v5 alias];
-                      if ([v50 isEqualToData:?])
+                      alias = [(KCSharingPrivateKeyCredential *)self alias];
+                      alias2 = [(KCSharingPrivateKeyCredential *)v5 alias];
+                      if ([alias isEqualToData:?])
                       {
-                        v21 = [(KCSharingPrivateKeyCredential *)self creator];
-                        if (v21 == [(KCSharingPrivateKeyCredential *)v5 creator])
+                        creator = [(KCSharingPrivateKeyCredential *)self creator];
+                        if (creator == [(KCSharingPrivateKeyCredential *)v5 creator])
                         {
-                          v22 = [(KCSharingPrivateKeyCredential *)self startDate];
-                          v48 = [(KCSharingPrivateKeyCredential *)v5 startDate];
-                          if ([v22 isEqualToDate:?])
+                          startDate = [(KCSharingPrivateKeyCredential *)self startDate];
+                          startDate2 = [(KCSharingPrivateKeyCredential *)v5 startDate];
+                          if ([startDate isEqualToDate:?])
                           {
-                            v23 = [(KCSharingPrivateKeyCredential *)self endDate];
-                            v46 = [(KCSharingPrivateKeyCredential *)v5 endDate];
-                            v47 = v23;
-                            if ([v23 isEqualToDate:?])
+                            endDate = [(KCSharingPrivateKeyCredential *)self endDate];
+                            endDate2 = [(KCSharingPrivateKeyCredential *)v5 endDate];
+                            v47 = endDate;
+                            if ([endDate isEqualToDate:?])
                             {
-                              v24 = [(KCSharingPrivateKeyCredential *)self viewHint];
-                              v44 = [(KCSharingPrivateKeyCredential *)v5 viewHint];
-                              v45 = v24;
-                              if (![v24 isEqualToString:?])
+                              viewHint = [(KCSharingPrivateKeyCredential *)self viewHint];
+                              viewHint2 = [(KCSharingPrivateKeyCredential *)v5 viewHint];
+                              v45 = viewHint;
+                              if (![viewHint isEqualToString:?])
                               {
                                 goto LABEL_51;
                               }
 
-                              v25 = [(KCSharingPrivateKeyCredential *)self keyClass];
-                              if (v25 != [(KCSharingPrivateKeyCredential *)v5 keyClass])
+                              keyClass = [(KCSharingPrivateKeyCredential *)self keyClass];
+                              if (keyClass != [(KCSharingPrivateKeyCredential *)v5 keyClass])
                               {
                                 goto LABEL_51;
                               }
 
-                              v26 = [(KCSharingPrivateKeyCredential *)self isPermanent];
-                              if (v26 != [(KCSharingPrivateKeyCredential *)v5 isPermanent])
+                              isPermanent = [(KCSharingPrivateKeyCredential *)self isPermanent];
+                              if (isPermanent != [(KCSharingPrivateKeyCredential *)v5 isPermanent])
                               {
                                 goto LABEL_51;
                               }
 
-                              v27 = [(KCSharingPrivateKeyCredential *)self isPrivate];
-                              if (v27 != [(KCSharingPrivateKeyCredential *)v5 isPrivate])
+                              isPrivate = [(KCSharingPrivateKeyCredential *)self isPrivate];
+                              if (isPrivate != [(KCSharingPrivateKeyCredential *)v5 isPrivate])
                               {
                                 goto LABEL_51;
                               }
 
-                              v28 = [(KCSharingPrivateKeyCredential *)self isModifiable];
-                              if (v28 != [(KCSharingPrivateKeyCredential *)v5 isModifiable])
+                              isModifiable = [(KCSharingPrivateKeyCredential *)self isModifiable];
+                              if (isModifiable != [(KCSharingPrivateKeyCredential *)v5 isModifiable])
                               {
                                 goto LABEL_51;
                               }
 
-                              v29 = [(KCSharingPrivateKeyCredential *)self isSensitive];
-                              if (v29 != [(KCSharingPrivateKeyCredential *)v5 isSensitive])
+                              isSensitive = [(KCSharingPrivateKeyCredential *)self isSensitive];
+                              if (isSensitive != [(KCSharingPrivateKeyCredential *)v5 isSensitive])
                               {
                                 goto LABEL_51;
                               }
 
-                              v30 = [(KCSharingPrivateKeyCredential *)self wasAlwaysSensitive];
-                              if (v30 != [(KCSharingPrivateKeyCredential *)v5 wasAlwaysSensitive])
+                              wasAlwaysSensitive = [(KCSharingPrivateKeyCredential *)self wasAlwaysSensitive];
+                              if (wasAlwaysSensitive != [(KCSharingPrivateKeyCredential *)v5 wasAlwaysSensitive])
                               {
                                 goto LABEL_51;
                               }
 
-                              v31 = [(KCSharingPrivateKeyCredential *)self isExtractable];
-                              if (v31 != [(KCSharingPrivateKeyCredential *)v5 isExtractable])
+                              isExtractable = [(KCSharingPrivateKeyCredential *)self isExtractable];
+                              if (isExtractable != [(KCSharingPrivateKeyCredential *)v5 isExtractable])
                               {
                                 goto LABEL_51;
                               }
 
-                              v32 = [(KCSharingPrivateKeyCredential *)self wasNeverExtractable];
-                              if (v32 != [(KCSharingPrivateKeyCredential *)v5 wasNeverExtractable])
+                              wasNeverExtractable = [(KCSharingPrivateKeyCredential *)self wasNeverExtractable];
+                              if (wasNeverExtractable != [(KCSharingPrivateKeyCredential *)v5 wasNeverExtractable])
                               {
                                 goto LABEL_51;
                               }
 
-                              v33 = [(KCSharingPrivateKeyCredential *)self canEncrypt];
-                              if (v33 != [(KCSharingPrivateKeyCredential *)v5 canEncrypt])
+                              canEncrypt = [(KCSharingPrivateKeyCredential *)self canEncrypt];
+                              if (canEncrypt != [(KCSharingPrivateKeyCredential *)v5 canEncrypt])
                               {
                                 goto LABEL_51;
                               }
 
-                              v34 = [(KCSharingPrivateKeyCredential *)self canDecrypt];
-                              if (v34 == [(KCSharingPrivateKeyCredential *)v5 canDecrypt]&& (v35 = [(KCSharingPrivateKeyCredential *)self canDerive], v35 == [(KCSharingPrivateKeyCredential *)v5 canDerive]) && (v36 = [(KCSharingPrivateKeyCredential *)self canSign], v36 == [(KCSharingPrivateKeyCredential *)v5 canSign]) && (v37 = [(KCSharingPrivateKeyCredential *)self canVerify], v37 == [(KCSharingPrivateKeyCredential *)v5 canVerify]) && (v38 = [(KCSharingPrivateKeyCredential *)self canSignRecover], v38 == [(KCSharingPrivateKeyCredential *)v5 canSignRecover]) && (v39 = [(KCSharingPrivateKeyCredential *)self canVerifyRecover], v39 == [(KCSharingPrivateKeyCredential *)v5 canVerifyRecover]) && (v40 = [(KCSharingPrivateKeyCredential *)self canWrap], v40 == [(KCSharingPrivateKeyCredential *)v5 canWrap]))
+                              canDecrypt = [(KCSharingPrivateKeyCredential *)self canDecrypt];
+                              if (canDecrypt == [(KCSharingPrivateKeyCredential *)v5 canDecrypt]&& (v35 = [(KCSharingPrivateKeyCredential *)self canDerive], v35 == [(KCSharingPrivateKeyCredential *)v5 canDerive]) && (v36 = [(KCSharingPrivateKeyCredential *)self canSign], v36 == [(KCSharingPrivateKeyCredential *)v5 canSign]) && (v37 = [(KCSharingPrivateKeyCredential *)self canVerify], v37 == [(KCSharingPrivateKeyCredential *)v5 canVerify]) && (v38 = [(KCSharingPrivateKeyCredential *)self canSignRecover], v38 == [(KCSharingPrivateKeyCredential *)v5 canSignRecover]) && (v39 = [(KCSharingPrivateKeyCredential *)self canVerifyRecover], v39 == [(KCSharingPrivateKeyCredential *)v5 canVerifyRecover]) && (v40 = [(KCSharingPrivateKeyCredential *)self canWrap], v40 == [(KCSharingPrivateKeyCredential *)v5 canWrap]))
                               {
-                                v41 = [(KCSharingPrivateKeyCredential *)self canUnwrap];
-                                v42 = v41 == [(KCSharingPrivateKeyCredential *)v5 canUnwrap];
+                                canUnwrap = [(KCSharingPrivateKeyCredential *)self canUnwrap];
+                                v42 = canUnwrap == [(KCSharingPrivateKeyCredential *)v5 canUnwrap];
                               }
 
                               else
@@ -391,8 +391,8 @@ LABEL_51:
                           v42 = 0;
                         }
 
-                        v13 = v55;
-                        v11 = v60;
+                        label = v55;
+                        applicationTag = v60;
                       }
 
                       else
@@ -416,7 +416,7 @@ LABEL_51:
                 else
                 {
                   v42 = 0;
-                  v13 = v55;
+                  label = v55;
                 }
               }
 
@@ -429,7 +429,7 @@ LABEL_51:
             else
             {
               v42 = 0;
-              v11 = v60;
+              applicationTag = v60;
             }
           }
 
@@ -467,45 +467,45 @@ LABEL_51:
 
 - (unint64_t)hash
 {
-  v3 = [(KCSharingPrivateKeyCredential *)self sharingGroup];
-  v4 = [v3 hash];
+  sharingGroup = [(KCSharingPrivateKeyCredential *)self sharingGroup];
+  v4 = [sharingGroup hash];
 
-  v5 = [(KCSharingPrivateKeyCredential *)self accessGroup];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  accessGroup = [(KCSharingPrivateKeyCredential *)self accessGroup];
+  v6 = [accessGroup hash] - v4 + 32 * v4;
 
   v7 = [(KCSharingPrivateKeyCredential *)self keyType]+ 32 * v6 - v6;
-  v8 = [(KCSharingPrivateKeyCredential *)self applicationTag];
-  v9 = [v8 hash] + 32 * v7 - v7;
+  applicationTag = [(KCSharingPrivateKeyCredential *)self applicationTag];
+  v9 = [applicationTag hash] + 32 * v7 - v7;
 
-  v10 = [(KCSharingPrivateKeyCredential *)self label];
-  v11 = [v10 hash] + 32 * v9 - v9;
+  label = [(KCSharingPrivateKeyCredential *)self label];
+  v11 = [label hash] + 32 * v9 - v9;
 
-  v12 = [(KCSharingPrivateKeyCredential *)self applicationLabel];
-  v13 = [v12 hash] + 32 * v11 - v11;
+  applicationLabel = [(KCSharingPrivateKeyCredential *)self applicationLabel];
+  v13 = [applicationLabel hash] + 32 * v11 - v11;
 
-  v14 = [(KCSharingPrivateKeyCredential *)self keyMaterial];
-  v15 = [v14 hash] + 32 * v13 - v13;
+  keyMaterial = [(KCSharingPrivateKeyCredential *)self keyMaterial];
+  v15 = [keyMaterial hash] + 32 * v13 - v13;
 
   v16 = [(KCSharingPrivateKeyCredential *)self keySizeInBits]+ 32 * v15 - v15;
   v17 = [(KCSharingPrivateKeyCredential *)self effectiveKeySize]+ 32 * v16 - v16;
-  v18 = [(KCSharingPrivateKeyCredential *)self creationDate];
-  v19 = [v18 hash] + 32 * v17 - v17;
+  creationDate = [(KCSharingPrivateKeyCredential *)self creationDate];
+  v19 = [creationDate hash] + 32 * v17 - v17;
 
-  v20 = [(KCSharingPrivateKeyCredential *)self modificationDate];
-  v21 = [v20 hash] + 32 * v19 - v19;
+  modificationDate = [(KCSharingPrivateKeyCredential *)self modificationDate];
+  v21 = [modificationDate hash] + 32 * v19 - v19;
 
-  v22 = [(KCSharingPrivateKeyCredential *)self alias];
-  v23 = [v22 hash] + 32 * v21 - v21;
+  alias = [(KCSharingPrivateKeyCredential *)self alias];
+  v23 = [alias hash] + 32 * v21 - v21;
 
   v24 = [(KCSharingPrivateKeyCredential *)self creator]+ 32 * v23 - v23;
-  v25 = [(KCSharingPrivateKeyCredential *)self startDate];
-  v26 = [v25 hash] + 32 * v24 - v24;
+  startDate = [(KCSharingPrivateKeyCredential *)self startDate];
+  v26 = [startDate hash] + 32 * v24 - v24;
 
-  v27 = [(KCSharingPrivateKeyCredential *)self endDate];
-  v28 = [v27 hash] + 32 * v26 - v26;
+  endDate = [(KCSharingPrivateKeyCredential *)self endDate];
+  v28 = [endDate hash] + 32 * v26 - v26;
 
-  v29 = [(KCSharingPrivateKeyCredential *)self viewHint];
-  v30 = [v29 hash] + 32 * v28 - v28;
+  viewHint = [(KCSharingPrivateKeyCredential *)self viewHint];
+  v30 = [viewHint hash] + 32 * v28 - v28;
 
   v31 = [(KCSharingPrivateKeyCredential *)self keyClass]+ 32 * v30 - v30;
   v32 = [(KCSharingPrivateKeyCredential *)self isPermanent]+ 32 * v31 - v31;
@@ -526,9 +526,9 @@ LABEL_51:
   return [(KCSharingPrivateKeyCredential *)self canUnwrap]+ 32 * v46 - v46;
 }
 
-- (KCSharingPrivateKeyCredential)initWithAttributes:(id)a3 error:(id *)a4
+- (KCSharingPrivateKeyCredential)initWithAttributes:(id)attributes error:(id *)error
 {
-  v6 = a3;
+  attributesCopy = attributes;
   v134.receiver = self;
   v134.super_class = KCSharingPrivateKeyCredential;
   v7 = [(KCSharingPrivateKeyCredential *)&v134 init];
@@ -539,13 +539,13 @@ LABEL_51:
   }
 
   v8 = kSecAttrSharingGroup;
-  v9 = [v6 objectForKeyedSubscript:kSecAttrSharingGroup];
+  v9 = [attributesCopy objectForKeyedSubscript:kSecAttrSharingGroup];
   if (!v9)
   {
     v285 = @"KCSharingMissingAttribute";
     v286 = v8;
     v10 = [NSDictionary dictionaryWithObjects:&v286 forKeys:&v285 count:1];
-    sub_100061E2C(a4, 22, v10);
+    sub_100061E2C(error, 22, v10);
 LABEL_109:
 
     goto LABEL_110;
@@ -560,22 +560,22 @@ LABEL_109:
     v11 = [NSDictionary dictionaryWithObjects:&v282 forKeys:&v281 count:1];
     v284 = v11;
     v12 = [NSDictionary dictionaryWithObjects:&v284 forKeys:&v283 count:1];
-    v53 = a4;
+    errorCopy3 = error;
     v54 = 1;
 LABEL_94:
-    sub_100061E2C(v53, v54, v12);
+    sub_100061E2C(errorCopy3, v54, v12);
 LABEL_107:
 
     goto LABEL_108;
   }
 
-  v10 = [v6 objectForKeyedSubscript:kSecAttrAccessGroup];
+  v10 = [attributesCopy objectForKeyedSubscript:kSecAttrAccessGroup];
   if (!v10)
   {
     v279 = @"KCSharingMissingAttribute";
     v280 = kSecAttrAccessGroup;
     v11 = [NSDictionary dictionaryWithObjects:&v280 forKeys:&v279 count:1];
-    sub_100061E2C(a4, 22, v11);
+    sub_100061E2C(error, 22, v11);
 LABEL_108:
 
     goto LABEL_109;
@@ -590,22 +590,22 @@ LABEL_108:
     v12 = [NSDictionary dictionaryWithObjects:&v276 forKeys:&v275 count:1];
     v278 = v12;
     v13 = [NSDictionary dictionaryWithObjects:&v278 forKeys:&v277 count:1];
-    v55 = a4;
+    errorCopy5 = error;
     v56 = 1;
 LABEL_97:
-    sub_100061E2C(v55, v56, v13);
+    sub_100061E2C(errorCopy5, v56, v13);
 LABEL_106:
 
     goto LABEL_107;
   }
 
-  v11 = [v6 objectForKeyedSubscript:kSecAttrKeyType];
+  v11 = [attributesCopy objectForKeyedSubscript:kSecAttrKeyType];
   if (!v11)
   {
     v273 = @"KCSharingMissingAttribute";
     v274 = kSecAttrKeyType;
     v12 = [NSDictionary dictionaryWithObjects:&v274 forKeys:&v273 count:1];
-    v53 = a4;
+    errorCopy3 = error;
     v54 = 22;
     goto LABEL_94;
   }
@@ -619,20 +619,20 @@ LABEL_106:
     v13 = [NSDictionary dictionaryWithObjects:&v270 forKeys:&v269 count:1];
     v272 = v13;
     v14 = [NSDictionary dictionaryWithObjects:&v272 forKeys:&v271 count:1];
-    v60 = a4;
+    errorCopy7 = error;
     v61 = 1;
 LABEL_104:
-    sub_100061E2C(v60, v61, v14);
+    sub_100061E2C(errorCopy7, v61, v14);
     goto LABEL_105;
   }
 
-  v12 = [v6 objectForKeyedSubscript:kSecAttrApplicationTag];
+  v12 = [attributesCopy objectForKeyedSubscript:kSecAttrApplicationTag];
   if (!v12)
   {
     v267 = @"KCSharingMissingAttribute";
     v268 = kSecAttrApplicationTag;
     v13 = [NSDictionary dictionaryWithObjects:&v268 forKeys:&v267 count:1];
-    v55 = a4;
+    errorCopy5 = error;
     v56 = 22;
     goto LABEL_97;
   }
@@ -646,23 +646,23 @@ LABEL_104:
     v14 = [NSDictionary dictionaryWithObjects:&v264 forKeys:&v263 count:1];
     v266 = v14;
     v57 = [NSDictionary dictionaryWithObjects:&v266 forKeys:&v265 count:1];
-    v58 = a4;
+    errorCopy8 = error;
     v59 = 1;
 LABEL_100:
-    sub_100061E2C(v58, v59, v57);
+    sub_100061E2C(errorCopy8, v59, v57);
 LABEL_101:
 
 LABEL_105:
     goto LABEL_106;
   }
 
-  v13 = [v6 objectForKeyedSubscript:kSecAttrLabel];
+  v13 = [attributesCopy objectForKeyedSubscript:kSecAttrLabel];
   if (!v13)
   {
     v261 = @"KCSharingMissingAttribute";
     v262 = kSecAttrLabel;
     v14 = [NSDictionary dictionaryWithObjects:&v262 forKeys:&v261 count:1];
-    v60 = a4;
+    errorCopy7 = error;
     v61 = 22;
     goto LABEL_104;
   }
@@ -678,20 +678,20 @@ LABEL_105:
     v57 = [NSDictionary dictionaryWithObjects:&v258 forKeys:&v257 count:1];
     v260 = v57;
     v64 = [NSDictionary dictionaryWithObjects:&v260 forKeys:&v259 count:1];
-    sub_100061E2C(a4, 1, v64);
+    sub_100061E2C(error, 1, v64);
 
     v13 = v63;
     v12 = v133;
     goto LABEL_101;
   }
 
-  v14 = [v6 objectForKeyedSubscript:kSecAttrApplicationLabel];
+  v14 = [attributesCopy objectForKeyedSubscript:kSecAttrApplicationLabel];
   if (!v14)
   {
     v255 = @"KCSharingMissingAttribute";
     v256 = kSecAttrApplicationLabel;
     v57 = [NSDictionary dictionaryWithObjects:&v256 forKeys:&v255 count:1];
-    v58 = a4;
+    errorCopy8 = error;
     v59 = 22;
     goto LABEL_100;
   }
@@ -707,20 +707,20 @@ LABEL_105:
     v65 = [NSDictionary dictionaryWithObjects:&v252 forKeys:&v251 count:1];
     v254 = v65;
     v66 = [NSDictionary dictionaryWithObjects:&v254 forKeys:&v253 count:1];
-    sub_100061E2C(a4, 1, v66);
+    sub_100061E2C(error, 1, v66);
 
     v14 = v130;
     v13 = v131;
     goto LABEL_101;
   }
 
-  v15 = [v6 objectForKeyedSubscript:kSecValueData];
+  v15 = [attributesCopy objectForKeyedSubscript:kSecValueData];
   if (!v15)
   {
     v249 = @"KCSharingMissingAttribute";
     v250 = kSecValueData;
     v67 = [NSDictionary dictionaryWithObjects:&v250 forKeys:&v249 count:1];
-    sub_100061E2C(a4, 22, v67);
+    sub_100061E2C(error, 22, v67);
     goto LABEL_117;
   }
 
@@ -735,7 +735,7 @@ LABEL_105:
     v68 = [NSDictionary dictionaryWithObjects:&v246 forKeys:&v245 count:1];
     v248 = v68;
     v69 = [NSDictionary dictionaryWithObjects:&v248 forKeys:&v247 count:1];
-    sub_100061E2C(a4, 1, v69);
+    sub_100061E2C(error, 1, v69);
 
     v15 = v128;
     v14 = v129;
@@ -745,7 +745,7 @@ LABEL_117:
   }
 
   v132 = v12;
-  v16 = [v6 objectForKeyedSubscript:kSecAttrKeySizeInBits];
+  v16 = [attributesCopy objectForKeyedSubscript:kSecAttrKeySizeInBits];
   if ((_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
   {
     v243 = @"KCSharingInvalidAttribute";
@@ -755,20 +755,20 @@ LABEL_117:
     v72 = [NSDictionary dictionaryWithObjects:&v242 forKeys:&v241 count:1];
     v244 = v72;
     v73 = [NSDictionary dictionaryWithObjects:&v244 forKeys:&v243 count:1];
-    sub_100061E2C(a4, 1, v73);
+    sub_100061E2C(error, 1, v73);
 
 LABEL_126:
     goto LABEL_108;
   }
 
   v127 = v16;
-  v17 = [v6 objectForKeyedSubscript:kSecAttrEffectiveKeySize];
+  v17 = [attributesCopy objectForKeyedSubscript:kSecAttrEffectiveKeySize];
   if (!v17)
   {
     v239 = @"KCSharingMissingAttribute";
     v240 = kSecAttrEffectiveKeySize;
     v70 = [NSDictionary dictionaryWithObjects:&v240 forKeys:&v239 count:1];
-    sub_100061E2C(a4, 22, v70);
+    sub_100061E2C(error, 22, v70);
 LABEL_122:
 
 LABEL_125:
@@ -784,18 +784,18 @@ LABEL_125:
     v75 = [NSDictionary dictionaryWithObjects:&v236 forKeys:&v235 count:1];
     v238 = v75;
     v76 = [NSDictionary dictionaryWithObjects:&v238 forKeys:&v237 count:1];
-    sub_100061E2C(a4, 1, v76);
+    sub_100061E2C(error, 1, v76);
 
     goto LABEL_122;
   }
 
-  v126 = [v6 objectForKeyedSubscript:kSecAttrCreationDate];
+  v126 = [attributesCopy objectForKeyedSubscript:kSecAttrCreationDate];
   if (!v126)
   {
     v233 = @"KCSharingMissingAttribute";
     v234 = kSecAttrCreationDate;
     v74 = [NSDictionary dictionaryWithObjects:&v234 forKeys:&v233 count:1];
-    sub_100061E2C(a4, 22, v74);
+    sub_100061E2C(error, 22, v74);
 LABEL_124:
 
     goto LABEL_125;
@@ -810,18 +810,18 @@ LABEL_124:
     v77 = [NSDictionary dictionaryWithObjects:&v230 forKeys:&v229 count:1];
     v232 = v77;
     v78 = [NSDictionary dictionaryWithObjects:&v232 forKeys:&v231 count:1];
-    sub_100061E2C(a4, 1, v78);
+    sub_100061E2C(error, 1, v78);
 
     goto LABEL_124;
   }
 
-  v125 = [v6 objectForKeyedSubscript:kSecAttrModificationDate];
+  v125 = [attributesCopy objectForKeyedSubscript:kSecAttrModificationDate];
   if (!v125)
   {
     v227 = @"KCSharingMissingAttribute";
     v228 = kSecAttrModificationDate;
     v124 = [NSDictionary dictionaryWithObjects:&v228 forKeys:&v227 count:1];
-    sub_100061E2C(a4, 22, v124);
+    sub_100061E2C(error, 22, v124);
 LABEL_129:
     v52 = 0;
     goto LABEL_173;
@@ -836,13 +836,13 @@ LABEL_129:
     v79 = [NSDictionary dictionaryWithObjects:&v224 forKeys:&v223 count:1];
     v226 = v79;
     v80 = [NSDictionary dictionaryWithObjects:&v226 forKeys:&v225 count:1];
-    sub_100061E2C(a4, 1, v80);
+    sub_100061E2C(error, 1, v80);
 
     goto LABEL_129;
   }
 
   v18 = kSecAttrAlias;
-  v124 = [v6 objectForKeyedSubscript:kSecAttrAlias];
+  v124 = [attributesCopy objectForKeyedSubscript:kSecAttrAlias];
   if (v124 && (_NSIsNSData() & 1) == 0)
   {
     v221 = @"KCSharingInvalidAttribute";
@@ -852,17 +852,17 @@ LABEL_129:
     v123 = [NSDictionary dictionaryWithObjects:&v220 forKeys:&v219 count:1];
     v222 = v123;
     v122 = [NSDictionary dictionaryWithObjects:&v222 forKeys:&v221 count:1];
-    sub_100061E2C(a4, 1, v122);
+    sub_100061E2C(error, 1, v122);
     v52 = 0;
   }
 
   else
   {
-    v19 = [v6 objectForKeyedSubscript:kSecAttrCreator];
+    v19 = [attributesCopy objectForKeyedSubscript:kSecAttrCreator];
     if (!v19 || (_NSIsNSNumber() & 1) != 0 || (_NSIsNSString() & 1) != 0)
     {
       v20 = kSecAttrStartDate;
-      v123 = [v6 objectForKeyedSubscript:kSecAttrStartDate];
+      v123 = [attributesCopy objectForKeyedSubscript:kSecAttrStartDate];
       if (v123 && (_NSIsNSDate() & 1) == 0)
       {
         v213 = @"KCSharingInvalidAttribute";
@@ -872,7 +872,7 @@ LABEL_129:
         v120 = [NSDictionary dictionaryWithObjects:&v212 forKeys:&v211 count:1];
         v214 = v120;
         v119 = [NSDictionary dictionaryWithObjects:&v214 forKeys:&v213 count:1];
-        sub_100061E2C(a4, 1, v119);
+        sub_100061E2C(error, 1, v119);
         v52 = 0;
 
 LABEL_171:
@@ -880,7 +880,7 @@ LABEL_171:
       }
 
       v21 = kSecAttrEndDate;
-      v122 = [v6 objectForKeyedSubscript:kSecAttrEndDate];
+      v122 = [attributesCopy objectForKeyedSubscript:kSecAttrEndDate];
       if (v122 && (_NSIsNSDate() & 1) == 0)
       {
         v209 = @"KCSharingInvalidAttribute";
@@ -890,14 +890,14 @@ LABEL_171:
         v118 = [NSDictionary dictionaryWithObjects:&v208 forKeys:&v207 count:1];
         v210 = v118;
         v117 = [NSDictionary dictionaryWithObjects:&v210 forKeys:&v209 count:1];
-        sub_100061E2C(a4, 1, v117);
+        sub_100061E2C(error, 1, v117);
         v52 = 0;
 
 LABEL_170:
         goto LABEL_171;
       }
 
-      v120 = [v6 objectForKeyedSubscript:kSecAttrSyncViewHint];
+      v120 = [attributesCopy objectForKeyedSubscript:kSecAttrSyncViewHint];
       if (v120 && (_NSIsNSString() & 1) == 0)
       {
         v205 = @"KCSharingInvalidAttribute";
@@ -907,14 +907,14 @@ LABEL_170:
         v116 = [NSDictionary dictionaryWithObjects:&v204 forKeys:&v203 count:1];
         v206 = v116;
         v115 = [NSDictionary dictionaryWithObjects:&v206 forKeys:&v205 count:1];
-        sub_100061E2C(a4, 1, v115);
+        sub_100061E2C(error, 1, v115);
         v52 = 0;
 
 LABEL_169:
         goto LABEL_170;
       }
 
-      v118 = [v6 objectForKeyedSubscript:kSecAttrKeyClass];
+      v118 = [attributesCopy objectForKeyedSubscript:kSecAttrKeyClass];
       if (v118 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v201 = @"KCSharingInvalidAttribute";
@@ -924,14 +924,14 @@ LABEL_169:
         v114 = [NSDictionary dictionaryWithObjects:&v200 forKeys:&v199 count:1];
         v202 = v114;
         v113 = [NSDictionary dictionaryWithObjects:&v202 forKeys:&v201 count:1];
-        sub_100061E2C(a4, 1, v113);
+        sub_100061E2C(error, 1, v113);
         v52 = 0;
 
 LABEL_168:
         goto LABEL_169;
       }
 
-      v116 = [v6 objectForKeyedSubscript:kSecAttrIsPermanent];
+      v116 = [attributesCopy objectForKeyedSubscript:kSecAttrIsPermanent];
       if (v116 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v197 = @"KCSharingInvalidAttribute";
@@ -941,7 +941,7 @@ LABEL_168:
         v112 = [NSDictionary dictionaryWithObjects:&v196 forKeys:&v195 count:1];
         v198 = v112;
         v111 = [NSDictionary dictionaryWithObjects:&v198 forKeys:&v197 count:1];
-        sub_100061E2C(a4, 1, v111);
+        sub_100061E2C(error, 1, v111);
         v52 = 0;
 
 LABEL_167:
@@ -949,7 +949,7 @@ LABEL_167:
       }
 
       v22 = kSecAttrIsPrivate;
-      v114 = [v6 objectForKeyedSubscript:kSecAttrIsPrivate];
+      v114 = [attributesCopy objectForKeyedSubscript:kSecAttrIsPrivate];
       if (v114 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v193 = @"KCSharingInvalidAttribute";
@@ -959,7 +959,7 @@ LABEL_167:
         v110 = [NSDictionary dictionaryWithObjects:&v192 forKeys:&v191 count:1];
         v194 = v110;
         v109 = [NSDictionary dictionaryWithObjects:&v194 forKeys:&v193 count:1];
-        sub_100061E2C(a4, 1, v109);
+        sub_100061E2C(error, 1, v109);
         v52 = 0;
 
 LABEL_166:
@@ -967,7 +967,7 @@ LABEL_166:
       }
 
       v23 = kSecAttrIsModifiable;
-      v112 = [v6 objectForKeyedSubscript:kSecAttrIsModifiable];
+      v112 = [attributesCopy objectForKeyedSubscript:kSecAttrIsModifiable];
       if (v112 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v189 = @"KCSharingInvalidAttribute";
@@ -977,14 +977,14 @@ LABEL_166:
         v108 = [NSDictionary dictionaryWithObjects:&v188 forKeys:&v187 count:1];
         v190 = v108;
         v107 = [NSDictionary dictionaryWithObjects:&v190 forKeys:&v189 count:1];
-        sub_100061E2C(a4, 1, v107);
+        sub_100061E2C(error, 1, v107);
         v52 = 0;
 
 LABEL_165:
         goto LABEL_166;
       }
 
-      v110 = [v6 objectForKeyedSubscript:kSecAttrIsSensitive];
+      v110 = [attributesCopy objectForKeyedSubscript:kSecAttrIsSensitive];
       if (v110 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v185 = @"KCSharingInvalidAttribute";
@@ -994,7 +994,7 @@ LABEL_165:
         v106 = [NSDictionary dictionaryWithObjects:&v184 forKeys:&v183 count:1];
         v186 = v106;
         v105 = [NSDictionary dictionaryWithObjects:&v186 forKeys:&v185 count:1];
-        sub_100061E2C(a4, 1, v105);
+        sub_100061E2C(error, 1, v105);
         v52 = 0;
 
 LABEL_164:
@@ -1002,7 +1002,7 @@ LABEL_164:
       }
 
       v24 = kSecAttrWasAlwaysSensitive;
-      v108 = [v6 objectForKeyedSubscript:kSecAttrWasAlwaysSensitive];
+      v108 = [attributesCopy objectForKeyedSubscript:kSecAttrWasAlwaysSensitive];
       if (v108 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v181 = @"KCSharingInvalidAttribute";
@@ -1012,14 +1012,14 @@ LABEL_164:
         v104 = [NSDictionary dictionaryWithObjects:&v180 forKeys:&v179 count:1];
         v182 = v104;
         v103 = [NSDictionary dictionaryWithObjects:&v182 forKeys:&v181 count:1];
-        sub_100061E2C(a4, 1, v103);
+        sub_100061E2C(error, 1, v103);
         v52 = 0;
 
 LABEL_163:
         goto LABEL_164;
       }
 
-      v106 = [v6 objectForKeyedSubscript:kSecAttrIsExtractable];
+      v106 = [attributesCopy objectForKeyedSubscript:kSecAttrIsExtractable];
       if (v106 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v177 = @"KCSharingInvalidAttribute";
@@ -1029,7 +1029,7 @@ LABEL_163:
         v102 = [NSDictionary dictionaryWithObjects:&v176 forKeys:&v175 count:1];
         v178 = v102;
         v101 = [NSDictionary dictionaryWithObjects:&v178 forKeys:&v177 count:1];
-        sub_100061E2C(a4, 1, v101);
+        sub_100061E2C(error, 1, v101);
         v52 = 0;
 
 LABEL_162:
@@ -1037,7 +1037,7 @@ LABEL_162:
       }
 
       v25 = kSecAttrWasNeverExtractable;
-      v104 = [v6 objectForKeyedSubscript:kSecAttrWasNeverExtractable];
+      v104 = [attributesCopy objectForKeyedSubscript:kSecAttrWasNeverExtractable];
       if (v104 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v173 = @"KCSharingInvalidAttribute";
@@ -1047,14 +1047,14 @@ LABEL_162:
         v100 = [NSDictionary dictionaryWithObjects:&v172 forKeys:&v171 count:1];
         v174 = v100;
         v99 = [NSDictionary dictionaryWithObjects:&v174 forKeys:&v173 count:1];
-        sub_100061E2C(a4, 1, v99);
+        sub_100061E2C(error, 1, v99);
         v52 = 0;
 
 LABEL_161:
         goto LABEL_162;
       }
 
-      v102 = [v6 objectForKeyedSubscript:kSecAttrCanEncrypt];
+      v102 = [attributesCopy objectForKeyedSubscript:kSecAttrCanEncrypt];
       if (v102 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v169 = @"KCSharingInvalidAttribute";
@@ -1064,14 +1064,14 @@ LABEL_161:
         v98 = [NSDictionary dictionaryWithObjects:&v168 forKeys:&v167 count:1];
         v170 = v98;
         v97 = [NSDictionary dictionaryWithObjects:&v170 forKeys:&v169 count:1];
-        sub_100061E2C(a4, 1, v97);
+        sub_100061E2C(error, 1, v97);
         v52 = 0;
 
 LABEL_160:
         goto LABEL_161;
       }
 
-      v100 = [v6 objectForKeyedSubscript:kSecAttrCanDecrypt];
+      v100 = [attributesCopy objectForKeyedSubscript:kSecAttrCanDecrypt];
       if (v100 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v165 = @"KCSharingInvalidAttribute";
@@ -1081,14 +1081,14 @@ LABEL_160:
         v96 = [NSDictionary dictionaryWithObjects:&v164 forKeys:&v163 count:1];
         v166 = v96;
         v95 = [NSDictionary dictionaryWithObjects:&v166 forKeys:&v165 count:1];
-        sub_100061E2C(a4, 1, v95);
+        sub_100061E2C(error, 1, v95);
         v52 = 0;
 
 LABEL_159:
         goto LABEL_160;
       }
 
-      v98 = [v6 objectForKeyedSubscript:kSecAttrCanDerive];
+      v98 = [attributesCopy objectForKeyedSubscript:kSecAttrCanDerive];
       if (v98 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v161 = @"KCSharingInvalidAttribute";
@@ -1098,14 +1098,14 @@ LABEL_159:
         v94 = [NSDictionary dictionaryWithObjects:&v160 forKeys:&v159 count:1];
         v162 = v94;
         v93 = [NSDictionary dictionaryWithObjects:&v162 forKeys:&v161 count:1];
-        sub_100061E2C(a4, 1, v93);
+        sub_100061E2C(error, 1, v93);
         v52 = 0;
 
 LABEL_158:
         goto LABEL_159;
       }
 
-      v96 = [v6 objectForKeyedSubscript:kSecAttrCanSign];
+      v96 = [attributesCopy objectForKeyedSubscript:kSecAttrCanSign];
       if (v96 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v157 = @"KCSharingInvalidAttribute";
@@ -1115,14 +1115,14 @@ LABEL_158:
         v92 = [NSDictionary dictionaryWithObjects:&v156 forKeys:&v155 count:1];
         v158 = v92;
         v91 = [NSDictionary dictionaryWithObjects:&v158 forKeys:&v157 count:1];
-        sub_100061E2C(a4, 1, v91);
+        sub_100061E2C(error, 1, v91);
         v52 = 0;
 
 LABEL_157:
         goto LABEL_158;
       }
 
-      v94 = [v6 objectForKeyedSubscript:kSecAttrCanVerify];
+      v94 = [attributesCopy objectForKeyedSubscript:kSecAttrCanVerify];
       if (v94 && (_NSIsNSNumber() & 1) == 0 && (_NSIsNSString() & 1) == 0)
       {
         v153 = @"KCSharingInvalidAttribute";
@@ -1132,7 +1132,7 @@ LABEL_157:
         v90 = [NSDictionary dictionaryWithObjects:&v152 forKeys:&v151 count:1];
         v154 = v90;
         v89 = [NSDictionary dictionaryWithObjects:&v154 forKeys:&v153 count:1];
-        sub_100061E2C(a4, 1, v89);
+        sub_100061E2C(error, 1, v89);
         v52 = 0;
 
 LABEL_156:
@@ -1140,17 +1140,17 @@ LABEL_156:
       }
 
       v26 = kSecAttrCanSignRecover;
-      v92 = [v6 objectForKeyedSubscript:kSecAttrCanSignRecover];
+      v92 = [attributesCopy objectForKeyedSubscript:kSecAttrCanSignRecover];
       if (!v92 || (_NSIsNSNumber() & 1) != 0 || (_NSIsNSString() & 1) != 0)
       {
         v27 = kSecAttrCanVerifyRecover;
-        v90 = [v6 objectForKeyedSubscript:kSecAttrCanVerifyRecover];
+        v90 = [attributesCopy objectForKeyedSubscript:kSecAttrCanVerifyRecover];
         if (!v90 || (_NSIsNSNumber() & 1) != 0 || (_NSIsNSString() & 1) != 0)
         {
-          v88 = [v6 objectForKeyedSubscript:kSecAttrCanWrap];
+          v88 = [attributesCopy objectForKeyedSubscript:kSecAttrCanWrap];
           if (!v88 || (_NSIsNSNumber() & 1) != 0 || (_NSIsNSString() & 1) != 0)
           {
-            v87 = [v6 objectForKeyedSubscript:kSecAttrCanUnwrap];
+            v87 = [attributesCopy objectForKeyedSubscript:kSecAttrCanUnwrap];
             if (!v87 || (_NSIsNSNumber() & 1) != 0 || (_NSIsNSString() & 1) != 0)
             {
               v28 = [v9 copy];
@@ -1233,7 +1233,7 @@ LABEL_156:
             v83 = [NSDictionary dictionaryWithObjects:&v136 forKeys:&v135 count:1];
             v138 = v83;
             v84 = [NSDictionary dictionaryWithObjects:&v138 forKeys:&v137 count:1];
-            sub_100061E2C(a4, 1, v84);
+            sub_100061E2C(error, 1, v84);
 
 LABEL_153:
             v52 = 0;
@@ -1249,7 +1249,7 @@ LABEL_154:
           v81 = [NSDictionary dictionaryWithObjects:&v140 forKeys:&v139 count:1];
           v142 = v81;
           v82 = [NSDictionary dictionaryWithObjects:&v142 forKeys:&v141 count:1];
-          sub_100061E2C(a4, 1, v82);
+          sub_100061E2C(error, 1, v82);
         }
 
         else
@@ -1261,7 +1261,7 @@ LABEL_154:
           v87 = [NSDictionary dictionaryWithObjects:&v144 forKeys:&v143 count:1];
           v146 = v87;
           v81 = [NSDictionary dictionaryWithObjects:&v146 forKeys:&v145 count:1];
-          sub_100061E2C(a4, 1, v81);
+          sub_100061E2C(error, 1, v81);
         }
 
         goto LABEL_153;
@@ -1274,7 +1274,7 @@ LABEL_154:
       v88 = [NSDictionary dictionaryWithObjects:&v148 forKeys:&v147 count:1];
       v150 = v88;
       v87 = [NSDictionary dictionaryWithObjects:&v150 forKeys:&v149 count:1];
-      sub_100061E2C(a4, 1, v87);
+      sub_100061E2C(error, 1, v87);
       goto LABEL_153;
     }
 
@@ -1285,7 +1285,7 @@ LABEL_154:
     v122 = [NSDictionary dictionaryWithObjects:&v216 forKeys:&v215 count:1];
     v218 = v122;
     v121 = [NSDictionary dictionaryWithObjects:&v218 forKeys:&v217 count:1];
-    sub_100061E2C(a4, 1, v121);
+    sub_100061E2C(error, 1, v121);
     v52 = 0;
   }
 
@@ -1306,82 +1306,82 @@ LABEL_175:
   return v62;
 }
 
-- (KCSharingPrivateKeyCredential)initWithProto:(id)a3 sharingGroup:(id)a4 error:(id *)a5
+- (KCSharingPrivateKeyCredential)initWithProto:(id)proto sharingGroup:(id)group error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  protoCopy = proto;
+  groupCopy = group;
   v128.receiver = self;
   v128.super_class = KCSharingPrivateKeyCredential;
   v9 = [(KCSharingPrivateKeyCredential *)&v128 init];
 
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [groupCopy copy];
     sharingGroup = v9->_sharingGroup;
     v9->_sharingGroup = v10;
 
-    v12 = [v7 accessGroup];
-    v13 = [v12 copy];
+    accessGroup = [protoCopy accessGroup];
+    v13 = [accessGroup copy];
     accessGroup = v9->_accessGroup;
     v9->_accessGroup = v13;
 
-    v9->_keyType = [v7 keyType];
-    v15 = [v7 applicationTag];
-    v16 = [v15 copy];
+    v9->_keyType = [protoCopy keyType];
+    applicationTag = [protoCopy applicationTag];
+    v16 = [applicationTag copy];
     applicationTag = v9->_applicationTag;
     v9->_applicationTag = v16;
 
-    v18 = [v7 label];
-    v19 = [v18 copy];
+    label = [protoCopy label];
+    v19 = [label copy];
     label = v9->_label;
     v9->_label = v19;
 
-    v21 = [v7 applicationLabel];
-    v22 = [v21 copy];
+    applicationLabel = [protoCopy applicationLabel];
+    v22 = [applicationLabel copy];
     applicationLabel = v9->_applicationLabel;
     v9->_applicationLabel = v22;
 
-    v24 = [v7 keyMaterial];
-    v25 = [v24 copy];
+    keyMaterial = [protoCopy keyMaterial];
+    v25 = [keyMaterial copy];
     keyMaterial = v9->_keyMaterial;
     v9->_keyMaterial = v25;
 
-    v9->_keySizeInBits = [v7 keySizeInBits];
-    v9->_effectiveKeySize = [v7 effectiveKeySize];
-    [v7 creationDate];
+    v9->_keySizeInBits = [protoCopy keySizeInBits];
+    v9->_effectiveKeySize = [protoCopy effectiveKeySize];
+    [protoCopy creationDate];
     v27 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
     creationDate = v9->_creationDate;
     v9->_creationDate = v27;
 
-    [v7 modificationDate];
+    [protoCopy modificationDate];
     v29 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
     modificationDate = v9->_modificationDate;
     v9->_modificationDate = v29;
 
-    v31 = [v7 alias];
-    v32 = [v31 copy];
+    alias = [protoCopy alias];
+    v32 = [alias copy];
     alias = v9->_alias;
     v9->_alias = v32;
 
-    v9->_creator = [v7 creator];
-    [v7 startDate];
+    v9->_creator = [protoCopy creator];
+    [protoCopy startDate];
     v34 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
     startDate = v9->_startDate;
     v9->_startDate = v34;
 
-    [v7 endDate];
+    [protoCopy endDate];
     v36 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
     endDate = v9->_endDate;
     v9->_endDate = v36;
 
-    v38 = [v7 viewHint];
-    v39 = [v38 copy];
+    viewHint = [protoCopy viewHint];
+    v39 = [viewHint copy];
     viewHint = v9->_viewHint;
     v9->_viewHint = v39;
 
-    if ([v7 hasKeyClass])
+    if ([protoCopy hasKeyClass])
     {
-      v9->_keyClass = [v7 keyClass];
+      v9->_keyClass = [protoCopy keyClass];
       v41 = KCSharingLogObject();
       if (!os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
@@ -1414,9 +1414,9 @@ LABEL_175:
     _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, v42, buf, v44);
 LABEL_8:
 
-    if ([v7 hasIsPermanent])
+    if ([protoCopy hasIsPermanent])
     {
-      v9->_isPermanent = [v7 isPermanent];
+      v9->_isPermanent = [protoCopy isPermanent];
       v46 = KCSharingLogObject();
       if (!os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
       {
@@ -1449,9 +1449,9 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, v47, buf, v49);
 LABEL_14:
 
-    if ([v7 hasIsPrivate])
+    if ([protoCopy hasIsPrivate])
     {
-      v9->_isPrivate = [v7 isPrivate];
+      v9->_isPrivate = [protoCopy isPrivate];
       v51 = KCSharingLogObject();
       if (!os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
@@ -1484,9 +1484,9 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, v52, buf, v54);
 LABEL_20:
 
-    if ([v7 hasIsModifiable])
+    if ([protoCopy hasIsModifiable])
     {
-      v9->_isModifiable = [v7 isModifiable];
+      v9->_isModifiable = [protoCopy isModifiable];
       v56 = KCSharingLogObject();
       if (!os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
@@ -1519,9 +1519,9 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, v57, buf, v59);
 LABEL_26:
 
-    if ([v7 hasIsSensitive])
+    if ([protoCopy hasIsSensitive])
     {
-      v9->_isSensitive = [v7 isSensitive];
+      v9->_isSensitive = [protoCopy isSensitive];
       v61 = KCSharingLogObject();
       if (!os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
       {
@@ -1554,9 +1554,9 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, v62, buf, v64);
 LABEL_32:
 
-    if ([v7 hasWasAlwaysSensitive])
+    if ([protoCopy hasWasAlwaysSensitive])
     {
-      v9->_wasAlwaysSensitive = [v7 wasAlwaysSensitive];
+      v9->_wasAlwaysSensitive = [protoCopy wasAlwaysSensitive];
       v66 = KCSharingLogObject();
       if (!os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
       {
@@ -1589,9 +1589,9 @@ LABEL_32:
     _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, v67, buf, v69);
 LABEL_38:
 
-    if ([v7 hasIsExtractable])
+    if ([protoCopy hasIsExtractable])
     {
-      v9->_isExtractable = [v7 isExtractable];
+      v9->_isExtractable = [protoCopy isExtractable];
       v71 = KCSharingLogObject();
       if (!os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
       {
@@ -1624,9 +1624,9 @@ LABEL_38:
     _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, v72, buf, v74);
 LABEL_44:
 
-    if ([v7 hasWasNeverExtractable])
+    if ([protoCopy hasWasNeverExtractable])
     {
-      v9->_wasNeverExtractable = [v7 wasNeverExtractable];
+      v9->_wasNeverExtractable = [protoCopy wasNeverExtractable];
       v76 = KCSharingLogObject();
       if (!os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
       {
@@ -1659,9 +1659,9 @@ LABEL_44:
     _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_DEFAULT, v77, buf, v79);
 LABEL_50:
 
-    if ([v7 hasCanEncrypt])
+    if ([protoCopy hasCanEncrypt])
     {
-      v9->_canEncrypt = [v7 canEncrypt];
+      v9->_canEncrypt = [protoCopy canEncrypt];
       v81 = KCSharingLogObject();
       if (!os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
       {
@@ -1694,9 +1694,9 @@ LABEL_50:
     _os_log_impl(&_mh_execute_header, v83, OS_LOG_TYPE_DEFAULT, v82, buf, v84);
 LABEL_56:
 
-    if ([v7 hasCanDecrypt])
+    if ([protoCopy hasCanDecrypt])
     {
-      v9->_canDecrypt = [v7 canDecrypt];
+      v9->_canDecrypt = [protoCopy canDecrypt];
       v86 = KCSharingLogObject();
       if (!os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
       {
@@ -1729,9 +1729,9 @@ LABEL_56:
     _os_log_impl(&_mh_execute_header, v88, OS_LOG_TYPE_DEFAULT, v87, buf, v89);
 LABEL_62:
 
-    if ([v7 hasCanDerive])
+    if ([protoCopy hasCanDerive])
     {
-      v9->_canDerive = [v7 canDerive];
+      v9->_canDerive = [protoCopy canDerive];
       v91 = KCSharingLogObject();
       if (!os_log_type_enabled(v91, OS_LOG_TYPE_DEFAULT))
       {
@@ -1764,9 +1764,9 @@ LABEL_62:
     _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, v92, buf, v94);
 LABEL_68:
 
-    if ([v7 hasCanSign])
+    if ([protoCopy hasCanSign])
     {
-      v9->_canSign = [v7 canSign];
+      v9->_canSign = [protoCopy canSign];
       v96 = KCSharingLogObject();
       if (!os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
       {
@@ -1799,9 +1799,9 @@ LABEL_68:
     _os_log_impl(&_mh_execute_header, v98, OS_LOG_TYPE_DEFAULT, v97, buf, v99);
 LABEL_74:
 
-    if ([v7 hasCanVerify])
+    if ([protoCopy hasCanVerify])
     {
-      v9->_canVerify = [v7 canVerify];
+      v9->_canVerify = [protoCopy canVerify];
       v101 = KCSharingLogObject();
       if (!os_log_type_enabled(v101, OS_LOG_TYPE_DEFAULT))
       {
@@ -1834,9 +1834,9 @@ LABEL_74:
     _os_log_impl(&_mh_execute_header, v103, OS_LOG_TYPE_DEFAULT, v102, buf, v104);
 LABEL_80:
 
-    if ([v7 hasCanSignRecover])
+    if ([protoCopy hasCanSignRecover])
     {
-      v9->_canSignRecover = [v7 canSignRecover];
+      v9->_canSignRecover = [protoCopy canSignRecover];
       v106 = KCSharingLogObject();
       if (!os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
       {
@@ -1869,9 +1869,9 @@ LABEL_80:
     _os_log_impl(&_mh_execute_header, v108, OS_LOG_TYPE_DEFAULT, v107, buf, v109);
 LABEL_86:
 
-    if ([v7 hasCanVerifyRecover])
+    if ([protoCopy hasCanVerifyRecover])
     {
-      v9->_canVerifyRecover = [v7 canVerifyRecover];
+      v9->_canVerifyRecover = [protoCopy canVerifyRecover];
       v111 = KCSharingLogObject();
       if (!os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
       {
@@ -1904,9 +1904,9 @@ LABEL_86:
     _os_log_impl(&_mh_execute_header, v113, OS_LOG_TYPE_DEFAULT, v112, buf, v114);
 LABEL_92:
 
-    if ([v7 hasCanWrap])
+    if ([protoCopy hasCanWrap])
     {
-      v9->_canWrap = [v7 canWrap];
+      v9->_canWrap = [protoCopy canWrap];
       v116 = KCSharingLogObject();
       if (!os_log_type_enabled(v116, OS_LOG_TYPE_DEFAULT))
       {
@@ -1939,9 +1939,9 @@ LABEL_92:
     _os_log_impl(&_mh_execute_header, v118, OS_LOG_TYPE_DEFAULT, v117, buf, v119);
 LABEL_98:
 
-    if ([v7 hasCanUnwrap])
+    if ([protoCopy hasCanUnwrap])
     {
-      v9->_canUnwrap = [v7 canUnwrap];
+      v9->_canUnwrap = [protoCopy canUnwrap];
       v121 = KCSharingLogObject();
       if (os_log_type_enabled(v121, OS_LOG_TYPE_DEFAULT))
       {
@@ -1976,23 +1976,23 @@ LABEL_103:
   return v126;
 }
 
-- (KCSharingPrivateKeyCredential)initWithDatabaseItem:(SecDbItem *)a3 error:(id *)a4
+- (KCSharingPrivateKeyCredential)initWithDatabaseItem:(SecDbItem *)item error:(id *)error
 {
-  v7 = [objc_opt_class() requiredAttributeKeys];
-  v8 = sub_100017964(a3, v7, a4);
+  requiredAttributeKeys = [objc_opt_class() requiredAttributeKeys];
+  v8 = sub_100017964(item, requiredAttributeKeys, error);
 
   if (v8)
   {
-    self = [(KCSharingPrivateKeyCredential *)self initWithAttributes:v8 error:a4];
-    v9 = self;
+    self = [(KCSharingPrivateKeyCredential *)self initWithAttributes:v8 error:error];
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 + (NSSet)requiredAttributeKeys

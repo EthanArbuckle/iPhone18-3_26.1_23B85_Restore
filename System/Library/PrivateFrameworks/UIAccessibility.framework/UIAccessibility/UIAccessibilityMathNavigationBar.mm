@@ -1,17 +1,17 @@
 @interface UIAccessibilityMathNavigationBar
 - (BOOL)accessibilityPerformEscape;
-- (UIAccessibilityMathNavigationBar)initWithFrame:(CGRect)a3;
-- (id)_popNavigationItemWithTransition:(int)a3;
-- (void)_pushNavigationItem:(id)a3 transition:(int)a4;
+- (UIAccessibilityMathNavigationBar)initWithFrame:(CGRect)frame;
+- (id)_popNavigationItemWithTransition:(int)transition;
+- (void)_pushNavigationItem:(id)item transition:(int)transition;
 @end
 
 @implementation UIAccessibilityMathNavigationBar
 
-- (UIAccessibilityMathNavigationBar)initWithFrame:(CGRect)a3
+- (UIAccessibilityMathNavigationBar)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = UIAccessibilityMathNavigationBar;
-  v3 = [(UIAccessibilityMathNavigationBar *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIAccessibilityMathNavigationBar *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,11 +24,11 @@
 
     UIGraphicsEndImageContext();
     [(UIAccessibilityMathNavigationBar *)v4 setBackgroundImage:v6 forBarMetrics:0];
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIAccessibilityMathNavigationBar *)v4 setBackgroundColor:v7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIAccessibilityMathNavigationBar *)v4 setBackgroundColor:whiteColor];
 
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIAccessibilityMathNavigationBar *)v4 setTintColor:v8];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIAccessibilityMathNavigationBar *)v4 setTintColor:whiteColor2];
 
     [(UIAccessibilityMathNavigationBar *)v4 setTranslucent:1];
   }
@@ -38,44 +38,44 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 accessibilityPresentingViewController];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  accessibilityPresentingViewController = [mEMORY[0x1E69DC668] accessibilityPresentingViewController];
 
-  v4 = [v3 presentedViewController];
+  presentedViewController = [accessibilityPresentingViewController presentedViewController];
 
-  if (!v4)
+  if (!presentedViewController)
   {
     _AXAssert();
   }
 
-  v5 = [v3 presentedViewController];
+  presentedViewController2 = [accessibilityPresentingViewController presentedViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = v5;
+    v10 = presentedViewController2;
     _AXAssert();
     goto LABEL_7;
   }
 
-  v6 = [v5 viewControllers];
-  v7 = [v6 count];
+  viewControllers = [presentedViewController2 viewControllers];
+  v7 = [viewControllers count];
 
   if (v7 == 1)
   {
 LABEL_7:
-    [v3 dismissViewControllerAnimated:1 completion:{0, v10}];
+    [accessibilityPresentingViewController dismissViewControllerAnimated:1 completion:{0, v10}];
     goto LABEL_8;
   }
 
-  v8 = [v5 popViewControllerAnimated:1];
+  v8 = [presentedViewController2 popViewControllerAnimated:1];
 LABEL_8:
 
   return 1;
 }
 
-- (void)_pushNavigationItem:(id)a3 transition:(int)a4
+- (void)_pushNavigationItem:(id)item transition:(int)transition
 {
-  if (a4)
+  if (transition)
   {
     v4 = 6;
   }
@@ -87,12 +87,12 @@ LABEL_8:
 
   v5.receiver = self;
   v5.super_class = UIAccessibilityMathNavigationBar;
-  [(UIAccessibilityMathNavigationBar *)&v5 _pushNavigationItem:a3 transition:v4];
+  [(UIAccessibilityMathNavigationBar *)&v5 _pushNavigationItem:item transition:v4];
 }
 
-- (id)_popNavigationItemWithTransition:(int)a3
+- (id)_popNavigationItemWithTransition:(int)transition
 {
-  if (a3)
+  if (transition)
   {
     v3 = 6;
   }

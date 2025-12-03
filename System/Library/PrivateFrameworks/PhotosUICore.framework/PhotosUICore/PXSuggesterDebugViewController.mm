@@ -1,45 +1,45 @@
 @interface PXSuggesterDebugViewController
-- (PXSuggesterDebugViewController)initWithName:(id)a3 options:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_stringWithSortCriteria:(unint64_t)a3;
-- (id)assetsDataSourceManagerForSuggestion:(id)a3;
+- (PXSuggesterDebugViewController)initWithName:(id)name options:(id)options;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_stringWithSortCriteria:(unint64_t)criteria;
+- (id)assetsDataSourceManagerForSuggestion:(id)suggestion;
 - (id)dateButton;
 - (id)fullLibraryButton;
-- (id)oneUpPresentationInitialAssetReference:(id)a3;
-- (id)oneUpPresentationMediaProvider:(id)a3;
+- (id)oneUpPresentationInitialAssetReference:(id)reference;
+- (id)oneUpPresentationMediaProvider:(id)provider;
 - (id)showInvalidItemsButton;
 - (id)sortButton;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
 - (void)_fetchSuggestions;
 - (void)_sortItems;
 - (void)_updateToolbarItems;
-- (void)configureCell:(id)a3 withItem:(id)a4;
-- (void)didSelectDateButton:(id)a3;
-- (void)didSelectFullLibraryButton:(id)a3;
-- (void)didSelectShowInvalidItemsButton:(id)a3;
-- (void)didSelectSortButton:(id)a3;
+- (void)configureCell:(id)cell withItem:(id)item;
+- (void)didSelectDateButton:(id)button;
+- (void)didSelectFullLibraryButton:(id)button;
+- (void)didSelectShowInvalidItemsButton:(id)button;
+- (void)didSelectSortButton:(id)button;
 - (void)didStopProcessing;
 - (void)refresh;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateShowInvalidItemsButton;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willStartProcessing;
 @end
 
 @implementation PXSuggesterDebugViewController
 
-- (id)_stringWithSortCriteria:(unint64_t)a3
+- (id)_stringWithSortCriteria:(unint64_t)criteria
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (criteria == 1)
   {
     v3 = @"Score";
   }
 
-  if (a3)
+  if (criteria)
   {
     return v3;
   }
@@ -79,12 +79,12 @@
   }
 }
 
-- (void)didSelectSortButton:(id)a3
+- (void)didSelectSortButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Sort Criteria" message:0 preferredStyle:0];
-  v6 = [v5 popoverPresentationController];
-  [v6 setBarButtonItem:v4];
+  popoverPresentationController = [v5 popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:buttonCopy];
 
   v7 = 0;
   v8 = 1;
@@ -142,7 +142,7 @@ uint64_t __54__PXSuggesterDebugViewController_didSelectSortButton___block_invoke
   [(UIBarButtonItem *)self->_showInvalidItemsButton setTitle:v2];
 }
 
-- (void)didSelectShowInvalidItemsButton:(id)a3
+- (void)didSelectShowInvalidItemsButton:(id)button
 {
   self->_showsInvalidItems ^= 1u;
   [(PXSuggesterDebugViewController *)self updateShowInvalidItemsButton];
@@ -151,14 +151,14 @@ uint64_t __54__PXSuggesterDebugViewController_didSelectSortButton___block_invoke
   [(PXSuggesterDebugViewController *)self refresh];
 }
 
-- (void)didSelectDateButton:(id)a3
+- (void)didSelectDateButton:(id)button
 {
   v5 = objc_alloc_init(PXContextualMemoriesSettingsTableViewController);
-  v4 = [(PXSuggesterDebugViewController *)self navigationController];
-  [v4 pushViewController:v5 animated:1];
+  navigationController = [(PXSuggesterDebugViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
-- (void)didSelectFullLibraryButton:(id)a3
+- (void)didSelectFullLibraryButton:(id)button
 {
   fullLibraryIsEnabled = self->_fullLibraryIsEnabled;
   self->_fullLibraryIsEnabled = !fullLibraryIsEnabled;
@@ -169,8 +169,8 @@ uint64_t __54__PXSuggesterDebugViewController_didSelectSortButton___block_invoke
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] redColor];
-    [(UIBarButtonItem *)self->_fullLibraryButton setTintColor:v5];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [(UIBarButtonItem *)self->_fullLibraryButton setTintColor:redColor];
   }
 
   [(PXSuggesterDebugViewController *)self willStartProcessing];
@@ -193,20 +193,20 @@ uint64_t __61__PXSuggesterDebugViewController_didSelectFullLibraryButton___block
 - (void)_updateToolbarItems
 {
   v11[7] = *MEMORY[0x1E69E9840];
-  v3 = [(PXSuggesterDebugViewController *)self fullLibraryButton];
+  fullLibraryButton = [(PXSuggesterDebugViewController *)self fullLibraryButton];
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
-  v5 = [(PXSuggesterDebugViewController *)self dateButton];
+  dateButton = [(PXSuggesterDebugViewController *)self dateButton];
   v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
-  v7 = [(PXSuggesterDebugViewController *)self showInvalidItemsButton];
+  showInvalidItemsButton = [(PXSuggesterDebugViewController *)self showInvalidItemsButton];
   v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
-  v9 = [(PXSuggesterDebugViewController *)self sortButton];
-  v11[0] = v3;
+  sortButton = [(PXSuggesterDebugViewController *)self sortButton];
+  v11[0] = fullLibraryButton;
   v11[1] = v4;
-  v11[2] = v5;
+  v11[2] = dateButton;
   v11[3] = v6;
-  v11[4] = v7;
+  v11[4] = showInvalidItemsButton;
   v11[5] = v8;
-  v11[6] = v9;
+  v11[6] = sortButton;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:7];
   [(PXSuggesterDebugViewController *)self setToolbarItems:v10];
 }
@@ -301,11 +301,11 @@ uint64_t __61__PXSuggesterDebugViewController_didSelectFullLibraryButton___block
 
   if (self->_fullLibraryIsEnabled)
   {
-    v6 = [MEMORY[0x1E695DF00] distantPast];
-    [v4 setObject:v6 forKeyedSubscript:@"universalStartDate"];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    [v4 setObject:distantPast forKeyedSubscript:@"universalStartDate"];
 
-    v7 = [MEMORY[0x1E695DF00] distantFuture];
-    [v4 setObject:v7 forKeyedSubscript:@"universalEndDate"];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [v4 setObject:distantFuture forKeyedSubscript:@"universalEndDate"];
   }
 
   v8 = [MEMORY[0x1E69789A8] px:self deprecated:?appPhotoLibrary];
@@ -358,33 +358,33 @@ uint64_t __61__PXSuggesterDebugViewController_didSelectFullLibraryButton___block
   [v23 refresh];
 }
 
-- (void)configureCell:(id)a3 withItem:(id)a4
+- (void)configureCell:(id)cell withItem:(id)item
 {
-  v21 = a3;
-  v5 = a4;
-  v6 = [v5 suggestion];
-  [v21 setSuggestion:v6];
+  cellCopy = cell;
+  itemCopy = item;
+  suggestion = [itemCopy suggestion];
+  [cellCopy setSuggestion:suggestion];
 
-  v7 = [MEMORY[0x1E69DC888] labelColor];
-  if ([v5 isInvalid])
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  if ([itemCopy isInvalid])
   {
-    v8 = [MEMORY[0x1E69DC888] redColor];
+    redColor = [MEMORY[0x1E69DC888] redColor];
   }
 
   else
   {
-    v9 = [v5 info];
-    v10 = [v9 objectForKeyedSubscript:@"identicalExistingSuggestionInfo"];
+    info = [itemCopy info];
+    v10 = [info objectForKeyedSubscript:@"identicalExistingSuggestionInfo"];
 
     if (v10)
     {
-      v8 = [MEMORY[0x1E69DC888] greenColor];
+      redColor = [MEMORY[0x1E69DC888] greenColor];
     }
 
     else
     {
-      v11 = [v5 info];
-      v12 = [v11 objectForKeyedSubscript:@"suggestionsByCollisionReason"];
+      info2 = [itemCopy info];
+      v12 = [info2 objectForKeyedSubscript:@"suggestionsByCollisionReason"];
       v13 = [v12 count];
 
       if (!v13)
@@ -392,79 +392,79 @@ uint64_t __61__PXSuggesterDebugViewController_didSelectFullLibraryButton___block
         goto LABEL_8;
       }
 
-      v8 = [MEMORY[0x1E69DC888] orangeColor];
+      redColor = [MEMORY[0x1E69DC888] orangeColor];
     }
   }
 
-  v14 = v8;
+  v14 = redColor;
 
-  v7 = v14;
+  labelColor = v14;
 LABEL_8:
-  v15 = [v21 textLabel];
-  v16 = [v5 name];
-  v17 = [v16 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F1741150];
+  textLabel = [cellCopy textLabel];
+  name = [itemCopy name];
+  v17 = [name stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F1741150];
 
-  [v15 setText:v17];
-  [v15 setTextColor:v7];
-  v18 = [v21 detailTextLabel];
-  v19 = [v5 description];
-  [v18 setText:v19];
+  [textLabel setText:v17];
+  [textLabel setTextColor:labelColor];
+  detailTextLabel = [cellCopy detailTextLabel];
+  v19 = [itemCopy description];
+  [detailTextLabel setText:v19];
 
-  [v18 setTextColor:v7];
-  [v18 sizeToFit];
-  v20 = [v5 suggestion];
-  [v21 setAccessoryType:4 * (v20 != 0)];
+  [detailTextLabel setTextColor:labelColor];
+  [detailTextLabel sizeToFit];
+  suggestion2 = [itemCopy suggestion];
+  [cellCopy setAccessoryType:4 * (suggestion2 != 0)];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"SuggestersDebugTableViewCellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"SuggestersDebugTableViewCellIdentifier"];
   if (!v7)
   {
     v7 = [[PXSuggesterDebugViewControllerCell alloc] initWithStyle:3 reuseIdentifier:@"SuggestersDebugTableViewCellIdentifier"];
-    v8 = [(PXSuggesterDebugViewControllerCell *)v7 detailTextLabel];
-    [v8 setNumberOfLines:2];
+    detailTextLabel = [(PXSuggesterDebugViewControllerCell *)v7 detailTextLabel];
+    [detailTextLabel setNumberOfLines:2];
 
-    v9 = [(PXSuggesterDebugViewControllerCell *)v7 detailTextLabel];
-    [v9 setLineBreakMode:0];
+    detailTextLabel2 = [(PXSuggesterDebugViewControllerCell *)v7 detailTextLabel];
+    [detailTextLabel2 setLineBreakMode:0];
   }
 
-  v10 = -[NSArray objectAtIndexedSubscript:](self->_sortedItems, "objectAtIndexedSubscript:", [v6 row]);
+  v10 = -[NSArray objectAtIndexedSubscript:](self->_sortedItems, "objectAtIndexedSubscript:", [pathCopy row]);
   [(PXSuggesterDebugViewController *)self configureCell:v7 withItem:v10];
 
   return v7;
 }
 
-- (id)oneUpPresentationInitialAssetReference:(id)a3
+- (id)oneUpPresentationInitialAssetReference:(id)reference
 {
-  v3 = [(PXSuggesterDebugViewController *)self oneUpPresentationDataSourceManager:a3];
-  v4 = [v3 dataSource];
-  v5 = [v4 startingAssetReference];
+  v3 = [(PXSuggesterDebugViewController *)self oneUpPresentationDataSourceManager:reference];
+  dataSource = [v3 dataSource];
+  startingAssetReference = [dataSource startingAssetReference];
 
-  return v5;
+  return startingAssetReference;
 }
 
-- (id)oneUpPresentationMediaProvider:(id)a3
+- (id)oneUpPresentationMediaProvider:(id)provider
 {
   v3 = objc_alloc_init(PXPhotoKitUIMediaProvider);
 
   return v3;
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = MEMORY[0x1E69DC8D8];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __92__PXSuggesterDebugViewController_tableView_contextMenuConfigurationForRowAtIndexPath_point___block_invoke;
   v13[3] = &unk_1E773AFD8;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = viewCopy;
+  v15 = pathCopy;
+  v9 = pathCopy;
+  v10 = viewCopy;
   v11 = [v8 configurationWithIdentifier:0 previewProvider:0 actionProvider:v13];
 
   return v11;
@@ -490,22 +490,22 @@ id __92__PXSuggesterDebugViewController_tableView_contextMenuConfigurationForRow
   return v7;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v11 = -[NSArray objectAtIndexedSubscript:](self->_sortedItems, "objectAtIndexedSubscript:", [a4 row]);
-  v5 = [v11 suggestion];
-  v6 = [MEMORY[0x1E6978630] fetchKeyCuratedAssetInAssetCollection:v5 referenceAsset:0];
+  v11 = -[NSArray objectAtIndexedSubscript:](self->_sortedItems, "objectAtIndexedSubscript:", [path row]);
+  suggestion = [v11 suggestion];
+  v6 = [MEMORY[0x1E6978630] fetchKeyCuratedAssetInAssetCollection:suggestion referenceAsset:0];
   v7 = [PXSuggestionDebugViewController alloc];
-  v8 = [v11 info];
-  v9 = [(PXSuggestionDebugViewController *)v7 initWithSuggestion:v5 suggestionInfo:v8];
+  info = [v11 info];
+  v9 = [(PXSuggestionDebugViewController *)v7 initWithSuggestion:suggestion suggestionInfo:info];
 
-  v10 = [(PXSuggesterDebugViewController *)self navigationController];
-  [v10 px_presentViewControllerInNavigationController:v9 animated:1 dimissButtonLocation:0 completion:0];
+  navigationController = [(PXSuggesterDebugViewController *)self navigationController];
+  [navigationController px_presentViewControllerInNavigationController:v9 animated:1 dimissButtonLocation:0 completion:0];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = -[NSArray objectAtIndexedSubscript:](self->_sortedItems, "objectAtIndexedSubscript:", [a4 row]);
+  v4 = -[NSArray objectAtIndexedSubscript:](self->_sortedItems, "objectAtIndexedSubscript:", [path row]);
   v5 = [v4 description];
   v6 = [v5 rangeOfString:@"\n"];
 
@@ -522,28 +522,28 @@ id __92__PXSuggesterDebugViewController_tableView_contextMenuConfigurationForRow
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_sortedItems, "objectAtIndexedSubscript:", [a4 row]);
-  v5 = [v8 suggestion];
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_sortedItems, "objectAtIndexedSubscript:", [path row]);
+  suggestion = [v8 suggestion];
   currentSuggestion = self->_currentSuggestion;
-  self->_currentSuggestion = v5;
+  self->_currentSuggestion = suggestion;
 
   [(UIViewController *)self px_enableOneUpPresentation];
-  v7 = [(UIViewController *)self px_oneUpPresentation];
-  [v7 setDelegate:self];
-  [v7 startWithConfigurationHandler:0];
+  px_oneUpPresentation = [(UIViewController *)self px_oneUpPresentation];
+  [px_oneUpPresentation setDelegate:self];
+  [px_oneUpPresentation startWithConfigurationHandler:0];
 }
 
-- (id)assetsDataSourceManagerForSuggestion:(id)a3
+- (id)assetsDataSourceManagerForSuggestion:(id)suggestion
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E6978760];
-  v14 = a3;
+  suggestionCopy = suggestion;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v14 count:1];
-  v7 = [v3 transientCollectionListWithCollections:v6 title:{0, v14, v15}];
+  suggestionCopy2 = suggestion;
+  v6 = [v4 arrayWithObjects:&suggestionCopy count:1];
+  v7 = [v3 transientCollectionListWithCollections:v6 title:{0, suggestionCopy, v15}];
 
   v8 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v7 options:0];
   v9 = [[PXPhotosDataSourceConfiguration alloc] initWithCollectionListFetchResult:v8 options:0];
@@ -557,12 +557,12 @@ id __92__PXSuggesterDebugViewController_tableView_contextMenuConfigurationForRow
 
 - (void)refresh
 {
-  v3 = [(PXSuggesterDebugViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(PXSuggesterDebugViewController *)self tableView];
+  [tableView reloadData];
 
-  v5 = [(PXSuggesterDebugViewController *)self navigationItem];
+  navigationItem = [(PXSuggesterDebugViewController *)self navigationItem];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%d) %@", -[NSArray count](self->_sortedItems, "count"), self->_name];
-  [v5 setTitle:v4];
+  [navigationItem setTitle:v4];
 }
 
 - (void)didStopProcessing
@@ -585,11 +585,11 @@ id __92__PXSuggesterDebugViewController_tableView_contextMenuConfigurationForRow
   [(UIActivityIndicatorView *)spinnerView startAnimating];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PXSuggesterDebugViewController;
-  [(PXSuggesterDebugViewController *)&v6 viewWillAppear:a3];
+  [(PXSuggesterDebugViewController *)&v6 viewWillAppear:appear];
   [(PXSuggesterDebugViewController *)self willStartProcessing];
   v4 = +[PXContextualMemoriesSettingsController sharedController];
   v5[0] = MEMORY[0x1E69E9820];
@@ -657,31 +657,31 @@ uint64_t __49__PXSuggesterDebugViewController_viewWillAppear___block_invoke_3(ui
   v53.super_class = PXSuggesterDebugViewController;
   [(PXSuggesterDebugViewController *)&v53 viewDidLoad];
   name = self->_name;
-  v4 = [(PXSuggesterDebugViewController *)self navigationItem];
-  [v4 setTitle:name];
+  navigationItem = [(PXSuggesterDebugViewController *)self navigationItem];
+  [navigationItem setTitle:name];
 
-  v5 = [(PXSuggesterDebugViewController *)self tableView];
-  [v5 setEstimatedRowHeight:44.0];
+  tableView = [(PXSuggesterDebugViewController *)self tableView];
+  [tableView setEstimatedRowHeight:44.0];
 
   v6 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:101];
   spinnerView = self->_spinnerView;
   self->_spinnerView = v6;
 
-  v8 = [MEMORY[0x1E69DC888] grayColor];
-  [(UIActivityIndicatorView *)self->_spinnerView setColor:v8];
+  grayColor = [MEMORY[0x1E69DC888] grayColor];
+  [(UIActivityIndicatorView *)self->_spinnerView setColor:grayColor];
 
   [(UIActivityIndicatorView *)self->_spinnerView bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(PXSuggesterDebugViewController *)self view];
-  [v17 bounds];
+  view = [(PXSuggesterDebugViewController *)self view];
+  [view bounds];
   v19 = v18;
   [(UIActivityIndicatorView *)self->_spinnerView bounds];
   v21 = (v19 - v20) * 0.5;
-  v22 = [(PXSuggesterDebugViewController *)self view];
-  [v22 bounds];
+  view2 = [(PXSuggesterDebugViewController *)self view];
+  [view2 bounds];
   v24 = v23;
   [(UIActivityIndicatorView *)self->_spinnerView bounds];
   v26 = (v24 - v25) * 0.5;
@@ -694,8 +694,8 @@ uint64_t __49__PXSuggesterDebugViewController_viewWillAppear___block_invoke_3(ui
 
   [(UIActivityIndicatorView *)self->_spinnerView setAutoresizingMask:45];
   [(UIActivityIndicatorView *)self->_spinnerView setHidesWhenStopped:1];
-  v27 = [(PXSuggesterDebugViewController *)self view];
-  [v27 addSubview:self->_spinnerView];
+  view3 = [(PXSuggesterDebugViewController *)self view];
+  [view3 addSubview:self->_spinnerView];
 
   v28 = objc_alloc(MEMORY[0x1E69DCC10]);
   v29 = [v28 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -706,8 +706,8 @@ uint64_t __49__PXSuggesterDebugViewController_viewWillAppear___block_invoke_3(ui
   v31 = [MEMORY[0x1E69DB878] systemFontOfSize:36.0 weight:*MEMORY[0x1E69DB958]];
   [(UILabel *)self->_noResultLabel setFont:v31];
 
-  v32 = [MEMORY[0x1E69DC888] grayColor];
-  [(UILabel *)self->_noResultLabel setTextColor:v32];
+  grayColor2 = [MEMORY[0x1E69DC888] grayColor];
+  [(UILabel *)self->_noResultLabel setTextColor:grayColor2];
 
   [(UILabel *)self->_noResultLabel setTextAlignment:1];
   [(UILabel *)self->_noResultLabel sizeToFit];
@@ -716,13 +716,13 @@ uint64_t __49__PXSuggesterDebugViewController_viewWillAppear___block_invoke_3(ui
   v36 = v35;
   v38 = v37;
   v40 = v39;
-  v41 = [(PXSuggesterDebugViewController *)self view];
-  [v41 bounds];
+  view4 = [(PXSuggesterDebugViewController *)self view];
+  [view4 bounds];
   v43 = v42;
   [(UILabel *)self->_noResultLabel bounds];
   v45 = (v43 - v44) * 0.5;
-  v46 = [(PXSuggesterDebugViewController *)self view];
-  [v46 bounds];
+  view5 = [(PXSuggesterDebugViewController *)self view];
+  [view5 bounds];
   v48 = v47;
   [(UILabel *)self->_noResultLabel bounds];
   v50 = (v48 - v49) * 0.5;
@@ -735,26 +735,26 @@ uint64_t __49__PXSuggesterDebugViewController_viewWillAppear___block_invoke_3(ui
 
   [(UILabel *)self->_noResultLabel setAutoresizingMask:45];
   [(UILabel *)self->_noResultLabel setHidden:1];
-  v51 = [(PXSuggesterDebugViewController *)self view];
-  [v51 addSubview:self->_noResultLabel];
+  view6 = [(PXSuggesterDebugViewController *)self view];
+  [view6 addSubview:self->_noResultLabel];
 
   [(PXSuggesterDebugViewController *)self _updateToolbarItems];
-  v52 = [(PXSuggesterDebugViewController *)self navigationController];
-  [v52 setToolbarHidden:0 animated:1];
+  navigationController = [(PXSuggesterDebugViewController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:1];
 }
 
-- (PXSuggesterDebugViewController)initWithName:(id)a3 options:(id)a4
+- (PXSuggesterDebugViewController)initWithName:(id)name options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = PXSuggesterDebugViewController;
   v9 = [(PXSuggesterDebugViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_options, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_options, options);
   }
 
   return v10;

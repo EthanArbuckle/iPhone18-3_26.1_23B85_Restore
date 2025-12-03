@@ -1,12 +1,12 @@
 @interface CUINamedIconLayerGroup
-- (BOOL)_updateFromCatalog:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6;
+- (BOOL)_updateFromCatalog:(id)catalog displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)name;
 - (CGColor)color;
 - (CUINamedGradient)gradient;
-- (CUINamedIconLayerGroup)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5 resolvingWithBlock:(id)a6;
+- (CUINamedIconLayerGroup)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme resolvingWithBlock:(id)block;
 - (id)mutableCopy;
-- (void)_addLayer:(id)a3;
-- (void)_setGradientOrColor:(id)a3;
-- (void)_setGradientOrColorName:(id)a3;
+- (void)_addLayer:(id)layer;
+- (void)_setGradientOrColor:(id)color;
+- (void)_setGradientOrColorName:(id)name;
 - (void)dealloc;
 @end
 
@@ -21,7 +21,7 @@
 
 - (CGColor)color
 {
-  v2 = [(CUINamedIconLayerGroup *)self _gradientOrColor];
+  _gradientOrColor = [(CUINamedIconLayerGroup *)self _gradientOrColor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -30,17 +30,17 @@
 
   else
   {
-    return v2;
+    return _gradientOrColor;
   }
 }
 
 - (CUINamedGradient)gradient
 {
-  v2 = [(CUINamedIconLayerGroup *)self _gradientOrColor];
+  _gradientOrColor = [(CUINamedIconLayerGroup *)self _gradientOrColor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return _gradientOrColor;
   }
 
   else
@@ -49,31 +49,31 @@
   }
 }
 
-- (CUINamedIconLayerGroup)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5 resolvingWithBlock:(id)a6
+- (CUINamedIconLayerGroup)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme resolvingWithBlock:(id)block
 {
-  v8 = a3;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = CUINamedIconLayerGroup;
-  v9 = [(CUINamedLookup *)&v20 initWithName:a3 usingRenditionKey:a4 fromTheme:?];
+  v9 = [(CUINamedLookup *)&v20 initWithName:name usingRenditionKey:key fromTheme:?];
   v10 = v9;
   if (v9)
   {
-    v11 = [(CUINamedLookup *)v9 _rendition];
-    if ([(CUIThemeRendition *)v11 type]!= 1020)
+    _rendition = [(CUINamedLookup *)v9 _rendition];
+    if ([(CUIThemeRendition *)_rendition type]!= 1020)
     {
-      _CUILog(4, "CoreUI: Attempting to create named icon layer stack '%@' from inappropriate rendition type: %@", v12, v13, v14, v15, v16, v17, v8);
+      _CUILog(4, "CoreUI: Attempting to create named icon layer stack '%@' from inappropriate rendition type: %@", v12, v13, v14, v15, v16, v17, nameCopy);
 LABEL_8:
 
       return 0;
     }
 
-    if (!v8)
+    if (!nameCopy)
     {
-      [(CUINamedLookup *)v10 setName:[(CUIThemeRendition *)v11 name]];
-      v8 = [(CUIThemeRendition *)v11 name];
+      [(CUINamedLookup *)v10 setName:[(CUIThemeRendition *)_rendition name]];
+      nameCopy = [(CUIThemeRendition *)_rendition name];
     }
 
-    v18 = [objc_opt_class() _createLayers:v8 fromTheme:a5 baseRendition:v11 withBlock:a6];
+    v18 = [objc_opt_class() _createLayers:nameCopy fromTheme:theme baseRendition:_rendition withBlock:block];
     v10->_layers = v18;
     if (!v18)
     {
@@ -84,7 +84,7 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)_updateFromCatalog:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6
+- (BOOL)_updateFromCatalog:(id)catalog displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)name
 {
   v22.receiver = self;
   v22.super_class = CUINamedIconLayerGroup;
@@ -98,31 +98,31 @@ LABEL_7:
       return v11;
     }
 
-    v12 = [a3 _appearancefallback_gradientWithName:-[CUINamedIconLayerGroup gradientOrColorName](self displayGamut:"gradientOrColorName") deviceIdiom:a4 appearanceName:{a5, a6}];
-    if (v12)
+    cgColor = [catalog _appearancefallback_gradientWithName:-[CUINamedIconLayerGroup gradientOrColorName](self displayGamut:"gradientOrColorName") deviceIdiom:gamut appearanceName:{idiom, name}];
+    if (cgColor)
     {
 LABEL_6:
-      [(CUINamedIconLayerGroup *)self _setGradientOrColor:v12];
+      [(CUINamedIconLayerGroup *)self _setGradientOrColor:cgColor];
       goto LABEL_7;
     }
 
-    v13 = [a3 _appearancefallback_colorWithName:-[CUINamedIconLayerGroup gradientOrColorName](self displayGamut:"gradientOrColorName") deviceIdiom:a4 appearanceName:{a5, a6}];
+    v13 = [catalog _appearancefallback_colorWithName:-[CUINamedIconLayerGroup gradientOrColorName](self displayGamut:"gradientOrColorName") deviceIdiom:gamut appearanceName:{idiom, name}];
     if (v13)
     {
-      v12 = [v13 cgColor];
+      cgColor = [v13 cgColor];
       goto LABEL_6;
     }
 
-    v14 = [(CUINamedIconLayerGroup *)self gradientOrColorName];
+    gradientOrColorName = [(CUINamedIconLayerGroup *)self gradientOrColorName];
     [(CUINamedLookup *)self name];
-    _CUILog(4, "CoreUI: Couldn't find gradient/colorname '%@' for icon layer stack %@", v15, v16, v17, v18, v19, v20, v14);
+    _CUILog(4, "CoreUI: Couldn't find gradient/colorname '%@' for icon layer stack %@", v15, v16, v17, v18, v19, v20, gradientOrColorName);
     LOBYTE(v11) = 0;
   }
 
   return v11;
 }
 
-- (void)_addLayer:(id)a3
+- (void)_addLayer:(id)layer
 {
   layers = self->_layers;
   if (!layers)
@@ -131,26 +131,26 @@ LABEL_6:
     self->_layers = layers;
   }
 
-  [(NSMutableArray *)layers addObject:a3];
+  [(NSMutableArray *)layers addObject:layer];
 }
 
-- (void)_setGradientOrColorName:(id)a3
+- (void)_setGradientOrColorName:(id)name
 {
   gradientOrColorName = self->_gradientOrColorName;
-  if (gradientOrColorName != a3)
+  if (gradientOrColorName != name)
   {
 
-    self->_gradientOrColorName = a3;
+    self->_gradientOrColorName = name;
   }
 }
 
-- (void)_setGradientOrColor:(id)a3
+- (void)_setGradientOrColor:(id)color
 {
   gradientOrColor = self->_gradientOrColor;
-  if (gradientOrColor != a3)
+  if (gradientOrColor != color)
   {
 
-    self->_gradientOrColor = a3;
+    self->_gradientOrColor = color;
   }
 }
 
@@ -162,8 +162,8 @@ LABEL_6:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(CUINamedIconLayerGroup *)self layers];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  layers = [(CUINamedIconLayerGroup *)self layers];
+  v6 = [(NSArray *)layers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -175,7 +175,7 @@ LABEL_6:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(layers);
         }
 
         v10 = [*(*(&v12 + 1) + 8 * v9) mutableCopy];
@@ -185,7 +185,7 @@ LABEL_6:
       }
 
       while (v7 != v9);
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [(NSArray *)layers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);

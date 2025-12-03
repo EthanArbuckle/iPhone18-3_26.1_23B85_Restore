@@ -1,20 +1,20 @@
 @interface OOPAWebViewController
 - (OOPAWebViewController)init;
 - (OOPAWebViewControllerDelegate)delegate;
-- (id)connection:(id)a3 willSendRequest:(id)a4 redirectResponse:(id)a5;
-- (void)_cancelButtonTapped:(id)a3;
+- (id)connection:(id)connection willSendRequest:(id)request redirectResponse:(id)response;
+- (void)_cancelButtonTapped:(id)tapped;
 - (void)_loadWebView;
 - (void)_loadWebViewIfReady;
 - (void)_updateNavigationButtons;
-- (void)_updateNavigationPromptWithActiveURL:(id)a3;
-- (void)connection:(id)a3 didFailWithError:(id)a4;
-- (void)connection:(id)a3 didReceiveAuthenticationChallenge:(id)a4;
-- (void)setAuthURL:(id)a3;
-- (void)setNavBarTitle:(id)a3;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4;
+- (void)_updateNavigationPromptWithActiveURL:(id)l;
+- (void)connection:(id)connection didFailWithError:(id)error;
+- (void)connection:(id)connection didReceiveAuthenticationChallenge:(id)challenge;
+- (void)setAuthURL:(id)l;
+- (void)setNavBarTitle:(id)title;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation;
 @end
 
 @implementation OOPAWebViewController
@@ -41,26 +41,26 @@
   return v2;
 }
 
-- (void)setNavBarTitle:(id)a3
+- (void)setNavBarTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   navBarTitle = self->_navBarTitle;
   self->_navBarTitle = v4;
 
   if (self->_hasAlreadyAppeared)
   {
     v6 = [OOPASpinnerTitle alloc];
-    v7 = [(OOPAWebViewController *)self navBarTitle];
-    v9 = [(OOPASpinnerTitle *)v6 initWithTitle:v7];
+    navBarTitle = [(OOPAWebViewController *)self navBarTitle];
+    v9 = [(OOPASpinnerTitle *)v6 initWithTitle:navBarTitle];
 
-    v8 = [(OOPAWebViewController *)self navigationItem];
-    [v8 setTitleView:v9];
+    navigationItem = [(OOPAWebViewController *)self navigationItem];
+    [navigationItem setTitleView:v9];
   }
 }
 
-- (void)setAuthURL:(id)a3
+- (void)setAuthURL:(id)l
 {
-  v4 = [a3 copy];
+  v4 = [l copy];
   authURL = self->_authURL;
   self->_authURL = v4;
 
@@ -80,8 +80,8 @@
 
 - (void)_loadWebView
 {
-  v3 = [(NSURL *)self->_authURL resourceSpecifier];
-  v4 = [v3 substringFromIndex:2];
+  resourceSpecifier = [(NSURL *)self->_authURL resourceSpecifier];
+  v4 = [resourceSpecifier substringFromIndex:2];
   v5 = [@"https://gil.apple.com/" stringByAppendingString:v4];
   v6 = [NSURL URLWithString:v5];
 
@@ -96,34 +96,34 @@
   self->_urlRequest = v8;
 
   v10 = [NSURLConnection connectionWithRequest:self->_urlRequest delegate:self];
-  v11 = [(OOPAWebViewController *)self navigationItem];
-  v12 = [v11 titleView];
-  [v12 startAnimating];
+  navigationItem = [(OOPAWebViewController *)self navigationItem];
+  titleView = [navigationItem titleView];
+  [titleView startAnimating];
 }
 
-- (id)connection:(id)a3 willSendRequest:(id)a4 redirectResponse:(id)a5
+- (id)connection:(id)connection willSendRequest:(id)request redirectResponse:(id)response
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  requestCopy = request;
   v9 = _ACLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    sub_100002970(v8, v9);
+    sub_100002970(requestCopy, v9);
   }
 
-  v10 = [v8 URL];
-  v11 = [v10 host];
-  v12 = [v11 isEqualToString:@"gil.apple.com"];
+  v10 = [requestCopy URL];
+  host = [v10 host];
+  v12 = [host isEqualToString:@"gil.apple.com"];
 
   if (v12)
   {
-    v13 = v8;
+    v13 = requestCopy;
   }
 
   else
   {
-    v14 = [v8 mutableCopy];
-    [v7 cancel];
+    v14 = [requestCopy mutableCopy];
+    [connectionCopy cancel];
     v15 = [(WKWebView *)self->_webView loadRequest:v14];
 
     v13 = 0;
@@ -132,25 +132,25 @@
   return v13;
 }
 
-- (void)connection:(id)a3 didReceiveAuthenticationChallenge:(id)a4
+- (void)connection:(id)connection didReceiveAuthenticationChallenge:(id)challenge
 {
-  v4 = a4;
+  challengeCopy = challenge;
   v5 = _ACLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100002A20();
   }
 
-  v6 = [v4 protectionSpace];
-  v7 = [v6 serverTrust];
+  protectionSpace = [challengeCopy protectionSpace];
+  serverTrust = [protectionSpace serverTrust];
 
-  v8 = [v4 protectionSpace];
-  v9 = [v8 authenticationMethod];
-  v10 = [v9 isEqualToString:NSURLAuthenticationMethodServerTrust];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace2 authenticationMethod];
+  v10 = [authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 
   if (v10)
   {
-    if (SecTrustEvaluateWithError(v7, 0))
+    if (SecTrustEvaluateWithError(serverTrust, 0))
     {
       v11 = SecTrustCopyInfo();
       if (v11)
@@ -166,9 +166,9 @@
             sub_100002A5C();
           }
 
-          v16 = [v4 sender];
-          v17 = [NSURLCredential credentialForTrust:v7];
-          [v16 useCredential:v17 forAuthenticationChallenge:v4];
+          sender = [challengeCopy sender];
+          v17 = [NSURLCredential credentialForTrust:serverTrust];
+          [sender useCredential:v17 forAuthenticationChallenge:challengeCopy];
 
           goto LABEL_15;
         }
@@ -182,25 +182,25 @@
     sub_100002A98();
   }
 
-  v16 = [v4 sender];
-  [v16 cancelAuthenticationChallenge:v4];
+  sender = [challengeCopy sender];
+  [sender cancelAuthenticationChallenge:challengeCopy];
 LABEL_15:
 }
 
-- (void)connection:(id)a3 didFailWithError:(id)a4
+- (void)connection:(id)connection didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _ACLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     sub_100002AD4();
   }
 
-  v7 = [(OOPAWebViewController *)self delegate];
-  [v7 webViewController:self didFinishWithSuccess:0 response:0];
+  delegate = [(OOPAWebViewController *)self delegate];
+  [delegate webViewController:self didFinishWithSuccess:0 response:0];
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
   v4 = _ACLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -208,42 +208,42 @@ LABEL_15:
     sub_100002B48();
   }
 
-  v5 = [(OOPAWebViewController *)self delegate];
-  [v5 webViewController:self didFinishWithSuccess:0 response:0];
+  delegate = [(OOPAWebViewController *)self delegate];
+  [delegate webViewController:self didFinishWithSuccess:0 response:0];
 }
 
 - (void)_updateNavigationButtons
 {
   [(UIBarButtonItem *)self->_backButton setEnabled:[(WKWebView *)self->_webView canGoBack]];
   forwardButton = self->_forwardButton;
-  v4 = [(WKWebView *)self->_webView canGoForward];
+  canGoForward = [(WKWebView *)self->_webView canGoForward];
 
-  [(UIBarButtonItem *)forwardButton setEnabled:v4];
+  [(UIBarButtonItem *)forwardButton setEnabled:canGoForward];
 }
 
-- (void)_updateNavigationPromptWithActiveURL:(id)a3
+- (void)_updateNavigationPromptWithActiveURL:(id)l
 {
-  v6 = a3;
-  v4 = [(OOPAWebViewController *)self navigationItem];
-  if (v6)
+  lCopy = l;
+  navigationItem = [(OOPAWebViewController *)self navigationItem];
+  if (lCopy)
   {
-    v5 = [v6 host];
-    [v4 setPrompt:v5];
+    host = [lCopy host];
+    [navigationItem setPrompt:host];
   }
 
   else
   {
-    [v4 setPrompt:&stru_100008338];
+    [navigationItem setPrompt:&stru_100008338];
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = [a4 request];
-  v9 = [v8 URL];
-  v10 = [v9 absoluteString];
-  v11 = [v10 hasPrefix:@"account://"];
+  handlerCopy = handler;
+  request = [action request];
+  v9 = [request URL];
+  absoluteString = [v9 absoluteString];
+  v11 = [absoluteString hasPrefix:@"account://"];
 
   if (v11)
   {
@@ -254,54 +254,54 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "OOPAWebViewController caught account:// redirect!", v14, 2u);
     }
 
-    v13 = [(OOPAWebViewController *)self delegate];
-    [v13 webViewController:self didFinishWithSuccess:1 response:0];
+    delegate = [(OOPAWebViewController *)self delegate];
+    [delegate webViewController:self didFinishWithSuccess:1 response:0];
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v7[2](v7, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation
 {
-  v5 = [(OOPAWebViewController *)self navigationItem:a3];
-  v4 = [v5 titleView];
-  [v4 startAnimating];
+  v5 = [(OOPAWebViewController *)self navigationItem:view];
+  titleView = [v5 titleView];
+  [titleView startAnimating];
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v8 = a3;
+  viewCopy = view;
   if (!self->_hidingWebView)
   {
-    v5 = [(OOPAWebViewController *)self navigationItem];
-    v6 = [v5 titleView];
-    [v6 stopAnimating];
+    navigationItem = [(OOPAWebViewController *)self navigationItem];
+    titleView = [navigationItem titleView];
+    [titleView stopAnimating];
   }
 
   [(OOPAWebViewController *)self _updateNavigationButtons];
-  v7 = [v8 URL];
+  v7 = [viewCopy URL];
   [(OOPAWebViewController *)self _updateNavigationPromptWithActiveURL:v7];
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v7 = _ACLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "OOPAWebViewController failed to load page with error: %@", &v10, 0xCu);
   }
 
-  v8 = [(OOPAWebViewController *)self navigationItem];
-  v9 = [v8 titleView];
-  [v9 stopAnimating];
+  navigationItem = [(OOPAWebViewController *)self navigationItem];
+  titleView = [navigationItem titleView];
+  [titleView stopAnimating];
 
   [(OOPAWebViewController *)self _updateNavigationButtons];
 }

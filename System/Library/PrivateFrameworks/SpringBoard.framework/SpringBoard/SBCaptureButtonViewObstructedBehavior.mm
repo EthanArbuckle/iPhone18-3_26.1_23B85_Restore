@@ -1,48 +1,48 @@
 @interface SBCaptureButtonViewObstructedBehavior
-- (unint64_t)cameraLaunchIntentInContext:(id)a3;
-- (unint64_t)coachIntentInContext:(id)a3;
-- (unint64_t)wakeIntentInContext:(id)a3;
+- (unint64_t)cameraLaunchIntentInContext:(id)context;
+- (unint64_t)coachIntentInContext:(id)context;
+- (unint64_t)wakeIntentInContext:(id)context;
 @end
 
 @implementation SBCaptureButtonViewObstructedBehavior
 
-- (unint64_t)cameraLaunchIntentInContext:(id)a3
+- (unint64_t)cameraLaunchIntentInContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 event];
-  if (v4 == 2)
+  contextCopy = context;
+  event = [contextCopy event];
+  if (event == 2)
   {
-    if ([v3 suppressedOnButtonDown])
+    if ([contextCopy suppressedOnButtonDown])
     {
-      v5 = 3;
+      isSuppressed = 3;
       goto LABEL_9;
     }
 
 LABEL_7:
-    v5 = [v3 isSuppressed];
+    isSuppressed = [contextCopy isSuppressed];
     goto LABEL_9;
   }
 
-  if (v4 != 1)
+  if (event != 1)
   {
-    v5 = 0;
+    isSuppressed = 0;
     goto LABEL_9;
   }
 
-  if (([v3 shouldSuspendLaunchOnButtonDown] & 1) == 0)
+  if (([contextCopy shouldSuspendLaunchOnButtonDown] & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v5 = 4;
+  isSuppressed = 4;
 LABEL_9:
 
-  return v5;
+  return isSuppressed;
 }
 
-- (unint64_t)coachIntentInContext:(id)a3
+- (unint64_t)coachIntentInContext:(id)context
 {
-  if ([(SBCaptureButtonViewObstructedBehavior *)self _isAbortingForContext:a3])
+  if ([(SBCaptureButtonViewObstructedBehavior *)self _isAbortingForContext:context])
   {
     return 3;
   }
@@ -53,9 +53,9 @@ LABEL_9:
   }
 }
 
-- (unint64_t)wakeIntentInContext:(id)a3
+- (unint64_t)wakeIntentInContext:(id)context
 {
-  if ([(SBCaptureButtonViewObstructedBehavior *)self _isAbortingForContext:a3])
+  if ([(SBCaptureButtonViewObstructedBehavior *)self _isAbortingForContext:context])
   {
     return 2;
   }

@@ -14,8 +14,8 @@
 
 - (BOOL)isSimpleRectangularTextContainer
 {
-  v3 = [(ICTK2TextContainer *)self exclusionPaths];
-  if ([v3 count] || -[ICTK2TextContainer maximumNumberOfLines](self, "maximumNumberOfLines"))
+  exclusionPaths = [(ICTK2TextContainer *)self exclusionPaths];
+  if ([exclusionPaths count] || -[ICTK2TextContainer maximumNumberOfLines](self, "maximumNumberOfLines"))
   {
     LOBYTE(v4) = 0;
   }

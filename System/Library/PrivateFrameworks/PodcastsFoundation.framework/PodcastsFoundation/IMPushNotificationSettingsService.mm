@@ -1,24 +1,24 @@
 @interface IMPushNotificationSettingsService
-- (id)endpointURLForKey:(id)a3;
-- (void)performDataRequestWithCompletion:(id)a3;
+- (id)endpointURLForKey:(id)key;
+- (void)performDataRequestWithCompletion:(id)completion;
 @end
 
 @implementation IMPushNotificationSettingsService
 
-- (id)endpointURLForKey:(id)a3
+- (id)endpointURLForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(IMBaseStoreService *)self bag];
   v6 = [v5 dictionaryForKey:@"pushNotificationSettings"];
 
-  v7 = [v6 asyncValuePromise];
+  asyncValuePromise = [v6 asyncValuePromise];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__IMPushNotificationSettingsService_endpointURLForKey___block_invoke;
   v11[3] = &unk_1E856B0A8;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 thenWithBlock:v11];
+  v12 = keyCopy;
+  v8 = keyCopy;
+  v9 = [asyncValuePromise thenWithBlock:v11];
 
   return v9;
 }
@@ -58,20 +58,20 @@ id __55__IMPushNotificationSettingsService_endpointURLForKey___block_invoke(uint
   return v14;
 }
 
-- (void)performDataRequestWithCompletion:(id)a3
+- (void)performDataRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(IMPushNotificationSettingsService *)self urlRequest];
+  urlRequest = [(IMPushNotificationSettingsService *)self urlRequest];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__IMPushNotificationSettingsService_performDataRequestWithCompletion___block_invoke;
   v7[3] = &unk_1E856B0F8;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v7[4] = self;
   v8 = v6;
-  [v5 addFinishBlock:v7];
+  [urlRequest addFinishBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);

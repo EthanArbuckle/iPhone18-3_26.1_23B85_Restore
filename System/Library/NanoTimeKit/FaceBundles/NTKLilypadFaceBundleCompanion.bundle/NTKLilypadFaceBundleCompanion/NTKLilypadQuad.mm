@@ -1,38 +1,38 @@
 @interface NTKLilypadQuad
-- (BOOL)prepareForTime:(double)a3;
-- (LilypadNoiseConfig)noiseConfigForPosition:(double)a3 atTime:;
-- (NTKLilypadPhysicsBodies)_bodiesForTime:(NTKLilypadTime *)a3;
-- (NTKLilypadQuad)initWithDevice:(id)a3;
-- (double)createMatrixForTextureWithSize:(float32x2_t)a1 translation:(double)a2 scale:(float)a3 rotate:(float)a4 xOffset:(float)a5;
-- (float)textureOriginForDigit:(unsigned int)a3;
-- (float)textureSizeForDigit:(unsigned int)a3;
-- (id)_generateNoiseTextureInRect:(CGRect)a3 device:(id)a4;
+- (BOOL)prepareForTime:(double)time;
+- (LilypadNoiseConfig)noiseConfigForPosition:(double)position atTime:;
+- (NTKLilypadPhysicsBodies)_bodiesForTime:(NTKLilypadTime *)time;
+- (NTKLilypadQuad)initWithDevice:(id)device;
+- (double)createMatrixForTextureWithSize:(float32x2_t)size translation:(double)translation scale:(float)scale rotate:(float)rotate xOffset:(float)offset;
+- (float)textureOriginForDigit:(unsigned int)digit;
+- (float)textureSizeForDigit:(unsigned int)digit;
+- (id)_generateNoiseTextureInRect:(CGRect)rect device:(id)device;
 - (id)_wallBodies;
 - (void)_createPhysicsWorld;
 - (void)_resetTimeBodiesToDefaultPositions;
-- (void)_updateTimeBodiesFromTime:(NTKLilypadTime *)a3 toTime:(NTKLilypadTime *)a4;
+- (void)_updateTimeBodiesFromTime:(NTKLilypadTime *)time toTime:(NTKLilypadTime *)toTime;
 - (void)loadTextures;
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3;
-- (void)renderForDisplayWithEncoder:(id)a3;
-- (void)renderTimeToRenderEncoder:(id)a3;
-- (void)setDeviceMotion:(id)a3;
-- (void)setThreadVibrations:(NTKLilypadThreadVibrations *)a3;
-- (void)setTime:(NTKLilypadTime *)a3;
-- (void)setupForQuadView:(id)a3;
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer;
+- (void)renderForDisplayWithEncoder:(id)encoder;
+- (void)renderTimeToRenderEncoder:(id)encoder;
+- (void)setDeviceMotion:(id)motion;
+- (void)setThreadVibrations:(NTKLilypadThreadVibrations *)vibrations;
+- (void)setTime:(NTKLilypadTime *)time;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation NTKLilypadQuad
 
-- (NTKLilypadQuad)initWithDevice:(id)a3
+- (NTKLilypadQuad)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = NTKLilypadQuad;
   v6 = [(NTKLilypadQuad *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = dispatch_semaphore_create(3);
     renderSemaphore = v7->_renderSemaphore;
     v7->_renderSemaphore = v8;
@@ -50,9 +50,9 @@
   return v7;
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(CLKDevice *)self->_device screenBounds];
   v6 = v5;
   [(CLKDevice *)self->_device screenScale];
@@ -79,38 +79,38 @@
   [v19 setLabel:@"LilypadTimePipeline"];
   [v19 setVertexFunction:v17];
   [v19 setFragmentFunction:v18];
-  v98 = v4;
-  v20 = [v4 colorPixelFormat];
-  v21 = [v19 colorAttachments];
-  v22 = [v21 objectAtIndexedSubscript:0];
-  [v22 setPixelFormat:v20];
+  v98 = viewCopy;
+  colorPixelFormat = [viewCopy colorPixelFormat];
+  colorAttachments = [v19 colorAttachments];
+  v22 = [colorAttachments objectAtIndexedSubscript:0];
+  [v22 setPixelFormat:colorPixelFormat];
 
-  v23 = [v19 colorAttachments];
-  v24 = [v23 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v19 colorAttachments];
+  v24 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v24 setBlendingEnabled:1];
 
-  v25 = [v19 colorAttachments];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  colorAttachments3 = [v19 colorAttachments];
+  v26 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v26 setRgbBlendOperation:0];
 
-  v27 = [v19 colorAttachments];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  colorAttachments4 = [v19 colorAttachments];
+  v28 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v28 setAlphaBlendOperation:0];
 
-  v29 = [v19 colorAttachments];
-  v30 = [v29 objectAtIndexedSubscript:0];
+  colorAttachments5 = [v19 colorAttachments];
+  v30 = [colorAttachments5 objectAtIndexedSubscript:0];
   [v30 setSourceRGBBlendFactor:4];
 
-  v31 = [v19 colorAttachments];
-  v32 = [v31 objectAtIndexedSubscript:0];
+  colorAttachments6 = [v19 colorAttachments];
+  v32 = [colorAttachments6 objectAtIndexedSubscript:0];
   [v32 setSourceAlphaBlendFactor:4];
 
-  v33 = [v19 colorAttachments];
-  v34 = [v33 objectAtIndexedSubscript:0];
+  colorAttachments7 = [v19 colorAttachments];
+  v34 = [colorAttachments7 objectAtIndexedSubscript:0];
   [v34 setDestinationRGBBlendFactor:5];
 
-  v35 = [v19 colorAttachments];
-  v36 = [v35 objectAtIndexedSubscript:0];
+  colorAttachments8 = [v19 colorAttachments];
+  v36 = [colorAttachments8 objectAtIndexedSubscript:0];
   [v36 setDestinationAlphaBlendFactor:5];
 
   v101 = 0;
@@ -150,37 +150,37 @@
   [v48 setLabel:@"LilypadStrandPipeline"];
   [v48 setVertexFunction:v46];
   [v48 setFragmentFunction:v47];
-  v49 = [v98 colorPixelFormat];
-  v50 = [v48 colorAttachments];
-  v51 = [v50 objectAtIndexedSubscript:0];
-  [v51 setPixelFormat:v49];
+  colorPixelFormat2 = [v98 colorPixelFormat];
+  colorAttachments9 = [v48 colorAttachments];
+  v51 = [colorAttachments9 objectAtIndexedSubscript:0];
+  [v51 setPixelFormat:colorPixelFormat2];
 
-  v52 = [v48 colorAttachments];
-  v53 = [v52 objectAtIndexedSubscript:0];
+  colorAttachments10 = [v48 colorAttachments];
+  v53 = [colorAttachments10 objectAtIndexedSubscript:0];
   [v53 setBlendingEnabled:1];
 
-  v54 = [v48 colorAttachments];
-  v55 = [v54 objectAtIndexedSubscript:0];
+  colorAttachments11 = [v48 colorAttachments];
+  v55 = [colorAttachments11 objectAtIndexedSubscript:0];
   [v55 setRgbBlendOperation:0];
 
-  v56 = [v48 colorAttachments];
-  v57 = [v56 objectAtIndexedSubscript:0];
+  colorAttachments12 = [v48 colorAttachments];
+  v57 = [colorAttachments12 objectAtIndexedSubscript:0];
   [v57 setAlphaBlendOperation:0];
 
-  v58 = [v48 colorAttachments];
-  v59 = [v58 objectAtIndexedSubscript:0];
+  colorAttachments13 = [v48 colorAttachments];
+  v59 = [colorAttachments13 objectAtIndexedSubscript:0];
   [v59 setSourceRGBBlendFactor:4];
 
-  v60 = [v48 colorAttachments];
-  v61 = [v60 objectAtIndexedSubscript:0];
+  colorAttachments14 = [v48 colorAttachments];
+  v61 = [colorAttachments14 objectAtIndexedSubscript:0];
   [v61 setSourceAlphaBlendFactor:0];
 
-  v62 = [v48 colorAttachments];
-  v63 = [v62 objectAtIndexedSubscript:0];
+  colorAttachments15 = [v48 colorAttachments];
+  v63 = [colorAttachments15 objectAtIndexedSubscript:0];
   [v63 setDestinationRGBBlendFactor:5];
 
-  v64 = [v48 colorAttachments];
-  v65 = [v64 objectAtIndexedSubscript:0];
+  colorAttachments16 = [v48 colorAttachments];
+  v65 = [colorAttachments16 objectAtIndexedSubscript:0];
   [v65 setDestinationAlphaBlendFactor:1];
 
   v99 = 0;
@@ -221,8 +221,8 @@
 
   while (v73 != 3);
   v79 = +[MTLRenderPassDescriptor renderPassDescriptor];
-  v80 = [v79 colorAttachments];
-  v81 = [v80 objectAtIndexedSubscript:0];
+  colorAttachments17 = [v79 colorAttachments];
+  v81 = [colorAttachments17 objectAtIndexedSubscript:0];
 
   [v81 setLoadAction:2];
   [v81 setClearColor:{0.0, 0.0, 0.0, 0.0}];
@@ -236,11 +236,11 @@
   darkColors = self->_darkColors;
   self->_darkColors = v84;
 
-  v86 = [(MTLBuffer *)self->_lightColors contents];
-  v87 = [(MTLBuffer *)self->_darkColors contents];
+  contents = [(MTLBuffer *)self->_lightColors contents];
+  contents2 = [(MTLBuffer *)self->_darkColors contents];
   if (v72 >= 1)
   {
-    v88 = v87;
+    v88 = contents2;
     v89 = &xmmword_8A20;
     v90 = v72 & 0x7FFFFFFF;
     v91 = &xmmword_8920;
@@ -248,7 +248,7 @@
     {
       v92 = *v91++;
       CLKUIConvertToRGBfFromSRGBf_fast();
-      *v86++ = v93;
+      *contents++ = v93;
       v94 = *v89++;
       CLKUIConvertToRGBfFromSRGBf_fast();
       *v88++ = v95;
@@ -288,55 +288,55 @@
   self->_blitNoise = v10;
 }
 
-- (float)textureOriginForDigit:(unsigned int)a3
+- (float)textureOriginForDigit:(unsigned int)digit
 {
-  if (a3 >= 0xA)
+  if (digit >= 0xA)
   {
     sub_6568();
   }
 
-  return dword_8C20[a3];
+  return dword_8C20[digit];
 }
 
-- (float)textureSizeForDigit:(unsigned int)a3
+- (float)textureSizeForDigit:(unsigned int)digit
 {
-  if (a3 >= 0xA)
+  if (digit >= 0xA)
   {
     sub_6594();
   }
 
-  return (dword_8C20[a3 + 1] + ~dword_8C20[a3]);
+  return (dword_8C20[digit + 1] + ~dword_8C20[digit]);
 }
 
-- (void)setTime:(NTKLilypadTime *)a3
+- (void)setTime:(NTKLilypadTime *)time
 {
   p_time = &self->_time;
   time = self->_time;
-  v6 = *a3;
+  v6 = *time;
   [(NTKLilypadQuad *)self _updateTimeBodiesFromTime:&time toTime:&v6];
-  v5 = *&a3->fromHour;
-  p_time->fraction = a3->fraction;
+  v5 = *&time->fromHour;
+  p_time->fraction = time->fraction;
   *&p_time->fromHour = v5;
 }
 
-- (void)setThreadVibrations:(NTKLilypadThreadVibrations *)a3
+- (void)setThreadVibrations:(NTKLilypadThreadVibrations *)vibrations
 {
-  v3 = *&a3->vibrations[12];
-  v5 = *a3->vibrations;
-  v4 = *&a3->vibrations[4];
-  *&self->_vibrations.vibrations[8] = *&a3->vibrations[8];
+  v3 = *&vibrations->vibrations[12];
+  v5 = *vibrations->vibrations;
+  v4 = *&vibrations->vibrations[4];
+  *&self->_vibrations.vibrations[8] = *&vibrations->vibrations[8];
   *&self->_vibrations.vibrations[12] = v3;
   *self->_vibrations.vibrations = v5;
   *&self->_vibrations.vibrations[4] = v4;
 }
 
-- (void)setDeviceMotion:(id)a3
+- (void)setDeviceMotion:(id)motion
 {
-  v4 = a3;
-  v12 = v4;
-  if (v4)
+  motionCopy = motion;
+  v12 = motionCopy;
+  if (motionCopy)
   {
-    [v4 userAcceleration];
+    [motionCopy userAcceleration];
     v6.f64[1] = v5;
     v11 = v6;
     [v12 gravity];
@@ -359,14 +359,14 @@
   time = self->_time;
   v4 = [(NTKLilypadQuad *)self _bodiesForTime:&time];
   v6 = v5;
-  v7 = [(NTKLilypadQuad *)self _wallBodies];
+  _wallBodies = [(NTKLilypadQuad *)self _wallBodies];
   [v3 addBody:v4];
   [v3 addBody:v6];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v8 = v7;
+  v8 = _wallBodies;
   v9 = [v8 countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v9)
   {
@@ -399,11 +399,11 @@
   [(NTKLilypadQuad *)self _resetTimeBodiesToDefaultPositions];
 }
 
-- (void)_updateTimeBodiesFromTime:(NTKLilypadTime *)a3 toTime:(NTKLilypadTime *)a4
+- (void)_updateTimeBodiesFromTime:(NTKLilypadTime *)time toTime:(NTKLilypadTime *)toTime
 {
-  if (*&a3->fromHour != *&a4->fromHour)
+  if (*&time->fromHour != *&toTime->fromHour)
   {
-    v8 = *a4;
+    v8 = *toTime;
     v5 = [(NTKLilypadQuad *)self _bodiesForTime:&v8];
     v7 = v6;
     [(PKPhysicsBody *)self->_hourBody position];
@@ -431,12 +431,12 @@
   }
 }
 
-- (NTKLilypadPhysicsBodies)_bodiesForTime:(NTKLilypadTime *)a3
+- (NTKLilypadPhysicsBodies)_bodiesForTime:(NTKLilypadTime *)time
 {
   v4 = 0;
   v5 = 0;
-  fromHour = a3->fromHour;
-  fromMinute = a3->fromMinute;
+  fromHour = time->fromHour;
+  fromMinute = time->fromMinute;
   v36[0] = fromMinute % 10;
   v36[1] = fromMinute / 10;
   v30 = fromHour;
@@ -571,13 +571,13 @@
   return v6;
 }
 
-- (id)_generateNoiseTextureInRect:(CGRect)a3 device:(id)a4
+- (id)_generateNoiseTextureInRect:(CGRect)rect device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  deviceCopy = device;
   v9 = objc_opt_new();
   [v9 setPixelFormat:10];
   [v9 setWidth:128];
@@ -586,8 +586,8 @@
   [v9 setTextureType:2];
   [v9 setUsage:1];
   [v9 setStorageMode:2];
-  v10 = [v8 newTextureWithDescriptor:v9];
-  v11 = [v8 newBufferWithLength:0x4000 options:0];
+  v10 = [deviceCopy newTextureWithDescriptor:v9];
+  v11 = [deviceCopy newBufferWithLength:0x4000 options:0];
 
   v20 = _NSConcreteStackBlock;
   v21 = 3221225472;
@@ -599,7 +599,7 @@
   v27 = height;
   v29 = width;
   v30 = height;
-  v28 = [v11 contents];
+  contents = [v11 contents];
   NTKHighPriorityApply();
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -615,7 +615,7 @@
   return v15;
 }
 
-- (LilypadNoiseConfig)noiseConfigForPosition:(double)a3 atTime:
+- (LilypadNoiseConfig)noiseConfigForPosition:(double)position atTime:
 {
   snoise4();
   snoise4();
@@ -623,14 +623,14 @@
   return v3;
 }
 
-- (double)createMatrixForTextureWithSize:(float32x2_t)a1 translation:(double)a2 scale:(float)a3 rotate:(float)a4 xOffset:(float)a5
+- (double)createMatrixForTextureWithSize:(float32x2_t)size translation:(double)translation scale:(float)scale rotate:(float)rotate xOffset:(float)offset
 {
   __asm { FMOV            V0.4S, #1.0 }
 
   v30 = _Q0;
-  *_Q0.i64 = a2;
+  *_Q0.i64 = translation;
   v27 = _Q0;
-  v13 = __sincosf_stret(a4);
+  v13 = __sincosf_stret(rotate);
   *v12.i32 = v13.__cosval;
   *v11.i32 = v13.__sinval;
   v14 = 0;
@@ -655,8 +655,8 @@
   v18 = v35;
   v19 = v36;
   LODWORD(v20) = 0;
-  *(&v20 + 1) = a3;
-  v31 = LODWORD(a3);
+  *(&v20 + 1) = scale;
+  v31 = LODWORD(scale);
   v32 = v20;
   v33 = xmmword_88F0;
   v34 = 0u;
@@ -673,7 +673,7 @@
   v22 = v34;
   v23 = v35;
   v24.i64[0] = 1065353216;
-  v24.u64[1] = vmla_f32(LODWORD(a5), 0xBF000000BF000000, a1);
+  v24.u64[1] = vmla_f32(LODWORD(offset), 0xBF000000BF000000, size);
   v25 = v36;
   *v19.f32 = vdup_lane_s32(v24.u64[1], 1);
   v31 = COERCE_UNSIGNED_INT(1.0);
@@ -692,7 +692,7 @@
   return *v34.i64;
 }
 
-- (BOOL)prepareForTime:(double)a3
+- (BOOL)prepareForTime:(double)time
 {
   renderSemaphore = self->_renderSemaphore;
   v5 = dispatch_time(0, 33333333);
@@ -766,17 +766,17 @@
   return v6 == 0;
 }
 
-- (void)renderTimeToRenderEncoder:(id)a3
+- (void)renderTimeToRenderEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_57AC;
   v14[3] = &unk_C510;
   v14[4] = self;
   v5 = objc_retainBlock(v14);
-  [v4 setRenderPipelineState:self->_timeRenderPipelineState];
-  [v4 setFragmentTexture:self->_digitsTex atIndex:0];
+  [encoderCopy setRenderPipelineState:self->_timeRenderPipelineState];
+  [encoderCopy setFragmentTexture:self->_digitsTex atIndex:0];
   fromHour = self->_time.fromHour;
   fromMinute = self->_time.fromMinute;
   v16 = fromMinute % 10;
@@ -800,8 +800,8 @@
     v9 = v8;
   }
 
-  [v4 setVertexBytes:v15 length:384 atIndex:0];
-  [v4 drawPrimitives:4 vertexStart:0 vertexCount:4 instanceCount:v9];
+  [encoderCopy setVertexBytes:v15 length:384 atIndex:0];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4 instanceCount:v9];
   if (self->_time.fraction != 0.0)
   {
     toHour = self->_time.toHour;
@@ -827,24 +827,24 @@
       v13 = v12;
     }
 
-    [v4 setVertexBytes:v15 length:384 atIndex:0];
-    [v4 drawPrimitives:4 vertexStart:0 vertexCount:4 instanceCount:v13];
+    [encoderCopy setVertexBytes:v15 length:384 atIndex:0];
+    [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4 instanceCount:v13];
   }
 }
 
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   v46[0] = _NSConcreteStackBlock;
   v46[1] = 3221225472;
   v46[2] = sub_5EA8;
   v46[3] = &unk_C538;
   v46[4] = self;
-  [v4 addCompletedHandler:v46];
+  [bufferCopy addCompletedHandler:v46];
   blitDigits = self->_blitDigits;
   if (blitDigits)
   {
-    v8 = blitDigits[2](blitDigits, v4);
+    v8 = blitDigits[2](blitDigits, bufferCopy);
     digitsTex = self->_digitsTex;
     self->_digitsTex = v8;
 
@@ -855,7 +855,7 @@
   blitFunction = self->_blitFunction;
   if (blitFunction)
   {
-    v12 = blitFunction[2](blitFunction, v4);
+    v12 = blitFunction[2](blitFunction, bufferCopy);
     functionTex = self->_functionTex;
     self->_functionTex = v12;
 
@@ -866,7 +866,7 @@
   blitNoise = self->_blitNoise;
   if (blitNoise)
   {
-    v16 = blitNoise[2](blitNoise, v4);
+    v16 = blitNoise[2](blitNoise, bufferCopy);
     noiseTex = self->_noiseTex;
     self->_noiseTex = v16;
 
@@ -883,7 +883,7 @@
   v22 = [v21 objectAtIndexedSubscript:0];
   [v22 setTexture:v20];
 
-  v23 = [v4 renderCommandEncoderWithDescriptor:self->_timePassDescriptor];
+  v23 = [bufferCopy renderCommandEncoderWithDescriptor:self->_timePassDescriptor];
   [(NTKLilypadQuad *)self renderTimeToRenderEncoder:v23];
   v24 = sub_6274([v23 endEncoding], self->_device);
   v25 = v24;
@@ -917,26 +917,26 @@
   }
 
   while (v30 != 16);
-  v34 = [v4 computeCommandEncoder];
-  [v34 setComputePipelineState:self->_strandsComputePipelineState];
-  [v34 setTexture:self->_timeBuffer[self->_currentBufferIndex] atIndex:0];
-  [v34 setTexture:self->_functionTex atIndex:1];
-  [v34 setTexture:self->_noiseTex atIndex:2];
-  [v34 setBytes:&v43 length:40 atIndex:0];
-  [v34 setBuffer:self->_strandBuffer[self->_currentBufferIndex] offset:0 atIndex:2];
-  [v34 setBytes:v41 length:320 atIndex:1];
-  v35 = [(MTLComputePipelineState *)self->_strandsComputePipelineState threadExecutionWidth];
-  v36 = [(MTLComputePipelineState *)self->_strandsComputePipelineState maxTotalThreadsPerThreadgroup];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_strandsComputePipelineState];
+  [computeCommandEncoder setTexture:self->_timeBuffer[self->_currentBufferIndex] atIndex:0];
+  [computeCommandEncoder setTexture:self->_functionTex atIndex:1];
+  [computeCommandEncoder setTexture:self->_noiseTex atIndex:2];
+  [computeCommandEncoder setBytes:&v43 length:40 atIndex:0];
+  [computeCommandEncoder setBuffer:self->_strandBuffer[self->_currentBufferIndex] offset:0 atIndex:2];
+  [computeCommandEncoder setBytes:v41 length:320 atIndex:1];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_strandsComputePipelineState threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_strandsComputePipelineState maxTotalThreadsPerThreadgroup];
   v38[2] = 1;
-  v39 = (v35 + v25 * v28 - 1) / v35;
+  v39 = (threadExecutionWidth + v25 * v28 - 1) / threadExecutionWidth;
   v40 = vdupq_n_s64(1uLL);
-  v38[0] = v35;
-  v38[1] = v36 / v35;
-  [v34 dispatchThreadgroups:&v39 threadsPerThreadgroup:v38];
-  [v34 endEncoding];
+  v38[0] = threadExecutionWidth;
+  v38[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
+  [computeCommandEncoder dispatchThreadgroups:&v39 threadsPerThreadgroup:v38];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
   LOWORD(v3) = self->_screenWidth;
   *&v5 = v3;
@@ -944,8 +944,8 @@
   *(&v5 + 1) = v3;
   v13 = v5;
   device = self->_device;
-  v7 = a3;
-  v8 = sub_6274(v7, device);
+  encoderCopy = encoder;
+  v8 = sub_6274(encoderCopy, device);
   LODWORD(device) = v8;
   v9 = HIDWORD(v8);
   v14[0] = 0;
@@ -959,12 +959,12 @@
   colorMode = self->_colorMode;
   HIDWORD(v15) = LODWORD(self->_tritiumProgress);
   v16[0] = colorMode;
-  [v7 setRenderPipelineState:self->_strandsRenderPipelineState];
-  [v7 setVertexBytes:v14 length:40 atIndex:0];
-  [v7 setVertexBuffer:self->_lightColors offset:0 atIndex:1];
-  [v7 setVertexBuffer:self->_darkColors offset:0 atIndex:2];
-  [v7 setVertexBuffer:self->_strandBuffer[self->_currentBufferIndex] offset:0 atIndex:3];
-  [v7 drawPrimitives:4 vertexStart:0 vertexCount:2 * v9 instanceCount:device];
+  [encoderCopy setRenderPipelineState:self->_strandsRenderPipelineState];
+  [encoderCopy setVertexBytes:v14 length:40 atIndex:0];
+  [encoderCopy setVertexBuffer:self->_lightColors offset:0 atIndex:1];
+  [encoderCopy setVertexBuffer:self->_darkColors offset:0 atIndex:2];
+  [encoderCopy setVertexBuffer:self->_strandBuffer[self->_currentBufferIndex] offset:0 atIndex:3];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:2 * v9 instanceCount:device];
 
   self->_currentBufferIndex = (self->_currentBufferIndex + 1) % 3;
 }

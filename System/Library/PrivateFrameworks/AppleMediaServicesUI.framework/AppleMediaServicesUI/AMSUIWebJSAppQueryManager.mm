@@ -1,29 +1,29 @@
 @interface AMSUIWebJSAppQueryManager
-- (AMSUIWebJSAppQueryManager)initWithDelegate:(id)a3;
+- (AMSUIWebJSAppQueryManager)initWithDelegate:(id)delegate;
 - (AMSUIWebJSAppQueryManagerDelegate)delegate;
-- (id)_encodeApp:(id)a3;
-- (id)_executeAppQuery:(id)a3;
-- (id)queryAppsWithBundleIDs:(id)a3 startObserving:(BOOL)a4;
-- (id)queryAppsWithStoreItemIDs:(id)a3 startObserving:(BOOL)a4;
-- (void)_postMediaQueryResultsChangeEventWithApps:(id)a3;
+- (id)_encodeApp:(id)app;
+- (id)_executeAppQuery:(id)query;
+- (id)queryAppsWithBundleIDs:(id)ds startObserving:(BOOL)observing;
+- (id)queryAppsWithStoreItemIDs:(id)ds startObserving:(BOOL)observing;
+- (void)_postMediaQueryResultsChangeEventWithApps:(id)apps;
 - (void)invalidate;
 - (void)stopObservingAllApps;
-- (void)stopObservingAppsWithBundleIDs:(id)a3;
-- (void)stopObservingAppsWithStoreItemIDs:(id)a3;
+- (void)stopObservingAppsWithBundleIDs:(id)ds;
+- (void)stopObservingAppsWithStoreItemIDs:(id)ds;
 @end
 
 @implementation AMSUIWebJSAppQueryManager
 
-- (AMSUIWebJSAppQueryManager)initWithDelegate:(id)a3
+- (AMSUIWebJSAppQueryManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = AMSUIWebJSAppQueryManager;
   v5 = [(AMSUIWebJSAppQueryManager *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     observingQueries = v6->_observingQueries;
     v6->_observingQueries = v7;
@@ -34,33 +34,33 @@
 
 - (void)invalidate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(AMSUIWebJSAppQueryManager *)v2 observingQueries];
-  [v3 removeAllObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observingQueries = [(AMSUIWebJSAppQueryManager *)selfCopy observingQueries];
+  [observingQueries removeAllObjects];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  [(AMSUIWebJSAppQueryManager *)v2 setDelegate:0];
+  [(AMSUIWebJSAppQueryManager *)selfCopy setDelegate:0];
 }
 
-- (id)queryAppsWithBundleIDs:(id)a3 startObserving:(BOOL)a4
+- (id)queryAppsWithBundleIDs:(id)ds startObserving:(BOOL)observing
 {
-  v4 = a4;
+  observingCopy = observing;
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [getASDAppQueryClass() queryForBundleIDs:v6];
+  dsCopy = ds;
+  v7 = [getASDAppQueryClass() queryForBundleIDs:dsCopy];
   v8 = v7;
-  if (v4)
+  if (observingCopy)
   {
     [v7 setObserver:self];
-    v9 = self;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = v6;
+    v10 = dsCopy;
     v11 = [v10 countByEnumeratingWithState:&v23 objects:v33 count:16];
     if (v11)
     {
@@ -75,8 +75,8 @@
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [(AMSUIWebJSAppQueryManager *)v9 observingQueries];
-          [v15 setObject:v8 forKey:v14];
+          observingQueries = [(AMSUIWebJSAppQueryManager *)selfCopy observingQueries];
+          [observingQueries setObject:v8 forKey:v14];
         }
 
         v11 = [v10 countByEnumeratingWithState:&v23 objects:v33 count:16];
@@ -85,17 +85,17 @@
       while (v11);
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
-  v16 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v16)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v16 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v17 = [v16 OSLogObject];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v18 = objc_opt_class();
     v19 = AMSLogKey();
@@ -104,8 +104,8 @@
     v29 = 2114;
     v30 = v19;
     v31 = 2114;
-    v32 = v6;
-    _os_log_impl(&dword_1BB036000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Executing app query for bundle identifiers %{public}@", buf, 0x20u);
+    v32 = dsCopy;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Executing app query for bundle identifiers %{public}@", buf, 0x20u);
   }
 
   v20 = [(AMSUIWebJSAppQueryManager *)self _executeAppQuery:v8];
@@ -115,23 +115,23 @@
   return v20;
 }
 
-- (id)queryAppsWithStoreItemIDs:(id)a3 startObserving:(BOOL)a4
+- (id)queryAppsWithStoreItemIDs:(id)ds startObserving:(BOOL)observing
 {
-  v4 = a4;
+  observingCopy = observing;
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [getASDAppQueryClass() queryForStoreItemIDs:v6];
+  dsCopy = ds;
+  v7 = [getASDAppQueryClass() queryForStoreItemIDs:dsCopy];
   v8 = v7;
-  if (v4)
+  if (observingCopy)
   {
     [v7 setObserver:self];
-    v9 = self;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = v6;
+    v10 = dsCopy;
     v11 = [v10 countByEnumeratingWithState:&v23 objects:v33 count:16];
     if (v11)
     {
@@ -146,8 +146,8 @@
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [(AMSUIWebJSAppQueryManager *)v9 observingQueries];
-          [v15 setObject:v8 forKey:v14];
+          observingQueries = [(AMSUIWebJSAppQueryManager *)selfCopy observingQueries];
+          [observingQueries setObject:v8 forKey:v14];
         }
 
         v11 = [v10 countByEnumeratingWithState:&v23 objects:v33 count:16];
@@ -156,17 +156,17 @@
       while (v11);
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
-  v16 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v16)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v16 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v17 = [v16 OSLogObject];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v18 = objc_opt_class();
     v19 = AMSLogKey();
@@ -175,8 +175,8 @@
     v29 = 2114;
     v30 = v19;
     v31 = 2114;
-    v32 = v6;
-    _os_log_impl(&dword_1BB036000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Executing app query for store item identifiers %{public}@", buf, 0x20u);
+    v32 = dsCopy;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Executing app query for store item identifiers %{public}@", buf, 0x20u);
   }
 
   v20 = [(AMSUIWebJSAppQueryManager *)self _executeAppQuery:v8];
@@ -190,23 +190,23 @@
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(AMSUIWebJSAppQueryManager *)obj observingQueries];
-  [v2 removeAllObjects];
+  observingQueries = [(AMSUIWebJSAppQueryManager *)obj observingQueries];
+  [observingQueries removeAllObjects];
 
   objc_sync_exit(obj);
 }
 
-- (void)stopObservingAppsWithBundleIDs:(id)a3
+- (void)stopObservingAppsWithBundleIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  dsCopy = ds;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -222,8 +222,8 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [(AMSUIWebJSAppQueryManager *)v5 observingQueries];
-        [v11 removeObjectForKey:v10];
+        observingQueries = [(AMSUIWebJSAppQueryManager *)selfCopy observingQueries];
+        [observingQueries removeObjectForKey:v10];
 
         ++v9;
       }
@@ -235,21 +235,21 @@
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopObservingAppsWithStoreItemIDs:(id)a3
+- (void)stopObservingAppsWithStoreItemIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  dsCopy = ds;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -265,8 +265,8 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [(AMSUIWebJSAppQueryManager *)v5 observingQueries];
-        [v11 removeObjectForKey:v10];
+        observingQueries = [(AMSUIWebJSAppQueryManager *)selfCopy observingQueries];
+        [observingQueries removeObjectForKey:v10];
 
         ++v9;
       }
@@ -278,56 +278,56 @@
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_encodeApp:(id)a3
+- (id)_encodeApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = objc_alloc(MEMORY[0x1E695DF90]);
-  v5 = [v3 bundleID];
-  v6 = [v4 initWithObjectsAndKeys:{v5, @"bundleID", 0}];
+  bundleID = [appCopy bundleID];
+  v6 = [v4 initWithObjectsAndKeys:{bundleID, @"bundleID", 0}];
 
-  v7 = [v3 bundleShortVersion];
-  [v6 setValue:v7 forKey:@"bundleShortVersion"];
+  bundleShortVersion = [appCopy bundleShortVersion];
+  [v6 setValue:bundleShortVersion forKey:@"bundleShortVersion"];
 
-  v8 = [v3 bundleVersion];
-  [v6 setValue:v8 forKey:@"bundleVersion"];
+  bundleVersion = [appCopy bundleVersion];
+  [v6 setValue:bundleVersion forKey:@"bundleVersion"];
 
-  v9 = [v3 installError];
-  v10 = [v9 description];
+  installError = [appCopy installError];
+  v10 = [installError description];
   [v6 setValue:v10 forKey:@"installError"];
 
-  v11 = [v3 installID];
-  v12 = [v11 UUIDString];
-  [v6 setValue:v12 forKey:@"installID"];
+  installID = [appCopy installID];
+  uUIDString = [installID UUIDString];
+  [v6 setValue:uUIDString forKey:@"installID"];
 
-  v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isInstalled")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(appCopy, "isInstalled")}];
   [v6 setValue:v13 forKey:@"isInstalled"];
 
-  v14 = [v3 progress];
-  v15 = v14;
-  if (v14)
+  progress = [appCopy progress];
+  v15 = progress;
+  if (progress)
   {
     v16 = MEMORY[0x1E696AD98];
-    [v14 fractionCompleted];
+    [progress fractionCompleted];
     v17 = [v16 numberWithDouble:?];
     [v6 setValue:v17 forKey:@"progress"];
   }
 
-  v18 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v3, "storeItemID")}];
+  v18 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(appCopy, "storeItemID")}];
   [v6 setValue:v18 forKey:@"storeItemID"];
 
-  v19 = [v3 storeFront];
-  [v6 setValue:v19 forKey:@"storeFront"];
+  storeFront = [appCopy storeFront];
+  [v6 setValue:storeFront forKey:@"storeFront"];
 
   return v6;
 }
 
-- (id)_executeAppQuery:(id)a3
+- (id)_executeAppQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = objc_alloc_init(MEMORY[0x1E698C7F0]);
   objc_initWeak(&location, self);
   v6 = AMSLogKey();
@@ -340,7 +340,7 @@
   v13 = v7;
   v8 = v5;
   v14 = v8;
-  [v4 executeQueryWithResultHandler:v12];
+  [queryCopy executeQueryWithResultHandler:v12];
   v9 = v14;
   v10 = v8;
 
@@ -410,18 +410,18 @@ void __46__AMSUIWebJSAppQueryManager__executeAppQuery___block_invoke(uint64_t a1
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_postMediaQueryResultsChangeEventWithApps:(id)a3
+- (void)_postMediaQueryResultsChangeEventWithApps:(id)apps
 {
-  v4 = a3;
-  v5 = [(AMSUIWebJSAppQueryManager *)self delegate];
+  appsCopy = apps;
+  delegate = [(AMSUIWebJSAppQueryManager *)self delegate];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__AMSUIWebJSAppQueryManager__postMediaQueryResultsChangeEventWithApps___block_invoke;
   v7[3] = &unk_1E7F264F8;
   v7[4] = self;
-  v6 = [v4 ams_mapWithTransform:v7];
+  v6 = [appsCopy ams_mapWithTransform:v7];
 
-  [v5 appQueryManager:self didReceiveApps:v6];
+  [delegate appQueryManager:self didReceiveApps:v6];
 }
 
 - (AMSUIWebJSAppQueryManagerDelegate)delegate

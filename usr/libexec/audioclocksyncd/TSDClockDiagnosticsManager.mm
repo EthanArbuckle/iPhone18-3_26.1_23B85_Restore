@@ -1,15 +1,15 @@
 @interface TSDClockDiagnosticsManager
-- (BOOL)addNetworkPortWithService:(id)a3;
-- (BOOL)addStatisticsWithIdentifier:(unint64_t)a3;
-- (BOOL)removeNetworkPortWithService:(id)a3;
-- (BOOL)removeStatisticsWithIdentifier:(unint64_t)a3;
+- (BOOL)addNetworkPortWithService:(id)service;
+- (BOOL)addStatisticsWithIdentifier:(unint64_t)identifier;
+- (BOOL)removeNetworkPortWithService:(id)service;
+- (BOOL)removeStatisticsWithIdentifier:(unint64_t)identifier;
 - (TSDClockDiagnosticsManager)init;
 - (void)dealloc;
-- (void)didChangeASCapable:(BOOL)a3 forPort:(id)a4;
-- (void)didChangeAdministrativeEnable:(BOOL)a3 forPort:(id)a4;
-- (void)didSyncTimeoutWithMean:(int64_t)a3 median:(int64_t)a4 standardDeviation:(unint64_t)a5 minimum:(int64_t)a6 maximum:(int64_t)a7 numberOfSamples:(unsigned int)a8 forPort:(id)a9;
-- (void)didTerminateServiceForPort:(id)a3;
-- (void)didTimeoutOnMACLookupForPort:(id)a3;
+- (void)didChangeASCapable:(BOOL)capable forPort:(id)port;
+- (void)didChangeAdministrativeEnable:(BOOL)enable forPort:(id)port;
+- (void)didSyncTimeoutWithMean:(int64_t)mean median:(int64_t)median standardDeviation:(unint64_t)deviation minimum:(int64_t)minimum maximum:(int64_t)maximum numberOfSamples:(unsigned int)samples forPort:(id)port;
+- (void)didTerminateServiceForPort:(id)port;
+- (void)didTimeoutOnMACLookupForPort:(id)port;
 @end
 
 @implementation TSDClockDiagnosticsManager
@@ -158,9 +158,9 @@
   return v2;
 }
 
-- (BOOL)removeStatisticsWithIdentifier:(unint64_t)a3
+- (BOOL)removeStatisticsWithIdentifier:(unint64_t)identifier
 {
-  v4 = [NSNumber numberWithLongLong:a3];
+  v4 = [NSNumber numberWithLongLong:identifier];
   v5 = [(NSMutableDictionary *)self->_statistics objectForKeyedSubscript:v4];
   v6 = v5;
   if (v5)
@@ -172,15 +172,15 @@
   return v6 != 0;
 }
 
-- (BOOL)addNetworkPortWithService:(id)a3
+- (BOOL)addNetworkPortWithService:(id)service
 {
-  v4 = a3;
-  v5 = [TSDgPTPPort gPTPPortWithService:v4];
+  serviceCopy = service;
+  v5 = [TSDgPTPPort gPTPPortWithService:serviceCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%016llx", [v4 entryID]);
+    v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%016llx", [serviceCopy entryID]);
     v8 = [(NSMutableDictionary *)self->_networkPorts objectForKeyedSubscript:v7];
 
     if (!v8)
@@ -200,9 +200,9 @@
   return isKindOfClass & 1;
 }
 
-- (BOOL)removeNetworkPortWithService:(id)a3
+- (BOOL)removeNetworkPortWithService:(id)service
 {
-  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%016llx", [a3 entryID]);
+  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%016llx", [service entryID]);
   v5 = [(NSMutableDictionary *)self->_networkPorts objectForKeyedSubscript:v4];
 
   if (v5)
@@ -216,14 +216,14 @@
   return v5 != 0;
 }
 
-- (void)didChangeASCapable:(BOOL)a3 forPort:(id)a4
+- (void)didChangeASCapable:(BOOL)capable forPort:(id)port
 {
-  v5 = a3;
+  capableCopy = capable;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = a4;
-    v7 = [v6 clockIdentifier];
-    if (v5)
+    portCopy = port;
+    clockIdentifier = [portCopy clockIdentifier];
+    if (capableCopy)
     {
       v8 = "YES";
     }
@@ -233,26 +233,26 @@
       v8 = "NO";
     }
 
-    v9 = [v6 portNumber];
+    portNumber = [portCopy portNumber];
 
     v10 = 134218498;
-    v11 = v7;
+    v11 = clockIdentifier;
     v12 = 2080;
     v13 = v8;
     v14 = 1024;
-    v15 = v9;
+    v15 = portNumber;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "0x%016llx: AS Capable %s on port %hu\n", &v10, 0x1Cu);
   }
 }
 
-- (void)didChangeAdministrativeEnable:(BOOL)a3 forPort:(id)a4
+- (void)didChangeAdministrativeEnable:(BOOL)enable forPort:(id)port
 {
-  v5 = a3;
+  enableCopy = enable;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = a4;
-    v7 = [v6 clockIdentifier];
-    if (v5)
+    portCopy = port;
+    clockIdentifier = [portCopy clockIdentifier];
+    if (enableCopy)
     {
       v8 = "YES";
     }
@@ -262,74 +262,74 @@
       v8 = "NO";
     }
 
-    v9 = [v6 portNumber];
+    portNumber = [portCopy portNumber];
 
     v10 = 134218498;
-    v11 = v7;
+    v11 = clockIdentifier;
     v12 = 2080;
     v13 = v8;
     v14 = 1024;
-    v15 = v9;
+    v15 = portNumber;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "0x%016llx: Administrative Enabled %s on port %hu\n", &v10, 0x1Cu);
   }
 }
 
-- (void)didTimeoutOnMACLookupForPort:(id)a3
+- (void)didTimeoutOnMACLookupForPort:(id)port
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = a3;
-    v5 = [v4 clockIdentifier];
-    v6 = [v4 portNumber];
+    portCopy = port;
+    clockIdentifier = [portCopy clockIdentifier];
+    portNumber = [portCopy portNumber];
 
     v7 = 134218240;
-    v8 = v5;
+    v8 = clockIdentifier;
     v9 = 1024;
-    v10 = v6;
+    v10 = portNumber;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "0x%016llx: MAC lookup timeout on port %hu\n", &v7, 0x12u);
   }
 }
 
-- (void)didSyncTimeoutWithMean:(int64_t)a3 median:(int64_t)a4 standardDeviation:(unint64_t)a5 minimum:(int64_t)a6 maximum:(int64_t)a7 numberOfSamples:(unsigned int)a8 forPort:(id)a9
+- (void)didSyncTimeoutWithMean:(int64_t)mean median:(int64_t)median standardDeviation:(unint64_t)deviation minimum:(int64_t)minimum maximum:(int64_t)maximum numberOfSamples:(unsigned int)samples forPort:(id)port
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = a9;
-    v16 = [v15 clockIdentifier];
-    v17 = [v15 portNumber];
+    portCopy = port;
+    clockIdentifier = [portCopy clockIdentifier];
+    portNumber = [portCopy portNumber];
 
     v18 = 134219776;
-    v19 = v16;
+    v19 = clockIdentifier;
     v20 = 1024;
-    v21 = v17;
+    v21 = portNumber;
     v22 = 2048;
-    v23 = a3;
+    meanCopy = mean;
     v24 = 2048;
-    v25 = a4;
+    medianCopy = median;
     v26 = 2048;
-    v27 = a5;
+    deviationCopy = deviation;
     v28 = 2048;
-    v29 = a6;
+    minimumCopy = minimum;
     v30 = 2048;
-    v31 = a7;
+    maximumCopy = maximum;
     v32 = 1024;
-    v33 = a8;
+    samplesCopy = samples;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "0x%016llx: Sync timeout on port %hu with mean %llu median %llu stddev %llu min %llu max %llu num samples %u\n", &v18, 0x4Au);
   }
 }
 
-- (void)didTerminateServiceForPort:(id)a3
+- (void)didTerminateServiceForPort:(id)port
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = a3;
-    v5 = [v4 clockIdentifier];
-    v6 = [v4 portNumber];
+    portCopy = port;
+    clockIdentifier = [portCopy clockIdentifier];
+    portNumber = [portCopy portNumber];
 
     v7 = 134218240;
-    v8 = v5;
+    v8 = clockIdentifier;
     v9 = 1024;
-    v10 = v6;
+    v10 = portNumber;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "0x%016llx: Terminate for port %hu\n", &v7, 0x12u);
   }
 }
@@ -347,13 +347,13 @@
   [(TSDClockDiagnosticsManager *)&v4 dealloc];
 }
 
-- (BOOL)addStatisticsWithIdentifier:(unint64_t)a3
+- (BOOL)addStatisticsWithIdentifier:(unint64_t)identifier
 {
   v5 = [NSNumber numberWithLongLong:?];
   v6 = [(NSMutableDictionary *)self->_statistics objectForKeyedSubscript:v5];
   if (!v6)
   {
-    v7 = [[TSDClockStatistics alloc] initWithClockIdentifier:a3];
+    v7 = [[TSDClockStatistics alloc] initWithClockIdentifier:identifier];
     if (v7)
     {
       statistics = self->_statistics;

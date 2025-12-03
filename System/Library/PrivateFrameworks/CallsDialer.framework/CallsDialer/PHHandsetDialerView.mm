@@ -12,50 +12,50 @@
 - (id)newCallButton;
 - (id)newDeleteButton;
 - (id)newNumberPadView;
-- (id)numberPadButtonsForCharacters:(id)a3;
+- (id)numberPadButtonsForCharacters:(id)characters;
 - (void)constraintAddContactButtonForIPad;
 - (void)constraintAddContactButtonForNonIPad;
 - (void)constraintDualSimPicker;
 - (void)createConstraints;
 - (void)createDeleteButtonX;
 - (void)layoutSubviews;
-- (void)setDeleteButtonAlpha:(double)a3;
-- (void)setEnableDualSimMenu:(BOOL)a3;
+- (void)setDeleteButtonAlpha:(double)alpha;
+- (void)setEnableDualSimMenu:(BOOL)menu;
 - (void)updateContraintsForStatusBar;
 @end
 
 @implementation PHHandsetDialerView
 
-- (void)setEnableDualSimMenu:(BOOL)a3
+- (void)setEnableDualSimMenu:(BOOL)menu
 {
-  if (self->_enableDualSimMenu != a3)
+  if (self->_enableDualSimMenu != menu)
   {
-    v3 = a3;
+    menuCopy = menu;
     if ([(PHHandsetDialerView *)self appType]== 1)
     {
-      v5 = [(PHHandsetDialerView *)self pillView];
+      pillView = [(PHHandsetDialerView *)self pillView];
 
-      if (v5)
+      if (pillView)
       {
-        self->_enableDualSimMenu = v3;
-        v6 = [(PHHandsetDialerView *)self pillView];
-        v7 = [v6 superview];
+        self->_enableDualSimMenu = menuCopy;
+        pillView2 = [(PHHandsetDialerView *)self pillView];
+        superview = [pillView2 superview];
 
-        if (v3)
+        if (menuCopy)
         {
-          if (!v7)
+          if (!superview)
           {
-            v8 = [(PHHandsetDialerView *)self pillView];
-            [(PHHandsetDialerView *)self addSubview:v8];
+            pillView3 = [(PHHandsetDialerView *)self pillView];
+            [(PHHandsetDialerView *)self addSubview:pillView3];
 
             [(PHHandsetDialerView *)self constraintDualSimPicker];
           }
         }
 
-        else if (v7)
+        else if (superview)
         {
-          v9 = [(PHHandsetDialerView *)self pillView];
-          [v9 removeFromSuperview];
+          pillView4 = [(PHHandsetDialerView *)self pillView];
+          [pillView4 removeFromSuperview];
         }
       }
     }
@@ -67,34 +67,34 @@
   v8.receiver = self;
   v8.super_class = PHHandsetDialerView;
   [(PHHandsetDialerView *)&v8 layoutSubviews];
-  v3 = [(PHHandsetDialerView *)self featureFlags];
-  if ([v3 phoneLargeFormatUIEnabled])
+  featureFlags = [(PHHandsetDialerView *)self featureFlags];
+  if ([featureFlags phoneLargeFormatUIEnabled])
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v5 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       return;
     }
 
     [(PHHandsetDialerView *)self _yOffsetForKeypadView];
     v7 = v6;
-    v3 = [(PHHandsetDialerView *)self phonePadViewTopConstraint];
-    [v3 setConstant:v7];
+    featureFlags = [(PHHandsetDialerView *)self phonePadViewTopConstraint];
+    [featureFlags setConstant:v7];
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PHAbstractDialerView *)self lcdView];
-  [v3 frame];
+  lcdView = [(PHAbstractDialerView *)self lcdView];
+  [lcdView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(PHAbstractDialerView *)self deleteButton];
-  [v12 frame];
+  deleteButton = [(PHAbstractDialerView *)self deleteButton];
+  [deleteButton frame];
   v28.origin.x = v13;
   v28.origin.y = v14;
   v28.size.width = v15;
@@ -124,55 +124,55 @@
 - (void)createConstraints
 {
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(PHAbstractDialerView *)self lcdView];
-  v5 = [v3 constraintWithItem:v4 attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:0.0];
+  lcdView = [(PHAbstractDialerView *)self lcdView];
+  v5 = [v3 constraintWithItem:lcdView attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:0.0];
   [(PHHandsetDialerView *)self addConstraint:v5];
 
   v6 = MEMORY[0x277CCAAD0];
-  v7 = [(PHAbstractDialerView *)self callButton];
-  v8 = [(PHAbstractDialerView *)self phonePadView];
-  v9 = [v6 constraintWithItem:v7 attribute:9 relatedBy:0 toItem:v8 attribute:9 multiplier:1.0 constant:0.0];
+  callButton = [(PHAbstractDialerView *)self callButton];
+  phonePadView = [(PHAbstractDialerView *)self phonePadView];
+  v9 = [v6 constraintWithItem:callButton attribute:9 relatedBy:0 toItem:phonePadView attribute:9 multiplier:1.0 constant:0.0];
   [(PHHandsetDialerView *)self addConstraint:v9];
 
   v10 = MEMORY[0x277CCAAD0];
-  v11 = [(PHAbstractDialerView *)self phonePadView];
-  v12 = [v10 constraintWithItem:v11 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  phonePadView2 = [(PHAbstractDialerView *)self phonePadView];
+  v12 = [v10 constraintWithItem:phonePadView2 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [(PHHandsetDialerView *)self addConstraint:v12];
 
   v13 = MEMORY[0x277CCAAD0];
-  v14 = [(PHAbstractDialerView *)self deleteButton];
-  v15 = [(PHAbstractDialerView *)self phonePadView];
-  v16 = [(PHAbstractDialerView *)self phonePadView];
-  [v16 bounds];
-  v18 = [v13 constraintWithItem:v14 attribute:9 relatedBy:0 toItem:v15 attribute:2 multiplier:1.0 constant:v17 / -6.0 + -2.0];
+  deleteButton = [(PHAbstractDialerView *)self deleteButton];
+  phonePadView3 = [(PHAbstractDialerView *)self phonePadView];
+  phonePadView4 = [(PHAbstractDialerView *)self phonePadView];
+  [phonePadView4 bounds];
+  v18 = [v13 constraintWithItem:deleteButton attribute:9 relatedBy:0 toItem:phonePadView3 attribute:2 multiplier:1.0 constant:v17 / -6.0 + -2.0];
   [(PHHandsetDialerView *)self addConstraint:v18];
 
   v19 = MEMORY[0x277CCAAD0];
-  v20 = [(PHAbstractDialerView *)self deleteButton];
-  v21 = [(PHAbstractDialerView *)self callButton];
-  v22 = [v19 constraintWithItem:v20 attribute:10 relatedBy:0 toItem:v21 attribute:10 multiplier:1.0 constant:0.0];
+  deleteButton2 = [(PHAbstractDialerView *)self deleteButton];
+  callButton2 = [(PHAbstractDialerView *)self callButton];
+  v22 = [v19 constraintWithItem:deleteButton2 attribute:10 relatedBy:0 toItem:callButton2 attribute:10 multiplier:1.0 constant:0.0];
   [(PHHandsetDialerView *)self addConstraint:v22];
 
   v23 = MEMORY[0x277CCAAD0];
-  v24 = [(PHAbstractDialerView *)self lcdView];
-  v25 = [v23 constraintWithItem:v24 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  lcdView2 = [(PHAbstractDialerView *)self lcdView];
+  v25 = [v23 constraintWithItem:lcdView2 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [(PHHandsetDialerView *)self addConstraint:v25];
 
-  v26 = [(PHAbstractDialerView *)self lcdView];
-  v27 = [v26 widthAnchor];
-  v28 = [(PHAbstractDialerView *)self phonePadView];
-  [v28 bounds];
-  v30 = [v27 constraintEqualToConstant:v29];
+  lcdView3 = [(PHAbstractDialerView *)self lcdView];
+  widthAnchor = [lcdView3 widthAnchor];
+  phonePadView5 = [(PHAbstractDialerView *)self phonePadView];
+  [phonePadView5 bounds];
+  v30 = [widthAnchor constraintEqualToConstant:v29];
   [v30 setActive:1];
 
   if ([(PHHandsetDialerView *)self appType]== 1)
   {
     if ([(PHHandsetDialerView *)self enableSmartDialer])
     {
-      v31 = [MEMORY[0x277D75418] currentDevice];
-      v32 = [v31 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v32 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         [(PHHandsetDialerView *)self constraintAddContactButtonForIPad];
       }
@@ -183,10 +183,10 @@
       }
     }
 
-    v33 = [MEMORY[0x277D75418] currentDevice];
-    v34 = [v33 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if (v34 == 5)
+    if (userInterfaceIdiom2 == 5)
     {
 
       [(PHHandsetDialerView *)self constraintDualSimPicker];
@@ -197,17 +197,17 @@
 - (void)constraintAddContactButtonForIPad
 {
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(PHAbstractDialerView *)self addContactButton];
-  v5 = [(PHAbstractDialerView *)self callButton];
-  v6 = [v3 constraintWithItem:v4 attribute:10 relatedBy:0 toItem:v5 attribute:10 multiplier:1.0 constant:0.0];
+  addContactButton = [(PHAbstractDialerView *)self addContactButton];
+  callButton = [(PHAbstractDialerView *)self callButton];
+  v6 = [v3 constraintWithItem:addContactButton attribute:10 relatedBy:0 toItem:callButton attribute:10 multiplier:1.0 constant:0.0];
   [(PHHandsetDialerView *)self addConstraint:v6];
 
   v7 = MEMORY[0x277CCAAD0];
-  v12 = [(PHAbstractDialerView *)self addContactButton];
-  v8 = [(PHAbstractDialerView *)self phonePadView];
-  v9 = [(PHAbstractDialerView *)self phonePadView];
-  [v9 bounds];
-  v11 = [v7 constraintWithItem:v12 attribute:9 relatedBy:0 toItem:v8 attribute:1 multiplier:1.0 constant:v10 / 6.0 + 2.0];
+  addContactButton2 = [(PHAbstractDialerView *)self addContactButton];
+  phonePadView = [(PHAbstractDialerView *)self phonePadView];
+  phonePadView2 = [(PHAbstractDialerView *)self phonePadView];
+  [phonePadView2 bounds];
+  v11 = [v7 constraintWithItem:addContactButton2 attribute:9 relatedBy:0 toItem:phonePadView attribute:1 multiplier:1.0 constant:v10 / 6.0 + 2.0];
   [(PHHandsetDialerView *)self addConstraint:v11];
 }
 
@@ -215,23 +215,23 @@
 {
   v21[3] = *MEMORY[0x277D85DE8];
   v14 = MEMORY[0x277CCAAD0];
-  v20 = [(PHAbstractDialerView *)self addContactButton];
-  v18 = [v20 topAnchor];
-  v19 = [(PHHandsetDialerView *)self headerLayoutGuide];
-  v17 = [v19 topAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  addContactButton = [(PHAbstractDialerView *)self addContactButton];
+  topAnchor = [addContactButton topAnchor];
+  headerLayoutGuide = [(PHHandsetDialerView *)self headerLayoutGuide];
+  topAnchor2 = [headerLayoutGuide topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v21[0] = v16;
-  v15 = [(PHAbstractDialerView *)self addContactButton];
-  v3 = [v15 bottomAnchor];
-  v4 = [(PHHandsetDialerView *)self headerLayoutGuide];
-  v5 = [v4 bottomAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  addContactButton2 = [(PHAbstractDialerView *)self addContactButton];
+  bottomAnchor = [addContactButton2 bottomAnchor];
+  headerLayoutGuide2 = [(PHHandsetDialerView *)self headerLayoutGuide];
+  bottomAnchor2 = [headerLayoutGuide2 bottomAnchor];
+  v6 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21[1] = v6;
-  v7 = [(PHAbstractDialerView *)self addContactButton];
-  v8 = [v7 trailingAnchor];
-  v9 = [(PHHandsetDialerView *)self layoutMarginsGuide];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  addContactButton3 = [(PHAbstractDialerView *)self addContactButton];
+  trailingAnchor = [addContactButton3 trailingAnchor];
+  layoutMarginsGuide = [(PHHandsetDialerView *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[2] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:3];
   [v14 activateConstraints:v12];
@@ -243,17 +243,17 @@
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v14 = MEMORY[0x277CCAAD0];
-  v15 = [(PHHandsetDialerView *)self pillView];
-  v3 = [v15 leadingAnchor];
-  v4 = [(PHHandsetDialerView *)self layoutMarginsGuide];
-  v5 = [v4 leadingAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  pillView = [(PHHandsetDialerView *)self pillView];
+  leadingAnchor = [pillView leadingAnchor];
+  layoutMarginsGuide = [(PHHandsetDialerView *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v16[0] = v6;
-  v7 = [(PHHandsetDialerView *)self pillView];
-  v8 = [v7 centerYAnchor];
-  v9 = [(PHHandsetDialerView *)self headerLayoutGuide];
-  v10 = [v9 centerYAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  pillView2 = [(PHHandsetDialerView *)self pillView];
+  centerYAnchor = [pillView2 centerYAnchor];
+  headerLayoutGuide = [(PHHandsetDialerView *)self headerLayoutGuide];
+  centerYAnchor2 = [headerLayoutGuide centerYAnchor];
+  v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v16[1] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   [v14 activateConstraints:v12];
@@ -283,28 +283,28 @@ void __42__PHHandsetDialerView_dialerIsNumericOnly__block_invoke()
 {
   [(PHHandsetDialerView *)self _keypadToCallButtonYSpacing];
   v4 = v3;
-  v5 = [(PHHandsetDialerView *)self callButtonKeypadOffsetConstraint];
-  [v5 setConstant:v4];
+  callButtonKeypadOffsetConstraint = [(PHHandsetDialerView *)self callButtonKeypadOffsetConstraint];
+  [callButtonKeypadOffsetConstraint setConstant:v4];
 
   [(PHHandsetDialerView *)self _yOffsetForKeypadView];
   v7 = v6;
-  v8 = [(PHHandsetDialerView *)self phonePadViewTopConstraint];
-  [v8 setConstant:v7];
+  phonePadViewTopConstraint = [(PHHandsetDialerView *)self phonePadViewTopConstraint];
+  [phonePadViewTopConstraint setConstant:v7];
 
   [(PHHandsetDialerView *)self _yOffsetForAddContactButton];
   v10 = v9;
-  v11 = [(PHHandsetDialerView *)self addContactButtonTopConstraint];
-  [v11 setConstant:v10];
+  addContactButtonTopConstraint = [(PHHandsetDialerView *)self addContactButtonTopConstraint];
+  [addContactButtonTopConstraint setConstant:v10];
 
-  v12 = [(PHAbstractDialerView *)self phonePadView];
-  [v12 invalidateIntrinsicContentSize];
+  phonePadView = [(PHAbstractDialerView *)self phonePadView];
+  [phonePadView invalidateIntrinsicContentSize];
 }
 
-- (id)numberPadButtonsForCharacters:(id)a3
+- (id)numberPadButtonsForCharacters:(id)characters
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  charactersCopy = characters;
+  v6 = [[v4 alloc] initWithCapacity:{objc_msgSend(charactersCopy, "count")}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__PHHandsetDialerView_numberPadButtonsForCharacters___block_invoke;
@@ -312,7 +312,7 @@ void __42__PHHandsetDialerView_dialerIsNumericOnly__block_invoke()
   v11[4] = self;
   v7 = v6;
   v12 = v7;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [charactersCopy enumerateObjectsUsingBlock:v11];
 
   v8 = v12;
   v9 = v7;
@@ -335,29 +335,29 @@ void __53__PHHandsetDialerView_numberPadButtonsForCharacters___block_invoke(uint
 
 - (void)createDeleteButtonX
 {
-  v19 = [(PHHandsetDialerView *)self deleteButtonXImageView];
+  deleteButtonXImageView = [(PHHandsetDialerView *)self deleteButtonXImageView];
   v3 = objc_alloc(MEMORY[0x277D75D18]);
-  v4 = [(PHAbstractDialerView *)self deleteButton];
-  [v4 frame];
+  deleteButton = [(PHAbstractDialerView *)self deleteButton];
+  [deleteButton frame];
   v6 = v5;
   +[(TPNumberPadButton *)PHHandsetDialerNumberPadButton];
   v8 = v6 - (v7 * 0.5 + 2.0);
-  v9 = [(PHAbstractDialerView *)self deleteButton];
-  [v9 frame];
+  deleteButton2 = [(PHAbstractDialerView *)self deleteButton];
+  [deleteButton2 frame];
   v11 = v10 * 0.5;
-  [v19 frame];
+  [deleteButtonXImageView frame];
   v13 = v11 - v12 * 0.5;
-  [v19 frame];
+  [deleteButtonXImageView frame];
   v15 = v14;
-  [v19 frame];
+  [deleteButtonXImageView frame];
   v16 = [v3 initWithFrame:{v8, v13, v15}];
   deleteButtonXView = self->_deleteButtonXView;
   self->_deleteButtonXView = v16;
 
   [(UIView *)self->_deleteButtonXView setUserInteractionEnabled:0];
-  [(UIView *)self->_deleteButtonXView addSubview:v19];
-  v18 = [(PHAbstractDialerView *)self deleteButton];
-  [v18 addSubview:self->_deleteButtonXView];
+  [(UIView *)self->_deleteButtonXView addSubview:deleteButtonXImageView];
+  deleteButton3 = [(PHAbstractDialerView *)self deleteButton];
+  [deleteButton3 addSubview:self->_deleteButtonXView];
 }
 
 - (id)deleteButtonXImageView
@@ -369,8 +369,8 @@ void __53__PHHandsetDialerView_numberPadButtonsForCharacters___block_invoke(uint
   v6 = [v5 imageWithRenderingMode:2];
   v7 = [v2 initWithImage:v6];
 
-  v8 = [MEMORY[0x277D75348] dynamicLabelColor];
-  [v7 setTintColor:v8];
+  dynamicLabelColor = [MEMORY[0x277D75348] dynamicLabelColor];
+  [v7 setTintColor:dynamicLabelColor];
 
   return v7;
 }
@@ -378,21 +378,21 @@ void __53__PHHandsetDialerView_numberPadButtonsForCharacters___block_invoke(uint
 - (id)newDeleteButton
 {
   v3 = [PHHandsetDialerDeleteButton buttonWithType:1];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   [v3 setOpaque:0];
-  v5 = [MEMORY[0x277D75348] dynamicLabelColor];
-  [v3 setTintColor:v5];
+  dynamicLabelColor = [MEMORY[0x277D75348] dynamicLabelColor];
+  [v3 setTintColor:dynamicLabelColor];
 
   [v3 setHighlighted:0];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v6) = 1144750080;
   [v3 setContentCompressionResistancePriority:0 forAxis:v6];
   v7 = MEMORY[0x277D755B8];
-  v8 = [(PHHandsetDialerView *)self deleteButtonImageName];
+  deleteButtonImageName = [(PHHandsetDialerView *)self deleteButtonImageName];
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v10 = [v7 imageNamed:v8 inBundle:v9];
+  v10 = [v7 imageNamed:deleteButtonImageName inBundle:v9];
 
   [v3 setImage:v10 forState:0];
   +[(TPNumberPadButton *)PHHandsetDialerNumberPadButton];
@@ -413,17 +413,17 @@ void __53__PHHandsetDialerView_numberPadButtonsForCharacters___block_invoke(uint
   [v3 setContentEdgeInsets:{v14, v18, v22, v24 - v25 * 0.5}];
   +[(TPNumberPadButton *)PHHandsetDialerNumberPadButton];
   v27 = v26 * 0.5;
-  v28 = [v3 layer];
-  [v28 setCornerRadius:v27];
+  layer = [v3 layer];
+  [layer setCornerRadius:v27];
 
   [v3 sizeToFit];
   return v3;
 }
 
-- (void)setDeleteButtonAlpha:(double)a3
+- (void)setDeleteButtonAlpha:(double)alpha
 {
-  v4 = [(PHAbstractDialerView *)self deleteButton];
-  [v4 setAlpha:a3];
+  deleteButton = [(PHAbstractDialerView *)self deleteButton];
+  [deleteButton setAlpha:alpha];
 }
 
 - (id)newNumberPadView
@@ -480,13 +480,13 @@ void __53__PHHandsetDialerView_numberPadButtonsForCharacters___block_invoke(uint
 
 - (double)_yOffsetForAddContactButton
 {
-  v3 = [(PHHandsetDialerView *)self featureFlags];
-  if ([v3 phoneLargeFormatUIEnabled])
+  featureFlags = [(PHHandsetDialerView *)self featureFlags];
+  if ([featureFlags phoneLargeFormatUIEnabled])
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       return 32.0;
     }
@@ -517,12 +517,12 @@ void __53__PHHandsetDialerView_numberPadButtonsForCharacters___block_invoke(uint
 {
   if (![MEMORY[0x277D3A7E0] shouldUseExplicitLayoutDimensions:{-[PHHandsetDialerView appType](self, "appType")}])
   {
-    v7 = [MEMORY[0x277D3A7E0] handsetDialerSpacing];
-    if (v7 > 2)
+    handsetDialerSpacing = [MEMORY[0x277D3A7E0] handsetDialerSpacing];
+    if (handsetDialerSpacing > 2)
     {
-      if (v7 <= 4)
+      if (handsetDialerSpacing <= 4)
       {
-        if (v7 != 3)
+        if (handsetDialerSpacing != 3)
         {
           v8 = 87.5;
           goto LABEL_25;
@@ -533,14 +533,14 @@ void __53__PHHandsetDialerView_numberPadButtonsForCharacters___block_invoke(uint
         goto LABEL_23;
       }
 
-      if (v7 == 5)
+      if (handsetDialerSpacing == 5)
       {
         +[PHHandsetDialerNumberPadButton verticalPadding];
         v10 = 81.0;
         goto LABEL_23;
       }
 
-      if (v7 == 6)
+      if (handsetDialerSpacing == 6)
       {
         +[PHHandsetDialerNumberPadButton verticalPadding];
         v10 = 99.0;
@@ -554,7 +554,7 @@ LABEL_20:
       goto LABEL_25;
     }
 
-    switch(v7)
+    switch(handsetDialerSpacing)
     {
       case 0:
         v8 = 17.0;
@@ -581,32 +581,32 @@ LABEL_20:
 LABEL_25:
     [(PHHandsetDialerView *)self _remoteViewControllerDialerOffset];
     v5 = v8 - v11;
-    v12 = [(PHHandsetDialerView *)self featureFlags];
-    if ([v12 phoneLargeFormatUIEnabled])
+    featureFlags = [(PHHandsetDialerView *)self featureFlags];
+    if ([featureFlags phoneLargeFormatUIEnabled])
     {
-      v13 = [MEMORY[0x277D75418] currentDevice];
-      v14 = [v13 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v14 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
       {
         return v5;
       }
 
-      v15 = [(PHHandsetDialerView *)self window];
-      v12 = [v15 windowScene];
+      window = [(PHHandsetDialerView *)self window];
+      featureFlags = [window windowScene];
 
-      [MEMORY[0x277D3A7E0] yOffsetForSmartDialerLCDViewForOrientation:{objc_msgSend(v12, "interfaceOrientation")}];
+      [MEMORY[0x277D3A7E0] yOffsetForSmartDialerLCDViewForOrientation:{objc_msgSend(featureFlags, "interfaceOrientation")}];
       v5 = v5 - v16;
     }
 
     return v5;
   }
 
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v5 = 20.0;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return v5;
   }
@@ -620,10 +620,10 @@ LABEL_25:
   v2 = 0.0;
   if ([(PHAbstractDialerView *)self isHostedInRemoteViewController])
   {
-    v3 = [MEMORY[0x277D3A7E0] handsetDialerSpacing];
-    if (v3 <= 6)
+    handsetDialerSpacing = [MEMORY[0x277D3A7E0] handsetDialerSpacing];
+    if (handsetDialerSpacing <= 6)
     {
-      return dbl_2429ED380[v3];
+      return dbl_2429ED380[handsetDialerSpacing];
     }
   }
 
@@ -639,10 +639,10 @@ LABEL_25:
     return result;
   }
 
-  v4 = [MEMORY[0x277D3A7E0] handsetDialerSpacing];
-  if (v4 > 2)
+  handsetDialerSpacing = [MEMORY[0x277D3A7E0] handsetDialerSpacing];
+  if (handsetDialerSpacing > 2)
   {
-    if (v4 == 3)
+    if (handsetDialerSpacing == 3)
     {
       +[PHHandsetDialerNumberPadButton verticalPadding];
       v6 = 17.0;
@@ -650,7 +650,7 @@ LABEL_25:
 
     else
     {
-      if (v4 != 5)
+      if (handsetDialerSpacing != 5)
       {
         return 8.5;
       }
@@ -662,9 +662,9 @@ LABEL_25:
     return v6 - v5;
   }
 
-  if (v4)
+  if (handsetDialerSpacing)
   {
-    if (v4 == 1)
+    if (handsetDialerSpacing == 1)
     {
       return 7.0;
     }
@@ -678,11 +678,11 @@ LABEL_25:
 
 - (double)yOffsetFromKeypadToLCDViewForExplicitLayoutDevices
 {
-  v3 = [MEMORY[0x277D3A7E0] screenSize];
+  screenSize = [MEMORY[0x277D3A7E0] screenSize];
   result = 38.0;
-  if (v3 <= 0xF)
+  if (screenSize <= 0xF)
   {
-    if (((1 << v3) & 0xA210) != 0)
+    if (((1 << screenSize) & 0xA210) != 0)
     {
       v5 = ![(PHAbstractDialerView *)self isHostedInRemoteViewController];
       result = 20.0;
@@ -695,9 +695,9 @@ LABEL_4:
       return result;
     }
 
-    if (v3)
+    if (screenSize)
     {
-      if (v3 != 1)
+      if (screenSize != 1)
       {
         return result;
       }
@@ -707,11 +707,11 @@ LABEL_4:
       goto LABEL_4;
     }
 
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     result = 3.0;
-    if (!v7)
+    if (!userInterfaceIdiom)
     {
       return -20.0;
     }
@@ -722,15 +722,15 @@ LABEL_4:
 
 - (double)yOffsetFromKeypadToDialerButtonForExplictLayoutDevices
 {
-  v2 = [MEMORY[0x277D3A7E0] screenSize];
+  screenSize = [MEMORY[0x277D3A7E0] screenSize];
   v3 = 0.0;
-  if (v2 <= 10)
+  if (screenSize <= 10)
   {
-    if (v2 <= 3)
+    if (screenSize <= 3)
     {
-      if (v2)
+      if (screenSize)
       {
-        if (v2 != 1)
+        if (screenSize != 1)
         {
           goto LABEL_25;
         }
@@ -749,11 +749,11 @@ LABEL_4:
       goto LABEL_25;
     }
 
-    if (v2 != 4)
+    if (screenSize != 4)
     {
-      if (v2 != 9)
+      if (screenSize != 9)
       {
-        if (v2 == 10)
+        if (screenSize == 10)
         {
           v3 = 18.0;
         }
@@ -769,15 +769,15 @@ LABEL_21:
     goto LABEL_12;
   }
 
-  if (v2 <= 12)
+  if (screenSize <= 12)
   {
     v6 = 19.0;
-    if (v2 != 12)
+    if (screenSize != 12)
     {
       v6 = 0.0;
     }
 
-    if (v2 == 11)
+    if (screenSize == 11)
     {
       v3 = 9.0;
     }
@@ -790,7 +790,7 @@ LABEL_21:
 
   else
   {
-    switch(v2)
+    switch(screenSize)
     {
       case 13:
         goto LABEL_21;

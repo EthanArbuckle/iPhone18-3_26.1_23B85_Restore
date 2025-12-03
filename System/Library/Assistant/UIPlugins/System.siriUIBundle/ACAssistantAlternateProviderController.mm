@@ -1,18 +1,18 @@
 @interface ACAssistantAlternateProviderController
-- (ACAssistantAlternateProviderController)initWithAlternateProviderSnippet:(id)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (double)desiredHeightForWidth:(double)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (ACAssistantAlternateProviderController)initWithAlternateProviderSnippet:(id)snippet;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (double)desiredHeightForWidth:(double)width;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)sashItem;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadView;
 @end
 
 @implementation ACAssistantAlternateProviderController
 
-- (ACAssistantAlternateProviderController)initWithAlternateProviderSnippet:(id)a3
+- (ACAssistantAlternateProviderController)initWithAlternateProviderSnippet:(id)snippet
 {
-  v5 = a3;
+  snippetCopy = snippet;
   v14.receiver = self;
   v14.super_class = ACAssistantAlternateProviderController;
   v6 = [(ACAssistantAlternateProviderController *)&v14 init];
@@ -20,13 +20,13 @@
   if (v6)
   {
     [(ACAssistantAlternateProviderController *)v6 setDefaultViewInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-    objc_storeStrong(&v7->_snippet, a3);
-    v8 = [v5 title];
+    objc_storeStrong(&v7->_snippet, snippet);
+    title = [snippetCopy title];
     snippetTitle = v7->_snippetTitle;
-    v7->_snippetTitle = v8;
+    v7->_snippetTitle = title;
 
-    v10 = [v5 alternateProviderResults];
-    v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+    alternateProviderResults = [snippetCopy alternateProviderResults];
+    v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [alternateProviderResults count]);
     viewArray = v7->_viewArray;
     v7->_viewArray = v11;
   }
@@ -39,16 +39,16 @@
   v21.receiver = self;
   v21.super_class = ACAssistantAlternateProviderController;
   [(ACAssistantAlternateProviderController *)&v21 loadView];
-  v3 = [(ACAssistantAlternateProviderController *)self collectionView];
-  v4 = [(ACAssistantAlternateProviderController *)self delegate];
-  v5 = [v4 persistentDataStoreForSiriViewController:self];
+  collectionView = [(ACAssistantAlternateProviderController *)self collectionView];
+  delegate = [(ACAssistantAlternateProviderController *)self delegate];
+  v5 = [delegate persistentDataStoreForSiriViewController:self];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(SAUIAlternateProviderSnippet *)self->_snippet alternateProviderResults];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  alternateProviderResults = [(SAUIAlternateProviderSnippet *)self->_snippet alternateProviderResults];
+  v7 = [alternateProviderResults countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -60,7 +60,7 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(alternateProviderResults);
         }
 
         v11 = [[ACAssistantAlternateProviderResultView alloc] initWithAlternateProviderResult:*(*(&v17 + 1) + 8 * v10) usingPersistentStore:v5];
@@ -70,34 +70,34 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v8 = [alternateProviderResults countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(ACAssistantAlternateProviderController *)self delegate];
-  [v12 siriViewControllerExpectedWidth:self];
+  delegate2 = [(ACAssistantAlternateProviderController *)self delegate];
+  [delegate2 siriViewControllerExpectedWidth:self];
   v14 = v13;
 
-  [v3 setFrame:{0.0, 0.0, v14, 0.0}];
-  [v3 setDataSource:self];
-  [v3 setDelegate:self];
+  [collectionView setFrame:{0.0, 0.0, v14, 0.0}];
+  [collectionView setDataSource:self];
+  [collectionView setDelegate:self];
   v15 = objc_opt_class();
   v16 = +[SiriUIContentCollectionViewCell reuseIdentifier];
-  [v3 registerClass:v15 forCellWithReuseIdentifier:v16];
+  [collectionView registerClass:v15 forCellWithReuseIdentifier:v16];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
   if (([(ACAssistantAlternateProviderController *)self isViewLoaded]& 1) == 0)
   {
     [(ACAssistantAlternateProviderController *)self loadView];
   }
 
-  v4 = [(ACAssistantAlternateProviderController *)self collectionView];
-  v5 = [v4 collectionViewLayout];
-  [v5 collectionViewContentSize];
+  collectionView = [(ACAssistantAlternateProviderController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v7 = v6;
 
   return v7;
@@ -116,40 +116,40 @@
   return v4;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ACAssistantAlternateProviderController *)self collectionView];
+  pathCopy = path;
+  collectionView = [(ACAssistantAlternateProviderController *)self collectionView];
   v7 = +[SiriUIContentCollectionViewCell reuseIdentifier];
-  v8 = [v6 dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:v5];
+  v8 = [collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:pathCopy];
 
   [v8 setHasChevron:0];
   viewArray = self->_viewArray;
-  v10 = [v5 item];
+  item = [pathCopy item];
 
-  v11 = [(NSMutableArray *)viewArray objectAtIndex:v10];
+  v11 = [(NSMutableArray *)viewArray objectAtIndex:item];
   [v11 edgeInsets];
   [v8 setCustomViewEdgeInsets:?];
   [v8 setCustomView:v11];
-  v12 = [(NSMutableArray *)self->_viewArray lastObject];
-  v13 = v11 != v12;
+  lastObject = [(NSMutableArray *)self->_viewArray lastObject];
+  v13 = v11 != lastObject;
 
   [v8 setKeylineType:v13];
 
   return v8;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(ACAssistantAlternateProviderController *)self delegate];
-  [v7 siriViewControllerExpectedWidth:self];
+  pathCopy = path;
+  delegate = [(ACAssistantAlternateProviderController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   v9 = v8;
 
   viewArray = self->_viewArray;
-  v11 = [v6 item];
+  item = [pathCopy item];
 
-  v12 = [(NSMutableArray *)viewArray objectAtIndex:v11];
+  v12 = [(NSMutableArray *)viewArray objectAtIndex:item];
   [v12 sizeThatFits:{v9, 1.79769313e308}];
   v14 = v13;
 
@@ -160,17 +160,17 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectItemAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectItemAtIndexPath:pathCopy animated:1];
   viewArray = self->_viewArray;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v11 = [(NSMutableArray *)viewArray objectAtIndex:v8];
-  v9 = [(ACAssistantAlternateProviderController *)self delegate];
-  v10 = [v11 commands];
-  [v9 siriViewController:self performAceCommands:v10];
+  delegate = [(ACAssistantAlternateProviderController *)self delegate];
+  commands = [v11 commands];
+  [delegate siriViewController:self performAceCommands:commands];
 }
 
 @end

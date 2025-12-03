@@ -1,8 +1,8 @@
 @interface FCPurchaseMetadataFetcher
 - (FCPurchaseMetadataFetcher)init;
 - (id)clientIdentifier;
-- (id)fetchPurchaseMetadataForPurchaseID:(id)a3 restorePurchase:(BOOL)a4;
-- (id)promiseStoreExternalVersionWithAppAdamID:(void *)a1;
+- (id)fetchPurchaseMetadataForPurchaseID:(id)d restorePurchase:(BOOL)purchase;
+- (id)promiseStoreExternalVersionWithAppAdamID:(void *)d;
 @end
 
 @implementation FCPurchaseMetadataFetcher
@@ -62,33 +62,33 @@ void __45__FCPurchaseMetadataFetcher_clientIdentifier__block_invoke()
 
 - (id)clientIdentifier
 {
-  if (a1)
+  if (self)
   {
     if (qword_1EDB27088 != -1)
     {
       dispatch_once(&qword_1EDB27088, &__block_literal_global_39);
     }
 
-    a1 = _MergedGlobals_147;
+    self = _MergedGlobals_147;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)fetchPurchaseMetadataForPurchaseID:(id)a3 restorePurchase:(BOOL)a4
+- (id)fetchPurchaseMetadataForPurchaseID:(id)d restorePurchase:(BOOL)purchase
 {
-  v6 = a3;
+  dCopy = d;
   v7 = MEMORY[0x1E69B68F8];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __80__FCPurchaseMetadataFetcher_fetchPurchaseMetadataForPurchaseID_restorePurchase___block_invoke;
   v37[3] = &unk_1E7C3AE08;
   v37[4] = self;
-  v28 = v6;
+  v28 = dCopy;
   v38 = v28;
   v27 = [v7 firstly:v37];
-  v8 = [v27 thenOn];
+  thenOn = [v27 thenOn];
   if (self)
   {
     accessQueue = self->_accessQueue;
@@ -104,10 +104,10 @@ void __45__FCPurchaseMetadataFetcher_clientIdentifier__block_invoke()
   v33 = 3221225472;
   v34 = __80__FCPurchaseMetadataFetcher_fetchPurchaseMetadataForPurchaseID_restorePurchase___block_invoke_2;
   v35 = &unk_1E7C3C388;
-  v36 = self;
+  selfCopy = self;
   v26 = v10;
-  v25 = v8[2](v8);
-  v11 = [v25 thenOn];
+  v25 = thenOn[2](thenOn);
+  thenOn2 = [v25 thenOn];
   if (self)
   {
     v12 = self->_accessQueue;
@@ -124,10 +124,10 @@ void __45__FCPurchaseMetadataFetcher_clientIdentifier__block_invoke()
   v30[2] = __80__FCPurchaseMetadataFetcher_fetchPurchaseMetadataForPurchaseID_restorePurchase___block_invoke_3;
   v30[3] = &unk_1E7C3C3B0;
   v30[4] = self;
-  v31 = a4;
-  v14 = (v11)[2](v11, v13, v30);
-  v15 = [v14 thenOn];
-  v16 = v15;
+  purchaseCopy = purchase;
+  v14 = (thenOn2)[2](thenOn2, v13, v30);
+  thenOn3 = [v14 thenOn];
+  v16 = thenOn3;
   if (self)
   {
     v17 = self->_accessQueue;
@@ -143,12 +143,12 @@ void __45__FCPurchaseMetadataFetcher_clientIdentifier__block_invoke()
   v29[2] = __80__FCPurchaseMetadataFetcher_fetchPurchaseMetadataForPurchaseID_restorePurchase___block_invoke_4;
   v29[3] = &unk_1E7C3C3D8;
   v29[4] = self;
-  v18 = *(v15 + 16);
+  v18 = *(thenOn3 + 16);
   v19 = v17;
   v20 = v18(v16, v19, v29);
-  v21 = [v20 thenOn];
+  thenOn4 = [v20 thenOn];
   v22 = dispatch_get_global_queue(25, 0);
-  v23 = (v21)[2](v21, v22, &__block_literal_global_38_0);
+  v23 = (thenOn4)[2](thenOn4, v22, &__block_literal_global_38_0);
 
   return v23;
 }
@@ -753,22 +753,22 @@ id __73__FCPurchaseMetadataFetcher_promiseStoreExternalVersionWithLookupResult__
   return [(FCPurchaseMetadataFetcher *)v3 promiseStoreExternalVersionWithAppAdamID:v5];
 }
 
-- (id)promiseStoreExternalVersionWithAppAdamID:(void *)a1
+- (id)promiseStoreExternalVersionWithAppAdamID:(void *)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
     v4 = objc_alloc(MEMORY[0x1E69B68F8]);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __70__FCPurchaseMetadataFetcher_promiseStoreExternalVersionWithAppAdamID___block_invoke;
     v6[3] = &unk_1E7C3B310;
-    v6[4] = a1;
+    v6[4] = d;
     v7 = v3;
-    a1 = [v4 initWithResolver:v6];
+    d = [v4 initWithResolver:v6];
   }
 
-  return a1;
+  return d;
 }
 
 void __66__FCPurchaseMetadataFetcher_checkIfOfferUsedAlreadyWithAppAdamID___block_invoke(uint64_t a1, void *a2)

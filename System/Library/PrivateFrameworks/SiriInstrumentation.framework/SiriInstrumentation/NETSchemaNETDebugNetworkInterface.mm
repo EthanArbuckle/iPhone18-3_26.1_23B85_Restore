@@ -1,41 +1,41 @@
 @interface NETSchemaNETDebugNetworkInterface
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETDebugNetworkInterface)initWithDictionary:(id)a3;
-- (NETSchemaNETDebugNetworkInterface)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETDebugNetworkInterface)initWithDictionary:(id)dictionary;
+- (NETSchemaNETDebugNetworkInterface)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasBytesReceived:(BOOL)a3;
-- (void)setHasBytesRetransmitted:(BOOL)a3;
-- (void)setHasBytesSent:(BOOL)a3;
-- (void)setHasBytesUnacked:(BOOL)a3;
-- (void)setHasDuplicateBytesReceived:(BOOL)a3;
-- (void)setHasOutOfOrderBytesReceived:(BOOL)a3;
-- (void)setHasPacketsReceived:(BOOL)a3;
-- (void)setHasPacketsSent:(BOOL)a3;
-- (void)setHasRttBest:(BOOL)a3;
-- (void)setHasRttSmoothed:(BOOL)a3;
-- (void)setHasRttVariance:(BOOL)a3;
-- (void)setHasSendBandwidth:(BOOL)a3;
-- (void)setHasSendBufferBytes:(BOOL)a3;
-- (void)setHasSynRetransmits:(BOOL)a3;
-- (void)setHasTfoSynDataAcked:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasBytesReceived:(BOOL)received;
+- (void)setHasBytesRetransmitted:(BOOL)retransmitted;
+- (void)setHasBytesSent:(BOOL)sent;
+- (void)setHasBytesUnacked:(BOOL)unacked;
+- (void)setHasDuplicateBytesReceived:(BOOL)received;
+- (void)setHasOutOfOrderBytesReceived:(BOOL)received;
+- (void)setHasPacketsReceived:(BOOL)received;
+- (void)setHasPacketsSent:(BOOL)sent;
+- (void)setHasRttBest:(BOOL)best;
+- (void)setHasRttSmoothed:(BOOL)smoothed;
+- (void)setHasRttVariance:(BOOL)variance;
+- (void)setHasSendBandwidth:(BOOL)bandwidth;
+- (void)setHasSendBufferBytes:(BOOL)bytes;
+- (void)setHasSynRetransmits:(BOOL)retransmits;
+- (void)setHasTfoSynDataAcked:(BOOL)acked;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETDebugNetworkInterface
 
-- (NETSchemaNETDebugNetworkInterface)initWithDictionary:(id)a3
+- (NETSchemaNETDebugNetworkInterface)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v43.receiver = self;
   v43.super_class = NETSchemaNETDebugNetworkInterface;
   v5 = [(NETSchemaNETDebugNetworkInterface *)&v43 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"rttCurrent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rttCurrent"];
     objc_opt_class();
     v41 = v6;
     if (objc_opt_isKindOfClass())
@@ -43,7 +43,7 @@
       -[NETSchemaNETDebugNetworkInterface setRttCurrent:](v5, "setRttCurrent:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"rttSmoothed"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"rttSmoothed"];
     objc_opt_class();
     v39 = v7;
     if (objc_opt_isKindOfClass())
@@ -51,7 +51,7 @@
       -[NETSchemaNETDebugNetworkInterface setRttSmoothed:](v5, "setRttSmoothed:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"rttVariance"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"rttVariance"];
     objc_opt_class();
     v37 = v8;
     if (objc_opt_isKindOfClass())
@@ -59,7 +59,7 @@
       -[NETSchemaNETDebugNetworkInterface setRttVariance:](v5, "setRttVariance:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"rttBest"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"rttBest"];
     objc_opt_class();
     v35 = v9;
     if (objc_opt_isKindOfClass())
@@ -67,28 +67,28 @@
       -[NETSchemaNETDebugNetworkInterface setRttBest:](v5, "setRttBest:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"packetsSent"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"packetsSent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugNetworkInterface setPacketsSent:](v5, "setPacketsSent:", [v10 unsignedLongLongValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"packetsReceived"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"packetsReceived"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugNetworkInterface setPacketsReceived:](v5, "setPacketsReceived:", [v11 unsignedLongLongValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"bytesSent"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"bytesSent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugNetworkInterface setBytesSent:](v5, "setBytesSent:", [v12 unsignedLongLongValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"bytesRetransmitted"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"bytesRetransmitted"];
     objc_opt_class();
     v42 = v13;
     if (objc_opt_isKindOfClass())
@@ -96,14 +96,14 @@
       -[NETSchemaNETDebugNetworkInterface setBytesRetransmitted:](v5, "setBytesRetransmitted:", [v13 unsignedLongLongValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"bytesUnacked"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"bytesUnacked"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugNetworkInterface setBytesUnacked:](v5, "setBytesUnacked:", [v14 unsignedLongLongValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"bytesReceived"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"bytesReceived"];
     objc_opt_class();
     v40 = v15;
     if (objc_opt_isKindOfClass())
@@ -111,14 +111,14 @@
       -[NETSchemaNETDebugNetworkInterface setBytesReceived:](v5, "setBytesReceived:", [v15 unsignedLongLongValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"duplicateBytesReceived"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"duplicateBytesReceived"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugNetworkInterface setDuplicateBytesReceived:](v5, "setDuplicateBytesReceived:", [v16 unsignedLongLongValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"outOfOrderBytesReceived"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"outOfOrderBytesReceived"];
     objc_opt_class();
     v38 = v17;
     if (objc_opt_isKindOfClass())
@@ -126,14 +126,14 @@
       -[NETSchemaNETDebugNetworkInterface setOutOfOrderBytesReceived:](v5, "setOutOfOrderBytesReceived:", [v17 unsignedLongLongValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"sendBufferBytes"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"sendBufferBytes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugNetworkInterface setSendBufferBytes:](v5, "setSendBufferBytes:", [v18 unsignedLongLongValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"sendBandwidth"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"sendBandwidth"];
     objc_opt_class();
     v36 = v19;
     if (objc_opt_isKindOfClass())
@@ -141,7 +141,7 @@
       -[NETSchemaNETDebugNetworkInterface setSendBandwidth:](v5, "setSendBandwidth:", [v19 unsignedLongLongValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"synRetransmits"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"synRetransmits"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -149,7 +149,7 @@
     }
 
     v34 = v12;
-    v21 = [v4 objectForKeyedSubscript:@"tfoSynDataAcked"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"tfoSynDataAcked"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -157,14 +157,14 @@
     }
 
     v33 = v21;
-    v22 = [v4 objectForKeyedSubscript:@"subflowSwitchCount"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"subflowSwitchCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugNetworkInterface setSubflowSwitchCount:](v5, "setSubflowSwitchCount:", [v22 unsignedIntValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"networkInterface"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"networkInterface"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -191,30 +191,30 @@
   return v5;
 }
 
-- (NETSchemaNETDebugNetworkInterface)initWithJSON:(id)a3
+- (NETSchemaNETDebugNetworkInterface)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETDebugNetworkInterface *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETDebugNetworkInterface *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETDebugNetworkInterface *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -227,13 +227,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_has = &self->_has;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETDebugNetworkInterface bytesReceived](self, "bytesReceived")}];
-    [v3 setObject:v9 forKeyedSubscript:@"bytesReceived"];
+    [dictionary setObject:v9 forKeyedSubscript:@"bytesReceived"];
 
     has = *p_has;
     if ((*p_has & 0x80) == 0)
@@ -254,7 +254,7 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETDebugNetworkInterface bytesRetransmitted](self, "bytesRetransmitted")}];
-  [v3 setObject:v10 forKeyedSubscript:@"bytesRetransmitted"];
+  [dictionary setObject:v10 forKeyedSubscript:@"bytesRetransmitted"];
 
   has = *p_has;
   if ((*p_has & 0x40) == 0)
@@ -270,7 +270,7 @@ LABEL_4:
 
 LABEL_12:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETDebugNetworkInterface bytesSent](self, "bytesSent")}];
-  [v3 setObject:v11 forKeyedSubscript:@"bytesSent"];
+  [dictionary setObject:v11 forKeyedSubscript:@"bytesSent"];
 
   has = *p_has;
   if ((*p_has & 0x100) == 0)
@@ -286,29 +286,29 @@ LABEL_5:
 
 LABEL_13:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETDebugNetworkInterface bytesUnacked](self, "bytesUnacked")}];
-  [v3 setObject:v12 forKeyedSubscript:@"bytesUnacked"];
+  [dictionary setObject:v12 forKeyedSubscript:@"bytesUnacked"];
 
   if ((*p_has & 0x400) != 0)
   {
 LABEL_6:
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETDebugNetworkInterface duplicateBytesReceived](self, "duplicateBytesReceived")}];
-    [v3 setObject:v6 forKeyedSubscript:@"duplicateBytesReceived"];
+    [dictionary setObject:v6 forKeyedSubscript:@"duplicateBytesReceived"];
   }
 
 LABEL_7:
   if (self->_networkInterface)
   {
-    v7 = [(NETSchemaNETDebugNetworkInterface *)self networkInterface];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    networkInterface = [(NETSchemaNETDebugNetworkInterface *)self networkInterface];
+    dictionaryRepresentation = [networkInterface dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"networkInterface"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"networkInterface"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"networkInterface"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"networkInterface"];
     }
   }
 
@@ -316,7 +316,7 @@ LABEL_7:
   if ((*p_has & 0x800) != 0)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETDebugNetworkInterface outOfOrderBytesReceived](self, "outOfOrderBytesReceived")}];
-    [v3 setObject:v21 forKeyedSubscript:@"outOfOrderBytesReceived"];
+    [dictionary setObject:v21 forKeyedSubscript:@"outOfOrderBytesReceived"];
 
     v14 = *p_has;
     if ((*p_has & 0x20) == 0)
@@ -337,7 +337,7 @@ LABEL_19:
   }
 
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETDebugNetworkInterface packetsReceived](self, "packetsReceived")}];
-  [v3 setObject:v22 forKeyedSubscript:@"packetsReceived"];
+  [dictionary setObject:v22 forKeyedSubscript:@"packetsReceived"];
 
   v14 = *p_has;
   if ((*p_has & 0x10) == 0)
@@ -353,7 +353,7 @@ LABEL_20:
 
 LABEL_38:
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETDebugNetworkInterface packetsSent](self, "packetsSent")}];
-  [v3 setObject:v23 forKeyedSubscript:@"packetsSent"];
+  [dictionary setObject:v23 forKeyedSubscript:@"packetsSent"];
 
   v14 = *p_has;
   if ((*p_has & 8) == 0)
@@ -369,7 +369,7 @@ LABEL_21:
 
 LABEL_39:
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETDebugNetworkInterface rttBest](self, "rttBest")}];
-  [v3 setObject:v24 forKeyedSubscript:@"rttBest"];
+  [dictionary setObject:v24 forKeyedSubscript:@"rttBest"];
 
   v14 = *p_has;
   if ((*p_has & 1) == 0)
@@ -385,7 +385,7 @@ LABEL_22:
 
 LABEL_40:
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETDebugNetworkInterface rttCurrent](self, "rttCurrent")}];
-  [v3 setObject:v25 forKeyedSubscript:@"rttCurrent"];
+  [dictionary setObject:v25 forKeyedSubscript:@"rttCurrent"];
 
   v14 = *p_has;
   if ((*p_has & 2) == 0)
@@ -401,7 +401,7 @@ LABEL_23:
 
 LABEL_41:
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETDebugNetworkInterface rttSmoothed](self, "rttSmoothed")}];
-  [v3 setObject:v26 forKeyedSubscript:@"rttSmoothed"];
+  [dictionary setObject:v26 forKeyedSubscript:@"rttSmoothed"];
 
   v14 = *p_has;
   if ((*p_has & 4) == 0)
@@ -417,7 +417,7 @@ LABEL_24:
 
 LABEL_42:
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETDebugNetworkInterface rttVariance](self, "rttVariance")}];
-  [v3 setObject:v27 forKeyedSubscript:@"rttVariance"];
+  [dictionary setObject:v27 forKeyedSubscript:@"rttVariance"];
 
   v14 = *p_has;
   if ((*p_has & 0x2000) == 0)
@@ -433,27 +433,27 @@ LABEL_25:
 
 LABEL_43:
   v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETDebugNetworkInterface sendBandwidth](self, "sendBandwidth")}];
-  [v3 setObject:v28 forKeyedSubscript:@"sendBandwidth"];
+  [dictionary setObject:v28 forKeyedSubscript:@"sendBandwidth"];
 
   if ((*p_has & 0x1000) != 0)
   {
 LABEL_26:
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[NETSchemaNETDebugNetworkInterface sendBufferBytes](self, "sendBufferBytes")}];
-    [v3 setObject:v15 forKeyedSubscript:@"sendBufferBytes"];
+    [dictionary setObject:v15 forKeyedSubscript:@"sendBufferBytes"];
   }
 
 LABEL_27:
   if (*(&self->_has + 2))
   {
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETDebugNetworkInterface subflowSwitchCount](self, "subflowSwitchCount")}];
-    [v3 setObject:v16 forKeyedSubscript:@"subflowSwitchCount"];
+    [dictionary setObject:v16 forKeyedSubscript:@"subflowSwitchCount"];
   }
 
   v17 = *p_has;
   if ((*p_has & 0x4000) != 0)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETDebugNetworkInterface synRetransmits](self, "synRetransmits")}];
-    [v3 setObject:v18 forKeyedSubscript:@"synRetransmits"];
+    [dictionary setObject:v18 forKeyedSubscript:@"synRetransmits"];
 
     v17 = *p_has;
   }
@@ -461,12 +461,12 @@ LABEL_27:
   if (v17 < 0)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETDebugNetworkInterface tfoSynDataAcked](self, "tfoSynDataAcked")}];
-    [v3 setObject:v19 forKeyedSubscript:@"tfoSynDataAcked"];
+    [dictionary setObject:v19 forKeyedSubscript:@"tfoSynDataAcked"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -698,18 +698,18 @@ LABEL_35:
   return v8 ^ v7 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ [(NETSchemaNETNetworkInterface *)self->_networkInterface hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_73;
   }
 
   p_has = &self->_has;
   has = self->_has;
-  v7 = v4 + 64;
-  v8 = v4[64];
+  v7 = equalCopy + 64;
+  v8 = equalCopy[64];
   if ((*&has & 1) != (v8 & 1))
   {
     goto LABEL_73;
@@ -718,7 +718,7 @@ LABEL_35:
   if (*&has)
   {
     rttCurrent = self->_rttCurrent;
-    if (rttCurrent != [v4 rttCurrent])
+    if (rttCurrent != [equalCopy rttCurrent])
     {
       goto LABEL_73;
     }
@@ -733,7 +733,7 @@ LABEL_35:
     if (v10)
     {
       rttSmoothed = self->_rttSmoothed;
-      if (rttSmoothed != [v4 rttSmoothed])
+      if (rttSmoothed != [equalCopy rttSmoothed])
       {
         goto LABEL_73;
       }
@@ -748,7 +748,7 @@ LABEL_35:
       if (v12)
       {
         rttVariance = self->_rttVariance;
-        if (rttVariance != [v4 rttVariance])
+        if (rttVariance != [equalCopy rttVariance])
         {
           goto LABEL_73;
         }
@@ -763,7 +763,7 @@ LABEL_35:
         if (v14)
         {
           rttBest = self->_rttBest;
-          if (rttBest != [v4 rttBest])
+          if (rttBest != [equalCopy rttBest])
           {
             goto LABEL_73;
           }
@@ -778,7 +778,7 @@ LABEL_35:
           if (v16)
           {
             packetsSent = self->_packetsSent;
-            if (packetsSent != [v4 packetsSent])
+            if (packetsSent != [equalCopy packetsSent])
             {
               goto LABEL_73;
             }
@@ -793,7 +793,7 @@ LABEL_35:
             if (v18)
             {
               packetsReceived = self->_packetsReceived;
-              if (packetsReceived != [v4 packetsReceived])
+              if (packetsReceived != [equalCopy packetsReceived])
               {
                 goto LABEL_73;
               }
@@ -808,7 +808,7 @@ LABEL_35:
               if (v20)
               {
                 bytesSent = self->_bytesSent;
-                if (bytesSent != [v4 bytesSent])
+                if (bytesSent != [equalCopy bytesSent])
                 {
                   goto LABEL_73;
                 }
@@ -823,7 +823,7 @@ LABEL_35:
                 if (v22)
                 {
                   bytesRetransmitted = self->_bytesRetransmitted;
-                  if (bytesRetransmitted != [v4 bytesRetransmitted])
+                  if (bytesRetransmitted != [equalCopy bytesRetransmitted])
                   {
                     goto LABEL_73;
                   }
@@ -838,7 +838,7 @@ LABEL_35:
                   if (v24)
                   {
                     bytesUnacked = self->_bytesUnacked;
-                    if (bytesUnacked != [v4 bytesUnacked])
+                    if (bytesUnacked != [equalCopy bytesUnacked])
                     {
                       goto LABEL_73;
                     }
@@ -853,7 +853,7 @@ LABEL_35:
                     if (v26)
                     {
                       bytesReceived = self->_bytesReceived;
-                      if (bytesReceived != [v4 bytesReceived])
+                      if (bytesReceived != [equalCopy bytesReceived])
                       {
                         goto LABEL_73;
                       }
@@ -868,7 +868,7 @@ LABEL_35:
                       if (v28)
                       {
                         duplicateBytesReceived = self->_duplicateBytesReceived;
-                        if (duplicateBytesReceived != [v4 duplicateBytesReceived])
+                        if (duplicateBytesReceived != [equalCopy duplicateBytesReceived])
                         {
                           goto LABEL_73;
                         }
@@ -883,7 +883,7 @@ LABEL_35:
                         if (v30)
                         {
                           outOfOrderBytesReceived = self->_outOfOrderBytesReceived;
-                          if (outOfOrderBytesReceived != [v4 outOfOrderBytesReceived])
+                          if (outOfOrderBytesReceived != [equalCopy outOfOrderBytesReceived])
                           {
                             goto LABEL_73;
                           }
@@ -898,7 +898,7 @@ LABEL_35:
                           if (v32)
                           {
                             sendBufferBytes = self->_sendBufferBytes;
-                            if (sendBufferBytes != [v4 sendBufferBytes])
+                            if (sendBufferBytes != [equalCopy sendBufferBytes])
                             {
                               goto LABEL_73;
                             }
@@ -913,7 +913,7 @@ LABEL_35:
                             if (v34)
                             {
                               sendBandwidth = self->_sendBandwidth;
-                              if (sendBandwidth != [v4 sendBandwidth])
+                              if (sendBandwidth != [equalCopy sendBandwidth])
                               {
                                 goto LABEL_73;
                               }
@@ -928,7 +928,7 @@ LABEL_35:
                               if (v36)
                               {
                                 synRetransmits = self->_synRetransmits;
-                                if (synRetransmits != [v4 synRetransmits])
+                                if (synRetransmits != [equalCopy synRetransmits])
                                 {
                                   goto LABEL_73;
                                 }
@@ -939,19 +939,19 @@ LABEL_35:
 
                               if (((v8 ^ *&has) & 0x8000) == 0)
                               {
-                                if ((*&has & 0x8000) == 0 || (tfoSynDataAcked = self->_tfoSynDataAcked, tfoSynDataAcked == [v4 tfoSynDataAcked]))
+                                if ((*&has & 0x8000) == 0 || (tfoSynDataAcked = self->_tfoSynDataAcked, tfoSynDataAcked == [equalCopy tfoSynDataAcked]))
                                 {
-                                  if ((*(&self->_has + 2) & 1) == (v4[65] & 1))
+                                  if ((*(&self->_has + 2) & 1) == (equalCopy[65] & 1))
                                   {
-                                    if ((*(&self->_has + 2) & 1) == 0 || (subflowSwitchCount = self->_subflowSwitchCount, subflowSwitchCount == [v4 subflowSwitchCount]))
+                                    if ((*(&self->_has + 2) & 1) == 0 || (subflowSwitchCount = self->_subflowSwitchCount, subflowSwitchCount == [equalCopy subflowSwitchCount]))
                                     {
-                                      v40 = [(NETSchemaNETDebugNetworkInterface *)self networkInterface];
-                                      v41 = [v4 networkInterface];
-                                      v42 = v41;
-                                      if ((v40 != 0) != (v41 == 0))
+                                      networkInterface = [(NETSchemaNETDebugNetworkInterface *)self networkInterface];
+                                      networkInterface2 = [equalCopy networkInterface];
+                                      v42 = networkInterface2;
+                                      if ((networkInterface != 0) != (networkInterface2 == 0))
                                       {
-                                        v43 = [(NETSchemaNETDebugNetworkInterface *)self networkInterface];
-                                        if (!v43)
+                                        networkInterface3 = [(NETSchemaNETDebugNetworkInterface *)self networkInterface];
+                                        if (!networkInterface3)
                                         {
 
 LABEL_76:
@@ -959,10 +959,10 @@ LABEL_76:
                                           goto LABEL_74;
                                         }
 
-                                        v44 = v43;
-                                        v45 = [(NETSchemaNETDebugNetworkInterface *)self networkInterface];
-                                        v46 = [v4 networkInterface];
-                                        v47 = [v45 isEqual:v46];
+                                        v44 = networkInterface3;
+                                        networkInterface4 = [(NETSchemaNETDebugNetworkInterface *)self networkInterface];
+                                        networkInterface5 = [equalCopy networkInterface];
+                                        v47 = [networkInterface4 isEqual:networkInterface5];
 
                                         if (v47)
                                         {
@@ -999,9 +999,9 @@ LABEL_74:
   return v48;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   p_has = &self->_has;
   has = self->_has;
   if (has)
@@ -1221,21 +1221,21 @@ LABEL_17:
     PBDataWriterWriteUint32Field();
   }
 
-  v6 = [(NETSchemaNETDebugNetworkInterface *)self networkInterface];
+  networkInterface = [(NETSchemaNETDebugNetworkInterface *)self networkInterface];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (networkInterface)
   {
-    v8 = [(NETSchemaNETDebugNetworkInterface *)self networkInterface];
+    networkInterface2 = [(NETSchemaNETDebugNetworkInterface *)self networkInterface];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasTfoSynDataAcked:(BOOL)a3
+- (void)setHasTfoSynDataAcked:(BOOL)acked
 {
-  if (a3)
+  if (acked)
   {
     v3 = 0x8000;
   }
@@ -1248,9 +1248,9 @@ LABEL_17:
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasSynRetransmits:(BOOL)a3
+- (void)setHasSynRetransmits:(BOOL)retransmits
 {
-  if (a3)
+  if (retransmits)
   {
     v3 = 0x4000;
   }
@@ -1263,9 +1263,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasSendBandwidth:(BOOL)a3
+- (void)setHasSendBandwidth:(BOOL)bandwidth
 {
-  if (a3)
+  if (bandwidth)
   {
     v3 = 0x2000;
   }
@@ -1278,9 +1278,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasSendBufferBytes:(BOOL)a3
+- (void)setHasSendBufferBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 4096;
   }
@@ -1293,9 +1293,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasOutOfOrderBytesReceived:(BOOL)a3
+- (void)setHasOutOfOrderBytesReceived:(BOOL)received
 {
-  if (a3)
+  if (received)
   {
     v3 = 2048;
   }
@@ -1308,9 +1308,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasDuplicateBytesReceived:(BOOL)a3
+- (void)setHasDuplicateBytesReceived:(BOOL)received
 {
-  if (a3)
+  if (received)
   {
     v3 = 1024;
   }
@@ -1323,9 +1323,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasBytesReceived:(BOOL)a3
+- (void)setHasBytesReceived:(BOOL)received
 {
-  if (a3)
+  if (received)
   {
     v3 = 512;
   }
@@ -1338,9 +1338,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasBytesUnacked:(BOOL)a3
+- (void)setHasBytesUnacked:(BOOL)unacked
 {
-  if (a3)
+  if (unacked)
   {
     v3 = 256;
   }
@@ -1353,9 +1353,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasBytesRetransmitted:(BOOL)a3
+- (void)setHasBytesRetransmitted:(BOOL)retransmitted
 {
-  if (a3)
+  if (retransmitted)
   {
     v3 = 128;
   }
@@ -1368,9 +1368,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasBytesSent:(BOOL)a3
+- (void)setHasBytesSent:(BOOL)sent
 {
-  if (a3)
+  if (sent)
   {
     v3 = 64;
   }
@@ -1383,9 +1383,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasPacketsReceived:(BOOL)a3
+- (void)setHasPacketsReceived:(BOOL)received
 {
-  if (a3)
+  if (received)
   {
     v3 = 32;
   }
@@ -1398,9 +1398,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasPacketsSent:(BOOL)a3
+- (void)setHasPacketsSent:(BOOL)sent
 {
-  if (a3)
+  if (sent)
   {
     v3 = 16;
   }
@@ -1413,9 +1413,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRttBest:(BOOL)a3
+- (void)setHasRttBest:(BOOL)best
 {
-  if (a3)
+  if (best)
   {
     v3 = 8;
   }
@@ -1428,9 +1428,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRttVariance:(BOOL)a3
+- (void)setHasRttVariance:(BOOL)variance
 {
-  if (a3)
+  if (variance)
   {
     v3 = 4;
   }
@@ -1443,9 +1443,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRttSmoothed:(BOOL)a3
+- (void)setHasRttSmoothed:(BOOL)smoothed
 {
-  if (a3)
+  if (smoothed)
   {
     v3 = 2;
   }
@@ -1458,17 +1458,17 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = NETSchemaNETDebugNetworkInterface;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NETSchemaNETDebugNetworkInterface *)self networkInterface:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(NETSchemaNETDebugNetworkInterface *)self deleteNetworkInterface];
   }

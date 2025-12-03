@@ -1,20 +1,20 @@
 @interface SearchHintsCollectionViewDataSource
 - (_TtC8AppStore35SearchHintsCollectionViewDataSource)init;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 @end
 
 @implementation SearchHintsCollectionViewDataSource
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = self;
+  selfCopy = self;
   v5 = dispatch thunk of SearchHintsPresenter.resultCount.getter();
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
@@ -22,12 +22,12 @@
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   type metadata accessor for SearchHintCollectionViewCell();
-  v9 = a3;
+  viewCopy = view;
   static UICollectionReusableView.defaultReuseIdentifier.getter();
   v10 = String._bridgeToObjectiveC()();
 
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:isa];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:isa];
 
   (*(v6 + 8))(v8, v5);
 

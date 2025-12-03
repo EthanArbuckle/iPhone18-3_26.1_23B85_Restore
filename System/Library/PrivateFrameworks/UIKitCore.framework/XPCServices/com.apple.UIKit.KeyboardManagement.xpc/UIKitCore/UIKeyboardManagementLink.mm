@@ -1,14 +1,14 @@
 @interface UIKeyboardManagementLink
 - (NSString)description;
 - (_UIKeyboardArbiter)owner;
-- (void)connectWithQueue:(id)a3;
-- (void)createSceneWithCompletion:(id)a3;
-- (void)scene:(id)a3 didReceiveActions:(id)a4;
-- (void)scene:(id)a3 didUpdateWithDiff:(id)a4 transitionContext:(id)a5 completion:(id)a6;
+- (void)connectWithQueue:(id)queue;
+- (void)createSceneWithCompletion:(id)completion;
+- (void)scene:(id)scene didReceiveActions:(id)actions;
+- (void)scene:(id)scene didUpdateWithDiff:(id)diff transitionContext:(id)context completion:(id)completion;
 - (void)updateSceneSettings;
-- (void)workspace:(id)a3 didCreateScene:(id)a4 withTransitionContext:(id)a5 completion:(id)a6;
-- (void)workspace:(id)a3 didReceiveActions:(id)a4;
-- (void)workspace:(id)a3 willDestroyScene:(id)a4 withTransitionContext:(id)a5 completion:(id)a6;
+- (void)workspace:(id)workspace didCreateScene:(id)scene withTransitionContext:(id)context completion:(id)completion;
+- (void)workspace:(id)workspace didReceiveActions:(id)actions;
+- (void)workspace:(id)workspace willDestroyScene:(id)scene withTransitionContext:(id)context completion:(id)completion;
 @end
 
 @implementation UIKeyboardManagementLink
@@ -23,23 +23,23 @@
   return v4;
 }
 
-- (void)connectWithQueue:(id)a3
+- (void)connectWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v7 = [FBSWorkspaceInitializationOptions optionsWithDelegate:self];
-  [v7 setCallOutQueue:v4];
+  [v7 setCallOutQueue:queueCopy];
 
   v5 = FBSWorkspaceInitialize();
   workspace = self->_workspace;
   self->_workspace = v5;
 }
 
-- (void)createSceneWithCompletion:(id)a3
+- (void)createSceneWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(FBSMutableSceneClientSettings);
-  v6 = [(UIKeyboardManagementLink *)self owner];
-  [v6 updateSceneClientSettings:v5];
+  owner = [(UIKeyboardManagementLink *)self owner];
+  [owner updateSceneClientSettings:v5];
 
   v7 = objc_alloc_init(FBSWorkspaceSceneRequestOptions);
   v22 = 0;
@@ -72,8 +72,8 @@
     v15[1] = 3221225472;
     v15[2] = sub_1000010D8;
     v15[3] = &unk_1000041D0;
-    v16 = v4;
-    v12 = v4;
+    v16 = completionCopy;
+    v12 = completionCopy;
     [(FBSWorkspace *)workspace requestSceneFromEndpoint:v10 withOptions:v7 completion:v15];
   }
 
@@ -98,17 +98,17 @@
   [(FBSScene *)scene updateClientSettingsWithBlock:v3];
 }
 
-- (void)workspace:(id)a3 didCreateScene:(id)a4 withTransitionContext:(id)a5 completion:(id)a6
+- (void)workspace:(id)workspace didCreateScene:(id)scene withTransitionContext:(id)context completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  sceneCopy = scene;
+  completionCopy = completion;
   v12 = sub_100001384();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v17 = "[UIKeyboardManagementLink workspace:didCreateScene:withTransitionContext:completion:]";
     v18 = 2112;
-    v19 = v10;
+    v19 = sceneCopy;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
   }
 
@@ -118,90 +118,90 @@
     [v15 handleFailureInMethod:a2 object:self file:@"_UIKeyboardManagement.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"_scene == nil"}];
   }
 
-  objc_storeStrong(&self->_scene, a4);
+  objc_storeStrong(&self->_scene, scene);
   [(FBSScene *)self->_scene setDelegate:self];
-  if (v11)
+  if (completionCopy)
   {
     v13 = objc_alloc_init(FBSWorkspaceCreateSceneResponse);
-    v11[2](v11, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
-  v14 = [(UIKeyboardManagementLink *)self owner];
-  [v14 activateClients];
+  owner = [(UIKeyboardManagementLink *)self owner];
+  [owner activateClients];
 }
 
-- (void)workspace:(id)a3 willDestroyScene:(id)a4 withTransitionContext:(id)a5 completion:(id)a6
+- (void)workspace:(id)workspace willDestroyScene:(id)scene withTransitionContext:(id)context completion:(id)completion
 {
-  v8 = a4;
-  v9 = a6;
+  sceneCopy = scene;
+  completionCopy = completion;
   v10 = sub_100001384();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v14 = 136315394;
     v15 = "[UIKeyboardManagementLink workspace:willDestroyScene:withTransitionContext:completion:]";
     v16 = 2112;
-    v17 = v8;
+    v17 = sceneCopy;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s %@", &v14, 0x16u);
   }
 
   scene = self->_scene;
   self->_scene = 0;
 
-  v12 = [(UIKeyboardManagementLink *)self owner];
-  [v12 attemptConnection];
+  owner = [(UIKeyboardManagementLink *)self owner];
+  [owner attemptConnection];
 
-  if (v9)
+  if (completionCopy)
   {
     v13 = objc_alloc_init(FBSWorkspaceDestroySceneResponse);
-    v9[2](v9, v13);
+    completionCopy[2](completionCopy, v13);
   }
 }
 
-- (void)workspace:(id)a3 didReceiveActions:(id)a4
+- (void)workspace:(id)workspace didReceiveActions:(id)actions
 {
-  v4 = a4;
+  actionsCopy = actions;
   v5 = sub_100001384();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 136315394;
     v7 = "[UIKeyboardManagementLink workspace:didReceiveActions:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = actionsCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s %@", &v6, 0x16u);
   }
 }
 
-- (void)scene:(id)a3 didUpdateWithDiff:(id)a4 transitionContext:(id)a5 completion:(id)a6
+- (void)scene:(id)scene didUpdateWithDiff:(id)diff transitionContext:(id)context completion:(id)completion
 {
-  v7 = a4;
-  v8 = a6;
+  diffCopy = diff;
+  completionCopy = completion;
   v9 = sub_100001384();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v11 = 136315394;
     v12 = "[UIKeyboardManagementLink scene:didUpdateWithDiff:transitionContext:completion:]";
     v13 = 2112;
-    v14 = v7;
+    v14 = diffCopy;
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s %@", &v11, 0x16u);
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v10 = objc_alloc_init(FBSWorkspaceSceneUpdateResponse);
-    v8[2](v8, v10);
+    completionCopy[2](completionCopy, v10);
   }
 }
 
-- (void)scene:(id)a3 didReceiveActions:(id)a4
+- (void)scene:(id)scene didReceiveActions:(id)actions
 {
-  v4 = a4;
+  actionsCopy = actions;
   v5 = sub_100001384();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 136315394;
     v7 = "[UIKeyboardManagementLink scene:didReceiveActions:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = actionsCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s %@", &v6, 0x16u);
   }
 }

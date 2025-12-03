@@ -3,8 +3,8 @@
 - (BOOL)copyAndPrepareLog;
 - (BOOL)flushMicrostackshots;
 - (BOOL)generateMSS;
-- (BOOL)packageDirectory:(id)a3 to:(id)a4;
-- (PLSubmissionFileMSS)initWithConfig:(id)a3;
+- (BOOL)packageDirectory:(id)directory to:(id)to;
+- (PLSubmissionFileMSS)initWithConfig:(id)config;
 - (id)getFileList;
 - (id)mssTextFilePath;
 - (void)collectMSS;
@@ -15,37 +15,37 @@
 
 @implementation PLSubmissionFileMSS
 
-- (PLSubmissionFileMSS)initWithConfig:(id)a3
+- (PLSubmissionFileMSS)initWithConfig:(id)config
 {
-  v4 = a3;
-  if ([v4 submitMSS] && ((v8.receiver = self, v8.super_class = PLSubmissionFileMSS, v5 = -[PLSubmissionFile initWithConfig:](&v8, sel_initWithConfig_, v4), (self = v5) == 0) || -[PLSubmissionFileMSS copyAndPrepareLog](v5, "copyAndPrepareLog")))
+  configCopy = config;
+  if ([configCopy submitMSS] && ((v8.receiver = self, v8.super_class = PLSubmissionFileMSS, v5 = -[PLSubmissionFile initWithConfig:](&v8, sel_initWithConfig_, configCopy), (self = v5) == 0) || -[PLSubmissionFileMSS copyAndPrepareLog](v5, "copyAndPrepareLog")))
   {
     self = self;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)mssTextFilePath
 {
-  v2 = [(PLSubmissionFile *)self filePath];
-  v3 = [v2 stringByReplacingOccurrencesOfString:@".mss.anon" withString:@".msstext.anon"];
+  filePath = [(PLSubmissionFile *)self filePath];
+  v3 = [filePath stringByReplacingOccurrencesOfString:@".mss.anon" withString:@".msstext.anon"];
 
   return v3;
 }
 
 - (BOOL)copyAndPrepareLog
 {
-  v3 = [(PLSubmissionFileMSS *)self flushMicrostackshots];
+  flushMicrostackshots = [(PLSubmissionFileMSS *)self flushMicrostackshots];
   v4 = PLLogSubmission();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
-  if (v3)
+  if (flushMicrostackshots)
   {
     if (v5)
     {
@@ -58,18 +58,18 @@
     [PLSubmissionFileMSS copyAndPrepareLog];
   }
 
-  v6 = [(PLSubmissionFile *)self directory];
+  directory = [(PLSubmissionFile *)self directory];
 
-  if (v6)
+  if (directory)
   {
-    v7 = [(PLSubmissionFile *)self directory];
-    [PLUtilities createAndChownDirectoryIfDirectoryDoesNotExist:v7];
+    directory2 = [(PLSubmissionFile *)self directory];
+    [PLUtilities createAndChownDirectoryIfDirectoryDoesNotExist:directory2];
   }
 
-  v8 = [(PLSubmissionFileMSS *)self collectMSS];
+  collectMSS = [(PLSubmissionFileMSS *)self collectMSS];
   v9 = PLLogSubmission();
   v10 = v9;
-  if (!v8)
+  if (!collectMSS)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -87,15 +87,15 @@
 
   if (_os_feature_enabled_impl())
   {
-    v11 = [(PLSubmissionFile *)self taskingConfig];
-    v12 = [v11 submitReasonType];
+    taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+    submitReasonType = [taskingConfig submitReasonType];
 
-    if (v12 != 2)
+    if (submitReasonType != 2)
     {
-      v13 = [(PLSubmissionFileMSS *)self generateMSS];
+      generateMSS = [(PLSubmissionFileMSS *)self generateMSS];
       v14 = PLLogSubmission();
       v10 = v14;
-      if (v13)
+      if (generateMSS)
       {
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
@@ -113,28 +113,28 @@ LABEL_18:
     }
   }
 
-  return v8;
+  return collectMSS;
 }
 
 - (BOOL)collectMSS
 {
-  v3 = [(PLSubmissionFile *)self filePath];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@".mss.anon" withString:&stru_1F539D228];
+  filePath = [(PLSubmissionFile *)self filePath];
+  v4 = [filePath stringByReplacingOccurrencesOfString:@".mss.anon" withString:&stru_1F539D228];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4];
 
   if (!v6)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v40 = 0;
-    v10 = [v9 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v40];
+    v10 = [defaultManager2 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v40];
     v7 = v40;
 
     if (v10)
     {
-      v11 = [(PLSubmissionFileMSS *)self getFileList];
-      v12 = [v11 mutableCopy];
+      getFileList = [(PLSubmissionFileMSS *)self getFileList];
+      v12 = [getFileList mutableCopy];
 
       if (v12 && [v12 count])
       {
@@ -162,35 +162,35 @@ LABEL_18:
           v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/microstackshots", v13];
           v17 = [v15 initFileURLWithPath:v16];
 
-          v18 = [v17 path];
-          v19 = open([v18 UTF8String], 3585, 432);
+          path = [v17 path];
+          v19 = open([path UTF8String], 3585, 432);
 
           if (v19 != -1)
           {
-            v20 = [(PLSubmissionFile *)self taskingConfig];
-            v21 = [v20 startDate];
-            v22 = [v21 convertFromMonotonicToSystem];
+            taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+            startDate = [taskingConfig startDate];
+            convertFromMonotonicToSystem = [startDate convertFromMonotonicToSystem];
 
             empty = xpc_dictionary_create_empty();
-            [v22 timeIntervalSince1970];
+            [convertFromMonotonicToSystem timeIntervalSince1970];
             xpc_dictionary_set_uint64(empty, "time", v24);
             if (!systemstats_copy_microstackshots_to_file())
             {
-              v25 = [v17 lastPathComponent];
-              [v12 addObject:v25];
+              lastPathComponent = [v17 lastPathComponent];
+              [v12 addObject:lastPathComponent];
             }
 
             close(v19);
           }
 
-          v26 = [MEMORY[0x1E695DF90] dictionary];
-          [v26 setObject:v12 forKeyedSubscript:@"LogFiles"];
-          [v26 setObject:MEMORY[0x1E695E0F0] forKeyedSubscript:@"DscsymFiles"];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
+          [dictionary setObject:v12 forKeyedSubscript:@"LogFiles"];
+          [dictionary setObject:MEMORY[0x1E695E0F0] forKeyedSubscript:@"DscsymFiles"];
           v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", v13, @"tag.json"];
-          if ([(PLSubmissionFile *)self createTagFileWithPath:v27 withInfo:v26])
+          if ([(PLSubmissionFile *)self createTagFileWithPath:v27 withInfo:dictionary])
           {
-            v28 = [(PLSubmissionFile *)self filePath];
-            v8 = [(PLSubmissionFileMSS *)self packageDirectory:v13 to:v28];
+            filePath2 = [(PLSubmissionFile *)self filePath];
+            v8 = [(PLSubmissionFileMSS *)self packageDirectory:v13 to:filePath2];
             if (v8)
             {
               v29 = PLLogSubmission();
@@ -213,8 +213,8 @@ LABEL_18:
 
           else
           {
-            v28 = PLLogSubmission();
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+            filePath2 = PLLogSubmission();
+            if (os_log_type_enabled(filePath2, OS_LOG_TYPE_DEBUG))
             {
               [PLSubmissionFileMSS collectMSS];
             }
@@ -291,11 +291,11 @@ void __33__PLSubmissionFileMSS_collectMSS__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)generateMSS
 {
-  v3 = [(PLSubmissionFile *)self filePath];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@".mss.anon" withString:@"-text"];
+  filePath = [(PLSubmissionFile *)self filePath];
+  v4 = [filePath stringByReplacingOccurrencesOfString:@".mss.anon" withString:@"-text"];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4];
 
   if (v6)
   {
@@ -310,21 +310,21 @@ void __33__PLSubmissionFileMSS_collectMSS__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v39 = 0;
-    v10 = [v9 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v39];
+    v10 = [defaultManager2 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v39];
     v7 = v39;
 
     if (v10)
     {
       v11 = [v4 stringByAppendingPathComponent:@"text-microstackshots.txt"];
-      v12 = [(PLSubmissionFile *)self taskingConfig];
-      v13 = [v12 startDate];
-      v14 = [v13 convertFromMonotonicToSystem];
+      taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+      startDate = [taskingConfig startDate];
+      convertFromMonotonicToSystem = [startDate convertFromMonotonicToSystem];
 
-      v15 = [(PLSubmissionFile *)self taskingConfig];
-      v16 = [v15 endDate];
-      v17 = [v16 convertFromMonotonicToSystem];
+      taskingConfig2 = [(PLSubmissionFile *)self taskingConfig];
+      endDate = [taskingConfig2 endDate];
+      convertFromMonotonicToSystem2 = [endDate convertFromMonotonicToSystem];
 
       v18 = PLLogSubmission();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -333,29 +333,29 @@ void __33__PLSubmissionFileMSS_collectMSS__block_invoke(uint64_t a1, void *a2)
       }
 
       v19 = objc_alloc_init(SignpostReaderHelper);
-      v20 = [(SignpostReaderHelper *)v19 generateTaskingMSSWithStartDate:v14 endDate:v17 atPath:v11];
+      v20 = [(SignpostReaderHelper *)v19 generateTaskingMSSWithStartDate:convertFromMonotonicToSystem endDate:convertFromMonotonicToSystem2 atPath:v11];
       v21 = v20;
       if (v20)
       {
-        v31 = v17;
-        v32 = v14;
+        v31 = convertFromMonotonicToSystem2;
+        v32 = convertFromMonotonicToSystem;
         v34 = MEMORY[0x1E69E9820];
         v35 = 3221225472;
         v36 = __34__PLSubmissionFileMSS_generateMSS__block_invoke;
         v37 = &unk_1E8519A88;
         v38 = v20;
         AnalyticsSendEventLazy();
-        v22 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v23 = MEMORY[0x1E696AD98];
         +[PLUtilities getLastSystemTimeOffset];
         v24 = [v23 numberWithDouble:?];
-        [v22 setObject:v24 forKeyedSubscript:@"LastSystemOffset"];
+        [dictionary setObject:v24 forKeyedSubscript:@"LastSystemOffset"];
 
         v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", v4, @"tag.json"];
-        if ([(PLSubmissionFile *)self createTagFileWithPath:v25 withInfo:v22])
+        if ([(PLSubmissionFile *)self createTagFileWithPath:v25 withInfo:dictionary])
         {
-          v26 = [(PLSubmissionFileMSS *)self mssTextFilePath];
-          v8 = [(PLSubmissionFileMSS *)self packageDirectory:v4 to:v26];
+          mssTextFilePath = [(PLSubmissionFileMSS *)self mssTextFilePath];
+          v8 = [(PLSubmissionFileMSS *)self packageDirectory:v4 to:mssTextFilePath];
           v27 = PLLogSubmission();
           v28 = v27;
           if (v8)
@@ -375,8 +375,8 @@ void __33__PLSubmissionFileMSS_collectMSS__block_invoke(uint64_t a1, void *a2)
 
         else
         {
-          v26 = PLLogSubmission();
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
+          mssTextFilePath = PLLogSubmission();
+          if (os_log_type_enabled(mssTextFilePath, OS_LOG_TYPE_DEBUG))
           {
             [PLSubmissionFileMSS collectMSS];
           }
@@ -385,8 +385,8 @@ void __33__PLSubmissionFileMSS_collectMSS__block_invoke(uint64_t a1, void *a2)
         }
 
         v29 = v38;
-        v17 = v31;
-        v14 = v32;
+        convertFromMonotonicToSystem2 = v31;
+        convertFromMonotonicToSystem = v32;
       }
 
       else
@@ -475,21 +475,21 @@ id __34__PLSubmissionFileMSS_generateMSS__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (BOOL)packageDirectory:(id)a3 to:(id)a4
+- (BOOL)packageDirectory:(id)directory to:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  toCopy = to;
   v8 = PLLogSubmission();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v20 = 138412290;
-    v21 = v6;
+    v21 = directoryCopy;
     _os_log_impl(&dword_1D8611000, v8, OS_LOG_TYPE_INFO, "Packaging directory %@", &v20, 0xCu);
   }
 
   v9 = MEMORY[0x1E6999F68];
-  v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
+  v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:directoryCopy];
   v11 = [v9 archiveDirectoryAt:v10 deleteOriginal:1];
 
   if (!v11)
@@ -497,15 +497,15 @@ id __34__PLSubmissionFileMSS_generateMSS__block_invoke(uint64_t a1)
     goto LABEL_7;
   }
 
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
-  v13 = [v11 path];
-  v14 = [v12 moveItemAtPath:v13 toPath:v7 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v11 path];
+  v14 = [defaultManager moveItemAtPath:path toPath:toCopy error:0];
 
   if (!v14)
   {
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
-    v17 = [v11 path];
-    [v16 removeItemAtPath:v17 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    path2 = [v11 path];
+    [defaultManager2 removeItemAtPath:path2 error:0];
 
 LABEL_7:
     v15 = 0;
@@ -539,15 +539,15 @@ LABEL_8:
 - (id)getFileList
 {
   v61 = *MEMORY[0x1E69E9840];
-  v2 = [(PLSubmissionFile *)self taskingConfig];
-  v3 = [v2 startDate];
-  v40 = [v3 convertFromMonotonicToSystem];
+  taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+  startDate = [taskingConfig startDate];
+  convertFromMonotonicToSystem = [startDate convertFromMonotonicToSystem];
 
-  v4 = [v2 endDate];
-  v41 = [v4 convertFromMonotonicToSystem];
+  endDate = [taskingConfig endDate];
+  convertFromMonotonicToSystem2 = [endDate convertFromMonotonicToSystem];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 contentsOfDirectoryAtPath:@"/var/db/systemstats" error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager contentsOfDirectoryAtPath:@"/var/db/systemstats" error:0];
 
   if (![v6 count])
   {
@@ -572,7 +572,7 @@ LABEL_8:
 
   v9 = v8;
   v34 = v6;
-  v35 = v2;
+  v35 = taskingConfig;
   v37 = 0;
   v39 = 0;
   v10 = *v45;
@@ -592,8 +592,8 @@ LABEL_8:
 
       v13 = *(*(&v44 + 1) + 8 * v12);
       v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@/%@", @"/var/db/systemstats", v13];
-      v15 = [MEMORY[0x1E696AC08] defaultManager];
-      v16 = [v15 attributesOfItemAtPath:v14 error:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      v16 = [defaultManager2 attributesOfItemAtPath:v14 error:0];
 
       v17 = [v16 objectForKey:v11];
       v18 = [v13 componentsSeparatedByString:@"."];
@@ -609,10 +609,10 @@ LABEL_8:
           goto LABEL_16;
         }
 
-        if ([v40 compare:v17] != -1 || objc_msgSend(v41, "compare:", v17) == -1)
+        if ([convertFromMonotonicToSystem compare:v17] != -1 || objc_msgSend(convertFromMonotonicToSystem2, "compare:", v17) == -1)
         {
           v7 = v20;
-          if ([v41 compare:v17] == -1 && (!v39 || objc_msgSend(v39, "compare:", v17) == 1))
+          if ([convertFromMonotonicToSystem2 compare:v17] == -1 && (!v39 || objc_msgSend(v39, "compare:", v17) == 1))
           {
             v23 = v17;
 
@@ -626,7 +626,7 @@ LABEL_8:
         else
         {
           [v36 addObject:v13];
-          v38 &= [v41 compare:v17] != 0;
+          v38 &= [convertFromMonotonicToSystem2 compare:v17] != 0;
 LABEL_16:
           v7 = v20;
         }
@@ -652,23 +652,23 @@ LABEL_16:
   }
 
   v6 = v34;
-  v2 = v35;
+  taskingConfig = v35;
   v26 = v39;
 LABEL_25:
   v28 = PLLogSubmission();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
-    v31 = [v2 startDate];
-    v32 = [v2 endDate];
+    startDate2 = [taskingConfig startDate];
+    endDate2 = [taskingConfig endDate];
     v33 = [v36 count];
     *buf = 138413570;
-    v49 = v40;
+    v49 = convertFromMonotonicToSystem;
     v50 = 2112;
-    v51 = v31;
+    v51 = startDate2;
     v52 = 2112;
-    v53 = v41;
+    v53 = convertFromMonotonicToSystem2;
     v54 = 2112;
-    v55 = v32;
+    v55 = endDate2;
     v56 = 1024;
     v57 = v33;
     v58 = 2112;
@@ -688,26 +688,26 @@ LABEL_28:
 {
   if ([(PLSubmissionFile *)self iCloudUploadEnabled])
   {
-    v3 = [(PLSubmissionFile *)self filePath];
-    [(PLSubmissionFile *)self submitLogToiCloud:v3 WithCompress:0];
+    filePath = [(PLSubmissionFile *)self filePath];
+    [(PLSubmissionFile *)self submitLogToiCloud:filePath WithCompress:0];
 
     if (_os_feature_enabled_impl())
     {
-      v4 = [(PLSubmissionFile *)self taskingConfig];
-      v5 = [v4 submitReasonType];
+      taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+      submitReasonType = [taskingConfig submitReasonType];
 
-      if (v5 != 2)
+      if (submitReasonType != 2)
       {
-        v6 = [(PLSubmissionFileMSS *)self mssTextFilePath];
-        [(PLSubmissionFile *)self submitLogToiCloud:v6 WithCompress:0];
+        mssTextFilePath = [(PLSubmissionFileMSS *)self mssTextFilePath];
+        [(PLSubmissionFile *)self submitLogToiCloud:mssTextFilePath WithCompress:0];
       }
     }
   }
 
-  v7 = [(PLSubmissionFile *)self taskingConfig];
-  v8 = [v7 isDRTasking];
+  taskingConfig2 = [(PLSubmissionFile *)self taskingConfig];
+  isDRTasking = [taskingConfig2 isDRTasking];
 
-  if ((v8 & 1) == 0)
+  if ((isDRTasking & 1) == 0)
   {
     v9 = [(PLSubmissionFile *)self submitLogToDAWithBugType:@"220"];
 

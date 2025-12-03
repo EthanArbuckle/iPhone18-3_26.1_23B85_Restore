@@ -1,16 +1,16 @@
 @interface ARQLReplayObserver
 - (_TtC11AssetViewer18ARQLReplayObserver)init;
-- (void)replayConfigurationDidFinishReplaying:(id)a3;
+- (void)replayConfigurationDidFinishReplaying:(id)replaying;
 @end
 
 @implementation ARQLReplayObserver
 
-- (void)replayConfigurationDidFinishReplaying:(id)a3
+- (void)replayConfigurationDidFinishReplaying:(id)replaying
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC11AssetViewer18ARQLReplayObserver_callback);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_24124AD38(v3);
     v3(v5);
 

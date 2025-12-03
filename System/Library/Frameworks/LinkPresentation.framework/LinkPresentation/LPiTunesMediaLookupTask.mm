@@ -1,11 +1,11 @@
 @interface LPiTunesMediaLookupTask
 - (LPiTunesMediaLookupTask)init;
-- (LPiTunesMediaLookupTask)initWithBundleIdentifier:(id)a3;
-- (LPiTunesMediaLookupTask)initWithIdentifier:(id)a3 storefrontCountryCode:(id)a4;
-- (id)_compileQueryParametersWithBundleIds:(id)a3 itemIds:(id)a4;
+- (LPiTunesMediaLookupTask)initWithBundleIdentifier:(id)identifier;
+- (LPiTunesMediaLookupTask)initWithIdentifier:(id)identifier storefrontCountryCode:(id)code;
+- (id)_compileQueryParametersWithBundleIds:(id)ids itemIds:(id)itemIds;
 - (id)callerID;
 - (id)sharedBag;
-- (void)start:(id)a3;
+- (void)start:(id)start;
 @end
 
 @implementation LPiTunesMediaLookupTask
@@ -62,53 +62,53 @@ void __35__LPiTunesMediaLookupTask_callerID__block_invoke()
 
 - (LPiTunesMediaLookupTask)init
 {
-  v3 = [MEMORY[0x1E698CAC8] currentProcess];
-  [v3 setAccountMediaType:*MEMORY[0x1E698C4C0]];
-  v4 = [(LPiTunesMediaLookupTask *)self sharedBag];
-  v5 = [(LPiTunesMediaLookupTask *)self callerID];
+  currentProcess = [MEMORY[0x1E698CAC8] currentProcess];
+  [currentProcess setAccountMediaType:*MEMORY[0x1E698C4C0]];
+  sharedBag = [(LPiTunesMediaLookupTask *)self sharedBag];
+  callerID = [(LPiTunesMediaLookupTask *)self callerID];
   v6 = *MEMORY[0x1E698C618];
   v10.receiver = self;
   v10.super_class = LPiTunesMediaLookupTask;
-  v7 = [(AMSLookup *)&v10 initWithBag:v4 caller:v5 keyProfile:v6];
+  v7 = [(AMSLookup *)&v10 initWithBag:sharedBag caller:callerID keyProfile:v6];
 
   if (v7)
   {
     [(AMSLookup *)v7 setPlatform:@"web"];
-    [(AMSLookup *)v7 setClientInfo:v3];
+    [(AMSLookup *)v7 setClientInfo:currentProcess];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (LPiTunesMediaLookupTask)initWithIdentifier:(id)a3 storefrontCountryCode:(id)a4
+- (LPiTunesMediaLookupTask)initWithIdentifier:(id)identifier storefrontCountryCode:(id)code
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  codeCopy = code;
   v8 = [(LPiTunesMediaLookupTask *)self init];
   if (v8)
   {
-    v13[0] = v6;
+    v13[0] = identifierCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     identifiers = v8->_identifiers;
     v8->_identifiers = v9;
 
-    objc_storeStrong(&v8->_storefrontCountryCode, a4);
+    objc_storeStrong(&v8->_storefrontCountryCode, code);
     v11 = v8;
   }
 
   return v8;
 }
 
-- (LPiTunesMediaLookupTask)initWithBundleIdentifier:(id)a3
+- (LPiTunesMediaLookupTask)initWithBundleIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(LPiTunesMediaLookupTask *)self init];
   if (v5)
   {
-    v10[0] = v4;
+    v10[0] = identifierCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     bundleIdentifiers = v5->_bundleIdentifiers;
     v5->_bundleIdentifiers = v6;
@@ -119,11 +119,11 @@ void __35__LPiTunesMediaLookupTask_callerID__block_invoke()
   return v5;
 }
 
-- (id)_compileQueryParametersWithBundleIds:(id)a3 itemIds:(id)a4
+- (id)_compileQueryParametersWithBundleIds:(id)ids itemIds:(id)itemIds
 {
   v9.receiver = self;
   v9.super_class = LPiTunesMediaLookupTask;
-  v5 = [(AMSLookup *)&v9 _compileQueryParametersWithBundleIds:a3 itemIds:a4];
+  v5 = [(AMSLookup *)&v9 _compileQueryParametersWithBundleIds:ids itemIds:itemIds];
   v6 = [v5 mutableCopy];
 
   [v6 setObject:@"omni" forKey:@"availability"];
@@ -136,15 +136,15 @@ void __35__LPiTunesMediaLookupTask_callerID__block_invoke()
   return v6;
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = [(AMSLookup *)self performLookupWithBundleIdentifiers:self->_bundleIdentifiers itemIdentifiers:self->_identifiers];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__LPiTunesMediaLookupTask_start___block_invoke;
   v7[3] = &unk_1E7A36190;
-  v6 = v4;
+  v6 = startCopy;
   v8 = v6;
   [v5 addFinishBlock:v7];
 }

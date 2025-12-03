@@ -1,8 +1,8 @@
 @interface SportsFavoritesTemplateController
-- (void)vuiCollectionView:(id)a3 didSelectItemAt:(id)a4;
-- (void)vuiCollectionView:(id)a3 willDisplay:(id)a4 for:(id)a5;
-- (void)vui_viewDidAppear:(BOOL)a3;
-- (void)vui_viewDidDisappear:(BOOL)a3;
+- (void)vuiCollectionView:(id)view didSelectItemAt:(id)at;
+- (void)vuiCollectionView:(id)view willDisplay:(id)display for:(id)for;
+- (void)vui_viewDidAppear:(BOOL)appear;
+- (void)vui_viewDidDisappear:(BOOL)disappear;
 - (void)vui_viewDidLoad;
 @end
 
@@ -10,25 +10,25 @@
 
 - (void)vui_viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3DB6E0C();
 }
 
-- (void)vui_viewDidAppear:(BOOL)a3
+- (void)vui_viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3DB6F8C(v4);
 }
 
-- (void)vui_viewDidDisappear:(BOOL)a3
+- (void)vui_viewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3DB738C(v4);
 }
 
-- (void)vuiCollectionView:(id)a3 didSelectItemAt:(id)a4
+- (void)vuiCollectionView:(id)view didSelectItemAt:(id)at
 {
   v6 = sub_1E41FE874();
   OUTLINED_FUNCTION_0_10();
@@ -37,14 +37,14 @@
   OUTLINED_FUNCTION_5();
   v12 = v11 - v10;
   sub_1E41FE804();
-  v13 = a3;
-  v14 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1E3DB7960();
 
   (*(v8 + 8))(v12, v6);
 }
 
-- (void)vuiCollectionView:(id)a3 willDisplay:(id)a4 for:(id)a5
+- (void)vuiCollectionView:(id)view willDisplay:(id)display for:(id)for
 {
   v8 = sub_1E41FE874();
   OUTLINED_FUNCTION_0_10();
@@ -53,10 +53,10 @@
   OUTLINED_FUNCTION_5();
   v14 = (v13 - v12);
   sub_1E41FE804();
-  v15 = a3;
-  v16 = a4;
-  v17 = self;
-  sub_1E3DB7D24(v15, v16, v14);
+  viewCopy = view;
+  displayCopy = display;
+  selfCopy = self;
+  sub_1E3DB7D24(viewCopy, displayCopy, v14);
 
   (*(v10 + 8))(v14, v8);
 }

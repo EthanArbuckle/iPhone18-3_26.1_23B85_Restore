@@ -1,7 +1,7 @@
 @interface TransactionPickerServiceViewController
-- (_TtC16FinanceUIService38TransactionPickerServiceViewController)initWithCoder:(id)a3;
-- (_TtC16FinanceUIService38TransactionPickerServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC16FinanceUIService38TransactionPickerServiceViewController)initWithCoder:(id)coder;
+- (_TtC16FinanceUIService38TransactionPickerServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -17,11 +17,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_100001BB0();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -31,11 +31,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_100001D4C(a3);
+  selfCopy = self;
+  sub_100001D4C(disappear);
 }
 
-- (_TtC16FinanceUIService38TransactionPickerServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16FinanceUIService38TransactionPickerServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -45,10 +45,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -56,13 +56,13 @@
     v6 = 0;
   }
 
-  v8 = a4;
-  v9 = sub_100003594(v6, a3, a4);
+  bundleCopy = bundle;
+  v9 = sub_100003594(v6, name, bundle);
 
   return v9;
 }
 
-- (_TtC16FinanceUIService38TransactionPickerServiceViewController)initWithCoder:(id)a3
+- (_TtC16FinanceUIService38TransactionPickerServiceViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -72,7 +72,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_100003780(a3);
+  v4 = sub_100003780(coder);
 
   return v4;
 }

@@ -1,6 +1,6 @@
 @interface MTRThreadNetworkDiagnosticsClusterNeighborTableStruct
 - (MTRThreadNetworkDiagnosticsClusterNeighborTableStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -60,50 +60,50 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct);
-  v5 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self extAddress];
-  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setExtAddress:v5];
+  extAddress = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self extAddress];
+  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setExtAddress:extAddress];
 
   v6 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self age];
   [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setAge:v6];
 
-  v7 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self rloc16];
-  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setRloc16:v7];
+  rloc16 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self rloc16];
+  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setRloc16:rloc16];
 
-  v8 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self linkFrameCounter];
-  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setLinkFrameCounter:v8];
+  linkFrameCounter = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self linkFrameCounter];
+  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setLinkFrameCounter:linkFrameCounter];
 
-  v9 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self mleFrameCounter];
-  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setMleFrameCounter:v9];
+  mleFrameCounter = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self mleFrameCounter];
+  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setMleFrameCounter:mleFrameCounter];
 
   v10 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self lqi];
   [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setLqi:v10];
 
-  v11 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self averageRssi];
-  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setAverageRssi:v11];
+  averageRssi = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self averageRssi];
+  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setAverageRssi:averageRssi];
 
-  v12 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self lastRssi];
-  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setLastRssi:v12];
+  lastRssi = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self lastRssi];
+  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setLastRssi:lastRssi];
 
-  v13 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self frameErrorRate];
-  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setFrameErrorRate:v13];
+  frameErrorRate = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self frameErrorRate];
+  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setFrameErrorRate:frameErrorRate];
 
-  v14 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self messageErrorRate];
-  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setMessageErrorRate:v14];
+  messageErrorRate = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self messageErrorRate];
+  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setMessageErrorRate:messageErrorRate];
 
-  v15 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self rxOnWhenIdle];
-  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setRxOnWhenIdle:v15];
+  rxOnWhenIdle = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self rxOnWhenIdle];
+  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setRxOnWhenIdle:rxOnWhenIdle];
 
-  v16 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self fullThreadDevice];
-  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setFullThreadDevice:v16];
+  fullThreadDevice = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self fullThreadDevice];
+  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setFullThreadDevice:fullThreadDevice];
 
-  v17 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self fullNetworkData];
-  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setFullNetworkData:v17];
+  fullNetworkData = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self fullNetworkData];
+  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setFullNetworkData:fullNetworkData];
 
-  v18 = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self isChild];
-  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setIsChild:v18];
+  isChild = [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)self isChild];
+  [(MTRThreadNetworkDiagnosticsClusterNeighborTableStruct *)v4 setIsChild:isChild];
 
   return v4;
 }

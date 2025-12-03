@@ -1,11 +1,11 @@
 @interface MUIAppleIntelligenceOnboardingViewController
 + (UIImage)welcomeImage;
-+ (id)_imageWithName:(id)a3;
-+ (id)_symbolImageWithName:(id)a3;
++ (id)_imageWithName:(id)name;
++ (id)_symbolImageWithName:(id)name;
 + (int64_t)currentAppleIntelligenceOnboardingState;
 - (MUIAppleIntelligenceOnboardingViewController)init;
 - (void)addBulletListItems;
-- (void)continueOnboarding:(id)a3;
+- (void)continueOnboarding:(id)onboarding;
 @end
 
 @implementation MUIAppleIntelligenceOnboardingViewController
@@ -23,25 +23,25 @@
     [(MUIAppleIntelligenceOnboardingViewController *)v5 setModalPresentationStyle:2];
     [(MUIAppleIntelligenceOnboardingViewController *)v5 setModalInPresentation:1];
     [(MUIAppleIntelligenceOnboardingViewController *)v5 addBulletListItems];
-    v6 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     v7 = +[MUIAppleIntelligenceOnboardingViewController continueButtonTitle];
-    [v6 setTitle:v7 forState:0];
+    [boldButton setTitle:v7 forState:0];
 
-    [v6 addTarget:v5 action:sel_continueOnboarding_ forControlEvents:0x2000];
-    v8 = [(MUIAppleIntelligenceOnboardingViewController *)v5 buttonTray];
-    [v8 addButton:v6];
+    [boldButton addTarget:v5 action:sel_continueOnboarding_ forControlEvents:0x2000];
+    buttonTray = [(MUIAppleIntelligenceOnboardingViewController *)v5 buttonTray];
+    [buttonTray addButton:boldButton];
   }
 
   return v5;
 }
 
-- (void)continueOnboarding:(id)a3
+- (void)continueOnboarding:(id)onboarding
 {
-  v3 = [MEMORY[0x277CBEBD0] em_userDefaults];
-  [v3 setBool:1 forKey:*MEMORY[0x277D06C80]];
+  em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
+  [em_userDefaults setBool:1 forKey:*MEMORY[0x277D06C80]];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"AppleIntelligenceOnboardingViewControllerDidCompleteNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AppleIntelligenceOnboardingViewControllerDidCompleteNotification" object:0];
 }
 
 - (void)addBulletListItems
@@ -55,14 +55,14 @@
   v13 = _EFLocalizedString();
   v8 = _EFLocalizedString();
   v9 = [MUIAppleIntelligenceOnboardingViewController _imageWithName:@"arrowshape.turn.up.left"];
-  v10 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  [(MUIAppleIntelligenceOnboardingViewController *)self addBulletedListItemWithTitle:v14 description:v3 image:v4 tintColor:v10];
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  [(MUIAppleIntelligenceOnboardingViewController *)self addBulletedListItemWithTitle:v14 description:v3 image:v4 tintColor:tertiaryLabelColor];
 
-  v11 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  [(MUIAppleIntelligenceOnboardingViewController *)self addBulletedListItemWithTitle:v5 description:v6 image:v7 tintColor:v11];
+  tertiaryLabelColor2 = [MEMORY[0x277D75348] tertiaryLabelColor];
+  [(MUIAppleIntelligenceOnboardingViewController *)self addBulletedListItemWithTitle:v5 description:v6 image:v7 tintColor:tertiaryLabelColor2];
 
-  v12 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  [(MUIAppleIntelligenceOnboardingViewController *)self addBulletedListItemWithTitle:v13 description:v8 image:v9 tintColor:v12];
+  tertiaryLabelColor3 = [MEMORY[0x277D75348] tertiaryLabelColor];
+  [(MUIAppleIntelligenceOnboardingViewController *)self addBulletedListItemWithTitle:v13 description:v8 image:v9 tintColor:tertiaryLabelColor3];
 }
 
 + (int64_t)currentAppleIntelligenceOnboardingState
@@ -72,8 +72,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x277CBEBD0] em_userDefaults];
-  v4 = [v3 BOOLForKey:*MEMORY[0x277D06C80]];
+  em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
+  v4 = [em_userDefaults BOOLForKey:*MEMORY[0x277D06C80]];
 
   if (v4)
   {
@@ -112,10 +112,10 @@
     v5 = v6;
   }
 
-  v7 = [v5 CGImage];
-  if (v7)
+  cGImage = [v5 CGImage];
+  if (cGImage)
   {
-    v8 = [MEMORY[0x277D755B8] imageWithCGImage:v7];
+    v8 = [MEMORY[0x277D755B8] imageWithCGImage:cGImage];
   }
 
   else
@@ -126,25 +126,25 @@
   return v8;
 }
 
-+ (id)_symbolImageWithName:(id)a3
++ (id)_symbolImageWithName:(id)name
 {
-  v3 = [MEMORY[0x277D755B8] mui_imageWithPrivateSystemSymbolName:a3];
-  v4 = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
-  v5 = [v3 imageWithSymbolConfiguration:v4];
+  v3 = [MEMORY[0x277D755B8] mui_imageWithPrivateSystemSymbolName:name];
+  configurationPreferringMulticolor = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
+  v5 = [v3 imageWithSymbolConfiguration:configurationPreferringMulticolor];
 
   return v5;
 }
 
-+ (id)_imageWithName:(id)a3
++ (id)_imageWithName:(id)name
 {
   v3 = MEMORY[0x277D755B8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v4 bundleForClass:objc_opt_class()];
-  v7 = [v3 imageNamed:v5 inBundle:v6];
+  v7 = [v3 imageNamed:nameCopy inBundle:v6];
 
-  v8 = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
-  v9 = [v7 imageWithSymbolConfiguration:v8];
+  configurationPreferringMulticolor = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
+  v9 = [v7 imageWithSymbolConfiguration:configurationPreferringMulticolor];
 
   return v9;
 }

@@ -1,21 +1,21 @@
 @interface MFPhotoPickerControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation MFPhotoPickerControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFPhotoPickerController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"MFPhotoPickerController" hasInstanceMethod:@"photosFetchResult" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFPhotoPickerController" hasInstanceMethod:@"close:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UICollectionViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"navigationItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFPhotoPickerController" isKindOfClass:@"UICollectionViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFPhotoPickerController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"MFPhotoPickerController" hasInstanceMethod:@"photosFetchResult" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFPhotoPickerController" hasInstanceMethod:@"close:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UICollectionViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"navigationItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFPhotoPickerController" isKindOfClass:@"UICollectionViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -26,33 +26,33 @@
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
   v3 = *MEMORY[0x29EDC7F80];
-  v4 = [v2 navigationItem];
-  v5 = [v4 leftBarButtonItem];
-  [v5 setAccessibilityTraits:v3];
+  navigationItem = [v2 navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setAccessibilityTraits:v3];
 
   v6 = UIKitAccessibilityLocalizedString();
-  v7 = [v2 navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setAccessibilityLabel:v6];
+  navigationItem2 = [v2 navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setAccessibilityLabel:v6];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = MFPhotoPickerControllerAccessibility;
-  v8 = [(MFPhotoPickerControllerAccessibility *)&v15 collectionView:v6 cellForItemAtIndexPath:v7];
+  v8 = [(MFPhotoPickerControllerAccessibility *)&v15 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
   objc_opt_class();
   v9 = [(MFPhotoPickerControllerAccessibility *)self safeValueForKey:@"photosFetchResult"];
   v10 = __UIAccessibilityCastAsClass();
 
-  v11 = [v10 objectAtIndex:{objc_msgSend(v7, "item")}];
-  v12 = [v11 accessibilityLabel];
-  [v8 setAccessibilityLabel:v12];
+  v11 = [v10 objectAtIndex:{objc_msgSend(pathCopy, "item")}];
+  accessibilityLabel = [v11 accessibilityLabel];
+  [v8 setAccessibilityLabel:accessibilityLabel];
 
-  v13 = [v11 accessibilityCustomContent];
-  [v8 setAccessibilityCustomContent:v13];
+  accessibilityCustomContent = [v11 accessibilityCustomContent];
+  [v8 setAccessibilityCustomContent:accessibilityCustomContent];
 
   return v8;
 }
@@ -66,9 +66,9 @@
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
   v4 = *MEMORY[0x29EDC7ED8];
-  v5 = [v3 navigationItem];
-  v6 = [v5 titleView];
-  UIAccessibilityPostNotification(v4, v6);
+  navigationItem = [v3 navigationItem];
+  titleView = [navigationItem titleView];
+  UIAccessibilityPostNotification(v4, titleView);
 }
 
 @end

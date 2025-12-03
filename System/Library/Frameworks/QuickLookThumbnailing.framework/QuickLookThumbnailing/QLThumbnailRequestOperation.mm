@@ -1,35 +1,35 @@
 @interface QLThumbnailRequestOperation
-+ (id)operationWithThumbnailRequest:(id)a3;
++ (id)operationWithThumbnailRequest:(id)request;
 - (BOOL)_finishIfNeeded;
-- (QLThumbnailRequestOperation)initWithThumbnailRequest:(id)a3;
+- (QLThumbnailRequestOperation)initWithThumbnailRequest:(id)request;
 - (id)sharedSerialResponseQueue;
-- (void)__finishWithError:(id)a3;
+- (void)__finishWithError:(id)error;
 - (void)_finishIfRequestIsInvalid;
-- (void)_finishWithError:(id)a3;
+- (void)_finishWithError:(id)error;
 - (void)cancel;
 - (void)main;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
 @implementation QLThumbnailRequestOperation
 
-- (QLThumbnailRequestOperation)initWithThumbnailRequest:(id)a3
+- (QLThumbnailRequestOperation)initWithThumbnailRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = QLThumbnailRequestOperation;
   v5 = [(QLThumbnailRequestOperation *)&v12 init];
   if (v5)
   {
-    [v4 setRequestedTypes:-1];
-    v6 = [QLThumbnailGenerationRequest requestWithThumbnailRequest:v4];
+    [requestCopy setRequestedTypes:-1];
+    v6 = [QLThumbnailGenerationRequest requestWithThumbnailRequest:requestCopy];
     request = v5->_request;
     v5->_request = v6;
 
-    v8 = [(QLThumbnailRequestOperation *)v5 sharedSerialResponseQueue];
-    v9 = dispatch_queue_create_with_target_V2("com.apple.quicklook.thumbnailRequestOperation", 0, v8);
+    sharedSerialResponseQueue = [(QLThumbnailRequestOperation *)v5 sharedSerialResponseQueue];
+    v9 = dispatch_queue_create_with_target_V2("com.apple.quicklook.thumbnailRequestOperation", 0, sharedSerialResponseQueue);
     serialResponseQueue = v5->_serialResponseQueue;
     v5->_serialResponseQueue = v9;
   }
@@ -56,31 +56,31 @@ uint64_t __56__QLThumbnailRequestOperation_sharedSerialResponseQueue__block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)operationWithThumbnailRequest:(id)a3
++ (id)operationWithThumbnailRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithThumbnailRequest:v4];
+  requestCopy = request;
+  v5 = [[self alloc] initWithThumbnailRequest:requestCopy];
 
   return v5;
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  if (self->_finished != a3)
+  if (self->_finished != finished)
   {
     [(QLThumbnailRequestOperation *)self willChangeValueForKey:@"isFinished"];
-    self->_finished = a3;
+    self->_finished = finished;
 
     [(QLThumbnailRequestOperation *)self didChangeValueForKey:@"isFinished"];
   }
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  if (self->_executing != a3)
+  if (self->_executing != executing)
   {
     [(QLThumbnailRequestOperation *)self willChangeValueForKey:@"isExecuting"];
-    self->_executing = a3;
+    self->_executing = executing;
 
     [(QLThumbnailRequestOperation *)self didChangeValueForKey:@"isExecuting"];
   }
@@ -88,39 +88,39 @@ uint64_t __56__QLThumbnailRequestOperation_sharedSerialResponseQueue__block_invo
 
 - (void)start
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(QLThumbnailRequestOperation *)v2 setExecuting:1];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(QLThumbnailRequestOperation *)selfCopy setExecuting:1];
+  objc_sync_exit(selfCopy);
 
-  [(QLThumbnailRequestOperation *)v2 main];
+  [(QLThumbnailRequestOperation *)selfCopy main];
 }
 
 - (void)cancel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v4.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v4.receiver = selfCopy;
   v4.super_class = QLThumbnailRequestOperation;
   [(QLThumbnailRequestOperation *)&v4 cancel];
   v3 = +[QLThumbnailGenerator sharedGenerator];
-  [v3 cancelRequest:v2->_request];
+  [v3 cancelRequest:selfCopy->_request];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(QLThumbnailRequestOperation *)v4 __finishWithError:v5];
-  objc_sync_exit(v4);
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(QLThumbnailRequestOperation *)selfCopy __finishWithError:errorCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)__finishWithError:(id)a3
+- (void)__finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (![(QLThumbnailRequestOperation *)self isFinished])
   {
     [(QLThumbnailRequestOperation *)self setExecuting:0];
@@ -131,7 +131,7 @@ uint64_t __56__QLThumbnailRequestOperation_sharedSerialResponseQueue__block_invo
     v6[2] = __49__QLThumbnailRequestOperation___finishWithError___block_invoke;
     v6[3] = &unk_1E8369BD0;
     v6[4] = self;
-    v7 = v4;
+    v7 = errorCopy;
     dispatch_async(serialResponseQueue, v6);
   }
 }
@@ -191,22 +191,22 @@ void __49__QLThumbnailRequestOperation___finishWithError___block_invoke(uint64_t
 
 - (BOOL)_finishIfNeeded
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(QLThumbnailRequestOperation *)v2 isCancelled]&& [(QLThumbnailRequestOperation *)v2 isExecuting])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(QLThumbnailRequestOperation *)selfCopy isCancelled]&& [(QLThumbnailRequestOperation *)selfCopy isExecuting])
   {
-    v3 = [QLThumbnailGenerator errorWithCode:5 request:v2->_request additionalUserInfo:0];
-    [(QLThumbnailRequestOperation *)v2 __finishWithError:v3];
+    v3 = [QLThumbnailGenerator errorWithCode:5 request:selfCopy->_request additionalUserInfo:0];
+    [(QLThumbnailRequestOperation *)selfCopy __finishWithError:v3];
   }
 
-  else if (!v2->_request && [(QLThumbnailRequestOperation *)v2 isExecuting])
+  else if (!selfCopy->_request && [(QLThumbnailRequestOperation *)selfCopy isExecuting])
   {
-    [(QLThumbnailRequestOperation *)v2 __finishWithError:v2->_thumbnailRequestInvalidError];
+    [(QLThumbnailRequestOperation *)selfCopy __finishWithError:selfCopy->_thumbnailRequestInvalidError];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return [(QLThumbnailRequestOperation *)v2 isFinished];
+  return [(QLThumbnailRequestOperation *)selfCopy isFinished];
 }
 
 - (void)main

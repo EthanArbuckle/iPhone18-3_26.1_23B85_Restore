@@ -1,6 +1,6 @@
 @interface TransitLineMarker
 - (_TtC6MapsUI17TransitLineMarker)init;
-- (_TtC6MapsUI17TransitLineMarker)initWithTransitLine:(id)a3 locationHint:(CLLocationCoordinate2D)a4;
+- (_TtC6MapsUI17TransitLineMarker)initWithTransitLine:(id)line locationHint:(CLLocationCoordinate2D)hint;
 - (id)artwork;
 - (id)labelText;
 - (id)mapItemIdentifier;
@@ -8,12 +8,12 @@
 
 @implementation TransitLineMarker
 
-- (_TtC6MapsUI17TransitLineMarker)initWithTransitLine:(id)a3 locationHint:(CLLocationCoordinate2D)a4
+- (_TtC6MapsUI17TransitLineMarker)initWithTransitLine:(id)line locationHint:(CLLocationCoordinate2D)hint
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = hint.longitude;
+  latitude = hint.latitude;
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR____TtC6MapsUI17TransitLineMarker_transitLine) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC6MapsUI17TransitLineMarker_transitLine) = line;
   v9 = (self + OBJC_IVAR____TtC6MapsUI17TransitLineMarker_locationHint);
   *v9 = latitude;
   v9[1] = longitude;
@@ -32,7 +32,7 @@
 
 - (id)mapItemIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TransitLineMarker.mapItemIdentifier()();
 
   return v3;
@@ -40,7 +40,7 @@
 
 - (id)labelText
 {
-  v2 = self;
+  selfCopy = self;
   object = TransitLineMarker.labelText()().value._object;
 
   if (object)
@@ -58,9 +58,9 @@
 
 - (id)artwork
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC6MapsUI17TransitLineMarker_transitLine) artwork];
+  artwork = [*(&self->super.isa + OBJC_IVAR____TtC6MapsUI17TransitLineMarker_transitLine) artwork];
 
-  return v2;
+  return artwork;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface VCPCNNFullConnectionBlock
-+ (id)fcBlockWithNumNeurons:(int)a3 NeuronType:(int)a4;
-- (VCPCNNFullConnectionBlock)initWithParameters:(int)a3 NeuronType:(int)a4;
-- (int)constructBlock:(id)a3 context:(id)a4;
-- (int)readFromDisk:(__sFILE *)a3 quantFactor:(signed __int16)a4;
-- (int)readWeightsBias:(__sFILE *)a3 weights:(float *)a4 bias:(float *)a5 inputDim:(int)a6 outputDim:(int)a7 quantFactor:(int)a8;
++ (id)fcBlockWithNumNeurons:(int)neurons NeuronType:(int)type;
+- (VCPCNNFullConnectionBlock)initWithParameters:(int)parameters NeuronType:(int)type;
+- (int)constructBlock:(id)block context:(id)context;
+- (int)readFromDisk:(__sFILE *)disk quantFactor:(signed __int16)factor;
+- (int)readWeightsBias:(__sFILE *)bias weights:(float *)weights bias:(float *)a5 inputDim:(int)dim outputDim:(int)outputDim quantFactor:(int)factor;
 - (void)dealloc;
 @end
 
 @implementation VCPCNNFullConnectionBlock
 
-+ (id)fcBlockWithNumNeurons:(int)a3 NeuronType:(int)a4
++ (id)fcBlockWithNumNeurons:(int)neurons NeuronType:(int)type
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&type;
+  v5 = *&neurons;
   +[VCPCNNMetalContext supportGPU];
   v6 = [objc_alloc(objc_opt_class()) initWithParameters:v5 NeuronType:v4];
 
   return v6;
 }
 
-- (VCPCNNFullConnectionBlock)initWithParameters:(int)a3 NeuronType:(int)a4
+- (VCPCNNFullConnectionBlock)initWithParameters:(int)parameters NeuronType:(int)type
 {
-  if (a3 < 1)
+  if (parameters < 1)
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -33,18 +33,18 @@
     v6 = [(VCPCNNFullConnectionBlock *)&v9 init];
     if (v6)
     {
-      v6->_numNeurons = a3;
+      v6->_numNeurons = parameters;
       v6->_weight = 0;
       v6->_bias = 0;
-      v6->_neuronType = a4;
+      v6->_neuronType = type;
       v6->super._executedOnGPU = 0;
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -66,12 +66,12 @@
   [(VCPCNNFullConnectionBlock *)&v5 dealloc];
 }
 
-- (int)constructBlock:(id)a3 context:(id)a4
+- (int)constructBlock:(id)block context:(id)context
 {
-  v7 = a4;
-  objc_storeStrong(&self->super._context, a4);
-  v8 = a3;
-  objc_storeWeak(&self->super._inputSize, v8);
+  contextCopy = context;
+  objc_storeStrong(&self->super._context, context);
+  blockCopy = block;
+  objc_storeWeak(&self->super._inputSize, blockCopy);
 
   v9 = [VCPCNNData cnnDataWithGPUContext:self->super._context];
   output = self->super._output;
@@ -98,19 +98,19 @@
   return v15;
 }
 
-- (int)readWeightsBias:(__sFILE *)a3 weights:(float *)a4 bias:(float *)a5 inputDim:(int)a6 outputDim:(int)a7 quantFactor:(int)a8
+- (int)readWeightsBias:(__sFILE *)bias weights:(float *)weights bias:(float *)a5 inputDim:(int)dim outputDim:(int)outputDim quantFactor:(int)factor
 {
-  if (!a8)
+  if (!factor)
   {
     operator new[]();
   }
 
-  if (a8 != 1)
+  if (factor != 1)
   {
     return -50;
   }
 
-  if (fread(a4, 4uLL, a7 * a6, a3) && fread(a5, 4uLL, a7, a3))
+  if (fread(weights, 4uLL, outputDim * dim, bias) && fread(a5, 4uLL, outputDim, bias))
   {
     return 0;
   }
@@ -118,9 +118,9 @@
   return -19;
 }
 
-- (int)readFromDisk:(__sFILE *)a3 quantFactor:(signed __int16)a4
+- (int)readFromDisk:(__sFILE *)disk quantFactor:(signed __int16)factor
 {
-  if (a4 != 1)
+  if (factor != 1)
   {
     return -50;
   }
@@ -145,33 +145,33 @@
   }
 
   v12 = [(NSMutableArray *)self->super._outputSize objectAtIndexedSubscript:0];
-  v13 = [v12 intValue];
+  intValue = [v12 intValue];
 
   if (self->_weight || self->_bias)
   {
     return -50;
   }
 
-  if (v13 * v7 < 0)
+  if (intValue * v7 < 0)
   {
     v15 = -1;
   }
 
   else
   {
-    v15 = 4 * v13 * v7;
+    v15 = 4 * intValue * v7;
   }
 
   v16 = MEMORY[0x1E69E5398];
   self->_weight = operator new[](v15, MEMORY[0x1E69E5398]);
-  if (v13 < 0)
+  if (intValue < 0)
   {
     v17 = -1;
   }
 
   else
   {
-    v17 = 4 * v13;
+    v17 = 4 * intValue;
   }
 
   v18 = operator new[](v17, v16);
@@ -180,7 +180,7 @@
   if (self->_weight && v18)
   {
 
-    return [(VCPCNNFullConnectionBlock *)self loadWeights:a3 inputDim:v7 outputDim:v13 quantFactor:1];
+    return [(VCPCNNFullConnectionBlock *)self loadWeights:disk inputDim:v7 outputDim:intValue quantFactor:1];
   }
 
   return result;

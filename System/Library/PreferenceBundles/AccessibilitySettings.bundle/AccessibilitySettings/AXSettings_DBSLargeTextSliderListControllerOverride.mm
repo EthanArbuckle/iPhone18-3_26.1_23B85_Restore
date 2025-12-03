@@ -1,18 +1,18 @@
 @interface AXSettings_DBSLargeTextSliderListControllerOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation AXSettings_DBSLargeTextSliderListControllerOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DBSLargeTextSliderListController" isKindOfClass:@"PSListController"];
-  [v3 validateClass:@"PSListController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"viewDidLayoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DBSLargeTextSliderListController" isKindOfClass:@"PSListController"];
+  [validationsCopy validateClass:@"PSListController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"viewDidLayoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
 }
 
 - (void)loadView
@@ -25,9 +25,9 @@
     objc_opt_class();
     v2 = __UIAccessibilityCastAsClass();
     v3 = sharedBFFStyle();
-    v4 = [v3 backgroundColor];
-    v5 = [v2 table];
-    [v5 setBackgroundColor:v4];
+    backgroundColor = [v3 backgroundColor];
+    table = [v2 table];
+    [table setBackgroundColor:backgroundColor];
   }
 }
 
@@ -47,8 +47,8 @@
 
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
-  [v4 bounds];
+  view = [v3 view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -56,8 +56,8 @@
 
   objc_opt_class();
   v13 = __UIAccessibilityCastAsClass();
-  v14 = [v13 table];
-  [v14 setFrame:{v6, v8, v10, v12}];
+  table = [v13 table];
+  [table setFrame:{v6, v8, v10, v12}];
 
   v16 = v13;
   v15 = v13;

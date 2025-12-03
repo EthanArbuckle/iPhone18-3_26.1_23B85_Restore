@@ -1,11 +1,11 @@
 @interface UIApplicationShortcutIcon
-+ (UIApplicationShortcutIcon)iconWithCustomImage:(id)a3 isTemplate:(BOOL)a4;
++ (UIApplicationShortcutIcon)iconWithCustomImage:(id)image isTemplate:(BOOL)template;
 + (UIApplicationShortcutIcon)iconWithSystemImageName:(NSString *)systemImageName;
 + (UIApplicationShortcutIcon)iconWithTemplateImageName:(NSString *)templateImageName;
 + (UIApplicationShortcutIcon)iconWithType:(UIApplicationShortcutIconType)type;
-- (BOOL)isEqual:(id)a3;
-- (UIApplicationShortcutIcon)initWithSBSApplicationShortcutIcon:(id)a3;
-- (UIApplicationShortcutIcon)initWithXPCDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UIApplicationShortcutIcon)initWithSBSApplicationShortcutIcon:(id)icon;
+- (UIApplicationShortcutIcon)initWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation UIApplicationShortcutIcon
@@ -13,7 +13,7 @@
 + (UIApplicationShortcutIcon)iconWithType:(UIApplicationShortcutIconType)type
 {
   v4 = _UIApplicationShortcutIconSystemImageNameForType(type);
-  v5 = [a1 iconWithSystemImageName:v4];
+  v5 = [self iconWithSystemImageName:v4];
 
   return v5;
 }
@@ -40,7 +40,7 @@
   v6 = v5;
   _Block_object_dispose(&v11, 8);
   v7 = [[v5 alloc] initWithSystemImageName:v4];
-  v8 = [[a1 alloc] initWithSBSApplicationShortcutIcon:v7];
+  v8 = [[self alloc] initWithSBSApplicationShortcutIcon:v7];
 
   return v8;
 }
@@ -67,21 +67,21 @@
   v6 = v5;
   _Block_object_dispose(&v11, 8);
   v7 = [[v5 alloc] initWithTemplateImageName:v4];
-  v8 = [[a1 alloc] initWithSBSApplicationShortcutIcon:v7];
+  v8 = [[self alloc] initWithSBSApplicationShortcutIcon:v7];
 
   return v8;
 }
 
-+ (UIApplicationShortcutIcon)iconWithCustomImage:(id)a3 isTemplate:(BOOL)a4
++ (UIApplicationShortcutIcon)iconWithCustomImage:(id)image isTemplate:(BOOL)template
 {
-  v4 = a4;
-  v6 = a3;
-  if ([(UIImage *)v6 isSymbolImage])
+  templateCopy = template;
+  imageCopy = image;
+  if ([(UIImage *)imageCopy isSymbolImage])
   {
-    v7 = _UIImageName(v6);
-    if (_UIIsSystemSymbolImage(v6))
+    v7 = _UIImageName(imageCopy);
+    if (_UIIsSystemSymbolImage(imageCopy))
     {
-      v8 = [a1 iconWithSystemImageName:v7];
+      v8 = [self iconWithSystemImageName:v7];
 LABEL_6:
       v9 = v8;
       goto LABEL_10;
@@ -89,12 +89,12 @@ LABEL_6:
 
     if (v7)
     {
-      v8 = [a1 iconWithTemplateImageName:v7];
+      v8 = [self iconWithTemplateImageName:v7];
       goto LABEL_6;
     }
   }
 
-  v7 = UIImagePNGRepresentation(v6);
+  v7 = UIImagePNGRepresentation(imageCopy);
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -113,33 +113,33 @@ LABEL_6:
 
   v11 = v10;
   _Block_object_dispose(&v15, 8);
-  v12 = [[v10 alloc] initWithImageData:v7 dataType:0 isTemplate:v4];
-  v9 = [[a1 alloc] initWithSBSApplicationShortcutIcon:v12];
+  v12 = [[v10 alloc] initWithImageData:v7 dataType:0 isTemplate:templateCopy];
+  v9 = [[self alloc] initWithSBSApplicationShortcutIcon:v12];
 
 LABEL_10:
 
   return v9;
 }
 
-- (UIApplicationShortcutIcon)initWithSBSApplicationShortcutIcon:(id)a3
+- (UIApplicationShortcutIcon)initWithSBSApplicationShortcutIcon:(id)icon
 {
-  v5 = a3;
+  iconCopy = icon;
   v9.receiver = self;
   v9.super_class = UIApplicationShortcutIcon;
   v6 = [(UIApplicationShortcutIcon *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sbsShortcutIcon, a3);
+    objc_storeStrong(&v6->_sbsShortcutIcon, icon);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -149,17 +149,17 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UIApplicationShortcutIcon *)v5 sbsShortcutIcon];
-      if (v6 == self->_sbsShortcutIcon)
+      v5 = equalCopy;
+      sbsShortcutIcon = [(UIApplicationShortcutIcon *)v5 sbsShortcutIcon];
+      if (sbsShortcutIcon == self->_sbsShortcutIcon)
       {
         v8 = 1;
       }
 
       else
       {
-        v7 = [(UIApplicationShortcutIcon *)v5 sbsShortcutIcon];
-        v8 = [v7 isEqual:self->_sbsShortcutIcon];
+        sbsShortcutIcon2 = [(UIApplicationShortcutIcon *)v5 sbsShortcutIcon];
+        v8 = [sbsShortcutIcon2 isEqual:self->_sbsShortcutIcon];
       }
     }
 
@@ -172,9 +172,9 @@ LABEL_10:
   return v8;
 }
 
-- (UIApplicationShortcutIcon)initWithXPCDictionary:(id)a3
+- (UIApplicationShortcutIcon)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
   v12 = 0;
   v13 = &v12;

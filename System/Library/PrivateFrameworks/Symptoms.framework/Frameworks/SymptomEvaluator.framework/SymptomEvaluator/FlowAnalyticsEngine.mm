@@ -1,156 +1,156 @@
 @interface FlowAnalyticsEngine
-+ (BOOL)appBundleIdentifierIsWebBrowser:(id)a3;
-+ (id)appBundleIdentifierFromAuditToken:(id *)a3;
-+ (id)appBundleIdentifierFromBundleIdentifier:(id)a3;
++ (BOOL)appBundleIdentifierIsWebBrowser:(id)browser;
++ (id)appBundleIdentifierFromAuditToken:(id *)token;
++ (id)appBundleIdentifierFromBundleIdentifier:(id)identifier;
 + (id)queue;
-+ (void)appsWithFlowsPassingTest:(id)a3 replyQueue:(id)a4 reply:(id)a5;
-+ (void)checkForegroundStateForProcessWithUUID:(id)a3 replyQueue:(id)a4 reply:(id)a5;
++ (void)appsWithFlowsPassingTest:(id)test replyQueue:(id)queue reply:(id)reply;
++ (void)checkForegroundStateForProcessWithUUID:(id)d replyQueue:(id)queue reply:(id)reply;
 + (void)endRNFPeriod;
-+ (void)identifierForUUID:(id)a3 replyQueue:(id)a4 reply:(id)a5;
-+ (void)performAppEndpointTrackingPeriodicActivityWithReply:(id)a3;
-+ (void)performAppExperiencePeriodicActivityWithReply:(id)a3;
-+ (void)performAppPeriodicActivityWithReply:(id)a3;
-+ (void)performAppTrackingPeriodicActivityWithReply:(id)a3;
-+ (void)recentUsageForApps:(id)a3 replyQueue:(id)a4 reply:(id)a5;
-+ (void)workspaceSaveWithCallback:(id)a3;
-- (BOOL)_appBundleIdentifierIsWebBrowser:(id)a3;
-- (BOOL)_bundleBackgroundAudioCapable:(id)a3;
-- (BOOL)_handlesFlowEntity:(id)a3;
-- (BOOL)_handlesProcEntity:(id)a3;
-- (BOOL)_isLiveFlowPerfinScope:(id)a3 forTime:(id)a4 andTag:(id)a5;
-- (BOOL)_isLiveUsageInRollingWindow:(id)a3 forTime:(id)a4;
-- (BOOL)_isLiveUsageinScope:(id)a3 forTime:(id)a4;
-- (BOOL)_performAppLevelAppDomainUsageAnalyticsFromDate:(id)a3 toDate:(id)a4;
-- (BOOL)_performSystemLevelAppDomainUsageAnalyticsFromDate:(id)a3 toDate:(id)a4;
-- (BOOL)_processNameIsValid:(id)a3;
-- (BOOL)_requiresUserValidationPredicateForEntity:(id)a3;
++ (void)identifierForUUID:(id)d replyQueue:(id)queue reply:(id)reply;
++ (void)performAppEndpointTrackingPeriodicActivityWithReply:(id)reply;
++ (void)performAppExperiencePeriodicActivityWithReply:(id)reply;
++ (void)performAppPeriodicActivityWithReply:(id)reply;
++ (void)performAppTrackingPeriodicActivityWithReply:(id)reply;
++ (void)recentUsageForApps:(id)apps replyQueue:(id)queue reply:(id)reply;
++ (void)workspaceSaveWithCallback:(id)callback;
+- (BOOL)_appBundleIdentifierIsWebBrowser:(id)browser;
+- (BOOL)_bundleBackgroundAudioCapable:(id)capable;
+- (BOOL)_handlesFlowEntity:(id)entity;
+- (BOOL)_handlesProcEntity:(id)entity;
+- (BOOL)_isLiveFlowPerfinScope:(id)scope forTime:(id)time andTag:(id)tag;
+- (BOOL)_isLiveUsageInRollingWindow:(id)window forTime:(id)time;
+- (BOOL)_isLiveUsageinScope:(id)scope forTime:(id)time;
+- (BOOL)_performAppLevelAppDomainUsageAnalyticsFromDate:(id)date toDate:(id)toDate;
+- (BOOL)_performSystemLevelAppDomainUsageAnalyticsFromDate:(id)date toDate:(id)toDate;
+- (BOOL)_processNameIsValid:(id)valid;
+- (BOOL)_requiresUserValidationPredicateForEntity:(id)entity;
 - (BOOL)_setupLocalCache;
-- (BOOL)_setupObjectAnalyticsWorkspaces:(id)a3;
+- (BOOL)_setupObjectAnalyticsWorkspaces:(id)workspaces;
 - (BOOL)_setupSignalHandling;
-- (BOOL)_shouldProcessDomainInfoForBundleID:(id)a3 implicit:(id *)a4 knownToLaunchServices:(BOOL *)a5 ignoredInLaunchServices:(BOOL *)a6 isWebBrowser:(BOOL *)a7;
-- (BOOL)_shouldSendStatisticsReport:(id)a3;
-- (BOOL)domainInfoProcessingForSnapshot:(id)a3 process:(id)a4 attributedName:(id)a5 remoteAddress:(id)a6 isWebBrowser:(BOOL)a7;
-- (BOOL)handlesEntity:(id)a3;
-- (BOOL)isSnapshotFlowUUIDStored:(id)a3;
-- (FlowAnalyticsEngine)initWithWorkspace:(id)a3 params:(id)a4 queue:(id)a5;
-- (double)_usageFingerprintForBundleName:(id)a3;
-- (id)_appEndpointsInProcess:(id)a3;
-- (id)_appExperienceForApp:(id)a3 forTime:(id)a4;
-- (id)_attemptConvertingPluginNameToContainingAppName:(id)a3;
-- (id)_fetchFromProcCacheWithName:(id)a3 ofType:(unsigned int)a4;
-- (id)_flowFetchForName:(id)a3;
-- (id)_has1stPartyImpliedBundleNameBehavior:(id)a3;
-- (id)_liveUsageFetchForProcess:(id)a3;
-- (id)_parseEvent:(id)a3 withGeneration:(id *)a4;
-- (id)_processFetchForName:(id)a3 bundle:(id)a4 extension:(id)a5 shouldFillMiss:(BOOL)a6;
-- (id)_repurposeAppEndpointRecords:(id)a3;
-- (id)_trafficEnvelopeToTier:(double)a3;
-- (id)createFlushInactiveLedgerTimer:(id)a3;
-- (id)getOption:(id)a3;
-- (id)setOption:(id)a3;
-- (int)_performQueryOnEntityFromInstantFlowCache:(id)a3 target:(id)a4 pred:(id)a5 found:(id *)a6;
-- (int)_performQueryOnEntityFromProcCache:(id)a3 target:(id)a4 pred:(id)a5 found:(id *)a6;
-- (int)performQueryOnEntityFromCache:(id)a3 pred:(id)a4 altpred:(id *)a5 actions:(id)a6 found:(id *)a7;
-- (unint64_t)_aggregateSumDomainUsageAnalyticsOnField:(id)a3 forPredicate:(id)a4;
+- (BOOL)_shouldProcessDomainInfoForBundleID:(id)d implicit:(id *)implicit knownToLaunchServices:(BOOL *)services ignoredInLaunchServices:(BOOL *)launchServices isWebBrowser:(BOOL *)browser;
+- (BOOL)_shouldSendStatisticsReport:(id)report;
+- (BOOL)domainInfoProcessingForSnapshot:(id)snapshot process:(id)process attributedName:(id)name remoteAddress:(id)address isWebBrowser:(BOOL)browser;
+- (BOOL)handlesEntity:(id)entity;
+- (BOOL)isSnapshotFlowUUIDStored:(id)stored;
+- (FlowAnalyticsEngine)initWithWorkspace:(id)workspace params:(id)params queue:(id)queue;
+- (double)_usageFingerprintForBundleName:(id)name;
+- (id)_appEndpointsInProcess:(id)process;
+- (id)_appExperienceForApp:(id)app forTime:(id)time;
+- (id)_attemptConvertingPluginNameToContainingAppName:(id)name;
+- (id)_fetchFromProcCacheWithName:(id)name ofType:(unsigned int)type;
+- (id)_flowFetchForName:(id)name;
+- (id)_has1stPartyImpliedBundleNameBehavior:(id)behavior;
+- (id)_liveUsageFetchForProcess:(id)process;
+- (id)_parseEvent:(id)event withGeneration:(id *)generation;
+- (id)_processFetchForName:(id)name bundle:(id)bundle extension:(id)extension shouldFillMiss:(BOOL)miss;
+- (id)_repurposeAppEndpointRecords:(id)records;
+- (id)_trafficEnvelopeToTier:(double)tier;
+- (id)createFlushInactiveLedgerTimer:(id)timer;
+- (id)getOption:(id)option;
+- (id)setOption:(id)option;
+- (int)_performQueryOnEntityFromInstantFlowCache:(id)cache target:(id)target pred:(id)pred found:(id *)found;
+- (int)_performQueryOnEntityFromProcCache:(id)cache target:(id)target pred:(id)pred found:(id *)found;
+- (int)performQueryOnEntityFromCache:(id)cache pred:(id)pred altpred:(id *)altpred actions:(id)actions found:(id *)found;
+- (unint64_t)_aggregateSumDomainUsageAnalyticsOnField:(id)field forPredicate:(id)predicate;
 - (unint64_t)_clearStaleAppEndpointRecords;
 - (unint64_t)_clearStaleNetDomainsRecords;
 - (unint64_t)_clearUninstalledAppEntries;
-- (unint64_t)_liveUsageCountForProcess:(id)a3 subscriberTag:(id)a4;
+- (unint64_t)_liveUsageCountForProcess:(id)process subscriberTag:(id)tag;
 - (unint64_t)_pruneAppExperienceRecords;
 - (unint64_t)_submitAppDomainUsageRecordInfoAnalytics;
 - (unint64_t)_submitAppEndpointRecordInfoAnalytics;
-- (void)_algosScoreFor:(id)a3 score:(double)a4;
-- (void)_applyCountsTo:(id)a3 fromLiveUsage:(id)a4 mustReset:(BOOL)a5;
-- (void)_appsWithFlowsPassingTest:(id)a3 replyQueue:(id)a4 reply:(id)a5;
-- (void)_archiveRecord:(id)a3;
-- (void)_calendarUsageForApp:(id)a3 givenLastRun:(id)a4;
-- (void)_checkCellExcessUsageActions:(unint64_t)a3 previous:(unint64_t)a4 snapshot:(id)a5;
-- (void)_checkForegroundStateForProcessWithUUID:(id)a3 replyQueue:(id)a4 reply:(id)a5;
-- (void)_compactUsageForApp:(id)a3 intervalType:(int)a4 givenLastRun:(id)a5;
-- (void)_didReceiveSnapshot:(id)a3;
+- (void)_algosScoreFor:(id)for score:(double)score;
+- (void)_applyCountsTo:(id)to fromLiveUsage:(id)usage mustReset:(BOOL)reset;
+- (void)_appsWithFlowsPassingTest:(id)test replyQueue:(id)queue reply:(id)reply;
+- (void)_archiveRecord:(id)record;
+- (void)_calendarUsageForApp:(id)app givenLastRun:(id)run;
+- (void)_checkCellExcessUsageActions:(unint64_t)actions previous:(unint64_t)previous snapshot:(id)snapshot;
+- (void)_checkForegroundStateForProcessWithUUID:(id)d replyQueue:(id)queue reply:(id)reply;
+- (void)_compactUsageForApp:(id)app intervalType:(int)type givenLastRun:(id)run;
+- (void)_didReceiveSnapshot:(id)snapshot;
 - (void)_dumpState;
 - (void)_dumpSubFlowCounts;
-- (void)_enableThresholdMonitoringForCellularInterface:(uint64_t)a1;
+- (void)_enableThresholdMonitoringForCellularInterface:(uint64_t)interface;
 - (void)_endRNFPeriod;
-- (void)_evalDomainTrackingDropOf:(id)a3;
-- (void)_generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6;
-- (void)_handleAppTrackingNotification:(id)a3;
-- (void)_handleApplicationNotificationCompactForBundleName:(id)a3 edgeMode:(BOOL)a4;
-- (void)_handleApplicationNotificationStateChangedForBundleName:(id)a3 edgeMode:(BOOL)a4 intervalType:(int)a5;
-- (void)_handleEndpointTrackingNotification:(id)a3;
+- (void)_evalDomainTrackingDropOf:(id)of;
+- (void)_generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block;
+- (void)_handleAppTrackingNotification:(id)notification;
+- (void)_handleApplicationNotificationCompactForBundleName:(id)name edgeMode:(BOOL)mode;
+- (void)_handleApplicationNotificationStateChangedForBundleName:(id)name edgeMode:(BOOL)mode intervalType:(int)type;
+- (void)_handleEndpointTrackingNotification:(id)notification;
 - (void)_handleSIGUSR1;
-- (void)_handleSnapshot:(id)a3;
-- (void)_handleSnapshotForDomains:(id)a3;
+- (void)_handleSnapshot:(id)snapshot;
+- (void)_handleSnapshotForDomains:(id)domains;
 - (void)_initializeInternals;
-- (void)_insertProcCache:(id)a3 ofType:(unsigned int)a4 underName:(id)a5;
-- (void)_liveUsagePackForProcess:(id)a3 subscriberTag:(id)a4;
-- (void)_logBitmapOutcome:(id)a3;
-- (void)_logExcessCellUsage:(int64_t)a3 snapshot:(id)a4;
-- (void)_newCoreMediaAssetDownloadEvent:(id)a3;
-- (void)_newExpectedTransfer:(id)a3;
-- (void)_newFlowData:(id)a3;
-- (void)_noteSizeableBackgroundTransferEvent:(id)a3;
+- (void)_insertProcCache:(id)cache ofType:(unsigned int)type underName:(id)name;
+- (void)_liveUsagePackForProcess:(id)process subscriberTag:(id)tag;
+- (void)_logBitmapOutcome:(id)outcome;
+- (void)_logExcessCellUsage:(int64_t)usage snapshot:(id)snapshot;
+- (void)_newCoreMediaAssetDownloadEvent:(id)event;
+- (void)_newExpectedTransfer:(id)transfer;
+- (void)_newFlowData:(id)data;
+- (void)_noteSizeableBackgroundTransferEvent:(id)event;
 - (void)_performAppDomainUsageAnalytics;
-- (void)_performAppEndpointTrackingPeriodicTasksWithReply:(id)a3;
-- (void)_performAppExperiencePeriodicTasksWithReply:(id)a3;
-- (void)_performAppPeriodicTasksWithReply:(id)a3;
-- (void)_performAppTrackingPeriodicTasksWithReply:(id)a3;
+- (void)_performAppEndpointTrackingPeriodicTasksWithReply:(id)reply;
+- (void)_performAppExperiencePeriodicTasksWithReply:(id)reply;
+- (void)_performAppPeriodicTasksWithReply:(id)reply;
+- (void)_performAppTrackingPeriodicTasksWithReply:(id)reply;
 - (void)_pruneFlowHistory;
-- (void)_recentUsageForApps:(id)a3 replyQueue:(id)a4 reply:(id)a5;
+- (void)_recentUsageForApps:(id)apps replyQueue:(id)queue reply:(id)reply;
 - (void)_refreshFullDataUsage;
 - (void)_refreshFullDataUsageComplete;
-- (void)_refreshFullDataUsageWithCallback:(id)a3;
-- (void)_removeAllInfoForProcess:(id)a3;
-- (void)_removeFromProcCache:(id)a3 ofType:(unsigned int)a4;
-- (void)_removeInfoFromWorkspaceForProcess:(id)a3;
+- (void)_refreshFullDataUsageWithCallback:(id)callback;
+- (void)_removeAllInfoForProcess:(id)process;
+- (void)_removeFromProcCache:(id)cache ofType:(unsigned int)type;
+- (void)_removeInfoFromWorkspaceForProcess:(id)process;
 - (void)_removeOldFlowRecords;
-- (void)_reportDomainTrackingDropFor:(id)a3 withCause:(unint64_t)a4 detail:(id)a5;
-- (void)_reportThresholdedFlowCount:(unint64_t)a3 threshold:(unint64_t)a4;
+- (void)_reportDomainTrackingDropFor:(id)for withCause:(unint64_t)cause detail:(id)detail;
+- (void)_reportThresholdedFlowCount:(unint64_t)count threshold:(unint64_t)threshold;
 - (void)_saveAndUnloadSelectState;
-- (void)_sendStatisticsReport:(id)a3;
+- (void)_sendStatisticsReport:(id)report;
 - (void)_setupDailyMaintenanceActivity;
 - (void)_setupNotificationCenterAndRelayObservers;
 - (void)_setupPrefsStoreObserving;
 - (void)_startFlowMonitoring;
-- (void)_summaryAppDomainUsageBy:(unsigned int)a3 reply:(id)a4;
-- (void)_updateKnownCellularInterfaceIndexList:(int)a3 force:;
-- (void)_updateLiveUsage:(id)a3 wifiIn:(int64_t)a4 wifiOut:(int64_t)a5 cellIn:(int64_t)a6 cellOut:(int64_t)a7 wiredIn:(int64_t)a8 wiredOut:(int64_t)a9 btIn:(int64_t)a10 btOut:(int64_t)a11 xIn:(int64_t)a12 xOut:(int64_t)a13 isJumboFlow:(BOOL)a14 isExpensive:(BOOL)a15 closing:(BOOL)a16;
-- (void)_updateTetheringUsage:(BOOL)a3;
-- (void)clearAppDomainUsage:(id)a3;
-- (void)clearAppEndpoints:(id)a3;
-- (void)createSnapshotFor:(id)a3 pred:(id)a4 actions:(id)a5 reply:(id)a6;
+- (void)_summaryAppDomainUsageBy:(unsigned int)by reply:(id)reply;
+- (void)_updateKnownCellularInterfaceIndexList:(int)list force:;
+- (void)_updateLiveUsage:(id)usage wifiIn:(int64_t)in wifiOut:(int64_t)out cellIn:(int64_t)cellIn cellOut:(int64_t)cellOut wiredIn:(int64_t)wiredIn wiredOut:(int64_t)wiredOut btIn:(int64_t)self0 btOut:(int64_t)self1 xIn:(int64_t)self2 xOut:(int64_t)self3 isJumboFlow:(BOOL)self4 isExpensive:(BOOL)self5 closing:(BOOL)self6;
+- (void)_updateTetheringUsage:(BOOL)usage;
+- (void)clearAppDomainUsage:(id)usage;
+- (void)clearAppEndpoints:(id)endpoints;
+- (void)createSnapshotFor:(id)for pred:(id)pred actions:(id)actions reply:(id)reply;
 - (void)dealloc;
-- (void)endpointMaintenanceOnClose:(id)a3;
-- (void)generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6;
-- (void)getNetworkBitmapsWithNames:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5 options:(id)a6 reply:(id)a7;
-- (void)handleLaunchServicesApplicationUnregistration:(id)a3;
-- (void)identifierForUUID:(id)a3 queue:(id)a4 reply:(id)a5;
-- (void)logOutcomeArray:(id)a3;
-- (void)networkDomainResolution:(id)a3;
-- (void)networkDomainUserAppTrackingChanged:(id)a3;
-- (void)networkDomainUserEndpointTrackingChanged:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performAppEndpointTrackingPeriodicTasksComplete:(id)a3 error:(id)a4;
-- (void)performAppExperiencePeriodicTasksComplete:(id)a3 error:(id)a4;
-- (void)performAppPeriodicTasksComplete:(id)a3 error:(id)a4;
-- (void)performAppTrackingActionWithOptions:(id)a3 userId:(unsigned int)a4 reply:(id)a5;
-- (void)performAppTrackingPeriodicTasksComplete:(id)a3 error:(id)a4;
-- (void)performQueryOnEntity:(id)a3 fetchRequestProperties:(id)a4 pred:(id)a5 sort:(id)a6 actions:(id)a7 service:(id)a8 connection:(id)a9 reply:(id)a10;
-- (void)performThresholdingOn:(id)a3 forKey:(id)a4 andValue:(id)a5 connection:(id)a6 createdBlock:(id *)a7 hitBlock:(id)a8 errorBlock:(id)a9;
+- (void)endpointMaintenanceOnClose:(id)close;
+- (void)generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block;
+- (void)getNetworkBitmapsWithNames:(id)names startTime:(unint64_t)time endTime:(unint64_t)endTime options:(id)options reply:(id)reply;
+- (void)handleLaunchServicesApplicationUnregistration:(id)unregistration;
+- (void)identifierForUUID:(id)d queue:(id)queue reply:(id)reply;
+- (void)logOutcomeArray:(id)array;
+- (void)networkDomainResolution:(id)resolution;
+- (void)networkDomainUserAppTrackingChanged:(id)changed;
+- (void)networkDomainUserEndpointTrackingChanged:(id)changed;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performAppEndpointTrackingPeriodicTasksComplete:(id)complete error:(id)error;
+- (void)performAppExperiencePeriodicTasksComplete:(id)complete error:(id)error;
+- (void)performAppPeriodicTasksComplete:(id)complete error:(id)error;
+- (void)performAppTrackingActionWithOptions:(id)options userId:(unsigned int)id reply:(id)reply;
+- (void)performAppTrackingPeriodicTasksComplete:(id)complete error:(id)error;
+- (void)performQueryOnEntity:(id)entity fetchRequestProperties:(id)properties pred:(id)pred sort:(id)sort actions:(id)actions service:(id)service connection:(id)connection reply:(id)self0;
+- (void)performThresholdingOn:(id)on forKey:(id)key andValue:(id)value connection:(id)connection createdBlock:(id *)block hitBlock:(id)hitBlock errorBlock:(id)errorBlock;
 - (void)pollFlows;
-- (void)postCAEvent:(id)a3 withName:(id)a4;
-- (void)processSnapshotForConnectionEstablishment:(id)a3;
-- (void)removeSnapshotFlowUUIDsForSourceKey:(id)a3;
-- (void)resetDataFor:(id)a3 nameKind:(id)a4;
-- (void)sendPowerLogReport:(id)a3 isStart:(BOOL)a4;
+- (void)postCAEvent:(id)event withName:(id)name;
+- (void)processSnapshotForConnectionEstablishment:(id)establishment;
+- (void)removeSnapshotFlowUUIDsForSourceKey:(id)key;
+- (void)resetDataFor:(id)for nameKind:(id)kind;
+- (void)sendPowerLogReport:(id)report isStart:(BOOL)start;
 - (void)startObservingLaunchServices;
-- (void)statsManager:(id)a3 thresholdReachedOn:(unsigned int)a4;
+- (void)statsManager:(id)manager thresholdReachedOn:(unsigned int)on;
 - (void)stopObservingLaunchServices;
-- (void)storeSnapshotFlowUUID:(id)a3 forSourceKey:(id)a4;
+- (void)storeSnapshotFlowUUID:(id)d forSourceKey:(id)key;
 - (void)submitAppEndpointToDateSPICallMetric;
 - (void)submitNetworkDomainUsageToDateSPICallMetric;
-- (void)updateEffectiveUserId:(id)a3;
-- (void)workspaceSaveWithCallback:(id)a3;
+- (void)updateEffectiveUserId:(id)id;
+- (void)workspaceSaveWithCallback:(id)callback;
 @end
 
 @implementation FlowAnalyticsEngine
@@ -233,22 +233,22 @@ uint64_t __32__FlowAnalyticsEngine_pollFlows__block_invoke_2(uint64_t a1)
 
 + (id)queue
 {
-  v3 = sharedInstance_1;
+  queue = sharedInstance_1;
   if (sharedInstance_1)
   {
-    v3 = [sharedInstance_1 queue];
+    queue = [sharedInstance_1 queue];
     v2 = vars8;
   }
 
-  return v3;
+  return queue;
 }
 
 - (void)_refreshFullDataUsage
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastFullRefreshTime = self->lastFullRefreshTime;
-  if (lastFullRefreshTime && ([(NSDate *)lastFullRefreshTime timeIntervalSinceDate:v3], fabs(v5) < 1.0))
+  if (lastFullRefreshTime && ([(NSDate *)lastFullRefreshTime timeIntervalSinceDate:date], fabs(v5) < 1.0))
   {
     v6 = attributionLogHandle;
     if (os_log_type_enabled(attributionLogHandle, OS_LOG_TYPE_INFO))
@@ -295,7 +295,7 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  objc_storeStrong(&self->lastFullRefreshTime, v3);
+  objc_storeStrong(&self->lastFullRefreshTime, date);
   v10 = attributionLogHandle;
   if (os_log_type_enabled(attributionLogHandle, OS_LOG_TYPE_INFO))
   {
@@ -387,9 +387,9 @@ uint64_t __44__FlowAnalyticsEngine__refreshFullDataUsage__block_invoke_2(uint64_
   if ([(AnalyticsWorkspace *)self->super.workspace persistent])
   {
     [(AnalyticsWorkspace *)self->super.workspace save];
-    v3 = [(AnalyticsWorkspace *)self->super.workspace mainObjectContext];
-    v4 = [v3 registeredObjects];
-    v5 = [v4 count];
+    mainObjectContext = [(AnalyticsWorkspace *)self->super.workspace mainObjectContext];
+    registeredObjects = [mainObjectContext registeredObjects];
+    v5 = [registeredObjects count];
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
@@ -399,7 +399,7 @@ uint64_t __44__FlowAnalyticsEngine__refreshFullDataUsage__block_invoke_2(uint64_
     v16[2] = __48__FlowAnalyticsEngine__saveAndUnloadSelectState__block_invoke;
     v16[3] = &unk_27898C508;
     v16[4] = &v17;
-    [v4 enumerateObjectsUsingBlock:v16];
+    [registeredObjects enumerateObjectsUsingBlock:v16];
     v6 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
@@ -424,9 +424,9 @@ uint64_t __44__FlowAnalyticsEngine__refreshFullDataUsage__block_invoke_2(uint64_
       v12 = 3221225472;
       v13 = __48__FlowAnalyticsEngine__saveAndUnloadSelectState__block_invoke_352;
       v14 = &unk_27898C530;
-      v9 = v3;
+      v9 = mainObjectContext;
       v15 = v9;
-      [v4 enumerateObjectsUsingBlock:&v11];
+      [registeredObjects enumerateObjectsUsingBlock:&v11];
       [v9 processPendingChanges];
     }
 
@@ -456,34 +456,34 @@ void __48__FlowAnalyticsEngine__saveAndUnloadSelectState__block_invoke_352(uint6
   }
 }
 
-- (FlowAnalyticsEngine)initWithWorkspace:(id)a3 params:(id)a4 queue:(id)a5
+- (FlowAnalyticsEngine)initWithWorkspace:(id)workspace params:(id)params queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  v12 = 0;
-  if (!v8 || !v10)
+  workspaceCopy = workspace;
+  paramsCopy = params;
+  queueCopy = queue;
+  v11 = queueCopy;
+  selfCopy4 = 0;
+  if (!workspaceCopy || !queueCopy)
   {
     goto LABEL_19;
   }
 
   v33.receiver = self;
   v33.super_class = FlowAnalyticsEngine;
-  v13 = [(AnalyticsEngineCore *)&v33 initWithWorkspace:v8 params:v9 queue:v10];
+  v13 = [(AnalyticsEngineCore *)&v33 initWithWorkspace:workspaceCopy params:paramsCopy queue:queueCopy];
   self = v13;
   if (!v13)
   {
 LABEL_17:
     self = self;
-    v12 = self;
+    selfCopy4 = self;
     goto LABEL_19;
   }
 
-  if (![(FlowAnalyticsEngine *)v13 _setupObjectAnalyticsWorkspaces:v8])
+  if (![(FlowAnalyticsEngine *)v13 _setupObjectAnalyticsWorkspaces:workspaceCopy])
   {
 LABEL_18:
-    v12 = 0;
+    selfCopy4 = 0;
     goto LABEL_19;
   }
 
@@ -516,21 +516,21 @@ LABEL_18:
             if (self->_flowWatchers)
             {
               gEffectiveUserId = 501;
-              v23 = [(AnalyticsEngineCore *)self queue];
+              queue = [(AnalyticsEngineCore *)self queue];
               block[0] = MEMORY[0x277D85DD0];
               block[1] = 3221225472;
               block[2] = __54__FlowAnalyticsEngine_initWithWorkspace_params_queue___block_invoke_2;
               block[3] = &unk_27898A0C8;
-              v24 = self;
-              v30 = v24;
+              selfCopy2 = self;
+              v30 = selfCopy2;
               v25 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-              dispatch_async(v23, v25);
+              dispatch_async(queue, v25);
 
               v27[0] = MEMORY[0x277D85DD0];
               v27[1] = 3221225472;
               v27[2] = __54__FlowAnalyticsEngine_initWithWorkspace_params_queue___block_invoke_3;
               v27[3] = &unk_27898A0C8;
-              v28 = v24;
+              v28 = selfCopy2;
               if (initWithWorkspace_params_queue__pred != -1)
               {
                 dispatch_once(&initWithWorkspace_params_queue__pred, v27);
@@ -550,19 +550,19 @@ LABEL_18:
   v31[1] = 3221225472;
   v31[2] = __54__FlowAnalyticsEngine_initWithWorkspace_params_queue___block_invoke;
   v31[3] = &unk_27898A0C8;
-  v14 = self;
-  v32 = v14;
+  selfCopy3 = self;
+  v32 = selfCopy3;
   if (initWithWorkspace_params_queue__pred != -1)
   {
     dispatch_once(&initWithWorkspace_params_queue__pred, v31);
   }
 
-  self = v14;
+  self = selfCopy3;
 
-  v12 = self;
+  selfCopy4 = self;
 LABEL_19:
 
-  return v12;
+  return selfCopy4;
 }
 
 - (void)_initializeInternals
@@ -574,15 +574,15 @@ LABEL_19:
     v4 = v3;
     v5 = qos_class_self();
     *buf = 136315138;
-    v60 = qos_string(v5);
+    selfCopy = qos_string(v5);
     _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_DEBUG, "FAE _initializeInternals: QoS %s", buf, 0xCu);
   }
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   setApparentTime(v6);
   v7 = [FlowRefreshScheduler alloc];
-  v8 = [(AnalyticsEngineCore *)self queue];
-  v9 = [(FlowRefreshScheduler *)v7 initWithQueue:v8];
+  queue = [(AnalyticsEngineCore *)self queue];
+  v9 = [(FlowRefreshScheduler *)v7 initWithQueue:queue];
   refreshScheduler = self->refreshScheduler;
   self->refreshScheduler = v9;
 
@@ -595,17 +595,17 @@ LABEL_19:
   bitmapRetriever = self->bitmapRetriever;
   self->bitmapRetriever = v13;
 
-  v15 = [(AnalyticsEngineCore *)self queue];
-  v16 = [(FlowAnalyticsEngine *)self createFlushInactiveLedgerTimer:v15];
+  queue2 = [(AnalyticsEngineCore *)self queue];
+  v16 = [(FlowAnalyticsEngine *)self createFlushInactiveLedgerTimer:queue2];
   flushInactiveLedgerTimer = self->flushInactiveLedgerTimer;
   self->flushInactiveLedgerTimer = v16;
 
-  v18 = [(AnalyticsEngineCore *)self queue];
-  [TrackedFlow setPolledFlowQueue:v18];
+  queue3 = [(AnalyticsEngineCore *)self queue];
+  [TrackedFlow setPolledFlowQueue:queue3];
 
   self->_greenTeaLogger = ct_green_tea_logger_create();
   [(FlowAnalyticsEngine *)self _setupSignalHandling];
-  v19 = [(AnalyticsEngineCore *)self queue];
+  queue4 = [(AnalyticsEngineCore *)self queue];
   handler[5] = MEMORY[0x277D85DD0];
   handler[6] = 3221225472;
   handler[7] = __43__FlowAnalyticsEngine__initializeInternals__block_invoke;
@@ -615,8 +615,8 @@ LABEL_19:
 
   [(FlowAnalyticsEngine *)self startObservingLaunchServices];
   v20 = objc_alloc(MEMORY[0x277D2CA90]);
-  v21 = [(AnalyticsEngineCore *)self queue];
-  v22 = [v20 initWithQueue:v21];
+  queue5 = [(AnalyticsEngineCore *)self queue];
+  v22 = [v20 initWithQueue:queue5];
   nstatManager = self->nstatManager;
   self->nstatManager = v22;
 
@@ -625,18 +625,18 @@ LABEL_19:
   {
     [(NWStatsManager *)v24 setDelegate:self];
     self->_nrFrequencyBand = -1;
-    v25 = [(AnalyticsEngineCore *)self queue];
+    queue6 = [(AnalyticsEngineCore *)self queue];
     v26 = +[WiFiThroughputAdviser sharedInstance];
-    [v26 setQueue:v25];
+    [v26 setQueue:queue6];
 
-    v27 = [(AnalyticsEngineCore *)self queue];
-    [AppTracker setInternalQueue:v27];
+    queue7 = [(AnalyticsEngineCore *)self queue];
+    [AppTracker setInternalQueue:queue7];
 
     v28 = domainTrackingLogHandle;
     if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v60 = self;
+      selfCopy = self;
       _os_log_impl(&dword_23255B000, v28, OS_LOG_TYPE_INFO, "Configuring FAE<%p> as the network domain delegate", buf, 0xCu);
     }
 
@@ -644,8 +644,8 @@ LABEL_19:
     [v29 setNetworkDomainDelegate:self];
 
     [(FlowAnalyticsEngine *)self _setupNotificationCenterAndRelayObservers];
-    v30 = [(AnalyticsEngineCore *)self queue];
-    v31 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v30);
+    queue8 = [(AnalyticsEngineCore *)self queue];
+    v31 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue8);
     flushOldFlowRecordsTimer = self->flushOldFlowRecordsTimer;
     self->flushOldFlowRecordsTimer = v31;
 
@@ -686,23 +686,23 @@ LABEL_19:
     }
 
     v39 = +[AppStateMonitor sharedInstance];
-    v40 = [(AnalyticsEngineCore *)self queue];
-    [v39 setQueue:v40];
+    queue9 = [(AnalyticsEngineCore *)self queue];
+    [v39 setQueue:queue9];
 
     [v39 enable];
     v41 = +[SystemSettingsRelay defaultRelay];
     if ([v41 taggedInfoFeatureFlagEnabled])
     {
       v42 = +[BasebandFlowChecker sharedInstance];
-      v43 = [(AnalyticsEngineCore *)self queue];
-      [v42 setQueue:v43];
+      queue10 = [(AnalyticsEngineCore *)self queue];
+      [v42 setQueue:queue10];
 
       [v42 activate];
       v44 = analyticsLogHandle;
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v60 = v42;
+        selfCopy = v42;
         _os_log_impl(&dword_23255B000, v44, OS_LOG_TYPE_DEFAULT, "FAE: system has taggedInfo feature flag enabled, bbFlowChecker is %@", buf, 0xCu);
       }
     }
@@ -726,11 +726,11 @@ LABEL_19:
 
     markMeasurement(2, 9);
     submitAllMeasurementsToCA();
-    v47 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v57 = @"ObjectKey";
-    v58 = self;
-    v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-    [v47 postNotificationName:@"kNotificationOfCompletedInitialization" object:self userInfo:v48];
+    selfCopy2 = self;
+    v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&selfCopy2 forKeys:&v57 count:1];
+    [defaultCenter postNotificationName:@"kNotificationOfCompletedInitialization" object:self userInfo:v48];
 
     objc_destroyWeak(&v54);
     objc_destroyWeak(&location);
@@ -752,7 +752,7 @@ void __43__FlowAnalyticsEngine__initializeInternals__block_invoke_2(uint64_t a1)
   [WeakRetained _setupLocalCache];
 }
 
-- (BOOL)_setupObjectAnalyticsWorkspaces:(id)a3
+- (BOOL)_setupObjectAnalyticsWorkspaces:(id)workspaces
 {
   v4 = [objc_alloc(MEMORY[0x277D6B508]) initWithWorkspace:self->super.workspace withCache:0];
   aspace = self->aspace;
@@ -765,23 +765,23 @@ void __43__FlowAnalyticsEngine__initializeInternals__block_invoke_2(uint64_t a1)
 
   v6 = objc_alloc(MEMORY[0x277D6B540]);
   workspace = self->super.workspace;
-  v8 = [MEMORY[0x277D6B568] entityName];
-  v9 = [v6 initWithWorkspace:workspace entityName:v8 withCache:0];
+  entityName = [MEMORY[0x277D6B568] entityName];
+  v9 = [v6 initWithWorkspace:workspace entityName:entityName withCache:0];
   domspace = self->domspace;
   self->domspace = v9;
 
   v11 = objc_alloc(MEMORY[0x277D6B540]);
   v12 = self->super.workspace;
-  v13 = [MEMORY[0x277D6B570] entityName];
-  v14 = [v11 initWithWorkspace:v12 entityName:v13 withCache:0];
+  entityName2 = [MEMORY[0x277D6B570] entityName];
+  v14 = [v11 initWithWorkspace:v12 entityName:entityName2 withCache:0];
   epspace = self->epspace;
   self->epspace = v14;
 
   self->domainUsageBucketDuration = 60.0;
   v16 = objc_alloc(MEMORY[0x277D6B540]);
   v17 = self->super.workspace;
-  v18 = [MEMORY[0x277D6B578] entityName];
-  v19 = [v16 initWithWorkspace:v17 entityName:v18 withCache:0];
+  entityName3 = [MEMORY[0x277D6B578] entityName];
+  v19 = [v16 initWithWorkspace:v17 entityName:entityName3 withCache:0];
   expspace = self->expspace;
   self->expspace = v19;
 
@@ -810,8 +810,8 @@ void __43__FlowAnalyticsEngine__initializeInternals__block_invoke_2(uint64_t a1)
 
   v26 = objc_alloc(MEMORY[0x277D6B540]);
   v27 = self->super.workspace;
-  v28 = [MEMORY[0x277D6B560] entityName];
-  v29 = [v26 initWithWorkspace:v27 entityName:v28 withCache:0];
+  entityName4 = [MEMORY[0x277D6B560] entityName];
+  v29 = [v26 initWithWorkspace:v27 entityName:entityName4 withCache:0];
   calspace = self->calspace;
   self->calspace = v29;
 
@@ -822,8 +822,8 @@ void __43__FlowAnalyticsEngine__initializeInternals__block_invoke_2(uint64_t a1)
 
   v31 = objc_alloc(MEMORY[0x277D6B540]);
   v32 = self->super.workspace;
-  v33 = [MEMORY[0x277D6B590] entityName];
-  v34 = [v31 initWithWorkspace:v32 entityName:v33 withCache:0];
+  entityName5 = [MEMORY[0x277D6B590] entityName];
+  v34 = [v31 initWithWorkspace:v32 entityName:entityName5 withCache:0];
   fspace = self->fspace;
   self->fspace = v34;
 
@@ -834,17 +834,17 @@ void __43__FlowAnalyticsEngine__initializeInternals__block_invoke_2(uint64_t a1)
 
   v36 = objc_alloc(MEMORY[0x277D6B540]);
   v37 = self->super.workspace;
-  v38 = [MEMORY[0x277D6B598] entityName];
-  v39 = [v36 initWithWorkspace:v37 entityName:v38 withCache:0];
+  entityName6 = [MEMORY[0x277D6B598] entityName];
+  v39 = [v36 initWithWorkspace:v37 entityName:entityName6 withCache:0];
   lfpspace = self->lfpspace;
   self->lfpspace = v39;
 
   return self->lfpspace != 0;
 }
 
-- (id)createFlushInactiveLedgerTimer:(id)a3
+- (id)createFlushInactiveLedgerTimer:(id)timer
 {
-  v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, a3);
+  v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, timer);
   dispatch_source_set_timer(v4, 0, 0xD18C2E2800uLL, 0x5F5E100uLL);
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
@@ -888,28 +888,28 @@ void __54__FlowAnalyticsEngine_createFlushInactiveLedgerTimer___block_invoke(uin
   [(FlowAnalyticsEngine *)self _performAppDomainUsageAnalytics];
   if ([(FlowAnalyticsEngine *)self delegateToProxyAnalytics])
   {
-    v3 = [(FlowAnalyticsEngine *)self proxyAnalytics];
+    proxyAnalytics = [(FlowAnalyticsEngine *)self proxyAnalytics];
 
-    if (!v3)
+    if (!proxyAnalytics)
     {
       v4 = objc_opt_new();
       [(FlowAnalyticsEngine *)self setProxyAnalytics:v4];
 
-      v5 = [(FlowAnalyticsEngine *)self proxyAnalytics];
-      [v5 setDelegate:self];
+      proxyAnalytics2 = [(FlowAnalyticsEngine *)self proxyAnalytics];
+      [proxyAnalytics2 setDelegate:self];
     }
 
-    v6 = [(FlowAnalyticsEngine *)self proxyAnalytics];
-    [v6 performAppPeriodicTasks];
+    proxyAnalytics3 = [(FlowAnalyticsEngine *)self proxyAnalytics];
+    [proxyAnalytics3 performAppPeriodicTasks];
 
-    v7 = [(FlowAnalyticsEngine *)self proxyAnalytics];
-    [v7 performAppTrackingPeriodicTasks];
+    proxyAnalytics4 = [(FlowAnalyticsEngine *)self proxyAnalytics];
+    [proxyAnalytics4 performAppTrackingPeriodicTasks];
 
-    v8 = [(FlowAnalyticsEngine *)self proxyAnalytics];
-    [v8 performAppEndpointTrackingPeriodicTasks];
+    proxyAnalytics5 = [(FlowAnalyticsEngine *)self proxyAnalytics];
+    [proxyAnalytics5 performAppEndpointTrackingPeriodicTasks];
 
-    v9 = [(FlowAnalyticsEngine *)self proxyAnalytics];
-    [v9 performAppExperiencePeriodicTasks];
+    proxyAnalytics6 = [(FlowAnalyticsEngine *)self proxyAnalytics];
+    [proxyAnalytics6 performAppExperiencePeriodicTasks];
   }
 
   else
@@ -1057,8 +1057,8 @@ LABEL_6:
 - (BOOL)_setupSignalHandling
 {
   signal(30, 1);
-  v3 = [(AnalyticsEngineCore *)self queue];
-  v4 = dispatch_source_create(MEMORY[0x277D85D30], 0x1EuLL, 0, v3);
+  queue = [(AnalyticsEngineCore *)self queue];
+  v4 = dispatch_source_create(MEMORY[0x277D85D30], 0x1EuLL, 0, queue);
   v5 = _setupSignalHandling_sigusr1;
   _setupSignalHandling_sigusr1 = v4;
 
@@ -1074,8 +1074,8 @@ LABEL_6:
   }
 
   signal(29, 1);
-  v6 = [(AnalyticsEngineCore *)self queue];
-  v7 = dispatch_source_create(MEMORY[0x277D85D30], 0x1DuLL, 0, v6);
+  queue2 = [(AnalyticsEngineCore *)self queue];
+  v7 = dispatch_source_create(MEMORY[0x277D85D30], 0x1DuLL, 0, queue2);
   siginfo = self->siginfo;
   self->siginfo = v7;
 
@@ -1096,13 +1096,13 @@ LABEL_6:
 
 - (void)_setupNotificationCenterAndRelayObservers
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __64__FlowAnalyticsEngine__setupNotificationCenterAndRelayObservers__block_invoke;
   v38[3] = &unk_27898A690;
   v38[4] = self;
-  v4 = [v3 addObserverForName:@"kNotificationCellTrafficClassReportCapable" object:0 queue:0 usingBlock:v38];
+  v4 = [defaultCenter addObserverForName:@"kNotificationCellTrafficClassReportCapable" object:0 queue:0 usingBlock:v38];
   cellTCCapabilityObserver = self->cellTCCapabilityObserver;
   self->cellTCCapabilityObserver = v4;
 
@@ -1111,7 +1111,7 @@ LABEL_6:
   v37[2] = __64__FlowAnalyticsEngine__setupNotificationCenterAndRelayObservers__block_invoke_107;
   v37[3] = &unk_27898A690;
   v37[4] = self;
-  v6 = [v3 addObserverForName:@"kNotificationCellThroughputAdvisoryCapable" object:0 queue:0 usingBlock:v37];
+  v6 = [defaultCenter addObserverForName:@"kNotificationCellThroughputAdvisoryCapable" object:0 queue:0 usingBlock:v37];
   cellThroughputAdvisoryReqObserver = self->cellThroughputAdvisoryReqObserver;
   self->cellThroughputAdvisoryReqObserver = v6;
 
@@ -1123,7 +1123,7 @@ LABEL_6:
   v36[2] = __64__FlowAnalyticsEngine__setupNotificationCenterAndRelayObservers__block_invoke_118;
   v36[3] = &unk_27898A690;
   v36[4] = self;
-  v9 = [v3 addObserverForName:@"kAppStateStatsNotificationAppForegroundStateChanged" object:0 queue:0 usingBlock:v36];
+  v9 = [defaultCenter addObserverForName:@"kAppStateStatsNotificationAppForegroundStateChanged" object:0 queue:0 usingBlock:v36];
   appStateChangeObserver = self->appStateChangeObserver;
   self->appStateChangeObserver = v9;
 
@@ -1132,7 +1132,7 @@ LABEL_6:
   v35[2] = __64__FlowAnalyticsEngine__setupNotificationCenterAndRelayObservers__block_invoke_3;
   v35[3] = &unk_27898A690;
   v35[4] = self;
-  v11 = [v3 addObserverForName:@"UMSwitch" object:0 queue:0 usingBlock:v35];
+  v11 = [defaultCenter addObserverForName:@"UMSwitch" object:0 queue:0 usingBlock:v35];
   userSwitchObserver = self->userSwitchObserver;
   self->userSwitchObserver = v11;
 
@@ -1141,7 +1141,7 @@ LABEL_6:
   v34[2] = __64__FlowAnalyticsEngine__setupNotificationCenterAndRelayObservers__block_invoke_2_122;
   v34[3] = &unk_27898A690;
   v34[4] = self;
-  v13 = [v3 addObserverForName:@"AlgosScore" object:0 queue:0 usingBlock:v34];
+  v13 = [defaultCenter addObserverForName:@"AlgosScore" object:0 queue:0 usingBlock:v34];
   algosScoreObserver = self->algosScoreObserver;
   self->algosScoreObserver = v13;
 
@@ -1150,7 +1150,7 @@ LABEL_6:
   v33[2] = __64__FlowAnalyticsEngine__setupNotificationCenterAndRelayObservers__block_invoke_4;
   v33[3] = &unk_27898A690;
   v33[4] = self;
-  v15 = [v3 addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v33];
+  v15 = [defaultCenter addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v33];
   relayReadyObserver = self->relayReadyObserver;
   self->relayReadyObserver = v15;
 
@@ -1160,7 +1160,7 @@ LABEL_6:
   v32[2] = __64__FlowAnalyticsEngine__setupNotificationCenterAndRelayObservers__block_invoke_131;
   v32[3] = &unk_27898A690;
   v32[4] = self;
-  v17 = [v3 addObserverForName:@"kNotificationOfTetheringState" object:0 queue:0 usingBlock:v32];
+  v17 = [defaultCenter addObserverForName:@"kNotificationOfTetheringState" object:0 queue:0 usingBlock:v32];
   tetherObserver = self->tetherObserver;
   self->tetherObserver = v17;
 
@@ -1169,7 +1169,7 @@ LABEL_6:
   v31[2] = __64__FlowAnalyticsEngine__setupNotificationCenterAndRelayObservers__block_invoke_133;
   v31[3] = &unk_27898A690;
   v31[4] = self;
-  v19 = [v3 addObserverForName:@"kNotificationFlowStats" object:0 queue:0 usingBlock:v31];
+  v19 = [defaultCenter addObserverForName:@"kNotificationFlowStats" object:0 queue:0 usingBlock:v31];
   flowObserver = self->flowObserver;
   self->flowObserver = v19;
 
@@ -1178,7 +1178,7 @@ LABEL_6:
   v30[2] = __64__FlowAnalyticsEngine__setupNotificationCenterAndRelayObservers__block_invoke_3_135;
   v30[3] = &unk_27898A690;
   v30[4] = self;
-  v21 = [v3 addObserverForName:@"kNotificationExpectedTransfer" object:0 queue:0 usingBlock:v30];
+  v21 = [defaultCenter addObserverForName:@"kNotificationExpectedTransfer" object:0 queue:0 usingBlock:v30];
   transferSizeObserver = self->transferSizeObserver;
   self->transferSizeObserver = v21;
 
@@ -1187,7 +1187,7 @@ LABEL_6:
   v29[2] = __64__FlowAnalyticsEngine__setupNotificationCenterAndRelayObservers__block_invoke_5_137;
   v29[3] = &unk_27898A690;
   v29[4] = self;
-  v23 = [v3 addObserverForName:@"kNotificationCoreMediaAssetDownload" object:0 queue:0 usingBlock:v29];
+  v23 = [defaultCenter addObserverForName:@"kNotificationCoreMediaAssetDownload" object:0 queue:0 usingBlock:v29];
   assetDownloadObserver = self->assetDownloadObserver;
   self->assetDownloadObserver = v23;
 
@@ -1196,7 +1196,7 @@ LABEL_6:
   v28[2] = __64__FlowAnalyticsEngine__setupNotificationCenterAndRelayObservers__block_invoke_2_139;
   v28[3] = &unk_27898A690;
   v28[4] = self;
-  v25 = [v3 addObserverForName:@"kNotificationDASOversizeLoad" object:0 queue:0 usingBlock:v28];
+  v25 = [defaultCenter addObserverForName:@"kNotificationDASOversizeLoad" object:0 queue:0 usingBlock:v28];
   sizeableBackgroundTransferObserver = self->sizeableBackgroundTransferObserver;
   self->sizeableBackgroundTransferObserver = v25;
 
@@ -1596,13 +1596,13 @@ void __64__FlowAnalyticsEngine__setupNotificationCenterAndRelayObservers__block_
 - (void)_setupDailyMaintenanceActivity
 {
   objc_initWeak(&location, self);
-  v3 = [(AnalyticsEngineCore *)self queue];
+  queue = [(AnalyticsEngineCore *)self queue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__FlowAnalyticsEngine__setupDailyMaintenanceActivity__block_invoke;
   v4[3] = &unk_27898C3B0;
   objc_copyWeak(&v5, &location);
-  [(PeriodicMaintenanceActivity *)DailyMaintenanceActivity registerPeriodicActivityWithIdentifier:@"FAEngine.Daily" queue:v3 activity:v4];
+  [(PeriodicMaintenanceActivity *)DailyMaintenanceActivity registerPeriodicActivityWithIdentifier:@"FAEngine.Daily" queue:queue activity:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2526,33 +2526,33 @@ LABEL_12:
     self->nstatManagerConfigured = 0;
   }
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 removeObserver:self->tetherObserver];
-  [v12 removeObserver:self->algosScoreObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->tetherObserver];
+  [defaultCenter removeObserver:self->algosScoreObserver];
   algosScoreObserver = self->algosScoreObserver;
   self->algosScoreObserver = 0;
 
-  [v12 removeObserver:self->appStateChangeObserver];
+  [defaultCenter removeObserver:self->appStateChangeObserver];
   appStateChangeObserver = self->appStateChangeObserver;
   self->appStateChangeObserver = 0;
 
-  [v12 removeObserver:self->assetDownloadObserver];
+  [defaultCenter removeObserver:self->assetDownloadObserver];
   assetDownloadObserver = self->assetDownloadObserver;
   self->assetDownloadObserver = 0;
 
-  [v12 removeObserver:self->cellThroughputAdvisoryReqObserver];
+  [defaultCenter removeObserver:self->cellThroughputAdvisoryReqObserver];
   cellThroughputAdvisoryReqObserver = self->cellThroughputAdvisoryReqObserver;
   self->cellThroughputAdvisoryReqObserver = 0;
 
   if (self->relayReadyObserver)
   {
-    [v12 removeObserver:?];
+    [defaultCenter removeObserver:?];
   }
 
   [(NetworkStateRelay *)self->_wifiRelay removeObserver:self forKeyPath:@"primary"];
   [(CellularStateRelay *)self->_cellRelay removeObserver:self forKeyPath:@"primary"];
   [(CellularStateRelay *)self->_cellRelay removeObserver:self forKeyPath:@"nrFrequencyBand"];
-  [v12 removeObserver:self->flowObserver];
+  [defaultCenter removeObserver:self->flowObserver];
   flushOldFlowRecordsTimer = self->flushOldFlowRecordsTimer;
   if (flushOldFlowRecordsTimer)
   {
@@ -2563,26 +2563,26 @@ LABEL_12:
 
   if (self->userSwitchObserver)
   {
-    [v12 removeObserver:?];
+    [defaultCenter removeObserver:?];
     userSwitchObserver = self->userSwitchObserver;
     self->userSwitchObserver = 0;
   }
 
   if (self->userAppTrackingObserver)
   {
-    [v12 removeObserver:?];
+    [defaultCenter removeObserver:?];
     userAppTrackingObserver = self->userAppTrackingObserver;
     self->userAppTrackingObserver = 0;
   }
 
   if (self->userEndpointTrackingObserver)
   {
-    [v12 removeObserver:?];
+    [defaultCenter removeObserver:?];
     userEndpointTrackingObserver = self->userEndpointTrackingObserver;
     self->userEndpointTrackingObserver = 0;
   }
 
-  [v12 removeObserver:self->domainResolvingObserver];
+  [defaultCenter removeObserver:self->domainResolvingObserver];
   domainResolvingObserver = self->domainResolvingObserver;
   self->domainResolvingObserver = 0;
 
@@ -2595,23 +2595,23 @@ LABEL_12:
   [(AnalyticsEngineCore *)&v24 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 isEqualToString:@"primary"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"primary"])
   {
-    v12 = v10;
-    v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-    v14 = [v12 functionalInterfaceType];
+    v12 = objectCopy;
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    functionalInterfaceType = [v12 functionalInterfaceType];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 && [v13 BOOLValue])
     {
-      if (v14 == 3)
+      if (functionalInterfaceType == 3)
       {
-        objc_storeStrong(&self->_mostRecentPrimaryRelay, a4);
+        objc_storeStrong(&self->_mostRecentPrimaryRelay, object);
         v15 = +[TrackedFlow allActiveFlowsCount];
       }
 
@@ -2627,77 +2627,77 @@ LABEL_12:
     }
   }
 
-  if ([v9 isEqualToString:@"nrFrequencyBand"])
+  if ([pathCopy isEqualToString:@"nrFrequencyBand"])
   {
-    v17 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v17 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v17 shortValue];
-      if (v18 >= 3)
+      shortValue = [v17 shortValue];
+      if (shortValue >= 3)
       {
         v19 = -1;
       }
 
       else
       {
-        v19 = v18;
+        v19 = shortValue;
       }
 
-      v20 = [(AnalyticsEngineCore *)self queue];
+      queue = [(AnalyticsEngineCore *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __70__FlowAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___block_invoke;
       block[3] = &unk_27898A3A0;
       block[4] = self;
       v43 = v19;
-      dispatch_async(v20, block);
+      dispatch_async(queue, block);
     }
   }
 
-  if ([v9 isEqualToString:@"autoBugCaptureEnabled"])
+  if ([pathCopy isEqualToString:@"autoBugCaptureEnabled"])
   {
-    v21 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v21 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     v22 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v23 = v22;
-      v24 = [v21 BOOLValue];
+      bOOLValue = [v21 BOOLValue];
       *buf = 67109120;
-      v45 = v24;
+      v45 = bOOLValue;
       _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_DEFAULT, "Observed value for autoBugCaptureEnabled is %d", buf, 8u);
     }
 
-    v25 = [(AnalyticsEngineCore *)self queue];
+    queue2 = [(AnalyticsEngineCore *)self queue];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __70__FlowAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___block_invoke_195;
     v39[3] = &unk_27898A7D0;
     v40 = v21;
-    v41 = self;
+    selfCopy = self;
     v26 = v21;
-    dispatch_async(v25, v39);
+    dispatch_async(queue2, v39);
 
     v27 = v40;
     goto LABEL_27;
   }
 
-  if ([v9 isEqualToString:@"screenNotDark"])
+  if ([pathCopy isEqualToString:@"screenNotDark"])
   {
-    v26 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v26 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v28 = v26;
-      v29 = [(AnalyticsEngineCore *)self queue];
+      queue3 = [(AnalyticsEngineCore *)self queue];
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __70__FlowAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
       v36[3] = &unk_27898A7D0;
       v37 = v28;
-      v38 = self;
+      selfCopy2 = self;
       v27 = v28;
-      dispatch_async(v29, v36);
+      dispatch_async(queue3, v36);
 
       v30 = v37;
 LABEL_26:
@@ -2711,14 +2711,14 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ([v9 isEqualToString:@"screenUnlocked"])
+  if ([pathCopy isEqualToString:@"screenUnlocked"])
   {
-    v26 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v26 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v31 = v26;
-      v32 = [(AnalyticsEngineCore *)self queue];
+      queue4 = [(AnalyticsEngineCore *)self queue];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __70__FlowAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___block_invoke_199;
@@ -2726,7 +2726,7 @@ LABEL_27:
       v34[4] = self;
       v35 = v31;
       v27 = v31;
-      dispatch_async(v32, v34);
+      dispatch_async(queue4, v34);
 
       v30 = v35;
       goto LABEL_26;
@@ -2871,10 +2871,10 @@ void __70__FlowAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshFullDataUsageWithCallback:(id)a3
+- (void)_refreshFullDataUsageWithCallback:(id)callback
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbackCopy = callback;
   ++_refreshFullDataUsageWithCallback__debugCount;
   v5 = attributionLogHandle;
   if (os_log_type_enabled(attributionLogHandle, OS_LOG_TYPE_INFO))
@@ -2894,7 +2894,7 @@ void __70__FlowAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___
   }
 
   v11 = _refreshFullDataUsageWithCallback__debugCount;
-  v12 = [(AnalyticsEngineCore *)self queue];
+  queue = [(AnalyticsEngineCore *)self queue];
   v13 = _Block_copy(self->dataUsageRefreshCompletionBlock);
   ++self->dataUsageRefreshCompletionNumWaiting;
   v24 = MEMORY[0x277D85DD0];
@@ -2903,10 +2903,10 @@ void __70__FlowAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___
   v27 = &unk_27898C468;
   v14 = v13;
   v29 = v14;
-  v15 = v12;
+  v15 = queue;
   v28 = v15;
   v31 = v11;
-  v16 = v4;
+  v16 = callbackCopy;
   v30 = v16;
   v17 = _Block_copy(&v24);
   v18 = self->dataUsageRefreshCompletionBlock;
@@ -2969,7 +2969,7 @@ uint64_t __57__FlowAnalyticsEngine__refreshFullDataUsageWithCallback___block_inv
   return result;
 }
 
-- (void)_reportThresholdedFlowCount:(unint64_t)a3 threshold:(unint64_t)a4
+- (void)_reportThresholdedFlowCount:(unint64_t)count threshold:(unint64_t)threshold
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
@@ -3085,17 +3085,17 @@ BOOL __61__FlowAnalyticsEngine__reportThresholdedFlowCount_threshold___block_inv
   return v8 == 0;
 }
 
-- (void)_logExcessCellUsage:(int64_t)a3 snapshot:(id)a4
+- (void)_logExcessCellUsage:(int64_t)usage snapshot:(id)snapshot
 {
   v55 = *MEMORY[0x277D85DE8];
   v6 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     log = v6;
-    v7 = a4;
-    v8 = [v7 snapshotReason];
+    snapshotCopy = snapshot;
+    snapshotReason = [snapshotCopy snapshotReason];
     v9 = "";
-    if (v8 == 2)
+    if (snapshotReason == 2)
     {
       v9 = "closed";
     }
@@ -3110,26 +3110,26 @@ BOOL __61__FlowAnalyticsEngine__reportThresholdedFlowCount_threshold___block_inv
     }
 
     v26 = v11;
-    v12 = [v7 flowUsesChannels];
+    flowUsesChannels = [snapshotCopy flowUsesChannels];
     v13 = "socket";
-    if (v12)
+    if (flowUsesChannels)
     {
       v13 = "channel";
     }
 
-    v14 = [v7 sourceIdentifier];
-    [v7 flowDuration];
+    sourceIdentifier = [snapshotCopy sourceIdentifier];
+    [snapshotCopy flowDuration];
     v16 = v15;
-    v17 = [v7 processID];
-    v18 = [v7 processName];
-    v19 = [v7 uuid];
-    v20 = [v7 euuid];
-    v21 = [v7 vuuid];
-    v22 = [v7 attributedEntity];
-    v23 = [v7 attributionReasonString];
+    processID = [snapshotCopy processID];
+    processName = [snapshotCopy processName];
+    uuid = [snapshotCopy uuid];
+    euuid = [snapshotCopy euuid];
+    vuuid = [snapshotCopy vuuid];
+    attributedEntity = [snapshotCopy attributedEntity];
+    attributionReasonString = [snapshotCopy attributionReasonString];
 
     *buf = 134221058;
-    v30 = a3;
+    usageCopy = usage;
     v31 = 2080;
     v32 = v27;
     v33 = 2080;
@@ -3137,36 +3137,36 @@ BOOL __61__FlowAnalyticsEngine__reportThresholdedFlowCount_threshold___block_inv
     v35 = 2080;
     v36 = v25;
     v37 = 2048;
-    v38 = v14;
+    v38 = sourceIdentifier;
     v39 = 2048;
     v40 = v16;
     v41 = 1024;
-    v42 = v17;
+    v42 = processID;
     v43 = 2112;
-    v44 = v18;
+    v44 = processName;
     v45 = 2112;
-    v46 = v19;
+    v46 = uuid;
     v47 = 2112;
-    v48 = v20;
+    v48 = euuid;
     v49 = 2112;
-    v50 = v21;
+    v50 = vuuid;
     v51 = 2112;
-    v52 = v22;
+    v52 = attributedEntity;
     v53 = 2112;
-    v54 = v23;
+    v54 = attributionReasonString;
     _os_log_impl(&dword_23255B000, log, OS_LOG_TYPE_DEFAULT, "Cell traffic threshold %lld on %s %s %s flow %lld duration %.2f with pid %d procname %@ UUID %@ EUUID %@ VUUID %@ (attributed %@ reason%@)", buf, 0x80u);
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkCellExcessUsageActions:(unint64_t)a3 previous:(unint64_t)a4 snapshot:(id)a5
+- (void)_checkCellExcessUsageActions:(unint64_t)actions previous:(unint64_t)previous snapshot:(id)snapshot
 {
-  v15 = a5;
-  v8 = [v15 snapshotReason];
-  if (a3 > 0x100000 && (a3 > 0xA00000 ? (v9 = a4 >= 0xA00001) : (v9 = 1), v9 ? (v10 = 0) : (v10 = 1), a4 <= 0x100000 || (v10 & 1) != 0 || v8 == 2))
+  snapshotCopy = snapshot;
+  snapshotReason = [snapshotCopy snapshotReason];
+  if (actions > 0x100000 && (actions > 0xA00000 ? (v9 = previous >= 0xA00001) : (v9 = 1), v9 ? (v10 = 0) : (v10 = 1), previous <= 0x100000 || (v10 & 1) != 0 || snapshotReason == 2))
   {
-    [(FlowAnalyticsEngine *)self _logExcessCellUsage:a3 snapshot:v15];
+    [(FlowAnalyticsEngine *)self _logExcessCellUsage:actions snapshot:snapshotCopy];
     v11 = 1;
   }
 
@@ -3185,23 +3185,23 @@ BOOL __61__FlowAnalyticsEngine__reportThresholdedFlowCount_threshold___block_inv
     }
   }
 
-  if (v12 < a3 && v12 >= a4)
+  if (v12 < actions && v12 >= previous)
   {
     if ((v11 & 1) == 0)
     {
-      [(FlowAnalyticsEngine *)self _logExcessCellUsage:a3 snapshot:v15];
+      [(FlowAnalyticsEngine *)self _logExcessCellUsage:actions snapshot:snapshotCopy];
     }
 
-    [(FlowAnalyticsEngine *)self _generateFlowAnomalySymptom:405527 currentUsage:a3 snapshot:v15];
+    [(FlowAnalyticsEngine *)self _generateFlowAnomalySymptom:405527 currentUsage:actions snapshot:snapshotCopy];
   }
 }
 
-- (BOOL)_shouldSendStatisticsReport:(id)a3
+- (BOOL)_shouldSendStatisticsReport:(id)report
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  reportCopy = report;
+  v4 = reportCopy;
+  if (!reportCopy)
   {
     v10 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
@@ -3217,7 +3217,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v3 snapshotReason] != 2)
+  if ([reportCopy snapshotReason] != 2)
   {
     v10 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
@@ -3266,12 +3266,12 @@ LABEL_16:
   return v9;
 }
 
-- (void)_sendStatisticsReport:(id)a3
+- (void)_sendStatisticsReport:(id)report
 {
   v71 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  reportCopy = report;
+  v4 = reportCopy;
+  if (!reportCopy)
   {
     v50 = analyticsLogHandle;
     if (!os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
@@ -3286,7 +3286,7 @@ LABEL_38:
     goto LABEL_61;
   }
 
-  if ([v3 snapshotReason] != 2)
+  if ([reportCopy snapshotReason] != 2)
   {
     v50 = analyticsLogHandle;
     if (!os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
@@ -3314,13 +3314,13 @@ LABEL_38:
     xpc_dictionary_set_uint64(v5, "cellularBytesOut", [v4 txCellularBytes]);
     [v4 flowDuration];
     xpc_dictionary_set_double(v5, "duration", v6);
-    v7 = [v4 flowTypeLowerCase];
-    v8 = [v7 UTF8String];
+    flowTypeLowerCase = [v4 flowTypeLowerCase];
+    uTF8String = [flowTypeLowerCase UTF8String];
 
-    if (v8)
+    if (uTF8String)
     {
-      v9 = [v4 flowTypeLowerCase];
-      xpc_dictionary_set_string(v5, "type", [v9 UTF8String]);
+      flowTypeLowerCase2 = [v4 flowTypeLowerCase];
+      xpc_dictionary_set_string(v5, "type", [flowTypeLowerCase2 UTF8String]);
     }
 
     xpc_dictionary_set_BOOL(v5, "isIPv4", [v4 isIPv4]);
@@ -3350,42 +3350,42 @@ LABEL_38:
     xpc_dictionary_set_uint64(v5, "trafficClass", [v4 trafficClass]);
     xpc_dictionary_set_uint64(v5, "receiveBufferSize", [v4 receiveBufferSize]);
     xpc_dictionary_set_uint64(v5, "receiveBufferUsed", [v4 receiveBufferUsed]);
-    v10 = [v4 attributedEntity];
-    v11 = [v10 UTF8String];
+    attributedEntity = [v4 attributedEntity];
+    uTF8String2 = [attributedEntity UTF8String];
 
-    if (v11)
+    if (uTF8String2)
     {
-      v12 = [v4 attributedEntity];
-      xpc_dictionary_set_string(v5, "attributedEntity", [v12 UTF8String]);
+      attributedEntity2 = [v4 attributedEntity];
+      xpc_dictionary_set_string(v5, "attributedEntity", [attributedEntity2 UTF8String]);
     }
 
     xpc_dictionary_set_BOOL(v5, "attributedEntityIsProcessName", [v4 attributedEntityIsProcessName]);
     xpc_dictionary_set_BOOL(v5, "attributedEntityIsBundleName", [v4 attributedEntityIsBundleName]);
-    v13 = [v4 attributionReasonString];
-    v14 = [v13 UTF8String];
+    attributionReasonString = [v4 attributionReasonString];
+    uTF8String3 = [attributionReasonString UTF8String];
 
-    if (v14)
+    if (uTF8String3)
     {
-      v15 = [v4 attributionReasonString];
-      xpc_dictionary_set_string(v5, "attributionReason", [v15 UTF8String]);
+      attributionReasonString2 = [v4 attributionReasonString];
+      xpc_dictionary_set_string(v5, "attributionReason", [attributionReasonString2 UTF8String]);
     }
 
-    v16 = [v4 delegateName];
-    v17 = [v16 UTF8String];
+    delegateName = [v4 delegateName];
+    uTF8String4 = [delegateName UTF8String];
 
-    if (v17)
+    if (uTF8String4)
     {
-      v18 = [v4 delegateName];
-      xpc_dictionary_set_string(v5, "delegateName", [v18 UTF8String]);
+      delegateName2 = [v4 delegateName];
+      xpc_dictionary_set_string(v5, "delegateName", [delegateName2 UTF8String]);
     }
 
-    v19 = [v4 processName];
-    v20 = [v19 UTF8String];
+    processName = [v4 processName];
+    uTF8String5 = [processName UTF8String];
 
-    if (v20)
+    if (uTF8String5)
     {
-      v21 = [v4 processName];
-      xpc_dictionary_set_string(v5, "processName", [v21 UTF8String]);
+      processName2 = [v4 processName];
+      xpc_dictionary_set_string(v5, "processName", [processName2 UTF8String]);
     }
 
     xpc_dictionary_set_BOOL(v5, "isDaemon", [v4 isADaemon]);
@@ -3398,40 +3398,40 @@ LABEL_38:
     xpc_dictionary_set_BOOL(v5, "uiBackgroundAudioCapable", [v4 uiBackgroundAudioCapable]);
     if (os_variant_has_internal_diagnostics() && _os_feature_enabled_impl())
     {
-      v22 = [v4 domainName];
-      v23 = [v22 UTF8String];
+      domainName = [v4 domainName];
+      uTF8String6 = [domainName UTF8String];
 
-      if (v23)
+      if (uTF8String6)
       {
-        v24 = [v4 domainName];
-        xpc_dictionary_set_string(v5, "domainName", [v24 UTF8String]);
+        domainName2 = [v4 domainName];
+        xpc_dictionary_set_string(v5, "domainName", [domainName2 UTF8String]);
       }
 
-      v25 = [v4 domainOwner];
-      v26 = [v25 UTF8String];
+      domainOwner = [v4 domainOwner];
+      uTF8String7 = [domainOwner UTF8String];
 
-      if (v26)
+      if (uTF8String7)
       {
-        v27 = [v4 domainOwner];
-        xpc_dictionary_set_string(v5, "domainOwner", [v27 UTF8String]);
+        domainOwner2 = [v4 domainOwner];
+        xpc_dictionary_set_string(v5, "domainOwner", [domainOwner2 UTF8String]);
       }
 
-      v28 = [v4 domainTrackerContext];
-      v29 = [v28 UTF8String];
+      domainTrackerContext = [v4 domainTrackerContext];
+      uTF8String8 = [domainTrackerContext UTF8String];
 
-      if (v29)
+      if (uTF8String8)
       {
-        v30 = [v4 domainTrackerContext];
-        xpc_dictionary_set_string(v5, "domainTrackerContext", [v30 UTF8String]);
+        domainTrackerContext2 = [v4 domainTrackerContext];
+        xpc_dictionary_set_string(v5, "domainTrackerContext", [domainTrackerContext2 UTF8String]);
       }
 
-      v31 = [v4 domainAttributedBundleId];
-      v32 = [v31 UTF8String];
+      domainAttributedBundleId = [v4 domainAttributedBundleId];
+      uTF8String9 = [domainAttributedBundleId UTF8String];
 
-      if (v32)
+      if (uTF8String9)
       {
-        v33 = [v4 domainAttributedBundleId];
-        xpc_dictionary_set_string(v5, "domainAttributedBundleId", [v33 UTF8String]);
+        domainAttributedBundleId2 = [v4 domainAttributedBundleId];
+        xpc_dictionary_set_string(v5, "domainAttributedBundleId", [domainAttributedBundleId2 UTF8String]);
       }
     }
 
@@ -3454,13 +3454,13 @@ LABEL_38:
       xpc_dictionary_set_uint64(v5, "txWindow", [v34 txWindow]);
       xpc_dictionary_set_uint64(v5, "txCongestionWindow", [v34 txCongestionWindow]);
       xpc_dictionary_set_uint64(v5, "trafficManagementFlags", [v34 trafficManagementFlags]);
-      v38 = [v34 congestionAlgorithm];
-      v39 = [v38 UTF8String];
+      congestionAlgorithm = [v34 congestionAlgorithm];
+      uTF8String10 = [congestionAlgorithm UTF8String];
 
-      if (v39)
+      if (uTF8String10)
       {
-        v40 = [v34 congestionAlgorithm];
-        xpc_dictionary_set_string(v5, "congestionAlgorithm", [v40 UTF8String]);
+        congestionAlgorithm2 = [v34 congestionAlgorithm];
+        xpc_dictionary_set_string(v5, "congestionAlgorithm", [congestionAlgorithm2 UTF8String]);
       }
 
       xpc_dictionary_set_BOOL(v5, "probeActivated", [v34 probeActivated]);
@@ -3481,9 +3481,9 @@ LABEL_38:
       xpc_dictionary_set_double(v5, "rttVariation", v44);
       xpc_dictionary_set_uint64(v5, "rxDuplicateBytes", [v41 rxDuplicateBytes]);
       xpc_dictionary_set_uint64(v5, "rxOutOfOrderBytes", [v41 rxOutOfOrderBytes]);
-      v45 = [v41 txRetransmittedBytes];
+      txRetransmittedBytes = [v41 txRetransmittedBytes];
 
-      xpc_dictionary_set_uint64(v5, "txRetransmittedBytes", v45);
+      xpc_dictionary_set_uint64(v5, "txRetransmittedBytes", txRetransmittedBytes);
     }
 
     objc_opt_class();
@@ -3493,11 +3493,11 @@ LABEL_38:
       [v46 connDuration];
       xpc_dictionary_set_double(v5, "connectionDuration", v47);
       xpc_dictionary_set_BOOL(v5, "hasNetAccess", [v46 hasNetAccess]);
-      v48 = [v46 currentProperties];
-      v49 = v48;
-      if (v48)
+      currentProperties = [v46 currentProperties];
+      v49 = currentProperties;
+      if (currentProperties)
       {
-        if ([v48 isSilent])
+        if ([currentProperties isSilent])
         {
 
 LABEL_60:
@@ -3508,40 +3508,40 @@ LABEL_60:
         xpc_dictionary_set_BOOL(v5, "nw_isNonAppInitiated", [v49 isNonAppInitiated]);
         if (os_variant_has_internal_diagnostics() && _os_feature_enabled_impl())
         {
-          v52 = [v49 domainName];
-          v53 = [v52 UTF8String];
+          domainName3 = [v49 domainName];
+          uTF8String11 = [domainName3 UTF8String];
 
-          if (v53)
+          if (uTF8String11)
           {
-            v54 = [v49 domainName];
-            xpc_dictionary_set_string(v5, "nw_domainName", [v54 UTF8String]);
+            domainName4 = [v49 domainName];
+            xpc_dictionary_set_string(v5, "nw_domainName", [domainName4 UTF8String]);
           }
 
-          v55 = [v49 domainOwner];
-          v56 = [v55 UTF8String];
+          domainOwner3 = [v49 domainOwner];
+          uTF8String12 = [domainOwner3 UTF8String];
 
-          if (v56)
+          if (uTF8String12)
           {
-            v57 = [v49 domainOwner];
-            xpc_dictionary_set_string(v5, "nw_domainOwner", [v57 UTF8String]);
+            domainOwner4 = [v49 domainOwner];
+            xpc_dictionary_set_string(v5, "nw_domainOwner", [domainOwner4 UTF8String]);
           }
 
-          v58 = [v49 domainTrackerContext];
-          v59 = [v58 UTF8String];
+          domainTrackerContext3 = [v49 domainTrackerContext];
+          uTF8String13 = [domainTrackerContext3 UTF8String];
 
-          if (v59)
+          if (uTF8String13)
           {
-            v60 = [v49 domainTrackerContext];
-            xpc_dictionary_set_string(v5, "nw_domainTrackerContext", [v60 UTF8String]);
+            domainTrackerContext4 = [v49 domainTrackerContext];
+            xpc_dictionary_set_string(v5, "nw_domainTrackerContext", [domainTrackerContext4 UTF8String]);
           }
 
-          v61 = [v49 domainAttributedBundleId];
-          v62 = [v61 UTF8String];
+          domainAttributedBundleId3 = [v49 domainAttributedBundleId];
+          uTF8String14 = [domainAttributedBundleId3 UTF8String];
 
-          if (v62)
+          if (uTF8String14)
           {
-            v63 = [v49 domainAttributedBundleId];
-            xpc_dictionary_set_string(v5, "nw_domainAttributedBundleId", [v63 UTF8String]);
+            domainAttributedBundleId4 = [v49 domainAttributedBundleId];
+            xpc_dictionary_set_string(v5, "nw_domainAttributedBundleId", [domainAttributedBundleId4 UTF8String]);
           }
         }
       }
@@ -3588,16 +3588,16 @@ LABEL_61:
   v68 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSnapshot:(id)a3
+- (void)_handleSnapshot:(id)snapshot
 {
   v220 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  snapshotCopy = snapshot;
+  if (snapshotCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = snapshotCopy;
       if ([v5 isSubFlow])
       {
         v6 = analyticsLogHandle;
@@ -3613,13 +3613,13 @@ LABEL_61:
       }
     }
 
-    v9 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "sourceIdentifier")}];
-    v10 = [v4 snapshotReason];
+    v9 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(snapshotCopy, "sourceIdentifier")}];
+    snapshotReason = [snapshotCopy snapshotReason];
     v11 = analyticsLogHandle;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      *v191 = v4;
+      *v191 = snapshotCopy;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "Flow data on entry is %@", buf, 0xCu);
     }
 
@@ -3627,7 +3627,7 @@ LABEL_61:
     v13 = attributionLogHandle;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      if (v10 == 2)
+      if (snapshotReason == 2)
       {
         v14 = "";
       }
@@ -3638,15 +3638,15 @@ LABEL_61:
       }
 
       v15 = +[TrackedFlow allActiveFlowsCount];
-      v16 = [v4 sourceIdentifier];
+      sourceIdentifier = [snapshotCopy sourceIdentifier];
       *buf = 136316162;
       *v191 = v14;
       *&v191[8] = 2048;
       *&v191[10] = v15;
       v192 = 2048;
-      v193 = *&v16;
+      v193 = *&sourceIdentifier;
       v194 = 2112;
-      v195 = v4;
+      v195 = snapshotCopy;
       v196 = 2112;
       v197 = v12;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEBUG, "flow is %sclosed. cache count %lu\nsrc %lld snapshot: %@\nflow: %@", buf, 0x34u);
@@ -3661,9 +3661,9 @@ LABEL_61:
         if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
         {
           v34 = v33;
-          v35 = [v4 attributedEntity];
+          attributedEntity = [snapshotCopy attributedEntity];
           *buf = 138478083;
-          *v191 = v35;
+          *v191 = attributedEntity;
           *&v191[8] = 2112;
           *&v191[10] = v9;
           _os_log_impl(&dword_23255B000, v34, OS_LOG_TYPE_ERROR, "Unable to create TrackedFlow for %{private}@ with flowKey %@", buf, 0x16u);
@@ -3694,8 +3694,8 @@ LABEL_61:
           v27 = 0.0;
           if ([(NetworkStateRelay *)mostRecentPrimaryRelay primary]&& [(NetworkStateRelay *)self->_mostRecentPrimaryRelay functionalInterfaceType]== 3)
           {
-            v28 = [(NetworkStateRelay *)self->_mostRecentPrimaryRelay madePrimaryDate];
-            [v28 timeIntervalSinceNow];
+            madePrimaryDate = [(NetworkStateRelay *)self->_mostRecentPrimaryRelay madePrimaryDate];
+            [madePrimaryDate timeIntervalSinceNow];
             v27 = -v29;
           }
 
@@ -3714,14 +3714,14 @@ LABEL_61:
           if (v27 > 0.0 && v27 < 180.0)
           {
             self->thunderingHerdFlowCountExceededThreshold = 1;
-            v31 = [(AnalyticsEngineCore *)self queue];
+            queue = [(AnalyticsEngineCore *)self queue];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __39__FlowAnalyticsEngine__handleSnapshot___block_invoke;
             block[3] = &unk_27898AFE0;
             block[4] = self;
             block[5] = v25;
-            dispatch_async(v31, block);
+            dispatch_async(queue, block);
           }
         }
       }
@@ -3729,36 +3729,36 @@ LABEL_61:
       if (!self->flowCountExceededThreshold && v22 >= 0x3E9)
       {
         self->flowCountExceededThreshold = 1;
-        v32 = [(AnalyticsEngineCore *)self queue];
+        queue2 = [(AnalyticsEngineCore *)self queue];
         v188[0] = MEMORY[0x277D85DD0];
         v188[1] = 3221225472;
         v188[2] = __39__FlowAnalyticsEngine__handleSnapshot___block_invoke_2;
         v188[3] = &unk_27898AFE0;
         v188[4] = self;
         v188[5] = v22;
-        dispatch_async(v32, v188);
+        dispatch_async(queue2, v188);
       }
     }
 
-    if (([v12 flags] & 0x200) == 0 && (objc_msgSend(v12, "inheritEarlyProperties:", v4) & 1) == 0 && v10 != 2)
+    if (([v12 flags] & 0x200) == 0 && (objc_msgSend(v12, "inheritEarlyProperties:", snapshotCopy) & 1) == 0 && snapshotReason != 2)
     {
-      -[NWStatsManager ignoreSource:](self->nstatManager, "ignoreSource:", [v4 sourceIdentifier]);
+      -[NWStatsManager ignoreSource:](self->nstatManager, "ignoreSource:", [snapshotCopy sourceIdentifier]);
 
 LABEL_222:
       goto LABEL_223;
     }
 
-    v183 = v10;
-    v17 = [v12 ownerKey];
-    if (!v17)
+    v183 = snapshotReason;
+    ownerKey = [v12 ownerKey];
+    if (!ownerKey)
     {
-      v17 = [v4 attributedEntity];
-      v18 = [v4 delegateName];
+      ownerKey = [snapshotCopy attributedEntity];
+      delegateName = [snapshotCopy delegateName];
 
-      if (v18)
+      if (delegateName)
       {
-        v19 = [v4 delegateName];
-        [AppTracker noteFlow:v12 withDelegatee:v19 snapshot:v4];
+        delegateName2 = [snapshotCopy delegateName];
+        [AppTracker noteFlow:v12 withDelegatee:delegateName2 snapshot:snapshotCopy];
       }
 
       else if (v183 != 2)
@@ -3766,64 +3766,64 @@ LABEL_222:
         goto LABEL_50;
       }
 
-      [v12 setOwnerKey:v17];
+      [v12 setOwnerKey:ownerKey];
     }
 
 LABEL_50:
-    [AppTracker noteFlow:v12 withOwner:v17 snapshot:v4];
-    if ([v4 networkActivityMapStartTime])
+    [AppTracker noteFlow:v12 withOwner:ownerKey snapshot:snapshotCopy];
+    if ([snapshotCopy networkActivityMapStartTime])
     {
-      [(FlowScrutinizer *)self->flowScrutinizer addActivityBitmapFromSnapshot:v4];
+      [(FlowScrutinizer *)self->flowScrutinizer addActivityBitmapFromSnapshot:snapshotCopy];
     }
 
-    if (-[FlowScrutinizer cellFlowsScrutinized](self->flowScrutinizer, "cellFlowsScrutinized") && (([v4 interfaceCellular] & 1) != 0 || objc_msgSend(v4, "rxCellularBytes") || objc_msgSend(v4, "txCellularBytes")) && (-[FlowScrutinizer cellFlowsScrutinized](self->flowScrutinizer, "cellFlowsScrutinized") == 2 || objc_msgSend(v4, "snapshotReason") == 2) || -[FlowScrutinizer wifiFlowsScrutinized](self->flowScrutinizer, "wifiFlowsScrutinized") && ((objc_msgSend(v4, "interfaceWiFi") & 1) != 0 || objc_msgSend(v4, "rxWiFiBytes") || objc_msgSend(v4, "txWiFiBytes")) && (objc_msgSend(v4, "hasLocalDestination") & 1) == 0 && (-[FlowScrutinizer wifiFlowsScrutinized](self->flowScrutinizer, "wifiFlowsScrutinized") == 2 || objc_msgSend(v4, "snapshotReason") == 2))
+    if (-[FlowScrutinizer cellFlowsScrutinized](self->flowScrutinizer, "cellFlowsScrutinized") && (([snapshotCopy interfaceCellular] & 1) != 0 || objc_msgSend(snapshotCopy, "rxCellularBytes") || objc_msgSend(snapshotCopy, "txCellularBytes")) && (-[FlowScrutinizer cellFlowsScrutinized](self->flowScrutinizer, "cellFlowsScrutinized") == 2 || objc_msgSend(snapshotCopy, "snapshotReason") == 2) || -[FlowScrutinizer wifiFlowsScrutinized](self->flowScrutinizer, "wifiFlowsScrutinized") && ((objc_msgSend(snapshotCopy, "interfaceWiFi") & 1) != 0 || objc_msgSend(snapshotCopy, "rxWiFiBytes") || objc_msgSend(snapshotCopy, "txWiFiBytes")) && (objc_msgSend(snapshotCopy, "hasLocalDestination") & 1) == 0 && (-[FlowScrutinizer wifiFlowsScrutinized](self->flowScrutinizer, "wifiFlowsScrutinized") == 2 || objc_msgSend(snapshotCopy, "snapshotReason") == 2))
     {
-      if ([v4 attributedEntityIsBundleName] && (objc_msgSend(v4, "attributedEntity"), v36 = objc_claimAutoreleasedReturnValue(), v36, v36))
+      if ([snapshotCopy attributedEntityIsBundleName] && (objc_msgSend(snapshotCopy, "attributedEntity"), v36 = objc_claimAutoreleasedReturnValue(), v36, v36))
       {
-        v37 = [v4 attributedEntity];
-        [v4 setUiBackgroundAudioCapable:{-[FlowAnalyticsEngine _bundleBackgroundAudioCapable:](self, "_bundleBackgroundAudioCapable:", v37)}];
+        attributedEntity2 = [snapshotCopy attributedEntity];
+        [snapshotCopy setUiBackgroundAudioCapable:{-[FlowAnalyticsEngine _bundleBackgroundAudioCapable:](self, "_bundleBackgroundAudioCapable:", attributedEntity2)}];
       }
 
       else
       {
-        [v4 setUiBackgroundAudioCapable:0];
+        [snapshotCopy setUiBackgroundAudioCapable:0];
       }
 
       flowScrutinizer = self->flowScrutinizer;
-      v39 = [v12 classification];
-      [(FlowScrutinizer *)flowScrutinizer scrutinizeFlow:v4 withClassification:v39];
+      classification = [v12 classification];
+      [(FlowScrutinizer *)flowScrutinizer scrutinizeFlow:snapshotCopy withClassification:classification];
     }
 
     v182 = v9;
-    if ([v4 failedConsistencyChecks])
+    if ([snapshotCopy failedConsistencyChecks])
     {
-      if ([v4 failedNegativeDeltaCheck])
+      if ([snapshotCopy failedNegativeDeltaCheck])
       {
         v40 = 405528;
         goto LABEL_77;
       }
 
-      if ([v4 failedRxCountCheck])
+      if ([snapshotCopy failedRxCountCheck])
       {
         v40 = 405529;
         goto LABEL_77;
       }
 
-      if ([v4 failedSkywalkAction])
+      if ([snapshotCopy failedSkywalkAction])
       {
         v40 = 405530;
 LABEL_77:
-        v41 = [v12 flags];
+        flags = [v12 flags];
         v42 = analyticsLogHandle;
         v43 = os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR);
-        if ((v41 & 0x2000) != 0)
+        if ((flags & 0x2000) != 0)
         {
           if (v43)
           {
             v50 = v42;
-            v51 = [v4 sourceIdentifier];
+            sourceIdentifier2 = [snapshotCopy sourceIdentifier];
             *buf = 134217984;
-            *v191 = v51;
+            *v191 = sourceIdentifier2;
             _os_log_impl(&dword_23255B000, v50, OS_LOG_TYPE_ERROR, "snapshot.failedConsistencyChecks, suppress duplicate reports on flow %lld", buf, 0xCu);
           }
         }
@@ -3833,19 +3833,19 @@ LABEL_77:
           if (v43)
           {
             v44 = v42;
-            v45 = [v4 sourceIdentifier];
+            sourceIdentifier3 = [snapshotCopy sourceIdentifier];
             *buf = 67109376;
             *v191 = v40;
             *&v191[4] = 2048;
-            *&v191[6] = v45;
+            *&v191[6] = sourceIdentifier3;
             _os_log_impl(&dword_23255B000, v44, OS_LOG_TYPE_ERROR, "snapshot.failedConsistencyChecks, report symptom %x to ABC for flow %lld", buf, 0x12u);
           }
 
-          -[FlowAnalyticsEngine _generateFlowAnomalySymptom:currentUsage:snapshot:](self, "_generateFlowAnomalySymptom:currentUsage:snapshot:", v40, [v4 txWiredBytes] + objc_msgSend(v4, "rxWiredBytes") + objc_msgSend(v4, "rxCellularBytes") + objc_msgSend(v4, "txCellularBytes") + objc_msgSend(v4, "rxWiFiBytes") + objc_msgSend(v4, "txWiFiBytes"), v4);
+          -[FlowAnalyticsEngine _generateFlowAnomalySymptom:currentUsage:snapshot:](self, "_generateFlowAnomalySymptom:currentUsage:snapshot:", v40, [snapshotCopy txWiredBytes] + objc_msgSend(snapshotCopy, "rxWiredBytes") + objc_msgSend(snapshotCopy, "rxCellularBytes") + objc_msgSend(snapshotCopy, "txCellularBytes") + objc_msgSend(snapshotCopy, "rxWiFiBytes") + objc_msgSend(snapshotCopy, "txWiFiBytes"), snapshotCopy);
           [v12 setFlags:{objc_msgSend(v12, "flags") | 0x2000}];
           if (v183 != 2)
           {
-            -[NWStatsManager ignoreSource:](self->nstatManager, "ignoreSource:", [v4 sourceIdentifier]);
+            -[NWStatsManager ignoreSource:](self->nstatManager, "ignoreSource:", [snapshotCopy sourceIdentifier]);
           }
         }
 
@@ -3853,78 +3853,78 @@ LABEL_77:
       }
     }
 
-    v177 = [v4 rxBytes];
-    v174 = [v4 txBytes];
-    if (([v4 interfaceCompanionLink] & 1) != 0 || -[FlowAnalyticsEngine _snapshotUsesCompanion:](self, "_snapshotUsesCompanion:", v4))
+    rxBytes = [snapshotCopy rxBytes];
+    txBytes = [snapshotCopy txBytes];
+    if (([snapshotCopy interfaceCompanionLink] & 1) != 0 || -[FlowAnalyticsEngine _snapshotUsesCompanion:](self, "_snapshotUsesCompanion:", snapshotCopy))
     {
-      [v4 hasCellTraffic];
+      [snapshotCopy hasCellTraffic];
     }
 
-    v181 = v17;
+    v181 = ownerKey;
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v46 = v4;
-      v47 = [v46 rxDuplicateBytes];
-      v48 = [v46 rxOutOfOrderBytes];
-      v49 = [v46 txRetransmittedBytes];
+      v46 = snapshotCopy;
+      rxDuplicateBytes = [v46 rxDuplicateBytes];
+      rxOutOfOrderBytes = [v46 rxOutOfOrderBytes];
+      txRetransmittedBytes = [v46 txRetransmittedBytes];
       [v46 deltaRxDuplicateBytes];
       [v46 deltaRxOutOfOrderBytes];
       [v46 deltaTxRetransmittedBytes];
-      v157 = [v46 txUnacked];
-      v161 = [v46 probeActivated];
-      v165 = [v46 connProbeFailed];
-      v168 = [v46 readProbeFailed];
+      txUnacked = [v46 txUnacked];
+      probeActivated = [v46 probeActivated];
+      connProbeFailed = [v46 connProbeFailed];
+      readProbeFailed = [v46 readProbeFailed];
       log = [v46 writeProbeFailed];
 
-      v148 = v47;
-      v151 = v48;
-      v154 = v49;
+      v148 = rxDuplicateBytes;
+      v151 = rxOutOfOrderBytes;
+      v154 = txRetransmittedBytes;
     }
 
     else
     {
-      v157 = 0;
+      txUnacked = 0;
       log = 0;
-      v168 = 0;
-      v165 = 0;
-      v161 = 0;
+      readProbeFailed = 0;
+      connProbeFailed = 0;
+      probeActivated = 0;
       v151 = 0;
       v154 = 0;
       v148 = 0;
     }
 
-    v52 = [v4 deltaAccountingRxWiredBytes];
-    v53 = [v4 deltaAccountingTxWiredBytes];
-    v54 = [v4 deltaAccountingRxCellularBytes];
-    v55 = [v4 deltaAccountingTxCellularBytes];
-    v56 = [v4 deltaAccountingRxWiFiBytes];
-    v57 = [v4 deltaAccountingTxWiFiBytes];
-    v58 = [v4 deltaAccountingRxCompanionLinkBluetoothBytes];
-    v59 = [v4 deltaAccountingTxCompanionLinkBluetoothBytes];
-    v179 = v56;
-    v60 = v56 | v57;
-    v61 = v57;
+    deltaAccountingRxWiredBytes = [snapshotCopy deltaAccountingRxWiredBytes];
+    deltaAccountingTxWiredBytes = [snapshotCopy deltaAccountingTxWiredBytes];
+    deltaAccountingRxCellularBytes = [snapshotCopy deltaAccountingRxCellularBytes];
+    deltaAccountingTxCellularBytes = [snapshotCopy deltaAccountingTxCellularBytes];
+    deltaAccountingRxWiFiBytes = [snapshotCopy deltaAccountingRxWiFiBytes];
+    deltaAccountingTxWiFiBytes = [snapshotCopy deltaAccountingTxWiFiBytes];
+    deltaAccountingRxCompanionLinkBluetoothBytes = [snapshotCopy deltaAccountingRxCompanionLinkBluetoothBytes];
+    deltaAccountingTxCompanionLinkBluetoothBytes = [snapshotCopy deltaAccountingTxCompanionLinkBluetoothBytes];
+    v179 = deltaAccountingRxWiFiBytes;
+    v60 = deltaAccountingRxWiFiBytes | deltaAccountingTxWiFiBytes;
+    v61 = deltaAccountingTxWiFiBytes;
     v62 = v60 != 0;
-    *&v144 = v59;
-    *(&v144 + 1) = v58;
-    v146 = (v60 | v54 | v55 | v52 | v53 | v58 | v59) != 0;
-    v63 = [v4 interfaceExpensive];
-    if ((([v4 snapshotAppStateIsForeground] & 1) != 0 || objc_msgSend(v4, "startAppStateIsForeground")) && (objc_msgSend(v4, "hasLocalDestination") & 1) == 0 && (v54 || v179 | v55 || v61))
+    *&v144 = deltaAccountingTxCompanionLinkBluetoothBytes;
+    *(&v144 + 1) = deltaAccountingRxCompanionLinkBluetoothBytes;
+    v146 = (v60 | deltaAccountingRxCellularBytes | deltaAccountingTxCellularBytes | deltaAccountingRxWiredBytes | deltaAccountingTxWiredBytes | deltaAccountingRxCompanionLinkBluetoothBytes | deltaAccountingTxCompanionLinkBluetoothBytes) != 0;
+    interfaceExpensive = [snapshotCopy interfaceExpensive];
+    if ((([snapshotCopy snapshotAppStateIsForeground] & 1) != 0 || objc_msgSend(snapshotCopy, "startAppStateIsForeground")) && (objc_msgSend(snapshotCopy, "hasLocalDestination") & 1) == 0 && (deltaAccountingRxCellularBytes || v179 | deltaAccountingTxCellularBytes || v61))
     {
-      [TrackedFlow foregroundNonLocalUsageGrandTallyAfterAdding:v55 + v54 + v179 + v61];
+      [TrackedFlow foregroundNonLocalUsageGrandTallyAfterAdding:deltaAccountingTxCellularBytes + deltaAccountingRxCellularBytes + v179 + v61];
       v64 = outrankLogHandle;
       if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
       {
-        [v4 flowDuration];
+        [snapshotCopy flowDuration];
         *buf = 138413570;
         *v191 = v181;
         *&v191[8] = 2048;
         *&v191[10] = v65;
         v192 = 2048;
-        v193 = *&v54;
+        v193 = *&deltaAccountingRxCellularBytes;
         v194 = 2048;
-        v195 = v55;
+        v195 = deltaAccountingTxCellularBytes;
         v196 = 2048;
         v197 = v179;
         v198 = 2048;
@@ -3933,39 +3933,39 @@ LABEL_77:
       }
     }
 
-    if ([v4 interfaceCellularViaPreferredFallback])
+    if ([snapshotCopy interfaceCellularViaPreferredFallback])
     {
-      [TrackedFlow reverseRnfUsageGrandTallyAfterAdding:v55 + v54];
+      [TrackedFlow reverseRnfUsageGrandTallyAfterAdding:deltaAccountingTxCellularBytes + deltaAccountingRxCellularBytes];
     }
 
-    if (v62 && ([v4 hasLocalDestination] & 1) == 0)
+    if (v62 && ([snapshotCopy hasLocalDestination] & 1) == 0)
     {
       [TrackedFlow wifiNonLocalUsageGrandTallyAfterAdding:v61 + v179];
     }
 
-    if (v54 | v55)
+    if (deltaAccountingRxCellularBytes | deltaAccountingTxCellularBytes)
     {
-      [TrackedFlow cellUsageGrandTallyAfterAdding:v55 + v54];
-      if (v63)
+      [TrackedFlow cellUsageGrandTallyAfterAdding:deltaAccountingTxCellularBytes + deltaAccountingRxCellularBytes];
+      if (interfaceExpensive)
       {
-        [TrackedFlow cellExpensiveUsageGrandTallyAfterAdding:v55 + v54];
+        [TrackedFlow cellExpensiveUsageGrandTallyAfterAdding:deltaAccountingTxCellularBytes + deltaAccountingRxCellularBytes];
       }
     }
 
-    v142 = v63;
-    if ([v4 interfaceCellularViaFallback] && (objc_msgSend(v12, "isForcedNonRNF") & 1) == 0)
+    v142 = interfaceExpensive;
+    if ([snapshotCopy interfaceCellularViaFallback] && (objc_msgSend(v12, "isForcedNonRNF") & 1) == 0)
     {
       v145 = 1;
       [v12 setIsRNF:1];
-      [TrackedFlow rnfUsageGrandTallyAfterAdding:v55 + v54];
-      v66 = v55;
-      v67 = v54;
-      if (v63)
+      [TrackedFlow rnfUsageGrandTallyAfterAdding:deltaAccountingTxCellularBytes + deltaAccountingRxCellularBytes];
+      v66 = deltaAccountingTxCellularBytes;
+      v67 = deltaAccountingRxCellularBytes;
+      if (interfaceExpensive)
       {
-        [TrackedFlow rnfExpensiveUsageGrandTallyAfterAdding:v55 + v54];
+        [TrackedFlow rnfExpensiveUsageGrandTallyAfterAdding:deltaAccountingTxCellularBytes + deltaAccountingRxCellularBytes];
         v145 = 1;
-        v66 = v55;
-        v67 = v54;
+        v66 = deltaAccountingTxCellularBytes;
+        v67 = deltaAccountingRxCellularBytes;
       }
     }
 
@@ -3978,58 +3978,58 @@ LABEL_77:
 
     v138 = v67;
     v140 = v66;
-    v68 = v174 + v177;
-    v69 = [v4 rxCellularBytes];
-    v178 = [v4 txCellularBytes] + v69;
+    v68 = txBytes + rxBytes;
+    rxCellularBytes = [snapshotCopy rxCellularBytes];
+    v178 = [snapshotCopy txCellularBytes] + rxCellularBytes;
     if (v178 > 0x100000)
     {
-      -[FlowAnalyticsEngine _checkCellExcessUsageActions:previous:snapshot:](self, "_checkCellExcessUsageActions:previous:snapshot:", v178, v178 - ([v4 deltaAccountingRxCellularBytes] + objc_msgSend(v4, "deltaAccountingTxCellularBytes")), v4);
+      -[FlowAnalyticsEngine _checkCellExcessUsageActions:previous:snapshot:](self, "_checkCellExcessUsageActions:previous:snapshot:", v178, v178 - ([snapshotCopy deltaAccountingRxCellularBytes] + objc_msgSend(snapshotCopy, "deltaAccountingTxCellularBytes")), snapshotCopy);
     }
 
     v70 = v62;
-    [v12 setRxWiFiBytes:{objc_msgSend(v4, "rxWiFiBytes")}];
-    [v12 setTxWiFiBytes:{objc_msgSend(v4, "txWiFiBytes")}];
+    [v12 setRxWiFiBytes:{objc_msgSend(snapshotCopy, "rxWiFiBytes")}];
+    [v12 setTxWiFiBytes:{objc_msgSend(snapshotCopy, "txWiFiBytes")}];
     [v12 setRxDupeBytes:v148];
     [v12 setRxOOOBytes:v151];
     [v12 setTxReTxBytes:v154];
-    [v12 setTxUnacked:v157];
-    [v12 setRxPkts:{objc_msgSend(v4, "rxPackets")}];
-    [v12 setTxPkts:{objc_msgSend(v4, "txPackets")}];
-    [v12 setProbedFlow:v161];
-    [v12 setProbed3WHSStuckFlow:v165];
-    [v12 setProbedReadStuckFlow:v168];
+    [v12 setTxUnacked:txUnacked];
+    [v12 setRxPkts:{objc_msgSend(snapshotCopy, "rxPackets")}];
+    [v12 setTxPkts:{objc_msgSend(snapshotCopy, "txPackets")}];
+    [v12 setProbedFlow:probeActivated];
+    [v12 setProbed3WHSStuckFlow:connProbeFailed];
+    [v12 setProbedReadStuckFlow:readProbeFailed];
     [v12 setProbedWriteStuckFlow:log];
     if (v183 == 2)
     {
-      [NetworkAnalyticsEngine didReceiveProtocolSnapshot:v4];
+      [NetworkAnalyticsEngine didReceiveProtocolSnapshot:snapshotCopy];
       v71 = v68;
       v175 = v68 > 0x3200000;
-      v17 = v181;
-      if ([(FlowAnalyticsEngine *)self _shouldSendStatisticsReport:v4])
+      ownerKey = v181;
+      if ([(FlowAnalyticsEngine *)self _shouldSendStatisticsReport:snapshotCopy])
       {
-        v72 = [(AnalyticsEngineCore *)self queue];
+        queue3 = [(AnalyticsEngineCore *)self queue];
         v186[0] = MEMORY[0x277D85DD0];
         v186[1] = 3221225472;
         v186[2] = __39__FlowAnalyticsEngine__handleSnapshot___block_invoke_306;
         v186[3] = &unk_27898A7D0;
         v186[4] = self;
-        v187 = v4;
-        dispatch_async(v72, v186);
+        v187 = snapshotCopy;
+        dispatch_async(queue3, v186);
       }
 
       if (self->repeatedConnFailureDetector)
       {
-        if (![v4 rxBytes])
+        if (![snapshotCopy rxBytes])
         {
-          [v4 flowDuration];
+          [snapshotCopy flowDuration];
           if (v73 > 1.0)
           {
-            if ([v4 isADaemon])
+            if ([snapshotCopy isADaemon])
             {
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [(RepeatedConnFailureDetector *)self->repeatedConnFailureDetector noteSuspectFlow:v4 withOwner:v181];
+                [(RepeatedConnFailureDetector *)self->repeatedConnFailureDetector noteSuspectFlow:snapshotCopy withOwner:v181];
               }
             }
           }
@@ -4042,16 +4042,16 @@ LABEL_77:
       }
 
       v68 = v71;
-      if (self->appTrackingEnabled && v181 && self->endpointTrackingEnabled && [v4 attributedEntityIsBundleName] && (objc_msgSend(v4, "hasLocalDestination") & 1) == 0)
+      if (self->appTrackingEnabled && v181 && self->endpointTrackingEnabled && [snapshotCopy attributedEntityIsBundleName] && (objc_msgSend(snapshotCopy, "hasLocalDestination") & 1) == 0)
       {
-        [(FlowAnalyticsEngine *)self endpointMaintenanceOnClose:v4];
+        [(FlowAnalyticsEngine *)self endpointMaintenanceOnClose:snapshotCopy];
       }
     }
 
     else
     {
       v175 = 0;
-      v17 = v181;
+      ownerKey = v181;
     }
 
     if (v146)
@@ -4063,9 +4063,9 @@ LABEL_77:
       }
 
       v166 = v61;
-      if (v54 | v55)
+      if (deltaAccountingRxCellularBytes | deltaAccountingTxCellularBytes)
       {
-        v75 = v55;
+        v75 = deltaAccountingTxCellularBytes;
       }
 
       else
@@ -4073,9 +4073,9 @@ LABEL_77:
         v75 = v61;
       }
 
-      if (v54 | v55)
+      if (deltaAccountingRxCellularBytes | deltaAccountingTxCellularBytes)
       {
-        v76 = v54;
+        v76 = deltaAccountingRxCellularBytes;
       }
 
       else
@@ -4095,7 +4095,7 @@ LABEL_77:
           if (os_log_type_enabled(loga, OS_LOG_TYPE_INFO))
           {
             v80 = "WiFi";
-            if (v54 | v55)
+            if (deltaAccountingRxCellularBytes | deltaAccountingTxCellularBytes)
             {
               v80 = "Cell";
             }
@@ -4110,12 +4110,12 @@ LABEL_77:
             }
 
             v152 = v82;
-            v155 = [v4 processName];
-            v149 = [v4 attributedEntity];
-            v169 = [v4 localAddress];
-            v83 = sockAddrToString(v169);
-            v158 = [v4 remoteAddress];
-            v84 = sockAddrToString(v158);
+            processName = [snapshotCopy processName];
+            attributedEntity3 = [snapshotCopy attributedEntity];
+            localAddress = [snapshotCopy localAddress];
+            v83 = sockAddrToString(localAddress);
+            remoteAddress = [snapshotCopy remoteAddress];
+            v84 = sockAddrToString(remoteAddress);
             *buf = 136316930;
             *v191 = v162;
             *&v191[8] = 2080;
@@ -4125,42 +4125,42 @@ LABEL_77:
             v194 = 2048;
             v195 = v76;
             v196 = 2114;
-            v197 = v155;
+            v197 = processName;
             v198 = 2114;
-            v199 = v149;
+            v199 = attributedEntity3;
             v200 = 2114;
             v201 = v83;
             v202 = 2114;
             v203 = v84;
             _os_log_impl(&dword_23255B000, loga, OS_LOG_TYPE_INFO, "%s %s bytes transmitted: %llu, bytes received: %llu, process name: %{public}@, bundle id: %{public}@ local address: %{public}@ remote address: %{public}@", buf, 0x52u);
 
-            v17 = v181;
+            ownerKey = v181;
           }
         }
       }
 
-      if ([v4 attributedEntityIsProcessName])
+      if ([snapshotCopy attributedEntityIsProcessName])
       {
-        v85 = [v4 attributedEntity];
+        attributedEntity4 = [snapshotCopy attributedEntity];
       }
 
       else
       {
-        v85 = 0;
+        attributedEntity4 = 0;
       }
 
-      if ([v4 attributedEntityIsBundleName])
+      if ([snapshotCopy attributedEntityIsBundleName])
       {
-        v86 = [v4 attributedEntity];
+        attributedEntity5 = [snapshotCopy attributedEntity];
       }
 
       else
       {
-        v86 = 0;
+        attributedEntity5 = 0;
       }
 
-      v87 = [v4 attributedExtension];
-      v88 = [(FlowAnalyticsEngine *)self _processFetchForName:v85 bundle:v86 extension:v87 shouldFillMiss:1];
+      attributedExtension = [snapshotCopy attributedExtension];
+      v88 = [(FlowAnalyticsEngine *)self _processFetchForName:attributedEntity4 bundle:attributedEntity5 extension:attributedExtension shouldFillMiss:1];
 
       logb = v88;
       if (v88)
@@ -4168,10 +4168,10 @@ LABEL_77:
         v170 = [(FlowAnalyticsEngine *)self _liveUsageFetchForProcess:v88];
         if (v170)
         {
-          v159 = v86;
-          v163 = v85;
-          v89 = [v4 interfaceAWDL];
-          if (v89)
+          v159 = attributedEntity5;
+          v163 = attributedEntity4;
+          interfaceAWDL = [snapshotCopy interfaceAWDL];
+          if (interfaceAWDL)
           {
             v90 = 0;
           }
@@ -4181,7 +4181,7 @@ LABEL_77:
             v90 = v166;
           }
 
-          if (v89)
+          if (interfaceAWDL)
           {
             v91 = 0;
           }
@@ -4191,7 +4191,7 @@ LABEL_77:
             v91 = v179;
           }
 
-          if (v89)
+          if (interfaceAWDL)
           {
             v92 = v166;
           }
@@ -4201,7 +4201,7 @@ LABEL_77:
             v92 = 0;
           }
 
-          if (v89)
+          if (interfaceAWDL)
           {
             v93 = v179;
           }
@@ -4218,19 +4218,19 @@ LABEL_77:
           v156 = v90;
           if ((v145 & v175) == 1 && v137 >= 0x1F400001)
           {
-            v96 = [MEMORY[0x277CBEAA8] date];
-            v97 = [v12 startingTimestamp];
-            [v96 timeIntervalSinceDate:v97];
+            date = [MEMORY[0x277CBEAA8] date];
+            startingTimestamp = [v12 startingTimestamp];
+            [date timeIntervalSinceDate:startingTimestamp];
 
             internal_symptom_new(405510);
             internal_symptom_set_qualifier();
             internal_symptom_set_qualifier();
             internal_symptom_set_qualifier();
-            v98 = [v4 attributedEntity];
-            v99 = v98;
-            if (v98)
+            attributedEntity6 = [snapshotCopy attributedEntity];
+            v99 = attributedEntity6;
+            if (attributedEntity6)
             {
-              strlen([v98 UTF8String]);
+              strlen([attributedEntity6 UTF8String]);
               v95 = v183;
               internal_symptom_set_additional_qualifier();
             }
@@ -4248,44 +4248,44 @@ LABEL_77:
           LOBYTE(v136) = v94;
           v150 = v92;
           BYTE2(v136) = v95 == 2;
-          [FlowAnalyticsEngine _updateLiveUsage:"_updateLiveUsage:wifiIn:wifiOut:cellIn:cellOut:wiredIn:wiredOut:btIn:btOut:xIn:xOut:isJumboFlow:isExpensive:closing:" wifiIn:v170 wifiOut:v91 cellIn:v90 cellOut:v54 wiredIn:v55 wiredOut:v93 btIn:v92 btOut:*(&v144 + 1) xIn:v144 xOut:v138 isJumboFlow:v140 isExpensive:v136 closing:?];
-          v100 = [MEMORY[0x277CBEAA8] date];
-          [v88 setTimeStamp:v100];
+          [FlowAnalyticsEngine _updateLiveUsage:"_updateLiveUsage:wifiIn:wifiOut:cellIn:cellOut:wiredIn:wiredOut:btIn:btOut:xIn:xOut:isJumboFlow:isExpensive:closing:" wifiIn:v170 wifiOut:v91 cellIn:v90 cellOut:deltaAccountingRxCellularBytes wiredIn:deltaAccountingTxCellularBytes wiredOut:v93 btIn:v92 btOut:*(&v144 + 1) xIn:v144 xOut:v138 isJumboFlow:v140 isExpensive:v136 closing:?];
+          date2 = [MEMORY[0x277CBEAA8] date];
+          [v88 setTimeStamp:date2];
 
-          v176 = [v4 sourceIdentifier];
-          v101 = [v4 delegateName];
-          v102 = [v4 attributedExtension];
-          if (v101)
+          sourceIdentifier4 = [snapshotCopy sourceIdentifier];
+          delegateName3 = [snapshotCopy delegateName];
+          attributedExtension2 = [snapshotCopy attributedExtension];
+          if (delegateName3)
           {
-            v184 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" (delegation: %@)", v101];
+            v101 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" (delegation: %@)", delegateName3];
           }
 
           else
           {
-            v184 = &stru_2847966D8;
+            v101 = &stru_2847966D8;
           }
 
-          if (v102)
+          if (attributedExtension2)
           {
-            v109 = [v88 name];
-            if ([v109 isEqualToString:v102])
+            name = [v88 name];
+            if ([name isEqualToString:attributedExtension2])
             {
 
-              v180 = &stru_2847966D8;
+              v102 = &stru_2847966D8;
             }
 
             else
             {
-              v110 = [v184 isEqualToString:v102];
+              v110 = [v101 isEqualToString:attributedExtension2];
 
               if (v110)
               {
-                v180 = &stru_2847966D8;
+                v102 = &stru_2847966D8;
               }
 
               else
               {
-                v180 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" (attrExtn: %@)", v102];
+                v102 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" (attrExtn: %@)", attributedExtension2];
               }
 
               v88 = logb;
@@ -4294,14 +4294,14 @@ LABEL_77:
 
           else
           {
-            v180 = &stru_2847966D8;
+            v102 = &stru_2847966D8;
           }
 
           v111 = analyticsLogHandle;
           if (os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
           {
-            v112 = [v88 name];
-            if ([v4 attributionReason] == 4)
+            name2 = [v88 name];
+            if ([snapshotCopy attributionReason] == 4)
             {
               v113 = @"(viaNEHelper)";
             }
@@ -4311,39 +4311,39 @@ LABEL_77:
               v113 = &stru_2847966D8;
             }
 
-            v147 = [v170 wifiIN];
-            v114 = [v170 wifiOUT];
-            v141 = [v170 wwanIN];
-            v139 = [v170 wwanOUT];
+            wifiIN = [v170 wifiIN];
+            wifiOUT = [v170 wifiOUT];
+            wwanIN = [v170 wwanIN];
+            wwanOUT = [v170 wwanOUT];
             v143 = [v170 tag];
-            [v4 flowDuration];
+            [snapshotCopy flowDuration];
             *buf = 138416130;
-            *v191 = v112;
+            *v191 = name2;
             *&v191[8] = 2112;
             *&v191[10] = v113;
             v88 = logb;
             v192 = 2112;
-            v193 = *&v184;
+            v193 = *&v101;
             v194 = 2112;
-            v195 = v180;
+            v195 = v102;
             v196 = 2048;
-            v197 = v176;
+            v197 = sourceIdentifier4;
             v198 = 2112;
-            v199 = v147;
+            v199 = wifiIN;
             v200 = 2112;
-            v201 = v114;
+            v201 = wifiOUT;
             v202 = 2048;
             v203 = v153;
             v204 = 2048;
             v205 = v156;
             v206 = 2112;
-            v207 = v141;
+            v207 = wwanIN;
             v208 = 2112;
-            v209 = v139;
+            v209 = wwanOUT;
             v210 = 2048;
-            v211 = v54;
+            v211 = deltaAccountingRxCellularBytes;
             v212 = 2048;
-            v213 = v55;
+            v213 = deltaAccountingTxCellularBytes;
             v214 = 1024;
             v215 = v145;
             v216 = 2112;
@@ -4353,28 +4353,28 @@ LABEL_77:
             _os_log_impl(&dword_23255B000, v111, OS_LOG_TYPE_DEFAULT, "Data Usage for %@%@%@%@ on flow %llu - WiFi in/out: %@/%@, WiFi delta_in/delta_out: %lld/%lld, Cell in/out: %@/%@, Cell delta_in/delta_out: %lld/%lld, RNF: %d, subscriber tag: %@, total duration: %.3f", buf, 0x9Eu);
           }
 
-          v103 = v184;
+          v103 = v101;
           if (v144 != 0)
           {
             v116 = analyticsLogHandle;
             if (os_log_type_enabled(v116, OS_LOG_TYPE_DEFAULT))
             {
-              v117 = [v88 name];
-              v118 = [v170 btIN];
-              v119 = [v170 btOUT];
-              [v4 flowDuration];
+              name3 = [v88 name];
+              btIN = [v170 btIN];
+              btOUT = [v170 btOUT];
+              [snapshotCopy flowDuration];
               *buf = 138414338;
-              *v191 = v117;
+              *v191 = name3;
               *&v191[8] = 2112;
-              *&v191[10] = v184;
+              *&v191[10] = v101;
               v192 = 2112;
-              v193 = *&v180;
+              v193 = *&v102;
               v194 = 2048;
-              v195 = v176;
+              v195 = sourceIdentifier4;
               v196 = 2112;
-              v197 = v118;
+              v197 = btIN;
               v198 = 2112;
-              v199 = v119;
+              v199 = btOUT;
               v200 = 2048;
               v201 = *(&v144 + 1);
               v202 = 2048;
@@ -4390,23 +4390,23 @@ LABEL_77:
           v121 = analyticsLogHandle;
           if (os_log_type_enabled(v121, OS_LOG_TYPE_DEBUG))
           {
-            v122 = [v88 name];
-            v123 = [v170 wiredIN];
-            v124 = [v170 wiredOUT];
+            name4 = [v88 name];
+            wiredIN = [v170 wiredIN];
+            wiredOUT = [v170 wiredOUT];
             v125 = [v170 tag];
-            [v4 flowDuration];
+            [snapshotCopy flowDuration];
             *buf = 138414594;
-            *v191 = v122;
+            *v191 = name4;
             *&v191[8] = 2112;
-            *&v191[10] = v184;
+            *&v191[10] = v101;
             v192 = 2112;
-            v193 = *&v180;
+            v193 = *&v102;
             v194 = 2048;
-            v195 = v176;
+            v195 = sourceIdentifier4;
             v196 = 2112;
-            v197 = v123;
+            v197 = wiredIN;
             v198 = 2112;
-            v199 = v124;
+            v199 = wiredOUT;
             v200 = 2048;
             v201 = v167;
             v202 = 2048;
@@ -4420,9 +4420,9 @@ LABEL_77:
             v88 = logb;
           }
 
-          v17 = v181;
-          v86 = v159;
-          v85 = v163;
+          ownerKey = v181;
+          attributedEntity5 = v159;
+          attributedEntity4 = v163;
         }
 
         else
@@ -4430,49 +4430,49 @@ LABEL_77:
           v103 = evaluationLogHandle;
           if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
           {
-            v160 = v86;
+            v160 = attributedEntity5;
             v104 = [v88 description];
-            v105 = [v104 UTF8String];
+            uTF8String = [v104 UTF8String];
             ctShim = self->ctShim;
-            v164 = v85;
+            v164 = attributedEntity4;
             if (ctShim)
             {
-              v87 = [(CoreTelephonyShim *)ctShim currentSubscriberTag];
-              if (v87)
+              attributedExtension = [(CoreTelephonyShim *)ctShim currentSubscriberTag];
+              if (attributedExtension)
               {
-                v107 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
+                currentSubscriberTag = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
                 v108 = 1;
               }
 
               else
               {
                 v108 = 0;
-                v107 = &unk_2847EF6C8;
+                currentSubscriberTag = &unk_2847EF6C8;
               }
             }
 
             else
             {
               v108 = 0;
-              v107 = &unk_2847EF6C8;
+              currentSubscriberTag = &unk_2847EF6C8;
             }
 
             *buf = 136315394;
-            *v191 = v105;
+            *v191 = uTF8String;
             *&v191[8] = 2112;
-            *&v191[10] = v107;
+            *&v191[10] = currentSubscriberTag;
             _os_log_impl(&dword_23255B000, v103, OS_LOG_TYPE_DEFAULT, "Can't find liveusage for %s with subscriber tag: %@", buf, 0x16u);
             if (v108)
             {
             }
 
-            v17 = v181;
+            ownerKey = v181;
             if (ctShim)
             {
             }
 
-            v86 = v160;
-            v85 = v164;
+            attributedEntity5 = v160;
+            attributedEntity4 = v164;
             v88 = logb;
           }
         }
@@ -4480,8 +4480,8 @@ LABEL_77:
 
       if (v178)
       {
-        v127 = v86;
-        v128 = [v4 interfaceIndex];
+        v127 = attributedEntity5;
+        interfaceIndex = [snapshotCopy interfaceIndex];
         v185[0] = MEMORY[0x277D85DD0];
         v185[1] = 3221225472;
         v185[2] = __39__FlowAnalyticsEngine__handleSnapshot___block_invoke_323;
@@ -4493,21 +4493,21 @@ LABEL_77:
           dispatch_once(&_handleSnapshot__onceToken, v129);
         }
 
-        if (self->_pdpLastUsedInterfaceIndex != v128)
+        if (self->_pdpLastUsedInterfaceIndex != interfaceIndex)
         {
           pdpMonitoredInterfaces = self->_pdpMonitoredInterfaces;
-          v131 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v128];
+          v131 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:interfaceIndex];
           LOBYTE(pdpMonitoredInterfaces) = [(NSMutableSet *)pdpMonitoredInterfaces containsObject:v131];
 
           if (pdpMonitoredInterfaces)
           {
-            self->_pdpLastUsedInterfaceIndex = v128;
+            self->_pdpLastUsedInterfaceIndex = interfaceIndex;
             v132 = flowLogHandle;
             if (os_log_type_enabled(v132, OS_LOG_TYPE_INFO))
             {
               pdpLastUsedInterfaceIndex = self->_pdpLastUsedInterfaceIndex;
               *buf = 67109376;
-              *v191 = v128;
+              *v191 = interfaceIndex;
               *&v191[4] = 1024;
               *&v191[6] = pdpLastUsedInterfaceIndex;
               _os_log_impl(&dword_23255B000, v132, OS_LOG_TYPE_INFO, "Already monitoring %d; updated last used pdp interface to %d", buf, 0xEu);
@@ -4520,19 +4520,19 @@ LABEL_77:
             if (os_log_type_enabled(v135, OS_LOG_TYPE_DEBUG))
             {
               *buf = 67109376;
-              *v191 = v128;
+              *v191 = interfaceIndex;
               *&v191[4] = 2048;
               *&v191[6] = v178;
               _os_log_impl(&dword_23255B000, v135, OS_LOG_TYPE_DEBUG, "Incoming (presumed) cellular interface index %d is not monitored (usage: %ld)", buf, 0x12u);
             }
 
             [(FlowAnalyticsEngine *)self _updateKnownCellularInterfaceIndexList:0 force:?];
-            [(FlowAnalyticsEngine *)self _enableThresholdMonitoringForCellularInterface:v128];
+            [(FlowAnalyticsEngine *)self _enableThresholdMonitoringForCellularInterface:interfaceIndex];
           }
         }
 
-        v17 = v181;
-        v86 = v127;
+        ownerKey = v181;
+        attributedEntity5 = v127;
         v88 = logb;
       }
     }
@@ -4570,34 +4570,34 @@ uint64_t __39__FlowAnalyticsEngine__handleSnapshot___block_invoke_323(uint64_t a
   return MEMORY[0x2821F96F8](v5, v7);
 }
 
-- (BOOL)_shouldProcessDomainInfoForBundleID:(id)a3 implicit:(id *)a4 knownToLaunchServices:(BOOL *)a5 ignoredInLaunchServices:(BOOL *)a6 isWebBrowser:(BOOL *)a7
+- (BOOL)_shouldProcessDomainInfoForBundleID:(id)d implicit:(id *)implicit knownToLaunchServices:(BOOL *)services ignoredInLaunchServices:(BOOL *)launchServices isWebBrowser:(BOOL *)browser
 {
   v28 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = [LaunchServicesUtilities implicitlyAssumedIdentityEntitlementForBundleIdentifier:v11];
+  dCopy = d;
+  v12 = [LaunchServicesUtilities implicitlyAssumedIdentityEntitlementForBundleIdentifier:dCopy];
   v13 = v12;
-  if (a7)
+  if (browser)
   {
-    *a7 = [v12 isWebBrowser];
+    *browser = [v12 isWebBrowser];
   }
 
-  v14 = [v13 type];
+  type = [v13 type];
   v15 = 1;
-  if (v14 <= 2)
+  if (type <= 2)
   {
-    if (v14)
+    if (type)
     {
-      if (v14 == 2)
+      if (type == 2)
       {
-        *a4 = [v13 impliedBundleID];
+        *implicit = [v13 impliedBundleID];
         v20 = domainTrackingLogHandle;
         if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_INFO))
         {
-          v21 = *a4;
+          v21 = *implicit;
           v24 = 138478083;
           v25 = v21;
           v26 = 2113;
-          v27 = v11;
+          type2 = dCopy;
           _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_INFO, "Using implied identity %{private}@ for %{private}@, entitlement type is 'bundleID'", &v24, 0x16u);
         }
       }
@@ -4609,7 +4609,7 @@ uint64_t __39__FlowAnalyticsEngine__handleSnapshot___block_invoke_323(uint64_t a
       if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_ERROR))
       {
         v24 = 138477827;
-        v25 = v11;
+        v25 = dCopy;
         _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_ERROR, "Found unexpected 'type' in entitlement for %{private}@", &v24, 0xCu);
       }
 
@@ -4619,32 +4619,32 @@ uint64_t __39__FlowAnalyticsEngine__handleSnapshot___block_invoke_323(uint64_t a
 
   else
   {
-    if ((v14 - 3) >= 4)
+    if ((type - 3) >= 4)
     {
-      if (v14 != 7)
+      if (type != 7)
       {
         goto LABEL_10;
       }
 
-      if (a5)
+      if (services)
       {
-        *a5 = 0;
+        *services = 0;
       }
 
       v22 = domainTrackingLogHandle;
       if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v24 = 138477827;
-        v25 = v11;
+        v25 = dCopy;
         _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_DEBUG, "Skipping privacy accounting for %{private}@, not known to LaunchServices", &v24, 0xCu);
       }
     }
 
     else
     {
-      if (a6)
+      if (launchServices)
       {
-        *a6 = 1;
+        *launchServices = 1;
       }
 
       v16 = domainTrackingLogHandle;
@@ -4652,9 +4652,9 @@ uint64_t __39__FlowAnalyticsEngine__handleSnapshot___block_invoke_323(uint64_t a
       {
         v17 = v16;
         v24 = 138478083;
-        v25 = v11;
+        v25 = dCopy;
         v26 = 2048;
-        v27 = [v13 type];
+        type2 = [v13 type];
         _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEBUG, "Skipping privacy accounting for %{private}@, ignored in LaunchServices, type %lu", &v24, 0x16u);
       }
     }
@@ -4668,24 +4668,24 @@ LABEL_10:
   return v15;
 }
 
-- (void)_handleSnapshotForDomains:(id)a3
+- (void)_handleSnapshotForDomains:(id)domains
 {
   v114 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isSilent] & 1) == 0 && self->appTrackingEnabled)
+  domainsCopy = domains;
+  if (([domainsCopy isSilent] & 1) == 0 && self->appTrackingEnabled)
   {
     v103 = 1;
     v102 = 0;
     v101 = 0;
-    v5 = [v4 domainAttributedBundleId];
+    domainAttributedBundleId = [domainsCopy domainAttributedBundleId];
 
-    if (v5)
+    if (domainAttributedBundleId)
     {
-      v6 = [v4 domainAttributedBundleId];
+      domainAttributedBundleId2 = [domainsCopy domainAttributedBundleId];
 LABEL_5:
-      v7 = v6;
-      v8 = [v4 processName];
-      if ([v8 isEqualToString:@"mDNSResponder"] & 1) != 0 || (objc_msgSend(v7, "hasPrefix:", @"terminusd"))
+      v7 = domainAttributedBundleId2;
+      processName = [domainsCopy processName];
+      if ([processName isEqualToString:@"mDNSResponder"] & 1) != 0 || (objc_msgSend(v7, "hasPrefix:", @"terminusd"))
       {
 
 LABEL_22:
@@ -4704,14 +4704,14 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "sourceIdentifier")}];
+      v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(domainsCopy, "sourceIdentifier")}];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v24 = v4;
+          v24 = domainsCopy;
           v25 = [(NSMutableDictionary *)self->trackedSourceIDs objectForKeyedSubscript:v12];
           if (v25 && (v26 = v25, -[NSMutableDictionary objectForKeyedSubscript:](self->trackedSourceIDs, "objectForKeyedSubscript:", v12), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 BOOLValue], v27, v26, (v28 & 1) != 0))
           {
@@ -4721,14 +4721,14 @@ LABEL_23:
           else
           {
             v18 = v24;
-            v54 = [(__CFString *)v24 remoteAddress];
-            v55 = [v54 bytes];
+            remoteAddress = [(__CFString *)v24 remoteAddress];
+            bytes = [remoteAddress bytes];
 
-            if (!v55 || !*(v55 + 2) || is_directly_reachable_address(v55))
+            if (!bytes || !*(bytes + 2) || is_directly_reachable_address(bytes))
             {
-              v56 = [(__CFString *)v24 remoteAddress];
+              remoteAddress2 = [(__CFString *)v24 remoteAddress];
               v97 = 0;
-              v57 = validateSockAddrToString(v56, 0, &v97);
+              v57 = validateSockAddrToString(remoteAddress2, 0, &v97);
               v49 = v97;
 
               if (v57)
@@ -4810,8 +4810,8 @@ LABEL_31:
         if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEBUG))
         {
           v35 = v34;
-          v36 = [v4 domainAttributedBundleId];
-          v37 = [v4 attributedEntity];
+          domainAttributedBundleId3 = [domainsCopy domainAttributedBundleId];
+          attributedEntity = [domainsCopy attributedEntity];
           *buf = 138478851;
           v105 = v30;
           v106 = 2113;
@@ -4819,9 +4819,9 @@ LABEL_31:
           v108 = 2113;
           v109 = v7;
           v110 = 2113;
-          v111 = v36;
+          v111 = domainAttributedBundleId3;
           v112 = 2113;
-          v113 = v37;
+          v113 = attributedEntity;
           _os_log_impl(&dword_23255B000, v35, OS_LOG_TYPE_DEBUG, "Proceed with privacy accounting by attributing to: %{private}@ (implicitIdentity: %{private}@, attributed: %{private}@, domainAttributedBundleId: %{private}@, attributedEntity: %{private}@)", buf, 0x34u);
 
           v18 = v95;
@@ -4831,9 +4831,9 @@ LABEL_31:
         if (v94)
         {
           v38 = [(NSMutableDictionary *)self->trackedSourceIDs objectForKeyedSubscript:v12];
-          v39 = [v38 BOOLValue];
+          bOOLValue = [v38 BOOLValue];
 
-          if (v39)
+          if (bOOLValue)
           {
             v40 = domainTrackingLogHandle;
             v18 = v95;
@@ -4847,9 +4847,9 @@ LABEL_105:
             }
 
             v41 = v40;
-            v42 = [v94 domainDescription];
+            domainDescription = [v94 domainDescription];
             *buf = 138477827;
-            v105 = v42;
+            v105 = domainDescription;
             _os_log_impl(&dword_23255B000, v41, OS_LOG_TYPE_DEBUG, "FlowSnapshot: %{private}@, already processed domain info", buf, 0xCu);
 
             v18 = v95;
@@ -4858,12 +4858,12 @@ LABEL_49:
             goto LABEL_105;
           }
 
-          v67 = [v94 flowuuid];
-          v93 = v67;
-          if (v67)
+          flowuuid = [v94 flowuuid];
+          v93 = flowuuid;
+          if (flowuuid)
           {
             v18 = v95;
-            if ([(FlowAnalyticsEngine *)self isSnapshotFlowUUIDStored:v67])
+            if ([(FlowAnalyticsEngine *)self isSnapshotFlowUUIDStored:flowuuid])
             {
               [(NSMutableDictionary *)self->trackedSourceIDs setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v12];
               v68 = domainTrackingLogHandle;
@@ -4877,16 +4877,16 @@ LABEL_49:
               goto LABEL_104;
             }
 
-            v71 = [v94 domainName];
-            if (v71)
+            domainName = [v94 domainName];
+            if (domainName)
             {
             }
 
             else
             {
-              v79 = [v94 remoteAddress];
+              remoteAddress3 = [v94 remoteAddress];
 
-              if (!v79)
+              if (!remoteAddress3)
               {
 LABEL_104:
 
@@ -4898,9 +4898,9 @@ LABEL_104:
             if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
             {
               v81 = v80;
-              v82 = [v94 domainDescription];
+              domainDescription2 = [v94 domainDescription];
               *buf = 138477827;
-              v105 = v82;
+              v105 = domainDescription2;
               v83 = "FlowSnapshot: %{private}@, will process domain info";
 LABEL_102:
               _os_log_impl(&dword_23255B000, v81, OS_LOG_TYPE_DEFAULT, v83, buf, 0xCu);
@@ -4914,25 +4914,25 @@ LABEL_102:
           v18 = v95;
           if ([v94 snapshotReason] == 2)
           {
-            v70 = [v94 domainName];
-            if (v70)
+            domainName2 = [v94 domainName];
+            if (domainName2)
             {
 
               goto LABEL_100;
             }
 
-            v84 = [v94 remoteAddress];
+            remoteAddress4 = [v94 remoteAddress];
 
-            if (v84)
+            if (remoteAddress4)
             {
 LABEL_100:
               v85 = domainTrackingLogHandle;
               if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
               {
                 v81 = v85;
-                v82 = [v94 domainDescription];
+                domainDescription2 = [v94 domainDescription];
                 *buf = 138477827;
-                v105 = v82;
+                v105 = domainDescription2;
                 v83 = "FlowSnapshot: %{private}@, will process domain info for flow closing with nil fuuid";
                 goto LABEL_102;
               }
@@ -4940,8 +4940,8 @@ LABEL_100:
 LABEL_103:
               v86 = MEMORY[0x277CCABB0];
               v13 = v94;
-              v87 = [v94 remoteAddress];
-              v88 = [v86 numberWithBool:{-[FlowAnalyticsEngine domainInfoProcessingForSnapshot:process:attributedName:remoteAddress:isWebBrowser:](self, "domainInfoProcessingForSnapshot:process:attributedName:remoteAddress:isWebBrowser:", v94, v32, v30, v87, v101)}];
+              remoteAddress5 = [v94 remoteAddress];
+              v88 = [v86 numberWithBool:{-[FlowAnalyticsEngine domainInfoProcessingForSnapshot:process:attributedName:remoteAddress:isWebBrowser:](self, "domainInfoProcessingForSnapshot:process:attributedName:remoteAddress:isWebBrowser:", v94, v32, v30, remoteAddress5, v101)}];
               [(NSMutableDictionary *)self->trackedSourceIDs setObject:v88 forKeyedSubscript:v12];
 
               v18 = v95;
@@ -4953,9 +4953,9 @@ LABEL_103:
           if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
           {
             v90 = v89;
-            v91 = [v94 domainDescription];
+            domainDescription3 = [v94 domainDescription];
             *buf = 138477827;
-            v105 = v91;
+            v105 = domainDescription3;
             _os_log_impl(&dword_23255B000, v90, OS_LOG_TYPE_DEFAULT, "FlowSnapshot: %{private}@, waiting to process domain info until flow closing with nil fuuid", buf, 0xCu);
 
             v18 = v95;
@@ -4969,7 +4969,7 @@ LABEL_103:
           goto LABEL_105;
         }
 
-        v92 = [(__CFString *)v18 flowuuid];
+        flowuuid2 = [(__CFString *)v18 flowuuid];
         v63 = [(NSMutableDictionary *)self->trackedSourceIDs objectForKeyedSubscript:v12];
         if ([v63 BOOLValue])
         {
@@ -4979,16 +4979,16 @@ LABEL_72:
           {
             [(FlowAnalyticsEngine *)self removeSnapshotFlowUUIDsForSourceKey:v12];
             v13 = 0;
-            v66 = v92;
+            v66 = flowuuid2;
           }
 
           else
           {
             v13 = 0;
-            v66 = v92;
-            if (v92)
+            v66 = flowuuid2;
+            if (flowuuid2)
             {
-              [(FlowAnalyticsEngine *)self storeSnapshotFlowUUID:v92 forSourceKey:v96];
+              [(FlowAnalyticsEngine *)self storeSnapshotFlowUUID:flowuuid2 forSourceKey:v96];
             }
           }
 
@@ -4998,16 +4998,16 @@ LABEL_95:
           goto LABEL_105;
         }
 
-        v69 = [(__CFString *)v18 domainName];
-        if (v69)
+        domainName3 = [(__CFString *)v18 domainName];
+        if (domainName3)
         {
         }
 
         else
         {
-          v72 = [(__CFString *)v18 remoteAddress];
+          remoteAddress6 = [(__CFString *)v18 remoteAddress];
 
-          if (!v72)
+          if (!remoteAddress6)
           {
             goto LABEL_72;
           }
@@ -5021,24 +5021,24 @@ LABEL_95:
           _os_log_impl(&dword_23255B000, v73, OS_LOG_TYPE_DEFAULT, "ConnSnapshot: %{private}@, will process domain info", buf, 0xCu);
         }
 
-        v66 = v92;
-        if (v92 && [(__CFString *)v18 snapshotReason]!= 2)
+        v66 = flowuuid2;
+        if (flowuuid2 && [(__CFString *)v18 snapshotReason]!= 2)
         {
-          [(FlowAnalyticsEngine *)self storeSnapshotFlowUUID:v92 forSourceKey:v96];
+          [(FlowAnalyticsEngine *)self storeSnapshotFlowUUID:flowuuid2 forSourceKey:v96];
         }
 
         v74 = MEMORY[0x277CCABB0];
-        v75 = [(__CFString *)v18 remoteAddress];
+        remoteAddress7 = [(__CFString *)v18 remoteAddress];
         v76 = v18;
-        v77 = v75;
-        v78 = [v74 numberWithBool:{-[FlowAnalyticsEngine domainInfoProcessingForSnapshot:process:attributedName:remoteAddress:isWebBrowser:](self, "domainInfoProcessingForSnapshot:process:attributedName:remoteAddress:isWebBrowser:", v76, v32, v30, v75, v101)}];
+        v77 = remoteAddress7;
+        v78 = [v74 numberWithBool:{-[FlowAnalyticsEngine domainInfoProcessingForSnapshot:process:attributedName:remoteAddress:isWebBrowser:](self, "domainInfoProcessingForSnapshot:process:attributedName:remoteAddress:isWebBrowser:", v76, v32, v30, remoteAddress7, v101)}];
         [(NSMutableDictionary *)self->trackedSourceIDs setObject:v78 forKeyedSubscript:v96];
 
         v13 = 0;
         goto LABEL_95;
       }
 
-      v13 = v4;
+      v13 = domainsCopy;
       v14 = [(NSMutableDictionary *)self->trackedSourceIDs objectForKeyedSubscript:v12];
       if (v14 && (v15 = v14, -[NSMutableDictionary objectForKeyedSubscript:](self->trackedSourceIDs, "objectForKeyedSubscript:", v12), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 BOOLValue], v16, v15, (v17 & 1) != 0) || (objc_msgSend(v13, "hasNonLocalDestination") & 1) != 0)
       {
@@ -5047,13 +5047,13 @@ LABEL_16:
         goto LABEL_31;
       }
 
-      v45 = [v13 hasLocalDestination];
-      v46 = [v13 remoteAddress];
-      v47 = v46;
-      if (v45)
+      hasLocalDestination = [v13 hasLocalDestination];
+      remoteAddress8 = [v13 remoteAddress];
+      v47 = remoteAddress8;
+      if (hasLocalDestination)
       {
         v99 = 0;
-        v48 = validateSockAddrToString(v46, 0, &v99);
+        v48 = validateSockAddrToString(remoteAddress8, 0, &v99);
         v49 = v99;
 
         if (!v48)
@@ -5076,16 +5076,16 @@ LABEL_16:
 
       else
       {
-        v59 = [v46 bytes];
+        bytes2 = [remoteAddress8 bytes];
 
-        if (v59 && *(v59 + 2) && !is_directly_reachable_address(v59))
+        if (bytes2 && *(bytes2 + 2) && !is_directly_reachable_address(bytes2))
         {
           goto LABEL_16;
         }
 
-        v60 = [v13 remoteAddress];
+        remoteAddress9 = [v13 remoteAddress];
         v98 = 0;
-        v61 = validateSockAddrToString(v60, 0, &v98);
+        v61 = validateSockAddrToString(remoteAddress9, 0, &v98);
         v49 = v98;
 
         if (!v61 || (v62 = domainTrackingLogHandle, !os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_INFO)))
@@ -5108,13 +5108,13 @@ LABEL_106:
       goto LABEL_68;
     }
 
-    v9 = [v4 attributedEntity];
+    attributedEntity2 = [domainsCopy attributedEntity];
 
-    if (v9)
+    if (attributedEntity2)
     {
-      if ([v4 attributedEntityIsBundleName])
+      if ([domainsCopy attributedEntityIsBundleName])
       {
-        v6 = [v4 attributedEntity];
+        domainAttributedBundleId2 = [domainsCopy attributedEntity];
         goto LABEL_5;
       }
 
@@ -5122,11 +5122,11 @@ LABEL_106:
       if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v21 = v20;
-        v22 = [v4 attributedEntity];
+        attributedEntity3 = [domainsCopy attributedEntity];
         *buf = 138478083;
-        v105 = v22;
+        v105 = attributedEntity3;
         v106 = 1024;
-        LODWORD(v107) = [v4 attributionReason];
+        LODWORD(v107) = [domainsCopy attributionReason];
         _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEBUG, "Skipping privacy accounting for %{private}@, attributionReason %d", buf, 0x12u);
       }
     }
@@ -5150,14 +5150,14 @@ LABEL_24:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didReceiveSnapshot:(id)a3
+- (void)_didReceiveSnapshot:(id)snapshot
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  snapshotCopy = snapshot;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = snapshotCopy;
     [(FlowAnalyticsEngine *)self _handleSnapshot:v5];
     [(FlowAnalyticsEngine *)self _handleSnapshotForDomains:v5];
     if ([v5 snapshotReason] == 2)
@@ -5166,9 +5166,9 @@ LABEL_24:
       [TrackedFlow removeTrackingForKey:v6 fromSnapshot:v5];
 LABEL_7:
       v7 = [(NSMutableDictionary *)self->trackedSourceIDs objectForKeyedSubscript:v6];
-      v8 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
 
-      if ((v8 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         [(FlowAnalyticsEngine *)self _evalDomainTrackingDropOf:v5];
       }
@@ -5189,7 +5189,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = snapshotCopy;
     [(FlowAnalyticsEngine *)self _handleSnapshotForDomains:v5];
     if ([v5 snapshotReason] == 2)
     {
@@ -5218,10 +5218,10 @@ LABEL_13:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)statsManager:(id)a3 thresholdReachedOn:(unsigned int)a4
+- (void)statsManager:(id)manager thresholdReachedOn:(unsigned int)on
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  managerCopy = manager;
   lastCellularThresholdRefreshTime = self->lastCellularThresholdRefreshTime;
   v9 = 1;
   if (lastCellularThresholdRefreshTime)
@@ -5266,7 +5266,7 @@ LABEL_13:
     }
 
     *buf = 67109378;
-    v24 = a4;
+    onCopy = on;
     v25 = 2112;
     v26 = v16;
     _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_INFO, "Threshold reached for interface %d, refresh %@ required", buf, 0x12u);
@@ -5274,9 +5274,9 @@ LABEL_13:
 
   if (v9)
   {
-    v17 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v18 = self->lastCellularThresholdRefreshTime;
-    self->lastCellularThresholdRefreshTime = v17;
+    self->lastCellularThresholdRefreshTime = date;
 
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     setApparentTime(v19);
@@ -5308,34 +5308,34 @@ uint64_t __55__FlowAnalyticsEngine_statsManager_thresholdReachedOn___block_invok
   return result;
 }
 
-- (double)_usageFingerprintForBundleName:(id)a3
+- (double)_usageFingerprintForBundleName:(id)name
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(FlowAnalyticsEngine *)self _processFetchForName:0 bundle:v5 shouldFillMiss:0];
+  nameCopy = name;
+  v6 = [(FlowAnalyticsEngine *)self _processFetchForName:0 bundle:nameCopy shouldFillMiss:0];
   if (v6)
   {
     v7 = [(FlowAnalyticsEngine *)self _liveUsageFetchForProcess:v6];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 wifiIN];
-      [v9 doubleValue];
+      wifiIN = [v7 wifiIN];
+      [wifiIN doubleValue];
       v11 = v10;
-      v12 = [v8 wifiOUT];
-      [v12 doubleValue];
+      wifiOUT = [v8 wifiOUT];
+      [wifiOUT doubleValue];
       v14 = v11 + v13;
-      v15 = [v8 wwanIN];
-      [v15 doubleValue];
+      wwanIN = [v8 wwanIN];
+      [wwanIN doubleValue];
       v17 = v14 + v16;
-      v18 = [v8 wwanOUT];
-      [v18 doubleValue];
+      wwanOUT = [v8 wwanOUT];
+      [wwanOUT doubleValue];
       v20 = v17 + v19;
-      v21 = [v8 wiredIN];
-      [v21 doubleValue];
+      wiredIN = [v8 wiredIN];
+      [wiredIN doubleValue];
       v23 = v20 + v22;
-      v24 = [v8 wiredOUT];
-      [v24 doubleValue];
+      wiredOUT = [v8 wiredOUT];
+      [wiredOUT doubleValue];
       v26 = v23 + v25;
     }
 
@@ -5347,30 +5347,30 @@ uint64_t __55__FlowAnalyticsEngine_statsManager_thresholdReachedOn___block_invok
         ctShim = self->ctShim;
         if (ctShim)
         {
-          v3 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
-          if (v3)
+          currentSubscriberTag = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
+          if (currentSubscriberTag)
           {
-            v30 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
+            currentSubscriberTag2 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
             v31 = 1;
           }
 
           else
           {
             v31 = 0;
-            v30 = &unk_2847EF6C8;
+            currentSubscriberTag2 = &unk_2847EF6C8;
           }
         }
 
         else
         {
           v31 = 0;
-          v30 = &unk_2847EF6C8;
+          currentSubscriberTag2 = &unk_2847EF6C8;
         }
 
         v34 = 138412546;
-        v35 = v5;
+        v35 = nameCopy;
         v36 = 2112;
-        v37 = v30;
+        v37 = currentSubscriberTag2;
         _os_log_impl(&dword_23255B000, v28, OS_LOG_TYPE_DEFAULT, "Failed to find LiveUsage for %@ with subscriber tag: %@", &v34, 0x16u);
         if (v31)
         {
@@ -5392,7 +5392,7 @@ uint64_t __55__FlowAnalyticsEngine_statsManager_thresholdReachedOn___block_invok
     if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v34 = 138412290;
-      v35 = v5;
+      v35 = nameCopy;
       _os_log_impl(&dword_23255B000, v27, OS_LOG_TYPE_DEFAULT, "Failed to find process for %@", &v34, 0xCu);
     }
   }
@@ -5401,36 +5401,36 @@ uint64_t __55__FlowAnalyticsEngine_statsManager_thresholdReachedOn___block_invok
   return v26;
 }
 
-- (void)_handleApplicationNotificationCompactForBundleName:(id)a3 edgeMode:(BOOL)a4
+- (void)_handleApplicationNotificationCompactForBundleName:(id)name edgeMode:(BOOL)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   v7 = procStateLogHandle;
   if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "false";
-    if (v4)
+    if (modeCopy)
     {
       v8 = "true";
     }
 
     v22 = 138412546;
-    v23 = v6;
+    v23 = nameCopy;
     v24 = 2080;
     v25 = v8;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEFAULT, "%@: Foreground: %s", &v22, 0x16u);
   }
 
-  v9 = [(NSMutableDictionary *)self->appCompactState objectForKey:v6];
+  v9 = [(NSMutableDictionary *)self->appCompactState objectForKey:nameCopy];
   v10 = v9;
-  if (!v4 && !v9)
+  if (!modeCopy && !v9)
   {
     v11 = procStateLogHandle;
     if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_INFO))
     {
       v22 = 138412290;
-      v23 = v6;
+      v23 = nameCopy;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_INFO, "Removal when already gone for app: %@", &v22, 0xCu);
     }
 
@@ -5438,7 +5438,7 @@ uint64_t __55__FlowAnalyticsEngine_statsManager_thresholdReachedOn___block_invok
     goto LABEL_33;
   }
 
-  if (v4 && v9)
+  if (modeCopy && v9)
   {
     v12 = procStateLogHandle;
     if (!os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_INFO))
@@ -5447,33 +5447,33 @@ uint64_t __55__FlowAnalyticsEngine_statsManager_thresholdReachedOn___block_invok
     }
 
     v22 = 138412290;
-    v23 = v6;
+    v23 = nameCopy;
     v13 = "Analytics Engine: double ON for app: %@";
 LABEL_32:
     _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_INFO, v13, &v22, 0xCu);
     goto LABEL_33;
   }
 
-  if (v4)
+  if (modeCopy)
   {
     v14 = MEMORY[0x277CCABB0];
-    [(FlowAnalyticsEngine *)self _usageFingerprintForBundleName:v6];
+    [(FlowAnalyticsEngine *)self _usageFingerprintForBundleName:nameCopy];
     v15 = [v14 numberWithDouble:?];
 
-    [(NSMutableDictionary *)self->appCompactState setObject:v15 forKey:v6];
+    [(NSMutableDictionary *)self->appCompactState setObject:v15 forKey:nameCopy];
     v16 = procStateLogHandle;
     if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_INFO))
     {
       v22 = 138412546;
       v23 = v15;
       v24 = 2112;
-      v25 = v6;
+      v25 = nameCopy;
       _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_INFO, "Set appCompactState object %@ for key %@", &v22, 0x16u);
     }
 
-    if (self->appTrackingEnabled && v6 && self->endpointTrackingEnabled)
+    if (self->appTrackingEnabled && nameCopy && self->endpointTrackingEnabled)
     {
-      [(FlowAnalyticsEngine *)self _fetchAppEndpointsRecordForUserId:gEffectiveUserId bundleName:v6];
+      [(FlowAnalyticsEngine *)self _fetchAppEndpointsRecordForUserId:gEffectiveUserId bundleName:nameCopy];
     }
 
     v10 = v15;
@@ -5481,7 +5481,7 @@ LABEL_32:
 
   else
   {
-    [(FlowAnalyticsEngine *)self _usageFingerprintForBundleName:v6];
+    [(FlowAnalyticsEngine *)self _usageFingerprintForBundleName:nameCopy];
     if (v17 != 0.0)
     {
       v18 = v17;
@@ -5490,15 +5490,15 @@ LABEL_32:
       {
         if (self->appTrackingEnabled && self->endpointTrackingEnabled)
         {
-          [(FlowAnalyticsEngine *)self _resolveAppEndpointsForUserId:gEffectiveUserId bundleName:v6];
-          [(FlowAnalyticsEngine *)self _archiveAppEndpointsForUserId:gEffectiveUserId bundleName:v6];
+          [(FlowAnalyticsEngine *)self _resolveAppEndpointsForUserId:gEffectiveUserId bundleName:nameCopy];
+          [(FlowAnalyticsEngine *)self _archiveAppEndpointsForUserId:gEffectiveUserId bundleName:nameCopy];
         }
 
         v20 = procStateLogHandle;
         if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_DEFAULT))
         {
           v22 = 138412290;
-          v23 = v6;
+          v23 = nameCopy;
           _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_DEFAULT, "call _saveAndUnloadSelectState on %@ exiting foreground state", &v22, 0xCu);
         }
 
@@ -5506,12 +5506,12 @@ LABEL_32:
       }
     }
 
-    [(NSMutableDictionary *)self->appCompactState removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->appCompactState removeObjectForKey:nameCopy];
     v12 = procStateLogHandle;
     if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_INFO))
     {
       v22 = 138412290;
-      v23 = v6;
+      v23 = nameCopy;
       v13 = "Remove appCompactState key %@";
       goto LABEL_32;
     }
@@ -5522,22 +5522,22 @@ LABEL_33:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleApplicationNotificationStateChangedForBundleName:(id)a3 edgeMode:(BOOL)a4 intervalType:(int)a5
+- (void)_handleApplicationNotificationStateChangedForBundleName:(id)name edgeMode:(BOOL)mode intervalType:(int)type
 {
-  v6 = a4;
+  modeCopy = mode;
   v69 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  nameCopy = name;
   v9 = procStateLogHandle;
   if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v10 = "false";
-    if (v6)
+    if (modeCopy)
     {
       v10 = "true";
     }
 
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = nameCopy;
     *&buf[12] = 2080;
     *&buf[14] = v10;
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEFAULT, "State Change for bundle name %@: Foreground: %s", buf, 0x16u);
@@ -5548,9 +5548,9 @@ LABEL_33:
   *&buf[16] = 0x3032000000;
   v66 = __Block_byref_object_copy__5;
   v67 = __Block_byref_object_dispose__5;
-  v68 = [(NSMutableDictionary *)self->appState objectForKey:v8];
+  v68 = [(NSMutableDictionary *)self->appState objectForKey:nameCopy];
   v11 = *(*&buf[8] + 40);
-  if (v6)
+  if (modeCopy)
   {
     if (v11)
     {
@@ -5558,7 +5558,7 @@ LABEL_33:
       if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_INFO))
       {
         *v61 = 138412290;
-        v62 = v8;
+        v62 = nameCopy;
         v13 = "Analytics Engine: double ON for app: %@";
 LABEL_17:
         _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_INFO, v13, v61, 0xCu);
@@ -5569,7 +5569,7 @@ LABEL_17:
     }
 
 LABEL_10:
-    v14 = [(FlowAnalyticsEngine *)self _processFetchForName:0 bundle:v8 shouldFillMiss:0];
+    v14 = [(FlowAnalyticsEngine *)self _processFetchForName:0 bundle:nameCopy shouldFillMiss:0];
     v56 = v14;
     if (v14)
     {
@@ -5577,29 +5577,29 @@ LABEL_10:
       v16 = v15;
       if (v15)
       {
-        v17 = [v15 wifiIN];
-        [v17 doubleValue];
+        wifiIN = [v15 wifiIN];
+        [wifiIN doubleValue];
         if (v18 == 0.0)
         {
-          v19 = [v16 wifiOUT];
-          [v19 doubleValue];
+          wifiOUT = [v16 wifiOUT];
+          [wifiOUT doubleValue];
           if (v20 == 0.0)
           {
-            v28 = [v16 wwanIN];
-            [v28 doubleValue];
-            v55 = v28;
+            wwanIN = [v16 wwanIN];
+            [wwanIN doubleValue];
+            v55 = wwanIN;
             if (v29 == 0.0)
             {
-              v53 = [v16 wwanOUT];
-              [v53 doubleValue];
+              wwanOUT = [v16 wwanOUT];
+              [wwanOUT doubleValue];
               if (v30 == 0.0)
               {
-                v52 = [v16 wiredIN];
-                [v52 doubleValue];
+                wiredIN = [v16 wiredIN];
+                [wiredIN doubleValue];
                 if (v31 == 0.0)
                 {
-                  v51 = [v16 wiredOUT];
-                  [v51 doubleValue];
+                  wiredOUT = [v16 wiredOUT];
+                  [wiredOUT doubleValue];
                   v21 = v32 != 0.0;
                 }
 
@@ -5633,102 +5633,102 @@ LABEL_10:
         }
 
 LABEL_45:
-        if (v6)
+        if (modeCopy)
         {
-          v33 = [MEMORY[0x277CBEAA8] date];
+          date = [MEMORY[0x277CBEAA8] date];
           aspace = self->aspace;
-          v35 = [MEMORY[0x277D6B580] entityName];
-          v36 = [(AppAnalytics *)aspace createTemporaryEntityForEntityName:v35];
+          entityName = [MEMORY[0x277D6B580] entityName];
+          v36 = [(AppAnalytics *)aspace createTemporaryEntityForEntityName:entityName];
           v37 = *(*&buf[8] + 40);
           *(*&buf[8] + 40) = v36;
 
           if (*(*&buf[8] + 40))
           {
-            v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+            v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
             [*(*&buf[8] + 40) setKind:v38];
 
             v39 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
             v40 = v39;
             if (v16)
             {
-              v41 = [v16 wifiIN];
+              wifiIN2 = [v16 wifiIN];
             }
 
             else
             {
-              v41 = v39;
+              wifiIN2 = v39;
             }
 
-            [*(*&buf[8] + 40) setWifiIN_start:v41];
+            [*(*&buf[8] + 40) setWifiIN_start:wifiIN2];
             if (v16)
             {
 
-              v45 = [v16 wifiOUT];
+              wifiOUT2 = [v16 wifiOUT];
             }
 
             else
             {
-              v45 = v40;
+              wifiOUT2 = v40;
             }
 
-            [*(*&buf[8] + 40) setWifiOUT_start:v45];
+            [*(*&buf[8] + 40) setWifiOUT_start:wifiOUT2];
             if (v16)
             {
 
-              v46 = [v16 wwanIN];
+              wwanIN2 = [v16 wwanIN];
             }
 
             else
             {
-              v46 = v40;
+              wwanIN2 = v40;
             }
 
-            [*(*&buf[8] + 40) setWwanIN_start:v46];
+            [*(*&buf[8] + 40) setWwanIN_start:wwanIN2];
             if (v16)
             {
 
-              v47 = [v16 wwanOUT];
+              wwanOUT2 = [v16 wwanOUT];
             }
 
             else
             {
-              v47 = v40;
+              wwanOUT2 = v40;
             }
 
-            [*(*&buf[8] + 40) setWwanOUT_start:v47];
+            [*(*&buf[8] + 40) setWwanOUT_start:wwanOUT2];
             if (v16)
             {
 
-              v48 = [v16 wiredIN];
+              wiredIN2 = [v16 wiredIN];
             }
 
             else
             {
-              v48 = v40;
+              wiredIN2 = v40;
             }
 
-            [*(*&buf[8] + 40) setWiredIN_start:v48];
+            [*(*&buf[8] + 40) setWiredIN_start:wiredIN2];
             if (v16)
             {
 
-              v49 = [v16 wiredOUT];
+              wiredOUT2 = [v16 wiredOUT];
             }
 
             else
             {
-              v49 = v40;
+              wiredOUT2 = v40;
             }
 
-            [*(*&buf[8] + 40) setWiredOUT_start:v49];
+            [*(*&buf[8] + 40) setWiredOUT_start:wiredOUT2];
             if (v16)
             {
             }
 
-            [*(*&buf[8] + 40) setTimeStart:v33];
-            [(NSMutableDictionary *)self->appState setObject:*(*&buf[8] + 40) forKey:v8];
+            [*(*&buf[8] + 40) setTimeStart:date];
+            [(NSMutableDictionary *)self->appState setObject:*(*&buf[8] + 40) forKey:nameCopy];
             if (self->appTrackingEnabled && self->endpointTrackingEnabled)
             {
-              [(FlowAnalyticsEngine *)self _fetchAppEndpointsRecordForUserId:gEffectiveUserId bundleName:v8];
+              [(FlowAnalyticsEngine *)self _fetchAppEndpointsRecordForUserId:gEffectiveUserId bundleName:nameCopy];
             }
           }
 
@@ -5738,7 +5738,7 @@ LABEL_45:
             if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_ERROR))
             {
               *v61 = 138412290;
-              v62 = v8;
+              v62 = nameCopy;
               _os_log_impl(&dword_23255B000, v44, OS_LOG_TYPE_ERROR, "Failed to allocate SFAppRun entity for %@", v61, 0xCu);
             }
           }
@@ -5748,7 +5748,7 @@ LABEL_45:
         {
           if (!v21)
           {
-            [(NSMutableDictionary *)self->appState removeObjectForKey:v8];
+            [(NSMutableDictionary *)self->appState removeObjectForKey:nameCopy];
             v42 = *(*&buf[8] + 40);
             *(*&buf[8] + 40) = 0;
 
@@ -5764,9 +5764,9 @@ LABEL_78:
           v57[2] = __101__FlowAnalyticsEngine__handleApplicationNotificationStateChangedForBundleName_edgeMode_intervalType___block_invoke;
           v57[3] = &unk_27898C4E0;
           v57[4] = self;
-          v58 = v8;
+          v58 = nameCopy;
           v59 = buf;
-          v60 = a5;
+          typeCopy = type;
           [(FlowAnalyticsEngine *)self _refreshFullDataUsageWithCallback:v57];
         }
 
@@ -5780,11 +5780,11 @@ LABEL_78:
         ctShim = self->ctShim;
         if (ctShim)
         {
-          v25 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
-          if (v25)
+          currentSubscriberTag = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
+          if (currentSubscriberTag)
           {
-            v54 = v25;
-            v26 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
+            v54 = currentSubscriberTag;
+            currentSubscriberTag2 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
             v27 = 1;
           }
 
@@ -5792,20 +5792,20 @@ LABEL_78:
           {
             v54 = 0;
             v27 = 0;
-            v26 = &unk_2847EF6C8;
+            currentSubscriberTag2 = &unk_2847EF6C8;
           }
         }
 
         else
         {
           v27 = 0;
-          v26 = &unk_2847EF6C8;
+          currentSubscriberTag2 = &unk_2847EF6C8;
         }
 
         *v61 = 138412546;
-        v62 = v8;
+        v62 = nameCopy;
         v63 = 2112;
-        v64 = v26;
+        v64 = currentSubscriberTag2;
         _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_DEFAULT, "Failed to find LiveUsage for %@ with subscriber tag: %@", v61, 0x16u);
         if (v27)
         {
@@ -5823,7 +5823,7 @@ LABEL_78:
       if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         *v61 = 138412290;
-        v62 = v8;
+        v62 = nameCopy;
         _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_DEFAULT, "Failed to find process for %@", v61, 0xCu);
       }
     }
@@ -5842,7 +5842,7 @@ LABEL_78:
   if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_INFO))
   {
     *v61 = 138412290;
-    v62 = v8;
+    v62 = nameCopy;
     v13 = "Removal when already gone for app: %@";
     goto LABEL_17;
   }
@@ -6036,13 +6036,13 @@ void __101__FlowAnalyticsEngine__handleApplicationNotificationStateChangedForBun
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processSnapshotForConnectionEstablishment:(id)a3
+- (void)processSnapshotForConnectionEstablishment:(id)establishment
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 snapshotReason];
-  [v4 flowDuration];
-  if (v6 < 7.5 || v5 == 2)
+  establishmentCopy = establishment;
+  snapshotReason = [establishmentCopy snapshotReason];
+  [establishmentCopy flowDuration];
+  if (v6 < 7.5 || snapshotReason == 2)
   {
     goto LABEL_6;
   }
@@ -6054,11 +6054,11 @@ void __101__FlowAnalyticsEngine__handleApplicationNotificationStateChangedForBun
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v4;
-      v8 = [v12 QUICState];
-      v13 = [v12 QUICStateNumber];
+      v12 = establishmentCopy;
+      qUICState = [v12 QUICState];
+      qUICStateNumber = [v12 QUICStateNumber];
 
-      if (v13 > 8)
+      if (qUICStateNumber > 8)
       {
         goto LABEL_21;
       }
@@ -6067,40 +6067,40 @@ void __101__FlowAnalyticsEngine__handleApplicationNotificationStateChangedForBun
     }
 
 LABEL_6:
-    v8 = 0;
+    qUICState = 0;
     goto LABEL_21;
   }
 
-  v10 = v4;
-  v8 = [v10 TCPState];
-  v11 = [v10 TCPStateNumber];
+  v10 = establishmentCopy;
+  qUICState = [v10 TCPState];
+  tCPStateNumber = [v10 TCPStateNumber];
 
-  if ((v11 & 0xFFFFFFFE) != 2)
+  if ((tCPStateNumber & 0xFFFFFFFE) != 2)
   {
     goto LABEL_21;
   }
 
 LABEL_12:
-  v14 = [v4 attributedEntity];
-  v15 = [v4 interfaceWiFi];
-  v16 = [v4 interfaceCellular];
-  [v4 flowDuration];
+  attributedEntity = [establishmentCopy attributedEntity];
+  interfaceWiFi = [establishmentCopy interfaceWiFi];
+  interfaceCellular = [establishmentCopy interfaceCellular];
+  [establishmentCopy flowDuration];
   v18 = v17;
   v19 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_INFO))
   {
     v20 = @"Other";
-    if (v16)
+    if (interfaceCellular)
     {
       v20 = @"Cellular";
     }
 
     *buf = 138413058;
-    v32 = v14;
+    v32 = attributedEntity;
     v35 = 2048;
     v33 = 2112;
-    v34 = v8;
-    if (v15)
+    v34 = qUICState;
+    if (interfaceWiFi)
     {
       v20 = @"Wi-Fi";
     }
@@ -6111,101 +6111,101 @@ LABEL_12:
     _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_INFO, "Found pre-connection establishment stuck flow for %@ [state=%@, duration=%.2fs, interface=%@]", buf, 0x2Au);
   }
 
-  v21 = [MEMORY[0x277CCABB0] numberWithBool:{v15, @"kNotificationFlowScrutinizerIsWiFiFlow"}];
+  v21 = [MEMORY[0x277CCABB0] numberWithBool:{interfaceWiFi, @"kNotificationFlowScrutinizerIsWiFiFlow"}];
   v30[0] = v21;
   v29[1] = @"kNotificationFlowScrutinizerIsCellularFlow";
-  v22 = [MEMORY[0x277CCABB0] numberWithBool:v16];
+  v22 = [MEMORY[0x277CCABB0] numberWithBool:interfaceCellular];
   v30[1] = v22;
   v29[2] = @"kNotificationFlowScrutinizerFlowDuration";
   v23 = [MEMORY[0x277CCABB0] numberWithDouble:v18];
   v24 = v23;
   v29[3] = @"kNotificationFlowScrutinizerAttributedEntity";
   v25 = @"unknown";
-  if (v14)
+  if (attributedEntity)
   {
-    v25 = v14;
+    v25 = attributedEntity;
   }
 
   v30[2] = v23;
   v30[3] = v25;
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:4];
 
-  v27 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v27 postNotificationName:@"kNotificationFlowScrutinizerPreConnectionStuckFlow" object:self userInfo:v26];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"kNotificationFlowScrutinizerPreConnectionStuckFlow" object:self userInfo:v26];
 
 LABEL_21:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkDomainUserAppTrackingChanged:(id)a3
+- (void)networkDomainUserAppTrackingChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = domainTrackingLogHandle;
   if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = changedCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "networkDomainUserAppTrackingChanged delegate: %@", buf, 0xCu);
   }
 
-  v6 = [(AnalyticsEngineCore *)self queue];
+  queue = [(AnalyticsEngineCore *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__FlowAnalyticsEngine_networkDomainUserAppTrackingChanged___block_invoke;
   v9[3] = &unk_27898A7D0;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = changedCopy;
+  v7 = changedCopy;
+  dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkDomainUserEndpointTrackingChanged:(id)a3
+- (void)networkDomainUserEndpointTrackingChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = domainTrackingLogHandle;
   if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = changedCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "networkDomainUserEndpointTrackingChanged delegate: %@", buf, 0xCu);
   }
 
-  v6 = [(AnalyticsEngineCore *)self queue];
+  queue = [(AnalyticsEngineCore *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__FlowAnalyticsEngine_networkDomainUserEndpointTrackingChanged___block_invoke;
   v9[3] = &unk_27898A7D0;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = changedCopy;
+  v7 = changedCopy;
+  dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkDomainResolution:(id)a3
+- (void)networkDomainResolution:(id)resolution
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resolutionCopy = resolution;
   v5 = domainTrackingLogHandle;
   if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v20 = v4;
+    v20 = resolutionCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "networkDomainResolution delegate: %@", buf, 0xCu);
   }
 
-  v6 = v4;
+  v6 = resolutionCopy;
   v7 = [v6 objectForKeyedSubscript:@"ResolvingEffectiveUserId"];
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
   v9 = [v6 objectForKeyedSubscript:@"ResolvingBundleName"];
   v10 = [v6 objectForKeyedSubscript:@"ResolvingEndpoints"];
-  v11 = [(AnalyticsEngineCore *)self queue];
+  queue = [(AnalyticsEngineCore *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __47__FlowAnalyticsEngine_networkDomainResolution___block_invoke;
@@ -6213,10 +6213,10 @@ LABEL_21:
   v15[4] = self;
   v16 = v9;
   v17 = v10;
-  v18 = v8;
+  v18 = unsignedIntegerValue;
   v12 = v10;
   v13 = v9;
-  dispatch_async(v11, v15);
+  dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -6236,15 +6236,15 @@ _BYTE *__47__FlowAnalyticsEngine_networkDomainResolution___block_invoke(uint64_t
   return result;
 }
 
-- (void)sendPowerLogReport:(id)a3 isStart:(BOOL)a4
+- (void)sendPowerLogReport:(id)report isStart:(BOOL)start
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reportCopy = report;
   v5 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = reportCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "SDM power log report %@", &v7, 0xCu);
   }
 
@@ -6253,109 +6253,109 @@ _BYTE *__47__FlowAnalyticsEngine_networkDomainResolution___block_invoke(uint64_t
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postCAEvent:(id)a3 withName:(id)a4
+- (void)postCAEvent:(id)event withName:(id)name
 {
-  v5 = a3;
-  v4 = v5;
+  eventCopy = event;
+  v4 = eventCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)_generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6
+- (void)_generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block
 {
-  v19 = a5;
-  v9 = a6;
-  if (a3 - 18 < 2)
+  uuidCopy = uuid;
+  blockCopy = block;
+  if (id - 18 < 2)
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     setApparentTime(v14);
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v15 = +[FlowScrutinizer sharedInstance];
-    v16 = [v15 getLedgerState:a3 == 19];
+    date2 = [v15 getLedgerState:id == 19];
 
-    [v11 setObject:v16 forKeyedSubscript:@"FlowLedgerDetails"];
-    v17 = [MEMORY[0x277CBEAA8] date];
-    (*(v9 + 2))(v9, 0, "FlowLedger details", v17, "collected on demand", 0, v11);
+    [dictionary setObject:date2 forKeyedSubscript:@"FlowLedgerDetails"];
+    date = [MEMORY[0x277CBEAA8] date];
+    (*(blockCopy + 2))(blockCopy, 0, "FlowLedger details", date, "collected on demand", 0, dictionary);
   }
 
   else
   {
-    if (a3 != 15)
+    if (id != 15)
     {
-      if (a3 == 12)
+      if (id == 12)
       {
-        v10 = [MEMORY[0x277CBEB38] dictionary];
-        v11 = v10;
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = dictionary2;
         cellThroughputAdviser = self->cellThroughputAdviser;
         if (cellThroughputAdviser)
         {
           [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
           v13 = [(CellThroughputAdviser *)cellThroughputAdviser getStateAt:?];
-          [v11 setObject:v13 forKeyedSubscript:@"CellThroughputDetails"];
+          [dictionary setObject:v13 forKeyedSubscript:@"CellThroughputDetails"];
         }
 
         else
         {
-          [v10 setObject:@"No adviser configured" forKeyedSubscript:@"CellThroughputDetails"];
+          [dictionary2 setObject:@"No adviser configured" forKeyedSubscript:@"CellThroughputDetails"];
         }
 
-        v16 = [MEMORY[0x277CBEAA8] date];
-        (*(v9 + 2))(v9, 0, "CellThroughputAdvice  details", v16, "collected on demand", 0, v11);
+        date2 = [MEMORY[0x277CBEAA8] date];
+        (*(blockCopy + 2))(blockCopy, 0, "CellThroughputAdvice  details", date2, "collected on demand", 0, dictionary);
       }
 
       else
       {
-        v11 = [MEMORY[0x277CBEAA8] date];
-        v16 = [MEMORY[0x277CBEAC0] dictionary];
-        (*(v9 + 2))(v9, 0, "FAE unrecognised managed event request", v11, "collected on demand", 0, v16);
+        dictionary = [MEMORY[0x277CBEAA8] date];
+        date2 = [MEMORY[0x277CBEAC0] dictionary];
+        (*(blockCopy + 2))(blockCopy, 0, "FAE unrecognised managed event request", dictionary, "collected on demand", 0, date2);
       }
 
       goto LABEL_12;
     }
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v18 = +[WiFiThroughputAdviser sharedInstance];
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-    v16 = [v18 getStateAt:?];
+    date2 = [v18 getStateAt:?];
 
-    [v11 setObject:v16 forKeyedSubscript:@"WiFiThroughputDetails"];
-    v17 = [MEMORY[0x277CBEAA8] date];
-    (*(v9 + 2))(v9, 0, "WiFiThroughputAdvice  details", v17, "collected on demand", 0, v11);
+    [dictionary setObject:date2 forKeyedSubscript:@"WiFiThroughputDetails"];
+    date = [MEMORY[0x277CBEAA8] date];
+    (*(blockCopy + 2))(blockCopy, 0, "WiFiThroughputAdvice  details", date, "collected on demand", 0, dictionary);
   }
 
 LABEL_12:
 }
 
-- (void)generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6
+- (void)generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [(AnalyticsEngineCore *)self queue];
+  uuidCopy = uuid;
+  blockCopy = block;
+  queue = [(AnalyticsEngineCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__FlowAnalyticsEngine_generateInfoForId_context_uuid_completionBlock___block_invoke;
   block[3] = &unk_27898AFB8;
-  v18 = a3;
-  v19 = a4;
+  idCopy = id;
+  contextCopy = context;
   block[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, block);
+  v16 = uuidCopy;
+  v17 = blockCopy;
+  v13 = blockCopy;
+  v14 = uuidCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_newCoreMediaAssetDownloadEvent:(id)a3
+- (void)_newCoreMediaAssetDownloadEvent:(id)event
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v38 = self;
+  eventCopy = event;
+  selfCopy = self;
   if (![(FlowScrutinizer *)self->flowScrutinizer assetDownloadsScrutinized])
   {
     goto LABEL_46;
   }
 
-  v36 = [v4 userInfo];
-  [v36 keyEnumerator];
+  userInfo = [eventCopy userInfo];
+  [userInfo keyEnumerator];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -6368,7 +6368,7 @@ LABEL_12:
 
   v6 = v5;
   v32 = 408;
-  v33 = v4;
+  v33 = eventCopy;
   v7 = 0;
   v35 = *v47;
   while (2)
@@ -6382,9 +6382,9 @@ LABEL_12:
 
       v9 = *(*(&v46 + 1) + 8 * i);
 
-      v10 = [v36 objectForKeyedSubscript:v9];
-      v11 = [v10 eventKey];
-      v12 = [v10 eventData];
+      v10 = [userInfo objectForKeyedSubscript:v9];
+      eventKey = [v10 eventKey];
+      eventData = [v10 eventData];
       if ([v10 processName])
       {
         v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:objc_msgSend(v10 encoding:{"processName"), 4}];
@@ -6397,13 +6397,13 @@ LABEL_12:
 
       v7 = v9;
       v14 = [SymptomStore keyFromSymptomName:@"SYMPTOM_TRANSPORT_DISCONNECT", v32];
-      v15 = [v11 isEqualToString:v14];
+      v15 = [eventKey isEqualToString:v14];
 
       if (v15)
       {
         if (v13 && (([v13 isEqualToString:@"mediaserverd"] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", @"mediaplaybackd")))
         {
-          v28 = *(&v38->super.super.isa + v32);
+          v28 = *(&selfCopy->super.super.isa + v32);
           [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
           [v28 noteCoreMediaAssetDownloadEvent:2 downloadUUID:0 byProcess:v13 onBehalfOf:0 duration:0.0 at:v29];
         }
@@ -6411,12 +6411,12 @@ LABEL_12:
         goto LABEL_43;
       }
 
-      if ((*(v12 + 4) & 4) == 0)
+      if ((*(eventData + 4) & 4) == 0)
       {
         goto LABEL_16;
       }
 
-      v16 = *(v12 + 40);
+      v16 = *(eventData + 40);
       if ((v16 & 1) == 0)
       {
         v30 = flowScrutinyLogHandle;
@@ -6432,7 +6432,7 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      if ((~*(v12 + 40) & 6) != 0)
+      if ((~*(eventData + 40) & 6) != 0)
       {
         v17 = flowScrutinyLogHandle;
         if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_INFO))
@@ -6446,22 +6446,22 @@ LABEL_43:
       }
 
 LABEL_16:
-      v37 = v11;
+      v37 = eventKey;
       v18 = [v10 eventQualifierStringForKey:@"1"];
-      v19 = [v10 processId];
-      if (v38->assetDownloadProcessId != v19)
+      processId = [v10 processId];
+      if (selfCopy->assetDownloadProcessId != processId)
       {
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __55__FlowAnalyticsEngine__newCoreMediaAssetDownloadEvent___block_invoke;
         block[3] = &unk_27898AFE0;
-        block[4] = v38;
-        block[5] = v19;
+        block[4] = selfCopy;
+        block[5] = processId;
         dispatch_sync(MEMORY[0x277D85CD0], block);
       }
 
-      v20 = [v10 eventQualifiers];
-      v21 = [v20 objectForKeyedSubscript:@"2"];
+      eventQualifiers = [v10 eventQualifiers];
+      v21 = [eventQualifiers objectForKeyedSubscript:@"2"];
 
       if (v21 && [v21 length] == 16)
       {
@@ -6473,10 +6473,10 @@ LABEL_16:
         v22 = 0;
       }
 
-      v23 = *(v12 + 4);
+      v23 = *(eventData + 4);
       if (v23)
       {
-        v24 = *(v12 + 24);
+        v24 = *(eventData + 24);
       }
 
       else
@@ -6484,13 +6484,13 @@ LABEL_16:
 
         v24 = 0;
         v22 = 0;
-        v23 = *(v12 + 4);
+        v23 = *(eventData + 4);
       }
 
       v25 = 86400.0;
       if ((v23 & 2) != 0)
       {
-        v25 = *(v12 + 32) / 1000.0;
+        v25 = *(eventData + 32) / 1000.0;
       }
 
       v26 = flowScrutinyLogHandle;
@@ -6511,18 +6511,18 @@ LABEL_16:
           _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_DEFAULT, "FAE to flowScrutinizer, Download event %lld %@ on behalf of %@ download UUID %@ duration %.3f", buf, 0x34u);
         }
 
-        v27 = [(AnalyticsEngineCore *)v38 queue];
+        queue = [(AnalyticsEngineCore *)selfCopy queue];
         v39[0] = MEMORY[0x277D85DD0];
         v39[1] = 3221225472;
         v39[2] = __55__FlowAnalyticsEngine__newCoreMediaAssetDownloadEvent___block_invoke_405;
         v39[3] = &unk_27898C558;
-        v39[4] = v38;
+        v39[4] = selfCopy;
         v43 = v24;
         v40 = v22;
         v41 = v13;
         v42 = v18;
         v44 = v25;
-        dispatch_async(v27, v39);
+        dispatch_async(queue, v39);
       }
 
       else if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_ERROR))
@@ -6544,7 +6544,7 @@ LABEL_16:
 
 LABEL_44:
 
-  v4 = v33;
+  eventCopy = v33;
 LABEL_45:
 
 LABEL_46:
@@ -6571,7 +6571,7 @@ uint64_t __55__FlowAnalyticsEngine__newCoreMediaAssetDownloadEvent___block_invok
   return [v2 noteCoreMediaAssetDownloadEvent:v3 downloadUUID:v1 byProcess:v5 onBehalfOf:v4 duration:v6 at:v7];
 }
 
-- (void)_noteSizeableBackgroundTransferEvent:(id)a3
+- (void)_noteSizeableBackgroundTransferEvent:(id)event
 {
   v49 = *MEMORY[0x277D85DE8];
   if (!self->cellThroughputAdviser)
@@ -6579,8 +6579,8 @@ uint64_t __55__FlowAnalyticsEngine__newCoreMediaAssetDownloadEvent___block_invok
     goto LABEL_19;
   }
 
-  v3 = [a3 userInfo];
-  [v3 keyEnumerator];
+  userInfo = [event userInfo];
+  [userInfo keyEnumerator];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -6612,20 +6612,20 @@ uint64_t __55__FlowAnalyticsEngine__newCoreMediaAssetDownloadEvent___block_invok
 
       v7 = *(*(&v36 + 1) + 8 * v9);
 
-      v11 = [v3 objectForKeyedSubscript:v7];
-      v12 = [v11 eventData];
+      v11 = [userInfo objectForKeyedSubscript:v7];
+      eventData = [v11 eventData];
       v13 = [v11 eventQualifierStringForKey:@"1"];
       v14 = v13;
-      if ((~*(v12 + 4) & 7) != 0)
+      if ((~*(eventData + 4) & 7) != 0)
       {
       }
 
       else if (v13)
       {
-        v15 = v3;
-        v16 = *(v12 + 24);
-        v17 = *(v12 + 32);
-        v18 = *(v12 + 40);
+        v15 = userInfo;
+        v16 = *(eventData + 24);
+        v17 = *(eventData + 32);
+        v18 = *(eventData + 40);
         v19 = flowScrutinyLogHandle;
         if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
         {
@@ -6653,7 +6653,7 @@ uint64_t __55__FlowAnalyticsEngine__newCoreMediaAssetDownloadEvent___block_invok
         v21 = v14;
         dispatch_async(v20, block);
 
-        v3 = v15;
+        userInfo = v15;
         v8 = v26;
         v6 = v28;
         goto LABEL_15;
@@ -6695,15 +6695,15 @@ uint64_t __60__FlowAnalyticsEngine__noteSizeableBackgroundTransferEvent___block_
   return [v2 noteSizeableBackgroundTransferEventName:v1 event:v3 downloadSizeBytes:v4 uploadSizeBytes:v5 at:?];
 }
 
-- (void)_newExpectedTransfer:(id)a3
+- (void)_newExpectedTransfer:(id)transfer
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v28 = self;
+  transferCopy = transfer;
+  selfCopy = self;
   if ([(FlowScrutinizer *)self->flowScrutinizer expectedTransfersScrutinized])
   {
-    v5 = [v4 userInfo];
-    [v5 keyEnumerator];
+    userInfo = [transferCopy userInfo];
+    [userInfo keyEnumerator];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -6711,10 +6711,10 @@ uint64_t __60__FlowAnalyticsEngine__noteSizeableBackgroundTransferEvent___block_
     v33 = [obj countByEnumeratingWithState:&v41 objects:v53 count:16];
     if (v33)
     {
-      v26 = v4;
+      v26 = transferCopy;
       v6 = 0;
       v32 = *v42;
-      v27 = v5;
+      v27 = userInfo;
       do
       {
         for (i = 0; i != v33; ++i)
@@ -6727,15 +6727,15 @@ uint64_t __60__FlowAnalyticsEngine__noteSizeableBackgroundTransferEvent___block_
 
           v6 = *(*(&v41 + 1) + 8 * i);
 
-          v9 = [v5 objectForKeyedSubscript:v6];
+          v9 = [userInfo objectForKeyedSubscript:v6];
           v10 = [v9 eventQualifierStringForKey:@"3"];
           v11 = [v9 eventQualifierStringForKey:@"7"];
           v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v11];
-          v13 = [v9 eventQualifiers];
-          v14 = [v13 objectForKeyedSubscript:@"8"];
+          eventQualifiers = [v9 eventQualifiers];
+          v14 = [eventQualifiers objectForKeyedSubscript:@"8"];
 
-          v15 = [v9 eventQualifiers];
-          v16 = [v15 objectForKeyedSubscript:@"9"];
+          eventQualifiers2 = [v9 eventQualifiers];
+          v16 = [eventQualifiers2 objectForKeyedSubscript:@"9"];
 
           if (v12)
           {
@@ -6790,19 +6790,19 @@ uint64_t __60__FlowAnalyticsEngine__noteSizeableBackgroundTransferEvent___block_
               _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_DEFAULT, "FAE to FlowScrutinizer, Transfer size %lld type %d flow UUID %@ from %@", buf, 0x26u);
             }
 
-            v24 = [(AnalyticsEngineCore *)v28 queue];
+            queue = [(AnalyticsEngineCore *)selfCopy queue];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __44__FlowAnalyticsEngine__newExpectedTransfer___block_invoke;
             block[3] = &unk_27898C5A8;
-            block[4] = v28;
+            block[4] = selfCopy;
             v36 = v39;
             v37 = v29 & 1;
             v38 = v30 & 1;
             v35 = v12;
-            dispatch_async(v24, block);
+            dispatch_async(queue, block);
 
-            v5 = v27;
+            userInfo = v27;
           }
 
           else
@@ -6822,7 +6822,7 @@ uint64_t __60__FlowAnalyticsEngine__noteSizeableBackgroundTransferEvent___block_
 
       while (v33);
 
-      v4 = v26;
+      transferCopy = v26;
     }
   }
 
@@ -7052,62 +7052,62 @@ LABEL_10:
   return self->appCompactState != 0;
 }
 
-- (void)_removeAllInfoForProcess:(id)a3
+- (void)_removeAllInfoForProcess:(id)process
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processCopy = process;
   v5 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138477827;
-    v14 = v4;
+    v14 = processCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "_removeAllInfoForProcess %{private}@", &v13, 0xCu);
   }
 
-  if (v4)
+  if (processCopy)
   {
-    v6 = [v4 name];
-    v7 = [v4 extensionName];
-    if (v7)
+    name = [processCopy name];
+    extensionName = [processCopy extensionName];
+    if (extensionName)
     {
       v8 = 4;
     }
 
     else
     {
-      v9 = [v4 bundleName];
-      if (v9)
+      bundleName = [processCopy bundleName];
+      if (bundleName)
       {
         v8 = 3;
       }
 
       else
       {
-        v10 = [v4 procName];
-        v8 = 2 * (v10 != 0);
+        procName = [processCopy procName];
+        v8 = 2 * (procName != 0);
       }
     }
 
-    [(FlowAnalyticsEngine *)self _removeInfoFromWorkspaceForProcess:v4];
+    [(FlowAnalyticsEngine *)self _removeInfoFromWorkspaceForProcess:processCopy];
     v11 = analyticsLogHandle;
-    if (v6)
+    if (name)
     {
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v13 = 138412290;
-        v14 = v6;
+        v14 = name;
         _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "Removing local cache for %@", &v13, 0xCu);
       }
 
-      [(FlowAnalyticsEngine *)self _removeFromProcCache:v6 ofType:v8];
-      [(NSMutableDictionary *)self->appState removeObjectForKey:v6];
-      [(NSMutableDictionary *)self->appCompactState removeObjectForKey:v6];
+      [(FlowAnalyticsEngine *)self _removeFromProcCache:name ofType:v8];
+      [(NSMutableDictionary *)self->appState removeObjectForKey:name];
+      [(NSMutableDictionary *)self->appCompactState removeObjectForKey:name];
     }
 
     else if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = processCopy;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_ERROR, "Trying to removing local cache for %@ with nil name", &v13, 0xCu);
     }
   }
@@ -7115,44 +7115,44 @@ LABEL_10:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeInfoFromWorkspaceForProcess:(id)a3
+- (void)_removeInfoFromWorkspaceForProcess:(id)process
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processCopy = process;
   v5 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v24 = v4;
+    v24 = processCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "Removing Process entity %{private}@ from workspace", buf, 0xCu);
   }
 
-  if ([v4 isApp])
+  if ([processCopy isApp])
   {
-    v6 = v4;
-    v7 = [v6 hasTypicalUsage];
-    v8 = [v7 count];
+    v6 = processCopy;
+    hasTypicalUsage = [v6 hasTypicalUsage];
+    v8 = [hasTypicalUsage count];
 
     if (v8)
     {
       aspace = self->aspace;
-      v10 = [v6 hasTypicalUsage];
+      hasTypicalUsage2 = [v6 hasTypicalUsage];
       v11 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, v8}];
-      v12 = [v10 objectsAtIndexes:v11];
+      v12 = [hasTypicalUsage2 objectsAtIndexes:v11];
       [(AppAnalytics *)aspace removeEntities:v12];
     }
 
     v13 = self->aspace;
-    v14 = [v6 hasCalendarUsage];
-    v15 = [v14 allObjects];
-    [(AppAnalytics *)v13 removeEntities:v15];
+    hasCalendarUsage = [v6 hasCalendarUsage];
+    allObjects = [hasCalendarUsage allObjects];
+    [(AppAnalytics *)v13 removeEntities:allObjects];
   }
 
-  [v4 setHintLiveUsage:0];
-  if (v4 && [v4 isApp])
+  [processCopy setHintLiveUsage:0];
+  if (processCopy && [processCopy isApp])
   {
-    v16 = [v4 bundleName];
-    v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %u AND %K == %@", @"effectiveUserId", gEffectiveUserId, @"bundleName", v16];
+    bundleName = [processCopy bundleName];
+    v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %u AND %K == %@", @"effectiveUserId", gEffectiveUserId, @"bundleName", bundleName];
     v18 = [(ObjectAnalytics *)self->domspace removeEntitiesMatching:v17 wspaceReset:0];
     v19 = domainTrackingLogHandle;
     if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -7160,35 +7160,35 @@ LABEL_10:
       *buf = 134218243;
       v24 = v18;
       v25 = 2113;
-      v26 = v16;
+      v26 = bundleName;
       _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_DEFAULT, "Removed %ld ADU records for %{private}@ via reset data", buf, 0x16u);
     }
   }
 
   pspace = self->pspace;
-  v21 = [MEMORY[0x277CBEA60] arrayWithObject:v4];
+  v21 = [MEMORY[0x277CBEA60] arrayWithObject:processCopy];
   [(ProcessAnalytics *)pspace removeEntities:v21];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_processFetchForName:(id)a3 bundle:(id)a4 extension:(id)a5 shouldFillMiss:(BOOL)a6
+- (id)_processFetchForName:(id)name bundle:(id)bundle extension:(id)extension shouldFillMiss:(BOOL)miss
 {
-  v6 = a6;
+  missCopy = miss;
   v68 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  bundleCopy = bundle;
+  extensionCopy = extension;
   v56 = 0;
   v57 = &v56;
   v58 = 0x3032000000;
   v59 = __Block_byref_object_copy__5;
   v60 = __Block_byref_object_dispose__5;
   v61 = 0;
-  if (v12)
+  if (extensionCopy)
   {
     objc_opt_class();
-    if (!((v11 == 0) | ((objc_opt_isKindOfClass() & 1) == 0)))
+    if (!((bundleCopy == 0) | ((objc_opt_isKindOfClass() & 1) == 0)))
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -7196,7 +7196,7 @@ LABEL_10:
         v13 = 1;
         v14 = 4;
         v15 = MEMORY[0x277D6B5C8];
-        v16 = v12;
+        v16 = extensionCopy;
         goto LABEL_13;
       }
     }
@@ -7205,9 +7205,9 @@ LABEL_10:
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138478083;
-      v63 = v12;
+      v63 = extensionCopy;
       v64 = 2113;
-      v65 = v11;
+      v65 = bundleCopy;
       v18 = "_processFetchForName: extensionName %{private}@ requested with bundleID %{private}@, validation error";
       v19 = v17;
       v20 = 22;
@@ -7219,7 +7219,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (v11)
+  if (bundleCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -7227,7 +7227,7 @@ LABEL_35:
       v13 = 1;
       v14 = 3;
       v15 = MEMORY[0x277D6B5C0];
-      v16 = v11;
+      v16 = bundleCopy;
       goto LABEL_13;
     }
 
@@ -7238,7 +7238,7 @@ LABEL_35:
     }
 
     *buf = 138477827;
-    v63 = v11;
+    v63 = bundleCopy;
     v18 = "_processFetchForName: bundleID %{private}@, validation error";
 LABEL_34:
     v19 = v33;
@@ -7246,7 +7246,7 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (!v10)
+  if (!nameCopy)
   {
     v34 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
@@ -7273,7 +7273,7 @@ LABEL_36:
     }
 
     *buf = 138477827;
-    v63 = v10;
+    v63 = nameCopy;
     v18 = "_processFetchForName: processName %{private}@, validation error";
     goto LABEL_34;
   }
@@ -7281,7 +7281,7 @@ LABEL_36:
   v13 = 0;
   v14 = 2;
   v15 = MEMORY[0x277D6B5D0];
-  v16 = v10;
+  v16 = nameCopy;
 LABEL_13:
   v21 = v16;
   v22 = *v15;
@@ -7315,12 +7315,12 @@ LABEL_13:
     v51[1] = 3221225472;
     v51[2] = __76__FlowAnalyticsEngine__processFetchForName_bundle_extension_shouldFillMiss___block_invoke;
     v51[3] = &unk_27898C5D0;
-    v46 = v12;
+    v46 = extensionCopy;
     v52 = v46;
-    v29 = v11;
+    v29 = bundleCopy;
     v53 = v29;
     v55 = &v56;
-    v30 = v10;
+    v30 = nameCopy;
     v54 = v30;
     [v50 enumerateObjectsUsingBlock:v51];
     if (v57[5])
@@ -7339,16 +7339,16 @@ LABEL_13:
       [(FlowAnalyticsEngine *)self _insertProcCache:v57[5] ofType:v14 underName:v21, v46];
     }
 
-    else if (v6)
+    else if (missCopy)
     {
       if (v48)
       {
         p_pspace = &self->aspace;
       }
 
-      v35 = [(ProcessAnalytics *)*p_pspace createEntity];
+      createEntity = [(ProcessAnalytics *)*p_pspace createEntity];
       v36 = v57[5];
-      v57[5] = v35;
+      v57[5] = createEntity;
 
       v37 = v57[5];
       if (v37)
@@ -7356,11 +7356,11 @@ LABEL_13:
         [v37 setProcName:v21];
         [v57[5] setBundleName:v29];
         [v57[5] setExtensionName:v47];
-        v38 = [MEMORY[0x277CBEAA8] date];
-        [v57[5] setFirstTimeStamp:v38];
+        date = [MEMORY[0x277CBEAA8] date];
+        [v57[5] setFirstTimeStamp:date];
 
-        v39 = [MEMORY[0x277CBEAA8] distantPast];
-        [v57[5] setTimeStamp:v39];
+        distantPast = [MEMORY[0x277CBEAA8] distantPast];
+        [v57[5] setTimeStamp:distantPast];
 
         [(AnalyticsWorkspace *)self->super.workspace save];
         [(FlowAnalyticsEngine *)self _insertProcCache:v57[5] ofType:v14 underName:v21];
@@ -7675,13 +7675,13 @@ LABEL_34:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_has1stPartyImpliedBundleNameBehavior:(id)a3
+- (id)_has1stPartyImpliedBundleNameBehavior:(id)behavior
 {
-  v3 = a3;
-  v4 = v3;
+  behaviorCopy = behavior;
+  v4 = behaviorCopy;
   if (_has1stPartyImpliedBundleNameBehavior__onceToken == -1)
   {
-    if (v3)
+    if (behaviorCopy)
     {
 LABEL_3:
       v5 = [_has1stPartyImpliedBundleNameBehavior__k1stPartyImpliedBundleNamesMap objectForKeyedSubscript:v4];
@@ -7710,11 +7710,11 @@ void __61__FlowAnalyticsEngine__has1stPartyImpliedBundleNameBehavior___block_inv
   _has1stPartyImpliedBundleNameBehavior__k1stPartyImpliedBundleNamesMap = &unk_2847EF480;
 }
 
-- (BOOL)_processNameIsValid:(id)a3
+- (BOOL)_processNameIsValid:(id)valid
 {
-  if (a3)
+  if (valid)
   {
-    return [a3 isEqualToString:&stru_2847966D8] ^ 1;
+    return [valid isEqualToString:&stru_2847966D8] ^ 1;
   }
 
   else
@@ -7723,11 +7723,11 @@ void __61__FlowAnalyticsEngine__has1stPartyImpliedBundleNameBehavior___block_inv
   }
 }
 
-- (id)_fetchFromProcCacheWithName:(id)a3 ofType:(unsigned int)a4
+- (id)_fetchFromProcCacheWithName:(id)name ofType:(unsigned int)type
 {
   v65[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6 || ![(AnalyticsWorkspace *)self->super.workspace persistent])
+  nameCopy = name;
+  if (!nameCopy || ![(AnalyticsWorkspace *)self->super.workspace persistent])
   {
     v8 = 0;
     goto LABEL_42;
@@ -7736,8 +7736,8 @@ void __61__FlowAnalyticsEngine__has1stPartyImpliedBundleNameBehavior___block_inv
   p_processViaBundleNameCache = &self->processViaBundleNameCache;
   if (!self->processViaBundleNameCache || !self->processViaProcNameCache || !self->processViaExtensionNameCache)
   {
-    v52 = a4;
-    v53 = v6;
+    typeCopy = type;
+    v53 = nameCopy;
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v10 = *p_processViaBundleNameCache;
     v54 = &self->processViaBundleNameCache;
@@ -7753,9 +7753,9 @@ void __61__FlowAnalyticsEngine__has1stPartyImpliedBundleNameBehavior___block_inv
 
     context = objc_autoreleasePoolPush();
     v15 = MEMORY[0x277CBE408];
-    v16 = [MEMORY[0x277D6B548] entityName];
-    v17 = [(AnalyticsWorkspace *)self->super.workspace mainObjectContext];
-    v18 = [v15 entityForName:v16 inManagedObjectContext:v17];
+    entityName = [MEMORY[0x277D6B548] entityName];
+    mainObjectContext = [(AnalyticsWorkspace *)self->super.workspace mainObjectContext];
+    v18 = [v15 entityForName:entityName inManagedObjectContext:mainObjectContext];
 
     v19 = objc_alloc_init(MEMORY[0x277CBE428]);
     v50 = v18;
@@ -7764,8 +7764,8 @@ void __61__FlowAnalyticsEngine__has1stPartyImpliedBundleNameBehavior___block_inv
     [v19 setAllocationType:1];
     v20 = objc_alloc_init(MEMORY[0x277CBE410]);
     [v20 setName:@"objectID"];
-    v21 = [MEMORY[0x277CCA9C0] expressionForEvaluatedObject];
-    [v20 setExpression:v21];
+    expressionForEvaluatedObject = [MEMORY[0x277CCA9C0] expressionForEvaluatedObject];
+    [v20 setExpression:expressionForEvaluatedObject];
 
     [v20 setExpressionResultType:2000];
     v22 = *MEMORY[0x277D6B5C0];
@@ -7777,11 +7777,11 @@ void __61__FlowAnalyticsEngine__has1stPartyImpliedBundleNameBehavior___block_inv
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v65 count:4];
     [v19 setPropertiesToFetch:v23];
 
-    v24 = self;
-    v25 = [(AnalyticsWorkspace *)self->super.workspace mainObjectContext];
+    selfCopy = self;
+    mainObjectContext2 = [(AnalyticsWorkspace *)self->super.workspace mainObjectContext];
     v59 = 0;
     v49 = v19;
-    v26 = [v25 executeFetchRequest:v19 error:&v59];
+    v26 = [mainObjectContext2 executeFetchRequest:v19 error:&v59];
     v47 = v59;
 
     v57 = 0u;
@@ -7812,7 +7812,7 @@ void __61__FlowAnalyticsEngine__has1stPartyImpliedBundleNameBehavior___block_inv
           {
             if (v35)
             {
-              v37 = v24->processViaExtensionNameCache;
+              v37 = selfCopy->processViaExtensionNameCache;
               v38 = v36;
               v39 = v35;
             }
@@ -7826,7 +7826,7 @@ void __61__FlowAnalyticsEngine__has1stPartyImpliedBundleNameBehavior___block_inv
 
             else
             {
-              v37 = v24->processViaProcNameCache;
+              v37 = selfCopy->processViaProcNameCache;
               v38 = v36;
               v39 = v33;
             }
@@ -7841,23 +7841,23 @@ void __61__FlowAnalyticsEngine__has1stPartyImpliedBundleNameBehavior___block_inv
       while (v29);
     }
 
-    self = v24;
-    [(AnalyticsWorkspace *)v24->super.workspace reset];
+    self = selfCopy;
+    [(AnalyticsWorkspace *)selfCopy->super.workspace reset];
 
     objc_autoreleasePoolPop(context);
-    v6 = v53;
-    a4 = v52;
+    nameCopy = v53;
+    type = typeCopy;
     p_processViaBundleNameCache = v54;
   }
 
-  if (a4 > 2)
+  if (type > 2)
   {
-    if (a4 == 3)
+    if (type == 3)
     {
       goto LABEL_31;
     }
 
-    if (a4 == 4)
+    if (type == 4)
     {
       v40 = 104;
       goto LABEL_30;
@@ -7866,10 +7866,10 @@ void __61__FlowAnalyticsEngine__has1stPartyImpliedBundleNameBehavior___block_inv
     goto LABEL_33;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v43 = [*p_processViaBundleNameCache objectForKeyedSubscript:v6];
-    if (v43 || ([(NSMutableDictionary *)self->processViaExtensionNameCache objectForKeyedSubscript:v6], (v43 = objc_claimAutoreleasedReturnValue()) != 0))
+    v43 = [*p_processViaBundleNameCache objectForKeyedSubscript:nameCopy];
+    if (v43 || ([(NSMutableDictionary *)self->processViaExtensionNameCache objectForKeyedSubscript:nameCopy], (v43 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v41 = v43;
       goto LABEL_40;
@@ -7878,16 +7878,16 @@ void __61__FlowAnalyticsEngine__has1stPartyImpliedBundleNameBehavior___block_inv
     goto LABEL_26;
   }
 
-  if (a4 != 2)
+  if (type != 2)
   {
 LABEL_33:
     v42 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109379;
-      v61 = a4;
+      typeCopy2 = type;
       v62 = 2113;
-      v63 = v6;
+      v63 = nameCopy;
       _os_log_impl(&dword_23255B000, v42, OS_LOG_TYPE_ERROR, "Attempting to retrieve using invalid cache type %u, for name %{private}@", buf, 0x12u);
     }
 
@@ -7900,12 +7900,12 @@ LABEL_26:
 LABEL_30:
   p_processViaBundleNameCache = (&self->super.super.isa + v40);
 LABEL_31:
-  v41 = [*p_processViaBundleNameCache objectForKeyedSubscript:v6];
+  v41 = [*p_processViaBundleNameCache objectForKeyedSubscript:nameCopy];
   if (v41)
   {
 LABEL_40:
-    v44 = [(AnalyticsWorkspace *)self->super.workspace mainObjectContext];
-    v8 = [v44 objectWithID:v41];
+    mainObjectContext3 = [(AnalyticsWorkspace *)self->super.workspace mainObjectContext];
+    v8 = [mainObjectContext3 objectWithID:v41];
 
     goto LABEL_41;
   }
@@ -7920,51 +7920,51 @@ LABEL_42:
   return v8;
 }
 
-- (void)_insertProcCache:(id)a3 ofType:(unsigned int)a4 underName:(id)a5
+- (void)_insertProcCache:(id)cache ofType:(unsigned int)type underName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  cacheCopy = cache;
+  nameCopy = name;
   v10 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
   {
-    if (a4 > 4)
+    if (type > 4)
     {
       v11 = @"CacheTypeUnknown";
     }
 
     else
     {
-      v11 = off_27898CA88[a4];
+      v11 = off_27898CA88[type];
     }
 
     *v21 = 138412803;
     *&v21[4] = v11;
     *&v21[12] = 2113;
-    *&v21[14] = v9;
+    *&v21[14] = nameCopy;
     *&v21[22] = 2112;
-    *&v21[24] = v8;
+    *&v21[24] = cacheCopy;
     v12 = v10;
     _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEBUG, "_insertProcCache %@ %{private}@ with %@", v21, 0x20u);
   }
 
-  if (v8 && v9)
+  if (cacheCopy && nameCopy)
   {
-    switch(a4)
+    switch(type)
     {
       case 2u:
-        v13 = [v8 objectID];
+        objectID = [cacheCopy objectID];
         v14 = 112;
         goto LABEL_16;
       case 4u:
-        v13 = [v8 objectID];
+        objectID = [cacheCopy objectID];
         v14 = 104;
         goto LABEL_16;
       case 3u:
-        v13 = [v8 objectID];
+        objectID = [cacheCopy objectID];
         v14 = 96;
 LABEL_16:
-        [*(&self->super.super.isa + v14) setObject:v13 forKeyedSubscript:{v9, *v21, *&v21[16], *&v21[24]}];
+        [*(&self->super.super.isa + v14) setObject:objectID forKeyedSubscript:{nameCopy, *v21, *&v21[16], *&v21[24]}];
         goto LABEL_17;
     }
 
@@ -7972,13 +7972,13 @@ LABEL_16:
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v19 = v18;
-      v20 = [v8 objectID];
+      objectID2 = [cacheCopy objectID];
       *v21 = 67109635;
-      *&v21[4] = a4;
+      *&v21[4] = type;
       *&v21[8] = 2113;
-      *&v21[10] = v9;
+      *&v21[10] = nameCopy;
       *&v21[18] = 2112;
-      *&v21[20] = v20;
+      *&v21[20] = objectID2;
       _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_ERROR, "Attempting to insert into invalid cache type %u, name %{private}@ for process %@", v21, 0x1Cu);
     }
   }
@@ -7988,13 +7988,13 @@ LABEL_16:
     v15 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
     {
-      v13 = v15;
-      v16 = [v8 objectID];
+      objectID = v15;
+      objectID3 = [cacheCopy objectID];
       *v21 = 138412546;
-      *&v21[4] = v9;
+      *&v21[4] = nameCopy;
       *&v21[12] = 2112;
-      *&v21[14] = v16;
-      _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_ERROR, "Attempting to insert either no-name or no-process in cache: %@, name: %@", v21, 0x16u);
+      *&v21[14] = objectID3;
+      _os_log_impl(&dword_23255B000, objectID, OS_LOG_TYPE_ERROR, "Attempting to insert either no-name or no-process in cache: %@, name: %@", v21, 0x16u);
 
 LABEL_17:
     }
@@ -8003,34 +8003,34 @@ LABEL_17:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeFromProcCache:(id)a3 ofType:(unsigned int)a4
+- (void)_removeFromProcCache:(id)cache ofType:(unsigned int)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cacheCopy = cache;
   v7 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
   {
-    if (a4 > 4)
+    if (type > 4)
     {
       v8 = @"CacheTypeUnknown";
     }
 
     else
     {
-      v8 = off_27898CA88[a4];
+      v8 = off_27898CA88[type];
     }
 
     *v17 = 138412547;
     *&v17[4] = v8;
     *&v17[12] = 2113;
-    *&v17[14] = v6;
+    *&v17[14] = cacheCopy;
     v9 = v7;
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEBUG, "_removeFromProcCache %@ %{private}@", v17, 0x16u);
   }
 
-  if (v6)
+  if (cacheCopy)
   {
-    switch(a4)
+    switch(type)
     {
       case 2u:
         v10 = 112;
@@ -8041,7 +8041,7 @@ LABEL_17:
       case 3u:
         v10 = 96;
 LABEL_15:
-        [*(&self->super.super.isa + v10) removeObjectForKey:{v6, *v17, *&v17[16], v18}];
+        [*(&self->super.super.isa + v10) removeObjectForKey:{cacheCopy, *v17, *&v17[16], v18}];
         goto LABEL_16;
     }
 
@@ -8049,19 +8049,19 @@ LABEL_15:
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v14 = @"CacheTypeUnknown";
-      if (a4 == 1)
+      if (type == 1)
       {
         v14 = @"CacheTypeBestMatch";
       }
 
-      if (!a4)
+      if (!type)
       {
         v14 = @"CacheTypeUndefined";
       }
 
       v15 = v14;
       *v17 = 138478083;
-      *&v17[4] = v6;
+      *&v17[4] = cacheCopy;
       *&v17[12] = 2112;
       *&v17[14] = v15;
       v16 = v13;
@@ -8084,11 +8084,11 @@ LABEL_16:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isLiveUsageinScope:(id)a3 forTime:(id)a4
+- (BOOL)_isLiveUsageinScope:(id)scope forTime:(id)time
 {
-  v6 = a4;
-  v7 = [a3 timeStamp];
-  [v7 timeIntervalSinceDate:v6];
+  timeCopy = time;
+  timeStamp = [scope timeStamp];
+  [timeStamp timeIntervalSinceDate:timeCopy];
   v9 = v8;
 
   LODWORD(v10) = v9;
@@ -8105,11 +8105,11 @@ LABEL_16:
   return self->usageCoalescingSpanSecs > v10;
 }
 
-- (BOOL)_isLiveUsageInRollingWindow:(id)a3 forTime:(id)a4
+- (BOOL)_isLiveUsageInRollingWindow:(id)window forTime:(id)time
 {
-  v6 = a4;
-  v7 = [a3 timeStamp];
-  [v7 timeIntervalSinceDate:v6];
+  timeCopy = time;
+  timeStamp = [window timeStamp];
+  [timeStamp timeIntervalSinceDate:timeCopy];
   v9 = v8;
 
   LODWORD(v10) = v9;
@@ -8126,44 +8126,44 @@ LABEL_16:
   return self->usageWindowUnitsCount * self->usageCoalescingSpanSecs >= v10;
 }
 
-- (id)_liveUsageFetchForProcess:(id)a3
+- (id)_liveUsageFetchForProcess:(id)process
 {
   v113 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v80 = [v8 isApp];
-  v81 = v8;
-  v82 = [v8 hintLiveUsage];
-  v86 = self;
-  if (v82)
+  processCopy = process;
+  isApp = [processCopy isApp];
+  v81 = processCopy;
+  hintLiveUsage = [processCopy hintLiveUsage];
+  selfCopy = self;
+  if (hintLiveUsage)
   {
-    v4 = [v82 tag];
-    if (v4)
+    currentSubscriberTag3 = [hintLiveUsage tag];
+    if (currentSubscriberTag3)
     {
-      v9 = [v82 tag];
+      v9 = [hintLiveUsage tag];
       ctShim = self->ctShim;
       if (ctShim)
       {
-        v3 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
-        if (v3)
+        currentSubscriberTag = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
+        if (currentSubscriberTag)
         {
-          v5 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
+          currentSubscriberTag2 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
           v11 = 1;
         }
 
         else
         {
           v11 = 0;
-          v5 = &unk_2847EF6C8;
+          currentSubscriberTag2 = &unk_2847EF6C8;
         }
       }
 
       else
       {
         v11 = 0;
-        v5 = &unk_2847EF6C8;
+        currentSubscriberTag2 = &unk_2847EF6C8;
       }
 
-      v6 = [v9 isEqualToNumber:v5];
+      currentSubscriberTag4 = [v9 isEqualToNumber:currentSubscriberTag2];
       if (v11)
       {
       }
@@ -8171,10 +8171,10 @@ LABEL_16:
       if (ctShim)
       {
 
-        if (v6)
+        if (currentSubscriberTag4)
         {
 LABEL_12:
-          v12 = [v81 hintLiveUsage];
+          hintLiveUsage2 = [v81 hintLiveUsage];
           goto LABEL_33;
         }
       }
@@ -8182,7 +8182,7 @@ LABEL_12:
       else
       {
 
-        if (v6)
+        if (currentSubscriberTag4)
         {
           goto LABEL_12;
         }
@@ -8208,14 +8208,14 @@ LABEL_12:
           objc_enumerationMutation(obj);
         }
 
-        v6 = *(*(&v98 + 1) + 8 * i);
-        v16 = [v6 tag];
-        v17 = v86->ctShim;
-        if (v17 && ([(CoreTelephonyShim *)v86->ctShim currentSubscriberTag], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+        currentSubscriberTag4 = *(*(&v98 + 1) + 8 * i);
+        v16 = [currentSubscriberTag4 tag];
+        v17 = selfCopy->ctShim;
+        if (v17 && ([(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag], (currentSubscriberTag2 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v4 = [(CoreTelephonyShim *)v86->ctShim currentSubscriberTag];
+          currentSubscriberTag3 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
           v18 = 1;
-          v19 = v4;
+          v19 = currentSubscriberTag3;
         }
 
         else
@@ -8235,8 +8235,8 @@ LABEL_12:
 
         if (v20)
         {
-          v12 = v6;
-          [v81 setHintLiveUsage:v12];
+          hintLiveUsage2 = currentSubscriberTag4;
+          [v81 setHintLiveUsage:hintLiveUsage2];
           goto LABEL_32;
         }
       }
@@ -8251,48 +8251,48 @@ LABEL_12:
     }
   }
 
-  v12 = 0;
+  hintLiveUsage2 = 0;
 LABEL_32:
 
 LABEL_33:
-  v83 = [MEMORY[0x277CBEAA8] date];
-  if (v12)
+  date = [MEMORY[0x277CBEAA8] date];
+  if (hintLiveUsage2)
   {
     v21 = analyticsLogHandle;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [v81 name];
-      v23 = v86->ctShim;
+      name = [v81 name];
+      v23 = selfCopy->ctShim;
       if (v23)
       {
-        v6 = [(CoreTelephonyShim *)v86->ctShim currentSubscriberTag];
-        if (v6)
+        currentSubscriberTag4 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
+        if (currentSubscriberTag4)
         {
-          v24 = [(CoreTelephonyShim *)v86->ctShim currentSubscriberTag];
+          currentSubscriberTag5 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
           v25 = 1;
         }
 
         else
         {
           v25 = 0;
-          v24 = &unk_2847EF6C8;
+          currentSubscriberTag5 = &unk_2847EF6C8;
         }
       }
 
       else
       {
         v25 = 0;
-        v24 = &unk_2847EF6C8;
+        currentSubscriberTag5 = &unk_2847EF6C8;
       }
 
       *buf = 67109890;
-      v105 = v80;
+      v105 = isApp;
       v106 = 2112;
-      v107 = v22;
+      v107 = name;
       v108 = 2048;
-      v109 = v12;
+      v109 = hintLiveUsage2;
       v110 = 2112;
-      v111 = v24;
+      v111 = currentSubscriberTag5;
       _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEBUG, "found LU hint (mode: %d) for %@: %p, subscriber tag: %@", buf, 0x26u);
       if (v25)
       {
@@ -8303,7 +8303,7 @@ LABEL_33:
       }
     }
 
-    if (!v80 || [(FlowAnalyticsEngine *)v86 _isLiveUsageinScope:v12 forTime:v83])
+    if (!isApp || [(FlowAnalyticsEngine *)selfCopy _isLiveUsageinScope:hintLiveUsage2 forTime:date])
     {
       goto LABEL_131;
     }
@@ -8311,38 +8311,38 @@ LABEL_33:
     v43 = analyticsLogHandle;
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
     {
-      v44 = [v81 name];
-      v45 = v86->ctShim;
+      name2 = [v81 name];
+      v45 = selfCopy->ctShim;
       if (v45)
       {
-        v6 = [(CoreTelephonyShim *)v86->ctShim currentSubscriberTag];
-        if (v6)
+        currentSubscriberTag4 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
+        if (currentSubscriberTag4)
         {
-          v46 = [(CoreTelephonyShim *)v86->ctShim currentSubscriberTag];
+          currentSubscriberTag6 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
           v47 = 1;
         }
 
         else
         {
           v47 = 0;
-          v46 = &unk_2847EF6C8;
+          currentSubscriberTag6 = &unk_2847EF6C8;
         }
       }
 
       else
       {
         v47 = 0;
-        v46 = &unk_2847EF6C8;
+        currentSubscriberTag6 = &unk_2847EF6C8;
       }
 
       *buf = 67109890;
       v105 = 1;
       v106 = 2112;
-      v107 = v44;
+      v107 = name2;
       v108 = 2048;
-      v109 = v12;
+      v109 = hintLiveUsage2;
       v110 = 2112;
-      v111 = v46;
+      v111 = currentSubscriberTag6;
       _os_log_impl(&dword_23255B000, v43, OS_LOG_TYPE_DEBUG, "found LU hint but expired (mode: %d) for %@: %p, subscriber tag: %@", buf, 0x26u);
       if (v47)
       {
@@ -8356,7 +8356,7 @@ LABEL_33:
     goto LABEL_81;
   }
 
-  if (!v80)
+  if (!isApp)
   {
     v92 = 0u;
     v93 = 0u;
@@ -8381,14 +8381,14 @@ LABEL_33:
 
         v29 = *(*(&v90 + 1) + 8 * j);
         v30 = [v29 tag];
-        v31 = v86->ctShim;
+        v31 = selfCopy->ctShim;
         if (v31)
         {
-          v32 = [(CoreTelephonyShim *)v31 currentSubscriberTag];
-          if (v32)
+          currentSubscriberTag7 = [(CoreTelephonyShim *)v31 currentSubscriberTag];
+          if (currentSubscriberTag7)
           {
-            v33 = [(CoreTelephonyShim *)v86->ctShim currentSubscriberTag];
-            v34 = [v30 isEqualToNumber:v33];
+            currentSubscriberTag8 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
+            v34 = [v30 isEqualToNumber:currentSubscriberTag8];
           }
 
           else
@@ -8412,48 +8412,48 @@ LABEL_33:
           }
         }
 
-        v36 = [v29 kind];
-        v37 = [v36 intValue] == 0;
+        kind = [v29 kind];
+        v37 = [kind intValue] == 0;
 
         if (v37)
         {
-          v12 = v29;
-          [v81 setHintLiveUsage:v12];
+          hintLiveUsage2 = v29;
+          [v81 setHintLiveUsage:hintLiveUsage2];
           v38 = analyticsLogHandle;
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
           {
-            v39 = [v81 name];
-            v40 = v86->ctShim;
+            name3 = [v81 name];
+            v40 = selfCopy->ctShim;
             if (v40)
             {
-              v36 = [(CoreTelephonyShim *)v86->ctShim currentSubscriberTag];
-              if (v36)
+              kind = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
+              if (kind)
               {
-                v41 = [(CoreTelephonyShim *)v86->ctShim currentSubscriberTag];
+                currentSubscriberTag9 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
                 v42 = 1;
               }
 
               else
               {
                 v42 = 0;
-                v41 = &unk_2847EF6C8;
+                currentSubscriberTag9 = &unk_2847EF6C8;
               }
             }
 
             else
             {
               v42 = 0;
-              v41 = &unk_2847EF6C8;
+              currentSubscriberTag9 = &unk_2847EF6C8;
             }
 
             *buf = 67109890;
             v105 = 0;
             v106 = 2112;
-            v107 = v39;
+            v107 = name3;
             v108 = 2048;
-            v109 = v12;
+            v109 = hintLiveUsage2;
             v110 = 2112;
-            v111 = v41;
+            v111 = currentSubscriberTag9;
             _os_log_impl(&dword_23255B000, v38, OS_LOG_TYPE_DEBUG, "established LU hint (mode: %d) for %@: %p, subscriber tag: %@", buf, 0x26u);
             if (v42)
             {
@@ -8500,14 +8500,14 @@ LABEL_81:
 
       v51 = *(*(&v94 + 1) + 8 * k);
       v52 = [v51 tag];
-      v53 = v86->ctShim;
+      v53 = selfCopy->ctShim;
       if (v53)
       {
-        v54 = [(CoreTelephonyShim *)v53 currentSubscriberTag];
-        if (v54)
+        currentSubscriberTag10 = [(CoreTelephonyShim *)v53 currentSubscriberTag];
+        if (currentSubscriberTag10)
         {
-          v12 = [(CoreTelephonyShim *)v86->ctShim currentSubscriberTag];
-          v55 = [v52 isEqualToNumber:v12];
+          hintLiveUsage2 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
+          v55 = [v52 isEqualToNumber:hintLiveUsage2];
         }
 
         else
@@ -8531,46 +8531,46 @@ LABEL_81:
         }
       }
 
-      v57 = [v51 kind];
-      v58 = [v57 intValue] == 0;
+      kind2 = [v51 kind];
+      v58 = [kind2 intValue] == 0;
 
-      if (!v58 && [(FlowAnalyticsEngine *)v86 _isLiveUsageinScope:v51 forTime:v83])
+      if (!v58 && [(FlowAnalyticsEngine *)selfCopy _isLiveUsageinScope:v51 forTime:date])
       {
         v59 = analyticsLogHandle;
         if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
         {
-          v60 = [v81 name];
-          v61 = v86->ctShim;
+          name4 = [v81 name];
+          v61 = selfCopy->ctShim;
           if (v61)
           {
-            v12 = [(CoreTelephonyShim *)v86->ctShim currentSubscriberTag];
-            if (v12)
+            hintLiveUsage2 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
+            if (hintLiveUsage2)
             {
-              v62 = [(CoreTelephonyShim *)v86->ctShim currentSubscriberTag];
+              currentSubscriberTag11 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
               v63 = 1;
             }
 
             else
             {
               v63 = 0;
-              v62 = &unk_2847EF6C8;
+              currentSubscriberTag11 = &unk_2847EF6C8;
             }
           }
 
           else
           {
             v63 = 0;
-            v62 = &unk_2847EF6C8;
+            currentSubscriberTag11 = &unk_2847EF6C8;
           }
 
           *buf = 67109890;
           v105 = 1;
           v106 = 2112;
-          v107 = v60;
+          v107 = name4;
           v108 = 2048;
           v109 = 0;
           v110 = 2112;
-          v111 = v62;
+          v111 = currentSubscriberTag11;
           _os_log_impl(&dword_23255B000, v59, OS_LOG_TYPE_DEBUG, "established LU hint (mode: %d) for %@: %p, subscriber tag: %@", buf, 0x26u);
           if (v63)
           {
@@ -8581,8 +8581,8 @@ LABEL_81:
           }
         }
 
-        v12 = v51;
-        [v81 setHintLiveUsage:v12];
+        hintLiveUsage2 = v51;
+        [v81 setHintLiveUsage:hintLiveUsage2];
         goto LABEL_117;
       }
     }
@@ -8597,79 +8597,79 @@ LABEL_81:
   }
 
 LABEL_97:
-  v12 = 0;
+  hintLiveUsage2 = 0;
 LABEL_117:
 
-  if (!v12)
+  if (!hintLiveUsage2)
   {
-    v12 = [(UsageAnalytics *)v86->uspace createEntity];
-    v64 = [MEMORY[0x277CCABB0] numberWithInt:v80];
-    [v12 setKind:v64];
+    hintLiveUsage2 = [(UsageAnalytics *)selfCopy->uspace createEntity];
+    v64 = [MEMORY[0x277CCABB0] numberWithInt:isApp];
+    [hintLiveUsage2 setKind:v64];
 
-    v65 = [MEMORY[0x277CBEAA8] date];
-    [v12 setTimeStamp:v65];
-    v66 = v86->ctShim;
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [hintLiveUsage2 setTimeStamp:date2];
+    v66 = selfCopy->ctShim;
     if (v66)
     {
-      v67 = [(CoreTelephonyShim *)v66 currentSubscriberTag];
-      if (v67)
+      currentSubscriberTag12 = [(CoreTelephonyShim *)v66 currentSubscriberTag];
+      if (currentSubscriberTag12)
       {
-        v68 = [(CoreTelephonyShim *)v86->ctShim currentSubscriberTag];
-        [v12 setTag:v68];
+        currentSubscriberTag13 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
+        [hintLiveUsage2 setTag:currentSubscriberTag13];
       }
 
       else
       {
-        [v12 setTag:&unk_2847EF6C8];
+        [hintLiveUsage2 setTag:&unk_2847EF6C8];
       }
     }
 
     else
     {
-      [v12 setTag:&unk_2847EF6C8];
+      [hintLiveUsage2 setTag:&unk_2847EF6C8];
     }
 
-    [v81 setHintLiveUsage:v12];
+    [v81 setHintLiveUsage:hintLiveUsage2];
     v69 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v70 = v69;
-      v71 = [v81 name];
-      v72 = [v12 tag];
+      name5 = [v81 name];
+      v72 = [hintLiveUsage2 tag];
       *buf = 67109890;
-      v105 = v80;
+      v105 = isApp;
       v106 = 2112;
-      v107 = v71;
+      v107 = name5;
       v108 = 2048;
-      v109 = v12;
+      v109 = hintLiveUsage2;
       v110 = 2112;
       v111 = v72;
       _os_log_impl(&dword_23255B000, v70, OS_LOG_TYPE_DEBUG, "creating LU record (mode: %d) for %@: %p, subscriber tag: %@", buf, 0x26u);
     }
 
-    [v81 addHasLiveUsageObject:v12];
-    v73 = [v12 tag];
-    v74 = [(FlowAnalyticsEngine *)v86 _liveUsageCountForProcess:v81 subscriberTag:v73];
+    [v81 addHasLiveUsageObject:hintLiveUsage2];
+    v73 = [hintLiveUsage2 tag];
+    v74 = [(FlowAnalyticsEngine *)selfCopy _liveUsageCountForProcess:v81 subscriberTag:v73];
 
-    v75 = [v81 hasLiveUsage];
-    v76 = [v75 count] == 1;
+    hasLiveUsage = [v81 hasLiveUsage];
+    v76 = [hasLiveUsage count] == 1;
 
     if (v76)
     {
-      [v81 setFirstTimeStamp:v65];
+      [v81 setFirstTimeStamp:date2];
     }
 
-    else if (v74 > v86->usageWindowUnitsCount)
+    else if (v74 > selfCopy->usageWindowUnitsCount)
     {
-      v77 = [(AnalyticsEngineCore *)v86 queue];
+      queue = [(AnalyticsEngineCore *)selfCopy queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __49__FlowAnalyticsEngine__liveUsageFetchForProcess___block_invoke;
       block[3] = &unk_27898A328;
-      block[4] = v86;
+      block[4] = selfCopy;
       v88 = v81;
-      v89 = v12;
-      dispatch_async(v77, block);
+      v89 = hintLiveUsage2;
+      dispatch_async(queue, block);
     }
   }
 
@@ -8677,7 +8677,7 @@ LABEL_131:
 
   v78 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return hintLiveUsage2;
 }
 
 void __49__FlowAnalyticsEngine__liveUsageFetchForProcess___block_invoke(uint64_t a1)
@@ -8688,19 +8688,19 @@ void __49__FlowAnalyticsEngine__liveUsageFetchForProcess___block_invoke(uint64_t
   [v1 _liveUsagePackForProcess:v2 subscriberTag:v3];
 }
 
-- (unint64_t)_liveUsageCountForProcess:(id)a3 subscriberTag:(id)a4
+- (unint64_t)_liveUsageCountForProcess:(id)process subscriberTag:(id)tag
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  processCopy = process;
+  tagCopy = tag;
+  if (tagCopy)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [v5 hasLiveUsage];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v25 count:16];
+    hasLiveUsage = [processCopy hasLiveUsage];
+    v8 = [hasLiveUsage countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -8712,16 +8712,16 @@ void __49__FlowAnalyticsEngine__liveUsageFetchForProcess___block_invoke(uint64_t
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(hasLiveUsage);
           }
 
           v13 = [*(*(&v19 + 1) + 8 * i) tag];
-          v14 = [v13 isEqualToNumber:v6];
+          v14 = [v13 isEqualToNumber:tagCopy];
 
           v10 += v14;
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        v9 = [hasLiveUsage countByEnumeratingWithState:&v19 objects:v25 count:16];
       }
 
       while (v9);
@@ -8757,26 +8757,26 @@ void __49__FlowAnalyticsEngine__liveUsageFetchForProcess___block_invoke(uint64_t
   return v10;
 }
 
-- (void)_liveUsagePackForProcess:(id)a3 subscriberTag:(id)a4
+- (void)_liveUsagePackForProcess:(id)process subscriberTag:(id)tag
 {
   v74 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  processCopy = process;
+  tagCopy = tag;
+  if (tagCopy)
   {
     v54 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:self->usageWindowUnitsCount];
-    v55 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v8 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v9 = v8;
-      v10 = [v6 name];
+      name = [processCopy name];
       *buf = 138412802;
-      v65 = v10;
+      v65 = name;
       v66 = 2048;
-      v67 = [(FlowAnalyticsEngine *)self _liveUsageCountForProcess:v6 subscriberTag:v7];
+      v67 = [(FlowAnalyticsEngine *)self _liveUsageCountForProcess:processCopy subscriberTag:tagCopy];
       v68 = 2112;
-      v69 = v7;
+      v69 = tagCopy;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEBUG, "packing LU records for %@, count: %lu, subscriber tag: %@", buf, 0x20u);
     }
 
@@ -8784,13 +8784,13 @@ void __49__FlowAnalyticsEngine__liveUsageFetchForProcess___block_invoke(uint64_t
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v11 = [v6 hasLiveUsage];
-    v12 = [v11 countByEnumeratingWithState:&v60 objects:v73 count:16];
-    v53 = v6;
+    hasLiveUsage = [processCopy hasLiveUsage];
+    v12 = [hasLiveUsage countByEnumeratingWithState:&v60 objects:v73 count:16];
+    v53 = processCopy;
     if (v12)
     {
       v13 = v12;
-      v14 = 0;
+      firstObject = 0;
       v15 = *v61;
       do
       {
@@ -8798,21 +8798,21 @@ void __49__FlowAnalyticsEngine__liveUsageFetchForProcess___block_invoke(uint64_t
         {
           if (*v61 != v15)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(hasLiveUsage);
           }
 
           v17 = *(*(&v60 + 1) + 8 * i);
           v18 = [v17 tag];
-          v19 = [v18 isEqualToNumber:v7];
+          v19 = [v18 isEqualToNumber:tagCopy];
 
           if (v19)
           {
-            v20 = [v17 kind];
-            v21 = [v20 intValue];
+            kind = [v17 kind];
+            intValue = [kind intValue];
 
-            if (v21)
+            if (intValue)
             {
-              if (![(FlowAnalyticsEngine *)self _isLiveUsageInRollingWindow:v17 forTime:v55])
+              if (![(FlowAnalyticsEngine *)self _isLiveUsageInRollingWindow:v17 forTime:date])
               {
                 [v54 addObject:v17];
               }
@@ -8822,19 +8822,19 @@ void __49__FlowAnalyticsEngine__liveUsageFetchForProcess___block_invoke(uint64_t
             {
               v22 = v17;
 
-              v14 = v22;
+              firstObject = v22;
             }
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v60 objects:v73 count:16];
+        v13 = [hasLiveUsage countByEnumeratingWithState:&v60 objects:v73 count:16];
       }
 
       while (v13);
 
-      v6 = v53;
+      processCopy = v53;
       v23 = v54;
-      if (v14)
+      if (firstObject)
       {
         goto LABEL_29;
       }
@@ -8848,31 +8848,31 @@ void __49__FlowAnalyticsEngine__liveUsageFetchForProcess___block_invoke(uint64_t
 
     if (![v23 count])
     {
-      v14 = 0;
+      firstObject = 0;
       goto LABEL_42;
     }
 
-    v14 = [v23 firstObject];
+    firstObject = [v23 firstObject];
     v26 = [MEMORY[0x277CCABB0] numberWithInt:0];
-    [v14 setKind:v26];
+    [firstObject setKind:v26];
 
-    [v23 removeObject:v14];
+    [v23 removeObject:firstObject];
     v27 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v28 = v27;
-      v29 = [v6 name];
-      v30 = [(FlowAnalyticsEngine *)self _liveUsageCountForProcess:v6 subscriberTag:v7];
+      name2 = [processCopy name];
+      v30 = [(FlowAnalyticsEngine *)self _liveUsageCountForProcess:processCopy subscriberTag:tagCopy];
       *buf = 138412802;
-      v65 = v29;
+      v65 = name2;
       v66 = 2048;
       v67 = v30;
       v68 = 2112;
-      v69 = v7;
+      v69 = tagCopy;
       _os_log_impl(&dword_23255B000, v28, OS_LOG_TYPE_DEBUG, "packing LU records, with promotion, for %@, count: %lu, subscriber tag: %@", buf, 0x20u);
     }
 
-    if (!v14)
+    if (!firstObject)
     {
       goto LABEL_42;
     }
@@ -8900,18 +8900,18 @@ LABEL_29:
             }
 
             v36 = *(*(&v56 + 1) + 8 * j);
-            [(FlowAnalyticsEngine *)self _applyCountsTo:v14 fromLiveUsage:v36 mustReset:0];
-            v37 = [v14 timeStamp];
-            [v37 timeIntervalSinceReferenceDate];
+            [(FlowAnalyticsEngine *)self _applyCountsTo:firstObject fromLiveUsage:v36 mustReset:0];
+            timeStamp = [firstObject timeStamp];
+            [timeStamp timeIntervalSinceReferenceDate];
             v39 = v38;
-            v40 = [v36 timeStamp];
-            [v40 timeIntervalSinceReferenceDate];
+            timeStamp2 = [v36 timeStamp];
+            [timeStamp2 timeIntervalSinceReferenceDate];
             v42 = v41;
 
             if (v39 > v42)
             {
-              v43 = [v36 timeStamp];
-              [v14 setTimeStamp:v43];
+              timeStamp3 = [v36 timeStamp];
+              [firstObject setTimeStamp:timeStamp3];
             }
           }
 
@@ -8926,23 +8926,23 @@ LABEL_29:
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v45 = v44;
-        v6 = v53;
-        v46 = [v53 name];
-        v47 = [(FlowAnalyticsEngine *)self _liveUsageCountForProcess:v53 subscriberTag:v7];
+        processCopy = v53;
+        name3 = [v53 name];
+        v47 = [(FlowAnalyticsEngine *)self _liveUsageCountForProcess:v53 subscriberTag:tagCopy];
         *buf = 138413058;
-        v65 = v46;
+        v65 = name3;
         v66 = 2112;
-        v67 = v7;
+        v67 = tagCopy;
         v68 = 2048;
         v69 = v47;
         v70 = 2112;
-        v71 = v14;
+        v71 = firstObject;
         _os_log_impl(&dword_23255B000, v45, OS_LOG_TYPE_DEBUG, "packing LU records for %@, subscriber tag: %@, residual count: %lu, mono contents: %@", buf, 0x2Au);
       }
 
       else
       {
-        v6 = v53;
+        processCopy = v53;
       }
 
       v23 = v54;
@@ -8956,12 +8956,12 @@ LABEL_42:
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v49 = v48;
-      v50 = [v6 name];
-      v51 = [(FlowAnalyticsEngine *)self _liveUsageCountForProcess:v6 subscriberTag:v7];
+      name4 = [processCopy name];
+      v51 = [(FlowAnalyticsEngine *)self _liveUsageCountForProcess:processCopy subscriberTag:tagCopy];
       *buf = 138412802;
-      v65 = v50;
+      v65 = name4;
       v66 = 2112;
-      v67 = v7;
+      v67 = tagCopy;
       v68 = 2048;
       v69 = v51;
       _os_log_impl(&dword_23255B000, v49, OS_LOG_TYPE_DEBUG, "packing LU records for %@, nothing left to do, subscriber tag: %@, residual count: %lu", buf, 0x20u);
@@ -8970,8 +8970,8 @@ LABEL_42:
     goto LABEL_46;
   }
 
-  v14 = [MEMORY[0x277CBEAA8] date];
-  if (!_liveUsagePackForProcess_subscriberTag__lastLoggedTime || ([_liveUsagePackForProcess_subscriberTag__lastLoggedTime timeIntervalSinceDate:v14], v24 < -180.0))
+  firstObject = [MEMORY[0x277CBEAA8] date];
+  if (!_liveUsagePackForProcess_subscriberTag__lastLoggedTime || ([_liveUsagePackForProcess_subscriberTag__lastLoggedTime timeIntervalSinceDate:firstObject], v24 < -180.0))
   {
     v25 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
@@ -8981,7 +8981,7 @@ LABEL_42:
       _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_ERROR, "_liveUsagePackForProcess: encountered unexpected nil tag (%llu previous errors)", buf, 0xCu);
     }
 
-    objc_storeStrong(&_liveUsagePackForProcess_subscriberTag__lastLoggedTime, v14);
+    objc_storeStrong(&_liveUsagePackForProcess_subscriberTag__lastLoggedTime, firstObject);
   }
 
   ++_liveUsagePackForProcess_subscriberTag__errCount;
@@ -9000,8 +9000,8 @@ LABEL_47:
     _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_DEFAULT, "Cleaning up entries of uninstalled Apps", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  if (v4)
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  if (defaultWorkspace)
   {
     v5 = [(AppAnalytics *)self->aspace fetchAllEntityDictionariesWithProperties:&unk_2847EEB50];
     *buf = 0;
@@ -9016,7 +9016,7 @@ LABEL_47:
     v15[2] = __50__FlowAnalyticsEngine__clearUninstalledAppEntries__block_invoke;
     v15[3] = &unk_27898BEB0;
     v18 = buf;
-    v16 = v4;
+    v16 = defaultWorkspace;
     v7 = v6;
     v17 = v7;
     [v5 enumerateObjectsUsingBlock:v15];
@@ -9096,8 +9096,8 @@ uint64_t __50__FlowAnalyticsEngine__clearUninstalledAppEntries__block_invoke(uin
   v40 = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:0.0];
   workspace = self->super.workspace;
-  v5 = [(AnalyticsEngineCore *)self queue];
-  v6 = [ImpoExpoService impoExpoServiceInWorkspace:workspace andQueue:v5];
+  queue = [(AnalyticsEngineCore *)self queue];
+  v6 = [ImpoExpoService impoExpoServiceInWorkspace:workspace andQueue:queue];
 
   v35 = 0;
   v7 = [v6 exportAndUnarchiveItemUnderName:@"LASTNETDOMAINSANALYTICSRUN" lastUpdated:&v35 verificationBlock:&__block_literal_global_495];
@@ -9232,52 +9232,52 @@ uint64_t __54__FlowAnalyticsEngine__performAppDomainUsageAnalytics__block_invoke
   return isKindOfClass & 1;
 }
 
-- (unint64_t)_aggregateSumDomainUsageAnalyticsOnField:(id)a3 forPredicate:(id)a4
+- (unint64_t)_aggregateSumDomainUsageAnalyticsOnField:(id)field forPredicate:(id)predicate
 {
-  v5 = a4;
+  predicateCopy = predicate;
   v6 = functionOnKeyDescriptor();
   v7 = objc_alloc_init(MEMORY[0x277D6B510]);
   [v7 addAggregateProperty:v6];
   LOBYTE(v13) = 1;
-  v8 = [(ObjectAnalytics *)self->domspace fetchEntityDictionariesWithProperties:MEMORY[0x277CBEBF8] fetchRequestProperties:v7 predicate:v5 sortDescriptors:0 limit:0 offset:0 includeObjectID:v13];
+  v8 = [(ObjectAnalytics *)self->domspace fetchEntityDictionariesWithProperties:MEMORY[0x277CBEBF8] fetchRequestProperties:v7 predicate:predicateCopy sortDescriptors:0 limit:0 offset:0 includeObjectID:v13];
 
-  v9 = [v8 firstObject];
-  v10 = [v9 objectForKeyedSubscript:@"total"];
-  v11 = [v10 integerValue];
+  firstObject = [v8 firstObject];
+  v10 = [firstObject objectForKeyedSubscript:@"total"];
+  integerValue = [v10 integerValue];
 
-  return v11;
+  return integerValue;
 }
 
-- (BOOL)_performSystemLevelAppDomainUsageAnalyticsFromDate:(id)a3 toDate:(id)a4
+- (BOOL)_performSystemLevelAppDomainUsageAnalyticsFromDate:(id)date toDate:(id)toDate
 {
   v83[2] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCAC30];
   v7 = gEffectiveUserId;
-  v8 = a4;
-  v9 = a3;
+  toDateCopy = toDate;
+  dateCopy = date;
   v74 = [v6 predicateWithFormat:@"effectiveUserId == %u", v7];
   v66 = [(ObjectAnalytics *)self->domspace countEntitiesMatching:?];
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"effectiveUserId == %u AND firstTimeStamp >= %@ AND firstTimeStamp < %@", gEffectiveUserId, v9, v8];
+  toDateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"effectiveUserId == %u AND firstTimeStamp >= %@ AND firstTimeStamp < %@", gEffectiveUserId, dateCopy, toDateCopy];
 
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"domainType == %u", 1];
   v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"kind == %u", 1];
   v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"domainClassification == %u", 2];
   v14 = MEMORY[0x277CCA920];
-  v83[0] = v10;
+  v83[0] = toDateCopy;
   v83[1] = v11;
   v72 = v11;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:2];
   v16 = [v14 andPredicateWithSubpredicates:v15];
 
   v17 = MEMORY[0x277CCA920];
-  v82[0] = v10;
+  v82[0] = toDateCopy;
   v82[1] = v12;
   v71 = v12;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v82 count:2];
   v19 = [v17 andPredicateWithSubpredicates:v18];
 
   v20 = MEMORY[0x277CCA920];
-  v81[0] = v10;
+  v81[0] = toDateCopy;
   v81[1] = v13;
   v70 = v13;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v81 count:2];
@@ -9286,15 +9286,15 @@ uint64_t __54__FlowAnalyticsEngine__performAppDomainUsageAnalytics__block_invoke
   v23 = [(ObjectAnalytics *)self->domspace countEntitiesMatching:v16];
   v58 = [(ObjectAnalytics *)self->domspace countEntitiesMatching:v19];
   v57 = [(ObjectAnalytics *)self->domspace countEntitiesMatching:v22];
-  v24 = [(ObjectAnalytics *)self->domspace countEntitiesMatching:v10];
+  v24 = [(ObjectAnalytics *)self->domspace countEntitiesMatching:toDateCopy];
   v69 = v16;
   v25 = [(FlowAnalyticsEngine *)self _aggregateSumDomainUsageAnalyticsOnField:@"hits" forPredicate:v16];
   v67 = v22;
   v26 = [(FlowAnalyticsEngine *)self _aggregateSumDomainUsageAnalyticsOnField:@"hits" forPredicate:v22];
   v68 = v19;
   v27 = [(FlowAnalyticsEngine *)self _aggregateSumDomainUsageAnalyticsOnField:@"hits" forPredicate:v19];
-  v73 = v10;
-  v28 = [(FlowAnalyticsEngine *)self _aggregateSumDomainUsageAnalyticsOnField:@"hits" forPredicate:v10];
+  v73 = toDateCopy;
+  v28 = [(FlowAnalyticsEngine *)self _aggregateSumDomainUsageAnalyticsOnField:@"hits" forPredicate:toDateCopy];
   v29 = v24;
   v79[0] = @"trackerUniqueCount";
   v65 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v23];
@@ -9418,14 +9418,14 @@ LABEL_18:
   return v48;
 }
 
-- (BOOL)_performAppLevelAppDomainUsageAnalyticsFromDate:(id)a3 toDate:(id)a4
+- (BOOL)_performAppLevelAppDomainUsageAnalyticsFromDate:(id)date toDate:(id)toDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  toDateCopy = toDate;
   v8 = +[SystemProperties sharedInstance];
-  v9 = [v8 internalBuild];
+  internalBuild = [v8 internalBuild];
 
-  if (v9)
+  if (internalBuild)
   {
     v28 = 0;
     v29 = &v28;
@@ -9433,24 +9433,24 @@ LABEL_18:
     v31 = 0;
     v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"domainType == %u", 1];
     v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"kind == %u", 1];
-    v12 = [MEMORY[0x277CCA920] predicateWithFormat:@"effectiveUserId == %u AND firstTimeStamp >= %@ AND firstTimeStamp < %@", gEffectiveUserId, v6, v7];
+    toDateCopy = [MEMORY[0x277CCA920] predicateWithFormat:@"effectiveUserId == %u AND firstTimeStamp >= %@ AND firstTimeStamp < %@", gEffectiveUserId, dateCopy, toDateCopy];
     v13 = countOfKeyDescriptor();
     v14 = objc_alloc_init(MEMORY[0x277D6B510]);
     [v14 addGroupByProperty:@"bundleName"];
     [v14 addAggregateProperty:v13];
     LOBYTE(v21) = 1;
-    v15 = [(ObjectAnalytics *)self->domspace fetchEntityDictionariesWithProperties:&unk_2847EEB68 fetchRequestProperties:v14 predicate:v12 sortDescriptors:0 limit:0 offset:0 includeObjectID:v21];
+    v15 = [(ObjectAnalytics *)self->domspace fetchEntityDictionariesWithProperties:&unk_2847EEB68 fetchRequestProperties:v14 predicate:toDateCopy sortDescriptors:0 limit:0 offset:0 includeObjectID:v21];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __78__FlowAnalyticsEngine__performAppLevelAppDomainUsageAnalyticsFromDate_toDate___block_invoke;
     v22[3] = &unk_27898C620;
-    v16 = v12;
+    v16 = toDateCopy;
     v23 = v16;
     v17 = v10;
     v24 = v17;
     v18 = v11;
     v25 = v18;
-    v26 = self;
+    selfCopy = self;
     v27 = &v28;
     [v15 enumerateObjectsUsingBlock:v22];
     v19 = *(v29 + 24);
@@ -9570,32 +9570,32 @@ id __78__FlowAnalyticsEngine__performAppLevelAppDomainUsageAnalyticsFromDate_toD
   return v7;
 }
 
-- (void)_performAppPeriodicTasksWithReply:(id)a3
+- (void)_performAppPeriodicTasksWithReply:(id)reply
 {
-  v8 = a3;
-  v4 = [(FlowAnalyticsEngine *)self _clearUninstalledAppEntries];
-  if (v8)
+  replyCopy = reply;
+  _clearUninstalledAppEntries = [(FlowAnalyticsEngine *)self _clearUninstalledAppEntries];
+  if (replyCopy)
   {
     v5 = objc_alloc(MEMORY[0x277CBEB38]);
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:_clearUninstalledAppEntries];
     v7 = [v5 initWithObjectsAndKeys:{v6, @"recordsDeleted", 0}];
 
-    v8[2](v8, v7, 0);
+    replyCopy[2](replyCopy, v7, 0);
   }
 }
 
-- (void)performAppPeriodicTasksComplete:(id)a3 error:(id)a4
+- (void)performAppPeriodicTasksComplete:(id)complete error:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  completeCopy = complete;
+  errorCopy = error;
   v7 = analyticsLogHandle;
-  if (v6)
+  if (errorCopy)
   {
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v6;
+      v13 = errorCopy;
       v8 = "Periodic app tasks failed with %@";
       v9 = v7;
       v10 = OS_LOG_TYPE_ERROR;
@@ -9607,7 +9607,7 @@ LABEL_6:
   else if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = completeCopy;
     v8 = "Periodic app tasks finished with result %@";
     v9 = v7;
     v10 = OS_LOG_TYPE_DEFAULT;
@@ -9617,518 +9617,518 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)performAppPeriodicActivityWithReply:(id)a3
++ (void)performAppPeriodicActivityWithReply:(id)reply
 {
   if (sharedInstance_1)
   {
-    [sharedInstance_1 _performAppPeriodicTasksWithReply:a3];
+    [sharedInstance_1 _performAppPeriodicTasksWithReply:reply];
   }
 }
 
-- (void)_applyCountsTo:(id)a3 fromLiveUsage:(id)a4 mustReset:(BOOL)a5
+- (void)_applyCountsTo:(id)to fromLiveUsage:(id)usage mustReset:(BOOL)reset
 {
-  if (a5)
+  if (reset)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [v6 wwanIN];
-    [v7 setWwanIN:v8];
+    usageCopy = usage;
+    toCopy = to;
+    wwanIN = [usageCopy wwanIN];
+    [toCopy setWwanIN:wwanIN];
 
-    v9 = [v6 wwanIN_exp];
-    [v7 setWwanIN_exp:v9];
+    wwanIN_exp = [usageCopy wwanIN_exp];
+    [toCopy setWwanIN_exp:wwanIN_exp];
 
-    v10 = [v6 wwanOUT];
-    [v7 setWwanOUT:v10];
+    wwanOUT = [usageCopy wwanOUT];
+    [toCopy setWwanOUT:wwanOUT];
 
-    v11 = [v6 wwanOUT_exp];
-    [v7 setWwanOUT_exp:v11];
+    wwanOUT_exp = [usageCopy wwanOUT_exp];
+    [toCopy setWwanOUT_exp:wwanOUT_exp];
 
-    v12 = [v6 wifiIN];
-    [v7 setWifiIN:v12];
+    wifiIN = [usageCopy wifiIN];
+    [toCopy setWifiIN:wifiIN];
 
-    v13 = [v6 wifiIN_exp];
-    [v7 setWifiIN_exp:v13];
+    wifiIN_exp = [usageCopy wifiIN_exp];
+    [toCopy setWifiIN_exp:wifiIN_exp];
 
-    v14 = [v6 wifiOUT];
-    [v7 setWifiOUT:v14];
+    wifiOUT = [usageCopy wifiOUT];
+    [toCopy setWifiOUT:wifiOUT];
 
-    v15 = [v6 wifiOUT_exp];
-    [v7 setWifiOUT_exp:v15];
+    wifiOUT_exp = [usageCopy wifiOUT_exp];
+    [toCopy setWifiOUT_exp:wifiOUT_exp];
 
-    v16 = [v6 wiredIN];
-    [v7 setWiredIN:v16];
+    wiredIN = [usageCopy wiredIN];
+    [toCopy setWiredIN:wiredIN];
 
-    v17 = [v6 wiredIN_exp];
-    [v7 setWiredIN_exp:v17];
+    wiredIN_exp = [usageCopy wiredIN_exp];
+    [toCopy setWiredIN_exp:wiredIN_exp];
 
-    v18 = [v6 wiredOUT];
-    [v7 setWiredOUT:v18];
+    wiredOUT = [usageCopy wiredOUT];
+    [toCopy setWiredOUT:wiredOUT];
 
-    v19 = [v6 wiredOUT_exp];
-    [v7 setWiredOUT_exp:v19];
+    wiredOUT_exp = [usageCopy wiredOUT_exp];
+    [toCopy setWiredOUT_exp:wiredOUT_exp];
 
-    v20 = [v6 btIN];
-    [v7 setBtIN:v20];
+    btIN = [usageCopy btIN];
+    [toCopy setBtIN:btIN];
 
-    v21 = [v6 btIN_exp];
-    [v7 setBtIN_exp:v21];
+    btIN_exp = [usageCopy btIN_exp];
+    [toCopy setBtIN_exp:btIN_exp];
 
-    v22 = [v6 btOUT];
-    [v7 setBtOUT:v22];
+    btOUT = [usageCopy btOUT];
+    [toCopy setBtOUT:btOUT];
 
-    v23 = [v6 btOUT_exp];
-    [v7 setBtOUT_exp:v23];
+    btOUT_exp = [usageCopy btOUT_exp];
+    [toCopy setBtOUT_exp:btOUT_exp];
 
-    v24 = [v6 xIN];
-    [v7 setXIN:v24];
+    v24 = [usageCopy xIN];
+    [toCopy setXIN:v24];
 
-    v25 = [v6 xIN_exp];
-    [v7 setXIN_exp:v25];
+    xIN_exp = [usageCopy xIN_exp];
+    [toCopy setXIN_exp:xIN_exp];
 
-    v26 = [v6 xOUT];
-    [v7 setXOUT:v26];
+    xOUT = [usageCopy xOUT];
+    [toCopy setXOUT:xOUT];
 
-    v27 = [v6 xOUT_exp];
-    [v7 setXOUT_exp:v27];
+    xOUT_exp = [usageCopy xOUT_exp];
+    [toCopy setXOUT_exp:xOUT_exp];
 
-    v28 = [v6 allFlows];
-    [v7 setAllFlows:v28];
+    allFlows = [usageCopy allFlows];
+    [toCopy setAllFlows:allFlows];
 
-    v183 = [v6 jumboFlows];
+    jumboFlows = [usageCopy jumboFlows];
 
-    [v7 setJumboFlows:v183];
+    [toCopy setJumboFlows:jumboFlows];
   }
 
   else
   {
     v29 = MEMORY[0x277CCABB0];
-    v30 = a4;
-    v31 = a3;
-    v32 = [v30 wwanIN];
-    [v32 doubleValue];
+    usageCopy2 = usage;
+    toCopy2 = to;
+    wwanIN2 = [usageCopy2 wwanIN];
+    [wwanIN2 doubleValue];
     v34 = v33;
-    v35 = [v31 wwanIN];
-    [v35 doubleValue];
+    wwanIN3 = [toCopy2 wwanIN];
+    [wwanIN3 doubleValue];
     v37 = [v29 numberWithDouble:v34 + v36];
-    [v31 setWwanIN:v37];
+    [toCopy2 setWwanIN:v37];
 
     v38 = MEMORY[0x277CCABB0];
-    v39 = [v30 wwanIN_exp];
-    [v39 doubleValue];
+    wwanIN_exp2 = [usageCopy2 wwanIN_exp];
+    [wwanIN_exp2 doubleValue];
     v41 = v40;
-    v42 = [v31 wwanIN_exp];
-    [v42 doubleValue];
+    wwanIN_exp3 = [toCopy2 wwanIN_exp];
+    [wwanIN_exp3 doubleValue];
     v44 = [v38 numberWithDouble:v41 + v43];
-    [v31 setWwanIN_exp:v44];
+    [toCopy2 setWwanIN_exp:v44];
 
     v45 = MEMORY[0x277CCABB0];
-    v46 = [v30 wwanOUT];
-    [v46 doubleValue];
+    wwanOUT2 = [usageCopy2 wwanOUT];
+    [wwanOUT2 doubleValue];
     v48 = v47;
-    v49 = [v31 wwanOUT];
-    [v49 doubleValue];
+    wwanOUT3 = [toCopy2 wwanOUT];
+    [wwanOUT3 doubleValue];
     v51 = [v45 numberWithDouble:v48 + v50];
-    [v31 setWwanOUT:v51];
+    [toCopy2 setWwanOUT:v51];
 
     v52 = MEMORY[0x277CCABB0];
-    v53 = [v30 wwanOUT_exp];
-    [v53 doubleValue];
+    wwanOUT_exp2 = [usageCopy2 wwanOUT_exp];
+    [wwanOUT_exp2 doubleValue];
     v55 = v54;
-    v56 = [v31 wwanOUT_exp];
-    [v56 doubleValue];
+    wwanOUT_exp3 = [toCopy2 wwanOUT_exp];
+    [wwanOUT_exp3 doubleValue];
     v58 = [v52 numberWithDouble:v55 + v57];
-    [v31 setWwanOUT_exp:v58];
+    [toCopy2 setWwanOUT_exp:v58];
 
     v59 = MEMORY[0x277CCABB0];
-    v60 = [v30 wifiIN];
-    [v60 doubleValue];
+    wifiIN2 = [usageCopy2 wifiIN];
+    [wifiIN2 doubleValue];
     v62 = v61;
-    v63 = [v31 wifiIN];
-    [v63 doubleValue];
+    wifiIN3 = [toCopy2 wifiIN];
+    [wifiIN3 doubleValue];
     v65 = [v59 numberWithDouble:v62 + v64];
-    [v31 setWifiIN:v65];
+    [toCopy2 setWifiIN:v65];
 
     v66 = MEMORY[0x277CCABB0];
-    v67 = [v30 wifiIN_exp];
-    [v67 doubleValue];
+    wifiIN_exp2 = [usageCopy2 wifiIN_exp];
+    [wifiIN_exp2 doubleValue];
     v69 = v68;
-    v70 = [v31 wifiIN_exp];
-    [v70 doubleValue];
+    wifiIN_exp3 = [toCopy2 wifiIN_exp];
+    [wifiIN_exp3 doubleValue];
     v72 = [v66 numberWithDouble:v69 + v71];
-    [v31 setWifiIN_exp:v72];
+    [toCopy2 setWifiIN_exp:v72];
 
     v73 = MEMORY[0x277CCABB0];
-    v74 = [v30 wifiOUT];
-    [v74 doubleValue];
+    wifiOUT2 = [usageCopy2 wifiOUT];
+    [wifiOUT2 doubleValue];
     v76 = v75;
-    v77 = [v31 wifiOUT];
-    [v77 doubleValue];
+    wifiOUT3 = [toCopy2 wifiOUT];
+    [wifiOUT3 doubleValue];
     v79 = [v73 numberWithDouble:v76 + v78];
-    [v31 setWifiOUT:v79];
+    [toCopy2 setWifiOUT:v79];
 
     v80 = MEMORY[0x277CCABB0];
-    v81 = [v30 wifiOUT_exp];
-    [v81 doubleValue];
+    wifiOUT_exp2 = [usageCopy2 wifiOUT_exp];
+    [wifiOUT_exp2 doubleValue];
     v83 = v82;
-    v84 = [v31 wifiOUT_exp];
-    [v84 doubleValue];
+    wifiOUT_exp3 = [toCopy2 wifiOUT_exp];
+    [wifiOUT_exp3 doubleValue];
     v86 = [v80 numberWithDouble:v83 + v85];
-    [v31 setWifiOUT_exp:v86];
+    [toCopy2 setWifiOUT_exp:v86];
 
     v87 = MEMORY[0x277CCABB0];
-    v88 = [v30 wiredIN];
-    [v88 doubleValue];
+    wiredIN2 = [usageCopy2 wiredIN];
+    [wiredIN2 doubleValue];
     v90 = v89;
-    v91 = [v31 wiredIN];
-    [v91 doubleValue];
+    wiredIN3 = [toCopy2 wiredIN];
+    [wiredIN3 doubleValue];
     v93 = [v87 numberWithDouble:v90 + v92];
-    [v31 setWiredIN:v93];
+    [toCopy2 setWiredIN:v93];
 
     v94 = MEMORY[0x277CCABB0];
-    v95 = [v30 wiredIN_exp];
-    [v95 doubleValue];
+    wiredIN_exp2 = [usageCopy2 wiredIN_exp];
+    [wiredIN_exp2 doubleValue];
     v97 = v96;
-    v98 = [v31 wiredIN_exp];
-    [v98 doubleValue];
+    wiredIN_exp3 = [toCopy2 wiredIN_exp];
+    [wiredIN_exp3 doubleValue];
     v100 = [v94 numberWithDouble:v97 + v99];
-    [v31 setWiredIN_exp:v100];
+    [toCopy2 setWiredIN_exp:v100];
 
     v101 = MEMORY[0x277CCABB0];
-    v102 = [v30 wiredOUT];
-    [v102 doubleValue];
+    wiredOUT2 = [usageCopy2 wiredOUT];
+    [wiredOUT2 doubleValue];
     v104 = v103;
-    v105 = [v31 wiredOUT];
-    [v105 doubleValue];
-    v107 = [v101 numberWithDouble:v104 + v106];
-    [v31 setWiredOUT:v107];
+    wiredOUT3 = [toCopy2 wiredOUT];
+    [wiredOUT3 doubleValue];
+    v106 = [v101 numberWithDouble:v104 + v106];
+    [toCopy2 setWiredOUT:v106];
 
     v108 = MEMORY[0x277CCABB0];
-    v109 = [v30 wiredOUT_exp];
-    [v109 doubleValue];
+    wiredOUT_exp2 = [usageCopy2 wiredOUT_exp];
+    [wiredOUT_exp2 doubleValue];
     v111 = v110;
-    v112 = [v31 wiredOUT_exp];
-    [v112 doubleValue];
-    v114 = [v108 numberWithDouble:v111 + v113];
-    [v31 setWiredOUT_exp:v114];
+    wiredOUT_exp3 = [toCopy2 wiredOUT_exp];
+    [wiredOUT_exp3 doubleValue];
+    v113 = [v108 numberWithDouble:v111 + v113];
+    [toCopy2 setWiredOUT_exp:v113];
 
     v115 = MEMORY[0x277CCABB0];
-    v116 = [v30 btIN];
-    [v116 doubleValue];
+    btIN2 = [usageCopy2 btIN];
+    [btIN2 doubleValue];
     v118 = v117;
-    v119 = [v31 btIN];
-    [v119 doubleValue];
-    v121 = [v115 numberWithDouble:v118 + v120];
-    [v31 setBtIN:v121];
+    btIN3 = [toCopy2 btIN];
+    [btIN3 doubleValue];
+    v120 = [v115 numberWithDouble:v118 + v120];
+    [toCopy2 setBtIN:v120];
 
     v122 = MEMORY[0x277CCABB0];
-    v123 = [v30 btIN_exp];
-    [v123 doubleValue];
+    btIN_exp2 = [usageCopy2 btIN_exp];
+    [btIN_exp2 doubleValue];
     v125 = v124;
-    v126 = [v31 btIN_exp];
-    [v126 doubleValue];
-    v128 = [v122 numberWithDouble:v125 + v127];
-    [v31 setBtIN_exp:v128];
+    btIN_exp3 = [toCopy2 btIN_exp];
+    [btIN_exp3 doubleValue];
+    v127 = [v122 numberWithDouble:v125 + v127];
+    [toCopy2 setBtIN_exp:v127];
 
     v129 = MEMORY[0x277CCABB0];
-    v130 = [v30 btOUT];
-    [v130 doubleValue];
+    btOUT2 = [usageCopy2 btOUT];
+    [btOUT2 doubleValue];
     v132 = v131;
-    v133 = [v31 btOUT];
-    [v133 doubleValue];
-    v135 = [v129 numberWithDouble:v132 + v134];
-    [v31 setBtOUT:v135];
+    btOUT3 = [toCopy2 btOUT];
+    [btOUT3 doubleValue];
+    v134 = [v129 numberWithDouble:v132 + v134];
+    [toCopy2 setBtOUT:v134];
 
     v136 = MEMORY[0x277CCABB0];
-    v137 = [v30 btOUT_exp];
-    [v137 doubleValue];
+    btOUT_exp2 = [usageCopy2 btOUT_exp];
+    [btOUT_exp2 doubleValue];
     v139 = v138;
-    v140 = [v31 btOUT_exp];
-    [v140 doubleValue];
-    v142 = [v136 numberWithDouble:v139 + v141];
-    [v31 setBtOUT_exp:v142];
+    btOUT_exp3 = [toCopy2 btOUT_exp];
+    [btOUT_exp3 doubleValue];
+    v141 = [v136 numberWithDouble:v139 + v141];
+    [toCopy2 setBtOUT_exp:v141];
 
     v143 = MEMORY[0x277CCABB0];
-    v144 = [v30 xIN];
+    v144 = [usageCopy2 xIN];
     [v144 doubleValue];
     v146 = v145;
-    v147 = [v31 xIN];
+    v147 = [toCopy2 xIN];
     [v147 doubleValue];
-    v149 = [v143 numberWithDouble:v146 + v148];
-    [v31 setXIN:v149];
+    v148 = [v143 numberWithDouble:v146 + v148];
+    [toCopy2 setXIN:v148];
 
     v150 = MEMORY[0x277CCABB0];
-    v151 = [v30 xIN_exp];
-    [v151 doubleValue];
+    xIN_exp2 = [usageCopy2 xIN_exp];
+    [xIN_exp2 doubleValue];
     v153 = v152;
-    v154 = [v31 xIN_exp];
-    [v154 doubleValue];
-    v156 = [v150 numberWithDouble:v153 + v155];
-    [v31 setXIN_exp:v156];
+    xIN_exp3 = [toCopy2 xIN_exp];
+    [xIN_exp3 doubleValue];
+    v155 = [v150 numberWithDouble:v153 + v155];
+    [toCopy2 setXIN_exp:v155];
 
     v157 = MEMORY[0x277CCABB0];
-    v158 = [v30 xOUT];
-    [v158 doubleValue];
+    xOUT2 = [usageCopy2 xOUT];
+    [xOUT2 doubleValue];
     v160 = v159;
-    v161 = [v31 xOUT];
-    [v161 doubleValue];
-    v163 = [v157 numberWithDouble:v160 + v162];
-    [v31 setXOUT:v163];
+    xOUT3 = [toCopy2 xOUT];
+    [xOUT3 doubleValue];
+    v162 = [v157 numberWithDouble:v160 + v162];
+    [toCopy2 setXOUT:v162];
 
     v164 = MEMORY[0x277CCABB0];
-    v165 = [v30 xOUT_exp];
-    [v165 doubleValue];
+    xOUT_exp2 = [usageCopy2 xOUT_exp];
+    [xOUT_exp2 doubleValue];
     v167 = v166;
-    v168 = [v31 xOUT_exp];
-    [v168 doubleValue];
-    v170 = [v164 numberWithDouble:v167 + v169];
-    [v31 setXOUT_exp:v170];
+    xOUT_exp3 = [toCopy2 xOUT_exp];
+    [xOUT_exp3 doubleValue];
+    v169 = [v164 numberWithDouble:v167 + v169];
+    [toCopy2 setXOUT_exp:v169];
 
     v171 = MEMORY[0x277CCABB0];
-    v172 = [v30 allFlows];
-    [v172 doubleValue];
+    allFlows2 = [usageCopy2 allFlows];
+    [allFlows2 doubleValue];
     v174 = v173;
-    v175 = [v31 allFlows];
-    [v175 doubleValue];
-    v177 = [v171 numberWithDouble:v174 + v176];
-    [v31 setAllFlows:v177];
+    allFlows3 = [toCopy2 allFlows];
+    [allFlows3 doubleValue];
+    v176 = [v171 numberWithDouble:v174 + v176];
+    [toCopy2 setAllFlows:v176];
 
     v178 = MEMORY[0x277CCABB0];
-    v183 = [v30 jumboFlows];
+    jumboFlows = [usageCopy2 jumboFlows];
 
-    [v183 doubleValue];
+    [jumboFlows doubleValue];
     v180 = v179;
-    v7 = [v31 jumboFlows];
-    [v7 doubleValue];
-    v182 = [v178 numberWithDouble:v180 + v181];
-    [v31 setJumboFlows:v182];
+    toCopy = [toCopy2 jumboFlows];
+    [toCopy doubleValue];
+    v181 = [v178 numberWithDouble:v180 + v181];
+    [toCopy2 setJumboFlows:v181];
   }
 }
 
-- (void)_updateLiveUsage:(id)a3 wifiIn:(int64_t)a4 wifiOut:(int64_t)a5 cellIn:(int64_t)a6 cellOut:(int64_t)a7 wiredIn:(int64_t)a8 wiredOut:(int64_t)a9 btIn:(int64_t)a10 btOut:(int64_t)a11 xIn:(int64_t)a12 xOut:(int64_t)a13 isJumboFlow:(BOOL)a14 isExpensive:(BOOL)a15 closing:(BOOL)a16
+- (void)_updateLiveUsage:(id)usage wifiIn:(int64_t)in wifiOut:(int64_t)out cellIn:(int64_t)cellIn cellOut:(int64_t)cellOut wiredIn:(int64_t)wiredIn wiredOut:(int64_t)wiredOut btIn:(int64_t)self0 btOut:(int64_t)self1 xIn:(int64_t)self2 xOut:(int64_t)self3 isJumboFlow:(BOOL)self4 isExpensive:(BOOL)self5 closing:(BOOL)self6
 {
-  v21 = a16;
-  v22 = a14;
-  v23 = a13;
-  v24 = a3;
-  v118 = v24;
-  if (a7 | a6)
+  closingCopy2 = closing;
+  flowCopy2 = flow;
+  xOutCopy2 = xOut;
+  usageCopy = usage;
+  v118 = usageCopy;
+  if (cellOut | cellIn)
   {
     v25 = MEMORY[0x277CCABB0];
-    v26 = [v24 wwanIN];
-    [v26 doubleValue];
-    v27 = a6;
-    v29 = [v25 numberWithDouble:v28 + a6];
-    [v118 setWwanIN:v29];
+    wwanIN = [usageCopy wwanIN];
+    [wwanIN doubleValue];
+    cellInCopy = cellIn;
+    cellIn = [v25 numberWithDouble:v28 + cellIn];
+    [v118 setWwanIN:cellIn];
 
-    v21 = a16;
+    closingCopy2 = closing;
     v30 = MEMORY[0x277CCABB0];
-    v31 = [v118 wwanOUT];
-    [v31 doubleValue];
-    v32 = a7;
-    v34 = [v30 numberWithDouble:v33 + a7];
-    [v118 setWwanOUT:v34];
+    wwanOUT = [v118 wwanOUT];
+    [wwanOUT doubleValue];
+    cellOutCopy = cellOut;
+    cellOut = [v30 numberWithDouble:v33 + cellOut];
+    [v118 setWwanOUT:cellOut];
 
-    v22 = a14;
-    v23 = a13;
-    v24 = v118;
-    if (a15)
+    flowCopy2 = flow;
+    xOutCopy2 = xOut;
+    usageCopy = v118;
+    if (expensive)
     {
       v35 = MEMORY[0x277CCABB0];
-      v36 = [v118 wwanIN_exp];
-      [v36 doubleValue];
-      v38 = [v35 numberWithDouble:v37 + v27];
-      [v118 setWwanIN_exp:v38];
+      wwanIN_exp = [v118 wwanIN_exp];
+      [wwanIN_exp doubleValue];
+      cellInCopy = [v35 numberWithDouble:v37 + cellInCopy];
+      [v118 setWwanIN_exp:cellInCopy];
 
       v39 = MEMORY[0x277CCABB0];
-      v40 = [v118 wwanOUT_exp];
-      [v40 doubleValue];
-      v42 = [v39 numberWithDouble:v41 + v32];
-      [v118 setWwanOUT_exp:v42];
+      wwanOUT_exp = [v118 wwanOUT_exp];
+      [wwanOUT_exp doubleValue];
+      cellOutCopy = [v39 numberWithDouble:v41 + cellOutCopy];
+      [v118 setWwanOUT_exp:cellOutCopy];
 
-      v24 = v118;
+      usageCopy = v118;
     }
   }
 
-  if (a5 | a4)
+  if (out | in)
   {
     v43 = MEMORY[0x277CCABB0];
-    v44 = [v118 wifiIN];
-    [v44 doubleValue];
-    v45 = a4;
-    v47 = [v43 numberWithDouble:v46 + a4];
+    wifiIN = [v118 wifiIN];
+    [wifiIN doubleValue];
+    inCopy = in;
+    v47 = [v43 numberWithDouble:v46 + in];
     [v118 setWifiIN:v47];
 
     v48 = MEMORY[0x277CCABB0];
-    v49 = [v118 wifiOUT];
-    [v49 doubleValue];
-    v50 = a5;
-    v52 = [v48 numberWithDouble:v51 + a5];
+    wifiOUT = [v118 wifiOUT];
+    [wifiOUT doubleValue];
+    outCopy = out;
+    v52 = [v48 numberWithDouble:v51 + out];
     [v118 setWifiOUT:v52];
 
-    v24 = v118;
-    if (a15)
+    usageCopy = v118;
+    if (expensive)
     {
       v53 = MEMORY[0x277CCABB0];
-      v54 = [v118 wifiIN_exp];
-      [v54 doubleValue];
-      v56 = [v53 numberWithDouble:v55 + v45];
-      [v118 setWifiIN_exp:v56];
+      wifiIN_exp = [v118 wifiIN_exp];
+      [wifiIN_exp doubleValue];
+      inCopy = [v53 numberWithDouble:v55 + inCopy];
+      [v118 setWifiIN_exp:inCopy];
 
       v57 = MEMORY[0x277CCABB0];
-      v58 = [v118 wifiOUT_exp];
-      [v58 doubleValue];
-      v60 = [v57 numberWithDouble:v59 + v50];
-      [v118 setWifiOUT_exp:v60];
+      wifiOUT_exp = [v118 wifiOUT_exp];
+      [wifiOUT_exp doubleValue];
+      outCopy = [v57 numberWithDouble:v59 + outCopy];
+      [v118 setWifiOUT_exp:outCopy];
 
-      v24 = v118;
+      usageCopy = v118;
     }
   }
 
-  if (a9 | a8)
+  if (wiredOut | wiredIn)
   {
     v61 = MEMORY[0x277CCABB0];
-    v62 = [v118 wiredIN];
-    [v62 doubleValue];
-    v63 = a8;
-    v65 = [v61 numberWithDouble:v64 + a8];
-    [v118 setWiredIN:v65];
+    wiredIN = [v118 wiredIN];
+    [wiredIN doubleValue];
+    wiredInCopy = wiredIn;
+    wiredIn = [v61 numberWithDouble:v64 + wiredIn];
+    [v118 setWiredIN:wiredIn];
 
     v66 = MEMORY[0x277CCABB0];
-    v67 = [v118 wiredOUT];
-    [v67 doubleValue];
-    v69 = [v66 numberWithDouble:v68 + a9];
-    [v118 setWiredOUT:v69];
+    wiredOUT = [v118 wiredOUT];
+    [wiredOUT doubleValue];
+    wiredOut = [v66 numberWithDouble:v68 + wiredOut];
+    [v118 setWiredOUT:wiredOut];
 
-    v24 = v118;
-    if (a15)
+    usageCopy = v118;
+    if (expensive)
     {
       v70 = MEMORY[0x277CCABB0];
-      v71 = [v118 wiredIN_exp];
-      [v71 doubleValue];
-      v73 = [v70 numberWithDouble:v72 + v63];
-      [v118 setWiredIN_exp:v73];
+      wiredIN_exp = [v118 wiredIN_exp];
+      [wiredIN_exp doubleValue];
+      wiredInCopy = [v70 numberWithDouble:v72 + wiredInCopy];
+      [v118 setWiredIN_exp:wiredInCopy];
 
       v74 = MEMORY[0x277CCABB0];
-      v75 = [v118 wiredOUT_exp];
-      [v75 doubleValue];
-      v77 = [v74 numberWithDouble:v76 + a9];
-      [v118 setWiredOUT_exp:v77];
+      wiredOUT_exp = [v118 wiredOUT_exp];
+      [wiredOUT_exp doubleValue];
+      wiredOut2 = [v74 numberWithDouble:v76 + wiredOut];
+      [v118 setWiredOUT_exp:wiredOut2];
 
-      v24 = v118;
+      usageCopy = v118;
     }
   }
 
-  if (__PAIR128__(a11, a10) != 0)
+  if (__PAIR128__(btOut, btIn) != 0)
   {
     v78 = MEMORY[0x277CCABB0];
-    v79 = [v118 btIN];
-    [v79 doubleValue];
-    v81 = [v78 numberWithDouble:v80 + a10];
-    [v118 setBtIN:v81];
+    btIN = [v118 btIN];
+    [btIN doubleValue];
+    btIn = [v78 numberWithDouble:v80 + btIn];
+    [v118 setBtIN:btIn];
 
     v82 = MEMORY[0x277CCABB0];
-    v83 = [v118 btOUT];
-    [v83 doubleValue];
-    v85 = [v82 numberWithDouble:v84 + a11];
-    [v118 setBtOUT:v85];
+    btOUT = [v118 btOUT];
+    [btOUT doubleValue];
+    btOut = [v82 numberWithDouble:v84 + btOut];
+    [v118 setBtOUT:btOut];
 
-    v24 = v118;
-    if (a15)
+    usageCopy = v118;
+    if (expensive)
     {
       v86 = MEMORY[0x277CCABB0];
-      v87 = [v118 btIN_exp];
-      [v87 doubleValue];
-      v89 = [v86 numberWithDouble:v88 + a10];
-      [v118 setBtIN_exp:v89];
+      btIN_exp = [v118 btIN_exp];
+      [btIN_exp doubleValue];
+      btIn2 = [v86 numberWithDouble:v88 + btIn];
+      [v118 setBtIN_exp:btIn2];
 
       v90 = MEMORY[0x277CCABB0];
-      v91 = [v118 btOUT_exp];
-      [v91 doubleValue];
-      v93 = [v90 numberWithDouble:v92 + a11];
-      [v118 setBtOUT_exp:v93];
+      btOUT_exp = [v118 btOUT_exp];
+      [btOUT_exp doubleValue];
+      btOut2 = [v90 numberWithDouble:v92 + btOut];
+      [v118 setBtOUT_exp:btOut2];
 
-      v24 = v118;
+      usageCopy = v118;
     }
   }
 
-  if (v23 | a12)
+  if (xOutCopy2 | xIn)
   {
     v94 = MEMORY[0x277CCABB0];
     v95 = [v118 xIN];
     [v95 doubleValue];
-    v97 = [v94 numberWithDouble:v96 + a12];
+    v97 = [v94 numberWithDouble:v96 + xIn];
     [v118 setXIN:v97];
 
     v98 = MEMORY[0x277CCABB0];
-    v99 = [v118 xOUT];
-    [v99 doubleValue];
-    v101 = [v98 numberWithDouble:v100 + v23];
-    [v118 setXOUT:v101];
+    xOUT = [v118 xOUT];
+    [xOUT doubleValue];
+    xOutCopy2 = [v98 numberWithDouble:v100 + xOutCopy2];
+    [v118 setXOUT:xOutCopy2];
 
-    v24 = v118;
-    if (a15)
+    usageCopy = v118;
+    if (expensive)
     {
       v102 = MEMORY[0x277CCABB0];
-      v103 = [v118 xIN_exp];
-      [v103 doubleValue];
-      v105 = [v102 numberWithDouble:v104 + a12];
+      xIN_exp = [v118 xIN_exp];
+      [xIN_exp doubleValue];
+      v105 = [v102 numberWithDouble:v104 + xIn];
       [v118 setXIN_exp:v105];
 
       v106 = MEMORY[0x277CCABB0];
-      v107 = [v118 xOUT_exp];
-      [v107 doubleValue];
-      v109 = [v106 numberWithDouble:v108 + v23];
-      [v118 setXOUT_exp:v109];
+      xOUT_exp = [v118 xOUT_exp];
+      [xOUT_exp doubleValue];
+      xOutCopy22 = [v106 numberWithDouble:v108 + xOutCopy2];
+      [v118 setXOUT_exp:xOutCopy22];
 
-      v24 = v118;
+      usageCopy = v118;
     }
   }
 
-  if (v21)
+  if (closingCopy2)
   {
     v110 = MEMORY[0x277CCABB0];
-    v111 = [v118 allFlows];
-    [v111 doubleValue];
+    allFlows = [v118 allFlows];
+    [allFlows doubleValue];
     v113 = [v110 numberWithDouble:v112 + 1.0];
     [v118 setAllFlows:v113];
 
-    v24 = v118;
-    if (v22)
+    usageCopy = v118;
+    if (flowCopy2)
     {
       v114 = MEMORY[0x277CCABB0];
-      v115 = [v118 jumboFlows];
-      [v115 doubleValue];
+      jumboFlows = [v118 jumboFlows];
+      [jumboFlows doubleValue];
       v117 = [v114 numberWithDouble:v116 + 1.0];
       [v118 setJumboFlows:v117];
 
-      v24 = v118;
+      usageCopy = v118;
     }
   }
 }
 
-- (void)_compactUsageForApp:(id)a3 intervalType:(int)a4 givenLastRun:(id)a5
+- (void)_compactUsageForApp:(id)app intervalType:(int)type givenLastRun:(id)run
 {
   v210 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v185 = a5;
-  v184 = [v8 bundleName];
-  v9 = [v8 hasTypicalUsage];
-  v10 = [v9 count];
+  appCopy = app;
+  runCopy = run;
+  bundleName = [appCopy bundleName];
+  hasTypicalUsage = [appCopy hasTypicalUsage];
+  v10 = [hasTypicalUsage count];
 
   if (!v10)
   {
     aspace = self->aspace;
-    v12 = [MEMORY[0x277D6B588] entityName];
-    v13 = [(AppAnalytics *)aspace createEntityForEntityName:v12];
+    entityName = [MEMORY[0x277D6B588] entityName];
+    v13 = [(AppAnalytics *)aspace createEntityForEntityName:entityName];
 
     if (!v13)
     {
       v181 = analyticsLogHandle;
-      v68 = v185;
+      v68 = runCopy;
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v209 = v184;
+        v209 = bundleName;
         _os_log_impl(&dword_23255B000, v181, OS_LOG_TYPE_ERROR, "Can't create AppTypicalUsage for %@", buf, 0xCu);
       }
 
@@ -10138,115 +10138,115 @@ LABEL_6:
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:0];
     [v13 setIntervalType:v14];
 
-    [v8 insertObject:v13 inHasTypicalUsageAtIndex:0];
+    [appCopy insertObject:v13 inHasTypicalUsageAtIndex:0];
   }
 
-  v15 = [v8 hasTypicalUsage];
-  v16 = a4;
-  v17 = [v15 objectAtIndex:a4];
+  hasTypicalUsage2 = [appCopy hasTypicalUsage];
+  typeCopy = type;
+  v17 = [hasTypicalUsage2 objectAtIndex:type];
 
-  v18 = [v17 firstTimeStamp];
+  firstTimeStamp = [v17 firstTimeStamp];
 
-  if (!v18)
+  if (!firstTimeStamp)
   {
-    v19 = [MEMORY[0x277CBEAA8] date];
-    [v17 setFirstTimeStamp:v19];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v17 setFirstTimeStamp:date];
   }
 
-  v20 = [v17 wifiSampleCount];
-  [v20 doubleValue];
+  wifiSampleCount = [v17 wifiSampleCount];
+  [wifiSampleCount doubleValue];
   v202 = v21;
 
-  v22 = [v17 wwanSampleCount];
-  [v22 doubleValue];
+  wwanSampleCount = [v17 wwanSampleCount];
+  [wwanSampleCount doubleValue];
   v199 = v23;
 
-  v24 = [v17 wiredSampleCount];
-  [v24 doubleValue];
+  wiredSampleCount = [v17 wiredSampleCount];
+  [wiredSampleCount doubleValue];
   v200 = v25;
 
-  v26 = [v17 wifiIN_mean];
-  [v26 doubleValue];
+  wifiIN_mean = [v17 wifiIN_mean];
+  [wifiIN_mean doubleValue];
   v28 = v27;
 
-  v29 = [v17 wifiIN_M2];
-  [v29 doubleValue];
+  wifiIN_M2 = [v17 wifiIN_M2];
+  [wifiIN_M2 doubleValue];
   v188 = v30;
 
-  v31 = [v17 wifiIN];
-  [v31 doubleValue];
+  wifiIN = [v17 wifiIN];
+  [wifiIN doubleValue];
   v189 = v32;
 
-  v33 = [v17 wifiOUT_mean];
-  [v33 doubleValue];
+  wifiOUT_mean = [v17 wifiOUT_mean];
+  [wifiOUT_mean doubleValue];
   v35 = v34;
 
-  v36 = [v17 wifiOUT_M2];
-  [v36 doubleValue];
+  wifiOUT_M2 = [v17 wifiOUT_M2];
+  [wifiOUT_M2 doubleValue];
   v201 = v37;
 
-  v38 = [v17 wifiOUT];
-  [v38 doubleValue];
+  wifiOUT = [v17 wifiOUT];
+  [wifiOUT doubleValue];
   v190 = v39;
 
-  v40 = [v17 wwanIN_mean];
-  [v40 doubleValue];
+  wwanIN_mean = [v17 wwanIN_mean];
+  [wwanIN_mean doubleValue];
   v42 = v41;
 
-  v43 = [v17 wwanIN_M2];
-  [v43 doubleValue];
+  wwanIN_M2 = [v17 wwanIN_M2];
+  [wwanIN_M2 doubleValue];
   v191 = v44;
 
-  v45 = [v17 wwanIN];
-  [v45 doubleValue];
+  wwanIN = [v17 wwanIN];
+  [wwanIN doubleValue];
   v192 = v46;
 
-  v47 = [v17 wwanOUT_mean];
-  [v47 doubleValue];
+  wwanOUT_mean = [v17 wwanOUT_mean];
+  [wwanOUT_mean doubleValue];
   v49 = v48;
 
-  v50 = [v17 wwanOUT_M2];
-  [v50 doubleValue];
+  wwanOUT_M2 = [v17 wwanOUT_M2];
+  [wwanOUT_M2 doubleValue];
   v193 = v51;
 
-  v52 = [v17 wwanOUT];
-  [v52 doubleValue];
+  wwanOUT = [v17 wwanOUT];
+  [wwanOUT doubleValue];
   v194 = v53;
 
-  v54 = [v17 wiredIN_mean];
-  [v54 doubleValue];
+  wiredIN_mean = [v17 wiredIN_mean];
+  [wiredIN_mean doubleValue];
   v56 = v55;
 
-  v57 = [v17 wiredIN_M2];
-  [v57 doubleValue];
+  wiredIN_M2 = [v17 wiredIN_M2];
+  [wiredIN_M2 doubleValue];
   v195 = v58;
 
-  v59 = [v17 wiredIN];
-  [v59 doubleValue];
+  wiredIN = [v17 wiredIN];
+  [wiredIN doubleValue];
   v196 = v60;
 
-  v61 = [v17 wiredOUT_mean];
-  [v61 doubleValue];
+  wiredOUT_mean = [v17 wiredOUT_mean];
+  [wiredOUT_mean doubleValue];
   v63 = v62;
 
-  v64 = [v17 wiredOUT_M2];
-  [v64 doubleValue];
+  wiredOUT_M2 = [v17 wiredOUT_M2];
+  [wiredOUT_M2 doubleValue];
   v197 = v65;
 
-  v66 = [v17 wiredOUT];
-  [v66 doubleValue];
+  wiredOUT = [v17 wiredOUT];
+  [wiredOUT doubleValue];
   v198 = v67;
 
-  v68 = v185;
-  v183 = v8;
-  if (v185)
+  v68 = runCopy;
+  v183 = appCopy;
+  if (runCopy)
   {
-    [MEMORY[0x277CBEB98] setWithObjects:{v185, 0}];
+    [MEMORY[0x277CBEB98] setWithObjects:{runCopy, 0}];
   }
 
   else
   {
-    [v8 hasAppRun];
+    [appCopy hasAppRun];
   }
 
   v205 = 0u;
@@ -10277,39 +10277,39 @@ LABEL_39:
       }
 
       v75 = *(*(&v203 + 1) + 8 * i);
-      v76 = [v75 kind];
-      v77 = [v76 unsignedIntegerValue];
+      kind = [v75 kind];
+      unsignedIntegerValue = [kind unsignedIntegerValue];
 
-      if (v77 != v16)
+      if (unsignedIntegerValue != typeCopy)
       {
         continue;
       }
 
-      v78 = [v75 wifiIN_end];
-      [v78 doubleValue];
+      wifiIN_end = [v75 wifiIN_end];
+      [wifiIN_end doubleValue];
       v80 = v79;
-      v81 = [v75 wifiIN_start];
-      [v81 doubleValue];
+      wifiIN_start = [v75 wifiIN_start];
+      [wifiIN_start doubleValue];
       if (v80 != v82)
       {
 
 LABEL_19:
-        v89 = [v75 wifiIN_end];
-        [v89 doubleValue];
+        wifiIN_end2 = [v75 wifiIN_end];
+        [wifiIN_end2 doubleValue];
         v91 = v90;
-        v92 = [v75 wifiIN_start];
-        [v92 doubleValue];
+        wifiIN_start2 = [v75 wifiIN_start];
+        [wifiIN_start2 doubleValue];
         v94 = v91 - v93;
 
         v95 = v94 - v28;
         v28 = v28 + (v94 - v28) / (v202 + 1.0);
         v188 = v188 + v95 * (v94 - v28);
         v189 = v189 + v94;
-        v96 = [v75 wifiOUT_end];
-        [v96 doubleValue];
+        wifiOUT_end = [v75 wifiOUT_end];
+        [wifiOUT_end doubleValue];
         v98 = v97;
-        v99 = [v75 wifiOUT_start];
-        [v99 doubleValue];
+        wifiOUT_start = [v75 wifiOUT_start];
+        [wifiOUT_start doubleValue];
         v101 = v98 - v100;
 
         v190 = v190 + v101;
@@ -10321,11 +10321,11 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v83 = [v75 wifiOUT_end];
-      [v83 doubleValue];
+      wifiOUT_end2 = [v75 wifiOUT_end];
+      [wifiOUT_end2 doubleValue];
       v85 = v84;
-      v86 = [v75 wifiOUT_start];
-      [v86 doubleValue];
+      wifiOUT_start2 = [v75 wifiOUT_start];
+      [wifiOUT_start2 doubleValue];
       v88 = v87;
 
       if (v85 != v88)
@@ -10334,18 +10334,18 @@ LABEL_19:
       }
 
 LABEL_20:
-      v103 = [v75 wwanIN_end];
-      [v103 doubleValue];
+      wwanIN_end = [v75 wwanIN_end];
+      [wwanIN_end doubleValue];
       v105 = v104;
-      v106 = [v75 wwanIN_start];
-      [v106 doubleValue];
+      wwanIN_start = [v75 wwanIN_start];
+      [wwanIN_start doubleValue];
       if (v105 == v107)
       {
-        v108 = [v75 wwanOUT_end];
-        [v108 doubleValue];
+        wwanOUT_end = [v75 wwanOUT_end];
+        [wwanOUT_end doubleValue];
         v110 = v109;
-        v111 = [v75 wwanOUT_start];
-        [v111 doubleValue];
+        wwanOUT_start = [v75 wwanOUT_start];
+        [wwanOUT_start doubleValue];
         v113 = v112;
 
         if (v110 == v113)
@@ -10358,22 +10358,22 @@ LABEL_20:
       {
       }
 
-      v114 = [v75 wwanIN_end];
-      [v114 doubleValue];
+      wwanIN_end2 = [v75 wwanIN_end];
+      [wwanIN_end2 doubleValue];
       v116 = v115;
-      v117 = [v75 wwanIN_start];
-      [v117 doubleValue];
+      wwanIN_start2 = [v75 wwanIN_start];
+      [wwanIN_start2 doubleValue];
       v119 = v116 - v118;
 
       v120 = v119 - v42;
       v42 = v42 + (v119 - v42) / (v199 + 1.0);
       v191 = v191 + v120 * (v119 - v42);
       v192 = v192 + v119;
-      v121 = [v75 wwanOUT_end];
-      [v121 doubleValue];
+      wwanOUT_end2 = [v75 wwanOUT_end];
+      [wwanOUT_end2 doubleValue];
       v123 = v122;
-      v124 = [v75 wwanOUT_start];
-      [v124 doubleValue];
+      wwanOUT_start2 = [v75 wwanOUT_start];
+      [wwanOUT_start2 doubleValue];
       v126 = v123 - v125;
 
       v127 = v126 - v49;
@@ -10383,31 +10383,31 @@ LABEL_20:
       v194 = v194 + v126;
       LOBYTE(v186) = 1;
 LABEL_25:
-      v128 = [v75 wiredIN_end];
-      [v128 doubleValue];
+      wiredIN_end = [v75 wiredIN_end];
+      [wiredIN_end doubleValue];
       v130 = v129;
-      v131 = [v75 wiredIN_start];
-      [v131 doubleValue];
+      wiredIN_start = [v75 wiredIN_start];
+      [wiredIN_start doubleValue];
       if (v130 != v132)
       {
 
 LABEL_29:
-        v139 = [v75 wiredIN_end];
-        [v139 doubleValue];
+        wiredIN_end2 = [v75 wiredIN_end];
+        [wiredIN_end2 doubleValue];
         v141 = v140;
-        v142 = [v75 wiredIN_start];
-        [v142 doubleValue];
+        wiredIN_start2 = [v75 wiredIN_start];
+        [wiredIN_start2 doubleValue];
         v144 = v141 - v143;
 
         v145 = v144 - v56;
         v56 = v56 + (v144 - v56) / (v200 + 1.0);
         v195 = v195 + v145 * (v144 - v56);
         v196 = v196 + v144;
-        v146 = [v75 wiredOUT_end];
-        [v146 doubleValue];
+        wiredOUT_end = [v75 wiredOUT_end];
+        [wiredOUT_end doubleValue];
         v148 = v147;
-        v149 = [v75 wiredOUT_start];
-        [v149 doubleValue];
+        wiredOUT_start = [v75 wiredOUT_start];
+        [wiredOUT_start doubleValue];
         v151 = v148 - v150;
 
         v152 = v151 - v63;
@@ -10419,11 +10419,11 @@ LABEL_29:
         continue;
       }
 
-      v133 = [v75 wiredOUT_end];
-      [v133 doubleValue];
+      wiredOUT_end2 = [v75 wiredOUT_end];
+      [wiredOUT_end2 doubleValue];
       v135 = v134;
-      v136 = [v75 wiredOUT_start];
-      [v136 doubleValue];
+      wiredOUT_start2 = [v75 wiredOUT_start];
+      [wiredOUT_start2 doubleValue];
       v138 = v137;
 
       if (v135 != v138)
@@ -10443,8 +10443,8 @@ LABEL_29:
     v17 = v182;
     [v182 setWifiIN_mean:v153];
 
-    v154 = [MEMORY[0x277CCABB0] numberWithDouble:v188 / v202];
-    [v182 setWifiIN_var:v154];
+    v202 = [MEMORY[0x277CCABB0] numberWithDouble:v188 / v202];
+    [v182 setWifiIN_var:v202];
 
     v155 = [MEMORY[0x277CCABB0] numberWithDouble:v188];
     [v182 setWifiIN_M2:v155];
@@ -10455,8 +10455,8 @@ LABEL_29:
     v157 = [MEMORY[0x277CCABB0] numberWithDouble:v35];
     [v182 setWifiOUT_mean:v157];
 
-    v158 = [MEMORY[0x277CCABB0] numberWithDouble:v201 / v202];
-    [v182 setWifiOUT_var:v158];
+    v2022 = [MEMORY[0x277CCABB0] numberWithDouble:v201 / v202];
+    [v182 setWifiOUT_var:v2022];
 
     v159 = [MEMORY[0x277CCABB0] numberWithDouble:v201];
     [v182 setWifiOUT_M2:v159];
@@ -10478,8 +10478,8 @@ LABEL_29:
     v162 = [MEMORY[0x277CCABB0] numberWithDouble:v42];
     [v17 setWwanIN_mean:v162];
 
-    v163 = [MEMORY[0x277CCABB0] numberWithDouble:v191 / v199];
-    [v17 setWwanIN_var:v163];
+    v199 = [MEMORY[0x277CCABB0] numberWithDouble:v191 / v199];
+    [v17 setWwanIN_var:v199];
 
     v164 = [MEMORY[0x277CCABB0] numberWithDouble:v191];
     [v17 setWwanIN_M2:v164];
@@ -10490,8 +10490,8 @@ LABEL_29:
     v166 = [MEMORY[0x277CCABB0] numberWithDouble:v49];
     [v17 setWwanOUT_mean:v166];
 
-    v167 = [MEMORY[0x277CCABB0] numberWithDouble:v193 / v199];
-    [v17 setWwanOUT_var:v167];
+    v1992 = [MEMORY[0x277CCABB0] numberWithDouble:v193 / v199];
+    [v17 setWwanOUT_var:v1992];
 
     v168 = [MEMORY[0x277CCABB0] numberWithDouble:v193];
     [v17 setWwanOUT_M2:v168];
@@ -10503,14 +10503,14 @@ LABEL_29:
     [v17 setWwanSampleCount:v170];
   }
 
-  v68 = v185;
+  v68 = runCopy;
   if ((v186 & 0x100000000) != 0)
   {
     v171 = [MEMORY[0x277CCABB0] numberWithDouble:v56];
     [v17 setWiredIN_mean:v171];
 
-    v172 = [MEMORY[0x277CCABB0] numberWithDouble:v195 / v200];
-    [v17 setWiredIN_var:v172];
+    v200 = [MEMORY[0x277CCABB0] numberWithDouble:v195 / v200];
+    [v17 setWiredIN_var:v200];
 
     v173 = [MEMORY[0x277CCABB0] numberWithDouble:v195];
     [v17 setWiredIN_M2:v173];
@@ -10521,8 +10521,8 @@ LABEL_29:
     v175 = [MEMORY[0x277CCABB0] numberWithDouble:v63];
     [v17 setWiredOUT_mean:v175];
 
-    v176 = [MEMORY[0x277CCABB0] numberWithDouble:v197 / v200];
-    [v17 setWiredOUT_var:v176];
+    v2002 = [MEMORY[0x277CCABB0] numberWithDouble:v197 / v200];
+    [v17 setWiredOUT_var:v2002];
 
     v177 = [MEMORY[0x277CCABB0] numberWithDouble:v197];
     [v17 setWiredOUT_M2:v177];
@@ -10536,28 +10536,28 @@ LABEL_29:
   }
 
 LABEL_40:
-  v179 = [MEMORY[0x277CBEAA8] date];
-  [v17 setTimeStamp:v179];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [v17 setTimeStamp:date2];
 
-  v8 = v183;
+  appCopy = v183;
 LABEL_41:
 
   v180 = *MEMORY[0x277D85DE8];
 }
 
-- (void)workspaceSaveWithCallback:(id)a3
+- (void)workspaceSaveWithCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(AnalyticsEngineCore *)self queue];
+  callbackCopy = callback;
+  queue = [(AnalyticsEngineCore *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__FlowAnalyticsEngine_workspaceSaveWithCallback___block_invoke;
   v8[3] = &unk_27898C648;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = callbackCopy;
+  v6 = callbackCopy;
   v7 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v8);
-  dispatch_async(v5, v7);
+  dispatch_async(queue, v7);
 }
 
 uint64_t __49__FlowAnalyticsEngine_workspaceSaveWithCallback___block_invoke(uint64_t a1)
@@ -10568,25 +10568,25 @@ uint64_t __49__FlowAnalyticsEngine_workspaceSaveWithCallback___block_invoke(uint
   return v2();
 }
 
-+ (void)workspaceSaveWithCallback:(id)a3
++ (void)workspaceSaveWithCallback:(id)callback
 {
   if (sharedInstance_1)
   {
-    [sharedInstance_1 workspaceSaveWithCallback:a3];
+    [sharedInstance_1 workspaceSaveWithCallback:callback];
   }
 
   else
   {
-    (*(a3 + 2))(a3);
+    (*(callback + 2))(callback);
   }
 }
 
-+ (void)checkForegroundStateForProcessWithUUID:(id)a3 replyQueue:(id)a4 reply:(id)a5
++ (void)checkForegroundStateForProcessWithUUID:(id)d replyQueue:(id)queue reply:(id)reply
 {
-  v7 = a5;
+  replyCopy = reply;
   if (sharedInstance_1)
   {
-    [sharedInstance_1 _checkForegroundStateForProcessWithUUID:a3 replyQueue:a4 reply:v7];
+    [sharedInstance_1 _checkForegroundStateForProcessWithUUID:d replyQueue:queue reply:replyCopy];
   }
 
   else
@@ -10595,8 +10595,8 @@ uint64_t __49__FlowAnalyticsEngine_workspaceSaveWithCallback___block_invoke(uint
     block[1] = 3221225472;
     block[2] = __79__FlowAnalyticsEngine_checkForegroundStateForProcessWithUUID_replyQueue_reply___block_invoke;
     block[3] = &unk_27898C670;
-    v9 = v7;
-    dispatch_async(a4, block);
+    v9 = replyCopy;
+    dispatch_async(queue, block);
   }
 }
 
@@ -10616,24 +10616,24 @@ void __79__FlowAnalyticsEngine_checkForegroundStateForProcessWithUUID_replyQueue
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkForegroundStateForProcessWithUUID:(id)a3 replyQueue:(id)a4 reply:(id)a5
+- (void)_checkForegroundStateForProcessWithUUID:(id)d replyQueue:(id)queue reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AnalyticsEngineCore *)self queue];
+  dCopy = d;
+  queueCopy = queue;
+  replyCopy = reply;
+  queue = [(AnalyticsEngineCore *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__FlowAnalyticsEngine__checkForegroundStateForProcessWithUUID_replyQueue_reply___block_invoke;
   v15[3] = &unk_27898BFC8;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  selfCopy = self;
+  v18 = queueCopy;
+  v19 = replyCopy;
+  v12 = replyCopy;
+  v13 = queueCopy;
+  v14 = dCopy;
+  dispatch_async(queue, v15);
 }
 
 void __80__FlowAnalyticsEngine__checkForegroundStateForProcessWithUUID_replyQueue_reply___block_invoke(uint64_t a1)
@@ -10784,17 +10784,17 @@ void __36__FlowAnalyticsEngine__endRNFPeriod__block_invoke_2()
 {
   if (sharedInstance_1)
   {
-    v2 = [sharedInstance_1 queue];
-    dispatch_async(v2, &__block_literal_global_612);
+    queue = [sharedInstance_1 queue];
+    dispatch_async(queue, &__block_literal_global_612);
   }
 }
 
-+ (void)recentUsageForApps:(id)a3 replyQueue:(id)a4 reply:(id)a5
++ (void)recentUsageForApps:(id)apps replyQueue:(id)queue reply:(id)reply
 {
-  v7 = a5;
+  replyCopy = reply;
   if (sharedInstance_1)
   {
-    [sharedInstance_1 _recentUsageForApps:a3 replyQueue:a4 reply:v7];
+    [sharedInstance_1 _recentUsageForApps:apps replyQueue:queue reply:replyCopy];
   }
 
   else
@@ -10803,8 +10803,8 @@ void __36__FlowAnalyticsEngine__endRNFPeriod__block_invoke_2()
     block[1] = 3221225472;
     block[2] = __59__FlowAnalyticsEngine_recentUsageForApps_replyQueue_reply___block_invoke;
     block[3] = &unk_27898C670;
-    v9 = v7;
-    dispatch_async(a4, block);
+    v9 = replyCopy;
+    dispatch_async(queue, block);
   }
 }
 
@@ -10824,24 +10824,24 @@ void __59__FlowAnalyticsEngine_recentUsageForApps_replyQueue_reply___block_invok
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_recentUsageForApps:(id)a3 replyQueue:(id)a4 reply:(id)a5
+- (void)_recentUsageForApps:(id)apps replyQueue:(id)queue reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AnalyticsEngineCore *)self queue];
+  appsCopy = apps;
+  queueCopy = queue;
+  replyCopy = reply;
+  queue = [(AnalyticsEngineCore *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__FlowAnalyticsEngine__recentUsageForApps_replyQueue_reply___block_invoke;
   v15[3] = &unk_27898BFC8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = appsCopy;
+  v17 = queueCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = queueCopy;
+  v14 = appsCopy;
+  dispatch_async(queue, v15);
 }
 
 void __60__FlowAnalyticsEngine__recentUsageForApps_replyQueue_reply___block_invoke(uint64_t a1)
@@ -11181,12 +11181,12 @@ void __60__FlowAnalyticsEngine__recentUsageForApps_replyQueue_reply___block_invo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)appsWithFlowsPassingTest:(id)a3 replyQueue:(id)a4 reply:(id)a5
++ (void)appsWithFlowsPassingTest:(id)test replyQueue:(id)queue reply:(id)reply
 {
-  v7 = a5;
-  if (a3 && sharedInstance_1)
+  replyCopy = reply;
+  if (test && sharedInstance_1)
   {
-    [sharedInstance_1 _appsWithFlowsPassingTest:a3 replyQueue:a4 reply:v7];
+    [sharedInstance_1 _appsWithFlowsPassingTest:test replyQueue:queue reply:replyCopy];
   }
 
   else
@@ -11195,25 +11195,25 @@ void __60__FlowAnalyticsEngine__recentUsageForApps_replyQueue_reply___block_invo
     block[1] = 3221225472;
     block[2] = __65__FlowAnalyticsEngine_appsWithFlowsPassingTest_replyQueue_reply___block_invoke;
     block[3] = &unk_27898C670;
-    v9 = v7;
-    dispatch_async(a4, block);
+    v9 = replyCopy;
+    dispatch_async(queue, block);
   }
 }
 
-- (void)_appsWithFlowsPassingTest:(id)a3 replyQueue:(id)a4 reply:(id)a5
+- (void)_appsWithFlowsPassingTest:(id)test replyQueue:(id)queue reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(AnalyticsEngineCore *)self queue];
+  testCopy = test;
+  replyCopy = reply;
+  queue = [(AnalyticsEngineCore *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__FlowAnalyticsEngine__appsWithFlowsPassingTest_replyQueue_reply___block_invoke;
   v12[3] = &unk_27898C6E8;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, v12);
+  v13 = testCopy;
+  v14 = replyCopy;
+  v10 = replyCopy;
+  v11 = testCopy;
+  dispatch_async(queue, v12);
 }
 
 void __66__FlowAnalyticsEngine__appsWithFlowsPassingTest_replyQueue_reply___block_invoke(uint64_t a1)
@@ -11222,23 +11222,23 @@ void __66__FlowAnalyticsEngine__appsWithFlowsPassingTest_replyQueue_reply___bloc
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)identifierForUUID:(id)a3 replyQueue:(id)a4 reply:(id)a5
++ (void)identifierForUUID:(id)d replyQueue:(id)queue reply:(id)reply
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  queueCopy = queue;
+  replyCopy = reply;
   if (sharedInstance_1)
   {
-    v10 = [sharedInstance_1 queue];
+    queue = [sharedInstance_1 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__FlowAnalyticsEngine_identifierForUUID_replyQueue_reply___block_invoke;
     block[3] = &unk_27898C710;
-    v18 = v7;
-    v19 = v8;
-    v20 = v9;
-    dispatch_async(v10, block);
+    v18 = dCopy;
+    v19 = queueCopy;
+    v20 = replyCopy;
+    dispatch_async(queue, block);
 
     v11 = v18;
   }
@@ -11254,46 +11254,46 @@ void __66__FlowAnalyticsEngine__appsWithFlowsPassingTest_replyQueue_reply___bloc
       _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEBUG, "returning error: %@", buf, 0xCu);
     }
 
-    if (v8)
+    if (queueCopy)
     {
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __58__FlowAnalyticsEngine_identifierForUUID_replyQueue_reply___block_invoke_615;
       v14[3] = &unk_27898B678;
-      v16 = v9;
+      v16 = replyCopy;
       v11 = v11;
       v15 = v11;
-      dispatch_async(v8, v14);
+      dispatch_async(queueCopy, v14);
     }
 
     else
     {
-      (*(v9 + 2))(v9, 0, 0, v11);
+      (*(replyCopy + 2))(replyCopy, 0, 0, v11);
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_trafficEnvelopeToTier:(double)a3
+- (id)_trafficEnvelopeToTier:(double)tier
 {
-  v3 = a3;
-  if (a3 < 0x1000)
+  tierCopy = tier;
+  if (tier < 0x1000)
   {
     return @"tier1";
   }
 
-  if (v3 < 0x10000)
+  if (tierCopy < 0x10000)
   {
     return @"tier2";
   }
 
-  if (v3 < 0x100000)
+  if (tierCopy < 0x100000)
   {
     return @"tier3";
   }
 
-  if (v3 >> 24)
+  if (tierCopy >> 24)
   {
     return @"tier5";
   }
@@ -11301,55 +11301,55 @@ void __66__FlowAnalyticsEngine__appsWithFlowsPassingTest_replyQueue_reply___bloc
   return @"tier4";
 }
 
-- (void)_calendarUsageForApp:(id)a3 givenLastRun:(id)a4
+- (void)_calendarUsageForApp:(id)app givenLastRun:(id)run
 {
   v79 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 timeStart];
-  [v7 timeIntervalSince1970];
+  appCopy = app;
+  runCopy = run;
+  timeStart = [runCopy timeStart];
+  [timeStart timeIntervalSince1970];
   v9 = v8;
 
   v68 = v9;
   v10 = gmtime(&v68);
   v11 = v10->tm_min / 15 + 4 * v10->tm_hour + 1;
   v12 = LOWORD(v10->tm_wday) + 1;
-  v13 = [v5 hintCalendarUsage];
-  if (!v13)
+  hintCalendarUsage = [appCopy hintCalendarUsage];
+  if (!hintCalendarUsage)
   {
 LABEL_8:
     v22 = MEMORY[0x277CCAC30];
-    v23 = [v5 bundleName];
-    v24 = [v22 predicateWithFormat:@"%K == %@ AND %K == %hu AND %K == %hu", @"hasApp.bundleName", v23, @"timeOfDaySlot", v11, @"dayOfWeek", v12];
+    bundleName = [appCopy bundleName];
+    v24 = [v22 predicateWithFormat:@"%K == %@ AND %K == %hu AND %K == %hu", @"hasApp.bundleName", bundleName, @"timeOfDaySlot", v11, @"dayOfWeek", v12];
 
     v25 = [(ObjectAnalytics *)self->calspace fetchEntitiesFreeForm:v24 sortDesc:0];
     if ([v25 count] == 1)
     {
-      v20 = [v25 objectAtIndex:0];
+      hintCalendarUsage4 = [v25 objectAtIndex:0];
     }
 
     else
     {
       aspace = self->aspace;
-      v27 = [MEMORY[0x277D6B560] entityName];
-      v20 = [(AppAnalytics *)aspace createEntityForEntityName:v27];
+      entityName = [MEMORY[0x277D6B560] entityName];
+      hintCalendarUsage4 = [(AppAnalytics *)aspace createEntityForEntityName:entityName];
 
-      if (v20)
+      if (hintCalendarUsage4)
       {
         v28 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v11];
-        [v20 setTimeOfDaySlot:v28];
+        [hintCalendarUsage4 setTimeOfDaySlot:v28];
 
         v29 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v12];
-        [v20 setDayOfWeek:v29];
+        [hintCalendarUsage4 setDayOfWeek:v29];
 
-        v30 = [v6 timeStart];
-        [v20 setFirstTimeStamp:v30];
+        timeStart2 = [runCopy timeStart];
+        [hintCalendarUsage4 setFirstTimeStamp:timeStart2];
 
-        [v5 addHasCalendarUsageObject:v20];
+        [appCopy addHasCalendarUsageObject:hintCalendarUsage4];
       }
     }
 
-    if (!v20)
+    if (!hintCalendarUsage4)
     {
       goto LABEL_5;
     }
@@ -11357,26 +11357,26 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v14 = v13;
-  v15 = [v5 hintCalendarUsage];
-  v16 = [v15 timeOfDaySlot];
-  if ([v16 unsignedShortValue] != v11)
+  v14 = hintCalendarUsage;
+  hintCalendarUsage2 = [appCopy hintCalendarUsage];
+  timeOfDaySlot = [hintCalendarUsage2 timeOfDaySlot];
+  if ([timeOfDaySlot unsignedShortValue] != v11)
   {
 
     goto LABEL_8;
   }
 
-  v17 = [v5 hintCalendarUsage];
-  v18 = [v17 dayOfWeek];
-  v19 = [v18 unsignedShortValue];
+  hintCalendarUsage3 = [appCopy hintCalendarUsage];
+  dayOfWeek = [hintCalendarUsage3 dayOfWeek];
+  unsignedShortValue = [dayOfWeek unsignedShortValue];
 
-  if (v19 != v12)
+  if (unsignedShortValue != v12)
   {
     goto LABEL_8;
   }
 
-  v20 = [v5 hintCalendarUsage];
-  if (!v20)
+  hintCalendarUsage4 = [appCopy hintCalendarUsage];
+  if (!hintCalendarUsage4)
   {
 LABEL_5:
     v21 = analyticsLogHandle;
@@ -11392,41 +11392,41 @@ LABEL_5:
 LABEL_13:
   v64 = v11;
   v65 = v12;
-  v66 = [v6 wifiIN_end];
-  [v66 doubleValue];
+  wifiIN_end = [runCopy wifiIN_end];
+  [wifiIN_end doubleValue];
   v32 = v31;
-  v33 = [v6 wifiIN_start];
-  [v33 doubleValue];
+  wifiIN_start = [runCopy wifiIN_start];
+  [wifiIN_start doubleValue];
   v35 = v32 - v34;
-  v36 = [v6 wifiOUT_end];
-  [v36 doubleValue];
+  wifiOUT_end = [runCopy wifiOUT_end];
+  [wifiOUT_end doubleValue];
   v38 = v35 + v37;
-  v39 = [v6 wifiOUT_start];
-  [v39 doubleValue];
+  wifiOUT_start = [runCopy wifiOUT_start];
+  [wifiOUT_start doubleValue];
   v41 = v38 - v40;
-  v42 = [v6 wwanIN_end];
-  [v42 doubleValue];
+  wwanIN_end = [runCopy wwanIN_end];
+  [wwanIN_end doubleValue];
   v44 = v41 + v43;
-  [v6 wwanIN_start];
-  v46 = v45 = v5;
+  [runCopy wwanIN_start];
+  v46 = v45 = appCopy;
   [v46 doubleValue];
   v48 = v44 - v47;
-  v49 = [v6 wwanOUT_end];
-  [v49 doubleValue];
+  wwanOUT_end = [runCopy wwanOUT_end];
+  [wwanOUT_end doubleValue];
   v51 = v48 + v50;
-  v52 = [v6 wwanOUT_start];
-  [v52 doubleValue];
+  wwanOUT_start = [runCopy wwanOUT_start];
+  [wwanOUT_start doubleValue];
   v54 = v51 - v53;
 
-  v5 = v45;
+  appCopy = v45;
   v55 = [(FlowAnalyticsEngine *)self _trafficEnvelopeToTier:v54];
   v56 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v57 = v56;
-    v58 = [v5 bundleName];
+    bundleName2 = [appCopy bundleName];
     *buf = 138413314;
-    v70 = v58;
+    v70 = bundleName2;
     v71 = 2048;
     v72 = v54;
     v73 = 2112;
@@ -11438,27 +11438,27 @@ LABEL_13:
     _os_log_impl(&dword_23255B000, v57, OS_LOG_TYPE_DEBUG, "calendar: app: %@, traffic envelope: %f, tier: %@, at timeslot: %d, dayslot: %d", buf, 0x2Cu);
   }
 
-  v59 = [v20 valueForKey:v55];
+  v59 = [hintCalendarUsage4 valueForKey:v55];
   v60 = [v59 unsignedIntValue] + 1;
 
   v61 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v60];
-  [v20 setValue:v61 forKey:v55];
+  [hintCalendarUsage4 setValue:v61 forKey:v55];
 
-  v62 = [v6 timeStart];
-  [v20 setTimeStamp:v62];
+  timeStart3 = [runCopy timeStart];
+  [hintCalendarUsage4 setTimeStamp:timeStart3];
 
-  [v5 setHintCalendarUsage:v20];
+  [appCopy setHintCalendarUsage:hintCalendarUsage4];
 LABEL_16:
 
   v63 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)appBundleIdentifierFromAuditToken:(id *)a3
++ (id)appBundleIdentifierFromAuditToken:(id *)token
 {
   v15 = *MEMORY[0x277D85DE8];
   v12 = 0;
-  v3 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v3 = *&token->var0[4];
+  *buf = *token->var0;
   v14 = v3;
   v4 = [MEMORY[0x277CC1E90] bundleRecordForAuditToken:buf error:&v12];
   v5 = v12;
@@ -11496,14 +11496,14 @@ LABEL_16:
   return v9;
 }
 
-+ (id)appBundleIdentifierFromBundleIdentifier:(id)a3
++ (id)appBundleIdentifierFromBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v12 = 0;
-    v4 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v3 allowPlaceholder:0 error:&v12];
+    v4 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v12];
     v5 = v12;
     v6 = v5;
     if (v4)
@@ -11527,7 +11527,7 @@ LABEL_16:
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 138478083;
-        v14 = v3;
+        v14 = identifierCopy;
         v15 = 2112;
         v16 = v6;
         _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_ERROR, "Error creating LSBundleRecord from bundle identifier (%{private}@), %@", buf, 0x16u);
@@ -11547,37 +11547,37 @@ LABEL_16:
   return v9;
 }
 
-+ (BOOL)appBundleIdentifierIsWebBrowser:(id)a3
++ (BOOL)appBundleIdentifierIsWebBrowser:(id)browser
 {
   result = sharedInstance_1;
   if (sharedInstance_1)
   {
-    return [sharedInstance_1 _appBundleIdentifierIsWebBrowser:a3];
+    return [sharedInstance_1 _appBundleIdentifierIsWebBrowser:browser];
   }
 
   return result;
 }
 
-- (BOOL)_appBundleIdentifierIsWebBrowser:(id)a3
+- (BOOL)_appBundleIdentifierIsWebBrowser:(id)browser
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  browserCopy = browser;
   v24 = 0;
-  if (v4)
+  if (browserCopy)
   {
-    v5 = [(NSMutableDictionary *)self->webBrowserBundleCache objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->webBrowserBundleCache objectForKeyedSubscript:browserCopy];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 BOOLValue];
-      v24 = v7;
+      bOOLValue = [v5 BOOLValue];
+      v24 = bOOLValue;
 LABEL_19:
 
       goto LABEL_20;
     }
 
     v23 = 0;
-    v9 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v4 allowPlaceholder:0 error:&v23];
+    v9 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:browserCopy allowPlaceholder:0 error:&v23];
     v10 = v23;
     v11 = v10;
     if (v9)
@@ -11597,7 +11597,7 @@ LABEL_19:
       {
         v18 = v17;
         v19 = [MEMORY[0x277CCABB0] numberWithBool:v24];
-        [(NSMutableDictionary *)self->webBrowserBundleCache setObject:v19 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->webBrowserBundleCache setObject:v19 forKeyedSubscript:browserCopy];
       }
 
       else
@@ -11607,7 +11607,7 @@ LABEL_19:
         if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
         {
           *buf = 138477827;
-          v26 = v4;
+          v26 = browserCopy;
           v14 = "Error creating appBundleIdentifier from bundle identifier (%{private}@)";
           v15 = v20;
           v16 = 12;
@@ -11622,7 +11622,7 @@ LABEL_19:
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 138478083;
-        v26 = v4;
+        v26 = browserCopy;
         v27 = 2112;
         v28 = v11;
         v14 = "Error creating LSBundleRecord from bundle identifier (%{private}@), %@";
@@ -11633,7 +11633,7 @@ LABEL_17:
       }
     }
 
-    v7 = v24;
+    bOOLValue = v24;
     goto LABEL_19;
   }
 
@@ -11644,11 +11644,11 @@ LABEL_17:
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_ERROR, "Nil bundleIdentifier", buf, 2u);
   }
 
-  v7 = 0;
+  bOOLValue = 0;
 LABEL_20:
 
   v21 = *MEMORY[0x277D85DE8];
-  return v7 & 1;
+  return bOOLValue & 1;
 }
 
 - (void)startObservingLaunchServices
@@ -11665,14 +11665,14 @@ LABEL_20:
   CFNotificationCenterRemoveObserver(DistributedCenter, self, @"com.apple.LaunchServices.applicationUnregistered", 0);
 }
 
-- (void)handleLaunchServicesApplicationUnregistration:(id)a3
+- (void)handleLaunchServicesApplicationUnregistration:(id)unregistration
 {
   v23 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = a3;
+  obj = unregistration;
   v4 = [obj countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v4)
   {
@@ -11710,24 +11710,24 @@ LABEL_20:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endpointMaintenanceOnClose:(id)a3
+- (void)endpointMaintenanceOnClose:(id)close
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 attributedEntity];
-  v6 = [v4 remoteAddress];
+  closeCopy = close;
+  attributedEntity = [closeCopy attributedEntity];
+  remoteAddress = [closeCopy remoteAddress];
   v14 = 0;
-  v7 = validateSockAddrToString(v6, 0, &v14);
+  v7 = validateSockAddrToString(remoteAddress, 0, &v14);
   v8 = v14;
   if (v7)
   {
-    v9 = [v6 bytes];
-    if (([v4 hasNonLocalDestination] & 1) != 0 || *(v9 + 2) && (is_directly_reachable_address(v9) & 1) == 0)
+    bytes = [remoteAddress bytes];
+    if (([closeCopy hasNonLocalDestination] & 1) != 0 || *(bytes + 2) && (is_directly_reachable_address(bytes) & 1) == 0)
     {
       v10 = [MEMORY[0x277CBEB98] setWithObject:v8];
-      v11 = [v4 isTracker];
-      [(FlowAnalyticsEngine *)self _updateAppEndpoints:v10 type:v11 userId:gEffectiveUserId bundleName:v5 flowClosing:1];
-      [(FlowAnalyticsEngine *)self _resolveAppEndpointsForUserId:gEffectiveUserId bundleName:v5];
+      isTracker = [closeCopy isTracker];
+      [(FlowAnalyticsEngine *)self _updateAppEndpoints:v10 type:isTracker userId:gEffectiveUserId bundleName:attributedEntity flowClosing:1];
+      [(FlowAnalyticsEngine *)self _resolveAppEndpointsForUserId:gEffectiveUserId bundleName:attributedEntity];
     }
   }
 
@@ -11737,9 +11737,9 @@ LABEL_20:
     if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v16 = v6;
+      v16 = remoteAddress;
       v17 = 2112;
-      v18 = v5;
+      v18 = attributedEntity;
       _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEBUG, "No remote endpoint extracted from %@ for %@", buf, 0x16u);
     }
   }
@@ -11747,17 +11747,17 @@ LABEL_20:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_appEndpointsInProcess:(id)a3
+- (id)_appEndpointsInProcess:(id)process
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAA8] date];
+  processCopy = process;
+  date = [MEMORY[0x277CBEAA8] date];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v3 hasAppEndpoint];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  hasAppEndpoint = [processCopy hasAppEndpoint];
+  v6 = [hasAppEndpoint countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -11768,15 +11768,15 @@ LABEL_3:
     {
       if (*v20 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(hasAppEndpoint);
       }
 
       v10 = *(*(&v19 + 1) + 8 * v9);
-      v11 = [v10 effectiveUserId];
-      if (v11 == gEffectiveUserId)
+      effectiveUserId = [v10 effectiveUserId];
+      if (effectiveUserId == gEffectiveUserId)
       {
-        v12 = [v10 firstTimeStamp];
-        v13 = isDateWithinScope(v4, v12, 86400.0);
+        firstTimeStamp = [v10 firstTimeStamp];
+        v13 = isDateWithinScope(date, firstTimeStamp, 86400.0);
 
         if (v13)
         {
@@ -11786,7 +11786,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v7 = [hasAppEndpoint countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -11796,9 +11796,9 @@ LABEL_3:
       }
     }
 
-    v14 = v10;
+    createEntity = v10;
 
-    if (v14)
+    if (createEntity)
     {
       goto LABEL_13;
     }
@@ -11809,17 +11809,17 @@ LABEL_3:
 LABEL_10:
   }
 
-  v14 = [(ObjectAnalytics *)self->epspace createEntity];
-  [v14 setEffectiveUserId:gEffectiveUserId];
-  v15 = [MEMORY[0x277CBEAA8] date];
-  [v14 setFirstTimeStamp:v15];
+  createEntity = [(ObjectAnalytics *)self->epspace createEntity];
+  [createEntity setEffectiveUserId:gEffectiveUserId];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [createEntity setFirstTimeStamp:date2];
 
-  [v3 addHasAppEndpointObject:v14];
+  [processCopy addHasAppEndpointObject:createEntity];
 LABEL_13:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return createEntity;
 }
 
 - (unint64_t)_clearStaleAppEndpointRecords
@@ -11906,34 +11906,34 @@ id __60__FlowAnalyticsEngine__submitAppEndpointRecordInfoAnalytics__block_invoke
   return v2;
 }
 
-- (void)_performAppEndpointTrackingPeriodicTasksWithReply:(id)a3
+- (void)_performAppEndpointTrackingPeriodicTasksWithReply:(id)reply
 {
-  v10 = a3;
-  v4 = [(FlowAnalyticsEngine *)self _clearStaleAppEndpointRecords];
-  v5 = [(FlowAnalyticsEngine *)self _submitAppEndpointRecordInfoAnalytics];
-  if (v10)
+  replyCopy = reply;
+  _clearStaleAppEndpointRecords = [(FlowAnalyticsEngine *)self _clearStaleAppEndpointRecords];
+  _submitAppEndpointRecordInfoAnalytics = [(FlowAnalyticsEngine *)self _submitAppEndpointRecordInfoAnalytics];
+  if (replyCopy)
   {
     v6 = objc_alloc(MEMORY[0x277CBEB38]);
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:_clearStaleAppEndpointRecords];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:_submitAppEndpointRecordInfoAnalytics];
     v9 = [v6 initWithObjectsAndKeys:{v7, @"endpointRecordsDeleted", v8, @"endpointRecordAnalyticsSubmitted", 0}];
 
-    v10[2](v10, v9, 0);
+    replyCopy[2](replyCopy, v9, 0);
   }
 }
 
-- (void)performAppEndpointTrackingPeriodicTasksComplete:(id)a3 error:(id)a4
+- (void)performAppEndpointTrackingPeriodicTasksComplete:(id)complete error:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  completeCopy = complete;
+  errorCopy = error;
   v7 = domainTrackingLogHandle;
-  if (v6)
+  if (errorCopy)
   {
     if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v6;
+      v13 = errorCopy;
       v8 = "Periodic app endpoint tracking tasks failed with %@";
       v9 = v7;
       v10 = OS_LOG_TYPE_ERROR;
@@ -11945,7 +11945,7 @@ LABEL_6:
   else if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = completeCopy;
     v8 = "Periodic app endpoint tracking tasks finished with result %@";
     v9 = v7;
     v10 = OS_LOG_TYPE_DEFAULT;
@@ -11955,11 +11955,11 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)performAppEndpointTrackingPeriodicActivityWithReply:(id)a3
++ (void)performAppEndpointTrackingPeriodicActivityWithReply:(id)reply
 {
   if (sharedInstance_1)
   {
-    [sharedInstance_1 _performAppEndpointTrackingPeriodicTasksWithReply:a3];
+    [sharedInstance_1 _performAppEndpointTrackingPeriodicTasksWithReply:reply];
   }
 }
 
@@ -11975,21 +11975,21 @@ LABEL_6:
   AnalyticsSendEventLazy();
 }
 
-- (void)_reportDomainTrackingDropFor:(id)a3 withCause:(unint64_t)a4 detail:(id)a5
+- (void)_reportDomainTrackingDropFor:(id)for withCause:(unint64_t)cause detail:(id)detail
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (a4 <= 0xA && ((1 << a4) & 0x7AE) != 0)
+  forCopy = for;
+  detailCopy = detail;
+  if (cause <= 0xA && ((1 << cause) & 0x7AE) != 0)
   {
-    if (v7)
+    if (forCopy)
     {
       v9 = +[NetDomainsHandler sharedInstance];
-      v10 = [v9 bundleNameImplies1stOr2ndParty:v7];
+      v10 = [v9 bundleNameImplies1stOr2ndParty:forCopy];
 
       if (v10)
       {
-        v11 = v7;
+        v11 = forCopy;
       }
 
       else
@@ -11998,11 +11998,11 @@ LABEL_6:
         if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_INFO))
         {
           *buf = 138478339;
-          v17 = v7;
+          v17 = forCopy;
           v18 = 2048;
-          v19 = a4;
+          causeCopy2 = cause;
           v20 = 2113;
-          v21 = v8;
+          v21 = detailCopy;
           _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_INFO, "3rd Party obfuscated Drop reported to analytics for %{private}@ cause %lu detail %{private}@", buf, 0x20u);
         }
 
@@ -12019,11 +12019,11 @@ LABEL_6:
     if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 138478339;
-      v17 = v7;
+      v17 = forCopy;
       v18 = 2048;
-      v19 = a4;
+      causeCopy2 = cause;
       v20 = 2113;
-      v21 = v8;
+      v21 = detailCopy;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_INFO, "Drop reported to analytics for %{private}@ cause %lu detail %{private}@", buf, 0x20u);
     }
 
@@ -12074,36 +12074,36 @@ LABEL_7:
   return v8;
 }
 
-- (void)_evalDomainTrackingDropOf:(id)a3
+- (void)_evalDomainTrackingDropOf:(id)of
 {
-  v4 = a3;
+  ofCopy = of;
   if (self->appTrackingEnabled && AnalyticsIsEventUsed())
   {
-    v5 = [v4 domainAttributedBundleId];
-    if (v5)
+    domainAttributedBundleId = [ofCopy domainAttributedBundleId];
+    if (domainAttributedBundleId)
     {
-      [v4 domainAttributedBundleId];
+      [ofCopy domainAttributedBundleId];
     }
 
     else
     {
-      [v4 attributedEntity];
+      [ofCopy attributedEntity];
     }
     v6 = ;
 
     v37 = 1;
     v36 = 0;
     v35 = 0;
-    v7 = [v4 processName];
-    if ([v7 isEqualToString:@"mDNSResponder"])
+    processName = [ofCopy processName];
+    if ([processName isEqualToString:@"mDNSResponder"])
     {
 
 LABEL_9:
-      v9 = self;
+      selfCopy3 = self;
       v10 = v6;
       v11 = 6;
 LABEL_10:
-      [(FlowAnalyticsEngine *)v9 _reportDomainTrackingDropFor:v10 withCause:v11 detail:v4];
+      [(FlowAnalyticsEngine *)selfCopy3 _reportDomainTrackingDropFor:v10 withCause:v11 detail:ofCopy];
       v12 = 0;
 LABEL_11:
       v13 = v6;
@@ -12121,7 +12121,7 @@ LABEL_12:
 
     if (!v6)
     {
-      [(FlowAnalyticsEngine *)self _reportDomainTrackingDropFor:0 withCause:1 detail:v4];
+      [(FlowAnalyticsEngine *)self _reportDomainTrackingDropFor:0 withCause:1 detail:ofCopy];
       v12 = 0;
       v13 = 0;
       goto LABEL_12;
@@ -12129,21 +12129,21 @@ LABEL_12:
 
     if ([v6 hasPrefix:@"terminusd"])
     {
-      v9 = self;
+      selfCopy3 = self;
       v10 = v6;
       v11 = 8;
       goto LABEL_10;
     }
 
-    v14 = [v4 attributedEntity];
-    if (v14)
+    attributedEntity = [ofCopy attributedEntity];
+    if (attributedEntity)
     {
-      v15 = v14;
-      v16 = [v4 attributedEntityIsBundleName];
+      v15 = attributedEntity;
+      attributedEntityIsBundleName = [ofCopy attributedEntityIsBundleName];
 
-      if ((v16 & 1) == 0)
+      if ((attributedEntityIsBundleName & 1) == 0)
       {
-        v9 = self;
+        selfCopy3 = self;
         v10 = v6;
         v11 = 11;
         goto LABEL_10;
@@ -12158,7 +12158,7 @@ LABEL_12:
     {
       if (v36 == 1)
       {
-        v20 = self;
+        selfCopy5 = self;
         v21 = v6;
         v22 = 7;
       }
@@ -12170,12 +12170,12 @@ LABEL_12:
           goto LABEL_11;
         }
 
-        v20 = self;
+        selfCopy5 = self;
         v21 = v6;
         v22 = 9;
       }
 
-      [(FlowAnalyticsEngine *)v20 _reportDomainTrackingDropFor:v21 withCause:v22 detail:v4];
+      [(FlowAnalyticsEngine *)selfCopy5 _reportDomainTrackingDropFor:v21 withCause:v22 detail:ofCopy];
       goto LABEL_11;
     }
 
@@ -12191,15 +12191,15 @@ LABEL_12:
 
     v13 = v19;
 
-    if ([v4 isSilent])
+    if ([ofCopy isSilent])
     {
-      [(FlowAnalyticsEngine *)self _reportDomainTrackingDropFor:v13 withCause:4 detail:v4];
+      [(FlowAnalyticsEngine *)self _reportDomainTrackingDropFor:v13 withCause:4 detail:ofCopy];
       goto LABEL_12;
     }
 
-    v23 = [v4 domainName];
+    domainName = [ofCopy domainName];
 
-    if (v23)
+    if (domainName)
     {
       goto LABEL_12;
     }
@@ -12207,10 +12207,10 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = v4;
-      v25 = [v24 remoteAddress];
-      v26 = [v24 flowuuid];
-      v27 = [v24 hasLocalDestination];
+      v24 = ofCopy;
+      remoteAddress = [v24 remoteAddress];
+      flowuuid = [v24 flowuuid];
+      hasLocalDestination = [v24 hasLocalDestination];
     }
 
     else
@@ -12218,68 +12218,68 @@ LABEL_12:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v26 = 0;
+        flowuuid = 0;
         goto LABEL_45;
       }
 
-      v29 = v4;
-      v25 = [v29 remoteAddress];
-      v26 = [v29 flowuuid];
-      v30 = [v25 bytes];
-      if (!v30 || !*(v30 + 2))
+      v29 = ofCopy;
+      remoteAddress = [v29 remoteAddress];
+      flowuuid = [v29 flowuuid];
+      bytes = [remoteAddress bytes];
+      if (!bytes || !*(bytes + 2))
       {
         v28 = 0;
 LABEL_42:
 
-        if (v25)
+        if (remoteAddress)
         {
           if (!v28)
           {
             v33 = 0;
-            v31 = validateSockAddrToString(v25, 0, &v33);
+            v31 = validateSockAddrToString(remoteAddress, 0, &v33);
             v32 = v33;
-            if (v26 && !v31)
+            if (flowuuid && !v31)
             {
-              [(FlowAnalyticsEngine *)self _reportDomainTrackingDropFor:v13 withCause:3 detail:v4];
+              [(FlowAnalyticsEngine *)self _reportDomainTrackingDropFor:v13 withCause:3 detail:ofCopy];
             }
 
             goto LABEL_12;
           }
 
-          [(FlowAnalyticsEngine *)self _reportDomainTrackingDropFor:v13 withCause:5 detail:v4];
+          [(FlowAnalyticsEngine *)self _reportDomainTrackingDropFor:v13 withCause:5 detail:ofCopy];
 
           goto LABEL_46;
         }
 
 LABEL_45:
-        [(FlowAnalyticsEngine *)self _reportDomainTrackingDropFor:v13 withCause:2 detail:v4];
+        [(FlowAnalyticsEngine *)self _reportDomainTrackingDropFor:v13 withCause:2 detail:ofCopy];
 LABEL_46:
 
         goto LABEL_12;
       }
 
-      v27 = is_directly_reachable_address(v30);
+      hasLocalDestination = is_directly_reachable_address(bytes);
     }
 
-    v28 = v27;
+    v28 = hasLocalDestination;
     goto LABEL_42;
   }
 
 LABEL_13:
 }
 
-- (void)storeSnapshotFlowUUID:(id)a3 forSourceKey:(id)a4
+- (void)storeSnapshotFlowUUID:(id)d forSourceKey:(id)key
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  dCopy = d;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (!dCopy || !keyCopy)
   {
     goto LABEL_17;
   }
 
-  v9 = [(NSMutableDictionary *)self->snapshotFlowUUIDs objectForKeyedSubscript:v7];
+  v9 = [(NSMutableDictionary *)self->snapshotFlowUUIDs objectForKeyedSubscript:keyCopy];
   if (v9)
   {
     objc_opt_class();
@@ -12301,12 +12301,12 @@ LABEL_13:
       goto LABEL_12;
     }
 
-    [v9 addObject:v6];
+    [v9 addObject:dCopy];
     v10 = domainTrackingLogHandle;
     if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_INFO))
     {
       *v25 = 138412546;
-      *&v25[4] = v6;
+      *&v25[4] = dCopy;
       *&v25[12] = 2112;
       *&v25[14] = v8;
       v11 = "ConnSnapshot: stored fuuid %@ for conn id %@";
@@ -12321,13 +12321,13 @@ LABEL_9:
     [(NSMutableDictionary *)self->snapshotFlowUUIDs setObject:v12 forKeyedSubscript:v8];
 
     v13 = [(NSMutableDictionary *)self->snapshotFlowUUIDs objectForKeyedSubscript:v8];
-    [v13 addObject:v6];
+    [v13 addObject:dCopy];
 
     v10 = domainTrackingLogHandle;
     if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_INFO))
     {
       *v25 = 138412546;
-      *&v25[4] = v6;
+      *&v25[4] = dCopy;
       *&v25[12] = 2112;
       *&v25[14] = v8;
       v11 = "ConnSnapshot: stored fuuid %@ for conn id %@ (first time)";
@@ -12352,36 +12352,36 @@ LABEL_12:
     }
 
     v22 = +[NetDomainsHandler sharedInstance];
-    v23 = [&unk_2847EF6F8 stringValue];
-    [v22 triggerAutoBugCaptureCaseForType:@"ExcessiveConcurrentConnections" subType:0 privateSubtypeContext:0 detectedProcess:@"symptomsd" events:0 thresholdValuesString:v23];
+    stringValue = [&unk_2847EF6F8 stringValue];
+    [v22 triggerAutoBugCaptureCaseForType:@"ExcessiveConcurrentConnections" subType:0 privateSubtypeContext:0 detectedProcess:@"symptomsd" events:0 thresholdValuesString:stringValue];
   }
 
 LABEL_17:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSnapshotFlowUUIDsForSourceKey:(id)a3
+- (void)removeSnapshotFlowUUIDsForSourceKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [(NSMutableDictionary *)self->snapshotFlowUUIDs objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->snapshotFlowUUIDs objectForKeyedSubscript:keyCopy];
     if (v5)
     {
-      [(NSMutableDictionary *)self->snapshotFlowUUIDs setObject:0 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->snapshotFlowUUIDs setObject:0 forKeyedSubscript:keyCopy];
       v6 = domainTrackingLogHandle;
       if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEBUG))
       {
         snapshotFlowUUIDs = self->snapshotFlowUUIDs;
         v8 = v6;
         v9 = [(NSMutableDictionary *)snapshotFlowUUIDs count];
-        v10 = [(NSMutableDictionary *)self->snapshotFlowUUIDs allKeys];
-        v11 = [v10 componentsJoinedByString:{@", "}];
+        allKeys = [(NSMutableDictionary *)self->snapshotFlowUUIDs allKeys];
+        v11 = [allKeys componentsJoinedByString:{@", "}];
         v13 = 138413058;
         v14 = v5;
         v15 = 2112;
-        v16 = v4;
+        v16 = keyCopy;
         v17 = 2048;
         v18 = v9;
         v19 = 2112;
@@ -12394,18 +12394,18 @@ LABEL_17:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isSnapshotFlowUUIDStored:(id)a3
+- (BOOL)isSnapshotFlowUUIDStored:(id)stored
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  storedCopy = stored;
+  if (storedCopy)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [(NSMutableDictionary *)self->snapshotFlowUUIDs allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+    allKeys = [(NSMutableDictionary *)self->snapshotFlowUUIDs allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v6)
     {
       v7 = v6;
@@ -12420,12 +12420,12 @@ LABEL_17:
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = [(NSMutableDictionary *)self->snapshotFlowUUIDs objectForKeyedSubscript:*(*(&v19 + 1) + 8 * v10)];
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 containsObject:v4])
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 containsObject:storedCopy])
           {
             ++connSnapshotFlowUUIDHitsAndMisses_0;
             v13 = domainTrackingLogHandle;
@@ -12445,7 +12445,7 @@ LABEL_17:
         }
 
         while (v7 != v10);
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v19 objects:v25 count:16];
         v8 = v18;
         if (v7)
         {
@@ -12478,26 +12478,26 @@ LABEL_19:
   return v14;
 }
 
-- (BOOL)domainInfoProcessingForSnapshot:(id)a3 process:(id)a4 attributedName:(id)a5 remoteAddress:(id)a6 isWebBrowser:(BOOL)a7
+- (BOOL)domainInfoProcessingForSnapshot:(id)snapshot process:(id)process attributedName:(id)name remoteAddress:(id)address isWebBrowser:(BOOL)browser
 {
-  v7 = a7;
+  browserCopy = browser;
   v122[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 domainOwner];
-  v16 = &stru_2847966D8;
-  v94 = v13;
-  if (v15)
+  snapshotCopy = snapshot;
+  processCopy = process;
+  nameCopy = name;
+  addressCopy = address;
+  domainOwner = [snapshotCopy domainOwner];
+  domainOwner2 = &stru_2847966D8;
+  v94 = nameCopy;
+  if (domainOwner)
   {
-    v16 = [v11 domainOwner];
+    domainOwner2 = [snapshotCopy domainOwner];
   }
 
-  v93 = [v11 snapshotType];
-  v17 = [v11 sourceIdentifier];
-  v86 = [v11 isNonAppInitiated];
-  if (v86)
+  snapshotType = [snapshotCopy snapshotType];
+  sourceIdentifier = [snapshotCopy sourceIdentifier];
+  isNonAppInitiated = [snapshotCopy isNonAppInitiated];
+  if (isNonAppInitiated)
   {
     v18 = 2;
   }
@@ -12508,9 +12508,9 @@ LABEL_19:
   }
 
   v91 = v18;
-  v19 = [v11 isTracker];
-  v20 = v19;
-  if (v19)
+  isTracker = [snapshotCopy isTracker];
+  v20 = isTracker;
+  if (isTracker)
   {
     v21 = 1;
   }
@@ -12520,59 +12520,59 @@ LABEL_19:
     v21 = 2;
   }
 
-  v22 = [v11 domainName];
+  domainName = [snapshotCopy domainName];
 
-  v90 = v14;
-  if (v22)
+  v90 = addressCopy;
+  if (domainName)
   {
-    v84 = v17;
-    v23 = [v11 domainName];
-    v24 = [v23 hasSuffix:@"."];
+    v84 = sourceIdentifier;
+    domainName2 = [snapshotCopy domainName];
+    v24 = [domainName2 hasSuffix:@"."];
 
-    v25 = [v11 domainName];
+    domainName3 = [snapshotCopy domainName];
     if (v24)
     {
-      v26 = [v11 domainName];
-      v27 = -[__CFString substringToIndex:](v25, "substringToIndex:", [v26 length] - 1);
+      domainName4 = [snapshotCopy domainName];
+      v27 = -[__CFString substringToIndex:](domainName3, "substringToIndex:", [domainName4 length] - 1);
 
-      v25 = v27;
+      domainName3 = v27;
     }
 
     if (v20)
     {
       v28 = 1;
       v92 = 1;
-      if (!v25)
+      if (!domainName3)
       {
         goto LABEL_78;
       }
 
 LABEL_46:
-      v45 = [v11 domainTrackerContext];
-      v46 = &stru_2847966D8;
-      if (v45)
+      domainTrackerContext = [snapshotCopy domainTrackerContext];
+      domainTrackerContext3 = &stru_2847966D8;
+      if (domainTrackerContext)
       {
-        v47 = [v11 domainTrackerContext];
-        if ([NetworkDomainsUtility isValidDomain:v47])
+        domainTrackerContext2 = [snapshotCopy domainTrackerContext];
+        if ([NetworkDomainsUtility isValidDomain:domainTrackerContext2])
         {
-          v46 = [v11 domainTrackerContext];
+          domainTrackerContext3 = [snapshotCopy domainTrackerContext];
         }
       }
 
-      v48 = [v11 processName];
-      if (v46)
+      processName = [snapshotCopy processName];
+      if (domainTrackerContext3)
       {
-        v49 = [(__CFString *)v46 length];
+        v49 = [(__CFString *)domainTrackerContext3 length];
         v50 = 0;
         v51 = @"Unknown";
-        if (!v49 || !v48)
+        if (!v49 || !processName)
         {
           goto LABEL_57;
         }
 
-        if ([(__CFString *)v48 length])
+        if ([(__CFString *)processName length])
         {
-          if (([(__CFString *)v48 isEqualToString:@"com.apple.WebKit.Networking"]& 1) != 0)
+          if (([(__CFString *)processName isEqualToString:@"com.apple.WebKit.Networking"]& 1) != 0)
           {
             v50 = 2;
             v51 = @"Verified";
@@ -12580,22 +12580,22 @@ LABEL_46:
 
           else
           {
-            if ([(__CFString *)v48 isEqualToString:@"MobileSafari"])
+            if ([(__CFString *)processName isEqualToString:@"MobileSafari"])
             {
               v78 = domainTrackingLogHandle;
               if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412803;
-                v97 = v48;
+                v97 = processName;
                 v98 = 2113;
-                v99 = v46;
+                v99 = domainTrackerContext3;
                 v100 = 2113;
                 v101 = v94;
                 _os_log_impl(&dword_23255B000, v78, OS_LOG_TYPE_ERROR, "Process is %@ with context %{private}@ for %{private}@, triggering an ABC case", buf, 0x20u);
               }
 
               v79 = +[NetDomainsHandler sharedInstance];
-              [v79 triggerAutoBugCaptureCaseForType:@"ProcessMobileSafariWithContext" subType:0 privateSubtypeContext:v46 detectedProcess:v48 events:0 thresholdValuesString:0];
+              [v79 triggerAutoBugCaptureCaseForType:@"ProcessMobileSafariWithContext" subType:0 privateSubtypeContext:domainTrackerContext3 detectedProcess:processName events:0 thresholdValuesString:0];
             }
 
             v50 = 1;
@@ -12604,12 +12604,12 @@ LABEL_46:
 
 LABEL_57:
           v83 = v51;
-          v85 = v48;
+          v85 = processName;
           v52 = gEffectiveUserId;
-          v53 = [v12 bundleName];
+          bundleName = [processCopy bundleName];
           HIDWORD(v80) = v91;
           LOWORD(v80) = v50;
-          v54 = [(FlowAnalyticsEngine *)self _appDomainUsageBy:v52 bundleName:v53 forDomain:v25 domainOwner:v16 domainType:v92 domainClassification:v28 context:v46 contextVerificationType:v80 initiatedType:?];
+          v54 = [(FlowAnalyticsEngine *)self _appDomainUsageBy:v52 bundleName:bundleName forDomain:domainName3 domainOwner:domainOwner2 domainType:v92 domainClassification:v28 context:domainTrackerContext3 contextVerificationType:v80 initiatedType:?];
 
           if (!v54)
           {
@@ -12634,22 +12634,22 @@ LABEL_77:
             goto LABEL_78;
           }
 
-          v82 = v12;
-          v55 = [MEMORY[0x277CBEAA8] date];
-          v56 = [v11 snapshotReasonString];
+          v82 = processCopy;
+          date = [MEMORY[0x277CBEAA8] date];
+          snapshotReasonString = [snapshotCopy snapshotReasonString];
           v57 = @"AppInitiated";
-          if (v86)
+          if (isNonAppInitiated)
           {
             v57 = @"NonAppInitiated";
           }
 
           v87 = v57;
-          v58 = [v54 timeStamp];
+          timeStamp = [v54 timeStamp];
 
-          if (v58)
+          if (timeStamp)
           {
-            v59 = [v54 timeStamp];
-            [v55 timeIntervalSinceDate:v59];
+            timeStamp2 = [v54 timeStamp];
+            [date timeIntervalSinceDate:timeStamp2];
             v61 = v60;
 
             v62 = v92;
@@ -12672,32 +12672,32 @@ LABEL_71:
                     v70 = &stru_2847966D8;
                   }
 
-                  v71 = v46;
-                  v72 = v55;
-                  v73 = v16;
+                  v71 = domainTrackerContext3;
+                  v72 = date;
+                  v73 = domainOwner2;
                   v74 = gEffectiveUserId;
                   log = v69;
-                  v75 = [v54 hits];
+                  hits = [v54 hits];
                   *buf = 138415619;
                   v97 = v70;
                   v98 = 2112;
-                  v99 = v93;
+                  v99 = snapshotType;
                   v100 = 2048;
                   v101 = v84;
                   v102 = 2112;
-                  v103 = v56;
+                  v103 = snapshotReasonString;
                   v104 = 1024;
                   *v105 = v74;
-                  v16 = v73;
-                  v55 = v72;
-                  v46 = v71;
+                  domainOwner2 = v73;
+                  date = v72;
+                  domainTrackerContext3 = v71;
                   v62 = v92;
                   *&v105[4] = 2113;
                   *&v105[6] = v94;
                   v106 = 2113;
-                  v107 = v25;
+                  v107 = domainName3;
                   v108 = 2113;
-                  v109 = v16;
+                  v109 = domainOwner2;
                   v110 = 2113;
                   v111 = v71;
                   v112 = 2112;
@@ -12705,7 +12705,7 @@ LABEL_71:
                   v114 = 2112;
                   v115 = v83;
                   v116 = 2112;
-                  v117 = v75;
+                  v117 = hits;
                   v118 = 2113;
                   v119 = v85;
                   v120 = 2112;
@@ -12713,7 +12713,7 @@ LABEL_71:
                   _os_log_impl(&dword_23255B000, log, OS_LOG_TYPE_DEFAULT, "Hit %@tracker domain for %@ id %llu %@, euid: %u, bundle: %{private}@, domain: %{private}@, owner: %{private}@, context: %{private}@, initiatedType: %@, contextVerificationType: %@, hits: %@, process: %{private}@, disposition: %@", buf, 0x8Au);
                 }
 
-                v12 = v82;
+                processCopy = v82;
                 goto LABEL_77;
               }
 
@@ -12735,12 +12735,12 @@ LABEL_71:
           }
 
           v65 = MEMORY[0x277CCABB0];
-          v66 = [v54 hits];
-          [v66 doubleValue];
+          hits2 = [v54 hits];
+          [hits2 doubleValue];
           v68 = [v65 numberWithDouble:v67 + 1.0];
           [v54 setHits:v68];
 
-          [v54 setTimeStamp:v55];
+          [v54 setTimeStamp:date];
           goto LABEL_71;
         }
       }
@@ -12750,10 +12750,10 @@ LABEL_71:
       goto LABEL_57;
     }
 
-    v29 = v16;
+    v29 = domainOwner2;
     if (NEHelperTrackerGetAppInfo())
     {
-      if (v7)
+      if (browserCopy)
       {
         NEHelperTrackerAppInfoSetIsBrowser();
       }
@@ -12765,12 +12765,12 @@ LABEL_71:
       if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        LODWORD(v97) = v7;
+        LODWORD(v97) = browserCopy;
         _os_log_impl(&dword_23255B000, v37, OS_LOG_TYPE_ERROR, "NEHelperTrackerGetAppInfo() failed to create appInfoRef, isWebBrowser: %d, will match DDG app list", buf, 8u);
       }
     }
 
-    v122[0] = v25;
+    v122[0] = domainName3;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v122 count:1];
     v95[1] = 0;
     v95[2] = 0;
@@ -12802,9 +12802,9 @@ LABEL_71:
       {
         v44 = @"app";
         *buf = 138413827;
-        v97 = v93;
+        v97 = snapshotType;
         v98 = 2048;
-        if (v7)
+        if (browserCopy)
         {
           v44 = @"web";
         }
@@ -12818,7 +12818,7 @@ LABEL_71:
         v104 = 1024;
         *v105 = 1;
         *&v105[4] = 2113;
-        *&v105[6] = v25;
+        *&v105[6] = domainName3;
         v106 = 2113;
         v107 = v94;
         _os_log_impl(&dword_23255B000, v43, OS_LOG_TYPE_DEFAULT, "%@ %llu fetched from DDG %@ list, owner: %{private}@, domainType: %d, domain: %{private}@, bundle: %{private}@", buf, 0x44u);
@@ -12841,9 +12841,9 @@ LABEL_71:
   else
   {
     v92 = v21;
-    v29 = v16;
+    v29 = domainOwner2;
     v95[0] = 0;
-    v30 = validateSockAddrToString(v14, 0, v95);
+    v30 = validateSockAddrToString(addressCopy, 0, v95);
     v31 = v95[0];
     v32 = v31;
     if (!v30)
@@ -12853,21 +12853,21 @@ LABEL_71:
       {
         *buf = 138413059;
         v35 = v94;
-        v97 = v93;
+        v97 = snapshotType;
         v98 = 2048;
-        v99 = v17;
+        v99 = sourceIdentifier;
         v100 = 2113;
         v101 = v94;
         v102 = 2113;
-        v103 = v14;
+        v103 = addressCopy;
         _os_log_impl(&dword_23255B000, v34, OS_LOG_TYPE_DEFAULT, "%@ %llu uses null dest IP address, bundle: %{private}@, remoteAddress: %{private}@", buf, 0x2Au);
-        v25 = 0;
+        domainName3 = 0;
         v36 = 0;
       }
 
       else
       {
-        v25 = 0;
+        domainName3 = 0;
         v36 = 0;
         v35 = v94;
       }
@@ -12875,7 +12875,7 @@ LABEL_71:
       goto LABEL_79;
     }
 
-    v84 = v17;
+    v84 = sourceIdentifier;
     if (v31)
     {
       v32 = v31;
@@ -12883,15 +12883,15 @@ LABEL_71:
       if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138413315;
-        v97 = v93;
+        v97 = snapshotType;
         v98 = 2048;
-        v99 = v17;
+        v99 = sourceIdentifier;
         v100 = 2113;
         v101 = v32;
         v102 = 2113;
         v103 = v94;
         v104 = 2113;
-        *v105 = v14;
+        *v105 = addressCopy;
         _os_log_impl(&dword_23255B000, v33, OS_LOG_TYPE_DEFAULT, "%@ %llu uses dest IP address (treating as domainName): %{private}@, bundle: %{private}@, remoteAddress: %{private}@", buf, 0x34u);
       }
 
@@ -12904,57 +12904,57 @@ LABEL_71:
       if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413059;
-        v97 = v93;
+        v97 = snapshotType;
         v98 = 2048;
-        v99 = v17;
+        v99 = sourceIdentifier;
         v100 = 2113;
         v101 = v94;
         v102 = 2113;
-        v103 = v14;
+        v103 = addressCopy;
         _os_log_impl(&dword_23255B000, v42, OS_LOG_TYPE_ERROR, "%@ %llu failed to extract dest IP address, bundle: %{private}@, remoteAddress: %{private}@", buf, 0x2Au);
       }
 
       v28 = 0;
     }
 
-    v25 = v32;
+    domainName3 = v32;
   }
 
-  v16 = v29;
-  if (v25)
+  domainOwner2 = v29;
+  if (domainName3)
   {
     goto LABEL_46;
   }
 
 LABEL_78:
-  v29 = v16;
+  v29 = domainOwner2;
   v32 = +[NetDomainsHandler sharedInstance];
   v35 = v94;
-  [(__CFString *)v32 checkForAutoBugCaptureWorthyCase:v94 domainName:v25 initiatedType:v91];
+  [(__CFString *)v32 checkForAutoBugCaptureWorthyCase:v94 domainName:domainName3 initiatedType:v91];
   v36 = 1;
 LABEL_79:
 
-  v16 = v29;
+  domainOwner2 = v29;
 LABEL_81:
 
   v76 = *MEMORY[0x277D85DE8];
   return v36;
 }
 
-- (void)_summaryAppDomainUsageBy:(unsigned int)a3 reply:(id)a4
+- (void)_summaryAppDomainUsageBy:(unsigned int)by reply:(id)reply
 {
-  v6 = a4;
-  if (v6)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v7 = [(AnalyticsEngineCore *)self queue];
+    queue = [(AnalyticsEngineCore *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__FlowAnalyticsEngine__summaryAppDomainUsageBy_reply___block_invoke;
     block[3] = &unk_27898C7D0;
-    v10 = a3;
+    byCopy = by;
     block[4] = self;
-    v9 = v6;
-    dispatch_async(v7, block);
+    v9 = replyCopy;
+    dispatch_async(queue, block);
   }
 }
 
@@ -13087,34 +13087,34 @@ id __63__FlowAnalyticsEngine__submitAppDomainUsageRecordInfoAnalytics__block_inv
   return v2;
 }
 
-- (void)_performAppTrackingPeriodicTasksWithReply:(id)a3
+- (void)_performAppTrackingPeriodicTasksWithReply:(id)reply
 {
-  v10 = a3;
-  v4 = [(FlowAnalyticsEngine *)self _clearStaleNetDomainsRecords];
-  v5 = [(FlowAnalyticsEngine *)self _submitAppDomainUsageRecordInfoAnalytics];
-  if (v10)
+  replyCopy = reply;
+  _clearStaleNetDomainsRecords = [(FlowAnalyticsEngine *)self _clearStaleNetDomainsRecords];
+  _submitAppDomainUsageRecordInfoAnalytics = [(FlowAnalyticsEngine *)self _submitAppDomainUsageRecordInfoAnalytics];
+  if (replyCopy)
   {
     v6 = objc_alloc(MEMORY[0x277CBEB38]);
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:_clearStaleNetDomainsRecords];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:_submitAppDomainUsageRecordInfoAnalytics];
     v9 = [v6 initWithObjectsAndKeys:{v7, @"aduRecordsDeleted", v8, @"aduRecordAnalyticsSubmitted", 0}];
 
-    v10[2](v10, v9, 0);
+    replyCopy[2](replyCopy, v9, 0);
   }
 }
 
-- (void)performAppTrackingPeriodicTasksComplete:(id)a3 error:(id)a4
+- (void)performAppTrackingPeriodicTasksComplete:(id)complete error:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  completeCopy = complete;
+  errorCopy = error;
   v7 = domainTrackingLogHandle;
-  if (v6)
+  if (errorCopy)
   {
     if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v6;
+      v13 = errorCopy;
       v8 = "Periodic app tracking tasks failed with %@";
       v9 = v7;
       v10 = OS_LOG_TYPE_ERROR;
@@ -13126,7 +13126,7 @@ LABEL_6:
   else if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = completeCopy;
     v8 = "Periodic app tracking tasks finished with result %@";
     v9 = v7;
     v10 = OS_LOG_TYPE_DEFAULT;
@@ -13136,20 +13136,20 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)performAppTrackingPeriodicActivityWithReply:(id)a3
++ (void)performAppTrackingPeriodicActivityWithReply:(id)reply
 {
   if (sharedInstance_1)
   {
-    [sharedInstance_1 _performAppTrackingPeriodicTasksWithReply:a3];
+    [sharedInstance_1 _performAppTrackingPeriodicTasksWithReply:reply];
   }
 }
 
-- (void)performAppTrackingActionWithOptions:(id)a3 userId:(unsigned int)a4 reply:(id)a5
+- (void)performAppTrackingActionWithOptions:(id)options userId:(unsigned int)id reply:(id)reply
 {
   v111 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 objectForKeyedSubscript:@"clearHistory"];
+  optionsCopy = options;
+  replyCopy = reply;
+  v9 = [optionsCopy objectForKeyedSubscript:@"clearHistory"];
   if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v10 = domainTrackingLogHandle;
@@ -13164,7 +13164,7 @@ LABEL_6:
     }
 
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v8[2](v8, 0, v14);
+    replyCopy[2](replyCopy, 0, v14);
   }
 
   v15 = [v9 objectForKeyedSubscript:@"clearHistoryBundleIDs"];
@@ -13178,7 +13178,7 @@ LABEL_6:
     }
 
     v17 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v8[2](v8, 0, v17);
+    replyCopy[2](replyCopy, 0, v17);
   }
 
   v18 = [v9 objectForKeyedSubscript:@"clearHistoryStartDate"];
@@ -13198,7 +13198,7 @@ LABEL_6:
     }
 
     v23 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v8[2](v8, 0, v23);
+    replyCopy[2](replyCopy, 0, v23);
   }
 
   v24 = [v9 objectForKeyedSubscript:@"clearHistoryEndDate"];
@@ -13219,7 +13219,7 @@ LABEL_6:
     }
 
     v30 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v8[2](v8, 0, v30);
+    replyCopy[2](replyCopy, 0, v30);
 
     v25 = v85;
   }
@@ -13246,15 +13246,15 @@ LABEL_6:
     }
 
     v38 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v8[2](v8, 0, v38);
+    replyCopy[2](replyCopy, 0, v38);
   }
 
   v82 = v18;
   v39 = 0x277CBE000uLL;
   v40 = objc_alloc_init(MEMORY[0x277CBEB38]);
   objc_opt_class();
-  v83 = v8;
-  v80 = self;
+  v83 = replyCopy;
+  selfCopy = self;
   v81 = v9;
   if (objc_opt_isKindOfClass())
   {
@@ -13267,7 +13267,7 @@ LABEL_6:
     if (v42)
     {
       v43 = v42;
-      v78 = v7;
+      v78 = optionsCopy;
       v44 = *v98;
       do
       {
@@ -13307,7 +13307,7 @@ LABEL_6:
       }
 
       while (v43);
-      v7 = v78;
+      optionsCopy = v78;
       v31 = v85;
       v39 = 0x277CBE000;
     }
@@ -13367,7 +13367,7 @@ LABEL_6:
       }
 
       v41 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-      v8[2](v8, 0, v41);
+      replyCopy[2](replyCopy, 0, v41);
     }
   }
 
@@ -13384,15 +13384,15 @@ LABEL_6:
     (v83)[2](v83, 0, v62);
   }
 
-  v63 = [v7 objectForKeyedSubscript:@"showDetails"];
+  v63 = [optionsCopy objectForKeyedSubscript:@"showDetails"];
   if (v63 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v64 = [v63 BOOLValue];
+    bOOLValue = [v63 BOOLValue];
   }
 
   else
   {
-    v64 = 0;
+    bOOLValue = 0;
   }
 
   v65 = objc_alloc_init(*(v39 + 2872));
@@ -13404,7 +13404,7 @@ LABEL_6:
     v69 = formattedDateStringForTimeInterval(v68);
     [v31 timeIntervalSince1970];
     formattedDateStringForTimeInterval(v70);
-    v72 = v71 = v7;
+    v72 = v71 = optionsCopy;
     *buf = 138478595;
     v102 = v84;
     v103 = 2112;
@@ -13412,10 +13412,10 @@ LABEL_6:
     v105 = 2112;
     v106 = v72;
     v107 = 1024;
-    v108 = v64;
+    v108 = bOOLValue;
     _os_log_impl(&dword_23255B000, v67, OS_LOG_TYPE_DEFAULT, "Clear history action received options: %{private}@, start %@, end %@, details %d", buf, 0x26u);
 
-    v7 = v71;
+    optionsCopy = v71;
     v31 = v85;
   }
 
@@ -13423,13 +13423,13 @@ LABEL_6:
   v86[1] = 3221225472;
   v86[2] = __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply___block_invoke;
   v86[3] = &unk_27898C7F8;
-  v91 = a4;
+  idCopy = id;
   v73 = v31;
   v87 = v73;
   v74 = v82;
   v88 = v74;
-  v89 = v80;
-  v92 = v64;
+  v89 = selfCopy;
+  v92 = bOOLValue;
   v75 = v65;
   v90 = v75;
   [v40 enumerateKeysAndObjectsUsingBlock:v86];
@@ -13622,12 +13622,12 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
   AnalyticsSendEventLazy();
 }
 
-- (void)_handleEndpointTrackingNotification:(id)a3
+- (void)_handleEndpointTrackingNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"userEndpointTrackingUserID"];
-  v6 = [v4 objectForKeyedSubscript:@"userEndpointTrackingState"];
+  notificationCopy = notification;
+  v5 = [notificationCopy objectForKeyedSubscript:@"userEndpointTrackingUserID"];
+  v6 = [notificationCopy objectForKeyedSubscript:@"userEndpointTrackingState"];
 
   if (v5)
   {
@@ -13639,22 +13639,22 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7 = [v5 unsignedIntValue];
-          v8 = [v6 BOOLValue];
-          self->endpointTrackingEnabled = v8;
-          if (v8)
+          unsignedIntValue = [v5 unsignedIntValue];
+          bOOLValue = [v6 BOOLValue];
+          self->endpointTrackingEnabled = bOOLValue;
+          if (bOOLValue)
           {
             v9 = domainTrackingLogHandle;
             if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
             {
               v14 = 67109120;
-              v15 = v7;
+              v15 = unsignedIntValue;
               _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEFAULT, "Endpoint tracking enabled for user %u", &v14, 8u);
             }
 
             if (self->appTrackingEnabled)
             {
-              [(FlowAnalyticsEngine *)self createAppEndpointsStorageForUserId:v7];
+              [(FlowAnalyticsEngine *)self createAppEndpointsStorageForUserId:unsignedIntValue];
             }
           }
 
@@ -13668,11 +13668,11 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
               if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
               {
                 v14 = 67109120;
-                v15 = v7;
+                v15 = unsignedIntValue;
                 _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEFAULT, "Endpoint tracking disabled for user %u, clearing out the account's EndpointTracking data", &v14, 8u);
               }
 
-              [(FlowAnalyticsEngine *)self clearAppEndpointsForUserWithID:v7];
+              [(FlowAnalyticsEngine *)self clearAppEndpointsForUserWithID:unsignedIntValue];
             }
           }
         }
@@ -13683,12 +13683,12 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAppTrackingNotification:(id)a3
+- (void)_handleAppTrackingNotification:(id)notification
 {
   v66 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"userAppTrackingUserID"];
-  v5 = [v3 objectForKeyedSubscript:@"userAppTrackingState"];
+  notificationCopy = notification;
+  v4 = [notificationCopy objectForKeyedSubscript:@"userAppTrackingUserID"];
+  v5 = [notificationCopy objectForKeyedSubscript:@"userAppTrackingState"];
   if (v4)
   {
     objc_opt_class();
@@ -13700,13 +13700,13 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
         if (objc_opt_isKindOfClass())
         {
           v50 = v4;
-          v51 = v3;
-          v6 = [v4 unsignedIntValue];
+          v51 = notificationCopy;
+          unsignedIntValue = [v4 unsignedIntValue];
           v49 = v5;
           self->appTrackingEnabled = [v5 BOOLValue];
           context = objc_autoreleasePoolPush();
-          v48 = v6;
-          v46 = [MEMORY[0x277CCAC30] predicateWithFormat:@"effectiveUserId = %d AND bundleName = %@", v6, &stru_2847966D8];
+          v48 = unsignedIntValue;
+          v46 = [MEMORY[0x277CCAC30] predicateWithFormat:@"effectiveUserId = %d AND bundleName = %@", unsignedIntValue, &stru_2847966D8];
           v7 = [ObjectAnalytics fetchEntitiesFreeForm:"fetchEntitiesFreeForm:sortDesc:limit:batchSize:" sortDesc:? limit:? batchSize:?];
           v8 = domainTrackingLogHandle;
           if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -13741,33 +13741,33 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
                 v16 = *(*(&v55 + 1) + 8 * i);
                 v17 = objc_autoreleasePoolPush();
                 v18 = v16;
-                v19 = [v18 bundleName];
-                v20 = [v19 length];
+                bundleName = [v18 bundleName];
+                v20 = [bundleName length];
 
                 if (!v20)
                 {
-                  v21 = [v18 hasApp];
-                  v22 = [v21 bundleName];
+                  hasApp = [v18 hasApp];
+                  bundleName2 = [hasApp bundleName];
 
-                  if (v22)
+                  if (bundleName2)
                   {
-                    v23 = [v18 hasApp];
-                    v24 = [v23 bundleName];
+                    hasApp2 = [v18 hasApp];
+                    bundleName3 = [hasApp2 bundleName];
 
-                    [v18 setBundleName:v24];
+                    [v18 setBundleName:bundleName3];
                     ++v13;
                     v25 = domainTrackingLogHandle;
                     if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
                     {
                       v26 = v25;
-                      v27 = [v18 domain];
-                      v28 = [v18 bundleName];
+                      domain = [v18 domain];
+                      bundleName4 = [v18 bundleName];
                       *buf = 134218499;
                       v60 = v13;
                       v61 = 2113;
-                      v62 = v27;
+                      v62 = domain;
                       v63 = 2113;
-                      v64 = v28;
+                      v64 = bundleName4;
                       _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_DEFAULT, "%lu: Updated old ADU's (domain: %{private}@) bundleName to %{private}@", buf, 0x20u);
 
                       v10 = v53;
@@ -13777,20 +13777,20 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
                     {
                       v54 = v13;
                       [(AnalyticsWorkspace *)self->super.workspace save];
-                      v29 = [(AnalyticsWorkspace *)self->super.workspace mainObjectContext];
-                      [v29 refreshAllObjects];
+                      mainObjectContext = [(AnalyticsWorkspace *)self->super.workspace mainObjectContext];
+                      [mainObjectContext refreshAllObjects];
                       v30 = domainTrackingLogHandle;
                       if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
                       {
                         v31 = v30;
-                        v32 = [v18 domain];
-                        v33 = [v18 bundleName];
+                        domain2 = [v18 domain];
+                        bundleName5 = [v18 bundleName];
                         *buf = 134218499;
                         v60 = v54;
                         v61 = 2113;
-                        v62 = v32;
+                        v62 = domain2;
                         v63 = 2113;
-                        v64 = v33;
+                        v64 = bundleName5;
                         _os_log_impl(&dword_23255B000, v31, OS_LOG_TYPE_DEFAULT, "%lu: Intermediate save and refresh up to domain: %{private}@, bundleName: %{private}@", buf, 0x20u);
 
                         v10 = v53;
@@ -13810,12 +13810,12 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
             while (v12);
           }
 
-          v3 = v51;
+          notificationCopy = v51;
           if ([v10 count])
           {
             [(AnalyticsWorkspace *)self->super.workspace save];
-            v34 = [(AnalyticsWorkspace *)self->super.workspace mainObjectContext];
-            [v34 refreshAllObjects];
+            mainObjectContext2 = [(AnalyticsWorkspace *)self->super.workspace mainObjectContext];
+            [mainObjectContext2 refreshAllObjects];
             v35 = domainTrackingLogHandle;
             if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
             {
@@ -13896,16 +13896,16 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_repurposeAppEndpointRecords:(id)a3
+- (id)_repurposeAppEndpointRecords:(id)records
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recordsCopy = records;
   v44 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v4 = v3;
+  v4 = recordsCopy;
   v5 = [v4 countByEnumeratingWithState:&v54 objects:v64 count:16];
   if (v5)
   {
@@ -13985,8 +13985,8 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
                         }
                       }
 
-                      v31 = [v29 name];
-                      [v30 addObject:v31];
+                      name = [v29 name];
+                      [v30 addObject:name];
                     }
 
                     v26 = [v24 countByEnumeratingWithState:&v49 objects:v62 count:16];
@@ -14055,10 +14055,10 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
   return v44;
 }
 
-- (void)updateEffectiveUserId:(id)a3
+- (void)updateEffectiveUserId:(id)id
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKeyedSubscript:@"UMSwitchToUserID"];
+  v3 = [id objectForKeyedSubscript:@"UMSwitchToUserID"];
   if (v3)
   {
     objc_opt_class();
@@ -14078,7 +14078,7 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearAppEndpoints:(id)a3
+- (void)clearAppEndpoints:(id)endpoints
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = [(ObjectAnalytics *)self->epspace removeEntitiesMatching:0];
@@ -14120,7 +14120,7 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearAppDomainUsage:(id)a3
+- (void)clearAppDomainUsage:(id)usage
 {
   v8 = *MEMORY[0x277D85DE8];
   v3 = [(ObjectAnalytics *)self->domspace removeEntitiesMatching:0];
@@ -14135,17 +14135,17 @@ void __72__FlowAnalyticsEngine_performAppTrackingActionWithOptions_userId_reply_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_appExperienceForApp:(id)a3 forTime:(id)a4
+- (id)_appExperienceForApp:(id)app forTime:(id)time
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  timeCopy = time;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [v6 hasAppExperience];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  hasAppExperience = [appCopy hasAppExperience];
+  v9 = [hasAppExperience countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -14156,12 +14156,12 @@ LABEL_3:
     {
       if (*v22 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(hasAppExperience);
       }
 
       v13 = *(*(&v21 + 1) + 8 * v12);
-      v14 = [v13 firstTimeStamp];
-      [v14 timeIntervalSinceDate:v7];
+      firstTimeStamp = [v13 firstTimeStamp];
+      [firstTimeStamp timeIntervalSinceDate:timeCopy];
       v16 = v15;
 
       v17 = v16;
@@ -14177,7 +14177,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v10 = [hasAppExperience countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -14187,9 +14187,9 @@ LABEL_3:
       }
     }
 
-    v18 = v13;
+    createEntity = v13;
 
-    if (v18)
+    if (createEntity)
     {
       goto LABEL_14;
     }
@@ -14200,42 +14200,42 @@ LABEL_3:
 LABEL_11:
   }
 
-  v18 = [(ObjectAnalytics *)self->expspace createEntity];
-  [v18 setFirstTimeStamp:v7];
-  [v6 addHasAppExperienceObject:v18];
+  createEntity = [(ObjectAnalytics *)self->expspace createEntity];
+  [createEntity setFirstTimeStamp:timeCopy];
+  [appCopy addHasAppExperienceObject:createEntity];
 LABEL_14:
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return createEntity;
 }
 
-- (void)_performAppExperiencePeriodicTasksWithReply:(id)a3
+- (void)_performAppExperiencePeriodicTasksWithReply:(id)reply
 {
-  v8 = a3;
-  v4 = [(FlowAnalyticsEngine *)self _pruneAppExperienceRecords];
-  if (v8)
+  replyCopy = reply;
+  _pruneAppExperienceRecords = [(FlowAnalyticsEngine *)self _pruneAppExperienceRecords];
+  if (replyCopy)
   {
     v5 = objc_alloc(MEMORY[0x277CBEB38]);
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:_pruneAppExperienceRecords];
     v7 = [v5 initWithObjectsAndKeys:{v6, @"recordsDeleted", 0}];
 
-    v8[2](v8, v7, 0);
+    replyCopy[2](replyCopy, v7, 0);
   }
 }
 
-- (void)performAppExperiencePeriodicTasksComplete:(id)a3 error:(id)a4
+- (void)performAppExperiencePeriodicTasksComplete:(id)complete error:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  completeCopy = complete;
+  errorCopy = error;
   v7 = appExperienceLogHandle;
-  if (v6)
+  if (errorCopy)
   {
     if (os_log_type_enabled(appExperienceLogHandle, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v6;
+      v13 = errorCopy;
       v8 = "Periodic app experience tasks failed with %@";
       v9 = v7;
       v10 = OS_LOG_TYPE_ERROR;
@@ -14247,7 +14247,7 @@ LABEL_6:
   else if (os_log_type_enabled(appExperienceLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = completeCopy;
     v8 = "Periodic app experience tasks finished with result %@";
     v9 = v7;
     v10 = OS_LOG_TYPE_DEFAULT;
@@ -14257,11 +14257,11 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)performAppExperiencePeriodicActivityWithReply:(id)a3
++ (void)performAppExperiencePeriodicActivityWithReply:(id)reply
 {
   if (sharedInstance_1)
   {
-    [sharedInstance_1 _performAppExperiencePeriodicTasksWithReply:a3];
+    [sharedInstance_1 _performAppExperiencePeriodicTasksWithReply:reply];
   }
 }
 
@@ -14283,21 +14283,21 @@ LABEL_6:
   return v5;
 }
 
-- (void)_algosScoreFor:(id)a3 score:(double)a4
+- (void)_algosScoreFor:(id)for score:(double)score
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = COERCE_DOUBLE(a3);
+  v6 = COERCE_DOUBLE(for);
   v7 = appExperienceLogHandle;
   if (os_log_type_enabled(appExperienceLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v22 = 138412546;
     v23 = v6;
     v24 = 2048;
-    v25 = a4;
+    scoreCopy = score;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "Bundle: %@ score: %f", &v22, 0x16u);
   }
 
-  v8 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   if (v6 != 0.0)
   {
     v9 = [(FlowAnalyticsEngine *)self _processFetchForName:0 bundle:*&v6 shouldFillMiss:0];
@@ -14305,14 +14305,14 @@ LABEL_6:
     if (v9 && [v9 isApp])
     {
       v11 = v10;
-      v12 = [(FlowAnalyticsEngine *)self _appExperienceForApp:v11 forTime:v8];
+      v12 = [(FlowAnalyticsEngine *)self _appExperienceForApp:v11 forTime:date];
       v13 = v12;
       if (v12)
       {
         [v12 setAlgosSamples:{objc_msgSend(v12, "algosSamples") + 1}];
         [v13 algosScore];
         v15 = v14;
-        [v13 setAlgosScore:{v14 + (a4 - v14) / objc_msgSend(v13, "algosSamples")}];
+        [v13 setAlgosScore:{v14 + (score - v14) / objc_msgSend(v13, "algosSamples")}];
         v16 = appExperienceLogHandle;
         if (os_log_type_enabled(appExperienceLogHandle, OS_LOG_TYPE_DEFAULT))
         {
@@ -14321,15 +14321,15 @@ LABEL_6:
           v22 = 138413058;
           v23 = v6;
           v24 = 2048;
-          v25 = v15;
+          scoreCopy = v15;
           v26 = 2048;
-          v27 = a4;
+          scoreCopy2 = score;
           v28 = 2048;
           v29 = v18;
           _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEFAULT, "Bundle %@ agg-value: %f, new value: %f, new agg-value: %f", &v22, 0x2Au);
         }
 
-        [v13 setTimeStamp:v8];
+        [v13 setTimeStamp:date];
       }
 
       else
@@ -14352,7 +14352,7 @@ LABEL_6:
         v22 = 138412546;
         v23 = *&v10;
         v24 = 2112;
-        v25 = v6;
+        scoreCopy = v6;
         _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_ERROR, "Either no entry (%@) or non-App entry for bundle %@", &v22, 0x16u);
       }
     }
@@ -14361,13 +14361,13 @@ LABEL_6:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isLiveFlowPerfinScope:(id)a3 forTime:(id)a4 andTag:(id)a5
+- (BOOL)_isLiveFlowPerfinScope:(id)scope forTime:(id)time andTag:(id)tag
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 timeStamp];
-  [v10 timeIntervalSinceDate:v9];
+  scopeCopy = scope;
+  tagCopy = tag;
+  timeCopy = time;
+  timeStamp = [scopeCopy timeStamp];
+  [timeStamp timeIntervalSinceDate:timeCopy];
   v12 = v11;
 
   v13 = v12;
@@ -14378,8 +14378,8 @@ LABEL_6:
 
   if (v13 >> 7 <= 0x2A2)
   {
-    v15 = [v7 tag];
-    v14 = [v15 isEqualToString:v8];
+    v15 = [scopeCopy tag];
+    v14 = [v15 isEqualToString:tagCopy];
   }
 
   else
@@ -14395,8 +14395,8 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:1.84467441e19];
   v4 = MEMORY[0x277CCAC30];
-  v5 = [MEMORY[0x277CBEAA8] distantPast];
-  v6 = [v4 predicateWithFormat:@"%K >= %@ AND %K < %@", @"timeStamp", v5, @"timeStamp", v3];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v6 = [v4 predicateWithFormat:@"%K >= %@ AND %K < %@", @"timeStamp", distantPast, @"timeStamp", v3];
 
   v7 = [(ObjectAnalytics *)self->lfpspace fetchEntitiesFreeForm:v6 sortDesc:0];
   v8 = analyticsLogHandle;
@@ -14414,11 +14414,11 @@ LABEL_6:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_flowFetchForName:(id)a3
+- (id)_flowFetchForName:(id)name
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v14 = 0;
     goto LABEL_19;
@@ -14453,20 +14453,20 @@ LABEL_6:
   v42 = __Block_byref_object_copy__5;
   v43 = __Block_byref_object_dispose__5;
   v44 = 0;
-  v11 = [(NSMutableDictionary *)self->flowCache objectForKey:v4];
+  v11 = [(NSMutableDictionary *)self->flowCache objectForKey:nameCopy];
   v12 = *(*(&buf + 1) + 40);
   *(*(&buf + 1) + 40) = v11;
 
   v13 = *(*(&buf + 1) + 40);
   if (!v13)
   {
-    v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"remoteID", v4];
-    v16 = [(ObjectAnalytics *)self->fspace fetchEntitiesFreeForm:v15 sortDesc:0];
+    nameCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"remoteID", nameCopy];
+    v16 = [(ObjectAnalytics *)self->fspace fetchEntitiesFreeForm:nameCopy sortDesc:0];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __41__FlowAnalyticsEngine__flowFetchForName___block_invoke_843;
     v34[3] = &unk_27898C848;
-    v17 = v4;
+    v17 = nameCopy;
     v35 = v17;
     p_buf = &buf;
     [v16 enumerateObjectsUsingBlock:v34];
@@ -14481,8 +14481,8 @@ LABEL_17:
     }
 
     fspace = self->fspace;
-    v20 = [MEMORY[0x277D6B590] entityName];
-    v21 = [(ObjectAnalytics *)fspace createEntityForEntityName:v20];
+    entityName = [MEMORY[0x277D6B590] entityName];
+    v21 = [(ObjectAnalytics *)fspace createEntityForEntityName:entityName];
     v22 = *(*(&buf + 1) + 40);
     *(*(&buf + 1) + 40) = v21;
 
@@ -14490,11 +14490,11 @@ LABEL_17:
     if (v23)
     {
       [v23 setRemoteID:v17];
-      v24 = [MEMORY[0x277CBEAA8] date];
-      [*(*(&buf + 1) + 40) setFirstTimeStamp:v24];
+      date = [MEMORY[0x277CBEAA8] date];
+      [*(*(&buf + 1) + 40) setFirstTimeStamp:date];
 
-      v25 = [MEMORY[0x277CBEAA8] distantPast];
-      [*(*(&buf + 1) + 40) setTimeStamp:v25];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      [*(*(&buf + 1) + 40) setTimeStamp:distantPast];
 
       v26 = [MEMORY[0x277CCABB0] numberWithShort:0];
       [*(*(&buf + 1) + 40) setKind:v26];
@@ -14565,16 +14565,16 @@ void __41__FlowAnalyticsEngine__flowFetchForName___block_invoke_843(uint64_t a1,
   }
 }
 
-- (id)_parseEvent:(id)a3 withGeneration:(id *)a4
+- (id)_parseEvent:(id)event withGeneration:(id *)generation
 {
   v86 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  eventCopy = event;
   fspace = self->fspace;
-  v8 = [MEMORY[0x277D6B598] entityName];
-  v9 = [(ObjectAnalytics *)fspace createTemporaryEntityForEntityName:v8];
+  entityName = [MEMORY[0x277D6B598] entityName];
+  v9 = [(ObjectAnalytics *)fspace createTemporaryEntityForEntityName:entityName];
 
-  v72 = v6;
-  [v6 keyEnumerator];
+  v72 = eventCopy;
+  [eventCopy keyEnumerator];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
@@ -14583,7 +14583,7 @@ void __41__FlowAnalyticsEngine__flowFetchForName___block_invoke_843(uint64_t a1,
   if (v10)
   {
     v11 = v10;
-    v67 = a4;
+    generationCopy = generation;
     v68 = v9;
     v12 = 0;
     v13 = 0;
@@ -14604,7 +14604,7 @@ LABEL_3:
       v12 = *(*(&v73 + 1) + 8 * v15);
 
       v19 = [v72 objectForKeyedSubscript:v12];
-      v20 = [v19 eventData];
+      eventData = [v19 eventData];
       v21 = analyticsLogHandle;
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
       {
@@ -14613,7 +14613,7 @@ LABEL_3:
         _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEBUG, "netanalyticsdebug: received IKE notification for %@", buf, 0xCu);
       }
 
-      v14 = [v19 eventQualifierStringForKey:{@"1", v67}];
+      v14 = [v19 eventQualifierStringForKey:{@"1", generationCopy}];
 
       v13 = [v19 eventQualifierStringForKey:@"2"];
 
@@ -14633,8 +14633,8 @@ LABEL_3:
         if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
         {
           loga = v30;
-          v31 = [v19 eventQualifiers];
-          v32 = [v31 objectForKeyedSubscript:@"1"];
+          eventQualifiers = [v19 eventQualifiers];
+          v32 = [eventQualifiers objectForKeyedSubscript:@"1"];
           if (v32)
           {
             v33 = " not";
@@ -14645,8 +14645,8 @@ LABEL_3:
             v33 = "";
           }
 
-          v34 = [v19 eventQualifiers];
-          v35 = [v34 objectForKeyedSubscript:@"2"];
+          eventQualifiers2 = [v19 eventQualifiers];
+          v35 = [eventQualifiers2 objectForKeyedSubscript:@"2"];
           *buf = 138412802;
           v36 = " not";
           if (!v35)
@@ -14681,14 +14681,14 @@ LABEL_27:
 
       if (v26)
       {
-        v47 = v20;
-        v48 = *(v20 + 4) & 0xF;
+        v47 = eventData;
+        v48 = *(eventData + 4) & 0xF;
         v9 = v68;
         if (v48 == 15)
         {
           [v68 setTmpID:v14];
           v49 = v13;
-          *v67 = v13;
+          *generationCopy = v13;
           v50 = [MEMORY[0x277CCABB0] numberWithDouble:v47[3]];
           [v68 setTxPackets:v50];
 
@@ -14739,14 +14739,14 @@ LABEL_33:
 
       if (v28)
       {
-        v56 = v20;
-        v48 = *(v20 + 4) & 0xF;
+        v56 = eventData;
+        v48 = *(eventData + 4) & 0xF;
         v9 = v68;
         if (v48 == 15)
         {
           [v68 setTmpID:v14];
           v57 = v13;
-          *v67 = v13;
+          *generationCopy = v13;
           v58 = [MEMORY[0x277CCABB0] numberWithDouble:1.0];
           [v68 setConnAttempts:v58];
 
@@ -14794,19 +14794,19 @@ LABEL_33:
       }
     }
 
-    v37 = v20;
-    v38 = *(v20 + 4) & 3;
+    v37 = eventData;
+    v38 = *(eventData + 4) & 3;
     v9 = v68;
     if (v38 == 3)
     {
       [v68 setTmpID:v14];
       v39 = v13;
-      *v67 = v13;
+      *generationCopy = v13;
       v40 = [MEMORY[0x277CCABB0] numberWithDouble:1.0];
       [v68 setConnSuccesses:v40];
 
-      v41 = [v68 connSuccesses];
-      [v68 setConnAttempts:v41];
+      connSuccesses = [v68 connSuccesses];
+      [v68 setConnAttempts:connSuccesses];
 
       v42 = [MEMORY[0x277CCABB0] numberWithDouble:(*(v37 + 32) + (*(v37 + 24) * 1000000.0))];
       [v68 setUsecsEstabTime:v42];
@@ -14821,7 +14821,7 @@ LABEL_33:
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v45 = v44;
-      v46 = [v68 usecsEstabTime];
+      usecsEstabTime = [v68 usecsEstabTime];
       *buf = 138413058;
       v78 = v12;
       v79 = 2112;
@@ -14829,7 +14829,7 @@ LABEL_33:
       v81 = 2112;
       v82 = v13;
       v83 = 2112;
-      v84 = v46;
+      v84 = usecsEstabTime;
       _os_log_impl(&dword_23255B000, v45, OS_LOG_TYPE_DEBUG, "netanalyticsdebug: parsed %@, %@, %@, %@", buf, 0x2Au);
     }
 
@@ -14852,25 +14852,25 @@ LABEL_44:
   return v29;
 }
 
-- (void)_archiveRecord:(id)a3
+- (void)_archiveRecord:(id)record
 {
   v95 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  recordCopy = record;
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v7 = v6;
-    v8 = [v4 tmpID];
+    tmpID = [recordCopy tmpID];
     *buf = 134218242;
-    v92 = v4;
+    v92 = recordCopy;
     v93 = 2112;
-    v94 = v8;
+    v94 = tmpID;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "netanalyticsdebug: archiving flow record %p for %@", buf, 0x16u);
   }
 
-  v9 = [v4 tmpID];
-  v10 = [(FlowAnalyticsEngine *)self _flowFetchForName:v9];
+  tmpID2 = [recordCopy tmpID];
+  v10 = [(FlowAnalyticsEngine *)self _flowFetchForName:tmpID2];
 
   if (v10)
   {
@@ -14879,8 +14879,8 @@ LABEL_44:
     v86 = 0u;
     v87 = 0u;
     v85 = v10;
-    v11 = [v10 hasLivePerformance];
-    v12 = [v11 countByEnumeratingWithState:&v86 objects:v90 count:16];
+    hasLivePerformance = [v10 hasLivePerformance];
+    v12 = [hasLivePerformance countByEnumeratingWithState:&v86 objects:v90 count:16];
     if (v12)
     {
       v13 = v12;
@@ -14891,12 +14891,12 @@ LABEL_6:
       {
         if (*v87 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(hasLivePerformance);
         }
 
         v16 = *(*(&v86 + 1) + 8 * v15);
-        v17 = [v4 tag];
-        v18 = [(FlowAnalyticsEngine *)self _isLiveFlowPerfinScope:v16 forTime:v5 andTag:v17];
+        v17 = [recordCopy tag];
+        v18 = [(FlowAnalyticsEngine *)self _isLiveFlowPerfinScope:v16 forTime:date andTag:v17];
 
         if (v18)
         {
@@ -14905,7 +14905,7 @@ LABEL_6:
 
         if (v13 == ++v15)
         {
-          v13 = [v11 countByEnumeratingWithState:&v86 objects:v90 count:16];
+          v13 = [hasLivePerformance countByEnumeratingWithState:&v86 objects:v90 count:16];
           if (v13)
           {
             goto LABEL_6;
@@ -14915,10 +14915,10 @@ LABEL_6:
         }
       }
 
-      v19 = v16;
+      createEntity = v16;
 
       v10 = v85;
-      if (v19)
+      if (createEntity)
       {
         goto LABEL_16;
       }
@@ -14931,103 +14931,103 @@ LABEL_12:
       v10 = v85;
     }
 
-    v19 = [(ObjectAnalytics *)self->lfpspace createEntity];
-    v20 = [DateRounder roundToDayResolutionOnly:v5];
-    [v19 setTimeStamp:v20];
+    createEntity = [(ObjectAnalytics *)self->lfpspace createEntity];
+    v20 = [DateRounder roundToDayResolutionOnly:date];
+    [createEntity setTimeStamp:v20];
 
-    [v10 addHasLivePerformanceObject:v19];
-    v21 = [v10 hasLivePerformance];
-    v22 = [v21 count];
+    [v10 addHasLivePerformanceObject:createEntity];
+    hasLivePerformance2 = [v10 hasLivePerformance];
+    v22 = [hasLivePerformance2 count];
 
     if (v22 == 1)
     {
-      v23 = [v19 timeStamp];
-      [v10 setFirstTimeStamp:v23];
+      timeStamp = [createEntity timeStamp];
+      [v10 setFirstTimeStamp:timeStamp];
     }
 
 LABEL_16:
-    v24 = [v4 tag];
-    [v19 setTag:v24];
+    v24 = [recordCopy tag];
+    [createEntity setTag:v24];
 
-    v25 = [v19 connSuccesses];
-    [v25 doubleValue];
+    connSuccesses = [createEntity connSuccesses];
+    [connSuccesses doubleValue];
     v27 = v26;
 
     v28 = MEMORY[0x277CCABB0];
-    v29 = [v4 connSuccesses];
-    [v29 doubleValue];
+    connSuccesses2 = [recordCopy connSuccesses];
+    [connSuccesses2 doubleValue];
     v31 = [v28 numberWithDouble:v27 + v30];
-    [v19 setConnSuccesses:v31];
+    [createEntity setConnSuccesses:v31];
 
-    v32 = [v19 connAttempts];
-    [v32 doubleValue];
+    connAttempts = [createEntity connAttempts];
+    [connAttempts doubleValue];
     v34 = v33;
 
     v35 = MEMORY[0x277CCABB0];
-    v36 = [v4 connAttempts];
-    [v36 doubleValue];
+    connAttempts2 = [recordCopy connAttempts];
+    [connAttempts2 doubleValue];
     v38 = [v35 numberWithDouble:v34 + v37];
-    [v19 setConnAttempts:v38];
+    [createEntity setConnAttempts:v38];
 
-    v39 = [v19 usecsEstabTime];
-    [v39 doubleValue];
+    usecsEstabTime = [createEntity usecsEstabTime];
+    [usecsEstabTime doubleValue];
     v41 = v40;
 
     v42 = MEMORY[0x277CCABB0];
-    v43 = [v4 usecsEstabTime];
-    [v43 doubleValue];
+    usecsEstabTime2 = [recordCopy usecsEstabTime];
+    [usecsEstabTime2 doubleValue];
     v45 = [v42 numberWithDouble:v41 + v44];
-    [v19 setUsecsEstabTime:v45];
+    [createEntity setUsecsEstabTime:v45];
 
-    v46 = [v19 txPackets];
-    [v46 doubleValue];
+    txPackets = [createEntity txPackets];
+    [txPackets doubleValue];
     v48 = v47;
 
     v49 = MEMORY[0x277CCABB0];
-    v50 = [v4 txPackets];
-    [v50 doubleValue];
+    txPackets2 = [recordCopy txPackets];
+    [txPackets2 doubleValue];
     v52 = [v49 numberWithDouble:v48 + v51];
-    [v19 setTxPackets:v52];
+    [createEntity setTxPackets:v52];
 
-    v53 = [v19 txReTxPackets];
-    [v53 doubleValue];
+    txReTxPackets = [createEntity txReTxPackets];
+    [txReTxPackets doubleValue];
     v55 = v54;
 
     v56 = MEMORY[0x277CCABB0];
-    v57 = [v4 txReTxPackets];
-    [v57 doubleValue];
+    txReTxPackets2 = [recordCopy txReTxPackets];
+    [txReTxPackets2 doubleValue];
     v59 = [v56 numberWithDouble:v55 + v58];
-    [v19 setTxReTxPackets:v59];
+    [createEntity setTxReTxPackets:v59];
 
-    v60 = [v19 txFailPackets];
-    [v60 doubleValue];
+    txFailPackets = [createEntity txFailPackets];
+    [txFailPackets doubleValue];
     v62 = v61;
 
     v63 = MEMORY[0x277CCABB0];
-    v64 = [v4 txFailPackets];
-    [v64 doubleValue];
+    txFailPackets2 = [recordCopy txFailPackets];
+    [txFailPackets2 doubleValue];
     v66 = [v63 numberWithDouble:v62 + v65];
-    [v19 setTxFailPackets:v66];
+    [createEntity setTxFailPackets:v66];
 
-    v67 = [v19 overallTime];
-    [v67 doubleValue];
+    overallTime = [createEntity overallTime];
+    [overallTime doubleValue];
     v69 = v68;
 
     v70 = MEMORY[0x277CCABB0];
-    v71 = [v4 overallTime];
-    [v71 doubleValue];
+    overallTime2 = [recordCopy overallTime];
+    [overallTime2 doubleValue];
     v73 = [v70 numberWithDouble:v69 + v72];
-    [v19 setOverallTime:v73];
+    [createEntity setOverallTime:v73];
 
-    v74 = [v19 timesThresholded];
-    [v74 doubleValue];
+    timesThresholded = [createEntity timesThresholded];
+    [timesThresholded doubleValue];
     v76 = v75;
 
     v77 = MEMORY[0x277CCABB0];
-    v78 = [v4 timesThresholded];
-    [v78 doubleValue];
+    timesThresholded2 = [recordCopy timesThresholded];
+    [timesThresholded2 doubleValue];
     v80 = [v77 numberWithDouble:v76 + v79];
-    [v19 setTimesThresholded:v80];
+    [createEntity setTimesThresholded:v80];
 
     [(AnalyticsWorkspace *)self->super.workspace save];
   }
@@ -15038,9 +15038,9 @@ LABEL_16:
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v82 = v81;
-      v83 = [v4 tmpID];
+      tmpID3 = [recordCopy tmpID];
       *buf = 138412290;
-      v92 = v83;
+      v92 = tmpID3;
       _os_log_impl(&dword_23255B000, v82, OS_LOG_TYPE_ERROR, "Failing to track usage for flow %@", buf, 0xCu);
     }
   }
@@ -15050,14 +15050,14 @@ LABEL_16:
 
 - (void)_pruneFlowHistory
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   flowInstant = self->flowInstant;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__FlowAnalyticsEngine__pruneFlowHistory__block_invoke;
   v6[3] = &unk_27898B7F0;
-  v7 = v3;
-  v5 = v3;
+  v7 = date;
+  v5 = date;
   [(NSMutableDictionary *)flowInstant enumerateKeysAndObjectsUsingBlock:v6];
 }
 
@@ -15144,10 +15144,10 @@ BOOL __40__FlowAnalyticsEngine__pruneFlowHistory__block_invoke_854(uint64_t a1, 
   return v8;
 }
 
-- (void)_newFlowData:(id)a3
+- (void)_newFlowData:(id)data
 {
   v82 = *MEMORY[0x277D85DE8];
-  v62 = a3;
+  dataCopy = data;
   v4 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -15155,21 +15155,21 @@ BOOL __40__FlowAnalyticsEngine__pruneFlowHistory__block_invoke_854(uint64_t a1, 
     _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_DEBUG, "netanalyticsdebug: received IKE notification", buf, 2u);
   }
 
-  v63 = [v62 userInfo];
+  userInfo = [dataCopy userInfo];
   v75 = 0;
-  v5 = [(FlowAnalyticsEngine *)self _parseEvent:v63 withGeneration:&v75];
+  v5 = [(FlowAnalyticsEngine *)self _parseEvent:userInfo withGeneration:&v75];
   v60 = v75;
   if (v5)
   {
-    v58 = [MEMORY[0x277CBEAA8] date];
-    [v5 setTimeStamp:v58];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v5 setTimeStamp:date];
     v59 = [(NSMutableDictionary *)self->flowInstant objectForKeyedSubscript:v60];
     if (v59)
     {
       [(FlowAnalyticsEngine *)self _pruneFlowHistory];
       v61 = [v59 objectAtIndex:0];
-      v6 = [v61 kind];
-      v7 = [v6 shortValue] == 0;
+      kind = [v61 kind];
+      v7 = [kind shortValue] == 0;
 
       if (!v7)
       {
@@ -15177,9 +15177,9 @@ BOOL __40__FlowAnalyticsEngine__pruneFlowHistory__block_invoke_854(uint64_t a1, 
         if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
         {
           v9 = v8;
-          v10 = [v5 tmpID];
+          tmpID = [v5 tmpID];
           *buf = 138412290;
-          *&buf[4] = v10;
+          *&buf[4] = tmpID;
           _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_ERROR, "netanalyticsdebug: (1) no head-end for flow %@, discarding all its records", buf, 0xCu);
         }
 
@@ -15189,8 +15189,8 @@ BOOL __40__FlowAnalyticsEngine__pruneFlowHistory__block_invoke_854(uint64_t a1, 
 
     else
     {
-      v11 = [v5 kind];
-      v12 = [v11 shortValue] == 1;
+      kind2 = [v5 kind];
+      v12 = [kind2 shortValue] == 1;
 
       if (v12)
       {
@@ -15198,9 +15198,9 @@ BOOL __40__FlowAnalyticsEngine__pruneFlowHistory__block_invoke_854(uint64_t a1, 
         if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
         {
           v14 = v13;
-          v15 = [v5 tmpID];
+          tmpID2 = [v5 tmpID];
           *buf = 138412290;
-          *&buf[4] = v15;
+          *&buf[4] = tmpID2;
           _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_ERROR, "netanalyticsdebug: (2) no head-end for flow %@, discarding all its records", buf, 0xCu);
         }
 
@@ -15228,9 +15228,9 @@ BOOL __40__FlowAnalyticsEngine__pruneFlowHistory__block_invoke_854(uint64_t a1, 
         v19 = analyticsLogHandle;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          v20 = [v17 tmpID];
+          tmpID3 = [v17 tmpID];
           *v78 = 138412290;
-          v79 = v20;
+          v79 = tmpID3;
           _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_ERROR, "netanalyticsdebug: (3) avoiding multiple instantiations for flow %@, discarding all its new records", v78, 0xCu);
         }
 
@@ -15254,36 +15254,36 @@ LABEL_51:
       }
     }
 
-    v21 = [v5 kind];
-    v22 = [v21 shortValue];
+    kind3 = [v5 kind];
+    shortValue = [kind3 shortValue];
 
     v23 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v24 = v23;
-      v25 = [v5 tmpID];
+      tmpID4 = [v5 tmpID];
       *buf = 67109378;
-      *&buf[4] = v22;
+      *&buf[4] = shortValue;
       *&buf[8] = 2112;
-      *&buf[10] = v25;
+      *&buf[10] = tmpID4;
       _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEBUG, "netanalyticsdebug: receiving record kind %hd for %@", buf, 0x12u);
     }
 
-    if (v22 == 2)
+    if (shortValue == 2)
     {
       if (v61)
       {
-        v40 = [v5 overallTime];
-        [v61 setOverallTime:v40];
+        overallTime = [v5 overallTime];
+        [v61 setOverallTime:overallTime];
 
-        v41 = [v5 txPackets];
-        [v61 setTxPackets:v41];
+        txPackets = [v5 txPackets];
+        [v61 setTxPackets:txPackets];
 
-        v42 = [v5 txReTxPackets];
-        [v61 setTxReTxPackets:v42];
+        txReTxPackets = [v5 txReTxPackets];
+        [v61 setTxReTxPackets:txReTxPackets];
 
-        v43 = [v5 txFailPackets];
-        [v61 setTxFailPackets:v43];
+        txFailPackets = [v5 txFailPackets];
+        [v61 setTxFailPackets:txFailPackets];
       }
 
       else
@@ -15292,9 +15292,9 @@ LABEL_51:
         internal_symptom_create();
         v47 = [v61 tag];
         v48 = v47;
-        v49 = [v47 UTF8String];
+        uTF8String = [v47 UTF8String];
 
-        strlen(v49);
+        strlen(uTF8String);
         internal_symptom_set_additional_qualifier();
         internal_symptom_send();
       }
@@ -15306,10 +15306,10 @@ LABEL_51:
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v50 = [(FlowAnalyticsEngine *)self flowWatchers];
-      v51 = [v50 allValues];
+      flowWatchers = [(FlowAnalyticsEngine *)self flowWatchers];
+      allValues = [flowWatchers allValues];
 
-      v52 = [v51 countByEnumeratingWithState:&v64 objects:v76 count:16];
+      v52 = [allValues countByEnumeratingWithState:&v64 objects:v76 count:16];
       if (v52)
       {
         v53 = *v65;
@@ -15319,7 +15319,7 @@ LABEL_51:
           {
             if (*v65 != v53)
             {
-              objc_enumerationMutation(v51);
+              objc_enumerationMutation(allValues);
             }
 
             v55 = *(*(&v64 + 1) + 8 * i);
@@ -15333,18 +15333,18 @@ LABEL_51:
             (*(v55 + 16))(v55);
           }
 
-          v52 = [v51 countByEnumeratingWithState:&v64 objects:v76 count:16];
+          v52 = [allValues countByEnumeratingWithState:&v64 objects:v76 count:16];
         }
 
         while (v52);
       }
     }
 
-    else if (v22 == 1)
+    else if (shortValue == 1)
     {
       [v59 addObject:v5];
-      v29 = [v61 timesThresholded];
-      [v29 doubleValue];
+      timesThresholded = [v61 timesThresholded];
+      [timesThresholded doubleValue];
       v31 = v30;
 
       v32 = [MEMORY[0x277CCABB0] numberWithDouble:v31 + 1.0];
@@ -15354,10 +15354,10 @@ LABEL_51:
       v71 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v33 = [(FlowAnalyticsEngine *)self flowWatchers];
-      v34 = [v33 allValues];
+      flowWatchers2 = [(FlowAnalyticsEngine *)self flowWatchers];
+      allValues2 = [flowWatchers2 allValues];
 
-      v35 = [v34 countByEnumeratingWithState:&v68 objects:v77 count:16];
+      v35 = [allValues2 countByEnumeratingWithState:&v68 objects:v77 count:16];
       if (v35)
       {
         v36 = *v69;
@@ -15367,7 +15367,7 @@ LABEL_51:
           {
             if (*v69 != v36)
             {
-              objc_enumerationMutation(v34);
+              objc_enumerationMutation(allValues2);
             }
 
             v38 = *(*(&v68 + 1) + 8 * j);
@@ -15381,24 +15381,24 @@ LABEL_51:
             (*(v38 + 16))(v38);
           }
 
-          v35 = [v34 countByEnumeratingWithState:&v68 objects:v77 count:16];
+          v35 = [allValues2 countByEnumeratingWithState:&v68 objects:v77 count:16];
         }
 
         while (v35);
       }
     }
 
-    else if (v22)
+    else if (shortValue)
     {
       v44 = analyticsLogHandle;
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v45 = v44;
-        v46 = [v5 tmpID];
+        tmpID5 = [v5 tmpID];
         *buf = 67109378;
-        *&buf[4] = v22;
+        *&buf[4] = shortValue;
         *&buf[8] = 2112;
-        *&buf[10] = v46;
+        *&buf[10] = tmpID5;
         _os_log_impl(&dword_23255B000, v45, OS_LOG_TYPE_DEBUG, "netanalyticsdebug: unknown record kind %hd for %@", buf, 0x12u);
       }
     }
@@ -15409,9 +15409,9 @@ LABEL_51:
       internal_symptom_create();
       v26 = [v5 tag];
       v27 = v26;
-      v28 = [v26 UTF8String];
+      uTF8String2 = [v26 UTF8String];
 
-      strlen(v28);
+      strlen(uTF8String2);
       internal_symptom_set_additional_qualifier();
       internal_symptom_send();
     }
@@ -15439,9 +15439,9 @@ void __36__FlowAnalyticsEngine__newFlowData___block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (void)_updateTetheringUsage:(BOOL)a3
+- (void)_updateTetheringUsage:(BOOL)usage
 {
-  v4 = a3;
+  usageCopy = usage;
   __src[65] = *MEMORY[0x277D85DE8];
   memset(__src, 0, 512);
   if (_updateTetheringUsage__pred != -1)
@@ -15477,7 +15477,7 @@ void __36__FlowAnalyticsEngine__newFlowData___block_invoke(uint64_t a1, uint64_t
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v7 = "not";
-      if (v4)
+      if (usageCopy)
       {
         v8 = "";
       }
@@ -15499,11 +15499,11 @@ void __36__FlowAnalyticsEngine__newFlowData___block_invoke(uint64_t a1, uint64_t
       _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "tether: updating usage, is %s from refresh trigger, state is %s active", buf, 0x16u);
     }
 
-    v39 = v4;
-    v38 = self;
+    v39 = usageCopy;
+    selfCopy = self;
     v9 = 0;
     v10 = 0;
-    v11 = 712;
+    currentSubscriberTag = 712;
     while (1)
     {
       if ((_updateTetheringUsage__bitmap & (1 << v9)) != 0)
@@ -15531,8 +15531,8 @@ LABEL_16:
         {
           v15 = *(&v42 + 1);
           __src[v9] = *(&v42 + 1);
-          v3 = v15 - _updateTetheringUsage__carryIfindex[v9];
-          if (v3 >= 1)
+          currentSubscriberTag3 = v15 - _updateTetheringUsage__carryIfindex[v9];
+          if (currentSubscriberTag3 >= 1)
           {
             v16 = analyticsLogHandle;
             if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -15540,16 +15540,16 @@ LABEL_16:
               *buf = 67109376;
               *v64 = v9;
               *&v64[4] = 2048;
-              *&v64[6] = v3;
+              *&v64[6] = currentSubscriberTag3;
               _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_DEFAULT, "tether: cell interface %d contributes %lld bytes", buf, 0x12u);
             }
 
-            v10 += v3;
+            v10 += currentSubscriberTag3;
             goto LABEL_21;
           }
 
           v17 = analyticsLogHandle;
-          if (v3 < 0)
+          if (currentSubscriberTag3 < 0)
           {
             if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
             {
@@ -15598,45 +15598,45 @@ LABEL_21:
             v22 = [(FlowAnalyticsEngine *)self _liveUsageFetchForProcess:v21];
             if (v22)
             {
-              v23 = [(FlowAnalyticsEngine *)self cellRelay];
+              cellRelay = [(FlowAnalyticsEngine *)self cellRelay];
               BYTE2(v37) = 0;
-              BYTE1(v37) = [v23 expensive];
+              BYTE1(v37) = [cellRelay expensive];
               LOBYTE(v37) = 0;
               [FlowAnalyticsEngine _updateLiveUsage:"_updateLiveUsage:wifiIn:wifiOut:cellIn:cellOut:wiredIn:wiredOut:btIn:btOut:xIn:xOut:isJumboFlow:isExpensive:closing:" wifiIn:v22 wifiOut:0 cellIn:0 cellOut:v10 wiredIn:0 wiredOut:0 btIn:0 btOut:0 xIn:0 xOut:0 isJumboFlow:0 isExpensive:v37 closing:?];
 
               v24 = analyticsLogHandle;
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
               {
-                v25 = [v22 wwanIN];
-                [v25 doubleValue];
+                wwanIN = [v22 wwanIN];
+                [wwanIN doubleValue];
                 v27 = v26;
                 ctShim = self->ctShim;
                 if (ctShim)
                 {
-                  v11 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
-                  if (v11)
+                  currentSubscriberTag = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
+                  if (currentSubscriberTag)
                   {
-                    v29 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
+                    currentSubscriberTag2 = [(CoreTelephonyShim *)self->ctShim currentSubscriberTag];
                     v30 = 1;
                   }
 
                   else
                   {
                     v30 = 0;
-                    v29 = &unk_2847EF6C8;
+                    currentSubscriberTag2 = &unk_2847EF6C8;
                   }
                 }
 
                 else
                 {
                   v30 = 0;
-                  v29 = &unk_2847EF6C8;
+                  currentSubscriberTag2 = &unk_2847EF6C8;
                 }
 
                 *buf = 134218242;
                 *v64 = v27;
                 *&v64[8] = 2112;
-                *&v64[10] = v29;
+                *&v64[10] = currentSubscriberTag2;
                 _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEFAULT, "tether: data activity, updated new tally (fwd): %f, subscriber tag: %@", buf, 0x16u);
                 if (v30)
                 {
@@ -15661,33 +15661,33 @@ LABEL_21:
               v32 = analyticsLogHandle;
               if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
               {
-                v33 = v38->ctShim;
+                v33 = selfCopy->ctShim;
                 if (v33)
                 {
-                  v3 = [(CoreTelephonyShim *)v38->ctShim currentSubscriberTag];
-                  if (v3)
+                  currentSubscriberTag3 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
+                  if (currentSubscriberTag3)
                   {
-                    v34 = [(CoreTelephonyShim *)v38->ctShim currentSubscriberTag];
+                    currentSubscriberTag4 = [(CoreTelephonyShim *)selfCopy->ctShim currentSubscriberTag];
                     v35 = 1;
                   }
 
                   else
                   {
                     v35 = 0;
-                    v34 = &unk_2847EF6C8;
+                    currentSubscriberTag4 = &unk_2847EF6C8;
                   }
                 }
 
                 else
                 {
                   v35 = 0;
-                  v34 = &unk_2847EF6C8;
+                  currentSubscriberTag4 = &unk_2847EF6C8;
                 }
 
                 *buf = 138412546;
                 *v64 = @"misd";
                 *&v64[8] = 2112;
-                *&v64[10] = v34;
+                *&v64[10] = currentSubscriberTag4;
                 _os_log_impl(&dword_23255B000, v32, OS_LOG_TYPE_ERROR, "tether: failed to find LiveUsage for %@ with subscriber tag: %@", buf, 0x16u);
                 if (v35)
                 {
@@ -15784,67 +15784,67 @@ void __45__FlowAnalyticsEngine__updateTetheringUsage___block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_handlesProcEntity:(id)a3
+- (BOOL)_handlesProcEntity:(id)entity
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D6B548] entityName];
-  if ([v3 isEqualToString:v4])
+  entityCopy = entity;
+  entityName = [MEMORY[0x277D6B548] entityName];
+  if ([entityCopy isEqualToString:entityName])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D6B518] entityName];
-    if ([v3 isEqualToString:v6])
+    entityName2 = [MEMORY[0x277D6B518] entityName];
+    if ([entityCopy isEqualToString:entityName2])
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [MEMORY[0x277D6B558] entityName];
-      if ([v3 isEqualToString:v7])
+      entityName3 = [MEMORY[0x277D6B558] entityName];
+      if ([entityCopy isEqualToString:entityName3])
       {
         v5 = 1;
       }
 
       else
       {
-        v8 = [MEMORY[0x277D6B568] entityName];
-        if ([v3 isEqualToString:v8])
+        entityName4 = [MEMORY[0x277D6B568] entityName];
+        if ([entityCopy isEqualToString:entityName4])
         {
           v5 = 1;
         }
 
         else
         {
-          v9 = [MEMORY[0x277D6B578] entityName];
-          if ([v3 isEqualToString:v9])
+          entityName5 = [MEMORY[0x277D6B578] entityName];
+          if ([entityCopy isEqualToString:entityName5])
           {
             v5 = 1;
           }
 
           else
           {
-            v10 = [MEMORY[0x277D6B570] entityName];
-            if ([v3 isEqualToString:v10])
+            entityName6 = [MEMORY[0x277D6B570] entityName];
+            if ([entityCopy isEqualToString:entityName6])
             {
               v5 = 1;
             }
 
             else
             {
-              v11 = [MEMORY[0x277D6B588] entityName];
-              if ([v3 isEqualToString:v11])
+              entityName7 = [MEMORY[0x277D6B588] entityName];
+              if ([entityCopy isEqualToString:entityName7])
               {
                 v5 = 1;
               }
 
               else
               {
-                v12 = [MEMORY[0x277D6B560] entityName];
-                v5 = [v3 isEqualToString:v12];
+                entityName8 = [MEMORY[0x277D6B560] entityName];
+                v5 = [entityCopy isEqualToString:entityName8];
               }
             }
           }
@@ -15856,55 +15856,55 @@ void __45__FlowAnalyticsEngine__updateTetheringUsage___block_invoke()
   return v5;
 }
 
-- (BOOL)_handlesFlowEntity:(id)a3
+- (BOOL)_handlesFlowEntity:(id)entity
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D6B590] entityName];
-  if ([v3 isEqualToString:v4])
+  entityCopy = entity;
+  entityName = [MEMORY[0x277D6B590] entityName];
+  if ([entityCopy isEqualToString:entityName])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D6B598] entityName];
-    v5 = [v3 isEqualToString:v6];
+    entityName2 = [MEMORY[0x277D6B598] entityName];
+    v5 = [entityCopy isEqualToString:entityName2];
   }
 
   return v5;
 }
 
-- (BOOL)handlesEntity:(id)a3
+- (BOOL)handlesEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(FlowAnalyticsEngine *)self _handlesProcEntity:v4]|| [(FlowAnalyticsEngine *)self _handlesFlowEntity:v4];
+  entityCopy = entity;
+  v5 = [(FlowAnalyticsEngine *)self _handlesProcEntity:entityCopy]|| [(FlowAnalyticsEngine *)self _handlesFlowEntity:entityCopy];
 
   return v5;
 }
 
-- (BOOL)_requiresUserValidationPredicateForEntity:(id)a3
+- (BOOL)_requiresUserValidationPredicateForEntity:(id)entity
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D6B568] entityName];
-  if ([v3 isEqualToString:v4])
+  entityCopy = entity;
+  entityName = [MEMORY[0x277D6B568] entityName];
+  if ([entityCopy isEqualToString:entityName])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D6B570] entityName];
-    v5 = [v3 isEqualToString:v6];
+    entityName2 = [MEMORY[0x277D6B570] entityName];
+    v5 = [entityCopy isEqualToString:entityName2];
   }
 
   return v5;
 }
 
-- (void)_logBitmapOutcome:(id)a3
+- (void)_logBitmapOutcome:(id)outcome
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  outcomeCopy = outcome;
+  if (outcomeCopy)
   {
     v4 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -15917,7 +15917,7 @@ void __45__FlowAnalyticsEngine__updateTetheringUsage___block_invoke()
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v5 = v3;
+    v5 = outcomeCopy;
     v30 = [v5 countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (v30)
     {
@@ -16036,26 +16036,26 @@ void __45__FlowAnalyticsEngine__updateTetheringUsage___block_invoke()
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getNetworkBitmapsWithNames:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5 options:(id)a6 reply:(id)a7
+- (void)getNetworkBitmapsWithNames:(id)names startTime:(unint64_t)time endTime:(unint64_t)endTime options:(id)options reply:(id)reply
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (v14)
+  namesCopy = names;
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v15 = [(AnalyticsEngineCore *)self queue];
+    queue = [(AnalyticsEngineCore *)self queue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __82__FlowAnalyticsEngine_getNetworkBitmapsWithNames_startTime_endTime_options_reply___block_invoke;
     v17[3] = &unk_27898C8E8;
     v17[4] = self;
-    v18 = v12;
-    v21 = a4;
-    v22 = a5;
-    v19 = v13;
-    v20 = v14;
+    v18 = namesCopy;
+    timeCopy = time;
+    endTimeCopy = endTime;
+    v19 = optionsCopy;
+    v20 = replyCopy;
     v16 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v17);
-    dispatch_async(v15, v16);
+    dispatch_async(queue, v16);
   }
 }
 
@@ -16118,16 +16118,16 @@ void __82__FlowAnalyticsEngine_getNetworkBitmapsWithNames_startTime_endTime_opti
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)logOutcomeArray:(id)a3
+- (void)logOutcomeArray:(id)array
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v5 = +[SystemProperties sharedInstance];
-  v6 = [v5 internalBuild];
+  internalBuild = [v5 internalBuild];
 
-  if (v6)
+  if (internalBuild)
   {
-    v7 = [v4 count];
+    v7 = [arrayCopy count];
     outcomeArrayLogEntryCount = self->outcomeArrayLogEntryCount;
     v9 = v7 - outcomeArrayLogEntryCount;
     if (v7 < outcomeArrayLogEntryCount)
@@ -16148,12 +16148,12 @@ void __82__FlowAnalyticsEngine_getNetworkBitmapsWithNames_startTime_endTime_opti
       v13 = 1;
       v14 = 0x277CBE000uLL;
       v48 = v7;
-      v45 = v4;
+      v45 = arrayCopy;
       do
       {
         v15 = v11;
         v16 = objc_autoreleasePoolPush();
-        v11 = [v4 objectAtIndexedSubscript:v10 + v12];
+        v11 = [arrayCopy objectAtIndexedSubscript:v10 + v12];
 
         v17 = *(v14 + 2752);
         objc_opt_class();
@@ -16224,7 +16224,7 @@ void __82__FlowAnalyticsEngine_getNetworkBitmapsWithNames_startTime_endTime_opti
               v66 = v33;
               _os_log_impl(&dword_23255B000, log, OS_LOG_TYPE_DEFAULT, "entry: %@ %50@ %12@ %12@ %12@ %12@ %3@ %3@", buf, 0x52u);
 
-              v4 = v45;
+              arrayCopy = v45;
               v26 = v49;
             }
 
@@ -16277,7 +16277,7 @@ void __82__FlowAnalyticsEngine_getNetworkBitmapsWithNames_startTime_endTime_opti
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v42 = v41;
-    v43 = [v4 count];
+    v43 = [arrayCopy count];
     *buf = 134217984;
     v52 = v43;
     _os_log_impl(&dword_23255B000, v42, OS_LOG_TYPE_DEFAULT, "SymptomAnalytics ServiceImpl: FAE end of outcome array (%lu entries)", buf, 0xCu);
@@ -16286,23 +16286,23 @@ void __82__FlowAnalyticsEngine_getNetworkBitmapsWithNames_startTime_endTime_opti
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performQueryOnEntity:(id)a3 fetchRequestProperties:(id)a4 pred:(id)a5 sort:(id)a6 actions:(id)a7 service:(id)a8 connection:(id)a9 reply:(id)a10
+- (void)performQueryOnEntity:(id)entity fetchRequestProperties:(id)properties pred:(id)pred sort:(id)sort actions:(id)actions service:(id)service connection:(id)connection reply:(id)self0
 {
   v102 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v61 = a4;
-  v65 = a5;
-  v62 = a6;
-  v17 = a7;
-  v63 = a8;
-  v18 = a9;
-  v64 = a10;
-  v19 = [v18 processIdentifier];
+  entityCopy = entity;
+  propertiesCopy = properties;
+  predCopy = pred;
+  sortCopy = sort;
+  actionsCopy = actions;
+  serviceCopy = service;
+  connectionCopy = connection;
+  replyCopy = reply;
+  processIdentifier = [connectionCopy processIdentifier];
   v20 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v21 = v20;
-    v22 = pid_to_process_name(v19);
+    v22 = pid_to_process_name(processIdentifier);
     v23 = v22;
     v24 = @"<unknown>";
     *buf = 138413826;
@@ -16313,32 +16313,32 @@ void __82__FlowAnalyticsEngine_getNetworkBitmapsWithNames_startTime_endTime_opti
 
     *&buf[4] = v24;
     *&buf[12] = 2048;
-    *&buf[14] = v19;
+    *&buf[14] = processIdentifier;
     *&buf[22] = 2112;
-    v96 = v16;
+    v96 = entityCopy;
     *v97 = 2112;
-    *&v97[2] = v65;
+    *&v97[2] = predCopy;
     *&v97[10] = 2112;
-    *&v97[12] = v62;
+    *&v97[12] = sortCopy;
     v98 = 2112;
-    v99 = v17;
+    v99 = actionsCopy;
     v100 = 2112;
-    v101 = v61;
+    v101 = propertiesCopy;
     _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEFAULT, "SymptomAnalytics ServiceImpl: FAE perform query for %@ (pid %lld) on %@ predicate %@ sort %@ actions %@ properties %@", buf, 0x48u);
   }
 
-  if (v16)
+  if (entityCopy)
   {
-    v25 = [MEMORY[0x277D6B568] entityName];
-    v26 = [v16 isEqualToString:v25];
+    entityName = [MEMORY[0x277D6B568] entityName];
+    v26 = [entityCopy isEqualToString:entityName];
 
     if (v26)
     {
       [(FlowAnalyticsEngine *)self submitNetworkDomainUsageToDateSPICallMetric];
     }
 
-    v27 = [MEMORY[0x277D6B570] entityName];
-    v28 = [v16 isEqualToString:v27];
+    entityName2 = [MEMORY[0x277D6B570] entityName];
+    v28 = [entityCopy isEqualToString:entityName2];
 
     if (v28)
     {
@@ -16358,20 +16358,20 @@ void __82__FlowAnalyticsEngine_getNetworkBitmapsWithNames_startTime_endTime_opti
         }
 
         v36 = objc_alloc_init(MEMORY[0x277CBEA60]);
-        v64[2](v64, v36);
+        replyCopy[2](replyCopy, v36);
         goto LABEL_38;
       }
     }
   }
 
-  if (v17)
+  if (actionsCopy)
   {
-    v29 = [v17 objectForKeyedSubscript:@"refreshUsage"];
+    v29 = [actionsCopy objectForKeyedSubscript:@"refreshUsage"];
     v30 = v29 != 0;
 
     if (v30)
     {
-      if (![v63 assertEntitlement:v18 entitlement:2 orWaiveOnIntent:v17])
+      if (![serviceCopy assertEntitlement:connectionCopy entitlement:2 orWaiveOnIntent:actionsCopy])
       {
         goto LABEL_35;
       }
@@ -16384,12 +16384,12 @@ void __82__FlowAnalyticsEngine_getNetworkBitmapsWithNames_startTime_endTime_opti
       }
     }
 
-    v32 = [v17 objectForKeyedSubscript:@"watchpointKey"];
+    v32 = [actionsCopy objectForKeyedSubscript:@"watchpointKey"];
     v33 = v32 == 0;
 
     if (!v33)
     {
-      if ([v63 assertEntitlement:v18 entitlement:3 orWaiveOnIntent:v17])
+      if ([serviceCopy assertEntitlement:connectionCopy entitlement:3 orWaiveOnIntent:actionsCopy])
       {
         v34 = analyticsLogHandle;
         if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
@@ -16411,7 +16411,7 @@ LABEL_35:
       }
 
       v36 = objc_alloc_init(MEMORY[0x277CBEA60]);
-      v64[2](v64, v36);
+      replyCopy[2](replyCopy, v36);
       goto LABEL_38;
     }
   }
@@ -16423,11 +16423,11 @@ LABEL_35:
 
   v35 = 0;
 LABEL_23:
-  v36 = v65;
-  if ([(FlowAnalyticsEngine *)self _requiresUserValidationPredicateForEntity:v16])
+  v36 = predCopy;
+  if ([(FlowAnalyticsEngine *)self _requiresUserValidationPredicateForEntity:entityCopy])
   {
-    v37 = [v18 effectiveUserIdentifier];
-    v38 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %u", @"effectiveUserId", v37];
+    effectiveUserIdentifier = [connectionCopy effectiveUserIdentifier];
+    v38 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %u", @"effectiveUserId", effectiveUserIdentifier];
     v39 = v38;
     if (v36)
     {
@@ -16468,23 +16468,23 @@ LABEL_34:
       v66[1] = 3221225472;
       v66[2] = __110__FlowAnalyticsEngine_performQueryOnEntity_fetchRequestProperties_pred_sort_actions_service_connection_reply___block_invoke_3;
       v66[3] = &unk_27898C9B0;
-      v67 = v16;
-      v68 = self;
-      v69 = v64;
-      [(AnalyticsEngineCore *)self performQueryOnEntityCore:v67 fetchRequestProperties:v61 pred:v36 sort:v62 actions:v17 service:v63 reply:v66];
+      v67 = entityCopy;
+      selfCopy = self;
+      v69 = replyCopy;
+      [(AnalyticsEngineCore *)self performQueryOnEntityCore:v67 fetchRequestProperties:propertiesCopy pred:v36 sort:sortCopy actions:actionsCopy service:serviceCopy reply:v66];
 
       goto LABEL_38;
     }
 
-    v52 = [v17 objectForKey:@"watchpointTarget"];
-    v53 = [v17 objectForKey:@"watchpointKey"];
-    v54 = [v17 objectForKey:@"watchpointValue"];
+    v52 = [actionsCopy objectForKey:@"watchpointTarget"];
+    v53 = [actionsCopy objectForKey:@"watchpointKey"];
+    v54 = [actionsCopy objectForKey:@"watchpointValue"];
     v55 = v54;
-    if (v18 && v52 && v53 && v54)
+    if (connectionCopy && v52 && v53 && v54)
     {
-      v60 = [(ObjectAnalytics *)self->lfpspace getDescriptionForName:v16];
-      v56 = [v60 attributesByName];
-      v57 = [v56 objectForKeyedSubscript:v53];
+      v60 = [(ObjectAnalytics *)self->lfpspace getDescriptionForName:entityCopy];
+      attributesByName = [v60 attributesByName];
+      v57 = [attributesByName objectForKeyedSubscript:v53];
       v58 = v57 == 0;
 
       if (!v58)
@@ -16501,15 +16501,15 @@ LABEL_34:
         v75[2] = __110__FlowAnalyticsEngine_performQueryOnEntity_fetchRequestProperties_pred_sort_actions_service_connection_reply___block_invoke_903;
         v75[3] = &unk_27898C960;
         v75[4] = self;
-        v76 = v16;
-        v77 = v61;
+        v76 = entityCopy;
+        v77 = propertiesCopy;
         v36 = v36;
         v78 = v36;
-        v79 = v62;
-        v80 = v17;
-        v81 = v63;
-        v83 = v64;
-        v82 = v18;
+        v79 = sortCopy;
+        v80 = actionsCopy;
+        v81 = serviceCopy;
+        v83 = replyCopy;
+        v82 = connectionCopy;
         v84 = buf;
         v70[0] = MEMORY[0x277D85DD0];
         v70[1] = 3221225472;
@@ -16517,7 +16517,7 @@ LABEL_34:
         v70[3] = &unk_27898C988;
         v73 = v83;
         v71 = v82;
-        v72 = self;
+        selfCopy2 = self;
         v74 = buf;
         [(FlowAnalyticsEngine *)self performThresholdingOn:v52 forKey:v53 andValue:v55 connection:v71 createdBlock:&obj hitBlock:v75 errorBlock:v70];
         objc_storeStrong(&v97[8], obj);
@@ -16546,9 +16546,9 @@ LABEL_34:
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v50 = v49;
-    v51 = [v18 processIdentifier];
+    processIdentifier2 = [connectionCopy processIdentifier];
     *buf = 134217984;
-    *&buf[4] = v51;
+    *&buf[4] = processIdentifier2;
     _os_log_impl(&dword_23255B000, v50, OS_LOG_TYPE_DEBUG, "SymptomAnalytics ServiceImpl: in refresh codepath on behalf of pid %lld", buf, 0xCu);
   }
 
@@ -16557,14 +16557,14 @@ LABEL_34:
   v86[2] = __110__FlowAnalyticsEngine_performQueryOnEntity_fetchRequestProperties_pred_sort_actions_service_connection_reply___block_invoke;
   v86[3] = &unk_27898C938;
   v86[4] = self;
-  v87 = v16;
-  v88 = v61;
+  v87 = entityCopy;
+  v88 = propertiesCopy;
   v36 = v36;
   v89 = v36;
-  v90 = v62;
-  v91 = v17;
-  v92 = v63;
-  v93 = v64;
+  v90 = sortCopy;
+  v91 = actionsCopy;
+  v92 = serviceCopy;
+  v93 = replyCopy;
   [(FlowAnalyticsEngine *)self _refreshFullDataUsageWithCallback:v86];
 
 LABEL_38:
@@ -16682,24 +16682,24 @@ void __110__FlowAnalyticsEngine_performQueryOnEntity_fetchRequestProperties_pred
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)performThresholdingOn:(id)a3 forKey:(id)a4 andValue:(id)a5 connection:(id)a6 createdBlock:(id *)a7 hitBlock:(id)a8 errorBlock:(id)a9
+- (void)performThresholdingOn:(id)on forKey:(id)key andValue:(id)value connection:(id)connection createdBlock:(id *)block hitBlock:(id)hitBlock errorBlock:(id)errorBlock
 {
   v52 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
+  onCopy = on;
+  keyCopy = key;
+  valueCopy = value;
+  connectionCopy = connection;
+  hitBlockCopy = hitBlock;
+  errorBlockCopy = errorBlock;
   v21 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v47 = v15;
+    v47 = onCopy;
     v48 = 2112;
-    v49 = v16;
+    v49 = keyCopy;
     v50 = 2112;
-    v51 = v17;
+    v51 = valueCopy;
     _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEBUG, "SymptomAnalytics ServiceImpl: entering watchpoint codepath with (target,key,value: %@/%@/%@", buf, 0x20u);
   }
 
@@ -16708,23 +16708,23 @@ void __110__FlowAnalyticsEngine_performQueryOnEntity_fetchRequestProperties_pred
   aBlock[2] = __105__FlowAnalyticsEngine_performThresholdingOn_forKey_andValue_connection_createdBlock_hitBlock_errorBlock___block_invoke;
   aBlock[3] = &unk_27898CA00;
   aBlock[4] = self;
-  v34 = v15;
+  v34 = onCopy;
   v41 = v34;
-  v22 = v16;
+  v22 = keyCopy;
   v42 = v22;
-  v23 = v17;
+  v23 = valueCopy;
   v43 = v23;
-  v24 = v19;
+  v24 = hitBlockCopy;
   v44 = v24;
-  v25 = v20;
+  v25 = errorBlockCopy;
   v45 = v25;
-  *a7 = _Block_copy(aBlock);
-  v26 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v18];
-  v27 = [(FlowAnalyticsEngine *)self flowWatchers];
-  v28 = _Block_copy(*a7);
-  [v27 setObject:v28 forKey:v26];
+  *block = _Block_copy(aBlock);
+  v26 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:connectionCopy];
+  flowWatchers = [(FlowAnalyticsEngine *)self flowWatchers];
+  v28 = _Block_copy(*block);
+  [flowWatchers setObject:v28 forKey:v26];
 
-  objc_initWeak(&location, v18);
+  objc_initWeak(&location, connectionCopy);
   objc_initWeak(&from, self);
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -16732,13 +16732,13 @@ void __110__FlowAnalyticsEngine_performQueryOnEntity_fetchRequestProperties_pred
   v35[3] = &unk_27898CA28;
   objc_copyWeak(&v36, &from);
   objc_copyWeak(&v37, &location);
-  [v18 setInvalidationHandler:v35];
+  [connectionCopy setInvalidationHandler:v35];
   v29 = analyticsLogHandle;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
   {
-    v30 = [v18 description];
-    v31 = [(FlowAnalyticsEngine *)self flowWatchers];
-    v32 = [v31 count];
+    v30 = [connectionCopy description];
+    flowWatchers2 = [(FlowAnalyticsEngine *)self flowWatchers];
+    v32 = [flowWatchers2 count];
     *buf = 138412546;
     v47 = v30;
     v48 = 2048;
@@ -16894,14 +16894,14 @@ void __105__FlowAnalyticsEngine_performThresholdingOn_forKey_andValue_connection
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (int)performQueryOnEntityFromCache:(id)a3 pred:(id)a4 altpred:(id *)a5 actions:(id)a6 found:(id *)a7
+- (int)performQueryOnEntityFromCache:(id)cache pred:(id)pred altpred:(id *)altpred actions:(id)actions found:(id *)found
 {
   v66 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [v12 name];
-  v16 = [v14 objectForKeyedSubscript:@"sweepUsage"];
+  cacheCopy = cache;
+  predCopy = pred;
+  actionsCopy = actions;
+  name = [cacheCopy name];
+  v16 = [actionsCopy objectForKeyedSubscript:@"sweepUsage"];
 
   v56 = 0;
   if (v16)
@@ -16916,13 +16916,13 @@ void __105__FlowAnalyticsEngine_performThresholdingOn_forKey_andValue_connection
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v18 = [v13 subpredicates];
-    v19 = [v18 countByEnumeratingWithState:&v52 objects:v65 count:16];
+    subpredicates = [predCopy subpredicates];
+    v19 = [subpredicates countByEnumeratingWithState:&v52 objects:v65 count:16];
     if (v19)
     {
       v20 = v19;
-      v48 = a7;
-      v50 = a5;
+      foundCopy = found;
+      altpredCopy = altpred;
       v21 = *v53;
       while (2)
       {
@@ -16930,7 +16930,7 @@ void __105__FlowAnalyticsEngine_performThresholdingOn_forKey_andValue_connection
         {
           if (*v53 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(subpredicates);
           }
 
           v23 = [(AnalyticsEngineCore *)self extractQueryStringFrom:*(*(&v52 + 1) + 8 * i) isGeneric:&v56];
@@ -16941,7 +16941,7 @@ void __105__FlowAnalyticsEngine_performThresholdingOn_forKey_andValue_connection
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v52 objects:v65 count:16];
+        v20 = [subpredicates countByEnumeratingWithState:&v52 objects:v65 count:16];
         if (v20)
         {
           continue;
@@ -16952,8 +16952,8 @@ void __105__FlowAnalyticsEngine_performThresholdingOn_forKey_andValue_connection
 
       v17 = 0;
 LABEL_16:
-      a7 = v48;
-      a5 = v50;
+      found = foundCopy;
+      altpred = altpredCopy;
     }
 
     else
@@ -16972,15 +16972,15 @@ LABEL_2:
       goto LABEL_19;
     }
 
-    v17 = [(AnalyticsEngineCore *)self extractQueryStringFrom:v13 isGeneric:&v56];
+    v17 = [(AnalyticsEngineCore *)self extractQueryStringFrom:predCopy isGeneric:&v56];
   }
 
 LABEL_19:
-  if ([(FlowAnalyticsEngine *)self _handlesProcEntity:v15])
+  if ([(FlowAnalyticsEngine *)self _handlesProcEntity:name])
   {
     if (v17 || (v56 & 1) != 0)
     {
-      v24 = [(AnalyticsEngineCore *)self safePredFrom:v13 forEntity:v12];
+      v24 = [(AnalyticsEngineCore *)self safePredFrom:predCopy forEntity:cacheCopy];
       if (v24)
       {
         if (v56)
@@ -16992,13 +16992,13 @@ LABEL_19:
             _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_DEBUG, "SymptomAnalytics ServiceImpl: remap: entering flow for generics", buf, 2u);
           }
 
-          v26 = [v14 objectForKeyedSubscript:@"nameChain"];
+          v26 = [actionsCopy objectForKeyedSubscript:@"nameChain"];
 
           if (v26)
           {
-            v51 = a5;
-            v27 = [MEMORY[0x277CBEB68] null];
-            v28 = [v26 isEqual:v27];
+            altpredCopy2 = altpred;
+            null = [MEMORY[0x277CBEB68] null];
+            v28 = [v26 isEqual:null];
 
             if (v28)
             {
@@ -17017,8 +17017,8 @@ LABEL_19:
               v64 = v26;
               v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
               v37 = [v24 predicateWithSubstitutionVariables:?];
-              *v51 = v37;
-              if ([(FlowAnalyticsEngine *)self _performQueryOnEntityFromProcCache:v12 target:v26 pred:v37 found:a7])
+              *altpredCopy2 = v37;
+              if ([(FlowAnalyticsEngine *)self _performQueryOnEntityFromProcCache:cacheCopy target:v26 pred:v37 found:found])
               {
                 v38 = [(FlowAnalyticsEngine *)self _attemptConvertingPluginNameToContainingAppName:v26];
                 if (v38)
@@ -17033,8 +17033,8 @@ LABEL_19:
 
                   v41 = v40;
                   v37 = v40;
-                  *v51 = v40;
-                  v30 = [(FlowAnalyticsEngine *)self _performQueryOnEntityFromProcCache:v12 target:v47 pred:v40 found:a7];
+                  *altpredCopy2 = v40;
+                  v30 = [(FlowAnalyticsEngine *)self _performQueryOnEntityFromProcCache:cacheCopy target:v47 pred:v40 found:found];
                   v42 = analyticsLogHandle;
                   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
                   {
@@ -17100,7 +17100,7 @@ LABEL_19:
           goto LABEL_38;
         }
 
-        v30 = [(FlowAnalyticsEngine *)self _performQueryOnEntityFromProcCache:v12 target:v17 pred:v24 found:a7];
+        v30 = [(FlowAnalyticsEngine *)self _performQueryOnEntityFromProcCache:cacheCopy target:v17 pred:v24 found:found];
       }
 
       else
@@ -17135,31 +17135,31 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  if (![(FlowAnalyticsEngine *)self _handlesFlowEntity:v15])
+  if (![(FlowAnalyticsEngine *)self _handlesFlowEntity:name])
   {
     goto LABEL_42;
   }
 
-  v31 = [v14 objectForKeyedSubscript:@"instantFlow"];
+  v31 = [actionsCopy objectForKeyedSubscript:@"instantFlow"];
 
   if (!v31)
   {
     goto LABEL_42;
   }
 
-  v30 = [(FlowAnalyticsEngine *)self _performQueryOnEntityFromInstantFlowCache:v12 target:v17 pred:v13 found:a7];
+  v30 = [(FlowAnalyticsEngine *)self _performQueryOnEntityFromInstantFlowCache:cacheCopy target:v17 pred:predCopy found:found];
 LABEL_43:
 
   v34 = *MEMORY[0x277D85DE8];
   return v30;
 }
 
-- (int)_performQueryOnEntityFromProcCache:(id)a3 target:(id)a4 pred:(id)a5 found:(id *)a6
+- (int)_performQueryOnEntityFromProcCache:(id)cache target:(id)target pred:(id)pred found:(id *)found
 {
   v54 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  cacheCopy = cache;
+  targetCopy = target;
+  predCopy = pred;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__FlowAnalyticsEngine__performQueryOnEntityFromProcCache_target_pred_found___block_invoke;
@@ -17170,22 +17170,22 @@ LABEL_43:
     dispatch_once(&_performQueryOnEntityFromProcCache_target_pred_found__once, block);
   }
 
-  v13 = [(FlowAnalyticsEngine *)self _fetchFromProcCacheWithName:v11 ofType:1];
+  v13 = [(FlowAnalyticsEngine *)self _fetchFromProcCacheWithName:targetCopy ofType:1];
   if (v13)
   {
-    v38 = v12;
-    v39 = v11;
+    v38 = predCopy;
+    v39 = targetCopy;
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v16 = [v13 isApp];
+    isApp = [v13 isApp];
     v17 = &_performQueryOnEntityFromProcCache_target_pred_found__appDesc;
-    if (!v16)
+    if (!isApp)
     {
       v17 = &_performQueryOnEntityFromProcCache_target_pred_found__procDesc;
     }
 
-    v40 = v10;
-    [*v17 relationshipsWithDestinationEntity:{v10, a6}];
+    v40 = cacheCopy;
+    [*v17 relationshipsWithDestinationEntity:{cacheCopy, found}];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -17207,8 +17207,8 @@ LABEL_43:
           v23 = *(*(&v45 + 1) + 8 * i);
           if (([v23 isTransient] & 1) == 0)
           {
-            v24 = [v23 name];
-            [v14 addObject:v24];
+            name = [v23 name];
+            [v14 addObject:name];
           }
         }
 
@@ -17241,10 +17241,10 @@ LABEL_43:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v31 = [v30 allObjects];
+            allObjects = [v30 allObjects];
 LABEL_24:
-            v32 = v31;
-            [v15 addObjectsFromArray:v31];
+            v32 = allObjects;
+            [v15 addObjectsFromArray:allObjects];
 
             goto LABEL_26;
           }
@@ -17252,7 +17252,7 @@ LABEL_24:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v31 = [v30 array];
+            allObjects = [v30 array];
             goto LABEL_24;
           }
 
@@ -17266,12 +17266,12 @@ LABEL_26:
       while (v27);
     }
 
-    v12 = v38;
+    predCopy = v38;
     *v37 = [v15 filteredArrayUsingPredicate:v38];
 
     v33 = 0;
-    v11 = v39;
-    v10 = v40;
+    targetCopy = v39;
+    cacheCopy = v40;
   }
 
   else
@@ -17280,7 +17280,7 @@ LABEL_26:
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v53 = v11;
+      v53 = targetCopy;
       _os_log_impl(&dword_23255B000, v34, OS_LOG_TYPE_DEBUG, "SymptomAnalytics ServiceImpl: cache miss for %@", buf, 0xCu);
     }
 
@@ -17309,33 +17309,33 @@ void __76__FlowAnalyticsEngine__performQueryOnEntityFromProcCache_target_pred_fo
   _performQueryOnEntityFromProcCache_target_pred_found__appDesc = v9;
 }
 
-- (id)_attemptConvertingPluginNameToContainingAppName:(id)a3
+- (id)_attemptConvertingPluginNameToContainingAppName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->pluginToBundleCache objectForKeyedSubscript:v4];
+  nameCopy = name;
+  v5 = [(NSMutableDictionary *)self->pluginToBundleCache objectForKeyedSubscript:nameCopy];
   if (v5)
   {
-    v6 = v5;
+    applicationIdentifier2 = v5;
     v7 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v18 = 138412546;
-      v19 = v4;
+      v19 = nameCopy;
       v20 = 2112;
-      v21 = v6;
+      v21 = applicationIdentifier2;
       _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "SymptomAnalytics ServiceImpl: remap: hotpath hit, converted %@ to %@", &v18, 0x16u);
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:v4];
+    v8 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:nameCopy];
     v9 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v18 = 138412546;
-      v19 = v4;
+      v19 = nameCopy;
       v20 = 2048;
       v21 = v8;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEBUG, "SymptomAnalytics ServiceImpl: remap: slowpath, converting %@ to plugin: %p", &v18, 0x16u);
@@ -17343,57 +17343,57 @@ void __76__FlowAnalyticsEngine__performQueryOnEntityFromProcCache_target_pred_fo
 
     if (v8)
     {
-      v10 = [v8 containingBundle];
+      containingBundle = [v8 containingBundle];
       v11 = analyticsLogHandle;
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v18 = 134217984;
-        v19 = v10;
+        v19 = containingBundle;
         _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "SymptomAnalytics ServiceImpl: remap: containing bundle: %p", &v18, 0xCu);
       }
 
-      if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if (containingBundle && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v12 = v10;
+        v12 = containingBundle;
         v13 = analyticsLogHandle;
         if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
         {
           v14 = v13;
-          v15 = [v12 applicationIdentifier];
+          applicationIdentifier = [v12 applicationIdentifier];
           v18 = 138412290;
-          v19 = v15;
+          v19 = applicationIdentifier;
           _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_DEBUG, "SymptomAnalytics ServiceImpl: remap: plugin's containing appname: %@", &v18, 0xCu);
         }
 
-        v6 = [v12 applicationIdentifier];
-        if (v6)
+        applicationIdentifier2 = [v12 applicationIdentifier];
+        if (applicationIdentifier2)
         {
-          [(NSMutableDictionary *)self->pluginToBundleCache setObject:v6 forKeyedSubscript:v4];
+          [(NSMutableDictionary *)self->pluginToBundleCache setObject:applicationIdentifier2 forKeyedSubscript:nameCopy];
         }
       }
 
       else
       {
-        v6 = 0;
+        applicationIdentifier2 = 0;
       }
     }
 
     else
     {
-      v6 = 0;
+      applicationIdentifier2 = 0;
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return applicationIdentifier2;
 }
 
-- (BOOL)_bundleBackgroundAudioCapable:(id)a3
+- (BOOL)_bundleBackgroundAudioCapable:(id)capable
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->audioBundleCache objectForKeyedSubscript:v4];
+  capableCopy = capable;
+  v5 = [(NSMutableDictionary *)self->audioBundleCache objectForKeyedSubscript:capableCopy];
   v6 = v5;
   if (v5)
   {
@@ -17402,7 +17402,7 @@ void __76__FlowAnalyticsEngine__performQueryOnEntityFromProcCache_target_pred_fo
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v17 = 138412546;
-      v18 = v4;
+      v18 = capableCopy;
       v19 = 1024;
       v20 = v7;
       _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEBUG, "audio background capability for %@: %d (source: cache)", &v17, 0x12u);
@@ -17411,20 +17411,20 @@ void __76__FlowAnalyticsEngine__performQueryOnEntityFromProcCache_target_pred_fo
 
   else
   {
-    v9 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v4];
+    v9 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:capableCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 UIBackgroundModes];
-      v7 = [v11 containsObject:@"audio"];
+      uIBackgroundModes = [v9 UIBackgroundModes];
+      v7 = [uIBackgroundModes containsObject:@"audio"];
       v12 = [MEMORY[0x277CCABB0] numberWithBool:v7];
-      [(NSMutableDictionary *)self->audioBundleCache setObject:v12 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->audioBundleCache setObject:v12 forKeyedSubscript:capableCopy];
 
       v13 = analyticsLogHandle;
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v17 = 138412546;
-        v18 = v4;
+        v18 = capableCopy;
         v19 = 1024;
         v20 = v7;
         _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEBUG, "audio background capability for %@: %d (source: LS)", &v17, 0x12u);
@@ -17437,7 +17437,7 @@ void __76__FlowAnalyticsEngine__performQueryOnEntityFromProcCache_target_pred_fo
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
       {
         v17 = 138412290;
-        v18 = v4;
+        v18 = capableCopy;
         _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_ERROR, "applicationProxyForIdentifier failed for %@", &v17, 0xCu);
       }
 
@@ -17449,10 +17449,10 @@ void __76__FlowAnalyticsEngine__performQueryOnEntityFromProcCache_target_pred_fo
   return v7;
 }
 
-- (int)_performQueryOnEntityFromInstantFlowCache:(id)a3 target:(id)a4 pred:(id)a5 found:(id *)a6
+- (int)_performQueryOnEntityFromInstantFlowCache:(id)cache target:(id)target pred:(id)pred found:(id *)found
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  targetCopy = target;
   [(FlowAnalyticsEngine *)self _pruneFlowHistory];
   v9 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
@@ -17460,46 +17460,46 @@ void __76__FlowAnalyticsEngine__performQueryOnEntityFromProcCache_target_pred_fo
     flowInstant = self->flowInstant;
     v11 = v9;
     v24 = 138412546;
-    v25 = v8;
+    v25 = targetCopy;
     v26 = 2048;
     v27 = [(NSMutableDictionary *)flowInstant count];
     _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "netanalyticsdebug: looking for instant flow: %@, %lu on record", &v24, 0x16u);
   }
 
   v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:5];
-  v13 = [(NSMutableDictionary *)self->flowInstant objectEnumerator];
-  v14 = [v13 nextObject];
-  if (v14)
+  objectEnumerator = [(NSMutableDictionary *)self->flowInstant objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v15 = v14;
+    nextObject2 = nextObject;
     do
     {
-      v16 = v15;
-      v17 = [v16 firstObject];
-      v18 = v17;
-      if (!v8 || ([v17 tmpID], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", v8), v19, v20))
+      v16 = nextObject2;
+      firstObject = [v16 firstObject];
+      v18 = firstObject;
+      if (!targetCopy || ([firstObject tmpID], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", targetCopy), v19, v20))
       {
         [v12 addObjectsFromArray:v16];
       }
 
-      v15 = [v13 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v15);
+    while (nextObject2);
   }
 
   v21 = v12;
-  *a6 = v12;
+  *found = v12;
 
   v22 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (void)createSnapshotFor:(id)a3 pred:(id)a4 actions:(id)a5 reply:(id)a6
+- (void)createSnapshotFor:(id)for pred:(id)pred actions:(id)actions reply:(id)reply
 {
   v6 = MEMORY[0x277CCA9B8];
   v7 = *MEMORY[0x277CCA5B8];
-  v8 = a6;
+  replyCopy = reply;
   v9 = [v6 errorWithDomain:v7 code:45 userInfo:0];
   v10 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
@@ -17508,28 +17508,28 @@ void __76__FlowAnalyticsEngine__performQueryOnEntityFromProcCache_target_pred_fo
     _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEBUG, "SymptomAnalytics ServiceImpl: netanalyticsdebug: flow: denied snapshot request (ENOTSUP)", v11, 2u);
   }
 
-  v8[2](v8, 0, v9);
+  replyCopy[2](replyCopy, 0, v9);
 }
 
-- (id)setOption:(id)a3
+- (id)setOption:(id)option
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  optionCopy = option;
+  v5 = optionCopy;
+  if (!optionCopy)
   {
     v8 = 0;
     goto LABEL_5;
   }
 
   v6 = @"calendarUsageToggle";
-  v7 = [v4 objectForKey:@"calendarUsageToggle"];
+  v7 = [optionCopy objectForKey:@"calendarUsageToggle"];
   if (!v7)
   {
     v6 = @"typicalUsageToggle";
     v8 = [v5 objectForKey:@"typicalUsageToggle"];
     if (v8)
     {
-      v9 = [(FlowAnalyticsEngine *)self haveTypicalUsage];
+      haveTypicalUsage = [(FlowAnalyticsEngine *)self haveTypicalUsage];
       -[FlowAnalyticsEngine setHaveTypicalUsage:](self, "setHaveTypicalUsage:", [v8 BOOLValue]);
       goto LABEL_8;
     }
@@ -17540,11 +17540,11 @@ LABEL_5:
   }
 
   v8 = v7;
-  v9 = [(FlowAnalyticsEngine *)self haveCalendar];
+  haveTypicalUsage = [(FlowAnalyticsEngine *)self haveCalendar];
   -[FlowAnalyticsEngine setHaveCalendar:](self, "setHaveCalendar:", [v8 BOOLValue]);
 LABEL_8:
   v11 = MEMORY[0x277CBEAC0];
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:v9];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:haveTypicalUsage];
   v10 = [v11 dictionaryWithObjectsAndKeys:{v12, v6, 0}];
 
 LABEL_9:
@@ -17552,51 +17552,51 @@ LABEL_9:
   return v10;
 }
 
-- (id)getOption:(id)a3
+- (id)getOption:(id)option
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  optionCopy = option;
+  v5 = optionCopy;
+  if (optionCopy)
   {
-    v6 = [v4 objectForKey:@"calendarUsageToggle"];
+    dictionary = [optionCopy objectForKey:@"calendarUsageToggle"];
 
-    if (v6)
+    if (dictionary)
     {
-      v6 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[FlowAnalyticsEngine haveCalendar](self, "haveCalendar")}];
-      [v6 setObject:v7 forKeyedSubscript:@"calendarUsageToggle"];
+      [dictionary setObject:v7 forKeyedSubscript:@"calendarUsageToggle"];
     }
 
     v8 = [v5 objectForKey:@"typicalUsageToggle"];
 
     if (v8)
     {
-      if (!v6)
+      if (!dictionary)
       {
-        v6 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
       }
 
       v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[FlowAnalyticsEngine haveTypicalUsage](self, "haveTypicalUsage")}];
-      [v6 setObject:v9 forKeyedSubscript:@"typicalUsageToggle"];
+      [dictionary setObject:v9 forKeyedSubscript:@"typicalUsageToggle"];
     }
   }
 
   else
   {
-    v6 = 0;
+    dictionary = 0;
   }
 
-  return v6;
+  return dictionary;
 }
 
-- (void)resetDataFor:(id)a3 nameKind:(id)a4
+- (void)resetDataFor:(id)for nameKind:(id)kind
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  forCopy = for;
+  kindCopy = kind;
+  if (forCopy && [forCopy count])
   {
-    v8 = [MEMORY[0x277CBEB98] setWithArray:v6];
+    v8 = [MEMORY[0x277CBEB98] setWithArray:forCopy];
   }
 
   else
@@ -17604,7 +17604,7 @@ LABEL_9:
     v8 = 0;
   }
 
-  v9 = [(ProcessAnalytics *)self->pspace processesWithNameInSet:v8 nameKind:v7];
+  v9 = [(ProcessAnalytics *)self->pspace processesWithNameInSet:v8 nameKind:kindCopy];
   v10 = analyticsLogHandle;
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -17646,18 +17646,18 @@ LABEL_9:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)identifierForUUID:(id)a3 queue:(id)a4 reply:(id)a5
+- (void)identifierForUUID:(id)d queue:(id)queue reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dCopy = d;
+  queueCopy = queue;
+  replyCopy = reply;
+  if (dCopy)
   {
     nstatManager = self->nstatManager;
     if (nstatManager)
     {
       v22 = 0;
-      v12 = [(NWStatsManager *)nstatManager identifierForUUID:v8 derivation:&v22];
+      v12 = [(NWStatsManager *)nstatManager identifierForUUID:dCopy derivation:&v22];
       if (v12)
       {
         v13 = v12;
@@ -17673,7 +17673,7 @@ LABEL_9:
             v16 = 0;
 LABEL_13:
             v15 = 0;
-            if (!v9)
+            if (!queueCopy)
             {
               goto LABEL_14;
             }
@@ -17693,10 +17693,10 @@ LABEL_13:
   v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
   v16 = 0;
   v13 = 0;
-  if (!v9)
+  if (!queueCopy)
   {
 LABEL_14:
-    v10[2](v10, v13, v16, v15);
+    replyCopy[2](replyCopy, v13, v16, v15);
     goto LABEL_15;
   }
 
@@ -17705,27 +17705,27 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __53__FlowAnalyticsEngine_identifierForUUID_queue_reply___block_invoke;
   block[3] = &unk_27898CA50;
-  v21 = v10;
+  v21 = replyCopy;
   v18 = v13;
   v19 = v16;
   v20 = v15;
-  dispatch_async(v9, block);
+  dispatch_async(queueCopy, block);
 
 LABEL_15:
 }
 
-- (void)_updateKnownCellularInterfaceIndexList:(int)a3 force:
+- (void)_updateKnownCellularInterfaceIndexList:(int)list force:
 {
   *&v18[5] = *MEMORY[0x277D85DE8];
   v5 = a2;
   v6 = v5;
-  if (a1 && (![v5 count] || a3))
+  if (self && (![v5 count] || list))
   {
     v7 = flowLogHandle;
     if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v8 = "";
-      if (a3)
+      if (list)
       {
         v8 = " (forced)";
       }
@@ -17769,26 +17769,26 @@ LABEL_15:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enableThresholdMonitoringForCellularInterface:(uint64_t)a1
+- (void)_enableThresholdMonitoringForCellularInterface:(uint64_t)interface
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (interface)
   {
-    v4 = *(a1 + 256);
+    v4 = *(interface + 256);
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a2];
     LODWORD(v4) = [v4 containsObject:v5];
 
     if (v4)
     {
-      [a1 _startMonitoringNetworkInterface:a2 usingThreshold:0x100000];
-      v6 = *(a1 + 264);
+      [interface _startMonitoringNetworkInterface:a2 usingThreshold:0x100000];
+      v6 = *(interface + 264);
       v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a2];
       [v6 addObject:v7];
 
       v8 = flowLogHandle;
       if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = *(a1 + 264);
+        v9 = *(interface + 264);
         v13 = 67109378;
         v14 = a2;
         v15 = 2112;
@@ -17796,11 +17796,11 @@ LABEL_15:
         _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEFAULT, "Set threshold monitoring on interface index %d (total monitored interfaces: %@)", &v13, 0x12u);
       }
 
-      *(a1 + 248) = a2;
+      *(interface + 248) = a2;
       v10 = flowLogHandle;
       if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_INFO))
       {
-        v11 = *(a1 + 248);
+        v11 = *(interface + 248);
         v13 = 67109120;
         v14 = v11;
         _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_INFO, "Updated last used pdp interface to %d", &v13, 8u);

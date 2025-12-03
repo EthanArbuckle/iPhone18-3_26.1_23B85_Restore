@@ -1,31 +1,31 @@
 @interface HMDEventModel
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 className:(Class)a6 message:(id)a7;
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d className:(Class)name message:(id)message;
 + (id)properties;
 @end
 
 @implementation HMDEventModel
 
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 className:(Class)a6 message:(id)a7
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d className:(Class)name message:(id)message
 {
   v9 = *MEMORY[0x277CD2340];
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 hmf_UUIDForKey:v9];
+  dCopy = d;
+  dictionaryCopy = dictionary;
+  v12 = [dictionaryCopy hmf_UUIDForKey:v9];
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    uUID = v12;
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
   }
 
-  v15 = v14;
+  v15 = uUID;
 
-  v16 = [[a6 alloc] initWithObjectChangeType:1 uuid:v15 parentUUID:v10];
-  v17 = [v11 hmf_numberForKey:*MEMORY[0x277CD22A0]];
+  v16 = [[name alloc] initWithObjectChangeType:1 uuid:v15 parentUUID:dCopy];
+  v17 = [dictionaryCopy hmf_numberForKey:*MEMORY[0x277CD22A0]];
 
   [v16 setEndEvent:v17];
 
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = __27__HMDEventModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_111488 != -1)
   {
     dispatch_once(&properties_onceToken_111488, block);

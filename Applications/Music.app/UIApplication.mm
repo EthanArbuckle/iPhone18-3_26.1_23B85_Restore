@@ -1,24 +1,24 @@
 @interface UIApplication
-+ (void)setSharePlayTogetherObjCViewModel:(id)a3;
++ (void)setSharePlayTogetherObjCViewModel:(id)model;
 @end
 
 @implementation UIApplication
 
-+ (void)setSharePlayTogetherObjCViewModel:(id)a3
++ (void)setSharePlayTogetherObjCViewModel:(id)model
 {
   v3 = qword_101218AE8;
-  qword_101218AE8 = a3;
-  v4 = a3;
+  qword_101218AE8 = model;
+  modelCopy = model;
 
-  v5 = [objc_opt_self() defaultCenter];
-  v6 = v5;
+  defaultCenter = [objc_opt_self() defaultCenter];
+  v6 = defaultCenter;
   if (qword_10117F208 != -1)
   {
     swift_once();
-    v5 = v6;
+    defaultCenter = v6;
   }
 
-  [v5 postNotificationName:qword_101218648 object:0];
+  [defaultCenter postNotificationName:qword_101218648 object:0];
 }
 
 @end

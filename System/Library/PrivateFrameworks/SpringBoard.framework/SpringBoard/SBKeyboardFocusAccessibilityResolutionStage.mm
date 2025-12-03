@@ -1,15 +1,15 @@
 @interface SBKeyboardFocusAccessibilityResolutionStage
 - (SBKeyboardFocusAccessibilityResolutionDeelgate)delegate;
 - (SBKeyboardFocusResolutionStageSceneProviding)sceneProvider;
-- (void)resolveKeyboardFocusPolicy:(id)a3 context:(id)a4 stop:(BOOL *)a5;
+- (void)resolveKeyboardFocusPolicy:(id)policy context:(id)context stop:(BOOL *)stop;
 @end
 
 @implementation SBKeyboardFocusAccessibilityResolutionStage
 
-- (void)resolveKeyboardFocusPolicy:(id)a3 context:(id)a4 stop:(BOOL *)a5
+- (void)resolveKeyboardFocusPolicy:(id)policy context:(id)context stop:(BOOL *)stop
 {
-  v15 = a3;
-  v9 = a4;
+  policyCopy = policy;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (!WeakRetained)
   {
@@ -17,15 +17,15 @@
   }
 
   v11 = WeakRetained;
-  v12 = [WeakRetained accessibilityKeyboardFocusOverrideTarget];
-  if (v12)
+  accessibilityKeyboardFocusOverrideTarget = [WeakRetained accessibilityKeyboardFocusOverrideTarget];
+  if (accessibilityKeyboardFocusOverrideTarget)
   {
-    v13 = [v15 auditHistory];
-    v14 = [v15 keyboardFocusTarget];
-    [v13 addItemWithFormat:@"-- SBKeyboardFocusAccessibilityResolutionStage overriding keyboard arbiter target (policy was %@, override is %@)", v14, v12];
+    auditHistory = [policyCopy auditHistory];
+    keyboardFocusTarget = [policyCopy keyboardFocusTarget];
+    [auditHistory addItemWithFormat:@"-- SBKeyboardFocusAccessibilityResolutionStage overriding keyboard arbiter target (policy was %@, override is %@)", keyboardFocusTarget, accessibilityKeyboardFocusOverrideTarget];
 
-    [v15 setKeyboardFocusTarget:v12];
-    *a5 = 1;
+    [policyCopy setKeyboardFocusTarget:accessibilityKeyboardFocusOverrideTarget];
+    *stop = 1;
   }
 }
 

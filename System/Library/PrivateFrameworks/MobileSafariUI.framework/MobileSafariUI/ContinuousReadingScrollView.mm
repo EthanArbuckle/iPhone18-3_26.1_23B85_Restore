@@ -1,21 +1,21 @@
 @interface ContinuousReadingScrollView
-- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)a3 resultHandler:(id)a4;
+- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)location resultHandler:(id)handler;
 @end
 
 @implementation ContinuousReadingScrollView
 
-- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)a3 resultHandler:(id)a4
+- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)location resultHandler:(id)handler
 {
-  v6 = a4;
-  v5 = [(ContinuousReadingScrollView *)self delegate];
+  handlerCopy = handler;
+  delegate = [(ContinuousReadingScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 scrollViewShouldScrollToTop:self];
+    [delegate scrollViewShouldScrollToTop:self];
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 

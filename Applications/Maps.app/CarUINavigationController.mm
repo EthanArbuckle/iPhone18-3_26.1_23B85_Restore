@@ -1,5 +1,5 @@
 @interface CarUINavigationController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (id)preferredFocusEnvironments;
 - (void)setNeedsFocusUpdate;
 @end
@@ -10,16 +10,16 @@
 {
   v7.receiver = self;
   v7.super_class = CarUINavigationController;
-  v3 = [(CarUINavigationController *)&v7 preferredFocusEnvironments];
+  preferredFocusEnvironments = [(CarUINavigationController *)&v7 preferredFocusEnvironments];
   if ([(CarUINavigationController *)self isNavigationBarHidden])
   {
     v4 = [NSPredicate predicateWithBlock:&stru_10164D258];
-    v5 = [v3 filteredArrayUsingPredicate:v4];
+    v5 = [preferredFocusEnvironments filteredArrayUsingPredicate:v4];
 
-    v3 = v5;
+    preferredFocusEnvironments = v5;
   }
 
-  return v3;
+  return preferredFocusEnvironments;
 }
 
 - (void)setNeedsFocusUpdate
@@ -28,19 +28,19 @@
   v4.super_class = CarUINavigationController;
   [(CarUINavigationController *)&v4 setNeedsFocusUpdate];
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 chromeViewController];
-  [v3 setNeedsFocusUpdate];
+  chromeViewController = [v2 chromeViewController];
+  [chromeViewController setNeedsFocusUpdate];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v3 = a3;
+  beginCopy = begin;
   objc_opt_class();
   v6 = 1;
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 allowedPressTypes];
-    v5 = [v4 containsObject:&off_1016E9410];
+    allowedPressTypes = [beginCopy allowedPressTypes];
+    v5 = [allowedPressTypes containsObject:&off_1016E9410];
 
     if (v5)
     {

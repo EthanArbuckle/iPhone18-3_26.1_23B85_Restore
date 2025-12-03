@@ -1,30 +1,30 @@
 @interface SCLContact
-- (BOOL)isEqual:(id)a3;
-- (SCLContact)initWithCoder:(id)a3;
-- (id)_initWithContactIdentifier:(id)a3 type:(unint64_t)a4 value:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (SCLContact)initWithCoder:(id)coder;
+- (id)_initWithContactIdentifier:(id)identifier type:(unint64_t)type value:(id)value;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCLContact
 
-- (id)_initWithContactIdentifier:(id)a3 type:(unint64_t)a4 value:(id)a5
+- (id)_initWithContactIdentifier:(id)identifier type:(unint64_t)type value:(id)value
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  valueCopy = value;
   v16.receiver = self;
   v16.super_class = SCLContact;
   v10 = [(SCLContact *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     contactIdentifier = v10->_contactIdentifier;
     v10->_contactIdentifier = v11;
 
-    v10->_type = a4;
-    v13 = [v9 copy];
+    v10->_type = type;
+    v13 = [valueCopy copy];
     value = v10->_value;
     v10->_value = v13;
   }
@@ -34,19 +34,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SCLContact *)self contactIdentifier];
-  v4 = [v3 hash];
+  contactIdentifier = [(SCLContact *)self contactIdentifier];
+  v4 = [contactIdentifier hash];
   v5 = [(SCLContact *)self type]^ v4;
-  v6 = [(SCLContact *)self value];
-  v7 = [v6 hash];
+  value = [(SCLContact *)self value];
+  v7 = [value hash];
 
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -56,13 +56,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SCLContact *)self contactIdentifier];
-      v7 = [(SCLContact *)v5 contactIdentifier];
+      v5 = equalCopy;
+      contactIdentifier = [(SCLContact *)self contactIdentifier];
+      contactIdentifier2 = [(SCLContact *)v5 contactIdentifier];
       if (BSEqualObjects() && (v8 = [(SCLContact *)self type], v8 == [(SCLContact *)v5 type]))
       {
-        v9 = [(SCLContact *)self value];
-        v10 = [(SCLContact *)v5 value];
+        value = [(SCLContact *)self value];
+        value2 = [(SCLContact *)v5 value];
         v11 = BSEqualStrings();
       }
 
@@ -84,17 +84,17 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SCLContact *)self contactIdentifier];
-  [v3 appendString:v4 withName:@"contactIdentifier"];
+  contactIdentifier = [(SCLContact *)self contactIdentifier];
+  [v3 appendString:contactIdentifier withName:@"contactIdentifier"];
 
-  v5 = [(SCLContact *)self type];
+  type = [(SCLContact *)self type];
   v6 = @"unknown";
-  if (v5 == 2)
+  if (type == 2)
   {
     v6 = @"phone";
   }
 
-  if (v5 == 1)
+  if (type == 1)
   {
     v7 = @"email";
   }
@@ -105,15 +105,15 @@
   }
 
   [v3 appendString:v7 withName:@"type"];
-  v8 = [(SCLContact *)self value];
-  [v3 appendString:v8 withName:@"value"];
+  value = [(SCLContact *)self value];
+  [v3 appendString:value withName:@"value"];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SCLContact alloc];
   contactIdentifier = self->_contactIdentifier;
@@ -123,24 +123,24 @@
   return [(SCLContact *)v4 _initWithContactIdentifier:contactIdentifier type:type value:value];
 }
 
-- (SCLContact)initWithCoder:(id)a3
+- (SCLContact)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
-  v6 = [v4 decodeIntegerForKey:@"type"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"type"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
 
   v8 = [(SCLContact *)self _initWithContactIdentifier:v5 type:v6 value:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contactIdentifier = self->_contactIdentifier;
-  v5 = a3;
-  [v5 encodeObject:contactIdentifier forKey:@"contactIdentifier"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_value forKey:@"value"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contactIdentifier forKey:@"contactIdentifier"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
 }
 
 @end

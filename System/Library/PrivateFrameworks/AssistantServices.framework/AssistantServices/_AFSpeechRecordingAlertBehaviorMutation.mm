@@ -1,5 +1,5 @@
 @interface _AFSpeechRecordingAlertBehaviorMutation
-- (_AFSpeechRecordingAlertBehaviorMutation)initWithBase:(id)a3;
+- (_AFSpeechRecordingAlertBehaviorMutation)initWithBase:(id)base;
 - (int64_t)getBeepSoundID;
 - (int64_t)getStyle;
 @end
@@ -32,16 +32,16 @@
   }
 }
 
-- (_AFSpeechRecordingAlertBehaviorMutation)initWithBase:(id)a3
+- (_AFSpeechRecordingAlertBehaviorMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFSpeechRecordingAlertBehaviorMutation;
   v6 = [(_AFSpeechRecordingAlertBehaviorMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

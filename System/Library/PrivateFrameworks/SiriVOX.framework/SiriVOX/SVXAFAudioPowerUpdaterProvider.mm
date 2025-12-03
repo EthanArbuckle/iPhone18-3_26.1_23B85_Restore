@@ -1,16 +1,16 @@
 @interface SVXAFAudioPowerUpdaterProvider
-- (id)createWithProvider:(id)a3 queue:(id)a4 frequency:(int64_t)a5 delegate:(id)a6;
+- (id)createWithProvider:(id)provider queue:(id)queue frequency:(int64_t)frequency delegate:(id)delegate;
 @end
 
 @implementation SVXAFAudioPowerUpdaterProvider
 
-- (id)createWithProvider:(id)a3 queue:(id)a4 frequency:(int64_t)a5 delegate:(id)a6
+- (id)createWithProvider:(id)provider queue:(id)queue frequency:(int64_t)frequency delegate:(id)delegate
 {
   v9 = MEMORY[0x277CEF190];
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[v9 alloc] initWithProvider:v12 queue:v11 frequency:a5 delegate:v10];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  providerCopy = provider;
+  v13 = [[v9 alloc] initWithProvider:providerCopy queue:queueCopy frequency:frequency delegate:delegateCopy];
 
   return v13;
 }

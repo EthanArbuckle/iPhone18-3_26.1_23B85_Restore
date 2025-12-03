@@ -1,8 +1,8 @@
 @interface MSNPillDataSourceController
-- (MSNPillDataSourceController)initWithQueue:(id)a3;
+- (MSNPillDataSourceController)initWithQueue:(id)queue;
 - (MSNPillDataSourceProtocol)dataSource;
 - (void)dealloc;
-- (void)registerPillDataSource:(id)a3 forIdentifiers:(id)a4;
+- (void)registerPillDataSource:(id)source forIdentifiers:(id)identifiers;
 @end
 
 @implementation MSNPillDataSourceController
@@ -16,16 +16,16 @@
   [(MSNPillDataSourceController *)&v3 dealloc];
 }
 
-- (MSNPillDataSourceController)initWithQueue:(id)a3
+- (MSNPillDataSourceController)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = MSNPillDataSourceController;
   v6 = [(MSNPillDataSourceController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     objc_initWeak(&location, v7);
     queue = v7->_queue;
     v10[0] = MEMORY[0x277D85DD0];
@@ -76,62 +76,62 @@ void __45__MSNPillDataSourceController_initWithQueue___block_invoke_2(uint64_t a
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerPillDataSource:(id)a3 forIdentifiers:(id)a4
+- (void)registerPillDataSource:(id)source forIdentifiers:(id)identifiers
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSNPillDataSourceController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  sourceCopy = source;
+  identifiersCopy = identifiers;
+  queue = [(MSNPillDataSourceController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.mediasafetynet.pill" options:0];
   [(MSNPillDataSourceController *)self setXpcConnection:v9];
 
   v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2869B57C8];
-  v11 = [(MSNPillDataSourceController *)self xpcConnection];
-  [v11 setRemoteObjectInterface:v10];
+  xpcConnection = [(MSNPillDataSourceController *)self xpcConnection];
+  [xpcConnection setRemoteObjectInterface:v10];
 
   v12 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2869B6450];
-  v13 = [(MSNPillDataSourceController *)self xpcConnection];
-  [v13 setExportedInterface:v12];
+  xpcConnection2 = [(MSNPillDataSourceController *)self xpcConnection];
+  [xpcConnection2 setExportedInterface:v12];
 
-  v14 = [(MSNPillDataSourceController *)self xpcConnection];
-  [v14 setExportedObject:v6];
+  xpcConnection3 = [(MSNPillDataSourceController *)self xpcConnection];
+  [xpcConnection3 setExportedObject:sourceCopy];
 
-  v15 = [(MSNPillDataSourceController *)self xpcConnection];
-  v16 = [(MSNPillDataSourceController *)self queue];
-  [v15 _setQueue:v16];
+  xpcConnection4 = [(MSNPillDataSourceController *)self xpcConnection];
+  queue2 = [(MSNPillDataSourceController *)self queue];
+  [xpcConnection4 _setQueue:queue2];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __69__MSNPillDataSourceController_registerPillDataSource_forIdentifiers___block_invoke;
   v26[3] = &unk_2798A3D68;
   v27 = @"com.apple.mediasafetynet.pill";
-  v17 = [(MSNPillDataSourceController *)self xpcConnection];
-  [v17 setInterruptionHandler:v26];
+  xpcConnection5 = [(MSNPillDataSourceController *)self xpcConnection];
+  [xpcConnection5 setInterruptionHandler:v26];
 
   v25 = @"com.apple.mediasafetynet.pill";
   v18 = [(MSNPillDataSourceController *)self xpcConnection:MEMORY[0x277D85DD0]];
   [v18 setInvalidationHandler:&v24];
 
-  v19 = [(MSNPillDataSourceController *)self xpcConnection];
-  [v19 resume];
+  xpcConnection6 = [(MSNPillDataSourceController *)self xpcConnection];
+  [xpcConnection6 resume];
 
-  [(MSNPillDataSourceController *)self setDataSource:v6];
-  [(MSNPillDataSourceController *)self setIdentifiers:v7];
+  [(MSNPillDataSourceController *)self setDataSource:sourceCopy];
+  [(MSNPillDataSourceController *)self setIdentifiers:identifiersCopy];
   v20 = MSNLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v29 = v6;
+    v29 = sourceCopy;
     v30 = 2112;
-    v31 = v7;
+    v31 = identifiersCopy;
     _os_log_impl(&dword_258731000, v20, OS_LOG_TYPE_INFO, "Registering dataSource: (%@) with identifiers: %@", buf, 0x16u);
   }
 
-  v21 = [(MSNPillDataSourceController *)self xpcConnection];
-  v22 = [v21 remoteObjectProxy];
-  [v22 registerPillDataSourceForIdentifiers:v7];
+  xpcConnection7 = [(MSNPillDataSourceController *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection7 remoteObjectProxy];
+  [remoteObjectProxy registerPillDataSourceForIdentifiers:identifiersCopy];
 
   v23 = *MEMORY[0x277D85DE8];
 }

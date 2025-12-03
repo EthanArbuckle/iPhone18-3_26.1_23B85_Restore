@@ -1,14 +1,14 @@
 @interface SSDownloadStatus
 - (BOOL)isPausable;
-- (SSDownloadStatus)initWithXPCEncoding:(id)a3;
+- (SSDownloadStatus)initWithXPCEncoding:(id)encoding;
 - (float)percentComplete;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (void)dealloc;
-- (void)setOperationProgress:(id)a3;
-- (void)setOperationType:(int64_t)a3;
-- (void)setPausable:(BOOL)a3;
-- (void)setPercentComplete:(float)a3;
+- (void)setOperationProgress:(id)progress;
+- (void)setOperationType:(int64_t)type;
+- (void)setPausable:(BOOL)pausable;
+- (void)setPercentComplete:(float)complete;
 @end
 
 @implementation SSDownloadStatus
@@ -22,34 +22,34 @@
 
 - (BOOL)isPausable
 {
-  v2 = [(SSDownloadPhase *)self->_activePhase operationProgress];
+  operationProgress = [(SSDownloadPhase *)self->_activePhase operationProgress];
 
-  return [(SSOperationProgress *)v2 canPause];
+  return [(SSOperationProgress *)operationProgress canPause];
 }
 
 - (float)percentComplete
 {
-  v2 = [(SSDownloadPhase *)self->_activePhase operationProgress];
+  operationProgress = [(SSDownloadPhase *)self->_activePhase operationProgress];
   v3 = 0.0;
-  if (v2)
+  if (operationProgress)
   {
-    v4 = v2;
-    v5 = [(SSOperationProgress *)v2 normalizedCurrentValue];
-    v6 = [(SSOperationProgress *)v4 normalizedMaxValue];
-    if (v6 >= 1)
+    v4 = operationProgress;
+    normalizedCurrentValue = [(SSOperationProgress *)operationProgress normalizedCurrentValue];
+    normalizedMaxValue = [(SSOperationProgress *)v4 normalizedMaxValue];
+    if (normalizedMaxValue >= 1)
     {
-      return v5 / v6;
+      return normalizedCurrentValue / normalizedMaxValue;
     }
   }
 
   return v3;
 }
 
-- (void)setOperationProgress:(id)a3
+- (void)setOperationProgress:(id)progress
 {
-  if (a3)
+  if (progress)
   {
-    v5 = [[SSDownloadPhase alloc] initWithOperationProgress:a3];
+    v5 = [[SSDownloadPhase alloc] initWithOperationProgress:progress];
   }
 
   else
@@ -60,35 +60,35 @@
   self->_activePhase = v5;
 }
 
-- (void)setOperationType:(int64_t)a3
+- (void)setOperationType:(int64_t)type
 {
-  v4 = [(SSDownloadPhase *)self->_activePhase operationProgress];
+  operationProgress = [(SSDownloadPhase *)self->_activePhase operationProgress];
 
-  [(SSOperationProgress *)v4 setOperationType:a3];
+  [(SSOperationProgress *)operationProgress setOperationType:type];
 }
 
-- (void)setPausable:(BOOL)a3
+- (void)setPausable:(BOOL)pausable
 {
-  v3 = a3;
-  v4 = [(SSDownloadPhase *)self->_activePhase operationProgress];
+  pausableCopy = pausable;
+  operationProgress = [(SSDownloadPhase *)self->_activePhase operationProgress];
 
-  [(SSOperationProgress *)v4 setCanPause:v3];
+  [(SSOperationProgress *)operationProgress setCanPause:pausableCopy];
 }
 
-- (void)setPercentComplete:(float)a3
+- (void)setPercentComplete:(float)complete
 {
-  v4 = [(SSDownloadPhase *)self->_activePhase operationProgress];
-  v5 = ([(SSOperationProgress *)v4 normalizedMaxValue]* a3);
+  operationProgress = [(SSDownloadPhase *)self->_activePhase operationProgress];
+  v5 = ([(SSOperationProgress *)operationProgress normalizedMaxValue]* complete);
 
-  [(SSOperationProgress *)v4 setNormalizedCurrentValue:v5];
+  [(SSOperationProgress *)operationProgress setNormalizedCurrentValue:v5];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  *(v5 + 8) = [(SSDownloadPhase *)self->_activePhase copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  *(v5 + 8) = [(SSDownloadPhase *)self->_activePhase copyWithZone:zone];
   *(v5 + 16) = self->_contentRestricted;
-  *(v5 + 24) = [(NSError *)self->_error copyWithZone:a3];
+  *(v5 + 24) = [(NSError *)self->_error copyWithZone:zone];
   *(v5 + 32) = self->_failed;
   *(v5 + 33) = self->_paused;
   return v5;
@@ -105,20 +105,20 @@
   return v3;
 }
 
-- (SSDownloadStatus)initWithXPCEncoding:(id)a3
+- (SSDownloadStatus)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v7.receiver = self;
     v7.super_class = SSDownloadStatus;
     v5 = [(SSDownloadStatus *)&v7 init];
     if (v5)
     {
-      v5->_activePhase = [[SSDownloadPhase alloc] initWithXPCEncoding:xpc_dictionary_get_value(a3, "0")];
-      v5->_error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithXPCEncoding:{xpc_dictionary_get_value(a3, "1")}];
-      v5->_contentRestricted = xpc_dictionary_get_BOOL(a3, "4");
-      v5->_failed = xpc_dictionary_get_BOOL(a3, "2");
-      v5->_paused = xpc_dictionary_get_BOOL(a3, "3");
+      v5->_activePhase = [[SSDownloadPhase alloc] initWithXPCEncoding:xpc_dictionary_get_value(encoding, "0")];
+      v5->_error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithXPCEncoding:{xpc_dictionary_get_value(encoding, "1")}];
+      v5->_contentRestricted = xpc_dictionary_get_BOOL(encoding, "4");
+      v5->_failed = xpc_dictionary_get_BOOL(encoding, "2");
+      v5->_paused = xpc_dictionary_get_BOOL(encoding, "3");
     }
   }
 

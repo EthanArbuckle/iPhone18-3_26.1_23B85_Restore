@@ -1,5 +1,5 @@
 @interface CDMHelloWorldServiceGraph
-+ (id)getAssetsForSetup:(id)a3;
++ (id)getAssetsForSetup:(id)setup;
 + (id)requiredDAGServices;
 - (void)buildGraph;
 @end
@@ -24,7 +24,7 @@
   return v8;
 }
 
-+ (id)getAssetsForSetup:(id)a3
++ (id)getAssetsForSetup:(id)setup
 {
   v3 = objc_alloc_init(CDMAssetsInfo);
 
@@ -34,40 +34,40 @@
 - (void)buildGraph
 {
   objc_initWeak(location, self);
-  v3 = [(CDMServiceGraph *)self getGraphInput];
-  v4 = [v3 siriNLUTypeObj];
-  v5 = [(CDMServiceGraph *)self validateRequest:v4];
+  getGraphInput = [(CDMServiceGraph *)self getGraphInput];
+  siriNLUTypeObj = [getGraphInput siriNLUTypeObj];
+  v5 = [(CDMServiceGraph *)self validateRequest:siriNLUTypeObj];
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
   v17[3] = __Block_byref_object_copy__6456;
   v17[4] = __Block_byref_object_dispose__6457;
-  v18 = [v5 utterance];
-  v6 = [v4 requestId];
+  utterance = [v5 utterance];
+  requestId = [siriNLUTypeObj requestId];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __39__CDMHelloWorldServiceGraph_buildGraph__block_invoke;
   v16[3] = &unk_1E862F468;
   v16[4] = v17;
-  v7 = [(CDMServiceGraph *)self addNodeWithName:@"doDummyTokenize" requestId:v6 block:v16];
+  v7 = [(CDMServiceGraph *)self addNodeWithName:@"doDummyTokenize" requestId:requestId block:v16];
 
-  v8 = [v4 requestId];
+  requestId2 = [siriNLUTypeObj requestId];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __39__CDMHelloWorldServiceGraph_buildGraph__block_invoke_590;
   v14[3] = &unk_1E862F490;
   v14[4] = v17;
   objc_copyWeak(&v15, location);
-  v9 = [(CDMServiceGraph *)self addNodeWithName:@"mockErrorInGraph" requestId:v8 block:v14];
+  v9 = [(CDMServiceGraph *)self addNodeWithName:@"mockErrorInGraph" requestId:requestId2 block:v14];
 
-  v10 = [v4 requestId];
+  requestId3 = [siriNLUTypeObj requestId];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __39__CDMHelloWorldServiceGraph_buildGraph__block_invoke_2;
   v12[3] = &unk_1E862F490;
   v12[4] = v17;
   objc_copyWeak(&v13, location);
-  v11 = [(CDMServiceGraph *)self addNodeWithName:@"doDummyPostProcess" requestId:v10 block:v12];
+  v11 = [(CDMServiceGraph *)self addNodeWithName:@"doDummyPostProcess" requestId:requestId3 block:v12];
 
   [v11 addDependency:v9];
   [v11 addDependency:v7];

@@ -1,12 +1,12 @@
 @interface CKPackageItemTable
 + (id)dbProperties;
-- (id)copyItemsFromPackage:(id)a3 itemTable:(id)a4;
-- (id)enumerateItemsInSection:(unint64_t)a3 withBlock:(id)a4;
+- (id)copyItemsFromPackage:(id)package itemTable:(id)table;
+- (id)enumerateItemsInSection:(unint64_t)section withBlock:(id)block;
 - (id)resetSectionPlanning;
-- (id)updateItem:(id)a3 withSignature:(id)a4 size:(unint64_t)a5 paddedSize:(unint64_t)a6 itemID:(unint64_t)a7 sectionIndex:(id)a8;
-- (id)updateItemsAtIndexes:(id)a3 fileURLs:(id)a4;
-- (unint64_t)paddedSizeOfSectionAtIndex:(unint64_t)a3 error:(id *)a4;
-- (unint64_t)sizeOfSectionAtIndex:(unint64_t)a3 error:(id *)a4;
+- (id)updateItem:(id)item withSignature:(id)signature size:(unint64_t)size paddedSize:(unint64_t)paddedSize itemID:(unint64_t)d sectionIndex:(id)index;
+- (id)updateItemsAtIndexes:(id)indexes fileURLs:(id)ls;
+- (unint64_t)paddedSizeOfSectionAtIndex:(unint64_t)index error:(id *)error;
+- (unint64_t)sizeOfSectionAtIndex:(unint64_t)index error:(id *)error;
 @end
 
 @implementation CKPackageItemTable
@@ -63,33 +63,33 @@
   return v7;
 }
 
-- (unint64_t)sizeOfSectionAtIndex:(unint64_t)a3 error:(id *)a4
+- (unint64_t)sizeOfSectionAtIndex:(unint64_t)index error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13 = @"SECTION";
-  v6 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], a2, a3);
+  v6 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], a2, index);
   v14[0] = v6;
   v8 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v7, v14, &v13, 1);
 
-  v10 = objc_msgSend_sumOfProperty_inEntriesMatching_label_error_predicate_(self, v9, @"size", v8, off_1EA90EB08, a4, &unk_1EFA2E4A8);
+  v10 = objc_msgSend_sumOfProperty_inEntriesMatching_label_error_predicate_(self, v9, @"size", v8, off_1EA90EB08, error, &unk_1EFA2E4A8);
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (unint64_t)paddedSizeOfSectionAtIndex:(unint64_t)a3 error:(id *)a4
+- (unint64_t)paddedSizeOfSectionAtIndex:(unint64_t)index error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13 = @"SECTION";
-  v6 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], a2, a3);
+  v6 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], a2, index);
   v14[0] = v6;
   v8 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v7, v14, &v13, 1);
 
-  v10 = objc_msgSend_sumOfProperty_inEntriesMatching_label_error_predicate_(self, v9, @"paddedSize", v8, off_1EA90EB20, a4, &unk_1EFA2E4C8);
+  v10 = objc_msgSend_sumOfProperty_inEntriesMatching_label_error_predicate_(self, v9, @"paddedSize", v8, off_1EA90EB20, error, &unk_1EFA2E4C8);
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (id)updateItem:(id)a3 withSignature:(id)a4 size:(unint64_t)a5 paddedSize:(unint64_t)a6 itemID:(unint64_t)a7 sectionIndex:(id)a8
+- (id)updateItem:(id)item withSignature:(id)signature size:(unint64_t)size paddedSize:(unint64_t)paddedSize itemID:(unint64_t)d sectionIndex:(id)index
 {
   v34 = *MEMORY[0x1E69E9840];
   v29 = @"signature";
@@ -98,44 +98,44 @@
   v32 = @"itemID";
   v33 = @"sectionIndex";
   v14 = MEMORY[0x1E695DEC8];
-  v15 = a8;
-  v16 = a4;
-  v17 = a3;
+  indexCopy = index;
+  signatureCopy = signature;
+  itemCopy = item;
   v19 = objc_msgSend_arrayWithObjects_count_(v14, v18, &v29, 5);
-  objc_msgSend_setSignature_(v17, v20, v16, v29, v30, v31, v32, v33, v34);
+  objc_msgSend_setSignature_(itemCopy, v20, signatureCopy, v29, v30, v31, v32, v33, v34);
 
-  objc_msgSend_setSize_(v17, v21, a5);
-  objc_msgSend_setPaddedSize_(v17, v22, a6);
-  objc_msgSend_setItemID_(v17, v23, a7);
-  objc_msgSend_setSectionIndex_(v17, v24, v15);
+  objc_msgSend_setSize_(itemCopy, v21, size);
+  objc_msgSend_setPaddedSize_(itemCopy, v22, paddedSize);
+  objc_msgSend_setItemID_(itemCopy, v23, d);
+  objc_msgSend_setSectionIndex_(itemCopy, v24, indexCopy);
 
-  v26 = objc_msgSend_updateProperties_usingObject_label_(self, v25, v19, v17, off_1EA90EB38);
+  v26 = objc_msgSend_updateProperties_usingObject_label_(self, v25, v19, itemCopy, off_1EA90EB38);
 
   v27 = *MEMORY[0x1E69E9840];
 
   return v26;
 }
 
-- (id)updateItemsAtIndexes:(id)a3 fileURLs:(id)a4
+- (id)updateItemsAtIndexes:(id)indexes fileURLs:(id)ls
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  indexesCopy = indexes;
+  lsCopy = ls;
   v26[0] = @"fileURL";
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v8, v26, 1);
-  v12 = objc_msgSend_count(v6, v10, v11);
+  v12 = objc_msgSend_count(indexesCopy, v10, v11);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = sub_188520890;
   v20[3] = &unk_1E70BC108;
   v24 = v9;
   v25 = v12;
-  v21 = v6;
-  v22 = v7;
-  v23 = self;
+  v21 = indexesCopy;
+  v22 = lsCopy;
+  selfCopy = self;
   v13 = v9;
-  v14 = v7;
-  v15 = v6;
+  v14 = lsCopy;
+  v15 = indexesCopy;
   v17 = objc_msgSend_performInTransaction_(self, v16, v20);
 
   v18 = *MEMORY[0x1E69E9840];
@@ -143,32 +143,32 @@
   return v17;
 }
 
-- (id)enumerateItemsInSection:(unint64_t)a3 withBlock:(id)a4
+- (id)enumerateItemsInSection:(unint64_t)section withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_188520A38;
   v11[3] = &unk_1E70BC150;
-  v12 = v6;
-  v13 = a3;
+  v12 = blockCopy;
+  sectionCopy = section;
   v11[4] = self;
-  v7 = v6;
+  v7 = blockCopy;
   v9 = objc_msgSend_performInTransaction_(self, v8, v11);
 
   return v9;
 }
 
-- (id)copyItemsFromPackage:(id)a3 itemTable:(id)a4
+- (id)copyItemsFromPackage:(id)package itemTable:(id)table
 {
-  v5 = a4;
+  tableCopy = table;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_188520CC4;
   v10[3] = &unk_1E70BC178;
-  v11 = v5;
-  v12 = self;
-  v6 = v5;
+  v11 = tableCopy;
+  selfCopy = self;
+  v6 = tableCopy;
   v8 = objc_msgSend_performTransaction_(self, v7, v10);
 
   return v8;

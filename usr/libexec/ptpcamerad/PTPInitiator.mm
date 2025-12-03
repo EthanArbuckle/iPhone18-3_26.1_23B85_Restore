@@ -2,7 +2,7 @@
 - (BOOL)allowKeepAwake;
 - (BOOL)closeSession;
 - (BOOL)containsAccessRestrictedAppleDeviceStorage;
-- (BOOL)deleteFile:(id)a3;
+- (BOOL)deleteFile:(id)file;
 - (BOOL)iCloudPhotosEnabled;
 - (BOOL)initiateCapture;
 - (BOOL)isAccessRestrictedAppleDevice;
@@ -10,56 +10,56 @@
 - (BOOL)prioritizeSpeed;
 - (BOOL)readStorages;
 - (BOOL)resetDevice;
-- (BOOL)resetDevicePropertyValueForProperty:(unsigned __int16)a3;
+- (BOOL)resetDevicePropertyValueForProperty:(unsigned __int16)property;
 - (BOOL)sendHostMediaCapabilities;
 - (BOOL)sendHostSupportsGroupNotifications;
-- (BOOL)setDeviceDateTime:(id)a3;
-- (BOOL)setDevicePropertyValue:(id)a3 forProperty:(unsigned __int16)a4;
+- (BOOL)setDeviceDateTime:(id)time;
+- (BOOL)setDevicePropertyValue:(id)value forProperty:(unsigned __int16)property;
 - (BOOL)start;
 - (ICRemoteCameraDeviceNotificationProtocol)delegate;
 - (PTPDeviceInfoDataset)deviceInfo;
 - (double)timeOffset;
-- (id)cameraItemWithObjectID:(unint64_t)a3;
+- (id)cameraItemWithObjectID:(unint64_t)d;
 - (id)deviceDateTime;
-- (id)devicePropertyDescDatasetForProperty:(unsigned __int16)a3;
-- (id)devicePropertyValueForProperty:(unsigned __int16)a3;
-- (id)executeTransaction:(id)a3 timeout:(double)a4;
-- (id)fileSystemManifestForStorage:(unsigned int)a3 objectFormatCode:(unsigned int)a4 association:(unsigned int)a5;
-- (id)metadataFromFile:(id)a3;
+- (id)devicePropertyDescDatasetForProperty:(unsigned __int16)property;
+- (id)devicePropertyValueForProperty:(unsigned __int16)property;
+- (id)executeTransaction:(id)transaction timeout:(double)timeout;
+- (id)fileSystemManifestForStorage:(unsigned int)storage objectFormatCode:(unsigned int)code association:(unsigned int)association;
+- (id)metadataFromFile:(id)file;
 - (id)mobdevProps;
-- (id)mtpObjectRepData:(unsigned int)a3;
-- (id)mtpObjectRepMetadata:(unsigned int)a3;
-- (id)objectHandlesInStorage:(unsigned int)a3 objectFormatCode:(unsigned int)a4 association:(unsigned int)a5;
-- (id)partialDataFromFile:(id)a3 fromOffset:(unint64_t)a4 maxSize:(unint64_t)a5 actualSize:(unint64_t *)a6 useBuffer:(char *)a7;
+- (id)mtpObjectRepData:(unsigned int)data;
+- (id)mtpObjectRepMetadata:(unsigned int)metadata;
+- (id)objectHandlesInStorage:(unsigned int)storage objectFormatCode:(unsigned int)code association:(unsigned int)association;
+- (id)partialDataFromFile:(id)file fromOffset:(unint64_t)offset maxSize:(unint64_t)size actualSize:(unint64_t *)actualSize useBuffer:(char *)buffer;
 - (id)refreshAssignedDeviceName;
-- (id)storageForStorageID:(unsigned int)a3;
+- (id)storageForStorageID:(unsigned int)d;
 - (id)storageIDs;
-- (id)storageInfo:(unsigned int)a3;
-- (id)thumbDataFromFile:(id)a3 maxSize:(unsigned int)a4 actualSize:(unsigned int *)a5 useBuffer:(char *)a6;
-- (unint64_t)mtpObjectCompressedSize64:(unsigned int)a3;
-- (unint64_t)objectCompressedSize64:(unsigned int)a3;
-- (unsigned)copyPartialFile:(id)a3 fromOffset:(unint64_t)a4 size:(unint64_t)a5 to:(id)a6;
-- (unsigned)mtpObjectHeight:(unsigned int)a3;
-- (unsigned)mtpObjectWidth:(unsigned int)a3;
-- (unsigned)numObjectsInStorage:(unsigned int)a3 objectFormatCode:(unsigned int)a4 association:(unsigned int)a5;
+- (id)storageInfo:(unsigned int)info;
+- (id)thumbDataFromFile:(id)file maxSize:(unsigned int)size actualSize:(unsigned int *)actualSize useBuffer:(char *)buffer;
+- (unint64_t)mtpObjectCompressedSize64:(unsigned int)size64;
+- (unint64_t)objectCompressedSize64:(unsigned int)size64;
+- (unsigned)copyPartialFile:(id)file fromOffset:(unint64_t)offset size:(unint64_t)size to:(id)to;
+- (unsigned)mtpObjectHeight:(unsigned int)height;
+- (unsigned)mtpObjectWidth:(unsigned int)width;
+- (unsigned)numObjectsInStorage:(unsigned int)storage objectFormatCode:(unsigned int)code association:(unsigned int)association;
 - (unsigned)preflightCount;
 - (unsigned)ptpObjectCount;
-- (void)addMobdevProperties:(id)a3;
+- (void)addMobdevProperties:(id)properties;
 - (void)cancel;
-- (void)cancelTimerAndFireBlock:(id)a3;
+- (void)cancelTimerAndFireBlock:(id)block;
 - (void)dealloc;
-- (void)enumerateMTPPropertiesForObjectFormat:(id)a3;
-- (void)handleEvent:(id)a3;
-- (void)notifyDeviceReady:(unint64_t)a3;
+- (void)enumerateMTPPropertiesForObjectFormat:(id)format;
+- (void)handleEvent:(id)event;
+- (void)notifyDeviceReady:(unint64_t)ready;
 - (void)processUnhandledEvents;
 - (void)removeDevice;
-- (void)sendContentsNotificationWithOrder:(int64_t)a3 toConnections:(id)a4;
-- (void)sendPTPCommand:(id)a3 andPayload:(id)a4 withReply:(id)a5;
-- (void)sentData:(id)a3;
-- (void)sentData:(id)a3 responseCode:(id)a4;
+- (void)sendContentsNotificationWithOrder:(int64_t)order toConnections:(id)connections;
+- (void)sendPTPCommand:(id)command andPayload:(id)payload withReply:(id)reply;
+- (void)sentData:(id)data;
+- (void)sentData:(id)data responseCode:(id)code;
 - (void)setDeviceFinishedEnumerating;
 - (void)setDeviceIsEnumerating;
-- (void)startTimerWithInterval:(double)a3 andFireBlock:(id)a4;
+- (void)startTimerWithInterval:(double)interval andFireBlock:(id)block;
 - (void)stop;
 - (void)updateCatalogingDone;
 - (void)updateMobdevProps;
@@ -77,8 +77,8 @@
     v3 = [v4 stringByAppendingString:@".."];
   }
 
-  v5 = [(PTPInitiator *)self transport];
-  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%p | %16s - 0x%08X", self, "dealloc locID", [v5 locationID]);
+  transport = [(PTPInitiator *)self transport];
+  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%p | %16s - 0x%08X", self, "dealloc locID", [transport locationID]);
 
   v7 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
@@ -86,7 +86,7 @@
     v8 = v3;
     v9 = v7;
     *buf = 136446466;
-    v25 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v26 = 2114;
     v27 = v6;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -141,8 +141,8 @@
 
 - (BOOL)start
 {
-  v3 = [(PTPHostUSBTransport *)self->_transport startInitiator];
-  if (v3)
+  startInitiator = [(PTPHostUSBTransport *)self->_transport startInitiator];
+  if (startInitiator)
   {
     transport = self->_transport;
     objc_opt_class();
@@ -150,21 +150,21 @@
     {
       [(PTPInitiator *)self setDeviceVendorID:[(PTPHostUSBTransport *)self->_transport vendorID]];
       [(PTPInitiator *)self setDeviceProductID:[(PTPHostUSBTransport *)self->_transport productID]];
-      v5 = [(PTPHostUSBTransport *)self->_transport usbSerialNumberString];
-      [(PTPInitiator *)self setDeviceSerialNumberString:v5];
+      usbSerialNumberString = [(PTPHostUSBTransport *)self->_transport usbSerialNumberString];
+      [(PTPInitiator *)self setDeviceSerialNumberString:usbSerialNumberString];
     }
 
-    v6 = [(PTPInitiator *)self deviceSerialNumberString];
-    if ([v6 length] == 24 && -[PTPInitiator deviceVendorID](self, "deviceVendorID") == 1452)
+    deviceSerialNumberString = [(PTPInitiator *)self deviceSerialNumberString];
+    if ([deviceSerialNumberString length] == 24 && -[PTPInitiator deviceVendorID](self, "deviceVendorID") == 1452)
     {
-      v7 = [v6 substringWithRange:{0, 8}];
-      v8 = [v6 substringFromIndex:9];
+      v7 = [deviceSerialNumberString substringWithRange:{0, 8}];
+      v8 = [deviceSerialNumberString substringFromIndex:9];
       v9 = [NSString stringWithFormat:@"%@-%@", v7, v8];
       [(PTPInitiator *)self setDeviceSerialNumberString:v9];
     }
   }
 
-  return v3;
+  return startInitiator;
 }
 
 - (void)stop
@@ -177,8 +177,8 @@
     v3 = [v4 stringByAppendingString:@".."];
   }
 
-  v5 = [(PTPInitiator *)self transport];
-  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%p | %16s - 0x%08X", self, "stopping locID", [v5 locationID]);
+  transport = [(PTPInitiator *)self transport];
+  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%p | %16s - 0x%08X", self, "stopping locID", [transport locationID]);
 
   v7 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
@@ -186,7 +186,7 @@
     v8 = v3;
     v9 = v7;
     *buf = 136446466;
-    v11 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v12 = 2114;
     v13 = v6;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -215,41 +215,41 @@
     v4 = [v3 initWithOperationCode:36867 transactionID:? dataPhaseInfo:?];
     v5 = [[PTPTransaction alloc] initWithOperationRequestPacket:v4 txData:0 rxData:0 dataExpected:1];
     v6 = [(PTPInitiator *)self executeTransaction:v5 timeout:_gPTPDefaultTimeOutInSeconds];
-    v7 = [(PTPTransaction *)v5 rxDataBuffer];
-    if (v6 && [v6 responseCode] == 8193 && objc_msgSend(v7, "length"))
+    rxDataBuffer = [(PTPTransaction *)v5 rxDataBuffer];
+    if (v6 && [v6 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
     {
-      [v7 headerOffsetBytes];
+      [rxDataBuffer headerOffsetBytes];
       v8 = CopyUnicodeStringWithLengthByteFromBuffer();
       [(PTPInitiator *)self setUserAssignedDeviceName:v8];
     }
 
-    v9 = [(PTPInitiator *)self userAssignedDeviceName];
+    userAssignedDeviceName = [(PTPInitiator *)self userAssignedDeviceName];
   }
 
   else
   {
-    v9 = 0;
+    userAssignedDeviceName = 0;
   }
 
-  return v9;
+  return userAssignedDeviceName;
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(PTPInitiator *)self delegate];
+  eventCopy = event;
+  delegate = [(PTPInitiator *)self delegate];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_100005904;
   v11 = &unk_10002C900;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = eventCopy;
+  v6 = eventCopy;
   v7 = [NSBlockOperation blockOperationWithBlock:&v8];
-  [v5 addInteractiveOperation:{v7, v8, v9, v10, v11, v12}];
+  [delegate addInteractiveOperation:{v7, v8, v9, v10, v11, selfCopy}];
 }
 
-- (id)cameraItemWithObjectID:(unint64_t)a3
+- (id)cameraItemWithObjectID:(unint64_t)d
 {
   v13 = 0u;
   v14 = 0u;
@@ -271,10 +271,10 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 cameraFileWithObjectID:{a3, v13}];
+        v10 = [v9 cameraFileWithObjectID:{d, v13}];
         if (!v10)
         {
-          v10 = [v9 cameraFolderWithObjectID:a3];
+          v10 = [v9 cameraFolderWithObjectID:d];
           if (!v10)
           {
             continue;
@@ -308,8 +308,8 @@ LABEL_13:
 
 - (void)processUnhandledEvents
 {
-  v4 = [(PTPInitiator *)self transport];
-  if ([v4 connected])
+  transport = [(PTPInitiator *)self transport];
+  if ([transport connected])
   {
     v3 = [(NSMutableArray *)self->_eventQueue count];
 
@@ -318,28 +318,28 @@ LABEL_13:
       return;
     }
 
-    v4 = [(NSMutableArray *)self->_eventQueue objectAtIndex:0];
-    [(NSMutableArray *)self->_eventQueue removeObject:v4];
+    transport = [(NSMutableArray *)self->_eventQueue objectAtIndex:0];
+    [(NSMutableArray *)self->_eventQueue removeObject:transport];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(PTPInitiator *)self performSelector:"handleEvent:" withObject:v4 afterDelay:0.0];
+      [(PTPInitiator *)self performSelector:"handleEvent:" withObject:transport afterDelay:0.0];
     }
   }
 }
 
-- (id)executeTransaction:(id)a3 timeout:(double)a4
+- (id)executeTransaction:(id)transaction timeout:(double)timeout
 {
-  v6 = a3;
+  transactionCopy = transaction;
   [(PTPInitiator *)self setRequestPending:1];
   [(PTPInitiator *)self setCancelOp:0];
-  v7 = [v6 requestPacket];
-  v8 = [v7 operationCode];
+  requestPacket = [transactionCopy requestPacket];
+  operationCode = [requestPacket operationCode];
 
-  v10 = v8 - 4097 < 2 || v8 == 36875 || v8 == 36880;
+  v10 = operationCode - 4097 < 2 || operationCode == 36875 || operationCode == 36880;
   if (v10 || self->_sessionOpen)
   {
-    v11 = [(PTPHostUSBTransport *)self->_transport sendTransaction:v6 timeout:a4];
+    v11 = [(PTPHostUSBTransport *)self->_transport sendTransaction:transactionCopy timeout:timeout];
   }
 
   else
@@ -375,8 +375,8 @@ LABEL_13:
 - (void)removeDevice
 {
   v7 = @"locationID";
-  v3 = [(PTPInitiator *)self transport];
-  v4 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v3 locationID]);
+  transport = [(PTPInitiator *)self transport];
+  v4 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [transport locationID]);
   v8 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
 
@@ -385,11 +385,11 @@ LABEL_13:
   [v6 postNotificationName:@"PTPRemoteCameraResetSession" object:0 userInfo:v5];
 }
 
-- (void)sentData:(id)a3
+- (void)sentData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   __ICOSLogCreate();
-  v4 = [NSString stringWithFormat:@"sentData: <PTPDataPacket %p> called\n", v3];
+  dataCopy = [NSString stringWithFormat:@"sentData: <PTPDataPacket %p> called\n", dataCopy];
 
   if (__ICLogTypeEnabled())
   {
@@ -397,20 +397,20 @@ LABEL_13:
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v7 = v4;
+      v7 = dataCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
   }
 }
 
-- (void)sentData:(id)a3 responseCode:(id)a4
+- (void)sentData:(id)data responseCode:(id)code
 {
-  v5 = a4;
-  v6 = a3;
+  codeCopy = code;
+  dataCopy = data;
   __ICOSLogCreate();
-  v7 = [v5 intValue];
+  intValue = [codeCopy intValue];
 
-  v8 = [NSString stringWithFormat:@"sentData: <PTPDataPacket %p><ResponseCode %d> called\n", v6, v7];
+  v8 = [NSString stringWithFormat:@"sentData: <PTPDataPacket %p><ResponseCode %d> called\n", dataCopy, intValue];
 
   if (__ICLogTypeEnabled())
   {
@@ -452,10 +452,10 @@ LABEL_13:
     v9 = v7;
     v7 = [(PTPInitiator *)self executeTransaction:v6 timeout:5.0];
 
-    v10 = [(PTPTransaction *)v6 rxDataBuffer];
+    rxDataBuffer = [(PTPTransaction *)v6 rxDataBuffer];
     if (v7)
     {
-      if ([v7 responseCode] == 8193 && objc_msgSend(v10, "length"))
+      if ([v7 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
       {
         break;
       }
@@ -463,7 +463,7 @@ LABEL_13:
 
     [(PTPInitiator *)self closeSession];
 LABEL_12:
-    [v10 setLength:0];
+    [rxDataBuffer setLength:0];
 
     if (!--v8 || self->_deviceInfo)
     {
@@ -472,7 +472,7 @@ LABEL_12:
   }
 
   v11 = [PTPDeviceInfoDataset alloc];
-  v12 = +[NSMutableData dataWithBytes:length:](NSMutableData, "dataWithBytes:length:", [v10 headerOffsetBytes], objc_msgSend(v10, "length"));
+  v12 = +[NSMutableData dataWithBytes:length:](NSMutableData, "dataWithBytes:length:", [rxDataBuffer headerOffsetBytes], objc_msgSend(rxDataBuffer, "length"));
   v13 = [v11 initWithMutableData:v12];
   v14 = self->_deviceInfo;
   self->_deviceInfo = v13;
@@ -488,16 +488,16 @@ LABEL_14:
     [(PTPInitiator *)self updateMobdevProps];
   }
 
-  v15 = [(PTPDeviceInfoDataset *)self->_deviceInfo vendorExtensionDescription];
-  v16 = [v15 isEqualToString:&stru_10002D6D0];
+  vendorExtensionDescription = [(PTPDeviceInfoDataset *)self->_deviceInfo vendorExtensionDescription];
+  v16 = [vendorExtensionDescription isEqualToString:&stru_10002D6D0];
 
   if ((v16 & 1) == 0)
   {
     v33 = v6;
     v17 = [NSCharacterSet characterSetWithCharactersInString:@"&^"];
-    v18 = [(PTPDeviceInfoDataset *)self->_deviceInfo vendorExtensionDescription];
+    vendorExtensionDescription2 = [(PTPDeviceInfoDataset *)self->_deviceInfo vendorExtensionDescription];
     v32 = v17;
-    v19 = [v18 componentsSeparatedByCharactersInSet:v17];
+    v19 = [vendorExtensionDescription2 componentsSeparatedByCharactersInSet:v17];
 
     v36 = 0u;
     v37 = 0u;
@@ -589,13 +589,13 @@ LABEL_38:
   return v3;
 }
 
-- (void)addMobdevProperties:(id)a3
+- (void)addMobdevProperties:(id)properties
 {
-  if (a3)
+  if (properties)
   {
-    v4 = a3;
+    propertiesCopy = properties;
     os_unfair_lock_lock(&self->_mobdevPropertiesLock);
-    [(NSMutableDictionary *)self->_mobdevProperties addEntriesFromDictionary:v4];
+    [(NSMutableDictionary *)self->_mobdevProperties addEntriesFromDictionary:propertiesCopy];
 
     os_unfair_lock_unlock(&self->_mobdevPropertiesLock);
   }
@@ -603,13 +603,13 @@ LABEL_38:
 
 - (void)updateMobdevProps
 {
-  v3 = [(PTPInitiator *)self mobdevProps];
-  v4 = [v3 count];
+  mobdevProps = [(PTPInitiator *)self mobdevProps];
+  v4 = [mobdevProps count];
 
   if (!v4)
   {
-    v5 = [(PTPInitiator *)self transport];
-    -[PTPInitiator updatePropertiesOfMobileDeviceWithLocationID:](self, "updatePropertiesOfMobileDeviceWithLocationID:", [v5 locationID]);
+    transport = [(PTPInitiator *)self transport];
+    -[PTPInitiator updatePropertiesOfMobileDeviceWithLocationID:](self, "updatePropertiesOfMobileDeviceWithLocationID:", [transport locationID]);
   }
 }
 
@@ -624,18 +624,18 @@ LABEL_38:
   return self->_icplState == 1;
 }
 
-- (id)devicePropertyDescDatasetForProperty:(unsigned __int16)a3
+- (id)devicePropertyDescDatasetForProperty:(unsigned __int16)property
 {
   v4 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
   v5 = [v4 initWithOperationCode:4116 transactionID:? dataPhaseInfo:? parameter1:?];
   v6 = [[PTPTransaction alloc] initWithOperationRequestPacket:v5 txData:0 rxData:0 dataExpected:1];
   v7 = [(PTPInitiator *)self executeTransaction:v6 timeout:_gPTPDefaultTimeOutInSeconds];
-  v8 = [(PTPTransaction *)v6 rxDataBuffer];
-  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(v8, "length"))
+  rxDataBuffer = [(PTPTransaction *)v6 rxDataBuffer];
+  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
   {
     v9 = [PTPDevicePropDescDataset alloc];
-    v10 = +[NSMutableData dataWithBytes:length:](NSMutableData, "dataWithBytes:length:", [v8 headerOffsetBytes], objc_msgSend(v8, "length"));
+    v10 = +[NSMutableData dataWithBytes:length:](NSMutableData, "dataWithBytes:length:", [rxDataBuffer headerOffsetBytes], objc_msgSend(rxDataBuffer, "length"));
     v11 = [v9 initWithMutableData:v10];
   }
 
@@ -647,17 +647,17 @@ LABEL_38:
   return v11;
 }
 
-- (id)devicePropertyValueForProperty:(unsigned __int16)a3
+- (id)devicePropertyValueForProperty:(unsigned __int16)property
 {
   v4 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
   v5 = [v4 initWithOperationCode:4117 transactionID:? dataPhaseInfo:? parameter1:?];
   v6 = [[PTPTransaction alloc] initWithOperationRequestPacket:v5 txData:0 rxData:0 dataExpected:1];
   v7 = [(PTPInitiator *)self executeTransaction:v6 timeout:_gPTPDefaultTimeOutInSeconds];
-  v8 = [(PTPTransaction *)v6 rxDataBuffer];
-  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(v8, "length"))
+  rxDataBuffer = [(PTPTransaction *)v6 rxDataBuffer];
+  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
   {
-    v9 = [v8 copy];
+    v9 = [rxDataBuffer copy];
   }
 
   else
@@ -668,13 +668,13 @@ LABEL_38:
   return v9;
 }
 
-- (BOOL)setDevicePropertyValue:(id)a3 forProperty:(unsigned __int16)a4
+- (BOOL)setDevicePropertyValue:(id)value forProperty:(unsigned __int16)property
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
   v7 = [v6 initWithOperationCode:4118 transactionID:? dataPhaseInfo:? parameter1:?];
-  v8 = [[PTPDataPacket alloc] initWithOperationCode:4118 transactionID:self->_transactionID andData:v5];
+  v8 = [[PTPDataPacket alloc] initWithOperationCode:4118 transactionID:self->_transactionID andData:valueCopy];
 
   v9 = [[PTPTransaction alloc] initWithOperationRequestPacket:v7 txData:v8 rxData:0 dataExpected:0];
   v10 = [(PTPInitiator *)self executeTransaction:v9 timeout:_gPTPDefaultTimeOutInSeconds];
@@ -692,7 +692,7 @@ LABEL_38:
   return v12;
 }
 
-- (BOOL)resetDevicePropertyValueForProperty:(unsigned __int16)a3
+- (BOOL)resetDevicePropertyValueForProperty:(unsigned __int16)property
 {
   v4 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
@@ -734,33 +734,33 @@ LABEL_38:
   return v7;
 }
 
-- (void)startTimerWithInterval:(double)a3 andFireBlock:(id)a4
+- (void)startTimerWithInterval:(double)interval andFireBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(PTPInitiator *)self timerQueue];
+  blockCopy = block;
+  timerQueue = [(PTPInitiator *)self timerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100008034;
   block[3] = &unk_10002C978;
-  v11 = a3;
+  intervalCopy = interval;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = blockCopy;
+  v8 = blockCopy;
+  dispatch_sync(timerQueue, block);
 }
 
-- (void)cancelTimerAndFireBlock:(id)a3
+- (void)cancelTimerAndFireBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PTPInitiator *)self timerQueue];
+  blockCopy = block;
+  timerQueue = [(PTPInitiator *)self timerQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100008304;
   v7[3] = &unk_10002C870;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_sync(timerQueue, v7);
 }
 
 - (void)setDeviceIsEnumerating
@@ -846,11 +846,11 @@ LABEL_38:
   v4 = [v3 initWithOperationCode:4100 transactionID:? dataPhaseInfo:?];
   v5 = [[PTPTransaction alloc] initWithOperationRequestPacket:v4 txData:0 rxData:0 dataExpected:1];
   v6 = [(PTPInitiator *)self executeTransaction:v5 timeout:_gPTPDefaultTimeOutInSeconds];
-  v7 = [(PTPTransaction *)v5 rxDataBuffer];
-  if (v6 && [v6 responseCode] == 8193 && objc_msgSend(v7, "length"))
+  rxDataBuffer = [(PTPTransaction *)v5 rxDataBuffer];
+  if (v6 && [v6 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
   {
-    [v7 headerOffsetBytes];
-    [v7 length];
+    [rxDataBuffer headerOffsetBytes];
+    [rxDataBuffer length];
     v8 = CopyArrayOfHandlesFromBufferMaxSize();
   }
 
@@ -862,18 +862,18 @@ LABEL_38:
   return v8;
 }
 
-- (id)storageInfo:(unsigned int)a3
+- (id)storageInfo:(unsigned int)info
 {
   v4 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
   v5 = [v4 initWithOperationCode:4101 transactionID:? dataPhaseInfo:? parameter1:?];
   v6 = [[PTPTransaction alloc] initWithOperationRequestPacket:v5 txData:0 rxData:0 dataExpected:1];
   v7 = [(PTPInitiator *)self executeTransaction:v6 timeout:_gPTPDefaultTimeOutInSeconds];
-  v8 = [(PTPTransaction *)v6 rxDataBuffer];
-  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(v8, "length"))
+  rxDataBuffer = [(PTPTransaction *)v6 rxDataBuffer];
+  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
   {
     v9 = [PTPStorageInfoDataset alloc];
-    v10 = +[NSMutableData dataWithBytes:length:](NSMutableData, "dataWithBytes:length:", [v8 headerOffsetBytes], objc_msgSend(v8, "length"));
+    v10 = +[NSMutableData dataWithBytes:length:](NSMutableData, "dataWithBytes:length:", [rxDataBuffer headerOffsetBytes], objc_msgSend(rxDataBuffer, "length"));
     v11 = [v9 initWithMutableData:v10];
   }
 
@@ -947,9 +947,9 @@ LABEL_38:
     {
       v17 = v11;
       v18 = v16;
-      v19 = [(__CFString *)v11 UTF8String];
+      uTF8String = [(__CFString *)v11 UTF8String];
       *buf = 136446466;
-      v53 = v19;
+      v53 = uTF8String;
       v54 = 2114;
       v55 = v15;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -976,16 +976,16 @@ LABEL_38:
             objc_enumerationMutation(v40);
           }
 
-          v24 = [*(*(&v43 + 1) + 8 * j) longValue];
-          if (v24)
+          longValue = [*(*(&v43 + 1) + 8 * j) longValue];
+          if (longValue)
           {
-            v25 = [[PTPCameraStorage alloc] initWithStorageID:v24 initiator:self];
-            v26 = [(PTPInitiator *)self storageInfo:v24];
+            v25 = [[PTPCameraStorage alloc] initWithStorageID:longValue initiator:self];
+            v26 = [(PTPInitiator *)self storageInfo:longValue];
             [(PTPCameraStorage *)v25 setInfo:v26];
 
-            v27 = [(PTPCameraStorage *)v25 prime];
+            prime = [(PTPCameraStorage *)v25 prime];
             [(NSMutableArray *)self->_storages addObject:v25];
-            v28 = [(PTPCameraStorage *)v25 enumerateContent:v27 withOrder:self->_enumerationOrder];
+            v28 = [(PTPCameraStorage *)v25 enumerateContent:prime withOrder:self->_enumerationOrder];
             __ICOSLogCreate();
             v29 = @"(prime)ptpObjectCount";
             if ([@"(prime)ptpObjectCount" length] >= 0x15)
@@ -994,15 +994,15 @@ LABEL_38:
               v29 = [v30 stringByAppendingString:@".."];
             }
 
-            v31 = [NSString stringWithFormat:@"0x%08X:%lu", v24, [(PTPCameraStorage *)v25 ptpObjectCount]];
+            v31 = [NSString stringWithFormat:@"0x%08X:%lu", longValue, [(PTPCameraStorage *)v25 ptpObjectCount]];
             v32 = _gICOSLog;
             if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
             {
               v33 = v29;
               v34 = v32;
-              v35 = [(__CFString *)v29 UTF8String];
+              uTF8String2 = [(__CFString *)v29 UTF8String];
               *buf = 136446466;
-              v53 = v35;
+              v53 = uTF8String2;
               v54 = 2114;
               v55 = v31;
               _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1034,7 +1034,7 @@ LABEL_38:
   return v36;
 }
 
-- (id)storageForStorageID:(unsigned int)a3
+- (id)storageForStorageID:(unsigned int)d
 {
   v12 = 0u;
   v13 = 0u;
@@ -1056,7 +1056,7 @@ LABEL_38:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 storageID] == a3)
+        if ([v9 storageID] == d)
         {
           v10 = v9;
           goto LABEL_11;
@@ -1079,7 +1079,7 @@ LABEL_11:
   return v10;
 }
 
-- (unsigned)numObjectsInStorage:(unsigned int)a3 objectFormatCode:(unsigned int)a4 association:(unsigned int)a5
+- (unsigned)numObjectsInStorage:(unsigned int)storage objectFormatCode:(unsigned int)code association:(unsigned int)association
 {
   v6 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
@@ -1089,27 +1089,27 @@ LABEL_11:
   v10 = v9;
   if (v9 && [v9 responseCode] == 8193)
   {
-    v11 = [v10 parameter1];
+    parameter1 = [v10 parameter1];
   }
 
   else
   {
-    v11 = 0;
+    parameter1 = 0;
   }
 
-  return v11;
+  return parameter1;
 }
 
-- (id)objectHandlesInStorage:(unsigned int)a3 objectFormatCode:(unsigned int)a4 association:(unsigned int)a5
+- (id)objectHandlesInStorage:(unsigned int)storage objectFormatCode:(unsigned int)code association:(unsigned int)association
 {
   v6 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
   v7 = [v6 initWithOperationCode:4103 transactionID:? dataPhaseInfo:? parameter1:? parameter2:? parameter3:?];
   v8 = [[PTPTransaction alloc] initWithOperationRequestPacket:v7 txData:0 rxData:0 dataExpected:1];
   v9 = [(PTPInitiator *)self executeTransaction:v8 timeout:_gPTPDefaultTimeOutInSeconds];
-  v10 = [(PTPTransaction *)v8 rxDataBuffer];
-  v11 = v10;
-  if (v9 && [v10 length] && (objc_msgSend(v9, "responseCode") == 8193 || objc_msgSend(v9, "responseCode") == 8201))
+  rxDataBuffer = [(PTPTransaction *)v8 rxDataBuffer];
+  v11 = rxDataBuffer;
+  if (v9 && [rxDataBuffer length] && (objc_msgSend(v9, "responseCode") == 8193 || objc_msgSend(v9, "responseCode") == 8201))
   {
     [v11 headerOffsetBytes];
     [v11 length];
@@ -1124,38 +1124,38 @@ LABEL_11:
   return v12;
 }
 
-- (void)enumerateMTPPropertiesForObjectFormat:(id)a3
+- (void)enumerateMTPPropertiesForObjectFormat:(id)format
 {
-  v4 = a3;
-  v5 = [(PTPInitiator *)self deviceInfo];
-  v6 = [v5 operationsSupported];
+  formatCopy = format;
+  deviceInfo = [(PTPInitiator *)self deviceInfo];
+  operationsSupported = [deviceInfo operationsSupported];
   v7 = [NSNumber numberWithInt:38913];
-  if (([v6 containsObject:v7] & 1) == 0)
+  if (([operationsSupported containsObject:v7] & 1) == 0)
   {
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [(PTPInitiator *)self mtpProperties];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  mtpProperties = [(PTPInitiator *)self mtpProperties];
+  v9 = [mtpProperties objectForKeyedSubscript:formatCopy];
 
   if (!v9)
   {
     v10 = [PTPOperationRequestPacket alloc];
     transactionID = self->_transactionID;
     self->_transactionID = transactionID + 1;
-    v5 = [v10 initWithOperationCode:38913 transactionID:transactionID dataPhaseInfo:1 parameter1:{objc_msgSend(v4, "unsignedIntegerValue")}];
-    v12 = [[PTPTransaction alloc] initWithOperationRequestPacket:v5 txData:0 rxData:0 dataExpected:1];
+    deviceInfo = [v10 initWithOperationCode:38913 transactionID:transactionID dataPhaseInfo:1 parameter1:{objc_msgSend(formatCopy, "unsignedIntegerValue")}];
+    v12 = [[PTPTransaction alloc] initWithOperationRequestPacket:deviceInfo txData:0 rxData:0 dataExpected:1];
     v13 = [(PTPInitiator *)self executeTransaction:v12 timeout:_gPTPDefaultTimeOutInSeconds];
-    v14 = [(PTPTransaction *)v12 rxDataBuffer];
-    if (v13 && [v13 responseCode] == 8193 && objc_msgSend(v14, "length"))
+    rxDataBuffer = [(PTPTransaction *)v12 rxDataBuffer];
+    if (v13 && [v13 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
     {
-      [v14 headerOffsetBytes];
-      [v14 length];
+      [rxDataBuffer headerOffsetBytes];
+      [rxDataBuffer length];
       v15 = CopyArrayOfUnsignedShortsFromBufferMaxSize();
-      v16 = [(PTPInitiator *)self mtpProperties];
-      [v16 setObject:v15 forKeyedSubscript:v4];
+      mtpProperties2 = [(PTPInitiator *)self mtpProperties];
+      [mtpProperties2 setObject:v15 forKeyedSubscript:formatCopy];
     }
 
     goto LABEL_9;
@@ -1164,17 +1164,17 @@ LABEL_9:
 LABEL_10:
 }
 
-- (unint64_t)objectCompressedSize64:(unsigned int)a3
+- (unint64_t)objectCompressedSize64:(unsigned int)size64
 {
   v4 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
   v5 = [v4 initWithOperationCode:36870 transactionID:? dataPhaseInfo:? parameter1:? parameter2:? parameter3:?];
   v6 = [[PTPTransaction alloc] initWithOperationRequestPacket:v5 txData:0 rxData:0 dataExpected:1];
   v7 = [(PTPInitiator *)self executeTransaction:v6 timeout:_gPTPDefaultTimeOutInSeconds];
-  v8 = [(PTPTransaction *)v6 rxDataBuffer];
-  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(v8, "length"))
+  rxDataBuffer = [(PTPTransaction *)v6 rxDataBuffer];
+  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
   {
-    [v8 headerOffsetBytes];
+    [rxDataBuffer headerOffsetBytes];
     UInt64 = ReadUInt64();
   }
 
@@ -1186,23 +1186,23 @@ LABEL_10:
   return UInt64;
 }
 
-- (unint64_t)mtpObjectCompressedSize64:(unsigned int)a3
+- (unint64_t)mtpObjectCompressedSize64:(unsigned int)size64
 {
   v4 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
   v5 = [v4 initWithOperationCode:38915 transactionID:? dataPhaseInfo:? parameter1:? parameter2:?];
   v6 = [[PTPTransaction alloc] initWithOperationRequestPacket:v5 txData:0 rxData:0 dataExpected:1];
   v7 = [(PTPInitiator *)self executeTransaction:v6 timeout:_gPTPDefaultTimeOutInSeconds];
-  v8 = [(PTPTransaction *)v6 rxDataBuffer];
-  if (!v7 || [v7 responseCode] != 8193 || !objc_msgSend(v8, "length"))
+  rxDataBuffer = [(PTPTransaction *)v6 rxDataBuffer];
+  if (!v7 || [v7 responseCode] != 8193 || !objc_msgSend(rxDataBuffer, "length"))
   {
     goto LABEL_8;
   }
 
-  [v8 headerOffsetBytes];
-  if ([v8 length] != 4)
+  [rxDataBuffer headerOffsetBytes];
+  if ([rxDataBuffer length] != 4)
   {
-    if ([v8 length] == 8)
+    if ([rxDataBuffer length] == 8)
     {
       UInt64 = ReadUInt64();
       goto LABEL_9;
@@ -1219,17 +1219,17 @@ LABEL_9:
   return UInt64;
 }
 
-- (id)mtpObjectRepData:(unsigned int)a3
+- (id)mtpObjectRepData:(unsigned int)data
 {
   v4 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
   v5 = [v4 initWithOperationCode:38915 transactionID:? dataPhaseInfo:? parameter1:? parameter2:?];
   v6 = [[PTPTransaction alloc] initWithOperationRequestPacket:v5 txData:0 rxData:0 dataExpected:1];
   v7 = [(PTPInitiator *)self executeTransaction:v6 timeout:_gPTPDefaultTimeOutInSeconds];
-  v8 = [(PTPTransaction *)v6 rxDataBuffer];
-  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(v8, "length"))
+  rxDataBuffer = [(PTPTransaction *)v6 rxDataBuffer];
+  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
   {
-    v9 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v8 headerOffsetBytes], ReadUInt32());
+    v9 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [rxDataBuffer headerOffsetBytes], ReadUInt32());
   }
 
   else
@@ -1240,17 +1240,17 @@ LABEL_9:
   return v9;
 }
 
-- (id)mtpObjectRepMetadata:(unsigned int)a3
+- (id)mtpObjectRepMetadata:(unsigned int)metadata
 {
   v4 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
   v5 = [v4 initWithOperationCode:38915 transactionID:? dataPhaseInfo:? parameter1:? parameter2:?];
   v6 = [[PTPTransaction alloc] initWithOperationRequestPacket:v5 txData:0 rxData:0 dataExpected:1];
   v7 = [(PTPInitiator *)self executeTransaction:v6 timeout:_gPTPDefaultTimeOutInSeconds];
-  v8 = [(PTPTransaction *)v6 rxDataBuffer];
-  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(v8, "length"))
+  rxDataBuffer = [(PTPTransaction *)v6 rxDataBuffer];
+  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
   {
-    bytes = [v8 headerOffsetBytes];
+    bytes = [rxDataBuffer headerOffsetBytes];
     UInt32 = ReadUInt32();
     v10 = CFDataCreateWithBytesNoCopy(0, bytes, UInt32, kCFAllocatorNull);
     v11 = CGImageSourceCreateWithData(v10, 0);
@@ -1265,17 +1265,17 @@ LABEL_9:
   return v12;
 }
 
-- (unsigned)mtpObjectHeight:(unsigned int)a3
+- (unsigned)mtpObjectHeight:(unsigned int)height
 {
   v4 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
   v5 = [v4 initWithOperationCode:38915 transactionID:? dataPhaseInfo:? parameter1:? parameter2:?];
   v6 = [[PTPTransaction alloc] initWithOperationRequestPacket:v5 txData:0 rxData:0 dataExpected:1];
   v7 = [(PTPInitiator *)self executeTransaction:v6 timeout:_gPTPDefaultTimeOutInSeconds];
-  v8 = [(PTPTransaction *)v6 rxDataBuffer];
-  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(v8, "length"))
+  rxDataBuffer = [(PTPTransaction *)v6 rxDataBuffer];
+  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
   {
-    [v8 headerOffsetBytes];
+    [rxDataBuffer headerOffsetBytes];
     UInt32 = ReadUInt32();
   }
 
@@ -1287,17 +1287,17 @@ LABEL_9:
   return UInt32;
 }
 
-- (unsigned)mtpObjectWidth:(unsigned int)a3
+- (unsigned)mtpObjectWidth:(unsigned int)width
 {
   v4 = [PTPOperationRequestPacket alloc];
   ++self->_transactionID;
   v5 = [v4 initWithOperationCode:38915 transactionID:? dataPhaseInfo:? parameter1:? parameter2:?];
   v6 = [[PTPTransaction alloc] initWithOperationRequestPacket:v5 txData:0 rxData:0 dataExpected:1];
   v7 = [(PTPInitiator *)self executeTransaction:v6 timeout:_gPTPDefaultTimeOutInSeconds];
-  v8 = [(PTPTransaction *)v6 rxDataBuffer];
-  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(v8, "length"))
+  rxDataBuffer = [(PTPTransaction *)v6 rxDataBuffer];
+  if (v7 && [v7 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
   {
-    [v8 headerOffsetBytes];
+    [rxDataBuffer headerOffsetBytes];
     UInt32 = ReadUInt32();
   }
 
@@ -1309,7 +1309,7 @@ LABEL_9:
   return UInt32;
 }
 
-- (id)fileSystemManifestForStorage:(unsigned int)a3 objectFormatCode:(unsigned int)a4 association:(unsigned int)a5
+- (id)fileSystemManifestForStorage:(unsigned int)storage objectFormatCode:(unsigned int)code association:(unsigned int)association
 {
   v6 = objc_alloc_init(NSMutableArray);
   v7 = [PTPOperationRequestPacket alloc];
@@ -1317,19 +1317,19 @@ LABEL_9:
   v8 = [v7 initWithOperationCode:4131 transactionID:? dataPhaseInfo:? parameter1:? parameter2:? parameter3:?];
   v9 = [[PTPTransaction alloc] initWithOperationRequestPacket:v8 txData:0 rxData:0 dataExpected:1];
   v10 = [(PTPInitiator *)self executeTransaction:v9 timeout:_gPTPDefaultTimeOutInSeconds];
-  v11 = [(PTPTransaction *)v9 rxDataBuffer];
+  rxDataBuffer = [(PTPTransaction *)v9 rxDataBuffer];
   if (v10)
   {
     if ([v10 responseCode] == 8193)
     {
-      v12 = [v11 length];
+      v12 = [rxDataBuffer length];
       if (v12 >= 1)
       {
         v13 = v12;
         v42 = v9;
         v43 = v8;
         v44 = v6;
-        v14 = *[v11 mutableBytes];
+        v14 = *[rxDataBuffer mutableBytes];
         __ICOSLogCreate();
         v15 = @"FilesystemMaifest";
         if ([@"FilesystemMaifest" length] >= 0x15)
@@ -1338,7 +1338,7 @@ LABEL_9:
           v15 = [v16 stringByAppendingString:@".."];
         }
 
-        v41 = v11;
+        v41 = rxDataBuffer;
         v17 = [NSString stringWithFormat:@"Num Objects: %X", v14];
         v18 = _gICOSLog;
         if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
@@ -1346,7 +1346,7 @@ LABEL_9:
           v19 = v15;
           v20 = v18;
           *buf = 136446466;
-          v46 = [(__CFString *)v15 UTF8String];
+          uTF8String = [(__CFString *)v15 UTF8String];
           v47 = 2114;
           v48 = v17;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1382,9 +1382,9 @@ LABEL_9:
             {
               v28 = v24;
               v29 = v27;
-              v30 = [(__CFString *)v24 UTF8String];
+              uTF8String2 = [(__CFString *)v24 UTF8String];
               *buf = 136446466;
-              v46 = v30;
+              uTF8String = uTF8String2;
               v47 = 2114;
               v48 = v26;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1406,9 +1406,9 @@ LABEL_9:
             {
               v37 = v33;
               v38 = v36;
-              v39 = [(__CFString *)v33 UTF8String];
+              uTF8String3 = [(__CFString *)v33 UTF8String];
               *buf = 136446466;
-              v46 = v39;
+              uTF8String = uTF8String3;
               v47 = 2114;
               v48 = v35;
               _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1423,7 +1423,7 @@ LABEL_9:
         v8 = v43;
         v6 = v44;
         v9 = v42;
-        v11 = v41;
+        rxDataBuffer = v41;
       }
     }
   }
@@ -1437,23 +1437,23 @@ LABEL_9:
   return v6;
 }
 
-- (id)partialDataFromFile:(id)a3 fromOffset:(unint64_t)a4 maxSize:(unint64_t)a5 actualSize:(unint64_t *)a6 useBuffer:(char *)a7
+- (id)partialDataFromFile:(id)file fromOffset:(unint64_t)offset maxSize:(unint64_t)size actualSize:(unint64_t *)actualSize useBuffer:(char *)buffer
 {
-  v9 = a3;
-  v10 = [(PTPInitiator *)self deviceInfo];
-  v11 = [(PTPInitiator *)self deviceInfo];
-  v12 = [v11 operationsSupported];
+  fileCopy = file;
+  deviceInfo = [(PTPInitiator *)self deviceInfo];
+  deviceInfo2 = [(PTPInitiator *)self deviceInfo];
+  operationsSupported = [deviceInfo2 operationsSupported];
   v13 = [NSNumber numberWithUnsignedShort:36871];
-  if ([v12 containsObject:v13] && -[PTPInitiator deviceVendorID](self, "deviceVendorID") == 1452)
+  if ([operationsSupported containsObject:v13] && -[PTPInitiator deviceVendorID](self, "deviceVendorID") == 1452)
   {
-    v14 = v10;
+    v14 = deviceInfo;
 
 LABEL_5:
-    v18 = sub_100015240(a5);
+    v18 = sub_100015240(size);
     v19 = [PTPWrappedBytes alloc];
-    if (a7)
+    if (buffer)
     {
-      v20 = [v19 initWithBytes:a7 capacity:v18];
+      v20 = [v19 initWithBytes:buffer capacity:v18];
     }
 
     else
@@ -1463,21 +1463,21 @@ LABEL_5:
 
     v24 = v20;
     v29 = v14;
-    if ([(PTPInitiator *)self copyPartialFile:v9 fromOffset:a4 size:a5 to:v20]== 8193)
+    if ([(PTPInitiator *)self copyPartialFile:fileCopy fromOffset:offset size:size to:v20]== 8193)
     {
       v30 = [v24 length];
-      *a6 = v30;
+      *actualSize = v30;
       if (v30)
       {
-        v31 = [v24 headerOffsetBytes];
-        if (a7)
+        headerOffsetBytes = [v24 headerOffsetBytes];
+        if (buffer)
         {
-          [NSData dataWithBytesNoCopy:v31 length:*a6 freeWhenDone:0];
+          [NSData dataWithBytesNoCopy:headerOffsetBytes length:*actualSize freeWhenDone:0];
         }
 
         else
         {
-          +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", v31, [v24 length]);
+          +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", headerOffsetBytes, [v24 length]);
         }
         v28 = ;
       }
@@ -1491,34 +1491,34 @@ LABEL_5:
     else
     {
       v28 = 0;
-      *a6 = 0;
+      *actualSize = 0;
     }
 
     goto LABEL_21;
   }
 
-  v14 = v10;
-  v15 = [v10 operationsSupported];
+  v14 = deviceInfo;
+  operationsSupported2 = [deviceInfo operationsSupported];
   v16 = [NSNumber numberWithUnsignedShort:4123];
-  v17 = [v15 containsObject:v16];
+  v17 = [operationsSupported2 containsObject:v16];
 
   if (v17)
   {
     goto LABEL_5;
   }
 
-  v21 = [v9 size];
+  v21 = [fileCopy size];
   v22 = [PTPOperationRequestPacket alloc];
   transactionID = self->_transactionID;
   self->_transactionID = transactionID + 1;
-  v24 = [v22 initWithOperationCode:4105 transactionID:transactionID dataPhaseInfo:1 parameter1:{objc_msgSend(v9, "objHandle")}];
+  v24 = [v22 initWithOperationCode:4105 transactionID:transactionID dataPhaseInfo:1 parameter1:{objc_msgSend(fileCopy, "objHandle")}];
   v25 = [[PTPTransaction alloc] initWithOperationRequestPacket:v24 txData:0 rxData:0 dataExpected:1];
   v26 = [(PTPInitiator *)self executeTransaction:v25 timeout:_gPTPDefaultTimeOutInSeconds];
-  v27 = [(PTPTransaction *)v25 rxDataBuffer];
-  if (v26 && [v26 responseCode] == 8193 && objc_msgSend(v27, "length") == v21)
+  rxDataBuffer = [(PTPTransaction *)v25 rxDataBuffer];
+  if (v26 && [v26 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length") == v21)
   {
-    memcpy(a7 + 12, [v27 headerOffsetBytes] + a4, a5);
-    *a6 = a5;
+    memcpy(buffer + 12, [rxDataBuffer headerOffsetBytes] + offset, size);
+    *actualSize = size;
   }
 
   v28 = 0;
@@ -1528,27 +1528,27 @@ LABEL_21:
   return v28;
 }
 
-- (unsigned)copyPartialFile:(id)a3 fromOffset:(unint64_t)a4 size:(unint64_t)a5 to:(id)a6
+- (unsigned)copyPartialFile:(id)file fromOffset:(unint64_t)offset size:(unint64_t)size to:(id)to
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(PTPInitiator *)self deviceInfo];
-  if ([v12 standardVersion] < 0x6E)
+  fileCopy = file;
+  toCopy = to;
+  deviceInfo = [(PTPInitiator *)self deviceInfo];
+  if ([deviceInfo standardVersion] < 0x6E)
   {
 
 LABEL_5:
-    v17 = [(PTPInitiator *)self deviceInfo];
-    v18 = [v17 operationsSupported];
+    deviceInfo2 = [(PTPInitiator *)self deviceInfo];
+    operationsSupported = [deviceInfo2 operationsSupported];
     v19 = [NSNumber numberWithUnsignedShort:38337];
-    v20 = [v18 containsObject:v19];
+    v20 = [operationsSupported containsObject:v19];
 
     if (v20)
     {
       v21 = [PTPOperationRequestPacket alloc];
       transactionID = self->_transactionID;
       self->_transactionID = transactionID + 1;
-      LODWORD(v31) = a5;
-      v16 = [v21 initWithOperationCode:38337 transactionID:transactionID dataPhaseInfo:1 parameter1:objc_msgSend(v10 parameter2:"objHandle") parameter3:a4 parameter4:{HIDWORD(a4), v31}];
+      LODWORD(v31) = size;
+      v16 = [v21 initWithOperationCode:38337 transactionID:transactionID dataPhaseInfo:1 parameter1:objc_msgSend(fileCopy parameter2:"objHandle") parameter3:offset parameter4:{HIDWORD(offset), v31}];
     }
 
     else
@@ -1556,15 +1556,15 @@ LABEL_5:
       v23 = [PTPOperationRequestPacket alloc];
       v24 = self->_transactionID;
       self->_transactionID = v24 + 1;
-      v16 = [v23 initWithOperationCode:4123 transactionID:v24 dataPhaseInfo:1 parameter1:objc_msgSend(v10 parameter2:"objHandle") parameter3:{a4, a5}];
+      v16 = [v23 initWithOperationCode:4123 transactionID:v24 dataPhaseInfo:1 parameter1:objc_msgSend(fileCopy parameter2:"objHandle") parameter3:{offset, size}];
     }
 
     goto LABEL_8;
   }
 
-  v13 = [(PTPInitiator *)self deviceVendorID];
+  deviceVendorID = [(PTPInitiator *)self deviceVendorID];
 
-  if (v13 != 1452)
+  if (deviceVendorID != 1452)
   {
     goto LABEL_5;
   }
@@ -1572,44 +1572,44 @@ LABEL_5:
   v14 = [PTPOperationRequestPacket alloc];
   v15 = self->_transactionID;
   self->_transactionID = v15 + 1;
-  v16 = [v14 initWithOperationCode:36871 transactionID:v15 dataPhaseInfo:1 parameter1:objc_msgSend(v10 parameter2:"objHandle") parameter3:a4 parameter4:HIDWORD(a4) parameter5:a5];
+  v16 = [v14 initWithOperationCode:36871 transactionID:v15 dataPhaseInfo:1 parameter1:objc_msgSend(fileCopy parameter2:"objHandle") parameter3:offset parameter4:HIDWORD(offset) parameter5:size];
 LABEL_8:
   v25 = v16;
-  v26 = [[PTPTransaction alloc] initWithOperationRequestPacket:v16 txData:0 rxData:v11 dataExpected:1];
+  v26 = [[PTPTransaction alloc] initWithOperationRequestPacket:v16 txData:0 rxData:toCopy dataExpected:1];
   v27 = [(PTPInitiator *)self executeTransaction:v26 timeout:_gPTPDefaultTimeOutInSeconds];
   v28 = v27;
   if (v27)
   {
-    v29 = [v27 responseCode];
+    responseCode = [v27 responseCode];
   }
 
   else
   {
-    v29 = 8194;
+    responseCode = 8194;
   }
 
-  return v29;
+  return responseCode;
 }
 
-- (id)thumbDataFromFile:(id)a3 maxSize:(unsigned int)a4 actualSize:(unsigned int *)a5 useBuffer:(char *)a6
+- (id)thumbDataFromFile:(id)file maxSize:(unsigned int)size actualSize:(unsigned int *)actualSize useBuffer:(char *)buffer
 {
-  v8 = a3;
-  if ([v8 hasThumbnail])
+  fileCopy = file;
+  if ([fileCopy hasThumbnail])
   {
     v9 = [PTPOperationRequestPacket alloc];
     transactionID = self->_transactionID;
     self->_transactionID = transactionID + 1;
-    v11 = [v9 initWithOperationCode:4106 transactionID:transactionID dataPhaseInfo:1 parameter1:{objc_msgSend(v8, "objHandle")}];
+    v11 = [v9 initWithOperationCode:4106 transactionID:transactionID dataPhaseInfo:1 parameter1:{objc_msgSend(fileCopy, "objHandle")}];
     v12 = [[PTPTransaction alloc] initWithOperationRequestPacket:v11 txData:0 rxData:0 dataExpected:1];
     v13 = [(PTPInitiator *)self executeTransaction:v12 timeout:_gPTPDefaultTimeOutInSeconds];
-    v14 = [(PTPTransaction *)v12 rxDataBuffer];
+    rxDataBuffer = [(PTPTransaction *)v12 rxDataBuffer];
     if (v13 && [v13 responseCode] == 8193)
     {
-      v15 = [v14 length];
-      *a5 = v15;
+      v15 = [rxDataBuffer length];
+      *actualSize = v15;
       if (v15)
       {
-        v16 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v14 headerOffsetBytes], objc_msgSend(v14, "length"));
+        v16 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [rxDataBuffer headerOffsetBytes], objc_msgSend(rxDataBuffer, "length"));
       }
 
       else
@@ -1621,7 +1621,7 @@ LABEL_8:
     else
     {
       v16 = 0;
-      *a5 = 0;
+      *actualSize = 0;
     }
   }
 
@@ -1633,21 +1633,21 @@ LABEL_8:
   return v16;
 }
 
-- (id)metadataFromFile:(id)a3
+- (id)metadataFromFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = [PTPOperationRequestPacket alloc];
   transactionID = self->_transactionID;
   self->_transactionID = transactionID + 1;
-  v7 = [v4 objHandle];
+  objHandle = [fileCopy objHandle];
 
-  v8 = [v5 initWithOperationCode:36873 transactionID:transactionID dataPhaseInfo:1 parameter1:v7];
+  v8 = [v5 initWithOperationCode:36873 transactionID:transactionID dataPhaseInfo:1 parameter1:objHandle];
   v9 = [[PTPTransaction alloc] initWithOperationRequestPacket:v8 txData:0 rxData:0 dataExpected:1];
   v10 = [(PTPInitiator *)self executeTransaction:v9 timeout:_gPTPDefaultTimeOutInSeconds];
-  v11 = [(PTPTransaction *)v9 rxDataBuffer];
-  if (v10 && [v10 responseCode] == 8193 && objc_msgSend(v11, "length"))
+  rxDataBuffer = [(PTPTransaction *)v9 rxDataBuffer];
+  if (v10 && [v10 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
   {
-    v12 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v11 headerOffsetBytes], objc_msgSend(v11, "length"));
+    v12 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [rxDataBuffer headerOffsetBytes], objc_msgSend(rxDataBuffer, "length"));
   }
 
   else
@@ -1679,29 +1679,29 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)deleteFile:(id)a3
+- (BOOL)deleteFile:(id)file
 {
-  v4 = a3;
-  v5 = [(PTPInitiator *)self deviceInfo];
-  v6 = [v5 operationsSupported];
+  fileCopy = file;
+  deviceInfo = [(PTPInitiator *)self deviceInfo];
+  operationsSupported = [deviceInfo operationsSupported];
   v7 = [NSNumber numberWithUnsignedShort:4107];
-  v8 = [v6 containsObject:v7];
+  v8 = [operationsSupported containsObject:v7];
 
   if (v8)
   {
     v9 = [PTPOperationRequestPacket alloc];
     transactionID = self->_transactionID;
     self->_transactionID = transactionID + 1;
-    v11 = [v9 initWithOperationCode:4107 transactionID:transactionID dataPhaseInfo:1 parameter1:{objc_msgSend(v4, "objHandle")}];
+    v11 = [v9 initWithOperationCode:4107 transactionID:transactionID dataPhaseInfo:1 parameter1:{objc_msgSend(fileCopy, "objHandle")}];
     v12 = [[PTPTransaction alloc] initWithOperationRequestPacket:v11 txData:0 rxData:0 dataExpected:0];
     v13 = [(PTPInitiator *)self executeTransaction:v12 timeout:_gPTPDefaultTimeOutInSeconds];
     v14 = v13;
     if (v13 && [v13 responseCode] == 8193)
     {
-      v15 = -[PTPInitiator storageForStorageID:](self, "storageForStorageID:", [v4 storageID]);
+      v15 = -[PTPInitiator storageForStorageID:](self, "storageForStorageID:", [fileCopy storageID]);
       if (v15)
       {
-        [v15 removeCameraFileFromIndex:{objc_msgSend(v4, "objHandle")}];
+        [v15 removeCameraFileFromIndex:{objc_msgSend(fileCopy, "objHandle")}];
       }
 
       v16 = 1;
@@ -1723,10 +1723,10 @@ LABEL_8:
 
 - (id)deviceDateTime
 {
-  v3 = [(PTPInitiator *)self deviceInfo];
-  v4 = [v3 devicePropertiesSupported];
+  deviceInfo = [(PTPInitiator *)self deviceInfo];
+  devicePropertiesSupported = [deviceInfo devicePropertiesSupported];
   v5 = [NSNumber numberWithUnsignedShort:20497];
-  v6 = [v4 containsObject:v5];
+  v6 = [devicePropertiesSupported containsObject:v5];
 
   if (v6)
   {
@@ -1735,10 +1735,10 @@ LABEL_8:
     v8 = [v7 initWithOperationCode:4117 transactionID:? dataPhaseInfo:? parameter1:?];
     v9 = [[PTPTransaction alloc] initWithOperationRequestPacket:v8 txData:0 rxData:0 dataExpected:1];
     v10 = [(PTPInitiator *)self executeTransaction:v9 timeout:_gPTPDefaultTimeOutInSeconds];
-    v11 = [(PTPTransaction *)v9 rxDataBuffer];
-    if (v10 && [v10 responseCode] == 8193 && objc_msgSend(v11, "length"))
+    rxDataBuffer = [(PTPTransaction *)v9 rxDataBuffer];
+    if (v10 && [v10 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
     {
-      v20 = [v11 headerOffsetBytes];
+      headerOffsetBytes = [rxDataBuffer headerOffsetBytes];
       v12 = CopyUnicodeStringWithLengthByteFromBuffer();
       if (v12)
       {
@@ -1782,11 +1782,11 @@ LABEL_8:
 
 - (double)timeOffset
 {
-  v2 = [(PTPInitiator *)self deviceDateTime];
-  v3 = v2;
-  if (v2)
+  deviceDateTime = [(PTPInitiator *)self deviceDateTime];
+  v3 = deviceDateTime;
+  if (deviceDateTime)
   {
-    [v2 timeIntervalSinceNow];
+    [deviceDateTime timeIntervalSinceNow];
     v5 = v4;
   }
 
@@ -1798,19 +1798,19 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)setDeviceDateTime:(id)a3
+- (BOOL)setDeviceDateTime:(id)time
 {
-  v4 = a3;
-  v5 = [(PTPInitiator *)self deviceInfo];
-  v6 = [v5 devicePropertiesSupported];
+  timeCopy = time;
+  deviceInfo = [(PTPInitiator *)self deviceInfo];
+  devicePropertiesSupported = [deviceInfo devicePropertiesSupported];
   v7 = [NSNumber numberWithUnsignedShort:20497];
-  v8 = [v6 containsObject:v7];
+  v8 = [devicePropertiesSupported containsObject:v7];
 
   if (v8)
   {
-    if (v4)
+    if (timeCopy)
     {
-      v9 = v4;
+      v9 = timeCopy;
     }
 
     else
@@ -1837,27 +1837,27 @@ LABEL_8:
   return v10;
 }
 
-- (void)sendPTPCommand:(id)a3 andPayload:(id)a4 withReply:(id)a5
+- (void)sendPTPCommand:(id)command andPayload:(id)payload withReply:(id)reply
 {
-  v24 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PTPInitiator *)self delegate];
-  [v10 holdPowerAssertion];
+  payloadCopy = payload;
+  replyCopy = reply;
+  commandCopy = command;
+  delegate = [(PTPInitiator *)self delegate];
+  [delegate holdPowerAssertion];
 
   v11 = +[NSMutableDictionary dictionary];
   v12 = [PTPOperationRequestPacket alloc];
-  v13 = [v9 bytes];
+  bytes = [commandCopy bytes];
 
-  v14 = [v12 initWithUSBBuffer:v13];
-  v15 = [v24 length];
+  v14 = [v12 initWithUSBBuffer:bytes];
+  v15 = [payloadCopy length];
   transactionID = self->_transactionID;
   if (v15)
   {
     [v14 setTransactionID:transactionID];
     [v14 setDataPhaseInfo:2];
-    v17 = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v14 transactionID:"operationCode") andData:{self->_transactionID, v24}];
-    v18 = [[PTPTransaction alloc] initWithOperationRequestPacket:v14 txData:v17 rxData:0 dataExpected:0];
+    rxDataBuffer = [[PTPDataPacket alloc] initWithOperationCode:objc_msgSend(v14 transactionID:"operationCode") andData:{self->_transactionID, payloadCopy}];
+    v18 = [[PTPTransaction alloc] initWithOperationRequestPacket:v14 txData:rxDataBuffer rxData:0 dataExpected:0];
     v19 = [(PTPInitiator *)self executeTransaction:v18 timeout:_gPTPDefaultTimeOutInSeconds];
     ++self->_transactionID;
   }
@@ -1869,24 +1869,24 @@ LABEL_8:
     [v14 setDataPhaseInfo:1];
     v18 = [[PTPTransaction alloc] initWithOperationRequestPacket:v14 txData:0 rxData:0 dataExpected:1];
     v19 = [(PTPInitiator *)self executeTransaction:v18 timeout:_gPTPDefaultTimeOutInSeconds];
-    v17 = [(PTPTransaction *)v18 rxDataBuffer];
-    if (v19 && [v19 responseCode] == 8193 && objc_msgSend(v17, "length"))
+    rxDataBuffer = [(PTPTransaction *)v18 rxDataBuffer];
+    if (v19 && [v19 responseCode] == 8193 && objc_msgSend(rxDataBuffer, "length"))
     {
-      v23 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v17 headerOffsetBytes], objc_msgSend(v17, "length"));
+      v23 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [rxDataBuffer headerOffsetBytes], objc_msgSend(rxDataBuffer, "length"));
       [v11 setObject:v23 forKey:@"ICPTPDataInBuffer"];
     }
   }
 
   if (v19)
   {
-    v20 = [v19 contentForUSB];
-    v21 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v20 bytes], objc_msgSend(v20, "length"));
+    contentForUSB = [v19 contentForUSB];
+    v21 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [contentForUSB bytes], objc_msgSend(contentForUSB, "length"));
     [v11 setObject:v21 forKey:@"ICPTPResponseBuffer"];
   }
 
-  v8[2](v8, v11);
-  v22 = [(PTPInitiator *)self delegate];
-  [v22 releasePowerAssertion];
+  replyCopy[2](replyCopy, v11);
+  delegate2 = [(PTPInitiator *)self delegate];
+  [delegate2 releasePowerAssertion];
 }
 
 - (BOOL)isAccessRestrictedAppleDevice
@@ -1903,7 +1903,7 @@ LABEL_8:
   if (!self->_sessionOpen)
   {
     v4 = dispatch_semaphore_create(0);
-    v5 = [(PTPInitiator *)self delegate];
+    delegate = [(PTPInitiator *)self delegate];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10000BFA4;
@@ -1913,7 +1913,7 @@ LABEL_8:
     v6 = v4;
     v11 = v6;
     v7 = [NSBlockOperation blockOperationWithBlock:v10];
-    [v5 addInteractiveOperation:v7];
+    [delegate addInteractiveOperation:v7];
 
     v8 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(v6, v8);
@@ -1941,9 +1941,9 @@ LABEL_9:
 - (BOOL)prioritizeSpeed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained prioritizeSpeed];
+  prioritizeSpeed = [WeakRetained prioritizeSpeed];
 
-  return v3;
+  return prioritizeSpeed;
 }
 
 - (void)updateCatalogingDone
@@ -1994,9 +1994,9 @@ LABEL_11:
   [(PTPInitiator *)self setCatalogingDone:v8];
 }
 
-- (void)notifyDeviceReady:(unint64_t)a3
+- (void)notifyDeviceReady:(unint64_t)ready
 {
-  if (a3)
+  if (ready)
   {
     [NSNumber numberWithUnsignedInteger:?];
   }
@@ -2011,10 +2011,10 @@ LABEL_11:
   v20[0] = @"ICDeviceIsReady";
   v20[1] = v4;
   v5 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
-  v6 = [(PTPInitiator *)self delegate];
-  v7 = [(PTPInitiator *)self delegate];
-  v8 = [v7 allConnections];
-  [v6 sendStatusNotification:v5 toConnections:v8];
+  delegate = [(PTPInitiator *)self delegate];
+  delegate2 = [(PTPInitiator *)self delegate];
+  allConnections = [delegate2 allConnections];
+  [delegate sendStatusNotification:v5 toConnections:allConnections];
 
   __ICOSLogCreate();
   v9 = @"notifyDeviceReady";
@@ -2031,27 +2031,27 @@ LABEL_11:
     v13 = v9;
     v14 = v12;
     *buf = 136446466;
-    v16 = [(__CFString *)v9 UTF8String];
+    uTF8String = [(__CFString *)v9 UTF8String];
     v17 = 2114;
     v18 = v11;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 }
 
-- (void)sendContentsNotificationWithOrder:(int64_t)a3 toConnections:(id)a4
+- (void)sendContentsNotificationWithOrder:(int64_t)order toConnections:(id)connections
 {
-  v6 = a4;
-  v7 = [(PTPInitiator *)self delegate];
+  connectionsCopy = connections;
+  delegate = [(PTPInitiator *)self delegate];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000CB9C;
   v10[3] = &unk_10002C9C8;
   v10[4] = self;
-  v11 = v6;
-  v12 = a3;
-  v8 = v6;
+  v11 = connectionsCopy;
+  orderCopy = order;
+  v8 = connectionsCopy;
   v9 = [NSBlockOperation blockOperationWithBlock:v10];
-  [v7 addInteractiveOperation:v9];
+  [delegate addInteractiveOperation:v9];
 }
 
 - (unsigned)ptpObjectCount
@@ -2134,18 +2134,18 @@ LABEL_11:
 
 - (BOOL)sendHostSupportsGroupNotifications
 {
-  v3 = [(PTPInitiator *)self deviceInfo];
-  v4 = [v3 operationsSupported];
+  deviceInfo = [(PTPInitiator *)self deviceInfo];
+  operationsSupported = [deviceInfo operationsSupported];
   v5 = [NSNumber numberWithUnsignedShort:36880];
-  if (![v4 containsObject:v5])
+  if (![operationsSupported containsObject:v5])
   {
 
     return 0;
   }
 
-  v6 = [(PTPInitiator *)self deviceVendorID];
+  deviceVendorID = [(PTPInitiator *)self deviceVendorID];
 
-  if (v6 != 1452)
+  if (deviceVendorID != 1452)
   {
     return 0;
   }
@@ -2182,7 +2182,7 @@ LABEL_11:
       v17 = v13;
       v18 = v16;
       v20 = 136446466;
-      v21 = [(__CFString *)v13 UTF8String];
+      uTF8String = [(__CFString *)v13 UTF8String];
       v22 = 2114;
       v23 = v15;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v20, 0x16u);
@@ -2201,18 +2201,18 @@ LABEL_11:
 
 - (BOOL)sendHostMediaCapabilities
 {
-  v3 = [(PTPInitiator *)self deviceInfo];
-  v4 = [v3 operationsSupported];
+  deviceInfo = [(PTPInitiator *)self deviceInfo];
+  operationsSupported = [deviceInfo operationsSupported];
   v5 = [NSNumber numberWithUnsignedShort:36875];
-  if (![v4 containsObject:v5])
+  if (![operationsSupported containsObject:v5])
   {
 
     return 0;
   }
 
-  v6 = [(PTPInitiator *)self deviceVendorID];
+  deviceVendorID = [(PTPInitiator *)self deviceVendorID];
 
-  if (v6 != 1452)
+  if (deviceVendorID != 1452)
   {
     return 0;
   }
@@ -2223,8 +2223,8 @@ LABEL_11:
   v8 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
   v9 = [PFMediaCapabilities capabilitiesForCurrentDeviceWithOptions:v8];
 
-  v10 = [v9 opaqueRepresentation];
-  if (v10)
+  opaqueRepresentation = [v9 opaqueRepresentation];
+  if (opaqueRepresentation)
   {
     if (self->_sessionOpen)
     {
@@ -2246,20 +2246,20 @@ LABEL_11:
       v14 = [v15 stringByAppendingString:@".."];
     }
 
-    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Sending Host Capabilities: [%lu]", [v10 length]);
+    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Sending Host Capabilities: [%lu]", [opaqueRepresentation length]);
     v17 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v14;
       v19 = v17;
       *buf = 136446466;
-      v33 = [(__CFString *)v14 UTF8String];
+      uTF8String = [(__CFString *)v14 UTF8String];
       v34 = 2114;
       v35 = v16;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    v20 = [[PTPDataPacket alloc] initWithOperationCode:36875 transactionID:transactionID andData:v10];
+    v20 = [[PTPDataPacket alloc] initWithOperationCode:36875 transactionID:transactionID andData:opaqueRepresentation];
     v21 = [[PTPTransaction alloc] initWithOperationRequestPacket:v13 txData:v20 rxData:0 dataExpected:0];
     v22 = [(PTPInitiator *)self executeTransaction:v21 timeout:_gPTPDefaultTimeOutInSeconds];
     v23 = v22;
@@ -2279,9 +2279,9 @@ LABEL_11:
       {
         v28 = v24;
         v29 = v27;
-        v30 = [(__CFString *)v24 UTF8String];
+        uTF8String2 = [(__CFString *)v24 UTF8String];
         *buf = 136446466;
-        v33 = v30;
+        uTF8String = uTF8String2;
         v34 = 2114;
         v35 = v26;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);

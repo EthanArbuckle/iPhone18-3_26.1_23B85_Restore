@@ -1,28 +1,28 @@
 @interface VUIOverlayView
-+ (id)overlayViewFromMediaItem:(id)a3 overlayType:(int64_t)a4 existingView:(id)a5;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
++ (id)overlayViewFromMediaItem:(id)item overlayType:(int64_t)type existingView:(id)view;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (UIEdgeInsets)_overlayPadding;
 - (UIEdgeInsets)padding;
-- (void)setBadgeViewWrappers:(id)a3;
-- (void)setGradientLayer:(id)a3;
-- (void)setGradientView:(id)a3;
-- (void)setOverlayType:(int64_t)a3;
-- (void)setProgressView:(id)a3;
-- (void)setTextBadge:(id)a3;
-- (void)setTitleLabel:(id)a3;
+- (void)setBadgeViewWrappers:(id)wrappers;
+- (void)setGradientLayer:(id)layer;
+- (void)setGradientView:(id)view;
+- (void)setOverlayType:(int64_t)type;
+- (void)setProgressView:(id)view;
+- (void)setTextBadge:(id)badge;
+- (void)setTitleLabel:(id)label;
 @end
 
 @implementation VUIOverlayView
 
-+ (id)overlayViewFromMediaItem:(id)a3 overlayType:(int64_t)a4 existingView:(id)a5
++ (id)overlayViewFromMediaItem:(id)item overlayType:(int64_t)type existingView:(id)view
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a3;
+  viewCopy = view;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
+    v9 = viewCopy;
   }
 
   else
@@ -32,19 +32,19 @@
   }
 
   v11 = v9;
-  [(VUIOverlayView *)v9 setOverlayType:a4];
-  v12 = [v8 bookmark];
-  [v12 floatValue];
+  [(VUIOverlayView *)v9 setOverlayType:type];
+  bookmark = [itemCopy bookmark];
+  [bookmark floatValue];
   v14 = v13;
 
-  v15 = [v8 duration];
-  [v15 floatValue];
+  duration = [itemCopy duration];
+  [duration floatValue];
   v17 = v16;
 
-  v18 = [v8 playedState];
+  playedState = [itemCopy playedState];
 
-  v19 = [v18 integerValue];
-  if (v19 == 3)
+  integerValue = [playedState integerValue];
+  if (integerValue == 3)
   {
     v20 = objc_alloc_init(MEMORY[0x1E69D5998]);
     v21 = [VUIImageResourceMap imageForResourceName:@"watched-checkmark"];
@@ -77,17 +77,17 @@ LABEL_11:
     {
       v20 = objc_opt_new();
       v22 = +[VUIProgressBarLayout defaultProgressBarLayout];
-      v25 = [v22 gradientStartColor];
-      [v20 setGradientStartColor:v25];
+      gradientStartColor = [v22 gradientStartColor];
+      [v20 setGradientStartColor:gradientStartColor];
 
-      v26 = [v22 gradientEndColor];
-      [v20 setGradientEndColor:v26];
+      gradientEndColor = [v22 gradientEndColor];
+      [v20 setGradientEndColor:gradientEndColor];
 
       [v22 cornerRadius];
       [v20 setCornerRadius:?];
       [v20 setShouldProgressBarUseRoundCorner:{objc_msgSend(v22, "shouldProgressBarUseRoundCorner")}];
-      v27 = [v22 fillColor];
-      [v20 setCompleteTintColor:v27];
+      fillColor = [v22 fillColor];
+      [v20 setCompleteTintColor:fillColor];
 
       [v20 setStyle:1];
       [v22 height];
@@ -105,58 +105,58 @@ LABEL_13:
   return v11;
 }
 
-- (void)setOverlayType:(int64_t)a3
+- (void)setOverlayType:(int64_t)type
 {
-  if (self->_overlayType != a3)
+  if (self->_overlayType != type)
   {
-    self->_overlayType = a3;
+    self->_overlayType = type;
     [(VUIOverlayView *)self vui_setNeedsDisplay];
   }
 }
 
-- (void)setGradientLayer:(id)a3
+- (void)setGradientLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   gradientLayer = self->_gradientLayer;
-  v9 = v5;
-  if (gradientLayer != v5)
+  v9 = layerCopy;
+  if (gradientLayer != layerCopy)
   {
     [(CALayer *)gradientLayer removeFromSuperlayer];
-    objc_storeStrong(&self->_gradientLayer, a3);
+    objc_storeStrong(&self->_gradientLayer, layer);
     v7 = self->_gradientLayer;
     [(VUIBaseView *)self->_gradientView bounds];
     [(CALayer *)v7 setFrame:?];
-    v8 = [(VUIBaseView *)self->_gradientView layer];
-    [v8 addSublayer:self->_gradientLayer];
+    layer = [(VUIBaseView *)self->_gradientView layer];
+    [layer addSublayer:self->_gradientLayer];
   }
 
   [(VUIOverlayView *)self vui_setNeedsLayout];
 }
 
-- (void)setGradientView:(id)a3
+- (void)setGradientView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   gradientView = self->_gradientView;
-  v7 = v5;
-  if (gradientView != v5)
+  v7 = viewCopy;
+  if (gradientView != viewCopy)
   {
     [(VUIBaseView *)gradientView removeFromSuperview];
     [(VUIOverlayView *)self vui_insertSubview:v7 aboveSubview:0 oldView:self->_gradientView];
-    objc_storeStrong(&self->_gradientView, a3);
+    objc_storeStrong(&self->_gradientView, view);
   }
 
   [(VUIOverlayView *)self vui_setNeedsLayout];
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   titleLabel = self->_titleLabel;
-  v7 = v5;
-  if (titleLabel != v5)
+  v7 = labelCopy;
+  if (titleLabel != labelCopy)
   {
     [(VUILabel *)titleLabel removeFromSuperview];
-    objc_storeStrong(&self->_titleLabel, a3);
+    objc_storeStrong(&self->_titleLabel, label);
     if (self->_titleLabel)
     {
       [(VUIOverlayView *)self addSubview:?];
@@ -166,23 +166,23 @@ LABEL_13:
   [(VUIOverlayView *)self vui_setNeedsLayout];
 }
 
-- (void)setTextBadge:(id)a3
+- (void)setTextBadge:(id)badge
 {
-  v5 = a3;
-  [(VUIOverlayView *)self vui_addSubview:v5 oldView:self->_textBadge];
-  if (self->_textBadge != v5)
+  badgeCopy = badge;
+  [(VUIOverlayView *)self vui_addSubview:badgeCopy oldView:self->_textBadge];
+  if (self->_textBadge != badgeCopy)
   {
-    objc_storeStrong(&self->_textBadge, a3);
+    objc_storeStrong(&self->_textBadge, badge);
   }
 
   [(VUIOverlayView *)self vui_setNeedsLayout];
 }
 
-- (void)setBadgeViewWrappers:(id)a3
+- (void)setBadgeViewWrappers:(id)wrappers
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count] || -[NSArray count](self->_badgeViewWrappers, "count"))
+  wrappersCopy = wrappers;
+  if ([wrappersCopy count] || -[NSArray count](self->_badgeViewWrappers, "count"))
   {
     v24 = 0u;
     v25 = 0u;
@@ -204,8 +204,8 @@ LABEL_13:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v22 + 1) + 8 * v10) badgeView];
-          [v11 removeFromSuperview];
+          badgeView = [*(*(&v22 + 1) + 8 * v10) badgeView];
+          [badgeView removeFromSuperview];
 
           ++v10;
         }
@@ -217,7 +217,7 @@ LABEL_13:
       while (v8);
     }
 
-    objc_storeStrong(&self->_badgeViewWrappers, a3);
+    objc_storeStrong(&self->_badgeViewWrappers, wrappers);
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
@@ -238,8 +238,8 @@ LABEL_13:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v18 + 1) + 8 * v16) badgeView];
-          [(VUIOverlayView *)self addSubview:v17];
+          badgeView2 = [*(*(&v18 + 1) + 8 * v16) badgeView];
+          [(VUIOverlayView *)self addSubview:badgeView2];
 
           ++v16;
         }
@@ -255,15 +255,15 @@ LABEL_13:
   }
 }
 
-- (void)setProgressView:(id)a3
+- (void)setProgressView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   progressView = self->_progressView;
-  v7 = v5;
-  if (progressView != v5)
+  v7 = viewCopy;
+  if (progressView != viewCopy)
   {
     [(VUIProgressView *)progressView removeFromSuperview];
-    objc_storeStrong(&self->_progressView, a3);
+    objc_storeStrong(&self->_progressView, view);
     if (self->_progressView)
     {
       [(VUIOverlayView *)self addSubview:?];
@@ -273,13 +273,13 @@ LABEL_13:
   [(VUIOverlayView *)self setNeedsLayout];
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
   v131 = *MEMORY[0x1E69E9840];
   v128.receiver = self;
   v128.super_class = VUIOverlayView;
-  [(VUIOverlayView *)&v128 vui_layoutSubviews:a4 computationOnly:?];
-  v5 = [(VUIOverlayView *)self vuiIsRTL];
+  [(VUIOverlayView *)&v128 vui_layoutSubviews:only computationOnly:?];
+  vuiIsRTL = [(VUIOverlayView *)self vuiIsRTL];
   [(VUIOverlayView *)self bounds];
   v7 = v6;
   v9 = v8;
@@ -304,9 +304,9 @@ LABEL_13:
   if (self->_titleLabel)
   {
     v15 = *(MEMORY[0x1E695F058] + 8);
-    v16 = [(VUIOverlayView *)self titleLabel];
-    v17 = [v16 textLayout];
-    [v17 margin];
+    titleLabel = [(VUIOverlayView *)self titleLabel];
+    textLayout = [titleLabel textLayout];
+    [textLayout margin];
     v19 = v18;
     v114 = v20;
     v22 = v21;
@@ -450,13 +450,13 @@ LABEL_14:
           [v45 badgeSize];
           v47 = v46;
           v49 = v48;
-          v50 = [v45 badgeType];
-          v51 = v50;
+          badgeType = [v45 badgeType];
+          v51 = badgeType;
           v52 = v43;
           v53 = v42;
-          if (v50)
+          if (badgeType)
           {
-            v54 = [v50 isEqualToString:{@"checkmark", v43, v42}];
+            v54 = [badgeType isEqualToString:{@"checkmark", v43, v42}];
             v52 = v7 - v47;
             v53 = v9 - v49;
             if (!v54)
@@ -466,7 +466,7 @@ LABEL_14:
             }
           }
 
-          if (v5)
+          if (vuiIsRTL)
           {
             VUIRectWithFlippedOriginRelativeToBoundingRect();
             v47 = v55;
@@ -489,8 +489,8 @@ LABEL_14:
   v57 = v10;
   if (self->_progressView)
   {
-    v58 = [MEMORY[0x1E69DC938] currentDevice];
-    [v58 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    [currentDevice userInterfaceIdiom];
 
     [(VUIProgressView *)self->_progressView sizeThatFits:v7 - left - right, 0.0];
     VUIRoundValue();
@@ -499,13 +499,13 @@ LABEL_14:
     v10 = v119;
   }
 
-  if (v5)
+  if (vuiIsRTL)
   {
     VUIRectWithFlippedOriginRelativeToBoundingRect();
     v57 = v60;
     v62 = v61;
-    v63 = [(VUIProgressView *)self->_progressView layer];
-    [v63 setFlipsHorizontalAxis:1];
+    layer = [(VUIProgressView *)self->_progressView layer];
+    [layer setFlipsHorizontalAxis:1];
 
     v11 = v62;
     v10 = v119;
@@ -517,18 +517,18 @@ LABEL_14:
   gradientLayer = self->_gradientLayer;
   if (gradientLayer)
   {
-    v65 = [(CALayer *)gradientLayer mask];
+    mask = [(CALayer *)gradientLayer mask];
 
-    if (v65)
+    if (mask)
     {
-      v66 = [(CALayer *)self->_gradientLayer mask];
-      [v66 setFrame:{v110, v111, v105, v112}];
+      mask2 = [(CALayer *)self->_gradientLayer mask];
+      [mask2 setFrame:{v110, v111, v105, v112}];
     }
   }
 
   v67 = v103;
   v68 = v116;
-  if (v5)
+  if (vuiIsRTL)
   {
     VUIRectWithFlippedOriginRelativeToBoundingRect();
     v70 = v69;
@@ -558,8 +558,8 @@ LABEL_14:
   [(VUITextBadgeView *)self->_textBadge setFrame:v76, v79, v82, v84];
   if (self->_overlayType == 3)
   {
-    v85 = [(VUITextBadgeView *)self->_textBadge layer];
-    [v85 removeAllAnimations];
+    layer2 = [(VUITextBadgeView *)self->_textBadge layer];
+    [layer2 removeAllAnimations];
   }
 
   v122 = 0u;
@@ -582,9 +582,9 @@ LABEL_14:
         }
 
         v91 = *(*(&v120 + 1) + 8 * j);
-        v92 = [v91 badgeView];
+        badgeView = [v91 badgeView];
         [v91 badgeFrame];
-        [v92 setFrame:?];
+        [badgeView setFrame:?];
       }
 
       v88 = [(NSArray *)v86 countByEnumeratingWithState:&v120 objects:v129 count:16];
@@ -593,15 +593,15 @@ LABEL_14:
     while (v88);
   }
 
-  v93 = [(VUIOverlayView *)self layer];
-  [v93 cornerRadius];
+  layer3 = [(VUIOverlayView *)self layer];
+  [layer3 cornerRadius];
   v95 = v94;
 
-  v96 = [(VUIOverlayView *)self layer];
-  [v96 setMasksToBounds:v95 > 0.0];
+  layer4 = [(VUIOverlayView *)self layer];
+  [layer4 setMasksToBounds:v95 > 0.0];
 
-  width = a3.width;
-  height = a3.height;
+  width = subviews.width;
+  height = subviews.height;
   result.height = height;
   result.width = width;
   return result;

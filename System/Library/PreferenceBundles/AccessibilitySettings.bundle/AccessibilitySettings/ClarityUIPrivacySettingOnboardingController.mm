@@ -1,52 +1,52 @@
 @interface ClarityUIPrivacySettingOnboardingController
-- (ClarityUIPrivacySettingOnboardingController)initWithTitle:(id)a3 privacySpecifier:(id)a4 completion:(id)a5;
+- (ClarityUIPrivacySettingOnboardingController)initWithTitle:(id)title privacySpecifier:(id)specifier completion:(id)completion;
 @end
 
 @implementation ClarityUIPrivacySettingOnboardingController
 
-- (ClarityUIPrivacySettingOnboardingController)initWithTitle:(id)a3 privacySpecifier:(id)a4 completion:(id)a5
+- (ClarityUIPrivacySettingOnboardingController)initWithTitle:(id)title privacySpecifier:(id)specifier completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 propertyForKey:@"ClarityTCCExplanation"];
-  v12 = [v8 propertyForKey:@"ClarityTCCIconKey"];
+  specifierCopy = specifier;
+  completionCopy = completion;
+  titleCopy = title;
+  v11 = [specifierCopy propertyForKey:@"ClarityTCCExplanation"];
+  v12 = [specifierCopy propertyForKey:@"ClarityTCCIconKey"];
   v13 = v12;
-  if (!v12 || ([v12 integerValue], TCCCopyIconResourcePathForService(), v14 = objc_claimAutoreleasedReturnValue(), +[UIImage imageWithContentsOfFile:](UIImage, "imageWithContentsOfFile:", v14), v15 = objc_claimAutoreleasedReturnValue(), v14, !v15))
+  if (!v12 || ([v12 integerValue], TCCCopyIconResourcePathForService(), v14 = objc_claimAutoreleasedReturnValue(), +[UIImage imageWithContentsOfFile:](UIImage, "imageWithContentsOfFile:", v14), getLazyIcon = objc_claimAutoreleasedReturnValue(), v14, !getLazyIcon))
   {
-    v16 = [v8 propertyForKey:PSIconImageKey];
+    v16 = [specifierCopy propertyForKey:PSIconImageKey];
     if (v16)
     {
-      v15 = v16;
+      getLazyIcon = v16;
     }
 
     else
     {
-      v17 = [v8 propertyForKey:PSLazyIconLoading];
-      v18 = [v17 BOOLValue];
+      v17 = [specifierCopy propertyForKey:PSLazyIconLoading];
+      bOOLValue = [v17 BOOLValue];
 
-      if (v18)
+      if (bOOLValue)
       {
-        v19 = [[PSTableCell alloc] initWithStyle:0 reuseIdentifier:0 specifier:v8];
-        [v19 setSpecifier:v8];
-        v15 = [v19 getLazyIcon];
+        v19 = [[PSTableCell alloc] initWithStyle:0 reuseIdentifier:0 specifier:specifierCopy];
+        [v19 setSpecifier:specifierCopy];
+        getLazyIcon = [v19 getLazyIcon];
       }
 
       else
       {
-        v15 = 0;
+        getLazyIcon = 0;
       }
     }
   }
 
-  v20 = [[ClarityUISettingsWrapperController alloc] initWithPSSpecifier:v8];
+  v20 = [[ClarityUISettingsWrapperController alloc] initWithPSSpecifier:specifierCopy];
   v25.receiver = self;
   v25.super_class = ClarityUIPrivacySettingOnboardingController;
-  v21 = [(ClarityUIOnboardingSettingsWrapperController *)&v25 initWithTitle:v10 detailText:v11 icon:v15 controller:v20];
+  v21 = [(ClarityUIOnboardingSettingsWrapperController *)&v25 initWithTitle:titleCopy detailText:v11 icon:getLazyIcon controller:v20];
 
   if (v21)
   {
-    v22 = objc_retainBlock(v9);
+    v22 = objc_retainBlock(completionCopy);
     completionHandler = v21->_completionHandler;
     v21->_completionHandler = v22;
 

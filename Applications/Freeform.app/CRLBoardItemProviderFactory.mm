@@ -1,38 +1,38 @@
 @interface CRLBoardItemProviderFactory
-- (CRLBoardItemProviderFactory)initWithBoardItemFactory:(id)a3;
+- (CRLBoardItemProviderFactory)initWithBoardItemFactory:(id)factory;
 - (_TtC8Freeform19CRLBoardItemFactory)boardItemFactory;
-- (id)extractAdaptiveGlyphsFrom:(id)a3 in:(_NSRange)a4;
-- (id)extractPasteboardBoardItemsFrom:(id)a3;
-- (id)geometryForTextBoxWithPosition:(CGPoint)a3;
-- (id)providerForBoardItemFromDetectedImportableURL:(id)a3 fallbackBoardItemProvider:(id)a4;
-- (id)providersForBoardItemsFromImportedRichText:(id)a3;
-- (id)providersForBoardItemsFromImportedText:(id)a3;
-- (id)providersForBoardItemsFromTextStorages:(id)a3 position:(CGPoint)a4 keepHighlights:(BOOL)a5;
-- (id)providersForBoardItemsFromURLs:(id)a3;
-- (id)styleMappingProvidersForPasteboardBoardItems:(id)a3;
+- (id)extractAdaptiveGlyphsFrom:(id)from in:(_NSRange)in;
+- (id)extractPasteboardBoardItemsFrom:(id)from;
+- (id)geometryForTextBoxWithPosition:(CGPoint)position;
+- (id)providerForBoardItemFromDetectedImportableURL:(id)l fallbackBoardItemProvider:(id)provider;
+- (id)providersForBoardItemsFromImportedRichText:(id)text;
+- (id)providersForBoardItemsFromImportedText:(id)text;
+- (id)providersForBoardItemsFromTextStorages:(id)storages position:(CGPoint)position keepHighlights:(BOOL)highlights;
+- (id)providersForBoardItemsFromURLs:(id)ls;
+- (id)styleMappingProvidersForPasteboardBoardItems:(id)items;
 @end
 
 @implementation CRLBoardItemProviderFactory
 
-- (CRLBoardItemProviderFactory)initWithBoardItemFactory:(id)a3
+- (CRLBoardItemProviderFactory)initWithBoardItemFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v8.receiver = self;
   v8.super_class = CRLBoardItemProviderFactory;
   v5 = [(CRLBoardItemProviderFactory *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_boardItemFactory, v4);
+    objc_storeWeak(&v5->_boardItemFactory, factoryCopy);
   }
 
   return v6;
 }
 
-- (id)styleMappingProvidersForPasteboardBoardItems:(id)a3
+- (id)styleMappingProvidersForPasteboardBoardItems:(id)items
 {
-  v3 = a3;
-  v4 = [v3 count];
+  itemsCopy = items;
+  v4 = [itemsCopy count];
   if (v4)
   {
     v5 = [NSMutableArray arrayWithCapacity:v4];
@@ -40,7 +40,7 @@
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v3;
+    v6 = itemsCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -79,19 +79,19 @@
   return v5;
 }
 
-- (id)providersForBoardItemsFromTextStorages:(id)a3 position:(CGPoint)a4 keepHighlights:(BOOL)a5
+- (id)providersForBoardItemsFromTextStorages:(id)storages position:(CGPoint)position keepHighlights:(BOOL)highlights
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
-  if ([v8 count])
+  y = position.y;
+  x = position.x;
+  storagesCopy = storages;
+  if ([storagesCopy count])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v19 = v8;
-    v9 = v8;
+    v19 = storagesCopy;
+    v9 = storagesCopy;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
@@ -138,7 +138,7 @@
       v12 = 0;
     }
 
-    v8 = v19;
+    storagesCopy = v19;
   }
 
   else
@@ -149,13 +149,13 @@
   return v12;
 }
 
-- (id)providersForBoardItemsFromImportedText:(id)a3
+- (id)providersForBoardItemsFromImportedText:(id)text
 {
-  v4 = a3;
-  if ([v4 length])
+  textCopy = text;
+  if ([textCopy length])
   {
     v5 = [(CRLBoardItemProviderFactory *)self geometryForTextBoxWithPosition:CGPointZero.x, CGPointZero.y];
-    v6 = [[CRLTextBoxingBoardItemProvider alloc] initWithTextString:v4 geometry:v5];
+    v6 = [[CRLTextBoxingBoardItemProvider alloc] initWithTextString:textCopy geometry:v5];
     v7 = v6;
     if (v6)
     {
@@ -177,14 +177,14 @@
   return v8;
 }
 
-- (id)providersForBoardItemsFromImportedRichText:(id)a3
+- (id)providersForBoardItemsFromImportedRichText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = +[NSMutableArray array];
-  v6 = [(CRLBoardItemProviderFactory *)self extractPasteboardBoardItemsFrom:v4];
+  v6 = [(CRLBoardItemProviderFactory *)self extractPasteboardBoardItemsFrom:textCopy];
   [v5 addObjectsFromArray:v6];
 
-  v7 = [CRLWPStorageSanitizer filterText:v4 removingAttachments:1];
+  v7 = [CRLWPStorageSanitizer filterText:textCopy removingAttachments:1];
 
   if ([v7 length])
   {
@@ -196,12 +196,12 @@
   return v5;
 }
 
-- (id)extractPasteboardBoardItemsFrom:(id)a3
+- (id)extractPasteboardBoardItemsFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v5 = +[NSMutableArray array];
-  v6 = [v4 length];
-  if ([v4 containsAttachmentsInRange:{0, v6}])
+  v6 = [fromCopy length];
+  if ([fromCopy containsAttachmentsInRange:{0, v6}])
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -209,20 +209,20 @@
     v10[3] = &unk_10185DEB0;
     v7 = v5;
     v11 = v7;
-    [v4 enumerateAttribute:NSAttachmentAttributeName inRange:0 options:v6 usingBlock:{0, v10}];
-    v8 = [(CRLBoardItemProviderFactory *)self extractAdaptiveGlyphsFrom:v4 in:0, v6];
+    [fromCopy enumerateAttribute:NSAttachmentAttributeName inRange:0 options:v6 usingBlock:{0, v10}];
+    v8 = [(CRLBoardItemProviderFactory *)self extractAdaptiveGlyphsFrom:fromCopy in:0, v6];
     [v7 addObjectsFromArray:v8];
   }
 
   return v5;
 }
 
-- (id)providersForBoardItemsFromURLs:(id)a3
+- (id)providersForBoardItemsFromURLs:(id)ls
 {
-  v3 = a3;
-  if ([v3 count])
+  lsCopy = ls;
+  if ([lsCopy count])
   {
-    v4 = [v3 crl_arrayByTransformingWithBlock:&stru_10185DEF0];
+    v4 = [lsCopy crl_arrayByTransformingWithBlock:&stru_10185DEF0];
   }
 
   else
@@ -233,13 +233,13 @@
   return v4;
 }
 
-- (id)providerForBoardItemFromDetectedImportableURL:(id)a3 fallbackBoardItemProvider:(id)a4
+- (id)providerForBoardItemFromDetectedImportableURL:(id)l fallbackBoardItemProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
-  if ([CRLURLBoardItemProvider canInitWithURL:v5])
+  lCopy = l;
+  providerCopy = provider;
+  if ([CRLURLBoardItemProvider canInitWithURL:lCopy])
   {
-    v7 = [[CRLURLBoardItemProvider alloc] initWithURL:v5 fallbackBoardItemProvider:v6 isDetectedURL:1 suggestedName:0];
+    v7 = [[CRLURLBoardItemProvider alloc] initWithURL:lCopy fallbackBoardItemProvider:providerCopy isDetectedURL:1 suggestedName:0];
   }
 
   else
@@ -250,9 +250,9 @@
   return v7;
 }
 
-- (id)geometryForTextBoxWithPosition:(CGPoint)a3
+- (id)geometryForTextBoxWithPosition:(CGPoint)position
 {
-  v3 = [(CRLCanvasInfoGeometry *)[CRLCanvasMutableInfoGeometry alloc] initWithPosition:a3.x size:a3.y, CGSizeZero.width, CGSizeZero.height];
+  v3 = [(CRLCanvasInfoGeometry *)[CRLCanvasMutableInfoGeometry alloc] initWithPosition:position.x size:position.y, CGSizeZero.width, CGSizeZero.height];
   [(CRLCanvasMutableInfoGeometry *)v3 setWidthValid:0];
   [(CRLCanvasMutableInfoGeometry *)v3 setHeightValid:0];
 
@@ -266,13 +266,13 @@
   return WeakRetained;
 }
 
-- (id)extractAdaptiveGlyphsFrom:(id)a3 in:(_NSRange)a4
+- (id)extractAdaptiveGlyphsFrom:(id)from in:(_NSRange)in
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = self;
-  sub_100D80160(v7, location, length);
+  length = in.length;
+  location = in.location;
+  fromCopy = from;
+  selfCopy = self;
+  sub_100D80160(fromCopy, location, length);
 
   sub_1005B981C(&qword_1019F8DC0);
   v9.super.isa = Array._bridgeToObjectiveC()().super.isa;

@@ -1,42 +1,42 @@
 @interface BNBannerSource
-+ (id)bannerSourceForDestination:(int64_t)a3 forRequesterIdentifier:(id)a4;
-+ (void)_invalidateBannerSource:(id)a3;
++ (id)bannerSourceForDestination:(int64_t)destination forRequesterIdentifier:(id)identifier;
++ (void)_invalidateBannerSource:(id)source;
 + (void)initialize;
-- (BNBannerSource)initWithDestination:(int64_t)a3 andRequesterIdentifier:(id)a4;
-- (BNBannerSource)initWithMachName:(id)a3 andRequesterIdentifier:(id)a4;
+- (BNBannerSource)initWithDestination:(int64_t)destination andRequesterIdentifier:(id)identifier;
+- (BNBannerSource)initWithMachName:(id)name andRequesterIdentifier:(id)identifier;
 - (BNBannerSourceDelegate)delegate;
-- (BOOL)_isValidPresentable:(id)a3 errorDescription:(id *)a4;
-- (BOOL)bannerClientContainerShouldDeferFocus:(id)a3;
-- (BOOL)postPresentable:(id)a3 options:(unint64_t)a4 userInfo:(id)a5 error:(id *)a6;
-- (BOOL)revokePresentableWithRequestIdentifier:(id)a3 animated:(BOOL)a4 reason:(id)a5 userInfo:(id)a6 error:(id *)a7;
-- (BOOL)setSuspended:(BOOL)a3 forReason:(id)a4 revokingCurrent:(BOOL)a5 error:(id *)a6;
+- (BOOL)_isValidPresentable:(id)presentable errorDescription:(id *)description;
+- (BOOL)bannerClientContainerShouldDeferFocus:(id)focus;
+- (BOOL)postPresentable:(id)presentable options:(unint64_t)options userInfo:(id)info error:(id *)error;
+- (BOOL)revokePresentableWithRequestIdentifier:(id)identifier animated:(BOOL)animated reason:(id)reason userInfo:(id)info error:(id *)error;
+- (BOOL)setSuspended:(BOOL)suspended forReason:(id)reason revokingCurrent:(BOOL)current error:(id *)error;
 - (NSString)description;
-- (id)_activeConnectionWithError:(id *)a3;
-- (id)_presentableContextForPresentableWithUniqueIdentifier:(id)a3;
-- (id)_presentableForUniqueIdentifier:(id)a3;
-- (id)_revokePresentableWithIdentification:(id)a3 reason:(id)a4 animated:(id)a5 userInfo:(id)a6 error:(id *)a7;
-- (id)containerViewControllerForBannerSceneComponentProvider:(id)a3;
-- (id)keyWindowForScreen:(id)a3;
-- (id)layoutDescriptionWithError:(id *)a3;
-- (id)revokeAllPresentablesWithReason:(id)a3 userInfo:(id)a4 error:(id *)a5;
-- (id)revokePresentableWithIdentification:(id)a3 reason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6 error:(id *)a7;
-- (id)revokePresentableWithRequestIdentifier:(id)a3 reason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6 error:(id *)a7;
-- (void)_addPresentableContext:(id)a3;
+- (id)_activeConnectionWithError:(id *)error;
+- (id)_presentableContextForPresentableWithUniqueIdentifier:(id)identifier;
+- (id)_presentableForUniqueIdentifier:(id)identifier;
+- (id)_revokePresentableWithIdentification:(id)identification reason:(id)reason animated:(id)animated userInfo:(id)info error:(id *)error;
+- (id)containerViewControllerForBannerSceneComponentProvider:(id)provider;
+- (id)keyWindowForScreen:(id)screen;
+- (id)layoutDescriptionWithError:(id *)error;
+- (id)revokeAllPresentablesWithReason:(id)reason userInfo:(id)info error:(id *)error;
+- (id)revokePresentableWithIdentification:(id)identification reason:(id)reason animated:(BOOL)animated userInfo:(id)info error:(id *)error;
+- (id)revokePresentableWithRequestIdentifier:(id)identifier reason:(id)reason animated:(BOOL)animated userInfo:(id)info error:(id *)error;
+- (void)_addPresentableContext:(id)context;
 - (void)_invalidateConnection;
-- (void)_removePresentable:(id)a3 reason:(id)a4;
-- (void)_removePresentableContextForPresentableWithUniqueIdentifier:(id)a3 reason:(id)a4;
-- (void)bannerClientContainerStoppedDeferringFocus:(id)a3;
+- (void)_removePresentable:(id)presentable reason:(id)reason;
+- (void)_removePresentableContextForPresentableWithUniqueIdentifier:(id)identifier reason:(id)reason;
+- (void)bannerClientContainerStoppedDeferringFocus:(id)focus;
 - (void)dealloc;
 - (void)invalidate;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)sceneWillInvalidateForBannerSceneComponentProvider:(id)a3;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)sceneWillInvalidateForBannerSceneComponentProvider:(id)provider;
 @end
 
 @implementation BNBannerSource
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     BNRegisterBannerKitLogging();
@@ -68,14 +68,14 @@
   return v11;
 }
 
-- (BNBannerSource)initWithMachName:(id)a3 andRequesterIdentifier:(id)a4
+- (BNBannerSource)initWithMachName:(id)name andRequesterIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  nameCopy = name;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (nameCopy)
   {
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -97,11 +97,11 @@ LABEL_3:
   v9 = [(BNBannerSource *)&v15 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [nameCopy copy];
     machName = v9->_machName;
     v9->_machName = v10;
 
-    objc_storeStrong(&v9->_requesterIdentifier, a4);
+    objc_storeStrong(&v9->_requesterIdentifier, identifier);
     Serial = BSDispatchQueueCreateSerial();
     connectionQueue = v9->_connectionQueue;
     v9->_connectionQueue = Serial;
@@ -110,20 +110,20 @@ LABEL_3:
   return v9;
 }
 
-- (BNBannerSource)initWithDestination:(int64_t)a3 andRequesterIdentifier:(id)a4
+- (BNBannerSource)initWithDestination:(int64_t)destination andRequesterIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = _MachNameForDestination(a3);
-  if (!v6)
+  identifierCopy = identifier;
+  v7 = _MachNameForDestination(destination);
+  if (!identifierCopy)
   {
     [BNBannerSource initWithDestination:andRequesterIdentifier:];
   }
 
-  v8 = [(BNBannerSource *)self initWithMachName:v7 andRequesterIdentifier:v6];
+  v8 = [(BNBannerSource *)self initWithMachName:v7 andRequesterIdentifier:identifierCopy];
   v9 = v8;
   if (v8)
   {
-    v8->_destination = a3;
+    v8->_destination = destination;
   }
 
   return v9;
@@ -137,11 +137,11 @@ LABEL_3:
   [(BNBannerSource *)&v3 dealloc];
 }
 
-+ (id)bannerSourceForDestination:(int64_t)a3 forRequesterIdentifier:(id)a4
++ (id)bannerSourceForDestination:(int64_t)destination forRequesterIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 >= 2)
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  if (destination >= 2)
   {
     +[BNBannerSource bannerSourceForDestination:forRequesterIdentifier:];
     if (v6)
@@ -150,7 +150,7 @@ LABEL_3:
     }
   }
 
-  else if (v5)
+  else if (identifierCopy)
   {
     goto LABEL_3;
   }
@@ -169,11 +169,11 @@ LABEL_3:
     [__requesterIDsToMachNamesToSources setObject:v7 forKeyedSubscript:v6];
   }
 
-  v8 = _MachNameForDestination(a3);
+  v8 = _MachNameForDestination(destination);
   v9 = [v7 objectForKeyedSubscript:v8];
   if (!v9)
   {
-    v9 = [[BNBannerSource alloc] initWithDestination:a3 andRequesterIdentifier:v6];
+    v9 = [[BNBannerSource alloc] initWithDestination:destination andRequesterIdentifier:v6];
     [v7 setObject:v9 forKeyedSubscript:v8];
     v9->_valid = 1;
   }
@@ -188,7 +188,7 @@ uint64_t __68__BNBannerSource_bannerSourceForDestination_forRequesterIdentifier_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)layoutDescriptionWithError:(id *)a3
+- (id)layoutDescriptionWithError:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
   v21 = 0;
@@ -206,9 +206,9 @@ uint64_t __68__BNBannerSource_bannerSourceForDestination_forRequesterIdentifier_
   obj = 0;
   v4 = [(BNBannerSource *)self _activeConnectionWithError:&obj];
   objc_storeStrong(&v20, obj);
-  v5 = [v4 bn_remoteTargetEnforceLaunching];
+  bn_remoteTargetEnforceLaunching = [v4 bn_remoteTargetEnforceLaunching];
 
-  if (v5)
+  if (bn_remoteTargetEnforceLaunching)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -216,7 +216,7 @@ uint64_t __68__BNBannerSource_bannerSourceForDestination_forRequesterIdentifier_
     v13[3] = &unk_1E81E4450;
     v13[4] = &v21;
     v13[5] = &v15;
-    [v5 __layoutDescriptionWithReply:v13];
+    [bn_remoteTargetEnforceLaunching __layoutDescriptionWithReply:v13];
   }
 
   else if (!v16[5])
@@ -230,12 +230,12 @@ uint64_t __68__BNBannerSource_bannerSourceForDestination_forRequesterIdentifier_
     v16[5] = v8;
   }
 
-  if (a3)
+  if (error)
   {
     v10 = v16[5];
     if (v10)
     {
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -261,16 +261,16 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
   *(v9 + 40) = v6;
 }
 
-- (BOOL)postPresentable:(id)a3 options:(unint64_t)a4 userInfo:(id)a5 error:(id *)a6
+- (BOOL)postPresentable:(id)presentable options:(unint64_t)options userInfo:(id)info error:(id *)error
 {
   v95 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v67 = a5;
+  presentableCopy = presentable;
+  infoCopy = info;
   v9 = BNLogHostingService;
   if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = BNEffectivePresentableDescription(v8);
+    v11 = BNEffectivePresentableDescription(presentableCopy);
     LODWORD(buf) = 138543362;
     *(&buf + 4) = v11;
     _os_log_impl(&dword_1C42DC000, v10, OS_LOG_TYPE_DEFAULT, "Asked to post presentable: %{public}@", &buf, 0xCu);
@@ -286,27 +286,27 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
   v92 = __Block_byref_object_copy_;
   v93 = __Block_byref_object_dispose_;
   v94 = 0;
-  if (v8)
+  if (presentableCopy)
   {
     v76 = 0;
-    v12 = [(BNBannerSource *)self _isValidPresentable:v8 errorDescription:&v76];
+    v12 = [(BNBannerSource *)self _isValidPresentable:presentableCopy errorDescription:&v76];
     v13 = v76;
     v14 = v13;
     if (v12)
     {
-      v15 = [v8 requesterIdentifier];
-      v16 = [v15 isEqualToString:self->_requesterIdentifier];
+      requesterIdentifier = [presentableCopy requesterIdentifier];
+      v16 = [requesterIdentifier isEqualToString:self->_requesterIdentifier];
 
       if (v16)
       {
-        [v8 ensurePresentableIsUniquelyIdentifiable];
-        v17 = [v8 uniquePresentableIdentifier];
-        v18 = [(BNBannerSource *)self _presentableContextForPresentableWithUniqueIdentifier:v17];
+        [presentableCopy ensurePresentableIsUniquelyIdentifiable];
+        uniquePresentableIdentifier = [presentableCopy uniquePresentableIdentifier];
+        v18 = [(BNBannerSource *)self _presentableContextForPresentableWithUniqueIdentifier:uniquePresentableIdentifier];
 
         v19 = v18;
         if (!v18)
         {
-          v19 = [[_BNPresentableContext alloc] initWithMachName:self->_machName presentable:v8];
+          v19 = [[_BNPresentableContext alloc] initWithMachName:self->_machName presentable:presentableCopy];
           [(BNBannerSource *)self _addPresentableContext:v19];
         }
 
@@ -322,51 +322,51 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
 
         if (objc_opt_respondsToSelector())
         {
-          v31 = [v8 providesTemplateContent];
+          providesTemplateContent = [presentableCopy providesTemplateContent];
         }
 
         else
         {
-          v31 = 0;
+          providesTemplateContent = 0;
         }
 
-        v63 = v31 | ~v20;
-        if (v31 & 1 | ((v20 & 1) == 0))
+        v63 = providesTemplateContent | ~v20;
+        if (providesTemplateContent & 1 | ((v20 & 1) == 0))
         {
           if (objc_opt_respondsToSelector())
           {
-            [v8 setPresentableContext:v19];
+            [presentableCopy setPresentableContext:v19];
           }
         }
 
         else if (!v18)
         {
-          v32 = [v8 uniquePresentableIdentifier];
-          [BNBannerSceneComponentProvider registerDelegate:self forSceneForPresentableWithUniqueIdentifier:v32];
+          uniquePresentableIdentifier2 = [presentableCopy uniquePresentableIdentifier];
+          [BNBannerSceneComponentProvider registerDelegate:self forSceneForPresentableWithUniqueIdentifier:uniquePresentableIdentifier2];
         }
 
         v33 = *(&buf + 1);
         obj = 0;
         v34 = [(BNBannerSource *)self _activeConnectionWithError:&obj];
         objc_storeStrong((v33 + 40), obj);
-        v25 = [v34 bn_remoteTargetEnforceLaunching];
+        bn_remoteTargetEnforceLaunching = [v34 bn_remoteTargetEnforceLaunching];
 
-        if (v25)
+        if (bn_remoteTargetEnforceLaunching)
         {
           objc_initWeak(location, self);
-          v35 = v8;
+          v35 = presentableCopy;
           if ((objc_opt_respondsToSelector() & 1) != 0 && [v35 providesTemplateContent])
           {
             v36 = v35;
-            v37 = [v36 requesterIdentifier];
-            v38 = [v36 requestIdentifier];
-            v39 = [v36 uniquePresentableIdentifier];
-            v64 = [(BNPresentableIdentification *)BNBannerSourceTemplatePresentableSpecification identificationWithRequesterIdentifier:v37 requestIdentifier:v38 uniqueIdentifier:v39];
+            requesterIdentifier2 = [v36 requesterIdentifier];
+            requestIdentifier = [v36 requestIdentifier];
+            uniquePresentableIdentifier3 = [v36 uniquePresentableIdentifier];
+            v64 = [(BNPresentableIdentification *)BNBannerSourceTemplatePresentableSpecification identificationWithRequesterIdentifier:requesterIdentifier2 requestIdentifier:requestIdentifier uniqueIdentifier:uniquePresentableIdentifier3];
 
             if (objc_opt_respondsToSelector())
             {
-              v40 = [v36 leadingTemplateViewProvider];
-              [v64 setLeadingTemplateViewProvider:v40];
+              leadingTemplateViewProvider = [v36 leadingTemplateViewProvider];
+              [v64 setLeadingTemplateViewProvider:leadingTemplateViewProvider];
             }
 
             else
@@ -376,8 +376,8 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
 
             if (objc_opt_respondsToSelector())
             {
-              v50 = [v36 trailingTemplateViewProvider];
-              [v64 setTrailingTemplateViewProvider:v50];
+              trailingTemplateViewProvider = [v36 trailingTemplateViewProvider];
+              [v64 setTrailingTemplateViewProvider:trailingTemplateViewProvider];
             }
 
             else
@@ -387,8 +387,8 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
 
             if (objc_opt_respondsToSelector())
             {
-              v51 = [v36 primaryTemplateItemProvider];
-              [v64 setPrimaryTemplateItemProvider:v51];
+              primaryTemplateItemProvider = [v36 primaryTemplateItemProvider];
+              [v64 setPrimaryTemplateItemProvider:primaryTemplateItemProvider];
             }
 
             else
@@ -398,8 +398,8 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
 
             if (objc_opt_respondsToSelector())
             {
-              v52 = [v36 secondaryTemplateItemProvider];
-              [v64 setSecondaryTemplateItemProvider:v52];
+              secondaryTemplateItemProvider = [v36 secondaryTemplateItemProvider];
+              [v64 setSecondaryTemplateItemProvider:secondaryTemplateItemProvider];
             }
 
             else
@@ -412,10 +412,10 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
 
           else
           {
-            v41 = [v35 requesterIdentifier];
-            v42 = [v35 requestIdentifier];
-            v43 = [v35 uniquePresentableIdentifier];
-            v64 = [(BNPresentableIdentification *)BNBannerSourcePresentableSpecification identificationWithRequesterIdentifier:v41 requestIdentifier:v42 uniqueIdentifier:v43];
+            requesterIdentifier3 = [v35 requesterIdentifier];
+            requestIdentifier2 = [v35 requestIdentifier];
+            uniquePresentableIdentifier4 = [v35 uniquePresentableIdentifier];
+            v64 = [(BNPresentableIdentification *)BNBannerSourcePresentableSpecification identificationWithRequesterIdentifier:requesterIdentifier3 requestIdentifier:requestIdentifier2 uniqueIdentifier:uniquePresentableIdentifier4];
 
             v44 = UIViewControllerFromPresentable(v35);
             v45 = v44;
@@ -437,19 +437,19 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
 
           if (objc_opt_respondsToSelector())
           {
-            v53 = [v35 presentableBehavior];
+            presentableBehavior = [v35 presentableBehavior];
           }
 
           else
           {
-            v53 = (objc_opt_respondsToSelector() & 1) != 0 && [v35 presentableType] == 1;
+            presentableBehavior = (objc_opt_respondsToSelector() & 1) != 0 && [v35 presentableType] == 1;
           }
 
-          [v64 setPresentableBehavior:v53];
+          [v64 setPresentableBehavior:presentableBehavior];
 
-          if (v67)
+          if (infoCopy)
           {
-            v54 = [v67 mutableCopy];
+            v54 = [infoCopy mutableCopy];
           }
 
           else
@@ -462,7 +462,7 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
           v57 = NSStringFromClass(v56);
           [v55 setObject:v57 forKeyedSubscript:@"BNBannerSourcePresentableClassName"];
 
-          v58 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+          v58 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
           v68[0] = MEMORY[0x1E69E9820];
           v68[1] = 3221225472;
           v68[2] = __57__BNBannerSource_postPresentable_options_userInfo_error___block_invoke;
@@ -474,7 +474,7 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
           v69 = v19;
           objc_copyWeak(&v73, location);
           v70 = v35;
-          [v25 __postPresentableWithSpecification:v64 options:v58 userInfo:v55 reply:v68];
+          [bn_remoteTargetEnforceLaunching __postPresentableWithSpecification:v64 options:v58 userInfo:v55 reply:v68];
 
           objc_destroyWeak(&v73);
           objc_destroyWeak(location);
@@ -482,7 +482,7 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
 
         else
         {
-          [(BNBannerSource *)self _removePresentable:v8 reason:@"failed to obtain remote target from connection"];
+          [(BNBannerSource *)self _removePresentable:presentableCopy reason:@"failed to obtain remote target from connection"];
           if (!*(*(&buf + 1) + 40))
           {
             v46 = MEMORY[0x1E696ABC0];
@@ -499,14 +499,14 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
       else
       {
         v26 = MEMORY[0x1E696AEC0];
-        v27 = [v8 requesterIdentifier];
-        v19 = [v26 stringWithFormat:@"Presentable requesterID (%@) doesn't match source (%@)", v27, self->_requesterIdentifier];
+        requesterIdentifier4 = [presentableCopy requesterIdentifier];
+        v19 = [v26 stringWithFormat:@"Presentable requesterID (%@) doesn't match source (%@)", requesterIdentifier4, self->_requesterIdentifier];
 
         v28 = MEMORY[0x1E696ABC0];
         v86 = *MEMORY[0x1E696A578];
         v87 = v19;
-        v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
-        v29 = [v28 errorWithDomain:@"BNBannerSourceErrorDomain" code:2 userInfo:v25];
+        bn_remoteTargetEnforceLaunching = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
+        v29 = [v28 errorWithDomain:@"BNBannerSourceErrorDomain" code:2 userInfo:bn_remoteTargetEnforceLaunching];
         v30 = *(*(&buf + 1) + 40);
         *(*(&buf + 1) + 40) = v29;
       }
@@ -519,7 +519,7 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
       v85 = v13;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
       v24 = [v23 errorWithDomain:@"BNBannerSourceErrorDomain" code:2 userInfo:v19];
-      v25 = *(*(&buf + 1) + 40);
+      bn_remoteTargetEnforceLaunching = *(*(&buf + 1) + 40);
       *(*(&buf + 1) + 40) = v24;
     }
   }
@@ -540,13 +540,13 @@ void __45__BNBannerSource_layoutDescriptionWithError___block_invoke(uint64_t a1,
     v59 = BNLogHostingService;
     if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
     {
-      v60 = BNEffectivePresentableDescription(v8);
+      v60 = BNEffectivePresentableDescription(presentableCopy);
       [BNBannerSource postPresentable:v60 options:&buf + 8 userInfo:location error:v59];
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
     }
   }
 
@@ -580,13 +580,13 @@ void __57__BNBannerSource_postPresentable_options_userInfo_error___block_invoke(
   }
 }
 
-- (id)revokePresentableWithRequestIdentifier:(id)a3 reason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6 error:(id *)a7
+- (id)revokePresentableWithRequestIdentifier:(id)identifier reason:(id)reason animated:(BOOL)animated userInfo:(id)info error:(id *)error
 {
-  v9 = a5;
+  animatedCopy = animated;
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  infoCopy = info;
   v15 = BNLogHostingService;
   if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_DEFAULT))
   {
@@ -594,28 +594,28 @@ void __57__BNBannerSource_postPresentable_options_userInfo_error___block_invoke(
     v17 = v15;
     v18 = NSStringFromBOOL();
     v23 = 138544130;
-    v24 = v12;
+    v24 = identifierCopy;
     v25 = 2114;
     v26 = requesterIdentifier;
     v27 = 2114;
-    v28 = v13;
+    v28 = reasonCopy;
     v29 = 2114;
     v30 = v18;
     _os_log_impl(&dword_1C42DC000, v17, OS_LOG_TYPE_DEFAULT, "Asked to revoke presentable with requestID %{public}@ and requesterID %{public}@ with reason '%{public}@' (animated=%{public}@)", &v23, 0x2Au);
   }
 
-  v19 = [BNPresentableIdentification identificationWithRequesterIdentifier:self->_requesterIdentifier requestIdentifier:v12];
-  v20 = [MEMORY[0x1E696AD98] numberWithBool:v9];
-  v21 = [(BNBannerSource *)self _revokePresentableWithIdentification:v19 reason:v13 animated:v20 userInfo:v14 error:a7];
+  v19 = [BNPresentableIdentification identificationWithRequesterIdentifier:self->_requesterIdentifier requestIdentifier:identifierCopy];
+  v20 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
+  v21 = [(BNBannerSource *)self _revokePresentableWithIdentification:v19 reason:reasonCopy animated:v20 userInfo:infoCopy error:error];
 
   return v21;
 }
 
-- (id)revokeAllPresentablesWithReason:(id)a3 userInfo:(id)a4 error:(id *)a5
+- (id)revokeAllPresentablesWithReason:(id)reason userInfo:(id)info error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  reasonCopy = reason;
+  infoCopy = info;
   v10 = BNLogHostingService;
   if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_DEFAULT))
   {
@@ -623,71 +623,71 @@ void __57__BNBannerSource_postPresentable_options_userInfo_error___block_invoke(
     v15 = 138543618;
     v16 = requesterIdentifier;
     v17 = 2114;
-    v18 = v8;
+    v18 = reasonCopy;
     _os_log_impl(&dword_1C42DC000, v10, OS_LOG_TYPE_DEFAULT, "Asked to revoke all presentables with requester ID %{public}@ with reason '%{public}@'", &v15, 0x16u);
   }
 
   v12 = [BNPresentableIdentification identificationWithRequesterIdentifier:self->_requesterIdentifier];
-  v13 = [(BNBannerSource *)self _revokePresentableWithIdentification:v12 reason:v8 animated:0 userInfo:v9 error:a5];
+  v13 = [(BNBannerSource *)self _revokePresentableWithIdentification:v12 reason:reasonCopy animated:0 userInfo:infoCopy error:error];
 
   return v13;
 }
 
-- (BOOL)revokePresentableWithRequestIdentifier:(id)a3 animated:(BOOL)a4 reason:(id)a5 userInfo:(id)a6 error:(id *)a7
+- (BOOL)revokePresentableWithRequestIdentifier:(id)identifier animated:(BOOL)animated reason:(id)reason userInfo:(id)info error:(id *)error
 {
-  v7 = [(BNBannerSource *)self revokePresentableWithRequestIdentifier:a3 reason:a5 animated:a4 userInfo:a6 error:a7];
+  v7 = [(BNBannerSource *)self revokePresentableWithRequestIdentifier:identifier reason:reason animated:animated userInfo:info error:error];
   v8 = v7 != 0;
 
   return v8;
 }
 
-- (id)revokePresentableWithIdentification:(id)a3 reason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6 error:(id *)a7
+- (id)revokePresentableWithIdentification:(id)identification reason:(id)reason animated:(BOOL)animated userInfo:(id)info error:(id *)error
 {
-  v9 = a5;
+  animatedCopy = animated;
   v36 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  identificationCopy = identification;
+  reasonCopy = reason;
+  infoCopy = info;
   v15 = BNLogHostingService;
   if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v12 requestIdentifier];
-    v18 = [v12 requesterIdentifier];
-    v19 = [v12 uniquePresentableIdentifier];
+    requestIdentifier = [identificationCopy requestIdentifier];
+    requesterIdentifier = [identificationCopy requesterIdentifier];
+    uniquePresentableIdentifier = [identificationCopy uniquePresentableIdentifier];
     NSStringFromBOOL();
-    v25 = self;
-    v21 = v20 = a7;
+    selfCopy = self;
+    v21 = v20 = error;
     *buf = 138544386;
-    v27 = v17;
+    v27 = requestIdentifier;
     v28 = 2114;
-    v29 = v18;
+    v29 = requesterIdentifier;
     v30 = 2114;
-    v31 = v19;
+    v31 = uniquePresentableIdentifier;
     v32 = 2114;
-    v33 = v13;
+    v33 = reasonCopy;
     v34 = 2114;
     v35 = v21;
     _os_log_impl(&dword_1C42DC000, v16, OS_LOG_TYPE_DEFAULT, "Asked to revoke presentable with requestID %{public}@, requesterID %{public}@, and uniqueID %{public}@ with reason '%{public}@' (animated=%{public}@)", buf, 0x34u);
 
-    a7 = v20;
-    self = v25;
+    error = v20;
+    self = selfCopy;
   }
 
-  v22 = [MEMORY[0x1E696AD98] numberWithBool:v9];
-  v23 = [(BNBannerSource *)self _revokePresentableWithIdentification:v12 reason:v13 animated:v22 userInfo:v14 error:a7];
+  v22 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
+  v23 = [(BNBannerSource *)self _revokePresentableWithIdentification:identificationCopy reason:reasonCopy animated:v22 userInfo:infoCopy error:error];
 
   return v23;
 }
 
-- (id)keyWindowForScreen:(id)a3
+- (id)keyWindowForScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   WeakRetained = objc_loadWeakRetained(&self->_bannerClientContainerDeferringFocus);
   if ([WeakRetained isDeferringFocus])
   {
     v6 = objc_loadWeakRetained(&self->_bannerClientContainerDeferringFocus);
-    v7 = [v6 keyWindowForScreen:v4];
+    v7 = [v6 keyWindowForScreen:screenCopy];
   }
 
   else
@@ -698,12 +698,12 @@ void __57__BNBannerSource_postPresentable_options_userInfo_error___block_invoke(
   return v7;
 }
 
-- (BOOL)setSuspended:(BOOL)a3 forReason:(id)a4 revokingCurrent:(BOOL)a5 error:(id *)a6
+- (BOOL)setSuspended:(BOOL)suspended forReason:(id)reason revokingCurrent:(BOOL)current error:(id *)error
 {
-  v7 = a5;
-  v8 = a3;
+  currentCopy = current;
+  suspendedCopy = suspended;
   v37[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  reasonCopy = reason;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -714,24 +714,24 @@ void __57__BNBannerSource_postPresentable_options_userInfo_error___block_invoke(
   v27 = __Block_byref_object_copy_;
   v28 = __Block_byref_object_dispose_;
   v29 = 0;
-  if (v10)
+  if (reasonCopy)
   {
     obj = 0;
     v11 = [(BNBannerSource *)self _activeConnectionWithError:&obj];
     objc_storeStrong(&v29, obj);
-    v12 = [v11 bn_remoteTargetEnforceLaunching];
+    bn_remoteTargetEnforceLaunching = [v11 bn_remoteTargetEnforceLaunching];
 
-    if (v12)
+    if (bn_remoteTargetEnforceLaunching)
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithBool:v8];
-      v14 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+      v13 = [MEMORY[0x1E696AD98] numberWithBool:suspendedCopy];
+      v14 = [MEMORY[0x1E696AD98] numberWithBool:currentCopy];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __63__BNBannerSource_setSuspended_forReason_revokingCurrent_error___block_invoke;
       v22[3] = &unk_1E81E44A0;
       v22[4] = &v30;
       v22[5] = &v24;
-      [v12 __recommendSuspension:v13 forReason:v10 revokingCurrent:v14 reply:v22];
+      [bn_remoteTargetEnforceLaunching __recommendSuspension:v13 forReason:reasonCopy revokingCurrent:v14 reply:v22];
     }
 
     else
@@ -756,19 +756,19 @@ void __57__BNBannerSource_postPresentable_options_userInfo_error___block_invoke(
     v15 = MEMORY[0x1E696ABC0];
     v34 = *MEMORY[0x1E696A578];
     v35 = @"Missing 'reason'";
-    v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-    v16 = [v15 errorWithDomain:@"BNBannerSourceErrorDomain" code:2 userInfo:v12];
+    bn_remoteTargetEnforceLaunching = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
+    v16 = [v15 errorWithDomain:@"BNBannerSourceErrorDomain" code:2 userInfo:bn_remoteTargetEnforceLaunching];
     v13 = v25[5];
     v25[5] = v16;
   }
 
 LABEL_7:
-  if (a6)
+  if (error)
   {
     v17 = v25[5];
     if (v17)
     {
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -797,7 +797,7 @@ void __63__BNBannerSource_setSuspended_forReason_revokingCurrent_error___block_i
     if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138543362;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C42DC000, v3, OS_LOG_TYPE_DEFAULT, "BNBannerSource invalidated: %{public}@", &v5, 0xCu);
     }
 
@@ -811,13 +811,13 @@ void __63__BNBannerSource_setSuspended_forReason_revokingCurrent_error___block_i
   }
 }
 
-- (id)containerViewControllerForBannerSceneComponentProvider:(id)a3
+- (id)containerViewControllerForBannerSceneComponentProvider:(id)provider
 {
-  v4 = [a3 _scene];
-  v5 = [v4 _FBSScene];
-  v6 = [v5 settings];
+  _scene = [provider _scene];
+  _FBSScene = [_scene _FBSScene];
+  settings = [_FBSScene settings];
   v7 = objc_opt_class();
-  v8 = v6;
+  v8 = settings;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -838,125 +838,125 @@ void __63__BNBannerSource_setSuspended_forReason_revokingCurrent_error___block_i
 
   v10 = v9;
 
-  v11 = [v4 bn_presentableUniqueIdentifier];
-  v12 = [(BNBannerSource *)self _presentableForUniqueIdentifier:v11];
+  bn_presentableUniqueIdentifier = [_scene bn_presentableUniqueIdentifier];
+  v12 = [(BNBannerSource *)self _presentableForUniqueIdentifier:bn_presentableUniqueIdentifier];
   if (!v12)
   {
     [BNBannerSource containerViewControllerForBannerSceneComponentProvider:];
   }
 
-  v13 = [v10 clientContainerViewControllerClass];
-  if (!v13)
+  clientContainerViewControllerClass = [v10 clientContainerViewControllerClass];
+  if (!clientContainerViewControllerClass)
   {
-    v13 = objc_opt_class();
+    clientContainerViewControllerClass = objc_opt_class();
   }
 
-  v14 = [v12 uniquePresentableIdentifier];
-  v15 = [(BNBannerSource *)self _presentableContextForPresentableWithUniqueIdentifier:v14];
+  uniquePresentableIdentifier = [v12 uniquePresentableIdentifier];
+  v15 = [(BNBannerSource *)self _presentableContextForPresentableWithUniqueIdentifier:uniquePresentableIdentifier];
 
-  v16 = [[v13 alloc] initWithScene:v4 presentable:v12 context:v15];
+  v16 = [[clientContainerViewControllerClass alloc] initWithScene:_scene presentable:v12 context:v15];
   [v16 setDelegate:self];
 
   return v16;
 }
 
-- (void)sceneWillInvalidateForBannerSceneComponentProvider:(id)a3
+- (void)sceneWillInvalidateForBannerSceneComponentProvider:(id)provider
 {
-  v5 = [a3 _scene];
-  v4 = [v5 bn_presentableUniqueIdentifier];
-  [(BNBannerSource *)self _removePresentableWithUniqueIdentifier:v4 reason:@"scene will invalidate"];
+  _scene = [provider _scene];
+  bn_presentableUniqueIdentifier = [_scene bn_presentableUniqueIdentifier];
+  [(BNBannerSource *)self _removePresentableWithUniqueIdentifier:bn_presentableUniqueIdentifier reason:@"scene will invalidate"];
 }
 
-- (BOOL)bannerClientContainerShouldDeferFocus:(id)a3
+- (BOOL)bannerClientContainerShouldDeferFocus:(id)focus
 {
   destination = self->_destination;
   if (destination == 1)
   {
-    objc_storeWeak(&self->_bannerClientContainerDeferringFocus, a3);
+    objc_storeWeak(&self->_bannerClientContainerDeferringFocus, focus);
   }
 
   return destination == 1;
 }
 
-- (void)bannerClientContainerStoppedDeferringFocus:(id)a3
+- (void)bannerClientContainerStoppedDeferringFocus:(id)focus
 {
-  v4 = a3;
+  focusCopy = focus;
   WeakRetained = objc_loadWeakRetained(&self->_bannerClientContainerDeferringFocus);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == focusCopy)
   {
 
     objc_storeWeak(&self->_bannerClientContainerDeferringFocus, 0);
   }
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v10 = a3;
-  v6 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v10 providesTemplateContent])
+  bannerCopy = banner;
+  reasonCopy = reason;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [bannerCopy providesTemplateContent])
   {
-    v7 = [v10 uniquePresentableIdentifier];
-    v8 = [(BNBannerSource *)self _presentableContextForPresentableWithUniqueIdentifier:v7];
+    uniquePresentableIdentifier = [bannerCopy uniquePresentableIdentifier];
+    v8 = [(BNBannerSource *)self _presentableContextForPresentableWithUniqueIdentifier:uniquePresentableIdentifier];
     [v8 removePresentableObserver:self];
 
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"template presentable did disappear as banner (%@)", v6];
-    [(BNBannerSource *)self _removePresentable:v10 reason:v9];
+    reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"template presentable did disappear as banner (%@)", reasonCopy];
+    [(BNBannerSource *)self _removePresentable:bannerCopy reason:reasonCopy];
   }
 }
 
-+ (void)_invalidateBannerSource:(id)a3
++ (void)_invalidateBannerSource:(id)source
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  sourceCopy = source;
+  if (sourceCopy)
   {
     v4 = BNLogHostingService;
     if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v3;
+      v9 = sourceCopy;
       _os_log_impl(&dword_1C42DC000, v4, OS_LOG_TYPE_DEFAULT, "Removing reference to invalidated banner source: %{public}@", &v8, 0xCu);
     }
 
     v5 = __requesterIDsToMachNamesToSources;
-    v6 = [v3 requesterIdentifier];
-    v7 = [v5 objectForKeyedSubscript:v6];
-    [v7 setObject:0 forKeyedSubscript:*(v3 + 1)];
+    requesterIdentifier = [sourceCopy requesterIdentifier];
+    v7 = [v5 objectForKeyedSubscript:requesterIdentifier];
+    [v7 setObject:0 forKeyedSubscript:*(sourceCopy + 1)];
 
-    *(v3 + 48) = 0;
+    *(sourceCopy + 48) = 0;
   }
 }
 
-- (id)_activeConnectionWithError:(id *)a3
+- (id)_activeConnectionWithError:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_valid)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_valid)
   {
-    if (v4->_connection)
+    if (selfCopy->_connection)
     {
       goto LABEL_9;
     }
 
     v5 = MEMORY[0x1E698F498];
-    machName = v4->_machName;
+    machName = selfCopy->_machName;
     v7 = +[BNBannerSourceSessionSpecification identifier];
     v8 = [v5 endpointForMachName:machName service:v7 instance:0];
 
     v9 = [MEMORY[0x1E698F490] connectionWithEndpoint:v8];
-    connection = v4->_connection;
-    v4->_connection = v9;
+    connection = selfCopy->_connection;
+    selfCopy->_connection = v9;
 
-    v11 = v4->_connection;
+    v11 = selfCopy->_connection;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __45__BNBannerSource__activeConnectionWithError___block_invoke;
     v15[3] = &unk_1E81E44F0;
-    v15[4] = v4;
+    v15[4] = selfCopy;
     [(BSServiceConnection *)v11 configureConnection:v15];
-    [(BSServiceConnection *)v4->_connection activate];
+    [(BSServiceConnection *)selfCopy->_connection activate];
     goto LABEL_8;
   }
 
@@ -965,20 +965,20 @@ void __63__BNBannerSource_setSuspended_forReason_revokingCurrent_error___block_i
     [BNBannerSource _activeConnectionWithError:];
   }
 
-  if (a3)
+  if (error)
   {
     v12 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E696A578];
     v17[0] = @"Attempt to establish connection with an invalidated BNBannerSource";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    *a3 = [v12 errorWithDomain:@"BNBannerSourceErrorDomain" code:0 userInfo:v8];
+    *error = [v12 errorWithDomain:@"BNBannerSourceErrorDomain" code:0 userInfo:v8];
 LABEL_8:
   }
 
 LABEL_9:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  v13 = v4->_connection;
+  v13 = selfCopy->_connection;
 
   return v13;
 }
@@ -1077,58 +1077,58 @@ void __45__BNBannerSource__activeConnectionWithError___block_invoke_104(uint64_t
 - (void)_invalidateConnection
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_connection)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_connection)
   {
     v3 = BNLogHostingService;
     if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138543362;
-      v6 = v2;
+      v6 = selfCopy;
       _os_log_impl(&dword_1C42DC000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating connection: %{public}@", &v5, 0xCu);
     }
 
-    [(BSServiceConnection *)v2->_connection invalidate];
-    connection = v2->_connection;
-    v2->_connection = 0;
+    [(BSServiceConnection *)selfCopy->_connection invalidate];
+    connection = selfCopy->_connection;
+    selfCopy->_connection = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)_isValidPresentable:(id)a3 errorDescription:(id *)a4
+- (BOOL)_isValidPresentable:(id)presentable errorDescription:(id *)description
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 requestIdentifier];
-  v7 = [v6 length];
+  presentableCopy = presentable;
+  requestIdentifier = [presentableCopy requestIdentifier];
+  v7 = [requestIdentifier length];
 
   if (!v7)
   {
     v15 = MEMORY[0x1E696AEC0];
-    v16 = BNEffectivePresentableDescription(v5);
+    v16 = BNEffectivePresentableDescription(presentableCopy);
     [v15 stringWithFormat:@"Presentable missing requestID: %@", v16];
-    *a4 = LABEL_11:;
+    *description = LABEL_11:;
 
     v14 = 0;
     goto LABEL_12;
   }
 
-  v8 = [v5 requesterIdentifier];
-  v9 = [v8 length];
+  requesterIdentifier = [presentableCopy requesterIdentifier];
+  v9 = [requesterIdentifier length];
 
   if (!v9)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v16 = BNEffectivePresentableDescription(v5);
+    v16 = BNEffectivePresentableDescription(presentableCopy);
     [v17 stringWithFormat:@"Presentable missing requesterID: %@", v16];
     goto LABEL_11;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v5 providesTemplateContent] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([presentableCopy providesTemplateContent] & 1) == 0)
   {
-    v10 = UIViewControllerFromPresentable(v5);
+    v10 = UIViewControllerFromPresentable(presentableCopy);
 
     if (!v10)
     {
@@ -1136,7 +1136,7 @@ void __45__BNBannerSource__activeConnectionWithError___block_invoke_104(uint64_t
       if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_DEFAULT))
       {
         v12 = v11;
-        v13 = BNEffectivePresentableDescription(v5);
+        v13 = BNEffectivePresentableDescription(presentableCopy);
         *buf = 138543362;
         v27 = v13;
         _os_log_impl(&dword_1C42DC000, v12, OS_LOG_TYPE_DEFAULT, "Presentable provides neither template content nor a view controller – deferring to listener to manage UI: %{public}@", buf, 0xCu);
@@ -1146,20 +1146,20 @@ void __45__BNBannerSource__activeConnectionWithError___block_invoke_104(uint64_t
 
   v14 = 1;
 LABEL_12:
-  v18 = [v5 requesterIdentifier];
-  v19 = [v18 hasPrefix:@"com."];
+  requesterIdentifier2 = [presentableCopy requesterIdentifier];
+  v19 = [requesterIdentifier2 hasPrefix:@"com."];
 
   if ((v19 & 1) == 0)
   {
     v20 = BNLogHostingService;
     if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_ERROR))
     {
-      [BNBannerSource _isValidPresentable:v20 errorDescription:v5];
+      [BNBannerSource _isValidPresentable:v20 errorDescription:presentableCopy];
     }
   }
 
-  v21 = [v5 requesterIdentifier];
-  v22 = [v5 requestIdentifier];
+  requesterIdentifier3 = [presentableCopy requesterIdentifier];
+  requestIdentifier2 = [presentableCopy requestIdentifier];
   v23 = BSEqualStrings();
 
   if (v23)
@@ -1167,57 +1167,57 @@ LABEL_12:
     v24 = BNLogHostingService;
     if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_ERROR))
     {
-      [BNBannerSource _isValidPresentable:v24 errorDescription:v5];
+      [BNBannerSource _isValidPresentable:v24 errorDescription:presentableCopy];
     }
   }
 
   return v14;
 }
 
-- (void)_addPresentableContext:(id)a3
+- (void)_addPresentableContext:(id)context
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    uniqueIDsToContexts = v5->_uniqueIDsToContexts;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    uniqueIDsToContexts = selfCopy->_uniqueIDsToContexts;
     if (!uniqueIDsToContexts)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v8 = v5->_uniqueIDsToContexts;
-      v5->_uniqueIDsToContexts = v7;
+      v8 = selfCopy->_uniqueIDsToContexts;
+      selfCopy->_uniqueIDsToContexts = v7;
 
-      uniqueIDsToContexts = v5->_uniqueIDsToContexts;
+      uniqueIDsToContexts = selfCopy->_uniqueIDsToContexts;
     }
 
-    v9 = [v4 presentable];
-    v10 = [v9 uniquePresentableIdentifier];
-    [(NSMutableDictionary *)uniqueIDsToContexts setObject:v4 forKey:v10];
+    presentable = [contextCopy presentable];
+    uniquePresentableIdentifier = [presentable uniquePresentableIdentifier];
+    [(NSMutableDictionary *)uniqueIDsToContexts setObject:contextCopy forKey:uniquePresentableIdentifier];
 
-    [v4 addPresentableObserver:v5];
+    [contextCopy addPresentableObserver:selfCopy];
     v11 = BNLogHostingService;
     if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v4;
+      v13 = contextCopy;
       _os_log_impl(&dword_1C42DC000, v11, OS_LOG_TYPE_DEFAULT, "Added presentable context: %{public}@", &v12, 0xCu);
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (id)_presentableContextForPresentableWithUniqueIdentifier:(id)a3
+- (id)_presentableContextForPresentableWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)v5->_uniqueIDsToContexts objectForKey:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableDictionary *)selfCopy->_uniqueIDsToContexts objectForKey:identifierCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1228,37 +1228,37 @@ LABEL_12:
   return v6;
 }
 
-- (id)_presentableForUniqueIdentifier:(id)a3
+- (id)_presentableForUniqueIdentifier:(id)identifier
 {
-  v3 = [(BNBannerSource *)self _presentableContextForPresentableWithUniqueIdentifier:a3];
-  v4 = [v3 presentable];
+  v3 = [(BNBannerSource *)self _presentableContextForPresentableWithUniqueIdentifier:identifier];
+  presentable = [v3 presentable];
 
-  return v4;
+  return presentable;
 }
 
-- (void)_removePresentableContextForPresentableWithUniqueIdentifier:(id)a3 reason:(id)a4
+- (void)_removePresentableContextForPresentableWithUniqueIdentifier:(id)identifier reason:(id)reason
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![v7 length])
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  if (![reasonCopy length])
   {
     [BNBannerSource _removePresentableContextForPresentableWithUniqueIdentifier:reason:];
   }
 
-  if (v6)
+  if (identifierCopy)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [(BNBannerSource *)v8 _presentableContextForPresentableWithUniqueIdentifier:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = [(BNBannerSource *)selfCopy _presentableContextForPresentableWithUniqueIdentifier:identifierCopy];
     if (v9)
     {
-      [(NSMutableDictionary *)v8->_uniqueIDsToContexts removeObjectForKey:v6];
+      [(NSMutableDictionary *)selfCopy->_uniqueIDsToContexts removeObjectForKey:identifierCopy];
       v10 = BNLogHostingService;
       if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543618;
-        v12 = v7;
+        v12 = reasonCopy;
         v13 = 2114;
         v14 = v9;
         _os_log_impl(&dword_1C42DC000, v10, OS_LOG_TYPE_DEFAULT, "Removed presentable context for reason '%{public}@': %{public}@", &v11, 0x16u);
@@ -1272,27 +1272,27 @@ LABEL_12:
       [BNBannerSource _removePresentableContextForPresentableWithUniqueIdentifier:reason:];
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)_removePresentable:(id)a3 reason:(id)a4
+- (void)_removePresentable:(id)presentable reason:(id)reason
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  presentableCopy = presentable;
+  reasonCopy = reason;
+  if (presentableCopy)
   {
-    v8 = [v6 uniquePresentableIdentifier];
-    if (!v8)
+    uniquePresentableIdentifier = [presentableCopy uniquePresentableIdentifier];
+    if (!uniquePresentableIdentifier)
     {
       [BNBannerSource _removePresentable:reason:];
     }
 
-    v9 = [(BNBannerSource *)self _presentableForUniqueIdentifier:v8];
-    if (v9 == v6)
+    v9 = [(BNBannerSource *)self _presentableForUniqueIdentifier:uniquePresentableIdentifier];
+    if (v9 == presentableCopy)
     {
-      [(BNBannerSource *)self _removePresentableWithUniqueIdentifier:v8 reason:v7];
+      [(BNBannerSource *)self _removePresentableWithUniqueIdentifier:uniquePresentableIdentifier reason:reasonCopy];
     }
 
     else
@@ -1302,9 +1302,9 @@ LABEL_12:
       {
         v11 = v10;
         v12 = BNEffectivePresentableDescription(v9);
-        v13 = BNEffectivePresentableDescription(v6);
+        v13 = BNEffectivePresentableDescription(presentableCopy);
         v14 = 138543874;
-        v15 = v7;
+        v15 = reasonCopy;
         v16 = 2114;
         v17 = v12;
         v18 = 2114;
@@ -1315,13 +1315,13 @@ LABEL_12:
   }
 }
 
-- (id)_revokePresentableWithIdentification:(id)a3 reason:(id)a4 animated:(id)a5 userInfo:(id)a6 error:(id *)a7
+- (id)_revokePresentableWithIdentification:(id)identification reason:(id)reason animated:(id)animated userInfo:(id)info error:(id *)error
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identificationCopy = identification;
+  reasonCopy = reason;
+  animatedCopy = animated;
+  infoCopy = info;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -1334,34 +1334,34 @@ LABEL_12:
   v42 = __Block_byref_object_copy_;
   v43 = __Block_byref_object_dispose_;
   v44 = 0;
-  if (!v12 || !v13)
+  if (!identificationCopy || !reasonCopy)
   {
     v25 = MEMORY[0x1E696AEC0];
-    v26 = [v12 requesterIdentifier];
-    v20 = [v25 stringWithFormat:@"Requester identifier in identification (%@) doesn't match banner source (%@)", v26, self->_requesterIdentifier];
+    requesterIdentifier = [identificationCopy requesterIdentifier];
+    bn_remoteTargetEnforceLaunching = [v25 stringWithFormat:@"Requester identifier in identification (%@) doesn't match banner source (%@)", requesterIdentifier, self->_requesterIdentifier];
 
     v27 = MEMORY[0x1E696ABC0];
     v59 = *MEMORY[0x1E696A578];
-    v60 = v20;
-    v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-    v28 = [v27 errorWithDomain:@"BNBannerSourceErrorDomain" code:2 userInfo:v21];
+    v60 = bn_remoteTargetEnforceLaunching;
+    requesterIdentifier3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
+    v28 = [v27 errorWithDomain:@"BNBannerSourceErrorDomain" code:2 userInfo:requesterIdentifier3];
 LABEL_8:
-    v22 = v40[5];
+    requestIdentifier = v40[5];
     v40[5] = v28;
     goto LABEL_9;
   }
 
-  v16 = [v12 requesterIdentifier];
-  v17 = [v16 isEqualToString:self->_requesterIdentifier];
+  requesterIdentifier2 = [identificationCopy requesterIdentifier];
+  v17 = [requesterIdentifier2 isEqualToString:self->_requesterIdentifier];
 
   if (!v17)
   {
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing %@%@", @"identification", &stru_1F43AD928];
+    bn_remoteTargetEnforceLaunching = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing %@%@", @"identification", &stru_1F43AD928];
     v29 = MEMORY[0x1E696ABC0];
     v61 = *MEMORY[0x1E696A578];
-    v62 = v20;
-    v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
-    v28 = [v29 errorWithDomain:@"BNBannerSourceErrorDomain" code:2 userInfo:v21];
+    v62 = bn_remoteTargetEnforceLaunching;
+    requesterIdentifier3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
+    v28 = [v29 errorWithDomain:@"BNBannerSourceErrorDomain" code:2 userInfo:requesterIdentifier3];
     goto LABEL_8;
   }
 
@@ -1369,21 +1369,21 @@ LABEL_8:
   obj = 0;
   v19 = [(BNBannerSource *)self _activeConnectionWithError:&obj];
   objc_storeStrong(v18 + 5, obj);
-  v20 = [v19 bn_remoteTargetEnforceLaunching];
+  bn_remoteTargetEnforceLaunching = [v19 bn_remoteTargetEnforceLaunching];
 
-  if (v20)
+  if (bn_remoteTargetEnforceLaunching)
   {
-    v21 = [v12 requesterIdentifier];
-    v22 = [v12 requestIdentifier];
-    v23 = [v12 uniquePresentableIdentifier];
-    v24 = [BNPresentableIdentification identificationWithRequesterIdentifier:v21 requestIdentifier:v22 uniqueIdentifier:v23];
+    requesterIdentifier3 = [identificationCopy requesterIdentifier];
+    requestIdentifier = [identificationCopy requestIdentifier];
+    uniquePresentableIdentifier = [identificationCopy uniquePresentableIdentifier];
+    v24 = [BNPresentableIdentification identificationWithRequesterIdentifier:requesterIdentifier3 requestIdentifier:requestIdentifier uniqueIdentifier:uniquePresentableIdentifier];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __86__BNBannerSource__revokePresentableWithIdentification_reason_animated_userInfo_error___block_invoke;
     v37[3] = &unk_1E81E4518;
     v37[4] = &v45;
     v37[5] = &v39;
-    [v20 __revokePresentablesWithIdentification:v24 withAnimation:v14 reason:v13 userInfo:v15 reply:v37];
+    [bn_remoteTargetEnforceLaunching __revokePresentablesWithIdentification:v24 withAnimation:animatedCopy reason:reasonCopy userInfo:infoCopy reply:v37];
 
 LABEL_9:
     goto LABEL_10;
@@ -1394,8 +1394,8 @@ LABEL_9:
     v33 = MEMORY[0x1E696ABC0];
     v63 = *MEMORY[0x1E696A578];
     v64[0] = @"Failed to obtain remote target from connection";
-    v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:&v63 count:1];
-    v28 = [v33 errorWithDomain:@"BNBannerSourceErrorDomain" code:1 userInfo:v21];
+    requesterIdentifier3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:&v63 count:1];
+    v28 = [v33 errorWithDomain:@"BNBannerSourceErrorDomain" code:1 userInfo:requesterIdentifier3];
     goto LABEL_8;
   }
 
@@ -1406,23 +1406,23 @@ LABEL_10:
     v30 = BNLogHostingService;
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v34 = [v12 requestIdentifier];
-      v35 = [v12 requesterIdentifier];
+      requestIdentifier2 = [identificationCopy requestIdentifier];
+      requesterIdentifier4 = [identificationCopy requesterIdentifier];
       v36 = v40[5];
       *buf = 138544130;
-      v52 = v34;
+      v52 = requestIdentifier2;
       v53 = 2114;
-      v54 = v35;
+      v54 = requesterIdentifier4;
       v55 = 2114;
-      v56 = v13;
+      v56 = reasonCopy;
       v57 = 2114;
       v58 = v36;
       _os_log_error_impl(&dword_1C42DC000, v30, OS_LOG_TYPE_ERROR, "Error encountered attempting to revoke presentable with requestID %{public}@ and requesterID %{public}@ for reason '%{public}@': %{public}@", buf, 0x2Au);
     }
 
-    if (a7)
+    if (error)
     {
-      *a7 = v40[5];
+      *error = v40[5];
     }
   }
 

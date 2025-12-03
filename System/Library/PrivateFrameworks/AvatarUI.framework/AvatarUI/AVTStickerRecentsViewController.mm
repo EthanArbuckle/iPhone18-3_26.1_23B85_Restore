@@ -1,32 +1,32 @@
 @interface AVTStickerRecentsViewController
-+ (id)imageStoreWithEnvironment:(id)a3;
-+ (id)layoutForSize:(CGSize)a3;
-+ (id)stickerCacheWithEnvironment:(id)a3;
-+ (id)stickerForRecentItem:(id)a3;
++ (id)imageStoreWithEnvironment:(id)environment;
++ (id)layoutForSize:(CGSize)size;
++ (id)stickerCacheWithEnvironment:(id)environment;
++ (id)stickerForRecentItem:(id)item;
 + (id)stickerRecentsController;
-+ (id)stickerRecentsControllerForStore:(id)a3;
-- (AVTStickerRecentsViewController)initWithAvatarStore:(id)a3 environment:(id)a4;
++ (id)stickerRecentsControllerForStore:(id)store;
+- (AVTStickerRecentsViewController)initWithAvatarStore:(id)store environment:(id)environment;
 - (AVTStickerRecentsViewControllerDelegate)delegate;
-- (UIEdgeInsets)edgeInsetsForContainerSize:(CGSize)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (UIEdgeInsets)edgeInsetsForContainerSize:(CGSize)size;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)placeholderItems;
-- (id)recentStickersWithCount:(int64_t)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)recentStickersWithCount:(int64_t)count;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)beginObservingAvatarStoreChanges;
-- (void)buildRecentsItemsWithCompletionBlock:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)buildRecentsItemsWithCompletionBlock:(id)block;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)determineOverlayTypeWithCompletionBlock:(id)a3;
-- (void)dismissOverlayViewAnimated:(BOOL)a3;
+- (void)determineOverlayTypeWithCompletionBlock:(id)block;
+- (void)dismissOverlayViewAnimated:(BOOL)animated;
 - (void)endObservingAvatarStoreChanges;
 - (void)fetchDefaultMemojiIfNeeded;
-- (void)overlayDidTapContinueButton:(id)a3;
-- (void)recentStickersDidChange:(id)a3;
+- (void)overlayDidTapContinueButton:(id)button;
+- (void)recentStickersDidChange:(id)change;
 - (void)setupRenderingDependentPieces;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateDisplayItems;
-- (void)updateItemSizeForContainerSize:(CGSize)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateItemSizeForContainerSize:(CGSize)size;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -34,12 +34,12 @@
 
 @implementation AVTStickerRecentsViewController
 
-+ (id)layoutForSize:(CGSize)a3
++ (id)layoutForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [MEMORY[0x1E69DCBD0] emojiGraphicsTraitsForCurrentScreenTraits];
-  [v5 minimumInteritemSpacing];
+  height = size.height;
+  width = size.width;
+  emojiGraphicsTraitsForCurrentScreenTraits = [MEMORY[0x1E69DCBD0] emojiGraphicsTraitsForCurrentScreenTraits];
+  [emojiGraphicsTraitsForCurrentScreenTraits minimumInteritemSpacing];
   v7 = v6;
   v8 = *MEMORY[0x1E695F060];
   v9 = *(MEMORY[0x1E695F060] + 8);
@@ -65,30 +65,30 @@
   return v17;
 }
 
-+ (id)stickerForRecentItem:(id)a3
++ (id)stickerForRecentItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 url];
+  itemCopy = item;
+  v4 = [itemCopy url];
 
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E6973F40]);
-    v6 = [v3 url];
-    v7 = [v3 localizedDescription];
-    v4 = [v5 initWithContentsOfFileURL:v6 localizedDescription:v7 error:0];
+    v6 = [itemCopy url];
+    localizedDescription = [itemCopy localizedDescription];
+    v4 = [v5 initWithContentsOfFileURL:v6 localizedDescription:localizedDescription error:0];
   }
 
   return v4;
 }
 
-+ (id)stickerCacheWithEnvironment:(id)a3
++ (id)stickerCacheWithEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   if (!AVTUIStickersCaching() || AVTUIFlushStickersCache())
   {
-    v4 = [v3 stickerImageStoreLocation];
-    v5 = [v3 logger];
-    [AVTImageStore clearContentAtLocation:v4 logger:v5];
+    stickerImageStoreLocation = [environmentCopy stickerImageStoreLocation];
+    logger = [environmentCopy logger];
+    [AVTImageStore clearContentAtLocation:stickerImageStoreLocation logger:logger];
 
     AVTUISetFlushStickersCache();
   }
@@ -96,9 +96,9 @@
   if (AVTUIStickersCaching())
   {
     v6 = [AVTInMemoryResourceCache alloc];
-    v7 = [v3 lockProvider];
-    v8 = [v3 logger];
-    v9 = [(AVTInMemoryResourceCache *)v6 initWithLockProvider:v7 totalCostLimit:980000 logger:v8];
+    lockProvider = [environmentCopy lockProvider];
+    logger2 = [environmentCopy logger];
+    v9 = [(AVTInMemoryResourceCache *)v6 initWithLockProvider:lockProvider totalCostLimit:980000 logger:logger2];
   }
 
   else
@@ -109,23 +109,23 @@
   return v9;
 }
 
-+ (id)imageStoreWithEnvironment:(id)a3
++ (id)imageStoreWithEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   if (!AVTUIStickersCaching() || AVTUIFlushStickersCache())
   {
-    v4 = [v3 stickerImageStoreLocation];
-    v5 = [v3 logger];
-    [AVTImageStore clearContentAtLocation:v4 logger:v5];
+    stickerImageStoreLocation = [environmentCopy stickerImageStoreLocation];
+    logger = [environmentCopy logger];
+    [AVTImageStore clearContentAtLocation:stickerImageStoreLocation logger:logger];
 
     AVTUISetFlushStickersCache();
   }
 
   v6 = +[AVTUIStickerRenderer imageEncoder];
   v7 = [AVTClippableImageStore alloc];
-  v8 = [v3 coreEnvironment];
-  v9 = [v3 stickerImageStoreLocation];
-  v10 = [(AVTImageStore *)v7 initWithEnvironment:v8 validateImages:1 location:v9 encoder:v6];
+  coreEnvironment = [environmentCopy coreEnvironment];
+  stickerImageStoreLocation2 = [environmentCopy stickerImageStoreLocation];
+  v10 = [(AVTImageStore *)v7 initWithEnvironment:coreEnvironment validateImages:1 location:stickerImageStoreLocation2 encoder:v6];
 
   return v10;
 }
@@ -133,27 +133,27 @@
 + (id)stickerRecentsController
 {
   v3 = +[AVTUIEnvironment defaultEnvironment];
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v5 = objc_alloc_init(AVTAvatarStore);
   v6 = [v4 initWithAvatarStore:v5 environment:v3];
 
   return v6;
 }
 
-+ (id)stickerRecentsControllerForStore:(id)a3
++ (id)stickerRecentsControllerForStore:(id)store
 {
-  v4 = a3;
-  v5 = [a1 alloc];
+  storeCopy = store;
+  v5 = [self alloc];
   v6 = +[AVTUIEnvironment defaultEnvironment];
-  v7 = [v5 initWithAvatarStore:v4 environment:v6];
+  v7 = [v5 initWithAvatarStore:storeCopy environment:v6];
 
   return v7;
 }
 
-- (AVTStickerRecentsViewController)initWithAvatarStore:(id)a3 environment:(id)a4
+- (AVTStickerRecentsViewController)initWithAvatarStore:(id)store environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  environmentCopy = environment;
   v24.receiver = self;
   v24.super_class = AVTStickerRecentsViewController;
   v9 = [(AVTStickerRecentsViewController *)&v24 initWithNibName:0 bundle:0];
@@ -166,7 +166,7 @@
     buttonItem = v9->_buttonItem;
     v9->_buttonItem = v13;
 
-    objc_storeStrong(&v9->_environment, a4);
+    objc_storeStrong(&v9->_environment, environment);
     v15 = [objc_opt_class() layoutForSize:{50.0, 50.0}];
     stickerRecentsLayout = v9->_stickerRecentsLayout;
     v9->_stickerRecentsLayout = v15;
@@ -175,17 +175,17 @@
     imageStore = v9->_imageStore;
     v9->_imageStore = v17;
 
-    if (([v7 conformsToProtocol:&unk_1F39DD3B0] & 1) == 0)
+    if (([storeCopy conformsToProtocol:&unk_1F39DD3B0] & 1) == 0)
     {
-      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object protocol for %@", v7}];
+      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object protocol for %@", storeCopy}];
     }
 
-    v19 = v7;
+    v19 = storeCopy;
     [v19 setStickerBackendDelegate:v9];
-    objc_storeStrong(&v9->_avatarStore, a3);
-    v20 = [(AVTStickerRecentsViewController *)v9 placeholderItems];
+    objc_storeStrong(&v9->_avatarStore, store);
+    placeholderItems = [(AVTStickerRecentsViewController *)v9 placeholderItems];
     stickerItems = v9->_stickerItems;
-    v9->_stickerItems = v20;
+    v9->_stickerItems = placeholderItems;
 
     [(AVTStickerRecentsViewController *)v9 updateDisplayItems];
     v22 = AVTUIShowPrereleaseStickerPack_once();
@@ -202,8 +202,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_avatarStoreChangeObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_avatarStoreChangeObserver];
 
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = 0;
@@ -218,41 +218,41 @@
   v33.receiver = self;
   v33.super_class = AVTStickerRecentsViewController;
   [(AVTStickerRecentsViewController *)&v33 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(AVTStickerRecentsViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(AVTStickerRecentsViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
   v5 = objc_alloc_init(MEMORY[0x1E69DC840]);
   collectionViewLayout = self->_collectionViewLayout;
   self->_collectionViewLayout = v5;
 
-  v7 = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout interitemPadding];
-  [(UICollectionViewFlowLayout *)self->_collectionViewLayout setMinimumLineSpacing:v7];
-  [(UICollectionViewFlowLayout *)self->_collectionViewLayout setMinimumInteritemSpacing:v7];
-  v8 = [(AVTStickerRecentsViewController *)self view];
-  [v8 bounds];
+  interitemPadding = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout interitemPadding];
+  [(UICollectionViewFlowLayout *)self->_collectionViewLayout setMinimumLineSpacing:interitemPadding];
+  [(UICollectionViewFlowLayout *)self->_collectionViewLayout setMinimumInteritemSpacing:interitemPadding];
+  view2 = [(AVTStickerRecentsViewController *)self view];
+  [view2 bounds];
   [(AVTStickerRecentsViewController *)self updateItemSizeForContainerSize:v9, v10];
 
-  v11 = [(AVTStickerRecentsViewController *)self view];
-  [v11 bounds];
+  view3 = [(AVTStickerRecentsViewController *)self view];
+  [view3 bounds];
   [(AVTStickerRecentsViewController *)self edgeInsetsForContainerSize:v12, v13];
   [(UICollectionView *)self->_collectionView setContentInset:?];
 
   v14 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v15 = [(AVTStickerRecentsViewController *)self view];
-  [v15 bounds];
+  view4 = [(AVTStickerRecentsViewController *)self view];
+  [view4 bounds];
   v16 = [v14 initWithFrame:self->_collectionViewLayout collectionViewLayout:?];
   collectionView = self->_collectionView;
   self->_collectionView = v16;
 
-  v18 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)self->_collectionView setBackgroundColor:v18];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:clearColor2];
 
   [(UICollectionView *)self->_collectionView setScrollEnabled:0];
   [(UICollectionView *)self->_collectionView setDelegate:self];
   [(UICollectionView *)self->_collectionView setDataSource:self];
-  v19 = [(AVTStickerRecentsViewController *)self view];
-  [v19 addSubview:self->_collectionView];
+  view5 = [(AVTStickerRecentsViewController *)self view];
+  [view5 addSubview:self->_collectionView];
 
   v20 = self->_collectionView;
   v21 = objc_opt_class();
@@ -264,8 +264,8 @@
   v25 = +[AVTStickerRecentsButtonCollectionViewCell identifier];
   [(UICollectionView *)v23 registerClass:v24 forCellWithReuseIdentifier:v25];
 
-  v26 = [(AVTUIEnvironment *)self->_environment serialQueueProvider];
-  v27 = (v26)[2](v26, "com.apple.AvatarUI.StickerRecentsWorkQueue");
+  serialQueueProvider = [(AVTUIEnvironment *)self->_environment serialQueueProvider];
+  v27 = (serialQueueProvider)[2](serialQueueProvider, "com.apple.AvatarUI.StickerRecentsWorkQueue");
   recentsWorkQueue = self->_recentsWorkQueue;
   self->_recentsWorkQueue = v27;
 
@@ -376,11 +376,11 @@ void __46__AVTStickerRecentsViewController_viewDidLoad__block_invoke_4(uint64_t 
   [v1 reloadData];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = AVTStickerRecentsViewController;
-  [(AVTStickerRecentsViewController *)&v8 viewDidAppear:a3];
+  [(AVTStickerRecentsViewController *)&v8 viewDidAppear:appear];
   kdebug_trace();
   if (perfLog_onceToken != -1)
   {
@@ -394,26 +394,26 @@ void __46__AVTStickerRecentsViewController_viewDidLoad__block_invoke_4(uint64_t 
     _os_signpost_emit_with_name_impl(&dword_1BB341000, v3, OS_SIGNPOST_INTERVAL_END, 0x33uLL, "recents-bringup", "enableTelemetry=YES", v7, 2u);
   }
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"com.apple.paddlefish.shouldNotifyOnAppear"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:@"com.apple.paddlefish.shouldNotifyOnAppear"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v6 postNotificationName:@"PaddlefishRecentsViewDidAppear" object:0 userInfo:0 deliverImmediately:1];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter postNotificationName:@"PaddlefishRecentsViewDidAppear" object:0 userInfo:0 deliverImmediately:1];
   }
 }
 
 - (void)setupRenderingDependentPieces
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(AVTUIEnvironment *)self->_environment backgroundRenderingQueue];
+  backgroundRenderingQueue = [(AVTUIEnvironment *)self->_environment backgroundRenderingQueue];
   renderingQueue = self->_renderingQueue;
-  self->_renderingQueue = v3;
+  self->_renderingQueue = backgroundRenderingQueue;
 
-  v5 = [(AVTUIEnvironment *)self->_environment backgroundEncodingQueue];
+  backgroundEncodingQueue = [(AVTUIEnvironment *)self->_environment backgroundEncodingQueue];
   encodingQueue = self->_encodingQueue;
-  self->_encodingQueue = v5;
+  self->_encodingQueue = backgroundEncodingQueue;
 
   v7 = [objc_opt_class() stickerCacheWithEnvironment:self->_environment];
   cache = self->_cache;
@@ -446,8 +446,8 @@ void __46__AVTStickerRecentsViewController_viewDidLoad__block_invoke_4(uint64_t 
   stickerRecentsMigrator = self->_stickerRecentsMigrator;
   self->_stickerRecentsMigrator = v16;
 
-  v18 = [(AVTUIEnvironment *)self->_environment coreEnvironment];
-  v19 = [AVTSerialTaskScheduler fifoSchedulerWithEnvironment:v18];
+  coreEnvironment = [(AVTUIEnvironment *)self->_environment coreEnvironment];
+  v19 = [AVTSerialTaskScheduler fifoSchedulerWithEnvironment:coreEnvironment];
   taskScheduler = self->_taskScheduler;
   self->_taskScheduler = v19;
 }
@@ -455,14 +455,14 @@ void __46__AVTStickerRecentsViewController_viewDidLoad__block_invoke_4(uint64_t 
 - (void)beginObservingAvatarStoreChanges
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E698E308];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__AVTStickerRecentsViewController_beginObservingAvatarStoreChanges__block_invoke;
   v7[3] = &unk_1E7F3B248;
   objc_copyWeak(&v8, &location);
-  v5 = [v3 addObserverForName:v4 object:0 queue:0 usingBlock:v7];
+  v5 = [defaultCenter addObserverForName:v4 object:0 queue:0 usingBlock:v7];
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = v5;
 
@@ -517,8 +517,8 @@ void __67__AVTStickerRecentsViewController_beginObservingAvatarStoreChanges__blo
 
 - (void)endObservingAvatarStoreChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_avatarStoreChangeObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_avatarStoreChangeObserver];
 
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = 0;
@@ -533,17 +533,17 @@ void __67__AVTStickerRecentsViewController_beginObservingAvatarStoreChanges__blo
     v9 = 0;
     v5 = [(AVTAvatarStoreInternal *)avatarStore avatarsForFetchRequest:v3 error:&v9];
     v6 = v9;
-    v7 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     defaultMemoji = self->_defaultMemoji;
-    self->_defaultMemoji = v7;
+    self->_defaultMemoji = firstObject;
 
     self->_hasFetchedDefaultMemoji = 1;
   }
 }
 
-- (void)determineOverlayTypeWithCompletionBlock:(id)a3
+- (void)determineOverlayTypeWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (AVTUIStickerRecentsShowDisclosureWarning())
   {
     v5 = &unk_1F39A5A58;
@@ -572,8 +572,8 @@ void __67__AVTStickerRecentsViewController_beginObservingAvatarStoreChanges__blo
   v7[2] = __75__AVTStickerRecentsViewController_determineOverlayTypeWithCompletionBlock___block_invoke;
   v7[3] = &unk_1E7F3A8A8;
   v8 = v5;
-  v9 = v4;
-  v6 = v4;
+  v9 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -599,16 +599,16 @@ void __67__AVTStickerRecentsViewController_beginObservingAvatarStoreChanges__blo
   return v6;
 }
 
-- (void)buildRecentsItemsWithCompletionBlock:(id)a3
+- (void)buildRecentsItemsWithCompletionBlock:(id)block
 {
-  v42 = a3;
+  blockCopy = block;
   [(AVTStickerRecentsMigrator *)self->_stickerRecentsMigrator performMigrationIfNeeded];
   [(AVTStickerRecentsViewController *)self fetchDefaultMemojiIfNeeded];
   if (!self->_generatorPool)
   {
     v4 = [AVTUIStickerGeneratorPool alloc];
-    v5 = [(AVTUIEnvironment *)self->_environment logger];
-    v6 = [(AVTUIStickerGeneratorPool *)v4 initWithMaxStickerGeneratorCount:1 logger:v5];
+    logger = [(AVTUIEnvironment *)self->_environment logger];
+    v6 = [(AVTUIStickerGeneratorPool *)v4 initWithMaxStickerGeneratorCount:1 logger:logger];
     generatorPool = self->_generatorPool;
     self->_generatorPool = v6;
   }
@@ -627,7 +627,7 @@ void __67__AVTStickerRecentsViewController_beginObservingAvatarStoreChanges__blo
   v54 = __Block_byref_object_dispose__4;
   v55 = 0;
   v8 = v57[5];
-  v9 = [(AVTAvatarRecord *)self->_defaultMemoji identifier];
+  identifier = [(AVTAvatarRecord *)self->_defaultMemoji identifier];
   avatarStore = self->_avatarStore;
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
@@ -635,7 +635,7 @@ void __67__AVTStickerRecentsViewController_beginObservingAvatarStoreChanges__blo
   v49[3] = &unk_1E7F3B270;
   v49[4] = &v56;
   v49[5] = &v50;
-  [AVTStickerRecentsPresetsProvider filteredAndPaddedStickerRecordsWithRecents:v8 excludingRecords:0 paddingMemojiIdentifier:v9 avatarStore:avatarStore numberOfStickers:8 resultBlock:v49];
+  [AVTStickerRecentsPresetsProvider filteredAndPaddedStickerRecordsWithRecents:v8 excludingRecords:0 paddingMemojiIdentifier:identifier avatarStore:avatarStore numberOfStickers:8 resultBlock:v49];
 
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
@@ -656,19 +656,19 @@ void __67__AVTStickerRecentsViewController_beginObservingAvatarStoreChanges__blo
 
     v13 = [v57[5] objectAtIndexedSubscript:v11];
     v14 = v51[5];
-    v15 = [v13 avatarRecordIdentifier];
-    v16 = [v14 objectForKeyedSubscript:v15];
+    avatarRecordIdentifier = [v13 avatarRecordIdentifier];
+    v16 = [v14 objectForKeyedSubscript:avatarRecordIdentifier];
 
     configurationProvider = self->_configurationProvider;
-    v18 = [v13 stickerConfigurationIdentifier];
-    v19 = [(AVTStickerConfigurationProvider *)configurationProvider stickerConfigurationForAvatarRecord:v16 stickerName:v18];
+    stickerConfigurationIdentifier = [v13 stickerConfigurationIdentifier];
+    v19 = [(AVTStickerConfigurationProvider *)configurationProvider stickerConfigurationForAvatarRecord:v16 stickerName:stickerConfigurationIdentifier];
 
     if (!v19)
     {
       [(AVTStickerRecentsMigrator *)self->_stickerRecentsMigrator setNeedsMigrationOnNextLaunch];
-      v38 = [(AVTUIEnvironment *)self->_environment logger];
+      logger2 = [(AVTUIEnvironment *)self->_environment logger];
       v39 = [v13 description];
-      [v38 logFetchedRecentStickerWithNoStickerConfiguration:v39];
+      [logger2 logFetchedRecentStickerWithNoStickerConfiguration:v39];
 
       goto LABEL_10;
     }
@@ -691,10 +691,10 @@ void __67__AVTStickerRecentsViewController_beginObservingAvatarStoreChanges__blo
 
     v30 = [(AVTUIStickerRenderer *)v29 scheduledStickerResourceProviderForStickerConfiguration:v19];
     v31 = [AVTStickerRecentsStickerItem alloc];
-    v32 = [v25 identifier];
-    v33 = [v19 name];
-    v34 = [v19 localizedName];
-    v35 = [(AVTStickerRecentsStickerItem *)v31 initWithAvatarIdentifier:v32 stickerName:v33 localizedName:v34 stickerProvider:v30];
+    identifier2 = [v25 identifier];
+    name = [v19 name];
+    localizedName = [v19 localizedName];
+    v35 = [(AVTStickerRecentsStickerItem *)v31 initWithAvatarIdentifier:identifier2 stickerName:name localizedName:localizedName stickerProvider:v30];
 
     [v43 addObject:v35];
     v11 = v44 + 1;
@@ -706,9 +706,9 @@ void __67__AVTStickerRecentsViewController_beginObservingAvatarStoreChanges__blo
   self->_stickerItems = v36;
 
   [(AVTStickerRecentsViewController *)self updateDisplayItems];
-  if (v42)
+  if (blockCopy)
   {
-    v42[2]();
+    blockCopy[2]();
   }
 
 LABEL_10:
@@ -750,13 +750,13 @@ void __72__AVTStickerRecentsViewController_buildRecentsItemsWithCompletionBlock_
   v32[9] = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_stickerItems count])
   {
-    v3 = [(AVTStickerRecentsViewController *)self stickerRecentsLayout];
-    v4 = [v3 numberOfItems];
+    stickerRecentsLayout = [(AVTStickerRecentsViewController *)self stickerRecentsLayout];
+    numberOfItems = [stickerRecentsLayout numberOfItems];
 
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
-    if (v4 >= 1)
+    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:numberOfItems];
+    if (numberOfItems >= 1)
     {
-      for (i = 0; i != v4; ++i)
+      for (i = 0; i != numberOfItems; ++i)
       {
         if (i == [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout appButtonIndex])
         {
@@ -837,8 +837,8 @@ void __72__AVTStickerRecentsViewController_buildRecentsItemsWithCompletionBlock_
   v16.super_class = AVTStickerRecentsViewController;
   [(AVTStickerRecentsViewController *)&v16 viewWillLayoutSubviews];
   v3 = objc_opt_class();
-  v4 = [(AVTStickerRecentsViewController *)self view];
-  [v4 bounds];
+  view = [(AVTStickerRecentsViewController *)self view];
+  [view bounds];
   v7 = [v3 layoutForSize:{v5, v6}];
 
   if (([v7 isEqual:self->_stickerRecentsLayout] & 1) == 0)
@@ -847,21 +847,21 @@ void __72__AVTStickerRecentsViewController_buildRecentsItemsWithCompletionBlock_
     -[UICollectionViewFlowLayout setMinimumLineSpacing:](self->_collectionViewLayout, "setMinimumLineSpacing:", [v7 interitemPadding]);
     -[UICollectionViewFlowLayout setMinimumInteritemSpacing:](self->_collectionViewLayout, "setMinimumInteritemSpacing:", [v7 interitemPadding]);
     [(AVTStickerRecentsViewController *)self updateDisplayItems];
-    v8 = [(AVTStickerRecentsViewController *)self collectionView];
-    [v8 reloadData];
+    collectionView = [(AVTStickerRecentsViewController *)self collectionView];
+    [collectionView reloadData];
   }
 
-  v9 = [(AVTStickerRecentsViewController *)self view];
-  [v9 bounds];
+  view2 = [(AVTStickerRecentsViewController *)self view];
+  [view2 bounds];
   [(AVTStickerRecentsViewController *)self updateItemSizeForContainerSize:v10, v11];
 
   [(UICollectionViewFlowLayout *)self->_collectionViewLayout invalidateLayout];
-  v12 = [(AVTStickerRecentsViewController *)self view];
-  [v12 bounds];
+  view3 = [(AVTStickerRecentsViewController *)self view];
+  [view3 bounds];
   [(UICollectionView *)self->_collectionView setFrame:?];
 
-  v13 = [(AVTStickerRecentsViewController *)self view];
-  [v13 bounds];
+  view4 = [(AVTStickerRecentsViewController *)self view];
+  [view4 bounds];
   [(AVTStickerRecentsViewController *)self edgeInsetsForContainerSize:v14, v15];
   [(UICollectionView *)self->_collectionView setContentInset:?];
 }
@@ -887,44 +887,44 @@ void __72__AVTStickerRecentsViewController_buildRecentsItemsWithCompletionBlock_
   [(AVTStickerRecentsViewController *)&v6 viewDidLayoutSubviews];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = AVTStickerRecentsViewController;
-  v4 = a3;
-  [(AVTStickerRecentsViewController *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(AVTStickerRecentsViewController *)&v9 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(AVTStickerRecentsViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(AVTStickerRecentsViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(AVTStickerRecentsViewController *)self collectionView];
-    [v8 reloadData];
+    collectionView = [(AVTStickerRecentsViewController *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
-- (id)recentStickersWithCount:(int64_t)a3
+- (id)recentStickersWithCount:(int64_t)count
 {
-  v4 = [MEMORY[0x1E698E350] requestForMostRecentStickersWithResultLimit:a3];
+  v4 = [MEMORY[0x1E698E350] requestForMostRecentStickersWithResultLimit:count];
   avatarStore = self->_avatarStore;
   v11 = 0;
   v6 = [(AVTAvatarStoreInternal *)avatarStore recentStickersForFetchRequest:v4 error:&v11];
   v7 = v11;
   if (v7)
   {
-    v8 = [(AVTUIEnvironment *)self->_environment logger];
-    v9 = [v7 localizedDescription];
-    [v8 logErrorFetchingRecentStickers:v9];
+    logger = [(AVTUIEnvironment *)self->_environment logger];
+    localizedDescription = [v7 localizedDescription];
+    [logger logErrorFetchingRecentStickers:localizedDescription];
   }
 
   return v6;
 }
 
-- (void)dismissOverlayViewAnimated:(BOOL)a3
+- (void)dismissOverlayViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ((AVTUIHasShownStickerRecentsSplashView() & 1) == 0)
   {
     AVTUISetHasShownStickerRecentsSplashView();
@@ -939,7 +939,7 @@ void __72__AVTStickerRecentsViewController_buildRecentsItemsWithCompletionBlock_
   edgeMaskLayer = self->_edgeMaskLayer;
   self->_edgeMaskLayer = 0;
 
-  if (v3)
+  if (animatedCopy)
   {
     [(CALayer *)v7 shadowRadius];
     v11 = v10;
@@ -986,19 +986,19 @@ uint64_t __62__AVTStickerRecentsViewController_dismissOverlayViewAnimated___bloc
   return [v2 removeFromSuperlayer];
 }
 
-- (void)updateItemSizeForContainerSize:(CGSize)a3
+- (void)updateItemSizeForContainerSize:(CGSize)size
 {
-  if (a3.width != 0.0)
+  if (size.width != 0.0)
   {
-    height = a3.height;
-    if (a3.height != 0.0)
+    height = size.height;
+    if (size.height != 0.0)
     {
-      width = a3.width;
-      v6 = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout numberOfItemsPerRow];
-      v7 = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout numberOfItemsPerColumn];
-      v8 = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout interitemPadding];
-      v9 = floor((width - v8 * (v6 - 1)) / v6);
-      v10 = floor((height - v8 * (v7 - 1)) / v7);
+      width = size.width;
+      numberOfItemsPerRow = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout numberOfItemsPerRow];
+      numberOfItemsPerColumn = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout numberOfItemsPerColumn];
+      interitemPadding = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout interitemPadding];
+      v9 = floor((width - interitemPadding * (numberOfItemsPerRow - 1)) / numberOfItemsPerRow);
+      v10 = floor((height - interitemPadding * (numberOfItemsPerColumn - 1)) / numberOfItemsPerColumn);
       if (v10 >= v9)
       {
         v10 = v9;
@@ -1011,9 +1011,9 @@ uint64_t __62__AVTStickerRecentsViewController_dismissOverlayViewAnimated___bloc
   }
 }
 
-- (UIEdgeInsets)edgeInsetsForContainerSize:(CGSize)a3
+- (UIEdgeInsets)edgeInsetsForContainerSize:(CGSize)size
 {
-  if (a3.width == 0.0 || (height = a3.height, a3.height == 0.0))
+  if (size.width == 0.0 || (height = size.height, size.height == 0.0))
   {
     v14 = *MEMORY[0x1E69DDCE0];
     v13 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -1023,14 +1023,14 @@ uint64_t __62__AVTStickerRecentsViewController_dismissOverlayViewAnimated___bloc
 
   else
   {
-    width = a3.width;
-    v6 = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout numberOfItemsPerRow];
-    v7 = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout numberOfItemsPerColumn];
-    v8 = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout interitemPadding];
+    width = size.width;
+    numberOfItemsPerRow = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout numberOfItemsPerRow];
+    numberOfItemsPerColumn = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout numberOfItemsPerColumn];
+    interitemPadding = [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout interitemPadding];
     [(UICollectionViewFlowLayout *)self->_collectionViewLayout itemSize];
-    v10 = (v6 - 1) * v8 + v9 * v6;
+    v10 = (numberOfItemsPerRow - 1) * interitemPadding + v9 * numberOfItemsPerRow;
     [(UICollectionViewFlowLayout *)self->_collectionViewLayout itemSize];
-    v12 = (v7 - 1) * v8 + v11 * v7;
+    v12 = (numberOfItemsPerColumn - 1) * interitemPadding + v11 * numberOfItemsPerColumn;
     v13 = fmax(floor((width - v10) * 0.5), 0.0);
     v14 = fmax(floor((height - v12) * 0.5), 0.0);
     v15 = v14;
@@ -1044,9 +1044,9 @@ uint64_t __62__AVTStickerRecentsViewController_dismissOverlayViewAnimated___bloc
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(NSArray *)self->_displayItems count:a3];
+  v5 = [(NSArray *)self->_displayItems count:view];
   if (v5 != [(AVTStickerRecentsLayout *)self->_stickerRecentsLayout numberOfItems])
   {
     return 0;
@@ -1057,23 +1057,23 @@ uint64_t __62__AVTStickerRecentsViewController_dismissOverlayViewAnimated___bloc
   return [(AVTStickerRecentsLayout *)stickerRecentsLayout numberOfItems];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   displayItems = self->_displayItems;
-  v7 = a4;
-  v8 = a3;
-  v9 = -[NSArray objectAtIndexedSubscript:](displayItems, "objectAtIndexedSubscript:", [v7 row]);
-  v10 = [v9 cellIdentifier];
-  v11 = [v8 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v7];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = -[NSArray objectAtIndexedSubscript:](displayItems, "objectAtIndexedSubscript:", [pathCopy row]);
+  cellIdentifier = [v9 cellIdentifier];
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:pathCopy];
 
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  [v11 setDisplaySessionUUID:v12];
-  v13 = [v9 image];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [v11 setDisplaySessionUUID:uUID];
+  image = [v9 image];
 
-  if (v13)
+  if (image)
   {
-    v14 = [v9 image];
-    [v11 updateWithImage:v14];
+    image2 = [v9 image];
+    [v11 updateWithImage:image2];
 
     if ([(AVTStickerRecentsViewController *)self showPrereleaseSticker])
     {
@@ -1087,20 +1087,20 @@ uint64_t __62__AVTStickerRecentsViewController_dismissOverlayViewAnimated___bloc
 
   else
   {
-    v15 = [v9 provider];
+    provider = [v9 provider];
 
-    if (v15)
+    if (provider)
     {
-      v16 = [v9 provider];
+      provider2 = [v9 provider];
       v19 = MEMORY[0x1E69E9820];
       v20 = 3221225472;
       v21 = __73__AVTStickerRecentsViewController_collectionView_cellForItemAtIndexPath___block_invoke;
       v22 = &unk_1E7F3B2C0;
       v23 = v11;
-      v24 = v12;
+      v24 = uUID;
       v25 = v9;
-      v26 = self;
-      v17 = (v16)[2](v16, &v19, 0);
+      selfCopy = self;
+      v17 = (provider2)[2](provider2, &v19, 0);
 
       if (v17)
       {
@@ -1142,49 +1142,49 @@ void __73__AVTStickerRecentsViewController_collectionView_cellForItemAtIndexPath
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_displayItems, "objectAtIndexedSubscript:", [v7 row]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_displayItems, "objectAtIndexedSubscript:", [pathCopy row]);
   v9 = self->_environment;
   v10 = v9;
   if (v8 == self->_buttonItem)
   {
-    v21 = [(AVTUIEnvironment *)v9 usageTrackingSession];
-    [v21 didOpenStickersAppFromRecents];
+    usageTrackingSession = [(AVTUIEnvironment *)v9 usageTrackingSession];
+    [usageTrackingSession didOpenStickersAppFromRecents];
 
-    v12 = [(AVTStickerRecentsViewController *)self delegate];
-    [v12 stickerRecentsControllerDidTapAppButton:self];
+    delegate = [(AVTStickerRecentsViewController *)self delegate];
+    [delegate stickerRecentsControllerDidTapAppButton:self];
     goto LABEL_5;
   }
 
   v11 = [objc_opt_class() stickerForRecentItem:v8];
   if (v11)
   {
-    v12 = v11;
-    v13 = [(AVTStickerRecentsViewController *)self delegate];
-    [v13 stickerRecentsController:self didTapSticker:v12];
+    delegate = v11;
+    delegate2 = [(AVTStickerRecentsViewController *)self delegate];
+    [delegate2 stickerRecentsController:self didTapSticker:delegate];
 
     v14 = v8;
-    v15 = [(AVTUIEnvironment *)v10 usageTrackingSession];
-    v16 = [(AVTStickerRecentsItem *)v14 stickerName];
-    v17 = [(AVTStickerRecentsItem *)v14 avatarIdentifier];
-    [v15 didTapStickerFromRecents:v16 withAvatarIdentifier:v17];
+    usageTrackingSession2 = [(AVTUIEnvironment *)v10 usageTrackingSession];
+    stickerName = [(AVTStickerRecentsItem *)v14 stickerName];
+    avatarIdentifier = [(AVTStickerRecentsItem *)v14 avatarIdentifier];
+    [usageTrackingSession2 didTapStickerFromRecents:stickerName withAvatarIdentifier:avatarIdentifier];
 
     avatarStore = self->_avatarStore;
-    v19 = [(AVTStickerRecentsItem *)v14 avatarIdentifier];
-    v20 = [(AVTStickerRecentsItem *)v14 stickerName];
+    avatarIdentifier2 = [(AVTStickerRecentsItem *)v14 avatarIdentifier];
+    stickerName2 = [(AVTStickerRecentsItem *)v14 stickerName];
 
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __75__AVTStickerRecentsViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
     v22[3] = &unk_1E7F3B2E8;
     v23 = v10;
-    [(AVTAvatarStoreInternal *)avatarStore didUseStickerWithAvatarIdentifier:v19 stickerIdentifier:v20 completionHandler:v22];
+    [(AVTAvatarStoreInternal *)avatarStore didUseStickerWithAvatarIdentifier:avatarIdentifier2 stickerIdentifier:stickerName2 completionHandler:v22];
 
 LABEL_5:
-    [v6 deselectItemAtIndexPath:v7 animated:1];
+    [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
   }
 }
 
@@ -1201,7 +1201,7 @@ void __75__AVTStickerRecentsViewController_collectionView_didSelectItemAtIndexPa
   }
 }
 
-- (void)recentStickersDidChange:(id)a3
+- (void)recentStickersDidChange:(id)change
 {
   objc_initWeak(&location, self);
   recentsWorkQueue = self->_recentsWorkQueue;
@@ -1245,10 +1245,10 @@ void __59__AVTStickerRecentsViewController_recentStickersDidChange___block_invok
   [v1 reloadData];
 }
 
-- (void)overlayDidTapContinueButton:(id)a3
+- (void)overlayDidTapContinueButton:(id)button
 {
-  v4 = [(AVTStickerRecentsViewController *)self delegate];
-  [v4 stickerRecentsControllerDidRequestMemojiEditor:self];
+  delegate = [(AVTStickerRecentsViewController *)self delegate];
+  [delegate stickerRecentsControllerDidRequestMemojiEditor:self];
 
   v5 = dispatch_time(0, 500000000);
   block[0] = MEMORY[0x1E69E9820];

@@ -1,16 +1,16 @@
 @interface _PASSqlReadTransaction
-- (_PASSqlReadTransaction)initWithHandle:(id)a3;
+- (_PASSqlReadTransaction)initWithHandle:(id)handle;
 @end
 
 @implementation _PASSqlReadTransaction
 
-- (_PASSqlReadTransaction)initWithHandle:(id)a3
+- (_PASSqlReadTransaction)initWithHandle:(id)handle
 {
-  v6 = a3;
-  if (!v6)
+  handleCopy = handle;
+  if (!handleCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_PASSqliteTransaction.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"handle"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASSqliteTransaction.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"handle"}];
   }
 
   v11.receiver = self;
@@ -19,7 +19,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_db, a3);
+    objc_storeStrong(&v7->_db, handle);
   }
 
   return v8;

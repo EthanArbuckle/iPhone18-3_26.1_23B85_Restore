@@ -1,11 +1,11 @@
 @interface PKImageWandCAPackage
-+ (BOOL)_loadCAPackageViewWithName:(void *)a3 completion:;
-+ (BOOL)loadPackageViewsWithHandler:(uint64_t)a1;
++ (BOOL)_loadCAPackageViewWithName:(void *)name completion:;
++ (BOOL)loadPackageViewsWithHandler:(uint64_t)handler;
 @end
 
 @implementation PKImageWandCAPackage
 
-+ (BOOL)loadPackageViewsWithHandler:(uint64_t)a1
++ (BOOL)loadPackageViewsWithHandler:(uint64_t)handler
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -39,10 +39,10 @@
   return v6;
 }
 
-+ (BOOL)_loadCAPackageViewWithName:(void *)a3 completion:
++ (BOOL)_loadCAPackageViewWithName:(void *)name completion:
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = a2;
   objc_opt_self();
   v6 = PencilKitBundle();
@@ -54,10 +54,10 @@
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v7 absoluteString];
+      absoluteString = [v7 absoluteString];
       v11 = PencilKitBundle();
       *buf = 138412546;
-      v20 = v10;
+      v20 = absoluteString;
       v21 = 2112;
       v22 = v11;
       _os_log_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEFAULT, "load ca asset: %@, bundle: %@", buf, 0x16u);
@@ -69,7 +69,7 @@
     v16[2] = __62__PKImageWandCAPackage__loadCAPackageViewWithName_completion___block_invoke;
     v16[3] = &unk_1E82DCDF0;
     v17 = v7;
-    v18 = v4;
+    v18 = nameCopy;
     [v12 loadPackageViewWithContentsOfURL:v17 publishedObjectViewClassMap:0 completion:v16];
 
     v9 = v17;
@@ -79,10 +79,10 @@
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v14 = [0 absoluteString];
+      absoluteString2 = [0 absoluteString];
       v15 = PencilKitBundle();
       *buf = 138412546;
-      v20 = v14;
+      v20 = absoluteString2;
       v21 = 2112;
       v22 = v15;
       _os_log_error_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_ERROR, "ca asset not found: %@, bundle: %@", buf, 0x16u);

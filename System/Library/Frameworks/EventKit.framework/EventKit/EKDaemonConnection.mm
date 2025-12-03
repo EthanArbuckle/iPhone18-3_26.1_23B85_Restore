@@ -2,40 +2,40 @@
 + (EKDaemonConnection)preferredAvailableDaemonConnection;
 + (id)anyAvailableDaemonConnection;
 + (id)sharedQueue;
-+ (void)addLivingDaemonConnection:(id)a3;
-+ (void)setPreferredAvailableDaemonConnection:(id)a3;
++ (void)addLivingDaemonConnection:(id)connection;
++ (void)setPreferredAvailableDaemonConnection:(id)connection;
 - (BOOL)_connectToServer;
 - (BOOL)shouldValidateObjectIDs;
 - (CADInterface)CADOperationProxy;
 - (CADInterface)CADOperationProxySync;
-- (EKDaemonConnection)initWithConnectionFactory:(id)a3;
+- (EKDaemonConnection)initWithConnectionFactory:(id)factory;
 - (EKDaemonConnectionDelegate)delegate;
 - (int)databaseRestoreGeneration;
 - (int)eventAccessLevel;
 - (int64_t)eventAuthorization;
 - (int64_t)remindersAuthorization;
-- (unsigned)addCancellableRemoteOperation:(id)a3;
-- (void)CADClientReceiveDatabaseIntegrityErrors:(id)a3;
+- (unsigned)addCancellableRemoteOperation:(id)operation;
+- (void)CADClientReceiveDatabaseIntegrityErrors:(id)errors;
 - (void)_createConnectionAndOperationProxyIfNeeded;
 - (void)_daemonRestarted;
-- (void)_eventAuthorization:(int64_t *)a3 remindersAuthorization:(int64_t *)a4;
+- (void)_eventAuthorization:(int64_t *)authorization remindersAuthorization:(int64_t *)remindersAuthorization;
 - (void)_finishAllRepliesOnServerDeath;
-- (void)cancelRemoteOperation:(unsigned int)a3;
+- (void)cancelRemoteOperation:(unsigned int)operation;
 - (void)clearCachedAuthStatus;
-- (void)databaseRestoreGenerationChangedByThisClient:(int)a3;
+- (void)databaseRestoreGenerationChangedByThisClient:(int)client;
 - (void)dealloc;
 - (void)disconnect;
-- (void)removeCancellableRemoteOperation:(unsigned int)a3;
-- (void)setInitializationOptions:(id)a3;
+- (void)removeCancellableRemoteOperation:(unsigned int)operation;
+- (void)setInitializationOptions:(id)options;
 @end
 
 @implementation EKDaemonConnection
 
 - (int)eventAccessLevel
 {
-  v2 = [(EKDaemonConnection *)self eventAuthorization];
+  eventAuthorization = [(EKDaemonConnection *)self eventAuthorization];
 
-  return MEMORY[0x1EEDF1DA8](v2);
+  return MEMORY[0x1EEDF1DA8](eventAuthorization);
 }
 
 - (int64_t)eventAuthorization
@@ -116,12 +116,12 @@ void __43__EKDaemonConnection_CADOperationProxySync__block_invoke(uint64_t a1)
     xpcConnection = self->_xpcConnection;
     self->_xpcConnection = v4;
 
-    v6 = [(EKDaemonConnection *)self initializationOptions];
-    v7 = v6;
+    initializationOptions = [(EKDaemonConnection *)self initializationOptions];
+    v7 = initializationOptions;
     if (!self->_xpcConnection)
     {
       self->_wasAbortedDueToExcessiveConnections = 1;
-      if ([v6 unitTesting])
+      if ([initializationOptions unitTesting])
       {
         v8 = OS_LOG_TYPE_DEFAULT;
       }
@@ -230,21 +230,21 @@ void __32__EKDaemonConnection_disconnect__block_invoke_2(uint64_t a1)
 
 + (id)anyAvailableDaemonConnection
 {
-  v2 = [a1 preferredAvailableDaemonConnection];
-  v3 = v2;
-  if (v2)
+  preferredAvailableDaemonConnection = [self preferredAvailableDaemonConnection];
+  v3 = preferredAvailableDaemonConnection;
+  if (preferredAvailableDaemonConnection)
   {
-    v4 = v2;
+    anyObject = preferredAvailableDaemonConnection;
   }
 
   else
   {
     os_unfair_lock_lock(&livingConnectionLock);
-    v4 = [storedWeakReferenceDaemonConnection anyObject];
+    anyObject = [storedWeakReferenceDaemonConnection anyObject];
     os_unfair_lock_unlock(&livingConnectionLock);
   }
 
-  return v4;
+  return anyObject;
 }
 
 + (EKDaemonConnection)preferredAvailableDaemonConnection
@@ -287,29 +287,29 @@ void __39__EKDaemonConnection_CADOperationProxy__block_invoke(uint64_t a1)
   objc_storeStrong(v3, v2);
 }
 
-- (EKDaemonConnection)initWithConnectionFactory:(id)a3
+- (EKDaemonConnection)initWithConnectionFactory:(id)factory
 {
-  v5 = a3;
+  factoryCopy = factory;
   v17.receiver = self;
   v17.super_class = EKDaemonConnection;
   v6 = [(EKDaemonConnection *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connectionFactory, a3);
+    objc_storeStrong(&v6->_connectionFactory, factory);
     objc_opt_class();
     v7->_nextCancellationToken = 1;
     v8 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
 
-    v10 = dispatch_queue_create(v9, 0);
+    v10 = dispatch_queue_create(uTF8String, 0);
     connectionLock = v7->_connectionLock;
     v7->_connectionLock = v10;
 
     v12 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v13 = [v12 UTF8String];
+    uTF8String2 = [v12 UTF8String];
 
-    v14 = dispatch_queue_create(v13, 0);
+    v14 = dispatch_queue_create(uTF8String2, 0);
     replyHandlerLock = v7->_replyHandlerLock;
     v7->_replyHandlerLock = v14;
 
@@ -337,18 +337,18 @@ void __38__EKDaemonConnection__connectToServer__block_invoke(uint64_t a1)
   }
 }
 
-+ (void)setPreferredAvailableDaemonConnection:(id)a3
++ (void)setPreferredAvailableDaemonConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&livingConnectionLock);
-  objc_storeWeak(&_preferredAvailableDaemonConnection, v3);
+  objc_storeWeak(&_preferredAvailableDaemonConnection, connectionCopy);
 
   os_unfair_lock_unlock(&livingConnectionLock);
 }
 
-+ (void)addLivingDaemonConnection:(id)a3
++ (void)addLivingDaemonConnection:(id)connection
 {
-  v6 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&livingConnectionLock);
   v3 = storedWeakReferenceDaemonConnection;
   if (!storedWeakReferenceDaemonConnection)
@@ -360,7 +360,7 @@ void __38__EKDaemonConnection__connectToServer__block_invoke(uint64_t a1)
     v3 = storedWeakReferenceDaemonConnection;
   }
 
-  [v3 addObject:v6];
+  [v3 addObject:connectionCopy];
   os_unfair_lock_unlock(&livingConnectionLock);
 }
 
@@ -395,9 +395,9 @@ void __33__EKDaemonConnection_sharedQueue__block_invoke()
   }
 }
 
-- (void)setInitializationOptions:(id)a3
+- (void)setInitializationOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -408,20 +408,20 @@ void __33__EKDaemonConnection_sharedQueue__block_invoke()
   block[2] = __47__EKDaemonConnection_setInitializationOptions___block_invoke;
   block[3] = &unk_1E77FD468;
   block[4] = self;
-  v6 = v4;
+  v6 = optionsCopy;
   v11 = v6;
   v12 = &v13;
   dispatch_sync(connectionLock, block);
   if (*(v14 + 24) == 1)
   {
-    v7 = [(EKDaemonConnection *)self CADOperationProxy];
+    cADOperationProxy = [(EKDaemonConnection *)self CADOperationProxy];
     initializationOptions = self->_initializationOptions;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __47__EKDaemonConnection_setInitializationOptions___block_invoke_2;
     v9[3] = &unk_1E77FD490;
     v9[4] = self;
-    [v7 CADDatabaseSetInitializationOptions:initializationOptions reply:v9];
+    [cADOperationProxy CADDatabaseSetInitializationOptions:initializationOptions reply:v9];
   }
 
   [(EKDaemonConnection *)self clearCachedAuthStatus];
@@ -462,18 +462,18 @@ void __47__EKDaemonConnection_setInitializationOptions___block_invoke_2(uint64_t
   }
 }
 
-- (void)databaseRestoreGenerationChangedByThisClient:(int)a3
+- (void)databaseRestoreGenerationChangedByThisClient:(int)client
 {
   os_unfair_lock_lock(&self->_internalStateLock);
-  self->_databaseRestoreGeneration = a3;
+  self->_databaseRestoreGeneration = client;
   self->_databaseRestoreGenerationHasEverChangedSignificantly = 1;
 
   os_unfair_lock_unlock(&self->_internalStateLock);
 }
 
-- (unsigned)addCancellableRemoteOperation:(id)a3
+- (unsigned)addCancellableRemoteOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -483,10 +483,10 @@ void __47__EKDaemonConnection_setInitializationOptions___block_invoke_2(uint64_t
   block[1] = 3221225472;
   block[2] = __52__EKDaemonConnection_addCancellableRemoteOperation___block_invoke;
   block[3] = &unk_1E77FD4B8;
-  v9 = v4;
+  v9 = operationCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = operationCopy;
   dispatch_sync(replyHandlerLock, block);
   LODWORD(replyHandlerLock) = *(v12 + 6);
 
@@ -516,7 +516,7 @@ void __52__EKDaemonConnection_addCancellableRemoteOperation___block_invoke(void 
   [v8 setObject:v7 forKey:v9];
 }
 
-- (void)removeCancellableRemoteOperation:(unsigned int)a3
+- (void)removeCancellableRemoteOperation:(unsigned int)operation
 {
   replyHandlerLock = self->_replyHandlerLock;
   v4[0] = MEMORY[0x1E69E9820];
@@ -524,7 +524,7 @@ void __52__EKDaemonConnection_addCancellableRemoteOperation___block_invoke(void 
   v4[2] = __55__EKDaemonConnection_removeCancellableRemoteOperation___block_invoke;
   v4[3] = &unk_1E77FD4E0;
   v4[4] = self;
-  v5 = a3;
+  operationCopy = operation;
   dispatch_sync(replyHandlerLock, v4);
 }
 
@@ -535,7 +535,7 @@ void __55__EKDaemonConnection_removeCancellableRemoteOperation___block_invoke(ui
   [v1 removeObjectForKey:v2];
 }
 
-- (void)cancelRemoteOperation:(unsigned int)a3
+- (void)cancelRemoteOperation:(unsigned int)operation
 {
   v6 = 0;
   v7 = &v6;
@@ -550,7 +550,7 @@ void __55__EKDaemonConnection_removeCancellableRemoteOperation___block_invoke(ui
   block[3] = &unk_1E77FD508;
   block[4] = self;
   block[5] = &v6;
-  v5 = a3;
+  operationCopy = operation;
   dispatch_sync(replyHandlerLock, block);
   [v7[5] cancel];
   _Block_object_dispose(&v6, 8);
@@ -676,42 +676,42 @@ void __70__EKDaemonConnection_operationForToken_respondingToSelector_finished___
   *(v4 + 40) = v3;
 }
 
-- (void)CADClientReceiveDatabaseIntegrityErrors:(id)a3
+- (void)CADClientReceiveDatabaseIntegrityErrors:(id)errors
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  errorsCopy = errors;
+  if ([errorsCopy count])
   {
     v5 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
-      [(EKDaemonConnection *)v4 CADClientReceiveDatabaseIntegrityErrors:v5];
+      [(EKDaemonConnection *)errorsCopy CADClientReceiveDatabaseIntegrityErrors:v5];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v10 = @"integrityErrors";
-    v11[0] = v4;
+    v11[0] = errorsCopy;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    [v7 postNotificationName:@"EKEventStoreIntegrityErrorsFoundNotification" object:WeakRetained userInfo:v8];
+    [defaultCenter postNotificationName:@"EKEventStoreIntegrityErrorsFoundNotification" object:WeakRetained userInfo:v8];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_eventAuthorization:(int64_t *)a3 remindersAuthorization:(int64_t *)a4
+- (void)_eventAuthorization:(int64_t *)authorization remindersAuthorization:(int64_t *)remindersAuthorization
 {
   os_unfair_lock_lock(&self->_internalStateLock);
   if (self->_accessDetermined)
   {
-    if (a3)
+    if (authorization)
     {
-      *a3 = self->_eventAuthorization;
+      *authorization = self->_eventAuthorization;
     }
 
-    if (a4)
+    if (remindersAuthorization)
     {
-      *a4 = self->_remindersAuthorization;
+      *remindersAuthorization = self->_remindersAuthorization;
     }
 
     os_unfair_lock_unlock(&self->_internalStateLock);
@@ -732,7 +732,7 @@ void __70__EKDaemonConnection_operationForToken_respondingToSelector_finished___
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 0;
-    v7 = [(EKDaemonConnection *)self CADOperationProxySync];
+    cADOperationProxySync = [(EKDaemonConnection *)self CADOperationProxySync];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __65__EKDaemonConnection__eventAuthorization_remindersAuthorization___block_invoke;
@@ -740,7 +740,7 @@ void __70__EKDaemonConnection_operationForToken_respondingToSelector_finished___
     v8[4] = &v9;
     v8[5] = &v17;
     v8[6] = &v13;
-    [v7 CADDatabaseGetAccess:v8];
+    [cADOperationProxySync CADDatabaseGetAccess:v8];
 
     if (v10[3])
     {
@@ -749,14 +749,14 @@ void __70__EKDaemonConnection_operationForToken_respondingToSelector_finished___
       self->_eventAuthorization = v18[3];
       self->_remindersAuthorization = v14[3];
       os_unfair_lock_unlock(&self->_internalStateLock);
-      if (a3)
+      if (authorization)
       {
-        *a3 = v18[3];
+        *authorization = v18[3];
       }
 
-      if (a4)
+      if (remindersAuthorization)
       {
-        *a4 = v14[3];
+        *remindersAuthorization = v14[3];
       }
     }
 

@@ -1,15 +1,15 @@
 @interface MAMapSnippetView
-- (MAMapSnippetView)initWithFrame:(CGRect)a3 mapItem:(id)a4 itemRepresentsCurrentLocation:(BOOL)a5 regionOfInterest:(id)a6 fallbackDistance:(double)a7 reservationDelegate:(id)a8;
+- (MAMapSnippetView)initWithFrame:(CGRect)frame mapItem:(id)item itemRepresentsCurrentLocation:(BOOL)location regionOfInterest:(id)interest fallbackDistance:(double)distance reservationDelegate:(id)delegate;
 - (MAMapSnippetViewDelegate)delegate;
 - (_MKPlaceReservationDelegate)reservationDelegate;
-- (double)desiredHeightForWidth:(double)a3;
+- (double)desiredHeightForWidth:(double)width;
 - (id)_newMapOverlayView;
 - (id)_newMapView;
 - (id)_newReservationView;
 - (id)_newResultView;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (id)nameForMapItem:(id)a3;
-- (void)_handleTapOnMap:(id)a3;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (id)nameForMapItem:(id)item;
+- (void)_handleTapOnMap:(id)map;
 - (void)_setupConstraints;
 - (void)_setupCustomFeatureForMapItem;
 - (void)_setupCustomFeatureForParkedCar;
@@ -20,56 +20,56 @@
 
 @implementation MAMapSnippetView
 
-- (MAMapSnippetView)initWithFrame:(CGRect)a3 mapItem:(id)a4 itemRepresentsCurrentLocation:(BOOL)a5 regionOfInterest:(id)a6 fallbackDistance:(double)a7 reservationDelegate:(id)a8
+- (MAMapSnippetView)initWithFrame:(CGRect)frame mapItem:(id)item itemRepresentsCurrentLocation:(BOOL)location regionOfInterest:(id)interest fallbackDistance:(double)distance reservationDelegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a4;
-  v19 = a6;
-  v20 = a8;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  itemCopy = item;
+  interestCopy = interest;
+  delegateCopy = delegate;
   v35.receiver = self;
   v35.super_class = MAMapSnippetView;
-  v21 = [(MAMapSnippetView *)&v35 initWithFrame:x, y, width, height];
-  v22 = v21;
-  if (v21)
+  height = [(MAMapSnippetView *)&v35 initWithFrame:x, y, width, height];
+  v22 = height;
+  if (height)
   {
-    objc_storeStrong(&v21->_mapItem, a4);
-    v22->_itemRepresentsCurrentLocation = a5;
-    objc_storeStrong(&v22->_regionOfInterestRadiusInMiles, a6);
-    v22->_fallbackDistance = a7;
-    objc_storeWeak(&v22->_reservationDelegate, v20);
-    v23 = [(SALocalSearchMapItem *)v22->_mapItem location];
-    if (([v23 isRegionCity] & 1) == 0 && (objc_msgSend(v23, "isRegionCounty") & 1) == 0 && (objc_msgSend(v23, "isRegionState") & 1) == 0 && (objc_msgSend(v23, "isRegionCountry") & 1) == 0)
+    objc_storeStrong(&height->_mapItem, item);
+    v22->_itemRepresentsCurrentLocation = location;
+    objc_storeStrong(&v22->_regionOfInterestRadiusInMiles, interest);
+    v22->_fallbackDistance = distance;
+    objc_storeWeak(&v22->_reservationDelegate, delegateCopy);
+    location = [(SALocalSearchMapItem *)v22->_mapItem location];
+    if (([location isRegionCity] & 1) == 0 && (objc_msgSend(location, "isRegionCounty") & 1) == 0 && (objc_msgSend(location, "isRegionState") & 1) == 0 && (objc_msgSend(location, "isRegionCountry") & 1) == 0)
     {
-      v24 = [(MAMapSnippetView *)v22 _newResultView];
+      _newResultView = [(MAMapSnippetView *)v22 _newResultView];
       resultView = v22->_resultView;
-      v22->_resultView = v24;
+      v22->_resultView = _newResultView;
 
       [(MAMapSnippetView *)v22 addSubview:v22->_resultView];
     }
 
-    v26 = [(MAMapSnippetView *)v22 _newMapView];
+    _newMapView = [(MAMapSnippetView *)v22 _newMapView];
     snippetMapView = v22->_snippetMapView;
-    v22->_snippetMapView = v26;
+    v22->_snippetMapView = _newMapView;
 
     [(MAMapSnippetView *)v22 addSubview:v22->_snippetMapView];
-    v28 = [(MAMapSnippetView *)v22 _newMapOverlayView];
+    _newMapOverlayView = [(MAMapSnippetView *)v22 _newMapOverlayView];
     mapOverlayView = v22->_mapOverlayView;
-    v22->_mapOverlayView = v28;
+    v22->_mapOverlayView = _newMapOverlayView;
 
     [(MAMapSnippetView *)v22 addSubview:v22->_mapOverlayView];
-    v30 = [(MAMapSnippetView *)v22 _newReservationView];
+    _newReservationView = [(MAMapSnippetView *)v22 _newReservationView];
     reservationView = v22->_reservationView;
-    v22->_reservationView = v30;
+    v22->_reservationView = _newReservationView;
 
     if (v22->_reservationView)
     {
       [(MAMapSnippetView *)v22 addSubview:?];
     }
 
-    if ([v18 isParkingLocation])
+    if ([itemCopy isParkingLocation])
     {
       [(MAMapSnippetView *)v22 _setupCustomFeatureStore];
       [(MAMapSnippetView *)v22 _setupCustomFeatureForParkedCar];
@@ -125,10 +125,10 @@ LABEL_17:
 
 - (id)_newReservationView
 {
-  v3 = [(MAMapSnippetView *)self mapItem];
-  v4 = [v3 restaurantInfo];
-  v5 = [(MAMapSnippetView *)self reservationDelegate];
-  v6 = [v4 _ma_reservationInfoWithDelegate:v5];
+  mapItem = [(MAMapSnippetView *)self mapItem];
+  restaurantInfo = [mapItem restaurantInfo];
+  reservationDelegate = [(MAMapSnippetView *)self reservationDelegate];
+  v6 = [restaurantInfo _ma_reservationInfoWithDelegate:reservationDelegate];
 
   if (v6)
   {
@@ -178,8 +178,8 @@ LABEL_17:
   [v3 setTintColor:v4];
 
   [v3 _ma_updateSemanticContentAttribute];
-  v5 = [v3 layer];
-  [v5 setCornerRadius:10.0];
+  layer = [v3 layer];
+  [layer setCornerRadius:10.0];
 
   return v3;
 }
@@ -190,22 +190,22 @@ LABEL_17:
   [(MAMapSnippetOverlayView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   v4 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_handleTapOnMap:"];
   [(MAMapSnippetOverlayView *)v3 addGestureRecognizer:v4];
-  v5 = [(MAMapSnippetOverlayView *)v3 layer];
-  [v5 setCornerRadius:10.0];
+  layer = [(MAMapSnippetOverlayView *)v3 layer];
+  [layer setCornerRadius:10.0];
 
   return v3;
 }
 
 - (void)_setupCustomFeatureForParkedCar
 {
-  v3 = [(MAMapSnippetView *)self mapItem];
-  v4 = [v3 location];
+  mapItem = [(MAMapSnippetView *)self mapItem];
+  location = [mapItem location];
 
-  v5 = [v4 latitude];
-  [v5 doubleValue];
+  latitude = [location latitude];
+  [latitude doubleValue];
   v7 = v6;
-  v8 = [v4 longitude];
-  [v8 doubleValue];
+  longitude = [location longitude];
+  [longitude doubleValue];
   v10 = v9;
 
   v11 = [[VKCustomFeature alloc] initWithCoordinate:{v7, v10}];
@@ -228,44 +228,44 @@ LABEL_17:
   [(_MKCustomFeatureStore *)customFeatureStore addAnnotations:v18];
 }
 
-- (id)nameForMapItem:(id)a3
+- (id)nameForMapItem:(id)item
 {
-  v3 = a3;
-  if ([v3 _hasTransitDisplayName])
+  itemCopy = item;
+  if ([itemCopy _hasTransitDisplayName])
   {
-    v4 = [v3 _transitDisplayName];
+    _transitDisplayName = [itemCopy _transitDisplayName];
   }
 
   else
   {
-    v5 = [v3 _geoMapItem];
+    _geoMapItem = [itemCopy _geoMapItem];
 
-    v4 = [v5 name];
-    v3 = v5;
+    _transitDisplayName = [_geoMapItem name];
+    itemCopy = _geoMapItem;
   }
 
-  return v4;
+  return _transitDisplayName;
 }
 
 - (void)_setupCustomFeatureForMapItem
 {
-  v3 = [(MAMapSnippetView *)self mapItem];
-  v4 = [MKMapItem mapItemWithLocalSearchMapItem:v3];
+  mapItem = [(MAMapSnippetView *)self mapItem];
+  v4 = [MKMapItem mapItemWithLocalSearchMapItem:mapItem];
 
   [v4 _coordinate];
   v6 = v5;
   [v4 _coordinate];
   v8 = v7;
   v9 = [[VKCustomFeature alloc] initWithCoordinate:{v6, v7}];
-  v10 = [v4 _styleAttributes];
-  if (([v10 hasAttributes] & 1) == 0)
+  _styleAttributes = [v4 _styleAttributes];
+  if (([_styleAttributes hasAttributes] & 1) == 0)
   {
     v11 = +[GEOFeatureStyleAttributes markerStyleAttributes];
 
-    v10 = v11;
+    _styleAttributes = v11;
   }
 
-  v12 = [v10 copy];
+  v12 = [_styleAttributes copy];
 
   v19 = xmmword_18870;
   v20 = 0x100010024;
@@ -299,9 +299,9 @@ LABEL_17:
     [v6 addEntriesFromDictionary:v8];
 
     [v4 addObjectsFromArray:&off_49CE0];
-    v9 = [(MAResultView *)self->_resultView heightAnchor];
+    heightAnchor = [(MAResultView *)self->_resultView heightAnchor];
     [(MAResultView *)self->_resultView preferredHeight];
-    v10 = [v9 constraintEqualToConstant:?];
+    v10 = [heightAnchor constraintEqualToConstant:?];
     [v3 addObject:v10];
   }
 
@@ -354,8 +354,8 @@ LABEL_17:
     while (v15);
   }
 
-  v19 = [(MKMapView *)self->_snippetMapView heightAnchor];
-  v20 = [v19 constraintEqualToConstant:0.0];
+  heightAnchor2 = [(MKMapView *)self->_snippetMapView heightAnchor];
+  v20 = [heightAnchor2 constraintEqualToConstant:0.0];
   mapViewHeightConstraint = self->_mapViewHeightConstraint;
   self->_mapViewHeightConstraint = v20;
 
@@ -364,21 +364,21 @@ LABEL_17:
   [(NSLayoutConstraint *)self->_mapViewHeightConstraint setConstant:round(v23 * 0.381965995)];
 
   [v3 addObject:self->_mapViewHeightConstraint];
-  v36 = [(MAMapSnippetOverlayView *)self->_mapOverlayView heightAnchor];
-  v35 = [(MKMapView *)self->_snippetMapView heightAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  heightAnchor3 = [(MAMapSnippetOverlayView *)self->_mapOverlayView heightAnchor];
+  heightAnchor4 = [(MKMapView *)self->_snippetMapView heightAnchor];
+  v34 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
   v41[0] = v34;
-  v33 = [(MAMapSnippetOverlayView *)self->_mapOverlayView widthAnchor];
-  v32 = [(MKMapView *)self->_snippetMapView widthAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  widthAnchor = [(MAMapSnippetOverlayView *)self->_mapOverlayView widthAnchor];
+  widthAnchor2 = [(MKMapView *)self->_snippetMapView widthAnchor];
+  v31 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v41[1] = v31;
-  v30 = [(MAMapSnippetOverlayView *)self->_mapOverlayView centerXAnchor];
-  v24 = [(MKMapView *)self->_snippetMapView centerXAnchor];
-  v25 = [v30 constraintEqualToAnchor:v24];
+  centerXAnchor = [(MAMapSnippetOverlayView *)self->_mapOverlayView centerXAnchor];
+  centerXAnchor2 = [(MKMapView *)self->_snippetMapView centerXAnchor];
+  v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v41[2] = v25;
-  v26 = [(MAMapSnippetOverlayView *)self->_mapOverlayView centerYAnchor];
-  v27 = [(MKMapView *)self->_snippetMapView centerYAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  centerYAnchor = [(MAMapSnippetOverlayView *)self->_mapOverlayView centerYAnchor];
+  centerYAnchor2 = [(MKMapView *)self->_snippetMapView centerYAnchor];
+  v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v41[3] = v28;
   v29 = [NSArray arrayWithObjects:v41 count:4];
   [v3 addObjectsFromArray:v29];
@@ -394,7 +394,7 @@ LABEL_17:
   [(MAMapSnippetView *)&v3 dealloc];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
   [(MAResultView *)self->_resultView preferredHeight];
   v5 = v4;
@@ -428,21 +428,21 @@ LABEL_17:
 
 - (void)_tap
 {
-  v4 = [(MAMapSnippetView *)self delegate];
-  v3 = [(MAMapSnippetView *)self mapItem];
-  [v4 mapView:self didChooseMapItem:v3 headerTapped:1];
+  delegate = [(MAMapSnippetView *)self delegate];
+  mapItem = [(MAMapSnippetView *)self mapItem];
+  [delegate mapView:self didChooseMapItem:mapItem headerTapped:1];
 }
 
-- (void)_handleTapOnMap:(id)a3
+- (void)_handleTapOnMap:(id)map
 {
   snippetMapView = self->_snippetMapView;
-  v5 = a3;
+  mapCopy = map;
   [(MKMapView *)snippetMapView attributionFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v5 locationInView:self->_snippetMapView];
+  [mapCopy locationInView:self->_snippetMapView];
   v15 = v14;
   v17 = v16;
 
@@ -452,40 +452,40 @@ LABEL_17:
   v25.size.height = v13;
   v24.x = v15;
   v24.y = v17;
-  if (CGRectContainsPoint(v25, v24) && ([(MKMapView *)self->_snippetMapView urlForMapAttribution], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (CGRectContainsPoint(v25, v24) && ([(MKMapView *)self->_snippetMapView urlForMapAttribution], (delegate2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v18 = [(MAMapSnippetView *)self delegate];
-    v19 = [(MAMapSnippetView *)self mapItem];
-    v20 = [v19 placeData2];
-    v21 = [MKMapItem mapItemWithSerializedPlaceData:v20];
-    [v18 mapViewDidChooseMapAttribution:v22 mapItem:v21];
+    delegate = [(MAMapSnippetView *)self delegate];
+    mapItem = [(MAMapSnippetView *)self mapItem];
+    placeData2 = [mapItem placeData2];
+    v21 = [MKMapItem mapItemWithSerializedPlaceData:placeData2];
+    [delegate mapViewDidChooseMapAttribution:delegate2 mapItem:v21];
   }
 
   else
   {
-    v22 = [(MAMapSnippetView *)self delegate];
-    v18 = [(MAMapSnippetView *)self mapItem];
-    [v22 mapView:self didChooseMapItem:v18 headerTapped:0];
+    delegate2 = [(MAMapSnippetView *)self delegate];
+    delegate = [(MAMapSnippetView *)self mapItem];
+    [delegate2 mapView:self didChooseMapItem:delegate headerTapped:0];
   }
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 userLocation];
+  viewCopy = view;
+  annotationCopy = annotation;
+  userLocation = [viewCopy userLocation];
 
-  if (v7 == v6)
+  if (userLocation == annotationCopy)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v5 dequeueReusableAnnotationViewWithIdentifier:@"searchResult"];
+    v8 = [viewCopy dequeueReusableAnnotationViewWithIdentifier:@"searchResult"];
     if (!v8)
     {
-      v8 = [[MKPinAnnotationView alloc] initWithAnnotation:v6 reuseIdentifier:@"searchResult"];
+      v8 = [[MKPinAnnotationView alloc] initWithAnnotation:annotationCopy reuseIdentifier:@"searchResult"];
       [v8 setCanShowCallout:0];
     }
   }

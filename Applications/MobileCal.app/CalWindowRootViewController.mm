@@ -1,79 +1,79 @@
 @interface CalWindowRootViewController
-+ (id)sanitizeCalSubCal:(id)a3;
++ (id)sanitizeCalSubCal:(id)cal;
 - (BOOL)_shouldUseSideBar;
 - (BOOL)_viewControllerExistsInPresentationChainThatShouldNotRotate;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)canShowAvatarViewWithTraitCollection:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)canShowAvatarViewWithTraitCollection:(id)collection;
 - (BOOL)paletteShouldShowAvatarView;
 - (CGSize)mainContentSize;
-- (CalWindowRootViewController)initWithRootNavigationController:(id)a3;
+- (CalWindowRootViewController)initWithRootNavigationController:(id)controller;
 - (id)largeCalendarBarButtonItem;
 - (id)largeInboxBarButtonItem;
 - (id)largeListViewBarButtonItem;
-- (id)traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:(id)a3;
-- (id)viewControllerForSidebarState:(unint64_t)a3;
+- (id)traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:(id)collection;
+- (id)viewControllerForSidebarState:(unint64_t)state;
 - (unint64_t)focusFilterMode;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_delegatesChanged:(id)a3;
-- (void)_identityChanged:(id)a3;
-- (void)_updateAfterExtendedLaunch:(id)a3;
+- (void)_delegatesChanged:(id)changed;
+- (void)_identityChanged:(id)changed;
+- (void)_updateAfterExtendedLaunch:(id)launch;
 - (void)attemptDisplayReviewPrompt;
 - (void)cancelSearch;
-- (void)continueSearchWithTerm:(id)a3;
+- (void)continueSearchWithTerm:(id)term;
 - (void)dealloc;
-- (void)dismissPresentedViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handleURL:(id)a3 context:(id)a4;
+- (void)dismissPresentedViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)handleURL:(id)l context:(id)context;
 - (void)inboxWillDismiss;
-- (void)paletteAvatarViewTapped:(id)a3;
-- (void)paletteTodayButtonTapped:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
+- (void)paletteAvatarViewTapped:(id)tapped;
+- (void)paletteTodayButtonTapped:(id)tapped;
+- (void)pressesBegan:(id)began withEvent:(id)event;
 - (void)routeNewEventKeyCommand;
 - (void)routeSearchKeyCommand;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)setCurrentSidebarState:(unint64_t)a3 completion:(id)a4;
-- (void)setFocusFilterMode:(unint64_t)a3;
-- (void)showCalendarsSideBarWithCompletion:(id)a3;
-- (void)showCalendarsViewWithCompletion:(id)a3;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)setCurrentSidebarState:(unint64_t)state completion:(id)completion;
+- (void)setFocusFilterMode:(unint64_t)mode;
+- (void)showCalendarsSideBarWithCompletion:(id)completion;
+- (void)showCalendarsViewWithCompletion:(id)completion;
 - (void)showDayView;
-- (void)showEventAndCloseSidebarIfNeeded:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5;
-- (void)showIdentitySwitcherFromSourceView:(id)a3;
-- (void)showInboxSideBarWithCompletion:(id)a3;
+- (void)showEventAndCloseSidebarIfNeeded:(id)needed animated:(BOOL)animated showMode:(unint64_t)mode;
+- (void)showIdentitySwitcherFromSourceView:(id)view;
+- (void)showInboxSideBarWithCompletion:(id)completion;
 - (void)showInboxView;
-- (void)showInspectorForCalendar:(id)a3 enableDoneInitially:(BOOL)a4;
-- (void)showListSideBarWithCompletion:(id)a3;
+- (void)showInspectorForCalendar:(id)calendar enableDoneInitially:(BOOL)initially;
+- (void)showListSideBarWithCompletion:(id)completion;
 - (void)showListView;
 - (void)showSearch;
 - (void)showSearchView;
 - (void)showSplitMonthView;
-- (void)splitViewController:(id)a3 willHideColumn:(int64_t)a4;
+- (void)splitViewController:(id)controller willHideColumn:(int64_t)column;
 - (void)todayToolbarItemPressed;
-- (void)toggleSidebar:(id)a3;
+- (void)toggleSidebar:(id)sidebar;
 - (void)updateNavigationBarButtons;
 - (void)updatePrimaryViewControllerNavBar;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CalWindowRootViewController
 
-- (CalWindowRootViewController)initWithRootNavigationController:(id)a3
+- (CalWindowRootViewController)initWithRootNavigationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v26.receiver = self;
   v26.super_class = CalWindowRootViewController;
   v6 = [(CalWindowRootViewController *)&v26 initWithStyle:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootNavigationController, a3);
+    objc_storeStrong(&v6->_rootNavigationController, controller);
     [(RootNavigationController *)v7->_rootNavigationController setSplitViewDelegate:v7];
     v8 = [SearchResultsViewController alloc];
-    v9 = [(RootNavigationController *)v7->_rootNavigationController model];
-    v10 = [(RootNavigationController *)v7->_rootNavigationController window];
-    v11 = [(SearchResultsViewController *)v8 initWithModel:v9 window:v10];
+    model = [(RootNavigationController *)v7->_rootNavigationController model];
+    window = [(RootNavigationController *)v7->_rootNavigationController window];
+    v11 = [(SearchResultsViewController *)v8 initWithModel:model window:window];
     searchResultsController = v7->_searchResultsController;
     v7->_searchResultsController = v11;
 
@@ -90,16 +90,16 @@
 
     v18 = +[NSNotificationCenter defaultCenter];
     v19 = CUIKCalendarModelIdentityChangedNotification;
-    v20 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v18 addObserver:v7 selector:"_identityChanged:" name:v19 object:v20];
+    model2 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v18 addObserver:v7 selector:"_identityChanged:" name:v19 object:model2];
 
     v21 = CUIKCalendarModelDelegatesChangedNotification;
-    v22 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v18 addObserver:v7 selector:"_delegatesChanged:" name:v21 object:v22];
+    model3 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v18 addObserver:v7 selector:"_delegatesChanged:" name:v21 object:model3];
 
     v23 = CUIKCalendarModelDisplayedOccurrencesChangedForTheFirstTimeNotification;
-    v24 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v18 addObserver:v7 selector:"_updateAfterExtendedLaunch:" name:v23 object:v24];
+    model4 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v18 addObserver:v7 selector:"_updateAfterExtendedLaunch:" name:v23 object:model4];
 
     [v18 addObserver:v7 selector:"_updateAfterExtendedLaunch:" name:@"MainViewControllerDidCompleteExtendedLaunchNotification" object:0];
   }
@@ -122,12 +122,12 @@
   v44.receiver = self;
   v44.super_class = CalWindowRootViewController;
   [(CalWindowRootViewController *)&v44 viewDidLoad];
-  v3 = [(CalWindowRootViewController *)self view];
-  [v3 setAutoresizingMask:18];
+  view = [(CalWindowRootViewController *)self view];
+  [view setAutoresizingMask:18];
 
   v4 = +[UIColor systemBackgroundColor];
-  v5 = [(CalWindowRootViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view2 = [(CalWindowRootViewController *)self view];
+  [view2 setBackgroundColor:v4];
 
   [(CalWindowRootViewController *)self setDelegate:self];
   [(CalWindowRootViewController *)self setPresentsWithGesture:0];
@@ -137,15 +137,15 @@
   self->_primaryVC = v6;
 
   v8 = +[UIColor systemBackgroundColor];
-  v9 = [(UINavigationController *)self->_primaryVC view];
-  [v9 setBackgroundColor:v8];
+  view3 = [(UINavigationController *)self->_primaryVC view];
+  [view3 setBackgroundColor:v8];
 
   v10 = +[UIColor secondarySystemBackgroundColor];
-  v11 = [(UINavigationController *)self->_primaryVC navigationBar];
-  [v11 setBarTintColor:v10];
+  navigationBar = [(UINavigationController *)self->_primaryVC navigationBar];
+  [navigationBar setBarTintColor:v10];
 
-  v12 = [(UINavigationController *)self->_primaryVC navigationBar];
-  [v12 setForceFullHeightInLandscape:1];
+  navigationBar2 = [(UINavigationController *)self->_primaryVC navigationBar];
+  [navigationBar2 setForceFullHeightInLandscape:1];
 
   [(CalWindowRootViewController *)self setViewController:self->_primaryVC forColumn:0];
   [(CalWindowRootViewController *)self setViewController:self->_rootNavigationController forColumn:2];
@@ -156,37 +156,37 @@
   self->_paletteView = v13;
 
   [(SidebarPaletteView *)self->_paletteView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [(RootNavigationController *)self->_rootNavigationController model];
-  [(SidebarPaletteView *)self->_paletteView setModel:v15];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  [(SidebarPaletteView *)self->_paletteView setModel:model];
 
   [(SidebarPaletteView *)self->_paletteView setDelegate:self];
-  v16 = [(RootNavigationController *)self->_rootNavigationController model];
-  -[SidebarPaletteView setShowIdentity:](self->_paletteView, "setShowIdentity:", [v16 containsDelegateSources]);
+  model2 = [(RootNavigationController *)self->_rootNavigationController model];
+  -[SidebarPaletteView setShowIdentity:](self->_paletteView, "setShowIdentity:", [model2 containsDelegateSources]);
 
   v17 = self->_paletteView;
-  v18 = [(CalWindowRootViewController *)self view];
-  [v18 bounds];
+  view4 = [(CalWindowRootViewController *)self view];
+  [view4 bounds];
   [(SidebarPaletteView *)v17 sizeThatFits:v19, v20];
   v22 = v21;
   v24 = v23;
 
   v25 = [[UIView alloc] initWithFrame:{0.0, 0.0, v22, v24}];
   [v25 addSubview:self->_paletteView];
-  v43 = [(SidebarPaletteView *)self->_paletteView leadingAnchor];
-  v42 = [v25 leadingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  leadingAnchor = [(SidebarPaletteView *)self->_paletteView leadingAnchor];
+  leadingAnchor2 = [v25 leadingAnchor];
+  v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v45[0] = v41;
-  v40 = [(SidebarPaletteView *)self->_paletteView trailingAnchor];
-  v39 = [v25 trailingAnchor];
-  v26 = [v40 constraintEqualToAnchor:v39];
+  trailingAnchor = [(SidebarPaletteView *)self->_paletteView trailingAnchor];
+  trailingAnchor2 = [v25 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v45[1] = v26;
-  v27 = [(SidebarPaletteView *)self->_paletteView topAnchor];
-  v28 = [v25 topAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  topAnchor = [(SidebarPaletteView *)self->_paletteView topAnchor];
+  topAnchor2 = [v25 topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v45[2] = v29;
-  v30 = [(SidebarPaletteView *)self->_paletteView bottomAnchor];
-  v31 = [v25 bottomAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  bottomAnchor = [(SidebarPaletteView *)self->_paletteView bottomAnchor];
+  bottomAnchor2 = [v25 bottomAnchor];
+  v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v45[3] = v32;
   v33 = [NSArray arrayWithObjects:v45 count:4];
   [NSLayoutConstraint activateConstraints:v33];
@@ -196,27 +196,27 @@
   self->_palette = v34;
 
   [(_UINavigationBarPalette *)self->_palette setPreferredHeight:v24];
-  v36 = [(RootNavigationController *)self->_rootNavigationController paletteView];
-  [v36 setDelegate:self];
+  paletteView = [(RootNavigationController *)self->_rootNavigationController paletteView];
+  [paletteView setDelegate:self];
 
   [(CalWindowRootViewController *)self hideColumn:0];
   [(CalWindowRootViewController *)self hideColumn:4];
   [(RootNavigationController *)self->_rootNavigationController setAvatarViewVisible:0];
   v37 = [objc_opt_class() shouldHideInlineFocusBannerForSidebarState:self->_currentSidebarState];
-  v38 = [(RootNavigationController *)self->_rootNavigationController paletteView];
-  [v38 setShouldHideInlineFocusBanner:v37];
+  paletteView2 = [(RootNavigationController *)self->_rootNavigationController paletteView];
+  [paletteView2 setShouldHideInlineFocusBanner:v37];
 
   [(CalWindowRootViewController *)self updateNavigationBarButtons];
 }
 
 - (id)largeCalendarBarButtonItem
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController model];
-  v4 = [(RootNavigationController *)self->_rootNavigationController model];
-  v5 = [v4 sourceForSelectedIdentity];
-  v6 = [v3 displayableAccountErrorsForSource:v5];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  model2 = [(RootNavigationController *)self->_rootNavigationController model];
+  sourceForSelectedIdentity = [model2 sourceForSelectedIdentity];
+  v6 = [model displayableAccountErrorsForSource:sourceForSelectedIdentity];
 
-  v7 = [(CalWindowRootViewController *)self currentSidebarState];
+  currentSidebarState = [(CalWindowRootViewController *)self currentSidebarState];
   if (v6 < 1)
   {
     largeCalendarBarButtonItem = self->_largeCalendarBarButtonItem;
@@ -225,8 +225,8 @@
       v17 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:3 scale:17.0];
       v18 = [UIBarButtonItem alloc];
       v19 = [UIImage systemImageNamed:@"calendar" withConfiguration:v17];
-      v20 = [v19 imageFlippedForRightToLeftLayoutDirection];
-      v21 = [v18 initWithImage:v20 style:0 target:self action:"calendarButtonTapped"];
+      imageFlippedForRightToLeftLayoutDirection = [v19 imageFlippedForRightToLeftLayoutDirection];
+      v21 = [v18 initWithImage:imageFlippedForRightToLeftLayoutDirection style:0 target:self action:"calendarButtonTapped"];
       v22 = self->_largeCalendarBarButtonItem;
       self->_largeCalendarBarButtonItem = v21;
 
@@ -255,7 +255,7 @@
       largeCalendarBarButtonItem = self->_largeCalendarBarButtonItem;
     }
 
-    [(UIBarButtonItem *)largeCalendarBarButtonItem setSelected:v7 == 1];
+    [(UIBarButtonItem *)largeCalendarBarButtonItem setSelected:currentSidebarState == 1];
     v15 = self->_largeCalendarBarButtonItem;
   }
 
@@ -264,8 +264,8 @@
     largeBadgedCalendarBarButtonItem = self->_largeBadgedCalendarBarButtonItem;
     if (!largeBadgedCalendarBarButtonItem)
     {
-      v9 = [MainWindowControlHeaderView badgedCalendarIcon:v7 == 1];
-      v10 = [MainWindowControlHeaderView customBadgedButtonWithImage:v9 target:self selected:v7 == 1 insets:"calendarButtonTapped" action:-8.0, -10.0, -8.0, -10.0];
+      v9 = [MainWindowControlHeaderView badgedCalendarIcon:currentSidebarState == 1];
+      v10 = [MainWindowControlHeaderView customBadgedButtonWithImage:v9 target:self selected:currentSidebarState == 1 insets:"calendarButtonTapped" action:-8.0, -10.0, -8.0, -10.0];
       v11 = [[UIBarButtonItem alloc] initWithCustomView:v10];
       v12 = self->_largeBadgedCalendarBarButtonItem;
       self->_largeBadgedCalendarBarButtonItem = v11;
@@ -274,9 +274,9 @@
       largeBadgedCalendarBarButtonItem = self->_largeBadgedCalendarBarButtonItem;
     }
 
-    v13 = [(UIBarButtonItem *)largeBadgedCalendarBarButtonItem customView];
-    v14 = [MainWindowControlHeaderView badgedCalendarIcon:v7 == 1];
-    [v13 setImage:v14 forState:0];
+    customView = [(UIBarButtonItem *)largeBadgedCalendarBarButtonItem customView];
+    v14 = [MainWindowControlHeaderView badgedCalendarIcon:currentSidebarState == 1];
+    [customView setImage:v14 forState:0];
 
     v15 = self->_largeBadgedCalendarBarButtonItem;
   }
@@ -286,10 +286,10 @@
 
 - (id)largeInboxBarButtonItem
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController model];
-  v4 = [v3 eventNotificationsForCurrentIdentityCount];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  eventNotificationsForCurrentIdentityCount = [model eventNotificationsForCurrentIdentityCount];
 
-  v5 = [(CalWindowRootViewController *)self currentSidebarState];
+  currentSidebarState = [(CalWindowRootViewController *)self currentSidebarState];
   if (!self->_largeInboxBarButtonItem)
   {
     v6 = [UIBarButtonItem alloc];
@@ -312,9 +312,9 @@
     [(UIBarButtonItem *)self->_largeInboxBarButtonItem setAccessibilityIdentifier:@"inbox-button"];
   }
 
-  if (v4 < 1)
+  if (eventNotificationsForCurrentIdentityCount < 1)
   {
-    [(UIBarButtonItem *)self->_largeInboxBarButtonItem setSelected:v5 == 2];
+    [(UIBarButtonItem *)self->_largeInboxBarButtonItem setSelected:currentSidebarState == 2];
     v18 = self->_largeInboxBarButtonItem;
   }
 
@@ -342,9 +342,9 @@
       [(UIBarButtonItem *)self->_largeBadgedInboxBarButtonItem setAccessibilityIdentifier:@"inbox-button"];
     }
 
-    v16 = [MainWindowControlHeaderView inboxImageForCount:v4 selected:v5 == 2 forToolbar:0 bold:0];
-    v17 = [(UIBarButtonItem *)self->_largeBadgedInboxBarButtonItem customView];
-    [v17 setImage:v16 forState:0];
+    v16 = [MainWindowControlHeaderView inboxImageForCount:eventNotificationsForCurrentIdentityCount selected:currentSidebarState == 2 forToolbar:0 bold:0];
+    customView = [(UIBarButtonItem *)self->_largeBadgedInboxBarButtonItem customView];
+    [customView setImage:v16 forState:0];
 
     v18 = self->_largeBadgedInboxBarButtonItem;
   }
@@ -359,8 +359,8 @@
     v3 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:3 scale:17.0];
     v4 = [UIBarButtonItem alloc];
     v5 = [UIImage systemImageNamed:@"list.bullet" withConfiguration:v3];
-    v6 = [v5 imageFlippedForRightToLeftLayoutDirection];
-    v7 = [v4 initWithImage:v6 style:0 target:self action:"listButtonTapped"];
+    imageFlippedForRightToLeftLayoutDirection = [v5 imageFlippedForRightToLeftLayoutDirection];
+    v7 = [v4 initWithImage:imageFlippedForRightToLeftLayoutDirection style:0 target:self action:"listButtonTapped"];
     largeListViewBarButtonItem = self->_largeListViewBarButtonItem;
     self->_largeListViewBarButtonItem = v7;
 
@@ -388,31 +388,31 @@
   if (CalSolariumEnabled() && (-[RootNavigationController ekui_futureTraitCollection](self->_rootNavigationController, "ekui_futureTraitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 horizontalSizeClass], v3, v4 != 1))
   {
     v5 = [UIBarButtonItemGroup alloc];
-    v6 = [(CalWindowRootViewController *)self largeCalendarBarButtonItem];
-    v15[0] = v6;
-    v7 = [(CalWindowRootViewController *)self largeInboxBarButtonItem];
-    v15[1] = v7;
-    v8 = [(CalWindowRootViewController *)self largeListViewBarButtonItem];
-    v15[2] = v8;
+    largeCalendarBarButtonItem = [(CalWindowRootViewController *)self largeCalendarBarButtonItem];
+    v15[0] = largeCalendarBarButtonItem;
+    largeInboxBarButtonItem = [(CalWindowRootViewController *)self largeInboxBarButtonItem];
+    v15[1] = largeInboxBarButtonItem;
+    largeListViewBarButtonItem = [(CalWindowRootViewController *)self largeListViewBarButtonItem];
+    v15[2] = largeListViewBarButtonItem;
     v9 = [NSArray arrayWithObjects:v15 count:3];
     v10 = [v5 initWithBarButtonItems:v9 representativeItem:0];
 
     v14 = v10;
     v11 = [NSArray arrayWithObjects:&v14 count:1];
-    v12 = [(CalWindowRootViewController *)self navigationItem];
-    [v12 setLeadingItemGroups:v11];
+    navigationItem = [(CalWindowRootViewController *)self navigationItem];
+    [navigationItem setLeadingItemGroups:v11];
   }
 
   else
   {
-    v13 = [(CalWindowRootViewController *)self navigationItem];
-    [v13 setLeadingItemGroups:&__NSArray0__struct];
+    navigationItem2 = [(CalWindowRootViewController *)self navigationItem];
+    [navigationItem2 setLeadingItemGroups:&__NSArray0__struct];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   self->_didAppear = 1;
   if (self->_needsSidebarSetup)
   {
@@ -426,7 +426,7 @@
 
   v5.receiver = self;
   v5.super_class = CalWindowRootViewController;
-  [(CalWindowRootViewController *)&v5 viewDidAppear:v3];
+  [(CalWindowRootViewController *)&v5 viewDidAppear:appearCopy];
 }
 
 - (BOOL)_viewControllerExistsInPresentationChainThatShouldNotRotate
@@ -438,10 +438,10 @@
     [v3 addObject:v4];
   }
 
-  v5 = [(CalWindowRootViewController *)self presentedViewController];
-  if (v5)
+  presentedViewController = [(CalWindowRootViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v6 = v5;
+    v6 = presentedViewController;
     do
     {
       v7 = [v3 containsObject:objc_opt_class()];
@@ -450,12 +450,12 @@
         break;
       }
 
-      v8 = [v6 presentedViewController];
+      presentedViewController2 = [v6 presentedViewController];
 
-      v6 = v8;
+      v6 = presentedViewController2;
     }
 
-    while (v8);
+    while (presentedViewController2);
   }
 
   else
@@ -468,30 +468,30 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(CalWindowRootViewController *)self presentedViewController];
+  presentedViewController = [(CalWindowRootViewController *)self presentedViewController];
   v4 = EKUIUseLargeFormatPhoneUI();
   objc_opt_class();
   if (((objc_opt_isKindOfClass() & 1) != 0 || v4 && self->_isSearching || -[CalWindowRootViewController _viewControllerExistsInPresentationChainThatShouldNotRotate](self, "_viewControllerExistsInPresentationChainThatShouldNotRotate")) && (-[CalWindowRootViewController view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), [v5 window], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "windowScene"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "interfaceOrientation"), v7, v6, v5, v8))
   {
-    v9 = 1 << v8;
+    supportedInterfaceOrientations = 1 << v8;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = CalWindowRootViewController;
-    v9 = [(CalWindowRootViewController *)&v11 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [(CalWindowRootViewController *)&v11 supportedInterfaceOrientations];
   }
 
-  return v9;
+  return supportedInterfaceOrientations;
 }
 
-- (id)traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:(id)a3
+- (id)traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 horizontalSizeClass] == 1 && objc_msgSend(v3, "verticalSizeClass") == 1)
+  collectionCopy = collection;
+  if ([collectionCopy horizontalSizeClass] == 1 && objc_msgSend(collectionCopy, "verticalSizeClass") == 1)
   {
-    v4 = [v3 traitCollectionByModifyingTraits:&stru_100211830];
+    v4 = [collectionCopy traitCollectionByModifyingTraits:&stru_100211830];
   }
 
   else
@@ -502,60 +502,60 @@
   return v4;
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
   if (([(CalWindowRootViewController *)self isViewLoaded]& 1) == 0)
   {
-    v8 = [(CalWindowRootViewController *)self traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:v6];
+    v8 = [(CalWindowRootViewController *)self traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:collectionCopy];
     if (v8)
     {
       [(CalWindowRootViewController *)self setEkui_futureTraitCollection:v8];
-      v9 = [(CalWindowRootViewController *)self view];
-      [v9 setNeedsLayout];
+      view = [(CalWindowRootViewController *)self view];
+      [view setNeedsLayout];
 
       [(CalWindowRootViewController *)self setEkui_futureTraitCollection:0];
     }
 
     else
     {
-      v10 = [(CalWindowRootViewController *)self view];
-      [v10 setNeedsLayout];
+      view2 = [(CalWindowRootViewController *)self view];
+      [view2 setNeedsLayout];
     }
   }
 
-  v11 = [v6 horizontalSizeClass];
-  v12 = [(CalWindowRootViewController *)self traitCollection];
-  v13 = [v12 horizontalSizeClass];
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
+  traitCollection = [(CalWindowRootViewController *)self traitCollection];
+  horizontalSizeClass2 = [traitCollection horizontalSizeClass];
 
-  v14 = [v6 horizontalSizeClass];
-  v38 = v14 == 2;
-  v15 = [(CalWindowRootViewController *)self view];
-  v16 = [v15 window];
-  v17 = [v16 windowScene];
-  v18 = [v17 activationState];
+  horizontalSizeClass3 = [collectionCopy horizontalSizeClass];
+  v38 = horizontalSizeClass3 == 2;
+  view3 = [(CalWindowRootViewController *)self view];
+  window = [view3 window];
+  windowScene = [window windowScene];
+  activationState = [windowScene activationState];
 
-  v19 = 0;
+  firstResponder = 0;
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
   v56 = 0;
-  v20 = v18 == 2;
+  v20 = activationState == 2;
   if (!v20)
   {
-    v19 = [(CalWindowRootViewController *)self firstResponder];
+    firstResponder = [(CalWindowRootViewController *)self firstResponder];
   }
 
-  if (v11 == v13 || v14 != 2)
+  if (horizontalSizeClass == horizontalSizeClass2 || horizontalSizeClass3 != 2)
   {
-    if (v11 == v13)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
-      v25 = 0;
+      displayedDetailViewControllers = 0;
       goto LABEL_26;
     }
 
-    v21 = [(CalWindowRootViewController *)self presentedViewController];
+    presentedViewController = [(CalWindowRootViewController *)self presentedViewController];
     if ([(CalWindowRootViewController *)self currentSidebarState]!= 1)
     {
       goto LABEL_24;
@@ -567,8 +567,8 @@
       goto LABEL_24;
     }
 
-    v26 = [v21 viewControllers];
-    v27 = [v26 firstObject];
+    viewControllers = [presentedViewController viewControllers];
+    firstObject = [viewControllers firstObject];
     NSClassFromString(@"EKCalendarEditor");
     if (objc_opt_isKindOfClass())
     {
@@ -576,8 +576,8 @@
 
     else
     {
-      v28 = [v21 viewControllers];
-      v29 = [v28 firstObject];
+      viewControllers2 = [presentedViewController viewControllers];
+      firstObject2 = [viewControllers2 firstObject];
       NSClassFromString(@"EKSubscribedCalendarEditor");
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -587,19 +587,19 @@
       }
     }
 
-    v30 = [(UINavigationController *)self->_primaryVC topViewController];
-    v31 = [v30 preservedState];
+    topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+    preservedState = [topViewController preservedState];
     calendarsPreservedState = self->_calendarsPreservedState;
-    self->_calendarsPreservedState = v31;
+    self->_calendarsPreservedState = preservedState;
 
     [(CalWindowRootViewController *)self dismissViewControllerAnimated:0 completion:0];
     goto LABEL_24;
   }
 
-  v21 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
-  if (!v21)
+  presentedViewController = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+  if (!presentedViewController)
   {
-    v21 = [(CalWindowRootViewController *)self presentedViewController];
+    presentedViewController = [(CalWindowRootViewController *)self presentedViewController];
   }
 
   objc_opt_class();
@@ -610,48 +610,48 @@
     {
       [(RootNavigationController *)self->_rootNavigationController dismissViewControllerAnimated:0 completion:0];
       v54[3] = 2;
-      objc_storeStrong(&self->_presentedInboxVC, v21);
-      v25 = [(InboxViewController *)self->_presentedInboxVC displayedDetailViewControllers];
+      objc_storeStrong(&self->_presentedInboxVC, presentedViewController);
+      displayedDetailViewControllers = [(InboxViewController *)self->_presentedInboxVC displayedDetailViewControllers];
       goto LABEL_25;
     }
 
 LABEL_24:
-    v25 = 0;
+    displayedDetailViewControllers = 0;
     goto LABEL_25;
   }
 
-  v22 = [v21 preservedState];
+  preservedState2 = [presentedViewController preservedState];
   v23 = self->_calendarsPreservedState;
-  self->_calendarsPreservedState = v22;
+  self->_calendarsPreservedState = preservedState2;
 
-  v24 = [v21 presentingViewController];
-  [v24 dismissViewControllerAnimated:0 completion:0];
+  presentingViewController = [presentedViewController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:0 completion:0];
 
-  v25 = 0;
+  displayedDetailViewControllers = 0;
   v54[3] = 1;
 LABEL_25:
 
 LABEL_26:
-  v33 = [(SearchResultsViewController *)self->_searchResultsController searchBar];
-  v34 = [v33 text];
+  searchBar = [(SearchResultsViewController *)self->_searchResultsController searchBar];
+  text = [searchBar text];
 
-  if (v34)
+  if (text)
   {
     v51[0] = _NSConcreteStackBlock;
     v51[1] = 3221225472;
     v51[2] = sub_1000FF670;
     v51[3] = &unk_10020F1F0;
     v51[4] = self;
-    v52 = v34;
-    [v7 animateAlongsideTransition:0 completion:v51];
+    v52 = text;
+    [coordinatorCopy animateAlongsideTransition:0 completion:v51];
   }
 
   v50.receiver = self;
   v50.super_class = CalWindowRootViewController;
-  [(CalWindowRootViewController *)&v50 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
-  if (v7)
+  [(CalWindowRootViewController *)&v50 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   else
@@ -672,22 +672,22 @@ LABEL_26:
   v39[1] = 3221225472;
   v39[2] = sub_1000FF8CC;
   v39[3] = &unk_100211858;
-  v35 = v19;
+  v35 = firstResponder;
   v43 = &v53;
   v40 = v35;
-  v41 = self;
+  selfCopy = self;
   v44 = v20;
-  v36 = v25;
+  v36 = displayedDetailViewControllers;
   v42 = v36;
-  [v7 animateAlongsideTransition:v45 completion:v39];
+  [coordinatorCopy animateAlongsideTransition:v45 completion:v39];
 
   _Block_object_dispose(&v53, 8);
 }
 
 - (CGSize)mainContentSize
 {
-  v2 = [(RootNavigationController *)self->_rootNavigationController view];
-  [v2 bounds];
+  view = [(RootNavigationController *)self->_rootNavigationController view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
 
@@ -698,25 +698,25 @@ LABEL_26:
   return result;
 }
 
-+ (id)sanitizeCalSubCal:(id)a3
++ (id)sanitizeCalSubCal:(id)cal
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"calsubcal"];
+  calCopy = cal;
+  scheme = [calCopy scheme];
+  v5 = [scheme isEqualToString:@"calsubcal"];
 
   if (v5)
   {
-    v6 = [v3 resourceSpecifier];
-    v7 = [v6 stringByRemovingPercentEncoding];
+    resourceSpecifier = [calCopy resourceSpecifier];
+    stringByRemovingPercentEncoding = [resourceSpecifier stringByRemovingPercentEncoding];
 
-    if (v7)
+    if (stringByRemovingPercentEncoding)
     {
-      v8 = [NSURL URLWithString:v7];
+      v8 = [NSURL URLWithString:stringByRemovingPercentEncoding];
     }
 
     else
     {
-      v8 = v3;
+      v8 = calCopy;
     }
 
     v9 = v8;
@@ -724,28 +724,28 @@ LABEL_26:
 
   else
   {
-    v9 = v3;
+    v9 = calCopy;
   }
 
   return v9;
 }
 
-- (void)handleURL:(id)a3 context:(id)a4
+- (void)handleURL:(id)l context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 scheme];
-  v9 = [(CalWindowRootViewController *)self traitCollection];
-  v10 = [v9 horizontalSizeClass];
+  lCopy = l;
+  contextCopy = context;
+  scheme = [lCopy scheme];
+  traitCollection = [(CalWindowRootViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v10 == 2)
+  if (horizontalSizeClass == 2)
   {
-    if ([v8 isEqualToString:@"calinvitelist"])
+    if ([scheme isEqualToString:@"calinvitelist"])
     {
-      v11 = [(RootNavigationController *)self->_rootNavigationController model];
-      v12 = [v11 allEventNotificationsCount];
+      model = [(RootNavigationController *)self->_rootNavigationController model];
+      allEventNotificationsCount = [model allEventNotificationsCount];
 
-      if (v12)
+      if (allEventNotificationsCount)
       {
         [(CalWindowRootViewController *)self setCurrentSidebarState:2];
         goto LABEL_23;
@@ -753,10 +753,10 @@ LABEL_26:
     }
   }
 
-  v13 = [(CalWindowRootViewController *)self traitCollection];
-  if ([v13 horizontalSizeClass] == 2)
+  traitCollection2 = [(CalWindowRootViewController *)self traitCollection];
+  if ([traitCollection2 horizontalSizeClass] == 2)
   {
-    if ([v8 isEqualToString:@"calsubcal"])
+    if ([scheme isEqualToString:@"calsubcal"])
     {
 
 LABEL_18:
@@ -765,18 +765,18 @@ LABEL_18:
         [(CalWindowRootViewController *)self setCurrentSidebarState:1];
       }
 
-      v17 = [(UINavigationController *)self->_primaryVC topViewController];
-      v18 = [CalWindowRootViewController sanitizeCalSubCal:v6];
+      topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+      v18 = [CalWindowRootViewController sanitizeCalSubCal:lCopy];
       if (v18)
       {
         [(CalWindowRootViewController *)self cancelSearch];
-        [v17 showAddSubscribedCalendarWithURL:v18];
+        [topViewController showAddSubscribedCalendarWithURL:v18];
       }
 
       goto LABEL_23;
     }
 
-    v16 = [v8 isEqualToString:@"webcal"];
+    v16 = [scheme isEqualToString:@"webcal"];
 
     if (v16)
     {
@@ -788,7 +788,7 @@ LABEL_18:
   {
   }
 
-  if (v10 == 2 && [v8 isEqualToString:@"calshow"] && (objc_msgSend(v6, "host"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"familyCalendar"), v14, v15))
+  if (horizontalSizeClass == 2 && [scheme isEqualToString:@"calshow"] && (objc_msgSend(lCopy, "host"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"familyCalendar"), v14, v15))
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -806,44 +806,44 @@ LABEL_18:
     }
 
     [(CalWindowRootViewController *)self cancelSearch];
-    [(RootNavigationController *)self->_rootNavigationController handleURL:v6 context:v7];
+    [(RootNavigationController *)self->_rootNavigationController handleURL:lCopy context:contextCopy];
   }
 
 LABEL_23:
 }
 
-- (void)continueSearchWithTerm:(id)a3
+- (void)continueSearchWithTerm:(id)term
 {
-  v11 = a3;
-  v4 = [(CalWindowRootViewController *)self ekui_futureTraitCollection];
-  v5 = [v4 horizontalSizeClass];
+  termCopy = term;
+  ekui_futureTraitCollection = [(CalWindowRootViewController *)self ekui_futureTraitCollection];
+  horizontalSizeClass = [ekui_futureTraitCollection horizontalSizeClass];
 
   rootNavigationController = self->_rootNavigationController;
-  if (v5 == 1)
+  if (horizontalSizeClass == 1)
   {
-    [(RootNavigationController *)rootNavigationController continueSearchWithTerm:v11 animated:1 removeViewControllersIncapableOfSearchIfNeeded:1];
+    [(RootNavigationController *)rootNavigationController continueSearchWithTerm:termCopy animated:1 removeViewControllersIncapableOfSearchIfNeeded:1];
   }
 
   else
   {
-    v7 = [(RootNavigationController *)rootNavigationController largeSearchController];
-    v8 = [v7 searchBar];
-    [v8 setText:v11];
+    largeSearchController = [(RootNavigationController *)rootNavigationController largeSearchController];
+    searchBar = [largeSearchController searchBar];
+    [searchBar setText:termCopy];
 
     [(CalWindowRootViewController *)self showSearch];
-    v9 = [(RootNavigationController *)self->_rootNavigationController largeSearchController];
-    v10 = [v9 searchBar];
-    [(CalWindowRootViewController *)self searchBar:v10 textDidChange:v11];
+    largeSearchController2 = [(RootNavigationController *)self->_rootNavigationController largeSearchController];
+    searchBar2 = [largeSearchController2 searchBar];
+    [(CalWindowRootViewController *)self searchBar:searchBar2 textDidChange:termCopy];
   }
 }
 
 - (void)updatePrimaryViewControllerNavBar
 {
-  v8 = [(UINavigationController *)self->_primaryVC topViewController];
-  v3 = [(CalWindowRootViewController *)self traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+  traitCollection = [(CalWindowRootViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v4 == 2)
+  if (horizontalSizeClass == 2)
   {
     [(SidebarPaletteView *)self->_paletteView sizeToFit];
     [(SidebarPaletteView *)self->_paletteView frame];
@@ -856,17 +856,17 @@ LABEL_23:
     palette = 0;
   }
 
-  v7 = [v8 navigationItem];
-  [v7 _setBottomPalette:palette];
+  navigationItem = [topViewController navigationItem];
+  [navigationItem _setBottomPalette:palette];
 }
 
-- (BOOL)canShowAvatarViewWithTraitCollection:(id)a3
+- (BOOL)canShowAvatarViewWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(RootNavigationController *)self->_rootNavigationController model];
-  if ([v5 containsDelegateSources])
+  collectionCopy = collection;
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  if ([model containsDelegateSources])
   {
-    v6 = [v4 horizontalSizeClass] == 2;
+    v6 = [collectionCopy horizontalSizeClass] == 2;
   }
 
   else
@@ -877,35 +877,35 @@ LABEL_23:
   return v6;
 }
 
-- (id)viewControllerForSidebarState:(unint64_t)a3
+- (id)viewControllerForSidebarState:(unint64_t)state
 {
-  switch(a3)
+  switch(state)
   {
     case 3uLL:
       v12 = [CompactListViewController alloc];
-      v13 = [(RootNavigationController *)self->_rootNavigationController model];
-      v14 = [(CalWindowRootViewController *)self view];
-      v15 = [v14 window];
-      v6 = [(ListViewController *)v12 initWithModel:v13 window:v15];
+      model = [(RootNavigationController *)self->_rootNavigationController model];
+      view = [(CalWindowRootViewController *)self view];
+      window = [view window];
+      switcherViewController = [(ListViewController *)v12 initWithModel:model window:window];
 
-      [(ListViewController *)v6 setDelegate:self];
-      [(ListViewController *)v6 setOverrideExtendedEdges:0];
-      [(ListViewController *)v6 setDestination:2];
-      v7 = 0;
+      [(ListViewController *)switcherViewController setDelegate:self];
+      [(ListViewController *)switcherViewController setOverrideExtendedEdges:0];
+      [(ListViewController *)switcherViewController setDestination:2];
+      segmentedControl = 0;
       v8 = @"Today";
       goto LABEL_11;
     case 2uLL:
       presentedInboxVC = self->_presentedInboxVC;
       if (presentedInboxVC)
       {
-        v6 = [(InboxViewController *)presentedInboxVC switcherViewController];
-        [(CompactListViewController *)v6 willMoveToParentViewController:0];
-        v10 = [(CompactListViewController *)v6 view];
-        [v10 removeFromSuperview];
+        switcherViewController = [(InboxViewController *)presentedInboxVC switcherViewController];
+        [(CompactListViewController *)switcherViewController willMoveToParentViewController:0];
+        view2 = [(CompactListViewController *)switcherViewController view];
+        [view2 removeFromSuperview];
 
-        [(CompactListViewController *)v6 removeFromParentViewController];
-        [(CompactListViewController *)v6 setSwitcherDelegate:self];
-        [(ListViewController *)v6 setDestination:2];
+        [(CompactListViewController *)switcherViewController removeFromParentViewController];
+        [(CompactListViewController *)switcherViewController setSwitcherDelegate:self];
+        [(ListViewController *)switcherViewController setDestination:2];
         v11 = self->_presentedInboxVC;
         self->_presentedInboxVC = 0;
       }
@@ -913,21 +913,21 @@ LABEL_23:
       else
       {
         v17 = [InboxSwitcherViewController alloc];
-        v18 = [(RootNavigationController *)self->_rootNavigationController model];
-        v6 = [(InboxSwitcherViewController *)v17 initWithModel:v18 destination:2];
+        model2 = [(RootNavigationController *)self->_rootNavigationController model];
+        switcherViewController = [(InboxSwitcherViewController *)v17 initWithModel:model2 destination:2];
 
-        [(CompactListViewController *)v6 setSwitcherDelegate:self];
+        [(CompactListViewController *)switcherViewController setSwitcherDelegate:self];
       }
 
-      v7 = [(CompactListViewController *)v6 segmentedControl];
+      segmentedControl = [(CompactListViewController *)switcherViewController segmentedControl];
       v8 = @"Inbox";
       goto LABEL_11;
     case 1uLL:
       v4 = [CalendarsViewController alloc];
-      v5 = [(RootNavigationController *)self->_rootNavigationController model];
-      v6 = [(CalendarsViewController *)v4 initWithModel:v5 destination:2];
+      model3 = [(RootNavigationController *)self->_rootNavigationController model];
+      switcherViewController = [(CalendarsViewController *)v4 initWithModel:model3 destination:2];
 
-      v7 = 0;
+      segmentedControl = 0;
       v8 = @"Calendars";
 LABEL_11:
       v19 = +[NSBundle mainBundle];
@@ -937,67 +937,67 @@ LABEL_11:
   }
 
   v16 = 0;
-  v7 = 0;
-  v6 = 0;
+  segmentedControl = 0;
+  switcherViewController = 0;
 LABEL_12:
   [(SidebarPaletteView *)self->_paletteView setTitle:v16];
-  [(SidebarPaletteView *)self->_paletteView setSegmentedControl:v7];
+  [(SidebarPaletteView *)self->_paletteView setSegmentedControl:segmentedControl];
   [(SidebarPaletteView *)self->_paletteView setNeedsLayout];
   [(SidebarPaletteView *)self->_paletteView layoutIfNeeded];
   paletteView = self->_paletteView;
-  v21 = [(UINavigationController *)self->_primaryVC view];
-  [v21 bounds];
+  view3 = [(UINavigationController *)self->_primaryVC view];
+  [view3 bounds];
   [(SidebarPaletteView *)paletteView sizeThatFits:v22, v23];
 
   [(_UINavigationBarPalette *)self->_palette frame];
   [(_UINavigationBarPalette *)self->_palette setFrame:?];
-  v24 = [(CompactListViewController *)v6 navigationItem];
-  [v24 _setAutoScrollEdgeTransitionDistance:16.0];
+  navigationItem = [(CompactListViewController *)switcherViewController navigationItem];
+  [navigationItem _setAutoScrollEdgeTransitionDistance:16.0];
 
-  v25 = [(CompactListViewController *)v6 navigationItem];
-  [v25 _setManualScrollEdgeAppearanceEnabled:1];
+  navigationItem2 = [(CompactListViewController *)switcherViewController navigationItem];
+  [navigationItem2 _setManualScrollEdgeAppearanceEnabled:1];
 
-  v26 = v6;
-  return v6;
+  v26 = switcherViewController;
+  return switcherViewController;
 }
 
-- (void)setCurrentSidebarState:(unint64_t)a3 completion:(id)a4
+- (void)setCurrentSidebarState:(unint64_t)state completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (state)
   {
-    self->_lastOpenSidebarState = a3;
+    self->_lastOpenSidebarState = state;
   }
 
   if (!self->_didAppear || [(CalWindowRootViewController *)self isCollapsed])
   {
-    if (self->_currentSidebarState != a3)
+    if (self->_currentSidebarState != state)
     {
       self->_needsSidebarSetup = 1;
-      self->_pendingState = a3;
+      self->_pendingState = state;
       [(CalWindowRootViewController *)self updateNavigationBarButtons];
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     goto LABEL_42;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (!a3)
+    if (!state)
     {
       goto LABEL_19;
     }
 
     currentSidebarState = self->_currentSidebarState;
 LABEL_18:
-    if (currentSidebarState != a3)
+    if (currentSidebarState != state)
     {
-      v11 = [(CalWindowRootViewController *)self viewControllerForSidebarState:a3];
+      v11 = [(CalWindowRootViewController *)self viewControllerForSidebarState:state];
       if (v11)
       {
         if (self->_currentSidebarState == 2)
@@ -1012,16 +1012,16 @@ LABEL_18:
 
         if (self->_currentSidebarState)
         {
-          v14 = [objc_opt_class() shouldHideInlineFocusBannerForSidebarState:a3];
-          v15 = [(RootNavigationController *)self->_rootNavigationController paletteView];
-          [v15 setShouldHideInlineFocusBanner:v14];
+          v14 = [objc_opt_class() shouldHideInlineFocusBannerForSidebarState:state];
+          paletteView = [(RootNavigationController *)self->_rootNavigationController paletteView];
+          [paletteView setShouldHideInlineFocusBanner:v14];
         }
 
         else
         {
-          v24 = [(CalWindowRootViewController *)self transitionCoordinator];
+          transitionCoordinator = [(CalWindowRootViewController *)self transitionCoordinator];
 
-          if (v24)
+          if (transitionCoordinator)
           {
 
             goto LABEL_41;
@@ -1030,23 +1030,23 @@ LABEL_18:
           self->_animatingSidebar = [(CalWindowRootViewController *)self splitBehavior]== 1;
           [(CalWindowRootViewController *)self showColumn:0];
           [(CalWindowRootViewController *)self cancelSearch];
-          v25 = [(CalWindowRootViewController *)self transitionCoordinator];
+          transitionCoordinator2 = [(CalWindowRootViewController *)self transitionCoordinator];
           v28[0] = _NSConcreteStackBlock;
           v28[1] = 3221225472;
           v28[2] = sub_100100CB8;
           v28[3] = &unk_10020F488;
           v28[4] = self;
-          v28[5] = a3;
+          v28[5] = state;
           v26[0] = _NSConcreteStackBlock;
           v26[1] = 3221225472;
           v26[2] = sub_100100D2C;
           v26[3] = &unk_10020F1F0;
           v26[4] = self;
           v27 = v11;
-          [v25 animateAlongsideTransition:v28 completion:v26];
+          [transitionCoordinator2 animateAlongsideTransition:v28 completion:v26];
         }
 
-        if (a3 == 3)
+        if (state == 3)
         {
           v16 = [UIBarButtonItem alloc];
           v17 = +[NSBundle mainBundle];
@@ -1060,14 +1060,14 @@ LABEL_18:
         [(CalWindowRootViewController *)self updatePrimaryViewControllerNavBar];
       }
 
-      self->_currentSidebarState = a3;
+      self->_currentSidebarState = state;
 
 LABEL_31:
       [(CalWindowRootViewController *)self updateNavigationBarButtons];
       self->_animatingSidebar = 0;
-      if (v6)
+      if (completionCopy)
       {
-        (v6)[2](v6, v11);
+        (completionCopy)[2](completionCopy, v11);
       }
 
       goto LABEL_41;
@@ -1085,9 +1085,9 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v21 = [(CalWindowRootViewController *)self transitionCoordinator];
+    transitionCoordinator3 = [(CalWindowRootViewController *)self transitionCoordinator];
 
-    if (!v21)
+    if (!transitionCoordinator3)
     {
       if (self->_currentSidebarState == 2)
       {
@@ -1096,10 +1096,10 @@ LABEL_19:
 
       self->_animatingSidebar = [(CalWindowRootViewController *)self splitBehavior]== 1;
       [(CalWindowRootViewController *)self hideColumn:0];
-      v22 = [(CalWindowRootViewController *)self transitionCoordinator];
-      if (v22)
+      transitionCoordinator4 = [(CalWindowRootViewController *)self transitionCoordinator];
+      if (transitionCoordinator4)
       {
-        v23 = v22;
+        v23 = transitionCoordinator4;
         v29[0] = _NSConcreteStackBlock;
         v29[1] = 3221225472;
         v29[2] = sub_100100CA8;
@@ -1137,32 +1137,32 @@ LABEL_41:
     goto LABEL_18;
   }
 
-  v8 = [(UINavigationController *)self->_primaryVC topViewController];
-  [v8 restorePreservedState:self->_calendarsPreservedState];
+  topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+  [topViewController restorePreservedState:self->_calendarsPreservedState];
   calendarsPreservedState = self->_calendarsPreservedState;
   self->_calendarsPreservedState = 0;
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_42:
 }
 
-- (void)showCalendarsSideBarWithCompletion:(id)a3
+- (void)showCalendarsSideBarWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CalWindowRootViewController *)self currentSidebarState]== 1)
   {
-    v5 = [(UINavigationController *)self->_primaryVC topViewController];
+    topViewController = [(UINavigationController *)self->_primaryVC topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4)
+    if (completionCopy)
     {
       if (isKindOfClass)
       {
-        v7 = v5;
+        v7 = topViewController;
       }
 
       else
@@ -1170,7 +1170,7 @@ LABEL_42:
         v7 = 0;
       }
 
-      (v4)[2](v4, v7);
+      (completionCopy)[2](completionCopy, v7);
     }
   }
 
@@ -1180,24 +1180,24 @@ LABEL_42:
     v8[1] = 3221225472;
     v8[2] = sub_100100ECC;
     v8[3] = &unk_10020F4B0;
-    v9 = v4;
+    v9 = completionCopy;
     [(CalWindowRootViewController *)self setCurrentSidebarState:1 completion:v8];
   }
 }
 
-- (void)showInboxSideBarWithCompletion:(id)a3
+- (void)showInboxSideBarWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CalWindowRootViewController *)self currentSidebarState]== 2)
   {
-    v5 = [(UINavigationController *)self->_primaryVC topViewController];
+    topViewController = [(UINavigationController *)self->_primaryVC topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4)
+    if (completionCopy)
     {
       if (isKindOfClass)
       {
-        v7 = v5;
+        v7 = topViewController;
       }
 
       else
@@ -1205,7 +1205,7 @@ LABEL_42:
         v7 = 0;
       }
 
-      (v4)[2](v4, v7);
+      (completionCopy)[2](completionCopy, v7);
     }
   }
 
@@ -1215,24 +1215,24 @@ LABEL_42:
     v8[1] = 3221225472;
     v8[2] = sub_100101050;
     v8[3] = &unk_10020F4B0;
-    v9 = v4;
+    v9 = completionCopy;
     [(CalWindowRootViewController *)self setCurrentSidebarState:2 completion:v8];
   }
 }
 
-- (void)showListSideBarWithCompletion:(id)a3
+- (void)showListSideBarWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CalWindowRootViewController *)self currentSidebarState]== 3)
   {
-    v5 = [(UINavigationController *)self->_primaryVC topViewController];
+    topViewController = [(UINavigationController *)self->_primaryVC topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4)
+    if (completionCopy)
     {
       if (isKindOfClass)
       {
-        v7 = v5;
+        v7 = topViewController;
       }
 
       else
@@ -1240,7 +1240,7 @@ LABEL_42:
         v7 = 0;
       }
 
-      (v4)[2](v4, v7);
+      (completionCopy)[2](completionCopy, v7);
     }
   }
 
@@ -1250,22 +1250,22 @@ LABEL_42:
     v8[1] = 3221225472;
     v8[2] = sub_1001011D4;
     v8[3] = &unk_10020F4B0;
-    v9 = v4;
+    v9 = completionCopy;
     [(CalWindowRootViewController *)self setCurrentSidebarState:3 completion:v8];
   }
 }
 
 - (void)todayToolbarItemPressed
 {
-  v3 = [(UINavigationController *)self->_primaryVC topViewController];
+  topViewController = [(UINavigationController *)self->_primaryVC topViewController];
   v2 = CUIKTodayDate();
-  [v3 scrollToDate:v2 animated:1];
+  [topViewController scrollToDate:v2 animated:1];
 }
 
-- (void)showEventAndCloseSidebarIfNeeded:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5
+- (void)showEventAndCloseSidebarIfNeeded:(id)needed animated:(BOOL)animated showMode:(unint64_t)mode
 {
-  v6 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  neededCopy = needed;
   if (self->_currentSidebarState && [(CalWindowRootViewController *)self splitBehavior]== 2 && ([(CalWindowRootViewController *)self setCurrentSidebarState:0], [(CalWindowRootViewController *)self transitionCoordinator], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
@@ -1274,42 +1274,42 @@ LABEL_42:
     v11[2] = sub_1001013EC;
     v11[3] = &unk_10020F4D8;
     v11[4] = self;
-    v14 = v6;
-    v12 = v8;
-    v13 = a5;
+    v14 = animatedCopy;
+    v12 = neededCopy;
+    modeCopy = mode;
     [v10 animateAlongsideTransition:v11 completion:0];
   }
 
   else
   {
-    [(RootNavigationController *)self->_rootNavigationController showEvent:v8 animated:v6 showMode:a5 context:0];
+    [(RootNavigationController *)self->_rootNavigationController showEvent:neededCopy animated:animatedCopy showMode:mode context:0];
   }
 }
 
-- (void)splitViewController:(id)a3 willHideColumn:(int64_t)a4
+- (void)splitViewController:(id)controller willHideColumn:(int64_t)column
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  controllerCopy = controller;
+  v7 = controllerCopy;
+  if (!column)
   {
     if (self->_currentSidebarState)
     {
-      v12 = v6;
-      v6 = [(CalWindowRootViewController *)self isCollapsed];
+      v12 = controllerCopy;
+      controllerCopy = [(CalWindowRootViewController *)self isCollapsed];
       v7 = v12;
-      if ((v6 & 1) == 0)
+      if ((controllerCopy & 1) == 0)
       {
-        v8 = [(CalWindowRootViewController *)self view];
-        v9 = [v8 window];
-        v10 = [v9 windowScene];
-        v11 = [v10 activationState];
+        view = [(CalWindowRootViewController *)self view];
+        window = [view window];
+        windowScene = [window windowScene];
+        activationState = [windowScene activationState];
 
         v7 = v12;
-        if (v11 != 2)
+        if (activationState != 2)
         {
           if (self->_currentSidebarState == 2)
           {
-            v6 = [(CalWindowRootViewController *)self inboxWillDismiss];
+            controllerCopy = [(CalWindowRootViewController *)self inboxWillDismiss];
             v7 = v12;
           }
 
@@ -1319,37 +1319,37 @@ LABEL_42:
     }
   }
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(controllerCopy, v7);
 }
 
 - (void)inboxWillDismiss
 {
-  v3 = [(UINavigationController *)self->_primaryVC topViewController];
-  v2 = [v3 view];
-  [v2 endEditing:1];
+  topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+  view = [topViewController view];
+  [view endEditing:1];
 
-  [v3 inboxWillDismiss];
+  [topViewController inboxWillDismiss];
 }
 
 - (void)attemptDisplayReviewPrompt
 {
-  v6 = [(CalWindowRootViewController *)self view];
-  v3 = [v6 window];
-  v4 = [v3 windowScene];
-  v5 = [(RootNavigationController *)self->_rootNavigationController model];
-  [EKUIAppReviewUtils displayReviewPromptIfNeededInScene:v4 calendarModel:v5];
+  view = [(CalWindowRootViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  [EKUIAppReviewUtils displayReviewPromptIfNeededInScene:windowScene calendarModel:model];
 }
 
-- (void)showIdentitySwitcherFromSourceView:(id)a3
+- (void)showIdentitySwitcherFromSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [IdentitySwitcherViewController alloc];
-  v6 = [(RootNavigationController *)self->_rootNavigationController model];
-  v7 = [(IdentitySwitcherViewController *)v5 initWithModel:v6];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  v7 = [(IdentitySwitcherViewController *)v5 initWithModel:model];
 
   [(IdentitySwitcherViewController *)v7 setModalPresentationStyle:7];
-  v8 = [(IdentitySwitcherViewController *)v7 popoverPresentationController];
-  [v8 setSourceView:v4];
+  popoverPresentationController = [(IdentitySwitcherViewController *)v7 popoverPresentationController];
+  [popoverPresentationController setSourceView:viewCopy];
 
   if (CalInterfaceIsLeftToRight())
   {
@@ -1361,7 +1361,7 @@ LABEL_42:
     v9 = 8;
   }
 
-  [v8 setPermittedArrowDirections:v9];
+  [popoverPresentationController setPermittedArrowDirections:v9];
   v10 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
   {
@@ -1372,13 +1372,13 @@ LABEL_42:
   [(CalWindowRootViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)paletteTodayButtonTapped:(id)a3
+- (void)paletteTodayButtonTapped:(id)tapped
 {
   [(RootNavigationController *)self->_rootNavigationController todayPressed];
   if (self->_currentSidebarState == 3)
   {
-    v4 = [(UINavigationController *)self->_primaryVC topViewController];
-    [v4 scrollToTodayAnimated:1];
+    topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+    [topViewController scrollToTodayAnimated:1];
   }
 
   searchResultsController = self->_searchResultsController;
@@ -1386,16 +1386,16 @@ LABEL_42:
   [(SearchResultsViewController *)searchResultsController scrollToDate:v6 animated:1];
 }
 
-- (void)paletteAvatarViewTapped:(id)a3
+- (void)paletteAvatarViewTapped:(id)tapped
 {
-  v4 = [a3 avatarView];
-  [(CalWindowRootViewController *)self showIdentitySwitcherFromSourceView:v4];
+  avatarView = [tapped avatarView];
+  [(CalWindowRootViewController *)self showIdentitySwitcherFromSourceView:avatarView];
 }
 
 - (BOOL)paletteShouldShowAvatarView
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController ekui_futureTraitCollection];
-  if ([(CalWindowRootViewController *)self canShowAvatarViewWithTraitCollection:v3])
+  ekui_futureTraitCollection = [(RootNavigationController *)self->_rootNavigationController ekui_futureTraitCollection];
+  if ([(CalWindowRootViewController *)self canShowAvatarViewWithTraitCollection:ekui_futureTraitCollection])
   {
     v4 = self->_currentSidebarState == 0;
   }
@@ -1410,37 +1410,37 @@ LABEL_42:
 
 - (unint64_t)focusFilterMode
 {
-  v2 = [(RootNavigationController *)self->_rootNavigationController model];
-  v3 = [v2 focusFilterMode];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  focusFilterMode = [model focusFilterMode];
 
-  return v3;
+  return focusFilterMode;
 }
 
-- (void)setFocusFilterMode:(unint64_t)a3
+- (void)setFocusFilterMode:(unint64_t)mode
 {
-  v4 = [(RootNavigationController *)self->_rootNavigationController model];
-  [v4 setFocusFilterMode:a3];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  [model setFocusFilterMode:mode];
 }
 
-- (void)_identityChanged:(id)a3
+- (void)_identityChanged:(id)changed
 {
   paletteView = self->_paletteView;
-  v5 = [(RootNavigationController *)self->_rootNavigationController model];
-  v4 = [v5 sourceForSelectedIdentity];
-  [(SidebarPaletteView *)paletteView updateIdentity:v4];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  sourceForSelectedIdentity = [model sourceForSelectedIdentity];
+  [(SidebarPaletteView *)paletteView updateIdentity:sourceForSelectedIdentity];
 }
 
-- (void)_delegatesChanged:(id)a3
+- (void)_delegatesChanged:(id)changed
 {
-  v4 = [(RootNavigationController *)self->_rootNavigationController model];
-  -[SidebarPaletteView setShowIdentity:](self->_paletteView, "setShowIdentity:", [v4 containsDelegateSources]);
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  -[SidebarPaletteView setShowIdentity:](self->_paletteView, "setShowIdentity:", [model containsDelegateSources]);
 
   rootNavigationController = self->_rootNavigationController;
 
   [(RootNavigationController *)rootNavigationController setAvatarViewVisible:0];
 }
 
-- (void)_updateAfterExtendedLaunch:(id)a3
+- (void)_updateAfterExtendedLaunch:(id)launch
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1450,20 +1450,20 @@ LABEL_42:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   rootNavigationController = self->_rootNavigationController;
-  v7 = a4;
-  if ([(RootNavigationController *)rootNavigationController shouldHandleCanPerformActionForSelector:a3])
+  senderCopy = sender;
+  if ([(RootNavigationController *)rootNavigationController shouldHandleCanPerformActionForSelector:action])
   {
-    v8 = [(RootNavigationController *)self->_rootNavigationController canPerformAction:a3 withSender:v7];
+    v8 = [(RootNavigationController *)self->_rootNavigationController canPerformAction:action withSender:senderCopy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = CalWindowRootViewController;
-    v8 = [(CalWindowRootViewController *)&v11 canPerformAction:a3 withSender:v7];
+    v8 = [(CalWindowRootViewController *)&v11 canPerformAction:action withSender:senderCopy];
   }
 
   v9 = v8;
@@ -1473,14 +1473,14 @@ LABEL_42:
 
 - (void)routeNewEventKeyCommand
 {
-  v3 = [(CalWindowRootViewController *)self traitCollection];
-  if ([v3 horizontalSizeClass] != 2)
+  traitCollection = [(CalWindowRootViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] != 2)
   {
     goto LABEL_4;
   }
 
-  v4 = [(CalWindowRootViewController *)self presentedViewController];
-  if (v4)
+  presentedViewController = [(CalWindowRootViewController *)self presentedViewController];
+  if (presentedViewController)
   {
 
 LABEL_4:
@@ -1491,17 +1491,17 @@ LABEL_5:
     return;
   }
 
-  v6 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+  presentedViewController2 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
 
-  if (v6)
+  if (presentedViewController2)
   {
     goto LABEL_5;
   }
 
-  v7 = [(RootNavigationController *)self->_rootNavigationController addEventBarButtonItem];
-  v8 = [v7 isEnabled];
+  addEventBarButtonItem = [(RootNavigationController *)self->_rootNavigationController addEventBarButtonItem];
+  isEnabled = [addEventBarButtonItem isEnabled];
 
-  if (v8)
+  if (isEnabled)
   {
 
     [(CalWindowRootViewController *)self showAddEvent];
@@ -1510,14 +1510,14 @@ LABEL_5:
 
 - (void)routeSearchKeyCommand
 {
-  v3 = [(CalWindowRootViewController *)self traitCollection];
-  if ([v3 horizontalSizeClass] != 2)
+  traitCollection = [(CalWindowRootViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] != 2)
   {
     goto LABEL_4;
   }
 
-  v4 = [(CalWindowRootViewController *)self presentedViewController];
-  if (v4)
+  presentedViewController = [(CalWindowRootViewController *)self presentedViewController];
+  if (presentedViewController)
   {
 
 LABEL_4:
@@ -1528,9 +1528,9 @@ LABEL_5:
     return;
   }
 
-  v6 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+  presentedViewController2 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
 
-  if (v6)
+  if (presentedViewController2)
   {
     goto LABEL_5;
   }
@@ -1538,11 +1538,11 @@ LABEL_5:
   [(CalWindowRootViewController *)self showSearch];
 }
 
-- (void)toggleSidebar:(id)a3
+- (void)toggleSidebar:(id)sidebar
 {
   if ([(CalWindowRootViewController *)self currentSidebarState])
   {
-    v4 = self;
+    selfCopy2 = self;
     lastOpenSidebarState = 0;
   }
 
@@ -1555,31 +1555,31 @@ LABEL_5:
       self->_lastOpenSidebarState = 1;
     }
 
-    v4 = self;
+    selfCopy2 = self;
   }
 
-  [(CalWindowRootViewController *)v4 setCurrentSidebarState:lastOpenSidebarState];
+  [(CalWindowRootViewController *)selfCopy2 setCurrentSidebarState:lastOpenSidebarState];
 }
 
 - (BOOL)_shouldUseSideBar
 {
-  v2 = [(CalWindowRootViewController *)self traitCollection];
-  v3 = [v2 horizontalSizeClass] == 2;
+  traitCollection = [(CalWindowRootViewController *)self traitCollection];
+  v3 = [traitCollection horizontalSizeClass] == 2;
 
   return v3;
 }
 
-- (void)showCalendarsViewWithCompletion:(id)a3
+- (void)showCalendarsViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CalWindowRootViewController *)self _shouldUseSideBar])
   {
-    [(CalWindowRootViewController *)self showCalendarsSideBarWithCompletion:v4];
+    [(CalWindowRootViewController *)self showCalendarsSideBarWithCompletion:completionCopy];
   }
 
   else
   {
-    [(RootNavigationController *)self->_rootNavigationController showCalendarsAnimated:1 completion:v4];
+    [(RootNavigationController *)self->_rootNavigationController showCalendarsAnimated:1 completion:completionCopy];
   }
 }
 
@@ -1607,9 +1607,9 @@ LABEL_5:
 
   else
   {
-    v3 = [(RootNavigationController *)self->_rootNavigationController resetToDayView];
+    resetToDayView = [(RootNavigationController *)self->_rootNavigationController resetToDayView];
 
-    if (v3)
+    if (resetToDayView)
     {
       rootNavigationController = self->_rootNavigationController;
 
@@ -1634,9 +1634,9 @@ LABEL_5:
 
 - (void)showSplitMonthView
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController resetToMonthView];
+  resetToMonthView = [(RootNavigationController *)self->_rootNavigationController resetToMonthView];
 
-  if (v3)
+  if (resetToMonthView)
   {
     if ([(CalWindowRootViewController *)self _shouldUseSideBar])
     {
@@ -1653,9 +1653,9 @@ LABEL_5:
 
 - (void)showDayView
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController resetToDayView];
+  resetToDayView = [(RootNavigationController *)self->_rootNavigationController resetToDayView];
 
-  if (v3)
+  if (resetToDayView)
   {
     rootNavigationController = self->_rootNavigationController;
 
@@ -1663,39 +1663,39 @@ LABEL_5:
   }
 }
 
-- (void)showInspectorForCalendar:(id)a3 enableDoneInitially:(BOOL)a4
+- (void)showInspectorForCalendar:(id)calendar enableDoneInitially:(BOOL)initially
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001024B8;
   v7[3] = &unk_10020F528;
-  v8 = a3;
-  v9 = a4;
-  v6 = v8;
+  calendarCopy = calendar;
+  initiallyCopy = initially;
+  v6 = calendarCopy;
   [(CalWindowRootViewController *)self showCalendarsViewWithCompletion:v7];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(CalWindowRootViewController *)self isFirstResponder];
-  v48 = self;
-  v10 = [(RootNavigationController *)self->_rootNavigationController topMainViewControllerContainer];
-  v11 = [v10 wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder];
+  beganCopy = began;
+  eventCopy = event;
+  isFirstResponder = [(CalWindowRootViewController *)self isFirstResponder];
+  selfCopy = self;
+  topMainViewControllerContainer = [(RootNavigationController *)self->_rootNavigationController topMainViewControllerContainer];
+  wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder = [topMainViewControllerContainer wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder];
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v12 = v7;
+  v12 = beganCopy;
   v13 = [v12 countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (v13)
   {
     v14 = v13;
-    v44 = v8;
+    v44 = eventCopy;
     v49 = *v52;
-    v15 = v9 | v11;
+    v15 = isFirstResponder | wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder;
     v45 = 1;
     v47 = v12;
     while (1)
@@ -1713,12 +1713,12 @@ LABEL_5:
         {
           [v17 key];
           v20 = v19 = v4;
-          v21 = [v20 modifierFlags];
+          modifierFlags = [v20 modifierFlags];
 
           v4 = v19;
-          if (!v21)
+          if (!modifierFlags)
           {
-            [(RootNavigationController *)v48->_rootNavigationController handleSpaceBarKeyCommand];
+            [(RootNavigationController *)selfCopy->_rootNavigationController handleSpaceBarKeyCommand];
           }
         }
 
@@ -1728,21 +1728,21 @@ LABEL_5:
 
         if (v15)
         {
-          v22 = [(CalWindowRootViewController *)v48 presentedViewController];
+          presentedViewController = [(CalWindowRootViewController *)selfCopy presentedViewController];
 
-          if (!v22)
+          if (!presentedViewController)
           {
             v23 = [v17 key];
             if ([v23 keyCode] == 43)
             {
               [v17 key];
               v25 = v24 = v4;
-              v26 = [v25 modifierFlags];
+              modifierFlags2 = [v25 modifierFlags];
 
               v4 = v24;
-              if (v26 == 0x20000)
+              if (modifierFlags2 == 0x20000)
               {
-                v27 = [(CalWindowRootViewController *)v48 targetForAction:"handleSelectPreviousEventCommand" withSender:0];
+                v27 = [(CalWindowRootViewController *)selfCopy targetForAction:"handleSelectPreviousEventCommand" withSender:0];
                 v28 = v27;
                 if (v27)
                 {
@@ -1763,12 +1763,12 @@ LABEL_5:
             {
               [v17 key];
               v31 = v30 = v4;
-              v32 = [v31 modifierFlags];
+              modifierFlags3 = [v31 modifierFlags];
 
               v4 = v30;
-              if (!v32)
+              if (!modifierFlags3)
               {
-                v33 = [(CalWindowRootViewController *)v48 targetForAction:"handleSelectNextEventCommand" withSender:0];
+                v33 = [(CalWindowRootViewController *)selfCopy targetForAction:"handleSelectNextEventCommand" withSender:0];
                 v28 = v33;
                 if (v33)
                 {
@@ -1788,21 +1788,21 @@ LABEL_43:
             }
 
             v34 = [v17 key];
-            v35 = [v34 keyCode];
-            if (v35 == 82 || ([v17 key], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "keyCode") == 80))
+            keyCode = [v34 keyCode];
+            if (keyCode == 82 || ([v17 key], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "keyCode") == 80))
             {
               v36 = v4;
               v37 = [v17 key];
-              v38 = [v37 modifierFlags];
+              modifierFlags4 = [v37 modifierFlags];
 
-              if (v35 != 82)
+              if (keyCode != 82)
               {
               }
 
               v12 = v47;
-              if (!v38)
+              if (!modifierFlags4)
               {
-                v39 = [(CalWindowRootViewController *)v48 targetForAction:"handleSelectPreviousEventCommand" withSender:0];
+                v39 = [(CalWindowRootViewController *)selfCopy targetForAction:"handleSelectPreviousEventCommand" withSender:0];
                 v28 = v39;
                 if (v39)
                 {
@@ -1822,25 +1822,25 @@ LABEL_43:
             }
 
             v28 = [v17 key];
-            v40 = [v28 keyCode];
-            if (v40 == 81 || ([v17 key], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "keyCode") == 79))
+            keyCode2 = [v28 keyCode];
+            if (keyCode2 == 81 || ([v17 key], eventCopy = objc_claimAutoreleasedReturnValue(), objc_msgSend(eventCopy, "keyCode") == 79))
             {
               v46 = v4;
               v41 = [v17 key];
-              v42 = [v41 modifierFlags];
+              modifierFlags5 = [v41 modifierFlags];
 
-              if (v40 != 81)
+              if (keyCode2 != 81)
               {
               }
 
               v12 = v47;
-              if (v42)
+              if (modifierFlags5)
               {
                 v4 = v46;
                 continue;
               }
 
-              v43 = [(CalWindowRootViewController *)v48 targetForAction:"handleSelectNextEventCommand" withSender:0];
+              v43 = [(CalWindowRootViewController *)selfCopy targetForAction:"handleSelectNextEventCommand" withSender:0];
               v28 = v43;
               if (v43)
               {
@@ -1864,7 +1864,7 @@ LABEL_43:
       if (!v14)
       {
 
-        v8 = v44;
+        eventCopy = v44;
         if ((v45 & 1) == 0)
         {
           goto LABEL_50;
@@ -1876,73 +1876,73 @@ LABEL_43:
   }
 
 LABEL_49:
-  v50.receiver = v48;
+  v50.receiver = selfCopy;
   v50.super_class = CalWindowRootViewController;
-  [(CalWindowRootViewController *)&v50 pressesBegan:v12 withEvent:v8];
+  [(CalWindowRootViewController *)&v50 pressesBegan:v12 withEvent:eventCopy];
 LABEL_50:
 }
 
-- (void)dismissPresentedViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentedViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CalWindowRootViewController *)self presentedViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  presentedViewController = [(CalWindowRootViewController *)self presentedViewController];
 
-  if (v7)
+  if (presentedViewController)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100102A30;
     v8[3] = &unk_10020F550;
     v8[4] = self;
-    v10 = v4;
-    v9 = v6;
-    [(CalWindowRootViewController *)self dismissViewControllerAnimated:v4 completion:v8];
+    v10 = animatedCopy;
+    v9 = completionCopy;
+    [(CalWindowRootViewController *)self dismissViewControllerAnimated:animatedCopy completion:v8];
   }
 
   else
   {
-    [(RootNavigationController *)self->_rootNavigationController dismissPresentedViewControllerAnimated:v4 completion:v6];
+    [(RootNavigationController *)self->_rootNavigationController dismissPresentedViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  [(SearchResultsViewController *)self->_searchResultsController setSearchBar:v4];
+  editingCopy = editing;
+  [(SearchResultsViewController *)self->_searchResultsController setSearchBar:editingCopy];
   [(CalWindowRootViewController *)self showSearch];
-  [v4 setShowsCancelButton:1 animated:1];
+  [editingCopy setShowsCancelButton:1 animated:1];
   v5 = dispatch_time(0, 250000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100102B50;
   block[3] = &unk_10020EB00;
-  v8 = v4;
-  v6 = v4;
+  v8 = editingCopy;
+  v6 = editingCopy;
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  [v4 setShowsCancelButton:0 animated:1];
-  [v4 setText:0];
-  [v4 resignFirstResponder];
+  clickedCopy = clicked;
+  [clickedCopy setShowsCancelButton:0 animated:1];
+  [clickedCopy setText:0];
+  [clickedCopy resignFirstResponder];
 
   [(CalWindowRootViewController *)self endSearch];
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = a3;
+  clickedCopy = clicked;
   [(CalWindowRootViewController *)self showSearch];
-  [(SearchResultsViewController *)self->_searchResultsController searchBarSearchButtonClicked:v4];
+  [(SearchResultsViewController *)self->_searchResultsController searchBarSearchButtonClicked:clickedCopy];
 }
 
 - (void)cancelSearch
 {
-  v3 = [(SearchResultsViewController *)self->_searchResultsController searchBar];
-  [(CalWindowRootViewController *)self searchBarCancelButtonClicked:v3];
+  searchBar = [(SearchResultsViewController *)self->_searchResultsController searchBar];
+  [(CalWindowRootViewController *)self searchBarCancelButtonClicked:searchBar];
 }
 
 - (void)showSearch

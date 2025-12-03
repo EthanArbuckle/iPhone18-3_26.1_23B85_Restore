@@ -1,19 +1,19 @@
 @interface CSClamshellStateMonitor
 + (id)sharedInstance;
 - (CSClamshellStateMonitor)init;
-- (void)_didReceiveClamshellStateChangeNotification:(BOOL)a3;
+- (void)_didReceiveClamshellStateChangeNotification:(BOOL)notification;
 @end
 
 @implementation CSClamshellStateMonitor
 
-- (void)_didReceiveClamshellStateChangeNotification:(BOOL)a3
+- (void)_didReceiveClamshellStateChangeNotification:(BOOL)notification
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __71__CSClamshellStateMonitor__didReceiveClamshellStateChangeNotification___block_invoke;
   v3[3] = &unk_2784C5E78;
   v3[4] = self;
-  v4 = a3;
+  notificationCopy = notification;
   [(CSEventMonitor *)self enumerateObserversInQueue:v3];
 }
 

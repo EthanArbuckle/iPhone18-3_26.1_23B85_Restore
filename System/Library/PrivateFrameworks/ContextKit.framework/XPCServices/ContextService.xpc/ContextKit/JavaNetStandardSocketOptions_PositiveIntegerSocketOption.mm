@@ -1,38 +1,38 @@
 @interface JavaNetStandardSocketOptions_PositiveIntegerSocketOption
-- (JavaNetStandardSocketOptions_PositiveIntegerSocketOption)initWithNSString:(id)a3 withInt:(int)a4;
-- (id)validateAndConvertValueAfterGetWithJavaIoFileDescriptor:(id)a3 withId:(id)a4;
-- (id)validateAndConvertValueBeforeSetWithJavaIoFileDescriptor:(id)a3 withId:(id)a4;
+- (JavaNetStandardSocketOptions_PositiveIntegerSocketOption)initWithNSString:(id)string withInt:(int)int;
+- (id)validateAndConvertValueAfterGetWithJavaIoFileDescriptor:(id)descriptor withId:(id)id;
+- (id)validateAndConvertValueBeforeSetWithJavaIoFileDescriptor:(id)descriptor withId:(id)id;
 @end
 
 @implementation JavaNetStandardSocketOptions_PositiveIntegerSocketOption
 
-- (JavaNetStandardSocketOptions_PositiveIntegerSocketOption)initWithNSString:(id)a3 withInt:(int)a4
+- (JavaNetStandardSocketOptions_PositiveIntegerSocketOption)initWithNSString:(id)string withInt:(int)int
 {
   v7 = JavaLangInteger_class_();
-  JreStrongAssign(&self->super.name_, a3);
+  JreStrongAssign(&self->super.name_, string);
   JreStrongAssign(&self->super.type_, v7);
-  self->super.socketOption_ = a4;
+  self->super.socketOption_ = int;
   return self;
 }
 
-- (id)validateAndConvertValueBeforeSetWithJavaIoFileDescriptor:(id)a3 withId:(id)a4
+- (id)validateAndConvertValueBeforeSetWithJavaIoFileDescriptor:(id)descriptor withId:(id)id
 {
-  if (!a4)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a4 intValue] <= 0)
+  if ([id intValue] <= 0)
   {
     v14 = JreStrcat("$$", v6, v7, v8, v9, v10, v11, v12, self->super.name_);
     v15 = new_JavaLangIllegalArgumentException_initWithNSString_(v14);
     objc_exception_throw(v15);
   }
 
-  return a4;
+  return id;
 }
 
-- (id)validateAndConvertValueAfterGetWithJavaIoFileDescriptor:(id)a3 withId:(id)a4
+- (id)validateAndConvertValueAfterGetWithJavaIoFileDescriptor:(id)descriptor withId:(id)id
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -41,7 +41,7 @@
   }
 
   objc_opt_class();
-  if (!a4)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -51,8 +51,8 @@
     JreThrowClassCastException();
   }
 
-  v13 = [a4 intValue];
-  if (v13 <= 0)
+  intValue = [id intValue];
+  if (intValue <= 0)
   {
 LABEL_9:
     name = self->super.name_;
@@ -61,7 +61,7 @@ LABEL_9:
     objc_exception_throw(v16);
   }
 
-  return JavaLangInteger_valueOfWithInt_(v13);
+  return JavaLangInteger_valueOfWithInt_(intValue);
 }
 
 @end

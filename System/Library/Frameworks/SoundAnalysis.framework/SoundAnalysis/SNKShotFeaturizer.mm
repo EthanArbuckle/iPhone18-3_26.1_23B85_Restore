@@ -1,24 +1,24 @@
 @interface SNKShotFeaturizer
-+ (id)featurizeFiles:(id)a3 hallucinatorModelURL:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-+ (id)featurizeFiles:(id)a3 hallucinatorModelURL:(id)a4 queue:(id)a5 resultHandler:(id)a6 completionHandler:(id)a7;
-+ (id)performSegmentationRequest:(id)a3 error:(id *)a4;
++ (id)featurizeFiles:(id)files hallucinatorModelURL:(id)l queue:(id)queue completionHandler:(id)handler;
++ (id)featurizeFiles:(id)files hallucinatorModelURL:(id)l queue:(id)queue resultHandler:(id)handler completionHandler:(id)completionHandler;
++ (id)performSegmentationRequest:(id)request error:(id *)error;
 @end
 
 @implementation SNKShotFeaturizer
 
-+ (id)featurizeFiles:(id)a3 hallucinatorModelURL:(id)a4 queue:(id)a5 completionHandler:(id)a6
++ (id)featurizeFiles:(id)files hallucinatorModelURL:(id)l queue:(id)queue completionHandler:(id)handler
 {
   v8 = sub_1C9A91558();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a6);
+  v12 = _Block_copy(handler);
   sub_1C9A92798();
   sub_1C9A914F8();
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
-  v14 = a5;
-  static SNKShotFeaturizer.featurizeFiles(_:hallucinatorModelURL:queue:completionHandler:)(v14, sub_1C97BD248, v13, v17);
+  queueCopy = queue;
+  static SNKShotFeaturizer.featurizeFiles(_:hallucinatorModelURL:queue:completionHandler:)(queueCopy, sub_1C97BD248, v13, v17);
 
   (*(v9 + 8))(v11, v8);
   sub_1C97A5A8C(v17, v17[3]);
@@ -28,22 +28,22 @@
   return v15;
 }
 
-+ (id)featurizeFiles:(id)a3 hallucinatorModelURL:(id)a4 queue:(id)a5 resultHandler:(id)a6 completionHandler:(id)a7
++ (id)featurizeFiles:(id)files hallucinatorModelURL:(id)l queue:(id)queue resultHandler:(id)handler completionHandler:(id)completionHandler
 {
   v10 = sub_1C9A91558();
   v11 = *(v10 - 8);
   MEMORY[0x1EEE9AC00](v10);
   v13 = v21 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v14 = _Block_copy(a6);
-  v15 = _Block_copy(a7);
+  v14 = _Block_copy(handler);
+  v15 = _Block_copy(completionHandler);
   sub_1C9A92798();
   sub_1C9A914F8();
   v16 = swift_allocObject();
   *(v16 + 16) = v14;
   v17 = swift_allocObject();
   *(v17 + 16) = v15;
-  v18 = a5;
-  static SNKShotFeaturizer.featurizeFiles(_:hallucinatorModelURL:queue:resultHandler:completionHandler:)(v18, sub_1C97BD1EC, v16, sub_1C97BDEE4, v17, v21);
+  queueCopy = queue;
+  static SNKShotFeaturizer.featurizeFiles(_:hallucinatorModelURL:queue:resultHandler:completionHandler:)(queueCopy, sub_1C97BD1EC, v16, sub_1C97BDEE4, v17, v21);
 
   (*(v11 + 8))(v13, v10);
   sub_1C97A5A8C(v21, v21[3]);
@@ -53,10 +53,10 @@
   return v19;
 }
 
-+ (id)performSegmentationRequest:(id)a3 error:(id *)a4
++ (id)performSegmentationRequest:(id)request error:(id *)error
 {
-  v4 = a3;
-  v5 = static SNKShotFeaturizer.performSegmentationRequest(_:)(v4);
+  requestCopy = request;
+  v5 = static SNKShotFeaturizer.performSegmentationRequest(_:)(requestCopy);
 
   return v5;
 }

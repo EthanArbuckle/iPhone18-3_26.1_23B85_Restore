@@ -2,46 +2,46 @@
 + (id)sharedInstance;
 - (UNUserNotificationServiceConnection)init;
 - (id)_queue_ensureConnection;
-- (id)badgeNumberForBundleIdentifier:(id)a3;
-- (id)clearedInfoForBundleIdentifier:(id)a3;
-- (id)deliveredNotificationsForBundleIdentifier:(id)a3;
-- (id)notificationCategoriesForBundleIdentifier:(id)a3;
-- (id)notificationSettingsForBundleIdentifier:(id)a3;
-- (id)notificationSettingsForTopicsWithBundleIdentifier:(id)a3;
-- (id)notificationTopicsForBundleIdentifier:(id)a3;
-- (id)pendingNotificationRequestsForBundleIdentifier:(id)a3;
+- (id)badgeNumberForBundleIdentifier:(id)identifier;
+- (id)clearedInfoForBundleIdentifier:(id)identifier;
+- (id)deliveredNotificationsForBundleIdentifier:(id)identifier;
+- (id)notificationCategoriesForBundleIdentifier:(id)identifier;
+- (id)notificationSettingsForBundleIdentifier:(id)identifier;
+- (id)notificationSettingsForTopicsWithBundleIdentifier:(id)identifier;
+- (id)notificationTopicsForBundleIdentifier:(id)identifier;
+- (id)pendingNotificationRequestsForBundleIdentifier:(id)identifier;
 - (void)_invalidate;
-- (void)_queue_addObserver:(id)a3 forBundleIdentifier:(id)a4;
-- (void)_queue_didReceiveDeviceToken:(id)a3 forBundleIdentifier:(id)a4;
+- (void)_queue_addObserver:(id)observer forBundleIdentifier:(id)identifier;
+- (void)_queue_didReceiveDeviceToken:(id)token forBundleIdentifier:(id)identifier;
 - (void)_queue_invalidatedConnection;
-- (void)_queue_removeObserver:(id)a3 forBundleIdentifier:(id)a4;
-- (void)addNotificationRequest:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
-- (void)addObserver:(id)a3 forBundleIdentifier:(id)a4;
-- (void)didReceiveDeviceToken:(id)a3 forBundleIdentifier:(id)a4;
-- (void)getBadgeNumberForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)getDeliveredNotificationsForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)getNotificationCategoriesForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)getNotificationSettingsForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)getNotificationSettingsForTopicsWithBundleIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)getNotificationTopicsForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)getPendingNotificationRequestsForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)performBlockOnConnectionQueue:(id)a3;
-- (void)removeAllDeliveredNotificationsForBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeAllPendingNotificationRequestsForBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeDeliveredNotificationsWithIdentifiers:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)removeObserver:(id)a3 forBundleIdentifier:(id)a4;
-- (void)removePendingNotificationRequestsWithIdentifiers:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)removeSimilarNotificationRequests:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)replaceContentForRequestWithIdentifier:(id)a3 bundleIdentifier:(id)a4 replacementContent:(id)a5 completionHandler:(id)a6;
-- (void)requestAuthorizationWithOptions:(unint64_t)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)requestRemoveAuthorizationForBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)setBadgeCount:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
-- (void)setBadgeNumber:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
-- (void)setBadgeString:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
-- (void)setNotificationCategories:(id)a3 forBundleIdentifier:(id)a4;
-- (void)setNotificationRequests:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)setNotificationTopics:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
-- (void)setObservingUserNotifications:(BOOL)a3 forBundleIdentifier:(id)a4;
+- (void)_queue_removeObserver:(id)observer forBundleIdentifier:(id)identifier;
+- (void)addNotificationRequest:(id)request forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)addObserver:(id)observer forBundleIdentifier:(id)identifier;
+- (void)didReceiveDeviceToken:(id)token forBundleIdentifier:(id)identifier;
+- (void)getBadgeNumberForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)getDeliveredNotificationsForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)getNotificationCategoriesForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)getNotificationSettingsForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)getNotificationSettingsForTopicsWithBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)getNotificationTopicsForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)getPendingNotificationRequestsForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)performBlockOnConnectionQueue:(id)queue;
+- (void)removeAllDeliveredNotificationsForBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeAllPendingNotificationRequestsForBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeDeliveredNotificationsWithIdentifiers:(id)identifiers forBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeObserver:(id)observer forBundleIdentifier:(id)identifier;
+- (void)removePendingNotificationRequestsWithIdentifiers:(id)identifiers forBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeSimilarNotificationRequests:(id)requests forBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)replaceContentForRequestWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier replacementContent:(id)content completionHandler:(id)handler;
+- (void)requestAuthorizationWithOptions:(unint64_t)options forBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)requestRemoveAuthorizationForBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)setBadgeCount:(id)count forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)setBadgeNumber:(id)number forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)setBadgeString:(id)string forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)setNotificationCategories:(id)categories forBundleIdentifier:(id)identifier;
+- (void)setNotificationRequests:(id)requests forBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)setNotificationTopics:(id)topics forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)setObservingUserNotifications:(BOOL)notifications forBundleIdentifier:(id)identifier;
 @end
 
 @implementation UNUserNotificationServiceConnection
@@ -152,52 +152,52 @@ uint64_t __53__UNUserNotificationServiceConnection_sharedInstance__block_invoke(
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addObserver:(id)a3 forBundleIdentifier:(id)a4
+- (void)addObserver:(id)observer forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__UNUserNotificationServiceConnection_addObserver_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFF870;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = observerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)removeObserver:(id)a3 forBundleIdentifier:(id)a4
+- (void)removeObserver:(id)observer forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__UNUserNotificationServiceConnection_removeObserver_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFF870;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = observerCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)setObservingUserNotifications:(BOOL)a3 forBundleIdentifier:(id)a4
+- (void)setObservingUserNotifications:(BOOL)notifications forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__UNUserNotificationServiceConnection_setObservingUserNotifications_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFFDE0;
-  v11 = a3;
+  notificationsCopy = notifications;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = identifierCopy;
+  v8 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -208,18 +208,18 @@ void __89__UNUserNotificationServiceConnection_setObservingUserNotifications_for
   [v2 setObservingUserNotifications:*(a1 + 48) forBundleIdentifier:*(a1 + 40)];
 }
 
-- (void)requestAuthorizationWithOptions:(unint64_t)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)requestAuthorizationWithOptions:(unint64_t)options forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v10 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v20 = v8;
+    v20 = identifierCopy;
     v21 = 2048;
-    v22 = a3;
+    optionsCopy = options;
     _os_log_impl(&dword_1B85E3000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Requesting authorization with options %ld", buf, 0x16u);
   }
 
@@ -229,11 +229,11 @@ void __89__UNUserNotificationServiceConnection_setObservingUserNotifications_for
   v15[2] = __109__UNUserNotificationServiceConnection_requestAuthorizationWithOptions_forBundleIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_1E7CFFEA8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = a3;
-  v12 = v9;
-  v13 = v8;
+  v16 = identifierCopy;
+  v17 = handlerCopy;
+  optionsCopy2 = options;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
   dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x1E69E9840];
@@ -342,16 +342,16 @@ uint64_t __109__UNUserNotificationServiceConnection_requestAuthorizationWithOpti
   return result;
 }
 
-- (void)requestRemoveAuthorizationForBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)requestRemoveAuthorizationForBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Requesting remove authorization", buf, 0xCu);
   }
 
@@ -361,10 +361,10 @@ uint64_t __109__UNUserNotificationServiceConnection_requestAuthorizationWithOpti
   block[2] = __103__UNUserNotificationServiceConnection_requestRemoveAuthorizationForBundleIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7CFF8E8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -472,15 +472,15 @@ uint64_t __103__UNUserNotificationServiceConnection_requestRemoveAuthorizationFo
   return result;
 }
 
-- (id)notificationSettingsForBundleIdentifier:(id)a3
+- (id)notificationSettingsForBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting notification settings (sync)", &buf, 0xCu);
   }
 
@@ -496,9 +496,9 @@ uint64_t __103__UNUserNotificationServiceConnection_requestRemoveAuthorizationFo
   block[2] = __79__UNUserNotificationServiceConnection_notificationSettingsForBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFFEF8;
   block[4] = self;
-  v12 = v4;
+  v12 = identifierCopy;
   p_buf = &buf;
-  v7 = v4;
+  v7 = identifierCopy;
   dispatch_sync(queue, block);
   v8 = *(*(&buf + 1) + 40);
 
@@ -560,16 +560,16 @@ void __79__UNUserNotificationServiceConnection_notificationSettingsForBundleIden
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getNotificationSettingsForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)getNotificationSettingsForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting notification settings (async)", buf, 0xCu);
   }
 
@@ -579,10 +579,10 @@ void __79__UNUserNotificationServiceConnection_notificationSettingsForBundleIden
   block[2] = __104__UNUserNotificationServiceConnection_getNotificationSettingsForBundleIdentifier_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7CFF8E8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -684,19 +684,19 @@ uint64_t __104__UNUserNotificationServiceConnection_getNotificationSettingsForBu
   return result;
 }
 
-- (void)setNotificationCategories:(id)a3 forBundleIdentifier:(id)a4
+- (void)setNotificationCategories:(id)categories forBundleIdentifier:(id)identifier
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  categoriesCopy = categories;
+  identifierCopy = identifier;
   v7 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
     *buf = 138543618;
-    v34 = v6;
+    v34 = identifierCopy;
     v35 = 2048;
-    v36 = [v5 count];
+    v36 = [categoriesCopy count];
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Setting %ld notification categories", buf, 0x16u);
   }
 
@@ -705,7 +705,7 @@ uint64_t __104__UNUserNotificationServiceConnection_getNotificationSettingsForBu
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = v5;
+  v10 = categoriesCopy;
   v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v11)
   {
@@ -736,7 +736,7 @@ uint64_t __104__UNUserNotificationServiceConnection_getNotificationSettingsForBu
             v17 = v16;
             v18 = objc_opt_class();
             *buf = 138543618;
-            v34 = v6;
+            v34 = identifierCopy;
             v35 = 2114;
             v36 = v18;
             v19 = v18;
@@ -761,8 +761,8 @@ uint64_t __104__UNUserNotificationServiceConnection_getNotificationSettingsForBu
   block[3] = &unk_1E7CFF870;
   block[4] = self;
   v26 = v9;
-  v27 = v6;
-  v21 = v6;
+  v27 = identifierCopy;
+  v21 = identifierCopy;
   v22 = v9;
   dispatch_sync(queue, block);
 
@@ -776,15 +776,15 @@ void __85__UNUserNotificationServiceConnection_setNotificationCategories_forBund
   [v2 setNotificationCategories:*(a1 + 40) forBundleIdentifier:*(a1 + 48)];
 }
 
-- (id)notificationCategoriesForBundleIdentifier:(id)a3
+- (id)notificationCategoriesForBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting notification categories (sync)", &buf, 0xCu);
   }
 
@@ -800,9 +800,9 @@ void __85__UNUserNotificationServiceConnection_setNotificationCategories_forBund
   block[2] = __81__UNUserNotificationServiceConnection_notificationCategoriesForBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFFEF8;
   block[4] = self;
-  v12 = v4;
+  v12 = identifierCopy;
   p_buf = &buf;
-  v7 = v4;
+  v7 = identifierCopy;
   dispatch_sync(queue, block);
   v8 = *(*(&buf + 1) + 40);
 
@@ -865,16 +865,16 @@ void __81__UNUserNotificationServiceConnection_notificationCategoriesForBundleId
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getNotificationCategoriesForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)getNotificationCategoriesForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting notification categories (async)", buf, 0xCu);
   }
 
@@ -884,10 +884,10 @@ void __81__UNUserNotificationServiceConnection_notificationCategoriesForBundleId
   block[2] = __106__UNUserNotificationServiceConnection_getNotificationCategoriesForBundleIdentifier_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7CFF8E8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -991,51 +991,51 @@ uint64_t __106__UNUserNotificationServiceConnection_getNotificationCategoriesFor
   return result;
 }
 
-- (void)addNotificationRequest:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)addNotificationRequest:(id)request forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = objc_opt_class();
-  v12 = UNSafeCast(v11, v8);
+  v12 = UNSafeCast(v11, requestCopy);
   if (v12)
   {
-    v13 = [v8 destinations];
+    destinations = [requestCopy destinations];
     v14 = UNLogConnections;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v12 identifier];
-      v15 = [v22 un_logDigest];
-      v23 = v10;
-      if (v13 == 15)
+      identifier = [v12 identifier];
+      un_logDigest = [identifier un_logDigest];
+      v23 = handlerCopy;
+      if (destinations == 15)
       {
         v24 = @"Default";
       }
 
       else
       {
-        v24 = UNNotificationDestinationStrings(v13);
+        v24 = UNNotificationDestinationStrings(destinations);
       }
 
-      v17 = [v8 content];
-      v18 = [v17 date];
-      v19 = [v18 un_logString];
+      content = [requestCopy content];
+      date = [content date];
+      un_logString = [date un_logString];
       *buf = 138544130;
-      v30 = v9;
+      v30 = identifierCopy;
       v31 = 2114;
-      v32 = v15;
+      v32 = un_logDigest;
       v33 = 2114;
       v34 = v24;
       v35 = 2114;
-      v36 = v19;
+      v36 = un_logString;
       _os_log_impl(&dword_1B85E3000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Adding notification request %{public}@ to destinations: %{public}@, contentDate: %{public}@", buf, 0x2Au);
 
-      if (v13 != 15)
+      if (destinations != 15)
       {
       }
 
-      v10 = v23;
+      handlerCopy = v23;
     }
 
     queue = self->_queue;
@@ -1044,8 +1044,8 @@ uint64_t __106__UNUserNotificationServiceConnection_getNotificationCategoriesFor
     block[2] = __104__UNUserNotificationServiceConnection_addNotificationRequest_forBundleIdentifier_withCompletionHandler___block_invoke;
     block[3] = &unk_1E7CFFFC0;
     block[4] = self;
-    v26 = v9;
-    v28 = v10;
+    v26 = identifierCopy;
+    v28 = handlerCopy;
     v27 = v12;
     dispatch_sync(queue, block);
   }
@@ -1055,7 +1055,7 @@ uint64_t __106__UNUserNotificationServiceConnection_getNotificationCategoriesFor
     v16 = UNLogConnections;
     if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_ERROR))
     {
-      [UNUserNotificationServiceConnection addNotificationRequest:v9 forBundleIdentifier:v16 withCompletionHandler:?];
+      [UNUserNotificationServiceConnection addNotificationRequest:identifierCopy forBundleIdentifier:v16 withCompletionHandler:?];
     }
   }
 
@@ -1162,26 +1162,26 @@ uint64_t __104__UNUserNotificationServiceConnection_addNotificationRequest_forBu
   return result;
 }
 
-- (void)replaceContentForRequestWithIdentifier:(id)a3 bundleIdentifier:(id)a4 replacementContent:(id)a5 completionHandler:(id)a6
+- (void)replaceContentForRequestWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier replacementContent:(id)content completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  contentCopy = content;
+  handlerCopy = handler;
   v14 = objc_opt_class();
-  v15 = UNSafeCast(v14, v12);
+  v15 = UNSafeCast(v14, contentCopy);
   v16 = UNLogConnections;
   if (v15)
   {
     if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
     {
       v17 = v16;
-      v18 = [v10 un_logDigest];
+      un_logDigest = [identifierCopy un_logDigest];
       *buf = 138543618;
-      v27 = v11;
+      v27 = bundleIdentifierCopy;
       v28 = 2114;
-      v29 = v18;
+      v29 = un_logDigest;
       _os_log_impl(&dword_1B85E3000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] Replacing notification content %{public}@", buf, 0x16u);
     }
 
@@ -1191,16 +1191,16 @@ uint64_t __104__UNUserNotificationServiceConnection_addNotificationRequest_forBu
     block[2] = __132__UNUserNotificationServiceConnection_replaceContentForRequestWithIdentifier_bundleIdentifier_replacementContent_completionHandler___block_invoke;
     block[3] = &unk_1E7CFFFE8;
     block[4] = self;
-    v22 = v11;
-    v25 = v13;
-    v23 = v10;
+    v22 = bundleIdentifierCopy;
+    v25 = handlerCopy;
+    v23 = identifierCopy;
     v24 = v15;
     dispatch_sync(queue, block);
   }
 
   else if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_ERROR))
   {
-    [UNUserNotificationServiceConnection replaceContentForRequestWithIdentifier:v11 bundleIdentifier:v16 replacementContent:? completionHandler:?];
+    [UNUserNotificationServiceConnection replaceContentForRequestWithIdentifier:bundleIdentifierCopy bundleIdentifier:v16 replacementContent:? completionHandler:?];
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -1307,17 +1307,17 @@ uint64_t __132__UNUserNotificationServiceConnection_replaceContentForRequestWith
   return result;
 }
 
-- (void)setNotificationRequests:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)setNotificationRequests:(id)requests forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DF70] array];
+  requestsCopy = requests;
+  identifierCopy = identifier;
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v7;
+  v10 = requestsCopy;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
@@ -1337,7 +1337,7 @@ uint64_t __132__UNUserNotificationServiceConnection_replaceContentForRequestWith
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v9 addObject:v15];
+          [array addObject:v15];
         }
 
         else
@@ -1360,11 +1360,11 @@ uint64_t __132__UNUserNotificationServiceConnection_replaceContentForRequestWith
   block[1] = 3221225472;
   block[2] = __101__UNUserNotificationServiceConnection_setNotificationRequests_forBundleIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7CFF870;
-  v21 = v8;
-  v22 = v9;
-  v23 = self;
-  v17 = v9;
-  v18 = v8;
+  v21 = identifierCopy;
+  v22 = array;
+  selfCopy = self;
+  v17 = array;
+  v18 = identifierCopy;
   dispatch_sync(queue, block);
 
   v19 = *MEMORY[0x1E69E9840];
@@ -1419,15 +1419,15 @@ void __101__UNUserNotificationServiceConnection_setNotificationRequests_forBundl
   }
 }
 
-- (id)pendingNotificationRequestsForBundleIdentifier:(id)a3
+- (id)pendingNotificationRequestsForBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting pending notification requests (sync)", &buf, 0xCu);
   }
 
@@ -1443,9 +1443,9 @@ void __101__UNUserNotificationServiceConnection_setNotificationRequests_forBundl
   block[2] = __86__UNUserNotificationServiceConnection_pendingNotificationRequestsForBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFFEF8;
   block[4] = self;
-  v12 = v4;
+  v12 = identifierCopy;
   p_buf = &buf;
-  v7 = v4;
+  v7 = identifierCopy;
   dispatch_sync(queue, block);
   v8 = *(*(&buf + 1) + 40);
 
@@ -1508,16 +1508,16 @@ void __86__UNUserNotificationServiceConnection_pendingNotificationRequestsForBun
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getPendingNotificationRequestsForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)getPendingNotificationRequestsForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting pending notification requests (async)", buf, 0xCu);
   }
 
@@ -1527,10 +1527,10 @@ void __86__UNUserNotificationServiceConnection_pendingNotificationRequestsForBun
   block[2] = __111__UNUserNotificationServiceConnection_getPendingNotificationRequestsForBundleIdentifier_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7CFF8E8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1636,20 +1636,20 @@ uint64_t __111__UNUserNotificationServiceConnection_getPendingNotificationReques
   return result;
 }
 
-- (void)removePendingNotificationRequestsWithIdentifiers:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)removePendingNotificationRequestsWithIdentifiers:(id)identifiers forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v8 count];
-    v14 = [v8 un_map:&__block_literal_global_49];
+    v13 = [identifiersCopy count];
+    v14 = [identifiersCopy un_map:&__block_literal_global_49];
     *buf = 138543874;
-    v25 = v9;
+    v25 = identifierCopy;
     v26 = 2048;
     v27 = v13;
     v28 = 2114;
@@ -1663,12 +1663,12 @@ uint64_t __111__UNUserNotificationServiceConnection_getPendingNotificationReques
   v20[2] = __126__UNUserNotificationServiceConnection_removePendingNotificationRequestsWithIdentifiers_forBundleIdentifier_completionHandler___block_invoke_50;
   v20[3] = &unk_1E7CFFFC0;
   v20[4] = self;
-  v21 = v9;
-  v22 = v8;
-  v23 = v10;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
+  v21 = identifierCopy;
+  v22 = identifiersCopy;
+  v23 = handlerCopy;
+  v16 = identifiersCopy;
+  v17 = handlerCopy;
+  v18 = identifierCopy;
   dispatch_sync(queue, v20);
 
   v19 = *MEMORY[0x1E69E9840];
@@ -1738,20 +1738,20 @@ void __126__UNUserNotificationServiceConnection_removePendingNotificationRequest
   }
 }
 
-- (void)removeSimilarNotificationRequests:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)removeSimilarNotificationRequests:(id)requests forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestsCopy = requests;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
     *buf = 138543618;
-    v23 = v9;
+    v23 = identifierCopy;
     v24 = 2048;
-    v25 = [v8 count];
+    v25 = [requestsCopy count];
     _os_log_impl(&dword_1B85E3000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Removing %ld similar pending notification requests", buf, 0x16u);
   }
 
@@ -1761,12 +1761,12 @@ void __126__UNUserNotificationServiceConnection_removePendingNotificationRequest
   v18[2] = __111__UNUserNotificationServiceConnection_removeSimilarNotificationRequests_forBundleIdentifier_completionHandler___block_invoke;
   v18[3] = &unk_1E7CFFFC0;
   v18[4] = self;
-  v19 = v9;
-  v20 = v8;
-  v21 = v10;
-  v14 = v8;
-  v15 = v10;
-  v16 = v9;
+  v19 = identifierCopy;
+  v20 = requestsCopy;
+  v21 = handlerCopy;
+  v14 = requestsCopy;
+  v15 = handlerCopy;
+  v16 = identifierCopy;
   dispatch_sync(queue, v18);
 
   v17 = *MEMORY[0x1E69E9840];
@@ -1836,16 +1836,16 @@ void __111__UNUserNotificationServiceConnection_removeSimilarNotificationRequest
   }
 }
 
-- (void)removeAllPendingNotificationRequestsForBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeAllPendingNotificationRequestsForBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Removing all pending notification requests", buf, 0xCu);
   }
 
@@ -1855,10 +1855,10 @@ void __111__UNUserNotificationServiceConnection_removeSimilarNotificationRequest
   block[2] = __113__UNUserNotificationServiceConnection_removeAllPendingNotificationRequestsForBundleIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7CFF8E8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   dispatch_sync(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1927,15 +1927,15 @@ void __113__UNUserNotificationServiceConnection_removeAllPendingNotificationRequ
   }
 }
 
-- (id)deliveredNotificationsForBundleIdentifier:(id)a3
+- (id)deliveredNotificationsForBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting delivered notifications (sync)", &buf, 0xCu);
   }
 
@@ -1951,9 +1951,9 @@ void __113__UNUserNotificationServiceConnection_removeAllPendingNotificationRequ
   block[2] = __81__UNUserNotificationServiceConnection_deliveredNotificationsForBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFFEF8;
   block[4] = self;
-  v12 = v4;
+  v12 = identifierCopy;
   p_buf = &buf;
-  v7 = v4;
+  v7 = identifierCopy;
   dispatch_sync(queue, block);
   v8 = *(*(&buf + 1) + 40);
 
@@ -2016,16 +2016,16 @@ void __81__UNUserNotificationServiceConnection_deliveredNotificationsForBundleId
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getDeliveredNotificationsForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)getDeliveredNotificationsForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting delivered notifications", buf, 0xCu);
   }
 
@@ -2035,10 +2035,10 @@ void __81__UNUserNotificationServiceConnection_deliveredNotificationsForBundleId
   block[2] = __106__UNUserNotificationServiceConnection_getDeliveredNotificationsForBundleIdentifier_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7CFF8E8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -2142,20 +2142,20 @@ uint64_t __106__UNUserNotificationServiceConnection_getDeliveredNotificationsFor
   return result;
 }
 
-- (void)removeDeliveredNotificationsWithIdentifiers:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)removeDeliveredNotificationsWithIdentifiers:(id)identifiers forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v8 count];
-    v14 = [v8 un_map:&__block_literal_global_62];
+    v13 = [identifiersCopy count];
+    v14 = [identifiersCopy un_map:&__block_literal_global_62];
     *buf = 138543874;
-    v25 = v9;
+    v25 = identifierCopy;
     v26 = 2048;
     v27 = v13;
     v28 = 2114;
@@ -2169,12 +2169,12 @@ uint64_t __106__UNUserNotificationServiceConnection_getDeliveredNotificationsFor
   v20[2] = __121__UNUserNotificationServiceConnection_removeDeliveredNotificationsWithIdentifiers_forBundleIdentifier_completionHandler___block_invoke_63;
   v20[3] = &unk_1E7CFFFC0;
   v20[4] = self;
-  v21 = v9;
-  v22 = v8;
-  v23 = v10;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
+  v21 = identifierCopy;
+  v22 = identifiersCopy;
+  v23 = handlerCopy;
+  v16 = identifiersCopy;
+  v17 = handlerCopy;
+  v18 = identifierCopy;
   dispatch_sync(queue, v20);
 
   v19 = *MEMORY[0x1E69E9840];
@@ -2244,16 +2244,16 @@ void __121__UNUserNotificationServiceConnection_removeDeliveredNotificationsWith
   }
 }
 
-- (void)removeAllDeliveredNotificationsForBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeAllDeliveredNotificationsForBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Removing all delivered notifications", buf, 0xCu);
   }
 
@@ -2263,10 +2263,10 @@ void __121__UNUserNotificationServiceConnection_removeDeliveredNotificationsWith
   block[2] = __108__UNUserNotificationServiceConnection_removeAllDeliveredNotificationsForBundleIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7CFF8E8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   dispatch_sync(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -2335,15 +2335,15 @@ void __108__UNUserNotificationServiceConnection_removeAllDeliveredNotificationsF
   }
 }
 
-- (id)badgeNumberForBundleIdentifier:(id)a3
+- (id)badgeNumberForBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting badge number (sync)", &buf, 0xCu);
   }
 
@@ -2359,9 +2359,9 @@ void __108__UNUserNotificationServiceConnection_removeAllDeliveredNotificationsF
   block[2] = __70__UNUserNotificationServiceConnection_badgeNumberForBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFFEF8;
   block[4] = self;
-  v12 = v4;
+  v12 = identifierCopy;
   p_buf = &buf;
-  v7 = v4;
+  v7 = identifierCopy;
   dispatch_sync(queue, block);
   v8 = *(*(&buf + 1) + 40);
 
@@ -2424,16 +2424,16 @@ void __70__UNUserNotificationServiceConnection_badgeNumberForBundleIdentifier___
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getBadgeNumberForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)getBadgeNumberForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting badge number (async)", buf, 0xCu);
   }
 
@@ -2443,10 +2443,10 @@ void __70__UNUserNotificationServiceConnection_badgeNumberForBundleIdentifier___
   block[2] = __95__UNUserNotificationServiceConnection_getBadgeNumberForBundleIdentifier_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7CFF8E8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -2548,19 +2548,19 @@ uint64_t __95__UNUserNotificationServiceConnection_getBadgeNumberForBundleIdenti
   return result;
 }
 
-- (void)setBadgeNumber:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)setBadgeNumber:(id)number forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  numberCopy = number;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v22 = v9;
+    v22 = identifierCopy;
     v23 = 2114;
-    v24 = v8;
+    v24 = numberCopy;
     _os_log_impl(&dword_1B85E3000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Setting badge number to %{public}@", buf, 0x16u);
   }
 
@@ -2570,12 +2570,12 @@ uint64_t __95__UNUserNotificationServiceConnection_getBadgeNumberForBundleIdenti
   v17[2] = __96__UNUserNotificationServiceConnection_setBadgeNumber_forBundleIdentifier_withCompletionHandler___block_invoke;
   v17[3] = &unk_1E7CFFFC0;
   v17[4] = self;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
-  v13 = v8;
-  v14 = v10;
-  v15 = v9;
+  v18 = identifierCopy;
+  v19 = numberCopy;
+  v20 = handlerCopy;
+  v13 = numberCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
   dispatch_sync(queue, v17);
 
   v16 = *MEMORY[0x1E69E9840];
@@ -2681,19 +2681,19 @@ uint64_t __96__UNUserNotificationServiceConnection_setBadgeNumber_forBundleIdent
   return result;
 }
 
-- (void)setBadgeCount:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)setBadgeCount:(id)count forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  countCopy = count;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v22 = v9;
+    v22 = identifierCopy;
     v23 = 2114;
-    v24 = v8;
+    v24 = countCopy;
     _os_log_impl(&dword_1B85E3000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Setting badge count to %{public}@", buf, 0x16u);
   }
 
@@ -2703,12 +2703,12 @@ uint64_t __96__UNUserNotificationServiceConnection_setBadgeNumber_forBundleIdent
   v17[2] = __95__UNUserNotificationServiceConnection_setBadgeCount_forBundleIdentifier_withCompletionHandler___block_invoke;
   v17[3] = &unk_1E7CFFFC0;
   v17[4] = self;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
-  v13 = v8;
-  v14 = v10;
-  v15 = v9;
+  v18 = identifierCopy;
+  v19 = countCopy;
+  v20 = handlerCopy;
+  v13 = countCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
   dispatch_sync(queue, v17);
 
   v16 = *MEMORY[0x1E69E9840];
@@ -2814,19 +2814,19 @@ uint64_t __95__UNUserNotificationServiceConnection_setBadgeCount_forBundleIdenti
   return result;
 }
 
-- (void)setBadgeString:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)setBadgeString:(id)string forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v22 = v9;
+    v22 = identifierCopy;
     v23 = 2114;
-    v24 = v8;
+    v24 = stringCopy;
     _os_log_impl(&dword_1B85E3000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Setting badge string to %{public}@", buf, 0x16u);
   }
 
@@ -2836,12 +2836,12 @@ uint64_t __95__UNUserNotificationServiceConnection_setBadgeCount_forBundleIdenti
   v17[2] = __96__UNUserNotificationServiceConnection_setBadgeString_forBundleIdentifier_withCompletionHandler___block_invoke;
   v17[3] = &unk_1E7CFFFC0;
   v17[4] = self;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
-  v13 = v8;
-  v14 = v10;
-  v15 = v9;
+  v18 = identifierCopy;
+  v19 = stringCopy;
+  v20 = handlerCopy;
+  v13 = stringCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
   dispatch_sync(queue, v17);
 
   v16 = *MEMORY[0x1E69E9840];
@@ -2947,19 +2947,19 @@ uint64_t __96__UNUserNotificationServiceConnection_setBadgeString_forBundleIdent
   return result;
 }
 
-- (void)setNotificationTopics:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)setNotificationTopics:(id)topics forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  topicsCopy = topics;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v22 = v9;
+    v22 = identifierCopy;
     v23 = 2114;
-    v24 = v8;
+    v24 = topicsCopy;
     _os_log_impl(&dword_1B85E3000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Setting topics %{public}@", buf, 0x16u);
   }
 
@@ -2969,12 +2969,12 @@ uint64_t __96__UNUserNotificationServiceConnection_setBadgeString_forBundleIdent
   v17[2] = __103__UNUserNotificationServiceConnection_setNotificationTopics_forBundleIdentifier_withCompletionHandler___block_invoke;
   v17[3] = &unk_1E7CFFFC0;
   v17[4] = self;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
-  v13 = v8;
-  v14 = v10;
-  v15 = v9;
+  v18 = identifierCopy;
+  v19 = topicsCopy;
+  v20 = handlerCopy;
+  v13 = topicsCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
   dispatch_sync(queue, v17);
 
   v16 = *MEMORY[0x1E69E9840];
@@ -3080,16 +3080,16 @@ uint64_t __103__UNUserNotificationServiceConnection_setNotificationTopics_forBun
   return result;
 }
 
-- (void)getNotificationTopicsForBundleIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)getNotificationTopicsForBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting topics", buf, 0xCu);
   }
 
@@ -3099,10 +3099,10 @@ uint64_t __103__UNUserNotificationServiceConnection_setNotificationTopics_forBun
   block[2] = __102__UNUserNotificationServiceConnection_getNotificationTopicsForBundleIdentifier_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7CFF8E8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -3202,15 +3202,15 @@ uint64_t __102__UNUserNotificationServiceConnection_getNotificationTopicsForBund
   return result;
 }
 
-- (id)notificationTopicsForBundleIdentifier:(id)a3
+- (id)notificationTopicsForBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting topics (sync)", &buf, 0xCu);
   }
 
@@ -3226,9 +3226,9 @@ uint64_t __102__UNUserNotificationServiceConnection_getNotificationTopicsForBund
   block[2] = __77__UNUserNotificationServiceConnection_notificationTopicsForBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFFEF8;
   block[4] = self;
-  v12 = v4;
+  v12 = identifierCopy;
   p_buf = &buf;
-  v7 = v4;
+  v7 = identifierCopy;
   dispatch_sync(queue, block);
   v8 = *(*(&buf + 1) + 40);
 
@@ -3291,16 +3291,16 @@ void __77__UNUserNotificationServiceConnection_notificationTopicsForBundleIdenti
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getNotificationSettingsForTopicsWithBundleIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)getNotificationSettingsForTopicsWithBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting topic settings", buf, 0xCu);
   }
 
@@ -3310,10 +3310,10 @@ void __77__UNUserNotificationServiceConnection_notificationTopicsForBundleIdenti
   block[2] = __114__UNUserNotificationServiceConnection_getNotificationSettingsForTopicsWithBundleIdentifier_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7CFF8E8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -3413,15 +3413,15 @@ uint64_t __114__UNUserNotificationServiceConnection_getNotificationSettingsForTo
   return result;
 }
 
-- (id)notificationSettingsForTopicsWithBundleIdentifier:(id)a3
+- (id)notificationSettingsForTopicsWithBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting topic settings (sync)", &buf, 0xCu);
   }
 
@@ -3437,9 +3437,9 @@ uint64_t __114__UNUserNotificationServiceConnection_getNotificationSettingsForTo
   block[2] = __89__UNUserNotificationServiceConnection_notificationSettingsForTopicsWithBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFFEF8;
   block[4] = self;
-  v12 = v4;
+  v12 = identifierCopy;
   p_buf = &buf;
-  v7 = v4;
+  v7 = identifierCopy;
   dispatch_sync(queue, block);
   v8 = *(*(&buf + 1) + 40);
 
@@ -3502,15 +3502,15 @@ void __89__UNUserNotificationServiceConnection_notificationSettingsForTopicsWith
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)clearedInfoForBundleIdentifier:(id)a3
+- (id)clearedInfoForBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting cleared info (sync)", &buf, 0xCu);
   }
 
@@ -3526,9 +3526,9 @@ void __89__UNUserNotificationServiceConnection_notificationSettingsForTopicsWith
   block[2] = __70__UNUserNotificationServiceConnection_clearedInfoForBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFFEF8;
   block[4] = self;
-  v12 = v4;
+  v12 = identifierCopy;
   p_buf = &buf;
-  v7 = v4;
+  v7 = identifierCopy;
   dispatch_sync(queue, block);
   v8 = *(*(&buf + 1) + 40);
 
@@ -3588,16 +3588,16 @@ void __70__UNUserNotificationServiceConnection_clearedInfoForBundleIdentifier___
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performBlockOnConnectionQueue:(id)a3
+- (void)performBlockOnConnectionQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__UNUserNotificationServiceConnection_performBlockOnConnectionQueue___block_invoke;
   block[3] = &unk_1E7CFF8C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_sync(queue, block);
 }
 
@@ -3612,16 +3612,16 @@ uint64_t __69__UNUserNotificationServiceConnection_performBlockOnConnectionQueue
   return result;
 }
 
-- (void)didReceiveDeviceToken:(id)a3 forBundleIdentifier:(id)a4
+- (void)didReceiveDeviceToken:(id)token forBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  identifierCopy = identifier;
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v7;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Did receive remote notification token", buf, 0xCu);
   }
 
@@ -3631,10 +3631,10 @@ uint64_t __69__UNUserNotificationServiceConnection_performBlockOnConnectionQueue
   block[2] = __81__UNUserNotificationServiceConnection_didReceiveDeviceToken_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFF870;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = tokenCopy;
+  v15 = identifierCopy;
+  v10 = identifierCopy;
+  v11 = tokenCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -3699,13 +3699,13 @@ void __62__UNUserNotificationServiceConnection__queue_ensureConnection__block_in
   [(UNUserNotificationServiceConnection *)self _invalidate];
 }
 
-- (void)_queue_didReceiveDeviceToken:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_didReceiveDeviceToken:(id)token forBundleIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(NSMutableDictionary *)self->_observersByBundleIdentifier objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_observersByBundleIdentifier objectForKey:identifierCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -3728,7 +3728,7 @@ void __62__UNUserNotificationServiceConnection__queue_ensureConnection__block_in
         v13 = *(*(&v15 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 didReceiveDeviceToken:v6 forBundleIdentifier:v7];
+          [v13 didReceiveDeviceToken:tokenCopy forBundleIdentifier:identifierCopy];
         }
 
         ++v12;
@@ -3744,43 +3744,43 @@ void __62__UNUserNotificationServiceConnection__queue_ensureConnection__block_in
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_addObserver:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_addObserver:(id)observer forBundleIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10)
+  observerCopy = observer;
+  identifierCopy = identifier;
+  if (observerCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_observersByBundleIdentifier objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_observersByBundleIdentifier objectForKey:identifierCopy];
     if (!v7)
     {
       v7 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:4];
-      [(NSMutableDictionary *)self->_observersByBundleIdentifier setObject:v7 forKey:v6];
+      [(NSMutableDictionary *)self->_observersByBundleIdentifier setObject:v7 forKey:identifierCopy];
     }
 
-    [v7 addObject:v10];
+    [v7 addObject:observerCopy];
     if ([v7 count])
     {
-      v8 = [(UNUserNotificationServiceConnection *)self _queue_ensureConnection];
-      v9 = [v8 remoteObjectProxy];
-      [v9 setObservingUserNotifications:1 forBundleIdentifier:v6];
+      _queue_ensureConnection = [(UNUserNotificationServiceConnection *)self _queue_ensureConnection];
+      remoteObjectProxy = [_queue_ensureConnection remoteObjectProxy];
+      [remoteObjectProxy setObservingUserNotifications:1 forBundleIdentifier:identifierCopy];
     }
   }
 }
 
-- (void)_queue_removeObserver:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_removeObserver:(id)observer forBundleIdentifier:(id)identifier
 {
-  v11 = a4;
+  identifierCopy = identifier;
   observersByBundleIdentifier = self->_observersByBundleIdentifier;
-  v7 = a3;
-  v8 = [(NSMutableDictionary *)observersByBundleIdentifier objectForKey:v11];
-  [v8 removeObject:v7];
+  observerCopy = observer;
+  v8 = [(NSMutableDictionary *)observersByBundleIdentifier objectForKey:identifierCopy];
+  [v8 removeObject:observerCopy];
 
   if (![v8 count])
   {
-    [(NSMutableDictionary *)self->_observersByBundleIdentifier removeObjectForKey:v11];
-    v9 = [(UNUserNotificationServiceConnection *)self _queue_ensureConnection];
-    v10 = [v9 remoteObjectProxy];
-    [v10 setObservingUserNotifications:0 forBundleIdentifier:v11];
+    [(NSMutableDictionary *)self->_observersByBundleIdentifier removeObjectForKey:identifierCopy];
+    _queue_ensureConnection = [(UNUserNotificationServiceConnection *)self _queue_ensureConnection];
+    remoteObjectProxy = [_queue_ensureConnection remoteObjectProxy];
+    [remoteObjectProxy setObservingUserNotifications:0 forBundleIdentifier:identifierCopy];
   }
 }
 

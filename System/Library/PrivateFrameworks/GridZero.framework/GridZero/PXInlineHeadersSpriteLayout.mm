@@ -1,21 +1,21 @@
 @interface PXInlineHeadersSpriteLayout
-- (PXInlineHeadersSpriteLayout)initWithLevel:(unint64_t)a3;
+- (PXInlineHeadersSpriteLayout)initWithLevel:(unint64_t)level;
 - (PXZoomableInlineHeadersLayoutGeometrySource)geometrySource;
 - (id)axSpriteIndexes;
-- (id)itemsInRect:(CGRect)a3 inLayout:(id)a4;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (int64_t)itemClosestToItem:(int64_t)a3 inDirection:(unint64_t)a4;
-- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)a3 inDirection:(unint64_t)a4;
+- (id)itemsInRect:(CGRect)rect inLayout:(id)layout;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (int64_t)itemClosestToItem:(int64_t)item inDirection:(unint64_t)direction;
+- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)index inDirection:(unint64_t)direction;
 - (void)_bumpMediaVersion;
-- (void)_currentLocaleChanged:(id)a3;
+- (void)_currentLocaleChanged:(id)changed;
 - (void)_setupDateFormatters;
 - (void)_updateSprites;
 - (void)alphaDidChange;
 - (void)displayScaleDidChange;
 - (void)invalidateAnchorItemFrames;
-- (void)setDataSource:(id)a3;
-- (void)setSpec:(id)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)setDataSource:(id)source;
+- (void)setSpec:(id)spec;
+- (void)setStyle:(unint64_t)style;
 - (void)update;
 - (void)visibleRectDidChange;
 @end
@@ -24,9 +24,9 @@
 
 - (void)_setupDateFormatters
 {
-  v9 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
   v3 = objc_alloc_init(MEMORY[0x277CCA968]);
-  [(NSDateFormatter *)v3 setLocale:v9];
+  [(NSDateFormatter *)v3 setLocale:autoupdatingCurrentLocale];
   [(NSDateFormatter *)v3 setTimeStyle:0];
   [(NSDateFormatter *)v3 setLocalizedDateFormatFromTemplate:@"yyyy"];
   if (self->_level)
@@ -45,7 +45,7 @@
   v6 = v3;
 
   v7 = objc_alloc_init(MEMORY[0x277CCA968]);
-  [(NSDateFormatter *)v7 setLocale:v9];
+  [(NSDateFormatter *)v7 setLocale:autoupdatingCurrentLocale];
   [(NSDateFormatter *)v7 setTimeStyle:0];
   [(NSDateFormatter *)v7 setLocalizedDateFormatFromTemplate:@"MMM"];
   [(NSDateFormatter *)v7 setFormattingContext:4];
@@ -73,9 +73,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXInlineHeadersSpriteLayout alphaDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:181 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:181 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -113,9 +113,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXInlineHeadersSpriteLayout _bumpMediaVersion]"];
-      [v6 handleFailureInFunction:v7 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:242 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:242 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -156,9 +156,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXInlineHeadersSpriteLayout displayScaleDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:175 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:175 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -198,9 +198,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXInlineHeadersSpriteLayout visibleRectDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:170 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:170 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -230,9 +230,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXInlineHeadersSpriteLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:246 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:246 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -249,9 +249,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXInlineHeadersSpriteLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:250 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:250 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -262,26 +262,26 @@ LABEL_5:
 
 - (void)_updateSprites
 {
-  v3 = [(PXGItemsLayout *)self numberOfItems];
-  v4 = [(PXInlineHeadersSpriteLayout *)self dataSource];
-  v5 = [v4 numberOfSections];
+  numberOfItems = [(PXGItemsLayout *)self numberOfItems];
+  dataSource = [(PXInlineHeadersSpriteLayout *)self dataSource];
+  numberOfSections = [dataSource numberOfSections];
 
-  if (v3 != v5)
+  if (numberOfItems != numberOfSections)
   {
-    v6 = [(PXInlineHeadersSpriteLayout *)self dataSource];
-    -[PXGItemsLayout setNumberOfItems:](self, "setNumberOfItems:", [v6 numberOfSections]);
+    dataSource2 = [(PXInlineHeadersSpriteLayout *)self dataSource];
+    -[PXGItemsLayout setNumberOfItems:](self, "setNumberOfItems:", [dataSource2 numberOfSections]);
   }
 
   [(PXInlineHeadersSpriteLayout *)self alpha];
   if (v7 != 0.0 || !self->_didHideSprites)
   {
-    v8 = [(PXInlineHeadersSpriteLayout *)self localNumberOfSprites];
+    localNumberOfSprites = [(PXInlineHeadersSpriteLayout *)self localNumberOfSprites];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __45__PXInlineHeadersSpriteLayout__updateSprites__block_invoke;
     v9[3] = &unk_278297848;
     v9[4] = self;
-    [(PXInlineHeadersSpriteLayout *)self modifySpritesInRange:v8 << 32 state:v9];
+    [(PXInlineHeadersSpriteLayout *)self modifySpritesInRange:localNumberOfSprites << 32 state:v9];
   }
 }
 
@@ -314,14 +314,14 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)a3 inDirection:(unint64_t)a4
+- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)index inDirection:(unint64_t)direction
 {
   v5 = -1;
-  if (a4 - 4 < 2)
+  if (direction - 4 < 2)
   {
-    if ([(PXInlineHeadersSpriteLayout *)self localNumberOfSprites]- 1 > a3)
+    if ([(PXInlineHeadersSpriteLayout *)self localNumberOfSprites]- 1 > index)
     {
-      return a3 + 1;
+      return index + 1;
     }
 
     else
@@ -330,42 +330,42 @@ LABEL_5:
     }
   }
 
-  else if (a4 == 6 || a4 == 3)
+  else if (direction == 6 || direction == 3)
   {
-    return a3 - 1;
+    return index - 1;
   }
 
   return v5;
 }
 
-- (id)itemsInRect:(CGRect)a3 inLayout:(id)a4
+- (id)itemsInRect:(CGRect)rect inLayout:(id)layout
 {
-  v5 = [(PXInlineHeadersSpriteLayout *)self axSpriteIndexesInRect:a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PXInlineHeadersSpriteLayout *)self axSpriteIndexesInRect:layout, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v6 = [(PXGItemsLayout *)self itemsForSpriteIndexes:v5];
 
   return v6;
 }
 
-- (int64_t)itemClosestToItem:(int64_t)a3 inDirection:(unint64_t)a4
+- (int64_t)itemClosestToItem:(int64_t)item inDirection:(unint64_t)direction
 {
-  v6 = [(PXGItemsLayout *)self numberOfItems];
+  numberOfItems = [(PXGItemsLayout *)self numberOfItems];
 
-  return MEMORY[0x2821DBCF8](a3, a4, 1, v6);
+  return MEMORY[0x2821DBCF8](item, direction, 1, numberOfItems);
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v6 = [(PXInlineHeadersSpriteLayout *)self dataSource:*&a3];
-  v7 = [v6 sectionInfos];
-  v8 = a3;
+  v6 = [(PXInlineHeadersSpriteLayout *)self dataSource:*&index];
+  sectionInfos = [v6 sectionInfos];
+  indexCopy = index;
 
-  v9 = [(PXInlineHeadersSpriteLayout *)self level];
+  level = [(PXInlineHeadersSpriteLayout *)self level];
   v10 = PXShouldAlwaysDisplayYearBeforeMonthForCurrentLocale();
-  v11 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:*(v7 + 32 * v8 + 24)];
-  if (v9)
+  v11 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:*(sectionInfos + 32 * indexCopy + 24)];
+  if (level)
   {
     v12 = [(NSDateFormatter *)self->_monthFormatter stringFromDate:v11];
-    v9 = [(NSDateFormatter *)self->_yearFormatter stringFromDate:v11];
+    level = [(NSDateFormatter *)self->_yearFormatter stringFromDate:v11];
   }
 
   else
@@ -373,12 +373,12 @@ LABEL_5:
     v12 = [(NSDateFormatter *)self->_yearFormatter stringFromDate:v11];
   }
 
-  v13 = [(PXInlineHeadersSpriteLayout *)self dataSource];
-  v14 = [v13 type];
+  dataSource = [(PXInlineHeadersSpriteLayout *)self dataSource];
+  type = [dataSource type];
 
-  if (v14 == 2)
+  if (type == 2)
   {
-    v15 = v9 != 0;
+    v15 = level != 0;
     if (v12 != 0 && v15)
     {
       v16 = @"PXPhotosGridAllPhotosAddedOnMonthYear";
@@ -396,7 +396,7 @@ LABEL_5:
     v20 = v10 ^ [v19 hasPrefix:@"%"];
     if ((v20 & v15) != 0)
     {
-      v21 = v9;
+      v21 = level;
     }
 
     else
@@ -407,7 +407,7 @@ LABEL_5:
     v22 = PXStringWithValidatedFormat();
     if ((v20 & v15) != 0)
     {
-      v9 = v22;
+      level = v22;
     }
 
     else
@@ -416,7 +416,7 @@ LABEL_5:
     }
   }
 
-  v23 = [[PXZoomableInlineHeaderViewConfiguration alloc] initWithTitle:v12 subtitle:v9 swapTitleAndSubtitle:v10 style:[(PXInlineHeadersSpriteLayout *)self style]];
+  v23 = [[PXZoomableInlineHeaderViewConfiguration alloc] initWithTitle:v12 subtitle:level swapTitleAndSubtitle:v10 style:[(PXInlineHeadersSpriteLayout *)self style]];
 
   return v23;
 }
@@ -737,9 +737,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXInlineHeadersSpriteLayout invalidateAnchorItemFrames]"];
-      [v6 handleFailureInFunction:v7 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:237 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:237 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -761,20 +761,20 @@ LABEL_5:
   }
 }
 
-- (void)_currentLocaleChanged:(id)a3
+- (void)_currentLocaleChanged:(id)changed
 {
   [(PXInlineHeadersSpriteLayout *)self _setupDateFormatters];
 
   [(PXInlineHeadersSpriteLayout *)self _bumpMediaVersion];
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
+  specCopy = spec;
   spec = self->_spec;
-  if (spec != v5)
+  if (spec != specCopy)
   {
-    v12 = v5;
+    v12 = specCopy;
     [(PXInlineHeadersSpriteLayout *)self safeAreaInsets];
     [(PXZoomableInlineHeadersLayoutSpec *)spec headerFloatMarginsForSafeAreaInsets:?];
     [(PXInlineHeadersSpriteLayout *)self safeAreaInsets];
@@ -782,8 +782,8 @@ LABEL_5:
     if (PXEdgeInsetsEqualToEdgeInsets())
     {
 LABEL_9:
-      objc_storeStrong(&self->_spec, a3);
-      v5 = v12;
+      objc_storeStrong(&self->_spec, spec);
+      specCopy = v12;
       goto LABEL_10;
     }
 
@@ -813,9 +813,9 @@ LABEL_8:
 
     if (self->_updateFlags.updated)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXInlineHeadersSpriteLayout setSpec:]"];
-      [v10 handleFailureInFunction:v11 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:209 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v11 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:209 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -826,31 +826,31 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(PXInlineHeadersSpriteLayout *)self _bumpMediaVersion];
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
-  if (self->_dataSource != v5)
+  sourceCopy = source;
+  if (self->_dataSource != sourceCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_dataSource, a3);
+    v7 = sourceCopy;
+    objc_storeStrong(&self->_dataSource, source);
     axSpriteIndexes = self->_axSpriteIndexes;
     self->_axSpriteIndexes = 0;
 
     [(PXInlineHeadersSpriteLayout *)self _bumpMediaVersion];
-    v5 = v7;
+    sourceCopy = v7;
   }
 }
 
-- (PXInlineHeadersSpriteLayout)initWithLevel:(unint64_t)a3
+- (PXInlineHeadersSpriteLayout)initWithLevel:(unint64_t)level
 {
   v15.receiver = self;
   v15.super_class = PXInlineHeadersSpriteLayout;
@@ -858,15 +858,15 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v4->_level = a3;
+    v4->_level = level;
     [(PXInlineHeadersSpriteLayout *)v4 setContentSource:v4];
-    v6 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
     calendar = v5->_calendar;
-    v5->_calendar = v6;
+    v5->_calendar = autoupdatingCurrentCalendar;
 
     [(PXInlineHeadersSpriteLayout *)v5 _setupDateFormatters];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v5 selector:sel__currentLocaleChanged_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__currentLocaleChanged_ name:*MEMORY[0x277CBE620] object:0];
 
     p_updateFlags = &v5->_updateFlags;
     needsUpdate = v5->_updateFlags.needsUpdate;
@@ -882,9 +882,9 @@ LABEL_7:
 LABEL_6:
       if (v5->_updateFlags.updated)
       {
-        v13 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXInlineHeadersSpriteLayout initWithLevel:]"];
-        [v13 handleFailureInFunction:v14 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:163 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v14 file:@"PXZoomableInlineHeadersLayout.m" lineNumber:163 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }

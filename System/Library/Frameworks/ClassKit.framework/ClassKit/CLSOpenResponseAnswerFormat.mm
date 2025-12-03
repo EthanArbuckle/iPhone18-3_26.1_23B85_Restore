@@ -1,90 +1,90 @@
 @interface CLSOpenResponseAnswerFormat
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (BOOL)canCopyToDatabase:(id)a3;
-- (CLSOpenResponseAnswerFormat)initWithDatabaseRow:(id)a3;
-- (id)initWithCKRecord:(id)a3;
-- (int64_t)syncBackend:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (BOOL)canCopyToDatabase:(id)database;
+- (CLSOpenResponseAnswerFormat)initWithDatabaseRow:(id)row;
+- (id)initWithCKRecord:(id)record;
+- (int64_t)syncBackend:(id)backend;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
 @end
 
 @implementation CLSOpenResponseAnswerFormat
 
-- (CLSOpenResponseAnswerFormat)initWithDatabaseRow:(id)a3
+- (CLSOpenResponseAnswerFormat)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSOpenResponseAnswerFormat *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSOpenResponseAnswerFormat *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"parentObjectID");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"parentObjectID");
     [v6 setParentObjectID:v7];
 
-    v8 = sub_10016D778(v4, @"answerFormatType");
+    v8 = sub_10016D778(rowCopy, @"answerFormatType");
     [v6 setAnswerFormatType:{objc_msgSend(v8, "intValue")}];
 
-    v9 = sub_10016D778(v4, @"teacherProvidedText");
+    v9 = sub_10016D778(rowCopy, @"teacherProvidedText");
     [v6 setTeacherProvidedText:v9];
 
-    v10 = sub_10016D778(v4, @"maximumTextLength");
+    v10 = sub_10016D778(rowCopy, @"maximumTextLength");
     [v6 setMaximumTextLength:{objc_msgSend(v10, "integerValue")}];
 
-    v11 = sub_10016D778(v4, @"minimumTextLength");
+    v11 = sub_10016D778(rowCopy, @"minimumTextLength");
     [v6 setMinimumTextLength:{objc_msgSend(v11, "integerValue")}];
 
-    v12 = sub_10016D778(v4, @"type");
+    v12 = sub_10016D778(rowCopy, @"type");
     [v6 setType:{objc_msgSend(v12, "intValue")}];
 
-    v13 = sub_10016D778(v4, @"allowsMultimedia");
+    v13 = sub_10016D778(rowCopy, @"allowsMultimedia");
     [v6 setAllowsMultimedia:{objc_msgSend(v13, "BOOLValue")}];
   }
 
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v13.receiver = self;
   v13.super_class = CLSOpenResponseAnswerFormat;
-  v4 = a3;
-  [(CLSOpenResponseAnswerFormat *)&v13 bindTo:v4];
+  toCopy = to;
+  [(CLSOpenResponseAnswerFormat *)&v13 bindTo:toCopy];
   v14 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v14 count:1, v13.receiver, v13.super_class];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSOpenResponseAnswerFormat *)self parentObjectID];
-  sub_1000982FC(v4, v6, @"parentObjectID");
+  parentObjectID = [(CLSOpenResponseAnswerFormat *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, @"parentObjectID");
 
   v7 = [NSNumber numberWithInteger:[(CLSOpenResponseAnswerFormat *)self answerFormatType]];
-  sub_1000982FC(v4, v7, @"answerFormatType");
+  sub_1000982FC(toCopy, v7, @"answerFormatType");
 
   v8 = [NSNumber numberWithInteger:[(CLSOpenResponseAnswerFormat *)self maximumTextLength]];
-  sub_1000982FC(v4, v8, @"maximumTextLength");
+  sub_1000982FC(toCopy, v8, @"maximumTextLength");
 
   v9 = [NSNumber numberWithInteger:[(CLSOpenResponseAnswerFormat *)self minimumTextLength]];
-  sub_1000982FC(v4, v9, @"minimumTextLength");
+  sub_1000982FC(toCopy, v9, @"minimumTextLength");
 
-  v10 = [(CLSOpenResponseAnswerFormat *)self teacherProvidedText];
-  sub_1000982FC(v4, v10, @"teacherProvidedText");
+  teacherProvidedText = [(CLSOpenResponseAnswerFormat *)self teacherProvidedText];
+  sub_1000982FC(toCopy, teacherProvidedText, @"teacherProvidedText");
 
   v11 = [NSNumber numberWithInteger:[(CLSOpenResponseAnswerFormat *)self type]];
-  sub_1000982FC(v4, v11, @"type");
+  sub_1000982FC(toCopy, v11, @"type");
 
   v12 = [NSNumber numberWithBool:[(CLSOpenResponseAnswerFormat *)self allowsMultimedia]];
-  sub_1000982FC(v4, v12, @"allowsMultimedia");
+  sub_1000982FC(toCopy, v12, @"allowsMultimedia");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3 == 1)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version == 1)
   {
 LABEL_6:
     if (sub_1000B9298(v8, @"alter table CLSOpenResponseAnswerFormat add column allowsMultimedia integer", 0, 0, 0))
     {
-      a3 = 2;
+      version = 2;
       goto LABEL_8;
     }
 
@@ -93,9 +93,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table CLSOpenResponseAnswerFormat (\n    objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    type                  integer,\n    answerFormatType      integer,\n    maximumTextLength     integer,\n    minimumTextLength     integer,\n    teacherProvidedText   text,\nforeign key (parentObjectID) references CLSQuestionStep(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSOpenResponseAnswerFormat_objectID on CLSOpenResponseAnswerFormat (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSOpenResponseAnswerFormat_parentObjectID on CLSOpenResponseAnswerFormat (parentObjectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSOpenResponseAnswerFormat (\n    objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    type                  integer,\n    answerFormatType      integer,\n    maximumTextLength     integer,\n    minimumTextLength     integer,\n    teacherProvidedText   text,\nforeign key (parentObjectID) references CLSQuestionStep(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSOpenResponseAnswerFormat_objectID on CLSOpenResponseAnswerFormat (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSOpenResponseAnswerFormat_parentObjectID on CLSOpenResponseAnswerFormat (parentObjectID)", 0, 0, 0))
     {
       goto LABEL_9;
     }
@@ -104,96 +104,96 @@ LABEL_9:
   }
 
 LABEL_8:
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_10:
 
   return v9;
 }
 
-- (BOOL)canCopyToDatabase:(id)a3
+- (BOOL)canCopyToDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_opt_class();
-  v6 = [(CLSOpenResponseAnswerFormat *)self parentObjectID];
-  v7 = [v4 select:v5 identity:v6];
+  parentObjectID = [(CLSOpenResponseAnswerFormat *)self parentObjectID];
+  v7 = [databaseCopy select:v5 identity:parentObjectID];
 
-  LOBYTE(v6) = [v7 canCopyToDatabase:v4];
-  return v6;
+  LOBYTE(parentObjectID) = [v7 canCopyToDatabase:databaseCopy];
+  return parentObjectID;
 }
 
-- (id)initWithCKRecord:(id)a3
+- (id)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"type"];
+  recordCopy = record;
+  v5 = [recordCopy objectForKeyedSubscript:@"type"];
   if (v5)
   {
     v6 = CLSOpenResponseTypeFromString();
-    v7 = [v4 objectForKeyedSubscript:@"teacherProvidedText"];
-    v8 = [v4 objectForKeyedSubscript:@"minimumTextLength"];
-    v9 = [v8 integerValue];
+    v7 = [recordCopy objectForKeyedSubscript:@"teacherProvidedText"];
+    v8 = [recordCopy objectForKeyedSubscript:@"minimumTextLength"];
+    integerValue = [v8 integerValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"maximumTextLength"];
-    v11 = [v10 integerValue];
+    v10 = [recordCopy objectForKeyedSubscript:@"maximumTextLength"];
+    integerValue2 = [v10 integerValue];
 
-    v12 = [(CLSOpenResponseAnswerFormat *)self initWithType:v6 starterText:v7 minimumLength:v9 maximumLength:v11];
+    v12 = [(CLSOpenResponseAnswerFormat *)self initWithType:v6 starterText:v7 minimumLength:integerValue maximumLength:integerValue2];
     v13 = v12;
     if (v12)
     {
-      [(CLSOpenResponseAnswerFormat *)v12 _initCommonPropsWithRecord:v4];
-      v14 = [v4 objectForKeyedSubscript:@"allowsMultimedia"];
+      [(CLSOpenResponseAnswerFormat *)v12 _initCommonPropsWithRecord:recordCopy];
+      v14 = [recordCopy objectForKeyedSubscript:@"allowsMultimedia"];
       -[CLSOpenResponseAnswerFormat setAllowsMultimedia:](v13, "setAllowsMultimedia:", [v14 BOOLValue]);
     }
 
     self = v13;
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
   v10.receiver = self;
   v10.super_class = CLSOpenResponseAnswerFormat;
-  v4 = a3;
-  [(CLSOpenResponseAnswerFormat *)&v10 populate:v4];
+  populateCopy = populate;
+  [(CLSOpenResponseAnswerFormat *)&v10 populate:populateCopy];
   [(CLSOpenResponseAnswerFormat *)self type:v10.receiver];
   v5 = NSStringFromOpenResponseType();
-  [v4 setObject:v5 forKeyedSubscript:@"type"];
+  [populateCopy setObject:v5 forKeyedSubscript:@"type"];
 
-  v6 = [(CLSOpenResponseAnswerFormat *)self teacherProvidedText];
-  [v4 setObject:v6 forKeyedSubscript:@"teacherProvidedText"];
+  teacherProvidedText = [(CLSOpenResponseAnswerFormat *)self teacherProvidedText];
+  [populateCopy setObject:teacherProvidedText forKeyedSubscript:@"teacherProvidedText"];
 
   v7 = [NSNumber numberWithInteger:[(CLSOpenResponseAnswerFormat *)self minimumTextLength]];
-  [v4 setObject:v7 forKeyedSubscript:@"minimumTextLength"];
+  [populateCopy setObject:v7 forKeyedSubscript:@"minimumTextLength"];
 
   v8 = [NSNumber numberWithInteger:[(CLSOpenResponseAnswerFormat *)self maximumTextLength]];
-  [v4 setObject:v8 forKeyedSubscript:@"maximumTextLength"];
+  [populateCopy setObject:v8 forKeyedSubscript:@"maximumTextLength"];
 
   v9 = [NSNumber numberWithBool:[(CLSOpenResponseAnswerFormat *)self allowsMultimedia]];
-  [v4 setObject:v9 forKeyedSubscript:@"allowsMultimedia"];
+  [populateCopy setObject:v9 forKeyedSubscript:@"allowsMultimedia"];
 
-  [(CLSOpenResponseAnswerFormat *)self updateParentReferencesForRecord:v4];
+  [(CLSOpenResponseAnswerFormat *)self updateParentReferencesForRecord:populateCopy];
 }
 
-- (int64_t)syncBackend:(id)a3
+- (int64_t)syncBackend:(id)backend
 {
-  v4 = a3;
-  v5 = [(CLSOpenResponseAnswerFormat *)self parentObjectID];
-  if (v5)
+  backendCopy = backend;
+  parentObjectID = [(CLSOpenResponseAnswerFormat *)self parentObjectID];
+  if (parentObjectID)
   {
-    v6 = [v4 select:objc_opt_class() identity:v5];
+    v6 = [backendCopy select:objc_opt_class() identity:parentObjectID];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 syncBackend:v4];
+      v8 = [v6 syncBackend:backendCopy];
     }
 
     else

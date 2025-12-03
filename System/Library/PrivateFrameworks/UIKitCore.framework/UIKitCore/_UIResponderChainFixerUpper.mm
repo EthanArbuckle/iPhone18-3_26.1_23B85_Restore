@@ -1,17 +1,17 @@
 @interface _UIResponderChainFixerUpper
 - (_UIResponderChainFixerUpper)init;
 - (id)_nextResponders;
-- (id)_recursiveDescription:(id)a3;
-- (id)_recursiveDescriptionStep:(unint64_t)a3;
+- (id)_recursiveDescription:(id)description;
+- (id)_recursiveDescriptionStep:(unint64_t)step;
 - (id)description;
-- (void)_callResponder:(id)a3 phase:(int64_t)a4 components:(id)a5 event:(id)a6;
-- (void)_deliverComponents:(id)a3 phase:(int64_t)a4 forEvent:(id)a5 toResponder:(id)a6;
-- (void)_recordDeliveryOfComponents:(id)a3 toResponder:(id)a4;
-- (void)_removeDeliveryRecordForComponents:(id)a3;
-- (void)_snapshotDeliveryOfComponents:(id)a3 map:(id)a4 block:(id)a5;
-- (void)deliverPressesEvent:(id)a3 toResponder:(id)a4;
-- (void)deliverTouchesEvent:(id)a3 toResponder:(id)a4;
-- (void)forward:(id)a3 phase:(int64_t)a4 withEvent:(id)a5 fromResponder:(id)a6;
+- (void)_callResponder:(id)responder phase:(int64_t)phase components:(id)components event:(id)event;
+- (void)_deliverComponents:(id)components phase:(int64_t)phase forEvent:(id)event toResponder:(id)responder;
+- (void)_recordDeliveryOfComponents:(id)components toResponder:(id)responder;
+- (void)_removeDeliveryRecordForComponents:(id)components;
+- (void)_snapshotDeliveryOfComponents:(id)components map:(id)map block:(id)block;
+- (void)deliverPressesEvent:(id)event toResponder:(id)responder;
+- (void)deliverTouchesEvent:(id)event toResponder:(id)responder;
+- (void)forward:(id)forward phase:(int64_t)phase withEvent:(id)event fromResponder:(id)responder;
 @end
 
 @implementation _UIResponderChainFixerUpper
@@ -31,21 +31,21 @@
   return v2;
 }
 
-- (void)_snapshotDeliveryOfComponents:(id)a3 map:(id)a4 block:(id)a5
+- (void)_snapshotDeliveryOfComponents:(id)components map:(id)map block:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v20 = self;
-  v19 = [(_UIResponderChainFixerUpper *)self currentDelivery];
+  componentsCopy = components;
+  mapCopy = map;
+  blockCopy = block;
+  selfCopy = self;
+  currentDelivery = [(_UIResponderChainFixerUpper *)self currentDelivery];
   v11 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:512 valueOptions:0 capacity:0];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [v9 keyEnumerator];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  keyEnumerator = [mapCopy keyEnumerator];
+  v13 = [keyEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -56,67 +56,67 @@
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        if ([v8 containsObject:{v17, v19}])
+        if ([componentsCopy containsObject:{v17, currentDelivery}])
         {
-          v18 = [v9 objectForKey:v17];
+          v18 = [mapCopy objectForKey:v17];
           [v11 setObject:v18 forKey:v17];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [keyEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v14);
   }
 
-  [(_UIResponderChainFixerUpper *)v20 setCurrentDelivery:v11];
-  v10[2](v10);
-  [(_UIResponderChainFixerUpper *)v20 setCurrentDelivery:v19];
+  [(_UIResponderChainFixerUpper *)selfCopy setCurrentDelivery:v11];
+  blockCopy[2](blockCopy);
+  [(_UIResponderChainFixerUpper *)selfCopy setCurrentDelivery:currentDelivery];
 }
 
-- (void)deliverTouchesEvent:(id)a3 toResponder:(id)a4
+- (void)deliverTouchesEvent:(id)event toResponder:(id)responder
 {
-  v9 = a3;
-  v6 = a4;
+  eventCopy = event;
+  responderCopy = responder;
   for (i = 0; i != 5; ++i)
   {
-    v8 = [v9 _touchesForResponder:v6 withPhase:i];
+    v8 = [eventCopy _touchesForResponder:responderCopy withPhase:i];
     if (v8)
     {
-      [(_UIResponderChainFixerUpper *)self _deliverComponents:v8 phase:i forEvent:v9 toResponder:v6];
-      [UIApp _registerEstimatedTouches:v8 event:v9 forTouchable:v6];
+      [(_UIResponderChainFixerUpper *)self _deliverComponents:v8 phase:i forEvent:eventCopy toResponder:responderCopy];
+      [UIApp _registerEstimatedTouches:v8 event:eventCopy forTouchable:responderCopy];
     }
   }
 }
 
-- (void)deliverPressesEvent:(id)a3 toResponder:(id)a4
+- (void)deliverPressesEvent:(id)event toResponder:(id)responder
 {
-  v9 = a3;
-  v6 = a4;
+  eventCopy = event;
+  responderCopy = responder;
   for (i = 0; i != 5; ++i)
   {
-    v8 = [v9 _pressesForResponder:v6 withPhase:i];
+    v8 = [eventCopy _pressesForResponder:responderCopy withPhase:i];
     if (v8)
     {
-      [(_UIResponderChainFixerUpper *)self _deliverComponents:v8 phase:i forEvent:v9 toResponder:v6];
+      [(_UIResponderChainFixerUpper *)self _deliverComponents:v8 phase:i forEvent:eventCopy toResponder:responderCopy];
     }
   }
 }
 
-- (void)_deliverComponents:(id)a3 phase:(int64_t)a4 forEvent:(id)a5 toResponder:(id)a6
+- (void)_deliverComponents:(id)components phase:(int64_t)phase forEvent:(id)event toResponder:(id)responder
 {
   v45 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v11 || ![v11 count])
+  componentsCopy = components;
+  eventCopy = event;
+  responderCopy = responder;
+  if (!componentsCopy || ![componentsCopy count])
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"_UIResponderChainFixerUpper.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"components != nil && components.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIResponderChainFixerUpper.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"components != nil && components.count > 0"}];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("EventDelivery", &_deliverComponents_phase_forEvent_toResponder____s_category);
@@ -125,7 +125,7 @@
     v25 = *(CategoryCachedImpl + 8);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = v13;
+      v26 = responderCopy;
       if (v26)
       {
         v27 = MEMORY[0x1E696AEC0];
@@ -140,24 +140,24 @@
       }
 
       *buf = 134218498;
-      v40 = a4;
+      phaseCopy = phase;
       v41 = 2112;
-      v42 = v11;
+      v42 = componentsCopy;
       v43 = 2112;
       v44 = v30;
       _os_log_impl(&dword_188A29000, v25, OS_LOG_TYPE_ERROR, "Delivering phase %ld components %@ to responder %@", buf, 0x20u);
     }
   }
 
-  if (a4 > 2)
+  if (phase > 2)
   {
-    if (a4 == 3)
+    if (phase == 3)
     {
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v15 = v11;
+      v15 = componentsCopy;
       v16 = [v15 countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v16)
       {
@@ -180,10 +180,10 @@
 
             else
             {
-              v21 = [v20 _eventComponentType];
+              _eventComponentType = [v20 _eventComponentType];
               if (v20)
               {
-                v22 = v21 == 0;
+                v22 = _eventComponentType == 0;
               }
 
               else
@@ -205,7 +205,7 @@
       }
     }
 
-    else if (a4 != 4)
+    else if (phase != 4)
     {
       goto LABEL_31;
     }
@@ -213,32 +213,32 @@
 
   else
   {
-    if (!a4)
+    if (!phase)
     {
-      [(_UIResponderChainFixerUpper *)self _recordDeliveryOfComponents:v11 toResponder:v13];
-      [(_UIResponderChainFixerUpper *)self _callResponder:v13 phase:0 components:v11 event:v12];
+      [(_UIResponderChainFixerUpper *)self _recordDeliveryOfComponents:componentsCopy toResponder:responderCopy];
+      [(_UIResponderChainFixerUpper *)self _callResponder:responderCopy phase:0 components:componentsCopy event:eventCopy];
       goto LABEL_31;
     }
 
-    if (a4 != 1)
+    if (phase != 1)
     {
       goto LABEL_31;
     }
   }
 
-  v23 = [(_UIResponderChainFixerUpper *)self deliveryRecords];
+  deliveryRecords = [(_UIResponderChainFixerUpper *)self deliveryRecords];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __77___UIResponderChainFixerUpper__deliverComponents_phase_forEvent_toResponder___block_invoke;
   v31[3] = &unk_1E70F36D0;
   v31[4] = self;
-  v33 = a4;
-  v32 = v12;
-  [(_UIResponderChainFixerUpper *)self _snapshotDeliveryOfComponents:v11 map:v23 block:v31];
+  phaseCopy2 = phase;
+  v32 = eventCopy;
+  [(_UIResponderChainFixerUpper *)self _snapshotDeliveryOfComponents:componentsCopy map:deliveryRecords block:v31];
 
-  if (a4 != 1)
+  if (phase != 1)
   {
-    [(_UIResponderChainFixerUpper *)self _removeDeliveryRecordForComponents:v11];
+    [(_UIResponderChainFixerUpper *)self _removeDeliveryRecordForComponents:componentsCopy];
   }
 
 LABEL_31:
@@ -247,24 +247,24 @@ LABEL_31:
 - (id)_nextResponders
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = [(_UIResponderChainFixerUpper *)self currentDelivery];
-  if (!v4)
+  currentDelivery = [(_UIResponderChainFixerUpper *)self currentDelivery];
+  if (!currentDelivery)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_UIResponderChainFixerUpper.m" lineNumber:225 description:@"Trying to enumerate responders without a current delivery record."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIResponderChainFixerUpper.m" lineNumber:225 description:@"Trying to enumerate responders without a current delivery record."];
   }
 
-  v21 = self;
+  selfCopy = self;
   v5 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:512 valueOptions:0 capacity:0];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [v4 keyEnumerator];
-  v7 = [v6 allObjects];
+  keyEnumerator = [currentDelivery keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  obj = v7;
-  v24 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  obj = allObjects;
+  v24 = [allObjects countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v24)
   {
     v23 = *v26;
@@ -278,11 +278,11 @@ LABEL_31:
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
-        v10 = [v4 objectForKey:{v9, v21}];
+        v10 = [currentDelivery objectForKey:{v9, selfCopy}];
         v11 = [v10 mutableCopy];
-        v12 = [v11 firstObject];
+        firstObject = [v11 firstObject];
         [v11 removeObjectAtIndex:0];
-        v13 = [v5 objectForKey:v12];
+        v13 = [v5 objectForKey:firstObject];
         v14 = [v13 mutableCopy];
         v15 = v14;
         if (v14)
@@ -299,16 +299,16 @@ LABEL_31:
 
         [v17 addObject:v9];
         v18 = [v17 copy];
-        [v5 setObject:v18 forKey:v12];
+        [v5 setObject:v18 forKey:firstObject];
 
         if ([v11 count])
         {
-          [v4 setObject:v11 forKey:v9];
+          [currentDelivery setObject:v11 forKey:v9];
         }
 
         else
         {
-          [v4 removeObjectForKey:v9];
+          [currentDelivery removeObjectForKey:v9];
         }
       }
 
@@ -318,30 +318,30 @@ LABEL_31:
     while (v24);
   }
 
-  [(_UIResponderChainFixerUpper *)v21 setCurrentDelivery:v4];
+  [(_UIResponderChainFixerUpper *)selfCopy setCurrentDelivery:currentDelivery];
 
   return v5;
 }
 
-- (void)forward:(id)a3 phase:(int64_t)a4 withEvent:(id)a5 fromResponder:(id)a6
+- (void)forward:(id)forward phase:(int64_t)phase withEvent:(id)event fromResponder:(id)responder
 {
   v38 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v26 = a5;
-  v10 = a6;
-  v11 = v10;
-  if ((a4 - 3) < 2 || a4 == 1)
+  forwardCopy = forward;
+  eventCopy = event;
+  responderCopy = responder;
+  v11 = responderCopy;
+  if ((phase - 3) < 2 || phase == 1)
   {
-    v13 = [(_UIResponderChainFixerUpper *)self _nextResponders];
-    if ([v13 count])
+    _nextResponders = [(_UIResponderChainFixerUpper *)self _nextResponders];
+    if ([_nextResponders count])
     {
-      if ([v13 count] == 1)
+      if ([_nextResponders count] == 1)
       {
-        v14 = [v13 keyEnumerator];
-        v15 = [v14 nextObject];
+        keyEnumerator = [_nextResponders keyEnumerator];
+        nextObject = [keyEnumerator nextObject];
 
-        v16 = [v13 objectForKey:v15];
-        [(_UIResponderChainFixerUpper *)self _callResponder:v15 phase:a4 components:v16 event:v26];
+        v16 = [_nextResponders objectForKey:nextObject];
+        [(_UIResponderChainFixerUpper *)self _callResponder:nextObject phase:phase components:v16 event:eventCopy];
       }
 
       else
@@ -351,7 +351,7 @@ LABEL_31:
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        obj = [v13 keyEnumerator];
+        obj = [_nextResponders keyEnumerator];
         v17 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
         if (v17)
         {
@@ -368,17 +368,17 @@ LABEL_31:
               }
 
               v21 = *(*(&v33 + 1) + 8 * v20);
-              v22 = [(_UIResponderChainFixerUpper *)self currentDelivery];
+              currentDelivery = [(_UIResponderChainFixerUpper *)self currentDelivery];
               v27[0] = MEMORY[0x1E69E9820];
               v27[1] = 3221225472;
               v27[2] = __69___UIResponderChainFixerUpper_forward_phase_withEvent_fromResponder___block_invoke;
               v27[3] = &unk_1E70F4378;
-              v28 = v13;
+              v28 = _nextResponders;
               v29 = v21;
-              v30 = self;
-              v32 = a4;
-              v31 = v26;
-              [(_UIResponderChainFixerUpper *)self _snapshotDeliveryOfComponents:v25 map:v22 block:v27];
+              selfCopy = self;
+              phaseCopy = phase;
+              v31 = eventCopy;
+              [(_UIResponderChainFixerUpper *)self _snapshotDeliveryOfComponents:forwardCopy map:currentDelivery block:v27];
 
               ++v20;
             }
@@ -395,61 +395,61 @@ LABEL_31:
     }
   }
 
-  else if (!a4)
+  else if (!phase)
   {
-    v12 = [v10 nextResponder];
-    if (v12)
+    nextResponder = [responderCopy nextResponder];
+    if (nextResponder)
     {
-      [(_UIResponderChainFixerUpper *)self _recordDeliveryOfComponents:v25 toResponder:v12];
-      [(_UIResponderChainFixerUpper *)self _callResponder:v12 phase:0 components:v25 event:v26];
+      [(_UIResponderChainFixerUpper *)self _recordDeliveryOfComponents:forwardCopy toResponder:nextResponder];
+      [(_UIResponderChainFixerUpper *)self _callResponder:nextResponder phase:0 components:forwardCopy event:eventCopy];
     }
   }
 }
 
-- (void)_callResponder:(id)a3 phase:(int64_t)a4 components:(id)a5 event:(id)a6
+- (void)_callResponder:(id)responder phase:(int64_t)phase components:(id)components event:(id)event
 {
-  v15 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 anyObject];
-  v13 = [v12 _eventComponentType];
+  responderCopy = responder;
+  componentsCopy = components;
+  eventCopy = event;
+  anyObject = [componentsCopy anyObject];
+  _eventComponentType = [anyObject _eventComponentType];
 
-  if (v13 == 1)
+  if (_eventComponentType == 1)
   {
-    if (a4 <= 2)
+    if (phase <= 2)
     {
-      if (!a4)
+      if (!phase)
       {
-        [v15 pressesBegan:v10 withEvent:v11];
+        [responderCopy pressesBegan:componentsCopy withEvent:eventCopy];
         goto LABEL_26;
       }
 
-      if (a4 == 1)
+      if (phase == 1)
       {
-        [v15 pressesChanged:v10 withEvent:v11];
+        [responderCopy pressesChanged:componentsCopy withEvent:eventCopy];
       }
 
       goto LABEL_23;
     }
 
-    if (a4 == 3)
+    if (phase == 3)
     {
-      [v15 pressesEnded:v10 withEvent:v11];
+      [responderCopy pressesEnded:componentsCopy withEvent:eventCopy];
       goto LABEL_23;
     }
 
-    if (a4 == 4)
+    if (phase == 4)
     {
-      [v15 pressesCancelled:v10 withEvent:v11];
+      [responderCopy pressesCancelled:componentsCopy withEvent:eventCopy];
       goto LABEL_23;
     }
 
     goto LABEL_10;
   }
 
-  if (v13)
+  if (_eventComponentType)
   {
-    if (!a4)
+    if (!phase)
     {
       goto LABEL_26;
     }
@@ -457,32 +457,32 @@ LABEL_31:
     goto LABEL_23;
   }
 
-  if (a4 <= 2)
+  if (phase <= 2)
   {
-    if (!a4)
+    if (!phase)
     {
-      [v15 touchesBegan:v10 withEvent:v11];
+      [responderCopy touchesBegan:componentsCopy withEvent:eventCopy];
       goto LABEL_26;
     }
 
-    if (a4 == 1)
+    if (phase == 1)
     {
-      [v15 touchesMoved:v10 withEvent:v11];
+      [responderCopy touchesMoved:componentsCopy withEvent:eventCopy];
     }
 
     goto LABEL_23;
   }
 
-  if (a4 == 3)
+  if (phase == 3)
   {
-    [v15 touchesEnded:v10 withEvent:v11];
+    [responderCopy touchesEnded:componentsCopy withEvent:eventCopy];
     goto LABEL_23;
   }
 
-  if (a4 != 4)
+  if (phase != 4)
   {
 LABEL_10:
-    if (a4 == 5)
+    if (phase == 5)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Invalid phase."];
     }
@@ -490,27 +490,27 @@ LABEL_10:
     goto LABEL_23;
   }
 
-  [v15 touchesCancelled:v10 withEvent:v11];
+  [responderCopy touchesCancelled:componentsCopy withEvent:eventCopy];
 LABEL_23:
-  v14 = [(_UIResponderChainFixerUpper *)self currentDelivery];
-  if ([v14 count])
+  currentDelivery = [(_UIResponderChainFixerUpper *)self currentDelivery];
+  if ([currentDelivery count])
   {
-    [(_UIResponderChainFixerUpper *)self forward:v10 phase:a4 withEvent:v11 fromResponder:v15];
+    [(_UIResponderChainFixerUpper *)self forward:componentsCopy phase:phase withEvent:eventCopy fromResponder:responderCopy];
   }
 
 LABEL_26:
 }
 
-- (void)_recordDeliveryOfComponents:(id)a3 toResponder:(id)a4
+- (void)_recordDeliveryOfComponents:(id)components toResponder:(id)responder
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  responderCopy = responder;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v8 = [componentsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -521,53 +521,53 @@ LABEL_26:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(componentsCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 _eventComponentPhase];
-        v14 = [v13 value];
+        _eventComponentPhase = [v12 _eventComponentPhase];
+        value = [_eventComponentPhase value];
 
-        if (v14)
+        if (value)
         {
-          v19 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v19 handleFailureInMethod:a2 object:self file:@"_UIResponderChainFixerUpper.m" lineNumber:372 description:@"Only components in the begin phase can be recorded."];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_UIResponderChainFixerUpper.m" lineNumber:372 description:@"Only components in the begin phase can be recorded."];
         }
 
-        v15 = [(_UIResponderChainFixerUpper *)self deliveryRecords];
-        v16 = [v15 objectForKey:v12];
+        deliveryRecords = [(_UIResponderChainFixerUpper *)self deliveryRecords];
+        v16 = [deliveryRecords objectForKey:v12];
 
-        v17 = [(_UIResponderChainFixerUpper *)self deliveryRecords];
+        deliveryRecords2 = [(_UIResponderChainFixerUpper *)self deliveryRecords];
         if (v16)
         {
-          [v16 arrayByAddingObject:v7];
+          [v16 arrayByAddingObject:responderCopy];
         }
 
         else
         {
-          v25 = v7;
+          v25 = responderCopy;
           [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
         }
         v18 = ;
-        [v17 setObject:v18 forKey:v12];
+        [deliveryRecords2 setObject:v18 forKey:v12];
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v9 = [componentsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_removeDeliveryRecordForComponents:(id)a3
+- (void)_removeDeliveryRecordForComponents:(id)components
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  componentsCopy = components;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [componentsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -578,22 +578,22 @@ LABEL_26:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(componentsCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 _eventComponentPhase];
-        if ([v11 value] != 3 && objc_msgSend(v11, "value") != 4)
+        _eventComponentPhase = [v10 _eventComponentPhase];
+        if ([_eventComponentPhase value] != 3 && objc_msgSend(_eventComponentPhase, "value") != 4)
         {
-          v13 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v13 handleFailureInMethod:a2 object:self file:@"_UIResponderChainFixerUpper.m" lineNumber:387 description:@"Only components in the ended or cancelled phase can be removed."];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_UIResponderChainFixerUpper.m" lineNumber:387 description:@"Only components in the ended or cancelled phase can be removed."];
         }
 
-        v12 = [(_UIResponderChainFixerUpper *)self deliveryRecords];
-        [v12 removeObjectForKey:v10];
+        deliveryRecords = [(_UIResponderChainFixerUpper *)self deliveryRecords];
+        [deliveryRecords removeObjectForKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [componentsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -607,16 +607,16 @@ LABEL_26:
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(_UIResponderChainFixerUpper *)self deliveryRecords];
-  v8 = [v7 count];
+  deliveryRecords = [(_UIResponderChainFixerUpper *)self deliveryRecords];
+  v8 = [deliveryRecords count];
 
   if (v8)
   {
-    v9 = [(_UIResponderChainFixerUpper *)self deliveryRecords];
-    [v6 appendFormat:@"; currently tracking %lu components>\n", objc_msgSend(v9, "count")];
+    deliveryRecords2 = [(_UIResponderChainFixerUpper *)self deliveryRecords];
+    [v6 appendFormat:@"; currently tracking %lu components>\n", objc_msgSend(deliveryRecords2, "count")];
 
-    v10 = [(_UIResponderChainFixerUpper *)self recursiveDescription];
-    [v6 appendString:v10];
+    recursiveDescription = [(_UIResponderChainFixerUpper *)self recursiveDescription];
+    [v6 appendString:recursiveDescription];
   }
 
   else
@@ -627,47 +627,47 @@ LABEL_26:
   return v6;
 }
 
-- (id)_recursiveDescription:(id)a3
+- (id)_recursiveDescription:(id)description
 {
-  v4 = a3;
-  if (!v4)
+  descriptionCopy = description;
+  if (!descriptionCopy)
   {
     v5 = MEMORY[0x1E695DFD8];
-    v6 = [(_UIResponderChainFixerUpper *)self deliveryRecords];
-    v7 = [v6 keyEnumerator];
-    v8 = [v7 allObjects];
-    v4 = [v5 setWithArray:v8];
+    deliveryRecords = [(_UIResponderChainFixerUpper *)self deliveryRecords];
+    keyEnumerator = [deliveryRecords keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
+    descriptionCopy = [v5 setWithArray:allObjects];
   }
 
-  v9 = [MEMORY[0x1E696AD60] string];
-  v10 = [(_UIResponderChainFixerUpper *)self deliveryRecords];
+  string = [MEMORY[0x1E696AD60] string];
+  deliveryRecords2 = [(_UIResponderChainFixerUpper *)self deliveryRecords];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53___UIResponderChainFixerUpper__recursiveDescription___block_invoke;
   v14[3] = &unk_1E70F35B8;
-  v11 = v9;
+  v11 = string;
   v15 = v11;
-  v16 = self;
-  [(_UIResponderChainFixerUpper *)self _snapshotDeliveryOfComponents:v4 map:v10 block:v14];
+  selfCopy = self;
+  [(_UIResponderChainFixerUpper *)self _snapshotDeliveryOfComponents:descriptionCopy map:deliveryRecords2 block:v14];
 
   v12 = v11;
   return v11;
 }
 
-- (id)_recursiveDescriptionStep:(unint64_t)a3
+- (id)_recursiveDescriptionStep:(unint64_t)step
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = [(_UIResponderChainFixerUpper *)self _nextResponders];
-  if ([v5 count])
+  _nextResponders = [(_UIResponderChainFixerUpper *)self _nextResponders];
+  if ([_nextResponders count])
   {
-    v6 = [v5 count];
-    if (a3 && v6 == 1)
+    v6 = [_nextResponders count];
+    if (step && v6 == 1)
     {
-      v7 = [v5 keyEnumerator];
-      v8 = [v7 nextObject];
+      keyEnumerator = [_nextResponders keyEnumerator];
+      nextObject = [keyEnumerator nextObject];
 
       v9 = objc_opt_new();
-      v10 = v8;
+      v10 = nextObject;
       if (v10)
       {
         v11 = MEMORY[0x1E696AEC0];
@@ -682,7 +682,7 @@ LABEL_26:
       }
 
       [(__CFString *)v9 appendFormat:@" - %@\n", v14];
-      v26 = [(_UIResponderChainFixerUpper *)self _recursiveDescriptionStep:a3 + 1];
+      v26 = [(_UIResponderChainFixerUpper *)self _recursiveDescriptionStep:step + 1];
       [(__CFString *)v9 appendString:v26];
     }
 
@@ -693,7 +693,7 @@ LABEL_26:
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
-      obj = [v5 keyEnumerator];
+      obj = [_nextResponders keyEnumerator];
       v15 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v15)
       {
@@ -709,9 +709,9 @@ LABEL_26:
             }
 
             v18 = *(*(&v37 + 1) + 8 * i);
-            v19 = [v5 objectForKey:v18];
-            [&stru_1EFB14550 stringByPaddingToLength:a3 withString:@" " startingAtIndex:0];
-            v21 = v20 = v5;
+            v19 = [_nextResponders objectForKey:v18];
+            [&stru_1EFB14550 stringByPaddingToLength:step withString:@" " startingAtIndex:0];
+            v21 = v20 = _nextResponders;
             [(__CFString *)v9 appendString:v21];
 
             [(__CFString *)v9 appendString:@" + "];
@@ -727,18 +727,18 @@ LABEL_26:
             [(__CFString *)v9 appendString:v24];
 
             [(__CFString *)v9 appendString:@":\n"];
-            v25 = [(_UIResponderChainFixerUpper *)self currentDelivery];
+            currentDelivery = [(_UIResponderChainFixerUpper *)self currentDelivery];
             v30[0] = MEMORY[0x1E69E9820];
             v30[1] = 3221225472;
             v30[2] = __57___UIResponderChainFixerUpper__recursiveDescriptionStep___block_invoke_2;
             v30[3] = &unk_1E7107CE8;
             v31 = v9;
             v32 = v18;
-            v33 = self;
-            v34 = a3;
-            [(_UIResponderChainFixerUpper *)self _snapshotDeliveryOfComponents:v19 map:v25 block:v30];
+            selfCopy = self;
+            stepCopy = step;
+            [(_UIResponderChainFixerUpper *)self _snapshotDeliveryOfComponents:v19 map:currentDelivery block:v30];
 
-            v5 = v20;
+            _nextResponders = v20;
           }
 
           v16 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];

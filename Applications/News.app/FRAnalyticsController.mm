@@ -1,23 +1,23 @@
 @interface FRAnalyticsController
-- (BOOL)sessionInProgressForID:(id)a3;
+- (BOOL)sessionInProgressForID:(id)d;
 - (FRAnalyticsController)init;
-- (FRAnalyticsController)initWithCloudContext:(id)a3;
+- (FRAnalyticsController)initWithCloudContext:(id)context;
 - (NTPBSession)currentSession;
-- (void)_endAllSessionsWithReason:(int64_t)a3 forSceneID:(id)a4;
+- (void)_endAllSessionsWithReason:(int64_t)reason forSceneID:(id)d;
 - (void)_resetUserID;
 - (void)_restartAllSessions;
-- (void)_startSessionWithReferral:(id)a3 sceneID:(id)a4 restartAllSessions:(BOOL)a5;
-- (void)addAppSessionObserver:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_startSessionWithReferral:(id)referral sceneID:(id)d restartAllSessions:(BOOL)sessions;
+- (void)addAppSessionObserver:(id)observer;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)endSessionForReason:(int64_t)a3 byStartingNewSession:(BOOL)a4 resetUserID:(BOOL)a5 forSceneID:(id)a6;
+- (void)endSessionForReason:(int64_t)reason byStartingNewSession:(BOOL)session resetUserID:(BOOL)d forSceneID:(id)iD;
 - (void)loadOrRegenerateUserID;
 - (void)loadOrRegenerateUserStartDate;
-- (void)notifyWhenUserIDHasBeenDeterminedWithBlock:(id)a3;
-- (void)resignSessionForSceneID:(id)a3;
-- (void)startSessionIfNeededWithReferral:(id)a3 sceneID:(id)a4;
+- (void)notifyWhenUserIDHasBeenDeterminedWithBlock:(id)block;
+- (void)resignSessionForSceneID:(id)d;
+- (void)startSessionIfNeededWithReferral:(id)referral sceneID:(id)d;
 - (void)syncUserStartDate;
-- (void)userInfoDidChangeFeldsparID:(id)a3 fromCloud:(BOOL)a4;
+- (void)userInfoDidChangeFeldsparID:(id)d fromCloud:(BOOL)cloud;
 @end
 
 @implementation FRAnalyticsController
@@ -31,8 +31,8 @@
   }
 
   dispatch_group_enter(v3);
-  v4 = [(FRAnalyticsController *)self cloudContext];
-  v5 = [v4 userInfo];
+  cloudContext = [(FRAnalyticsController *)self cloudContext];
+  userInfo = [cloudContext userInfo];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006460;
@@ -40,21 +40,21 @@
   v7[4] = self;
   v8 = v3;
   v6 = v3;
-  [v5 loadFeldsparIDWithCompletion:v7];
+  [userInfo loadFeldsparIDWithCompletion:v7];
 }
 
 - (void)loadOrRegenerateUserStartDate
 {
   v3 = +[FCAppleAccount sharedAccount];
-  v4 = [v3 isPrivateDataSyncingEnabled];
+  isPrivateDataSyncingEnabled = [v3 isPrivateDataSyncingEnabled];
 
-  v5 = [(FRAnalyticsController *)self cloudContext];
-  v6 = [v5 userInfo];
-  v7 = [v6 userStartDate];
+  cloudContext = [(FRAnalyticsController *)self cloudContext];
+  userInfo = [cloudContext userInfo];
+  userStartDate = [userInfo userStartDate];
 
-  if (!v7)
+  if (!userStartDate)
   {
-    if (v4)
+    if (isPrivateDataSyncingEnabled)
     {
 
       [(FRAnalyticsController *)self syncUserStartDate];
@@ -62,17 +62,17 @@
 
     else
     {
-      v8 = [(FRAnalyticsController *)self lastAppOpenDate];
+      lastAppOpenDate = [(FRAnalyticsController *)self lastAppOpenDate];
 
-      if (!v8 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+      if (!lastAppOpenDate && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         sub_100068548();
       }
 
-      v9 = [(FRAnalyticsController *)self lastAppOpenDate];
-      v10 = [(FRAnalyticsController *)self cloudContext];
-      v11 = [v10 userInfo];
-      [v11 setUserStartDate:v9];
+      lastAppOpenDate2 = [(FRAnalyticsController *)self lastAppOpenDate];
+      cloudContext2 = [(FRAnalyticsController *)self cloudContext];
+      userInfo2 = [cloudContext2 userInfo];
+      [userInfo2 setUserStartDate:lastAppOpenDate2];
     }
   }
 }
@@ -100,10 +100,10 @@
   objc_exception_throw(v4);
 }
 
-- (FRAnalyticsController)initWithCloudContext:(id)a3
+- (FRAnalyticsController)initWithCloudContext:(id)context
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  contextCopy = context;
+  if (!contextCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100068228();
   }
@@ -117,14 +117,14 @@
     sceneSessionDictionary = v6->_sceneSessionDictionary;
     v6->_sceneSessionDictionary = v7;
 
-    objc_storeStrong(&v6->_cloudContext, a3);
+    objc_storeStrong(&v6->_cloudContext, context);
     v6->_isUserIDLoaded = 0;
     v9 = dispatch_group_create();
     userIDDeterminationGroup = v6->_userIDDeterminationGroup;
     v6->_userIDDeterminationGroup = v9;
 
-    v11 = [v5 userInfo];
-    [v11 addObserver:v6];
+    userInfo = [contextCopy userInfo];
+    [userInfo addObserver:v6];
     v12 = +[NSDate date];
     lastAppOpenDate = v6->_lastAppOpenDate;
     v6->_lastAppOpenDate = v12;
@@ -145,9 +145,9 @@
 
 - (void)dealloc
 {
-  v3 = [(FRAnalyticsController *)self cloudContext];
-  v4 = [v3 userInfo];
-  [v4 removeObserver:self];
+  cloudContext = [(FRAnalyticsController *)self cloudContext];
+  userInfo = [cloudContext userInfo];
+  [userInfo removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = FRAnalyticsController;
@@ -164,9 +164,9 @@
   return 0;
 }
 
-- (void)userInfoDidChangeFeldsparID:(id)a3 fromCloud:(BOOL)a4
+- (void)userInfoDidChangeFeldsparID:(id)d fromCloud:(BOOL)cloud
 {
-  if (a4)
+  if (cloud)
   {
     if ([(FRAnalyticsController *)self isUserIDLoaded])
     {
@@ -175,63 +175,63 @@
   }
 }
 
-- (void)notifyWhenUserIDHasBeenDeterminedWithBlock:(id)a3
+- (void)notifyWhenUserIDHasBeenDeterminedWithBlock:(id)block
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  blockCopy = block;
+  if (!blockCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000683C0();
   }
 
-  v5 = [(FRAnalyticsController *)self userIDDeterminationGroup];
-  dispatch_group_notify(v5, &_dispatch_main_q, v4);
+  userIDDeterminationGroup = [(FRAnalyticsController *)self userIDDeterminationGroup];
+  dispatch_group_notify(userIDDeterminationGroup, &_dispatch_main_q, blockCopy);
 }
 
 - (void)syncUserStartDate
 {
-  v3 = [(FRAnalyticsController *)self cloudContext];
-  v4 = [v3 userInfo];
+  cloudContext = [(FRAnalyticsController *)self cloudContext];
+  userInfo = [cloudContext userInfo];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000B214;
   v5[3] = &unk_1000C18F8;
   v5[4] = self;
-  [v4 syncWithCompletion:v5];
+  [userInfo syncWithCompletion:v5];
 }
 
-- (BOOL)sessionInProgressForID:(id)a3
+- (BOOL)sessionInProgressForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   +[NSThread isMainThread];
-  v5 = [(FRAnalyticsController *)self sceneSessionDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  sceneSessionDictionary = [(FRAnalyticsController *)self sceneSessionDictionary];
+  v6 = [sceneSessionDictionary objectForKeyedSubscript:dCopy];
 
   return v6 != 0;
 }
 
-- (void)startSessionIfNeededWithReferral:(id)a3 sceneID:(id)a4
+- (void)startSessionIfNeededWithReferral:(id)referral sceneID:(id)d
 {
-  v7 = a3;
-  v6 = a4;
+  referralCopy = referral;
+  dCopy = d;
   +[NSThread isMainThread];
-  if (![(FRAnalyticsController *)self sessionInProgressForID:v6])
+  if (![(FRAnalyticsController *)self sessionInProgressForID:dCopy])
   {
-    [(FRAnalyticsController *)self _startSessionWithReferral:v7 sceneID:v6 restartAllSessions:0];
+    [(FRAnalyticsController *)self _startSessionWithReferral:referralCopy sceneID:dCopy restartAllSessions:0];
   }
 }
 
-- (void)resignSessionForSceneID:(id)a3
+- (void)resignSessionForSceneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   +[NSThread isMainThread];
-  v5 = [(FRAnalyticsController *)self observers];
-  v6 = [v5 allObjects];
+  observers = [(FRAnalyticsController *)self observers];
+  allObjects = [observers allObjects];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v6;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -249,11 +249,11 @@
         v12 = *(*(&v14 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v13 = [v12 sceneSessionIdentifier];
+          sceneSessionIdentifier = [v12 sceneSessionIdentifier];
 
-          if (v13 == v4)
+          if (sceneSessionIdentifier == dCopy)
           {
-            [v12 performSelector:"sessionWillResignActive" withObject:v4];
+            [v12 performSelector:"sessionWillResignActive" withObject:dCopy];
           }
         }
       }
@@ -265,32 +265,32 @@
   }
 }
 
-- (void)endSessionForReason:(int64_t)a3 byStartingNewSession:(BOOL)a4 resetUserID:(BOOL)a5 forSceneID:(id)a6
+- (void)endSessionForReason:(int64_t)reason byStartingNewSession:(BOOL)session resetUserID:(BOOL)d forSceneID:(id)iD
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
+  dCopy = d;
+  sessionCopy = session;
+  iDCopy = iD;
   +[NSThread isMainThread];
-  if (v10)
+  if (iDCopy)
   {
-    v11 = [(FRAnalyticsController *)self sceneSessionDictionary];
-    v12 = [v11 objectForKeyedSubscript:v10];
+    sceneSessionDictionary = [(FRAnalyticsController *)self sceneSessionDictionary];
+    v12 = [sceneSessionDictionary objectForKeyedSubscript:iDCopy];
 
     if (v12)
     {
-      v13 = a3 == 4 && v7;
-      if (!v13 && !v6)
+      v13 = reason == 4 && sessionCopy;
+      if (!v13 && !dCopy)
       {
-        v29 = v7;
+        v29 = sessionCopy;
         v30 = v12;
-        v14 = [(FRAnalyticsController *)self observers];
-        v15 = [v14 allObjects];
+        observers = [(FRAnalyticsController *)self observers];
+        allObjects = [observers allObjects];
 
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v16 = v15;
+        v16 = allObjects;
         v17 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v17)
         {
@@ -311,12 +311,12 @@
               v23 = *(*(&v31 + 1) + 8 * v21);
               if (objc_opt_respondsToSelector())
               {
-                v24 = [v23 sceneSessionIdentifier];
+                sceneSessionIdentifier = [v23 sceneSessionIdentifier];
 
-                if (v24 == v10)
+                if (sceneSessionIdentifier == iDCopy)
                 {
-                  v26 = [NSNumber numberWithInteger:a3];
-                  [v23 performSelector:v22 withObject:v26 withObject:v10];
+                  v26 = [NSNumber numberWithInteger:reason];
+                  [v23 performSelector:v22 withObject:v26 withObject:iDCopy];
 
                   goto LABEL_23;
                 }
@@ -341,39 +341,39 @@ LABEL_23:
 
         v25 = 0;
         v12 = v30;
-        v6 = 0;
-        v7 = v29;
+        dCopy = 0;
+        sessionCopy = v29;
         goto LABEL_24;
       }
 
 LABEL_21:
-      [(FRAnalyticsController *)self _endAllSessionsWithReason:a3 forSceneID:v10];
+      [(FRAnalyticsController *)self _endAllSessionsWithReason:reason forSceneID:iDCopy];
       v25 = 1;
 LABEL_24:
       v27 = FCAnalyticsLog;
       if (os_log_type_enabled(FCAnalyticsLog, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v36 = v10;
+        v36 = iDCopy;
         v37 = 2112;
         v38 = v12;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Ending analytics session with scene ID session ID: %@, %@", buf, 0x16u);
       }
 
-      if (v6)
+      if (dCopy)
       {
         [(FRAnalyticsController *)self _resetUserID];
       }
 
-      if ((v25 | v7) == 1)
+      if ((v25 | sessionCopy) == 1)
       {
-        [(FRAnalyticsController *)self _startSessionWithReferral:0 sceneID:v10 restartAllSessions:v25];
+        [(FRAnalyticsController *)self _startSessionWithReferral:0 sceneID:iDCopy restartAllSessions:v25];
       }
 
       else
       {
-        v28 = [(FRAnalyticsController *)self sceneSessionDictionary];
-        [v28 setObject:0 forKeyedSubscript:v10];
+        sceneSessionDictionary2 = [(FRAnalyticsController *)self sceneSessionDictionary];
+        [sceneSessionDictionary2 setObject:0 forKeyedSubscript:iDCopy];
       }
 
       goto LABEL_33;
@@ -382,13 +382,13 @@ LABEL_24:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_1000686D0();
-      if (v6)
+      if (dCopy)
       {
         goto LABEL_21;
       }
     }
 
-    else if (v6)
+    else if (dCopy)
     {
       goto LABEL_21;
     }
@@ -403,17 +403,17 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)_endAllSessionsWithReason:(int64_t)a3 forSceneID:(id)a4
+- (void)_endAllSessionsWithReason:(int64_t)reason forSceneID:(id)d
 {
-  [NSThread isMainThread:a3];
-  v6 = [(FRAnalyticsController *)self appSessionObservers];
-  v7 = [v6 allObjects];
+  [NSThread isMainThread:reason];
+  appSessionObservers = [(FRAnalyticsController *)self appSessionObservers];
+  allObjects = [appSessionObservers allObjects];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v7;
+  v8 = allObjects;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -431,7 +431,7 @@ LABEL_34:
         v13 = *(*(&v15 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v14 = [NSNumber numberWithInteger:a3, v15];
+          v14 = [NSNumber numberWithInteger:reason, v15];
           [v13 performSelector:"endAppSessionWithEndReason:" withObject:v14];
         }
       }
@@ -443,21 +443,21 @@ LABEL_34:
   }
 }
 
-- (void)_startSessionWithReferral:(id)a3 sceneID:(id)a4 restartAllSessions:(BOOL)a5
+- (void)_startSessionWithReferral:(id)referral sceneID:(id)d restartAllSessions:(BOOL)sessions
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  sessionsCopy = sessions;
+  referralCopy = referral;
+  dCopy = d;
   +[NSThread isMainThread];
-  if (v5)
+  if (sessionsCopy)
   {
-    v10 = [(FRAnalyticsController *)self sceneSessionDictionary];
+    sceneSessionDictionary = [(FRAnalyticsController *)self sceneSessionDictionary];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_10000BD84;
     v37[3] = &unk_1000C1948;
     v37[4] = self;
-    [v10 enumerateKeysAndObjectsUsingBlock:v37];
+    [sceneSessionDictionary enumerateKeysAndObjectsUsingBlock:v37];
 
     [(FRAnalyticsController *)self _restartAllSessions];
   }
@@ -465,18 +465,18 @@ LABEL_34:
   else
   {
     v11 = +[NSUUID UUID];
-    v12 = [v11 UUIDString];
+    uUIDString = [v11 UUIDString];
 
-    v13 = [(FRAnalyticsController *)self sceneSessionDictionary];
-    [v13 setObject:v12 forKeyedSubscript:v9];
+    sceneSessionDictionary2 = [(FRAnalyticsController *)self sceneSessionDictionary];
+    [sceneSessionDictionary2 setObject:uUIDString forKeyedSubscript:dCopy];
 
-    v14 = [v8 referringURL];
+    referringURL = [referralCopy referringURL];
 
-    if (v14)
+    if (referringURL)
     {
       v15 = [NSURL alloc];
-      v16 = [v8 referringURL];
-      v32 = [v15 initWithString:v16];
+      referringURL2 = [referralCopy referringURL];
+      v32 = [v15 initWithString:referringURL2];
     }
 
     else
@@ -484,14 +484,14 @@ LABEL_34:
       v32 = 0;
     }
 
-    v17 = [(FRAnalyticsController *)self observers];
-    v18 = [v17 allObjects];
+    observers = [(FRAnalyticsController *)self observers];
+    allObjects = [observers allObjects];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v19 = v18;
+    v19 = allObjects;
     v20 = [v19 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v20)
     {
@@ -512,14 +512,14 @@ LABEL_34:
           v26 = *(*(&v33 + 1) + 8 * v24);
           if (objc_opt_respondsToSelector())
           {
-            v27 = [v26 sceneSessionIdentifier];
+            sceneSessionIdentifier = [v26 sceneSessionIdentifier];
 
-            if (v27 == v9)
+            if (sceneSessionIdentifier == dCopy)
             {
-              v28 = [(FRAnalyticsController *)self sceneSessionDictionary];
-              v29 = [v28 objectForKeyedSubscript:v9];
-              v30 = [v31 referringApplication];
-              [v26 sessionDidStartWithSessionID:v29 sourceApplication:v30 url:v32];
+              sceneSessionDictionary3 = [(FRAnalyticsController *)self sceneSessionDictionary];
+              v29 = [sceneSessionDictionary3 objectForKeyedSubscript:dCopy];
+              referringApplication = [v31 referringApplication];
+              [v26 sessionDidStartWithSessionID:v29 sourceApplication:referringApplication url:v32];
 
               goto LABEL_17;
             }
@@ -542,22 +542,22 @@ LABEL_34:
 
 LABEL_17:
 
-    v8 = v31;
+    referralCopy = v31;
   }
 }
 
 - (void)_restartAllSessions
 {
   +[NSThread isMainThread];
-  v27 = self;
-  v3 = [(FRAnalyticsController *)self appSessionObservers];
-  v4 = [v3 allObjects];
+  selfCopy = self;
+  appSessionObservers = [(FRAnalyticsController *)self appSessionObservers];
+  allObjects = [appSessionObservers allObjects];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = v4;
+  v5 = allObjects;
   v6 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v6)
   {
@@ -588,14 +588,14 @@ LABEL_17:
 
   v26 = v5;
 
-  v12 = [(FRAnalyticsController *)v27 observers];
-  v13 = [v12 allObjects];
+  observers = [(FRAnalyticsController *)selfCopy observers];
+  allObjects2 = [observers allObjects];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = v13;
+  v14 = allObjects2;
   v15 = [v14 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v15)
   {
@@ -611,17 +611,17 @@ LABEL_17:
         }
 
         v19 = *(*(&v28 + 1) + 8 * j);
-        v20 = [v19 sceneSessionIdentifier];
+        sceneSessionIdentifier = [v19 sceneSessionIdentifier];
         if (objc_opt_respondsToSelector())
         {
-          v21 = [(FRAnalyticsController *)v27 sceneSessionDictionary];
-          v22 = [v21 allKeys];
-          v23 = [v22 containsObject:v20];
+          sceneSessionDictionary = [(FRAnalyticsController *)selfCopy sceneSessionDictionary];
+          allKeys = [sceneSessionDictionary allKeys];
+          v23 = [allKeys containsObject:sceneSessionIdentifier];
 
           if (v23)
           {
-            v24 = [(FRAnalyticsController *)v27 sceneSessionDictionary];
-            v25 = [v24 objectForKeyedSubscript:v20];
+            sceneSessionDictionary2 = [(FRAnalyticsController *)selfCopy sceneSessionDictionary];
+            v25 = [sceneSessionDictionary2 objectForKeyedSubscript:sceneSessionIdentifier];
             [v19 sessionDidStartWithSessionID:v25 sourceApplication:0 url:0];
           }
         }
@@ -636,25 +636,25 @@ LABEL_17:
 
 - (void)_resetUserID
 {
-  v3 = [(FRAnalyticsController *)self cloudContext];
-  v2 = [v3 userInfo];
-  [v2 resetUserIDs];
+  cloudContext = [(FRAnalyticsController *)self cloudContext];
+  userInfo = [cloudContext userInfo];
+  [userInfo resetUserIDs];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   +[NSThread isMainThread];
-  v5 = [(FRAnalyticsController *)self observers];
-  [v5 addObject:v4];
+  observers = [(FRAnalyticsController *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)addAppSessionObserver:(id)a3
+- (void)addAppSessionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   +[NSThread isMainThread];
-  v5 = [(FRAnalyticsController *)self appSessionObservers];
-  [v5 addObject:v4];
+  appSessionObservers = [(FRAnalyticsController *)self appSessionObservers];
+  [appSessionObservers addObject:observerCopy];
 }
 
 @end

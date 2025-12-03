@@ -1,16 +1,16 @@
 @interface BRInterface
 + (id)interfaces;
-- (BOOL)disableStates:(id)a3 clearAsset:(BOOL)a4 error:(id *)a5;
-- (BOOL)enableStates:(id)a3 error:(id *)a4;
-- (BOOL)playState:(unint64_t)a3 forSpeed:(unint64_t)a4 error:(id *)a5;
-- (BOOL)setConfigs:(id)a3 withAssets:(id)a4 forStates:(id)a5 error:(id *)a6;
-- (BOOL)setGlobalConfigs:(id)a3 error:(id *)a4;
+- (BOOL)disableStates:(id)states clearAsset:(BOOL)asset error:(id *)error;
+- (BOOL)enableStates:(id)states error:(id *)error;
+- (BOOL)playState:(unint64_t)state forSpeed:(unint64_t)speed error:(id *)error;
+- (BOOL)setConfigs:(id)configs withAssets:(id)assets forStates:(id)states error:(id *)error;
+- (BOOL)setGlobalConfigs:(id)configs error:(id *)error;
 - (BRInterface)init;
 - (id)description;
 - (id)propertyList;
 - (void)dealloc;
 - (void)init;
-- (void)timestampWithLabel:(id)a3;
+- (void)timestampWithLabel:(id)label;
 @end
 
 @implementation BRInterface
@@ -47,9 +47,9 @@
   v7.receiver = self;
   v7.super_class = BRInterface;
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:{-[BRInterface description](&v7, sel_description)}];
-  v4 = [(BRInterface *)self isReady];
+  isReady = [(BRInterface *)self isReady];
   v5 = "N";
-  if (v4)
+  if (isReady)
   {
     v5 = "Y";
   }
@@ -63,20 +63,20 @@
 
 - (id)propertyList
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(BRInterface *)self isReady];
+  isReady = [(BRInterface *)self isReady];
   v6 = "N";
-  if (v5)
+  if (isReady)
   {
     v6 = "Y";
   }
 
-  [v3 setObject:objc_msgSend(v4 forKey:{"stringWithFormat:", @"%s;", v6), @"IsReady"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", -[BRInterface maxAssetSlots](self, "maxAssetSlots")), @"MaxSlots"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", -[BRInterface unusedAssetSlots](self, "unusedAssetSlots")), @"UnusedSlots"}];
-  [v3 setObject:self->_timestampDict forKey:@"RecentActionTimestamps"];
-  return v3;
+  [dictionary setObject:objc_msgSend(v4 forKey:{"stringWithFormat:", @"%s;", v6), @"IsReady"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", -[BRInterface maxAssetSlots](self, "maxAssetSlots")), @"MaxSlots"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", -[BRInterface unusedAssetSlots](self, "unusedAssetSlots")), @"UnusedSlots"}];
+  [dictionary setObject:self->_timestampDict forKey:@"RecentActionTimestamps"];
+  return dictionary;
 }
 
 + (id)interfaces
@@ -97,66 +97,66 @@
   return v2;
 }
 
-- (BOOL)setGlobalConfigs:(id)a3 error:(id *)a4
+- (BOOL)setGlobalConfigs:(id)configs error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (BOOL)setConfigs:(id)a3 withAssets:(id)a4 forStates:(id)a5 error:(id *)a6
+- (BOOL)setConfigs:(id)configs withAssets:(id)assets forStates:(id)states error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (BOOL)enableStates:(id)a3 error:(id *)a4
+- (BOOL)enableStates:(id)states error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (BOOL)disableStates:(id)a3 clearAsset:(BOOL)a4 error:(id *)a5
+- (BOOL)disableStates:(id)states clearAsset:(BOOL)asset error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (BOOL)playState:(unint64_t)a3 forSpeed:(unint64_t)a4 error:(id *)a5
+- (BOOL)playState:(unint64_t)state forSpeed:(unint64_t)speed error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (void)timestampWithLabel:(id)a3
+- (void)timestampWithLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v5 = MEMORY[0x277CCABB0];
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v6 = [v5 numberWithDouble:?];
     timestampDict = self->_timestampDict;
 
-    [(NSMutableDictionary *)timestampDict setObject:v6 forKeyedSubscript:a3];
+    [(NSMutableDictionary *)timestampDict setObject:v6 forKeyedSubscript:label];
   }
 }
 

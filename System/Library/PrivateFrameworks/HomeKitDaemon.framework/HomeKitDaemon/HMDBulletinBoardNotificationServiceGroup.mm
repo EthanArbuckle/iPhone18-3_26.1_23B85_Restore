@@ -1,36 +1,36 @@
 @interface HMDBulletinBoardNotificationServiceGroup
 + (id)logCategory;
-- (BOOL)_isAlarmService:(id)a3;
-- (BOOL)_isDefaultRoom:(id)a3 ofHome:(id)a4;
-- (BOOL)_isNotificationGeneratingService:(id)a3;
-- (BOOL)_isSupportedAssociationService:(id)a3;
+- (BOOL)_isAlarmService:(id)service;
+- (BOOL)_isDefaultRoom:(id)room ofHome:(id)home;
+- (BOOL)_isNotificationGeneratingService:(id)service;
+- (BOOL)_isSupportedAssociationService:(id)service;
 - (HMDBulletinBoardNotification)bulletinBoardNotification;
-- (HMDBulletinBoardNotificationServiceGroup)initWithBulletinBoardNotification:(id)a3;
-- (HMDBulletinBoardNotificationServiceGroup)initWithCoder:(id)a3;
+- (HMDBulletinBoardNotificationServiceGroup)initWithBulletinBoardNotification:(id)notification;
+- (HMDBulletinBoardNotificationServiceGroup)initWithCoder:(id)coder;
 - (NSArray)associatedServices;
 - (NSArray)cameraProfiles;
 - (NSHashTable)associatedServicesTable;
 - (NSHashTable)cameraProfilesTable;
 - (NSSet)associatedServiceUUIDs;
 - (NSSet)cameraProfileUUIDs;
-- (id)_accessoriesInRoom:(id)a3 ofHome:(id)a4;
-- (id)_cameraNotificationGeneratingServicesForAccessory:(id)a3;
-- (id)_cameraProfileWithID:(id)a3;
+- (id)_accessoriesInRoom:(id)room ofHome:(id)home;
+- (id)_cameraNotificationGeneratingServicesForAccessory:(id)accessory;
+- (id)_cameraProfileWithID:(id)d;
 - (id)_prepareServiceGroupPayload;
-- (id)actionContextForCameraProfileID:(id)a3;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)actionContextForCameraProfileID:(id)d;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)logIdentifier;
 - (void)_configureServices;
-- (void)_handleBulletinBoardNotificationServiceGroupRequest:(id)a3;
-- (void)_updateAssociatedServices:(id)a3 associatedCameras:(id)a4;
-- (void)_updateAssociatedServicesTable:(id)a3;
+- (void)_handleBulletinBoardNotificationServiceGroupRequest:(id)request;
+- (void)_updateAssociatedServices:(id)services associatedCameras:(id)cameras;
+- (void)_updateAssociatedServicesTable:(id)table;
 - (void)configureBulletinNotification;
-- (void)configureWithWorkQueue:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAssociatedServiceUUIDs:(id)a3;
-- (void)setAssociatedServicesTable:(id)a3;
-- (void)setCameraProfileUUIDs:(id)a3;
-- (void)setCameraProfilesTable:(id)a3;
+- (void)configureWithWorkQueue:(id)queue;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAssociatedServiceUUIDs:(id)ds;
+- (void)setAssociatedServicesTable:(id)table;
+- (void)setCameraProfileUUIDs:(id)ds;
+- (void)setCameraProfilesTable:(id)table;
 @end
 
 @implementation HMDBulletinBoardNotificationServiceGroup
@@ -42,26 +42,26 @@
   return WeakRetained;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDBulletinBoardNotificationServiceGroup *)self bulletinBoardNotification];
-  [v4 encodeConditionalObject:v5 forKey:@"HM.BulletinBoardNotification"];
+  coderCopy = coder;
+  bulletinBoardNotification = [(HMDBulletinBoardNotificationServiceGroup *)self bulletinBoardNotification];
+  [coderCopy encodeConditionalObject:bulletinBoardNotification forKey:@"HM.BulletinBoardNotification"];
 
-  v6 = [(HMDBulletinBoardNotificationServiceGroup *)self cameraProfileUUIDs];
-  v7 = [v6 allObjects];
-  [v4 encodeObject:v7 forKey:@"HM.BulletinBoardNotificationCameraProfiles"];
+  cameraProfileUUIDs = [(HMDBulletinBoardNotificationServiceGroup *)self cameraProfileUUIDs];
+  allObjects = [cameraProfileUUIDs allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"HM.BulletinBoardNotificationCameraProfiles"];
 
-  v9 = [(HMDBulletinBoardNotificationServiceGroup *)self associatedServiceUUIDs];
-  v8 = [v9 allObjects];
-  [v4 encodeObject:v8 forKey:@"HM.BulletinBoardNotificationServices"];
+  associatedServiceUUIDs = [(HMDBulletinBoardNotificationServiceGroup *)self associatedServiceUUIDs];
+  allObjects2 = [associatedServiceUUIDs allObjects];
+  [coderCopy encodeObject:allObjects2 forKey:@"HM.BulletinBoardNotificationServices"];
 }
 
-- (HMDBulletinBoardNotificationServiceGroup)initWithCoder:(id)a3
+- (HMDBulletinBoardNotificationServiceGroup)initWithCoder:(id)coder
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.BulletinBoardNotification"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.BulletinBoardNotification"];
   if (v5)
   {
     v6 = [(HMDBulletinBoardNotificationServiceGroup *)self initWithBulletinBoardNotification:v5];
@@ -72,7 +72,7 @@
       v27[1] = objc_opt_class();
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
       v9 = [v7 setWithArray:v8];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"HM.BulletinBoardNotificationCameraProfiles"];
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"HM.BulletinBoardNotificationCameraProfiles"];
 
       v11 = [MEMORY[0x277CBEB98] setWithArray:v10];
       cameraProfileUUIDs = v6->_cameraProfileUUIDs;
@@ -83,21 +83,21 @@
       v26[1] = objc_opt_class();
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
       v15 = [v13 setWithArray:{v14, v26[0]}];
-      v16 = [v4 decodeObjectOfClasses:v15 forKey:@"HM.BulletinBoardNotificationServices"];
+      v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"HM.BulletinBoardNotificationServices"];
 
       v17 = [MEMORY[0x277CBEB98] setWithArray:v16];
       associatedServiceUUIDs = v6->_associatedServiceUUIDs;
       v6->_associatedServiceUUIDs = v17;
     }
 
-    v19 = v6;
-    v20 = v19;
+    selfCopy = v6;
+    v20 = selfCopy;
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -119,20 +119,20 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBulletinBoardNotificationServiceGroup *)self bulletinBoardNotification];
-  v3 = [v2 logIdentifier];
+  bulletinBoardNotification = [(HMDBulletinBoardNotificationServiceGroup *)self bulletinBoardNotification];
+  logIdentifier = [bulletinBoardNotification logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (id)actionContextForCameraProfileID:(id)a3
+- (id)actionContextForCameraProfileID:(id)d
 {
   v105 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDBulletinBoardNotificationServiceGroup *)self _cameraProfileWithID:v4];
+  dCopy = d;
+  v5 = [(HMDBulletinBoardNotificationServiceGroup *)self _cameraProfileWithID:dCopy];
   if (v5)
   {
-    v6 = [(HMDBulletinBoardNotificationServiceGroup *)self associatedServices];
+    associatedServices = [(HMDBulletinBoardNotificationServiceGroup *)self associatedServices];
     v7 = objc_opt_new();
     v8 = 0x277CBE000uLL;
     if (![v5 isMicrophonePresent])
@@ -140,10 +140,10 @@
       goto LABEL_4;
     }
 
-    v9 = [(HMDBulletinBoardNotificationServiceGroup *)self bulletinBoardNotification];
-    v10 = [v9 service];
-    v11 = [v10 type];
-    v12 = [v11 isEqualToString:*MEMORY[0x277CFE8D8]];
+    bulletinBoardNotification = [(HMDBulletinBoardNotificationServiceGroup *)self bulletinBoardNotification];
+    service = [bulletinBoardNotification service];
+    type = [service type];
+    v12 = [type isEqualToString:*MEMORY[0x277CFE8D8]];
 
     if ((v12 & 1) == 0)
     {
@@ -175,36 +175,36 @@ LABEL_4:
     v91[3] = &unk_27866F768;
     v22 = v21;
     v92 = v22;
-    v80 = v6;
-    [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v91];
+    v80 = associatedServices;
+    [associatedServices hmf_enumerateWithAutoreleasePoolUsingBlock:v91];
     v23 = *MEMORY[0x277CFE878];
     v24 = [v22 objectForKeyedSubscript:*MEMORY[0x277CFE878]];
     v81 = v5;
-    v82 = v4;
+    v82 = dCopy;
     v83 = v7;
     v84 = v22;
     if ([v24 count])
     {
-      v25 = [v5 accessory];
-      v26 = [v25 home];
-      v27 = [MEMORY[0x277CBEAA8] date];
-      v28 = v26;
-      v29 = v27;
+      accessory = [v5 accessory];
+      home = [accessory home];
+      date = [MEMORY[0x277CBEAA8] date];
+      v28 = home;
+      v29 = date;
       v30 = v29;
       if (v28)
       {
-        v31 = v29;
+        date2 = v29;
         if (!v29)
         {
-          v31 = [MEMORY[0x277CBEAA8] date];
+          date2 = [MEMORY[0x277CBEAA8] date];
         }
 
-        v32 = [v28 homeLocationHandler];
-        v33 = [v32 location];
+        homeLocationHandler = [v28 homeLocationHandler];
+        location = [homeLocationHandler location];
 
-        v34 = [HMDLocation sunriseTimeForLocation:v33];
-        v35 = [HMDLocation sunsetTimeForLocation:v33];
-        [v31 timeIntervalSince1970];
+        v34 = [HMDLocation sunriseTimeForLocation:location];
+        v35 = [HMDLocation sunsetTimeForLocation:location];
+        [date2 timeIntervalSince1970];
         v37 = v36;
         [v35 timeIntervalSince1970];
         v39 = v38;
@@ -253,25 +253,25 @@ LABEL_42:
             v94[0] = @"HomeAppBulletinCategory";
             v94[1] = v55;
             v93[2] = *MEMORY[0x277CCF308];
-            v69 = [v5 contextSPIUniqueIdentifier];
-            [v69 UUIDString];
+            contextSPIUniqueIdentifier = [v5 contextSPIUniqueIdentifier];
+            [contextSPIUniqueIdentifier UUIDString];
             v71 = v70 = v55;
             v93[3] = @"dismissButton";
             v94[2] = v71;
             v94[3] = v68;
             v17 = [*(v56 + 2752) dictionaryWithObjects:v94 forKeys:v93 count:4];
 
-            v4 = v82;
+            dCopy = v82;
             goto LABEL_43;
           }
 
-          v57 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v58 = [v84 objectForKeyedSubscript:v47];
           v87[0] = MEMORY[0x277D85DD0];
           v87[1] = 3221225472;
           v87[2] = __76__HMDBulletinBoardNotificationServiceGroup_actionContextForCameraProfileID___block_invoke_3;
           v87[3] = &unk_27866F790;
-          v59 = v57;
+          v59 = array;
           v88 = v59;
           [v58 hmf_enumerateWithAutoreleasePoolUsingBlock:v87];
           v60 = [v84 objectForKeyedSubscript:v50];
@@ -352,12 +352,12 @@ LABEL_40:
       }
 
       v24 = [v22 objectForKeyedSubscript:v23];
-      v42 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       v89[0] = MEMORY[0x277D85DD0];
       v89[1] = 3221225472;
       v89[2] = __76__HMDBulletinBoardNotificationServiceGroup_actionContextForCameraProfileID___block_invoke_2;
       v89[3] = &unk_27866F790;
-      v43 = v42;
+      v43 = array2;
       v90 = v43;
       [v24 hmf_enumerateWithAutoreleasePoolUsingBlock:v89];
       v44 = *MEMORY[0x277CFE7F8];
@@ -390,7 +390,7 @@ LABEL_40:
   }
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
@@ -398,7 +398,7 @@ LABEL_40:
     *buf = 138543618;
     v102 = v16;
     v103 = 2112;
-    v104 = v4;
+    v104 = dCopy;
     _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@Could not find the camera profile with unique id %@, not providing any context", buf, 0x16u);
   }
 
@@ -454,22 +454,22 @@ void __76__HMDBulletinBoardNotificationServiceGroup_actionContextForCameraProfil
   [v2 addObject:v3];
 }
 
-- (id)_cameraProfileWithID:(id)a3
+- (id)_cameraProfileWithID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDBulletinBoardNotificationServiceGroup *)self cameraProfiles];
+  dCopy = d;
+  cameraProfiles = [(HMDBulletinBoardNotificationServiceGroup *)self cameraProfiles];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__HMDBulletinBoardNotificationServiceGroup__cameraProfileWithID___block_invoke;
   v15[3] = &unk_27866F740;
-  v6 = v4;
+  v6 = dCopy;
   v16 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v15];
+  v7 = [cameraProfiles indexOfObjectPassingTest:v15];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -487,7 +487,7 @@ void __76__HMDBulletinBoardNotificationServiceGroup_actionContextForCameraProfil
 
   else
   {
-    v12 = [v5 objectAtIndex:v7];
+    v12 = [cameraProfiles objectAtIndex:v7];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -503,17 +503,17 @@ uint64_t __65__HMDBulletinBoardNotificationServiceGroup__cameraProfileWithID___b
   return v4;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [(HMDBulletinBoardNotificationServiceGroup *)self associatedServices];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  associatedServices = [(HMDBulletinBoardNotificationServiceGroup *)self associatedServices];
+  v7 = [associatedServices countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -524,27 +524,27 @@ uint64_t __65__HMDBulletinBoardNotificationServiceGroup__cameraProfileWithID___b
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(associatedServices);
         }
 
         v11 = [*(*(&v25 + 1) + 8 * i) description];
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v8 = [associatedServices countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v8);
   }
 
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277D0F078]];
-  v12 = [MEMORY[0x277CBEB18] array];
+  [dictionary setObject:array forKeyedSubscript:*MEMORY[0x277D0F078]];
+  array2 = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [(HMDBulletinBoardNotificationServiceGroup *)self cameraProfiles];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  cameraProfiles = [(HMDBulletinBoardNotificationServiceGroup *)self cameraProfiles];
+  v14 = [cameraProfiles countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v14)
   {
     v15 = v14;
@@ -555,49 +555,49 @@ uint64_t __65__HMDBulletinBoardNotificationServiceGroup__cameraProfileWithID___b
       {
         if (*v22 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(cameraProfiles);
         }
 
         v18 = [*(*(&v21 + 1) + 8 * j) description];
-        [v12 addObject:v18];
+        [array2 addObject:v18];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v15 = [cameraProfiles countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v15);
   }
 
-  [v4 setObject:v12 forKeyedSubscript:*MEMORY[0x277D0F068]];
+  [dictionary setObject:array2 forKeyedSubscript:*MEMORY[0x277D0F068]];
   v19 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
 - (NSArray)cameraProfiles
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSHashTable *)self->_cameraProfilesTable allObjects];
+  allObjects = [(NSHashTable *)self->_cameraProfilesTable allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)associatedServices
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSHashTable *)self->_associatedServicesTable allObjects];
+  allObjects = [(NSHashTable *)self->_associatedServicesTable allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
-- (void)setAssociatedServicesTable:(id)a3
+- (void)setAssociatedServicesTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   os_unfair_lock_lock_with_options();
   associatedServicesTable = self->_associatedServicesTable;
-  self->_associatedServicesTable = v4;
+  self->_associatedServicesTable = tableCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -611,12 +611,12 @@ uint64_t __65__HMDBulletinBoardNotificationServiceGroup__cameraProfileWithID___b
   return v3;
 }
 
-- (void)setCameraProfilesTable:(id)a3
+- (void)setCameraProfilesTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   os_unfair_lock_lock_with_options();
   cameraProfilesTable = self->_cameraProfilesTable;
-  self->_cameraProfilesTable = v4;
+  self->_cameraProfilesTable = tableCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -630,11 +630,11 @@ uint64_t __65__HMDBulletinBoardNotificationServiceGroup__cameraProfileWithID___b
   return v3;
 }
 
-- (void)setAssociatedServiceUUIDs:(id)a3
+- (void)setAssociatedServiceUUIDs:(id)ds
 {
-  v6 = a3;
+  dsCopy = ds;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [dsCopy copy];
   associatedServiceUUIDs = self->_associatedServiceUUIDs;
   self->_associatedServiceUUIDs = v4;
 
@@ -650,11 +650,11 @@ uint64_t __65__HMDBulletinBoardNotificationServiceGroup__cameraProfileWithID___b
   return v3;
 }
 
-- (void)setCameraProfileUUIDs:(id)a3
+- (void)setCameraProfileUUIDs:(id)ds
 {
-  v6 = a3;
+  dsCopy = ds;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [dsCopy copy];
   cameraProfileUUIDs = self->_cameraProfileUUIDs;
   self->_cameraProfileUUIDs = v4;
 
@@ -673,16 +673,16 @@ uint64_t __65__HMDBulletinBoardNotificationServiceGroup__cameraProfileWithID___b
 - (id)_prepareServiceGroupPayload
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDBulletinBoardNotificationServiceGroup *)self cameraProfileUUIDs];
-  v4 = [v3 allObjects];
+  cameraProfileUUIDs = [(HMDBulletinBoardNotificationServiceGroup *)self cameraProfileUUIDs];
+  allObjects = [cameraProfileUUIDs allObjects];
 
-  v5 = [(HMDBulletinBoardNotificationServiceGroup *)self associatedServiceUUIDs];
-  v6 = [v5 allObjects];
+  associatedServiceUUIDs = [(HMDBulletinBoardNotificationServiceGroup *)self associatedServiceUUIDs];
+  allObjects2 = [associatedServiceUUIDs allObjects];
 
   v10[0] = @"HM.BulletinBoardNotificationCameraProfiles";
   v10[1] = @"HM.BulletinBoardNotificationServices";
-  v11[0] = v4;
-  v11[1] = v6;
+  v11[0] = allObjects;
+  v11[1] = allObjects2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -690,17 +690,17 @@ uint64_t __65__HMDBulletinBoardNotificationServiceGroup__cameraProfileWithID___b
   return v7;
 }
 
-- (void)_updateAssociatedServicesTable:(id)a3
+- (void)_updateAssociatedServicesTable:(id)table
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  tableCopy = table;
+  weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v4 allValues];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [tableCopy allValues];
+  v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -712,58 +712,58 @@ uint64_t __65__HMDBulletinBoardNotificationServiceGroup__cameraProfileWithID___b
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        [v5 addObject:*(*(&v12 + 1) + 8 * v10++)];
+        [weakObjectsHashTable addObject:*(*(&v12 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 
-  [(HMDBulletinBoardNotificationServiceGroup *)self setAssociatedServicesTable:v5];
+  [(HMDBulletinBoardNotificationServiceGroup *)self setAssociatedServicesTable:weakObjectsHashTable];
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAssociatedServices:(id)a3 associatedCameras:(id)a4
+- (void)_updateAssociatedServices:(id)services associatedCameras:(id)cameras
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  servicesCopy = services;
+  camerasCopy = cameras;
   v8 = MEMORY[0x277CBEB98];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [camerasCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = MEMORY[0x277CBEB98];
-  v12 = [v6 allKeys];
-  v13 = [v11 setWithArray:v12];
+  allKeys2 = [servicesCopy allKeys];
+  v13 = [v11 setWithArray:allKeys2];
 
-  v14 = [(HMDBulletinBoardNotificationServiceGroup *)self associatedServiceUUIDs];
-  v15 = [v14 isEqualToSet:v13];
+  associatedServiceUUIDs = [(HMDBulletinBoardNotificationServiceGroup *)self associatedServiceUUIDs];
+  v15 = [associatedServiceUUIDs isEqualToSet:v13];
 
-  v50 = v6;
+  v50 = servicesCopy;
   if (v15)
   {
-    v16 = [(HMDBulletinBoardNotificationServiceGroup *)self associatedServicesTable];
-    v17 = [v16 count];
+    associatedServicesTable = [(HMDBulletinBoardNotificationServiceGroup *)self associatedServicesTable];
+    v17 = [associatedServicesTable count];
 
     if (v17)
     {
       goto LABEL_8;
     }
 
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
     [(HMDBulletinBoardNotificationServiceGroup *)self setAssociatedServiceUUIDs:v13];
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -774,23 +774,23 @@ uint64_t __65__HMDBulletinBoardNotificationServiceGroup__cameraProfileWithID___b
       v62 = v13;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@Updating associated services with %@", buf, 0x16u);
 
-      v6 = v50;
+      servicesCopy = v50;
     }
 
     objc_autoreleasePoolPop(v19);
-    v18 = v20;
+    selfCopy = selfCopy2;
   }
 
-  [(HMDBulletinBoardNotificationServiceGroup *)v18 _updateAssociatedServicesTable:v6];
+  [(HMDBulletinBoardNotificationServiceGroup *)selfCopy _updateAssociatedServicesTable:servicesCopy];
 LABEL_8:
-  v23 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v49 = v7;
-  v24 = [v7 allValues];
-  v25 = [v24 countByEnumeratingWithState:&v54 objects:v58 count:16];
+  v49 = camerasCopy;
+  allValues = [camerasCopy allValues];
+  v25 = [allValues countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v25)
   {
     v26 = v25;
@@ -801,27 +801,27 @@ LABEL_8:
       {
         if (*v55 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(allValues);
         }
 
-        v29 = [*(*(&v54 + 1) + 8 * i) cameraProfile];
-        [v23 addObject:v29];
+        cameraProfile = [*(*(&v54 + 1) + 8 * i) cameraProfile];
+        [weakObjectsHashTable addObject:cameraProfile];
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v54 objects:v58 count:16];
+      v26 = [allValues countByEnumeratingWithState:&v54 objects:v58 count:16];
     }
 
     while (v26);
   }
 
-  v30 = [(HMDBulletinBoardNotificationServiceGroup *)self bulletinBoardNotification];
-  v31 = [(HMDBulletinBoardNotificationServiceGroup *)self cameraProfileUUIDs];
-  v32 = [v31 isEqualToSet:v10];
+  bulletinBoardNotification = [(HMDBulletinBoardNotificationServiceGroup *)self bulletinBoardNotification];
+  cameraProfileUUIDs = [(HMDBulletinBoardNotificationServiceGroup *)self cameraProfileUUIDs];
+  v32 = [cameraProfileUUIDs isEqualToSet:v10];
 
   if ((v32 & 1) == 0)
   {
     v40 = objc_autoreleasePoolPush();
-    v41 = self;
+    selfCopy3 = self;
     v42 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
     {
@@ -834,31 +834,31 @@ LABEL_8:
     }
 
     objc_autoreleasePoolPop(v40);
-    [(HMDBulletinBoardNotificationServiceGroup *)v41 setCameraProfileUUIDs:v10];
-    [(HMDBulletinBoardNotificationServiceGroup *)v41 setCameraProfilesTable:v23];
-    [v30 updateRegistrations];
+    [(HMDBulletinBoardNotificationServiceGroup *)selfCopy3 setCameraProfileUUIDs:v10];
+    [(HMDBulletinBoardNotificationServiceGroup *)selfCopy3 setCameraProfilesTable:weakObjectsHashTable];
+    [bulletinBoardNotification updateRegistrations];
     v35 = v50;
     goto LABEL_25;
   }
 
-  v33 = [(HMDBulletinBoardNotificationServiceGroup *)self cameraProfilesTable];
+  cameraProfilesTable = [(HMDBulletinBoardNotificationServiceGroup *)self cameraProfilesTable];
   v34 = HMFEqualObjects();
 
   if ((v34 & 1) == 0)
   {
-    [(HMDBulletinBoardNotificationServiceGroup *)self setCameraProfilesTable:v23];
+    [(HMDBulletinBoardNotificationServiceGroup *)self setCameraProfilesTable:weakObjectsHashTable];
   }
 
   v35 = v50;
   if ((v15 & 1) == 0)
   {
 LABEL_25:
-    v44 = [v30 service];
-    v45 = [v44 accessory];
-    v46 = [v45 home];
+    service = [bulletinBoardNotification service];
+    accessory = [service accessory];
+    home = [accessory home];
 
-    [v46 saveWithReason:@"HMDBulletinBoardNotificationServiceGroupUpdatedSaveReason" postSyncNotification:0];
-    v47 = [v46 accessoryBulletinNotificationManager];
+    [home saveWithReason:@"HMDBulletinBoardNotificationServiceGroupUpdatedSaveReason" postSyncNotification:0];
+    accessoryBulletinNotificationManager = [home accessoryBulletinNotificationManager];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __88__HMDBulletinBoardNotificationServiceGroup__updateAssociatedServices_associatedCameras___block_invoke;
@@ -866,13 +866,13 @@ LABEL_25:
     v51[4] = self;
     v52 = v13;
     v53 = v10;
-    [v47 updateServiceGroup:self completion:v51];
+    [accessoryBulletinNotificationManager updateServiceGroup:self completion:v51];
 
     goto LABEL_26;
   }
 
   v36 = objc_autoreleasePoolPush();
-  v37 = self;
+  selfCopy4 = self;
   v38 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
   {
@@ -944,47 +944,47 @@ LABEL_6:
 
 - (void)_configureServices
 {
-  v2 = self;
+  selfCopy = self;
   v110[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDBulletinBoardNotificationServiceGroup *)self bulletinBoardNotification];
-  v4 = [v3 service];
+  bulletinBoardNotification = [(HMDBulletinBoardNotificationServiceGroup *)self bulletinBoardNotification];
+  service = [bulletinBoardNotification service];
 
-  v5 = [v4 accessory];
-  v6 = [v5 room];
+  accessory = [service accessory];
+  room = [accessory room];
 
-  if (v6)
+  if (room)
   {
-    v7 = [v6 home];
-    if (v7)
+    home = [room home];
+    if (home)
     {
-      v8 = [v4 accessory];
-      if (v8)
+      accessory2 = [service accessory];
+      if (accessory2)
       {
-        [v7 hapAccessories];
-        v70 = v6;
-        v71 = v4;
-        v72 = v69 = v7;
-        if ([(HMDBulletinBoardNotificationServiceGroup *)v2 _isDefaultRoom:v6 ofHome:v7])
+        [home hapAccessories];
+        v70 = room;
+        v71 = service;
+        v72 = v69 = home;
+        if ([(HMDBulletinBoardNotificationServiceGroup *)selfCopy _isDefaultRoom:room ofHome:home])
         {
-          v110[0] = v8;
+          v110[0] = accessory2;
           v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v110 count:1];
         }
 
         else
         {
-          v9 = [(HMDBulletinBoardNotificationServiceGroup *)v2 _accessoriesInRoom:v6 ofHome:v7];
+          v9 = [(HMDBulletinBoardNotificationServiceGroup *)selfCopy _accessoriesInRoom:room ofHome:home];
         }
 
         v25 = v9;
-        v26 = [MEMORY[0x277CBEB38] dictionary];
-        v68 = v8;
-        v67 = [(HMDBulletinBoardNotificationServiceGroup *)v2 _cameraNotificationGeneratingServicesForAccessory:v8];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        v68 = accessory2;
+        v67 = [(HMDBulletinBoardNotificationServiceGroup *)selfCopy _cameraNotificationGeneratingServicesForAccessory:accessory2];
         v96 = 0u;
         v97 = 0u;
         v98 = 0u;
         v99 = 0u;
         obj = v25;
-        v81 = v26;
+        v81 = dictionary;
         v77 = [obj countByEnumeratingWithState:&v96 objects:v109 count:16];
         if (v77)
         {
@@ -1005,8 +1005,8 @@ LABEL_6:
               v93 = 0u;
               v94 = 0u;
               v95 = 0u;
-              v29 = [v28 services];
-              v30 = [v29 countByEnumeratingWithState:&v92 objects:v108 count:16];
+              services = [v28 services];
+              v30 = [services countByEnumeratingWithState:&v92 objects:v108 count:16];
               if (v30)
               {
                 v31 = v30;
@@ -1019,47 +1019,47 @@ LABEL_6:
                   {
                     if (*v93 != v32)
                     {
-                      objc_enumerationMutation(v29);
+                      objc_enumerationMutation(services);
                     }
 
                     v34 = *(*(&v92 + 1) + 8 * v33);
-                    if ([(HMDBulletinBoardNotificationServiceGroup *)v2 _isSupportedAssociationService:v34])
+                    if ([(HMDBulletinBoardNotificationServiceGroup *)selfCopy _isSupportedAssociationService:v34])
                     {
                       v35 = objc_autoreleasePoolPush();
-                      v36 = v2;
+                      v36 = selfCopy;
                       v37 = HMFGetOSLogHandle();
                       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
                       {
                         HMFGetLogIdentifier();
                         v38 = v32;
-                        v39 = v2;
-                        v41 = v40 = v29;
-                        v42 = [v34 serviceType];
+                        v39 = selfCopy;
+                        v41 = v40 = services;
+                        serviceType = [v34 serviceType];
                         *buf = 138543874;
                         v103 = v41;
                         v104 = 2112;
                         v105 = v34;
                         v106 = 2112;
-                        v107 = v42;
+                        v107 = serviceType;
                         _os_log_impl(&dword_229538000, v37, OS_LOG_TYPE_DEBUG, "%{public}@Service %@ with type %@ is a supported service for association", buf, 0x20u);
 
-                        v26 = v81;
-                        v29 = v40;
-                        v2 = v39;
+                        dictionary = v81;
+                        services = v40;
+                        selfCopy = v39;
                         v32 = v38;
                         v31 = v82;
                       }
 
                       objc_autoreleasePoolPop(v35);
-                      v43 = [v34 serviceIdentifier];
-                      [v26 setObject:v34 forKeyedSubscript:v43];
+                      serviceIdentifier = [v34 serviceIdentifier];
+                      [dictionary setObject:v34 forKeyedSubscript:serviceIdentifier];
                     }
 
                     ++v33;
                   }
 
                   while (v31 != v33);
-                  v31 = [v29 countByEnumeratingWithState:&v92 objects:v108 count:16];
+                  v31 = [services countByEnumeratingWithState:&v92 objects:v108 count:16];
                 }
 
                 while (v31);
@@ -1100,8 +1100,8 @@ LABEL_6:
               v85 = 0u;
               v86 = 0u;
               v87 = 0u;
-              v83 = [v45 services];
-              v46 = [v83 countByEnumeratingWithState:&v84 objects:v100 count:16];
+              services2 = [v45 services];
+              v46 = [services2 countByEnumeratingWithState:&v84 objects:v100 count:16];
               if (v46)
               {
                 v47 = v46;
@@ -1112,37 +1112,37 @@ LABEL_6:
                   {
                     if (*v85 != v48)
                     {
-                      objc_enumerationMutation(v83);
+                      objc_enumerationMutation(services2);
                     }
 
                     v50 = *(*(&v84 + 1) + 8 * i);
-                    if ([(HMDBulletinBoardNotificationServiceGroup *)v2 _isAlarmService:v50])
+                    if ([(HMDBulletinBoardNotificationServiceGroup *)selfCopy _isAlarmService:v50])
                     {
                       v51 = objc_autoreleasePoolPush();
-                      v52 = v2;
+                      v52 = selfCopy;
                       v53 = HMFGetOSLogHandle();
                       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
                       {
                         v54 = HMFGetLogIdentifier();
-                        v55 = [v50 serviceType];
+                        serviceType2 = [v50 serviceType];
                         *buf = 138543874;
                         v103 = v54;
                         v104 = 2112;
                         v105 = v50;
                         v106 = 2112;
-                        v107 = v55;
+                        v107 = serviceType2;
                         _os_log_impl(&dword_229538000, v53, OS_LOG_TYPE_DEBUG, "%{public}@Service %@ with type %@ contains an alarm system, adding it to association", buf, 0x20u);
 
-                        v26 = v81;
+                        dictionary = v81;
                       }
 
                       objc_autoreleasePoolPop(v51);
-                      v56 = [v50 serviceIdentifier];
-                      [v26 setObject:v50 forKeyedSubscript:v56];
+                      serviceIdentifier2 = [v50 serviceIdentifier];
+                      [dictionary setObject:v50 forKeyedSubscript:serviceIdentifier2];
                     }
                   }
 
-                  v47 = [v83 countByEnumeratingWithState:&v84 objects:v100 count:16];
+                  v47 = [services2 countByEnumeratingWithState:&v84 objects:v100 count:16];
                 }
 
                 while (v47);
@@ -1159,7 +1159,7 @@ LABEL_6:
         }
 
         v57 = objc_autoreleasePoolPush();
-        v58 = v2;
+        v58 = selfCopy;
         v59 = HMFGetOSLogHandle();
         v60 = v67;
         if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
@@ -1173,11 +1173,11 @@ LABEL_6:
         }
 
         objc_autoreleasePoolPop(v57);
-        v4 = v71;
+        service = v71;
         if ([v67 count])
         {
           v62 = v58;
-          v63 = v26;
+          v63 = dictionary;
           v64 = v67;
         }
 
@@ -1189,7 +1189,7 @@ LABEL_6:
         }
 
         [(HMDBulletinBoardNotificationServiceGroup *)v62 _updateAssociatedServices:v63 associatedCameras:v64, v67];
-        v65 = v26;
+        v65 = dictionary;
         v15 = v69;
         v10 = v70;
         v20 = v68;
@@ -1198,10 +1198,10 @@ LABEL_6:
       else
       {
         v20 = 0;
-        v15 = v7;
-        v10 = v6;
+        v15 = home;
+        v10 = room;
         v21 = objc_autoreleasePoolPush();
-        v22 = v2;
+        v22 = selfCopy;
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
@@ -1218,9 +1218,9 @@ LABEL_6:
     else
     {
       v15 = 0;
-      v10 = v6;
+      v10 = room;
       v16 = objc_autoreleasePoolPush();
-      v17 = v2;
+      v17 = selfCopy;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -1238,7 +1238,7 @@ LABEL_6:
   {
     v10 = 0;
     v11 = objc_autoreleasePoolPush();
-    v12 = v2;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -1254,12 +1254,12 @@ LABEL_6:
   v66 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_cameraNotificationGeneratingServicesForAccessory:(id)a3
+- (id)_cameraNotificationGeneratingServicesForAccessory:(id)accessory
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = v4;
+  accessoryCopy = accessory;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = accessoryCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1286,7 +1286,7 @@ LABEL_6:
       v26 = v6;
       v9 = 0;
       v28 = *v36;
-      v29 = v5;
+      v29 = dictionary;
       do
       {
         v10 = 0;
@@ -1301,17 +1301,17 @@ LABEL_6:
           v12 = *(*(&v35 + 1) + 8 * v10);
           v9 = [[HMDBulletinBoardCameraNotificationAssociation alloc] initWithCameraProfile:v12];
 
-          v13 = [v12 uniqueIdentifier];
-          v14 = [v13 UUIDString];
-          [v5 setObject:v9 forKeyedSubscript:v14];
+          uniqueIdentifier = [v12 uniqueIdentifier];
+          uUIDString = [uniqueIdentifier UUIDString];
+          [dictionary setObject:v9 forKeyedSubscript:uUIDString];
 
           v33 = 0u;
           v34 = 0u;
           v31 = 0u;
           v32 = 0u;
           v15 = v8;
-          v16 = [v8 services];
-          v17 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+          services = [v8 services];
+          v17 = [services countByEnumeratingWithState:&v31 objects:v39 count:16];
           if (v17)
           {
             v18 = v17;
@@ -1322,18 +1322,18 @@ LABEL_6:
               {
                 if (*v32 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(services);
                 }
 
                 v21 = *(*(&v31 + 1) + 8 * i);
                 if ([(HMDBulletinBoardNotificationServiceGroup *)self _isNotificationGeneratingService:v21])
                 {
-                  v22 = [(HMDBulletinBoardCameraNotificationAssociation *)v9 notificationGeneratingServicesWithCamera];
-                  [v22 addObject:v21];
+                  notificationGeneratingServicesWithCamera = [(HMDBulletinBoardCameraNotificationAssociation *)v9 notificationGeneratingServicesWithCamera];
+                  [notificationGeneratingServicesWithCamera addObject:v21];
                 }
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+              v18 = [services countByEnumeratingWithState:&v31 objects:v39 count:16];
             }
 
             while (v18);
@@ -1341,7 +1341,7 @@ LABEL_6:
 
           ++v10;
           v11 = v9;
-          v5 = v29;
+          dictionary = v29;
           v8 = v15;
         }
 
@@ -1354,12 +1354,12 @@ LABEL_6:
       v6 = v26;
     }
 
-    v23 = [v5 copy];
+    v23 = [dictionary copy];
   }
 
   else
   {
-    v23 = v5;
+    v23 = dictionary;
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -1367,19 +1367,19 @@ LABEL_6:
   return v23;
 }
 
-- (id)_accessoriesInRoom:(id)a3 ofHome:(id)a4
+- (id)_accessoriesInRoom:(id)room ofHome:(id)home
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  roomCopy = room;
+  homeCopy = home;
   [MEMORY[0x277CBEB18] array];
-  v21 = v20 = v6;
+  v21 = v20 = homeCopy;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v6 hapAccessories];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  hapAccessories = [homeCopy hapAccessories];
+  v8 = [hapAccessories countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1390,14 +1390,14 @@ LABEL_6:
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(hapAccessories);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 room];
-        v14 = [v13 uuid];
-        v15 = [v5 uuid];
-        v16 = [v14 isEqual:v15];
+        room = [v12 room];
+        uuid = [room uuid];
+        uuid2 = [roomCopy uuid];
+        v16 = [uuid isEqual:uuid2];
 
         if (v16)
         {
@@ -1405,7 +1405,7 @@ LABEL_6:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [hapAccessories countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -1417,14 +1417,14 @@ LABEL_6:
   return v17;
 }
 
-- (BOOL)_isDefaultRoom:(id)a3 ofHome:(id)a4
+- (BOOL)_isDefaultRoom:(id)room ofHome:(id)home
 {
-  v5 = a4;
-  v6 = [a3 uuid];
-  v7 = [v5 roomForEntireHome];
+  homeCopy = home;
+  uuid = [room uuid];
+  roomForEntireHome = [homeCopy roomForEntireHome];
 
-  v8 = [v7 uuid];
-  v9 = [v6 isEqual:v8];
+  uuid2 = [roomForEntireHome uuid];
+  v9 = [uuid isEqual:uuid2];
 
   return v9;
 }
@@ -1432,12 +1432,12 @@ LABEL_6:
 - (void)configureBulletinNotification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDBulletinBoardNotificationServiceGroup *)self workQueue];
+  workQueue = [(HMDBulletinBoardNotificationServiceGroup *)self workQueue];
 
-  if (v3)
+  if (workQueue)
   {
-    v4 = [(HMDBulletinBoardNotificationServiceGroup *)self workQueue];
-    dispatch_assert_queue_V2(v4);
+    workQueue2 = [(HMDBulletinBoardNotificationServiceGroup *)self workQueue];
+    dispatch_assert_queue_V2(workQueue2);
 
     v5 = *MEMORY[0x277D85DE8];
 
@@ -1447,7 +1447,7 @@ LABEL_6:
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -1462,30 +1462,30 @@ LABEL_6:
   }
 }
 
-- (BOOL)_isNotificationGeneratingService:(id)a3
+- (BOOL)_isNotificationGeneratingService:(id)service
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CFE8D8];
   v10[0] = *MEMORY[0x277CFE840];
   v10[1] = v3;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
+  serviceCopy = service;
   v6 = [v4 arrayWithObjects:v10 count:2];
-  v7 = [v5 serviceType];
+  serviceType = [serviceCopy serviceType];
 
-  LOBYTE(v4) = [v6 containsObject:v7];
+  LOBYTE(v4) = [v6 containsObject:serviceType];
   v8 = *MEMORY[0x277D85DE8];
   return v4;
 }
 
-- (BOOL)_isAlarmService:(id)a3
+- (BOOL)_isAlarmService:(id)service
 {
-  v3 = [a3 findCharacteristicWithType:*MEMORY[0x277CFE6D0]];
+  v3 = [service findCharacteristicWithType:*MEMORY[0x277CFE6D0]];
 
   return v3 != 0;
 }
 
-- (BOOL)_isSupportedAssociationService:(id)a3
+- (BOOL)_isSupportedAssociationService:(id)service
 {
   v11[4] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CFE838];
@@ -1495,26 +1495,26 @@ LABEL_6:
   v11[2] = *MEMORY[0x277CFE858];
   v11[3] = v4;
   v5 = MEMORY[0x277CBEA60];
-  v6 = a3;
+  serviceCopy = service;
   v7 = [v5 arrayWithObjects:v11 count:4];
-  v8 = [v6 serviceType];
+  serviceType = [serviceCopy serviceType];
 
-  LOBYTE(v5) = [v7 containsObject:v8];
+  LOBYTE(v5) = [v7 containsObject:serviceType];
   v9 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)_handleBulletinBoardNotificationServiceGroupRequest:(id)a3
+- (void)_handleBulletinBoardNotificationServiceGroupRequest:(id)request
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 responseHandler];
+  requestCopy = request;
+  responseHandler = [requestCopy responseHandler];
 
-  if (v5)
+  if (responseHandler)
   {
-    v6 = [(HMDBulletinBoardNotificationServiceGroup *)self _prepareServiceGroupPayload];
+    _prepareServiceGroupPayload = [(HMDBulletinBoardNotificationServiceGroup *)self _prepareServiceGroupPayload];
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -1522,25 +1522,25 @@ LABEL_6:
       v13 = 138543618;
       v14 = v10;
       v15 = 2112;
-      v16 = v6;
+      v16 = _prepareServiceGroupPayload;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Responding to a request for notification service group with payload %@", &v13, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
-    v11 = [v4 responseHandler];
-    (v11)[2](v11, 0, v6);
+    responseHandler2 = [requestCopy responseHandler];
+    (responseHandler2)[2](responseHandler2, 0, _prepareServiceGroupPayload);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithWorkQueue:(id)a3
+- (void)configureWithWorkQueue:(id)queue
 {
-  v4 = a3;
-  if (v4)
+  queueCopy = queue;
+  if (queueCopy)
   {
-    v8 = v4;
-    [(HMDBulletinBoardNotificationServiceGroup *)self setWorkQueue:v4];
+    v8 = queueCopy;
+    [(HMDBulletinBoardNotificationServiceGroup *)self setWorkQueue:queueCopy];
   }
 
   else
@@ -1550,16 +1550,16 @@ LABEL_6:
   }
 }
 
-- (HMDBulletinBoardNotificationServiceGroup)initWithBulletinBoardNotification:(id)a3
+- (HMDBulletinBoardNotificationServiceGroup)initWithBulletinBoardNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v16.receiver = self;
   v16.super_class = HMDBulletinBoardNotificationServiceGroup;
   v5 = [(HMDBulletinBoardNotificationServiceGroup *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_bulletinBoardNotification, v4);
+    objc_storeWeak(&v5->_bulletinBoardNotification, notificationCopy);
     v7 = [MEMORY[0x277CBEB98] set];
     cameraProfileUUIDs = v6->_cameraProfileUUIDs;
     v6->_cameraProfileUUIDs = v7;
@@ -1568,13 +1568,13 @@ LABEL_6:
     associatedServiceUUIDs = v6->_associatedServiceUUIDs;
     v6->_associatedServiceUUIDs = v9;
 
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     cameraProfilesTable = v6->_cameraProfilesTable;
-    v6->_cameraProfilesTable = v11;
+    v6->_cameraProfilesTable = weakObjectsHashTable;
 
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     associatedServicesTable = v6->_associatedServicesTable;
-    v6->_associatedServicesTable = v13;
+    v6->_associatedServicesTable = weakObjectsHashTable2;
   }
 
   return v6;

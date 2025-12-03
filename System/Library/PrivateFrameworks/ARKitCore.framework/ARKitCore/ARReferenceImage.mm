@@ -1,46 +1,46 @@
 @interface ARReferenceImage
 + (NSSet)referenceImagesInGroupNamed:(NSString *)name bundle:(NSBundle *)bundle;
-+ (id)referenceImagesInGroupNamed:(id)a3 catalog:(id)a4;
-+ (id)referenceImagesInGroupNamed:(id)a3 catalogName:(id)a4 bundle:(id)a5;
-+ (id)referenceImagesInGroupNamed:(id)a3 catalogURL:(id)a4;
-- (ARReferenceImage)initWithCGImage:(CGImage *)a3 orientation:(unsigned int)a4 physicalWidth:(double)a5 addPadding:(BOOL)a6;
++ (id)referenceImagesInGroupNamed:(id)named catalog:(id)catalog;
++ (id)referenceImagesInGroupNamed:(id)named catalogName:(id)name bundle:(id)bundle;
++ (id)referenceImagesInGroupNamed:(id)named catalogURL:(id)l;
+- (ARReferenceImage)initWithCGImage:(CGImage *)image orientation:(unsigned int)orientation physicalWidth:(double)width addPadding:(BOOL)padding;
 - (ARReferenceImage)initWithCGImage:(CGImageRef)image orientation:(CGImagePropertyOrientation)orientation physicalWidth:(CGFloat)physicalWidth;
-- (ARReferenceImage)initWithCIImage:(id)a3 orientation:(unsigned int)a4 physicalWidth:(double)a5 alphaInfo:(unsigned int *)a6 addPadding:(BOOL)a7;
-- (ARReferenceImage)initWithCoder:(id)a3;
-- (ARReferenceImage)initWithIdentifier:(id)a3;
+- (ARReferenceImage)initWithCIImage:(id)image orientation:(unsigned int)orientation physicalWidth:(double)width alphaInfo:(unsigned int *)info addPadding:(BOOL)padding;
+- (ARReferenceImage)initWithCoder:(id)coder;
+- (ARReferenceImage)initWithIdentifier:(id)identifier;
 - (ARReferenceImage)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer orientation:(CGImagePropertyOrientation)orientation physicalWidth:(CGFloat)physicalWidth;
-- (ARReferenceImage)initWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 physicalWidth:(double)a5 addPadding:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
+- (ARReferenceImage)initWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation physicalWidth:(double)width addPadding:(BOOL)padding;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)imageSize;
 - (CGSize)physicalSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)shortDebugDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)estimateQualityWithCompletionHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)estimateQualityWithCompletionHandler:(id)handler;
 - (void)validateWithCompletionHandler:(void *)completionHandler;
 @end
 
 @implementation ARReferenceImage
 
-- (ARReferenceImage)initWithCGImage:(CGImage *)a3 orientation:(unsigned int)a4 physicalWidth:(double)a5 addPadding:(BOOL)a6
+- (ARReferenceImage)initWithCGImage:(CGImage *)image orientation:(unsigned int)orientation physicalWidth:(double)width addPadding:(BOOL)padding
 {
-  v6 = a6;
-  v8 = *&a4;
-  AlphaInfo = CGImageGetAlphaInfo(a3);
-  v11 = [objc_alloc(MEMORY[0x1E695F658]) initWithCGImage:a3];
-  v12 = [(ARReferenceImage *)self initWithCIImage:v11 orientation:v8 physicalWidth:&AlphaInfo alphaInfo:v6 addPadding:a5];
+  paddingCopy = padding;
+  v8 = *&orientation;
+  AlphaInfo = CGImageGetAlphaInfo(image);
+  v11 = [objc_alloc(MEMORY[0x1E695F658]) initWithCGImage:image];
+  v12 = [(ARReferenceImage *)self initWithCIImage:v11 orientation:v8 physicalWidth:&AlphaInfo alphaInfo:paddingCopy addPadding:width];
 
   return v12;
 }
 
-- (ARReferenceImage)initWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 physicalWidth:(double)a5 addPadding:(BOOL)a6
+- (ARReferenceImage)initWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation physicalWidth:(double)width addPadding:(BOOL)padding
 {
-  v6 = a6;
-  v8 = *&a4;
-  v10 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:a3];
-  v11 = [(ARReferenceImage *)self initWithCIImage:v10 orientation:v8 physicalWidth:0 alphaInfo:v6 addPadding:a5];
+  paddingCopy = padding;
+  v8 = *&orientation;
+  v10 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:buffer];
+  v11 = [(ARReferenceImage *)self initWithCIImage:v10 orientation:v8 physicalWidth:0 alphaInfo:paddingCopy addPadding:width];
 
   return v11;
 }
@@ -64,21 +64,21 @@
   return v9;
 }
 
-- (ARReferenceImage)initWithCIImage:(id)a3 orientation:(unsigned int)a4 physicalWidth:(double)a5 alphaInfo:(unsigned int *)a6 addPadding:(BOOL)a7
+- (ARReferenceImage)initWithCIImage:(id)image orientation:(unsigned int)orientation physicalWidth:(double)width alphaInfo:(unsigned int *)info addPadding:(BOOL)padding
 {
-  v7 = a7;
+  paddingCopy = padding;
   v106 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  imageCopy = image;
   v101.receiver = self;
   v101.super_class = ARReferenceImage;
   v13 = [(ARReferenceImage *)&v101 init];
   if (v13)
   {
     p_pixelBufferOut = &pixelBufferOut;
-    if (a6)
+    if (info)
     {
-      v15 = *a6;
-      if (*a6 == 6)
+      v15 = *info;
+      if (*info == 6)
       {
         v16 = 0;
       }
@@ -106,7 +106,7 @@
 
     pixelBufferOut = 0;
     pixelBuffer = 0;
-    if (ARCreateDownScaledGrayscaleImageAndMask(v12, 0x280uLL, @"ARReferenceImage", &pixelBuffer, p_pixelBufferOut))
+    if (ARCreateDownScaledGrayscaleImageAndMask(imageCopy, 0x280uLL, @"ARReferenceImage", &pixelBuffer, p_pixelBufferOut))
     {
       if (ARShouldUseLogTypeError_onceToken_35 != -1)
       {
@@ -152,18 +152,18 @@ LABEL_21:
     }
 
     v25 = CVPixelBufferGetWidth(pixelBuffer) < 0x64 || CVPixelBufferGetHeight(pixelBuffer) < 0x64;
-    [v12 extent];
+    [imageCopy extent];
     if (v27 == CVPixelBufferGetWidth(pixelBuffer))
     {
-      [v12 extent];
-      v29 = v28 != CVPixelBufferGetHeight(pixelBuffer) || v7;
+      [imageCopy extent];
+      v29 = v28 != CVPixelBufferGetHeight(pixelBuffer) || paddingCopy;
       if ((v29 & v25 & 1) == 0)
       {
 LABEL_76:
-        if (!ARCorrectCVPixelBufferOrientation(pixelBuffer, a4, &v13->_pixelBuffer))
+        if (!ARCorrectCVPixelBufferOrientation(pixelBuffer, orientation, &v13->_pixelBuffer))
         {
 LABEL_86:
-          if (!pixelBufferOut || !ARCorrectCVPixelBufferOrientation(pixelBufferOut, a4, &v13->_alphaMask))
+          if (!pixelBufferOut || !ARCorrectCVPixelBufferOrientation(pixelBufferOut, orientation, &v13->_alphaMask))
           {
             goto LABEL_97;
           }
@@ -211,9 +211,9 @@ LABEL_95:
 LABEL_97:
           CVPixelBufferRelease(pixelBuffer);
           CVPixelBufferRelease(pixelBufferOut);
-          [v12 extent];
-          v13->_physicalSize.width = a5;
-          v13->_physicalSize.height = v88 / v87 * a5;
+          [imageCopy extent];
+          v13->_physicalSize.width = width;
+          v13->_physicalSize.height = v88 / v87 * width;
           v89 = [objc_opt_class() referenceImageUUIDForPixelBuffer:{-[ARReferenceImage pixelBuffer](v13, "pixelBuffer")}];
           identifier = v13->_identifier;
           v13->_identifier = v89;
@@ -501,26 +501,26 @@ LABEL_98:
   return v13;
 }
 
-- (ARReferenceImage)initWithIdentifier:(id)a3
+- (ARReferenceImage)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = ARReferenceImage;
   v6 = [(ARReferenceImage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
 }
 
-+ (id)referenceImagesInGroupNamed:(id)a3 catalog:(id)a4
++ (id)referenceImagesInGroupNamed:(id)named catalog:(id)catalog
 {
   v40 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v5 = [a4 namedRecognitionGroupWithName:?];
+  namedCopy = named;
+  v5 = [catalog namedRecognitionGroupWithName:?];
   if (!v5)
   {
     if (ARShouldUseLogTypeError_onceToken_35 != -1)
@@ -530,15 +530,15 @@ LABEL_98:
 
     v25 = ARShouldUseLogTypeError_internalOSVersion_35;
     v26 = _ARLogGeneral_26();
-    v6 = v26;
+    namedRecognitionImageImageList = v26;
     if (v25 == 1)
     {
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v39 = v32;
+        v39 = namedCopy;
         v27 = "No resource group with name %{public}@ found";
-        v28 = v6;
+        v28 = namedRecognitionImageImageList;
         v29 = OS_LOG_TYPE_ERROR;
 LABEL_33:
         _os_log_impl(&dword_1C241C000, v28, v29, v27, buf, 0xCu);
@@ -548,9 +548,9 @@ LABEL_33:
     else if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v39 = v32;
+      v39 = namedCopy;
       v27 = "Error: No resource group with name %{public}@ found";
-      v28 = v6;
+      v28 = namedRecognitionImageImageList;
       v29 = OS_LOG_TYPE_INFO;
       goto LABEL_33;
     }
@@ -564,8 +564,8 @@ LABEL_33:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = [v5 namedRecognitionImageImageList];
-  v7 = [v6 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  namedRecognitionImageImageList = [v5 namedRecognitionImageImageList];
+  v7 = [namedRecognitionImageImageList countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (!v7)
   {
     goto LABEL_35;
@@ -580,7 +580,7 @@ LABEL_33:
     {
       if (*v34 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(namedRecognitionImageImageList);
       }
 
       v11 = *(*(&v33 + 1) + 8 * v10);
@@ -594,22 +594,22 @@ LABEL_33:
           if (objc_opt_respondsToSelector())
           {
             v14 = [v13 valueForKey:@"exifOrientation"];
-            v15 = [v14 intValue];
+            intValue = [v14 intValue];
           }
 
           else
           {
-            v15 = 1;
+            intValue = 1;
           }
 
           v22 = [ARReferenceImage alloc];
-          v23 = [v13 image];
+          image = [v13 image];
           [v13 physicalSizeInMeters];
-          v18 = [(ARReferenceImage *)v22 initWithCGImage:v23 orientation:v15 physicalWidth:1 addPadding:?];
-          v24 = [v13 name];
-          [(ARReferenceImage *)v18 setName:v24];
+          v18 = [(ARReferenceImage *)v22 initWithCGImage:image orientation:intValue physicalWidth:1 addPadding:?];
+          name = [v13 name];
+          [(ARReferenceImage *)v18 setName:name];
 
-          [(ARReferenceImage *)v18 setResourceGroupName:v32];
+          [(ARReferenceImage *)v18 setResourceGroupName:namedCopy];
           [v31 addObject:v18];
           goto LABEL_22;
         }
@@ -651,7 +651,7 @@ LABEL_22:
     }
 
     while (v8 != v10);
-    v8 = [v6 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    v8 = [namedRecognitionImageImageList countByEnumeratingWithState:&v33 objects:v37 count:16];
   }
 
   while (v8);
@@ -669,14 +669,14 @@ LABEL_35:
   return v7;
 }
 
-+ (id)referenceImagesInGroupNamed:(id)a3 catalogName:(id)a4 bundle:(id)a5
++ (id)referenceImagesInGroupNamed:(id)named catalogName:(id)name bundle:(id)bundle
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  namedCopy = named;
+  nameCopy = name;
+  bundleCopy = bundle;
   v15 = 0;
-  v10 = [objc_alloc(MEMORY[0x1E6999368]) initWithName:v8 fromBundle:v9 error:&v15];
+  v10 = [objc_alloc(MEMORY[0x1E6999368]) initWithName:nameCopy fromBundle:bundleCopy error:&v15];
   v11 = v15;
   if (v11)
   {
@@ -684,9 +684,9 @@ LABEL_35:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v17 = v8;
+      v17 = nameCopy;
       v18 = 2114;
-      v19 = v9;
+      v19 = bundleCopy;
       v20 = 2112;
       v21 = v11;
       _os_log_impl(&dword_1C241C000, v12, OS_LOG_TYPE_ERROR, "Error while opening catalog named %{public}@ in bundle %{public}@: %@", buf, 0x20u);
@@ -697,19 +697,19 @@ LABEL_35:
 
   else
   {
-    v13 = [objc_opt_class() referenceImagesInGroupNamed:v7 catalog:v10];
+    v13 = [objc_opt_class() referenceImagesInGroupNamed:namedCopy catalog:v10];
   }
 
   return v13;
 }
 
-+ (id)referenceImagesInGroupNamed:(id)a3 catalogURL:(id)a4
++ (id)referenceImagesInGroupNamed:(id)named catalogURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  namedCopy = named;
+  lCopy = l;
   v12 = 0;
-  v7 = [objc_alloc(MEMORY[0x1E6999368]) initWithURL:v6 error:&v12];
+  v7 = [objc_alloc(MEMORY[0x1E6999368]) initWithURL:lCopy error:&v12];
   v8 = v12;
   if (v8)
   {
@@ -717,9 +717,9 @@ LABEL_35:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v14 = v5;
+      v14 = namedCopy;
       v15 = 2114;
-      v16 = v6;
+      v16 = lCopy;
       v17 = 2112;
       v18 = v8;
       _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_ERROR, "Error while opening catalog named %{public}@ from URL %{public}@: %@", buf, 0x20u);
@@ -730,7 +730,7 @@ LABEL_35:
 
   else
   {
-    v10 = [objc_opt_class() referenceImagesInGroupNamed:v5 catalog:v7];
+    v10 = [objc_opt_class() referenceImagesInGroupNamed:namedCopy catalog:v7];
   }
 
   return v10;
@@ -750,11 +750,11 @@ LABEL_35:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ARReferenceImage *)self name];
+  name = [(ARReferenceImage *)self name];
   [(ARReferenceImage *)self physicalSize];
   v8 = v7;
   [(ARReferenceImage *)self physicalSize];
-  v10 = [v3 stringWithFormat:@"<%@: %p name=%@ physicalSize=(%.03f, %.03f)>", v5, self, v6, v8, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %p name=%@ physicalSize=(%.03f, %.03f)>", v5, self, name, v8, v9];
 
   return v10;
 }
@@ -762,11 +762,11 @@ LABEL_35:
 - (id)shortDebugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ARReferenceImage *)self name];
+  name = [(ARReferenceImage *)self name];
   [(ARReferenceImage *)self physicalSize];
   v6 = v5;
   [(ARReferenceImage *)self physicalSize];
-  v8 = [v3 stringWithFormat:@"<name=%@, physicalSize=(%.03f, %.03f)>", v4, v6, v7];
+  v8 = [v3 stringWithFormat:@"<name=%@, physicalSize=(%.03f, %.03f)>", name, v6, v7];
 
   return v8;
 }
@@ -792,16 +792,16 @@ LABEL_35:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 identifier];
-    v7 = [(ARReferenceImage *)self identifier];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    identifier = [v5 identifier];
+    identifier2 = [(ARReferenceImage *)self identifier];
+    if ([identifier isEqual:identifier2])
     {
       [v5 physicalSize];
       v9 = v8;
@@ -824,21 +824,21 @@ LABEL_35:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   [(ARReferenceImage *)self physicalSize];
   v5[10] = v6;
   v5[11] = v7;
-  v8 = [(ARReferenceImage *)self name];
-  v9 = [v8 copyWithZone:a3];
+  name = [(ARReferenceImage *)self name];
+  v9 = [name copyWithZone:zone];
   v10 = v5[3];
   v5[3] = v9;
 
   v5[7] = CVPixelBufferRetain(self->_pixelBuffer);
   v5[8] = CVPixelBufferRetain(self->_alphaMask);
-  v11 = [(ARReferenceImage *)self identifier];
-  v12 = [v11 copyWithZone:a3];
+  identifier = [(ARReferenceImage *)self identifier];
+  v12 = [identifier copyWithZone:zone];
   v13 = v5[9];
   v5[9] = v12;
 
@@ -847,48 +847,48 @@ LABEL_35:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   [(ARReferenceImage *)self physicalSize];
-  [v7 encodeSize:@"physicalSize" forKey:?];
-  v4 = [(ARReferenceImage *)self name];
-  [v7 encodeObject:v4 forKey:@"name"];
+  [coderCopy encodeSize:@"physicalSize" forKey:?];
+  name = [(ARReferenceImage *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v5 = [(ARReferenceImage *)self identifier];
-  [v7 encodeObject:v5 forKey:@"identifier"];
+  identifier = [(ARReferenceImage *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
   [(ARReferenceImage *)self estimatedQuality];
-  [v7 encodeDouble:@"estimatedQuality" forKey:?];
+  [coderCopy encodeDouble:@"estimatedQuality" forKey:?];
   v6 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:{-[ARReferenceImage pixelBuffer](self, "pixelBuffer")}];
   if (v6)
   {
-    [v7 encodeObject:v6 forKey:@"pixelbuffer"];
+    [coderCopy encodeObject:v6 forKey:@"pixelbuffer"];
   }
 }
 
-- (ARReferenceImage)initWithCoder:(id)a3
+- (ARReferenceImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ARReferenceImage;
   v5 = [(ARReferenceImage *)&v15 init];
   if (v5)
   {
-    [v4 decodeSizeForKey:@"physicalSize"];
+    [coderCopy decodeSizeForKey:@"physicalSize"];
     v5->_physicalSize.width = v6;
     v5->_physicalSize.height = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v10;
 
-    [v4 decodeDoubleForKey:@"estimatedQuality"];
+    [coderCopy decodeDoubleForKey:@"estimatedQuality"];
     v5->_estimatedQuality = v12;
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pixelbuffer"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pixelbuffer"];
     v5->_pixelBuffer = ARPixelBufferWithCIImage(v13);
   }
 
@@ -898,15 +898,15 @@ LABEL_35:
 - (void)validateWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = [(ARReferenceImage *)self cachedVerificationError];
+  cachedVerificationError = [(ARReferenceImage *)self cachedVerificationError];
 
-  if (v5)
+  if (cachedVerificationError)
   {
     if (v4)
     {
-      v6 = [(ARReferenceImage *)self cachedVerificationError];
-      v7 = [v6 error];
-      v4[2](v4, v7);
+      cachedVerificationError2 = [(ARReferenceImage *)self cachedVerificationError];
+      error = [cachedVerificationError2 error];
+      v4[2](v4, error);
     }
   }
 
@@ -955,11 +955,11 @@ void __50__ARReferenceImage_validateWithCompletionHandler___block_invoke(uint64_
   dispatch_semaphore_signal(*(*(a1 + 32) + 16));
 }
 
-- (void)estimateQualityWithCompletionHandler:(id)a3
+- (void)estimateQualityWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v3 = a3;
+    handlerCopy = handler;
     v8 = objc_opt_new();
     v4 = ARKitCoreBundle();
     v5 = [v4 localizedStringForKey:@"Image detection quality estimation could not be performed" value:&stru_1F4208A80 table:@"Localizable"];
@@ -969,7 +969,7 @@ void __50__ARReferenceImage_validateWithCompletionHandler___block_invoke(uint64_
     [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696A588]];
 
     v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.arkit.error" code:1003 userInfo:v8];
-    v3[2](v3, v7, -1.0);
+    handlerCopy[2](handlerCopy, v7, -1.0);
   }
 }
 

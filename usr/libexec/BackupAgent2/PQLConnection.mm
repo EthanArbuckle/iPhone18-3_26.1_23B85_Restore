@@ -1,31 +1,31 @@
 @interface PQLConnection
-- (BOOL)executeStatements:(id)a3 error:(id *)a4;
-- (BOOL)executeWithError:(id *)a3 sql:(id)a4;
-- (BOOL)fetchObjectOfClass:(Class)a3 outObject:(id *)a4 error:(id *)a5 sql:(id)a6;
-- (BOOL)groupInTransaction:(id *)a3 transaction:(id)a4;
-- (BOOL)performSchemaUpgrades:(id)a3 isReadOnly:(BOOL)a4 error:(id *)a5;
-- (id)fetchObjectOfClass:(Class)a3 error:(id *)a4 sql:(id)a5;
-- (unint64_t)fetchCountWithError:(id *)a3 sql:(id)a4;
+- (BOOL)executeStatements:(id)statements error:(id *)error;
+- (BOOL)executeWithError:(id *)error sql:(id)sql;
+- (BOOL)fetchObjectOfClass:(Class)class outObject:(id *)object error:(id *)error sql:(id)sql;
+- (BOOL)groupInTransaction:(id *)transaction transaction:(id)a4;
+- (BOOL)performSchemaUpgrades:(id)upgrades isReadOnly:(BOOL)only error:(id *)error;
+- (id)fetchObjectOfClass:(Class)class error:(id *)error sql:(id)sql;
+- (unint64_t)fetchCountWithError:(id *)error sql:(id)sql;
 @end
 
 @implementation PQLConnection
 
-- (BOOL)executeWithError:(id *)a3 sql:(id)a4
+- (BOOL)executeWithError:(id *)error sql:(id)sql
 {
-  v6 = [(PQLConnection *)self execute:a4 args:&v9];
+  v6 = [(PQLConnection *)self execute:sql args:&v9];
   v7 = v6;
-  if (a3 && (v6 & 1) == 0)
+  if (error && (v6 & 1) == 0)
   {
-    *a3 = [(PQLConnection *)self lastError];
+    *error = [(PQLConnection *)self lastError];
   }
 
   return v7;
 }
 
-- (BOOL)executeStatements:(id)a3 error:(id *)a4
+- (BOOL)executeStatements:(id)statements error:(id *)error
 {
-  v6 = a3;
-  if (!a4)
+  statementsCopy = statements;
+  if (!error)
   {
     sub_10009FD8C();
   }
@@ -34,7 +34,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v6;
+  v7 = statementsCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -69,14 +69,14 @@ LABEL_4:
       }
     }
 
-    v15 = [(PQLConnection *)self lastError];
+    lastError = [(PQLConnection *)self lastError];
     objc_autoreleasePoolPop(v13);
 
-    if (v15)
+    if (lastError)
     {
-      v16 = v15;
+      v16 = lastError;
       v14 = 0;
-      *a4 = v15;
+      *error = lastError;
       goto LABEL_13;
     }
 
@@ -87,37 +87,37 @@ LABEL_4:
   {
 LABEL_10:
     v14 = 1;
-    v15 = v7;
+    lastError = v7;
 LABEL_13:
   }
 
   return v14;
 }
 
-- (id)fetchObjectOfClass:(Class)a3 error:(id *)a4 sql:(id)a5
+- (id)fetchObjectOfClass:(Class)class error:(id *)error sql:(id)sql
 {
-  v7 = [(PQLConnection *)self fetchObjectOfClass:a3 sql:a5 args:&v12];
+  v7 = [(PQLConnection *)self fetchObjectOfClass:class sql:sql args:&v12];
   v8 = v7;
-  if (a4 && !v7)
+  if (error && !v7)
   {
-    v9 = [(PQLConnection *)self lastError];
-    *a4 = [v9 excludingNotFound];
+    lastError = [(PQLConnection *)self lastError];
+    *error = [lastError excludingNotFound];
   }
 
   return v8;
 }
 
-- (BOOL)fetchObjectOfClass:(Class)a3 outObject:(id *)a4 error:(id *)a5 sql:(id)a6
+- (BOOL)fetchObjectOfClass:(Class)class outObject:(id *)object error:(id *)error sql:(id)sql
 {
-  v9 = [(PQLConnection *)self fetchObjectOfClass:a3 sql:a6 args:&v14];
-  v10 = [(PQLConnection *)self lastError];
-  v11 = [v10 excludingNotFound];
+  v9 = [(PQLConnection *)self fetchObjectOfClass:class sql:sql args:&v14];
+  lastError = [(PQLConnection *)self lastError];
+  excludingNotFound = [lastError excludingNotFound];
 
-  if (!v11)
+  if (!excludingNotFound)
   {
     v12 = v9;
-    a5 = a4;
-    if (!a4)
+    error = object;
+    if (!object)
     {
       goto LABEL_4;
     }
@@ -125,60 +125,60 @@ LABEL_13:
     goto LABEL_3;
   }
 
-  v12 = v11;
-  if (a5)
+  v12 = excludingNotFound;
+  if (error)
   {
 LABEL_3:
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_4:
 
-  return v11 == 0;
+  return excludingNotFound == 0;
 }
 
-- (unint64_t)fetchCountWithError:(id *)a3 sql:(id)a4
+- (unint64_t)fetchCountWithError:(id *)error sql:(id)sql
 {
-  v5 = a4;
-  v6 = [(PQLConnection *)self fetchObjectOfClass:objc_opt_class() sql:v5 args:&v9];
+  sqlCopy = sql;
+  v6 = [(PQLConnection *)self fetchObjectOfClass:objc_opt_class() sql:sqlCopy args:&v9];
 
   if (v6)
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)performSchemaUpgrades:(id)a3 isReadOnly:(BOOL)a4 error:(id *)a5
+- (BOOL)performSchemaUpgrades:(id)upgrades isReadOnly:(BOOL)only error:(id *)error
 {
-  v6 = a4;
-  v9 = a3;
-  if (!v9)
+  onlyCopy = only;
+  upgradesCopy = upgrades;
+  if (!upgradesCopy)
   {
     sub_10009FE48();
   }
 
-  if (!a5)
+  if (!error)
   {
     sub_10009FE1C();
   }
 
-  v10 = v9;
+  v10 = upgradesCopy;
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v11 = [upgradesCopy countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v11)
   {
     v12 = v11;
-    v13 = 0;
+    version = 0;
     v14 = *v32;
     do
     {
@@ -190,12 +190,12 @@ LABEL_4:
         }
 
         v16 = *(*(&v31 + 1) + 8 * i);
-        if ([v16 version] <= v13)
+        if ([v16 version] <= version)
         {
           sub_10009FDB8(a2, self);
         }
 
-        v13 = [v16 version];
+        version = [v16 version];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -206,20 +206,20 @@ LABEL_4:
 
   else
   {
-    v13 = 0;
+    version = 0;
   }
 
-  v17 = [(PQLConnection *)self userVersion];
-  v18 = [v17 unsignedIntValue];
+  userVersion = [(PQLConnection *)self userVersion];
+  unsignedIntValue = [userVersion unsignedIntValue];
 
-  if (v18 >= v13)
+  if (unsignedIntValue >= version)
   {
 LABEL_26:
     v19 = 1;
     goto LABEL_28;
   }
 
-  if (!v6)
+  if (!onlyCopy)
   {
     v29 = 0u;
     v30 = 0u;
@@ -240,7 +240,7 @@ LABEL_26:
             objc_enumerationMutation(v20);
           }
 
-          if (![(PQLConnection *)self _performSchemaUpgrade:*(*(&v27 + 1) + 8 * j) fromDatabaseVersion:v18 error:a5, v27])
+          if (![(PQLConnection *)self _performSchemaUpgrade:*(*(&v27 + 1) + 8 * j) fromDatabaseVersion:unsignedIntValue error:error, v27])
           {
             [(PQLConnection *)self close:0];
 
@@ -248,8 +248,8 @@ LABEL_26:
             goto LABEL_28;
           }
 
-          v25 = [(PQLConnection *)self userVersion];
-          v18 = [v25 unsignedIntValue];
+          userVersion2 = [(PQLConnection *)self userVersion];
+          unsignedIntValue = [userVersion2 unsignedIntValue];
         }
 
         v22 = [v20 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -267,13 +267,13 @@ LABEL_26:
 
   [(PQLConnection *)self close:0];
   [MBError errorWithCode:1 format:@"Can't migrate RO database"];
-  *a5 = v19 = 0;
+  *error = v19 = 0;
 LABEL_28:
 
   return v19;
 }
 
-- (BOOL)groupInTransaction:(id *)a3 transaction:(id)a4
+- (BOOL)groupInTransaction:(id *)transaction transaction:(id)a4
 {
   v12 = 0;
   v13 = &v12;
@@ -289,9 +289,9 @@ LABEL_28:
   v10 = v6;
   v11 = &v12;
   v7 = [(PQLConnection *)self groupInTransaction:v9];
-  if (a3)
+  if (transaction)
   {
-    *a3 = v13[5];
+    *transaction = v13[5];
   }
 
   _Block_object_dispose(&v12, 8);

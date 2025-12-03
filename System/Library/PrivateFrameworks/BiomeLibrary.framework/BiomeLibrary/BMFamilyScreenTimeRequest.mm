@@ -1,16 +1,16 @@
 @interface BMFamilyScreenTimeRequest
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMFamilyScreenTimeRequest)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMFamilyScreenTimeRequest)initWithRequestID:(id)a3 eventTime:(id)a4 requesterDSID:(id)a5 responderDSID:(id)a6 requestKind:(int)a7 status:(int)a8 approvalTime:(int)a9 websitePath:(id)a10 bundleID:(id)a11 isActionUserDevice:(id)a12;
-- (BOOL)isEqual:(id)a3;
+- (BMFamilyScreenTimeRequest)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMFamilyScreenTimeRequest)initWithRequestID:(id)d eventTime:(id)time requesterDSID:(id)iD responderDSID:(id)sID requestKind:(int)kind status:(int)status approvalTime:(int)approvalTime websitePath:(id)self0 bundleID:(id)self1 isActionUserDevice:(id)self2;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)eventTime;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMFamilyScreenTimeRequest
@@ -45,25 +45,25 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMFamilyScreenTimeRequest *)self requestID];
-    v7 = [v5 requestID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    requestID = [(BMFamilyScreenTimeRequest *)self requestID];
+    requestID2 = [v5 requestID];
+    v8 = requestID2;
+    if (requestID == requestID2)
     {
     }
 
     else
     {
-      v9 = [(BMFamilyScreenTimeRequest *)self requestID];
-      v10 = [v5 requestID];
-      v11 = [v9 isEqual:v10];
+      requestID3 = [(BMFamilyScreenTimeRequest *)self requestID];
+      requestID4 = [v5 requestID];
+      v11 = [requestID3 isEqual:requestID4];
 
       if (!v11)
       {
@@ -71,18 +71,18 @@
       }
     }
 
-    v13 = [(BMFamilyScreenTimeRequest *)self eventTime];
-    v14 = [v5 eventTime];
-    v15 = v14;
-    if (v13 == v14)
+    eventTime = [(BMFamilyScreenTimeRequest *)self eventTime];
+    eventTime2 = [v5 eventTime];
+    v15 = eventTime2;
+    if (eventTime == eventTime2)
     {
     }
 
     else
     {
-      v16 = [(BMFamilyScreenTimeRequest *)self eventTime];
-      v17 = [v5 eventTime];
-      v18 = [v16 isEqual:v17];
+      eventTime3 = [(BMFamilyScreenTimeRequest *)self eventTime];
+      eventTime4 = [v5 eventTime];
+      v18 = [eventTime3 isEqual:eventTime4];
 
       if (!v18)
       {
@@ -90,18 +90,18 @@
       }
     }
 
-    v19 = [(BMFamilyScreenTimeRequest *)self requesterDSID];
-    v20 = [v5 requesterDSID];
-    v21 = v20;
-    if (v19 == v20)
+    requesterDSID = [(BMFamilyScreenTimeRequest *)self requesterDSID];
+    requesterDSID2 = [v5 requesterDSID];
+    v21 = requesterDSID2;
+    if (requesterDSID == requesterDSID2)
     {
     }
 
     else
     {
-      v22 = [(BMFamilyScreenTimeRequest *)self requesterDSID];
-      v23 = [v5 requesterDSID];
-      v24 = [v22 isEqual:v23];
+      requesterDSID3 = [(BMFamilyScreenTimeRequest *)self requesterDSID];
+      requesterDSID4 = [v5 requesterDSID];
+      v24 = [requesterDSID3 isEqual:requesterDSID4];
 
       if (!v24)
       {
@@ -109,18 +109,18 @@
       }
     }
 
-    v25 = [(BMFamilyScreenTimeRequest *)self responderDSID];
-    v26 = [v5 responderDSID];
-    v27 = v26;
-    if (v25 == v26)
+    responderDSID = [(BMFamilyScreenTimeRequest *)self responderDSID];
+    responderDSID2 = [v5 responderDSID];
+    v27 = responderDSID2;
+    if (responderDSID == responderDSID2)
     {
     }
 
     else
     {
-      v28 = [(BMFamilyScreenTimeRequest *)self responderDSID];
-      v29 = [v5 responderDSID];
-      v30 = [v28 isEqual:v29];
+      responderDSID3 = [(BMFamilyScreenTimeRequest *)self responderDSID];
+      responderDSID4 = [v5 responderDSID];
+      v30 = [responderDSID3 isEqual:responderDSID4];
 
       if (!v30)
       {
@@ -128,36 +128,36 @@
       }
     }
 
-    v31 = [(BMFamilyScreenTimeRequest *)self requestKind];
-    if (v31 != [v5 requestKind])
+    requestKind = [(BMFamilyScreenTimeRequest *)self requestKind];
+    if (requestKind != [v5 requestKind])
     {
       goto LABEL_35;
     }
 
-    v32 = [(BMFamilyScreenTimeRequest *)self status];
-    if (v32 != [v5 status])
+    status = [(BMFamilyScreenTimeRequest *)self status];
+    if (status != [v5 status])
     {
       goto LABEL_35;
     }
 
-    v33 = [(BMFamilyScreenTimeRequest *)self approvalTime];
-    if (v33 != [v5 approvalTime])
+    approvalTime = [(BMFamilyScreenTimeRequest *)self approvalTime];
+    if (approvalTime != [v5 approvalTime])
     {
       goto LABEL_35;
     }
 
-    v34 = [(BMFamilyScreenTimeRequest *)self websitePath];
-    v35 = [v5 websitePath];
-    v36 = v35;
-    if (v34 == v35)
+    websitePath = [(BMFamilyScreenTimeRequest *)self websitePath];
+    websitePath2 = [v5 websitePath];
+    v36 = websitePath2;
+    if (websitePath == websitePath2)
     {
     }
 
     else
     {
-      v37 = [(BMFamilyScreenTimeRequest *)self websitePath];
-      v38 = [v5 websitePath];
-      v39 = [v37 isEqual:v38];
+      websitePath3 = [(BMFamilyScreenTimeRequest *)self websitePath];
+      websitePath4 = [v5 websitePath];
+      v39 = [websitePath3 isEqual:websitePath4];
 
       if (!v39)
       {
@@ -165,18 +165,18 @@
       }
     }
 
-    v40 = [(BMFamilyScreenTimeRequest *)self bundleID];
-    v41 = [v5 bundleID];
-    v42 = v41;
-    if (v40 == v41)
+    bundleID = [(BMFamilyScreenTimeRequest *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    v42 = bundleID2;
+    if (bundleID == bundleID2)
     {
     }
 
     else
     {
-      v43 = [(BMFamilyScreenTimeRequest *)self bundleID];
-      v44 = [v5 bundleID];
-      v45 = [v43 isEqual:v44];
+      bundleID3 = [(BMFamilyScreenTimeRequest *)self bundleID];
+      bundleID4 = [v5 bundleID];
+      v45 = [bundleID3 isEqual:bundleID4];
 
       if (!v45)
       {
@@ -192,8 +192,8 @@
 
     if (-[BMFamilyScreenTimeRequest hasIsActionUserDevice](self, "hasIsActionUserDevice") && [v5 hasIsActionUserDevice])
     {
-      v46 = [(BMFamilyScreenTimeRequest *)self isActionUserDevice];
-      v12 = v46 ^ [v5 isActionUserDevice] ^ 1;
+      isActionUserDevice = [(BMFamilyScreenTimeRequest *)self isActionUserDevice];
+      v12 = isActionUserDevice ^ [v5 isActionUserDevice] ^ 1;
 LABEL_36:
 
       goto LABEL_37;
@@ -230,13 +230,13 @@ LABEL_37:
 - (id)jsonDictionary
 {
   v39[10] = *MEMORY[0x1E69E9840];
-  v3 = [(BMFamilyScreenTimeRequest *)self requestID];
-  v4 = [(BMFamilyScreenTimeRequest *)self eventTime];
-  if (v4)
+  requestID = [(BMFamilyScreenTimeRequest *)self requestID];
+  eventTime = [(BMFamilyScreenTimeRequest *)self eventTime];
+  if (eventTime)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(BMFamilyScreenTimeRequest *)self eventTime];
-    [v6 timeIntervalSinceReferenceDate];
+    eventTime2 = [(BMFamilyScreenTimeRequest *)self eventTime];
+    [eventTime2 timeIntervalSinceReferenceDate];
     v7 = [v5 numberWithDouble:?];
   }
 
@@ -245,13 +245,13 @@ LABEL_37:
     v7 = 0;
   }
 
-  v8 = [(BMFamilyScreenTimeRequest *)self requesterDSID];
-  v9 = [(BMFamilyScreenTimeRequest *)self responderDSID];
+  requesterDSID = [(BMFamilyScreenTimeRequest *)self requesterDSID];
+  responderDSID = [(BMFamilyScreenTimeRequest *)self responderDSID];
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMFamilyScreenTimeRequest requestKind](self, "requestKind")}];
   v37 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMFamilyScreenTimeRequest status](self, "status")}];
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMFamilyScreenTimeRequest approvalTime](self, "approvalTime")}];
-  v36 = [(BMFamilyScreenTimeRequest *)self websitePath];
-  v35 = [(BMFamilyScreenTimeRequest *)self bundleID];
+  websitePath = [(BMFamilyScreenTimeRequest *)self websitePath];
+  bundleID = [(BMFamilyScreenTimeRequest *)self bundleID];
   if ([(BMFamilyScreenTimeRequest *)self hasIsActionUserDevice])
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMFamilyScreenTimeRequest isActionUserDevice](self, "isActionUserDevice")}];
@@ -263,104 +263,104 @@ LABEL_37:
   }
 
   v38[0] = @"requestID";
-  v13 = v3;
-  if (!v3)
+  null = requestID;
+  if (!requestID)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30 = v13;
-  v39[0] = v13;
+  v30 = null;
+  v39[0] = null;
   v38[1] = @"eventTime";
-  v14 = v7;
+  null2 = v7;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v14;
-  v39[1] = v14;
+  v29 = null2;
+  v39[1] = null2;
   v38[2] = @"requesterDSID";
-  v15 = v8;
-  if (!v8)
+  null3 = requesterDSID;
+  if (!requesterDSID)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v15;
-  v39[2] = v15;
+  v28 = null3;
+  v39[2] = null3;
   v38[3] = @"responderDSID";
-  v16 = v9;
-  if (!v9)
+  null4 = responderDSID;
+  if (!responderDSID)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v3;
-  v27 = v16;
-  v39[3] = v16;
+  v34 = requestID;
+  v27 = null4;
+  v39[3] = null4;
   v38[4] = @"requestKind";
-  v17 = v10;
+  null5 = v10;
   if (!v10)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v33 = v7;
-  v39[4] = v17;
+  v39[4] = null5;
   v38[5] = @"status";
-  v18 = v37;
+  null6 = v37;
   if (!v37)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v8;
-  v39[5] = v18;
+  v32 = requesterDSID;
+  v39[5] = null6;
   v38[6] = @"approvalTime";
-  v19 = v11;
+  null7 = v11;
   if (!v11)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v9;
-  v39[6] = v19;
+  v20 = responderDSID;
+  v39[6] = null7;
   v38[7] = @"websitePath";
-  v21 = v36;
-  if (!v36)
+  null8 = websitePath;
+  if (!websitePath)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
   v22 = v10;
-  v39[7] = v21;
+  v39[7] = null8;
   v38[8] = @"bundleID";
-  v23 = v35;
-  if (!v35)
+  null9 = bundleID;
+  if (!bundleID)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39[8] = v23;
+  v39[8] = null9;
   v38[9] = @"isActionUserDevice";
-  v24 = v12;
+  null10 = v12;
   if (!v12)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39[9] = v24;
+  v39[9] = null10;
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:10];
   if (!v12)
   {
   }
 
-  if (!v35)
+  if (!bundleID)
   {
   }
 
-  if (v36)
+  if (websitePath)
   {
     if (v11)
     {
@@ -435,16 +435,16 @@ LABEL_41:
   return v31;
 }
 
-- (BMFamilyScreenTimeRequest)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMFamilyScreenTimeRequest)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v120[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"requestID"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"requestID"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
 LABEL_4:
-    v8 = [v5 objectForKeyedSubscript:@"eventTime"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"eventTime"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -473,10 +473,10 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v100 = 0;
-            v19 = 0;
+            errorCopy = 0;
             goto LABEL_51;
           }
 
@@ -491,8 +491,8 @@ LABEL_4:
           v8 = v77;
           v97 = v79;
           v100 = 0;
-          v19 = 0;
-          *a4 = [v76 initWithDomain:v80 code:2 userInfo:?];
+          errorCopy = 0;
+          *error = [v76 initWithDomain:v80 code:2 userInfo:?];
           goto LABEL_50;
         }
 
@@ -508,17 +508,17 @@ LABEL_4:
     }
 
 LABEL_16:
-    v21 = [v5 objectForKeyedSubscript:@"requesterDSID"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"requesterDSID"];
     v97 = v21;
     if (v21 && (v22 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v41 = 0;
-          v19 = 0;
+          errorCopy = 0;
           goto LABEL_50;
         }
 
@@ -534,8 +534,8 @@ LABEL_16:
         v49 = v46;
         v8 = v45;
         v41 = 0;
-        v19 = 0;
-        *a4 = [v48 initWithDomain:v49 code:2 userInfo:v47];
+        errorCopy = 0;
+        *error = [v48 initWithDomain:v49 code:2 userInfo:v47];
 LABEL_49:
 
 LABEL_50:
@@ -550,17 +550,17 @@ LABEL_50:
       v96 = 0;
     }
 
-    v23 = [v5 objectForKeyedSubscript:@"responderDSID"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"responderDSID"];
     v92 = v23;
     if (v23 && (v24 = v23, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v99 = 0;
-          v19 = 0;
+          errorCopy = 0;
           v41 = v96;
           goto LABEL_49;
         }
@@ -577,8 +577,8 @@ LABEL_50:
         v54 = v52;
         v8 = v51;
         v99 = 0;
-        v19 = 0;
-        *a4 = [v53 initWithDomain:v54 code:2 userInfo:v25];
+        errorCopy = 0;
+        *error = [v53 initWithDomain:v54 code:2 userInfo:v25];
         v41 = v96;
         goto LABEL_48;
       }
@@ -591,7 +591,7 @@ LABEL_50:
       v99 = 0;
     }
 
-    v25 = [v5 objectForKeyedSubscript:@"requestKind"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"requestKind"];
     v93 = v6;
     if (v25 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -599,7 +599,7 @@ LABEL_50:
       if (objc_opt_isKindOfClass())
       {
         v26 = v7;
-        v27 = self;
+        selfCopy3 = self;
         v94 = v25;
       }
 
@@ -608,10 +608,10 @@ LABEL_50:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v94 = 0;
-            v19 = 0;
+            errorCopy = 0;
             v41 = v96;
             v24 = v92;
             goto LABEL_48;
@@ -629,8 +629,8 @@ LABEL_50:
           v88 = v67;
           v69 = [v95 initWithDomain:v68 code:2 userInfo:?];
           v94 = 0;
-          v19 = 0;
-          *a4 = v69;
+          errorCopy = 0;
+          *error = v69;
           v41 = v96;
           v24 = v92;
 LABEL_47:
@@ -641,18 +641,18 @@ LABEL_48:
 
         v26 = v7;
         v94 = [MEMORY[0x1E696AD98] numberWithInt:BMFamilyScreenTimeRequestKindFromString(v25)];
-        v27 = self;
+        selfCopy3 = self;
       }
     }
 
     else
     {
       v26 = v7;
-      v27 = self;
+      selfCopy3 = self;
       v94 = 0;
     }
 
-    v28 = [v5 objectForKeyedSubscript:@"status"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     v87 = v25;
     v88 = v28;
     if (v28 && (v29 = v28, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -668,12 +668,12 @@ LABEL_48:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v91 = 0;
-            v19 = 0;
+            errorCopy = 0;
             v41 = v96;
-            self = v27;
+            self = selfCopy3;
             v7 = v26;
             v24 = v92;
             v6 = v93;
@@ -688,9 +688,9 @@ LABEL_48:
           v86 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v110 forKeys:&v109 count:1];
           v72 = [v70 initWithDomain:v71 code:2 userInfo:?];
           v91 = 0;
-          v19 = 0;
-          *a4 = v72;
-          self = v27;
+          errorCopy = 0;
+          *error = v72;
+          self = selfCopy3;
           v7 = v26;
           v24 = v92;
           v6 = v93;
@@ -706,21 +706,21 @@ LABEL_48:
       v91 = 0;
     }
 
-    v30 = [v5 objectForKeyedSubscript:@"approvalTime"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"approvalTime"];
     v86 = v30;
     if (v30 && (v31 = v30, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
-      self = v27;
+      self = selfCopy3;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v90 = 0;
-            v19 = 0;
+            errorCopy = 0;
             v7 = v26;
             v24 = v92;
             v6 = v93;
@@ -735,8 +735,8 @@ LABEL_48:
           v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
           v75 = [v73 initWithDomain:v74 code:2 userInfo:v32];
           v90 = 0;
-          v19 = 0;
-          *a4 = v75;
+          errorCopy = 0;
+          *error = v75;
           v7 = v26;
           v6 = v93;
 LABEL_44:
@@ -753,15 +753,15 @@ LABEL_46:
         v90 = [MEMORY[0x1E696AD98] numberWithInt:BMFamilyScreenTimeRequestApprovedTimeFromString(v31)];
         v7 = v26;
 LABEL_32:
-        v32 = [v5 objectForKeyedSubscript:@"websitePath"];
+        v32 = [dictionaryCopy objectForKeyedSubscript:@"websitePath"];
         v6 = v93;
         if (v32 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v19 = a4;
-            if (!a4)
+            errorCopy = error;
+            if (!error)
             {
               v89 = 0;
               goto LABEL_44;
@@ -780,8 +780,8 @@ LABEL_32:
             v8 = v55;
             v60 = [v59 initWithDomain:v58 code:2 userInfo:v33];
             v89 = 0;
-            v19 = 0;
-            *a4 = v60;
+            errorCopy = 0;
+            *error = v60;
             goto LABEL_43;
           }
 
@@ -793,23 +793,23 @@ LABEL_32:
           v89 = 0;
         }
 
-        v33 = [v5 objectForKeyedSubscript:@"bundleID"];
+        v33 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
         v85 = v8;
         if (v33 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v36 = 0;
-              v19 = 0;
+              errorCopy = 0;
               v6 = v93;
               goto LABEL_43;
             }
 
             v34 = v7;
-            v35 = self;
+            selfCopy6 = self;
             v83 = objc_alloc(MEMORY[0x1E696ABC0]);
             v61 = *MEMORY[0x1E698F240];
             v103 = *MEMORY[0x1E696A578];
@@ -818,30 +818,30 @@ LABEL_32:
             v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v104 forKeys:&v103 count:1];
             v62 = [v83 initWithDomain:v61 code:2 userInfo:v37];
             v36 = 0;
-            v19 = 0;
-            *a4 = v62;
+            errorCopy = 0;
+            *error = v62;
             goto LABEL_42;
           }
 
           v34 = v7;
-          v35 = self;
+          selfCopy6 = self;
           v36 = v33;
         }
 
         else
         {
           v34 = v7;
-          v35 = self;
+          selfCopy6 = self;
           v36 = 0;
         }
 
-        v37 = [v5 objectForKeyedSubscript:@"isActionUserDevice"];
+        v37 = [dictionaryCopy objectForKeyedSubscript:@"isActionUserDevice"];
         if (v37 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (a4)
+            if (error)
             {
               v84 = objc_alloc(MEMORY[0x1E696ABC0]);
               v82 = *MEMORY[0x1E698F240];
@@ -849,11 +849,11 @@ LABEL_32:
               v63 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isActionUserDevice"];
               v102 = v63;
               v64 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
-              *a4 = [v84 initWithDomain:v82 code:2 userInfo:v64];
+              *error = [v84 initWithDomain:v82 code:2 userInfo:v64];
             }
 
             v38 = 0;
-            v19 = 0;
+            errorCopy = 0;
             goto LABEL_42;
           }
 
@@ -865,14 +865,14 @@ LABEL_32:
           v38 = 0;
         }
 
-        v39 = [v94 intValue];
-        v40 = [v91 intValue];
+        intValue = [v94 intValue];
+        intValue2 = [v91 intValue];
         LODWORD(v81) = [v90 intValue];
-        v19 = [(BMFamilyScreenTimeRequest *)v35 initWithRequestID:v34 eventTime:v100 requesterDSID:v96 responderDSID:v99 requestKind:v39 status:v40 approvalTime:v81 websitePath:v89 bundleID:v36 isActionUserDevice:v38];
-        v35 = v19;
+        errorCopy = [(BMFamilyScreenTimeRequest *)selfCopy6 initWithRequestID:v34 eventTime:v100 requesterDSID:v96 responderDSID:v99 requestKind:intValue status:intValue2 approvalTime:v81 websitePath:v89 bundleID:v36 isActionUserDevice:v38];
+        selfCopy6 = errorCopy;
 LABEL_42:
 
-        self = v35;
+        self = selfCopy6;
         v6 = v93;
         v7 = v34;
         v8 = v85;
@@ -887,7 +887,7 @@ LABEL_43:
     else
     {
       v90 = 0;
-      self = v27;
+      self = selfCopy3;
     }
 
     v7 = v26;
@@ -901,10 +901,10 @@ LABEL_43:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v7 = 0;
-    v19 = 0;
+    errorCopy = 0;
     goto LABEL_52;
   }
 
@@ -917,27 +917,27 @@ LABEL_43:
   v18 = v16;
   v8 = v17;
   v7 = 0;
-  v19 = 0;
-  *a4 = [v15 initWithDomain:v18 code:2 userInfo:v17];
+  errorCopy = 0;
+  *error = [v15 initWithDomain:v18 code:2 userInfo:v17];
 LABEL_51:
 
 LABEL_52:
   v42 = *MEMORY[0x1E69E9840];
-  return v19;
+  return errorCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMFamilyScreenTimeRequest *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if (self->_requestID)
   {
     PBDataWriterWriteStringField();
@@ -975,18 +975,18 @@ LABEL_52:
     PBDataWriterWriteStringField();
   }
 
-  v8 = v10;
+  v8 = toCopy;
   if (self->_hasIsActionUserDevice)
   {
     isActionUserDevice = self->_isActionUserDevice;
     PBDataWriterWriteBOOLField();
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v50.receiver = self;
   v50.super_class = BMFamilyScreenTimeRequest;
   v5 = [(BMEventBase *)&v50 init];
@@ -995,12 +995,12 @@ LABEL_52:
     goto LABEL_98;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1011,18 +1011,18 @@ LABEL_52:
       while (1)
       {
         LOBYTE(v51) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v51) & 0x7F) << v7;
@@ -1040,9 +1040,9 @@ LABEL_52:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1060,18 +1060,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v51) = 0;
-              v41 = [v4 position] + 1;
-              if (v41 >= [v4 position] && (v42 = objc_msgSend(v4, "position") + 1, v42 <= objc_msgSend(v4, "length")))
+              v41 = [fromCopy position] + 1;
+              if (v41 >= [fromCopy position] && (v42 = objc_msgSend(fromCopy, "position") + 1, v42 <= objc_msgSend(fromCopy, "length")))
               {
-                v43 = [v4 data];
-                [v43 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (LOBYTE(v51) & 0x7F) << v39;
@@ -1088,7 +1088,7 @@ LABEL_16:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 3)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 3)
             {
 LABEL_84:
               LODWORD(v18) = 0;
@@ -1116,18 +1116,18 @@ LABEL_76:
             while (1)
             {
               LOBYTE(v51) = 0;
-              v34 = [v4 position] + 1;
-              if (v34 >= [v4 position] && (v35 = objc_msgSend(v4, "position") + 1, v35 <= objc_msgSend(v4, "length")))
+              v34 = [fromCopy position] + 1;
+              if (v34 >= [fromCopy position] && (v35 = objc_msgSend(fromCopy, "position") + 1, v35 <= objc_msgSend(fromCopy, "length")))
               {
-                v36 = [v4 data];
-                [v36 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (LOBYTE(v51) & 0x7F) << v32;
@@ -1144,7 +1144,7 @@ LABEL_76:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 3)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 3)
             {
 LABEL_80:
               LODWORD(v18) = 0;
@@ -1182,18 +1182,18 @@ LABEL_80:
         while (1)
         {
           LOBYTE(v51) = 0;
-          v26 = [v4 position] + 1;
-          if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+          v26 = [fromCopy position] + 1;
+          if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
           {
-            v28 = [v4 data];
-            [v28 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v25 |= (LOBYTE(v51) & 0x7F) << v23;
@@ -1211,7 +1211,7 @@ LABEL_80:
           }
         }
 
-        v29 = (v25 != 0) & ~[v4 hasError];
+        v29 = (v25 != 0) & ~[fromCopy hasError];
 LABEL_92:
         v5->_isActionUserDevice = v29;
       }
@@ -1237,18 +1237,18 @@ LABEL_92:
               while (1)
               {
                 LOBYTE(v51) = 0;
-                v19 = [v4 position] + 1;
-                if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+                v19 = [fromCopy position] + 1;
+                if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v21 = [v4 data];
-                  [v21 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+                  data5 = [fromCopy data];
+                  [data5 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v18 |= (LOBYTE(v51) & 0x7F) << v16;
@@ -1265,7 +1265,7 @@ LABEL_92:
                 }
               }
 
-              if (([v4 hasError] & 1) != 0 || v18 > 2)
+              if (([fromCopy hasError] & 1) != 0 || v18 > 2)
               {
 LABEL_88:
                 LODWORD(v18) = 0;
@@ -1300,31 +1300,31 @@ LABEL_75:
 
         v5->_hasRaw_eventTime = 1;
         v51 = 0.0;
-        v30 = [v4 position] + 8;
-        if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 8, v31 <= objc_msgSend(v4, "length")))
+        v30 = [fromCopy position] + 8;
+        if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 8, v31 <= objc_msgSend(fromCopy, "length")))
         {
-          v46 = [v4 data];
-          [v46 getBytes:&v51 range:{objc_msgSend(v4, "position"), 8}];
+          data6 = [fromCopy data];
+          [data6 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_eventTime = v51;
       }
 
 LABEL_95:
-      v47 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v47 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_97:
     v48 = 0;
@@ -1342,41 +1342,41 @@ LABEL_98:
 - (NSString)description
 {
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v13 = [(BMFamilyScreenTimeRequest *)self requestID];
-  v3 = [(BMFamilyScreenTimeRequest *)self eventTime];
-  v4 = [(BMFamilyScreenTimeRequest *)self requesterDSID];
-  v5 = [(BMFamilyScreenTimeRequest *)self responderDSID];
+  requestID = [(BMFamilyScreenTimeRequest *)self requestID];
+  eventTime = [(BMFamilyScreenTimeRequest *)self eventTime];
+  requesterDSID = [(BMFamilyScreenTimeRequest *)self requesterDSID];
+  responderDSID = [(BMFamilyScreenTimeRequest *)self responderDSID];
   v6 = BMFamilyScreenTimeRequestKindAsString([(BMFamilyScreenTimeRequest *)self requestKind]);
   v7 = BMFamilyScreenTimeRequestStatusAsString([(BMFamilyScreenTimeRequest *)self status]);
   v8 = BMFamilyScreenTimeRequestApprovedTimeAsString([(BMFamilyScreenTimeRequest *)self approvalTime]);
-  v9 = [(BMFamilyScreenTimeRequest *)self websitePath];
-  v10 = [(BMFamilyScreenTimeRequest *)self bundleID];
+  websitePath = [(BMFamilyScreenTimeRequest *)self websitePath];
+  bundleID = [(BMFamilyScreenTimeRequest *)self bundleID];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMFamilyScreenTimeRequest isActionUserDevice](self, "isActionUserDevice")}];
-  v15 = [v14 initWithFormat:@"BMFamilyScreenTimeRequest with requestID: %@, eventTime: %@, requesterDSID: %@, responderDSID: %@, requestKind: %@, status: %@, approvalTime: %@, websitePath: %@, bundleID: %@, isActionUserDevice: %@", v13, v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  v15 = [v14 initWithFormat:@"BMFamilyScreenTimeRequest with requestID: %@, eventTime: %@, requesterDSID: %@, responderDSID: %@, requestKind: %@, status: %@, approvalTime: %@, websitePath: %@, bundleID: %@, isActionUserDevice: %@", requestID, eventTime, requesterDSID, responderDSID, v6, v7, v8, websitePath, bundleID, v11];
 
   return v15;
 }
 
-- (BMFamilyScreenTimeRequest)initWithRequestID:(id)a3 eventTime:(id)a4 requesterDSID:(id)a5 responderDSID:(id)a6 requestKind:(int)a7 status:(int)a8 approvalTime:(int)a9 websitePath:(id)a10 bundleID:(id)a11 isActionUserDevice:(id)a12
+- (BMFamilyScreenTimeRequest)initWithRequestID:(id)d eventTime:(id)time requesterDSID:(id)iD responderDSID:(id)sID requestKind:(int)kind status:(int)status approvalTime:(int)approvalTime websitePath:(id)self0 bundleID:(id)self1 isActionUserDevice:(id)self2
 {
-  v28 = a3;
-  v17 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a10;
-  v18 = a11;
-  v19 = a12;
+  dCopy = d;
+  timeCopy = time;
+  iDCopy = iD;
+  sIDCopy = sID;
+  pathCopy = path;
+  bundleIDCopy = bundleID;
+  deviceCopy = device;
   v29.receiver = self;
   v29.super_class = BMFamilyScreenTimeRequest;
   v20 = [(BMEventBase *)&v29 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v20->_requestID, a3);
-    if (v17)
+    objc_storeStrong(&v20->_requestID, d);
+    if (timeCopy)
     {
       v20->_hasRaw_eventTime = 1;
-      [v17 timeIntervalSinceReferenceDate];
+      [timeCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1386,17 +1386,17 @@ LABEL_98:
     }
 
     v20->_raw_eventTime = v21;
-    objc_storeStrong(&v20->_requesterDSID, a5);
-    objc_storeStrong(&v20->_responderDSID, a6);
-    v20->_requestKind = a7;
-    v20->_status = a8;
-    v20->_approvalTime = a9;
-    objc_storeStrong(&v20->_websitePath, a10);
-    objc_storeStrong(&v20->_bundleID, a11);
-    if (v19)
+    objc_storeStrong(&v20->_requesterDSID, iD);
+    objc_storeStrong(&v20->_responderDSID, sID);
+    v20->_requestKind = kind;
+    v20->_status = status;
+    v20->_approvalTime = approvalTime;
+    objc_storeStrong(&v20->_websitePath, path);
+    objc_storeStrong(&v20->_bundleID, bundleID);
+    if (deviceCopy)
     {
       v20->_hasIsActionUserDevice = 1;
-      v20->_isActionUserDevice = [v19 BOOLValue];
+      v20->_isActionUserDevice = [deviceCopy BOOLValue];
     }
 
     else
@@ -1439,13 +1439,13 @@ LABEL_98:
   return v11;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMFamilyScreenTimeRequest alloc] initByReadFrom:v6];
     v8 = v7;

@@ -1,5 +1,5 @@
 @interface PlatformController
-- (BOOL)_shouldCreateAuxiliaryTask:(Class)a3 forCreationPreference:(int64_t)a4;
+- (BOOL)_shouldCreateAuxiliaryTask:(Class)task forCreationPreference:(int64_t)preference;
 - (ChromeViewController)chromeViewController;
 - (EntryPointsCoordinator)entryPointsCoordinator;
 - (MapsSession)currentSession;
@@ -10,29 +10,29 @@
 - (PlatformController)init;
 - (RoutePlanningSession)currentRoutePlanningSession;
 - (id)directionsDataSource;
-- (void)_continuePushNavigationWithRoute:(id)a3 navigationMode:(unint64_t)a4 completion:(id)a5;
+- (void)_continuePushNavigationWithRoute:(id)route navigationMode:(unint64_t)mode completion:(id)completion;
 - (void)_createAllAuxiliaryTasks;
-- (void)_createAuxiliaryTasksIfNecessaryForPreference:(int64_t)a3;
-- (void)_handleInitialRouteLoaded:(id)a3;
-- (void)_suspendSession:(id)a3 completion:(id)a4;
-- (void)clearIfCurrentSession:(id)a3;
-- (void)clearIfCurrentSessionIsKindOfClass:(Class)a3;
+- (void)_createAuxiliaryTasksIfNecessaryForPreference:(int64_t)preference;
+- (void)_handleInitialRouteLoaded:(id)loaded;
+- (void)_suspendSession:(id)session completion:(id)completion;
+- (void)clearIfCurrentSession:(id)session;
+- (void)clearIfCurrentSessionIsKindOfClass:(Class)class;
 - (void)clearSessions;
 - (void)dealloc;
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4;
-- (void)mapViewDidBecomeFullyDrawnNotification:(id)a3;
-- (void)popIfCurrentSession:(id)a3;
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion;
+- (void)mapViewDidBecomeFullyDrawnNotification:(id)notification;
+- (void)popIfCurrentSession:(id)session;
 - (void)popSession;
-- (void)popUntil:(id)a3;
+- (void)popUntil:(id)until;
 - (void)prepareToReplaySessions;
-- (void)pushNavigationWithRoute:(id)a3 navigationMode:(unint64_t)a4 shouldCheckNavSafetyAlert:(BOOL)a5 completion:(id)a6;
-- (void)pushSession:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)removeSession:(id)a3;
-- (void)replaceCurrentSessionWithSession:(id)a3;
+- (void)pushNavigationWithRoute:(id)route navigationMode:(unint64_t)mode shouldCheckNavSafetyAlert:(BOOL)alert completion:(id)completion;
+- (void)pushSession:(id)session;
+- (void)registerObserver:(id)observer;
+- (void)removeSession:(id)session;
+- (void)replaceCurrentSessionWithSession:(id)session;
 - (void)replaySessions;
-- (void)setChromeViewController:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)setChromeViewController:(id)controller;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation PlatformController
@@ -51,26 +51,26 @@
     v3 = sub_100008614();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(PlatformController *)self sessionStack];
-      v5 = [(PlatformController *)self observers];
+      sessionStack = [(PlatformController *)self sessionStack];
+      observers = [(PlatformController *)self observers];
       *buf = 134349570;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
-      v20 = v4;
+      v20 = sessionStack;
       v21 = 2112;
-      v22 = v5;
+      v22 = observers;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Preparing to replay with sessions: %@ and current observers: %@", buf, 0x20u);
     }
 
-    v6 = [(PlatformController *)self observers];
-    [v6 snapshotCurrentObservers];
+    observers2 = [(PlatformController *)self observers];
+    [observers2 snapshotCurrentObservers];
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(PlatformController *)self sessionStack];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    sessionStack2 = [(PlatformController *)self sessionStack];
+    v8 = [sessionStack2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -82,7 +82,7 @@
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(sessionStack2);
           }
 
           [*(*(&v12 + 1) + 8 * v11) prepareToReplayCurrentState];
@@ -90,7 +90,7 @@
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [sessionStack2 countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -204,25 +204,25 @@
 
 - (PedestrianARSessionStateManager)pedestrianARSessionStateManager
 {
-  v2 = [(PlatformController *)self auxiliaryTasksManager];
-  v3 = [v2 auxilaryTaskForClass:objc_opt_class()];
+  auxiliaryTasksManager = [(PlatformController *)self auxiliaryTasksManager];
+  v3 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
 
-  v4 = [v3 stateManager];
+  stateManager = [v3 stateManager];
 
-  return v4;
+  return stateManager;
 }
 
 - (MapsSession)currentSession
 {
-  v2 = [(PlatformController *)self sessionStack];
-  v3 = [v2 lastObject];
+  sessionStack = [(PlatformController *)self sessionStack];
+  lastObject = [sessionStack lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (NavigationSession)currentNavigationSession
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PlatformController.currentNavigationSession.getter();
 
   return v3;
@@ -230,16 +230,16 @@
 
 - (RoutePlanningSession)currentRoutePlanningSession
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PlatformController.currentRoutePlanningSession.getter();
 
   return v3;
 }
 
-- (void)_continuePushNavigationWithRoute:(id)a3 navigationMode:(unint64_t)a4 completion:(id)a5
+- (void)_continuePushNavigationWithRoute:(id)route navigationMode:(unint64_t)mode completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  routeCopy = route;
+  completionCopy = completion;
   v10 = sub_100035E6C();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -248,12 +248,12 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
-  v11 = [(PlatformController *)self chromeViewController];
-  v12 = [v11 currentTraits];
-  v13 = v12;
-  if (v12)
+  chromeViewController = [(PlatformController *)self chromeViewController];
+  currentTraits = [chromeViewController currentTraits];
+  v13 = currentTraits;
+  if (currentTraits)
   {
-    v14 = v12;
+    v14 = currentTraits;
   }
 
   else
@@ -269,21 +269,21 @@
   v19[2] = sub_1006228BC;
   v19[3] = &unk_1016242E8;
   objc_copyWeak(v22, buf);
-  v22[1] = a4;
+  v22[1] = mode;
   v16 = v15;
   v20 = v16;
-  v17 = v9;
+  v17 = completionCopy;
   v21 = v17;
-  v18 = [v8 _maps_convertToNavigableRouteWithTraits:v16 errorHandler:v17 completionHandler:v19];
+  v18 = [routeCopy _maps_convertToNavigableRouteWithTraits:v16 errorHandler:v17 completionHandler:v19];
 
   objc_destroyWeak(v22);
   objc_destroyWeak(buf);
 }
 
-- (void)pushNavigationWithRoute:(id)a3 navigationMode:(unint64_t)a4 shouldCheckNavSafetyAlert:(BOOL)a5 completion:(id)a6
+- (void)pushNavigationWithRoute:(id)route navigationMode:(unint64_t)mode shouldCheckNavSafetyAlert:(BOOL)alert completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  routeCopy = route;
+  completionCopy = completion;
   v12 = sub_100035E6C();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -295,9 +295,9 @@
   v13 = +[NSUserDefaults standardUserDefaults];
   v14 = [v13 BOOLForKey:@"HasShownCustomNavModeAdvisoryKey"];
 
-  if (v14 & 1 | !a5)
+  if (v14 & 1 | !alert)
   {
-    [(PlatformController *)self _continuePushNavigationWithRoute:v10 navigationMode:a4 completion:v11];
+    [(PlatformController *)self _continuePushNavigationWithRoute:routeCopy navigationMode:mode completion:completionCopy];
   }
 
   else
@@ -314,9 +314,9 @@
     v19[2] = sub_100622ED8;
     v19[3] = &unk_101624298;
     objc_copyWeak(v22, buf);
-    v20 = v10;
-    v22[1] = a4;
-    v21 = v11;
+    v20 = routeCopy;
+    v22[1] = mode;
+    v21 = completionCopy;
     [v15 interruptApplicationWithKind:1 userInfo:v18 completionHandler:v19];
 
     objc_destroyWeak(v22);
@@ -330,8 +330,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(PlatformController *)self sessionStack];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  sessionStack = [(PlatformController *)self sessionStack];
+  v3 = [sessionStack countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -344,7 +344,7 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(sessionStack);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -365,7 +365,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [sessionStack countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v4);
@@ -382,21 +382,21 @@
   return v12;
 }
 
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100D07FE8;
   block[3] = &unk_1016605F8;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  draftCopy = draft;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = draftCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)mapViewDidBecomeFullyDrawnNotification:(id)a3
+- (void)mapViewDidBecomeFullyDrawnNotification:(id)notification
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:VKMapViewDidBecomeFullyDrawnNotification object:0];
@@ -416,17 +416,17 @@
 {
   if (![(PlatformController *)self didReplaySessions])
   {
-    v3 = [(PlatformController *)self currentSession];
+    currentSession = [(PlatformController *)self currentSession];
 
-    if (v3)
+    if (currentSession)
     {
-      v4 = [(PlatformController *)self observers];
-      [v4 removeSnapshottedObservers];
+      observers = [(PlatformController *)self observers];
+      [observers removeSnapshottedObservers];
 
-      v5 = [(PlatformController *)self observers];
-      v6 = [v5 hasObservers];
+      observers2 = [(PlatformController *)self observers];
+      hasObservers = [observers2 hasObservers];
 
-      if (v6)
+      if (hasObservers)
       {
         v32 = 0;
         v33 = &v32;
@@ -455,7 +455,7 @@
           v9 = v27[5];
           v10 = v33[5];
           *buf = 134349570;
-          v40 = self;
+          selfCopy = self;
           v41 = 2112;
           v42 = v9;
           v43 = 2112;
@@ -464,8 +464,8 @@
         }
 
         objc_storeStrong(&self->_previousSession, v27[5]);
-        v11 = [(PlatformController *)self observers];
-        [v11 platformController:self willChangeCurrentSessionFromSession:v27[5] toSession:v33[5]];
+        observers3 = [(PlatformController *)self observers];
+        [observers3 platformController:self willChangeCurrentSessionFromSession:v27[5] toSession:v33[5]];
 
         v12 = self->_stackLock;
         v24[0] = _NSConcreteStackBlock;
@@ -475,8 +475,8 @@
         v24[4] = self;
         v24[5] = &v32;
         dispatch_sync(v12, v24);
-        v13 = [(PlatformController *)self observers];
-        [v13 platformController:self didChangeCurrentSessionFromSession:v27[5] toSession:v33[5]];
+        observers4 = [(PlatformController *)self observers];
+        [observers4 platformController:self didChangeCurrentSessionFromSession:v27[5] toSession:v33[5]];
 
         [v33[5] replayCurrentState];
         previousSession = self->_previousSession;
@@ -487,15 +487,15 @@
       }
     }
 
-    v15 = [(PlatformController *)self observers];
-    [v15 restoreOriginalObservers];
+    observers5 = [(PlatformController *)self observers];
+    [observers5 restoreOriginalObservers];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v16 = [(PlatformController *)self sessionStack];
-    v17 = [v16 countByEnumeratingWithState:&v20 objects:v38 count:16];
+    sessionStack = [(PlatformController *)self sessionStack];
+    v17 = [sessionStack countByEnumeratingWithState:&v20 objects:v38 count:16];
     if (v17)
     {
       v18 = *v21;
@@ -506,7 +506,7 @@
         {
           if (*v21 != v18)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(sessionStack);
           }
 
           [*(*(&v20 + 1) + 8 * v19) cleanupStateReplay];
@@ -514,7 +514,7 @@
         }
 
         while (v17 != v19);
-        v17 = [v16 countByEnumeratingWithState:&v20 objects:v38 count:16];
+        v17 = [sessionStack countByEnumeratingWithState:&v20 objects:v38 count:16];
       }
 
       while (v17);
@@ -527,63 +527,63 @@
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(PlatformController *)self sessionStack];
-  v5 = [(PlatformController *)self chromeViewController];
-  v6 = [NSString stringWithFormat:@"<%@: %p\nsessions=%@\nchromeViewController=%@\n>", v3, self, v4, v5];
+  sessionStack = [(PlatformController *)self sessionStack];
+  chromeViewController = [(PlatformController *)self chromeViewController];
+  v6 = [NSString stringWithFormat:@"<%@: %p\nsessions=%@\nchromeViewController=%@\n>", v3, self, sessionStack, chromeViewController];
 
   return v6;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_100008614();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Removing observer: %@", &v7, 0x16u);
   }
 
-  v6 = [(PlatformController *)self observers];
-  [v6 unregisterObserver:v4];
+  observers = [(PlatformController *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_100008614();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Adding observer: %@", &v7, 0x16u);
   }
 
-  v6 = [(PlatformController *)self observers];
-  [v6 registerObserver:v4];
+  observers = [(PlatformController *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)clearIfCurrentSessionIsKindOfClass:(Class)a3
+- (void)clearIfCurrentSessionIsKindOfClass:(Class)class
 {
   v5 = sub_100008614();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(PlatformController *)self currentSession];
+    currentSession = [(PlatformController *)self currentSession];
     v9 = 134349570;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = currentSession;
     v13 = 2112;
-    v14 = a3;
+    classCopy = class;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Clear all sessions if the current session (%@) is kind of class: %@", &v9, 0x20u);
   }
 
-  v7 = [(PlatformController *)self currentSession];
+  currentSession2 = [(PlatformController *)self currentSession];
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
@@ -592,25 +592,25 @@
   }
 }
 
-- (void)clearIfCurrentSession:(id)a3
+- (void)clearIfCurrentSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = sub_100008614();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(PlatformController *)self currentSession];
+    currentSession = [(PlatformController *)self currentSession];
     v8 = 134349570;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v6;
+    v11 = currentSession;
     v12 = 2112;
-    v13 = v4;
+    v13 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Clear all sessions if the current session (%@) is equal to: %@", &v8, 0x20u);
   }
 
-  v7 = [(PlatformController *)self currentSession];
+  currentSession2 = [(PlatformController *)self currentSession];
 
-  if (v7 == v4)
+  if (currentSession2 == sessionCopy)
   {
     [(PlatformController *)self clearSessions];
   }
@@ -622,7 +622,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v4 = 134349314;
-    v5 = self;
+    selfCopy = self;
     v6 = 2080;
     v7 = "[PlatformController clearSessions]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] %s", &v4, 0x16u);
@@ -631,61 +631,61 @@
   [(PlatformController *)self popUntil:&stru_101651398];
 }
 
-- (void)removeSession:(id)a3
+- (void)removeSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = sub_100008614();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v4;
+    v17 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Removing session: %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (sessionCopy)
   {
     stackLock = self->_stackLock;
     v8 = _NSConcreteStackBlock;
     v9 = 3221225472;
     v10 = sub_100D08D44;
     v11 = &unk_101661A90;
-    v12 = self;
-    v7 = v4;
+    selfCopy2 = self;
+    v7 = sessionCopy;
     v13 = v7;
     dispatch_sync(stackLock, &v8);
-    [v7 setPlatformController:{0, v8, v9, v10, v11, v12}];
+    [v7 setPlatformController:{0, v8, v9, v10, v11, selfCopy2}];
   }
 }
 
-- (void)_suspendSession:(id)a3 completion:(id)a4
+- (void)_suspendSession:(id)session completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
     v8 = sub_100008614();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9 = 134349056;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[%{public}p] Outgoing session requires asynchronous suspension", &v9, 0xCu);
     }
 
-    [v6 suspendWithCompletion:v7];
+    [sessionCopy suspendWithCompletion:completionCopy];
   }
 
   else
   {
-    [v6 suspend];
-    v7[2](v7);
+    [sessionCopy suspend];
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)popUntil:(id)a3
+- (void)popUntil:(id)until
 {
-  v4 = a3;
+  untilCopy = until;
   v5 = sub_100008614();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -697,15 +697,15 @@
   }
 
   obj = [(PlatformController *)self currentSession];
-  v6 = [(PlatformController *)self sessionStack];
-  v7 = [v6 count] == 0;
+  sessionStack = [(PlatformController *)self sessionStack];
+  v7 = [sessionStack count] == 0;
 
   if (!v7)
   {
     do
     {
-      v8 = [(PlatformController *)self currentSession];
-      v9 = v4[2](v4, v8);
+      currentSession = [(PlatformController *)self currentSession];
+      v9 = untilCopy[2](untilCopy, currentSession);
 
       if (v9)
       {
@@ -729,22 +729,22 @@
       [(PlatformController *)self removeSession:*(*&buf[8] + 40)];
       _Block_object_dispose(buf, 8);
 
-      v11 = [(PlatformController *)self sessionStack];
-      v12 = [v11 count] == 0;
+      sessionStack2 = [(PlatformController *)self sessionStack];
+      v12 = [sessionStack2 count] == 0;
     }
 
     while (!v12);
   }
 
-  v13 = [(PlatformController *)self currentSession];
-  v14 = obj == v13;
+  currentSession2 = [(PlatformController *)self currentSession];
+  v14 = obj == currentSession2;
 
   if (!v14)
   {
     objc_storeStrong(&self->_previousSession, obj);
-    v15 = [(PlatformController *)self observers];
-    v16 = [(PlatformController *)self currentSession];
-    [v15 platformController:self willChangeCurrentSessionFromSession:obj toSession:v16];
+    observers = [(PlatformController *)self observers];
+    currentSession3 = [(PlatformController *)self currentSession];
+    [observers platformController:self willChangeCurrentSessionFromSession:obj toSession:currentSession3];
 
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
@@ -760,71 +760,71 @@
   v19 = sub_100008614();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    v20 = [(PlatformController *)self sessionStack];
+    sessionStack3 = [(PlatformController *)self sessionStack];
     *buf = 134349314;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v20;
+    *&buf[14] = sessionStack3;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "[%{public}p] Current session stack: %@", buf, 0x16u);
   }
 }
 
-- (void)replaceCurrentSessionWithSession:(id)a3
+- (void)replaceCurrentSessionWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = sub_100008614();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(PlatformController *)self currentSession];
+    currentSession = [(PlatformController *)self currentSession];
     v10 = 134349570;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = currentSession;
     v14 = 2112;
-    v15 = v4;
+    v15 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Replace current session (%@) with: %@", &v10, 0x20u);
   }
 
-  if (v4)
+  if (sessionCopy)
   {
-    v7 = [(PlatformController *)self currentSession];
-    [(PlatformController *)self pushSession:v4];
-    if (v7)
+    currentSession2 = [(PlatformController *)self currentSession];
+    [(PlatformController *)self pushSession:sessionCopy];
+    if (currentSession2)
     {
-      [(PlatformController *)self removeSession:v7];
+      [(PlatformController *)self removeSession:currentSession2];
       v8 = sub_100008614();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v9 = [(PlatformController *)self sessionStack];
+        sessionStack = [(PlatformController *)self sessionStack];
         v10 = 134349314;
-        v11 = self;
+        selfCopy2 = self;
         v12 = 2112;
-        v13 = v9;
+        v13 = sessionStack;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[%{public}p] Current session stack: %@", &v10, 0x16u);
       }
     }
   }
 }
 
-- (void)popIfCurrentSession:(id)a3
+- (void)popIfCurrentSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = sub_100008614();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(PlatformController *)self currentSession];
+    currentSession = [(PlatformController *)self currentSession];
     v8 = 134349570;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v6;
+    v11 = currentSession;
     v12 = 2112;
-    v13 = v4;
+    v13 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Pop if the current session (%@) is equal to: %@", &v8, 0x20u);
   }
 
-  v7 = [(PlatformController *)self currentSession];
+  currentSession2 = [(PlatformController *)self currentSession];
 
-  if (v7 == v4)
+  if (currentSession2 == sessionCopy)
   {
     [(PlatformController *)self popSession];
   }
@@ -855,42 +855,42 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)pushSession:(id)a3
+- (void)pushSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = sub_100008614();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v4;
+    v17 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Pushing new session: %@", buf, 0x16u);
   }
 
   [CATransaction setFrameStallSkipRequest:1];
   [(PlatformController *)self _createAllAuxiliaryTasks];
-  v6 = [(PlatformController *)self currentSession];
-  objc_storeStrong(&self->_previousSession, v6);
-  v7 = [(PlatformController *)self observers];
-  [v7 platformController:self willChangeCurrentSessionFromSession:v6 toSession:v4];
+  currentSession = [(PlatformController *)self currentSession];
+  objc_storeStrong(&self->_previousSession, currentSession);
+  observers = [(PlatformController *)self observers];
+  [observers platformController:self willChangeCurrentSessionFromSession:currentSession toSession:sessionCopy];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100D0990C;
   v11[3] = &unk_101661A40;
   v11[4] = self;
-  v12 = v4;
-  v13 = v6;
-  v8 = v6;
-  v9 = v4;
+  v12 = sessionCopy;
+  v13 = currentSession;
+  v8 = currentSession;
+  v9 = sessionCopy;
   v10 = objc_retainBlock(v11);
   [(PlatformController *)self _suspendSession:v8 completion:v10];
 }
 
-- (void)_handleInitialRouteLoaded:(id)a3
+- (void)_handleInitialRouteLoaded:(id)loaded
 {
-  v3 = a3;
+  loadedCopy = loaded;
   v4 = +[UIApplication sharedMapsDelegate];
   [v4 showNavigationAdvisoryIfNeeded];
 
@@ -898,16 +898,16 @@
   block[1] = 3221225472;
   block[2] = sub_100D09B90;
   block[3] = &unk_101661B18;
-  v7 = v3;
-  v5 = v3;
+  v7 = loadedCopy;
+  v5 = loadedCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_createAuxiliaryTasksIfNecessaryForPreference:(int64_t)a3
+- (void)_createAuxiliaryTasksIfNecessaryForPreference:(int64_t)preference
 {
-  v5 = [(PlatformController *)self auxiliaryTaskCreationPreferencesSatisfied];
-  v6 = [NSNumber numberWithInteger:a3];
-  v7 = [v5 containsObject:v6];
+  auxiliaryTaskCreationPreferencesSatisfied = [(PlatformController *)self auxiliaryTaskCreationPreferencesSatisfied];
+  v6 = [NSNumber numberWithInteger:preference];
+  v7 = [auxiliaryTaskCreationPreferencesSatisfied containsObject:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -915,9 +915,9 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 134349312;
-      v122 = self;
+      selfCopy2 = self;
       v123 = 2048;
-      v124 = a3;
+      preferenceCopy2 = preference;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Creating auxiliary tasks for preference: %ld", buf, 0x16u);
     }
 
@@ -934,7 +934,7 @@
     }
 
     v13 = +[NSMutableArray array];
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v14 = [NavigationStateMonitoringTask alloc];
       v15 = +[MNNavigationService sharedService];
@@ -942,7 +942,7 @@
       [v13 addObject:v16];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v17 = [NavdDefaultsUpdater alloc];
       v18 = +[NSUserDefaults standardUserDefaults];
@@ -952,7 +952,7 @@
       [v13 addObject:v21];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v22 = [MapsLocationProviderUpdater alloc];
       v23 = +[MKLocationManager sharedLocationManager];
@@ -960,7 +960,7 @@
       [v13 addObject:v24];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v25 = [TilePreloadingTask alloc];
       v26 = +[MNNavigationService sharedService];
@@ -969,7 +969,7 @@
       [v13 addObject:v28];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       objc_initWeak(buf, self);
       v116 = _NSConcreteStackBlock;
@@ -985,7 +985,7 @@
       objc_destroyWeak(buf);
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v31 = [NavigationIntentCapturer alloc];
       v32 = +[MKMapService sharedService];
@@ -993,24 +993,24 @@
       [v13 addObject:v33];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v34 = objc_alloc_init(RoutePlanningAnalyticsTask);
       [v13 addObject:v34];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v35 = objc_alloc_init(RoutePlanningUpdater);
       [v13 addObject:v35];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v36 = +[GEOPlatform sharedPlatform];
-      v37 = [v36 isInternalInstall];
+      isInternalInstall = [v36 isInternalInstall];
 
-      if (v37)
+      if (isInternalInstall)
       {
         v38 = [MapsRadarAttachmentProviderTask alloc];
         v39 = +[MapsRadarController sharedInstance];
@@ -1019,19 +1019,19 @@
       }
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v41 = [[NavigationStateUpdater alloc] initWithPlatformController:self];
       [v13 addObject:v41];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v42 = objc_alloc_init(NavigationTrackingTask);
       [v13 addObject:v42];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v43 = [_TtC4Maps31NavigationProgressCapturingTask alloc];
       v44 = +[GEOUserSession sharedInstance];
@@ -1046,7 +1046,7 @@
       v46 = 0;
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v47 = [_TtC4Maps47NavigationAlertsOnlyOverrideSynchronizationTask alloc];
       v48 = +[NSUserDefaults standardUserDefaults];
@@ -1057,7 +1057,7 @@
       [v13 addObject:v52];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v53 = +[MNNavigationService sharedService];
       v54 = [NavigationRouteInterrupter alloc];
@@ -1069,43 +1069,43 @@
       [v13 addObject:v58];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v59 = [[AutomaticVehicleSelectionTask alloc] initWithPlatformController:self];
       [v13 addObject:v59];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v60 = objc_alloc_init(VehicleMonitoringTask);
       [v13 addObject:v60];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v61 = objc_alloc_init(VehicleDisambiguationTask);
       [v13 addObject:v61];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v62 = [[VIOSessionTask alloc] initWithPlatformController:self];
       [v13 addObject:v62];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3]&& +[VLFSessionTask isVLFModeSupported])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference]&& +[VLFSessionTask isVLFModeSupported])
     {
       v63 = [[VLFSessionTask alloc] initWithPlatformController:self];
       [v13 addObject:v63];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3]&& +[VLFSessionTask isVLFModeSupported])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference]&& +[VLFSessionTask isVLFModeSupported])
     {
       v64 = [[VLFPuckAnimationTask alloc] initWithPlatformController:self];
       [v13 addObject:v64];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3]&& +[PedestrianARSessionTask isPedestrianARModeSupported])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference]&& +[PedestrianARSessionTask isPedestrianARModeSupported])
     {
       v65 = [[PedestrianARSessionTask alloc] initWithPlatformController:self];
       [v13 addObject:v65];
@@ -1116,19 +1116,19 @@
       v65 = 0;
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3]&& +[PedestrianARSessionTask isPedestrianARModeSupported])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference]&& +[PedestrianARSessionTask isPedestrianARModeSupported])
     {
-      v66 = [(PedestrianARSessionTask *)v65 stateManager];
-      if (v66)
+      stateManager = [(PedestrianARSessionTask *)v65 stateManager];
+      if (stateManager)
       {
         v67 = [PedestrianARMotionMonitorTask alloc];
         v68 = +[PedestrianARSessionUsageTracker sharedInstance];
-        v69 = [(PedestrianARMotionMonitorTask *)v67 initWithPlatformController:self stateManager:v66 usageTracker:v68];
+        v69 = [(PedestrianARMotionMonitorTask *)v67 initWithPlatformController:self stateManager:stateManager usageTracker:v68];
         [v13 addObject:v69];
       }
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3]&& +[PedestrianARSessionTask isPedestrianARModeSupported])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference]&& +[PedestrianARSessionTask isPedestrianARModeSupported])
     {
       v70 = [PedestrianARMuteSpeechOverrideTask alloc];
       v71 = +[MNNavigationService sharedService];
@@ -1136,7 +1136,7 @@
       [v13 addObject:v72];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3]&& +[PedestrianARSessionTask isPedestrianARModeSupported])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference]&& +[PedestrianARSessionTask isPedestrianARModeSupported])
     {
       v73 = [PedestrianARUsageMigratorTask alloc];
       v74 = +[PedestrianARSessionUsageTracker sharedInstance];
@@ -1144,7 +1144,7 @@
       [v13 addObject:v75];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v76 = +[GEOPlatform sharedPlatform];
       if (![v76 isInternalInstall])
@@ -1169,26 +1169,26 @@ LABEL_70:
     }
 
 LABEL_71:
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v81 = +[GEOPlatform sharedPlatform];
-      v82 = [v81 isInternalInstall];
+      isInternalInstall2 = [v81 isInternalInstall];
 
-      if (v82)
+      if (isInternalInstall2)
       {
         v83 = objc_alloc_init(RoutePlanningServerEnvrionmentChangeRouteRefreshTask);
         [v13 addObject:v83];
       }
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       if ((GEOConfigGetBOOL() & 1) == 0)
       {
         v84 = +[GEOPlatform sharedPlatform];
-        v85 = [v84 isInternalInstall];
+        isInternalInstall3 = [v84 isInternalInstall];
 
-        if (!v85)
+        if (!isInternalInstall3)
         {
 LABEL_117:
 
@@ -1204,25 +1204,25 @@ LABEL_117:
       [v13 addObject:v90];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3]&& MapsFeature_IsEnabled_Bakersfield())
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference]&& MapsFeature_IsEnabled_Bakersfield())
     {
       v91 = +[TrafficIncidentLayoutManager sharedInstance];
       [v13 addObject:v91];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3]&& MapsFeature_IsEnabled_Bakersfield())
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference]&& MapsFeature_IsEnabled_Bakersfield())
     {
       v92 = +[TrafficIncidentsStorageManager sharedInstance];
       [v13 addObject:v92];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v93 = +[RAPRecordManagerTrafficIncidentReportSaver sharedInstance];
       [v13 addObject:v93];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v94 = +[IPCServer sharedServer];
       v95 = v94 == 0;
@@ -1236,25 +1236,25 @@ LABEL_117:
       }
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v99 = objc_alloc_init(VirtualGarageServiceTask);
       [v13 addObject:v99];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v100 = +[GEOPlatform sharedPlatform];
-      v101 = [v100 isInternalInstall];
+      isInternalInstall4 = [v100 isInternalInstall];
 
-      if (v101)
+      if (isInternalInstall4)
       {
         v102 = objc_alloc_init(InternalDebugTask);
         [v13 addObject:v102];
       }
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v103 = +[GEOPlatform sharedPlatform];
       if ([(DebugCoreMotionCompassAvailabilityTask *)v103 isInternalInstall])
@@ -1272,19 +1272,19 @@ LABEL_117:
     }
 
 LABEL_99:
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v105 = +[RAPWebBundleDownloadManager sharedInstance];
       [v13 addObject:v105];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v106 = objc_alloc_init(CarDisplayConfigAuxiliaryTask);
       [v13 addObject:v106];
     }
 
-    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:a3])
+    if ([(PlatformController *)self _shouldCreateAuxiliaryTask:objc_opt_class() forCreationPreference:preference])
     {
       v107 = objc_opt_new();
       [v13 addObject:v107];
@@ -1295,19 +1295,19 @@ LABEL_99:
     if (os_log_type_enabled(v108, OS_LOG_TYPE_INFO))
     {
       *buf = 134349570;
-      v122 = self;
+      selfCopy2 = self;
       v123 = 2048;
-      v124 = a3;
+      preferenceCopy2 = preference;
       v125 = 2112;
       v126 = v13;
       _os_log_impl(&_mh_execute_header, v108, OS_LOG_TYPE_INFO, "[%{public}p] Created auxiliary tasks for preference: %ld\n%@", buf, 0x20u);
     }
 
-    if (a3)
+    if (preference)
     {
-      if (a3 != 1)
+      if (preference != 1)
       {
-        if (a3 != 2)
+        if (preference != 2)
         {
 LABEL_113:
           v112 = sub_100008614();
@@ -1321,16 +1321,16 @@ LABEL_113:
           goto LABEL_117;
         }
 
-        v109 = [(PlatformController *)self auxiliaryTaskCreationPreferencesSatisfied];
-        [v109 addObject:&off_1016E9770];
+        auxiliaryTaskCreationPreferencesSatisfied2 = [(PlatformController *)self auxiliaryTaskCreationPreferencesSatisfied];
+        [auxiliaryTaskCreationPreferencesSatisfied2 addObject:&off_1016E9770];
       }
 
-      v110 = [(PlatformController *)self auxiliaryTaskCreationPreferencesSatisfied];
-      [v110 addObject:&off_1016E9758];
+      auxiliaryTaskCreationPreferencesSatisfied3 = [(PlatformController *)self auxiliaryTaskCreationPreferencesSatisfied];
+      [auxiliaryTaskCreationPreferencesSatisfied3 addObject:&off_1016E9758];
     }
 
-    v111 = [(PlatformController *)self auxiliaryTaskCreationPreferencesSatisfied];
-    [v111 addObject:&off_1016E9740];
+    auxiliaryTaskCreationPreferencesSatisfied4 = [(PlatformController *)self auxiliaryTaskCreationPreferencesSatisfied];
+    [auxiliaryTaskCreationPreferencesSatisfied4 addObject:&off_1016E9740];
 
     goto LABEL_113;
   }
@@ -1344,19 +1344,19 @@ LABEL_113:
   [(PlatformController *)self _createAuxiliaryTasksIfNecessaryForPreference:2];
 }
 
-- (BOOL)_shouldCreateAuxiliaryTask:(Class)a3 forCreationPreference:(int64_t)a4
+- (BOOL)_shouldCreateAuxiliaryTask:(Class)task forCreationPreference:(int64_t)preference
 {
-  v6 = [(objc_class *)a3 creationPreference];
-  v7 = [(PlatformController *)self auxiliaryTaskCreationPreferencesSatisfied];
-  v8 = [NSNumber numberWithInteger:v6];
-  v9 = [v7 containsObject:v8];
+  creationPreference = [(objc_class *)task creationPreference];
+  auxiliaryTaskCreationPreferencesSatisfied = [(PlatformController *)self auxiliaryTaskCreationPreferencesSatisfied];
+  v8 = [NSNumber numberWithInteger:creationPreference];
+  v9 = [auxiliaryTaskCreationPreferencesSatisfied containsObject:v8];
 
-  return (v6 <= a4) & ~v9;
+  return (creationPreference <= preference) & ~v9;
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
 
   v5 = obj;
@@ -1376,7 +1376,7 @@ LABEL_113:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 

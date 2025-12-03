@@ -54,8 +54,8 @@
 
 - (void)resetDoubleBuffer
 {
-  v3 = [(_MLNetworkPacket *)self doubleBuffer];
-  [(_MLNetworkPacket *)self setBuffer:v3];
+  doubleBuffer = [(_MLNetworkPacket *)self doubleBuffer];
+  [(_MLNetworkPacket *)self setBuffer:doubleBuffer];
 
   v4 = objc_opt_new();
   [(_MLNetworkPacket *)self setDoubleBuffer:v4];

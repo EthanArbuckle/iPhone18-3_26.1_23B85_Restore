@@ -1,44 +1,44 @@
 @interface _PFTSynchronousQueueScheduler
-- (_PFTSynchronousQueueScheduler)initWithQueue:(id)a3;
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5;
-- (id)performCancellableBlock:(id)a3 qualityOfService:(unint64_t)a4;
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (_PFTSynchronousQueueScheduler)initWithQueue:(id)queue;
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)performCancellableBlock:(id)block qualityOfService:(unint64_t)service;
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service;
 @end
 
 @implementation _PFTSynchronousQueueScheduler
 
-- (_PFTSynchronousQueueScheduler)initWithQueue:(id)a3
+- (_PFTSynchronousQueueScheduler)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = _PFTSynchronousQueueScheduler;
   v6 = [(_PFTSynchronousQueueScheduler *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   queue = self->_queue;
-  v9 = v6;
+  v9 = blockCopy;
   v14 = v9;
-  if (a4 <= 2)
+  if (service <= 2)
   {
-    if (!a4)
+    if (!service)
     {
       v12 = MEMORY[0x25F8CF560](v9);
       goto LABEL_17;
     }
 
-    if (a4 == 2)
+    if (service == 2)
     {
       v10 = QOS_CLASS_BACKGROUND;
 LABEL_15:
@@ -51,9 +51,9 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (a4 <= 4)
+  if (service <= 4)
   {
-    if (a4 == 3)
+    if (service == 3)
     {
       v10 = QOS_CLASS_UTILITY;
     }
@@ -66,13 +66,13 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (a4 == 5)
+  if (service == 5)
   {
     v10 = QOS_CLASS_USER_INTERACTIVE;
     goto LABEL_15;
   }
 
-  if (a4 != 6)
+  if (service != 6)
   {
     goto LABEL_11;
   }
@@ -88,26 +88,26 @@ LABEL_17:
   objc_autoreleasePoolPop(v7);
 }
 
-- (id)performCancellableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)performCancellableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = objc_alloc_init(SynchronousQueueSchedulerCancellationToken);
   queue = self->_queue;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __74___PFTSynchronousQueueScheduler_performCancellableBlock_qualityOfService___block_invoke;
   v20[3] = &unk_279A52AE8;
-  v9 = v6;
+  v9 = blockCopy;
   v22 = v9;
   v10 = v7;
   v21 = v10;
   v11 = v20;
   v12 = v11;
-  if (a4 > 2)
+  if (service > 2)
   {
-    if (a4 <= 4)
+    if (service <= 4)
     {
-      if (a4 == 3)
+      if (service == 3)
       {
         v13 = QOS_CLASS_UTILITY;
       }
@@ -120,13 +120,13 @@ LABEL_17:
       goto LABEL_15;
     }
 
-    if (a4 == 5)
+    if (service == 5)
     {
       v13 = QOS_CLASS_USER_INTERACTIVE;
       goto LABEL_15;
     }
 
-    if (a4 == 6)
+    if (service == 6)
     {
       v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v11);
 LABEL_16:
@@ -139,9 +139,9 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (a4)
+  if (service)
   {
-    if (a4 == 2)
+    if (service == 2)
     {
       v13 = QOS_CLASS_BACKGROUND;
 LABEL_15:
@@ -164,28 +164,28 @@ LABEL_17:
   return v10;
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v8 = a4;
+  blockCopy = block;
   queue = self->_queue;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __74___PFTSynchronousQueueScheduler_afterDelay_performBlock_qualityOfService___block_invoke;
   v19[3] = &unk_279A52B10;
-  v21 = a3;
-  v10 = v8;
+  delayCopy = delay;
+  v10 = blockCopy;
   v20 = v10;
   v11 = v19;
   v12 = v11;
-  if (a5 <= 2)
+  if (service <= 2)
   {
-    if (!a5)
+    if (!service)
     {
       v15 = MEMORY[0x25F8CF560](v11);
       goto LABEL_17;
     }
 
-    if (a5 == 2)
+    if (service == 2)
     {
       v13 = QOS_CLASS_BACKGROUND;
 LABEL_15:
@@ -198,9 +198,9 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (a5 <= 4)
+  if (service <= 4)
   {
-    if (a5 == 3)
+    if (service == 3)
     {
       v13 = QOS_CLASS_UTILITY;
     }
@@ -213,13 +213,13 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (a5 == 5)
+  if (service == 5)
   {
     v13 = QOS_CLASS_USER_INTERACTIVE;
     goto LABEL_15;
   }
 
-  if (a5 != 6)
+  if (service != 6)
   {
     goto LABEL_11;
   }

@@ -1,64 +1,64 @@
 @interface AKCDaemon
 - (AKCDaemonDelegate)delegate;
 - (AKCPersistenceDelegate)persistence;
-- (id)nextEventDateWithSchedule:(id)a3 after:(id)a4;
-- (void)activityDataWithAlarmID:(id)a3 completion:(id)a4;
-- (void)alarmsWithCompletion:(id)a3;
-- (void)authorizationStatesWithCompletion:(id)a3;
-- (void)createAlarm:(id)a3 completion:(id)a4;
-- (void)createAuthorization:(id)a3;
-- (void)deleteAlarmWithAlarmID:(id)a3;
-- (void)deleteAuthorizationWithBundleID:(id)a3;
-- (void)dismissNotificationWithIdentifier:(id)a3;
-- (void)requestAlarmNotification:(id)a3 completion:(id)a4;
-- (void)requestTimerNotification:(id)a3 completion:(id)a4;
-- (void)updateAlarm:(id)a3 completion:(id)a4;
-- (void)updateAuthorization:(id)a3;
+- (id)nextEventDateWithSchedule:(id)schedule after:(id)after;
+- (void)activityDataWithAlarmID:(id)d completion:(id)completion;
+- (void)alarmsWithCompletion:(id)completion;
+- (void)authorizationStatesWithCompletion:(id)completion;
+- (void)createAlarm:(id)alarm completion:(id)completion;
+- (void)createAuthorization:(id)authorization;
+- (void)deleteAlarmWithAlarmID:(id)d;
+- (void)deleteAuthorizationWithBundleID:(id)d;
+- (void)dismissNotificationWithIdentifier:(id)identifier;
+- (void)requestAlarmNotification:(id)notification completion:(id)completion;
+- (void)requestTimerNotification:(id)notification completion:(id)completion;
+- (void)updateAlarm:(id)alarm completion:(id)completion;
+- (void)updateAuthorization:(id)authorization;
 @end
 
 @implementation AKCDaemon
 
-- (id)nextEventDateWithSchedule:(id)a3 after:(id)a4
+- (id)nextEventDateWithSchedule:(id)schedule after:(id)after
 {
-  v6 = a4;
-  v7 = a3;
+  afterCopy = after;
+  scheduleCopy = schedule;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained nextEventDateForSchedule:v7 afterDate:v6];
+  v9 = [WeakRetained nextEventDateForSchedule:scheduleCopy afterDate:afterCopy];
 
   return v9;
 }
 
-- (void)requestAlarmNotification:(id)a3 completion:(id)a4
+- (void)requestAlarmNotification:(id)notification completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  notificationCopy = notification;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained requestAlarmNotification:v7 completion:v6];
+  [WeakRetained requestAlarmNotification:notificationCopy completion:completionCopy];
 }
 
-- (void)requestTimerNotification:(id)a3 completion:(id)a4
+- (void)requestTimerNotification:(id)notification completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  notificationCopy = notification;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained requestTimerNotification:v7 completion:v6];
+  [WeakRetained requestTimerNotification:notificationCopy completion:completionCopy];
 }
 
-- (void)dismissNotificationWithIdentifier:(id)a3
+- (void)dismissNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained dismissNotificationWithID:v4];
+  [WeakRetained dismissNotificationWithID:identifierCopy];
 }
 
-- (void)authorizationStatesWithCompletion:(id)a3
+- (void)authorizationStatesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_persistence);
 
   if (!WeakRetained)
   {
-    v4[2](v4, MEMORY[0x277CBEC10]);
+    completionCopy[2](completionCopy, MEMORY[0x277CBEC10]);
   }
 
   v6 = objc_loadWeakRetained(&self->_persistence);
@@ -66,8 +66,8 @@
   v8[1] = 3221225472;
   v8[2] = __47__AKCDaemon_authorizationStatesWithCompletion___block_invoke;
   v8[3] = &unk_27876F6D8;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 selectAllAuthorizations:v8];
 }
 
@@ -116,16 +116,16 @@ void __47__AKCDaemon_authorizationStatesWithCompletion___block_invoke(uint64_t a
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createAuthorization:(id)a3
+- (void)createAuthorization:(id)authorization
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  authorizationCopy = authorization;
   WeakRetained = objc_loadWeakRetained(&self->_persistence);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_persistence);
-    v9[0] = v4;
+    v9[0] = authorizationCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
     [v6 insertAuthorizations:v7 completion:&__block_literal_global];
   }
@@ -133,16 +133,16 @@ void __47__AKCDaemon_authorizationStatesWithCompletion___block_invoke(uint64_t a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAuthorizationWithBundleID:(id)a3
+- (void)deleteAuthorizationWithBundleID:(id)d
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_persistence);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_persistence);
-    v9[0] = v4;
+    v9[0] = dCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
     [v6 deleteAuthorizationsWithBundleIds:v7 completion:&__block_literal_global_6];
   }
@@ -150,16 +150,16 @@ void __47__AKCDaemon_authorizationStatesWithCompletion___block_invoke(uint64_t a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAuthorization:(id)a3
+- (void)updateAuthorization:(id)authorization
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  authorizationCopy = authorization;
   WeakRetained = objc_loadWeakRetained(&self->_persistence);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_persistence);
-    v9[0] = v4;
+    v9[0] = authorizationCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
     [v6 updateAuthorizations:v7 completion:&__block_literal_global_8];
   }
@@ -167,9 +167,9 @@ void __47__AKCDaemon_authorizationStatesWithCompletion___block_invoke(uint64_t a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)alarmsWithCompletion:(id)a3
+- (void)alarmsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_persistence);
 
   if (WeakRetained)
@@ -179,13 +179,13 @@ void __47__AKCDaemon_authorizationStatesWithCompletion___block_invoke(uint64_t a
     v7[1] = 3221225472;
     v7[2] = __34__AKCDaemon_alarmsWithCompletion___block_invoke;
     v7[3] = &unk_27876F6D8;
-    v8 = v4;
+    v8 = completionCopy;
     [v6 selectAllAlarmsIncludingAttributes:0 completion:v7];
   }
 
   else
   {
-    (*(v4 + 2))(v4, MEMORY[0x277CBEBF8]);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x277CBEBF8]);
   }
 }
 
@@ -231,27 +231,27 @@ void __34__AKCDaemon_alarmsWithCompletion___block_invoke(uint64_t a1, void *a2)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activityDataWithAlarmID:(id)a3 completion:(id)a4
+- (void)activityDataWithAlarmID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_persistence);
 
   if (WeakRetained)
   {
-    v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier == %@", v6];
+    dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier == %@", dCopy];
     v10 = objc_loadWeakRetained(&self->_persistence);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __48__AKCDaemon_activityDataWithAlarmID_completion___block_invoke;
     v11[3] = &unk_27876F6D8;
-    v12 = v7;
-    [v10 selectAlarmsWithPredicate:v9 includeAttributes:1 completion:v11];
+    v12 = completionCopy;
+    [v10 selectAlarmsWithPredicate:dCopy includeAttributes:1 completion:v11];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -262,34 +262,34 @@ void __48__AKCDaemon_activityDataWithAlarmID_completion___block_invoke(uint64_t 
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)createAlarm:(id)a3 completion:(id)a4
+- (void)createAlarm:(id)alarm completion:(id)completion
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  alarmCopy = alarm;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_persistence);
 
   if (WeakRetained)
   {
     v9 = objc_loadWeakRetained(&self->_persistence);
-    v12[0] = v6;
+    v12[0] = alarmCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-    [v9 insertAlarms:v10 completion:v7];
+    [v9 insertAlarms:v10 completion:completionCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAlarmWithAlarmID:(id)a3
+- (void)deleteAlarmWithAlarmID:(id)d
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_persistence);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_persistence);
-    v9[0] = v4;
+    v9[0] = dCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
     [v6 deleteAlarmsWithIdentifiers:v7 completion:&__block_literal_global_13];
   }
@@ -297,19 +297,19 @@ void __48__AKCDaemon_activityDataWithAlarmID_completion___block_invoke(uint64_t 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAlarm:(id)a3 completion:(id)a4
+- (void)updateAlarm:(id)alarm completion:(id)completion
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  alarmCopy = alarm;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_persistence);
 
   if (WeakRetained)
   {
     v9 = objc_loadWeakRetained(&self->_persistence);
-    v12[0] = v6;
+    v12[0] = alarmCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-    [v9 updateAlarms:v10 completion:v7];
+    [v9 updateAlarms:v10 completion:completionCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];

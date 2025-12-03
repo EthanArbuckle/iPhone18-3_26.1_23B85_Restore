@@ -2,16 +2,16 @@
 - (NSString)text;
 - (UIEdgeInsets)textContainerInset;
 - (UIFont)font;
-- (_TtC17SequoiaTranslator23TextViewWithPlaceHolder)initWithCoder:(id)a3;
-- (_TtC17SequoiaTranslator23TextViewWithPlaceHolder)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC17SequoiaTranslator23TextViewWithPlaceHolder)initWithCoder:(id)coder;
+- (_TtC17SequoiaTranslator23TextViewWithPlaceHolder)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (id)_axPlaceholderTextView;
 - (int64_t)textAlignment;
-- (void)paste:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextContainerInset:(UIEdgeInsets)a3;
+- (void)paste:(id)paste;
+- (void)setFont:(id)font;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextContainerInset:(UIEdgeInsets)inset;
 - (void)textDidUpdate;
 @end
 
@@ -21,21 +21,21 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for TextViewWithPlaceHolder();
-  v2 = [(TextViewWithPlaceHolder *)&v4 font];
+  font = [(TextViewWithPlaceHolder *)&v4 font];
 
-  return v2;
+  return font;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for TextViewWithPlaceHolder();
-  v4 = a3;
+  fontCopy = font;
   v5 = v8.receiver;
-  [(TextViewWithPlaceHolder *)&v8 setFont:v4];
+  [(TextViewWithPlaceHolder *)&v8 setFont:fontCopy];
   v6 = sub_10026DB48();
-  v7 = [v5 font];
-  [v6 setFont:v7];
+  font = [v5 font];
+  [v6 setFont:font];
 }
 
 - (int64_t)textAlignment
@@ -45,12 +45,12 @@
   return [(TextViewWithPlaceHolder *)&v3 textAlignment];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for TextViewWithPlaceHolder();
   v4 = v6.receiver;
-  [(TextViewWithPlaceHolder *)&v6 setTextAlignment:a3];
+  [(TextViewWithPlaceHolder *)&v6 setTextAlignment:alignment];
   v5 = sub_10026DB48();
   [v5 setTextAlignment:{objc_msgSend(v4, "textAlignment", v6.receiver, v6.super_class)}];
 }
@@ -67,17 +67,17 @@
   return result;
 }
 
-- (void)setTextContainerInset:(UIEdgeInsets)a3
+- (void)setTextContainerInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = self;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  selfCopy = self;
   v8 = sub_10026DB48();
   [v8 setTextContainerInset:{top, left, bottom, right}];
 
-  v9.receiver = v7;
+  v9.receiver = selfCopy;
   v9.super_class = type metadata accessor for TextViewWithPlaceHolder();
   [(TextViewWithPlaceHolder *)&v9 setTextContainerInset:top, left, bottom, right];
 }
@@ -87,10 +87,10 @@
   v7.receiver = self;
   v7.super_class = type metadata accessor for TextViewWithPlaceHolder();
   v2 = v7.receiver;
-  v3 = [(TextViewWithPlaceHolder *)&v7 text];
-  if (v3)
+  text = [(TextViewWithPlaceHolder *)&v7 text];
+  if (text)
   {
-    v4 = v3;
+    v4 = text;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
     v5 = String._bridgeToObjectiveC()();
@@ -105,18 +105,18 @@
   return v5;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (a3)
+  if (text)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v4 = self;
+    selfCopy = self;
     v5 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -127,44 +127,44 @@
   sub_10026DBAC();
 }
 
-- (_TtC17SequoiaTranslator23TextViewWithPlaceHolder)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC17SequoiaTranslator23TextViewWithPlaceHolder)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  return sub_10026E3E0(a4, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
+  return sub_10026E3E0(container, x, y, width, height);
 }
 
-- (_TtC17SequoiaTranslator23TextViewWithPlaceHolder)initWithCoder:(id)a3
+- (_TtC17SequoiaTranslator23TextViewWithPlaceHolder)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_10026EE24(v3);
+  coderCopy = coder;
+  v4 = sub_10026EE24(coderCopy);
 
   return v4;
 }
 
 - (void)textDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_10026DBAC();
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a3)
+  length = range.length;
+  location = range.location;
+  if (text)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v7 = self;
+    selfCopy = self;
     v8 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0;
   }
 
@@ -175,11 +175,11 @@
   sub_10026DBAC();
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  if (a3)
+  if (paste)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -188,7 +188,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10026E9A4(v6);
@@ -198,7 +198,7 @@
 
 - (id)_axPlaceholderTextView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10026DB48();
 
   return v3;

@@ -13,7 +13,7 @@
   v8[3] = &unk_27972AE10;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 na_firstObjectPassingTest:v8];
+  v6 = [self na_firstObjectPassingTest:v8];
 
   return v6;
 }

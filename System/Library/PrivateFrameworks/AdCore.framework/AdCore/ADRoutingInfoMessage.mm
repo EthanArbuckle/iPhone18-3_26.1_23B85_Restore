@@ -1,5 +1,5 @@
 @interface ADRoutingInfoMessage
-- (ADRoutingInfoMessage)initWithRoutingType:(unint64_t)a3 preferencesStore:(id)a4;
+- (ADRoutingInfoMessage)initWithRoutingType:(unint64_t)type preferencesStore:(id)store;
 - (NSString)environmentURL;
 - (NSString)payload;
 - (id)description;
@@ -8,17 +8,17 @@
 
 @implementation ADRoutingInfoMessage
 
-- (ADRoutingInfoMessage)initWithRoutingType:(unint64_t)a3 preferencesStore:(id)a4
+- (ADRoutingInfoMessage)initWithRoutingType:(unint64_t)type preferencesStore:(id)store
 {
-  v7 = a4;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = ADRoutingInfoMessage;
   v8 = [(ADRoutingInfoMessage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_routingInfoType = a3;
-    objc_storeStrong(&v8->_storage, a4);
+    v8->_routingInfoType = type;
+    objc_storeStrong(&v8->_storage, store);
   }
 
   return v9;
@@ -30,18 +30,18 @@
   v8.receiver = self;
   v8.super_class = ADRoutingInfoMessage;
   v4 = [(ADRoutingInfoMessage *)&v8 description];
-  v5 = [(ADRoutingInfoMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADRoutingInfoMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (NSString)environmentURL
 {
-  v4 = [(ADRoutingInfoMessage *)self routingInfoType];
-  if (v4)
+  routingInfoType = [(ADRoutingInfoMessage *)self routingInfoType];
+  if (routingInfoType)
   {
-    if (v4 != 1)
+    if (routingInfoType != 1)
     {
       goto LABEL_6;
     }
@@ -54,8 +54,8 @@
     v5 = @"ToroAdServerURL";
   }
 
-  v6 = [(ADRoutingInfoMessage *)self storage];
-  v2 = [v6 stringForKey:v5];
+  storage = [(ADRoutingInfoMessage *)self storage];
+  v2 = [storage stringForKey:v5];
 
 LABEL_6:
 
@@ -66,31 +66,31 @@ LABEL_6:
 {
   if (MGGetBoolAnswer())
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    v4 = [(ADRoutingInfoMessage *)self environmentURL];
-    if (v4)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    environmentURL = [(ADRoutingInfoMessage *)self environmentURL];
+    if (environmentURL)
     {
-      [v3 setObject:v4 forKey:@"environmentUrl"];
+      [dictionary setObject:environmentURL forKey:@"environmentUrl"];
     }
 
-    v5 = [v3 copy];
+    dictionary2 = [dictionary copy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  return v5;
+  return dictionary2;
 }
 
 - (NSString)payload
 {
-  v2 = [(ADRoutingInfoMessage *)self dictionaryRepresentation];
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ADRoutingInfoMessage *)self dictionaryRepresentation];
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:dictionaryRepresentation])
   {
     v15 = 0;
-    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:0 error:&v15];
+    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryRepresentation options:0 error:&v15];
     v4 = v3;
     if (v15)
     {

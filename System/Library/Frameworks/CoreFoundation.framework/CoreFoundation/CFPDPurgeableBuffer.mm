@@ -1,7 +1,7 @@
 @interface CFPDPurgeableBuffer
 - (BOOL)beginAccessing;
-- (CFPDPurgeableBuffer)initWithFileDescriptor:(int)a3 size:(unint64_t)a4;
-- (CFPDPurgeableBuffer)initWithPropertyList:(void *)a3;
+- (CFPDPurgeableBuffer)initWithFileDescriptor:(int)descriptor size:(unint64_t)size;
+- (CFPDPurgeableBuffer)initWithPropertyList:(void *)list;
 - (void)bytes;
 - (void)dealloc;
 - (void)endAccessing;
@@ -78,10 +78,10 @@
   return result;
 }
 
-- (CFPDPurgeableBuffer)initWithFileDescriptor:(int)a3 size:(unint64_t)a4
+- (CFPDPurgeableBuffer)initWithFileDescriptor:(int)descriptor size:(unint64_t)size
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3 < 0 || !a4)
+  if (descriptor < 0 || !size)
   {
 
 LABEL_21:
@@ -95,7 +95,7 @@ LABEL_21:
   v7 = v6;
   if (v6)
   {
-    if (a4 >= *MEMORY[0x1E69E9AC8] >> 2)
+    if (size >= *MEMORY[0x1E69E9AC8] >> 2)
     {
       context.version = 0;
       context.info = v6;
@@ -121,22 +121,22 @@ LABEL_21:
       }
     }
 
-    Typed = CFAllocatorAllocateTyped(v8, a4, 1629243638, 0);
+    Typed = CFAllocatorAllocateTyped(v8, size, 1629243638, 0);
     if (Typed)
     {
       v10 = Typed;
-      FixedMutableWithBuffer = _CFDataCreateFixedMutableWithBuffer(&__kCFAllocatorSystemDefault, a4, Typed, v8);
+      FixedMutableWithBuffer = _CFDataCreateFixedMutableWithBuffer(&__kCFAllocatorSystemDefault, size, Typed, v8);
       if (FixedMutableWithBuffer)
       {
         v12 = FixedMutableWithBuffer;
         CFRelease(v8);
-        CFDataSetLength(v12, a4);
+        CFDataSetLength(v12, size);
         MutableBytePtr = CFDataGetMutableBytePtr(v12);
         v14 = 0;
-        v15 = a4;
+        sizeCopy = size;
         do
         {
-          v16 = read(a3, &MutableBytePtr[v14], v15);
+          v16 = read(descriptor, &MutableBytePtr[v14], sizeCopy);
           v17 = v16;
           if (v16 == -1)
           {
@@ -144,7 +144,7 @@ LABEL_21:
             {
               v21 = *__error();
               bzero(&context, 0x400uLL);
-              fcntl(a3, 50, &context);
+              fcntl(descriptor, 50, &context);
               v22 = _CFPrefsDaemonLog();
               if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
               {
@@ -159,20 +159,20 @@ LABEL_21:
           else
           {
             v14 += v16;
-            v15 -= v16;
+            sizeCopy -= v16;
           }
         }
 
         while (v17);
         v7->handle = v12;
-        if (v14 == a4)
+        if (v14 == size)
         {
           v7->safe = 1;
           goto LABEL_22;
         }
 
         bzero(&context, 0x400uLL);
-        fcntl(a3, 50, &context);
+        fcntl(descriptor, 50, &context);
         v20 = _CFPrefsDaemonLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
         {
@@ -196,7 +196,7 @@ LABEL_22:
   return v7;
 }
 
-- (CFPDPurgeableBuffer)initWithPropertyList:(void *)a3
+- (CFPDPurgeableBuffer)initWithPropertyList:(void *)list
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -210,7 +210,7 @@ LABEL_22:
     v9[2] = __44__CFPDPurgeableBuffer_initWithPropertyList___block_invoke;
     v9[3] = &unk_1E6D7DAD8;
     v9[4] = v4;
-    DataUsingExternalBufferAllocator = __CFBinaryPlistCreateDataUsingExternalBufferAllocator(a3, 0, 0, v9, 0);
+    DataUsingExternalBufferAllocator = __CFBinaryPlistCreateDataUsingExternalBufferAllocator(list, 0, 0, v9, 0);
     if (DataUsingExternalBufferAllocator)
     {
       v5->handle = DataUsingExternalBufferAllocator;

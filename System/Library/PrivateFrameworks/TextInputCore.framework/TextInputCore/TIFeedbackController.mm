@@ -3,25 +3,25 @@
 - (BOOL)feedbackFeatureEnabled;
 - (BOOL)isFCSBuild;
 - (TIFeedbackController)init;
-- (id)computeRandomizedTimeIntervalFromTimestamp:(id)a3;
+- (id)computeRandomizedTimeIntervalFromTimestamp:(id)timestamp;
 - (id)currentInputModes;
 - (void)assessAndScheduleRetry;
-- (void)dispatchAllEventsWithDelegate:(id)a3;
-- (void)dispatchScheduledEventsWithDelegate:(id)a3 overrideSchedule:(BOOL)a4;
-- (void)dispatchScheduledInitiationAndCompletionEventsImmediatelyWithDelegate:(id)a3;
-- (void)dispatchScheduledInitiationAndTerminationEventsImmediatelyWithDelegate:(id)a3;
-- (void)handleFCSBuildWithDelegate:(id)a3;
-- (void)handleFeedbackActionsWithDelegate:(id)a3;
-- (void)handleFeedbackStateCompletionPendingWithDelegate:(id)a3 isEligibleDevice:(BOOL)a4;
-- (void)handleFeedbackStateInitiatedWithDelegate:(id)a3 isEligibleDevice:(BOOL)a4 isPreferenceEnabled:(BOOL)a5;
-- (void)handleFeedbackStateNoneWithDelegate:(id)a3 isEligibleDevice:(BOOL)a4;
+- (void)dispatchAllEventsWithDelegate:(id)delegate;
+- (void)dispatchScheduledEventsWithDelegate:(id)delegate overrideSchedule:(BOOL)schedule;
+- (void)dispatchScheduledInitiationAndCompletionEventsImmediatelyWithDelegate:(id)delegate;
+- (void)dispatchScheduledInitiationAndTerminationEventsImmediatelyWithDelegate:(id)delegate;
+- (void)handleFCSBuildWithDelegate:(id)delegate;
+- (void)handleFeedbackActionsWithDelegate:(id)delegate;
+- (void)handleFeedbackStateCompletionPendingWithDelegate:(id)delegate isEligibleDevice:(BOOL)device;
+- (void)handleFeedbackStateInitiatedWithDelegate:(id)delegate isEligibleDevice:(BOOL)device isPreferenceEnabled:(BOOL)enabled;
+- (void)handleFeedbackStateNoneWithDelegate:(id)delegate isEligibleDevice:(BOOL)device;
 - (void)retrySurvey;
 - (void)scheduleCompletionEvent;
 - (void)scheduleInitiationEvent;
 - (void)scheduleRetry;
 - (void)scheduleSurveyRequestEvent;
 - (void)setInitiationState;
-- (void)setTerminationStateWithValue:(int64_t)a3;
+- (void)setTerminationStateWithValue:(int64_t)value;
 @end
 
 @implementation TIFeedbackController
@@ -36,10 +36,10 @@
   v12 = 0;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v2 = [MEMORY[0x277D6F380] sharedInputModeController];
-    v3 = [v2 enabledInputModeIdentifiers];
+    mEMORY[0x277D6F380] = [MEMORY[0x277D6F380] sharedInputModeController];
+    enabledInputModeIdentifiers = [mEMORY[0x277D6F380] enabledInputModeIdentifiers];
     v4 = v8[5];
-    v8[5] = v3;
+    v8[5] = enabledInputModeIdentifiers;
   }
 
   else
@@ -64,8 +64,8 @@ void __41__TIFeedbackController_currentInputModes__block_invoke(uint64_t a1)
 
 - (BOOL)currentPreferenceValue
 {
-  v3 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  LOBYTE(self) = [v3 BOOLForPreferenceKey:self->_preferenceName];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  LOBYTE(self) = [mEMORY[0x277D6F470] BOOLForPreferenceKey:self->_preferenceName];
 
   return self;
 }
@@ -87,17 +87,17 @@ void __41__TIFeedbackController_currentInputModes__block_invoke(uint64_t a1)
   return [v3 isFeatureEnabledForInternalBuilds];
 }
 
-- (id)computeRandomizedTimeIntervalFromTimestamp:(id)a3
+- (id)computeRandomizedTimeIntervalFromTimestamp:(id)timestamp
 {
-  v3 = a3;
+  timestampCopy = timestamp;
   if ([MEMORY[0x277D6F360] shouldPublishCAEventsImmediately])
   {
-    v4 = v3;
+    v4 = timestampCopy;
   }
 
   else
   {
-    v4 = [v3 dateByAddingTimeInterval:arc4random() / 4294967300.0 * 432000.0 + 0.0];
+    v4 = [timestampCopy dateByAddingTimeInterval:arc4random() / 4294967300.0 * 432000.0 + 0.0];
   }
 
   v5 = v4;
@@ -105,74 +105,74 @@ void __41__TIFeedbackController_currentInputModes__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)dispatchAllEventsWithDelegate:(id)a3
+- (void)dispatchAllEventsWithDelegate:(id)delegate
 {
-  v4 = a3;
-  [(TIFeedbackController *)self dispatchScheduledEventsWithDelegate:v4 overrideSchedule:1];
-  [v4 sendUpgradeEventUsingStudyDataFromFeedbackController:self];
+  delegateCopy = delegate;
+  [(TIFeedbackController *)self dispatchScheduledEventsWithDelegate:delegateCopy overrideSchedule:1];
+  [delegateCopy sendUpgradeEventUsingStudyDataFromFeedbackController:self];
 }
 
-- (void)dispatchScheduledInitiationAndTerminationEventsImmediatelyWithDelegate:(id)a3
+- (void)dispatchScheduledInitiationAndTerminationEventsImmediatelyWithDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = [MEMORY[0x277D6F360] getInitiationEventTimestamp];
-  if (v4)
+  delegateCopy = delegate;
+  getInitiationEventTimestamp = [MEMORY[0x277D6F360] getInitiationEventTimestamp];
+  if (getInitiationEventTimestamp)
   {
-    [v5 sendInitiationEventUsingStudyDataFromFeedbackController:self];
+    [delegateCopy sendInitiationEventUsingStudyDataFromFeedbackController:self];
     [MEMORY[0x277D6F360] removeInitiationEventTimestamp];
   }
 
-  [v5 sendTerminationEventUsingStudyDataFromFeedbackController:self];
+  [delegateCopy sendTerminationEventUsingStudyDataFromFeedbackController:self];
 }
 
-- (void)dispatchScheduledInitiationAndCompletionEventsImmediatelyWithDelegate:(id)a3
+- (void)dispatchScheduledInitiationAndCompletionEventsImmediatelyWithDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = [MEMORY[0x277D6F360] getInitiationEventTimestamp];
-  if (v4)
+  delegateCopy = delegate;
+  getInitiationEventTimestamp = [MEMORY[0x277D6F360] getInitiationEventTimestamp];
+  if (getInitiationEventTimestamp)
   {
-    [v5 sendInitiationEventUsingStudyDataFromFeedbackController:self];
+    [delegateCopy sendInitiationEventUsingStudyDataFromFeedbackController:self];
     [MEMORY[0x277D6F360] removeInitiationEventTimestamp];
   }
 
-  [v5 sendCompletionEventUsingStudyDataFromFeedbackController:self];
+  [delegateCopy sendCompletionEventUsingStudyDataFromFeedbackController:self];
   [MEMORY[0x277D6F360] removeCompletionEventTimestamp];
 }
 
-- (void)dispatchScheduledEventsWithDelegate:(id)a3 overrideSchedule:(BOOL)a4
+- (void)dispatchScheduledEventsWithDelegate:(id)delegate overrideSchedule:(BOOL)schedule
 {
-  v4 = a4;
-  v16 = a3;
+  scheduleCopy = schedule;
+  delegateCopy = delegate;
   v6 = [MEMORY[0x277CBEAA8] now];
-  v7 = [MEMORY[0x277D6F360] getInitiationEventTimestamp];
-  v8 = v7;
-  if (v7)
+  getInitiationEventTimestamp = [MEMORY[0x277D6F360] getInitiationEventTimestamp];
+  v8 = getInitiationEventTimestamp;
+  if (getInitiationEventTimestamp)
   {
-    if ([v7 compare:v6] == -1 || v4)
+    if ([getInitiationEventTimestamp compare:v6] == -1 || scheduleCopy)
     {
-      [v16 sendInitiationEventUsingStudyDataFromFeedbackController:self];
+      [delegateCopy sendInitiationEventUsingStudyDataFromFeedbackController:self];
       [MEMORY[0x277D6F360] removeInitiationEventTimestamp];
     }
   }
 
-  v10 = [MEMORY[0x277D6F360] getRequestSurveyEventTimestamp];
-  v11 = v10;
-  if (v10)
+  getRequestSurveyEventTimestamp = [MEMORY[0x277D6F360] getRequestSurveyEventTimestamp];
+  v11 = getRequestSurveyEventTimestamp;
+  if (getRequestSurveyEventTimestamp)
   {
-    if ([v10 compare:v6] == -1 || v4)
+    if ([getRequestSurveyEventTimestamp compare:v6] == -1 || scheduleCopy)
     {
-      [v16 sendRequestSurveyEventUsingStudyDataFromFeedbackController:self];
+      [delegateCopy sendRequestSurveyEventUsingStudyDataFromFeedbackController:self];
       [MEMORY[0x277D6F360] removeRequestSurveyEventTimestamp];
     }
   }
 
-  v13 = [MEMORY[0x277D6F360] getCompletionEventTimestamp];
-  v14 = v13;
-  if (v13)
+  getCompletionEventTimestamp = [MEMORY[0x277D6F360] getCompletionEventTimestamp];
+  v14 = getCompletionEventTimestamp;
+  if (getCompletionEventTimestamp)
   {
-    if ([v13 compare:v6] == -1 || v4)
+    if ([getCompletionEventTimestamp compare:v6] == -1 || scheduleCopy)
     {
-      [v16 sendCompletionEventUsingStudyDataFromFeedbackController:self];
+      [delegateCopy sendCompletionEventUsingStudyDataFromFeedbackController:self];
       [MEMORY[0x277D6F360] removeCompletionEventTimestamp];
     }
   }
@@ -180,35 +180,35 @@ void __41__TIFeedbackController_currentInputModes__block_invoke(uint64_t a1)
 
 - (void)scheduleCompletionEvent
 {
-  v3 = [MEMORY[0x277D6F360] getFinalTimestamp];
-  v4 = [(TIFeedbackController *)self computeRandomizedTimeIntervalFromTimestamp:v3];
+  getFinalTimestamp = [MEMORY[0x277D6F360] getFinalTimestamp];
+  v4 = [(TIFeedbackController *)self computeRandomizedTimeIntervalFromTimestamp:getFinalTimestamp];
 
   [MEMORY[0x277D6F360] setCompletionEventTimestamp:v4];
 }
 
 - (void)scheduleSurveyRequestEvent
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(TIFeedbackController *)self computeRandomizedTimeIntervalFromTimestamp:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [(TIFeedbackController *)self computeRandomizedTimeIntervalFromTimestamp:date];
 
   [MEMORY[0x277D6F360] setRequestSurveyEventTimestamp:v4];
 }
 
 - (void)scheduleInitiationEvent
 {
-  v3 = [MEMORY[0x277D6F360] getInitialTimestamp];
-  v4 = [(TIFeedbackController *)self computeRandomizedTimeIntervalFromTimestamp:v3];
+  getInitialTimestamp = [MEMORY[0x277D6F360] getInitialTimestamp];
+  v4 = [(TIFeedbackController *)self computeRandomizedTimeIntervalFromTimestamp:getInitialTimestamp];
 
   [MEMORY[0x277D6F360] setInitiationEventTimestamp:v4];
 }
 
-- (void)setTerminationStateWithValue:(int64_t)a3
+- (void)setTerminationStateWithValue:(int64_t)value
 {
   v14 = *MEMORY[0x277D85DE8];
   [MEMORY[0x277D6F360] setFeedbackState:?];
   v5 = MEMORY[0x277D6F360];
-  v6 = [(TIFeedbackController *)self currentInputModes];
-  [v5 setFinalInputModes:v6];
+  currentInputModes = [(TIFeedbackController *)self currentInputModes];
+  [v5 setFinalInputModes:currentInputModes];
 
   v7 = MEMORY[0x277D6F360];
   v8 = [MEMORY[0x277CBEAA8] now];
@@ -220,9 +220,9 @@ void __41__TIFeedbackController_currentInputModes__block_invoke(uint64_t a1)
     v9 = IXAFeedbackLogFacility();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Feedback %@: set termination state with value:%ld", "-[TIFeedbackController setTerminationStateWithValue:]", self->_studyID, a3];
+      value = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Feedback %@: set termination state with value:%ld", "-[TIFeedbackController setTerminationStateWithValue:]", self->_studyID, value];
       *buf = 138412290;
-      v13 = v11;
+      v13 = value;
       _os_log_debug_impl(&dword_22CA55000, v9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
   }
@@ -232,30 +232,30 @@ void __41__TIFeedbackController_currentInputModes__block_invoke(uint64_t a1)
 
 - (void)setInitiationState
 {
-  v3 = [(TIFeedbackController *)self currentPreferenceValue];
-  if (!v3)
+  currentPreferenceValue = [(TIFeedbackController *)self currentPreferenceValue];
+  if (!currentPreferenceValue)
   {
     [(TIFeedbackController *)self setPreferenceValue:1];
   }
 
-  v4 = [(TIFeedbackController *)self currentInputModes];
-  [(TIFeedbackController *)self initiateStudyWithInputModes:v4 initialPreferenceValue:v3];
+  currentInputModes = [(TIFeedbackController *)self currentInputModes];
+  [(TIFeedbackController *)self initiateStudyWithInputModes:currentInputModes initialPreferenceValue:currentPreferenceValue];
 }
 
-- (void)handleFeedbackActionsWithDelegate:(id)a3
+- (void)handleFeedbackActionsWithDelegate:(id)delegate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   if ([(TIFeedbackController *)self isFCSBuild])
   {
-    [(TIFeedbackController *)self handleFCSBuildWithDelegate:v4];
+    [(TIFeedbackController *)self handleFCSBuildWithDelegate:delegateCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D6F360] isEligibleDevice];
-    v6 = [MEMORY[0x277D6F360] getFeedbackState];
-    v7 = [(TIFeedbackController *)self currentPreferenceValue];
+    isEligibleDevice = [MEMORY[0x277D6F360] isEligibleDevice];
+    getFeedbackState = [MEMORY[0x277D6F360] getFeedbackState];
+    currentPreferenceValue = [(TIFeedbackController *)self currentPreferenceValue];
     if ([(TIFeedbackController *)self feedbackFeatureEnabled])
     {
       if (!KeyboardSettingsFeedbackLibraryCore_frameworkLibrary)
@@ -283,7 +283,7 @@ void __41__TIFeedbackController_currentInputModes__block_invoke(uint64_t a1)
       v9 = IXAFeedbackLogFacility();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Feedback %@: enabled: %ld, eligible: %ld, state: %ld, preferenceEnabled: %ld", "-[TIFeedbackController handleFeedbackActionsWithDelegate:]", self->_studyID, v8, v5, v6, v7];
+        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Feedback %@: enabled: %ld, eligible: %ld, state: %ld, preferenceEnabled: %ld", "-[TIFeedbackController handleFeedbackActionsWithDelegate:]", self->_studyID, v8, isEligibleDevice, getFeedbackState, currentPreferenceValue];
         LODWORD(buf) = 138412290;
         *(&buf + 4) = v12;
         _os_log_debug_impl(&dword_22CA55000, v9, OS_LOG_TYPE_DEBUG, "%@", &buf, 0xCu);
@@ -292,34 +292,34 @@ void __41__TIFeedbackController_currentInputModes__block_invoke(uint64_t a1)
 
     if (v8)
     {
-      [(TIFeedbackController *)self dispatchScheduledEventsWithDelegate:v4 overrideSchedule:0];
-      if (v6 <= 2)
+      [(TIFeedbackController *)self dispatchScheduledEventsWithDelegate:delegateCopy overrideSchedule:0];
+      if (getFeedbackState <= 2)
       {
-        if (!v6)
+        if (!getFeedbackState)
         {
-          [(TIFeedbackController *)self handleFeedbackStateNoneWithDelegate:v4 isEligibleDevice:v5];
+          [(TIFeedbackController *)self handleFeedbackStateNoneWithDelegate:delegateCopy isEligibleDevice:isEligibleDevice];
           goto LABEL_28;
         }
 
-        if (v6 == 2)
+        if (getFeedbackState == 2)
         {
-          [(TIFeedbackController *)self handleFeedbackStateInitiatedWithDelegate:v4 isEligibleDevice:v5 isPreferenceEnabled:v7];
+          [(TIFeedbackController *)self handleFeedbackStateInitiatedWithDelegate:delegateCopy isEligibleDevice:isEligibleDevice isPreferenceEnabled:currentPreferenceValue];
           goto LABEL_28;
         }
       }
 
       else
       {
-        switch(v6)
+        switch(getFeedbackState)
         {
           case 3:
-            [(TIFeedbackController *)self handleFeedbackStateCompletionPendingWithDelegate:v4 isEligibleDevice:v5];
+            [(TIFeedbackController *)self handleFeedbackStateCompletionPendingWithDelegate:delegateCopy isEligibleDevice:isEligibleDevice];
             goto LABEL_28;
           case 8:
-            [(TIFeedbackController *)self handleFeedbackStateRetryPendingWithDelegate:v4 isEligibleDevice:v5];
+            [(TIFeedbackController *)self handleFeedbackStateRetryPendingWithDelegate:delegateCopy isEligibleDevice:isEligibleDevice];
             goto LABEL_28;
           case 9:
-            [(TIFeedbackController *)self handleFeedbackStateResponsePendingWithDelegate:v4 isEligibleDevice:v5];
+            [(TIFeedbackController *)self handleFeedbackStateResponsePendingWithDelegate:delegateCopy isEligibleDevice:isEligibleDevice];
             goto LABEL_28;
         }
       }
@@ -343,29 +343,29 @@ LABEL_28:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFCSBuildWithDelegate:(id)a3
+- (void)handleFCSBuildWithDelegate:(id)delegate
 {
-  v10 = a3;
-  v4 = [MEMORY[0x277D6F360] getFeedbackState];
+  delegateCopy = delegate;
+  getFeedbackState = [MEMORY[0x277D6F360] getFeedbackState];
   v5 = MEMORY[0x277D6F360];
-  if (v4)
+  if (getFeedbackState)
   {
-    v6 = [(TIFeedbackController *)self currentInputModes];
-    [v5 setFinalInputModes:v6];
+    currentInputModes = [(TIFeedbackController *)self currentInputModes];
+    [v5 setFinalInputModes:currentInputModes];
 
     v7 = MEMORY[0x277D6F360];
     v8 = [MEMORY[0x277CBEAA8] now];
     [v7 setFinalTimestamp:v8];
 
     [MEMORY[0x277D6F360] setFinalPreferenceValue:{-[TIFeedbackController currentPreferenceValue](self, "currentPreferenceValue")}];
-    [(TIFeedbackController *)self dispatchAllEventsWithDelegate:v10];
+    [(TIFeedbackController *)self dispatchAllEventsWithDelegate:delegateCopy];
     [MEMORY[0x277D6F360] clearStudyState];
   }
 
   else
   {
-    v9 = [MEMORY[0x277D6F360] getStudyEnrollment];
-    if (![v9 length] && objc_msgSend(MEMORY[0x277D6F360], "isStudyForFCS") && objc_msgSend(MEMORY[0x277D6F360], "isEligibleDevice"))
+    getStudyEnrollment = [MEMORY[0x277D6F360] getStudyEnrollment];
+    if (![getStudyEnrollment length] && objc_msgSend(MEMORY[0x277D6F360], "isStudyForFCS") && objc_msgSend(MEMORY[0x277D6F360], "isEligibleDevice"))
     {
       if (![(TIFeedbackController *)self currentPreferenceValue])
       {
@@ -463,13 +463,13 @@ LABEL_14:
 - (void)retrySurvey
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D6F360] getFormIdentifier];
+  getFormIdentifier = [MEMORY[0x277D6F360] getFormIdentifier];
   if (IXACanLogMessageAtLevel())
   {
     v4 = IXAFeedbackLogFacility();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Feedback %@: retrying survey: %@", "-[TIFeedbackController retrySurvey]", self->_studyID, v3];
+      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Feedback %@: retrying survey: %@", "-[TIFeedbackController retrySurvey]", self->_studyID, getFormIdentifier];
       *buf = 138412290;
       v12 = v8;
       _os_log_debug_impl(&dword_22CA55000, v4, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -482,8 +482,8 @@ LABEL_14:
   v9[2] = __35__TIFeedbackController_retrySurvey__block_invoke;
   v9[3] = &unk_278733710;
   v9[4] = self;
-  v10 = v3;
-  v6 = v3;
+  v10 = getFormIdentifier;
+  v6 = getFormIdentifier;
   [v5 fetchCountsForFormWithIdentifier:v6 completion:v9];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -641,35 +641,35 @@ void __35__TIFeedbackController_retrySurvey__block_invoke_66(uint64_t a1, void *
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFeedbackStateCompletionPendingWithDelegate:(id)a3 isEligibleDevice:(BOOL)a4
+- (void)handleFeedbackStateCompletionPendingWithDelegate:(id)delegate isEligibleDevice:(BOOL)device
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  delegateCopy = delegate;
   [(TIFeedbackController *)self scheduleSurveyRequestEvent];
-  v7 = [MEMORY[0x277D6F360] getSurveyOutcome];
+  getSurveyOutcome = [MEMORY[0x277D6F360] getSurveyOutcome];
   v8 = IXACanLogMessageAtLevel();
-  if (!a4)
+  if (!device)
   {
     if (v8)
     {
       v11 = IXAFeedbackLogFacility();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Feedback %@: survey outcome is %ld, device is ineligible action: terminateIneligible", "-[TIFeedbackController handleFeedbackStateCompletionPendingWithDelegate:isEligibleDevice:]", self->_studyID, v7];
+        v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Feedback %@: survey outcome is %ld, device is ineligible action: terminateIneligible", "-[TIFeedbackController handleFeedbackStateCompletionPendingWithDelegate:isEligibleDevice:]", self->_studyID, getSurveyOutcome];
         *buf = 138412290;
         v23 = v18;
         _os_log_debug_impl(&dword_22CA55000, v11, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
 
-    v12 = self;
+    selfCopy2 = self;
     v13 = 6;
     goto LABEL_33;
   }
 
-  if (v7 > 5)
+  if (getSurveyOutcome > 5)
   {
-    if (v7 == 6)
+    if (getSurveyOutcome == 6)
     {
       if (v8)
       {
@@ -686,7 +686,7 @@ void __35__TIFeedbackController_retrySurvey__block_invoke_66(uint64_t a1, void *
       goto LABEL_32;
     }
 
-    if (v7 == 7)
+    if (getSurveyOutcome == 7)
     {
       if (v8)
       {
@@ -713,7 +713,7 @@ LABEL_19:
       v14 = IXAFeedbackLogFacility();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Feedback %@: survey outcome is unexpected as %ld: terminateInvalid", "-[TIFeedbackController handleFeedbackStateCompletionPendingWithDelegate:isEligibleDevice:]", self->_studyID, v7];
+        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Feedback %@: survey outcome is unexpected as %ld: terminateInvalid", "-[TIFeedbackController handleFeedbackStateCompletionPendingWithDelegate:isEligibleDevice:]", self->_studyID, getSurveyOutcome];
         *buf = 138412290;
         v23 = v19;
         _os_log_debug_impl(&dword_22CA55000, v14, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -721,17 +721,17 @@ LABEL_19:
     }
 
 LABEL_32:
-    v12 = self;
+    selfCopy2 = self;
     v13 = 5;
 LABEL_33:
-    [(TIFeedbackController *)v12 setTerminationStateWithValue:v13];
-    [(TIFeedbackController *)self dispatchScheduledInitiationAndTerminationEventsImmediatelyWithDelegate:v6];
+    [(TIFeedbackController *)selfCopy2 setTerminationStateWithValue:v13];
+    [(TIFeedbackController *)self dispatchScheduledInitiationAndTerminationEventsImmediatelyWithDelegate:delegateCopy];
     goto LABEL_34;
   }
 
-  if (v7 != 4)
+  if (getSurveyOutcome != 4)
   {
-    if (v7 == 5)
+    if (getSurveyOutcome == 5)
     {
       if (v8)
       {
@@ -789,11 +789,11 @@ LABEL_34:
     }
   }
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v4 dateByAddingTimeInterval:86400.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [date dateByAddingTimeInterval:86400.0];
   if ([MEMORY[0x277D6F360] shouldPublishCAEventsImmediately])
   {
-    v6 = [v4 dateByAddingTimeInterval:10.0];
+    v6 = [date dateByAddingTimeInterval:10.0];
 
     v5 = v6;
   }
@@ -806,13 +806,13 @@ LABEL_34:
 
 - (void)assessAndScheduleRetry
 {
-  v3 = [MEMORY[0x277D6F360] getFormIdentifier];
+  getFormIdentifier = [MEMORY[0x277D6F360] getFormIdentifier];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __46__TIFeedbackController_assessAndScheduleRetry__block_invoke;
   v4[3] = &unk_2787336C0;
   v4[4] = self;
-  [MEMORY[0x277D08688] fetchCountsForFormWithIdentifier:v3 completion:v4];
+  [MEMORY[0x277D08688] fetchCountsForFormWithIdentifier:getFormIdentifier completion:v4];
 }
 
 void __46__TIFeedbackController_assessAndScheduleRetry__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -912,13 +912,13 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFeedbackStateInitiatedWithDelegate:(id)a3 isEligibleDevice:(BOOL)a4 isPreferenceEnabled:(BOOL)a5
+- (void)handleFeedbackStateInitiatedWithDelegate:(id)delegate isEligibleDevice:(BOOL)device isPreferenceEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  v6 = a4;
+  enabledCopy = enabled;
+  deviceCopy = device;
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (!v6)
+  delegateCopy = delegate;
+  if (!deviceCopy)
   {
     if (IXACanLogMessageAtLevel())
     {
@@ -932,12 +932,12 @@ LABEL_12:
       }
     }
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = 6;
     goto LABEL_18;
   }
 
-  if (!v5)
+  if (!enabledCopy)
   {
     if (IXACanLogMessageAtLevel())
     {
@@ -951,11 +951,11 @@ LABEL_12:
       }
     }
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = 5;
 LABEL_18:
-    [(TIFeedbackController *)v11 setTerminationStateWithValue:v12];
-    [(TIFeedbackController *)self dispatchScheduledInitiationAndTerminationEventsImmediatelyWithDelegate:v8];
+    [(TIFeedbackController *)selfCopy2 setTerminationStateWithValue:v12];
+    [(TIFeedbackController *)self dispatchScheduledInitiationAndTerminationEventsImmediatelyWithDelegate:delegateCopy];
     goto LABEL_19;
   }
 
@@ -971,18 +971,18 @@ LABEL_18:
     }
   }
 
-  [v8 accumulateWordCounts];
+  [delegateCopy accumulateWordCounts];
 LABEL_19:
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFeedbackStateNoneWithDelegate:(id)a3 isEligibleDevice:(BOOL)a4
+- (void)handleFeedbackStateNoneWithDelegate:(id)delegate isEligibleDevice:(BOOL)device
 {
-  v4 = a4;
+  deviceCopy = device;
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (deviceCopy)
   {
     if (IXACanLogMessageAtLevel())
     {
@@ -996,7 +996,7 @@ LABEL_19:
       }
     }
 
-    [v6 resetWordCounts];
+    [delegateCopy resetWordCounts];
     [(TIFeedbackController *)self setInitiationState];
     [(TIFeedbackController *)self scheduleInitiationEvent];
     [MEMORY[0x277D6F360] setStudyEnrollment];
@@ -1012,13 +1012,13 @@ LABEL_19:
   v2 = [(TIFeedbackController *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D6F360] getStudyID];
+    getStudyID = [MEMORY[0x277D6F360] getStudyID];
     studyID = v2->_studyID;
-    v2->_studyID = v3;
+    v2->_studyID = getStudyID;
 
-    v5 = [MEMORY[0x277D6F360] getPreferenceKey];
+    getPreferenceKey = [MEMORY[0x277D6F360] getPreferenceKey];
     preferenceName = v2->_preferenceName;
-    v2->_preferenceName = v5;
+    v2->_preferenceName = getPreferenceKey;
   }
 
   return v2;

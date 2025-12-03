@@ -1,29 +1,29 @@
 @interface CPLTransportUpdateTask
-- (id)enumerateScopesForTaskInTransaction:(id)a3;
-- (id)newScopedTaskWithScope:(id)a3 session:(id)a4 transportScope:(id)a5 clientCacheIdentifier:(id)a6;
+- (id)enumerateScopesForTaskInTransaction:(id)transaction;
+- (id)newScopedTaskWithScope:(id)scope session:(id)session transportScope:(id)transportScope clientCacheIdentifier:(id)identifier;
 @end
 
 @implementation CPLTransportUpdateTask
 
-- (id)newScopedTaskWithScope:(id)a3 session:(id)a4 transportScope:(id)a5 clientCacheIdentifier:(id)a6
+- (id)newScopedTaskWithScope:(id)scope session:(id)session transportScope:(id)transportScope clientCacheIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  identifierCopy = identifier;
+  transportScopeCopy = transportScope;
+  sessionCopy = session;
+  scopeCopy = scope;
   v14 = [CPLTransportUpdateScopeTask alloc];
-  v15 = [(CPLEngineSyncTask *)self engineLibrary];
-  v16 = [(CPLEngineScopedTask *)v14 initWithEngineLibrary:v15 session:v12 clientCacheIdentifier:v10 scope:v13 transportScope:v11];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  v16 = [(CPLEngineScopedTask *)v14 initWithEngineLibrary:engineLibrary session:sessionCopy clientCacheIdentifier:identifierCopy scope:scopeCopy transportScope:transportScopeCopy];
 
   return v16;
 }
 
-- (id)enumerateScopesForTaskInTransaction:(id)a3
+- (id)enumerateScopesForTaskInTransaction:(id)transaction
 {
-  v3 = [(CPLEngineMultiscopeSyncTask *)self scopes];
-  v4 = [v3 enumeratorForScopesNeedingToUpdateTransport];
+  scopes = [(CPLEngineMultiscopeSyncTask *)self scopes];
+  enumeratorForScopesNeedingToUpdateTransport = [scopes enumeratorForScopesNeedingToUpdateTransport];
 
-  return v4;
+  return enumeratorForScopesNeedingToUpdateTransport;
 }
 
 @end

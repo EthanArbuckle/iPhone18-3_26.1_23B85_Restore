@@ -1,35 +1,35 @@
 @interface PKEngagementBatchRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEngagementBatchRequest:(id)a3;
-- (PKEngagementBatchRequest)initWithDictionary:(id)a3 errorsByRequestID:(id *)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEngagementBatchRequest:(id)request;
+- (PKEngagementBatchRequest)initWithDictionary:(id)dictionary errorsByRequestID:(id *)d error:(id *)error;
 - (id)description;
 - (id)parametersByPropertyName;
-- (id)propertiesForSource:(unint64_t)a3;
+- (id)propertiesForSource:(unint64_t)source;
 @end
 
 @implementation PKEngagementBatchRequest
 
-- (PKEngagementBatchRequest)initWithDictionary:(id)a3 errorsByRequestID:(id *)a4 error:(id *)a5
+- (PKEngagementBatchRequest)initWithDictionary:(id)dictionary errorsByRequestID:(id *)d error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = PKEngagementBatchRequest;
   v9 = [(PKEngagementBatchRequest *)&v37 init];
   if (v9)
   {
-    v10 = [v8 PKDictionaryForKey:@"batch"];
+    v10 = [dictionaryCopy PKDictionaryForKey:@"batch"];
     v11 = v10;
     if (!v10 || ![v10 count])
     {
-      *a5 = +[PKEngagementRequest malformedRequest];
+      *error = +[PKEngagementRequest malformedRequest];
 
       v27 = 0;
       goto LABEL_17;
     }
 
-    v29 = a4;
-    v30 = v8;
+    dCopy = d;
+    v30 = dictionaryCopy;
     v31 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v33 = 0u;
@@ -78,12 +78,12 @@
       while (v15);
     }
 
-    *v29 = [v12 copy];
+    *dCopy = [v12 copy];
     v25 = [v31 copy];
     requests = v9->_requests;
     v9->_requests = v25;
 
-    v8 = v30;
+    dictionaryCopy = v30;
   }
 
   v27 = v9;
@@ -92,7 +92,7 @@ LABEL_17:
   return v27;
 }
 
-- (id)propertiesForSource:(unint64_t)a3
+- (id)propertiesForSource:(unint64_t)source
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -116,10 +116,10 @@ LABEL_17:
         }
 
         v11 = [(NSDictionary *)self->_requests objectForKeyedSubscript:*(*(&v15 + 1) + 8 * i), v15];
-        if ([v11 propertySource] == a3)
+        if ([v11 propertySource] == source)
         {
-          v12 = [v11 propertyName];
-          [v5 addObject:v12];
+          propertyName = [v11 propertyName];
+          [v5 addObject:propertyName];
         }
       }
 
@@ -158,18 +158,18 @@ LABEL_17:
         }
 
         v9 = [(NSDictionary *)self->_requests objectForKeyedSubscript:*(*(&v18 + 1) + 8 * i), v18];
-        v10 = [v9 parameters];
-        if (v10)
+        parameters = [v9 parameters];
+        if (parameters)
         {
-          v11 = v10;
-          v12 = [v9 parameters];
-          v13 = [v12 count];
+          v11 = parameters;
+          parameters2 = [v9 parameters];
+          v13 = [parameters2 count];
 
           if (v13)
           {
-            v14 = [v9 parameters];
-            v15 = [v9 propertyName];
-            [v3 setObject:v14 forKeyedSubscript:v15];
+            parameters3 = [v9 parameters];
+            propertyName = [v9 propertyName];
+            [v3 setObject:parameters3 forKeyedSubscript:propertyName];
           }
         }
       }
@@ -193,27 +193,27 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKEngagementBatchRequest *)self isEqualToEngagementBatchRequest:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKEngagementBatchRequest *)self isEqualToEngagementBatchRequest:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToEngagementBatchRequest:(id)a3
+- (BOOL)isEqualToEngagementBatchRequest:(id)request
 {
   requests = self->_requests;
-  v4 = *(a3 + 1);
+  v4 = *(request + 1);
   if (requests)
   {
     v5 = v4 == 0;

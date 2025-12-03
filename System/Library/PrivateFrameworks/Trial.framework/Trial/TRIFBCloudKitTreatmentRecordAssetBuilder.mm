@@ -1,9 +1,9 @@
 @interface TRIFBCloudKitTreatmentRecordAssetBuilder
 - (void)dealloc;
-- (void)setAssetIndex:(unsigned int)a3;
-- (void)setContainer:(unsigned __int8)a3;
-- (void)setHasCkIndex:(BOOL)a3;
-- (void)setTreatmentId:(id)a3;
+- (void)setAssetIndex:(unsigned int)index;
+- (void)setContainer:(unsigned __int8)container;
+- (void)setHasCkIndex:(BOOL)index;
+- (void)setTreatmentId:(id)id;
 @end
 
 @implementation TRIFBCloudKitTreatmentRecordAssetBuilder
@@ -21,63 +21,63 @@
   [(TRIFBCloudKitTreatmentRecordAssetBuilder *)&v4 dealloc];
 }
 
-- (void)setContainer:(unsigned __int8)a3
+- (void)setContainer:(unsigned __int8)container
 {
-  v3 = a3;
+  containerCopy = container;
   v7 = *MEMORY[0x277D85DE8];
-  v5 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v5)
+  if (!firstError)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(self->_bldr->var0, 4, v3);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(self->_bldr->var0, 4, containerCopy);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTreatmentId:(id)a3
+- (void)setTreatmentId:(id)id
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  idCopy = id;
+  if (!idCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:627 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:627 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
-    v7 = v5;
+    v7 = idCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 6, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAssetIndex:(unsigned int)a3
+- (void)setAssetIndex:(unsigned int)index
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v5)
+  if (!firstError)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(self->_bldr->var0, 8, a3);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(self->_bldr->var0, 8, index);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setHasCkIndex:(BOOL)a3
+- (void)setHasCkIndex:(BOOL)index
 {
-  v3 = a3;
+  indexCopy = index;
   v7 = *MEMORY[0x277D85DE8];
-  v5 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v5)
+  if (!firstError)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(self->_bldr->var0, 10, v3);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(self->_bldr->var0, 10, indexCopy);
   }
 
   v6 = *MEMORY[0x277D85DE8];

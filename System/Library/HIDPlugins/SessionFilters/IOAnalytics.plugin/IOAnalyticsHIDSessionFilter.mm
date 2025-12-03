@@ -1,11 +1,11 @@
 @interface IOAnalyticsHIDSessionFilter
-- (IOAnalyticsHIDSessionFilter)initWithSession:(id)a3;
+- (IOAnalyticsHIDSessionFilter)initWithSession:(id)session;
 - (void)dealloc;
 @end
 
 @implementation IOAnalyticsHIDSessionFilter
 
-- (IOAnalyticsHIDSessionFilter)initWithSession:(id)a3
+- (IOAnalyticsHIDSessionFilter)initWithSession:(id)session
 {
   v25.receiver = self;
   v25.super_class = IOAnalyticsHIDSessionFilter;

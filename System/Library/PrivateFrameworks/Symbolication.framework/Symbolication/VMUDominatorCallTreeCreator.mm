@@ -1,9 +1,9 @@
 @interface VMUDominatorCallTreeCreator
-- (id)callTreeWithGraph:(id)a3 groupByType:(BOOL)a4 showRegionVirtualSize:(BOOL)a5 debugTimer:(id)a6;
-- (id)groupByTypeNameForNode:(unsigned int)a3;
-- (id)referenceDecriptionForSourceNodeAddress:(unint64_t)a3 referenceInfo:(id *)a4;
+- (id)callTreeWithGraph:(id)graph groupByType:(BOOL)type showRegionVirtualSize:(BOOL)size debugTimer:(id)timer;
+- (id)groupByTypeNameForNode:(unsigned int)node;
+- (id)referenceDecriptionForSourceNodeAddress:(unint64_t)address referenceInfo:(id *)info;
 - (id)remainingNodeNames;
-- (void)buildCallTreeWithRootNodeNames:(id)a3;
+- (void)buildCallTreeWithRootNodeNames:(id)names;
 - (void)removeJunkEdges;
 - (void)removeJunkNodes;
 @end
@@ -12,10 +12,10 @@
 
 - (void)removeJunkEdges
 {
-  v3 = [(VMUDirectedGraph *)self->_processObjectGraph edgeNamespaceSize];
-  v4 = malloc_type_calloc(1uLL, ((v3 + 7) >> 3) + 4, 0xB2EC2458uLL);
-  *v4 = v3;
-  v5 = [(VMUDirectedGraph *)self->_processObjectGraph invertedGraph];
+  edgeNamespaceSize = [(VMUDirectedGraph *)self->_processObjectGraph edgeNamespaceSize];
+  v4 = malloc_type_calloc(1uLL, ((edgeNamespaceSize + 7) >> 3) + 4, 0xB2EC2458uLL);
+  *v4 = edgeNamespaceSize;
+  invertedGraph = [(VMUDirectedGraph *)self->_processObjectGraph invertedGraph];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -48,7 +48,7 @@
   v15 = &unk_1E827A320;
   v18 = v24;
   v19 = v26;
-  v10 = v5;
+  v10 = invertedGraph;
   v16 = v10;
   v11 = v8;
   v17 = v11;
@@ -216,9 +216,9 @@ uint64_t __46__VMUDominatorCallTreeCreator_removeJunkEdges__block_invoke_3(uint6
 
 - (void)removeJunkNodes
 {
-  v3 = [(VMUDirectedGraph *)self->_processObjectGraph nodeNamespaceSize];
-  v4 = malloc_type_calloc(1uLL, ((v3 + 7) >> 3) + 4, 0xB2EC2458uLL);
-  *v4 = v3;
+  nodeNamespaceSize = [(VMUDirectedGraph *)self->_processObjectGraph nodeNamespaceSize];
+  v4 = malloc_type_calloc(1uLL, ((nodeNamespaceSize + 7) >> 3) + 4, 0xB2EC2458uLL);
+  *v4 = nodeNamespaceSize;
   processObjectGraph = self->_processObjectGraph;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -346,21 +346,21 @@ void __46__VMUDominatorCallTreeCreator_removeJunkNodes__block_invoke_2(void *a1,
   }
 }
 
-- (id)callTreeWithGraph:(id)a3 groupByType:(BOOL)a4 showRegionVirtualSize:(BOOL)a5 debugTimer:(id)a6
+- (id)callTreeWithGraph:(id)graph groupByType:(BOOL)type showRegionVirtualSize:(BOOL)size debugTimer:(id)timer
 {
-  v10 = a3;
-  v11 = a6;
+  graphCopy = graph;
+  timerCopy = timer;
   v12 = objc_autoreleasePoolPush();
-  [(VMUDominatorCallTreeCreator *)self setProcessObjectGraph:v10];
-  self->_showRegionVirtualSize = a5;
-  self->_groupByType = a4;
-  objc_storeStrong(&self->_debugTimer, a6);
-  [v11 startWithMessage:"remove junk nodes from object graph"];
+  [(VMUDominatorCallTreeCreator *)self setProcessObjectGraph:graphCopy];
+  self->_showRegionVirtualSize = size;
+  self->_groupByType = type;
+  objc_storeStrong(&self->_debugTimer, timer);
+  [timerCopy startWithMessage:"remove junk nodes from object graph"];
   self->_visitedNodes = [(VMUDominatorCallTreeCreator *)self removeJunkNodes];
-  [v11 startWithMessage:"remove junk edges from object graph"];
+  [timerCopy startWithMessage:"remove junk edges from object graph"];
   [(VMUDominatorCallTreeCreator *)self removeJunkEdges];
-  [v11 startWithMessage:"create dominator graph"];
-  v13 = [[VMUDominatorGraph alloc] initWithGraph:v10 debugTimer:v11];
+  [timerCopy startWithMessage:"create dominator graph"];
+  v13 = [[VMUDominatorGraph alloc] initWithGraph:graphCopy debugTimer:timerCopy];
   [(VMUDominatorCallTreeCreator *)self setDominatorGraph:v13];
 
   [(VMUDebugTimer *)self->_debugTimer startWithMessage:"select all dominator roots as roots of the tree"];
@@ -378,24 +378,24 @@ void __46__VMUDominatorCallTreeCreator_removeJunkNodes__block_invoke_2(void *a1,
 
   [(VMUDebugTimer *)self->_debugTimer startWithMessage:"build tree from selected nodes"];
   [(VMUDominatorCallTreeCreator *)self buildCallTreeWithRootNodeNames:v16];
-  v18 = [(VMUDominatorCallTreeCreator *)self desiredAddress];
-  if (v18)
+  desiredAddress = [(VMUDominatorCallTreeCreator *)self desiredAddress];
+  if (desiredAddress)
   {
     goto LABEL_2;
   }
 
-  v19 = [(VMUDominatorCallTreeCreator *)self desiredClassesPattern];
+  desiredClassesPattern = [(VMUDominatorCallTreeCreator *)self desiredClassesPattern];
 
-  if (!v19)
+  if (!desiredClassesPattern)
   {
     [(VMUDebugTimer *)self->_debugTimer startWithMessage:"add remaining nodes to tree"];
-    v18 = [(VMUDominatorCallTreeCreator *)self remainingNodeNames];
-    [(VMUDominatorCallTreeCreator *)self buildCallTreeWithRootNodeNames:v18];
+    desiredAddress = [(VMUDominatorCallTreeCreator *)self remainingNodeNames];
+    [(VMUDominatorCallTreeCreator *)self buildCallTreeWithRootNodeNames:desiredAddress];
 LABEL_2:
   }
 
   free(self->_visitedNodes);
-  [v11 startWithMessage:"add child counts"];
+  [timerCopy startWithMessage:"add child counts"];
   [(VMUCallTreeRoot *)self->_callTreeRoot addChildCountsIntoNode];
   v20 = self->_callTreeRoot;
 
@@ -411,30 +411,30 @@ void __94__VMUDominatorCallTreeCreator_callTreeWithGraph_groupByType_showRegionV
   [v2 addObject:v3];
 }
 
-- (void)buildCallTreeWithRootNodeNames:(id)a3
+- (void)buildCallTreeWithRootNodeNames:(id)names
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VMUDominatorCallTreeCreator *)self desiredAddress];
+  namesCopy = names;
+  desiredAddress = [(VMUDominatorCallTreeCreator *)self desiredAddress];
 
-  if (v5)
+  if (desiredAddress)
   {
-    v6 = [(VMUDominatorCallTreeCreator *)self desiredAddress];
-    v7 = [v6 unsignedIntegerValue];
+    desiredAddress2 = [(VMUDominatorCallTreeCreator *)self desiredAddress];
+    unsignedIntegerValue = [desiredAddress2 unsignedIntegerValue];
 
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __62__VMUDominatorCallTreeCreator_buildCallTreeWithRootNodeNames___block_invoke;
     v23[3] = &__block_descriptor_40_e21_B36__0I8___Qb60b4__12l;
-    v23[4] = v7;
+    v23[4] = unsignedIntegerValue;
     v8 = v23;
   }
 
   else
   {
-    v9 = [(VMUDominatorCallTreeCreator *)self desiredClassesPattern];
+    desiredClassesPattern = [(VMUDominatorCallTreeCreator *)self desiredClassesPattern];
 
-    if (!v9)
+    if (!desiredClassesPattern)
     {
       goto LABEL_6;
     }
@@ -447,13 +447,13 @@ void __94__VMUDominatorCallTreeCreator_callTreeWithGraph_groupByType_showRegionV
     v8 = aBlock;
   }
 
-  v9 = _Block_copy(v8);
+  desiredClassesPattern = _Block_copy(v8);
 LABEL_6:
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v4;
+  v10 = namesCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v11)
   {
@@ -468,16 +468,16 @@ LABEL_6:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * i) unsignedIntValue];
+        unsignedIntValue = [*(*(&v18 + 1) + 8 * i) unsignedIntValue];
         processObjectGraph = self->_processObjectGraph;
         if (processObjectGraph)
         {
-          [(VMUObjectGraph *)processObjectGraph nodeDetails:v15];
+          [(VMUObjectGraph *)processObjectGraph nodeDetails:unsignedIntValue];
         }
 
-        if ([(VMUDominatorGraph *)self->_dominatorGraph hasAnyDirectDomineesForNodeName:v15])
+        if ([(VMUDominatorGraph *)self->_dominatorGraph hasAnyDirectDomineesForNodeName:unsignedIntValue])
         {
-          [(VMUDominatorCallTreeCreator *)self buildCallTreeWithNodeName:v15 callTreeParentNode:self->_callTreeRoot parentNodeName:0xFFFFFFFFLL parentNodeType:0 reference:0 rootNodeFilter:v9];
+          [(VMUDominatorCallTreeCreator *)self buildCallTreeWithNodeName:unsignedIntValue callTreeParentNode:self->_callTreeRoot parentNodeName:0xFFFFFFFFLL parentNodeType:0 reference:0 rootNodeFilter:desiredClassesPattern];
         }
       }
 
@@ -518,7 +518,7 @@ uint64_t __62__VMUDominatorCallTreeCreator_buildCallTreeWithRootNodeNames___bloc
   v20[1] = 3221225472;
   v21 = __49__VMUDominatorCallTreeCreator_remainingNodeNames__block_invoke;
   v22 = &unk_1E8278D70;
-  v23 = self;
+  selfCopy = self;
   v5 = v3;
   v24 = v5;
   v6 = v20;
@@ -626,12 +626,12 @@ uint64_t __131__VMUDominatorCallTreeCreator_buildCallTreeWithNodeName_callTreePa
   return result;
 }
 
-- (id)referenceDecriptionForSourceNodeAddress:(unint64_t)a3 referenceInfo:(id *)a4
+- (id)referenceDecriptionForSourceNodeAddress:(unint64_t)address referenceInfo:(id *)info
 {
-  v5 = [(VMUProcessObjectGraph *)self->_processObjectGraph regionSymbolNameForAddress:a4->var0 + a3];
-  if (v5)
+  address = [(VMUProcessObjectGraph *)self->_processObjectGraph regionSymbolNameForAddress:info->var0 + address];
+  if (address)
   {
-    v6 = VMUScanTypeKeywordDescription(a4->var1);
+    v6 = VMUScanTypeKeywordDescription(info->var1);
     if (v6 && *v6)
     {
       v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%s ", v6];
@@ -642,7 +642,7 @@ uint64_t __131__VMUDominatorCallTreeCreator_buildCallTreeWithNodeName_callTreePa
       v7 = &stru_1F461F9C8;
     }
 
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", v7, v5];
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", v7, address];
   }
 
   else
@@ -653,7 +653,7 @@ uint64_t __131__VMUDominatorCallTreeCreator_buildCallTreeWithNodeName_callTreePa
   return v8;
 }
 
-- (id)groupByTypeNameForNode:(unsigned int)a3
+- (id)groupByTypeNameForNode:(unsigned int)node
 {
   processObjectGraph = self->_processObjectGraph;
   if (processObjectGraph)

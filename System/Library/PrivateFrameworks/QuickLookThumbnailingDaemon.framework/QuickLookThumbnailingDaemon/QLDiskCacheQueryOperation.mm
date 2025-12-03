@@ -1,6 +1,6 @@
 @interface QLDiskCacheQueryOperation
-- (BOOL)appendThumbnailRequest:(id)a3;
-- (QLDiskCacheQueryOperation)initWithCacheThread:(id)a3;
+- (BOOL)appendThumbnailRequest:(id)request;
+- (QLDiskCacheQueryOperation)initWithCacheThread:(id)thread;
 - (void)cancel;
 - (void)dealloc;
 - (void)main;
@@ -10,13 +10,13 @@
 
 - (void)dealloc
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  queue = v2->_queue;
-  v2->_queue = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  queue = selfCopy->_queue;
+  selfCopy->_queue = 0;
 
-  objc_sync_exit(v2);
-  v4.receiver = v2;
+  objc_sync_exit(selfCopy);
+  v4.receiver = selfCopy;
   v4.super_class = QLDiskCacheQueryOperation;
   [(QLDiskCacheQueryOperation *)&v4 dealloc];
 }
@@ -30,32 +30,32 @@
   v24 = __Block_byref_object_copy__1;
   v25 = __Block_byref_object_dispose__1;
   v26 = 0;
-  v2 = self;
-  objc_sync_enter(v2);
-  queue = v2->_queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  queue = selfCopy->_queue;
   if (queue)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __33__QLDiskCacheQueryOperation_main__block_invoke;
     block[3] = &unk_279ADD578;
-    block[4] = v2;
+    block[4] = selfCopy;
     block[5] = &v21;
     dispatch_sync(queue, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (v22[5])
   {
-    v4 = [(_QLCacheThread *)v2->_cacheThread diskCache];
+    diskCache = [(_QLCacheThread *)selfCopy->_cacheThread diskCache];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __33__QLDiskCacheQueryOperation_main__block_invoke_2;
     v19[3] = &unk_279ADD5C8;
-    v19[4] = v2;
+    v19[4] = selfCopy;
     v19[5] = &v21;
-    v5 = [v4 doReading:v19];
+    v5 = [diskCache doReading:v19];
 
     if ((v5 & 1) == 0)
     {
@@ -63,8 +63,8 @@
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v6 = [v22[5] allValues];
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v27 count:16];
+      allValues = [v22[5] allValues];
+      v7 = [allValues countByEnumeratingWithState:&v15 objects:v27 count:16];
       if (v7)
       {
         v8 = 0;
@@ -77,18 +77,18 @@
           {
             if (*v16 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(allValues);
             }
 
             v8 = *(*(&v15 + 1) + 8 * v10);
 
-            [(_QLCacheThread *)v2->_cacheThread _dispatchThumbnailRequestInServerThread:v8];
+            [(_QLCacheThread *)selfCopy->_cacheThread _dispatchThumbnailRequestInServerThread:v8];
             ++v10;
             v11 = v8;
           }
 
           while (v7 != v10);
-          v7 = [v6 countByEnumeratingWithState:&v15 objects:v27 count:16];
+          v7 = [allValues countByEnumeratingWithState:&v15 objects:v27 count:16];
         }
 
         while (v7);
@@ -96,13 +96,13 @@
     }
   }
 
-  v12 = [(_QLCacheThread *)v2->_cacheThread serverThread];
+  serverThread = [(_QLCacheThread *)selfCopy->_cacheThread serverThread];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __33__QLDiskCacheQueryOperation_main__block_invoke_25;
   v14[3] = &unk_279ADD0F8;
-  v14[4] = v2;
-  [v12 perform:v14];
+  v14[4] = selfCopy;
+  [serverThread perform:v14];
 
   _Block_object_dispose(&v21, 8);
   v13 = *MEMORY[0x277D85DE8];
@@ -222,9 +222,9 @@ void __33__QLDiskCacheQueryOperation_main__block_invoke_2(uint64_t a1)
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (QLDiskCacheQueryOperation)initWithCacheThread:(id)a3
+- (QLDiskCacheQueryOperation)initWithCacheThread:(id)thread
 {
-  v5 = a3;
+  threadCopy = thread;
   v6 = [(QLDiskCacheQueryOperation *)self init];
   if (v6)
   {
@@ -237,35 +237,35 @@ void __33__QLDiskCacheQueryOperation_main__block_invoke_2(uint64_t a1)
     v6->_thumbnailRequestBatch = v9;
 
     v6->_thumbnailRequestCount = 0;
-    objc_storeStrong(&v6->_cacheThread, a3);
+    objc_storeStrong(&v6->_cacheThread, thread);
   }
 
   return v6;
 }
 
-- (BOOL)appendThumbnailRequest:(id)a3
+- (BOOL)appendThumbnailRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = self;
-  objc_sync_enter(v5);
-  queue = v5->_queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  queue = selfCopy->_queue;
   if (queue)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __52__QLDiskCacheQueryOperation_appendThumbnailRequest___block_invoke;
     block[3] = &unk_279ADD5A0;
-    block[4] = v5;
-    v10 = v4;
+    block[4] = selfCopy;
+    v10 = requestCopy;
     v11 = &v12;
     dispatch_sync(queue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v7 = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
@@ -347,21 +347,21 @@ LABEL_13:
   v34 = __Block_byref_object_copy__1;
   v35 = __Block_byref_object_dispose__1;
   v36 = 0;
-  v2 = self;
-  objc_sync_enter(v2);
-  queue = v2->_queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  queue = selfCopy->_queue;
   if (queue)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __35__QLDiskCacheQueryOperation_cancel__block_invoke;
     block[3] = &unk_279ADD578;
-    block[4] = v2;
+    block[4] = selfCopy;
     block[5] = &v31;
     dispatch_sync(queue, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (v32[5])
   {
@@ -414,14 +414,14 @@ LABEL_13:
                 v11 = v10;
                 if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
                 {
-                  v12 = [v9 request];
-                  v13 = [v12 fileIdentifier];
+                  request = [v9 request];
+                  fileIdentifier = [request fileIdentifier];
                   *buf = 138412290;
-                  v38 = v13;
+                  v38 = fileIdentifier;
                   _os_log_impl(&dword_2615D3000, v11, OS_LOG_TYPE_INFO, "Disk cache request cancel, sending the thumbnail request to the server thread (%@)", buf, 0xCu);
                 }
 
-                [(_QLCacheThread *)v2->_cacheThread _dispatchThumbnailRequestInServerThread:v9];
+                [(_QLCacheThread *)selfCopy->_cacheThread _dispatchThumbnailRequestInServerThread:v9];
                 ++v8;
               }
 
@@ -440,16 +440,16 @@ LABEL_13:
     }
   }
 
-  v21.receiver = v2;
+  v21.receiver = selfCopy;
   v21.super_class = QLDiskCacheQueryOperation;
   [(QLDiskCacheQueryOperation *)&v21 cancel];
-  v14 = [(_QLCacheThread *)v2->_cacheThread serverThread];
+  serverThread = [(_QLCacheThread *)selfCopy->_cacheThread serverThread];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __35__QLDiskCacheQueryOperation_cancel__block_invoke_26;
   v20[3] = &unk_279ADD0F8;
-  v20[4] = v2;
-  [v14 perform:v20];
+  v20[4] = selfCopy;
+  [serverThread perform:v20];
 
   _Block_object_dispose(&v31, 8);
   v15 = *MEMORY[0x277D85DE8];

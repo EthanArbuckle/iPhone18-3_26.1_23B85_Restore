@@ -1,30 +1,30 @@
 @interface TSSPropertySet
-+ (TSSPropertySet)propertySetWithArray:(id)a3;
-+ (id)p_mutableIndexSetWithFirstProperty:(int)a3 argumentList:(char *)a4;
++ (TSSPropertySet)propertySetWithArray:(id)array;
++ (id)p_mutableIndexSetWithFirstProperty:(int)property argumentList:(char *)list;
 + (id)propertySet;
-+ (id)propertySetFromUnionOfPropertySets:(id)a3;
-- (BOOL)containsProperties:(id)a3;
-- (BOOL)intersectsProperties:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)propertySetFromUnionOfPropertySets:(id)sets;
+- (BOOL)containsProperties:(id)properties;
+- (BOOL)intersectsProperties:(id)properties;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)propertyStrings;
 - (TSSPropertySet)init;
-- (TSSPropertySet)initWithIndexSet:(id)a3;
-- (TSSPropertySet)initWithPropertySet:(id)a3;
+- (TSSPropertySet)initWithIndexSet:(id)set;
+- (TSSPropertySet)initWithPropertySet:(id)set;
 - (_NSRange)propertyRange;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)propertySetByAddingPropertiesFromSet:(id)a3;
-- (id)propertySetByIntersectingWithPropertySet:(id)a3;
-- (id)propertySetByRemovingPropertiesFromSet:(id)a3;
-- (void)enumeratePropertiesUsingBlock:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)propertySetByAddingPropertiesFromSet:(id)set;
+- (id)propertySetByIntersectingWithPropertySet:(id)set;
+- (id)propertySetByRemovingPropertiesFromSet:(id)set;
+- (void)enumeratePropertiesUsingBlock:(id)block;
 @end
 
 @implementation TSSPropertySet
 
-- (TSSPropertySet)initWithIndexSet:(id)a3
+- (TSSPropertySet)initWithIndexSet:(id)set
 {
-  v6 = a3;
-  if (!v6)
+  setCopy = set;
+  if (!setCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSSPropertySet initWithIndexSet:]");
@@ -40,7 +40,7 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->mIndexSet, a3);
+    objc_storeStrong(&v14->mIndexSet, set);
   }
 
   return v15;
@@ -54,19 +54,19 @@
   return v6;
 }
 
-+ (id)p_mutableIndexSetWithFirstProperty:(int)a3 argumentList:(char *)a4
++ (id)p_mutableIndexSetWithFirstProperty:(int)property argumentList:(char *)list
 {
-  if (!a3)
+  if (!property)
   {
     goto LABEL_6;
   }
 
   v5 = objc_alloc(MEMORY[0x277CCAB58]);
-  for (i = objc_msgSend_initWithIndex_(v5, v6, a3); ; objc_msgSend_addIndex_(i, v7, v10))
+  for (i = objc_msgSend_initWithIndex_(v5, v6, property); ; objc_msgSend_addIndex_(i, v7, v10))
   {
-    v9 = a4;
-    a4 += 8;
-    v10 = *v9;
+    listCopy = list;
+    list += 8;
+    v10 = *listCopy;
     if (!v10)
     {
       break;
@@ -82,16 +82,16 @@ LABEL_6:
   return i;
 }
 
-- (TSSPropertySet)initWithPropertySet:(id)a3
+- (TSSPropertySet)initWithPropertySet:(id)set
 {
-  v4 = a3;
-  if (!v4)
+  setCopy = set;
+  if (!setCopy)
   {
     sub_276CE17B8();
   }
 
-  v7 = v4;
-  v8 = v4[1];
+  v7 = setCopy;
+  v8 = setCopy[1];
   if (!v8)
   {
     v9 = MEMORY[0x277D81150];
@@ -117,16 +117,16 @@ LABEL_6:
   return v2;
 }
 
-+ (TSSPropertySet)propertySetWithArray:(id)a3
++ (TSSPropertySet)propertySetWithArray:(id)array
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v6 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v4, v5);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v3;
+  v7 = arrayCopy;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v24, v28, 16);
   if (v9)
   {
@@ -163,16 +163,16 @@ LABEL_6:
   return v21;
 }
 
-+ (id)propertySetFromUnionOfPropertySets:(id)a3
++ (id)propertySetFromUnionOfPropertySets:(id)sets
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  setsCopy = sets;
   v6 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v4, v5);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v3;
+  v7 = setsCopy;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v22, v26, 16);
   if (v9)
   {
@@ -205,9 +205,9 @@ LABEL_6:
   return v19;
 }
 
-- (BOOL)containsProperties:(id)a3
+- (BOOL)containsProperties:(id)properties
 {
-  if (a3 && (v3 = *(a3 + 1)) != 0)
+  if (properties && (v3 = *(properties + 1)) != 0)
   {
     return MEMORY[0x2821F9670](self->mIndexSet, sel_containsIndexes_, v3);
   }
@@ -238,28 +238,28 @@ LABEL_6:
   return result;
 }
 
-- (void)enumeratePropertiesUsingBlock:(id)a3
+- (void)enumeratePropertiesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   mIndexSet = self->mIndexSet;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_276CBAEA8;
   v8[3] = &unk_27A6EF210;
-  v9 = v4;
-  v6 = v4;
+  v9 = blockCopy;
+  v6 = blockCopy;
   objc_msgSend_enumerateIndexesUsingBlock_(mIndexSet, v7, v8);
 }
 
-- (BOOL)intersectsProperties:(id)a3
+- (BOOL)intersectsProperties:(id)properties
 {
-  v4 = a3;
-  v7 = v4;
+  propertiesCopy = properties;
+  v7 = propertiesCopy;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  if (v4 && objc_msgSend_count(v4, v5, v6))
+  if (propertiesCopy && objc_msgSend_count(propertiesCopy, v5, v6))
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -276,12 +276,12 @@ LABEL_6:
   return v9;
 }
 
-- (id)propertySetByAddingPropertiesFromSet:(id)a3
+- (id)propertySetByAddingPropertiesFromSet:(id)set
 {
   mIndexSet = self->mIndexSet;
-  v4 = a3;
+  setCopy = set;
   v7 = objc_msgSend_mutableCopy(mIndexSet, v5, v6);
-  v8 = v4[1];
+  v8 = setCopy[1];
 
   objc_msgSend_addIndexes_(v7, v9, v8);
   v10 = objc_alloc(objc_opt_class());
@@ -290,12 +290,12 @@ LABEL_6:
   return v12;
 }
 
-- (id)propertySetByRemovingPropertiesFromSet:(id)a3
+- (id)propertySetByRemovingPropertiesFromSet:(id)set
 {
   mIndexSet = self->mIndexSet;
-  v4 = a3;
+  setCopy = set;
   v7 = objc_msgSend_mutableCopy(mIndexSet, v5, v6);
-  v8 = v4[1];
+  v8 = setCopy[1];
 
   objc_msgSend_removeIndexes_(v7, v9, v8);
   v10 = objc_alloc(objc_opt_class());
@@ -304,33 +304,33 @@ LABEL_6:
   return v12;
 }
 
-- (id)propertySetByIntersectingWithPropertySet:(id)a3
+- (id)propertySetByIntersectingWithPropertySet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v7 = objc_msgSend_count(self, v5, v6);
-  if (v7 >= objc_msgSend_count(v4, v8, v9))
+  if (v7 >= objc_msgSend_count(setCopy, v8, v9))
   {
-    v10 = v4;
+    selfCopy = setCopy;
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
-  v11 = v10->mIndexSet;
+  v11 = selfCopy->mIndexSet;
   v14 = objc_msgSend_count(self, v12, v13);
-  if (v14 >= objc_msgSend_count(v4, v15, v16))
+  if (v14 >= objc_msgSend_count(setCopy, v15, v16))
   {
-    v17 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v17 = v4;
+    selfCopy2 = setCopy;
   }
 
-  v18 = v17->mIndexSet;
+  v18 = selfCopy2->mIndexSet;
   v21 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v19, v20);
   v29 = MEMORY[0x277D85DD0];
   v30 = 3221225472;
@@ -363,20 +363,20 @@ LABEL_6:
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSSMutablePropertySet alloc];
 
   return MEMORY[0x2821F9670](v4, sel_initWithPropertySet_, self);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqual = objc_msgSend_isEqual_(self->mIndexSet, v5, v4[1]);
+    isEqual = objc_msgSend_isEqual_(self->mIndexSet, v5, equalCopy[1]);
   }
 
   else

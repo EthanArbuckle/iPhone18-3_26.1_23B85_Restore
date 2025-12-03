@@ -1,37 +1,37 @@
 @interface CKTitledImageBalloonView
-- (CKTitledImageBalloonView)initWithFrame:(CGRect)a3;
+- (CKTitledImageBalloonView)initWithFrame:(CGRect)frame;
 - (NSString)title;
-- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)a3;
-- (void)configureForLocatingChatItem:(id)a3;
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6;
+- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)size;
+- (void)configureForLocatingChatItem:(id)item;
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setOrientation:(char)a3;
-- (void)setTitle:(id)a3;
-- (void)tapGestureRecognized:(id)a3;
+- (void)setOrientation:(char)orientation;
+- (void)setTitle:(id)title;
+- (void)tapGestureRecognized:(id)recognized;
 @end
 
 @implementation CKTitledImageBalloonView
 
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect
 {
-  v6 = a6;
-  v7 = a5;
+  effectCopy = effect;
+  orientationCopy = orientation;
   v12.receiver = self;
   v12.super_class = CKTitledImageBalloonView;
-  v10 = a3;
-  [(CKImageBalloonView *)&v12 configureForMediaObject:v10 previewWidth:v7 orientation:v6 hasInvisibleInkEffect:a4];
-  v11 = [v10 title];
+  objectCopy = object;
+  [(CKImageBalloonView *)&v12 configureForMediaObject:objectCopy previewWidth:orientationCopy orientation:effectCopy hasInvisibleInkEffect:width];
+  title = [objectCopy title];
 
-  [(CKTitledImageBalloonView *)self setTitle:v11];
+  [(CKTitledImageBalloonView *)self setTitle:title];
 }
 
-- (CKTitledImageBalloonView)initWithFrame:(CGRect)a3
+- (CKTitledImageBalloonView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = CKTitledImageBalloonView;
-  v3 = [(CKImageBalloonView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKImageBalloonView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
@@ -39,8 +39,8 @@
     v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [v6 setOpaque:0];
     [v6 setBackgroundColor:0];
-    v7 = [v4 previewTitleFont];
-    [v6 setFont:v7];
+    previewTitleFont = [v4 previewTitleFont];
+    [v6 setFont:previewTitleFont];
 
     [(CKTitledImageBalloonView *)v3 addSubview:v6];
     [(CKTitledImageBalloonView *)v3 setTitleLabel:v6];
@@ -48,8 +48,8 @@
     {
       v8 = objc_alloc(MEMORY[0x1E69DCAE0]);
       v9 = [v4 chevronImageForColorType:0xFFFFFFFFLL];
-      v10 = [v9 imageFlippedForRightToLeftLayoutDirection];
-      v11 = [v8 initWithImage:v10];
+      imageFlippedForRightToLeftLayoutDirection = [v9 imageFlippedForRightToLeftLayoutDirection];
+      v11 = [v8 initWithImage:imageFlippedForRightToLeftLayoutDirection];
 
       [v11 setContentMode:4];
       [(CKTitledImageBalloonView *)v3 addSubview:v11];
@@ -70,7 +70,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
   [(CKTitledImageBalloonView *)self alignmentRectForFrame:v4, v6, v8, v10];
   v13 = v12;
   v15 = v14;
@@ -83,18 +83,18 @@
   v38.size.width = v8;
   v38.size.height = v10;
   v19 = CGRectGetMaxY(v38) - v18;
-  v20 = [(CKTitledImageBalloonView *)self effectView];
-  [v20 setFrame:{0.0, v10 - v18, v8, v18}];
+  effectView = [(CKTitledImageBalloonView *)self effectView];
+  [effectView setFrame:{0.0, v10 - v18, v8, v18}];
 
-  v21 = [(CKTitledImageBalloonView *)self chevron];
-  v22 = [v21 image];
-  [v22 size];
+  chevron = [(CKTitledImageBalloonView *)self chevron];
+  image = [chevron image];
+  [image size];
   rect.origin.y = v23;
 
-  v24 = [(CKTitledImageBalloonView *)self titleLabel];
-  [v24 _capOffsetFromBoundsTop];
+  titleLabel = [(CKTitledImageBalloonView *)self titleLabel];
+  [titleLabel _capOffsetFromBoundsTop];
   v26 = v25;
-  [v24 _baselineOffsetFromBottom];
+  [titleLabel _baselineOffsetFromBottom];
   v28 = v18 - (v26 + v27);
   if (CKMainScreenScale_once_34 != -1)
   {
@@ -111,9 +111,9 @@
   v30 = v13;
   v31 = floor((v19 + (v18 - v28) * 0.5) * v29) / v29;
   v32 = +[CKUIBehavior sharedBehaviors];
-  v33 = [v32 showsBalloonChevron];
+  showsBalloonChevron = [v32 showsBalloonChevron];
 
-  if (v33)
+  if (showsBalloonChevron)
   {
     v34 = v15 - (rect.origin.y + 10.0);
   }
@@ -123,7 +123,7 @@
     v34 = v15;
   }
 
-  if (v11)
+  if (userInterfaceLayoutDirection)
   {
     v39.origin.x = v30;
     v39.origin.y = v19;
@@ -134,7 +134,7 @@
     v40.origin.y = v31;
     v40.size.width = v34;
     v40.size.height = v28;
-    [v24 setFrame:{MaxX - CGRectGetWidth(v40), v31, v34, v28}];
+    [titleLabel setFrame:{MaxX - CGRectGetWidth(v40), v31, v34, v28}];
     v41.origin.x = v30;
     v41.origin.y = v19;
     v41.size.width = v15;
@@ -144,7 +144,7 @@
 
   else
   {
-    [v24 setFrame:{rect.origin.x, v31, v34, v28}];
+    [titleLabel setFrame:{rect.origin.x, v31, v34, v28}];
     v42.origin.x = v30;
     v42.origin.y = v19;
     v42.size.width = v15;
@@ -152,7 +152,7 @@
     MinX = CGRectGetMaxX(v42) - rect.origin.y;
   }
 
-  [v21 setFrame:{MinX, v19, rect.origin.y, v18}];
+  [chevron setFrame:{MinX, v19, rect.origin.y, v18}];
 }
 
 - (void)prepareForDisplay
@@ -160,26 +160,26 @@
   v9.receiver = self;
   v9.super_class = CKTitledImageBalloonView;
   [(CKImageBalloonView *)&v9 prepareForDisplay];
-  v3 = [(CKTitledImageBalloonView *)self effectView];
+  effectView = [(CKTitledImageBalloonView *)self effectView];
 
-  if (!v3)
+  if (!effectView)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD298]);
     v5 = [MEMORY[0x1E69DC730] effectWithStyle:6];
     v6 = [v4 initWithEffect:v5];
     [(CKTitledImageBalloonView *)self setEffectView:v6];
 
-    v7 = [(CKTitledImageBalloonView *)self effectView];
-    [(CKTitledImageBalloonView *)self addSubview:v7];
+    effectView2 = [(CKTitledImageBalloonView *)self effectView];
+    [(CKTitledImageBalloonView *)self addSubview:effectView2];
   }
 
-  v8 = [(CKTitledImageBalloonView *)self effectView];
-  [(CKTitledImageBalloonView *)self sendSubviewToBack:v8];
+  effectView3 = [(CKTitledImageBalloonView *)self effectView];
+  [(CKTitledImageBalloonView *)self sendSubviewToBack:effectView3];
 }
 
-- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)a3
+- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)size
 {
-  v4 = [(CKBalloonView *)self orientation:a3.width];
+  v4 = [(CKBalloonView *)self orientation:size.width];
   v5 = +[CKUIBehavior sharedBehaviors];
   [(CKBalloonView *)self balloonDescriptor];
   [v5 balloonMaskAlignmentRectInsetsWithTailShape:v18];
@@ -221,13 +221,13 @@
   v4.receiver = self;
   v4.super_class = CKTitledImageBalloonView;
   [(CKImageBalloonView *)&v4 prepareForReuse];
-  v3 = [(CKTitledImageBalloonView *)self chevron];
-  [v3 setHidden:0];
+  chevron = [(CKTitledImageBalloonView *)self chevron];
+  [chevron setHidden:0];
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
-  v4 = a3;
+  recognizedCopy = recognized;
   v5 = +[CKUIBehavior sharedBehaviors];
   [v5 locationShareBalloonButtonHeight];
   v7 = v6;
@@ -236,45 +236,45 @@
   memset(&slice, 0, sizeof(slice));
   [(CKTitledImageBalloonView *)self bounds];
   CGRectDivide(v15, &slice, &remainder, v7, CGRectMaxYEdge);
-  [v4 locationInView:self];
+  [recognizedCopy locationInView:self];
   v14.x = v8;
   v14.y = v9;
   if (CGRectContainsPoint(slice, v14))
   {
-    v10 = [(CKBalloonView *)self delegate];
-    [v10 balloonViewTitleTapped:self];
+    delegate = [(CKBalloonView *)self delegate];
+    [delegate balloonViewTitleTapped:self];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = CKTitledImageBalloonView;
-    [(CKImageBalloonView *)&v11 tapGestureRecognized:v4];
+    [(CKImageBalloonView *)&v11 tapGestureRecognized:recognizedCopy];
   }
 }
 
-- (void)setOrientation:(char)a3
+- (void)setOrientation:(char)orientation
 {
-  v3 = a3;
-  if ([(CKBalloonView *)self orientation]!= a3)
+  orientationCopy = orientation;
+  if ([(CKBalloonView *)self orientation]!= orientation)
   {
     v5.receiver = self;
     v5.super_class = CKTitledImageBalloonView;
-    [(CKBalloonView *)&v5 setOrientation:v3];
+    [(CKBalloonView *)&v5 setOrientation:orientationCopy];
     [(CKTitledImageBalloonView *)self setNeedsLayout];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v7 = a3;
-  v4 = [(CKTitledImageBalloonView *)self title];
-  v5 = [v4 isEqualToString:v7];
+  titleCopy = title;
+  title = [(CKTitledImageBalloonView *)self title];
+  v5 = [title isEqualToString:titleCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(CKTitledImageBalloonView *)self titleLabel];
-    [v6 setText:v7];
+    titleLabel = [(CKTitledImageBalloonView *)self titleLabel];
+    [titleLabel setText:titleCopy];
 
     [(CKTitledImageBalloonView *)self setNeedsLayout];
   }
@@ -282,28 +282,28 @@
 
 - (NSString)title
 {
-  v2 = [(CKTitledImageBalloonView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(CKTitledImageBalloonView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)configureForLocatingChatItem:(id)a3
+- (void)configureForLocatingChatItem:(id)item
 {
-  v4 = a3;
-  -[CKTitledImageBalloonView setOrientation:](self, "setOrientation:", [v4 balloonOrientation]);
-  -[CKImageBalloonView setHasTail:](self, "setHasTail:", [v4 hasTail]);
-  -[CKBalloonView setBalloonCorners:](self, "setBalloonCorners:", [v4 balloonCorners]);
-  [v4 textAlignmentInsets];
+  itemCopy = item;
+  -[CKTitledImageBalloonView setOrientation:](self, "setOrientation:", [itemCopy balloonOrientation]);
+  -[CKImageBalloonView setHasTail:](self, "setHasTail:", [itemCopy hasTail]);
+  -[CKBalloonView setBalloonCorners:](self, "setBalloonCorners:", [itemCopy balloonCorners]);
+  [itemCopy textAlignmentInsets];
   [(CKBalloonView *)self setTextAlignmentInsets:?];
   v5 = +[CKUIBehavior sharedBehaviors];
   [v5 mapPreviewMaxWidth];
-  v8 = +[CKLocationMediaObject placeholderPreviewForWidth:orientation:](CKLocationMediaObject, "placeholderPreviewForWidth:orientation:", [v4 balloonOrientation], v6);
+  v8 = +[CKLocationMediaObject placeholderPreviewForWidth:orientation:](CKLocationMediaObject, "placeholderPreviewForWidth:orientation:", [itemCopy balloonOrientation], v6);
 
   [(CKImageBalloonView *)self setImage:v8];
-  v7 = [v4 locationText];
+  locationText = [itemCopy locationText];
 
-  [(CKTitledImageBalloonView *)self setTitle:v7];
+  [(CKTitledImageBalloonView *)self setTitle:locationText];
 }
 
 @end

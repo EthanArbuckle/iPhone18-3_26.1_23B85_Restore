@@ -1,12 +1,12 @@
 @interface PlusView
-- (_TtC18ASMessagesProvider8PlusView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider8PlusView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC18ASMessagesProvider8PlusView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider8PlusView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation PlusView
 
-- (_TtC18ASMessagesProvider8PlusView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider8PlusView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider8PlusView_plusColor) = 0;
   result = sub_76A840();
@@ -14,17 +14,17 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_61ED7C(x, y, width, height);
 }
 
-- (_TtC18ASMessagesProvider8PlusView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider8PlusView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

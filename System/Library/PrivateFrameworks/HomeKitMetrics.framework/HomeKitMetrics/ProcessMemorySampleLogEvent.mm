@@ -1,6 +1,6 @@
 @interface ProcessMemorySampleLogEvent
 - (_TtC14HomeKitMetrics27ProcessMemorySampleLogEvent)init;
-- (_TtC14HomeKitMetrics27ProcessMemorySampleLogEvent)initWithStartTime:(double)a3;
+- (_TtC14HomeKitMetrics27ProcessMemorySampleLogEvent)initWithStartTime:(double)time;
 @end
 
 @implementation ProcessMemorySampleLogEvent
@@ -12,7 +12,7 @@
   return result;
 }
 
-- (_TtC14HomeKitMetrics27ProcessMemorySampleLogEvent)initWithStartTime:(double)a3
+- (_TtC14HomeKitMetrics27ProcessMemorySampleLogEvent)initWithStartTime:(double)time
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,22 +1,22 @@
 @interface MIOJPEGStreamOutputSettings
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7;
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile;
 @end
 
 @implementation MIOJPEGStreamOutputSettings
 
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v7 = a6;
+  encoderConfigCopy = encoderConfig;
   v37[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [v9 objectForKey:@"EncodingQuality"];
+  configCopy = config;
+  v10 = [configCopy objectForKey:@"EncodingQuality"];
   v11 = v10;
   if (v10)
   {
     [v10 doubleValue];
     [MOVStreamIOUtility clampedQuality:?];
     v13 = v12;
-    if (v7)
+    if (encoderConfigCopy)
     {
 LABEL_3:
       v36 = *MEMORY[0x277CE2BA8];
@@ -44,13 +44,13 @@ LABEL_3:
   else
   {
     v13 = -1.0;
-    if (v7)
+    if (encoderConfigCopy)
     {
       goto LABEL_3;
     }
   }
 
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a4);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(description);
   v22 = *MEMORY[0x277CE62C8];
   v33[0] = *MEMORY[0x277CE6310];
   v23 = *MEMORY[0x277CE63C0];

@@ -3,10 +3,10 @@
 - (DAIDSMessageReceiver)receiver;
 - (DAIDSMessengerProxy)init;
 - (id)_createXPCConnection;
-- (void)availableDestinationsWithCompletion:(id)a3;
-- (void)receiveMessage:(id)a3 data:(id)a4 fromDestination:(id)a5 expectsResponse:(BOOL)a6 response:(id)a7;
-- (void)sendMessage:(id)a3 data:(id)a4 toDestination:(id)a5 forceLocalDelivery:(BOOL)a6 expectsResponse:(BOOL)a7 response:(id)a8;
-- (void)setReceiver:(id)a3;
+- (void)availableDestinationsWithCompletion:(id)completion;
+- (void)receiveMessage:(id)message data:(id)data fromDestination:(id)destination expectsResponse:(BOOL)response response:(id)a7;
+- (void)sendMessage:(id)message data:(id)data toDestination:(id)destination forceLocalDelivery:(BOOL)delivery expectsResponse:(BOOL)response response:(id)a8;
+- (void)setReceiver:(id)receiver;
 @end
 
 @implementation DAIDSMessengerProxy
@@ -26,38 +26,38 @@
     messageReceiverQueue = v2->_messageReceiverQueue;
     v2->_messageReceiverQueue = v5;
 
-    v7 = [(DAIDSMessengerProxy *)v2 _createXPCConnection];
+    _createXPCConnection = [(DAIDSMessengerProxy *)v2 _createXPCConnection];
     connection = v2->_connection;
-    v2->_connection = v7;
+    v2->_connection = _createXPCConnection;
   }
 
   return v2;
 }
 
-- (void)setReceiver:(id)a3
+- (void)setReceiver:(id)receiver
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  receiverCopy = receiver;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v4;
+    v23 = receiverCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[DAIDSMessengerProxy] Setting receiver: %@", buf, 0xCu);
   }
 
-  objc_storeWeak(&v5->_receiver, v4);
-  v7 = [(DAIDSMessengerProxy *)v5 pendingTasks];
-  v8 = [v7 count] == 0;
+  objc_storeWeak(&selfCopy->_receiver, receiverCopy);
+  pendingTasks = [(DAIDSMessengerProxy *)selfCopy pendingTasks];
+  v8 = [pendingTasks count] == 0;
 
   if (!v8)
   {
     v9 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(DAIDSMessengerProxy *)v5 pendingTasks];
-      v11 = [v10 count];
+      pendingTasks2 = [(DAIDSMessengerProxy *)selfCopy pendingTasks];
+      v11 = [pendingTasks2 count];
       *buf = 134217984;
       v23 = v11;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[DAIDSMessengerProxy] Executing pending tasks, count: %lu", buf, 0xCu);
@@ -67,8 +67,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v12 = [(DAIDSMessengerProxy *)v5 pendingTasks];
-    v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    pendingTasks3 = [(DAIDSMessengerProxy *)selfCopy pendingTasks];
+    v13 = [pendingTasks3 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v13)
     {
       v14 = *v18;
@@ -79,7 +79,7 @@
         {
           if (*v18 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(pendingTasks3);
           }
 
           (*(*(*(&v17 + 1) + 8 * v15) + 16))();
@@ -87,58 +87,58 @@
         }
 
         while (v13 != v15);
-        v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v13 = [pendingTasks3 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v13);
     }
 
-    v16 = [(DAIDSMessengerProxy *)v5 pendingTasks];
-    [v16 removeAllObjects];
+    pendingTasks4 = [(DAIDSMessengerProxy *)selfCopy pendingTasks];
+    [pendingTasks4 removeAllObjects];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)availableDestinationsWithCompletion:(id)a3
+- (void)availableDestinationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DAIDSMessengerProxy *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&stru_1001BCE20];
+  completionCopy = completion;
+  connection = [(DAIDSMessengerProxy *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:&stru_1001BCE20];
 
-  [v6 availableDestinationsWithCompletion:v4];
+  [v6 availableDestinationsWithCompletion:completionCopy];
 }
 
-- (void)sendMessage:(id)a3 data:(id)a4 toDestination:(id)a5 forceLocalDelivery:(BOOL)a6 expectsResponse:(BOOL)a7 response:(id)a8
+- (void)sendMessage:(id)message data:(id)data toDestination:(id)destination forceLocalDelivery:(BOOL)delivery expectsResponse:(BOOL)response response:(id)a8
 {
-  v8 = a7;
-  v9 = a6;
+  responseCopy = response;
+  deliveryCopy = delivery;
   v14 = a8;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [(DAIDSMessengerProxy *)self connection];
-  v19 = [v18 remoteObjectProxyWithErrorHandler:&stru_1001BCE40];
+  destinationCopy = destination;
+  dataCopy = data;
+  messageCopy = message;
+  connection = [(DAIDSMessengerProxy *)self connection];
+  v19 = [connection remoteObjectProxyWithErrorHandler:&stru_1001BCE40];
 
-  [v19 sendMessage:v17 data:v16 toDestination:v15 forceLocalDelivery:v9 expectsResponse:v8 response:v14];
+  [v19 sendMessage:messageCopy data:dataCopy toDestination:destinationCopy forceLocalDelivery:deliveryCopy expectsResponse:responseCopy response:v14];
 }
 
-- (void)receiveMessage:(id)a3 data:(id)a4 fromDestination:(id)a5 expectsResponse:(BOOL)a6 response:(id)a7
+- (void)receiveMessage:(id)message data:(id)data fromDestination:(id)destination expectsResponse:(BOOL)response response:(id)a7
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  messageCopy = message;
+  dataCopy = data;
+  destinationCopy = destination;
   v15 = a7;
   v16 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(DAIDSMessengerProxy *)self receiver];
+    receiver = [(DAIDSMessengerProxy *)self receiver];
     *buf = 136315650;
     v41 = "[DAIDSMessengerProxy receiveMessage:data:fromDestination:expectsResponse:response:]";
     v42 = 2112;
-    v43 = v12;
+    v43 = messageCopy;
     v44 = 2112;
-    v45 = v17;
+    v45 = receiver;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[DAIDSMessengerProxy] %s, message: %@, receiver: %@", buf, 0x20u);
   }
 
@@ -147,21 +147,21 @@
   v29 = 3221225472;
   v30 = sub_10001249C;
   v31 = &unk_1001BCE90;
-  v32 = self;
+  selfCopy = self;
   objc_copyWeak(&v37, &location);
-  v18 = v12;
+  v18 = messageCopy;
   v33 = v18;
-  v19 = v13;
+  v19 = dataCopy;
   v34 = v19;
-  v20 = v14;
+  v20 = destinationCopy;
   v35 = v20;
-  v38 = a6;
+  responseCopy = response;
   v21 = v15;
   v36 = v21;
   v22 = objc_retainBlock(&v28);
-  v23 = self;
-  objc_sync_enter(v23);
-  v24 = [(DAIDSMessengerProxy *)v23 receiver:v28];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  v24 = [(DAIDSMessengerProxy *)selfCopy2 receiver:v28];
 
   if (v24)
   {
@@ -178,12 +178,12 @@
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[DAIDSMessengerProxy] Adding a pending task for the %@ message", buf, 0xCu);
     }
 
-    v26 = [(DAIDSMessengerProxy *)v23 pendingTasks];
+    pendingTasks = [(DAIDSMessengerProxy *)selfCopy2 pendingTasks];
     v27 = objc_retainBlock(v22);
-    [v26 addObject:v27];
+    [pendingTasks addObject:v27];
   }
 
-  objc_sync_exit(v23);
+  objc_sync_exit(selfCopy2);
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(&location);

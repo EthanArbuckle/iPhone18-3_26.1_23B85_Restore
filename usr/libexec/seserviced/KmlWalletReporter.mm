@@ -1,14 +1,14 @@
 @interface KmlWalletReporter
-- (BOOL)didReceiveInvitationRequestWithUuid:(id)a3 ownerKeyIdentifier:(id)a4 friendKeyIdentifier:(id)a5 targetType:(int64_t)a6;
+- (BOOL)didReceiveInvitationRequestWithUuid:(id)uuid ownerKeyIdentifier:(id)identifier friendKeyIdentifier:(id)keyIdentifier targetType:(int64_t)type;
 - (KmlWalletReporter)init;
 - (void)dealloc;
-- (void)didReceiveSharingInvitationWithIdentifier:(id)a3 uuid:(id)a4 metadata:(id)a5 ownerIdsId:(id)a6;
-- (void)finishedSharingForKey:(id)a3 result:(id)a4;
-- (void)passcodeRetryRequestedFor:(id)a3 retriesLeft:(unint64_t)a4;
-- (void)reportUnusableInvitation:(id)a3 reason:(id)a4;
-- (void)requestAuthorizationForSharingInvitationIdentifier:(id)a3;
-- (void)sendCrossPlatformSharingMessage:(id)a3 toMailboxIdentifier:(id)a4;
-- (void)sharingCompleteForInvitationIdentifier:(id)a3 friendKeyIdentifier:(id)a4 status:(id)a5;
+- (void)didReceiveSharingInvitationWithIdentifier:(id)identifier uuid:(id)uuid metadata:(id)metadata ownerIdsId:(id)id;
+- (void)finishedSharingForKey:(id)key result:(id)result;
+- (void)passcodeRetryRequestedFor:(id)for retriesLeft:(unint64_t)left;
+- (void)reportUnusableInvitation:(id)invitation reason:(id)reason;
+- (void)requestAuthorizationForSharingInvitationIdentifier:(id)identifier;
+- (void)sendCrossPlatformSharingMessage:(id)message toMailboxIdentifier:(id)identifier;
+- (void)sharingCompleteForInvitationIdentifier:(id)identifier friendKeyIdentifier:(id)keyIdentifier status:(id)status;
 @end
 
 @implementation KmlWalletReporter
@@ -43,7 +43,7 @@
   [(KmlWalletReporter *)&v4 dealloc];
 }
 
-- (void)didReceiveSharingInvitationWithIdentifier:(id)a3 uuid:(id)a4 metadata:(id)a5 ownerIdsId:(id)a6
+- (void)didReceiveSharingInvitationWithIdentifier:(id)identifier uuid:(id)uuid metadata:(id)metadata ownerIdsId:(id)id
 {
   v6 = KmlLogger();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -56,7 +56,7 @@
   }
 }
 
-- (void)finishedSharingForKey:(id)a3 result:(id)a4
+- (void)finishedSharingForKey:(id)key result:(id)result
 {
   v4 = KmlLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -69,7 +69,7 @@
   }
 }
 
-- (void)reportUnusableInvitation:(id)a3 reason:(id)a4
+- (void)reportUnusableInvitation:(id)invitation reason:(id)reason
 {
   v4 = KmlLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -82,7 +82,7 @@
   }
 }
 
-- (void)requestAuthorizationForSharingInvitationIdentifier:(id)a3
+- (void)requestAuthorizationForSharingInvitationIdentifier:(id)identifier
 {
   v3 = KmlLogger();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -95,27 +95,27 @@
   }
 }
 
-- (void)sharingCompleteForInvitationIdentifier:(id)a3 friendKeyIdentifier:(id)a4 status:(id)a5
+- (void)sharingCompleteForInvitationIdentifier:(id)identifier friendKeyIdentifier:(id)keyIdentifier status:(id)status
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
+  statusCopy = status;
   reporterQueue = self->_reporterQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10036E88C;
   v15[3] = &unk_1004D1B40;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = keyIdentifierCopy;
+  selfCopy = self;
+  v19 = statusCopy;
+  v12 = statusCopy;
+  v13 = keyIdentifierCopy;
+  v14 = identifierCopy;
   dispatch_async(reporterQueue, v15);
 }
 
-- (BOOL)didReceiveInvitationRequestWithUuid:(id)a3 ownerKeyIdentifier:(id)a4 friendKeyIdentifier:(id)a5 targetType:(int64_t)a6
+- (BOOL)didReceiveInvitationRequestWithUuid:(id)uuid ownerKeyIdentifier:(id)identifier friendKeyIdentifier:(id)keyIdentifier targetType:(int64_t)type
 {
   v6 = KmlLogger();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -130,27 +130,27 @@
   return 0;
 }
 
-- (void)sendCrossPlatformSharingMessage:(id)a3 toMailboxIdentifier:(id)a4
+- (void)sendCrossPlatformSharingMessage:(id)message toMailboxIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 genericData];
-  v9 = [v8 asDictionary];
+  identifierCopy = identifier;
+  messageCopy = message;
+  genericData = [messageCopy genericData];
+  asDictionary = [genericData asDictionary];
 
   v10 = +[NSMutableDictionary dictionary];
-  v11 = [v7 additionalData];
-  v12 = [v11 asDictionary];
-  [v10 setObject:v12 forKeyedSubscript:@"carKey"];
+  additionalData = [messageCopy additionalData];
+  asDictionary2 = [additionalData asDictionary];
+  [v10 setObject:asDictionary2 forKeyedSubscript:@"carKey"];
 
-  v13 = [v7 genericData];
+  genericData2 = [messageCopy genericData];
 
-  v14 = [v13 messageType];
-  if ((v14 - 1) >= 7)
+  messageType = [genericData2 messageType];
+  if ((messageType - 1) >= 7)
   {
-    v14 = 0;
+    messageType = 0;
   }
 
-  v15 = [[PKSharingGenericMessage alloc] initWithFormat:2 type:v14 genericSharingDict:v9 appleSharingDict:v10];
+  v15 = [[PKSharingGenericMessage alloc] initWithFormat:2 type:messageType genericSharingDict:asDictionary appleSharingDict:v10];
   dispatch_assert_queue_not_V2(self->_reporterQueue);
   reporterQueue = self->_reporterQueue;
   block[0] = _NSConcreteStackBlock;
@@ -158,14 +158,14 @@
   block[2] = sub_10036ECC8;
   block[3] = &unk_1004C24A8;
   block[4] = self;
-  v20 = v6;
+  v20 = identifierCopy;
   v21 = v15;
   v17 = v15;
-  v18 = v6;
+  v18 = identifierCopy;
   dispatch_sync(reporterQueue, block);
 }
 
-- (void)passcodeRetryRequestedFor:(id)a3 retriesLeft:(unint64_t)a4
+- (void)passcodeRetryRequestedFor:(id)for retriesLeft:(unint64_t)left
 {
   v4 = KmlLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))

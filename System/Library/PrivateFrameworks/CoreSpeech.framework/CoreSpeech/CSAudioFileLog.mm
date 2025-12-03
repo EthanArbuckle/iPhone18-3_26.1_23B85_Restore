@@ -3,10 +3,10 @@
 - (CSAudioFileLog)init;
 - (id)_audioLogDirectory;
 - (id)_getOrCreateAudioLogDirectory;
-- (id)_makeTimestampedAudioLogFilenameWithPrefix:(id)a3 suffix:(id)a4;
+- (id)_makeTimestampedAudioLogFilenameWithPrefix:(id)prefix suffix:(id)suffix;
 - (id)_nowString;
 - (void)_closeAudioFile;
-- (void)appendAudioData:(id)a3;
+- (void)appendAudioData:(id)data;
 - (void)dealloc;
 - (void)startRecording;
 - (void)stopRecording;
@@ -14,22 +14,22 @@
 
 @implementation CSAudioFileLog
 
-- (id)_makeTimestampedAudioLogFilenameWithPrefix:(id)a3 suffix:(id)a4
+- (id)_makeTimestampedAudioLogFilenameWithPrefix:(id)prefix suffix:(id)suffix
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSAudioFileLog *)self _getOrCreateAudioLogDirectory];
-  v9 = [(CSAudioFileLog *)self _nowString];
-  v10 = v9;
+  suffixCopy = suffix;
+  prefixCopy = prefix;
+  _getOrCreateAudioLogDirectory = [(CSAudioFileLog *)self _getOrCreateAudioLogDirectory];
+  _nowString = [(CSAudioFileLog *)self _nowString];
+  v10 = _nowString;
   v11 = &stru_1002546C0;
-  if (v9)
+  if (_nowString)
   {
-    v11 = v9;
+    v11 = _nowString;
   }
 
-  v12 = [NSString stringWithFormat:@"%@/%@%@%@", v8, v7, v11, v6];
+  suffixCopy = [NSString stringWithFormat:@"%@/%@%@%@", _getOrCreateAudioLogDirectory, prefixCopy, v11, suffixCopy];
 
-  v13 = [v12 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+  v13 = [suffixCopy stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
   return v13;
 }
@@ -49,9 +49,9 @@
 
 - (id)_getOrCreateAudioLogDirectory
 {
-  v2 = [(CSAudioFileLog *)self _audioLogDirectory];
+  _audioLogDirectory = [(CSAudioFileLog *)self _audioLogDirectory];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v3 fileExistsAtPath:v2 isDirectory:0];
+  v4 = [v3 fileExistsAtPath:_audioLogDirectory isDirectory:0];
 
   if (v4)
   {
@@ -62,7 +62,7 @@
   {
     v6 = +[NSFileManager defaultManager];
     v12 = 0;
-    v7 = [v6 createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:&v12];
+    v7 = [v6 createDirectoryAtPath:_audioLogDirectory withIntermediateDirectories:1 attributes:0 error:&v12];
     v5 = v12;
 
     if ((v7 & 1) == 0)
@@ -71,21 +71,21 @@
       if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_ERROR))
       {
         v10 = v8;
-        v11 = [v5 localizedDescription];
+        localizedDescription = [v5 localizedDescription];
         *buf = 136315650;
         v14 = "[CSAudioFileLog _getOrCreateAudioLogDirectory]";
         v15 = 2114;
-        v16 = v2;
+        v16 = _audioLogDirectory;
         v17 = 2114;
-        v18 = v11;
+        v18 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s Couldn't create CoreSpeech log directory at path %{public}@ %{public}@", buf, 0x20u);
       }
 
-      v2 = @"/tmp";
+      _audioLogDirectory = @"/tmp";
     }
   }
 
-  return v2;
+  return _audioLogDirectory;
 }
 
 - (id)_audioLogDirectory
@@ -111,17 +111,17 @@
   dispatch_async(queue, block);
 }
 
-- (void)appendAudioData:(id)a3
+- (void)appendAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000256E0;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(queue, v7);
 }
 

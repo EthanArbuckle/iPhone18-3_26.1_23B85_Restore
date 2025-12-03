@@ -1,9 +1,9 @@
 @interface MTRUnitTestingClusterGlobalEchoResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRUnitTestingClusterGlobalEchoResponseParams)init;
-- (MTRUnitTestingClusterGlobalEchoResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRUnitTestingClusterGlobalEchoResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRUnitTestingClusterGlobalEchoResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRUnitTestingClusterGlobalEchoResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,14 +27,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterGlobalEchoResponseParams);
-  v5 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
-  [(MTRUnitTestingClusterGlobalEchoResponseParams *)v4 setField1:v5];
+  field1 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
+  [(MTRUnitTestingClusterGlobalEchoResponseParams *)v4 setField1:field1];
 
-  v6 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field2];
-  [(MTRUnitTestingClusterGlobalEchoResponseParams *)v4 setField2:v6];
+  field2 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field2];
+  [(MTRUnitTestingClusterGlobalEchoResponseParams *)v4 setField2:field2];
 
   return v4;
 }
@@ -49,9 +49,9 @@
   return v6;
 }
 
-- (MTRUnitTestingClusterGlobalEchoResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRUnitTestingClusterGlobalEchoResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v19.receiver = self;
   v19.super_class = MTRUnitTestingClusterGlobalEchoResponseParams;
   v7 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)&v19 init];
@@ -61,7 +61,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:4294048773 commandID:14 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:4294048773 commandID:14 error:error];
   if (v18)
   {
     sub_2393C5AAC(v17);
@@ -87,7 +87,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -98,7 +98,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRUnitTestingClusterGlobalEchoResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRUnitTestingClusterGlobalEchoResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRUnitTestingClusterGlobalEchoResponseParams;
@@ -106,7 +106,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -122,54 +122,54 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
   v5 = objc_opt_new();
   [(MTRUnitTestingClusterGlobalEchoResponseParams *)self setField1:v5];
 
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*a3 length:*(a3 + 1) encoding:4];
-  v7 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
-  [v7 setName:v6];
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*struct length:*(struct + 1) encoding:4];
+  field1 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
+  [field1 setName:v6];
 
-  v8 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
-  v9 = [v8 name];
+  field12 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
+  name = [field12 name];
 
-  if (v9)
+  if (name)
   {
-    if (*(a3 + 20))
+    if (*(struct + 20))
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(a3 + 4)];
-      v11 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
-      [v11 setMyBitmap:v10];
+      field14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(struct + 4)];
+      field13 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
+      [field13 setMyBitmap:field14];
     }
 
     else
     {
-      v10 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
-      [v10 setMyBitmap:0];
+      field14 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
+      [field14 setMyBitmap:0];
     }
 
-    if (*(a3 + 24) == 1 && (sub_238DE36D8(a3 + 24)[1] & 1) != 0)
+    if (*(struct + 24) == 1 && (sub_238DE36D8(struct + 24)[1] & 1) != 0)
     {
       v15 = MEMORY[0x277CCABB0];
-      v16 = sub_238DE36D8(a3 + 24);
+      v16 = sub_238DE36D8(struct + 24);
       if ((v16[1] & 1) == 0)
       {
         sub_238EA195C();
       }
 
-      v17 = [v15 numberWithUnsignedChar:*v16];
-      v18 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
-      [v18 setMyEnum:v17];
+      field16 = [v15 numberWithUnsignedChar:*v16];
+      field15 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
+      [field15 setMyEnum:field16];
     }
 
     else
     {
-      v17 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
-      [v17 setMyEnum:0];
+      field16 = [(MTRUnitTestingClusterGlobalEchoResponseParams *)self field1];
+      [field16 setMyEnum:0];
     }
 
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 32)];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 32)];
     [(MTRUnitTestingClusterGlobalEchoResponseParams *)self setField2:v19];
 
     v13 = 0;

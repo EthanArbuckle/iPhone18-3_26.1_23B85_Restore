@@ -1,30 +1,30 @@
 @interface IconSettingsButton
-- (IconSettingsButton)initWithButtonConfiguration:(id)a3;
+- (IconSettingsButton)initWithButtonConfiguration:(id)configuration;
 - (void)stateDidChange;
 @end
 
 @implementation IconSettingsButton
 
-- (IconSettingsButton)initWithButtonConfiguration:(id)a3
+- (IconSettingsButton)initWithButtonConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v45.receiver = self;
   v45.super_class = IconSettingsButton;
   v5 = [(IconSettingsButton *)&v45 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v5)
   {
-    v6 = [v4 preferenceValue];
+    preferenceValue = [configurationCopy preferenceValue];
     preferenceValue = v5->_preferenceValue;
-    v5->_preferenceValue = v6;
+    v5->_preferenceValue = preferenceValue;
 
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     objc_opt_class();
     v43 = v8;
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v4 imageName];
+      imageName = [configurationCopy imageName];
       v11 = [UIImageView alloc];
-      v12 = [UIImage imageNamed:v10 inBundle:v8];
+      v12 = [UIImage imageNamed:imageName inBundle:v8];
       v13 = [v11 initWithImage:v12];
     }
 
@@ -48,8 +48,8 @@
     [(UILabel *)v5->_titleLabel setFont:v17];
 
     [(UILabel *)v5->_titleLabel setAdjustsFontForContentSizeCategory:1];
-    v18 = [v4 title];
-    [(UILabel *)v5->_titleLabel setText:v18];
+    title = [configurationCopy title];
+    [(UILabel *)v5->_titleLabel setText:title];
 
     LODWORD(v19) = 1148846080;
     [(UILabel *)v5->_titleLabel setContentCompressionResistancePriority:0 forAxis:v19];
@@ -74,27 +74,27 @@
     [v26 setAlignment:3];
     [v26 setUserInteractionEnabled:0];
     [(IconSettingsButton *)v5 addSubview:v26];
-    v41 = [v26 widthAnchor];
-    v40 = [(IconSettingsButton *)v5 widthAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    widthAnchor = [v26 widthAnchor];
+    widthAnchor2 = [(IconSettingsButton *)v5 widthAnchor];
+    v39 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v46[0] = v39;
-    v38 = [v26 heightAnchor];
-    v37 = [(IconSettingsButton *)v5 heightAnchor];
-    v27 = [v38 constraintEqualToAnchor:v37];
+    heightAnchor = [v26 heightAnchor];
+    heightAnchor2 = [(IconSettingsButton *)v5 heightAnchor];
+    v27 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v46[1] = v27;
-    v28 = [v26 centerXAnchor];
-    v29 = [(IconSettingsButton *)v5 centerXAnchor];
-    [v28 constraintEqualToAnchor:v29];
-    v30 = v44 = v4;
+    centerXAnchor = [v26 centerXAnchor];
+    centerXAnchor2 = [(IconSettingsButton *)v5 centerXAnchor];
+    [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    v30 = v44 = configurationCopy;
     v46[2] = v30;
-    v31 = [v26 centerYAnchor];
-    v32 = [(IconSettingsButton *)v5 centerYAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    centerYAnchor = [v26 centerYAnchor];
+    centerYAnchor2 = [(IconSettingsButton *)v5 centerYAnchor];
+    v33 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v46[3] = v33;
     v34 = [NSArray arrayWithObjects:v46 count:4];
     [NSLayoutConstraint activateConstraints:v34];
 
-    v4 = v44;
+    configurationCopy = v44;
     v35 = v5;
   }
 

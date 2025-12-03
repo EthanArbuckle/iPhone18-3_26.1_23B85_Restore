@@ -1,16 +1,16 @@
 @interface UIStatusBarButtonActionItemView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_contentsImageFrame;
 - (double)updateContentsAndWidth;
 - (id)_createButton;
-- (void)_doubleTapButton:(id)a3;
-- (void)_pressAndHoldButton:(id)a3;
-- (void)_triggerButtonWithAction:(int64_t)a3;
+- (void)_doubleTapButton:(id)button;
+- (void)_pressAndHoldButton:(id)button;
+- (void)_triggerButtonWithAction:(int64_t)action;
 - (void)layoutSubviews;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setLayerHighlightImage:(id)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setLayerHighlightImage:(id)image;
 @end
 
 @implementation UIStatusBarButtonActionItemView
@@ -57,18 +57,18 @@
   {
     if ([(UIStatusBarButtonActionItemView *)self allowsUserInteraction])
     {
-      v5 = [(UIStatusBarButtonActionItemView *)self _createButton];
+      _createButton = [(UIStatusBarButtonActionItemView *)self _createButton];
       button = self->_button;
-      self->_button = v5;
+      self->_button = _createButton;
 
       if ([(UIStatusBarButtonActionItemView *)self extendsHitTestingFrame])
       {
-        v7 = [(UIStatusBarButtonActionItemView *)self _createButton];
+        _createButton2 = [(UIStatusBarButtonActionItemView *)self _createButton];
         externalButton = self->_externalButton;
-        self->_externalButton = v7;
+        self->_externalButton = _createButton2;
 
-        v9 = [(UIView *)self->_externalButton layer];
-        [v9 setHitTestsAsOpaque:1];
+        layer = [(UIView *)self->_externalButton layer];
+        [layer setHitTestsAsOpaque:1];
       }
     }
   }
@@ -83,24 +83,24 @@
     v10 = 1.0;
   }
 
-  v11 = [(UIView *)self layer];
+  layer2 = [(UIView *)self layer];
   *&v12 = v10;
-  [v11 setOpacity:v12];
+  [layer2 setOpacity:v12];
 
-  v13 = [(UIView *)self traitCollection];
-  v14 = [v13 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v14 == 3)
+  if (userInterfaceIdiom == 3)
   {
     if ([(UIView *)self isFocused])
     {
-      v15 = [(UIStatusBarButtonActionItemView *)self highlightImage];
-      v16 = v15;
-      if (v15)
+      highlightImage = [(UIStatusBarButtonActionItemView *)self highlightImage];
+      v16 = highlightImage;
+      if (highlightImage)
       {
-        v17 = [v15 image];
+        image = [highlightImage image];
 
-        if (v17)
+        if (image)
         {
           [(UIStatusBarButtonActionItemView *)self setLayerHighlightImage:v16];
         }
@@ -109,8 +109,8 @@
 
     else
     {
-      v18 = [(UIStatusBarButtonActionItemView *)self ringLayer];
-      [v18 removeFromSuperlayer];
+      ringLayer = [(UIStatusBarButtonActionItemView *)self ringLayer];
+      [ringLayer removeFromSuperlayer];
 
       [(UIStatusBarButtonActionItemView *)self setRingLayer:0];
     }
@@ -136,46 +136,46 @@
   }
 }
 
-- (void)_triggerButtonWithAction:(int64_t)a3
+- (void)_triggerButtonWithAction:(int64_t)action
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v9[0] = 0x1EFB19190;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[UIStatusBarButtonActionItemView buttonType](self, "buttonType")}];
   v9[1] = 0x1EFB9C6B0;
   v10[0] = v6;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:action];
   v10[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  [v5 postNotificationName:0x1EFB9C690 object:self userInfo:v8];
+  [defaultCenter postNotificationName:0x1EFB9C690 object:self userInfo:v8];
 }
 
-- (void)_doubleTapButton:(id)a3
+- (void)_doubleTapButton:(id)button
 {
-  if ([a3 state] == 3)
+  if ([button state] == 3)
   {
 
     [(UIStatusBarButtonActionItemView *)self _triggerButtonWithAction:1];
   }
 }
 
-- (void)_pressAndHoldButton:(id)a3
+- (void)_pressAndHoldButton:(id)button
 {
-  if ([a3 state] == 1)
+  if ([button state] == 1)
   {
 
     [(UIStatusBarButtonActionItemView *)self _triggerButtonWithAction:2];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = UIStatusBarButtonActionItemView;
-  if ([(UIView *)&v11 pointInside:v7 withEvent:x, y])
+  if ([(UIView *)&v11 pointInside:eventCopy withEvent:x, y])
   {
     v8 = 1;
   }
@@ -184,7 +184,7 @@
   {
     externalButton = self->_externalButton;
     [(UIView *)externalButton convertPoint:self fromView:x, y];
-    v8 = [(UIView *)externalButton pointInside:v7 withEvent:?];
+    v8 = [(UIView *)externalButton pointInside:eventCopy withEvent:?];
   }
 
   else
@@ -195,45 +195,45 @@
   return v8;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = UIStatusBarButtonActionItemView;
-  v6 = a3;
-  [(UIResponder *)&v7 pressesBegan:v6 withEvent:a4];
-  LODWORD(a4) = _UIPressesContainsPressType(v6, 4);
+  beganCopy = began;
+  [(UIResponder *)&v7 pressesBegan:beganCopy withEvent:event];
+  LODWORD(event) = _UIPressesContainsPressType(beganCopy, 4);
 
-  if (a4)
+  if (event)
   {
     [(UIStatusBarButtonActionItemView *)self setSelected:1, v7.receiver, v7.super_class];
     [(UIStatusBarButtonActionItemView *)self updateContentsAndWidth];
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = UIStatusBarButtonActionItemView;
-  v6 = a3;
-  [(UIResponder *)&v7 pressesChanged:v6 withEvent:a4];
-  LODWORD(a4) = _UIPressesContainsPressType(v6, 4);
+  cancelledCopy = cancelled;
+  [(UIResponder *)&v7 pressesChanged:cancelledCopy withEvent:event];
+  LODWORD(event) = _UIPressesContainsPressType(cancelledCopy, 4);
 
-  if (a4)
+  if (event)
   {
     [(UIStatusBarButtonActionItemView *)self setSelected:0, v7.receiver, v7.super_class];
     [(UIStatusBarButtonActionItemView *)self updateContentsAndWidth];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = UIStatusBarButtonActionItemView;
-  v6 = a3;
-  [(UIResponder *)&v7 pressesEnded:v6 withEvent:a4];
-  LODWORD(a4) = _UIPressesContainsPressType(v6, 4);
+  endedCopy = ended;
+  [(UIResponder *)&v7 pressesEnded:endedCopy withEvent:event];
+  LODWORD(event) = _UIPressesContainsPressType(endedCopy, 4);
 
-  if (a4)
+  if (event)
   {
     [(UIStatusBarButtonActionItemView *)self setSelected:0, v7.receiver, v7.super_class];
     [(UIStatusBarButtonActionItemView *)self updateContentsAndWidth];
@@ -242,11 +242,11 @@
 
 - (CGRect)_contentsImageFrame
 {
-  v3 = [(UIStatusBarItemView *)self contentsImage];
+  contentsImage = [(UIStatusBarItemView *)self contentsImage];
   v4 = *MEMORY[0x1E695EFF8];
   v5 = *(MEMORY[0x1E695EFF8] + 8);
-  v6 = [v3 image];
-  [v6 size];
+  image = [contentsImage image];
+  [image size];
   v8 = v7;
   v10 = v9;
 
@@ -255,8 +255,8 @@
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(UIStatusBarItemView *)self foregroundStyle];
-  [v19 scale];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  [foregroundStyle scale];
   UIRectCenteredXInRectScale(v4, v5, v8, v10, v12, v14, v16, v18, v20);
   v22 = v21;
   v24 = v23;
@@ -274,54 +274,54 @@
   return result;
 }
 
-- (void)setLayerHighlightImage:(id)a3
+- (void)setLayerHighlightImage:(id)image
 {
-  v40 = a3;
+  imageCopy = image;
   if (![(UIStatusBarItemView *)self legibilityStyle])
   {
-    v4 = [(UIStatusBarButtonActionItemView *)self ringLayer];
+    ringLayer = [(UIStatusBarButtonActionItemView *)self ringLayer];
 
-    if (!v4)
+    if (!ringLayer)
     {
-      v5 = [MEMORY[0x1E6979398] layer];
-      [(UIStatusBarButtonActionItemView *)self setRingLayer:v5];
+      layer = [MEMORY[0x1E6979398] layer];
+      [(UIStatusBarButtonActionItemView *)self setRingLayer:layer];
 
       v6 = *MEMORY[0x1E695EFF8];
       v7 = *(MEMORY[0x1E695EFF8] + 8);
-      v8 = [v40 image];
-      [v8 size];
+      image = [imageCopy image];
+      [image size];
       v10 = v9;
       v12 = v11;
 
       [(UIStatusBarButtonActionItemView *)self _contentsImageFrame];
       v15 = v14 + v13 * 0.5;
       v18 = v17 + v16 * 0.5;
-      v19 = [(UIStatusBarItemView *)self foregroundStyle];
-      [v19 scale];
+      foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+      [foregroundStyle scale];
       UIRectCenteredAboutPointScale(v6, v7, v10, v12, v15, v18, v20);
       v22 = v21;
       v24 = v23;
       v26 = v25;
       v28 = v27;
 
-      v29 = [(UIStatusBarButtonActionItemView *)self ringLayer];
-      [v29 setFrame:{v22, v24, v26, v28}];
+      ringLayer2 = [(UIStatusBarButtonActionItemView *)self ringLayer];
+      [ringLayer2 setFrame:{v22, v24, v26, v28}];
 
       [(UIView *)self contentScaleFactor];
       v31 = v30;
-      v32 = [(UIStatusBarButtonActionItemView *)self ringLayer];
-      [v32 setContentsScale:v31];
+      ringLayer3 = [(UIStatusBarButtonActionItemView *)self ringLayer];
+      [ringLayer3 setContentsScale:v31];
 
-      v33 = [(UIStatusBarButtonActionItemView *)self ringLayer];
-      v34 = [v40 image];
-      v35 = [v34 imageWithRenderingMode:2];
+      ringLayer4 = [(UIStatusBarButtonActionItemView *)self ringLayer];
+      image2 = [imageCopy image];
+      v35 = [image2 imageWithRenderingMode:2];
       v36 = +[UIColor externalSystemTealColor];
       v37 = [v35 _flatImageWithColor:v36];
-      [v33 setContents:{objc_msgSend(v37, "CGImage")}];
+      [ringLayer4 setContents:{objc_msgSend(v37, "CGImage")}];
 
-      v38 = [(UIView *)self layer];
-      v39 = [(UIStatusBarButtonActionItemView *)self ringLayer];
-      [v38 addSublayer:v39];
+      layer2 = [(UIView *)self layer];
+      ringLayer5 = [(UIStatusBarButtonActionItemView *)self ringLayer];
+      [layer2 addSublayer:ringLayer5];
     }
   }
 }

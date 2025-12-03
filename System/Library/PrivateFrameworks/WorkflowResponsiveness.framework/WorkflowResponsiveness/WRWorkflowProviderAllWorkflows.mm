@@ -1,19 +1,19 @@
 @interface WRWorkflowProviderAllWorkflows
-- (WRWorkflowProviderAllWorkflows)initWithQueue:(id)a3 callback:(id)a4;
-- (void)handleSettingsChanged:(BOOL)a3;
+- (WRWorkflowProviderAllWorkflows)initWithQueue:(id)queue callback:(id)callback;
+- (void)handleSettingsChanged:(BOOL)changed;
 @end
 
 @implementation WRWorkflowProviderAllWorkflows
 
-- (WRWorkflowProviderAllWorkflows)initWithQueue:(id)a3 callback:(id)a4
+- (WRWorkflowProviderAllWorkflows)initWithQueue:(id)queue callback:(id)callback
 {
-  v6 = a4;
+  callbackCopy = callback;
   v11.receiver = self;
   v11.super_class = WRWorkflowProviderAllWorkflows;
-  v7 = [(WRWorkflowProvider *)&v11 initWithQueue:a3];
+  v7 = [(WRWorkflowProvider *)&v11 initWithQueue:queue];
   if (v7)
   {
-    v8 = MEMORY[0x277C5A9A0](v6);
+    v8 = MEMORY[0x277C5A9A0](callbackCopy);
     callback = v7->_callback;
     v7->_callback = v8;
   }
@@ -21,10 +21,10 @@
   return v7;
 }
 
-- (void)handleSettingsChanged:(BOOL)a3
+- (void)handleSettingsChanged:(BOOL)changed
 {
   v5 = +[WRWorkflow allWorkflows];
-  if (a3 || ([(WRWorkflowProviderAllWorkflows *)self handleSettingsChanged:v5]& 1) != 0)
+  if (changed || ([(WRWorkflowProviderAllWorkflows *)self handleSettingsChanged:v5]& 1) != 0)
   {
     [WRWorkflowProviderAllWorkflows handleSettingsChanged:];
   }

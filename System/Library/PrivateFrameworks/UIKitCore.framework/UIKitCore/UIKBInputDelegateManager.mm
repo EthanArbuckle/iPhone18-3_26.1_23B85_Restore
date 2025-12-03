@@ -1,33 +1,33 @@
 @interface UIKBInputDelegateManager
 + (BOOL)isAsyncTextInputEnabled;
-+ (_NSRange)rangeForTextRange:(id)a3 document:(id)a4;
-- (BOOL)_deleteForwardAndNotify:(BOOL)a3;
++ (_NSRange)rangeForTextRange:(id)range document:(id)document;
+- (BOOL)_deleteForwardAndNotify:(BOOL)notify;
 - (BOOL)_hasMarkedText;
-- (BOOL)_range:(id)a3 intersectsRange:(id)a4;
+- (BOOL)_range:(id)_range intersectsRange:(id)range;
 - (BOOL)_selectionAtDocumentStart;
 - (BOOL)callKeyboardWillDismiss;
-- (BOOL)callShouldDeleteBackwardWithCount:(unint64_t)a3;
-- (BOOL)callShouldReplaceExtendedRange:(int64_t)a3 withText:(id)a4 includeMarkedText:(BOOL)a5;
-- (BOOL)canHandleInputDelegateCommandAction:(unint64_t)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)callShouldDeleteBackwardWithCount:(unint64_t)count;
+- (BOOL)callShouldReplaceExtendedRange:(int64_t)range withText:(id)text includeMarkedText:(BOOL)markedText;
+- (BOOL)canHandleInputDelegateCommandAction:(unint64_t)action;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)continuousSpellCheckingEnabled;
-- (BOOL)delegateRespondsToSelector:(SEL)a3;
+- (BOOL)delegateRespondsToSelector:(SEL)selector;
 - (BOOL)hasAsyncCapableInputDelegate;
 - (BOOL)hasMarkedText;
 - (BOOL)hasText;
-- (BOOL)insertSupplementalItem:(id)a3 candidate:(id)a4 replacementRange:(id)a5;
-- (BOOL)insertTextSuggestion:(id)a3;
+- (BOOL)insertSupplementalItem:(id)item candidate:(id)candidate replacementRange:(id)range;
+- (BOOL)insertTextSuggestion:(id)suggestion;
 - (BOOL)requiresKeyEvents;
 - (BOOL)selectionIsEndOfWord;
 - (BOOL)selectionIsWord;
 - (BOOL)shouldDeleteForward;
 - (BOOL)shouldSuppressUpdateCandidateView;
-- (CGRect)caretRectForPosition:(id)a3;
+- (CGRect)caretRectForPosition:(id)position;
 - (CGRect)selectionClipRect;
 - (CGRect)textFirstRect;
 - (CGRect)textLastRect;
 - (CGRect)visibleTextRect;
-- (SEL)selectorForCommand:(unint64_t)a3;
+- (SEL)selectorForCommand:(unint64_t)command;
 - (UIAsyncTextInputClient)asyncInputDelegate;
 - (UIKBInputDelegateManager)init;
 - (UIKeyInput)forwardingInputDelegate;
@@ -39,101 +39,101 @@
 - (UITextSelectionDisplayInteraction)selectionDisplayInteraction;
 - (UIView)automaticallySelectedOverlay;
 - (id)__content;
-- (id)_adjustedTextRange:(id)a3 givenRange:(_NSRange)a4 contextBeforeLength:(unint64_t)a5 relativeToDocument:(id)a6;
-- (id)_moveDown:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveLeft:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveRight:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToEndOfDocument:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToEndOfLine:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToEndOfParagraph:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToEndOfWord:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToStartOfDocument:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToStartOfLine:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToStartOfParagraph:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToStartOfWord:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveUp:(BOOL)a3 withHistory:(id)a4;
-- (id)_rangeOfText:(id)a3 endingAtPosition:(id)a4;
-- (id)_textRangeFromNSRange:(_NSRange)a3;
+- (id)_adjustedTextRange:(id)range givenRange:(_NSRange)givenRange contextBeforeLength:(unint64_t)length relativeToDocument:(id)document;
+- (id)_moveDown:(BOOL)down withHistory:(id)history;
+- (id)_moveLeft:(BOOL)left withHistory:(id)history;
+- (id)_moveRight:(BOOL)right withHistory:(id)history;
+- (id)_moveToEndOfDocument:(BOOL)document withHistory:(id)history;
+- (id)_moveToEndOfLine:(BOOL)line withHistory:(id)history;
+- (id)_moveToEndOfParagraph:(BOOL)paragraph withHistory:(id)history;
+- (id)_moveToEndOfWord:(BOOL)word withHistory:(id)history;
+- (id)_moveToStartOfDocument:(BOOL)document withHistory:(id)history;
+- (id)_moveToStartOfLine:(BOOL)line withHistory:(id)history;
+- (id)_moveToStartOfParagraph:(BOOL)paragraph withHistory:(id)history;
+- (id)_moveToStartOfWord:(BOOL)word withHistory:(id)history;
+- (id)_moveUp:(BOOL)up withHistory:(id)history;
+- (id)_rangeOfText:(id)text endingAtPosition:(id)position;
+- (id)_textRangeFromNSRange:(_NSRange)range;
 - (id)_textSelectingContainer;
 - (id)asyncCapableInputDelegate;
 - (id)asyncWebKitInteractionDelegate;
 - (id)attributedMarkedText;
 - (id)beginningOfDocument;
 - (id)delegateAsResponder;
-- (id)delegateRespectingForwardingDelegate:(BOOL)a3;
+- (id)delegateRespectingForwardingDelegate:(BOOL)delegate;
 - (id)endOfDocument;
 - (id)inputSystemSourceSession;
 - (id)markedText;
 - (id)markedTextRange;
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4;
+- (id)positionFromPosition:(id)position offset:(int64_t)offset;
 - (id)privateInputDelegate;
-- (id)privateInputDelegateRespectingForwardingDelegate:(BOOL)a3;
+- (id)privateInputDelegateRespectingForwardingDelegate:(BOOL)delegate;
 - (id)privateKeyInputDelegate;
 - (id)selectedText;
 - (id)selectedTextRange;
-- (id)selectionRectsForRange:(id)a3;
-- (id)textInRange:(id)a3;
+- (id)selectionRectsForRange:(id)range;
+- (id)textInRange:(id)range;
 - (id)textInputDelegate;
 - (id)textInputView;
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4;
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition;
 - (id)tintColor;
 - (id)webInputDelegate;
-- (int64_t)baseWritingDirectionForPosition:(id)a3 inDirection:(int64_t)a4;
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4;
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4;
+- (int64_t)baseWritingDirectionForPosition:(id)position inDirection:(int64_t)direction;
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition;
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition;
 - (unint64_t)_textLengthToDeleteBeforeSelectedRangeForSmartDelete;
-- (unint64_t)removeAnnotation:(id)a3 removalRangeLength:(unint64_t)a4 forAnnotationRange:(_NSRange)a5 contextBeforeLength:(int64_t)a6;
-- (unint64_t)replaceAnnotationRange:(_NSRange)a3 contextBeforeLength:(int64_t)a4 withAnnotatedString:(id)a5 relativeReplacementRange:(_NSRange)a6;
+- (unint64_t)removeAnnotation:(id)annotation removalRangeLength:(unint64_t)length forAnnotationRange:(_NSRange)range contextBeforeLength:(int64_t)beforeLength;
+- (unint64_t)replaceAnnotationRange:(_NSRange)range contextBeforeLength:(int64_t)length withAnnotatedString:(id)string relativeReplacementRange:(_NSRange)replacementRange;
 - (unsigned)_characterBeforeCaretSelection;
-- (void)_deleteBackwardAndNotify:(BOOL)a3 reinsertText:(BOOL)a4 overrideOriginalContextBeforeInputWith:(id)a5;
-- (void)_deleteBackwardWhileOverridingContextAndNotifyAtEnd:(BOOL)a3 deletionCount:(unint64_t)a4 reinsertTextInLoop:(BOOL)a5;
+- (void)_deleteBackwardAndNotify:(BOOL)notify reinsertText:(BOOL)text overrideOriginalContextBeforeInputWith:(id)with;
+- (void)_deleteBackwardWhileOverridingContextAndNotifyAtEnd:(BOOL)end deletionCount:(unint64_t)count reinsertTextInLoop:(BOOL)loop;
 - (void)_deleteByWord;
 - (void)_deleteForwardByWord;
 - (void)_deleteToEndOfLine;
 - (void)_deleteToEndOfParagraph;
 - (void)_deleteToStartOfLine;
-- (void)_firstResponderDidChange:(id)a3;
-- (void)_moveCurrentSelection:(int)a3;
-- (void)_setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)_setSelectionToPosition:(id)a3;
-- (void)addTextAlternatives:(id)a3;
-- (void)adjustSelection:(id)a3 completionHandler:(id)a4;
-- (void)applyAutocorrection:(id)a3 toString:(id)a4 shouldUnderline:(BOOL)a5 withCompletionHandler:(id)a6;
-- (void)applyAutocorrection:(id)a3 toString:(id)a4 withCompletionHandler:(id)a5;
+- (void)_firstResponderDidChange:(id)change;
+- (void)_moveCurrentSelection:(int)selection;
+- (void)_setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)_setSelectionToPosition:(id)position;
+- (void)addTextAlternatives:(id)alternatives;
+- (void)adjustSelection:(id)selection completionHandler:(id)handler;
+- (void)applyAutocorrection:(id)autocorrection toString:(id)string shouldUnderline:(BOOL)underline withCompletionHandler:(id)handler;
+- (void)applyAutocorrection:(id)autocorrection toString:(id)string withCompletionHandler:(id)handler;
 - (void)changedSelection;
 - (void)clearDelegate;
-- (void)clearForwardingInputDelegateAndResign:(BOOL)a3;
-- (void)collapseSelectionAndAdjustByOffset:(int64_t)a3;
-- (void)correctedTypedText:(id)a3 rangeOfReplacement:(id)a4;
-- (void)handleClearWithInsertBeforeAdvance:(id)a3;
-- (void)handleKeyWebEvent:(id)a3;
-- (void)handleKeyWebEvent:(id)a3 withCompletionHandler:(id)a4;
-- (void)insertAttributedText:(id)a3;
-- (void)insertDictationResult:(id)a3;
-- (void)insertText:(id)a3;
-- (void)insertText:(id)a3 alternatives:(id)a4 style:(int64_t)a5;
-- (void)insertText:(id)a3 updateInputSource:(BOOL)a4;
-- (void)insertText:(id)a3 withEnumeratedAnimationStyle:(int64_t)a4;
-- (void)insertTextAfterSelection:(id)a3;
+- (void)clearForwardingInputDelegateAndResign:(BOOL)resign;
+- (void)collapseSelectionAndAdjustByOffset:(int64_t)offset;
+- (void)correctedTypedText:(id)text rangeOfReplacement:(id)replacement;
+- (void)handleClearWithInsertBeforeAdvance:(id)advance;
+- (void)handleKeyWebEvent:(id)event;
+- (void)handleKeyWebEvent:(id)event withCompletionHandler:(id)handler;
+- (void)insertAttributedText:(id)text;
+- (void)insertDictationResult:(id)result;
+- (void)insertText:(id)text;
+- (void)insertText:(id)text alternatives:(id)alternatives style:(int64_t)style;
+- (void)insertText:(id)text updateInputSource:(BOOL)source;
+- (void)insertText:(id)text withEnumeratedAnimationStyle:(int64_t)style;
+- (void)insertTextAfterSelection:(id)selection;
 - (void)moveSelectionToEndOfWord;
-- (void)replaceRange:(id)a3 oldText:(id)a4 withAttributedText:(id)a5 forReplaceAction:(int)a6;
-- (void)replaceRange:(id)a3 oldText:(id)a4 withText:(id)a5 forReplaceAction:(int)a6;
-- (void)replaceRange:(id)a3 withText:(id)a4;
-- (void)requestDocumentContext:(id)a3 completionHandler:(id)a4;
-- (void)requestTextContextForAutocorrectionWithCompletionHandler:(id)a3;
-- (void)requestTextRectsForString:(id)a3 withCompletionHandler:(id)a4;
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setBaseWritingDirection:(int64_t)a3 forRange:(id)a4;
-- (void)setContinuousSpellCheckingEnabled:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setForwardingInputDelegate:(id)a3;
-- (void)setSelectedTextRange:(id)a3;
+- (void)replaceRange:(id)range oldText:(id)text withAttributedText:(id)attributedText forReplaceAction:(int)action;
+- (void)replaceRange:(id)range oldText:(id)text withText:(id)withText forReplaceAction:(int)action;
+- (void)replaceRange:(id)range withText:(id)text;
+- (void)requestDocumentContext:(id)context completionHandler:(id)handler;
+- (void)requestTextContextForAutocorrectionWithCompletionHandler:(id)handler;
+- (void)requestTextRectsForString:(id)string withCompletionHandler:(id)handler;
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setBaseWritingDirection:(int64_t)direction forRange:(id)range;
+- (void)setContinuousSpellCheckingEnabled:(BOOL)enabled;
+- (void)setDelegate:(id)delegate;
+- (void)setForwardingInputDelegate:(id)delegate;
+- (void)setSelectedTextRange:(id)range;
 - (void)setupResponderChangeListeners;
-- (void)shiftKeyStateChangedFrom:(int)a3 to:(int)a4;
+- (void)shiftKeyStateChangedFrom:(int)from to:(int)to;
 - (void)storeDelegateConformance;
 - (void)transposeCharacters;
 - (void)unmarkText;
-- (void)unmarkText:(id)a3;
+- (void)unmarkText:(id)text;
 - (void)updateRespectForwardingInputDelegateFlagInDestination;
 - (void)updateSelectableInputDelegateIfNecessary;
 @end
@@ -142,51 +142,51 @@
 
 - (BOOL)_hasMarkedText
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
 LABEL_7:
-    v7 = v4;
-    v8 = [v4 hasMarkedText];
+    markedTextRange = webInputDelegate2;
+    hasMarkedText = [webInputDelegate2 hasMarkedText];
     goto LABEL_8;
   }
 
-  v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-  if (v5)
+  if (asyncInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     goto LABEL_7;
   }
 
-  v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+  asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-  if (v6)
+  if (asyncWebKitInteractionDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     goto LABEL_7;
   }
 
-  v10 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v7 = [v10 markedTextRange];
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  markedTextRange = [textInputDelegate markedTextRange];
 
-  if (v7)
+  if (markedTextRange)
   {
-    v11 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v12 = [v11 textInRange:v7];
-    v8 = [v12 length] != 0;
+    textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    v12 = [textInputDelegate2 textInRange:markedTextRange];
+    hasMarkedText = [v12 length] != 0;
   }
 
   else
   {
-    v8 = 0;
+    hasMarkedText = 0;
   }
 
 LABEL_8:
 
-  return v8;
+  return hasMarkedText;
 }
 
 - (id)webInputDelegate
@@ -227,35 +227,35 @@ LABEL_8:
 
 - (BOOL)hasAsyncCapableInputDelegate
 {
-  v2 = [(UIKBInputDelegateManager *)self asyncCapableInputDelegate];
-  v3 = v2 != 0;
+  asyncCapableInputDelegate = [(UIKBInputDelegateManager *)self asyncCapableInputDelegate];
+  v3 = asyncCapableInputDelegate != 0;
 
   return v3;
 }
 
 - (id)textInputView
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v5)
+    if (asyncInputDelegate)
     {
-      v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
 
     else
     {
-      v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (v6)
+      if (asyncWebKitInteractionDelegate)
       {
         [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       }
@@ -264,64 +264,64 @@ LABEL_8:
       {
         [(UIKBInputDelegateManager *)self textInputDelegate];
       }
-      v4 = ;
+      webInputDelegate2 = ;
     }
   }
 
-  v7 = v4;
-  v8 = [v4 textInputView];
+  v7 = webInputDelegate2;
+  textInputView = [webInputDelegate2 textInputView];
 
-  return v8;
+  return textInputView;
 }
 
 - (id)delegateAsResponder
 {
-  v3 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 window], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "screen"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "_userInterfaceIdiom"), v5, v4, v6 == 3))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([keyInputDelegate window], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "screen"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "_userInterfaceIdiom"), v5, v4, v6 == 3))
   {
-    v7 = v3;
+    firstResponder = keyInputDelegate;
   }
 
   else
   {
-    v8 = [UIApp keyWindow];
-    v7 = [v8 firstResponder];
-    v9 = [(UIKBInputDelegateManager *)self forwardingInputDelegate];
+    keyWindow = [UIApp keyWindow];
+    firstResponder = [keyWindow firstResponder];
+    forwardingInputDelegate = [(UIKBInputDelegateManager *)self forwardingInputDelegate];
 
-    if (v9)
+    if (forwardingInputDelegate)
     {
-      v10 = [(UIKBInputDelegateManager *)self forwardingInputDelegate];
+      forwardingInputDelegate2 = [(UIKBInputDelegateManager *)self forwardingInputDelegate];
 
-      v7 = v10;
+      firstResponder = forwardingInputDelegate2;
     }
 
-    if (v7)
+    if (firstResponder)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = v3 == 0;
+      v11 = keyInputDelegate == 0;
     }
 
     if (!v11)
     {
-      v7 = v3;
+      firstResponder = keyInputDelegate;
     }
   }
 
-  return v7;
+  return firstResponder;
 }
 
 - (void)updateSelectableInputDelegateIfNecessary
 {
   self->m_firstResponderAdoptsTextInput = 0;
   v3 = +[UIWindow _applicationKeyWindow];
-  v4 = [v3 firstResponder];
+  firstResponder = [v3 firstResponder];
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 conformsToProtocol:&unk_1EFE8B2D0])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [firstResponder conformsToProtocol:&unk_1EFE8B2D0])
   {
     self->m_firstResponderAdoptsTextInput = 1;
   }
@@ -358,15 +358,15 @@ LABEL_9:
 {
   if ((self->m_delegateConformanceType & 2) != 0)
   {
-    v4 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+    keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
   }
 
   else
   {
-    v4 = 0;
+    keyInputDelegate = 0;
   }
 
-  return v4;
+  return keyInputDelegate;
 }
 
 - (UIKeyInput)forwardingInputDelegate
@@ -378,28 +378,28 @@ LABEL_9:
 
 - (id)asyncCapableInputDelegate
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
-  v4 = v3;
-  if (v3)
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
+  v4 = webInputDelegate;
+  if (webInputDelegate)
   {
-    v5 = v3;
+    v5 = webInputDelegate;
   }
 
   else
   {
-    v6 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-    v7 = v6;
-    if (v6)
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    v7 = asyncInputDelegate;
+    if (asyncInputDelegate)
     {
-      v8 = v6;
+      asyncWebKitInteractionDelegate = asyncInputDelegate;
     }
 
     else
     {
-      v8 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     }
 
-    v5 = v8;
+    v5 = asyncWebKitInteractionDelegate;
   }
 
   return v5;
@@ -407,18 +407,18 @@ LABEL_9:
 
 - (id)beginningOfDocument
 {
-  v2 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v3 = [v2 beginningOfDocument];
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  beginningOfDocument = [textInputDelegate beginningOfDocument];
 
-  return v3;
+  return beginningOfDocument;
 }
 
 - (id)endOfDocument
 {
-  v2 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v3 = [v2 endOfDocument];
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  endOfDocument = [textInputDelegate endOfDocument];
 
-  return v3;
+  return endOfDocument;
 }
 
 - (UITextInputTraits)textInputTraits
@@ -428,8 +428,8 @@ LABEL_9:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 textInputTraits];
-    v7 = [UITextInputTraits traitsByAdoptingTraits:v6];
+    textInputTraits = [v4 textInputTraits];
+    v7 = [UITextInputTraits traitsByAdoptingTraits:textInputTraits];
 
     if ([v5 conformsToProtocol:&unk_1EFE8A8A0])
     {
@@ -541,22 +541,22 @@ void __51__UIKBInputDelegateManager_isAsyncTextInputEnabled__block_invoke()
 {
   if ((self->m_delegateConformanceType & 4) != 0)
   {
-    v4 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+    keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
   }
 
   else
   {
-    v4 = 0;
+    keyInputDelegate = 0;
   }
 
-  return v4;
+  return keyInputDelegate;
 }
 
 - (UITextInteractionAssistant)textInteractionAssistant
 {
-  v3 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+  privateInputDelegate = [(UIKBInputDelegateManager *)self privateInputDelegate];
 
-  if (v3)
+  if (privateInputDelegate)
   {
     [(UIKBInputDelegateManager *)self privateInputDelegate];
   }
@@ -566,78 +566,78 @@ void __51__UIKBInputDelegateManager_isAsyncTextInputEnabled__block_invoke()
     [(UIKBInputDelegateManager *)self textInputDelegate];
   }
   v4 = ;
-  v5 = [v4 interactionAssistant];
+  interactionAssistant = [v4 interactionAssistant];
 
-  return v5;
+  return interactionAssistant;
 }
 
 - (id)markedText
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v5)
+    if (asyncInputDelegate)
     {
-      v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
 
     else
     {
-      v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (!v6)
+      if (!asyncWebKitInteractionDelegate)
       {
-        v7 = [(UIKBInputDelegateManager *)self textInputDelegate];
-        v10 = [v7 markedTextRange];
-        if (v10)
+        textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+        markedTextRange = [textInputDelegate markedTextRange];
+        if (markedTextRange)
         {
-          v11 = [(UIKBInputDelegateManager *)self textInputDelegate];
-          v12 = [(UIKBInputDelegateManager *)self textInputDelegate];
-          v13 = [v12 markedTextRange];
-          v8 = [v11 textInRange:v13];
+          textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+          textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
+          markedTextRange2 = [textInputDelegate3 markedTextRange];
+          markedText = [textInputDelegate2 textInRange:markedTextRange2];
         }
 
         else
         {
-          v8 = 0;
+          markedText = 0;
         }
 
         goto LABEL_8;
       }
 
-      v4 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     }
   }
 
-  v7 = v4;
-  v8 = [v4 markedText];
+  textInputDelegate = webInputDelegate2;
+  markedText = [webInputDelegate2 markedText];
 LABEL_8:
 
-  return v8;
+  return markedText;
 }
 
 - (id)selectedTextRange
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v5)
+    if (asyncInputDelegate)
     {
       [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
@@ -646,51 +646,51 @@ LABEL_8:
     {
       [(UIKBInputDelegateManager *)self textInputDelegate];
     }
-    v4 = ;
+    webInputDelegate2 = ;
   }
 
-  v6 = v4;
-  v7 = [v4 selectedTextRange];
+  v6 = webInputDelegate2;
+  selectedTextRange = [webInputDelegate2 selectedTextRange];
 
-  return v7;
+  return selectedTextRange;
 }
 
 - (UIView)automaticallySelectedOverlay
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
 LABEL_5:
-    v6 = v4;
-    v7 = [v4 unscaledView];
+    keyInputDelegate = webInputDelegate2;
+    unscaledView = [webInputDelegate2 unscaledView];
     goto LABEL_6;
   }
 
-  v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-  if (v5)
+  if (asyncInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     goto LABEL_5;
   }
 
-  v6 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-    v7 = [v9 automaticallySelectedOverlay];
+    keyInputDelegate2 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+    unscaledView = [keyInputDelegate2 automaticallySelectedOverlay];
   }
 
   else
   {
-    v7 = 0;
+    unscaledView = 0;
   }
 
 LABEL_6:
 
-  return v7;
+  return unscaledView;
 }
 
 - (id)inputSystemSourceSession
@@ -698,31 +698,31 @@ LABEL_6:
   if ((self->m_delegateConformanceType & 0x80) != 0 || ([(UIKBInputDelegateManager *)self forwardingInputDelegate], (v3 = objc_claimAutoreleasedReturnValue()) != 0) && (m_originalDelegateConformanceType = self->m_originalDelegateConformanceType, v3, (m_originalDelegateConformanceType & 0x80) != 0))
   {
     v6 = [(UIKBInputDelegateManager *)self delegateRespectingForwardingDelegate:0];
-    v5 = [v6 _rtiSourceSession];
+    _rtiSourceSession = [v6 _rtiSourceSession];
   }
 
   else
   {
-    v5 = 0;
+    _rtiSourceSession = 0;
   }
 
-  return v5;
+  return _rtiSourceSession;
 }
 
 - (void)changedSelection
 {
-  v3 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-  if (v3)
+  legacyInputDelegate = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+  if (legacyInputDelegate)
   {
-    v4 = v3;
-    v5 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+    v4 = legacyInputDelegate;
+    legacyInputDelegate2 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v8 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-      v7 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-      [v8 keyboardInputChangedSelection:v7];
+      legacyInputDelegate3 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+      legacyInputDelegate4 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+      [legacyInputDelegate3 keyboardInputChangedSelection:legacyInputDelegate4];
     }
   }
 }
@@ -731,16 +731,16 @@ LABEL_6:
 {
   v33 = *MEMORY[0x1E69E9840];
   self->m_delegateConformanceType = 0;
-  v3 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-  v4 = [v3 conformsToProtocol:&unk_1EFE8B2D0];
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  v4 = [keyInputDelegate conformsToProtocol:&unk_1EFE8B2D0];
 
   if (v4)
   {
     self->m_delegateConformanceType |= 2uLL;
   }
 
-  v5 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-  v6 = [v5 conformsToProtocol:&unk_1EFE8E9A0];
+  keyInputDelegate2 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  v6 = [keyInputDelegate2 conformsToProtocol:&unk_1EFE8E9A0];
 
   if (v6)
   {
@@ -749,8 +749,8 @@ LABEL_6:
 
   if (+[UIKBInputDelegateManager isAsyncTextInputEnabled])
   {
-    v7 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-    v8 = [v7 conformsToProtocol:&unk_1F016C7B0];
+    keyInputDelegate3 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+    v8 = [keyInputDelegate3 conformsToProtocol:&unk_1F016C7B0];
 
     if (v8)
     {
@@ -758,15 +758,15 @@ LABEL_6:
       v9 = _UIKeyboardImplLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v29 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+        keyInputDelegate4 = [(UIKBInputDelegateManager *)self keyInputDelegate];
         v31 = 138412290;
-        v32 = v29;
+        v32 = keyInputDelegate4;
         _os_log_debug_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEBUG, "Delegate: %@, conforms to UIAsyncTextInputClient", &v31, 0xCu);
       }
     }
 
-    v10 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-    v11 = [v10 conformsToProtocol:&unk_1F016C810];
+    keyInputDelegate5 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+    v11 = [keyInputDelegate5 conformsToProtocol:&unk_1F016C810];
 
     if (v11)
     {
@@ -774,32 +774,32 @@ LABEL_6:
       v12 = _UIKeyboardImplLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        v30 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+        keyInputDelegate6 = [(UIKBInputDelegateManager *)self keyInputDelegate];
         v31 = 138412290;
-        v32 = v30;
+        v32 = keyInputDelegate6;
         _os_log_debug_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEBUG, "Delegate: %@, conforms to BETextInput", &v31, 0xCu);
       }
     }
   }
 
-  v13 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-  v14 = [v13 conformsToProtocol:&unk_1F016CC30];
+  keyInputDelegate7 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  v14 = [keyInputDelegate7 conformsToProtocol:&unk_1F016CC30];
 
   if (v14)
   {
     self->m_delegateConformanceType |= 8uLL;
   }
 
-  v15 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-  v16 = [v15 conformsToProtocol:&unk_1EFE8A940];
+  keyInputDelegate8 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  v16 = [keyInputDelegate8 conformsToProtocol:&unk_1EFE8A940];
 
   if (v16)
   {
     self->m_delegateConformanceType |= 1uLL;
   }
 
-  v17 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-  v18 = [v17 conformsToProtocol:&unk_1EFEB5DC8];
+  keyInputDelegate9 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  v18 = [keyInputDelegate9 conformsToProtocol:&unk_1EFEB5DC8];
 
   m_delegateConformanceType = self->m_delegateConformanceType;
   if (v18)
@@ -810,7 +810,7 @@ LABEL_6:
 
   if ((m_delegateConformanceType & 4) != 0)
   {
-    v20 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
@@ -819,15 +819,15 @@ LABEL_6:
     }
   }
 
-  v22 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-  v23 = [v22 conformsToProtocol:&unk_1EFE8A188];
+  keyInputDelegate10 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  v23 = [keyInputDelegate10 conformsToProtocol:&unk_1EFE8A188];
 
   if (v23)
   {
     self->m_delegateConformanceType |= 0x40uLL;
   }
 
-  v24 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  keyInputDelegate11 = [(UIKBInputDelegateManager *)self keyInputDelegate];
   v25 = objc_opt_respondsToSelector();
 
   if (v25)
@@ -835,13 +835,13 @@ LABEL_6:
     self->m_delegateConformanceType |= 0x80uLL;
   }
 
-  v26 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  keyInputDelegate12 = [(UIKBInputDelegateManager *)self keyInputDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v27 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-    v28 = [v27 requiresKeyEvents];
+    keyInputDelegate13 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+    requiresKeyEvents = [keyInputDelegate13 requiresKeyEvents];
 
-    if (v28)
+    if (requiresKeyEvents)
     {
       self->m_delegateConformanceType |= 0x100uLL;
     }
@@ -854,49 +854,49 @@ LABEL_6:
 
 - (BOOL)hasText
 {
-  v2 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-  v3 = [v2 hasText];
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  hasText = [keyInputDelegate hasText];
 
-  return v3;
+  return hasText;
 }
 
 - (unsigned)_characterBeforeCaretSelection
 {
-  v2 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v3 = [v2 _characterBeforeCaretSelection];
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  _characterBeforeCaretSelection = [textInputDelegate _characterBeforeCaretSelection];
 
-  return v3;
+  return _characterBeforeCaretSelection;
 }
 
 - (UIKeyboardInput)legacyInputDelegate
 {
   if ((self->m_delegateConformanceType & 0x40) != 0)
   {
-    v4 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+    keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
   }
 
   else
   {
-    v4 = 0;
+    keyInputDelegate = 0;
   }
 
-  return v4;
+  return keyInputDelegate;
 }
 
 - (id)markedTextRange
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v5)
+    if (asyncInputDelegate)
     {
       [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
@@ -905,13 +905,13 @@ LABEL_6:
     {
       [(UIKBInputDelegateManager *)self textInputDelegate];
     }
-    v4 = ;
+    webInputDelegate2 = ;
   }
 
-  v6 = v4;
-  v7 = [v4 markedTextRange];
+  v6 = webInputDelegate2;
+  markedTextRange = [webInputDelegate2 markedTextRange];
 
-  return v7;
+  return markedTextRange;
 }
 
 - (UIKBInputDelegateManager)init
@@ -924,37 +924,37 @@ LABEL_6:
 - (void)setupResponderChangeListeners
 {
   [(UIKBInputDelegateManager *)self updateSelectableInputDelegateIfNecessary];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__firstResponderDidChange_ name:@"UIWindowFirstResponderDidChangeNotification" object:0];
-  [v3 addObserver:self selector:sel_updateSelectableInputDelegateIfNecessary name:@"_UIWindowDidBecomeApplicationKeyNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__firstResponderDidChange_ name:@"UIWindowFirstResponderDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_updateSelectableInputDelegateIfNecessary name:@"_UIWindowDidBecomeApplicationKeyNotification" object:0];
 }
 
 - (UITextSelectionDisplayInteraction)selectionDisplayInteraction
 {
-  v2 = [(UIKBInputDelegateManager *)self delegateAsResponder];
-  v3 = [v2 _responderForEditing];
-  v4 = [v3 _selectionDisplayInteraction];
+  delegateAsResponder = [(UIKBInputDelegateManager *)self delegateAsResponder];
+  _responderForEditing = [delegateAsResponder _responderForEditing];
+  _selectionDisplayInteraction = [_responderForEditing _selectionDisplayInteraction];
 
-  return v4;
+  return _selectionDisplayInteraction;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v12 = a3;
+  delegateCopy = delegate;
   selectableDelegate = self->_selectableDelegate;
   self->_selectableDelegate = 0;
 
-  objc_storeStrong(&self->_keyInputDelegate, a3);
+  objc_storeStrong(&self->_keyInputDelegate, delegate);
   [(UIKBInputDelegateManager *)self storeDelegateConformance];
-  v6 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v7 = [v6 interactionAssistant];
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  interactionAssistant = [textInputDelegate interactionAssistant];
 
-  v8 = [v7 externalInteractions];
+  externalInteractions = [interactionAssistant externalInteractions];
 
-  if (v8)
+  if (externalInteractions)
   {
-    v9 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v10 = [UITextInteractionSelectableInputDelegate selectableInputDelegateWithTextInput:v9];
+    textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    v10 = [UITextInteractionSelectableInputDelegate selectableInputDelegateWithTextInput:textInputDelegate2];
     v11 = self->_selectableDelegate;
     self->_selectableDelegate = v10;
   }
@@ -969,22 +969,22 @@ LABEL_6:
   self->_keyInputDelegate = 0;
 
   self->m_originalDelegateConformanceType = 0;
-  v4 = [(UIKBInputDelegateManager *)self forwardingInputDelegate];
+  forwardingInputDelegate = [(UIKBInputDelegateManager *)self forwardingInputDelegate];
 
-  if (v4)
+  if (forwardingInputDelegate)
   {
-    v5 = [(UIKBInputDelegateManager *)self forwardingInputDelegate];
-    [v5 resignFirstResponder];
+    forwardingInputDelegate2 = [(UIKBInputDelegateManager *)self forwardingInputDelegate];
+    [forwardingInputDelegate2 resignFirstResponder];
 
     [(UIKBInputDelegateManager *)self setForwardingInputDelegate:0];
   }
 }
 
-- (void)setForwardingInputDelegate:(id)a3
+- (void)setForwardingInputDelegate:(id)delegate
 {
-  v9 = a3;
-  v4 = objc_storeWeak(&self->_forwardingInputDelegate, v9);
-  v5 = [v9 conformsToProtocol:&unk_1F016CC30];
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_forwardingInputDelegate, delegateCopy);
+  v5 = [delegateCopy conformsToProtocol:&unk_1F016CC30];
 
   self->_forwardingInputDelegateConformsToWKInteraction = v5;
   if (+[UIKBInputDelegateManager isAsyncTextInputEnabled])
@@ -996,26 +996,26 @@ LABEL_6:
     self->_forwardingInputDelegateConformsToBETextInput = [v7 conformsToProtocol:&unk_1F016C810];
   }
 
-  [(UIKBInputDelegateManager *)self setShouldRespectForwardingInputDelegate:v9 != 0];
+  [(UIKBInputDelegateManager *)self setShouldRespectForwardingInputDelegate:delegateCopy != 0];
   self->m_originalDelegateConformanceType = self->m_delegateConformanceType;
   [(UIKBInputDelegateManager *)self storeDelegateConformance];
-  v8 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v8 didChangeForwardingInputDelegate:v9];
+  keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate didChangeForwardingInputDelegate:delegateCopy];
 
   [(UIKBInputDelegateManager *)self updateRespectForwardingInputDelegateFlagInDestination];
 }
 
-- (void)clearForwardingInputDelegateAndResign:(BOOL)a3
+- (void)clearForwardingInputDelegateAndResign:(BOOL)resign
 {
-  v3 = a3;
-  v5 = [(UIKBInputDelegateManager *)self forwardingInputDelegate];
+  resignCopy = resign;
+  forwardingInputDelegate = [(UIKBInputDelegateManager *)self forwardingInputDelegate];
 
-  if (v5)
+  if (forwardingInputDelegate)
   {
-    if (v3)
+    if (resignCopy)
     {
-      v6 = [(UIKBInputDelegateManager *)self forwardingInputDelegate];
-      [v6 resignFirstResponder];
+      forwardingInputDelegate2 = [(UIKBInputDelegateManager *)self forwardingInputDelegate];
+      [forwardingInputDelegate2 resignFirstResponder];
     }
 
     [(UIKBInputDelegateManager *)self setForwardingInputDelegate:0];
@@ -1027,24 +1027,24 @@ LABEL_6:
 {
   if (+[UIKeyboard isKeyboardProcess])
   {
-    v3 = [(UIKBInputDelegateManager *)self inputSystemSourceSession];
-    if (v3)
+    inputSystemSourceSession = [(UIKBInputDelegateManager *)self inputSystemSourceSession];
+    if (inputSystemSourceSession)
     {
-      v6 = v3;
-      v4 = [v3 textOperations];
-      [v4 setCustomInfoType:0x1EFB7C8B0];
+      v6 = inputSystemSourceSession;
+      textOperations = [inputSystemSourceSession textOperations];
+      [textOperations setCustomInfoType:0x1EFB7C8B0];
       v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[UIKBInputDelegateManager shouldRespectForwardingInputDelegate](self, "shouldRespectForwardingInputDelegate")}];
-      [v4 setCustomInfo:v5];
+      [textOperations setCustomInfo:v5];
 
       [v6 flushOperations];
-      v3 = v6;
+      inputSystemSourceSession = v6;
     }
   }
 }
 
-- (id)delegateRespectingForwardingDelegate:(BOOL)a3
+- (id)delegateRespectingForwardingDelegate:(BOOL)delegate
 {
-  if (a3 && [(UIKBInputDelegateManager *)self shouldRespectForwardingInputDelegate])
+  if (delegate && [(UIKBInputDelegateManager *)self shouldRespectForwardingInputDelegate])
   {
     WeakRetained = objc_loadWeakRetained(&self->_forwardingInputDelegate);
   }
@@ -1059,15 +1059,15 @@ LABEL_6:
 
 - (CGRect)selectionClipRect
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
 LABEL_5:
-    v8 = v5;
-    [v5 selectionClipRect];
+    keyInputDelegate = webInputDelegate2;
+    [webInputDelegate2 selectionClipRect];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -1075,20 +1075,20 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     goto LABEL_5;
   }
 
-  v8 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v21 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-    [v21 _selectionClipRect];
+    keyInputDelegate2 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+    [keyInputDelegate2 _selectionClipRect];
     v10 = v22;
     v12 = v23;
     v14 = v24;
@@ -1116,11 +1116,11 @@ LABEL_6:
   return result;
 }
 
-- (id)privateInputDelegateRespectingForwardingDelegate:(BOOL)a3
+- (id)privateInputDelegateRespectingForwardingDelegate:(BOOL)delegate
 {
   if ((self->m_delegateConformanceType & 4) != 0)
   {
-    v5 = [(UIKBInputDelegateManager *)self delegateRespectingForwardingDelegate:a3, v3];
+    v5 = [(UIKBInputDelegateManager *)self delegateRespectingForwardingDelegate:delegate, v3];
   }
 
   else
@@ -1135,37 +1135,37 @@ LABEL_6:
 {
   if ((self->m_delegateConformanceType & 0x10) != 0)
   {
-    v4 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+    keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
   }
 
   else
   {
-    v4 = 0;
+    keyInputDelegate = 0;
   }
 
-  return v4;
+  return keyInputDelegate;
 }
 
 - (UITextInteractionSelectableInputDelegate)selectableDelegate
 {
-  v3 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  if (v3)
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  if (textInputDelegate)
   {
-    v4 = v3;
+    delegateAsResponder = textInputDelegate;
     selectableDelegate = self->_selectableDelegate;
     if (selectableDelegate)
     {
-      v6 = [(UITextInteractionSelectableInputDelegate *)selectableDelegate textInput];
+      textInput = [(UITextInteractionSelectableInputDelegate *)selectableDelegate textInput];
 
       v7 = self->_selectableDelegate;
-      if (v6 == v4)
+      if (textInput == delegateAsResponder)
       {
 LABEL_7:
         v12 = v7;
 LABEL_11:
         v13 = v12;
 
-        v4 = v13;
+        delegateAsResponder = v13;
         goto LABEL_13;
       }
 
@@ -1175,15 +1175,15 @@ LABEL_11:
       }
     }
 
-    v8 = [v4 interactionAssistant];
-    v9 = [v8 externalInteractions];
+    interactionAssistant = [delegateAsResponder interactionAssistant];
+    externalInteractions = [interactionAssistant externalInteractions];
 
-    if (!v9)
+    if (!externalInteractions)
     {
       goto LABEL_13;
     }
 
-    v10 = [UITextInteractionSelectableInputDelegate selectableInputDelegateWithTextInput:v4];
+    v10 = [UITextInteractionSelectableInputDelegate selectableInputDelegateWithTextInput:delegateAsResponder];
     v11 = self->_selectableDelegate;
     self->_selectableDelegate = v10;
 
@@ -1193,57 +1193,57 @@ LABEL_11:
 
   if (self->m_firstResponderAdoptsTextInput)
   {
-    v4 = [(UIKBInputDelegateManager *)self delegateAsResponder];
-    if (!v4)
+    delegateAsResponder = [(UIKBInputDelegateManager *)self delegateAsResponder];
+    if (!delegateAsResponder)
     {
       goto LABEL_13;
     }
 
-    v12 = [UITextInteractionSelectableInputDelegate selectableInputDelegateWithTextInput:v4];
+    v12 = [UITextInteractionSelectableInputDelegate selectableInputDelegateWithTextInput:delegateAsResponder];
     goto LABEL_11;
   }
 
-  v4 = 0;
+  delegateAsResponder = 0;
 LABEL_13:
 
-  return v4;
+  return delegateAsResponder;
 }
 
-- (BOOL)canHandleInputDelegateCommandAction:(unint64_t)a3
+- (BOOL)canHandleInputDelegateCommandAction:(unint64_t)action
 {
-  v4 = [(UIKBInputDelegateManager *)self selectorForCommand:a3];
-  v5 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  v4 = [(UIKBInputDelegateManager *)self selectorForCommand:action];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v5)
+  if (webInputDelegate)
   {
-    v6 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v7 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v7)
+    if (asyncInputDelegate)
     {
-      v6 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
 
     else
     {
-      v12 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (v12)
+      if (asyncWebKitInteractionDelegate)
       {
-        v8 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
-        v9 = [v8 canPerformAction:v4 withSender:0];
+        asyncWebKitInteractionDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+        v9 = [asyncWebKitInteractionDelegate2 canPerformAction:v4 withSender:0];
         goto LABEL_6;
       }
 
-      v6 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
     }
   }
 
-  v8 = v6;
+  asyncWebKitInteractionDelegate2 = webInputDelegate2;
   v9 = objc_opt_respondsToSelector();
 LABEL_6:
   v10 = v9;
@@ -1251,25 +1251,25 @@ LABEL_6:
   return v10 & 1;
 }
 
-- (SEL)selectorForCommand:(unint64_t)a3
+- (SEL)selectorForCommand:(unint64_t)command
 {
-  v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-  if (v5)
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  if (asyncInputDelegate)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    v6 = v7 != 0;
+    webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
+    v6 = webInputDelegate != 0;
   }
 
-  if (a3 <= 2)
+  if (command <= 2)
   {
-    if (a3)
+    if (command)
     {
-      if (a3 == 1)
+      if (command == 1)
       {
         v9 = &selRef_deleteInDirection_toGranularity_;
         v10 = &selRef__deleteForwardAndNotify_;
@@ -1277,7 +1277,7 @@ LABEL_6:
 
       else
       {
-        if (a3 != 2)
+        if (command != 2)
         {
           return result;
         }
@@ -1294,9 +1294,9 @@ LABEL_6:
     }
   }
 
-  else if (a3 > 4)
+  else if (command > 4)
   {
-    if (a3 == 5)
+    if (command == 5)
     {
       v9 = &selRef_deleteInDirection_toGranularity_;
       v10 = &selRef__deleteToEndOfLine;
@@ -1304,7 +1304,7 @@ LABEL_6:
 
     else
     {
-      if (a3 != 6)
+      if (command != 6)
       {
         return result;
       }
@@ -1317,7 +1317,7 @@ LABEL_6:
   else
   {
     v9 = &selRef_deleteInDirection_toGranularity_;
-    if (a3 == 3)
+    if (command == 3)
     {
       v10 = &selRef__deleteForwardByWord;
     }
@@ -1336,61 +1336,61 @@ LABEL_6:
   return *v9;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-  if (v7)
+  senderCopy = sender;
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  if (asyncInputDelegate)
   {
   }
 
   else
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-    if (!v8)
+    if (!webInputDelegate)
     {
-      v9 = [(UIKBInputDelegateManager *)self delegateAsResponder];
-      v13 = [v9 canPerformAction:a3 withSender:v6];
+      delegateAsResponder = [(UIKBInputDelegateManager *)self delegateAsResponder];
+      v13 = [delegateAsResponder canPerformAction:action withSender:senderCopy];
       goto LABEL_13;
     }
   }
 
-  if (sel_isEqual(a3, sel__moveUp_withHistory_) || sel_isEqual(a3, sel__moveDown_withHistory_) || sel_isEqual(a3, sel__moveLeft_withHistory_) || sel_isEqual(a3, sel__moveRight_withHistory_))
+  if (sel_isEqual(action, sel__moveUp_withHistory_) || sel_isEqual(action, sel__moveDown_withHistory_) || sel_isEqual(action, sel__moveLeft_withHistory_) || sel_isEqual(action, sel__moveRight_withHistory_))
   {
-    v9 = [(UIKBInputDelegateManager *)self delegateAsResponder];
-    if (![v9 canPerformAction:sel_moveInLayoutDirection_ withSender:v6])
+    delegateAsResponder = [(UIKBInputDelegateManager *)self delegateAsResponder];
+    if (![delegateAsResponder canPerformAction:sel_moveInLayoutDirection_ withSender:senderCopy])
     {
       v13 = 0;
       goto LABEL_13;
     }
 
-    v10 = [(UIKBInputDelegateManager *)self delegateAsResponder];
-    v11 = v10;
+    delegateAsResponder2 = [(UIKBInputDelegateManager *)self delegateAsResponder];
+    v11 = delegateAsResponder2;
     v12 = sel_extendInLayoutDirection_;
   }
 
   else
   {
-    if (!sel_isEqual(a3, sel__moveToStartOfWord_withHistory_) && !sel_isEqual(a3, sel__moveToStartOfLine_withHistory_) && !sel_isEqual(a3, sel__moveToStartOfParagraph_withHistory_) && !sel_isEqual(a3, sel__moveToStartOfDocument_withHistory_) && !sel_isEqual(a3, sel__moveToEndOfWord_withHistory_) && !sel_isEqual(a3, sel__moveToEndOfParagraph_withHistory_) && !sel_isEqual(a3, sel__moveToEndOfLine_withHistory_) && !sel_isEqual(a3, sel__moveToEndOfDocument_withHistory_))
+    if (!sel_isEqual(action, sel__moveToStartOfWord_withHistory_) && !sel_isEqual(action, sel__moveToStartOfLine_withHistory_) && !sel_isEqual(action, sel__moveToStartOfParagraph_withHistory_) && !sel_isEqual(action, sel__moveToStartOfDocument_withHistory_) && !sel_isEqual(action, sel__moveToEndOfWord_withHistory_) && !sel_isEqual(action, sel__moveToEndOfParagraph_withHistory_) && !sel_isEqual(action, sel__moveToEndOfLine_withHistory_) && !sel_isEqual(action, sel__moveToEndOfDocument_withHistory_))
     {
       v13 = 0;
       goto LABEL_14;
     }
 
-    v9 = [(UIKBInputDelegateManager *)self delegateAsResponder];
-    if ([v9 canPerformAction:sel_moveInStorageDirection_byGranularity_ withSender:v6])
+    delegateAsResponder = [(UIKBInputDelegateManager *)self delegateAsResponder];
+    if ([delegateAsResponder canPerformAction:sel_moveInStorageDirection_byGranularity_ withSender:senderCopy])
     {
       v13 = 1;
       goto LABEL_13;
     }
 
-    v10 = [(UIKBInputDelegateManager *)self delegateAsResponder];
-    v11 = v10;
+    delegateAsResponder2 = [(UIKBInputDelegateManager *)self delegateAsResponder];
+    v11 = delegateAsResponder2;
     v12 = sel_extendInStorageDirection_byGranularity_;
   }
 
-  v13 = [v10 canPerformAction:v12 withSender:v6];
+  v13 = [delegateAsResponder2 canPerformAction:v12 withSender:senderCopy];
 
 LABEL_13:
 LABEL_14:
@@ -1398,23 +1398,23 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)delegateRespondsToSelector:(SEL)a3
+- (BOOL)delegateRespondsToSelector:(SEL)selector
 {
-  v3 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
   v4 = objc_opt_respondsToSelector();
 
   return v4 & 1;
 }
 
-- (void)_firstResponderDidChange:(id)a3
+- (void)_firstResponderDidChange:(id)change
 {
-  v7 = a3;
-  v4 = [v7 object];
-  if ([v4 _isApplicationKeyWindow])
+  changeCopy = change;
+  object = [changeCopy object];
+  if ([object _isApplicationKeyWindow])
   {
     self->m_firstResponderAdoptsTextInput = 0;
-    v5 = [v7 userInfo];
-    v6 = [v5 objectForKey:@"UIWindowFirstResponderUserInfoKey"];
+    userInfo = [changeCopy userInfo];
+    v6 = [userInfo objectForKey:@"UIWindowFirstResponderUserInfoKey"];
 
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 conformsToProtocol:&unk_1EFE8B2D0])
     {
@@ -1425,7 +1425,7 @@ LABEL_14:
 
 - (BOOL)continuousSpellCheckingEnabled
 {
-  v3 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1433,28 +1433,28 @@ LABEL_14:
     return 0;
   }
 
-  v5 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-  v6 = [v5 continuousSpellCheckingEnabled];
+  keyInputDelegate2 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  continuousSpellCheckingEnabled = [keyInputDelegate2 continuousSpellCheckingEnabled];
 
-  return v6;
+  return continuousSpellCheckingEnabled;
 }
 
-- (void)setContinuousSpellCheckingEnabled:(BOOL)a3
+- (void)setContinuousSpellCheckingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  enabledCopy = enabled;
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-    [v7 setContinuousSpellCheckingEnabled:v3];
+    keyInputDelegate2 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+    [keyInputDelegate2 setContinuousSpellCheckingEnabled:enabledCopy];
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if (os_variant_has_internal_diagnostics())
   {
     v6 = _UIKeyboardExtendedLog();
@@ -1465,14 +1465,14 @@ LABEL_14:
     }
   }
 
-  v5 = [(UIKBInputDelegateManager *)self privateInputDelegate];
-  -[UIKBInputDelegateManager insertText:updateInputSource:](self, "insertText:updateInputSource:", v4, [v5 _textInputSource] != 3);
+  privateInputDelegate = [(UIKBInputDelegateManager *)self privateInputDelegate];
+  -[UIKBInputDelegateManager insertText:updateInputSource:](self, "insertText:updateInputSource:", textCopy, [privateInputDelegate _textInputSource] != 3);
 }
 
-- (void)insertText:(id)a3 alternatives:(id)a4 style:(int64_t)a5
+- (void)insertText:(id)text alternatives:(id)alternatives style:(int64_t)style
 {
-  v8 = a3;
-  v9 = a4;
+  textCopy = text;
+  alternativesCopy = alternatives;
   if (os_variant_has_internal_diagnostics())
   {
     v24 = _UIKeyboardExtendedLog();
@@ -1483,13 +1483,13 @@ LABEL_14:
     }
   }
 
-  v10 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
   v11 = objc_opt_respondsToSelector();
 
-  v12 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   v13 = objc_opt_respondsToSelector();
 
-  v14 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
   v15 = objc_opt_respondsToSelector();
 
   if ((v11 | v13) & 1) != 0 || (v15)
@@ -1497,7 +1497,7 @@ LABEL_14:
     [(UIKBInputDelegateManager *)self setInsideKeyInputDelegateCall:1];
     if ((v11 | v13))
     {
-      v17 = [[off_1E70ECBA0 alloc] initWithPrimaryString:v8 alternativeStrings:v9 isLowConfidence:a5 == 1];
+      textInputDelegate2 = [[off_1E70ECBA0 alloc] initWithPrimaryString:textCopy alternativeStrings:alternativesCopy isLowConfidence:style == 1];
       v26 = 0;
       v27 = &v26;
       v28 = 0x2050000000;
@@ -1516,56 +1516,56 @@ LABEL_14:
 
       v19 = v18;
       _Block_object_dispose(&v26, 8);
-      v20 = [[v18 alloc] _initWithNSTextAlternatives:v17];
-      v21 = [(UIKBInputDelegateManager *)self webInputDelegate];
-      v22 = v21;
+      v20 = [[v18 alloc] _initWithNSTextAlternatives:textInputDelegate2];
+      webInputDelegate3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+      v22 = webInputDelegate3;
       if (v13)
       {
-        [v21 insertTextAlternatives:v20];
+        [webInputDelegate3 insertTextAlternatives:v20];
       }
 
       else if (v11)
       {
-        [v21 insertText:v8 textAlternatives:v20 style:a5];
+        [webInputDelegate3 insertText:textCopy textAlternatives:v20 style:style];
       }
     }
 
     else
     {
-      v17 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      [v17 insertText:v8 alternatives:v9 style:a5];
+      textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      [textInputDelegate2 insertText:textCopy alternatives:alternativesCopy style:style];
     }
 
-    v23 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-    [v23 updateTextInputKeyboardSource];
+    keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+    [keyboardStateDelegate updateTextInputKeyboardSource];
 
     [(UIKBInputDelegateManager *)self setInsideKeyInputDelegateCall:0];
-    v16 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-    [v16 updateKeyboardStateForInsertion:v8];
+    keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+    [keyboardStateDelegate2 updateKeyboardStateForInsertion:textCopy];
   }
 
   else
   {
-    v16 = [off_1E70ECBA0 attributedText:v8 withAlternativeTexts:v9 style:a5];
-    [(UIKBInputDelegateManager *)self insertAttributedText:v16];
+    keyboardStateDelegate2 = [off_1E70ECBA0 attributedText:textCopy withAlternativeTexts:alternativesCopy style:style];
+    [(UIKBInputDelegateManager *)self insertAttributedText:keyboardStateDelegate2];
   }
 }
 
-- (id)textInRange:(id)a3
+- (id)textInRange:(id)range
 {
-  v4 = a3;
-  v5 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  rangeCopy = range;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v5)
+  if (webInputDelegate)
   {
-    v6 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v7 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v7)
+    if (asyncInputDelegate)
     {
       [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
@@ -1574,42 +1574,42 @@ LABEL_14:
     {
       [(UIKBInputDelegateManager *)self textInputDelegate];
     }
-    v6 = ;
+    webInputDelegate2 = ;
   }
 
-  v8 = v6;
-  v9 = [v6 textInRange:v4];
+  v8 = webInputDelegate2;
+  v9 = [webInputDelegate2 textInRange:rangeCopy];
 
   return v9;
 }
 
-- (void)replaceRange:(id)a3 withText:(id)a4
+- (void)replaceRange:(id)range withText:(id)text
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  [v8 replaceRange:v7 withText:v6];
+  textCopy = text;
+  rangeCopy = range;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  [textInputDelegate replaceRange:rangeCopy withText:textCopy];
 }
 
-- (void)correctedTypedText:(id)a3 rangeOfReplacement:(id)a4
+- (void)correctedTypedText:(id)text rangeOfReplacement:(id)replacement
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  textCopy = text;
+  replacementCopy = replacement;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    [v9 correctedTypedText:v10 rangeOfReplacement:v6];
+    textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    [textInputDelegate2 correctedTypedText:textCopy rangeOfReplacement:replacementCopy];
   }
 }
 
-- (void)replaceRange:(id)a3 oldText:(id)a4 withText:(id)a5 forReplaceAction:(int)a6
+- (void)replaceRange:(id)range oldText:(id)text withText:(id)withText forReplaceAction:(int)action
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  rangeCopy = range;
+  textCopy = text;
+  withTextCopy = withText;
   if (os_variant_has_internal_diagnostics())
   {
     v55 = _UIKeyboardExtendedLog();
@@ -1620,249 +1620,249 @@ LABEL_14:
     }
   }
 
-  if (a6 > 1)
+  if (action > 1)
   {
-    if (a6 == 2)
+    if (action == 2)
     {
-      v21 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v22 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v23 = [v22 beginningOfDocument];
-      v24 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v25 = [v24 endOfDocument];
-      v15 = [v21 textRangeFromPosition:v23 toPosition:v25];
+      textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+      textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      beginningOfDocument = [textInputDelegate2 beginningOfDocument];
+      textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      endOfDocument = [textInputDelegate3 endOfDocument];
+      selectedText = [textInputDelegate textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
 
-      v26 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v27 = [v26 textInRange:v15];
+      textInputDelegate4 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      v27 = [textInputDelegate4 textInRange:selectedText];
       v28 = [v27 length];
 
-      if (![(UIKBInputDelegateManager *)self callShouldReplaceExtendedRange:v28 withText:v12 includeMarkedText:1])
+      if (![(UIKBInputDelegateManager *)self callShouldReplaceExtendedRange:v28 withText:withTextCopy includeMarkedText:1])
       {
 LABEL_32:
 
         goto LABEL_40;
       }
 
-      v16 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      [v16 replaceRange:v15 withText:v12];
+      textInputDelegate5 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      [textInputDelegate5 replaceRange:selectedText withText:withTextCopy];
 LABEL_30:
 
       goto LABEL_32;
     }
 
-    if (a6 != 3 || !v12)
+    if (action != 3 || !withTextCopy)
     {
       goto LABEL_40;
     }
 
-    v17 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-    if (v17)
+    if (webInputDelegate)
     {
-      if (![v11 length])
+      if (![textCopy length])
       {
         goto LABEL_48;
       }
 
-      v18 = [(UIKBInputDelegateManager *)self webInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
     }
 
     else
     {
-      v32 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-      if (v32)
+      if (asyncInputDelegate)
       {
-        if (![v11 length])
+        if (![textCopy length])
         {
           goto LABEL_48;
         }
 
-        v18 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+        webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
       }
 
       else
       {
-        v37 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+        asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-        if (!v37)
+        if (!asyncWebKitInteractionDelegate)
         {
-          if (!v10 || ([v10 isEmpty] & 1) != 0)
+          if (!rangeCopy || ([rangeCopy isEmpty] & 1) != 0)
           {
             goto LABEL_48;
           }
 
-          v50 = [(UIKBInputDelegateManager *)self textInputDelegate];
+          textInputDelegate6 = [(UIKBInputDelegateManager *)self textInputDelegate];
           v51 = objc_opt_respondsToSelector();
 
           if (v51)
           {
-            v52 = [(UIKBInputDelegateManager *)self textInputDelegate];
-            [v52 replaceRangeWithTextWithoutClosingTyping:v10 replacementText:v12];
+            textInputDelegate7 = [(UIKBInputDelegateManager *)self textInputDelegate];
+            [textInputDelegate7 replaceRangeWithTextWithoutClosingTyping:rangeCopy replacementText:withTextCopy];
           }
 
           else
           {
-            v52 = [(UIKBInputDelegateManager *)self selectableDelegate];
-            [v52 replaceRange:v10 withText:v12];
+            textInputDelegate7 = [(UIKBInputDelegateManager *)self selectableDelegate];
+            [textInputDelegate7 replaceRange:rangeCopy withText:withTextCopy];
           }
 
-          v20 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-          [v20 updateKeyboardStateForReplacingText:v11 withText:v12];
+          keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+          [keyboardStateDelegate updateKeyboardStateForReplacingText:textCopy withText:withTextCopy];
           goto LABEL_39;
         }
 
-        if (![v11 length])
+        if (![textCopy length])
         {
           goto LABEL_48;
         }
 
-        v18 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+        webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       }
     }
 
-    v20 = v18;
-    [v18 replaceDictatedText:v11 withText:v12];
+    keyboardStateDelegate = webInputDelegate2;
+    [webInputDelegate2 replaceDictatedText:textCopy withText:withTextCopy];
     goto LABEL_39;
   }
 
-  if (!a6)
+  if (!action)
   {
-    v19 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-    if (v19 || ([(UIKBInputDelegateManager *)self webInputDelegate], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+    asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    if (asyncInputDelegate2 || ([(UIKBInputDelegateManager *)self webInputDelegate], (asyncInputDelegate2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v35 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      textInputDelegate8 = [(UIKBInputDelegateManager *)self textInputDelegate];
       v36 = objc_opt_respondsToSelector();
 
       if (v36)
       {
-        v20 = [(UIKBInputDelegateManager *)self textInputDelegate];
-        [v20 replaceRangeWithTextWithoutClosingTyping:v10 replacementText:v12];
+        keyboardStateDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+        [keyboardStateDelegate replaceRangeWithTextWithoutClosingTyping:rangeCopy replacementText:withTextCopy];
         goto LABEL_39;
       }
     }
 
-    v20 = [(UIKBInputDelegateManager *)self selectableDelegate];
-    [v20 replaceRange:v10 withText:v12];
+    keyboardStateDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+    [keyboardStateDelegate replaceRange:rangeCopy withText:withTextCopy];
 LABEL_39:
 
     goto LABEL_40;
   }
 
-  if (a6 == 1)
+  if (action == 1)
   {
-    v13 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate3 = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-    if (v13)
+    if (webInputDelegate3)
     {
-      v14 = [(UIKBInputDelegateManager *)self webInputDelegate];
-      v15 = [v14 selectedText];
+      webInputDelegate4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+      selectedText = [webInputDelegate4 selectedText];
 
-      if ([v15 length])
+      if ([selectedText length])
       {
-        v16 = [(UIKBInputDelegateManager *)self webInputDelegate];
-        [v16 replaceSelectedText:v15 withText:v12];
+        textInputDelegate5 = [(UIKBInputDelegateManager *)self webInputDelegate];
+        [textInputDelegate5 replaceSelectedText:selectedText withText:withTextCopy];
         goto LABEL_30;
       }
 
 LABEL_31:
-      [(UIKBInputDelegateManager *)self insertText:v12];
+      [(UIKBInputDelegateManager *)self insertText:withTextCopy];
       goto LABEL_32;
     }
 
-    v29 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate3 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v29)
+    if (asyncInputDelegate3)
     {
-      v30 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-      v15 = [v30 selectedText];
+      asyncInputDelegate4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      selectedText = [asyncInputDelegate4 selectedText];
 
-      if (![v15 length])
+      if (![selectedText length])
       {
         goto LABEL_31;
       }
 
-      v31 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      asyncInputDelegate5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 LABEL_29:
-      v16 = v31;
-      [v31 replaceText:v15 withText:v12];
+      textInputDelegate5 = asyncInputDelegate5;
+      [asyncInputDelegate5 replaceText:selectedText withText:withTextCopy];
       goto LABEL_30;
     }
 
-    v33 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+    asyncWebKitInteractionDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-    if (v33)
+    if (asyncWebKitInteractionDelegate2)
     {
-      v34 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
-      v15 = [v34 selectedText];
+      asyncWebKitInteractionDelegate3 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      selectedText = [asyncWebKitInteractionDelegate3 selectedText];
 
-      if (![v15 length])
+      if (![selectedText length])
       {
         goto LABEL_31;
       }
 
-      v31 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncInputDelegate5 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       goto LABEL_29;
     }
 
-    v38 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v15 = [v38 selectedTextRange];
+    textInputDelegate9 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    selectedText = [textInputDelegate9 selectedTextRange];
 
-    if (v15)
+    if (selectedText)
     {
-      if (![v15 isEmpty] || (-[UIKBInputDelegateManager textInputDelegate](self, "textInputDelegate"), v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "end"), v40 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v39, "_rangeOfEnclosingWord:", v40), v41 = objc_claimAutoreleasedReturnValue(), v15, v40, v39, (v15 = v41) != 0))
+      if (![selectedText isEmpty] || (-[UIKBInputDelegateManager textInputDelegate](self, "textInputDelegate"), v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(selectedText, "end"), v40 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v39, "_rangeOfEnclosingWord:", v40), v41 = objc_claimAutoreleasedReturnValue(), selectedText, v40, v39, (selectedText = v41) != 0))
       {
-        v42 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-        [v42 setShouldIgnoreTextInputChanges:1];
+        keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+        [keyboardStateDelegate2 setShouldIgnoreTextInputChanges:1];
 
-        v43 = [(UIKBInputDelegateManager *)self textInputDelegate];
-        v44 = [v43 textInRange:v15];
+        textInputDelegate10 = [(UIKBInputDelegateManager *)self textInputDelegate];
+        v44 = [textInputDelegate10 textInRange:selectedText];
 
-        v45 = [(UIKBInputDelegateManager *)self selectableDelegate];
-        [v45 replaceRange:v15 withText:v12];
+        selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+        [selectableDelegate replaceRange:selectedText withText:withTextCopy];
 
-        v59 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-        v46 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-        v47 = [v46 keyboardState];
-        v48 = [v47 documentState];
-        v49 = [v48 documentStateAfterReplacingText:v44 withText:v12];
+        keyboardStateDelegate3 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+        keyboardStateDelegate4 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+        keyboardState = [keyboardStateDelegate4 keyboardState];
+        documentState = [keyboardState documentState];
+        v49 = [documentState documentStateAfterReplacingText:v44 withText:withTextCopy];
         if (v49)
         {
-          [v59 setDocumentState:v49];
+          [keyboardStateDelegate3 setDocumentState:v49];
         }
 
         else
         {
           v57 = MEMORY[0x1E69D9590];
-          v56 = [(UIKBInputDelegateManager *)self textInputDelegate];
-          [v57 documentStateOfDocument:v56];
+          textInputDelegate11 = [(UIKBInputDelegateManager *)self textInputDelegate];
+          [v57 documentStateOfDocument:textInputDelegate11];
           v53 = v58 = v44;
-          [v59 setDocumentState:v53];
+          [keyboardStateDelegate3 setDocumentState:v53];
 
           v44 = v58;
         }
 
-        v54 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-        [v54 setShouldIgnoreTextInputChanges:0];
+        keyboardStateDelegate5 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+        [keyboardStateDelegate5 setShouldIgnoreTextInputChanges:0];
 
         goto LABEL_32;
       }
     }
 
 LABEL_48:
-    [(UIKBInputDelegateManager *)self insertText:v12];
+    [(UIKBInputDelegateManager *)self insertText:withTextCopy];
   }
 
 LABEL_40:
 }
 
-- (void)replaceRange:(id)a3 oldText:(id)a4 withAttributedText:(id)a5 forReplaceAction:(int)a6
+- (void)replaceRange:(id)range oldText:(id)text withAttributedText:(id)attributedText forReplaceAction:(int)action
 {
-  v9 = a3;
-  v10 = a5;
+  rangeCopy = range;
+  attributedTextCopy = attributedText;
   if (os_variant_has_internal_diagnostics())
   {
     v18 = _UIKeyboardExtendedLog();
@@ -1872,59 +1872,59 @@ LABEL_40:
       _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_DEFAULT, "replacing text", v19, 2u);
     }
 
-    if (a6)
+    if (action)
     {
       goto LABEL_9;
     }
   }
 
-  else if (a6)
+  else if (action)
   {
     goto LABEL_9;
   }
 
-  v11 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-  if (v11 || ([(UIKBInputDelegateManager *)self webInputDelegate], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  if (asyncInputDelegate || ([(UIKBInputDelegateManager *)self webInputDelegate], (asyncInputDelegate = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v16 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v14 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
       goto LABEL_8;
     }
   }
 
-  v12 = [(UIKBInputDelegateManager *)self selectableDelegate];
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(UIKBInputDelegateManager *)self selectableDelegate];
+    textInputDelegate2 = [(UIKBInputDelegateManager *)self selectableDelegate];
 LABEL_8:
-    v15 = v14;
-    [v14 replaceRange:v9 withAttributedText:v10];
+    v15 = textInputDelegate2;
+    [textInputDelegate2 replaceRange:rangeCopy withAttributedText:attributedTextCopy];
   }
 
 LABEL_9:
 }
 
-- (id)_adjustedTextRange:(id)a3 givenRange:(_NSRange)a4 contextBeforeLength:(unint64_t)a5 relativeToDocument:(id)a6
+- (id)_adjustedTextRange:(id)range givenRange:(_NSRange)givenRange contextBeforeLength:(unint64_t)length relativeToDocument:(id)document
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a6;
-  v11 = v10;
+  length = givenRange.length;
+  location = givenRange.location;
+  documentCopy = document;
+  v11 = documentCopy;
   v12 = 0;
-  if (a3 && v10)
+  if (range && documentCopy)
   {
-    v13 = [a3 start];
-    v14 = [v11 positionFromPosition:v13 offset:location - a5];
+    start = [range start];
+    v14 = [v11 positionFromPosition:start offset:location - length];
 
     if (v14 && ([v11 positionFromPosition:v14 offset:length], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
     {
@@ -1941,62 +1941,62 @@ LABEL_9:
   return v12;
 }
 
-- (unint64_t)replaceAnnotationRange:(_NSRange)a3 contextBeforeLength:(int64_t)a4 withAnnotatedString:(id)a5 relativeReplacementRange:(_NSRange)a6
+- (unint64_t)replaceAnnotationRange:(_NSRange)range contextBeforeLength:(int64_t)length withAnnotatedString:(id)string relativeReplacementRange:(_NSRange)replacementRange
 {
-  length = a6.length;
-  location = a6.location;
-  v9 = a3.length;
-  v10 = a3.location;
-  v12 = a5;
-  v13 = v10 - a4;
+  length = replacementRange.length;
+  location = replacementRange.location;
+  v9 = range.length;
+  v10 = range.location;
+  stringCopy = string;
+  v13 = v10 - length;
   if (_os_feature_enabled_impl())
   {
-    v14 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(UIKBInputDelegateManager *)self webInputDelegate];
-      [v16 replaceSelectionOffset:v10 - a4 length:v9 withAnnotatedString:v12 relativeReplacementRange:{location, length}];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+      [webInputDelegate2 replaceSelectionOffset:v10 - length length:v9 withAnnotatedString:stringCopy relativeReplacementRange:{location, length}];
 LABEL_25:
       v27 = 1;
       goto LABEL_26;
     }
   }
 
-  v17 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate3 = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (!v17)
+  if (!webInputDelegate3)
   {
-    v28 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v28)
+    if (asyncInputDelegate)
     {
-      v16 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
       if (location == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v29 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+        asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 LABEL_17:
-        v35 = v29;
-        [v29 replaceSelectionOffset:v10 - a4 length:v9 withAnnotatedString:v12 relativeReplacementRange:{0x7FFFFFFFFFFFFFFFLL, length}];
+        keyboardStateDelegate3 = asyncInputDelegate2;
+        [asyncInputDelegate2 replaceSelectionOffset:v10 - length length:v9 withAnnotatedString:stringCopy relativeReplacementRange:{0x7FFFFFFFFFFFFFFFLL, length}];
 LABEL_24:
 
         goto LABEL_25;
       }
 
-      v36 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-      [v36 textWillChange:v16];
+      keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+      [keyboardStateDelegate textWillChange:webInputDelegate2];
 
-      v37 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      asyncInputDelegate3 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
 
     else
     {
-      v34 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (!v34)
+      if (!asyncWebKitInteractionDelegate)
       {
-        v38 = [(UIKBInputDelegateManager *)self textInputDelegate];
+        textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
         v39 = objc_opt_respondsToSelector();
 
         if ((v39 & 1) == 0)
@@ -2005,27 +2005,27 @@ LABEL_24:
           goto LABEL_27;
         }
 
-        v40 = [(UIKBInputDelegateManager *)self textInputDelegate];
-        v41 = [v40 markedTextRange];
-        v42 = v41;
-        if (v41)
+        textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+        markedTextRange = [textInputDelegate2 markedTextRange];
+        v42 = markedTextRange;
+        if (markedTextRange)
         {
-          v16 = v41;
+          webInputDelegate2 = markedTextRange;
         }
 
         else
         {
-          v48 = [(UIKBInputDelegateManager *)self textInputDelegate];
-          v16 = [v48 selectedTextRange];
+          textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
+          webInputDelegate2 = [textInputDelegate3 selectedTextRange];
         }
 
-        v46 = [(UIKBInputDelegateManager *)self textInputDelegate];
-        v24 = [(UIKBInputDelegateManager *)self _adjustedTextRange:v16 givenRange:v10 contextBeforeLength:v9 relativeToDocument:a4, v46];
+        textInputDelegate4 = [(UIKBInputDelegateManager *)self textInputDelegate];
+        v24 = [(UIKBInputDelegateManager *)self _adjustedTextRange:webInputDelegate2 givenRange:v10 contextBeforeLength:v9 relativeToDocument:length, textInputDelegate4];
 
         if (v24)
         {
-          v47 = [(UIKBInputDelegateManager *)self textInputDelegate];
-          [v47 replaceRange:v24 withAnnotatedString:v12 relativeReplacementRange:{location, length}];
+          textInputDelegate5 = [(UIKBInputDelegateManager *)self textInputDelegate];
+          [textInputDelegate5 replaceRange:v24 withAnnotatedString:stringCopy relativeReplacementRange:{location, length}];
 
           v27 = 1;
           goto LABEL_13;
@@ -2034,57 +2034,57 @@ LABEL_24:
         goto LABEL_8;
       }
 
-      v16 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       if (location == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v29 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+        asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
         goto LABEL_17;
       }
 
-      v43 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-      [v43 textWillChange:v16];
+      keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+      [keyboardStateDelegate2 textWillChange:webInputDelegate2];
 
-      v37 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncInputDelegate3 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     }
 
-    v44 = v37;
-    [v37 replaceSelectionOffset:v13 length:v9 withAnnotatedString:v12 relativeReplacementRange:{location, length}];
+    v44 = asyncInputDelegate3;
+    [asyncInputDelegate3 replaceSelectionOffset:v13 length:v9 withAnnotatedString:stringCopy relativeReplacementRange:{location, length}];
 
-    v35 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-    [v35 textDidChange:v16];
+    keyboardStateDelegate3 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+    [keyboardStateDelegate3 textDidChange:webInputDelegate2];
     goto LABEL_24;
   }
 
-  v18 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v16 = [v18 documentState];
+  keyboardStateDelegate4 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  webInputDelegate2 = [keyboardStateDelegate4 documentState];
 
-  v19 = [v16 contextBeforeInput];
-  [v19 length];
+  contextBeforeInput = [webInputDelegate2 contextBeforeInput];
+  [contextBeforeInput length];
 
-  v20 = [v16 contextBeforeInput];
-  v21 = [v20 length];
+  contextBeforeInput2 = [webInputDelegate2 contextBeforeInput];
+  v21 = [contextBeforeInput2 length];
 
   if (v10 + v9 > v21)
   {
-    v22 = [v16 contextBeforeInput];
-    v9 = [v22 length] - v10;
+    contextBeforeInput3 = [webInputDelegate2 contextBeforeInput];
+    v9 = [contextBeforeInput3 length] - v10;
   }
 
-  v23 = [v16 contextBeforeInput];
-  v24 = [v23 substringWithRange:{v10, v9}];
+  contextBeforeInput4 = [webInputDelegate2 contextBeforeInput];
+  v24 = [contextBeforeInput4 substringWithRange:{v10, v9}];
 
-  v25 = [v12 string];
-  v26 = [v24 isEqualToString:v25];
+  string = [stringCopy string];
+  v26 = [v24 isEqualToString:string];
 
   if ((v26 & 1) == 0)
   {
-    v30 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    v31 = [v12 string];
-    [v30 replaceDictatedText:v24 withText:v31];
+    webInputDelegate4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    string2 = [stringCopy string];
+    [webInputDelegate4 replaceDictatedText:v24 withText:string2];
 
-    v32 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-    v33 = [v12 string];
-    [v32 updateKeyboardStateForReplacingText:v24 withText:v33];
+    keyboardStateDelegate5 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+    string3 = [stringCopy string];
+    [keyboardStateDelegate5 updateKeyboardStateForReplacingText:v24 withText:string3];
 
     v27 = 3;
     goto LABEL_13;
@@ -2100,22 +2100,22 @@ LABEL_27:
   return v27;
 }
 
-- (unint64_t)removeAnnotation:(id)a3 removalRangeLength:(unint64_t)a4 forAnnotationRange:(_NSRange)a5 contextBeforeLength:(int64_t)a6
+- (unint64_t)removeAnnotation:(id)annotation removalRangeLength:(unint64_t)length forAnnotationRange:(_NSRange)range contextBeforeLength:(int64_t)beforeLength
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a3;
+  length = range.length;
+  location = range.location;
+  annotationCopy = annotation;
   if (_os_feature_enabled_impl())
   {
-    v12 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(UIKBInputDelegateManager *)self webInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
 LABEL_10:
-      v20 = v14;
-      [v14 removeAnnotation:v11 forSelectionOffset:location - a6 length:a4];
+      selectedTextRange = webInputDelegate2;
+      [webInputDelegate2 removeAnnotation:annotationCopy forSelectionOffset:location - beforeLength length:length];
       v16 = 1;
 LABEL_11:
 
@@ -2123,53 +2123,53 @@ LABEL_11:
     }
   }
 
-  v15 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate3 = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (!v15)
+  if (!webInputDelegate3)
   {
-    v17 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v14 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
       goto LABEL_10;
     }
 
-    v19 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+    asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-    if (v19)
+    if (asyncWebKitInteractionDelegate)
     {
-      v14 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       goto LABEL_10;
     }
 
-    v22 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
     v23 = objc_opt_respondsToSelector();
 
     if (v23)
     {
-      v24 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v25 = [v24 markedTextRange];
-      v26 = v25;
-      if (v25)
+      textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      markedTextRange = [textInputDelegate2 markedTextRange];
+      v26 = markedTextRange;
+      if (markedTextRange)
       {
-        v20 = v25;
+        selectedTextRange = markedTextRange;
       }
 
       else
       {
-        v27 = [(UIKBInputDelegateManager *)self textInputDelegate];
-        v20 = [v27 selectedTextRange];
+        textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
+        selectedTextRange = [textInputDelegate3 selectedTextRange];
       }
 
-      v28 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v29 = [(UIKBInputDelegateManager *)self _adjustedTextRange:v20 givenRange:location contextBeforeLength:length relativeToDocument:a6, v28];
+      textInputDelegate4 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      v29 = [(UIKBInputDelegateManager *)self _adjustedTextRange:selectedTextRange givenRange:location contextBeforeLength:length relativeToDocument:beforeLength, textInputDelegate4];
 
       if (v29)
       {
-        v30 = [(UIKBInputDelegateManager *)self textInputDelegate];
-        [v30 removeAnnotation:v11 forRange:v29];
+        textInputDelegate5 = [(UIKBInputDelegateManager *)self textInputDelegate];
+        [textInputDelegate5 removeAnnotation:annotationCopy forRange:v29];
 
         v16 = 1;
       }
@@ -2191,86 +2191,86 @@ LABEL_12:
 
 - (void)transposeCharacters
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v5 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    [v5 transposeCharactersAroundSelection];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    [webInputDelegate2 transposeCharactersAroundSelection];
   }
 
   else
   {
-    v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v4)
+    if (asyncInputDelegate)
     {
-      v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-      [v5 transposeCharacters];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      [webInputDelegate2 transposeCharacters];
     }
 
     else
     {
-      v5 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      [v5 _transpose];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      [webInputDelegate2 _transpose];
     }
   }
 }
 
 - (id)selectedText
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v5)
+    if (asyncInputDelegate)
     {
-      v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
 
     else
     {
-      v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (!v6)
+      if (!asyncWebKitInteractionDelegate)
       {
         goto LABEL_8;
       }
 
-      v4 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     }
   }
 
-  v7 = v4;
-  v6 = [v4 selectedText];
+  v7 = webInputDelegate2;
+  asyncWebKitInteractionDelegate = [webInputDelegate2 selectedText];
 
 LABEL_8:
 
-  return v6;
+  return asyncWebKitInteractionDelegate;
 }
 
-- (void)setSelectedTextRange:(id)a3
+- (void)setSelectedTextRange:(id)range
 {
-  v8 = a3;
-  v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  rangeCopy = range;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v4)
+  if (webInputDelegate)
   {
-    v5 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v6 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v6)
+    if (asyncInputDelegate)
     {
       [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
@@ -2279,30 +2279,30 @@ LABEL_8:
     {
       [(UIKBInputDelegateManager *)self textInputDelegate];
     }
-    v5 = ;
+    webInputDelegate2 = ;
   }
 
-  v7 = v5;
-  [v5 setSelectedTextRange:v8];
+  v7 = webInputDelegate2;
+  [webInputDelegate2 setSelectedTextRange:rangeCopy];
 }
 
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v9 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v9)
+    if (asyncInputDelegate)
     {
       [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
@@ -2311,28 +2311,28 @@ LABEL_8:
     {
       [(UIKBInputDelegateManager *)self textInputDelegate];
     }
-    v8 = ;
+    webInputDelegate2 = ;
   }
 
-  v10 = v8;
-  [v8 _setAttributedMarkedText:v11 selectedRange:{location, length}];
+  v10 = webInputDelegate2;
+  [webInputDelegate2 _setAttributedMarkedText:textCopy selectedRange:{location, length}];
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
-  v4 = a3;
-  v5 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  rangeCopy = range;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v5)
+  if (webInputDelegate)
   {
-    v6 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v7 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v7)
+    if (asyncInputDelegate)
     {
       [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
@@ -2341,42 +2341,42 @@ LABEL_8:
     {
       [(UIKBInputDelegateManager *)self textInputDelegate];
     }
-    v6 = ;
+    webInputDelegate2 = ;
   }
 
-  v8 = v6;
-  v9 = [v6 selectionRectsForRange:v4];
+  v8 = webInputDelegate2;
+  v9 = [webInputDelegate2 selectionRectsForRange:rangeCopy];
 
   return v9;
 }
 
 - (BOOL)hasMarkedText
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
 LABEL_7:
-    v7 = v4;
-    v8 = [v4 hasMarkedText];
+    v7 = webInputDelegate2;
+    hasMarkedText = [webInputDelegate2 hasMarkedText];
 
-    return v8;
+    return hasMarkedText;
   }
 
-  v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-  if (v5)
+  if (asyncInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     goto LABEL_7;
   }
 
-  v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+  asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-  if (v6)
+  if (asyncWebKitInteractionDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     goto LABEL_7;
   }
 
@@ -2385,137 +2385,137 @@ LABEL_7:
 
 - (void)unmarkText
 {
-  v3 = [(UIKBInputDelegateManager *)self selectableDelegate];
-  [v3 _unmarkText];
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+  [selectableDelegate _unmarkText];
 
-  v4 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v5 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v6 = [v5 keyboardState];
-  v7 = [v6 documentState];
-  v8 = [v7 documentStateAfterUnmarkingText];
-  [v4 setDocumentState:v8];
+  keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  keyboardState = [keyboardStateDelegate2 keyboardState];
+  documentState = [keyboardState documentState];
+  documentStateAfterUnmarkingText = [documentState documentStateAfterUnmarkingText];
+  [keyboardStateDelegate setDocumentState:documentStateAfterUnmarkingText];
 
-  v9 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v9 clearInputForMarkedText];
+  keyboardStateDelegate3 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate3 clearInputForMarkedText];
 }
 
 - (id)attributedMarkedText
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
     v5 = objc_opt_respondsToSelector();
 
-    v6 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate3 = [(UIKBInputDelegateManager *)self webInputDelegate];
 LABEL_7:
-    v11 = v6;
+    textInputDelegate2 = webInputDelegate3;
     if (v5)
     {
-      v12 = [v6 attributedMarkedText];
+      attributedMarkedText = [webInputDelegate3 attributedMarkedText];
 LABEL_13:
 
       goto LABEL_14;
     }
 
-    v13 = [v6 markedText];
+    markedText = [webInputDelegate3 markedText];
 
-    if (v13)
+    if (markedText)
     {
-      v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v13];
-      v11 = v13;
+      attributedMarkedText = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:markedText];
+      textInputDelegate2 = markedText;
       goto LABEL_13;
     }
 
-    v11 = 0;
+    textInputDelegate2 = 0;
 LABEL_12:
-    v12 = 0;
+    attributedMarkedText = 0;
     goto LABEL_13;
   }
 
-  v7 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-  if (v7)
+  if (asyncInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     v5 = objc_opt_respondsToSelector();
 
-    v6 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate3 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     goto LABEL_7;
   }
 
-  v9 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+  asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-  if (v9)
+  if (asyncWebKitInteractionDelegate)
   {
-    v10 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+    asyncWebKitInteractionDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     v5 = objc_opt_respondsToSelector();
 
-    v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+    webInputDelegate3 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     goto LABEL_7;
   }
 
-  v15 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
   v16 = objc_opt_respondsToSelector();
 
-  v11 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v17 = [v11 markedTextRange];
-  v18 = v17;
+  textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  markedTextRange = [textInputDelegate2 markedTextRange];
+  v18 = markedTextRange;
   if (v16)
   {
-    if (v17)
+    if (markedTextRange)
     {
-      v19 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v20 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v21 = [v20 markedTextRange];
-      v12 = [v19 attributedTextInRange:v21];
+      textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      textInputDelegate4 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      markedTextRange2 = [textInputDelegate4 markedTextRange];
+      attributedMarkedText = [textInputDelegate3 attributedTextInRange:markedTextRange2];
     }
 
     else
     {
-      v12 = 0;
+      attributedMarkedText = 0;
     }
 
     goto LABEL_13;
   }
 
-  if (!v17)
+  if (!markedTextRange)
   {
     goto LABEL_12;
   }
 
-  v22 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v23 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v24 = [v23 markedTextRange];
-  v25 = [v22 textInRange:v24];
+  textInputDelegate5 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  textInputDelegate6 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  markedTextRange3 = [textInputDelegate6 markedTextRange];
+  v25 = [textInputDelegate5 textInRange:markedTextRange3];
 
   if (v25)
   {
-    v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v25];
-    v11 = v25;
+    attributedMarkedText = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v25];
+    textInputDelegate2 = v25;
     goto LABEL_13;
   }
 
-  v12 = 0;
+  attributedMarkedText = 0;
 LABEL_14:
 
-  return v12;
+  return attributedMarkedText;
 }
 
 - (id)tintColor
 {
-  v2 = [(UIKBInputDelegateManager *)self delegateAsResponder];
+  delegateAsResponder = [(UIKBInputDelegateManager *)self delegateAsResponder];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 tintColor];
+    tintColor = [delegateAsResponder tintColor];
   }
 
   else
   {
-    v4 = [v2 _responderForEditing];
-    if (!v4)
+    _responderForEditing = [delegateAsResponder _responderForEditing];
+    if (!_responderForEditing)
     {
       goto LABEL_9;
     }
@@ -2528,97 +2528,97 @@ LABEL_14:
         break;
       }
 
-      v3 = [v4 nextResponder];
+      tintColor = [_responderForEditing nextResponder];
 
-      v4 = v3;
+      _responderForEditing = tintColor;
     }
 
-    while (v3);
+    while (tintColor);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v4 tintColor];
+      tintColor = [_responderForEditing tintColor];
     }
 
     else
     {
 LABEL_9:
-      v3 = 0;
+      tintColor = 0;
     }
   }
 
-  return v3;
+  return tintColor;
 }
 
 - (id)_textSelectingContainer
 {
   if ([(UIKBInputDelegateManager *)self hasAsyncCapableInputDelegate])
   {
-    v3 = [(UIKBInputDelegateManager *)self asyncCapableInputDelegate];
+    asyncCapableInputDelegate = [(UIKBInputDelegateManager *)self asyncCapableInputDelegate];
   }
 
   else
   {
-    v4 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v3 = [v4 _textSelectingContainer];
+    textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+    asyncCapableInputDelegate = [textInputDelegate _textSelectingContainer];
   }
 
-  return v3;
+  return asyncCapableInputDelegate;
 }
 
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4
+- (id)positionFromPosition:(id)position offset:(int64_t)offset
 {
-  v6 = a3;
-  v7 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v8 = [v7 positionFromPosition:v6 offset:a4];
+  positionCopy = position;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  v8 = [textInputDelegate positionFromPosition:positionCopy offset:offset];
 
   return v8;
 }
 
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v9 = [v8 textRangeFromPosition:v7 toPosition:v6];
+  toPositionCopy = toPosition;
+  positionCopy = position;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  v9 = [textInputDelegate textRangeFromPosition:positionCopy toPosition:toPositionCopy];
 
   return v9;
 }
 
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v9 = [v8 comparePosition:v7 toPosition:v6];
+  toPositionCopy = toPosition;
+  positionCopy = position;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  v9 = [textInputDelegate comparePosition:positionCopy toPosition:toPositionCopy];
 
   return v9;
 }
 
-- (int64_t)baseWritingDirectionForPosition:(id)a3 inDirection:(int64_t)a4
+- (int64_t)baseWritingDirectionForPosition:(id)position inDirection:(int64_t)direction
 {
-  v6 = a3;
-  v7 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v8 = [v7 baseWritingDirectionForPosition:v6 inDirection:a4];
+  positionCopy = position;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  v8 = [textInputDelegate baseWritingDirectionForPosition:positionCopy inDirection:direction];
 
   return v8;
 }
 
-- (void)setBaseWritingDirection:(int64_t)a3 forRange:(id)a4
+- (void)setBaseWritingDirection:(int64_t)direction forRange:(id)range
 {
-  v10 = a4;
-  v6 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  rangeCopy = range;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v6)
+  if (webInputDelegate)
   {
-    v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v8 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v8)
+    if (asyncInputDelegate)
     {
       [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
@@ -2627,29 +2627,29 @@ LABEL_9:
     {
       [(UIKBInputDelegateManager *)self textInputDelegate];
     }
-    v7 = ;
+    webInputDelegate2 = ;
   }
 
-  v9 = v7;
-  [v7 setBaseWritingDirection:a3 forRange:v10];
+  v9 = webInputDelegate2;
+  [webInputDelegate2 setBaseWritingDirection:direction forRange:rangeCopy];
 }
 
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  positionCopy = position;
+  toPositionCopy = toPosition;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v8)
+  if (webInputDelegate)
   {
-    v9 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v10 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v10)
+    if (asyncInputDelegate)
     {
       [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
@@ -2658,30 +2658,30 @@ LABEL_9:
     {
       [(UIKBInputDelegateManager *)self textInputDelegate];
     }
-    v9 = ;
+    webInputDelegate2 = ;
   }
 
-  v11 = v9;
-  v12 = [v9 offsetFromPosition:v6 toPosition:v7];
+  v11 = webInputDelegate2;
+  v12 = [webInputDelegate2 offsetFromPosition:positionCopy toPosition:toPositionCopy];
 
   return v12;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  positionCopy = position;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v5)
+  if (webInputDelegate)
   {
-    v6 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v7 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v7)
+    if (asyncInputDelegate)
     {
       [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
@@ -2690,11 +2690,11 @@ LABEL_9:
     {
       [(UIKBInputDelegateManager *)self textInputDelegate];
     }
-    v6 = ;
+    webInputDelegate2 = ;
   }
 
-  v8 = v6;
-  [v6 caretRectForPosition:v4];
+  v8 = webInputDelegate2;
+  [webInputDelegate2 caretRectForPosition:positionCopy];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -2711,208 +2711,208 @@ LABEL_9:
   return result;
 }
 
-- (id)_moveUp:(BOOL)a3 withHistory:(id)a4
+- (id)_moveUp:(BOOL)up withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  upCopy = up;
+  historyCopy = history;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
 LABEL_5:
-    v10 = v8;
-    if (v4)
+    selectableDelegate = webInputDelegate2;
+    if (upCopy)
     {
-      [v8 extendInLayoutDirection:4];
+      [webInputDelegate2 extendInLayoutDirection:4];
     }
 
     else
     {
-      [v8 moveInLayoutDirection:4];
+      [webInputDelegate2 moveInLayoutDirection:4];
     }
 
     v11 = 0;
     goto LABEL_9;
   }
 
-  v9 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-  if (v9)
+  if (asyncInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     goto LABEL_5;
   }
 
-  v10 = [(UIKBInputDelegateManager *)self selectableDelegate];
-  v11 = [v10 _moveUp:v4 withHistory:v6];
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+  v11 = [selectableDelegate _moveUp:upCopy withHistory:historyCopy];
 LABEL_9:
 
   return v11;
 }
 
-- (id)_moveDown:(BOOL)a3 withHistory:(id)a4
+- (id)_moveDown:(BOOL)down withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  downCopy = down;
+  historyCopy = history;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
 LABEL_5:
-    v10 = v8;
-    if (v4)
+    selectableDelegate = webInputDelegate2;
+    if (downCopy)
     {
-      [v8 extendInLayoutDirection:5];
+      [webInputDelegate2 extendInLayoutDirection:5];
     }
 
     else
     {
-      [v8 moveInLayoutDirection:5];
+      [webInputDelegate2 moveInLayoutDirection:5];
     }
 
     v11 = 0;
     goto LABEL_9;
   }
 
-  v9 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-  if (v9)
+  if (asyncInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     goto LABEL_5;
   }
 
-  v10 = [(UIKBInputDelegateManager *)self selectableDelegate];
-  v11 = [v10 _moveDown:v4 withHistory:v6];
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+  v11 = [selectableDelegate _moveDown:downCopy withHistory:historyCopy];
 LABEL_9:
 
   return v11;
 }
 
-- (id)_moveLeft:(BOOL)a3 withHistory:(id)a4
+- (id)_moveLeft:(BOOL)left withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  leftCopy = left;
+  historyCopy = history;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
 LABEL_5:
-    v10 = v8;
-    if (v4)
+    selectableDelegate = webInputDelegate2;
+    if (leftCopy)
     {
-      [v8 extendInLayoutDirection:3];
+      [webInputDelegate2 extendInLayoutDirection:3];
     }
 
     else
     {
-      [v8 moveInLayoutDirection:3];
+      [webInputDelegate2 moveInLayoutDirection:3];
     }
 
     v11 = 0;
     goto LABEL_9;
   }
 
-  v9 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-  if (v9)
+  if (asyncInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     goto LABEL_5;
   }
 
-  v10 = [(UIKBInputDelegateManager *)self selectableDelegate];
-  v11 = [v10 _moveLeft:v4 withHistory:v6];
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+  v11 = [selectableDelegate _moveLeft:leftCopy withHistory:historyCopy];
 LABEL_9:
 
   return v11;
 }
 
-- (id)_moveRight:(BOOL)a3 withHistory:(id)a4
+- (id)_moveRight:(BOOL)right withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  rightCopy = right;
+  historyCopy = history;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
 LABEL_5:
-    v10 = v8;
-    if (v4)
+    selectableDelegate = webInputDelegate2;
+    if (rightCopy)
     {
-      [v8 extendInLayoutDirection:2];
+      [webInputDelegate2 extendInLayoutDirection:2];
     }
 
     else
     {
-      [v8 moveInLayoutDirection:2];
+      [webInputDelegate2 moveInLayoutDirection:2];
     }
 
     v11 = 0;
     goto LABEL_9;
   }
 
-  v9 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-  if (v9)
+  if (asyncInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     goto LABEL_5;
   }
 
-  v10 = [(UIKBInputDelegateManager *)self selectableDelegate];
-  v11 = [v10 _moveRight:v4 withHistory:v6];
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+  v11 = [selectableDelegate _moveRight:rightCopy withHistory:historyCopy];
 LABEL_9:
 
   return v11;
 }
 
-- (id)_moveToStartOfWord:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToStartOfWord:(BOOL)word withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  wordCopy = word;
+  historyCopy = history;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    v9 = v8;
-    if (v4)
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    selectableDelegate = webInputDelegate2;
+    if (wordCopy)
     {
-      [v8 extendInStorageDirection:1 byGranularity:1];
+      [webInputDelegate2 extendInStorageDirection:1 byGranularity:1];
     }
 
     else
     {
-      [v8 moveInStorageDirection:1 byGranularity:1];
+      [webInputDelegate2 moveInStorageDirection:1 byGranularity:1];
     }
   }
 
   else
   {
-    v10 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v10)
+    if (!asyncInputDelegate)
     {
-      v9 = [(UIKBInputDelegateManager *)self selectableDelegate];
-      v12 = [v9 _moveToStartOfWord:v4 withHistory:v6];
+      selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+      v12 = [selectableDelegate _moveToStartOfWord:wordCopy withHistory:historyCopy];
       goto LABEL_11;
     }
 
-    v11 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-    v9 = v11;
-    if (v4)
+    asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    selectableDelegate = asyncInputDelegate2;
+    if (wordCopy)
     {
-      [v11 extendInDirection:1 byGranularity:1];
+      [asyncInputDelegate2 extendInDirection:1 byGranularity:1];
     }
 
     else
     {
-      [v11 moveInDirection:1 byGranularity:1];
+      [asyncInputDelegate2 moveInDirection:1 byGranularity:1];
     }
   }
 
@@ -2922,48 +2922,48 @@ LABEL_11:
   return v12;
 }
 
-- (id)_moveToStartOfParagraph:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToStartOfParagraph:(BOOL)paragraph withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  paragraphCopy = paragraph;
+  historyCopy = history;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    v9 = v8;
-    if (v4)
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    selectableDelegate = webInputDelegate2;
+    if (paragraphCopy)
     {
-      [v8 extendInStorageDirection:1 byGranularity:3];
+      [webInputDelegate2 extendInStorageDirection:1 byGranularity:3];
     }
 
     else
     {
-      [v8 moveInStorageDirection:1 byGranularity:3];
+      [webInputDelegate2 moveInStorageDirection:1 byGranularity:3];
     }
   }
 
   else
   {
-    v10 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v10)
+    if (!asyncInputDelegate)
     {
-      v9 = [(UIKBInputDelegateManager *)self selectableDelegate];
-      v12 = [v9 _moveToStartOfParagraph:v4 withHistory:v6];
+      selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+      v12 = [selectableDelegate _moveToStartOfParagraph:paragraphCopy withHistory:historyCopy];
       goto LABEL_11;
     }
 
-    v11 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-    v9 = v11;
-    if (v4)
+    asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    selectableDelegate = asyncInputDelegate2;
+    if (paragraphCopy)
     {
-      [v11 extendInDirection:1 byGranularity:3];
+      [asyncInputDelegate2 extendInDirection:1 byGranularity:3];
     }
 
     else
     {
-      [v11 moveInDirection:1 byGranularity:3];
+      [asyncInputDelegate2 moveInDirection:1 byGranularity:3];
     }
   }
 
@@ -2973,48 +2973,48 @@ LABEL_11:
   return v12;
 }
 
-- (id)_moveToStartOfLine:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToStartOfLine:(BOOL)line withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  lineCopy = line;
+  historyCopy = history;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    v9 = v8;
-    if (v4)
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    selectableDelegate = webInputDelegate2;
+    if (lineCopy)
     {
-      [v8 extendInStorageDirection:1 byGranularity:4];
+      [webInputDelegate2 extendInStorageDirection:1 byGranularity:4];
     }
 
     else
     {
-      [v8 moveInStorageDirection:1 byGranularity:4];
+      [webInputDelegate2 moveInStorageDirection:1 byGranularity:4];
     }
   }
 
   else
   {
-    v10 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v10)
+    if (!asyncInputDelegate)
     {
-      v9 = [(UIKBInputDelegateManager *)self selectableDelegate];
-      v12 = [v9 _moveToStartOfLine:v4 withHistory:v6];
+      selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+      v12 = [selectableDelegate _moveToStartOfLine:lineCopy withHistory:historyCopy];
       goto LABEL_11;
     }
 
-    v11 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-    v9 = v11;
-    if (v4)
+    asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    selectableDelegate = asyncInputDelegate2;
+    if (lineCopy)
     {
-      [v11 extendInDirection:1 byGranularity:4];
+      [asyncInputDelegate2 extendInDirection:1 byGranularity:4];
     }
 
     else
     {
-      [v11 moveInDirection:1 byGranularity:4];
+      [asyncInputDelegate2 moveInDirection:1 byGranularity:4];
     }
   }
 
@@ -3024,48 +3024,48 @@ LABEL_11:
   return v12;
 }
 
-- (id)_moveToStartOfDocument:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToStartOfDocument:(BOOL)document withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  documentCopy = document;
+  historyCopy = history;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    v9 = v8;
-    if (v4)
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    selectableDelegate = webInputDelegate2;
+    if (documentCopy)
     {
-      [v8 extendInStorageDirection:1 byGranularity:5];
+      [webInputDelegate2 extendInStorageDirection:1 byGranularity:5];
     }
 
     else
     {
-      [v8 moveInStorageDirection:1 byGranularity:5];
+      [webInputDelegate2 moveInStorageDirection:1 byGranularity:5];
     }
   }
 
   else
   {
-    v10 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v10)
+    if (!asyncInputDelegate)
     {
-      v9 = [(UIKBInputDelegateManager *)self selectableDelegate];
-      v12 = [v9 _moveToStartOfDocument:v4 withHistory:v6];
+      selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+      v12 = [selectableDelegate _moveToStartOfDocument:documentCopy withHistory:historyCopy];
       goto LABEL_11;
     }
 
-    v11 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-    v9 = v11;
-    if (v4)
+    asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    selectableDelegate = asyncInputDelegate2;
+    if (documentCopy)
     {
-      [v11 extendInDirection:1 byGranularity:5];
+      [asyncInputDelegate2 extendInDirection:1 byGranularity:5];
     }
 
     else
     {
-      [v11 moveInDirection:1 byGranularity:5];
+      [asyncInputDelegate2 moveInDirection:1 byGranularity:5];
     }
   }
 
@@ -3075,48 +3075,48 @@ LABEL_11:
   return v12;
 }
 
-- (id)_moveToEndOfWord:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToEndOfWord:(BOOL)word withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  wordCopy = word;
+  historyCopy = history;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    v9 = v8;
-    if (v4)
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    selectableDelegate = webInputDelegate2;
+    if (wordCopy)
     {
-      [v8 extendInStorageDirection:0 byGranularity:1];
+      [webInputDelegate2 extendInStorageDirection:0 byGranularity:1];
     }
 
     else
     {
-      [v8 moveInStorageDirection:0 byGranularity:1];
+      [webInputDelegate2 moveInStorageDirection:0 byGranularity:1];
     }
   }
 
   else
   {
-    v10 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v10)
+    if (!asyncInputDelegate)
     {
-      v9 = [(UIKBInputDelegateManager *)self selectableDelegate];
-      v12 = [v9 _moveToEndOfWord:v4 withHistory:v6];
+      selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+      v12 = [selectableDelegate _moveToEndOfWord:wordCopy withHistory:historyCopy];
       goto LABEL_11;
     }
 
-    v11 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-    v9 = v11;
-    if (v4)
+    asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    selectableDelegate = asyncInputDelegate2;
+    if (wordCopy)
     {
-      [v11 extendInDirection:0 byGranularity:1];
+      [asyncInputDelegate2 extendInDirection:0 byGranularity:1];
     }
 
     else
     {
-      [v11 moveInDirection:0 byGranularity:1];
+      [asyncInputDelegate2 moveInDirection:0 byGranularity:1];
     }
   }
 
@@ -3126,48 +3126,48 @@ LABEL_11:
   return v12;
 }
 
-- (id)_moveToEndOfParagraph:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToEndOfParagraph:(BOOL)paragraph withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  paragraphCopy = paragraph;
+  historyCopy = history;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    v9 = v8;
-    if (v4)
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    selectableDelegate = webInputDelegate2;
+    if (paragraphCopy)
     {
-      [v8 extendInStorageDirection:0 byGranularity:3];
+      [webInputDelegate2 extendInStorageDirection:0 byGranularity:3];
     }
 
     else
     {
-      [v8 moveInStorageDirection:0 byGranularity:3];
+      [webInputDelegate2 moveInStorageDirection:0 byGranularity:3];
     }
   }
 
   else
   {
-    v10 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v10)
+    if (!asyncInputDelegate)
     {
-      v9 = [(UIKBInputDelegateManager *)self selectableDelegate];
-      v12 = [v9 _moveToEndOfParagraph:v4 withHistory:v6];
+      selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+      v12 = [selectableDelegate _moveToEndOfParagraph:paragraphCopy withHistory:historyCopy];
       goto LABEL_11;
     }
 
-    v11 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-    v9 = v11;
-    if (v4)
+    asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    selectableDelegate = asyncInputDelegate2;
+    if (paragraphCopy)
     {
-      [v11 extendInDirection:0 byGranularity:3];
+      [asyncInputDelegate2 extendInDirection:0 byGranularity:3];
     }
 
     else
     {
-      [v11 moveInDirection:0 byGranularity:3];
+      [asyncInputDelegate2 moveInDirection:0 byGranularity:3];
     }
   }
 
@@ -3177,48 +3177,48 @@ LABEL_11:
   return v12;
 }
 
-- (id)_moveToEndOfLine:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToEndOfLine:(BOOL)line withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  lineCopy = line;
+  historyCopy = history;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    v9 = v8;
-    if (v4)
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    selectableDelegate = webInputDelegate2;
+    if (lineCopy)
     {
-      [v8 extendInStorageDirection:0 byGranularity:4];
+      [webInputDelegate2 extendInStorageDirection:0 byGranularity:4];
     }
 
     else
     {
-      [v8 moveInStorageDirection:0 byGranularity:4];
+      [webInputDelegate2 moveInStorageDirection:0 byGranularity:4];
     }
   }
 
   else
   {
-    v10 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v10)
+    if (!asyncInputDelegate)
     {
-      v9 = [(UIKBInputDelegateManager *)self selectableDelegate];
-      v12 = [v9 _moveToEndOfLine:v4 withHistory:v6];
+      selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+      v12 = [selectableDelegate _moveToEndOfLine:lineCopy withHistory:historyCopy];
       goto LABEL_11;
     }
 
-    v11 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-    v9 = v11;
-    if (v4)
+    asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    selectableDelegate = asyncInputDelegate2;
+    if (lineCopy)
     {
-      [v11 extendInDirection:0 byGranularity:4];
+      [asyncInputDelegate2 extendInDirection:0 byGranularity:4];
     }
 
     else
     {
-      [v11 moveInDirection:0 byGranularity:4];
+      [asyncInputDelegate2 moveInDirection:0 byGranularity:4];
     }
   }
 
@@ -3228,48 +3228,48 @@ LABEL_11:
   return v12;
 }
 
-- (id)_moveToEndOfDocument:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToEndOfDocument:(BOOL)document withHistory:(id)history
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  documentCopy = document;
+  historyCopy = history;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    v9 = v8;
-    if (v4)
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    selectableDelegate = webInputDelegate2;
+    if (documentCopy)
     {
-      [v8 extendInStorageDirection:0 byGranularity:5];
+      [webInputDelegate2 extendInStorageDirection:0 byGranularity:5];
     }
 
     else
     {
-      [v8 moveInStorageDirection:0 byGranularity:5];
+      [webInputDelegate2 moveInStorageDirection:0 byGranularity:5];
     }
   }
 
   else
   {
-    v10 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v10)
+    if (!asyncInputDelegate)
     {
-      v9 = [(UIKBInputDelegateManager *)self selectableDelegate];
-      v12 = [v9 _moveToEndOfDocument:v4 withHistory:v6];
+      selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+      v12 = [selectableDelegate _moveToEndOfDocument:documentCopy withHistory:historyCopy];
       goto LABEL_11;
     }
 
-    v11 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-    v9 = v11;
-    if (v4)
+    asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    selectableDelegate = asyncInputDelegate2;
+    if (documentCopy)
     {
-      [v11 extendInDirection:0 byGranularity:5];
+      [asyncInputDelegate2 extendInDirection:0 byGranularity:5];
     }
 
     else
     {
-      [v11 moveInDirection:0 byGranularity:5];
+      [asyncInputDelegate2 moveInDirection:0 byGranularity:5];
     }
   }
 
@@ -3279,28 +3279,28 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)insertSupplementalItem:(id)a3 candidate:(id)a4 replacementRange:(id)a5
+- (BOOL)insertSupplementalItem:(id)item candidate:(id)candidate replacementRange:(id)range
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  if (!v11)
+  itemCopy = item;
+  candidateCopy = candidate;
+  rangeCopy = range;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  if (!textInputDelegate)
   {
-    v11 = [(UIKBInputDelegateManager *)self delegateAsResponder];
-    if (v11)
+    textInputDelegate = [(UIKBInputDelegateManager *)self delegateAsResponder];
+    if (textInputDelegate)
     {
-      v16 = [(UIKBInputDelegateManager *)self delegateAsResponder];
-      v17 = [v16 conformsToProtocol:&unk_1EFE8B2D0];
+      delegateAsResponder = [(UIKBInputDelegateManager *)self delegateAsResponder];
+      v17 = [delegateAsResponder conformsToProtocol:&unk_1EFE8B2D0];
 
       if (v17)
       {
-        v11 = [(UIKBInputDelegateManager *)self delegateAsResponder];
+        textInputDelegate = [(UIKBInputDelegateManager *)self delegateAsResponder];
       }
 
       else
       {
-        v11 = 0;
+        textInputDelegate = 0;
       }
     }
   }
@@ -3308,34 +3308,34 @@ LABEL_11:
   v12 = objc_opt_respondsToSelector();
   if (v12)
   {
-    if (v11)
+    if (textInputDelegate)
     {
-      v13 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-      [v13 textWillChange:v11];
+      keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+      [keyboardStateDelegate textWillChange:textInputDelegate];
 
-      v14 = [v9 candidate];
-      [v11 _insertSupplementalItem:v8 forString:v14 replacementRange:v10];
+      candidate = [candidateCopy candidate];
+      [textInputDelegate _insertSupplementalItem:itemCopy forString:candidate replacementRange:rangeCopy];
 
-      v15 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-      [v15 textSuggestionDidChange:v11];
+      keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+      [keyboardStateDelegate2 textSuggestionDidChange:textInputDelegate];
     }
 
     else
     {
-      v15 = [v9 candidate];
-      [0 _insertSupplementalItem:v8 forString:v15 replacementRange:v10];
+      keyboardStateDelegate2 = [candidateCopy candidate];
+      [0 _insertSupplementalItem:itemCopy forString:keyboardStateDelegate2 replacementRange:rangeCopy];
     }
 
-    v18 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-    [v18 syncDocumentStateToInputDelegate];
+    keyboardStateDelegate3 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+    [keyboardStateDelegate3 syncDocumentStateToInputDelegate];
   }
 
   return v12 & 1;
 }
 
-- (BOOL)insertTextSuggestion:(id)a3
+- (BOOL)insertTextSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3348,51 +3348,51 @@ LABEL_11:
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
-  v6 = [(UIKBInputDelegateManager *)self webInputDelegate];
-  if (!v6)
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
+  if (!webInputDelegate)
   {
-    v6 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-    if (!v6)
+    webInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    if (!webInputDelegate)
     {
-      v6 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      if (!v6)
+      webInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+      if (!webInputDelegate)
       {
-        v7 = [(UIKBInputDelegateManager *)self delegateAsResponder];
-        if (!v7)
+        delegateAsResponder = [(UIKBInputDelegateManager *)self delegateAsResponder];
+        if (!delegateAsResponder)
         {
           goto LABEL_8;
         }
 
-        v22 = [(UIKBInputDelegateManager *)self delegateAsResponder];
-        v23 = [v22 conformsToProtocol:&unk_1EFE8B2D0];
+        delegateAsResponder2 = [(UIKBInputDelegateManager *)self delegateAsResponder];
+        v23 = [delegateAsResponder2 conformsToProtocol:&unk_1EFE8B2D0];
 
         if (!v23)
         {
-          v7 = 0;
+          delegateAsResponder = 0;
           goto LABEL_8;
         }
 
-        v6 = [(UIKBInputDelegateManager *)self delegateAsResponder];
+        webInputDelegate = [(UIKBInputDelegateManager *)self delegateAsResponder];
       }
     }
   }
 
-  v7 = v6;
-  if ((v6 == 0) | isKindOfClass & 1)
+  delegateAsResponder = webInputDelegate;
+  if ((webInputDelegate == 0) | isKindOfClass & 1)
   {
 LABEL_8:
     v8 = 1;
     goto LABEL_10;
   }
 
-  v9 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v9 textWillChange:v7];
+  keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate textWillChange:delegateAsResponder];
 
   v8 = 0;
 LABEL_10:
   if (objc_opt_respondsToSelector())
   {
-    [v7 insertTextSuggestion:v4 completionHandler:&__block_literal_global_1076];
+    [delegateAsResponder insertTextSuggestion:suggestionCopy completionHandler:&__block_literal_global_1076];
 LABEL_33:
     v13 = 1;
     goto LABEL_34;
@@ -3400,21 +3400,21 @@ LABEL_33:
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-    if (!v10)
+    if (!webInputDelegate2)
     {
-      v14 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-      if (v14)
+      if (asyncInputDelegate)
       {
-        v15 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-        [v15 insertTextSuggestion:v4];
+        asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+        [asyncInputDelegate2 insertTextSuggestion:suggestionCopy];
       }
 
       else
       {
-        [v7 insertTextSuggestion:v4];
+        [delegateAsResponder insertTextSuggestion:suggestionCopy];
       }
 
       goto LABEL_33;
@@ -3423,7 +3423,7 @@ LABEL_33:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v4;
+      v11 = suggestionCopy;
       v12 = [objc_alloc(getBEAutoFillTextSuggestionClass()) _initWithUIKitTextSuggestion:v11];
     }
 
@@ -3450,26 +3450,26 @@ LABEL_33:
 
         v25 = v24;
         _Block_object_dispose(&v30, 8);
-        v12 = [[v24 alloc] _initWithUIKitTextSuggestion:v4];
+        v12 = [[v24 alloc] _initWithUIKitTextSuggestion:suggestionCopy];
         goto LABEL_32;
       }
 
-      v11 = v4;
+      v11 = suggestionCopy;
       v16 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
-      v17 = [v11 username];
+      username = [v11 username];
 
-      if (v17)
+      if (username)
       {
-        v18 = [v11 username];
-        [v16 setObject:v18 forKeyedSubscript:@"username"];
+        username2 = [v11 username];
+        [v16 setObject:username2 forKeyedSubscript:@"username"];
       }
 
-      v19 = [v11 password];
+      password = [v11 password];
 
-      if (v19)
+      if (password)
       {
-        v20 = [v11 password];
-        [v16 setObject:v20 forKeyedSubscript:@"password"];
+        password2 = [v11 password];
+        [v16 setObject:password2 forKeyedSubscript:@"password"];
       }
 
       v21 = [UIAutoFillTextSuggestion autoFillSuggestionWithContents:v16];
@@ -3477,8 +3477,8 @@ LABEL_33:
     }
 
 LABEL_32:
-    v26 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    [v26 insertTextSuggestion:v12];
+    webInputDelegate3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    [webInputDelegate3 insertTextSuggestion:v12];
 
     goto LABEL_33;
   }
@@ -3486,15 +3486,15 @@ LABEL_32:
   v13 = 0;
 LABEL_34:
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 isSecureTextEntry])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [delegateAsResponder isSecureTextEntry])
   {
-    [v7 _forceObscureAllText];
+    [delegateAsResponder _forceObscureAllText];
   }
 
   if ((v8 & 1) == 0)
   {
-    v27 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-    [v27 textSuggestionDidChange:v7];
+    keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+    [keyboardStateDelegate2 textSuggestionDidChange:delegateAsResponder];
   }
 
   return v13;
@@ -3516,137 +3516,137 @@ void __49__UIKBInputDelegateManager_insertTextSuggestion___block_invoke(uint64_t
   }
 }
 
-- (void)insertAttributedText:(id)a3
+- (void)insertAttributedText:(id)text
 {
-  v26 = a3;
-  v4 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v5 = [v4 keyboardState];
-  v6 = [v5 documentState];
-  v7 = [v6 selectedText];
-  v8 = [v7 length];
+  textCopy = text;
+  keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  keyboardState = [keyboardStateDelegate keyboardState];
+  documentState = [keyboardState documentState];
+  selectedText = [documentState selectedText];
+  v8 = [selectedText length];
 
   [(UIKBInputDelegateManager *)self setInsideKeyInputDelegateCall:1];
-  v9 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-  v10 = [(UIKBInputDelegateManager *)self selectableDelegate];
-  v11 = [(UIKBInputDelegateManager *)self privateInputDelegate];
-  LOBYTE(v7) = objc_opt_respondsToSelector();
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+  privateInputDelegate = [(UIKBInputDelegateManager *)self privateInputDelegate];
+  LOBYTE(selectedText) = objc_opt_respondsToSelector();
 
-  if (v7)
+  if (selectedText)
   {
-    v12 = [(UIKBInputDelegateManager *)self privateInputDelegate];
-    [v12 insertAttributedText:v26];
+    privateInputDelegate2 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+    [privateInputDelegate2 insertAttributedText:textCopy];
     goto LABEL_10;
   }
 
-  if (v9 != v10)
+  if (keyInputDelegate != selectableDelegate)
   {
-    v13 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
 
-    if (!v13)
+    if (!textInputDelegate)
     {
-      v12 = [v26 string];
+      privateInputDelegate2 = [textCopy string];
       goto LABEL_8;
     }
   }
 
-  v12 = [v26 string];
-  if (!v10)
+  privateInputDelegate2 = [textCopy string];
+  if (!selectableDelegate)
   {
 LABEL_8:
-    v14 = v9;
+    v14 = keyInputDelegate;
     goto LABEL_9;
   }
 
-  v14 = v10;
+  v14 = selectableDelegate;
 LABEL_9:
-  [v14 insertText:v12];
+  [v14 insertText:privateInputDelegate2];
 LABEL_10:
 
-  v15 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v15 updateTextInputKeyboardSource];
+  keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate2 updateTextInputKeyboardSource];
 
   [(UIKBInputDelegateManager *)self setInsideKeyInputDelegateCall:0];
-  v16 = [v26 length];
+  v16 = [textCopy length];
   if (v16)
   {
     v17 = v16;
-    v18 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-    v19 = [v26 string];
-    v20 = [v19 substringWithRange:{0, v17}];
-    [v18 updateKeyboardStateForInsertion:v20];
+    keyboardStateDelegate3 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+    string = [textCopy string];
+    v20 = [string substringWithRange:{0, v17}];
+    [keyboardStateDelegate3 updateKeyboardStateForInsertion:v20];
   }
 
-  v21 = [(UIKBInputDelegateManager *)self privateInputDelegate];
-  v22 = [v21 _textInputSource];
+  privateInputDelegate3 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+  _textInputSource = [privateInputDelegate3 _textInputSource];
 
-  if (v22 != 2)
+  if (_textInputSource != 2)
   {
     v23 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v24 = [v23 _textInputSessionAnalytics];
-    v25 = [v26 string];
-    [v24 didInsertText:v25 relativeRangeBefore:{0, v8}];
+    _textInputSessionAnalytics = [v23 _textInputSessionAnalytics];
+    string2 = [textCopy string];
+    [_textInputSessionAnalytics didInsertText:string2 relativeRangeBefore:{0, v8}];
   }
 }
 
-- (void)insertDictationResult:(id)a3
+- (void)insertDictationResult:(id)result
 {
-  v4 = a3;
-  v7 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  resultCopy = result;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 insertDictationResult:v4];
+    [textInputDelegate insertDictationResult:resultCopy];
   }
 
   else
   {
-    v5 = [v4 firstObject];
+    firstObject = [resultCopy firstObject];
 
-    v6 = [v5 text];
-    [v7 insertText:v6];
+    text = [firstObject text];
+    [textInputDelegate insertText:text];
 
-    v4 = v5;
+    resultCopy = firstObject;
   }
 }
 
 - (BOOL)requiresKeyEvents
 {
-  v3 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-    v5 = [v4 requiresKeyEvents];
+    keyInputDelegate2 = [(UIKBInputDelegateManager *)self keyInputDelegate];
+    requiresKeyEvents = [keyInputDelegate2 requiresKeyEvents];
   }
 
   else
   {
-    v5 = 0;
+    requiresKeyEvents = 0;
   }
 
-  return v5;
+  return requiresKeyEvents;
 }
 
-- (void)handleKeyWebEvent:(id)a3
+- (void)handleKeyWebEvent:(id)event
 {
-  v7 = a3;
-  v4 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+  eventCopy = event;
+  privateInputDelegate = [(UIKBInputDelegateManager *)self privateInputDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIKBInputDelegateManager *)self privateInputDelegate];
-    [v6 handleKeyWebEvent:v7];
+    privateInputDelegate2 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+    [privateInputDelegate2 handleKeyWebEvent:eventCopy];
   }
 }
 
-- (void)handleKeyWebEvent:(id)a3 withCompletionHandler:(id)a4
+- (void)handleKeyWebEvent:(id)event withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  eventCopy = event;
+  handlerCopy = handler;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v8)
+  if (webInputDelegate)
   {
-    v9 = [[UIKeyEvent alloc] initWithWebEvent:v6];
+    v9 = [[UIKeyEvent alloc] initWithWebEvent:eventCopy];
     v30 = 0;
     v31 = &v30;
     v32 = 0x2050000000;
@@ -3666,35 +3666,35 @@ LABEL_10:
     v11 = v10;
     _Block_object_dispose(&v30, 8);
     v12 = [[v10 alloc] _initWithUIKitKeyEvent:v9];
-    v13 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __68__UIKBInputDelegateManager_handleKeyWebEvent_withCompletionHandler___block_invoke;
     v23[3] = &unk_1E7109458;
-    v24 = v7;
-    [v13 handleKeyEntry:v12 withCompletionHandler:v23];
+    v24 = handlerCopy;
+    [webInputDelegate2 handleKeyEntry:v12 withCompletionHandler:v23];
 
     goto LABEL_7;
   }
 
-  v14 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-  if (v14)
+  if (asyncInputDelegate)
   {
-    v9 = [[UIKeyEvent alloc] initWithWebEvent:v6];
-    v15 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    v9 = [[UIKeyEvent alloc] initWithWebEvent:eventCopy];
+    asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __68__UIKBInputDelegateManager_handleKeyWebEvent_withCompletionHandler___block_invoke_2;
     v21[3] = &unk_1E7109480;
-    v22 = v7;
-    [v15 handleAsyncKeyEvent:v9 withCompletionHandler:v21];
+    v22 = handlerCopy;
+    [asyncInputDelegate2 handleAsyncKeyEvent:v9 withCompletionHandler:v21];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v16 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+  privateInputDelegate = [(UIKBInputDelegateManager *)self privateInputDelegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
@@ -3710,19 +3710,19 @@ LABEL_7:
 
     else
     {
-      v18 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+      privateInputDelegate2 = [(UIKBInputDelegateManager *)self privateInputDelegate];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __68__UIKBInputDelegateManager_handleKeyWebEvent_withCompletionHandler___block_invoke_1087;
       v19[3] = &unk_1E71094A8;
-      v20 = v7;
-      [v18 handleKeyWebEvent:v6 withCompletionHandler:v19];
+      v20 = handlerCopy;
+      [privateInputDelegate2 handleKeyWebEvent:eventCopy withCompletionHandler:v19];
     }
   }
 
   else
   {
-    (*(v7 + 2))(v7, v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, eventCopy, 0);
   }
 
 LABEL_8:
@@ -3743,171 +3743,171 @@ void __68__UIKBInputDelegateManager_handleKeyWebEvent_withCompletionHandler___bl
   (*(v4 + 16))(v4, v5, a3);
 }
 
-- (void)_setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)_setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(UIKBInputDelegateManager *)self selectableDelegate];
-  [v8 _setMarkedText:v7 selectedRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+  [selectableDelegate _setMarkedText:textCopy selectedRange:{location, length}];
 }
 
-- (void)_moveCurrentSelection:(int)a3
+- (void)_moveCurrentSelection:(int)selection
 {
-  v3 = *&a3;
-  v5 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  v3 = *&selection;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v5)
+  if (webInputDelegate)
   {
-    v6 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
 LABEL_7:
-    v9 = v6;
-    [v6 moveByOffset:v3];
+    textInputDelegate = webInputDelegate2;
+    [webInputDelegate2 moveByOffset:v3];
     goto LABEL_8;
   }
 
-  v7 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-  if (v7)
+  if (asyncInputDelegate)
   {
-    v6 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     goto LABEL_7;
   }
 
-  v8 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+  asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-  if (v8)
+  if (asyncWebKitInteractionDelegate)
   {
-    v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     goto LABEL_7;
   }
 
-  v9 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  [v9 _moveCurrentSelection:v3];
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  [textInputDelegate _moveCurrentSelection:v3];
 LABEL_8:
 }
 
-- (void)_deleteBackwardAndNotify:(BOOL)a3 reinsertText:(BOOL)a4 overrideOriginalContextBeforeInputWith:(id)a5
+- (void)_deleteBackwardAndNotify:(BOOL)notify reinsertText:(BOOL)text overrideOriginalContextBeforeInputWith:(id)with
 {
-  v46 = a3;
-  v7 = a5;
-  v8 = v7;
-  if (v7)
+  notifyCopy = notify;
+  withCopy = with;
+  v8 = withCopy;
+  if (withCopy)
   {
-    v9 = v7;
+    v9 = withCopy;
   }
 
   else
   {
-    v10 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-    v11 = [v10 documentState];
-    v12 = [v11 contextBeforeInput];
-    v9 = [v12 copy];
+    keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+    documentState = [keyboardStateDelegate documentState];
+    contextBeforeInput = [documentState contextBeforeInput];
+    v9 = [contextBeforeInput copy];
   }
 
   v13 = [v9 length];
-  v14 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v15 = [v14 documentState];
-  v16 = [v15 markedText];
-  v48 = [v16 length];
+  keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  documentState2 = [keyboardStateDelegate2 documentState];
+  markedText = [documentState2 markedText];
+  v48 = [markedText length];
 
   [(UIKBInputDelegateManager *)self setInsideKeyInputDelegateCall:1];
-  v17 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+  legacyInputDelegate = [(UIKBInputDelegateManager *)self legacyInputDelegate];
 
   v49 = v13;
   v50 = v9;
-  if (v17)
+  if (legacyInputDelegate)
   {
     v18 = 0;
   }
 
   else
   {
-    v19 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v20 = v19;
-    if (a4)
+    textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+    v20 = textInputDelegate;
+    if (text)
     {
       v51 = 0;
-      [v19 _expandSelectionToBackwardDeletionClusterWithReinsertionOut:&v51];
+      [textInputDelegate _expandSelectionToBackwardDeletionClusterWithReinsertionOut:&v51];
       v18 = v51;
     }
 
     else
     {
-      [v19 _expandSelectionToBackwardDeletionClusterWithReinsertionOut:0];
+      [textInputDelegate _expandSelectionToBackwardDeletionClusterWithReinsertionOut:0];
       v18 = 0;
     }
   }
 
-  v21 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v22 = [v21 keyboardState];
-  v23 = [v22 documentState];
-  v24 = [v23 selectedText];
-  v25 = [v24 copy];
+  keyboardStateDelegate3 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  keyboardState = [keyboardStateDelegate3 keyboardState];
+  documentState3 = [keyboardState documentState];
+  selectedText = [documentState3 selectedText];
+  v25 = [selectedText copy];
 
   v47 = [v25 length];
-  v26 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-  v27 = [(UIKBInputDelegateManager *)self selectableDelegate];
-  v28 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-  v29 = [(UIKBInputDelegateManager *)self webInputDelegate];
-  v30 = v29;
-  if (v29)
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
+  v30 = webInputDelegate;
+  if (webInputDelegate)
   {
     goto LABEL_13;
   }
 
-  if (v28)
+  if (asyncInputDelegate)
   {
-    v29 = v28;
+    webInputDelegate = asyncInputDelegate;
 LABEL_13:
-    [v29 deleteInDirection:1 toGranularity:0];
+    [webInputDelegate deleteInDirection:1 toGranularity:0];
     goto LABEL_14;
   }
 
-  if ((v26 == v27 || ([(UIKBInputDelegateManager *)self textInputDelegate], v44 = objc_claimAutoreleasedReturnValue(), v44, v44)) && v27)
+  if ((keyInputDelegate == selectableDelegate || ([(UIKBInputDelegateManager *)self textInputDelegate], v44 = objc_claimAutoreleasedReturnValue(), v44, v44)) && selectableDelegate)
   {
-    [v27 _deleteBackwardAndNotify:v46];
+    [selectableDelegate _deleteBackwardAndNotify:notifyCopy];
     if (!v18)
     {
       goto LABEL_15;
     }
 
-    [v27 insertText:v18];
+    [selectableDelegate insertText:v18];
   }
 
   else
   {
-    [v26 _deleteBackwardAndNotify:v46];
+    [keyInputDelegate _deleteBackwardAndNotify:notifyCopy];
   }
 
 LABEL_14:
 
 LABEL_15:
-  v31 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v31 updateTextInputKeyboardSource];
+  keyboardStateDelegate4 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate4 updateTextInputKeyboardSource];
 
   [(UIKBInputDelegateManager *)self setInsideKeyInputDelegateCall:0];
-  v32 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v33 = [v32 documentState];
-  v34 = [v33 contextBeforeInput];
-  v35 = [v34 length];
+  keyboardStateDelegate5 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  documentState4 = [keyboardStateDelegate5 documentState];
+  contextBeforeInput2 = [documentState4 contextBeforeInput];
+  v35 = [contextBeforeInput2 length];
 
-  v36 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v37 = [v36 documentState];
-  v38 = [v37 markedText];
-  v39 = [v38 length];
+  keyboardStateDelegate6 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  documentState5 = [keyboardStateDelegate6 documentState];
+  markedText2 = [documentState5 markedText];
+  v39 = [markedText2 length];
 
   if (v49 == v35 && v48 == v39)
   {
-    v40 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-    [v40 updateKeyboardStateForDeletion];
+    keyboardStateDelegate7 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+    [keyboardStateDelegate7 updateKeyboardStateForDeletion];
   }
 
-  v41 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v42 = [v41 documentState];
-  v43 = [v42 markedText];
+  keyboardStateDelegate8 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  documentState6 = [keyboardStateDelegate8 documentState];
+  markedText3 = [documentState6 markedText];
 
-  if (!v43)
+  if (!markedText3)
   {
     if (v47)
     {
@@ -3922,31 +3922,31 @@ LABEL_15:
   }
 }
 
-- (void)_deleteBackwardWhileOverridingContextAndNotifyAtEnd:(BOOL)a3 deletionCount:(unint64_t)a4 reinsertTextInLoop:(BOOL)a5
+- (void)_deleteBackwardWhileOverridingContextAndNotifyAtEnd:(BOOL)end deletionCount:(unint64_t)count reinsertTextInLoop:(BOOL)loop
 {
-  v5 = a5;
-  v7 = a3;
-  v9 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v10 = [v9 documentState];
-  v11 = [v10 copy];
+  loopCopy = loop;
+  endCopy = end;
+  keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  documentState = [keyboardStateDelegate documentState];
+  v11 = [documentState copy];
 
-  v12 = a4 - v7;
-  if (a4 != v7)
+  v12 = count - endCopy;
+  if (count != endCopy)
   {
     do
     {
-      v13 = [v11 contextBeforeInput];
-      [(UIKBInputDelegateManager *)self _deleteBackwardAndNotify:0 reinsertText:v5 overrideOriginalContextBeforeInputWith:v13];
+      contextBeforeInput = [v11 contextBeforeInput];
+      [(UIKBInputDelegateManager *)self _deleteBackwardAndNotify:0 reinsertText:loopCopy overrideOriginalContextBeforeInputWith:contextBeforeInput];
 
-      v16 = [v11 documentStateAfterDeletingBackward];
+      documentStateAfterDeletingBackward = [v11 documentStateAfterDeletingBackward];
 
-      v14 = v16;
-      v11 = v16;
+      v14 = documentStateAfterDeletingBackward;
+      v11 = documentStateAfterDeletingBackward;
       --v12;
     }
 
     while (v12);
-    if ((v7 & 1) == 0)
+    if ((endCopy & 1) == 0)
     {
       goto LABEL_5;
     }
@@ -3955,12 +3955,12 @@ LABEL_15:
   }
 
   v14 = v11;
-  if (v7)
+  if (endCopy)
   {
 LABEL_4:
     v17 = v14;
-    v15 = [v14 contextBeforeInput];
-    [(UIKBInputDelegateManager *)self _deleteBackwardAndNotify:1 reinsertText:0 overrideOriginalContextBeforeInputWith:v15];
+    contextBeforeInput2 = [v14 contextBeforeInput];
+    [(UIKBInputDelegateManager *)self _deleteBackwardAndNotify:1 reinsertText:0 overrideOriginalContextBeforeInputWith:contextBeforeInput2];
 
     v14 = v17;
   }
@@ -3970,22 +3970,22 @@ LABEL_5:
 
 - (void)_deleteByWord
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v5)
+    if (!asyncInputDelegate)
     {
-      v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (v6)
+      if (asyncWebKitInteractionDelegate)
       {
         [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       }
@@ -3999,32 +3999,32 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
   }
 
-  v7 = v4;
-  [v4 deleteInDirection:1 toGranularity:1];
+  v7 = webInputDelegate2;
+  [webInputDelegate2 deleteInDirection:1 toGranularity:1];
 LABEL_6:
 }
 
 - (void)_deleteForwardByWord
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v5)
+    if (!asyncInputDelegate)
     {
-      v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (v6)
+      if (asyncWebKitInteractionDelegate)
       {
         [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       }
@@ -4038,32 +4038,32 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
   }
 
-  v7 = v4;
-  [v4 deleteInDirection:0 toGranularity:1];
+  v7 = webInputDelegate2;
+  [webInputDelegate2 deleteInDirection:0 toGranularity:1];
 LABEL_6:
 }
 
 - (void)_deleteToStartOfLine
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v5)
+    if (!asyncInputDelegate)
     {
-      v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (v6)
+      if (asyncWebKitInteractionDelegate)
       {
         [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       }
@@ -4077,32 +4077,32 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
   }
 
-  v7 = v4;
-  [v4 deleteInDirection:1 toGranularity:4];
+  v7 = webInputDelegate2;
+  [webInputDelegate2 deleteInDirection:1 toGranularity:4];
 LABEL_6:
 }
 
 - (void)_deleteToEndOfLine
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v5)
+    if (!asyncInputDelegate)
     {
-      v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (v6)
+      if (asyncWebKitInteractionDelegate)
       {
         [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       }
@@ -4116,32 +4116,32 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
   }
 
-  v7 = v4;
-  [v4 deleteInDirection:0 toGranularity:4];
+  v7 = webInputDelegate2;
+  [webInputDelegate2 deleteInDirection:0 toGranularity:4];
 LABEL_6:
 }
 
 - (void)_deleteToEndOfParagraph
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v5)
+    if (!asyncInputDelegate)
     {
-      v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (v6)
+      if (asyncWebKitInteractionDelegate)
       {
         [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       }
@@ -4155,15 +4155,15 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
   }
 
-  v7 = v4;
-  [v4 deleteInDirection:0 toGranularity:3];
+  v7 = webInputDelegate2;
+  [webInputDelegate2 deleteInDirection:0 toGranularity:3];
 LABEL_6:
 }
 
-- (BOOL)_deleteForwardAndNotify:(BOOL)a3
+- (BOOL)_deleteForwardAndNotify:(BOOL)notify
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -4171,9 +4171,9 @@ LABEL_6:
   aBlock[3] = &unk_1E7103900;
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
-  v5 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v5 || ([(UIKBInputDelegateManager *)self asyncInputDelegate], v6 = objc_claimAutoreleasedReturnValue(), v6, v6) || ([(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate], v7 = objc_claimAutoreleasedReturnValue(), v7, v7) || ([(UIKBInputDelegateManager *)self textInputDelegate], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  if (webInputDelegate || ([(UIKBInputDelegateManager *)self asyncInputDelegate], v6 = objc_claimAutoreleasedReturnValue(), v6, v6) || ([(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate], v7 = objc_claimAutoreleasedReturnValue(), v7, v7) || ([(UIKBInputDelegateManager *)self textInputDelegate], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
     v4[2](v4);
     v9 = 1;
@@ -4235,122 +4235,122 @@ void __52__UIKBInputDelegateManager__deleteForwardAndNotify___block_invoke_5(uin
 
 - (unint64_t)_textLengthToDeleteBeforeSelectedRangeForSmartDelete
 {
-  v2 = [(UIKBInputDelegateManager *)self selectableDelegate];
-  if (v2 && (objc_opt_respondsToSelector() & 1) != 0)
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+  if (selectableDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v2 _textLengthToDeleteBeforeSelectedRangeForSmartDelete];
+    _textLengthToDeleteBeforeSelectedRangeForSmartDelete = [selectableDelegate _textLengthToDeleteBeforeSelectedRangeForSmartDelete];
   }
 
   else
   {
-    v3 = 0;
+    _textLengthToDeleteBeforeSelectedRangeForSmartDelete = 0;
   }
 
-  return v3;
+  return _textLengthToDeleteBeforeSelectedRangeForSmartDelete;
 }
 
 - (id)__content
 {
-  v2 = [(UIKBInputDelegateManager *)self privateInputDelegate];
-  v3 = [v2 _proxyTextInput];
+  privateInputDelegate = [(UIKBInputDelegateManager *)self privateInputDelegate];
+  _proxyTextInput = [privateInputDelegate _proxyTextInput];
 
-  return v3;
+  return _proxyTextInput;
 }
 
-- (id)_textRangeFromNSRange:(_NSRange)a3
+- (id)_textRangeFromNSRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v6 = [v5 _textRangeFromNSRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  v6 = [textInputDelegate _textRangeFromNSRange:{location, length}];
 
   return v6;
 }
 
-- (void)_setSelectionToPosition:(id)a3
+- (void)_setSelectionToPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  [v5 _setSelectionToPosition:v4];
+  positionCopy = position;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  [textInputDelegate _setSelectionToPosition:positionCopy];
 }
 
 - (BOOL)_selectionAtDocumentStart
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    v5 = [v4 isSelectionAtDocumentStart];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    isSelectionAtDocumentStart = [webInputDelegate2 isSelectionAtDocumentStart];
   }
 
   else
   {
-    v6 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v6)
+    if (asyncInputDelegate)
     {
-      v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-      v5 = [v4 selectionAtDocumentStart];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      isSelectionAtDocumentStart = [webInputDelegate2 selectionAtDocumentStart];
     }
 
     else
     {
-      v4 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v5 = [v4 _selectionAtDocumentStart];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      isSelectionAtDocumentStart = [webInputDelegate2 _selectionAtDocumentStart];
     }
   }
 
-  v7 = v5;
+  v7 = isSelectionAtDocumentStart;
 
   return v7;
 }
 
-- (void)applyAutocorrection:(id)a3 toString:(id)a4 withCompletionHandler:(id)a5
+- (void)applyAutocorrection:(id)autocorrection toString:(id)string withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  autocorrectionCopy = autocorrection;
+  stringCopy = string;
+  handlerCopy = handler;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v11)
+  if (webInputDelegate)
   {
-    v12 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __79__UIKBInputDelegateManager_applyAutocorrection_toString_withCompletionHandler___block_invoke;
     v19[3] = &unk_1E70FDA40;
     v13 = &v20;
-    v20 = v10;
-    [v12 replaceText:v8 withText:v9 options:0 completionHandler:v19];
+    v20 = handlerCopy;
+    [webInputDelegate2 replaceText:autocorrectionCopy withText:stringCopy options:0 completionHandler:v19];
   }
 
   else
   {
-    v14 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v14)
+    if (asyncInputDelegate)
     {
-      v12 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __79__UIKBInputDelegateManager_applyAutocorrection_toString_withCompletionHandler___block_invoke_2;
       v17[3] = &unk_1E70FDA40;
       v13 = &v18;
-      v18 = v10;
-      [v12 replaceText:v8 withText:v9 options:0 withCompletionHandler:v17];
+      v18 = handlerCopy;
+      [webInputDelegate2 replaceText:autocorrectionCopy withText:stringCopy options:0 withCompletionHandler:v17];
     }
 
     else
     {
-      v12 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __79__UIKBInputDelegateManager_applyAutocorrection_toString_withCompletionHandler___block_invoke_3;
       v15[3] = &unk_1E70FDA68;
       v13 = &v16;
-      v16 = v10;
-      [v12 applyAutocorrection:v8 toString:v9 withCompletionHandler:v15];
+      v16 = handlerCopy;
+      [webInputDelegate2 applyAutocorrection:autocorrectionCopy toString:stringCopy withCompletionHandler:v15];
     }
   }
 }
@@ -4391,61 +4391,61 @@ uint64_t __79__UIKBInputDelegateManager_applyAutocorrection_toString_withComplet
   return result;
 }
 
-- (void)applyAutocorrection:(id)a3 toString:(id)a4 shouldUnderline:(BOOL)a5 withCompletionHandler:(id)a6
+- (void)applyAutocorrection:(id)autocorrection toString:(id)string shouldUnderline:(BOOL)underline withCompletionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  underlineCopy = underline;
+  autocorrectionCopy = autocorrection;
+  stringCopy = string;
+  handlerCopy = handler;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v13)
+  if (webInputDelegate)
   {
-    v14 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __95__UIKBInputDelegateManager_applyAutocorrection_toString_shouldUnderline_withCompletionHandler___block_invoke;
     v24[3] = &unk_1E70FDA40;
-    v25 = v12;
-    [v14 replaceText:v11 withText:v10 options:v7 completionHandler:v24];
+    v25 = handlerCopy;
+    [webInputDelegate2 replaceText:stringCopy withText:autocorrectionCopy options:underlineCopy completionHandler:v24];
 
     v15 = v25;
   }
 
   else
   {
-    v16 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v16)
+    if (asyncInputDelegate)
     {
-      v17 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __95__UIKBInputDelegateManager_applyAutocorrection_toString_shouldUnderline_withCompletionHandler___block_invoke_2;
       v22[3] = &unk_1E70FDA40;
-      v23 = v12;
-      [v17 replaceText:v11 withText:v10 options:v7 withCompletionHandler:v22];
+      v23 = handlerCopy;
+      [asyncInputDelegate2 replaceText:stringCopy withText:autocorrectionCopy options:underlineCopy withCompletionHandler:v22];
 
       v15 = v23;
     }
 
     else
     {
-      v18 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (!v18)
+      if (!asyncWebKitInteractionDelegate)
       {
-        [(UIKBInputDelegateManager *)self applyAutocorrection:v10 toString:v11 withCompletionHandler:v12];
+        [(UIKBInputDelegateManager *)self applyAutocorrection:autocorrectionCopy toString:stringCopy withCompletionHandler:handlerCopy];
         goto LABEL_8;
       }
 
-      v19 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __95__UIKBInputDelegateManager_applyAutocorrection_toString_shouldUnderline_withCompletionHandler___block_invoke_3;
       v20[3] = &unk_1E70FDA68;
-      v21 = v12;
-      [v19 applyAutocorrection:v10 toString:v11 shouldUnderline:v7 withCompletionHandler:v20];
+      v21 = handlerCopy;
+      [asyncWebKitInteractionDelegate2 applyAutocorrection:autocorrectionCopy toString:stringCopy shouldUnderline:underlineCopy withCompletionHandler:v20];
 
       v15 = v21;
     }
@@ -4492,103 +4492,103 @@ uint64_t __95__UIKBInputDelegateManager_applyAutocorrection_toString_shouldUnder
 
 - (BOOL)shouldSuppressUpdateCandidateView
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v5)
+    if (!asyncInputDelegate)
     {
-      v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       if (objc_opt_respondsToSelector())
       {
-        v7 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+        asyncWebKitInteractionDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
         goto LABEL_7;
       }
 
 LABEL_10:
-      v9 = 0;
+      shouldSuppressUpdateCandidateView = 0;
       goto LABEL_11;
     }
 
-    v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
   }
 
-  v6 = v4;
+  asyncWebKitInteractionDelegate = webInputDelegate2;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  v7 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncWebKitInteractionDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 LABEL_7:
-  v8 = v7;
-  v9 = [v7 shouldSuppressUpdateCandidateView];
+  v8 = asyncWebKitInteractionDelegate2;
+  shouldSuppressUpdateCandidateView = [asyncWebKitInteractionDelegate2 shouldSuppressUpdateCandidateView];
 
 LABEL_11:
+  return shouldSuppressUpdateCandidateView;
+}
+
+- (id)_rangeOfText:(id)text endingAtPosition:(id)position
+{
+  positionCopy = position;
+  textCopy = text;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  v9 = [textInputDelegate _rangeOfText:textCopy endingAtPosition:positionCopy];
+
   return v9;
 }
 
-- (id)_rangeOfText:(id)a3 endingAtPosition:(id)a4
+- (BOOL)_range:(id)_range intersectsRange:(id)range
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v9 = [v8 _rangeOfText:v7 endingAtPosition:v6];
-
-  return v9;
-}
-
-- (BOOL)_range:(id)a3 intersectsRange:(id)a4
-{
-  if (!a3 || !a4)
+  if (!_range || !range)
   {
     return 0;
   }
 
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v9 = [v8 _range:v7 intersectsRange:v6];
+  rangeCopy = range;
+  _rangeCopy = _range;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  v9 = [textInputDelegate _range:_rangeCopy intersectsRange:rangeCopy];
 
   return v9;
 }
 
-- (void)requestDocumentContext:(id)a3 completionHandler:(id)a4
+- (void)requestDocumentContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  contextCopy = context;
+  handlerCopy = handler;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (!v8)
+  if (!webInputDelegate)
   {
-    v14 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v14)
+    if (asyncInputDelegate)
     {
-      v15 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
 
     else
     {
-      v16 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (!v16)
+      if (!asyncWebKitInteractionDelegate)
       {
         goto LABEL_10;
       }
 
-      v15 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     }
 
-    v17 = v15;
-    [v15 requestDocumentContext:v6 completionHandler:v7];
+    v17 = asyncInputDelegate2;
+    [asyncInputDelegate2 requestDocumentContext:contextCopy completionHandler:handlerCopy];
 
     goto LABEL_10;
   }
@@ -4611,12 +4611,12 @@ LABEL_11:
 
   v10 = v9;
   _Block_object_dispose(&v24, 8);
-  v11 = [[v9 alloc] _initWithUIKitDocumentRequest:v6];
+  v11 = [[v9 alloc] _initWithUIKitDocumentRequest:contextCopy];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __69__UIKBInputDelegateManager_requestDocumentContext_completionHandler___block_invoke;
   v21 = &unk_1E71094D0;
-  v22 = v7;
+  v22 = handlerCopy;
   v12 = _Block_copy(&v18);
   v13 = [(UIKBInputDelegateManager *)self webInputDelegate:v18];
   [v13 requestDocumentContext:v11 completionHandler:v12];
@@ -4630,31 +4630,31 @@ void __69__UIKBInputDelegateManager_requestDocumentContext_completionHandler___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)requestTextContextForAutocorrectionWithCompletionHandler:(id)a3
+- (void)requestTextContextForAutocorrectionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  handlerCopy = handler;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v5)
+  if (webInputDelegate)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __85__UIKBInputDelegateManager_requestTextContextForAutocorrectionWithCompletionHandler___block_invoke;
     aBlock[3] = &unk_1E71094D0;
-    v11 = v4;
+    v11 = handlerCopy;
     v6 = _Block_copy(aBlock);
-    v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    [v7 requestTextContextForAutocorrectionWithCompletionHandler:v6];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    [webInputDelegate2 requestTextContextForAutocorrectionWithCompletionHandler:v6];
   }
 
   else
   {
-    v8 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v8)
+    if (asyncInputDelegate)
     {
-      v9 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-      [v9 requestTextContextForAutocorrectionWithCompletionHandler:v4];
+      asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      [asyncInputDelegate2 requestTextContextForAutocorrectionWithCompletionHandler:handlerCopy];
     }
   }
 }
@@ -4665,88 +4665,88 @@ void __85__UIKBInputDelegateManager_requestTextContextForAutocorrectionWithCompl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)adjustSelection:(id)a3 completionHandler:(id)a4
+- (void)adjustSelection:(id)selection completionHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v10 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  var1 = selection.var1;
+  var0 = selection.var0;
+  handlerCopy = handler;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    [v8 adjustSelectionByRange:var0 completionHandler:{var1, v10}];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    [webInputDelegate2 adjustSelectionByRange:var0 completionHandler:{var1, handlerCopy}];
   }
 
   else
   {
-    v9 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v9)
+    if (asyncInputDelegate)
     {
-      v8 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-      [v8 adjustSelection:var0 completionHandler:{var1, v10}];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      [webInputDelegate2 adjustSelection:var0 completionHandler:{var1, handlerCopy}];
     }
 
     else
     {
-      v8 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
-      [v8 adjustSelectionWithDelta:var0 completionHandler:{var1, v10}];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      [webInputDelegate2 adjustSelectionWithDelta:var0 completionHandler:{var1, handlerCopy}];
     }
   }
 }
 
-- (void)requestTextRectsForString:(id)a3 withCompletionHandler:(id)a4
+- (void)requestTextRectsForString:(id)string withCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  stringCopy = string;
+  handlerCopy = handler;
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
 LABEL_5:
-    v10 = v8;
-    [v8 requestTextRectsForString:v11 withCompletionHandler:v6];
+    v10 = webInputDelegate2;
+    [webInputDelegate2 requestTextRectsForString:stringCopy withCompletionHandler:handlerCopy];
     goto LABEL_6;
   }
 
-  v9 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-  if (v9)
+  if (asyncInputDelegate)
   {
-    v8 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     goto LABEL_5;
   }
 
   v10 = objc_opt_new();
-  v6[2](v6, v10);
+  handlerCopy[2](handlerCopy, v10);
 LABEL_6:
 }
 
 - (CGRect)textFirstRect
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v5)
+    if (asyncInputDelegate)
     {
-      v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
 
     else
     {
-      v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (!v6)
+      if (!asyncWebKitInteractionDelegate)
       {
         v9 = *MEMORY[0x1E695F050];
         v11 = *(MEMORY[0x1E695F050] + 8);
@@ -4755,12 +4755,12 @@ LABEL_6:
         goto LABEL_8;
       }
 
-      v4 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     }
   }
 
-  v7 = v4;
-  [v4 textFirstRect];
+  v7 = webInputDelegate2;
+  [webInputDelegate2 textFirstRect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -4780,27 +4780,27 @@ LABEL_8:
 
 - (CGRect)textLastRect
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v3)
+  if (webInputDelegate)
   {
-    v4 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v5)
+    if (asyncInputDelegate)
     {
-      v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
 
     else
     {
-      v6 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (!v6)
+      if (!asyncWebKitInteractionDelegate)
       {
         v9 = *MEMORY[0x1E695F050];
         v11 = *(MEMORY[0x1E695F050] + 8);
@@ -4809,12 +4809,12 @@ LABEL_8:
         goto LABEL_8;
       }
 
-      v4 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     }
   }
 
-  v7 = v4;
-  [v4 textLastRect];
+  v7 = webInputDelegate2;
+  [webInputDelegate2 textLastRect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -4834,43 +4834,43 @@ LABEL_8:
 
 - (BOOL)callKeyboardWillDismiss
 {
-  v3 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UIKBInputDelegateManager *)self webInputDelegate];
-    [v5 keyboardWillDismiss];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    [webInputDelegate2 keyboardWillDismiss];
   }
 
   return v4 & 1;
 }
 
-- (void)insertText:(id)a3 updateInputSource:(BOOL)a4
+- (void)insertText:(id)text updateInputSource:(BOOL)source
 {
-  v4 = a4;
-  v51 = a3;
-  v6 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v7 = [v6 keyboardState];
-  v8 = [v7 documentState];
-  v9 = [v8 selectedText];
-  v10 = [v9 copy];
+  sourceCopy = source;
+  textCopy = text;
+  keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  keyboardState = [keyboardStateDelegate keyboardState];
+  documentState = [keyboardState documentState];
+  selectedText = [documentState selectedText];
+  v10 = [selectedText copy];
 
-  v11 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v12 = [v11 keyboardState];
-  v13 = [v12 documentState];
-  v14 = [v13 selectedText];
-  v15 = [v14 length];
+  keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  keyboardState2 = [keyboardStateDelegate2 keyboardState];
+  documentState2 = [keyboardState2 documentState];
+  selectedText2 = [documentState2 selectedText];
+  v15 = [selectedText2 length];
 
   [(UIKBInputDelegateManager *)self setInsideKeyInputDelegateCall:1];
-  v16 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-  v17 = [(UIKBInputDelegateManager *)self selectableDelegate];
-  v18 = [(UIKBInputDelegateManager *)self privateKeyInputDelegate];
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+  privateKeyInputDelegate = [(UIKBInputDelegateManager *)self privateKeyInputDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v18 insertFilteredText:v51];
+    v19 = [privateKeyInputDelegate insertFilteredText:textCopy];
     v21 = v20;
-    if (!v4)
+    if (!sourceCopy)
     {
       goto LABEL_11;
     }
@@ -4878,39 +4878,39 @@ LABEL_8:
 
   else
   {
-    if ((v16 == v17 || ([(UIKBInputDelegateManager *)self textInputDelegate], v22 = objc_claimAutoreleasedReturnValue(), v22, v22)) && v17)
+    if ((keyInputDelegate == selectableDelegate || ([(UIKBInputDelegateManager *)self textInputDelegate], v22 = objc_claimAutoreleasedReturnValue(), v22, v22)) && selectableDelegate)
     {
-      v23 = v17;
+      v23 = selectableDelegate;
     }
 
     else
     {
-      v23 = v16;
+      v23 = keyInputDelegate;
     }
 
-    [v23 insertText:v51];
-    v21 = [v51 length];
+    [v23 insertText:textCopy];
+    v21 = [textCopy length];
     v19 = 0;
-    if (!v4)
+    if (!sourceCopy)
     {
       goto LABEL_11;
     }
   }
 
-  v24 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v24 updateTextInputKeyboardSource];
+  keyboardStateDelegate3 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate3 updateTextInputKeyboardSource];
 
 LABEL_11:
   [(UIKBInputDelegateManager *)self setInsideKeyInputDelegateCall:0];
   if (v21 && v19 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v25 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-    v26 = [v51 substringWithRange:{v19, v21}];
-    [v25 updateKeyboardStateForInsertion:v26];
+    keyboardStateDelegate4 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+    v26 = [textCopy substringWithRange:{v19, v21}];
+    [keyboardStateDelegate4 updateKeyboardStateForInsertion:v26];
   }
 
-  v27 = [(UIKBInputDelegateManager *)self privateInputDelegate];
-  if ([v27 _textInputSource] == 2)
+  privateInputDelegate = [(UIKBInputDelegateManager *)self privateInputDelegate];
+  if ([privateInputDelegate _textInputSource] == 2)
   {
     v28 = 0;
   }
@@ -4930,8 +4930,8 @@ LABEL_11:
     }
   }
 
-  v31 = [(UIKBInputDelegateManager *)self privateInputDelegate];
-  if ([v31 _textInputSource] == 5)
+  privateInputDelegate2 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+  if ([privateInputDelegate2 _textInputSource] == 5)
   {
     if (!+[UIKeyboard inputUIOOP])
     {
@@ -4951,8 +4951,8 @@ LABEL_11:
   {
 LABEL_27:
     v33 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v34 = [v33 _textInputSessionAnalytics];
-    [v34 didInsertText:v51 relativeRangeBefore:0 selectedTextBefore:v15 withLanguage:{v10, 0}];
+    _textInputSessionAnalytics = [v33 _textInputSessionAnalytics];
+    [_textInputSessionAnalytics didInsertText:textCopy relativeRangeBefore:0 selectedTextBefore:v15 withLanguage:{v10, 0}];
   }
 
   v35 = +[UIKBAnalyticsDispatcher sharedInstance];
@@ -4962,7 +4962,7 @@ LABEL_35:
 
 LABEL_36:
     v39 = +[UIKBAnalyticsDispatcher sharedInstance];
-    [v39 setNextCandidateReplacementPostCandidateInsertedText:v51];
+    [v39 setNextCandidateReplacementPostCandidateInsertedText:textCopy];
 
     goto LABEL_37;
   }
@@ -4991,9 +4991,9 @@ LABEL_33:
   }
 
   v49 = +[UIKBAnalyticsDispatcher sharedInstance];
-  v50 = [v49 nextCandidateReplacementSource];
+  nextCandidateReplacementSource = [v49 nextCandidateReplacementSource];
 
-  if (v50 == 6)
+  if (nextCandidateReplacementSource == 6)
   {
     goto LABEL_36;
   }
@@ -5005,17 +5005,17 @@ LABEL_37:
 
 LABEL_40:
     v43 = +[UIKBAnalyticsDispatcher sharedInstance];
-    [v43 setNextCandidateReplacementInsertedText:v51];
+    [v43 setNextCandidateReplacementInsertedText:textCopy];
 
     v44 = +[UIKBAnalyticsDispatcher sharedInstance];
     [v44 setNextCandidateReplacementPostCandidateInsertedText:&stru_1EFB14550];
 
     v45 = +[UIKBAnalyticsDispatcher sharedInstance];
-    v46 = [v45 nextCandidateReplacementSource];
+    nextCandidateReplacementSource2 = [v45 nextCandidateReplacementSource];
 
     v47 = +[UIKBAnalyticsDispatcher sharedInstance];
     v48 = v47;
-    if (v46 == 9)
+    if (nextCandidateReplacementSource2 == 9)
     {
       [v47 setAnalyticsShouldCallDidKeyPress:0];
     }
@@ -5029,9 +5029,9 @@ LABEL_40:
   }
 
   v41 = +[UIKBAnalyticsDispatcher sharedInstance];
-  v42 = [v41 nextCandidateReplacementSource];
+  nextCandidateReplacementSource3 = [v41 nextCandidateReplacementSource];
 
-  if (v42 == 10)
+  if (nextCandidateReplacementSource3 == 10)
   {
     goto LABEL_40;
   }
@@ -5039,82 +5039,82 @@ LABEL_40:
 LABEL_44:
 }
 
-- (void)insertTextAfterSelection:(id)a3
+- (void)insertTextAfterSelection:(id)selection
 {
-  v15 = a3;
-  v4 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v5 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v6 = [v5 keyboardState];
-  v7 = [v6 documentState];
-  v8 = [v7 documentStateAfterInsertingTextAfterSelection:v15];
-  [v4 setDocumentState:v8];
+  selectionCopy = selection;
+  keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  keyboardState = [keyboardStateDelegate2 keyboardState];
+  documentState = [keyboardState documentState];
+  v8 = [documentState documentStateAfterInsertingTextAfterSelection:selectionCopy];
+  [keyboardStateDelegate setDocumentState:v8];
 
-  v9 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v9 clearInputForMarkedText];
+  keyboardStateDelegate3 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate3 clearInputForMarkedText];
 
   [(UIKBInputDelegateManager *)self setInsideKeyInputDelegateCall:1];
-  v10 = [(UIKBInputDelegateManager *)self keyInputDelegate];
-  v11 = [(UIKBInputDelegateManager *)self selectableDelegate];
-  if ((v10 == v11 || ([(UIKBInputDelegateManager *)self textInputDelegate], v12 = objc_claimAutoreleasedReturnValue(), v12, v12)) && v11)
+  keyInputDelegate = [(UIKBInputDelegateManager *)self keyInputDelegate];
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+  if ((keyInputDelegate == selectableDelegate || ([(UIKBInputDelegateManager *)self textInputDelegate], v12 = objc_claimAutoreleasedReturnValue(), v12, v12)) && selectableDelegate)
   {
-    v13 = v11;
+    v13 = selectableDelegate;
   }
 
   else
   {
-    v13 = v10;
+    v13 = keyInputDelegate;
   }
 
-  [v13 insertText:v15];
-  v14 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v14 updateTextInputKeyboardSource];
+  [v13 insertText:selectionCopy];
+  keyboardStateDelegate4 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate4 updateTextInputKeyboardSource];
 
   [(UIKBInputDelegateManager *)self setInsideKeyInputDelegateCall:0];
-  -[UIKBInputDelegateManager _moveCurrentSelection:](self, "_moveCurrentSelection:", -[v15 length]);
+  -[UIKBInputDelegateManager _moveCurrentSelection:](self, "_moveCurrentSelection:", -[selectionCopy length]);
 }
 
-- (void)insertText:(id)a3 withEnumeratedAnimationStyle:(int64_t)a4
+- (void)insertText:(id)text withEnumeratedAnimationStyle:(int64_t)style
 {
-  v23 = a3;
-  v6 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  textCopy = text;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v11 = [v10 selectedTextRange];
+      textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      selectedTextRange = [textInputDelegate3 selectedTextRange];
 
-      v12 = [v11 end];
+      v12 = [selectedTextRange end];
       v13 = v12;
       if (v12)
       {
-        v14 = v12;
+        endOfDocument = v12;
       }
 
       else
       {
-        v16 = [v11 start];
-        v17 = v16;
-        if (v16)
+        start = [selectedTextRange start];
+        v17 = start;
+        if (start)
         {
-          v14 = v16;
+          endOfDocument = start;
         }
 
         else
         {
-          v18 = [(UIKBInputDelegateManager *)self textInputDelegate];
-          v14 = [v18 endOfDocument];
+          textInputDelegate4 = [(UIKBInputDelegateManager *)self textInputDelegate];
+          endOfDocument = [textInputDelegate4 endOfDocument];
         }
       }
 
-      v19 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v20 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v15 = [v19 textStylingAtPosition:v14 inDirection:{objc_msgSend(v20, "selectionAffinity")}];
+      textInputDelegate5 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      textInputDelegate6 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      v15 = [textInputDelegate5 textStylingAtPosition:endOfDocument inDirection:{objc_msgSend(textInputDelegate6, "selectionAffinity")}];
     }
 
     else
@@ -5122,130 +5122,130 @@ LABEL_44:
       v15 = MEMORY[0x1E695E0F8];
     }
 
-    v21 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v23 attributes:v15];
-    v22 = [(UIKBInputDelegateManager *)self privateInputDelegate];
-    [v22 _insertAttributedText:v21 withAnimation:a4 completion:0];
+    v21 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:textCopy attributes:v15];
+    privateInputDelegate = [(UIKBInputDelegateManager *)self privateInputDelegate];
+    [privateInputDelegate _insertAttributedText:v21 withAnimation:style completion:0];
   }
 
   else
   {
-    [(UIKBInputDelegateManager *)self insertText:v23];
+    [(UIKBInputDelegateManager *)self insertText:textCopy];
   }
 }
 
-- (void)unmarkText:(id)a3
+- (void)unmarkText:(id)text
 {
-  v4 = a3;
-  v5 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v5 setShouldIgnoreTextInputChanges:1];
+  textCopy = text;
+  keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate setShouldIgnoreTextInputChanges:1];
 
-  v6 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v7 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  v8 = [v7 keyboardState];
-  v9 = [v8 documentState];
-  v10 = [v9 documentStateAfterSettingMarkedText:v4 selectedRange:{objc_msgSend(v4, "length"), 0}];
-  [v6 setDocumentState:v10];
+  keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  keyboardStateDelegate3 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  keyboardState = [keyboardStateDelegate3 keyboardState];
+  documentState = [keyboardState documentState];
+  v10 = [documentState documentStateAfterSettingMarkedText:textCopy selectedRange:{objc_msgSend(textCopy, "length"), 0}];
+  [keyboardStateDelegate2 setDocumentState:v10];
 
-  v11 = [(UIKBInputDelegateManager *)self selectableDelegate];
-  [v11 _setMarkedText:v4 selectedRange:{objc_msgSend(v4, "length"), 0}];
+  selectableDelegate = [(UIKBInputDelegateManager *)self selectableDelegate];
+  [selectableDelegate _setMarkedText:textCopy selectedRange:{objc_msgSend(textCopy, "length"), 0}];
 
   [(UIKBInputDelegateManager *)self unmarkText];
-  v12 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v12 setShouldIgnoreTextInputChanges:0];
+  keyboardStateDelegate4 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate4 setShouldIgnoreTextInputChanges:0];
 }
 
-- (void)handleClearWithInsertBeforeAdvance:(id)a3
+- (void)handleClearWithInsertBeforeAdvance:(id)advance
 {
-  v14 = a3;
-  v4 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v5 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v6 = [v5 beginningOfDocument];
-  v7 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v8 = [v7 endOfDocument];
-  v9 = [v4 textRangeFromPosition:v6 toPosition:v8];
+  advanceCopy = advance;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  beginningOfDocument = [textInputDelegate2 beginningOfDocument];
+  textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  endOfDocument = [textInputDelegate3 endOfDocument];
+  v9 = [textInputDelegate textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
 
-  v10 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v11 = [v10 textInRange:v9];
+  textInputDelegate4 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  v11 = [textInputDelegate4 textInRange:v9];
   v12 = [v11 length];
 
-  if ([(UIKBInputDelegateManager *)self callShouldReplaceExtendedRange:v12 withText:v14 includeMarkedText:1])
+  if ([(UIKBInputDelegateManager *)self callShouldReplaceExtendedRange:v12 withText:advanceCopy includeMarkedText:1])
   {
-    v13 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    [v13 replaceRange:v9 withText:v14];
+    textInputDelegate5 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    [textInputDelegate5 replaceRange:v9 withText:advanceCopy];
   }
 }
 
-- (BOOL)callShouldReplaceExtendedRange:(int64_t)a3 withText:(id)a4 includeMarkedText:(BOOL)a5
+- (BOOL)callShouldReplaceExtendedRange:(int64_t)range withText:(id)text includeMarkedText:(BOOL)markedText
 {
-  v5 = a5;
+  markedTextCopy = markedText;
   v97[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v10 = [v9 selectedTextRange];
+  textCopy = text;
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  selectedTextRange = [textInputDelegate selectedTextRange];
 
-  v11 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v95 = [v11 markedTextRange];
+  textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  markedTextRange = [textInputDelegate2 markedTextRange];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v10 ranges];
-    if ([v12 count])
+    ranges = [selectedTextRange ranges];
+    if ([ranges count])
     {
       [(UIKBInputDelegateManager *)self legacyInputDelegate];
-      v13 = v93 = v8;
+      v13 = v93 = textCopy;
       v14 = objc_opt_respondsToSelector();
 
-      v8 = v93;
+      textCopy = v93;
       if (v14)
       {
-        v15 = [v10 ranges];
-        v16 = v15;
-        if (v5)
+        ranges2 = [selectedTextRange ranges];
+        v16 = ranges2;
+        if (markedTextCopy)
         {
           objc_opt_class();
-          v17 = v95;
-          v18 = v16;
+          v17 = markedTextRange;
+          ranges4 = v16;
           if (objc_opt_isKindOfClass())
           {
-            v19 = [v95 ranges];
-            v20 = [v19 count];
+            ranges3 = [markedTextRange ranges];
+            v20 = [ranges3 count];
 
-            v18 = v16;
+            ranges4 = v16;
             if (v20)
             {
-              v18 = [v95 ranges];
+              ranges4 = [markedTextRange ranges];
             }
           }
 
-          if (![v18 count])
+          if (![ranges4 count])
           {
             v91 = MEMORY[0x1E696B098];
             v21 = objc_opt_class();
-            v22 = [(UIKBInputDelegateManager *)self textInputDelegate];
-            v23 = [v21 rangeForTextRange:v95 document:v22];
+            textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
+            v23 = [v21 rangeForTextRange:markedTextRange document:textInputDelegate3];
             v25 = [v91 valueWithRange:{v23, v24}];
             v97[0] = v25;
             v92 = [MEMORY[0x1E695DEC8] arrayWithObjects:v97 count:1];
 
-            v18 = v92;
+            ranges4 = v92;
           }
 
-          if (![v18 count])
+          if (![ranges4 count])
           {
 LABEL_52:
             v75 = v16;
 
-            v18 = v75;
+            ranges4 = v75;
             goto LABEL_56;
           }
         }
 
         else
         {
-          [v15 count];
-          v18 = v16;
-          v17 = v95;
+          [ranges2 count];
+          ranges4 = v16;
+          v17 = markedTextRange;
           if (![v16 count])
           {
             goto LABEL_56;
@@ -5253,8 +5253,8 @@ LABEL_52:
         }
 
         v71 = v16;
-        v72 = [v18 firstObject];
-        [v72 rangeValue];
+        firstObject = [ranges4 firstObject];
+        [firstObject rangeValue];
         v74 = v73;
 
         if (v74)
@@ -5264,54 +5264,54 @@ LABEL_52:
         }
 
         v16 = v71;
-        if (v5)
+        if (markedTextCopy)
         {
           goto LABEL_52;
         }
 
 LABEL_56:
-        if ([v18 count])
+        if ([ranges4 count])
         {
           v96 = v16;
-          v76 = [v18 lastObject];
-          v77 = [v76 rangeValue];
+          lastObject = [ranges4 lastObject];
+          rangeValue = [lastObject rangeValue];
 
-          if (v77 != 0x7FFFFFFFFFFFFFFFLL)
+          if (rangeValue != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v78 = [v18 lastObject];
-            v79 = [v78 rangeValue];
+            lastObject2 = [ranges4 lastObject];
+            rangeValue2 = [lastObject2 rangeValue];
             v81 = v80;
 
-            if ((a3 & 0x8000000000000000) == 0)
+            if ((range & 0x8000000000000000) == 0)
             {
-              v82 = [v18 lastObject];
-              v83 = [v82 rangeValue];
+              lastObject3 = [ranges4 lastObject];
+              rangeValue3 = [lastObject3 rangeValue];
 
-              if (v83 < a3)
+              if (rangeValue3 < range)
               {
-                a3 = v83;
+                range = rangeValue3;
               }
 
-              v79 -= a3;
+              rangeValue2 -= range;
             }
 
-            v84 = [v18 subarrayWithRange:{0, objc_msgSend(v18, "count") - 1}];
+            v84 = [ranges4 subarrayWithRange:{0, objc_msgSend(ranges4, "count") - 1}];
 
-            v85 = [MEMORY[0x1E696B098] valueWithRange:{v79, a3 + v81}];
-            v18 = [v84 arrayByAddingObject:v85];
+            v85 = [MEMORY[0x1E696B098] valueWithRange:{rangeValue2, range + v81}];
+            ranges4 = [v84 arrayByAddingObject:v85];
           }
 
           v16 = v96;
         }
 
-        v86 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+        legacyInputDelegate = [(UIKBInputDelegateManager *)self legacyInputDelegate];
         v87 = objc_opt_respondsToSelector();
 
         if (v87)
         {
-          v88 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-          v89 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-          v54 = [v88 keyboardInput:v89 shouldReplaceTextInRanges:v18 replacementText:v93];
+          legacyInputDelegate2 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+          legacyInputDelegate3 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+          v54 = [legacyInputDelegate2 keyboardInput:legacyInputDelegate3 shouldReplaceTextInRanges:ranges4 replacementText:v93];
         }
 
         else
@@ -5319,7 +5319,7 @@ LABEL_56:
           v54 = 1;
         }
 
-        v8 = v93;
+        textCopy = v93;
         goto LABEL_68;
       }
     }
@@ -5329,52 +5329,52 @@ LABEL_56:
     }
   }
 
-  v26 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+  legacyInputDelegate4 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
   v27 = objc_opt_respondsToSelector();
 
   if ((v27 & 1) == 0)
   {
-    v35 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    textInputDelegate4 = [(UIKBInputDelegateManager *)self textInputDelegate];
     v36 = objc_opt_respondsToSelector();
 
     if ((v36 & 1) == 0)
     {
       v54 = 1;
-      v17 = v95;
+      v17 = markedTextRange;
       goto LABEL_68;
     }
 
-    v37 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v38 = v37;
-    if (v5)
+    textInputDelegate5 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    v38 = textInputDelegate5;
+    if (markedTextCopy)
     {
-      v39 = [v37 markedTextRange];
+      markedTextRange2 = [textInputDelegate5 markedTextRange];
 
-      if ([v39 isEmpty])
+      if ([markedTextRange2 isEmpty])
       {
-        v40 = [(UIKBInputDelegateManager *)self textInputDelegate];
-        v41 = [v40 selectedTextRange];
+        textInputDelegate6 = [(UIKBInputDelegateManager *)self textInputDelegate];
+        selectedTextRange2 = [textInputDelegate6 selectedTextRange];
 
-        v39 = v41;
+        markedTextRange2 = selectedTextRange2;
       }
     }
 
     else
     {
-      v39 = [v37 selectedTextRange];
+      markedTextRange2 = [textInputDelegate5 selectedTextRange];
 
-      [v39 isEmpty];
+      [markedTextRange2 isEmpty];
     }
 
-    v64 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v65 = [v39 start];
-    v66 = [v64 positionFromPosition:v65 offset:-a3];
+    textInputDelegate7 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    start = [markedTextRange2 start];
+    v66 = [textInputDelegate7 positionFromPosition:start offset:-range];
 
     if (v66)
     {
-      v67 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v68 = [v39 end];
-      v69 = [v67 textRangeFromPosition:v66 toPosition:v68];
+      textInputDelegate8 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      v68 = [markedTextRange2 end];
+      v69 = [textInputDelegate8 textRangeFromPosition:v66 toPosition:v68];
 
       if (!v69)
       {
@@ -5382,10 +5382,10 @@ LABEL_56:
         goto LABEL_54;
       }
 
-      v70 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v54 = [v70 shouldChangeTextInRange:v69 replacementText:v8];
+      textInputDelegate9 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      v54 = [textInputDelegate9 shouldChangeTextInRange:v69 replacementText:textCopy];
 
-      v39 = v69;
+      markedTextRange2 = v69;
     }
 
     else
@@ -5394,40 +5394,40 @@ LABEL_56:
     }
 
 LABEL_54:
-    v17 = v95;
+    v17 = markedTextRange;
 
     goto LABEL_68;
   }
 
-  v94 = v10;
-  v28 = v8;
-  v29 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+  v94 = selectedTextRange;
+  v28 = textCopy;
+  privateInputDelegate = [(UIKBInputDelegateManager *)self privateInputDelegate];
   v30 = objc_opt_respondsToSelector();
 
   if (v30)
   {
-    v31 = [(UIKBInputDelegateManager *)self privateInputDelegate];
-    v32 = [v31 selectionRange];
+    privateInputDelegate2 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+    selectionRange = [privateInputDelegate2 selectionRange];
     v34 = v33;
   }
 
   else
   {
     v42 = objc_opt_class();
-    v31 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v43 = [v31 selectedTextRange];
-    v44 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v32 = [v42 rangeForTextRange:v43 document:v44];
+    privateInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    selectedTextRange3 = [privateInputDelegate2 selectedTextRange];
+    textInputDelegate10 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    selectionRange = [v42 rangeForTextRange:selectedTextRange3 document:textInputDelegate10];
     v34 = v45;
   }
 
-  if (v5)
+  if (markedTextCopy)
   {
     v46 = objc_opt_class();
-    v47 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v48 = [v47 markedTextRange];
-    v49 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v50 = [v46 rangeForTextRange:v48 document:v49];
+    textInputDelegate11 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    markedTextRange3 = [textInputDelegate11 markedTextRange];
+    textInputDelegate12 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    v50 = [v46 rangeForTextRange:markedTextRange3 document:textInputDelegate12];
     v52 = v51;
 
     v53 = v34;
@@ -5437,10 +5437,10 @@ LABEL_54:
   else
   {
     v53 = 0;
-    v50 = v32;
+    v50 = selectionRange;
   }
 
-  v8 = v28;
+  textCopy = v28;
   if (v34)
   {
     v55 = v50;
@@ -5448,7 +5448,7 @@ LABEL_54:
 
   else
   {
-    v55 = v32;
+    v55 = selectionRange;
   }
 
   if (v34)
@@ -5456,20 +5456,20 @@ LABEL_54:
     v53 = v34;
   }
 
-  v56 = v53 + a3;
-  if (v55 >= a3)
+  v56 = v53 + range;
+  if (v55 >= range)
   {
-    v57 = a3;
+    rangeCopy = range;
   }
 
   else
   {
-    v57 = v55;
+    rangeCopy = v55;
   }
 
-  v58 = v55 - v57;
-  v59 = v57 + v53;
-  if (a3 >= 0)
+  v58 = v55 - rangeCopy;
+  v59 = rangeCopy + v53;
+  if (range >= 0)
   {
     v56 = v59;
   }
@@ -5499,81 +5499,81 @@ LABEL_54:
     v61 = v56;
   }
 
-  v62 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-  v63 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-  v54 = [v62 keyboardInput:v63 shouldReplaceTextInRange:v60 replacementText:{v61, v28}];
+  legacyInputDelegate5 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+  legacyInputDelegate6 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+  v54 = [legacyInputDelegate5 keyboardInput:legacyInputDelegate6 shouldReplaceTextInRange:v60 replacementText:{v61, v28}];
 
-  v10 = v94;
-  v17 = v95;
+  selectedTextRange = v94;
+  v17 = markedTextRange;
 LABEL_68:
 
   return v54;
 }
 
-- (BOOL)callShouldDeleteBackwardWithCount:(unint64_t)a3
+- (BOOL)callShouldDeleteBackwardWithCount:(unint64_t)count
 {
-  v5 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v5 setShouldIgnoreTextInputChanges:1];
+  keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate setShouldIgnoreTextInputChanges:1];
 
-  v6 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+  legacyInputDelegate = [(UIKBInputDelegateManager *)self legacyInputDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    if (a3 >= 2)
+    if (count >= 2)
     {
-      v8 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      [v8 _extendCurrentSelection:-a3];
+      textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+      [textInputDelegate _extendCurrentSelection:-count];
 
-      v9 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-      v10 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-      v11 = [v9 keyboardInputShouldDelete:v10];
+      legacyInputDelegate2 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+      legacyInputDelegate3 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+      v11 = [legacyInputDelegate2 keyboardInputShouldDelete:legacyInputDelegate3];
 
-      v12 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      [v12 _setCaretSelectionAtEndOfSelection];
+      textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      [textInputDelegate2 _setCaretSelectionAtEndOfSelection];
 
-      v13 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-      [v13 syncDocumentStateToInputDelegate];
+      keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+      [keyboardStateDelegate2 syncDocumentStateToInputDelegate];
 LABEL_16:
 
       goto LABEL_17;
     }
 
-    v13 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-    v26 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-    v27 = [v13 keyboardInputShouldDelete:v26];
+    keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+    legacyInputDelegate4 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+    v27 = [keyboardStateDelegate2 keyboardInputShouldDelete:legacyInputDelegate4];
 LABEL_15:
     v11 = v27;
 
     goto LABEL_16;
   }
 
-  v14 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v13 = [(UIKBInputDelegateManager *)self selectedTextRange];
-    if ([v13 isEmpty])
+    keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self selectedTextRange];
+    if ([keyboardStateDelegate2 isEmpty])
     {
-      v16 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v17 = [v13 start];
-      v18 = [(UIKBInputDelegateManager *)self beginningOfDocument];
-      v19 = [v16 comparePosition:v17 toPosition:v18];
+      textInputDelegate4 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      start = [keyboardStateDelegate2 start];
+      beginningOfDocument = [(UIKBInputDelegateManager *)self beginningOfDocument];
+      v19 = [textInputDelegate4 comparePosition:start toPosition:beginningOfDocument];
 
       if (v19)
       {
-        v20 = [(UIKBInputDelegateManager *)self textInputDelegate];
-        v21 = [v13 start];
-        v22 = [v20 positionFromPosition:v21 offset:-1];
+        textInputDelegate5 = [(UIKBInputDelegateManager *)self textInputDelegate];
+        start2 = [keyboardStateDelegate2 start];
+        v22 = [textInputDelegate5 positionFromPosition:start2 offset:-1];
 
         if (v22)
         {
-          v23 = [(UIKBInputDelegateManager *)self textInputDelegate];
-          v24 = [v13 end];
-          v25 = [v23 textRangeFromPosition:v22 toPosition:v24];
+          textInputDelegate6 = [(UIKBInputDelegateManager *)self textInputDelegate];
+          v24 = [keyboardStateDelegate2 end];
+          v25 = [textInputDelegate6 textRangeFromPosition:v22 toPosition:v24];
 
-          v13 = v23;
+          keyboardStateDelegate2 = textInputDelegate6;
         }
 
         else
@@ -5581,45 +5581,45 @@ LABEL_15:
           v25 = 0;
         }
 
-        v13 = v25;
+        keyboardStateDelegate2 = v25;
       }
     }
 
-    if (!v13)
+    if (!keyboardStateDelegate2)
     {
       v11 = 1;
       goto LABEL_16;
     }
 
-    v26 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v27 = [v26 shouldChangeTextInRange:v13 replacementText:&stru_1EFB14550];
+    legacyInputDelegate4 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    v27 = [legacyInputDelegate4 shouldChangeTextInRange:keyboardStateDelegate2 replacementText:&stru_1EFB14550];
     goto LABEL_15;
   }
 
   v11 = 1;
 LABEL_17:
-  v28 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v28 setShouldIgnoreTextInputChanges:0];
+  keyboardStateDelegate3 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate3 setShouldIgnoreTextInputChanges:0];
 
   return v11;
 }
 
-- (void)addTextAlternatives:(id)a3
+- (void)addTextAlternatives:(id)alternatives
 {
-  v17 = a3;
-  v4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+  alternativesCopy = alternatives;
+  asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-  if (v4)
+  if (asyncInputDelegate)
   {
-    v5 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-    [v5 addTextAlternatives:v17];
+    asyncInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    [asyncInputDelegate2 addTextAlternatives:alternativesCopy];
   }
 
-  v6 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v6)
+  if (webInputDelegate)
   {
-    v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
     v8 = objc_opt_respondsToSelector();
 
     if ((v8 & 1) == 0)
@@ -5627,16 +5627,16 @@ LABEL_17:
       goto LABEL_14;
     }
 
-    v9 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate3 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v10 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate3 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (v10)
+    if (asyncInputDelegate3)
     {
-      v11 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      asyncInputDelegate4 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
       v12 = objc_opt_respondsToSelector();
 
       if ((v12 & 1) == 0)
@@ -5644,16 +5644,16 @@ LABEL_17:
         goto LABEL_14;
       }
 
-      v9 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      webInputDelegate3 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
 
     else
     {
-      v13 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
 
-      if (v13)
+      if (asyncWebKitInteractionDelegate)
       {
-        v14 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+        asyncWebKitInteractionDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
         v15 = objc_opt_respondsToSelector();
 
         if ((v15 & 1) == 0)
@@ -5661,32 +5661,32 @@ LABEL_17:
           goto LABEL_14;
         }
 
-        v9 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+        webInputDelegate3 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       }
 
       else
       {
-        v9 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+        webInputDelegate3 = [(UIKBInputDelegateManager *)self privateInputDelegate];
       }
     }
   }
 
-  v16 = v9;
-  [v9 addTextAlternatives:v17];
+  v16 = webInputDelegate3;
+  [webInputDelegate3 addTextAlternatives:alternativesCopy];
 
 LABEL_14:
 }
 
 - (CGRect)visibleTextRect
 {
-  v3 = [(UIKBInputDelegateManager *)self asyncCapableInputDelegate];
-  if (!v3 || (v4 = v3, [(UIKBInputDelegateManager *)self asyncCapableInputDelegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) == 0))
+  asyncCapableInputDelegate = [(UIKBInputDelegateManager *)self asyncCapableInputDelegate];
+  if (!asyncCapableInputDelegate || (v4 = asyncCapableInputDelegate, [(UIKBInputDelegateManager *)self asyncCapableInputDelegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) == 0))
   {
-    v25 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    if (v25 && (v26 = v25, [(UIKBInputDelegateManager *)self textInputDelegate], v27 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v27, v26, (isKindOfClass & 1) != 0))
+    textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+    if (textInputDelegate && (v26 = textInputDelegate, [(UIKBInputDelegateManager *)self textInputDelegate], v27 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v27, v26, (isKindOfClass & 1) != 0))
     {
-      v19 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      [v19 visibleTextRect];
+      textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      [textInputDelegate2 visibleTextRect];
     }
 
     else
@@ -5701,8 +5701,8 @@ LABEL_14:
         goto LABEL_12;
       }
 
-      v19 = [(UIKBInputDelegateManager *)self textInputView];
-      [v19 bounds];
+      textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputView];
+      [textInputDelegate2 bounds];
     }
 
     x = v29;
@@ -5712,22 +5712,22 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v7 = [(UIKBInputDelegateManager *)self asyncCapableInputDelegate];
-  [v7 unobscuredContentRect];
+  asyncCapableInputDelegate2 = [(UIKBInputDelegateManager *)self asyncCapableInputDelegate];
+  [asyncCapableInputDelegate2 unobscuredContentRect];
   x = v8;
   y = v10;
   width = v12;
   height = v14;
 
-  v16 = [(UIKBInputDelegateManager *)self textInteractionAssistant];
-  v17 = [v16 view];
-  v18 = [v17 isEditing];
+  textInteractionAssistant = [(UIKBInputDelegateManager *)self textInteractionAssistant];
+  view = [textInteractionAssistant view];
+  isEditing = [view isEditing];
 
-  if (v18)
+  if (isEditing)
   {
-    v19 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-    v20 = [(UIKBInputDelegateManager *)self textInputView];
-    [v19 subtractKeyboardFrameFromRect:v20 inView:{x, y, width, height}];
+    textInputDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+    textInputView = [(UIKBInputDelegateManager *)self textInputView];
+    [textInputDelegate2 subtractKeyboardFrameFromRect:textInputView inView:{x, y, width, height}];
     x = v21;
     y = v22;
     width = v23;
@@ -5748,21 +5748,21 @@ LABEL_12:
   return result;
 }
 
-+ (_NSRange)rangeForTextRange:(id)a3 document:(id)a4
++ (_NSRange)rangeForTextRange:(id)range document:(id)document
 {
-  v4 = a3;
-  if (a3)
+  rangeCopy = range;
+  if (range)
   {
-    v5 = a4;
-    v6 = v4;
-    v7 = [v5 beginningOfDocument];
-    v8 = [v6 start];
-    v4 = [v5 offsetFromPosition:v7 toPosition:v8];
+    documentCopy = document;
+    v6 = rangeCopy;
+    beginningOfDocument = [documentCopy beginningOfDocument];
+    start = [v6 start];
+    rangeCopy = [documentCopy offsetFromPosition:beginningOfDocument toPosition:start];
 
-    v9 = [v6 start];
+    start2 = [v6 start];
     v10 = [v6 end];
 
-    v11 = [v5 offsetFromPosition:v9 toPosition:v10];
+    v11 = [documentCopy offsetFromPosition:start2 toPosition:v10];
   }
 
   else
@@ -5770,7 +5770,7 @@ LABEL_12:
     v11 = 0;
   }
 
-  v12 = v4;
+  v12 = rangeCopy;
   v13 = v11;
   result.length = v13;
   result.location = v12;
@@ -5779,52 +5779,52 @@ LABEL_12:
 
 - (BOOL)shouldDeleteForward
 {
-  v3 = [(UIKBInputDelegateManager *)self selectedTextRange];
+  selectedTextRange = [(UIKBInputDelegateManager *)self selectedTextRange];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 ranges];
-    if ([v4 count])
+    ranges = [selectedTextRange ranges];
+    if ([ranges count])
     {
-      v5 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+      legacyInputDelegate = [(UIKBInputDelegateManager *)self legacyInputDelegate];
       v6 = objc_opt_respondsToSelector();
 
       if (v6)
       {
-        v7 = [v3 ranges];
-        if ([v7 count] && (objc_msgSend(v7, "lastObject"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "rangeValue"), v8, v9 != 0x7FFFFFFFFFFFFFFFLL))
+        ranges2 = [selectedTextRange ranges];
+        if ([ranges2 count] && (objc_msgSend(ranges2, "lastObject"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "rangeValue"), v8, v9 != 0x7FFFFFFFFFFFFFFFLL))
         {
-          v37 = [v7 lastObject];
-          v38 = [v37 rangeValue];
+          lastObject = [ranges2 lastObject];
+          rangeValue = [lastObject rangeValue];
           v40 = v39;
 
-          v11 = v7;
+          textInputDelegate6 = ranges2;
           if (!v40)
           {
-            v41 = [(UIKBInputDelegateManager *)self textInputDelegate];
-            v42 = [v3 end];
-            v43 = [(UIKBInputDelegateManager *)self endOfDocument];
-            v44 = [v41 comparePosition:v42 toPosition:v43];
+            textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+            v42 = [selectedTextRange end];
+            endOfDocument = [(UIKBInputDelegateManager *)self endOfDocument];
+            v44 = [textInputDelegate comparePosition:v42 toPosition:endOfDocument];
 
-            v11 = v7;
+            textInputDelegate6 = ranges2;
             if (v44)
             {
-              v45 = [v7 subarrayWithRange:{0, objc_msgSend(v7, "count") - 1}];
+              v45 = [ranges2 subarrayWithRange:{0, objc_msgSend(ranges2, "count") - 1}];
 
-              v46 = [MEMORY[0x1E696B098] valueWithRange:{v38, 1}];
-              v11 = [v45 arrayByAddingObject:v46];
+              v46 = [MEMORY[0x1E696B098] valueWithRange:{rangeValue, 1}];
+              textInputDelegate6 = [v45 arrayByAddingObject:v46];
             }
           }
 
-          v47 = [v11 lastObject];
-          [v47 rangeValue];
+          lastObject2 = [textInputDelegate6 lastObject];
+          [lastObject2 rangeValue];
           v49 = v48;
 
           if (v49)
           {
-            v50 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-            v51 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-            LOBYTE(v10) = [v50 keyboardInput:v51 shouldReplaceTextInRanges:v11 replacementText:&stru_1EFB14550];
+            legacyInputDelegate2 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+            legacyInputDelegate3 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+            LOBYTE(v10) = [legacyInputDelegate2 keyboardInput:legacyInputDelegate3 shouldReplaceTextInRanges:textInputDelegate6 replacementText:&stru_1EFB14550];
           }
 
           else
@@ -5836,7 +5836,7 @@ LABEL_12:
         else
         {
           LOBYTE(v10) = 1;
-          v11 = v7;
+          textInputDelegate6 = ranges2;
         }
 
         goto LABEL_29;
@@ -5848,37 +5848,37 @@ LABEL_12:
     }
   }
 
-  v12 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+  legacyInputDelegate4 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
   v13 = objc_opt_respondsToSelector();
 
   if ((v13 & 1) == 0)
   {
-    v25 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
     v26 = objc_opt_respondsToSelector();
 
     if (v26)
     {
-      v7 = [(UIKBInputDelegateManager *)self selectedTextRange];
-      if ([v7 isEmpty])
+      ranges2 = [(UIKBInputDelegateManager *)self selectedTextRange];
+      if ([ranges2 isEmpty])
       {
-        v27 = [(UIKBInputDelegateManager *)self textInputDelegate];
-        v28 = [v7 end];
-        v29 = [(UIKBInputDelegateManager *)self endOfDocument];
-        v30 = [v27 comparePosition:v28 toPosition:v29];
+        textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
+        v28 = [ranges2 end];
+        endOfDocument2 = [(UIKBInputDelegateManager *)self endOfDocument];
+        v30 = [textInputDelegate3 comparePosition:v28 toPosition:endOfDocument2];
 
         if (v30)
         {
-          v31 = [(UIKBInputDelegateManager *)self textInputDelegate];
-          v32 = [v7 end];
-          v33 = [v31 positionFromPosition:v32 offset:1];
+          textInputDelegate4 = [(UIKBInputDelegateManager *)self textInputDelegate];
+          v32 = [ranges2 end];
+          v33 = [textInputDelegate4 positionFromPosition:v32 offset:1];
 
           if (v33)
           {
-            v34 = [(UIKBInputDelegateManager *)self textInputDelegate];
-            v35 = [v7 start];
-            v36 = [v34 textRangeFromPosition:v35 toPosition:v33];
+            textInputDelegate5 = [(UIKBInputDelegateManager *)self textInputDelegate];
+            start = [ranges2 start];
+            v36 = [textInputDelegate5 textRangeFromPosition:start toPosition:v33];
 
-            v7 = v34;
+            ranges2 = textInputDelegate5;
           }
 
           else
@@ -5886,18 +5886,18 @@ LABEL_12:
             v36 = 0;
           }
 
-          v7 = v36;
+          ranges2 = v36;
         }
       }
 
-      if (!v7)
+      if (!ranges2)
       {
         LOBYTE(v10) = 1;
         goto LABEL_30;
       }
 
-      v11 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v24 = [v11 shouldChangeTextInRange:v7 replacementText:&stru_1EFB14550];
+      textInputDelegate6 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      v24 = [textInputDelegate6 shouldChangeTextInRange:ranges2 replacementText:&stru_1EFB14550];
       goto LABEL_28;
     }
 
@@ -5905,9 +5905,9 @@ LABEL_12:
   }
 
   v14 = objc_opt_class();
-  v15 = [(UIKBInputDelegateManager *)self selectedTextRange];
-  v16 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v17 = [v14 rangeForTextRange:v15 document:v16];
+  selectedTextRange2 = [(UIKBInputDelegateManager *)self selectedTextRange];
+  textInputDelegate7 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  v17 = [v14 rangeForTextRange:selectedTextRange2 document:textInputDelegate7];
   v10 = v18;
 
   if (v17 == 0x7FFFFFFFFFFFFFFFLL)
@@ -5919,9 +5919,9 @@ LABEL_18:
 
   if (v10 || (-[UIKBInputDelegateManager textInputDelegate](self, "textInputDelegate"), v19 = objc_claimAutoreleasedReturnValue(), -[UIKBInputDelegateManager selectedTextRange](self, "selectedTextRange"), v20 = objc_claimAutoreleasedReturnValue(), [v20 end], v21 = objc_claimAutoreleasedReturnValue(), -[UIKBInputDelegateManager endOfDocument](self, "endOfDocument"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v19, "comparePosition:toPosition:", v21, v22), v22, v21, v20, v19, v10 = 1, v23))
   {
-    v7 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-    v11 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
-    v24 = [v7 keyboardInput:v11 shouldReplaceTextInRange:v17 replacementText:{v10, &stru_1EFB14550}];
+    ranges2 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+    textInputDelegate6 = [(UIKBInputDelegateManager *)self legacyInputDelegate];
+    v24 = [ranges2 keyboardInput:textInputDelegate6 shouldReplaceTextInRange:v17 replacementText:{v10, &stru_1EFB14550}];
 LABEL_28:
     LOBYTE(v10) = v24;
 LABEL_29:
@@ -5936,28 +5936,28 @@ LABEL_31:
 
 - (BOOL)selectionIsEndOfWord
 {
-  v3 = [(UIKBInputDelegateManager *)self selectedTextRange];
-  v4 = v3;
-  if (v3 && ([v3 _isRanged] & 1) == 0)
+  selectedTextRange = [(UIKBInputDelegateManager *)self selectedTextRange];
+  v4 = selectedTextRange;
+  if (selectedTextRange && ([selectedTextRange _isRanged] & 1) == 0)
   {
-    v6 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v7 = [v4 start];
-    v8 = [v6 _rangeOfEnclosingWord:v7];
+    textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+    start = [v4 start];
+    v8 = [textInputDelegate _rangeOfEnclosingWord:start];
 
     if (v8)
     {
-      v9 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
       v10 = [v4 end];
       v11 = [v8 end];
-      if ([v9 comparePosition:v10 toPosition:v11])
+      if ([textInputDelegate2 comparePosition:v10 toPosition:v11])
       {
         v5 = 0;
       }
 
       else
       {
-        v12 = [(UIKBInputDelegateManager *)self textInputDelegate];
-        v13 = [v12 textInRange:v8];
+        textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
+        v13 = [textInputDelegate3 textInRange:v8];
         v5 = [v13 length] != 0;
       }
     }
@@ -5976,20 +5976,20 @@ LABEL_31:
   return v5;
 }
 
-- (void)collapseSelectionAndAdjustByOffset:(int64_t)a3
+- (void)collapseSelectionAndAdjustByOffset:(int64_t)offset
 {
-  v5 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v5 setShouldIgnoreTextInputChanges:1];
+  keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate setShouldIgnoreTextInputChanges:1];
 
   if (![(UIKBInputDelegateManager *)self hasAsyncCapableInputDelegate])
   {
-    v9 = [(UIKBInputDelegateManager *)self selectedTextRange];
-    v10 = [v9 end];
+    selectedTextRange = [(UIKBInputDelegateManager *)self selectedTextRange];
+    v10 = [selectedTextRange end];
 
-    if (a3 && v10)
+    if (offset && v10)
     {
-      v11 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v12 = [v11 positionFromPosition:v10 offset:a3];
+      textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+      v12 = [textInputDelegate positionFromPosition:v10 offset:offset];
 
       if (v12)
       {
@@ -6004,40 +6004,40 @@ LABEL_31:
       goto LABEL_17;
     }
 
-    v14 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v15 = [v14 textRangeFromPosition:v10 toPosition:v10];
+    textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    v15 = [textInputDelegate2 textRangeFromPosition:v10 toPosition:v10];
 
     if (v15)
     {
       [(UIKBInputDelegateManager *)self setSelectedTextRange:v15];
-      v16 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-      [v16 syncDocumentStateToInputDelegate];
+      keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+      [keyboardStateDelegate2 syncDocumentStateToInputDelegate];
     }
 
     goto LABEL_17;
   }
 
-  v6 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(UIKBInputDelegateManager *)self webInputDelegate];
+    webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
   }
 
   else
   {
-    v17 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v8 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
     }
 
     else
     {
-      v19 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      asyncWebKitInteractionDelegate = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
       v20 = objc_opt_respondsToSelector();
 
       if ((v20 & 1) == 0)
@@ -6045,51 +6045,51 @@ LABEL_31:
         goto LABEL_18;
       }
 
-      v8 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncWebKitInteractionDelegate];
     }
   }
 
-  v10 = v8;
-  [v8 moveByOffset:a3];
+  v10 = webInputDelegate2;
+  [webInputDelegate2 moveByOffset:offset];
 LABEL_17:
 
 LABEL_18:
-  v21 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-  [v21 setShouldIgnoreTextInputChanges:0];
+  keyboardStateDelegate3 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+  [keyboardStateDelegate3 setShouldIgnoreTextInputChanges:0];
 }
 
 - (void)moveSelectionToEndOfWord
 {
-  v17 = [(UIKBInputDelegateManager *)self selectedTextRange];
-  if (v17)
+  selectedTextRange = [(UIKBInputDelegateManager *)self selectedTextRange];
+  if (selectedTextRange)
   {
-    v3 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v4 = [v17 end];
-    v5 = [v3 _rangeOfEnclosingWord:v4];
+    textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+    v4 = [selectedTextRange end];
+    v5 = [textInputDelegate _rangeOfEnclosingWord:v4];
 
     if (v5)
     {
-      v6 = [(UIKBInputDelegateManager *)self textInputDelegate];
-      v7 = [v17 end];
+      textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+      v7 = [selectedTextRange end];
       v8 = [v5 end];
-      v9 = [v6 comparePosition:v7 toPosition:v8];
+      v9 = [textInputDelegate2 comparePosition:v7 toPosition:v8];
 
       if (v9 == -1)
       {
-        v10 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-        [v10 setShouldIgnoreTextInputChanges:1];
+        keyboardStateDelegate = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+        [keyboardStateDelegate setShouldIgnoreTextInputChanges:1];
 
-        v11 = [(UIKBInputDelegateManager *)self textInputDelegate];
+        textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
         v12 = [v5 end];
         v13 = [v5 end];
-        v14 = [v11 textRangeFromPosition:v12 toPosition:v13];
+        v14 = [textInputDelegate3 textRangeFromPosition:v12 toPosition:v13];
         [(UIKBInputDelegateManager *)self setSelectedTextRange:v14];
 
-        v15 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-        [v15 syncDocumentStateToInputDelegate];
+        keyboardStateDelegate2 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+        [keyboardStateDelegate2 syncDocumentStateToInputDelegate];
 
-        v16 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
-        [v16 setShouldIgnoreTextInputChanges:0];
+        keyboardStateDelegate3 = [(UIKBInputDelegateManager *)self keyboardStateDelegate];
+        [keyboardStateDelegate3 setShouldIgnoreTextInputChanges:0];
       }
     }
   }
@@ -6102,16 +6102,16 @@ LABEL_18:
 
 - (BOOL)selectionIsWord
 {
-  v3 = [(UIKBInputDelegateManager *)self selectedTextRange];
-  v4 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v5 = [v3 start];
-  v6 = [(UIKBInputDelegateManager *)self beginningOfDocument];
-  if ([v4 comparePosition:v5 toPosition:v6])
+  selectedTextRange = [(UIKBInputDelegateManager *)self selectedTextRange];
+  textInputDelegate = [(UIKBInputDelegateManager *)self textInputDelegate];
+  start = [selectedTextRange start];
+  beginningOfDocument = [(UIKBInputDelegateManager *)self beginningOfDocument];
+  if ([textInputDelegate comparePosition:start toPosition:beginningOfDocument])
   {
-    v7 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v8 = [v7 tokenizer];
-    v9 = [v3 start];
-    v10 = [v8 isPosition:v9 atBoundary:1 inDirection:1];
+    textInputDelegate2 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    tokenizer = [textInputDelegate2 tokenizer];
+    start2 = [selectedTextRange start];
+    v10 = [tokenizer isPosition:start2 atBoundary:1 inDirection:1];
 
     if (!v10)
     {
@@ -6124,15 +6124,15 @@ LABEL_18:
   {
   }
 
-  v12 = [(UIKBInputDelegateManager *)self textInputDelegate];
-  v13 = [v3 end];
-  v14 = [(UIKBInputDelegateManager *)self endOfDocument];
-  if ([v12 comparePosition:v13 toPosition:v14])
+  textInputDelegate3 = [(UIKBInputDelegateManager *)self textInputDelegate];
+  v13 = [selectedTextRange end];
+  endOfDocument = [(UIKBInputDelegateManager *)self endOfDocument];
+  if ([textInputDelegate3 comparePosition:v13 toPosition:endOfDocument])
   {
-    v15 = [(UIKBInputDelegateManager *)self textInputDelegate];
-    v16 = [v15 tokenizer];
-    v17 = [v3 end];
-    v11 = [v16 isPosition:v17 atBoundary:1 inDirection:0];
+    textInputDelegate4 = [(UIKBInputDelegateManager *)self textInputDelegate];
+    tokenizer2 = [textInputDelegate4 tokenizer];
+    v17 = [selectedTextRange end];
+    v11 = [tokenizer2 isPosition:v17 atBoundary:1 inDirection:0];
   }
 
   else
@@ -6144,47 +6144,47 @@ LABEL_9:
   return v11;
 }
 
-- (void)shiftKeyStateChangedFrom:(int)a3 to:(int)a4
+- (void)shiftKeyStateChangedFrom:(int)from to:(int)to
 {
-  v7 = [(UIKBInputDelegateManager *)self webInputDelegate];
+  webInputDelegate = [(UIKBInputDelegateManager *)self webInputDelegate];
 
-  if (v7)
+  if (webInputDelegate)
   {
-    if (a3 == 3)
+    if (from == 3)
     {
       v8 = 2;
     }
 
     else
     {
-      v8 = a3 == 1;
+      v8 = from == 1;
     }
 
-    if (a4 == 3)
+    if (to == 3)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = a4 == 1;
+      v9 = to == 1;
     }
 
     if (v8 != v9)
     {
-      v18 = [(UIKBInputDelegateManager *)self webInputDelegate];
-      [v18 shiftKeyStateChangedFromState:v8 toState:v9];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self webInputDelegate];
+      [webInputDelegate2 shiftKeyStateChangedFromState:v8 toState:v9];
 LABEL_27:
     }
   }
 
   else
   {
-    v10 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+    asyncInputDelegate = [(UIKBInputDelegateManager *)self asyncInputDelegate];
 
-    if (!v10)
+    if (!asyncInputDelegate)
     {
-      v13 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+      privateInputDelegate = [(UIKBInputDelegateManager *)self privateInputDelegate];
       v14 = objc_opt_respondsToSelector();
 
       if ((v14 & 1) == 0)
@@ -6192,56 +6192,56 @@ LABEL_27:
         return;
       }
 
-      v15 = [(UIKBInputDelegateManager *)self privateInputDelegate];
-      if (a3 == 3)
+      privateInputDelegate2 = [(UIKBInputDelegateManager *)self privateInputDelegate];
+      if (from == 3)
       {
         v16 = 0x10000;
       }
 
       else
       {
-        v16 = (a3 == 1) << 17;
+        v16 = (from == 1) << 17;
       }
 
-      if (a4 == 3)
+      if (to == 3)
       {
         v17 = 0x10000;
       }
 
       else
       {
-        v17 = (a4 == 1) << 17;
+        v17 = (to == 1) << 17;
       }
 
-      v18 = v15;
-      [v15 modifierFlagsDidChangeFrom:v16 to:v17];
+      webInputDelegate2 = privateInputDelegate2;
+      [privateInputDelegate2 modifierFlagsDidChangeFrom:v16 to:v17];
       goto LABEL_27;
     }
 
-    if (a3 == 3)
+    if (from == 3)
     {
       v11 = 2;
     }
 
     else
     {
-      v11 = a3 == 1;
+      v11 = from == 1;
     }
 
-    if (a4 == 3)
+    if (to == 3)
     {
       v12 = 2;
     }
 
     else
     {
-      v12 = a4 == 1;
+      v12 = to == 1;
     }
 
     if (v11 != v12)
     {
-      v18 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
-      [v18 shiftKeyStateChangedFrom:v11 to:v12];
+      webInputDelegate2 = [(UIKBInputDelegateManager *)self asyncInputDelegate];
+      [webInputDelegate2 shiftKeyStateChangedFrom:v11 to:v12];
       goto LABEL_27;
     }
   }

@@ -1,8 +1,8 @@
 @interface BCXPCUbiquityDisableServiceProxy
 - (BCXPCUbiquityDisableServiceProxy)init;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
-- (void)syncIsLiverpoolAndUbiquityEnabledWithReply:(id)a3;
+- (void)syncIsLiverpoolAndUbiquityEnabledWithReply:(id)reply;
 @end
 
 @implementation BCXPCUbiquityDisableServiceProxy
@@ -35,29 +35,29 @@
   [(BCXPCUbiquityDisableServiceProxy *)&v3 dealloc];
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BCXPCUbiquityDisableServiceProxy *)self connection];
+  handlerCopy = handler;
+  connection = [(BCXPCUbiquityDisableServiceProxy *)self connection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_5C500;
   v9[3] = &unk_2C8548;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (void)syncIsLiverpoolAndUbiquityEnabledWithReply:(id)a3
+- (void)syncIsLiverpoolAndUbiquityEnabledWithReply:(id)reply
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_5C614;
   v6[3] = &unk_2C8548;
-  v7 = a3;
-  v4 = v7;
+  replyCopy = reply;
+  v4 = replyCopy;
   v5 = [(BCXPCUbiquityDisableServiceProxy *)self synchronousRemoteObjectProxyWithErrorHandler:v6];
   [v5 isLiverpoolAndUbiquityEnabledWithReply:v4];
 }

@@ -1,61 +1,61 @@
 @interface VCPayloadUtils
-+ (BOOL)canBundleExternallyForPayload:(int)a3 forBundlingScheme:(int)a4 operatingMode:(int)a5;
-+ (BOOL)isAMRCodecModeSupported:(int)a3 forBandwidth:(int)a4;
-+ (BOOL)isCodecModeSupported:(int)a3 forBandwidth:(int)a4 withPayload:(int)a5;
-+ (BOOL)isEVSCodecModeSupported:(int)a3 forBandwidth:(int)a4;
-+ (BOOL)isFormatAACELDNonSBR48KHzStereo:(const AudioStreamBasicDescription *)a3;
-+ (BOOL)isPayloadSupportedInFaceTime:(int)a3;
-+ (BOOL)shouldEnablePacketSizeLimitForAudioFormat:(AudioStreamBasicDescription *)a3;
-+ (BOOL)skipBandWidthCheckForCodecRateModes:(int)a3 supportedBitrates:(id)a4;
-+ (double)blockSizeForPayload:(int)a3 sampleRate:(unsigned int)a4;
-+ (float)qualityForPayload:(int)a3 forBitrate:(unsigned int)a4;
-+ (id)allowedBitratesForPayload:(int)a3 supportedBitrates:(id)a4 supportedBandwidths:(id)a5;
-+ (id)supportedCodecModesForBandwidth:(int)a3 payload:(int)a4;
-+ (int)audioCodecBandwidthForVCAudioCodecBandwidth:(int)a3;
-+ (int)codecBandwidthForPayload:(int)a3;
-+ (int)codecRateModeForDesiredANBR:(unsigned int)a3 payload:(int)a4 supportedBitrates:(id)a5 supportedBandwidths:(id)a6;
-+ (int)payloadForCodecType:(int64_t)a3;
-+ (int)vcAudioCodecBandwidthForAudioCodecBandwidth:(int)a3;
-+ (int64_t)ctAudioCodecEVSBandwidthForAudioCodecBandwidth:(int)a3;
-+ (int64_t)ctAudioCodecEVSBitrateForBitrate:(unsigned int)a3;
-+ (int64_t)ctAudioCodecTypeForMediaStreamCodec:(int64_t)a3;
-+ (unsigned)audioCodecTypeForPayload:(int)a3;
-+ (unsigned)bitrateForAMRCodecMode:(int)a3;
-+ (unsigned)bitrateForAMRWBCodecMode:(int)a3;
-+ (unsigned)bitrateForCodecType:(int64_t)a3 mode:(int)a4;
-+ (unsigned)bitrateForEVSCodecMode:(int)a3;
-+ (unsigned)codecSamplesPerFrameForCodecType:(int64_t)a3 secondsPerFrame:(double)a4;
-+ (unsigned)codecSamplesPerFrameForPayload:(int)a3 blockSize:(double)a4 sampleRate:(unsigned int)a5;
-+ (unsigned)internalBundleFactorForPayload:(int)a3;
-+ (unsigned)sampleRateForCodecBandwidth:(int)a3;
-+ (unsigned)sampleRateForCodecType:(int64_t)a3;
-+ (unsigned)sampleRateForPayload:(int)a3;
++ (BOOL)canBundleExternallyForPayload:(int)payload forBundlingScheme:(int)scheme operatingMode:(int)mode;
++ (BOOL)isAMRCodecModeSupported:(int)supported forBandwidth:(int)bandwidth;
++ (BOOL)isCodecModeSupported:(int)supported forBandwidth:(int)bandwidth withPayload:(int)payload;
++ (BOOL)isEVSCodecModeSupported:(int)supported forBandwidth:(int)bandwidth;
++ (BOOL)isFormatAACELDNonSBR48KHzStereo:(const AudioStreamBasicDescription *)stereo;
++ (BOOL)isPayloadSupportedInFaceTime:(int)time;
++ (BOOL)shouldEnablePacketSizeLimitForAudioFormat:(AudioStreamBasicDescription *)format;
++ (BOOL)skipBandWidthCheckForCodecRateModes:(int)modes supportedBitrates:(id)bitrates;
++ (double)blockSizeForPayload:(int)payload sampleRate:(unsigned int)rate;
++ (float)qualityForPayload:(int)payload forBitrate:(unsigned int)bitrate;
++ (id)allowedBitratesForPayload:(int)payload supportedBitrates:(id)bitrates supportedBandwidths:(id)bandwidths;
++ (id)supportedCodecModesForBandwidth:(int)bandwidth payload:(int)payload;
++ (int)audioCodecBandwidthForVCAudioCodecBandwidth:(int)bandwidth;
++ (int)codecBandwidthForPayload:(int)payload;
++ (int)codecRateModeForDesiredANBR:(unsigned int)r payload:(int)payload supportedBitrates:(id)bitrates supportedBandwidths:(id)bandwidths;
++ (int)payloadForCodecType:(int64_t)type;
++ (int)vcAudioCodecBandwidthForAudioCodecBandwidth:(int)bandwidth;
++ (int64_t)ctAudioCodecEVSBandwidthForAudioCodecBandwidth:(int)bandwidth;
++ (int64_t)ctAudioCodecEVSBitrateForBitrate:(unsigned int)bitrate;
++ (int64_t)ctAudioCodecTypeForMediaStreamCodec:(int64_t)codec;
++ (unsigned)audioCodecTypeForPayload:(int)payload;
++ (unsigned)bitrateForAMRCodecMode:(int)mode;
++ (unsigned)bitrateForAMRWBCodecMode:(int)mode;
++ (unsigned)bitrateForCodecType:(int64_t)type mode:(int)mode;
++ (unsigned)bitrateForEVSCodecMode:(int)mode;
++ (unsigned)codecSamplesPerFrameForCodecType:(int64_t)type secondsPerFrame:(double)frame;
++ (unsigned)codecSamplesPerFrameForPayload:(int)payload blockSize:(double)size sampleRate:(unsigned int)rate;
++ (unsigned)internalBundleFactorForPayload:(int)payload;
++ (unsigned)sampleRateForCodecBandwidth:(int)bandwidth;
++ (unsigned)sampleRateForCodecType:(int64_t)type;
++ (unsigned)sampleRateForPayload:(int)payload;
 @end
 
 @implementation VCPayloadUtils
 
-+ (BOOL)isPayloadSupportedInFaceTime:(int)a3
++ (BOOL)isPayloadSupportedInFaceTime:(int)time
 {
   result = 1;
-  if ((a3 - 97) <= 0x19)
+  if ((time - 97) <= 0x19)
   {
-    if (((1 << (a3 - 97)) & 0x3400F83) != 0)
+    if (((1 << (time - 97)) & 0x3400F83) != 0)
     {
       return result;
     }
 
-    if (a3 == 99)
+    if (time == 99)
     {
       return 0;
     }
 
-    if (a3 == 113)
+    if (time == 113)
     {
       return VCFeatureFlagManager_UseAudioCodecACC24ForU1();
     }
   }
 
-  if (a3 > 0x14 || ((1 << a3) & 0x2301) == 0)
+  if (time > 0x14 || ((1 << time) & 0x2301) == 0)
   {
     return 0;
   }
@@ -63,27 +63,27 @@
   return result;
 }
 
-+ (unsigned)sampleRateForCodecType:(int64_t)a3
++ (unsigned)sampleRateForCodecType:(int64_t)type
 {
-  if ((a3 - 1) > 0x13)
+  if ((type - 1) > 0x13)
   {
     return 0;
   }
 
   else
   {
-    return dword_1DBD47638[a3 - 1];
+    return dword_1DBD47638[type - 1];
   }
 }
 
-+ (unsigned)sampleRateForPayload:(int)a3
++ (unsigned)sampleRateForPayload:(int)payload
 {
   result = 8000;
-  if (a3 <= 12)
+  if (payload <= 12)
   {
-    if (a3 && a3 != 8)
+    if (payload && payload != 8)
     {
-      if (a3 == 9)
+      if (payload == 9)
       {
         return 16000;
       }
@@ -97,7 +97,7 @@
 
   else
   {
-    switch(a3)
+    switch(payload)
     {
       case 'a':
       case 'c':
@@ -133,7 +133,7 @@
       case 'l':
         return 32000;
       default:
-        if (a3 != 13)
+        if (payload != 13)
         {
           return 0;
         }
@@ -147,33 +147,33 @@ LABEL_3:
   return result;
 }
 
-+ (unsigned)sampleRateForCodecBandwidth:(int)a3
++ (unsigned)sampleRateForCodecBandwidth:(int)bandwidth
 {
-  if ((a3 - 1) >= 3)
+  if ((bandwidth - 1) >= 3)
   {
     return 8000;
   }
 
   else
   {
-    return 16000 * a3;
+    return 16000 * bandwidth;
   }
 }
 
-+ (unsigned)audioCodecTypeForPayload:(int)a3
++ (unsigned)audioCodecTypeForPayload:(int)payload
 {
-  if (a3 > 105)
+  if (payload > 105)
   {
-    if (a3 > 110)
+    if (payload > 110)
     {
-      if (a3 != 111)
+      if (payload != 111)
       {
-        if (a3 == 113)
+        if (payload == 113)
         {
           return 1633903462;
         }
 
-        if (a3 == 119)
+        if (payload == 119)
         {
           return 1869641075;
         }
@@ -182,9 +182,9 @@ LABEL_3:
       }
     }
 
-    else if ((a3 - 107) >= 2)
+    else if ((payload - 107) >= 2)
     {
-      if (a3 == 106)
+      if (payload == 106)
       {
         return 1633772390;
       }
@@ -196,9 +196,9 @@ LABEL_3:
   }
 
   result = 1935764850;
-  if (a3 <= 97)
+  if (payload <= 97)
   {
-    switch(a3)
+    switch(payload)
     {
       case 0:
         return 1970037111;
@@ -211,14 +211,14 @@ LABEL_3:
     goto LABEL_27;
   }
 
-  if (a3 <= 100)
+  if (payload <= 100)
   {
-    if (a3 == 98)
+    if (payload == 98)
     {
       return 1935767394;
     }
 
-    if (a3 == 99)
+    if (payload == 99)
     {
       return 1953790320;
     }
@@ -226,7 +226,7 @@ LABEL_3:
     goto LABEL_27;
   }
 
-  if (a3 == 101 || a3 == 104)
+  if (payload == 101 || payload == 104)
   {
     return 1633772390;
   }
@@ -244,9 +244,9 @@ LABEL_27:
   return -1;
 }
 
-+ (double)blockSizeForPayload:(int)a3 sampleRate:(unsigned int)a4
++ (double)blockSizeForPayload:(int)payload sampleRate:(unsigned int)rate
 {
-  v4 = a4 == 48000 && a3 == 119;
+  v4 = rate == 48000 && payload == 119;
   result = 0.02;
   if (v4)
   {
@@ -256,11 +256,11 @@ LABEL_27:
   return result;
 }
 
-+ (unsigned)codecSamplesPerFrameForCodecType:(int64_t)a3 secondsPerFrame:(double)a4
++ (unsigned)codecSamplesPerFrameForCodecType:(int64_t)type secondsPerFrame:(double)frame
 {
   v4 = 0.0;
   result = 1408;
-  switch(a3)
+  switch(type)
   {
     case 1:
     case 5:
@@ -293,7 +293,7 @@ LABEL_27:
     case 19:
       v6 = 48000.0;
 LABEL_8:
-      v4 = a4 * v6;
+      v4 = frame * v6;
       break;
     default:
       return vcvtad_u64_f64(v4);
@@ -302,23 +302,23 @@ LABEL_8:
   return vcvtad_u64_f64(v4);
 }
 
-+ (unsigned)codecSamplesPerFrameForPayload:(int)a3 blockSize:(double)a4 sampleRate:(unsigned int)a5
++ (unsigned)codecSamplesPerFrameForPayload:(int)payload blockSize:(double)size sampleRate:(unsigned int)rate
 {
   v5 = 480.0;
-  if (a3 > 106)
+  if (payload > 106)
   {
-    if (a3 > 111)
+    if (payload > 111)
     {
-      if (a3 <= 120)
+      if (payload <= 120)
       {
-        if ((a3 - 112) < 2)
+        if ((payload - 112) < 2)
         {
           return vcvtad_u64_f64(v5);
         }
 
-        if (a3 == 119)
+        if (payload == 119)
         {
-          [a1 opusSamplesPerFrameForSampleRate:*&a5 blockSize:a4];
+          [self opusSamplesPerFrameForSampleRate:*&rate blockSize:size];
           v5 = v6;
           return vcvtad_u64_f64(v5);
         }
@@ -326,12 +326,12 @@ LABEL_8:
         goto LABEL_27;
       }
 
-      if (a3 == 121)
+      if (payload == 121)
       {
         goto LABEL_30;
       }
 
-      if (a3 != 122)
+      if (payload != 122)
       {
 LABEL_27:
         v5 = 0.0;
@@ -350,19 +350,19 @@ LABEL_27:
 LABEL_24:
       v7 = 8000.0;
 LABEL_34:
-      v5 = a4 * v7;
+      v5 = size * v7;
       return vcvtad_u64_f64(v5);
     }
 
-    if (a3 != 107)
+    if (payload != 107)
     {
-      if (a3 == 108)
+      if (payload == 108)
       {
         v7 = 32000.0;
         goto LABEL_34;
       }
 
-      if (a3 != 111)
+      if (payload != 111)
       {
         goto LABEL_27;
       }
@@ -375,11 +375,11 @@ LABEL_30:
     goto LABEL_34;
   }
 
-  if (a3 <= 97)
+  if (payload <= 97)
   {
-    if (a3 <= 8)
+    if (payload <= 8)
     {
-      if (a3 && a3 != 8)
+      if (payload && payload != 8)
       {
         goto LABEL_27;
       }
@@ -387,15 +387,15 @@ LABEL_30:
       goto LABEL_24;
     }
 
-    if (a3 != 9)
+    if (payload != 9)
     {
-      if (a3 == 13)
+      if (payload == 13)
       {
         v7 = 24000.0;
         goto LABEL_34;
       }
 
-      if (a3 != 97)
+      if (payload != 97)
       {
         goto LABEL_27;
       }
@@ -406,23 +406,23 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  if (a3 > 103)
+  if (payload > 103)
   {
     return vcvtad_u64_f64(v5);
   }
 
-  if (a3 == 98)
+  if (payload == 98)
   {
     goto LABEL_30;
   }
 
-  if (a3 == 99)
+  if (payload == 99)
   {
     v5 = 1408.0;
     return vcvtad_u64_f64(v5);
   }
 
-  if (a3 != 101)
+  if (payload != 101)
   {
     goto LABEL_27;
   }
@@ -430,17 +430,17 @@ LABEL_30:
   return vcvtad_u64_f64(v5);
 }
 
-+ (int)codecBandwidthForPayload:(int)a3
++ (int)codecBandwidthForPayload:(int)payload
 {
   result = 0;
-  if (a3 > 106)
+  if (payload > 106)
   {
-    if (a3 == 111)
+    if (payload == 111)
     {
       return result;
     }
 
-    if (a3 != 107)
+    if (payload != 107)
     {
       return 2;
     }
@@ -448,12 +448,12 @@ LABEL_30:
 
   else
   {
-    if (a3 == 97)
+    if (payload == 97)
     {
       return result;
     }
 
-    if (a3 != 98)
+    if (payload != 98)
     {
       return 2;
     }
@@ -462,55 +462,55 @@ LABEL_30:
   return 1;
 }
 
-+ (id)supportedCodecModesForBandwidth:(int)a3 payload:(int)a4
++ (id)supportedCodecModesForBandwidth:(int)bandwidth payload:(int)payload
 {
-  if (a4 <= 106)
+  if (payload <= 106)
   {
-    if (a4 != 97)
+    if (payload != 97)
     {
-      if (a4 == 98)
+      if (payload == 98)
       {
-        return [a1 codecModesForAMR16kHz];
+        return [self codecModesForAMR16kHz];
       }
 
       return 0;
     }
 
-    return [a1 codecModesForAMR8kHz];
+    return [self codecModesForAMR8kHz];
   }
 
   else
   {
-    if ((a4 - 107) >= 2 && a4 != 111)
+    if ((payload - 107) >= 2 && payload != 111)
     {
       return 0;
     }
 
-    switch(a3)
+    switch(bandwidth)
     {
       case 2:
-        return [a1 codecModesForEVS32kHz];
+        return [self codecModesForEVS32kHz];
       case 1:
-        return [a1 codecModesForEVS16kHz];
+        return [self codecModesForEVS16kHz];
       case 0:
-        return [a1 codecModesForEVS8kHz];
+        return [self codecModesForEVS8kHz];
       default:
         return 0;
     }
   }
 }
 
-+ (id)allowedBitratesForPayload:(int)a3 supportedBitrates:(id)a4 supportedBandwidths:(id)a5
++ (id)allowedBitratesForPayload:(int)payload supportedBitrates:(id)bitrates supportedBandwidths:(id)bandwidths
 {
-  v7 = *&a3;
+  v7 = *&payload;
   v23 = *MEMORY[0x1E69E9840];
-  v9 = [a1 codecBandwidthForPayload:?];
-  v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:{objc_msgSend(a1, "supportedCodecModesForBandwidth:payload:", v9, v7)}];
+  v9 = [self codecBandwidthForPayload:?];
+  v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:{objc_msgSend(self, "supportedCodecModesForBandwidth:payload:", v9, v7)}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [a5 countByEnumeratingWithState:&v19 objects:v18 count:16];
+  v11 = [bandwidths countByEnumeratingWithState:&v19 objects:v18 count:16];
   if (v11)
   {
     v12 = v11;
@@ -521,16 +521,16 @@ LABEL_30:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(bandwidths);
         }
 
         if (v9 != [*(*(&v19 + 1) + 8 * i) integerValue])
         {
-          [v10 addObjectsFromArray:{objc_msgSend(a1, "supportedCodecModesForBandwidth:payload:")}];
+          [v10 addObjectsFromArray:{objc_msgSend(self, "supportedCodecModesForBandwidth:payload:")}];
         }
       }
 
-      v12 = [a5 countByEnumeratingWithState:&v19 objects:v18 count:16];
+      v12 = [bandwidths countByEnumeratingWithState:&v19 objects:v18 count:16];
     }
 
     while (v12);
@@ -544,7 +544,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  [v10 intersectSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", a4)}];
+  [v10 intersectSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", bitrates)}];
   v15 = [objc_msgSend(objc_msgSend(v10 "allObjects")];
   if (!v15)
   {
@@ -557,10 +557,10 @@ LABEL_12:
   return v15;
 }
 
-+ (int)codecRateModeForDesiredANBR:(unsigned int)a3 payload:(int)a4 supportedBitrates:(id)a5 supportedBandwidths:(id)a6
++ (int)codecRateModeForDesiredANBR:(unsigned int)r payload:(int)payload supportedBitrates:(id)bitrates supportedBandwidths:(id)bandwidths
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = [a1 allowedBitratesForPayload:*&a4 supportedBitrates:a5 supportedBandwidths:a6];
+  v8 = [self allowedBitratesForPayload:*&payload supportedBitrates:bitrates supportedBandwidths:bandwidths];
   if (v8)
   {
     v9 = v8;
@@ -585,7 +585,7 @@ LABEL_4:
         }
 
         v10 = *(*(&v19 + 1) + 8 * v14);
-        if ([v10 unsignedIntValue] > a3)
+        if ([v10 unsignedIntValue] > r)
         {
           break;
         }
@@ -601,7 +601,7 @@ LABEL_4:
             goto LABEL_4;
           }
 
-          return VCPayloadUtils_AudioCodecRateModeForBitrate(a4, [v15 unsignedIntValue]);
+          return VCPayloadUtils_AudioCodecRateModeForBitrate(payload, [v15 unsignedIntValue]);
         }
       }
     }
@@ -611,7 +611,7 @@ LABEL_4:
       v15 = v10;
     }
 
-    return VCPayloadUtils_AudioCodecRateModeForBitrate(a4, [v15 unsignedIntValue]);
+    return VCPayloadUtils_AudioCodecRateModeForBitrate(payload, [v15 unsignedIntValue]);
   }
 
   else
@@ -621,50 +621,50 @@ LABEL_4:
   }
 }
 
-+ (BOOL)isEVSCodecModeSupported:(int)a3 forBandwidth:(int)a4
++ (BOOL)isEVSCodecModeSupported:(int)supported forBandwidth:(int)bandwidth
 {
-  v4 = (a3 - 13) < 9;
-  v5 = (a3 - 15) < 7;
-  if (a4 != 3)
+  v4 = (supported - 13) < 9;
+  v5 = (supported - 15) < 7;
+  if (bandwidth != 3)
   {
     v5 = 0;
   }
 
-  if (a4 != 2)
+  if (bandwidth != 2)
   {
     v4 = v5;
   }
 
-  v6 = (a3 - 10) < 0xC;
-  if (a4 != 1)
+  v6 = (supported - 10) < 0xC;
+  if (bandwidth != 1)
   {
     v6 = 0;
   }
 
-  if (!a4)
+  if (!bandwidth)
   {
-    v6 = (a3 - 10) < 7;
+    v6 = (supported - 10) < 7;
   }
 
-  if (a4 <= 1)
+  if (bandwidth <= 1)
   {
     v4 = v6;
   }
 
-  return a3 < 9 || v4;
+  return supported < 9 || v4;
 }
 
-+ (BOOL)isAMRCodecModeSupported:(int)a3 forBandwidth:(int)a4
++ (BOOL)isAMRCodecModeSupported:(int)supported forBandwidth:(int)bandwidth
 {
-  v4 = a3 < 8;
-  if (a4)
+  v4 = supported < 8;
+  if (bandwidth)
   {
     v4 = 0;
   }
 
-  if (a4 == 1)
+  if (bandwidth == 1)
   {
-    return a3 < 9;
+    return supported < 9;
   }
 
   else
@@ -673,22 +673,22 @@ LABEL_4:
   }
 }
 
-+ (BOOL)isCodecModeSupported:(int)a3 forBandwidth:(int)a4 withPayload:(int)a5
++ (BOOL)isCodecModeSupported:(int)supported forBandwidth:(int)bandwidth withPayload:(int)payload
 {
-  if ((a5 - 97) > 0xE)
+  if ((payload - 97) > 0xE)
   {
     return 0;
   }
 
-  v5 = 1 << (a5 - 97);
+  v5 = 1 << (payload - 97);
   if ((v5 & 0x4C00) != 0)
   {
-    return [a1 isEVSCodecModeSupported:*&a3 forBandwidth:*&a4];
+    return [self isEVSCodecModeSupported:*&supported forBandwidth:*&bandwidth];
   }
 
   if ((v5 & 3) != 0)
   {
-    return [a1 isAMRCodecModeSupported:*&a3 forBandwidth:*&a4];
+    return [self isAMRCodecModeSupported:*&supported forBandwidth:*&bandwidth];
   }
 
   else
@@ -697,28 +697,28 @@ LABEL_4:
   }
 }
 
-+ (BOOL)isFormatAACELDNonSBR48KHzStereo:(const AudioStreamBasicDescription *)a3
++ (BOOL)isFormatAACELDNonSBR48KHzStereo:(const AudioStreamBasicDescription *)stereo
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (stereo)
   {
-    return a3->mFormatID == 1633772389 && a3->mSampleRate == 48000 && a3->mChannelsPerFrame == 2;
+    return stereo->mFormatID == 1633772389 && stereo->mSampleRate == 48000 && stereo->mChannelsPerFrame == 2;
   }
 
   [VCPayloadUtils isFormatAACELDNonSBR48KHzStereo:?];
   return v4;
 }
 
-+ (BOOL)skipBandWidthCheckForCodecRateModes:(int)a3 supportedBitrates:(id)a4
++ (BOOL)skipBandWidthCheckForCodecRateModes:(int)modes supportedBitrates:(id)bitrates
 {
   v22 = *MEMORY[0x1E69E9840];
-  LODWORD(v5) = [a1 isEVSPayload:*&a3];
+  LODWORD(v5) = [self isEVSPayload:*&modes];
   if (!v5)
   {
     return v5;
   }
 
-  v5 = [a4 count];
+  v5 = [bitrates count];
   if (!v5)
   {
     return v5;
@@ -728,7 +728,7 @@ LABEL_4:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v18 objects:v17 count:16];
+  v6 = [bitrates countByEnumeratingWithState:&v18 objects:v17 count:16];
   if (!v6)
   {
     LOBYTE(v5) = 1;
@@ -743,33 +743,33 @@ LABEL_4:
     {
       if (*v19 != v8)
       {
-        objc_enumerationMutation(a4);
+        objc_enumerationMutation(bitrates);
       }
 
-      v10 = [*(*(&v18 + 1) + 8 * i) unsignedIntValue];
-      if (v10 <= 24399)
+      unsignedIntValue = [*(*(&v18 + 1) + 8 * i) unsignedIntValue];
+      if (unsignedIntValue <= 24399)
       {
-        if (v10 > 9599)
+        if (unsignedIntValue > 9599)
         {
-          v11 = v10 == 9600 || v10 == 13200;
+          v11 = unsignedIntValue == 9600 || unsignedIntValue == 13200;
           v12 = 16400;
         }
 
         else
         {
-          v11 = v10 == 5900 || v10 == 7200;
+          v11 = unsignedIntValue == 5900 || unsignedIntValue == 7200;
           v12 = 8000;
         }
 
         goto LABEL_23;
       }
 
-      if (v10 <= 63999)
+      if (unsignedIntValue <= 63999)
       {
-        v11 = v10 == 24400 || v10 == 32000;
+        v11 = unsignedIntValue == 24400 || unsignedIntValue == 32000;
         v12 = 48000;
 LABEL_23:
-        if (v11 || v10 == v12)
+        if (v11 || unsignedIntValue == v12)
         {
           goto LABEL_39;
         }
@@ -777,7 +777,7 @@ LABEL_23:
         continue;
       }
 
-      if (v10 == 64000 || v10 == 96000 || v10 == 128000)
+      if (unsignedIntValue == 64000 || unsignedIntValue == 96000 || unsignedIntValue == 128000)
       {
 LABEL_39:
         LOBYTE(v5) = 0;
@@ -785,7 +785,7 @@ LABEL_39:
       }
     }
 
-    v7 = [a4 countByEnumeratingWithState:&v18 objects:v17 count:16];
+    v7 = [bitrates countByEnumeratingWithState:&v18 objects:v17 count:16];
     LOBYTE(v5) = 1;
     if (v7)
     {
@@ -796,12 +796,12 @@ LABEL_39:
   }
 }
 
-+ (BOOL)canBundleExternallyForPayload:(int)a3 forBundlingScheme:(int)a4 operatingMode:(int)a5
++ (BOOL)canBundleExternallyForPayload:(int)payload forBundlingScheme:(int)scheme operatingMode:(int)mode
 {
-  if (a4 == 2)
+  if (scheme == 2)
   {
-    v5 = 0x29u >> (a3 - 101);
-    if ((a3 - 101) > 5)
+    v5 = 0x29u >> (payload - 101);
+    if ((payload - 101) > 5)
     {
       LOBYTE(v5) = 0;
     }
@@ -809,17 +809,17 @@ LABEL_39:
 
   else
   {
-    if (a4 != 1 || (a3 - 98) > 0x15)
+    if (scheme != 1 || (payload - 98) > 0x15)
     {
       goto LABEL_7;
     }
 
     LOBYTE(v5) = 1;
-    if (((1 << (a3 - 98)) & 0x20C5C8) == 0)
+    if (((1 << (payload - 98)) & 0x20C5C8) == 0)
     {
-      if (a3 == 98)
+      if (payload == 98)
       {
-        LOBYTE(v5) = a5 == 6;
+        LOBYTE(v5) = mode == 6;
         return v5 & 1;
       }
 
@@ -831,9 +831,9 @@ LABEL_7:
   return v5 & 1;
 }
 
-+ (unsigned)internalBundleFactorForPayload:(int)a3
++ (unsigned)internalBundleFactorForPayload:(int)payload
 {
-  if ((a3 - 121) >= 2)
+  if ((payload - 121) >= 2)
   {
     return 1;
   }
@@ -844,12 +844,12 @@ LABEL_7:
   }
 }
 
-+ (BOOL)shouldEnablePacketSizeLimitForAudioFormat:(AudioStreamBasicDescription *)a3
++ (BOOL)shouldEnablePacketSizeLimitForAudioFormat:(AudioStreamBasicDescription *)format
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (format)
   {
-    if (a3->mFormatID == 1869641075 || (v3 = [VCPayloadUtils isFormatAACELDNonSBR48KHzStereo:?]))
+    if (format->mFormatID == 1869641075 || (v3 = [VCPayloadUtils isFormatAACELDNonSBR48KHzStereo:?]))
     {
       LOBYTE(v3) = 1;
     }
@@ -864,22 +864,22 @@ LABEL_7:
   return v3;
 }
 
-+ (float)qualityForPayload:(int)a3 forBitrate:(unsigned int)a4
++ (float)qualityForPayload:(int)payload forBitrate:(unsigned int)bitrate
 {
-  if (a3 <= 103)
+  if (payload <= 103)
   {
-    if (a3 != 97)
+    if (payload != 97)
     {
-      if (a3 == 98)
+      if (payload == 98)
       {
         result = 0.5;
-        if (a4 >> 6 < 0x7D)
+        if (bitrate >> 6 < 0x7D)
         {
           return result;
         }
 
         result = 0.75;
-        if (a4 < 0x2EE1)
+        if (bitrate < 0x2EE1)
         {
           return result;
         }
@@ -887,13 +887,13 @@ LABEL_7:
         return 1.0;
       }
 
-      if (a3 != 101)
+      if (payload != 101)
       {
         return 1.0;
       }
 
       result = 0.5;
-      if (a4 >> 4 < 0x753)
+      if (bitrate >> 4 < 0x753)
       {
         return result;
       }
@@ -902,30 +902,30 @@ LABEL_7:
       goto LABEL_43;
     }
 
-    v7 = a4 >> 5 > 0x176;
+    v7 = bitrate >> 5 > 0x176;
     result = 0.5;
     v8 = 0.0;
   }
 
   else
   {
-    v4 = a3 - 107;
-    if ((a3 - 107) > 0xC)
+    v4 = payload - 107;
+    if ((payload - 107) > 0xC)
     {
 LABEL_30:
-      if (a3 != 104)
+      if (payload != 104)
       {
-        if (a3 == 106)
+        if (payload == 106)
         {
           result = 0.5;
-          if (a4 > 0x5DC0)
+          if (bitrate > 0x5DC0)
           {
             return result;
           }
 
-          if (a4 <= 0x4E20)
+          if (bitrate <= 0x4E20)
           {
-            if (a4 == 20000)
+            if (bitrate == 20000)
             {
               return 0.8;
             }
@@ -940,14 +940,14 @@ LABEL_30:
       }
 
       result = 0.5;
-      if (a4 >> 5 < 0x271)
+      if (bitrate >> 5 < 0x271)
       {
         return result;
       }
 
       v6 = 24001;
 LABEL_43:
-      if (a4 < v6)
+      if (bitrate < v6)
       {
         return 0.66;
       }
@@ -960,13 +960,13 @@ LABEL_43:
       if (((1 << v4) & 0x60) != 0)
       {
         result = 0.0;
-        if (a4 >> 3 <= 0xC34)
+        if (bitrate >> 3 <= 0xC34)
         {
-          if (a4 >> 5 <= 0x176)
+          if (bitrate >> 5 <= 0x176)
           {
-            if (a4 >> 3 <= 0x464)
+            if (bitrate >> 3 <= 0x464)
             {
-              return flt_1DBD47610[a4 >> 6 > 0x7C];
+              return flt_1DBD47610[bitrate >> 6 > 0x7C];
             }
 
             else
@@ -984,19 +984,19 @@ LABEL_43:
         return result;
       }
 
-      if (a3 == 119)
+      if (payload == 119)
       {
         result = 0.0;
-        if (a4 >> 6 <= 0x176)
+        if (bitrate >> 6 <= 0x176)
         {
           result = 0.75;
-          if (a4 >> 5 <= 0x270)
+          if (bitrate >> 5 <= 0x270)
           {
             result = 0.5;
-            if (a4 <= 0x3E80)
+            if (bitrate <= 0x3E80)
             {
               result = 0.33;
-              if (a4 >> 5 <= 0x176)
+              if (bitrate >> 5 <= 0x176)
               {
                 return 0.0;
               }
@@ -1011,22 +1011,22 @@ LABEL_43:
     }
 
     result = 0.0;
-    if (a4 >> 3 > 0xC34)
+    if (bitrate >> 3 > 0xC34)
     {
       return result;
     }
 
-    if (a4 >> 5 > 0x176)
+    if (bitrate >> 5 > 0x176)
     {
       return 0.93;
     }
 
-    if (a4 >> 3 > 0x464)
+    if (bitrate >> 3 > 0x464)
     {
       return 0.85;
     }
 
-    v7 = a4 >> 6 > 0x7C;
+    v7 = bitrate >> 6 > 0x7C;
     result = 0.4;
     v8 = 0.75;
   }
@@ -1039,15 +1039,15 @@ LABEL_43:
   return result;
 }
 
-+ (int)payloadForCodecType:(int64_t)a3
++ (int)payloadForCodecType:(int64_t)type
 {
-  v3 = a3;
+  typeCopy = type;
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 > 100)
+  if (type > 100)
   {
-    if (a3 > 199)
+    if (type > 199)
     {
-      switch(a3)
+      switch(type)
       {
         case 200:
           return 109;
@@ -1060,12 +1060,12 @@ LABEL_43:
 
     else
     {
-      if ((a3 - 102) < 2)
+      if ((type - 102) < 2)
       {
         return 100;
       }
 
-      if (a3 == 101)
+      if (type == 101)
       {
         return 126;
       }
@@ -1085,7 +1085,7 @@ LABEL_17:
         v11 = 1024;
         v12 = 761;
         v13 = 1024;
-        v14 = v3;
+        v14 = typeCopy;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Unsupported codec type %d", &v7, 0x22u);
       }
     }
@@ -1096,7 +1096,7 @@ LABEL_17:
   else
   {
     result = 0;
-    switch(a3)
+    switch(type)
     {
       case 1:
         result = 97;
@@ -1154,7 +1154,7 @@ LABEL_17:
         result = 113;
         break;
       default:
-        if (a3 != 100)
+        if (type != 100)
         {
           goto LABEL_17;
         }
@@ -1167,20 +1167,20 @@ LABEL_17:
   return result;
 }
 
-+ (unsigned)bitrateForCodecType:(int64_t)a3 mode:(int)a4
++ (unsigned)bitrateForCodecType:(int64_t)type mode:(int)mode
 {
-  if (a3 > 10)
+  if (type > 10)
   {
-    if (a3 > 15)
+    if (type > 15)
     {
-      switch(a3)
+      switch(type)
       {
         case 16:
           return 64000;
         case 17:
 LABEL_11:
 
-          return [VCPayloadUtils bitrateForEVSCodecMode:*&a4];
+          return [VCPayloadUtils bitrateForEVSCodecMode:*&mode];
         case 19:
           return 48000;
       }
@@ -1188,9 +1188,9 @@ LABEL_11:
       return 0;
     }
 
-    if (a3 != 11)
+    if (type != 11)
     {
-      if (a3 == 12)
+      if (type == 12)
       {
         return 24000;
       }
@@ -1211,11 +1211,11 @@ LABEL_11:
 
   else
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      if ((a3 - 3) >= 2)
+      if ((type - 3) >= 2)
       {
-        if (a3 != 8)
+        if (type != 8)
         {
           return 0;
         }
@@ -1226,27 +1226,27 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
 
-        return [VCPayloadUtils bitrateForAMRWBCodecMode:*&a4];
+        return [VCPayloadUtils bitrateForAMRWBCodecMode:*&mode];
       }
 
       return 0;
     }
 
-    return [VCPayloadUtils bitrateForAMRCodecMode:*&a4];
+    return [VCPayloadUtils bitrateForAMRCodecMode:*&mode];
   }
 }
 
-+ (unsigned)bitrateForAMRCodecMode:(int)a3
++ (unsigned)bitrateForAMRCodecMode:(int)mode
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 < 8)
+  if (mode < 8)
   {
-    return dword_1DBD47688[a3];
+    return dword_1DBD47688[mode];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -1266,19 +1266,19 @@ LABEL_11:
     v11 = 1024;
     v12 = 833;
     v13 = 1024;
-    v14 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Unsupported mode %d", &v7, 0x22u);
   }
 
   return 0;
 }
 
-+ (unsigned)bitrateForAMRWBCodecMode:(int)a3
++ (unsigned)bitrateForAMRWBCodecMode:(int)mode
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 < 9)
+  if (mode < 9)
   {
-    return dword_1DBD476A8[a3];
+    return dword_1DBD476A8[mode];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -1298,42 +1298,42 @@ LABEL_11:
     v11 = 1024;
     v12 = 859;
     v13 = 1024;
-    v14 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Unsupported mode %d", &v7, 0x22u);
   }
 
   return 0;
 }
 
-+ (unsigned)bitrateForEVSCodecMode:(int)a3
++ (unsigned)bitrateForEVSCodecMode:(int)mode
 {
-  if ((a3 - 10) >= 0xC)
+  if ((mode - 10) >= 0xC)
   {
     return [VCPayloadUtils bitrateForAMRWBCodecMode:?];
   }
 
   else
   {
-    return dword_1DBD476CC[a3 - 10];
+    return dword_1DBD476CC[mode - 10];
   }
 }
 
-+ (int64_t)ctAudioCodecTypeForMediaStreamCodec:(int64_t)a3
++ (int64_t)ctAudioCodecTypeForMediaStreamCodec:(int64_t)codec
 {
-  if (a3 <= 2)
+  if (codec <= 2)
   {
-    if (a3 == 1)
+    if (codec == 1)
     {
       return 0;
     }
 
-    if (a3 == 2)
+    if (codec == 2)
     {
       return 1;
     }
   }
 
-  else if ((a3 - 3) < 2 || a3 == 17)
+  else if ((codec - 3) < 2 || codec == 17)
   {
     return 2;
   }
@@ -1341,31 +1341,31 @@ LABEL_11:
   return 5;
 }
 
-+ (int64_t)ctAudioCodecEVSBandwidthForAudioCodecBandwidth:(int)a3
++ (int64_t)ctAudioCodecEVSBandwidthForAudioCodecBandwidth:(int)bandwidth
 {
-  if (a3 >= 3)
+  if (bandwidth >= 3)
   {
     return 3;
   }
 
   else
   {
-    return a3;
+    return bandwidth;
   }
 }
 
-+ (int64_t)ctAudioCodecEVSBitrateForBitrate:(unsigned int)a3
++ (int64_t)ctAudioCodecEVSBitrateForBitrate:(unsigned int)bitrate
 {
-  if (a3 <= 24399)
+  if (bitrate <= 24399)
   {
     v3 = 9599;
     v11 = 5;
-    if (a3 != 16400)
+    if (bitrate != 16400)
     {
       v11 = 0;
     }
 
-    if (a3 == 13200)
+    if (bitrate == 13200)
     {
       v12 = 4;
     }
@@ -1375,7 +1375,7 @@ LABEL_11:
       v12 = v11;
     }
 
-    if (a3 == 9600)
+    if (bitrate == 9600)
     {
       v6 = 3;
     }
@@ -1388,7 +1388,7 @@ LABEL_11:
     v7 = 7200;
     v8 = 1;
     v10 = 2;
-    if (a3 != 8000)
+    if (bitrate != 8000)
     {
       v10 = 0;
     }
@@ -1398,12 +1398,12 @@ LABEL_11:
   {
     v3 = 63999;
     v4 = 11;
-    if (a3 != 128000)
+    if (bitrate != 128000)
     {
       v4 = 0;
     }
 
-    if (a3 == 96000)
+    if (bitrate == 96000)
     {
       v5 = 10;
     }
@@ -1413,7 +1413,7 @@ LABEL_11:
       v5 = v4;
     }
 
-    if (a3 == 64000)
+    if (bitrate == 64000)
     {
       v6 = 9;
     }
@@ -1426,12 +1426,12 @@ LABEL_11:
     v7 = 24400;
     v8 = 6;
     v9 = 8;
-    if (a3 != 48000)
+    if (bitrate != 48000)
     {
       v9 = 0;
     }
 
-    if (a3 == 32000)
+    if (bitrate == 32000)
     {
       v10 = 7;
     }
@@ -1442,7 +1442,7 @@ LABEL_11:
     }
   }
 
-  if (a3 == v7)
+  if (bitrate == v7)
   {
     v13 = v8;
   }
@@ -1452,7 +1452,7 @@ LABEL_11:
     v13 = v10;
   }
 
-  if (a3 <= v3)
+  if (bitrate <= v3)
   {
     return v13;
   }
@@ -1463,29 +1463,29 @@ LABEL_11:
   }
 }
 
-+ (int)vcAudioCodecBandwidthForAudioCodecBandwidth:(int)a3
++ (int)vcAudioCodecBandwidthForAudioCodecBandwidth:(int)bandwidth
 {
-  if ((a3 - 1) >= 3)
+  if ((bandwidth - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return bandwidth;
   }
 }
 
-+ (int)audioCodecBandwidthForVCAudioCodecBandwidth:(int)a3
++ (int)audioCodecBandwidthForVCAudioCodecBandwidth:(int)bandwidth
 {
-  if ((a3 - 1) >= 3)
+  if ((bandwidth - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return bandwidth;
   }
 }
 

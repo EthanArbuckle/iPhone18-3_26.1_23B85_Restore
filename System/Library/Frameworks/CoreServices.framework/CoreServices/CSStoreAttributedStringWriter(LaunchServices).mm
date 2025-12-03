@@ -34,7 +34,7 @@
     v13 = &stru_1EEF65710;
   }
 
-  [a1 write:v6 string:v13];
+  [self write:v6 string:v13];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -58,8 +58,8 @@
       v12[1] = 3221225472;
       v12[2] = __70__CSStoreAttributedStringWriter_LaunchServices__write_directoryClass___block_invoke_2;
       v12[3] = &unk_1E6A1A830;
-      v12[4] = a1;
-      [a1 withAppliedAttribute:v11 value:v10 block:v12];
+      v12[4] = self;
+      [self withAppliedAttribute:v11 value:v10 block:v12];
       goto LABEL_7;
     }
   }
@@ -70,10 +70,10 @@
   v13[1] = 3221225472;
   v13[2] = __70__CSStoreAttributedStringWriter_LaunchServices__write_directoryClass___block_invoke;
   v13[3] = &unk_1E6A1ABE8;
-  v13[4] = a1;
+  v13[4] = self;
   v14 = v7;
   v10 = v7;
-  [a1 withAppliedAttribute:v9 value:v8 block:v13];
+  [self withAppliedAttribute:v9 value:v8 block:v13];
 
 LABEL_7:
 }
@@ -101,7 +101,7 @@ LABEL_7:
       }
 
       v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a4];
-      [a1 write:v6 number:v11];
+      [self write:v6 number:v11];
 
       goto LABEL_11;
     }
@@ -121,11 +121,11 @@ LABEL_10:
   v12[1] = 3221225472;
   v12[2] = __64__CSStoreAttributedStringWriter_LaunchServices__write_platform___block_invoke;
   v12[3] = &unk_1E6A1B140;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = v6;
   v14 = v7;
   v10 = v7;
-  [a1 withAppliedAttribute:v9 value:v8 block:v12];
+  [self withAppliedAttribute:v9 value:v8 block:v12];
 
 LABEL_11:
 }
@@ -134,7 +134,7 @@ LABEL_11:
 {
   v7 = a3;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
-  [a1 write:v7 number:v6];
+  [self write:v7 number:v6];
 }
 
 @end

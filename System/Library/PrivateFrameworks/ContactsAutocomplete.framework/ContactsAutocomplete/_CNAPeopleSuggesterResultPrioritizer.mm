@@ -2,11 +2,11 @@
 + (id)bundleIdentifierOfCurrentProcess;
 + (id)makeBundleIdentifierOfCurrentProcess;
 + (id)os_log;
-- (BOOL)resultIdentifierIsValidMessagesChatGuid:(id)a3;
-- (BOOL)resultMatchesPrefix:(id)a3 inNameComponentsOfResult:(id)a4;
+- (BOOL)resultIdentifierIsValidMessagesChatGuid:(id)guid;
+- (BOOL)resultMatchesPrefix:(id)prefix inNameComponentsOfResult:(id)result;
 - (_CNAPeopleSuggesterResultPrioritizer)init;
-- (id)applyPriorityOrderToResults:(id)a3 fetchRequest:(id)a4 andCompletePriorityResultsPromise:(id)a5;
-- (id)partitionCandidatesForRanking:(id)a3 givenPrefixes:(id)a4;
+- (id)applyPriorityOrderToResults:(id)results fetchRequest:(id)request andCompletePriorityResultsPromise:(id)promise;
+- (id)partitionCandidatesForRanking:(id)ranking givenPrefixes:(id)prefixes;
 @end
 
 @implementation _CNAPeopleSuggesterResultPrioritizer
@@ -40,37 +40,37 @@
   return v2;
 }
 
-- (id)applyPriorityOrderToResults:(id)a3 fetchRequest:(id)a4 andCompletePriorityResultsPromise:(id)a5
+- (id)applyPriorityOrderToResults:(id)results fetchRequest:(id)request andCompletePriorityResultsPromise:(id)promise
 {
   v118 = *MEMORY[0x277D85DE8];
-  v81 = a3;
-  v84 = a4;
-  v80 = a5;
-  v7 = [MEMORY[0x277CFBED0] defaultProvider];
-  [v7 timestamp];
+  resultsCopy = results;
+  requestCopy = request;
+  promiseCopy = promise;
+  defaultProvider = [MEMORY[0x277CFBED0] defaultProvider];
+  [defaultProvider timestamp];
   v9 = v8;
 
   v10 = CNALoggingContextTriage();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v84 triageIdentifier];
+    triageIdentifier = [requestCopy triageIdentifier];
     *buf = 138543362;
-    *&buf[4] = v11;
+    *&buf[4] = triageIdentifier;
     _os_log_impl(&dword_2155FE000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] PeopleSuggester: Will sort", buf, 0xCu);
   }
 
-  v88 = [MEMORY[0x277CBEB40] orderedSet];
-  v12 = [v84 searchNames];
-  v83 = [(_CNAPeopleSuggesterResultPrioritizer *)self partitionCandidatesForRanking:v81 givenPrefixes:v12];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  searchNames = [requestCopy searchNames];
+  v83 = [(_CNAPeopleSuggesterResultPrioritizer *)self partitionCandidatesForRanking:resultsCopy givenPrefixes:searchNames];
 
-  v13 = [v83 first];
-  v82 = [v83 second];
-  v93 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v88, "count")}];
+  first = [v83 first];
+  second = [v83 second];
+  v93 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(orderedSet, "count")}];
   v108 = 0u;
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  obj = v13;
+  obj = first;
   v92 = [obj countByEnumeratingWithState:&v106 objects:v114 count:16];
   if (v92)
   {
@@ -85,10 +85,10 @@
         }
 
         v15 = *(*(&v106 + 1) + 8 * i);
-        v16 = [v15 value];
+        value = [v15 value];
         if ([(_CNAPeopleSuggesterResultPrioritizer *)self resultIdentifierIsValidMessagesChatGuid:v15])
         {
-          v17 = [v15 identifier];
+          identifier = [v15 identifier];
           v105 = 0;
           v18 = [v15 members:&v105];
           v19 = v105;
@@ -103,7 +103,7 @@
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              *&buf[4] = v17;
+              *&buf[4] = identifier;
               *&buf[12] = 2112;
               *&buf[14] = v19;
               _os_log_impl(&dword_2155FE000, v25, OS_LOG_TYPE_DEFAULT, "Error retrieving chat recipients from %@ : %@", buf, 0x16u);
@@ -112,37 +112,37 @@
             v20 = 0;
           }
 
-          v24 = 0;
+          unformattedInternationalStringValue = 0;
         }
 
         else
         {
-          if ([v16 addressType] == 2)
+          if ([value addressType] == 2)
           {
             v21 = MEMORY[0x277CBDB70];
-            v22 = [v16 address];
-            v23 = [v21 phoneNumberWithStringValue:v22];
+            address = [value address];
+            v23 = [v21 phoneNumberWithStringValue:address];
 
-            v24 = [v23 unformattedInternationalStringValue];
+            unformattedInternationalStringValue = [v23 unformattedInternationalStringValue];
           }
 
           else
           {
-            v24 = [v16 address];
+            unformattedInternationalStringValue = [value address];
           }
 
           v20 = 0;
-          v17 = 0;
+          identifier = 0;
         }
 
-        if (v17)
+        if (identifier)
         {
-          v26 = v17;
+          v26 = identifier;
         }
 
         else
         {
-          v26 = v24;
+          v26 = unformattedInternationalStringValue;
         }
 
         v27 = v26;
@@ -152,23 +152,23 @@
         }
 
         v28 = objc_alloc(get_PSAutocompleteSuggestionClass());
-        v29 = [v15 displayName];
-        v30 = [v15 identifier];
-        v31 = [v28 initWithChatGuid:v17 chatHandles:v20 displayName:v29 handle:v24 contactIdentifier:v30 resultSourceType:objc_msgSend(v15 autocompleteResult:{"sourceType"), 0}];
+        displayName = [v15 displayName];
+        identifier2 = [v15 identifier];
+        v31 = [v28 initWithChatGuid:identifier chatHandles:v20 displayName:displayName handle:unformattedInternationalStringValue contactIdentifier:identifier2 resultSourceType:objc_msgSend(v15 autocompleteResult:{"sourceType"), 0}];
 
         if (v31)
         {
-          [v88 addObject:v31];
+          [orderedSet addObject:v31];
         }
 
         else
         {
-          v32 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+          os_log = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
             *&buf[4] = v15;
-            _os_log_error_impl(&dword_2155FE000, v32, OS_LOG_TYPE_ERROR, "Could not create suggestion from result: %{public}@", buf, 0xCu);
+            _os_log_error_impl(&dword_2155FE000, os_log, OS_LOG_TYPE_ERROR, "Could not create suggestion from result: %{public}@", buf, 0xCu);
           }
         }
       }
@@ -182,39 +182,39 @@
   v33 = CNALoggingContextTriage();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
-    v34 = [v84 triageIdentifier];
+    triageIdentifier2 = [requestCopy triageIdentifier];
     *buf = 138543362;
-    *&buf[4] = v34;
+    *&buf[4] = triageIdentifier2;
     _os_log_impl(&dword_2155FE000, v33, OS_LOG_TYPE_DEFAULT, "[%{public}@] PeopleSuggester: Will re-rank with PSSuggester", buf, 0xCu);
   }
 
-  v35 = [objc_opt_class() bundleIdentifierOfCurrentProcess];
-  v36 = [v84 fetchContext];
-  v37 = [v36 sendingAddressAccountIdentifier];
+  bundleIdentifierOfCurrentProcess = [objc_opt_class() bundleIdentifierOfCurrentProcess];
+  fetchContext = [requestCopy fetchContext];
+  sendingAddressAccountIdentifier = [fetchContext sendingAddressAccountIdentifier];
 
-  if ([v84 shouldIncludeGroupResults])
+  if ([requestCopy shouldIncludeGroupResults])
   {
-    v38 = [v84 searchString];
+    searchString = [requestCopy searchString];
   }
 
   else
   {
-    v38 = 0;
+    searchString = 0;
   }
 
   v99[0] = MEMORY[0x277D85DD0];
   v99[1] = 3221225472;
   v99[2] = __115___CNAPeopleSuggesterResultPrioritizer_applyPriorityOrderToResults_fetchRequest_andCompletePriorityResultsPromise___block_invoke_20;
   v99[3] = &unk_2781C4CE0;
-  v85 = v35;
+  v85 = bundleIdentifierOfCurrentProcess;
   v100 = v85;
-  v86 = v37;
+  v86 = sendingAddressAccountIdentifier;
   v101 = v86;
-  v91 = v38;
+  v91 = searchString;
   v102 = v91;
-  v89 = v88;
+  v89 = orderedSet;
   v103 = v89;
-  v104 = self;
+  selfCopy = self;
   v39 = v99;
   *buf = 0;
   *&buf[8] = buf;
@@ -240,14 +240,14 @@
   v45 = CNALoggingContextTriage();
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
   {
-    v46 = [v84 triageIdentifier];
+    triageIdentifier3 = [requestCopy triageIdentifier];
     *buf = 138543362;
-    *&buf[4] = v46;
+    *&buf[4] = triageIdentifier3;
     _os_log_impl(&dword_2155FE000, v45, OS_LOG_TYPE_DEFAULT, "[%{public}@] PeopleSuggester: Will convert to autocomplete results", buf, 0xCu);
   }
 
-  v47 = [MEMORY[0x277CBEB40] orderedSet];
-  v48 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet3 = [MEMORY[0x277CBEB40] orderedSet];
   v97 = 0u;
   v98 = 0u;
   v95 = 0u;
@@ -267,40 +267,40 @@
         }
 
         v53 = *(*(&v95 + 1) + 8 * j);
-        v54 = [v53 chatGuid];
-        v55 = v54;
-        if (v54)
+        chatGuid = [v53 chatGuid];
+        v55 = chatGuid;
+        if (chatGuid)
         {
-          v56 = v54;
+          handle = chatGuid;
         }
 
         else
         {
-          v56 = [v53 handle];
+          handle = [v53 handle];
         }
 
-        v57 = v56;
+        v57 = handle;
 
         v58 = [v93 objectForKeyedSubscript:v57];
         v59 = v58;
         if (v58)
         {
           [v58 setSourceType:{objc_msgSend(v53, "resultSourceType") | objc_msgSend(v58, "sourceType")}];
-          [v47 addObject:v59];
+          [orderedSet2 addObject:v59];
           if (([v59 sourceType] & 0x10) != 0)
           {
-            [v48 addObject:v59];
+            [orderedSet3 addObject:v59];
           }
         }
 
         else
         {
-          v60 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
+          os_log2 = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
             *&buf[4] = v53;
-            _os_log_error_impl(&dword_2155FE000, v60, OS_LOG_TYPE_ERROR, "Suggestion from PS has no identifier; this result may be ranked lower than it should be: %{public}@", buf, 0xCu);
+            _os_log_error_impl(&dword_2155FE000, os_log2, OS_LOG_TYPE_ERROR, "Suggestion from PS has no identifier; this result may be ranked lower than it should be: %{public}@", buf, 0xCu);
           }
         }
       }
@@ -311,51 +311,51 @@
     while (v50);
   }
 
-  v61 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
+  os_log3 = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log3, OS_LOG_TYPE_DEBUG))
   {
     [_CNAPeopleSuggesterResultPrioritizer applyPriorityOrderToResults:fetchRequest:andCompletePriorityResultsPromise:];
   }
 
-  v62 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v62, OS_LOG_TYPE_DEBUG))
+  os_log4 = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log4, OS_LOG_TYPE_DEBUG))
   {
     [_CNAPeopleSuggesterResultPrioritizer applyPriorityOrderToResults:fetchRequest:andCompletePriorityResultsPromise:];
   }
 
-  v63 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
+  os_log5 = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log5, OS_LOG_TYPE_DEBUG))
   {
     [_CNAPeopleSuggesterResultPrioritizer applyPriorityOrderToResults:fetchRequest:andCompletePriorityResultsPromise:];
   }
 
-  [v47 addObjectsFromArray:obj];
-  [v47 addObjectsFromArray:v82];
-  v64 = [MEMORY[0x277CBEB18] array];
-  v65 = [v47 array];
-  v66 = [(_CNAPeopleSuggesterResultPrioritizer *)self partitionStewieResults:v65];
+  [orderedSet2 addObjectsFromArray:obj];
+  [orderedSet2 addObjectsFromArray:second];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [orderedSet2 array];
+  v66 = [(_CNAPeopleSuggesterResultPrioritizer *)self partitionStewieResults:array2];
 
-  v67 = [v66 first];
-  [v64 addObjectsFromArray:v67];
+  first2 = [v66 first];
+  [array addObjectsFromArray:first2];
 
-  v68 = [v66 second];
-  [v64 addObjectsFromArray:v68];
+  second2 = [v66 second];
+  [array addObjectsFromArray:second2];
 
-  [v80 finishWithResult:v48];
-  v69 = [MEMORY[0x277CFBED0] defaultProvider];
-  [v69 timestamp];
+  [promiseCopy finishWithResult:orderedSet3];
+  defaultProvider2 = [MEMORY[0x277CFBED0] defaultProvider];
+  [defaultProvider2 timestamp];
   v71 = v70;
 
   v72 = [MEMORY[0x277CFBEC8] stringForTimeInterval:v71 - v9];
   v73 = CNALoggingContextTriage();
   if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
   {
-    v74 = [v84 triageIdentifier];
-    v75 = [v64 count];
-    v76 = [v64 count];
+    triageIdentifier4 = [requestCopy triageIdentifier];
+    v75 = [array count];
+    v76 = [array count];
     v77 = "results";
     *buf = 138544130;
-    *&buf[4] = v74;
+    *&buf[4] = triageIdentifier4;
     *&buf[12] = 2048;
     if (v76 == 1)
     {
@@ -372,57 +372,57 @@
 
   v78 = *MEMORY[0x277D85DE8];
 
-  return v64;
+  return array;
 }
 
-- (id)partitionCandidatesForRanking:(id)a3 givenPrefixes:(id)a4
+- (id)partitionCandidatesForRanking:(id)ranking givenPrefixes:(id)prefixes
 {
-  v6 = a4;
+  prefixesCopy = prefixes;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84___CNAPeopleSuggesterResultPrioritizer_partitionCandidatesForRanking_givenPrefixes___block_invoke;
   v10[3] = &unk_2781C4D30;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [a3 _cn_partition:v10];
+  v11 = prefixesCopy;
+  v7 = prefixesCopy;
+  v8 = [ranking _cn_partition:v10];
 
   return v8;
 }
 
-- (BOOL)resultMatchesPrefix:(id)a3 inNameComponentsOfResult:(id)a4
+- (BOOL)resultMatchesPrefix:(id)prefix inNameComponentsOfResult:(id)result
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  prefixCopy = prefix;
+  resultCopy = result;
+  v7 = resultCopy;
+  if (resultCopy)
   {
-    v8 = [v6 firstName];
-    if ([v8 _cn_hasPrefix:v5])
+    firstName = [resultCopy firstName];
+    if ([firstName _cn_hasPrefix:prefixCopy])
     {
       v9 = 1;
     }
 
     else
     {
-      v10 = [v7 lastName];
-      if ([v10 _cn_hasPrefix:v5])
+      lastName = [v7 lastName];
+      if ([lastName _cn_hasPrefix:prefixCopy])
       {
         v9 = 1;
       }
 
       else
       {
-        v11 = [v7 nickname];
-        if ([v11 _cn_hasPrefix:v5])
+        nickname = [v7 nickname];
+        if ([nickname _cn_hasPrefix:prefixCopy])
         {
           v9 = 1;
         }
 
         else
         {
-          v12 = [v7 nameSuffix];
-          v9 = [v12 _cn_hasPrefix:v5];
+          nameSuffix = [v7 nameSuffix];
+          v9 = [nameSuffix _cn_hasPrefix:prefixCopy];
         }
       }
     }
@@ -436,13 +436,13 @@
   return v9;
 }
 
-- (BOOL)resultIdentifierIsValidMessagesChatGuid:(id)a3
+- (BOOL)resultIdentifierIsValidMessagesChatGuid:(id)guid
 {
-  v3 = a3;
-  if ([v3 resultType] == 1)
+  guidCopy = guid;
+  if ([guidCopy resultType] == 1)
   {
-    v4 = [v3 identifier];
-    if ([v4 containsString:@"iMessage"])
+    identifier = [guidCopy identifier];
+    if ([identifier containsString:@"iMessage"])
     {
 LABEL_5:
 
@@ -451,15 +451,15 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v5 = [v3 identifier];
-    if ([v5 containsString:@"SMS"])
+    identifier2 = [guidCopy identifier];
+    if ([identifier2 containsString:@"SMS"])
     {
 
       goto LABEL_5;
     }
 
-    v6 = [v3 identifier];
-    v7 = [v6 containsString:@"urn:biz:"];
+    identifier3 = [guidCopy identifier];
+    v7 = [identifier3 containsString:@"urn:biz:"];
 
     if (v7)
     {
@@ -467,7 +467,7 @@ LABEL_10:
     }
   }
 
-  if ([v3 resultType] == 1 && (objc_msgSend(v3, "sourceType") & 0x10) != 0)
+  if ([guidCopy resultType] == 1 && (objc_msgSend(guidCopy, "sourceType") & 0x10) != 0)
   {
     goto LABEL_10;
   }
@@ -484,7 +484,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __72___CNAPeopleSuggesterResultPrioritizer_bundleIdentifierOfCurrentProcess__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (bundleIdentifierOfCurrentProcess_cn_once_token_20 != -1)
   {
     dispatch_once(&bundleIdentifierOfCurrentProcess_cn_once_token_20, block);
@@ -497,19 +497,19 @@ LABEL_11:
 
 + (id)makeBundleIdentifierOfCurrentProcess
 {
-  v2 = [MEMORY[0x277CC1E88] bundleProxyForCurrentProcess];
+  bundleProxyForCurrentProcess = [MEMORY[0x277CC1E88] bundleProxyForCurrentProcess];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 bundleIdentifier];
+    bundleIdentifier = [bundleProxyForCurrentProcess bundleIdentifier];
   }
 
   else
   {
-    v3 = 0;
+    bundleIdentifier = 0;
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (void)applyPriorityOrderToResults:fetchRequest:andCompletePriorityResultsPromise:.cold.1()

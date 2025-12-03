@@ -1,7 +1,7 @@
 @interface NSLocalizedNumberFormatRule
 + (id)automatic;
 - (id)_init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSLocalizedNumberFormatRule
@@ -31,7 +31,7 @@ id __40__NSLocalizedNumberFormatRule_automatic__block_invoke()
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = objc_opt_class();
 

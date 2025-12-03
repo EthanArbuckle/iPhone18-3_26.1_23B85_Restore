@@ -1,17 +1,17 @@
 @interface GKSegmentedSectionHeaderView
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)prepareForReuse;
-- (void)setTitles:(id)a3;
+- (void)setTitles:(id)titles;
 @end
 
 @implementation GKSegmentedSectionHeaderView
 
-- (void)setTitles:(id)a3
+- (void)setTitles:(id)titles
 {
-  v4 = a3;
-  v5 = [(GKSegmentedSelectorView *)self segmentedControl];
-  v6 = [v5 numberOfSegments];
-  if (v6 == [v4 count])
+  titlesCopy = titles;
+  segmentedControl = [(GKSegmentedSelectorView *)self segmentedControl];
+  numberOfSegments = [segmentedControl numberOfSegments];
+  if (numberOfSegments == [titlesCopy count])
   {
     v7 = v11;
     v11[0] = MEMORY[0x277D85DD0];
@@ -22,7 +22,7 @@
 
   else
   {
-    [v5 removeAllSegments];
+    [segmentedControl removeAllSegments];
     v7 = v12;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -32,20 +32,20 @@
 
   v7[2] = v9;
   v7[3] = v8;
-  v7[4] = v5;
-  v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  v7[4] = segmentedControl;
+  v10 = segmentedControl;
+  [titlesCopy enumerateObjectsUsingBlock:v7];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v6.receiver = self;
   v6.super_class = GKSegmentedSectionHeaderView;
-  v4 = a3;
-  [(GKSegmentedSelectorView *)&v6 applyLayoutAttributes:v4];
-  v5 = [v4 indexPath];
+  attributesCopy = attributes;
+  [(GKSegmentedSelectorView *)&v6 applyLayoutAttributes:attributesCopy];
+  indexPath = [attributesCopy indexPath];
 
-  -[GKSegmentedSectionHeaderView setSectionIndex:](self, "setSectionIndex:", [v5 section]);
+  -[GKSegmentedSectionHeaderView setSectionIndex:](self, "setSectionIndex:", [indexPath section]);
 }
 
 - (void)prepareForReuse
@@ -54,8 +54,8 @@
   v4.super_class = GKSegmentedSectionHeaderView;
   [(GKSegmentedSelectorView *)&v4 prepareForReuse];
   self->_sectionIndex = -1;
-  v3 = [(GKSegmentedSelectorView *)self segmentedControl];
-  [v3 removeAllSegments];
+  segmentedControl = [(GKSegmentedSelectorView *)self segmentedControl];
+  [segmentedControl removeAllSegments];
 
   [(GKSegmentedSelectorView *)self setTarget:0];
 }

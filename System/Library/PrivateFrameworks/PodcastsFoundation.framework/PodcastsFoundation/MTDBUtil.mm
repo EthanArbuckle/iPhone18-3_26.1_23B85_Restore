@@ -1,22 +1,22 @@
 @interface MTDBUtil
-+ (BOOL)isSupportedUrlString:(id)a3;
++ (BOOL)isSupportedUrlString:(id)string;
 @end
 
 @implementation MTDBUtil
 
-+ (BOOL)isSupportedUrlString:(id)a3
++ (BOOL)isSupportedUrlString:(id)string
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 length])
+  stringCopy = string;
+  if (![stringCopy length])
   {
     goto LABEL_26;
   }
 
-  v4 = [v3 lowercaseString];
-  if ([v4 hasPrefix:@"https://"])
+  lowercaseString = [stringCopy lowercaseString];
+  if ([lowercaseString hasPrefix:@"https://"])
   {
-    v5 = [v3 length];
+    v5 = [stringCopy length];
 
     if (v5 > 8)
     {
@@ -28,10 +28,10 @@
   {
   }
 
-  v6 = [v3 lowercaseString];
-  if ([v6 hasPrefix:@"http://"])
+  lowercaseString2 = [stringCopy lowercaseString];
+  if ([lowercaseString2 hasPrefix:@"http://"])
   {
-    v7 = [v3 length];
+    v7 = [stringCopy length];
 
     if (v7 > 7)
     {
@@ -43,10 +43,10 @@
   {
   }
 
-  v8 = [v3 lowercaseString];
-  if ([v8 hasPrefix:@"file://"])
+  lowercaseString3 = [stringCopy lowercaseString];
+  if ([lowercaseString3 hasPrefix:@"file://"])
   {
-    v9 = [v3 length];
+    v9 = [stringCopy length];
 
     if (v9 > 7)
     {
@@ -60,7 +60,7 @@ LABEL_12:
   {
   }
 
-  if ([v3 length] < 4)
+  if ([stringCopy length] < 4)
   {
 LABEL_26:
     v10 = 0;
@@ -69,15 +69,15 @@ LABEL_26:
 
   if (!isSupportedUrlString____url_types)
   {
-    v11 = [MEMORY[0x1E696AAE8] mainBundle];
-    v12 = [v11 infoDictionary];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
 
     v13 = objc_opt_new();
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = [v12 objectForKey:{@"CFBundleURLTypes", 0}];
+    v14 = [infoDictionary objectForKey:{@"CFBundleURLTypes", 0}];
     v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v15)
     {
@@ -107,14 +107,14 @@ LABEL_26:
     isSupportedUrlString____url_types = v20;
   }
 
-  v22 = [MEMORY[0x1E695DFF8] URLWithString:v3];
-  v23 = [v22 scheme];
-  v24 = [v23 lowercaseString];
+  v22 = [MEMORY[0x1E695DFF8] URLWithString:stringCopy];
+  scheme = [v22 scheme];
+  lowercaseString4 = [scheme lowercaseString];
 
-  if ([isSupportedUrlString____url_types containsObject:v24])
+  if ([isSupportedUrlString____url_types containsObject:lowercaseString4])
   {
-    v25 = [v3 length];
-    v10 = v25 > [v24 length] + 3;
+    v25 = [stringCopy length];
+    v10 = v25 > [lowercaseString4 length] + 3;
   }
 
   else

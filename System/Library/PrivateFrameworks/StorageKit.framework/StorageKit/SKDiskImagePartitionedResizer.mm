@@ -1,17 +1,17 @@
 @interface SKDiskImagePartitionedResizer
-- (id)resizeStateMachine:(id *)a3;
+- (id)resizeStateMachine:(id *)machine;
 @end
 
 @implementation SKDiskImagePartitionedResizer
 
-- (id)resizeStateMachine:(id *)a3
+- (id)resizeStateMachine:(id *)machine
 {
   v27[10] = *MEMORY[0x277D85DE8];
-  v5 = [(SKDiskImageResizerBase *)self limits];
+  limits = [(SKDiskImageResizerBase *)self limits];
   v6 = objc_opt_class();
-  v7 = [(SKDiskResizerBase *)self disk];
-  v8 = [v7 type];
-  LOBYTE(v6) = [v6 isSupportedWholeDisk:v8];
+  disk = [(SKDiskResizerBase *)self disk];
+  type = [disk type];
+  LOBYTE(v6) = [v6 isSupportedWholeDisk:type];
 
   if (v6)
   {
@@ -38,8 +38,8 @@
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:10];
     v16 = [SKStateTransitionTable tableWithTransitionEntries:v15 selectorTarget:self];
 
-    v17 = [(SKDiskResizerBase *)self eventFromSize];
-    if ([v17 isEqualToString:kGrowEvent])
+    eventFromSize = [(SKDiskResizerBase *)self eventFromSize];
+    if ([eventFromSize isEqualToString:kGrowEvent])
     {
       v18 = @"kImageResize";
     }
@@ -49,13 +49,13 @@
       v18 = @"kVolumeResize";
     }
 
-    v19 = [(SKDiskResizerBase *)self eventFromSize];
-    v20 = [SKStateMachine machineWithStateTransitionTable:v16 startState:v18 startEvent:v19];
+    eventFromSize2 = [(SKDiskResizerBase *)self eventFromSize];
+    v20 = [SKStateMachine machineWithStateTransitionTable:v16 startState:v18 startEvent:eventFromSize2];
   }
 
   else
   {
-    v20 = [SKError nilWithPOSIXCode:45 error:a3];
+    v20 = [SKError nilWithPOSIXCode:45 error:machine];
   }
 
   v21 = *MEMORY[0x277D85DE8];

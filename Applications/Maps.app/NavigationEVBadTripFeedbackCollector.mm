@@ -1,17 +1,17 @@
 @interface NavigationEVBadTripFeedbackCollector
 - (BOOL)_checkForBadTrip;
 - (BOOL)isBadTrip;
-- (NavigationEVBadTripFeedbackCollector)initWithNavigationService:(id)a3 virtualGarageService:(id)a4;
+- (NavigationEVBadTripFeedbackCollector)initWithNavigationService:(id)service virtualGarageService:(id)garageService;
 - (void)_rebuildExpectedEVInfos;
 - (void)_reset;
 - (void)_virtualGarageDidBecomeAvailable;
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5;
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
-- (void)setCurrentVehicleState:(id)a3;
-- (void)setObservedRoute:(id)a3;
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason;
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
+- (void)setCurrentVehicleState:(id)state;
+- (void)setObservedRoute:(id)route;
 - (void)startRecording;
 - (void)stopRecording;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation NavigationEVBadTripFeedbackCollector
@@ -41,47 +41,47 @@
   }
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100886AD8;
   v7[3] = &unk_101661A90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updateCopy;
+  v6 = updateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
-  v8 = a3;
+  serviceCopy = service;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100886BEC;
   v11[3] = &unk_10164C698;
-  v13 = a4;
-  v14 = a5;
+  indexCopy = index;
+  segmentIndexCopy = segmentIndex;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = serviceCopy;
+  v10 = serviceCopy;
   dispatch_async(queue, v11);
 }
 
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason
 {
-  v6 = a4;
+  rerouteCopy = reroute;
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100887174;
   v9[3] = &unk_101661A90;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = rerouteCopy;
+  v8 = rerouteCopy;
   dispatch_async(queue, v9);
 }
 
@@ -136,9 +136,9 @@
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = self;
-    v4 = [(GEOComposedRoute *)self->_observedRoute steps];
-    v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    selfCopy = self;
+    steps = [(GEOComposedRoute *)self->_observedRoute steps];
+    v5 = [steps countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v5)
     {
       v6 = v5;
@@ -149,15 +149,15 @@
         {
           if (*v20 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(steps);
           }
 
           v9 = *(*(&v19 + 1) + 8 * i);
-          v10 = [v9 evInfo];
-          if (v10)
+          evInfo = [v9 evInfo];
+          if (evInfo)
           {
             v11 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v9 stepID]);
-            [v3 setObject:v10 forKeyedSubscript:v11];
+            [v3 setObject:evInfo forKeyedSubscript:v11];
           }
 
           else
@@ -165,29 +165,29 @@
             v11 = sub_100024D88();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
             {
-              v12 = [v9 stepID];
+              stepID = [v9 stepID];
               *buf = 134217984;
-              v25 = v12;
+              v25 = stepID;
               _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "stepID: %lu didn't have evInfo", buf, 0xCu);
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v6 = [steps countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v6);
     }
 
     v13 = [v3 copy];
-    stepIDToExpectedEVInfos = v18->_stepIDToExpectedEVInfos;
-    v18->_stepIDToExpectedEVInfos = v13;
+    stepIDToExpectedEVInfos = selfCopy->_stepIDToExpectedEVInfos;
+    selfCopy->_stepIDToExpectedEVInfos = v13;
   }
 }
 
-- (void)setObservedRoute:(id)a3
+- (void)setObservedRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   if (!self->_isRecording)
   {
     v5 = sub_100024D88();
@@ -197,16 +197,16 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "observedRoute called when we are not recording", v10, 2u);
     }
 
-    v4 = 0;
+    routeCopy = 0;
   }
 
-  objc_storeStrong(&self->_observedRoute, v4);
+  objc_storeStrong(&self->_observedRoute, routeCopy);
   if (self->_observedRoute)
   {
     v6 = [EVBadTripRouteInfo alloc];
-    v7 = [(NavigationEVBadTripFeedbackCollector *)self observedRoute];
-    v8 = [(NavigationEVBadTripFeedbackCollector *)self currentVehicleState];
-    v9 = [(EVBadTripRouteInfo *)v6 initWithRoute:v7 currentVehicleState:v8];
+    observedRoute = [(NavigationEVBadTripFeedbackCollector *)self observedRoute];
+    currentVehicleState = [(NavigationEVBadTripFeedbackCollector *)self currentVehicleState];
+    v9 = [(EVBadTripRouteInfo *)v6 initWithRoute:observedRoute currentVehicleState:currentVehicleState];
 
     [(NSMutableArray *)self->_routeInfos addObject:v9];
     [(NavigationEVBadTripFeedbackCollector *)self _rebuildExpectedEVInfos];
@@ -218,12 +218,12 @@
   }
 }
 
-- (void)setCurrentVehicleState:(id)a3
+- (void)setCurrentVehicleState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   currentVehicleState = self->_currentVehicleState;
   p_currentVehicleState = &self->_currentVehicleState;
-  v8 = v5;
+  v8 = stateCopy;
   v9 = currentVehicleState;
   if (v8 | v9)
   {
@@ -232,16 +232,16 @@
 
     if ((v11 & 1) == 0)
     {
-      objc_storeStrong(p_currentVehicleState, a3);
+      objc_storeStrong(p_currentVehicleState, state);
       v12 = sub_100024D88();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        v13 = [v8 identifier];
-        v14 = [v8 currentBatteryCharge];
+        identifier = [v8 identifier];
+        currentBatteryCharge = [v8 currentBatteryCharge];
         v15 = 138412546;
-        v16 = v13;
+        v16 = identifier;
         v17 = 2048;
-        v18 = v14;
+        v18 = currentBatteryCharge;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "currentVehicleState was changed to: %@, battery charge (Wh): %lu", &v15, 0x16u);
       }
     }
@@ -250,7 +250,7 @@
 
 - (BOOL)_checkForBadTrip
 {
-  v2 = self;
+  selfCopy = self;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
@@ -264,7 +264,7 @@ LABEL_23:
     v42 = sub_100024D88();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
     {
-      v45 = v2->_routeInfos;
+      v45 = selfCopy->_routeInfos;
       v46 = v45;
       if (v45)
       {
@@ -369,7 +369,7 @@ LABEL_46:
   }
 
   v5 = v4;
-  v63 = v2;
+  v63 = selfCopy;
   v6 = *v69;
   v7 = 0.0;
   v8 = 0.0;
@@ -385,30 +385,30 @@ LABEL_46:
       }
 
       v10 = *(*(&v68 + 1) + 8 * i);
-      v11 = [v10 initialBatteryCharge];
-      if (v11)
+      initialBatteryCharge = [v10 initialBatteryCharge];
+      if (initialBatteryCharge)
       {
-        v12 = v11;
-        v13 = [v10 realArrivalBatteryCharge];
-        if (v13)
+        v12 = initialBatteryCharge;
+        realArrivalBatteryCharge = [v10 realArrivalBatteryCharge];
+        if (realArrivalBatteryCharge)
         {
-          v14 = v13;
-          v15 = [v10 expectedArrivalBatteryCharge];
+          v14 = realArrivalBatteryCharge;
+          expectedArrivalBatteryCharge = [v10 expectedArrivalBatteryCharge];
 
-          if (v15)
+          if (expectedArrivalBatteryCharge)
           {
-            v16 = [v10 realArrivalBatteryCharge];
-            [v16 doubleValue];
+            realArrivalBatteryCharge2 = [v10 realArrivalBatteryCharge];
+            [realArrivalBatteryCharge2 doubleValue];
             v18 = v17;
-            v19 = [v10 expectedArrivalBatteryCharge];
-            [v19 doubleValue];
+            expectedArrivalBatteryCharge2 = [v10 expectedArrivalBatteryCharge];
+            [expectedArrivalBatteryCharge2 doubleValue];
             v21 = v18 - v20;
 
-            v22 = [v10 realArrivalBatteryCharge];
-            [v22 doubleValue];
+            realArrivalBatteryCharge3 = [v10 realArrivalBatteryCharge];
+            [realArrivalBatteryCharge3 doubleValue];
             v24 = v23;
-            v25 = [v10 initialBatteryCharge];
-            [v25 doubleValue];
+            initialBatteryCharge2 = [v10 initialBatteryCharge];
+            [initialBatteryCharge2 doubleValue];
             v27 = vabdd_f64(v24, v26);
 
             v8 = v21 + v8;
@@ -419,14 +419,14 @@ LABEL_46:
               goto LABEL_15;
             }
 
-            v29 = [v10 route];
-            v30 = COERCE_DOUBLE([v29 serverIdentifier]);
-            v31 = [v10 lastTraversedStep];
-            v32 = COERCE_DOUBLE([v31 stepIndex]);
+            route = [v10 route];
+            v30 = COERCE_DOUBLE([route serverIdentifier]);
+            lastTraversedStep = [v10 lastTraversedStep];
+            v32 = COERCE_DOUBLE([lastTraversedStep stepIndex]);
             [v10 initialBatteryCharge];
             v33 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-            v34 = [v10 realArrivalBatteryCharge];
-            v35 = [v10 expectedArrivalBatteryCharge];
+            realArrivalBatteryCharge4 = [v10 realArrivalBatteryCharge];
+            expectedArrivalBatteryCharge3 = [v10 expectedArrivalBatteryCharge];
             *buf = 134219522;
             v78 = v30;
             v79 = 2048;
@@ -438,9 +438,9 @@ LABEL_46:
             v85 = 2112;
             v86 = v33;
             v87 = 2112;
-            v88 = v34;
+            v88 = realArrivalBatteryCharge4;
             v89 = 2112;
-            v90 = v35;
+            v90 = expectedArrivalBatteryCharge3;
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Added new segment (%lu lastTraveledStep: %lu) with delta: %.4f, consumption: %.2f, initial: %@, real: %@, expected: %@", buf, 0x48u);
 
             v6 = v64;
@@ -459,15 +459,15 @@ LABEL_46:
         goto LABEL_15;
       }
 
-      v29 = [v10 route];
-      v36 = COERCE_DOUBLE([v29 serverIdentifier]);
-      v31 = [v10 lastTraversedStep];
-      v37 = COERCE_DOUBLE([v31 stepIndex]);
+      route = [v10 route];
+      v36 = COERCE_DOUBLE([route serverIdentifier]);
+      lastTraversedStep = [v10 lastTraversedStep];
+      v37 = COERCE_DOUBLE([lastTraversedStep stepIndex]);
       [v10 initialBatteryCharge];
       v33 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       [v10 realArrivalBatteryCharge];
       v38 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      v39 = [v10 expectedArrivalBatteryCharge];
+      expectedArrivalBatteryCharge4 = [v10 expectedArrivalBatteryCharge];
       *buf = 134219010;
       v78 = v36;
       v79 = 2048;
@@ -478,7 +478,7 @@ LABEL_46:
       v83 = 2112;
       v84 = v38;
       v85 = 2112;
-      v86 = *&v39;
+      v86 = *&expectedArrivalBatteryCharge4;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Will not be able to calculate delta for route: %lu, lastTraveledStep: %lu, initial: %@, real: %@, expected: %@", buf, 0x34u);
 
 LABEL_14:
@@ -492,7 +492,7 @@ LABEL_15:
 
   while (v5);
 
-  v2 = v63;
+  selfCopy = v63;
   if (v7 < 2.22044605e-16)
   {
     goto LABEL_23;
@@ -567,10 +567,10 @@ LABEL_48:
   dispatch_async(queue, block);
 }
 
-- (NavigationEVBadTripFeedbackCollector)initWithNavigationService:(id)a3 virtualGarageService:(id)a4
+- (NavigationEVBadTripFeedbackCollector)initWithNavigationService:(id)service virtualGarageService:(id)garageService
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  garageServiceCopy = garageService;
   v15.receiver = self;
   v15.super_class = NavigationEVBadTripFeedbackCollector;
   v9 = [(NavigationEVBadTripFeedbackCollector *)&v15 init];
@@ -581,9 +581,9 @@ LABEL_48:
     queue = v9->_queue;
     v9->_queue = v11;
 
-    objc_storeStrong(&v9->_navigationService, a3);
+    objc_storeStrong(&v9->_navigationService, service);
     [(MNNavigationService *)v9->_navigationService registerObserver:v9];
-    objc_storeStrong(&v9->_virtualGarageService, a4);
+    objc_storeStrong(&v9->_virtualGarageService, garageService);
     v13 = +[NSNotificationCenter defaultCenter];
     [v13 addObserver:v9 selector:"_virtualGarageDidBecomeAvailable" name:@"VirtualGarageAvailableNotification" object:0];
   }

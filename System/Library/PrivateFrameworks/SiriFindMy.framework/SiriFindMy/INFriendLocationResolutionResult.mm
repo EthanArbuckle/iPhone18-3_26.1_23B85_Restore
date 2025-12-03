@@ -1,22 +1,22 @@
 @interface INFriendLocationResolutionResult
-+ (id)confirmationRequiredWithINFriendLocationToConfirm:(id)a3;
-+ (id)disambiguationWithINFriendLocationsToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedINFriendLocation:(id)a3;
++ (id)confirmationRequiredWithINFriendLocationToConfirm:(id)confirm;
++ (id)disambiguationWithINFriendLocationsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedINFriendLocation:(id)location;
 @end
 
 @implementation INFriendLocationResolutionResult
 
-+ (id)successWithResolvedINFriendLocation:(id)a3
++ (id)successWithResolvedINFriendLocation:(id)location
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_266DA6960(v4);
+  locationCopy = location;
+  v5 = sub_266DA6960(locationCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithINFriendLocationsToDisambiguate:(id)a3
++ (id)disambiguationWithINFriendLocationsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for INFriendLocation();
   v3 = sub_266DAA93C();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithINFriendLocationToConfirm:(id)a3
++ (id)confirmationRequiredWithINFriendLocationToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_266DA6B78(a3);
+  confirmCopy = confirm;
+  v5 = sub_266DA6B78(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_266DA3968();
   sub_266DAA93C();

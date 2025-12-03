@@ -1,18 +1,18 @@
 @interface BYODDomainPurchaseEligibilityResult
-- (BYODDomainPurchaseEligibilityResult)initWithDictionary:(id)a3;
+- (BYODDomainPurchaseEligibilityResult)initWithDictionary:(id)dictionary;
 @end
 
 @implementation BYODDomainPurchaseEligibilityResult
 
-- (BYODDomainPurchaseEligibilityResult)initWithDictionary:(id)a3
+- (BYODDomainPurchaseEligibilityResult)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = BYODDomainPurchaseEligibilityResult;
   v5 = [(BYODDomainPurchaseEligibilityResult *)&v8 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"purchaseAllowed"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"purchaseAllowed"];
     v5->_purchaseAllowed = [v6 BOOLValue];
   }
 

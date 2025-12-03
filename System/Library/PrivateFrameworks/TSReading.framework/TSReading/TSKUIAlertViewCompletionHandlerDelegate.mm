@@ -1,5 +1,5 @@
 @interface TSKUIAlertViewCompletionHandlerDelegate
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4;
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index;
 - (void)dealloc;
 @end
 
@@ -12,12 +12,12 @@
   [(TSKUIAlertViewCompletionHandlerDelegate *)&v3 dealloc];
 }
 
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index
 {
-  v4 = [(TSKUIAlertViewCompletionHandlerDelegate *)self completionHandler];
-  if (v4)
+  completionHandler = [(TSKUIAlertViewCompletionHandlerDelegate *)self completionHandler];
+  if (completionHandler)
   {
-    v5 = v4[2];
+    v5 = completionHandler[2];
 
     v5();
   }

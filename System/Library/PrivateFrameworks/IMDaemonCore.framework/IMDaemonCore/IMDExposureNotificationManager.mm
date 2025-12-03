@@ -1,12 +1,12 @@
 @interface IMDExposureNotificationManager
 + (id)sharedInstance;
 - (BOOL)_bagDisabled;
-- (BOOL)_isMessageItemEligibleForEN:(id)a3;
+- (BOOL)_isMessageItemEligibleForEN:(id)n;
 - (id)_allowedDomains;
 - (id)_enManager;
-- (id)_enTextMessageForMessageBody:(id)a3;
-- (id)_enURLsForMessageBody:(id)a3;
-- (void)processMessageItemForENURL:(id)a3 withCompletionHandler:(id)a4;
+- (id)_enTextMessageForMessageBody:(id)body;
+- (id)_enURLsForMessageBody:(id)body;
+- (void)processMessageItemForENURL:(id)l withCompletionHandler:(id)handler;
 @end
 
 @implementation IMDExposureNotificationManager
@@ -69,35 +69,35 @@
 {
   v2 = [MEMORY[0x277D18A10] sharedInstanceForBagType:0];
   v3 = [v2 objectForKey:@"en-push-disabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)_isMessageItemEligibleForEN:(id)a3
+- (BOOL)_isMessageItemEligibleForEN:(id)n
 {
-  v4 = a3;
-  if (-[IMDExposureNotificationManager _bagDisabled](self, "_bagDisabled") || ([v4 isFromMe] & 1) != 0)
+  nCopy = n;
+  if (-[IMDExposureNotificationManager _bagDisabled](self, "_bagDisabled") || ([nCopy isFromMe] & 1) != 0)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v4 service];
-    v5 = [v6 isEqualToString:*MEMORY[0x277D1A610]];
+    service = [nCopy service];
+    v5 = [service isEqualToString:*MEMORY[0x277D1A610]];
   }
 
   return v5;
 }
 
-- (id)_enURLsForMessageBody:(id)a3
+- (id)_enURLsForMessageBody:(id)body
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  bodyCopy = body;
   v6 = objc_alloc_init(v4);
   v7 = *MEMORY[0x277D19140];
-  v8 = [v5 length];
+  v8 = [bodyCopy length];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_22B57C144;
@@ -105,7 +105,7 @@
   v13[4] = self;
   v9 = v6;
   v14 = v9;
-  [v5 enumerateAttribute:v7 inRange:0 options:v8 usingBlock:{0, v13}];
+  [bodyCopy enumerateAttribute:v7 inRange:0 options:v8 usingBlock:{0, v13}];
 
   v10 = v14;
   v11 = v9;
@@ -113,9 +113,9 @@
   return v9;
 }
 
-- (id)_enTextMessageForMessageBody:(id)a3
+- (id)_enTextMessageForMessageBody:(id)body
 {
-  v4 = a3;
+  bodyCopy = body;
   if (qword_27D8CFE50 != -1)
   {
     sub_22B7D2C14();
@@ -123,12 +123,12 @@
 
   if (qword_27D8CFE48)
   {
-    v5 = [(IMDExposureNotificationManager *)self _enURLsForMessageBody:v4];
+    v5 = [(IMDExposureNotificationManager *)self _enURLsForMessageBody:bodyCopy];
     if ([v5 count])
     {
       v6 = qword_27D8CFE48;
-      v7 = [v4 string];
-      v8 = [v6 textMessageWithMessage:v7 embeddedURLs:v5];
+      string = [bodyCopy string];
+      v8 = [v6 textMessageWithMessage:string embeddedURLs:v5];
     }
 
     else
@@ -145,23 +145,23 @@
   return v8;
 }
 
-- (void)processMessageItemForENURL:(id)a3 withCompletionHandler:(id)a4
+- (void)processMessageItemForENURL:(id)l withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 body];
-  if ([(IMDExposureNotificationManager *)self _isMessageItemEligibleForEN:v6]&& v8)
+  lCopy = l;
+  handlerCopy = handler;
+  body = [lCopy body];
+  if ([(IMDExposureNotificationManager *)self _isMessageItemEligibleForEN:lCopy]&& body)
   {
-    v9 = [(IMDExposureNotificationManager *)self _enManager];
-    if (![v9 exposureNotificationEnabled])
+    _enManager = [(IMDExposureNotificationManager *)self _enManager];
+    if (![_enManager exposureNotificationEnabled])
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    v10 = [(IMDExposureNotificationManager *)self _enTextMessageForMessageBody:v8];
+    v10 = [(IMDExposureNotificationManager *)self _enTextMessageForMessageBody:body];
     if (v10)
     {
       if (objc_opt_respondsToSelector())
@@ -170,8 +170,8 @@ LABEL_15:
         v13[1] = 3221225472;
         v13[2] = sub_22B57C540;
         v13[3] = &unk_278704440;
-        v14 = v7;
-        [v9 verifyTextMessage:v10 completionHandler:v13];
+        v14 = handlerCopy;
+        [_enManager verifyTextMessage:v10 completionHandler:v13];
 
 LABEL_14:
         goto LABEL_15;
@@ -188,11 +188,11 @@ LABEL_14:
       }
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_14;
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_16:
 }
 

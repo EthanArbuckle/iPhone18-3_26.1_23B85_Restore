@@ -1,15 +1,15 @@
 @interface PCConfiguration
-+ (void)fetchConfigurationForClass:(Class)a3 completion:(id)a4;
++ (void)fetchConfigurationForClass:(Class)class completion:(id)completion;
 @end
 
 @implementation PCConfiguration
 
-+ (void)fetchConfigurationForClass:(Class)a3 completion:(id)a4
++ (void)fetchConfigurationForClass:(Class)class completion:(id)completion
 {
-  v5 = a4;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (objc_opt_class() == a3)
+    if (objc_opt_class() == class)
     {
       v9 = APLogForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -19,30 +19,30 @@
       }
 
       APSimulateCrash();
-      v5[2](v5, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
-      v6 = [MEMORY[0x277CE4A38] sharedInstance];
-      v7 = [(objc_class *)a3 path];
-      v8 = [v6 configurationForPath:v7];
+      mEMORY[0x277CE4A38] = [MEMORY[0x277CE4A38] sharedInstance];
+      path = [(objc_class *)class path];
+      v8 = [mEMORY[0x277CE4A38] configurationForPath:path];
 
       if (v8)
       {
-        (v5)[2](v5, v8);
+        (completionCopy)[2](completionCopy, v8);
       }
 
       else
       {
         v10 = objc_alloc_init(PCSupportRequester);
-        v11 = NSStringFromClass(a3);
+        v11 = NSStringFromClass(class);
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = sub_260F1E790;
         v12[3] = &unk_279AC9748;
-        v14 = a3;
-        v13 = v5;
+        classCopy = class;
+        v13 = completionCopy;
         [(PCSupportRequester *)v10 fetchConfigurationForClass:v11 completion:v12];
       }
     }

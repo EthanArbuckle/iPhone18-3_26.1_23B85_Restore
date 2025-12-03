@@ -1,5 +1,5 @@
 @interface RMCloudConfigController
-+ (id)_enrollmentURLFromCloudConfig:(id)a3;
++ (id)_enrollmentURLFromCloudConfig:(id)config;
 + (id)_enrollmentURLFromUpdatedCloudConfig;
 + (id)_updatedCloudConfig;
 + (id)cloudConfigEnrollmentURLWithUpdateFromServer;
@@ -12,39 +12,39 @@
   v3 = +[RMManagementSettings sharedSettings];
   [v3 removeValueForKey:@"HasCloudConfigBeenChecked"];
   [v3 removeValueForKey:@"CloudConfigEnrollmentURL"];
-  v4 = [a1 _enrollmentURLFromUpdatedCloudConfig];
+  _enrollmentURLFromUpdatedCloudConfig = [self _enrollmentURLFromUpdatedCloudConfig];
 
-  return v4;
+  return _enrollmentURLFromUpdatedCloudConfig;
 }
 
 + (id)_enrollmentURLFromUpdatedCloudConfig
 {
-  v3 = [a1 _updatedCloudConfig];
-  v4 = [a1 _enrollmentURLFromCloudConfig:v3];
+  _updatedCloudConfig = [self _updatedCloudConfig];
+  v4 = [self _enrollmentURLFromCloudConfig:_updatedCloudConfig];
 
   return v4;
 }
 
-+ (id)_enrollmentURLFromCloudConfig:(id)a3
++ (id)_enrollmentURLFromCloudConfig:(id)config
 {
-  v3 = a3;
-  if (v3)
+  configCopy = config;
+  if (configCopy)
   {
     v4 = +[RMManagementSettings sharedSettings];
     [v4 setValue:&__kCFBooleanTrue forKey:@"HasCloudConfigBeenChecked"];
-    v5 = [v3 objectForKeyedSubscript:@"MDMProtocolVersion"];
+    v5 = [configCopy objectForKeyedSubscript:@"MDMProtocolVersion"];
     v6 = v5;
     if (v5 && [v5 intValue] == 2)
     {
-      v7 = [v3 objectForKeyedSubscript:@"ConfigurationURL"];
+      v7 = [configCopy objectForKeyedSubscript:@"ConfigurationURL"];
       if ([v7 length])
       {
         v8 = [NSURL URLWithString:v7];
         v9 = v8;
         if (v8)
         {
-          v10 = [v8 absoluteString];
-          [v4 setValue:v10 forKey:@"CloudConfigEnrollmentURL"];
+          absoluteString = [v8 absoluteString];
+          [v4 setValue:absoluteString forKey:@"CloudConfigEnrollmentURL"];
 
           v11 = +[RMLog cloudConfigController];
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -120,7 +120,7 @@
     v3 = [RMLocations baseDirectoryURLCreateIfNeeded:1];
     v4 = [v3 URLByAppendingPathComponent:@"DEP.plist"];
 
-    v5 = [NSDictionary dictionaryWithContentsOfURL:v4];
+    cloudConfigurationDetails = [NSDictionary dictionaryWithContentsOfURL:v4];
   }
 
   else
@@ -146,18 +146,18 @@
     [v7 unlock];
     if (*(v15 + 5))
     {
-      v5 = 0;
+      cloudConfigurationDetails = 0;
     }
 
     else
     {
-      v5 = [v8 cloudConfigurationDetails];
+      cloudConfigurationDetails = [v8 cloudConfigurationDetails];
     }
 
     _Block_object_dispose(buf, 8);
   }
 
-  return v5;
+  return cloudConfigurationDetails;
 }
 
 @end

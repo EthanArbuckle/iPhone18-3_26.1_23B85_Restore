@@ -14,23 +14,23 @@
 + (id)sharedInstance;
 + (id)typingFeedbackFormatter;
 + (id)typingStyleFormatter;
-+ (id)voiceFormatterForEnabledVoiceCodes:(id)a3;
-- (BOOL)isItemSupported:(id)a3;
++ (id)voiceFormatterForEnabledVoiceCodes:(id)codes;
+- (BOOL)isItemSupported:(id)supported;
 - (id)_enabledVoices;
-- (id)_formatterForItem:(id)a3;
+- (id)_formatterForItem:(id)item;
 - (id)_init;
 - (id)_volumeForActiveVoice;
-- (id)formattedValue:(id)a3 withItem:(id)a4;
-- (id)nameForItem:(id)a3;
-- (id)possibleValuesForSettingsItem:(id)a3;
-- (id)scaledValue:(id)a3 withItem:(id)a4;
+- (id)formattedValue:(id)value withItem:(id)item;
+- (id)nameForItem:(id)item;
+- (id)possibleValuesForSettingsItem:(id)item;
+- (id)scaledValue:(id)value withItem:(id)item;
 - (id)userSettingsItems;
-- (id)valueForSettingsItem:(id)a3;
-- (void)_setVolumeForActiveVoice:(double)a3;
+- (id)valueForSettingsItem:(id)item;
+- (void)_setVolumeForActiveVoice:(double)voice;
 - (void)_turnOffBrailleIOSyncIfNeeded;
-- (void)saveUserSettingsItems:(id)a3;
-- (void)setNextValueForItem:(id)a3 inDirection:(int64_t)a4;
-- (void)setValue:(id)a3 forSettingsItem:(id)a4;
+- (void)saveUserSettingsItems:(id)items;
+- (void)setNextValueForItem:(id)item inDirection:(int64_t)direction;
+- (void)setValue:(id)value forSettingsItem:(id)item;
 @end
 
 @implementation VOSSettingsHelper
@@ -62,8 +62,8 @@ uint64_t __35__VOSSettingsHelper_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [(VOSSettingsHelper *)v2 _enabledVoices];
-    [(VOSSettingsHelper *)v3 setEnabledVoices:v4];
+    _enabledVoices = [(VOSSettingsHelper *)v2 _enabledVoices];
+    [(VOSSettingsHelper *)v3 setEnabledVoices:_enabledVoices];
 
     [(VOSSettingsHelper *)v3 setSliderMaxValue:1.0];
     [(VOSSettingsHelper *)v3 setSliderMinValue:0.0];
@@ -76,25 +76,25 @@ uint64_t __35__VOSSettingsHelper_sharedInstance__block_invoke()
 {
   v29 = *MEMORY[0x277D85DE8];
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277CE7DA0] sharedInstance];
-  v4 = [v3 dialectForSystemLanguage];
-  v5 = [v4 specificLanguageID];
+  mEMORY[0x277CE7DA0] = [MEMORY[0x277CE7DA0] sharedInstance];
+  dialectForSystemLanguage = [mEMORY[0x277CE7DA0] dialectForSystemLanguage];
+  specificLanguageID = [dialectForSystemLanguage specificLanguageID];
 
-  v6 = [MEMORY[0x277CE7E20] sharedInstance];
-  v7 = [v6 voiceOverDefaultVoiceSelections];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  voiceOverDefaultVoiceSelections = [mEMORY[0x277CE7E20] voiceOverDefaultVoiceSelections];
+  v8 = [voiceOverDefaultVoiceSelections objectForKeyedSubscript:specificLanguageID];
 
-  v9 = [MEMORY[0x277D703C8] sharedInstance];
-  v10 = [v8 voiceId];
-  v11 = [v9 speechVoiceWithVoiceId:v10];
+  mEMORY[0x277D703C8] = [MEMORY[0x277D703C8] sharedInstance];
+  voiceId = [v8 voiceId];
+  v11 = [mEMORY[0x277D703C8] speechVoiceWithVoiceId:voiceId];
 
   v23 = v11;
   if (!v8 || ![v11 isInstalled])
   {
-    v13 = [MEMORY[0x277CE7E20] sharedInstance];
-    v12 = [v13 speechVoiceIdentifierForLanguage:v5 sourceKey:*MEMORY[0x277CE68B0] exists:0];
+    mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceId2 = [mEMORY[0x277CE7E20]2 speechVoiceIdentifierForLanguage:specificLanguageID sourceKey:*MEMORY[0x277CE68B0] exists:0];
 
-    if (!v12)
+    if (!voiceId2)
     {
       goto LABEL_7;
     }
@@ -102,11 +102,11 @@ uint64_t __35__VOSSettingsHelper_sharedInstance__block_invoke()
     goto LABEL_6;
   }
 
-  v12 = [v8 voiceId];
-  if (v12)
+  voiceId2 = [v8 voiceId];
+  if (voiceId2)
   {
 LABEL_6:
-    [v2 addObject:v12];
+    [v2 addObject:voiceId2];
   }
 
 LABEL_7:
@@ -114,10 +114,10 @@ LABEL_7:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = [MEMORY[0x277CE7E20] sharedInstance];
-  v15 = [v14 voiceOverVoiceRotors];
+  mEMORY[0x277CE7E20]3 = [MEMORY[0x277CE7E20] sharedInstance];
+  voiceOverVoiceRotors = [mEMORY[0x277CE7E20]3 voiceOverVoiceRotors];
 
-  v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v16 = [voiceOverVoiceRotors countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v16)
   {
     v17 = v16;
@@ -125,27 +125,27 @@ LABEL_7:
     do
     {
       v19 = 0;
-      v20 = v12;
+      v20 = voiceId2;
       do
       {
         if (*v25 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(voiceOverVoiceRotors);
         }
 
-        v12 = [*(*(&v24 + 1) + 8 * v19) identifier];
+        voiceId2 = [*(*(&v24 + 1) + 8 * v19) identifier];
 
-        if (v12)
+        if (voiceId2)
         {
-          [v2 addObject:v12];
+          [v2 addObject:voiceId2];
         }
 
         ++v19;
-        v20 = v12;
+        v20 = voiceId2;
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v17 = [voiceOverVoiceRotors countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v17);
@@ -159,18 +159,18 @@ LABEL_7:
 - (id)userSettingsItems
 {
   v52 = *MEMORY[0x277D85DE8];
-  v33 = [MEMORY[0x277CBEB18] array];
-  v3 = [MEMORY[0x277CE7E20] sharedInstance];
-  v4 = [v3 voiceOverQuickSettingsItems];
+  array = [MEMORY[0x277CBEB18] array];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  voiceOverQuickSettingsItems = [mEMORY[0x277CE7E20] voiceOverQuickSettingsItems];
 
-  v31 = [v4 axMapObjectsUsingBlock:&__block_literal_global_297_0];
+  v31 = [voiceOverQuickSettingsItems axMapObjectsUsingBlock:&__block_literal_global_297_0];
   v30 = +[VOSSettingsItem allSettingsItems];
   v5 = [VOSSettingsItem settingsIDtoItemMap:?];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v4;
+  obj = voiceOverQuickSettingsItems;
   v6 = [obj countByEnumeratingWithState:&v40 objects:v51 count:16];
   if (v6)
   {
@@ -198,7 +198,7 @@ LABEL_7:
             v13 = [v10 objectForKeyedSubscript:?];
             v48[1] = v13;
             v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:2];
-            [v33 addObject:v14];
+            [array addObject:v14];
           }
 
           else
@@ -226,7 +226,7 @@ LABEL_7:
   v37 = 0u;
   v15 = v30;
   v16 = [v15 countByEnumeratingWithState:&v36 objects:v46 count:16];
-  v17 = v33;
+  v17 = array;
   if (v16)
   {
     v18 = v16;
@@ -243,10 +243,10 @@ LABEL_7:
         v21 = *(*(&v36 + 1) + 8 * j);
         if ([(VOSSettingsHelper *)self itemIsSupportedForPlatform:v21])
         {
-          v22 = [v21 identifier];
-          v23 = [v31 containsObject:v22];
+          identifier = [v21 identifier];
+          v23 = [v31 containsObject:identifier];
 
-          v17 = v33;
+          v17 = array;
           if ((v23 & 1) == 0)
           {
             v44[0] = @"Item";
@@ -262,15 +262,15 @@ LABEL_7:
             v34[4] = self;
             v35 = v25;
             v26 = v25;
-            v27 = [v33 indexOfObjectPassingTest:v34];
+            v27 = [array indexOfObjectPassingTest:v34];
             if (v27 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              [v33 addObject:v24];
+              [array addObject:v24];
             }
 
             else
             {
-              [v33 insertObject:v24 atIndex:v27];
+              [array insertObject:v24 atIndex:v27];
             }
           }
         }
@@ -296,16 +296,16 @@ BOOL __38__VOSSettingsHelper_userSettingsItems__block_invoke_307(uint64_t a1, vo
   return v5;
 }
 
-- (void)saveUserSettingsItems:(id)a3
+- (void)saveUserSettingsItems:(id)items
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v3;
+  obj = itemsCopy;
   v5 = [obj countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v5)
   {
@@ -327,10 +327,10 @@ BOOL __38__VOSSettingsHelper_userSettingsItems__block_invoke_307(uint64_t a1, vo
         v21[1] = @"Item";
         v22[0] = v10;
         v11 = [v9 objectForKeyedSubscript:@"Item"];
-        v12 = [v11 identifier];
-        v22[1] = v12;
+        identifier = [v11 identifier];
+        v22[1] = identifier;
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
-        [v4 addObject:v13];
+        [array addObject:v13];
 
         ++v8;
       }
@@ -342,51 +342,51 @@ BOOL __38__VOSSettingsHelper_userSettingsItems__block_invoke_307(uint64_t a1, vo
     while (v6);
   }
 
-  v14 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v14 setVoiceOverQuickSettingsItems:v4];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20] setVoiceOverQuickSettingsItems:array];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNextValueForItem:(id)a3 inDirection:(int64_t)a4
+- (void)setNextValueForItem:(id)item inDirection:(int64_t)direction
 {
-  v39 = a3;
-  v6 = [v39 itemType];
-  if (!v6)
+  itemCopy = item;
+  itemType = [itemCopy itemType];
+  if (!itemType)
   {
     v23 = MEMORY[0x277CCABB0];
-    v7 = [(VOSSettingsHelper *)self valueForSettingsItem:v39];
+    v7 = [(VOSSettingsHelper *)self valueForSettingsItem:itemCopy];
     v24 = [v23 numberWithInt:{objc_msgSend(v7, "BOOLValue") ^ 1}];
 LABEL_41:
     v38 = v24;
-    [(VOSSettingsHelper *)self setValue:v24 forSettingsItem:v39];
+    [(VOSSettingsHelper *)self setValue:v24 forSettingsItem:itemCopy];
 
     goto LABEL_42;
   }
 
-  if (v6 == 1)
+  if (itemType == 1)
   {
-    v11 = [(VOSSettingsHelper *)self valueForSettingsItem:v39];
+    v11 = [(VOSSettingsHelper *)self valueForSettingsItem:itemCopy];
     [v11 floatValue];
     v13 = v12;
 
     v14 = +[VOSSettingsItem SpeakingRate];
-    v15 = v14 == v39;
+    v15 = v14 == itemCopy;
 
     v16 = +[VOSSettingsItem BrailleAutoAdvanceDuration];
 
-    if (v16 == v39)
+    if (v16 == itemCopy)
     {
       v17 = +[VOSSettingsHelper sharedInstance];
       v18 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
-      v19 = [v17 scaledValue:v18 withItem:v39];
+      v19 = [v17 scaledValue:v18 withItem:itemCopy];
       [v19 doubleValue];
       v13 = v20;
     }
 
     v21 = +[VOSSettingsItem DuckingAmount];
 
-    if (v21 == v39)
+    if (v21 == itemCopy)
     {
       [(VOSSettingsHelper *)self setSliderMaxValue:0.99];
       [(VOSSettingsHelper *)self setSliderMinValue:0.01];
@@ -400,24 +400,24 @@ LABEL_41:
 
     v25 = +[VOSSettingsItem Volume];
 
-    if (v25 == v39)
+    if (v25 == itemCopy)
     {
       [(VOSSettingsHelper *)self setSliderMaxValue:1.0];
       [(VOSSettingsHelper *)self setSliderMinValue:0.00999999978];
-      v27 = dbl_223CAECA0[a4 == 1] + v13;
+      v27 = dbl_223CAECA0[direction == 1] + v13;
       v22 = 0.05;
     }
 
     else
     {
       v26 = -v22;
-      if (a4 == 1)
+      if (direction == 1)
       {
         v26 = v22;
       }
 
       v27 = v13 + v26;
-      if (v21 != v39)
+      if (v21 != itemCopy)
       {
         [(VOSSettingsHelper *)self sliderMinValue];
         if (v27 >= v28)
@@ -438,7 +438,7 @@ LABEL_41:
 
 LABEL_36:
         v7 = [MEMORY[0x277CCABB0] numberWithDouble:v30];
-        [(VOSSettingsHelper *)self setValue:v7 forSettingsItem:v39];
+        [(VOSSettingsHelper *)self setValue:v7 forSettingsItem:itemCopy];
         goto LABEL_42;
       }
     }
@@ -479,16 +479,16 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  if (v6 != 2)
+  if (itemType != 2)
   {
     goto LABEL_43;
   }
 
-  v7 = [(VOSSettingsHelper *)self possibleValuesForSettingsItem:v39];
-  v8 = [(VOSSettingsHelper *)self valueForSettingsItem:v39];
+  v7 = [(VOSSettingsHelper *)self possibleValuesForSettingsItem:itemCopy];
+  v8 = [(VOSSettingsHelper *)self valueForSettingsItem:itemCopy];
   v9 = [v7 indexOfObject:v8];
 
-  if (!a4)
+  if (!direction)
   {
     if (v9 <= 0)
     {
@@ -499,7 +499,7 @@ LABEL_36:
     goto LABEL_40;
   }
 
-  if (a4 == 1)
+  if (direction == 1)
   {
     if (v9 + 1 < [v7 count])
     {
@@ -521,31 +521,31 @@ LABEL_42:
 LABEL_43:
 }
 
-- (id)valueForSettingsItem:(id)a3
+- (id)valueForSettingsItem:(id)item
 {
   v87 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = +[VOSSettingsItem Sounds];
 
-  if (v5 == v4)
+  if (v5 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 voiceOverSoundEffectsEnabled];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] voiceOverSoundEffectsEnabled];
     goto LABEL_34;
   }
 
   v6 = +[VOSSettingsItem AudioDucking];
 
-  if (v6 == v4)
+  if (v6 == itemCopy)
   {
     v37 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v38 = [v35 voiceOverMediaDuckingMode];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverMediaDuckingMode = [mEMORY[0x277CE7E20] voiceOverMediaDuckingMode];
 LABEL_32:
-    v39 = [v37 numberWithLong:v38];
+    null = [v37 numberWithLong:voiceOverMediaDuckingMode];
 LABEL_35:
-    v40 = v39;
+    v40 = null;
 LABEL_36:
 
     goto LABEL_37;
@@ -553,88 +553,88 @@ LABEL_36:
 
   v7 = +[VOSSettingsItem Pitch];
 
-  if (v7 == v4)
+  if (v7 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 voiceOverPitchChangeEnabled];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] voiceOverPitchChangeEnabled];
     goto LABEL_34;
   }
 
   v8 = +[VOSSettingsItem DuckingAmount];
 
-  if (v8 == v4)
+  if (v8 == itemCopy)
   {
     v43 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v35 voiceOverMediaDuckingAmount];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] voiceOverMediaDuckingAmount];
 LABEL_41:
-    v39 = [v43 numberWithDouble:?];
+    null = [v43 numberWithDouble:?];
     goto LABEL_35;
   }
 
   v9 = +[VOSSettingsItem Volume];
 
-  if (v9 == v4)
+  if (v9 == itemCopy)
   {
-    v44 = [(VOSSettingsHelper *)self _volumeForActiveVoice];
+    _volumeForActiveVoice = [(VOSSettingsHelper *)self _volumeForActiveVoice];
 LABEL_43:
-    v40 = v44;
+    v40 = _volumeForActiveVoice;
     goto LABEL_37;
   }
 
   v10 = +[VOSSettingsItem SendToHDMI];
 
-  if (v10 == v4)
+  if (v10 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 voiceOverAudioFollowsHDMIAudio];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] voiceOverAudioFollowsHDMIAudio];
     goto LABEL_34;
   }
 
   v11 = +[VOSSettingsItem SoundCurtain];
 
-  if (v11 == v4)
+  if (v11 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 voiceOverSoundCurtain];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] voiceOverSoundCurtain];
     goto LABEL_34;
   }
 
   v12 = +[VOSSettingsItem SpeakNotifications];
 
-  if (v12 == v4)
+  if (v12 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 voiceOverSpeakNotificationsEnabled];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] voiceOverSpeakNotificationsEnabled];
     goto LABEL_34;
   }
 
   v13 = +[VOSSettingsItem SpeakingRate];
 
-  if (v13 == v4)
+  if (v13 == itemCopy)
   {
     v45 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v35 voiceOverEffectiveSpeakingRate];
-    v39 = [v45 numberWithFloat:?];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] voiceOverEffectiveSpeakingRate];
+    null = [v45 numberWithFloat:?];
     goto LABEL_35;
   }
 
   v14 = +[VOSSettingsItem Voice];
 
-  if (v14 == v4)
+  if (v14 == itemCopy)
   {
-    v46 = [MEMORY[0x277CE7E20] sharedInstance];
-    v47 = [v46 voiceOverCurrentRotorVoiceIdentifier];
+    mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverCurrentRotorVoiceIdentifier = [mEMORY[0x277CE7E20]2 voiceOverCurrentRotorVoiceIdentifier];
 
-    if (v47)
+    if (voiceOverCurrentRotorVoiceIdentifier)
     {
-      v48 = [(VOSSettingsHelper *)self enabledVoices];
-      v49 = [v48 indexOfObjectPassingTest:&__block_literal_global_311];
+      enabledVoices = [(VOSSettingsHelper *)self enabledVoices];
+      v49 = [enabledVoices indexOfObjectPassingTest:&__block_literal_global_311];
 
       if (v49 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -652,29 +652,29 @@ LABEL_43:
       v50 = 0;
     }
 
-    v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v50];
+    _volumeForActiveVoice = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v50];
     goto LABEL_43;
   }
 
   v15 = +[VOSSettingsItem Hints];
 
-  if (v15 == v4)
+  if (v15 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 voiceOverHintsEnabled];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] voiceOverHintsEnabled];
     goto LABEL_34;
   }
 
   v16 = +[VOSSettingsItem ScreenRecognition];
 
-  if (v16 == v4)
+  if (v16 == itemCopy)
   {
     v51 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v52 = [v4 settingsData];
-    v53 = [v52 frontmostAppIdentifier];
-    v40 = [v51 numberWithInt:{objc_msgSend(v35, "automaticAccessibilityModeForBundleIdentifier:", v53) == 1}];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    settingsData = [itemCopy settingsData];
+    frontmostAppIdentifier = [settingsData frontmostAppIdentifier];
+    v40 = [v51 numberWithInt:{objc_msgSend(mEMORY[0x277CE7E20], "automaticAccessibilityModeForBundleIdentifier:", frontmostAppIdentifier) == 1}];
 
 LABEL_54:
     goto LABEL_36;
@@ -682,107 +682,107 @@ LABEL_54:
 
   v17 = +[VOSSettingsItem LiveRegions];
 
-  if (v17 == v4)
+  if (v17 == itemCopy)
   {
-    v54 = [MEMORY[0x277CE7E20] sharedInstance];
-    v55 = [v4 settingsData];
-    v56 = [v55 frontmostAppIdentifier];
-    if (v56)
+    mEMORY[0x277CE7E20]3 = [MEMORY[0x277CE7E20] sharedInstance];
+    settingsData2 = [itemCopy settingsData];
+    frontmostAppIdentifier2 = [settingsData2 frontmostAppIdentifier];
+    if (frontmostAppIdentifier2)
     {
-      v35 = [v54 liveRegionStatusForWebOrApp:v56];
+      mEMORY[0x277CE7E20] = [mEMORY[0x277CE7E20]3 liveRegionStatusForWebOrApp:frontmostAppIdentifier2];
     }
 
     else
     {
-      v68 = [v4 settingsData];
-      v69 = [v68 webAreaURL];
-      v35 = [v54 liveRegionStatusForWebOrApp:v69];
+      settingsData3 = [itemCopy settingsData];
+      webAreaURL = [settingsData3 webAreaURL];
+      mEMORY[0x277CE7E20] = [mEMORY[0x277CE7E20]3 liveRegionStatusForWebOrApp:webAreaURL];
     }
 
     v70 = MEMORY[0x277CCABB0];
-    if (v35)
+    if (mEMORY[0x277CE7E20])
     {
-      v71 = [v35 BOOLValue];
+      bOOLValue = [mEMORY[0x277CE7E20] BOOLValue];
     }
 
     else
     {
-      v71 = 1;
+      bOOLValue = 1;
     }
 
-    v39 = [v70 numberWithInt:v71];
+    null = [v70 numberWithInt:bOOLValue];
     goto LABEL_35;
   }
 
   v18 = +[VOSSettingsItem ImageDescriptions];
 
-  if (v18 == v4)
+  if (v18 == itemCopy)
   {
-    v57 = [MEMORY[0x277CE7E20] sharedInstance];
-    v58 = [v57 imageCaptioningDisabledApps];
-    v59 = [v4 settingsData];
-    v60 = [v59 frontmostAppIdentifier];
-    v61 = [v58 containsObject:v60];
+    mEMORY[0x277CE7E20]4 = [MEMORY[0x277CE7E20] sharedInstance];
+    imageCaptioningDisabledApps = [mEMORY[0x277CE7E20]4 imageCaptioningDisabledApps];
+    settingsData4 = [itemCopy settingsData];
+    frontmostAppIdentifier3 = [settingsData4 frontmostAppIdentifier];
+    v61 = [imageCaptioningDisabledApps containsObject:frontmostAppIdentifier3];
 
-    v44 = [MEMORY[0x277CCABB0] numberWithInt:v61 ^ 1u];
+    _volumeForActiveVoice = [MEMORY[0x277CCABB0] numberWithInt:v61 ^ 1u];
     goto LABEL_43;
   }
 
   v19 = +[VOSSettingsItem DirectTouch];
 
-  if (v19 == v4)
+  if (v19 == itemCopy)
   {
-    v62 = [MEMORY[0x277CE7E20] sharedInstance];
-    v63 = [v62 voiceOverDirectTouchEnabledApps];
-    v64 = [v4 settingsData];
-    v65 = [v64 frontmostAppIdentifier];
-    v66 = [v63 objectForKeyedSubscript:v65];
-    v67 = [v66 BOOLValue];
+    mEMORY[0x277CE7E20]5 = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverDirectTouchEnabledApps = [mEMORY[0x277CE7E20]5 voiceOverDirectTouchEnabledApps];
+    settingsData5 = [itemCopy settingsData];
+    frontmostAppIdentifier4 = [settingsData5 frontmostAppIdentifier];
+    v66 = [voiceOverDirectTouchEnabledApps objectForKeyedSubscript:frontmostAppIdentifier4];
+    bOOLValue2 = [v66 BOOLValue];
 
-    v44 = [MEMORY[0x277CCABB0] numberWithBool:v67];
+    _volumeForActiveVoice = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue2];
     goto LABEL_43;
   }
 
   v20 = +[VOSSettingsItem RotorActionConfirmation];
 
-  if (v20 == v4)
+  if (v20 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 voiceOverSpeakActionConfirmation];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] voiceOverSpeakActionConfirmation];
     goto LABEL_34;
   }
 
   v21 = +[VOSSettingsItem BrailleAlerts];
 
-  if (v21 == v4)
+  if (v21 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 voiceOverBrailleAlertsEnabled];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] voiceOverBrailleAlertsEnabled];
     goto LABEL_34;
   }
 
   v22 = +[VOSSettingsItem BrailleFormatting];
 
-  if (v22 == v4)
+  if (v22 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 voiceOverBrailleFormattingEnabled];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] voiceOverBrailleFormattingEnabled];
     goto LABEL_34;
   }
 
   v23 = +[VOSSettingsItem Activities];
 
-  if (v23 == v4)
+  if (v23 == itemCopy)
   {
-    v72 = [MEMORY[0x277CE7E20] sharedInstance];
-    v35 = [v72 voiceOverSelectedActivity];
+    mEMORY[0x277CE7E20]6 = [MEMORY[0x277CE7E20] sharedInstance];
+    mEMORY[0x277CE7E20] = [mEMORY[0x277CE7E20]6 voiceOverSelectedActivity];
 
-    if (v35)
+    if (mEMORY[0x277CE7E20])
     {
-      v39 = v35;
+      null = mEMORY[0x277CE7E20];
       goto LABEL_35;
     }
 
@@ -791,183 +791,183 @@ LABEL_54:
 
   v24 = +[VOSSettingsItem Punctuation];
 
-  if (v24 == v4)
+  if (v24 == itemCopy)
   {
-    v73 = [MEMORY[0x277CE7E20] sharedInstance];
-    v35 = [v73 voiceOverPunctuationGroup];
+    mEMORY[0x277CE7E20]7 = [MEMORY[0x277CE7E20] sharedInstance];
+    mEMORY[0x277CE7E20] = [mEMORY[0x277CE7E20]7 voiceOverPunctuationGroup];
 
-    if (v35)
+    if (mEMORY[0x277CE7E20])
     {
-      v52 = [MEMORY[0x277CE7658] sharedDatabase];
-      v40 = [v52 punctuationGroupForUUID:v35];
+      settingsData = [MEMORY[0x277CE7658] sharedDatabase];
+      v40 = [settingsData punctuationGroupForUUID:mEMORY[0x277CE7E20]];
       goto LABEL_54;
     }
 
 LABEL_73:
-    v39 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     goto LABEL_35;
   }
 
   v25 = +[VOSSettingsItem NavigationStyle];
 
-  if (v25 == v4)
+  if (v25 == itemCopy)
   {
     v74 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v75 = [v35 voiceOverNavigationStyle];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverNavigationStyle = [mEMORY[0x277CE7E20] voiceOverNavigationStyle];
 LABEL_79:
-    v39 = [v74 numberWithInteger:v75];
+    null = [v74 numberWithInteger:voiceOverNavigationStyle];
     goto LABEL_35;
   }
 
   v26 = +[VOSSettingsItem NavigateImages];
 
-  if (v26 == v4)
+  if (v26 == itemCopy)
   {
     v74 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v75 = [v35 voiceOverNavigateImagesOption];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverNavigationStyle = [mEMORY[0x277CE7E20] voiceOverNavigateImagesOption];
     goto LABEL_79;
   }
 
   v27 = +[VOSSettingsItem GestureDirection];
 
-  if (v27 == v4)
+  if (v27 == itemCopy)
   {
     v74 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v75 = [v35 voiceOverNavigationDirectionMode];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverNavigationStyle = [mEMORY[0x277CE7E20] voiceOverNavigationDirectionMode];
     goto LABEL_79;
   }
 
   v28 = +[VOSSettingsItem PhoneticFeedback];
 
-  if (v28 == v4)
+  if (v28 == itemCopy)
   {
     v74 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v75 = [v35 voiceOverPhoneticsFeedback];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverNavigationStyle = [mEMORY[0x277CE7E20] voiceOverPhoneticsFeedback];
     goto LABEL_79;
   }
 
   v29 = +[VOSSettingsItem MediaDescriptions];
 
-  if (v29 == v4)
+  if (v29 == itemCopy)
   {
     v74 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v75 = [v35 voiceOverDescribedMedia];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverNavigationStyle = [mEMORY[0x277CE7E20] voiceOverDescribedMedia];
     goto LABEL_79;
   }
 
   v30 = +[VOSSettingsItem CaptionPanel];
 
-  if (v30 == v4)
+  if (v30 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 enableVoiceOverCaptions];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] enableVoiceOverCaptions];
     goto LABEL_34;
   }
 
   v31 = +[VOSSettingsItem LargeCursor];
 
-  if (v31 == v4)
+  if (v31 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 voiceOverLargeCursorEnabled];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] voiceOverLargeCursorEnabled];
     goto LABEL_34;
   }
 
-  v32 = [v4 identifier];
-  v33 = [v32 isEqualToString:@"ScreenCurtain"];
+  identifier = [itemCopy identifier];
+  v33 = [identifier isEqualToString:@"ScreenCurtain"];
 
   if (v33)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 voiceOverScreenCurtainEnabled];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] voiceOverScreenCurtainEnabled];
 LABEL_34:
-    v39 = [v34 numberWithBool:v36];
+    null = [v34 numberWithBool:voiceOverSoundEffectsEnabled];
     goto LABEL_35;
   }
 
   v76 = +[VOSSettingsItem TypingStyle];
 
-  if (v76 == v4)
+  if (v76 == itemCopy)
   {
     v37 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v38 = [v35 voiceOverTypingMode];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverMediaDuckingMode = [mEMORY[0x277CE7E20] voiceOverTypingMode];
     goto LABEL_32;
   }
 
   v77 = +[VOSSettingsItem SoftwareTypingFeedback];
 
-  if (v77 == v4)
+  if (v77 == itemCopy)
   {
     v74 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v75 = [v35 voiceOverSoftwareTypingFeedback];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverNavigationStyle = [mEMORY[0x277CE7E20] voiceOverSoftwareTypingFeedback];
     goto LABEL_79;
   }
 
   v78 = +[VOSSettingsItem HardwareTypingFeedback];
 
-  if (v78 == v4)
+  if (v78 == itemCopy)
   {
     v74 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v75 = [v35 voiceOverHardwareTypingFeedback];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverNavigationStyle = [mEMORY[0x277CE7E20] voiceOverHardwareTypingFeedback];
     goto LABEL_79;
   }
 
   v79 = +[VOSSettingsItem SlideToType];
 
-  if (v79 == v4)
+  if (v79 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = +[VOSSettingsHelper sharedInstance];
-    v36 = [v35 isSlideToTypeEnabled];
+    mEMORY[0x277CE7E20] = +[VOSSettingsHelper sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] isSlideToTypeEnabled];
     goto LABEL_34;
   }
 
   v80 = +[VOSSettingsItem BrailleAutoAdvanceDuration];
 
-  if (v80 == v4)
+  if (v80 == itemCopy)
   {
     v43 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v35 voiceOverBrailleAutoAdvanceDuration];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] voiceOverBrailleAutoAdvanceDuration];
     goto LABEL_41;
   }
 
   v81 = +[VOSSettingsItem BrailleInput];
 
-  if (v81 == v4)
+  if (v81 == itemCopy)
   {
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v39 = [v35 voiceOverTouchBrailleDisplayInputTableIdentifier];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    null = [mEMORY[0x277CE7E20] voiceOverTouchBrailleDisplayInputTableIdentifier];
     goto LABEL_35;
   }
 
   v82 = +[VOSSettingsItem BrailleOutput];
 
-  if (v82 == v4)
+  if (v82 == itemCopy)
   {
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v39 = [v35 voiceOverTouchBrailleDisplayOutputTableIdentifier];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    null = [mEMORY[0x277CE7E20] voiceOverTouchBrailleDisplayOutputTableIdentifier];
     goto LABEL_35;
   }
 
   v83 = +[VOSSettingsItem BSIActivationGestures];
 
-  if (v83 == v4)
+  if (v83 == itemCopy)
   {
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277CE7E20] sharedInstance];
-    v36 = [v35 voiceOverTouchBrailleGesturesActivationGestureEnabled];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverSoundEffectsEnabled = [mEMORY[0x277CE7E20] voiceOverTouchBrailleGesturesActivationGestureEnabled];
     goto LABEL_34;
   }
 
@@ -975,7 +975,7 @@ LABEL_34:
   if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
   {
     v85 = 138412290;
-    v86 = v4;
+    v86 = itemCopy;
     _os_log_impl(&dword_223C70000, v84, OS_LOG_TYPE_DEFAULT, "Unhandled pref getter for item: %@", &v85, 0xCu);
   }
 
@@ -998,191 +998,191 @@ uint64_t __42__VOSSettingsHelper_valueForSettingsItem___block_invoke(uint64_t a1
   return v6;
 }
 
-- (void)setValue:(id)a3 forSettingsItem:(id)a4
+- (void)setValue:(id)value forSettingsItem:(id)item
 {
   v121 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  itemCopy = item;
   v8 = +[VOSSettingsItem Sounds];
 
-  if (v8 == v7)
+  if (v8 == itemCopy)
   {
-    v39 = [v6 BOOLValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverSoundEffectsEnabled:v39];
+    bOOLValue = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverSoundEffectsEnabled:bOOLValue];
     goto LABEL_39;
   }
 
   v9 = +[VOSSettingsItem AudioDucking];
 
-  if (v9 == v7)
+  if (v9 == itemCopy)
   {
-    v40 = [v6 integerValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverMediaDuckingMode:v40];
+    integerValue = [valueCopy integerValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverMediaDuckingMode:integerValue];
     goto LABEL_39;
   }
 
   v10 = +[VOSSettingsItem DuckingAmount];
 
-  if (v10 == v7)
+  if (v10 == itemCopy)
   {
-    [v6 doubleValue];
+    [valueCopy doubleValue];
     v42 = v41;
-    v43 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v43 setVoiceOverMediaDuckingAmount:v42];
+    mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20]2 setVoiceOverMediaDuckingAmount:v42];
     goto LABEL_33;
   }
 
   v11 = +[VOSSettingsItem Pitch];
 
-  if (v11 == v7)
+  if (v11 == itemCopy)
   {
-    v44 = [v6 BOOLValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverPitchChangeEnabled:v44];
+    bOOLValue2 = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverPitchChangeEnabled:bOOLValue2];
     goto LABEL_39;
   }
 
   v12 = +[VOSSettingsItem Volume];
 
-  if (v12 == v7)
+  if (v12 == itemCopy)
   {
-    [v6 floatValue];
+    [valueCopy floatValue];
     [(VOSSettingsHelper *)self _setVolumeForActiveVoice:v45];
     goto LABEL_40;
   }
 
   v13 = +[VOSSettingsItem SendToHDMI];
 
-  if (v13 == v7)
+  if (v13 == itemCopy)
   {
-    v46 = [v6 BOOLValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverAudioFollowsHDMIAudio:v46];
+    bOOLValue3 = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverAudioFollowsHDMIAudio:bOOLValue3];
     goto LABEL_39;
   }
 
   v14 = +[VOSSettingsItem SoundCurtain];
 
-  if (v14 == v7)
+  if (v14 == itemCopy)
   {
-    v47 = [v6 BOOLValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverSoundCurtain:v47];
+    bOOLValue4 = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverSoundCurtain:bOOLValue4];
     goto LABEL_39;
   }
 
   v15 = +[VOSSettingsItem SpeakNotifications];
 
-  if (v15 == v7)
+  if (v15 == itemCopy)
   {
-    v48 = [v6 BOOLValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverSpeakNotificationsEnabled:v48];
+    bOOLValue5 = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverSpeakNotificationsEnabled:bOOLValue5];
     goto LABEL_39;
   }
 
   v16 = +[VOSSettingsItem SpeakingRate];
 
-  if (v16 == v7)
+  if (v16 == itemCopy)
   {
-    [v6 floatValue];
+    [valueCopy floatValue];
     v53 = v52;
-    v43 = [MEMORY[0x277CE7E20] sharedInstance];
+    mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
     LODWORD(v54) = v53;
-    [v43 setVoiceOverEffectiveSpeakingRate:v54];
+    [mEMORY[0x277CE7E20]2 setVoiceOverEffectiveSpeakingRate:v54];
     goto LABEL_33;
   }
 
   v17 = +[VOSSettingsItem Voice];
 
-  if (v17 == v7)
+  if (v17 == itemCopy)
   {
-    if (![v6 integerValue])
+    if (![valueCopy integerValue])
     {
-      v43 = [MEMORY[0x277CE7E20] sharedInstance];
-      [v43 setVoiceOverCurrentRotorVoiceIdentifier:&stru_283729578];
+      mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+      [mEMORY[0x277CE7E20]2 setVoiceOverCurrentRotorVoiceIdentifier:&stru_283729578];
       goto LABEL_33;
     }
 
-    v43 = -[NSArray objectAtIndexedSubscript:](self->_enabledVoices, "objectAtIndexedSubscript:", [v6 integerValue]);
-    v55 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v55 setVoiceOverCurrentRotorVoiceIdentifier:v43];
+    mEMORY[0x277CE7E20]2 = -[NSArray objectAtIndexedSubscript:](self->_enabledVoices, "objectAtIndexedSubscript:", [valueCopy integerValue]);
+    mEMORY[0x277CE7E20]3 = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20]3 setVoiceOverCurrentRotorVoiceIdentifier:mEMORY[0x277CE7E20]2];
     goto LABEL_44;
   }
 
   v18 = +[VOSSettingsItem Hints];
 
-  if (v18 == v7)
+  if (v18 == itemCopy)
   {
-    v56 = [v6 BOOLValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverHintsEnabled:v56];
+    bOOLValue6 = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverHintsEnabled:bOOLValue6];
     goto LABEL_39;
   }
 
   v19 = +[VOSSettingsItem RotorActionConfirmation];
 
-  if (v19 == v7)
+  if (v19 == itemCopy)
   {
-    v57 = [v6 BOOLValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverSpeakActionConfirmation:v57];
+    bOOLValue7 = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverSpeakActionConfirmation:bOOLValue7];
     goto LABEL_39;
   }
 
   v20 = +[VOSSettingsItem BrailleAlerts];
 
-  if (v20 == v7)
+  if (v20 == itemCopy)
   {
-    v58 = [v6 BOOLValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverBrailleAlertsEnabled:v58];
+    bOOLValue8 = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverBrailleAlertsEnabled:bOOLValue8];
     goto LABEL_39;
   }
 
   v21 = +[VOSSettingsItem BrailleFormatting];
 
-  if (v21 == v7)
+  if (v21 == itemCopy)
   {
-    v59 = [v6 BOOLValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverBrailleFormattingEnabled:v59];
+    bOOLValue9 = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverBrailleFormattingEnabled:bOOLValue9];
     goto LABEL_39;
   }
 
   v22 = +[VOSSettingsItem ImageDescriptions];
 
-  if (v22 == v7)
+  if (v22 == itemCopy)
   {
-    v60 = [v6 BOOLValue];
-    v61 = [v7 settingsData];
-    v43 = [v61 frontmostAppIdentifier];
+    bOOLValue10 = [valueCopy BOOLValue];
+    settingsData = [itemCopy settingsData];
+    mEMORY[0x277CE7E20]2 = [settingsData frontmostAppIdentifier];
 
-    if (v43)
+    if (mEMORY[0x277CE7E20]2)
     {
-      v62 = [MEMORY[0x277CE7E20] sharedInstance];
-      v63 = [v62 imageCaptioningDisabledApps];
-      v64 = [v63 mutableCopy];
+      mEMORY[0x277CE7E20]4 = [MEMORY[0x277CE7E20] sharedInstance];
+      imageCaptioningDisabledApps = [mEMORY[0x277CE7E20]4 imageCaptioningDisabledApps];
+      array = [imageCaptioningDisabledApps mutableCopy];
 
-      if (!v64)
+      if (!array)
       {
-        v64 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
       }
 
-      if (v60)
+      if (bOOLValue10)
       {
-        [v64 removeObject:v43];
+        [array removeObject:mEMORY[0x277CE7E20]2];
       }
 
-      else if (([v64 containsObject:v43] & 1) == 0)
+      else if (([array containsObject:mEMORY[0x277CE7E20]2] & 1) == 0)
       {
-        [v64 addObject:v43];
+        [array addObject:mEMORY[0x277CE7E20]2];
       }
 
-      v74 = [MEMORY[0x277CE7E20] sharedInstance];
-      [v74 setImageCaptioningDisabledApps:v64];
+      mEMORY[0x277CE7E20]5 = [MEMORY[0x277CE7E20] sharedInstance];
+      [mEMORY[0x277CE7E20]5 setImageCaptioningDisabledApps:array];
     }
 
     goto LABEL_33;
@@ -1190,56 +1190,56 @@ uint64_t __42__VOSSettingsHelper_valueForSettingsItem___block_invoke(uint64_t a1
 
   v23 = +[VOSSettingsItem DirectTouch];
 
-  if (v23 == v7)
+  if (v23 == itemCopy)
   {
-    v65 = [v7 settingsData];
-    v43 = [v65 frontmostAppIdentifier];
+    settingsData2 = [itemCopy settingsData];
+    mEMORY[0x277CE7E20]2 = [settingsData2 frontmostAppIdentifier];
 
-    if (!v43)
+    if (!mEMORY[0x277CE7E20]2)
     {
       goto LABEL_33;
     }
 
-    v66 = [MEMORY[0x277CE7E20] sharedInstance];
-    v67 = [v66 voiceOverDirectTouchEnabledApps];
-    v55 = [v67 mutableCopy];
+    mEMORY[0x277CE7E20]6 = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverDirectTouchEnabledApps = [mEMORY[0x277CE7E20]6 voiceOverDirectTouchEnabledApps];
+    mEMORY[0x277CE7E20]3 = [voiceOverDirectTouchEnabledApps mutableCopy];
 
-    v68 = [v55 objectForKey:v43];
-    LODWORD(v67) = [v68 BOOLValue];
+    v68 = [mEMORY[0x277CE7E20]3 objectForKey:mEMORY[0x277CE7E20]2];
+    LODWORD(voiceOverDirectTouchEnabledApps) = [v68 BOOLValue];
 
-    v69 = [MEMORY[0x277CCABB0] numberWithInt:v67 ^ 1];
-    [v55 setObject:v69 forKeyedSubscript:v43];
+    v69 = [MEMORY[0x277CCABB0] numberWithInt:voiceOverDirectTouchEnabledApps ^ 1];
+    [mEMORY[0x277CE7E20]3 setObject:v69 forKeyedSubscript:mEMORY[0x277CE7E20]2];
 
-    v70 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v70 setVoiceOverDirectTouchEnabledApps:v55];
+    mEMORY[0x277CE7E20]7 = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20]7 setVoiceOverDirectTouchEnabledApps:mEMORY[0x277CE7E20]3];
 
     goto LABEL_44;
   }
 
   v24 = +[VOSSettingsItem LiveRegions];
 
-  if (v24 == v7)
+  if (v24 == itemCopy)
   {
-    v71 = [v7 settingsData];
-    v72 = [v71 frontmostAppIdentifier];
-    v73 = v72;
-    if (v72)
+    settingsData3 = [itemCopy settingsData];
+    frontmostAppIdentifier = [settingsData3 frontmostAppIdentifier];
+    v73 = frontmostAppIdentifier;
+    if (frontmostAppIdentifier)
     {
-      v43 = v72;
+      mEMORY[0x277CE7E20]2 = frontmostAppIdentifier;
     }
 
     else
     {
-      v83 = [v7 settingsData];
-      v43 = [v83 webAreaURL];
+      settingsData4 = [itemCopy settingsData];
+      mEMORY[0x277CE7E20]2 = [settingsData4 webAreaURL];
     }
 
-    v84 = [MEMORY[0x277CE7E20] sharedInstance];
-    v55 = [v84 liveRegionStatusForWebOrApp:v43];
+    mEMORY[0x277CE7E20]8 = [MEMORY[0x277CE7E20] sharedInstance];
+    mEMORY[0x277CE7E20]3 = [mEMORY[0x277CE7E20]8 liveRegionStatusForWebOrApp:mEMORY[0x277CE7E20]2];
 
-    if (v55)
+    if (mEMORY[0x277CE7E20]3)
     {
-      v85 = [v55 BOOLValue] ^ 1;
+      v85 = [mEMORY[0x277CE7E20]3 BOOLValue] ^ 1;
     }
 
     else
@@ -1247,9 +1247,9 @@ uint64_t __42__VOSSettingsHelper_valueForSettingsItem___block_invoke(uint64_t a1
       v85 = 0;
     }
 
-    v86 = [MEMORY[0x277CE7E20] sharedInstance];
+    mEMORY[0x277CE7E20]9 = [MEMORY[0x277CE7E20] sharedInstance];
     v87 = [MEMORY[0x277CCABB0] numberWithInt:v85];
-    [v86 setLiveRegionStatusForWebOrApp:v43 status:v87];
+    [mEMORY[0x277CE7E20]9 setLiveRegionStatusForWebOrApp:mEMORY[0x277CE7E20]2 status:v87];
 
 LABEL_44:
     goto LABEL_33;
@@ -1257,137 +1257,137 @@ LABEL_44:
 
   v25 = +[VOSSettingsItem ScreenRecognition];
 
-  if (v25 == v7)
+  if (v25 == itemCopy)
   {
-    v75 = [MEMORY[0x277CE7E20] sharedInstance];
-    v76 = [v7 settingsData];
-    v77 = [v76 frontmostAppIdentifier];
-    v78 = [v75 automaticAccessibilityModeForBundleIdentifier:v77];
+    mEMORY[0x277CE7E20]10 = [MEMORY[0x277CE7E20] sharedInstance];
+    settingsData5 = [itemCopy settingsData];
+    frontmostAppIdentifier2 = [settingsData5 frontmostAppIdentifier];
+    v78 = [mEMORY[0x277CE7E20]10 automaticAccessibilityModeForBundleIdentifier:frontmostAppIdentifier2];
 
     v79 = v78 != 1;
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    v80 = [v7 settingsData];
-    v81 = [v80 frontmostAppIdentifier];
-    [v38 setAutomaticAccessibilityMode:v79 forBundleIdentifier:v81];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    settingsData6 = [itemCopy settingsData];
+    frontmostAppIdentifier3 = [settingsData6 frontmostAppIdentifier];
+    [mEMORY[0x277CE7E20] setAutomaticAccessibilityMode:v79 forBundleIdentifier:frontmostAppIdentifier3];
 
     goto LABEL_39;
   }
 
   v26 = +[VOSSettingsItem NavigationStyle];
 
-  if (v26 == v7)
+  if (v26 == itemCopy)
   {
-    v82 = [v6 integerValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverNavigationStyle:v82];
+    integerValue2 = [valueCopy integerValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverNavigationStyle:integerValue2];
     goto LABEL_39;
   }
 
   v27 = +[VOSSettingsItem NavigateImages];
 
-  if (v27 == v7)
+  if (v27 == itemCopy)
   {
-    v88 = [v6 integerValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverNavigateImagesOption:v88];
+    integerValue3 = [valueCopy integerValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverNavigateImagesOption:integerValue3];
     goto LABEL_39;
   }
 
   v28 = +[VOSSettingsItem GestureDirection];
 
-  if (v28 == v7)
+  if (v28 == itemCopy)
   {
-    v89 = [v6 integerValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverNavigationDirectionMode:v89];
+    integerValue4 = [valueCopy integerValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverNavigationDirectionMode:integerValue4];
     goto LABEL_39;
   }
 
   v29 = +[VOSSettingsItem PhoneticFeedback];
 
-  if (v29 == v7)
+  if (v29 == itemCopy)
   {
-    v90 = [v6 integerValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverPhoneticsFeedback:v90];
+    integerValue5 = [valueCopy integerValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverPhoneticsFeedback:integerValue5];
     goto LABEL_39;
   }
 
   v30 = +[VOSSettingsItem MediaDescriptions];
 
-  if (v30 == v7)
+  if (v30 == itemCopy)
   {
-    v91 = [v6 integerValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverDescribedMedia:v91];
+    integerValue6 = [valueCopy integerValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverDescribedMedia:integerValue6];
     goto LABEL_39;
   }
 
   v31 = +[VOSSettingsItem CaptionPanel];
 
-  if (v31 == v7)
+  if (v31 == itemCopy)
   {
-    v92 = [v6 BOOLValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setEnableVoiceOverCaptions:v92];
+    bOOLValue11 = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setEnableVoiceOverCaptions:bOOLValue11];
     goto LABEL_39;
   }
 
   v32 = +[VOSSettingsItem LargeCursor];
 
-  if (v32 == v7)
+  if (v32 == itemCopy)
   {
-    v93 = [v6 BOOLValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverLargeCursorEnabled:v93];
+    bOOLValue12 = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverLargeCursorEnabled:bOOLValue12];
     goto LABEL_39;
   }
 
   v33 = +[VOSSettingsItem Activities];
 
-  if (v33 == v7)
+  if (v33 == itemCopy)
   {
-    v94 = [MEMORY[0x277CBEB68] null];
-    v95 = [v6 isEqual:v94];
+    null = [MEMORY[0x277CBEB68] null];
+    v95 = [valueCopy isEqual:null];
 
     if (v95)
     {
 
-      v6 = 0;
+      valueCopy = 0;
     }
 
-    v43 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v43 setVoiceOverSelectedActivity:v6];
+    mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20]2 setVoiceOverSelectedActivity:valueCopy];
     goto LABEL_33;
   }
 
   v34 = +[VOSSettingsItem Punctuation];
 
-  if (v34 == v7)
+  if (v34 == itemCopy)
   {
-    v96 = [MEMORY[0x277CBEB68] null];
-    v97 = [v6 isEqual:v96];
+    null2 = [MEMORY[0x277CBEB68] null];
+    v97 = [valueCopy isEqual:null2];
 
     if (v97)
     {
 
-      v6 = 0;
+      valueCopy = 0;
     }
 
-    v43 = [v6 uuid];
-    v55 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v55 setVoiceOverPunctuationGroup:v43];
+    mEMORY[0x277CE7E20]2 = [valueCopy uuid];
+    mEMORY[0x277CE7E20]3 = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20]3 setVoiceOverPunctuationGroup:mEMORY[0x277CE7E20]2];
     goto LABEL_44;
   }
 
-  v35 = [v7 identifier];
-  v36 = [v35 isEqualToString:@"ScreenCurtain"];
+  identifier = [itemCopy identifier];
+  v36 = [identifier isEqualToString:@"ScreenCurtain"];
 
   if (v36)
   {
-    v37 = [v6 BOOLValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverScreenCurtainEnabled:v37];
+    bOOLValue13 = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverScreenCurtainEnabled:bOOLValue13];
 LABEL_39:
 
     goto LABEL_40;
@@ -1395,87 +1395,87 @@ LABEL_39:
 
   v98 = +[VOSSettingsItem TypingStyle];
 
-  if (v98 == v7)
+  if (v98 == itemCopy)
   {
-    v106 = [v6 integerValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverTypingMode:v106];
+    integerValue7 = [valueCopy integerValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverTypingMode:integerValue7];
     goto LABEL_39;
   }
 
   v99 = +[VOSSettingsItem SoftwareTypingFeedback];
 
-  if (v99 == v7)
+  if (v99 == itemCopy)
   {
-    v107 = [v6 integerValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverSoftwareTypingFeedback:v107];
+    integerValue8 = [valueCopy integerValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverSoftwareTypingFeedback:integerValue8];
     goto LABEL_39;
   }
 
   v100 = +[VOSSettingsItem HardwareTypingFeedback];
 
-  if (v100 == v7)
+  if (v100 == itemCopy)
   {
-    v108 = [v6 integerValue];
-    v38 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v38 setVoiceOverHardwareTypingFeedback:v108];
+    integerValue9 = [valueCopy integerValue];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setVoiceOverHardwareTypingFeedback:integerValue9];
     goto LABEL_39;
   }
 
   v101 = +[VOSSettingsItem SlideToType];
 
-  if (v101 == v7)
+  if (v101 == itemCopy)
   {
-    v109 = [v6 BOOLValue];
-    v38 = +[VOSSettingsHelper sharedInstance];
-    [v38 setSlideToTypeEnabled:v109];
+    bOOLValue14 = [valueCopy BOOLValue];
+    mEMORY[0x277CE7E20] = +[VOSSettingsHelper sharedInstance];
+    [mEMORY[0x277CE7E20] setSlideToTypeEnabled:bOOLValue14];
     goto LABEL_39;
   }
 
   v102 = +[VOSSettingsItem BrailleAutoAdvanceDuration];
 
-  if (v102 != v7)
+  if (v102 != itemCopy)
   {
     v103 = +[VOSSettingsItem BrailleInput];
 
-    if (v103 == v7)
+    if (v103 == itemCopy)
     {
-      v114 = [v6 stringValue];
-      v115 = [MEMORY[0x277CE7E20] sharedInstance];
-      [v115 setVoiceOverTouchBrailleDisplayInputTableIdentifier:v114];
+      stringValue = [valueCopy stringValue];
+      mEMORY[0x277CE7E20]11 = [MEMORY[0x277CE7E20] sharedInstance];
+      [mEMORY[0x277CE7E20]11 setVoiceOverTouchBrailleDisplayInputTableIdentifier:stringValue];
     }
 
     else
     {
       v104 = +[VOSSettingsItem BrailleOutput];
 
-      if (v104 != v7)
+      if (v104 != itemCopy)
       {
         v105 = +[VOSSettingsItem BSIActivationGestures];
 
-        if (v105 == v7)
+        if (v105 == itemCopy)
         {
-          v116 = [v6 BOOLValue];
-          v38 = [MEMORY[0x277CE7E20] sharedInstance];
-          [v38 setVoiceOverTouchBrailleGesturesActivationGestureEnabled:v116];
+          bOOLValue15 = [valueCopy BOOLValue];
+          mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+          [mEMORY[0x277CE7E20] setVoiceOverTouchBrailleGesturesActivationGestureEnabled:bOOLValue15];
           goto LABEL_39;
         }
 
-        v43 = VOTLogCommon();
-        if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+        mEMORY[0x277CE7E20]2 = VOTLogCommon();
+        if (os_log_type_enabled(mEMORY[0x277CE7E20]2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v120 = v7;
-          _os_log_impl(&dword_223C70000, v43, OS_LOG_TYPE_DEFAULT, "Unhandled pref setter for item: %@", buf, 0xCu);
+          v120 = itemCopy;
+          _os_log_impl(&dword_223C70000, mEMORY[0x277CE7E20]2, OS_LOG_TYPE_DEFAULT, "Unhandled pref setter for item: %@", buf, 0xCu);
         }
 
         goto LABEL_33;
       }
 
-      v114 = [v6 stringValue];
-      v115 = [MEMORY[0x277CE7E20] sharedInstance];
-      [v115 setVoiceOverTouchBrailleDisplayOutputTableIdentifier:v114];
+      stringValue = [valueCopy stringValue];
+      mEMORY[0x277CE7E20]11 = [MEMORY[0x277CE7E20] sharedInstance];
+      [mEMORY[0x277CE7E20]11 setVoiceOverTouchBrailleDisplayOutputTableIdentifier:stringValue];
     }
 
     [(VOSSettingsHelper *)self _turnOffBrailleIOSyncIfNeeded];
@@ -1484,43 +1484,43 @@ LABEL_39:
 
   v110 = *MEMORY[0x277CE69E8];
   v111 = *MEMORY[0x277CE69E0] - *MEMORY[0x277CE69E8];
-  [v6 floatValue];
+  [valueCopy floatValue];
   v113 = v110 + v111 * v112;
-  v43 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v43 setVoiceOverBrailleAutoAdvanceDuration:v113];
+  mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20]2 setVoiceOverBrailleAutoAdvanceDuration:v113];
 LABEL_33:
 
 LABEL_40:
-  v49 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v117 = @"SettingsItem";
-  v118 = v7;
+  v118 = itemCopy;
   v50 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v118 forKeys:&v117 count:1];
-  [v49 postNotificationName:@"VOSDidUpdateValueForSettingsItemNotification" object:self userInfo:v50];
+  [defaultCenter postNotificationName:@"VOSDidUpdateValueForSettingsItemNotification" object:self userInfo:v50];
 
   v51 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_turnOffBrailleIOSyncIfNeeded
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  v3 = [v2 voiceOverTouchBrailleDisplayInputTableIdentifier];
-  v4 = [MEMORY[0x277CE7E20] sharedInstance];
-  v5 = [v4 voiceOverTouchBrailleDisplayOutputTableIdentifier];
-  v6 = [v3 isEqualToString:v5];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  voiceOverTouchBrailleDisplayInputTableIdentifier = [mEMORY[0x277CE7E20] voiceOverTouchBrailleDisplayInputTableIdentifier];
+  mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+  voiceOverTouchBrailleDisplayOutputTableIdentifier = [mEMORY[0x277CE7E20]2 voiceOverTouchBrailleDisplayOutputTableIdentifier];
+  v6 = [voiceOverTouchBrailleDisplayInputTableIdentifier isEqualToString:voiceOverTouchBrailleDisplayOutputTableIdentifier];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v7 setVoiceOverTouchBrailleDisplaySyncInputOutputTables:0];
+    mEMORY[0x277CE7E20]3 = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20]3 setVoiceOverTouchBrailleDisplaySyncInputOutputTables:0];
   }
 }
 
-- (id)nameForItem:(id)a3
+- (id)nameForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = +[VOSSettingsItem PhoneticFeedback];
 
-  if (v4 == v3)
+  if (v4 == itemCopy)
   {
     v31 = @"PHONETICS_TITLE";
     goto LABEL_43;
@@ -1528,7 +1528,7 @@ LABEL_40:
 
   v5 = +[VOSSettingsItem MediaDescriptions];
 
-  if (v5 == v3)
+  if (v5 == itemCopy)
   {
     v31 = @"MEDIA_DESC_TITLE";
     goto LABEL_43;
@@ -1536,7 +1536,7 @@ LABEL_40:
 
   v6 = +[VOSSettingsItem Pitch];
 
-  if (v6 == v3)
+  if (v6 == itemCopy)
   {
     v31 = @"PITCH_CHANGES_TITLE";
     goto LABEL_43;
@@ -1544,7 +1544,7 @@ LABEL_40:
 
   v7 = +[VOSSettingsItem RotorActionConfirmation];
 
-  if (v7 == v3)
+  if (v7 == itemCopy)
   {
     v31 = @"ACTION_CONFIRMATION_EXTENDED";
     goto LABEL_43;
@@ -1552,7 +1552,7 @@ LABEL_40:
 
   v8 = +[VOSSettingsItem NavigateImages];
 
-  if (v8 == v3)
+  if (v8 == itemCopy)
   {
     v31 = @"NAVIGATE_IMAGES_TITLE";
     goto LABEL_43;
@@ -1560,18 +1560,18 @@ LABEL_40:
 
   v9 = +[VOSSettingsItem GestureDirection];
 
-  if (v9 == v3)
+  if (v9 == itemCopy)
   {
     v32 = *MEMORY[0x277CE6A28];
-    v33 = AXVoiceOverRotorLocString();
+    localizedName = AXVoiceOverRotorLocString();
 LABEL_44:
-    v34 = v33;
+    v34 = localizedName;
     goto LABEL_45;
   }
 
   v10 = +[VOSSettingsItem Activities];
 
-  if (v10 == v3)
+  if (v10 == itemCopy)
   {
     v31 = @"ACTIVITIES";
     goto LABEL_43;
@@ -1579,7 +1579,7 @@ LABEL_44:
 
   v11 = +[VOSSettingsItem Punctuation];
 
-  if (v11 == v3)
+  if (v11 == itemCopy)
   {
     v31 = @"PUNCTUATION";
     goto LABEL_43;
@@ -1587,7 +1587,7 @@ LABEL_44:
 
   v12 = +[VOSSettingsItem SoftwareTypingFeedback];
 
-  if (v12 == v3)
+  if (v12 == itemCopy)
   {
     v31 = @"SOFTWARE_TYPING_FEEDBACK";
     goto LABEL_43;
@@ -1595,7 +1595,7 @@ LABEL_44:
 
   v13 = +[VOSSettingsItem HardwareTypingFeedback];
 
-  if (v13 == v3)
+  if (v13 == itemCopy)
   {
     v31 = @"HARDWARE_TYPING_FEEDBACK";
     goto LABEL_43;
@@ -1603,7 +1603,7 @@ LABEL_44:
 
   v14 = +[VOSSettingsItem SendToHDMI];
 
-  if (v14 == v3)
+  if (v14 == itemCopy)
   {
     v31 = @"ROUTE_TO_HDMI";
     goto LABEL_43;
@@ -1611,7 +1611,7 @@ LABEL_44:
 
   v15 = +[VOSSettingsItem SoundCurtain];
 
-  if (v15 == v3)
+  if (v15 == itemCopy)
   {
     v31 = @"SOUND_CURTAIN";
     goto LABEL_43;
@@ -1619,7 +1619,7 @@ LABEL_44:
 
   v16 = +[VOSSettingsItem CaptionPanel];
 
-  if (v16 == v3)
+  if (v16 == itemCopy)
   {
     v31 = @"CAPTION_PANEL";
     goto LABEL_43;
@@ -1627,7 +1627,7 @@ LABEL_44:
 
   v17 = +[VOSSettingsItem LargeCursor];
 
-  if (v17 == v3)
+  if (v17 == itemCopy)
   {
     v31 = @"CURSOR_STYLE";
     goto LABEL_43;
@@ -1635,7 +1635,7 @@ LABEL_44:
 
   v18 = +[VOSSettingsItem SpeakNotifications];
 
-  if (v18 == v3)
+  if (v18 == itemCopy)
   {
     v31 = @"ALWAYS_SPEAK_NOTIFICATIONS";
     goto LABEL_43;
@@ -1643,17 +1643,17 @@ LABEL_44:
 
   v19 = +[VOSSettingsItem BrailleAlerts];
 
-  if (v19 == v3)
+  if (v19 == itemCopy)
   {
     v36 = @"BRAILLE_DISPLAY_TIMEOUT";
 LABEL_50:
-    v33 = soft_AXUILocalizedStringForKey(v36);
+    localizedName = soft_AXUILocalizedStringForKey(v36);
     goto LABEL_44;
   }
 
   v20 = +[VOSSettingsItem BrailleFormatting];
 
-  if (v20 == v3)
+  if (v20 == itemCopy)
   {
     v36 = @"BRAILLE_TEXT_FORMATTING";
     goto LABEL_50;
@@ -1661,19 +1661,19 @@ LABEL_50:
 
   v21 = +[VOSSettingsItem ScreenRecognition];
 
-  if (v21 == v3)
+  if (v21 == itemCopy)
   {
-    v37 = [v3 settingsData];
-    v38 = [v37 frontmostAppIdentifier];
+    settingsData = [itemCopy settingsData];
+    frontmostAppIdentifier = [settingsData frontmostAppIdentifier];
 
-    if (v38)
+    if (frontmostAppIdentifier)
     {
       v39 = MEMORY[0x277CCACA8];
       v40 = @"VO_SCREEN_RECOGNITION_WITH_APP";
 LABEL_61:
       v44 = AXVoiceOverSettingsLocalizedStringForKey(v40);
-      v45 = [v3 settingsData];
-      v46 = [v45 frontmostAppIdentifier];
+      settingsData2 = [itemCopy settingsData];
+      frontmostAppIdentifier2 = [settingsData2 frontmostAppIdentifier];
       v51 = AXAppNameForBundleId();
       v34 = [v39 stringWithFormat:v44, v51];
 
@@ -1682,21 +1682,21 @@ LABEL_61:
 
     v31 = @"VO_SCREEN_RECOGNITION";
 LABEL_43:
-    v33 = AXVoiceOverSettingsLocalizedStringForKey(v31);
+    localizedName = AXVoiceOverSettingsLocalizedStringForKey(v31);
     goto LABEL_44;
   }
 
   v22 = +[VOSSettingsItem LiveRegions];
 
-  if (v22 != v3)
+  if (v22 != itemCopy)
   {
     v23 = +[VOSSettingsItem ImageDescriptions];
 
-    if (v23 != v3)
+    if (v23 != itemCopy)
     {
       v24 = +[VOSSettingsItem BrailleAutoAdvanceDuration];
 
-      if (v24 == v3)
+      if (v24 == itemCopy)
       {
         v31 = @"BRAILLE_AUTO_ADVANCE_DURATION";
       }
@@ -1705,7 +1705,7 @@ LABEL_43:
       {
         v25 = +[VOSSettingsItem DirectTouch];
 
-        if (v25 == v3)
+        if (v25 == itemCopy)
         {
           v31 = @"DIRECT_TOUCH";
         }
@@ -1714,7 +1714,7 @@ LABEL_43:
         {
           v26 = +[VOSSettingsItem Voice];
 
-          if (v26 == v3)
+          if (v26 == itemCopy)
           {
             v31 = @"QUICK_SETTINGS_ITEM_VO_VOICE";
           }
@@ -1723,7 +1723,7 @@ LABEL_43:
           {
             v27 = +[VOSSettingsItem BrailleInput];
 
-            if (v27 == v3)
+            if (v27 == itemCopy)
             {
               v31 = @"BRAILLE_INPUT";
             }
@@ -1732,15 +1732,15 @@ LABEL_43:
             {
               v28 = +[VOSSettingsItem BrailleOutput];
 
-              if (v28 == v3)
+              if (v28 == itemCopy)
               {
                 v31 = @"BRAILLE_OUTPUT";
               }
 
               else
               {
-                v29 = [v3 identifier];
-                v30 = [v29 isEqualToString:@"ScreenCurtain"];
+                identifier = [itemCopy identifier];
+                v30 = [identifier isEqualToString:@"ScreenCurtain"];
 
                 if (v30)
                 {
@@ -1751,9 +1751,9 @@ LABEL_43:
                 {
                   v52 = +[VOSSettingsItem BSIActivationGestures];
 
-                  if (v52 != v3)
+                  if (v52 != itemCopy)
                   {
-                    v33 = [v3 localizedName];
+                    localizedName = [itemCopy localizedName];
                     goto LABEL_44;
                   }
 
@@ -1768,10 +1768,10 @@ LABEL_43:
       goto LABEL_43;
     }
 
-    v47 = [v3 settingsData];
-    v48 = [v47 frontmostAppIdentifier];
+    settingsData3 = [itemCopy settingsData];
+    frontmostAppIdentifier3 = [settingsData3 frontmostAppIdentifier];
 
-    if (v48)
+    if (frontmostAppIdentifier3)
     {
       v39 = MEMORY[0x277CCACA8];
       v40 = @"VO_IMAGE_DESCRIPTIONS_WITH_APP";
@@ -1782,15 +1782,15 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  v41 = [v3 settingsData];
-  v42 = [v41 webAreaURL];
+  settingsData4 = [itemCopy settingsData];
+  webAreaURL = [settingsData4 webAreaURL];
 
-  if (!v42)
+  if (!webAreaURL)
   {
-    v49 = [v3 settingsData];
-    v50 = [v49 frontmostAppIdentifier];
+    settingsData5 = [itemCopy settingsData];
+    frontmostAppIdentifier4 = [settingsData5 frontmostAppIdentifier];
 
-    if (v50)
+    if (frontmostAppIdentifier4)
     {
       v39 = MEMORY[0x277CCACA8];
       v40 = @"VO_LIVE_REGION_WITH_APP";
@@ -1803,9 +1803,9 @@ LABEL_43:
 
   v43 = MEMORY[0x277CCACA8];
   v44 = AXVoiceOverSettingsLocalizedStringForKey(@"VO_LIVE_REGION_WITH_APP");
-  v45 = [v3 settingsData];
-  v46 = [v45 webAreaURL];
-  v34 = [v43 stringWithFormat:v44, v46];
+  settingsData2 = [itemCopy settingsData];
+  frontmostAppIdentifier2 = [settingsData2 webAreaURL];
+  v34 = [v43 stringWithFormat:v44, frontmostAppIdentifier2];
 LABEL_62:
 
 LABEL_45:
@@ -1813,30 +1813,30 @@ LABEL_45:
   return v34;
 }
 
-- (void)_setVolumeForActiveVoice:(double)a3
+- (void)_setVolumeForActiveVoice:(double)voice
 {
-  v5 = [MEMORY[0x277CE7E20] sharedInstance];
-  *&v4 = a3;
-  [v5 setVoiceOverEffectiveSpeakingVolume:v4];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  *&v4 = voice;
+  [mEMORY[0x277CE7E20] setVoiceOverEffectiveSpeakingVolume:v4];
 }
 
 - (id)_volumeForActiveVoice
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v3 voiceOverEffectiveSpeakingVolume];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20] voiceOverEffectiveSpeakingVolume];
   v4 = [v2 numberWithFloat:?];
 
   return v4;
 }
 
-- (id)possibleValuesForSettingsItem:(id)a3
+- (id)possibleValuesForSettingsItem:(id)item
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = +[VOSSettingsItem NavigationStyle];
 
-  if (v5 == v4)
+  if (v5 == itemCopy)
   {
     v21 = &unk_2837361D0;
     goto LABEL_20;
@@ -1844,7 +1844,7 @@ LABEL_45:
 
   v6 = +[VOSSettingsItem TypingStyle];
 
-  if (v6 == v4)
+  if (v6 == itemCopy)
   {
     v21 = &unk_2837361E8;
     goto LABEL_20;
@@ -1852,7 +1852,7 @@ LABEL_45:
 
   v7 = +[VOSSettingsItem SoftwareTypingFeedback];
   v8 = v7;
-  if (v7 == v4)
+  if (v7 == itemCopy)
   {
 
     goto LABEL_19;
@@ -1860,7 +1860,7 @@ LABEL_45:
 
   v9 = +[VOSSettingsItem HardwareTypingFeedback];
 
-  if (v9 == v4)
+  if (v9 == itemCopy)
   {
 LABEL_19:
     v21 = &unk_283736200;
@@ -1869,7 +1869,7 @@ LABEL_19:
 
   v10 = +[VOSSettingsItem PhoneticFeedback];
 
-  if (v10 == v4)
+  if (v10 == itemCopy)
   {
     v21 = &unk_283736218;
     goto LABEL_20;
@@ -1877,7 +1877,7 @@ LABEL_19:
 
   v11 = +[VOSSettingsItem MediaDescriptions];
 
-  if (v11 == v4)
+  if (v11 == itemCopy)
   {
     v21 = &unk_283736230;
     goto LABEL_20;
@@ -1885,7 +1885,7 @@ LABEL_19:
 
   v12 = +[VOSSettingsItem NavigateImages];
 
-  if (v12 == v4)
+  if (v12 == itemCopy)
   {
     v21 = &unk_283736248;
     goto LABEL_20;
@@ -1893,7 +1893,7 @@ LABEL_19:
 
   v13 = +[VOSSettingsItem GestureDirection];
 
-  if (v13 == v4)
+  if (v13 == itemCopy)
   {
     v21 = &unk_283736260;
     goto LABEL_20;
@@ -1901,7 +1901,7 @@ LABEL_19:
 
   v14 = +[VOSSettingsItem AudioDucking];
 
-  if (v14 == v4)
+  if (v14 == itemCopy)
   {
     v21 = &unk_283736278;
     goto LABEL_20;
@@ -1909,35 +1909,35 @@ LABEL_19:
 
   v15 = +[VOSSettingsItem Activities];
 
-  if (v15 == v4)
+  if (v15 == itemCopy)
   {
-    v24 = [MEMORY[0x277CBEB68] null];
-    v62[0] = v24;
+    null = [MEMORY[0x277CBEB68] null];
+    v62[0] = null;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:1];
-    v26 = [MEMORY[0x277CE7E20] sharedInstance];
-    v27 = [v26 voiceOverActivities];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    voiceOverActivities = [mEMORY[0x277CE7E20] voiceOverActivities];
 LABEL_30:
-    v28 = v27;
-    v21 = [v25 arrayByAddingObjectsFromArray:v27];
+    v28 = voiceOverActivities;
+    v21 = [v25 arrayByAddingObjectsFromArray:voiceOverActivities];
 
     goto LABEL_20;
   }
 
   v16 = +[VOSSettingsItem Punctuation];
 
-  if (v16 == v4)
+  if (v16 == itemCopy)
   {
-    v24 = [MEMORY[0x277CBEB68] null];
-    v61 = v24;
+    null = [MEMORY[0x277CBEB68] null];
+    v61 = null;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
-    v26 = [MEMORY[0x277CE7658] sharedDatabase];
-    v27 = [v26 punctuationGroups];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7658] sharedDatabase];
+    voiceOverActivities = [mEMORY[0x277CE7E20] punctuationGroups];
     goto LABEL_30;
   }
 
   v17 = +[VOSSettingsItem BrailleInput];
   v18 = v17;
-  if (v17 == v4)
+  if (v17 == itemCopy)
   {
   }
 
@@ -1945,15 +1945,15 @@ LABEL_30:
   {
     v19 = +[VOSSettingsItem BrailleOutput];
 
-    if (v19 != v4)
+    if (v19 != itemCopy)
     {
       v20 = +[VOSSettingsItem Voice];
 
-      if (v20 == v4)
+      if (v20 == itemCopy)
       {
         v21 = objc_opt_new();
-        v48 = [(VOSSettingsHelper *)self enabledVoices];
-        v49 = [v48 count];
+        enabledVoices = [(VOSSettingsHelper *)self enabledVoices];
+        v49 = [enabledVoices count];
 
         if (v49)
         {
@@ -1964,8 +1964,8 @@ LABEL_30:
             [v21 addObject:v51];
 
             ++v50;
-            v52 = [(VOSSettingsHelper *)self enabledVoices];
-            v53 = [v52 count];
+            enabledVoices2 = [(VOSSettingsHelper *)self enabledVoices];
+            v53 = [enabledVoices2 count];
           }
 
           while (v53 > v50);
@@ -1981,7 +1981,7 @@ LABEL_30:
     }
   }
 
-  v54 = v4;
+  v54 = itemCopy;
   v29 = _AXSVoiceOverTouchCopyBrailleLanguageRotorItems();
   v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v29, "count")}];
   v56 = 0u;
@@ -2007,31 +2007,31 @@ LABEL_30:
 
         v36 = *(*(&v56 + 1) + 8 * i);
         v37 = [v36 objectForKeyedSubscript:{v34, v54}];
-        v38 = [v37 BOOLValue];
+        bOOLValue = [v37 BOOLValue];
 
-        if (v38)
+        if (bOOLValue)
         {
-          v39 = [v36 objectForKeyedSubscript:@"RotorItem"];
-          if (!v39)
+          identifier = [v36 objectForKeyedSubscript:@"RotorItem"];
+          if (!identifier)
           {
             v40 = [v36 objectForKeyedSubscript:@"LanguageDefaults"];
-            v41 = [MEMORY[0x277CE7DA0] sharedInstance];
-            v42 = [v41 userLocale];
+            mEMORY[0x277CE7DA0] = [MEMORY[0x277CE7DA0] sharedInstance];
+            userLocale = [mEMORY[0x277CE7DA0] userLocale];
 
-            v43 = [v42 localeIdentifier];
-            v44 = [v40 objectForKeyedSubscript:v43];
+            localeIdentifier = [userLocale localeIdentifier];
+            v44 = [v40 objectForKeyedSubscript:localeIdentifier];
 
             if (v44)
             {
-              v39 = v44;
+              identifier = v44;
             }
 
             else
             {
-              [MEMORY[0x277CF3350] defaultTableForLocale:v42];
+              [MEMORY[0x277CF3350] defaultTableForLocale:userLocale];
               v45 = v34;
               v47 = v46 = v30;
-              v39 = [v47 identifier];
+              identifier = [v47 identifier];
 
               v30 = v46;
               v34 = v45;
@@ -2039,7 +2039,7 @@ LABEL_30:
             }
           }
 
-          [v21 addObject:v39];
+          [v21 addObject:identifier];
         }
       }
 
@@ -2049,7 +2049,7 @@ LABEL_30:
     while (v32);
   }
 
-  v4 = v54;
+  itemCopy = v54;
 LABEL_20:
 
   v22 = *MEMORY[0x277D85DE8];
@@ -2057,33 +2057,33 @@ LABEL_20:
   return v21;
 }
 
-- (BOOL)isItemSupported:(id)a3
+- (BOOL)isItemSupported:(id)supported
 {
-  v4 = a3;
+  supportedCopy = supported;
   v5 = +[VOSSettingsItem ImageDescriptions];
 
-  if (v5 == v4)
+  if (v5 == supportedCopy)
   {
-    v10 = [MEMORY[0x277CE7E20] sharedInstance];
-    if (![v10 voiceOverImageCaptionsEnabled])
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    if (![mEMORY[0x277CE7E20] voiceOverImageCaptionsEnabled])
     {
 LABEL_10:
-      v9 = 0;
+      anyUserPreferredLangaugeIsRTL = 0;
 LABEL_15:
 
       goto LABEL_16;
     }
 
 LABEL_7:
-    v11 = [MEMORY[0x277CCAC38] processInfo];
-    if ([v11 physicalMemory] <= 0x773593FF)
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    if ([processInfo physicalMemory] <= 0x773593FF)
     {
-      v9 = 0;
+      anyUserPreferredLangaugeIsRTL = 0;
     }
 
     else
     {
-      v9 = AXRuntimeCheck_HasANE();
+      anyUserPreferredLangaugeIsRTL = AXRuntimeCheck_HasANE();
     }
 
     goto LABEL_15;
@@ -2091,10 +2091,10 @@ LABEL_7:
 
   v6 = +[VOSSettingsItem ScreenRecognition];
 
-  if (v6 == v4)
+  if (v6 == supportedCopy)
   {
-    v10 = [MEMORY[0x277CE7E20] sharedInstance];
-    if (![v10 automaticAccessibilityEnabled])
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    if (![mEMORY[0x277CE7E20] automaticAccessibilityEnabled])
     {
       goto LABEL_10;
     }
@@ -2104,39 +2104,39 @@ LABEL_7:
 
   v7 = +[VOSSettingsItem LiveRegions];
 
-  if (v7 == v4)
+  if (v7 == supportedCopy)
   {
-    v9 = 1;
+    anyUserPreferredLangaugeIsRTL = 1;
     goto LABEL_16;
   }
 
   v8 = +[VOSSettingsItem GestureDirection];
 
-  if (v8 == v4)
+  if (v8 == supportedCopy)
   {
-    v10 = [MEMORY[0x277CE7E20] sharedInstance];
-    v9 = [v10 anyUserPreferredLangaugeIsRTL];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    anyUserPreferredLangaugeIsRTL = [mEMORY[0x277CE7E20] anyUserPreferredLangaugeIsRTL];
     goto LABEL_15;
   }
 
-  v9 = [(VOSSettingsHelper *)self itemIsSupportedForPlatform:v4];
+  anyUserPreferredLangaugeIsRTL = [(VOSSettingsHelper *)self itemIsSupportedForPlatform:supportedCopy];
 LABEL_16:
 
-  return v9;
+  return anyUserPreferredLangaugeIsRTL;
 }
 
-- (id)_formatterForItem:(id)a3
+- (id)_formatterForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = +[VOSSettingsItem Volume];
-  if (v5 == v4)
+  if (v5 == itemCopy)
   {
     goto LABEL_21;
   }
 
   v6 = +[VOSSettingsItem SpeakingRate];
   v7 = v6;
-  if (v6 == v4)
+  if (v6 == itemCopy)
   {
 
 LABEL_21:
@@ -2145,7 +2145,7 @@ LABEL_21:
 
   v8 = +[VOSSettingsItem DuckingAmount];
 
-  if (v8 == v4)
+  if (v8 == itemCopy)
   {
 LABEL_22:
     v27 = +[VOSSettingsHelper percentageFormatter];
@@ -2154,7 +2154,7 @@ LABEL_22:
 
   v9 = +[VOSSettingsItem NavigationStyle];
 
-  if (v9 == v4)
+  if (v9 == itemCopy)
   {
     v27 = +[VOSSettingsHelper navigationStyleFormatter];
     goto LABEL_23;
@@ -2162,7 +2162,7 @@ LABEL_22:
 
   v10 = +[VOSSettingsItem PhoneticFeedback];
 
-  if (v10 == v4)
+  if (v10 == itemCopy)
   {
     v27 = +[VOSSettingsHelper phoneticFeedbackFormatter];
     goto LABEL_23;
@@ -2170,7 +2170,7 @@ LABEL_22:
 
   v11 = +[VOSSettingsItem MediaDescriptions];
 
-  if (v11 == v4)
+  if (v11 == itemCopy)
   {
     v27 = +[VOSSettingsHelper mediaDescriptionsFormatter];
     goto LABEL_23;
@@ -2178,7 +2178,7 @@ LABEL_22:
 
   v12 = +[VOSSettingsItem NavigateImages];
 
-  if (v12 == v4)
+  if (v12 == itemCopy)
   {
     v27 = +[VOSSettingsHelper navigateImagesFormatter];
     goto LABEL_23;
@@ -2186,7 +2186,7 @@ LABEL_22:
 
   v13 = +[VOSSettingsItem GestureDirection];
 
-  if (v13 == v4)
+  if (v13 == itemCopy)
   {
     v27 = +[VOSSettingsHelper gestureDirectionFormatter];
     goto LABEL_23;
@@ -2194,7 +2194,7 @@ LABEL_22:
 
   v14 = +[VOSSettingsItem Activities];
 
-  if (v14 == v4)
+  if (v14 == itemCopy)
   {
     v27 = +[VOSSettingsHelper activitiesFormatter];
     goto LABEL_23;
@@ -2202,7 +2202,7 @@ LABEL_22:
 
   v15 = +[VOSSettingsItem Punctuation];
 
-  if (v15 == v4)
+  if (v15 == itemCopy)
   {
     v27 = +[VOSSettingsHelper punctuationFormatter];
     goto LABEL_23;
@@ -2210,7 +2210,7 @@ LABEL_22:
 
   v16 = +[VOSSettingsItem TypingStyle];
 
-  if (v16 == v4)
+  if (v16 == itemCopy)
   {
     v27 = +[VOSSettingsHelper typingStyleFormatter];
     goto LABEL_23;
@@ -2218,7 +2218,7 @@ LABEL_22:
 
   v17 = +[VOSSettingsItem SoftwareTypingFeedback];
   v18 = v17;
-  if (v17 == v4)
+  if (v17 == itemCopy)
   {
 
     goto LABEL_36;
@@ -2226,7 +2226,7 @@ LABEL_22:
 
   v19 = +[VOSSettingsItem HardwareTypingFeedback];
 
-  if (v19 == v4)
+  if (v19 == itemCopy)
   {
 LABEL_36:
     v27 = +[VOSSettingsHelper typingFeedbackFormatter];
@@ -2235,7 +2235,7 @@ LABEL_36:
 
   v20 = +[VOSSettingsItem BrailleAutoAdvanceDuration];
 
-  if (v20 == v4)
+  if (v20 == itemCopy)
   {
     v27 = +[VOSSettingsHelper durationFormatter];
     goto LABEL_23;
@@ -2243,11 +2243,11 @@ LABEL_36:
 
   v21 = +[VOSSettingsItem Voice];
 
-  if (v21 != v4)
+  if (v21 != itemCopy)
   {
     v22 = +[VOSSettingsItem BrailleInput];
     v23 = v22;
-    if (v22 == v4)
+    if (v22 == itemCopy)
     {
     }
 
@@ -2255,11 +2255,11 @@ LABEL_36:
     {
       v24 = +[VOSSettingsItem BrailleOutput];
 
-      if (v24 != v4)
+      if (v24 != itemCopy)
       {
         v25 = +[VOSSettingsItem AudioDucking];
 
-        if (v25 != v4)
+        if (v25 != itemCopy)
         {
           v26 = 0;
           goto LABEL_24;
@@ -2276,44 +2276,44 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v29 = [(VOSSettingsHelper *)self enabledVoices];
-  v26 = [VOSSettingsHelper voiceFormatterForEnabledVoiceCodes:v29];
+  enabledVoices = [(VOSSettingsHelper *)self enabledVoices];
+  v26 = [VOSSettingsHelper voiceFormatterForEnabledVoiceCodes:enabledVoices];
 
 LABEL_24:
 
   return v26;
 }
 
-- (id)formattedValue:(id)a3 withItem:(id)a4
+- (id)formattedValue:(id)value withItem:(id)item
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  valueCopy = value;
+  itemCopy = item;
+  if (valueCopy)
   {
-    v8 = [(VOSSettingsHelper *)self _formatterForItem:v7];
+    v8 = [(VOSSettingsHelper *)self _formatterForItem:itemCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = (*(v8 + 16))(v8, v6);
+      v10 = (*(v8 + 16))(v8, valueCopy);
     }
 
     else
     {
-      if ([v7 itemType])
+      if ([itemCopy itemType])
       {
         v12 = VOTLogCommon();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v15 = 138412546;
-          v16 = v6;
+          v16 = valueCopy;
           v17 = 2112;
-          v18 = v7;
+          v18 = itemCopy;
           _os_log_impl(&dword_223C70000, v12, OS_LOG_TYPE_DEFAULT, "Error. no formatter provided to format value: '%@'. item: %@", &v15, 0x16u);
         }
       }
 
-      v10 = [v6 description];
+      v10 = [valueCopy description];
     }
 
     v11 = v10;
@@ -2329,22 +2329,22 @@ LABEL_24:
   return v11;
 }
 
-- (id)scaledValue:(id)a3 withItem:(id)a4
+- (id)scaledValue:(id)value withItem:(id)item
 {
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  itemCopy = item;
   v7 = +[VOSSettingsItem BrailleAutoAdvanceDuration];
 
-  if (v7 == v6)
+  if (v7 == itemCopy)
   {
     v9 = MEMORY[0x277CCABB0];
-    [v5 doubleValue];
+    [valueCopy doubleValue];
     v8 = [v9 numberWithDouble:(v10 - *MEMORY[0x277CE69E8]) / (*MEMORY[0x277CE69E0] - *MEMORY[0x277CE69E8])];
   }
 
   else
   {
-    v8 = v5;
+    v8 = valueCopy;
   }
 
   v11 = v8;
@@ -2873,15 +2873,15 @@ id __42__VOSSettingsHelper_brailleTableFormatter__block_invoke_2(uint64_t a1, vo
   return v5;
 }
 
-+ (id)voiceFormatterForEnabledVoiceCodes:(id)a3
++ (id)voiceFormatterForEnabledVoiceCodes:(id)codes
 {
-  v3 = a3;
+  codesCopy = codes;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__VOSSettingsHelper_voiceFormatterForEnabledVoiceCodes___block_invoke;
   aBlock[3] = &unk_2784F36E8;
-  v9 = v3;
-  v4 = v3;
+  v9 = codesCopy;
+  v4 = codesCopy;
   v5 = _Block_copy(aBlock);
   v6 = _Block_copy(v5);
 

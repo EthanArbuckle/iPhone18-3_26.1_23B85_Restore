@@ -1,17 +1,17 @@
 @interface CRFormFieldInfoLogger
-+ (id)parseLog:(id)a3;
-+ (void)logFieldInfo:(id)a3;
++ (id)parseLog:(id)log;
++ (void)logFieldInfo:(id)info;
 @end
 
 @implementation CRFormFieldInfoLogger
 
-+ (id)parseLog:(id)a3
++ (id)parseLog:(id)log
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  logCopy = log;
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v37 = v3;
-  v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v3];
+  v37 = logCopy;
+  v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:logCopy];
   v6 = [v4 initWithData:v5 encoding:4];
 
   v36 = v6;
@@ -123,16 +123,16 @@ LABEL_15:
   return v8;
 }
 
-+ (void)logFieldInfo:(id)a3
++ (void)logFieldInfo:(id)info
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  infoCopy = info;
   if (_MergedGlobals_32 != -1)
   {
     dispatch_once(&_MergedGlobals_32, &__block_literal_global_27);
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"imagePath"];
+  v4 = [infoCopy objectForKeyedSubscript:@"imagePath"];
   v5 = v4;
   v6 = &stru_1F2BB4348;
   if (v4)
@@ -142,55 +142,55 @@ LABEL_15:
 
   v7 = v6;
 
-  v8 = [v3 objectForKeyedSubscript:@"index"];
+  v8 = [infoCopy objectForKeyedSubscript:@"index"];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    [v9 setValue:v7 forKey:@"imagePath"];
-    v10 = [v3 objectForKeyedSubscript:@"textContentType"];
-    [v9 setValue:v10 forKey:@"reference"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setValue:v7 forKey:@"imagePath"];
+    v10 = [infoCopy objectForKeyedSubscript:@"textContentType"];
+    [dictionary setValue:v10 forKey:@"reference"];
 
-    v11 = [v3 objectForKeyedSubscript:@"textContentType"];
-    [v9 setValue:v11 forKey:@"predicted"];
+    v11 = [infoCopy objectForKeyedSubscript:@"textContentType"];
+    [dictionary setValue:v11 forKey:@"predicted"];
 
-    v12 = [v3 objectForKeyedSubscript:@"text"];
-    [v9 setValue:v12 forKey:@"text"];
+    v12 = [infoCopy objectForKeyedSubscript:@"text"];
+    [dictionary setValue:v12 forKey:@"text"];
 
-    [v9 setValue:&stru_1F2BB4348 forKey:@"keyword"];
-    v13 = [v3 objectForKeyedSubscript:@"locale"];
-    [v9 setValue:v13 forKey:@"locale"];
+    [dictionary setValue:&stru_1F2BB4348 forKey:@"keyword"];
+    v13 = [infoCopy objectForKeyedSubscript:@"locale"];
+    [dictionary setValue:v13 forKey:@"locale"];
 
-    [v9 setValue:&stru_1F2BB4348 forKey:@"correctLabelText"];
-    v14 = [v3 objectForKeyedSubscript:@"index"];
-    [v9 setValue:v14 forKey:@"index"];
+    [dictionary setValue:&stru_1F2BB4348 forKey:@"correctLabelText"];
+    v14 = [infoCopy objectForKeyedSubscript:@"index"];
+    [dictionary setValue:v14 forKey:@"index"];
 
-    v15 = [v3 objectForKeyedSubscript:@"matchedResult"];
-    [v9 setValue:v15 forKey:@"matchedResult"];
+    v15 = [infoCopy objectForKeyedSubscript:@"matchedResult"];
+    [dictionary setValue:v15 forKey:@"matchedResult"];
 
-    v16 = [v3 objectForKeyedSubscript:@"x"];
-    [v9 setValue:v16 forKey:@"x"];
+    v16 = [infoCopy objectForKeyedSubscript:@"x"];
+    [dictionary setValue:v16 forKey:@"x"];
 
-    v17 = [v3 objectForKeyedSubscript:@"y"];
-    [v9 setValue:v17 forKey:@"y"];
+    v17 = [infoCopy objectForKeyedSubscript:@"y"];
+    [dictionary setValue:v17 forKey:@"y"];
 
-    v18 = [v3 objectForKeyedSubscript:@"width"];
-    [v9 setValue:v18 forKey:@"width"];
+    v18 = [infoCopy objectForKeyedSubscript:@"width"];
+    [dictionary setValue:v18 forKey:@"width"];
 
-    v19 = [v3 objectForKeyedSubscript:@"height"];
-    [v9 setValue:v19 forKey:@"height"];
+    v19 = [infoCopy objectForKeyedSubscript:@"height"];
+    [dictionary setValue:v19 forKey:@"height"];
 
-    v20 = [v3 objectForKeyedSubscript:@"widthBounded"];
-    [v9 setValue:v20 forKey:@"widthBounded"];
+    v20 = [infoCopy objectForKeyedSubscript:@"widthBounded"];
+    [dictionary setValue:v20 forKey:@"widthBounded"];
 
-    v21 = [v3 objectForKeyedSubscript:@"heightBounded"];
-    [v9 setValue:v21 forKey:@"heightBounded"];
+    v21 = [infoCopy objectForKeyedSubscript:@"heightBounded"];
+    [dictionary setValue:v21 forKey:@"heightBounded"];
 
-    v22 = [@"CTCDataField: " UTF8String];
+    uTF8String = [@"CTCDataField: " UTF8String];
     v23 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v24 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v9 options:0 error:0];
+    v24 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:0];
     v25 = [v23 initWithData:v24 encoding:4];
-    printf("%s%s\n", v22, [v25 UTF8String]);
+    printf("%s%s\n", uTF8String, [v25 UTF8String]);
   }
 
   if (([qword_1ED960230 containsObject:v7] & 1) == 0)
@@ -199,15 +199,15 @@ LABEL_15:
     v32[0] = @"imagePath";
     v32[1] = @"textRegions";
     v33[0] = v7;
-    v26 = [v3 objectForKeyedSubscript:?];
+    v26 = [infoCopy objectForKeyedSubscript:?];
     v33[1] = v26;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
 
-    v28 = [@"CTCDataLabel: " UTF8String];
+    uTF8String2 = [@"CTCDataLabel: " UTF8String];
     v29 = objc_alloc(MEMORY[0x1E696AEC0]);
     v30 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v27 options:0 error:0];
     v31 = [v29 initWithData:v30 encoding:4];
-    printf("%s%s\n", v28, [v31 UTF8String]);
+    printf("%s%s\n", uTF8String2, [v31 UTF8String]);
   }
 }
 

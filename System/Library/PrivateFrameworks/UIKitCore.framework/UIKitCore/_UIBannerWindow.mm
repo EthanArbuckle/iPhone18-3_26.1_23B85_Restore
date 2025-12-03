@@ -1,6 +1,6 @@
 @interface _UIBannerWindow
 - (_UIBannerWindow)init;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation _UIBannerWindow
@@ -19,11 +19,11 @@
   return v2;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = _UIBannerWindow;
-  v5 = [(UIView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v10 hitTest:event withEvent:test.x, test.y];
   if (v5 == self || (-[UIWindow rootViewController](self, "rootViewController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 view], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5 == v7))
   {
     v8 = 0;

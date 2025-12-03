@@ -1,39 +1,39 @@
 @interface PLDelayedFiledSystemDeletions
 + (id)_filesystemDeletionQueue;
-+ (id)deletionsFromChangeHubEvent:(id)a3;
-+ (void)appendDescriptionForEvent:(id)a3 toComponents:(id)a4;
++ (id)deletionsFromChangeHubEvent:(id)event;
++ (void)appendDescriptionForEvent:(id)event toComponents:(id)components;
 + (void)waitForAllDelayedDeletionsToFinish;
-- (PLDelayedFiledSystemDeletions)initWithFilesystemDeletionInfos:(id)a3;
+- (PLDelayedFiledSystemDeletions)initWithFilesystemDeletionInfos:(id)infos;
 - (id)debugDescription;
-- (void)addFilesystemDeletionInfo:(id)a3;
-- (void)appendToXPCMessage:(id)a3 managedObjectContext:(id)a4;
+- (void)addFilesystemDeletionInfo:(id)info;
+- (void)appendToXPCMessage:(id)message managedObjectContext:(id)context;
 - (void)dealloc;
-- (void)deleteAllRemainingFilesAndThumbnailsWithPhotoLibrary:(id)a3;
+- (void)deleteAllRemainingFilesAndThumbnailsWithPhotoLibrary:(id)library;
 @end
 
 @implementation PLDelayedFiledSystemDeletions
 
-- (PLDelayedFiledSystemDeletions)initWithFilesystemDeletionInfos:(id)a3
+- (PLDelayedFiledSystemDeletions)initWithFilesystemDeletionInfos:(id)infos
 {
-  v5 = a3;
+  infosCopy = infos;
   v6 = [(PLDelayedFiledSystemDeletions *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deletionInfos, a3);
+    objc_storeStrong(&v6->_deletionInfos, infos);
   }
 
   return v7;
 }
 
-- (void)deleteAllRemainingFilesAndThumbnailsWithPhotoLibrary:(id)a3
+- (void)deleteAllRemainingFilesAndThumbnailsWithPhotoLibrary:(id)library
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  libraryCopy = library;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PLDelayedFiledSystemDeletions.m" lineNumber:353 description:@"deleteAllRemainingFilesAndThumbnails must only be called by assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDelayedFiledSystemDeletions.m" lineNumber:353 description:@"deleteAllRemainingFilesAndThumbnails must only be called by assetsd"];
   }
 
   if ([(NSMutableArray *)self->_deletionInfos count])
@@ -52,7 +52,7 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v21 = self;
+    selfCopy = self;
     v8 = self->_deletionInfos;
     v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v9)
@@ -72,9 +72,9 @@
           v14 = PLBackendGetLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v13 uuid];
+            uuid = [v13 uuid];
             *buf = 138543362;
-            v33 = v15;
+            v33 = uuid;
             _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Deleting asset file resources and thumbs for %{public}@", buf, 0xCu);
           }
         }
@@ -85,27 +85,27 @@
       while (v10);
     }
 
-    if (!v5)
+    if (!libraryCopy)
     {
-      v5 = +[PLPhotoLibrary systemPhotoLibrary];
+      libraryCopy = +[PLPhotoLibrary systemPhotoLibrary];
     }
 
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __86__PLDelayedFiledSystemDeletions_deleteAllRemainingFilesAndThumbnailsWithPhotoLibrary___block_invoke;
     v25[3] = &unk_1E7578848;
-    v16 = v5;
+    v16 = libraryCopy;
     v26 = v16;
-    v27 = v21;
+    v27 = selfCopy;
     [v16 performBlockAndWait:v25 completionHandler:0];
     v17 = +[PLDelayedFiledSystemDeletions _filesystemDeletionQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __86__PLDelayedFiledSystemDeletions_deleteAllRemainingFilesAndThumbnailsWithPhotoLibrary___block_invoke_2;
     block[3] = &unk_1E75761B8;
-    block[4] = v21;
-    v5 = v16;
-    v23 = v5;
+    block[4] = selfCopy;
+    libraryCopy = v16;
+    v23 = libraryCopy;
     v24 = v20;
     v18 = v20;
     dispatch_sync(v17, block);
@@ -354,24 +354,24 @@ LABEL_25:
   [*(v37 + 48) stillAlive];
 }
 
-- (void)appendToXPCMessage:(id)a3 managedObjectContext:(id)a4
+- (void)appendToXPCMessage:(id)message managedObjectContext:(id)context
 {
   v119 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  xdict = v6;
-  if (!v6)
+  messageCopy = message;
+  contextCopy = context;
+  xdict = messageCopy;
+  if (!messageCopy)
   {
-    v68 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v68 handleFailureInMethod:a2 object:self file:@"PLDelayedFiledSystemDeletions.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"message != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDelayedFiledSystemDeletions.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"message != NULL"}];
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
-  v77 = self;
+  selfCopy = self;
   v9 = self->_deletionInfos;
   v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v108 objects:v118 count:16];
   if (v10)
@@ -388,18 +388,18 @@ LABEL_25:
         }
 
         v14 = *(*(&v108 + 1) + 8 * i);
-        v15 = [v14 directory];
-        v16 = [v14 filename];
-        if ([v15 length] && objc_msgSend(v16, "length"))
+        directory = [v14 directory];
+        filename = [v14 filename];
+        if ([directory length] && objc_msgSend(filename, "length"))
         {
-          v17 = [v8 objectForKey:v15];
+          v17 = [dictionary objectForKey:directory];
           if (!v17)
           {
             v17 = [MEMORY[0x1E695DFA8] set];
-            [v8 setObject:v17 forKey:v15];
+            [dictionary setObject:v17 forKey:directory];
           }
 
-          [v17 addObject:v16];
+          [v17 addObject:filename];
         }
       }
 
@@ -409,18 +409,18 @@ LABEL_25:
     while (v11);
   }
 
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v105[0] = MEMORY[0x1E69E9820];
   v105[1] = 3221225472;
   v105[2] = __73__PLDelayedFiledSystemDeletions_appendToXPCMessage_managedObjectContext___block_invoke;
   v105[3] = &unk_1E756DD90;
-  v74 = v7;
+  v74 = contextCopy;
   v106 = v74;
-  v19 = v18;
+  v19 = array;
   v107 = v19;
-  [v8 enumerateKeysAndObjectsUsingBlock:v105];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v105];
   v76 = v19;
-  v75 = v8;
+  v75 = dictionary;
   if ([v19 count])
   {
     v20 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v19, "count")}];
@@ -444,11 +444,11 @@ LABEL_25:
           }
 
           v26 = *(*(&v101 + 1) + 8 * j);
-          v27 = [v26 directory];
-          v28 = [v26 filename];
-          if ([v27 length] && objc_msgSend(v28, "length"))
+          directory2 = [v26 directory];
+          filename2 = [v26 filename];
+          if ([directory2 length] && objc_msgSend(filename2, "length"))
           {
-            v29 = [v27 stringByAppendingPathComponent:v28];
+            v29 = [directory2 stringByAppendingPathComponent:filename2];
             [v20 addObject:v29];
           }
         }
@@ -463,40 +463,40 @@ LABEL_25:
     v100 = 0u;
     v97 = 0u;
     v98 = 0u;
-    v30 = v77->_deletionInfos;
-    v31 = [(NSMutableArray *)v30 countByEnumeratingWithState:&v97 objects:v116 count:16];
+    contextCopy2 = selfCopy->_deletionInfos;
+    v31 = [(NSMutableArray *)contextCopy2 countByEnumeratingWithState:&v97 objects:v116 count:16];
     if (v31)
     {
       v32 = v31;
       v33 = *v98;
-      context = v30;
+      context = contextCopy2;
       do
       {
         for (k = 0; k != v32; ++k)
         {
           if (*v98 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(contextCopy2);
           }
 
           v35 = *(*(&v97 + 1) + 8 * k);
-          v36 = [v35 directory];
-          v37 = [v35 filename];
-          if ([v36 length] && objc_msgSend(v37, "length"))
+          directory3 = [v35 directory];
+          filename3 = [v35 filename];
+          if ([directory3 length] && objc_msgSend(filename3, "length"))
           {
-            v38 = [v36 stringByAppendingPathComponent:v37];
+            v38 = [directory3 stringByAppendingPathComponent:filename3];
             if ([v20 containsObject:v38])
             {
               v39 = v20;
               v40 = PLBackendGetLog();
               if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
               {
-                v41 = [v35 fileURLs];
+                fileURLs = [v35 fileURLs];
                 *buf = 138412290;
-                v114 = v41;
+                v114 = fileURLs;
                 _os_log_impl(&dword_19BF1F000, v40, OS_LOG_TYPE_ERROR, "Denying attempt to delete file paths %@ since we found duplicates", buf, 0xCu);
 
-                v30 = context;
+                contextCopy2 = context;
               }
 
               [v35 setFileURLs:0];
@@ -506,7 +506,7 @@ LABEL_25:
           }
         }
 
-        v32 = [(NSMutableArray *)v30 countByEnumeratingWithState:&v97 objects:v116 count:16];
+        v32 = [(NSMutableArray *)contextCopy2 countByEnumeratingWithState:&v97 objects:v116 count:16];
       }
 
       while (v32);
@@ -527,11 +527,11 @@ LABEL_25:
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  obj = v77->_deletionInfos;
+  obj = selfCopy->_deletionInfos;
   v86 = [(NSMutableArray *)obj countByEnumeratingWithState:&v93 objects:v115 count:16];
   if (v86)
   {
-    v79 = 0;
+    timestamp = 0;
     v81 = *v94;
     v82 = v42;
     do
@@ -546,23 +546,23 @@ LABEL_25:
         v45 = v43;
         v46 = *(*(&v93 + 1) + 8 * m);
         contexta = objc_autoreleasePoolPush();
-        v47 = [v46 objectIDURI];
-        v48 = CFURLGetBytes(v47, buf, 1024);
+        objectIDURI = [v46 objectIDURI];
+        v48 = CFURLGetBytes(objectIDURI, buf, 1024);
         if (!v48)
         {
-          v63 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v63 handleFailureInMethod:a2 object:v77 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:293 description:@"Unable to encode object URI."];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"PLDelayedFiledSystemDeletions.m" lineNumber:293 description:@"Unable to encode object URI."];
         }
 
         xpc_array_set_data(v42, 0xFFFFFFFFFFFFFFFFLL, buf, v48);
-        v49 = [v46 fileURLs];
+        fileURLs2 = [v46 fileURLs];
         v50 = xpc_array_create(0, 0);
         xpc_array_set_value(xarray, 0xFFFFFFFFFFFFFFFFLL, v50);
         v91 = 0u;
         v92 = 0u;
         v89 = 0u;
         v90 = 0u;
-        v51 = v49;
+        v51 = fileURLs2;
         v52 = [v51 countByEnumeratingWithState:&v89 objects:v112 count:16];
         if (v52)
         {
@@ -577,8 +577,8 @@ LABEL_25:
                 objc_enumerationMutation(v51);
               }
 
-              v56 = [*(*(&v89 + 1) + 8 * n) path];
-              xpc_array_set_string(v50, 0xFFFFFFFFFFFFFFFFLL, [v56 fileSystemRepresentation]);
+              path = [*(*(&v89 + 1) + 8 * n) path];
+              xpc_array_set_string(v50, 0xFFFFFFFFFFFFFFFFLL, [path fileSystemRepresentation]);
             }
 
             v53 = [v51 countByEnumeratingWithState:&v89 objects:v112 count:16];
@@ -588,12 +588,12 @@ LABEL_25:
         }
 
         xpc_array_set_uint64(v83, 0xFFFFFFFFFFFFFFFFLL, [v46 thumbnailIndex]);
-        v57 = [v46 thumbnailIdentifier];
-        v58 = [v57 UTF8String];
+        thumbnailIdentifier = [v46 thumbnailIdentifier];
+        uTF8String = [thumbnailIdentifier UTF8String];
 
-        if (v58)
+        if (uTF8String)
         {
-          v59 = v58;
+          v59 = uTF8String;
         }
 
         else
@@ -602,12 +602,12 @@ LABEL_25:
         }
 
         xpc_array_set_string(v84, 0xFFFFFFFFFFFFFFFFLL, v59);
-        v60 = [v46 uuid];
-        v61 = [v60 UTF8String];
+        uuid = [v46 uuid];
+        uTF8String2 = [uuid UTF8String];
 
-        if (v61)
+        if (uTF8String2)
         {
-          v62 = v61;
+          v62 = uTF8String2;
         }
 
         else
@@ -617,9 +617,9 @@ LABEL_25:
 
         v43 = v45;
         xpc_array_set_string(v45, 0xFFFFFFFFFFFFFFFFLL, v62);
-        if ([v46 thumbnailIndex] != -1 && objc_msgSend(v46, "thumbnailIndex") != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v46, "timestamp") > v79)
+        if ([v46 thumbnailIndex] != -1 && objc_msgSend(v46, "thumbnailIndex") != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v46, "timestamp") > timestamp)
         {
-          v79 = [v46 timestamp];
+          timestamp = [v46 timestamp];
         }
 
         objc_autoreleasePoolPop(contexta);
@@ -634,36 +634,36 @@ LABEL_25:
 
   else
   {
-    v79 = 0;
+    timestamp = 0;
   }
 
-  xpc_dictionary_set_uint64(xdict, "deletionTimestamp", v79);
+  xpc_dictionary_set_uint64(xdict, "deletionTimestamp", timestamp);
   count = xpc_array_get_count(v42);
   if (count != xpc_array_get_count(xarray))
   {
-    v69 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v69 handleFailureInMethod:a2 object:v77 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:328 description:@"len(assetURIs) != len(fileURLsList) ?"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"PLDelayedFiledSystemDeletions.m" lineNumber:328 description:@"len(assetURIs) != len(fileURLsList) ?"];
   }
 
   v65 = xpc_array_get_count(v42);
   if (v65 != xpc_array_get_count(v83))
   {
-    v70 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v70 handleFailureInMethod:a2 object:v77 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:330 description:@"len(assetURIs) != len(thumbnailIndexes) ?"];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:selfCopy file:@"PLDelayedFiledSystemDeletions.m" lineNumber:330 description:@"len(assetURIs) != len(thumbnailIndexes) ?"];
   }
 
   v66 = xpc_array_get_count(v42);
   if (v66 != xpc_array_get_count(v84))
   {
-    v71 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v71 handleFailureInMethod:a2 object:v77 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:332 description:@"len(assetURIs) != len(thumbnailIdentifiers) ?"];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:selfCopy file:@"PLDelayedFiledSystemDeletions.m" lineNumber:332 description:@"len(assetURIs) != len(thumbnailIdentifiers) ?"];
   }
 
   v67 = xpc_array_get_count(v42);
   if (v67 != xpc_array_get_count(v43))
   {
-    v72 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v72 handleFailureInMethod:a2 object:v77 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:334 description:@"len(assetURIs) != len(thumbnailUUIDs) ?"];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:selfCopy file:@"PLDelayedFiledSystemDeletions.m" lineNumber:334 description:@"len(assetURIs) != len(thumbnailUUIDs) ?"];
   }
 }
 
@@ -685,23 +685,23 @@ void __73__PLDelayedFiledSystemDeletions_appendToXPCMessage_managedObjectContext
   }
 }
 
-- (void)addFilesystemDeletionInfo:(id)a3
+- (void)addFilesystemDeletionInfo:(id)info
 {
-  v4 = a3;
-  v7 = v4;
+  infoCopy = info;
+  v7 = infoCopy;
   if (!self->_deletionInfos)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     deletionInfos = self->_deletionInfos;
     self->_deletionInfos = v5;
 
-    v4 = v7;
+    infoCopy = v7;
   }
 
-  if (v4)
+  if (infoCopy)
   {
     [(NSMutableArray *)self->_deletionInfos addObject:v7];
-    v4 = v7;
+    infoCopy = v7;
   }
 }
 
@@ -718,8 +718,8 @@ void __73__PLDelayedFiledSystemDeletions_appendToXPCMessage_managedObjectContext
 - (id)debugDescription
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"<%p %@> {", self, objc_opt_class()];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"<%p %@> {", self, objc_opt_class()];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -740,13 +740,13 @@ void __73__PLDelayedFiledSystemDeletions_appendToXPCMessage_managedObjectContext
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [v8 objectIDURI];
-        v10 = [v8 fileURLs];
-        v11 = [v10 componentsJoinedByString:{@", "}];
-        v12 = [v8 thumbnailIndex];
-        v13 = [v8 thumbnailIdentifier];
-        v14 = [v8 uuid];
-        [v3 appendFormat:@"\n%@: { %@ }, [%lu, %@]: %@", v9, v11, v12, v13, v14];
+        objectIDURI = [v8 objectIDURI];
+        fileURLs = [v8 fileURLs];
+        v11 = [fileURLs componentsJoinedByString:{@", "}];
+        thumbnailIndex = [v8 thumbnailIndex];
+        thumbnailIdentifier = [v8 thumbnailIdentifier];
+        uuid = [v8 uuid];
+        [string appendFormat:@"\n%@: { %@ }, [%lu, %@]: %@", objectIDURI, v11, thumbnailIndex, thumbnailIdentifier, uuid];
       }
 
       v5 = [(NSMutableArray *)obj countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -755,74 +755,74 @@ void __73__PLDelayedFiledSystemDeletions_appendToXPCMessage_managedObjectContext
     while (v5);
   }
 
-  [v3 appendString:@"\n}"];
+  [string appendString:@"\n}"];
 
-  return v3;
+  return string;
 }
 
-+ (id)deletionsFromChangeHubEvent:(id)a3
++ (id)deletionsFromChangeHubEvent:(id)event
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "fsDeletionURIs");
-  v7 = xpc_dictionary_get_value(v5, "fsDeletionPaths");
-  v8 = xpc_dictionary_get_value(v5, "thumbnailIndexes");
-  v9 = xpc_dictionary_get_value(v5, "thumbnailIdentifiers");
-  v10 = xpc_dictionary_get_value(v5, "thumbnailUUIDs");
-  uint64 = xpc_dictionary_get_uint64(v5, "deletionTimestamp");
+  eventCopy = event;
+  v6 = xpc_dictionary_get_value(eventCopy, "fsDeletionURIs");
+  v7 = xpc_dictionary_get_value(eventCopy, "fsDeletionPaths");
+  v8 = xpc_dictionary_get_value(eventCopy, "thumbnailIndexes");
+  v9 = xpc_dictionary_get_value(eventCopy, "thumbnailIdentifiers");
+  v10 = xpc_dictionary_get_value(eventCopy, "thumbnailUUIDs");
+  uint64 = xpc_dictionary_get_uint64(eventCopy, "deletionTimestamp");
   if (v6)
   {
     v12 = uint64;
     if (!v7)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:a1 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:471 description:@"fileURLsList is out of sync?"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLDelayedFiledSystemDeletions.m" lineNumber:471 description:@"fileURLsList is out of sync?"];
     }
 
     count = xpc_array_get_count(v6);
     if (count != xpc_array_get_count(v7))
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:a1 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:473 description:@"len(xpcAssetURIs) != len(xpcFileURLsList) ?"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLDelayedFiledSystemDeletions.m" lineNumber:473 description:@"len(xpcAssetURIs) != len(xpcFileURLsList) ?"];
     }
 
     v14 = xpc_array_get_count(v6);
     if (v14 != xpc_array_get_count(v8))
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:a1 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:475 description:@"len(xpcAssetURIs) != len(xpcThumbnailIndexes) ?"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLDelayedFiledSystemDeletions.m" lineNumber:475 description:@"len(xpcAssetURIs) != len(xpcThumbnailIndexes) ?"];
     }
 
     v15 = xpc_array_get_count(v6);
     if (v15 != xpc_array_get_count(v8))
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v29 handleFailureInMethod:a2 object:a1 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:477 description:@"len(xpcAssetURIs) != len(xpcThumbnailIndexes) ?"];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"PLDelayedFiledSystemDeletions.m" lineNumber:477 description:@"len(xpcAssetURIs) != len(xpcThumbnailIndexes) ?"];
     }
 
     v16 = xpc_array_get_count(v6);
     if (v16 != xpc_array_get_count(v9))
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v30 handleFailureInMethod:a2 object:a1 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:479 description:@"len(xpcAssetURIs) != len(xpcThumbnailIdentifiers) ?"];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler5 handleFailureInMethod:a2 object:self file:@"PLDelayedFiledSystemDeletions.m" lineNumber:479 description:@"len(xpcAssetURIs) != len(xpcThumbnailIdentifiers) ?"];
     }
 
     v17 = xpc_array_get_count(v6);
     if (v17 != xpc_array_get_count(v10))
     {
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v31 handleFailureInMethod:a2 object:a1 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:481 description:@"len(xpcAssetURIs) != len(xpcThumbnailUUIDs) ?"];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler6 handleFailureInMethod:a2 object:self file:@"PLDelayedFiledSystemDeletions.m" lineNumber:481 description:@"len(xpcAssetURIs) != len(xpcThumbnailUUIDs) ?"];
     }
 
     v18 = objc_autoreleasePoolPush();
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = a2;
-    v21 = v19;
+    v21 = array;
     v32 = MEMORY[0x1E69E9820];
     v33 = 3221225472;
     v34 = __61__PLDelayedFiledSystemDeletions_deletionsFromChangeHubEvent___block_invoke;
     v35 = &unk_1E756DE08;
     v41 = v20;
-    v42 = a1;
+    selfCopy = self;
     v36 = v7;
     v37 = v8;
     v38 = v9;
@@ -831,7 +831,7 @@ void __73__PLDelayedFiledSystemDeletions_appendToXPCMessage_managedObjectContext
     v40 = v21;
     v22 = v21;
     xpc_array_apply(v6, &v32);
-    v23 = [a1 alloc];
+    v23 = [self alloc];
     v24 = [v23 initWithFilesystemDeletionInfos:{v22, v32, v33, v34, v35}];
 
     objc_autoreleasePoolPop(v18);
@@ -894,39 +894,39 @@ uint64_t __61__PLDelayedFiledSystemDeletions_deletionsFromChangeHubEvent___block
   return 1;
 }
 
-+ (void)appendDescriptionForEvent:(id)a3 toComponents:(id)a4
++ (void)appendDescriptionForEvent:(id)event toComponents:(id)components
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  componentsCopy = components;
   v9 = objc_autoreleasePoolPush();
-  v10 = xpc_dictionary_get_value(v7, "fsDeletionURIs");
-  v11 = xpc_dictionary_get_value(v7, "fsDeletionPaths");
+  v10 = xpc_dictionary_get_value(eventCopy, "fsDeletionURIs");
+  v11 = xpc_dictionary_get_value(eventCopy, "fsDeletionPaths");
   if (v10)
   {
     count = xpc_array_get_count(v10);
     if (count != xpc_array_get_count(v11))
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLDelayedFiledSystemDeletions appendDescriptionForEvent:toComponents:]"];
-      [v19 handleFailureInFunction:v20 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:427 description:@"len(xpcAssetURIs) != len(xpcFileURLsList) ?"];
+      [currentHandler handleFailureInFunction:v20 file:@"PLDelayedFiledSystemDeletions.m" lineNumber:427 description:@"len(xpcAssetURIs) != len(xpcFileURLsList) ?"];
     }
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     applier = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __72__PLDelayedFiledSystemDeletions_appendDescriptionForEvent_toComponents___block_invoke;
     v24 = &unk_1E756DDE0;
     v27 = a2;
-    v28 = a1;
+    selfCopy = self;
     v25 = v11;
-    v26 = v13;
-    v14 = v13;
+    v26 = array;
+    v14 = array;
     xpc_array_apply(v10, &applier);
     v15 = MEMORY[0x1E696AEC0];
     v16 = xpc_array_get_count(v10);
     v17 = [v14 componentsJoinedByString:{@", "}];
     v18 = [v15 stringWithFormat:@"%zu delayed deletes: {%@}", v16, v17, applier, v22, v23, v24];
-    [v8 addObject:v18];
+    [componentsCopy addObject:v18];
   }
 
   objc_autoreleasePoolPop(v9);
@@ -990,8 +990,8 @@ uint64_t __72__PLDelayedFiledSystemDeletions_appendDescriptionForEvent_toCompone
 
 + (void)waitForAllDelayedDeletionsToFinish
 {
-  v2 = [a1 _filesystemDeletionQueue];
-  dispatch_sync(v2, &__block_literal_global_148_54432);
+  _filesystemDeletionQueue = [self _filesystemDeletionQueue];
+  dispatch_sync(_filesystemDeletionQueue, &__block_literal_global_148_54432);
 }
 
 + (id)_filesystemDeletionQueue

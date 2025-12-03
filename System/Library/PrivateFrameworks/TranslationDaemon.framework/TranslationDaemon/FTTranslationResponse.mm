@@ -1,6 +1,6 @@
 @interface FTTranslationResponse
 - (BOOL)final_message;
-- (FTTranslationResponse)initWithFlatbuffData:(id)a3 root:(const TranslationResponse *)a4 verify:(BOOL)a5;
+- (FTTranslationResponse)initWithFlatbuffData:(id)data root:(const TranslationResponse *)root verify:(BOOL)verify;
 - (NSArray)alternative_descriptions;
 - (NSArray)engine_output;
 - (NSArray)n_best_translated_phrases;
@@ -9,18 +9,18 @@
 - (NSString)return_string;
 - (NSString)sequence_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::TranslationResponse>)addObjectToBuffer:(void *)a3;
-- (id)alternative_descriptions_objectAtIndex:(unint64_t)a3;
-- (id)engine_output_objectAtIndex:(unint64_t)a3;
+- (Offset<siri::speech::schema_fb::TranslationResponse>)addObjectToBuffer:(void *)buffer;
+- (id)alternative_descriptions_objectAtIndex:(unint64_t)index;
+- (id)engine_output_objectAtIndex:(unint64_t)index;
 - (id)flatbuffData;
-- (id)n_best_translated_phrases_objectAtIndex:(unint64_t)a3;
+- (id)n_best_translated_phrases_objectAtIndex:(unint64_t)index;
 - (int)return_code;
 - (unint64_t)alternative_descriptions_count;
 - (unint64_t)engine_output_count;
 - (unint64_t)n_best_translated_phrases_count;
-- (void)alternative_descriptions_enumerateObjectsUsingBlock:(id)a3;
-- (void)engine_output_enumerateObjectsUsingBlock:(id)a3;
-- (void)n_best_translated_phrases_enumerateObjectsUsingBlock:(id)a3;
+- (void)alternative_descriptions_enumerateObjectsUsingBlock:(id)block;
+- (void)engine_output_enumerateObjectsUsingBlock:(id)block;
+- (void)n_best_translated_phrases_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTTranslationResponse
@@ -46,10 +46,10 @@ id __89__FTTranslationResponse_TranslationPhrase_TranslationDaemonAdditions__lt_
   return v6;
 }
 
-- (FTTranslationResponse)initWithFlatbuffData:(id)a3 root:(const TranslationResponse *)a4 verify:(BOOL)a5
+- (FTTranslationResponse)initWithFlatbuffData:(id)data root:(const TranslationResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTTranslationResponse;
   v10 = [(FTTranslationResponse *)&v25 init];
@@ -58,35 +58,35 @@ id __89__FTTranslationResponse_TranslationPhrase_TranslationDaemonAdditions__lt_
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -201,12 +201,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"n_best_translated_phrases"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __50__FTTranslationResponse_n_best_translated_phrases__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTTranslationResponse *)self n_best_translated_phrases_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"n_best_translated_phrases"];
@@ -215,13 +215,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)n_best_translated_phrases_objectAtIndex:(unint64_t)a3
+- (id)n_best_translated_phrases_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"n_best_translated_phrases"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -234,7 +234,7 @@ LABEL_3:
     v11 = *v10[12].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTTranslationResponse_TranslationPhrase alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -273,14 +273,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)n_best_translated_phrases_enumerateObjectsUsingBlock:(id)a3
+- (void)n_best_translated_phrases_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"n_best_translated_phrases"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -303,7 +303,7 @@ LABEL_8:
           do
           {
             v15 = [[FTTranslationResponse_TranslationPhrase alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -352,12 +352,12 @@ LABEL_8:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"engine_output"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __38__FTTranslationResponse_engine_output__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTTranslationResponse *)self engine_output_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"engine_output"];
@@ -366,13 +366,13 @@ LABEL_8:
   return v3;
 }
 
-- (id)engine_output_objectAtIndex:(unint64_t)a3
+- (id)engine_output_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"engine_output"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -385,7 +385,7 @@ LABEL_3:
     v11 = *v10[16].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTTranslationResponse_TranslationPhrase alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -424,14 +424,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)engine_output_enumerateObjectsUsingBlock:(id)a3
+- (void)engine_output_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"engine_output"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -454,7 +454,7 @@ LABEL_8:
           do
           {
             v15 = [[FTTranslationResponse_TranslationPhrase alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -510,12 +510,12 @@ LABEL_8:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"alternative_descriptions"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __49__FTTranslationResponse_alternative_descriptions__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTTranslationResponse *)self alternative_descriptions_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"alternative_descriptions"];
@@ -524,13 +524,13 @@ LABEL_8:
   return v3;
 }
 
-- (id)alternative_descriptions_objectAtIndex:(unint64_t)a3
+- (id)alternative_descriptions_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"alternative_descriptions"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -543,7 +543,7 @@ LABEL_3:
     v11 = *v10[22].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTMTAlternativeDescription alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -582,14 +582,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)alternative_descriptions_enumerateObjectsUsingBlock:(id)a3
+- (void)alternative_descriptions_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"alternative_descriptions"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -612,7 +612,7 @@ LABEL_8:
           do
           {
             v15 = [[FTMTAlternativeDescription alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -633,53 +633,53 @@ LABEL_8:
   }
 }
 
-- (Offset<siri::speech::schema_fb::TranslationResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TranslationResponse>)addObjectToBuffer:(void *)buffer
 {
   v78 = *MEMORY[0x277D85DE8];
-  v5 = [(FTTranslationResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(FTTranslationResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_284834138;
+    speech_id = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(FTTranslationResponse *)self request_id];
-  v10 = v9;
-  if (!v9)
+  request_id = [(FTTranslationResponse *)self request_id];
+  v10 = request_id;
+  if (!request_id)
   {
-    v9 = &stru_284834138;
+    request_id = &stru_284834138;
   }
 
-  v11 = [(__CFString *)v9 UTF8String];
-  v12 = strlen(v11);
-  v57 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v11, v12);
+  uTF8String2 = [(__CFString *)request_id UTF8String];
+  v12 = strlen(uTF8String2);
+  v57 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v12);
 
-  v56 = [(FTTranslationResponse *)self return_code];
-  v13 = [(FTTranslationResponse *)self return_string];
-  v14 = v13;
-  if (!v13)
+  return_code = [(FTTranslationResponse *)self return_code];
+  return_string = [(FTTranslationResponse *)self return_string];
+  v14 = return_string;
+  if (!return_string)
   {
-    v13 = &stru_284834138;
+    return_string = &stru_284834138;
   }
 
-  v15 = [(__CFString *)v13 UTF8String];
-  v16 = strlen(v15);
-  v55 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v15, v16);
+  uTF8String3 = [(__CFString *)return_string UTF8String];
+  v16 = strlen(uTF8String3);
+  v55 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String3, v16);
 
   memset(&v74, 0, sizeof(v74));
-  v17 = [(FTTranslationResponse *)self n_best_translated_phrases];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v74, [v17 count]);
+  n_best_translated_phrases = [(FTTranslationResponse *)self n_best_translated_phrases];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v74, [n_best_translated_phrases count]);
 
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v18 = [(FTTranslationResponse *)self n_best_translated_phrases];
-  v19 = [v18 countByEnumeratingWithState:&v70 objects:v77 count:16];
+  n_best_translated_phrases2 = [(FTTranslationResponse *)self n_best_translated_phrases];
+  v19 = [n_best_translated_phrases2 countByEnumeratingWithState:&v70 objects:v77 count:16];
   if (v19)
   {
     v20 = *v71;
@@ -689,14 +689,14 @@ LABEL_8:
       {
         if (*v71 != v20)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(n_best_translated_phrases2);
         }
 
-        LODWORD(v69.__begin_) = [*(*(&v70 + 1) + 8 * i) addObjectToBuffer:a3];
+        LODWORD(v69.__begin_) = [*(*(&v70 + 1) + 8 * i) addObjectToBuffer:buffer];
         std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v74.__begin_, &v69);
       }
 
-      v19 = [v18 countByEnumeratingWithState:&v70 objects:v77 count:16];
+      v19 = [n_best_translated_phrases2 countByEnumeratingWithState:&v70 objects:v77 count:16];
     }
 
     while (v19);
@@ -712,28 +712,28 @@ LABEL_8:
     begin = v74.__begin_;
   }
 
-  v54 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, begin, v74.__end_ - v74.__begin_);
-  v23 = [(FTTranslationResponse *)self engine_input];
-  v24 = v23;
-  if (!v23)
+  v54 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, begin, v74.__end_ - v74.__begin_);
+  engine_input = [(FTTranslationResponse *)self engine_input];
+  v24 = engine_input;
+  if (!engine_input)
   {
-    v23 = &stru_284834138;
+    engine_input = &stru_284834138;
   }
 
-  v25 = [(__CFString *)v23 UTF8String];
-  v26 = strlen(v25);
-  v27 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v25, v26);
+  uTF8String4 = [(__CFString *)engine_input UTF8String];
+  v26 = strlen(uTF8String4);
+  v27 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String4, v26);
 
   memset(&v69, 0, sizeof(v69));
-  v28 = [(FTTranslationResponse *)self engine_output];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v69, [v28 count]);
+  engine_output = [(FTTranslationResponse *)self engine_output];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v69, [engine_output count]);
 
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v29 = [(FTTranslationResponse *)self engine_output];
-  v30 = [v29 countByEnumeratingWithState:&v65 objects:v76 count:16];
+  engine_output2 = [(FTTranslationResponse *)self engine_output];
+  v30 = [engine_output2 countByEnumeratingWithState:&v65 objects:v76 count:16];
   if (v30)
   {
     v31 = *v66;
@@ -743,14 +743,14 @@ LABEL_8:
       {
         if (*v66 != v31)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(engine_output2);
         }
 
-        LODWORD(v64.__begin_) = [*(*(&v65 + 1) + 8 * j) addObjectToBuffer:a3];
+        LODWORD(v64.__begin_) = [*(*(&v65 + 1) + 8 * j) addObjectToBuffer:buffer];
         std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v69.__begin_, &v64);
       }
 
-      v30 = [v29 countByEnumeratingWithState:&v65 objects:v76 count:16];
+      v30 = [engine_output2 countByEnumeratingWithState:&v65 objects:v76 count:16];
     }
 
     while (v30);
@@ -766,29 +766,29 @@ LABEL_8:
     v33 = v69.__begin_;
   }
 
-  v34 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v33, v69.__end_ - v69.__begin_);
-  v35 = [(FTTranslationResponse *)self sequence_id];
-  v36 = v35;
-  if (!v35)
+  v34 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v33, v69.__end_ - v69.__begin_);
+  sequence_id = [(FTTranslationResponse *)self sequence_id];
+  v36 = sequence_id;
+  if (!sequence_id)
   {
-    v35 = &stru_284834138;
+    sequence_id = &stru_284834138;
   }
 
-  v37 = [(__CFString *)v35 UTF8String];
-  v38 = strlen(v37);
-  v39 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v37, v38);
+  uTF8String5 = [(__CFString *)sequence_id UTF8String];
+  v38 = strlen(uTF8String5);
+  v39 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String5, v38);
 
-  v40 = [(FTTranslationResponse *)self final_message];
+  final_message = [(FTTranslationResponse *)self final_message];
   memset(&v64, 0, sizeof(v64));
-  v41 = [(FTTranslationResponse *)self alternative_descriptions];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v64, [v41 count]);
+  alternative_descriptions = [(FTTranslationResponse *)self alternative_descriptions];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v64, [alternative_descriptions count]);
 
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v42 = [(FTTranslationResponse *)self alternative_descriptions];
-  v43 = [v42 countByEnumeratingWithState:&v60 objects:v75 count:16];
+  alternative_descriptions2 = [(FTTranslationResponse *)self alternative_descriptions];
+  v43 = [alternative_descriptions2 countByEnumeratingWithState:&v60 objects:v75 count:16];
   if (v43)
   {
     v44 = *v61;
@@ -798,14 +798,14 @@ LABEL_8:
       {
         if (*v61 != v44)
         {
-          objc_enumerationMutation(v42);
+          objc_enumerationMutation(alternative_descriptions2);
         }
 
-        v59 = [*(*(&v60 + 1) + 8 * k) addObjectToBuffer:a3];
+        v59 = [*(*(&v60 + 1) + 8 * k) addObjectToBuffer:buffer];
         std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v64.__begin_, &v59);
       }
 
-      v43 = [v42 countByEnumeratingWithState:&v60 objects:v75 count:16];
+      v43 = [alternative_descriptions2 countByEnumeratingWithState:&v60 objects:v75 count:16];
     }
 
     while (v43);
@@ -821,22 +821,22 @@ LABEL_8:
     v46 = v64.__begin_;
   }
 
-  v47 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v46, v64.__end_ - v64.__begin_);
-  *(a3 + 70) = 1;
-  v48 = *(a3 + 8);
-  v49 = *(a3 + 12);
-  v50 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v57);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v56, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v55);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 12, v54);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 14, v27);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 16, v34);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 18, v39);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 20, v40, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 22, v47);
-  v51.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v48 - v49 + v50);
+  v47 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v46, v64.__end_ - v64.__begin_);
+  *(buffer + 70) = 1;
+  v48 = *(buffer + 8);
+  v49 = *(buffer + 12);
+  v50 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v57);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, return_code, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v55);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 12, v54);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 14, v27);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 16, v34);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 18, v39);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 20, final_message, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 22, v47);
+  v51.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v48 - v49 + v50);
   if (v64.__begin_)
   {
     v64.__end_ = v64.__begin_;

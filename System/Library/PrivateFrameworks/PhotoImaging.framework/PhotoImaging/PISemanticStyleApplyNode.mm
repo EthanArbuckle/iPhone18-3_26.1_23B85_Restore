@@ -1,81 +1,81 @@
 @interface PISemanticStyleApplyNode
-- (PISemanticStyleApplyNode)initWithInput:(id)a3 style:(id)a4 thumbnail:(id)a5;
-- (PISemanticStyleApplyNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (PISemanticStyleApplyNode)initWithInput:(id)input style:(id)style thumbnail:(id)thumbnail;
+- (PISemanticStyleApplyNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PISemanticStyleApplyNode
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v9 evaluationMode])
+  cacheCopy = cache;
+  stateCopy = state;
+  if (![stateCopy evaluationMode])
   {
     v69.receiver = self;
     v69.super_class = PISemanticStyleApplyNode;
-    v21 = [(NURenderNode *)&v69 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+    v21 = [(NURenderNode *)&v69 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
     goto LABEL_28;
   }
 
-  if ([v9 auxiliaryImageType] != 1)
+  if ([stateCopy auxiliaryImageType] != 1)
   {
-    v22 = [(PISemanticStyleApplyNode *)self inputNode];
-    v21 = [v22 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+    inputNode = [(PISemanticStyleApplyNode *)self inputNode];
+    v21 = [inputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
 
     goto LABEL_28;
   }
 
-  v60 = a5;
-  v10 = [(PISemanticStyleApplyNode *)self styleNode];
-  v11 = [v10 settings];
-  v12 = [v11 objectForKeyedSubscript:@"cast"];
+  errorCopy = error;
+  styleNode = [(PISemanticStyleApplyNode *)self styleNode];
+  settings = [styleNode settings];
+  v12 = [settings objectForKeyedSubscript:@"cast"];
   v13 = PISemanticStyleCastFromString(v12);
 
-  v14 = [(PISemanticStyleApplyNode *)self styleNode];
-  v15 = [v14 settings];
-  v16 = [v15 objectForKeyedSubscript:@"tone"];
+  styleNode2 = [(PISemanticStyleApplyNode *)self styleNode];
+  settings2 = [styleNode2 settings];
+  v16 = [settings2 objectForKeyedSubscript:@"tone"];
   [v16 floatValue];
-  v17 = [(PISemanticStyleApplyNode *)self styleNode];
-  v18 = [v17 settings];
-  v19 = [v18 objectForKeyedSubscript:@"color"];
+  styleNode3 = [(PISemanticStyleApplyNode *)self styleNode];
+  settings3 = [styleNode3 settings];
+  v19 = [settings3 objectForKeyedSubscript:@"color"];
   [v19 floatValue];
   v59 = v13;
   LODWORD(v13) = [v13 isEqualToString:@"None"];
 
   if (!v13)
   {
-    v23 = [(NURenderNode *)self videoProperties:v60];
-    v24 = [v23 videoCorruptionInfo];
+    v23 = [(NURenderNode *)self videoProperties:errorCopy];
+    videoCorruptionInfo = [v23 videoCorruptionInfo];
     v25 = PFExists();
 
     if (v25)
     {
-      v26 = [(PISemanticStyleApplyNode *)self inputNode];
+      inputNode2 = [(PISemanticStyleApplyNode *)self inputNode];
 LABEL_11:
-      v27 = v26;
-      v21 = [v26 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:v60];
+      v27 = inputNode2;
+      v21 = [inputNode2 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:errorCopy];
 
 LABEL_26:
       goto LABEL_27;
     }
 
-    if ([v9 evaluationMode] == 2)
+    if ([stateCopy evaluationMode] == 2)
     {
-      v26 = [(PISemanticStyleApplyNode *)self styleNode];
+      inputNode2 = [(PISemanticStyleApplyNode *)self styleNode];
       goto LABEL_11;
     }
 
-    if ([v9 evaluationMode] == 1)
+    if ([stateCopy evaluationMode] == 1)
     {
-      if (v9)
+      if (stateCopy)
       {
-        [v9 time];
+        [stateCopy time];
         if ((v67 & 0x100000000) != 0)
         {
-          v28 = [(PISemanticStyleApplyNode *)self inputNode];
-          v29 = [v28 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:v60];
+          inputNode3 = [(PISemanticStyleApplyNode *)self inputNode];
+          v29 = [inputNode3 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:errorCopy];
 
           if (!v29)
           {
@@ -85,7 +85,7 @@ LABEL_25:
             goto LABEL_26;
           }
 
-          v30 = [v29 imageProperties:v60];
+          v30 = [v29 imageProperties:errorCopy];
           v31 = v30;
           if (!v30)
           {
@@ -95,51 +95,51 @@ LABEL_43:
             goto LABEL_25;
           }
 
-          v32 = [v30 semanticStyleProperties];
-          v33 = v32;
-          if (v32)
+          semanticStyleProperties = [v30 semanticStyleProperties];
+          v33 = semanticStyleProperties;
+          if (semanticStyleProperties)
           {
-            [v32 keyTime];
+            [semanticStyleProperties keyTime];
             if (v65)
             {
-              v43 = [v9 copy];
+              v43 = [stateCopy copy];
               [v33 keyTime];
               v61 = v63;
               v62 = v64;
               [v43 setTime:&v61];
               [v43 setMediaComponentType:2];
               [v43 setDoNotOverride:1];
-              v44 = [(PISemanticStyleApplyNode *)self styleNode];
-              v45 = [v44 nodeByReplayingAgainstCache:v8 pipelineState:v43 error:v60];
+              styleNode4 = [(PISemanticStyleApplyNode *)self styleNode];
+              v45 = [styleNode4 nodeByReplayingAgainstCache:cacheCopy pipelineState:v43 error:errorCopy];
 
               if (v45)
               {
                 v58 = v45;
-                v46 = [(PISemanticStyleApplyNode *)self thumbnailNode];
-                v47 = v46;
+                thumbnailNode = [(PISemanticStyleApplyNode *)self thumbnailNode];
+                v47 = thumbnailNode;
                 v57 = v43;
-                if (v46)
+                if (thumbnailNode)
                 {
-                  v48 = [v46 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:v60];
+                  v48 = [thumbnailNode nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:errorCopy];
                 }
 
                 else
                 {
-                  v49 = [(PISemanticStyleApplyNode *)self inputNode];
-                  v48 = [v49 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:v60];
+                  inputNode4 = [(PISemanticStyleApplyNode *)self inputNode];
+                  v48 = [inputNode4 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:errorCopy];
                 }
 
                 v50 = MEMORY[0x1E69B3C40];
-                v51 = [v58 settings];
-                v52 = [v50 styleTransferThumbnailNodeWithInput:v48 settings:v51];
+                settings4 = [v58 settings];
+                v52 = [v50 styleTransferThumbnailNodeWithInput:v48 settings:settings4];
 
-                v53 = [v52 inputs];
-                v56 = [v52 resolvedNodeWithCachedInputs:v53 cache:v8 pipelineState:v9 error:v60];
+                inputs = [v52 inputs];
+                v56 = [v52 resolvedNodeWithCachedInputs:inputs cache:cacheCopy pipelineState:stateCopy error:errorCopy];
 
                 v45 = v58;
                 v54 = [MEMORY[0x1E69B3C40] styleTransferApplyNodeWithInput:v29 thumbnail:v56 target:v58 settings:MEMORY[0x1E695E0F8]];
-                v55 = [v54 inputs];
-                v21 = [v54 resolvedNodeWithCachedInputs:v55 cache:v8 pipelineState:v9 error:v60];
+                inputs2 = [v54 inputs];
+                v21 = [v54 resolvedNodeWithCachedInputs:inputs2 cache:cacheCopy pipelineState:stateCopy error:errorCopy];
 
                 v43 = v57;
               }
@@ -161,7 +161,7 @@ LABEL_43:
           }
 
           v21 = 0;
-          *v60 = v34;
+          *errorCopy = v34;
 LABEL_42:
 
           goto LABEL_43;
@@ -176,32 +176,32 @@ LABEL_42:
       }
     }
 
-    v35 = [(PISemanticStyleApplyNode *)self thumbnailNode];
-    v36 = v35;
-    if (v35)
+    thumbnailNode2 = [(PISemanticStyleApplyNode *)self thumbnailNode];
+    v36 = thumbnailNode2;
+    if (thumbnailNode2)
     {
-      v37 = v35;
+      inputNode5 = thumbnailNode2;
     }
 
     else
     {
-      v37 = [(PISemanticStyleApplyNode *)self inputNode];
+      inputNode5 = [(PISemanticStyleApplyNode *)self inputNode];
     }
 
-    v29 = v37;
+    v29 = inputNode5;
 
     v38 = MEMORY[0x1E69B3C40];
-    v39 = [(PISemanticStyleApplyNode *)self inputNode];
-    v40 = [(PISemanticStyleApplyNode *)self styleNode];
-    v41 = [v38 styleTransferApplyNodeWithInput:v39 thumbnail:v29 target:v40 settings:MEMORY[0x1E695E0F8]];
+    inputNode6 = [(PISemanticStyleApplyNode *)self inputNode];
+    styleNode5 = [(PISemanticStyleApplyNode *)self styleNode];
+    v41 = [v38 styleTransferApplyNodeWithInput:inputNode6 thumbnail:v29 target:styleNode5 settings:MEMORY[0x1E695E0F8]];
 
-    v21 = [v41 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:v60];
+    v21 = [v41 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:errorCopy];
 
     goto LABEL_25;
   }
 
-  v20 = [(PISemanticStyleApplyNode *)self inputNode];
-  v21 = [v20 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:v60];
+  inputNode7 = [(PISemanticStyleApplyNode *)self inputNode];
+  v21 = [inputNode7 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:errorCopy];
 
 LABEL_27:
 LABEL_28:
@@ -209,22 +209,22 @@ LABEL_28:
   return v21;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = PISemanticStyleApplyNode;
-  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
-- (PISemanticStyleApplyNode)initWithInput:(id)a3 style:(id)a4 thumbnail:(id)a5
+- (PISemanticStyleApplyNode)initWithInput:(id)input style:(id)style thumbnail:(id)thumbnail
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  inputCopy = input;
+  styleCopy = style;
+  thumbnailCopy = thumbnail;
+  if (!inputCopy)
   {
     v15 = NUAssertLogger_11150();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -235,7 +235,7 @@ LABEL_28:
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v17 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v19 = NUAssertLogger_11150();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -243,11 +243,11 @@ LABEL_28:
     {
       if (v20)
       {
-        v28 = dispatch_get_specific(*v17);
+        v28 = dispatch_get_specific(*callStackSymbols);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v17 = [v29 callStackSymbols];
-        v31 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v39 = v28;
         v40 = 2114;
@@ -258,10 +258,10 @@ LABEL_28:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v39 = v17;
+      v39 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -269,7 +269,7 @@ LABEL_28:
     goto LABEL_17;
   }
 
-  if (!v9)
+  if (!styleCopy)
   {
     v22 = NUAssertLogger_11150();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -280,7 +280,7 @@ LABEL_28:
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v17 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v24 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v19 = NUAssertLogger_11150();
     v25 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -288,8 +288,8 @@ LABEL_28:
     {
       if (v25)
       {
-        v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v27 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v39 = v27;
         _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -301,11 +301,11 @@ LABEL_28:
 LABEL_17:
     if (v25)
     {
-      v32 = dispatch_get_specific(*v17);
+      v32 = dispatch_get_specific(*callStackSymbols);
       v33 = MEMORY[0x1E696AF00];
       v34 = v32;
-      v35 = [v33 callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v33 callStackSymbols];
+      v36 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v39 = v32;
       v40 = 2114;
@@ -318,10 +318,10 @@ LABEL_19:
     _NUAssertFailHandler();
   }
 
-  v11 = v10;
+  v11 = thumbnailCopy;
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v12 setObject:v8 forKeyedSubscript:@"input"];
-  [v12 setObject:v9 forKeyedSubscript:@"style"];
+  [v12 setObject:inputCopy forKeyedSubscript:@"input"];
+  [v12 setObject:styleCopy forKeyedSubscript:@"style"];
   [v12 setObject:v11 forKeyedSubscript:@"thumbnail"];
   v37.receiver = self;
   v37.super_class = PISemanticStyleApplyNode;
@@ -330,11 +330,11 @@ LABEL_19:
   return v13;
 }
 
-- (PISemanticStyleApplyNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PISemanticStyleApplyNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -373,8 +373,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -401,8 +401,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

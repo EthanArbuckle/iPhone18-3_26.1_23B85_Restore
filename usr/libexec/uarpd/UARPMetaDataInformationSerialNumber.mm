@@ -1,7 +1,7 @@
 @interface UARPMetaDataInformationSerialNumber
 - (UARPMetaDataInformationSerialNumber)init;
-- (UARPMetaDataInformationSerialNumber)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataInformationSerialNumber)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataInformationSerialNumber)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataInformationSerialNumber)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,16 +24,16 @@
   return v3;
 }
 
-- (UARPMetaDataInformationSerialNumber)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataInformationSerialNumber)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataInformationSerialNumber *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataInformationSerialNumber;
-    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:valueCopy];
     serialNumber = v7->_serialNumber;
     v7->_serialNumber = v8;
 
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (UARPMetaDataInformationSerialNumber)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataInformationSerialNumber)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataInformationSerialNumber *)self init];
   if (v6)
   {
-    v7 = [[NSString alloc] initWithBytes:a4 length:a3 encoding:4];
+    v7 = [[NSString alloc] initWithBytes:value length:length encoding:4];
     serialNumber = v6->_serialNumber;
     v6->_serialNumber = v7;
 
@@ -70,19 +70,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataInformationSerialNumber *)self serialNumber];
+  serialNumber = [(UARPMetaDataInformationSerialNumber *)self serialNumber];
   v6.receiver = self;
   v6.super_class = UARPMetaDataInformationSerialNumber;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithString:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithString:serialNumber];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataInformationSerialNumber *)self serialNumber];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  serialNumber = [(UARPMetaDataInformationSerialNumber *)self serialNumber];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, serialNumber];
 
   return v5;
 }

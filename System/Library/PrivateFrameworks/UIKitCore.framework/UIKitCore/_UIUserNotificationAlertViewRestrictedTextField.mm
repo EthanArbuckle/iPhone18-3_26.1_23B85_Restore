@@ -1,39 +1,39 @@
 @interface _UIUserNotificationAlertViewRestrictedTextField
-+ (id)restrictedProxyForTextField:(id)a3;
-- (void)forwardInvocation:(id)a3;
++ (id)restrictedProxyForTextField:(id)field;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation _UIUserNotificationAlertViewRestrictedTextField
 
-+ (id)restrictedProxyForTextField:(id)a3
++ (id)restrictedProxyForTextField:(id)field
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS____UIUserNotificationAlertViewRestrictedTextField;
-  v3 = objc_msgSendSuper2(&v5, sel_proxyWithTarget_, a3);
+  v3 = objc_msgSendSuper2(&v5, sel_proxyWithTarget_, field);
 
   return v3;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = NSStringFromSelector([v4 selector]);
-  v6 = [objc_opt_class() _supportedMethodSelectorNames];
-  v7 = [v6 containsObject:v5];
+  invocationCopy = invocation;
+  v5 = NSStringFromSelector([invocationCopy selector]);
+  _supportedMethodSelectorNames = [objc_opt_class() _supportedMethodSelectorNames];
+  v7 = [_supportedMethodSelectorNames containsObject:v5];
 
   if (v7)
   {
     v11.receiver = self;
     v11.super_class = _UIUserNotificationAlertViewRestrictedTextField;
-    [(_UITargetedProxy *)&v11 forwardInvocation:v4];
+    [(_UITargetedProxy *)&v11 forwardInvocation:invocationCopy];
   }
 
   else
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D920];
-    v10 = [objc_opt_class() _supportedMethodSelectorNames];
-    [v8 raise:v9 format:{@"Text fields in UIAlertViews displayed from view services only accept these methods: %@", v10}];
+    _supportedMethodSelectorNames2 = [objc_opt_class() _supportedMethodSelectorNames];
+    [v8 raise:v9 format:{@"Text fields in UIAlertViews displayed from view services only accept these methods: %@", _supportedMethodSelectorNames2}];
   }
 }
 

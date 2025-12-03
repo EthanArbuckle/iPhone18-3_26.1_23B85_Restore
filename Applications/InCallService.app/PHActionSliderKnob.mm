@@ -1,15 +1,15 @@
 @interface PHActionSliderKnob
-- (PHActionSliderKnob)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (PHActionSliderKnob)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation PHActionSliderKnob
 
-- (PHActionSliderKnob)initWithFrame:(CGRect)a3
+- (PHActionSliderKnob)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PHActionSliderKnob;
-  v3 = [(PHActionSliderKnob *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHActionSliderKnob *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor whiteColor];
@@ -26,10 +26,10 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  v7 = [(PHActionSliderKnob *)self knobColor:a3.origin.x];
+  height = rect.size.height;
+  v7 = [(PHActionSliderKnob *)self knobColor:rect.origin.x];
   if (_UISolariumEnabled())
   {
     [(PHActionSliderKnob *)self applyRegularGlassBackgroundWithTintColor:v7];
@@ -54,8 +54,8 @@
     UIGraphicsPopContext();
   }
 
-  v6 = [(PHActionSliderKnob *)self layer];
-  [v6 setCornerRadius:height * 0.5];
+  layer = [(PHActionSliderKnob *)self layer];
+  [layer setCornerRadius:height * 0.5];
 }
 
 @end

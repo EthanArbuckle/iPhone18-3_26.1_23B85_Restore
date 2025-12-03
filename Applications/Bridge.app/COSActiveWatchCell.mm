@@ -1,18 +1,18 @@
 @interface COSActiveWatchCell
-- (COSActiveWatchCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (COSActiveWatchCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)searchIconImage;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation COSActiveWatchCell
 
-- (COSActiveWatchCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (COSActiveWatchCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v36.receiver = self;
   v36.super_class = COSActiveWatchCell;
-  v5 = [(COSActiveWatchCell *)&v36 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(COSActiveWatchCell *)&v36 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (v5)
   {
     v6 = [[COSWatchView alloc] initWithStyle:6];
@@ -28,8 +28,8 @@
     [v10 addArrangedSubview:v5->_watchView];
     [v10 setSpacing:18.0];
     [v10 setAlignment:3];
-    v11 = [(COSActiveWatchCell *)v5 contentView];
-    [v11 addSubview:v10];
+    contentView = [(COSActiveWatchCell *)v5 contentView];
+    [contentView addSubview:v10];
 
     v12 = _NSDictionaryOfVariableBindings(@"horizontalStack", v10, 0);
     v13 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[horizontalStack]|", 0, 0, v12);
@@ -43,7 +43,7 @@
     v17 = 1;
     [v16 setAxis:1];
     [v16 setBaselineRelativeArrangement:1];
-    v18 = [UIApp preferredContentSizeCategory];
+    preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
     if ((_UIContentSizeCategoryCompareToContentSizeCategory() & 0x8000000000000000) == 0)
     {
       if (_UIContentSizeCategoryCompareToContentSizeCategory() < 0)
@@ -88,15 +88,15 @@
     [v10 addArrangedSubview:v16];
     if (v17 >= 2)
     {
-      v30 = [(COSWatchView *)v5->_watchView topAnchor];
-      v31 = [(UILabel *)v5->_watchName topAnchor];
+      topAnchor = [(COSWatchView *)v5->_watchView topAnchor];
+      topAnchor2 = [(UILabel *)v5->_watchName topAnchor];
       [(UILabel *)v5->_watchName _capOffsetFromBoundsTop];
-      v33 = [v30 constraintEqualToAnchor:v31 constant:-v32];
+      v33 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-v32];
       [v33 setActive:1];
     }
 
-    v34 = [(COSActiveWatchCell *)v5 titleLabel];
-    [v34 setHidden:1];
+    titleLabel = [(COSActiveWatchCell *)v5 titleLabel];
+    [titleLabel setHidden:1];
   }
 
   return v5;
@@ -116,17 +116,17 @@
   v4.receiver = self;
   v4.super_class = COSActiveWatchCell;
   [(COSActiveWatchCell *)&v4 layoutSubviews];
-  v3 = [(COSActiveWatchCell *)self titleLabel];
-  [v3 setHidden:1];
+  titleLabel = [(COSActiveWatchCell *)self titleLabel];
+  [titleLabel setHidden:1];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v27.receiver = self;
   v27.super_class = COSActiveWatchCell;
-  v4 = a3;
-  [(COSActiveWatchCell *)&v27 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:@"COSActiveWatchDetail"];
+  specifierCopy = specifier;
+  [(COSActiveWatchCell *)&v27 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"COSActiveWatchDetail"];
 
   if (v5)
   {
@@ -192,9 +192,9 @@
     v25 = pbb_bridge_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v5 _bridgeConciseDebugDescription];
+      _bridgeConciseDebugDescription = [v5 _bridgeConciseDebugDescription];
       *buf = 138412290;
-      v29 = v26;
+      v29 = _bridgeConciseDebugDescription;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Refreshed with device %@", buf, 0xCu);
     }
   }
@@ -217,8 +217,8 @@
   v14.height = v4;
   UIGraphicsBeginImageContextWithOptions(v14, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v6 = [(COSWatchView *)self->_watchView layer];
-  [v6 renderInContext:CurrentContext];
+  layer = [(COSWatchView *)self->_watchView layer];
+  [layer renderInContext:CurrentContext];
 
   v7 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();

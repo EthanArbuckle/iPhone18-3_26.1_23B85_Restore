@@ -1,6 +1,6 @@
 @interface VCWRMHandler
 - (VCWRMHandler)init;
-- (unsigned)processRemoteWRMSuggestion:(int)a3 isRemoteDuplicating:(BOOL)a4;
+- (unsigned)processRemoteWRMSuggestion:(int)suggestion isRemoteDuplicating:(BOOL)duplicating;
 @end
 
 @implementation VCWRMHandler
@@ -19,21 +19,21 @@
   return result;
 }
 
-- (unsigned)processRemoteWRMSuggestion:(int)a3 isRemoteDuplicating:(BOOL)a4
+- (unsigned)processRemoteWRMSuggestion:(int)suggestion isRemoteDuplicating:(BOOL)duplicating
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3 == -1)
+  if (suggestion == -1)
   {
     return 0;
   }
 
-  if (self->_remoteWRMLinkTypeSuggestion == a3 && self->_isRemoteDuplicating == a4)
+  if (self->_remoteWRMLinkTypeSuggestion == suggestion && self->_isRemoteDuplicating == duplicating)
   {
     return 1;
   }
 
-  self->_isRemoteDuplicating = a4;
-  self->_remoteWRMLinkTypeSuggestion = a3;
+  self->_isRemoteDuplicating = duplicating;
+  self->_remoteWRMLinkTypeSuggestion = suggestion;
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v7 = VRTraceErrorLogLevelToCSTR();
@@ -44,7 +44,7 @@
       isRemoteDuplicating = self->_isRemoteDuplicating;
       v12 = 136316162;
       v13 = v7;
-      if (!a3)
+      if (!suggestion)
       {
         v9 = "Cellular";
       }

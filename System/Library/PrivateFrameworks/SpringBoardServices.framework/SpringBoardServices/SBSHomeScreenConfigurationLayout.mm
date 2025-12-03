@@ -1,28 +1,28 @@
 @interface SBSHomeScreenConfigurationLayout
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBSHomeScreenConfigurationLayout)initWithBSXPCCoder:(id)a3;
-- (SBSHomeScreenConfigurationLayout)initWithItems:(id)a3 dockItems:(id)a4;
+- (SBSHomeScreenConfigurationLayout)initWithBSXPCCoder:(id)coder;
+- (SBSHomeScreenConfigurationLayout)initWithItems:(id)items dockItems:(id)dockItems;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SBSHomeScreenConfigurationLayout
 
-- (SBSHomeScreenConfigurationLayout)initWithItems:(id)a3 dockItems:(id)a4
+- (SBSHomeScreenConfigurationLayout)initWithItems:(id)items dockItems:(id)dockItems
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  dockItemsCopy = dockItems;
   v14.receiver = self;
   v14.super_class = SBSHomeScreenConfigurationLayout;
   v8 = [(SBSHomeScreenConfigurationLayout *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [itemsCopy copy];
     items = v8->_items;
     v8->_items = v9;
 
-    v11 = [v7 copy];
+    v11 = [dockItemsCopy copy];
     dockItems = v8->_dockItems;
     v8->_dockItems = v11;
   }
@@ -30,29 +30,29 @@
   return v8;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   items = self->_items;
-  v5 = a3;
-  [v5 encodeCollection:items forKey:@"items"];
-  [v5 encodeCollection:self->_dockItems forKey:@"dockItems"];
+  coderCopy = coder;
+  [coderCopy encodeCollection:items forKey:@"items"];
+  [coderCopy encodeCollection:self->_dockItems forKey:@"dockItems"];
 }
 
-- (SBSHomeScreenConfigurationLayout)initWithBSXPCCoder:(id)a3
+- (SBSHomeScreenConfigurationLayout)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SBSHomeScreenConfigurationLayout;
   v5 = [(SBSHomeScreenConfigurationLayout *)&v13 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"items"];
+    v7 = [coderCopy decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"items"];
     items = v5->_items;
     v5->_items = v7;
 
     v9 = objc_opt_class();
-    v10 = [v4 decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"dockItems"];
+    v10 = [coderCopy decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"dockItems"];
     dockItems = v5->_dockItems;
     v5->_dockItems = v10;
   }
@@ -70,16 +70,16 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [MEMORY[0x1E698E6A0] builderWithObject:self ofExpectedClass:objc_opt_class()];
   items = self->_items;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __44__SBSHomeScreenConfigurationLayout_isEqual___block_invoke;
   v18[3] = &unk_1E735F618;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
   v8 = [v5 appendObject:items counterpart:v18];
   dockItems = self->_dockItems;
@@ -100,9 +100,9 @@
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_items withName:@"items"];
   v5 = [v3 appendObject:self->_dockItems withName:@"dockItems"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

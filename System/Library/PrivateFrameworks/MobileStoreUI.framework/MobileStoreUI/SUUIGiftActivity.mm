@@ -1,5 +1,5 @@
 @interface SUUIGiftActivity
-- (SUUIGiftActivity)initWithItem:(id)a3 clientContext:(id)a4;
+- (SUUIGiftActivity)initWithItem:(id)item clientContext:(id)context;
 - (id)activityImage;
 - (id)activityTitle;
 - (id)activityViewController;
@@ -7,18 +7,18 @@
 
 @implementation SUUIGiftActivity
 
-- (SUUIGiftActivity)initWithItem:(id)a3 clientContext:(id)a4
+- (SUUIGiftActivity)initWithItem:(id)item clientContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SUUIGiftActivity;
   v9 = [(UIActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientContext, a4);
-    objc_storeStrong(&v10->_item, a3);
+    objc_storeStrong(&v9->_clientContext, context);
+    objc_storeStrong(&v10->_item, item);
   }
 
   return v10;

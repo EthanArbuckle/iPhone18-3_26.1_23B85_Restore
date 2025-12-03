@@ -2,10 +2,10 @@
 + (const)periodicActivityID;
 + (id)sharedInstance;
 + (int64_t)periodicActivityInterval;
-+ (void)registerPeriodicActivityWithIdentifier:(id)a3 queue:(id)a4 activity:(id)a5;
++ (void)registerPeriodicActivityWithIdentifier:(id)identifier queue:(id)queue activity:(id)activity;
 - (ABCPeriodicMaintenanceActivity)init;
-- (void)_handleActivityRun:(id)a3;
-- (void)_registerPeriodicActivityWithIdentifier:(id)a3 queue:(id)a4 activity:(id)a5;
+- (void)_handleActivityRun:(id)run;
+- (void)_registerPeriodicActivityWithIdentifier:(id)identifier queue:(id)queue activity:(id)activity;
 - (void)_registerPeriodicMaintenanceActivity;
 - (void)dealloc;
 @end
@@ -14,35 +14,35 @@
 
 + (int64_t)periodicActivityInterval
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ABCPeriodicMaintenanceActivity.m" lineNumber:38 description:{@"Subclasses must provide an impl for %s", "+[ABCPeriodicMaintenanceActivity periodicActivityInterval]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ABCPeriodicMaintenanceActivity.m" lineNumber:38 description:{@"Subclasses must provide an impl for %s", "+[ABCPeriodicMaintenanceActivity periodicActivityInterval]"}];
 
   return *MEMORY[0x277D86298];
 }
 
 + (const)periodicActivityID
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ABCPeriodicMaintenanceActivity.m" lineNumber:44 description:{@"Subclasses must provide an impl for %s", "+[ABCPeriodicMaintenanceActivity periodicActivityID]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ABCPeriodicMaintenanceActivity.m" lineNumber:44 description:{@"Subclasses must provide an impl for %s", "+[ABCPeriodicMaintenanceActivity periodicActivityID]"}];
 
   return "";
 }
 
 + (id)sharedInstance
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ABCPeriodicMaintenanceActivity.m" lineNumber:50 description:{@"Subclasses must provide an impl for %s", "+[ABCPeriodicMaintenanceActivity sharedInstance]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ABCPeriodicMaintenanceActivity.m" lineNumber:50 description:{@"Subclasses must provide an impl for %s", "+[ABCPeriodicMaintenanceActivity sharedInstance]"}];
 
   return 0;
 }
 
-+ (void)registerPeriodicActivityWithIdentifier:(id)a3 queue:(id)a4 activity:(id)a5
++ (void)registerPeriodicActivityWithIdentifier:(id)identifier queue:(id)queue activity:(id)activity
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() sharedInstance];
-  [v10 _registerPeriodicActivityWithIdentifier:v9 queue:v8 activity:v7];
+  activityCopy = activity;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  sharedInstance = [objc_opt_class() sharedInstance];
+  [sharedInstance _registerPeriodicActivityWithIdentifier:identifierCopy queue:queueCopy activity:activityCopy];
 }
 
 - (ABCPeriodicMaintenanceActivity)init
@@ -74,8 +74,8 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [objc_opt_class() periodicActivityID];
-  xpc_activity_unregister(v3);
+  periodicActivityID = [objc_opt_class() periodicActivityID];
+  xpc_activity_unregister(periodicActivityID);
   v4.receiver = self;
   v4.super_class = ABCPeriodicMaintenanceActivity;
   [(ABCPeriodicMaintenanceActivity *)&v4 dealloc];
@@ -91,15 +91,15 @@ LABEL_6:
     xpc_dictionary_set_string(v3, *MEMORY[0x277D86340], *MEMORY[0x277D86348]);
     xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86360], 1);
     v5 = *MEMORY[0x277D86288];
-    v6 = [objc_opt_class() periodicActivityInterval];
-    xpc_dictionary_set_int64(v4, v5, v6);
-    v7 = [objc_opt_class() periodicActivityID];
+    periodicActivityInterval = [objc_opt_class() periodicActivityInterval];
+    xpc_dictionary_set_int64(v4, v5, periodicActivityInterval);
+    periodicActivityID = [objc_opt_class() periodicActivityID];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __70__ABCPeriodicMaintenanceActivity__registerPeriodicMaintenanceActivity__block_invoke;
     handler[3] = &unk_278CF14B0;
     handler[4] = self;
-    xpc_activity_register(v7, v4, handler);
+    xpc_activity_register(periodicActivityID, v4, handler);
   }
 
   else
@@ -112,7 +112,7 @@ LABEL_6:
       *buf = 138543618;
       v14 = v10;
       v15 = 2080;
-      v16 = [objc_opt_class() periodicActivityID];
+      periodicActivityID2 = [objc_opt_class() periodicActivityID];
       _os_log_impl(&dword_241804000, v8, OS_LOG_TYPE_ERROR, "[%{public}@] Unable to create xpc_activity criteria for %s", buf, 0x16u);
     }
   }
@@ -148,10 +148,10 @@ void __70__ABCPeriodicMaintenanceActivity__registerPeriodicMaintenanceActivity__
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActivityRun:(id)a3
+- (void)_handleActivityRun:(id)run
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  runCopy = run;
   obj = self->_activities;
   objc_sync_enter(obj);
   nextActivityIndex = self->_nextActivityIndex;
@@ -172,7 +172,7 @@ LABEL_13:
       _os_log_impl(&dword_241804000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] Completed running periodic activity xpc_activity", buf, 0xCu);
     }
 
-    if (!xpc_activity_set_state(v4, 5))
+    if (!xpc_activity_set_state(runCopy, 5))
     {
       v24 = symptomsLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -211,22 +211,22 @@ LABEL_13:
       {
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
-        v16 = [v12 activityIdentifier];
+        activityIdentifier = [v12 activityIdentifier];
         *buf = 138543618;
         v36 = v15;
         v37 = 2112;
-        v38 = v16;
+        v38 = activityIdentifier;
         _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Ready to run periodic activity %@", buf, 0x16u);
       }
 
-      v17 = [v12 activityQueue];
-      v18 = [v12 activityBlock];
-      dispatch_async(v17, v18);
+      activityQueue = [v12 activityQueue];
+      activityBlock = [v12 activityBlock];
+      dispatch_async(activityQueue, activityBlock);
 
       v19 = nextActivityIndex + 1;
       v20 = v8 == nextActivityIndex ? 0 : nextActivityIndex + 1;
       self->_nextActivityIndex = v20;
-      if (v19 < v7 && xpc_activity_should_defer(v4))
+      if (v19 < v7 && xpc_activity_should_defer(runCopy))
       {
         break;
       }
@@ -248,7 +248,7 @@ LABEL_13:
       _os_log_impl(&dword_241804000, v28, OS_LOG_TYPE_DEFAULT, "[%{public}@] Deferring periodic activity xpc_activity", buf, 0xCu);
     }
 
-    if (!xpc_activity_set_state(v4, 3))
+    if (!xpc_activity_set_state(runCopy, 3))
     {
       v31 = symptomsLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -267,14 +267,14 @@ LABEL_13:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerPeriodicActivityWithIdentifier:(id)a3 queue:(id)a4 activity:(id)a5
+- (void)_registerPeriodicActivityWithIdentifier:(id)identifier queue:(id)queue activity:(id)activity
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9 && v10 && [v8 length])
+  identifierCopy = identifier;
+  queueCopy = queue;
+  activityCopy = activity;
+  v11 = activityCopy;
+  if (queueCopy && activityCopy && [identifierCopy length])
   {
     v12 = self->_activities;
     objc_sync_enter(v12);
@@ -286,7 +286,7 @@ LABEL_13:
       *buf = 138543618;
       *&buf[4] = v15;
       *&buf[12] = 2112;
-      *&buf[14] = v8;
+      *&buf[14] = identifierCopy;
       _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_INFO, "[%{public}@] Registering periodic activity %@", buf, 0x16u);
     }
 
@@ -299,16 +299,16 @@ LABEL_13:
     v25[1] = 3221225472;
     v25[2] = __89__ABCPeriodicMaintenanceActivity__registerPeriodicActivityWithIdentifier_queue_activity___block_invoke;
     v25[3] = &unk_278CF1558;
-    v17 = v8;
+    v17 = identifierCopy;
     v26 = v17;
-    v27 = self;
+    selfCopy = self;
     v28 = buf;
     [(NSMutableArray *)activities enumerateObjectsUsingBlock:v25];
     if (*(*&buf[8] + 24) == 1)
     {
       v18 = objc_alloc_init(ABCMaintenanceActivity);
       [(ABCMaintenanceActivity *)v18 setActivityBlock:v11];
-      [(ABCMaintenanceActivity *)v18 setActivityQueue:v9];
+      [(ABCMaintenanceActivity *)v18 setActivityQueue:queueCopy];
       [(ABCMaintenanceActivity *)v18 setActivityIdentifier:v17];
       [(NSMutableArray *)self->_activities addObject:v18];
       v19 = symptomsLogHandle();

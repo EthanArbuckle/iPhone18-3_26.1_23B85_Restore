@@ -1,28 +1,28 @@
 @interface VTSpeakerIdUtilities
-+ (BOOL)deleteExistingSATModelForLanguageCode:(id)a3;
-+ (id)_getAssetHashFromConfigPath:(id)a3;
-+ (id)createSATDirectoriesForType:(unint64_t)a3 forLanguageCode:(id)a4;
-+ (id)getExplicitEnrollmentUtterancesForType:(unint64_t)a3 forLanguageCode:(id)a4;
-+ (id)getImplicitEnrollmentUtterancesPriorTo:(id)a3 forType:(unint64_t)a4 forLanguageCode:(id)a5;
-+ (id)getProfileVersionFilePathForLanguageCode:(id)a3;
-+ (id)getSATAudioDirectoryForType:(unint64_t)a3 forLanguageCode:(id)a4;
-+ (id)getSATDirectoryForLanguageCode:(id)a3;
-+ (id)getSATDirectoryForModelType:(unint64_t)a3 forLanguageCode:(id)a4;
-+ (id)getSATModelDirectoryForType:(unint64_t)a3 forLanguageCode:(id)a4;
-+ (id)getSortedEnrollmentUtterancesForType:(unint64_t)a3 forLanguageCode:(id)a4;
-+ (id)getSortedImplicitEnrollmentUtterancesForType:(unint64_t)a3 forLanguageCode:(id)a4;
-+ (id)getSpeakerModelPathForType:(unint64_t)a3 withLanguageCode:(id)a4 withConfigPath:(id)a5 createDirectory:(BOOL)a6;
-+ (id)stringForVTSpIdType:(unint64_t)a3;
++ (BOOL)deleteExistingSATModelForLanguageCode:(id)code;
++ (id)_getAssetHashFromConfigPath:(id)path;
++ (id)createSATDirectoriesForType:(unint64_t)type forLanguageCode:(id)code;
++ (id)getExplicitEnrollmentUtterancesForType:(unint64_t)type forLanguageCode:(id)code;
++ (id)getImplicitEnrollmentUtterancesPriorTo:(id)to forType:(unint64_t)type forLanguageCode:(id)code;
++ (id)getProfileVersionFilePathForLanguageCode:(id)code;
++ (id)getSATAudioDirectoryForType:(unint64_t)type forLanguageCode:(id)code;
++ (id)getSATDirectoryForLanguageCode:(id)code;
++ (id)getSATDirectoryForModelType:(unint64_t)type forLanguageCode:(id)code;
++ (id)getSATModelDirectoryForType:(unint64_t)type forLanguageCode:(id)code;
++ (id)getSortedEnrollmentUtterancesForType:(unint64_t)type forLanguageCode:(id)code;
++ (id)getSortedImplicitEnrollmentUtterancesForType:(unint64_t)type forLanguageCode:(id)code;
++ (id)getSpeakerModelPathForType:(unint64_t)type withLanguageCode:(id)code withConfigPath:(id)path createDirectory:(BOOL)directory;
++ (id)stringForVTSpIdType:(unint64_t)type;
 + (id)timeStampWithSaltGrain;
 @end
 
 @implementation VTSpeakerIdUtilities
 
-+ (BOOL)deleteExistingSATModelForLanguageCode:(id)a3
++ (BOOL)deleteExistingSATModelForLanguageCode:(id)code
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [VTSpeakerIdUtilities getSATModelDirectoryForType:1 forLanguageCode:v3];
+  codeCopy = code;
+  v4 = [VTSpeakerIdUtilities getSATModelDirectoryForType:1 forLanguageCode:codeCopy];
   if ([v4 isEqualToString:@"/tmp"])
   {
     v5 = VTLogContextFacilityVoiceTrigger;
@@ -48,7 +48,7 @@ LABEL_21:
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v42 = v3;
+      v42 = codeCopy;
       v6 = "ERR: satTDModelDirector is nil for LanguageCode %@";
       goto LABEL_27;
     }
@@ -57,20 +57,20 @@ LABEL_21:
   }
 
   v7 = 0x277CCA000uLL;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 fileExistsAtPath:v4 isDirectory:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:v4 isDirectory:0];
 
   if (v9)
   {
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v40 = 0;
-    v11 = [v10 contentsOfDirectoryAtPath:v4 error:&v40];
+    v11 = [defaultManager2 contentsOfDirectoryAtPath:v4 error:&v40];
     v12 = v40;
 
     if (!v12 && v11)
     {
       v32 = v11;
-      v33 = v3;
+      v33 = codeCopy;
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
@@ -96,9 +96,9 @@ LABEL_21:
             if (*(*(&v36 + 1) + 8 * v18))
             {
               v19 = [v4 stringByAppendingPathComponent:?];
-              v20 = [*(v7 + 2560) defaultManager];
+              defaultManager3 = [*(v7 + 2560) defaultManager];
               v35 = 0;
-              [v20 removeItemAtPath:v19 error:&v35];
+              [defaultManager3 removeItemAtPath:v19 error:&v35];
               v21 = v35;
 
               if (v21)
@@ -140,7 +140,7 @@ LABEL_21:
       }
 
       v11 = v32;
-      v3 = v33;
+      codeCopy = v33;
       v12 = 0;
     }
   }
@@ -164,12 +164,12 @@ LABEL_25:
   return v5;
 }
 
-+ (id)getSortedEnrollmentUtterancesForType:(unint64_t)a3 forLanguageCode:(id)a4
++ (id)getSortedEnrollmentUtterancesForType:(unint64_t)type forLanguageCode:(id)code
 {
-  v5 = a4;
-  v6 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:a3 forLanguageCode:v5];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 contentsOfDirectoryAtPath:v6 error:0];
+  codeCopy = code;
+  v6 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:type forLanguageCode:codeCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager contentsOfDirectoryAtPath:v6 error:0];
 
   v20 = 0;
   v21 = &v20;
@@ -200,18 +200,18 @@ void __77__VTSpeakerIdUtilities_getSortedEnrollmentUtterancesForType_forLanguage
   [*(*(*(a1 + 40) + 8) + 40) addObject:v3];
 }
 
-+ (id)getImplicitEnrollmentUtterancesPriorTo:(id)a3 forType:(unint64_t)a4 forLanguageCode:(id)a5
++ (id)getImplicitEnrollmentUtterancesPriorTo:(id)to forType:(unint64_t)type forLanguageCode:(id)code
 {
-  v7 = a3;
-  v8 = a5;
-  if (v7)
+  toCopy = to;
+  codeCopy = code;
+  if (toCopy)
   {
-    v9 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:a4 forLanguageCode:v8];
+    v9 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:type forLanguageCode:codeCopy];
     if (v9)
     {
-      v10 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v30 = 0;
-      v11 = [v10 contentsOfDirectoryAtPath:v9 error:&v30];
+      v11 = [defaultManager contentsOfDirectoryAtPath:v9 error:&v30];
       v12 = v30;
 
       *buf = 0;
@@ -232,7 +232,7 @@ void __77__VTSpeakerIdUtilities_getSortedEnrollmentUtterancesForType_forLanguage
       v19[1] = 3221225472;
       v19[2] = __87__VTSpeakerIdUtilities_getImplicitEnrollmentUtterancesPriorTo_forType_forLanguageCode___block_invoke_2;
       v19[3] = &unk_2784EC4F0;
-      v20 = v7;
+      v20 = toCopy;
       v14 = [v13 predicateWithBlock:v19];
       v15 = [*(v25 + 5) filteredArrayUsingPredicate:v14];
 
@@ -327,13 +327,13 @@ LABEL_11:
   return v14;
 }
 
-+ (id)getSortedImplicitEnrollmentUtterancesForType:(unint64_t)a3 forLanguageCode:(id)a4
++ (id)getSortedImplicitEnrollmentUtterancesForType:(unint64_t)type forLanguageCode:(id)code
 {
-  v5 = a4;
-  v6 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:a3 forLanguageCode:v5];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  codeCopy = code;
+  v6 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:type forLanguageCode:codeCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v25 = 0;
-  v8 = [v7 contentsOfDirectoryAtPath:v6 error:&v25];
+  v8 = [defaultManager contentsOfDirectoryAtPath:v6 error:&v25];
   v9 = v25;
 
   v19 = 0;
@@ -447,13 +447,13 @@ BOOL __85__VTSpeakerIdUtilities_getSortedImplicitEnrollmentUtterancesForType_for
   return v8;
 }
 
-+ (id)getExplicitEnrollmentUtterancesForType:(unint64_t)a3 forLanguageCode:(id)a4
++ (id)getExplicitEnrollmentUtterancesForType:(unint64_t)type forLanguageCode:(id)code
 {
-  v5 = a4;
-  v6 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:a3 forLanguageCode:v5];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  codeCopy = code;
+  v6 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:type forLanguageCode:codeCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v23 = 0;
-  v8 = [v7 contentsOfDirectoryAtPath:v6 error:&v23];
+  v8 = [defaultManager contentsOfDirectoryAtPath:v6 error:&v23];
   v9 = v23;
 
   v17 = 0;
@@ -508,62 +508,62 @@ BOOL __79__VTSpeakerIdUtilities_getExplicitEnrollmentUtterancesForType_forLangua
   return v8;
 }
 
-+ (id)_getAssetHashFromConfigPath:(id)a3
++ (id)_getAssetHashFromConfigPath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"com_apple_MobileAsset_VoiceTriggerAssets/"];
+  pathCopy = path;
+  v4 = [pathCopy rangeOfString:@"com_apple_MobileAsset_VoiceTriggerAssets/"];
   v6 = v5;
-  v7 = [v3 rangeOfString:@".asset"];
+  v7 = [pathCopy rangeOfString:@".asset"];
   v9 = @"nohash";
   if (v6 && v8)
   {
-    v9 = [v3 substringWithRange:{v4 + v6, v7 - (v4 + v6)}];
+    v9 = [pathCopy substringWithRange:{v4 + v6, v7 - (v4 + v6)}];
   }
 
   return v9;
 }
 
-+ (id)getProfileVersionFilePathForLanguageCode:(id)a3
++ (id)getProfileVersionFilePathForLanguageCode:(id)code
 {
-  v3 = [VTSpeakerIdUtilities getSATDirectoryForLanguageCode:a3];
+  v3 = [VTSpeakerIdUtilities getSATDirectoryForLanguageCode:code];
   v4 = [v3 stringByAppendingPathComponent:@"enrollment_version.json"];
 
   return v4;
 }
 
-+ (id)getSpeakerModelPathForType:(unint64_t)a3 withLanguageCode:(id)a4 withConfigPath:(id)a5 createDirectory:(BOOL)a6
++ (id)getSpeakerModelPathForType:(unint64_t)type withLanguageCode:(id)code withConfigPath:(id)path createDirectory:(BOOL)directory
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a5;
-  if (v6)
+  directoryCopy = directory;
+  codeCopy = code;
+  pathCopy = path;
+  if (directoryCopy)
   {
-    v11 = [VTSpeakerIdUtilities createSATDirectoriesForType:a3 forLanguageCode:v9];
+    v11 = [VTSpeakerIdUtilities createSATDirectoriesForType:type forLanguageCode:codeCopy];
   }
 
-  v12 = [VTSpeakerIdUtilities _getAssetHashFromConfigPath:v10];
-  v13 = [VTSpeakerIdUtilities getSATModelDirectoryForType:a3 forLanguageCode:v9];
+  v12 = [VTSpeakerIdUtilities _getAssetHashFromConfigPath:pathCopy];
+  v13 = [VTSpeakerIdUtilities getSATModelDirectoryForType:type forLanguageCode:codeCopy];
   v14 = [v13 stringByAppendingPathComponent:v12];
 
   return v14;
 }
 
-+ (id)createSATDirectoriesForType:(unint64_t)a3 forLanguageCode:(id)a4
++ (id)createSATDirectoriesForType:(unint64_t)type forLanguageCode:(id)code
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:a3 forLanguageCode:v5];
-  v7 = [VTSpeakerIdUtilities getSATModelDirectoryForType:a3 forLanguageCode:v5];
+  codeCopy = code;
+  v6 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:type forLanguageCode:codeCopy];
+  v7 = [VTSpeakerIdUtilities getSATModelDirectoryForType:type forLanguageCode:codeCopy];
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 fileExistsAtPath:v6 isDirectory:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:v6 isDirectory:0];
 
   v10 = 0;
   if ((v9 & 1) == 0)
   {
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v26 = 0;
-    v12 = [v11 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v26];
+    v12 = [defaultManager2 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v26];
     v10 = v26;
 
     v13 = VTLogContextFacilityVoiceTrigger;
@@ -580,17 +580,17 @@ BOOL __79__VTSpeakerIdUtilities_getExplicitEnrollmentUtterancesForType_forLangua
     else if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
     {
       v21 = v13;
-      v22 = [v10 localizedDescription];
+      localizedDescription = [v10 localizedDescription];
       *buf = 138543618;
       v28 = v6;
       v29 = 2114;
-      v30 = v22;
+      v30 = localizedDescription;
       _os_log_error_impl(&dword_223A31000, v21, OS_LOG_TYPE_ERROR, "Couldn't create SAT audio directory at path %{public}@ %{public}@", buf, 0x16u);
     }
   }
 
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  v15 = [v14 fileExistsAtPath:v7 isDirectory:0];
+  defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+  v15 = [defaultManager3 fileExistsAtPath:v7 isDirectory:0];
 
   if (v15)
   {
@@ -599,9 +599,9 @@ BOOL __79__VTSpeakerIdUtilities_getExplicitEnrollmentUtterancesForType_forLangua
 
   else
   {
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
     v25 = v10;
-    v18 = [v17 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v25];
+    v18 = [defaultManager4 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v25];
     v16 = v25;
 
     v19 = VTLogContextFacilityVoiceTrigger;
@@ -618,11 +618,11 @@ BOOL __79__VTSpeakerIdUtilities_getExplicitEnrollmentUtterancesForType_forLangua
     else if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
     {
       v23 = v19;
-      v24 = [v16 localizedDescription];
+      localizedDescription2 = [v16 localizedDescription];
       *buf = 138543618;
       v28 = v7;
       v29 = 2114;
-      v30 = v24;
+      v30 = localizedDescription2;
       _os_log_error_impl(&dword_223A31000, v23, OS_LOG_TYPE_ERROR, "Couldn't create SAT model directory at path %{public}@ %{public}@", buf, 0x16u);
     }
   }
@@ -630,10 +630,10 @@ BOOL __79__VTSpeakerIdUtilities_getExplicitEnrollmentUtterancesForType_forLangua
   return v16;
 }
 
-+ (id)getSATAudioDirectoryForType:(unint64_t)a3 forLanguageCode:(id)a4
++ (id)getSATAudioDirectoryForType:(unint64_t)type forLanguageCode:(id)code
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = [VTSpeakerIdUtilities getSATDirectoryForModelType:a3 forLanguageCode:a4];
+  v5 = [VTSpeakerIdUtilities getSATDirectoryForModelType:type forLanguageCode:code];
   v6 = v5;
   if (v5)
   {
@@ -646,7 +646,7 @@ BOOL __79__VTSpeakerIdUtilities_getExplicitEnrollmentUtterancesForType_forLangua
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "ERR: Invalid ModelType path for SpIdType %ld - Bailing out", &v10, 0xCu);
     }
 
@@ -656,10 +656,10 @@ BOOL __79__VTSpeakerIdUtilities_getExplicitEnrollmentUtterancesForType_forLangua
   return v7;
 }
 
-+ (id)getSATModelDirectoryForType:(unint64_t)a3 forLanguageCode:(id)a4
++ (id)getSATModelDirectoryForType:(unint64_t)type forLanguageCode:(id)code
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = [VTSpeakerIdUtilities getSATDirectoryForModelType:a3 forLanguageCode:a4];
+  v5 = [VTSpeakerIdUtilities getSATDirectoryForModelType:type forLanguageCode:code];
   v6 = v5;
   if (v5)
   {
@@ -672,7 +672,7 @@ BOOL __79__VTSpeakerIdUtilities_getExplicitEnrollmentUtterancesForType_forLangua
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "ERR: Invalid ModelType path for SpIdType %ld - Bailing out", &v10, 0xCu);
     }
 
@@ -682,11 +682,11 @@ BOOL __79__VTSpeakerIdUtilities_getExplicitEnrollmentUtterancesForType_forLangua
   return v7;
 }
 
-+ (id)getSATDirectoryForModelType:(unint64_t)a3 forLanguageCode:(id)a4
++ (id)getSATDirectoryForModelType:(unint64_t)type forLanguageCode:(id)code
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [VTSpeakerIdUtilities getSATDirectoryForLanguageCode:a4];
-  v6 = [VTSpeakerIdUtilities stringForVTSpIdType:a3];
+  v5 = [VTSpeakerIdUtilities getSATDirectoryForLanguageCode:code];
+  v6 = [VTSpeakerIdUtilities stringForVTSpIdType:type];
   v7 = v6;
   if (v5)
   {
@@ -700,7 +700,7 @@ BOOL __79__VTSpeakerIdUtilities_getExplicitEnrollmentUtterancesForType_forLangua
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134217984;
-      v16 = a3;
+      typeCopy = type;
       v10 = "ERR: Invalid SpIdType %ld - Bailing out";
       v11 = v13;
       v12 = 12;
@@ -728,34 +728,34 @@ LABEL_10:
   return v8;
 }
 
-+ (id)stringForVTSpIdType:(unint64_t)a3
++ (id)stringForVTSpIdType:(unint64_t)type
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3 - 1 < 3)
+  if (type - 1 < 3)
   {
-    return off_2784EC510[a3 - 1];
+    return off_2784EC510[type - 1];
   }
 
   v5 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_223A31000, v5, OS_LOG_TYPE_DEFAULT, "ERR: Unknown VTSpIdType:%lu", &v6, 0xCu);
   }
 
   return 0;
 }
 
-+ (id)getSATDirectoryForLanguageCode:(id)a3
++ (id)getSATDirectoryForLanguageCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = CPSharedResourcesDirectory();
   v5 = [v4 stringByAppendingPathComponent:@"Library/VoiceTrigger/SAT"];
   v6 = v5;
-  if (v3)
+  if (codeCopy)
   {
-    v7 = v3;
+    v7 = codeCopy;
   }
 
   else

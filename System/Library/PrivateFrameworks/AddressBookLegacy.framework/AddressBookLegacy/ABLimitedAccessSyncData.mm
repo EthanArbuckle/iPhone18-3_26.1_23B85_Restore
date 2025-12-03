@@ -6,10 +6,10 @@
 
 - (NSEnumerator)syncEvents
 {
-  v2 = [(ABLimitedAccessSyncData *)self syncEventsArray];
-  v3 = [v2 objectEnumerator];
+  syncEventsArray = [(ABLimitedAccessSyncData *)self syncEventsArray];
+  objectEnumerator = [syncEventsArray objectEnumerator];
 
-  return v3;
+  return objectEnumerator;
 }
 
 @end

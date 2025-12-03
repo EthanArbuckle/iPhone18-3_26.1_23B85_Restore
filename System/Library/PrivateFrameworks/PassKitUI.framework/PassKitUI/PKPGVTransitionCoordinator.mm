@@ -1,39 +1,39 @@
 @interface PKPGVTransitionCoordinator
-+ (uint64_t)connectWithRequest:(uint64_t)a1;
-- (id)becomeInteractiveForReceiver:(id)a3;
-- (unsigned)layout:(id)a3 transition:(id)a4 stateForSendableItem:(unsigned __int8)a5;
-- (void)_assertConnection:(char)a3 deallocating:;
-- (void)_assertLayout:(char)a3 deallocating:;
-- (void)_assertReceiver:(char)a3 deallocating:;
-- (void)_assertSender:(char)a3 deallocating:;
-- (void)_assertTransceiver:(char)a3 deallocating:;
-- (void)_assertTransition:(uint64_t)a1;
-- (void)_beginTransitionWithContext:(char)a3 dirty:(void *)a4 completion:(void *)a5 subtransition:;
-- (void)_finishInteractionForTransition:(uint64_t)a1;
-- (void)_finishLayoutCoordinatorActionForTransition:(uint64_t)a1;
-- (void)_finishSending:(int)a3 detached:(void *)a4 forTransition:;
-- (void)_subtransitionDidFinishForTransition:(uint64_t)a1;
-- (void)_transitionDidMoveSendableItem:(uint64_t)a1;
-- (void)_updateStateForTransitionInteractive:(uint64_t)a1;
-- (void)beginSubtransitionForTransition:(id)a3 sending:(unsigned __int8)a4 animated:(BOOL)a5;
-- (void)connectionDidTerminate:(id)a3;
-- (void)coordinatorForConnection:(void *)a1;
-- (void)coordinatorForLayout:(void *)a1;
-- (void)coordinatorForReceiver:(void *)a1;
-- (void)coordinatorForSender:(void *)a1;
-- (void)coordinatorForTransceiver:(void *)a1;
++ (uint64_t)connectWithRequest:(uint64_t)request;
+- (id)becomeInteractiveForReceiver:(id)receiver;
+- (unsigned)layout:(id)layout transition:(id)transition stateForSendableItem:(unsigned __int8)item;
+- (void)_assertConnection:(char)connection deallocating:;
+- (void)_assertLayout:(char)layout deallocating:;
+- (void)_assertReceiver:(char)receiver deallocating:;
+- (void)_assertSender:(char)sender deallocating:;
+- (void)_assertTransceiver:(char)transceiver deallocating:;
+- (void)_assertTransition:(uint64_t)transition;
+- (void)_beginTransitionWithContext:(char)context dirty:(void *)dirty completion:(void *)completion subtransition:;
+- (void)_finishInteractionForTransition:(uint64_t)transition;
+- (void)_finishLayoutCoordinatorActionForTransition:(uint64_t)transition;
+- (void)_finishSending:(int)sending detached:(void *)detached forTransition:;
+- (void)_subtransitionDidFinishForTransition:(uint64_t)transition;
+- (void)_transitionDidMoveSendableItem:(uint64_t)item;
+- (void)_updateStateForTransitionInteractive:(uint64_t)interactive;
+- (void)beginSubtransitionForTransition:(id)transition sending:(unsigned __int8)sending animated:(BOOL)animated;
+- (void)connectionDidTerminate:(id)terminate;
+- (void)coordinatorForConnection:(void *)connection;
+- (void)coordinatorForLayout:(void *)layout;
+- (void)coordinatorForReceiver:(void *)receiver;
+- (void)coordinatorForSender:(void *)sender;
+- (void)coordinatorForTransceiver:(void *)transceiver;
 - (void)dealloc;
-- (void)interruptSubtransitionForTransition:(id)a3 sending:(unsigned __int8)a4;
-- (void)receiver:(id)a3 updateInteractionToProgress:(double)a4;
-- (void)senderDidTapView:(id)a3;
-- (void)tombstoneConnection:(id)a3;
-- (void)transceiver:(id)a3 invertWithTransitionContext:(id)a4 completion:(id)a5;
-- (void)transceiver:(id)a3 transition:(id)a4 setNeedsStateUpdateInteractive:(BOOL)a5;
+- (void)interruptSubtransitionForTransition:(id)transition sending:(unsigned __int8)sending;
+- (void)receiver:(id)receiver updateInteractionToProgress:(double)progress;
+- (void)senderDidTapView:(id)view;
+- (void)tombstoneConnection:(id)connection;
+- (void)transceiver:(id)transceiver invertWithTransitionContext:(id)context completion:(id)completion;
+- (void)transceiver:(id)transceiver transition:(id)transition setNeedsStateUpdateInteractive:(BOOL)interactive;
 @end
 
 @implementation PKPGVTransitionCoordinator
 
-+ (uint64_t)connectWithRequest:(uint64_t)a1
++ (uint64_t)connectWithRequest:(uint64_t)request
 {
   v2 = a2;
   result = objc_opt_self();
@@ -302,47 +302,47 @@ LABEL_4:
   return [v4 transitionCoordinatorWillConnectLayout:v5 forRequest:v6];
 }
 
-- (void)_beginTransitionWithContext:(char)a3 dirty:(void *)a4 completion:(void *)a5 subtransition:
+- (void)_beginTransitionWithContext:(char)context dirty:(void *)dirty completion:(void *)completion subtransition:
 {
   v9 = a2;
-  v10 = a4;
-  v11 = a5;
-  if (!a1)
+  dirtyCopy = dirty;
+  completionCopy = completion;
+  if (!self)
   {
     goto LABEL_30;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 24));
+  WeakRetained = objc_loadWeakRetained((self + 24));
   if (WeakRetained)
   {
     v13 = WeakRetained;
-    v45 = v11;
-    v14 = objc_loadWeakRetained((a1 + 40));
+    v45 = completionCopy;
+    v14 = objc_loadWeakRetained((self + 40));
     if (v14)
     {
       v15 = v14;
-      v16 = objc_loadWeakRetained((a1 + 56));
+      v16 = objc_loadWeakRetained((self + 56));
       if (v16)
       {
         v17 = v16;
         if (v9)
         {
-          if (!*(a1 + 8))
+          if (!*(self + 8))
           {
             v44 = v15 != v16;
-            if (*(a1 + 98) != 1)
+            if (*(self + 98) != 1)
             {
               v18 = [PKPGVTransition alloc];
               v43 = v9;
               v19 = v9;
-              v20 = v10;
-              v41 = v10;
+              v20 = dirtyCopy;
+              v41 = dirtyCopy;
               if (v18 && (v60.receiver = v18, v60.super_class = PKPGVTransition, (v21 = objc_msgSendSuper2(&v60, sel_init)) != 0))
               {
                 v22 = v21;
                 *(v21 + 18) = 1;
                 objc_storeStrong(v21 + 5, a2);
-                *(v22 + 34) = a3;
+                *(v22 + 34) = context;
                 v23 = *(v19 + 9);
                 *(v22 + 32) = v23;
                 v24 = 1.0;
@@ -382,7 +382,7 @@ LABEL_4:
                 v31 = *(v22 + 32);
                 if (*(v22 + 33) == 1)
                 {
-                  *(a1 + 98) = 1;
+                  *(self + 98) = 1;
                 }
 
                 if (*(v22 + 18) != 1)
@@ -422,10 +422,10 @@ LABEL_4:
               v47[1] = 3221225472;
               v48 = __89__PKPGVTransitionCoordinator__beginTransitionWithContext_dirty_completion_subtransition___block_invoke;
               v49 = &unk_1E8025678;
-              v50 = a1;
+              selfCopy = self;
               v33 = v22;
               v51 = v33;
-              v57 = a3;
+              contextCopy = context;
               v34 = v15;
               v52 = v34;
               v58 = v44;
@@ -435,25 +435,25 @@ LABEL_4:
               v36 = v13;
               v54 = v36;
               v59 = v31;
-              v11 = v45;
+              completionCopy = v45;
               v55 = v45;
               v37 = v47;
-              if (!*(a1 + 96))
+              if (!*(self + 96))
               {
                 v38 = v37;
-                *(a1 + 96) = 2;
+                *(self + 96) = 2;
                 v39 = objc_autoreleasePoolPush();
-                v48(v38, *(a1 + 96));
+                v48(v38, *(self + 96));
                 v9 = v43;
                 objc_autoreleasePoolPop(v39);
-                *(a1 + 96) = 0;
+                *(self + 96) = 0;
 
                 if ((v42 & 1) != 0 || (v40 = v33[8] - 1, --v33[8], v40 < 0x10000))
                 {
-                  [(PKPGVTransitionCoordinator *)a1 _subtransitionDidFinishForTransition:v33];
+                  [(PKPGVTransitionCoordinator *)self _subtransitionDidFinishForTransition:v33];
 
                   _Block_object_dispose(&v60, 8);
-                  v10 = v41;
+                  dirtyCopy = v41;
 LABEL_30:
 
                   return;
@@ -477,28 +477,28 @@ LABEL_31:
   [(PKPGVTransitionCoordinator *)&v2 dealloc];
 }
 
-- (void)_assertConnection:(char)a3 deallocating:
+- (void)_assertConnection:(char)connection deallocating:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (!v5 || *(a1 + 99) == 1)
+    if (!v5 || *(self + 99) == 1)
     {
       goto LABEL_21;
     }
 
-    if ((a3 & 1) == 0)
+    if ((connection & 1) == 0)
     {
       v14 = v5;
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
+      WeakRetained = objc_loadWeakRetained((self + 24));
       if (WeakRetained)
       {
         v7 = WeakRetained;
-        v8 = objc_loadWeakRetained((a1 + 40));
+        v8 = objc_loadWeakRetained((self + 40));
         if (v8)
         {
           v9 = v8;
-          v10 = objc_loadWeakRetained((a1 + 56));
+          v10 = objc_loadWeakRetained((self + 56));
           if (v10)
           {
             if (v7 == v14 || v9 == v14 || v10 == v14)
@@ -516,19 +516,19 @@ LABEL_21:
       return;
     }
 
-    v11 = *(a1 + 32);
+    v11 = *(self + 32);
     if (!v11)
     {
       goto LABEL_21;
     }
 
-    v12 = *(a1 + 48);
+    v12 = *(self + 48);
     if (!v12)
     {
       goto LABEL_21;
     }
 
-    v13 = *(a1 + 64);
+    v13 = *(self + 64);
     if (!v13 || v11 != v5 && v12 != v5 && v13 != v5)
     {
       goto LABEL_21;
@@ -538,28 +538,28 @@ LABEL_21:
 LABEL_12:
 }
 
-- (void)_assertLayout:(char)a3 deallocating:
+- (void)_assertLayout:(char)layout deallocating:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (!v5 || *(a1 + 99) == 1)
+    if (!v5 || *(self + 99) == 1)
     {
       goto LABEL_14;
     }
 
-    if ((a3 & 1) == 0)
+    if ((layout & 1) == 0)
     {
       v9 = v5;
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
+      WeakRetained = objc_loadWeakRetained((self + 24));
 
       if (WeakRetained == v9)
       {
-        v7 = objc_loadWeakRetained((a1 + 40));
+        v7 = objc_loadWeakRetained((self + 40));
 
         if (v7)
         {
-          v8 = objc_loadWeakRetained((a1 + 56));
+          v8 = objc_loadWeakRetained((self + 56));
 
           v5 = v9;
           if (v8)
@@ -574,7 +574,7 @@ LABEL_14:
       return;
     }
 
-    if (*(a1 + 32) != v5 || !*(a1 + 48) || !*(a1 + 64))
+    if (*(self + 32) != v5 || !*(self + 48) || !*(self + 64))
     {
       goto LABEL_14;
     }
@@ -583,28 +583,28 @@ LABEL_14:
 LABEL_8:
 }
 
-- (void)_assertTransceiver:(char)a3 deallocating:
+- (void)_assertTransceiver:(char)transceiver deallocating:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (!v5 || *(a1 + 99) == 1)
+    if (!v5 || *(self + 99) == 1)
     {
       goto LABEL_19;
     }
 
-    if ((a3 & 1) == 0)
+    if ((transceiver & 1) == 0)
     {
       v12 = v5;
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
+      WeakRetained = objc_loadWeakRetained((self + 24));
 
       if (WeakRetained)
       {
-        v7 = objc_loadWeakRetained((a1 + 40));
+        v7 = objc_loadWeakRetained((self + 40));
         if (v7)
         {
           v8 = v7;
-          v9 = objc_loadWeakRetained((a1 + 56));
+          v9 = objc_loadWeakRetained((self + 56));
           if (v9)
           {
             if (v8 == v12 || v9 == v12)
@@ -622,18 +622,18 @@ LABEL_19:
       return;
     }
 
-    if (!*(a1 + 32))
+    if (!*(self + 32))
     {
       goto LABEL_19;
     }
 
-    v10 = *(a1 + 48);
+    v10 = *(self + 48);
     if (!v10)
     {
       goto LABEL_19;
     }
 
-    v11 = *(a1 + 64);
+    v11 = *(self + 64);
     if (!v11 || v10 != v5 && v11 != v5)
     {
       goto LABEL_19;
@@ -643,28 +643,28 @@ LABEL_19:
 LABEL_11:
 }
 
-- (void)_assertSender:(char)a3 deallocating:
+- (void)_assertSender:(char)sender deallocating:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (!v5 || *(a1 + 99) == 1)
+    if (!v5 || *(self + 99) == 1)
     {
       goto LABEL_14;
     }
 
-    if ((a3 & 1) == 0)
+    if ((sender & 1) == 0)
     {
       v9 = v5;
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
+      WeakRetained = objc_loadWeakRetained((self + 24));
 
       if (WeakRetained)
       {
-        v7 = objc_loadWeakRetained((a1 + 40));
+        v7 = objc_loadWeakRetained((self + 40));
 
         if (v7 == v9)
         {
-          v8 = objc_loadWeakRetained((a1 + 56));
+          v8 = objc_loadWeakRetained((self + 56));
 
           v5 = v9;
           if (v8)
@@ -679,7 +679,7 @@ LABEL_14:
       return;
     }
 
-    if (!*(a1 + 32) || *(a1 + 48) != v5 || !*(a1 + 64))
+    if (!*(self + 32) || *(self + 48) != v5 || !*(self + 64))
     {
       goto LABEL_14;
     }
@@ -688,28 +688,28 @@ LABEL_14:
 LABEL_8:
 }
 
-- (void)_assertReceiver:(char)a3 deallocating:
+- (void)_assertReceiver:(char)receiver deallocating:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (!v5 || *(a1 + 99) == 1)
+    if (!v5 || *(self + 99) == 1)
     {
       goto LABEL_14;
     }
 
-    if ((a3 & 1) == 0)
+    if ((receiver & 1) == 0)
     {
       v9 = v5;
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
+      WeakRetained = objc_loadWeakRetained((self + 24));
 
       if (WeakRetained)
       {
-        v7 = objc_loadWeakRetained((a1 + 40));
+        v7 = objc_loadWeakRetained((self + 40));
 
         if (v7)
         {
-          v8 = objc_loadWeakRetained((a1 + 56));
+          v8 = objc_loadWeakRetained((self + 56));
 
           v5 = v9;
           if (v8 == v9)
@@ -724,7 +724,7 @@ LABEL_14:
       return;
     }
 
-    if (!*(a1 + 32) || !*(a1 + 48) || *(a1 + 64) != v5)
+    if (!*(self + 32) || !*(self + 48) || *(self + 64) != v5)
     {
       goto LABEL_14;
     }
@@ -733,10 +733,10 @@ LABEL_14:
 LABEL_8:
 }
 
-- (void)_assertTransition:(uint64_t)a1
+- (void)_assertTransition:(uint64_t)transition
 {
   v3 = a2;
-  if (a1 && (!v3 || *(a1 + 8) != v3 || *(a1 + 99) == 1))
+  if (transition && (!v3 || *(transition + 8) != v3 || *(transition + 99) == 1))
   {
     __break(1u);
   }
@@ -1005,10 +1005,10 @@ void __89__PKPGVTransitionCoordinator__beginTransitionWithContext_dirty_completi
 LABEL_8:
 }
 
-- (void)_finishLayoutCoordinatorActionForTransition:(uint64_t)a1
+- (void)_finishLayoutCoordinatorActionForTransition:(uint64_t)transition
 {
   v4 = a2;
-  [(PKPGVTransitionCoordinator *)a1 _assertTransition:v4];
+  [(PKPGVTransitionCoordinator *)transition _assertTransition:v4];
   v3 = v4[8]-- - 1;
   if (v3 >= 0x10000)
   {
@@ -1017,7 +1017,7 @@ LABEL_8:
 
   else
   {
-    [(PKPGVTransitionCoordinator *)a1 _subtransitionDidFinishForTransition:v4];
+    [(PKPGVTransitionCoordinator *)transition _subtransitionDidFinishForTransition:v4];
   }
 }
 
@@ -1039,36 +1039,36 @@ uint64_t __89__PKPGVTransitionCoordinator__beginTransitionWithContext_dirty_comp
   return result;
 }
 
-- (void)_subtransitionDidFinishForTransition:(uint64_t)a1
+- (void)_subtransitionDidFinishForTransition:(uint64_t)transition
 {
   v18 = a2;
-  [(PKPGVTransitionCoordinator *)a1 _assertTransition:v18];
+  [(PKPGVTransitionCoordinator *)transition _assertTransition:v18];
   v3 = v18;
-  if ((!v18 || !v18[8]) && *(a1 + 82) == 1 && *(a1 + 74) == 1)
+  if ((!v18 || !v18[8]) && *(transition + 82) == 1 && *(transition + 74) == 1)
   {
-    if ((*(a1 + 73) & 1) == 0)
+    if ((*(transition + 73) & 1) == 0)
     {
-      [(PKPGVTransitionCoordinator *)a1 _transitionDidMoveSendableItem:?];
+      [(PKPGVTransitionCoordinator *)transition _transitionDidMoveSendableItem:?];
     }
 
-    if ((*(a1 + 81) & 1) == 0)
+    if ((*(transition + 81) & 1) == 0)
     {
-      [(PKPGVTransitionCoordinator *)a1 _transitionDidMoveSendableItem:?];
+      [(PKPGVTransitionCoordinator *)transition _transitionDidMoveSendableItem:?];
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 40));
-    if (!WeakRetained || (v5 = WeakRetained, (v6 = objc_loadWeakRetained((a1 + 56))) == 0) || (v7 = *(a1 + 8)) == 0 || (v8 = v6, v9 = v7, *(a1 + 80) != 2) || *(a1 + 72) != 2 || v9[8] || (v10 = v5 != v8, v11 = *(v9 + 34), v19[0] = MEMORY[0x1E69E9820], v19[1] = 3221225472, v20 = __44__PKPGVTransitionCoordinator__endTransition__block_invoke, v21 = &unk_1E8025718, v22 = a1, v12 = v9, v23 = v12, v13 = v8, v24 = v13, v26 = v11, v27 = v10, v14 = v5, v25 = v14, v15 = v19, *(a1 + 96)))
+    WeakRetained = objc_loadWeakRetained((transition + 40));
+    if (!WeakRetained || (v5 = WeakRetained, (v6 = objc_loadWeakRetained((transition + 56))) == 0) || (v7 = *(transition + 8)) == 0 || (v8 = v6, v9 = v7, *(transition + 80) != 2) || *(transition + 72) != 2 || v9[8] || (v10 = v5 != v8, v11 = *(v9 + 34), v19[0] = MEMORY[0x1E69E9820], v19[1] = 3221225472, v20 = __44__PKPGVTransitionCoordinator__endTransition__block_invoke, v21 = &unk_1E8025718, v22 = transition, v12 = v9, v23 = v12, v13 = v8, v24 = v13, v26 = v11, v27 = v10, v14 = v5, v25 = v14, v15 = v19, *(transition + 96)))
     {
       __break(1u);
       return;
     }
 
     v16 = v15;
-    *(a1 + 96) = 4;
+    *(transition + 96) = 4;
     v17 = objc_autoreleasePoolPush();
-    v20(v16, *(a1 + 96));
+    v20(v16, *(transition + 96));
     objc_autoreleasePoolPop(v17);
-    *(a1 + 96) = 0;
+    *(transition + 96) = 0;
 
     [PKPGVTransition _endTrackingTransition:v12];
     v3 = v18;
@@ -1155,14 +1155,14 @@ void __48__PKPGVTransitionCoordinator__becomeInteractive__block_invoke_2(uint64_
 LABEL_8:
 }
 
-- (void)_finishInteractionForTransition:(uint64_t)a1
+- (void)_finishInteractionForTransition:(uint64_t)transition
 {
   v3 = a2;
-  [(PKPGVTransitionCoordinator *)a1 _assertTransition:v3];
-  WeakRetained = objc_loadWeakRetained((a1 + 24));
-  if (WeakRetained && (*(v3 + 32) & 1) != 0 && (v5 = WeakRetained, *(v3 + 32) = 0, *(v3 + 6) = 0x3FF0000000000000, v12[0] = MEMORY[0x1E69E9820], v12[1] = 3221225472, v13 = __62__PKPGVTransitionCoordinator__finishInteractionForTransition___block_invoke, v14 = &unk_1E80256C8, v6 = v3, v15 = v6, v16 = a1, v7 = v5, v17 = v7, v8 = v12, !*(a1 + 96)) && (v9 = v8, *(a1 + 96) = 10, v10 = objc_autoreleasePoolPush(), (v13)(v9, *(a1 + 96)), objc_autoreleasePoolPop(v10), *(a1 + 96) = 0, v9, v9, v11 = v6[8] - 1, --v6[8], v11 < 0x10000))
+  [(PKPGVTransitionCoordinator *)transition _assertTransition:v3];
+  WeakRetained = objc_loadWeakRetained((transition + 24));
+  if (WeakRetained && (*(v3 + 32) & 1) != 0 && (v5 = WeakRetained, *(v3 + 32) = 0, *(v3 + 6) = 0x3FF0000000000000, v12[0] = MEMORY[0x1E69E9820], v12[1] = 3221225472, v13 = __62__PKPGVTransitionCoordinator__finishInteractionForTransition___block_invoke, v14 = &unk_1E80256C8, v6 = v3, v15 = v6, v16 = transition, v7 = v5, v17 = v7, v8 = v12, !*(transition + 96)) && (v9 = v8, *(transition + 96) = 10, v10 = objc_autoreleasePoolPush(), (v13)(v9, *(transition + 96)), objc_autoreleasePoolPop(v10), *(transition + 96) = 0, v9, v9, v11 = v6[8] - 1, --v6[8], v11 < 0x10000))
   {
-    [(PKPGVTransitionCoordinator *)a1 _subtransitionDidFinishForTransition:v6];
+    [(PKPGVTransitionCoordinator *)transition _subtransitionDidFinishForTransition:v6];
   }
 
   else
@@ -1289,22 +1289,22 @@ uint64_t __48__PKPGVTransitionCoordinator__becomeInteractive__block_invoke_8(uin
   return result;
 }
 
-- (void)_updateStateForTransitionInteractive:(uint64_t)a1
+- (void)_updateStateForTransitionInteractive:(uint64_t)interactive
 {
-  if (a1)
+  if (interactive)
   {
-    v3 = *(a1 + 96);
+    v3 = *(interactive + 96);
     if ((v3 & 6) == 0 || (v3 & 8) != 0)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
-      if (WeakRetained && (v7 = WeakRetained, (v8 = objc_loadWeakRetained((a1 + 40))) != 0) && (v9 = v8, (v10 = objc_loadWeakRetained((a1 + 56))) != 0) && (v11 = *(a1 + 8)) != 0 && ((v12 = v10, v13 = v11, v23[0] = MEMORY[0x1E69E9820], v23[1] = 3221225472, v24 = __67__PKPGVTransitionCoordinator__updateStateForTransitionInteractive___block_invoke, v25 = &unk_1E80257E0, v14 = v13, v26 = v14, v15 = v9, v27 = v15, v16 = v12, v28 = v16, v29 = a1, v31 = a2, v17 = v7, v30 = v17, v18 = v23, v19 = *(a1 + 96), (v3 & 8) == 0) ? (v20 = -57) : (v20 = -63), (v19 & v20) == 0))
+      WeakRetained = objc_loadWeakRetained((interactive + 24));
+      if (WeakRetained && (v7 = WeakRetained, (v8 = objc_loadWeakRetained((interactive + 40))) != 0) && (v9 = v8, (v10 = objc_loadWeakRetained((interactive + 56))) != 0) && (v11 = *(interactive + 8)) != 0 && ((v12 = v10, v13 = v11, v23[0] = MEMORY[0x1E69E9820], v23[1] = 3221225472, v24 = __67__PKPGVTransitionCoordinator__updateStateForTransitionInteractive___block_invoke, v25 = &unk_1E80257E0, v14 = v13, v26 = v14, v15 = v9, v27 = v15, v16 = v12, v28 = v16, v29 = interactive, v31 = a2, v17 = v7, v30 = v17, v18 = v23, v19 = *(interactive + 96), (v3 & 8) == 0) ? (v20 = -57) : (v20 = -63), (v19 & v20) == 0))
       {
         v21 = v18;
-        *(a1 + 96) = v19 | 0x10;
+        *(interactive + 96) = v19 | 0x10;
         v22 = objc_autoreleasePoolPush();
-        (v24)(v21, *(a1 + 96));
+        (v24)(v21, *(interactive + 96));
         objc_autoreleasePoolPop(v22);
-        *(a1 + 96) = v19;
+        *(interactive + 96) = v19;
       }
 
       else
@@ -1525,17 +1525,17 @@ uint64_t __44__PKPGVTransitionCoordinator__endTransition__block_invoke_2(uint64_
   return result;
 }
 
-- (void)_transitionDidMoveSendableItem:(uint64_t)a1
+- (void)_transitionDidMoveSendableItem:(uint64_t)item
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 40));
-  if (WeakRetained && (v5 = WeakRetained, (v6 = objc_loadWeakRetained((a1 + 56))) != 0) && (v7 = *(a1 + 8)) != 0 && (v8 = v6, v9 = v5 != v6, v10 = v7, v18[0] = MEMORY[0x1E69E9820], v18[1] = 3221225472, v19 = __61__PKPGVTransitionCoordinator__transitionDidMoveSendableItem___block_invoke, v20 = &unk_1E8025718, v25 = a2, v21 = a1, v11 = v5, v22 = v11, v12 = v10, v23 = v12, v26 = v9, v13 = v8, v24 = v13, v14 = v18, v15 = *(a1 + 96), (v15 & 0xFFF5) == 0))
+  WeakRetained = objc_loadWeakRetained((item + 40));
+  if (WeakRetained && (v5 = WeakRetained, (v6 = objc_loadWeakRetained((item + 56))) != 0) && (v7 = *(item + 8)) != 0 && (v8 = v6, v9 = v5 != v6, v10 = v7, v18[0] = MEMORY[0x1E69E9820], v18[1] = 3221225472, v19 = __61__PKPGVTransitionCoordinator__transitionDidMoveSendableItem___block_invoke, v20 = &unk_1E8025718, v25 = a2, v21 = item, v11 = v5, v22 = v11, v12 = v10, v23 = v12, v26 = v9, v13 = v8, v24 = v13, v14 = v18, v15 = *(item + 96), (v15 & 0xFFF5) == 0))
   {
     v16 = v14;
-    *(a1 + 96) = v15 | 0x20;
+    *(item + 96) = v15 | 0x20;
     v17 = objc_autoreleasePoolPush();
-    (v19)(v16, *(a1 + 96));
+    (v19)(v16, *(item + 96));
     objc_autoreleasePoolPop(v17);
-    *(a1 + 96) = v15;
+    *(item + 96) = v15;
   }
 
   else
@@ -1675,17 +1675,17 @@ void __53__PKPGVTransitionCoordinator__beginSending_animated___block_invoke_3(ui
   }
 }
 
-- (void)_finishSending:(int)a3 detached:(void *)a4 forTransition:
+- (void)_finishSending:(int)sending detached:(void *)detached forTransition:
 {
-  v7 = a4;
-  if (a1)
+  detachedCopy = detached;
+  if (self)
   {
-    v10 = v7;
-    [(PKPGVTransitionCoordinator *)a1 _assertTransition:v7];
+    v10 = detachedCopy;
+    [(PKPGVTransitionCoordinator *)self _assertTransition:detachedCopy];
     if (a2 == 1)
     {
-      v8 = (a1 + 74);
-      if (*(a1 + 74) != 1)
+      v8 = (self + 74);
+      if (*(self + 74) != 1)
       {
         v9 = 73;
         goto LABEL_8;
@@ -1697,23 +1697,23 @@ void __53__PKPGVTransitionCoordinator__beginSending_animated___block_invoke_3(ui
       if (a2)
       {
 LABEL_9:
-        if (a3)
+        if (sending)
         {
-          [(PKPGVTransitionCoordinator *)a1 _transitionDidMoveSendableItem:a2];
+          [(PKPGVTransitionCoordinator *)self _transitionDidMoveSendableItem:a2];
         }
 
-        [(PKPGVTransitionCoordinator *)a1 _subtransitionDidFinishForTransition:v10];
-        v7 = v10;
+        [(PKPGVTransitionCoordinator *)self _subtransitionDidFinishForTransition:v10];
+        detachedCopy = v10;
         goto LABEL_12;
       }
 
-      v8 = (a1 + 82);
-      if (*(a1 + 82) != 1)
+      v8 = (self + 82);
+      if (*(self + 82) != 1)
       {
         v9 = 81;
 LABEL_8:
         *v8 = 1;
-        *(a1 + v9) = a3;
+        *(self + v9) = sending;
         goto LABEL_9;
       }
     }
@@ -2095,46 +2095,46 @@ LABEL_16:
   }
 }
 
-- (void)coordinatorForConnection:(void *)a1
+- (void)coordinatorForConnection:(void *)connection
 {
-  if (a1)
+  if (connection)
   {
-    [(PKPGVTransitionCoordinator *)a1 _assertConnection:a2 deallocating:1];
-    v3 = a1;
+    [(PKPGVTransitionCoordinator *)connection _assertConnection:a2 deallocating:1];
+    connectionCopy = connection;
   }
 
-  return a1;
+  return connection;
 }
 
-- (void)connectionDidTerminate:(id)a3
+- (void)connectionDidTerminate:(id)terminate
 {
-  v4 = a3;
-  [(PKPGVTransitionCoordinator *)self _assertConnection:v4 deallocating:1];
-  v5 = self;
-  v19 = v4;
-  if (v5)
+  terminateCopy = terminate;
+  [(PKPGVTransitionCoordinator *)self _assertConnection:terminateCopy deallocating:1];
+  selfCopy = self;
+  v19 = terminateCopy;
+  if (selfCopy)
   {
-    if (v5->_invalidated || (v5->_invalidated = 1, v6 = v5->_transition, transition = v5->_transition, v5->_transition = 0, transition, v5->_interrupted = v6 != 0, WeakRetained = objc_loadWeakRetained(&v5->_layout), v9 = objc_loadWeakRetained(&v5->_sender), v10 = objc_loadWeakRetained(&v5->_receiver), v5->_unsafeLayout = 0, objc_storeWeak(&v5->_layout, 0), v5->_unsafeSender = 0, objc_storeWeak(&v5->_sender, 0), v5->_unsafeReceiver = 0, objc_storeWeak(&v5->_receiver, 0), v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v21 = __55__PKPGVTransitionCoordinator__terminateFromConnection___block_invoke, v22 = &unk_1E8025628, v11 = v6, v23 = v11, v12 = WeakRetained, v24 = v12, v25 = v19, v26 = v5, v13 = v10, v27 = v13, v14 = v9, v28 = v14, v15 = v20, restrictedActions = v5->_restrictedActions, (restrictedActions & 0xFFFFFFFB) != 0))
+    if (selfCopy->_invalidated || (selfCopy->_invalidated = 1, v6 = selfCopy->_transition, transition = selfCopy->_transition, selfCopy->_transition = 0, transition, selfCopy->_interrupted = v6 != 0, WeakRetained = objc_loadWeakRetained(&selfCopy->_layout), v9 = objc_loadWeakRetained(&selfCopy->_sender), v10 = objc_loadWeakRetained(&selfCopy->_receiver), selfCopy->_unsafeLayout = 0, objc_storeWeak(&selfCopy->_layout, 0), selfCopy->_unsafeSender = 0, objc_storeWeak(&selfCopy->_sender, 0), selfCopy->_unsafeReceiver = 0, objc_storeWeak(&selfCopy->_receiver, 0), v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v21 = __55__PKPGVTransitionCoordinator__terminateFromConnection___block_invoke, v22 = &unk_1E8025628, v11 = v6, v23 = v11, v12 = WeakRetained, v24 = v12, v25 = v19, v26 = selfCopy, v13 = v10, v27 = v13, v14 = v9, v28 = v14, v15 = v20, restrictedActions = selfCopy->_restrictedActions, (restrictedActions & 0xFFFFFFFB) != 0))
     {
       __break(1u);
       return;
     }
 
     v17 = v15;
-    v5->_restrictedActions = restrictedActions | 1;
+    selfCopy->_restrictedActions = restrictedActions | 1;
     v18 = objc_autoreleasePoolPush();
-    v21(v17, v5->_restrictedActions);
+    v21(v17, selfCopy->_restrictedActions);
     objc_autoreleasePoolPop(v18);
-    v5->_restrictedActions = restrictedActions;
+    selfCopy->_restrictedActions = restrictedActions;
 
     [PKPGVTransition _endTrackingTransition:v11];
   }
 }
 
-- (void)tombstoneConnection:(id)a3
+- (void)tombstoneConnection:(id)connection
 {
-  v5 = a3;
-  [(PKPGVTransitionCoordinator *)self _assertConnection:v5 deallocating:0];
+  connectionCopy = connection;
+  [(PKPGVTransitionCoordinator *)self _assertConnection:connectionCopy deallocating:0];
   if (self)
   {
     if (self->_tombstoned)
@@ -2152,26 +2152,26 @@ LABEL_16:
   }
 }
 
-- (void)coordinatorForLayout:(void *)a1
+- (void)coordinatorForLayout:(void *)layout
 {
-  if (a1)
+  if (layout)
   {
-    [(PKPGVTransitionCoordinator *)a1 _assertLayout:a2 deallocating:0];
-    v3 = a1;
+    [(PKPGVTransitionCoordinator *)layout _assertLayout:a2 deallocating:0];
+    layoutCopy = layout;
   }
 
-  return a1;
+  return layout;
 }
 
-- (unsigned)layout:(id)a3 transition:(id)a4 stateForSendableItem:(unsigned __int8)a5
+- (unsigned)layout:(id)layout transition:(id)transition stateForSendableItem:(unsigned __int8)item
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  [(PKPGVTransitionCoordinator *)self _assertLayout:v8 deallocating:0];
-  if (v9 && self->_transition == v9)
+  itemCopy = item;
+  layoutCopy = layout;
+  transitionCopy = transition;
+  [(PKPGVTransitionCoordinator *)self _assertLayout:layoutCopy deallocating:0];
+  if (transitionCopy && self->_transition == transitionCopy)
   {
-    if (v5 == 1)
+    if (itemCopy == 1)
     {
       if (!self->_view.interrupted)
       {
@@ -2186,7 +2186,7 @@ LABEL_11:
       return v12;
     }
 
-    if (!v5)
+    if (!itemCopy)
     {
       if (!self->_navigationItem.interrupted)
       {
@@ -2204,13 +2204,13 @@ LABEL_10:
   return result;
 }
 
-- (void)beginSubtransitionForTransition:(id)a3 sending:(unsigned __int8)a4 animated:(BOOL)a5
+- (void)beginSubtransitionForTransition:(id)transition sending:(unsigned __int8)sending animated:(BOOL)animated
 {
-  v6 = a4;
-  [(PKPGVTransitionCoordinator *)self _assertTransition:a3];
+  sendingCopy = sending;
+  [(PKPGVTransitionCoordinator *)self _assertTransition:transition];
   if (self)
   {
-    if (v6 == 1)
+    if (sendingCopy == 1)
     {
       if (!self->_view.interrupted && self->_view.state)
       {
@@ -2218,7 +2218,7 @@ LABEL_10:
       }
     }
 
-    else if (v6 || !self->_navigationItem.interrupted && self->_navigationItem.state)
+    else if (sendingCopy || !self->_navigationItem.interrupted && self->_navigationItem.state)
     {
       goto LABEL_20;
     }
@@ -2239,7 +2239,7 @@ LABEL_10:
           transition = self->_transition;
           if (transition)
           {
-            v16 = transition;
+            transitionCopy = transition;
             objc_initWeak(location, self);
             v51 = 0;
             v52 = &v51;
@@ -2247,22 +2247,22 @@ LABEL_10:
             v54 = __Block_byref_object_copy__24;
             v55 = __Block_byref_object_dispose__25;
             v56 = 0;
-            v24 = v16;
-            if (v6)
+            v24 = transitionCopy;
+            if (sendingCopy)
             {
               v17 = v25;
               v25[0] = MEMORY[0x1E69E9820];
               v25[1] = 3221225472;
               v26 = __53__PKPGVTransitionCoordinator__beginSending_animated___block_invoke_5;
               v27 = &unk_1E8025768;
-              v28 = self;
+              selfCopy = self;
               v29 = v11;
-              v30 = v16;
+              v30 = transitionCopy;
               v35 = v14;
               v31 = v13;
               v33 = &v51;
               v32 = v9;
-              v36 = a5;
+              animatedCopy = animated;
               v18 = &v34;
               objc_copyWeak(&v34, location);
               v37 = 1;
@@ -2294,14 +2294,14 @@ LABEL_18:
               v38[1] = 3221225472;
               v39 = __53__PKPGVTransitionCoordinator__beginSending_animated___block_invoke;
               v40 = &unk_1E8025768;
-              v41 = self;
+              selfCopy2 = self;
               v42 = v11;
-              v43 = v16;
+              v43 = transitionCopy;
               v48 = v14;
               v44 = v13;
               v46 = &v51;
               v45 = v9;
-              v49 = a5;
+              animatedCopy2 = animated;
               v18 = &v47;
               objc_copyWeak(&v47, location);
               v50 = 0;
@@ -2326,13 +2326,13 @@ LABEL_20:
   }
 }
 
-- (void)interruptSubtransitionForTransition:(id)a3 sending:(unsigned __int8)a4
+- (void)interruptSubtransitionForTransition:(id)transition sending:(unsigned __int8)sending
 {
-  v4 = a4;
-  [(PKPGVTransitionCoordinator *)self _assertTransition:a3];
+  sendingCopy = sending;
+  [(PKPGVTransitionCoordinator *)self _assertTransition:transition];
   if (self)
   {
-    if (v4 == 1)
+    if (sendingCopy == 1)
     {
       if (self->_view.interrupted || !self->_view.state)
       {
@@ -2340,13 +2340,13 @@ LABEL_20:
       }
     }
 
-    else if (v4 || self->_navigationItem.interrupted || !self->_navigationItem.state)
+    else if (sendingCopy || self->_navigationItem.interrupted || !self->_navigationItem.state)
     {
       goto LABEL_15;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_sender);
-    if (!WeakRetained || (v7 = WeakRetained, (v8 = objc_loadWeakRetained(&self->_receiver)) == 0) || (transition = self->_transition) == 0 || (v10 = v8, v11 = v7 != v8, v12 = transition, v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v21 = __48__PKPGVTransitionCoordinator__interruptSending___block_invoke, v22 = &unk_1E8025718, v27 = v4, v23 = self, v13 = v10, v24 = v13, v14 = v12, v25 = v14, v28 = v11, v15 = v7, v26 = v15, v16 = v20, restrictedActions = self->_restrictedActions, (restrictedActions & 0xFFF5) != 0))
+    if (!WeakRetained || (v7 = WeakRetained, (v8 = objc_loadWeakRetained(&self->_receiver)) == 0) || (transition = self->_transition) == 0 || (v10 = v8, v11 = v7 != v8, v12 = transition, v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v21 = __48__PKPGVTransitionCoordinator__interruptSending___block_invoke, v22 = &unk_1E8025718, v27 = sendingCopy, v23 = self, v13 = v10, v24 = v13, v14 = v12, v25 = v14, v28 = v11, v15 = v7, v26 = v15, v16 = v20, restrictedActions = self->_restrictedActions, (restrictedActions & 0xFFF5) != 0))
     {
 LABEL_15:
       __break(1u);
@@ -2362,25 +2362,25 @@ LABEL_15:
   }
 }
 
-- (void)coordinatorForTransceiver:(void *)a1
+- (void)coordinatorForTransceiver:(void *)transceiver
 {
-  if (a1)
+  if (transceiver)
   {
-    [(PKPGVTransitionCoordinator *)a1 _assertTransceiver:a2 deallocating:0];
-    v3 = a1;
+    [(PKPGVTransitionCoordinator *)transceiver _assertTransceiver:a2 deallocating:0];
+    transceiverCopy = transceiver;
   }
 
-  return a1;
+  return transceiver;
 }
 
-- (void)transceiver:(id)a3 transition:(id)a4 setNeedsStateUpdateInteractive:(BOOL)a5
+- (void)transceiver:(id)transceiver transition:(id)transition setNeedsStateUpdateInteractive:(BOOL)interactive
 {
-  v9 = a3;
-  v8 = a4;
-  [(PKPGVTransitionCoordinator *)self _assertTransceiver:v9 deallocating:0];
-  if (v8 && self->_transition == v8)
+  transceiverCopy = transceiver;
+  transitionCopy = transition;
+  [(PKPGVTransitionCoordinator *)self _assertTransceiver:transceiverCopy deallocating:0];
+  if (transitionCopy && self->_transition == transitionCopy)
   {
-    [(PKPGVTransitionCoordinator *)self _updateStateForTransitionInteractive:a5];
+    [(PKPGVTransitionCoordinator *)self _updateStateForTransitionInteractive:interactive];
   }
 
   else
@@ -2389,34 +2389,34 @@ LABEL_15:
   }
 }
 
-- (void)transceiver:(id)a3 invertWithTransitionContext:(id)a4 completion:(id)a5
+- (void)transceiver:(id)transceiver invertWithTransitionContext:(id)context completion:(id)completion
 {
-  v25 = a3;
-  v8 = a4;
-  v9 = a5;
-  [(PKPGVTransitionCoordinator *)self _assertTransceiver:v25 deallocating:0];
-  if (!v8)
+  transceiverCopy = transceiver;
+  contextCopy = context;
+  completionCopy = completion;
+  [(PKPGVTransitionCoordinator *)self _assertTransceiver:transceiverCopy deallocating:0];
+  if (!contextCopy)
   {
     goto LABEL_12;
   }
 
-  v10 = self;
-  v11 = v8;
-  v12 = v9;
-  if (v10)
+  selfCopy = self;
+  v11 = contextCopy;
+  v12 = completionCopy;
+  if (selfCopy)
   {
-    WeakRetained = objc_loadWeakRetained(&v10->_layout);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_layout);
     if (WeakRetained)
     {
       v14 = WeakRetained;
-      v15 = objc_loadWeakRetained(&v10->_sender);
+      v15 = objc_loadWeakRetained(&selfCopy->_sender);
       if (v15)
       {
         v16 = v15;
-        v17 = objc_loadWeakRetained(&v10->_receiver);
+        v17 = objc_loadWeakRetained(&selfCopy->_receiver);
         if (v17)
         {
-          if (!v10->_tombstoned)
+          if (!selfCopy->_tombstoned)
           {
             v18 = v17;
             v34 = 0;
@@ -2430,7 +2430,7 @@ LABEL_15:
             v27 = __70__PKPGVTransitionCoordinator__invertWithTransitionContext_completion___block_invoke;
             v28 = &unk_1E80256F0;
             v33 = &v34;
-            v29 = v10;
+            v29 = selfCopy;
             v19 = v16;
             v30 = v19;
             v20 = v18;
@@ -2438,16 +2438,16 @@ LABEL_15:
             v21 = v14;
             v32 = v21;
             v22 = v26;
-            if (!v10->_restrictedActions)
+            if (!selfCopy->_restrictedActions)
             {
               v23 = v22;
-              v10->_restrictedActions = 2;
+              selfCopy->_restrictedActions = 2;
               v24 = objc_autoreleasePoolPush();
-              (v27)(v23, v10->_restrictedActions);
+              (v27)(v23, selfCopy->_restrictedActions);
               objc_autoreleasePoolPop(v24);
-              v10->_restrictedActions = 0;
+              selfCopy->_restrictedActions = 0;
 
-              [(PKPGVTransitionCoordinator *)v10 _beginTransitionWithContext:v11 dirty:1 completion:v12 subtransition:0];
+              [(PKPGVTransitionCoordinator *)selfCopy _beginTransitionWithContext:v11 dirty:1 completion:v12 subtransition:0];
               [PKPGVTransition _endTrackingTransition:?];
 
               _Block_object_dispose(&v34, 8);
@@ -2466,21 +2466,21 @@ LABEL_12:
 LABEL_9:
 }
 
-- (void)coordinatorForSender:(void *)a1
+- (void)coordinatorForSender:(void *)sender
 {
-  if (a1)
+  if (sender)
   {
-    [(PKPGVTransitionCoordinator *)a1 _assertSender:a2 deallocating:0];
-    v3 = a1;
+    [(PKPGVTransitionCoordinator *)sender _assertSender:a2 deallocating:0];
+    senderCopy = sender;
   }
 
-  return a1;
+  return sender;
 }
 
-- (void)senderDidTapView:(id)a3
+- (void)senderDidTapView:(id)view
 {
-  v5 = a3;
-  [(PKPGVTransitionCoordinator *)self _assertSender:v5 deallocating:0];
+  viewCopy = view;
+  [(PKPGVTransitionCoordinator *)self _assertSender:viewCopy deallocating:0];
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_receiver);
@@ -2499,25 +2499,25 @@ LABEL_9:
   [WeakRetained transitionCoordinatorSenderDidTapView:self];
 }
 
-- (void)coordinatorForReceiver:(void *)a1
+- (void)coordinatorForReceiver:(void *)receiver
 {
-  if (a1)
+  if (receiver)
   {
-    [(PKPGVTransitionCoordinator *)a1 _assertReceiver:a2 deallocating:0];
-    v3 = a1;
+    [(PKPGVTransitionCoordinator *)receiver _assertReceiver:a2 deallocating:0];
+    receiverCopy = receiver;
   }
 
-  return a1;
+  return receiver;
 }
 
-- (id)becomeInteractiveForReceiver:(id)a3
+- (id)becomeInteractiveForReceiver:(id)receiver
 {
-  [(PKPGVTransitionCoordinator *)self _assertReceiver:a3 deallocating:0];
-  v4 = self;
-  v5 = v4;
-  if (v4)
+  [(PKPGVTransitionCoordinator *)self _assertReceiver:receiver deallocating:0];
+  selfCopy = self;
+  v5 = selfCopy;
+  if (selfCopy)
   {
-    WeakRetained = objc_loadWeakRetained(&v4->_layout);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_layout);
     if (WeakRetained)
     {
       v7 = WeakRetained;
@@ -2630,15 +2630,15 @@ LABEL_16:
   return v22;
 }
 
-- (void)receiver:(id)a3 updateInteractionToProgress:(double)a4
+- (void)receiver:(id)receiver updateInteractionToProgress:(double)progress
 {
-  [(PKPGVTransitionCoordinator *)self _assertReceiver:a3 deallocating:0];
+  [(PKPGVTransitionCoordinator *)self _assertReceiver:receiver deallocating:0];
   if (self)
   {
     transition = self->_transition;
     if (transition && transition->_tracking && !transition->_willEndTracking && transition->_interactive)
     {
-      transition->_interactiveProgress = a4;
+      transition->_interactiveProgress = progress;
 
       [(PKPGVTransitionCoordinator *)self _updateStateForTransitionInteractive:?];
     }

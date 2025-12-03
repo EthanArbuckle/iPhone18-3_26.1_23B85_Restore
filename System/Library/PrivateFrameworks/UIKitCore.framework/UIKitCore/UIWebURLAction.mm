@@ -1,39 +1,39 @@
 @interface UIWebURLAction
-+ (BOOL)performDefaultActionForURL:(id)a3 andDOMNode:(id)a4 withAllowedTypes:(unint64_t)a5 forFrame:(id)a6 inView:(id)a7;
-+ (void)performDataDetectorsDefaultActionForDOMNode:(id)a3 forFrame:(id)a4 inView:(id)a5;
++ (BOOL)performDefaultActionForURL:(id)l andDOMNode:(id)node withAllowedTypes:(unint64_t)types forFrame:(id)frame inView:(id)view;
++ (void)performDataDetectorsDefaultActionForDOMNode:(id)node forFrame:(id)frame inView:(id)view;
 @end
 
 @implementation UIWebURLAction
 
-+ (void)performDataDetectorsDefaultActionForDOMNode:(id)a3 forFrame:(id)a4 inView:(id)a5
++ (void)performDataDetectorsDefaultActionForDOMNode:(id)node forFrame:(id)frame inView:(id)view
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v11 = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
-  v10 = [v11 defaultActionForDOMNode:v9 forFrame:v8];
+  viewCopy = view;
+  frameCopy = frame;
+  nodeCopy = node;
+  dataDetectorsUIGetClass(@"DDDetectionController") = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
+  v10 = [dataDetectorsUIGetClass(@"DDDetectionController") defaultActionForDOMNode:nodeCopy forFrame:frameCopy];
 
-  [v11 performAction:v10 inView:v7 interactionDelegate:0];
+  [dataDetectorsUIGetClass(@"DDDetectionController") performAction:v10 inView:viewCopy interactionDelegate:0];
 }
 
-+ (BOOL)performDefaultActionForURL:(id)a3 andDOMNode:(id)a4 withAllowedTypes:(unint64_t)a5 forFrame:(id)a6 inView:(id)a7
++ (BOOL)performDefaultActionForURL:(id)l andDOMNode:(id)node withAllowedTypes:(unint64_t)types forFrame:(id)frame inView:(id)view
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  nodeCopy = node;
+  frameCopy = frame;
+  viewCopy = view;
   v16 = 0;
-  if (v12 && v13)
+  if (lCopy && nodeCopy)
   {
-    if ((a5 & 0xFFFFFFFF80000001) != 0 && [v12 isSpringboardHandledURL] && TelephonyUtilitiesLibrary() && objc_msgSend(v12, "hasTelephonyScheme"))
+    if ((types & 0xFFFFFFFF80000001) != 0 && [lCopy isSpringboardHandledURL] && TelephonyUtilitiesLibrary() && objc_msgSend(lCopy, "hasTelephonyScheme"))
     {
       goto LABEL_14;
     }
 
-    if ((a5 & 4) != 0)
+    if ((types & 4) != 0)
     {
-      v17 = [v12 scheme];
-      v18 = [v17 caseInsensitiveCompare:@"x-apple-data-detectors"];
+      scheme = [lCopy scheme];
+      v18 = [scheme caseInsensitiveCompare:@"x-apple-data-detectors"];
 
       if (!v18)
       {
@@ -41,16 +41,16 @@
       }
     }
 
-    if ((a5 & 2) != 0 && [v12 isSpringboardHandledURL])
+    if ((types & 2) != 0 && [lCopy isSpringboardHandledURL])
     {
-      if (!TelephonyUtilitiesLibrary() || ([v12 isFaceTimeURL] & 1) == 0 && !objc_msgSend(v12, "isFaceTimeAudioURL"))
+      if (!TelephonyUtilitiesLibrary() || ([lCopy isFaceTimeURL] & 1) == 0 && !objc_msgSend(lCopy, "isFaceTimeAudioURL"))
       {
-        [UIApp _openURL:v12 originatingView:v15 completionHandler:0];
+        [UIApp _openURL:lCopy originatingView:viewCopy completionHandler:0];
         goto LABEL_17;
       }
 
 LABEL_14:
-      [a1 performDataDetectorsDefaultActionForDOMNode:v13 forFrame:v14 inView:v15];
+      [self performDataDetectorsDefaultActionForDOMNode:nodeCopy forFrame:frameCopy inView:viewCopy];
 LABEL_17:
       v16 = 1;
       goto LABEL_18;

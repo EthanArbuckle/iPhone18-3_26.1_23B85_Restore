@@ -1,25 +1,25 @@
 @interface DIControllerServiceDelegate
-+ (BOOL)sendHandleToClient:(id)a3 clientConnection:(id)a4 outError:(id *)a5;
-+ (BOOL)tryAttachWithParams:(id)a3 clientConnection:(id)a4 outError:(id *)a5;
-- (BOOL)checkAttachEntitlementWithError:(id *)a3;
-- (BOOL)setupNewConnection:(id)a3;
-- (id)convertWithParams:(id)a3 reply:(id)a4;
-- (void)GUIAskForPassphraseWithEncryptionFrontend:(id)a3 usage:(int64_t)a4 reply:(id)a5;
-- (void)attachWithParams:(id)a3 reply:(id)a4;
-- (void)createAndStoreInSystemKeychainWithCreator:(id)a3 account:(id)a4 reply:(id)a5;
-- (void)dupWithStderrHandle:(id)a3 reply:(id)a4;
++ (BOOL)sendHandleToClient:(id)client clientConnection:(id)connection outError:(id *)error;
++ (BOOL)tryAttachWithParams:(id)params clientConnection:(id)connection outError:(id *)error;
+- (BOOL)checkAttachEntitlementWithError:(id *)error;
+- (BOOL)setupNewConnection:(id)connection;
+- (id)convertWithParams:(id)params reply:(id)reply;
+- (void)GUIAskForPassphraseWithEncryptionFrontend:(id)frontend usage:(int64_t)usage reply:(id)reply;
+- (void)attachWithParams:(id)params reply:(id)reply;
+- (void)createAndStoreInSystemKeychainWithCreator:(id)creator account:(id)account reply:(id)reply;
+- (void)dupWithStderrHandle:(id)handle reply:(id)reply;
 - (void)enterSandbox;
-- (void)keychainUnlockWithEncryptionUnlocker:(id)a3 reply:(id)a4;
-- (void)retrieveStatsWithParams:(id)a3 reply:(id)a4;
-- (void)verifyWithParams:(id)a3 reply:(id)a4;
+- (void)keychainUnlockWithEncryptionUnlocker:(id)unlocker reply:(id)reply;
+- (void)retrieveStatsWithParams:(id)params reply:(id)reply;
+- (void)verifyWithParams:(id)params reply:(id)reply;
 @end
 
 @implementation DIControllerServiceDelegate
 
-+ (BOOL)sendHandleToClient:(id)a3 clientConnection:(id)a4 outError:(id *)a5
++ (BOOL)sendHandleToClient:(id)client clientConnection:(id)connection outError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  connectionCopy = connection;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -31,17 +31,17 @@
   v14[2] = sub_10001421C;
   v14[3] = &unk_100202A18;
   v14[4] = &v15;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v14];
+  v9 = [connectionCopy synchronousRemoteObjectProxyWithErrorHandler:v14];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000143EC;
   v13[3] = &unk_100202A18;
   v13[4] = &v15;
-  [v9 attachCompletedWithHandle:v7 reply:v13];
+  [v9 attachCompletedWithHandle:clientCopy reply:v13];
   v10 = v16[5];
-  if (a5 && v10)
+  if (error && v10)
   {
-    *a5 = v10;
+    *error = v10;
     v10 = v16[5];
   }
 
@@ -51,22 +51,22 @@
   return v11;
 }
 
-+ (BOOL)tryAttachWithParams:(id)a3 clientConnection:(id)a4 outError:(id *)a5
++ (BOOL)tryAttachWithParams:(id)params clientConnection:(id)connection outError:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  connectionCopy = connection;
   v8 = 0;
   v9 = 0;
   while (1)
   {
-    v10 = [[DIController2IO_XPCHandlerAttach alloc] initWithParams:v6];
+    v10 = [[DIController2IO_XPCHandlerAttach alloc] initWithParams:paramsCopy];
     v41 = 0;
     v11 = [(DIController2IO_XPCHandlerAttach *)v10 runWithError:&v41];
     v12 = v41;
     if (v11)
     {
       v40 = v12;
-      v13 = [DIControllerServiceDelegate sendHandleToClient:v11 clientConnection:v7 outError:&v40];
+      v13 = [DIControllerServiceDelegate sendHandleToClient:v11 clientConnection:connectionCopy outError:&v40];
       v14 = v40;
 
       v12 = v14;
@@ -207,14 +207,14 @@ LABEL_38:
           v37 = v25;
           v36 = sub_1000E03D8();
           os_log_type_enabled(v36, OS_LOG_TYPE_ERROR);
-          v26 = [v6 inputURL];
-          v27 = [v26 path];
+          inputURL = [paramsCopy inputURL];
+          path = [inputURL path];
           *buf = 68158211;
           *&buf[4] = 77;
           v43 = 2080;
           v44 = "+[DIControllerServiceDelegate tryAttachWithParams:clientConnection:outError:]";
           v45 = 2113;
-          v46 = v27;
+          v46 = path;
           LODWORD(v35) = 28;
           v34 = buf;
           v28 = _os_log_send_and_compose_impl();
@@ -233,14 +233,14 @@ LABEL_38:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             v38 = v25;
-            v30 = [v6 inputURL];
-            v31 = [v30 path];
+            inputURL2 = [paramsCopy inputURL];
+            path2 = [inputURL2 path];
             *buf = 68158211;
             *&buf[4] = 77;
             v43 = 2080;
             v44 = "+[DIControllerServiceDelegate tryAttachWithParams:clientConnection:outError:]";
             v45 = 2113;
-            v46 = v31;
+            v46 = path2;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%.*s: Waiting for completion of an ongoing eject of %{private}@", buf, 0x1Cu);
 
             v25 = v38;
@@ -255,14 +255,14 @@ LABEL_38:
     }
   }
 
-  v32 = [DIError failWithInError:v14 outError:a5];
+  v32 = [DIError failWithInError:v14 outError:error];
   v10 = v14;
 LABEL_40:
 
   return v32;
 }
 
-- (BOOL)checkAttachEntitlementWithError:(id *)a3
+- (BOOL)checkAttachEntitlementWithError:(id *)error
 {
   v4 = +[NSXPCConnection currentConnection];
   v5 = [v4 valueForEntitlement:@"com.apple.diskimages.attach"];
@@ -307,16 +307,16 @@ LABEL_40:
   else
   {
     v9 = [NSString stringWithFormat:@"Missing entitlement: %@", @"com.apple.diskimages.attach"];
-    v10 = [DIError failWithEnumValue:158 verboseInfo:v9 error:a3];
+    v10 = [DIError failWithEnumValue:158 verboseInfo:v9 error:error];
   }
 
   return v10;
 }
 
-- (void)attachWithParams:(id)a3 reply:(id)a4
+- (void)attachWithParams:(id)params reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  replyCopy = reply;
   v17 = 0;
   v8 = [(DIControllerServiceDelegate *)self checkAttachEntitlementWithError:&v17];
   v9 = v17;
@@ -328,31 +328,31 @@ LABEL_40:
     v15[3] = sub_100014204;
     v15[4] = sub_100014214;
     v16 = +[NSXPCConnection currentConnection];
-    v10 = [(DIBaseServiceDelegate *)self dispatchQueue];
+    dispatchQueue = [(DIBaseServiceDelegate *)self dispatchQueue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000151D0;
     v11[3] = &unk_100202A40;
-    v12 = v6;
+    v12 = paramsCopy;
     v14 = v15;
-    v13 = v7;
-    dispatch_async(v10, v11);
+    v13 = replyCopy;
+    dispatch_async(dispatchQueue, v11);
 
     _Block_object_dispose(v15, 8);
   }
 
   else
   {
-    (*(v7 + 2))(v7, v9);
+    (*(replyCopy + 2))(replyCopy, v9);
   }
 }
 
-- (void)dupWithStderrHandle:(id)a3 reply:(id)a4
+- (void)dupWithStderrHandle:(id)handle reply:(id)reply
 {
-  v5 = a4;
-  LODWORD(a3) = [a3 fileDescriptor];
+  replyCopy = reply;
+  LODWORD(handle) = [handle fileDescriptor];
   v6 = fileno(__stderrp);
-  if (dup2(a3, v6) < 0)
+  if (dup2(handle, v6) < 0)
   {
     v10 = [DIError errorWithEnumValue:154 verboseInfo:@"Error duplicating stderr"];
   }
@@ -394,138 +394,138 @@ LABEL_40:
     *__error() = v7;
   }
 
-  v5[2](v5, v10);
+  replyCopy[2](replyCopy, v10);
 }
 
-- (id)convertWithParams:(id)a3 reply:(id)a4
+- (id)convertWithParams:(id)params reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  replyCopy = reply;
   v22 = 0;
-  v8 = [v6 validateDeserializationWithError:&v22];
+  v8 = [paramsCopy validateDeserializationWithError:&v22];
   v9 = v22;
   if (v8)
   {
-    v10 = [[DIConvertManager alloc] initWithParams:v6];
-    v11 = [(DIBaseServiceDelegate *)self dispatchQueue];
+    v10 = [[DIConvertManager alloc] initWithParams:paramsCopy];
+    dispatchQueue = [(DIBaseServiceDelegate *)self dispatchQueue];
     v15 = _NSConcreteStackBlock;
     v16 = 3221225472;
     v17 = sub_10001560C;
     v18 = &unk_100202A68;
     v19 = v10;
-    v20 = v6;
-    v21 = v7;
+    v20 = paramsCopy;
+    v21 = replyCopy;
     v12 = v10;
-    dispatch_async(v11, &v15);
+    dispatch_async(dispatchQueue, &v15);
 
     v13 = [(DIConvertManager *)v12 progress:v15];
   }
 
   else
   {
-    (*(v7 + 2))(v7, v9);
+    (*(replyCopy + 2))(replyCopy, v9);
     v13 = [NSProgress progressWithTotalUnitCount:100];
   }
 
   return v13;
 }
 
-- (void)verifyWithParams:(id)a3 reply:(id)a4
+- (void)verifyWithParams:(id)params reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DIBaseServiceDelegate *)self dispatchQueue];
+  paramsCopy = params;
+  replyCopy = reply;
+  dispatchQueue = [(DIBaseServiceDelegate *)self dispatchQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000157B8;
   v11[3] = &unk_100202A90;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = paramsCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = paramsCopy;
+  dispatch_async(dispatchQueue, v11);
 }
 
-- (void)keychainUnlockWithEncryptionUnlocker:(id)a3 reply:(id)a4
+- (void)keychainUnlockWithEncryptionUnlocker:(id)unlocker reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DIBaseServiceDelegate *)self dispatchQueue];
+  unlockerCopy = unlocker;
+  replyCopy = reply;
+  dispatchQueue = [(DIBaseServiceDelegate *)self dispatchQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000159B0;
   v11[3] = &unk_100202A90;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = unlockerCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = unlockerCopy;
+  dispatch_async(dispatchQueue, v11);
 }
 
-- (void)GUIAskForPassphraseWithEncryptionFrontend:(id)a3 usage:(int64_t)a4 reply:(id)a5
+- (void)GUIAskForPassphraseWithEncryptionFrontend:(id)frontend usage:(int64_t)usage reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(DIBaseServiceDelegate *)self dispatchQueue];
+  frontendCopy = frontend;
+  replyCopy = reply;
+  dispatchQueue = [(DIBaseServiceDelegate *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100015BC4;
   block[3] = &unk_100202AB8;
-  v15 = v9;
-  v16 = a4;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, block);
+  v15 = replyCopy;
+  usageCopy = usage;
+  v14 = frontendCopy;
+  v11 = replyCopy;
+  v12 = frontendCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)createAndStoreInSystemKeychainWithCreator:(id)a3 account:(id)a4 reply:(id)a5
+- (void)createAndStoreInSystemKeychainWithCreator:(id)creator account:(id)account reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DIBaseServiceDelegate *)self dispatchQueue];
+  creatorCopy = creator;
+  accountCopy = account;
+  replyCopy = reply;
+  dispatchQueue = [(DIBaseServiceDelegate *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100015DF8;
   block[3] = &unk_100202A68;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = creatorCopy;
+  v17 = accountCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = accountCopy;
+  v14 = creatorCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)retrieveStatsWithParams:(id)a3 reply:(id)a4
+- (void)retrieveStatsWithParams:(id)params reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DIBaseServiceDelegate *)self dispatchQueue];
+  paramsCopy = params;
+  replyCopy = reply;
+  dispatchQueue = [(DIBaseServiceDelegate *)self dispatchQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100016008;
   v11[3] = &unk_100202A90;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = paramsCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = paramsCopy;
+  dispatch_async(dispatchQueue, v11);
 }
 
-- (BOOL)setupNewConnection:(id)a3
+- (BOOL)setupNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DIControllerProtocol];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
-  [v4 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DIController2ClientProtocol];
-  [v4 setRemoteObjectInterface:v6];
+  [connectionCopy setRemoteObjectInterface:v6];
 
-  [v4 setInterruptionHandler:&stru_100202B20];
-  [v4 setInvalidationHandler:&stru_100202B40];
+  [connectionCopy setInterruptionHandler:&stru_100202B20];
+  [connectionCopy setInvalidationHandler:&stru_100202B40];
 
   return 1;
 }

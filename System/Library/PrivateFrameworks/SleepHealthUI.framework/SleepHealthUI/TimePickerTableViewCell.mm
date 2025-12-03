@@ -1,12 +1,12 @@
 @interface TimePickerTableViewCell
 - (NSString)description;
-- (_TtC13SleepHealthUI23TimePickerTableViewCell)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI23TimePickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC13SleepHealthUI23TimePickerTableViewCell)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI23TimePickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation TimePickerTableViewCell
 
-- (_TtC13SleepHealthUI23TimePickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC13SleepHealthUI23TimePickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -16,7 +16,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     v6 = sub_269D9A630();
     v8 = v7;
@@ -28,12 +28,12 @@
     v8 = 0;
   }
 
-  v9 = sub_269CF06D4(a3, v6, v8);
+  v9 = sub_269CF06D4(style, v6, v8);
 
   return v9;
 }
 
-- (_TtC13SleepHealthUI23TimePickerTableViewCell)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI23TimePickerTableViewCell)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -55,7 +55,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_269CF0A98();
 
   v3 = sub_269D9A5F0();

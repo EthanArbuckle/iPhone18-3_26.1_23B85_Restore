@@ -1,26 +1,26 @@
 @interface HSPCFixedSizeCenterContentViewController
 - (CGSize)contentSize;
-- (HSPCFixedSizeCenterContentViewController)initWithCenterContentView:(id)a3 size:(CGSize)a4 pinSides:(BOOL)a5;
+- (HSPCFixedSizeCenterContentViewController)initWithCenterContentView:(id)view size:(CGSize)size pinSides:(BOOL)sides;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCFixedSizeCenterContentViewController
 
-- (HSPCFixedSizeCenterContentViewController)initWithCenterContentView:(id)a3 size:(CGSize)a4 pinSides:(BOOL)a5
+- (HSPCFixedSizeCenterContentViewController)initWithCenterContentView:(id)view size:(CGSize)size pinSides:(BOOL)sides
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = HSPCFixedSizeCenterContentViewController;
   v11 = [(HSPCFixedSizeCenterContentViewController *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_centerContentView, a3);
+    objc_storeStrong(&v11->_centerContentView, view);
     v12->_contentSize.width = width;
     v12->_contentSize.height = height;
-    v12->_pinSides = a5;
+    v12->_pinSides = sides;
   }
 
   return v12;
@@ -31,87 +31,87 @@
   v42.receiver = self;
   v42.super_class = HSPCFixedSizeCenterContentViewController;
   [(HSPCFixedSizeCenterContentViewController *)&v42 viewDidLoad];
-  v3 = [(HSPCFixedSizeCenterContentViewController *)self contentView];
-  v41 = [v3 mainContentGuide];
+  contentView = [(HSPCFixedSizeCenterContentViewController *)self contentView];
+  mainContentGuide = [contentView mainContentGuide];
 
-  v4 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  centerContentView = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
+  [centerContentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(HSPCFixedSizeCenterContentViewController *)self contentView];
-  v6 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
-  [v5 addSubview:v6];
+  contentView2 = [(HSPCFixedSizeCenterContentViewController *)self contentView];
+  centerContentView2 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
+  [contentView2 addSubview:centerContentView2];
 
-  v7 = [(HSPCFixedSizeCenterContentViewController *)self contentView];
-  [v7 setClipsToBounds:0];
+  contentView3 = [(HSPCFixedSizeCenterContentViewController *)self contentView];
+  [contentView3 setClipsToBounds:0];
 
-  v8 = [(HSPCFixedSizeCenterContentViewController *)self contentView];
-  v9 = [v8 superview];
-  [v9 setClipsToBounds:0];
+  contentView4 = [(HSPCFixedSizeCenterContentViewController *)self contentView];
+  superview = [contentView4 superview];
+  [superview setClipsToBounds:0];
 
-  v10 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
-  v11 = [v10 heightAnchor];
+  centerContentView3 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
+  heightAnchor = [centerContentView3 heightAnchor];
   [(HSPCFixedSizeCenterContentViewController *)self contentSize];
-  v13 = [v11 constraintEqualToConstant:v12];
+  v13 = [heightAnchor constraintEqualToConstant:v12];
   v45[0] = v13;
-  v14 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
-  v15 = [v14 widthAnchor];
+  centerContentView4 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
+  widthAnchor = [centerContentView4 widthAnchor];
   [(HSPCFixedSizeCenterContentViewController *)self contentSize];
-  v16 = [v15 constraintEqualToConstant:?];
+  v16 = [widthAnchor constraintEqualToConstant:?];
   v45[1] = v16;
   v17 = [NSArray arrayWithObjects:v45 count:2];
   [NSLayoutConstraint activateConstraints:v17];
 
-  LODWORD(v11) = [(HSPCFixedSizeCenterContentViewController *)self pinSides];
-  v18 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
-  v40 = v18;
-  if (v11)
+  LODWORD(heightAnchor) = [(HSPCFixedSizeCenterContentViewController *)self pinSides];
+  centerContentView5 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
+  v40 = centerContentView5;
+  if (heightAnchor)
   {
-    v19 = [v18 leadingAnchor];
-    v38 = [v41 leadingAnchor];
-    v39 = v19;
-    v37 = [v19 constraintEqualToAnchor:?];
+    leadingAnchor = [centerContentView5 leadingAnchor];
+    leadingAnchor2 = [mainContentGuide leadingAnchor];
+    v39 = leadingAnchor;
+    v37 = [leadingAnchor constraintEqualToAnchor:?];
     v44[0] = v37;
-    v36 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
-    v20 = [v36 topAnchor];
-    v34 = [v41 topAnchor];
-    v35 = v20;
-    v21 = [v20 constraintEqualToAnchor:?];
+    centerContentView6 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
+    topAnchor = [centerContentView6 topAnchor];
+    topAnchor2 = [mainContentGuide topAnchor];
+    v35 = topAnchor;
+    v21 = [topAnchor constraintEqualToAnchor:?];
     v44[1] = v21;
-    v22 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
-    v23 = [v22 trailingAnchor];
-    v24 = [v41 trailingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    centerContentView7 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
+    trailingAnchor = [centerContentView7 trailingAnchor];
+    trailingAnchor2 = [mainContentGuide trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v44[2] = v25;
-    v26 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
-    v27 = [v26 bottomAnchor];
-    v28 = [v41 bottomAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    centerContentView8 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
+    bottomAnchor = [centerContentView8 bottomAnchor];
+    bottomAnchor2 = [mainContentGuide bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v44[3] = v29;
     v30 = v44;
   }
 
   else
   {
-    v31 = [v18 centerXAnchor];
-    v38 = [v41 centerXAnchor];
-    v39 = v31;
-    v37 = [v31 constraintEqualToAnchor:?];
+    centerXAnchor = [centerContentView5 centerXAnchor];
+    leadingAnchor2 = [mainContentGuide centerXAnchor];
+    v39 = centerXAnchor;
+    v37 = [centerXAnchor constraintEqualToAnchor:?];
     v43[0] = v37;
-    v36 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
-    v32 = [v36 centerYAnchor];
-    v34 = [v41 centerYAnchor];
-    v35 = v32;
-    v21 = [v32 constraintEqualToAnchor:?];
+    centerContentView6 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
+    centerYAnchor = [centerContentView6 centerYAnchor];
+    topAnchor2 = [mainContentGuide centerYAnchor];
+    v35 = centerYAnchor;
+    v21 = [centerYAnchor constraintEqualToAnchor:?];
     v43[1] = v21;
-    v22 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
-    v23 = [v22 topAnchor];
-    v24 = [v41 topAnchor];
-    v25 = [v23 constraintGreaterThanOrEqualToAnchor:v24 constant:0.0];
+    centerContentView7 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
+    trailingAnchor = [centerContentView7 topAnchor];
+    trailingAnchor2 = [mainContentGuide topAnchor];
+    v25 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:0.0];
     v43[2] = v25;
-    v26 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
-    v27 = [v26 bottomAnchor];
-    v28 = [v41 bottomAnchor];
-    v29 = [v27 constraintLessThanOrEqualToAnchor:v28 constant:0.0];
+    centerContentView8 = [(HSPCFixedSizeCenterContentViewController *)self centerContentView];
+    bottomAnchor = [centerContentView8 bottomAnchor];
+    bottomAnchor2 = [mainContentGuide bottomAnchor];
+    v29 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:0.0];
     v43[3] = v29;
     v30 = v43;
   }

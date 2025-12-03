@@ -9,14 +9,14 @@
 {
   v3 = [[SBRebootContext alloc] initWithReason:@"TestRecipe"];
   [(SBRebootContext *)v3 setDark:1];
-  v2 = [SBApp restartManager];
-  [v2 rebootWithContext:v3];
+  restartManager = [SBApp restartManager];
+  [restartManager rebootWithContext:v3];
 }
 
 - (void)handleVolumeDecrease
 {
-  v2 = [SBApp restartManager];
-  [v2 rebootForReason:@"TestRecipe"];
+  restartManager = [SBApp restartManager];
+  [restartManager rebootForReason:@"TestRecipe"];
 }
 
 @end

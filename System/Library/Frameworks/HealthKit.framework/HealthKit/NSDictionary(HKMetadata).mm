@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __50__NSDictionary_HKMetadata__hk_secureCodingClasses__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (hk_secureCodingClasses_onceToken != -1)
   {
     dispatch_once(&hk_secureCodingClasses_onceToken, block);
@@ -63,11 +63,11 @@
   v10[2] = __121__NSDictionary_HKMetadata__hk_validateMetadataKeysAndValuesAllowingPrivateMetadataKeys_applicationSDKVersionToken_error___block_invoke;
   v10[3] = &unk_1E737B980;
   v11 = a3;
-  v10[4] = a1;
+  v10[4] = self;
   v10[5] = &v12;
   v10[6] = a2;
   v10[7] = a4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v10];
+  [self enumerateKeysAndObjectsUsingBlock:v10];
   v6 = v13[5];
   v7 = v6;
   if (v6)
@@ -90,14 +90,14 @@
 
 - (id)hk_copyWithoutPrivateMetadataKeys
 {
-  v1 = [a1 _copyWithoutPrivateMetadataKeysShouldDerivePublicKeys:0];
+  v1 = [self _copyWithoutPrivateMetadataKeysShouldDerivePublicKeys:0];
 
   return v1;
 }
 
 - (id)hk_copySanitizedForPublicClient
 {
-  v1 = [a1 _copyWithoutPrivateMetadataKeysShouldDerivePublicKeys:1];
+  v1 = [self _copyWithoutPrivateMetadataKeysShouldDerivePublicKeys:1];
 
   return v1;
 }
@@ -109,8 +109,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [a1 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allKeys = [self allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v5)
   {
 
@@ -127,7 +127,7 @@
     {
       if (*v19 != v9)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(allKeys);
       }
 
       v11 = *(*(&v18 + 1) + 8 * v10);
@@ -143,7 +143,7 @@
 
         else
         {
-          v8 = [a1 mutableCopy];
+          v8 = [self mutableCopy];
           if (a3)
           {
 LABEL_9:
@@ -158,7 +158,7 @@ LABEL_9:
     }
 
     while (v7 != v10);
-    v12 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v12 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     v7 = v12;
   }
 
@@ -175,7 +175,7 @@ LABEL_9:
 LABEL_19:
   v16 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
 + (void)_addDerivedPublicKeyIfNecessaryForPrivateKey:()HKMetadata mutableDictionary:
@@ -223,12 +223,12 @@ LABEL_19:
   v6 = a3;
   if (a4)
   {
-    [a1 hk_acceptedMetadataValueClasses];
+    [self hk_acceptedMetadataValueClasses];
   }
 
   else
   {
-    [a1 hk_acceptedPublicMetadataValueClasses];
+    [self hk_acceptedPublicMetadataValueClasses];
   }
 
   v16 = 0u;
@@ -355,13 +355,13 @@ LABEL_19:
 
       if ([@"HKMetadataKeySyncIdentifier" isEqualToString:v9])
       {
-        v10 = [HKMetadataValidationUtilities hk_validateSyncIdentifierMetadataValue:a1 error:a5];
+        v10 = [HKMetadataValidationUtilities hk_validateSyncIdentifierMetadataValue:self error:a5];
         goto LABEL_19;
       }
 
       if ([@"HKMetadataKeySyncVersion" isEqualToString:v9])
       {
-        v10 = [HKMetadataValidationUtilities hk_validateSyncVersionMetadataValue:a1 error:a5];
+        v10 = [HKMetadataValidationUtilities hk_validateSyncVersionMetadataValue:self error:a5];
         goto LABEL_19;
       }
 
@@ -722,40 +722,40 @@ LABEL_11:
 {
   v9 = a3;
   v10 = a4;
-  v11 = [a1 _hk_validateMetadataBaseValueContent:v9 forKey:v10 error:a6];
+  v11 = [self _hk_validateMetadataBaseValueContent:v9 forKey:v10 error:a6];
   if (HKProgramSDKTokenAtLeast())
   {
-    v11 = v11 & [a1 _hk_validateMetadataIntroducedWithIOS13WithValue:v9 forKey:v10 error:a6];
+    v11 = v11 & [self _hk_validateMetadataIntroducedWithIOS13WithValue:v9 forKey:v10 error:a6];
   }
 
   if (HKProgramSDKTokenAtLeast())
   {
-    v11 = v11 & [a1 _hk_validateMetadataIntroducedWithIOS14WithValue:v9 forKey:v10 error:a6];
+    v11 = v11 & [self _hk_validateMetadataIntroducedWithIOS14WithValue:v9 forKey:v10 error:a6];
   }
 
   if (HKProgramSDKTokenAtLeast())
   {
-    v11 = v11 & [a1 _hk_validateMetadataIntroducedWithIOS15WithValue:v9 forKey:v10 error:a6];
+    v11 = v11 & [self _hk_validateMetadataIntroducedWithIOS15WithValue:v9 forKey:v10 error:a6];
   }
 
   if (HKProgramSDKTokenAtLeast())
   {
-    v11 = v11 & [a1 _hk_validateMetadataIntroducedWithIOS16WithValue:v9 forKey:v10 error:a6];
+    v11 = v11 & [self _hk_validateMetadataIntroducedWithIOS16WithValue:v9 forKey:v10 error:a6];
   }
 
   if (HKProgramSDKTokenAtLeast())
   {
-    v11 = v11 & [a1 _hk_validateMetadataIntroducedWithIOS17WithValue:v9 forKey:v10 error:a6];
+    v11 = v11 & [self _hk_validateMetadataIntroducedWithIOS17WithValue:v9 forKey:v10 error:a6];
   }
 
   if (HKProgramSDKTokenAtLeast())
   {
-    v11 = v11 & [a1 _hk_validateMetadataIntroducedWithIOS18WithValue:v9 forKey:v10 error:a6];
+    v11 = v11 & [self _hk_validateMetadataIntroducedWithIOS18WithValue:v9 forKey:v10 error:a6];
   }
 
   if (HKProgramSDKTokenAtLeast())
   {
-    v11 = v11 & [a1 _hk_validateMetadataIntroducedWithIOS19WithValue:v9 forKey:v10 error:a6];
+    v11 = v11 & [self _hk_validateMetadataIntroducedWithIOS19WithValue:v9 forKey:v10 error:a6];
   }
 
   return v11;

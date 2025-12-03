@@ -6,7 +6,7 @@
 - (double)deviceNativeDisplayScale;
 - (double)deviceRotatianInRadians;
 - (id)getScreenshotData;
-- (id)screenshotInfoForTransportWithFrame:(CGRect)a3;
+- (id)screenshotInfoForTransportWithFrame:(CGRect)frame;
 - (void)_registerAuditElementTransportInfo;
 - (void)_registerPointTransportInfo;
 - (void)_registerRangeTransportInfo;
@@ -89,9 +89,9 @@
   [v3 registerTransportInfoMasquerade:v2 encodeOnly:0];
 }
 
-- (id)screenshotInfoForTransportWithFrame:(CGRect)a3
+- (id)screenshotInfoForTransportWithFrame:(CGRect)frame
 {
-  v4 = [(AXAuditPluginPEP *)self getScreenshotData:a3.origin.x];
+  v4 = [(AXAuditPluginPEP *)self getScreenshotData:frame.origin.x];
   [(AXAuditPluginPEP *)self deviceRotatianInRadians];
   v6 = v5;
   [(AXAuditPluginPEP *)self deviceNativeDisplayScale];
@@ -111,11 +111,11 @@
 - (id)getScreenshotData
 {
   v2 = _UICreateScreenUIImageWithRotation();
-  v3 = [v2 CGImage];
+  cGImage = [v2 CGImage];
 
-  if (v3)
+  if (cGImage)
   {
-    CFRetain(v3);
+    CFRetain(cGImage);
     Mutable = CFDataCreateMutable(0, 0);
     v5 = CGImageDestinationCreateWithData(Mutable, @"public.png", 1uLL, 0);
     if (v5)
@@ -133,12 +133,12 @@
       }
 
       CGImageDestinationSetProperties(v6, v7);
-      CGImageDestinationAddImage(v6, v3, 0);
+      CGImageDestinationAddImage(v6, cGImage, 0);
       CGImageDestinationFinalize(v6);
       CFRelease(v6);
     }
 
-    CFRelease(v3);
+    CFRelease(cGImage);
   }
 
   else
@@ -210,22 +210,22 @@
 - (double)deviceRotatianInRadians
 {
   v2 = objc_alloc_init(FBSOrientationObserver);
-  v3 = [v2 activeInterfaceOrientation];
+  activeInterfaceOrientation = [v2 activeInterfaceOrientation];
   [v2 invalidate];
   v4 = 0.0;
-  if (v3 != (&dword_0 + 1))
+  if (activeInterfaceOrientation != (&dword_0 + 1))
   {
-    if (v3 == (&dword_0 + 3))
+    if (activeInterfaceOrientation == (&dword_0 + 3))
     {
       v4 = 1.57079633;
     }
 
-    else if (v3 == &dword_4)
+    else if (activeInterfaceOrientation == &dword_4)
     {
       v4 = -1.57079633;
     }
 
-    else if (v3 == (&dword_0 + 2))
+    else if (activeInterfaceOrientation == (&dword_0 + 2))
     {
       v4 = 3.14159265;
     }
@@ -243,26 +243,26 @@
     if (CFStringCompare(v5, @"AppleTV", 1uLL))
     {
       v7 = +[UIDevice currentDevice];
-      v8 = [v7 userInterfaceIdiom];
+      userInterfaceIdiom = [v7 userInterfaceIdiom];
 
-      if (v8 == &dword_0 + 1)
+      if (userInterfaceIdiom == &dword_0 + 1)
       {
         v4 = 0.0;
       }
 
-      if (v3 != (&dword_0 + 1) && v8 == &dword_0 + 1)
+      if (activeInterfaceOrientation != (&dword_0 + 1) && userInterfaceIdiom == &dword_0 + 1)
       {
-        if (v3 == (&dword_0 + 3))
+        if (activeInterfaceOrientation == (&dword_0 + 3))
         {
           v4 = 1.57079633;
         }
 
-        else if (v3 == &dword_4)
+        else if (activeInterfaceOrientation == &dword_4)
         {
           v4 = -1.57079633;
         }
 
-        else if (v3 == (&dword_0 + 2))
+        else if (activeInterfaceOrientation == (&dword_0 + 2))
         {
           v4 = 3.14159265;
         }

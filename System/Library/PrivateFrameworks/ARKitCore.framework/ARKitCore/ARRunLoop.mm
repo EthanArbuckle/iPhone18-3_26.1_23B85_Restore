@@ -1,12 +1,12 @@
 @interface ARRunLoop
 - (ARRunLoop)init;
-- (ARRunLoop)initWithName:(id)a3;
-- (void)_runloop_handleActivity:(unint64_t)a3;
+- (ARRunLoop)initWithName:(id)name;
+- (void)_runloop_handleActivity:(unint64_t)activity;
 - (void)_runloop_popAutoreleasePool;
 - (void)_runloop_pushAutoreleasePool;
 - (void)_startThread;
 - (void)dealloc;
-- (void)runOnRunLoop:(id)a3;
+- (void)runOnRunLoop:(id)loop;
 - (void)start;
 @end
 
@@ -20,15 +20,15 @@
   return v4;
 }
 
-- (ARRunLoop)initWithName:(id)a3
+- (ARRunLoop)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = ARRunLoop;
   v5 = [(ARRunLoop *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 
@@ -165,15 +165,15 @@ void __25__ARRunLoop__startThread__block_invoke(uint64_t a1, uint64_t a2, uint64
   [WeakRetained _runloop_handleActivity:a3];
 }
 
-- (void)runOnRunLoop:(id)a3
+- (void)runOnRunLoop:(id)loop
 {
-  v4 = a3;
+  loopCopy = loop;
   os_unfair_lock_lock(&self->_lock);
   runloop = self->_runloop;
   if (runloop)
   {
     os_unfair_lock_unlock(&self->_lock);
-    CFRunLoopPerformBlock(runloop, *MEMORY[0x1E695E8D0], v4);
+    CFRunLoopPerformBlock(runloop, *MEMORY[0x1E695E8D0], loopCopy);
 
     CFRunLoopWakeUp(runloop);
   }
@@ -195,7 +195,7 @@ void __25__ARRunLoop__startThread__block_invoke(uint64_t a1, uint64_t a2, uint64
     self->_earlyRunloopBlocks = v7;
 
     v9 = self->_earlyRunloopBlocks;
-    v10 = MEMORY[0x1C691B4C0](v4);
+    v10 = MEMORY[0x1C691B4C0](loopCopy);
 
     [(NSMutableArray *)v9 addObject:v10];
 
@@ -210,9 +210,9 @@ void __19__ARRunLoop_cancel__block_invoke()
   CFRunLoopStop(Current);
 }
 
-- (void)_runloop_handleActivity:(unint64_t)a3
+- (void)_runloop_handleActivity:(unint64_t)activity
 {
-  if (a3 == 128)
+  if (activity == 128)
   {
 
     [(ARRunLoop *)self _runloop_popAutoreleasePool];
@@ -220,12 +220,12 @@ void __19__ARRunLoop_cancel__block_invoke()
 
   else
   {
-    if (a3 == 32)
+    if (activity == 32)
     {
       [(ARRunLoop *)self _runloop_popAutoreleasePool];
     }
 
-    else if (a3 != 1)
+    else if (activity != 1)
     {
       return;
     }

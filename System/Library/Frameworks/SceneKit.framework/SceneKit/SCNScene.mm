@@ -1,79 +1,79 @@
 @interface SCNScene
-+ (BOOL)canImportFileExtension:(id)a3;
-+ (BOOL)canImportFileUTI:(id)a3;
++ (BOOL)canImportFileExtension:(id)extension;
++ (BOOL)canImportFileUTI:(id)i;
 + (SCNScene)scene;
 + (SCNScene)sceneNamed:(NSString *)name inDirectory:(NSString *)directory options:(NSDictionary *)options;
-+ (SCNScene)sceneWithData:(id)a3 atIndex:(int64_t)a4 options:(id)a5;
-+ (SCNScene)sceneWithData:(id)a3 options:(id)a4;
-+ (SCNScene)sceneWithMDLAsset:(id)a3 options:(id)a4;
-+ (SCNScene)sceneWithSceneRef:(__C3DScene *)a3;
++ (SCNScene)sceneWithData:(id)data atIndex:(int64_t)index options:(id)options;
++ (SCNScene)sceneWithData:(id)data options:(id)options;
++ (SCNScene)sceneWithMDLAsset:(id)asset options:(id)options;
++ (SCNScene)sceneWithSceneRef:(__C3DScene *)ref;
 + (SCNScene)sceneWithURL:(NSURL *)url options:(NSDictionary *)options error:(NSError *)error;
-+ (SCNScene)sceneWithURL:(id)a3 atIndex:(int64_t)a4 options:(id)a5;
-+ (id)_indexPathForNode:(id)a3;
++ (SCNScene)sceneWithURL:(id)l atIndex:(int64_t)index options:(id)options;
++ (id)_indexPathForNode:(id)node;
 + (id)supportedFileUTIsForExport;
 + (id)supportedFileUTIsForImport;
 - (BOOL)writeToURL:(NSURL *)url options:(NSDictionary *)options delegate:(id)delegate progressHandler:(SCNSceneExportProgressHandler)progressHandler;
-- (BOOL)writeToURLWithUSDKit:(id)a3;
+- (BOOL)writeToURLWithUSDKit:(id)kit;
 - (NSArray)particleSystems;
 - (SCNMaterialProperty)background;
 - (SCNMaterialProperty)lightingEnvironment;
 - (SCNNode)rootNode;
 - (SCNScene)init;
-- (SCNScene)initWithCoder:(id)a3;
-- (SCNScene)initWithSceneRef:(__C3DScene *)a3;
+- (SCNScene)initWithCoder:(id)coder;
+- (SCNScene)initWithSceneRef:(__C3DScene *)ref;
 - (SCNVector3)upAxis;
 - (double)endTime;
 - (double)frameRate;
 - (double)startTime;
 - (float)playbackSpeed;
-- (id)_exportAsMovieOperationWithDestinationURL:(id)a3 size:(CGSize)a4 attributes:(id)a5 delegate:(id)a6 didEndSelector:(SEL)a7 userInfo:(void *)a8;
-- (id)_nodeWithIndexPath:(id)a3;
-- (id)_physicsWorldCreateIfNeeded:(BOOL)a3;
-- (id)_subnodeFromIndexPath:(id)a3;
+- (id)_exportAsMovieOperationWithDestinationURL:(id)l size:(CGSize)size attributes:(id)attributes delegate:(id)delegate didEndSelector:(SEL)selector userInfo:(void *)info;
+- (id)_nodeWithIndexPath:(id)path;
+- (id)_physicsWorldCreateIfNeeded:(BOOL)needed;
+- (id)_subnodeFromIndexPath:(id)path;
 - (id)attributeForKey:(NSString *)key;
-- (id)copyAnimationChannelForKeyPath:(id)a3 animation:(id)a4;
-- (id)copyAnimationChannelForKeyPath:(id)a3 property:(id)a4;
-- (id)debugQuickLookObjectWithPointOfView:(id)a3;
-- (id)initForJavascript:(id)a3;
+- (id)copyAnimationChannelForKeyPath:(id)path animation:(id)animation;
+- (id)copyAnimationChannelForKeyPath:(id)path property:(id)property;
+- (id)debugQuickLookObjectWithPointOfView:(id)view;
+- (id)initForJavascript:(id)javascript;
 - (id)root;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (void)_clearSceneRef;
-- (void)_customDecodingOfSCNScene:(id)a3;
-- (void)_customEncodingOfSCNScene:(id)a3;
-- (void)_didDecodeSCNScene:(id)a3;
+- (void)_customDecodingOfSCNScene:(id)scene;
+- (void)_customEncodingOfSCNScene:(id)scene;
+- (void)_didDecodeSCNScene:(id)scene;
 - (void)_dumpToDisk;
 - (void)_prettifyForPreview;
 - (void)_resetSceneTimeRange;
-- (void)_scaleSceneBy:(double)a3;
-- (void)_setRootNode:(id)a3;
-- (void)_setSourceURL:(id)a3;
+- (void)_scaleSceneBy:(double)by;
+- (void)_setRootNode:(id)node;
+- (void)_setSourceURL:(id)l;
 - (void)_syncObjCModel;
 - (void)addParticleSystem:(SCNParticleSystem *)system withTransform:(SCNMatrix4 *)transform;
-- (void)addSceneAnimation:(id)a3 forKey:(id)a4 target:(id)a5;
+- (void)addSceneAnimation:(id)animation forKey:(id)key target:(id)target;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)lock;
 - (void)removeAllParticleSystems;
 - (void)removeParticleSystem:(SCNParticleSystem *)system;
 - (void)setAttribute:(id)attribute forKey:(NSString *)key;
-- (void)setEndTime:(double)a3;
+- (void)setEndTime:(double)time;
 - (void)setFogColor:(id)fogColor;
 - (void)setFogDensityExponent:(CGFloat)fogDensityExponent;
 - (void)setFogEndDistance:(CGFloat)fogEndDistance;
 - (void)setFogStartDistance:(CGFloat)fogStartDistance;
-- (void)setFrameRate:(double)a3;
+- (void)setFrameRate:(double)rate;
 - (void)setPaused:(BOOL)paused;
-- (void)setPausedForEditing:(BOOL)a3;
-- (void)setPlaybackSpeed:(float)a3;
-- (void)setRootNode:(id)a3 forLayer:(int)a4;
-- (void)setSceneSource:(id)a3;
+- (void)setPausedForEditing:(BOOL)editing;
+- (void)setPlaybackSpeed:(float)speed;
+- (void)setRootNode:(id)node forLayer:(int)layer;
+- (void)setSceneSource:(id)source;
 - (void)setScreenSpaceReflectionMaximumDistance:(CGFloat)screenSpaceReflectionMaximumDistance;
 - (void)setScreenSpaceReflectionSampleCount:(NSInteger)screenSpaceReflectionSampleCount;
 - (void)setScreenSpaceReflectionStride:(CGFloat)screenSpaceReflectionStride;
-- (void)setStartTime:(double)a3;
-- (void)setUpAxis:(SCNVector3)a3;
+- (void)setStartTime:(double)time;
+- (void)setUpAxis:(SCNVector3)axis;
 - (void)setWantsScreenSpaceReflection:(BOOL)wantsScreenSpaceReflection;
-- (void)set_allowsDefaultLightingEnvironmentFallback:(BOOL)a3;
+- (void)set_allowsDefaultLightingEnvironmentFallback:(BOOL)fallback;
 - (void)unlock;
 @end
 
@@ -83,11 +83,11 @@
 {
   if (!self->_rootNode)
   {
-    v3 = [(SCNScene *)self sceneRef];
-    v4 = v3;
-    if (v3)
+    sceneRef = [(SCNScene *)self sceneRef];
+    v4 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v3);
+      C3DSceneLock(sceneRef);
     }
 
     if (!self->_rootNode)
@@ -121,16 +121,16 @@
   return v6;
 }
 
-+ (SCNScene)sceneWithMDLAsset:(id)a3 options:(id)a4
++ (SCNScene)sceneWithMDLAsset:(id)asset options:(id)options
 {
   v153 = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7 = objc_opt_new();
   obj = objc_opt_new();
-  v8 = objc_alloc_init(a1);
+  v8 = objc_alloc_init(self);
   if (objc_opt_respondsToSelector())
   {
-    [a3 upAxis];
+    [asset upAxis];
     LODWORD(v10) = HIDWORD(v9);
     LODWORD(v12) = v11;
     [v8 setAttribute:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithSCNVector3:", v9, v10, v12), @"kSceneUpAxisAttributeKey"}];
@@ -144,7 +144,7 @@
   v137 = 0u;
   v138 = 0u;
   v139 = 0u;
-  v13 = [a3 countByEnumeratingWithState:&v136 objects:v151 count:16];
+  v13 = [asset countByEnumeratingWithState:&v136 objects:v151 count:16];
   if (v13)
   {
     v14 = *v137;
@@ -154,13 +154,13 @@
       {
         if (*v137 != v14)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(asset);
         }
 
         [objc_msgSend(v8 "rootNode")];
       }
 
-      v13 = [a3 countByEnumeratingWithState:&v136 objects:v151 count:16];
+      v13 = [asset countByEnumeratingWithState:&v136 objects:v151 count:16];
     }
 
     while (v13);
@@ -198,17 +198,17 @@
     while (v17);
   }
 
-  if ([objc_msgSend(a3 "animations")])
+  if ([objc_msgSend(asset "animations")])
   {
     v22 = objc_opt_new();
     v23 = 0;
-    v113 = a3;
+    assetCopy = asset;
     v111 = v22;
     v122 = *MEMORY[0x277CDA230];
     v112 = v8;
-    while (v23 < [objc_msgSend(a3 "animations")])
+    while (v23 < [objc_msgSend(asset "animations")])
     {
-      v24 = [objc_msgSend(a3 "animations")];
+      v24 = [objc_msgSend(asset "animations")];
       if (v24)
       {
         objc_opt_class();
@@ -218,7 +218,7 @@
           v121 = [objc_msgSend(v24 "jointPaths")];
           if (v121)
           {
-            v26 = [a4 valueForKey:@"kSceneSourceAnimationLoadingMode"];
+            v26 = [options valueForKey:@"kSceneSourceAnimationLoadingMode"];
             v27 = v26;
             if (v26)
             {
@@ -304,20 +304,20 @@
 
             if (memptr)
             {
-              v37 = [v25 translations];
-              [v37 getFloat3Array:memptr maxCount:v34];
+              translations = [v25 translations];
+              [translations getFloat3Array:memptr maxCount:v34];
             }
 
             if (v147)
             {
-              v38 = [v25 rotations];
-              [v38 getFloatQuaternionArray:v147 maxCount:v35];
+              rotations = [v25 rotations];
+              [rotations getFloatQuaternionArray:v147 maxCount:v35];
             }
 
             if (v146)
             {
-              v39 = [v25 scales];
-              [v39 getFloat3Array:v146 maxCount:v36];
+              scales = [v25 scales];
+              [scales getFloat3Array:v146 maxCount:v36];
             }
 
             [objc_msgSend(v25 "translations")];
@@ -337,14 +337,14 @@
             v145 = 0u;
             v142 = 0u;
             v143 = 0u;
-            v52 = [v25 jointPaths];
-            v53 = [v52 countByEnumeratingWithState:&v142 objects:v152 count:16];
+            jointPaths = [v25 jointPaths];
+            v53 = [jointPaths countByEnumeratingWithState:&v142 objects:v152 count:16];
             v54 = v41 - v43;
             v55 = v45 - v47;
             if (v53)
             {
               v56 = 0;
-              v118 = v52;
+              v118 = jointPaths;
               v119 = *v143;
               do
               {
@@ -478,16 +478,16 @@
             free(v147);
             free(v146);
             v8 = v112;
-            a3 = v113;
+            asset = assetCopy;
             v16 = v116;
             v22 = v111;
-            v93 = [MEMORY[0x277CD9E00] animation];
-            [v93 setAnimations:v123];
-            [v93 setFillMode:v122];
+            animation = [MEMORY[0x277CD9E00] animation];
+            [animation setAnimations:v123];
+            [animation setFillMode:v122];
             *&v94 = v28;
-            [v93 setRepeatCount:v94];
-            [v93 setRemovedOnCompletion:v114];
-            [v93 setUsesSceneTimeBase:v124 | HIDWORD(v114)];
+            [animation setRepeatCount:v94];
+            [animation setRemovedOnCompletion:v114];
+            [animation setUsesSceneTimeBase:v124 | HIDWORD(v114)];
             if (v124)
             {
               [objc_msgSend(v25 "translations")];
@@ -529,10 +529,10 @@
               }
             }
 
-            [v93 setDuration:v99];
-            if (v93)
+            [animation setDuration:v99];
+            if (animation)
             {
-              [v111 setObject:+[SCNAnimation animationWithCAAnimation:](SCNAnimation forKeyedSubscript:{"animationWithCAAnimation:", v93), objc_msgSend(v25, "name")}];
+              [v111 setObject:+[SCNAnimation animationWithCAAnimation:](SCNAnimation forKeyedSubscript:{"animationWithCAAnimation:", animation), objc_msgSend(v25, "name")}];
             }
           }
         }
@@ -551,7 +551,7 @@
   v131 = 0u;
   v128 = 0u;
   v129 = 0u;
-  v101 = [a3 countByEnumeratingWithState:&v128 objects:v149 count:16];
+  v101 = [asset countByEnumeratingWithState:&v128 objects:v149 count:16];
   if (v101)
   {
     v102 = *v129;
@@ -561,11 +561,11 @@
       {
         if (*v129 != v102)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(asset);
         }
       }
 
-      v101 = [a3 countByEnumeratingWithState:&v128 objects:v149 count:16];
+      v101 = [asset countByEnumeratingWithState:&v128 objects:v149 count:16];
     }
 
     while (v101);
@@ -616,9 +616,9 @@
   }
 
   [v8 _resetSceneTimeRange];
-  [a3 startTime];
+  [asset startTime];
   [v8 setStartTime:?];
-  [a3 endTime];
+  [asset endTime];
   [v8 setEndTime:?];
   v109 = v8;
   return v109;
@@ -641,11 +641,11 @@
     [v2 _syncObjCModel];
     if (!*(v2 + 4))
     {
-      v4 = [v2 sceneRef];
-      v5 = v4;
-      if (v4)
+      sceneRef = [v2 sceneRef];
+      v5 = sceneRef;
+      if (sceneRef)
       {
-        C3DSceneLock(v4);
+        C3DSceneLock(sceneRef);
       }
 
       if (!*(v2 + 4))
@@ -678,14 +678,14 @@
   return v2;
 }
 
-- (SCNScene)initWithSceneRef:(__C3DScene *)a3
+- (SCNScene)initWithSceneRef:(__C3DScene *)ref
 {
   v8.receiver = self;
   v8.super_class = SCNScene;
   v4 = [(SCNScene *)&v8 init];
   if (v4)
   {
-    v5 = CFRetain(a3);
+    v5 = CFRetain(ref);
     *(v4 + 1) = v5;
     if (v5)
     {
@@ -733,24 +733,24 @@
 
 + (SCNScene)scene
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 + (SCNScene)sceneNamed:(NSString *)name inDirectory:(NSString *)directory options:(NSDictionary *)options
 {
-  v9 = [(NSString *)name pathExtension];
-  if (![(__CFString *)v9 length])
+  pathExtension = [(NSString *)name pathExtension];
+  if (![(__CFString *)pathExtension length])
   {
-    v9 = @"dae";
+    pathExtension = @"dae";
   }
 
-  result = [SCNGetResourceBundle() URLForResource:-[NSString stringByDeletingPathExtension](name withExtension:"stringByDeletingPathExtension") subdirectory:{v9, directory}];
+  result = [SCNGetResourceBundle() URLForResource:-[NSString stringByDeletingPathExtension](name withExtension:"stringByDeletingPathExtension") subdirectory:{pathExtension, directory}];
   if (result)
   {
 
-    return [a1 sceneWithURL:result options:options error:0];
+    return [self sceneWithURL:result options:options error:0];
   }
 
   return result;
@@ -769,43 +769,43 @@
     return 0;
   }
 
-  return [(SCNSceneSource *)v8 sceneWithClass:a1 options:options error:error];
+  return [(SCNSceneSource *)v8 sceneWithClass:self options:options error:error];
 }
 
-+ (SCNScene)sceneWithURL:(id)a3 atIndex:(int64_t)a4 options:(id)a5
++ (SCNScene)sceneWithURL:(id)l atIndex:(int64_t)index options:(id)options
 {
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a5];
-  [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", a4), @"kSceneSourceSceneIndexKey"}];
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:options];
+  [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", index), @"kSceneSourceSceneIndexKey"}];
 
-  return [a1 sceneWithURL:a3 options:v8 error:0];
+  return [self sceneWithURL:l options:v8 error:0];
 }
 
-+ (SCNScene)sceneWithData:(id)a3 atIndex:(int64_t)a4 options:(id)a5
++ (SCNScene)sceneWithData:(id)data atIndex:(int64_t)index options:(id)options
 {
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a5];
-  [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", a4), @"kSceneSourceSceneIndexKey"}];
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:options];
+  [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", index), @"kSceneSourceSceneIndexKey"}];
 
-  return [a1 sceneWithData:a3 options:v8];
+  return [self sceneWithData:data options:v8];
 }
 
-+ (SCNScene)sceneWithData:(id)a3 options:(id)a4
++ (SCNScene)sceneWithData:(id)data options:(id)options
 {
-  result = [SCNSceneSource sceneSourceWithData:a3 options:?];
+  result = [SCNSceneSource sceneSourceWithData:data options:?];
   if (result)
   {
 
-    return [(SCNScene *)result sceneWithClass:a1 options:a4 error:0];
+    return [(SCNScene *)result sceneWithClass:self options:options error:0];
   }
 
   return result;
 }
 
-+ (SCNScene)sceneWithSceneRef:(__C3DScene *)a3
++ (SCNScene)sceneWithSceneRef:(__C3DScene *)ref
 {
-  result = C3DEntityGetObjCWrapper(a3);
+  result = C3DEntityGetObjCWrapper(ref);
   if (!result)
   {
-    v6 = [[a1 alloc] initWithSceneRef:a3];
+    v6 = [[self alloc] initWithSceneRef:ref];
 
     return v6;
   }
@@ -855,14 +855,14 @@
   return result;
 }
 
-- (void)setUpAxis:(SCNVector3)a3
+- (void)setUpAxis:(SCNVector3)axis
 {
   scene = self->_scene;
   if (scene)
   {
-    y = a3.y;
-    v5.n128_u32[2] = LODWORD(a3.z);
-    v5.n128_u64[0] = *&a3.x;
+    y = axis.y;
+    v5.n128_u32[2] = LODWORD(axis.z);
+    v5.n128_u64[0] = *&axis.x;
     C3DSceneSetUpAxis(scene, &v5);
   }
 }
@@ -895,23 +895,23 @@
   [(SCNScene *)&v6 dealloc];
 }
 
-- (void)_setSourceURL:(id)a3
+- (void)_setSourceURL:(id)l
 {
   sourceURL = self->_sourceURL;
-  if (sourceURL != a3)
+  if (sourceURL != l)
   {
 
-    self->_sourceURL = a3;
+    self->_sourceURL = l;
   }
 }
 
-- (void)setSceneSource:(id)a3
+- (void)setSceneSource:(id)source
 {
   sceneSource = self->_sceneSource;
-  if (sceneSource != a3)
+  if (sceneSource != source)
   {
 
-    self->_sceneSource = a3;
+    self->_sceneSource = source;
   }
 }
 
@@ -930,20 +930,20 @@
   return [(SCNScene *)self rootNode];
 }
 
-- (void)_setRootNode:(id)a3
+- (void)_setRootNode:(id)node
 {
   rootNode = self->_rootNode;
-  if (rootNode != a3)
+  if (rootNode != node)
   {
 
-    self->_rootNode = a3;
-    self->_layerRootNode[0] = a3;
-    v6 = [(SCNScene *)self sceneRef];
-    if (v6)
+    self->_rootNode = node;
+    self->_layerRootNode[0] = node;
+    sceneRef = [(SCNScene *)self sceneRef];
+    if (sceneRef)
     {
-      v7 = v6;
-      C3DSceneLock(v6);
-      C3DSceneSetRootNode(self->_scene, [a3 nodeRef]);
+      v7 = sceneRef;
+      C3DSceneLock(sceneRef);
+      C3DSceneSetRootNode(self->_scene, [node nodeRef]);
 
       C3DSceneUnlock(v7);
     }
@@ -951,29 +951,29 @@
     else
     {
       scene = self->_scene;
-      v9 = [a3 nodeRef];
+      nodeRef = [node nodeRef];
 
-      C3DSceneSetRootNode(scene, v9);
+      C3DSceneSetRootNode(scene, nodeRef);
     }
   }
 }
 
-- (void)setRootNode:(id)a3 forLayer:(int)a4
+- (void)setRootNode:(id)node forLayer:(int)layer
 {
   layerRootNode = self->_layerRootNode;
-  v5 = self->_layerRootNode[a4];
-  if (v5 != a3)
+  v5 = self->_layerRootNode[layer];
+  if (v5 != node)
   {
-    if (a4)
+    if (layer)
     {
 
-      layerRootNode[a4] = a3;
-      v9 = [(SCNScene *)self sceneRef];
-      if (v9)
+      layerRootNode[layer] = node;
+      sceneRef = [(SCNScene *)self sceneRef];
+      if (sceneRef)
       {
-        v10 = v9;
-        C3DSceneLock(v9);
-        C3DSceneSetLayerRootNode(self->_scene, a4, [a3 nodeRef]);
+        v10 = sceneRef;
+        C3DSceneLock(sceneRef);
+        C3DSceneSetLayerRootNode(self->_scene, layer, [node nodeRef]);
 
         C3DSceneUnlock(v10);
       }
@@ -981,9 +981,9 @@
       else
       {
         scene = self->_scene;
-        v12 = [a3 nodeRef];
+        nodeRef = [node nodeRef];
 
-        C3DSceneSetLayerRootNode(scene, a4, v12);
+        C3DSceneSetLayerRootNode(scene, layer, nodeRef);
       }
     }
 
@@ -995,16 +995,16 @@
   }
 }
 
-- (void)_scaleSceneBy:(double)a3
+- (void)_scaleSceneBy:(double)by
 {
-  v5 = [(SCNScene *)self sceneRef];
+  sceneRef = [(SCNScene *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __26__SCNScene__scaleSceneBy___block_invoke;
   v6[3] = &unk_2782FB7D0;
   v6[4] = self;
-  *&v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:0 applyBlock:v6];
+  *&v6[5] = by;
+  [SCNTransaction postCommandWithContext:sceneRef object:0 applyBlock:v6];
 }
 
 void __26__SCNScene__scaleSceneBy___block_invoke(uint64_t a1)
@@ -1015,44 +1015,44 @@ void __26__SCNScene__scaleSceneBy___block_invoke(uint64_t a1)
   C3DApplyScaleFactorOnScene(v2, v3);
 }
 
-+ (BOOL)canImportFileUTI:(id)a3
++ (BOOL)canImportFileUTI:(id)i
 {
-  if ([a3 isEqualToString:@"org.khronos.collada.digital-asset-exchange"])
+  if ([i isEqualToString:@"org.khronos.collada.digital-asset-exchange"])
   {
     return 1;
   }
 
-  return [a3 hasPrefix:@"com.apple.scenekit"];
+  return [i hasPrefix:@"com.apple.scenekit"];
 }
 
-+ (BOOL)canImportFileExtension:(id)a3
++ (BOOL)canImportFileExtension:(id)extension
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"dae"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"c3d") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"scn") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"scnz"))
+  lowercaseString = [extension lowercaseString];
+  if ([lowercaseString isEqualToString:@"dae"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"c3d") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"scn") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"scnz"))
   {
     return 1;
   }
 
   v5 = MEMORY[0x277CD7AD0];
 
-  return [v5 canImportFileExtension:v3];
+  return [v5 canImportFileExtension:lowercaseString];
 }
 
 + (id)supportedFileUTIsForImport
 {
-  v2 = [MEMORY[0x277CBEB18] array];
-  [v2 addObjectsFromArray:&unk_282E0FBA0];
-  return v2;
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObjectsFromArray:&unk_282E0FBA0];
+  return array;
 }
 
 + (id)supportedFileUTIsForExport
 {
-  v2 = [MEMORY[0x277CBEB18] array];
-  [v2 addObjectsFromArray:&unk_282E0FBB8];
-  return v2;
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObjectsFromArray:&unk_282E0FBB8];
+  return array;
 }
 
-- (id)_physicsWorldCreateIfNeeded:(BOOL)a3
+- (id)_physicsWorldCreateIfNeeded:(BOOL)needed
 {
   result = self->_physicsWorld;
   if (result)
@@ -1062,7 +1062,7 @@ void __26__SCNScene__scaleSceneBy___block_invoke(uint64_t a1)
 
   else
   {
-    v5 = !a3;
+    v5 = !needed;
   }
 
   if (!v5)
@@ -1084,14 +1084,14 @@ void __26__SCNScene__scaleSceneBy___block_invoke(uint64_t a1)
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v3 = [(SCNScene *)self rootNode];
+  rootNode = [(SCNScene *)self rootNode];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __32__SCNScene__resetSceneTimeRange__block_invoke;
   v4[3] = &unk_2782FF050;
   v4[4] = &v9;
   v4[5] = &v5;
-  [(SCNNode *)v3 enumerateHierarchyUsingBlock:v4];
+  [(SCNNode *)rootNode enumerateHierarchyUsingBlock:v4];
   [(SCNScene *)self setStartTime:v10[3]];
   [(SCNScene *)self setEndTime:v6[3]];
   _Block_object_dispose(&v5, 8);
@@ -1161,11 +1161,11 @@ uint64_t __32__SCNScene__resetSceneTimeRange__block_invoke(uint64_t a1, void *a2
 
 - (double)startTime
 {
-  v3 = [(SCNScene *)self sceneRef];
-  if (v3)
+  sceneRef = [(SCNScene *)self sceneRef];
+  if (sceneRef)
   {
-    v4 = v3;
-    C3DSceneLock(v3);
+    v4 = sceneRef;
+    C3DSceneLock(sceneRef);
     StartTime = C3DSceneGetStartTime(self->_scene);
     C3DSceneUnlock(v4);
     return StartTime;
@@ -1179,14 +1179,14 @@ uint64_t __32__SCNScene__resetSceneTimeRange__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
-  v5 = [(SCNScene *)self sceneRef];
-  if (v5)
+  sceneRef = [(SCNScene *)self sceneRef];
+  if (sceneRef)
   {
-    v6 = v5;
-    C3DSceneLock(v5);
-    C3DSceneSetStartTime(self->_scene, a3);
+    v6 = sceneRef;
+    C3DSceneLock(sceneRef);
+    C3DSceneSetStartTime(self->_scene, time);
 
     C3DSceneUnlock(v6);
   }
@@ -1195,17 +1195,17 @@ uint64_t __32__SCNScene__resetSceneTimeRange__block_invoke(uint64_t a1, void *a2
   {
     scene = self->_scene;
 
-    C3DSceneSetStartTime(scene, a3);
+    C3DSceneSetStartTime(scene, time);
   }
 }
 
 - (double)endTime
 {
-  v3 = [(SCNScene *)self sceneRef];
-  if (v3)
+  sceneRef = [(SCNScene *)self sceneRef];
+  if (sceneRef)
   {
-    v4 = v3;
-    C3DSceneLock(v3);
+    v4 = sceneRef;
+    C3DSceneLock(sceneRef);
     EndTime = C3DSceneGetEndTime(self->_scene);
     C3DSceneUnlock(v4);
     return EndTime;
@@ -1219,14 +1219,14 @@ uint64_t __32__SCNScene__resetSceneTimeRange__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setEndTime:(double)a3
+- (void)setEndTime:(double)time
 {
-  v5 = [(SCNScene *)self sceneRef];
-  if (v5)
+  sceneRef = [(SCNScene *)self sceneRef];
+  if (sceneRef)
   {
-    v6 = v5;
-    C3DSceneLock(v5);
-    C3DSceneSetEndTime(self->_scene, a3);
+    v6 = sceneRef;
+    C3DSceneLock(sceneRef);
+    C3DSceneSetEndTime(self->_scene, time);
 
     C3DSceneUnlock(v6);
   }
@@ -1235,17 +1235,17 @@ uint64_t __32__SCNScene__resetSceneTimeRange__block_invoke(uint64_t a1, void *a2
   {
     scene = self->_scene;
 
-    C3DSceneSetEndTime(scene, a3);
+    C3DSceneSetEndTime(scene, time);
   }
 }
 
 - (double)frameRate
 {
-  v3 = [(SCNScene *)self sceneRef];
-  if (v3)
+  sceneRef = [(SCNScene *)self sceneRef];
+  if (sceneRef)
   {
-    v4 = v3;
-    C3DSceneLock(v3);
+    v4 = sceneRef;
+    C3DSceneLock(sceneRef);
     FrameRate = C3DSceneGetFrameRate(self->_scene);
     C3DSceneUnlock(v4);
   }
@@ -1258,15 +1258,15 @@ uint64_t __32__SCNScene__resetSceneTimeRange__block_invoke(uint64_t a1, void *a2
   return FrameRate;
 }
 
-- (void)setFrameRate:(double)a3
+- (void)setFrameRate:(double)rate
 {
-  v5 = [(SCNScene *)self sceneRef];
-  if (v5)
+  sceneRef = [(SCNScene *)self sceneRef];
+  if (sceneRef)
   {
-    v6 = v5;
-    C3DSceneLock(v5);
-    v7 = a3;
-    C3DSceneSetFrameRate(self->_scene, v7);
+    v6 = sceneRef;
+    C3DSceneLock(sceneRef);
+    rateCopy = rate;
+    C3DSceneSetFrameRate(self->_scene, rateCopy);
 
     C3DSceneUnlock(v6);
   }
@@ -1275,18 +1275,18 @@ uint64_t __32__SCNScene__resetSceneTimeRange__block_invoke(uint64_t a1, void *a2
   {
     scene = self->_scene;
 
-    v9 = a3;
-    C3DSceneSetFrameRate(scene, v9);
+    rateCopy2 = rate;
+    C3DSceneSetFrameRate(scene, rateCopy2);
   }
 }
 
 - (float)playbackSpeed
 {
-  v3 = [(SCNScene *)self sceneRef];
-  if (v3)
+  sceneRef = [(SCNScene *)self sceneRef];
+  if (sceneRef)
   {
-    v4 = v3;
-    C3DSceneLock(v3);
+    v4 = sceneRef;
+    C3DSceneLock(sceneRef);
     PlaybackSpeed = C3DSceneGetPlaybackSpeed(self->_scene);
     C3DSceneUnlock(v4);
     return PlaybackSpeed;
@@ -1300,14 +1300,14 @@ uint64_t __32__SCNScene__resetSceneTimeRange__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setPlaybackSpeed:(float)a3
+- (void)setPlaybackSpeed:(float)speed
 {
-  v5 = [(SCNScene *)self sceneRef];
-  if (v5)
+  sceneRef = [(SCNScene *)self sceneRef];
+  if (sceneRef)
   {
-    v6 = v5;
-    C3DSceneLock(v5);
-    C3DSceneSetPlaybackSpeed(self->_scene, a3);
+    v6 = sceneRef;
+    C3DSceneLock(sceneRef);
+    C3DSceneSetPlaybackSpeed(self->_scene, speed);
 
     C3DSceneUnlock(v6);
   }
@@ -1316,7 +1316,7 @@ uint64_t __32__SCNScene__resetSceneTimeRange__block_invoke(uint64_t a1, void *a2
   {
     scene = self->_scene;
 
-    C3DSceneSetPlaybackSpeed(scene, a3);
+    C3DSceneSetPlaybackSpeed(scene, speed);
   }
 }
 
@@ -1444,21 +1444,21 @@ LABEL_7:
   return result;
 }
 
-- (void)set_allowsDefaultLightingEnvironmentFallback:(BOOL)a3
+- (void)set_allowsDefaultLightingEnvironmentFallback:(BOOL)fallback
 {
-  if (self->_allowsDefaultLightingEnvironmentFallback != a3)
+  if (self->_allowsDefaultLightingEnvironmentFallback != fallback)
   {
     v10 = v3;
     v11 = v4;
-    self->_allowsDefaultLightingEnvironmentFallback = a3;
-    v7 = [(SCNScene *)self sceneRef];
+    self->_allowsDefaultLightingEnvironmentFallback = fallback;
+    sceneRef = [(SCNScene *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __57__SCNScene_set_allowsDefaultLightingEnvironmentFallback___block_invoke;
     v8[3] = &unk_2782FB7F8;
     v8[4] = self;
-    v9 = a3;
-    [SCNTransaction postCommandWithContext:v7 object:0 applyBlock:v8];
+    fallbackCopy = fallback;
+    [SCNTransaction postCommandWithContext:sceneRef object:0 applyBlock:v8];
   }
 }
 
@@ -1468,14 +1468,14 @@ LABEL_7:
   {
 
     self->_fogColor = fogColor;
-    v5 = [(SCNScene *)self sceneRef];
+    sceneRef = [(SCNScene *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __24__SCNScene_setFogColor___block_invoke;
     v6[3] = &unk_2782FC950;
     v6[4] = fogColor;
     v6[5] = self;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"fogColor" applyBlock:v6];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"fogColor" applyBlock:v6];
   }
 }
 
@@ -1502,14 +1502,14 @@ double __24__SCNScene_setFogColor___block_invoke(uint64_t a1)
   if (v3 != self->_fogEndDistance)
   {
     self->_fogEndDistance = v3;
-    v5 = [(SCNScene *)self sceneRef];
+    sceneRef = [(SCNScene *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __30__SCNScene_setFogEndDistance___block_invoke;
     v6[3] = &unk_2782FB7D0;
     v6[4] = self;
     *&v6[5] = v3;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"fogEndDistance" applyBlock:v6];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"fogEndDistance" applyBlock:v6];
   }
 }
 
@@ -1525,14 +1525,14 @@ float __30__SCNScene_setFogEndDistance___block_invoke(uint64_t a1)
   if (self->_fogDensityExponent != fogDensityExponent)
   {
     self->_fogDensityExponent = fogDensityExponent;
-    v5 = [(SCNScene *)self sceneRef];
+    sceneRef = [(SCNScene *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __34__SCNScene_setFogDensityExponent___block_invoke;
     v6[3] = &unk_2782FB7D0;
     v6[4] = self;
     *&v6[5] = fogDensityExponent;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"fogDensityExponent" applyBlock:v6];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"fogDensityExponent" applyBlock:v6];
   }
 }
 
@@ -1548,14 +1548,14 @@ float __34__SCNScene_setFogDensityExponent___block_invoke(uint64_t a1)
   if (self->_fogStartDistance != fogStartDistance)
   {
     self->_fogStartDistance = fogStartDistance;
-    v5 = [(SCNScene *)self sceneRef];
+    sceneRef = [(SCNScene *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __32__SCNScene_setFogStartDistance___block_invoke;
     v6[3] = &unk_2782FB7D0;
     v6[4] = self;
     *&v6[5] = fogStartDistance;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"fogStartDistance" applyBlock:v6];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"fogStartDistance" applyBlock:v6];
   }
 }
 
@@ -1573,14 +1573,14 @@ float __32__SCNScene_setFogStartDistance___block_invoke(uint64_t a1)
     v10 = v3;
     v11 = v4;
     self->_wantsScreenSpaceReflection = wantsScreenSpaceReflection;
-    v7 = [(SCNScene *)self sceneRef];
+    sceneRef = [(SCNScene *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __42__SCNScene_setWantsScreenSpaceReflection___block_invoke;
     v8[3] = &unk_2782FB7F8;
     v8[4] = self;
     v9 = wantsScreenSpaceReflection;
-    [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
   }
 }
 
@@ -1591,14 +1591,14 @@ float __32__SCNScene_setFogStartDistance___block_invoke(uint64_t a1)
     v8[10] = v3;
     v8[11] = v4;
     self->_screenSpaceReflectionSampleCount = screenSpaceReflectionSampleCount;
-    v7 = [(SCNScene *)self sceneRef];
+    sceneRef = [(SCNScene *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __48__SCNScene_setScreenSpaceReflectionSampleCount___block_invoke;
     v8[3] = &unk_2782FB7D0;
     v8[4] = self;
     v8[5] = screenSpaceReflectionSampleCount;
-    [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
   }
 }
 
@@ -1607,14 +1607,14 @@ float __32__SCNScene_setFogStartDistance___block_invoke(uint64_t a1)
   if (self->_screenSpaceReflectionMaxRayDistance != screenSpaceReflectionMaximumDistance)
   {
     self->_screenSpaceReflectionMaxRayDistance = screenSpaceReflectionMaximumDistance;
-    v5 = [(SCNScene *)self sceneRef];
+    sceneRef = [(SCNScene *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __52__SCNScene_setScreenSpaceReflectionMaximumDistance___block_invoke;
     v6[3] = &unk_2782FB7D0;
     v6[4] = self;
     *&v6[5] = screenSpaceReflectionMaximumDistance;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
   }
 }
 
@@ -1630,14 +1630,14 @@ float __52__SCNScene_setScreenSpaceReflectionMaximumDistance___block_invoke(uint
   if (self->_screenSpaceReflectionStride != screenSpaceReflectionStride)
   {
     self->_screenSpaceReflectionStride = screenSpaceReflectionStride;
-    v5 = [(SCNScene *)self sceneRef];
+    sceneRef = [(SCNScene *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __43__SCNScene_setScreenSpaceReflectionStride___block_invoke;
     v6[3] = &unk_2782FB7D0;
     v6[4] = self;
     *&v6[5] = screenSpaceReflectionStride;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
   }
 }
 
@@ -1652,16 +1652,16 @@ float __43__SCNScene_setScreenSpaceReflectionStride___block_invoke(uint64_t a1)
 {
   if (options)
   {
-    v10 = [(NSDictionary *)options mutableCopy];
+    dictionary = [(NSDictionary *)options mutableCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v11 = v10;
-  v12 = [v10 valueForKey:@"kSceneSourceFormat"];
+  v11 = dictionary;
+  v12 = [dictionary valueForKey:@"kSceneSourceFormat"];
   if (v12)
   {
     v13 = v12;
@@ -1669,20 +1669,20 @@ float __43__SCNScene_setScreenSpaceReflectionStride___block_invoke(uint64_t a1)
     goto LABEL_16;
   }
 
-  v15 = [(NSString *)[(NSURL *)url pathExtension] lowercaseString];
-  if ([(NSString *)v15 isEqualToString:@"dae"])
+  lowercaseString = [(NSString *)[(NSURL *)url pathExtension] lowercaseString];
+  if ([(NSString *)lowercaseString isEqualToString:@"dae"])
   {
     v14 = 0;
     v16 = SCNSceneSourceFormatCOLLADA;
   }
 
-  else if ([(NSString *)v15 isEqualToString:@"scn"])
+  else if ([(NSString *)lowercaseString isEqualToString:@"scn"])
   {
     v14 = 0;
     v16 = SCNSceneSourceFormatSCN;
   }
 
-  else if ([(NSString *)v15 isEqualToString:@"c3d"])
+  else if ([(NSString *)lowercaseString isEqualToString:@"c3d"])
   {
     v14 = 0;
     v16 = SCNSceneSourceFormatC3D;
@@ -1690,7 +1690,7 @@ float __43__SCNScene_setScreenSpaceReflectionStride___block_invoke(uint64_t a1)
 
   else
   {
-    if (![(NSString *)v15 isEqualToString:@"scnz"])
+    if (![(NSString *)lowercaseString isEqualToString:@"scnz"])
     {
       v14 = 0;
       v13 = 0;
@@ -1715,11 +1715,11 @@ LABEL_16:
     if (v17)
     {
       +[SCNTransaction lock];
-      v18 = [(SCNScene *)self sceneRef];
-      v19 = v18;
-      if (v18)
+      sceneRef = [(SCNScene *)self sceneRef];
+      v19 = sceneRef;
+      if (sceneRef)
       {
-        C3DSceneLock(v18);
+        C3DSceneLock(sceneRef);
       }
     }
 
@@ -1782,8 +1782,8 @@ LABEL_53:
 
     else
     {
-      v30 = [(NSString *)[(NSURL *)url pathExtension] lowercaseString];
-      if (![(NSString *)v30 isEqualToString:@"usd"]&& ![(NSString *)v30 isEqualToString:@"usda"]&& ![(NSString *)v30 isEqualToString:@"usdc"]&& ![(NSString *)v30 isEqualToString:@"usdz"])
+      lowercaseString2 = [(NSString *)[(NSURL *)url pathExtension] lowercaseString];
+      if (![(NSString *)lowercaseString2 isEqualToString:@"usd"]&& ![(NSString *)lowercaseString2 isEqualToString:@"usda"]&& ![(NSString *)lowercaseString2 isEqualToString:@"usdc"]&& ![(NSString *)lowercaseString2 isEqualToString:@"usdz"])
       {
         goto LABEL_53;
       }
@@ -1815,11 +1815,11 @@ LABEL_38:
     [v11 removeObjectForKey:@"SCNSceneSourceInputSource"];
   }
 
-  v21 = [(SCNScene *)self sceneRef];
-  v22 = v21;
-  if (v21)
+  sceneRef2 = [(SCNScene *)self sceneRef];
+  v22 = sceneRef2;
+  if (sceneRef2)
   {
-    C3DSceneLock(v21);
+    C3DSceneLock(sceneRef2);
   }
 
   v23 = C3DIOWriteSceneToURL(url, [(SCNScene *)self sceneRef], v11, delegate, progressHandler);
@@ -1891,38 +1891,38 @@ uint64_t __56__SCNScene_writeToURL_options_delegate_progressHandler___block_invo
 
 - (void)lock
 {
-  v2 = [(SCNScene *)self sceneRef];
-  if (v2)
+  sceneRef = [(SCNScene *)self sceneRef];
+  if (sceneRef)
   {
 
-    C3DSceneLock(v2);
+    C3DSceneLock(sceneRef);
   }
 }
 
 - (void)unlock
 {
-  v2 = [(SCNScene *)self sceneRef];
-  if (v2)
+  sceneRef = [(SCNScene *)self sceneRef];
+  if (sceneRef)
   {
 
-    C3DSceneUnlock(v2);
+    C3DSceneUnlock(sceneRef);
   }
 }
 
-- (id)copyAnimationChannelForKeyPath:(id)a3 animation:(id)a4
+- (id)copyAnimationChannelForKeyPath:(id)path animation:(id)animation
 {
   v17 = 0;
   v18 = 0;
-  SCNKitSplitKVCPath(a3, &v18, &v17);
+  SCNKitSplitKVCPath(path, &v18, &v17);
   if ([v18 isEqual:@"root"])
   {
     if (!self->_rootNode)
     {
-      v7 = [(SCNScene *)self sceneRef];
-      v8 = v7;
-      if (v7)
+      sceneRef = [(SCNScene *)self sceneRef];
+      v8 = sceneRef;
+      if (sceneRef)
       {
-        C3DSceneLock(v7);
+        C3DSceneLock(sceneRef);
       }
 
       if (!self->_rootNode)
@@ -1955,7 +1955,7 @@ uint64_t __56__SCNScene_writeToURL_options_delegate_progressHandler___block_invo
     goto LABEL_27;
   }
 
-  if ([a3 hasPrefix:@"/"])
+  if ([path hasPrefix:@"/"])
   {
     if (!self->_rootNode)
     {
@@ -1965,18 +1965,18 @@ uint64_t __56__SCNScene_writeToURL_options_delegate_progressHandler___block_invo
     goto LABEL_32;
   }
 
-  v10 = [a3 hasPrefix:@"children["];
+  v10 = [path hasPrefix:@"children["];
   rootNode = self->_rootNode;
   if (v10)
   {
     if (!rootNode)
     {
 LABEL_14:
-      v12 = [(SCNScene *)self sceneRef];
-      v13 = v12;
-      if (v12)
+      sceneRef2 = [(SCNScene *)self sceneRef];
+      v13 = sceneRef2;
+      if (sceneRef2)
       {
-        C3DSceneLock(v12);
+        C3DSceneLock(sceneRef2);
       }
 
       if (!self->_rootNode)
@@ -2007,31 +2007,31 @@ LABEL_14:
 
 LABEL_32:
     result = self->_rootNode;
-    v16 = a3;
-    return [result copyAnimationChannelForKeyPath:v16 animation:a4];
+    pathCopy = path;
+    return [result copyAnimationChannelForKeyPath:pathCopy animation:animation];
   }
 
   result = [(SCNNode *)rootNode childNodeWithName:v18 recursively:1];
   if (result)
   {
 LABEL_27:
-    v16 = v17;
-    return [result copyAnimationChannelForKeyPath:v16 animation:a4];
+    pathCopy = v17;
+    return [result copyAnimationChannelForKeyPath:pathCopy animation:animation];
   }
 
   return result;
 }
 
-- (id)copyAnimationChannelForKeyPath:(id)a3 property:(id)a4
+- (id)copyAnimationChannelForKeyPath:(id)path property:(id)property
 {
-  if (self->_background == a4)
+  if (self->_background == property)
   {
     v6 = kC3DModelPathBackgroundMap;
   }
 
   else
   {
-    if (self->_environment != a4)
+    if (self->_environment != property)
     {
       return 0;
     }
@@ -2039,22 +2039,22 @@ LABEL_27:
     v6 = kC3DModelPathLightingEnvironmentMap;
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", *v6, a3];
+  path = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", *v6, path];
 
-  return SCNCreateAnimationChannelWithObjectAndPath(self, v7);
+  return SCNCreateAnimationChannelWithObjectAndPath(self, path);
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 hasPrefix:@"/"])
+  if ([key hasPrefix:@"/"])
   {
     if (!self->_rootNode)
     {
-      v5 = [(SCNScene *)self sceneRef];
-      v6 = v5;
-      if (v5)
+      sceneRef = [(SCNScene *)self sceneRef];
+      v6 = sceneRef;
+      if (sceneRef)
       {
-        C3DSceneLock(v5);
+        C3DSceneLock(sceneRef);
       }
 
       if (!self->_rootNode)
@@ -2085,36 +2085,36 @@ LABEL_27:
 
     rootNode = self->_rootNode;
 
-    return [(SCNNode *)rootNode valueForKey:a3];
+    return [(SCNNode *)rootNode valueForKey:key];
   }
 
   else
   {
-    result = [(SCNScene *)self attributeForKey:a3];
+    result = [(SCNScene *)self attributeForKey:key];
     if (!result)
     {
       v9 = self->_rootNode;
 
-      return [(SCNNode *)v9 childNodeWithName:a3 recursively:1];
+      return [(SCNNode *)v9 childNodeWithName:key recursively:1];
     }
   }
 
   return result;
 }
 
-- (void)addSceneAnimation:(id)a3 forKey:(id)a4 target:(id)a5
+- (void)addSceneAnimation:(id)animation forKey:(id)key target:(id)target
 {
-  v7 = [a3 copy];
+  v7 = [animation copy];
   [v7 setUsesSceneTimeBase:1];
 
-  [a5 addAnimation:v7 forKey:a4];
+  [target addAnimation:v7 forKey:key];
 }
 
 - (void)addParticleSystem:(SCNParticleSystem *)system withTransform:(SCNMatrix4 *)transform
 {
   if (system)
   {
-    v7 = [(SCNScene *)self sceneRef];
+    sceneRef = [(SCNScene *)self sceneRef];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __44__SCNScene_addParticleSystem_withTransform___block_invoke;
@@ -2127,7 +2127,7 @@ LABEL_27:
     v15 = v9;
     v11[4] = self;
     v11[5] = system;
-    [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v11];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v11];
   }
 
   else
@@ -2158,14 +2158,14 @@ double __44__SCNScene_addParticleSystem_withTransform___block_invoke(uint64_t a1
 {
   if (system)
   {
-    v5 = [(SCNScene *)self sceneRef];
+    sceneRef = [(SCNScene *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __33__SCNScene_removeParticleSystem___block_invoke;
     v7[3] = &unk_2782FC950;
     v7[4] = self;
     v7[5] = system;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 
   else
@@ -2196,13 +2196,13 @@ void __33__SCNScene_removeParticleSystem___block_invoke(uint64_t a1)
 
 - (void)removeAllParticleSystems
 {
-  v3 = [(SCNScene *)self sceneRef];
+  sceneRef = [(SCNScene *)self sceneRef];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __36__SCNScene_removeAllParticleSystems__block_invoke;
   v4[3] = &unk_2782FB820;
   v4[4] = self;
-  [SCNTransaction postCommandWithContext:v3 object:self applyBlock:v4];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v4];
 }
 
 void __36__SCNScene_removeAllParticleSystems__block_invoke(uint64_t a1)
@@ -2222,15 +2222,15 @@ void __36__SCNScene_removeAllParticleSystems__block_invoke(uint64_t a1)
 - (NSArray)particleSystems
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SCNScene *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNScene *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
-  v5 = [(SCNScene *)self __CFObject];
-  if (v5 && (ParticleManager = C3DSceneGetParticleManager(v5, 0)) != 0)
+  __CFObject = [(SCNScene *)self __CFObject];
+  if (__CFObject && (ParticleManager = C3DSceneGetParticleManager(__CFObject, 0)) != 0)
   {
     ParticleSystemsForNode = C3DParticleManagerGetParticleSystemsForNode(ParticleManager, 0);
     v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[__CFArray count](ParticleSystemsForNode, "count")}];
@@ -2285,21 +2285,21 @@ void __36__SCNScene_removeAllParticleSystems__block_invoke(uint64_t a1)
     v18 = v4;
     v7 = paused;
     self->_paused = paused;
-    v9 = [(SCNScene *)self sceneRef];
+    sceneRef = [(SCNScene *)self sceneRef];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __22__SCNScene_setPaused___block_invoke;
     v13[3] = &unk_2782FB7F8;
     v13[4] = self;
     v14 = v7;
-    [SCNTransaction postCommandWithContext:v9 object:0 applyBlock:v13];
+    [SCNTransaction postCommandWithContext:sceneRef object:0 applyBlock:v13];
     [(SCNNode *)[(SCNScene *)self rootNode] setPaused:v7];
-    v10 = [(SCNScene *)self __CFObject];
+    __CFObject = [(SCNScene *)self __CFObject];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __22__SCNScene_setPaused___block_invoke_2;
     v11[3] = &__block_descriptor_41_e8_v16__0d8l;
-    v11[4] = v10;
+    v11[4] = __CFObject;
     v12 = v7;
     [SCNTransaction postCommandWithContext:0 object:0 applyBlock:v11];
     +[SCNTransaction flush];
@@ -2314,36 +2314,36 @@ uint64_t __22__SCNScene_setPaused___block_invoke(uint64_t a1)
   return C3DSceneSetPaused(v2, v3);
 }
 
-- (void)setPausedForEditing:(BOOL)a3
+- (void)setPausedForEditing:(BOOL)editing
 {
-  if (self->_pausedForEditing != a3)
+  if (self->_pausedForEditing != editing)
   {
-    self->_pausedForEditing = a3;
+    self->_pausedForEditing = editing;
     C3DSceneSetPausedForEditing(self->_scene);
   }
 }
 
-- (id)_nodeWithIndexPath:(id)a3
+- (id)_nodeWithIndexPath:(id)path
 {
-  v4 = [(SCNScene *)self rootNode];
-  v5 = [a3 length];
+  rootNode = [(SCNScene *)self rootNode];
+  v5 = [path length];
   if (v5 >= 1)
   {
     v6 = v5;
     v7 = 0;
     while (1)
     {
-      v8 = [a3 indexAtPosition:v7];
-      if ([(NSArray *)[(SCNNode *)v4 childNodes] count]<= v8)
+      v8 = [path indexAtPosition:v7];
+      if ([(NSArray *)[(SCNNode *)rootNode childNodes] count]<= v8)
       {
         break;
       }
 
       ++v7;
-      v4 = [(NSArray *)[(SCNNode *)v4 childNodes] objectAtIndexedSubscript:v8];
+      rootNode = [(NSArray *)[(SCNNode *)rootNode childNodes] objectAtIndexedSubscript:v8];
       if (v6 == v7)
       {
-        return v4;
+        return rootNode;
       }
     }
 
@@ -2356,33 +2356,33 @@ uint64_t __22__SCNScene_setPaused___block_invoke(uint64_t a1)
     return 0;
   }
 
-  return v4;
+  return rootNode;
 }
 
-+ (id)_indexPathForNode:(id)a3
++ (id)_indexPathForNode:(id)node
 {
-  if (!a3)
+  if (!node)
   {
     return 0;
   }
 
-  v3 = a3;
+  nodeCopy = node;
   v4 = -1;
   v5 = -8;
-  v6 = a3;
+  nodeCopy2 = node;
   do
   {
-    v6 = [v6 parentNode];
+    nodeCopy2 = [nodeCopy2 parentNode];
     ++v4;
     v5 += 8;
   }
 
-  while (v6);
+  while (nodeCopy2);
   if (v4)
   {
     v7 = malloc_type_malloc(v5, 0x100004000313F17uLL);
-    v8 = [v3 parentNode];
-    if (!v8)
+    parentNode = [nodeCopy parentNode];
+    if (!parentNode)
     {
       goto LABEL_9;
     }
@@ -2390,14 +2390,14 @@ uint64_t __22__SCNScene_setPaused___block_invoke(uint64_t a1)
     v9 = v4 + 1;
     do
     {
-      v10 = v8;
-      v7[v9 - 2] = [v8 indexOfChildNode:v3];
-      v8 = [v10 parentNode];
+      v10 = parentNode;
+      v7[v9 - 2] = [parentNode indexOfChildNode:nodeCopy];
+      parentNode = [v10 parentNode];
       --v9;
-      v3 = v10;
+      nodeCopy = v10;
     }
 
-    while (v8);
+    while (parentNode);
     if (v9 != 1)
     {
 LABEL_9:
@@ -2425,9 +2425,9 @@ LABEL_9:
   }
 }
 
-- (id)_subnodeFromIndexPath:(id)a3
+- (id)_subnodeFromIndexPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     return [self _nodeWithIndexPath:?];
   }
@@ -2435,7 +2435,7 @@ LABEL_9:
   return self;
 }
 
-- (id)initForJavascript:(id)a3
+- (id)initForJavascript:(id)javascript
 {
   v14 = *MEMORY[0x277D85DE8];
   v11.receiver = self;
@@ -2446,27 +2446,27 @@ LABEL_9:
     return v4;
   }
 
-  if (a3)
+  if (javascript)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [MEMORY[0x277CBEBC0] URLWithString:a3];
-      if (![v5 scheme])
+      javascriptCopy = [MEMORY[0x277CBEBC0] URLWithString:javascript];
+      if (![javascriptCopy scheme])
       {
-        v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
+        javascriptCopy = [MEMORY[0x277CBEBC0] fileURLWithPath:javascript];
       }
     }
 
     else
     {
-      v5 = a3;
+      javascriptCopy = javascript;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [[SCNSceneSource alloc] initWithURL:v5 options:0];
+      v6 = [[SCNSceneSource alloc] initWithURL:javascriptCopy options:0];
       v7 = [(SCNSceneSource *)v6 _createSceneRefWithOptions:0 statusHandler:0];
 
       if (v7)
@@ -2482,7 +2482,7 @@ LABEL_13:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v13 = v5;
+        v13 = javascriptCopy;
         _os_log_impl(&dword_21BEF7000, v9, OS_LOG_TYPE_DEFAULT, "Warning: failed to load scene at %@", buf, 0xCu);
       }
     }
@@ -2516,35 +2516,35 @@ LABEL_14:
   return v4;
 }
 
-- (void)_customEncodingOfSCNScene:(id)a3
+- (void)_customEncodingOfSCNScene:(id)scene
 {
   [(SCNScene *)self endTime];
-  [a3 encodeDouble:@"endTime" forKey:?];
+  [scene encodeDouble:@"endTime" forKey:?];
   [(SCNScene *)self startTime];
-  [a3 encodeDouble:@"startTime" forKey:?];
+  [scene encodeDouble:@"startTime" forKey:?];
   [(SCNScene *)self frameRate];
-  [a3 encodeDouble:@"frameRate" forKey:?];
+  [scene encodeDouble:@"frameRate" forKey:?];
   [(SCNScene *)self upAxis];
 
-  SCNEncodeVector3(a3, @"upAxis", v5, v6, v7);
+  SCNEncodeVector3(scene, @"upAxis", v5, v6, v7);
 }
 
-- (void)_customDecodingOfSCNScene:(id)a3
+- (void)_customDecodingOfSCNScene:(id)scene
 {
-  [a3 decodeDoubleForKey:@"endTime"];
+  [scene decodeDoubleForKey:@"endTime"];
   [(SCNScene *)self setEndTime:?];
-  [a3 decodeDoubleForKey:@"startTime"];
+  [scene decodeDoubleForKey:@"startTime"];
   [(SCNScene *)self setStartTime:?];
-  [a3 decodeDoubleForKey:@"frameRate"];
+  [scene decodeDoubleForKey:@"frameRate"];
   [(SCNScene *)self setFrameRate:?];
-  v5.n128_f32[0] = SCNDecodeVector3(a3, @"upAxis");
+  v5.n128_f32[0] = SCNDecodeVector3(scene, @"upAxis");
   v5.n128_u32[1] = v6;
   v5.n128_u32[2] = v7;
   v8 = v5;
   C3DSceneSetUpAxis(self->_scene, &v8);
 }
 
-- (void)_didDecodeSCNScene:(id)a3
+- (void)_didDecodeSCNScene:(id)scene
 {
   if ((C3DMetalIsSupported() & 1) == 0)
   {
@@ -2569,22 +2569,22 @@ LABEL_14:
   v24[1] = v24;
   v24[2] = 0x2020000000;
   v25 = 0;
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v4 = [(SCNScene *)self rootNode];
+  rootNode = [(SCNScene *)self rootNode];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __31__SCNScene__prettifyForPreview__block_invoke;
   v19[3] = &unk_2782FF110;
-  v19[4] = v3;
+  v19[4] = array;
   v19[5] = &v20;
   v19[6] = v28;
   v19[7] = v26;
   v19[8] = v24;
-  [(SCNNode *)v4 enumerateHierarchyUsingBlock:v19];
+  [(SCNNode *)rootNode enumerateHierarchyUsingBlock:v19];
   if ((v21[3] & 1) == 0)
   {
     [(SCNNode *)[(SCNScene *)self rootNode] enumerateHierarchyUsingBlock:&__block_literal_global_72];
@@ -2596,7 +2596,7 @@ LABEL_14:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [v3 countByEnumeratingWithState:&v15 objects:v30 count:16];
+    v5 = [array countByEnumeratingWithState:&v15 objects:v30 count:16];
     if (v5)
     {
       v6 = *v16;
@@ -2606,7 +2606,7 @@ LABEL_14:
         {
           if (*v16 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(array);
           }
 
           v8 = *(*(&v15 + 1) + 8 * i);
@@ -2614,7 +2614,7 @@ LABEL_14:
           {
             [objc_msgSend(v8 "light")];
             v10 = v9;
-            v11 = [v8 light];
+            light = [v8 light];
             v12 = v10 * 0.05;
           }
 
@@ -2622,14 +2622,14 @@ LABEL_14:
           {
             [objc_msgSend(v8 "light")];
             v14 = v13;
-            v11 = [v8 light];
+            light = [v8 light];
             v12 = v14 * 0.5;
           }
 
-          [v11 setIntensity:v12];
+          [light setIntensity:v12];
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v15 objects:v30 count:16];
+        v5 = [array countByEnumeratingWithState:&v15 objects:v30 count:16];
       }
 
       while (v5);
@@ -2768,68 +2768,68 @@ uint64_t __31__SCNScene__prettifyForPreview__block_invoke_2(uint64_t a1, void *a
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(SCNScene *)self _customEncodingOfSCNScene:?];
   physicsWorld = self->_physicsWorld;
   if (physicsWorld && ![(SCNPhysicsWorld *)physicsWorld _isDefault])
   {
-    [a3 encodeObject:self->_physicsWorld forKey:@"physicsWorld"];
+    [coder encodeObject:self->_physicsWorld forKey:@"physicsWorld"];
   }
 
   rootNode = self->_rootNode;
   if (rootNode)
   {
-    [a3 encodeObject:rootNode forKey:@"rootNode"];
+    [coder encodeObject:rootNode forKey:@"rootNode"];
   }
 
   background = self->_background;
   if (background)
   {
-    [a3 encodeObject:background forKey:@"background"];
+    [coder encodeObject:background forKey:@"background"];
   }
 
   environment = self->_environment;
   if (environment)
   {
-    [a3 encodeObject:environment forKey:@"environment"];
+    [coder encodeObject:environment forKey:@"environment"];
   }
 
   userAttributes = self->_userAttributes;
   if (userAttributes)
   {
-    [a3 encodeObject:userAttributes forKey:@"userAttributes"];
+    [coder encodeObject:userAttributes forKey:@"userAttributes"];
   }
 
-  [a3 encodeDouble:@"fogStartDistance" forKey:self->_fogStartDistance];
-  [a3 encodeDouble:@"fogEndDistance" forKey:self->_fogEndDistance];
-  [a3 encodeDouble:@"fogDensityExponent" forKey:self->_fogDensityExponent];
+  [coder encodeDouble:@"fogStartDistance" forKey:self->_fogStartDistance];
+  [coder encodeDouble:@"fogEndDistance" forKey:self->_fogEndDistance];
+  [coder encodeDouble:@"fogDensityExponent" forKey:self->_fogDensityExponent];
   fogColor = self->_fogColor;
   if (fogColor)
   {
-    SCNEncodeUnsafeObjectForKey(a3, fogColor, @"fogColor");
+    SCNEncodeUnsafeObjectForKey(coder, fogColor, @"fogColor");
   }
 
-  [a3 encodeBool:self->_wantsScreenSpaceReflection forKey:@"wantsScreenSpaceReflection"];
-  [a3 encodeInt:LODWORD(self->_screenSpaceReflectionSampleCount) forKey:@"screenSpaceReflectionSampleCount"];
+  [coder encodeBool:self->_wantsScreenSpaceReflection forKey:@"wantsScreenSpaceReflection"];
+  [coder encodeInt:LODWORD(self->_screenSpaceReflectionSampleCount) forKey:@"screenSpaceReflectionSampleCount"];
   screenSpaceReflectionMaxRayDistance = self->_screenSpaceReflectionMaxRayDistance;
   *&screenSpaceReflectionMaxRayDistance = screenSpaceReflectionMaxRayDistance;
-  [a3 encodeFloat:@"screenSpaceReflectionMaximumDistance" forKey:screenSpaceReflectionMaxRayDistance];
+  [coder encodeFloat:@"screenSpaceReflectionMaximumDistance" forKey:screenSpaceReflectionMaxRayDistance];
   screenSpaceReflectionStride = self->_screenSpaceReflectionStride;
   *&screenSpaceReflectionStride = screenSpaceReflectionStride;
-  [a3 encodeFloat:@"screenSpaceReflectionStride" forKey:screenSpaceReflectionStride];
-  [a3 encodeBool:self->_paused forKey:@"paused"];
-  [a3 encodeInteger:1 forKey:@"version"];
+  [coder encodeFloat:@"screenSpaceReflectionStride" forKey:screenSpaceReflectionStride];
+  [coder encodeBool:self->_paused forKey:@"paused"];
+  [coder encodeInteger:1 forKey:@"version"];
   sourceURL = self->_sourceURL;
   if (sourceURL)
   {
-    [a3 encodeObject:sourceURL forKey:@"sourceURL"];
+    [coder encodeObject:sourceURL forKey:@"sourceURL"];
   }
 
-  [(SCNScene *)self _didEncodeSCNScene:a3];
+  [(SCNScene *)self _didEncodeSCNScene:coder];
 }
 
-- (SCNScene)initWithCoder:(id)a3
+- (SCNScene)initWithCoder:(id)coder
 {
   v18.receiver = self;
   v18.super_class = SCNScene;
@@ -2841,28 +2841,28 @@ uint64_t __31__SCNScene__prettifyForPreview__block_invoke_2(uint64_t a1, void *a
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a3 _allowDecodingCyclesInSecureMode];
+        [coder _allowDecodingCyclesInSecureMode];
       }
     }
 
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"sourceURL"];
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"sourceURL"];
     if (v6)
     {
       v7 = v6;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (![a3 documentURL])
+        if (![coder documentURL])
         {
-          [a3 setDocumentURL:v7];
+          [coder setDocumentURL:v7];
         }
       }
 
       else
       {
-        objc_setAssociatedObject(a3, @"SCNSourceURLForCurrentlyUnarchivedScene", v7, 0x301);
+        objc_setAssociatedObject(coder, @"SCNSourceURLForCurrentlyUnarchivedScene", v7, 0x301);
       }
     }
 
@@ -2874,10 +2874,10 @@ uint64_t __31__SCNScene__prettifyForPreview__block_invoke_2(uint64_t a1, void *a
     }
 
     [v4 _syncObjCModel];
-    [v4 _customDecodingOfSCNScene:a3];
-    v9 = [a3 decodeIntegerForKey:@"version"];
-    *(v4 + 3) = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"physicsWorld"];
-    v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"rootNode"];
+    [v4 _customDecodingOfSCNScene:coder];
+    v9 = [coder decodeIntegerForKey:@"version"];
+    *(v4 + 3) = [coder decodeObjectOfClass:objc_opt_class() forKey:@"physicsWorld"];
+    v10 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"rootNode"];
     if (v10)
     {
       [v4 setRootNode:v10];
@@ -2912,7 +2912,7 @@ uint64_t __31__SCNScene__prettifyForPreview__block_invoke_2(uint64_t a1, void *a
       }
     }
 
-    v13 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"background"];
+    v13 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"background"];
     *(v4 + 9) = v13;
     if (!v9)
     {
@@ -2924,50 +2924,50 @@ uint64_t __31__SCNScene__prettifyForPreview__block_invoke_2(uint64_t a1, void *a
       }
     }
 
-    *(v4 + 10) = [a3 decodeObjectOfClasses:SCNUserInfoClasses() forKey:@"environment"];
-    *(v4 + 11) = [a3 decodeObjectOfClasses:SCNUserInfoClasses() forKey:@"userAttributes"];
-    [a3 decodeDoubleForKey:@"fogStartDistance"];
+    *(v4 + 10) = [coder decodeObjectOfClasses:SCNUserInfoClasses() forKey:@"environment"];
+    *(v4 + 11) = [coder decodeObjectOfClasses:SCNUserInfoClasses() forKey:@"userAttributes"];
+    [coder decodeDoubleForKey:@"fogStartDistance"];
     [v4 setFogStartDistance:?];
-    [a3 decodeDoubleForKey:@"fogEndDistance"];
+    [coder decodeDoubleForKey:@"fogEndDistance"];
     [v4 setFogEndDistance:?];
-    [a3 decodeDoubleForKey:@"fogDensityExponent"];
+    [coder decodeDoubleForKey:@"fogDensityExponent"];
     [v4 setFogDensityExponent:?];
-    if ([a3 containsValueForKey:@"wantsScreenSpaceReflection"])
+    if ([coder containsValueForKey:@"wantsScreenSpaceReflection"])
     {
-      [v4 setWantsScreenSpaceReflection:{objc_msgSend(a3, "decodeBoolForKey:", @"wantsScreenSpaceReflection"}];
+      [v4 setWantsScreenSpaceReflection:{objc_msgSend(coder, "decodeBoolForKey:", @"wantsScreenSpaceReflection"}];
     }
 
-    if ([a3 containsValueForKey:@"screenSpaceReflectionSampleCount"])
+    if ([coder containsValueForKey:@"screenSpaceReflectionSampleCount"])
     {
-      [v4 setScreenSpaceReflectionSampleCount:{objc_msgSend(a3, "decodeIntForKey:", @"screenSpaceReflectionSampleCount"}];
+      [v4 setScreenSpaceReflectionSampleCount:{objc_msgSend(coder, "decodeIntForKey:", @"screenSpaceReflectionSampleCount"}];
     }
 
-    if ([a3 containsValueForKey:@"screenSpaceReflectionMaximumDistance"])
+    if ([coder containsValueForKey:@"screenSpaceReflectionMaximumDistance"])
     {
-      [a3 decodeFloatForKey:@"screenSpaceReflectionMaximumDistance"];
+      [coder decodeFloatForKey:@"screenSpaceReflectionMaximumDistance"];
       [v4 setScreenSpaceReflectionMaximumDistance:v14];
     }
 
-    if ([a3 containsValueForKey:@"screenSpaceReflectionStride"])
+    if ([coder containsValueForKey:@"screenSpaceReflectionStride"])
     {
-      [a3 decodeFloatForKey:@"screenSpaceReflectionStride"];
+      [coder decodeFloatForKey:@"screenSpaceReflectionStride"];
       [v4 setScreenSpaceReflectionStride:v15];
     }
 
     v16 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
-    [v4 setFogColor:{SCNDecodeUnsafeObjectForKey(a3, @"fogColor", v16)}];
-    [v4 setPaused:{objc_msgSend(a3, "decodeBoolForKey:", @"paused"}];
-    [v4 _didDecodeSCNScene:a3];
+    [v4 setFogColor:{SCNDecodeUnsafeObjectForKey(coder, @"fogColor", v16)}];
+    [v4 setPaused:{objc_msgSend(coder, "decodeBoolForKey:", @"paused"}];
+    [v4 _didDecodeSCNScene:coder];
     [SCNTransaction setImmediateMode:v5];
   }
 
   return v4;
 }
 
-- (BOOL)writeToURLWithUSDKit:(id)a3
+- (BOOL)writeToURLWithUSDKit:(id)kit
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(a3 "pathExtension")];
+  v5 = [objc_msgSend(kit "pathExtension")];
   if (([v5 isEqualToString:@"usd"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"usda") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"usdc") & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", @"usdz"))
   {
     goto LABEL_16;
@@ -2981,14 +2981,14 @@ uint64_t __31__SCNScene__prettifyForPreview__block_invoke_2(uint64_t a1, void *a
   if (SCNLoadUsdKitIfNeeded(void)::loaded == 1)
   {
     v6 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
-    v7 = [v6 URLByAppendingPathComponent:{objc_msgSend(a3, "lastPathComponent")}];
+    v7 = [v6 URLByAppendingPathComponent:{objc_msgSend(kit, "lastPathComponent")}];
     if ([v5 isEqualToString:@"usdz"])
     {
       v7 = [[(NSURL *)v7 URLByDeletingPathExtension] URLByAppendingPathExtension:@"usdc"];
     }
 
     +[SCNTransaction flush];
-    v8 = [objc_msgSend(a3 "URLByDeletingPathExtension")];
+    v8 = [objc_msgSend(kit "URLByDeletingPathExtension")];
     if (!v8 || (v9 = v8, [(__CFString *)v8 isEqualToString:&stru_282DCC058]))
     {
       v9 = @"root_node";
@@ -2996,26 +2996,26 @@ uint64_t __31__SCNScene__prettifyForPreview__block_invoke_2(uint64_t a1, void *a
 
     USDKitConverter::USDKitConverter(v27, self, &v9->isa, v7, [v6 path]);
     USKScene = USDKitConverter::makeUSKScene(v27, v7);
-    v10 = [a3 URLByDeletingLastPathComponent];
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v11 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:0];
+    uRLByDeletingLastPathComponent = [kit URLByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v12 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
     if (v12)
     {
       if ([v5 isEqualToString:@"usdz"])
       {
-        [USKScene saveAndCreateUSDZPackageWithURL:a3];
+        [USKScene saveAndCreateUSDZPackageWithURL:kit];
       }
 
       else
       {
         [USKScene save];
-        if ([v11 fileExistsAtPath:{objc_msgSend(a3, "path")}])
+        if ([defaultManager fileExistsAtPath:{objc_msgSend(kit, "path")}])
         {
-          [v11 removeItemAtURL:a3 error:0];
+          [defaultManager removeItemAtURL:kit error:0];
         }
 
-        v13 = [objc_msgSend(a3 "URLByDeletingLastPathComponent")];
-        v14 = [v11 enumeratorAtPath:{objc_msgSend(v6, "path")}];
+        v13 = [objc_msgSend(kit "URLByDeletingLastPathComponent")];
+        v14 = [defaultManager enumeratorAtPath:{objc_msgSend(v6, "path")}];
         v25 = 0u;
         v26 = 0u;
         v23 = 0u;
@@ -3036,12 +3036,12 @@ uint64_t __31__SCNScene__prettifyForPreview__block_invoke_2(uint64_t a1, void *a
               v18 = *(*(&v23 + 1) + 8 * i);
               v19 = [objc_msgSend(v6 "path")];
               v20 = [v13 stringByAppendingPathComponent:v18];
-              if ([v11 fileExistsAtPath:v20])
+              if ([defaultManager fileExistsAtPath:v20])
               {
-                [v11 removeItemAtPath:v20 error:0];
+                [defaultManager removeItemAtPath:v20 error:0];
               }
 
-              [v11 moveItemAtPath:v19 toPath:v20 error:0];
+              [defaultManager moveItemAtPath:v19 toPath:v20 error:0];
             }
 
             v15 = [v14 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -3052,7 +3052,7 @@ uint64_t __31__SCNScene__prettifyForPreview__block_invoke_2(uint64_t a1, void *a
       }
     }
 
-    [v11 removeItemAtURL:v6 error:0];
+    [defaultManager removeItemAtURL:v6 error:0];
     USDKitConverter::~USDKitConverter(v27);
   }
 
@@ -3065,20 +3065,20 @@ LABEL_16:
   return v12;
 }
 
-- (id)_exportAsMovieOperationWithDestinationURL:(id)a3 size:(CGSize)a4 attributes:(id)a5 delegate:(id)a6 didEndSelector:(SEL)a7 userInfo:(void *)a8
+- (id)_exportAsMovieOperationWithDestinationURL:(id)l size:(CGSize)size attributes:(id)attributes delegate:(id)delegate didEndSelector:(SEL)selector userInfo:(void *)info
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v16 = [SCNRenderer rendererWithDevice:0 options:0];
   [(SCNRenderer *)v16 setScene:self];
-  v17 = [[SCNMovieExportOperation alloc] initWithRenderer:v16 size:a5 attributes:a3 outputURL:width, height];
-  [(_SCNExportOperation *)v17 setDelegate:a6];
-  [(_SCNExportOperation *)v17 setUserInfo:a8];
-  [(_SCNExportOperation *)v17 setDidEndSelector:a7];
-  return v17;
+  height = [[SCNMovieExportOperation alloc] initWithRenderer:v16 size:attributes attributes:l outputURL:width, height];
+  [(_SCNExportOperation *)height setDelegate:delegate];
+  [(_SCNExportOperation *)height setUserInfo:info];
+  [(_SCNExportOperation *)height setDidEndSelector:selector];
+  return height;
 }
 
-- (id)debugQuickLookObjectWithPointOfView:(id)a3
+- (id)debugQuickLookObjectWithPointOfView:(id)view
 {
   if (C3DMetalIsSupported())
   {
@@ -3095,9 +3095,9 @@ LABEL_16:
   [(SCNRenderer *)v6 setJitteringEnabled:0];
   [(SCNRenderer *)v6 setAutoenablesDefaultLighting:1];
   [(SCNRenderer *)v6 setAutoAdjustCamera:1];
-  if (a3)
+  if (view)
   {
-    [(SCNRenderer *)v6 setPointOfView:a3];
+    [(SCNRenderer *)v6 setPointOfView:view];
   }
 
   +[SCNTransaction flush];

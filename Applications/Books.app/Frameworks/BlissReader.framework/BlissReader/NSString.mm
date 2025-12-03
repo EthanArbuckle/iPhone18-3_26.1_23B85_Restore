@@ -1,8 +1,8 @@
 @interface NSString
 + (NSString)stringWithUUID;
-+ (id)stringFromNSIndexPath:(id)a3;
-+ (int64_t)normalizedCompare:(id)a3 with:(id)a4;
-- (CGSize)sizeWithParagraphStyle:(id)a3;
++ (id)stringFromNSIndexPath:(id)path;
++ (int64_t)normalizedCompare:(id)compare with:(id)with;
+- (CGSize)sizeWithParagraphStyle:(id)style;
 - (id)normalizedStringForSearch;
 - (id)normalizedStringsForPrefixSearch;
 - (id)stringByTransformingForTHNotesSectionHeader;
@@ -10,9 +10,9 @@
 
 @implementation NSString
 
-+ (id)stringFromNSIndexPath:(id)a3
++ (id)stringFromNSIndexPath:(id)path
 {
-  v4 = [a3 length];
+  v4 = [path length];
   v5 = +[NSMutableString string];
   if (v4)
   {
@@ -22,24 +22,24 @@
       v7 = v6;
       do
       {
-        [v5 appendFormat:@"%lu.", objc_msgSend(a3, "indexAtPosition:", 0)];
+        [v5 appendFormat:@"%lu.", objc_msgSend(path, "indexAtPosition:", 0)];
         --v7;
       }
 
       while (v7);
     }
 
-    [v5 appendFormat:@"%lu", objc_msgSend(a3, "indexAtPosition:", v6)];
+    [v5 appendFormat:@"%lu", objc_msgSend(path, "indexAtPosition:", v6)];
   }
 
   return v5;
 }
 
-- (CGSize)sizeWithParagraphStyle:(id)a3
+- (CGSize)sizeWithParagraphStyle:(id)style
 {
   width = CGSizeZero.width;
   height = CGSizeZero.height;
-  v5 = [[NSAttributedString alloc] initWithString:self paragraphStyle:a3];
+  v5 = [[NSAttributedString alloc] initWithString:self paragraphStyle:style];
   v6 = CTTypesetterCreateWithAttributedString(v5);
   if (v6)
   {
@@ -69,39 +69,39 @@
   return result;
 }
 
-+ (int64_t)normalizedCompare:(id)a3 with:(id)a4
++ (int64_t)normalizedCompare:(id)compare with:(id)with
 {
-  if (a3 == a4)
+  if (compare == with)
   {
     return 0;
   }
 
   v12 = v5;
   v13 = v4;
-  if (!a3)
+  if (!compare)
   {
-    v9 = &stru_471858;
-    if (a4)
+    normalizedStringForSearch = &stru_471858;
+    if (with)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v10 = &stru_471858;
+    normalizedStringForSearch2 = &stru_471858;
     goto LABEL_8;
   }
 
-  v9 = [a3 normalizedStringForSearch];
-  if (!a4)
+  normalizedStringForSearch = [compare normalizedStringForSearch];
+  if (!with)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v10 = [a4 normalizedStringForSearch];
+  normalizedStringForSearch2 = [with normalizedStringForSearch];
 LABEL_8:
 
-  return [(__CFString *)v9 localizedCaseInsensitiveCompare:v10];
+  return [(__CFString *)normalizedStringForSearch localizedCaseInsensitiveCompare:normalizedStringForSearch2];
 }
 
 - (id)normalizedStringForSearch

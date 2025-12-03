@@ -1,37 +1,37 @@
 @interface PKPaymentSetupProductsViewController
-- (BOOL)didSelectProduct:(id)a3 completion:(id)a4;
-- (PKPaymentSetupProductsViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 delegate:(id)a5 category:(id)a6 paymentSetupProducts:(id)a7;
+- (BOOL)didSelectProduct:(id)product completion:(id)completion;
+- (PKPaymentSetupProductsViewController)initWithProvisioningController:(id)controller context:(int64_t)context delegate:(id)delegate category:(id)category paymentSetupProducts:(id)products;
 - (PKPaymentSetupProductsViewControllerFlowDelegate)flowDelegate;
-- (void)_didSelectAddADifferentCardWithCompletion:(id)a3;
+- (void)_didSelectAddADifferentCardWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)displayNoResultsViewWithSubtitle:(id)a3 needsManualEntryButton:(BOOL)a4;
-- (void)provisioningControllerUpdatedProducts:(id)a3;
+- (void)displayNoResultsViewWithSubtitle:(id)subtitle needsManualEntryButton:(BOOL)button;
+- (void)provisioningControllerUpdatedProducts:(id)products;
 - (void)reloadSectionsRequired;
 - (void)searchBarCancelButtonClicked;
-- (void)searchTextDidChangeTo:(id)a3;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)searchTextDidChangeTo:(id)to;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPaymentSetupProductsViewController
 
-- (PKPaymentSetupProductsViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 delegate:(id)a5 category:(id)a6 paymentSetupProducts:(id)a7
+- (PKPaymentSetupProductsViewController)initWithProvisioningController:(id)controller context:(int64_t)context delegate:(id)delegate category:(id)category paymentSetupProducts:(id)products
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
+  controllerCopy = controller;
+  categoryCopy = category;
+  productsCopy = products;
   v17.receiver = self;
   v17.super_class = PKPaymentSetupProductsViewController;
   v14 = [(PKPaymentSetupOptionsViewController *)&v17 initWithContext:0];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_provisioningController, a3);
-    objc_storeStrong(&v15->_category, a6);
-    objc_storeStrong(&v15->_paymentSetupProducts, a7);
-    [v11 addDelegate:v15];
+    objc_storeStrong(&v14->_provisioningController, controller);
+    objc_storeStrong(&v15->_category, category);
+    objc_storeStrong(&v15->_paymentSetupProducts, products);
+    [controllerCopy addDelegate:v15];
     [(PKDynamicCollectionViewController *)v15 setUseItemIdentityWhenUpdating:1];
   }
 
@@ -53,8 +53,8 @@
   v10.super_class = PKPaymentSetupProductsViewController;
   [(PKPaymentSetupOptionsViewController *)&v10 viewDidLoad];
   [(PKDynamicCollectionViewController *)self setRetainCellSelectionCellOnReload:1];
-  v3 = [(PKPaymentSetupProductCategory *)self->_category localizedTitle];
-  [(PKPaymentSetupOptionsViewController *)self setTitleText:v3];
+  localizedTitle = [(PKPaymentSetupProductCategory *)self->_category localizedTitle];
+  [(PKPaymentSetupOptionsViewController *)self setTitleText:localizedTitle];
 
   category = self->_category;
   [(PKPaymentSetupOptionsViewController *)self context];
@@ -62,8 +62,8 @@
   [(PKPaymentSetupOptionsViewController *)self setSubtitleText:v5];
 
   [(PKPaymentSetupOptionsViewController *)self setShowSearchBar:[(NSArray *)self->_paymentSetupProducts count]> 6];
-  v6 = [(PKPaymentSetupProductCategory *)self->_category localizedSearchBarDefaultText];
-  [(PKPaymentSetupOptionsViewController *)self setSearchBarDefaultText:v6];
+  localizedSearchBarDefaultText = [(PKPaymentSetupProductCategory *)self->_category localizedSearchBarDefaultText];
+  [(PKPaymentSetupOptionsViewController *)self setSearchBarDefaultText:localizedSearchBarDefaultText];
 
   v7 = [[PKPaymentSetupProductsSectionController alloc] initWithProvisoningController:self->_provisioningController];
   primaryProductSectionController = self->_primaryProductSectionController;
@@ -76,13 +76,13 @@
   [(PKPaymentSetupOptionsViewController *)self setSections:v9 animated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = PKPaymentSetupProductsViewController;
-  [(PKPaymentSetupOptionsViewController *)&v14 viewDidAppear:a3];
+  [(PKPaymentSetupOptionsViewController *)&v14 viewDidAppear:appear];
   v4 = &OBJC_IVAR___PKPaymentSetupProductsViewController__category;
-  v5 = [(PKPaymentSetupProductCategory *)self->_category identifier];
+  identifier = [(PKPaymentSetupProductCategory *)self->_category identifier];
   v6 = PKPaymentSetupProductTypeFromString();
 
   reporter = self->_reporter;
@@ -113,23 +113,23 @@
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppearedWithContext:v8];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupProductsViewController;
-  [(PKPaymentSetupProductsViewController *)&v4 viewDidDisappear:a3];
+  [(PKPaymentSetupProductsViewController *)&v4 viewDidDisappear:disappear];
   if ([(PKPaymentSetupProductsViewController *)self isMovingFromParentViewController])
   {
     [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter resetProductTypes];
   }
 }
 
-- (void)provisioningControllerUpdatedProducts:(id)a3
+- (void)provisioningControllerUpdatedProducts:(id)products
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PKPaymentProvisioningController *)self->_provisioningController paymentSetupProductModel];
+  paymentSetupProductModel = [(PKPaymentProvisioningController *)self->_provisioningController paymentSetupProductModel];
   v5 = [(NSArray *)self->_paymentSetupProducts valueForKey:@"productIdentifier"];
-  v6 = [v4 productsForProductIdentifiers:v5];
+  v6 = [paymentSetupProductModel productsForProductIdentifiers:v5];
   paymentSetupProducts = self->_paymentSetupProducts;
   self->_paymentSetupProducts = v6;
 
@@ -139,13 +139,13 @@
   [(PKPaymentSetupOptionsViewController *)self setSections:v8 animated:1];
 }
 
-- (void)searchTextDidChangeTo:(id)a3
+- (void)searchTextDidChangeTo:(id)to
 {
   v5.receiver = self;
   v5.super_class = PKPaymentSetupProductsViewController;
-  v4 = a3;
-  [(PKPaymentSetupOptionsViewController *)&v5 searchTextDidChangeTo:v4];
-  [(PKPaymentSetupProductsSectionController *)self->_primaryProductSectionController applySearchString:v4, v5.receiver, v5.super_class];
+  toCopy = to;
+  [(PKPaymentSetupOptionsViewController *)&v5 searchTextDidChangeTo:toCopy];
+  [(PKPaymentSetupProductsSectionController *)self->_primaryProductSectionController applySearchString:toCopy, v5.receiver, v5.super_class];
 }
 
 - (void)searchBarCancelButtonClicked
@@ -156,59 +156,59 @@
   [(PKPaymentSetupProductsSectionController *)self->_primaryProductSectionController applySearchString:0];
 }
 
-- (void)displayNoResultsViewWithSubtitle:(id)a3 needsManualEntryButton:(BOOL)a4
+- (void)displayNoResultsViewWithSubtitle:(id)subtitle needsManualEntryButton:(BOOL)button
 {
-  v4 = a4;
-  v6 = a3;
+  buttonCopy = button;
+  subtitleCopy = subtitle;
   [(PKPaymentSetupOptionsViewController *)self setShowNoResultsView:1 animated:1];
-  [(PKPaymentSetupOptionsViewController *)self setNoResultsSubtitle:v6];
+  [(PKPaymentSetupOptionsViewController *)self setNoResultsSubtitle:subtitleCopy];
 
-  if (v4)
+  if (buttonCopy)
   {
     v7 = PKLocalizedPaymentString(&cfstr_AddANewCard.isa);
     [(PKPaymentSetupOptionsViewController *)self setNoResultsActionButtonTitle:v7 target:self action:sel__didSelectAddADifferentCard];
   }
 }
 
-- (BOOL)didSelectProduct:(id)a3 completion:(id)a4
+- (BOOL)didSelectProduct:(id)product completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  productCopy = product;
+  completionCopy = completion;
   currentlyLoadingProduct = self->_currentlyLoadingProduct;
   if (currentlyLoadingProduct)
   {
     v10 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(PKPaymentSetupProduct *)currentlyLoadingProduct productIdentifier];
-      v12 = [v7 productIdentifier];
+      productIdentifier = [(PKPaymentSetupProduct *)currentlyLoadingProduct productIdentifier];
+      productIdentifier2 = [productCopy productIdentifier];
       v16 = 138412546;
-      v17 = v11;
+      v17 = productIdentifier;
       v18 = 2112;
-      v19 = v12;
+      v19 = productIdentifier2;
       _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Already loading product for: %@ cannot select: %@", &v16, 0x16u);
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_currentlyLoadingProduct, a3);
+    objc_storeStrong(&self->_currentlyLoadingProduct, product);
     WeakRetained = objc_loadWeakRetained(&self->_flowDelegate);
-    [WeakRetained productsViewController:self didSelectProduct:v7];
+    [WeakRetained productsViewController:self didSelectProduct:productCopy];
 
-    [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter setSetupProduct:v7];
+    [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter setSetupProduct:productCopy];
     v14 = self->_currentlyLoadingProduct;
     self->_currentlyLoadingProduct = 0;
 
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -223,46 +223,46 @@
   [(PKPaymentSetupOptionsViewController *)self setSections:v3 animated:1];
 }
 
-- (void)_didSelectAddADifferentCardWithCompletion:(id)a3
+- (void)_didSelectAddADifferentCardWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_flowDelegate);
   [WeakRetained productsViewControllerDidSelectManualEntry:self];
 
-  v5 = v6;
-  if (v6)
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 1);
-    v5 = v6;
+    (*(completionCopy + 2))(completionCopy, 1);
+    v5 = completionCopy;
   }
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v7 setUserInteractionEnabled:v5 ^ 1];
+  animatedCopy = animated;
+  iCopy = i;
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView setUserInteractionEnabled:iCopy ^ 1];
 
-  v8 = [(PKPaymentSetupProductsViewController *)self navigationController];
-  v9 = [v8 view];
-  [v9 setUserInteractionEnabled:v5 ^ 1];
+  navigationController = [(PKPaymentSetupProductsViewController *)self navigationController];
+  view = [navigationController view];
+  [view setUserInteractionEnabled:iCopy ^ 1];
 
-  v10 = [(PKPaymentSetupProductsViewController *)self navigationItem];
-  [v10 setHidesBackButton:v5];
+  navigationItem = [(PKPaymentSetupProductsViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:iCopy];
 
-  if (!v5)
+  if (!iCopy)
   {
-    [(PKPaymentSetupProductsSectionController *)self->_primaryProductSectionController hideLoadingIndicatorsAnimated:v4];
-    v15 = [(PKPaymentSetupProductsViewController *)self navigationController];
-    v11 = [v15 viewControllers];
-    v12 = [v11 lastObject];
-    v13 = v12;
-    if (v12 == self)
+    [(PKPaymentSetupProductsSectionController *)self->_primaryProductSectionController hideLoadingIndicatorsAnimated:animatedCopy];
+    navigationController2 = [(PKPaymentSetupProductsViewController *)self navigationController];
+    viewControllers = [navigationController2 viewControllers];
+    lastObject = [viewControllers lastObject];
+    v13 = lastObject;
+    if (lastObject == self)
     {
-      v14 = [(PKPaymentSetupProductsViewController *)self presentedViewController];
+      presentedViewController = [(PKPaymentSetupProductsViewController *)self presentedViewController];
 
-      if (!v14)
+      if (!presentedViewController)
       {
 
         [(PKDynamicCollectionViewController *)self deselectCells];

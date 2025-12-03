@@ -1,29 +1,29 @@
 @interface CosmeticAssessmentCheckingDamageViewController
-- (_TtC11Diagnostics46CosmeticAssessmentCheckingDamageViewController)initWithSpinnerText:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC11Diagnostics46CosmeticAssessmentCheckingDamageViewController)initWithSpinnerText:(id)text;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CosmeticAssessmentCheckingDamageViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for CosmeticAssessmentCheckingDamageViewController();
   v4 = v5.receiver;
-  [(CosmeticAssessmentCheckingDamageViewController *)&v5 viewDidAppear:v3];
+  [(CosmeticAssessmentCheckingDamageViewController *)&v5 viewDidAppear:appearCopy];
   sub_1000EBDFC(8);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for CosmeticAssessmentCheckingDamageViewController();
   v4 = v6.receiver;
-  [(CosmeticAssessmentCheckingDamageViewController *)&v6 viewWillDisappear:v3];
+  [(CosmeticAssessmentCheckingDamageViewController *)&v6 viewWillDisappear:disappearCopy];
   if (qword_1001FC730 != -1)
   {
     swift_once();
@@ -37,11 +37,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000CFFCC();
 }
 
-- (_TtC11Diagnostics46CosmeticAssessmentCheckingDamageViewController)initWithSpinnerText:(id)a3
+- (_TtC11Diagnostics46CosmeticAssessmentCheckingDamageViewController)initWithSpinnerText:(id)text
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

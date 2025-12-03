@@ -1,22 +1,22 @@
 @interface SKUIStarBarView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SKUIStarBarView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setColoringUsingStyle:(id)a3;
-- (void)setEmptyColor:(id)a3;
-- (void)setFilledColor:(id)a3;
-- (void)setNumberOfStars:(int64_t)a3;
-- (void)setValue:(double)a3;
+- (SKUIStarBarView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setColoringUsingStyle:(id)style;
+- (void)setEmptyColor:(id)color;
+- (void)setFilledColor:(id)color;
+- (void)setNumberOfStars:(int64_t)stars;
+- (void)setValue:(double)value;
 @end
 
 @implementation SKUIStarBarView
 
-- (SKUIStarBarView)initWithFrame:(CGRect)a3
+- (SKUIStarBarView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIStarBarView initWithFrame:];
@@ -24,47 +24,47 @@
 
   v14.receiver = self;
   v14.super_class = SKUIStarBarView;
-  v8 = [(SKUIStarBarView *)&v14 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIStarBarView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.05];
-    emptyColor = v8->_emptyColor;
-    v8->_emptyColor = v9;
+    emptyColor = height->_emptyColor;
+    height->_emptyColor = v9;
 
     v11 = [MEMORY[0x277D75348] colorWithWhite:0.517647059 alpha:1.0];
-    filledColor = v8->_filledColor;
-    v8->_filledColor = v11;
+    filledColor = height->_filledColor;
+    height->_filledColor = v11;
 
-    [(SKUIStarBarView *)v8 setContentMode:3];
+    [(SKUIStarBarView *)height setContentMode:3];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setColoringUsingStyle:(id)a3
+- (void)setColoringUsingStyle:(id)style
 {
-  v4 = a3;
-  v5 = [v4 ikBackgroundColor];
-  v12 = [v5 color];
+  styleCopy = style;
+  ikBackgroundColor = [styleCopy ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  v6 = [v4 ikColor];
+  ikColor = [styleCopy ikColor];
 
-  v7 = [v6 color];
+  color2 = [ikColor color];
 
-  if (v12 && v7)
+  if (color && color2)
   {
-    [(SKUIStarBarView *)self setEmptyColor:v12];
+    [(SKUIStarBarView *)self setEmptyColor:color];
 LABEL_7:
-    [(SKUIStarBarView *)self setFilledColor:v7];
+    [(SKUIStarBarView *)self setFilledColor:color2];
     goto LABEL_8;
   }
 
-  if (v7)
+  if (color2)
   {
-    v8 = SKUIColorSchemeStyleForColor(v7);
+    v8 = SKUIColorSchemeStyleForColor(color2);
     if (v8 <= 3)
     {
-      v9 = [v7 colorWithAlphaComponent:dbl_215F3FF90[v8]];
+      v9 = [color2 colorWithAlphaComponent:dbl_215F3FF90[v8]];
       [(SKUIStarBarView *)self setEmptyColor:v9];
     }
 
@@ -80,11 +80,11 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setEmptyColor:(id)a3
+- (void)setEmptyColor:(id)color
 {
-  if (self->_emptyColor != a3)
+  if (self->_emptyColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     emptyColor = self->_emptyColor;
     self->_emptyColor = v4;
 
@@ -98,11 +98,11 @@ LABEL_8:
   }
 }
 
-- (void)setFilledColor:(id)a3
+- (void)setFilledColor:(id)color
 {
-  if (self->_filledColor != a3)
+  if (self->_filledColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     filledColor = self->_filledColor;
     self->_filledColor = v4;
 
@@ -116,27 +116,27 @@ LABEL_8:
   }
 }
 
-- (void)setNumberOfStars:(int64_t)a3
+- (void)setNumberOfStars:(int64_t)stars
 {
-  if (self->_numberOfStars != a3)
+  if (self->_numberOfStars != stars)
   {
-    self->_numberOfStars = a3;
+    self->_numberOfStars = stars;
     [(SKUIStarBarView *)self setNeedsDisplay];
   }
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     [(SKUIStarBarView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(SKUIStarBarView *)self bounds:a3.origin.x];
+  [(SKUIStarBarView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;

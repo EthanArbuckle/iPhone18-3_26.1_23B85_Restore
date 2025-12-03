@@ -1,16 +1,16 @@
 @interface QueueImportJournal
 - (BOOL)scanForFiles;
-- (QueueImportJournal)initWithPartialPath:(const char *)a3 under:(int)a4 allowModification:(BOOL)a5;
+- (QueueImportJournal)initWithPartialPath:(const char *)path under:(int)under allowModification:(BOOL)modification;
 - (int64_t)oldestDateAfterRetirement;
 - (unint64_t)retirementSerialNumber;
 - (void)dealloc;
-- (void)noteJournalFile:(const char *)a3 serialNumber:(unint64_t)a4;
-- (void)noteRetirementFile:(const char *)a3 serialNumber:(unint64_t)a4;
+- (void)noteJournalFile:(const char *)file serialNumber:(unint64_t)number;
+- (void)noteRetirementFile:(const char *)file serialNumber:(unint64_t)number;
 @end
 
 @implementation QueueImportJournal
 
-- (QueueImportJournal)initWithPartialPath:(const char *)a3 under:(int)a4 allowModification:(BOOL)a5
+- (QueueImportJournal)initWithPartialPath:(const char *)path under:(int)under allowModification:(BOOL)modification
 {
   v11.receiver = self;
   v11.super_class = QueueImportJournal;
@@ -18,10 +18,10 @@
   v9 = v8;
   if (v8)
   {
-    v8->_allowModification = a5;
-    v8->_masterFD = a4;
+    v8->_allowModification = modification;
+    v8->_masterFD = under;
     v8->_journalArray = objc_alloc_init(NSMutableArray);
-    strlcpy(v9->_partialPath, a3, 0x400uLL);
+    strlcpy(v9->_partialPath, path, 0x400uLL);
   }
 
   return v9;
@@ -113,22 +113,22 @@
   }
 }
 
-- (void)noteJournalFile:(const char *)a3 serialNumber:(unint64_t)a4
+- (void)noteJournalFile:(const char *)file serialNumber:(unint64_t)number
 {
-  v5 = [[QueueImportJournalFile alloc] initWithType:0 partialPath:a3 andSerialNumber:a4];
+  v5 = [[QueueImportJournalFile alloc] initWithType:0 partialPath:file andSerialNumber:number];
   [(NSMutableArray *)self->_journalArray addObject:v5];
 }
 
-- (void)noteRetirementFile:(const char *)a3 serialNumber:(unint64_t)a4
+- (void)noteRetirementFile:(const char *)file serialNumber:(unint64_t)number
 {
-  self->_retirement = [[QueueImportJournalFile alloc] initWithType:1 partialPath:a3 andSerialNumber:a4];
+  self->_retirement = [[QueueImportJournalFile alloc] initWithType:1 partialPath:file andSerialNumber:number];
   if ([(NSMutableArray *)self->_journalArray count]>= 2)
   {
     v6 = [(NSMutableArray *)self->_journalArray count]- 1;
     while (v6)
     {
       v7 = [(NSMutableArray *)self->_journalArray objectAtIndexedSubscript:v6--];
-      if (v7[130] <= a4)
+      if (v7[130] <= number)
       {
         journalArray = self->_journalArray;
 
@@ -180,7 +180,7 @@
     v11 = 0;
     v43 = *v59;
     LOWORD(v38) = 256;
-    v39 = self;
+    selfCopy = self;
     do
     {
       v12 = 0;
@@ -285,7 +285,7 @@ LABEL_17:
 
           if (v11)
           {
-            self = v39;
+            self = selfCopy;
             v10 = v41;
 LABEL_29:
             v15 = v42;
@@ -296,7 +296,7 @@ LABEL_29:
           __memmove_chk();
           v15 = v42;
           v25 = read(v42, v3 + v24, 0x4000 - v24);
-          self = v39;
+          self = selfCopy;
           v11 = 0;
           v26 = v25 & ~(v25 >> 31);
           v27 = __OFADD__(v26, v24);
@@ -324,7 +324,7 @@ LABEL_29:
         if (v22 <= 0)
         {
           v28 = logForCSLogCategoryDefault();
-          self = v39;
+          self = selfCopy;
           v10 = v41;
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
           {
@@ -356,7 +356,7 @@ LABEL_29:
         }
 
         v18 = 1;
-        self = v39;
+        self = selfCopy;
 LABEL_42:
         close(v15);
         _Block_object_dispose(v56, 8);

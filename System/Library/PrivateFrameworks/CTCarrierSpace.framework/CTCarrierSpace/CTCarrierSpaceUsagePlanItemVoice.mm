@@ -1,9 +1,9 @@
 @interface CTCarrierSpaceUsagePlanItemVoice
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTCarrierSpaceUsagePlanItemVoice)init;
-- (CTCarrierSpaceUsagePlanItemVoice)initWithCoder:(id)a3;
+- (CTCarrierSpaceUsagePlanItemVoice)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCarrierSpaceUsagePlanItemVoice
@@ -29,21 +29,21 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTCarrierSpaceUsagePlanItemVoice *)self minutesCapacity];
-  [v3 appendFormat:@", minutesCapacity=%@", v4];
+  minutesCapacity = [(CTCarrierSpaceUsagePlanItemVoice *)self minutesCapacity];
+  [v3 appendFormat:@", minutesCapacity=%@", minutesCapacity];
 
-  v5 = [(CTCarrierSpaceUsagePlanItemVoice *)self minutesUsed];
-  [v3 appendFormat:@", minutesUsed=%@", v5];
+  minutesUsed = [(CTCarrierSpaceUsagePlanItemVoice *)self minutesUsed];
+  [v3 appendFormat:@", minutesUsed=%@", minutesUsed];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -53,25 +53,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(CTCarrierSpaceUsagePlanItemVoice *)self minutesCapacity];
-      v8 = [(CTCarrierSpaceUsagePlanItemVoice *)v6 minutesCapacity];
-      if (v7 == v8 || (-[CTCarrierSpaceUsagePlanItemVoice minutesCapacity](self, "minutesCapacity"), v3 = objc_claimAutoreleasedReturnValue(), -[CTCarrierSpaceUsagePlanItemVoice minutesCapacity](v6, "minutesCapacity"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToString:v4]))
+      minutesCapacity = [(CTCarrierSpaceUsagePlanItemVoice *)self minutesCapacity];
+      minutesCapacity2 = [(CTCarrierSpaceUsagePlanItemVoice *)equalCopy minutesCapacity];
+      if (minutesCapacity == minutesCapacity2 || (-[CTCarrierSpaceUsagePlanItemVoice minutesCapacity](self, "minutesCapacity"), v3 = objc_claimAutoreleasedReturnValue(), -[CTCarrierSpaceUsagePlanItemVoice minutesCapacity](equalCopy, "minutesCapacity"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToString:v4]))
       {
-        v10 = [(CTCarrierSpaceUsagePlanItemVoice *)self minutesUsed];
-        v11 = [(CTCarrierSpaceUsagePlanItemVoice *)v6 minutesUsed];
-        if (v10 == v11)
+        minutesUsed = [(CTCarrierSpaceUsagePlanItemVoice *)self minutesUsed];
+        minutesUsed2 = [(CTCarrierSpaceUsagePlanItemVoice *)equalCopy minutesUsed];
+        if (minutesUsed == minutesUsed2)
         {
           v9 = 1;
         }
 
         else
         {
-          v12 = [(CTCarrierSpaceUsagePlanItemVoice *)self minutesUsed];
-          v13 = [(CTCarrierSpaceUsagePlanItemVoice *)v6 minutesUsed];
-          v9 = [v12 isEqualToString:v13];
+          minutesUsed3 = [(CTCarrierSpaceUsagePlanItemVoice *)self minutesUsed];
+          minutesUsed4 = [(CTCarrierSpaceUsagePlanItemVoice *)equalCopy minutesUsed];
+          v9 = [minutesUsed3 isEqualToString:minutesUsed4];
         }
 
-        if (v7 == v8)
+        if (minutesCapacity == minutesCapacity2)
         {
           goto LABEL_13;
         }
@@ -94,27 +94,27 @@ LABEL_14:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minutesCapacity = self->_minutesCapacity;
-  v5 = a3;
-  [v5 encodeObject:minutesCapacity forKey:@"minutesCapacity"];
-  [v5 encodeObject:self->_minutesUsed forKey:@"minutesUsed"];
+  coderCopy = coder;
+  [coderCopy encodeObject:minutesCapacity forKey:@"minutesCapacity"];
+  [coderCopy encodeObject:self->_minutesUsed forKey:@"minutesUsed"];
 }
 
-- (CTCarrierSpaceUsagePlanItemVoice)initWithCoder:(id)a3
+- (CTCarrierSpaceUsagePlanItemVoice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTCarrierSpaceUsagePlanItemVoice;
   v5 = [(CTCarrierSpaceUsagePlanItemVoice *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minutesCapacity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minutesCapacity"];
     minutesCapacity = v5->_minutesCapacity;
     v5->_minutesCapacity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minutesUsed"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minutesUsed"];
     minutesUsed = v5->_minutesUsed;
     v5->_minutesUsed = v8;
   }

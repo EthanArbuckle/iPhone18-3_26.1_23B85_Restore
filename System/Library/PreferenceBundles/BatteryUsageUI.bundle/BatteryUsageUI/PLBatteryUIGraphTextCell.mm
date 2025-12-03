@@ -1,61 +1,61 @@
 @interface PLBatteryUIGraphTextCell
-- (PLBatteryUIGraphTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (PLBatteryUIGraphTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateConstraints;
 @end
 
 @implementation PLBatteryUIGraphTextCell
 
-- (PLBatteryUIGraphTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PLBatteryUIGraphTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v28.receiver = self;
   v28.super_class = PLBatteryUIGraphTextCell;
-  v9 = [(PLBatteryUIGraphTextCell *)&v28 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PLBatteryUIGraphTextCell *)&v28 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(PLBatteryUIGraphTextCell *)v9 contentView];
+    contentView = [(PLBatteryUIGraphTextCell *)v9 contentView];
     v12 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [(PLBatteryUIGraphTextCell *)v10 setBatteryUITextLabel:v12];
 
-    v13 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
-    [v13 setAccessibilityIdentifier:@"BATTERY_UILABEL_IDENTIFIER"];
+    batteryUITextLabel = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
+    [batteryUITextLabel setAccessibilityIdentifier:@"BATTERY_UILABEL_IDENTIFIER"];
 
     v14 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    v15 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
-    [v15 setFont:v14];
+    batteryUITextLabel2 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
+    [batteryUITextLabel2 setFont:v14];
 
-    v16 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    batteryUITextLabel3 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
+    [batteryUITextLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v17 = +[UIColor systemGrayColor];
-    v18 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
-    [v18 setTextColor:v17];
+    batteryUITextLabel4 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
+    [batteryUITextLabel4 setTextColor:v17];
 
-    v19 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
-    [v19 setTextAlignment:0];
+    batteryUITextLabel5 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
+    [batteryUITextLabel5 setTextAlignment:0];
 
     v20 = +[UIColor clearColor];
-    v21 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
-    [v21 setBackgroundColor:v20];
+    batteryUITextLabel6 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
+    [batteryUITextLabel6 setBackgroundColor:v20];
 
-    v22 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
-    [v22 setNumberOfLines:0];
+    batteryUITextLabel7 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
+    [batteryUITextLabel7 setNumberOfLines:0];
 
-    v23 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
-    [v23 setLineBreakMode:0];
+    batteryUITextLabel8 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
+    [batteryUITextLabel8 setLineBreakMode:0];
 
-    v24 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
-    [v11 addSubview:v24];
+    batteryUITextLabel9 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
+    [contentView addSubview:batteryUITextLabel9];
 
     [(PLBatteryUIGraphTextCell *)v10 setSeparatorInset:0.0, 0.0, 0.0, 0.0];
-    v25 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
-    v29 = v25;
+    batteryUITextLabel10 = [(PLBatteryUIGraphTextCell *)v10 batteryUITextLabel];
+    v29 = batteryUITextLabel10;
     v26 = [NSArray arrayWithObjects:&v29 count:1];
-    [v11 setAccessibilityElements:v26];
+    [contentView setAccessibilityElements:v26];
 
-    [(PLBatteryUIGraphTextCell *)v10 refreshCellContentsWithSpecifier:v8];
+    [(PLBatteryUIGraphTextCell *)v10 refreshCellContentsWithSpecifier:specifierCopy];
     [(PLBatteryUIGraphTextCell *)v10 setConstraintsAdded:0];
   }
 
@@ -87,14 +87,14 @@
   }
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = PLBatteryUIGraphTextCell;
-  v4 = a3;
-  [(PLBatteryUIGraphTextCell *)&v7 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PLBatteryUIGraphTextCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(PLBatteryUIGraphTextCell *)self batteryUITextLabel:v7.receiver];
-  v6 = [v4 propertyForKey:@"PLBatteryUIGraphTextKey"];
+  v6 = [specifierCopy propertyForKey:@"PLBatteryUIGraphTextKey"];
 
   [v5 setText:v6];
   [(PLBatteryUIGraphTextCell *)self setNeedsUpdateConstraints];

@@ -1,29 +1,29 @@
 @interface HKOntologyEducationContentSectionData
-- (BOOL)isEqual:(id)a3;
-- (HKOntologyEducationContentSectionData)initWithCoder:(id)a3;
-- (HKOntologyEducationContentSectionData)initWithStringValues:(id)a3 sectionDataType:(int64_t)a4 version:(int64_t)a5 timestamp:(double)a6 deleted:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (HKOntologyEducationContentSectionData)initWithCoder:(id)coder;
+- (HKOntologyEducationContentSectionData)initWithStringValues:(id)values sectionDataType:(int64_t)type version:(int64_t)version timestamp:(double)timestamp deleted:(BOOL)deleted;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKOntologyEducationContentSectionData
 
-- (HKOntologyEducationContentSectionData)initWithStringValues:(id)a3 sectionDataType:(int64_t)a4 version:(int64_t)a5 timestamp:(double)a6 deleted:(BOOL)a7
+- (HKOntologyEducationContentSectionData)initWithStringValues:(id)values sectionDataType:(int64_t)type version:(int64_t)version timestamp:(double)timestamp deleted:(BOOL)deleted
 {
-  v12 = a3;
+  valuesCopy = values;
   v17.receiver = self;
   v17.super_class = HKOntologyEducationContentSectionData;
   v13 = [(HKOntologyEducationContentSectionData *)&v17 init];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [valuesCopy copy];
     stringValues = v13->_stringValues;
     v13->_stringValues = v14;
 
-    v13->_sectionDataType = a4;
-    v13->_version = a5;
-    v13->_timestamp = a6;
-    v13->_deleted = a7;
+    v13->_sectionDataType = type;
+    v13->_version = version;
+    v13->_timestamp = timestamp;
+    v13->_deleted = deleted;
   }
 
   return v13;
@@ -52,10 +52,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -65,10 +65,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       stringValues = self->_stringValues;
-      v7 = [(HKOntologyEducationContentSectionData *)v5 stringValues];
-      if ([(NSArray *)stringValues isEqual:v7]&& (sectionDataType = self->_sectionDataType, sectionDataType == [(HKOntologyEducationContentSectionData *)v5 sectionDataType]) && (version = self->_version, version == [(HKOntologyEducationContentSectionData *)v5 version]) && (timestamp = self->_timestamp, [(HKOntologyEducationContentSectionData *)v5 timestamp], timestamp == v11))
+      stringValues = [(HKOntologyEducationContentSectionData *)v5 stringValues];
+      if ([(NSArray *)stringValues isEqual:stringValues]&& (sectionDataType = self->_sectionDataType, sectionDataType == [(HKOntologyEducationContentSectionData *)v5 sectionDataType]) && (version = self->_version, version == [(HKOntologyEducationContentSectionData *)v5 version]) && (timestamp = self->_timestamp, [(HKOntologyEducationContentSectionData *)v5 timestamp], timestamp == v11))
       {
         deleted = self->_deleted;
         v13 = deleted == [(HKOntologyEducationContentSectionData *)v5 deleted];
@@ -89,35 +89,35 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   stringValues = self->_stringValues;
-  v5 = a3;
-  [v5 encodeObject:stringValues forKey:@"stringValues"];
-  [v5 encodeInteger:self->_sectionDataType forKey:@"type"];
-  [v5 encodeInteger:self->_version forKey:@"version"];
-  [v5 encodeDouble:@"timestamp" forKey:self->_timestamp];
-  [v5 encodeBool:self->_deleted forKey:@"deleted"];
+  coderCopy = coder;
+  [coderCopy encodeObject:stringValues forKey:@"stringValues"];
+  [coderCopy encodeInteger:self->_sectionDataType forKey:@"type"];
+  [coderCopy encodeInteger:self->_version forKey:@"version"];
+  [coderCopy encodeDouble:@"timestamp" forKey:self->_timestamp];
+  [coderCopy encodeBool:self->_deleted forKey:@"deleted"];
 }
 
-- (HKOntologyEducationContentSectionData)initWithCoder:(id)a3
+- (HKOntologyEducationContentSectionData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKOntologyEducationContentSectionData;
   v5 = [(HKOntologyEducationContentSectionData *)&v11 init];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"stringValues"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"stringValues"];
     stringValues = v5->_stringValues;
     v5->_stringValues = v7;
 
-    v5->_sectionDataType = [v4 decodeIntegerForKey:@"type"];
-    v5->_version = [v4 decodeIntegerForKey:@"version"];
-    [v4 decodeDoubleForKey:@"timestamp"];
+    v5->_sectionDataType = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"version"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     v5->_timestamp = v9;
-    v5->_deleted = [v4 decodeBoolForKey:@"deleted"];
+    v5->_deleted = [coderCopy decodeBoolForKey:@"deleted"];
   }
 
   return v5;

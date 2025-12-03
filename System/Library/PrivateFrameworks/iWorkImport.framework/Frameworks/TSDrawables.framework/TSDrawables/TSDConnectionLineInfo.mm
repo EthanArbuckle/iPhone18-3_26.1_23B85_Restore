@@ -2,36 +2,36 @@
 - (BOOL)allowsParentGroupToBeResizedWithoutAspectRatioLock;
 - (CGAffineTransform)computeLayoutFullTransform;
 - (Class)layoutClass;
-- (TSDConnectionLineInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5;
+- (TSDConnectionLineInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style;
 - (TSDDrawableInfo)connectedFrom;
 - (TSDDrawableInfo)connectedTo;
 - (id)computeLayoutInfoGeometry;
 - (id)typeName;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)computeLayoutInfoGeometry:(id *)a3 andPathSource:(id *)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)performBlockWithTemporaryLayout:(id)a3;
-- (void)saveGeometryToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setConnectedFrom:(id)a3;
-- (void)setConnectedFromID:(id)a3;
-- (void)setConnectedTo:(id)a3;
-- (void)setConnectedToID:(id)a3;
-- (void)willCopyWithOtherDrawables:(id)a3;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)computeLayoutInfoGeometry:(id *)geometry andPathSource:(id *)source;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)performBlockWithTemporaryLayout:(id)layout;
+- (void)saveGeometryToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setConnectedFrom:(id)from;
+- (void)setConnectedFromID:(id)d;
+- (void)setConnectedTo:(id)to;
+- (void)setConnectedToID:(id)d;
+- (void)willCopyWithOtherDrawables:(id)drawables;
 @end
 
 @implementation TSDConnectionLineInfo
 
-- (TSDConnectionLineInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5
+- (TSDConnectionLineInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  objc_msgSend_size(v9, v11, v12);
+  styleCopy = style;
+  geometryCopy = geometry;
+  contextCopy = context;
+  objc_msgSend_size(geometryCopy, v11, v12);
   v15 = objc_msgSend_pathSourceOfLength_(TSDConnectionLinePathSource, v13, v14);
-  v17 = objc_msgSend_initWithContext_geometry_style_pathSource_(self, v16, v10, v9, v8, v15);
+  v17 = objc_msgSend_initWithContext_geometry_style_pathSource_(self, v16, contextCopy, geometryCopy, styleCopy, v15);
 
   return v17;
 }
@@ -59,64 +59,64 @@
 
 - (TSDDrawableInfo)connectedTo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->mConnectedToID && !v2->mConnectedToInfo && objc_msgSend_tsp_isInDocument(v2, v3, v4))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->mConnectedToID && !selfCopy->mConnectedToInfo && objc_msgSend_tsp_isInDocument(selfCopy, v3, v4))
   {
-    v7 = objc_msgSend_context(v2, v5, v6);
-    v9 = objc_msgSend_objectWithUUID_(v7, v8, v2->mConnectedToID);
+    v7 = objc_msgSend_context(selfCopy, v5, v6);
+    v9 = objc_msgSend_objectWithUUID_(v7, v8, selfCopy->mConnectedToID);
     objc_opt_class();
     v10 = TSUClassAndProtocolCast();
 
-    if (v2->mConnectedToInfo != v10)
+    if (selfCopy->mConnectedToInfo != v10)
     {
-      objc_msgSend_willModify(v2, v11, v12, &unk_2885A1E40);
-      objc_storeStrong(&v2->mConnectedToInfo, v10);
+      objc_msgSend_willModify(selfCopy, v11, v12, &unk_2885A1E40);
+      objc_storeStrong(&selfCopy->mConnectedToInfo, v10);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  mConnectedToInfo = v2->mConnectedToInfo;
+  mConnectedToInfo = selfCopy->mConnectedToInfo;
 
   return mConnectedToInfo;
 }
 
 - (TSDDrawableInfo)connectedFrom
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->mConnectedFromID && !v2->mConnectedFromInfo && objc_msgSend_tsp_isInDocument(v2, v3, v4))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->mConnectedFromID && !selfCopy->mConnectedFromInfo && objc_msgSend_tsp_isInDocument(selfCopy, v3, v4))
   {
-    v7 = objc_msgSend_context(v2, v5, v6);
-    v9 = objc_msgSend_objectWithUUID_(v7, v8, v2->mConnectedFromID);
+    v7 = objc_msgSend_context(selfCopy, v5, v6);
+    v9 = objc_msgSend_objectWithUUID_(v7, v8, selfCopy->mConnectedFromID);
     objc_opt_class();
     v10 = TSUClassAndProtocolCast();
 
-    if (v2->mConnectedFromInfo != v10)
+    if (selfCopy->mConnectedFromInfo != v10)
     {
-      objc_msgSend_willModify(v2, v11, v12, &unk_2885A1E40);
-      objc_storeStrong(&v2->mConnectedFromInfo, v10);
+      objc_msgSend_willModify(selfCopy, v11, v12, &unk_2885A1E40);
+      objc_storeStrong(&selfCopy->mConnectedFromInfo, v10);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  mConnectedFromInfo = v2->mConnectedFromInfo;
+  mConnectedFromInfo = selfCopy->mConnectedFromInfo;
 
   return mConnectedFromInfo;
 }
 
-- (void)setConnectedToID:(id)a3
+- (void)setConnectedToID:(id)d
 {
-  v19 = a3;
+  dCopy = d;
   v7 = objc_msgSend_connectedToID(self, v5, v6);
 
-  if (v7 != v19)
+  if (v7 != dCopy)
   {
     objc_msgSend_willModify(self, v8, v9);
     objc_msgSend_willChangeProperty_(self, v10, 541);
-    objc_storeStrong(&self->mConnectedToID, a3);
+    objc_storeStrong(&self->mConnectedToID, d);
     if (self->mConnectedToID)
     {
       if (!objc_msgSend_tsp_isInDocument(self, v11, v12))
@@ -146,16 +146,16 @@
 LABEL_8:
 }
 
-- (void)setConnectedFromID:(id)a3
+- (void)setConnectedFromID:(id)d
 {
-  v19 = a3;
+  dCopy = d;
   v7 = objc_msgSend_connectedFromID(self, v5, v6);
 
-  if (v7 != v19)
+  if (v7 != dCopy)
   {
     objc_msgSend_willModify(self, v8, v9);
     objc_msgSend_willChangeProperty_(self, v10, 542);
-    objc_storeStrong(&self->mConnectedFromID, a3);
+    objc_storeStrong(&self->mConnectedFromID, d);
     if (self->mConnectedFromID)
     {
       if (!objc_msgSend_tsp_isInDocument(self, v11, v12))
@@ -185,20 +185,20 @@ LABEL_8:
 LABEL_8:
 }
 
-- (void)setConnectedTo:(id)a3
+- (void)setConnectedTo:(id)to
 {
-  v24 = a3;
-  if (v24)
+  toCopy = to;
+  if (toCopy)
   {
     v6 = objc_msgSend_connectedTo(self, v4, v5);
 
-    v9 = v24;
-    if (v6 == v24)
+    v9 = toCopy;
+    if (v6 == toCopy)
     {
       goto LABEL_8;
     }
 
-    v10 = objc_msgSend_objectUUID(v24, v7, v8);
+    v10 = objc_msgSend_objectUUID(toCopy, v7, v8);
     v13 = objc_msgSend_copy(v10, v11, v12);
 
     if (!v13)
@@ -212,7 +212,7 @@ LABEL_8:
     }
 
     objc_msgSend_setConnectedToID_(self, v14, v13);
-    objc_msgSend_setConnectedToInfo_(self, v22, v24);
+    objc_msgSend_setConnectedToInfo_(self, v22, toCopy);
   }
 
   else
@@ -221,24 +221,24 @@ LABEL_8:
     objc_msgSend_setConnectedToInfo_(self, v23, 0);
   }
 
-  v9 = v24;
+  v9 = toCopy;
 LABEL_8:
 }
 
-- (void)setConnectedFrom:(id)a3
+- (void)setConnectedFrom:(id)from
 {
-  v24 = a3;
-  if (v24)
+  fromCopy = from;
+  if (fromCopy)
   {
     v6 = objc_msgSend_connectedFrom(self, v4, v5);
 
-    v9 = v24;
-    if (v6 == v24)
+    v9 = fromCopy;
+    if (v6 == fromCopy)
     {
       goto LABEL_8;
     }
 
-    v10 = objc_msgSend_objectUUID(v24, v7, v8);
+    v10 = objc_msgSend_objectUUID(fromCopy, v7, v8);
     v13 = objc_msgSend_copy(v10, v11, v12);
 
     if (!v13)
@@ -252,7 +252,7 @@ LABEL_8:
     }
 
     objc_msgSend_setConnectedFromID_(self, v14, v13);
-    objc_msgSend_setConnectedFromInfo_(self, v22, v24);
+    objc_msgSend_setConnectedFromInfo_(self, v22, fromCopy);
   }
 
   else
@@ -261,7 +261,7 @@ LABEL_8:
     objc_msgSend_setConnectedFromInfo_(self, v23, 0);
   }
 
-  v9 = v24;
+  v9 = fromCopy;
 LABEL_8:
 }
 
@@ -274,7 +274,7 @@ LABEL_8:
   return v2;
 }
 
-- (void)computeLayoutInfoGeometry:(id *)a3 andPathSource:(id *)a4
+- (void)computeLayoutInfoGeometry:(id *)geometry andPathSource:(id *)source
 {
   v7 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEB18], a2, self);
   v12 = objc_msgSend_connectedFrom(self, v8, v9);
@@ -294,8 +294,8 @@ LABEL_8:
   v15[2] = sub_276720108;
   v15[3] = &unk_27A6CD5A0;
   v15[4] = self;
-  v15[5] = a3;
-  v15[6] = a4;
+  v15[5] = geometry;
+  v15[6] = source;
   objc_msgSend_temporaryLayoutControllerForInfos_useInBlock_(TSDLayoutController, v13, v7, v15);
 }
 
@@ -345,9 +345,9 @@ LABEL_8:
   return v9;
 }
 
-- (void)willCopyWithOtherDrawables:(id)a3
+- (void)willCopyWithOtherDrawables:(id)drawables
 {
-  v24 = objc_msgSend_mutableCopy(a3, a2, a3);
+  v24 = objc_msgSend_mutableCopy(drawables, a2, drawables);
   if (objc_msgSend_count(v24, v4, v5))
   {
     v8 = 0;
@@ -383,9 +383,9 @@ LABEL_8:
   }
 }
 
-- (void)performBlockWithTemporaryLayout:(id)a3
+- (void)performBlockWithTemporaryLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v6 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEB18], v5, self);
   v9 = objc_msgSend_connectedFrom(self, v7, v8);
 
@@ -408,8 +408,8 @@ LABEL_8:
   v21[2] = sub_276720548;
   v21[3] = &unk_27A6CD5C8;
   v21[4] = self;
-  v22 = v4;
-  v19 = v4;
+  v22 = layoutCopy;
+  v19 = layoutCopy;
   objc_msgSend_temporaryLayoutControllerForInfos_useInBlock_(TSDLayoutController, v20, v6, v21);
 }
 
@@ -421,10 +421,10 @@ LABEL_8:
   return v5;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  objectCopy = object;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
@@ -432,7 +432,7 @@ LABEL_8:
   {
     v11 = objc_msgSend_computeLayoutInfoGeometry(self, v9, v10);
     v14 = objc_msgSend_computeLayoutInfoGeometry(v8, v12, v13);
-    v15 = TSDMixingTypeWithObjects(v11, v14, v6);
+    v15 = TSDMixingTypeWithObjects(v11, v14, contextCopy);
     v16 = TSDMixingTypeBestFromMixingTypes(5, v15);
 
     v34 = 0;
@@ -441,7 +441,7 @@ LABEL_8:
     v33 = 0;
     objc_msgSend_computeLayoutInfoGeometry_andPathSource_(v8, v19, 0, &v33);
     v20 = v33;
-    v22 = objc_msgSend_mixingTypeWithObject_context_(v18, v21, v20, v6);
+    v22 = objc_msgSend_mixingTypeWithObject_context_(v18, v21, v20, contextCopy);
     v23 = TSDMixingTypeBestFromMixingTypes(v16, v22);
     if (v23 < 4)
     {
@@ -468,12 +468,12 @@ LABEL_8:
   return v24;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 3))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(archive + 3);
   }
 
   else
@@ -483,50 +483,50 @@ LABEL_8:
 
   v40.receiver = self;
   v40.super_class = TSDConnectionLineInfo;
-  [(TSDShapeInfo *)&v40 loadFromArchive:v7 unarchiver:v6];
-  v9 = *(a3 + 4);
+  [(TSDShapeInfo *)&v40 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  v9 = *(archive + 4);
   if ((v9 & 2) != 0)
   {
-    v10 = *(a3 + 4);
+    v10 = *(archive + 4);
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = sub_27677B6D8;
     v39[3] = &unk_27A6CDC48;
     v39[4] = self;
-    v11 = v6;
+    v11 = unarchiverCopy;
     v12 = objc_opt_class();
     objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v11, v13, v10, v12, 0, v39);
 
-    v9 = *(a3 + 4);
+    v9 = *(archive + 4);
   }
 
   if ((v9 & 4) != 0)
   {
-    v14 = *(a3 + 5);
+    v14 = *(archive + 5);
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = sub_27677B6F0;
     v38[3] = &unk_27A6CDC48;
     v38[4] = self;
-    v15 = v6;
+    v15 = unarchiverCopy;
     v16 = objc_opt_class();
     objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v15, v17, v14, v16, 0, v38);
 
-    v9 = *(a3 + 4);
+    v9 = *(archive + 4);
   }
 
   if ((v9 & 0x10) != 0)
   {
-    v18 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(v6, v8, *(a3 + 7));
+    v18 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(unarchiverCopy, v8, *(archive + 7));
     mConnectedFromID = self->mConnectedFromID;
     self->mConnectedFromID = v18;
 
-    v9 = *(a3 + 4);
+    v9 = *(archive + 4);
   }
 
   if ((v9 & 8) != 0)
   {
-    v20 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(v6, v8, *(a3 + 6));
+    v20 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(unarchiverCopy, v8, *(archive + 6));
     mConnectedToID = self->mConnectedToID;
     self->mConnectedToID = v20;
   }
@@ -543,52 +543,52 @@ LABEL_8:
     self->super.mPathSource = v32;
   }
 
-  v34 = objc_msgSend_sourceType(v6, v25, v26);
+  v34 = objc_msgSend_sourceType(unarchiverCopy, v25, v26);
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = sub_27677B708;
   v36[3] = &unk_27A6CDC70;
   v36[4] = self;
   v37 = v34;
-  objc_msgSend_addFinalizeHandler_(v6, v35, v36);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v35, v36);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812F5188[82]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F5188[82]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = sub_27677BBA4;
   v22[3] = &unk_27A6CC520;
-  v25 = a3;
-  v7 = v6;
+  archiveCopy = archive;
+  v7 = archiverCopy;
   v23 = v7;
-  v24 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, v22);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, archive, v22);
   mConnectedFromID = self->mConnectedFromID;
   if (mConnectedFromID)
   {
-    *(a3 + 4) |= 0x10u;
-    v11 = *(a3 + 7);
+    *(archive + 4) |= 0x10u;
+    v11 = *(archive + 7);
     if (!v11)
     {
-      v12 = *(a3 + 1);
+      v12 = *(archive + 1);
       if (v12)
       {
         v12 = *(v12 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v11 = MEMORY[0x277C9BAE0](v12);
-      *(a3 + 7) = v11;
+      *(archive + 7) = v11;
     }
 
     objc_msgSend_setWeakReferenceToObjectUUID_message_(v7, v9, mConnectedFromID, v11);
@@ -597,18 +597,18 @@ LABEL_8:
   mConnectedToID = self->mConnectedToID;
   if (mConnectedToID)
   {
-    *(a3 + 4) |= 8u;
-    v14 = *(a3 + 6);
+    *(archive + 4) |= 8u;
+    v14 = *(archive + 6);
     if (!v14)
     {
-      v15 = *(a3 + 1);
+      v15 = *(archive + 1);
       if (v15)
       {
         v15 = *(v15 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v14 = MEMORY[0x277C9BAE0](v15);
-      *(a3 + 6) = v14;
+      *(archive + 6) = v14;
     }
 
     objc_msgSend_setWeakReferenceToObjectUUID_message_(v7, v9, mConnectedToID, v14);
@@ -617,18 +617,18 @@ LABEL_8:
   mConnectedFromInfo = self->mConnectedFromInfo;
   if (mConnectedFromInfo)
   {
-    *(a3 + 4) |= 2u;
-    v17 = *(a3 + 4);
+    *(archive + 4) |= 2u;
+    v17 = *(archive + 4);
     if (!v17)
     {
-      v18 = *(a3 + 1);
+      v18 = *(archive + 1);
       if (v18)
       {
         v18 = *(v18 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v17 = MEMORY[0x277C9BB20](v18);
-      *(a3 + 4) = v17;
+      *(archive + 4) = v17;
     }
 
     objc_msgSend_setWeakReference_message_(v7, v9, mConnectedFromInfo, v17);
@@ -637,38 +637,38 @@ LABEL_8:
   mConnectedToInfo = self->mConnectedToInfo;
   if (mConnectedToInfo)
   {
-    *(a3 + 4) |= 4u;
-    v20 = *(a3 + 5);
+    *(archive + 4) |= 4u;
+    v20 = *(archive + 5);
     if (!v20)
     {
-      v21 = *(a3 + 1);
+      v21 = *(archive + 1);
       if (v21)
       {
         v21 = *(v21 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v20 = MEMORY[0x277C9BB20](v21);
-      *(a3 + 5) = v20;
+      *(archive + 5) = v20;
     }
 
     objc_msgSend_setWeakReference_message_(v7, v9, mConnectedToInfo, v20);
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_27677BD78, off_2812F5188[82]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_27677BD78, off_2812F5188[82]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveGeometryToArchive:(void *)a3 archiver:(id)a4
+- (void)saveGeometryToArchive:(void *)archive archiver:(id)archiver
 {
-  v10 = a4;
+  archiverCopy = archiver;
   v8 = objc_msgSend_computeLayoutInfoGeometry(self, v6, v7);
-  objc_msgSend_saveToArchive_archiver_(v8, v9, a3, v10);
+  objc_msgSend_saveToArchive_archiver_(v8, v9, archive, archiverCopy);
 }
 
 @end

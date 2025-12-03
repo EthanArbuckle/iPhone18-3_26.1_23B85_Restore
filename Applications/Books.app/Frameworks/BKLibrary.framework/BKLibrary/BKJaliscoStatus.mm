@@ -1,41 +1,41 @@
 @interface BKJaliscoStatus
-+ (BOOL)addHidden:(id)a3 inMOC:(id)a4;
-+ (BOOL)addLocal:(id)a3 inMOC:(id)a4;
-+ (BOOL)addStatus:(id)a3 forStoreIds:(id)a4 inMOC:(id)a5;
-+ (BOOL)hasStatusValues:(id)a3;
-+ (BOOL)mergeLocalAssets:(id)a3 inMOC:(id)a4;
-+ (BOOL)mergeSerializedHidden:(id)a3 inMOC:(id)a4;
-+ (BOOL)mergeSerializedLocal:(id)a3 inMOC:(id)a4;
-+ (BOOL)mergedSerializedStatus:(id)a3 summaries:(id)a4 inMOC:(id)a5;
-+ (id)allHiddenStoreIds:(id)a3;
-+ (id)allLocalStoreIds:(id)a3;
-+ (id)allStoreIdsForStatus:(id)a3 inMOC:(id)a4;
-+ (id)serializeAllHidden:(id)a3;
-+ (id)serializeAllLocal:(id)a3;
-+ (id)serializeAllStatus:(id)a3 inMOC:(id)a4;
-+ (void)dsidChangeCleanup:(id)a3;
++ (BOOL)addHidden:(id)hidden inMOC:(id)c;
++ (BOOL)addLocal:(id)local inMOC:(id)c;
++ (BOOL)addStatus:(id)status forStoreIds:(id)ids inMOC:(id)c;
++ (BOOL)hasStatusValues:(id)values;
++ (BOOL)mergeLocalAssets:(id)assets inMOC:(id)c;
++ (BOOL)mergeSerializedHidden:(id)hidden inMOC:(id)c;
++ (BOOL)mergeSerializedLocal:(id)local inMOC:(id)c;
++ (BOOL)mergedSerializedStatus:(id)status summaries:(id)summaries inMOC:(id)c;
++ (id)allHiddenStoreIds:(id)ids;
++ (id)allLocalStoreIds:(id)ids;
++ (id)allStoreIdsForStatus:(id)status inMOC:(id)c;
++ (id)serializeAllHidden:(id)hidden;
++ (id)serializeAllLocal:(id)local;
++ (id)serializeAllStatus:(id)status inMOC:(id)c;
++ (void)dsidChangeCleanup:(id)cleanup;
 @end
 
 @implementation BKJaliscoStatus
 
-+ (id)allStoreIdsForStatus:(id)a3 inMOC:(id)a4
++ (id)allStoreIdsForStatus:(id)status inMOC:(id)c
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  statusCopy = status;
+  cCopy = c;
+  if (!cCopy)
   {
     v23 = 0;
     goto LABEL_27;
   }
 
   v7 = [NSPredicate predicateWithValue:1];
-  v8 = [NSEntityDescription entityForName:@"BKJaliscoStatus" inManagedObjectContext:v6];
+  v8 = [NSEntityDescription entityForName:@"BKJaliscoStatus" inManagedObjectContext:cCopy];
   v9 = objc_alloc_init(NSFetchRequest);
   [v9 setEntity:v8];
   [v9 setPredicate:v7];
   [v9 setReturnsObjectsAsFaults:0];
   v34 = 0;
-  v10 = [v6 executeFetchRequest:v9 error:&v34];
+  v10 = [cCopy executeFetchRequest:v9 error:&v34];
   v11 = v34;
   if ([v10 count])
   {
@@ -64,12 +64,12 @@
           }
 
           v18 = *(*(&v30 + 1) + 8 * i);
-          v19 = [v18 status];
-          v20 = [v18 storeId];
-          v21 = v20;
-          if (v19)
+          status = [v18 status];
+          storeId = [v18 storeId];
+          v21 = storeId;
+          if (status)
           {
-            v22 = v20 == 0;
+            v22 = storeId == 0;
           }
 
           else
@@ -79,7 +79,7 @@
 
           if (!v22)
           {
-            if ([v19 isEqualToString:v5])
+            if ([status isEqualToString:statusCopy])
             {
               [v12 addObject:v21];
             }
@@ -141,40 +141,40 @@ LABEL_27:
   return v23;
 }
 
-+ (id)allHiddenStoreIds:(id)a3
++ (id)allHiddenStoreIds:(id)ids
 {
-  v3 = a3;
+  idsCopy = ids;
   v4 = +[BKJaliscoStatus statusValueHidden];
-  v5 = [BKJaliscoStatus allStoreIdsForStatus:v4 inMOC:v3];
+  v5 = [BKJaliscoStatus allStoreIdsForStatus:v4 inMOC:idsCopy];
 
   return v5;
 }
 
-+ (id)allLocalStoreIds:(id)a3
++ (id)allLocalStoreIds:(id)ids
 {
-  v3 = a3;
+  idsCopy = ids;
   v4 = +[BKJaliscoStatus statusValueLocal];
-  v5 = [BKJaliscoStatus allStoreIdsForStatus:v4 inMOC:v3];
+  v5 = [BKJaliscoStatus allStoreIdsForStatus:v4 inMOC:idsCopy];
 
   return v5;
 }
 
-+ (id)serializeAllStatus:(id)a3 inMOC:(id)a4
++ (id)serializeAllStatus:(id)status inMOC:(id)c
 {
-  if (a4)
+  if (c)
   {
-    v5 = a4;
-    v6 = [NSPredicate predicateWithFormat:@"%K == %@", @"status", a3];
-    v7 = [NSEntityDescription entityForName:@"BKJaliscoStatus" inManagedObjectContext:v5];
+    cCopy = c;
+    status = [NSPredicate predicateWithFormat:@"%K == %@", @"status", status];
+    v7 = [NSEntityDescription entityForName:@"BKJaliscoStatus" inManagedObjectContext:cCopy];
     v8 = objc_alloc_init(NSFetchRequest);
     [v8 setEntity:v7];
     v9 = [NSArray arrayWithObjects:@"storeId", @"timeIntervalSinceReferenceDate", 0];
     [v8 setPropertiesToFetch:v9];
 
     [v8 setResultType:2];
-    [v8 setPredicate:v6];
+    [v8 setPredicate:status];
     v16 = 0;
-    v10 = [v5 executeFetchRequest:v8 error:&v16];
+    v10 = [cCopy executeFetchRequest:v8 error:&v16];
 
     v11 = v16;
     v12 = v11;
@@ -210,44 +210,44 @@ LABEL_27:
   return v10;
 }
 
-+ (id)serializeAllHidden:(id)a3
++ (id)serializeAllHidden:(id)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v4 = +[BKJaliscoStatus statusValueHidden];
-  v5 = [BKJaliscoStatus serializeAllStatus:v4 inMOC:v3];
+  v5 = [BKJaliscoStatus serializeAllStatus:v4 inMOC:hiddenCopy];
 
   return v5;
 }
 
-+ (id)serializeAllLocal:(id)a3
++ (id)serializeAllLocal:(id)local
 {
-  v3 = a3;
+  localCopy = local;
   v4 = +[BKJaliscoStatus statusValueLocal];
-  v5 = [BKJaliscoStatus serializeAllStatus:v4 inMOC:v3];
+  v5 = [BKJaliscoStatus serializeAllStatus:v4 inMOC:localCopy];
 
   return v5;
 }
 
-+ (BOOL)addStatus:(id)a3 forStoreIds:(id)a4 inMOC:(id)a5
++ (BOOL)addStatus:(id)status forStoreIds:(id)ids inMOC:(id)c
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9 && [v7 length] && objc_msgSend(v8, "count"))
+  statusCopy = status;
+  idsCopy = ids;
+  cCopy = c;
+  if (cCopy && [statusCopy length] && objc_msgSend(idsCopy, "count"))
   {
     v10 = objc_autoreleasePoolPush();
     v50 = +[NSDate date];
     [v50 timeIntervalSinceReferenceDate];
     v55 = [NSNumber numberWithUnsignedLongLong:v11];
-    v12 = [NSPredicate predicateWithFormat:@"%K IN %@", @"storeId", v8];
-    v13 = [NSEntityDescription entityForName:@"BKJaliscoStatus" inManagedObjectContext:v9];
+    idsCopy = [NSPredicate predicateWithFormat:@"%K IN %@", @"storeId", idsCopy];
+    v13 = [NSEntityDescription entityForName:@"BKJaliscoStatus" inManagedObjectContext:cCopy];
     v14 = objc_alloc_init(NSFetchRequest);
     [v14 setEntity:v13];
-    [v14 setPredicate:v12];
+    [v14 setPredicate:idsCopy];
     [v14 setReturnsObjectsAsFaults:0];
     v65 = 0;
     v51 = v14;
-    v15 = [v9 executeFetchRequest:v14 error:&v65];
+    v15 = [cCopy executeFetchRequest:v14 error:&v65];
     v16 = v65;
     if (v15)
     {
@@ -255,9 +255,9 @@ LABEL_27:
       v45 = v13;
       v52 = [v15 valueForKey:@"storeId"];
       v17 = [v52 count];
-      v18 = [v8 count];
+      v18 = [idsCopy count];
       v19 = v17 > v18;
-      v54 = v9;
+      v54 = cCopy;
       v47 = v10;
       if (v17 > v18)
       {
@@ -280,7 +280,7 @@ LABEL_27:
                 objc_enumerationMutation(v20);
               }
 
-              [v9 deleteObject:*(*(&v61 + 1) + 8 * i)];
+              [cCopy deleteObject:*(*(&v61 + 1) + 8 * i)];
             }
 
             v22 = [v20 countByEnumeratingWithState:&v61 objects:v73 count:16];
@@ -290,7 +290,7 @@ LABEL_27:
         }
 
         v60 = v49;
-        v15 = [v9 executeFetchRequest:v51 error:&v60];
+        v15 = [cCopy executeFetchRequest:v51 error:&v60];
         v25 = v60;
 
         v30 = [v15 valueForKey:@"storeId"];
@@ -303,7 +303,7 @@ LABEL_27:
         v30 = v52;
       }
 
-      v46 = v12;
+      v46 = idsCopy;
       v44 = v15;
       v53 = v30;
       v31 = [[NSDictionary alloc] initWithObjects:v15 forKeys:v30];
@@ -311,8 +311,8 @@ LABEL_27:
       v57 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v48 = v8;
-      v32 = v8;
+      v48 = idsCopy;
+      v32 = idsCopy;
       v33 = [v32 countByEnumeratingWithState:&v56 objects:v72 count:16];
       if (v33)
       {
@@ -332,15 +332,15 @@ LABEL_27:
             v39 = v38;
             if (v38)
             {
-              v40 = [v38 status];
-              v41 = [v40 isEqualToString:v7];
+              status = [v38 status];
+              v41 = [status isEqualToString:statusCopy];
 
               if (v41)
               {
                 goto LABEL_32;
               }
 
-              [v39 setStatus:v7];
+              [v39 setStatus:statusCopy];
               [v39 setTimeIntervalSinceReferenceDate:v55];
             }
 
@@ -348,7 +348,7 @@ LABEL_27:
             {
               v42 = [NSEntityDescription insertNewObjectForEntityForName:@"BKJaliscoStatus" inManagedObjectContext:v54];
               [v42 setStoreId:v37];
-              [v42 setStatus:v7];
+              [v42 setStatus:statusCopy];
               [v42 setTimeIntervalSinceReferenceDate:v55];
             }
 
@@ -363,12 +363,12 @@ LABEL_32:
       }
 
       v10 = v47;
-      v8 = v48;
-      v9 = v54;
+      idsCopy = v48;
+      cCopy = v54;
       v26 = v49;
       v28 = v50;
       v13 = v45;
-      v12 = v46;
+      idsCopy = v46;
       v29 = v44;
     }
 
@@ -417,43 +417,43 @@ LABEL_37:
   return v19;
 }
 
-+ (BOOL)addLocal:(id)a3 inMOC:(id)a4
++ (BOOL)addLocal:(id)local inMOC:(id)c
 {
-  v5 = a4;
-  v6 = a3;
+  cCopy = c;
+  localCopy = local;
   v7 = +[BKJaliscoStatus statusValueLocal];
-  v8 = [BKJaliscoStatus addStatus:v7 forStoreIds:v6 inMOC:v5];
+  v8 = [BKJaliscoStatus addStatus:v7 forStoreIds:localCopy inMOC:cCopy];
 
   return v8;
 }
 
-+ (BOOL)addHidden:(id)a3 inMOC:(id)a4
++ (BOOL)addHidden:(id)hidden inMOC:(id)c
 {
-  v5 = a4;
-  v6 = a3;
+  cCopy = c;
+  hiddenCopy = hidden;
   v7 = +[BKJaliscoStatus statusValueHidden];
-  v8 = [BKJaliscoStatus addStatus:v7 forStoreIds:v6 inMOC:v5];
+  v8 = [BKJaliscoStatus addStatus:v7 forStoreIds:hiddenCopy inMOC:cCopy];
 
   return v8;
 }
 
-+ (BOOL)mergedSerializedStatus:(id)a3 summaries:(id)a4 inMOC:(id)a5
++ (BOOL)mergedSerializedStatus:(id)status summaries:(id)summaries inMOC:(id)c
 {
-  v7 = a3;
-  v8 = a4;
-  v47 = a5;
-  if (v47 && [v7 length] && objc_msgSend(v8, "count"))
+  statusCopy = status;
+  summariesCopy = summaries;
+  cCopy = c;
+  if (cCopy && [statusCopy length] && objc_msgSend(summariesCopy, "count"))
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [v8 valueForKey:@"storeId"];
+    v10 = [summariesCopy valueForKey:@"storeId"];
     v11 = [NSPredicate predicateWithFormat:@"%K IN %@", @"storeId", v10];
-    v12 = [NSEntityDescription entityForName:@"BKJaliscoStatus" inManagedObjectContext:v47];
+    v12 = [NSEntityDescription entityForName:@"BKJaliscoStatus" inManagedObjectContext:cCopy];
     v13 = objc_alloc_init(NSFetchRequest);
     [v13 setEntity:v12];
     [v13 setPredicate:v11];
     [v13 setReturnsObjectsAsFaults:0];
     v56 = 0;
-    v14 = [v47 executeFetchRequest:v13 error:&v56];
+    v14 = [cCopy executeFetchRequest:v13 error:&v56];
     v15 = v56;
     v16 = v15;
     if (v14)
@@ -471,8 +471,8 @@ LABEL_37:
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v46 = v8;
-      obj = v8;
+      v46 = summariesCopy;
+      obj = summariesCopy;
       v51 = [obj countByEnumeratingWithState:&v52 objects:v57 count:16];
       if (!v51)
       {
@@ -499,35 +499,35 @@ LABEL_37:
           v25 = v24;
           if (!v24)
           {
-            v35 = [NSEntityDescription insertNewObjectForEntityForName:@"BKJaliscoStatus" inManagedObjectContext:v47];
+            v35 = [NSEntityDescription insertNewObjectForEntityForName:@"BKJaliscoStatus" inManagedObjectContext:cCopy];
             [v35 setStoreId:v22];
-            [v35 setStatus:v7];
+            [v35 setStatus:statusCopy];
             [v35 setTimeIntervalSinceReferenceDate:v23];
 
             goto LABEL_15;
           }
 
-          v26 = [v24 status];
-          v27 = [v26 isEqualToString:v7];
+          status = [v24 status];
+          v27 = [status isEqualToString:statusCopy];
 
           if ((v27 & 1) == 0)
           {
-            v28 = [v25 timeIntervalSinceReferenceDate];
-            v50 = [v28 unsignedLongValue];
+            timeIntervalSinceReferenceDate = [v25 timeIntervalSinceReferenceDate];
+            unsignedLongValue = [timeIntervalSinceReferenceDate unsignedLongValue];
             v29 = v19;
             v30 = v18;
             v31 = v17;
-            v32 = v7;
-            v33 = [v23 unsignedLongValue];
+            v32 = statusCopy;
+            unsignedLongValue2 = [v23 unsignedLongValue];
 
-            v34 = v50 >= v33;
-            v7 = v32;
+            v34 = unsignedLongValue >= unsignedLongValue2;
+            statusCopy = v32;
             v17 = v31;
             v18 = v30;
             v19 = v29;
             if (!v34)
             {
-              [v25 setStatus:v7];
+              [v25 setStatus:statusCopy];
               [v25 setTimeIntervalSinceReferenceDate:v23];
 LABEL_15:
               v49 = 1;
@@ -541,7 +541,7 @@ LABEL_15:
 LABEL_24:
 
           v9 = v45;
-          v8 = v46;
+          summariesCopy = v46;
           v11 = v43;
           v10 = v44;
           v13 = v41;
@@ -573,42 +573,42 @@ LABEL_25:
   return v36 & 1;
 }
 
-+ (BOOL)mergeSerializedLocal:(id)a3 inMOC:(id)a4
++ (BOOL)mergeSerializedLocal:(id)local inMOC:(id)c
 {
-  v5 = a4;
-  v6 = a3;
+  cCopy = c;
+  localCopy = local;
   v7 = +[BKJaliscoStatus statusValueLocal];
-  v8 = [BKJaliscoStatus mergedSerializedStatus:v7 summaries:v6 inMOC:v5];
+  v8 = [BKJaliscoStatus mergedSerializedStatus:v7 summaries:localCopy inMOC:cCopy];
 
   return v8;
 }
 
-+ (BOOL)mergeSerializedHidden:(id)a3 inMOC:(id)a4
++ (BOOL)mergeSerializedHidden:(id)hidden inMOC:(id)c
 {
-  v5 = a4;
-  v6 = a3;
+  cCopy = c;
+  hiddenCopy = hidden;
   v7 = +[BKJaliscoStatus statusValueHidden];
-  v8 = [BKJaliscoStatus mergedSerializedStatus:v7 summaries:v6 inMOC:v5];
+  v8 = [BKJaliscoStatus mergedSerializedStatus:v7 summaries:hiddenCopy inMOC:cCopy];
 
   return v8;
 }
 
-+ (BOOL)hasStatusValues:(id)a3
++ (BOOL)hasStatusValues:(id)values
 {
-  if (!a3)
+  if (!values)
   {
     return 0;
   }
 
-  v3 = a3;
-  v4 = [NSEntityDescription entityForName:@"BKJaliscoStatus" inManagedObjectContext:v3];
+  valuesCopy = values;
+  v4 = [NSEntityDescription entityForName:@"BKJaliscoStatus" inManagedObjectContext:valuesCopy];
   v5 = objc_alloc_init(NSFetchRequest);
   [v5 setEntity:v4];
   v6 = [NSPredicate predicateWithValue:1];
   [v5 setPredicate:v6];
 
   v11 = 0;
-  v7 = [v3 countForFetchRequest:v5 error:&v11];
+  v7 = [valuesCopy countForFetchRequest:v5 error:&v11];
 
   v8 = v11;
   v9 = v8;
@@ -625,19 +625,19 @@ LABEL_25:
   return v7 != 0;
 }
 
-+ (void)dsidChangeCleanup:(id)a3
++ (void)dsidChangeCleanup:(id)cleanup
 {
-  v3 = a3;
-  if (v3)
+  cleanupCopy = cleanup;
+  if (cleanupCopy)
   {
     v4 = objc_autoreleasePoolPush();
     v5 = [NSPredicate predicateWithValue:1];
-    v6 = [NSEntityDescription entityForName:@"BKJaliscoStatus" inManagedObjectContext:v3];
+    v6 = [NSEntityDescription entityForName:@"BKJaliscoStatus" inManagedObjectContext:cleanupCopy];
     v7 = objc_alloc_init(NSFetchRequest);
     [v7 setEntity:v6];
     [v7 setPredicate:v5];
     v20 = 0;
-    v8 = [v3 executeFetchRequest:v7 error:&v20];
+    v8 = [cleanupCopy executeFetchRequest:v7 error:&v20];
     v9 = v20;
     if ([v8 count])
     {
@@ -662,7 +662,7 @@ LABEL_25:
               objc_enumerationMutation(v10);
             }
 
-            [v3 deleteObject:*(*(&v16 + 1) + 8 * v14)];
+            [cleanupCopy deleteObject:*(*(&v16 + 1) + 8 * v14)];
             v14 = v14 + 1;
           }
 
@@ -680,18 +680,18 @@ LABEL_25:
   }
 }
 
-+ (BOOL)mergeLocalAssets:(id)a3 inMOC:(id)a4
++ (BOOL)mergeLocalAssets:(id)assets inMOC:(id)c
 {
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  cCopy = c;
   v7 = objc_alloc_init(NSMutableArray);
   v8 = objc_alloc_init(NSMutableArray);
-  v55 = [BKJaliscoStatus allLocalStoreIds:v6];
+  v55 = [BKJaliscoStatus allLocalStoreIds:cCopy];
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v9 = v5;
+  v9 = assetsCopy;
   v10 = [v9 countByEnumeratingWithState:&v65 objects:v77 count:16];
   if (v10)
   {
@@ -707,10 +707,10 @@ LABEL_25:
         }
 
         v14 = *(*(&v65 + 1) + 8 * i);
-        v15 = [v14 storeID];
-        if ([v15 longLongValue] >= 1 && (objc_msgSend(v55, "containsObject:", v15) & 1) == 0)
+        storeID = [v14 storeID];
+        if ([storeID longLongValue] >= 1 && (objc_msgSend(v55, "containsObject:", storeID) & 1) == 0)
         {
-          [v7 addObject:v15];
+          [v7 addObject:storeID];
           [v8 addObject:v14];
         }
       }
@@ -724,13 +724,13 @@ LABEL_25:
   if ([v8 count])
   {
     v16 = [[NSFetchRequest alloc] initWithEntityName:@"BKJaliscoStatus"];
-    v17 = [a1 statusValueLocal];
-    v18 = [NSPredicate predicateWithFormat:@"%K != %@ AND %K IN %@", @"status", v17, @"storeId", v7];
+    statusValueLocal = [self statusValueLocal];
+    v18 = [NSPredicate predicateWithFormat:@"%K != %@ AND %K IN %@", @"status", statusValueLocal, @"storeId", v7];
     [v16 setPredicate:v18];
 
     [v16 setReturnsObjectsAsFaults:0];
     v64 = 0;
-    v19 = [v6 executeFetchRequest:v16 error:&v64];
+    v19 = [cCopy executeFetchRequest:v16 error:&v64];
     v20 = v64;
     v21 = v20;
     v52 = v9;
@@ -738,7 +738,7 @@ LABEL_25:
     {
       v46 = v20;
       v48 = v16;
-      v50 = v6;
+      v50 = cCopy;
       v51 = v8;
       v22 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v19, "count")}];
       v60 = 0u;
@@ -762,10 +762,10 @@ LABEL_25:
             }
 
             v28 = *(*(&v60 + 1) + 8 * j);
-            v29 = [v28 storeId];
-            if ([v29 length])
+            storeId = [v28 storeId];
+            if ([storeId length])
             {
-              [v22 setObject:v28 forKeyedSubscript:v29];
+              [v22 setObject:v28 forKeyedSubscript:storeId];
             }
           }
 
@@ -798,25 +798,25 @@ LABEL_25:
             }
 
             v35 = *(*(&v56 + 1) + 8 * k);
-            v36 = [v35 storeID];
-            v37 = [v22 objectForKeyedSubscript:v36];
+            storeID2 = [v35 storeID];
+            v37 = [v22 objectForKeyedSubscript:storeID2];
             v38 = v37;
             if (v37)
             {
-              v39 = [v37 timeIntervalSinceReferenceDate];
-              v40 = +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:", [v39 longLongValue]);
+              timeIntervalSinceReferenceDate = [v37 timeIntervalSinceReferenceDate];
+              v40 = +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:", [timeIntervalSinceReferenceDate longLongValue]);
 
-              v41 = [v35 dataSourceInsertionDate];
-              v42 = v41;
-              if (!v41 || [v41 compare:v40] == &dword_0 + 1)
+              dataSourceInsertionDate = [v35 dataSourceInsertionDate];
+              v42 = dataSourceInsertionDate;
+              if (!dataSourceInsertionDate || [dataSourceInsertionDate compare:v40] == &dword_0 + 1)
               {
-                [v30 addObject:v36];
+                [v30 addObject:storeID2];
               }
             }
 
             else
             {
-              [v30 addObject:v36];
+              [v30 addObject:storeID2];
             }
           }
 
@@ -828,14 +828,14 @@ LABEL_25:
 
       if ([v30 count])
       {
-        v6 = v50;
+        cCopy = v50;
         v43 = [objc_opt_class() addLocal:v30 inMOC:v50];
       }
 
       else
       {
         v43 = 0;
-        v6 = v50;
+        cCopy = v50;
       }
 
       v16 = v48;

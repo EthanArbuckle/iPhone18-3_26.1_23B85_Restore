@@ -1,18 +1,18 @@
 @interface _HMDocument
-- (BOOL)isEqual:(id)a3;
-- (_HMDocument)initWithData:(id)a3 error:(id *)a4;
-- (_HMDocument)initWithString:(id)a3;
-- (_HMDocument)initWithURL:(id)a3 error:(id *)a4;
-- (_HMDocument)initWithURL:(id)a3 fileManager:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (_HMDocument)initWithData:(id)data error:(id *)error;
+- (_HMDocument)initWithString:(id)string;
+- (_HMDocument)initWithURL:(id)l error:(id *)error;
+- (_HMDocument)initWithURL:(id)l fileManager:(id)manager error:(id *)error;
 - (unint64_t)hash;
 @end
 
 @implementation _HMDocument
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -22,7 +22,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -33,9 +33,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(_HMDocument *)self stringValue];
-      v8 = [(_HMDocument *)v6 stringValue];
-      v9 = [v7 isEqualToString:v8];
+      stringValue = [(_HMDocument *)self stringValue];
+      stringValue2 = [(_HMDocument *)v6 stringValue];
+      v9 = [stringValue isEqualToString:stringValue2];
     }
 
     else
@@ -49,142 +49,142 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_HMDocument *)self stringValue];
-  v3 = [v2 hash];
+  stringValue = [(_HMDocument *)self stringValue];
+  v3 = [stringValue hash];
 
   return v3;
 }
 
-- (_HMDocument)initWithURL:(id)a3 fileManager:(id)a4 error:(id *)a5
+- (_HMDocument)initWithURL:(id)l fileManager:(id)manager error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  lCopy = l;
+  managerCopy = manager;
+  if (!lCopy)
   {
     goto LABEL_9;
   }
 
   v16 = 0;
-  v10 = [v8 path];
-  v11 = [v9 fileExistsAtPath:v10 isDirectory:&v16];
+  path = [lCopy path];
+  v11 = [managerCopy fileExistsAtPath:path isDirectory:&v16];
 
   if ((v11 & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v12 = @" file does not exist.";
       goto LABEL_8;
     }
 
 LABEL_9:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
   if (v16 == 1)
   {
-    if (a5)
+    if (error)
     {
       v12 = @"Invalid file type (directory).";
 LABEL_8:
-      *a5 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3 description:@"Invalid parameter." reason:v12 suggestion:0];
+      *error = [MEMORY[0x1E696ABC0] hmErrorWithCode:3 description:@"Invalid parameter." reason:v12 suggestion:0];
       goto LABEL_9;
     }
 
     goto LABEL_9;
   }
 
-  v15 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v8];
+  v15 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy];
   if (v15)
   {
-    self = [(_HMDocument *)self initWithData:v15 error:a5];
-    v13 = self;
+    self = [(_HMDocument *)self initWithData:v15 error:error];
+    selfCopy = self;
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] hmErrorWithCode:2 description:@"Not found." reason:@"The  data could not be read from the file." suggestion:0];
-    *a5 = v13 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
 LABEL_10:
-  return v13;
+  return selfCopy;
 }
 
-- (_HMDocument)initWithURL:(id)a3 error:(id *)a4
+- (_HMDocument)initWithURL:(id)l error:(id *)error
 {
   v6 = MEMORY[0x1E696AC08];
-  v7 = a3;
-  v8 = [v6 defaultManager];
-  v9 = [(_HMDocument *)self initWithURL:v7 fileManager:v8 error:a4];
+  lCopy = l;
+  defaultManager = [v6 defaultManager];
+  v9 = [(_HMDocument *)self initWithURL:lCopy fileManager:defaultManager error:error];
 
   return v9;
 }
 
-- (_HMDocument)initWithData:(id)a3 error:(id *)a4
+- (_HMDocument)initWithData:(id)data error:(id *)error
 {
-  if (a3)
+  if (data)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = a3;
-    v8 = [[v6 alloc] initWithData:v7 encoding:4];
+    dataCopy = data;
+    v8 = [[v6 alloc] initWithData:dataCopy encoding:4];
 
     if (v8)
     {
       self = [(_HMDocument *)self initWithString:v8];
-      v9 = self;
+      selfCopy = self;
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] hmErrorWithCode:3 description:@"Invalid parameter." reason:@" data is not UTF8 encoded" suggestion:0];
-      *a4 = v9 = 0;
+      *error = selfCopy = 0;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (_HMDocument)initWithString:(id)a3
+- (_HMDocument)initWithString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     v10.receiver = self;
     v10.super_class = _HMDocument;
     v5 = [(_HMDocument *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [stringCopy copy];
       stringValue = v5->_stringValue;
       v5->_stringValue = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

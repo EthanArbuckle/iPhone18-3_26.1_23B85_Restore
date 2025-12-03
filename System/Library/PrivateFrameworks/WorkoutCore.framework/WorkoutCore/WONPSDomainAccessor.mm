@@ -1,15 +1,15 @@
 @interface WONPSDomainAccessor
-- (BOOL)BOOLForKey:(id)a3;
-- (BOOL)_FIBoolForPerGizmoDomainAndKey:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)BOOLForKey:(id)key;
+- (BOOL)_FIBoolForPerGizmoDomainAndKey:(id)key defaultValue:(BOOL)value;
 - (BOOL)isWorkoutExtendedModeSupported;
 - (WONPSDomainAccessor)init;
-- (id)dataForPerGizmoDomainAndKey:(id)a3;
-- (id)valueForKey:(id)a3;
+- (id)dataForPerGizmoDomainAndKey:(id)key;
+- (id)valueForKey:(id)key;
 - (void)pairedDeviceStateChanged;
-- (void)removeDataPerGizmoDomainAndKey:(id)a3;
+- (void)removeDataPerGizmoDomainAndKey:(id)key;
 - (void)setupNotificationObservers;
-- (void)writeBoolPerGizmoDomainAndKey:(id)a3 value:(BOOL)a4;
-- (void)writeDataPerGizmoDomainAndKey:(id)a3 data:(id)a4;
+- (void)writeBoolPerGizmoDomainAndKey:(id)key value:(BOOL)value;
+- (void)writeDataPerGizmoDomainAndKey:(id)key data:(id)data;
 @end
 
 @implementation WONPSDomainAccessor
@@ -40,13 +40,13 @@
 
 - (BOOL)isWorkoutExtendedModeSupported
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = FIGetActivePairedDevice();
   v3 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"C26AD300-9198-11EC-8BC2-0800200C9A66"];
   v4 = [location[0] supportsCapability:?];
   MEMORY[0x277D82BD8](v3);
-  v6 = [(WONPSDomainAccessor *)v8 _FIBoolForPerGizmoDomainAndKey:@"WorkoutExtendedModeForceHardwareSupportEnabled" defaultValue:0];
+  v6 = [(WONPSDomainAccessor *)selfCopy _FIBoolForPerGizmoDomainAndKey:@"WorkoutExtendedModeForceHardwareSupportEnabled" defaultValue:0];
   v5 = 1;
   if ((v4 & 1) == 0)
   {
@@ -57,100 +57,100 @@
   return v5 & 1;
 }
 
-- (BOOL)_FIBoolForPerGizmoDomainAndKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)_FIBoolForPerGizmoDomainAndKey:(id)key defaultValue:(BOOL)value
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
-  v9 = a4;
-  v8 = [(FINPSDomainAccessorWrapper *)v12->_domainAccessor synchronize];
-  if (v8)
+  objc_storeStrong(location, key);
+  valueCopy = value;
+  valueCopy2 = value;
+  synchronize = [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor synchronize];
+  if (synchronize)
   {
-    NSLog(&cfstr_Wonpsdomainacc_0.isa, v8);
+    NSLog(&cfstr_Wonpsdomainacc_0.isa, synchronize);
   }
 
-  v7 = [(FINPSDomainAccessorWrapper *)v12->_domainAccessor objectForKey:location[0]];
+  v7 = [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor objectForKey:location[0]];
   if (v7)
   {
-    v9 = [v7 BOOLValue];
+    valueCopy2 = [v7 BOOLValue];
   }
 
-  v5 = v9;
+  v5 = valueCopy2;
   objc_storeStrong(&v7, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&synchronize, 0);
   objc_storeStrong(location, 0);
   return v5 & 1;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(FINPSDomainAccessorWrapper *)v7->_domainAccessor synchronize];
-  if (v5)
+  objc_storeStrong(location, key);
+  synchronize = [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor synchronize];
+  if (synchronize)
   {
-    NSLog(&cfstr_Wonpsdomainacc_0.isa, v5);
+    NSLog(&cfstr_Wonpsdomainacc_0.isa, synchronize);
   }
 
-  v4 = [(FINPSDomainAccessorWrapper *)v7->_domainAccessor objectForKey:location[0]];
-  objc_storeStrong(&v5, 0);
+  v4 = [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor objectForKey:location[0]];
+  objc_storeStrong(&synchronize, 0);
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(FINPSDomainAccessorWrapper *)v7->_domainAccessor synchronize];
-  if (v5)
+  objc_storeStrong(location, key);
+  synchronize = [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor synchronize];
+  if (synchronize)
   {
-    NSLog(&cfstr_Wonpsdomainacc_0.isa, v5);
+    NSLog(&cfstr_Wonpsdomainacc_0.isa, synchronize);
   }
 
-  v4 = [(FINPSDomainAccessorWrapper *)v7->_domainAccessor BOOLForKey:location[0]];
-  objc_storeStrong(&v5, 0);
+  v4 = [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor BOOLForKey:location[0]];
+  objc_storeStrong(&synchronize, 0);
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (void)removeDataPerGizmoDomainAndKey:(id)a3
+- (void)removeDataPerGizmoDomainAndKey:(id)key
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(FINPSDomainAccessorWrapper *)v5->_domainAccessor setObject:0 forKey:location[0]];
-  v3 = [(FINPSDomainAccessorWrapper *)v5->_domainAccessor synchronize];
-  if (v3)
+  objc_storeStrong(location, key);
+  [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor setObject:0 forKey:location[0]];
+  synchronize = [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor synchronize];
+  if (synchronize)
   {
-    NSLog(&cfstr_Wonpsdomainacc_0.isa, v3);
+    NSLog(&cfstr_Wonpsdomainacc_0.isa, synchronize);
   }
 
-  objc_storeStrong(&v3, 0);
+  objc_storeStrong(&synchronize, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)dataForPerGizmoDomainAndKey:(id)a3
+- (id)dataForPerGizmoDomainAndKey:(id)key
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(FINPSDomainAccessorWrapper *)v8->_domainAccessor synchronize];
-  if (v6)
+  objc_storeStrong(location, key);
+  synchronize = [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor synchronize];
+  if (synchronize)
   {
-    NSLog(&cfstr_Wonpsdomainacc_0.isa, v6);
+    NSLog(&cfstr_Wonpsdomainacc_0.isa, synchronize);
   }
 
-  v5 = [(FINPSDomainAccessorWrapper *)v8->_domainAccessor objectForKey:location[0]];
+  v5 = [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor objectForKey:location[0]];
   if (v5)
   {
     v9 = MEMORY[0x277D82BE0](v5);
@@ -162,26 +162,26 @@
   }
 
   objc_storeStrong(&v5, 0);
-  objc_storeStrong(&v6, 0);
+  objc_storeStrong(&synchronize, 0);
   objc_storeStrong(location, 0);
   v3 = v9;
 
   return v3;
 }
 
-- (void)writeDataPerGizmoDomainAndKey:(id)a3 data:(id)a4
+- (void)writeDataPerGizmoDomainAndKey:(id)key data:(id)data
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  [(FINPSDomainAccessorWrapper *)v11->_domainAccessor setObject:v9 forKey:location[0]];
-  v8 = [(FINPSDomainAccessorWrapper *)v11->_domainAccessor synchronize];
-  if (v8)
+  objc_storeStrong(&v9, data);
+  [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor setObject:v9 forKey:location[0]];
+  synchronize = [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor synchronize];
+  if (synchronize)
   {
-    NSLog(&cfstr_Wonpsdomainacc_0.isa, v8);
+    NSLog(&cfstr_Wonpsdomainacc_0.isa, synchronize);
   }
 
   else
@@ -194,23 +194,23 @@
     MEMORY[0x277D82BD8](v6);
   }
 
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&synchronize, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)writeBoolPerGizmoDomainAndKey:(id)a3 value:(BOOL)a4
+- (void)writeBoolPerGizmoDomainAndKey:(id)key value:(BOOL)value
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  [(FINPSDomainAccessorWrapper *)v11->_domainAccessor setBool:a4 forKey:location[0]];
-  v8 = [(FINPSDomainAccessorWrapper *)v11->_domainAccessor synchronize];
-  if (v8)
+  objc_storeStrong(location, key);
+  valueCopy = value;
+  [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor setBool:value forKey:location[0]];
+  synchronize = [(FINPSDomainAccessorWrapper *)selfCopy->_domainAccessor synchronize];
+  if (synchronize)
   {
-    NSLog(&cfstr_Wonpsdomainacc_0.isa, v8);
+    NSLog(&cfstr_Wonpsdomainacc_0.isa, synchronize);
   }
 
   else
@@ -223,14 +223,14 @@
     MEMORY[0x277D82BD8](v6);
   }
 
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&synchronize, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)setupNotificationObservers
 {
   v14[4] = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   v11[0] = [MEMORY[0x277CCAB98] defaultCenter];
   v14[0] = *MEMORY[0x277D2BC68];
@@ -255,7 +255,7 @@
       }
 
       v9 = *(__b[1] + 8 * v4);
-      [v11[0] addObserver:v12 selector:sel_pairedDeviceStateChanged name:v9 object:0];
+      [v11[0] addObserver:selfCopy selector:sel_pairedDeviceStateChanged name:v9 object:0];
       ++v4;
       if (v2 + 1 >= v5)
       {
@@ -277,13 +277,13 @@
 
 - (void)pairedDeviceStateChanged
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   NSLog(&cfstr_Wonpsdomainacc_1.isa);
   v2 = objc_alloc(MEMORY[0x277D095A0]);
   v3 = [v2 initWithDomain:*MEMORY[0x277D09618]];
-  domainAccessor = v14->_domainAccessor;
-  v14->_domainAccessor = v3;
+  domainAccessor = selfCopy->_domainAccessor;
+  selfCopy->_domainAccessor = v3;
   MEMORY[0x277D82BD8](domainAccessor);
   v6 = MEMORY[0x277D85CD0];
   v5 = MEMORY[0x277D85CD0];
@@ -293,7 +293,7 @@
   v10 = 0;
   v11 = __47__WONPSDomainAccessor_pairedDeviceStateChanged__block_invoke;
   v12 = &unk_277D88890;
-  v13[0] = MEMORY[0x277D82BE0](v14);
+  v13[0] = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v13, 0);

@@ -1,57 +1,57 @@
 @interface WFPocketAddAction
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)finishRunningWithError:(id)a3;
-- (void)pocketAPI:(id)a3 receivedResponse:(id)a4 forAPIMethod:(id)a5 error:(id)a6;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)finishRunningWithError:(id)error;
+- (void)pocketAPI:(id)i receivedResponse:(id)response forAPIMethod:(id)method error:(id)error;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFPocketAddAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v6 = a3;
+  descriptionCopy = description;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  if (v6)
+  nameCopy = name;
+  if (descriptionCopy)
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to add %2$@ to Pocket?");
-    [v7 localizedStringWithFormat:v9, v8, v6];
+    [v7 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
   }
 
   else
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to add content to Pocket?");
-    [v7 localizedStringWithFormat:v9, v8, v12];
+    [v7 localizedStringWithFormat:v9, nameCopy, v12];
   }
   v10 = ;
 
   return v10;
 }
 
-- (void)pocketAPI:(id)a3 receivedResponse:(id)a4 forAPIMethod:(id)a5 error:(id)a6
+- (void)pocketAPI:(id)i receivedResponse:(id)response forAPIMethod:(id)method error:(id)error
 {
-  if (a6)
+  if (error)
   {
-    [(WFPocketAddAction *)self setLastError:a6, a4, a5];
+    [(WFPocketAddAction *)self setLastError:error, response, method];
   }
 
-  v7 = [(WFPocketAddAction *)self addGroup:a3];
+  v7 = [(WFPocketAddAction *)self addGroup:i];
   dispatch_group_leave(v7);
 }
 
-- (void)finishRunningWithError:(id)a3
+- (void)finishRunningWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(WFPocketAddAction *)self setAddGroup:0];
   [(WFPocketAddAction *)self setLastError:0];
   v5.receiver = self;
   v5.super_class = WFPocketAddAction;
-  [(WFPocketAddAction *)&v5 finishRunningWithError:v4];
+  [(WFPocketAddAction *)&v5 finishRunningWithError:errorCopy];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = dispatch_group_create();
   [(WFPocketAddAction *)self setAddGroup:v5];
   v11[0] = MEMORY[0x277D85DD0];
@@ -59,16 +59,16 @@
   v11[2] = __48__WFPocketAddAction_runAsynchronouslyWithInput___block_invoke;
   v11[3] = &unk_278C1BA80;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v6 = objc_opt_class();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__WFPocketAddAction_runAsynchronouslyWithInput___block_invoke_2;
   v8[3] = &unk_278C1BAA8;
   v9 = v12;
-  v10 = self;
+  selfCopy2 = self;
   v7 = v12;
-  [v4 enumerateObjectRepresentations:v11 forClass:v6 completionHandler:v8];
+  [inputCopy enumerateObjectRepresentations:v11 forClass:v6 completionHandler:v8];
 }
 
 void __48__WFPocketAddAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)

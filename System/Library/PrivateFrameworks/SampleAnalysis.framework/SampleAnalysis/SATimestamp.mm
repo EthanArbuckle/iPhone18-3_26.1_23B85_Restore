@@ -1,23 +1,23 @@
 @interface SATimestamp
-+ (SATimestamp)timestampWithMachAbsTime:(unint64_t)a3 machAbsTimeSec:(double)a4 machContTime:(unint64_t)a5 machContTimeSec:(double)a6 wallTime:(double)a7;
-+ (SATimestamp)timestampWithMachAbsTime:(unint64_t)a3 machContTime:(unint64_t)a4 wallTime:(double)a5 machTimebase:(mach_timebase_info)a6;
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
++ (SATimestamp)timestampWithMachAbsTime:(unint64_t)time machAbsTimeSec:(double)sec machContTime:(unint64_t)contTime machContTimeSec:(double)timeSec wallTime:(double)wallTime;
++ (SATimestamp)timestampWithMachAbsTime:(unint64_t)time machContTime:(unint64_t)contTime wallTime:(double)wallTime machTimebase:(mach_timebase_info)timebase;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
 + (id)now;
-+ (id)timestampWithKTraceEvent:(uint64_t)a1 fromSession:(int *)a2;
-+ (id)timestampWithMachAbsTime:(uint64_t)a1 fromKtraceSession:(uint64_t)a2;
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)timestampWithKTraceEvent:(uint64_t)event fromSession:(int *)session;
++ (id)timestampWithMachAbsTime:(uint64_t)time fromKtraceSession:(uint64_t)session;
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (NSString)debugDescription;
-- (SATimestamp)initWithMachAbsTime:(unint64_t)a3 machAbsTimeSec:(double)a4 machContTime:(unint64_t)a5 machContTimeSec:(double)a6 wallTime:(double)a7;
-- (double)deltaSecondsTo:(id)a3 timeDomainPriorityList:(id)a4 timeDomainUsed:(unint64_t *)a5;
+- (SATimestamp)initWithMachAbsTime:(unint64_t)time machAbsTimeSec:(double)sec machContTime:(unint64_t)contTime machContTimeSec:(double)timeSec wallTime:(double)wallTime;
+- (double)deltaSecondsTo:(id)to timeDomainPriorityList:(id)list timeDomainUsed:(unint64_t *)used;
 - (id)copyDate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
-- (int64_t)deltaMachTo:(id)a3 timeDomainPriorityList:(id)a4 timeDomainUsed:(unint64_t *)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
+- (int64_t)deltaMachTo:(id)to timeDomainPriorityList:(id)list timeDomainUsed:(unint64_t *)used;
 - (uint64_t)applyMachTimebase:(uint64_t)result;
-- (void)addSelfToSerializationDictionary:(id)a3;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
 - (void)guessMissingTimesBasedOnCurrentTime;
-- (void)guessMissingTimesBasedOnTimestamp:(id)a3;
-- (void)writeJSONDictionaryEntriesToStream:(id)a3;
+- (void)guessMissingTimesBasedOnTimestamp:(id)timestamp;
+- (void)writeJSONDictionaryEntriesToStream:(id)stream;
 @end
 
 @implementation SATimestamp
@@ -31,77 +31,77 @@
     dispatch_once(&_MergedGlobals_7, &__block_literal_global_9);
   }
 
-  v4 = [a1 timestampWithMachAbsTime:0 machContTime:0 wallTime:qword_1EDD032B0 machTimebase:{0 - v3 + 0 / 1000000000.0, 0, 0, 0, 0}];
+  v4 = [self timestampWithMachAbsTime:0 machContTime:0 wallTime:qword_1EDD032B0 machTimebase:{0 - v3 + 0 / 1000000000.0, 0, 0, 0, 0}];
 
   return v4;
 }
 
-- (SATimestamp)initWithMachAbsTime:(unint64_t)a3 machAbsTimeSec:(double)a4 machContTime:(unint64_t)a5 machContTimeSec:(double)a6 wallTime:(double)a7
+- (SATimestamp)initWithMachAbsTime:(unint64_t)time machAbsTimeSec:(double)sec machContTime:(unint64_t)contTime machContTimeSec:(double)timeSec wallTime:(double)wallTime
 {
   v13.receiver = self;
   v13.super_class = SATimestamp;
   result = [(SATimestamp *)&v13 init];
   if (result)
   {
-    result->_machAbsTime = a3;
-    result->_machAbsTimeSeconds = a4;
-    result->_machContTime = a5;
-    result->_machContTimeSeconds = a6;
-    result->_wallTime = a7;
+    result->_machAbsTime = time;
+    result->_machAbsTimeSeconds = sec;
+    result->_machContTime = contTime;
+    result->_machContTimeSeconds = timeSec;
+    result->_wallTime = wallTime;
   }
 
   return result;
 }
 
-+ (SATimestamp)timestampWithMachAbsTime:(unint64_t)a3 machAbsTimeSec:(double)a4 machContTime:(unint64_t)a5 machContTimeSec:(double)a6 wallTime:(double)a7
++ (SATimestamp)timestampWithMachAbsTime:(unint64_t)time machAbsTimeSec:(double)sec machContTime:(unint64_t)contTime machContTimeSec:(double)timeSec wallTime:(double)wallTime
 {
-  v7 = [[a1 alloc] initWithMachAbsTime:a3 machAbsTimeSec:a5 machContTime:a4 machContTimeSec:a6 wallTime:a7];
+  v7 = [[self alloc] initWithMachAbsTime:time machAbsTimeSec:contTime machContTime:sec machContTimeSec:timeSec wallTime:wallTime];
 
   return v7;
 }
 
-+ (SATimestamp)timestampWithMachAbsTime:(unint64_t)a3 machContTime:(unint64_t)a4 wallTime:(double)a5 machTimebase:(mach_timebase_info)a6
++ (SATimestamp)timestampWithMachAbsTime:(unint64_t)time machContTime:(unint64_t)contTime wallTime:(double)wallTime machTimebase:(mach_timebase_info)timebase
 {
-  v10 = 0;
+  contTimeCopy = 0;
   v11 = 0.0;
-  if (a6.denom && a6.numer)
+  if (timebase.denom && timebase.numer)
   {
-    if (a6.numer == a6.denom)
+    if (timebase.numer == timebase.denom)
     {
-      v11 = a3 / 1000000000.0;
-      v10 = a4;
+      v11 = time / 1000000000.0;
+      contTimeCopy = contTime;
     }
 
     else
     {
       v11 = __udivti3() / 1000000000.0;
-      v10 = __udivti3();
+      contTimeCopy = __udivti3();
     }
   }
 
-  return [a1 timestampWithMachAbsTime:a3 machAbsTimeSec:a4 machContTime:v11 machContTimeSec:v10 / 1000000000.0 wallTime:a5];
+  return [self timestampWithMachAbsTime:time machAbsTimeSec:contTime machContTime:v11 machContTimeSec:contTimeCopy / 1000000000.0 wallTime:wallTime];
 }
 
-+ (id)timestampWithKTraceEvent:(uint64_t)a1 fromSession:(int *)a2
++ (id)timestampWithKTraceEvent:(uint64_t)event fromSession:(int *)session
 {
   v3 = objc_opt_self();
-  v4 = *a2;
+  v4 = *session;
   absolute_from_timestamp = ktrace_get_absolute_from_timestamp();
-  v6 = *a2;
+  v6 = *session;
   continuous_from_timestamp = ktrace_get_continuous_from_timestamp();
   ns_from_timestamp = ktrace_get_ns_from_timestamp();
   v9 = ktrace_get_ns_from_timestamp();
-  v10 = *(a2 + 7);
+  v10 = *(session + 7);
   if (v10)
   {
-    v11 = a2[16] / 1000000.0 + v10 - *MEMORY[0x1E695E468];
+    v11 = session[16] / 1000000.0 + v10 - *MEMORY[0x1E695E468];
   }
 
   else
   {
     v16 = 0;
     v17 = 0;
-    v12 = *a2;
+    v12 = *session;
     v13 = ktrace_convert_timestamp_to_walltime();
     v11 = 0.0;
     if (!v13)
@@ -115,7 +115,7 @@
   return v14;
 }
 
-+ (id)timestampWithMachAbsTime:(uint64_t)a1 fromKtraceSession:(uint64_t)a2
++ (id)timestampWithMachAbsTime:(uint64_t)time fromKtraceSession:(uint64_t)session
 {
   objc_opt_self();
   ns_from_timestamp = ktrace_get_ns_from_timestamp();
@@ -128,15 +128,15 @@
     v7 = 0 - *MEMORY[0x1E695E468] + 0 / 1000000000.0;
   }
 
-  v8 = [SATimestamp timestampWithMachAbsTime:a2 machAbsTimeSec:continuous_from_absolute machContTime:ns_from_timestamp / 1000000000.0 machContTimeSec:v5 / 1000000000.0 wallTime:v7, 0, 0];
+  v8 = [SATimestamp timestampWithMachAbsTime:session machAbsTimeSec:continuous_from_absolute machContTime:ns_from_timestamp / 1000000000.0 machContTimeSec:v5 / 1000000000.0 wallTime:v7, 0, 0];
 
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (self == a3)
+  if (self == compare)
   {
     result = 0;
 LABEL_25:
@@ -145,7 +145,7 @@ LABEL_25:
   }
 
   machAbsTime = self->_machAbsTime;
-  if (machAbsTime && (v4 = *(a3 + 1)) != 0 || (machAbsTime = self->_machContTime) != 0 && (v4 = *(a3 + 3)) != 0)
+  if (machAbsTime && (v4 = *(compare + 1)) != 0 || (machAbsTime = self->_machContTime) != 0 && (v4 = *(compare + 3)) != 0)
   {
     v5 = machAbsTime > v4;
     if (machAbsTime >= v4)
@@ -172,7 +172,7 @@ LABEL_25:
   }
 
   machAbsTimeSeconds = self->_machAbsTimeSeconds;
-  if (machAbsTimeSeconds != 0.0 && (v9 = *(a3 + 2), v9 != 0.0) || (machAbsTimeSeconds = self->_machContTimeSeconds, machAbsTimeSeconds != 0.0) && (v9 = *(a3 + 4), v9 != 0.0) || (machAbsTimeSeconds = self->_wallTime, machAbsTimeSeconds != 0.0) && (v9 = *(a3 + 5), v9 != 0.0))
+  if (machAbsTimeSeconds != 0.0 && (v9 = *(compare + 2), v9 != 0.0) || (machAbsTimeSeconds = self->_machContTimeSeconds, machAbsTimeSeconds != 0.0) && (v9 = *(compare + 4), v9 != 0.0) || (machAbsTimeSeconds = self->_wallTime, machAbsTimeSeconds != 0.0) && (v9 = *(compare + 5), v9 != 0.0))
   {
     if (machAbsTimeSeconds >= v9)
     {
@@ -202,36 +202,36 @@ LABEL_25:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     v14 = [(SATimestamp *)self debugDescription];
-    v15 = [v14 UTF8String];
-    v16 = [a3 debugDescription];
+    uTF8String = [v14 UTF8String];
+    v16 = [compare debugDescription];
     *buf = 136315394;
-    v29 = v15;
+    v29 = uTF8String;
     v30 = 2080;
-    v31 = [v16 UTF8String];
+    uTF8String2 = [v16 UTF8String];
     _os_log_error_impl(&dword_1E0E2F000, v13, OS_LOG_TYPE_ERROR, "Incomparable timestamps: %s vs %s", buf, 0x16u);
   }
 
   *__error() = v12;
   v17 = [(SATimestamp *)self debugDescription];
-  v18 = [v17 UTF8String];
-  v19 = [a3 debugDescription];
+  uTF8String3 = [v17 UTF8String];
+  v19 = [compare debugDescription];
   [v19 UTF8String];
-  _SASetCrashLogMessage(176, "Incomparable timestamps: %s vs %s", v20, v21, v22, v23, v24, v25, v18);
+  _SASetCrashLogMessage(176, "Incomparable timestamps: %s vs %s", v20, v21, v22, v23, v24, v25, uTF8String3);
 
   result = _os_crash();
   __break(1u);
   return result;
 }
 
-- (double)deltaSecondsTo:(id)a3 timeDomainPriorityList:(id)a4 timeDomainUsed:(unint64_t *)a5
+- (double)deltaSecondsTo:(id)to timeDomainPriorityList:(id)list timeDomainUsed:(unint64_t *)used
 {
   v41 = *MEMORY[0x1E69E9840];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = a4;
-  v9 = [v8 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  listCopy = list;
+  v9 = [listCopy countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v9)
   {
     v11 = v9;
@@ -244,26 +244,26 @@ LABEL_25:
       {
         if (*v35 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(listCopy);
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
-        v15 = [v14 unsignedLongLongValue];
-        switch(v15)
+        unsignedLongLongValue = [v14 unsignedLongLongValue];
+        switch(unsignedLongLongValue)
         {
           case 16:
             [(SATimestamp *)self machContTimeSeconds];
             if (v20 != 0.0)
             {
-              [a3 machContTimeSeconds];
+              [to machContTimeSeconds];
               if (v21 != 0.0)
               {
-                if (a5)
+                if (used)
                 {
-                  *a5 = 16;
+                  *used = 16;
                 }
 
-                [a3 machContTimeSeconds];
+                [to machContTimeSeconds];
                 v27 = v26;
                 [(SATimestamp *)self machContTimeSeconds];
                 goto LABEL_34;
@@ -275,15 +275,15 @@ LABEL_25:
             [(SATimestamp *)self machAbsTimeSeconds];
             if (v18 != 0.0)
             {
-              [a3 machAbsTimeSeconds];
+              [to machAbsTimeSeconds];
               if (v19 != 0.0)
               {
-                if (a5)
+                if (used)
                 {
-                  *a5 = 4;
+                  *used = 4;
                 }
 
-                [a3 machAbsTimeSeconds];
+                [to machAbsTimeSeconds];
                 v27 = v29;
                 [(SATimestamp *)self machAbsTimeSeconds];
                 goto LABEL_34;
@@ -295,15 +295,15 @@ LABEL_25:
             [(SATimestamp *)self wallTime];
             if (v16 != 0.0)
             {
-              [a3 wallTime];
+              [to wallTime];
               if (v17 != 0.0)
               {
-                if (a5)
+                if (used)
                 {
-                  *a5 = 1;
+                  *used = 1;
                 }
 
-                [a3 wallTime];
+                [to wallTime];
                 v27 = v30;
                 [(SATimestamp *)self wallTime];
 LABEL_34:
@@ -319,9 +319,9 @@ LABEL_34:
             v23 = _sa_logt();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
             {
-              v24 = [v14 unsignedLongLongValue];
+              unsignedLongLongValue2 = [v14 unsignedLongLongValue];
               *buf = v33;
-              v39 = v24;
+              v39 = unsignedLongLongValue2;
               _os_log_fault_impl(&dword_1E0E2F000, v23, OS_LOG_TYPE_FAULT, "Invalid time domain 0x%llx", buf, 0xCu);
             }
 
@@ -330,7 +330,7 @@ LABEL_34:
         }
       }
 
-      v11 = [v8 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v11 = [listCopy countByEnumeratingWithState:&v34 objects:v40 count:16];
       if (v11)
       {
         continue;
@@ -341,9 +341,9 @@ LABEL_34:
   }
 
   v25 = 0.0;
-  if (a5)
+  if (used)
   {
-    *a5 = 0;
+    *used = 0;
   }
 
 LABEL_35:
@@ -351,15 +351,15 @@ LABEL_35:
   return v25;
 }
 
-- (int64_t)deltaMachTo:(id)a3 timeDomainPriorityList:(id)a4 timeDomainUsed:(unint64_t *)a5
+- (int64_t)deltaMachTo:(id)to timeDomainPriorityList:(id)list timeDomainUsed:(unint64_t *)used
 {
   v32 = *MEMORY[0x1E69E9840];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = a4;
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  listCopy = list;
+  v9 = [listCopy countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v9)
   {
     v11 = v9;
@@ -372,39 +372,39 @@ LABEL_35:
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(listCopy);
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = [v14 unsignedLongLongValue];
-        if (v15 == 2)
+        unsignedLongLongValue = [v14 unsignedLongLongValue];
+        if (unsignedLongLongValue == 2)
         {
-          if (-[SATimestamp machAbsTime](self, "machAbsTime") && [a3 machAbsTime])
+          if (-[SATimestamp machAbsTime](self, "machAbsTime") && [to machAbsTime])
           {
-            if (a5)
+            if (used)
             {
-              *a5 = 2;
+              *used = 2;
             }
 
-            v20 = [a3 machAbsTime];
-            v21 = [(SATimestamp *)self machAbsTime];
+            machAbsTime = [to machAbsTime];
+            machAbsTime2 = [(SATimestamp *)self machAbsTime];
             goto LABEL_27;
           }
         }
 
-        else if (v15 == 8)
+        else if (unsignedLongLongValue == 8)
         {
-          if (-[SATimestamp machContTime](self, "machContTime") && [a3 machContTime])
+          if (-[SATimestamp machContTime](self, "machContTime") && [to machContTime])
           {
-            if (a5)
+            if (used)
             {
-              *a5 = 8;
+              *used = 8;
             }
 
-            v20 = [a3 machContTime];
-            v21 = [(SATimestamp *)self machContTime];
+            machAbsTime = [to machContTime];
+            machAbsTime2 = [(SATimestamp *)self machContTime];
 LABEL_27:
-            v19 = v20 - v21;
+            v19 = machAbsTime - machAbsTime2;
 
             goto LABEL_28;
           }
@@ -416,9 +416,9 @@ LABEL_27:
           v17 = _sa_logt();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
           {
-            v18 = [v14 unsignedLongLongValue];
+            unsignedLongLongValue2 = [v14 unsignedLongLongValue];
             *buf = v24;
-            v30 = v18;
+            v30 = unsignedLongLongValue2;
             _os_log_fault_impl(&dword_1E0E2F000, v17, OS_LOG_TYPE_FAULT, "Invalid time domain 0x%llx", buf, 0xCu);
           }
 
@@ -426,7 +426,7 @@ LABEL_27:
         }
       }
 
-      v11 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v11 = [listCopy countByEnumeratingWithState:&v25 objects:v31 count:16];
       if (v11)
       {
         continue;
@@ -437,9 +437,9 @@ LABEL_27:
   }
 
   v19 = 0;
-  if (a5)
+  if (used)
   {
-    *a5 = 0;
+    *used = 0;
   }
 
 LABEL_28:
@@ -447,7 +447,7 @@ LABEL_28:
   return v19;
 }
 
-- (void)guessMissingTimesBasedOnTimestamp:(id)a3
+- (void)guessMissingTimesBasedOnTimestamp:(id)timestamp
 {
   v121 = *MEMORY[0x1E69E9840];
   if (!self->_machAbsTime || self->_machAbsTimeSeconds == 0.0 || !self->_machContTime || self->_machContTimeSeconds == 0.0 || self->_wallTime == 0.0)
@@ -465,7 +465,7 @@ LABEL_28:
     v105[1] = 3221225472;
     v105[2] = __49__SATimestamp_guessMissingTimesBasedOnTimestamp___block_invoke;
     v105[3] = &unk_1E86F7220;
-    v105[4] = a3;
+    v105[4] = timestamp;
     v105[5] = self;
     v105[6] = &v106;
     v105[7] = &v110;
@@ -484,7 +484,7 @@ LABEL_28:
     v96[2] = __49__SATimestamp_guessMissingTimesBasedOnTimestamp___block_invoke_4;
     v96[3] = &unk_1E86F7220;
     v96[4] = self;
-    v96[5] = a3;
+    v96[5] = timestamp;
     v96[6] = &v97;
     v96[7] = &v101;
     v5 = MEMORY[0x1E12EBE50](v96);
@@ -502,7 +502,7 @@ LABEL_28:
     v87[2] = __49__SATimestamp_guessMissingTimesBasedOnTimestamp___block_invoke_2;
     v87[3] = &unk_1E86F7220;
     v87[4] = self;
-    v87[5] = a3;
+    v87[5] = timestamp;
     v87[6] = &v88;
     v87[7] = &v92;
     v6 = MEMORY[0x1E12EBE50](v87);
@@ -792,7 +792,7 @@ LABEL_87:
 
       if (!self->_machAbsTime)
       {
-        v36 = *(a3 + 1);
+        v36 = *(timestamp + 1);
         if (v36)
         {
           v37 = v93[3] + v36;
@@ -805,16 +805,16 @@ LABEL_87:
               v82 = v93[3];
               if (v7)
               {
-                v55 = v7;
+                selfCopy = v7;
               }
 
               else
               {
-                v55 = self;
+                selfCopy = self;
               }
 
-              v85 = [(SATimestamp *)v55 debugDescription];
-              v56 = [a3 debugDescription];
+              v85 = [(SATimestamp *)selfCopy debugDescription];
+              v56 = [timestamp debugDescription];
               *buf = 134218498;
               v116 = v82;
               v117 = 2114;
@@ -832,7 +832,7 @@ LABEL_87:
           if (!v7)
           {
             v7 = [(SATimestamp *)self copy];
-            v37 = v93[3] + *(a3 + 1);
+            v37 = v93[3] + *(timestamp + 1);
           }
 
           self->_machAbsTime = v37;
@@ -882,7 +882,7 @@ LABEL_147:
       }
 
 LABEL_89:
-      if (self->_machContTime || (v40 = *(a3 + 3)) == 0)
+      if (self->_machContTime || (v40 = *(timestamp + 3)) == 0)
       {
         if ((v12 & 1) == 0)
         {
@@ -895,7 +895,7 @@ LABEL_89:
 LABEL_92:
           if (self->_machAbsTimeSeconds == 0.0)
           {
-            v34 = *(a3 + 2);
+            v34 = *(timestamp + 2);
             if (v34 != 0.0)
             {
               v35 = v34 + v102[3];
@@ -908,16 +908,16 @@ LABEL_92:
                   v80 = *(v102 + 3);
                   if (v7)
                   {
-                    v53 = v7;
+                    selfCopy2 = v7;
                   }
 
                   else
                   {
-                    v53 = self;
+                    selfCopy2 = self;
                   }
 
-                  v84 = [(SATimestamp *)v53 debugDescription];
-                  v54 = [a3 debugDescription];
+                  v84 = [(SATimestamp *)selfCopy2 debugDescription];
+                  v54 = [timestamp debugDescription];
                   *buf = 134218498;
                   v116 = v80;
                   v117 = 2114;
@@ -936,7 +936,7 @@ LABEL_92:
                 if (!v7)
                 {
                   v7 = [(SATimestamp *)self copy];
-                  v35 = *(a3 + 2) + v102[3];
+                  v35 = *(timestamp + 2) + v102[3];
                 }
 
                 self->_machAbsTimeSeconds = v35;
@@ -950,7 +950,7 @@ LABEL_92:
 
           if (self->_machContTimeSeconds == 0.0)
           {
-            v47 = *(a3 + 4);
+            v47 = *(timestamp + 4);
             if (v47 != 0.0)
             {
               v48 = v47 + v102[3];
@@ -959,7 +959,7 @@ LABEL_92:
                 if (!v7)
                 {
                   v7 = [(SATimestamp *)self copy];
-                  v48 = *(a3 + 4) + v102[3];
+                  v48 = *(timestamp + 4) + v102[3];
                 }
 
                 self->_machContTimeSeconds = v48;
@@ -971,12 +971,12 @@ LABEL_92:
             }
           }
 
-          if (self->_wallTime == 0.0 && (v49 = *(a3 + 5), v49 != 0.0))
+          if (self->_wallTime == 0.0 && (v49 = *(timestamp + 5), v49 != 0.0))
           {
             if (!v7)
             {
               v7 = [(SATimestamp *)self copy];
-              v49 = *(a3 + 5);
+              v49 = *(timestamp + 5);
             }
 
             self->_wallTime = v49 + v102[3];
@@ -1058,7 +1058,7 @@ LABEL_127:
         if (!v7)
         {
           v7 = [(SATimestamp *)self copy];
-          v40 = *(a3 + 3);
+          v40 = *(timestamp + 3);
         }
 
         v41 = v93[3] + v40;
@@ -1258,9 +1258,9 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   machAbsTime = self->_machAbsTime;
   machAbsTimeSeconds = self->_machAbsTimeSeconds;
   machContTime = self->_machContTime;
@@ -1283,12 +1283,12 @@ LABEL_8:
   return [v4 initWithTimeIntervalSinceReferenceDate:wallTime];
 }
 
-- (void)writeJSONDictionaryEntriesToStream:(id)a3
+- (void)writeJSONDictionaryEntriesToStream:(id)stream
 {
   if (self->_wallTime != 0.0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-    SAJSONWriteDictionaryFirstEntry(a3, @"wallTimeCF", v5);
+    SAJSONWriteDictionaryFirstEntry(stream, @"wallTimeCF", v5);
 
     if (!self->_machAbsTime)
     {
@@ -1299,12 +1299,12 @@ LABEL_7:
       }
 
       v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-      SAJSONWriteDictionaryEntry(a3, @"machContTime", v7);
+      SAJSONWriteDictionaryEntry(stream, @"machContTime", v7);
       goto LABEL_9;
     }
 
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-    SAJSONWriteDictionaryEntry(a3, @"machAbsTime", v6);
+    SAJSONWriteDictionaryEntry(stream, @"machAbsTime", v6);
 LABEL_6:
 
     goto LABEL_7;
@@ -1313,7 +1313,7 @@ LABEL_6:
   if (self->_machAbsTime)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-    SAJSONWriteDictionaryFirstEntry(a3, @"machAbsTime", v6);
+    SAJSONWriteDictionaryFirstEntry(stream, @"machAbsTime", v6);
     goto LABEL_6;
   }
 
@@ -1323,14 +1323,14 @@ LABEL_6:
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-  SAJSONWriteDictionaryFirstEntry(a3, @"machContTime", v7);
+  SAJSONWriteDictionaryFirstEntry(stream, @"machContTime", v7);
 LABEL_9:
 }
 
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v50 = *MEMORY[0x1E69E9840];
-  if ([(SATimestamp *)self sizeInBytesForSerializedVersion:a3]!= a4)
+  if ([(SATimestamp *)self sizeInBytesForSerializedVersion:buffer]!= length)
   {
     v11 = *__error();
     v12 = _sa_logt();
@@ -1338,26 +1338,26 @@ LABEL_9:
     {
       v13 = [(SATimestamp *)self debugDescription];
       *buf = 136315650;
-      v45 = [v13 UTF8String];
+      uTF8String = [v13 UTF8String];
       v46 = 2048;
-      v47 = [(SATimestamp *)self sizeInBytesForSerializedVersion];
+      sizeInBytesForSerializedVersion = [(SATimestamp *)self sizeInBytesForSerializedVersion];
       v48 = 2048;
-      v49 = a4;
+      lengthCopy = length;
       _os_log_error_impl(&dword_1E0E2F000, v12, OS_LOG_TYPE_ERROR, "%s: size %lu != buffer length %lu", buf, 0x20u);
     }
 
     *__error() = v11;
     v14 = [(SATimestamp *)self debugDescription];
-    v15 = [v14 UTF8String];
+    uTF8String2 = [v14 UTF8String];
     [(SATimestamp *)self sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(776, "%s: size %lu != buffer length %lu", v16, v17, v18, v19, v20, v21, v15);
+    _SASetCrashLogMessage(776, "%s: size %lu != buffer length %lu", v16, v17, v18, v19, v20, v21, uTF8String2);
 
     _os_crash();
     __break(1u);
     goto LABEL_10;
   }
 
-  *&a3->var0 = 257;
+  *&buffer->var0 = 257;
   machAbsTime = self->_machAbsTime;
   if (!machAbsTime && self->_machAbsTimeSeconds != 0.0)
   {
@@ -1369,9 +1369,9 @@ LABEL_10:
       v24 = self->_machAbsTime;
       machAbsTimeSeconds = self->_machAbsTimeSeconds;
       *buf = 134218240;
-      v45 = v24;
+      uTF8String = v24;
       v46 = 2048;
-      v47 = *&machAbsTimeSeconds;
+      sizeInBytesForSerializedVersion = *&machAbsTimeSeconds;
       _os_log_error_impl(&dword_1E0E2F000, v23, OS_LOG_TYPE_ERROR, "machAbs %llu and machAbsSec %f", buf, 0x16u);
     }
 
@@ -1388,9 +1388,9 @@ LABEL_13:
       machContTime = self->_machContTime;
       machContTimeSeconds = self->_machContTimeSeconds;
       *buf = 134218240;
-      v45 = machContTime;
+      uTF8String = machContTime;
       v46 = 2048;
-      v47 = *&machContTimeSeconds;
+      sizeInBytesForSerializedVersion = *&machContTimeSeconds;
       _os_log_error_impl(&dword_1E0E2F000, v33, OS_LOG_TYPE_ERROR, "machCont %llu and machContSec %f", buf, 0x16u);
     }
 
@@ -1406,42 +1406,42 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(&a3->var1 + 1) = machAbsTime;
-  *(&a3->var2 + 2) = self->_machContTime;
-  *(&a3->var3 + 2) = *&self->_wallTime;
+  *(&buffer->var1 + 1) = machAbsTime;
+  *(&buffer->var2 + 2) = self->_machContTime;
+  *(&buffer->var3 + 2) = *&self->_wallTime;
   v9 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
-  v5 = [objc_opt_class() classDictionaryKey];
-  SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, v5);
+  classDictionaryKey = [objc_opt_class() classDictionaryKey];
+  SASerializableAddInstanceToSerializationDictionaryWithClassKey(dictionary, self, classDictionaryKey);
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 2u)
+  if (*buffer >= 2u)
   {
     goto LABEL_7;
   }
 
-  if (a4 <= 0x19)
+  if (length <= 0x19)
   {
     v7 = *__error();
     v8 = _sa_logt();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v17 = a4;
+      lengthCopy = length;
       v18 = 2048;
       v19 = 26;
       _os_log_error_impl(&dword_1E0E2F000, v8, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATimestamp struct %lu", buf, 0x16u);
     }
 
     *__error() = v7;
-    _SASetCrashLogMessage(801, "bufferLength %lu < serialized SATimestamp struct %lu", v9, v10, v11, v12, v13, v14, a4);
+    _SASetCrashLogMessage(801, "bufferLength %lu < serialized SATimestamp struct %lu", v9, v10, v11, v12, v13, v14, length);
     _os_crash();
     __break(1u);
 LABEL_7:
@@ -1449,7 +1449,7 @@ LABEL_7:
     objc_exception_throw(v15);
   }
 
-  result = [SATimestamp timestampWithMachAbsTime:*(a3 + 2) machAbsTimeSec:*(a3 + 10) machContTime:0.0 machContTimeSec:0.0 wallTime:*(a3 + 18)];
+  result = [SATimestamp timestampWithMachAbsTime:*(buffer + 2) machAbsTimeSec:*(buffer + 10) machContTime:0.0 machContTimeSec:0.0 wallTime:*(buffer + 18)];
   v6 = *MEMORY[0x1E69E9840];
   return result;
 }

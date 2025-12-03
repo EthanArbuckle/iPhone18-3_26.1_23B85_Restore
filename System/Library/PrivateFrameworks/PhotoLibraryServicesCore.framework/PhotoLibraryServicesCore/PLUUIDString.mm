@@ -1,35 +1,35 @@
 @interface PLUUIDString
-+ (BOOL)parseUUIDString:(id)a3 uuidBuffer:(char *)a4;
++ (BOOL)parseUUIDString:(id)string uuidBuffer:(char *)buffer;
 + (id)UUIDString;
 - ($DCF20CAD073027CB89FDEFA7A9A33809)UUIDBytes;
-- (BOOL)isEqualToString:(id)a3;
-- (PLUUIDString)initWithCFUUID:(__CFUUID *)a3;
-- (PLUUIDString)initWithUUID:(unsigned __int8)a3[16];
-- (PLUUIDString)initWithUUIDData:(id)a3;
-- (int64_t)compare:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5 locale:(id)a6;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (BOOL)isEqualToString:(id)string;
+- (PLUUIDString)initWithCFUUID:(__CFUUID *)d;
+- (PLUUIDString)initWithUUID:(unsigned __int8)d[16];
+- (PLUUIDString)initWithUUIDData:(id)data;
+- (int64_t)compare:(id)compare options:(unint64_t)options range:(_NSRange)range locale:(id)locale;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation PLUUIDString
 
-- (int64_t)compare:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5 locale:(id)a6
+- (int64_t)compare:(id)compare options:(unint64_t)options range:(_NSRange)range locale:(id)locale
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a3;
-  v12 = a6;
+  length = range.length;
+  location = range.location;
+  compareCopy = compare;
+  localeCopy = locale;
   v13 = objc_opt_class();
   if (v13 == objc_opt_class())
   {
-    v15 = uuid_compare(self->_uuid, v11 + 8);
+    v15 = uuid_compare(self->_uuid, compareCopy + 8);
     if (v15 < 0)
     {
-      v14 = -1;
+      localeCopy = -1;
     }
 
     else
     {
-      v14 = v15 != 0;
+      localeCopy = v15 != 0;
     }
   }
 
@@ -37,44 +37,44 @@
   {
     v17.receiver = self;
     v17.super_class = PLUUIDString;
-    v14 = [(PLUUIDString *)&v17 compare:v11 options:a4 range:location locale:length, v12];
+    localeCopy = [(PLUUIDString *)&v17 compare:compareCopy options:options range:location locale:length, localeCopy];
   }
 
-  return v14;
+  return localeCopy;
 }
 
-- (BOOL)isEqualToString:(id)a3
+- (BOOL)isEqualToString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = uuid_compare(self->_uuid, v4 + 8) == 0;
+    v6 = uuid_compare(self->_uuid, stringCopy + 8) == 0;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PLUUIDString;
-    v6 = [(PLUUIDString *)&v8 isEqualToString:v4];
+    v6 = [(PLUUIDString *)&v8 isEqualToString:stringCopy];
   }
 
   return v6;
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    v4 = &self->_uuidString[a4.location];
+    v4 = &self->_uuidString[range.location];
     do
     {
       v5 = *v4++;
-      *a3++ = v5;
-      --a4.length;
+      *characters++ = v5;
+      --range.length;
     }
 
-    while (a4.length);
+    while (range.length);
   }
 }
 
@@ -104,7 +104,7 @@
   return result;
 }
 
-- (PLUUIDString)initWithUUID:(unsigned __int8)a3[16]
+- (PLUUIDString)initWithUUID:(unsigned __int8)d[16]
 {
   v8.receiver = self;
   v8.super_class = PLUUIDString;
@@ -113,9 +113,9 @@
   if (v4)
   {
     uuid = v4->_uuid;
-    if (a3)
+    if (d)
     {
-      uuid_copy(uuid, a3);
+      uuid_copy(uuid, d);
     }
 
     else
@@ -129,7 +129,7 @@
   return v5;
 }
 
-- (PLUUIDString)initWithCFUUID:(__CFUUID *)a3
+- (PLUUIDString)initWithCFUUID:(__CFUUID *)d
 {
   v8.receiver = self;
   v8.super_class = PLUUIDString;
@@ -137,9 +137,9 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (d)
     {
-      v7 = CFUUIDGetUUIDBytes(a3);
+      v7 = CFUUIDGetUUIDBytes(d);
       uuid_copy(v5->_uuid, &v7.byte0);
     }
 
@@ -154,17 +154,17 @@
   return v5;
 }
 
-- (PLUUIDString)initWithUUIDData:(id)a3
+- (PLUUIDString)initWithUUIDData:(id)data
 {
-  v4 = a3;
-  if ([v4 length] == 16)
+  dataCopy = data;
+  if ([dataCopy length] == 16)
   {
     v7.receiver = self;
     v7.super_class = PLUUIDString;
     v5 = [(PLUUIDString *)&v7 init];
     if (v5)
     {
-      uuid_copy(v5->_uuid, [v4 bytes]);
+      uuid_copy(v5->_uuid, [dataCopy bytes]);
       uuid_unparse(v5->_uuid, v5->_uuidString);
     }
   }
@@ -178,10 +178,10 @@
   return v5;
 }
 
-+ (BOOL)parseUUIDString:(id)a3 uuidBuffer:(char *)a4
++ (BOOL)parseUUIDString:(id)string uuidBuffer:(char *)buffer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [a3 cStringUsingEncoding:4];
+  v5 = [string cStringUsingEncoding:4];
   if (v5)
   {
     v6 = v5;
@@ -201,7 +201,7 @@
 
     else
     {
-      *a4 = *uu;
+      *buffer = *uu;
     }
   }
 
@@ -222,7 +222,7 @@
 
 + (id)UUIDString
 {
-  v2 = [[a1 alloc] initWithUUID:0];
+  v2 = [[self alloc] initWithUUID:0];
 
   return v2;
 }

@@ -1,14 +1,14 @@
 @interface __NSPlaceholderDictionary
 - (__NSPlaceholderDictionary)init;
-- (__NSPlaceholderDictionary)initWithCapacity:(unint64_t)a3;
-- (__NSPlaceholderDictionary)initWithContentsOfFile:(id)a3;
-- (__NSPlaceholderDictionary)initWithContentsOfURL:(id)a3;
-- (__NSPlaceholderDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
+- (__NSPlaceholderDictionary)initWithCapacity:(unint64_t)capacity;
+- (__NSPlaceholderDictionary)initWithContentsOfFile:(id)file;
+- (__NSPlaceholderDictionary)initWithContentsOfURL:(id)l;
+- (__NSPlaceholderDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation __NSPlaceholderDictionary
@@ -66,7 +66,7 @@
   objc_exception_throw(v11);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v5 = "mutable";
   v6 = "NSMutableDictionary";
@@ -140,7 +140,7 @@
   objc_exception_throw(v11);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   v6 = "mutable";
   v7 = "NSMutableDictionary";
@@ -177,7 +177,7 @@
   objc_exception_throw(v13);
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   v5 = "mutable";
   v6 = "NSMutableDictionary";
@@ -214,15 +214,15 @@
   objc_exception_throw(v12);
 }
 
-- (__NSPlaceholderDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (__NSPlaceholderDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  if (!a4 && a5)
+  if (!keys && count)
   {
     goto LABEL_32;
   }
 
-  if (a5 >> 61)
+  if (count >> 61)
   {
     v13 = _os_log_pack_size();
     v14 = v22 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -230,27 +230,27 @@
     *v19 = 136315394;
     *(v19 + 4) = "[__NSPlaceholderDictionary initWithObjects:forKeys:count:]";
     *(v19 + 12) = 2048;
-    *(v19 + 14) = a5;
-    v16 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSPlaceholderDictionary initWithObjects:forKeys:count:]", a5);
+    *(v19 + 14) = count;
+    v16 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSPlaceholderDictionary initWithObjects:forKeys:count:]", count);
     goto LABEL_29;
   }
 
-  if (a5)
+  if (count)
   {
-    for (i = 0; i != a5; ++i)
+    for (i = 0; i != count; ++i)
     {
-      if (!a4[i])
+      if (!keys[i])
       {
         goto LABEL_28;
       }
     }
 
-    if (a3)
+    if (objects)
     {
       i = 0;
-      while (a3[i])
+      while (objects[i])
       {
-        if (a5 == ++i)
+        if (count == ++i)
         {
           goto LABEL_12;
         }
@@ -278,28 +278,28 @@ LABEL_32:
     *v21 = 136315394;
     *(v21 + 4) = "[__NSPlaceholderDictionary initWithObjects:forKeys:count:]";
     *(v21 + 12) = 2048;
-    *(v21 + 14) = a5;
-    v16 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSPlaceholderDictionary initWithObjects:forKeys:count:]", a5);
+    *(v21 + 14) = count;
+    v16 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSPlaceholderDictionary initWithObjects:forKeys:count:]", count);
     goto LABEL_29;
   }
 
 LABEL_12:
   if (self == &___immutablePlaceholderDictionary)
   {
-    if (a5 == 1)
+    if (count == 1)
     {
-      v8 = *a4;
-      v9 = *a3;
+      v8 = *keys;
+      v9 = *objects;
       v10 = *MEMORY[0x1E69E9840];
 
       return __NSSingleEntryDictionaryI_new(v8, v9, 1);
     }
 
-    else if (a5)
+    else if (count)
     {
       v11 = *MEMORY[0x1E69E9840];
 
-      return __NSDictionaryI_new(a4, a3, 0, a5, 1);
+      return __NSDictionaryI_new(keys, objects, 0, count, 1);
     }
 
     else
@@ -314,7 +314,7 @@ LABEL_12:
   {
     v6 = *MEMORY[0x1E69E9840];
 
-    return __NSDictionaryM_new(a4, a3, a5, 3uLL);
+    return __NSDictionaryM_new(keys, objects, count, 3uLL);
   }
 
   else
@@ -325,18 +325,18 @@ LABEL_12:
   return self;
 }
 
-- (__NSPlaceholderDictionary)initWithCapacity:(unint64_t)a3
+- (__NSPlaceholderDictionary)initWithCapacity:(unint64_t)capacity
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a3 >> 61)
+  if (capacity >> 61)
   {
     v6 = _os_log_pack_size();
     v7 = _os_log_pack_fill();
     *v7 = 136315394;
     *(v7 + 4) = "[__NSPlaceholderDictionary initWithCapacity:]";
     *(v7 + 12) = 2048;
-    *(v7 + 14) = a3;
-    v8 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: capacity (%lu) is ridiculous", "[__NSPlaceholderDictionary initWithCapacity:]", a3);
+    *(v7 + 14) = capacity;
+    v8 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: capacity (%lu) is ridiculous", "[__NSPlaceholderDictionary initWithCapacity:]", capacity);
     v9 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v8) osLogPack:0 size:v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0), v6];
     objc_exception_throw(v9);
   }
@@ -355,13 +355,13 @@ LABEL_9:
 
   v3 = *MEMORY[0x1E69E9840];
 
-  return __NSDictionaryM_new(0, 0, a3, 3uLL);
+  return __NSDictionaryM_new(0, 0, capacity, 3uLL);
 }
 
-- (__NSPlaceholderDictionary)initWithContentsOfFile:(id)a3
+- (__NSPlaceholderDictionary)initWithContentsOfFile:(id)file
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a3 && (_NSIsNSString(a3) & 1) == 0)
+  if (file && (_NSIsNSString(file) & 1) == 0)
   {
     v7 = _os_log_pack_size();
     v8 = _os_log_pack_fill();
@@ -374,15 +374,15 @@ LABEL_9:
 
   v5 = *MEMORY[0x1E69E9840];
 
-  return [NSDictionary newWithContentsOf:a3 immutable:self == &___immutablePlaceholderDictionary];
+  return [NSDictionary newWithContentsOf:file immutable:self == &___immutablePlaceholderDictionary];
 }
 
-- (__NSPlaceholderDictionary)initWithContentsOfURL:(id)a3
+- (__NSPlaceholderDictionary)initWithContentsOfURL:(id)l
 {
   v12[1] = *MEMORY[0x1E69E9840];
   if (atomic_load(&initWithContentsOfURL____cls_NSURL_0))
   {
-    if (!a3)
+    if (!l)
     {
       goto LABEL_6;
     }
@@ -391,7 +391,7 @@ LABEL_9:
   else
   {
     atomic_store(objc_lookUpClass("NSURL"), &initWithContentsOfURL____cls_NSURL_0);
-    if (!a3)
+    if (!l)
     {
       goto LABEL_6;
     }
@@ -412,7 +412,7 @@ LABEL_9:
 LABEL_6:
   v6 = *MEMORY[0x1E69E9840];
 
-  return [NSDictionary newWithContentsOf:a3 immutable:self == &___immutablePlaceholderDictionary];
+  return [NSDictionary newWithContentsOf:l immutable:self == &___immutablePlaceholderDictionary];
 }
 
 @end

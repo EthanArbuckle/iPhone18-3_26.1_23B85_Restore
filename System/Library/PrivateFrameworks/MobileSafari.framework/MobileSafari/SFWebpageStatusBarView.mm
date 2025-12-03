@@ -1,24 +1,24 @@
 @interface SFWebpageStatusBarView
-- (CGPoint)_originForStatusBarContentViewForContentHeight:(double)a3;
+- (CGPoint)_originForStatusBarContentViewForContentHeight:(double)height;
 - (CGPoint)hoverPoint;
-- (SFWebpageStatusBarView)initWithFrame:(CGRect)a3;
+- (SFWebpageStatusBarView)initWithFrame:(CGRect)frame;
 - (void)_clearStatusBarIsEnabledMessage;
 - (void)_hideStatusBar;
 - (void)_showStatusBar;
 - (void)clearStatus;
 - (void)displayStatusBarIsEnabledMessage;
 - (void)layoutSubviews;
-- (void)setHoverPoint:(CGPoint)a3;
-- (void)setStatusMessage:(id)a3;
+- (void)setHoverPoint:(CGPoint)point;
+- (void)setStatusMessage:(id)message;
 @end
 
 @implementation SFWebpageStatusBarView
 
-- (SFWebpageStatusBarView)initWithFrame:(CGRect)a3
+- (SFWebpageStatusBarView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = SFWebpageStatusBarView;
-  v3 = [(SFWebpageStatusBarView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFWebpageStatusBarView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -83,9 +83,9 @@
   }
 }
 
-- (CGPoint)_originForStatusBarContentViewForContentHeight:(double)a3
+- (CGPoint)_originForStatusBarContentViewForContentHeight:(double)height
 {
-  v4 = [(UIView *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(UIView *)self _sf_usesLeftToRightLayout];
   [(SFWebpageStatusBarView *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -103,8 +103,8 @@
   v37.size.width = v10;
   v37.size.height = v12;
   Height = CGRectGetHeight(v37);
-  v22 = [MEMORY[0x1E69C8880] isSolariumEnabled];
-  if (v4)
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  if (_sf_usesLeftToRightLayout)
   {
     v23 = v16;
   }
@@ -115,12 +115,12 @@
   }
 
   v24 = v23 + 5.0;
-  if (!v22)
+  if (!isSolariumEnabled)
   {
     v24 = 5.0;
   }
 
-  v38.origin.x = _SFFlipRectInCoordinateSpace(!v4, v18 + v24, Height - a3 + -5.0 - v18, v33, v32, v6, v8, v10, v12);
+  v38.origin.x = _SFFlipRectInCoordinateSpace(!_sf_usesLeftToRightLayout, v18 + v24, Height - height + -5.0 - v18, v33, v32, v6, v8, v10, v12);
   x = v38.origin.x;
   y = v38.origin.y;
   width = v38.size.width;
@@ -133,24 +133,24 @@
   return result;
 }
 
-- (void)setStatusMessage:(id)a3
+- (void)setStatusMessage:(id)message
 {
-  v14 = a3;
-  v5 = [(SFWebPageStatusBarMessage *)self->_statusMessage isEqual:v14];
-  v6 = v14;
+  messageCopy = message;
+  v5 = [(SFWebPageStatusBarMessage *)self->_statusMessage isEqual:messageCopy];
+  v6 = messageCopy;
   if ((v5 & 1) == 0)
   {
-    v7 = [v14 isEmpty];
-    v6 = v14;
-    v8 = v7;
+    isEmpty = [messageCopy isEmpty];
+    v6 = messageCopy;
+    v8 = isEmpty;
     dismissStatusBarEnabledTimer = self->_dismissStatusBarEnabledTimer;
     if (!dismissStatusBarEnabledTimer || (v8 & 1) == 0)
     {
       if (v8)
       {
-        v10 = [(SFWebPageStatusBarMessage *)self->_statusMessage isEmpty];
-        v6 = v14;
-        if (v10)
+        isEmpty2 = [(SFWebPageStatusBarMessage *)self->_statusMessage isEmpty];
+        v6 = messageCopy;
+        if (isEmpty2)
         {
           goto LABEL_13;
         }
@@ -165,7 +165,7 @@
         self->_dismissStatusBarEnabledTimer = 0;
       }
 
-      objc_storeStrong(&self->_statusMessage, a3);
+      objc_storeStrong(&self->_statusMessage, message);
       v12 = self->_suppressShowingStatusBar | v8;
       [(SFWebpageStatusBarView *)self _cancelPendingStatusBarHideIfNeeded];
       if (v12)
@@ -175,14 +175,14 @@
 
       else
       {
-        v13 = [v14 attributedMessageString];
-        [(UILabel *)self->_statusLabel setAttributedText:v13];
+        attributedMessageString = [messageCopy attributedMessageString];
+        [(UILabel *)self->_statusLabel setAttributedText:attributedMessageString];
         [(UILabel *)self->_statusLabel sizeToFit];
         [(SFWebpageStatusBarView *)self setNeedsLayout];
         [(SFWebpageStatusBarView *)self _showStatusBar];
       }
 
-      v6 = v14;
+      v6 = messageCopy;
     }
   }
 
@@ -195,13 +195,13 @@ LABEL_13:
   [(SFWebpageStatusBarView *)self setStatusMessage:v3];
 }
 
-- (void)setHoverPoint:(CGPoint)a3
+- (void)setHoverPoint:(CGPoint)point
 {
   p_hoverPoint = &self->_hoverPoint;
-  if (a3.x != self->_hoverPoint.x || a3.y != self->_hoverPoint.y)
+  if (point.x != self->_hoverPoint.x || point.y != self->_hoverPoint.y)
   {
-    p_hoverPoint->x = a3.x;
-    self->_hoverPoint.y = a3.y;
+    p_hoverPoint->x = point.x;
+    self->_hoverPoint.y = point.y;
     if (self->_shouldDodgeHoverPoint)
     {
       [(UIView *)self->_statusBarContentView frame];
@@ -218,26 +218,26 @@ LABEL_13:
 {
   self->_shouldDodgeHoverPoint = 1;
   v3 = MEMORY[0x1E69DD250];
-  v4 = [MEMORY[0x1E69DD250] areAnimationsEnabled];
+  areAnimationsEnabled = [MEMORY[0x1E69DD250] areAnimationsEnabled];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __40__SFWebpageStatusBarView__showStatusBar__block_invoke;
   v5[3] = &unk_1E721B360;
   v5[4] = self;
-  [v3 sf_animate:v4 withDuration:0 delay:v5 options:0 animations:0.25 completion:0.0];
+  [v3 sf_animate:areAnimationsEnabled withDuration:0 delay:v5 options:0 animations:0.25 completion:0.0];
 }
 
 - (void)_hideStatusBar
 {
   self->_shouldDodgeHoverPoint = 0;
   v3 = MEMORY[0x1E69DD250];
-  v4 = [MEMORY[0x1E69DD250] areAnimationsEnabled];
+  areAnimationsEnabled = [MEMORY[0x1E69DD250] areAnimationsEnabled];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __40__SFWebpageStatusBarView__hideStatusBar__block_invoke;
   v5[3] = &unk_1E721B360;
   v5[4] = self;
-  [v3 sf_animate:v4 withDuration:0 delay:v5 options:0 animations:0.25 completion:0.0];
+  [v3 sf_animate:areAnimationsEnabled withDuration:0 delay:v5 options:0 animations:0.25 completion:0.0];
 }
 
 - (void)_clearStatusBarIsEnabledMessage

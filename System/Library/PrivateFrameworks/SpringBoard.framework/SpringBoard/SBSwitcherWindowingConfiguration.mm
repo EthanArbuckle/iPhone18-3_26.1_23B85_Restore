@@ -1,30 +1,30 @@
 @interface SBSwitcherWindowingConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)containerBounds;
 - (CGSize)defaultWindowSize;
 - (CGSize)minimumDefaultWindowSize;
 - (SBSwitcherWindowingSettings)settings;
-- (double)bestStageCornerRadiiSupportingSolarium:(BOOL)a3;
-- (double)partiallyOccludedStageScaleForItemWithSize:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (double)bestStageCornerRadiiSupportingSolarium:(BOOL)solarium;
+- (double)partiallyOccludedStageScaleForItemWithSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation SBSwitcherWindowingConfiguration
 
-- (double)partiallyOccludedStageScaleForItemWithSize:(CGSize)a3
+- (double)partiallyOccludedStageScaleForItemWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SBSwitcherWindowingConfiguration *)self flexibleStageOccludedAppMaxHeightReduction];
   v7 = v6;
-  v8 = [(SBSwitcherWindowingConfiguration *)self settings];
-  v9 = v8;
-  if (v8)
+  settings = [(SBSwitcherWindowingConfiguration *)self settings];
+  v9 = settings;
+  if (settings)
   {
-    [v8 stageOccludedAppScaleFactor];
+    [settings stageOccludedAppScaleFactor];
     v11 = v10;
     [v9 flexibleStageOccludedAppMaxHeightReduction];
     v7 = v12;
@@ -55,10 +55,10 @@
   return v13;
 }
 
-- (double)bestStageCornerRadiiSupportingSolarium:(BOOL)a3
+- (double)bestStageCornerRadiiSupportingSolarium:(BOOL)solarium
 {
   v3 = 200;
-  if (a3)
+  if (solarium)
   {
     v3 = 208;
   }
@@ -66,10 +66,10 @@
   return *(&self->super.isa + v3);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -79,7 +79,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(SBSwitcherWindowingConfiguration *)v5 containerBounds];
       v26.origin.x = v6;
       v26.origin.y = v7;
@@ -208,10 +208,10 @@
                                                                           usesStripAreaForOverlapping = self->_usesStripAreaForOverlapping;
                                                                           if (usesStripAreaForOverlapping == [(SBSwitcherWindowingConfiguration *)v5 usesStripAreaForOverlapping])
                                                                           {
-                                                                            v22 = [(SBSwitcherWindowingConfiguration *)v5 gridWidths];
+                                                                            gridWidths = [(SBSwitcherWindowingConfiguration *)v5 gridWidths];
                                                                             if (BSEqualArrays())
                                                                             {
-                                                                              v23 = [(SBSwitcherWindowingConfiguration *)v5 gridHeights];
+                                                                              gridHeights = [(SBSwitcherWindowingConfiguration *)v5 gridHeights];
                                                                               if (BSEqualArrays() && ([(SBSwitcherWindowingConfiguration *)v5 switcherHorizontalEdgeSpacing], BSFloatEqualToFloat()) && ([(SBSwitcherWindowingConfiguration *)v5 switcherHorizontalInterItemSpacing], BSFloatEqualToFloat()) && ([(SBSwitcherWindowingConfiguration *)v5 switcherVerticalEdgeSpacing], BSFloatEqualToFloat()) && ([(SBSwitcherWindowingConfiguration *)v5 switcherVerticalInterItemSpacing], BSFloatEqualToFloat()) && ([(SBSwitcherWindowingConfiguration *)v5 switcherHeightForIconAndLabelsUnderEachPile], BSFloatEqualToFloat()) && ([(SBSwitcherWindowingConfiguration *)v5 switcherPileCardMinimumPeekAmount], BSFloatEqualToFloat()))
                                                                               {
                                                                                 [(SBSwitcherWindowingConfiguration *)v5 switcherPileCompactingFactor];
@@ -281,39 +281,39 @@ LABEL_55:
   return v12;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSwitcherWindowingConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSwitcherWindowingConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [(SBSwitcherWindowingConfiguration *)self defaultWindowSize];
   v5 = [v4 appendSize:@"defaultWindowSize" withName:?];
   [(SBSwitcherWindowingConfiguration *)self minimumDefaultWindowSize];
   v6 = [v4 appendSize:@"minimumDefaultWindowSize" withName:?];
-  v7 = [(SBSwitcherWindowingConfiguration *)self gridWidths];
-  v8 = [v4 appendObject:v7 withName:@"gridWidths"];
+  gridWidths = [(SBSwitcherWindowingConfiguration *)self gridWidths];
+  v8 = [v4 appendObject:gridWidths withName:@"gridWidths"];
 
-  v9 = [(SBSwitcherWindowingConfiguration *)self gridHeights];
-  v10 = [v4 appendObject:v9 withName:@"gridHeights"];
+  gridHeights = [(SBSwitcherWindowingConfiguration *)self gridHeights];
+  v10 = [v4 appendObject:gridHeights withName:@"gridHeights"];
 
   return v4;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBSwitcherWindowingConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSwitcherWindowingConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setContainerBounds:{self->_containerBounds.origin.x, self->_containerBounds.origin.y, self->_containerBounds.size.width, self->_containerBounds.size.height}];

@@ -1,14 +1,14 @@
 @interface MPAVOutputDeviceRoutingDataSourceAccessibility
-- (void)setPickedRoute:(id)a3 withPassword:(id)a4 completion:(id)a5;
+- (void)setPickedRoute:(id)route withPassword:(id)password completion:(id)completion;
 @end
 
 @implementation MPAVOutputDeviceRoutingDataSourceAccessibility
 
-- (void)setPickedRoute:(id)a3 withPassword:(id)a4 completion:(id)a5
+- (void)setPickedRoute:(id)route withPassword:(id)password completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  routeCopy = route;
+  passwordCopy = password;
+  completionCopy = completion;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   v15 = 0;
   v16 = &v15;
@@ -35,7 +35,7 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, *v12, 0, 0, 1u);
   v13.receiver = self;
   v13.super_class = MPAVOutputDeviceRoutingDataSourceAccessibility;
-  [(MPAVOutputDeviceRoutingDataSourceAccessibility *)&v13 setPickedRoute:v8 withPassword:v9 completion:v10];
+  [(MPAVOutputDeviceRoutingDataSourceAccessibility *)&v13 setPickedRoute:routeCopy withPassword:passwordCopy completion:completionCopy];
 }
 
 - (void)setPickedRoute:withPassword:completion:.cold.1()

@@ -1,24 +1,24 @@
 @interface HUServiceDetailsCameraAllowSnapshotsItem
 - (BOOL)_canReadWriteHMCameraSnapshotsControl;
-- (HUServiceDetailsCameraAllowSnapshotsItem)initWithSourceServiceItem:(id)a3 home:(id)a4 shouldBeHidden:(BOOL)a5;
+- (HUServiceDetailsCameraAllowSnapshotsItem)initWithSourceServiceItem:(id)item home:(id)home shouldBeHidden:(BOOL)hidden;
 - (HUServiceDetailsCameraSettingsReaderWriter)settingsReaderWriter;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)cameraSettings;
 - (id)characteristicValueManager;
 - (id)itemTitle;
-- (id)updateUserSettingsWithValue:(BOOL)a3;
+- (id)updateUserSettingsWithValue:(BOOL)value;
 @end
 
 @implementation HUServiceDetailsCameraAllowSnapshotsItem
 
-- (HUServiceDetailsCameraAllowSnapshotsItem)initWithSourceServiceItem:(id)a3 home:(id)a4 shouldBeHidden:(BOOL)a5
+- (HUServiceDetailsCameraAllowSnapshotsItem)initWithSourceServiceItem:(id)item home:(id)home shouldBeHidden:(BOOL)hidden
 {
   v7.receiver = self;
   v7.super_class = HUServiceDetailsCameraAllowSnapshotsItem;
-  result = [(HUServiceDetailsAbstractItem *)&v7 initWithSourceServiceItem:a3 home:a4];
+  result = [(HUServiceDetailsAbstractItem *)&v7 initWithSourceServiceItem:item home:home];
   if (result)
   {
-    result->_shouldBeHidden = a5;
+    result->_shouldBeHidden = hidden;
   }
 
   return result;
@@ -41,14 +41,14 @@
   return v6;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   if ([(HUServiceDetailsCameraAllowSnapshotsItem *)self _canReadWriteHMCameraSnapshotsControl])
   {
-    v5 = [(HUServiceDetailsCameraAllowSnapshotsItem *)self settingsReaderWriter];
-    v6 = [v5 readWithOptions:v4];
+    settingsReaderWriter = [(HUServiceDetailsCameraAllowSnapshotsItem *)self settingsReaderWriter];
+    v6 = [settingsReaderWriter readWithOptions:optionsCopy];
   }
 
   else
@@ -65,30 +65,30 @@
   return v6;
 }
 
-- (id)updateUserSettingsWithValue:(BOOL)a3
+- (id)updateUserSettingsWithValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   if ([(HUServiceDetailsCameraAllowSnapshotsItem *)self _canReadWriteHMCameraSnapshotsControl])
   {
-    v5 = [(HUServiceDetailsCameraAllowSnapshotsItem *)self settingsReaderWriter];
-    v6 = [v5 updateUserSettingsWithValue:v3];
+    settingsReaderWriter = [(HUServiceDetailsCameraAllowSnapshotsItem *)self settingsReaderWriter];
+    futureWithNoResult = [settingsReaderWriter updateUserSettingsWithValue:valueCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v6;
+  return futureWithNoResult;
 }
 
 - (BOOL)_canReadWriteHMCameraSnapshotsControl
 {
   objc_opt_class();
-  v3 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceServiceItem;
   }
 
   else
@@ -98,13 +98,13 @@
 
   v5 = v4;
 
-  v6 = [(HUServiceDetailsCameraAllowSnapshotsItem *)self shouldBeHidden];
+  shouldBeHidden = [(HUServiceDetailsCameraAllowSnapshotsItem *)self shouldBeHidden];
   LOBYTE(self) = 0;
-  if (!v6 && v5)
+  if (!shouldBeHidden && v5)
   {
-    v7 = [v5 profile];
-    v8 = [v7 userSettings];
-    self = (([v8 supportedFeatures] >> 5) & 1);
+    profile = [v5 profile];
+    userSettings = [profile userSettings];
+    self = (([userSettings supportedFeatures] >> 5) & 1);
   }
 
   return self;
@@ -113,10 +113,10 @@
 - (id)cameraSettings
 {
   objc_opt_class();
-  v3 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceServiceItem;
   }
 
   else
@@ -126,27 +126,27 @@
 
   v5 = v4;
 
-  v6 = [v5 profile];
+  profile = [v5 profile];
 
-  v7 = [v6 userSettings];
+  userSettings = [profile userSettings];
 
-  return v7;
+  return userSettings;
 }
 
 - (id)itemTitle
 {
-  v2 = [(HUServiceDetailsCameraAllowSnapshotsItem *)self itemTitleLocalizationKey];
-  v3 = _HULocalizedStringWithDefaultValue(v2, v2, 1);
+  itemTitleLocalizationKey = [(HUServiceDetailsCameraAllowSnapshotsItem *)self itemTitleLocalizationKey];
+  v3 = _HULocalizedStringWithDefaultValue(itemTitleLocalizationKey, itemTitleLocalizationKey, 1);
 
   return v3;
 }
 
 - (id)characteristicValueManager
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self home];
-  v3 = [v2 hf_characteristicValueManager];
+  home = [(HUServiceDetailsAbstractItem *)self home];
+  hf_characteristicValueManager = [home hf_characteristicValueManager];
 
-  return v3;
+  return hf_characteristicValueManager;
 }
 
 @end

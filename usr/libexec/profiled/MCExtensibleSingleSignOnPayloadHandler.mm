@@ -1,8 +1,8 @@
 @interface MCExtensibleSingleSignOnPayloadHandler
-+ (BOOL)_writeConfiguration:(id)a3 withError:(id *)a4;
-+ (BOOL)rebuildConfigurationIncludingPayloads:(id)a3 excludingPayloads:(id)a4 error:(id *)a5;
-+ (id)_configurationForPayloads:(id)a3 includingPayloads:(id)a4 excludingPayloads:(id)a5 error:(id *)a6;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
++ (BOOL)_writeConfiguration:(id)configuration withError:(id *)error;
++ (BOOL)rebuildConfigurationIncludingPayloads:(id)payloads excludingPayloads:(id)excludingPayloads error:(id *)error;
++ (id)_configurationForPayloads:(id)payloads includingPayloads:(id)includingPayloads excludingPayloads:(id)excludingPayloads error:(id *)error;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (void)remove;
 - (void)setAside;
 - (void)unsetAside;
@@ -10,9 +10,9 @@
 
 @implementation MCExtensibleSingleSignOnPayloadHandler
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v7 = [(MCNewPayloadHandler *)self payload:a3];
+  v7 = [(MCNewPayloadHandler *)self payload:installer];
   v8 = [MCProfileHandler payloadsOfClass:objc_opt_class() installedBeforePayload:v7];
   v9 = [v8 mutableCopy];
 
@@ -23,10 +23,10 @@
 
   if (v10)
   {
-    if (a6)
+    if (error)
     {
       v11 = v10;
-      *a6 = v10;
+      *error = v10;
     }
   }
 
@@ -36,9 +36,9 @@
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
     {
       v13 = v12;
-      v14 = [v7 esso_extensionIdentifier];
+      esso_extensionIdentifier = [v7 esso_extensionIdentifier];
       *buf = 138543362;
-      v18 = v14;
+      v18 = esso_extensionIdentifier;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Installed Extensible SSO extension for %{public}@", buf, 0xCu);
     }
   }
@@ -48,16 +48,16 @@
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [(MCNewPayloadHandler *)self profileHandler];
-  v5 = [v4 isSetAside];
+  payload = [(MCNewPayloadHandler *)self payload];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if (!v5)
+  if (!isSetAside)
   {
-    v6 = [MCProfileHandler payloadsOfClass:objc_opt_class() removedBeforePayload:v3];
+    v6 = [MCProfileHandler payloadsOfClass:objc_opt_class() removedBeforePayload:payload];
     v7 = [v6 mutableCopy];
 
-    [v7 addObject:v3];
+    [v7 addObject:payload];
     v17 = 0;
     LODWORD(v6) = [objc_opt_class() rebuildConfigurationIncludingPayloads:0 excludingPayloads:v7 error:&v17];
     v8 = v17;
@@ -67,9 +67,9 @@
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
       {
         v10 = v9;
-        v11 = [v3 esso_extensionIdentifier];
+        esso_extensionIdentifier = [payload esso_extensionIdentifier];
         *buf = 138543362;
-        v19 = v11;
+        v19 = esso_extensionIdentifier;
         v12 = "Removed Extensible SSO payload for extension ID %{public}@";
 LABEL_11:
         v14 = v10;
@@ -87,9 +87,9 @@ LABEL_11:
         if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
         {
           v10 = v13;
-          v11 = [v3 esso_extensionIdentifier];
+          esso_extensionIdentifier = [payload esso_extensionIdentifier];
           *buf = 138543618;
-          v19 = v11;
+          v19 = esso_extensionIdentifier;
           v20 = 2114;
           v21 = v8;
           v12 = "Failed to remove Extensible SSO payload with extension ID %{public}@. Ignoring. Error: %{public}@";
@@ -104,9 +104,9 @@ LABEL_12:
       else if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
       {
         v10 = v13;
-        v11 = [v3 esso_extensionIdentifier];
+        esso_extensionIdentifier = [payload esso_extensionIdentifier];
         *buf = 138543362;
-        v19 = v11;
+        v19 = esso_extensionIdentifier;
         v12 = "Remove Extensible SSO payload: no extension found with extension ID %{public}@";
         goto LABEL_11;
       }
@@ -115,13 +115,13 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  [qword_100136C70 removeObject:v3];
+  [qword_100136C70 removeObject:payload];
 LABEL_14:
 }
 
 - (void)setAside
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v3 = qword_100136C70;
   if (!qword_100136C70)
   {
@@ -132,7 +132,7 @@ LABEL_14:
     v3 = qword_100136C70;
   }
 
-  [v3 addObject:v2];
+  [v3 addObject:payload];
   v11 = 0;
   v6 = [objc_opt_class() rebuildConfigurationIncludingPayloads:0 excludingPayloads:qword_100136C70 error:&v11];
   v7 = v11;
@@ -142,9 +142,9 @@ LABEL_14:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v9 = v8;
-      v10 = [v2 esso_extensionIdentifier];
+      esso_extensionIdentifier = [payload esso_extensionIdentifier];
       *buf = 138543618;
-      v13 = v10;
+      v13 = esso_extensionIdentifier;
       v14 = 2114;
       v15 = v7;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to set aside Extensible SSO payload with extension ID %{public}@. Ignoring. Error: %{public}@", buf, 0x16u);
@@ -154,8 +154,8 @@ LABEL_14:
 
 - (void)unsetAside
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  [qword_100136C70 removeObject:v2];
+  payload = [(MCNewPayloadHandler *)self payload];
+  [qword_100136C70 removeObject:payload];
   v8 = 0;
   v3 = [objc_opt_class() rebuildConfigurationIncludingPayloads:0 excludingPayloads:qword_100136C70 error:&v8];
   v4 = v8;
@@ -165,9 +165,9 @@ LABEL_14:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v6 = v5;
-      v7 = [v2 esso_extensionIdentifier];
+      esso_extensionIdentifier = [payload esso_extensionIdentifier];
       *buf = 138543618;
-      v10 = v7;
+      v10 = esso_extensionIdentifier;
       v11 = 2114;
       v12 = v4;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Failed to restore Extensible SSO payload with extension ID %{public}@. Ignoring. Error: %{public}@", buf, 0x16u);
@@ -175,23 +175,23 @@ LABEL_14:
   }
 }
 
-+ (BOOL)rebuildConfigurationIncludingPayloads:(id)a3 excludingPayloads:(id)a4 error:(id *)a5
++ (BOOL)rebuildConfigurationIncludingPayloads:(id)payloads excludingPayloads:(id)excludingPayloads error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  excludingPayloadsCopy = excludingPayloads;
+  payloadsCopy = payloads;
   v10 = +[MCManifest sharedManifest];
   v11 = [v10 allInstalledPayloadsOfClass:objc_opt_class()];
   v12 = [v11 mutableCopy];
 
   v20 = 0;
-  v13 = [a1 _configurationForPayloads:v12 includingPayloads:v9 excludingPayloads:v8 error:&v20];
+  v13 = [self _configurationForPayloads:v12 includingPayloads:payloadsCopy excludingPayloads:excludingPayloadsCopy error:&v20];
 
   v14 = v20;
   if (v14)
   {
     v15 = v14;
     v16 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -200,9 +200,9 @@ LABEL_14:
   else
   {
     v19 = 0;
-    v16 = [a1 _writeConfiguration:v13 withError:&v19];
+    v16 = [self _writeConfiguration:v13 withError:&v19];
     v15 = v19;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -211,7 +211,7 @@ LABEL_14:
   if (v15)
   {
     v17 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
 LABEL_7:
@@ -219,29 +219,29 @@ LABEL_7:
   return v16;
 }
 
-+ (id)_configurationForPayloads:(id)a3 includingPayloads:(id)a4 excludingPayloads:(id)a5 error:(id *)a6
++ (id)_configurationForPayloads:(id)payloads includingPayloads:(id)includingPayloads excludingPayloads:(id)excludingPayloads error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v75 = v10;
-  if ([v9 count] || objc_msgSend(v10, "count"))
+  payloadsCopy = payloads;
+  includingPayloadsCopy = includingPayloads;
+  excludingPayloadsCopy = excludingPayloads;
+  v75 = excludingPayloadsCopy;
+  if ([includingPayloadsCopy count] || objc_msgSend(excludingPayloadsCopy, "count"))
   {
     v105[0] = _NSConcreteStackBlock;
     v105[1] = 3221225472;
     v105[2] = sub_100099BD0;
     v105[3] = &unk_10011CFD8;
-    v106 = v9;
-    v107 = v10;
-    v11 = [v8 indexesOfObjectsPassingTest:v105];
-    [v8 removeObjectsAtIndexes:v11];
+    v106 = includingPayloadsCopy;
+    v107 = excludingPayloadsCopy;
+    v11 = [payloadsCopy indexesOfObjectsPassingTest:v105];
+    [payloadsCopy removeObjectsAtIndexes:v11];
 
-    v10 = v75;
+    excludingPayloadsCopy = v75;
   }
 
-  if ([v9 count])
+  if ([includingPayloadsCopy count])
   {
-    [v8 addObjectsFromArray:v9];
+    [payloadsCopy addObjectsFromArray:includingPayloadsCopy];
   }
 
   v12 = +[NSMutableSet set];
@@ -250,7 +250,7 @@ LABEL_7:
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  obj = v8;
+  obj = payloadsCopy;
   v78 = [obj countByEnumeratingWithState:&v101 objects:v122 count:16];
   v80 = v12;
   v84 = v13;
@@ -269,8 +269,8 @@ LABEL_8:
       }
 
       v15 = *(*(&v101 + 1) + 8 * v14);
-      v16 = [v15 esso_type];
-      v17 = [v16 isEqualToString:@"Credential"];
+      esso_type = [v15 esso_type];
+      v17 = [esso_type isEqualToString:@"Credential"];
 
       if (v17)
       {
@@ -278,8 +278,8 @@ LABEL_8:
         v100 = 0uLL;
         v97 = 0uLL;
         v98 = 0uLL;
-        v18 = [v15 esso_hosts];
-        v19 = [v18 countByEnumeratingWithState:&v97 objects:v121 count:16];
+        esso_hosts = [v15 esso_hosts];
+        v19 = [esso_hosts countByEnumeratingWithState:&v97 objects:v121 count:16];
         if (v19)
         {
           v20 = v19;
@@ -291,18 +291,18 @@ LABEL_8:
             {
               if (*v98 != v21)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(esso_hosts);
               }
 
               v23 = *(*(&v97 + 1) + 8 * i);
-              v24 = [v23 lowercaseString];
-              if ([v12 containsObject:v24])
+              lowercaseString = [v23 lowercaseString];
+              if ([v12 containsObject:lowercaseString])
               {
-                if ([v9 containsObject:v15])
+                if ([includingPayloadsCopy containsObject:v15])
                 {
                   v70 = v23;
-                  v38 = MCErrorArray();
-                  v37 = [NSError MCErrorWithDomain:v73 code:54007 descriptionArray:v38 underlyingError:0 errorType:v72, v70, 0];
+                  absoluteString = MCErrorArray();
+                  v37 = [NSError MCErrorWithDomain:v73 code:54007 descriptionArray:absoluteString underlyingError:0 errorType:v72, v70, 0];
                   goto LABEL_41;
                 }
 
@@ -310,9 +310,9 @@ LABEL_8:
                 if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
                 {
                   v26 = v25;
-                  v27 = [v15 esso_extensionIdentifier];
+                  esso_extensionIdentifier = [v15 esso_extensionIdentifier];
                   *buf = 138543618;
-                  v118 = v27;
+                  v118 = esso_extensionIdentifier;
                   v119 = 2114;
                   v120 = v23;
                   _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Found pre-existing conflicting hosts while rebuilding configuration for Extensible SSO payload with extension ID %{public}@: %{public}@", buf, 0x16u);
@@ -323,11 +323,11 @@ LABEL_8:
 
               else
               {
-                [v12 addObject:v24];
+                [v12 addObject:lowercaseString];
               }
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v97 objects:v121 count:16];
+            v20 = [esso_hosts countByEnumeratingWithState:&v97 objects:v121 count:16];
             if (v20)
             {
               continue;
@@ -339,7 +339,7 @@ LABEL_8:
 LABEL_37:
           v37 = 0;
 LABEL_42:
-          v10 = v75;
+          excludingPayloadsCopy = v75;
           v13 = v84;
           v14 = v81;
           goto LABEL_43;
@@ -352,8 +352,8 @@ LABEL_42:
         v96 = 0uLL;
         v93 = 0uLL;
         v94 = 0uLL;
-        v18 = [v15 esso_URLs];
-        v28 = [v18 countByEnumeratingWithState:&v93 objects:v116 count:16];
+        esso_hosts = [v15 esso_URLs];
+        v28 = [esso_hosts countByEnumeratingWithState:&v93 objects:v116 count:16];
         if (v28)
         {
           v29 = v28;
@@ -365,18 +365,18 @@ LABEL_42:
             {
               if (*v94 != v30)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(esso_hosts);
               }
 
               v32 = *(*(&v93 + 1) + 8 * j);
-              v24 = [v32 normalizedURL];
-              if ([v84 containsObject:v24])
+              lowercaseString = [v32 normalizedURL];
+              if ([v84 containsObject:lowercaseString])
               {
-                if ([v9 containsObject:v15])
+                if ([includingPayloadsCopy containsObject:v15])
                 {
-                  v38 = [v32 absoluteString];
+                  absoluteString = [v32 absoluteString];
                   v39 = MCErrorArray();
-                  v37 = [NSError MCErrorWithDomain:v73 code:54005 descriptionArray:v39 underlyingError:0 errorType:v72, v38, 0];
+                  v37 = [NSError MCErrorWithDomain:v73 code:54005 descriptionArray:v39 underlyingError:0 errorType:v72, absoluteString, 0];
 
                   v12 = v80;
 LABEL_41:
@@ -388,12 +388,12 @@ LABEL_41:
                 if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
                 {
                   v34 = v33;
-                  v35 = [v15 esso_extensionIdentifier];
-                  v36 = [v32 absoluteString];
+                  esso_extensionIdentifier2 = [v15 esso_extensionIdentifier];
+                  absoluteString2 = [v32 absoluteString];
                   *buf = 138543618;
-                  v118 = v35;
+                  v118 = esso_extensionIdentifier2;
                   v119 = 2114;
-                  v120 = v36;
+                  v120 = absoluteString2;
                   _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "Found pre-existing conflicting URLs while rebuilding configuration for Extensible SSO payload with extension ID %{public}@: %{public}@", buf, 0x16u);
 
                   v12 = v80;
@@ -402,11 +402,11 @@ LABEL_41:
 
               else
               {
-                [v84 addObject:v24];
+                [v84 addObject:lowercaseString];
               }
             }
 
-            v29 = [v18 countByEnumeratingWithState:&v93 objects:v116 count:16];
+            v29 = [esso_hosts countByEnumeratingWithState:&v93 objects:v116 count:16];
             if (v29)
             {
               continue;
@@ -423,11 +423,11 @@ LABEL_43:
       if (v37)
       {
 
-        if (a6)
+        if (error)
         {
           v68 = v37;
           v67 = 0;
-          *a6 = v37;
+          *error = v37;
         }
 
         else
@@ -473,26 +473,26 @@ LABEL_43:
 
         v42 = *(*(&v89 + 1) + 8 * k);
         v43 = +[NSMutableDictionary dictionary];
-        v44 = [v42 esso_type];
-        [v43 setObject:v44 forKeyedSubscript:@"Type"];
+        esso_type2 = [v42 esso_type];
+        [v43 setObject:esso_type2 forKeyedSubscript:@"Type"];
 
-        v45 = [v42 esso_realm];
+        esso_realm = [v42 esso_realm];
 
-        if (v45)
+        if (esso_realm)
         {
-          v46 = [v42 esso_realm];
-          [v43 setObject:v46 forKeyedSubscript:@"Realm"];
+          esso_realm2 = [v42 esso_realm];
+          [v43 setObject:esso_realm2 forKeyedSubscript:@"Realm"];
         }
 
-        v47 = [v42 esso_teamIdentifier];
-        if (v47)
+        esso_teamIdentifier = [v42 esso_teamIdentifier];
+        if (esso_teamIdentifier)
         {
           v113[0] = @"BundleIdentifier";
-          v48 = [v42 esso_extensionIdentifier];
-          v114[0] = v48;
+          esso_extensionIdentifier3 = [v42 esso_extensionIdentifier];
+          v114[0] = esso_extensionIdentifier3;
           v113[1] = @"TeamIdentifier";
-          v49 = [v42 esso_teamIdentifier];
-          v114[1] = v49;
+          esso_teamIdentifier2 = [v42 esso_teamIdentifier];
+          v114[1] = esso_teamIdentifier2;
           v50 = [NSDictionary dictionaryWithObjects:v114 forKeys:v113 count:2];
           [v43 setObject:v50 forKeyedSubscript:@"Extension"];
         }
@@ -500,39 +500,39 @@ LABEL_43:
         else
         {
           v111 = @"BundleIdentifier";
-          v48 = [v42 esso_extensionIdentifier];
-          v112 = v48;
-          v49 = [NSDictionary dictionaryWithObjects:&v112 forKeys:&v111 count:1];
-          [v43 setObject:v49 forKeyedSubscript:@"Extension"];
+          esso_extensionIdentifier3 = [v42 esso_extensionIdentifier];
+          v112 = esso_extensionIdentifier3;
+          esso_teamIdentifier2 = [NSDictionary dictionaryWithObjects:&v112 forKeys:&v111 count:1];
+          [v43 setObject:esso_teamIdentifier2 forKeyedSubscript:@"Extension"];
         }
 
-        v51 = [v42 esso_extensionData];
+        esso_extensionData = [v42 esso_extensionData];
 
-        if (v51)
+        if (esso_extensionData)
         {
-          v52 = [v42 esso_extensionData];
-          [v43 setObject:v52 forKeyedSubscript:@"ExtensionData"];
+          esso_extensionData2 = [v42 esso_extensionData];
+          [v43 setObject:esso_extensionData2 forKeyedSubscript:@"ExtensionData"];
         }
 
-        v53 = [v42 esso_type];
-        v54 = [v53 isEqualToString:@"Credential"];
+        esso_type3 = [v42 esso_type];
+        v54 = [esso_type3 isEqualToString:@"Credential"];
 
         if (v54)
         {
-          v55 = [v42 esso_hosts];
-          [v43 setObject:v55 forKeyedSubscript:@"Hosts"];
+          esso_hosts2 = [v42 esso_hosts];
+          [v43 setObject:esso_hosts2 forKeyedSubscript:@"Hosts"];
         }
 
         else
         {
-          v56 = v9;
-          v55 = +[NSMutableArray array];
+          v56 = includingPayloadsCopy;
+          esso_hosts2 = +[NSMutableArray array];
           v85 = 0u;
           v86 = 0u;
           v87 = 0u;
           v88 = 0u;
-          v57 = [v42 esso_URLs];
-          v58 = [v57 countByEnumeratingWithState:&v85 objects:v110 count:16];
+          esso_URLs = [v42 esso_URLs];
+          v58 = [esso_URLs countByEnumeratingWithState:&v85 objects:v110 count:16];
           if (v58)
           {
             v59 = v58;
@@ -543,38 +543,38 @@ LABEL_43:
               {
                 if (*v86 != v60)
                 {
-                  objc_enumerationMutation(v57);
+                  objc_enumerationMutation(esso_URLs);
                 }
 
-                v62 = [*(*(&v85 + 1) + 8 * m) absoluteString];
-                [v55 addObject:v62];
+                absoluteString3 = [*(*(&v85 + 1) + 8 * m) absoluteString];
+                [esso_hosts2 addObject:absoluteString3];
               }
 
-              v59 = [v57 countByEnumeratingWithState:&v85 objects:v110 count:16];
+              v59 = [esso_URLs countByEnumeratingWithState:&v85 objects:v110 count:16];
             }
 
             while (v59);
           }
 
-          [v43 setObject:v55 forKeyedSubscript:@"URLPrefix"];
-          v9 = v56;
+          [v43 setObject:esso_hosts2 forKeyedSubscript:@"URLPrefix"];
+          includingPayloadsCopy = v56;
           v40 = v77;
         }
 
-        v63 = [v42 esso_screenLockedBehavior];
+        esso_screenLockedBehavior = [v42 esso_screenLockedBehavior];
 
-        if (v63)
+        if (esso_screenLockedBehavior)
         {
-          v64 = [v42 esso_screenLockedBehavior];
-          [v43 setObject:v64 forKeyedSubscript:@"ScreenLockedBehavior"];
+          esso_screenLockedBehavior2 = [v42 esso_screenLockedBehavior];
+          [v43 setObject:esso_screenLockedBehavior2 forKeyedSubscript:@"ScreenLockedBehavior"];
         }
 
-        v65 = [v42 esso_deniedBundleIdentifiers];
+        esso_deniedBundleIdentifiers = [v42 esso_deniedBundleIdentifiers];
 
-        if (v65)
+        if (esso_deniedBundleIdentifiers)
         {
-          v66 = [v42 esso_deniedBundleIdentifiers];
-          [v43 setObject:v66 forKeyedSubscript:@"DeniedBundleIdentifiers"];
+          esso_deniedBundleIdentifiers2 = [v42 esso_deniedBundleIdentifiers];
+          [v43 setObject:esso_deniedBundleIdentifiers2 forKeyedSubscript:@"DeniedBundleIdentifiers"];
         }
 
         [v40 addObject:v43];
@@ -591,7 +591,7 @@ LABEL_43:
   v67 = [NSDictionary dictionaryWithObjects:&v109 forKeys:&v108 count:1];
 
   v37 = 0;
-  v10 = v75;
+  excludingPayloadsCopy = v75;
   v12 = v80;
   v13 = v84;
 LABEL_78:
@@ -599,9 +599,9 @@ LABEL_78:
   return v67;
 }
 
-+ (BOOL)_writeConfiguration:(id)a3 withError:(id *)a4
++ (BOOL)_writeConfiguration:(id)configuration withError:(id *)error
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = dispatch_semaphore_create(0);
   v28 = 0;
   v29 = &v28;
@@ -622,14 +622,14 @@ LABEL_78:
   v21 = &v22;
   v8 = v6;
   v19 = v8;
-  [v7 saveConfigurationData:v5 completion:&v15];
+  [v7 saveConfigurationData:configurationCopy completion:&v15];
 
   v9 = dispatch_time(0, 30000000000);
   if (!dispatch_semaphore_wait(v8, v9))
   {
     v12 = *(v29 + 24);
     v11 = v23[5];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -641,11 +641,11 @@ LABEL_78:
   v11 = [NSError MCErrorWithDomain:MCExtensibleSingleSignOnErrorDomain code:54002 descriptionArray:v10 underlyingError:0 errorType:MCErrorTypeFatal, 0, v15, v16, v17, v18];
 
   v12 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_3:
     v13 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_4:

@@ -1,83 +1,83 @@
 @interface PGGraphIngestHomeWorkProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestHomeWorkProcessor)initWithGraphBuilder:(id)a3;
-- (void)_deleteEdgelessHomeWorkNodesInGraph:(id)a3;
-- (void)_deleteLocationEdgesOfPersonNodes:(id)a3 inGraph:(id)a4;
-- (void)inferHomeWorkAddressesOfPersonNodes:(id)a3 andCLSPersonByContactIdentifier:(id)a4 inGraph:(id)a5;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestHomeWorkProcessor)initWithGraphBuilder:(id)builder;
+- (void)_deleteEdgelessHomeWorkNodesInGraph:(id)graph;
+- (void)_deleteLocationEdgesOfPersonNodes:(id)nodes inGraph:(id)graph;
+- (void)inferHomeWorkAddressesOfPersonNodes:(id)nodes andCLSPersonByContactIdentifier:(id)identifier inGraph:(id)graph;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestHomeWorkProcessor
 
-- (void)_deleteLocationEdgesOfPersonNodes:(id)a3 inGraph:(id)a4
+- (void)_deleteLocationEdgesOfPersonNodes:(id)nodes inGraph:(id)graph
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 homeOrWorkNodes];
+  graphCopy = graph;
+  homeOrWorkNodes = [nodes homeOrWorkNodes];
   v8 = [MEMORY[0x277D22C20] any];
-  v9 = [(MAEdgeCollection *)PGGraphEdgeCollection edgesOfType:3 onNodes:v7 matchingFilter:v8];
+  v9 = [(MAEdgeCollection *)PGGraphEdgeCollection edgesOfType:3 onNodes:homeOrWorkNodes matchingFilter:v8];
 
-  v10 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     v11 = [v9 count];
-    v12 = [v7 description];
+    v12 = [homeOrWorkNodes description];
     v15 = 134218242;
     v16 = v11;
     v17 = 2112;
     v18 = v12;
-    _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_INFO, "[PGGraphIngestHomeWorkProcessor] Deleted %lu edges that are connected to HomeWork nodes [%@]", &v15, 0x16u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGGraphIngestHomeWorkProcessor] Deleted %lu edges that are connected to HomeWork nodes [%@]", &v15, 0x16u);
   }
 
   if ([v9 count])
   {
     v13 = objc_alloc_init(MEMORY[0x277D22C50]);
     [v13 removeEdges:v9];
-    [v6 executeGraphChangeRequest:v13];
+    [graphCopy executeGraphChangeRequest:v13];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteEdgelessHomeWorkNodesInGraph:(id)a3
+- (void)_deleteEdgelessHomeWorkNodesInGraph:(id)graph
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphHomeWorkNode filter];
   [v5 setWhereNoInAndOutEdges:1];
-  v6 = [v4 nodeIdentifiersMatchingFilter:v5];
-  v7 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  v6 = [graphCopy nodeIdentifiersMatchingFilter:v5];
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     v10 = 134217984;
     v11 = [v6 count];
-    _os_log_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_INFO, "[PGGraphIngestHomeWorkProcessor] Deleted %lu homeWork nodes from the graph", &v10, 0xCu);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGGraphIngestHomeWorkProcessor] Deleted %lu homeWork nodes from the graph", &v10, 0xCu);
   }
 
   if ([v6 count])
   {
     v8 = objc_alloc_init(MEMORY[0x277D22C50]);
     [v8 removeNodesForIdentifiers:v6];
-    [v4 executeGraphChangeRequest:v8];
+    [graphCopy executeGraphChangeRequest:v8];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inferHomeWorkAddressesOfPersonNodes:(id)a3 andCLSPersonByContactIdentifier:(id)a4 inGraph:(id)a5
+- (void)inferHomeWorkAddressesOfPersonNodes:(id)nodes andCLSPersonByContactIdentifier:(id)identifier inGraph:(id)graph
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  graphCopy = graph;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __110__PGGraphIngestHomeWorkProcessor_inferHomeWorkAddressesOfPersonNodes_andCLSPersonByContactIdentifier_inGraph___block_invoke;
   v12[3] = &unk_278888960;
-  v13 = v8;
-  v14 = v9;
-  v15 = self;
-  v10 = v9;
-  v11 = v8;
-  [a3 enumerateNodesUsingBlock:v12];
+  v13 = identifierCopy;
+  v14 = graphCopy;
+  selfCopy = self;
+  v10 = graphCopy;
+  v11 = identifierCopy;
+  [nodes enumerateNodesUsingBlock:v12];
 }
 
 void __110__PGGraphIngestHomeWorkProcessor_inferHomeWorkAddressesOfPersonNodes_andCLSPersonByContactIdentifier_inGraph___block_invoke(uint64_t a1, void *a2)
@@ -114,12 +114,12 @@ void __110__PGGraphIngestHomeWorkProcessor_inferHomeWorkAddressesOfPersonNodes_a
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v43 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  aBlock = a4;
-  v6 = [(PGGraphBuilder *)self->_graphBuilder graph];
+  updateCopy = update;
+  aBlock = block;
+  graph = [(PGGraphBuilder *)self->_graphBuilder graph];
   v27 = _Block_copy(aBlock);
   v37 = 0;
   v38 = &v37;
@@ -129,9 +129,9 @@ void __110__PGGraphIngestHomeWorkProcessor_inferHomeWorkAddressesOfPersonNodes_a
   v36[1] = v36;
   v36[2] = 0x2020000000;
   v36[3] = 0;
-  v7 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  v8 = os_signpost_id_generate(v7);
-  v9 = v7;
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  v8 = os_signpost_id_generate(loggingConnection);
+  v9 = loggingConnection;
   v10 = v9;
   spid = v8;
   v11 = v8 - 1;
@@ -144,16 +144,16 @@ void __110__PGGraphIngestHomeWorkProcessor_inferHomeWorkAddressesOfPersonNodes_a
   info = 0;
   mach_timebase_info(&info);
   v25 = mach_absolute_time();
-  v12 = [v28 updatedPersonNodesUnrelatedToMomentChange];
-  if (![v12 count])
+  updatedPersonNodesUnrelatedToMomentChange = [updateCopy updatedPersonNodesUnrelatedToMomentChange];
+  if (![updatedPersonNodesUnrelatedToMomentChange count])
   {
     goto LABEL_10;
   }
 
-  v13 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithSet:v12 graph:v6];
-  [(PGGraphIngestHomeWorkProcessor *)self _deleteLocationEdgesOfPersonNodes:v13 inGraph:v6];
-  v14 = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
-  v15 = [(PGGraphPersonNodeCollection *)v13 contactIdentifiers];
+  v13 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithSet:updatedPersonNodesUnrelatedToMomentChange graph:graph];
+  [(PGGraphIngestHomeWorkProcessor *)self _deleteLocationEdgesOfPersonNodes:v13 inGraph:graph];
+  serviceManager = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
+  contactIdentifiers = [(PGGraphPersonNodeCollection *)v13 contactIdentifiers];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __67__PGGraphIngestHomeWorkProcessor_runWithGraphUpdate_progressBlock___block_invoke;
@@ -162,7 +162,7 @@ void __110__PGGraphIngestHomeWorkProcessor_inferHomeWorkAddressesOfPersonNodes_a
   v32 = v36;
   v33 = &v37;
   v34 = 0x3F847AE147AE147BLL;
-  v16 = [v14 personsInContactStoreForContactIdentifiers:v15 needsRefetching:0 progressBlock:v30];
+  v16 = [serviceManager personsInContactStoreForContactIdentifiers:contactIdentifiers needsRefetching:0 progressBlock:v30];
 
   v17 = *(v38 + 24);
   if (v17 == 1)
@@ -179,15 +179,15 @@ void __110__PGGraphIngestHomeWorkProcessor_inferHomeWorkAddressesOfPersonNodes_a
 
   else
   {
-    [(PGGraphIngestHomeWorkProcessor *)self inferHomeWorkAddressesOfPersonNodes:v13 andCLSPersonByContactIdentifier:v16 inGraph:v6];
-    v18 = [v16 allKeys];
-    [v14 invalidateCacheForPersonInContactStoreWithContactIdentifiers:v18];
+    [(PGGraphIngestHomeWorkProcessor *)self inferHomeWorkAddressesOfPersonNodes:v13 andCLSPersonByContactIdentifier:v16 inGraph:graph];
+    allKeys = [v16 allKeys];
+    [serviceManager invalidateCacheForPersonInContactStoreWithContactIdentifiers:allKeys];
   }
 
   if ((v17 & 1) == 0)
   {
 LABEL_10:
-    [(PGGraphIngestHomeWorkProcessor *)self _deleteEdgelessHomeWorkNodesInGraph:v6];
+    [(PGGraphIngestHomeWorkProcessor *)self _deleteEdgelessHomeWorkNodesInGraph:graph];
     v19 = mach_absolute_time();
     numer = info.numer;
     denom = info.denom;
@@ -234,37 +234,37 @@ void __67__PGGraphIngestHomeWorkProcessor_runWithGraphUpdate_progressBlock___blo
   }
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 isResumingFullAnalysis])
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis])
   {
-    v4 = 0;
+    hasDeletedPersonNodes = 0;
   }
 
-  else if ([v3 hasUpdatedPersonNodesUnrelatedToMomentChange])
+  else if ([updateCopy hasUpdatedPersonNodesUnrelatedToMomentChange])
   {
-    v4 = 1;
+    hasDeletedPersonNodes = 1;
   }
 
   else
   {
-    v4 = [v3 hasDeletedPersonNodes];
+    hasDeletedPersonNodes = [updateCopy hasDeletedPersonNodes];
   }
 
-  return v4;
+  return hasDeletedPersonNodes;
 }
 
-- (PGGraphIngestHomeWorkProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestHomeWorkProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphIngestHomeWorkProcessor;
   v6 = [(PGGraphIngestHomeWorkProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
   }
 
   return v7;

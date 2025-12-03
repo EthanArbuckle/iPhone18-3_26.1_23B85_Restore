@@ -1,5 +1,5 @@
 @interface STSStgObject
-+ (void)throwIfError:(int)a3;
++ (void)throwIfError:(int)error;
 - (STSStgObject)init;
 @end
 
@@ -19,9 +19,9 @@
   return v3;
 }
 
-+ (void)throwIfError:(int)a3
++ (void)throwIfError:(int)error
 {
-  switch(a3)
+  switch(error)
   {
     case 0:
       return;

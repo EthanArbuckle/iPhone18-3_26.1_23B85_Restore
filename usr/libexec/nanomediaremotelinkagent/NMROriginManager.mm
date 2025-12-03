@@ -5,16 +5,16 @@
 - (NMROrigin)localOrigin;
 - (NMROriginManager)init;
 - (NSArray)availableOrigins;
-- (id)originForPlayerPath:(id)a3;
-- (id)originWithDeviceIdentifier:(id)a3;
-- (id)originWithUniqueIdentifier:(id)a3;
-- (void)_handleDeviceInfoDidChangeNotification:(id)a3;
-- (void)_onQueue_updateActiveOriginIdentifier:(id)a3;
+- (id)originForPlayerPath:(id)path;
+- (id)originWithDeviceIdentifier:(id)identifier;
+- (id)originWithUniqueIdentifier:(id)identifier;
+- (void)_handleDeviceInfoDidChangeNotification:(id)notification;
+- (void)_onQueue_updateActiveOriginIdentifier:(id)identifier;
 - (void)_onQueue_updateAvailableOrigins;
 - (void)_updateMediaRemoteAvailableAndActiveOrigins;
 - (void)_updateMediaRemoteLocalOrigin;
 - (void)dealloc;
-- (void)routingControllerAvailableRoutesDidChange:(id)a3;
+- (void)routingControllerAvailableRoutesDidChange:(id)change;
 @end
 
 @implementation NMROriginManager
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001ADB4;
   block[3] = &unk_100049248;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000541B0 != -1)
   {
     dispatch_once(&qword_1000541B0, block);
@@ -64,9 +64,9 @@
     v10 = sub_10002C180(2);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(MPAVRoutingController *)v2->_companionRoutingController name];
+      name = [(MPAVRoutingController *)v2->_companionRoutingController name];
       *buf = 138412290;
-      v15 = v11;
+      v15 = name;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%@] Begin discovery", buf, 0xCu);
     }
 
@@ -180,17 +180,17 @@
   return v3;
 }
 
-- (id)originWithDeviceIdentifier:(id)a3
+- (id)originWithDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_1000193E0;
   v17 = sub_1000193F0;
   v18 = 0;
-  if (v4)
+  if (identifierCopy)
   {
     serialQueue = self->_serialQueue;
     block[0] = _NSConcreteStackBlock;
@@ -199,7 +199,7 @@
     block[3] = &unk_100048E90;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = identifierCopy;
     dispatch_sync(serialQueue, block);
 
     v7 = v14[5];
@@ -216,17 +216,17 @@
   return v8;
 }
 
-- (id)originWithUniqueIdentifier:(id)a3
+- (id)originWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_1000193E0;
   v17 = sub_1000193F0;
   v18 = 0;
-  if (v4)
+  if (identifierCopy)
   {
     serialQueue = self->_serialQueue;
     block[0] = _NSConcreteStackBlock;
@@ -235,7 +235,7 @@
     block[3] = &unk_100048E90;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = identifierCopy;
     dispatch_sync(serialQueue, block);
 
     v7 = v14[5];
@@ -252,31 +252,31 @@
   return v8;
 }
 
-- (id)originForPlayerPath:(id)a3
+- (id)originForPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 route];
+  pathCopy = path;
+  route = [pathCopy route];
 
-  if (!v5)
+  if (!route)
   {
-    v8 = [(NMROriginManager *)self localOrigin];
+    localOrigin = [(NMROriginManager *)self localOrigin];
     goto LABEL_5;
   }
 
-  v6 = [v4 route];
-  v7 = [v6 isPhoneRoute];
+  route2 = [pathCopy route];
+  isPhoneRoute = [route2 isPhoneRoute];
 
-  if (v7)
+  if (isPhoneRoute)
   {
-    v8 = [(NMROriginManager *)self companionOrigin];
+    localOrigin = [(NMROriginManager *)self companionOrigin];
 LABEL_5:
-    v9 = v8;
+    v9 = localOrigin;
     goto LABEL_7;
   }
 
-  v10 = [v4 route];
-  v11 = [v10 routeUID];
-  v9 = [(NMROriginManager *)self originWithDeviceIdentifier:v11];
+  route3 = [pathCopy route];
+  routeUID = [route3 routeUID];
+  v9 = [(NMROriginManager *)self originWithDeviceIdentifier:routeUID];
 
 LABEL_7:
 
@@ -285,19 +285,19 @@ LABEL_7:
 
 - (void)_onQueue_updateAvailableOrigins
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_serialQueue);
   v3 = +[NSMutableOrderedSet orderedSet];
   v4 = +[NSMutableDictionary dictionary];
   v43 = +[NSMutableDictionary dictionary];
-  if (v2->_availableOriginRefs)
+  if (selfCopy->_availableOriginRefs)
   {
     Mutable = CFArrayCreateMutable(kCFAllocatorDefault, 1, &kCFTypeArrayCallBacks);
     v6 = CFAutorelease(Mutable);
-    availableOriginRefs = v2->_availableOriginRefs;
+    availableOriginRefs = selfCopy->_availableOriginRefs;
     if (availableOriginRefs && CFArrayGetCount(availableOriginRefs) >= 1)
     {
-      v8 = v2->_availableOriginRefs;
+      v8 = selfCopy->_availableOriginRefs;
       v47.length = CFArrayGetCount(v8);
       v47.location = 0;
       CFArrayAppendArray(v6, v8, v47);
@@ -309,7 +309,7 @@ LABEL_7:
       v10 = Count;
       v11 = 0;
       v41 = v4;
-      v42 = v2;
+      v42 = selfCopy;
       do
       {
         ValueAtIndex = CFArrayGetValueAtIndex(v6, v11);
@@ -340,19 +340,19 @@ LABEL_7:
             }
 
             v20 = sub_1000199A4();
-            v21 = [(NSDictionary *)v2->_availableOriginsByDeviceIdentifier objectForKeyedSubscript:v20];
+            v21 = [(NSDictionary *)selfCopy->_availableOriginsByDeviceIdentifier objectForKeyedSubscript:v20];
             v22 = v21;
             if (v21)
             {
-              v23 = [(NMROrigin *)v21 uniqueIdentifier];
-              if (v23)
+              uniqueIdentifier = [(NMROrigin *)v21 uniqueIdentifier];
+              if (uniqueIdentifier)
               {
-                v39 = v23;
+                v39 = uniqueIdentifier;
                 v40 = v3;
-                v24 = [(NMROrigin *)v22 uniqueIdentifier];
+                uniqueIdentifier2 = [(NMROrigin *)v22 uniqueIdentifier];
                 v25 = [NSNumber numberWithInt:MROriginGetUniqueIdentifier()];
                 v26 = v25;
-                if (v24 == v25)
+                if (uniqueIdentifier2 == v25)
                 {
 
                   v3 = v40;
@@ -360,7 +360,7 @@ LABEL_7:
 
                 else
                 {
-                  v38 = [v24 isEqual:v25];
+                  v38 = [uniqueIdentifier2 isEqual:v25];
 
                   v3 = v40;
                   if ((v38 & 1) == 0)
@@ -383,11 +383,11 @@ LABEL_25:
 
             [v3 addObject:v22];
             [v41 setObject:v22 forKeyedSubscript:v20];
-            v28 = [(NMROrigin *)v22 uniqueIdentifier];
-            [v43 setObject:v22 forKeyedSubscript:v28];
+            uniqueIdentifier3 = [(NMROrigin *)v22 uniqueIdentifier];
+            [v43 setObject:v22 forKeyedSubscript:uniqueIdentifier3];
 
             v4 = v41;
-            v2 = v42;
+            selfCopy = v42;
             goto LABEL_29;
           }
 
@@ -426,25 +426,25 @@ LABEL_29:
   }
 
   [v3 sortUsingComparator:&stru_100049288];
-  v29 = [v3 isEqual:v2->_availableOrigins];
+  v29 = [v3 isEqual:selfCopy->_availableOrigins];
   v30 = [v3 copy];
-  availableOrigins = v2->_availableOrigins;
-  v2->_availableOrigins = v30;
+  availableOrigins = selfCopy->_availableOrigins;
+  selfCopy->_availableOrigins = v30;
 
   v32 = [v4 copy];
-  availableOriginsByDeviceIdentifier = v2->_availableOriginsByDeviceIdentifier;
-  v2->_availableOriginsByDeviceIdentifier = v32;
+  availableOriginsByDeviceIdentifier = selfCopy->_availableOriginsByDeviceIdentifier;
+  selfCopy->_availableOriginsByDeviceIdentifier = v32;
 
   v34 = [v43 copy];
-  availableOriginsByOriginIdentifier = v2->_availableOriginsByOriginIdentifier;
-  v2->_availableOriginsByOriginIdentifier = v34;
+  availableOriginsByOriginIdentifier = selfCopy->_availableOriginsByOriginIdentifier;
+  selfCopy->_availableOriginsByOriginIdentifier = v34;
 
   if ((v29 & 1) == 0)
   {
     v36 = sub_10002C180(3);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = v2->_availableOrigins;
+      v37 = selfCopy->_availableOrigins;
       *buf = 138412290;
       v46 = v37;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "[Origin] Updated available origins: %@", buf, 0xCu);
@@ -454,30 +454,30 @@ LABEL_29:
     block[1] = 3221225472;
     block[2] = sub_10001BF54;
     block[3] = &unk_100048CD0;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)_onQueue_updateActiveOriginIdentifier:(id)a3
+- (void)_onQueue_updateActiveOriginIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (!v4 || ([(NSDictionary *)self->_availableOriginsByOriginIdentifier objectForKeyedSubscript:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  if (!identifierCopy || ([(NSDictionary *)self->_availableOriginsByOriginIdentifier objectForKeyedSubscript:identifierCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v6 = sub_10002C180(2);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_1000310C8(v4, self);
+      sub_1000310C8(identifierCopy, self);
     }
 
     v7 = self->_localOriginIdentifier;
-    v4 = v7;
+    identifierCopy = v7;
   }
 
-  if (![(NSNumber *)self->_activeOriginIdentifier isEqualToNumber:v4])
+  if (![(NSNumber *)self->_activeOriginIdentifier isEqualToNumber:identifierCopy])
   {
-    objc_storeStrong(&self->_activeOriginIdentifier, v4);
+    objc_storeStrong(&self->_activeOriginIdentifier, identifierCopy);
     v8 = sub_10002C180(2);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -560,31 +560,31 @@ LABEL_29:
   _Block_object_dispose(v24, 8);
 }
 
-- (void)_handleDeviceInfoDidChangeNotification:(id)a3
+- (void)_handleDeviceInfoDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001C7B0;
   v7[3] = &unk_100048C80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (void)routingControllerAvailableRoutesDidChange:(id)a3
+- (void)routingControllerAvailableRoutesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001C94C;
   v7[3] = &unk_100048C80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   dispatch_async(serialQueue, v7);
 }
 

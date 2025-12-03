@@ -1,6 +1,6 @@
 @interface NWMUltravioletIndexCategoryColor
 + (NSArray)spectrum;
-+ (id)colorForNumber:(id)a3;
++ (id)colorForNumber:(id)number;
 @end
 
 @implementation NWMUltravioletIndexCategoryColor
@@ -22,11 +22,11 @@
   return v2;
 }
 
-+ (id)colorForNumber:(id)a3
++ (id)colorForNumber:(id)number
 {
-  if (a3)
+  if (number)
   {
-    [a3 doubleValue];
+    [number doubleValue];
     [(NWKUIColorIndex *)NWMUltravioletIndexColorIndex colorForValue:?];
   }
 

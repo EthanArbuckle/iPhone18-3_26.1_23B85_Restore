@@ -24,38 +24,38 @@
 
 + (unint64_t)deviceType
 {
-  v2 = [a1 deviceClass];
-  if ([v2 isEqualToString:@"iPhone"])
+  deviceClass = [self deviceClass];
+  if ([deviceClass isEqualToString:@"iPhone"])
   {
     v3 = 1;
   }
 
-  else if ([v2 isEqualToString:@"iPod"])
+  else if ([deviceClass isEqualToString:@"iPod"])
   {
     v3 = 2;
   }
 
-  else if ([v2 isEqualToString:@"iPad"])
+  else if ([deviceClass isEqualToString:@"iPad"])
   {
     v3 = 3;
   }
 
-  else if ([v2 isEqualToString:@"AppleTV"])
+  else if ([deviceClass isEqualToString:@"AppleTV"])
   {
     v3 = 4;
   }
 
-  else if ([v2 isEqualToString:@"Watch"])
+  else if ([deviceClass isEqualToString:@"Watch"])
   {
     v3 = 5;
   }
 
-  else if ([v2 isEqualToString:@"AudioAccessory"])
+  else if ([deviceClass isEqualToString:@"AudioAccessory"])
   {
     v3 = 6;
   }
 
-  else if ([v2 isEqualToString:@"RealityDevice"])
+  else if ([deviceClass isEqualToString:@"RealityDevice"])
   {
     v3 = 8;
   }
@@ -65,7 +65,7 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138477827;
-      v6 = v2;
+      v6 = deviceClass;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Unknown device type %{private}@", &v5, 0xCu);
     }
 

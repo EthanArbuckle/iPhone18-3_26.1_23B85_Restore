@@ -32,66 +32,66 @@ uint64_t __46__PFXMPMetadataBuilder_xmpCreateDateFormatter__block_invoke()
 {
   v34 = *MEMORY[0x1E69E9840];
   Mutable = CGImageMetadataCreateMutable();
-  v4 = [(PFMetadataBuilder *)self title];
-  v5 = [v4 length];
+  title = [(PFMetadataBuilder *)self title];
+  v5 = [title length];
   v6 = MEMORY[0x1E696DD90];
   if (v5)
   {
-    PIImageMedataSetValueMatchingImageProperty(Mutable, *MEMORY[0x1E696DD90], *MEMORY[0x1E696DDD8], v4);
+    PIImageMedataSetValueMatchingImageProperty(Mutable, *MEMORY[0x1E696DD90], *MEMORY[0x1E696DDD8], title);
   }
 
-  v7 = [(PFMetadataBuilder *)self caption];
-  if ([v7 length])
+  caption = [(PFMetadataBuilder *)self caption];
+  if ([caption length])
   {
-    PIImageMedataSetValueMatchingImageProperty(Mutable, *v6, *MEMORY[0x1E696DD68], v7);
+    PIImageMedataSetValueMatchingImageProperty(Mutable, *v6, *MEMORY[0x1E696DD68], caption);
   }
 
-  v8 = [(PFMetadataBuilder *)self accessibilityDescription];
-  if ([v8 length])
+  accessibilityDescription = [(PFMetadataBuilder *)self accessibilityDescription];
+  if ([accessibilityDescription length])
   {
-    PIImageMedataSetValueMatchingImageProperty(Mutable, *v6, *MEMORY[0x1E696DDA8], v8);
+    PIImageMedataSetValueMatchingImageProperty(Mutable, *v6, *MEMORY[0x1E696DDA8], accessibilityDescription);
   }
 
-  v9 = [(PFMetadataBuilder *)self combinedKeywordsAndPeople];
-  if ([v9 count])
+  combinedKeywordsAndPeople = [(PFMetadataBuilder *)self combinedKeywordsAndPeople];
+  if ([combinedKeywordsAndPeople count])
   {
-    PIImageMedataSetValueMatchingImageProperty(Mutable, *v6, *MEMORY[0x1E696DDD0], v9);
+    PIImageMedataSetValueMatchingImageProperty(Mutable, *v6, *MEMORY[0x1E696DDD0], combinedKeywordsAndPeople);
   }
 
-  v10 = [(PFMetadataBuilder *)self creationDate];
-  if (v10)
+  creationDate = [(PFMetadataBuilder *)self creationDate];
+  if (creationDate)
   {
-    v11 = [objc_opt_class() xmpCreateDateFormatter];
-    v12 = [(PFMetadataBuilder *)self creationTimeZone];
-    [v11 setTimeZone:v12];
+    xmpCreateDateFormatter = [objc_opt_class() xmpCreateDateFormatter];
+    creationTimeZone = [(PFMetadataBuilder *)self creationTimeZone];
+    [xmpCreateDateFormatter setTimeZone:creationTimeZone];
 
-    v13 = [v11 stringFromDate:v10];
+    v13 = [xmpCreateDateFormatter stringFromDate:creationDate];
     PIImageMedataSetValueMatchingImageProperty(Mutable, *MEMORY[0x1E696D9B0], *MEMORY[0x1E696D998], v13);
   }
 
-  v14 = [(PFMetadataBuilder *)self location];
-  if (v14)
+  location = [(PFMetadataBuilder *)self location];
+  if (location)
   {
-    [PFSharingUtilities gpsDictionaryForLocation:v14];
-    v28 = v9;
-    v15 = v8;
-    v16 = v7;
-    v18 = v17 = v4;
+    [PFSharingUtilities gpsDictionaryForLocation:location];
+    v28 = combinedKeywordsAndPeople;
+    v15 = accessibilityDescription;
+    v16 = caption;
+    v18 = v17 = title;
     v19 = [v18 mutableCopy];
 
-    v20 = [objc_opt_class() xmpCreateDateFormatter];
+    xmpCreateDateFormatter2 = [objc_opt_class() xmpCreateDateFormatter];
     v21 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
-    [v20 setTimeZone:v21];
+    [xmpCreateDateFormatter2 setTimeZone:v21];
 
     [v19 setObject:0 forKeyedSubscript:*MEMORY[0x1E696DBA8]];
-    v22 = [v14 timestamp];
-    v23 = [v20 stringFromDate:v22];
+    timestamp = [location timestamp];
+    v23 = [xmpCreateDateFormatter2 stringFromDate:timestamp];
     [v19 setObject:v23 forKeyedSubscript:*MEMORY[0x1E696DC70]];
 
-    v4 = v17;
-    v7 = v16;
-    v8 = v15;
-    v9 = v28;
+    title = v17;
+    caption = v16;
+    accessibilityDescription = v15;
+    combinedKeywordsAndPeople = v28;
     v24 = *MEMORY[0x1E696DBF0];
     *&buf = MEMORY[0x1E69E9820];
     *(&buf + 1) = 3221225472;

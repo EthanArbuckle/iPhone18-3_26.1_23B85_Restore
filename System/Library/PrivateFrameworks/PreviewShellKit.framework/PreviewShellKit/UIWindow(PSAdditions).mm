@@ -6,7 +6,7 @@
 
 - (uint64_t)uv_createSnapshotImageFromIOSurface
 {
-  result = [a1 createIOSurface];
+  result = [self createIOSurface];
   if (result)
   {
 

@@ -1,53 +1,53 @@
 @interface _DASSignalQueue
-- (_DASSignalQueue)initWithCount:(unint64_t)a3;
+- (_DASSignalQueue)initWithCount:(unint64_t)count;
 - (double)mean;
 - (double)rate;
 - (id)allObjects;
 - (id)top;
 - (unint64_t)count;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 @end
 
 @implementation _DASSignalQueue
 
-- (_DASSignalQueue)initWithCount:(unint64_t)a3
+- (_DASSignalQueue)initWithCount:(unint64_t)count
 {
   v8.receiver = self;
   v8.super_class = _DASSignalQueue;
   v4 = [(_DASSignalQueue *)&v8 init];
   if (v4)
   {
-    v5 = [NSMutableDictionary dictionaryWithCapacity:a3];
+    v5 = [NSMutableDictionary dictionaryWithCapacity:count];
     signalQueueDictionary = v4->_signalQueueDictionary;
     v4->_signalQueueDictionary = v5;
 
-    v4->_limit = a3;
+    v4->_limit = count;
     v4->_queueLock._os_unfair_lock_opaque = 0;
   }
 
   return v4;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_queueLock);
-  v5 = [(NSMutableDictionary *)self->_signalQueueDictionary allValues];
-  v6 = [v5 count];
+  allValues = [(NSMutableDictionary *)self->_signalQueueDictionary allValues];
+  v6 = [allValues count];
   limit = self->_limit;
 
   if (v6 >= limit)
   {
-    v8 = [(NSMutableDictionary *)self->_signalQueueDictionary allKeys];
-    v9 = [v8 sortedArrayUsingSelector:"compare:"];
-    v10 = [v9 firstObject];
+    allKeys = [(NSMutableDictionary *)self->_signalQueueDictionary allKeys];
+    v9 = [allKeys sortedArrayUsingSelector:"compare:"];
+    firstObject = [v9 firstObject];
 
-    [(NSMutableDictionary *)self->_signalQueueDictionary removeObjectForKey:v10];
+    [(NSMutableDictionary *)self->_signalQueueDictionary removeObjectForKey:firstObject];
   }
 
   signalQueueDictionary = self->_signalQueueDictionary;
   v12 = +[NSDate date];
-  [(NSMutableDictionary *)signalQueueDictionary setObject:v4 forKeyedSubscript:v12];
+  [(NSMutableDictionary *)signalQueueDictionary setObject:objectCopy forKeyedSubscript:v12];
 
   os_unfair_lock_unlock(&self->_queueLock);
 }
@@ -55,8 +55,8 @@
 - (id)allObjects
 {
   os_unfair_lock_lock(&self->_queueLock);
-  v3 = [(NSMutableDictionary *)self->_signalQueueDictionary allKeys];
-  v4 = [v3 sortedArrayUsingSelector:"compare:"];
+  allKeys = [(NSMutableDictionary *)self->_signalQueueDictionary allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   +[NSMutableArray array];
   v9[0] = _NSConcreteStackBlock;
@@ -76,12 +76,12 @@
 - (id)top
 {
   os_unfair_lock_lock(&self->_queueLock);
-  v3 = [(NSMutableDictionary *)self->_signalQueueDictionary allKeys];
-  v4 = [v3 sortedArrayUsingSelector:"compare:"];
+  allKeys = [(NSMutableDictionary *)self->_signalQueueDictionary allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:"compare:"];
 
-  v5 = [v4 lastObject];
+  lastObject = [v4 lastObject];
   os_unfair_lock_unlock(&self->_queueLock);
-  v6 = [(NSMutableDictionary *)self->_signalQueueDictionary objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_signalQueueDictionary objectForKeyedSubscript:lastObject];
 
   return v6;
 }
@@ -89,14 +89,14 @@
 - (double)mean
 {
   os_unfair_lock_lock(&self->_queueLock);
-  v3 = [(NSMutableDictionary *)self->_signalQueueDictionary allValues];
-  if ([v3 count] && (objc_msgSend(v3, "firstObject"), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
+  allValues = [(NSMutableDictionary *)self->_signalQueueDictionary allValues];
+  if ([allValues count] && (objc_msgSend(allValues, "firstObject"), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v3;
+    v6 = allValues;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -143,22 +143,22 @@
 - (double)rate
 {
   os_unfair_lock_lock(&self->_queueLock);
-  v3 = [(NSMutableDictionary *)self->_signalQueueDictionary allKeys];
-  if ([v3 count])
+  allKeys = [(NSMutableDictionary *)self->_signalQueueDictionary allKeys];
+  if ([allKeys count])
   {
-    v4 = [v3 sortedArrayUsingSelector:"compare:"];
+    v4 = [allKeys sortedArrayUsingSelector:"compare:"];
 
-    v5 = [v4 firstObject];
-    v6 = [(NSMutableDictionary *)self->_signalQueueDictionary objectForKeyedSubscript:v5];
+    firstObject = [v4 firstObject];
+    v6 = [(NSMutableDictionary *)self->_signalQueueDictionary objectForKeyedSubscript:firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(NSMutableDictionary *)self->_signalQueueDictionary objectForKeyedSubscript:v5];
+      v7 = [(NSMutableDictionary *)self->_signalQueueDictionary objectForKeyedSubscript:firstObject];
       [v7 doubleValue];
       v9 = v8;
 
-      v10 = [v4 lastObject];
-      v11 = [(NSMutableDictionary *)self->_signalQueueDictionary objectForKeyedSubscript:v10];
+      lastObject = [v4 lastObject];
+      v11 = [(NSMutableDictionary *)self->_signalQueueDictionary objectForKeyedSubscript:lastObject];
       [v11 doubleValue];
       v13 = v12;
 
@@ -166,7 +166,7 @@
       v14 = os_log_create("com.apple.clas", "signals");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        [v10 timeIntervalSinceDate:v5];
+        [lastObject timeIntervalSinceDate:firstObject];
         v19 = 134218496;
         v20 = v9;
         v21 = 2048;
@@ -176,7 +176,7 @@
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "First %lf, Last %lf, timeInterval %lf", &v19, 0x20u);
       }
 
-      [v10 timeIntervalSinceDate:v5];
+      [lastObject timeIntervalSinceDate:firstObject];
       v17 = (v13 - v9) / v16;
     }
 
@@ -191,7 +191,7 @@
   {
     os_unfair_lock_unlock(&self->_queueLock);
     v17 = 0.0;
-    v4 = v3;
+    v4 = allKeys;
   }
 
   return v17;
@@ -199,8 +199,8 @@
 
 - (unint64_t)count
 {
-  v2 = [(NSMutableDictionary *)self->_signalQueueDictionary allValues];
-  v3 = [v2 count];
+  allValues = [(NSMutableDictionary *)self->_signalQueueDictionary allValues];
+  v3 = [allValues count];
 
   return v3;
 }

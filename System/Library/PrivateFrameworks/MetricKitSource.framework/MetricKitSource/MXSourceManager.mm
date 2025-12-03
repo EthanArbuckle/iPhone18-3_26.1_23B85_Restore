@@ -2,9 +2,9 @@
 + (id)sharedManager;
 - (MXSourceManager)init;
 - (id)_createXPCConnection;
-- (void)sendDiagnostic:(id)a3 forDate:(id)a4 andSourceID:(int64_t)a5;
-- (void)sendMetrics:(id)a3 forDate:(id)a4 andSourceID:(int64_t)a5;
-- (void)simulatePayloadDeliveryForClient:(id)a3;
+- (void)sendDiagnostic:(id)diagnostic forDate:(id)date andSourceID:(int64_t)d;
+- (void)sendMetrics:(id)metrics forDate:(id)date andSourceID:(int64_t)d;
+- (void)simulatePayloadDeliveryForClient:(id)client;
 @end
 
 @implementation MXSourceManager
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __32__MXSourceManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -79,11 +79,11 @@ uint64_t __32__MXSourceManager_sharedManager__block_invoke(uint64_t a1)
       v18 = objc_opt_class();
       v19 = objc_opt_class();
       v20 = [v13 setWithObjects:{v14, v15, v16, v17, v18, v19, objc_opt_class(), 0}];
-      v21 = [(NSXPCConnection *)v3 remoteObjectInterface];
-      [v21 setClasses:v12 forSelector:sel_writeMetricDataWithPayload_ argumentIndex:0 ofReply:0];
+      remoteObjectInterface = [(NSXPCConnection *)v3 remoteObjectInterface];
+      [remoteObjectInterface setClasses:v12 forSelector:sel_writeMetricDataWithPayload_ argumentIndex:0 ofReply:0];
 
-      v22 = [(NSXPCConnection *)v3 remoteObjectInterface];
-      [v22 setClasses:v20 forSelector:sel_writeDiagnosticDataWithPayload_ argumentIndex:0 ofReply:0];
+      remoteObjectInterface2 = [(NSXPCConnection *)v3 remoteObjectInterface];
+      [remoteObjectInterface2 setClasses:v20 forSelector:sel_writeDiagnosticDataWithPayload_ argumentIndex:0 ofReply:0];
 
       v23 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286A1E8E0];
       [(NSXPCConnection *)v3 setExportedInterface:v23];
@@ -96,50 +96,50 @@ uint64_t __32__MXSourceManager_sharedManager__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)sendMetrics:(id)a3 forDate:(id)a4 andSourceID:(int64_t)a5
+- (void)sendMetrics:(id)metrics forDate:(id)date andSourceID:(int64_t)d
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = [(MXSourceManager *)self _createXPCConnection];
+  metricsCopy = metrics;
+  dateCopy = date;
+  _createXPCConnection = [(MXSourceManager *)self _createXPCConnection];
   connection = self->_connection;
-  self->_connection = v9;
+  self->_connection = _createXPCConnection;
 
   if (self->_connection)
   {
-    v11 = [[MXSourceXPCPayload alloc] initWithSourceID:a5 withDateStamp:v8 andMetrics:v13];
-    v12 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    [v12 writeMetricDataWithPayload:v11];
+    v11 = [[MXSourceXPCPayload alloc] initWithSourceID:d withDateStamp:dateCopy andMetrics:metricsCopy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    [remoteObjectProxy writeMetricDataWithPayload:v11];
   }
 }
 
-- (void)sendDiagnostic:(id)a3 forDate:(id)a4 andSourceID:(int64_t)a5
+- (void)sendDiagnostic:(id)diagnostic forDate:(id)date andSourceID:(int64_t)d
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = [(MXSourceManager *)self _createXPCConnection];
+  diagnosticCopy = diagnostic;
+  dateCopy = date;
+  _createXPCConnection = [(MXSourceManager *)self _createXPCConnection];
   connection = self->_connection;
-  self->_connection = v9;
+  self->_connection = _createXPCConnection;
 
   if (self->_connection)
   {
-    v11 = [[MXSourceXPCPayload alloc] initWithSourceID:a5 withDateStamp:v8 andMetrics:v13];
-    v12 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    [v12 writeDiagnosticDataWithPayload:v11];
+    v11 = [[MXSourceXPCPayload alloc] initWithSourceID:d withDateStamp:dateCopy andMetrics:diagnosticCopy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    [remoteObjectProxy writeDiagnosticDataWithPayload:v11];
   }
 }
 
-- (void)simulatePayloadDeliveryForClient:(id)a3
+- (void)simulatePayloadDeliveryForClient:(id)client
 {
-  v8 = a3;
-  v4 = [(MXSourceManager *)self _createXPCConnection];
+  clientCopy = client;
+  _createXPCConnection = [(MXSourceManager *)self _createXPCConnection];
   connection = self->_connection;
-  self->_connection = v4;
+  self->_connection = _createXPCConnection;
 
   v6 = self->_connection;
   if (v6)
   {
-    v7 = [(NSXPCConnection *)v6 remoteObjectProxy];
-    [v7 deliverSamplePayloadForClient:v8];
+    remoteObjectProxy = [(NSXPCConnection *)v6 remoteObjectProxy];
+    [remoteObjectProxy deliverSamplePayloadForClient:clientCopy];
   }
 }
 

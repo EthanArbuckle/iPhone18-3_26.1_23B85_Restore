@@ -1,7 +1,7 @@
 @interface NMAPIFitnessMultiroomRequest
 - (NMAPIFitnessMultiroomRequest)init;
-- (id)_fitnessMultiroomIdentifierWithStoreURLBag:(id)a3;
-- (id)urlComponentsWithStoreURLBag:(id)a3 error:(id *)a4;
+- (id)_fitnessMultiroomIdentifierWithStoreURLBag:(id)bag;
+- (id)urlComponentsWithStoreURLBag:(id)bag error:(id *)error;
 @end
 
 @implementation NMAPIFitnessMultiroomRequest
@@ -20,17 +20,17 @@
   return v2;
 }
 
-- (id)urlComponentsWithStoreURLBag:(id)a3 error:(id *)a4
+- (id)urlComponentsWithStoreURLBag:(id)bag error:(id *)error
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  bagCopy = bag;
   v23.receiver = self;
   v23.super_class = NMAPIFitnessMultiroomRequest;
-  v7 = [(NMAPIRequest *)&v23 urlComponentsWithStoreURLBag:v6 error:a4];
-  v8 = MusicURLPathStorefrontWithURLBag(v6);
+  v7 = [(NMAPIRequest *)&v23 urlComponentsWithStoreURLBag:bagCopy error:error];
+  v8 = MusicURLPathStorefrontWithURLBag(bagCopy);
   if (v8)
   {
-    v9 = [(NMAPIFitnessMultiroomRequest *)self _fitnessMultiroomIdentifierWithStoreURLBag:v6];
+    v9 = [(NMAPIFitnessMultiroomRequest *)self _fitnessMultiroomIdentifierWithStoreURLBag:bagCopy];
     v10 = v9;
     if (v9)
     {
@@ -43,11 +43,11 @@
       v13 = [v11 pathWithComponents:v12];
       [v7 setPath:v13];
 
-      v14 = [v7 queryItems];
+      queryItems = [v7 queryItems];
       v15 = [MEMORY[0x277CCAD18] queryItemWithName:@"art[url]" value:{@"f, c"}];
       v24 = v15;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
-      v17 = [v14 arrayByAddingObjectsFromArray:v16];
+      v17 = [queryItems arrayByAddingObjectsFromArray:v16];
       [v7 setQueryItems:v17];
 
       v18 = v7;
@@ -61,10 +61,10 @@
         [NMAPIFitnessMultiroomRequest urlComponentsWithStoreURLBag:error:];
       }
 
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7201 userInfo:0];
-        *a4 = v18 = 0;
+        *error = v18 = 0;
       }
 
       else
@@ -82,10 +82,10 @@
       [NMAPIFitnessMultiroomRequest urlComponentsWithStoreURLBag:error:];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7201 userInfo:0];
-      *a4 = v18 = 0;
+      *error = v18 = 0;
     }
 
     else
@@ -99,9 +99,9 @@
   return v18;
 }
 
-- (id)_fitnessMultiroomIdentifierWithStoreURLBag:(id)a3
+- (id)_fitnessMultiroomIdentifierWithStoreURLBag:(id)bag
 {
-  v3 = [a3 dictionaryForBagKey:*MEMORY[0x277D7F9E8]];
+  v3 = [bag dictionaryForBagKey:*MEMORY[0x277D7F9E8]];
   v4 = [v3 objectForKey:@"musicWorkoutMediaPlayback"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {

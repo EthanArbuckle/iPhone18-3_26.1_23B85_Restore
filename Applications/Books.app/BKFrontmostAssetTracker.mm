@@ -1,11 +1,11 @@
 @interface BKFrontmostAssetTracker
 - (BKFrontmostAssetTracker)init;
-- (BKFrontmostAssetTracker)initWithAssetID:(id)a3 window:(id)a4 onFrontmostChanged:(id)a5;
+- (BKFrontmostAssetTracker)initWithAssetID:(id)d window:(id)window onFrontmostChanged:(id)changed;
 - (UIWindow)window;
 - (id)onFrontmostChanged;
 - (void)dealloc;
-- (void)setOnFrontmostChanged:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)setOnFrontmostChanged:(id)changed;
+- (void)setWindow:(id)window;
 @end
 
 @implementation BKFrontmostAssetTracker
@@ -34,9 +34,9 @@
   return v4;
 }
 
-- (void)setOnFrontmostChanged:(id)a3
+- (void)setOnFrontmostChanged:(id)changed
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(changed);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -54,13 +54,13 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_100007020(v7);
 }
 
-- (BKFrontmostAssetTracker)initWithAssetID:(id)a3 window:(id)a4 onFrontmostChanged:(id)a5
+- (BKFrontmostAssetTracker)initWithAssetID:(id)d window:(id)window onFrontmostChanged:(id)changed
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(changed);
   v7 = sub_1007A2254();
   v9 = v8;
   if (v6)
@@ -75,15 +75,15 @@
     v10 = 0;
   }
 
-  v11 = a4;
-  return FrontmostAssetTracker.init(assetID:window:onFrontmostChanged:)(v7, v9, a4, v6, v10);
+  windowCopy = window;
+  return FrontmostAssetTracker.init(assetID:window:onFrontmostChanged:)(v7, v9, window, v6, v10);
 }
 
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
   v4 = *(self + OBJC_IVAR___BKFrontmostAssetTracker_frontmostTracker);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     v6 = v4;
@@ -100,7 +100,7 @@
   v2 = *(self + OBJC_IVAR___BKFrontmostAssetTracker_frontmostTracker);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = v2;
     v2 = sub_10079E8C4();
   }
@@ -108,11 +108,11 @@
   return v2;
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
-  v5 = a3;
-  v6 = self;
-  FrontmostAssetTracker.window.setter(a3);
+  windowCopy = window;
+  selfCopy = self;
+  FrontmostAssetTracker.window.setter(window);
 }
 
 - (BKFrontmostAssetTracker)init

@@ -6,16 +6,16 @@
 - (NSManagedObjectModel)managedObjectModel;
 - (NSPersistentStoreCoordinator)persistentStoreCoordinator;
 - (OFLocationCache)init;
-- (OFLocationCache)initWithDiskCacheFilepath:(id)a3;
-- (id)placemarksForLocationCoordinate:(CLLocationCoordinate2D)a3;
-- (id)placemarksForLocationCoordinate:(CLLocationCoordinate2D)a3 andAccuracy:(double)a4 closestResultDistance:(double *)a5 numberOfResults:(unint64_t *)a6;
+- (OFLocationCache)initWithDiskCacheFilepath:(id)filepath;
+- (id)placemarksForLocationCoordinate:(CLLocationCoordinate2D)coordinate;
+- (id)placemarksForLocationCoordinate:(CLLocationCoordinate2D)coordinate andAccuracy:(double)accuracy closestResultDistance:(double *)distance numberOfResults:(unint64_t *)results;
 - (void)_didEnterBackgroundNotification;
 - (void)_willTerminateNotification;
 - (void)dealloc;
-- (void)invalidateCacheForLocationCoordinate:(CLLocationCoordinate2D)a3;
+- (void)invalidateCacheForLocationCoordinate:(CLLocationCoordinate2D)coordinate;
 - (void)invalidateDiskCaches;
 - (void)invalidateMemoryCaches;
-- (void)setPlacemarks:(id)a3 forLocationCoordinate:(CLLocationCoordinate2D)a4;
+- (void)setPlacemarks:(id)placemarks forLocationCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation OFLocationCache
@@ -46,23 +46,23 @@ OFLocationCache *__31__OFLocationCache_defaultCache__block_invoke()
   {
     v2->_predicateEntryTemplate = [MEMORY[0x277CCAC30] predicateWithFormat:@"(latitude = $latitude) && (longitude = $longitude)"];
     v2->_predicateEntryWithLocalRegionTemplate = [MEMORY[0x277CCAC30] predicateWithFormat:@"(($latitude2 <= latitude) && (latitude <= $latitude1)) && (($longitude1 <= longitude) && (longitude <= $longitude2))"];
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__didEnterBackgroundNotification name:*MEMORY[0x277D76660] object:0];
-    [v3 addObserver:v2 selector:sel__willTerminateNotification name:*MEMORY[0x277D76770] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__didEnterBackgroundNotification name:*MEMORY[0x277D76660] object:0];
+    [defaultCenter addObserver:v2 selector:sel__willTerminateNotification name:*MEMORY[0x277D76770] object:0];
   }
 
   return v2;
 }
 
-- (OFLocationCache)initWithDiskCacheFilepath:(id)a3
+- (OFLocationCache)initWithDiskCacheFilepath:(id)filepath
 {
   v4 = [(OFLocationCache *)self init];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CCAA00]);
     v10 = 0;
-    v4->_diskCacheFilepath = [a3 copy];
-    if ([v5 fileExistsAtPath:a3 isDirectory:&v10])
+    v4->_diskCacheFilepath = [filepath copy];
+    if ([v5 fileExistsAtPath:filepath isDirectory:&v10])
     {
       if (v10)
       {
@@ -76,12 +76,12 @@ LABEL_10:
     else
     {
       v9 = 0;
-      if (([v5 createDirectoryAtPath:objc_msgSend(a3 withIntermediateDirectories:"stringByDeletingLastPathComponent") attributes:1 error:{0, &v9}] & 1) == 0)
+      if (([v5 createDirectoryAtPath:objc_msgSend(filepath withIntermediateDirectories:"stringByDeletingLastPathComponent") attributes:1 error:{0, &v9}] & 1) == 0)
       {
         if (OFLoggerLevel >= 4)
         {
-          v6 = [a3 stringByDeletingLastPathComponent];
-          +[OFLogger logMessageWithLevel:file:line:andFormat:](OFLogger, "logMessageWithLevel:file:line:andFormat:", 4, "/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Caching/OFLocationCache.m", 92, @"Failed to create intermediate cache directories %@: %@", v6, [v9 localizedDescription]);
+          stringByDeletingLastPathComponent = [filepath stringByDeletingLastPathComponent];
+          +[OFLogger logMessageWithLevel:file:line:andFormat:](OFLogger, "logMessageWithLevel:file:line:andFormat:", 4, "/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Caching/OFLocationCache.m", 92, @"Failed to create intermediate cache directories %@: %@", stringByDeletingLastPathComponent, [v9 localizedDescription]);
         }
 
         goto LABEL_10;
@@ -96,9 +96,9 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76660] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76770] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76660] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76770] object:0];
   diskCacheFilepath = self->_diskCacheFilepath;
   if (diskCacheFilepath)
   {
@@ -159,13 +159,13 @@ LABEL_10:
   managedObjectContext = self->_managedObjectContext;
   if (!managedObjectContext)
   {
-    v4 = [(OFLocationCache *)self persistentStoreCoordinator];
-    if (v4)
+    persistentStoreCoordinator = [(OFLocationCache *)self persistentStoreCoordinator];
+    if (persistentStoreCoordinator)
     {
       v5 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
       self->_parentManagedObjectContext = v5;
       [(NSManagedObjectContext *)v5 setUndoManager:0];
-      [(NSManagedObjectContext *)self->_parentManagedObjectContext setPersistentStoreCoordinator:v4];
+      [(NSManagedObjectContext *)self->_parentManagedObjectContext setPersistentStoreCoordinator:persistentStoreCoordinator];
       v6 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
       self->_managedObjectContext = v6;
       [(NSManagedObjectContext *)v6 setUndoManager:0];
@@ -277,22 +277,22 @@ uint64_t __24__OFLocationCache__save__block_invoke(uint64_t a1)
 
 - (BOOL)save
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [(OFLocationCache *)self managedObjectContext];
+  managedObjectContext = [(OFLocationCache *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __23__OFLocationCache_save__block_invoke;
   v5[3] = &unk_279C89EA0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [(NSManagedObjectContext *)v3 performBlockAndWait:v5];
-  LOBYTE(v2) = *(v7 + 24);
+  [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v5];
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __23__OFLocationCache_save__block_invoke(uint64_t a1)
@@ -313,24 +313,24 @@ uint64_t __23__OFLocationCache_save__block_invoke(uint64_t a1)
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__OFLocationCache__didEnterBackgroundNotification__block_invoke;
   v7[3] = &unk_279C8A090;
   v7[4] = &v8;
-  v4 = [v3 beginBackgroundTaskWithExpirationHandler:v7];
+  v4 = [mEMORY[0x277D75128] beginBackgroundTaskWithExpirationHandler:v7];
   v9[3] = v4;
   if (v4 != *MEMORY[0x277D767B0])
   {
-    v5 = [(OFLocationCache *)self managedObjectContext];
+    managedObjectContext = [(OFLocationCache *)self managedObjectContext];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __50__OFLocationCache__didEnterBackgroundNotification__block_invoke_2;
     v6[3] = &unk_279C89EA0;
     v6[4] = self;
     v6[5] = &v8;
-    [(NSManagedObjectContext *)v5 performBlock:v6];
+    [(NSManagedObjectContext *)managedObjectContext performBlock:v6];
   }
 
   _Block_object_dispose(&v8, 8);
@@ -397,24 +397,24 @@ uint64_t __50__OFLocationCache__didEnterBackgroundNotification__block_invoke_3(u
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__OFLocationCache__willTerminateNotification__block_invoke;
   v7[3] = &unk_279C8A090;
   v7[4] = &v8;
-  v4 = [v3 beginBackgroundTaskWithExpirationHandler:v7];
+  v4 = [mEMORY[0x277D75128] beginBackgroundTaskWithExpirationHandler:v7];
   v9[3] = v4;
   if (v4 != *MEMORY[0x277D767B0])
   {
-    v5 = [(OFLocationCache *)self managedObjectContext];
+    managedObjectContext = [(OFLocationCache *)self managedObjectContext];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__OFLocationCache__willTerminateNotification__block_invoke_2;
     v6[3] = &unk_279C89EA0;
     v6[4] = self;
     v6[5] = &v8;
-    [(NSManagedObjectContext *)v5 performBlock:v6];
+    [(NSManagedObjectContext *)managedObjectContext performBlock:v6];
   }
 
   _Block_object_dispose(&v8, 8);
@@ -477,13 +477,13 @@ uint64_t __45__OFLocationCache__willTerminateNotification__block_invoke_3(uint64
 
 - (void)invalidateDiskCaches
 {
-  v3 = [(OFLocationCache *)self managedObjectContext];
+  managedObjectContext = [(OFLocationCache *)self managedObjectContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __39__OFLocationCache_invalidateDiskCaches__block_invoke;
   v4[3] = &unk_279C89F90;
   v4[4] = self;
-  [(NSManagedObjectContext *)v3 performBlockAndWait:v4];
+  [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v4];
 }
 
 uint64_t __39__OFLocationCache_invalidateDiskCaches__block_invoke(uint64_t a1)
@@ -553,13 +553,13 @@ uint64_t __39__OFLocationCache_invalidateDiskCaches__block_invoke_2(uint64_t a1)
 
 - (void)invalidateMemoryCaches
 {
-  v3 = [(OFLocationCache *)self managedObjectContext];
+  managedObjectContext = [(OFLocationCache *)self managedObjectContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __41__OFLocationCache_invalidateMemoryCaches__block_invoke;
   v4[3] = &unk_279C89F90;
   v4[4] = self;
-  [(NSManagedObjectContext *)v3 performBlockAndWait:v4];
+  [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v4];
 }
 
 uint64_t __41__OFLocationCache_invalidateMemoryCaches__block_invoke(uint64_t a1)
@@ -575,11 +575,11 @@ uint64_t __41__OFLocationCache_invalidateMemoryCaches__block_invoke(uint64_t a1)
   return [v3 performBlockAndWait:v5];
 }
 
-- (void)invalidateCacheForLocationCoordinate:(CLLocationCoordinate2D)a3
+- (void)invalidateCacheForLocationCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v6 = [(OFLocationCache *)self managedObjectContext];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  managedObjectContext = [(OFLocationCache *)self managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__OFLocationCache_invalidateCacheForLocationCoordinate___block_invoke;
@@ -587,7 +587,7 @@ uint64_t __41__OFLocationCache_invalidateMemoryCaches__block_invoke(uint64_t a1)
   v7[4] = self;
   *&v7[5] = latitude;
   *&v7[6] = longitude;
-  [(NSManagedObjectContext *)v6 performBlockAndWait:v7];
+  [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v7];
 }
 
 void *__56__OFLocationCache_invalidateCacheForLocationCoordinate___block_invoke(uint64_t a1)
@@ -615,15 +615,15 @@ void *__56__OFLocationCache_invalidateCacheForLocationCoordinate___block_invoke(
   return result;
 }
 
-- (void)setPlacemarks:(id)a3 forLocationCoordinate:(CLLocationCoordinate2D)a4
+- (void)setPlacemarks:(id)placemarks forLocationCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  if (a3)
+  if (placemarks)
   {
-    longitude = a4.longitude;
-    latitude = a4.latitude;
-    if ([a3 count])
+    longitude = coordinate.longitude;
+    latitude = coordinate.latitude;
+    if ([placemarks count])
     {
-      v8 = [(OFLocationCache *)self managedObjectContext];
+      managedObjectContext = [(OFLocationCache *)self managedObjectContext];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __55__OFLocationCache_setPlacemarks_forLocationCoordinate___block_invoke;
@@ -631,8 +631,8 @@ void *__56__OFLocationCache_invalidateCacheForLocationCoordinate___block_invoke(
       *&v9[6] = latitude;
       *&v9[7] = longitude;
       v9[4] = self;
-      v9[5] = a3;
-      [(NSManagedObjectContext *)v8 performBlockAndWait:v9];
+      v9[5] = placemarks;
+      [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v9];
     }
   }
 }
@@ -672,20 +672,20 @@ uint64_t __55__OFLocationCache_setPlacemarks_forLocationCoordinate___block_invok
   return [*(a1 + 32) _save];
 }
 
-- (id)placemarksForLocationCoordinate:(CLLocationCoordinate2D)a3 andAccuracy:(double)a4 closestResultDistance:(double *)a5 numberOfResults:(unint64_t *)a6
+- (id)placemarksForLocationCoordinate:(CLLocationCoordinate2D)coordinate andAccuracy:(double)accuracy closestResultDistance:(double *)distance numberOfResults:(unint64_t *)results
 {
   v8 = *MEMORY[0x277CE4208];
   v9 = *MEMORY[0x277CE4210];
-  if (a4 == 0.0 || v8 == a4 || v9 == a4)
+  if (accuracy == 0.0 || v8 == accuracy || v9 == accuracy)
   {
 
-    return [(OFLocationCache *)self placemarksForLocationCoordinate:a5, a6, a3.latitude, a3.longitude, v9, v8];
+    return [(OFLocationCache *)self placemarksForLocationCoordinate:distance, results, coordinate.latitude, coordinate.longitude, v9, v8];
   }
 
   else
   {
-    latitude = a3.latitude;
-    longitude = a3.longitude;
+    latitude = coordinate.latitude;
+    longitude = coordinate.longitude;
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v36 = 0;
     v37 = &v36;
@@ -695,7 +695,7 @@ uint64_t __55__OFLocationCache_setPlacemarks_forLocationCoordinate___block_invok
     v33 = &v32;
     v34 = 0x2020000000;
     v35 = 0;
-    v16 = [(OFLocationCache *)self managedObjectContext];
+    managedObjectContext = [(OFLocationCache *)self managedObjectContext];
     v17.f64[0] = latitude;
     v17.f64[1] = longitude;
     v18 = vdupq_n_s64(0x4066800000000000uLL);
@@ -705,7 +705,7 @@ uint64_t __55__OFLocationCache_setPlacemarks_forLocationCoordinate___block_invok
     v27[3] = &unk_279C8A128;
     v19 = vdupq_n_s64(0x400921FB54442D18uLL);
     v20 = vmulq_f64(vdivq_f64(v17, v18), v19);
-    v21 = vdupq_lane_s64(COERCE__INT64(a4 / 6378137.0), 0);
+    v21 = vdupq_lane_s64(COERCE__INT64(accuracy / 6378137.0), 0);
     v22 = vaddq_f64(v20, v21);
     v23 = vsubq_f64(v20, v21);
     v21.f64[0] = v22.f64[0];
@@ -719,15 +719,15 @@ uint64_t __55__OFLocationCache_setPlacemarks_forLocationCoordinate___block_invok
     v27[7] = &v36;
     v27[4] = self;
     v27[5] = v15;
-    [(NSManagedObjectContext *)v16 performBlockAndWait:v27];
-    if (a5)
+    [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v27];
+    if (distance)
     {
-      *a5 = v37[3];
+      *distance = v37[3];
     }
 
-    if (a6)
+    if (results)
     {
-      *a6 = v33[3];
+      *results = v33[3];
     }
 
     v24 = v15;
@@ -824,17 +824,17 @@ void __101__OFLocationCache_placemarksForLocationCoordinate_andAccuracy_closestR
   }
 }
 
-- (id)placemarksForLocationCoordinate:(CLLocationCoordinate2D)a3
+- (id)placemarksForLocationCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3052000000;
   v13 = __Block_byref_object_copy__0;
   v14 = __Block_byref_object_dispose__0;
   v15 = 0;
-  v6 = [(OFLocationCache *)self managedObjectContext];
+  managedObjectContext = [(OFLocationCache *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__OFLocationCache_placemarksForLocationCoordinate___block_invoke;
@@ -843,7 +843,7 @@ void __101__OFLocationCache_placemarksForLocationCoordinate_andAccuracy_closestR
   *&v9[7] = longitude;
   v9[4] = self;
   v9[5] = &v10;
-  [(NSManagedObjectContext *)v6 performBlockAndWait:v9];
+  [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
   return v7;

@@ -1,23 +1,23 @@
 @interface ARWorldAlignmentTechnique
-- (ARWorldAlignmentTechnique)initWithAlignment:(int64_t)a3 cameraPosition:(int64_t)a4;
+- (ARWorldAlignmentTechnique)initWithAlignment:(int64_t)alignment cameraPosition:(int64_t)position;
 - (BOOL)isBusy;
-- (BOOL)isEqual:(id)a3;
-- (float)_trackingAlignmentAngleForPoseData:(id)a3 deviceOrientation:(id)a4;
-- (id)_deviceOrientationPoseDataFromDeviceOrientation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)_trackingAlignmentAngleForPoseData:(id)data deviceOrientation:(id)orientation;
+- (id)_deviceOrientationPoseDataFromDeviceOrientation:(id)orientation;
 - (id)_fullDescription;
-- (id)_referenceTrackingAlignmentWithPoseData:(id)a3 deviceOrientation:(id)a4;
-- (id)_updateHeadingAlignmentWithPoseData:(id)a3 deviceOrientation:(id)a4 timestamp:(double)a5;
-- (id)predictedResultDataAtTimestamp:(double)a3 context:(id)a4;
-- (id)processData:(id)a3;
+- (id)_referenceTrackingAlignmentWithPoseData:(id)data deviceOrientation:(id)orientation;
+- (id)_updateHeadingAlignmentWithPoseData:(id)data deviceOrientation:(id)orientation timestamp:(double)timestamp;
+- (id)predictedResultDataAtTimestamp:(double)timestamp context:(id)context;
+- (id)processData:(id)data;
 - (id)resultDataClasses;
-- (void)_handleTrackingStateChanges:(id)a3 initialized:(BOOL *)a4 relocalized:(BOOL *)a5;
-- (void)_referenceDeviceOrientation:(id)a3;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
+- (void)_handleTrackingStateChanges:(id)changes initialized:(BOOL *)initialized relocalized:(BOOL *)relocalized;
+- (void)_referenceDeviceOrientation:(id)orientation;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
 @end
 
 @implementation ARWorldAlignmentTechnique
 
-- (ARWorldAlignmentTechnique)initWithAlignment:(int64_t)a3 cameraPosition:(int64_t)a4
+- (ARWorldAlignmentTechnique)initWithAlignment:(int64_t)alignment cameraPosition:(int64_t)position
 {
   v13.receiver = self;
   v13.super_class = ARWorldAlignmentTechnique;
@@ -25,8 +25,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_alignment = a3;
-    v6->_cameraPosition = a4;
+    v6->_alignment = alignment;
+    v6->_cameraPosition = position;
     v8 = dispatch_semaphore_create(1);
     dataSemaphore = v7->_dataSemaphore;
     v7->_dataSemaphore = v8;
@@ -46,15 +46,15 @@
   return [v2 setWithObjects:{v3, objc_opt_class(), 0}];
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatch_semaphore_wait(self->_dataSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     deviceOrientationDataByTime = self->_deviceOrientationDataByTime;
-    v6 = v4;
+    v6 = dataCopy;
     v7 = [v6 copy];
     [v6 timestamp];
     v9 = v8;
@@ -64,42 +64,42 @@
 
   dispatch_semaphore_signal(self->_dataSemaphore);
 
-  return v4;
+  return dataCopy;
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 resultDataOfClass:objc_opt_class()];
-  v8 = [v7 lastObject];
+  contextCopy = context;
+  v7 = [contextCopy resultDataOfClass:objc_opt_class()];
+  lastObject = [v7 lastObject];
 
   dispatch_semaphore_wait(self->_dataSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   imageMirrored = self->_imageMirrored;
-  v10 = [v6 imageData];
-  v11 = [v10 isMirrored];
+  imageData = [contextCopy imageData];
+  isMirrored = [imageData isMirrored];
 
-  if (imageMirrored != v11)
+  if (imageMirrored != isMirrored)
   {
-    v12 = [v6 imageData];
-    self->_imageMirrored = [v12 isMirrored];
+    imageData2 = [contextCopy imageData];
+    self->_imageMirrored = [imageData2 isMirrored];
 
     self->_deviceOrientationReferenced = 0;
     self->_trackingReferenced = 0;
   }
 
   v31 = 0;
-  [(ARWorldAlignmentTechnique *)self _handleTrackingStateChanges:v8 initialized:&v31 + 1 relocalized:&v31];
-  v13 = [v8 worldTrackingState];
-  v14 = [v13 reason];
+  [(ARWorldAlignmentTechnique *)self _handleTrackingStateChanges:lastObject initialized:&v31 + 1 relocalized:&v31];
+  worldTrackingState = [lastObject worldTrackingState];
+  reason = [worldTrackingState reason];
 
-  if (v14 == 1)
+  if (reason == 1)
   {
 
-    v8 = 0;
+    lastObject = 0;
   }
 
-  v15 = [(ARTimeKeyedList *)self->_deviceOrientationDataByTime nearestObjectForTime:a3];
+  v15 = [(ARTimeKeyedList *)self->_deviceOrientationDataByTime nearestObjectForTime:timestamp];
   if (v15 && !self->_deviceOrientationReferenced)
   {
     [(ARWorldAlignmentTechnique *)self _referenceDeviceOrientation:v15];
@@ -115,11 +115,11 @@
   {
     if (v15)
     {
-      if (v8)
+      if (lastObject)
       {
         if (!self->_trackingReferenced || HIBYTE(v31) == 1)
         {
-          v18 = [(ARWorldAlignmentTechnique *)self _referenceTrackingAlignmentWithPoseData:v8 deviceOrientation:v15];
+          v18 = [(ARWorldAlignmentTechnique *)self _referenceTrackingAlignmentWithPoseData:lastObject deviceOrientation:v15];
           v19 = v18;
           if (HIBYTE(v31) == 1 && self->_trackingReferenced)
           {
@@ -139,7 +139,7 @@
 
         if ([(ARWorldAlignmentTechnique *)self alignment]== 1)
         {
-          v29 = [(ARWorldAlignmentTechnique *)self _updateHeadingAlignmentWithPoseData:v8 deviceOrientation:v15 timestamp:a3];
+          v29 = [(ARWorldAlignmentTechnique *)self _updateHeadingAlignmentWithPoseData:lastObject deviceOrientation:v15 timestamp:timestamp];
           v19 = v29;
           if (!v29)
           {
@@ -170,7 +170,7 @@ LABEL_35:
           *buf = 138543618;
           v37 = v25;
           v38 = 2048;
-          v39 = self;
+          selfCopy = self;
           _os_log_impl(&dword_1C241C000, v23, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: World Tracking Reference Cleared", buf, 0x16u);
         }
 
@@ -178,7 +178,7 @@ LABEL_35:
         v26 = objc_opt_new();
         [v26 setWorldAlignmentReset:1];
         [v26 setReferenceOriginChanged:1];
-        if (v14 == 1)
+        if (reason == 1)
         {
           [v26 setSessionShouldResumeCameraPositionAndHeading:1];
         }
@@ -217,7 +217,7 @@ LABEL_41:
 
     else
     {
-      if (v14 != 1 || self->_trackingReferenced)
+      if (reason != 1 || self->_trackingReferenced)
       {
         goto LABEL_35;
       }
@@ -239,11 +239,11 @@ LABEL_40:
 LABEL_42:
 
   dispatch_semaphore_signal(self->_dataSemaphore);
-  v30 = [(ARTechnique *)self delegate];
-  [v30 technique:self didOutputResultData:v17 timestamp:v6 context:a3];
+  delegate = [(ARTechnique *)self delegate];
+  [delegate technique:self didOutputResultData:v17 timestamp:contextCopy context:timestamp];
 }
 
-- (id)predictedResultDataAtTimestamp:(double)a3 context:(id)a4
+- (id)predictedResultDataAtTimestamp:(double)timestamp context:(id)context
 {
   v39 = *MEMORY[0x1E69E9840];
   dispatch_semaphore_wait(self->_dataSemaphore, 0xFFFFFFFFFFFFFFFFLL);
@@ -256,9 +256,9 @@ LABEL_42:
   if (motionManager && [(CMMotionManager *)motionManager isPredictedDeviceMotionAvailable])
   {
     kdebug_trace();
-    v7 = [(ARWorldAlignmentTechnique *)self motionManager];
+    motionManager = [(ARWorldAlignmentTechnique *)self motionManager];
     v27 = 0;
-    v8 = [v7 predictedDeviceMotionAtTimestamp:&v27 error:a3];
+    v8 = [motionManager predictedDeviceMotionAtTimestamp:&v27 error:timestamp];
     v9 = v27;
 
     [v8 timestamp];
@@ -301,11 +301,11 @@ LABEL_20:
         *buf = 138544386;
         v30 = v15;
         v31 = 2048;
-        v32 = self;
+        selfCopy2 = self;
         v33 = 2112;
         v34 = v16;
         v35 = 2048;
-        v36 = a3;
+        timestampCopy2 = timestamp;
         v37 = 2048;
         v38 = v17;
         v18 = "%{public}@ <%p>: Error(%@) Failed to get device motion prediction at timestamp (%f) from motion manager (%p)";
@@ -325,11 +325,11 @@ LABEL_16:
       *buf = 138544386;
       v30 = v15;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2112;
       v34 = v16;
       v35 = 2048;
-      v36 = a3;
+      timestampCopy2 = timestamp;
       v37 = 2048;
       v38 = v22;
       v18 = "Error: %{public}@ <%p>: Error(%@) Failed to get device motion prediction at timestamp (%f) from motion manager (%p)";
@@ -340,7 +340,7 @@ LABEL_16:
   }
 
 LABEL_18:
-  v23 = [(ARTimeKeyedList *)self->_deviceOrientationDataByTime nearestObjectForTime:a3];
+  v23 = [(ARTimeKeyedList *)self->_deviceOrientationDataByTime nearestObjectForTime:timestamp];
   if (v23)
   {
     v10 = v23;
@@ -355,10 +355,10 @@ LABEL_22:
   return v25;
 }
 
-- (void)_referenceDeviceOrientation:(id)a3
+- (void)_referenceDeviceOrientation:(id)orientation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  orientationCopy = orientation;
   if ([(ARWorldAlignmentTechnique *)self alignment]== 1 && !self->_relocalizing)
   {
     if (self->_cameraPosition == 2)
@@ -402,9 +402,9 @@ LABEL_22:
     goto LABEL_10;
   }
 
-  if (v4)
+  if (orientationCopy)
   {
-    [v4 rotationMatrix];
+    [orientationCopy rotationMatrix];
   }
 
   else
@@ -457,12 +457,12 @@ LABEL_11:
   self->_deviceOrientationReferenced = 1;
 }
 
-- (float)_trackingAlignmentAngleForPoseData:(id)a3 deviceOrientation:(id)a4
+- (float)_trackingAlignmentAngleForPoseData:(id)data deviceOrientation:(id)orientation
 {
-  v6 = a3;
-  if (a4)
+  dataCopy = data;
+  if (orientation)
   {
-    [a4 rotationMatrix];
+    [orientation rotationMatrix];
   }
 
   else
@@ -474,29 +474,29 @@ LABEL_11:
   v7.n128_f64[0] = ARCameraToWorldTransformFromCMRotationMatrix(v18, self->_cameraPosition, self->_imageMirrored);
   *v10.i64 = AREulerAnglesFromMatrix(v7, v8, v9);
   v17 = v10;
-  [v6 cameraTransform];
+  [dataCopy cameraTransform];
   *v14.i64 = AREulerAnglesFromMatrix(v11, v12, v13);
   v15 = COERCE_FLOAT(vsubq_f32(v14, v17).i32[1]) - self->_deviceOrientationAlignmentAngle;
 
   return v15;
 }
 
-- (id)_referenceTrackingAlignmentWithPoseData:(id)a3 deviceOrientation:(id)a4
+- (id)_referenceTrackingAlignmentWithPoseData:(id)data deviceOrientation:(id)orientation
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  orientationCopy = orientation;
   v8 = objc_opt_new();
   [v8 setReferenceOriginChanged:1];
-  v9 = [(ARWorldAlignmentTechnique *)self alignment];
+  alignment = [(ARWorldAlignmentTechnique *)self alignment];
   v10 = 0.0;
-  if (v9 != 16)
+  if (alignment != 16)
   {
-    [(ARWorldAlignmentTechnique *)self _trackingAlignmentAngleForPoseData:v6 deviceOrientation:v7, 0.0];
+    [(ARWorldAlignmentTechnique *)self _trackingAlignmentAngleForPoseData:dataCopy deviceOrientation:orientationCopy, 0.0];
   }
 
   self->_trackingAlignmentAngle = v10;
-  [v6 cameraTransform];
+  [dataCopy cameraTransform];
   *self->_trackingAlignmentTranslation = v11;
   v12 = __sincosf_stret(self->_trackingAlignmentAngle * 0.5);
   v13 = vmulq_n_f32(xmmword_1C25C8BC0, v12.__sinval);
@@ -514,7 +514,7 @@ LABEL_11:
     *buf = 138543874;
     v24 = v16;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = v21;
     _os_log_impl(&dword_1C241C000, v14, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: World Tracking Referenced: %@", buf, 0x20u);
@@ -523,10 +523,10 @@ LABEL_11:
   return v8;
 }
 
-- (id)_updateHeadingAlignmentWithPoseData:(id)a3 deviceOrientation:(id)a4 timestamp:(double)a5
+- (id)_updateHeadingAlignmentWithPoseData:(id)data deviceOrientation:(id)orientation timestamp:(double)timestamp
 {
-  v7 = a5 - self->_lastHeadingUpdateTimestamp;
-  [(ARWorldAlignmentTechnique *)self _trackingAlignmentAngleForPoseData:a3 deviceOrientation:a4];
+  v7 = timestamp - self->_lastHeadingUpdateTimestamp;
+  [(ARWorldAlignmentTechnique *)self _trackingAlignmentAngleForPoseData:data deviceOrientation:orientation];
   trackingAlignmentAngle = self->_trackingAlignmentAngle;
   v10 = vabds_f32(v8, trackingAlignmentAngle);
   v11 = (4.0 / sqrtf(v7)) + 2.0;
@@ -544,7 +544,7 @@ LABEL_11:
 
   else
   {
-    self->_lastHeadingUpdateTimestamp = a5;
+    self->_lastHeadingUpdateTimestamp = timestamp;
     if (v10 <= 0.523598776)
     {
       v14 = v10 * 0.125;
@@ -571,13 +571,13 @@ LABEL_11:
   return v17;
 }
 
-- (id)_deviceOrientationPoseDataFromDeviceOrientation:(id)a3
+- (id)_deviceOrientationPoseDataFromDeviceOrientation:(id)orientation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  orientationCopy = orientation;
+  v5 = orientationCopy;
+  if (orientationCopy)
   {
-    [v4 rotationMatrix];
+    [orientationCopy rotationMatrix];
   }
 
   else
@@ -622,18 +622,18 @@ LABEL_11:
   return v10;
 }
 
-- (void)_handleTrackingStateChanges:(id)a3 initialized:(BOOL *)a4 relocalized:(BOOL *)a5
+- (void)_handleTrackingStateChanges:(id)changes initialized:(BOOL *)initialized relocalized:(BOOL *)relocalized
 {
-  v8 = a3;
-  v9 = [v8 worldTrackingState];
-  v10 = [v9 reason];
+  changesCopy = changes;
+  worldTrackingState = [changesCopy worldTrackingState];
+  reason = [worldTrackingState reason];
 
-  if (v8)
+  if (changesCopy)
   {
     lastTrackingStateReason = self->_lastTrackingStateReason;
-    if (lastTrackingStateReason != v10)
+    if (lastTrackingStateReason != reason)
     {
-      if (v10 == 1)
+      if (reason == 1)
       {
         self->_relocalizing = 1;
         if (lastTrackingStateReason != 4)
@@ -646,7 +646,7 @@ LABEL_11:
           v22[8] = 0x3FF0000000000000;
           [v12 setRotationMatrix:v22];
           [(ARWorldAlignmentTechnique *)self _referenceDeviceOrientation:v12];
-          v13 = [(ARWorldAlignmentTechnique *)self _referenceTrackingAlignmentWithPoseData:v8 deviceOrientation:v12];
+          v13 = [(ARWorldAlignmentTechnique *)self _referenceTrackingAlignmentWithPoseData:changesCopy deviceOrientation:v12];
           relocalizedAlignmentData = self->_relocalizedAlignmentData;
           self->_relocalizedAlignmentData = v13;
         }
@@ -657,59 +657,59 @@ LABEL_11:
 
       else
       {
-        v15 = [v8 worldTrackingState];
-        if ([v15 majorRelocalization])
+        worldTrackingState2 = [changesCopy worldTrackingState];
+        if ([worldTrackingState2 majorRelocalization])
         {
         }
 
         else
         {
-          v16 = [v8 worldTrackingState];
-          [v16 lastMajorRelocalizationTimestamp];
+          worldTrackingState3 = [changesCopy worldTrackingState];
+          [worldTrackingState3 lastMajorRelocalizationTimestamp];
           v18 = v17;
           lastMajorRelocalizationTimestamp = self->_lastMajorRelocalizationTimestamp;
 
           if (v18 <= lastMajorRelocalizationTimestamp)
           {
-            if (a4 && self->_lastTrackingStateReason == 1)
+            if (initialized && self->_lastTrackingStateReason == 1)
             {
-              *a4 = 1;
+              *initialized = 1;
             }
 
             goto LABEL_13;
           }
         }
 
-        if (a5)
+        if (relocalized)
         {
-          *a5 = 1;
+          *relocalized = 1;
         }
 
         self->_relocalizing = 0;
-        v20 = [v8 worldTrackingState];
-        [v20 lastMajorRelocalizationTimestamp];
+        worldTrackingState4 = [changesCopy worldTrackingState];
+        [worldTrackingState4 lastMajorRelocalizationTimestamp];
         self->_lastMajorRelocalizationTimestamp = v21;
       }
 
 LABEL_13:
-      self->_lastTrackingStateReason = v10;
+      self->_lastTrackingStateReason = reason;
     }
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = ARWorldAlignmentTechnique;
-  if ([(ARTechnique *)&v10 isEqual:v4])
+  if ([(ARTechnique *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(ARWorldAlignmentTechnique *)self alignment];
-    if (v6 == [v5 alignment])
+    v5 = equalCopy;
+    alignment = [(ARWorldAlignmentTechnique *)self alignment];
+    if (alignment == [v5 alignment])
     {
-      v7 = [(ARWorldAlignmentTechnique *)self cameraPosition];
-      v8 = v7 == [v5 cameraPosition];
+      cameraPosition = [(ARWorldAlignmentTechnique *)self cameraPosition];
+      v8 = cameraPosition == [v5 cameraPosition];
     }
 
     else
@@ -731,8 +731,8 @@ LABEL_13:
   v3 = MEMORY[0x1E696AD60];
   v12.receiver = self;
   v12.super_class = ARWorldAlignmentTechnique;
-  v4 = [(ARTechnique *)&v12 _fullDescription];
-  v5 = [v3 stringWithFormat:@"%@\n", v4];
+  _fullDescription = [(ARTechnique *)&v12 _fullDescription];
+  v5 = [v3 stringWithFormat:@"%@\n", _fullDescription];
 
   if (self->_relocalizing)
   {

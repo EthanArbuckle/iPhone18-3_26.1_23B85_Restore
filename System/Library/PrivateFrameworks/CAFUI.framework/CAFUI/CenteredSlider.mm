@@ -12,23 +12,23 @@
   v7.receiver = self;
   v7.super_class = type metadata accessor for CenteredSlider();
   v2 = v7.receiver;
-  v3 = [(CenteredSlider *)&v7 createThumbView];
+  createThumbView = [(CenteredSlider *)&v7 createThumbView];
   v4 = *&v2[OBJC_IVAR____TtC5CAFUI14CenteredSlider_thumbImageView];
-  *&v2[OBJC_IVAR____TtC5CAFUI14CenteredSlider_thumbImageView] = v3;
+  *&v2[OBJC_IVAR____TtC5CAFUI14CenteredSlider_thumbImageView] = createThumbView;
 
-  v5 = v3;
+  v5 = createThumbView;
   return v5;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CenteredSlider.layoutSubviews()();
 }
 
 - (void)valueChanged
 {
-  v2 = self;
+  selfCopy = self;
   CenteredSlider.valueChanged()();
 }
 
@@ -39,11 +39,11 @@
   v2 = v7.receiver;
   [(CenteredSlider *)&v7 tintColorDidChange];
   v3 = *&v2[OBJC_IVAR____TtC5CAFUI14CenteredSlider_fillLayer];
-  v4 = [v2 tintColor];
-  if (v4)
+  tintColor = [v2 tintColor];
+  if (tintColor)
   {
-    v5 = v4;
-    v6 = [v4 CGColor];
+    v5 = tintColor;
+    cGColor = [tintColor CGColor];
 
     [v3 setBackgroundColor_];
   }

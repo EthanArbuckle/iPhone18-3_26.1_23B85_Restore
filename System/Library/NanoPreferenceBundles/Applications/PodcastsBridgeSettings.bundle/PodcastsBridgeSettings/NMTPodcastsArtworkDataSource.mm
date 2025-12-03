@@ -1,14 +1,14 @@
 @interface NMTPodcastsArtworkDataSource
-+ (id)_backgroundColorFromCatalog:(id)a3;
-+ (id)_keyFromCatalog:(id)a3;
++ (id)_backgroundColorFromCatalog:(id)catalog;
++ (id)_keyFromCatalog:(id)catalog;
 + (id)imageURLSharedDataSource;
 + (id)uuidSharedDataSource;
-- (id)_cacheKeyForSize:(CGSize)a3 withBaseKey:(id)a4;
-- (id)_initWithIsImageURLKey:(BOOL)a3;
-- (id)existingArtworkEffectResultForEffectType:(int64_t)a3 catalog:(id)a4 options:(id)a5;
-- (id)existingRepresentationForArtworkCatalog:(id)a3;
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3;
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4;
+- (id)_cacheKeyForSize:(CGSize)size withBaseKey:(id)key;
+- (id)_initWithIsImageURLKey:(BOOL)key;
+- (id)existingArtworkEffectResultForEffectType:(int64_t)type catalog:(id)catalog options:(id)options;
+- (id)existingRepresentationForArtworkCatalog:(id)catalog;
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog;
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler;
 @end
 
 @implementation NMTPodcastsArtworkDataSource
@@ -37,29 +37,29 @@
   return v3;
 }
 
-- (id)_initWithIsImageURLKey:(BOOL)a3
+- (id)_initWithIsImageURLKey:(BOOL)key
 {
   v5.receiver = self;
   v5.super_class = NMTPodcastsArtworkDataSource;
   result = [(NMTPodcastsArtworkDataSource *)&v5 init];
   if (result)
   {
-    *(result + 8) = a3;
+    *(result + 8) = key;
   }
 
   return result;
 }
 
-- (id)existingRepresentationForArtworkCatalog:(id)a3
+- (id)existingRepresentationForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _keyFromCatalog:v4];
-  [v4 scaledFittingSize];
+  catalogCopy = catalog;
+  v5 = [objc_opt_class() _keyFromCatalog:catalogCopy];
+  [catalogCopy scaledFittingSize];
   v7 = v6;
   v9 = v8;
   v10 = [(NMTPodcastsArtworkDataSource *)self _cacheKeyForSize:v5 withBaseKey:?];
-  v11 = [v4 cache];
-  v12 = [v11 objectForKey:v10];
+  cache = [catalogCopy cache];
+  v12 = [cache objectForKey:v10];
 
   if (v12)
   {
@@ -67,12 +67,12 @@
     goto LABEL_14;
   }
 
-  if (([v4 renderHint] & 8) != 0)
+  if (([catalogCopy renderHint] & 8) != 0)
   {
     goto LABEL_13;
   }
 
-  [v4 fittingSize];
+  [catalogCopy fittingSize];
   v15 = v14;
   v17 = v16;
   if (v7 == MPArtworkCatalogOriginalSize[0] && v9 == MPArtworkCatalogOriginalSize[1])
@@ -101,8 +101,8 @@
   {
     v24 = [[PFStaticArtworkVisualIdenticality alloc] initWithArtworkIdentifier:v10];
     v13 = [MPArtworkRepresentation representationForVisualIdentity:v24 withSize:v23 image:v7, v9];
-    v25 = [v4 cache];
-    [v25 setObject:v13 forKey:v10];
+    cache2 = [catalogCopy cache];
+    [cache2 setObject:v13 forKey:v10];
 
     goto LABEL_14;
   }
@@ -114,15 +114,15 @@ LABEL_14:
   return v13;
 }
 
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _keyFromCatalog:v6];
-  [v6 scaledFittingSize];
+  catalogCopy = catalog;
+  handlerCopy = handler;
+  v8 = [objc_opt_class() _keyFromCatalog:catalogCopy];
+  [catalogCopy scaledFittingSize];
   v10 = v9;
   v12 = v11;
-  [v6 fittingSize];
+  [catalogCopy fittingSize];
   v14 = v13;
   v16 = v15;
   if (self->_isImageURLKey)
@@ -147,10 +147,10 @@ LABEL_14:
   v48 = v10;
   v49 = v12;
   v42 = v22;
-  v43 = self;
-  v23 = v6;
+  selfCopy = self;
+  v23 = catalogCopy;
   v44 = v23;
-  v24 = v7;
+  v24 = handlerCopy;
   v45 = v24;
   v25 = objc_retainBlock(v41);
   v26 = +[MTImageStore defaultStore];
@@ -168,7 +168,7 @@ LABEL_14:
     v35 = sub_26C8;
     v36 = &unk_1C840;
     v39 = v25;
-    v37 = self;
+    selfCopy2 = self;
     v28 = v22;
     v38 = v28;
     v40 = v24;
@@ -176,7 +176,7 @@ LABEL_14:
     if (self->_isImageURLKey)
     {
       v30 = [_TtC18PodcastsFoundation22DownloadableURLOptions alloc];
-      v31 = [v30 init:v28 nonAppInitiated:{0, v33, v34, v35, v36, v37, v38, v39}];
+      v31 = [v30 init:v28 nonAppInitiated:{0, v33, v34, v35, v36, selfCopy2, v38, v39}];
       v32 = +[MTImageDownloader sharedInstance];
       [v32 downloadImageUrl:v31 cacheKey:v28 userInitiated:1 callback:v29];
     }
@@ -189,22 +189,22 @@ LABEL_14:
   }
 }
 
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _keyFromCatalog:v3];
+  catalogCopy = catalog;
+  v4 = [objc_opt_class() _keyFromCatalog:catalogCopy];
 
   v5 = [[PFStaticArtworkVisualIdenticality alloc] initWithArtworkIdentifier:v4];
 
   return v5;
 }
 
-- (id)existingArtworkEffectResultForEffectType:(int64_t)a3 catalog:(id)a4 options:(id)a5
+- (id)existingArtworkEffectResultForEffectType:(int64_t)type catalog:(id)catalog options:(id)options
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v5 = a4;
-    v6 = [objc_opt_class() _backgroundColorFromCatalog:v5];
+    catalogCopy = catalog;
+    v6 = [objc_opt_class() _backgroundColorFromCatalog:catalogCopy];
 
     if (v6)
     {
@@ -227,20 +227,20 @@ LABEL_14:
   return v8;
 }
 
-- (id)_cacheKeyForSize:(CGSize)a3 withBaseKey:(id)a4
+- (id)_cacheKeyForSize:(CGSize)size withBaseKey:(id)key
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
-  v7 = v6;
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  v7 = keyCopy;
   if (width == MPArtworkCatalogOriginalSize[0] && height == MPArtworkCatalogOriginalSize[1])
   {
-    v9 = v6;
+    v9 = keyCopy;
   }
 
   else
   {
-    v9 = [NSString stringWithFormat:@"%@-{%f, %f}", v6, *&width, *&height];
+    v9 = [NSString stringWithFormat:@"%@-{%f, %f}", keyCopy, *&width, *&height];
   }
 
   v10 = v9;
@@ -248,18 +248,18 @@ LABEL_14:
   return v10;
 }
 
-+ (id)_keyFromCatalog:(id)a3
++ (id)_keyFromCatalog:(id)catalog
 {
-  v3 = [a3 token];
+  token = [catalog token];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = token;
   }
 
   else
   {
-    v4 = [v3 key];
+    v4 = [token key];
   }
 
   v5 = v4;
@@ -267,11 +267,11 @@ LABEL_14:
   return v5;
 }
 
-+ (id)_backgroundColorFromCatalog:(id)a3
++ (id)_backgroundColorFromCatalog:(id)catalog
 {
-  v3 = [a3 token];
+  token = [catalog token];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || (v4 = [v3 backgroundColor]) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 || (v4 = [token backgroundColor]) == 0)
   {
     v5 = 0;
   }

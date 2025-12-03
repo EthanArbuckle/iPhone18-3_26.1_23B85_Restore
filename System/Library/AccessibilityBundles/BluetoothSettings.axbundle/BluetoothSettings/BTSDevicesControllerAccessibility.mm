@@ -1,21 +1,21 @@
 @interface BTSDevicesControllerAccessibility
-- (void)setBluetoothEnabled:(id)a3 specifier:(id)a4;
+- (void)setBluetoothEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation BTSDevicesControllerAccessibility
 
-- (void)setBluetoothEnabled:(id)a3 specifier:(id)a4
+- (void)setBluetoothEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x29EDBFE18] sharedInstance];
-  v9 = [v8 enabled];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  mEMORY[0x29EDBFE18] = [MEMORY[0x29EDBFE18] sharedInstance];
+  enabled = [mEMORY[0x29EDBFE18] enabled];
 
-  v10 = [v6 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
   if (_UIAccessibilityFullKeyboardAccessEnabled())
   {
-    v11 = [MEMORY[0x29EDBDF48] bluetoothKeyboardDevices];
-    v12 = [v11 count] != 0;
+    bluetoothKeyboardDevices = [MEMORY[0x29EDBDF48] bluetoothKeyboardDevices];
+    v12 = [bluetoothKeyboardDevices count] != 0;
   }
 
   else
@@ -25,20 +25,20 @@
 
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v13 = [MEMORY[0x29EDBDFC8] server];
-    v14 = [v13 isBluetoothBrailleDisplayConnected];
+    server = [MEMORY[0x29EDBDFC8] server];
+    isBluetoothBrailleDisplayConnected = [server isBluetoothBrailleDisplayConnected];
   }
 
   else
   {
-    v14 = 0;
+    isBluetoothBrailleDisplayConnected = 0;
   }
 
-  if (v10 & 1 | (((UIAccessibilityIsSwitchControlRunning() | v12 | v14) & (v9 ^ v10) & 1) == 0))
+  if (bOOLValue & 1 | (((UIAccessibilityIsSwitchControlRunning() | v12 | isBluetoothBrailleDisplayConnected) & (enabled ^ bOOLValue) & 1) == 0))
   {
     v26.receiver = self;
     v26.super_class = BTSDevicesControllerAccessibility;
-    [(BTSDevicesControllerAccessibility *)&v26 setBluetoothEnabled:v6 specifier:v7];
+    [(BTSDevicesControllerAccessibility *)&v26 setBluetoothEnabled:enabledCopy specifier:specifierCopy];
   }
 
   else
@@ -68,8 +68,8 @@
     v27[1] = 3221225472;
     v27[2] = __67__BTSDevicesControllerAccessibility_setBluetoothEnabled_specifier___block_invoke_2;
     v27[3] = &unk_29F2A89E8;
-    v28 = v7;
-    v29 = self;
+    v28 = specifierCopy;
+    selfCopy = self;
     v25 = [v23 actionWithTitle:v24 style:0 handler:v27];
 
     [v19 addAction:v22];

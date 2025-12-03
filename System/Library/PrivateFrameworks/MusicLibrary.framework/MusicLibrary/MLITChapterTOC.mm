@@ -1,26 +1,26 @@
 @interface MLITChapterTOC
-+ (unsigned)_chapterDataCookieIndexMapForProperty:(int)a3 ofChapterTOC:(id)a4;
-+ (void)enumerateArtworkCacheIDsInFlattenedChapterData:(id)a3 usingBlock:(id)a4;
-+ (void)enumerateChapterTimesInFlattenedChapterData:(id)a3 usingBlock:(id)a4;
-- (MLITChapterTOC)initWithChapterDataRef:(ChapterData *)a3 totalTimeInMS:(unsigned int)a4;
-- (id)titlePropertyOfChapterAtIndex:(unsigned int)a3;
-- (id)urlPropertyOfChapterAtIndex:(unsigned int)a3;
-- (id)urlTitlePropertyOfChapterAtIndex:(unsigned int)a3;
-- (unsigned)_cachedCookieIndexMapForProperty:(int)a3 createIfNecessary:(BOOL)a4;
-- (unsigned)chapterIndexForGroupIndex:(unsigned int)a3 groupingProperty:(int)a4;
++ (unsigned)_chapterDataCookieIndexMapForProperty:(int)property ofChapterTOC:(id)c;
++ (void)enumerateArtworkCacheIDsInFlattenedChapterData:(id)data usingBlock:(id)block;
++ (void)enumerateChapterTimesInFlattenedChapterData:(id)data usingBlock:(id)block;
+- (MLITChapterTOC)initWithChapterDataRef:(ChapterData *)ref totalTimeInMS:(unsigned int)s;
+- (id)titlePropertyOfChapterAtIndex:(unsigned int)index;
+- (id)urlPropertyOfChapterAtIndex:(unsigned int)index;
+- (id)urlTitlePropertyOfChapterAtIndex:(unsigned int)index;
+- (unsigned)_cachedCookieIndexMapForProperty:(int)property createIfNecessary:(BOOL)necessary;
+- (unsigned)chapterIndexForGroupIndex:(unsigned int)index groupingProperty:(int)property;
 - (unsigned)countOfChapters;
-- (unsigned)countOfGroupsForProperty:(int)a3;
-- (unsigned)durationInMSOfGroupAtIndex:(unsigned int)a3 groupingProperty:(int)a4;
-- (unsigned)groupIndexAtTimeLocationInMS:(unsigned int)a3 groupingProperty:(int)a4;
-- (unsigned)groupIndexForChapterIndex:(unsigned int)a3 groupingProperty:(int)a4;
-- (unsigned)timeLocationInMSOfChapterAtIndex:(unsigned int)a3;
-- (unsigned)timeLocationInMSOfGroupAtIndex:(unsigned int)a3 groupingProperty:(int)a4;
+- (unsigned)countOfGroupsForProperty:(int)property;
+- (unsigned)durationInMSOfGroupAtIndex:(unsigned int)index groupingProperty:(int)property;
+- (unsigned)groupIndexAtTimeLocationInMS:(unsigned int)s groupingProperty:(int)property;
+- (unsigned)groupIndexForChapterIndex:(unsigned int)index groupingProperty:(int)property;
+- (unsigned)timeLocationInMSOfChapterAtIndex:(unsigned int)index;
+- (unsigned)timeLocationInMSOfGroupAtIndex:(unsigned int)index groupingProperty:(int)property;
 - (void)dealloc;
 @end
 
 @implementation MLITChapterTOC
 
-- (id)urlPropertyOfChapterAtIndex:(unsigned int)a3
+- (id)urlPropertyOfChapterAtIndex:(unsigned int)index
 {
   v7 = *MEMORY[0x277D85DE8];
   chapterDataRef = self->_chapterDataRef;
@@ -68,7 +68,7 @@ LABEL_11:
   return chapterDataRef;
 }
 
-- (id)urlTitlePropertyOfChapterAtIndex:(unsigned int)a3
+- (id)urlTitlePropertyOfChapterAtIndex:(unsigned int)index
 {
   v10 = *MEMORY[0x277D85DE8];
   if (!self->_chapterDataRef || (ChapterData_GetFlags() & 4) == 0)
@@ -95,15 +95,15 @@ LABEL_3:
   }
 
   v6 = v5;
-  v7 = [(MLITChapterTOC *)self urlTitleTrimmingCharacterSet];
-  v4 = [v6 stringByTrimmingCharactersInSet:v7];
+  urlTitleTrimmingCharacterSet = [(MLITChapterTOC *)self urlTitleTrimmingCharacterSet];
+  v4 = [v6 stringByTrimmingCharactersInSet:urlTitleTrimmingCharacterSet];
 
 LABEL_9:
 
   return v4;
 }
 
-- (id)titlePropertyOfChapterAtIndex:(unsigned int)a3
+- (id)titlePropertyOfChapterAtIndex:(unsigned int)index
 {
   v6 = *MEMORY[0x277D85DE8];
   if (!self->_chapterDataRef || (ChapterData_GetFlags() & 1) == 0 || ChapterData_GetIndChapterTime() == -1 || (memset(v5, 0, sizeof(v5)), ChapterData_CopyProperty()))
@@ -119,7 +119,7 @@ LABEL_9:
   return v3;
 }
 
-- (unsigned)timeLocationInMSOfChapterAtIndex:(unsigned int)a3
+- (unsigned)timeLocationInMSOfChapterAtIndex:(unsigned int)index
 {
   chapterDataRef = self->_chapterDataRef;
   if (chapterDataRef)
@@ -130,39 +130,39 @@ LABEL_9:
   return chapterDataRef;
 }
 
-- (unsigned)timeLocationInMSOfGroupAtIndex:(unsigned int)a3 groupingProperty:(int)a4
+- (unsigned)timeLocationInMSOfGroupAtIndex:(unsigned int)index groupingProperty:(int)property
 {
-  v5 = [(MLITChapterTOC *)self chapterIndexForGroupIndex:*&a3 groupingProperty:*&a4];
+  v5 = [(MLITChapterTOC *)self chapterIndexForGroupIndex:*&index groupingProperty:*&property];
 
   return [(MLITChapterTOC *)self timeLocationInMSOfChapterAtIndex:v5];
 }
 
-- (unsigned)groupIndexAtTimeLocationInMS:(unsigned int)a3 groupingProperty:(int)a4
+- (unsigned)groupIndexAtTimeLocationInMS:(unsigned int)s groupingProperty:(int)property
 {
-  v4 = *&a4;
-  v6 = [(MLChapterTOC *)self chapterIndexAtTimeLocationInMS:*&a3];
+  v4 = *&property;
+  v6 = [(MLChapterTOC *)self chapterIndexAtTimeLocationInMS:*&s];
 
   return [(MLITChapterTOC *)self groupIndexForChapterIndex:v6 groupingProperty:v4];
 }
 
-- (unsigned)durationInMSOfGroupAtIndex:(unsigned int)a3 groupingProperty:(int)a4
+- (unsigned)durationInMSOfGroupAtIndex:(unsigned int)index groupingProperty:(int)property
 {
-  v4 = *&a4;
+  v4 = *&property;
   v7 = [MLITChapterTOC chapterIndexForGroupIndex:"chapterIndexForGroupIndex:groupingProperty:" groupingProperty:?];
-  if ([(MLITChapterTOC *)self countOfGroupsForProperty:v4]- 1 == a3)
+  if ([(MLITChapterTOC *)self countOfGroupsForProperty:v4]- 1 == index)
   {
-    v8 = [(MLITChapterTOC *)self totalTimeInMS];
-    return v8 - [(MLITChapterTOC *)self timeLocationInMSOfChapterAtIndex:v7];
+    totalTimeInMS = [(MLITChapterTOC *)self totalTimeInMS];
+    return totalTimeInMS - [(MLITChapterTOC *)self timeLocationInMSOfChapterAtIndex:v7];
   }
 
   else
   {
-    v10 = [(MLITChapterTOC *)self timeLocationInMSOfChapterAtIndex:[(MLITChapterTOC *)self chapterIndexForGroupIndex:a3 + 1 groupingProperty:v4]];
+    v10 = [(MLITChapterTOC *)self timeLocationInMSOfChapterAtIndex:[(MLITChapterTOC *)self chapterIndexForGroupIndex:index + 1 groupingProperty:v4]];
     return v10 + ~[(MLITChapterTOC *)self timeLocationInMSOfChapterAtIndex:v7];
   }
 }
 
-- (unsigned)groupIndexForChapterIndex:(unsigned int)a3 groupingProperty:(int)a4
+- (unsigned)groupIndexForChapterIndex:(unsigned int)index groupingProperty:(int)property
 {
   chapterDataRef = self->_chapterDataRef;
   v5 = 0x7FFFFFFF;
@@ -170,7 +170,7 @@ LABEL_9:
   {
     IndChapterTime = ChapterData_GetIndChapterTime();
     v9 = 0x7FFFFFFF;
-    if ((a4 - 1) <= 3 && !(off_284086E08[a4 - 1])(chapterDataRef, IndChapterTime, 0, &v9) && v9 != 0x7FFFFFFF)
+    if ((property - 1) <= 3 && !(off_284086E08[property - 1])(chapterDataRef, IndChapterTime, 0, &v9) && v9 != 0x7FFFFFFF)
     {
       return v9 - 1;
     }
@@ -179,20 +179,20 @@ LABEL_9:
   return v5;
 }
 
-- (unsigned)chapterIndexForGroupIndex:(unsigned int)a3 groupingProperty:(int)a4
+- (unsigned)chapterIndexForGroupIndex:(unsigned int)index groupingProperty:(int)property
 {
-  v5 = [(MLITChapterTOC *)self _cachedCookieIndexMapForProperty:*&a4 createIfNecessary:1];
-  if (v5 && *v5 > a3)
+  v5 = [(MLITChapterTOC *)self _cachedCookieIndexMapForProperty:*&property createIfNecessary:1];
+  if (v5 && *v5 > index)
   {
-    return v5[a3 + 1] - 1;
+    return v5[index + 1] - 1;
   }
 
-  return a3;
+  return index;
 }
 
-- (unsigned)countOfGroupsForProperty:(int)a3
+- (unsigned)countOfGroupsForProperty:(int)property
 {
-  v5 = [(MLITChapterTOC *)self _cachedCookieIndexMapForProperty:*&a3 createIfNecessary:0];
+  v5 = [(MLITChapterTOC *)self _cachedCookieIndexMapForProperty:*&property createIfNecessary:0];
   if (v5)
   {
     return *v5;
@@ -209,12 +209,12 @@ LABEL_9:
   {
     IndChapterTime = ChapterData_GetIndChapterTime();
     v9 = 0x7FFFFFFF;
-    if ((a3 - 1) > 3)
+    if ((property - 1) > 3)
     {
       return 0;
     }
 
-    if ((off_284086E08[a3 - 1])(chapterDataRef, IndChapterTime, 0, &v9))
+    if ((off_284086E08[property - 1])(chapterDataRef, IndChapterTime, 0, &v9))
     {
       return 0;
     }
@@ -229,11 +229,11 @@ LABEL_9:
   return result;
 }
 
-- (unsigned)_cachedCookieIndexMapForProperty:(int)a3 createIfNecessary:(BOOL)a4
+- (unsigned)_cachedCookieIndexMapForProperty:(int)property createIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v5 = *&a3;
-  v7 = [objc_opt_class() _chapterDataCookieIndexMapForProperty:*&a3 ofChapterTOC:self];
+  necessaryCopy = necessary;
+  v5 = *&property;
+  v7 = [objc_opt_class() _chapterDataCookieIndexMapForProperty:*&property ofChapterTOC:self];
   v8 = v7;
   if (!v7 || (chapterDataRef = self->_chapterDataRef) == 0)
   {
@@ -257,7 +257,7 @@ LABEL_16:
 
   else
   {
-    v11 = !v4;
+    v11 = !necessaryCopy;
   }
 
   if (!v11)
@@ -350,13 +350,13 @@ LABEL_16:
   [(MLITChapterTOC *)&v6 dealloc];
 }
 
-- (MLITChapterTOC)initWithChapterDataRef:(ChapterData *)a3 totalTimeInMS:(unsigned int)a4
+- (MLITChapterTOC)initWithChapterDataRef:(ChapterData *)ref totalTimeInMS:(unsigned int)s
 {
   v8 = objc_opt_class();
   if (v8 == objc_opt_class())
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MLITChapterTOC.m" lineNumber:44 description:@"MLITChapterTOC is an abstract class.  You must allocate a concrete subclass."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MLITChapterTOC.m" lineNumber:44 description:@"MLITChapterTOC is an abstract class.  You must allocate a concrete subclass."];
   }
 
   v13.receiver = self;
@@ -365,8 +365,8 @@ LABEL_16:
   v10 = v9;
   if (v9)
   {
-    v9->_totalTimeInMS = a4;
-    if (a3)
+    v9->_totalTimeInMS = s;
+    if (ref)
     {
       v9->_chapterDataRef = ChapterData_Retain();
     }
@@ -375,46 +375,46 @@ LABEL_16:
   return v10;
 }
 
-+ (void)enumerateChapterTimesInFlattenedChapterData:(id)a3 usingBlock:(id)a4
++ (void)enumerateChapterTimesInFlattenedChapterData:(id)data usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  blockCopy = block;
   v7 = 0;
-  [v5 length];
-  [v5 bytes];
+  [dataCopy length];
+  [dataCopy bytes];
   ChapterData_CreateWithFlattenedData();
   ChapterData_Release();
 }
 
-+ (void)enumerateArtworkCacheIDsInFlattenedChapterData:(id)a3 usingBlock:(id)a4
++ (void)enumerateArtworkCacheIDsInFlattenedChapterData:(id)data usingBlock:(id)block
 {
   v8 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  blockCopy = block;
   v7 = 0;
-  [v5 length];
-  [v5 bytes];
+  [dataCopy length];
+  [dataCopy bytes];
   ChapterData_CreateWithFlattenedData();
   ChapterData_Release();
 }
 
-+ (unsigned)_chapterDataCookieIndexMapForProperty:(int)a3 ofChapterTOC:(id)a4
++ (unsigned)_chapterDataCookieIndexMapForProperty:(int)property ofChapterTOC:(id)c
 {
-  v7 = a4;
-  if (!v7)
+  cCopy = c;
+  if (!cCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"MLITChapterTOC.m" lineNumber:92 description:@"invalid parameter"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MLITChapterTOC.m" lineNumber:92 description:@"invalid parameter"];
   }
 
-  if ((a3 - 1) > 3)
+  if ((property - 1) > 3)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = &v7[*off_2787635A8[a3 - 1]];
+    v8 = &cCopy[*off_2787635A8[property - 1]];
   }
 
   return v8;

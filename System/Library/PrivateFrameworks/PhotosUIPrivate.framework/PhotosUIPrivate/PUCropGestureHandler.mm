@@ -1,35 +1,35 @@
 @interface PUCropGestureHandler
 - (CGSize)masterImageSize;
 - (CGVector)panRubberBandOffset;
-- (PUCropGestureHandler)initWithCropModel:(id)a3;
+- (PUCropGestureHandler)initWithCropModel:(id)model;
 - (PUCropGestureHandlerDelegate)delegate;
 - (double)_zoomScaleForCurrentCropRectAndModelRect;
-- (double)_zoomScaleForModelCropRect:(CGRect)a3;
+- (double)_zoomScaleForModelCropRect:(CGRect)rect;
 - (void)_activateRequest;
-- (void)_constrainedMoveCropRectBy:(CGVector)a3 startRect:(CGRect)a4 rubberband:(BOOL)a5;
+- (void)_constrainedMoveCropRectBy:(CGVector)by startRect:(CGRect)rect rubberband:(BOOL)rubberband;
 - (void)_deactivateRequest;
 - (void)_didTrack;
-- (void)_dispatchSyncOnDelegateQueue:(id)a3;
-- (void)_setGestureType:(int64_t)a3;
-- (void)_setZoomScale:(double)a3;
+- (void)_dispatchSyncOnDelegateQueue:(id)queue;
+- (void)_setGestureType:(int64_t)type;
+- (void)_setZoomScale:(double)scale;
 - (void)_startPitchYawRollGestureTimeoutTimer;
 - (void)_stopAnimatedPan;
 - (void)_stopAnimatedPanTimer;
 - (void)_stopAnimatedZoom;
 - (void)_stopAnimatedZoomTimer;
-- (void)_zoomWithScale:(double)a3 startCropRect:(CGRect)a4;
+- (void)_zoomWithScale:(double)scale startCropRect:(CGRect)rect;
 - (void)beginPan;
 - (void)beginZoom;
-- (void)endPanWithTranslation:(CGVector)a3 velocity:(CGVector)a4;
-- (void)endZoomWithScale:(double)a3;
-- (void)panWithTranslation:(CGVector)a3 velocity:(CGVector)a4;
+- (void)endPanWithTranslation:(CGVector)translation velocity:(CGVector)velocity;
+- (void)endZoomWithScale:(double)scale;
+- (void)panWithTranslation:(CGVector)translation velocity:(CGVector)velocity;
 - (void)reset;
-- (void)setDelegateQueue:(id)a3;
-- (void)setPitchAngle:(double)a3;
-- (void)setRollAngle:(double)a3;
-- (void)setYawAngle:(double)a3;
-- (void)zoomWithScale:(double)a3;
-- (void)zoomWithScale:(double)a3 rubberband:(BOOL)a4;
+- (void)setDelegateQueue:(id)queue;
+- (void)setPitchAngle:(double)angle;
+- (void)setRollAngle:(double)angle;
+- (void)setYawAngle:(double)angle;
+- (void)zoomWithScale:(double)scale;
+- (void)zoomWithScale:(double)scale rubberband:(BOOL)rubberband;
 @end
 
 @implementation PUCropGestureHandler
@@ -70,19 +70,19 @@
 
 - (void)_stopAnimatedPanTimer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  panAnimationTimer = v2->_panAnimationTimer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  panAnimationTimer = selfCopy->_panAnimationTimer;
   if (panAnimationTimer)
   {
     dispatch_source_cancel(panAnimationTimer);
-    v4 = v2->_panAnimationTimer;
-    v2->_panAnimationTimer = 0;
+    v4 = selfCopy->_panAnimationTimer;
+    selfCopy->_panAnimationTimer = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  [(PUCropGestureHandler *)v2 _clearGestureTypePan];
+  [(PUCropGestureHandler *)selfCopy _clearGestureTypePan];
 }
 
 - (void)_stopAnimatedZoom
@@ -113,25 +113,25 @@
   objc_sync_exit(obj);
 }
 
-- (void)_constrainedMoveCropRectBy:(CGVector)a3 startRect:(CGRect)a4 rubberband:(BOOL)a5
+- (void)_constrainedMoveCropRectBy:(CGVector)by startRect:(CGRect)rect rubberband:(BOOL)rubberband
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  dy = a3.dy;
-  dx = a3.dx;
-  if (a4.size.width < 1.0)
+  rubberbandCopy = rubberband;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dy = by.dy;
+  dx = by.dx;
+  if (rect.size.width < 1.0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:620 description:{@"Invalid parameter not satisfying: %@", @"startRect.size.width >= 1"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:620 description:{@"Invalid parameter not satisfying: %@", @"startRect.size.width >= 1"}];
   }
 
   if (height < 1.0)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:621 description:{@"Invalid parameter not satisfying: %@", @"startRect.size.height >= 1"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:621 description:{@"Invalid parameter not satisfying: %@", @"startRect.size.height >= 1"}];
   }
 
   [(NUCropModel *)self->_cropModel constrainedMoveCropRectBy:0 strict:dx startRect:dy, x, y, width, height];
@@ -139,7 +139,7 @@
   v15 = 0.0;
   v16 = 0.0;
   v17 = 0.0;
-  if (v5)
+  if (rubberbandCopy)
   {
     [(NUCropModel *)self->_cropModel cropRect:0.0];
     v14 = dx + x - v18;
@@ -161,13 +161,13 @@
   }
 }
 
-- (void)_zoomWithScale:(double)a3 startCropRect:(CGRect)a4
+- (void)_zoomWithScale:(double)scale startCropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  width = a4.size.width;
-  ScaledRect = getScaledRect(a4.origin.x, a4.origin.y, a4.size.width, a4.size.height, a3);
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  width = rect.size.width;
+  ScaledRect = getScaledRect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, scale);
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -274,7 +274,7 @@
   }
 }
 
-- (void)setRollAngle:(double)a3
+- (void)setRollAngle:(double)angle
 {
   [(PUCropGestureHandler *)self _setGestureType:2];
   x = self->_pitchYawRollState.startCropRect.origin.x;
@@ -290,13 +290,13 @@
   v12.origin.y = y;
   v12.size.width = width;
   v12.size.height = height;
-  [(NUCropModel *)self->_cropModel setRollAngle:a3 constrainCropRectWithTargetArea:v9 * CGRectGetHeight(v12) startRect:x startAngle:y, width, height, self->_gestureStartRoll];
+  [(NUCropModel *)self->_cropModel setRollAngle:angle constrainCropRectWithTargetArea:v9 * CGRectGetHeight(v12) startRect:x startAngle:y, width, height, self->_gestureStartRoll];
   [(PUCropGestureHandler *)self _didTrack];
 
   [(PUCropGestureHandler *)self _startPitchYawRollGestureTimeoutTimer];
 }
 
-- (void)setYawAngle:(double)a3
+- (void)setYawAngle:(double)angle
 {
   [(PUCropGestureHandler *)self _setGestureType:3];
   x = self->_pitchYawRollState.startCropRect.origin.x;
@@ -312,13 +312,13 @@
   v12.origin.y = y;
   v12.size.width = width;
   v12.size.height = height;
-  [(NUCropModel *)self->_cropModel setYawAngle:a3 constrainCropRectWithTargetArea:v9 * CGRectGetHeight(v12) startRect:x startAngle:y, width, height, self->_gestureStartYaw];
+  [(NUCropModel *)self->_cropModel setYawAngle:angle constrainCropRectWithTargetArea:v9 * CGRectGetHeight(v12) startRect:x startAngle:y, width, height, self->_gestureStartYaw];
   [(PUCropGestureHandler *)self _didTrack];
 
   [(PUCropGestureHandler *)self _startPitchYawRollGestureTimeoutTimer];
 }
 
-- (void)setPitchAngle:(double)a3
+- (void)setPitchAngle:(double)angle
 {
   [(PUCropGestureHandler *)self _setGestureType:1];
   x = self->_pitchYawRollState.startCropRect.origin.x;
@@ -334,7 +334,7 @@
   v12.origin.y = y;
   v12.size.width = width;
   v12.size.height = height;
-  [(NUCropModel *)self->_cropModel setPitchAngle:a3 constrainCropRectWithTargetArea:v9 * CGRectGetHeight(v12) startRect:x startAngle:y, width, height, self->_gestureStartPitch];
+  [(NUCropModel *)self->_cropModel setPitchAngle:angle constrainCropRectWithTargetArea:v9 * CGRectGetHeight(v12) startRect:x startAngle:y, width, height, self->_gestureStartPitch];
   [(PUCropGestureHandler *)self _didTrack];
 
   [(PUCropGestureHandler *)self _startPitchYawRollGestureTimeoutTimer];
@@ -342,34 +342,34 @@
 
 - (void)_startPitchYawRollGestureTimeoutTimer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  animationQueue = v2->_animationQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  animationQueue = selfCopy->_animationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__PUCropGestureHandler__startPitchYawRollGestureTimeoutTimer__block_invoke;
   block[3] = &unk_1E7B80DD0;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(animationQueue, block);
-  if (!v2->_pitchYawRollAnimationTimer)
+  if (!selfCopy->_pitchYawRollAnimationTimer)
   {
-    v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v2->_animationQueue);
+    v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy->_animationQueue);
     v5 = dispatch_time(0, 120000000);
     dispatch_source_set_timer(v4, v5, 0x7270E00uLL, 0x5F5E100uLL);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __61__PUCropGestureHandler__startPitchYawRollGestureTimeoutTimer__block_invoke_2;
     v8[3] = &unk_1E7B80DD0;
-    v8[4] = v2;
+    v8[4] = selfCopy;
     dispatch_source_set_event_handler(v4, v8);
-    pitchYawRollAnimationTimer = v2->_pitchYawRollAnimationTimer;
-    v2->_pitchYawRollAnimationTimer = v4;
+    pitchYawRollAnimationTimer = selfCopy->_pitchYawRollAnimationTimer;
+    selfCopy->_pitchYawRollAnimationTimer = v4;
     v7 = v4;
 
     dispatch_resume(v7);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __61__PUCropGestureHandler__startPitchYawRollGestureTimeoutTimer__block_invoke_2(uint64_t result)
@@ -394,25 +394,25 @@ uint64_t __61__PUCropGestureHandler__startPitchYawRollGestureTimeoutTimer__block
   return result;
 }
 
-- (void)endZoomWithScale:(double)a3
+- (void)endZoomWithScale:(double)scale
 {
   if (self->_isLogging)
   {
-    printf("[handler endZoomWithScale:%f];\n", a3);
+    printf("[handler endZoomWithScale:%f];\n", scale);
   }
 
-  [(PUCropGestureHandler *)self zoomWithScale:(self->_gesture >> 2) & 1 rubberband:a3];
+  [(PUCropGestureHandler *)self zoomWithScale:(self->_gesture >> 2) & 1 rubberband:scale];
   if (!self->_inZoomState)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:489 description:{@"Invalid parameter not satisfying: %@", @"_inZoomState"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:489 description:{@"Invalid parameter not satisfying: %@", @"_inZoomState"}];
   }
 
   self->_inZoomState = 0;
   if ((self->_gesture & 8) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:492 description:{@"Invalid parameter not satisfying: %@", @"_gesture & PUCropGestureTypePinch"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:492 description:{@"Invalid parameter not satisfying: %@", @"_gesture & PUCropGestureTypePinch"}];
   }
 
   if (self->_animateEndGesture)
@@ -426,14 +426,14 @@ uint64_t __61__PUCropGestureHandler__startPitchYawRollGestureTimeoutTimer__block
     handler[3] = &unk_1E7B80DD0;
     handler[4] = self;
     dispatch_source_set_event_handler(v6, handler);
-    v8 = self;
-    objc_sync_enter(v8);
-    zoomAnimationTimer = v8->_zoomAnimationTimer;
-    v8->_zoomAnimationTimer = v6;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    zoomAnimationTimer = selfCopy->_zoomAnimationTimer;
+    selfCopy->_zoomAnimationTimer = v6;
     v10 = v6;
 
     dispatch_resume(v10);
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -460,28 +460,28 @@ void __41__PUCropGestureHandler_endZoomWithScale___block_invoke(uint64_t a1)
   }
 }
 
-- (void)zoomWithScale:(double)a3
+- (void)zoomWithScale:(double)scale
 {
   if (self->_isLogging)
   {
-    printf("[handler zoomWithScale:%f];\n", a3);
+    printf("[handler zoomWithScale:%f];\n", scale);
   }
 
-  [(PUCropGestureHandler *)self zoomWithScale:1 rubberband:a3];
+  [(PUCropGestureHandler *)self zoomWithScale:1 rubberband:scale];
 }
 
-- (void)zoomWithScale:(double)a3 rubberband:(BOOL)a4
+- (void)zoomWithScale:(double)scale rubberband:(BOOL)rubberband
 {
   if (self->_inZoomState)
   {
-    v5 = a4;
+    rubberbandCopy = rubberband;
     if ((self->_gesture & 8) == 0)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:461 description:{@"Invalid parameter not satisfying: %@", @"_gesture & PUCropGestureTypePinch"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:461 description:{@"Invalid parameter not satisfying: %@", @"_gesture & PUCropGestureTypePinch"}];
     }
 
-    [(PUCropGestureHandler *)self _setZoomScale:a3];
+    [(PUCropGestureHandler *)self _setZoomScale:scale];
     scale = self->_pinchState.scale;
     if (scale != 1.0)
     {
@@ -489,16 +489,16 @@ void __41__PUCropGestureHandler_endZoomWithScale___block_invoke(uint64_t a1)
     }
 
     ScaledRect = getScaledRect(self->_panPinchStartRect.origin.x, self->_panPinchStartRect.origin.y, self->_panPinchStartRect.size.width, self->_panPinchStartRect.size.height, self->_panState.scale);
-    [(PUCropGestureHandler *)self _constrainedMoveCropRectBy:v5 startRect:self->_panState.modelSpaceTranslation.dx rubberband:self->_panState.modelSpaceTranslation.dy, ScaledRect, v10, v11, v12];
+    [(PUCropGestureHandler *)self _constrainedMoveCropRectBy:rubberbandCopy startRect:self->_panState.modelSpaceTranslation.dx rubberband:self->_panState.modelSpaceTranslation.dy, ScaledRect, v10, v11, v12];
 
     [(PUCropGestureHandler *)self _didTrack];
   }
 }
 
-- (void)_setZoomScale:(double)a3
+- (void)_setZoomScale:(double)scale
 {
-  self->_pinchState.scale = a3;
-  self->_panState.scale = a3;
+  self->_pinchState.scale = scale;
+  self->_panState.scale = scale;
   [(PUCropGestureHandler *)self masterImageSize];
   width = self->_panPinchStartRect.size.width;
   height = self->_panPinchStartRect.size.height;
@@ -519,13 +519,13 @@ void __41__PUCropGestureHandler_endZoomWithScale___block_invoke(uint64_t a1)
     v9 = v10;
   }
 
-  if (v9 > a3)
+  if (v9 > scale)
   {
     self->_panState.scale = v9;
   }
 
   maximumZoomScale = self->_maximumZoomScale;
-  if (maximumZoomScale >= a3)
+  if (maximumZoomScale >= scale)
   {
     maximumZoomScale = self->_panState.scale;
   }
@@ -560,8 +560,8 @@ void __41__PUCropGestureHandler_endZoomWithScale___block_invoke(uint64_t a1)
   [(PUCropGestureHandler *)self _activateRequest];
   if (self->_inZoomState)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:416 description:{@"Invalid parameter not satisfying: %@", @"!_inZoomState"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:416 description:{@"Invalid parameter not satisfying: %@", @"!_inZoomState"}];
   }
 
   self->_inZoomState = 1;
@@ -579,11 +579,11 @@ void __41__PUCropGestureHandler_endZoomWithScale___block_invoke(uint64_t a1)
   return result;
 }
 
-- (double)_zoomScaleForModelCropRect:(CGRect)a3
+- (double)_zoomScaleForModelCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(PUCropGestureHandler *)self masterImageSize:a3.origin.x];
+  height = rect.size.height;
+  width = rect.size.width;
+  [(PUCropGestureHandler *)self masterImageSize:rect.origin.x];
   v7 = 1.0;
   if (width >= 1.0)
   {
@@ -610,12 +610,12 @@ void __41__PUCropGestureHandler_endZoomWithScale___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)endPanWithTranslation:(CGVector)a3 velocity:(CGVector)a4
+- (void)endPanWithTranslation:(CGVector)translation velocity:(CGVector)velocity
 {
-  dy = a4.dy;
-  dx = a4.dx;
-  v6 = a3.dy;
-  v7 = a3.dx;
+  dy = velocity.dy;
+  dx = velocity.dx;
+  v6 = translation.dy;
+  v7 = translation.dx;
   [PUCropGestureHandler panWithTranslation:"panWithTranslation:velocity:" velocity:?];
   if (self->_isLogging)
   {
@@ -636,14 +636,14 @@ void __41__PUCropGestureHandler_endZoomWithScale___block_invoke(uint64_t a1)
     handler[3] = &unk_1E7B80DD0;
     handler[4] = self;
     dispatch_source_set_event_handler(v9, handler);
-    v11 = self;
-    objc_sync_enter(v11);
-    panAnimationTimer = v11->_panAnimationTimer;
-    v11->_panAnimationTimer = v9;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    panAnimationTimer = selfCopy->_panAnimationTimer;
+    selfCopy->_panAnimationTimer = v9;
     v13 = v9;
 
     dispatch_resume(v13);
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -678,13 +678,13 @@ void __55__PUCropGestureHandler_endPanWithTranslation_velocity___block_invoke(ui
   }
 }
 
-- (void)panWithTranslation:(CGVector)a3 velocity:(CGVector)a4
+- (void)panWithTranslation:(CGVector)translation velocity:(CGVector)velocity
 {
-  dy = a3.dy;
-  dx = a3.dx;
+  dy = translation.dy;
+  dx = translation.dx;
   if (self->_isLogging)
   {
-    printf("[handler panWithTranslation:CGVectorMake(%f, %f) velocity:CGVectorMake(%f, %f)];\n", a3.dx, a3.dy, a4.dx, a4.dy);
+    printf("[handler panWithTranslation:CGVectorMake(%f, %f) velocity:CGVectorMake(%f, %f)];\n", translation.dx, translation.dy, velocity.dx, velocity.dy);
   }
 
   if (self->_inPanState)
@@ -724,8 +724,8 @@ void __55__PUCropGestureHandler_endPanWithTranslation_velocity___block_invoke(ui
   [(PUCropGestureHandler *)self _activateRequest];
   if (self->_inPanState)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"!_inPanState"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"!_inPanState"}];
   }
 
   self->_inPanState = 1;
@@ -735,9 +735,9 @@ void __55__PUCropGestureHandler_endPanWithTranslation_velocity___block_invoke(ui
   self->_panState.modelSpaceTranslation.dy = 0.0;
 }
 
-- (void)_setGestureType:(int64_t)a3
+- (void)_setGestureType:(int64_t)type
 {
-  if (self->_gesture != a3)
+  if (self->_gesture != type)
   {
     v40 = v6;
     v41 = v5;
@@ -745,29 +745,29 @@ void __55__PUCropGestureHandler_endPanWithTranslation_velocity___block_invoke(ui
     v43 = v4;
     if (self->_isDebugging)
     {
-      v10 = a3 > 0xC ? "<incorrect enum value>" : off_1E7B80A60[a3];
+      v10 = type > 0xC ? "<incorrect enum value>" : off_1E7B80A60[type];
       printf(" _setGestureType:%s\n", v10);
-      if ((a3 & 3) != 0)
+      if ((type & 3) != 0)
       {
         puts(" pitching, yawing or rolling during a pan or pinch is not expected");
-        if ((a3 & 4) != 0)
+        if ((type & 4) != 0)
         {
-          v29 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v29 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"(type & PUCropGestureTypePan) == 0"}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"(type & PUCropGestureTypePan) == 0"}];
 
-          if ((a3 & 8) == 0)
+          if ((type & 8) == 0)
           {
             goto LABEL_9;
           }
         }
 
-        else if ((a3 & 8) == 0)
+        else if ((type & 8) == 0)
         {
           goto LABEL_9;
         }
 
-        v30 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v30 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:240 description:{@"Invalid parameter not satisfying: %@", @"(type & PUCropGestureTypePinch) == 0"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:240 description:{@"Invalid parameter not satisfying: %@", @"(type & PUCropGestureTypePinch) == 0"}];
       }
     }
 
@@ -782,13 +782,13 @@ LABEL_9:
       v37[2] = __40__PUCropGestureHandler__setGestureType___block_invoke;
       v37[3] = &unk_1E7B80C38;
       v38 = WeakRetained;
-      v39 = self;
+      selfCopy = self;
       [(PUCropGestureHandler *)self _dispatchSyncOnDelegateQueue:v37];
     }
 
-    if ((a3 & 0xC) == 0 || (gesture & 4) != 0 || (gesture & 8) != 0)
+    if ((type & 0xC) == 0 || (gesture & 4) != 0 || (gesture & 8) != 0)
     {
-      if ((a3 & 4) == 0 && (gesture & 4) != 0)
+      if ((type & 4) == 0 && (gesture & 4) != 0)
       {
         self->_panState.modelSpaceTranslation.dx = 0.0;
         self->_panState.modelSpaceTranslation.dy = 0.0;
@@ -805,18 +805,18 @@ LABEL_9:
       [(PUCropGestureHandler *)self _setZoomScale:1.0];
       if (self->_panPinchStartRect.size.width < 1.0)
       {
-        v28 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v28 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:266 description:{@"Invalid parameter not satisfying: %@", @"_panPinchStartRect.size.width >= 1"}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:266 description:{@"Invalid parameter not satisfying: %@", @"_panPinchStartRect.size.width >= 1"}];
       }
 
       if (self->_panPinchStartRect.size.height < 1.0)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v18 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:267 description:{@"Invalid parameter not satisfying: %@", @"_panPinchStartRect.size.height >= 1"}];
+        currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler4 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:267 description:{@"Invalid parameter not satisfying: %@", @"_panPinchStartRect.size.height >= 1"}];
       }
     }
 
-    if ((a3 & 3) != 0)
+    if ((type & 3) != 0)
     {
       [(NUCropModel *)self->_cropModel cropRect];
       self->_pitchYawRollState.startCropRect.origin.x = v20;
@@ -825,16 +825,16 @@ LABEL_9:
       self->_pitchYawRollState.startCropRect.size.height = height;
       if (v22 < 1.0)
       {
-        v26 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v26 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:276 description:{@"Invalid parameter not satisfying: %@", @"_pitchYawRollState.startCropRect.size.width >= 1"}];
+        currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler5 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:276 description:{@"Invalid parameter not satisfying: %@", @"_pitchYawRollState.startCropRect.size.width >= 1"}];
 
         height = self->_pitchYawRollState.startCropRect.size.height;
       }
 
       if (height < 1.0)
       {
-        v27 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v27 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:277 description:{@"Invalid parameter not satisfying: %@", @"_pitchYawRollState.startCropRect.size.height >= 1"}];
+        currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler6 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:277 description:{@"Invalid parameter not satisfying: %@", @"_pitchYawRollState.startCropRect.size.height >= 1"}];
       }
     }
 
@@ -844,7 +844,7 @@ LABEL_9:
     self->_gestureStartYaw = v24;
     [(NUCropModel *)self->_cropModel rollRadians];
     self->_gestureStartRoll = v25;
-    self->_gesture = a3;
+    self->_gesture = type;
     if (!v13)
     {
       goto LABEL_30;
@@ -852,7 +852,7 @@ LABEL_9:
 
     if (gesture)
     {
-      if (a3)
+      if (type)
       {
 LABEL_30:
 
@@ -867,10 +867,10 @@ LABEL_30:
       v34[2] = __40__PUCropGestureHandler__setGestureType___block_invoke_2;
       v34[3] = &unk_1E7B80C38;
       v35 = v13;
-      v36 = self;
+      selfCopy2 = self;
       [(PUCropGestureHandler *)self _dispatchSyncOnDelegateQueue:v34];
 
-      if (a3)
+      if (type)
       {
         goto LABEL_30;
       }
@@ -881,7 +881,7 @@ LABEL_30:
     v31[2] = __40__PUCropGestureHandler__setGestureType___block_invoke_3;
     v31[3] = &unk_1E7B80C38;
     v32 = v13;
-    v33 = self;
+    selfCopy3 = self;
     [(PUCropGestureHandler *)self _dispatchSyncOnDelegateQueue:v31];
 
     goto LABEL_30;
@@ -899,23 +899,23 @@ LABEL_30:
     v5[2] = __33__PUCropGestureHandler__didTrack__block_invoke;
     v5[3] = &unk_1E7B80C38;
     v6 = WeakRetained;
-    v7 = self;
+    selfCopy = self;
     [(PUCropGestureHandler *)self _dispatchSyncOnDelegateQueue:v5];
   }
 }
 
-- (void)_dispatchSyncOnDelegateQueue:(id)a3
+- (void)_dispatchSyncOnDelegateQueue:(id)queue
 {
-  v4 = a3;
-  v6 = v4;
-  if (self->_delegateQueueIsMain && (v5 = [MEMORY[0x1E696AF00] isMainThread], v4 = v6, v5))
+  queueCopy = queue;
+  v6 = queueCopy;
+  if (self->_delegateQueueIsMain && (v5 = [MEMORY[0x1E696AF00] isMainThread], queueCopy = v6, v5))
   {
     v6[2](v6);
   }
 
   else
   {
-    dispatch_sync(self->_delegateQueue, v4);
+    dispatch_sync(self->_delegateQueue, queueCopy);
   }
 }
 
@@ -945,18 +945,18 @@ LABEL_30:
   return result;
 }
 
-- (void)setDelegateQueue:(id)a3
+- (void)setDelegateQueue:(id)queue
 {
-  v5 = a3;
-  if (v5 == MEMORY[0x1E69E96A0])
+  queueCopy = queue;
+  if (queueCopy == MEMORY[0x1E69E96A0])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"delegateQueue != dispatch_get_main_queue()"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropGestureHandler.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"delegateQueue != dispatch_get_main_queue()"}];
   }
 
   self->_delegateQueueIsMain = 0;
   delegateQueue = self->_delegateQueue;
-  self->_delegateQueue = v5;
+  self->_delegateQueue = queueCopy;
 }
 
 - (void)reset
@@ -975,15 +975,15 @@ LABEL_30:
   self->_gesture = 0;
 }
 
-- (PUCropGestureHandler)initWithCropModel:(id)a3
+- (PUCropGestureHandler)initWithCropModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = PUCropGestureHandler;
   v5 = [(PUCropGestureHandler *)&v14 init];
   v6 = *(v5 + 29);
-  *(v5 + 29) = v4;
-  v7 = v4;
+  *(v5 + 29) = modelCopy;
+  v7 = modelCopy;
 
   *(v5 + 24) = 0u;
   *(v5 + 8) = 0u;

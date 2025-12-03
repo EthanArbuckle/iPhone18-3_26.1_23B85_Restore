@@ -1,43 +1,43 @@
 @interface CRLWPSmartField
-+ (id)allocWithZone:(_NSZone *)a3;
-- (BOOL)isEquivalentToObject:(id)a3;
-- (CRLWPSmartField)initWithRange:(_NSRange)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (BOOL)isEquivalentToObject:(id)object;
+- (CRLWPSmartField)initWithRange:(_NSRange)range;
 - (CRLWPTextSource)parentStorage;
 - (_NSRange)range;
-- (id)initFromSmartField:(id)a3;
+- (id)initFromSmartField:(id)field;
 - (unsigned)smartFieldKind;
 - (void)resetTextAttributeUUIDString;
-- (void)setTextAttributeUUIDString:(id)a3;
+- (void)setTextAttributeUUIDString:(id)string;
 @end
 
 @implementation CRLWPSmartField
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v6 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"It is illegal to instantiate CRLWPSmartField it is abstract" userInfo:0];;
     objc_exception_throw(v6);
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CRLWPSmartField;
-  return objc_msgSendSuper2(&v7, "allocWithZone:", a3);
+  return objc_msgSendSuper2(&v7, "allocWithZone:", zone);
 }
 
-- (CRLWPSmartField)initWithRange:(_NSRange)a3
+- (CRLWPSmartField)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v10.receiver = self;
   v10.super_class = CRLWPSmartField;
   v5 = [(CRLWPSmartField *)&v10 init];
   if (v5)
   {
     v6 = +[NSUUID UUID];
-    v7 = [v6 UUIDString];
+    uUIDString = [v6 UUIDString];
     textAttributeUUIDString = v5->_textAttributeUUIDString;
-    v5->_textAttributeUUIDString = v7;
+    v5->_textAttributeUUIDString = uUIDString;
 
     v5->_range.location = location;
     v5->_range.length = length;
@@ -46,22 +46,22 @@
   return v5;
 }
 
-- (id)initFromSmartField:(id)a3
+- (id)initFromSmartField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v11.receiver = self;
   v11.super_class = CRLWPSmartField;
   v5 = [(CRLWPSmartField *)&v11 init];
   if (v5)
   {
-    v6 = [v4 textAttributeUUIDString];
+    textAttributeUUIDString = [fieldCopy textAttributeUUIDString];
     textAttributeUUIDString = v5->_textAttributeUUIDString;
-    v5->_textAttributeUUIDString = v6;
+    v5->_textAttributeUUIDString = textAttributeUUIDString;
 
-    v8 = [v4 parentStorage];
-    objc_storeWeak(&v5->_parentStorage, v8);
+    parentStorage = [fieldCopy parentStorage];
+    objc_storeWeak(&v5->_parentStorage, parentStorage);
 
-    v5->_range.location = [v4 range];
+    v5->_range.location = [fieldCopy range];
     v5->_range.length = v9;
   }
 
@@ -128,15 +128,15 @@
 - (void)resetTextAttributeUUIDString
 {
   v4 = +[NSUUID UUID];
-  v3 = [v4 UUIDString];
-  [(CRLWPSmartField *)self setTextAttributeUUIDString:v3];
+  uUIDString = [v4 UUIDString];
+  [(CRLWPSmartField *)self setTextAttributeUUIDString:uUIDString];
 }
 
-- (BOOL)isEquivalentToObject:(id)a3
+- (BOOL)isEquivalentToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, objectCopy);
 
   if (v6 == self)
   {
@@ -145,11 +145,11 @@
 
   else
   {
-    if (v4)
+    if (objectCopy)
     {
       v7 = objc_opt_class();
-      v8 = sub_100014370(v7, v4);
-      v9 = [v8 textAttributeUUIDString];
+      v8 = sub_100014370(v7, objectCopy);
+      textAttributeUUIDString = [v8 textAttributeUUIDString];
       if (!self->_textAttributeUUIDString)
       {
         v10 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -180,12 +180,12 @@
         [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:111 isFatal:0 description:"Expect to have a UUIDString."];
       }
 
-      if (v9)
+      if (textAttributeUUIDString)
       {
         textAttributeUUIDString = self->_textAttributeUUIDString;
         if (textAttributeUUIDString)
         {
-          v16 = [(NSString *)textAttributeUUIDString isEqualToString:v9];
+          v16 = [(NSString *)textAttributeUUIDString isEqualToString:textAttributeUUIDString];
 LABEL_28:
 
           goto LABEL_29;
@@ -234,16 +234,16 @@ LABEL_29:
   return v16;
 }
 
-- (void)setTextAttributeUUIDString:(id)a3
+- (void)setTextAttributeUUIDString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   textAttributeUUIDString = self->_textAttributeUUIDString;
   p_textAttributeUUIDString = &self->_textAttributeUUIDString;
-  if (textAttributeUUIDString != v5)
+  if (textAttributeUUIDString != stringCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_textAttributeUUIDString, a3);
-    v5 = v8;
+    v8 = stringCopy;
+    objc_storeStrong(p_textAttributeUUIDString, string);
+    stringCopy = v8;
   }
 }
 

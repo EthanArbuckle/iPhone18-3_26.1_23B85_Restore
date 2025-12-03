@@ -1,6 +1,6 @@
 @interface HDDatabasePruningShowEntity
 - (HDDatabasePruningShowEntity)init;
-- (HDDatabasePruningShowEntity)initWithClassName:(id)a3 identifier:(id)a4 supportsPruning:(BOOL)a5 supportsPruningRestrictionPredicates:(BOOL)a6 maximumPruningAnchor:(id)a7 pruningRestrictionPredicates:(id)a8;
+- (HDDatabasePruningShowEntity)initWithClassName:(id)name identifier:(id)identifier supportsPruning:(BOOL)pruning supportsPruningRestrictionPredicates:(BOOL)predicates maximumPruningAnchor:(id)anchor pruningRestrictionPredicates:(id)restrictionPredicates;
 @end
 
 @implementation HDDatabasePruningShowEntity
@@ -15,24 +15,24 @@
   return 0;
 }
 
-- (HDDatabasePruningShowEntity)initWithClassName:(id)a3 identifier:(id)a4 supportsPruning:(BOOL)a5 supportsPruningRestrictionPredicates:(BOOL)a6 maximumPruningAnchor:(id)a7 pruningRestrictionPredicates:(id)a8
+- (HDDatabasePruningShowEntity)initWithClassName:(id)name identifier:(id)identifier supportsPruning:(BOOL)pruning supportsPruningRestrictionPredicates:(BOOL)predicates maximumPruningAnchor:(id)anchor pruningRestrictionPredicates:(id)restrictionPredicates
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  nameCopy = name;
+  identifierCopy = identifier;
+  anchorCopy = anchor;
+  restrictionPredicatesCopy = restrictionPredicates;
   v22.receiver = self;
   v22.super_class = HDDatabasePruningShowEntity;
   v18 = [(HDDatabasePruningShowEntity *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_className, a3);
-    objc_storeStrong(&v19->_identifier, a4);
-    v19->_supportsPruning = a5;
-    v19->_supportsPruningRestrictionPredicates = a6;
-    objc_storeStrong(&v19->_maximumPruningAnchor, a7);
-    objc_storeStrong(&v19->_pruningRestrictionPredicates, a8);
+    objc_storeStrong(&v18->_className, name);
+    objc_storeStrong(&v19->_identifier, identifier);
+    v19->_supportsPruning = pruning;
+    v19->_supportsPruningRestrictionPredicates = predicates;
+    objc_storeStrong(&v19->_maximumPruningAnchor, anchor);
+    objc_storeStrong(&v19->_pruningRestrictionPredicates, restrictionPredicates);
   }
 
   return v19;

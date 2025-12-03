@@ -1,6 +1,6 @@
 @interface CMIDeepZoomTransferPostProcMetalStageV2
-- (CMIDeepZoomTransferPostProcMetalStageV2)initWithMetalContext:(id)a3 withTileConfiguration:(id *)a4;
-- (int)processTileFrom:(id)a3 with:(id)a4 to:(id)a5 commandBuffer:(id)a6;
+- (CMIDeepZoomTransferPostProcMetalStageV2)initWithMetalContext:(id)context withTileConfiguration:(id *)configuration;
+- (int)processTileFrom:(id)from with:(id)with to:(id)to commandBuffer:(id)buffer;
 - (void)dealloc;
 @end
 
@@ -14,16 +14,16 @@
   [(CMIDeepZoomTransferPostProcMetalStageV2 *)&v3 dealloc];
 }
 
-- (CMIDeepZoomTransferPostProcMetalStageV2)initWithMetalContext:(id)a3 withTileConfiguration:(id *)a4
+- (CMIDeepZoomTransferPostProcMetalStageV2)initWithMetalContext:(id)context withTileConfiguration:(id *)configuration
 {
-  v7 = a3;
-  if (!a4)
+  contextCopy = context;
+  if (!configuration)
   {
     goto LABEL_11;
   }
 
-  v8 = 0;
-  if (*a4 && *(a4 + 1))
+  selfCopy = 0;
+  if (*configuration && *(configuration + 1))
   {
     v14.receiver = self;
     v14.super_class = CMIDeepZoomTransferPostProcMetalStageV2;
@@ -34,84 +34,84 @@
       goto LABEL_9;
     }
 
-    objc_storeStrong(&v9->_metalContext, a3);
+    objc_storeStrong(&v9->_metalContext, context);
     if (self->_metalContext || (+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), v10 = objc_claimAutoreleasedReturnValue(), v11 = [[FigMetalContext alloc] initWithbundle:v10 andOptionalCommandQueue:0], metalContext = self->_metalContext, self->_metalContext = v11, metalContext, v10, self->_metalContext))
     {
-      if (!sub_FEDC(self) && !sub_108FC(self, *a4, *(a4 + 1)))
+      if (!sub_FEDC(self) && !sub_108FC(self, *configuration, *(configuration + 1)))
       {
 LABEL_9:
         self = self;
-        v8 = self;
+        selfCopy = self;
         goto LABEL_10;
       }
     }
 
 LABEL_11:
-    v8 = 0;
+    selfCopy = 0;
   }
 
 LABEL_10:
 
-  return v8;
+  return selfCopy;
 }
 
-- (int)processTileFrom:(id)a3 with:(id)a4 to:(id)a5 commandBuffer:(id)a6
+- (int)processTileFrom:(id)from with:(id)with to:(id)to commandBuffer:(id)buffer
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  v15 = 0;
+  fromCopy = from;
+  withCopy = with;
+  toCopy = to;
+  bufferCopy = buffer;
+  v14 = bufferCopy;
+  computeCommandEncoder = 0;
   v16 = -12780;
-  if (v10 && v11 && v12)
+  if (fromCopy && withCopy && toCopy)
   {
-    v17 = v13;
-    if (!v13)
+    commandBuffer = bufferCopy;
+    if (!bufferCopy)
     {
-      v18 = [(FigMetalContext *)self->_metalContext commandQueue];
-      v17 = [v18 commandBuffer];
+      commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+      commandBuffer = [commandQueue commandBuffer];
     }
 
-    objc_storeStrong(&self->_tileResiduals, a4);
-    v19 = [v12 objectAtIndexedSubscript:0];
+    objc_storeStrong(&self->_tileResiduals, with);
+    v19 = [toCopy objectAtIndexedSubscript:0];
     tileOutputLuma = self->_tileOutputLuma;
     self->_tileOutputLuma = v19;
 
-    v21 = [v12 objectAtIndexedSubscript:1];
+    v21 = [toCopy objectAtIndexedSubscript:1];
     tileOutputChroma = self->_tileOutputChroma;
     self->_tileOutputChroma = v21;
 
-    v15 = [v17 computeCommandEncoder];
-    if ([v10 count] == &dword_0 + 1)
+    computeCommandEncoder = [commandBuffer computeCommandEncoder];
+    if ([fromCopy count] == &dword_0 + 1)
     {
-      v23 = [v10 objectAtIndexedSubscript:0];
-      sub_1165C(self, v23, self->_tileSourceLuma, self->_tileSourceChroma, v15);
+      v23 = [fromCopy objectAtIndexedSubscript:0];
+      sub_1165C(self, v23, self->_tileSourceLuma, self->_tileSourceChroma, computeCommandEncoder);
     }
 
     else
     {
-      sub_1177C(self, v10, self->_tileSourceLuma, self->_tileSourceChroma, v15);
+      sub_1177C(self, fromCopy, self->_tileSourceLuma, self->_tileSourceChroma, computeCommandEncoder);
     }
 
-    v24 = sub_118F8(self, self->_tileSourceLuma, self->_tileSourceChroma, self->_tileSourceLPLuma, self->_tileSourceLPChroma, self->_tileResiduals, self->_tileEnhancedLuma, self->_tileEnhancedChroma, v15);
-    if (v24 || (v24 = sub_11C80(self, self->_tileSourceLPLuma, self->_tileSourceLPChroma, self->_tileEnhancedLuma, self->_tileEnhancedChroma, self->_tileOutputLuma, self->_tileOutputChroma, v15)) != 0)
+    v24 = sub_118F8(self, self->_tileSourceLuma, self->_tileSourceChroma, self->_tileSourceLPLuma, self->_tileSourceLPChroma, self->_tileResiduals, self->_tileEnhancedLuma, self->_tileEnhancedChroma, computeCommandEncoder);
+    if (v24 || (v24 = sub_11C80(self, self->_tileSourceLPLuma, self->_tileSourceLPChroma, self->_tileEnhancedLuma, self->_tileEnhancedChroma, self->_tileOutputLuma, self->_tileOutputChroma, computeCommandEncoder)) != 0)
     {
       v16 = v24;
     }
 
     else
     {
-      v16 = sub_12084(self, self->_tileSourceLuma, self->_tileOutputLuma, v15);
+      v16 = sub_12084(self, self->_tileSourceLuma, self->_tileOutputLuma, computeCommandEncoder);
       if (!v16)
       {
-        [v15 endEncoding];
+        [computeCommandEncoder endEncoding];
         if (!v14)
         {
-          if (v17)
+          if (commandBuffer)
           {
-            [v17 commit];
-            [v17 waitUntilScheduled];
+            [commandBuffer commit];
+            [commandBuffer waitUntilScheduled];
             v16 = 0;
           }
         }
@@ -121,7 +121,7 @@ LABEL_10:
 
   else
   {
-    v17 = v13;
+    commandBuffer = bufferCopy;
   }
 
   return v16;

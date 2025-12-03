@@ -7,8 +7,8 @@
 - (BOOL)isLocked;
 - (BOOL)isRestrictedSKU;
 - (id)_computeName;
-- (id)featurePlatterView:(id)a3 backgrounColor:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (id)featurePlatterView:(id)view backgrounColor:(id)color;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 - (id)proxCardAddToDevice;
 - (id)proxCardAlreadyAttached;
 - (id)proxCardAttachAccessory;
@@ -26,91 +26,91 @@
 - (id)proxCardUpgradeAccountSecurity;
 - (id)proxCardUpgradeAccountSecurityError;
 - (unint64_t)accountState;
-- (unint64_t)stateForAccessory:(id)a3;
-- (void)_addAccessorytoDataStore:(id)a3;
-- (void)_removeAccessoryToDataStoreWithID:(id)a3;
-- (void)accessoryDidConnect:(id)a3;
-- (void)accessoryDidDisconnect:(id)a3;
-- (void)addDismissButtonAction:(id)a3;
-- (void)addDynamicMapToCard:(id)a3;
-- (void)addImagetoCard:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (unint64_t)stateForAccessory:(id)accessory;
+- (void)_addAccessorytoDataStore:(id)store;
+- (void)_removeAccessoryToDataStoreWithID:(id)d;
+- (void)accessoryDidConnect:(id)connect;
+- (void)accessoryDidDisconnect:(id)disconnect;
+- (void)addDismissButtonAction:(id)action;
+- (void)addDynamicMapToCard:(id)card;
+- (void)addImagetoCard:(id)card;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)continueWithAccountValidationFlow;
-- (void)enableFindMyWithCompletion:(id)a3;
+- (void)enableFindMyWithCompletion:(id)completion;
 - (void)launchSettingsAppUpgradeFlow;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)postNotification:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForSetupFlowFor:(id)a3;
-- (void)progressFlowWithState:(unint64_t)a3;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)postNotification:(id)notification;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)prepareForSetupFlowFor:(id)for;
+- (void)progressFlowWithState:(unint64_t)state;
 - (void)proxCardFlowDidDismiss;
 - (void)proxCardFlowWillPresent;
-- (void)setUpFindMyWithCompletion:(id)a3;
+- (void)setUpFindMyWithCompletion:(id)completion;
 - (void)setupEnded;
-- (void)storeAccessoryAsNotFindmyEnabled:(id)a3;
+- (void)storeAccessoryAsNotFindmyEnabled:(id)enabled;
 - (void)triggerFindMyAppInstallation;
-- (void)upgradeAccountButtonPressedOn:(id)a3;
+- (void)upgradeAccountButtonPressedOn:(id)on;
 - (void)viewDidLoad;
 @end
 
 @implementation FMDMagSafeSetupRemoteUIViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = [(FMDMagSafeSetupRemoteUIViewController *)self _remoteViewControllerProxyWithErrorHandler:&stru_100038738];
   [(FMDMagSafeSetupRemoteUIViewController *)self setRemoteVCProxy:v8];
 
   v9 = sub_100002400();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 userInfo];
+    userInfo = [contextCopy userInfo];
     v13 = 138412290;
-    v14 = v10;
+    v14 = userInfo;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "configContext = %@", &v13, 0xCu);
   }
 
-  v11 = [(FMDMagSafeSetupRemoteUIViewController *)self remoteVCProxy];
-  [v11 setReachabilityDisabled:1];
+  remoteVCProxy = [(FMDMagSafeSetupRemoteUIViewController *)self remoteVCProxy];
+  [remoteVCProxy setReachabilityDisabled:1];
 
-  v12 = [(FMDMagSafeSetupRemoteUIViewController *)self remoteVCProxy];
-  [v12 setAllowsAlertStacking:1];
+  remoteVCProxy2 = [(FMDMagSafeSetupRemoteUIViewController *)self remoteVCProxy];
+  [remoteVCProxy2 setAllowsAlertStacking:1];
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = [(FMDMagSafeSetupRemoteUIViewController *)self _remoteViewControllerProxyWithErrorHandler:&stru_100038758];
   [(FMDMagSafeSetupRemoteUIViewController *)self setRemoteVCProxy:v8];
 
-  v9 = [v7 userInfo];
+  userInfo = [contextCopy userInfo];
 
-  v10 = [v9 objectForKeyedSubscript:@"FMLaunchContext"];
+  v10 = [userInfo objectForKeyedSubscript:@"FMLaunchContext"];
   [(FMDMagSafeSetupRemoteUIViewController *)self setLaunchContext:v10];
 
-  v11 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
-  v12 = [v11 objectForKeyedSubscript:@"launchedFromFindMyApp"];
+  launchContext = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
+  v12 = [launchContext objectForKeyedSubscript:@"launchedFromFindMyApp"];
   -[FMDMagSafeSetupRemoteUIViewController setLaunchedFromFindMyApp:](self, "setLaunchedFromFindMyApp:", [v12 BOOLValue]);
 
   v13 = sub_100002400();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
+    launchContext2 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
     v15 = 138412290;
-    v16 = v14;
+    v16 = launchContext2;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "launchContext = %@", &v15, 0xCu);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -173,12 +173,12 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "FMDMagSafeSetupRemoteUIViewController: proxCardFlowDidDismiss get called", v6, 2u);
   }
 
-  v4 = [(FMDMagSafeSetupRemoteUIViewController *)self locationManager];
+  locationManager = [(FMDMagSafeSetupRemoteUIViewController *)self locationManager];
 
-  if (v4)
+  if (locationManager)
   {
-    v5 = [(FMDMagSafeSetupRemoteUIViewController *)self locationManager];
-    [v5 stopUpdatingLocation];
+    locationManager2 = [(FMDMagSafeSetupRemoteUIViewController *)self locationManager];
+    [locationManager2 stopUpdatingLocation];
 
     [(FMDMagSafeSetupRemoteUIViewController *)self setLocationManager:0];
   }
@@ -205,17 +205,17 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)accessoryDidConnect:(id)a3
+- (void)accessoryDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
-  v6 = [v5 objectForKeyedSubscript:@"serialNumber"];
+  connectCopy = connect;
+  launchContext = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
+  v6 = [launchContext objectForKeyedSubscript:@"serialNumber"];
   if (v6)
   {
     v7 = v6;
-    v8 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
-    v9 = [v8 objectForKeyedSubscript:@"serialNumber"];
-    v10 = [v4 isEqualToString:v9];
+    launchContext2 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
+    v9 = [launchContext2 objectForKeyedSubscript:@"serialNumber"];
+    v10 = [connectCopy isEqualToString:v9];
 
     if (!v10)
     {
@@ -231,39 +231,39 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v67 = v4;
+    v67 = connectCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "magsafe accessory with serial number %@ connected", buf, 0xCu);
   }
 
-  v12 = [(FMDMagSafeSetupRemoteUIViewController *)self timeoutTimer];
+  timeoutTimer = [(FMDMagSafeSetupRemoteUIViewController *)self timeoutTimer];
 
-  if (v12)
+  if (timeoutTimer)
   {
-    v13 = [(FMDMagSafeSetupRemoteUIViewController *)self timeoutTimer];
-    [v13 cancel];
+    timeoutTimer2 = [(FMDMagSafeSetupRemoteUIViewController *)self timeoutTimer];
+    [timeoutTimer2 cancel];
 
     [(FMDMagSafeSetupRemoteUIViewController *)self setTimeoutTimer:0];
   }
 
-  v14 = [(FMDMagSafeSetupRemoteUIViewController *)self showAttachScreenTimer];
+  showAttachScreenTimer = [(FMDMagSafeSetupRemoteUIViewController *)self showAttachScreenTimer];
 
-  if (v14)
+  if (showAttachScreenTimer)
   {
-    v15 = [(FMDMagSafeSetupRemoteUIViewController *)self showAttachScreenTimer];
-    [v15 cancel];
+    showAttachScreenTimer2 = [(FMDMagSafeSetupRemoteUIViewController *)self showAttachScreenTimer];
+    [showAttachScreenTimer2 cancel];
 
     [(FMDMagSafeSetupRemoteUIViewController *)self setShowAttachScreenTimer:0];
   }
 
-  v16 = [(FMDMagSafeSetupRemoteUIViewController *)self presentingAccessorySerialNumber];
+  presentingAccessorySerialNumber = [(FMDMagSafeSetupRemoteUIViewController *)self presentingAccessorySerialNumber];
 
-  if (v16)
+  if (presentingAccessorySerialNumber)
   {
-    v17 = [(FMDMagSafeSetupRemoteUIViewController *)self presentingAccessorySerialNumber];
-    v18 = [v17 isEqualToString:v4];
+    presentingAccessorySerialNumber2 = [(FMDMagSafeSetupRemoteUIViewController *)self presentingAccessorySerialNumber];
+    v18 = [presentingAccessorySerialNumber2 isEqualToString:connectCopy];
 
-    v19 = sub_100002400();
-    v20 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
+    firstObject = sub_100002400();
+    v20 = os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR);
     if (v18)
     {
       if (v20)
@@ -280,23 +280,23 @@
     goto LABEL_41;
   }
 
-  [(FMDMagSafeSetupRemoteUIViewController *)self setPresentingAccessorySerialNumber:v4];
-  v21 = [(FMDMagSafeSetupRemoteUIViewController *)self caAccessoryManager];
-  v22 = [v21 accessoryRawInfo];
-  v23 = [v22 allValues];
-  v19 = [v23 firstObject];
+  [(FMDMagSafeSetupRemoteUIViewController *)self setPresentingAccessorySerialNumber:connectCopy];
+  caAccessoryManager = [(FMDMagSafeSetupRemoteUIViewController *)self caAccessoryManager];
+  accessoryRawInfo = [caAccessoryManager accessoryRawInfo];
+  allValues = [accessoryRawInfo allValues];
+  firstObject = [allValues firstObject];
 
-  if (v4)
+  if (connectCopy)
   {
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v24 = [(FMDMagSafeSetupRemoteUIViewController *)self caAccessoryManager];
-    v25 = [v24 accessoryRawInfo];
-    v26 = [v25 allValues];
+    caAccessoryManager2 = [(FMDMagSafeSetupRemoteUIViewController *)self caAccessoryManager];
+    accessoryRawInfo2 = [caAccessoryManager2 accessoryRawInfo];
+    allValues2 = [accessoryRawInfo2 allValues];
 
-    v27 = [v26 countByEnumeratingWithState:&v61 objects:v65 count:16];
+    v27 = [allValues2 countByEnumeratingWithState:&v61 objects:v65 count:16];
     if (v27)
     {
       v28 = v27;
@@ -307,23 +307,23 @@
         {
           if (*v62 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(allValues2);
           }
 
           v31 = *(*(&v61 + 1) + 8 * i);
-          v32 = [v31 serialNumber];
-          v33 = [v32 isEqualToString:v4];
+          serialNumber = [v31 serialNumber];
+          v33 = [serialNumber isEqualToString:connectCopy];
 
           if (v33)
           {
             v34 = v31;
 
-            v19 = v34;
+            firstObject = v34;
             goto LABEL_28;
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v61 objects:v65 count:16];
+        v28 = [allValues2 countByEnumeratingWithState:&v61 objects:v65 count:16];
         if (v28)
         {
           continue;
@@ -336,18 +336,18 @@
 LABEL_28:
   }
 
-  v35 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
-  v36 = [v35 objectForKeyedSubscript:@"serialNumber"];
+  launchContext3 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
+  v36 = [launchContext3 objectForKeyedSubscript:@"serialNumber"];
   if (!v36)
   {
     goto LABEL_36;
   }
 
   v37 = v36;
-  v38 = [v19 serialNumber];
-  v39 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
-  v40 = [v39 objectForKeyedSubscript:@"serialNumber"];
-  if (![v38 isEqualToString:v40])
+  serialNumber2 = [firstObject serialNumber];
+  launchContext4 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
+  v40 = [launchContext4 objectForKeyedSubscript:@"serialNumber"];
+  if (![serialNumber2 isEqualToString:v40])
   {
 LABEL_35:
 
@@ -355,8 +355,8 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v41 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
-  v42 = [v41 objectForKeyedSubscript:@"isNVMSetup"];
+  launchContext5 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
+  v42 = [launchContext5 objectForKeyedSubscript:@"isNVMSetup"];
   if (!v42)
   {
 
@@ -364,9 +364,9 @@ LABEL_36:
   }
 
   v43 = v42;
-  v56 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
-  v57 = v41;
-  v44 = [v56 objectForKeyedSubscript:@"keysAvailable"];
+  launchContext6 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
+  v57 = launchContext5;
+  v44 = [launchContext6 objectForKeyedSubscript:@"keysAvailable"];
 
   if (!v44)
   {
@@ -384,61 +384,61 @@ LABEL_37:
     block[1] = 3221225472;
     block[2] = sub_100004E24;
     block[3] = &unk_100038858;
-    v59 = v19;
-    v60 = self;
+    v59 = firstObject;
+    selfCopy = self;
     dispatch_async(v55, block);
 
-    v53 = v59;
+    physicalAccessory = v59;
     goto LABEL_40;
   }
 
-  v45 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
-  v46 = [v45 objectForKeyedSubscript:@"isNVMSetup"];
-  -[NSObject setIsNVMSetup:](v19, "setIsNVMSetup:", [v46 BOOLValue]);
+  launchContext7 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
+  v46 = [launchContext7 objectForKeyedSubscript:@"isNVMSetup"];
+  -[NSObject setIsNVMSetup:](firstObject, "setIsNVMSetup:", [v46 BOOLValue]);
 
-  v47 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
-  v48 = [v47 objectForKeyedSubscript:@"keysAvailable"];
-  -[NSObject setKeysAvailable:](v19, "setKeysAvailable:", [v48 BOOLValue]);
+  launchContext8 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
+  v48 = [launchContext8 objectForKeyedSubscript:@"keysAvailable"];
+  -[NSObject setKeysAvailable:](firstObject, "setKeysAvailable:", [v48 BOOLValue]);
 
-  v49 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
-  v50 = [v49 objectForKeyedSubscript:@"phoneNumber"];
-  [v19 setPhoneNumber:v50];
+  launchContext9 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
+  v50 = [launchContext9 objectForKeyedSubscript:@"phoneNumber"];
+  [firstObject setPhoneNumber:v50];
 
-  v51 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
-  v52 = [v51 objectForKeyedSubscript:@"email"];
-  [v19 setEmail:v52];
+  launchContext10 = [(FMDMagSafeSetupRemoteUIViewController *)self launchContext];
+  v52 = [launchContext10 objectForKeyedSubscript:@"email"];
+  [firstObject setEmail:v52];
 
-  [(FMDMagSafeSetupRemoteUIViewController *)self setPhysicalAccessory:v19];
-  v53 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  [(FMDMagSafeSetupRemoteUIViewController *)self prepareForSetupFlowFor:v53];
+  [(FMDMagSafeSetupRemoteUIViewController *)self setPhysicalAccessory:firstObject];
+  physicalAccessory = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  [(FMDMagSafeSetupRemoteUIViewController *)self prepareForSetupFlowFor:physicalAccessory];
 LABEL_40:
 
 LABEL_41:
 LABEL_42:
 }
 
-- (void)accessoryDidDisconnect:(id)a3
+- (void)accessoryDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = sub_10000EE80();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "accessory with serialNumber %@ disconnected", &v10, 0xCu);
   }
 
-  v6 = [(FMDMagSafeSetupRemoteUIViewController *)self presentingAccessorySerialNumber];
-  if (!v6 || (v7 = v6, -[FMDMagSafeSetupRemoteUIViewController presentingAccessorySerialNumber](self, "presentingAccessorySerialNumber"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqualToString:v4], v8, v7, v9))
+  presentingAccessorySerialNumber = [(FMDMagSafeSetupRemoteUIViewController *)self presentingAccessorySerialNumber];
+  if (!presentingAccessorySerialNumber || (v7 = presentingAccessorySerialNumber, -[FMDMagSafeSetupRemoteUIViewController presentingAccessorySerialNumber](self, "presentingAccessorySerialNumber"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqualToString:disconnectCopy], v8, v7, v9))
   {
     [(FMDMagSafeSetupRemoteUIViewController *)self setPresentingAccessorySerialNumber:0];
     [(FMDMagSafeSetupRemoteUIViewController *)self setupEnded];
   }
 }
 
-- (void)prepareForSetupFlowFor:(id)a3
+- (void)prepareForSetupFlowFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   [(FMDMagSafeSetupRemoteUIViewController *)self setDeviceLockState:MKBGetDeviceLockState()];
   v5 = sub_100002400();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -447,19 +447,19 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "initialising prepareForSetupFlowFor", &v28, 2u);
   }
 
-  [(FMDMagSafeSetupRemoteUIViewController *)self setMagSafeState:[(FMDMagSafeSetupRemoteUIViewController *)self stateForAccessory:v4]];
+  [(FMDMagSafeSetupRemoteUIViewController *)self setMagSafeState:[(FMDMagSafeSetupRemoteUIViewController *)self stateForAccessory:forCopy]];
   if ([(FMDMagSafeSetupRemoteUIViewController *)self magSafeState]== 3)
   {
     v6 = +[FMDMagSafeDataStore sharedInstance];
-    v7 = [v6 readAllAccessoriesFromDisk];
+    readAllAccessoriesFromDisk = [v6 readAllAccessoriesFromDisk];
 
-    v8 = [v4 serialNumber];
-    v9 = [FMDExtHelper deviceIDFromAddress:v8];
+    serialNumber = [forCopy serialNumber];
+    v9 = [FMDExtHelper deviceIDFromAddress:serialNumber];
 
-    v10 = [v7 objectForKeyedSubscript:v9];
-    if (!v10 || (v11 = v10, [v7 objectForKeyedSubscript:v9], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "findMyEnabled"), v12, v11, (v13 & 1) == 0))
+    v10 = [readAllAccessoriesFromDisk objectForKeyedSubscript:v9];
+    if (!v10 || (v11 = v10, [readAllAccessoriesFromDisk objectForKeyedSubscript:v9], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "findMyEnabled"), v12, v11, (v13 & 1) == 0))
     {
-      [(FMDMagSafeSetupRemoteUIViewController *)self _addAccessorytoDataStore:v4];
+      [(FMDMagSafeSetupRemoteUIViewController *)self _addAccessorytoDataStore:forCopy];
     }
 
     [(FMDMagSafeSetupRemoteUIViewController *)self postNotification:@"com.apple.icloud.findmydeviced.findkit.magSafe.added"];
@@ -468,12 +468,12 @@ LABEL_42:
   v14 = sub_100002400();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceLockState];
-    v16 = [(FMDMagSafeSetupRemoteUIViewController *)self magSafeState];
+    deviceLockState = [(FMDMagSafeSetupRemoteUIViewController *)self deviceLockState];
+    magSafeState = [(FMDMagSafeSetupRemoteUIViewController *)self magSafeState];
     v28 = 67109632;
-    v29 = v15;
+    v29 = deviceLockState;
     v30 = 2048;
-    v31 = v16;
+    v31 = magSafeState;
     v32 = 2048;
     v33 = 0;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Device lock state = %d magSafeState = %lu proxCardState = %lu", &v28, 0x1Cu);
@@ -483,17 +483,17 @@ LABEL_42:
   {
     if ([(FMDMagSafeSetupRemoteUIViewController *)self magSafeState]== 3)
     {
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2;
 LABEL_35:
-      [(FMDMagSafeSetupRemoteUIViewController *)v17 progressFlowWithState:v18];
+      [(FMDMagSafeSetupRemoteUIViewController *)selfCopy3 progressFlowWithState:v18];
       goto LABEL_36;
     }
 
     if ([(FMDMagSafeSetupRemoteUIViewController *)self magSafeState]== 6)
     {
 LABEL_14:
-      v17 = self;
+      selfCopy3 = self;
       v18 = 3;
       goto LABEL_35;
     }
@@ -520,12 +520,12 @@ LABEL_14:
     v20 = sub_100002400();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceLockState];
-      v22 = [(FMDMagSafeSetupRemoteUIViewController *)self magSafeState];
+      deviceLockState2 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceLockState];
+      magSafeState2 = [(FMDMagSafeSetupRemoteUIViewController *)self magSafeState];
       v28 = 67109632;
-      v29 = v21;
+      v29 = deviceLockState2;
       v30 = 2048;
-      v31 = v22;
+      v31 = magSafeState2;
       v32 = 2048;
       v33 = 0;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Device lock state = %d magSafeState = %lu proxCardState = %lu", &v28, 0x1Cu);
@@ -567,18 +567,18 @@ LABEL_14:
     v24 = sub_100002400();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceLockState];
-      v26 = [(FMDMagSafeSetupRemoteUIViewController *)self magSafeState];
+      deviceLockState3 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceLockState];
+      magSafeState3 = [(FMDMagSafeSetupRemoteUIViewController *)self magSafeState];
       v28 = 67109632;
-      v29 = v25;
+      v29 = deviceLockState3;
       v30 = 2048;
-      v31 = v26;
+      v31 = magSafeState3;
       v32 = 2048;
       v33 = v23;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Device lock state = %d magSafeState = %lu proxCardState = %lu", &v28, 0x1Cu);
     }
 
-    v17 = self;
+    selfCopy3 = self;
     v18 = v23;
     goto LABEL_35;
   }
@@ -593,37 +593,37 @@ LABEL_14:
 LABEL_36:
 }
 
-- (unint64_t)stateForAccessory:(id)a3
+- (unint64_t)stateForAccessory:(id)accessory
 {
-  v4 = a3;
-  if (!v4)
+  accessoryCopy = accessory;
+  if (!accessoryCopy)
   {
     v10 = 0;
     goto LABEL_11;
   }
 
   v5 = +[FMDAccessoryTypeValidator sharedInstance];
-  v6 = [v4 accessoryType];
-  if (![v5 isAllowedAccessoryWithType:v6])
+  accessoryType = [accessoryCopy accessoryType];
+  if (![v5 isAllowedAccessoryWithType:accessoryType])
   {
 
     goto LABEL_10;
   }
 
-  v7 = [v4 isMF4i];
+  isMF4i = [accessoryCopy isMF4i];
 
-  if ((v7 & 1) == 0)
+  if ((isMF4i & 1) == 0)
   {
 LABEL_10:
     v10 = 6;
     goto LABEL_11;
   }
 
-  v8 = [v4 isNVMSetup];
-  v9 = [v4 keysAvailable];
-  if (v8)
+  isNVMSetup = [accessoryCopy isNVMSetup];
+  keysAvailable = [accessoryCopy keysAvailable];
+  if (isNVMSetup)
   {
-    if (v9)
+    if (keysAvailable)
     {
       v10 = 3;
     }
@@ -637,19 +637,19 @@ LABEL_10:
   else
   {
     v12 = +[FMDMagSafeDataStore sharedInstance];
-    v13 = [v12 readAllAccessoriesFromDisk];
+    readAllAccessoriesFromDisk = [v12 readAllAccessoriesFromDisk];
 
-    v14 = [v4 serialNumber];
-    v15 = [FMDExtHelper deviceIDFromAddress:v14];
+    serialNumber = [accessoryCopy serialNumber];
+    v15 = [FMDExtHelper deviceIDFromAddress:serialNumber];
 
-    v16 = [v13 objectForKeyedSubscript:v15];
+    v16 = [readAllAccessoriesFromDisk objectForKeyedSubscript:v15];
 
     if (v16)
     {
-      v17 = [v13 objectForKeyedSubscript:v15];
-      v18 = [v17 findMyEnabled];
+      v17 = [readAllAccessoriesFromDisk objectForKeyedSubscript:v15];
+      findMyEnabled = [v17 findMyEnabled];
 
-      if (v18)
+      if (findMyEnabled)
       {
         [(FMDMagSafeSetupRemoteUIViewController *)self _removeAccessoryToDataStoreWithID:v15];
         v10 = 0;
@@ -672,9 +672,9 @@ LABEL_11:
   return v10;
 }
 
-- (void)_removeAccessoryToDataStoreWithID:(id)a3
+- (void)_removeAccessoryToDataStoreWithID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = dispatch_group_create();
   dispatch_group_enter(v4);
   v5 = +[FMDMagSafeDataStore sharedInstance];
@@ -684,15 +684,15 @@ LABEL_11:
   v8[3] = &unk_100038880;
   v9 = v4;
   v6 = v4;
-  [v5 removeAccessoryWithId:v3 withCompletion:v8];
+  [v5 removeAccessoryWithId:dCopy withCompletion:v8];
 
   v7 = dispatch_time(0, 1000000000);
   dispatch_group_wait(v6, v7);
 }
 
-- (void)_addAccessorytoDataStore:(id)a3
+- (void)_addAccessorytoDataStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   v25 = 0;
@@ -701,18 +701,18 @@ LABEL_11:
   v26[2] = sub_1000064E4;
   v26[3] = sub_1000064F4;
   v27 = 0;
-  v6 = [v4 name];
+  name = [storeCopy name];
 
-  if (!v6)
+  if (!name)
   {
-    v7 = [(FMDMagSafeSetupRemoteUIViewController *)self _computeName];
+    _computeName = [(FMDMagSafeSetupRemoteUIViewController *)self _computeName];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1000064FC;
     v22[3] = &unk_1000388A8;
     v24 = &v25;
     v23 = v5;
-    [v4 setName:v7 withCompletion:v22];
+    [storeCopy setName:_computeName withCompletion:v22];
   }
 
   v8 = dispatch_time(0, 10000000000);
@@ -729,12 +729,12 @@ LABEL_11:
 
   if (v10)
   {
-    v12 = [[FMDMagSafeAccessory alloc] initWithPhysicalAccessory:v4 fmEnabled:1];
+    v12 = [[FMDMagSafeAccessory alloc] initWithPhysicalAccessory:storeCopy fmEnabled:1];
     [(FMDMagSafeSetupRemoteUIViewController *)self setMagSafeAccessory:v12];
 
     dispatch_group_enter(v5);
     v13 = +[FMDMagSafeDataStore sharedInstance];
-    v14 = [(FMDMagSafeSetupRemoteUIViewController *)self magSafeAccessory];
+    magSafeAccessory = [(FMDMagSafeSetupRemoteUIViewController *)self magSafeAccessory];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000065D8;
@@ -742,7 +742,7 @@ LABEL_11:
     v21 = &v25;
     v15 = v5;
     v20 = v15;
-    [v13 addAccessory:v14 withCompletion:v19];
+    [v13 addAccessory:magSafeAccessory withCompletion:v19];
 
     v16 = dispatch_time(0, 1000000000);
     v17 = dispatch_group_wait(v15, v16);
@@ -770,13 +770,13 @@ LABEL_11:
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)progressFlowWithState:(unint64_t)a3
+- (void)progressFlowWithState:(unint64_t)state
 {
   v5 = sub_100002400();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "flow with state = %lu", buf, 0xCu);
   }
 
@@ -785,32 +785,32 @@ LABEL_11:
   v6[2] = sub_1000067BC;
   v6[3] = &unk_1000388D0;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = state;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
 - (id)proxCardUnlockedStartFlow
 {
   v3 = [FMDRemoteAsset alloc];
-  v4 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v5 = [v4 accessoryType];
-  v6 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v7 = [v6 style];
-  v33 = [(FMDRemoteAsset *)v3 initWithAccessoryType:v5 style:v7 type:0];
+  physicalAccessory = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  accessoryType = [physicalAccessory accessoryType];
+  physicalAccessory2 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  style = [physicalAccessory2 style];
+  v33 = [(FMDRemoteAsset *)v3 initWithAccessoryType:accessoryType style:style type:0];
 
   v8 = [FMDRemoteAsset alloc];
-  v9 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v10 = [v9 accessoryType];
-  v11 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v12 = [v11 style];
-  v13 = [(FMDRemoteAsset *)v8 initWithAccessoryType:v10 style:v12 type:1];
+  physicalAccessory3 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  accessoryType2 = [physicalAccessory3 accessoryType];
+  physicalAccessory4 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  style2 = [physicalAccessory4 style];
+  v13 = [(FMDRemoteAsset *)v8 initWithAccessoryType:accessoryType2 style:style2 type:1];
 
-  v14 = [(FMDRemoteAsset *)v33 getStoredAssetLocation];
-  v15 = [(FMDRemoteAsset *)v13 getStoredAssetLocation];
-  v16 = v15;
-  if (v14)
+  getStoredAssetLocation = [(FMDRemoteAsset *)v33 getStoredAssetLocation];
+  getStoredAssetLocation2 = [(FMDRemoteAsset *)v13 getStoredAssetLocation];
+  v16 = getStoredAssetLocation2;
+  if (getStoredAssetLocation)
   {
-    v17 = v15 == 0;
+    v17 = getStoredAssetLocation2 == 0;
   }
 
   else
@@ -826,13 +826,13 @@ LABEL_11:
     if (v20)
     {
       *buf = 138412546;
-      v37 = v14;
+      v37 = getStoredAssetLocation;
       v38 = 2112;
       v39 = v16;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "using video = %@ and adjustmensts = %@", buf, 0x16u);
     }
 
-    v21 = [NSURL fileURLWithPath:v14];
+    v21 = [NSURL fileURLWithPath:getStoredAssetLocation];
     v22 = [NSURL fileURLWithPath:v16];
   }
 
@@ -876,48 +876,48 @@ LABEL_11:
 
 - (void)continueWithAccountValidationFlow
 {
-  v3 = [(FMDMagSafeSetupRemoteUIViewController *)self accountState];
-  if (v3 <= 3)
+  accountState = [(FMDMagSafeSetupRemoteUIViewController *)self accountState];
+  if (accountState <= 3)
   {
-    v4 = qword_100025E10[v3];
+    v4 = qword_100025E10[accountState];
 
     [(FMDMagSafeSetupRemoteUIViewController *)self progressFlowWithState:v4];
   }
 }
 
-- (void)setUpFindMyWithCompletion:(id)a3
+- (void)setUpFindMyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000070BC;
   v7[3] = &unk_100038990;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)storeAccessoryAsNotFindmyEnabled:(id)a3
+- (void)storeAccessoryAsNotFindmyEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = [FMDMagSafeAccessory alloc];
-  v6 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v7 = [(FMDMagSafeAccessory *)v5 initWithPhysicalAccessory:v6 fmEnabled:0];
+  physicalAccessory = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  v7 = [(FMDMagSafeAccessory *)v5 initWithPhysicalAccessory:physicalAccessory fmEnabled:0];
   [(FMDMagSafeSetupRemoteUIViewController *)self setMagSafeAccessory:v7];
 
   v9 = +[FMDMagSafeDataStore sharedInstance];
-  v8 = [(FMDMagSafeSetupRemoteUIViewController *)self magSafeAccessory];
-  [v9 addAccessory:v8 withCompletion:v4];
+  magSafeAccessory = [(FMDMagSafeSetupRemoteUIViewController *)self magSafeAccessory];
+  [v9 addAccessory:magSafeAccessory withCompletion:enabledCopy];
 }
 
 - (id)_computeName
 {
   v2 = objc_alloc_init(ACAccountStore);
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 aa_firstName];
-  v5 = [v3 aa_lastName];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  aa_firstName = [aa_primaryAppleAccount aa_firstName];
+  aa_lastName = [aa_primaryAppleAccount aa_lastName];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"MAGSAFE_PAIRING_WALLET_NAME_PATTERN" value:&stru_10003A130 table:0];
 
@@ -932,12 +932,12 @@ LABEL_11:
 
   if ([v7 containsString:@"<firstName>"])
   {
-    if (!v4)
+    if (!aa_firstName)
     {
       goto LABEL_10;
     }
 
-    v11 = [v7 stringByReplacingOccurrencesOfString:@"<firstName>" withString:v4];
+    v11 = [v7 stringByReplacingOccurrencesOfString:@"<firstName>" withString:aa_firstName];
 
     v7 = v11;
   }
@@ -948,14 +948,14 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v5)
+  if (!aa_lastName)
   {
 LABEL_10:
     v12 = v9;
     goto LABEL_11;
   }
 
-  v12 = [v7 stringByReplacingOccurrencesOfString:@"<lastName>" withString:v5];
+  v12 = [v7 stringByReplacingOccurrencesOfString:@"<lastName>" withString:aa_lastName];
 
   v7 = v12;
 LABEL_11:
@@ -1130,9 +1130,9 @@ LABEL_11:
   return v7;
 }
 
-- (void)enableFindMyWithCompletion:(id)a3
+- (void)enableFindMyWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[FMDFMIPManager sharedInstance];
   v5 = [v4 enableFMIPInContext:7];
 
@@ -1144,7 +1144,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "enable Findmy with error = %@", &v7, 0xCu);
   }
 
-  v3[2](v3, v5);
+  completionCopy[2](completionCopy, v5);
 }
 
 - (id)proxCardSetupFindmy
@@ -1175,10 +1175,10 @@ LABEL_11:
 
   if ([(FMDMagSafeSetupRemoteUIViewController *)self isFindMyAppInstalled])
   {
-    v10 = [(FMDMagSafeSetupRemoteUIViewController *)self isFindMyEnabled];
+    isFindMyEnabled = [(FMDMagSafeSetupRemoteUIViewController *)self isFindMyEnabled];
     v11 = +[NSBundle mainBundle];
     v12 = v11;
-    if (v10)
+    if (isFindMyEnabled)
     {
       [v11 localizedStringForKey:@"MAGSAFE_PAIRING_UPSELL_PROX_CARD_ADD_TO_FIND_MY?" value:&stru_10003A130 table:0];
     }
@@ -1227,7 +1227,7 @@ LABEL_11:
   v26 = &unk_100038A30;
   v18 = v3;
   v27 = v18;
-  v28 = self;
+  selfCopy = self;
   objc_copyWeak(&v29, &location);
   v19 = [PRXAction actionWithTitle:v17 style:0 handler:&v23];
   v20 = [v18 addAction:{v19, v23, v24, v25, v26}];
@@ -1240,12 +1240,12 @@ LABEL_11:
   return v21;
 }
 
-- (id)featurePlatterView:(id)a3 backgrounColor:(id)a4
+- (id)featurePlatterView:(id)view backgrounColor:(id)color
 {
-  v5 = a4;
-  v6 = a3;
+  colorCopy = color;
+  viewCopy = view;
   v19 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleBody scale:1];
-  v18 = [UIImage systemImageNamed:v6 withConfiguration:v19];
+  v18 = [UIImage systemImageNamed:viewCopy withConfiguration:v19];
 
   v7 = [[UIImageView alloc] initWithImage:v18];
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -1256,17 +1256,17 @@ LABEL_11:
   [v7 setMaximumContentSizeCategory:UIContentSizeCategoryLarge];
   v9 = objc_alloc_init(UIView);
   [v9 _setLayoutDebuggingIdentifier:@"PRXFeaturePlatter"];
-  [v9 setBackgroundColor:v5];
+  [v9 setBackgroundColor:colorCopy];
 
   [v9 _setContinuousCornerRadius:14.0];
   [v9 addSubview:v7];
-  v10 = [v9 centerXAnchor];
-  v11 = [v7 centerXAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  centerXAnchor = [v9 centerXAnchor];
+  centerXAnchor2 = [v7 centerXAnchor];
+  v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v20[0] = v12;
-  v13 = [v9 centerYAnchor];
-  v14 = [v7 centerYAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  centerYAnchor = [v9 centerYAnchor];
+  centerYAnchor2 = [v7 centerYAnchor];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v20[1] = v15;
   v16 = [NSArray arrayWithObjects:v20 count:2];
   [NSLayoutConstraint activateConstraints:v16];
@@ -1307,49 +1307,49 @@ LABEL_11:
 - (id)proxCardSetupComplete
 {
   v3 = objc_alloc_init(PRXFeatureListViewController);
-  v4 = [(FMDMagSafeSetupRemoteUIViewController *)self magSafeAccessory];
-  v5 = [v4 name];
-  [v3 setTitle:v5];
+  magSafeAccessory = [(FMDMagSafeSetupRemoteUIViewController *)self magSafeAccessory];
+  name = [magSafeAccessory name];
+  [v3 setTitle:name];
 
   [v3 setDismissalType:3];
   objc_initWeak(&location, self);
-  v6 = [(FMDMagSafeSetupRemoteUIViewController *)self isRestrictedSKU];
+  isRestrictedSKU = [(FMDMagSafeSetupRemoteUIViewController *)self isRestrictedSKU];
   v7 = sub_100002400();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v61 = v6;
+    v61 = isRestrictedSKU;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "isRestrictedSKU %d", buf, 8u);
   }
 
-  if (v6)
+  if (isRestrictedSKU)
   {
     v8 = [FMDRemoteAsset alloc];
-    v9 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-    v10 = [v9 accessoryType];
-    v11 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-    v12 = [v11 style];
-    v13 = [(FMDRemoteAsset *)v8 initWithAccessoryType:v10 style:v12 type:3];
+    physicalAccessory = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+    accessoryType = [physicalAccessory accessoryType];
+    physicalAccessory2 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+    style = [physicalAccessory2 style];
+    v13 = [(FMDRemoteAsset *)v8 initWithAccessoryType:accessoryType style:style type:3];
 
-    v14 = [(FMDRemoteAsset *)v13 getStoredAssetLocation];
-    if (!v14 || (v15 = v14, [NSData dataWithContentsOfFile:v14], v16 = objc_claimAutoreleasedReturnValue(), [UIImage imageWithData:v16 scale:3.0], v53 = objc_claimAutoreleasedReturnValue(), v16, v14 = v15, !v53))
+    getStoredAssetLocation = [(FMDRemoteAsset *)v13 getStoredAssetLocation];
+    if (!getStoredAssetLocation || (v15 = getStoredAssetLocation, [NSData dataWithContentsOfFile:getStoredAssetLocation], v16 = objc_claimAutoreleasedReturnValue(), [UIImage imageWithData:v16 scale:3.0], v53 = objc_claimAutoreleasedReturnValue(), v16, getStoredAssetLocation = v15, !v53))
     {
       v53 = [UIImage imageNamed:@"wallet1-pairing-non-owner"];
     }
 
-    v52 = v14;
+    v52 = getStoredAssetLocation;
     v17 = [[UIImageView alloc] initWithImage:v53];
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = [v3 contentView];
-    [v18 addSubview:v17];
+    contentView = [v3 contentView];
+    [contentView addSubview:v17];
 
-    v19 = [v3 tableView];
-    [v19 setTableHeaderView:v17];
+    tableView = [v3 tableView];
+    [tableView setTableHeaderView:v17];
 
-    v20 = [v17 centerXAnchor];
-    v21 = [v3 tableView];
-    v22 = [v21 centerXAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    centerXAnchor = [v17 centerXAnchor];
+    tableView2 = [v3 tableView];
+    centerXAnchor2 = [tableView2 centerXAnchor];
+    v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v59 = v23;
     v24 = [NSArray arrayWithObjects:&v59 count:1];
     [NSLayoutConstraint activateConstraints:v24];
@@ -1384,8 +1384,8 @@ LABEL_11:
 
   [v39 setImageViewSize:28.0];
   v40 = [v3 addFeature:v39];
-  v41 = [v3 tableView];
-  [v41 setSeparatorStyle:0];
+  tableView3 = [v3 tableView];
+  [tableView3 setSeparatorStyle:0];
 
   if ([(FMDMagSafeSetupRemoteUIViewController *)self isFindMyAppInstalled])
   {
@@ -1403,7 +1403,7 @@ LABEL_11:
     objc_destroyWeak(&v57);
   }
 
-  v46 = [(FMDMagSafeSetupRemoteUIViewController *)self isFindMyAppInstalled];
+  isFindMyAppInstalled = [(FMDMagSafeSetupRemoteUIViewController *)self isFindMyAppInstalled];
   v47 = +[NSBundle mainBundle];
   v48 = [v47 localizedStringForKey:@"MAGSAFE_PAIRING_UPSELL_PROX_CARD_DONE_ACTION" value:&stru_10003A130 table:0];
   v54[0] = _NSConcreteStackBlock;
@@ -1411,7 +1411,7 @@ LABEL_11:
   v54[2] = sub_10000A9C8;
   v54[3] = &unk_1000388F8;
   objc_copyWeak(&v55, &location);
-  v49 = [PRXAction actionWithTitle:v48 style:v46 handler:v54];
+  v49 = [PRXAction actionWithTitle:v48 style:isFindMyAppInstalled handler:v54];
   v50 = [v3 addAction:v49];
 
   objc_destroyWeak(&v55);
@@ -1430,29 +1430,29 @@ LABEL_11:
 
   [v3 setDismissalType:3];
   objc_initWeak(&location, self);
-  v7 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v8 = [v7 phoneNumber];
-  v9 = v8;
-  if (v8)
+  physicalAccessory = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  phoneNumber = [physicalAccessory phoneNumber];
+  v9 = phoneNumber;
+  if (phoneNumber)
   {
-    v10 = v8;
+    email = phoneNumber;
   }
 
   else
   {
-    v11 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-    v10 = [v11 email];
+    physicalAccessory2 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+    email = [physicalAccessory2 email];
   }
 
-  v12 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v13 = [v12 phoneNumber];
-  v14 = v13 == 0;
+  physicalAccessory3 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  phoneNumber2 = [physicalAccessory3 phoneNumber];
+  v14 = phoneNumber2 == 0;
 
-  if (v10)
+  if (email)
   {
     v15 = +[NSBundle mainBundle];
     v16 = [v15 localizedStringForKey:@"MAGSAFE_PAIRING_UPSELL_ALERT_REGISTERED_TO" value:&stru_10003A130 table:0];
-    v17 = [NSString stringWithFormat:v16, v10];
+    v17 = [NSString stringWithFormat:v16, email];
     [v3 setSubtitle:v17];
 
     v18 = +[NSBundle mainBundle];
@@ -1463,7 +1463,7 @@ LABEL_11:
     v30[3] = &unk_100038A58;
     objc_copyWeak(&v32, &location);
     v33 = v14;
-    v31 = v10;
+    v31 = email;
     v20 = [PRXAction actionWithTitle:v19 style:0 handler:v30];
     v21 = [v3 addAction:v20];
 
@@ -1477,8 +1477,8 @@ LABEL_11:
     v22 = 0;
   }
 
-  v23 = [v4[170] mainBundle];
-  v24 = [v23 localizedStringForKey:@"MAGSAFE_PAIRING_UPSELL_PROX_CARD_LEARN_MORE" value:&stru_10003A130 table:0];
+  mainBundle = [v4[170] mainBundle];
+  v24 = [mainBundle localizedStringForKey:@"MAGSAFE_PAIRING_UPSELL_PROX_CARD_LEARN_MORE" value:&stru_10003A130 table:0];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10000AFA8;
@@ -1554,25 +1554,25 @@ LABEL_11:
 - (id)proxCardLockedFindMyNotPaired
 {
   v3 = [FMDRemoteAsset alloc];
-  v4 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v5 = [v4 accessoryType];
-  v6 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v7 = [v6 style];
-  v33 = [(FMDRemoteAsset *)v3 initWithAccessoryType:v5 style:v7 type:0];
+  physicalAccessory = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  accessoryType = [physicalAccessory accessoryType];
+  physicalAccessory2 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  style = [physicalAccessory2 style];
+  v33 = [(FMDRemoteAsset *)v3 initWithAccessoryType:accessoryType style:style type:0];
 
   v8 = [FMDRemoteAsset alloc];
-  v9 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v10 = [v9 accessoryType];
-  v11 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v12 = [v11 style];
-  v32 = [(FMDRemoteAsset *)v8 initWithAccessoryType:v10 style:v12 type:1];
+  physicalAccessory3 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  accessoryType2 = [physicalAccessory3 accessoryType];
+  physicalAccessory4 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  style2 = [physicalAccessory4 style];
+  v32 = [(FMDRemoteAsset *)v8 initWithAccessoryType:accessoryType2 style:style2 type:1];
 
-  v13 = [(FMDRemoteAsset *)v33 getStoredAssetLocation];
-  v14 = [(FMDRemoteAsset *)v32 getStoredAssetLocation];
-  v15 = v14;
-  if (v13)
+  getStoredAssetLocation = [(FMDRemoteAsset *)v33 getStoredAssetLocation];
+  getStoredAssetLocation2 = [(FMDRemoteAsset *)v32 getStoredAssetLocation];
+  v15 = getStoredAssetLocation2;
+  if (getStoredAssetLocation)
   {
-    v16 = v14 == 0;
+    v16 = getStoredAssetLocation2 == 0;
   }
 
   else
@@ -1588,13 +1588,13 @@ LABEL_11:
     if (v19)
     {
       *buf = 138412546;
-      v37 = v13;
+      v37 = getStoredAssetLocation;
       v38 = 2112;
       v39 = v15;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "using video = %@ and adjustmensts = %@", buf, 0x16u);
     }
 
-    v20 = [NSURL fileURLWithPath:v13];
+    v20 = [NSURL fileURLWithPath:getStoredAssetLocation];
     v21 = [NSURL fileURLWithPath:v15];
   }
 
@@ -1645,19 +1645,19 @@ LABEL_11:
   [v3 setTitle:v5];
 
   [v3 setDismissalType:3];
-  v6 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v7 = [v6 phoneNumber];
-  if (v7)
+  physicalAccessory = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  phoneNumber = [physicalAccessory phoneNumber];
+  if (phoneNumber)
   {
-    v8 = v7;
+    email = phoneNumber;
   }
 
   else
   {
-    v9 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-    v8 = [v9 email];
+    physicalAccessory2 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+    email = [physicalAccessory2 email];
 
-    if (!v8)
+    if (!email)
     {
       goto LABEL_5;
     }
@@ -1665,7 +1665,7 @@ LABEL_11:
 
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"MAGSAFE_PAIRING_UPSELL_ALERT_REGISTERED_TO" value:&stru_10003A130 table:0];
-  v12 = [NSString stringWithFormat:v11, v8];
+  v12 = [NSString stringWithFormat:v11, email];
   [v3 setSubtitle:v12];
 
 LABEL_5:
@@ -1699,29 +1699,29 @@ LABEL_5:
   v5 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:101];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 startAnimating];
-  v6 = [v2 contentView];
-  [v6 addSubview:v5];
+  contentView = [v2 contentView];
+  [contentView addSubview:v5];
 
-  v7 = [v2 contentView];
-  v8 = [v7 mainContentGuide];
+  contentView2 = [v2 contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
 
-  v24 = [v5 topAnchor];
-  v23 = [v8 topAnchor];
-  v22 = [v24 constraintGreaterThanOrEqualToAnchor:v23];
+  topAnchor = [v5 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v22 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v25[0] = v22;
-  v21 = [v5 bottomAnchor];
-  v20 = [v8 bottomAnchor];
-  v19 = [v21 constraintLessThanOrEqualToAnchor:v20];
+  bottomAnchor = [v5 bottomAnchor];
+  bottomAnchor2 = [mainContentGuide bottomAnchor];
+  v19 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v25[1] = v19;
-  v9 = [v5 centerYAnchor];
+  centerYAnchor = [v5 centerYAnchor];
   v18 = v2;
-  v10 = [v2 view];
-  v11 = [v10 centerYAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:0.0];
+  view = [v2 view];
+  centerYAnchor2 = [view centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
   v25[2] = v12;
-  v13 = [v5 centerXAnchor];
-  v14 = [v8 centerXAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  centerXAnchor = [v5 centerXAnchor];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v25[3] = v15;
   v16 = [NSArray arrayWithObjects:v25 count:4];
   [NSLayoutConstraint activateConstraints:v16];
@@ -1836,19 +1836,19 @@ LABEL_5:
   return v3;
 }
 
-- (void)addImagetoCard:(id)a3
+- (void)addImagetoCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   v5 = [FMDRemoteAsset alloc];
-  v6 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v7 = [v6 accessoryType];
-  v8 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v9 = [v8 style];
-  v10 = [(FMDRemoteAsset *)v5 initWithAccessoryType:v7 style:v9 type:3];
+  physicalAccessory = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  accessoryType = [physicalAccessory accessoryType];
+  physicalAccessory2 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  style = [physicalAccessory2 style];
+  v10 = [(FMDRemoteAsset *)v5 initWithAccessoryType:accessoryType style:style type:3];
 
   v33 = v10;
-  v11 = [(FMDRemoteAsset *)v10 getStoredAssetLocation];
-  if (!v11 || ([NSData dataWithContentsOfFile:v11], v12 = objc_claimAutoreleasedReturnValue(), [UIImage imageWithData:v12 scale:3.0], v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
+  getStoredAssetLocation = [(FMDRemoteAsset *)v10 getStoredAssetLocation];
+  if (!getStoredAssetLocation || ([NSData dataWithContentsOfFile:getStoredAssetLocation], v12 = objc_claimAutoreleasedReturnValue(), [UIImage imageWithData:v12 scale:3.0], v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
   {
     v13 = [UIImage imageNamed:@"wallet1-pairing-non-owner"];
   }
@@ -1856,37 +1856,37 @@ LABEL_5:
   v32 = v13;
   v14 = [[UIImageView alloc] initWithImage:v13];
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [v4 contentView];
-  [v15 addSubview:v14];
+  contentView = [cardCopy contentView];
+  [contentView addSubview:v14];
 
-  v16 = [v4 contentView];
+  contentView2 = [cardCopy contentView];
 
-  v17 = [v16 mainContentGuide];
+  mainContentGuide = [contentView2 mainContentGuide];
 
-  v31 = [v14 topAnchor];
-  v30 = [v17 topAnchor];
-  v29 = [v31 constraintGreaterThanOrEqualToAnchor:v30];
+  topAnchor = [v14 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v29 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v34[0] = v29;
-  v27 = [v14 bottomAnchor];
-  v26 = [v17 bottomAnchor];
-  v18 = [v27 constraintLessThanOrEqualToAnchor:v26];
+  bottomAnchor = [v14 bottomAnchor];
+  bottomAnchor2 = [mainContentGuide bottomAnchor];
+  v18 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v34[1] = v18;
   [v14 centerYAnchor];
-  v19 = v28 = v11;
-  v20 = [v17 centerYAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  v19 = v28 = getStoredAssetLocation;
+  centerYAnchor = [mainContentGuide centerYAnchor];
+  v21 = [v19 constraintEqualToAnchor:centerYAnchor];
   v34[2] = v21;
-  v22 = [v14 centerXAnchor];
-  v23 = [v17 centerXAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  centerXAnchor = [v14 centerXAnchor];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v34[3] = v24;
   v25 = [NSArray arrayWithObjects:v34 count:4];
   [NSLayoutConstraint activateConstraints:v25];
 }
 
-- (void)addDynamicMapToCard:(id)a3
+- (void)addDynamicMapToCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   v5 = sub_100002400();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1896,44 +1896,44 @@ LABEL_5:
 
   v6 = [[MKMapView alloc] initWithFrame:{0.0, 0.0, 300.0, 200.0}];
   v7 = [FMDRemoteAsset alloc];
-  v8 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v9 = [v8 accessoryType];
-  v10 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
-  v11 = [v10 style];
-  v12 = [(FMDRemoteAsset *)v7 initWithAccessoryType:v9 style:v11 type:2];
+  physicalAccessory = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  accessoryType = [physicalAccessory accessoryType];
+  physicalAccessory2 = [(FMDMagSafeSetupRemoteUIViewController *)self physicalAccessory];
+  style = [physicalAccessory2 style];
+  v12 = [(FMDRemoteAsset *)v7 initWithAccessoryType:accessoryType style:style type:2];
 
-  v13 = [(FMDRemoteAsset *)v12 getStoredAssetLocation];
-  [(FMDMagSafeSetupRemoteUIViewController *)self setMapDeviceImagePath:v13];
+  getStoredAssetLocation = [(FMDRemoteAsset *)v12 getStoredAssetLocation];
+  [(FMDMagSafeSetupRemoteUIViewController *)self setMapDeviceImagePath:getStoredAssetLocation];
 
   [v6 setDelegate:self];
   [v6 setMapType:0];
   [v6 setUserInteractionEnabled:0];
   [v6 setShowsUserLocation:0];
-  v14 = [v6 layer];
-  [v14 setCornerCurve:kCACornerCurveContinuous];
+  layer = [v6 layer];
+  [layer setCornerCurve:kCACornerCurveContinuous];
 
-  v15 = [v6 layer];
-  [v15 setCornerRadius:16.0];
+  layer2 = [v6 layer];
+  [layer2 setCornerRadius:16.0];
 
   [(FMDMagSafeSetupRemoteUIViewController *)self setMapView:v6];
   v16 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/FindMyDevice.framework"];
   v17 = [[CLLocationManager alloc] initWithEffectiveBundle:v16];
   [(FMDMagSafeSetupRemoteUIViewController *)self setLocationManager:v17];
 
-  v18 = [(FMDMagSafeSetupRemoteUIViewController *)self locationManager];
-  [v18 setDelegate:self];
+  locationManager = [(FMDMagSafeSetupRemoteUIViewController *)self locationManager];
+  [locationManager setDelegate:self];
 
-  v19 = [(FMDMagSafeSetupRemoteUIViewController *)self locationManager];
-  [v19 setDesiredAccuracy:kCLLocationAccuracyBest];
+  locationManager2 = [(FMDMagSafeSetupRemoteUIViewController *)self locationManager];
+  [locationManager2 setDesiredAccuracy:kCLLocationAccuracyBest];
 
-  v20 = [(FMDMagSafeSetupRemoteUIViewController *)self locationManager];
-  [v20 setDistanceFilter:10.0];
+  locationManager3 = [(FMDMagSafeSetupRemoteUIViewController *)self locationManager];
+  [locationManager3 setDistanceFilter:10.0];
 
-  v21 = [(FMDMagSafeSetupRemoteUIViewController *)self locationManager];
-  [v21 startUpdatingLocation];
+  locationManager4 = [(FMDMagSafeSetupRemoteUIViewController *)self locationManager];
+  [locationManager4 startUpdatingLocation];
 
-  v22 = [v4 contentView];
-  [v22 addSubview:v6];
+  contentView = [cardCopy contentView];
+  [contentView addSubview:v6];
 
   v23 = [UIView alloc];
   v24 = [v23 initWithFrame:{0.0, 0.0, 300.0, PRXMainContentMargin + 200.0}];
@@ -1943,15 +1943,15 @@ LABEL_5:
   [v6 bounds];
   [v6 setCenter:{MidX, CGRectGetMidY(v29)}];
   [v24 addSubview:v6];
-  v26 = [v4 tableView];
+  tableView = [cardCopy tableView];
 
-  [v26 setTableHeaderView:v24];
+  [tableView setTableHeaderView:v24];
 }
 
-- (void)addDismissButtonAction:(id)a3
+- (void)addDismissButtonAction:(id)action
 {
-  v4 = a3;
-  objc_initWeak(&location, v4);
+  actionCopy = action;
+  objc_initWeak(&location, actionCopy);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000D59C;
@@ -1959,7 +1959,7 @@ LABEL_5:
   objc_copyWeak(&v7, &location);
   v6[4] = self;
   v5 = [PRXAction actionWithTitle:&stru_10003A130 style:0 handler:v6];
-  [v4 setDismissButtonAction:v5];
+  [actionCopy setDismissButtonAction:v5];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -1977,19 +1977,19 @@ LABEL_5:
   return v2 == 1 || v2 == 4;
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = sub_10000EE80();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "setupModules posting notification %@", &v6, 0xCu);
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterPostNotification(DarwinNotifyCenter, v3, 0, 0, 1u);
+  CFNotificationCenterPostNotification(DarwinNotifyCenter, notificationCopy, 0, 0, 1u);
 }
 
 - (BOOL)isFMFAllowed
@@ -2033,17 +2033,17 @@ LABEL_10:
   return v2 & 1;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
+  locationsCopy = locations;
   v6 = sub_100002400();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 firstObject];
-    [v7 coordinate];
+    firstObject = [locationsCopy firstObject];
+    [firstObject coordinate];
     v9 = v8;
-    v10 = [v5 firstObject];
-    [v10 coordinate];
+    firstObject2 = [locationsCopy firstObject];
+    [firstObject2 coordinate];
     v31 = 134283777;
     v32 = v9;
     v33 = 2049;
@@ -2051,23 +2051,23 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#Map locationManager new didUpdateUserLocation %{private}f %{private}f", &v31, 0x16u);
   }
 
-  v12 = [v5 firstObject];
-  [v12 coordinate];
+  firstObject3 = [locationsCopy firstObject];
+  [firstObject3 coordinate];
   v14 = v13;
 
-  v15 = [v5 firstObject];
-  [v15 coordinate];
+  firstObject4 = [locationsCopy firstObject];
+  [firstObject4 coordinate];
   v17 = v16;
 
-  v18 = [(FMDMagSafeSetupRemoteUIViewController *)self mapView];
-  [v18 setRegion:0 animated:{v14, v17, 0.001, 0.001}];
+  mapView = [(FMDMagSafeSetupRemoteUIViewController *)self mapView];
+  [mapView setRegion:0 animated:{v14, v17, 0.001, 0.001}];
 
-  v19 = [(FMDMagSafeSetupRemoteUIViewController *)self userLocationAnnotation];
+  userLocationAnnotation = [(FMDMagSafeSetupRemoteUIViewController *)self userLocationAnnotation];
 
-  if (v19)
+  if (userLocationAnnotation)
   {
-    v20 = [(FMDMagSafeSetupRemoteUIViewController *)self userLocationAnnotation];
-    [v20 setCoordinate:{v14, v17}];
+    userLocationAnnotation2 = [(FMDMagSafeSetupRemoteUIViewController *)self userLocationAnnotation];
+    [userLocationAnnotation2 setCoordinate:{v14, v17}];
   }
 
   else
@@ -2075,71 +2075,71 @@ LABEL_10:
     v21 = [[MKPointAnnotation alloc] initWithCoordinate:0 title:0 subtitle:{v14, v17}];
     [(FMDMagSafeSetupRemoteUIViewController *)self setUserLocationAnnotation:v21];
 
-    v20 = [(FMDMagSafeSetupRemoteUIViewController *)self mapView];
-    v22 = [(FMDMagSafeSetupRemoteUIViewController *)self userLocationAnnotation];
-    [v20 addAnnotation:v22];
+    userLocationAnnotation2 = [(FMDMagSafeSetupRemoteUIViewController *)self mapView];
+    userLocationAnnotation3 = [(FMDMagSafeSetupRemoteUIViewController *)self userLocationAnnotation];
+    [userLocationAnnotation2 addAnnotation:userLocationAnnotation3];
   }
 
-  v23 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceAnnotation];
+  deviceAnnotation = [(FMDMagSafeSetupRemoteUIViewController *)self deviceAnnotation];
 
-  v24 = [(FMDMagSafeSetupRemoteUIViewController *)self mapView];
-  v25 = v24;
-  if (v23)
+  mapView2 = [(FMDMagSafeSetupRemoteUIViewController *)self mapView];
+  v25 = mapView2;
+  if (deviceAnnotation)
   {
-    [v24 setRegion:1 animated:{v14, v17, 0.001, 0.001}];
+    [mapView2 setRegion:1 animated:{v14, v17, 0.001, 0.001}];
 
-    v26 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceAnnotation];
-    [v26 setCoordinate:{v14, v17}];
+    deviceAnnotation2 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceAnnotation];
+    [deviceAnnotation2 setCoordinate:{v14, v17}];
   }
 
   else
   {
-    [v24 setRegion:0 animated:{v14, v17, 0.001, 0.001}];
+    [mapView2 setRegion:0 animated:{v14, v17, 0.001, 0.001}];
 
     v27 = [[MKPointAnnotation alloc] initWithCoordinate:0 title:0 subtitle:{v14, v17}];
     [(FMDMagSafeSetupRemoteUIViewController *)self setDeviceAnnotation:v27];
 
-    v28 = [(FMDMagSafeSetupRemoteUIViewController *)self mapView];
-    v29 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceAnnotation];
-    [v28 addAnnotation:v29];
+    mapView3 = [(FMDMagSafeSetupRemoteUIViewController *)self mapView];
+    deviceAnnotation3 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceAnnotation];
+    [mapView3 addAnnotation:deviceAnnotation3];
 
-    v26 = [(FMDMagSafeSetupRemoteUIViewController *)self mapView];
-    v30 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceAnnotation];
-    [v26 selectAnnotation:v30 animated:1];
+    deviceAnnotation2 = [(FMDMagSafeSetupRemoteUIViewController *)self mapView];
+    deviceAnnotation4 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceAnnotation];
+    [deviceAnnotation2 selectAnnotation:deviceAnnotation4 animated:1];
   }
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v5 = a4;
+  annotationCopy = annotation;
   v6 = sub_100002400();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412290;
-    v23 = v5;
+    v23 = annotationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#Map viewForAnnotation %@", &v22, 0xCu);
   }
 
-  v7 = [(FMDMagSafeSetupRemoteUIViewController *)self deviceAnnotation];
+  deviceAnnotation = [(FMDMagSafeSetupRemoteUIViewController *)self deviceAnnotation];
 
-  if (v7 == v5)
+  if (deviceAnnotation == annotationCopy)
   {
     v10 = sub_100002400();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412290;
-      v23 = v5;
+      v23 = annotationCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#Map creating deviceAnnotation view %@", &v22, 0xCu);
     }
 
     v11 = [FMDeviceAnnotationView alloc];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v9 = [(FMDeviceAnnotationView *)v11 initWithAnnotation:v5 reuseIdentifier:v13];
+    v9 = [(FMDeviceAnnotationView *)v11 initWithAnnotation:annotationCopy reuseIdentifier:v13];
 
-    v14 = [(FMDMagSafeSetupRemoteUIViewController *)self mapDeviceImagePath];
+    mapDeviceImagePath = [(FMDMagSafeSetupRemoteUIViewController *)self mapDeviceImagePath];
 
-    if (!v14 || ([(FMDMagSafeSetupRemoteUIViewController *)self mapDeviceImagePath], v15 = objc_claimAutoreleasedReturnValue(), [UIImage imageWithContentsOfFile:v15], v16 = objc_claimAutoreleasedReturnValue(), v15, !v16))
+    if (!mapDeviceImagePath || ([(FMDMagSafeSetupRemoteUIViewController *)self mapDeviceImagePath], v15 = objc_claimAutoreleasedReturnValue(), [UIImage imageWithContentsOfFile:v15], v16 = objc_claimAutoreleasedReturnValue(), v15, !v16))
     {
       v16 = [UIImage imageNamed:@"wallet1-pairing-map"];
     }
@@ -2149,22 +2149,22 @@ LABEL_10:
 
   else
   {
-    v8 = [(FMDMagSafeSetupRemoteUIViewController *)self userLocationAnnotation];
+    userLocationAnnotation = [(FMDMagSafeSetupRemoteUIViewController *)self userLocationAnnotation];
 
-    if (v8 == v5)
+    if (userLocationAnnotation == annotationCopy)
     {
       v17 = sub_100002400();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v22 = 138412290;
-        v23 = v5;
+        v23 = annotationCopy;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "#Map creating userLocationAnnotation view %@", &v22, 0xCu);
       }
 
       v18 = [MKUserLocationView alloc];
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      v9 = [v18 initWithAnnotation:v5 reuseIdentifier:v20];
+      v9 = [v18 initWithAnnotation:annotationCopy reuseIdentifier:v20];
 
       [(FMDeviceAnnotationView *)v9 setCanShowCallout:0];
     }
@@ -2191,16 +2191,16 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#Find My installed? %i", v10, 8u);
   }
 
-  v6 = [(FMDMagSafeSetupRemoteUIViewController *)self appInstallCoordinator];
+  appInstallCoordinator = [(FMDMagSafeSetupRemoteUIViewController *)self appInstallCoordinator];
 
-  v7 = (v6 == 0) & v4;
-  if (v6 && ((v4 ^ 1) & 1) == 0)
+  isComplete = (appInstallCoordinator == 0) & v4;
+  if (appInstallCoordinator && ((v4 ^ 1) & 1) == 0)
   {
-    v8 = [(FMDMagSafeSetupRemoteUIViewController *)self appInstallCoordinator];
-    v7 = [v8 isComplete];
+    appInstallCoordinator2 = [(FMDMagSafeSetupRemoteUIViewController *)self appInstallCoordinator];
+    isComplete = [appInstallCoordinator2 isComplete];
   }
 
-  return v7;
+  return isComplete;
 }
 
 - (void)triggerFindMyAppInstallation
@@ -2228,11 +2228,11 @@ LABEL_10:
 - (unint64_t)accountState
 {
   v2 = objc_alloc_init(ACAccountStore);
-  v3 = [v2 aa_primaryAppleAccount];
-  if (v3)
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  if (aa_primaryAppleAccount)
   {
     v4 = +[AKAccountManager sharedInstance];
-    v5 = [v3 accountPropertyForKey:@"altDSID"];
+    v5 = [aa_primaryAppleAccount accountPropertyForKey:@"altDSID"];
     if (v5)
     {
       v6 = [v4 authKitAccountWithAltDSID:v5];
@@ -2290,9 +2290,9 @@ LABEL_10:
   return v9;
 }
 
-- (void)upgradeAccountButtonPressedOn:(id)a3
+- (void)upgradeAccountButtonPressedOn:(id)on
 {
-  v4 = a3;
+  onCopy = on;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"MAGSAFE_PAIRING_ACCPUNT_UPGRADE_SETUP_LATER_ALERT_TITLE" value:&stru_10003A130 table:0];
   v7 = +[NSBundle mainBundle];
@@ -2309,7 +2309,7 @@ LABEL_10:
   v12 = [UIAlertAction actionWithTitle:v11 style:0 handler:v13];
 
   [v9 addAction:v12];
-  [v4 presentViewController:v9 animated:1 completion:0];
+  [onCopy presentViewController:v9 animated:1 completion:0];
 }
 
 - (void)launchSettingsAppUpgradeFlow

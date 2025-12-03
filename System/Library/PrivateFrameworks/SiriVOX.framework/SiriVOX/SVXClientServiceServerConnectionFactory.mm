@@ -1,15 +1,15 @@
 @interface SVXClientServiceServerConnectionFactory
-- (id)createWithXPCConnection:(id)a3 performer:(id)a4 delegate:(id)a5;
+- (id)createWithXPCConnection:(id)connection performer:(id)performer delegate:(id)delegate;
 @end
 
 @implementation SVXClientServiceServerConnectionFactory
 
-- (id)createWithXPCConnection:(id)a3 performer:(id)a4 delegate:(id)a5
+- (id)createWithXPCConnection:(id)connection performer:(id)performer delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[SVXClientServiceServerConnection alloc] initWithXPCConnection:v9 performer:v8 delegate:v7];
+  delegateCopy = delegate;
+  performerCopy = performer;
+  connectionCopy = connection;
+  v10 = [[SVXClientServiceServerConnection alloc] initWithXPCConnection:connectionCopy performer:performerCopy delegate:delegateCopy];
 
   return v10;
 }

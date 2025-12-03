@@ -1,6 +1,6 @@
 @interface URLResponseDecoder
 - (URLResponseDecoder)init;
-- (id)resultFromResult:(id)a3 error:(id *)a4;
+- (id)resultFromResult:(id)result error:(id *)error;
 @end
 
 @implementation URLResponseDecoder
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (id)resultFromResult:(id)a3 error:(id *)a4
+- (id)resultFromResult:(id)result error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = URLResponseDecoder;
-  v5 = [(URLResponseDecoder *)&v12 resultFromResult:a3 error:a4];
+  v5 = [(URLResponseDecoder *)&v12 resultFromResult:result error:error];
   v6 = v5;
   if (v5)
   {
@@ -39,7 +39,7 @@
     v9[2] = sub_10020EF98;
     v9[3] = &unk_10051B570;
     v10 = v5;
-    v11 = self;
+    selfCopy = self;
     dispatch_sync(dispatchQueue, v9);
   }
 

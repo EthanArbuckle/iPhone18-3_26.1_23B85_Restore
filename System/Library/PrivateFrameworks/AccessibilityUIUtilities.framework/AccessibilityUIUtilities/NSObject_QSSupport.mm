@@ -1,9 +1,9 @@
 @interface NSObject_QSSupport
 - (BOOL)_accessibilityIsTextInput;
 - (id)_accessibilityQuickSpeakContent;
-- (id)_accessibilityQuickSpeakEnclosingSentence:(id *)a3;
-- (id)_accessibilitySentenceRectsForRange:(id)a3;
-- (id)_accessibilityTextRectsForRange:(id)a3 singleTextRect:(CGRect *)a4;
+- (id)_accessibilityQuickSpeakEnclosingSentence:(id *)sentence;
+- (id)_accessibilitySentenceRectsForRange:(id)range;
+- (id)_accessibilityTextRectsForRange:(id)range singleTextRect:(CGRect *)rect;
 - (id)_accessibilityUITextInput;
 - (void)_accessibilityQuickSpeakContent;
 @end
@@ -29,40 +29,40 @@
 {
   if ([(NSObject_QSSupport *)self _accessibilityIsTextInput])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   if ([(NSObject_QSSupport *)self _accessibilityIsTextInteraction])
   {
     v4 = [(NSObject_QSSupport *)self safeValueForKey:@"_textInput"];
 
-    v3 = v4;
+    selfCopy = v4;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)_accessibilityQuickSpeakEnclosingSentence:(id *)a3
+- (id)_accessibilityQuickSpeakEnclosingSentence:(id *)sentence
 {
-  v5 = [(NSObject_QSSupport *)self _accessibilityUITextInput];
-  v6 = v5;
-  if (v5)
+  _accessibilityUITextInput = [(NSObject_QSSupport *)self _accessibilityUITextInput];
+  v6 = _accessibilityUITextInput;
+  if (_accessibilityUITextInput)
   {
-    v7 = [v5 selectedTextRange];
+    selectedTextRange = [_accessibilityUITextInput selectedTextRange];
     v8 = [(NSObject_QSSupport *)self safeValueForKey:@"_accessibilityQuickSpeakTokenizer"];
-    v9 = AXUISentenceTextRangeForInput(v6, v7, v8);
+    v9 = AXUISentenceTextRangeForInput(v6, selectedTextRange, v8);
     v10 = v9;
     if (v9)
     {
-      if (a3)
+      if (sentence)
       {
         v11 = v9;
-        *a3 = v10;
+        *sentence = v10;
       }
 
       v12 = [v6 textInRange:v10];
@@ -88,14 +88,14 @@ LABEL_10:
 - (id)_accessibilityQuickSpeakContent
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(NSObject_QSSupport *)self _accessibilityUITextInput];
-  v4 = v3;
-  if (v3)
+  _accessibilityUITextInput = [(NSObject_QSSupport *)self _accessibilityUITextInput];
+  v4 = _accessibilityUITextInput;
+  if (_accessibilityUITextInput)
   {
-    v5 = [v3 selectedTextRange];
-    if (v5)
+    selectedTextRange = [_accessibilityUITextInput selectedTextRange];
+    if (selectedTextRange)
     {
-      v6 = [v4 textInRange:v5];
+      v6 = [v4 textInRange:selectedTextRange];
       if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
 
@@ -106,10 +106,10 @@ LABEL_10:
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && (buf[0] = 0, objc_opt_class(), __UIAccessibilityCastAsClass(), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 canPerformAction:sel_copy_ withSender:0], v7, v8))
   {
-    v9 = [MEMORY[0x1E69DCD50] _accessibilityUseQuickSpeakPasteBoard];
+    _accessibilityUseQuickSpeakPasteBoard = [MEMORY[0x1E69DCD50] _accessibilityUseQuickSpeakPasteBoard];
     [MEMORY[0x1E69DCD50] _accessibilitySetUseQuickSpeakPasteBoard:1];
-    v10 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    [v10 setStrings:0];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    [generalPasteboard setStrings:0];
     v11 = AXLogSpeakSelection();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -119,20 +119,20 @@ LABEL_10:
     }
 
     [(NSObject_QSSupport *)self performSelector:sel_copy_ withObject:0];
-    v14 = [MEMORY[0x1E696AD60] string];
-    v15 = [v10 strings];
+    string = [MEMORY[0x1E696AD60] string];
+    strings = [generalPasteboard strings];
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __53__NSObject_QSSupport__accessibilityQuickSpeakContent__block_invoke;
     v23 = &unk_1E812E770;
-    v24 = v14;
-    v25 = v15;
-    v16 = v15;
-    v17 = v14;
+    v24 = string;
+    v25 = strings;
+    v16 = strings;
+    v17 = string;
     [v16 enumerateObjectsUsingBlock:&v20];
-    [MEMORY[0x1E69DCD50] _accessibilitySetUseQuickSpeakPasteBoard:{v9, v20, v21, v22, v23}];
-    v18 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v6 = [v17 stringByTrimmingCharactersInSet:v18];
+    [MEMORY[0x1E69DCD50] _accessibilitySetUseQuickSpeakPasteBoard:{_accessibilityUseQuickSpeakPasteBoard, v20, v21, v22, v23}];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v6 = [v17 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   }
 
   else
@@ -145,67 +145,67 @@ LABEL_14:
   return v6;
 }
 
-- (id)_accessibilitySentenceRectsForRange:(id)a3
+- (id)_accessibilitySentenceRectsForRange:(id)range
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  rangeCopy = range;
+  array = [MEMORY[0x1E695DF70] array];
   v6 = [(NSObject_QSSupport *)self safeValueForKey:@"_accessibilityQuickSpeakTokenizer"];
-  v7 = self;
-  v8 = AXUISentenceTextRangeForInput(v7, v4, v6);
+  selfCopy = self;
+  v8 = AXUISentenceTextRangeForInput(selfCopy, rangeCopy, v6);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__NSObject_QSSupport__accessibilitySentenceRectsForRange___block_invoke;
   aBlock[3] = &unk_1E812E798;
-  v9 = v7;
+  v9 = selfCopy;
   v22 = v9;
   v10 = v8;
   v23 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [v10 start];
-  v13 = [(NSObject_QSSupport *)v9 positionFromPosition:v12 offset:1];
+  start = [v10 start];
+  v13 = [(NSObject_QSSupport *)v9 positionFromPosition:start offset:1];
   if (v13)
   {
     v14 = v13;
     while (v11[2](v11, v14))
     {
-      v15 = [(NSObject_QSSupport *)v9 textRangeFromPosition:v12 toPosition:v14];
+      v15 = [(NSObject_QSSupport *)v9 textRangeFromPosition:start toPosition:v14];
       v19 = 0u;
       v20 = 0u;
       v16 = [(NSObject_QSSupport *)v9 _accessibilityTextRectsForRange:v15 singleTextRect:&v19];
       if (*&v20 > 0.0)
       {
-        QSUnionRectsWithRect(v5, *&v19, *(&v19 + 1), *&v20, *(&v20 + 1));
+        QSUnionRectsWithRect(array, *&v19, *(&v19 + 1), *&v20, *(&v20 + 1));
       }
 
       v17 = v14;
 
       v14 = [(NSObject_QSSupport *)v9 positionFromPosition:v17 offset:1];
 
-      v12 = v17;
+      start = v17;
       if (!v14)
       {
-        v12 = v17;
+        start = v17;
         break;
       }
     }
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_accessibilityTextRectsForRange:(id)a3 singleTextRect:(CGRect *)a4
+- (id)_accessibilityTextRectsForRange:(id)range singleTextRect:(CGRect *)rect
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  rangeCopy = range;
   if (![(NSObject_QSSupport *)self _accessibilityIsTextInput])
   {
     goto LABEL_6;
   }
 
-  v7 = self;
-  v8 = [v6 start];
-  v9 = [v6 end];
-  v10 = [(NSObject_QSSupport *)v7 offsetFromPosition:v8 toPosition:v9];
+  selfCopy = self;
+  start = [rangeCopy start];
+  v9 = [rangeCopy end];
+  v10 = [(NSObject_QSSupport *)selfCopy offsetFromPosition:start toPosition:v9];
 
   if (!v10)
   {
@@ -217,7 +217,7 @@ LABEL_6:
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(NSObject_QSSupport *)v7 selectionRectsForRange:v6];
+    v11 = [(NSObject_QSSupport *)selfCopy selectionRectsForRange:rangeCopy];
   }
 
   else
@@ -298,8 +298,8 @@ LABEL_6:
       while (v21);
     }
 
-    v26 = [v12 firstObject];
-    [v26 CGRectValue];
+    firstObject = [v12 firstObject];
+    [firstObject CGRectValue];
     v28 = v27;
     v30 = v29;
     v32 = v31;
@@ -311,7 +311,7 @@ LABEL_6:
   else
   {
 LABEL_26:
-    [(NSObject_QSSupport *)v7 firstRectForRange:v6];
+    [(NSObject_QSSupport *)selfCopy firstRectForRange:rangeCopy];
     v28 = v35;
     v30 = v36;
     v32 = v37;
@@ -327,7 +327,7 @@ LABEL_26:
   v61.size.height = v34;
   if (CGRectEqualToRect(*MEMORY[0x1E695F058], v61) && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(NSObject_QSSupport *)v7 _accessibilitySpeakRectForRange:v6];
+    [(NSObject_QSSupport *)selfCopy _accessibilitySpeakRectForRange:rangeCopy];
     v28 = v40;
     v30 = v41;
     v32 = v42;
@@ -339,12 +339,12 @@ LABEL_26:
     v12 = v45;
   }
 
-  if (a4)
+  if (rect)
   {
-    a4->origin.x = v28;
-    a4->origin.y = v30;
-    a4->size.width = v32;
-    a4->size.height = v34;
+    rect->origin.x = v28;
+    rect->origin.y = v30;
+    rect->size.width = v32;
+    rect->size.height = v34;
   }
 
 LABEL_33:
@@ -355,7 +355,7 @@ LABEL_33:
 - (void)_accessibilityQuickSpeakContent
 {
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2048;
   *(buf + 14) = a2;
   _os_log_debug_impl(&dword_1C0DFB000, log, OS_LOG_TYPE_DEBUG, "Wil call copy: on %@<%p> for speak selection content", buf, 0x16u);

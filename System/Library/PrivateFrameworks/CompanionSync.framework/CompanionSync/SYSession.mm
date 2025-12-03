@@ -1,56 +1,56 @@
 @interface SYSession
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 - (BOOL)_beginTransaction;
 - (BOOL)_endTransaction;
-- (BOOL)_handleEndSessionResponse:(id)a3 error:(id *)a4;
-- (BOOL)_handleRestartSessionResponse:(id)a3 error:(id *)a4;
-- (BOOL)_handleStartSessionResponse:(id)a3 error:(id *)a4;
-- (BOOL)_handleSyncBatchResponse:(id)a3 error:(id *)a4;
+- (BOOL)_handleEndSessionResponse:(id)response error:(id *)error;
+- (BOOL)_handleRestartSessionResponse:(id)response error:(id *)error;
+- (BOOL)_handleStartSessionResponse:(id)response error:(id *)error;
+- (BOOL)_handleSyncBatchResponse:(id)response error:(id *)error;
 - (BOOL)_readyToProcessIncomingMessages;
-- (BOOL)_willAcquiesceToNewSessionFromPeer:(id)a3;
+- (BOOL)_willAcquiesceToNewSessionFromPeer:(id)peer;
 - (BOOL)canRestart;
 - (BOOL)canRollback;
 - (BOOL)isResetSync;
 - (NSDictionary)wrappedUserContext;
 - (PBCodable)stateForLogging;
 - (SYService)service;
-- (SYSession)initWithService:(id)a3;
+- (SYSession)initWithService:(id)service;
 - (SYSessionDelegate)delegate;
 - (double)remainingSessionTime;
 - (id)CPSafeDescription;
 - (id)_cancelPendingMessagesReturningFailures;
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4;
-- (id)combinedEngineOptions:(id)a3;
-- (id)dataFromChange:(id)a3;
-- (id)decodeChangeData:(id)a3 fromProtocolVersion:(int64_t)a4 ofType:(int64_t)a5;
-- (id)encodeSYChangeForBackwardCompatibility:(id)a3 protocolVersion:(int64_t)a4;
+- (id)changeFromData:(id)data ofType:(int64_t)type;
+- (id)combinedEngineOptions:(id)options;
+- (id)dataFromChange:(id)change;
+- (id)decodeChangeData:(id)data fromProtocolVersion:(int64_t)version ofType:(int64_t)type;
+- (id)encodeSYChangeForBackwardCompatibility:(id)compatibility protocolVersion:(int64_t)version;
 - (unsigned)state;
 - (void)_beginTransaction;
-- (void)_clearOutgoingMessageUUID:(id)a3;
+- (void)_clearOutgoingMessageUUID:(id)d;
 - (void)_continue;
 - (void)_endTransaction;
-- (void)_handleEndSession:(id)a3 response:(id)a4 completion:(id)a5;
-- (void)_handleError:(id)a3;
-- (void)_handleRestartSession:(id)a3 response:(id)a4 completion:(id)a5;
-- (void)_handleSyncBatch:(id)a3 response:(id)a4 completion:(id)a5;
-- (void)_onSessionStateChangedTo:(unsigned int)a3 do:(id)a4;
+- (void)_handleEndSession:(id)session response:(id)response completion:(id)completion;
+- (void)_handleError:(id)error;
+- (void)_handleRestartSession:(id)session response:(id)response completion:(id)completion;
+- (void)_handleSyncBatch:(id)batch response:(id)response completion:(id)completion;
+- (void)_onSessionStateChangedTo:(unsigned int)to do:(id)do;
 - (void)_pause;
-- (void)_recordOutgoingMessageUUID:(id)a3;
-- (void)_supercededWithSession:(id)a3;
+- (void)_recordOutgoingMessageUUID:(id)d;
+- (void)_supercededWithSession:(id)session;
 - (void)cancel;
-- (void)cancelWithError:(id)a3;
+- (void)cancelWithError:(id)error;
 - (void)dealloc;
-- (void)setCanRestart:(BOOL)a3;
-- (void)setCanRollback:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setState:(unsigned int)a3;
-- (void)setTargetQueue:(id)a3;
-- (void)start:(id)a3;
+- (void)setCanRestart:(BOOL)restart;
+- (void)setCanRollback:(BOOL)rollback;
+- (void)setDelegate:(id)delegate;
+- (void)setState:(unsigned int)state;
+- (void)setTargetQueue:(id)queue;
+- (void)start:(id)start;
 @end
 
 @implementation SYSession
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
@@ -58,23 +58,23 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"SYSession is an abstract class. Please instantiate the correct subclass for your use case."];
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___SYSession;
-  return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
 }
 
-- (SYSession)initWithService:(id)a3
+- (SYSession)initWithService:(id)service
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v25.receiver = self;
   v25.super_class = SYSession;
   v5 = [(SYSession *)&v25 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_service, v4);
-    v6->_priority = [v4 priority];
+    objc_storeWeak(&v5->_service, serviceCopy);
+    v6->_priority = [serviceCopy priority];
     *&v6->_perMessageTimeout = xmmword_1DF8E3E10;
     v7 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:16];
     pendingMessageIDs = v6->_pendingMessageIDs;
@@ -85,12 +85,12 @@
     v6->_peerGenerationIDs = v9;
 
     v6->_setDelegateLock._os_unfair_lock_opaque = 0;
-    v11 = [v4 name];
-    v12 = [v11 lastPathComponent];
-    snprintf(__str, 0x80uLL, "%s Session Queue", [v12 UTF8String]);
+    name = [serviceCopy name];
+    lastPathComponent = [name lastPathComponent];
+    snprintf(__str, 0x80uLL, "%s Session Queue", [lastPathComponent UTF8String]);
 
-    v13 = [v4 queue];
-    qos_class = dispatch_queue_get_qos_class(v13, 0);
+    queue = [serviceCopy queue];
+    qos_class = dispatch_queue_get_qos_class(queue, 0);
 
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = v15;
@@ -106,7 +106,7 @@
     v6->_queue = v18;
 
     [SYQueueDumper registerQueue:v6->_queue];
-    v20 = MakeDefaultDelegateQueue(v4);
+    v20 = MakeDefaultDelegateQueue(serviceCopy);
     delegateQueue = v6->_delegateQueue;
     v6->_delegateQueue = v20;
 
@@ -123,12 +123,12 @@
 - (void)dealloc
 {
   v7 = *MEMORY[0x1E69E9840];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   v5 = 138543362;
   v6 = v3;
-  _os_log_error_impl(&dword_1DF835000, v1, 0x90u, "[%{public}@ dealloc]: XPC transaction wasn't ended prior to -dealloc", &v5, 0xCu);
+  _os_log_error_impl(&dword_1DF835000, selfCopy, 0x90u, "[%{public}@ dealloc]: XPC transaction wasn't ended prior to -dealloc", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];
 }
@@ -184,14 +184,14 @@
   return v3;
 }
 
-- (void)_recordOutgoingMessageUUID:(id)a3
+- (void)_recordOutgoingMessageUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (![(SYSession *)self wasCancelled])
   {
-    if (v4)
+    if (dCopy)
     {
-      [(NSMutableSet *)self->_pendingMessageIDs addObject:v4];
+      [(NSMutableSet *)self->_pendingMessageIDs addObject:dCopy];
     }
 
     else
@@ -210,39 +210,39 @@
   }
 }
 
-- (void)_clearOutgoingMessageUUID:(id)a3
+- (void)_clearOutgoingMessageUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (![(SYSession *)self wasCancelled])
   {
-    [(NSMutableSet *)self->_pendingMessageIDs removeObject:v4];
+    [(NSMutableSet *)self->_pendingMessageIDs removeObject:dCopy];
   }
 }
 
 - (id)_cancelPendingMessagesReturningFailures
 {
-  v3 = [(SYSession *)self service];
-  v4 = [v3 syncEngine];
-  v5 = [v4 cancelMessagesReturningFailures:self->_pendingMessageIDs];
+  service = [(SYSession *)self service];
+  syncEngine = [service syncEngine];
+  v5 = [syncEngine cancelMessagesReturningFailures:self->_pendingMessageIDs];
 
   return v5;
 }
 
-- (id)dataFromChange:(id)a3
+- (id)dataFromChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   serializer = self->_serializer;
   if (serializer)
   {
-    v6 = [(SYChangeSerializer *)serializer dataFromChange:v4];
+    v6 = [(SYChangeSerializer *)serializer dataFromChange:changeCopy];
 LABEL_5:
     v7 = v6;
     goto LABEL_6;
   }
 
-  if ([v4 conformsToProtocol:&unk_1F5AE36C0])
+  if ([changeCopy conformsToProtocol:&unk_1F5AE36C0])
   {
-    v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
+    v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:changeCopy requiringSecureCoding:1 error:0];
     goto LABEL_5;
   }
 
@@ -253,9 +253,9 @@ LABEL_6:
   return v7;
 }
 
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4
+- (id)changeFromData:(id)data ofType:(int64_t)type
 {
-  v6 = a3;
+  dataCopy = data;
   serializer = self->_serializer;
   if (!serializer)
   {
@@ -263,58 +263,58 @@ LABEL_6:
     objc_exception_throw([v10 initWithName:*MEMORY[0x1E695D930] reason:@"SYSession does not have a serializer. You must set a serializer before starting a session." userInfo:0]);
   }
 
-  v8 = [(SYChangeSerializer *)serializer changeFromData:v6 ofType:a4];
+  v8 = [(SYChangeSerializer *)serializer changeFromData:dataCopy ofType:type];
 
   return v8;
 }
 
-- (id)encodeSYChangeForBackwardCompatibility:(id)a3 protocolVersion:(int64_t)a4
+- (id)encodeSYChangeForBackwardCompatibility:(id)compatibility protocolVersion:(int64_t)version
 {
-  v6 = a3;
+  compatibilityCopy = compatibility;
   if (self->_serializer && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [(SYChangeSerializer *)self->_serializer encodeSYChangeForBackwardCompatibility:v6 protocolVersion:a4];
+    v7 = [(SYChangeSerializer *)self->_serializer encodeSYChangeForBackwardCompatibility:compatibilityCopy protocolVersion:version];
 LABEL_11:
     v8 = v7;
     goto LABEL_12;
   }
 
-  if (a4 == 2)
+  if (version == 2)
   {
-    v7 = [(SYSession *)self dataFromChange:v6];
+    v7 = [(SYSession *)self dataFromChange:compatibilityCopy];
     goto LABEL_11;
   }
 
   if (self->_serializer && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [(SYChangeSerializer *)self->_serializer dataWithSYObject:v6];
+    v7 = [(SYChangeSerializer *)self->_serializer dataWithSYObject:compatibilityCopy];
     goto LABEL_11;
   }
 
-  if ([v6 conformsToProtocol:&unk_1F5AE36C0])
+  if ([compatibilityCopy conformsToProtocol:&unk_1F5AE36C0])
   {
-    v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+    v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:compatibilityCopy requiringSecureCoding:1 error:0];
     goto LABEL_11;
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"SYSession cannot encode change objects of type '%@' for protocol version %ld", objc_opt_class(), a4}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"SYSession cannot encode change objects of type '%@' for protocol version %ld", objc_opt_class(), version}];
   v8 = 0;
 LABEL_12:
 
   return v8;
 }
 
-- (id)decodeChangeData:(id)a3 fromProtocolVersion:(int64_t)a4 ofType:(int64_t)a5
+- (id)decodeChangeData:(id)data fromProtocolVersion:(int64_t)version ofType:(int64_t)type
 {
-  v8 = a3;
+  dataCopy = data;
   if (self->_serializer && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v9 = [(SYChangeSerializer *)self->_serializer decodeChangeData:v8 fromProtocolVersion:a4 ofType:a5];
+    v9 = [(SYChangeSerializer *)self->_serializer decodeChangeData:dataCopy fromProtocolVersion:version ofType:type];
   }
 
-  else if (a4 == 2)
+  else if (version == 2)
   {
-    v9 = [(SYSession *)self changeFromData:v8 ofType:a5];
+    v9 = [(SYSession *)self changeFromData:dataCopy ofType:type];
   }
 
   else
@@ -325,7 +325,7 @@ LABEL_12:
       objc_exception_throw([v12 initWithName:*MEMORY[0x1E695D930] reason:@"SYSession does not have a serializer. You must set a serializer before starting a session." userInfo:0]);
     }
 
-    v9 = [(SYChangeSerializer *)self->_serializer SYObjectWithData:v8];
+    v9 = [(SYChangeSerializer *)self->_serializer SYObjectWithData:dataCopy];
   }
 
   v10 = v9;
@@ -333,9 +333,9 @@ LABEL_12:
   return v10;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   os_unfair_lock_lock(&self->_setDelegateLock);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -364,23 +364,23 @@ LABEL_12:
   os_unfair_lock_unlock(&self->_setDelegateLock);
 }
 
-- (void)setTargetQueue:(id)a3
+- (void)setTargetQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   p_delegateQueue = &self->_delegateQueue;
-  if (self->_delegateQueue != v4)
+  if (self->_delegateQueue != queueCopy)
   {
-    if (!v4)
+    if (!queueCopy)
     {
-      v6 = [(SYSession *)self service];
-      obj = MakeDefaultDelegateQueue(v6);
+      service = [(SYSession *)self service];
+      obj = MakeDefaultDelegateQueue(service);
 
-      v4 = obj;
+      queueCopy = obj;
     }
 
-    obja = v4;
-    objc_storeStrong(p_delegateQueue, v4);
-    v4 = obja;
+    obja = queueCopy;
+    objc_storeStrong(p_delegateQueue, queueCopy);
+    queueCopy = obja;
   }
 }
 
@@ -398,21 +398,21 @@ LABEL_12:
 
 - (NSDictionary)wrappedUserContext
 {
-  v3 = [(SYSession *)self userContext];
-  v4 = [v3 mutableCopy];
+  userContext = [(SYSession *)self userContext];
+  v4 = [userContext mutableCopy];
 
-  v5 = [(SYSession *)self identifier];
-  v6 = v5;
+  identifier = [(SYSession *)self identifier];
+  v6 = identifier;
   if (v4)
   {
-    [v4 setObject:v5 forKeyedSubscript:@"AssociatedSessionIdentifier"];
+    [v4 setObject:identifier forKeyedSubscript:@"AssociatedSessionIdentifier"];
 
     v7 = v4;
   }
 
   else
   {
-    v7 = UserInfoDictionaryWithAssociatedSessionID(v5);
+    v7 = UserInfoDictionaryWithAssociatedSessionID(identifier);
   }
 
   return v7;
@@ -488,13 +488,13 @@ LABEL_12:
 
 - (BOOL)_readyToProcessIncomingMessages
 {
-  v3 = [(SYSession *)self state];
+  state = [(SYSession *)self state];
   result = 0;
-  if (v3 <= 6)
+  if (state <= 6)
   {
-    if (v3 != 1)
+    if (state != 1)
     {
-      if (v3 != 6)
+      if (state != 6)
       {
         return result;
       }
@@ -505,9 +505,9 @@ LABEL_12:
     return ![(SYSession *)self isSending];
   }
 
-  if (v3 != 7)
+  if (state != 7)
   {
-    if (v3 != 10)
+    if (state != 10)
     {
       return result;
     }
@@ -520,13 +520,13 @@ LABEL_9:
   return [(SYSession *)self isSending];
 }
 
-- (BOOL)_willAcquiesceToNewSessionFromPeer:(id)a3
+- (BOOL)_willAcquiesceToNewSessionFromPeer:(id)peer
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  peerCopy = peer;
   peerGenerationIDs = self->_peerGenerationIDs;
-  v6 = [v4 peerID];
-  v7 = [(NSMutableDictionary *)peerGenerationIDs objectForKeyedSubscript:v6];
+  peerID = [peerCopy peerID];
+  v7 = [(NSMutableDictionary *)peerGenerationIDs objectForKeyedSubscript:peerID];
 
   if (_sync_log_facilities_pred != -1)
   {
@@ -537,23 +537,23 @@ LABEL_9:
   if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_DEBUG))
   {
     v23 = v8;
-    v24 = [(SYSession *)self identifier];
-    v25 = [(SYSession *)self state];
-    v26 = [v4 generationID];
+    identifier = [(SYSession *)self identifier];
+    state = [(SYSession *)self state];
+    generationID = [peerCopy generationID];
     v34 = 138544130;
-    v35 = v24;
+    v35 = identifier;
     v36 = 1024;
-    *v37 = v25;
+    *v37 = state;
     *&v37[4] = 2114;
     *&v37[6] = v7;
     *&v37[14] = 2114;
-    *&v37[16] = v26;
+    *&v37[16] = generationID;
     _os_log_debug_impl(&dword_1DF835000, v23, OS_LOG_TYPE_DEBUG, "Session acquiescense test: %{public}@, %{companionsync:SYSessionState}d, my generation %{public}@, new generation %{public}@", &v34, 0x26u);
 
     if (v7)
     {
 LABEL_5:
-      if (([v4 hasGenerationID] & 1) == 0)
+      if (([peerCopy hasGenerationID] & 1) == 0)
       {
         if (_sync_log_facilities_pred != -1)
         {
@@ -567,15 +567,15 @@ LABEL_5:
         }
 
         v17 = v16;
-        v18 = [(SYSession *)self identifier];
+        identifier2 = [(SYSession *)self identifier];
         v34 = 138543362;
-        v35 = v18;
+        v35 = identifier2;
         v19 = "Session %{public}@ rejecting new session; no peer generation ID";
         goto LABEL_16;
       }
 
-      v9 = [v4 generationID];
-      v10 = [v7 isEqualToString:v9];
+      generationID2 = [peerCopy generationID];
+      v10 = [v7 isEqualToString:generationID2];
 
       if ((v10 & 1) == 0)
       {
@@ -589,12 +589,12 @@ LABEL_5:
         if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_INFO))
         {
           v13 = v20;
-          v14 = [(SYSession *)self identifier];
-          v21 = [v4 generationID];
+          identifier3 = [(SYSession *)self identifier];
+          generationID3 = [peerCopy generationID];
           v34 = 138543874;
-          v35 = v14;
+          v35 = identifier3;
           v36 = 2114;
-          *v37 = v21;
+          *v37 = generationID3;
           *&v37[8] = 2114;
           *&v37[10] = v7;
           _os_log_impl(&dword_1DF835000, v13, OS_LOG_TYPE_INFO, "Session %{public}@ acquiescing to new session; new generation ID %{public}@ does not match current %{public}@", &v34, 0x20u);
@@ -618,9 +618,9 @@ LABEL_39:
         if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_INFO))
         {
           v13 = v11;
-          v14 = [(SYSession *)self identifier];
+          identifier3 = [(SYSession *)self identifier];
           v34 = 138543362;
-          v35 = v14;
+          v35 = identifier3;
           v15 = "Session %{public}@ acquiescing to new session; second strike";
 LABEL_38:
           _os_log_impl(&dword_1DF835000, v13, OS_LOG_TYPE_INFO, v15, &v34, 0xCu);
@@ -640,9 +640,9 @@ LABEL_38:
       if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_INFO))
       {
         v17 = v22;
-        v18 = [(SYSession *)self identifier];
+        identifier2 = [(SYSession *)self identifier];
         v34 = 138543362;
-        v35 = v18;
+        v35 = identifier2;
         v19 = "Session %{public}@ rejecting new session: first strike";
 LABEL_16:
         _os_log_impl(&dword_1DF835000, v17, OS_LOG_TYPE_INFO, v19, &v34, 0xCu);
@@ -661,8 +661,8 @@ LABEL_16:
 
   if ([(SYSession *)self isSending])
   {
-    v27 = [(SYSession *)self state];
-    if (v27 == 6)
+    state2 = [(SYSession *)self state];
+    if (state2 == 6)
     {
       if (self->_rejectedNewSessionFromSamePeer)
       {
@@ -676,9 +676,9 @@ LABEL_16:
         if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_INFO))
         {
           v13 = v32;
-          v14 = [(SYSession *)self identifier];
+          identifier3 = [(SYSession *)self identifier];
           v34 = 138543362;
-          v35 = v14;
+          v35 = identifier3;
           v15 = "Session %{public}@ acquiescing to new session; sending, not started, already rejected";
           goto LABEL_38;
         }
@@ -696,9 +696,9 @@ LABEL_16:
       if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_INFO))
       {
         v17 = v33;
-        v18 = [(SYSession *)self identifier];
+        identifier2 = [(SYSession *)self identifier];
         v34 = 138543362;
-        v35 = v18;
+        v35 = identifier2;
         v19 = "Session %{public}@ rejecting new session; sending, not started, first strike";
         goto LABEL_16;
       }
@@ -708,7 +708,7 @@ LABEL_17:
       goto LABEL_40;
     }
 
-    if (!v27)
+    if (!state2)
     {
       if (_sync_log_facilities_pred != -1)
       {
@@ -722,9 +722,9 @@ LABEL_17:
       }
 
       v17 = v28;
-      v18 = [(SYSession *)self identifier];
+      identifier2 = [(SYSession *)self identifier];
       v34 = 138543362;
-      v35 = v18;
+      v35 = identifier2;
       v19 = "Session %{public}@ rejecting new session; not yet sent out my own start-session message";
       goto LABEL_16;
     }
@@ -740,9 +740,9 @@ LABEL_17:
   if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_INFO))
   {
     v13 = v29;
-    v14 = [(SYSession *)self identifier];
+    identifier3 = [(SYSession *)self identifier];
     v34 = 138543362;
-    v35 = v14;
+    v35 = identifier3;
     v15 = "Session %{public}@ acquiescing to new session; nil current generation";
     goto LABEL_38;
   }
@@ -753,10 +753,10 @@ LABEL_40:
   return v12;
 }
 
-- (void)_onSessionStateChangedTo:(unsigned int)a3 do:(id)a4
+- (void)_onSessionStateChangedTo:(unsigned int)to do:(id)do
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  doCopy = do;
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -775,10 +775,10 @@ LABEL_40:
   block[1] = 3221225472;
   block[2] = __41__SYSession__onSessionStateChangedTo_do___block_invoke;
   block[3] = &unk_1E86CBBD0;
-  v13 = a3;
+  toCopy = to;
   block[4] = self;
-  v12 = v6;
-  v9 = v6;
+  v12 = doCopy;
+  v9 = doCopy;
   dispatch_sync(queue, block);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -831,50 +831,50 @@ void __41__SYSession__onSessionStateChangedTo_do___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_supercededWithSession:(id)a3
+- (void)_supercededWithSession:(id)session
 {
-  v4 = a3;
-  v5 = [(SYSession *)self identifier];
-  [v4 setIdentifier:v5];
+  sessionCopy = session;
+  identifier = [(SYSession *)self identifier];
+  [sessionCopy setIdentifier:identifier];
 
-  v6 = [(SYSession *)self delegate];
-  [v4 setDelegate:v6];
+  delegate = [(SYSession *)self delegate];
+  [sessionCopy setDelegate:delegate];
 
-  v7 = [(SYSession *)self targetQueue];
-  [v4 setTargetQueue:v7];
+  targetQueue = [(SYSession *)self targetQueue];
+  [sessionCopy setTargetQueue:targetQueue];
 
-  v8 = [(SYSession *)self serializer];
-  [v4 setSerializer:v8];
+  serializer = [(SYSession *)self serializer];
+  [sessionCopy setSerializer:serializer];
 
-  v9 = [(SYSession *)self options];
-  [v4 setOptions:v9];
+  options = [(SYSession *)self options];
+  [sessionCopy setOptions:options];
 
-  [v4 setMaxConcurrentMessages:{-[SYSession maxConcurrentMessages](self, "maxConcurrentMessages")}];
-  [v4 setCanRestart:{-[SYSession canRestart](self, "canRestart")}];
-  [v4 setCanRollback:{-[SYSession canRollback](self, "canRollback")}];
-  v10 = [(SYSession *)self userContext];
-  [v4 setUserContext:v10];
+  [sessionCopy setMaxConcurrentMessages:{-[SYSession maxConcurrentMessages](self, "maxConcurrentMessages")}];
+  [sessionCopy setCanRestart:{-[SYSession canRestart](self, "canRestart")}];
+  [sessionCopy setCanRollback:{-[SYSession canRollback](self, "canRollback")}];
+  userContext = [(SYSession *)self userContext];
+  [sessionCopy setUserContext:userContext];
 
-  v11 = [(SYSession *)self sessionMetadata];
-  [v4 setSessionMetadata:v11];
+  sessionMetadata = [(SYSession *)self sessionMetadata];
+  [sessionCopy setSessionMetadata:sessionMetadata];
 
-  v12 = [(SYSession *)self peerGenerationIDs];
-  [v4 setPeerGenerationIDs:v12];
+  peerGenerationIDs = [(SYSession *)self peerGenerationIDs];
+  [sessionCopy setPeerGenerationIDs:peerGenerationIDs];
 
-  v13 = [(SYSession *)self reason];
-  [v4 setReason:v13];
+  reason = [(SYSession *)self reason];
+  [sessionCopy setReason:reason];
 
   [(SYSession *)self _setStateQuietly:0];
 
   [(SYSession *)self _endTransaction];
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(SYSession *)self state]!= 5)
   {
-    [(SYSession *)self setError:v4];
+    [(SYSession *)self setError:errorCopy];
     [(SYSession *)self setState:5];
   }
 }
@@ -884,8 +884,8 @@ void __41__SYSession__onSessionStateChangedTo_do___block_invoke(uint64_t a1)
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SYSession *)self identifier];
-  v7 = [v3 initWithFormat:@"<%@> %@", v5, v6];
+  identifier = [(SYSession *)self identifier];
+  v7 = [v3 initWithFormat:@"<%@> %@", v5, identifier];
 
   return v7;
 }
@@ -893,8 +893,8 @@ void __41__SYSession__onSessionStateChangedTo_do___block_invoke(uint64_t a1)
 - (PBCodable)stateForLogging
 {
   v3 = objc_opt_new();
-  v4 = [(SYSession *)self identifier];
-  [v3 setIdentifier:v4];
+  identifier = [(SYSession *)self identifier];
+  [v3 setIdentifier:identifier];
 
   [v3 setState:{-[SYSession state](self, "state")}];
   [v3 setIsSending:{-[SYSession isSending](self, "isSending")}];
@@ -905,18 +905,18 @@ void __41__SYSession__onSessionStateChangedTo_do___block_invoke(uint64_t a1)
   [v3 setFullSessionTimeout:?];
   [v3 setMaxConcurrentMessages:{-[SYSession maxConcurrentMessages](self, "maxConcurrentMessages")}];
   v5 = [SYLogErrorInfo alloc];
-  v6 = [(SYSession *)self error];
-  v7 = [(SYLogErrorInfo *)v5 initWithCocoaError:v6];
+  error = [(SYSession *)self error];
+  v7 = [(SYLogErrorInfo *)v5 initWithCocoaError:error];
   [v3 setError:v7];
 
   [v3 setCanRollback:{-[SYSession canRollback](self, "canRollback")}];
   [v3 setCanRestart:{-[SYSession canRestart](self, "canRestart")}];
   [v3 setCanceled:{-[SYSession wasCancelled](self, "wasCancelled")}];
-  v8 = [(SYSession *)self options];
-  [v3 setCocoaTransportOptions:v8];
+  options = [(SYSession *)self options];
+  [v3 setCocoaTransportOptions:options];
 
-  v9 = [(SYSession *)self reason];
-  [v3 setReason:v9];
+  reason = [(SYSession *)self reason];
+  [v3 setReason:reason];
 
   peerGenerationIDs = self->_peerGenerationIDs;
   v13[0] = MEMORY[0x1E69E9820];
@@ -955,28 +955,28 @@ void __28__SYSession_stateForLogging__block_invoke(uint64_t a1, void *a2, void *
   return WeakRetained;
 }
 
-- (id)combinedEngineOptions:(id)a3
+- (id)combinedEngineOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   options = self->_options;
-  if (v4)
+  if (optionsCopy)
   {
     if (options)
     {
       v6 = [(NSDictionary *)options mutableCopy];
-      [(NSDictionary *)v6 addEntriesFromDictionary:v4];
+      [(NSDictionary *)v6 addEntriesFromDictionary:optionsCopy];
       goto LABEL_7;
     }
 
-    v7 = v4;
+    optionsCopy2 = optionsCopy;
   }
 
   else
   {
-    v7 = options;
+    optionsCopy2 = options;
   }
 
-  v6 = v7;
+  v6 = optionsCopy2;
 LABEL_7:
 
   return v6;
@@ -991,7 +991,7 @@ LABEL_7:
   return 0;
 }
 
-- (void)setState:(unsigned int)a3
+- (void)setState:(unsigned int)state
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -1009,7 +1009,7 @@ LABEL_7:
   return 0;
 }
 
-- (void)setCanRestart:(BOOL)a3
+- (void)setCanRestart:(BOOL)restart
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -1027,7 +1027,7 @@ LABEL_7:
   return 0;
 }
 
-- (void)setCanRollback:(BOOL)a3
+- (void)setCanRollback:(BOOL)rollback
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -1045,7 +1045,7 @@ LABEL_7:
   return 0;
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
   OUTLINED_FUNCTION_2_4();
   v4 = v3;
@@ -1056,7 +1056,7 @@ LABEL_7:
   v4[2](v4, 0, v5);
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -1065,7 +1065,7 @@ LABEL_7:
   NSRequestConcreteImplementation();
 }
 
-- (void)_handleSyncBatch:(id)a3 response:(id)a4 completion:(id)a5
+- (void)_handleSyncBatch:(id)batch response:(id)response completion:(id)completion
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -1074,7 +1074,7 @@ LABEL_7:
   NSRequestConcreteImplementation();
 }
 
-- (void)_handleRestartSession:(id)a3 response:(id)a4 completion:(id)a5
+- (void)_handleRestartSession:(id)session response:(id)response completion:(id)completion
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -1083,7 +1083,7 @@ LABEL_7:
   NSRequestConcreteImplementation();
 }
 
-- (void)_handleEndSession:(id)a3 response:(id)a4 completion:(id)a5
+- (void)_handleEndSession:(id)session response:(id)response completion:(id)completion
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -1092,16 +1092,7 @@ LABEL_7:
   NSRequestConcreteImplementation();
 }
 
-- (BOOL)_handleStartSessionResponse:(id)a3 error:(id *)a4
-{
-  OUTLINED_FUNCTION_2_4();
-  objc_opt_class();
-  OUTLINED_FUNCTION_1_6();
-  NSRequestConcreteImplementation();
-  return 0;
-}
-
-- (BOOL)_handleSyncBatchResponse:(id)a3 error:(id *)a4
+- (BOOL)_handleStartSessionResponse:(id)response error:(id *)error
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -1110,7 +1101,7 @@ LABEL_7:
   return 0;
 }
 
-- (BOOL)_handleRestartSessionResponse:(id)a3 error:(id *)a4
+- (BOOL)_handleSyncBatchResponse:(id)response error:(id *)error
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -1119,7 +1110,16 @@ LABEL_7:
   return 0;
 }
 
-- (BOOL)_handleEndSessionResponse:(id)a3 error:(id *)a4
+- (BOOL)_handleRestartSessionResponse:(id)response error:(id *)error
+{
+  OUTLINED_FUNCTION_2_4();
+  objc_opt_class();
+  OUTLINED_FUNCTION_1_6();
+  NSRequestConcreteImplementation();
+  return 0;
+}
+
+- (BOOL)_handleEndSessionResponse:(id)response error:(id *)error
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -1132,7 +1132,7 @@ LABEL_7:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1DF835000, a2, OS_LOG_TYPE_DEBUG, "%{public}@: beginning XPC transaction, to stop us being Jetsammed until it's done.", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -1141,7 +1141,7 @@ LABEL_7:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1DF835000, a2, OS_LOG_TYPE_DEBUG, "%{public}@: ending XPC transaction. We can now be jetsammed safely.", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

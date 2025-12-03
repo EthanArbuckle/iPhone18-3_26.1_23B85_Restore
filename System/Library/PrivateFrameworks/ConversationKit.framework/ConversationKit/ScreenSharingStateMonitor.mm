@@ -1,7 +1,7 @@
 @interface ScreenSharingStateMonitor
 - (CGSize)currentlySharingParticipantContentsSize;
 - (TUCall)call;
-- (void)setCall:(id)a3;
+- (void)setCall:(id)call;
 @end
 
 @implementation ScreenSharingStateMonitor
@@ -13,16 +13,16 @@
   return v2;
 }
 
-- (void)setCall:(id)a3
+- (void)setCall:(id)call
 {
-  v5 = a3;
-  v6 = self;
-  ScreenSharingStateMonitor.call.setter(a3);
+  callCopy = call;
+  selfCopy = self;
+  ScreenSharingStateMonitor.call.setter(call);
 }
 
 - (CGSize)currentlySharingParticipantContentsSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ScreenSharingStateMonitor.currentlySharingParticipantContentsSize.getter();
   v5 = v4;
 

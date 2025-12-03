@@ -1,10 +1,10 @@
 @interface RTTripSegmentInertialDataEnumerationOptions
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOptions:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOptions:(id)options;
 - (RTTripSegmentInertialDataEnumerationOptions)init;
-- (RTTripSegmentInertialDataEnumerationOptions)initWithCoder:(id)a3;
-- (RTTripSegmentInertialDataEnumerationOptions)initWithDateInterval:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTTripSegmentInertialDataEnumerationOptions)initWithCoder:(id)coder;
+- (RTTripSegmentInertialDataEnumerationOptions)initWithDateInterval:(id)interval;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,91 +13,91 @@
 - (RTTripSegmentInertialDataEnumerationOptions)init
 {
   v3 = objc_alloc(MEMORY[0x1E696AB80]);
-  v4 = [MEMORY[0x1E695DF00] distantPast];
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
-  v6 = [v3 initWithStartDate:v4 endDate:v5];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v6 = [v3 initWithStartDate:distantPast endDate:distantFuture];
 
   v7 = [(RTTripSegmentInertialDataEnumerationOptions *)self initWithDateInterval:v6];
   return v7;
 }
 
-- (RTTripSegmentInertialDataEnumerationOptions)initWithDateInterval:(id)a3
+- (RTTripSegmentInertialDataEnumerationOptions)initWithDateInterval:(id)interval
 {
-  v6 = a3;
+  intervalCopy = interval;
   v11.receiver = self;
   v11.super_class = RTTripSegmentInertialDataEnumerationOptions;
   v7 = [(RTTripSegmentInertialDataEnumerationOptions *)&v11 init];
   if (v7)
   {
-    if (v6)
+    if (intervalCopy)
     {
-      v8 = [v6 copy];
+      v8 = [intervalCopy copy];
     }
 
     else
     {
       v9 = objc_alloc(MEMORY[0x1E696AB80]);
-      v3 = [MEMORY[0x1E695DF00] distantPast];
-      v4 = [MEMORY[0x1E695DF00] distantFuture];
-      v8 = [v9 initWithStartDate:v3 endDate:v4];
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
+      distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+      v8 = [v9 initWithStartDate:distantPast endDate:distantFuture];
     }
 
     objc_storeStrong(&v7->_dateInterval, v8);
-    if (!v6)
+    if (!intervalCopy)
     {
 
-      v8 = v3;
+      v8 = distantPast;
     }
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(RTTripSegmentInertialDataEnumerationOptions *)self dateInterval];
-  v6 = [v4 initWithDateInterval:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  dateInterval = [(RTTripSegmentInertialDataEnumerationOptions *)self dateInterval];
+  v6 = [v4 initWithDateInterval:dateInterval];
 
   return v6;
 }
 
-- (RTTripSegmentInertialDataEnumerationOptions)initWithCoder:(id)a3
+- (RTTripSegmentInertialDataEnumerationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
 
   v6 = [(RTTripSegmentInertialDataEnumerationOptions *)self initWithDateInterval:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripSegmentInertialDataEnumerationOptions *)self isEqualToOptions:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripSegmentInertialDataEnumerationOptions *)self isEqualToOptions:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToOptions:(id)a3
+- (BOOL)isEqualToOptions:(id)options
 {
-  v5 = a3;
-  v6 = v5;
+  optionsCopy = options;
+  v6 = optionsCopy;
   dateInterval = self->_dateInterval;
   v8 = dateInterval;
   if (!dateInterval)
   {
-    v3 = [v5 dateInterval];
-    if (!v3)
+    dateInterval = [optionsCopy dateInterval];
+    if (!dateInterval)
     {
       v10 = 1;
 LABEL_7:
@@ -108,8 +108,8 @@ LABEL_7:
     v8 = self->_dateInterval;
   }
 
-  v9 = [v6 dateInterval];
-  v10 = [(NSDateInterval *)v8 isEqual:v9];
+  dateInterval2 = [v6 dateInterval];
+  v10 = [(NSDateInterval *)v8 isEqual:dateInterval2];
 
   if (!dateInterval)
   {
@@ -124,11 +124,11 @@ LABEL_8:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSDateInterval *)self->_dateInterval startDate];
-  v5 = [v4 stringFromDate];
-  v6 = [(NSDateInterval *)self->_dateInterval endDate];
-  v7 = [v6 stringFromDate];
-  v8 = [v3 stringWithFormat:@"start date, %@, end date, %@", v5, v7];
+  startDate = [(NSDateInterval *)self->_dateInterval startDate];
+  stringFromDate = [startDate stringFromDate];
+  endDate = [(NSDateInterval *)self->_dateInterval endDate];
+  stringFromDate2 = [endDate stringFromDate];
+  v8 = [v3 stringWithFormat:@"start date, %@, end date, %@", stringFromDate, stringFromDate2];
 
   return v8;
 }

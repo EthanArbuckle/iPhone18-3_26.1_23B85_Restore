@@ -1,6 +1,6 @@
 @interface DDSupportFlowAction
 - (id)localizedName;
-- (void)prepareViewControllerForActionController:(id)a3;
+- (void)prepareViewControllerForActionController:(id)controller;
 @end
 
 @implementation DDSupportFlowAction
@@ -14,9 +14,9 @@
   return v4;
 }
 
-- (void)prepareViewControllerForActionController:(id)a3
+- (void)prepareViewControllerForActionController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [_TtC15DataDetectorsUI36DDSupportFlowViewControllerContainer alloc];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -24,18 +24,18 @@
   v13[3] = &unk_278290B50;
   v13[4] = self;
   v6 = [(DDSupportFlowViewControllerContainer *)v5 init:v13];
-  v7 = [(DDSupportFlowViewControllerContainer *)v6 controller];
+  controller = [(DDSupportFlowViewControllerContainer *)v6 controller];
   container = self->_container;
   self->_container = v6;
   v9 = v6;
 
   viewController = self->_viewController;
-  self->_viewController = v7;
-  v11 = v7;
+  self->_viewController = controller;
+  v11 = controller;
 
   v12.receiver = self;
   v12.super_class = DDSupportFlowAction;
-  [(DDAction *)&v12 prepareViewControllerForActionController:v4];
+  [(DDAction *)&v12 prepareViewControllerForActionController:controllerCopy];
 }
 
 void __64__DDSupportFlowAction_prepareViewControllerForActionController___block_invoke(uint64_t a1)

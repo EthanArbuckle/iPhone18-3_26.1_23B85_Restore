@@ -1,39 +1,39 @@
 @interface SSVMediaContentTasteUpdateResponse
 - (NSString)description;
-- (SSVMediaContentTasteUpdateResponse)initWithCoder:(id)a3;
-- (SSVMediaContentTasteUpdateResponse)initWithXPCEncoding:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SSVMediaContentTasteUpdateResponse)initWithCoder:(id)coder;
+- (SSVMediaContentTasteUpdateResponse)initWithXPCEncoding:(id)encoding;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSVMediaContentTasteUpdateResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contentTasteItems = self->_contentTasteItems;
-  v5 = a3;
-  [v5 encodeObject:contentTasteItems forKey:@"SSVMediaContentTasteUpdateResponseContentTasteItems"];
-  [v5 encodeObject:self->_expirationDate forKey:@"SSVMediaContentTasteUpdateResponseExpirationDate"];
-  [v5 encodeInt64:self->_responseRevisionID forKey:@"SSVMediaContentTasteUpdateResponseResponseRevisionID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contentTasteItems forKey:@"SSVMediaContentTasteUpdateResponseContentTasteItems"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"SSVMediaContentTasteUpdateResponseExpirationDate"];
+  [coderCopy encodeInt64:self->_responseRevisionID forKey:@"SSVMediaContentTasteUpdateResponseResponseRevisionID"];
 }
 
-- (SSVMediaContentTasteUpdateResponse)initWithCoder:(id)a3
+- (SSVMediaContentTasteUpdateResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSVMediaContentTasteUpdateResponse *)self init];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"SSVMediaContentTasteUpdateResponseContentTasteItems"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"SSVMediaContentTasteUpdateResponseContentTasteItems"];
     contentTasteItems = v5->_contentTasteItems;
     v5->_contentTasteItems = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SSVMediaContentTasteUpdateResponseExpirationDate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SSVMediaContentTasteUpdateResponseExpirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v11;
 
-    v5->_responseRevisionID = [v4 decodeInt64ForKey:@"SSVMediaContentTasteUpdateResponseResponseRevisionID"];
+    v5->_responseRevisionID = [coderCopy decodeInt64ForKey:@"SSVMediaContentTasteUpdateResponseResponseRevisionID"];
   }
 
   return v5;
@@ -60,11 +60,11 @@
   return v8;
 }
 
-- (SSVMediaContentTasteUpdateResponse)initWithXPCEncoding:(id)a3
+- (SSVMediaContentTasteUpdateResponse)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
+  encodingCopy = encoding;
   v5 = objc_opt_class();
-  NSSecureCodingObjectForXPCObject = SSCodingCreateNSSecureCodingObjectForXPCObject(v4, v5);
+  NSSecureCodingObjectForXPCObject = SSCodingCreateNSSecureCodingObjectForXPCObject(encodingCopy, v5);
 
   v7 = NSSecureCodingObjectForXPCObject;
   return v7;

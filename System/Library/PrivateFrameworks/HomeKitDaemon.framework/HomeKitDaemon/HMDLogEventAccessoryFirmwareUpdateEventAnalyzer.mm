@@ -1,8 +1,8 @@
 @interface HMDLogEventAccessoryFirmwareUpdateEventAnalyzer
 + (id)managedEventCounterRequestGroups;
-- (HMDLogEventAccessoryFirmwareUpdateEventAnalyzer)initWithEventCountersManager:(id)a3;
-- (void)observeEvent:(id)a3;
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4;
+- (HMDLogEventAccessoryFirmwareUpdateEventAnalyzer)initWithEventCountersManager:(id)manager;
+- (void)observeEvent:(id)event;
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date;
 - (void)resetAggregationAnalysisContext;
 @end
 
@@ -10,34 +10,34 @@
 
 - (void)resetAggregationAnalysisContext
 {
-  v2 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
-  [v2 resetEventCountersForRequestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup"];
+  eventCountersManager = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
+  [eventCountersManager resetEventCountersForRequestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup"];
 }
 
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
-  v10 = [v8 counterGroupForName:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup"];
+  dateCopy = date;
+  eventCopy = event;
+  eventCountersManager = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
+  v10 = [eventCountersManager counterGroupForName:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup"];
 
-  [v7 setPeakConcurrentIPAccessoryUpdateStaging:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventPeakConcurrentIPAccessoryUpdateStagingCounter", v6)}];
-  [v7 setPeakConcurrentIPAccessoryUpdateApply:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventPeakConcurrentIPAccessoryUpdateApplyCounter", v6)}];
-  [v7 setPeakConcurrentBLEAccessoryUpdateStaging:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventPeakConcurrentBLEAccessoryUpdateStagingCounter", v6)}];
-  [v7 setPeakConcurrentBLEAccessoryUpdateApply:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventPeakConcurrentBLEAccessoryUpdateApplyCounter", v6)}];
-  [v7 setPeakConcurrentThreadAccessoryUpdateStaging:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventPeakConcurrentThreadAccessoryUpdateStagingCounter", v6)}];
-  v9 = [v10 fetchEventCounterForEventName:@"HMDLogEventPeakConcurrentThreadAccessoryUpdateApplyCounter" forDate:v6];
+  [eventCopy setPeakConcurrentIPAccessoryUpdateStaging:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventPeakConcurrentIPAccessoryUpdateStagingCounter", dateCopy)}];
+  [eventCopy setPeakConcurrentIPAccessoryUpdateApply:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventPeakConcurrentIPAccessoryUpdateApplyCounter", dateCopy)}];
+  [eventCopy setPeakConcurrentBLEAccessoryUpdateStaging:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventPeakConcurrentBLEAccessoryUpdateStagingCounter", dateCopy)}];
+  [eventCopy setPeakConcurrentBLEAccessoryUpdateApply:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventPeakConcurrentBLEAccessoryUpdateApplyCounter", dateCopy)}];
+  [eventCopy setPeakConcurrentThreadAccessoryUpdateStaging:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventPeakConcurrentThreadAccessoryUpdateStagingCounter", dateCopy)}];
+  v9 = [v10 fetchEventCounterForEventName:@"HMDLogEventPeakConcurrentThreadAccessoryUpdateApplyCounter" forDate:dateCopy];
 
-  [v7 setPeakConcurrentThreadAccessoryUpdateApply:v9];
+  [eventCopy setPeakConcurrentThreadAccessoryUpdateApply:v9];
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v12 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v12;
+    v4 = eventCopy;
   }
 
   else
@@ -48,36 +48,36 @@
   v5 = v4;
   if (v5)
   {
-    v6 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
-    [v6 incrementEventCounterForEventName:@"HMDLogEventPeakConcurrentIPAccessoryUpdateStagingCounter" requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup" withValue:{objc_msgSend(v5, "peakConcurrentIPAccessoryUpdateStaging")}];
+    eventCountersManager = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
+    [eventCountersManager incrementEventCounterForEventName:@"HMDLogEventPeakConcurrentIPAccessoryUpdateStagingCounter" requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup" withValue:{objc_msgSend(v5, "peakConcurrentIPAccessoryUpdateStaging")}];
 
-    v7 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
-    [v7 incrementEventCounterForEventName:@"HMDLogEventPeakConcurrentIPAccessoryUpdateApplyCounter" requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup" withValue:{objc_msgSend(v5, "peakConcurrentIPAccessoryUpdateApply")}];
+    eventCountersManager2 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
+    [eventCountersManager2 incrementEventCounterForEventName:@"HMDLogEventPeakConcurrentIPAccessoryUpdateApplyCounter" requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup" withValue:{objc_msgSend(v5, "peakConcurrentIPAccessoryUpdateApply")}];
 
-    v8 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
-    [v8 incrementEventCounterForEventName:@"HMDLogEventPeakConcurrentBLEAccessoryUpdateStagingCounter" requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup" withValue:{objc_msgSend(v5, "peakConcurrentBLEAccessoryUpdateStaging")}];
+    eventCountersManager3 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
+    [eventCountersManager3 incrementEventCounterForEventName:@"HMDLogEventPeakConcurrentBLEAccessoryUpdateStagingCounter" requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup" withValue:{objc_msgSend(v5, "peakConcurrentBLEAccessoryUpdateStaging")}];
 
-    v9 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
-    [v9 incrementEventCounterForEventName:@"HMDLogEventPeakConcurrentBLEAccessoryUpdateApplyCounter" requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup" withValue:{objc_msgSend(v5, "peakConcurrentBLEAccessoryUpdateApply")}];
+    eventCountersManager4 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
+    [eventCountersManager4 incrementEventCounterForEventName:@"HMDLogEventPeakConcurrentBLEAccessoryUpdateApplyCounter" requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup" withValue:{objc_msgSend(v5, "peakConcurrentBLEAccessoryUpdateApply")}];
 
-    v10 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
-    [v10 incrementEventCounterForEventName:@"HMDLogEventPeakConcurrentThreadAccessoryUpdateStagingCounter" requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup" withValue:{objc_msgSend(v5, "peakConcurrentThreadAccessoryUpdateStaging")}];
+    eventCountersManager5 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
+    [eventCountersManager5 incrementEventCounterForEventName:@"HMDLogEventPeakConcurrentThreadAccessoryUpdateStagingCounter" requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup" withValue:{objc_msgSend(v5, "peakConcurrentThreadAccessoryUpdateStaging")}];
 
-    v11 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
-    [v11 incrementEventCounterForEventName:@"HMDLogEventPeakConcurrentThreadAccessoryUpdateApplyCounter" requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup" withValue:{objc_msgSend(v5, "peakConcurrentThreadAccessoryUpdateApply")}];
+    eventCountersManager6 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)self eventCountersManager];
+    [eventCountersManager6 incrementEventCounterForEventName:@"HMDLogEventPeakConcurrentThreadAccessoryUpdateApplyCounter" requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup" withValue:{objc_msgSend(v5, "peakConcurrentThreadAccessoryUpdateApply")}];
   }
 }
 
-- (HMDLogEventAccessoryFirmwareUpdateEventAnalyzer)initWithEventCountersManager:(id)a3
+- (HMDLogEventAccessoryFirmwareUpdateEventAnalyzer)initWithEventCountersManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = HMDLogEventAccessoryFirmwareUpdateEventAnalyzer;
   v6 = [(HMDLogEventAccessoryFirmwareUpdateEventAnalyzer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventCountersManager, a3);
+    objc_storeStrong(&v6->_eventCountersManager, manager);
   }
 
   return v7;

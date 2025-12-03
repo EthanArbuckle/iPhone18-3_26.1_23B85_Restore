@@ -1,126 +1,126 @@
 @interface SCATGridPointPicker
-- (BOOL)handleInputAction:(id)a3 withElement:(id)a4;
-- (id)_initWithMenu:(id)a3;
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)firstElementWithOptions:(int *)a3;
-- (id)lastElementWithOptions:(int *)a3;
-- (void)driver:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5;
-- (void)scannerWillMakeManagerActive:(id)a3;
-- (void)scannerWillMakeManagerActive:(id)a3 forDisplayID:(unsigned int)a4;
-- (void)scannerWillMakeManagerInactive:(id)a3 activeElementManager:(id)a4;
+- (BOOL)handleInputAction:(id)action withElement:(id)element;
+- (id)_initWithMenu:(id)menu;
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options;
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options;
+- (id)firstElementWithOptions:(int *)options;
+- (id)lastElementWithOptions:(int *)options;
+- (void)driver:(id)driver didFocusOnContext:(id)context oldContext:(id)oldContext;
+- (void)scannerWillMakeManagerActive:(id)active;
+- (void)scannerWillMakeManagerActive:(id)active forDisplayID:(unsigned int)d;
+- (void)scannerWillMakeManagerInactive:(id)inactive activeElementManager:(id)manager;
 @end
 
 @implementation SCATGridPointPicker
 
-- (id)_initWithMenu:(id)a3
+- (id)_initWithMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   v8.receiver = self;
   v8.super_class = SCATGridPointPicker;
-  v5 = [(SCATPointPicker *)&v8 _initWithMenu:v4];
+  v5 = [(SCATPointPicker *)&v8 _initWithMenu:menuCopy];
   if (v5)
   {
-    v6 = [(SCATPointPickerViewController *)[SCATGridPointPickerViewController alloc] initWithElementManager:v5 menu:v4];
+    v6 = [(SCATPointPickerViewController *)[SCATGridPointPickerViewController alloc] initWithElementManager:v5 menu:menuCopy];
     [v5 setVisualProvider:v6];
   }
 
   return v5;
 }
 
-- (id)firstElementWithOptions:(int *)a3
+- (id)firstElementWithOptions:(int *)options
 {
-  v4 = [(SCATGridPointPicker *)self _gridViewController];
-  v5 = [v4 firstElementWithOptions:a3];
+  _gridViewController = [(SCATGridPointPicker *)self _gridViewController];
+  v5 = [_gridViewController firstElementWithOptions:options];
 
   return v5;
 }
 
-- (id)lastElementWithOptions:(int *)a3
+- (id)lastElementWithOptions:(int *)options
 {
-  v4 = [(SCATGridPointPicker *)self _gridViewController];
-  v5 = [v4 lastElementWithOptions:a3];
+  _gridViewController = [(SCATGridPointPicker *)self _gridViewController];
+  v5 = [_gridViewController lastElementWithOptions:options];
 
   return v5;
 }
 
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options
 {
-  v8 = a3;
-  v9 = [(SCATGridPointPicker *)self _gridViewController];
-  v10 = [v9 elementAfter:v8 didWrap:a4 options:a5];
+  afterCopy = after;
+  _gridViewController = [(SCATGridPointPicker *)self _gridViewController];
+  v10 = [_gridViewController elementAfter:afterCopy didWrap:wrap options:options];
 
   return v10;
 }
 
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options
 {
-  v8 = a3;
-  v9 = [(SCATGridPointPicker *)self _gridViewController];
-  v10 = [v9 elementBefore:v8 didWrap:a4 options:a5];
+  beforeCopy = before;
+  _gridViewController = [(SCATGridPointPicker *)self _gridViewController];
+  v10 = [_gridViewController elementBefore:beforeCopy didWrap:wrap options:options];
 
   return v10;
 }
 
-- (void)driver:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5
+- (void)driver:(id)driver didFocusOnContext:(id)context oldContext:(id)oldContext
 {
   v12.receiver = self;
   v12.super_class = SCATGridPointPicker;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(SCATElementManager *)&v12 driver:v10 didFocusOnContext:v9 oldContext:v8];
+  oldContextCopy = oldContext;
+  contextCopy = context;
+  driverCopy = driver;
+  [(SCATElementManager *)&v12 driver:driverCopy didFocusOnContext:contextCopy oldContext:oldContextCopy];
   v11 = [(SCATGridPointPicker *)self _gridViewController:v12.receiver];
-  [v11 driver:v10 didFocusOnContext:v9 oldContext:v8];
+  [v11 driver:driverCopy didFocusOnContext:contextCopy oldContext:oldContextCopy];
 }
 
-- (void)scannerWillMakeManagerActive:(id)a3
+- (void)scannerWillMakeManagerActive:(id)active
 {
   v6.receiver = self;
   v6.super_class = SCATGridPointPicker;
-  v4 = a3;
-  [(SCATElementManager *)&v6 scannerWillMakeManagerActive:v4];
+  activeCopy = active;
+  [(SCATElementManager *)&v6 scannerWillMakeManagerActive:activeCopy];
   v5 = [(SCATGridPointPicker *)self _gridViewController:v6.receiver];
-  [v5 scannerWillMakeManagerActive:v4];
+  [v5 scannerWillMakeManagerActive:activeCopy];
 }
 
-- (void)scannerWillMakeManagerActive:(id)a3 forDisplayID:(unsigned int)a4
+- (void)scannerWillMakeManagerActive:(id)active forDisplayID:(unsigned int)d
 {
-  v4 = *&a4;
+  v4 = *&d;
   v8.receiver = self;
   v8.super_class = SCATGridPointPicker;
-  v6 = a3;
-  [(SCATElementManager *)&v8 scannerWillMakeManagerActive:v6];
+  activeCopy = active;
+  [(SCATElementManager *)&v8 scannerWillMakeManagerActive:activeCopy];
   v7 = [(SCATGridPointPicker *)self _gridViewController:v8.receiver];
-  [v7 scannerWillMakeManagerActive:v6 forDisplayID:v4];
+  [v7 scannerWillMakeManagerActive:activeCopy forDisplayID:v4];
 }
 
-- (void)scannerWillMakeManagerInactive:(id)a3 activeElementManager:(id)a4
+- (void)scannerWillMakeManagerInactive:(id)inactive activeElementManager:(id)manager
 {
   v9.receiver = self;
   v9.super_class = SCATGridPointPicker;
-  v6 = a4;
-  v7 = a3;
-  [(SCATElementManager *)&v9 scannerWillMakeManagerInactive:v7 activeElementManager:v6];
+  managerCopy = manager;
+  inactiveCopy = inactive;
+  [(SCATElementManager *)&v9 scannerWillMakeManagerInactive:inactiveCopy activeElementManager:managerCopy];
   v8 = [(SCATGridPointPicker *)self _gridViewController:v9.receiver];
-  [v8 scannerWillMakeManagerInactive:v7 activeElementManager:v6];
+  [v8 scannerWillMakeManagerInactive:inactiveCopy activeElementManager:managerCopy];
 }
 
-- (BOOL)handleInputAction:(id)a3 withElement:(id)a4
+- (BOOL)handleInputAction:(id)action withElement:(id)element
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  elementCopy = element;
   v11.receiver = self;
   v11.super_class = SCATGridPointPicker;
-  if ([(SCATElementManager *)&v11 handleInputAction:v6 withElement:v7])
+  if ([(SCATElementManager *)&v11 handleInputAction:actionCopy withElement:elementCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(SCATGridPointPicker *)self _gridViewController];
-    v8 = [v9 handleInputAction:v6 withElement:v7];
+    _gridViewController = [(SCATGridPointPicker *)self _gridViewController];
+    v8 = [_gridViewController handleInputAction:actionCopy withElement:elementCopy];
   }
 
   return v8;

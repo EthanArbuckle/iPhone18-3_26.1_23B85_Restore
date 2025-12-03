@@ -1,32 +1,32 @@
 @interface HKCodableChartFeedItemData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addTrends:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTrends:(id)trends;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableChartFeedItemData
 
-- (void)addTrends:(id)a3
+- (void)addTrends:(id)trends
 {
-  v4 = a3;
+  trendsCopy = trends;
   trends = self->_trends;
-  v8 = v4;
+  v8 = trendsCopy;
   if (!trends)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_trends;
     self->_trends = v6;
 
-    v4 = v8;
+    trendsCopy = v8;
     trends = self->_trends;
   }
 
-  [(NSMutableArray *)trends addObject:v4];
+  [(NSMutableArray *)trends addObject:trendsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableChartFeedItemData;
   v4 = [(HKCodableChartFeedItemData *)&v8 description];
-  v5 = [(HKCodableChartFeedItemData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableChartFeedItemData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   chartModel = self->_chartModel;
   if (chartModel)
   {
-    v5 = [(HKCodableChartSharableModel *)chartModel dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"chartModel"];
+    dictionaryRepresentation = [(HKCodableChartSharableModel *)chartModel dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"chartModel"];
   }
 
   if ([(NSMutableArray *)self->_trends count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -84,16 +84,16 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"trends"];
+    [dictionary setObject:v6 forKey:@"trends"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_chartModel)
   {
     PBDataWriterWriteSubmessage();
@@ -131,35 +131,35 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_chartModel)
   {
-    [v8 setChartModel:?];
+    [toCopy setChartModel:?];
   }
 
   if ([(HKCodableChartFeedItemData *)self trendsCount])
   {
-    [v8 clearTrends];
-    v4 = [(HKCodableChartFeedItemData *)self trendsCount];
-    if (v4)
+    [toCopy clearTrends];
+    trendsCount = [(HKCodableChartFeedItemData *)self trendsCount];
+    if (trendsCount)
     {
-      v5 = v4;
+      v5 = trendsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableChartFeedItemData *)self trendsAtIndex:i];
-        [v8 addTrends:v7];
+        [toCopy addTrends:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableChartSharableModel *)self->_chartModel copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableChartSharableModel *)self->_chartModel copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -183,7 +183,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addTrends:v13];
 
         ++v12;
@@ -199,13 +199,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((chartModel = self->_chartModel, !(chartModel | v4[1])) || -[HKCodableChartSharableModel isEqual:](chartModel, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((chartModel = self->_chartModel, !(chartModel | equalCopy[1])) || -[HKCodableChartSharableModel isEqual:](chartModel, "isEqual:")))
   {
     trends = self->_trends;
-    if (trends | v4[2])
+    if (trends | equalCopy[2])
     {
       v7 = [(NSMutableArray *)trends isEqual:?];
     }
@@ -224,12 +224,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   chartModel = self->_chartModel;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (chartModel)
   {
     if (v6)
@@ -247,7 +247,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

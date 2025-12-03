@@ -1,20 +1,20 @@
 @interface LCFFetureValueNameType
-- (id)init:(id)a3 featureValueType:(int64_t)a4;
+- (id)init:(id)init featureValueType:(int64_t)type;
 @end
 
 @implementation LCFFetureValueNameType
 
-- (id)init:(id)a3 featureValueType:(int64_t)a4
+- (id)init:(id)init featureValueType:(int64_t)type
 {
-  v7 = a3;
+  initCopy = init;
   v10.receiver = self;
   v10.super_class = LCFFetureValueNameType;
   v8 = [(LCFFetureValueNameType *)&v10 init];
   if (v8)
   {
     LCFLoggingUtilsInit();
-    objc_storeStrong(&v8->_featureName, a3);
-    v8->_featureValueType = a4;
+    objc_storeStrong(&v8->_featureName, init);
+    v8->_featureValueType = type;
   }
 
   return v8;

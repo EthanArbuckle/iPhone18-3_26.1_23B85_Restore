@@ -3,26 +3,26 @@
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)copyGranularity;
 - (unint64_t)alignment;
 - (unint64_t)size;
-- (void)copyFromLinearBytes:(const void *)a3 linearOffset:(unint64_t)a4 linearBytesPerRow:(unint64_t)a5 linearBytesPerImage:(unint64_t)a6 toTextureMemory:(void *)a7 textureSlice:(unint64_t)a8 textureLevel:(unint64_t)a9 textureRegion:(id *)a10;
-- (void)copyFromTextureMemory:(const void *)a3 textureSlice:(unint64_t)a4 textureLevel:(unint64_t)a5 textureRegion:(id *)a6 toLinearBytes:(void *)a7 linearOffset:(unint64_t)a8 linearBytesPerRow:(unint64_t)a9 linearBytesPerImage:(unint64_t)a10;
-- (void)finalizeTextureMemory:(void *)a3;
-- (void)initializeTextureMemory:(void *)a3;
+- (void)copyFromLinearBytes:(const void *)bytes linearOffset:(unint64_t)offset linearBytesPerRow:(unint64_t)row linearBytesPerImage:(unint64_t)image toTextureMemory:(void *)memory textureSlice:(unint64_t)slice textureLevel:(unint64_t)level textureRegion:(id *)self0;
+- (void)copyFromTextureMemory:(const void *)memory textureSlice:(unint64_t)slice textureLevel:(unint64_t)level textureRegion:(id *)region toLinearBytes:(void *)bytes linearOffset:(unint64_t)offset linearBytesPerRow:(unint64_t)row linearBytesPerImage:(unint64_t)self0;
+- (void)finalizeTextureMemory:(void *)memory;
+- (void)initializeTextureMemory:(void *)memory;
 @end
 
 @implementation MTLToolsTextureLayout
 
 - (unint64_t)size
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 size];
+  return [baseObject size];
 }
 
 - (unint64_t)alignment
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 alignment];
+  return [baseObject alignment];
 }
 
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)copyGranularity
@@ -46,46 +46,46 @@
 
 - ($71D83D51AB0F57F7CF166351F850C832)watermark
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  v3 = [v2 watermark];
+  watermark = [baseObject watermark];
   result.var0[1] = v4;
-  result.var0[0] = v3;
+  result.var0[0] = watermark;
   return result;
 }
 
-- (void)initializeTextureMemory:(void *)a3
+- (void)initializeTextureMemory:(void *)memory
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 initializeTextureMemory:a3];
+  [baseObject initializeTextureMemory:memory];
 }
 
-- (void)copyFromLinearBytes:(const void *)a3 linearOffset:(unint64_t)a4 linearBytesPerRow:(unint64_t)a5 linearBytesPerImage:(unint64_t)a6 toTextureMemory:(void *)a7 textureSlice:(unint64_t)a8 textureLevel:(unint64_t)a9 textureRegion:(id *)a10
+- (void)copyFromLinearBytes:(const void *)bytes linearOffset:(unint64_t)offset linearBytesPerRow:(unint64_t)row linearBytesPerImage:(unint64_t)image toTextureMemory:(void *)memory textureSlice:(unint64_t)slice textureLevel:(unint64_t)level textureRegion:(id *)self0
 {
-  v16 = [(MTLToolsObject *)self baseObject];
-  v17 = *&a10->var0.var2;
-  v18[0] = *&a10->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v17 = *&region->var0.var2;
+  v18[0] = *&region->var0.var0;
   v18[1] = v17;
-  v18[2] = *&a10->var1.var1;
-  [v16 copyFromLinearBytes:a3 linearOffset:a4 linearBytesPerRow:a5 linearBytesPerImage:a6 toTextureMemory:a7 textureSlice:a8 textureLevel:a9 textureRegion:v18];
+  v18[2] = *&region->var1.var1;
+  [baseObject copyFromLinearBytes:bytes linearOffset:offset linearBytesPerRow:row linearBytesPerImage:image toTextureMemory:memory textureSlice:slice textureLevel:level textureRegion:v18];
 }
 
-- (void)copyFromTextureMemory:(const void *)a3 textureSlice:(unint64_t)a4 textureLevel:(unint64_t)a5 textureRegion:(id *)a6 toLinearBytes:(void *)a7 linearOffset:(unint64_t)a8 linearBytesPerRow:(unint64_t)a9 linearBytesPerImage:(unint64_t)a10
+- (void)copyFromTextureMemory:(const void *)memory textureSlice:(unint64_t)slice textureLevel:(unint64_t)level textureRegion:(id *)region toLinearBytes:(void *)bytes linearOffset:(unint64_t)offset linearBytesPerRow:(unint64_t)row linearBytesPerImage:(unint64_t)self0
 {
-  v16 = [(MTLToolsObject *)self baseObject];
-  v17 = *&a6->var0.var2;
-  v18[0] = *&a6->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v17 = *&region->var0.var2;
+  v18[0] = *&region->var0.var0;
   v18[1] = v17;
-  v18[2] = *&a6->var1.var1;
-  [v16 copyFromTextureMemory:a3 textureSlice:a4 textureLevel:a5 textureRegion:v18 toLinearBytes:a7 linearOffset:a8 linearBytesPerRow:a9 linearBytesPerImage:a10];
+  v18[2] = *&region->var1.var1;
+  [baseObject copyFromTextureMemory:memory textureSlice:slice textureLevel:level textureRegion:v18 toLinearBytes:bytes linearOffset:offset linearBytesPerRow:row linearBytesPerImage:image];
 }
 
-- (void)finalizeTextureMemory:(void *)a3
+- (void)finalizeTextureMemory:(void *)memory
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 finalizeTextureMemory:a3];
+  [baseObject finalizeTextureMemory:memory];
 }
 
 @end

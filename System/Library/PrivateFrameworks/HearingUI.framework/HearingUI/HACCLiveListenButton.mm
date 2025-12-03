@@ -1,17 +1,17 @@
 @interface HACCLiveListenButton
 - (BOOL)shouldIncludeAccessoryViewInFooterViews;
 - (BOOL)shouldIncludeIconViewInFooterViews;
-- (HACCLiveListenButton)initWithFrame:(CGRect)a3;
+- (HACCLiveListenButton)initWithFrame:(CGRect)frame;
 - (HACCLiveListenLevelGroup)levelGroup;
 - (UIButton)rewindButton;
-- (id)_symbolForAudioLevel:(double)a3 isListening:(BOOL)a4 showLevels:(BOOL)a5;
+- (id)_symbolForAudioLevel:(double)level isListening:(BOOL)listening showLevels:(BOOL)levels;
 - (id)accessibilityCustomActions;
 - (id)accessoryView;
 - (id)contentValue;
 - (unint64_t)accessibilityTraits;
 - (void)_updateAXValueString;
 - (void)_updateButtonView;
-- (void)liveListenAudioLevelDidChange:(double)a3;
+- (void)liveListenAudioLevelDidChange:(double)change;
 - (void)subscribeListeners;
 - (void)toggleLiveListenRewind;
 - (void)unsubscribeListeners;
@@ -23,11 +23,11 @@
 
 @implementation HACCLiveListenButton
 
-- (HACCLiveListenButton)initWithFrame:(CGRect)a3
+- (HACCLiveListenButton)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = HACCLiveListenButton;
-  v3 = [(HUICCCapsuleButton *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUICCCapsuleButton *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = hearingLocString();
@@ -37,16 +37,16 @@
     v3->_buttonVC = v5;
 
     [(CCUILabeledRoundButtonViewController *)v3->_buttonVC setTitle:v4];
-    v7 = [(CCUILabeledRoundButtonViewController *)v3->_buttonVC button];
-    [v7 addTarget:v3 action:sel_buttonTapped forControlEvents:64];
+    button = [(CCUILabeledRoundButtonViewController *)v3->_buttonVC button];
+    [button addTarget:v3 action:sel_buttonTapped forControlEvents:64];
 
-    v8 = [(CCUILabeledRoundButtonViewController *)v3->_buttonVC button];
-    [(HUICCCapsuleButton *)v3 setIconView:v8];
+    button2 = [(CCUILabeledRoundButtonViewController *)v3->_buttonVC button];
+    [(HUICCCapsuleButton *)v3 setIconView:button2];
 
     if (_os_feature_enabled_impl())
     {
-      v9 = [(HACCLiveListenButton *)v3 rewindButton];
-      [(HUICCCapsuleButton *)v3 setAccessoryView:v9];
+      rewindButton = [(HACCLiveListenButton *)v3 rewindButton];
+      [(HUICCCapsuleButton *)v3 setAccessoryView:rewindButton];
     }
 
     else
@@ -76,7 +76,7 @@
   objc_initWeak(buf, self);
   if (_os_feature_enabled_impl())
   {
-    v4 = [MEMORY[0x277D12DE8] sharedInstance];
+    mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __42__HACCLiveListenButton_subscribeListeners__block_invoke;
@@ -84,28 +84,28 @@
     v5 = &v12;
     objc_copyWeak(&v12, buf);
     v11[4] = self;
-    [v4 registerListener:self forLiveListenHandler:v11];
+    [mEMORY[0x277D12DE8] registerListener:self forLiveListenHandler:v11];
 
-    v6 = [(HUICCCapsuleButton *)self delegate];
-    LODWORD(v4) = [v6 isControlCenterModuleExpanded];
+    delegate = [(HUICCCapsuleButton *)self delegate];
+    LODWORD(mEMORY[0x277D12DE8]) = [delegate isControlCenterModuleExpanded];
 
-    if (v4)
+    if (mEMORY[0x277D12DE8])
     {
-      v7 = [MEMORY[0x277D12DE8] sharedInstance];
-      [v7 startObservingRemoteLiveListenUpdates];
+      mEMORY[0x277D12DE8]2 = [MEMORY[0x277D12DE8] sharedInstance];
+      [mEMORY[0x277D12DE8]2 startObservingRemoteLiveListenUpdates];
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x277D12DE8] sharedInstance];
+    mEMORY[0x277D12DE8]3 = [MEMORY[0x277D12DE8] sharedInstance];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __42__HACCLiveListenButton_subscribeListeners__block_invoke_315;
     v9[3] = &unk_2796F7898;
     v5 = &v10;
     objc_copyWeak(&v10, buf);
-    [v8 registerListener:self forLiveListenLevelsHandler:v9];
+    [mEMORY[0x277D12DE8]3 registerListener:self forLiveListenLevelsHandler:v9];
   }
 
   objc_destroyWeak(v5);
@@ -237,27 +237,27 @@ void __42__HACCLiveListenButton_subscribeListeners__block_invoke_2_316(uint64_t 
   }
 
   v4 = _os_feature_enabled_impl();
-  v5 = [MEMORY[0x277D12DE8] sharedInstance];
-  v6 = v5;
+  mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+  mEMORY[0x277D12DE8]2 = mEMORY[0x277D12DE8];
   if (v4)
   {
-    [v5 unregisterLiveListenListener:self];
+    [mEMORY[0x277D12DE8] unregisterLiveListenListener:self];
 
-    v6 = [MEMORY[0x277D12DE8] sharedInstance];
-    [v6 stopObservingRemoteLiveListenUpdates];
+    mEMORY[0x277D12DE8]2 = [MEMORY[0x277D12DE8] sharedInstance];
+    [mEMORY[0x277D12DE8]2 stopObservingRemoteLiveListenUpdates];
   }
 
   else
   {
-    [v5 unregisterLiveListenLevelListener:self];
+    [mEMORY[0x277D12DE8] unregisterLiveListenLevelListener:self];
   }
 }
 
 - (void)updateStatusBarOverride
 {
-  v3 = [(HACCLiveListenButton *)self isListening];
+  isListening = [(HACCLiveListenButton *)self isListening];
   [(SBSStatusBarStyleOverridesAssertion *)self->_statusBarAssertion invalidate];
-  if (v3)
+  if (isListening)
   {
     v4 = [objc_alloc(MEMORY[0x277D66C48]) initWithStatusBarStyleOverrides:1024 forPID:getpid() exclusive:0 showsWhenForeground:0];
     statusBarAssertion = self->_statusBarAssertion;
@@ -329,8 +329,8 @@ void __42__HACCLiveListenButton_subscribeListeners__block_invoke_2_316(uint64_t 
     [(UIButton *)self->_rewindButton addTarget:self action:sel_toggleLiveListenRewind forControlEvents:64];
     [(UIButton *)self->_rewindButton setHidden:1];
     v8 = self->_rewindButton;
-    v9 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UIButton *)v8 setTintColor:v9];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UIButton *)v8 setTintColor:systemWhiteColor];
 
     objc_initWeak(&location, self);
     v10 = self->_rewindButton;
@@ -361,24 +361,24 @@ id __36__HACCLiveListenButton_rewindButton__block_invoke(uint64_t a1)
 
 - (void)toggleLiveListenRewind
 {
-  v2 = [(HACCLiveListenButton *)self isPlayingBack];
-  v3 = [MEMORY[0x277D12DE8] sharedInstance];
-  v4 = v3;
-  if (v2)
+  isPlayingBack = [(HACCLiveListenButton *)self isPlayingBack];
+  mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+  v4 = mEMORY[0x277D12DE8];
+  if (isPlayingBack)
   {
-    [v3 stopLiveListenRewind];
+    [mEMORY[0x277D12DE8] stopLiveListenRewind];
   }
 
   else
   {
-    [v3 startLiveListenRewind];
+    [mEMORY[0x277D12DE8] startLiveListenRewind];
   }
 }
 
-- (void)liveListenAudioLevelDidChange:(double)a3
+- (void)liveListenAudioLevelDidChange:(double)change
 {
-  v4 = [(HACCLiveListenButton *)self levelGroup];
-  [v4 updateLevel:a3];
+  levelGroup = [(HACCLiveListenButton *)self levelGroup];
+  [levelGroup updateLevel:change];
 }
 
 - (id)contentValue
@@ -388,15 +388,15 @@ id __36__HACCLiveListenButton_rewindButton__block_invoke(uint64_t a1)
   if (v3)
   {
     [(HACCLiveListenButton *)self liveListenState];
-    v5 = isLiveListenEnabledForState();
+    isListening = isLiveListenEnabledForState();
   }
 
   else
   {
-    v5 = [(HACCLiveListenButton *)self isListening];
+    isListening = [(HACCLiveListenButton *)self isListening];
   }
 
-  v6 = [v4 numberWithBool:v5];
+  v6 = [v4 numberWithBool:isListening];
 
   return v6;
 }
@@ -450,18 +450,18 @@ uint64_t __35__HACCLiveListenButton_updateValue__block_invoke_3(uint64_t a1)
 
 - (void)updateUI
 {
-  v3 = [(HACCLiveListenButton *)self isListening];
+  isListening = [(HACCLiveListenButton *)self isListening];
   if (_os_feature_enabled_impl())
   {
     [(HACCLiveListenButton *)self updateUILiveListenControls];
   }
 
   levelGroup = self->_levelGroup;
-  if (v3)
+  if (isListening)
   {
     [(HACCLiveListenLevelGroup *)levelGroup setHidden:0];
     [(HACCLiveListenButton *)self setAccessibilityHintString:0];
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0;
   }
 
@@ -478,10 +478,10 @@ uint64_t __35__HACCLiveListenButton_updateValue__block_invoke_3(uint64_t a1)
 
     else
     {
-      v8 = [MEMORY[0x277D12E38] sharedUtilities];
-      v9 = [v8 wirelessSplitterEnabled];
+      mEMORY[0x277D12E38] = [MEMORY[0x277D12E38] sharedUtilities];
+      wirelessSplitterEnabled = [mEMORY[0x277D12E38] wirelessSplitterEnabled];
 
-      if (v9)
+      if (wirelessSplitterEnabled)
       {
         v10 = hearingLocString();
         [(HACCLiveListenButton *)self setAccessibilityHintString:v10];
@@ -490,10 +490,10 @@ uint64_t __35__HACCLiveListenButton_updateValue__block_invoke_3(uint64_t a1)
 
     [(HUICCCapsuleButton *)self setSubtitleText:0];
     v6 = [(HACCLiveListenButton *)self enabled]^ 1;
-    v5 = self;
+    selfCopy2 = self;
   }
 
-  [(HUICCCapsuleButton *)v5 setDimmingState:v6];
+  [(HUICCCapsuleButton *)selfCopy2 setDimmingState:v6];
 
   [(HACCLiveListenButton *)self _updateButtonView];
 }
@@ -505,7 +505,7 @@ uint64_t __35__HACCLiveListenButton_updateValue__block_invoke_3(uint64_t a1)
     return;
   }
 
-  v3 = [(HACCLiveListenButton *)self liveListenState];
+  liveListenState = [(HACCLiveListenButton *)self liveListenState];
   v4 = isLiveListenEnabledForState();
   if (v4)
   {
@@ -522,22 +522,22 @@ uint64_t __35__HACCLiveListenButton_updateValue__block_invoke_3(uint64_t a1)
   [(HACCLiveListenButton *)self _updateButtonView];
   if (!isLiveListenEnabledNearbyForState())
   {
-    if (v3 != 5)
+    if (liveListenState != 5)
     {
       [(HUICCCapsuleButton *)self setSubtitleText:0];
-      if (v3 > 7)
+      if (liveListenState > 7)
       {
         return;
       }
 
-      if (((1 << v3) & 0xB) == 0)
+      if (((1 << liveListenState) & 0xB) == 0)
       {
-        if (((1 << v3) & 0xD0) != 0)
+        if (((1 << liveListenState) & 0xD0) != 0)
         {
           goto LABEL_19;
         }
 
-        if (v3 != 2)
+        if (liveListenState != 2)
         {
           return;
         }
@@ -554,9 +554,9 @@ LABEL_25:
     goto LABEL_11;
   }
 
-  if (v3 <= 3)
+  if (liveListenState <= 3)
   {
-    if (v3 >= 4)
+    if (liveListenState >= 4)
     {
       return;
     }
@@ -564,9 +564,9 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if ((v3 - 4) >= 2)
+  if ((liveListenState - 4) >= 2)
   {
-    if (v3 != 7 && v3 != 6)
+    if (liveListenState != 7 && liveListenState != 6)
     {
       return;
     }
@@ -581,30 +581,30 @@ LABEL_19:
   [(HACCLiveListenButton *)self setAccessibilityHintString:0];
 }
 
-- (id)_symbolForAudioLevel:(double)a3 isListening:(BOOL)a4 showLevels:(BOOL)a5
+- (id)_symbolForAudioLevel:(double)level isListening:(BOOL)listening showLevels:(BOOL)levels
 {
-  v5 = a5;
-  v6 = a4;
+  levelsCopy = levels;
+  listeningCopy = listening;
   v20[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (listening)
   {
-    v8 = [MEMORY[0x277D75348] redColor];
-    v20[0] = v8;
+    redColor = [MEMORY[0x277D75348] redColor];
+    v20[0] = redColor;
     v9 = v20;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    v19 = v8;
+    redColor = [MEMORY[0x277D75348] whiteColor];
+    v19 = redColor;
     v9 = &v19;
   }
 
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
-  v11 = _os_feature_enabled_impl() & v5;
-  v12 = (v11 & v6) == 0;
-  if ((v11 & v6) != 0)
+  v11 = _os_feature_enabled_impl() & levelsCopy;
+  v12 = (v11 & listeningCopy) == 0;
+  if ((v11 & listeningCopy) != 0)
   {
     v13 = @"microphone.and.signal.meter.fill";
   }
@@ -616,21 +616,21 @@ LABEL_19:
 
   if (v12)
   {
-    a3 = 1.0;
+    level = 1.0;
   }
 
   v14 = [MEMORY[0x277D755D0] configurationWithPaletteColors:v10];
   v15 = [MEMORY[0x277D755D0] configurationWithPointSize:4 weight:23.0];
   v16 = [v14 configurationByApplyingConfiguration:v15];
 
-  v17 = [MEMORY[0x277D755B8] _systemImageNamed:v13 variableValue:v16 withConfiguration:a3];
+  v17 = [MEMORY[0x277D755B8] _systemImageNamed:v13 variableValue:v16 withConfiguration:level];
 
   return v17;
 }
 
 - (void)_updateButtonView
 {
-  v3 = [(HACCLiveListenButton *)self isListening];
+  isListening = [(HACCLiveListenButton *)self isListening];
   if (_os_feature_enabled_impl())
   {
     [(HACCLiveListenButton *)self liveListenState];
@@ -638,13 +638,13 @@ LABEL_19:
     {
       [(HACCLiveListenButton *)self liveListenState];
       v4 = isLiveListenEnabledNearbyForState() ^ 1;
-      v3 = 1;
+      isListening = 1;
     }
 
     else
     {
       v4 = 0;
-      v3 = 0;
+      isListening = 0;
     }
   }
 
@@ -654,7 +654,7 @@ LABEL_19:
   }
 
   [(HACCLiveListenButton *)self audioLevel];
-  v5 = [(HACCLiveListenButton *)self _symbolForAudioLevel:v3 isListening:v4 showLevels:?];
+  v5 = [(HACCLiveListenButton *)self _symbolForAudioLevel:isListening isListening:v4 showLevels:?];
   v6 = hearingLocString();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -662,7 +662,7 @@ LABEL_19:
   v9[3] = &unk_2796F7008;
   v9[4] = self;
   v10 = v5;
-  v12 = v3;
+  v12 = isListening;
   v11 = v6;
   v7 = v6;
   v8 = v5;
@@ -689,8 +689,8 @@ void __41__HACCLiveListenButton__updateButtonView__block_invoke(uint64_t a1)
   [(HACCLiveListenButton *)self setAccessibilityValueString:0];
   if (_os_feature_enabled_impl())
   {
-    v3 = [(HACCLiveListenButton *)self liveListenState];
-    if (v3 != 5 && v3 != 4)
+    liveListenState = [(HACCLiveListenButton *)self liveListenState];
+    if (liveListenState != 5 && liveListenState != 4)
     {
       return;
     }
@@ -714,9 +714,9 @@ void __41__HACCLiveListenButton__updateButtonView__block_invoke(uint64_t a1)
 
   else
   {
-    v4 = [(HACCLiveListenButton *)self isEnabled];
+    isEnabled = [(HACCLiveListenButton *)self isEnabled];
     v3 = MEMORY[0x277D76580];
-    if (v4)
+    if (isEnabled)
     {
       v3 = MEMORY[0x277D76578];
     }
@@ -730,16 +730,16 @@ void __41__HACCLiveListenButton__updateButtonView__block_invoke(uint64_t a1)
   v3 = MEMORY[0x277CBEB18];
   v19.receiver = self;
   v19.super_class = HACCLiveListenButton;
-  v4 = [(HUICCCapsuleButton *)&v19 accessibilityCustomActions];
-  v5 = [v3 arrayWithArray:v4];
+  accessibilityCustomActions = [(HUICCCapsuleButton *)&v19 accessibilityCustomActions];
+  v5 = [v3 arrayWithArray:accessibilityCustomActions];
 
-  v6 = [(HUICCCapsuleButton *)self iconView];
-  if (v6)
+  iconView = [(HUICCCapsuleButton *)self iconView];
+  if (iconView)
   {
-    v7 = v6;
-    v8 = [(HACCLiveListenButton *)self isEnabled];
+    v7 = iconView;
+    isEnabled = [(HACCLiveListenButton *)self isEnabled];
 
-    if (v8)
+    if (isEnabled)
     {
       [(HACCLiveListenButton *)self isListening];
       v9 = hearingLocString();
@@ -771,18 +771,18 @@ uint64_t __50__HACCLiveListenButton_accessibilityCustomActions__block_invoke(uin
 
 - (BOOL)shouldIncludeIconViewInFooterViews
 {
-  v3 = [(HUICCCapsuleButton *)self iconView];
-  if (v3)
+  iconView = [(HUICCCapsuleButton *)self iconView];
+  if (iconView)
   {
-    v4 = [(HACCLiveListenButton *)self isEnabled];
+    isEnabled = [(HACCLiveListenButton *)self isEnabled];
   }
 
   else
   {
-    v4 = 0;
+    isEnabled = 0;
   }
 
-  return v4;
+  return isEnabled;
 }
 
 - (BOOL)shouldIncludeAccessoryViewInFooterViews
@@ -792,18 +792,18 @@ uint64_t __50__HACCLiveListenButton_accessibilityCustomActions__block_invoke(uin
     return 0;
   }
 
-  v3 = [(HACCLiveListenButton *)self accessoryView];
-  if (v3)
+  accessoryView = [(HACCLiveListenButton *)self accessoryView];
+  if (accessoryView)
   {
-    v4 = [(HACCLiveListenButton *)self isListening];
+    isListening = [(HACCLiveListenButton *)self isListening];
   }
 
   else
   {
-    v4 = 0;
+    isListening = 0;
   }
 
-  return v4;
+  return isListening;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface BWDepthFirstEnumerator
-- (BWDepthFirstEnumerator)initWithGraph:(id)a3 vertexOrdering:(int)a4;
-- (BWDepthFirstEnumerator)initWithSourceNodes:(id)a3 vertexOrdering:(int)a4;
+- (BWDepthFirstEnumerator)initWithGraph:(id)graph vertexOrdering:(int)ordering;
+- (BWDepthFirstEnumerator)initWithSourceNodes:(id)nodes vertexOrdering:(int)ordering;
 - (id)nextObject;
-- (uint64_t)_nextUnvisitedChild:(uint64_t)a1;
+- (uint64_t)_nextUnvisitedChild:(uint64_t)child;
 - (uint64_t)nextObject;
 - (void)dealloc;
 @end
@@ -18,15 +18,15 @@
   return result;
 }
 
-- (BWDepthFirstEnumerator)initWithGraph:(id)a3 vertexOrdering:(int)a4
+- (BWDepthFirstEnumerator)initWithGraph:(id)graph vertexOrdering:(int)ordering
 {
   v8.receiver = self;
   v8.super_class = BWDepthFirstEnumerator;
-  v5 = [(BWNodeEnumerator *)&v8 initWithGraph:a3];
+  v5 = [(BWNodeEnumerator *)&v8 initWithGraph:graph];
   v6 = v5;
   if (v5)
   {
-    v5->_ordering = a4;
+    v5->_ordering = ordering;
     v5->_stack = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6->_currentSourceIndex = 0;
     v6->_sourceNodes = [(BWGraph *)v6->super._graph _sourceNodes];
@@ -35,7 +35,7 @@
   return v6;
 }
 
-- (BWDepthFirstEnumerator)initWithSourceNodes:(id)a3 vertexOrdering:(int)a4
+- (BWDepthFirstEnumerator)initWithSourceNodes:(id)nodes vertexOrdering:(int)ordering
 {
   v9.receiver = self;
   v9.super_class = BWDepthFirstEnumerator;
@@ -43,10 +43,10 @@
   v7 = v6;
   if (v6)
   {
-    v6->_ordering = a4;
+    v6->_ordering = ordering;
     v6->_stack = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7->_currentSourceIndex = 0;
-    v7->_sourceNodes = a3;
+    v7->_sourceNodes = nodes;
     v7->super._nodeVisitCountMap = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
@@ -89,17 +89,17 @@
       while (v14);
     }
 
-    v4 = [(NSMutableArray *)self->_stack bw_pop];
+    bw_pop = [(NSMutableArray *)self->_stack bw_pop];
   }
 
   else
   {
-    v4 = [(NSMutableArray *)stack bw_pop];
+    bw_pop = [(NSMutableArray *)stack bw_pop];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [objc_msgSend(v4 "outputs")];
+    v5 = [objc_msgSend(bw_pop "outputs")];
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v15 count:16];
     if (v6)
     {
@@ -133,17 +133,17 @@
   }
 
   self->super._depth = 0;
-  return v4;
+  return bw_pop;
 }
 
-- (uint64_t)_nextUnvisitedChild:(uint64_t)a1
+- (uint64_t)_nextUnvisitedChild:(uint64_t)child
 {
-  if (!a1)
+  if (!child)
   {
     return 0;
   }
 
-  v4 = [objc_msgSend(OUTLINED_FUNCTION_0_73(a1 a2)];
+  v4 = [objc_msgSend(OUTLINED_FUNCTION_0_73(child a2)];
   v6 = OUTLINED_FUNCTION_44_0(v4, v5);
   if (!v6)
   {

@@ -2,12 +2,12 @@
 - (CGRect)visibleRect;
 - (NSDictionary)spriteIndexesByObjectIdentifier;
 - (PXGLayoutSnapshot)init;
-- (PXGLayoutSnapshot)initWithLayout:(id)a3 spriteDataStore:(id)a4;
+- (PXGLayoutSnapshot)initWithLayout:(id)layout spriteDataStore:(id)store;
 - (PXGSpriteDataStore)spriteDataStore;
-- (void)applyViewportShift:(CGPoint)a3;
-- (void)enumerateObjectIdentifiersForInfos:(id *)a3 count:(unsigned int)a4 usingBlock:(id)a5;
-- (void)enumerateObjectIdentifiersForSpriteIndexes:(id)a3 infos:(id *)a4 usingBlock:(id)a5;
-- (void)enumerateSpritesWithObjectIdentifier:(id)a3 usingBlock:(id)a4;
+- (void)applyViewportShift:(CGPoint)shift;
+- (void)enumerateObjectIdentifiersForInfos:(id *)infos count:(unsigned int)count usingBlock:(id)block;
+- (void)enumerateObjectIdentifiersForSpriteIndexes:(id)indexes infos:(id *)infos usingBlock:(id)block;
+- (void)enumerateSpritesWithObjectIdentifier:(id)identifier usingBlock:(id)block;
 - (void)releaseSpriteDataStore;
 @end
 
@@ -18,8 +18,8 @@
   spriteDataStore = self->_spriteDataStore;
   if (!spriteDataStore)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXGLayoutSnapshot.m" lineNumber:56 description:@"Attempting to access the sprite data store after it has been released and reused."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayoutSnapshot.m" lineNumber:56 description:@"Attempting to access the sprite data store after it has been released and reused."];
 
     spriteDataStore = self->_spriteDataStore;
   }
@@ -46,22 +46,22 @@
   return result;
 }
 
-- (void)enumerateSpritesWithObjectIdentifier:(id)a3 usingBlock:(id)a4
+- (void)enumerateSpritesWithObjectIdentifier:(id)identifier usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXGLayoutSnapshot *)self spriteDataStore];
-  if (v8)
+  identifierCopy = identifier;
+  blockCopy = block;
+  spriteDataStore = [(PXGLayoutSnapshot *)self spriteDataStore];
+  if (spriteDataStore)
   {
-    v9 = [(PXGLayoutSnapshot *)self spriteIndexesByObjectIdentifier];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    spriteIndexesByObjectIdentifier = [(PXGLayoutSnapshot *)self spriteIndexesByObjectIdentifier];
+    v10 = [spriteIndexesByObjectIdentifier objectForKeyedSubscript:identifierCopy];
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __69__PXGLayoutSnapshot_enumerateSpritesWithObjectIdentifier_usingBlock___block_invoke;
     v11[3] = &unk_2782A91D0;
     v11[4] = self;
-    v12 = v7;
+    v12 = blockCopy;
     [v10 enumerateIndexesUsingBlock:v11];
   }
 }
@@ -91,23 +91,23 @@ uint64_t __69__PXGLayoutSnapshot_enumerateSpritesWithObjectIdentifier_usingBlock
   return v8(v7, a2, v10, v6);
 }
 
-- (void)enumerateObjectIdentifiersForInfos:(id *)a3 count:(unsigned int)a4 usingBlock:(id)a5
+- (void)enumerateObjectIdentifiersForInfos:(id *)infos count:(unsigned int)count usingBlock:(id)block
 {
-  v8 = a5;
-  v9 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexesInRange:{0, a4}];
+  blockCopy = block;
+  v9 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexesInRange:{0, count}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__PXGLayoutSnapshot_enumerateObjectIdentifiersForInfos_count_usingBlock___block_invoke;
   v11[3] = &unk_2782A91A8;
-  v12 = v8;
-  v10 = v8;
-  [(PXGLayoutSnapshot *)self enumerateObjectIdentifiersForSpriteIndexes:v9 infos:a3 usingBlock:v11];
+  v12 = blockCopy;
+  v10 = blockCopy;
+  [(PXGLayoutSnapshot *)self enumerateObjectIdentifiersForSpriteIndexes:v9 infos:infos usingBlock:v11];
 }
 
-- (void)enumerateObjectIdentifiersForSpriteIndexes:(id)a3 infos:(id *)a4 usingBlock:(id)a5
+- (void)enumerateObjectIdentifiersForSpriteIndexes:(id)indexes infos:(id *)infos usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  indexesCopy = indexes;
+  blockCopy = block;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -122,13 +122,13 @@ uint64_t __69__PXGLayoutSnapshot_enumerateSpritesWithObjectIdentifier_usingBlock
   v11[1] = 3221225472;
   v11[2] = __81__PXGLayoutSnapshot_enumerateObjectIdentifiersForSpriteIndexes_infos_usingBlock___block_invoke;
   v11[3] = &unk_2782A9180;
-  v15 = a4;
+  infosCopy = infos;
   v13 = v17;
   v11[4] = self;
-  v10 = v9;
+  v10 = blockCopy;
   v12 = v10;
   v14 = v16;
-  [v8 enumerateRangesUsingBlock:v11];
+  [indexesCopy enumerateRangesUsingBlock:v11];
 
   _Block_object_dispose(v16, 8);
   _Block_object_dispose(v17, 8);
@@ -181,19 +181,19 @@ void __81__PXGLayoutSnapshot_enumerateObjectIdentifiersForSpriteIndexes_infos_us
   spriteIndexesByObjectIdentifier = self->_spriteIndexesByObjectIdentifier;
   if (!spriteIndexesByObjectIdentifier)
   {
-    v4 = [(PXGLayoutSnapshot *)self spriteDataStore];
-    if (v4)
+    spriteDataStore = [(PXGLayoutSnapshot *)self spriteDataStore];
+    if (spriteDataStore)
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v6 = [v4 infos];
-      v7 = [v4 count];
+      infos = [spriteDataStore infos];
+      v7 = [spriteDataStore count];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __52__PXGLayoutSnapshot_spriteIndexesByObjectIdentifier__block_invoke;
       v12[3] = &unk_2782A9158;
       v13 = v5;
       v8 = v5;
-      [(PXGLayoutSnapshot *)self enumerateObjectIdentifiersForInfos:v6 count:v7 usingBlock:v12];
+      [(PXGLayoutSnapshot *)self enumerateObjectIdentifiersForInfos:infos count:v7 usingBlock:v12];
       v9 = [v8 copy];
       v10 = self->_spriteIndexesByObjectIdentifier;
       self->_spriteIndexesByObjectIdentifier = v9;
@@ -222,18 +222,18 @@ void __52__PXGLayoutSnapshot_spriteIndexesByObjectIdentifier__block_invoke(uint6
   }
 }
 
-- (void)applyViewportShift:(CGPoint)a3
+- (void)applyViewportShift:(CGPoint)shift
 {
-  y = a3.y;
-  x = a3.x;
-  self->_visibleRect = CGRectOffset(self->_visibleRect, a3.x, a3.y);
-  v4 = [(PXGLayoutSnapshot *)self spriteDataStore];
-  v5 = v4;
-  if (v4)
+  y = shift.y;
+  x = shift.x;
+  self->_visibleRect = CGRectOffset(self->_visibleRect, shift.x, shift.y);
+  spriteDataStore = [(PXGLayoutSnapshot *)self spriteDataStore];
+  v5 = spriteDataStore;
+  if (spriteDataStore)
   {
-    v13 = v4;
-    v6 = v4;
-    v7 = [v13 geometries];
+    v13 = spriteDataStore;
+    v6 = spriteDataStore;
+    geometries = [v13 geometries];
     v8 = [v13 count];
     v5 = v13;
     v9.f64[0] = x;
@@ -243,8 +243,8 @@ void __52__PXGLayoutSnapshot_spriteIndexesByObjectIdentifier__block_invoke(uint6
       v9.f64[1] = y;
       do
       {
-        *v7 = vaddq_f64(v9, *v7);
-        v7 += 2;
+        *geometries = vaddq_f64(v9, *geometries);
+        geometries += 2;
         --v10;
       }
 
@@ -255,16 +255,16 @@ void __52__PXGLayoutSnapshot_spriteIndexesByObjectIdentifier__block_invoke(uint6
 
 - (PXGLayoutSnapshot)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGLayoutSnapshot.m" lineNumber:52 description:{@"%s is not available as initializer", "-[PXGLayoutSnapshot init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayoutSnapshot.m" lineNumber:52 description:{@"%s is not available as initializer", "-[PXGLayoutSnapshot init]"}];
 
   abort();
 }
 
-- (PXGLayoutSnapshot)initWithLayout:(id)a3 spriteDataStore:(id)a4
+- (PXGLayoutSnapshot)initWithLayout:(id)layout spriteDataStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  layoutCopy = layout;
+  storeCopy = store;
   v31.receiver = self;
   v31.super_class = PXGLayoutSnapshot;
   v9 = [(PXGLayoutSnapshot *)&v31 init];
@@ -283,7 +283,7 @@ void __52__PXGLayoutSnapshot_spriteIndexesByObjectIdentifier__block_invoke(uint6
     v30 = a2;
     v14 = v9;
     v29 = v14;
-    [v7 enumerateDescendantsLayoutsUsingBlock:v26];
+    [layoutCopy enumerateDescendantsLayoutsUsingBlock:v26];
     v15 = [v12 copy];
     identifierSourceByDataSourceIdentifier = v14->_identifierSourceByDataSourceIdentifier;
     v14->_identifierSourceByDataSourceIdentifier = v15;
@@ -292,17 +292,17 @@ void __52__PXGLayoutSnapshot_spriteIndexesByObjectIdentifier__block_invoke(uint6
     identifierSourceByDataSourceIdentifierHash = v14->_identifierSourceByDataSourceIdentifierHash;
     v14->_identifierSourceByDataSourceIdentifierHash = v17;
 
-    [v7 visibleRect];
+    [layoutCopy visibleRect];
     v14->_visibleRect.origin.x = v19;
     v14->_visibleRect.origin.y = v20;
     v14->_visibleRect.size.width = v21;
     v14->_visibleRect.size.height = v22;
-    objc_storeStrong(&v14->_spriteDataStore, a4);
-    v23 = [v7 numberOfSprites];
-    if (v23 != [v8 count])
+    objc_storeStrong(&v14->_spriteDataStore, store);
+    numberOfSprites = [layoutCopy numberOfSprites];
+    if (numberOfSprites != [storeCopy count])
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
-      [v25 handleFailureInMethod:a2 object:v14 file:@"PXGLayoutSnapshot.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"layout.numberOfSprites == spriteDataStore.count"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v14 file:@"PXGLayoutSnapshot.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"layout.numberOfSprites == spriteDataStore.count"}];
     }
   }
 

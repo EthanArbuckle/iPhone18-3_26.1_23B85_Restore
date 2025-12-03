@@ -1,25 +1,25 @@
 @interface SGTextMessageConversationTracker
-+ (id)getMergedPrompt:(id)a3 withParams:(id)a4;
++ (id)getMergedPrompt:(id)prompt withParams:(id)params;
 + (id)instance;
 - (SGTextMessageConversationTracker)init;
-- (id)addTextMessageItem:(id)a3;
-- (id)conversationForIdentifier:(id)a3;
+- (id)addTextMessageItem:(id)item;
+- (id)conversationForIdentifier:(id)identifier;
 @end
 
 @implementation SGTextMessageConversationTracker
 
-- (id)addTextMessageItem:(id)a3
+- (id)addTextMessageItem:(id)item
 {
-  v5 = a3;
-  v6 = [(SGConversationTracker *)self->_conversationTracker addMessage:v5];
-  v7 = [v6 firstObject];
+  itemCopy = item;
+  v6 = [(SGConversationTracker *)self->_conversationTracker addMessage:itemCopy];
+  firstObject = [v6 firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SGTextMessageConversationTracker.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"[conversation.firstObject isKindOfClass:[SGTextMessageItem class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGTextMessageConversationTracker.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"[conversation.firstObject isKindOfClass:[SGTextMessageItem class]]"}];
   }
 
   v9 = objc_autoreleasePoolPush();
@@ -29,17 +29,17 @@
   return v10;
 }
 
-- (id)conversationForIdentifier:(id)a3
+- (id)conversationForIdentifier:(id)identifier
 {
-  v5 = [(SGConversationTracker *)self->_conversationTracker conversationForSenderID:a3];
-  v6 = [v5 firstObject];
+  v5 = [(SGConversationTracker *)self->_conversationTracker conversationForSenderID:identifier];
+  firstObject = [v5 firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"SGTextMessageConversationTracker.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"[result.firstObject isKindOfClass:[SGTextMessageItem class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGTextMessageConversationTracker.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"[result.firstObject isKindOfClass:[SGTextMessageItem class]]"}];
   }
 
   return v5;
@@ -60,31 +60,31 @@
   return v2;
 }
 
-+ (id)getMergedPrompt:(id)a3 withParams:(id)a4
++ (id)getMergedPrompt:(id)prompt withParams:(id)params
 {
-  v5 = a4;
-  v6 = [a3 messages];
-  if ([v6 count] > 1)
+  paramsCopy = params;
+  messages = [prompt messages];
+  if ([messages count] > 1)
   {
-    v31 = v5;
-    v9 = [v6 objectAtIndexedSubscript:{objc_msgSend(v6, "count") - 2}];
-    v10 = [v6 objectAtIndexedSubscript:{objc_msgSend(v6, "count") - 1}];
+    v31 = paramsCopy;
+    v9 = [messages objectAtIndexedSubscript:{objc_msgSend(messages, "count") - 2}];
+    v10 = [messages objectAtIndexedSubscript:{objc_msgSend(messages, "count") - 1}];
     v30 = v9;
-    v11 = [v9 message];
-    v12 = [v11 sender];
-    v13 = [v12 handles];
-    v14 = [v13 firstObject];
+    message = [v9 message];
+    sender = [message sender];
+    handles = [sender handles];
+    firstObject = [handles firstObject];
     v29 = v10;
-    v15 = [v10 message];
-    v16 = [v15 sender];
-    v17 = [v16 handles];
-    v18 = [v17 firstObject];
-    LODWORD(v10) = [v14 isEqualToString:v18];
+    message2 = [v10 message];
+    sender2 = [message2 sender];
+    handles2 = [sender2 handles];
+    firstObject2 = [handles2 firstObject];
+    LODWORD(v10) = [firstObject isEqualToString:firstObject2];
 
     if (v10)
     {
       v19 = sgLogHandle();
-      v5 = v31;
+      paramsCopy = v31;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
         *buf = 0;
@@ -100,17 +100,17 @@
       v32[1] = 3221225472;
       v32[2] = __63__SGTextMessageConversationTracker_getMergedPrompt_withParams___block_invoke;
       v32[3] = &unk_27894D5F8;
-      v33 = v6;
+      v33 = messages;
       v20 = [v33 _pas_mappedArrayWithIndexedTransform:v32];
       v21 = MEMORY[0x277D02540];
-      v22 = [v20 lastObject];
-      v23 = [v22 text];
-      v5 = v31;
-      v24 = [v31 maxPromptLength];
+      lastObject = [v20 lastObject];
+      text = [lastObject text];
+      paramsCopy = v31;
+      maxPromptLength = [v31 maxPromptLength];
       [v31 maxPromptWindowSeconds];
       v26 = v25;
-      v27 = [v31 promptJoiningString];
-      v8 = [v21 getMergedPromptForMessage:v23 conversationTurns:v20 maxPromptLength:v24 maxPromptWindowSeconds:v27 promptJoiningString:v26];
+      promptJoiningString = [v31 promptJoiningString];
+      v8 = [v21 getMergedPromptForMessage:text conversationTurns:v20 maxPromptLength:maxPromptLength maxPromptWindowSeconds:promptJoiningString promptJoiningString:v26];
 
       v19 = v33;
     }

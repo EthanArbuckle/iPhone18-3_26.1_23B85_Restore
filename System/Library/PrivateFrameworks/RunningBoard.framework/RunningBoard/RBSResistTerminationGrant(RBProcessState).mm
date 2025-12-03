@@ -7,10 +7,10 @@
 - (void)applyToProcessState:()RBProcessState attributePath:context:
 {
   v5 = a3;
-  v4 = [a1 resistance];
-  if (v4 > [v5 terminationResistance])
+  resistance = [self resistance];
+  if (resistance > [v5 terminationResistance])
   {
-    [v5 setTerminationResistance:v4];
+    [v5 setTerminationResistance:resistance];
   }
 }
 

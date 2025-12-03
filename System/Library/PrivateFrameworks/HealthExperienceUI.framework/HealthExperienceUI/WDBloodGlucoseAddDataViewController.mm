@@ -1,8 +1,8 @@
 @interface WDBloodGlucoseAddDataViewController
 - (WDAddDataManualEntrySpinner)mealTimeEntryItem;
 - (id)defaultMetadata;
-- (id)manualEntryItemsForSection:(int64_t)a3;
-- (id)manualEntrySpinner:(id)a3 titleForRow:(int64_t)a4;
+- (id)manualEntryItemsForSection:(int64_t)section;
+- (id)manualEntrySpinner:(id)spinner titleForRow:(int64_t)row;
 @end
 
 @implementation WDBloodGlucoseAddDataViewController
@@ -30,46 +30,46 @@
 {
   v11.receiver = self;
   v11.super_class = WDBloodGlucoseAddDataViewController;
-  v3 = [(WDAddDataViewController *)&v11 defaultMetadata];
-  v4 = v3;
-  if (!v3)
+  defaultMetadata = [(WDAddDataViewController *)&v11 defaultMetadata];
+  v4 = defaultMetadata;
+  if (!defaultMetadata)
   {
-    v3 = MEMORY[0x1E695E0F8];
+    defaultMetadata = MEMORY[0x1E695E0F8];
   }
 
-  v5 = [v3 mutableCopy];
+  v5 = [defaultMetadata mutableCopy];
 
-  v6 = [(WDBloodGlucoseAddDataViewController *)self mealTimeEntryItem];
-  v7 = [v6 generateValue];
-  v8 = [v7 integerValue];
+  mealTimeEntryItem = [(WDBloodGlucoseAddDataViewController *)self mealTimeEntryItem];
+  generateValue = [mealTimeEntryItem generateValue];
+  integerValue = [generateValue integerValue];
 
-  if (v8 != *MEMORY[0x1E696C698])
+  if (integerValue != *MEMORY[0x1E696C698])
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
     [v5 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696BA58]];
   }
 
   return v5;
 }
 
-- (id)manualEntryItemsForSection:(int64_t)a3
+- (id)manualEntryItemsForSection:(int64_t)section
 {
   v9.receiver = self;
   v9.super_class = WDBloodGlucoseAddDataViewController;
-  v4 = [(WDDisplayTypeAddDataViewController *)&v9 manualEntryItemsForSection:a3];
+  v4 = [(WDDisplayTypeAddDataViewController *)&v9 manualEntryItemsForSection:section];
   v5 = [v4 mutableCopy];
 
-  v6 = [(WDBloodGlucoseAddDataViewController *)self mealTimeEntryItem];
-  [v5 addObject:v6];
+  mealTimeEntryItem = [(WDBloodGlucoseAddDataViewController *)self mealTimeEntryItem];
+  [v5 addObject:mealTimeEntryItem];
 
   v7 = [MEMORY[0x1E695DEC8] arrayWithArray:v5];
 
   return v7;
 }
 
-- (id)manualEntrySpinner:(id)a3 titleForRow:(int64_t)a4
+- (id)manualEntrySpinner:(id)spinner titleForRow:(int64_t)row
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MEAL_TIME_%zd", a4];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MEAL_TIME_%zd", row];
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v6 = [v5 localizedStringForKey:v4 value:&stru_1F3823B88 table:@"HealthUI-Localizable"];
 

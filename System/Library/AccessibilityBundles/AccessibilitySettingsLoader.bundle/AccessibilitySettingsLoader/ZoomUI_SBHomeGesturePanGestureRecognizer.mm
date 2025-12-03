@@ -1,25 +1,25 @@
 @interface ZoomUI_SBHomeGesturePanGestureRecognizer
-- (CGPoint)translationInView:(id)a3;
+- (CGPoint)translationInView:(id)view;
 @end
 
 @implementation ZoomUI_SBHomeGesturePanGestureRecognizer
 
-- (CGPoint)translationInView:(id)a3
+- (CGPoint)translationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (!+[ZoomServicesUI _shouldUnmapPointsForFluidGestures])
   {
     goto LABEL_6;
   }
 
-  v5 = [getAXSettingsClass() sharedInstance];
-  if ([v5 zoomInStandby])
+  sharedInstance = [getAXSettingsClass() sharedInstance];
+  if ([sharedInstance zoomInStandby])
   {
 
 LABEL_6:
     v36.receiver = self;
     v36.super_class = ZoomUI_SBHomeGesturePanGestureRecognizer;
-    [(ZoomUI_SBHomeGesturePanGestureRecognizer *)&v36 translationInView:v4];
+    [(ZoomUI_SBHomeGesturePanGestureRecognizer *)&v36 translationInView:viewCopy];
     v29 = v32;
     v31 = v33;
     goto LABEL_7;
@@ -38,13 +38,13 @@ LABEL_6:
   [(ZoomUI_SBHomeGesturePanGestureRecognizer *)self safeCGPointForKey:@"_lastSceneReferenceLocation"];
   v12 = v11;
   v14 = v13;
-  v15 = [v4 window];
-  v16 = [v15 screen];
-  v17 = [v16 displayIdentity];
-  v18 = [v17 displayID];
+  window = [viewCopy window];
+  screen = [window screen];
+  displayIdentity = [screen displayIdentity];
+  displayID = [displayIdentity displayID];
 
-  v19 = [getZoomServicesClass() sharedInstance];
-  [v19 zoomFrameOnDisplay:v18];
+  sharedInstance2 = [getZoomServicesClass() sharedInstance];
+  [sharedInstance2 zoomFrameOnDisplay:displayID];
   *zoomFrame = v20;
   *&zoomFrame[8] = v21;
   *&zoomFrame[16] = v22;

@@ -1,12 +1,12 @@
 @interface AVMediaSelectionNilOption
-- (AVMediaSelectionNilOption)initWithGroup:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVMediaSelectionNilOption)initWithGroup:(id)group;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
 @implementation AVMediaSelectionNilOption
 
-- (AVMediaSelectionNilOption)initWithGroup:(id)a3
+- (AVMediaSelectionNilOption)initWithGroup:(id)group
 {
   v11.receiver = self;
   v11.super_class = AVMediaSelectionNilOption;
@@ -14,16 +14,16 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (group)
     {
-      v4->_groupID = [a3 _groupID];
-      v5->_groupMediaType = [objc_msgSend(a3 "_groupMediaType")];
-      v6 = [MEMORY[0x1E695DF90] dictionary];
-      v7 = v6;
+      v4->_groupID = [group _groupID];
+      v5->_groupMediaType = [objc_msgSend(group "_groupMediaType")];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      v7 = dictionary;
       groupMediaType = v5->_groupMediaType;
       if (groupMediaType)
       {
-        [v6 setObject:groupMediaType forKey:*MEMORY[0x1E6973750]];
+        [dictionary setObject:groupMediaType forKey:*MEMORY[0x1E6973750]];
       }
 
       groupID = v5->_groupID;
@@ -33,7 +33,7 @@
       }
 
       v5->_dictionary = [v7 copy];
-      v5->_weakReferenceToGroup = [a3 _weakReference];
+      v5->_weakReferenceToGroup = [group _weakReference];
     }
 
     else
@@ -53,9 +53,9 @@
   [(AVMediaSelectionOption *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -67,9 +67,9 @@
   }
 
   dictionary = self->_dictionary;
-  v6 = [a3 dictionary];
+  dictionary = [equal dictionary];
 
-  return [(NSDictionary *)dictionary isEqual:v6];
+  return [(NSDictionary *)dictionary isEqual:dictionary];
 }
 
 @end

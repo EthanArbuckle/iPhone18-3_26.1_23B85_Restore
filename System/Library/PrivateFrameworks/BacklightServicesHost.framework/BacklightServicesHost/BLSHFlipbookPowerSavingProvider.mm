@@ -4,9 +4,9 @@
 - (BOOL)isFlipbookPowerSavingEnabled;
 - (NSString)description;
 - (id)lock_description;
-- (void)decrementDisablePowerSavingUsageCountForReason:(unint64_t)a3;
-- (void)incrementDisablePowerSavingUsageCountForReason:(unint64_t)a3;
-- (void)setFlipbook:(id)a3;
+- (void)decrementDisablePowerSavingUsageCountForReason:(unint64_t)reason;
+- (void)incrementDisablePowerSavingUsageCountForReason:(unint64_t)reason;
+- (void)setFlipbook:(id)flipbook;
 @end
 
 @implementation BLSHFlipbookPowerSavingProvider
@@ -36,10 +36,10 @@
 - (NSString)description
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BLSHFlipbookPowerSavingProvider *)self lock_description];
+  lock_description = [(BLSHFlipbookPowerSavingProvider *)self lock_description];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return lock_description;
 }
 
 void __51__BLSHFlipbookPowerSavingProvider_lock_description__block_invoke(uint64_t a1, void *a2)
@@ -125,13 +125,13 @@ void __51__BLSHFlipbookPowerSavingProvider_lock_description__block_invoke(uint64
   return WeakRetained;
 }
 
-- (void)setFlipbook:(id)a3
+- (void)setFlipbook:(id)flipbook
 {
-  v4 = a3;
+  flipbookCopy = flipbook;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_lock_count == 0;
-  objc_storeWeak(&self->_lock_flipbook, v4);
-  [v4 setPowerSavingEnabled:v5];
+  objc_storeWeak(&self->_lock_flipbook, flipbookCopy);
+  [flipbookCopy setPowerSavingEnabled:v5];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -139,31 +139,31 @@ void __51__BLSHFlipbookPowerSavingProvider_lock_description__block_invoke(uint64
 - (BOOL)isFlipbookPowerSavingEnabled
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = self->_lock_count == 0;
+  isPowerSavingEnabled = self->_lock_count == 0;
   WeakRetained = objc_loadWeakRetained(&self->_lock_flipbook);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    v3 = [WeakRetained isPowerSavingEnabled];
+    isPowerSavingEnabled = [WeakRetained isPowerSavingEnabled];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return isPowerSavingEnabled;
 }
 
-- (void)incrementDisablePowerSavingUsageCountForReason:(unint64_t)a3
+- (void)incrementDisablePowerSavingUsageCountForReason:(unint64_t)reason
 {
   v14 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  if (a3 >= 8)
+  if (reason >= 8)
   {
     [BLSHFlipbookPowerSavingProvider incrementDisablePowerSavingUsageCountForReason:];
   }
 
   lock_count = self->_lock_count;
   self->_lock_count = lock_count + 1;
-  ++self->_lock_reasonsCount[a3];
+  ++self->_lock_reasonsCount[reason];
   v6 = bls_assertions_log();
   WeakRetained = v6;
   if (lock_count)
@@ -178,11 +178,11 @@ void __51__BLSHFlipbookPowerSavingProvider_lock_description__block_invoke(uint64
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v8 = [(BLSHFlipbookPowerSavingProvider *)self lock_description];
+      lock_description = [(BLSHFlipbookPowerSavingProvider *)self lock_description];
       v10 = 134218242;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v8;
+      v13 = lock_description;
       _os_log_impl(&dword_21FD11000, WeakRetained, OS_LOG_TYPE_INFO, "%p did disable power savings: %{public}@", &v10, 0x16u);
     }
 
@@ -194,7 +194,7 @@ void __51__BLSHFlipbookPowerSavingProvider_lock_description__block_invoke(uint64
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)decrementDisablePowerSavingUsageCountForReason:(unint64_t)a3
+- (void)decrementDisablePowerSavingUsageCountForReason:(unint64_t)reason
 {
   v17 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -204,14 +204,14 @@ void __51__BLSHFlipbookPowerSavingProvider_lock_description__block_invoke(uint64
     [BLSHFlipbookPowerSavingProvider decrementDisablePowerSavingUsageCountForReason:];
   }
 
-  if (a3 >= 8)
+  if (reason >= 8)
   {
     [BLSHFlipbookPowerSavingProvider decrementDisablePowerSavingUsageCountForReason:];
   }
 
   v6 = lock_count - 1;
   self->_lock_count = lock_count - 1;
-  --self->_lock_reasonsCount[a3];
+  --self->_lock_reasonsCount[reason];
   v7 = bls_assertions_log();
   WeakRetained = v7;
   if (v6)
@@ -226,13 +226,13 @@ void __51__BLSHFlipbookPowerSavingProvider_lock_description__block_invoke(uint64
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v9 = [(BLSHFlipbookPowerSavingProvider *)self lock_description];
+      lock_description = [(BLSHFlipbookPowerSavingProvider *)self lock_description];
       v11 = 134218498;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
-      v14 = a3;
+      reasonCopy = reason;
       v15 = 2114;
-      v16 = v9;
+      v16 = lock_description;
       _os_log_impl(&dword_21FD11000, WeakRetained, OS_LOG_TYPE_INFO, "%p did enable power savings after removing reason:%ld – %{public}@", &v11, 0x20u);
     }
 

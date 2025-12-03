@@ -1,11 +1,11 @@
 @interface ControlContainerView
-- (_TtC16MagnifierSupport20ControlContainerView)initWithCoder:(id)a3;
-- (void)deviceOrientationDidChange:(id)a3;
+- (_TtC16MagnifierSupport20ControlContainerView)initWithCoder:(id)coder;
+- (void)deviceOrientationDidChange:(id)change;
 @end
 
 @implementation ControlContainerView
 
-- (_TtC16MagnifierSupport20ControlContainerView)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport20ControlContainerView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MagnifierSupport20ControlContainerView_buttonMap;
   *(&self->super.super.super.isa + v4) = sub_257BE98E4(MEMORY[0x277D84F90]);
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (void)deviceOrientationDidChange:(id)a3
+- (void)deviceOrientationDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_257C80D54();
 }
 

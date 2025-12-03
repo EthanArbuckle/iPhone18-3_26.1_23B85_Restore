@@ -1,18 +1,18 @@
 @interface HMFProductInfo
-+ (id)decodeSoftwareVersionWithCoder:(id)a3;
++ (id)decodeSoftwareVersionWithCoder:(id)coder;
 + (id)productInfo;
 + (id)shortDescription;
-+ (void)encodeSoftwareVersion:(id)a3 withCoder:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (void)encodeSoftwareVersion:(id)version withCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (HMFProductInfo)init;
-- (HMFProductInfo)initWithCoder:(id)a3;
-- (HMFProductInfo)initWithPlatform:(int64_t)a3 class:(int64_t)a4 variant:(int64_t)a5 softwareVersion:(id)a6 color:(int64_t)a7 modelIdentifier:(id)a8;
+- (HMFProductInfo)initWithCoder:(id)coder;
+- (HMFProductInfo)initWithPlatform:(int64_t)platform class:(int64_t)class variant:(int64_t)variant softwareVersion:(id)version color:(int64_t)color modelIdentifier:(id)identifier;
 - (id)attributeDescriptions;
 - (id)shortDescription;
 - (int64_t)productClass;
 - (int64_t)productPlatform;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFProductInfo
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __29__HMFProductInfo_productInfo__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280AFC280 != -1)
   {
     dispatch_once(&qword_280AFC280, block);
@@ -88,22 +88,22 @@ void __29__HMFProductInfo_productInfo__block_invoke(uint64_t a1)
   objc_exception_throw(v7);
 }
 
-- (HMFProductInfo)initWithPlatform:(int64_t)a3 class:(int64_t)a4 variant:(int64_t)a5 softwareVersion:(id)a6 color:(int64_t)a7 modelIdentifier:(id)a8
+- (HMFProductInfo)initWithPlatform:(int64_t)platform class:(int64_t)class variant:(int64_t)variant softwareVersion:(id)version color:(int64_t)color modelIdentifier:(id)identifier
 {
-  v15 = a6;
-  v16 = a8;
+  versionCopy = version;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = HMFProductInfo;
   v17 = [(HMFProductInfo *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_productPlatform = a3;
-    v17->_productClass = a4;
-    v17->_productVariant = a5;
-    objc_storeStrong(&v17->_softwareVersion, a6);
-    v18->_productColor = a7;
-    objc_storeStrong(&v18->_modelIdentifier, a8);
+    v17->_productPlatform = platform;
+    v17->_productClass = class;
+    v17->_productVariant = variant;
+    objc_storeStrong(&v17->_softwareVersion, version);
+    v18->_productColor = color;
+    objc_storeStrong(&v18->_modelIdentifier, identifier);
   }
 
   return v18;
@@ -159,17 +159,17 @@ void __29__HMFProductInfo_productInfo__block_invoke(uint64_t a1)
   v11 = [(HMFAttributeDescription *)v8 initWithName:@"Product Variant" value:v10];
   v27[2] = v11;
   v12 = [HMFAttributeDescription alloc];
-  v13 = [(HMFProductInfo *)self softwareVersion];
-  v14 = [v13 versionString];
-  v15 = [(HMFAttributeDescription *)v12 initWithName:@"Software Version" value:v14];
+  softwareVersion = [(HMFProductInfo *)self softwareVersion];
+  versionString = [softwareVersion versionString];
+  v15 = [(HMFAttributeDescription *)v12 initWithName:@"Software Version" value:versionString];
   v27[3] = v15;
   v16 = [HMFAttributeDescription alloc];
   v17 = HMFProductColorToString([(HMFProductInfo *)self productColor]);
   v18 = [(HMFAttributeDescription *)v16 initWithName:@"Product Color" value:v17];
   v27[4] = v18;
   v19 = [HMFAttributeDescription alloc];
-  v20 = [(HMFProductInfo *)self modelIdentifier];
-  v21 = [(HMFAttributeDescription *)v19 initWithName:@"Model Identifier" value:v20];
+  modelIdentifier = [(HMFProductInfo *)self modelIdentifier];
+  v21 = [(HMFAttributeDescription *)v19 initWithName:@"Model Identifier" value:modelIdentifier];
   v27[5] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:6];
 
@@ -180,16 +180,16 @@ void __29__HMFProductInfo_productInfo__block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v2 = [(HMFProductInfo *)self softwareVersion];
-  v3 = [v2 hash];
+  softwareVersion = [(HMFProductInfo *)self softwareVersion];
+  v3 = [softwareVersion hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -202,21 +202,21 @@ void __29__HMFProductInfo_productInfo__block_invoke(uint64_t a1)
       goto LABEL_9;
     }
 
-    v5 = [(HMFProductInfo *)self softwareVersion];
-    v6 = [(HMFProductInfo *)v4 softwareVersion];
-    v7 = [v5 isEqual:v6];
+    softwareVersion = [(HMFProductInfo *)self softwareVersion];
+    softwareVersion2 = [(HMFProductInfo *)equalCopy softwareVersion];
+    v7 = [softwareVersion isEqual:softwareVersion2];
 
     if (!v7)
     {
       goto LABEL_9;
     }
 
-    v8 = [(HMFProductInfo *)self productPlatform];
-    if (v8 == [(HMFProductInfo *)v4 productPlatform]&& (v9 = [(HMFProductInfo *)self productClass], v9 == [(HMFProductInfo *)v4 productClass]) && (v10 = [(HMFProductInfo *)self productVariant], v10 == [(HMFProductInfo *)v4 productVariant]) && (v11 = [(HMFProductInfo *)self productColor], v11 == [(HMFProductInfo *)v4 productColor]))
+    productPlatform = [(HMFProductInfo *)self productPlatform];
+    if (productPlatform == [(HMFProductInfo *)equalCopy productPlatform]&& (v9 = [(HMFProductInfo *)self productClass], v9 == [(HMFProductInfo *)equalCopy productClass]) && (v10 = [(HMFProductInfo *)self productVariant], v10 == [(HMFProductInfo *)equalCopy productVariant]) && (v11 = [(HMFProductInfo *)self productColor], v11 == [(HMFProductInfo *)equalCopy productColor]))
     {
-      v12 = [(HMFProductInfo *)self modelIdentifier];
-      v13 = [(HMFProductInfo *)v4 modelIdentifier];
-      v14 = [v12 isEqualToString:v13];
+      modelIdentifier = [(HMFProductInfo *)self modelIdentifier];
+      modelIdentifier2 = [(HMFProductInfo *)equalCopy modelIdentifier];
+      v14 = [modelIdentifier isEqualToString:modelIdentifier2];
     }
 
     else
@@ -229,19 +229,19 @@ LABEL_9:
   return v14;
 }
 
-+ (id)decodeSoftwareVersionWithCoder:(id)a3
++ (id)decodeSoftwareVersionWithCoder:(id)coder
 {
-  v3 = a3;
-  if ([v3 containsValueForKey:@"HMF.softwareVersion"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"HMF.softwareVersion"])
   {
-    v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HMF.softwareVersion"];
+    v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMF.softwareVersion"];
   }
 
   else
   {
-    v5 = [v3 decodeIntegerForKey:@"HMF.majorVersion"];
-    v6 = [v3 decodeIntegerForKey:@"HMF.minorVersion"];
-    v7 = [v3 decodeIntegerForKey:@"HMF.patchVersion"];
+    v5 = [coderCopy decodeIntegerForKey:@"HMF.majorVersion"];
+    v6 = [coderCopy decodeIntegerForKey:@"HMF.minorVersion"];
+    v7 = [coderCopy decodeIntegerForKey:@"HMF.patchVersion"];
 
     v9[0] = v5;
     v9[1] = v6;
@@ -252,44 +252,44 @@ LABEL_9:
   return v4;
 }
 
-+ (void)encodeSoftwareVersion:(id)a3 withCoder:(id)a4
++ (void)encodeSoftwareVersion:(id)version withCoder:(id)coder
 {
-  v7 = a4;
-  v5 = a3;
-  [v7 encodeObject:v5 forKey:@"HMF.softwareVersion"];
-  [v7 encodeInteger:objc_msgSend(v5 forKey:{"majorVersion"), @"HMF.majorVersion"}];
-  [v7 encodeInteger:objc_msgSend(v5 forKey:{"minorVersion"), @"HMF.minorVersion"}];
-  v6 = [v5 updateVersion];
+  coderCopy = coder;
+  versionCopy = version;
+  [coderCopy encodeObject:versionCopy forKey:@"HMF.softwareVersion"];
+  [coderCopy encodeInteger:objc_msgSend(versionCopy forKey:{"majorVersion"), @"HMF.majorVersion"}];
+  [coderCopy encodeInteger:objc_msgSend(versionCopy forKey:{"minorVersion"), @"HMF.minorVersion"}];
+  updateVersion = [versionCopy updateVersion];
 
-  [v7 encodeInteger:v6 forKey:@"HMF.patchVersion"];
+  [coderCopy encodeInteger:updateVersion forKey:@"HMF.patchVersion"];
 }
 
-- (HMFProductInfo)initWithCoder:(id)a3
+- (HMFProductInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"HMF.platform"];
-  v6 = [v4 decodeIntegerForKey:@"HMF.class"];
-  v7 = [v4 decodeIntegerForKey:@"HMF.variant"];
-  v8 = [HMFProductInfo decodeSoftwareVersionWithCoder:v4];
-  v9 = [v4 decodeIntegerForKey:@"HMF.color"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMF.modelIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"HMF.platform"];
+  v6 = [coderCopy decodeIntegerForKey:@"HMF.class"];
+  v7 = [coderCopy decodeIntegerForKey:@"HMF.variant"];
+  v8 = [HMFProductInfo decodeSoftwareVersionWithCoder:coderCopy];
+  v9 = [coderCopy decodeIntegerForKey:@"HMF.color"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMF.modelIdentifier"];
 
   v11 = [(HMFProductInfo *)self initWithPlatform:v5 class:v6 variant:v7 softwareVersion:v8 color:v9 modelIdentifier:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HMFProductInfo productPlatform](self forKey:{"productPlatform"), @"HMF.platform"}];
-  [v4 encodeInteger:-[HMFProductInfo productClass](self forKey:{"productClass"), @"HMF.class"}];
-  [v4 encodeInteger:-[HMFProductInfo productVariant](self forKey:{"productVariant"), @"HMF.variant"}];
-  v5 = [(HMFProductInfo *)self softwareVersion];
-  [HMFProductInfo encodeSoftwareVersion:v5 withCoder:v4];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HMFProductInfo productPlatform](self forKey:{"productPlatform"), @"HMF.platform"}];
+  [coderCopy encodeInteger:-[HMFProductInfo productClass](self forKey:{"productClass"), @"HMF.class"}];
+  [coderCopy encodeInteger:-[HMFProductInfo productVariant](self forKey:{"productVariant"), @"HMF.variant"}];
+  softwareVersion = [(HMFProductInfo *)self softwareVersion];
+  [HMFProductInfo encodeSoftwareVersion:softwareVersion withCoder:coderCopy];
 
-  [v4 encodeInteger:-[HMFProductInfo productColor](self forKey:{"productColor"), @"HMF.color"}];
-  v6 = [(HMFProductInfo *)self modelIdentifier];
-  [v4 encodeObject:v6 forKey:@"HMF.modelIdentifier"];
+  [coderCopy encodeInteger:-[HMFProductInfo productColor](self forKey:{"productColor"), @"HMF.color"}];
+  modelIdentifier = [(HMFProductInfo *)self modelIdentifier];
+  [coderCopy encodeObject:modelIdentifier forKey:@"HMF.modelIdentifier"];
 }
 
 @end

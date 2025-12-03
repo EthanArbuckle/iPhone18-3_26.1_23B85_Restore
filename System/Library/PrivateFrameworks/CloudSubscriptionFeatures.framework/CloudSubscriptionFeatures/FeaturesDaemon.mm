@@ -42,8 +42,8 @@ uint64_t __32__FeaturesDaemon_sharedInstance__block_invoke()
 
 - (void)start
 {
-  v2 = [(FeaturesDaemon *)self controller];
-  [v2 start];
+  controller = [(FeaturesDaemon *)self controller];
+  [controller start];
 }
 
 @end

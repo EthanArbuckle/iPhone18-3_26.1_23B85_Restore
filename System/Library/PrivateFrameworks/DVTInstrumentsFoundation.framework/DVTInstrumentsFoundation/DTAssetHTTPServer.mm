@@ -1,53 +1,53 @@
 @interface DTAssetHTTPServer
-- (BOOL)startListeningWithError:(id *)a3;
+- (BOOL)startListeningWithError:(id *)error;
 - (unint64_t)port;
-- (void)socket:(id)a3 didAcceptNewSocket:(id)a4;
+- (void)socket:(id)socket didAcceptNewSocket:(id)newSocket;
 - (void)stopListening;
 @end
 
 @implementation DTAssetHTTPServer
 
-- (BOOL)startListeningWithError:(id *)a3
+- (BOOL)startListeningWithError:(id *)error
 {
   v5 = dispatch_queue_create("com.apple.dt.DTAssetHTTPServer", MEMORY[0x277D85CD8]);
   [(DTAssetHTTPServer *)self setSocketDelegateQueue:v5];
 
   v6 = [_DT_GCDAsyncSocket alloc];
-  v7 = [(DTAssetHTTPServer *)self socketDelegateQueue];
-  v8 = [(_DT_GCDAsyncSocket *)v6 initWithDelegate:self delegateQueue:v7];
+  socketDelegateQueue = [(DTAssetHTTPServer *)self socketDelegateQueue];
+  v8 = [(_DT_GCDAsyncSocket *)v6 initWithDelegate:self delegateQueue:socketDelegateQueue];
   [(DTAssetHTTPServer *)self setSocket:v8];
 
-  v9 = [(DTAssetHTTPServer *)self socket];
-  LOBYTE(a3) = [v9 acceptOnInterface:@"localhost" port:0 error:a3];
+  socket = [(DTAssetHTTPServer *)self socket];
+  LOBYTE(error) = [socket acceptOnInterface:@"localhost" port:0 error:error];
 
-  return a3;
+  return error;
 }
 
 - (void)stopListening
 {
-  v2 = [(DTAssetHTTPServer *)self socket];
-  [v2 disconnect];
+  socket = [(DTAssetHTTPServer *)self socket];
+  [socket disconnect];
 }
 
-- (void)socket:(id)a3 didAcceptNewSocket:(id)a4
+- (void)socket:(id)socket didAcceptNewSocket:(id)newSocket
 {
-  v5 = a4;
+  newSocketCopy = newSocket;
   v6 = [DTAssetHTTPRequestHandler alloc];
-  v7 = [(DTAssetHTTPServer *)self channel];
-  v9 = [(DTAssetHTTPRequestHandler *)v6 initWithSocket:v5 channel:v7];
+  channel = [(DTAssetHTTPServer *)self channel];
+  v9 = [(DTAssetHTTPRequestHandler *)v6 initWithSocket:newSocketCopy channel:channel];
 
-  v8 = [(DTAssetHTTPServer *)self allowedResources];
-  [(DTAssetHTTPRequestHandler *)v9 setAllowedResources:v8];
+  allowedResources = [(DTAssetHTTPServer *)self allowedResources];
+  [(DTAssetHTTPRequestHandler *)v9 setAllowedResources:allowedResources];
 
   [(DTAssetHTTPRequestHandler *)v9 startReading];
 }
 
 - (unint64_t)port
 {
-  v2 = [(DTAssetHTTPServer *)self socket];
-  v3 = [v2 localPort];
+  socket = [(DTAssetHTTPServer *)self socket];
+  localPort = [socket localPort];
 
-  return v3;
+  return localPort;
 }
 
 @end

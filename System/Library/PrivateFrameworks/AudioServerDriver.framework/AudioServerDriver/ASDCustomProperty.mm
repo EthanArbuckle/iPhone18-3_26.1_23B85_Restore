@@ -1,6 +1,6 @@
 @interface ASDCustomProperty
 - (ASDCustomProperty)init;
-- (ASDCustomProperty)initWithAddress:(id)a3 propertyDataType:(unsigned int)a4 qualifierDataType:(unsigned int)a5;
+- (ASDCustomProperty)initWithAddress:(id)address propertyDataType:(unsigned int)type qualifierDataType:(unsigned int)dataType;
 - (ASDCustomPropertyInterest)interested;
 - (ASDObject)owner;
 - (id)value;
@@ -22,20 +22,20 @@
   return 0;
 }
 
-- (ASDCustomProperty)initWithAddress:(id)a3 propertyDataType:(unsigned int)a4 qualifierDataType:(unsigned int)a5
+- (ASDCustomProperty)initWithAddress:(id)address propertyDataType:(unsigned int)type qualifierDataType:(unsigned int)dataType
 {
-  v8 = a3;
+  addressCopy = address;
   v13.receiver = self;
   v13.super_class = ASDCustomProperty;
   v9 = [(ASDCustomProperty *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [addressCopy copy];
     address = v9->_address;
     v9->_address = v10;
 
-    v9->_propertyDataType = a4;
-    v9->_qualifierDataType = a5;
+    v9->_propertyDataType = type;
+    v9->_qualifierDataType = dataType;
   }
 
   return v9;
@@ -43,41 +43,41 @@
 
 - (void)sendPropertyChangeNotification
 {
-  v3 = [(ASDCustomProperty *)self address];
-  v9 = [v3 audioObjectPropertyAddress];
+  address = [(ASDCustomProperty *)self address];
+  audioObjectPropertyAddress = [address audioObjectPropertyAddress];
   LODWORD(v10) = v4;
 
-  v5 = [(ASDCustomProperty *)self owner:v9];
-  v6 = [v5 propertyChangedDelegate];
-  v7 = [(ASDCustomProperty *)self owner];
-  [v6 changedProperty:&v9 forObject:v7];
+  v5 = [(ASDCustomProperty *)self owner:audioObjectPropertyAddress];
+  propertyChangedDelegate = [v5 propertyChangedDelegate];
+  owner = [(ASDCustomProperty *)self owner];
+  [propertyChangedDelegate changedProperty:&audioObjectPropertyAddress forObject:owner];
 
-  v8 = [(ASDCustomProperty *)self interested];
-  [v8 propertyChangeNotification:self];
+  interested = [(ASDCustomProperty *)self interested];
+  [interested propertyChangeNotification:self];
 }
 
 - (unsigned)selector
 {
-  v2 = [(ASDCustomProperty *)self address];
-  v3 = [v2 selector];
+  address = [(ASDCustomProperty *)self address];
+  selector = [address selector];
 
-  return v3;
+  return selector;
 }
 
 - (unsigned)scope
 {
-  v2 = [(ASDCustomProperty *)self address];
-  v3 = [v2 scope];
+  address = [(ASDCustomProperty *)self address];
+  scope = [address scope];
 
-  return v3;
+  return scope;
 }
 
 - (unsigned)element
 {
-  v2 = [(ASDCustomProperty *)self address];
-  v3 = [v2 element];
+  address = [(ASDCustomProperty *)self address];
+  element = [address element];
 
-  return v3;
+  return element;
 }
 
 - (id)value

@@ -2,27 +2,27 @@
 + (id)PlayActivityStorageDirectoryPath;
 + (id)sharedInstance;
 - (BOOL)hasPendingPlayEvents;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ICPlayActivityServer)init;
 - (id)_init;
 - (id)_supportedInterfaceForXPCConnection;
-- (void)_dispatchCompletionHandler:(id)a3 withError:(id)a4;
-- (void)_handleFlushRequestNotification:(id)a3;
-- (void)_scheduleNextPlayActivityFlushOperationReplacingExisting:(BOOL)a3;
-- (void)flushPendingPlayActivityEventsWithCompletionHandler:(id)a3;
-- (void)insertPlayActivityEvents:(id)a3 shouldFlush:(BOOL)a4 withCompletionHandler:(id)a5;
+- (void)_dispatchCompletionHandler:(id)handler withError:(id)error;
+- (void)_handleFlushRequestNotification:(id)notification;
+- (void)_scheduleNextPlayActivityFlushOperationReplacingExisting:(BOOL)existing;
+- (void)flushPendingPlayActivityEventsWithCompletionHandler:(id)handler;
+- (void)insertPlayActivityEvents:(id)events shouldFlush:(BOOL)flush withCompletionHandler:(id)handler;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation ICPlayActivityServer
 
-- (void)_scheduleNextPlayActivityFlushOperationReplacingExisting:(BOOL)a3
+- (void)_scheduleNextPlayActivityFlushOperationReplacingExisting:(BOOL)existing
 {
   v5 = +[ICBGTaskScheduler sharedTaskScheduler];
   if ([(ICPlayActivityServer *)self hasPendingPlayEvents])
   {
-    if (a3 || ![v5 hasScheduledTask:@"com.apple.itunescloud.ICPlayActivityServer.flush_task"])
+    if (existing || ![v5 hasScheduledTask:@"com.apple.itunescloud.ICPlayActivityServer.flush_task"])
     {
       v8 = [ICStoreRequestContext alloc];
       v9 = +[ICUserIdentity activeAccount];
@@ -44,7 +44,7 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v14 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Not scheduling a flush because one is already scheduled", buf, 0xCu);
       }
     }
@@ -56,7 +56,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ No pending events - canceling any previously scheduled task", buf, 0xCu);
     }
 
@@ -106,24 +106,24 @@
   return v3;
 }
 
-- (void)_dispatchCompletionHandler:(id)a3 withError:(id)a4
+- (void)_dispatchCompletionHandler:(id)handler withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  handlerCopy = handler;
+  errorCopy = error;
+  if (handlerCopy)
   {
     queue = self->_queue;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000D9B74;
     v9[3] = &unk_1001DF5A0;
-    v11 = v6;
-    v10 = v7;
+    v11 = handlerCopy;
+    v10 = errorCopy;
     dispatch_async(queue, v9);
   }
 }
 
-- (void)_handleFlushRequestNotification:(id)a3
+- (void)_handleFlushRequestNotification:(id)notification
 {
   if (MSVDeviceOSIsInternalInstall())
   {
@@ -132,32 +132,32 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 processIdentifier];
-  v7 = sub_1000D1624(v5, @"com.apple.itunesstored.private");
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  v7 = sub_1000D1624(connectionCopy, @"com.apple.itunesstored.private");
   if (v7)
   {
-    v8 = [(ICPlayActivityServer *)self _supportedInterfaceForXPCConnection];
-    [v5 setExportedInterface:v8];
+    _supportedInterfaceForXPCConnection = [(ICPlayActivityServer *)self _supportedInterfaceForXPCConnection];
+    [connectionCopy setExportedInterface:_supportedInterfaceForXPCConnection];
 
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000D9E98;
     v15[3] = &unk_1001DF780;
     v15[4] = self;
-    v16 = v6;
-    [v5 setInterruptionHandler:v15];
+    v16 = processIdentifier;
+    [connectionCopy setInterruptionHandler:v15];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000D9F5C;
     v13[3] = &unk_1001DF780;
     v13[4] = self;
-    v14 = v6;
-    [v5 setInvalidationHandler:v13];
-    [v5 resume];
+    v14 = processIdentifier;
+    [connectionCopy setInvalidationHandler:v13];
+    [connectionCopy resume];
   }
 
   else
@@ -166,9 +166,9 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 1024;
-      v20 = v6;
+      v20 = processIdentifier;
       v21 = 2080;
       v22 = "com.apple.itunescloudd.playactivity";
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ pid %i is not entitled to connect to %s", buf, 0x1Cu);
@@ -180,14 +180,14 @@
   {
     v11 = "will not";
     *buf = 138543874;
-    v18 = self;
+    selfCopy2 = self;
     if (v7)
     {
       v11 = "will";
     }
 
     v19 = 1024;
-    v20 = v6;
+    v20 = processIdentifier;
     v21 = 2080;
     v22 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ connection from pid %i %s be accepted", buf, 0x1Cu);
@@ -196,22 +196,22 @@
   return v7;
 }
 
-- (void)insertPlayActivityEvents:(id)a3 shouldFlush:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)insertPlayActivityEvents:(id)events shouldFlush:(BOOL)flush withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  flushCopy = flush;
+  eventsCopy = events;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.amp.itunescloudd", "PlayActivity_Oversize");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = eventsCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%{public}@ Recording play activity events: %@", buf, 0x16u);
   }
 
-  if ([v8 count])
+  if ([eventsCopy count])
   {
     v11 = self->_table;
     *buf = 0;
@@ -228,7 +228,7 @@
     v20 = 3221225472;
     v21 = sub_1000DA348;
     v22 = &unk_1001DD5F8;
-    v12 = v8;
+    v12 = eventsCopy;
     v23 = v12;
     v25 = v27;
     v13 = v11;
@@ -256,17 +256,17 @@
       [(NSOperationQueue *)v17 addOperation:v18];
     }
 
-    if (v6)
+    if (flushCopy)
     {
-      [(ICPlayActivityServer *)self flushPendingPlayActivityEventsWithCompletionHandler:v9];
+      [(ICPlayActivityServer *)self flushPendingPlayActivityEventsWithCompletionHandler:handlerCopy];
     }
 
     else
     {
       [(ICPlayActivityServer *)self _scheduleNextPlayActivityFlushOperationReplacingExisting:0];
-      if (v9)
+      if (handlerCopy)
       {
-        v9[2](v9, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
     }
 
@@ -276,20 +276,20 @@
 
   else
   {
-    [(ICPlayActivityServer *)self _dispatchCompletionHandler:v9 withError:0];
+    [(ICPlayActivityServer *)self _dispatchCompletionHandler:handlerCopy withError:0];
   }
 }
 
-- (void)flushPendingPlayActivityEventsWithCompletionHandler:(id)a3
+- (void)flushPendingPlayActivityEventsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [[ICFlushPlayActivityEventsOperation alloc] initWithPlayActivityTable:self->_table];
   objc_initWeak(&location, v5);
   v6 = os_log_create("com.apple.amp.itunescloudd", "PlayActivity");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ starting operation to flush play activity events", buf, 0xCu);
   }
 
@@ -298,11 +298,11 @@
   v10 = sub_1000DA6A4;
   v11 = &unk_1001DD5D0;
   objc_copyWeak(&v14, &location);
-  v12 = self;
-  v7 = v4;
+  selfCopy2 = self;
+  v7 = handlerCopy;
   v13 = v7;
   [(ICFlushPlayActivityEventsOperation *)v5 setCompletionBlock:&v8];
-  [(NSOperationQueue *)self->_flushOperationQueue addOperation:v5, v8, v9, v10, v11, v12];
+  [(NSOperationQueue *)self->_flushOperationQueue addOperation:v5, v8, v9, v10, v11, selfCopy2];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -314,7 +314,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ stopping ....", &v4, 0xCu);
   }
 
@@ -327,7 +327,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ starting ....", buf, 0xCu);
   }
 

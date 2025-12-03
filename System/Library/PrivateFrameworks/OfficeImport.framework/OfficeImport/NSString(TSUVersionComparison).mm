@@ -7,7 +7,7 @@
 - (uint64_t)tsu_compareToVersionString:()TSUVersionComparison
 {
   v4 = a3;
-  v5 = TokenizeVersionString(a1);
+  v5 = TokenizeVersionString(self);
   v6 = TokenizeVersionString(v4);
   v7 = v6;
   if (v5 | v6)

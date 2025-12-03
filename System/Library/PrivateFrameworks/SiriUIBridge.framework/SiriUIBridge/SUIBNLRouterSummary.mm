@@ -1,23 +1,23 @@
 @interface SUIBNLRouterSummary
-- (SUIBNLRouterSummary)initWithBuilder:(id)a3;
-- (SUIBNLRouterSummary)initWithCoder:(id)a3;
+- (SUIBNLRouterSummary)initWithBuilder:(id)builder;
+- (SUIBNLRouterSummary)initWithCoder:(id)coder;
 @end
 
 @implementation SUIBNLRouterSummary
 
-- (SUIBNLRouterSummary)initWithBuilder:(id)a3
+- (SUIBNLRouterSummary)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = SUIBNLRouterSummary;
   v5 = [(SUIBNLRouterSummary *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = objc_alloc_init(SUIBNLRouterSummaryMutation);
-    v4[2](v4, v7);
-    v8 = [(SUIBNLRouterSummaryMutation *)v7 rewrittenUtterance];
-    v9 = [v8 copy];
+    builderCopy[2](builderCopy, v7);
+    rewrittenUtterance = [(SUIBNLRouterSummaryMutation *)v7 rewrittenUtterance];
+    v9 = [rewrittenUtterance copy];
     rewrittenUtterance = v6->_rewrittenUtterance;
     v6->_rewrittenUtterance = v9;
   }
@@ -25,10 +25,10 @@
   return v6;
 }
 
-- (SUIBNLRouterSummary)initWithCoder:(id)a3
+- (SUIBNLRouterSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUIBNLRouterSummary::rewrittenUtterance"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUIBNLRouterSummary::rewrittenUtterance"];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;

@@ -1,22 +1,22 @@
 @interface PKAccountTransfer
 - (BOOL)fundsAreAvailable;
 - (BOOL)isCurrentlyCancellable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKAccountTransfer)initWithCoder:(id)a3;
-- (PKAccountTransfer)initWithDictionary:(id)a3 productTimeZone:(id)a4;
-- (PKAccountTransfer)initWithRecord:(id)a3;
+- (PKAccountTransfer)initWithCoder:(id)coder;
+- (PKAccountTransfer)initWithDictionary:(id)dictionary productTimeZone:(id)zone;
+- (PKAccountTransfer)initWithRecord:(id)record;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithRecord:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithRecord:(id)record;
 @end
 
 @implementation PKAccountTransfer
 
-- (PKAccountTransfer)initWithDictionary:(id)a3 productTimeZone:(id)a4
+- (PKAccountTransfer)initWithDictionary:(id)dictionary productTimeZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  zoneCopy = zone;
   v47.receiver = self;
   v47.super_class = PKAccountTransfer;
   v8 = [(PKAccountTransfer *)&v47 init];
@@ -27,20 +27,20 @@ LABEL_24:
     goto LABEL_28;
   }
 
-  if (v7)
+  if (zoneCopy)
   {
-    v9 = [v6 PKStringForKey:@"transferIdentifier"];
-    v45 = [v6 PKStringForKey:@"transferDate"];
-    v44 = [v6 PKStringForKey:@"transferStatusDate"];
-    v43 = [v6 PKStringForKey:@"state"];
-    v10 = [v6 PKDecimalNumberFromStringForKey:@"amount"];
-    v11 = [v6 PKStringForKey:@"currencyCode"];
-    v42 = [v6 PKDictionaryForKey:@"externalAccount"];
-    v41 = [v6 PKDictionaryForKey:@"scheduleDetails"];
-    v39 = [v6 PKStringForKey:@"cancellationExpiryDate"];
-    v12 = [v6 PKStringForKey:@"expectedCompletionDate"];
-    v13 = [v6 PKStringForKey:@"type"];
-    v14 = PKPaymentDateFormatterWithTimeZone(v7);
+    v9 = [dictionaryCopy PKStringForKey:@"transferIdentifier"];
+    v45 = [dictionaryCopy PKStringForKey:@"transferDate"];
+    v44 = [dictionaryCopy PKStringForKey:@"transferStatusDate"];
+    v43 = [dictionaryCopy PKStringForKey:@"state"];
+    v10 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"amount"];
+    v11 = [dictionaryCopy PKStringForKey:@"currencyCode"];
+    v42 = [dictionaryCopy PKDictionaryForKey:@"externalAccount"];
+    v41 = [dictionaryCopy PKDictionaryForKey:@"scheduleDetails"];
+    v39 = [dictionaryCopy PKStringForKey:@"cancellationExpiryDate"];
+    v12 = [dictionaryCopy PKStringForKey:@"expectedCompletionDate"];
+    v13 = [dictionaryCopy PKStringForKey:@"type"];
+    v14 = PKPaymentDateFormatterWithTimeZone(zoneCopy);
     if (v9)
     {
       objc_storeStrong(&v8->_identifier, v9);
@@ -62,7 +62,7 @@ LABEL_24:
 
     if (v41)
     {
-      v19 = [[PKAccountTransferScheduleDetails alloc] initWithDictionary:v41 productTimeZone:v7];
+      v19 = [[PKAccountTransferScheduleDetails alloc] initWithDictionary:v41 productTimeZone:zoneCopy];
       scheduleDetails = v8->_scheduleDetails;
       v8->_scheduleDetails = v19;
     }
@@ -96,19 +96,19 @@ LABEL_24:
       v8->_expectedCompletionDate = v27;
     }
 
-    v29 = [v6 PKStringForKey:@"transferReferenceIdentifier"];
+    v29 = [dictionaryCopy PKStringForKey:@"transferReferenceIdentifier"];
     referenceIdentifier = v8->_referenceIdentifier;
     v8->_referenceIdentifier = v29;
 
-    v31 = [v6 PKStringForKey:@"clientReferenceIdentifier"];
+    v31 = [dictionaryCopy PKStringForKey:@"clientReferenceIdentifier"];
     clientReferenceIdentifier = v8->_clientReferenceIdentifier;
     v8->_clientReferenceIdentifier = v31;
 
-    v8->_statusCode = [v6 PKIntegerForKey:@"statusCode"];
+    v8->_statusCode = [dictionaryCopy PKIntegerForKey:@"statusCode"];
     v8->_state = PKAccountTransferStateFromString(v43);
-    v8->_cancellable = [v6 PKBoolForKey:@"cancellable"];
+    v8->_cancellable = [dictionaryCopy PKBoolForKey:@"cancellable"];
     v8->_type = PKAccountTransferTypeFromString(v13);
-    v33 = [v6 PKDecimalNumberFromStringForKey:@"holdAmount"];
+    v33 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"holdAmount"];
     if (v33 && v11)
     {
       v34 = [[PKCurrencyAmount alloc] initWithAmount:v10 currency:v11 exponent:0];
@@ -132,110 +132,110 @@ LABEL_28:
   return v36;
 }
 
-- (PKAccountTransfer)initWithCoder:(id)a3
+- (PKAccountTransfer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = PKAccountTransfer;
   v5 = [(PKAccountTransfer *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferReferenceIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferReferenceIdentifier"];
     referenceIdentifier = v5->_referenceIdentifier;
     v5->_referenceIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientReferenceIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientReferenceIdentifier"];
     clientReferenceIdentifier = v5->_clientReferenceIdentifier;
     v5->_clientReferenceIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmount"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmount"];
     currencyAmount = v5->_currencyAmount;
     v5->_currencyAmount = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"holdAmount"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"holdAmount"];
     holdAmount = v5->_holdAmount;
     v5->_holdAmount = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalAccount"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalAccount"];
     externalAccount = v5->_externalAccount;
     v5->_externalAccount = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scheduleDetails"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scheduleDetails"];
     scheduleDetails = v5->_scheduleDetails;
     v5->_scheduleDetails = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferDate"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferDate"];
     transferDate = v5->_transferDate;
     v5->_transferDate = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferStatusDate"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferStatusDate"];
     transferStatusDate = v5->_transferStatusDate;
     v5->_transferStatusDate = v22;
 
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v5->_statusCode = [v4 decodeIntegerForKey:@"statusCode"];
-    v5->_cancellable = [v4 decodeBoolForKey:@"cancellable"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cancellationExpiryDate"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v5->_statusCode = [coderCopy decodeIntegerForKey:@"statusCode"];
+    v5->_cancellable = [coderCopy decodeBoolForKey:@"cancellable"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cancellationExpiryDate"];
     cancellationExpiryDate = v5->_cancellationExpiryDate;
     v5->_cancellationExpiryDate = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expectedCompletionDate"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expectedCompletionDate"];
     expectedCompletionDate = v5->_expectedCompletionDate;
     v5->_expectedCompletionDate = v26;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"transferIdentifier"];
-  [v5 encodeObject:self->_referenceIdentifier forKey:@"transferReferenceIdentifier"];
-  [v5 encodeObject:self->_clientReferenceIdentifier forKey:@"clientReferenceIdentifier"];
-  [v5 encodeObject:self->_currencyAmount forKey:@"currencyAmount"];
-  [v5 encodeObject:self->_holdAmount forKey:@"holdAmount"];
-  [v5 encodeObject:self->_externalAccount forKey:@"externalAccount"];
-  [v5 encodeObject:self->_scheduleDetails forKey:@"scheduleDetails"];
-  [v5 encodeObject:self->_transferDate forKey:@"transferDate"];
-  [v5 encodeObject:self->_transferStatusDate forKey:@"transferStatusDate"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeInteger:self->_statusCode forKey:@"statusCode"];
-  [v5 encodeBool:self->_cancellable forKey:@"cancellable"];
-  [v5 encodeObject:self->_cancellationExpiryDate forKey:@"cancellationExpiryDate"];
-  [v5 encodeObject:self->_expectedCompletionDate forKey:@"expectedCompletionDate"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"transferIdentifier"];
+  [coderCopy encodeObject:self->_referenceIdentifier forKey:@"transferReferenceIdentifier"];
+  [coderCopy encodeObject:self->_clientReferenceIdentifier forKey:@"clientReferenceIdentifier"];
+  [coderCopy encodeObject:self->_currencyAmount forKey:@"currencyAmount"];
+  [coderCopy encodeObject:self->_holdAmount forKey:@"holdAmount"];
+  [coderCopy encodeObject:self->_externalAccount forKey:@"externalAccount"];
+  [coderCopy encodeObject:self->_scheduleDetails forKey:@"scheduleDetails"];
+  [coderCopy encodeObject:self->_transferDate forKey:@"transferDate"];
+  [coderCopy encodeObject:self->_transferStatusDate forKey:@"transferStatusDate"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeInteger:self->_statusCode forKey:@"statusCode"];
+  [coderCopy encodeBool:self->_cancellable forKey:@"cancellable"];
+  [coderCopy encodeObject:self->_cancellationExpiryDate forKey:@"cancellationExpiryDate"];
+  [coderCopy encodeObject:self->_expectedCompletionDate forKey:@"expectedCompletionDate"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
-- (PKAccountTransfer)initWithRecord:(id)a3
+- (PKAccountTransfer)initWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v43.receiver = self;
   v43.super_class = PKAccountTransfer;
   v5 = [(PKAccountTransfer *)&v43 init];
   if (v5)
   {
-    v6 = [v4 pk_encryptedStringForKey:@"transferIdentifier"];
+    v6 = [recordCopy pk_encryptedStringForKey:@"transferIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 pk_encryptedStringForKey:@"transferReferenceIdentifier"];
+    v8 = [recordCopy pk_encryptedStringForKey:@"transferReferenceIdentifier"];
     referenceIdentifier = v5->_referenceIdentifier;
     v5->_referenceIdentifier = v8;
 
-    v10 = [v4 pk_encryptedStringForKey:@"clientReferenceIdentifier"];
+    v10 = [recordCopy pk_encryptedStringForKey:@"clientReferenceIdentifier"];
     clientReferenceIdentifier = v5->_clientReferenceIdentifier;
     v5->_clientReferenceIdentifier = v10;
 
-    v12 = [v4 pk_encryptedStringForKey:@"amount"];
-    v13 = [v4 pk_encryptedStringForKey:@"currencyCode"];
+    v12 = [recordCopy pk_encryptedStringForKey:@"amount"];
+    v13 = [recordCopy pk_encryptedStringForKey:@"currencyCode"];
     v14 = v13;
     if (v12 && v13)
     {
@@ -246,7 +246,7 @@ LABEL_28:
       v5->_currencyAmount = v17;
     }
 
-    v19 = [v4 pk_encryptedStringForKey:@"holdAmount"];
+    v19 = [recordCopy pk_encryptedStringForKey:@"holdAmount"];
     if (v19 && v14)
     {
       v20 = [PKCurrencyAmount alloc];
@@ -256,121 +256,121 @@ LABEL_28:
       v5->_holdAmount = v22;
     }
 
-    v24 = [v4 pk_encryptedDateForKey:@"transferScheduledDate"];
+    v24 = [recordCopy pk_encryptedDateForKey:@"transferScheduledDate"];
     transferDate = v5->_transferDate;
     v5->_transferDate = v24;
 
-    v26 = [v4 pk_encryptedDateForKey:@"transferStatusDate"];
+    v26 = [recordCopy pk_encryptedDateForKey:@"transferStatusDate"];
     transferStatusDate = v5->_transferStatusDate;
     v5->_transferStatusDate = v26;
 
     v28 = [PKAccountTransferExternalAccount alloc];
-    v29 = [v4 pk_encryptedDictionaryForKey:@"externalAccount"];
+    v29 = [recordCopy pk_encryptedDictionaryForKey:@"externalAccount"];
     v30 = [(PKAccountPaymentFundingSource *)v28 initWithDictionary:v29];
     externalAccount = v5->_externalAccount;
     v5->_externalAccount = v30;
 
     v32 = [PKAccountTransferScheduleDetails alloc];
-    v33 = [v4 pk_encryptedDictionaryForKey:@"scheduleDetails"];
+    v33 = [recordCopy pk_encryptedDictionaryForKey:@"scheduleDetails"];
     v34 = [(PKAccountTransferScheduleDetails *)v32 initWithDictionary:v33];
     scheduleDetails = v5->_scheduleDetails;
     v5->_scheduleDetails = v34;
 
-    v36 = [v4 pk_encryptedStringForKey:@"state"];
+    v36 = [recordCopy pk_encryptedStringForKey:@"state"];
     v5->_state = PKAccountTransferStateFromString(v36);
 
-    v5->_statusCode = [v4 pk_encryptedIntegerForKey:@"statusCode"];
-    v5->_cancellable = [v4 pk_BOOLForKey:@"cancellable"];
-    v37 = [v4 pk_encryptedDateForKey:@"cancellationExpiryDate"];
+    v5->_statusCode = [recordCopy pk_encryptedIntegerForKey:@"statusCode"];
+    v5->_cancellable = [recordCopy pk_BOOLForKey:@"cancellable"];
+    v37 = [recordCopy pk_encryptedDateForKey:@"cancellationExpiryDate"];
     cancellationExpiryDate = v5->_cancellationExpiryDate;
     v5->_cancellationExpiryDate = v37;
 
-    v39 = [v4 pk_encryptedDateForKey:@"expectedCompletionDate"];
+    v39 = [recordCopy pk_encryptedDateForKey:@"expectedCompletionDate"];
     expectedCompletionDate = v5->_expectedCompletionDate;
     v5->_expectedCompletionDate = v39;
 
-    v41 = [v4 pk_encryptedStringForKey:@"type"];
+    v41 = [recordCopy pk_encryptedStringForKey:@"type"];
     v5->_type = PKAccountTransferTypeFromString(v41);
   }
 
   return v5;
 }
 
-- (void)encodeWithRecord:(id)a3
+- (void)encodeWithRecord:(id)record
 {
-  v4 = a3;
-  v17 = [v4 encryptedValues];
-  v5 = [v4 valuesByKey];
+  recordCopy = record;
+  encryptedValues = [recordCopy encryptedValues];
+  valuesByKey = [recordCopy valuesByKey];
 
   if (PKApplePayContainerEnvironment() == 2)
   {
-    [v17 setObject:self->_identifier forKey:@"transferIdentifier"];
-    [v17 setObject:self->_referenceIdentifier forKey:@"transferReferenceIdentifier"];
-    [v17 setObject:self->_clientReferenceIdentifier forKey:@"clientReferenceIdentifier"];
-    v6 = [(PKAccountPaymentFundingSource *)self->_externalAccount jsonString];
-    [v17 setObject:v6 forKey:@"externalAccount"];
+    [encryptedValues setObject:self->_identifier forKey:@"transferIdentifier"];
+    [encryptedValues setObject:self->_referenceIdentifier forKey:@"transferReferenceIdentifier"];
+    [encryptedValues setObject:self->_clientReferenceIdentifier forKey:@"clientReferenceIdentifier"];
+    jsonString = [(PKAccountPaymentFundingSource *)self->_externalAccount jsonString];
+    [encryptedValues setObject:jsonString forKey:@"externalAccount"];
 
-    v7 = [(PKAccountTransferScheduleDetails *)self->_scheduleDetails jsonString];
-    [v17 setObject:v7 forKey:@"scheduleDetails"];
+    jsonString2 = [(PKAccountTransferScheduleDetails *)self->_scheduleDetails jsonString];
+    [encryptedValues setObject:jsonString2 forKey:@"scheduleDetails"];
 
-    v8 = [(PKCurrencyAmount *)self->_currencyAmount currency];
-    [v17 setObject:v8 forKey:@"currencyCode"];
+    currency = [(PKCurrencyAmount *)self->_currencyAmount currency];
+    [encryptedValues setObject:currency forKey:@"currencyCode"];
 
-    v9 = [(PKCurrencyAmount *)self->_currencyAmount amount];
-    v10 = [v9 stringValue];
-    [v17 setObject:v10 forKey:@"amount"];
+    amount = [(PKCurrencyAmount *)self->_currencyAmount amount];
+    stringValue = [amount stringValue];
+    [encryptedValues setObject:stringValue forKey:@"amount"];
 
-    v11 = [(PKCurrencyAmount *)self->_holdAmount amount];
-    v12 = [v11 stringValue];
-    [v17 setObject:v12 forKey:@"holdAmount"];
+    amount2 = [(PKCurrencyAmount *)self->_holdAmount amount];
+    stringValue2 = [amount2 stringValue];
+    [encryptedValues setObject:stringValue2 forKey:@"holdAmount"];
 
-    [v17 setObject:self->_transferDate forKey:@"transferScheduledDate"];
-    [v17 setObject:self->_transferStatusDate forKey:@"transferStatusDate"];
+    [encryptedValues setObject:self->_transferDate forKey:@"transferScheduledDate"];
+    [encryptedValues setObject:self->_transferStatusDate forKey:@"transferStatusDate"];
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:self->_statusCode];
-    [v17 setObject:v13 forKey:@"statusCode"];
+    [encryptedValues setObject:v13 forKey:@"statusCode"];
 
     v14 = PKAccountTransferStateStringForState(self->_state);
-    [v17 setObject:v14 forKey:@"state"];
+    [encryptedValues setObject:v14 forKey:@"state"];
 
     v15 = [MEMORY[0x1E696AD98] numberWithBool:self->_cancellable];
-    [v5 setObject:v15 forKey:@"cancellable"];
+    [valuesByKey setObject:v15 forKey:@"cancellable"];
 
-    [v17 setObject:self->_cancellationExpiryDate forKey:@"cancellationExpiryDate"];
-    [v17 setObject:self->_expectedCompletionDate forKey:@"expectedCompletionDate"];
+    [encryptedValues setObject:self->_cancellationExpiryDate forKey:@"cancellationExpiryDate"];
+    [encryptedValues setObject:self->_expectedCompletionDate forKey:@"expectedCompletionDate"];
     v16 = PKAccountTransferTypeToString(self->_type);
-    [v17 setObject:v16 forKey:@"type"];
+    [encryptedValues setObject:v16 forKey:@"type"];
   }
 }
 
 - (BOOL)fundsAreAvailable
 {
   state = self->_state;
-  v3 = [(PKCurrencyAmount *)self->_holdAmount amount];
-  v4 = v3;
+  amount = [(PKCurrencyAmount *)self->_holdAmount amount];
+  v4 = amount;
   if (state == 6)
   {
-    if (v3 && ([v3 pk_isNotANumber] & 1) == 0)
+    if (amount && ([amount pk_isNotANumber] & 1) == 0)
     {
-      v5 = [v4 pk_isZeroNumber];
+      pk_isZeroNumber = [v4 pk_isZeroNumber];
     }
 
     else
     {
-      v5 = 1;
+      pk_isZeroNumber = 1;
     }
   }
 
   else
   {
-    v5 = 0;
+    pk_isZeroNumber = 0;
   }
 
-  return v5;
+  return pk_isZeroNumber;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -378,7 +378,7 @@ LABEL_28:
   }
 
   identifier = self->_identifier;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (identifier && v6)
   {
     if (([(NSString *)identifier isEqual:?]& 1) == 0)
@@ -393,7 +393,7 @@ LABEL_28:
   }
 
   referenceIdentifier = self->_referenceIdentifier;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (referenceIdentifier && v8)
   {
     if (([(NSString *)referenceIdentifier isEqual:?]& 1) == 0)
@@ -408,7 +408,7 @@ LABEL_28:
   }
 
   clientReferenceIdentifier = self->_clientReferenceIdentifier;
-  v10 = v4[4];
+  v10 = equalCopy[4];
   if (clientReferenceIdentifier && v10)
   {
     if (([(NSString *)clientReferenceIdentifier isEqual:?]& 1) == 0)
@@ -423,7 +423,7 @@ LABEL_28:
   }
 
   currencyAmount = self->_currencyAmount;
-  v12 = v4[5];
+  v12 = equalCopy[5];
   if (currencyAmount && v12)
   {
     if (![(PKCurrencyAmount *)currencyAmount isEqual:?])
@@ -438,7 +438,7 @@ LABEL_28:
   }
 
   holdAmount = self->_holdAmount;
-  v14 = v4[6];
+  v14 = equalCopy[6];
   if (holdAmount && v14)
   {
     if (![(PKCurrencyAmount *)holdAmount isEqual:?])
@@ -453,7 +453,7 @@ LABEL_28:
   }
 
   externalAccount = self->_externalAccount;
-  v16 = v4[13];
+  v16 = equalCopy[13];
   if (externalAccount && v16)
   {
     if (![(PKAccountPaymentFundingSource *)externalAccount isEqual:?])
@@ -468,7 +468,7 @@ LABEL_28:
   }
 
   scheduleDetails = self->_scheduleDetails;
-  v18 = v4[14];
+  v18 = equalCopy[14];
   if (scheduleDetails && v18)
   {
     if (![(PKAccountTransferScheduleDetails *)scheduleDetails isEqual:?])
@@ -483,7 +483,7 @@ LABEL_28:
   }
 
   transferDate = self->_transferDate;
-  v20 = v4[7];
+  v20 = equalCopy[7];
   if (transferDate && v20)
   {
     if (([(NSDate *)transferDate isEqual:?]& 1) == 0)
@@ -498,7 +498,7 @@ LABEL_28:
   }
 
   transferStatusDate = self->_transferStatusDate;
-  v22 = v4[8];
+  v22 = equalCopy[8];
   if (transferStatusDate && v22)
   {
     if (([(NSDate *)transferStatusDate isEqual:?]& 1) == 0)
@@ -512,13 +512,13 @@ LABEL_28:
     goto LABEL_60;
   }
 
-  if (self->_state != v4[11] || self->_statusCode != v4[12] || self->_cancellable != *(v4 + 8))
+  if (self->_state != equalCopy[11] || self->_statusCode != equalCopy[12] || self->_cancellable != *(equalCopy + 8))
   {
     goto LABEL_60;
   }
 
   cancellationExpiryDate = self->_cancellationExpiryDate;
-  v24 = v4[9];
+  v24 = equalCopy[9];
   if (cancellationExpiryDate && v24)
   {
     if (([(NSDate *)cancellationExpiryDate isEqual:?]& 1) == 0)
@@ -533,7 +533,7 @@ LABEL_28:
   }
 
   expectedCompletionDate = self->_expectedCompletionDate;
-  v26 = v4[10];
+  v26 = equalCopy[10];
   if (!expectedCompletionDate || !v26)
   {
     if (expectedCompletionDate == v26)
@@ -552,7 +552,7 @@ LABEL_60:
   }
 
 LABEL_58:
-  v27 = self->_type == v4[15];
+  v27 = self->_type == equalCopy[15];
 LABEL_61:
 
   return v27;
@@ -560,19 +560,19 @@ LABEL_61:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_referenceIdentifier];
-  [v3 safelyAddObject:self->_clientReferenceIdentifier];
-  [v3 safelyAddObject:self->_currencyAmount];
-  [v3 safelyAddObject:self->_holdAmount];
-  [v3 safelyAddObject:self->_externalAccount];
-  [v3 safelyAddObject:self->_scheduleDetails];
-  [v3 safelyAddObject:self->_transferDate];
-  [v3 safelyAddObject:self->_transferStatusDate];
-  [v3 safelyAddObject:self->_cancellationExpiryDate];
-  [v3 safelyAddObject:self->_expectedCompletionDate];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_referenceIdentifier];
+  [array safelyAddObject:self->_clientReferenceIdentifier];
+  [array safelyAddObject:self->_currencyAmount];
+  [array safelyAddObject:self->_holdAmount];
+  [array safelyAddObject:self->_externalAccount];
+  [array safelyAddObject:self->_scheduleDetails];
+  [array safelyAddObject:self->_transferDate];
+  [array safelyAddObject:self->_transferStatusDate];
+  [array safelyAddObject:self->_cancellationExpiryDate];
+  [array safelyAddObject:self->_expectedCompletionDate];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_state - v4 + 32 * v4;
   v6 = self->_statusCode - v5 + 32 * v5;
   v7 = self->_cancellable - v6 + 32 * v6;
@@ -629,8 +629,8 @@ LABEL_61:
     return 0;
   }
 
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [v4 compare:self->_cancellationExpiryDate] == -1;
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [date compare:self->_cancellationExpiryDate] == -1;
 
   return v5;
 }

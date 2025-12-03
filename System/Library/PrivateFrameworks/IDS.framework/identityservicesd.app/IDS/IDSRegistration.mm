@@ -1,15 +1,15 @@
 @interface IDSRegistration
-- (BOOL)_keychain_isEqual:(id)a3;
+- (BOOL)_keychain_isEqual:(id)equal;
 - (BOOL)canRegister;
 - (BOOL)canSendRegistration;
 - (BOOL)hasSentinel;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)removeFromKeychain;
 - (BOOL)saveToKeychain;
 - (BOOL)stopAtAuthentication;
 - (IDSRegistration)init;
-- (IDSRegistration)initWithDictionary:(id)a3;
-- (IDSRegistration)initWithPasswordManager:(id)a3;
+- (IDSRegistration)initWithDictionary:(id)dictionary;
+- (IDSRegistration)initWithPasswordManager:(id)manager;
 - (NSArray)confirmedEmails;
 - (NSArray)emailsToRegister;
 - (NSData)authenticationCert;
@@ -23,14 +23,14 @@
 - (id)_userStore;
 - (id)debugDescription;
 - (id)description;
-- (void)addCandidateEmail:(id)a3;
-- (void)removeCandidateEmail:(id)a3;
+- (void)addCandidateEmail:(id)email;
+- (void)removeCandidateEmail:(id)email;
 - (void)resetRegistrationID;
-- (void)setAuthenticationCert:(id)a3;
-- (void)setAuthenticationToken:(id)a3;
-- (void)setEmail:(id)a3;
-- (void)setRegistrationStatus:(int64_t)a3;
-- (void)setUserUniqueIdentifier:(id)a3;
+- (void)setAuthenticationCert:(id)cert;
+- (void)setAuthenticationToken:(id)token;
+- (void)setEmail:(id)email;
+- (void)setRegistrationStatus:(int64_t)status;
+- (void)setUserUniqueIdentifier:(id)identifier;
 - (void)voidAuthenticationTokenAllowingGracePeriod;
 - (void)voidPassword;
 @end
@@ -39,68 +39,68 @@
 
 - (NSData)authenticationCert
 {
-  v3 = [(IDSRegistration *)self registrationType];
+  registrationType = [(IDSRegistration *)self registrationType];
   if ([(IDSRegistration *)self registrationType])
   {
-    if (v3 == 2)
+    if (registrationType == 2)
     {
-      v4 = [(IDSRegistration *)self _user];
-      v5 = [(IDSRegistration *)self _userStore];
-      v6 = [v5 authenticationCertificateForUser:v4];
-      v7 = [v6 dataRepresentation];
+      _user = [(IDSRegistration *)self _user];
+      _userStore = [(IDSRegistration *)self _userStore];
+      v6 = [_userStore authenticationCertificateForUser:_user];
+      dataRepresentation = [v6 dataRepresentation];
     }
 
     else
     {
-      v4 = +[IDSRegistrationKeychainManager sharedInstance];
-      v5 = [(IDSRegistration *)self idsUserID];
-      v7 = [v4 authenticationCertForID:v5];
+      _user = +[IDSRegistrationKeychainManager sharedInstance];
+      _userStore = [(IDSRegistration *)self idsUserID];
+      dataRepresentation = [_user authenticationCertForID:_userStore];
     }
   }
 
   else
   {
-    v4 = [(IDSRegistration *)self _user];
-    v8 = [(IDSRegistration *)self _userStore];
-    v9 = [v8 authenticationCertificateForUser:v4];
-    v7 = [v9 dataRepresentation];
+    _user = [(IDSRegistration *)self _user];
+    _userStore2 = [(IDSRegistration *)self _userStore];
+    v9 = [_userStore2 authenticationCertificateForUser:_user];
+    dataRepresentation = [v9 dataRepresentation];
 
-    if (!v7)
+    if (!dataRepresentation)
     {
       v10 = +[IDSRegistrationKeychainManager sharedInstance];
-      v11 = [(IDSRegistration *)self userUniqueIdentifier];
-      v7 = [v10 authenticationCertForID:v11];
+      userUniqueIdentifier = [(IDSRegistration *)self userUniqueIdentifier];
+      dataRepresentation = [v10 authenticationCertForID:userUniqueIdentifier];
 
-      if (v7)
+      if (dataRepresentation)
       {
-        if (v4)
+        if (_user)
         {
-          v12 = [(IDSRegistration *)self idsUserID];
-          v13 = [v12 _stripFZIDPrefix];
+          idsUserID = [(IDSRegistration *)self idsUserID];
+          _stripFZIDPrefix = [idsUserID _stripFZIDPrefix];
 
-          v14 = [v4 unprefixedIdentifier];
-          v15 = [v4 phoneUserWithUpdatedPhoneNumber:v13 phoneBookNumber:v14];
+          unprefixedIdentifier = [_user unprefixedIdentifier];
+          v15 = [_user phoneUserWithUpdatedPhoneNumber:_stripFZIDPrefix phoneBookNumber:unprefixedIdentifier];
 
           v16 = +[IMRGLog registration];
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             v19 = 138412802;
-            v20 = v4;
+            v20 = _user;
             v21 = 2112;
             v22 = v15;
             v23 = 2048;
-            v24 = self;
+            selfCopy = self;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Updating user with correct phoneNumber {user: %@, updatedUser: %@, self: %p}", &v19, 0x20u);
           }
 
-          v17 = [(IDSRegistration *)self _userStore];
-          [v17 updateUser:v15];
+          _userStore3 = [(IDSRegistration *)self _userStore];
+          [_userStore3 updateUser:v15];
         }
       }
     }
   }
 
-  return v7;
+  return dataRepresentation;
 }
 
 - (id)description
@@ -108,16 +108,16 @@
   [(IDSRegistration *)self registrationStatus];
   v30 = _StringForIDSDRegistrationStatus();
   v29 = _StringForIDSRegistrationType([(IDSRegistration *)self registrationType]);
-  v31 = [(IDSRegistration *)self deviceName];
-  v22 = [(IDSRegistration *)self serviceType];
+  deviceName = [(IDSRegistration *)self deviceName];
+  serviceType = [(IDSRegistration *)self serviceType];
   v28 = _StringForIDSRegistrationServiceType();
-  v26 = [(IDSRegistration *)self environment];
-  v19 = [(IDSRegistration *)self mainID];
-  v27 = [(IDSRegistration *)self email];
-  v17 = [(IDSRegistration *)self userID];
-  v21 = [(IDSRegistration *)self isCDMA];
+  environment = [(IDSRegistration *)self environment];
+  mainID = [(IDSRegistration *)self mainID];
+  email = [(IDSRegistration *)self email];
+  userID = [(IDSRegistration *)self userID];
+  isCDMA = [(IDSRegistration *)self isCDMA];
   v3 = @"YES";
-  if (v21)
+  if (isCDMA)
   {
     v4 = @"YES";
   }
@@ -128,26 +128,26 @@
   }
 
   v16 = v4;
-  v25 = [(IDSRegistration *)self pushToken];
-  v15 = [(IDSRegistration *)self regionID];
-  v24 = [(IDSRegistration *)self regionBasePhoneNumber];
-  v20 = [(IDSRegistration *)self uris];
+  pushToken = [(IDSRegistration *)self pushToken];
+  regionID = [(IDSRegistration *)self regionID];
+  regionBasePhoneNumber = [(IDSRegistration *)self regionBasePhoneNumber];
+  uris = [(IDSRegistration *)self uris];
   v23 = IMLoggingStringForArray();
-  v18 = [(IDSRegistration *)self candidateEmails];
+  candidateEmails = [(IDSRegistration *)self candidateEmails];
   v5 = IMLoggingStringForArray();
-  v6 = [(IDSRegistration *)self authenticationCert];
-  v7 = [(IDSRegistration *)self registrationCert];
-  v8 = [(IDSRegistration *)self profileID];
-  v9 = [(IDSRegistration *)self idsUserID];
+  authenticationCert = [(IDSRegistration *)self authenticationCert];
+  registrationCert = [(IDSRegistration *)self registrationCert];
+  profileID = [(IDSRegistration *)self profileID];
+  idsUserID = [(IDSRegistration *)self idsUserID];
   userUniqueIdentifier = self->_userUniqueIdentifier;
-  v11 = [(IDSRegistration *)self ktAccountKey];
-  if (!v11)
+  ktAccountKey = [(IDSRegistration *)self ktAccountKey];
+  if (!ktAccountKey)
   {
     v3 = @"NO";
   }
 
-  v12 = [(IDSRegistration *)self eventTraceRandomID];
-  v13 = [NSString stringWithFormat:@"Registration info (%p): [Status: %@] [Type: %@] [Device Name: %@] [Service Type: %@] [Env: %@] [Main ID: %@] [AppleID: %@] [UserID: %@] [C2K: %@] [Push Token: %@] [Region ID: %@] [Base Number: %@] [URIs: %@] [Candidates: %@] [Auth Cert: %p] [Reg Cert: %p] [Profile ID: %@] [Auth User ID: %@] [User Unique ID: %@] [Account Key: %@] [Event Trace GUID: %@]", self, v30, v29, v31, v28, v26, v19, v27, v17, v16, v25, v15, v24, v23, v5, v6, v7, v8, v9, userUniqueIdentifier, v3, v12];
+  eventTraceRandomID = [(IDSRegistration *)self eventTraceRandomID];
+  v13 = [NSString stringWithFormat:@"Registration info (%p): [Status: %@] [Type: %@] [Device Name: %@] [Service Type: %@] [Env: %@] [Main ID: %@] [AppleID: %@] [UserID: %@] [C2K: %@] [Push Token: %@] [Region ID: %@] [Base Number: %@] [URIs: %@] [Candidates: %@] [Auth Cert: %p] [Reg Cert: %p] [Profile ID: %@] [Auth User ID: %@] [User Unique ID: %@] [Account Key: %@] [Event Trace GUID: %@]", self, v30, v29, deviceName, v28, environment, mainID, email, userID, v16, pushToken, regionID, regionBasePhoneNumber, v23, v5, authenticationCert, registrationCert, profileID, idsUserID, userUniqueIdentifier, v3, eventTraceRandomID];
 
   return v13;
 }
@@ -179,9 +179,9 @@ LABEL_10:
 
 - (NSString)email
 {
-  v3 = [(IDSRegistration *)self registrationType];
+  registrationType = [(IDSRegistration *)self registrationType];
   v4 = 120;
-  if (v3 == 2)
+  if (registrationType == 2)
   {
     v4 = 256;
   }
@@ -201,8 +201,8 @@ LABEL_10:
 
 - (id)_user
 {
-  v3 = [(IDSRegistration *)self _userStore];
-  v4 = [v3 userWithUniqueIdentifier:self->_userUniqueIdentifier];
+  _userStore = [(IDSRegistration *)self _userStore];
+  v4 = [_userStore userWithUniqueIdentifier:self->_userUniqueIdentifier];
 
   return v4;
 }
@@ -210,10 +210,10 @@ LABEL_10:
 - (id)_userStore
 {
   v2 = +[IDSDaemon sharedInstance];
-  v3 = [v2 registrationConductor];
-  v4 = [v3 userStore];
+  registrationConductor = [v2 registrationConductor];
+  userStore = [registrationConductor userStore];
 
-  return v4;
+  return userStore;
 }
 
 - (BOOL)saveToKeychain
@@ -226,20 +226,20 @@ LABEL_10:
 
 - (id)_keychain_comparisonValue
 {
-  v3 = [(IDSRegistration *)self registrationType];
-  if (v3)
+  registrationType = [(IDSRegistration *)self registrationType];
+  if (registrationType)
   {
-    if (v3 == 2)
+    if (registrationType == 2)
     {
-      v4 = [(IDSRegistration *)self userUniqueIdentifier];
+      userUniqueIdentifier = [(IDSRegistration *)self userUniqueIdentifier];
       goto LABEL_6;
     }
 
-    if (v3 == 1)
+    if (registrationType == 1)
     {
-      v4 = [(IDSRegistration *)self email];
+      userUniqueIdentifier = [(IDSRegistration *)self email];
 LABEL_6:
-      v5 = v4;
+      v5 = userUniqueIdentifier;
       goto LABEL_11;
     }
 
@@ -248,12 +248,12 @@ LABEL_6:
 
   else
   {
-    v6 = [(IDSRegistration *)self userUniqueIdentifier];
-    v7 = v6;
+    userUniqueIdentifier2 = [(IDSRegistration *)self userUniqueIdentifier];
+    v7 = userUniqueIdentifier2;
     v8 = @"phone-number-registration";
-    if (v6)
+    if (userUniqueIdentifier2)
     {
-      v8 = v6;
+      v8 = userUniqueIdentifier2;
     }
 
     v5 = v8;
@@ -264,23 +264,23 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)_keychain_isEqual:(id)a3
+- (BOOL)_keychain_isEqual:(id)equal
 {
-  v4 = a3;
-  if (![(IDSRegistration *)self isEqual:v4])
+  equalCopy = equal;
+  if (![(IDSRegistration *)self isEqual:equalCopy])
   {
-    v6 = [(IDSRegistration *)self serviceType];
-    v7 = [v4 serviceType];
-    v8 = v7;
-    if (v6 == v7)
+    serviceType = [(IDSRegistration *)self serviceType];
+    serviceType2 = [equalCopy serviceType];
+    v8 = serviceType2;
+    if (serviceType == serviceType2)
     {
     }
 
     else
     {
-      v9 = [(IDSRegistration *)self serviceType];
-      v10 = [v4 serviceType];
-      v11 = [v9 isEqualToString:v10];
+      serviceType3 = [(IDSRegistration *)self serviceType];
+      serviceType4 = [equalCopy serviceType];
+      v11 = [serviceType3 isEqualToString:serviceType4];
 
       if (!v11)
       {
@@ -288,12 +288,12 @@ LABEL_11:
       }
     }
 
-    v12 = [(IDSRegistration *)self registrationType];
-    if (v12 == [v4 registrationType])
+    registrationType = [(IDSRegistration *)self registrationType];
+    if (registrationType == [equalCopy registrationType])
     {
-      v13 = [(IDSRegistration *)self _keychain_comparisonValue];
-      v14 = [v4 _keychain_comparisonValue];
-      v5 = [v13 isEqualToString:v14];
+      _keychain_comparisonValue = [(IDSRegistration *)self _keychain_comparisonValue];
+      _keychain_comparisonValue2 = [equalCopy _keychain_comparisonValue];
+      v5 = [_keychain_comparisonValue isEqualToString:_keychain_comparisonValue2];
 
       goto LABEL_10;
     }
@@ -309,9 +309,9 @@ LABEL_10:
   return v5;
 }
 
-- (IDSRegistration)initWithPasswordManager:(id)a3
+- (IDSRegistration)initWithPasswordManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = IDSRegistration;
   v6 = [(IDSRegistration *)&v12 init];
@@ -321,7 +321,7 @@ LABEL_10:
     guid = v6->_guid;
     v6->_guid = v7;
 
-    objc_storeStrong(&v6->_passwordManager, a3);
+    objc_storeStrong(&v6->_passwordManager, manager);
     v9 = +[NSString stringGUID];
     eventTraceRandomID = v6->_eventTraceRandomID;
     v6->_eventTraceRandomID = v9;
@@ -330,9 +330,9 @@ LABEL_10:
   return v6;
 }
 
-- (IDSRegistration)initWithDictionary:(id)a3
+- (IDSRegistration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(IDSRegistration *)self init];
 
   if (!v5)
@@ -340,9 +340,9 @@ LABEL_10:
     goto LABEL_383;
   }
 
-  if (v4 && [v4 count])
+  if (dictionaryCopy && [dictionaryCopy count])
   {
-    v6 = [v4 objectForKey:@"push-token"];
+    v6 = [dictionaryCopy objectForKey:@"push-token"];
     if (_IDSRunningInDaemon() && v6)
     {
       v7 = +[IMRGLog registration];
@@ -365,7 +365,7 @@ LABEL_10:
 
     objc_storeStrong(&v5->_pushToken, v6);
 
-    v6 = [v4 objectForKey:@"registration-date"];
+    v6 = [dictionaryCopy objectForKey:@"registration-date"];
     if (_IDSRunningInDaemon() && v6)
     {
       v8 = +[IMRGLog registration];
@@ -389,7 +389,7 @@ LABEL_10:
 LABEL_18:
     objc_storeStrong(&v5->_registrationDate, v6);
 
-    v6 = [v4 objectForKey:@"next-registration-date"];
+    v6 = [dictionaryCopy objectForKey:@"next-registration-date"];
     if (_IDSRunningInDaemon() && v6)
     {
       v9 = +[IMRGLog registration];
@@ -404,7 +404,7 @@ LABEL_18:
 LABEL_25:
       objc_storeStrong(&v5->_nextRegistrationDate, v6);
 
-      v6 = [v4 objectForKey:@"needs-renewal"];
+      v6 = [dictionaryCopy objectForKey:@"needs-renewal"];
       if (_IDSRunningInDaemon() && v6)
       {
         v10 = +[IMRGLog registration];
@@ -420,7 +420,7 @@ LABEL_32:
         v6 = v6;
 
         -[IDSRegistration setNeedsRenewal:](v5, "setNeedsRenewal:", [v6 BOOLValue]);
-        v11 = [v4 objectForKey:@"invitation-version"];
+        v11 = [dictionaryCopy objectForKey:@"invitation-version"];
         if (_IDSRunningInDaemon() && v11)
         {
           v12 = +[IMRGLog registration];
@@ -443,7 +443,7 @@ LABEL_32:
 
         objc_storeStrong(&v5->_applicationVersion, v11);
 
-        v11 = [v4 objectForKey:@"ids-version"];
+        v11 = [dictionaryCopy objectForKey:@"ids-version"];
         if (_IDSRunningInDaemon() && v11)
         {
           v13 = +[IMRGLog registration];
@@ -467,7 +467,7 @@ LABEL_32:
 LABEL_46:
         objc_storeStrong(&v5->_IDSVersion, v11);
 
-        v11 = [v4 objectForKey:@"identity-version"];
+        v11 = [dictionaryCopy objectForKey:@"identity-version"];
         if (_IDSRunningInDaemon() && v11)
         {
           v14 = +[IMRGLog registration];
@@ -491,7 +491,7 @@ LABEL_46:
 LABEL_53:
         objc_storeStrong(&v5->_identityVersion, v11);
 
-        v11 = [v4 objectForKey:@"cdma"];
+        v11 = [dictionaryCopy objectForKey:@"cdma"];
         if (_IDSRunningInDaemon() && v11)
         {
           v15 = +[IMRGLog registration];
@@ -515,7 +515,7 @@ LABEL_53:
 LABEL_60:
         objc_storeStrong(&v5->_isC2K, v11);
 
-        v11 = [v4 objectForKey:@"identity-rsa-pair-signature"];
+        v11 = [dictionaryCopy objectForKey:@"identity-rsa-pair-signature"];
         _IDSRunningInDaemon();
         if (v11)
         {
@@ -528,7 +528,7 @@ LABEL_60:
 
         objc_storeStrong(&v5->_keyPairSignature, v11);
 
-        v11 = [v4 objectForKey:@"environment"];
+        v11 = [dictionaryCopy objectForKey:@"environment"];
         if (_IDSRunningInDaemon() && v11)
         {
           v16 = +[IMRGLog registration];
@@ -551,7 +551,7 @@ LABEL_60:
 
         objc_storeStrong(&v5->_environment, v11);
 
-        v11 = [v4 objectForKey:@"main-id"];
+        v11 = [dictionaryCopy objectForKey:@"main-id"];
         if (_IDSRunningInDaemon() && v11)
         {
           v17 = +[IMRGLog registration];
@@ -574,7 +574,7 @@ LABEL_60:
 
         objc_storeStrong(&v5->_mainID, v11);
 
-        v11 = [v4 objectForKey:@"temporary-phone-email"];
+        v11 = [dictionaryCopy objectForKey:@"temporary-phone-email"];
         if (_IDSRunningInDaemon() && v11)
         {
           v18 = +[IMRGLog registration];
@@ -598,7 +598,7 @@ LABEL_60:
 LABEL_83:
         objc_storeStrong(&v5->_temporaryPhoneEmail, v11);
 
-        v11 = [v4 objectForKey:@"profile-id"];
+        v11 = [dictionaryCopy objectForKey:@"profile-id"];
         if (_IDSRunningInDaemon() && v11)
         {
           v19 = +[IMRGLog registration];
@@ -622,7 +622,7 @@ LABEL_83:
 LABEL_90:
         objc_storeStrong(&v5->_profileID, v11);
 
-        v11 = [v4 objectForKey:@"device-name"];
+        v11 = [dictionaryCopy objectForKey:@"device-name"];
         if (_IDSRunningInDaemon() && v11)
         {
           v20 = +[IMRGLog registration];
@@ -646,7 +646,7 @@ LABEL_90:
 LABEL_97:
         objc_storeStrong(&v5->_deviceName, v11);
 
-        v11 = [v4 objectForKey:@"region-id"];
+        v11 = [dictionaryCopy objectForKey:@"region-id"];
         if (_IDSRunningInDaemon() && v11)
         {
           v21 = +[IMRGLog registration];
@@ -670,7 +670,7 @@ LABEL_97:
 LABEL_104:
         objc_storeStrong(&v5->_regionID, v11);
 
-        v11 = [v4 objectForKey:@"region-base-phone-number"];
+        v11 = [dictionaryCopy objectForKey:@"region-base-phone-number"];
         if (_IDSRunningInDaemon() && v11)
         {
           v22 = +[IMRGLog registration];
@@ -694,7 +694,7 @@ LABEL_104:
 LABEL_111:
         objc_storeStrong(&v5->_regionBasePhoneNumber, v11);
 
-        v11 = [v4 objectForKey:@"region-server-context"];
+        v11 = [dictionaryCopy objectForKey:@"region-server-context"];
         if (_IDSRunningInDaemon() && v11)
         {
           v23 = +[IMRGLog registration];
@@ -718,7 +718,7 @@ LABEL_111:
 LABEL_118:
         objc_storeStrong(&v5->_regionServerContext, v11);
 
-        v11 = [v4 objectForKey:@"dependant-registrations"];
+        v11 = [dictionaryCopy objectForKey:@"dependant-registrations"];
         _IDSRunningInDaemon();
         if (v11)
         {
@@ -731,7 +731,7 @@ LABEL_118:
 
         objc_storeStrong(&v5->_dependentRegistrations, v11);
 
-        v11 = [v4 objectForKey:@"self-handle"];
+        v11 = [dictionaryCopy objectForKey:@"self-handle"];
         if (_IDSRunningInDaemon() && v11)
         {
           v24 = +[IMRGLog registration];
@@ -755,7 +755,7 @@ LABEL_118:
 LABEL_127:
         objc_storeStrong(&v5->_dsHandle, v11);
 
-        v11 = [v4 objectForKey:@"dependant-registrations-ttl"];
+        v11 = [dictionaryCopy objectForKey:@"dependant-registrations-ttl"];
         if (_IDSRunningInDaemon() && v11)
         {
           v25 = +[IMRGLog registration];
@@ -779,7 +779,7 @@ LABEL_127:
 LABEL_134:
         objc_storeStrong(&v5->_dependentRegistrationsTTL, v11);
 
-        v11 = [v4 objectForKey:@"dependant-registrations-response-code"];
+        v11 = [dictionaryCopy objectForKey:@"dependant-registrations-response-code"];
         if (_IDSRunningInDaemon() && v11)
         {
           v26 = +[IMRGLog registration];
@@ -803,7 +803,7 @@ LABEL_134:
 LABEL_141:
         objc_storeStrong(&v5->_dependentRegistrationResponseCode, v11);
 
-        v11 = [v4 objectForKey:@"dependant-registrations-auth-retries"];
+        v11 = [dictionaryCopy objectForKey:@"dependant-registrations-auth-retries"];
         if (_IDSRunningInDaemon() && v11)
         {
           v27 = +[IMRGLog registration];
@@ -827,7 +827,7 @@ LABEL_141:
 LABEL_148:
         objc_storeStrong(&v5->_dependentRegistrationAuthRetries, v11);
 
-        v11 = [v4 objectForKey:@"uris"];
+        v11 = [dictionaryCopy objectForKey:@"uris"];
         if (_IDSRunningInDaemon() && v11)
         {
           v28 = +[IMRGLog registration];
@@ -851,7 +851,7 @@ LABEL_148:
 LABEL_155:
         objc_storeStrong(&v5->_uris, v11);
 
-        v11 = [v4 objectForKey:@"kt-uris"];
+        v11 = [dictionaryCopy objectForKey:@"kt-uris"];
         if (_IDSRunningInDaemon() && v11)
         {
           v29 = +[IMRGLog registration];
@@ -875,7 +875,7 @@ LABEL_155:
 LABEL_162:
         objc_storeStrong(&v5->_keyTransparencyEnrolledURIs, v11);
 
-        v11 = [v4 objectForKey:@"ids-user-id"];
+        v11 = [dictionaryCopy objectForKey:@"ids-user-id"];
         if (_IDSRunningInDaemon() && v11)
         {
           v30 = +[IMRGLog registration];
@@ -890,7 +890,7 @@ LABEL_162:
 LABEL_169:
           objc_storeStrong(&v5->_idsUserID, v11);
 
-          v11 = [v4 objectForKey:@"ids-registration-cert"];
+          v11 = [dictionaryCopy objectForKey:@"ids-registration-cert"];
           if (_IDSRunningInDaemon() && v11)
           {
             v31 = +[IMRGLog registration];
@@ -911,7 +911,7 @@ LABEL_169:
 LABEL_176:
             objc_storeStrong(&v5->_registrationCert, v11);
 
-            v11 = [v4 objectForKey:@"ids-authentication-cert"];
+            v11 = [dictionaryCopy objectForKey:@"ids-authentication-cert"];
             if (_IDSRunningInDaemon() && v11)
             {
               v32 = +[IMRGLog registration];
@@ -926,7 +926,7 @@ LABEL_176:
 LABEL_183:
               v33 = v11;
 
-              v34 = [v4 objectForKey:@"auth-token"];
+              v34 = [dictionaryCopy objectForKey:@"auth-token"];
               if (_IDSRunningInDaemon() && v34)
               {
                 v35 = +[IMRGLog registration];
@@ -951,7 +951,7 @@ LABEL_183:
 LABEL_193:
               v37 = v34;
 
-              v38 = [v4 objectForKey:@"user-unique-identifier"];
+              v38 = [dictionaryCopy objectForKey:@"user-unique-identifier"];
               if (_IDSRunningInDaemon() && v38)
               {
                 v39 = +[IMRGLog registration];
@@ -975,7 +975,7 @@ LABEL_193:
 LABEL_201:
               objc_storeStrong(&v5->_userUniqueIdentifier, v38);
 
-              v38 = [v4 objectForKey:@"context-info"];
+              v38 = [dictionaryCopy objectForKey:@"context-info"];
               if (_IDSRunningInDaemon() && v38)
               {
                 v40 = +[IMRGLog registration];
@@ -990,7 +990,7 @@ LABEL_201:
 LABEL_208:
                 objc_storeStrong(&v5->_contextInfo, v38);
 
-                v38 = [v4 objectForKey:@"event-trace-id"];
+                v38 = [dictionaryCopy objectForKey:@"event-trace-id"];
                 if (_IDSRunningInDaemon() && v38)
                 {
                   v41 = +[IMRGLog registration];
@@ -1017,7 +1017,7 @@ LABEL_215:
                     [(IDSRegistration *)v5 setEventTraceRandomID:v42];
                   }
 
-                  v43 = [v4 objectForKey:@"type"];
+                  v43 = [dictionaryCopy objectForKey:@"type"];
                   if (_IDSRunningInDaemon() && v43)
                   {
                     v44 = +[IMRGLog registration];
@@ -1041,7 +1041,7 @@ LABEL_231:
 
                     v116 = v45;
                     -[IDSRegistration setRegistrationType:](v5, "setRegistrationType:", [v45 intValue]);
-                    v46 = [v4 objectForKey:@"service"];
+                    v46 = [dictionaryCopy objectForKey:@"service"];
                     if (_IDSRunningInDaemon() && v46)
                     {
                       v47 = +[IMRGLog registration];
@@ -1061,7 +1061,7 @@ LABEL_231:
                     {
                       v115 = v46;
 
-                      v48 = [v4 objectForKey:@"service-identifier"];
+                      v48 = [dictionaryCopy objectForKey:@"service-identifier"];
                       if (_IDSRunningInDaemon() && v48)
                       {
                         v49 = +[IMRGLog registration];
@@ -1076,7 +1076,7 @@ LABEL_231:
 LABEL_242:
                         objc_storeStrong(&v5->_serviceIdentifier, v48);
 
-                        v48 = [v4 objectForKey:@"kt-account-key"];
+                        v48 = [dictionaryCopy objectForKey:@"kt-account-key"];
                         if (_IDSRunningInDaemon() && v48)
                         {
                           v50 = +[IMRGLog registration];
@@ -1093,7 +1093,7 @@ LABEL_249:
 
                           v114 = v51;
                           [(IDSRegistration *)v5 setKtAccountKey:v51];
-                          v52 = [v4 objectForKey:@"kt-account-key-timestamp"];
+                          v52 = [dictionaryCopy objectForKey:@"kt-account-key-timestamp"];
                           if (_IDSRunningInDaemon() && v52)
                           {
                             v53 = +[IMRGLog registration];
@@ -1117,7 +1117,7 @@ LABEL_249:
 LABEL_257:
                           objc_storeStrong(&v5->_ktAccountKeyTimestamp, v52);
 
-                          v52 = [v4 objectForKey:@"kt-account-key-error"];
+                          v52 = [dictionaryCopy objectForKey:@"kt-account-key-error"];
                           if (_IDSRunningInDaemon() && v52)
                           {
                             v55 = +[IMRGLog registration];
@@ -1132,7 +1132,7 @@ LABEL_257:
 LABEL_264:
                             objc_storeStrong(&v5->_ktAccountKeyErrorCode, v52);
 
-                            v52 = [v4 objectForKey:@"device-signature"];
+                            v52 = [dictionaryCopy objectForKey:@"device-signature"];
                             if (_IDSRunningInDaemon() && v52)
                             {
                               v56 = +[IMRGLog registration];
@@ -1149,7 +1149,7 @@ LABEL_271:
 
                               v113 = v57;
                               [(IDSRegistration *)v5 setDeviceSignature:v57];
-                              v58 = [v4 objectForKey:@"kt-data-for-registration"];
+                              v58 = [dictionaryCopy objectForKey:@"kt-data-for-registration"];
                               if (_IDSRunningInDaemon() && v58)
                               {
                                 v59 = +[IMRGLog registration];
@@ -1180,7 +1180,7 @@ LABEL_282:
 
                               v112 = v61;
                               [(IDSRegistration *)v5 setKtDataForRegistration:v61];
-                              v62 = [v4 objectForKey:@"opted-into-kt"];
+                              v62 = [dictionaryCopy objectForKey:@"opted-into-kt"];
                               if (_IDSRunningInDaemon() && v62)
                               {
                                 v63 = +[IMRGLog registration];
@@ -1211,7 +1211,7 @@ LABEL_290:
 
                               v111 = v65;
                               -[IDSRegistration setOptedIntoKT:](v5, "setOptedIntoKT:", [v65 intValue]);
-                              v66 = [v4 objectForKey:@"opted-into-kt-timestamp"];
+                              v66 = [dictionaryCopy objectForKey:@"opted-into-kt-timestamp"];
                               if (_IDSRunningInDaemon() && v66)
                               {
                                 v67 = +[IMRGLog registration];
@@ -1226,7 +1226,7 @@ LABEL_290:
 LABEL_298:
                                 objc_storeStrong(&v5->_optedIntoKTTimestamp, v66);
 
-                                v66 = [v4 objectForKey:@"opted-into-kt-error"];
+                                v66 = [dictionaryCopy objectForKey:@"opted-into-kt-error"];
                                 if (_IDSRunningInDaemon() && v66)
                                 {
                                   v69 = +[IMRGLog registration];
@@ -1247,7 +1247,7 @@ LABEL_298:
 LABEL_305:
                                   objc_storeStrong(&v5->_ktOptInErrorCode, v66);
 
-                                  v70 = [v4 objectForKey:@"dsid"];
+                                  v70 = [dictionaryCopy objectForKey:@"dsid"];
                                   if (_IDSRunningInDaemon() && v70)
                                   {
                                     v71 = +[IMRGLog registration];
@@ -1270,8 +1270,8 @@ LABEL_316:
 
                                     v110 = _IDSRegistrationServiceTypeForString();
                                     [(IDSRegistration *)v5 setServiceType:?];
-                                    v72 = [(IDSRegistration *)v5 serviceIdentifier];
-                                    if (![v72 length])
+                                    serviceIdentifier = [(IDSRegistration *)v5 serviceIdentifier];
+                                    if (![serviceIdentifier length])
                                     {
                                       v73 = [v110 length];
 
@@ -1280,8 +1280,8 @@ LABEL_316:
                                         goto LABEL_320;
                                       }
 
-                                      v72 = _IDSRegistrationServiceIdentifierFromServiceType();
-                                      [(IDSRegistration *)v5 setServiceIdentifier:v72];
+                                      serviceIdentifier = _IDSRegistrationServiceIdentifierFromServiceType();
+                                      [(IDSRegistration *)v5 setServiceIdentifier:serviceIdentifier];
                                     }
 
 LABEL_320:
@@ -1298,7 +1298,7 @@ LABEL_320:
                                       goto LABEL_324;
                                     }
 
-                                    v75 = [v4 objectForKey:@"bindings"];
+                                    v75 = [dictionaryCopy objectForKey:@"bindings"];
                                     if (_IDSRunningInDaemon() && v75)
                                     {
                                       v83 = +[IMRGLog registration];
@@ -1323,7 +1323,7 @@ LABEL_320:
 LABEL_341:
                                     v75 = v75;
 
-                                    v109 = [v4 objectForKey:@"cert"];
+                                    v109 = [dictionaryCopy objectForKey:@"cert"];
                                     if (_IDSRunningInDaemon() && v109)
                                     {
                                       v84 = +[IMRGLog registration];
@@ -1343,17 +1343,17 @@ LABEL_349:
                                         v109 = v75;
                                         v75 = 0;
 LABEL_326:
-                                        v108 = [(IDSRegistration *)v5 idsUserID];
+                                        idsUserID = [(IDSRegistration *)v5 idsUserID];
                                         if ([(IDSRegistration *)v5 registrationType])
                                         {
                                           goto LABEL_355;
                                         }
 
-                                        v77 = [(IDSRegistration *)v5 userUniqueIdentifier];
+                                        userUniqueIdentifier = [(IDSRegistration *)v5 userUniqueIdentifier];
                                         if ([v37 length])
                                         {
                                           v78 = +[IDSRegistrationKeychainManager sharedInstance];
-                                          v79 = [v78 smsSignatureForID:v77];
+                                          v79 = [v78 smsSignatureForID:userUniqueIdentifier];
                                           v105 = [v79 length];
 
                                           if (v105)
@@ -1361,27 +1361,27 @@ LABEL_326:
 LABEL_354:
 
 LABEL_355:
-                                            v88 = [(IDSRegistration *)v5 registrationType];
+                                            registrationType = [(IDSRegistration *)v5 registrationType];
                                             v89 = +[IMRGLog registration];
                                             v90 = os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT);
-                                            if (v88)
+                                            if (registrationType)
                                             {
                                               if (v90)
                                               {
                                                 *buf = 138412546;
                                                 v119 = v33;
                                                 v120 = 2112;
-                                                v121 = v108;
+                                                v121 = idsUserID;
                                                 _os_log_impl(&_mh_execute_header, v89, OS_LOG_TYPE_DEFAULT, "Loaded auth cert: %@    ID: %@", buf, 0x16u);
                                               }
 
-                                              if (![v33 length] || !objc_msgSend(v108, "length"))
+                                              if (![v33 length] || !objc_msgSend(idsUserID, "length"))
                                               {
                                                 goto LABEL_380;
                                               }
 
                                               v91 = +[IDSRegistrationKeychainManager sharedInstance];
-                                              v92 = [v91 authenticationCertForID:v108];
+                                              v92 = [v91 authenticationCertForID:idsUserID];
                                               v106 = [v92 length];
 
                                               v93 = +[IMRGLog registration];
@@ -1391,7 +1391,7 @@ LABEL_355:
                                                 if (v94)
                                                 {
                                                   *buf = 138412290;
-                                                  v119 = v108;
+                                                  v119 = idsUserID;
                                                   _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "Not migrating cert for user ID, we already have one: %@", buf, 0xCu);
                                                 }
                                               }
@@ -1401,12 +1401,12 @@ LABEL_355:
                                                 if (v94)
                                                 {
                                                   *buf = 138412290;
-                                                  v119 = v108;
+                                                  v119 = idsUserID;
                                                   _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "Migrating auth cert for IDS User ID: %@", buf, 0xCu);
                                                 }
 
                                                 v93 = +[IDSRegistrationKeychainManager sharedInstance];
-                                                [v93 setAuthenticationCert:v33 forID:v108];
+                                                [v93 setAuthenticationCert:v33 forID:idsUserID];
                                               }
 
 LABEL_379:
@@ -1418,11 +1418,11 @@ LABEL_380:
 
                                             if (v90)
                                             {
-                                              v95 = [(IDSRegistration *)v5 userUniqueIdentifier];
+                                              userUniqueIdentifier2 = [(IDSRegistration *)v5 userUniqueIdentifier];
                                               *buf = 138412546;
                                               v119 = v33;
                                               v120 = 2112;
-                                              v121 = v95;
+                                              v121 = userUniqueIdentifier2;
                                               _os_log_impl(&_mh_execute_header, v89, OS_LOG_TYPE_DEFAULT, "Loaded auth cert: %@    userUniqueID: %@", buf, 0x16u);
                                             }
 
@@ -1431,8 +1431,8 @@ LABEL_380:
                                               goto LABEL_380;
                                             }
 
-                                            v96 = [(IDSRegistration *)v5 userUniqueIdentifier];
-                                            v97 = [v96 length];
+                                            userUniqueIdentifier3 = [(IDSRegistration *)v5 userUniqueIdentifier];
+                                            v97 = [userUniqueIdentifier3 length];
 
                                             if (!v97)
                                             {
@@ -1440,8 +1440,8 @@ LABEL_380:
                                             }
 
                                             v98 = +[IDSRegistrationKeychainManager sharedInstance];
-                                            v99 = [(IDSRegistration *)v5 userUniqueIdentifier];
-                                            v100 = [v98 authenticationCertForID:v99];
+                                            userUniqueIdentifier4 = [(IDSRegistration *)v5 userUniqueIdentifier];
+                                            v100 = [v98 authenticationCertForID:userUniqueIdentifier4];
                                             v107 = [v100 length];
 
                                             v93 = +[IMRGLog registration];
@@ -1453,9 +1453,9 @@ LABEL_380:
                                                 goto LABEL_379;
                                               }
 
-                                              v102 = [(IDSRegistration *)v5 userUniqueIdentifier];
+                                              userUniqueIdentifier5 = [(IDSRegistration *)v5 userUniqueIdentifier];
                                               *buf = 138412290;
-                                              v119 = v102;
+                                              v119 = userUniqueIdentifier5;
                                               _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "Not migrating cert for user ID, we already have one: %@", buf, 0xCu);
                                             }
 
@@ -1463,15 +1463,15 @@ LABEL_380:
                                             {
                                               if (v101)
                                               {
-                                                v103 = [(IDSRegistration *)v5 userUniqueIdentifier];
+                                                userUniqueIdentifier6 = [(IDSRegistration *)v5 userUniqueIdentifier];
                                                 *buf = 138412290;
-                                                v119 = v103;
+                                                v119 = userUniqueIdentifier6;
                                                 _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "Migrating auth cert for userUniqueID: %@", buf, 0xCu);
                                               }
 
                                               v93 = +[IDSRegistrationKeychainManager sharedInstance];
-                                              v102 = [(IDSRegistration *)v5 userUniqueIdentifier];
-                                              [v93 setAuthenticationCert:v33 forID:v102];
+                                              userUniqueIdentifier5 = [(IDSRegistration *)v5 userUniqueIdentifier];
+                                              [v93 setAuthenticationCert:v33 forID:userUniqueIdentifier5];
                                             }
 
                                             goto LABEL_379;
@@ -1483,26 +1483,26 @@ LABEL_380:
                                             *buf = 138412546;
                                             v119 = v37;
                                             v120 = 2112;
-                                            v121 = v77;
+                                            v121 = userUniqueIdentifier;
                                             _os_log_impl(&_mh_execute_header, v80, OS_LOG_TYPE_DEFAULT, "Migrating this SMS auth token: %@  storageID: %@", buf, 0x16u);
                                           }
 
                                           v81 = +[IDSRegistrationKeychainManager sharedInstance];
-                                          [v81 setSMSSignature:v37 mainID:v77];
+                                          [v81 setSMSSignature:v37 mainID:userUniqueIdentifier];
 
                                           v82 = +[IDSRegistrationKeychainManager sharedInstance];
-                                          [v82 setSMSSignatureMechanism:&off_100C3D3A8 mainID:v77];
+                                          [v82 setSMSSignatureMechanism:&off_100C3D3A8 mainID:userUniqueIdentifier];
                                         }
 
                                         else
                                         {
-                                          if (!v77)
+                                          if (!userUniqueIdentifier)
                                           {
                                             goto LABEL_354;
                                           }
 
                                           v86 = +[IDSRegistrationKeychainManager sharedInstance];
-                                          v87 = [v86 smsSignatureForID:v77];
+                                          v87 = [v86 smsSignatureForID:userUniqueIdentifier];
 
                                           if (v87)
                                           {
@@ -1700,17 +1700,17 @@ LABEL_384:
   return self;
 }
 
-- (void)addCandidateEmail:(id)a3
+- (void)addCandidateEmail:(id)email
 {
-  v4 = a3;
+  emailCopy = email;
   if (IMStringIsPhoneNumber())
   {
     v5 = IMCanonicalizeFormattedString();
 
-    v4 = v5;
+    emailCopy = v5;
   }
 
-  v9 = [v4 _im_normalizedURIString];
+  _im_normalizedURIString = [emailCopy _im_normalizedURIString];
 
   candidateEmails = self->_candidateEmails;
   if (!candidateEmails)
@@ -1722,36 +1722,36 @@ LABEL_384:
     candidateEmails = self->_candidateEmails;
   }
 
-  if (([(NSMutableArray *)candidateEmails containsObject:v9]& 1) == 0)
+  if (([(NSMutableArray *)candidateEmails containsObject:_im_normalizedURIString]& 1) == 0)
   {
-    [(NSMutableArray *)self->_candidateEmails addObject:v9];
+    [(NSMutableArray *)self->_candidateEmails addObject:_im_normalizedURIString];
   }
 }
 
-- (void)removeCandidateEmail:(id)a3
+- (void)removeCandidateEmail:(id)email
 {
-  v4 = a3;
+  emailCopy = email;
   if (IMStringIsPhoneNumber())
   {
     v5 = IMCanonicalizeFormattedString();
 
-    v4 = v5;
+    emailCopy = v5;
   }
 
-  v9 = [v4 _im_normalizedURIString];
+  _im_normalizedURIString = [emailCopy _im_normalizedURIString];
 
-  v7 = v9;
-  if (v9)
+  v7 = _im_normalizedURIString;
+  if (_im_normalizedURIString)
   {
-    [(NSMutableArray *)self->_candidateEmails removeObject:v9];
+    [(NSMutableArray *)self->_candidateEmails removeObject:_im_normalizedURIString];
     v6 = [(NSMutableArray *)self->_candidateEmails count];
-    v7 = v9;
+    v7 = _im_normalizedURIString;
     if (!v6)
     {
       candidateEmails = self->_candidateEmails;
       self->_candidateEmails = 0;
 
-      v7 = v9;
+      v7 = _im_normalizedURIString;
     }
   }
 
@@ -1760,51 +1760,51 @@ LABEL_384:
 
 - (NSArray)confirmedEmails
 {
-  v2 = [(IDSRegistration *)self uris];
-  v3 = [v2 _IDsFromURIs];
+  uris = [(IDSRegistration *)self uris];
+  _IDsFromURIs = [uris _IDsFromURIs];
 
-  return v3;
+  return _IDsFromURIs;
 }
 
-- (void)setEmail:(id)a3
+- (void)setEmail:(id)email
 {
-  v4 = a3;
+  emailCopy = email;
   if ([(IDSRegistration *)self registrationType]== 2)
   {
-    [(IDSRegistration *)self setTemporaryPhoneEmail:v4];
+    [(IDSRegistration *)self setTemporaryPhoneEmail:emailCopy];
   }
 
   else
   {
-    [(IDSRegistration *)self setMainID:v4];
+    [(IDSRegistration *)self setMainID:emailCopy];
   }
 }
 
-- (void)setRegistrationStatus:(int64_t)a3
+- (void)setRegistrationStatus:(int64_t)status
 {
-  if (self->_registrationStatus != a3)
+  if (self->_registrationStatus != status)
   {
-    self->_registrationStatus = a3;
+    self->_registrationStatus = status;
   }
 }
 
-- (void)setUserUniqueIdentifier:(id)a3
+- (void)setUserUniqueIdentifier:(id)identifier
 {
-  v8 = a3;
-  objc_storeStrong(&self->_userUniqueIdentifier, a3);
+  identifierCopy = identifier;
+  objc_storeStrong(&self->_userUniqueIdentifier, identifier);
   if (!self->_mainID)
   {
-    v5 = [(IDSRegistration *)self _user];
-    v6 = [v5 unprefixedIdentifier];
+    _user = [(IDSRegistration *)self _user];
+    unprefixedIdentifier = [_user unprefixedIdentifier];
     mainID = self->_mainID;
-    self->_mainID = v6;
+    self->_mainID = unprefixedIdentifier;
   }
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = [NSNumber numberWithInteger:self->_registrationType];
-  v4 = [(IDSRegistration *)self serviceType];
+  serviceType = [(IDSRegistration *)self serviceType];
   v5 = _StringForIDSRegistrationServiceType();
 
   v6 = [NSNumber numberWithUnsignedInteger:self->_optedIntoKT];
@@ -2261,9 +2261,9 @@ LABEL_34:
   if (!self->_deviceName)
   {
     v60 = +[FTDeviceSupport sharedInstance];
-    v61 = [v60 deviceName];
+    deviceName = [v60 deviceName];
     deviceName = self->_deviceName;
-    self->_deviceName = v61;
+    self->_deviceName = deviceName;
   }
 
   v9 = v7;
@@ -2273,12 +2273,12 @@ LABEL_35:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v70.receiver = self;
   v70.super_class = IDSRegistration;
-  if ([(IDSRegistration *)&v70 isEqual:v4])
+  if ([(IDSRegistration *)&v70 isEqual:equalCopy])
   {
     v5 = 1;
     goto LABEL_41;
@@ -2290,24 +2290,24 @@ LABEL_35:
     goto LABEL_40;
   }
 
-  v6 = [(IDSRegistration *)self registrationType];
-  if (v6 != [v4 registrationType])
+  registrationType = [(IDSRegistration *)self registrationType];
+  if (registrationType != [equalCopy registrationType])
   {
     goto LABEL_40;
   }
 
-  v7 = [(IDSRegistration *)self serviceType];
-  v8 = [v4 serviceType];
-  v9 = v8;
-  if (v7 == v8)
+  serviceType = [(IDSRegistration *)self serviceType];
+  serviceType2 = [equalCopy serviceType];
+  v9 = serviceType2;
+  if (serviceType == serviceType2)
   {
   }
 
   else
   {
-    v10 = [(IDSRegistration *)self serviceType];
-    v11 = [v4 serviceType];
-    v12 = [v10 isEqualToString:v11];
+    serviceType3 = [(IDSRegistration *)self serviceType];
+    serviceType4 = [equalCopy serviceType];
+    v12 = [serviceType3 isEqualToString:serviceType4];
 
     if (!v12)
     {
@@ -2315,18 +2315,18 @@ LABEL_35:
     }
   }
 
-  v13 = [(IDSRegistration *)self pushToken];
-  v14 = [v4 pushToken];
-  v15 = v14;
-  if (v13 == v14)
+  pushToken = [(IDSRegistration *)self pushToken];
+  pushToken2 = [equalCopy pushToken];
+  v15 = pushToken2;
+  if (pushToken == pushToken2)
   {
   }
 
   else
   {
-    v16 = [(IDSRegistration *)self pushToken];
-    v17 = [v4 pushToken];
-    v18 = [v16 isEqualToData:v17];
+    pushToken3 = [(IDSRegistration *)self pushToken];
+    pushToken4 = [equalCopy pushToken];
+    v18 = [pushToken3 isEqualToData:pushToken4];
 
     if (!v18)
     {
@@ -2334,18 +2334,18 @@ LABEL_35:
     }
   }
 
-  v19 = [(IDSRegistration *)self environment];
-  v20 = [v4 environment];
-  v21 = v20;
-  if (v19 == v20)
+  environment = [(IDSRegistration *)self environment];
+  environment2 = [equalCopy environment];
+  v21 = environment2;
+  if (environment == environment2)
   {
   }
 
   else
   {
-    v22 = [(IDSRegistration *)self environment];
-    v23 = [v4 environment];
-    v24 = [v22 isEqualToString:v23];
+    environment3 = [(IDSRegistration *)self environment];
+    environment4 = [equalCopy environment];
+    v24 = [environment3 isEqualToString:environment4];
 
     if (!v24)
     {
@@ -2353,18 +2353,18 @@ LABEL_35:
     }
   }
 
-  v25 = [(IDSRegistration *)self deviceName];
-  v26 = [v4 deviceName];
-  v27 = v26;
-  if (v25 == v26)
+  deviceName = [(IDSRegistration *)self deviceName];
+  deviceName2 = [equalCopy deviceName];
+  v27 = deviceName2;
+  if (deviceName == deviceName2)
   {
   }
 
   else
   {
-    v28 = [(IDSRegistration *)self deviceName];
-    v29 = [v4 deviceName];
-    v30 = [v28 isEqualToString:v29];
+    deviceName3 = [(IDSRegistration *)self deviceName];
+    deviceName4 = [equalCopy deviceName];
+    v30 = [deviceName3 isEqualToString:deviceName4];
 
     if (!v30)
     {
@@ -2372,18 +2372,18 @@ LABEL_35:
     }
   }
 
-  v31 = [(IDSRegistration *)self mainID];
-  v32 = [v4 mainID];
-  v33 = v32;
-  if (v31 == v32)
+  mainID = [(IDSRegistration *)self mainID];
+  mainID2 = [equalCopy mainID];
+  v33 = mainID2;
+  if (mainID == mainID2)
   {
   }
 
   else
   {
-    v34 = [(IDSRegistration *)self mainID];
-    v35 = [v4 mainID];
-    v36 = [v34 isEqualToString:v35];
+    mainID3 = [(IDSRegistration *)self mainID];
+    mainID4 = [equalCopy mainID];
+    v36 = [mainID3 isEqualToString:mainID4];
 
     if (!v36)
     {
@@ -2391,18 +2391,18 @@ LABEL_35:
     }
   }
 
-  v37 = [(IDSRegistration *)self uris];
-  v38 = [v4 uris];
-  v39 = v38;
-  if (v37 == v38)
+  uris = [(IDSRegistration *)self uris];
+  uris2 = [equalCopy uris];
+  v39 = uris2;
+  if (uris == uris2)
   {
   }
 
   else
   {
-    v40 = [(IDSRegistration *)self uris];
-    v41 = [v4 uris];
-    v42 = [v40 isEqualToArray:v41];
+    uris3 = [(IDSRegistration *)self uris];
+    uris4 = [equalCopy uris];
+    v42 = [uris3 isEqualToArray:uris4];
 
     if (!v42)
     {
@@ -2410,18 +2410,18 @@ LABEL_35:
     }
   }
 
-  v43 = [(IDSRegistration *)self candidateEmails];
-  v44 = [v4 candidateEmails];
-  v45 = v44;
-  if (v43 == v44)
+  candidateEmails = [(IDSRegistration *)self candidateEmails];
+  candidateEmails2 = [equalCopy candidateEmails];
+  v45 = candidateEmails2;
+  if (candidateEmails == candidateEmails2)
   {
   }
 
   else
   {
-    v46 = [(IDSRegistration *)self candidateEmails];
-    v47 = [v4 candidateEmails];
-    v48 = [v46 isEqualToArray:v47];
+    candidateEmails3 = [(IDSRegistration *)self candidateEmails];
+    candidateEmails4 = [equalCopy candidateEmails];
+    v48 = [candidateEmails3 isEqualToArray:candidateEmails4];
 
     if (!v48)
     {
@@ -2429,18 +2429,18 @@ LABEL_35:
     }
   }
 
-  v49 = [(IDSRegistration *)self confirmedEmails];
-  v50 = [v4 confirmedEmails];
-  v51 = v50;
-  if (v49 == v50)
+  confirmedEmails = [(IDSRegistration *)self confirmedEmails];
+  confirmedEmails2 = [equalCopy confirmedEmails];
+  v51 = confirmedEmails2;
+  if (confirmedEmails == confirmedEmails2)
   {
   }
 
   else
   {
-    v52 = [(IDSRegistration *)self confirmedEmails];
-    v53 = [v4 confirmedEmails];
-    v54 = [v52 isEqualToArray:v53];
+    confirmedEmails3 = [(IDSRegistration *)self confirmedEmails];
+    confirmedEmails4 = [equalCopy confirmedEmails];
+    v54 = [confirmedEmails3 isEqualToArray:confirmedEmails4];
 
     if (!v54)
     {
@@ -2448,30 +2448,30 @@ LABEL_35:
     }
   }
 
-  v55 = [(IDSRegistration *)self isCDMA];
-  v56 = [v55 intValue];
-  v57 = [v4 isCDMA];
-  v58 = [v57 intValue];
+  isCDMA = [(IDSRegistration *)self isCDMA];
+  intValue = [isCDMA intValue];
+  isCDMA2 = [equalCopy isCDMA];
+  intValue2 = [isCDMA2 intValue];
 
-  if (v56 != v58)
+  if (intValue != intValue2)
   {
 LABEL_40:
     v5 = 0;
     goto LABEL_41;
   }
 
-  v59 = [(IDSRegistration *)self registrationCert];
-  v60 = [v4 registrationCert];
-  v61 = v60;
-  if (v59 == v60)
+  registrationCert = [(IDSRegistration *)self registrationCert];
+  registrationCert2 = [equalCopy registrationCert];
+  v61 = registrationCert2;
+  if (registrationCert == registrationCert2)
   {
   }
 
   else
   {
-    v62 = [(IDSRegistration *)self registrationCert];
-    v63 = [v4 registrationCert];
-    v64 = [v62 isEqualToData:v63];
+    registrationCert3 = [(IDSRegistration *)self registrationCert];
+    registrationCert4 = [equalCopy registrationCert];
+    v64 = [registrationCert3 isEqualToData:registrationCert4];
 
     if (!v64)
     {
@@ -2479,18 +2479,18 @@ LABEL_40:
     }
   }
 
-  v66 = [(IDSRegistration *)self userUniqueIdentifier];
-  v67 = [v4 userUniqueIdentifier];
-  if (v66 == v67)
+  userUniqueIdentifier = [(IDSRegistration *)self userUniqueIdentifier];
+  userUniqueIdentifier2 = [equalCopy userUniqueIdentifier];
+  if (userUniqueIdentifier == userUniqueIdentifier2)
   {
     v5 = 1;
   }
 
   else
   {
-    v68 = [(IDSRegistration *)self userUniqueIdentifier];
-    v69 = [v4 userUniqueIdentifier];
-    v5 = [v68 isEqualToString:v69];
+    userUniqueIdentifier3 = [(IDSRegistration *)self userUniqueIdentifier];
+    userUniqueIdentifier4 = [equalCopy userUniqueIdentifier];
+    v5 = [userUniqueIdentifier3 isEqualToString:userUniqueIdentifier4];
   }
 
 LABEL_41:
@@ -2508,17 +2508,17 @@ LABEL_41:
     v20 = sub_10000BCE4;
     v21 = 0;
     passwordManager = self->_passwordManager;
-    v4 = [(IDSRegistration *)self profileID];
-    v5 = [(IDSRegistration *)self email];
-    v6 = [v5 lowercaseString];
-    v7 = [(IDSRegistration *)self serviceType];
+    profileID = [(IDSRegistration *)self profileID];
+    email = [(IDSRegistration *)self email];
+    lowercaseString = [email lowercaseString];
+    serviceType = [(IDSRegistration *)self serviceType];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1006ABC28;
     v15[3] = &unk_100BE41E0;
     v15[4] = self;
     v15[5] = &v16;
-    [(FTPasswordManager *)passwordManager fetchAuthTokenForProfileID:v4 username:v6 service:v7 outRequestID:0 completionBlock:v15];
+    [(FTPasswordManager *)passwordManager fetchAuthTokenForProfileID:profileID username:lowercaseString service:serviceType outRequestID:0 completionBlock:v15];
 
     if ([v17[5] length])
     {
@@ -2530,24 +2530,24 @@ LABEL_41:
       v8 = 0;
     }
 
-    v12 = v8;
+    smsSignature = v8;
     _Block_object_dispose(&v16, 8);
   }
 
   else
   {
-    v9 = [(IDSRegistration *)self _userStore];
-    v10 = [(IDSRegistration *)self _user];
-    v11 = [v9 credentialForUser:v10];
+    _userStore = [(IDSRegistration *)self _userStore];
+    _user = [(IDSRegistration *)self _user];
+    v11 = [_userStore credentialForUser:_user];
 
     if (v11 && ![v11 realm])
     {
-      v12 = [v11 smsSignature];
+      smsSignature = [v11 smsSignature];
     }
 
     else
     {
-      v12 = 0;
+      smsSignature = 0;
     }
 
     v13 = +[IMRGLog registration];
@@ -2557,38 +2557,38 @@ LABEL_41:
     }
   }
 
-  return v12;
+  return smsSignature;
 }
 
-- (void)setAuthenticationToken:(id)a3
+- (void)setAuthenticationToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   if ([(IDSRegistration *)self registrationType])
   {
-    v5 = [(IDSRegistration *)self registrationType];
-    if (v4 || v5 != 2)
+    registrationType = [(IDSRegistration *)self registrationType];
+    if (tokenCopy || registrationType != 2)
     {
-      v6 = [(IDSRegistration *)self serviceType];
+      serviceType = [(IDSRegistration *)self serviceType];
       passwordManager = self->_passwordManager;
-      v12 = [(IDSRegistration *)self profileID];
-      v13 = [(IDSRegistration *)self email];
+      profileID = [(IDSRegistration *)self profileID];
+      email = [(IDSRegistration *)self email];
       v14 = IMStripLoginID();
-      v15 = [v14 lowercaseString];
+      lowercaseString = [v14 lowercaseString];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_1006AC0F0;
       v16[3] = &unk_100BE4208;
-      v17 = v4;
-      [(FTPasswordManager *)passwordManager setAuthTokenForProfileID:v12 username:v15 service:v6 authToken:v17 selfHandle:0 accountStatus:&off_100C3D3C0 outRequestID:0 completionBlock:v16];
+      v17 = tokenCopy;
+      [(FTPasswordManager *)passwordManager setAuthTokenForProfileID:profileID username:lowercaseString service:serviceType authToken:v17 selfHandle:0 accountStatus:&off_100C3D3C0 outRequestID:0 completionBlock:v16];
     }
 
     else
     {
-      v6 = +[IMRGLog registration];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      serviceType = +[IMRGLog registration];
+      if (os_log_type_enabled(serviceType, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "** Not clearing auth token since this is a temporary registration", buf, 2u);
+        _os_log_impl(&_mh_execute_header, serviceType, OS_LOG_TYPE_DEFAULT, "** Not clearing auth token since this is a temporary registration", buf, 2u);
       }
     }
 
@@ -2597,7 +2597,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!tokenCopy)
   {
     v7 = +[IMRGLog registration];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2606,11 +2606,11 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "** Cleraing auth token for SMS Registration.", buf, 2u);
     }
 
-    v6 = +[IDSDaemon sharedInstance];
-    v8 = [v6 registrationConductor];
-    v9 = [v8 phoneUserRegistry];
-    v10 = [(IDSRegistration *)self userUniqueIdentifier];
-    [v9 clearCredentialForUserUniqueIdentifier:v10];
+    serviceType = +[IDSDaemon sharedInstance];
+    registrationConductor = [serviceType registrationConductor];
+    phoneUserRegistry = [registrationConductor phoneUserRegistry];
+    userUniqueIdentifier = [(IDSRegistration *)self userUniqueIdentifier];
+    [phoneUserRegistry clearCredentialForUserUniqueIdentifier:userUniqueIdentifier];
 
     goto LABEL_11;
   }
@@ -2623,18 +2623,18 @@ LABEL_12:
   if ([(IDSRegistration *)self registrationType]== 1)
   {
     v3 = +[FTPasswordManager sharedInstance];
-    v4 = [(IDSRegistration *)self profileID];
-    v5 = [(IDSRegistration *)self email];
-    v6 = [v5 lowercaseString];
-    [v3 removeAuthTokenAllowingGracePeriodForProfileID:v4 username:v6];
+    profileID = [(IDSRegistration *)self profileID];
+    email = [(IDSRegistration *)self email];
+    lowercaseString = [email lowercaseString];
+    [v3 removeAuthTokenAllowingGracePeriodForProfileID:profileID username:lowercaseString];
 
     v7 = +[IMRGLog registration];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(IDSRegistration *)self email];
-      v9 = [v8 lowercaseString];
+      email2 = [(IDSRegistration *)self email];
+      lowercaseString2 = [email2 lowercaseString];
       v10 = 138412290;
-      v11 = v9;
+      v11 = lowercaseString2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Voided auth token for account (%@)", &v10, 0xCu);
     }
   }
@@ -2644,27 +2644,27 @@ LABEL_12:
 {
   if ([(IDSRegistration *)self registrationType]== 1)
   {
-    v7 = [(IDSRegistration *)self serviceType];
+    serviceType = [(IDSRegistration *)self serviceType];
     v3 = +[FTPasswordManager sharedInstance];
-    v4 = [(IDSRegistration *)self profileID];
-    v5 = [(IDSRegistration *)self email];
-    v6 = [v5 lowercaseString];
-    [v3 setPasswordForProfileID:v4 username:v6 service:v7 password:0 outRequestID:0 completionBlock:&stru_100BE4228];
+    profileID = [(IDSRegistration *)self profileID];
+    email = [(IDSRegistration *)self email];
+    lowercaseString = [email lowercaseString];
+    [v3 setPasswordForProfileID:profileID username:lowercaseString service:serviceType password:0 outRequestID:0 completionBlock:&stru_100BE4228];
   }
 }
 
 - (NSString)registrationTraceID
 {
-  v3 = [(IDSRegistration *)self eventTraceRandomID];
-  v4 = [(IDSRegistration *)self serviceIdentifier];
-  v5 = [NSString stringWithFormat:@"%@|%@|%d", v3, v4, [(IDSRegistration *)self registrationType]];
+  eventTraceRandomID = [(IDSRegistration *)self eventTraceRandomID];
+  serviceIdentifier = [(IDSRegistration *)self serviceIdentifier];
+  v5 = [NSString stringWithFormat:@"%@|%@|%d", eventTraceRandomID, serviceIdentifier, [(IDSRegistration *)self registrationType]];
 
   return v5;
 }
 
 - (void)resetRegistrationID
 {
-  v3 = [(IDSRegistration *)self registrationTraceID];
+  registrationTraceID = [(IDSRegistration *)self registrationTraceID];
   v4 = +[NSString stringGUID];
   eventTraceRandomID = self->_eventTraceRandomID;
   self->_eventTraceRandomID = v4;
@@ -2672,11 +2672,11 @@ LABEL_12:
   v6 = +[IMRGLog eventTracing];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(IDSRegistration *)self registrationTraceID];
+    registrationTraceID2 = [(IDSRegistration *)self registrationTraceID];
     v8 = 138412546;
-    v9 = v3;
+    v9 = registrationTraceID;
     v10 = 2112;
-    v11 = v7;
+    v11 = registrationTraceID2;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Resetting registration guid, %@ => %@", &v8, 0x16u);
   }
 }
@@ -2686,16 +2686,16 @@ LABEL_12:
   [(IDSRegistration *)self registrationStatus];
   v33 = _StringForIDSDRegistrationStatus();
   v32 = _StringForIDSRegistrationType([(IDSRegistration *)self registrationType]);
-  v34 = [(IDSRegistration *)self deviceName];
-  v23 = [(IDSRegistration *)self serviceType];
+  deviceName = [(IDSRegistration *)self deviceName];
+  serviceType = [(IDSRegistration *)self serviceType];
   v31 = _StringForIDSRegistrationServiceType();
-  v30 = [(IDSRegistration *)self environment];
-  v29 = [(IDSRegistration *)self mainID];
-  v28 = [(IDSRegistration *)self email];
-  v18 = [(IDSRegistration *)self userID];
-  v22 = [(IDSRegistration *)self isCDMA];
+  environment = [(IDSRegistration *)self environment];
+  mainID = [(IDSRegistration *)self mainID];
+  email = [(IDSRegistration *)self email];
+  userID = [(IDSRegistration *)self userID];
+  isCDMA = [(IDSRegistration *)self isCDMA];
   v3 = @"YES";
-  if (v22)
+  if (isCDMA)
   {
     v4 = @"YES";
   }
@@ -2706,29 +2706,29 @@ LABEL_12:
   }
 
   v17 = v4;
-  v21 = [(IDSRegistration *)self pushToken];
-  v27 = [v21 debugDescription];
-  v16 = [(IDSRegistration *)self regionID];
-  v15 = [(IDSRegistration *)self regionBasePhoneNumber];
-  v20 = [(IDSRegistration *)self uris];
+  pushToken = [(IDSRegistration *)self pushToken];
+  v27 = [pushToken debugDescription];
+  regionID = [(IDSRegistration *)self regionID];
+  regionBasePhoneNumber = [(IDSRegistration *)self regionBasePhoneNumber];
+  uris = [(IDSRegistration *)self uris];
   v26 = IMLoggingStringForArray();
-  v19 = [(IDSRegistration *)self candidateEmails];
+  candidateEmails = [(IDSRegistration *)self candidateEmails];
   v25 = IMLoggingStringForArray();
-  v24 = [(IDSRegistration *)self authenticationCert];
-  v5 = [(IDSRegistration *)self registrationCert];
-  v6 = [(IDSRegistration *)self profileID];
-  v7 = [(IDSRegistration *)self idsUserID];
-  v8 = [(IDSRegistration *)self registrationDate];
-  v9 = [(IDSRegistration *)self nextRegistrationDate];
+  authenticationCert = [(IDSRegistration *)self authenticationCert];
+  registrationCert = [(IDSRegistration *)self registrationCert];
+  profileID = [(IDSRegistration *)self profileID];
+  idsUserID = [(IDSRegistration *)self idsUserID];
+  registrationDate = [(IDSRegistration *)self registrationDate];
+  nextRegistrationDate = [(IDSRegistration *)self nextRegistrationDate];
   userUniqueIdentifier = self->_userUniqueIdentifier;
-  v11 = [(IDSRegistration *)self ktAccountKey];
-  if (!v11)
+  ktAccountKey = [(IDSRegistration *)self ktAccountKey];
+  if (!ktAccountKey)
   {
     v3 = @"NO";
   }
 
-  v12 = [(IDSRegistration *)self eventTraceRandomID];
-  v13 = [NSString stringWithFormat:@"Registration info (%p): [Status: %@] [Type: %@] [Device Name: %@] [Service Type: %@] [Env: %@] [Main ID: %@] [AppleID: %@] [UserID: %@] [C2K: %@] [Push Token: %@] [Region ID: %@] [Base Number: %@] [URIs: %@] [Candidates: %@] [Auth Cert: %p] [Reg Cert: %p] [Profile ID: %@] [Auth User ID: %@] [Registration Date: %@] [Heartbeat Date: %@] [User Unique ID: %@] [Account Key: %@] [Event Trace GUID: %@]", self, v33, v32, v34, v31, v30, v29, v28, v18, v17, v27, v16, v15, v26, v25, v24, v5, v6, v7, v8, v9, userUniqueIdentifier, v3, v12];
+  eventTraceRandomID = [(IDSRegistration *)self eventTraceRandomID];
+  v13 = [NSString stringWithFormat:@"Registration info (%p): [Status: %@] [Type: %@] [Device Name: %@] [Service Type: %@] [Env: %@] [Main ID: %@] [AppleID: %@] [UserID: %@] [C2K: %@] [Push Token: %@] [Region ID: %@] [Base Number: %@] [URIs: %@] [Candidates: %@] [Auth Cert: %p] [Reg Cert: %p] [Profile ID: %@] [Auth User ID: %@] [Registration Date: %@] [Heartbeat Date: %@] [User Unique ID: %@] [Account Key: %@] [Event Trace GUID: %@]", self, v33, v32, deviceName, v31, environment, mainID, email, userID, v17, v27, regionID, regionBasePhoneNumber, v26, v25, authenticationCert, registrationCert, profileID, idsUserID, registrationDate, nextRegistrationDate, userUniqueIdentifier, v3, eventTraceRandomID];
 
   return v13;
 }
@@ -2738,41 +2738,41 @@ LABEL_12:
   v3 = objc_alloc_init(NSMutableSet);
   if ([(IDSRegistration *)self shouldRegisterUsingDSHandle])
   {
-    v4 = [(IDSRegistration *)self dsHandle];
+    dsHandle = [(IDSRegistration *)self dsHandle];
 
-    v5 = +[IMRGLog registration];
-    v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    dsHandle3 = +[IMRGLog registration];
+    v6 = os_log_type_enabled(dsHandle3, OS_LOG_TYPE_DEFAULT);
+    if (dsHandle)
     {
       if (v6)
       {
-        v7 = [(IDSRegistration *)self idsUserID];
-        v8 = [(IDSRegistration *)self serviceType];
+        idsUserID = [(IDSRegistration *)self idsUserID];
+        serviceType = [(IDSRegistration *)self serviceType];
         *buf = 138412546;
-        v85 = v7;
+        selfCopy = idsUserID;
         v86 = 2112;
-        v87 = v8;
-        _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, " ... finding emails to register for DS registration based account: %@:%@", buf, 0x16u);
+        v87 = serviceType;
+        _os_log_impl(&_mh_execute_header, dsHandle3, OS_LOG_TYPE_DEFAULT, " ... finding emails to register for DS registration based account: %@:%@", buf, 0x16u);
       }
 
       v9 = +[IMRGLog registration];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(IDSRegistration *)self dsHandle];
+        dsHandle2 = [(IDSRegistration *)self dsHandle];
         *buf = 138412290;
-        v85 = v10;
+        selfCopy = dsHandle2;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, " => Added self handle: %@ to URI set", buf, 0xCu);
       }
 
-      v5 = [(IDSRegistration *)self dsHandle];
-      [v3 addObject:v5];
+      dsHandle3 = [(IDSRegistration *)self dsHandle];
+      [v3 addObject:dsHandle3];
     }
 
     else if (v6)
     {
       *buf = 138412290;
-      v85 = self;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, " => **** Missing self handle, not adding ****: %@", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&_mh_execute_header, dsHandle3, OS_LOG_TYPE_DEFAULT, " => **** Missing self handle, not adding ****: %@", buf, 0xCu);
     }
 
 LABEL_40:
@@ -2780,37 +2780,37 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v11 = [(IDSRegistration *)self shouldAutoRegisterAllHandles];
+  shouldAutoRegisterAllHandles = [(IDSRegistration *)self shouldAutoRegisterAllHandles];
   v12 = +[IMRGLog registration];
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (v11)
+  if (shouldAutoRegisterAllHandles)
   {
     if (v13)
     {
-      v14 = [(IDSRegistration *)self idsUserID];
-      v15 = [(IDSRegistration *)self serviceType];
+      idsUserID2 = [(IDSRegistration *)self idsUserID];
+      serviceType2 = [(IDSRegistration *)self serviceType];
       *buf = 138412546;
-      v85 = v14;
+      selfCopy = idsUserID2;
       v86 = 2112;
-      v87 = v15;
+      v87 = serviceType2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, " ... finding emails to register for auto register based account: %@:%@", buf, 0x16u);
     }
 
-    v16 = [(IDSRegistration *)self confirmedEmails];
-    v17 = [v16 count];
+    confirmedEmails = [(IDSRegistration *)self confirmedEmails];
+    v17 = [confirmedEmails count];
 
     if (v17)
     {
-      v18 = [(IDSRegistration *)self confirmedEmails];
-      [v3 addObjectsFromArray:v18];
+      confirmedEmails2 = [(IDSRegistration *)self confirmedEmails];
+      [v3 addObjectsFromArray:confirmedEmails2];
 
       v19 = +[IMRGLog registration];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(IDSRegistration *)self confirmedEmails];
+        confirmedEmails3 = [(IDSRegistration *)self confirmedEmails];
         v21 = IMLoggingStringForArray();
         *buf = 138412290;
-        v85 = v21;
+        selfCopy = v21;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, " => Auto adding confirmed emails: %@ to URI set", buf, 0xCu);
       }
     }
@@ -2825,21 +2825,21 @@ LABEL_40:
       }
     }
 
-    v35 = [(IDSRegistration *)self vettedEmails];
-    v36 = [v35 count];
+    vettedEmails = [(IDSRegistration *)self vettedEmails];
+    v36 = [vettedEmails count];
 
     if (v36)
     {
-      v37 = [(IDSRegistration *)self vettedEmails];
-      [v3 addObjectsFromArray:v37];
+      vettedEmails2 = [(IDSRegistration *)self vettedEmails];
+      [v3 addObjectsFromArray:vettedEmails2];
 
       v38 = +[IMRGLog registration];
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [(IDSRegistration *)self vettedEmails];
+        vettedEmails3 = [(IDSRegistration *)self vettedEmails];
         v40 = IMLoggingStringForArray();
         *buf = 138412290;
-        v85 = v40;
+        selfCopy = v40;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, " => Auto adding vetted emails: %@ to URI set", buf, 0xCu);
       }
     }
@@ -2854,27 +2854,27 @@ LABEL_40:
       }
     }
 
-    v41 = [(IDSRegistration *)self candidateEmails];
-    v42 = [v41 count];
+    candidateEmails = [(IDSRegistration *)self candidateEmails];
+    v42 = [candidateEmails count];
 
     if (v42)
     {
-      v43 = [(IDSRegistration *)self candidateEmails];
-      [v3 addObjectsFromArray:v43];
+      candidateEmails2 = [(IDSRegistration *)self candidateEmails];
+      [v3 addObjectsFromArray:candidateEmails2];
 
       v44 = +[IMRGLog registration];
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
       {
-        v45 = [(IDSRegistration *)self candidateEmails];
+        candidateEmails3 = [(IDSRegistration *)self candidateEmails];
         v46 = IMLoggingStringForArray();
         *buf = 138412290;
-        v85 = v46;
+        selfCopy = v46;
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, " => Added candidate emails: %@ to URI set", buf, 0xCu);
       }
     }
 
-    v5 = [(IDSRegistration *)self dsHandle];
-    if ([v5 length])
+    dsHandle3 = [(IDSRegistration *)self dsHandle];
+    if ([dsHandle3 length])
     {
       v47 = +[IMRGLog registration];
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
@@ -2883,7 +2883,7 @@ LABEL_40:
         _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, " => Removing DS Handle", buf, 2u);
       }
 
-      [v3 removeObject:v5];
+      [v3 removeObject:dsHandle3];
     }
 
     goto LABEL_40;
@@ -2891,50 +2891,50 @@ LABEL_40:
 
   if (v13)
   {
-    v22 = [(IDSRegistration *)self idsUserID];
-    v23 = [(IDSRegistration *)self serviceType];
+    idsUserID3 = [(IDSRegistration *)self idsUserID];
+    serviceType3 = [(IDSRegistration *)self serviceType];
     *buf = 138412546;
-    v85 = v22;
+    selfCopy = idsUserID3;
     v86 = 2112;
-    v87 = v23;
+    v87 = serviceType3;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, " ... finding emails to register for manual handle selection account: %@:%@", buf, 0x16u);
   }
 
-  v24 = [(IDSRegistration *)self confirmedEmails];
-  v25 = [v24 count];
+  confirmedEmails4 = [(IDSRegistration *)self confirmedEmails];
+  v25 = [confirmedEmails4 count];
 
   if (v25)
   {
-    v26 = [(IDSRegistration *)self confirmedEmails];
-    [v3 addObjectsFromArray:v26];
+    confirmedEmails5 = [(IDSRegistration *)self confirmedEmails];
+    [v3 addObjectsFromArray:confirmedEmails5];
 
     v27 = +[IMRGLog registration];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(IDSRegistration *)self confirmedEmails];
+      confirmedEmails6 = [(IDSRegistration *)self confirmedEmails];
       v29 = IMLoggingStringForArray();
       *buf = 138412290;
-      v85 = v29;
+      selfCopy = v29;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, " => Added confirmed emails: %@ to URI set", buf, 0xCu);
     }
   }
 
-  v30 = [(IDSRegistration *)self candidateEmails];
-  v31 = [v30 count];
+  candidateEmails4 = [(IDSRegistration *)self candidateEmails];
+  v31 = [candidateEmails4 count];
 
   if (v31)
   {
-    v32 = [(IDSRegistration *)self candidateEmails];
-    [v3 addObjectsFromArray:v32];
+    candidateEmails5 = [(IDSRegistration *)self candidateEmails];
+    [v3 addObjectsFromArray:candidateEmails5];
 
-    v5 = +[IMRGLog registration];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    dsHandle3 = +[IMRGLog registration];
+    if (os_log_type_enabled(dsHandle3, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [(IDSRegistration *)self candidateEmails];
+      candidateEmails6 = [(IDSRegistration *)self candidateEmails];
       v34 = IMLoggingStringForArray();
       *buf = 138412290;
-      v85 = v34;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, " => Added candidate emails: %@ to URI set", buf, 0xCu);
+      selfCopy = v34;
+      _os_log_impl(&_mh_execute_header, dsHandle3, OS_LOG_TYPE_DEFAULT, " => Added candidate emails: %@ to URI set", buf, 0xCu);
     }
 
     goto LABEL_40;
@@ -2947,7 +2947,7 @@ LABEL_41:
     v3 = 0;
   }
 
-  v77 = self;
+  selfCopy2 = self;
   if (+[IDSRegistrationController systemSupportsPhoneNumberRegistration])
   {
     v48 = +[IDSCTAdapter sharedInstance];
@@ -2957,8 +2957,8 @@ LABEL_41:
     v51 = [v49 __imArrayByApplyingBlock:&stru_100BE4248];
     v52 = [v51 mutableCopy];
 
-    v53 = [(IDSRegistration *)self _userStore];
-    v54 = [v53 usersWithRealm:2];
+    _userStore = [(IDSRegistration *)self _userStore];
+    v54 = [_userStore usersWithRealm:2];
     v55 = [v54 __imArrayByApplyingBlock:&stru_100BE4268];
     [(IDSRegistration *)v52 addObjectsFromArray:v55];
 
@@ -2966,7 +2966,7 @@ LABEL_41:
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v85 = v52;
+      selfCopy = v52;
       v86 = 2112;
       v87 = v50;
       _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "   Device numbers: %@, error: %@", buf, 0x16u);
@@ -3015,19 +3015,19 @@ LABEL_41:
 
         if ([(IDSRegistration *)v52 count])
         {
-          v65 = [(IDSRegistration *)v63 lowercaseString];
-          v66 = [(IDSRegistration *)v52 containsObject:v65];
+          lowercaseString = [(IDSRegistration *)v63 lowercaseString];
+          v66 = [(IDSRegistration *)v52 containsObject:lowercaseString];
 
           if (v66)
           {
             v67 = +[IMRGLog registration];
             if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
             {
-              v68 = [(IDSRegistration *)v77 serviceType];
+              serviceType4 = [(IDSRegistration *)selfCopy2 serviceType];
               *buf = 138412546;
-              v85 = v63;
+              selfCopy = v63;
               v86 = 2112;
-              v87 = v68;
+              v87 = serviceType4;
               _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "Skipping device number: %@  for service: %@", buf, 0x16u);
             }
 
@@ -3043,52 +3043,52 @@ LABEL_41:
   }
 
   v69 = v57;
-  v70 = [v57 allObjects];
+  allObjects = [v57 allObjects];
   v71 = +[IMRGLog registration];
   if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
   {
     v72 = IMLoggingStringForArray();
-    v73 = [(IDSRegistration *)v77 serviceType];
-    v74 = [(IDSRegistration *)v77 idsUserID];
+    serviceType5 = [(IDSRegistration *)selfCopy2 serviceType];
+    idsUserID4 = [(IDSRegistration *)selfCopy2 idsUserID];
     *buf = 138412802;
-    v85 = v72;
+    selfCopy = v72;
     v86 = 2112;
-    v87 = v73;
+    v87 = serviceType5;
     v88 = 2112;
-    v89 = v74;
+    v89 = idsUserID4;
     _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, " => Final emails to register: %@    for service: %@  account: %@", buf, 0x20u);
   }
 
-  return v70;
+  return allObjects;
 }
 
 - (BOOL)hasSentinel
 {
   v3 = +[FTDeviceSupport sharedInstance];
-  v4 = [v3 supportsSMS];
+  supportsSMS = [v3 supportsSMS];
 
-  if (!v4)
+  if (!supportsSMS)
   {
     return 0;
   }
 
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(IDSRegistration *)self confirmedEmails];
-  v7 = [v6 count];
+  confirmedEmails = [(IDSRegistration *)self confirmedEmails];
+  v7 = [confirmedEmails count];
 
   if (v7)
   {
-    v8 = [(IDSRegistration *)self confirmedEmails];
-    [v5 addObjectsFromArray:v8];
+    confirmedEmails2 = [(IDSRegistration *)self confirmedEmails];
+    [v5 addObjectsFromArray:confirmedEmails2];
   }
 
-  v9 = [(IDSRegistration *)self candidateEmails];
-  v10 = [v9 count];
+  candidateEmails = [(IDSRegistration *)self candidateEmails];
+  v10 = [candidateEmails count];
 
   if (v10)
   {
-    v11 = [(IDSRegistration *)self candidateEmails];
-    [v5 addObjectsFromArray:v11];
+    candidateEmails2 = [(IDSRegistration *)self candidateEmails];
+    [v5 addObjectsFromArray:candidateEmails2];
   }
 
   if (![v5 count])
@@ -3142,151 +3142,151 @@ LABEL_19:
 
 - (BOOL)canRegister
 {
-  v2 = self;
+  selfCopy = self;
   if ([(IDSRegistration *)self registrationType]== 1)
   {
-    if (![(IDSRegistration *)v2 shouldAutoRegisterAllHandles]&& ![(IDSRegistration *)v2 shouldRegisterUsingDSHandle])
+    if (![(IDSRegistration *)selfCopy shouldAutoRegisterAllHandles]&& ![(IDSRegistration *)selfCopy shouldRegisterUsingDSHandle])
     {
-      v3 = [(IDSRegistration *)v2 regionID];
-      if (![v3 length])
+      regionID = [(IDSRegistration *)selfCopy regionID];
+      if (![regionID length])
       {
-        LOBYTE(v2) = 0;
+        LOBYTE(selfCopy) = 0;
         goto LABEL_14;
       }
 
-      v4 = [(IDSRegistration *)v2 regionBasePhoneNumber];
-      v5 = [v4 length];
+      regionBasePhoneNumber = [(IDSRegistration *)selfCopy regionBasePhoneNumber];
+      v5 = [regionBasePhoneNumber length];
 
       if (!v5)
       {
-        LOBYTE(v2) = 0;
-        return v2;
+        LOBYTE(selfCopy) = 0;
+        return selfCopy;
       }
 
-      if (![(IDSRegistration *)v2 hasSentinel])
+      if (![(IDSRegistration *)selfCopy hasSentinel])
       {
-        v3 = [(IDSRegistration *)v2 emailsToRegister];
-        LOBYTE(v2) = [v3 count] != 0;
+        regionID = [(IDSRegistration *)selfCopy emailsToRegister];
+        LOBYTE(selfCopy) = [regionID count] != 0;
 LABEL_14:
 
-        return v2;
+        return selfCopy;
       }
     }
   }
 
-  else if (![(IDSRegistration *)v2 registrationType])
+  else if (![(IDSRegistration *)selfCopy registrationType])
   {
-    v3 = +[IDSCTAdapter sharedInstance];
-    if ([v3 isAnySIMInserted])
+    regionID = +[IDSCTAdapter sharedInstance];
+    if ([regionID isAnySIMInserted])
     {
-      LOBYTE(v2) = 1;
+      LOBYTE(selfCopy) = 1;
     }
 
     else
     {
       v6 = +[IMMobileNetworkManager sharedInstance];
-      LODWORD(v2) = [v6 requiresSIMInserted] ^ 1;
+      LODWORD(selfCopy) = [v6 requiresSIMInserted] ^ 1;
     }
 
     goto LABEL_14;
   }
 
-  LOBYTE(v2) = 1;
-  return v2;
+  LOBYTE(selfCopy) = 1;
+  return selfCopy;
 }
 
 - (BOOL)canSendRegistration
 {
-  v2 = self;
+  selfCopy = self;
   if ([(IDSRegistration *)self registrationType]== 1)
   {
-    if (!-[IDSRegistration shouldAutoRegisterAllHandles](v2, "shouldAutoRegisterAllHandles") || (-[IDSRegistration emailsToRegister](v2, "emailsToRegister"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 count], v3, !v4))
+    if (!-[IDSRegistration shouldAutoRegisterAllHandles](selfCopy, "shouldAutoRegisterAllHandles") || (-[IDSRegistration emailsToRegister](selfCopy, "emailsToRegister"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 count], v3, !v4))
     {
-      if (![(IDSRegistration *)v2 shouldRegisterUsingDSHandle])
+      if (![(IDSRegistration *)selfCopy shouldRegisterUsingDSHandle])
       {
-        v5 = [(IDSRegistration *)v2 regionID];
-        if (![v5 length])
+        regionID = [(IDSRegistration *)selfCopy regionID];
+        if (![regionID length])
         {
-          LOBYTE(v2) = 0;
+          LOBYTE(selfCopy) = 0;
           goto LABEL_15;
         }
 
-        v6 = [(IDSRegistration *)v2 regionBasePhoneNumber];
-        v7 = [v6 length];
+        regionBasePhoneNumber = [(IDSRegistration *)selfCopy regionBasePhoneNumber];
+        v7 = [regionBasePhoneNumber length];
 
         if (!v7)
         {
-          LOBYTE(v2) = 0;
-          return v2;
+          LOBYTE(selfCopy) = 0;
+          return selfCopy;
         }
 
-        if (![(IDSRegistration *)v2 hasSentinel])
+        if (![(IDSRegistration *)selfCopy hasSentinel])
         {
-          v5 = [(IDSRegistration *)v2 emailsToRegister];
-          LOBYTE(v2) = [v5 count] != 0;
+          regionID = [(IDSRegistration *)selfCopy emailsToRegister];
+          LOBYTE(selfCopy) = [regionID count] != 0;
 LABEL_15:
 
-          return v2;
+          return selfCopy;
         }
       }
     }
   }
 
-  else if (![(IDSRegistration *)v2 registrationType])
+  else if (![(IDSRegistration *)selfCopy registrationType])
   {
-    v5 = +[IDSCTAdapter sharedInstance];
-    if ([v5 isAnySIMInserted])
+    regionID = +[IDSCTAdapter sharedInstance];
+    if ([regionID isAnySIMInserted])
     {
-      LOBYTE(v2) = 1;
+      LOBYTE(selfCopy) = 1;
     }
 
     else
     {
       v8 = +[IMMobileNetworkManager sharedInstance];
-      LODWORD(v2) = [v8 requiresSIMInserted] ^ 1;
+      LODWORD(selfCopy) = [v8 requiresSIMInserted] ^ 1;
     }
 
     goto LABEL_15;
   }
 
-  LOBYTE(v2) = 1;
-  return v2;
+  LOBYTE(selfCopy) = 1;
+  return selfCopy;
 }
 
 - (BOOL)stopAtAuthentication
 {
-  v2 = [(IDSRegistration *)self serviceType];
+  serviceType = [(IDSRegistration *)self serviceType];
   v3 = IDSIsStewieRegistrationServiceType();
 
   return v3;
 }
 
-- (void)setAuthenticationCert:(id)a3
+- (void)setAuthenticationCert:(id)cert
 {
-  v10 = a3;
-  v4 = [(IDSRegistration *)self registrationType];
-  v5 = [(IDSRegistration *)self registrationType];
-  v6 = v5;
-  if (!v4)
+  certCopy = cert;
+  registrationType = [(IDSRegistration *)self registrationType];
+  registrationType2 = [(IDSRegistration *)self registrationType];
+  v6 = registrationType2;
+  if (!registrationType)
   {
-    if (v5 != 1)
+    if (registrationType2 != 1)
     {
 LABEL_7:
-      v7 = [(IDSRegistration *)self _userStore];
-      if (v10)
+      _userStore = [(IDSRegistration *)self _userStore];
+      if (certCopy)
       {
-        v8 = [[IDSAuthenticationCertificate alloc] initWithDataRepresentation:v10];
+        idsUserID = [[IDSAuthenticationCertificate alloc] initWithDataRepresentation:certCopy];
       }
 
       else
       {
-        v8 = 0;
+        idsUserID = 0;
       }
 
-      v9 = [(IDSRegistration *)self _user];
-      [v7 silentlySetAuthenticationCertificate:v8 forUser:v9];
+      _user = [(IDSRegistration *)self _user];
+      [_userStore silentlySetAuthenticationCertificate:idsUserID forUser:_user];
 
-      if (!v10)
+      if (!certCopy)
       {
         goto LABEL_12;
       }
@@ -3295,9 +3295,9 @@ LABEL_7:
     }
 
 LABEL_6:
-    v7 = +[IDSRegistrationKeychainManager sharedInstance];
-    v8 = [(IDSRegistration *)self idsUserID];
-    [v7 setAuthenticationCert:v10 forID:v8];
+    _userStore = +[IDSRegistrationKeychainManager sharedInstance];
+    idsUserID = [(IDSRegistration *)self idsUserID];
+    [_userStore setAuthenticationCert:certCopy forID:idsUserID];
 LABEL_11:
 
 LABEL_12:

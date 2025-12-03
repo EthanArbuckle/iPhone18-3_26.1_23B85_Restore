@@ -1,26 +1,26 @@
 @interface HFSensorServiceItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFSensorServiceItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = MEMORY[0x277CD1D90];
-  v5 = a3;
-  v6 = [(HFServiceItem *)self service];
-  v7 = [v6 serviceType];
-  v8 = [v4 hf_sensorCharacteristicTypeForServiceType:v7];
+  optionsCopy = options;
+  service = [(HFServiceItem *)self service];
+  serviceType = [service serviceType];
+  v8 = [v4 hf_sensorCharacteristicTypeForServiceType:serviceType];
 
   v9 = [MEMORY[0x277CBEB98] setWithObject:v8];
-  v10 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v9 options:v5];
+  v10 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v9 options:optionsCopy];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __51__HFSensorServiceItem__subclass_updateWithOptions___block_invoke;
   v14[3] = &unk_277DF5578;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v11 = v8;
   v12 = [v10 flatMap:v14];
 

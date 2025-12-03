@@ -1,21 +1,21 @@
 @interface BUCountingAssertionProvider
 - (BOOL)_endAssertion;
-- (BUCountingAssertionProvider)initWithDelegate:(id)a3;
-- (id)_newAssertion:(BOOL)a3;
+- (BUCountingAssertionProvider)initWithDelegate:(id)delegate;
+- (id)_newAssertion:(BOOL)assertion;
 @end
 
 @implementation BUCountingAssertionProvider
 
-- (BUCountingAssertionProvider)initWithDelegate:(id)a3
+- (BUCountingAssertionProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = BUCountingAssertionProvider;
   v5 = [(BUCountingAssertionProvider *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("BCCountingAssertionProvider.queue", v7);
     queue = v6->_queue;
@@ -25,7 +25,7 @@
   return v6;
 }
 
-- (id)_newAssertion:(BOOL)a3
+- (id)_newAssertion:(BOOL)assertion
 {
   v20 = 0;
   v21 = &v20;
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = sub_241DC10F8;
   block[3] = &unk_278D1D8A8;
-  v15 = a3;
+  assertionCopy = assertion;
   block[4] = self;
   block[5] = &v20;
   block[6] = &v16;

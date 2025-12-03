@@ -1,37 +1,37 @@
 @interface WFUIKitParameterEditingRequest
-- (WFUIKitParameterEditingRequest)initWithCoder:(id)a3;
-- (WFUIKitParameterEditingRequest)initWithParameterClassName:(id)a3 currentState:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (WFUIKitParameterEditingRequest)initWithCoder:(id)coder;
+- (WFUIKitParameterEditingRequest)initWithParameterClassName:(id)name currentState:(id)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFUIKitParameterEditingRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(WFUIKitParameterEditingRequest *)self parameterClassName];
-  [v11 encodeObject:v4 forKey:@"parameterClass"];
+  coderCopy = coder;
+  parameterClassName = [(WFUIKitParameterEditingRequest *)self parameterClassName];
+  [coderCopy encodeObject:parameterClassName forKey:@"parameterClass"];
 
-  v5 = [(WFUIKitParameterEditingRequest *)self currentState];
+  currentState = [(WFUIKitParameterEditingRequest *)self currentState];
 
-  if (v5)
+  if (currentState)
   {
-    v6 = [(WFUIKitParameterEditingRequest *)self currentState];
+    currentState2 = [(WFUIKitParameterEditingRequest *)self currentState];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v11 encodeObject:v8 forKey:@"stateClass"];
+    [coderCopy encodeObject:v8 forKey:@"stateClass"];
 
-    v9 = [(WFUIKitParameterEditingRequest *)self currentState];
-    v10 = [v9 serializedRepresentation];
-    [v11 encodeObject:v10 forKey:@"state"];
+    currentState3 = [(WFUIKitParameterEditingRequest *)self currentState];
+    serializedRepresentation = [currentState3 serializedRepresentation];
+    [coderCopy encodeObject:serializedRepresentation forKey:@"state"];
   }
 }
 
-- (WFUIKitParameterEditingRequest)initWithCoder:(id)a3
+- (WFUIKitParameterEditingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterClass"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stateClass"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterClass"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stateClass"];
   v7 = MEMORY[0x277CBEB98];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
@@ -39,9 +39,9 @@
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v7 setWithObjects:{v8, v9, v10, v11, v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"state"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"state"];
 
-  v15 = 0;
+  selfCopy = 0;
   if (v5)
   {
     if (v6 && v14)
@@ -49,31 +49,31 @@
       v16 = NSClassFromString(v6);
       if (v16)
       {
-        v15 = [[v16 alloc] initWithSerializedRepresentation:v14 variableProvider:0 parameter:0];
+        selfCopy = [[v16 alloc] initWithSerializedRepresentation:v14 variableProvider:0 parameter:0];
       }
 
       else
       {
-        v15 = 0;
+        selfCopy = 0;
       }
     }
 
-    self = [(WFUIKitParameterEditingRequest *)self initWithParameterClassName:v5 currentState:v15];
+    self = [(WFUIKitParameterEditingRequest *)self initWithParameterClassName:v5 currentState:selfCopy];
 
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (WFUIKitParameterEditingRequest)initWithParameterClassName:(id)a3 currentState:(id)a4
+- (WFUIKitParameterEditingRequest)initWithParameterClassName:(id)name currentState:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  nameCopy = name;
+  stateCopy = state;
+  if (!nameCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFUIKitParameterEditingRequest.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"parameterClassName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFUIKitParameterEditingRequest.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"parameterClassName"}];
   }
 
   v15.receiver = self;
@@ -82,8 +82,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_parameterClassName, a3);
-    objc_storeStrong(&v11->_currentState, a4);
+    objc_storeStrong(&v10->_parameterClassName, name);
+    objc_storeStrong(&v11->_currentState, state);
     v12 = v11;
   }
 

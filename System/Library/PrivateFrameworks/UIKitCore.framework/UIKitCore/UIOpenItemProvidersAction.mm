@@ -1,33 +1,33 @@
 @interface UIOpenItemProvidersAction
-- (UIOpenItemProvidersAction)initWithDragContinuationEndpoint:(id)a3 userInfo:(id)a4;
-- (UIOpenItemProvidersAction)initWithInfo:(id)a3 responder:(id)a4;
+- (UIOpenItemProvidersAction)initWithDragContinuationEndpoint:(id)endpoint userInfo:(id)info;
+- (UIOpenItemProvidersAction)initWithInfo:(id)info responder:(id)responder;
 - (id)continuationEndpoint;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (id)userInfo;
 - (unint64_t)providerSource;
 @end
 
 @implementation UIOpenItemProvidersAction
 
-- (UIOpenItemProvidersAction)initWithInfo:(id)a3 responder:(id)a4
+- (UIOpenItemProvidersAction)initWithInfo:(id)info responder:(id)responder
 {
   v5.receiver = self;
   v5.super_class = UIOpenItemProvidersAction;
-  return [(UIOpenItemProvidersAction *)&v5 initWithInfo:a3 responder:a4];
+  return [(UIOpenItemProvidersAction *)&v5 initWithInfo:info responder:responder];
 }
 
-- (UIOpenItemProvidersAction)initWithDragContinuationEndpoint:(id)a3 userInfo:(id)a4
+- (UIOpenItemProvidersAction)initWithDragContinuationEndpoint:(id)endpoint userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v7 = MEMORY[0x1E698E700];
-  v8 = a3;
+  endpointCopy = endpoint;
   v9 = objc_alloc_init(v7);
   [v9 setObject:&unk_1EFE32FE0 forSetting:1];
-  [v9 setObject:v8 forSetting:2];
+  [v9 setObject:endpointCopy forSetting:2];
 
-  if (v6)
+  if (infoCopy)
   {
-    [v9 setObject:v6 forSetting:3];
+    [v9 setObject:infoCopy forSetting:3];
   }
 
   v12.receiver = self;
@@ -37,40 +37,40 @@
   return v10;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 1 > 2)
+  if (setting - 1 > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E711F800[a3 - 1];
+    return off_1E711F800[setting - 1];
   }
 }
 
 - (unint64_t)providerSource
 {
-  v2 = [(UIOpenItemProvidersAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 unsignedIntegerValue];
+  info = [(UIOpenItemProvidersAction *)self info];
+  v3 = [info objectForSetting:1];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (id)continuationEndpoint
 {
-  v2 = [(UIOpenItemProvidersAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(UIOpenItemProvidersAction *)self info];
+  v3 = [info objectForSetting:2];
 
   return v3;
 }
 
 - (id)userInfo
 {
-  v2 = [(UIOpenItemProvidersAction *)self info];
-  v3 = [v2 objectForSetting:3];
+  info = [(UIOpenItemProvidersAction *)self info];
+  v3 = [info objectForSetting:3];
 
   return v3;
 }

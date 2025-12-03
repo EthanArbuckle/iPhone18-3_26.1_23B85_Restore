@@ -1,56 +1,56 @@
 @interface _MNArrivalUpdaterState_SearchingForParkingAfterArrival
 - (BOOL)_checkForArrival;
-- (void)onEnterState:(id)a3;
+- (void)onEnterState:(id)state;
 @end
 
 @implementation _MNArrivalUpdaterState_SearchingForParkingAfterArrival
 
 - (BOOL)_checkForArrival
 {
-  v3 = [(_MNArrivalUpdaterState *)self details];
-  v4 = [v3 navigationSessionState];
-  v5 = [v4 targetLeg];
-  v6 = [v5 arrivalParameters];
+  details = [(_MNArrivalUpdaterState *)self details];
+  navigationSessionState = [details navigationSessionState];
+  targetLeg = [navigationSessionState targetLeg];
+  arrivalParameters = [targetLeg arrivalParameters];
 
-  v7 = [(_MNArrivalUpdaterState *)self location];
-  if ([v6 containsLocation:v7 arrivalRegionType:7])
+  location = [(_MNArrivalUpdaterState *)self location];
+  if ([arrivalParameters containsLocation:location arrivalRegionType:7])
   {
     goto LABEL_4;
   }
 
-  v8 = [(_MNArrivalUpdaterState *)self location];
-  if ([v6 containsLocation:v8 arrivalRegionType:5])
+  location2 = [(_MNArrivalUpdaterState *)self location];
+  if ([arrivalParameters containsLocation:location2 arrivalRegionType:5])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v11 = [(_MNArrivalUpdaterState *)self location];
-  v12 = [v6 containsLocation:v11 arrivalRegionType:8];
+  location3 = [(_MNArrivalUpdaterState *)self location];
+  v12 = [arrivalParameters containsLocation:location3 arrivalRegionType:8];
 
   if ((v12 & 1) == 0)
   {
     v13.receiver = self;
     v13.super_class = _MNArrivalUpdaterState_SearchingForParkingAfterArrival;
-    v9 = [(_MNArrivalUpdaterState *)&v13 _checkForArrival];
+    _checkForArrival = [(_MNArrivalUpdaterState *)&v13 _checkForArrival];
     goto LABEL_6;
   }
 
 LABEL_5:
-  v9 = 1;
+  _checkForArrival = 1;
 LABEL_6:
 
-  return v9;
+  return _checkForArrival;
 }
 
-- (void)onEnterState:(id)a3
+- (void)onEnterState:(id)state
 {
-  [(_MNArrivalUpdaterState *)self sendArrivalInfoFromPreviousState:a3];
-  v6 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
-  v4 = [v6 safeDelegate];
-  v5 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
-  [v4 arrivalUpdater:v5 didUpdateVehicleParkingType:2];
+  [(_MNArrivalUpdaterState *)self sendArrivalInfoFromPreviousState:state];
+  arrivalUpdater = [(_MNArrivalUpdaterState *)self arrivalUpdater];
+  safeDelegate = [arrivalUpdater safeDelegate];
+  arrivalUpdater2 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
+  [safeDelegate arrivalUpdater:arrivalUpdater2 didUpdateVehicleParkingType:2];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface SULoadSectionsOperation
-- (BOOL)_loadSectionsFromCacheForVersion:(id)a3;
-- (BOOL)_loadSectionsFromNetworkWithDictionary:(id)a3;
+- (BOOL)_loadSectionsFromCacheForVersion:(id)version;
+- (BOOL)_loadSectionsFromNetworkWithDictionary:(id)dictionary;
 - (BOOL)shouldUseCache;
 - (NSString)activeSectionVersionString;
 - (SULoadSectionsOperation)init;
-- (SULoadSectionsOperation)initWithClientInterface:(id)a3;
+- (SULoadSectionsOperation)initWithClientInterface:(id)interface;
 - (SUSectionsResponse)sectionsResponse;
-- (id)_cachePathForVersion:(id)a3 create:(BOOL)a4;
-- (void)_setSectionsResponse:(id)a3;
-- (void)_writeSectionsResponseToCache:(id)a3 forVersion:(id)a4;
+- (id)_cachePathForVersion:(id)version create:(BOOL)create;
+- (void)_setSectionsResponse:(id)response;
+- (void)_writeSectionsResponseToCache:(id)cache forVersion:(id)version;
 - (void)dealloc;
 - (void)run;
-- (void)setActiveSectionVersionString:(id)a3;
-- (void)setShouldUseCache:(BOOL)a3;
+- (void)setActiveSectionVersionString:(id)string;
+- (void)setShouldUseCache:(BOOL)cache;
 @end
 
 @implementation SULoadSectionsOperation
@@ -24,14 +24,14 @@
   return [(SULoadSectionsOperation *)self initWithClientInterface:v3];
 }
 
-- (SULoadSectionsOperation)initWithClientInterface:(id)a3
+- (SULoadSectionsOperation)initWithClientInterface:(id)interface
 {
   v6.receiver = self;
   v6.super_class = SULoadSectionsOperation;
   v4 = [(SULoadSectionsOperation *)&v6 init];
   if (v4)
   {
-    v4->_clientInterface = a3;
+    v4->_clientInterface = interface;
     v4->_shouldUseCache = 1;
   }
 
@@ -61,23 +61,23 @@
   return v3;
 }
 
-- (void)setActiveSectionVersionString:(id)a3
+- (void)setActiveSectionVersionString:(id)string
 {
   [(SULoadSectionsOperation *)self lock];
   activeSectionVersionString = self->_activeSectionVersionString;
-  if (activeSectionVersionString != a3)
+  if (activeSectionVersionString != string)
   {
 
-    self->_activeSectionVersionString = [a3 copy];
+    self->_activeSectionVersionString = [string copy];
   }
 
   [(SULoadSectionsOperation *)self unlock];
 }
 
-- (void)setShouldUseCache:(BOOL)a3
+- (void)setShouldUseCache:(BOOL)cache
 {
   [(SULoadSectionsOperation *)self lock];
-  self->_shouldUseCache = a3;
+  self->_shouldUseCache = cache;
 
   [(SULoadSectionsOperation *)self unlock];
 }
@@ -98,19 +98,19 @@
   if (([(SULoadSectionsOperation *)self loadURLBagWithContext:v3 returningError:&v34]& 1) != 0)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    v5 = [MEMORY[0x1E69D4938] sharedConfig];
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v7 &= 2u;
     }
@@ -135,23 +135,23 @@
       }
     }
 
-    v12 = [objc_msgSend(objc_msgSend(MEMORY[0x1E69E47F8] sharedCache];
+    sharedCache = [objc_msgSend(objc_msgSend(MEMORY[0x1E69E47F8] sharedCache];
     objc_opt_class();
-    v15 = (objc_opt_isKindOfClass() & 1) == 0 || (v13 = -[SUClientInterface clientIdentifier](self->_clientInterface, "clientIdentifier")) == 0 || (v14 = [v12 objectForKey:v13]) == 0 || -[SULoadSectionsOperation _loadSectionsFromNetworkWithDictionary:](self, "_loadSectionsFromNetworkWithDictionary:", v14);
+    v15 = (objc_opt_isKindOfClass() & 1) == 0 || (v13 = -[SUClientInterface clientIdentifier](self->_clientInterface, "clientIdentifier")) == 0 || (v14 = [sharedCache objectForKey:v13]) == 0 || -[SULoadSectionsOperation _loadSectionsFromNetworkWithDictionary:](self, "_loadSectionsFromNetworkWithDictionary:", v14);
     v23 = CFAbsoluteTimeGetCurrent();
-    v24 = [MEMORY[0x1E69D4938] sharedConfig];
-    v25 = [v24 shouldLog];
-    if ([v24 shouldLogToDisk])
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v26 = v25 | 2;
+      v26 = shouldLog2 | 2;
     }
 
     else
     {
-      v26 = v25;
+      v26 = shouldLog2;
     }
 
-    if (!os_log_type_enabled([v24 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v26 &= 2u;
     }
@@ -181,19 +181,19 @@
 
   else
   {
-    v16 = [MEMORY[0x1E69D4938] sharedConfig];
-    v17 = [v16 shouldLog];
-    if ([v16 shouldLogToDisk])
+    mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+    if ([mEMORY[0x1E69D4938]3 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog3 | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog3;
     }
 
-    if (!os_log_type_enabled([v16 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938]3 OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v18 &= 2u;
     }
@@ -223,17 +223,17 @@
   [(SULoadSectionsOperation *)self setSuccess:v15, v32];
 }
 
-- (id)_cachePathForVersion:(id)a3 create:(BOOL)a4
+- (id)_cachePathForVersion:(id)version create:(BOOL)create
 {
-  v4 = a4;
+  createCopy = create;
   v6 = +[SUSectionsResponse sectionsCacheDirectory];
   if (!v6)
   {
     return 0;
   }
 
-  v7 = [v6 stringByAppendingPathComponent:a3];
-  if (v4 && ![MEMORY[0x1E696AC08] ensureDirectoryExists:v7])
+  v7 = [v6 stringByAppendingPathComponent:version];
+  if (createCopy && ![MEMORY[0x1E696AC08] ensureDirectoryExists:v7])
   {
     return 0;
   }
@@ -241,9 +241,9 @@
   return v7;
 }
 
-- (BOOL)_loadSectionsFromCacheForVersion:(id)a3
+- (BOOL)_loadSectionsFromCacheForVersion:(id)version
 {
-  v4 = [(SULoadSectionsOperation *)self _cachePathForVersion:a3 create:0];
+  v4 = [(SULoadSectionsOperation *)self _cachePathForVersion:version create:0];
   if (!v4)
   {
     return 0;
@@ -260,14 +260,14 @@
   return v6;
 }
 
-- (BOOL)_loadSectionsFromNetworkWithDictionary:(id)a3
+- (BOOL)_loadSectionsFromNetworkWithDictionary:(id)dictionary
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = [a3 objectForKey:@"version"];
+  stringValue = [dictionary objectForKey:@"version"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v5 stringValue];
+    stringValue = [stringValue stringValue];
   }
 
   else
@@ -275,12 +275,12 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = 0;
+      stringValue = 0;
       goto LABEL_9;
     }
   }
 
-  if (!v5)
+  if (!stringValue)
   {
 LABEL_9:
     v6 = 0;
@@ -290,7 +290,7 @@ LABEL_9:
   if ([(SULoadSectionsOperation *)self shouldUseCache])
   {
     v6 = 1;
-    if ([(SULoadSectionsOperation *)self _loadSectionsFromCacheForVersion:v5])
+    if ([(SULoadSectionsOperation *)self _loadSectionsFromCacheForVersion:stringValue])
     {
       return v6;
     }
@@ -302,19 +302,19 @@ LABEL_9:
   }
 
 LABEL_11:
-  v7 = [MEMORY[0x1E69D4938] sharedConfig];
-  v8 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v9 &= 2u;
   }
@@ -336,7 +336,7 @@ LABEL_11:
     }
   }
 
-  v13 = [a3 objectForKey:{@"url", v38}];
+  v13 = [dictionary objectForKey:{@"url", v38}];
   if (v13)
   {
     v14 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v13];
@@ -344,30 +344,30 @@ LABEL_11:
     {
       v15 = v14;
       v16 = [[SULoadNetworkSectionsOperation alloc] initWithURL:v14 clientInterface:self->_clientInterface];
-      [(SULoadNetworkSectionsOperation *)v16 setExpectedVersionString:v5];
+      [(SULoadNetworkSectionsOperation *)v16 setExpectedVersionString:stringValue];
       v43 = 0;
       if (([(SULoadSectionsOperation *)self runSubOperation:v16 returningError:&v43]& 1) != 0)
       {
-        v17 = [(SULoadNetworkSectionsOperation *)v16 sectionsResponse];
-        v18 = [MEMORY[0x1E695E000] standardUserDefaults];
-        v42 = [(SUSectionsResponse *)v17 versionString];
-        if ([(NSString *)v42 isEqualToString:+[SUSectionsResponse lastCachedVersionIdentifier]])
+        sectionsResponse = [(SULoadNetworkSectionsOperation *)v16 sectionsResponse];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+        versionString = [(SUSectionsResponse *)sectionsResponse versionString];
+        if ([(NSString *)versionString isEqualToString:+[SUSectionsResponse lastCachedVersionIdentifier]])
         {
-          v19 = [MEMORY[0x1E69D4938] sharedConfig];
-          v20 = [v19 shouldLog];
-          if ([v19 shouldLogToDisk])
+          mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+          shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+          if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
           {
-            v20 |= 2u;
+            shouldLog2 |= 2u;
           }
 
-          if (os_log_type_enabled([v19 OSLogObject], OS_LOG_TYPE_DEBUG))
+          if (os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEBUG))
           {
-            v21 = v20;
+            v21 = shouldLog2;
           }
 
           else
           {
-            v21 = v20 & 2;
+            v21 = shouldLog2 & 2;
           }
 
           if (v21)
@@ -388,33 +388,33 @@ LABEL_11:
             }
           }
 
-          [(SUSectionsResponse *)v17 setShouldResetUserOrdering:0, v39];
-          v26 = v42;
+          [(SUSectionsResponse *)sectionsResponse setShouldResetUserOrdering:0, v39];
+          v26 = versionString;
         }
 
         else
         {
-          v27 = [(SUSectionsResponse *)v17 shouldResetUserOrdering];
-          v28 = [v18 stringForKey:@"SULastSectionsStoreFront"];
+          shouldResetUserOrdering = [(SUSectionsResponse *)sectionsResponse shouldResetUserOrdering];
+          v28 = [standardUserDefaults stringForKey:@"SULastSectionsStoreFront"];
           v29 = [objc_msgSend(MEMORY[0x1E69D48B0] "currentDevice")];
           v41 = v29;
           if (v28 && ([v28 isEqualToString:v29] & 1) == 0)
           {
-            v30 = [MEMORY[0x1E69D4938] sharedConfig];
-            v31 = [v30 shouldLog];
-            if ([v30 shouldLogToDisk])
+            mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+            shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+            if ([mEMORY[0x1E69D4938]3 shouldLogToDisk])
             {
-              v31 |= 2u;
+              shouldLog3 |= 2u;
             }
 
-            if (os_log_type_enabled([v30 OSLogObject], OS_LOG_TYPE_DEBUG))
+            if (os_log_type_enabled([mEMORY[0x1E69D4938]3 OSLogObject], OS_LOG_TYPE_DEBUG))
             {
-              v32 = v31;
+              v32 = shouldLog3;
             }
 
             else
             {
-              v32 = v31 & 2;
+              v32 = shouldLog3 & 2;
             }
 
             if (v32)
@@ -435,30 +435,30 @@ LABEL_11:
               }
             }
 
-            v27 = 1;
+            shouldResetUserOrdering = 1;
           }
 
-          [(SUSectionsResponse *)v17 setShouldResetUserOrdering:v27, v39];
-          v26 = v42;
-          if (v42)
+          [(SUSectionsResponse *)sectionsResponse setShouldResetUserOrdering:shouldResetUserOrdering, v39];
+          v26 = versionString;
+          if (versionString)
           {
-            [SUSectionsResponse setLastCachedVersionIdentifier:v42];
+            [SUSectionsResponse setLastCachedVersionIdentifier:versionString];
           }
 
           if (v41)
           {
-            [v18 setObject:v41 forKey:@"SULastSectionsStoreFront"];
+            [standardUserDefaults setObject:v41 forKey:@"SULastSectionsStoreFront"];
           }
 
-          [v18 synchronize];
+          [standardUserDefaults synchronize];
         }
 
-        [(SULoadSectionsOperation *)self _setSectionsResponse:v17];
-        if ([(NSArray *)[(SUSectionsResponse *)v17 allSections] count])
+        [(SULoadSectionsOperation *)self _setSectionsResponse:sectionsResponse];
+        if ([(NSArray *)[(SUSectionsResponse *)sectionsResponse allSections] count])
         {
-          if ((v6 & -[SUSectionsResponse isCacheable](v17, "isCacheable")) == 1 && (!v26 || [v5 isEqualToString:v26]))
+          if ((v6 & -[SUSectionsResponse isCacheable](sectionsResponse, "isCacheable")) == 1 && (!v26 || [stringValue isEqualToString:v26]))
           {
-            [(SULoadSectionsOperation *)self _writeSectionsResponseToCache:v17 forVersion:v5];
+            [(SULoadSectionsOperation *)self _writeSectionsResponseToCache:sectionsResponse forVersion:stringValue];
           }
 
           LOBYTE(v6) = 1;
@@ -482,25 +482,25 @@ LABEL_57:
   return v6;
 }
 
-- (void)_setSectionsResponse:(id)a3
+- (void)_setSectionsResponse:(id)response
 {
   [(SULoadSectionsOperation *)self lock];
   sectionsResponse = self->_sectionsResponse;
-  if (sectionsResponse != a3)
+  if (sectionsResponse != response)
   {
 
-    self->_sectionsResponse = a3;
+    self->_sectionsResponse = response;
   }
 
   [(SULoadSectionsOperation *)self unlock];
 }
 
-- (void)_writeSectionsResponseToCache:(id)a3 forVersion:(id)a4
+- (void)_writeSectionsResponseToCache:(id)cache forVersion:(id)version
 {
   v37 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v26 = self;
-  v6 = [(SULoadSectionsOperation *)self activeSectionVersionString];
+  selfCopy = self;
+  activeSectionVersionString = [(SULoadSectionsOperation *)self activeSectionVersionString];
   v7 = +[SUSectionsResponse sectionsCacheDirectory];
   v27 = v5;
   v8 = [v5 contentsOfDirectoryAtPath:v7 error:0];
@@ -523,21 +523,21 @@ LABEL_57:
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
-        if (([v13 isEqualToString:v6] & 1) == 0)
+        if (([v13 isEqualToString:activeSectionVersionString] & 1) == 0)
         {
-          v14 = [MEMORY[0x1E69D4938] sharedConfig];
-          v15 = [v14 shouldLog];
-          if ([v14 shouldLogToDisk])
+          mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+          shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+          if ([mEMORY[0x1E69D4938] shouldLogToDisk])
           {
-            v16 = v15 | 2;
+            v16 = shouldLog | 2;
           }
 
           else
           {
-            v16 = v15;
+            v16 = shouldLog;
           }
 
-          if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_DEBUG))
+          if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
           {
             v16 &= 2u;
           }
@@ -572,10 +572,10 @@ LABEL_57:
     while (v10);
   }
 
-  v21 = [(SULoadSectionsOperation *)v26 _cachePathForVersion:a4 create:1];
+  v21 = [(SULoadSectionsOperation *)selfCopy _cachePathForVersion:version create:1];
   if (v21)
   {
-    [a3 writeToCacheDirectory:v21 error:0];
+    [cache writeToCacheDirectory:v21 error:0];
   }
 }
 

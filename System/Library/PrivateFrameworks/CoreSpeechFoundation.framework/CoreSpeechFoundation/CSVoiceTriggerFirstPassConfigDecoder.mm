@@ -1,15 +1,15 @@
 @interface CSVoiceTriggerFirstPassConfigDecoder
-+ (id)decodeConfigFrom:(id)a3;
++ (id)decodeConfigFrom:(id)from;
 @end
 
 @implementation CSVoiceTriggerFirstPassConfigDecoder
 
-+ (id)decodeConfigFrom:(id)a3
++ (id)decodeConfigFrom:(id)from
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 resourcePath];
-  v5 = [v3 getStringForKey:@"configFileNDAPI" category:@"voiceTriggerFirstPass" default:@"config.txt"];
+  fromCopy = from;
+  resourcePath = [fromCopy resourcePath];
+  v5 = [fromCopy getStringForKey:@"configFileNDAPI" category:@"voiceTriggerFirstPass" default:@"config.txt"];
   v6 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
@@ -20,23 +20,23 @@
     _os_log_impl(&dword_1DDA4B000, v6, OS_LOG_TYPE_DEFAULT, "%s Loading 1stPass-config=%@", &v37, 0x16u);
   }
 
-  v7 = [v3 getNumberForKey:@"threshold" category:@"voiceTriggerFirstPass" default:&unk_1F5916C20];
+  v7 = [fromCopy getNumberForKey:@"threshold" category:@"voiceTriggerFirstPass" default:&unk_1F5916C20];
   [v7 floatValue];
   v9 = v8;
 
-  v10 = [v3 getNumberForKey:@"delaySecondsForChannelSelection" category:@"voiceTriggerFirstPass" default:&unk_1F5916C30];
+  v10 = [fromCopy getNumberForKey:@"delaySecondsForChannelSelection" category:@"voiceTriggerFirstPass" default:&unk_1F5916C30];
   [v10 floatValue];
   v12 = v11;
 
-  v13 = [v3 getNumberForKey:@"masterChannelScoreBoost" category:@"voiceTriggerFirstPass" default:&unk_1F5916C30];
+  v13 = [fromCopy getNumberForKey:@"masterChannelScoreBoost" category:@"voiceTriggerFirstPass" default:&unk_1F5916C30];
   [v13 floatValue];
   v15 = v14;
 
-  v16 = [v3 getNumberForKey:@"voiceIsolationChannelScoreBoost" category:@"voiceTriggerFirstPass" default:&unk_1F5916C30];
+  v16 = [fromCopy getNumberForKey:@"voiceIsolationChannelScoreBoost" category:@"voiceTriggerFirstPass" default:&unk_1F5916C30];
   [v16 floatValue];
   v18 = v17;
 
-  v19 = [v3 getNumberForKey:@"processingChunkSeconds" category:@"voiceTriggerFirstPass" default:&unk_1F5916C40];
+  v19 = [fromCopy getNumberForKey:@"processingChunkSeconds" category:@"voiceTriggerFirstPass" default:&unk_1F5916C40];
   [v19 floatValue];
   v21 = v20;
 
@@ -57,17 +57,17 @@
   }
 
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v23];
-  v25 = [v3 getNumberForKey:@"processingChannelsBitset" category:@"voiceTriggerFirstPass" default:v24];
-  v26 = [v25 unsignedLongLongValue];
+  v25 = [fromCopy getNumberForKey:@"processingChannelsBitset" category:@"voiceTriggerFirstPass" default:v24];
+  unsignedLongLongValue = [v25 unsignedLongLongValue];
 
   v27 = [CSVoiceTriggerFirstPassConfig alloc];
-  v28 = [v4 stringByAppendingPathComponent:v5];
+  v28 = [resourcePath stringByAppendingPathComponent:v5];
   LODWORD(v29) = v9;
   LODWORD(v30) = v12;
   LODWORD(v31) = v15;
   LODWORD(v32) = v18;
   LODWORD(v33) = v21;
-  v34 = [(CSVoiceTriggerFirstPassConfig *)v27 initWithConfigPathNDAPI:v28 threshold:v26 delaySecondsForChannelSelection:v22 masterChannelScoreBoost:0xFFFFFFFFLL voiceIsolationChannelScoreBoost:v29 processingChunkSeconds:v30 processingChannelsBitset:v31 masterChannel:v32 voiceIsolationChannel:v33];
+  v34 = [(CSVoiceTriggerFirstPassConfig *)v27 initWithConfigPathNDAPI:v28 threshold:unsignedLongLongValue delaySecondsForChannelSelection:v22 masterChannelScoreBoost:0xFFFFFFFFLL voiceIsolationChannelScoreBoost:v29 processingChunkSeconds:v30 processingChannelsBitset:v31 masterChannel:v32 voiceIsolationChannel:v33];
 
   v35 = *MEMORY[0x1E69E9840];
 

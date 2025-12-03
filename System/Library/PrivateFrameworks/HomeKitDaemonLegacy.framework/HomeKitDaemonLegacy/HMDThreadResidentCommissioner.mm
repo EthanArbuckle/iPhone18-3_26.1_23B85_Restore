@@ -1,98 +1,98 @@
 @interface HMDThreadResidentCommissioner
 + (HMDThreadResidentCommissioner)sharedCommissioner;
 + (id)logCategory;
-- (HMDThreadResidentCommissioner)initWithThreadRadioClient:(id)a3;
+- (HMDThreadResidentCommissioner)initWithThreadRadioClient:(id)client;
 - (id)_getAllPendingOperations;
 - (id)_getThreadOperationSequenceNumber;
 - (id)initInternal;
 - (unint64_t)_numPendingOperations;
-- (void)_addToPendingOperations:(id)a3;
-- (void)_connectToThreadAccessoryWithExtendedMACAddress:(id)a3 completion:(id)a4;
+- (void)_addToPendingOperations:(id)operations;
+- (void)_connectToThreadAccessoryWithExtendedMACAddress:(id)address completion:(id)completion;
 - (void)_executePendingThreadOperation;
-- (void)_scheduleThreadOperation:(id)a3;
-- (void)_setThreadOperationInProgress:(BOOL)a3;
-- (void)_startThreadAccessoryFirmwareUpdateWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5;
-- (void)_startThreadAccessoryPairingWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5;
-- (void)_startThreadNetworkWithID:(id)a3 completion:(id)a4;
-- (void)_startThreadNetworkWithOperationalDataset:(id)a3 threadNetworkID:(id)a4 isOwnerUser:(BOOL)a5 completion:(id)a6;
-- (void)_stopThreadAccessoryFirmwareUpdateWithCompletion:(id)a3;
-- (void)_stopThreadAccessoryPairingWithCompletion:(id)a3;
-- (void)_stopThreadNetworkOnNonResidentWithCompletion:(id)a3;
-- (void)_stopThreadNetworkWithCompletion:(id)a3;
-- (void)connectToThreadAccessoryWithExtendedMACAddress:(id)a3 completion:(id)a4;
-- (void)dispatchBlock:(id)a3;
-- (void)informThreadLayerOfResidentChange:(BOOL)a3 primaryResidentIsThreadCapable:(BOOL)a4;
-- (void)registerForThreadNetworkEvents:(id)a3;
-- (void)startThreadAccessoryFirmwareUpdateWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5;
-- (void)startThreadAccessoryPairingWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5;
-- (void)startThreadNetworkWithID:(id)a3 completion:(id)a4;
-- (void)startThreadNetworkWithOperationalDataset:(id)a3 threadNetworkID:(id)a4 isOwnerUser:(BOOL)a5 completion:(id)a6;
-- (void)stopThreadAccessoryFirmwareUpdateWithCompletion:(id)a3;
-- (void)stopThreadAccessoryPairingWithCompletion:(id)a3;
-- (void)stopThreadNetworkOnDeviceLockWithCompletion:(id)a3;
-- (void)stopThreadNetworkWithCompletion:(id)a3;
-- (void)unregisterForThreadNetworkEvents:(id)a3;
+- (void)_scheduleThreadOperation:(id)operation;
+- (void)_setThreadOperationInProgress:(BOOL)progress;
+- (void)_startThreadAccessoryFirmwareUpdateWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device completion:(id)completion;
+- (void)_startThreadAccessoryPairingWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device completion:(id)completion;
+- (void)_startThreadNetworkWithID:(id)d completion:(id)completion;
+- (void)_startThreadNetworkWithOperationalDataset:(id)dataset threadNetworkID:(id)d isOwnerUser:(BOOL)user completion:(id)completion;
+- (void)_stopThreadAccessoryFirmwareUpdateWithCompletion:(id)completion;
+- (void)_stopThreadAccessoryPairingWithCompletion:(id)completion;
+- (void)_stopThreadNetworkOnNonResidentWithCompletion:(id)completion;
+- (void)_stopThreadNetworkWithCompletion:(id)completion;
+- (void)connectToThreadAccessoryWithExtendedMACAddress:(id)address completion:(id)completion;
+- (void)dispatchBlock:(id)block;
+- (void)informThreadLayerOfResidentChange:(BOOL)change primaryResidentIsThreadCapable:(BOOL)capable;
+- (void)registerForThreadNetworkEvents:(id)events;
+- (void)startThreadAccessoryFirmwareUpdateWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device completion:(id)completion;
+- (void)startThreadAccessoryPairingWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device completion:(id)completion;
+- (void)startThreadNetworkWithID:(id)d completion:(id)completion;
+- (void)startThreadNetworkWithOperationalDataset:(id)dataset threadNetworkID:(id)d isOwnerUser:(BOOL)user completion:(id)completion;
+- (void)stopThreadAccessoryFirmwareUpdateWithCompletion:(id)completion;
+- (void)stopThreadAccessoryPairingWithCompletion:(id)completion;
+- (void)stopThreadNetworkOnDeviceLockWithCompletion:(id)completion;
+- (void)stopThreadNetworkWithCompletion:(id)completion;
+- (void)unregisterForThreadNetworkEvents:(id)events;
 @end
 
 @implementation HMDThreadResidentCommissioner
 
-- (void)dispatchBlock:(id)a3
+- (void)dispatchBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDThreadResidentCommissioner *)self workQueue];
-  dispatch_async(v5, v4);
+  blockCopy = block;
+  workQueue = [(HMDThreadResidentCommissioner *)self workQueue];
+  dispatch_async(workQueue, blockCopy);
 }
 
-- (void)informThreadLayerOfResidentChange:(BOOL)a3 primaryResidentIsThreadCapable:(BOOL)a4
+- (void)informThreadLayerOfResidentChange:(BOOL)change primaryResidentIsThreadCapable:(BOOL)capable
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __98__HMDThreadResidentCommissioner_informThreadLayerOfResidentChange_primaryResidentIsThreadCapable___block_invoke;
   v4[3] = &unk_27972C680;
   v4[4] = self;
-  v5 = a3;
-  v6 = a4;
+  changeCopy = change;
+  capableCopy = capable;
   [(HMDThreadResidentCommissioner *)self dispatchBlock:v4];
 }
 
-- (void)unregisterForThreadNetworkEvents:(id)a3
+- (void)unregisterForThreadNetworkEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(HMDThreadResidentCommissioner *)self threadRadioClient];
-  [v5 unregisterForThreadNetworkEvents:v4];
+  eventsCopy = events;
+  threadRadioClient = [(HMDThreadResidentCommissioner *)self threadRadioClient];
+  [threadRadioClient unregisterForThreadNetworkEvents:eventsCopy];
 }
 
-- (void)registerForThreadNetworkEvents:(id)a3
+- (void)registerForThreadNetworkEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(HMDThreadResidentCommissioner *)self threadRadioClient];
-  [v5 registerForThreadNetworkEvents:v4];
+  eventsCopy = events;
+  threadRadioClient = [(HMDThreadResidentCommissioner *)self threadRadioClient];
+  [threadRadioClient registerForThreadNetworkEvents:eventsCopy];
 }
 
-- (void)_stopThreadAccessoryFirmwareUpdateWithCompletion:(id)a3
+- (void)_stopThreadAccessoryFirmwareUpdateWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__79595;
   v22 = __Block_byref_object_dispose__79596;
-  v23 = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
+  _getThreadOperationSequenceNumber = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
   v5 = [HMDThreadOperation alloc];
-  v6 = [(HMDThreadResidentCommissioner *)self workQueue];
+  workQueue = [(HMDThreadResidentCommissioner *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __82__HMDThreadResidentCommissioner__stopThreadAccessoryFirmwareUpdateWithCompletion___block_invoke;
   v15[3] = &unk_279728EA8;
   v15[4] = self;
   v17 = &v18;
-  v7 = v4;
+  v7 = completionCopy;
   v16 = v7;
-  v8 = [(HMDThreadOperation *)v5 initWithQueue:v6 threadOperationType:4 completion:v15];
+  v8 = [(HMDThreadOperation *)v5 initWithQueue:workQueue threadOperationType:4 completion:v15];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -106,7 +106,7 @@
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDThreadResidentCommissioner *)v10 _scheduleThreadOperation:v8];
+  [(HMDThreadResidentCommissioner *)selfCopy _scheduleThreadOperation:v8];
 
   _Block_object_dispose(&v18, 8);
   v14 = *MEMORY[0x277D85DE8];
@@ -225,12 +225,12 @@ LABEL_6:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopThreadAccessoryFirmwareUpdateWithCompletion:(id)a3
+- (void)stopThreadAccessoryFirmwareUpdateWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -241,21 +241,21 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v5);
-  if ([(HMDThreadResidentCommissioner *)v6 isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled])
+  if ([(HMDThreadResidentCommissioner *)selfCopy isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled])
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __81__HMDThreadResidentCommissioner_stopThreadAccessoryFirmwareUpdateWithCompletion___block_invoke;
     v15[3] = &unk_279735738;
-    v15[4] = v6;
-    v16 = v4;
-    [(HMDThreadResidentCommissioner *)v6 dispatchBlock:v15];
+    v15[4] = selfCopy;
+    v16 = completionCopy;
+    [(HMDThreadResidentCommissioner *)selfCopy dispatchBlock:v15];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = v6;
+    v10 = selfCopy;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -267,40 +267,40 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v9);
     v13 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5];
-    (*(v4 + 2))(v4, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startThreadAccessoryFirmwareUpdateWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5
+- (void)_startThreadAccessoryFirmwareUpdateWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  addressCopy = address;
+  completionCopy = completion;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__79595;
   v31 = __Block_byref_object_dispose__79596;
-  v32 = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
+  _getThreadOperationSequenceNumber = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
   v10 = [HMDThreadOperation alloc];
-  v11 = [(HMDThreadResidentCommissioner *)self workQueue];
+  workQueue = [(HMDThreadResidentCommissioner *)self workQueue];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __114__HMDThreadResidentCommissioner__startThreadAccessoryFirmwareUpdateWithExtendedMACAddress_isWedDevice_completion___block_invoke;
   v22[3] = &unk_279728F48;
   v22[4] = self;
   v25 = &v27;
-  v12 = v8;
+  v12 = addressCopy;
   v23 = v12;
-  v26 = a4;
-  v13 = v9;
+  deviceCopy = device;
+  v13 = completionCopy;
   v24 = v13;
-  v14 = [(HMDThreadOperation *)v10 initWithQueue:v11 threadOperationType:4 completion:v22];
+  v14 = [(HMDThreadOperation *)v10 initWithQueue:workQueue threadOperationType:4 completion:v22];
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -319,7 +319,7 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v15);
-  [(HMDThreadResidentCommissioner *)v16 _scheduleThreadOperation:v14];
+  [(HMDThreadResidentCommissioner *)selfCopy _scheduleThreadOperation:v14];
 
   _Block_object_dispose(&v27, 8);
   v21 = *MEMORY[0x277D85DE8];
@@ -462,13 +462,13 @@ LABEL_6:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startThreadAccessoryFirmwareUpdateWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5
+- (void)startThreadAccessoryFirmwareUpdateWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  addressCopy = address;
+  completionCopy = completion;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -479,23 +479,23 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v10);
-  if ([(HMDThreadResidentCommissioner *)v11 isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled])
+  if ([(HMDThreadResidentCommissioner *)selfCopy isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled])
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __113__HMDThreadResidentCommissioner_startThreadAccessoryFirmwareUpdateWithExtendedMACAddress_isWedDevice_completion___block_invoke;
     v20[3] = &unk_279732430;
-    v20[4] = v11;
-    v21 = v8;
-    v23 = a4;
-    v22 = v9;
-    [(HMDThreadResidentCommissioner *)v11 dispatchBlock:v20];
+    v20[4] = selfCopy;
+    v21 = addressCopy;
+    deviceCopy = device;
+    v22 = completionCopy;
+    [(HMDThreadResidentCommissioner *)selfCopy dispatchBlock:v20];
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v11;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -507,36 +507,36 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v14);
     v18 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5];
-    (*(v9 + 2))(v9, v18);
+    (*(completionCopy + 2))(completionCopy, v18);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopThreadAccessoryPairingWithCompletion:(id)a3
+- (void)_stopThreadAccessoryPairingWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__79595;
   v22 = __Block_byref_object_dispose__79596;
-  v23 = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
+  _getThreadOperationSequenceNumber = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
   v5 = [HMDThreadOperation alloc];
-  v6 = [(HMDThreadResidentCommissioner *)self workQueue];
+  workQueue = [(HMDThreadResidentCommissioner *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__HMDThreadResidentCommissioner__stopThreadAccessoryPairingWithCompletion___block_invoke;
   v15[3] = &unk_279728EA8;
   v15[4] = self;
   v17 = &v18;
-  v7 = v4;
+  v7 = completionCopy;
   v16 = v7;
-  v8 = [(HMDThreadOperation *)v5 initWithQueue:v6 threadOperationType:3 completion:v15];
+  v8 = [(HMDThreadOperation *)v5 initWithQueue:workQueue threadOperationType:3 completion:v15];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -550,7 +550,7 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDThreadResidentCommissioner *)v10 _scheduleThreadOperation:v8];
+  [(HMDThreadResidentCommissioner *)selfCopy _scheduleThreadOperation:v8];
 
   _Block_object_dispose(&v18, 8);
   v14 = *MEMORY[0x277D85DE8];
@@ -669,12 +669,12 @@ LABEL_6:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopThreadAccessoryPairingWithCompletion:(id)a3
+- (void)stopThreadAccessoryPairingWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -685,21 +685,21 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v5);
-  if ([(HMDThreadResidentCommissioner *)v6 isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled])
+  if ([(HMDThreadResidentCommissioner *)selfCopy isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled])
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __74__HMDThreadResidentCommissioner_stopThreadAccessoryPairingWithCompletion___block_invoke;
     v15[3] = &unk_279735738;
-    v15[4] = v6;
-    v16 = v4;
-    [(HMDThreadResidentCommissioner *)v6 dispatchBlock:v15];
+    v15[4] = selfCopy;
+    v16 = completionCopy;
+    [(HMDThreadResidentCommissioner *)selfCopy dispatchBlock:v15];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = v6;
+    v10 = selfCopy;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -711,40 +711,40 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v9);
     v13 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5];
-    (*(v4 + 2))(v4, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startThreadAccessoryPairingWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5
+- (void)_startThreadAccessoryPairingWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  addressCopy = address;
+  completionCopy = completion;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__79595;
   v31 = __Block_byref_object_dispose__79596;
-  v32 = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
+  _getThreadOperationSequenceNumber = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
   v10 = [HMDThreadOperation alloc];
-  v11 = [(HMDThreadResidentCommissioner *)self workQueue];
+  workQueue = [(HMDThreadResidentCommissioner *)self workQueue];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __107__HMDThreadResidentCommissioner__startThreadAccessoryPairingWithExtendedMACAddress_isWedDevice_completion___block_invoke;
   v22[3] = &unk_279728F48;
   v22[4] = self;
   v25 = &v27;
-  v12 = v8;
+  v12 = addressCopy;
   v23 = v12;
-  v26 = a4;
-  v13 = v9;
+  deviceCopy = device;
+  v13 = completionCopy;
   v24 = v13;
-  v14 = [(HMDThreadOperation *)v10 initWithQueue:v11 threadOperationType:3 completion:v22];
+  v14 = [(HMDThreadOperation *)v10 initWithQueue:workQueue threadOperationType:3 completion:v22];
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -763,7 +763,7 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v15);
-  [(HMDThreadResidentCommissioner *)v16 _scheduleThreadOperation:v14];
+  [(HMDThreadResidentCommissioner *)selfCopy _scheduleThreadOperation:v14];
 
   _Block_object_dispose(&v27, 8);
   v21 = *MEMORY[0x277D85DE8];
@@ -906,13 +906,13 @@ LABEL_6:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startThreadAccessoryPairingWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5
+- (void)startThreadAccessoryPairingWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  addressCopy = address;
+  completionCopy = completion;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -923,23 +923,23 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v10);
-  if ([(HMDThreadResidentCommissioner *)v11 isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled])
+  if ([(HMDThreadResidentCommissioner *)selfCopy isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled])
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __106__HMDThreadResidentCommissioner_startThreadAccessoryPairingWithExtendedMACAddress_isWedDevice_completion___block_invoke;
     v20[3] = &unk_279732430;
-    v20[4] = v11;
-    v21 = v8;
-    v23 = a4;
-    v22 = v9;
-    [(HMDThreadResidentCommissioner *)v11 dispatchBlock:v20];
+    v20[4] = selfCopy;
+    v21 = addressCopy;
+    deviceCopy = device;
+    v22 = completionCopy;
+    [(HMDThreadResidentCommissioner *)selfCopy dispatchBlock:v20];
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v11;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -951,23 +951,23 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v14);
     v18 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5];
-    (*(v9 + 2))(v9, v18);
+    (*(completionCopy + 2))(completionCopy, v18);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_connectToThreadAccessoryWithExtendedMACAddress:(id)a3 completion:(id)a4
+- (void)_connectToThreadAccessoryWithExtendedMACAddress:(id)address completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__79595;
   v34 = __Block_byref_object_dispose__79596;
-  v35 = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
+  _getThreadOperationSequenceNumber = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -975,19 +975,19 @@ LABEL_6:
   v28 = __Block_byref_object_dispose__79596;
   v29 = 0;
   v8 = [HMDThreadOperation alloc];
-  v9 = [(HMDThreadResidentCommissioner *)self workQueue];
+  workQueue = [(HMDThreadResidentCommissioner *)self workQueue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __92__HMDThreadResidentCommissioner__connectToThreadAccessoryWithExtendedMACAddress_completion___block_invoke;
   v19[3] = &unk_279728EF8;
   v19[4] = self;
   v22 = &v30;
-  v10 = v6;
+  v10 = addressCopy;
   v20 = v10;
-  v11 = v7;
+  v11 = completionCopy;
   v21 = v11;
   v23 = &v24;
-  v12 = [(HMDThreadOperation *)v8 initWithQueue:v9 threadOperationType:2 completion:v19];
+  v12 = [(HMDThreadOperation *)v8 initWithQueue:workQueue threadOperationType:2 completion:v19];
 
   if (!v10)
   {
@@ -995,7 +995,7 @@ LABEL_6:
   }
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -1011,7 +1011,7 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v13);
-  [(HMDThreadResidentCommissioner *)v14 _scheduleThreadOperation:v12];
+  [(HMDThreadResidentCommissioner *)selfCopy _scheduleThreadOperation:v12];
 
   _Block_object_dispose(&v24, 8);
   _Block_object_dispose(&v30, 8);
@@ -1188,13 +1188,13 @@ LABEL_7:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectToThreadAccessoryWithExtendedMACAddress:(id)a3 completion:(id)a4
+- (void)connectToThreadAccessoryWithExtendedMACAddress:(id)address completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1205,22 +1205,22 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v8);
-  if ([(HMDThreadResidentCommissioner *)v9 isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled])
+  if ([(HMDThreadResidentCommissioner *)selfCopy isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled])
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __91__HMDThreadResidentCommissioner_connectToThreadAccessoryWithExtendedMACAddress_completion___block_invoke;
     v18[3] = &unk_2797355D0;
-    v18[4] = v9;
-    v19 = v6;
-    v20 = v7;
-    [(HMDThreadResidentCommissioner *)v9 dispatchBlock:v18];
+    v18[4] = selfCopy;
+    v19 = addressCopy;
+    v20 = completionCopy;
+    [(HMDThreadResidentCommissioner *)selfCopy dispatchBlock:v18];
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v9;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1232,18 +1232,18 @@ LABEL_7:
 
     objc_autoreleasePoolPop(v12);
     v16 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5];
-    (*(v7 + 2))(v7, v16);
+    (*(completionCopy + 2))(completionCopy, v16);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopThreadNetworkWithCompletion:(id)a3
+- (void)_stopThreadNetworkWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1254,35 +1254,35 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDThreadResidentCommissioner *)v6 _stopThreadNetworkOnNonResidentWithCompletion:v4];
+  [(HMDThreadResidentCommissioner *)selfCopy _stopThreadNetworkOnNonResidentWithCompletion:completionCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopThreadNetworkOnNonResidentWithCompletion:(id)a3
+- (void)_stopThreadNetworkOnNonResidentWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__79595;
   v22 = __Block_byref_object_dispose__79596;
-  v23 = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
+  _getThreadOperationSequenceNumber = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
   v5 = [HMDThreadOperation alloc];
-  v6 = [(HMDThreadResidentCommissioner *)self workQueue];
+  workQueue = [(HMDThreadResidentCommissioner *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __79__HMDThreadResidentCommissioner__stopThreadNetworkOnNonResidentWithCompletion___block_invoke;
   v15[3] = &unk_279728EA8;
   v15[4] = self;
   v17 = &v18;
-  v7 = v4;
+  v7 = completionCopy;
   v16 = v7;
-  v8 = [(HMDThreadOperation *)v5 initWithQueue:v6 threadOperationType:0 completion:v15];
+  v8 = [(HMDThreadOperation *)v5 initWithQueue:workQueue threadOperationType:0 completion:v15];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1296,7 +1296,7 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDThreadResidentCommissioner *)v10 _scheduleThreadOperation:v8];
+  [(HMDThreadResidentCommissioner *)selfCopy _scheduleThreadOperation:v8];
 
   _Block_object_dispose(&v18, 8);
   v14 = *MEMORY[0x277D85DE8];
@@ -1418,12 +1418,12 @@ LABEL_6:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopThreadNetworkOnDeviceLockWithCompletion:(id)a3
+- (void)stopThreadNetworkOnDeviceLockWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1441,7 +1441,7 @@ LABEL_6:
 
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"StartThreadOnWakeAllowHomeThreadStop", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0);
   v10 = objc_autoreleasePoolPush();
-  v11 = v6;
+  v11 = selfCopy;
   v12 = HMFGetOSLogHandle();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
   if (AppBooleanValue)
@@ -1460,9 +1460,9 @@ LABEL_8:
     v17[1] = 3221225472;
     v17[2] = __77__HMDThreadResidentCommissioner_stopThreadNetworkOnDeviceLockWithCompletion___block_invoke;
     v17[3] = &unk_279735738;
-    v17[4] = v6;
-    v18 = v4;
-    [(HMDThreadResidentCommissioner *)v6 dispatchBlock:v17];
+    v17[4] = selfCopy;
+    v18 = completionCopy;
+    [(HMDThreadResidentCommissioner *)selfCopy dispatchBlock:v17];
 
     goto LABEL_12;
   }
@@ -1476,19 +1476,19 @@ LABEL_8:
   }
 
   objc_autoreleasePoolPop(v10);
-  (*(v4 + 2))(v4, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_12:
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopThreadNetworkWithCompletion:(id)a3
+- (void)stopThreadNetworkWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"StartThreadOnWake", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0);
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = v8;
   if (AppBooleanValue)
@@ -1502,7 +1502,7 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v6);
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -1520,22 +1520,22 @@ LABEL_12:
     v13[1] = 3221225472;
     v13[2] = __65__HMDThreadResidentCommissioner_stopThreadNetworkWithCompletion___block_invoke;
     v13[3] = &unk_279735738;
-    v13[4] = v7;
-    v14 = v4;
-    [(HMDThreadResidentCommissioner *)v7 dispatchBlock:v13];
+    v13[4] = selfCopy;
+    v14 = completionCopy;
+    [(HMDThreadResidentCommissioner *)selfCopy dispatchBlock:v13];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startThreadNetworkWithOperationalDataset:(id)a3 threadNetworkID:(id)a4 isOwnerUser:(BOOL)a5 completion:(id)a6
+- (void)startThreadNetworkWithOperationalDataset:(id)dataset threadNetworkID:(id)d isOwnerUser:(BOOL)user completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  datasetCopy = dataset;
+  dCopy = d;
+  completionCopy = completion;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -1550,50 +1550,50 @@ LABEL_12:
   v21[1] = 3221225472;
   v21[2] = __113__HMDThreadResidentCommissioner_startThreadNetworkWithOperationalDataset_threadNetworkID_isOwnerUser_completion___block_invoke;
   v21[3] = &unk_279733CD0;
-  v21[4] = v14;
-  v22 = v10;
-  v25 = a5;
-  v23 = v11;
-  v24 = v12;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
-  [(HMDThreadResidentCommissioner *)v14 dispatchBlock:v21];
+  v21[4] = selfCopy;
+  v22 = datasetCopy;
+  userCopy = user;
+  v23 = dCopy;
+  v24 = completionCopy;
+  v17 = completionCopy;
+  v18 = dCopy;
+  v19 = datasetCopy;
+  [(HMDThreadResidentCommissioner *)selfCopy dispatchBlock:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startThreadNetworkWithOperationalDataset:(id)a3 threadNetworkID:(id)a4 isOwnerUser:(BOOL)a5 completion:(id)a6
+- (void)_startThreadNetworkWithOperationalDataset:(id)dataset threadNetworkID:(id)d isOwnerUser:(BOOL)user completion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  datasetCopy = dataset;
+  dCopy = d;
+  completionCopy = completion;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__79595;
   v39 = __Block_byref_object_dispose__79596;
-  v40 = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
+  _getThreadOperationSequenceNumber = [(HMDThreadResidentCommissioner *)self _getThreadOperationSequenceNumber];
   v13 = [HMDThreadOperation alloc];
-  v14 = [(HMDThreadResidentCommissioner *)self workQueue];
+  workQueue = [(HMDThreadResidentCommissioner *)self workQueue];
   v25 = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __114__HMDThreadResidentCommissioner__startThreadNetworkWithOperationalDataset_threadNetworkID_isOwnerUser_completion___block_invoke;
   v28 = &unk_279728E58;
-  v29 = self;
+  selfCopy = self;
   v33 = &v35;
-  v15 = v11;
+  v15 = dCopy;
   v30 = v15;
-  v16 = v10;
+  v16 = datasetCopy;
   v31 = v16;
-  v17 = v12;
+  v17 = completionCopy;
   v32 = v17;
-  v34 = a5;
-  v18 = [(HMDThreadOperation *)v13 initWithQueue:v14 threadOperationType:1 completion:&v25];
+  userCopy = user;
+  v18 = [(HMDThreadOperation *)v13 initWithQueue:workQueue threadOperationType:1 completion:&v25];
 
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy2 = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
@@ -1611,7 +1611,7 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v19);
-  [(HMDThreadResidentCommissioner *)v20 _scheduleThreadOperation:v18, v25, v26, v27, v28, v29];
+  [(HMDThreadResidentCommissioner *)selfCopy2 _scheduleThreadOperation:v18, v25, v26, v27, v28, selfCopy];
 
   _Block_object_dispose(&v35, 8);
   v24 = *MEMORY[0x277D85DE8];
@@ -1774,7 +1774,7 @@ void __114__HMDThreadResidentCommissioner__startThreadNetworkWithOperationalData
   if (self->_operationInProgress)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -1791,11 +1791,11 @@ LABEL_59:
     goto LABEL_62;
   }
 
-  v48 = [(HMDThreadResidentCommissioner *)self _getAllPendingOperations];
-  if (![v48 count])
+  _getAllPendingOperations = [(HMDThreadResidentCommissioner *)self _getAllPendingOperations];
+  if (![_getAllPendingOperations count])
   {
     v43 = objc_autoreleasePoolPush();
-    v44 = self;
+    selfCopy2 = self;
     v45 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
     {
@@ -1806,14 +1806,14 @@ LABEL_59:
     }
 
     objc_autoreleasePoolPop(v43);
-    v7 = v48;
+    v7 = _getAllPendingOperations;
     goto LABEL_59;
   }
 
   self->_operationInProgress = 1;
   os_unfair_recursive_lock_unlock();
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy3 = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1821,7 +1821,7 @@ LABEL_59:
     *buf = 138543618;
     v67 = v11;
     v68 = 2048;
-    v69 = [v48 count];
+    v69 = [_getAllPendingOperations count];
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Pending operations: %lu", buf, 0x16u);
   }
 
@@ -1832,11 +1832,11 @@ LABEL_59:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v13 = [v48 reverseObjectEnumerator];
-  v14 = [v13 allObjects];
+  reverseObjectEnumerator = [_getAllPendingOperations reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v15 = 0;
-  v16 = [v14 countByEnumeratingWithState:&v59 objects:v65 count:16];
+  v16 = [allObjects countByEnumeratingWithState:&v59 objects:v65 count:16];
   if (v16)
   {
     v17 = *v60;
@@ -1846,7 +1846,7 @@ LABEL_59:
       {
         if (*v60 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allObjects);
         }
 
         v19 = *(*(&v59 + 1) + 8 * i);
@@ -1856,13 +1856,13 @@ LABEL_59:
           continue;
         }
 
-        v20 = [v15 operationType];
-        if (v20 > 2)
+        operationType = [v15 operationType];
+        if (operationType > 2)
         {
-          if ((v20 - 3) < 2)
+          if ((operationType - 3) < 2)
           {
-            v22 = [v19 operationType];
-            if (v22 - 2 < 3 || v22 <= 1)
+            operationType2 = [v19 operationType];
+            if (operationType2 - 2 < 3 || operationType2 <= 1)
             {
               goto LABEL_35;
             }
@@ -1871,26 +1871,26 @@ LABEL_59:
 
         else
         {
-          switch(v20)
+          switch(operationType)
           {
             case 0:
               goto LABEL_24;
             case 1:
-              v23 = [v19 operationType];
-              if ((v23 - 2) < 3)
+              operationType3 = [v19 operationType];
+              if ((operationType3 - 2) < 3)
               {
                 [v12 addObject:v19];
                 continue;
               }
 
-              if (v23 == 1)
+              if (operationType3 == 1)
               {
 LABEL_24:
                 [v49 addObject:v19];
                 continue;
               }
 
-              if (!v23)
+              if (!operationType3)
               {
 LABEL_35:
                 [v12 addObject:v15];
@@ -1902,8 +1902,8 @@ LABEL_35:
 
               break;
             case 2:
-              v21 = [v19 operationType];
-              if (v21 - 2 < 3 || v21 <= 1)
+              operationType4 = [v19 operationType];
+              if (operationType4 - 2 < 3 || operationType4 <= 1)
               {
                 goto LABEL_35;
               }
@@ -1913,14 +1913,14 @@ LABEL_35:
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v59 objects:v65 count:16];
+      v16 = [allObjects countByEnumeratingWithState:&v59 objects:v65 count:16];
     }
 
     while (v16);
   }
 
   v25 = objc_autoreleasePoolPush();
-  v26 = v9;
+  v26 = selfCopy3;
   v27 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
@@ -1938,10 +1938,10 @@ LABEL_35:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v30 = [v49 reverseObjectEnumerator];
-  v31 = [v30 allObjects];
+  reverseObjectEnumerator2 = [v49 reverseObjectEnumerator];
+  allObjects2 = [reverseObjectEnumerator2 allObjects];
 
-  v32 = [v31 countByEnumeratingWithState:&v55 objects:v64 count:16];
+  v32 = [allObjects2 countByEnumeratingWithState:&v55 objects:v64 count:16];
   if (v32)
   {
     v33 = *v56;
@@ -1951,7 +1951,7 @@ LABEL_35:
       {
         if (*v56 != v33)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(allObjects2);
         }
 
         v35 = *(*(&v55 + 1) + 8 * j);
@@ -1959,7 +1959,7 @@ LABEL_35:
         [v35 cancelWithError:v36];
       }
 
-      v32 = [v31 countByEnumeratingWithState:&v55 objects:v64 count:16];
+      v32 = [allObjects2 countByEnumeratingWithState:&v55 objects:v64 count:16];
     }
 
     while (v32);
@@ -1969,10 +1969,10 @@ LABEL_35:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v37 = [v12 reverseObjectEnumerator];
-  v38 = [v37 allObjects];
+  reverseObjectEnumerator3 = [v12 reverseObjectEnumerator];
+  allObjects3 = [reverseObjectEnumerator3 allObjects];
 
-  v39 = [v38 countByEnumeratingWithState:&v51 objects:v63 count:16];
+  v39 = [allObjects3 countByEnumeratingWithState:&v51 objects:v63 count:16];
   if (v39)
   {
     v40 = *v52;
@@ -1982,13 +1982,13 @@ LABEL_35:
       {
         if (*v52 != v40)
         {
-          objc_enumerationMutation(v38);
+          objc_enumerationMutation(allObjects3);
         }
 
         [(HMDThreadResidentCommissioner *)v26 _addToPendingOperations:*(*(&v51 + 1) + 8 * k)];
       }
 
-      v39 = [v38 countByEnumeratingWithState:&v51 objects:v63 count:16];
+      v39 = [allObjects3 countByEnumeratingWithState:&v51 objects:v63 count:16];
     }
 
     while (v39);
@@ -2011,7 +2011,7 @@ LABEL_35:
   v50[4] = v26;
   [v15 executeWithTimeout:v42 completion:v50];
 
-  v7 = v48;
+  v7 = _getAllPendingOperations;
 LABEL_62:
 
   v47 = *MEMORY[0x277D85DE8];
@@ -2039,11 +2039,11 @@ uint64_t __63__HMDThreadResidentCommissioner__executePendingThreadOperation__blo
   return [v3 _executePendingThreadOperation];
 }
 
-- (void)_scheduleThreadOperation:(id)a3
+- (void)_scheduleThreadOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   os_unfair_recursive_lock_lock_with_options();
-  [(HMDThreadResidentCommissioner *)self _addToPendingOperations:v5];
+  [(HMDThreadResidentCommissioner *)self _addToPendingOperations:operationCopy];
   operationInProgress = self->_operationInProgress;
   os_unfair_recursive_lock_unlock();
   if (!operationInProgress)
@@ -2052,11 +2052,11 @@ uint64_t __63__HMDThreadResidentCommissioner__executePendingThreadOperation__blo
   }
 }
 
-- (void)_addToPendingOperations:(id)a3
+- (void)_addToPendingOperations:(id)operations
 {
-  v4 = a3;
+  operationsCopy = operations;
   os_unfair_recursive_lock_lock_with_options();
-  [(NSMutableArray *)self->_pendingOperations addObject:v4];
+  [(NSMutableArray *)self->_pendingOperations addObject:operationsCopy];
   os_unfair_recursive_lock_unlock();
 }
 
@@ -2078,11 +2078,11 @@ uint64_t __63__HMDThreadResidentCommissioner__executePendingThreadOperation__blo
   return v3;
 }
 
-- (void)_setThreadOperationInProgress:(BOOL)a3
+- (void)_setThreadOperationInProgress:(BOOL)progress
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -2097,18 +2097,18 @@ uint64_t __63__HMDThreadResidentCommissioner__executePendingThreadOperation__blo
 
   objc_autoreleasePoolPop(v5);
   os_unfair_recursive_lock_lock_with_options();
-  v6->_operationInProgress = a3;
+  selfCopy->_operationInProgress = progress;
   os_unfair_recursive_lock_unlock();
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startThreadNetworkWithID:(id)a3 completion:(id)a4
+- (void)_startThreadNetworkWithID:(id)d completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -2119,17 +2119,17 @@ uint64_t __63__HMDThreadResidentCommissioner__executePendingThreadOperation__blo
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDThreadResidentCommissioner *)v9 threadRadioClient];
+  threadRadioClient = [(HMDThreadResidentCommissioner *)selfCopy threadRadioClient];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __70__HMDThreadResidentCommissioner__startThreadNetworkWithID_completion___block_invoke;
   v16[3] = &unk_279728E08;
-  v16[4] = v9;
-  v17 = v6;
-  v18 = v7;
-  v13 = v7;
-  v14 = v6;
-  [v12 startThreadNetwork:v14 completion:v16];
+  v16[4] = selfCopy;
+  v17 = dCopy;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = dCopy;
+  [threadRadioClient startThreadNetwork:v14 completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -2183,13 +2183,13 @@ void __70__HMDThreadResidentCommissioner__startThreadNetworkWithID_completion___
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startThreadNetworkWithID:(id)a3 completion:(id)a4
+- (void)startThreadNetworkWithID:(id)d completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -2204,12 +2204,12 @@ void __70__HMDThreadResidentCommissioner__startThreadNetworkWithID_completion___
   v15[1] = 3221225472;
   v15[2] = __69__HMDThreadResidentCommissioner_startThreadNetworkWithID_completion___block_invoke;
   v15[3] = &unk_2797355D0;
-  v15[4] = v9;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
-  [(HMDThreadResidentCommissioner *)v9 dispatchBlock:v15];
+  v15[4] = selfCopy;
+  v16 = dCopy;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = dCopy;
+  [(HMDThreadResidentCommissioner *)selfCopy dispatchBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -2222,9 +2222,9 @@ void __70__HMDThreadResidentCommissioner__startThreadNetworkWithID_completion___
   return v4;
 }
 
-- (HMDThreadResidentCommissioner)initWithThreadRadioClient:(id)a3
+- (HMDThreadResidentCommissioner)initWithThreadRadioClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = HMDThreadResidentCommissioner;
   v6 = [(HMDThreadResidentCommissioner *)&v15 init];
@@ -2237,7 +2237,7 @@ void __70__HMDThreadResidentCommissioner__startThreadNetworkWithID_completion___
     workQueue = v6->_workQueue;
     v6->_workQueue = v10;
 
-    objc_storeStrong(&v6->_threadRadioClient, a3);
+    objc_storeStrong(&v6->_threadRadioClient, client);
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     pendingOperations = v6->_pendingOperations;
     v6->_pendingOperations = v12;
@@ -2264,7 +2264,7 @@ void __70__HMDThreadResidentCommissioner__startThreadNetworkWithID_completion___
   os_unfair_lock_lock_with_options();
   WeakRetained = objc_loadWeakRetained(&sharedCommissioner_weakCommissioner);
   v4 = objc_autoreleasePoolPush();
-  v5 = a1;
+  selfCopy = self;
   if (WeakRetained)
   {
     v6 = HMFGetOSLogHandle();

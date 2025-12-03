@@ -6,16 +6,16 @@
 
 - (uint64_t)iconStyledUserInterfaceStyle
 {
-  v2 = [a1 userInterfaceStyle];
-  v3 = [a1 sbh_iconImageAppearance];
-  v4 = [v3 appearanceType];
+  userInterfaceStyle = [self userInterfaceStyle];
+  sbh_iconImageAppearance = [self sbh_iconImageAppearance];
+  appearanceType = [sbh_iconImageAppearance appearanceType];
 
-  if (v4 <= 5)
+  if (appearanceType <= 5)
   {
-    return qword_243237C40[v4];
+    return qword_243237C40[appearanceType];
   }
 
-  return v2;
+  return userInterfaceStyle;
 }
 
 @end

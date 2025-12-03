@@ -1,44 +1,44 @@
 @interface PassbookTableCell
-- (PassbookTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)_updateActivityIndicatorForSpecifier:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (PassbookTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)_updateActivityIndicatorForSpecifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PassbookTableCell
 
-- (PassbookTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PassbookTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v12.receiver = self;
   v12.super_class = PassbookTableCell;
-  v9 = [(PSTableCell *)&v12 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PSTableCell *)&v12 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    [(PassbookTableCell *)v9 _updateActivityIndicatorForSpecifier:v8];
+    [(PassbookTableCell *)v9 _updateActivityIndicatorForSpecifier:specifierCopy];
   }
 
   return v10;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v5.receiver = self;
   v5.super_class = PassbookTableCell;
-  v4 = a3;
-  [(PSTableCell *)&v5 refreshCellContentsWithSpecifier:v4];
-  [(PassbookTableCell *)self _updateActivityIndicatorForSpecifier:v4, v5.receiver, v5.super_class];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v5 refreshCellContentsWithSpecifier:specifierCopy];
+  [(PassbookTableCell *)self _updateActivityIndicatorForSpecifier:specifierCopy, v5.receiver, v5.super_class];
 }
 
-- (void)_updateActivityIndicatorForSpecifier:(id)a3
+- (void)_updateActivityIndicatorForSpecifier:(id)specifier
 {
-  v4 = [a3 objectForKeyedSubscript:@"PKSettingsSpecifierLoadingKey"];
+  v4 = [specifier objectForKeyedSubscript:@"PKSettingsSpecifierLoadingKey"];
   v7 = v4;
   if (v4 && [v4 BOOLValue])
   {
-    v5 = [(PassbookTableCell *)self accessoryView];
+    accessoryView = [(PassbookTableCell *)self accessoryView];
 
-    if (!v5)
+    if (!accessoryView)
     {
       v6 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
       [v6 startAnimating];

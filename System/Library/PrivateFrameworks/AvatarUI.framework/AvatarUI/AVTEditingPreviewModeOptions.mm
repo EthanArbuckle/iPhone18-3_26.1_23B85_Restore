@@ -1,6 +1,6 @@
 @interface AVTEditingPreviewModeOptions
 + (id)defaultOptions;
-- (AVTEditingPreviewModeOptions)initWithFramingMode:(id)a3 bodyPosePack:(id)a4;
+- (AVTEditingPreviewModeOptions)initWithFramingMode:(id)mode bodyPosePack:(id)pack;
 - (id)description;
 @end
 
@@ -8,24 +8,24 @@
 
 + (id)defaultOptions
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 initWithFramingMode:*MEMORY[0x1E698E230] bodyPosePack:0];
 
   return v3;
 }
 
-- (AVTEditingPreviewModeOptions)initWithFramingMode:(id)a3 bodyPosePack:(id)a4
+- (AVTEditingPreviewModeOptions)initWithFramingMode:(id)mode bodyPosePack:(id)pack
 {
-  v7 = a3;
-  v8 = a4;
+  modeCopy = mode;
+  packCopy = pack;
   v12.receiver = self;
   v12.super_class = AVTEditingPreviewModeOptions;
   v9 = [(AVTEditingPreviewModeOptions *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_framingMode, a3);
-    objc_storeStrong(&v10->_bodyPosePack, a4);
+    objc_storeStrong(&v9->_framingMode, mode);
+    objc_storeStrong(&v10->_bodyPosePack, pack);
   }
 
   return v10;
@@ -38,15 +38,15 @@
   v3 = [(AVTEditingPreviewModeOptions *)&v10 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTEditingPreviewModeOptions *)self framingMode];
-  [v4 appendFormat:@" framingMode: %@\n", v5];
+  framingMode = [(AVTEditingPreviewModeOptions *)self framingMode];
+  [v4 appendFormat:@" framingMode: %@\n", framingMode];
 
-  v6 = [(AVTEditingPreviewModeOptions *)self bodyPosePack];
+  bodyPosePack = [(AVTEditingPreviewModeOptions *)self bodyPosePack];
 
-  if (v6)
+  if (bodyPosePack)
   {
-    v7 = [(AVTEditingPreviewModeOptions *)self bodyPosePack];
-    [v4 appendFormat:@" posePack:%@\n", v7];
+    bodyPosePack2 = [(AVTEditingPreviewModeOptions *)self bodyPosePack];
+    [v4 appendFormat:@" posePack:%@\n", bodyPosePack2];
   }
 
   v8 = [v4 copy];

@@ -1,20 +1,20 @@
 @interface PNPLockScreenViewController
 - (CGSize)preferredContentSize;
-- (PNPLockScreenViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PNPLockScreenViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PNPPlatterViewControllerPlatterDelegate)platterDelegate;
 - (PNPViewControllerAppearanceDelegate)appearanceDelegate;
 - (void)dismissPill;
 - (void)loadView;
-- (void)setDeviceState:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setDeviceState:(id)state;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PNPLockScreenViewController
 
-- (PNPLockScreenViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PNPLockScreenViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = PNPLockScreenViewController;
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (void)setDeviceState:(id)a3
+- (void)setDeviceState:(id)state
 {
-  [(PNPDeviceStateConfigurable *)self->_pillView setDeviceState:a3];
-  v4 = [(PNPLockScreenViewController *)self _platterContainerView];
-  [v4 setEdge:{-[PNPLockScreenViewController preferredEdge](self, "preferredEdge")}];
+  [(PNPDeviceStateConfigurable *)self->_pillView setDeviceState:state];
+  _platterContainerView = [(PNPLockScreenViewController *)self _platterContainerView];
+  [_platterContainerView setEdge:{-[PNPLockScreenViewController preferredEdge](self, "preferredEdge")}];
 }
 
 - (void)loadView
@@ -60,26 +60,26 @@
   self->_pillView = v8;
   v10 = v8;
 
-  v11 = [(PNPLockScreenViewController *)self _platterContainerView];
-  [v11 setContentView:self->_pillView];
+  _platterContainerView = [(PNPLockScreenViewController *)self _platterContainerView];
+  [_platterContainerView setContentView:self->_pillView];
 
-  v12 = [(PNPLockScreenViewController *)self _platterContainerView];
-  [v12 setEdge:{-[PNPLockScreenViewController preferredEdge](self, "preferredEdge")}];
+  _platterContainerView2 = [(PNPLockScreenViewController *)self _platterContainerView];
+  [_platterContainerView2 setEdge:{-[PNPLockScreenViewController preferredEdge](self, "preferredEdge")}];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = PNPLockScreenViewController;
   [(PNPLockScreenViewController *)&v7 viewDidAppear:?];
-  v5 = [(PNPLockScreenViewController *)self _platterContainerView];
+  _platterContainerView = [(PNPLockScreenViewController *)self _platterContainerView];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__PNPLockScreenViewController_viewDidAppear___block_invoke;
   v6[3] = &unk_279A0A060;
   v6[4] = self;
-  PNPPlatterPresentPlatterContainerView(v5, v3, v6);
+  PNPPlatterPresentPlatterContainerView(_platterContainerView, appearCopy, v6);
 }
 
 void __45__PNPLockScreenViewController_viewDidAppear___block_invoke(uint64_t a1)
@@ -89,30 +89,30 @@ void __45__PNPLockScreenViewController_viewDidAppear___block_invoke(uint64_t a1)
   PNPChargingStatusConfigureAutoDismiss(v1, v2);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PNPLockScreenViewController;
-  [(PNPLockScreenViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(PNPLockScreenViewController *)self appearanceDelegate];
-  [v4 viewControllerDidDismiss:self];
+  [(PNPLockScreenViewController *)&v5 viewDidDisappear:disappear];
+  appearanceDelegate = [(PNPLockScreenViewController *)self appearanceDelegate];
+  [appearanceDelegate viewControllerDidDismiss:self];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __82__PNPLockScreenViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_279A0A088;
-  v10 = a3;
+  sizeCopy = size;
   v9[4] = self;
-  v7 = a4;
-  [v7 animateAlongsideTransition:v9 completion:&__block_literal_global_7];
+  coordinatorCopy = coordinator;
+  [coordinatorCopy animateAlongsideTransition:v9 completion:&__block_literal_global_7];
   v8.receiver = self;
   v8.super_class = PNPLockScreenViewController;
-  [(PNPLockScreenViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PNPLockScreenViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 void __82__PNPLockScreenViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -138,13 +138,13 @@ void __82__PNPLockScreenViewController_viewWillTransitionToSize_withTransitionCo
 
 - (void)dismissPill
 {
-  v3 = [(PNPLockScreenViewController *)self _platterContainerView];
+  _platterContainerView = [(PNPLockScreenViewController *)self _platterContainerView];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__PNPLockScreenViewController_dismissPill__block_invoke;
   v4[3] = &unk_279A0A060;
   v4[4] = self;
-  PNPPlatterPresentPlatterContainerView(v3, 1, v4);
+  PNPPlatterPresentPlatterContainerView(_platterContainerView, 1, v4);
 }
 
 void __42__PNPLockScreenViewController_dismissPill__block_invoke(uint64_t a1)

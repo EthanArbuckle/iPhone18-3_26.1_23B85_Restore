@@ -1,22 +1,22 @@
 @interface SKGAirportLocation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SKGAirportLocation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SKGAirportLocation *)self airportCode];
-    v7 = [v5 airportCode];
+    v5 = equalCopy;
+    airportCode = [(SKGAirportLocation *)self airportCode];
+    airportCode2 = [v5 airportCode];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [airportCode isEqualToString:airportCode2];
   }
 
   else
@@ -29,9 +29,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SKGAirportLocation *)self airportCode];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 hash];
+  airportCode = [(SKGAirportLocation *)self airportCode];
+  lowercaseString = [airportCode lowercaseString];
+  v4 = [lowercaseString hash];
 
   return v4;
 }
@@ -40,9 +40,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SKGAirportLocation *)self airportCode];
+  airportCode = [(SKGAirportLocation *)self airportCode];
   [(SKGEntity *)self score];
-  v7 = [v3 stringWithFormat:@"<%@: %@ %f>", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@: %@ %f>", v4, airportCode, v6];
 
   return v7;
 }

@@ -1,16 +1,16 @@
 @interface AKCommandLineUtilities
-- (BOOL)_isURLString:(id)a3;
+- (BOOL)_isURLString:(id)string;
 - (NSDateFormatter)dateFormatter;
 - (id)_hostURL;
-- (id)errorFromServerResponseBody:(id)a3;
-- (id)jsonDictionaryForData:(id)a3 error:(id)a4;
-- (id)mutableJSONRequestForPath:(id)a3;
-- (id)mutableJSONRequestForURL:(id)a3;
-- (void)beginDataTaskWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)createAndExecuteRequestForPath:(id)a3 requestBody:(id)a4 httpMethod:(id)a5 configuration:(id)a6 completion:(id)a7;
-- (void)signXMLRequest:(id)a3;
-- (void)signXMLRequest:(id)a3 withPostbackDictionary:(id)a4;
-- (void)updateConfiguration:(id)a3 fromXMLAttributes:(id)a4 response:(id)a5;
+- (id)errorFromServerResponseBody:(id)body;
+- (id)jsonDictionaryForData:(id)data error:(id)error;
+- (id)mutableJSONRequestForPath:(id)path;
+- (id)mutableJSONRequestForURL:(id)l;
+- (void)beginDataTaskWithRequest:(id)request completionHandler:(id)handler;
+- (void)createAndExecuteRequestForPath:(id)path requestBody:(id)body httpMethod:(id)method configuration:(id)configuration completion:(id)completion;
+- (void)signXMLRequest:(id)request;
+- (void)signXMLRequest:(id)request withPostbackDictionary:(id)dictionary;
+- (void)updateConfiguration:(id)configuration fromXMLAttributes:(id)attributes response:(id)response;
 @end
 
 @implementation AKCommandLineUtilities
@@ -33,28 +33,28 @@
   return v4;
 }
 
-- (void)createAndExecuteRequestForPath:(id)a3 requestBody:(id)a4 httpMethod:(id)a5 configuration:(id)a6 completion:(id)a7
+- (void)createAndExecuteRequestForPath:(id)path requestBody:(id)body httpMethod:(id)method configuration:(id)configuration completion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, body);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
+  objc_storeStrong(&v25, method);
   v24 = 0;
-  objc_storeStrong(&v24, a6);
+  objc_storeStrong(&v24, configuration);
   v23 = 0;
-  objc_storeStrong(&v23, a7);
-  v22 = [(AKCommandLineUtilities *)v28 mutableJSONRequestForPath:location[0]];
+  objc_storeStrong(&v23, completion);
+  v22 = [(AKCommandLineUtilities *)selfCopy mutableJSONRequestForPath:location[0]];
   [v22 ak_setJSONBodyWithParameters:v26];
   [v22 setHTTPMethod:v25];
-  v7 = [v24 resourceLoadDelegate];
-  [v7 signRequest:v22];
-  MEMORY[0x1E69E5920](v7);
-  objc_initWeak(&v21, v28);
-  v9 = v28;
+  resourceLoadDelegate = [v24 resourceLoadDelegate];
+  [resourceLoadDelegate signRequest:v22];
+  MEMORY[0x1E69E5920](resourceLoadDelegate);
+  objc_initWeak(&v21, selfCopy);
+  v9 = selfCopy;
   v8 = v22;
   v14 = MEMORY[0x1E69E9820];
   v15 = -1073741824;
@@ -156,18 +156,18 @@ void __34__AKCommandLineUtilities__hostURL__block_invoke()
   }
 }
 
-- (id)mutableJSONRequestForPath:(id)a3
+- (id)mutableJSONRequestForPath:(id)path
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v4 = MEMORY[0x1E696AF20];
-  v5 = [(AKCommandLineUtilities *)v11 _hostURL];
+  _hostURL = [(AKCommandLineUtilities *)selfCopy _hostURL];
   v9 = [v4 componentsWithString:?];
-  MEMORY[0x1E69E5920](v5);
+  MEMORY[0x1E69E5920](_hostURL);
   [v9 setPath:location[0]];
-  v6 = v11;
+  v6 = selfCopy;
   v7 = [v9 URL];
   v8 = [(AKCommandLineUtilities *)v6 mutableJSONRequestForURL:?];
   MEMORY[0x1E69E5920](v7);
@@ -177,13 +177,13 @@ void __34__AKCommandLineUtilities__hostURL__block_invoke()
   return v8;
 }
 
-- (id)mutableJSONRequestForURL:(id)a3
+- (id)mutableJSONRequestForURL:(id)l
 {
   v10 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v7 = _AKLogSystem();
   v6 = OS_LOG_TYPE_ERROR;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -204,44 +204,44 @@ void __34__AKCommandLineUtilities__hostURL__block_invoke()
   return v4;
 }
 
-- (id)errorFromServerResponseBody:(id)a3
+- (id)errorFromServerResponseBody:(id)body
 {
   v34 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, body);
   v29 = 0;
   v28 = [location[0] objectForKeyedSubscript:@"hasError"];
   v27 = [location[0] objectForKeyedSubscript:@"serviceErrors"];
   if (([v28 BOOLValue] & 1) != 0 || objc_msgSend(v27, "count"))
   {
-    v26 = [v27 firstObject];
+    firstObject = [v27 firstObject];
     v25 = 0;
-    if (v26)
+    if (firstObject)
     {
       v24 = _AKLogSystem();
       v23 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_1_8_64(v33, v26);
+        __os_log_helper_16_2_1_8_64(v33, firstObject);
         _os_log_error_impl(&dword_193225000, v24, v23, "Server response contained error: %@", v33, 0xCu);
       }
 
       objc_storeStrong(&v24, 0);
-      v16 = [v26 objectForKeyedSubscript:@"title"];
+      v16 = [firstObject objectForKeyedSubscript:@"title"];
       MEMORY[0x1E69E5920](v16);
       if (v16)
       {
-        v13 = [v26 objectForKeyedSubscript:@"message"];
+        v13 = [firstObject objectForKeyedSubscript:@"message"];
         MEMORY[0x1E69E5920](v13);
         if (v13)
         {
           v31[0] = *MEMORY[0x1E696A578];
-          v10 = [v26 objectForKeyedSubscript:@"title"];
+          v10 = [firstObject objectForKeyedSubscript:@"title"];
           v32[0] = v10;
           v31[1] = *MEMORY[0x1E696A588];
-          v9 = [v26 objectForKeyedSubscript:@"message"];
+          v9 = [firstObject objectForKeyedSubscript:@"message"];
           v32[1] = v9;
           v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
           v4 = v25;
@@ -288,7 +288,7 @@ void __34__AKCommandLineUtilities__hostURL__block_invoke()
     v29 = v5;
     MEMORY[0x1E69E5920](v6);
     objc_storeStrong(&v25, 0);
-    objc_storeStrong(&v26, 0);
+    objc_storeStrong(&firstObject, 0);
   }
 
   v8 = MEMORY[0x1E69E5928](v29);
@@ -301,15 +301,15 @@ void __34__AKCommandLineUtilities__hostURL__block_invoke()
   return v8;
 }
 
-- (id)jsonDictionaryForData:(id)a3 error:(id)a4
+- (id)jsonDictionaryForData:(id)data error:(id)error
 {
-  v15 = a4;
+  errorCopy = error;
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v18 = 0;
-  objc_storeStrong(&v18, v15);
+  objc_storeStrong(&v18, errorCopy);
   v17 = 0;
   if ([location[0] length])
   {
@@ -341,14 +341,14 @@ void __34__AKCommandLineUtilities__hostURL__block_invoke()
   return v6;
 }
 
-- (void)beginDataTaskWithRequest:(id)a3 completionHandler:(id)a4
+- (void)beginDataTaskWithRequest:(id)request completionHandler:(id)handler
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, handler);
   v7 = +[AKCommandLineURLSession sharedServerUIURLSession];
   v6 = location[0];
   v8 = MEMORY[0x1E69E9820];
@@ -430,23 +430,23 @@ void *__69__AKCommandLineUtilities_beginDataTaskWithRequest_completionHandler___
   return result;
 }
 
-- (void)updateConfiguration:(id)a3 fromXMLAttributes:(id)a4 response:(id)a5
+- (void)updateConfiguration:(id)configuration fromXMLAttributes:(id)attributes response:(id)response
 {
   v36 = *MEMORY[0x1E69E9840];
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, attributes);
   v31 = 0;
-  objc_storeStrong(&v31, a5);
+  objc_storeStrong(&v31, response);
   v30 = [v32 objectForKey:@"httpMethod"];
   v29 = [v32 objectForKey:@"url"];
-  v23 = [location[0] request];
-  v28 = [v23 mutableCopy];
-  MEMORY[0x1E69E5920](v23);
-  if ([(AKCommandLineUtilities *)v34 _isURLString:v29])
+  request = [location[0] request];
+  v28 = [request mutableCopy];
+  MEMORY[0x1E69E5920](request);
+  if ([(AKCommandLineUtilities *)selfCopy _isURLString:v29])
   {
     v19 = MEMORY[0x1E695AC18];
     v20 = [MEMORY[0x1E695DFF8] URLWithString:v29];
@@ -461,9 +461,9 @@ void *__69__AKCommandLineUtilities_beginDataTaskWithRequest_completionHandler___
   {
     v15 = objc_alloc(MEMORY[0x1E696AF20]);
     v17 = [v28 URL];
-    v16 = [v17 absoluteString];
+    absoluteString = [v17 absoluteString];
     v27 = [v15 initWithString:?];
-    MEMORY[0x1E69E5920](v16);
+    MEMORY[0x1E69E5920](absoluteString);
     MEMORY[0x1E69E5920](v17);
     [v27 setPath:v29];
     v18 = [v27 URL];
@@ -482,10 +482,10 @@ void *__69__AKCommandLineUtilities_beginDataTaskWithRequest_completionHandler___
     [v28 setHTTPMethod:@"GET"];
   }
 
-  v26 = [v31 allHeaderFields];
+  allHeaderFields = [v31 allHeaderFields];
   memset(__b, 0, sizeof(__b));
-  v13 = [v26 allKeys];
-  v14 = [v13 countByEnumeratingWithState:__b objects:v35 count:16];
+  allKeys = [allHeaderFields allKeys];
+  v14 = [allKeys countByEnumeratingWithState:__b objects:v35 count:16];
   if (v14)
   {
     v10 = *__b[2];
@@ -496,19 +496,19 @@ void *__69__AKCommandLineUtilities_beginDataTaskWithRequest_completionHandler___
       v9 = v11;
       if (*__b[2] != v10)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(allKeys);
       }
 
       v25 = *(__b[1] + 8 * v11);
       v7 = v28;
-      v8 = [v26 objectForKey:v25];
+      v8 = [allHeaderFields objectForKey:v25];
       [v7 setValue:? forHTTPHeaderField:?];
       MEMORY[0x1E69E5920](v8);
       ++v11;
       if (v9 + 1 >= v12)
       {
         v11 = 0;
-        v12 = [v13 countByEnumeratingWithState:__b objects:v35 count:16];
+        v12 = [allKeys countByEnumeratingWithState:__b objects:v35 count:16];
         if (!v12)
         {
           break;
@@ -517,9 +517,9 @@ void *__69__AKCommandLineUtilities_beginDataTaskWithRequest_completionHandler___
     }
   }
 
-  MEMORY[0x1E69E5920](v13);
+  MEMORY[0x1E69E5920](allKeys);
   [location[0] setRequest:v28];
-  objc_storeStrong(&v26, 0);
+  objc_storeStrong(&allHeaderFields, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v30, 0);
@@ -529,64 +529,64 @@ void *__69__AKCommandLineUtilities_beginDataTaskWithRequest_completionHandler___
   *MEMORY[0x1E69E9840];
 }
 
-- (void)signXMLRequest:(id)a3 withPostbackDictionary:(id)a4
+- (void)signXMLRequest:(id)request withPostbackDictionary:(id)dictionary
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, dictionary);
   [location[0] ak_setBodyWithParameters:v5];
   [location[0] setHTTPMethod:@"POST"];
-  [(AKCommandLineUtilities *)v7 signXMLRequest:location[0]];
+  [(AKCommandLineUtilities *)selfCopy signXMLRequest:location[0]];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)signXMLRequest:(id)a3
+- (void)signXMLRequest:(id)request
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   [location[0] setValue:@"application/x-buddyml" forHTTPHeaderField:@"Accept"];
   [location[0] setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_isURLString:(id)a3
+- (BOOL)_isURLString:(id)string
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   v9 = [MEMORY[0x1E695DFF8] URLWithString:location[0]];
   v7 = 0;
   v5 = 0;
   v4 = 0;
   if (v9)
   {
-    v8 = [v9 scheme];
+    scheme = [v9 scheme];
     v7 = 1;
     v4 = 0;
-    if (v8)
+    if (scheme)
     {
-      v6 = [v9 host];
+      host = [v9 host];
       v5 = 1;
-      v4 = v6 != 0;
+      v4 = host != 0;
     }
   }
 
   v11 = v4;
   if (v5)
   {
-    MEMORY[0x1E69E5920](v6);
+    MEMORY[0x1E69E5920](host);
   }
 
   if (v7)
   {
-    MEMORY[0x1E69E5920](v8);
+    MEMORY[0x1E69E5920](scheme);
   }
 
   objc_storeStrong(&v9, 0);

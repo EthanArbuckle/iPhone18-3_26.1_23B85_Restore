@@ -1,32 +1,32 @@
 @interface HDSharingAuthorizationManager
-- (BOOL)_addSharingAuthorizations:(void *)a3 recipientIdentifier:(void *)a4 databaseTransaction:(void *)a5 error:;
-- (BOOL)_removeSharingAuthorizations:(void *)a3 recipientIdentifier:(void *)a4 databaseTransaction:(void *)a5 error:;
-- (BOOL)addSharingAuthorizations:(id)a3 recipientIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)insertOrUpdateCodableRelationships:(id)a3 syncProvenance:(int64_t)a4 error:(id *)a5;
-- (BOOL)insertOrUpdateRecipientIdentifier:(id)a3 sharingAuthorizations:(id)a4 dateModified:(id)a5 syncProvenance:(int64_t)a6 syncIdentity:(int64_t)a7 databaseTransaction:(id)a8 error:(id *)a9;
-- (BOOL)markSharingAuthorizationsForDeletion:(id)a3 recipientIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)removeSharingAuthorizations:(id)a3 recipientIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)revokeRecipientWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)updateAuthorizationsForRecipientIdentifier:(id)a3 sharingAuthorizationsToAdd:(id)a4 sharingAuthorizationsToRemove:(id)a5 error:(id *)a6;
-- (HDSharingAuthorizationManager)initWithProfile:(id)a3;
-- (id)recipientIdentifiersForSharingAuthorizations:(id)a3 error:(id *)a4;
-- (id)sharingAuthorizationsForRecipientIdentifier:(id)a3 error:(id *)a4;
-- (id)sharingAuthorizationsMarkedForDeletionForRecipientIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)_addSharingAuthorizations:(void *)authorizations recipientIdentifier:(void *)identifier databaseTransaction:(void *)transaction error:;
+- (BOOL)_removeSharingAuthorizations:(void *)authorizations recipientIdentifier:(void *)identifier databaseTransaction:(void *)transaction error:;
+- (BOOL)addSharingAuthorizations:(id)authorizations recipientIdentifier:(id)identifier error:(id *)error;
+- (BOOL)insertOrUpdateCodableRelationships:(id)relationships syncProvenance:(int64_t)provenance error:(id *)error;
+- (BOOL)insertOrUpdateRecipientIdentifier:(id)identifier sharingAuthorizations:(id)authorizations dateModified:(id)modified syncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity databaseTransaction:(id)transaction error:(id *)error;
+- (BOOL)markSharingAuthorizationsForDeletion:(id)deletion recipientIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeSharingAuthorizations:(id)authorizations recipientIdentifier:(id)identifier error:(id *)error;
+- (BOOL)revokeRecipientWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)updateAuthorizationsForRecipientIdentifier:(id)identifier sharingAuthorizationsToAdd:(id)add sharingAuthorizationsToRemove:(id)remove error:(id *)error;
+- (HDSharingAuthorizationManager)initWithProfile:(id)profile;
+- (id)recipientIdentifiersForSharingAuthorizations:(id)authorizations error:(id *)error;
+- (id)sharingAuthorizationsForRecipientIdentifier:(id)identifier error:(id *)error;
+- (id)sharingAuthorizationsMarkedForDeletionForRecipientIdentifier:(id)identifier error:(id *)error;
 - (void)deleteMarkedSharingAuthorizations;
 @end
 
 @implementation HDSharingAuthorizationManager
 
-- (HDSharingAuthorizationManager)initWithProfile:(id)a3
+- (HDSharingAuthorizationManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v16.receiver = self;
   v16.super_class = HDSharingAuthorizationManager;
   v5 = [(HDSharingAuthorizationManager *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x277CCDA88]);
     v8 = HKLogSharing();
     v9 = [v7 initWithName:@"sharing-authorization-manager-observers" loggingCategory:v8];
@@ -45,9 +45,9 @@
   return v6;
 }
 
-- (id)sharingAuthorizationsForRecipientIdentifier:(id)a3 error:(id *)a4
+- (id)sharingAuthorizationsForRecipientIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -55,17 +55,17 @@
   v20 = __Block_byref_object_dispose__161;
   v21 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __83__HDSharingAuthorizationManager_sharingAuthorizationsForRecipientIdentifier_error___block_invoke;
   v13[3] = &unk_278619398;
   v15 = &v16;
-  v9 = v6;
+  v9 = identifierCopy;
   v14 = v9;
-  LODWORD(a4) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performReadTransactionWithHealthDatabase:v8 error:a4 block:v13];
+  LODWORD(error) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performReadTransactionWithHealthDatabase:database error:error block:v13];
 
-  if (a4)
+  if (error)
   {
     v10 = v17[5];
   }
@@ -92,9 +92,9 @@ BOOL __83__HDSharingAuthorizationManager_sharingAuthorizationsForRecipientIdenti
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (id)sharingAuthorizationsMarkedForDeletionForRecipientIdentifier:(id)a3 error:(id *)a4
+- (id)sharingAuthorizationsMarkedForDeletionForRecipientIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -102,17 +102,17 @@ BOOL __83__HDSharingAuthorizationManager_sharingAuthorizationsForRecipientIdenti
   v20 = __Block_byref_object_dispose__161;
   v21 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __100__HDSharingAuthorizationManager_sharingAuthorizationsMarkedForDeletionForRecipientIdentifier_error___block_invoke;
   v13[3] = &unk_278619398;
   v15 = &v16;
-  v9 = v6;
+  v9 = identifierCopy;
   v14 = v9;
-  LODWORD(a4) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performReadTransactionWithHealthDatabase:v8 error:a4 block:v13];
+  LODWORD(error) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performReadTransactionWithHealthDatabase:database error:error block:v13];
 
-  if (a4)
+  if (error)
   {
     v10 = v17[5];
   }
@@ -139,23 +139,23 @@ BOOL __100__HDSharingAuthorizationManager_sharingAuthorizationsMarkedForDeletion
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (id)recipientIdentifiersForSharingAuthorizations:(id)a3 error:(id *)a4
+- (id)recipientIdentifiersForSharingAuthorizations:(id)authorizations error:(id *)error
 {
-  v6 = a3;
+  authorizationsCopy = authorizations;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v9 = [WeakRetained database];
+  database = [WeakRetained database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __84__HDSharingAuthorizationManager_recipientIdentifiersForSharingAuthorizations_error___block_invoke;
   v15[3] = &unk_278613218;
-  v16 = v6;
+  v16 = authorizationsCopy;
   v17 = v7;
   v10 = v7;
-  v11 = v6;
-  LODWORD(a4) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performReadTransactionWithHealthDatabase:v9 error:a4 block:v15];
+  v11 = authorizationsCopy;
+  LODWORD(error) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a4)
+  if (error)
   {
     v12 = v10;
   }
@@ -246,32 +246,32 @@ LABEL_15:
   return (a3 | v14) & 1;
 }
 
-- (BOOL)addSharingAuthorizations:(id)a3 recipientIdentifier:(id)a4 error:(id *)a5
+- (BOOL)addSharingAuthorizations:(id)authorizations recipientIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  authorizationsCopy = authorizations;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __84__HDSharingAuthorizationManager_addSharingAuthorizations_recipientIdentifier_error___block_invoke;
   v15[3] = &unk_278615D40;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
-  LOBYTE(a5) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:v11 error:a5 block:v15];
+  v16 = authorizationsCopy;
+  v17 = identifierCopy;
+  v12 = identifierCopy;
+  v13 = authorizationsCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:database error:error block:v15];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_addSharingAuthorizations:(void *)a3 recipientIdentifier:(void *)a4 databaseTransaction:(void *)a5 error:
+- (BOOL)_addSharingAuthorizations:(void *)authorizations recipientIdentifier:(void *)identifier databaseTransaction:(void *)transaction error:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (!a1)
+  authorizationsCopy = authorizations;
+  identifierCopy = identifier;
+  if (!self)
   {
     v18 = 0;
     goto LABEL_7;
@@ -281,18 +281,18 @@ LABEL_15:
   v23[1] = 3221225472;
   v23[2] = __105__HDSharingAuthorizationManager__addSharingAuthorizations_recipientIdentifier_databaseTransaction_error___block_invoke;
   v23[3] = &unk_278613830;
-  v23[4] = a1;
+  v23[4] = self;
   v12 = v9;
   v24 = v12;
-  v13 = v10;
+  v13 = authorizationsCopy;
   v25 = v13;
-  [v11 onCommit:v23 orRollback:0];
+  [identifierCopy onCommit:v23 orRollback:0];
   if ([v13 type] == 1)
   {
-    v14 = [MEMORY[0x277CBEAA8] date];
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    date = [MEMORY[0x277CBEAA8] date];
+    WeakRetained = objc_loadWeakRetained((self + 8));
     v22 = 0;
-    v16 = +[HDSharingRelationshipEntity insertOrReplaceWithRecipientIdentifier:dateModified:syncProvenance:syncIdentity:databaseTransaction:error:](HDSharingRelationshipEntity, "insertOrReplaceWithRecipientIdentifier:dateModified:syncProvenance:syncIdentity:databaseTransaction:error:", v13, v14, 0, [WeakRetained currentSyncIdentityPersistentID], v11, &v22);
+    v16 = +[HDSharingRelationshipEntity insertOrReplaceWithRecipientIdentifier:dateModified:syncProvenance:syncIdentity:databaseTransaction:error:](HDSharingRelationshipEntity, "insertOrReplaceWithRecipientIdentifier:dateModified:syncProvenance:syncIdentity:databaseTransaction:error:", v13, date, 0, [WeakRetained currentSyncIdentityPersistentID], identifierCopy, &v22);
     v17 = v22;
 
     if (!v16)
@@ -301,10 +301,10 @@ LABEL_15:
       v18 = v20 == 0;
       if (v20)
       {
-        if (a5)
+        if (transaction)
         {
           v21 = v20;
-          *a5 = v20;
+          *transaction = v20;
         }
 
         else
@@ -317,7 +317,7 @@ LABEL_15:
     }
   }
 
-  v18 = [HDSharingAuthorizationsEntity addSharingAuthorizations:v12 forRecipientIdentifier:v13 databaseTransaction:v11 error:a5];
+  v18 = [HDSharingAuthorizationsEntity addSharingAuthorizations:v12 forRecipientIdentifier:v13 databaseTransaction:identifierCopy error:transaction];
 LABEL_6:
 
 LABEL_7:
@@ -339,33 +339,33 @@ void __105__HDSharingAuthorizationManager__addSharingAuthorizations_recipientIde
   [v4 notifyObservers:v5];
 }
 
-- (BOOL)removeSharingAuthorizations:(id)a3 recipientIdentifier:(id)a4 error:(id *)a5
+- (BOOL)removeSharingAuthorizations:(id)authorizations recipientIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  authorizationsCopy = authorizations;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __87__HDSharingAuthorizationManager_removeSharingAuthorizations_recipientIdentifier_error___block_invoke;
   v15[3] = &unk_278615D40;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
-  LOBYTE(a5) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:v11 error:a5 block:v15];
+  v16 = authorizationsCopy;
+  v17 = identifierCopy;
+  v12 = identifierCopy;
+  v13 = authorizationsCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:database error:error block:v15];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_removeSharingAuthorizations:(void *)a3 recipientIdentifier:(void *)a4 databaseTransaction:(void *)a5 error:
+- (BOOL)_removeSharingAuthorizations:(void *)authorizations recipientIdentifier:(void *)identifier databaseTransaction:(void *)transaction error:
 {
   v35 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (!a1)
+  authorizationsCopy = authorizations;
+  identifierCopy = identifier;
+  if (!self)
   {
     v18 = 0;
     goto LABEL_21;
@@ -375,25 +375,25 @@ void __105__HDSharingAuthorizationManager__addSharingAuthorizations_recipientIde
   v28[1] = 3221225472;
   v28[2] = __108__HDSharingAuthorizationManager__removeSharingAuthorizations_recipientIdentifier_databaseTransaction_error___block_invoke;
   v28[3] = &unk_278613830;
-  v28[4] = a1;
+  v28[4] = self;
   v12 = v9;
   v29 = v12;
-  v13 = v10;
+  v13 = authorizationsCopy;
   v30 = v13;
-  [v11 onCommit:v28 orRollback:0];
+  [identifierCopy onCommit:v28 orRollback:0];
   if ([v13 type] == 1)
   {
     v27 = 0;
-    v14 = [HDSharingRelationshipEntity entityWithRecipientIdentifier:v13 databaseTransaction:v11 error:&v27];
+    v14 = [HDSharingRelationshipEntity entityWithRecipientIdentifier:v13 databaseTransaction:identifierCopy error:&v27];
     v15 = v27;
     if (v15)
     {
       v16 = v15;
-      if (a5)
+      if (transaction)
       {
         v17 = v15;
         v18 = 0;
-        *a5 = v16;
+        *transaction = v16;
       }
 
       else
@@ -409,9 +409,9 @@ LABEL_19:
 
     if (v14)
     {
-      v19 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v26 = 0;
-      v20 = [v14 setDateModified:v19 databaseTransaction:v11 error:&v26];
+      v20 = [v14 setDateModified:date databaseTransaction:identifierCopy error:&v26];
       v21 = v26;
 
       if ((v20 & 1) == 0)
@@ -420,10 +420,10 @@ LABEL_19:
         v18 = v16 == 0;
         if (v16)
         {
-          if (a5)
+          if (transaction)
           {
             v22 = v16;
-            *a5 = v16;
+            *transaction = v16;
           }
 
           else
@@ -443,7 +443,7 @@ LABEL_19:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v32 = a1;
+        selfCopy = self;
         v33 = 2112;
         v34 = v13;
         _os_log_impl(&dword_228986000, v23, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Removing authorizations from non-existent relationship with recipient %@", buf, 0x16u);
@@ -453,7 +453,7 @@ LABEL_19:
     }
   }
 
-  v18 = [HDSharingAuthorizationsEntity deleteSharingAuthorizations:v12 recipientIdentifier:v13 databaseTransaction:v11 error:a5];
+  v18 = [HDSharingAuthorizationsEntity deleteSharingAuthorizations:v12 recipientIdentifier:v13 databaseTransaction:identifierCopy error:transaction];
 LABEL_20:
 
 LABEL_21:
@@ -476,27 +476,27 @@ void __108__HDSharingAuthorizationManager__removeSharingAuthorizations_recipient
   [v4 notifyObservers:v5];
 }
 
-- (BOOL)updateAuthorizationsForRecipientIdentifier:(id)a3 sharingAuthorizationsToAdd:(id)a4 sharingAuthorizationsToRemove:(id)a5 error:(id *)a6
+- (BOOL)updateAuthorizationsForRecipientIdentifier:(id)identifier sharingAuthorizationsToAdd:(id)add sharingAuthorizationsToRemove:(id)remove error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  addCopy = add;
+  removeCopy = remove;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v14 = [WeakRetained database];
+  database = [WeakRetained database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __139__HDSharingAuthorizationManager_updateAuthorizationsForRecipientIdentifier_sharingAuthorizationsToAdd_sharingAuthorizationsToRemove_error___block_invoke;
   v19[3] = &unk_27861B120;
   v19[4] = self;
-  v20 = v11;
-  v21 = v10;
-  v22 = v12;
-  v15 = v12;
-  v16 = v10;
-  v17 = v11;
-  LOBYTE(a6) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:v14 error:a6 block:v19];
+  v20 = addCopy;
+  v21 = identifierCopy;
+  v22 = removeCopy;
+  v15 = removeCopy;
+  v16 = identifierCopy;
+  v17 = addCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:database error:error block:v19];
 
-  return a6;
+  return error;
 }
 
 uint64_t __139__HDSharingAuthorizationManager_updateAuthorizationsForRecipientIdentifier_sharingAuthorizationsToAdd_sharingAuthorizationsToRemove_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -511,21 +511,21 @@ uint64_t __139__HDSharingAuthorizationManager_updateAuthorizationsForRecipientId
   return v5 & a3;
 }
 
-- (BOOL)revokeRecipientWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)revokeRecipientWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__HDSharingAuthorizationManager_revokeRecipientWithIdentifier_error___block_invoke;
   v11[3] = &unk_278613218;
   v11[4] = self;
-  v12 = v6;
-  v9 = v6;
-  LOBYTE(a4) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:v8 error:a4 block:v11];
+  v12 = identifierCopy;
+  v9 = identifierCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:database error:error block:v11];
 
-  return a4;
+  return error;
 }
 
 BOOL __69__HDSharingAuthorizationManager_revokeRecipientWithIdentifier_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -590,32 +590,32 @@ void __69__HDSharingAuthorizationManager_revokeRecipientWithIdentifier_error___b
   [v3 notifyObservers:v4];
 }
 
-- (BOOL)markSharingAuthorizationsForDeletion:(id)a3 recipientIdentifier:(id)a4 error:(id *)a5
+- (BOOL)markSharingAuthorizationsForDeletion:(id)deletion recipientIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  deletionCopy = deletion;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __96__HDSharingAuthorizationManager_markSharingAuthorizationsForDeletion_recipientIdentifier_error___block_invoke;
   v15[3] = &unk_278613218;
-  v16 = v8;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
-  LOBYTE(a5) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:v11 error:a5 block:v15];
+  v16 = deletionCopy;
+  v17 = identifierCopy;
+  v12 = identifierCopy;
+  v13 = deletionCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:database error:error block:v15];
 
-  return a5;
+  return error;
 }
 
 - (void)deleteMarkedSharingAuthorizations
 {
   v14 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
+  database = [WeakRetained database];
   v9 = 0;
-  v5 = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:v4 error:&v9 block:&__block_literal_global_194];
+  v5 = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:database error:&v9 block:&__block_literal_global_194];
   v6 = v9;
 
   if (!v5)
@@ -625,7 +625,7 @@ void __69__HDSharingAuthorizationManager_revokeRecipientWithIdentifier_error___b
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
       v13 = v6;
       _os_log_error_impl(&dword_228986000, v7, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Error removing marked sharing authorizations %{public}@", buf, 0x16u);
@@ -635,22 +635,22 @@ void __69__HDSharingAuthorizationManager_revokeRecipientWithIdentifier_error___b
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)insertOrUpdateCodableRelationships:(id)a3 syncProvenance:(int64_t)a4 error:(id *)a5
+- (BOOL)insertOrUpdateCodableRelationships:(id)relationships syncProvenance:(int64_t)provenance error:(id *)error
 {
-  v8 = a3;
+  relationshipsCopy = relationships;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v10 = [WeakRetained database];
+  database = [WeakRetained database];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __89__HDSharingAuthorizationManager_insertOrUpdateCodableRelationships_syncProvenance_error___block_invoke;
   v13[3] = &unk_278614698;
   v13[4] = self;
-  v14 = v8;
-  v15 = a4;
-  v11 = v8;
-  LOBYTE(a5) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:v10 error:a5 block:v13];
+  v14 = relationshipsCopy;
+  provenanceCopy = provenance;
+  v11 = relationshipsCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDSharingAuthorizationsEntity performWriteTransactionWithHealthDatabase:database error:error block:v13];
 
-  return a5;
+  return error;
 }
 
 uint64_t __89__HDSharingAuthorizationManager_insertOrUpdateCodableRelationships_syncProvenance_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -883,27 +883,27 @@ uint64_t __89__HDSharingAuthorizationManager_insertOrUpdateCodableRelationships_
   return result;
 }
 
-- (BOOL)insertOrUpdateRecipientIdentifier:(id)a3 sharingAuthorizations:(id)a4 dateModified:(id)a5 syncProvenance:(int64_t)a6 syncIdentity:(int64_t)a7 databaseTransaction:(id)a8 error:(id *)a9
+- (BOOL)insertOrUpdateRecipientIdentifier:(id)identifier sharingAuthorizations:(id)authorizations dateModified:(id)modified syncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity databaseTransaction:(id)transaction error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  if ([v15 type] == 1)
+  identifierCopy = identifier;
+  authorizationsCopy = authorizations;
+  modifiedCopy = modified;
+  transactionCopy = transaction;
+  if ([identifierCopy type] == 1)
   {
-    v41 = self;
-    v19 = a9;
+    selfCopy = self;
+    errorCopy2 = error;
     v45 = 0;
-    v20 = [HDSharingRelationshipEntity entityWithRecipientIdentifier:v15 databaseTransaction:v18 error:&v45];
+    v20 = [HDSharingRelationshipEntity entityWithRecipientIdentifier:identifierCopy databaseTransaction:transactionCopy error:&v45];
     v21 = v45;
     v22 = v21;
     if (!v20 && v21)
     {
-      if (a9)
+      if (error)
       {
         v23 = v21;
-        LOBYTE(v19) = 0;
-        *a9 = v22;
+        LOBYTE(errorCopy2) = 0;
+        *error = v22;
       }
 
       else
@@ -916,23 +916,23 @@ uint64_t __89__HDSharingAuthorizationManager_insertOrUpdateCodableRelationships_
 
     if (v20)
     {
-      v39 = v16;
+      v39 = authorizationsCopy;
       v44 = v21;
-      v24 = [v20 dateModifiedInDatabaseTransaction:v18 error:&v44];
+      v24 = [v20 dateModifiedInDatabaseTransaction:transactionCopy error:&v44];
       v25 = v44;
 
       if (!v24)
       {
         v27 = v25;
         v22 = v27;
-        v19 = (v27 == 0);
-        v16 = v39;
+        errorCopy2 = (v27 == 0);
+        authorizationsCopy = v39;
         if (v27)
         {
-          if (a9)
+          if (error)
           {
             v28 = v27;
-            *a9 = v22;
+            *error = v22;
           }
 
           else
@@ -944,52 +944,52 @@ uint64_t __89__HDSharingAuthorizationManager_insertOrUpdateCodableRelationships_
         goto LABEL_34;
       }
 
-      v26 = [v24 hk_isAfterOrEqualToDate:v17];
+      v26 = [v24 hk_isAfterOrEqualToDate:modifiedCopy];
 
       if (v26)
       {
-        LOBYTE(v19) = 1;
+        LOBYTE(errorCopy2) = 1;
         v22 = v25;
-        v16 = v39;
+        authorizationsCopy = v39;
 LABEL_34:
 
         goto LABEL_35;
       }
 
       v22 = v25;
-      v19 = a9;
-      v16 = v39;
+      errorCopy2 = error;
+      authorizationsCopy = v39;
     }
 
     v43 = v22;
-    v29 = [HDSharingRelationshipEntity insertOrReplaceWithRecipientIdentifier:v15 dateModified:v17 syncProvenance:a6 syncIdentity:a7 databaseTransaction:v18 error:&v43];
+    v29 = [HDSharingRelationshipEntity insertOrReplaceWithRecipientIdentifier:identifierCopy dateModified:modifiedCopy syncProvenance:provenance syncIdentity:identity databaseTransaction:transactionCopy error:&v43];
     v30 = v43;
 
     if (v29)
     {
       v40 = v29;
-      v31 = v19;
+      v31 = errorCopy2;
       v42 = v30;
-      v32 = [HDSharingAuthorizationsEntity sharingAuthorizationsForRecipientIdentifier:v15 databaseTransaction:v18 error:&v42];
+      v32 = [HDSharingAuthorizationsEntity sharingAuthorizationsForRecipientIdentifier:identifierCopy databaseTransaction:transactionCopy error:&v42];
       v22 = v42;
 
       if (v32)
       {
-        [v16 arrayByExcludingObjectsInArray:v32];
-        v33 = v19 = v16;
-        [(NSMutableDictionary *)v41->_addedAuthorizationsByRecipient setObject:v33 forKeyedSubscript:v15];
+        [authorizationsCopy arrayByExcludingObjectsInArray:v32];
+        v33 = errorCopy2 = authorizationsCopy;
+        [(NSMutableDictionary *)selfCopy->_addedAuthorizationsByRecipient setObject:v33 forKeyedSubscript:identifierCopy];
 
-        v34 = [v32 arrayByExcludingObjectsInArray:v19];
-        [(NSMutableDictionary *)v41->_removedAuthorizationsByRecipient setObject:v34 forKeyedSubscript:v15];
+        v34 = [v32 arrayByExcludingObjectsInArray:errorCopy2];
+        [(NSMutableDictionary *)selfCopy->_removedAuthorizationsByRecipient setObject:v34 forKeyedSubscript:identifierCopy];
 
-        v16 = v19;
-        LOBYTE(v19) = [HDSharingAuthorizationsEntity insertOrReplaceWithRecipientIdentifier:v15 sharingAuthorizations:v19 databaseTransaction:v18 error:v31];
+        authorizationsCopy = errorCopy2;
+        LOBYTE(errorCopy2) = [HDSharingAuthorizationsEntity insertOrReplaceWithRecipientIdentifier:identifierCopy sharingAuthorizations:errorCopy2 databaseTransaction:transactionCopy error:v31];
       }
 
       else
       {
         v22 = v22;
-        LOBYTE(v19) = v22 == 0;
+        LOBYTE(errorCopy2) = v22 == 0;
         if (v22)
         {
           if (v31)
@@ -1015,11 +1015,11 @@ LABEL_34:
       v32 = v30;
       if (v32)
       {
-        if (v19)
+        if (errorCopy2)
         {
           v35 = v32;
-          v36 = v19;
-          LOBYTE(v19) = 0;
+          v36 = errorCopy2;
+          LOBYTE(errorCopy2) = 0;
           *v36 = v32;
         }
 
@@ -1034,17 +1034,17 @@ LABEL_34:
       else
       {
         v22 = 0;
-        LOBYTE(v19) = 1;
+        LOBYTE(errorCopy2) = 1;
       }
     }
 
     goto LABEL_34;
   }
 
-  LOBYTE(v19) = 1;
+  LOBYTE(errorCopy2) = 1;
 LABEL_35:
 
-  return v19;
+  return errorCopy2;
 }
 
 void __69__HDSharingAuthorizationManager__notifyAuthorizationsAddedAndRemoved__block_invoke(uint64_t a1, void *a2)

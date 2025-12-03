@@ -5,9 +5,9 @@
 - (PSSpecifier)mainSwitchSpecifier;
 - (TPSCloudCallingDeviceListController)init;
 - (id)specifiers;
-- (void)cloudCallingDeviceController:(id)a3 didChangeDevices:(id)a4;
-- (void)setDeviceSwitchOn:(id)a3 specifier:(id)a4;
-- (void)setMainSwitchOn:(id)a3 specifier:(id)a4;
+- (void)cloudCallingDeviceController:(id)controller didChangeDevices:(id)devices;
+- (void)setDeviceSwitchOn:(id)on specifier:(id)specifier;
+- (void)setMainSwitchOn:(id)on specifier:(id)specifier;
 @end
 
 @implementation TPSCloudCallingDeviceListController
@@ -35,20 +35,20 @@
   v4 = *(&self->super.super.super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [(TPSCloudCallingDeviceListController *)self mainGroupSpecifier];
-    [v5 addObject:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    mainGroupSpecifier = [(TPSCloudCallingDeviceListController *)self mainGroupSpecifier];
+    [array addObject:mainGroupSpecifier];
 
-    v7 = [(TPSCloudCallingDeviceListController *)self mainSwitchSpecifier];
-    [v5 addObject:v7];
+    mainSwitchSpecifier = [(TPSCloudCallingDeviceListController *)self mainSwitchSpecifier];
+    [array addObject:mainSwitchSpecifier];
 
-    v8 = [(TPSCloudCallingDeviceListController *)self deviceSwitchSpecifiers];
-    if ([v8 count])
+    deviceSwitchSpecifiers = [(TPSCloudCallingDeviceListController *)self deviceSwitchSpecifiers];
+    if ([deviceSwitchSpecifiers count])
     {
-      v9 = [(TPSCloudCallingDeviceListController *)self devicesGroupSpecifier];
-      [v5 addObject:v9];
+      devicesGroupSpecifier = [(TPSCloudCallingDeviceListController *)self devicesGroupSpecifier];
+      [array addObject:devicesGroupSpecifier];
 
-      [v5 addObjectsFromArray:v8];
+      [array addObjectsFromArray:deviceSwitchSpecifiers];
     }
 
     v4 = *(&self->super.super.super.super.super.super.super.isa + v3);
@@ -103,13 +103,13 @@
           if ([v8 supportsRestrictingSecondaryCalling])
           {
             v9 = MEMORY[0x277CCACA8];
-            v10 = [v8 name];
-            v11 = [v8 tps_modelName];
-            v12 = [v9 stringWithFormat:@"%@ (%@)", v10, v11];
+            name = [v8 name];
+            tps_modelName = [v8 tps_modelName];
+            v12 = [v9 stringWithFormat:@"%@ (%@)", name, tps_modelName];
 
             v13 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v12 target:self set:sel_setDeviceSwitchOn_specifier_ get:sel_isDeviceSwitchOn_ detail:0 cell:6 edit:0];
-            v14 = [v8 uniqueID];
-            [v13 setIdentifier:v14];
+            uniqueID = [v8 uniqueID];
+            [v13 setIdentifier:uniqueID];
 
             [v19 addObject:v13];
           }
@@ -166,16 +166,16 @@
   return mainSwitchSpecifier;
 }
 
-- (void)setDeviceSwitchOn:(id)a3 specifier:(id)a4
+- (void)setDeviceSwitchOn:(id)on specifier:(id)specifier
 {
   v6 = *MEMORY[0x277D3FEB0];
-  v7 = a4;
-  v8 = a3;
-  v11 = [v7 propertyForKey:v6];
-  v9 = [v8 BOOLValue];
+  specifierCopy = specifier;
+  onCopy = on;
+  v11 = [specifierCopy propertyForKey:v6];
+  bOOLValue = [onCopy BOOLValue];
 
-  [v11 setOn:v9 animated:1];
-  v10 = [(TPSCloudCallingDeviceListController *)self cachedCellForSpecifier:v7];
+  [v11 setOn:bOOLValue animated:1];
+  v10 = [(TPSCloudCallingDeviceListController *)self cachedCellForSpecifier:specifierCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -184,16 +184,16 @@
   }
 }
 
-- (void)setMainSwitchOn:(id)a3 specifier:(id)a4
+- (void)setMainSwitchOn:(id)on specifier:(id)specifier
 {
   v6 = *MEMORY[0x277D3FEB0];
-  v7 = a4;
-  v8 = a3;
-  v11 = [v7 propertyForKey:v6];
-  v9 = [v8 BOOLValue];
+  specifierCopy = specifier;
+  onCopy = on;
+  v11 = [specifierCopy propertyForKey:v6];
+  bOOLValue = [onCopy BOOLValue];
 
-  [v11 setOn:v9 animated:1];
-  v10 = [(TPSCloudCallingDeviceListController *)self cachedCellForSpecifier:v7];
+  [v11 setOn:bOOLValue animated:1];
+  v10 = [(TPSCloudCallingDeviceListController *)self cachedCellForSpecifier:specifierCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -202,7 +202,7 @@
   }
 }
 
-- (void)cloudCallingDeviceController:(id)a3 didChangeDevices:(id)a4
+- (void)cloudCallingDeviceController:(id)controller didChangeDevices:(id)devices
 {
   v5 = TPSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

@@ -1,22 +1,22 @@
 @interface MTAnalyticsCoordinator
-- (MTAnalyticsCoordinator)initWithAlarmStorage:(id)a3;
-- (void)didDuckPlaybackForAttentionAwarenessWithId:(id)a3;
-- (void)didPostNotificationForAlarm:(id)a3 fullNotificationId:(id)a4 shortNotificationId:(id)a5 sender:(id)a6;
-- (void)didPostToneAlertWithIdentifier:(id)a3;
-- (void)didShowCoversheetForIdentifier:(id)a3;
-- (void)didStopSoundPlaybackWithId:(id)a3;
-- (void)didTearDownToneAlertWithIdentifier:(id)a3;
-- (void)didTriggerSoundPlaybackWithId:(id)a3;
-- (void)didUpdateAudioReporterId:(unint64_t)a3;
-- (void)source:(id)a3 didFireAlarm:(id)a4 triggerType:(unint64_t)a5;
+- (MTAnalyticsCoordinator)initWithAlarmStorage:(id)storage;
+- (void)didDuckPlaybackForAttentionAwarenessWithId:(id)id;
+- (void)didPostNotificationForAlarm:(id)alarm fullNotificationId:(id)id shortNotificationId:(id)notificationId sender:(id)sender;
+- (void)didPostToneAlertWithIdentifier:(id)identifier;
+- (void)didShowCoversheetForIdentifier:(id)identifier;
+- (void)didStopSoundPlaybackWithId:(id)id;
+- (void)didTearDownToneAlertWithIdentifier:(id)identifier;
+- (void)didTriggerSoundPlaybackWithId:(id)id;
+- (void)didUpdateAudioReporterId:(unint64_t)id;
+- (void)source:(id)source didFireAlarm:(id)alarm triggerType:(unint64_t)type;
 @end
 
 @implementation MTAnalyticsCoordinator
 
-- (MTAnalyticsCoordinator)initWithAlarmStorage:(id)a3
+- (MTAnalyticsCoordinator)initWithAlarmStorage:(id)storage
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storageCopy = storage;
   v20.receiver = self;
   v20.super_class = MTAnalyticsCoordinator;
   v6 = [(MTAnalyticsCoordinator *)&v20 init];
@@ -28,19 +28,19 @@
       *buf = 138543618;
       *&buf[4] = v6;
       *&buf[12] = 2114;
-      *&buf[14] = v5;
+      *&buf[14] = storageCopy;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "Initializing %{public}@ with alarmStorage:%{public}@", buf, 0x16u);
     }
 
-    objc_storeStrong(&v6->_alarmStorage, a3);
+    objc_storeStrong(&v6->_alarmStorage, storage);
     [(MTAlarmStorage *)v6->_alarmStorage registerObserver:v6];
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v9 = dispatch_queue_create("com.apple.MTAnalyticsCoordinator.serialqueue", v8);
     [(MTAnalyticsCoordinator *)v6 setSerializerQueue:v9];
 
     v10 = MEMORY[0x1E69B3790];
-    v11 = [(MTAnalyticsCoordinator *)v6 serializerQueue];
-    v12 = [v10 schedulerWithDispatchQueue:v11];
+    serializerQueue = [(MTAnalyticsCoordinator *)v6 serializerQueue];
+    v12 = [v10 schedulerWithDispatchQueue:serializerQueue];
     serializer = v6->_serializer;
     v6->_serializer = v12;
 
@@ -71,31 +71,31 @@
   return v6;
 }
 
-- (void)source:(id)a3 didFireAlarm:(id)a4 triggerType:(unint64_t)a5
+- (void)source:(id)source didFireAlarm:(id)alarm triggerType:(unint64_t)type
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  alarmCopy = alarm;
   v7 = MTLogForCategory(3);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 alarmIDString];
+    alarmIDString = [alarmCopy alarmIDString];
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v8;
+    v13 = alarmIDString;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ didFireAlarm:%{public}@", &v10, 0x16u);
   }
 
-  [(MTReportsManager *)self->_reportsManager processFiredAlarm:v6];
+  [(MTReportsManager *)self->_reportsManager processFiredAlarm:alarmCopy];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didPostNotificationForAlarm:(id)a3 fullNotificationId:(id)a4 shortNotificationId:(id)a5 sender:(id)a6
+- (void)didPostNotificationForAlarm:(id)alarm fullNotificationId:(id)id shortNotificationId:(id)notificationId sender:(id)sender
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  [(MTReportsManager *)self->_reportsManager didPostNotificationForAlarm:v10 fullNotificationId:v11 shortNotificationId:a5];
+  alarmCopy = alarm;
+  idCopy = id;
+  senderCopy = sender;
+  [(MTReportsManager *)self->_reportsManager didPostNotificationForAlarm:alarmCopy fullNotificationId:idCopy shortNotificationId:notificationId];
   if (objc_opt_respondsToSelector())
   {
     v13 = dispatch_time(0, 1000000000);
@@ -104,9 +104,9 @@
     v14[2] = __100__MTAnalyticsCoordinator_didPostNotificationForAlarm_fullNotificationId_shortNotificationId_sender___block_invoke;
     v14[3] = &unk_1E7B0D7F8;
     v14[4] = self;
-    v15 = v12;
-    v16 = v11;
-    v17 = v10;
+    v15 = senderCopy;
+    v16 = idCopy;
+    v17 = alarmCopy;
     dispatch_after(v13, MEMORY[0x1E69E96A0], v14);
   }
 }
@@ -144,128 +144,128 @@ void __100__MTAnalyticsCoordinator_didPostNotificationForAlarm_fullNotificationI
   [v3 didRetrieveDeliveredNotificationForAlarm:v2 date:v4];
 }
 
-- (void)didShowCoversheetForIdentifier:(id)a3
+- (void)didShowCoversheetForIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ didShowCoversheetForIdentifier: %{public}@", &v7, 0x16u);
   }
 
-  [(MTReportsManager *)self->_reportsManager didShowCoversheetForIdentifier:v4];
+  [(MTReportsManager *)self->_reportsManager didShowCoversheetForIdentifier:identifierCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didPostToneAlertWithIdentifier:(id)a3
+- (void)didPostToneAlertWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ didPostToneAlertWithIdentifier: %{public}@", &v7, 0x16u);
   }
 
-  [(MTReportsManager *)self->_reportsManager didPostToneAlertWithIdentifier:v4];
+  [(MTReportsManager *)self->_reportsManager didPostToneAlertWithIdentifier:identifierCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didTearDownToneAlertWithIdentifier:(id)a3
+- (void)didTearDownToneAlertWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ didTearDownToneAlertWithIdentifier: %{public}@", &v7, 0x16u);
   }
 
-  [(MTReportsManager *)self->_reportsManager didTearDownToneAlertWithIdentifier:v4];
+  [(MTReportsManager *)self->_reportsManager didTearDownToneAlertWithIdentifier:identifierCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didDuckPlaybackForAttentionAwarenessWithId:(id)a3
+- (void)didDuckPlaybackForAttentionAwarenessWithId:(id)id
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = idCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ didDuckPlaybackForAttentionAwarenessWithId: %{public}@", &v7, 0x16u);
   }
 
-  [(MTReportsManager *)self->_reportsManager didDuckPlaybackForAttentionAwarenessWithId:v4];
+  [(MTReportsManager *)self->_reportsManager didDuckPlaybackForAttentionAwarenessWithId:idCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didTriggerSoundPlaybackWithId:(id)a3
+- (void)didTriggerSoundPlaybackWithId:(id)id
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = idCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ didTriggerSoundPlaybackWithId: %{public}@", &v7, 0x16u);
   }
 
-  [(MTReportsManager *)self->_reportsManager didTriggerSoundPlaybackWithId:v4];
+  [(MTReportsManager *)self->_reportsManager didTriggerSoundPlaybackWithId:idCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didUpdateAudioReporterId:(unint64_t)a3
+- (void)didUpdateAudioReporterId:(unint64_t)id
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = a3;
+    idCopy = id;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ didUpdateAudioReporterId: %lu", &v7, 0x16u);
   }
 
-  [(MTReportsManager *)self->_reportsManager didUpdateAudioReporterId:a3];
+  [(MTReportsManager *)self->_reportsManager didUpdateAudioReporterId:id];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didStopSoundPlaybackWithId:(id)a3
+- (void)didStopSoundPlaybackWithId:(id)id
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = idCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ didStopSoundPlaybackWithId: %{public}@", &v7, 0x16u);
   }
 
-  [(MTReportsManager *)self->_reportsManager didStopSoundPlaybackWithId:v4];
+  [(MTReportsManager *)self->_reportsManager didStopSoundPlaybackWithId:idCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 

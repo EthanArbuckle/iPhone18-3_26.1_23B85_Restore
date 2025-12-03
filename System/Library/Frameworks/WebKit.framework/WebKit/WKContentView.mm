@@ -297,20 +297,20 @@
   v8 = [-[WKContentView webView](self "webView")];
   if (v8 == 1)
   {
-    v9 = 1;
+    isEnabledByDefault = 1;
   }
 
   else if (v8 == 2)
   {
-    v9 = 0;
+    isEnabledByDefault = 0;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DC988] isEnabledByDefault];
+    isEnabledByDefault = [MEMORY[0x1E69DC988] isEnabledByDefault];
   }
 
-  [v7 setEnabled:v9];
+  [v7 setEnabled:isEnabledByDefault];
   if (![(WKContentView *)self shouldUseAsyncInteractions])
   {
     v10 = self->_dragDropInteractionState.m_defaultDropPreviews.m_impl.m_table;
@@ -374,8 +374,8 @@
     }
 
     [(WKKeyboardScrollViewAnimator *)v6 setDelegate:self];
-    v8 = [(WKContentView *)self layer];
-    [v8 addObserver:self forKeyPath:@"transform" options:4 context:WKContentViewKVOTransformContext];
+    layer = [(WKContentView *)self layer];
+    [layer addObserver:self forKeyPath:@"transform" options:4 context:WKContentViewKVOTransformContext];
     v9 = [objc_alloc(MEMORY[0x1E69DCFC8]) initWithTarget:0 action:0];
     v10 = self->_touchActionLeftSwipeGestureRecognizer.m_ptr;
     self->_touchActionLeftSwipeGestureRecognizer.m_ptr = v9;
@@ -514,8 +514,8 @@
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v33 = [(WKContentView *)self deferringGestures];
-    v34 = [(NSArray *)v33 countByEnumeratingWithState:&v77 objects:v81 count:16];
+    deferringGestures = [(WKContentView *)self deferringGestures];
+    v34 = [(NSArray *)deferringGestures countByEnumeratingWithState:&v77 objects:v81 count:16];
     if (v34)
     {
       v35 = *v78;
@@ -525,7 +525,7 @@
         {
           if (*v78 != v35)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(deferringGestures);
           }
 
           v37 = *(*(&v77 + 1) + 8 * i);
@@ -533,7 +533,7 @@
           [(WKContentView *)self addGestureRecognizer:v37];
         }
 
-        v34 = [(NSArray *)v33 countByEnumeratingWithState:&v77 objects:v81 count:16];
+        v34 = [(NSArray *)deferringGestures countByEnumeratingWithState:&v77 objects:v81 count:16];
       }
 
       while (v34);
@@ -716,9 +716,9 @@
     }
 
     [(WKContentView *)self _registerPreview];
-    v66 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v66 addObserver:self selector:sel__willHideMenu_ name:*MEMORY[0x1E69DE0E8] object:0];
-    [v66 addObserver:self selector:sel__keyboardDidRequestDismissal_ name:*MEMORY[0x1E69DE000] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__willHideMenu_ name:*MEMORY[0x1E69DE0E8] object:0];
+    [defaultCenter addObserver:self selector:sel__keyboardDidRequestDismissal_ name:*MEMORY[0x1E69DE000] object:0];
     v67 = [[WKActionSheetAssistant alloc] initWithView:self];
     v68 = self->_actionSheetAssistant.m_ptr;
     self->_actionSheetAssistant.m_ptr = v67;
@@ -827,10 +827,10 @@
   [WKContentView(WKInteraction) _updateRuntimeProtocolConformanceIfNeeded]::hasUpdatedProtocolConformance = 1;
   if ((v2 & 1) == 0)
   {
-    v4 = [(WKContentView *)self shouldUseAsyncInteractions];
+    shouldUseAsyncInteractions = [(WKContentView *)self shouldUseAsyncInteractions];
     v5 = qword_1ED641418;
     v6 = os_log_type_enabled(qword_1ED641418, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (shouldUseAsyncInteractions)
     {
       if (v6)
       {
@@ -888,11 +888,11 @@
 
 - (void)_installVisibilityPropagationViews
 {
-  v3 = [(WKContentView *)self _createVisibilityPropagationView];
-  if (v3)
+  _createVisibilityPropagationView = [(WKContentView *)self _createVisibilityPropagationView];
+  if (_createVisibilityPropagationView)
   {
 
-    [(WKContentView *)self addSubview:v3];
+    [(WKContentView *)self addSubview:_createVisibilityPropagationView];
   }
 
   else
@@ -1003,9 +1003,9 @@
 
 - (void)_accessibilityRegisterUIProcessTokens
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  WebCore::Accessibility::newAccessibilityRemoteToken(&v19, v4, v5);
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  WebCore::Accessibility::newAccessibilityRemoteToken(&v19, uUIDString, v5);
   if (v19)
   {
     v6 = *(self->_page.m_ptr + 44);
@@ -1024,7 +1024,7 @@
         v9 = 0;
       }
 
-      objc_setAssociatedObject(self, [@"ax-uuid" hash], v3, 1);
+      objc_setAssociatedObject(self, [@"ax-uuid" hash], uUID, 1);
       v10 = [@"ax-pid" hash];
       objc_setAssociatedObject(self, v10, [MEMORY[0x1E696AD98] numberWithInt:v9], 1);
       v11 = v19;
@@ -1083,7 +1083,7 @@
     [(WKContentView *)self setUpInteraction];
     IsBeingCaptured = WebKit::WebPageProxy::setScreenIsBeingCaptured(self->_page.m_ptr, [(WKContentView *)self screenIsBeingCaptured]);
     WTF::RunLoop::mainSingleton(IsBeingCaptured);
-    v4 = self;
+    selfCopy = self;
     v5 = WTF::fastMalloc(0x10);
     *v5 = &unk_1F1144F88;
     v5[1] = self;
@@ -1143,10 +1143,10 @@
     isRectilinear = 1;
   }
 
-  v11 = [(WKContentView *)self layer];
-  if (v11)
+  layer = [(WKContentView *)self layer];
+  if (layer)
   {
-    [v11 transform];
+    [layer transform];
     v12 = *&v65.m_p1;
   }
 
@@ -1461,9 +1461,9 @@ LABEL_45:
 - (void)_configureMouseGestureRecognizer
 {
   m_ptr = self->_mouseInteraction.m_ptr;
-  v3 = [(WKContentView *)self shouldUseMouseGestureRecognizer];
+  shouldUseMouseGestureRecognizer = [(WKContentView *)self shouldUseMouseGestureRecognizer];
 
-  [(WKMouseInteraction *)m_ptr setEnabled:v3];
+  [(WKMouseInteraction *)m_ptr setEnabled:shouldUseMouseGestureRecognizer];
 }
 
 - (BOOL)shouldUseMouseGestureRecognizer
@@ -1472,7 +1472,7 @@ LABEL_45:
   {
     v10 = v2;
     v11 = v3;
-    v8 = self;
+    selfCopy = self;
     isNews = WTF::IOSApplication::isNews(self);
     if ((isNews & 1) == 0 && (WTF::IOSApplication::isStocks(isNews) & 1) == 0)
     {
@@ -1494,7 +1494,7 @@ LABEL_45:
 LABEL_7:
     _MergedGlobals_921 = v4;
     byte_1EB01D9E9 = 1;
-    self = v8;
+    self = selfCopy;
     return (self->_mouseEventPolicy != 1) & v4;
   }
 
@@ -1637,18 +1637,18 @@ LABEL_7:
 
   else
   {
-    v4 = self;
+    selfCopy4 = self;
     if ([(WKContentView *)self selectionHonorsOverflowScrolling])
     {
       v5 = *(self->_page.m_ptr + 4);
-      v4 = self;
+      selfCopy4 = self;
       if (*(v5 + 800) == 1)
       {
         v17 = *(v5 + 672);
         v18 = *(v5 + 688);
         v6 = [(WKContentView *)self _viewForLayerID:&v17];
         v7 = v6;
-        v4 = self;
+        selfCopy4 = self;
         if (v6)
         {
           v8 = v6;
@@ -1656,9 +1656,9 @@ LABEL_7:
           v16 = 0u;
           v13 = 0u;
           v14 = 0u;
-          v9 = [(WKContentView *)self allViewsIntersectingSelectionRange];
-          v10 = [(NSArray *)v9 countByEnumeratingWithState:&v13 objects:&v17 count:16];
-          v4 = v7;
+          allViewsIntersectingSelectionRange = [(WKContentView *)self allViewsIntersectingSelectionRange];
+          v10 = [(NSArray *)allViewsIntersectingSelectionRange countByEnumeratingWithState:&v13 objects:&v17 count:16];
+          selfCopy4 = v7;
           if (v10)
           {
             v11 = *v14;
@@ -1668,17 +1668,17 @@ LABEL_7:
               {
                 if (*v14 != v11)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(allViewsIntersectingSelectionRange);
                 }
 
                 if (v7 != *(*(&v13 + 1) + 8 * i) && ![(UIView *)v7 _wk_isAncestorOf:?])
                 {
-                  v4 = self;
+                  selfCopy4 = self;
                   goto LABEL_19;
                 }
               }
 
-              v10 = [(NSArray *)v9 countByEnumeratingWithState:&v13 objects:&v17 count:16];
+              v10 = [(NSArray *)allViewsIntersectingSelectionRange countByEnumeratingWithState:&v13 objects:&v17 count:16];
               if (v10)
               {
                 continue;
@@ -1687,7 +1687,7 @@ LABEL_7:
               break;
             }
 
-            v4 = v7;
+            selfCopy4 = v7;
           }
 
 LABEL_19:
@@ -1695,7 +1695,7 @@ LABEL_19:
       }
     }
 
-    objc_storeWeak(&self->_lastInteractionLocation.y, v4);
+    objc_storeWeak(&self->_lastInteractionLocation.y, selfCopy4);
     return objc_loadWeak(&self->_lastInteractionLocation.y);
   }
 }
@@ -1740,11 +1740,11 @@ LABEL_19:
       }
 
       [(UIPreviewItemController *)v4 setDelegate:self];
-      v6 = [(UIPreviewItemController *)self->_previewItemController.m_ptr presentationGestureRecognizer];
-      v7 = v6;
-      if (v6)
+      presentationGestureRecognizer = [(UIPreviewItemController *)self->_previewItemController.m_ptr presentationGestureRecognizer];
+      v7 = presentationGestureRecognizer;
+      if (presentationGestureRecognizer)
       {
-        v8 = v6;
+        v8 = presentationGestureRecognizer;
       }
 
       v9 = self->_previewGestureRecognizer.m_ptr;
@@ -1755,11 +1755,11 @@ LABEL_19:
 
       if (objc_opt_respondsToSelector())
       {
-        v10 = [(UIPreviewItemController *)self->_previewItemController.m_ptr presentationSecondaryGestureRecognizer];
-        v11 = v10;
-        if (v10)
+        presentationSecondaryGestureRecognizer = [(UIPreviewItemController *)self->_previewItemController.m_ptr presentationSecondaryGestureRecognizer];
+        v11 = presentationSecondaryGestureRecognizer;
+        if (presentationSecondaryGestureRecognizer)
         {
-          v12 = v10;
+          v12 = presentationSecondaryGestureRecognizer;
         }
 
         v13 = self->_previewSecondaryGestureRecognizer.m_ptr;
@@ -1836,11 +1836,11 @@ LABEL_19:
 
 - (void)_updateTextInputTraitsForInteractionTintColor
 {
-  v3 = [(WKContentView *)self _cascadeInteractionTintColor];
-  [(UITextInputTraits *)self->_legacyTextInputTraits.m_ptr _setColorsToMatchTintColor:v3];
+  _cascadeInteractionTintColor = [(WKContentView *)self _cascadeInteractionTintColor];
+  [(UITextInputTraits *)self->_legacyTextInputTraits.m_ptr _setColorsToMatchTintColor:_cascadeInteractionTintColor];
   m_ptr = self->_extendedTextInputTraits.m_ptr;
 
-  [(WKExtendedTextInputTraits *)m_ptr setSelectionColorsToMatchTintColor:v3];
+  [(WKExtendedTextInputTraits *)m_ptr setSelectionColorsToMatchTintColor:_cascadeInteractionTintColor];
 }
 
 - (id)_cascadeInteractionTintColor
@@ -1892,7 +1892,7 @@ LABEL_8:
       }
 
       WebCore::cocoaColor(&v18, &v19, v5);
-      v9 = v18;
+      tintColor = v18;
       v15 = *(v6 + 408);
       if ((v19 & 0x8000000000000) != 0)
       {
@@ -1906,17 +1906,17 @@ LABEL_8:
 
       if ((v15 & 1) == 0)
       {
-        if (v9)
+        if (tintColor)
         {
-          v16 = v9;
+          v16 = tintColor;
         }
 
-        return v9;
+        return tintColor;
       }
 
-      v8 = v9;
+      v8 = tintColor;
 LABEL_10:
-      v9 = [(WKContentView *)self tintColor];
+      tintColor = [(WKContentView *)self tintColor];
       if ([(WKContentView *)self _hasCustomTintColor])
       {
         if (v8)
@@ -1930,7 +1930,7 @@ LABEL_10:
         return v8;
       }
 
-      return v9;
+      return tintColor;
     }
   }
 
@@ -1948,14 +1948,14 @@ LABEL_10:
   }
 
   v4 = objc_opt_new();
-  v5 = [v4 tintColor];
-  WebCore::colorFromCocoaColor(&v21, v5, v6);
+  tintColor = [v4 tintColor];
+  WebCore::colorFromCocoaColor(&v21, tintColor, v6);
   if (v4)
   {
   }
 
-  v7 = [(WKContentView *)self tintColor];
-  WebCore::colorFromCocoaColor(&v20, v7, v8);
+  tintColor2 = [(WKContentView *)self tintColor];
+  WebCore::colorFromCocoaColor(&v20, tintColor2, v8);
   v10 = v20;
   if ((v21 & 0x8000000000000) == 0)
   {
@@ -2094,10 +2094,10 @@ LABEL_13:
       [(WKContentView *)self convertPoint:[(WKContentView *)self webView] fromView:self->_lastSelectionExtentPoint.point.x, self->_lastSelectionExtentPoint.point.y];
       v7 = v6;
       v9 = v8;
-      v10 = [(WKContentView *)self _hasFocusedElement];
+      _hasFocusedElement = [(WKContentView *)self _hasFocusedElement];
       respectSelectionAnchor = self->_lastSelectionExtentPoint.respectSelectionAnchor;
 
-      [(WKContentView *)self updateSelectionWithExtentPoint:v10 hasFocusedElement:respectSelectionAnchor respectSelectionAnchor:&__block_literal_global_1426 completionHandler:v7, v9];
+      [(WKContentView *)self updateSelectionWithExtentPoint:_hasFocusedElement hasFocusedElement:respectSelectionAnchor respectSelectionAnchor:&__block_literal_global_1426 completionHandler:v7, v9];
       break;
     case 1:
       [(WKContentView *)self convertPoint:[(WKContentView *)self webView] fromView:self->_lastSelectionTouch.point.x, self->_lastSelectionTouch.point.y];
@@ -2255,8 +2255,8 @@ LABEL_13:
     BYTE3(self->_dataListTextSuggestions.m_ptr) = 0;
     if (self->_interactionViewsContainerView.m_ptr)
     {
-      v13 = [(WKContentView *)self layer];
-      [v13 removeObserver:self forKeyPath:@"transform" context:WKContentViewKVOTransformContext];
+      layer = [(WKContentView *)self layer];
+      [layer removeObserver:self forKeyPath:@"transform" context:WKContentViewKVOTransformContext];
       [(UIView *)self->_interactionViewsContainerView.m_ptr removeFromSuperview];
       v14 = self->_interactionViewsContainerView.m_ptr;
       self->_interactionViewsContainerView.m_ptr = 0;
@@ -2277,8 +2277,8 @@ LABEL_13:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v15 = [(WKContentView *)self deferringGestures];
-    v16 = [(NSArray *)v15 countByEnumeratingWithState:&v38 objects:v84 count:16];
+    deferringGestures = [(WKContentView *)self deferringGestures];
+    v16 = [(NSArray *)deferringGestures countByEnumeratingWithState:&v38 objects:v84 count:16];
     if (v16)
     {
       v17 = *v39;
@@ -2288,7 +2288,7 @@ LABEL_13:
         {
           if (*v39 != v17)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(deferringGestures);
           }
 
           v19 = *(*(&v38 + 1) + 8 * i);
@@ -2296,7 +2296,7 @@ LABEL_13:
           [(WKContentView *)self removeGestureRecognizer:v19];
         }
 
-        v16 = [(NSArray *)v15 countByEnumeratingWithState:&v38 objects:v84 count:16];
+        v16 = [(NSArray *)deferringGestures countByEnumeratingWithState:&v38 objects:v84 count:16];
       }
 
       while (v16);

@@ -1,7 +1,7 @@
 @interface DOCUnicode
-+ (id)nonBreakingSpaceWithZeroWidth:(BOOL)a3;
-+ (id)uc:(id)a3;
-+ (int64_t)layoutDirectionForUIDirection:(int64_t)a3;
++ (id)nonBreakingSpaceWithZeroWidth:(BOOL)width;
++ (id)uc:(id)uc;
++ (int64_t)layoutDirectionForUIDirection:(int64_t)direction;
 - (_TtC26DocumentManagerExecutables10DOCUnicode)init;
 @end
 
@@ -14,7 +14,7 @@
   return result;
 }
 
-+ (id)uc:(id)a3
++ (id)uc:(id)uc
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -30,9 +30,9 @@
   return v9;
 }
 
-+ (id)nonBreakingSpaceWithZeroWidth:(BOOL)a3
++ (id)nonBreakingSpaceWithZeroWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     if (one-time initialization token for nonBreakingSpace_zeroWidth != -1)
     {
@@ -57,9 +57,9 @@
   return v4;
 }
 
-+ (int64_t)layoutDirectionForUIDirection:(int64_t)a3
++ (int64_t)layoutDirectionForUIDirection:(int64_t)direction
 {
-  if (a3 == 1)
+  if (direction == 1)
   {
     return 2;
   }

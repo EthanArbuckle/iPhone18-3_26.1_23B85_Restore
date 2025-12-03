@@ -1,22 +1,22 @@
 @interface AVInfoPanelDescriptionViewController
-- (AVInfoPanelDescriptionViewController)initWithCoder:(id)a3;
-- (AVInfoPanelDescriptionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AVInfoPanelDescriptionViewController)initWithCoder:(id)coder;
+- (AVInfoPanelDescriptionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (AVPlayerController)playerController;
 - (BOOL)hasContent;
 - (CGSize)preferredContentSize;
 - (id)_durationString;
-- (id)_metadataItemForIdentifiers:(id)a3;
-- (id)_releaseDateStringStyle:(int64_t)a3;
-- (void)_loadPosterFromMetadataItem:(id)a3;
+- (id)_metadataItemForIdentifiers:(id)identifiers;
+- (id)_releaseDateStringStyle:(int64_t)style;
+- (void)_loadPosterFromMetadataItem:(id)item;
 - (void)_updateActionButtons;
 - (void)_updateViewsWithNewMetadata;
 - (void)loadView;
-- (void)setActions:(id)a3;
-- (void)setClosedCaptioned:(BOOL)a3;
-- (void)setDuration:(double)a3;
-- (void)setMetadata:(id)a3;
+- (void)setActions:(id)actions;
+- (void)setClosedCaptioned:(BOOL)captioned;
+- (void)setDuration:(double)duration;
+- (void)setMetadata:(id)metadata;
 - (void)viewDidLoad;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation AVInfoPanelDescriptionViewController
@@ -58,7 +58,7 @@
   return v7;
 }
 
-- (id)_releaseDateStringStyle:(int64_t)a3
+- (id)_releaseDateStringStyle:(int64_t)style
 {
   v22[5] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E6987FE0] identifierForKey:*MEMORY[0x1E6987688] keySpace:*MEMORY[0x1E6987838]];
@@ -74,18 +74,18 @@
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:5];
 
   v11 = [(AVInfoPanelDescriptionViewController *)self _metadataItemForIdentifiers:v10];
-  v12 = [v11 dateValue];
-  v13 = [v11 stringValue];
-  v14 = [(AVInfoPanelDescriptionViewController *)self creationDate];
+  dateValue = [v11 dateValue];
+  stringValue = [v11 stringValue];
+  creationDate = [(AVInfoPanelDescriptionViewController *)self creationDate];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __64__AVInfoPanelDescriptionViewController__releaseDateStringStyle___block_invoke;
   v21[3] = &unk_1E7207B90;
   v21[4] = self;
-  v21[5] = a3;
+  v21[5] = style;
   v15 = _Block_copy(v21);
   v16 = v15;
-  if (v12)
+  if (dateValue)
   {
     v17 = v15[2];
 LABEL_3:
@@ -93,13 +93,13 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  if (!v13)
+  if (!stringValue)
   {
     v17 = v15[2];
     goto LABEL_3;
   }
 
-  v18 = v13;
+  v18 = stringValue;
 LABEL_6:
   v19 = v18;
 
@@ -152,16 +152,16 @@ LABEL_7:
   return v13;
 }
 
-- (void)_loadPosterFromMetadataItem:(id)a3
+- (void)_loadPosterFromMetadataItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__AVInfoPanelDescriptionViewController__loadPosterFromMetadataItem___block_invoke;
   v6[3] = &unk_1E7209FB0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = itemCopy;
+  selfCopy = self;
+  v5 = itemCopy;
   [v5 loadValuesAsynchronouslyForKeys:&unk_1EFF12E30 completionHandler:v6];
 }
 
@@ -232,9 +232,9 @@ void __68__AVInfoPanelDescriptionViewController__loadPosterFromMetadataItem___bl
 - (void)_updateViewsWithNewMetadata
 {
   v86[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AVInfoPanelDescriptionViewController *)self metadata];
+  metadata = [(AVInfoPanelDescriptionViewController *)self metadata];
 
-  if (v3)
+  if (metadata)
   {
     v86[0] = *MEMORY[0x1E6987640];
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:1];
@@ -288,14 +288,14 @@ void __68__AVInfoPanelDescriptionViewController__loadPosterFromMetadataItem___bl
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v77 count:2];
     v66 = [(AVInfoPanelDescriptionViewController *)self _metadataItemForIdentifiers:v25];
 
-    v26 = [v76 stringValue];
+    stringValue = [v76 stringValue];
     v69 = v6;
-    v27 = [v6 stringValue];
+    stringValue2 = [v6 stringValue];
     v67 = v14;
-    v28 = [v14 stringValue];
+    stringValue3 = [v14 stringValue];
     v68 = v9;
-    v29 = [v9 stringValue];
-    if ([v29 length])
+    stringValue4 = [v9 stringValue];
+    if ([stringValue4 length])
     {
 
       v30 = 0;
@@ -303,95 +303,95 @@ void __68__AVInfoPanelDescriptionViewController__loadPosterFromMetadataItem___bl
 
     else
     {
-      v30 = v29;
-      v29 = v27;
+      v30 = stringValue4;
+      stringValue4 = stringValue2;
     }
 
     v31 = 0;
     v70 = v30;
-    v71 = v29;
+    v71 = stringValue4;
     if (v19 && v75)
     {
-      v32 = v28;
-      v33 = v26;
-      v34 = [v19 value];
+      v32 = stringValue3;
+      v33 = stringValue;
+      value = [v19 value];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v36 = [v19 stringValue];
+        stringValue5 = [v19 stringValue];
       }
 
       else
       {
-        v37 = [v19 value];
+        value2 = [v19 value];
         v38 = objc_opt_respondsToSelector();
 
         if (v38)
         {
-          v39 = [v19 value];
-          v36 = [v39 stringValue];
+          value3 = [v19 value];
+          stringValue5 = [value3 stringValue];
         }
 
         else
         {
-          v36 = 0;
+          stringValue5 = 0;
         }
       }
 
-      v40 = [v75 value];
+      value4 = [v75 value];
       objc_opt_class();
       v41 = objc_opt_isKindOfClass();
 
       if (v41)
       {
-        v42 = [v75 stringValue];
+        stringValue6 = [v75 stringValue];
       }
 
       else
       {
-        v43 = [v75 value];
+        value5 = [v75 value];
         v44 = objc_opt_respondsToSelector();
 
         if (v44)
         {
-          v45 = [v75 value];
-          v42 = [v45 stringValue];
+          value6 = [v75 value];
+          stringValue6 = [value6 stringValue];
         }
 
         else
         {
-          v42 = 0;
+          stringValue6 = 0;
         }
       }
 
       v46 = MEMORY[0x1E696AEC0];
       v47 = AVLocalizedString(@"Season %@, Episode %@");
-      v31 = [v46 stringWithFormat:v47, v36, v42];
+      v31 = [v46 stringWithFormat:v47, stringValue5, stringValue6];
 
-      v26 = v33;
-      v28 = v32;
+      stringValue = v33;
+      stringValue3 = v32;
       v30 = v70;
-      v29 = v71;
+      stringValue4 = v71;
     }
 
     v48 = self->_descriptionView;
     v63 = v31;
     [(AVInfoPanelDescriptionView *)v48 setSeasonEpisodeText:v31];
-    [(AVInfoPanelDescriptionView *)v48 setTitleText:v29];
+    [(AVInfoPanelDescriptionView *)v48 setTitleText:stringValue4];
     [(AVInfoPanelDescriptionView *)v48 setSecondaryTitleText:v30];
-    v65 = v26;
-    [(AVInfoPanelDescriptionView *)v48 setSummaryText:v26];
-    v64 = v28;
-    [(AVInfoPanelDescriptionView *)v48 setGenreText:v28];
+    v65 = stringValue;
+    [(AVInfoPanelDescriptionView *)v48 setSummaryText:stringValue];
+    v64 = stringValue3;
+    [(AVInfoPanelDescriptionView *)v48 setGenreText:stringValue3];
     v49 = [(AVInfoPanelDescriptionViewController *)self _releaseDateStringStyle:0];
     [(AVInfoPanelDescriptionView *)v48 setDateText:v49];
-    v50 = [v73 numberValue];
-    v51 = [v50 integerValue];
-    v52 = [v74 numberValue];
-    [v52 floatValue];
-    [(AVInfoPanelDescriptionView *)v48 setTomatoFreshness:v51 rating:v74 == 0 hidden:?];
+    numberValue = [v73 numberValue];
+    integerValue = [numberValue integerValue];
+    numberValue2 = [v74 numberValue];
+    [numberValue2 floatValue];
+    [(AVInfoPanelDescriptionView *)v48 setTomatoFreshness:integerValue rating:v74 == 0 hidden:?];
 
     v53 = v72;
     v54 = [AVMediaContentRatings displayStringForMetadataItem:v72];
@@ -401,8 +401,8 @@ void __68__AVInfoPanelDescriptionViewController__loadPosterFromMetadataItem___bl
 
     if (v57)
     {
-      v58 = [v57 image];
-      v59 = [v58 imageWithBaselineOffsetFromBottom:1.0];
+      image = [v57 image];
+      v59 = [image imageWithBaselineOffsetFromBottom:1.0];
 
       if (![v57 isImageMask])
       {
@@ -444,15 +444,15 @@ LABEL_27:
   [(AVInfoPanelDescriptionViewController *)self _updateActionButtons];
 }
 
-- (id)_metadataItemForIdentifiers:(id)a3
+- (id)_metadataItemForIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  identifiersCopy = identifiers;
+  v5 = [identifiersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -463,23 +463,23 @@ LABEL_3:
     {
       if (*v16 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(identifiersCopy);
       }
 
       v9 = *(*(&v15 + 1) + 8 * v8);
       v10 = MEMORY[0x1E6987FE0];
-      v11 = [(AVInfoPanelDescriptionViewController *)self metadata];
-      v12 = [v10 metadataItemsFromArray:v11 filteredByIdentifier:v9];
-      v13 = [v12 firstObject];
+      metadata = [(AVInfoPanelDescriptionViewController *)self metadata];
+      v12 = [v10 metadataItemsFromArray:metadata filteredByIdentifier:v9];
+      firstObject = [v12 firstObject];
 
-      if (v13)
+      if (firstObject)
       {
         break;
       }
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [identifiersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -493,10 +493,10 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v13 = 0;
+    firstObject = 0;
   }
 
-  return v13;
+  return firstObject;
 }
 
 - (CGSize)preferredContentSize
@@ -509,31 +509,31 @@ LABEL_9:
   return result;
 }
 
-- (void)setActions:(id)a3
+- (void)setActions:(id)actions
 {
-  v5 = a3;
+  actionsCopy = actions;
   actions = self->_actions;
-  if (actions != v5)
+  if (actions != actionsCopy)
   {
-    v7 = v5;
-    actions = [actions isEqual:v5];
-    v5 = v7;
+    v7 = actionsCopy;
+    actions = [actions isEqual:actionsCopy];
+    actionsCopy = v7;
     if ((actions & 1) == 0)
     {
-      objc_storeStrong(&self->_actions, a3);
+      objc_storeStrong(&self->_actions, actions);
       actions = [(AVInfoPanelDescriptionViewController *)self _updateActionButtons];
-      v5 = v7;
+      actionsCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](actions, v5);
+  MEMORY[0x1EEE66BB8](actions, actionsCopy);
 }
 
 - (BOOL)hasContent
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AVInfoPanelDescriptionView *)self->_descriptionView posterImage];
-  if (v3)
+  posterImage = [(AVInfoPanelDescriptionView *)self->_descriptionView posterImage];
+  if (posterImage)
   {
     v4 = 1;
   }
@@ -560,43 +560,43 @@ LABEL_9:
   return v4;
 }
 
-- (void)setClosedCaptioned:(BOOL)a3
+- (void)setClosedCaptioned:(BOOL)captioned
 {
-  if (self->_closedCaptioned != a3)
+  if (self->_closedCaptioned != captioned)
   {
-    self->_closedCaptioned = a3;
-    [(AVInfoPanelDescriptionView *)self->_descriptionView setClosedCaptionBadgeHidden:!a3];
+    self->_closedCaptioned = captioned;
+    [(AVInfoPanelDescriptionView *)self->_descriptionView setClosedCaptionBadgeHidden:!captioned];
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (self->_duration != a3)
+  if (self->_duration != duration)
   {
-    self->_duration = a3;
+    self->_duration = duration;
     v5 = self->_descriptionView;
-    v6 = [(AVInfoPanelDescriptionViewController *)self _durationString];
-    [(AVInfoPanelDescriptionView *)v5 setDurationText:v6];
+    _durationString = [(AVInfoPanelDescriptionViewController *)self _durationString];
+    [(AVInfoPanelDescriptionView *)v5 setDurationText:_durationString];
   }
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v5 = a3;
-  if (self->_metadata != v5)
+  metadataCopy = metadata;
+  if (self->_metadata != metadataCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_metadata, a3);
+    v6 = metadataCopy;
+    objc_storeStrong(&self->_metadata, metadata);
     [(AVInfoPanelDescriptionViewController *)self _updateViewsWithNewMetadata];
-    v5 = v6;
+    metadataCopy = v6;
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = AVInfoPanelDescriptionViewController;
-  [(AVInfoPanelDescriptionViewController *)&v4 willMoveToParentViewController:a3];
+  [(AVInfoPanelDescriptionViewController *)&v4 willMoveToParentViewController:controller];
   [(AVInfoPanelDescriptionViewController *)self _updateViewsWithNewMetadata];
 }
 
@@ -606,8 +606,8 @@ LABEL_9:
   v5.super_class = AVInfoPanelDescriptionViewController;
   [(AVInfoPanelDescriptionViewController *)&v5 viewDidLoad];
   v3 = self->_descriptionView;
-  v4 = [(AVInfoPanelDescriptionViewController *)self _durationString];
-  [(AVInfoPanelDescriptionView *)v3 setDurationText:v4];
+  _durationString = [(AVInfoPanelDescriptionViewController *)self _durationString];
+  [(AVInfoPanelDescriptionView *)v3 setDurationText:_durationString];
 
   [(AVInfoPanelDescriptionView *)v3 setClosedCaptionBadgeHidden:[(AVInfoPanelDescriptionViewController *)self isClosedCaptioned]^ 1];
   [(AVInfoPanelDescriptionViewController *)self _updateActionButtons];
@@ -637,21 +637,21 @@ LABEL_9:
   [(AVInfoPanelDescriptionView *)v10 setTextColor:v11];
 
   [v3 addSubview:self->_descriptionView];
-  v24 = [(AVInfoPanelDescriptionView *)self->_descriptionView topAnchor];
-  v23 = [v3 topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:0.0];
+  topAnchor = [(AVInfoPanelDescriptionView *)self->_descriptionView topAnchor];
+  topAnchor2 = [v3 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   v25[0] = v22;
-  v21 = [(AVInfoPanelDescriptionView *)self->_descriptionView bottomAnchor];
-  v20 = [v3 bottomAnchor];
-  v12 = [v21 constraintEqualToAnchor:v20 constant:-4.0];
+  bottomAnchor = [(AVInfoPanelDescriptionView *)self->_descriptionView bottomAnchor];
+  bottomAnchor2 = [v3 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0];
   v25[1] = v12;
-  v13 = [(AVInfoPanelDescriptionView *)self->_descriptionView leftAnchor];
-  v14 = [v3 leftAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:24.0];
+  leftAnchor = [(AVInfoPanelDescriptionView *)self->_descriptionView leftAnchor];
+  leftAnchor2 = [v3 leftAnchor];
+  v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:24.0];
   v25[2] = v15;
-  v16 = [(AVInfoPanelDescriptionView *)self->_descriptionView rightAnchor];
-  v17 = [v3 rightAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:-24.0];
+  rightAnchor = [(AVInfoPanelDescriptionView *)self->_descriptionView rightAnchor];
+  rightAnchor2 = [v3 rightAnchor];
+  v18 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-24.0];
   v25[3] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
 
@@ -659,11 +659,11 @@ LABEL_9:
   [(AVInfoPanelDescriptionViewController *)self _updateActionButtons];
 }
 
-- (AVInfoPanelDescriptionViewController)initWithCoder:(id)a3
+- (AVInfoPanelDescriptionViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = AVInfoPanelDescriptionViewController;
-  v3 = [(AVInfoPanelDescriptionViewController *)&v7 initWithCoder:a3];
+  v3 = [(AVInfoPanelDescriptionViewController *)&v7 initWithCoder:coder];
   if (v3)
   {
     v4 = AVLocalizedString(@"INFO");
@@ -675,11 +675,11 @@ LABEL_9:
   return v3;
 }
 
-- (AVInfoPanelDescriptionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AVInfoPanelDescriptionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = AVInfoPanelDescriptionViewController;
-  v4 = [(AVInfoPanelDescriptionViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(AVInfoPanelDescriptionViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = AVLocalizedString(@"INFO");

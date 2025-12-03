@@ -1,60 +1,60 @@
 @interface WFBackgroundFadingButton
 - (NSMutableDictionary)backgroundColorsByState;
-- (void)setBackgroundColor:(id)a3 forState:(unint64_t)a4;
-- (void)setDerivesBackgroundColorFromTintColor:(BOOL)a3;
-- (void)setDerivesTitleColorFromTintColor:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setBackgroundColor:(id)color forState:(unint64_t)state;
+- (void)setDerivesBackgroundColorFromTintColor:(BOOL)color;
+- (void)setDerivesTitleColorFromTintColor:(BOOL)color;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 - (void)tintColorDidChange;
-- (void)updateBackgroundColorAnimated:(BOOL)a3;
+- (void)updateBackgroundColorAnimated:(BOOL)animated;
 @end
 
 @implementation WFBackgroundFadingButton
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(WFBackgroundFadingButton *)self isEnabled];
+  enabledCopy = enabled;
+  isEnabled = [(WFBackgroundFadingButton *)self isEnabled];
   v6.receiver = self;
   v6.super_class = WFBackgroundFadingButton;
-  [(WFBackgroundFadingButton *)&v6 setEnabled:v3];
-  if (v5 != v3)
+  [(WFBackgroundFadingButton *)&v6 setEnabled:enabledCopy];
+  if (isEnabled != enabledCopy)
   {
     [(WFBackgroundFadingButton *)self updateBackgroundColorAnimated:1];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(WFBackgroundFadingButton *)self isSelected];
+  selectedCopy = selected;
+  isSelected = [(WFBackgroundFadingButton *)self isSelected];
   v6.receiver = self;
   v6.super_class = WFBackgroundFadingButton;
-  [(WFBackgroundFadingButton *)&v6 setSelected:v3];
-  if (v5 != v3)
+  [(WFBackgroundFadingButton *)&v6 setSelected:selectedCopy];
+  if (isSelected != selectedCopy)
   {
     [(WFBackgroundFadingButton *)self updateBackgroundColorAnimated:1];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(WFBackgroundFadingButton *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(WFBackgroundFadingButton *)self isHighlighted];
   v6.receiver = self;
   v6.super_class = WFBackgroundFadingButton;
-  [(WFBackgroundFadingButton *)&v6 setHighlighted:v3];
-  if (v5 != v3)
+  [(WFBackgroundFadingButton *)&v6 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
     [(WFBackgroundFadingButton *)self updateBackgroundColorAnimated:1];
   }
 }
 
-- (void)updateBackgroundColorAnimated:(BOOL)a3
+- (void)updateBackgroundColorAnimated:(BOOL)animated
 {
   v3 = 0.100000001;
-  if (!a3)
+  if (!animated)
   {
     v3 = 0.0;
   }
@@ -137,8 +137,8 @@ LABEL_13:
   [(WFBackgroundFadingButton *)&v4 tintColorDidChange];
   if ([(WFBackgroundFadingButton *)self derivesTitleColorFromTintColor])
   {
-    v3 = [(WFBackgroundFadingButton *)self tintColor];
-    [(WFBackgroundFadingButton *)self setTitleColor:v3 forState:0];
+    tintColor = [(WFBackgroundFadingButton *)self tintColor];
+    [(WFBackgroundFadingButton *)self setTitleColor:tintColor forState:0];
   }
 
   if ([(WFBackgroundFadingButton *)self derivesBackgroundColorFromTintColor])
@@ -147,47 +147,47 @@ LABEL_13:
   }
 }
 
-- (void)setDerivesBackgroundColorFromTintColor:(BOOL)a3
+- (void)setDerivesBackgroundColorFromTintColor:(BOOL)color
 {
-  if (self->_derivesBackgroundColorFromTintColor != a3)
+  if (self->_derivesBackgroundColorFromTintColor != color)
   {
-    self->_derivesBackgroundColorFromTintColor = a3;
+    self->_derivesBackgroundColorFromTintColor = color;
     [(WFBackgroundFadingButton *)self updateBackgroundColorAnimated:0];
   }
 }
 
-- (void)setDerivesTitleColorFromTintColor:(BOOL)a3
+- (void)setDerivesTitleColorFromTintColor:(BOOL)color
 {
-  if (self->_derivesTitleColorFromTintColor != a3)
+  if (self->_derivesTitleColorFromTintColor != color)
   {
-    self->_derivesTitleColorFromTintColor = a3;
-    if (a3)
+    self->_derivesTitleColorFromTintColor = color;
+    if (color)
     {
-      v4 = [(WFBackgroundFadingButton *)self tintColor];
-      [(WFBackgroundFadingButton *)self setTitleColor:v4 forState:0];
+      tintColor = [(WFBackgroundFadingButton *)self tintColor];
+      [(WFBackgroundFadingButton *)self setTitleColor:tintColor forState:0];
 
-      v5 = [MEMORY[0x277D75348] secondaryLabelColor];
-      [(WFBackgroundFadingButton *)self setTitleColor:v5 forState:2];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      [(WFBackgroundFadingButton *)self setTitleColor:secondaryLabelColor forState:2];
     }
   }
 }
 
-- (void)setBackgroundColor:(id)a3 forState:(unint64_t)a4
+- (void)setBackgroundColor:(id)color forState:(unint64_t)state
 {
-  v8 = a3;
-  v6 = [(WFBackgroundFadingButton *)self backgroundColorsByState];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  if (v8)
+  colorCopy = color;
+  backgroundColorsByState = [(WFBackgroundFadingButton *)self backgroundColorsByState];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+  if (colorCopy)
   {
-    [v6 setObject:v8 forKey:v7];
+    [backgroundColorsByState setObject:colorCopy forKey:v7];
   }
 
   else
   {
-    [v6 removeObjectForKey:v7];
+    [backgroundColorsByState removeObjectForKey:v7];
   }
 
-  if ([(WFBackgroundFadingButton *)self state]== a4)
+  if ([(WFBackgroundFadingButton *)self state]== state)
   {
     [(WFBackgroundFadingButton *)self updateBackgroundColorAnimated:0];
   }

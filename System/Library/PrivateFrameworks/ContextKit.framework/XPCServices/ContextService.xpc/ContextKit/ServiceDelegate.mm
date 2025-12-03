@@ -1,14 +1,14 @@
 @interface ServiceDelegate
-+ (id)debugProcessIdentifierForConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (ServiceDelegate)initWithAssets:(id)a3;
++ (id)debugProcessIdentifierForConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (ServiceDelegate)initWithAssets:(id)assets;
 @end
 
 @implementation ServiceDelegate
 
-- (ServiceDelegate)initWithAssets:(id)a3
+- (ServiceDelegate)initWithAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v21.receiver = self;
   v21.super_class = ServiceDelegate;
   v5 = [(ServiceDelegate *)&v21 init];
@@ -16,7 +16,7 @@
   {
     v6 = objc_opt_class();
     objc_sync_enter(v6);
-    v7 = [[CKContextXPCProtocolImpl alloc] initWithAssets:v4];
+    v7 = [[CKContextXPCProtocolImpl alloc] initWithAssets:assetsCopy];
     sharedXPCService = v5->_sharedXPCService;
     v5->_sharedXPCService = v7;
 
@@ -46,11 +46,11 @@
   return v5;
 }
 
-+ (id)debugProcessIdentifierForConnection:(id)a3
++ (id)debugProcessIdentifierForConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [v3 processIdentifier];
-  v5 = [v3 _xpcConnection];
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  _xpcConnection = [connectionCopy _xpcConnection];
 
   v6 = xpc_connection_copy_bundle_id();
   if (v6)
@@ -67,7 +67,7 @@
   if (v8)
   {
     v9 = v8;
-    v10 = proc_pidpath(v4, v8, 0x200u);
+    v10 = proc_pidpath(processIdentifier, v8, 0x200u);
     if (v10 - 15 > 0xFFFFFFF1)
     {
 LABEL_10:
@@ -75,7 +75,7 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    v11 = proc_name(v4, v9, 0x200u);
+    v11 = proc_name(processIdentifier, v9, 0x200u);
     if (v11 > 0)
     {
       if (v11 >= 0x200)
@@ -96,23 +96,23 @@ LABEL_10:
 
   v12 = &stru_100484358;
 LABEL_13:
-  v13 = [NSString stringWithFormat:@"%i:%@:%@", v4, v12, v7];
+  v13 = [NSString stringWithFormat:@"%i:%@:%@", processIdentifier, v12, v7];
 
   return v13;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v27 = a3;
-  v6 = a4;
-  [v6 setExportedInterface:self->_interface];
-  [v6 setExportedObject:self->_sharedXPCService];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  [connectionCopy setExportedInterface:self->_interface];
+  [connectionCopy setExportedObject:self->_sharedXPCService];
   if (self->_connections)
   {
-    v7 = [ServiceDelegate debugProcessIdentifierForConnection:v6];
+    v7 = [ServiceDelegate debugProcessIdentifierForConnection:connectionCopy];
     v8 = self->_connections;
     objc_sync_enter(v8);
-    [(NSMapTable *)self->_connections setObject:v7 forKey:v6];
+    [(NSMapTable *)self->_connections setObject:v7 forKey:connectionCopy];
     v9 = [(NSMapTable *)self->_connections count];
     objc_sync_exit(v8);
 
@@ -129,18 +129,18 @@ LABEL_13:
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    LODWORD(v42) = [v6 processIdentifier];
+    LODWORD(v42) = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "New XPC connection for PID %i", buf, 8u);
   }
 
-  objc_initWeak(&location, v6);
+  objc_initWeak(&location, connectionCopy);
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_10000232C;
   v36[3] = &unk_1003E9420;
   objc_copyWeak(&v37, &location);
   v36[4] = self;
-  [v6 setInvalidationHandler:v36];
+  [connectionCopy setInvalidationHandler:v36];
   connections = self->_connections;
   if (connections)
   {
@@ -151,8 +151,8 @@ LABEL_13:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v13 = [(NSMapTable *)self->_connections keyEnumerator];
-    v14 = [v13 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    keyEnumerator = [(NSMapTable *)self->_connections keyEnumerator];
+    v14 = [keyEnumerator countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v14)
     {
       v15 = *v33;
@@ -162,7 +162,7 @@ LABEL_13:
         {
           if (*v33 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v17 = [(NSMapTable *)self->_connections objectForKey:*(*(&v32 + 1) + 8 * i)];
@@ -172,7 +172,7 @@ LABEL_13:
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v14 = [keyEnumerator countByEnumeratingWithState:&v32 objects:v40 count:16];
       }
 
       while (v14);
@@ -197,9 +197,9 @@ LABEL_13:
             objc_enumerationMutation(v18);
           }
 
-          v22 = v6;
+          v22 = connectionCopy;
           v23 = *(*(&v28 + 1) + 8 * j);
-          v24 = [v18 countForObject:{v23, v26, v27}];
+          v24 = [v18 countForObject:{v23, v26, listenerCopy}];
           if (v24 >= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
             *buf = 134218242;
@@ -209,7 +209,7 @@ LABEL_13:
             _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Too many XPC connections (%lu) from %@", buf, 0x16u);
           }
 
-          v6 = v22;
+          connectionCopy = v22;
         }
 
         v19 = [v18 countByEnumeratingWithState:&v28 objects:v39 count:16];
@@ -221,7 +221,7 @@ LABEL_13:
     objc_sync_exit(v26);
   }
 
-  [v6 resume];
+  [connectionCopy resume];
   objc_destroyWeak(&v37);
   objc_destroyWeak(&location);
 

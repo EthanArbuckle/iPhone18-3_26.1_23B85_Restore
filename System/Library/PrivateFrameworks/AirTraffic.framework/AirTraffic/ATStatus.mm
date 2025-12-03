@@ -1,53 +1,53 @@
 @interface ATStatus
-- (ATStatus)initWithCoder:(id)a3;
-- (ATStatus)initWithLibraryID:(id)a3 dataClass:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (ATStatus)initWithCoder:(id)coder;
+- (ATStatus)initWithLibraryID:(id)d dataClass:(id)class;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATStatus
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dataClass = self->_dataClass;
-  v6 = a3;
-  [v6 encodeObject:dataClass forKey:@"dataClass"];
-  [v6 encodeObject:self->_libraryID forKey:@"libraryID"];
-  [v6 encodeInteger:self->_syncStage forKey:@"syncStage"];
-  [v6 encodeInteger:self->_syncType forKey:@"syncType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dataClass forKey:@"dataClass"];
+  [coderCopy encodeObject:self->_libraryID forKey:@"libraryID"];
+  [coderCopy encodeInteger:self->_syncStage forKey:@"syncStage"];
+  [coderCopy encodeInteger:self->_syncType forKey:@"syncType"];
   *&v5 = self->_progress;
-  [v6 encodeFloat:@"progress" forKey:v5];
-  [v6 encodeInteger:self->_totalAssetCount forKey:@"totalAssetCount"];
-  [v6 encodeInteger:self->_totalItemCount forKey:@"totalItemCount"];
-  [v6 encodeInteger:self->_completedAssetCount forKey:@"completedAssetCount"];
-  [v6 encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
+  [coderCopy encodeFloat:@"progress" forKey:v5];
+  [coderCopy encodeInteger:self->_totalAssetCount forKey:@"totalAssetCount"];
+  [coderCopy encodeInteger:self->_totalItemCount forKey:@"totalItemCount"];
+  [coderCopy encodeInteger:self->_completedAssetCount forKey:@"completedAssetCount"];
+  [coderCopy encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
 }
 
-- (ATStatus)initWithCoder:(id)a3
+- (ATStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = ATStatus;
   v5 = [(ATStatus *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataClass"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataClass"];
     dataClass = v5->_dataClass;
     v5->_dataClass = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"libraryID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"libraryID"];
     libraryID = v5->_libraryID;
     v5->_libraryID = v8;
 
-    v5->_syncStage = [v4 decodeIntegerForKey:@"syncStage"];
-    v5->_syncType = [v4 decodeIntegerForKey:@"syncType"];
-    [v4 decodeFloatForKey:@"progress"];
+    v5->_syncStage = [coderCopy decodeIntegerForKey:@"syncStage"];
+    v5->_syncType = [coderCopy decodeIntegerForKey:@"syncType"];
+    [coderCopy decodeFloatForKey:@"progress"];
     v5->_progress = v10;
-    v5->_totalAssetCount = [v4 decodeIntegerForKey:@"totalAssetCount"];
-    v5->_totalItemCount = [v4 decodeIntegerForKey:@"totalItemCount"];
-    v5->_completedAssetCount = [v4 decodeIntegerForKey:@"completedAssetCount"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v5->_totalAssetCount = [coderCopy decodeIntegerForKey:@"totalAssetCount"];
+    v5->_totalItemCount = [coderCopy decodeIntegerForKey:@"totalItemCount"];
+    v5->_completedAssetCount = [coderCopy decodeIntegerForKey:@"completedAssetCount"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v11;
   }
@@ -101,17 +101,17 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 dataClass];
-    if ([v5 isEqualToString:self->_dataClass])
+    dataClass = [equalCopy dataClass];
+    if ([dataClass isEqualToString:self->_dataClass])
     {
-      v6 = [v4 libraryID];
-      v7 = [v6 isEqualToString:self->_libraryID];
+      libraryID = [equalCopy libraryID];
+      v7 = [libraryID isEqualToString:self->_libraryID];
     }
 
     else
@@ -128,18 +128,18 @@
   return v7;
 }
 
-- (ATStatus)initWithLibraryID:(id)a3 dataClass:(id)a4
+- (ATStatus)initWithLibraryID:(id)d dataClass:(id)class
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  classCopy = class;
   v12.receiver = self;
   v12.super_class = ATStatus;
   v9 = [(ATStatus *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_libraryID, a3);
-    objc_storeStrong(&v10->_dataClass, a4);
+    objc_storeStrong(&v9->_libraryID, d);
+    objc_storeStrong(&v10->_dataClass, class);
   }
 
   return v10;

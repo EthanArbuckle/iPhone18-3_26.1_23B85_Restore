@@ -1,6 +1,6 @@
 @interface MTRDeviceEnergyManagementClusterPowerAdjustStruct
 - (MTRDeviceEnergyManagementClusterPowerAdjustStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDeviceEnergyManagementClusterPowerAdjustStruct);
-  v5 = [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)self minPower];
-  [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)v4 setMinPower:v5];
+  minPower = [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)self minPower];
+  [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)v4 setMinPower:minPower];
 
-  v6 = [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)self maxPower];
-  [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)v4 setMaxPower:v6];
+  maxPower = [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)self maxPower];
+  [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)v4 setMaxPower:maxPower];
 
-  v7 = [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)self minDuration];
-  [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)v4 setMinDuration:v7];
+  minDuration = [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)self minDuration];
+  [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)v4 setMinDuration:minDuration];
 
-  v8 = [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)self maxDuration];
-  [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)v4 setMaxDuration:v8];
+  maxDuration = [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)self maxDuration];
+  [(MTRDeviceEnergyManagementClusterPowerAdjustStruct *)v4 setMaxDuration:maxDuration];
 
   return v4;
 }

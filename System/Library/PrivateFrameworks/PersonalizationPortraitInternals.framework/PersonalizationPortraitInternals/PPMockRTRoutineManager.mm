@@ -1,23 +1,23 @@
 @interface PPMockRTRoutineManager
 + (id)defaultManager;
 + (void)initialize;
-+ (void)setMockLocationsOfInterest:(id)a3;
++ (void)setMockLocationsOfInterest:(id)interest;
 - (PPMockRTRoutineManager)init;
-- (void)fetchLocationsOfInterestVisitedBetweenStartDate:(id)a3 endDate:(id)a4 withHandler:(id)a5;
+- (void)fetchLocationsOfInterestVisitedBetweenStartDate:(id)date endDate:(id)endDate withHandler:(id)handler;
 @end
 
 @implementation PPMockRTRoutineManager
 
-- (void)fetchLocationsOfInterestVisitedBetweenStartDate:(id)a3 endDate:(id)a4 withHandler:(id)a5
+- (void)fetchLocationsOfInterestVisitedBetweenStartDate:(id)date endDate:(id)endDate withHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = _mockLocationsOfInterest;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __94__PPMockRTRoutineManager_fetchLocationsOfInterestVisitedBetweenStartDate_endDate_withHandler___block_invoke;
   v8[3] = &unk_278972000;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [v6 runWithLockAcquired:v8];
 }
 
@@ -35,16 +35,16 @@
   return v2;
 }
 
-+ (void)setMockLocationsOfInterest:(id)a3
++ (void)setMockLocationsOfInterest:(id)interest
 {
-  v3 = a3;
+  interestCopy = interest;
   v4 = _mockLocationsOfInterest;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__PPMockRTRoutineManager_setMockLocationsOfInterest___block_invoke;
   v6[3] = &unk_278971FD8;
-  v7 = v3;
-  v5 = v3;
+  v7 = interestCopy;
+  v5 = interestCopy;
   [v4 runWithLockAcquired:v6];
 }
 

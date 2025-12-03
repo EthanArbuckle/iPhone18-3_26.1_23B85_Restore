@@ -1,8 +1,8 @@
 @interface FCTagIDFeature
 - (FCTagIDFeature)init;
-- (FCTagIDFeature)initWithPersonalizationIdentifier:(id)a3;
-- (FCTagIDFeature)initWithTagID:(id)a3;
-- (double)featureWeightWithConfigurableValues:(id)a3 publisherID:(id)a4;
+- (FCTagIDFeature)initWithPersonalizationIdentifier:(id)identifier;
+- (FCTagIDFeature)initWithTagID:(id)d;
+- (double)featureWeightWithConfigurableValues:(id)values publisherID:(id)d;
 @end
 
 @implementation FCTagIDFeature
@@ -34,56 +34,56 @@
   objc_exception_throw(v6);
 }
 
-- (FCTagIDFeature)initWithTagID:(id)a3
+- (FCTagIDFeature)initWithTagID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = FCTagIDFeature;
   v6 = [(FCPersonalizationFeature *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->super._tagID, a3);
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"f3", @"+", v5];
+    objc_storeStrong(&v6->super._tagID, d);
+    dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"f3", @"+", dCopy];
     personalizationIdentifier = v7->super._personalizationIdentifier;
-    v7->super._personalizationIdentifier = v8;
+    v7->super._personalizationIdentifier = dCopy;
   }
 
   return v7;
 }
 
-- (FCTagIDFeature)initWithPersonalizationIdentifier:(id)a3
+- (FCTagIDFeature)initWithPersonalizationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 length];
+  identifierCopy = identifier;
+  v5 = [identifierCopy length];
   v6 = [@"f3" length];
   if (v5 <= [@"+" length] + v6)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v7 = [v4 substringFromIndex:{objc_msgSend(@"+", "length") + objc_msgSend(@"f3", "length")}];
+    v7 = [identifierCopy substringFromIndex:{objc_msgSend(@"+", "length") + objc_msgSend(@"f3", "length")}];
     self = [(FCTagIDFeature *)self initWithTagID:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (double)featureWeightWithConfigurableValues:(id)a3 publisherID:(id)a4
+- (double)featureWeightWithConfigurableValues:(id)values publisherID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FCPersonalizationFeature *)self tagID];
-  v9 = [v8 isEqualToString:v7];
+  valuesCopy = values;
+  dCopy = d;
+  tagID = [(FCPersonalizationFeature *)self tagID];
+  v9 = [tagID isEqualToString:dCopy];
 
   v10 = 1.0;
   if (v9)
   {
-    [v6 publisherAggregateWeight];
+    [valuesCopy publisherAggregateWeight];
     v10 = v11;
   }
 

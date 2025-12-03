@@ -1,33 +1,33 @@
 @interface PXMetadataUtilitiesCameraDevice
-+ (id)cameraDeviceForDeviceName:(id)a3 camera:(int64_t)a4 realLensFocalLength:(id)a5 nominalLensFocalLength:(id)a6;
-+ (id)cameraForFocalLength:(id)a3 deviceName:(id)a4;
-+ (id)frontCameraDataForDeviceName:(id)a3;
++ (id)cameraDeviceForDeviceName:(id)name camera:(int64_t)camera realLensFocalLength:(id)length nominalLensFocalLength:(id)focalLength;
++ (id)cameraForFocalLength:(id)length deviceName:(id)name;
++ (id)frontCameraDataForDeviceName:(id)name;
 + (id)supportedDevices;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXMetadataUtilitiesCameraDevice)init;
-- (PXMetadataUtilitiesCameraDevice)initWithDisplayName:(id)a3 focalLength:(id)a4 focalLengthIn35mm:(id)a5;
+- (PXMetadataUtilitiesCameraDevice)initWithDisplayName:(id)name focalLength:(id)length focalLengthIn35mm:(id)in35mm;
 @end
 
 @implementation PXMetadataUtilitiesCameraDevice
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 displayName];
-    v7 = [(PXMetadataUtilitiesCameraDevice *)self displayName];
-    if (v6 == v7 || [v6 isEqualToString:v7])
+    v5 = equalCopy;
+    displayName = [v5 displayName];
+    displayName2 = [(PXMetadataUtilitiesCameraDevice *)self displayName];
+    if (displayName == displayName2 || [displayName isEqualToString:displayName2])
     {
-      v8 = [v5 focalLength];
-      v9 = [(PXMetadataUtilitiesCameraDevice *)self focalLength];
-      if (v8 == v9)
+      focalLength = [v5 focalLength];
+      focalLength2 = [(PXMetadataUtilitiesCameraDevice *)self focalLength];
+      if (focalLength == focalLength2)
       {
-        v11 = [v5 focalLengthIn35mm];
-        v12 = [(PXMetadataUtilitiesCameraDevice *)self focalLengthIn35mm];
-        v10 = v11 == v12;
+        focalLengthIn35mm = [v5 focalLengthIn35mm];
+        focalLengthIn35mm2 = [(PXMetadataUtilitiesCameraDevice *)self focalLengthIn35mm];
+        v10 = focalLengthIn35mm == focalLengthIn35mm2;
       }
 
       else
@@ -52,37 +52,37 @@
 
 - (PXMetadataUtilitiesCameraDevice)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXMetadataUtilitiesCameraDevice.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXMetadataUtilitiesCameraDevice init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMetadataUtilitiesCameraDevice.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXMetadataUtilitiesCameraDevice init]"}];
 
   abort();
 }
 
-- (PXMetadataUtilitiesCameraDevice)initWithDisplayName:(id)a3 focalLength:(id)a4 focalLengthIn35mm:(id)a5
+- (PXMetadataUtilitiesCameraDevice)initWithDisplayName:(id)name focalLength:(id)length focalLengthIn35mm:(id)in35mm
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  lengthCopy = length;
+  in35mmCopy = in35mm;
   v15.receiver = self;
   v15.super_class = PXMetadataUtilitiesCameraDevice;
   v12 = [(PXMetadataUtilitiesCameraDevice *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_displayName, a3);
-    objc_storeStrong(&v13->_focalLength, a4);
-    objc_storeStrong(&v13->_focalLengthIn35mm, a5);
+    objc_storeStrong(&v12->_displayName, name);
+    objc_storeStrong(&v13->_focalLength, length);
+    objc_storeStrong(&v13->_focalLengthIn35mm, in35mm);
   }
 
   return v13;
 }
 
-+ (id)frontCameraDataForDeviceName:(id)a3
++ (id)frontCameraDataForDeviceName:(id)name
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 lowercaseString];
-  v5 = [v4 containsString:@"iphone"];
+  nameCopy = name;
+  lowercaseString = [nameCopy lowercaseString];
+  v5 = [lowercaseString containsString:@"iphone"];
 
   if (v5)
   {
@@ -91,7 +91,7 @@
     v8 = [v6 setWithObject:v7];
 
     v9 = +[PXMetadataUtilitiesCameraDevice supportedDevices];
-    v10 = [v9 objectForKeyedSubscript:v3];
+    v10 = [v9 objectForKeyedSubscript:nameCopy];
     v11 = v10;
     if (v10)
     {
@@ -106,7 +106,7 @@
         v14 = v13;
         v24 = v11;
         v25 = v9;
-        v26 = v3;
+        v26 = nameCopy;
         v15 = *v28;
         do
         {
@@ -153,7 +153,7 @@
         v22 = 0;
 LABEL_20:
         v9 = v25;
-        v3 = v26;
+        nameCopy = v26;
         v11 = v24;
       }
 
@@ -179,7 +179,7 @@ LABEL_20:
 
 + (id)supportedDevices
 {
-  MEMORY[0x1EEE9AC00](a1);
+  MEMORY[0x1EEE9AC00](self);
   v583[45] = *MEMORY[0x1E69E9840];
   v2 = PXLocalizedStringFromTable(@"PXInfoPanelLCDFrontCamera", @"PhotosUICore");
   v200 = PXLocalizedStringFromTable(@"PXInfoPanelLCDRearCamera", @"PhotosUICore");
@@ -1344,14 +1344,14 @@ LABEL_20:
   return v12;
 }
 
-+ (id)cameraDeviceForDeviceName:(id)a3 camera:(int64_t)a4 realLensFocalLength:(id)a5 nominalLensFocalLength:(id)a6
++ (id)cameraDeviceForDeviceName:(id)name camera:(int64_t)camera realLensFocalLength:(id)length nominalLensFocalLength:(id)focalLength
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (a4 && v12 && ([v10 lowercaseString], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "containsString:", @"iphone"), v14, (v15 & 1) != 0))
+  nameCopy = name;
+  lengthCopy = length;
+  focalLengthCopy = focalLength;
+  v13 = focalLengthCopy;
+  if (camera && focalLengthCopy && ([nameCopy lowercaseString], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "containsString:", @"iphone"), v14, (v15 & 1) != 0))
   {
     v16 = PXLocalizedStringFromTable(@"PXInfoPanelLCDMainCamera", @"PhotosUICore");
     v17 = PXLocalizedStringFromTable(@"PXInfoPanelLCDFrontCamera", @"PhotosUICore");
@@ -1369,7 +1369,7 @@ LABEL_20:
     v35[4] = &unk_1F190CE80;
     v40 = v17;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:v35 count:5];
-    v20 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v20 = [MEMORY[0x1E696AD98] numberWithInteger:camera];
     v21 = [v19 objectForKeyedSubscript:v20];
 
     if (v21)
@@ -1382,9 +1382,9 @@ LABEL_20:
       v25 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F19111A0];
       v31 = v23;
       v29 = v22;
-      if (a4 == 2)
+      if (camera == 2)
       {
-        if (([v23 containsObject:v10] & 1) != 0 || (v22 = v24, objc_msgSend(v25, "containsObject:", v10)))
+        if (([v23 containsObject:nameCopy] & 1) != 0 || (v22 = v24, objc_msgSend(v25, "containsObject:", nameCopy)))
         {
           v26 = v22;
 
@@ -1393,38 +1393,38 @@ LABEL_20:
       }
 
       v17 = v30;
-      v27 = [[PXMetadataUtilitiesCameraDevice alloc] initWithDisplayName:v21 focalLength:v11 focalLengthIn35mm:v13];
+      v27 = [[PXMetadataUtilitiesCameraDevice alloc] initWithDisplayName:v21 focalLength:lengthCopy focalLengthIn35mm:v13];
 
       v16 = v32;
     }
 
     else
     {
-      v27 = [a1 cameraForFocalLength:v11 deviceName:v10];
+      v27 = [self cameraForFocalLength:lengthCopy deviceName:nameCopy];
     }
   }
 
   else
   {
-    v27 = [a1 cameraForFocalLength:v11 deviceName:v10];
+    v27 = [self cameraForFocalLength:lengthCopy deviceName:nameCopy];
   }
 
   return v27;
 }
 
-+ (id)cameraForFocalLength:(id)a3 deviceName:(id)a4
++ (id)cameraForFocalLength:(id)length deviceName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 lowercaseString];
-  if ([v7 containsString:@"iphone"])
+  lengthCopy = length;
+  nameCopy = name;
+  lowercaseString = [nameCopy lowercaseString];
+  if ([lowercaseString containsString:@"iphone"])
   {
   }
 
   else
   {
-    v8 = [v6 lowercaseString];
-    v9 = [v8 containsString:@"apple vision pro"];
+    lowercaseString2 = [nameCopy lowercaseString];
+    v9 = [lowercaseString2 containsString:@"apple vision pro"];
 
     if (!v9)
     {
@@ -1434,11 +1434,11 @@ LABEL_20:
   }
 
   v10 = +[PXMetadataUtilitiesCameraDevice supportedDevices];
-  v11 = [v10 objectForKeyedSubscript:v6];
+  v11 = [v10 objectForKeyedSubscript:nameCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 objectForKeyedSubscript:v5];
+    v13 = [v11 objectForKeyedSubscript:lengthCopy];
     v14 = v13;
     if (v13)
     {
@@ -1448,7 +1448,7 @@ LABEL_20:
       v18 = 0;
       if (v15 && v16)
       {
-        v18 = [[PXMetadataUtilitiesCameraDevice alloc] initWithDisplayName:v15 focalLength:v5 focalLengthIn35mm:v16];
+        v18 = [[PXMetadataUtilitiesCameraDevice alloc] initWithDisplayName:v15 focalLength:lengthCopy focalLengthIn35mm:v16];
       }
     }
 

@@ -46,7 +46,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
   if (!v5)
   {
     v6 = TRILogCategory_Server();

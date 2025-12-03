@@ -1,8 +1,8 @@
 @interface NIRecentlyObservedObjectsCache
 - (NIRecentlyObservedObjectsCache)init;
-- (id)getMostRecentObjectsWithMaxAge:(double)a3;
-- (void)didDiscoverNearbyObject:(id)a3;
-- (void)didUpdateNearbyObjects:(id)a3;
+- (id)getMostRecentObjectsWithMaxAge:(double)age;
+- (void)didDiscoverNearbyObject:(id)object;
+- (void)didUpdateNearbyObjects:(id)objects;
 @end
 
 @implementation NIRecentlyObservedObjectsCache
@@ -26,15 +26,15 @@
   return v3;
 }
 
-- (void)didUpdateNearbyObjects:(id)a3
+- (void)didUpdateNearbyObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   os_unfair_lock_lock(&self->_lock);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = objectsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -50,8 +50,8 @@
 
         v9 = *(*(&v12 + 1) + 8 * i);
         recentDevices = self->_recentDevices;
-        v11 = [v9 discoveryToken];
-        [(NSMutableDictionary *)recentDevices setObject:v9 forKeyedSubscript:v11];
+        discoveryToken = [v9 discoveryToken];
+        [(NSMutableDictionary *)recentDevices setObject:v9 forKeyedSubscript:discoveryToken];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -63,19 +63,19 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)didDiscoverNearbyObject:(id)a3
+- (void)didDiscoverNearbyObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = objectCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#recent-obj-cache,Discovered device: %@", &v5, 0xCu);
   }
 }
 
-- (id)getMostRecentObjectsWithMaxAge:(double)a3
+- (id)getMostRecentObjectsWithMaxAge:(double)age
 {
   os_unfair_lock_lock(&self->_lock);
   v5 = objc_opt_new();
@@ -86,7 +86,7 @@
   v12[2] = sub_1003687F8;
   v12[3] = &unk_10099F330;
   v14 = v6;
-  v15 = a3;
+  ageCopy = age;
   v8 = v5;
   v13 = v8;
   [(NSMutableDictionary *)recentDevices enumerateKeysAndObjectsUsingBlock:v12];
@@ -95,7 +95,7 @@
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v17 = a3;
+    ageCopy2 = age;
     v18 = 2112;
     v19 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#recent-obj-cache,Most recent objects under age %0.2f seconds: %@", buf, 0x16u);

@@ -1,27 +1,27 @@
 @interface CLIMUCalService
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLIMUCalService)init;
 - (id).cxx_construct;
 - (void)beginService;
 - (void)dealloc;
 - (void)endService;
-- (void)handleOutdoorServiceNotification:(const OutdoorUpdate *)a3;
-- (void)insertEstimate:(SensorParameterEstimate *)a3 intervalBeforeCurrentTimeSec:(double)a4;
-- (void)onDeviceImpactEvent:(DeviceImpactEvent *)a3;
-- (void)onSensorParameterEstimate:(SensorParameterEstimate *)a3;
-- (void)sendEstimatesToAOPAndAOP2ForParam:(int)a3 atTime:(double)a4;
-- (void)sendNotification:(int)a3;
+- (void)handleOutdoorServiceNotification:(const OutdoorUpdate *)notification;
+- (void)insertEstimate:(SensorParameterEstimate *)estimate intervalBeforeCurrentTimeSec:(double)sec;
+- (void)onDeviceImpactEvent:(DeviceImpactEvent *)event;
+- (void)onSensorParameterEstimate:(SensorParameterEstimate *)estimate;
+- (void)sendEstimatesToAOPAndAOP2ForParam:(int)param atTime:(double)time;
+- (void)sendNotification:(int)notification;
 @end
 
 @implementation CLIMUCalService
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -167,11 +167,11 @@
   }
 }
 
-- (void)handleOutdoorServiceNotification:(const OutdoorUpdate *)a3
+- (void)handleOutdoorServiceNotification:(const OutdoorUpdate *)notification
 {
-  if (a3->var3 == 3)
+  if (notification->var3 == 3)
   {
-    var2 = a3->var2;
+    var2 = notification->var2;
     if (var2)
     {
       v5 = var2 == 1;
@@ -201,17 +201,17 @@
   }
 }
 
-- (void)onSensorParameterEstimate:(SensorParameterEstimate *)a3
+- (void)onSensorParameterEstimate:(SensorParameterEstimate *)estimate
 {
-  sub_10083F9E0(&self->_dataStore, a3, self->_isIndoor, self->_relativeHumidityOutside, self->_temperatureOutside, 0.0);
-  if (self->_enableInFieldIMUCalibrationNotifications && (a3->var1 | 2) == 2 && *(&a3->var4 + 2) != 0)
+  sub_10083F9E0(&self->_dataStore, estimate, self->_isIndoor, self->_relativeHumidityOutside, self->_temperatureOutside, 0.0);
+  if (self->_enableInFieldIMUCalibrationNotifications && (estimate->var1 | 2) == 2 && *(&estimate->var4 + 2) != 0)
   {
 
     [(CLIMUCalService *)self sendNotification:?];
   }
 }
 
-- (void)onDeviceImpactEvent:(DeviceImpactEvent *)a3
+- (void)onDeviceImpactEvent:(DeviceImpactEvent *)event
 {
   if (COERCE_FLOAT(v3 >> 8) > 25.6)
   {
@@ -219,18 +219,18 @@
   }
 }
 
-- (void)insertEstimate:(SensorParameterEstimate *)a3 intervalBeforeCurrentTimeSec:(double)a4
+- (void)insertEstimate:(SensorParameterEstimate *)estimate intervalBeforeCurrentTimeSec:(double)sec
 {
-  if (a4 == 0.0)
+  if (sec == 0.0)
   {
     v15 = v4;
     v16 = v5;
-    v6 = *&a3->var3[4];
-    v13[2] = *&a3->var3[2];
+    v6 = *&estimate->var3[4];
+    v13[2] = *&estimate->var3[2];
     v14[0] = v6;
-    *(v14 + 10) = *(&a3->var3[5] + 2);
-    v7 = *a3->var3;
-    v13[0] = *&a3->var0;
+    *(v14 + 10) = *(&estimate->var3[5] + 2);
+    v7 = *estimate->var3;
+    v13[0] = *&estimate->var0;
     v13[1] = v7;
     [(CLIMUCalService *)self onSensorParameterEstimate:v13];
   }
@@ -242,18 +242,18 @@
     temperatureOutside = self->_temperatureOutside;
     p_dataStore = &self->_dataStore;
 
-    sub_10083F9E0(p_dataStore, a3, isIndoor, relativeHumidityOutside, temperatureOutside, a4);
+    sub_10083F9E0(p_dataStore, estimate, isIndoor, relativeHumidityOutside, temperatureOutside, sec);
   }
 }
 
-- (void)sendEstimatesToAOPAndAOP2ForParam:(int)a3 atTime:(double)a4
+- (void)sendEstimatesToAOPAndAOP2ForParam:(int)param atTime:(double)time
 {
-  sub_100840F78(a3, &v45, a4);
+  sub_100840F78(param, &v45, time);
   sub_1008410C0(&v45, &v41);
   if (v44 == 1)
   {
     LOBYTE(__p) = 86;
-    BYTE1(__p) = a3;
+    BYTE1(__p) = param;
     *(&__p + 2) = v42;
     *(&__p + 10) = v43;
     if (sub_10017C7AC(0))
@@ -298,9 +298,9 @@
   sub_10001A3E8();
   if (sub_100316E74())
   {
-    if (a3)
+    if (param)
     {
-      if (a3 != 2)
+      if (param != 2)
       {
         goto LABEL_51;
       }
@@ -418,7 +418,7 @@
       }
 
       v36 = sub_100BC9FB0(0);
-      sub_100BCA6A8(v36, a3);
+      sub_100BCA6A8(v36, param);
       v12 = *(&__p + 1);
       v11 = __p;
     }
@@ -431,7 +431,7 @@ LABEL_38:
       {
         v26 = *(__p + 8 * v25);
         memset(v51, 0, 74);
-        BYTE1(v51[0]) = a3;
+        BYTE1(v51[0]) = param;
         v27 = v45 + 112 * v26;
         *(v51 + 2) = *(v27 + 4);
         *(&v51[2] + 2) = *(v27 + 3);
@@ -501,10 +501,10 @@ LABEL_51:
   }
 }
 
-- (void)sendNotification:(int)a3
+- (void)sendNotification:(int)notification
 {
   Current = CFAbsoluteTimeGetCurrent();
-  sub_100840F78(a3, &__p, Current);
+  sub_100840F78(notification, &__p, Current);
   sub_1008410C0(&__p, v31);
   if ((v33 & 1) == 0)
   {
@@ -517,7 +517,7 @@ LABEL_51:
     if (os_log_type_enabled(qword_1025D45D8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67240192;
-      v41 = a3;
+      notificationCopy3 = notification;
       _os_log_impl(dword_100000000, v13, OS_LOG_TYPE_DEFAULT, "[IMUCal] Could not get last robust param,%{public}u", buf, 8u);
     }
 
@@ -528,7 +528,7 @@ LABEL_51:
 
     sub_101953B14(buf);
     v36 = 67240192;
-    v37 = a3;
+    notificationCopy4 = notification;
     v14 = _os_log_send_and_compose_impl();
     sub_100152C7C("Generic", 1, 0, 2, "[CLIMUCalService sendNotification:]", "%s\n", v14);
 LABEL_45:
@@ -550,7 +550,7 @@ LABEL_45:
   {
     v6 = sub_100840544(v31);
     *buf = 67240450;
-    v41 = a3;
+    notificationCopy3 = notification;
     v42 = 2114;
     v43 = v6;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "[IMUCal] notifying param,%{public}u,%{public}@", buf, 0x12u);
@@ -561,7 +561,7 @@ LABEL_45:
     sub_101953B14(buf);
     v29 = sub_100840544(v31);
     v36 = 67240450;
-    v37 = a3;
+    notificationCopy4 = notification;
     v38 = 2114;
     v39 = v29;
     v30 = _os_log_send_and_compose_impl();
@@ -579,7 +579,7 @@ LABEL_45:
   v8 = objc_opt_new();
   v9 = objc_opt_new();
   v10 = objc_opt_new();
-  if (!a3)
+  if (!notification)
   {
     [v9 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Accel-Bias"}];
     [v10 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"mg"}];
@@ -588,7 +588,7 @@ LABEL_45:
   }
 
   v11 = 1.0;
-  if (a3 == 2)
+  if (notification == 2)
   {
     [v9 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Gyro-Scale"}];
     [v10 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%%"}];

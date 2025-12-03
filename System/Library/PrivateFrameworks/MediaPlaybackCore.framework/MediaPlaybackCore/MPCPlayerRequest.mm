@@ -3,10 +3,10 @@
 - (MPCPlayerRequest)init;
 - (NSString)description;
 - (id)_stateDumpObject;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)middlewareClasses;
-- (void)setPlayerPath:(id)a3;
-- (void)setUserIdentity:(id)a3;
+- (void)setPlayerPath:(id)path;
+- (void)setUserIdentity:(id)identity;
 @end
 
 @implementation MPCPlayerRequest
@@ -22,9 +22,9 @@
     playerPath = v2->_playerPath;
     v2->_playerPath = v3;
 
-    v5 = [MEMORY[0x1E69E4680] activeAccount];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
     userIdentity = v2->_userIdentity;
-    v2->_userIdentity = v5;
+    v2->_userIdentity = activeAccount;
   }
 
   return v2;
@@ -72,8 +72,8 @@
 {
   v7.receiver = self;
   v7.super_class = MPCPlayerRequest;
-  v3 = [(MPRequest *)&v7 _stateDumpObject];
-  v4 = [v3 mutableCopy];
+  _stateDumpObject = [(MPRequest *)&v7 _stateDumpObject];
+  v4 = [_stateDumpObject mutableCopy];
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{-%ld, +%ld}", self->_tracklistRange.reverseCount, self->_tracklistRange.forwardCount];
   [v4 setObject:v5 forKeyedSubscript:@"tracklistRange"];
@@ -84,11 +84,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MPCPlayerRequest;
-  v4 = [(MPRequest *)&v6 copyWithZone:a3];
+  v4 = [(MPRequest *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 10, self->_playerPath);
   objc_storeStrong(v4 + 11, self->_playingItemProperties);
   objc_storeStrong(v4 + 13, self->_queueItemProperties);
@@ -100,14 +100,14 @@
   return v4;
 }
 
-- (void)setUserIdentity:(id)a3
+- (void)setUserIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  identityCopy = identity;
+  v5 = identityCopy;
+  if (!identityCopy)
   {
-    v4 = [MEMORY[0x1E69E4680] activeAccount];
-    v5 = v4;
+    identityCopy = [MEMORY[0x1E69E4680] activeAccount];
+    v5 = identityCopy;
   }
 
   if (self->_userIdentity != v5)
@@ -117,22 +117,22 @@
     v5 = v6;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](identityCopy, v5);
 }
 
-- (void)setPlayerPath:(id)a3
+- (void)setPlayerPath:(id)path
 {
-  v4 = a3;
-  if (self->_playerPath != v4)
+  pathCopy = path;
+  if (self->_playerPath != pathCopy)
   {
-    if (!v4)
+    if (!pathCopy)
     {
-      v4 = +[MPCPlayerPath deviceActivePlayerPath];
+      pathCopy = +[MPCPlayerPath deviceActivePlayerPath];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->_playerPath, v4);
-    v4 = obj;
+    obj = pathCopy;
+    objc_storeStrong(&self->_playerPath, pathCopy);
+    pathCopy = obj;
   }
 }
 

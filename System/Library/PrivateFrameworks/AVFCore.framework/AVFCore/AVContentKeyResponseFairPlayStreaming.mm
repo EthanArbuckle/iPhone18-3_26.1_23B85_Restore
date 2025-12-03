@@ -1,19 +1,19 @@
 @interface AVContentKeyResponseFairPlayStreaming
-- (AVContentKeyResponseFairPlayStreaming)initWithKeyData:(id)a3 renewalDate:(id)a4;
+- (AVContentKeyResponseFairPlayStreaming)initWithKeyData:(id)data renewalDate:(id)date;
 - (void)dealloc;
 @end
 
 @implementation AVContentKeyResponseFairPlayStreaming
 
-- (AVContentKeyResponseFairPlayStreaming)initWithKeyData:(id)a3 renewalDate:(id)a4
+- (AVContentKeyResponseFairPlayStreaming)initWithKeyData:(id)data renewalDate:(id)date
 {
   v8.receiver = self;
   v8.super_class = AVContentKeyResponseFairPlayStreaming;
   v6 = [(AVContentKeyResponse *)&v8 initWithKeySystem:@"FairPlayStreaming"];
   if (v6)
   {
-    v6->_keyData = [a3 copy];
-    v6->_renewalDate = [a4 copy];
+    v6->_keyData = [data copy];
+    v6->_renewalDate = [date copy];
   }
 
   return v6;

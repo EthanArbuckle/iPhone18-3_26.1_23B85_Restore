@@ -1,5 +1,5 @@
 @interface PKPaletteOptionSwitchCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,41 +8,41 @@
 
 @implementation PKPaletteOptionSwitchCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaletteOptionSwitchCell" hasInstanceVariable:@"_textLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPaletteOptionSwitchCell" hasInstanceVariable:@"_switchButton" withType:"UISwitch"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaletteOptionSwitchCell" hasInstanceVariable:@"_textLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPaletteOptionSwitchCell" hasInstanceVariable:@"_switchButton" withType:"UISwitch"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(PKPaletteOptionSwitchCellAccessibility *)self safeValueForKey:@"_textLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(PKPaletteOptionSwitchCellAccessibility *)self _axSwitchButton];
-  v3 = [v2 accessibilityValue];
+  _axSwitchButton = [(PKPaletteOptionSwitchCellAccessibility *)self _axSwitchButton];
+  accessibilityValue = [_axSwitchButton accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(PKPaletteOptionSwitchCellAccessibility *)self _axSwitchButton];
-  v3 = [v2 accessibilityTraits];
+  _axSwitchButton = [(PKPaletteOptionSwitchCellAccessibility *)self _axSwitchButton];
+  accessibilityTraits = [_axSwitchButton accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(PKPaletteOptionSwitchCellAccessibility *)self _axSwitchButton];
-  [v2 accessibilityActivationPoint];
+  _axSwitchButton = [(PKPaletteOptionSwitchCellAccessibility *)self _axSwitchButton];
+  [_axSwitchButton accessibilityActivationPoint];
   v4 = v3;
   v6 = v5;
 

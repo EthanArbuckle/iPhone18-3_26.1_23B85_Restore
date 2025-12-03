@@ -1,41 +1,41 @@
 @interface USKProperty
 - (BOOL)isAnimated;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setConnectionWithTargetPaths:(id)a3;
-- (BOOL)setCustomMetadata:(id)a3 value:(id)a4;
-- (BOOL)setDictionaryMetadataWithKey:(id)a3 dictionaryKey:(id)a4 value:(id)a5;
-- (BOOL)setMetadataWithKey:(id)a3 value:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setConnectionWithTargetPaths:(id)paths;
+- (BOOL)setCustomMetadata:(id)metadata value:(id)value;
+- (BOOL)setDictionaryMetadataWithKey:(id)key dictionaryKey:(id)dictionaryKey value:(id)value;
+- (BOOL)setMetadataWithKey:(id)key value:(id)value;
 - (NSString)role;
 - (NSString)type;
-- (USKProperty)initWithUsdProperty:(UsdProperty *)a3;
-- (USKProperty)initWithUsdProperty:(UsdProperty *)a3 withNodeOwner:(id)a4;
-- (USKProperty)initWithUsdProperty:(UsdProperty *)a3 withSceneOwner:(id)a4;
+- (USKProperty)initWithUsdProperty:(UsdProperty *)property;
+- (USKProperty)initWithUsdProperty:(UsdProperty *)property withNodeOwner:(id)owner;
+- (USKProperty)initWithUsdProperty:(UsdProperty *)property withSceneOwner:(id)owner;
 - (USKToken)roleName;
 - (USKToken)typeName;
 - (UsdProperty)usdProperty;
 - (__n128)double3Value;
-- (__n128)double3ValueAtTime:(uint64_t)a1@<X0>;
+- (__n128)double3ValueAtTime:(uint64_t)time@<X0>;
 - (__n128)double4Value;
-- (__n128)double4ValueAtTime:(uint64_t)a1@<X0>;
+- (__n128)double4ValueAtTime:(uint64_t)time@<X0>;
 - (__n128)double4x4Value;
-- (__n128)double4x4ValueAtTime:(uint64_t)a1@<X0>;
+- (__n128)double4x4ValueAtTime:(uint64_t)time@<X0>;
 - (__n64)float2Value;
-- (__n64)float2ValueAtTime:(uint64_t)a1;
+- (__n64)float2ValueAtTime:(uint64_t)time;
 - (__n64)float3Value;
-- (__n64)float3ValueAtTime:(uint64_t)a1;
+- (__n64)float3ValueAtTime:(uint64_t)time;
 - (__n64)float4Value;
-- (__n64)float4ValueAtTime:(uint64_t)a1;
+- (__n64)float4ValueAtTime:(uint64_t)time;
 - (__n64)quatfValue;
-- (__n64)quatfValueAtTime:(uint64_t)a1;
+- (__n64)quatfValueAtTime:(uint64_t)time;
 - (id).cxx_construct;
 - (id)connectedPropertyPath;
 - (id)connectedPropertyPaths;
-- (id)customMetadataWithKey:(id)a3;
+- (id)customMetadataWithKey:(id)key;
 - (id)data;
-- (id)dataAtTime:(double)a3;
-- (id)dictionaryMetadataWithKey:(id)a3 dictionaryKey:(id)a4;
+- (id)dataAtTime:(double)time;
+- (id)dictionaryMetadataWithKey:(id)key dictionaryKey:(id)dictionaryKey;
 - (id)metadata;
-- (id)metadataWithKey:(id)a3;
+- (id)metadataWithKey:(id)key;
 - (id)name;
 - (id)objectPath;
 - (id)objectPathArray;
@@ -44,51 +44,51 @@
 - (id)resourcePath;
 - (id)resourcePathArray;
 - (id)stringArray;
-- (id)stringArrayAtTime:(double)a3;
+- (id)stringArrayAtTime:(double)time;
 - (id)stringValue;
 - (id)targetObject;
 - (id)timeCodeValue;
 - (id)timeSamples;
 - (id)tokenArray;
-- (id)tokenArrayAtTime:(double)a3;
+- (id)tokenArrayAtTime:(double)time;
 - (id)tokenValue;
 - (id)urlValue;
 - (unint64_t)arraySize;
-- (unint64_t)arraySizeAtTime:(double)a3;
+- (unint64_t)arraySizeAtTime:(double)time;
 - (unint64_t)hash;
 - (void)clearConnections;
 - (void)clearMetadata;
 - (void)clearValue;
-- (void)setBoolValue:(BOOL)a3;
-- (void)setData:(id)a3;
-- (void)setData:(id)a3 atTime:(double)a4;
+- (void)setBoolValue:(BOOL)value;
+- (void)setData:(id)data;
+- (void)setData:(id)data atTime:(double)time;
 - (void)setDouble3Value:(USKProperty *)self;
-- (void)setDouble3Value:(double)a3 atTime:;
+- (void)setDouble3Value:(double)value atTime:;
 - (void)setDouble4Value:(USKProperty *)self;
-- (void)setDouble4Value:(double)a3 atTime:;
-- (void)setDouble4x4Value:(__int128 *)a3;
-- (void)setDouble4x4Value:(__int128 *)a3 atTime:;
-- (void)setDoubleValue:(double)a3;
-- (void)setDoubleValue:(double)a3 atTime:(double)a4;
+- (void)setDouble4Value:(double)value atTime:;
+- (void)setDouble4x4Value:(__int128 *)value;
+- (void)setDouble4x4Value:(__int128 *)value atTime:;
+- (void)setDoubleValue:(double)value;
+- (void)setDoubleValue:(double)value atTime:(double)time;
 - (void)setFloat2Value:(USKProperty *)self;
-- (void)setFloat2Value:(double)a3 atTime:;
-- (void)setFloatValue:(float)a3;
-- (void)setFloatValue:(float)a3 atTime:(double)a4;
-- (void)setIntValue:(int)a3;
-- (void)setObjectPath:(id)a3;
-- (void)setObjectPathArray:(id)a3;
-- (void)setResourcePath:(id)a3;
-- (void)setResourcePathArray:(id)a3;
-- (void)setStringArray:(id)a3;
-- (void)setStringArray:(id)a3 atTime:(double)a4;
-- (void)setStringValue:(id)a3;
-- (void)setTimeCodeValue:(id)a3;
-- (void)setTokenArray:(id)a3;
-- (void)setTokenArray:(id)a3 atTime:(double)a4;
-- (void)setTokenValue:(id)a3;
-- (void)setUIntValue:(unsigned int)a3;
-- (void)setUIntValue:(unsigned int)a3 atTime:(double)a4;
-- (void)setURL:(id)a3;
+- (void)setFloat2Value:(double)value atTime:;
+- (void)setFloatValue:(float)value;
+- (void)setFloatValue:(float)value atTime:(double)time;
+- (void)setIntValue:(int)value;
+- (void)setObjectPath:(id)path;
+- (void)setObjectPathArray:(id)array;
+- (void)setResourcePath:(id)path;
+- (void)setResourcePathArray:(id)array;
+- (void)setStringArray:(id)array;
+- (void)setStringArray:(id)array atTime:(double)time;
+- (void)setStringValue:(id)value;
+- (void)setTimeCodeValue:(id)value;
+- (void)setTokenArray:(id)array;
+- (void)setTokenArray:(id)array atTime:(double)time;
+- (void)setTokenValue:(id)value;
+- (void)setUIntValue:(unsigned int)value;
+- (void)setUIntValue:(unsigned int)value atTime:(double)time;
+- (void)setURL:(id)l;
 @end
 
 @implementation USKProperty
@@ -235,15 +235,15 @@ LABEL_21:
   return v7;
 }
 
-- (USKProperty)initWithUsdProperty:(UsdProperty *)a3
+- (USKProperty)initWithUsdProperty:(UsdProperty *)property
 {
   v9.receiver = self;
   v9.super_class = USKProperty;
   v4 = [(USKProperty *)&v9 init];
-  if (v4 && (sub_27033E778(a3) & 1) != 0)
+  if (v4 && (sub_27033E778(property) & 1) != 0)
   {
-    v4->_property._type = a3->_type;
-    pointer = a3->_prim._p._pointer;
+    v4->_property._type = property->_type;
+    pointer = property->_prim._p._pointer;
     if (pointer)
     {
       atomic_fetch_add_explicit(pointer + 6, 1uLL, memory_order_relaxed);
@@ -256,9 +256,9 @@ LABEL_21:
     }
 
     v4->_property._prim._p._pointer = pointer;
-    sub_27032787C(&v4->_property._proxyPrimPath, &a3->_proxyPrimPath);
-    sub_2703278D4(&v4->_property._proxyPrimPath._primPart._poolHandle + 4, &a3->_proxyPrimPath._primPart._poolHandle + 1);
-    sub_270325CAC(&v4->_property._proxyPrimPath._propPart._poolHandle, &a3->_proxyPrimPath._propPart._poolHandle);
+    sub_27032787C(&v4->_property._proxyPrimPath, &property->_proxyPrimPath);
+    sub_2703278D4(&v4->_property._proxyPrimPath._primPart._poolHandle + 4, &property->_proxyPrimPath._primPart._poolHandle + 1);
+    sub_270325CAC(&v4->_property._proxyPrimPath._propPart._poolHandle, &property->_proxyPrimPath._propPart._poolHandle);
     v7 = v4;
   }
 
@@ -270,16 +270,16 @@ LABEL_21:
   return v7;
 }
 
-- (USKProperty)initWithUsdProperty:(UsdProperty *)a3 withSceneOwner:(id)a4
+- (USKProperty)initWithUsdProperty:(UsdProperty *)property withSceneOwner:(id)owner
 {
-  v7 = a4;
+  ownerCopy = owner;
   v13.receiver = self;
   v13.super_class = USKProperty;
   v8 = [(USKProperty *)&v13 init];
-  if (v8 && (sub_27033E778(a3) & 1) != 0)
+  if (v8 && (sub_27033E778(property) & 1) != 0)
   {
-    v8->_property._type = a3->_type;
-    pointer = a3->_prim._p._pointer;
+    v8->_property._type = property->_type;
+    pointer = property->_prim._p._pointer;
     if (pointer)
     {
       atomic_fetch_add_explicit(pointer + 6, 1uLL, memory_order_relaxed);
@@ -292,10 +292,10 @@ LABEL_21:
     }
 
     v8->_property._prim._p._pointer = pointer;
-    sub_27032787C(&v8->_property._proxyPrimPath, &a3->_proxyPrimPath);
-    sub_2703278D4(&v8->_property._proxyPrimPath._primPart._poolHandle + 4, &a3->_proxyPrimPath._primPart._poolHandle + 1);
-    sub_270325CAC(&v8->_property._proxyPrimPath._propPart._poolHandle, &a3->_proxyPrimPath._propPart._poolHandle);
-    objc_storeStrong(&v8->_property._propName._rep._ptrAndBits, a4);
+    sub_27032787C(&v8->_property._proxyPrimPath, &property->_proxyPrimPath);
+    sub_2703278D4(&v8->_property._proxyPrimPath._primPart._poolHandle + 4, &property->_proxyPrimPath._primPart._poolHandle + 1);
+    sub_270325CAC(&v8->_property._proxyPrimPath._propPart._poolHandle, &property->_proxyPrimPath._propPart._poolHandle);
+    objc_storeStrong(&v8->_property._propName._rep._ptrAndBits, owner);
     v11 = v8;
   }
 
@@ -307,16 +307,16 @@ LABEL_21:
   return v11;
 }
 
-- (USKProperty)initWithUsdProperty:(UsdProperty *)a3 withNodeOwner:(id)a4
+- (USKProperty)initWithUsdProperty:(UsdProperty *)property withNodeOwner:(id)owner
 {
-  v7 = a4;
+  ownerCopy = owner;
   v13.receiver = self;
   v13.super_class = USKProperty;
   v8 = [(USKProperty *)&v13 init];
-  if (v8 && (sub_27033E778(a3) & 1) != 0)
+  if (v8 && (sub_27033E778(property) & 1) != 0)
   {
-    v8->_property._type = a3->_type;
-    pointer = a3->_prim._p._pointer;
+    v8->_property._type = property->_type;
+    pointer = property->_prim._p._pointer;
     if (pointer)
     {
       atomic_fetch_add_explicit(pointer + 6, 1uLL, memory_order_relaxed);
@@ -329,10 +329,10 @@ LABEL_21:
     }
 
     v8->_property._prim._p._pointer = pointer;
-    sub_27032787C(&v8->_property._proxyPrimPath, &a3->_proxyPrimPath);
-    sub_2703278D4(&v8->_property._proxyPrimPath._primPart._poolHandle + 4, &a3->_proxyPrimPath._primPart._poolHandle + 1);
-    sub_270325CAC(&v8->_property._proxyPrimPath._propPart._poolHandle, &a3->_proxyPrimPath._propPart._poolHandle);
-    objc_storeStrong(&v8->_sceneOwner, a4);
+    sub_27032787C(&v8->_property._proxyPrimPath, &property->_proxyPrimPath);
+    sub_2703278D4(&v8->_property._proxyPrimPath._primPart._poolHandle + 4, &property->_proxyPrimPath._primPart._poolHandle + 1);
+    sub_270325CAC(&v8->_property._proxyPrimPath._propPart._poolHandle, &property->_proxyPrimPath._propPart._poolHandle);
+    objc_storeStrong(&v8->_sceneOwner, owner);
     v11 = v8;
   }
 
@@ -374,7 +374,7 @@ LABEL_21:
   return NumElements;
 }
 
-- (unint64_t)arraySizeAtTime:(double)a3
+- (unint64_t)arraySizeAtTime:(double)time
 {
   v6[2] = *MEMORY[0x277D85DE8];
   sub_27034AA70(&self->_property._type, v6);
@@ -624,13 +624,13 @@ LABEL_21:
   return v29;
 }
 
-- (BOOL)setMetadataWithKey:(id)a3 value:(id)a4
+- (BOOL)setMetadataWithKey:(id)key value:(id)value
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v26 = 0;
-  v8 = v6;
+  v8 = keyCopy;
   v12 = objc_msgSend_UTF8String(v8, v9, v10, v11);
   MEMORY[0x27439E610](&v26, v12);
   v31._storage = 0;
@@ -649,9 +649,9 @@ LABEL_21:
     }
 
     Type = pxrInternal__aapl__pxrReserved__::VtValue::GetType(&v31);
-    if (v7)
+    if (valueCopy)
     {
-      objc_msgSend_value(v7, v17, v18, v19);
+      objc_msgSend_value(valueCopy, v17, v18, v19);
     }
 
     else
@@ -666,9 +666,9 @@ LABEL_21:
     {
       v29 = 0;
       v30 = 0;
-      if (v7)
+      if (valueCopy)
       {
-        objc_msgSend_value(v7, v14, v15, v16);
+        objc_msgSend_value(valueCopy, v14, v15, v16);
       }
 
       else
@@ -687,9 +687,9 @@ LABEL_21:
     else
     {
 LABEL_10:
-      if (v7)
+      if (valueCopy)
       {
-        objc_msgSend_value(v7, v14, v15, v16);
+        objc_msgSend_value(valueCopy, v14, v15, v16);
       }
 
       else
@@ -720,19 +720,19 @@ LABEL_10:
   return v21;
 }
 
-- (BOOL)setDictionaryMetadataWithKey:(id)a3 dictionaryKey:(id)a4 value:(id)a5
+- (BOOL)setDictionaryMetadataWithKey:(id)key dictionaryKey:(id)dictionaryKey value:(id)value
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  dictionaryKeyCopy = dictionaryKey;
+  valueCopy = value;
   v40 = 0;
-  v11 = v8;
+  v11 = keyCopy;
   v15 = objc_msgSend_UTF8String(v11, v12, v13, v14);
   MEMORY[0x27439E610](&v40, v15);
   v39 = 0;
-  v16 = v9;
-  v20 = objc_msgSend_UTF8String(v9, v17, v18, v19);
+  v16 = dictionaryKeyCopy;
+  v20 = objc_msgSend_UTF8String(dictionaryKeyCopy, v17, v18, v19);
   MEMORY[0x27439E610](&v39, v20);
   v43._storage = 0;
   v43._info._ptrAndBits = 0;
@@ -809,9 +809,9 @@ LABEL_10:
   if (v43._info._ptrAndBits)
   {
     Type = pxrInternal__aapl__pxrReserved__::VtValue::GetType(&v43);
-    if (v10)
+    if (valueCopy)
     {
-      objc_msgSend_value(v10, v31, v32, v33);
+      objc_msgSend_value(valueCopy, v31, v32, v33);
     }
 
     else
@@ -826,9 +826,9 @@ LABEL_10:
     {
       v44 = 0;
       v45 = 0;
-      if (v10)
+      if (valueCopy)
       {
-        objc_msgSend_value(v10, v25, v26, v27);
+        objc_msgSend_value(valueCopy, v25, v26, v27);
       }
 
       else
@@ -847,9 +847,9 @@ LABEL_10:
   }
 
 LABEL_28:
-  if (v10)
+  if (valueCopy)
   {
-    objc_msgSend_value(v10, v25, v26, v27);
+    objc_msgSend_value(valueCopy, v25, v26, v27);
   }
 
   else
@@ -878,11 +878,11 @@ LABEL_37:
   return v23;
 }
 
-- (BOOL)setCustomMetadata:(id)a3 value:(id)a4
+- (BOOL)setCustomMetadata:(id)metadata value:(id)value
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  valueCopy = value;
   v23 = 0;
   v8 = atomic_load(MEMORY[0x277D86540]);
   if (!v8)
@@ -902,12 +902,12 @@ LABEL_37:
   }
 
   v22 = 0;
-  v11 = v6;
+  v11 = metadataCopy;
   v15 = objc_msgSend_UTF8String(v11, v12, v13, v14);
   MEMORY[0x27439E610](&v22, v15);
-  if (v7)
+  if (valueCopy)
   {
-    objc_msgSend_value(v7, v16, v17, v18);
+    objc_msgSend_value(valueCopy, v16, v17, v18);
   }
 
   else
@@ -932,13 +932,13 @@ LABEL_37:
   return v19;
 }
 
-- (id)metadataWithKey:(id)a3
+- (id)metadataWithKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v21 = 0;
   v22 = 0;
-  v5 = v4;
+  v5 = keyCopy;
   v9 = objc_msgSend_UTF8String(v5, v6, v7, v8);
   MEMORY[0x27439E610](&v19, v9);
   pxrInternal__aapl__pxrReserved__::UsdObject::GetMetadata(&self->_property, &v19, &v21);
@@ -987,18 +987,18 @@ LABEL_37:
   return v13;
 }
 
-- (id)dictionaryMetadataWithKey:(id)a3 dictionaryKey:(id)a4
+- (id)dictionaryMetadataWithKey:(id)key dictionaryKey:(id)dictionaryKey
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  dictionaryKeyCopy = dictionaryKey;
   v29 = 0;
   v30 = 0;
-  v8 = v6;
+  v8 = keyCopy;
   v12 = objc_msgSend_UTF8String(v8, v9, v10, v11);
   MEMORY[0x27439E610](&v27, v12);
-  v13 = v7;
-  v17 = objc_msgSend_UTF8String(v7, v14, v15, v16);
+  v13 = dictionaryKeyCopy;
+  v17 = objc_msgSend_UTF8String(dictionaryKeyCopy, v14, v15, v16);
   MEMORY[0x27439E610](&Type, v17);
   pxrInternal__aapl__pxrReserved__::UsdObject::GetMetadataByDictKey(&self->_property, &v27, &Type, &v29);
   if ((Type & 7) != 0)
@@ -1051,10 +1051,10 @@ LABEL_37:
   return v21;
 }
 
-- (id)customMetadataWithKey:(id)a3
+- (id)customMetadataWithKey:(id)key
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v22 = 0;
   v23 = 0;
   v5 = atomic_load(MEMORY[0x277D86540]);
@@ -1063,7 +1063,7 @@ LABEL_37:
     sub_27033E930();
   }
 
-  v6 = v4;
+  v6 = keyCopy;
   v10 = objc_msgSend_UTF8String(v6, v7, v8, v9);
   MEMORY[0x27439E610](&v20, v10);
   pxrInternal__aapl__pxrReserved__::UsdObject::GetMetadataByDictKey(&self->_property, (v5 + 72), &v20, &v22);
@@ -1186,23 +1186,23 @@ LABEL_9:
   return v2;
 }
 
-- (BOOL)setConnectionWithTargetPaths:(id)a3
+- (BOOL)setConnectionWithTargetPaths:(id)paths
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathsCopy = paths;
   if (self->_property._type == 3)
   {
     v26 = 0u;
     v27 = 0u;
     sub_270340D70(&self->_property, &v26);
     memset(v25, 0, sizeof(v25));
-    v8 = objc_msgSend_count(v4, v5, v6, v7);
+    v8 = objc_msgSend_count(pathsCopy, v5, v6, v7);
     sub_27034CCC0(v25, v8);
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = v4;
+    v9 = pathsCopy;
     v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v21, v29, 16);
     if (v14)
     {
@@ -1527,7 +1527,7 @@ LABEL_28:
   return v9;
 }
 
-- (id)dataAtTime:(double)a3
+- (id)dataAtTime:(double)time
 {
   v22[2] = *MEMORY[0x277D85DE8];
   v19 = 0u;
@@ -1906,16 +1906,16 @@ LABEL_28:
 
 - (__n128)double3Value
 {
-  result.n128_f64[0] = sub_27034F830((a1 + 24));
+  result.n128_f64[0] = sub_27034F830((self + 24));
   result.n128_u64[1] = v3;
   *a2 = result;
   *(a2 + 16) = v5;
   return result;
 }
 
-- (__n128)double3ValueAtTime:(uint64_t)a1@<X0>
+- (__n128)double3ValueAtTime:(uint64_t)time@<X0>
 {
-  result.n128_f64[0] = sub_27034F830((a1 + 24));
+  result.n128_f64[0] = sub_27034F830((time + 24));
   result.n128_u64[1] = v3;
   *a2 = result;
   *(a2 + 16) = v5;
@@ -1924,7 +1924,7 @@ LABEL_28:
 
 - (__n128)double4Value
 {
-  result.n128_f64[0] = sub_27034FACC((a1 + 24));
+  result.n128_f64[0] = sub_27034FACC((self + 24));
   result.n128_u64[1] = v3;
   *(&v6 + 1) = v5;
   *a2 = result;
@@ -1932,9 +1932,9 @@ LABEL_28:
   return result;
 }
 
-- (__n128)double4ValueAtTime:(uint64_t)a1@<X0>
+- (__n128)double4ValueAtTime:(uint64_t)time@<X0>
 {
-  result.n128_f64[0] = sub_27034FACC((a1 + 24));
+  result.n128_f64[0] = sub_27034FACC((time + 24));
   result.n128_u64[1] = v3;
   *(&v6 + 1) = v5;
   *a2 = result;
@@ -1944,7 +1944,7 @@ LABEL_28:
 
 - (__n128)double4x4Value
 {
-  sub_27034FDC8((a1 + 24), v8);
+  sub_27034FDC8((self + 24), v8);
   v3 = v8[1];
   *a2 = v8[0];
   a2[1] = v3;
@@ -1961,9 +1961,9 @@ LABEL_28:
   return result;
 }
 
-- (__n128)double4x4ValueAtTime:(uint64_t)a1@<X0>
+- (__n128)double4x4ValueAtTime:(uint64_t)time@<X0>
 {
-  sub_27034FDC8((a1 + 24), v8);
+  sub_27034FDC8((time + 24), v8);
   v3 = v8[1];
   *a2 = v8[0];
   a2[1] = v3;
@@ -1982,56 +1982,56 @@ LABEL_28:
 
 - (__n64)float2Value
 {
-  result.n64_f32[0] = sub_270350300((a1 + 24));
+  result.n64_f32[0] = sub_270350300((self + 24));
   result.n64_u32[1] = v1;
   return result;
 }
 
-- (__n64)float2ValueAtTime:(uint64_t)a1
+- (__n64)float2ValueAtTime:(uint64_t)time
 {
-  result.n64_f32[0] = sub_270350300((a1 + 24));
+  result.n64_f32[0] = sub_270350300((time + 24));
   result.n64_u32[1] = v1;
   return result;
 }
 
 - (__n64)float3Value
 {
-  result.n64_f32[0] = sub_270350564((a1 + 24));
+  result.n64_f32[0] = sub_270350564((self + 24));
   result.n64_u32[1] = v1;
   return result;
 }
 
-- (__n64)float3ValueAtTime:(uint64_t)a1
+- (__n64)float3ValueAtTime:(uint64_t)time
 {
-  result.n64_f32[0] = sub_270350564((a1 + 24));
+  result.n64_f32[0] = sub_270350564((time + 24));
   result.n64_u32[1] = v1;
   return result;
 }
 
 - (__n64)float4Value
 {
-  result.n64_f32[0] = sub_2703507E8((a1 + 24));
+  result.n64_f32[0] = sub_2703507E8((self + 24));
   result.n64_u32[1] = v1;
   return result;
 }
 
-- (__n64)float4ValueAtTime:(uint64_t)a1
+- (__n64)float4ValueAtTime:(uint64_t)time
 {
-  result.n64_f32[0] = sub_2703507E8((a1 + 24));
+  result.n64_f32[0] = sub_2703507E8((time + 24));
   result.n64_u32[1] = v1;
   return result;
 }
 
 - (__n64)quatfValue
 {
-  result.n64_f32[0] = sub_270350A78((a1 + 24));
+  result.n64_f32[0] = sub_270350A78((self + 24));
   result.n64_u32[1] = v1;
   return result;
 }
 
-- (__n64)quatfValueAtTime:(uint64_t)a1
+- (__n64)quatfValueAtTime:(uint64_t)time
 {
-  result.n64_f32[0] = sub_270350A78((a1 + 24));
+  result.n64_f32[0] = sub_270350A78((time + 24));
   result.n64_u32[1] = v1;
   return result;
 }
@@ -2126,7 +2126,7 @@ LABEL_20:
   return v10;
 }
 
-- (id)stringArrayAtTime:(double)a3
+- (id)stringArrayAtTime:(double)time
 {
   v21[2] = *MEMORY[0x277D85DE8];
   sub_27034AA70(&self->_property._type, v21);
@@ -2222,7 +2222,7 @@ LABEL_20:
   return v6;
 }
 
-- (id)tokenArrayAtTime:(double)a3
+- (id)tokenArrayAtTime:(double)time
 {
   v19[2] = *MEMORY[0x277D85DE8];
   sub_27034AA70(&self->_property._type, v19);
@@ -2368,14 +2368,14 @@ LABEL_9:
   return 0;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  dataCopy = data;
+  v8 = dataCopy;
+  if (dataCopy)
   {
-    objc_msgSend_value(v4, v5, v6, v7);
+    objc_msgSend_value(dataCopy, v5, v6, v7);
   }
 
   else
@@ -2390,14 +2390,14 @@ LABEL_9:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setData:(id)a3 atTime:(double)a4
+- (void)setData:(id)data atTime:(double)time
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v9 = v5;
-  if (v5)
+  dataCopy = data;
+  v9 = dataCopy;
+  if (dataCopy)
   {
-    objc_msgSend_value(v5, v6, v7, v8);
+    objc_msgSend_value(dataCopy, v6, v7, v8);
   }
 
   else
@@ -2412,14 +2412,14 @@ LABEL_9:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTokenValue:(id)a3
+- (void)setTokenValue:(id)value
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  valueCopy = value;
+  v8 = valueCopy;
+  if (valueCopy)
   {
-    objc_msgSend_token(v4, v5, v6, v7);
+    objc_msgSend_token(valueCopy, v5, v6, v7);
     v11 = v10;
     v12 = &off_288040298 + 1;
     if ((v10 & 7) != 0 && (atomic_fetch_add_explicit((v10 & 0xFFFFFFFFFFFFFFF8), 2u, memory_order_relaxed) & 1) == 0)
@@ -2445,19 +2445,19 @@ LABEL_9:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v7 = objc_msgSend_UTF8String(v3, v4, v5, v6);
+  valueCopy = value;
+  v7 = objc_msgSend_UTF8String(valueCopy, v4, v5, v6);
   v9 = 0;
   sub_270329FE8(v8, &v7);
 }
 
-- (void)setTimeCodeValue:(id)a3
+- (void)setTimeCodeValue:(id)value
 {
   v7[2] = *MEMORY[0x277D85DE8];
-  objc_msgSend_sdfTimeCode(a3, a2, a3, v3);
+  objc_msgSend_sdfTimeCode(value, a2, value, v3);
   v7[1] = &off_288040588 + 1;
   v7[0] = v5;
   sub_270352FD0(&self->_property._type, v7);
@@ -2465,61 +2465,61 @@ LABEL_9:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBoolValue:(BOOL)a3
+- (void)setBoolValue:(BOOL)value
 {
   v6 = *MEMORY[0x277D85DE8];
   v5 = &unk_288040643;
-  v4[0] = a3;
+  v4[0] = value;
   sub_270352FD0(&self->_property._type, v4);
   sub_270311D34(v4);
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setIntValue:(int)a3
+- (void)setIntValue:(int)value
 {
   v6 = *MEMORY[0x277D85DE8];
   v5 = &unk_2880406FB;
-  v4 = a3;
-  sub_270352FD0(&self->_property._type, &v4);
-  sub_270311D34(&v4);
+  valueCopy = value;
+  sub_270352FD0(&self->_property._type, &valueCopy);
+  sub_270311D34(&valueCopy);
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUIntValue:(unsigned int)a3
+- (void)setUIntValue:(unsigned int)value
 {
   v6 = *MEMORY[0x277D85DE8];
   v5 = &unk_2880407B3;
-  v4 = a3;
-  sub_270352FD0(&self->_property._type, &v4);
-  sub_270311D34(&v4);
+  valueCopy = value;
+  sub_270352FD0(&self->_property._type, &valueCopy);
+  sub_270311D34(&valueCopy);
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUIntValue:(unsigned int)a3 atTime:(double)a4
+- (void)setUIntValue:(unsigned int)value atTime:(double)time
 {
   v7 = *MEMORY[0x277D85DE8];
   v6 = &unk_2880407B3;
-  v5 = a3;
-  sub_270352FD0(&self->_property._type, &v5);
-  sub_270311D34(&v5);
+  valueCopy = value;
+  sub_270352FD0(&self->_property._type, &valueCopy);
+  sub_270311D34(&valueCopy);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDoubleValue:(double)a3
+- (void)setDoubleValue:(double)value
 {
   v4[2] = *MEMORY[0x277D85DE8];
   v4[1] = &unk_2880409DB;
-  *v4 = a3;
+  *v4 = value;
   sub_270352FD0(&self->_property._type, v4);
   sub_270311D34(v4);
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDoubleValue:(double)a3 atTime:(double)a4
+- (void)setDoubleValue:(double)value atTime:(double)time
 {
   v5[2] = *MEMORY[0x277D85DE8];
   v5[1] = &unk_2880409DB;
-  *v5 = a3;
+  *v5 = value;
   sub_270352FD0(&self->_property._type, v5);
   sub_270311D34(v5);
   v4 = *MEMORY[0x277D85DE8];
@@ -2534,7 +2534,7 @@ LABEL_9:
   operator new();
 }
 
-- (void)setDouble3Value:(double)a3 atTime:
+- (void)setDouble3Value:(double)value atTime:
 {
   v7 = *MEMORY[0x277D85DE8];
   v5 = *v3;
@@ -2552,7 +2552,7 @@ LABEL_9:
   operator new();
 }
 
-- (void)setDouble4Value:(double)a3 atTime:
+- (void)setDouble4Value:(double)value atTime:
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = *v3;
@@ -2561,53 +2561,53 @@ LABEL_9:
   operator new();
 }
 
-- (void)setDouble4x4Value:(__int128 *)a3
+- (void)setDouble4x4Value:(__int128 *)value
 {
   v12 = *MEMORY[0x277D85DE8];
-  v10 = a3[1];
-  v6 = *a3;
-  v9 = a3[3];
-  v4 = a3[4];
-  v5 = a3[2];
-  v7 = a3[7];
-  v8 = a3[5];
-  v3 = a3[6];
+  v10 = value[1];
+  v6 = *value;
+  v9 = value[3];
+  v4 = value[4];
+  v5 = value[2];
+  v7 = value[7];
+  v8 = value[5];
+  v3 = value[6];
   v11 = &off_28803FE40 + 2;
   operator new();
 }
 
-- (void)setDouble4x4Value:(__int128 *)a3 atTime:
+- (void)setDouble4x4Value:(__int128 *)value atTime:
 {
   v12 = *MEMORY[0x277D85DE8];
-  v10 = a3[1];
-  v5 = a3[2];
-  v6 = *a3;
-  v8 = a3[5];
-  v9 = a3[3];
-  v7 = a3[7];
-  v3 = a3[6];
-  v4 = a3[4];
+  v10 = value[1];
+  v5 = value[2];
+  v6 = *value;
+  v8 = value[5];
+  v9 = value[3];
+  v7 = value[7];
+  v3 = value[6];
+  v4 = value[4];
   v11 = &off_28803FE40 + 2;
   operator new();
 }
 
-- (void)setFloatValue:(float)a3
+- (void)setFloatValue:(float)value
 {
   v6 = *MEMORY[0x277D85DE8];
   v5 = &unk_28803FCC3;
-  v4 = a3;
-  sub_270352FD0(&self->_property._type, &v4);
-  sub_270311D34(&v4);
+  valueCopy = value;
+  sub_270352FD0(&self->_property._type, &valueCopy);
+  sub_270311D34(&valueCopy);
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFloatValue:(float)a3 atTime:(double)a4
+- (void)setFloatValue:(float)value atTime:(double)time
 {
   v7 = *MEMORY[0x277D85DE8];
   v6 = &unk_28803FCC3;
-  v5 = a3;
-  sub_270352FD0(&self->_property._type, &v5);
-  sub_270311D34(&v5);
+  valueCopy = value;
+  sub_270352FD0(&self->_property._type, &valueCopy);
+  sub_270311D34(&valueCopy);
   v4 = *MEMORY[0x277D85DE8];
 }
 
@@ -2621,27 +2621,27 @@ LABEL_9:
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFloat2Value:(double)a3 atTime:
+- (void)setFloat2Value:(double)value atTime:
 {
   v4[2] = *MEMORY[0x277D85DE8];
   v4[1] = &off_288040868 + 3;
-  *v4 = a3;
+  *v4 = value;
   sub_270352FD0(&self->_property._type, v4);
   sub_270311D34(v4);
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setStringArray:(id)a3
+- (void)setStringArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v22 = 0;
-  v7 = objc_msgSend_count(v3, v4, v5, v6, 0, 0, 0, 0);
+  v7 = objc_msgSend_count(arrayCopy, v4, v5, v6, 0, 0, 0, 0);
   sub_270321124(&v21, v7);
   v11 = 0;
-  for (i = 0; i < objc_msgSend_count(v3, v8, v9, v10); ++i)
+  for (i = 0; i < objc_msgSend_count(arrayCopy, v8, v9, v10); ++i)
   {
-    v15 = objc_msgSend_objectAtIndexedSubscript_(v3, v13, i, v14);
+    v15 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v13, i, v14);
     v16 = v15;
     v20 = objc_msgSend_UTF8String(v15, v17, v18, v19);
     sub_27032D564(&v21);
@@ -2654,17 +2654,17 @@ LABEL_9:
   sub_270318A3C();
 }
 
-- (void)setStringArray:(id)a3 atTime:(double)a4
+- (void)setStringArray:(id)array atTime:(double)time
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v23 = 0;
-  v8 = objc_msgSend_count(v4, v5, v6, v7, 0, 0, 0, 0);
+  v8 = objc_msgSend_count(arrayCopy, v5, v6, v7, 0, 0, 0, 0);
   sub_270321124(&v22, v8);
   v12 = 0;
-  for (i = 0; i < objc_msgSend_count(v4, v9, v10, v11); ++i)
+  for (i = 0; i < objc_msgSend_count(arrayCopy, v9, v10, v11); ++i)
   {
-    v16 = objc_msgSend_objectAtIndexedSubscript_(v4, v14, i, v15);
+    v16 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v14, i, v15);
     v17 = v16;
     v21 = objc_msgSend_UTF8String(v16, v18, v19, v20);
     sub_27032D564(&v22);
@@ -2677,18 +2677,18 @@ LABEL_9:
   sub_270318A3C();
 }
 
-- (void)setTokenArray:(id)a3
+- (void)setTokenArray:(id)array
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v23 = 0;
   memset(v22, 0, sizeof(v22));
-  v7 = objc_msgSend_count(v3, v4, v5, v6);
+  v7 = objc_msgSend_count(arrayCopy, v4, v5, v6);
   sub_2703211BC(v22, v7);
   v11 = 0;
-  for (i = 0; i < objc_msgSend_count(v3, v8, v9, v10); ++i)
+  for (i = 0; i < objc_msgSend_count(arrayCopy, v8, v9, v10); ++i)
   {
-    v15 = objc_msgSend_objectAtIndexedSubscript_(v3, v13, i, v14);
+    v15 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v13, i, v14);
     v19 = v15;
     if (v15)
     {
@@ -2728,18 +2728,18 @@ LABEL_9:
   sub_270318A3C();
 }
 
-- (void)setTokenArray:(id)a3 atTime:(double)a4
+- (void)setTokenArray:(id)array atTime:(double)time
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v24 = 0;
   memset(v23, 0, sizeof(v23));
-  v8 = objc_msgSend_count(v4, v5, v6, v7);
+  v8 = objc_msgSend_count(arrayCopy, v5, v6, v7);
   sub_2703211BC(v23, v8);
   v12 = 0;
-  for (i = 0; i < objc_msgSend_count(v4, v9, v10, v11); ++i)
+  for (i = 0; i < objc_msgSend_count(arrayCopy, v9, v10, v11); ++i)
   {
-    v16 = objc_msgSend_objectAtIndexedSubscript_(v4, v14, i, v15);
+    v16 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v14, i, v15);
     v20 = v16;
     if (v16)
     {
@@ -2779,23 +2779,23 @@ LABEL_9:
   sub_270318A3C();
 }
 
-- (void)setObjectPathArray:(id)a3
+- (void)setObjectPathArray:(id)array
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v24 = 0u;
   v25 = 0u;
   sub_27034D19C(&self->_property, &v24);
   if (sub_27033E778(&v24))
   {
     memset(v23, 0, sizeof(v23));
-    v8 = objc_msgSend_count(v4, v5, v6, v7);
+    v8 = objc_msgSend_count(arrayCopy, v5, v6, v7);
     sub_27034CCC0(v23, v8);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v4;
+    v9 = arrayCopy;
     v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v19, v27, 16);
     if (v14)
     {
@@ -2851,18 +2851,18 @@ LABEL_9:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setObjectPath:(id)a3
+- (void)setObjectPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9 = 0u;
   v10 = 0u;
   sub_27034D19C(&self->_property, &v9);
   if (sub_27033E778(&v9))
   {
     memset(v8, 0, sizeof(v8));
-    if (v4)
+    if (pathCopy)
     {
-      objc_msgSend_path(v4, v5, v6, v7);
+      objc_msgSend_path(pathCopy, v5, v6, v7);
     }
 
     else
@@ -2891,16 +2891,16 @@ LABEL_9:
   }
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v16 = 0u;
   v17 = 0u;
   sub_270340D70(&self->_property, &v16);
   if (sub_27033E778(&v16))
   {
-    v8 = objc_msgSend_relativeString(v4, v5, v6, v7, 0, 0, 0, 0, 0, 0);
+    v8 = objc_msgSend_relativeString(lCopy, v5, v6, v7, 0, 0, 0, 0, 0, 0);
     v9 = v8;
     v13 = objc_msgSend_UTF8String(v8, v10, v11, v12);
     sub_2703122D4(v18, v13);
@@ -2929,17 +2929,17 @@ LABEL_9:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setResourcePath:(id)a3
+- (void)setResourcePath:(id)path
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v12 = 0u;
   v13 = 0u;
   sub_270340D70(&self->_property, &v12);
   if (sub_27033E778(&v12))
   {
-    v5 = v4;
-    v9 = objc_msgSend_UTF8String(v4, v6, v7, v8, 0, 0, 0, 0, 0);
+    v5 = pathCopy;
+    v9 = objc_msgSend_UTF8String(pathCopy, v6, v7, v8, 0, 0, 0, 0, 0);
     sub_2703122D4(v14, v9);
     MEMORY[0x27439E030](v11, v14);
     if (v15 < 0)
@@ -2966,10 +2966,10 @@ LABEL_9:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setResourcePathArray:(id)a3
+- (void)setResourcePathArray:(id)array
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v30 = 0u;
   v31 = 0u;
   sub_270340D70(&self->_property, &v30);
@@ -2977,12 +2977,12 @@ LABEL_9:
   {
     v29 = 0;
     memset(v28, 0, sizeof(v28));
-    v8 = objc_msgSend_count(v4, v5, v6, v7);
+    v8 = objc_msgSend_count(arrayCopy, v5, v6, v7);
     sub_270321314(v28, v8);
     v12 = 0;
-    for (i = 0; i < objc_msgSend_count(v4, v9, v10, v11); ++i)
+    for (i = 0; i < objc_msgSend_count(arrayCopy, v9, v10, v11); ++i)
     {
-      v16 = objc_msgSend_objectAtIndexedSubscript_(v4, v14, i, v15);
+      v16 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v14, i, v15);
       v17 = v16;
       v21 = objc_msgSend_UTF8String(v16, v18, v19, v20);
       sub_2703122D4(__p, v21);
@@ -3041,16 +3041,16 @@ LABEL_9:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     objc_msgSend_usdProperty(v5, v6, v7, v8);
     v9 = self->_property._type == v11 && self->_property._prim._p._pointer == v12 && self->_property._proxyPrimPath._primPart._poolHandle == v13 && (v14 ^ self->_property._proxyPrimPath._propPart._poolHandle) < 8;

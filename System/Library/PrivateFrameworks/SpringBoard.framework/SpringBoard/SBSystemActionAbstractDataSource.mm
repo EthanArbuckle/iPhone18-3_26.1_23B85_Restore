@@ -1,22 +1,22 @@
 @interface SBSystemActionAbstractDataSource
-- (SBSystemActionAbstractDataSource)initWithHostIdentifier:(id)a3;
-- (id)executorForSystemAction:(id)a3;
+- (SBSystemActionAbstractDataSource)initWithHostIdentifier:(id)identifier;
+- (id)executorForSystemAction:(id)action;
 - (void)_notifyDidUpdateSelectedAction;
-- (void)addObserver:(id)a3;
-- (void)setSelectedSystemAction:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)setSelectedSystemAction:(id)action;
 @end
 
 @implementation SBSystemActionAbstractDataSource
 
-- (SBSystemActionAbstractDataSource)initWithHostIdentifier:(id)a3
+- (SBSystemActionAbstractDataSource)initWithHostIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(SBSystemActionAbstractDataSource *)a2 initWithHostIdentifier:?];
   }
 
-  v6 = v5;
+  v6 = identifierCopy;
   v11.receiver = self;
   v11.super_class = SBSystemActionAbstractDataSource;
   v7 = [(SBSystemActionAbstractDataSource *)&v11 init];
@@ -32,35 +32,35 @@
   return v7;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)setSelectedSystemAction:(id)a3
+- (void)setSelectedSystemAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_selectedSystemAction, a3);
+    objc_storeStrong(&self->_selectedSystemAction, action);
     [(SBSystemActionAbstractDataSource *)&self->super.isa _notifyDidUpdateSelectedAction];
   }
 }
 
-- (id)executorForSystemAction:(id)a3
+- (id)executorForSystemAction:(id)action
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -70,16 +70,16 @@
 - (void)_notifyDidUpdateSelectedAction
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     BSDispatchQueueAssertMain();
-    v2 = [a1 selectedSystemAction];
+    selectedSystemAction = [self selectedSystemAction];
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [a1[1] allObjects];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    allObjects = [self[1] allObjects];
+    v4 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -91,14 +91,14 @@
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allObjects);
           }
 
-          [*(*(&v8 + 1) + 8 * v7++) systemActionDataSource:a1 didUpdateSelectedAction:v2];
+          [*(*(&v8 + 1) + 8 * v7++) systemActionDataSource:self didUpdateSelectedAction:selectedSystemAction];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);

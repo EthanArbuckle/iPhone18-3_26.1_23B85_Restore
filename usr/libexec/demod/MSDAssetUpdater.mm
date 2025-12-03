@@ -1,26 +1,26 @@
 @interface MSDAssetUpdater
 + (BOOL)shouldIncludeGMAssetTypes;
 + (id)allAssetTypes;
-+ (id)assetToString:(id)a3;
++ (id)assetToString:(id)string;
 + (id)getAllGreyMatterAssetTypes;
 + (id)sharedInstance;
 - (BOOL)assetsAvailable;
 - (BOOL)checkSiriAssetsAvailable;
-- (BOOL)downloadAssets:(id)a3 withError:(id *)a4;
-- (BOOL)downloadAssetsWithError:(id *)a3;
-- (BOOL)downloadSiriAssetsWithError:(id *)a3;
-- (BOOL)handleSiriAssetsWithError:(id *)a3;
+- (BOOL)downloadAssets:(id)assets withError:(id *)error;
+- (BOOL)downloadAssetsWithError:(id *)error;
+- (BOOL)downloadSiriAssetsWithError:(id *)error;
+- (BOOL)handleSiriAssetsWithError:(id *)error;
 - (BOOL)hasOnlyGMAssetTypes;
-- (BOOL)queryAndDownloadAssetsWithForceGMAssetTypes:(BOOL)a3 withError:(id *)a4;
-- (BOOL)queryAndDownloadSiriAssetsWithError:(id *)a3;
+- (BOOL)queryAndDownloadAssetsWithForceGMAssetTypes:(BOOL)types withError:(id *)error;
+- (BOOL)queryAndDownloadSiriAssetsWithError:(id *)error;
 - (BOOL)timerShouldFire;
-- (MSDAssetUpdater)initWithUAFConnection:(id)a3;
-- (id)checkAssetAvailabilityWithQuery:(id)a3;
-- (id)runQueryWithAssetType:(id)a3;
+- (MSDAssetUpdater)initWithUAFConnection:(id)connection;
+- (id)checkAssetAvailabilityWithQuery:(id)query;
+- (id)runQueryWithAssetType:(id)type;
 - (unint64_t)selectQueryInterval;
 - (void)collectAllAssetTypes;
 - (void)collectAllAssetTypesWithGM;
-- (void)downloadAllAssetsWithCompletion:(id)a3;
+- (void)downloadAllAssetsWithCompletion:(id)completion;
 - (void)queryAssets;
 - (void)startAssetQueryTimer;
 - (void)stopAssetQueryTimer;
@@ -40,9 +40,9 @@
   return v3;
 }
 
-- (MSDAssetUpdater)initWithUAFConnection:(id)a3
+- (MSDAssetUpdater)initWithUAFConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -56,7 +56,7 @@
   v7 = v6;
   if (v6)
   {
-    [(MSDAssetUpdater *)v6 setUafConnection:v4];
+    [(MSDAssetUpdater *)v6 setUafConnection:connectionCopy];
     v8 = v7;
   }
 
@@ -65,35 +65,35 @@
 
 - (unint64_t)selectQueryInterval
 {
-  v2 = [(MSDAssetUpdater *)self device];
-  v3 = [v2 hubSuppliedSettings];
-  v4 = [v3 objectForKey:@"AssetQueryInterval"];
+  device = [(MSDAssetUpdater *)self device];
+  hubSuppliedSettings = [device hubSuppliedSettings];
+  v4 = [hubSuppliedSettings objectForKey:@"AssetQueryInterval"];
 
   if (v4)
   {
-    v5 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
   {
-    v5 = 600;
+    unsignedIntegerValue = 600;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)assetsAvailable
 {
-  v2 = [(MSDAssetUpdater *)self preferences];
-  v3 = [v2 objectForKey:@"AssetsAvailable"];
-  v4 = [v3 BOOLValue];
+  preferences = [(MSDAssetUpdater *)self preferences];
+  v3 = [preferences objectForKey:@"AssetsAvailable"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)queryAndDownloadAssetsWithForceGMAssetTypes:(BOOL)a3 withError:(id *)a4
+- (BOOL)queryAndDownloadAssetsWithForceGMAssetTypes:(BOOL)types withError:(id *)error
 {
-  v5 = a3;
+  typesCopy = types;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -105,7 +105,7 @@
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 1;
-  if (v5)
+  if (typesCopy)
   {
     [(MSDAssetUpdater *)self collectAllAssetTypesWithGM];
   }
@@ -135,9 +135,9 @@
     *(v20 + 24) = 0;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v24[5];
+    *error = v24[5];
   }
 
   [(MSDAssetUpdater *)self collectAllAssetTypes];
@@ -149,7 +149,7 @@
   return v12;
 }
 
-- (BOOL)downloadAssetsWithError:(id *)a3
+- (BOOL)downloadAssetsWithError:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -162,7 +162,7 @@
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 1;
-  v6 = [(MSDAssetUpdater *)self uafConnection];
+  uafConnection = [(MSDAssetUpdater *)self uafConnection];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10007FCA8;
@@ -171,7 +171,7 @@
   v17 = &v18;
   v7 = v5;
   v15 = v7;
-  [v6 downloadAllAssetsFromUAFWithCompletion:v14];
+  [uafConnection downloadAllAssetsFromUAFWithCompletion:v14];
 
   v8 = dispatch_time(0, 7200000000000);
   if (dispatch_semaphore_wait(v7, v8))
@@ -189,9 +189,9 @@
     *(v19 + 24) = 0;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v23[5];
+    *error = v23[5];
   }
 
   v11 = *(v19 + 24);
@@ -202,9 +202,9 @@
   return v11;
 }
 
-- (BOOL)handleSiriAssetsWithError:(id *)a3
+- (BOOL)handleSiriAssetsWithError:(id *)error
 {
-  v4 = [(MSDAssetUpdater *)self downloadSiriAssetsWithError:a3];
+  v4 = [(MSDAssetUpdater *)self downloadSiriAssetsWithError:error];
   if (v4)
   {
 
@@ -214,7 +214,7 @@
   return v4;
 }
 
-- (BOOL)downloadSiriAssetsWithError:(id *)a3
+- (BOOL)downloadSiriAssetsWithError:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -227,7 +227,7 @@
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 1;
-  v6 = [(MSDAssetUpdater *)self uafConnection];
+  uafConnection = [(MSDAssetUpdater *)self uafConnection];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10007FFF8;
@@ -236,7 +236,7 @@
   v15 = v7;
   v16 = &v22;
   v17 = &v18;
-  [v6 downloadSiriAssetsFromUAFWithCompletion:v14];
+  [uafConnection downloadSiriAssetsFromUAFWithCompletion:v14];
 
   v8 = dispatch_time(0, 7200000000000);
   if (dispatch_semaphore_wait(v7, v8))
@@ -254,9 +254,9 @@
     *(v19 + 24) = 0;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v23[5];
+    *error = v23[5];
   }
 
   v11 = *(v19 + 24);
@@ -269,13 +269,13 @@
 
 - (BOOL)checkSiriAssetsAvailable
 {
-  v2 = [(MSDAssetUpdater *)self uafConnection];
-  v3 = [v2 checkSiriAssetsAvailable];
+  uafConnection = [(MSDAssetUpdater *)self uafConnection];
+  checkSiriAssetsAvailable = [uafConnection checkSiriAssetsAvailable];
 
-  return v3;
+  return checkSiriAssetsAvailable;
 }
 
-- (BOOL)queryAndDownloadSiriAssetsWithError:(id *)a3
+- (BOOL)queryAndDownloadSiriAssetsWithError:(id *)error
 {
   v31 = 0;
   v32 = &v31;
@@ -293,8 +293,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(MSDAssetUpdater *)self assetTypes];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v37 count:16];
+  assetTypes = [(MSDAssetUpdater *)self assetTypes];
+  v7 = [assetTypes countByEnumeratingWithState:&v23 objects:v37 count:16];
   if (v7)
   {
     v8 = *v24;
@@ -304,18 +304,18 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(assetTypes);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
         if (([v10 hasPrefix:@"com.apple.MobileAsset.UAF.Siri"] & 1) == 0)
         {
-          v11 = [(MSDAssetUpdater *)self assetTypes];
-          [v11 removeObject:v10];
+          assetTypes2 = [(MSDAssetUpdater *)self assetTypes];
+          [assetTypes2 removeObject:v10];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v23 objects:v37 count:16];
+      v7 = [assetTypes countByEnumeratingWithState:&v23 objects:v37 count:16];
     }
 
     while (v7);
@@ -346,9 +346,9 @@
     *(v28 + 24) = 0;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v32[5];
+    *error = v32[5];
   }
 
   [(MSDAssetUpdater *)self collectAllAssetTypes];
@@ -360,9 +360,9 @@
   return v16 & 1;
 }
 
-- (void)downloadAllAssetsWithCompletion:(id)a3
+- (void)downloadAllAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(NSOperationQueue);
   [v5 setMaxConcurrentOperationCount:3];
   v16[0] = 0;
@@ -377,7 +377,7 @@
   v14[3] = sub_10007FA10;
   v14[4] = sub_10007FA20;
   v15 = +[NSMutableArray array];
-  v6 = [(MSDAssetUpdater *)self assetUpdaterQueue];
+  assetUpdaterQueue = [(MSDAssetUpdater *)self assetUpdaterQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008069C;
@@ -386,19 +386,19 @@
   v10 = v5;
   v12 = v14;
   v13 = v16;
-  v11 = v4;
-  v7 = v4;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(assetUpdaterQueue, block);
 
   _Block_object_dispose(v14, 8);
   _Block_object_dispose(v16, 8);
 }
 
-- (BOOL)downloadAssets:(id)a3 withError:(id *)a4
+- (BOOL)downloadAssets:(id)assets withError:(id *)error
 {
-  v19 = a4;
-  v4 = a3;
+  errorCopy = error;
+  assetsCopy = assets;
   dsema = dispatch_semaphore_create(0);
   v37 = 0;
   v38 = &v37;
@@ -414,7 +414,7 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4;
+  obj = assetsCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v44 count:16];
   if (v5)
   {
@@ -432,8 +432,8 @@
         v9 = sub_100063A54();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
-          v10 = [v8 assetId];
-          sub_1000DD0B8(v10, buf, &v43, v9);
+          assetId = [v8 assetId];
+          sub_1000DD0B8(assetId, buf, &v43, v9);
         }
 
         v23[0] = _NSConcreteStackBlock;
@@ -464,8 +464,8 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v14 = [obj objectAtIndexedSubscript:v11];
-        v15 = [v14 assetType];
-        sub_1000DD114(v15, v41, v13, v14);
+        assetType = [v14 assetType];
+        sub_1000DD114(assetType, v41, v13, v14);
       }
 
       v16 = (v32 + 5);
@@ -477,9 +477,9 @@
     }
   }
 
-  if (v19)
+  if (errorCopy)
   {
-    *v19 = v32[5];
+    *errorCopy = v32[5];
   }
 
   v17 = *(v38 + 24);
@@ -489,16 +489,16 @@
   return v17 & 1;
 }
 
-+ (id)assetToString:(id)a3
++ (id)assetToString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 attributes];
-  v5 = [v4 objectForKey:@"AssetSpecifier"];
-  v6 = [v3 assetId];
-  v7 = [v3 attributes];
+  stringCopy = string;
+  attributes = [stringCopy attributes];
+  v5 = [attributes objectForKey:@"AssetSpecifier"];
+  assetId = [stringCopy assetId];
+  attributes2 = [stringCopy attributes];
 
-  v8 = [v7 objectForKey:@"_DownloadSize"];
-  v9 = [NSString stringWithFormat:@"\tAssetSpecifier: %@\n\tAssetId: %@\n\tSize: %@", v5, v6, v8];
+  v8 = [attributes2 objectForKey:@"_DownloadSize"];
+  v9 = [NSString stringWithFormat:@"\tAssetSpecifier: %@\n\tAssetId: %@\n\tSize: %@", v5, assetId, v8];
 
   return v9;
 }
@@ -508,16 +508,16 @@
   [(MSDAssetUpdater *)self collectAllAssetTypes];
   if (!+[MSDAssetUpdater shouldIncludeGMAssetTypes])
   {
-    v4 = [(MSDAssetUpdater *)self assetTypes];
+    assetTypes = [(MSDAssetUpdater *)self assetTypes];
     v3 = +[MSDAssetUpdater getAllGreyMatterAssetTypes];
-    [v4 addObjectsFromArray:v3];
+    [assetTypes addObjectsFromArray:v3];
   }
 }
 
 - (void)collectAllAssetTypes
 {
-  v3 = [(MSDAssetUpdater *)self assetTypes];
-  [v3 removeAllObjects];
+  assetTypes = [(MSDAssetUpdater *)self assetTypes];
+  [assetTypes removeAllObjects];
 
   v4 = +[MSDAssetUpdater allAssetTypes];
   v14 = 0u;
@@ -540,8 +540,8 @@
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [v9 isEqualToString:@"GreyMatterAssetTypes"];
-        v11 = [(MSDAssetUpdater *)self assetTypes];
-        v12 = v11;
+        assetTypes2 = [(MSDAssetUpdater *)self assetTypes];
+        v12 = assetTypes2;
         if (v10)
         {
           v13 = +[MSDAssetUpdater getAllGreyMatterAssetTypes];
@@ -550,7 +550,7 @@
 
         else
         {
-          [v11 addObject:v9];
+          [assetTypes2 addObject:v9];
         }
       }
 
@@ -695,11 +695,11 @@ LABEL_23:
         {
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
-            v22 = [v15 path];
+            path = [v15 path];
             *buf = 138543618;
             v34 = @"AutoAssetType";
             v35 = 2114;
-            v36 = v22;
+            v36 = path;
             _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "No %{public}@ key in plist at %{public}@", buf, 0x16u);
           }
 
@@ -712,12 +712,12 @@ LABEL_23:
         v19 = sub_100063A54();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          v20 = [v15 path];
-          v21 = [v6 localizedDescription];
+          path2 = [v15 path];
+          localizedDescription = [v6 localizedDescription];
           *buf = 138543618;
-          v34 = v20;
+          v34 = path2;
           v35 = 2114;
-          v36 = v21;
+          v36 = localizedDescription;
           _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Failed to read %{public}@ as a dictionary with error - %{public}@", buf, 0x16u);
         }
       }
@@ -752,10 +752,10 @@ LABEL_24:
     v5 = 0;
   }
 
-  v6 = [(MSDAssetUpdater *)self device];
-  v7 = [v6 mode];
+  device = [(MSDAssetUpdater *)self device];
+  mode = [device mode];
 
-  if (v7 == 5)
+  if (mode == 5)
   {
     if (v5)
     {
@@ -792,16 +792,16 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Requested start asset query timer", buf, 2u);
   }
 
-  v4 = [(MSDAssetUpdater *)self timerShouldFire];
+  timerShouldFire = [(MSDAssetUpdater *)self timerShouldFire];
   v5 = sub_100063A54();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (timerShouldFire)
   {
     if (v6)
     {
-      v7 = [(MSDAssetUpdater *)self queryInterval];
+      queryInterval = [(MSDAssetUpdater *)self queryInterval];
       *buf = 134217984;
-      v11 = v7;
+      v11 = queryInterval;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Starting asset query timer with interval %lu.", buf, 0xCu);
     }
 
@@ -848,24 +848,24 @@ LABEL_12:
 
 - (void)queryAssets
 {
-  v3 = [(MSDAssetUpdater *)self assetUpdaterQueue];
+  assetUpdaterQueue = [(MSDAssetUpdater *)self assetUpdaterQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100081FB4;
   block[3] = &unk_100169B70;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(assetUpdaterQueue, block);
 }
 
-- (id)runQueryWithAssetType:(id)a3
+- (id)runQueryWithAssetType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [[MAAssetQuery alloc] initWithType:v4];
+  v6 = [[MAAssetQuery alloc] initWithType:typeCopy];
   v7 = MGCopyAnswer();
   [v6 addKeyValuePair:@"SupportedDevices" with:v7];
 
@@ -873,7 +873,7 @@ LABEL_12:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v4;
+    *&buf[4] = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Running catalog download for asset type %{public}@", buf, 0xCu);
   }
 
@@ -881,7 +881,7 @@ LABEL_12:
   v18[1] = 3221225472;
   v18[2] = sub_100082600;
   v18[3] = &unk_10016B870;
-  v9 = v4;
+  v9 = typeCopy;
   v19 = v9;
   v21 = &v22;
   v10 = v5;
@@ -922,9 +922,9 @@ LABEL_8:
   return v14;
 }
 
-- (id)checkAssetAvailabilityWithQuery:(id)a3
+- (id)checkAssetAvailabilityWithQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -942,7 +942,7 @@ LABEL_8:
   v17 = &v25;
   v5 = dispatch_semaphore_create(0);
   v15 = v5;
-  v6 = v4;
+  v6 = queryCopy;
   v16 = v6;
   v18 = &v19;
   [v6 queryMetaData:&v11];

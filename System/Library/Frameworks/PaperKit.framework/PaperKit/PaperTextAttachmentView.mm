@@ -1,14 +1,14 @@
 @interface PaperTextAttachmentView
-- (BOOL)_wantsToolPickerVisible:(id)a3;
+- (BOOL)_wantsToolPickerVisible:(id)visible;
 @end
 
 @implementation PaperTextAttachmentView
 
-- (BOOL)_wantsToolPickerVisible:(id)a3
+- (BOOL)_wantsToolPickerVisible:(id)visible
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = PaperTextAttachmentView._wantsToolPickerVisible(_:)(v4);
+  visibleCopy = visible;
+  selfCopy = self;
+  LOBYTE(self) = PaperTextAttachmentView._wantsToolPickerVisible(_:)(visibleCopy);
 
   return self & 1;
 }

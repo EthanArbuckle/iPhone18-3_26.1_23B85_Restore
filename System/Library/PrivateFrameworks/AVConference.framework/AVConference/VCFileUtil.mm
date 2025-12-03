@@ -1,23 +1,23 @@
 @interface VCFileUtil
-+ (double)audioContentLengthOfFile:(id)a3;
-+ (double)contentLengthOfFile:(id)a3;
-+ (tagVCFileStats)statsOfFile:(SEL)a3;
-+ (unint64_t)sizeOfFile:(id)a3;
++ (double)audioContentLengthOfFile:(id)file;
++ (double)contentLengthOfFile:(id)file;
++ (tagVCFileStats)statsOfFile:(SEL)file;
++ (unint64_t)sizeOfFile:(id)file;
 @end
 
 @implementation VCFileUtil
 
-+ (unint64_t)sizeOfFile:(id)a3
++ (unint64_t)sizeOfFile:(id)file
 {
   v3 = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
 
   return [v3 fileSize];
 }
 
-+ (double)contentLengthOfFile:(id)a3
++ (double)contentLengthOfFile:(id)file
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6988168] URLAssetWithURL:a3 options:0];
+  v3 = [MEMORY[0x1E6988168] URLAssetWithURL:file options:0];
   memset(&v6, 170, sizeof(v6));
   if (v3)
   {
@@ -33,10 +33,10 @@
   return CMTimeGetSeconds(&v5);
 }
 
-+ (double)audioContentLengthOfFile:(id)a3
++ (double)audioContentLengthOfFile:(id)file
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6988168] URLAssetWithURL:a3 options:0];
+  v3 = [MEMORY[0x1E6988168] URLAssetWithURL:file options:0];
   v4 = [v3 tracksWithMediaType:*MEMORY[0x1E69875A0]];
   if (![v4 count])
   {
@@ -68,7 +68,7 @@
   return CMTimeGetSeconds(&time);
 }
 
-+ (tagVCFileStats)statsOfFile:(SEL)a3
++ (tagVCFileStats)statsOfFile:(SEL)file
 {
   v20 = *MEMORY[0x1E69E9840];
   v6 = [MEMORY[0x1E6988168] URLAssetWithURL:a4 options:0];

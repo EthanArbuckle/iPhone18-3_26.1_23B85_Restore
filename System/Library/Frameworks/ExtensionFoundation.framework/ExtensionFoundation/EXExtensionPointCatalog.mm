@@ -1,7 +1,7 @@
 @interface EXExtensionPointCatalog
 - (EXExtensionPointCatalog)init;
-- (EXExtensionPointCatalog)initWithEnumerator:(id)a3;
-- (id)extensionPointForIdentifier:(id)a3;
+- (EXExtensionPointCatalog)initWithEnumerator:(id)enumerator;
+- (id)extensionPointForIdentifier:(id)identifier;
 @end
 
 @implementation EXExtensionPointCatalog
@@ -14,10 +14,10 @@
   return v4;
 }
 
-- (EXExtensionPointCatalog)initWithEnumerator:(id)a3
+- (EXExtensionPointCatalog)initWithEnumerator:(id)enumerator
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  enumeratorCopy = enumerator;
   v27.receiver = self;
   v27.super_class = EXExtensionPointCatalog;
   v5 = [(EXExtensionPointCatalog *)&v27 init];
@@ -30,7 +30,7 @@
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = v4;
+    v8 = enumeratorCopy;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v9)
     {
@@ -47,8 +47,8 @@
 
           v13 = *(*(&v23 + 1) + 8 * i);
           v14 = MEMORY[0x1E696AEC0];
-          v15 = [v13 identifier];
-          v16 = [v14 stringWithFormat:@"%@:%u", v15, objc_msgSend(v13, "platform")];
+          identifier = [v13 identifier];
+          v16 = [v14 stringWithFormat:@"%@:%u", identifier, objc_msgSend(v13, "platform")];
 
           v17 = [v13 copy];
           [v7 setObject:v17 forKeyedSubscript:v16];
@@ -70,10 +70,10 @@
   return v6;
 }
 
-- (id)extensionPointForIdentifier:(id)a3
+- (id)extensionPointForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(EXExtensionPointCatalog *)self extensionPointForIdentifier:v4 platform:dyld_get_active_platform()];
+  identifierCopy = identifier;
+  v5 = [(EXExtensionPointCatalog *)self extensionPointForIdentifier:identifierCopy platform:dyld_get_active_platform()];
 
   return v5;
 }

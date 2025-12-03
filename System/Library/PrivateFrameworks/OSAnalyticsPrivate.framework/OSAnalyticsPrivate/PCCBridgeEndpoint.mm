@@ -1,31 +1,31 @@
 @interface PCCBridgeEndpoint
-+ (id)UDIDForRemoteDevice:(id)a3;
-+ (id)identifierForRemoteDevice:(id)a3;
-+ (id)remoteDeviceForIdentifier:(id)a3;
-+ (void)addSenderToMessage:(id)a3;
-- (BOOL)isDeviceNearby:(id)a3;
++ (id)UDIDForRemoteDevice:(id)device;
++ (id)identifierForRemoteDevice:(id)device;
++ (id)remoteDeviceForIdentifier:(id)identifier;
++ (void)addSenderToMessage:(id)message;
+- (BOOL)isDeviceNearby:(id)nearby;
 - (PCCBridgeEndpoint)init;
-- (id)connectionForIdentifier:(id)a3;
+- (id)connectionForIdentifier:(id)identifier;
 - (id)deviceIds;
-- (id)identifierForTarget:(id)a3;
-- (id)send:(id)a3 file:(id)a4 metadata:(id)a5 error:(id *)a6;
-- (id)send:(id)a3 message:(id)a4 error:(id *)a5;
-- (id)synchronize:(id)a3 withOptions:(id)a4;
+- (id)identifierForTarget:(id)target;
+- (id)send:(id)send file:(id)file metadata:(id)metadata error:(id *)error;
+- (id)send:(id)send message:(id)message error:(id *)error;
+- (id)synchronize:(id)synchronize withOptions:(id)options;
 - (void)dealloc;
-- (void)enterInterruptedStateFrom:(id)a3;
-- (void)exitInterruptedStateFrom:(id)a3;
-- (void)runWithDelegate:(id)a3;
+- (void)enterInterruptedStateFrom:(id)from;
+- (void)exitInterruptedStateFrom:(id)from;
+- (void)runWithDelegate:(id)delegate;
 - (void)setupDeviceStateChangeHandler;
 - (void)setupIncomingEventListener;
-- (void)setupOutgoingConnection:(id)a3;
-- (void)stashCrashReporterKeyForIdentifier:(id)a3;
+- (void)setupOutgoingConnection:(id)connection;
+- (void)stashCrashReporterKeyForIdentifier:(id)identifier;
 @end
 
 @implementation PCCBridgeEndpoint
 
 - (PCCBridgeEndpoint)init
 {
-  v2 = self;
+  selfCopy = self;
   if (!MEMORY[0x2822297C0] || !MEMORY[0x2822297B8] || !MEMORY[0x2822297B0] || !MEMORY[0x2822297A8] || !MEMORY[0x282229798] || !MEMORY[0x282229790] || !MEMORY[0x282229788] || !MEMORY[0x282229738] || !MEMORY[0x282229730] || !MEMORY[0x282229728] || !MEMORY[0x282229720] || !MEMORY[0x282229718] || !MEMORY[0x282229710] || !MEMORY[0x282229708] || !MEMORY[0x282229700] || !MEMORY[0x2822296F8] || !MEMORY[0x2822296E8] || !MEMORY[0x2822296F0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -38,32 +38,32 @@
 
   v16.receiver = self;
   v16.super_class = PCCBridgeEndpoint;
-  v2 = [(PCCBridgeEndpoint *)&v16 init];
-  if (v2)
+  selfCopy = [(PCCBridgeEndpoint *)&v16 init];
+  if (selfCopy)
   {
     v3 = dispatch_queue_create("com.apple.osanalytics.endpoint.remoteXPC.initialization", 0);
-    initializationQueue = v2->_initializationQueue;
-    v2->_initializationQueue = v3;
+    initializationQueue = selfCopy->_initializationQueue;
+    selfCopy->_initializationQueue = v3;
 
     v5 = dispatch_queue_create("com.apple.osanalytics.endpoint.remoteXPC.events", 0);
-    eventQueue = v2->_eventQueue;
-    v2->_eventQueue = v5;
+    eventQueue = selfCopy->_eventQueue;
+    selfCopy->_eventQueue = v5;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    remoteDevices = v2->_remoteDevices;
-    v2->_remoteDevices = v7;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    remoteDevices = selfCopy->_remoteDevices;
+    selfCopy->_remoteDevices = dictionary;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
-    remoteCRKeys = v2->_remoteCRKeys;
-    v2->_remoteCRKeys = v9;
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    remoteCRKeys = selfCopy->_remoteCRKeys;
+    selfCopy->_remoteCRKeys = dictionary2;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    outgoingConnections = v2->_outgoingConnections;
-    v2->_outgoingConnections = v11;
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+    outgoingConnections = selfCopy->_outgoingConnections;
+    selfCopy->_outgoingConnections = dictionary3;
 
     v13 = [MEMORY[0x277CBEB58] set];
-    interruptedDevices = v2->_interruptedDevices;
-    v2->_interruptedDevices = v13;
+    interruptedDevices = selfCopy->_interruptedDevices;
+    selfCopy->_interruptedDevices = v13;
   }
 
   if ((OSAIsRSDHost() & 1) == 0 && (OSAIsRSDDevice() & 1) == 0)
@@ -78,7 +78,7 @@ LABEL_27:
     return 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -151,11 +151,11 @@ LABEL_27:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runWithDelegate:(id)a3
+- (void)runWithDelegate:(id)delegate
 {
   v4.receiver = self;
   v4.super_class = PCCBridgeEndpoint;
-  [(PCCEndpoint *)&v4 runWithDelegate:a3];
+  [(PCCEndpoint *)&v4 runWithDelegate:delegate];
   [(PCCBridgeEndpoint *)self setupDeviceStateChangeHandler];
   [(PCCBridgeEndpoint *)self setupIncomingEventListener];
 }
@@ -650,7 +650,7 @@ void __50__PCCBridgeEndpoint_setupDeviceStateChangeHandler__block_invoke_50(uint
 - (id)deviceIds
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -695,7 +695,7 @@ void __50__PCCBridgeEndpoint_setupDeviceStateChangeHandler__block_invoke_50(uint
         }
 
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v11];
-        [v3 addObject:v16];
+        [array addObject:v16];
       }
 
       v5 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v21 objects:v27 count:16];
@@ -704,26 +704,26 @@ void __50__PCCBridgeEndpoint_setupDeviceStateChangeHandler__block_invoke_50(uint
     while (v5);
   }
 
-  v17 = [MEMORY[0x277CBEA60] arrayWithArray:v3];
+  v17 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-- (BOOL)isDeviceNearby:(id)a3
+- (BOOL)isDeviceNearby:(id)nearby
 {
-  v3 = [(NSMutableDictionary *)self->_outgoingConnections objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_outgoingConnections objectForKeyedSubscript:nearby];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)synchronize:(id)a3 withOptions:(id)a4
+- (id)synchronize:(id)synchronize withOptions:(id)options
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(PCCBridgeEndpoint *)self identifierForTarget:v5];
+  synchronizeCopy = synchronize;
+  v6 = [(PCCBridgeEndpoint *)self identifierForTarget:synchronizeCopy];
   if (v6)
   {
     v7 = [(NSMutableDictionary *)self->_outgoingConnections objectForKeyedSubscript:v6];
@@ -771,16 +771,16 @@ LABEL_10:
   return v14;
 }
 
-- (void)enterInterruptedStateFrom:(id)a3
+- (void)enterInterruptedStateFrom:(id)from
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([(NSMutableSet *)self->_interruptedDevices containsObject:v4]& 1) != 0)
+  fromCopy = from;
+  if (([(NSMutableSet *)self->_interruptedDevices containsObject:fromCopy]& 1) != 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v10 = v4;
+      v10 = fromCopy;
       _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%@ is already in interruped state; passing", buf, 0xCu);
     }
   }
@@ -790,18 +790,18 @@ LABEL_10:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v10 = v4;
+      v10 = fromCopy;
       _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%@ is entering interrupted state; disconnecting", buf, 0xCu);
     }
 
-    [(NSMutableSet *)self->_interruptedDevices addObject:v4];
+    [(NSMutableSet *)self->_interruptedDevices addObject:fromCopy];
     eventQueue = self->_eventQueue;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __47__PCCBridgeEndpoint_enterInterruptedStateFrom___block_invoke;
     v7[3] = &unk_2799C0038;
     v7[4] = self;
-    v8 = v4;
+    v8 = fromCopy;
     dispatch_async(eventQueue, v7);
   }
 
@@ -814,34 +814,34 @@ void __47__PCCBridgeEndpoint_enterInterruptedStateFrom___block_invoke(uint64_t a
   [WeakRetained handleConnection:0 from:*(a1 + 40)];
 }
 
-- (void)exitInterruptedStateFrom:(id)a3
+- (void)exitInterruptedStateFrom:(id)from
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(NSMutableSet *)self->_interruptedDevices containsObject:v4])
+  fromCopy = from;
+  if ([(NSMutableSet *)self->_interruptedDevices containsObject:fromCopy])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v10 = v4;
+      v10 = fromCopy;
       _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%@ is exiting interruped state; reconnecting", buf, 0xCu);
     }
 
-    [(NSMutableSet *)self->_interruptedDevices removeObject:v4];
+    [(NSMutableSet *)self->_interruptedDevices removeObject:fromCopy];
     eventQueue = self->_eventQueue;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__PCCBridgeEndpoint_exitInterruptedStateFrom___block_invoke;
     v7[3] = &unk_2799C0038;
     v7[4] = self;
-    v8 = v4;
+    v8 = fromCopy;
     dispatch_async(eventQueue, v7);
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = fromCopy;
     _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%@ is not in interruped state; passing", buf, 0xCu);
   }
 
@@ -854,12 +854,12 @@ void __46__PCCBridgeEndpoint_exitInterruptedStateFrom___block_invoke(uint64_t a1
   [WeakRetained handleConnection:1 from:*(a1 + 40)];
 }
 
-- (id)send:(id)a3 message:(id)a4 error:(id *)a5
+- (id)send:(id)send message:(id)message error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PCCBridgeEndpoint *)self identifierForTarget:v8];
+  sendCopy = send;
+  messageCopy = message;
+  v10 = [(PCCBridgeEndpoint *)self identifierForTarget:sendCopy];
   if (v10)
   {
     v11 = [(PCCBridgeEndpoint *)self connectionForIdentifier:v10];
@@ -873,7 +873,7 @@ void __46__PCCBridgeEndpoint_exitInterruptedStateFrom___block_invoke(uint64_t a1
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
-        v14 = [v9 objectForKeyedSubscript:@"messageType"];
+        v14 = [messageCopy objectForKeyedSubscript:@"messageType"];
         *buf = 138412290;
         v29 = v14;
         _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "sent %@", buf, 0xCu);
@@ -884,7 +884,7 @@ void __46__PCCBridgeEndpoint_exitInterruptedStateFrom___block_invoke(uint64_t a1
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v9 objectForKeyedSubscript:@"messageType"];
+        v15 = [messageCopy objectForKeyedSubscript:@"messageType"];
         *buf = 138412546;
         v29 = v10;
         v30 = 2112;
@@ -892,7 +892,7 @@ void __46__PCCBridgeEndpoint_exitInterruptedStateFrom___block_invoke(uint64_t a1
         _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "No connection to %@ on which to send message of type %@", buf, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
         v16 = [(NSMutableDictionary *)self->_remoteDevices objectForKeyedSubscript:v10];
 
@@ -916,7 +916,7 @@ void __46__PCCBridgeEndpoint_exitInterruptedStateFrom___block_invoke(uint64_t a1
           v21 = 4;
         }
 
-        *a5 = [v20 errorWithDomain:@"ProxyBridgeErrorDomain" code:v21 userInfo:v19];
+        *error = [v20 errorWithDomain:@"ProxyBridgeErrorDomain" code:v21 userInfo:v19];
       }
     }
   }
@@ -930,13 +930,13 @@ void __46__PCCBridgeEndpoint_exitInterruptedStateFrom___block_invoke(uint64_t a1
   return 0;
 }
 
-- (id)send:(id)a3 file:(id)a4 metadata:(id)a5 error:(id *)a6
+- (id)send:(id)send file:(id)file metadata:(id)metadata error:(id *)error
 {
   v52[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(PCCBridgeEndpoint *)self identifierForTarget:v10];
+  sendCopy = send;
+  fileCopy = file;
+  metadataCopy = metadata;
+  v13 = [(PCCBridgeEndpoint *)self identifierForTarget:sendCopy];
   if (!v13)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -958,7 +958,7 @@ void __46__PCCBridgeEndpoint_exitInterruptedStateFrom___block_invoke(uint64_t a1
       _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "No connection to %@ on which to send file", buf, 0xCu);
     }
 
-    if (a6)
+    if (error)
     {
       v17 = [(NSMutableDictionary *)self->_remoteDevices objectForKeyedSubscript:v13];
 
@@ -982,7 +982,7 @@ void __46__PCCBridgeEndpoint_exitInterruptedStateFrom___block_invoke(uint64_t a1
         v22 = 4;
       }
 
-      *a6 = [v21 errorWithDomain:@"ProxyBridgeErrorDomain" code:v22 userInfo:v20];
+      *error = [v21 errorWithDomain:@"ProxyBridgeErrorDomain" code:v22 userInfo:v20];
     }
 
 LABEL_27:
@@ -990,12 +990,12 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v15 = [MEMORY[0x277CCAD78] UUID];
-  v16 = [v15 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  if (v12)
+  if (metadataCopy)
   {
-    [MEMORY[0x277CBEB38] dictionaryWithDictionary:v12];
+    [MEMORY[0x277CBEB38] dictionaryWithDictionary:metadataCopy];
   }
 
   else
@@ -1003,8 +1003,8 @@ LABEL_27:
     [MEMORY[0x277CBEB38] dictionary];
   }
   v23 = ;
-  v35 = a6;
-  v37 = v12;
+  errorCopy = error;
+  v37 = metadataCopy;
   if (OSAIsRSDDisplay())
   {
     [v23 setObject:@"display" forKeyedSubscript:@"deviceType"];
@@ -1018,10 +1018,10 @@ LABEL_27:
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:2];
   v25 = ns2xpc();
 
-  [v11 fileSystemRepresentation];
-  v26 = v11;
+  [fileCopy fileSystemRepresentation];
+  v26 = fileCopy;
   v38 = v26;
-  v27 = v16;
+  v27 = uUIDString;
   v39 = v27;
   v28 = v13;
   v40 = v28;
@@ -1042,7 +1042,7 @@ LABEL_27:
       _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "sent %{public}@, tracking: %{public}@", buf, 0x16u);
     }
 
-    v12 = v37;
+    metadataCopy = v37;
   }
 
   else
@@ -1055,14 +1055,14 @@ LABEL_27:
       _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "unable to create xpc file xfer object for %{public}@", buf, 0xCu);
     }
 
-    v12 = v37;
-    if (v35)
+    metadataCopy = v37;
+    if (errorCopy)
     {
       v31 = MEMORY[0x277CCA9B8];
       v45 = *MEMORY[0x277CCA450];
       v46 = @"Unable to transfer file";
       v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-      *v35 = [v31 errorWithDomain:@"ProxyBridgeErrorDomain" code:3 userInfo:v32];
+      *errorCopy = [v31 errorWithDomain:@"ProxyBridgeErrorDomain" code:3 userInfo:v32];
     }
 
     v27 = 0;
@@ -1115,11 +1115,11 @@ void __46__PCCBridgeEndpoint_send_file_metadata_error___block_invoke(void *a1, i
   }
 }
 
-+ (id)remoteDeviceForIdentifier:(id)a3
++ (id)remoteDeviceForIdentifier:(id)identifier
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"Bridge"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"Bridge"])
   {
     v4 = remote_device_copy_unique_of_type();
   }
@@ -1128,7 +1128,7 @@ void __46__PCCBridgeEndpoint_send_file_metadata_error___block_invoke(void *a1, i
   {
     v8[0] = 0;
     v8[1] = 0;
-    v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v3];
+    v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:identifierCopy];
     [v5 getUUIDBytes:v8];
     v4 = remote_device_copy_device_with_uuid();
   }
@@ -1138,11 +1138,11 @@ void __46__PCCBridgeEndpoint_send_file_metadata_error___block_invoke(void *a1, i
   return v4;
 }
 
-+ (id)identifierForRemoteDevice:(id)a3
++ (id)identifierForRemoteDevice:(id)device
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -1155,13 +1155,13 @@ LABEL_9:
     }
 
 LABEL_10:
-    v4 = 0;
+    uUIDString = 0;
     goto LABEL_11;
   }
 
   if (remote_device_get_type() == 3)
   {
-    v4 = @"Bridge";
+    uUIDString = @"Bridge";
     goto LABEL_11;
   }
 
@@ -1183,18 +1183,18 @@ LABEL_10:
   }
 
   v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:uu];
-  v4 = [v10 UUIDString];
+  uUIDString = [v10 UUIDString];
 
 LABEL_11:
   v8 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return uUIDString;
 }
 
-+ (id)UDIDForRemoteDevice:(id)a3
++ (id)UDIDForRemoteDevice:(id)device
 {
-  v3 = a3;
-  if (v3)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v4 = remote_device_copy_property();
     v5 = v4;
@@ -1245,20 +1245,20 @@ LABEL_15:
   return v7;
 }
 
-- (id)identifierForTarget:(id)a3
+- (id)identifierForTarget:(id)target
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  targetCopy = target;
+  v5 = targetCopy;
+  if (targetCopy)
   {
-    v6 = v4;
+    v6 = targetCopy;
     goto LABEL_22;
   }
 
   if (OSAIsRSDHost())
   {
-    v7 = remote_device_copy_unique_of_type();
-    if (!v7)
+    allKeys = remote_device_copy_unique_of_type();
+    if (!allKeys)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -1269,9 +1269,9 @@ LABEL_15:
       goto LABEL_18;
     }
 
-    v8 = [PCCBridgeEndpoint identifierForRemoteDevice:v7];
+    firstObject = [PCCBridgeEndpoint identifierForRemoteDevice:allKeys];
 LABEL_17:
-    v6 = v8;
+    v6 = firstObject;
 LABEL_18:
 
     goto LABEL_22;
@@ -1282,8 +1282,8 @@ LABEL_18:
     v9 = [(NSMutableDictionary *)self->_outgoingConnections count];
     if (v9 == 1)
     {
-      v7 = [(NSMutableDictionary *)self->_outgoingConnections allKeys];
-      v8 = [v7 firstObject];
+      allKeys = [(NSMutableDictionary *)self->_outgoingConnections allKeys];
+      firstObject = [allKeys firstObject];
       goto LABEL_17;
     }
 
@@ -1312,12 +1312,12 @@ LABEL_22:
   return v6;
 }
 
-- (void)setupOutgoingConnection:(id)a3
+- (void)setupOutgoingConnection:(id)connection
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [PCCBridgeEndpoint identifierForRemoteDevice:v4];
-  v6 = [PCCBridgeEndpoint UDIDForRemoteDevice:v4];
+  connectionCopy = connection;
+  v5 = [PCCBridgeEndpoint identifierForRemoteDevice:connectionCopy];
+  v6 = [PCCBridgeEndpoint UDIDForRemoteDevice:connectionCopy];
   v7 = v6;
   if (v5)
   {
@@ -1392,7 +1392,7 @@ LABEL_22:
           v21 = __45__PCCBridgeEndpoint_setupOutgoingConnection___block_invoke;
           v22 = &unk_2799C00B0;
           v25 = v11;
-          v23 = self;
+          selfCopy = self;
           v14 = v5;
           v24 = v14;
           xpc_remote_connection_set_event_handler();
@@ -1514,9 +1514,9 @@ void __45__PCCBridgeEndpoint_setupOutgoingConnection___block_invoke_96(uint64_t 
   [WeakRetained handleConnection:1 from:*(a1 + 40)];
 }
 
-- (id)connectionForIdentifier:(id)a3
+- (id)connectionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1528,10 +1528,10 @@ void __45__PCCBridgeEndpoint_setupOutgoingConnection___block_invoke_96(uint64_t 
   block[1] = 3221225472;
   block[2] = __45__PCCBridgeEndpoint_connectionForIdentifier___block_invoke;
   block[3] = &unk_2799C00D8;
-  v10 = v4;
-  v11 = self;
+  v10 = identifierCopy;
+  selfCopy = self;
   v12 = &v13;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(initializationQueue, block);
   v7 = v14[5];
 
@@ -1569,32 +1569,32 @@ void __45__PCCBridgeEndpoint_connectionForIdentifier___block_invoke(uint64_t a1)
   }
 }
 
-+ (void)addSenderToMessage:(id)a3
++ (void)addSenderToMessage:(id)message
 {
-  xdict = a3;
+  xdict = message;
   v3 = MGCopyAnswer();
-  v4 = [v3 UTF8String];
+  uTF8String = [v3 UTF8String];
 
-  xpc_dictionary_set_string(xdict, "kOSASender", v4);
+  xpc_dictionary_set_string(xdict, "kOSASender", uTF8String);
 }
 
-- (void)stashCrashReporterKeyForIdentifier:(id)a3
+- (void)stashCrashReporterKeyForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_remoteCRKeys objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_remoteCRKeys objectForKeyedSubscript:identifierCopy];
 
   if (!v5)
   {
-    v6 = [PCCBridgeEndpoint remoteDeviceForIdentifier:v4];
+    v6 = [PCCBridgeEndpoint remoteDeviceForIdentifier:identifierCopy];
     if (v6 && remote_device_get_type() == 3)
     {
-      [(NSMutableDictionary *)self->_remoteCRKeys setObject:@"Bridge" forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_remoteCRKeys setObject:@"Bridge" forKeyedSubscript:identifierCopy];
     }
 
     else
     {
-      v7 = [(NSMutableDictionary *)self->_outgoingConnections objectForKeyedSubscript:v4];
+      v7 = [(NSMutableDictionary *)self->_outgoingConnections objectForKeyedSubscript:identifierCopy];
 
       if (v7)
       {
@@ -1605,13 +1605,13 @@ void __45__PCCBridgeEndpoint_connectionForIdentifier___block_invoke(uint64_t a1)
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v17 = v4;
+          v17 = identifierCopy;
           _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Sending request to stash crash reporter key for %@", buf, 0xCu);
         }
 
-        v10 = [(NSMutableDictionary *)self->_outgoingConnections objectForKeyedSubscript:v4];
+        v10 = [(NSMutableDictionary *)self->_outgoingConnections objectForKeyedSubscript:identifierCopy];
         eventQueue = self->_eventQueue;
-        v15 = v4;
+        v15 = identifierCopy;
         v12 = v8;
         xpc_remote_connection_send_message_with_reply();
 

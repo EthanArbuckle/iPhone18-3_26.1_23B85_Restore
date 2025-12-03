@@ -1,14 +1,14 @@
 @interface _SBScrollEventSniffer
 - (SBWindowScene)windowScene;
 - (_SBScrollEventSnifferDelegate)delegate;
-- (void)handleEvent:(id)a3;
+- (void)handleEvent:(id)event;
 @end
 
 @implementation _SBScrollEventSniffer
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  if ([a3 type] == 10)
+  if ([event type] == 10)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained eventSnifferHandledQualifyingScroll:self];

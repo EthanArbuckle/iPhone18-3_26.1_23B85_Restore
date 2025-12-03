@@ -1,22 +1,22 @@
 @interface CAMCTMEndCaptureCommand
-- (CAMCTMEndCaptureCommand)initWithCoder:(id)a3;
-- (CAMCTMEndCaptureCommand)initWithPersistenceUUID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMCTMEndCaptureCommand)initWithCoder:(id)coder;
+- (CAMCTMEndCaptureCommand)initWithPersistenceUUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMCTMEndCaptureCommand
 
-- (CAMCTMEndCaptureCommand)initWithPersistenceUUID:(id)a3
+- (CAMCTMEndCaptureCommand)initWithPersistenceUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = CAMCTMEndCaptureCommand;
   v5 = [(CAMCaptureCommand *)&v10 initWithSubcommands:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     persistenceUUID = v5->__persistenceUUID;
     v5->__persistenceUUID = v6;
 
@@ -26,15 +26,15 @@
   return v5;
 }
 
-- (CAMCTMEndCaptureCommand)initWithCoder:(id)a3
+- (CAMCTMEndCaptureCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CAMCTMEndCaptureCommand;
-  v5 = [(CAMCaptureCommand *)&v10 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"CAMCTMEndCaptureCommandPersistenceUUID"];
+    v6 = [coderCopy decodeObjectForKey:@"CAMCTMEndCaptureCommandPersistenceUUID"];
     persistenceUUID = v5->__persistenceUUID;
     v5->__persistenceUUID = v6;
 
@@ -44,47 +44,47 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CAMCTMEndCaptureCommand *)self _persistenceUUID];
-  [v4 encodeObject:v5 forKey:@"CAMCTMEndCaptureCommandPersistenceUUID"];
+  coderCopy = coder;
+  _persistenceUUID = [(CAMCTMEndCaptureCommand *)self _persistenceUUID];
+  [coderCopy encodeObject:_persistenceUUID forKey:@"CAMCTMEndCaptureCommandPersistenceUUID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CAMCTMEndCaptureCommand;
-  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:a3];
-  v5 = [(CAMCTMEndCaptureCommand *)self _persistenceUUID];
+  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:zone];
+  _persistenceUUID = [(CAMCTMEndCaptureCommand *)self _persistenceUUID];
   v6 = v4[3];
-  v4[3] = v5;
+  v4[3] = _persistenceUUID;
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CAMCTMEndCaptureCommand *)self _persistenceUUID];
-  v6 = [v4 currentStillImageOutput];
-  v7 = v5;
-  v8 = [v4 cachedMomentCaptureSettingsForIdentifier:v7];
-  [v4 clearCachedMomentCaptureSettingsForIdentifier:v7];
-  v9 = [v4 currentVideoDevice];
-  [v9 videoZoomFactor];
+  contextCopy = context;
+  _persistenceUUID = [(CAMCTMEndCaptureCommand *)self _persistenceUUID];
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
+  v7 = _persistenceUUID;
+  v8 = [contextCopy cachedMomentCaptureSettingsForIdentifier:v7];
+  [contextCopy clearCachedMomentCaptureSettingsForIdentifier:v7];
+  currentVideoDevice = [contextCopy currentVideoDevice];
+  [currentVideoDevice videoZoomFactor];
   v11 = v10;
 
-  [v4 registerVideoEndZoomFactor:v11];
+  [contextCopy registerVideoEndZoomFactor:v11];
   if (v8)
   {
-    [v6 endMomentCaptureWithUniqueID:{objc_msgSend(v8, "uniqueID")}];
+    [currentStillImageOutput endMomentCaptureWithUniqueID:{objc_msgSend(v8, "uniqueID")}];
     v12 = os_log_create("com.apple.camera", "Capture");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134217984;
-      v14 = [v8 uniqueID];
+      uniqueID = [v8 uniqueID];
       _os_log_impl(&dword_1A3640000, v12, OS_LOG_TYPE_DEFAULT, "captureID:%lld Called endMomentCaptureWithUniqueID:", &v13, 0xCu);
     }
   }

@@ -1,15 +1,15 @@
 @interface CardButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CardButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CardButton" hasInstanceVariable:@"_actionButton" withType:"UIButton"];
-  [v3 validateClass:@"CardButton" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CardButton" hasInstanceVariable:@"_actionButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"CardButton" isKindOfClass:@"UIView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -30,12 +30,12 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [v4 buttonType];
+  buttonType = [v4 buttonType];
 
-  if (v6 == 7)
+  if (buttonType == 7)
   {
-    v7 = [(CardButtonAccessibility *)self accessibilityIdentifier];
-    v8 = [v7 isEqualToString:@"CardButtonTypeShare"];
+    accessibilityIdentifier = [(CardButtonAccessibility *)self accessibilityIdentifier];
+    v8 = [accessibilityIdentifier isEqualToString:@"CardButtonTypeShare"];
 
     if (v8)
     {

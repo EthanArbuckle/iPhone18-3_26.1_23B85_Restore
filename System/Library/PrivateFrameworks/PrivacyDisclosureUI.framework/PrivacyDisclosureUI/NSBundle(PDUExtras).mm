@@ -7,8 +7,8 @@
 
 - (id)pdu_aboutPrivacyBundleID
 {
-  v1 = [a1 infoDictionary];
-  v2 = [v1 objectForKeyedSubscript:@"NSRegulatoryPrivacyDisclosure"];
+  infoDictionary = [self infoDictionary];
+  v2 = [infoDictionary objectForKeyedSubscript:@"NSRegulatoryPrivacyDisclosure"];
   v3 = [v2 objectForKeyedSubscript:@"NSRegulatoryPrivacyDisclosureOBKPrivacyBundle"];
 
   objc_opt_class();
@@ -18,11 +18,11 @@
     v3 = 0;
   }
 
-  v4 = [v3 lowercaseString];
-  v5 = v4;
-  if (v4)
+  lowercaseString = [v3 lowercaseString];
+  v5 = lowercaseString;
+  if (lowercaseString)
   {
-    if (([v4 isEqualToString:v3] & 1) == 0)
+    if (([lowercaseString isEqualToString:v3] & 1) == 0)
     {
       v6 = PDC_LOG_CHANNEL_PREFIXPrivacyDisclosureUI();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -39,7 +39,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_25F70A000, a2, OS_LOG_TYPE_ERROR, "OnBoardingKit bundle '%@' should be lower case only, please file a radar.", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

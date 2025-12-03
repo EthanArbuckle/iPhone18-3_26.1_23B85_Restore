@@ -1,7 +1,7 @@
 @interface PlaceSummaryTextHighlightConfiguration
 - (NSString)typedAutocompleteQuery;
 - (_TtC4Maps38PlaceSummaryTextHighlightConfiguration)init;
-- (_TtC4Maps38PlaceSummaryTextHighlightConfiguration)initWithTypedAutocompleteQuery:(id)a3 type:(id)a4;
+- (_TtC4Maps38PlaceSummaryTextHighlightConfiguration)initWithTypedAutocompleteQuery:(id)query type:(id)type;
 @end
 
 @implementation PlaceSummaryTextHighlightConfiguration
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (_TtC4Maps38PlaceSummaryTextHighlightConfiguration)initWithTypedAutocompleteQuery:(id)a3 type:(id)a4
+- (_TtC4Maps38PlaceSummaryTextHighlightConfiguration)initWithTypedAutocompleteQuery:(id)query type:(id)type
 {
-  if (a3)
+  if (query)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -38,10 +38,10 @@
   v8 = (self + OBJC_IVAR____TtC4Maps38PlaceSummaryTextHighlightConfiguration_typedAutocompleteQuery);
   *v8 = v6;
   v8[1] = v7;
-  *(self + OBJC_IVAR____TtC4Maps38PlaceSummaryTextHighlightConfiguration_type) = a4;
+  *(self + OBJC_IVAR____TtC4Maps38PlaceSummaryTextHighlightConfiguration_type) = type;
   v11.receiver = self;
   v11.super_class = type metadata accessor for PlaceSummaryTextHighlightConfiguration();
-  v9 = a4;
+  typeCopy = type;
   return [(PlaceSummaryTextHighlightConfiguration *)&v11 init];
 }
 

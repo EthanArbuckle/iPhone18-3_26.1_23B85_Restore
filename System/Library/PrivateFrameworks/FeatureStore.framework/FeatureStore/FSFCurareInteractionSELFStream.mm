@@ -1,22 +1,22 @@
 @interface FSFCurareInteractionSELFStream
-- (BOOL)insert:(id)a3 error:(id *)a4;
-- (id)retrieve:(id)a3;
-- (void)retrieve:(id)a3 completionHandler:(id)a4;
-- (void)retrieveWithCompletionHandler:(id)a3;
+- (BOOL)insert:(id)insert error:(id *)error;
+- (id)retrieve:(id)retrieve;
+- (void)retrieve:(id)retrieve completionHandler:(id)handler;
+- (void)retrieveWithCompletionHandler:(id)handler;
 @end
 
 @implementation FSFCurareInteractionSELFStream
 
-- (BOOL)insert:(id)a3 error:(id *)a4
+- (BOOL)insert:(id)insert error:(id *)error
 {
-  v4 = a3;
+  insertCopy = insert;
   v5 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"SELF stream does not support insertion" userInfo:0];
   objc_exception_throw(v5);
 }
 
-- (id)retrieve:(id)a3
+- (id)retrieve:(id)retrieve
 {
-  v4 = a3;
+  retrieveCopy = retrieve;
   v5 = dispatch_semaphore_create(0);
   v12 = 0;
   v13 = &v12;
@@ -47,25 +47,25 @@ void __65__FSFCurareInteractionSELFStream_StreamSourceProtocol__retrieve___block
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)retrieve:(id)a3 completionHandler:(id)a4
+- (void)retrieve:(id)retrieve completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__FSFCurareInteractionSELFStream_StreamSourceProtocol__retrieve_completionHandler___block_invoke;
   v7[3] = &unk_2784D34E8;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(FSFCurareInteractionSELFStream *)self retrieveWithCompletionHandler:v7];
 }
 
-- (void)retrieveWithCompletionHandler:(id)a3
+- (void)retrieveWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   _runTaskForBridgedAsyncMethod(_:)(&async function pointer to partial apply for @objc closure #1 in CurareInteractionSELFStream.retrieve(), v5);
 }

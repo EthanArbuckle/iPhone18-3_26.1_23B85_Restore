@@ -1,12 +1,12 @@
 @interface RMModelSecurityPasskeyAttestationDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 attestationIdentityAssetReference:(id)a4 relyingParties:(id)a5;
-+ (id)buildWithIdentifier:(id)a3 attestationIdentityAssetReference:(id)a4 attestationIdentityKeyIsExtractable:(id)a5 relyingParties:(id)a6;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier attestationIdentityAssetReference:(id)reference relyingParties:(id)parties;
++ (id)buildWithIdentifier:(id)identifier attestationIdentityAssetReference:(id)reference attestationIdentityKeyIsExtractable:(id)extractable relyingParties:(id)parties;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelSecurityPasskeyAttestationDeclaration
@@ -50,31 +50,31 @@ void __63__RMModelSecurityPasskeyAttestationDeclaration_assetReferences__block_i
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 attestationIdentityAssetReference:(id)a4 attestationIdentityKeyIsExtractable:(id)a5 relyingParties:(id)a6
++ (id)buildWithIdentifier:(id)identifier attestationIdentityAssetReference:(id)reference attestationIdentityKeyIsExtractable:(id)extractable relyingParties:(id)parties
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  identifierCopy = identifier;
+  partiesCopy = parties;
+  extractableCopy = extractable;
+  referenceCopy = reference;
   v13 = objc_opt_new();
   [v13 setDeclarationType:@"com.apple.configuration.security.passkey.attestation"];
-  if (v9)
+  if (identifierCopy)
   {
-    [v13 setDeclarationIdentifier:v9];
+    [v13 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
-    [v13 setDeclarationIdentifier:v15];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v13 setDeclarationIdentifier:uUIDString];
   }
 
-  [v13 setPayloadAttestationIdentityAssetReference:v12];
+  [v13 setPayloadAttestationIdentityAssetReference:referenceCopy];
 
-  if (v11)
+  if (extractableCopy)
   {
-    v16 = v11;
+    v16 = extractableCopy;
   }
 
   else
@@ -84,34 +84,34 @@ void __63__RMModelSecurityPasskeyAttestationDeclaration_assetReferences__block_i
 
   [v13 setPayloadAttestationIdentityKeyIsExtractable:v16];
 
-  [v13 setPayloadRelyingParties:v10];
+  [v13 setPayloadRelyingParties:partiesCopy];
   [v13 updateServerToken];
 
   return v13;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 attestationIdentityAssetReference:(id)a4 relyingParties:(id)a5
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier attestationIdentityAssetReference:(id)reference relyingParties:(id)parties
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  partiesCopy = parties;
+  referenceCopy = reference;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.configuration.security.passkey.attestation"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadAttestationIdentityAssetReference:v9];
+  [v10 setPayloadAttestationIdentityAssetReference:referenceCopy];
 
-  [v10 setPayloadRelyingParties:v8];
+  [v10 setPayloadRelyingParties:partiesCopy];
   [v10 updateServerToken];
 
   return v10;
@@ -141,12 +141,12 @@ void __63__RMModelSecurityPasskeyAttestationDeclaration_assetReferences__block_i
   return v8;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelSecurityPasskeyAttestationDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -154,7 +154,7 @@ void __63__RMModelSecurityPasskeyAttestationDeclaration_assetReferences__block_i
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"AttestationIdentityAssetReference" forKeyPath:@"payloadAttestationIdentityAssetReference" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"AttestationIdentityKeyIsExtractable" forKeyPath:@"payloadAttestationIdentityKeyIsExtractable" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:v7 usingKey:@"RelyingParties" forKeyPath:@"payloadRelyingParties" validator:&__block_literal_global_63 isRequired:1 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AttestationIdentityAssetReference" forKeyPath:@"payloadAttestationIdentityAssetReference" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"AttestationIdentityKeyIsExtractable" forKeyPath:@"payloadAttestationIdentityKeyIsExtractable" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"RelyingParties" forKeyPath:@"payloadRelyingParties" validator:&__block_literal_global_63 isRequired:1 defaultValue:0 error:error];
   return v13;
 }
 
@@ -167,28 +167,28 @@ uint64_t __98__RMModelSecurityPasskeyAttestationDeclaration_loadPayloadFromDicti
   return isKindOfClass & 1;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelSecurityPasskeyAttestationDeclaration *)self payloadAttestationIdentityAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AttestationIdentityAssetReference" value:v5 isRequired:1 defaultValue:0];
+  payloadAttestationIdentityAssetReference = [(RMModelSecurityPasskeyAttestationDeclaration *)self payloadAttestationIdentityAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AttestationIdentityAssetReference" value:payloadAttestationIdentityAssetReference isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelSecurityPasskeyAttestationDeclaration *)self payloadAttestationIdentityKeyIsExtractable];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"AttestationIdentityKeyIsExtractable" value:v6 isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
+  payloadAttestationIdentityKeyIsExtractable = [(RMModelSecurityPasskeyAttestationDeclaration *)self payloadAttestationIdentityKeyIsExtractable];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"AttestationIdentityKeyIsExtractable" value:payloadAttestationIdentityKeyIsExtractable isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
 
-  v7 = [(RMModelSecurityPasskeyAttestationDeclaration *)self payloadRelyingParties];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"RelyingParties" value:v7 itemSerializer:&__block_literal_global_68 isRequired:1 defaultValue:0];
+  payloadRelyingParties = [(RMModelSecurityPasskeyAttestationDeclaration *)self payloadRelyingParties];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"RelyingParties" value:payloadRelyingParties itemSerializer:&__block_literal_global_68 isRequired:1 defaultValue:0];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelSecurityPasskeyAttestationDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v12 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadAttestationIdentityAssetReference copy];
   v6 = v4[6];
   v4[6] = v5;

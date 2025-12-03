@@ -1,18 +1,18 @@
 @interface HMDCoreDataTransformerHMDTriggerRecurrences
 + (id)allowedTopLevelClasses;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation HMDCoreDataTransformerHMDTriggerRecurrences
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy)
   {
-    v6 = v4;
+    v6 = valueCopy;
     objc_opt_class();
     v7 = objc_opt_isKindOfClass() & 1;
     if (v7)
@@ -33,10 +33,10 @@
       return [(HMDCoreDataTransformerHMDTriggerRecurrences *)v18 transformedValue:v19, v20];
     }
 
-    v10 = [v6 unsignedIntegerValue];
-    if (v10)
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
+    if (unsignedIntegerValue)
     {
-      v11 = v10;
+      v11 = unsignedIntegerValue;
       v12 = [[NSMutableArray alloc] initWithCapacity:7];
       for (i = 1; i != 8; ++i)
       {
@@ -69,10 +69,10 @@
   return v16;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  if (v4)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -82,7 +82,7 @@
 
     v19.receiver = self;
     v19.super_class = HMDCoreDataTransformerHMDTriggerRecurrences;
-    v5 = [(HMDSecureUnarchiveFromDataTransformer *)&v19 transformedValue:v4];
+    v5 = [(HMDSecureUnarchiveFromDataTransformer *)&v19 transformedValue:valueCopy];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -103,14 +103,14 @@
           }
 
           v11 = *(*(&v20 + 1) + 8 * i);
-          v12 = [v11 calendar];
-          v13 = v12;
-          if (!v12 || ([v12 maximumRangeOfUnit:512] == 1 ? (v15 = v14 == 7) : (v15 = 0), v15))
+          calendar = [v11 calendar];
+          v13 = calendar;
+          if (!calendar || ([calendar maximumRangeOfUnit:512] == 1 ? (v15 = v14 == 7) : (v15 = 0), v15))
           {
-            v16 = [v11 weekday];
-            if ((v16 - 8) >= 0xFFFFFFFFFFFFFFF9)
+            weekday = [v11 weekday];
+            if ((weekday - 8) >= 0xFFFFFFFFFFFFFFF9)
             {
-              v8 |= (1 << (v16 - 1));
+              v8 |= (1 << (weekday - 1));
             }
           }
         }

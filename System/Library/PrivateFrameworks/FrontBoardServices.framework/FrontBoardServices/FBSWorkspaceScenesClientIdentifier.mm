@@ -1,8 +1,8 @@
 @interface FBSWorkspaceScenesClientIdentifier
-+ (FBSWorkspaceScenesClientIdentifier)identifierWithHostEndpoint:(uint64_t)a1;
-+ (FBSWorkspaceScenesClientIdentifier)identifierWithPeer:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
-- (id)tokenWithIdentity:(uint64_t)a1;
++ (FBSWorkspaceScenesClientIdentifier)identifierWithHostEndpoint:(uint64_t)endpoint;
++ (FBSWorkspaceScenesClientIdentifier)identifierWithPeer:(uint64_t)peer;
+- (BOOL)isEqual:(id)equal;
+- (id)tokenWithIdentity:(uint64_t)identity;
 - (unint64_t)hash;
 @end
 
@@ -19,7 +19,7 @@
   return [(BSServiceConnectionEndpoint *)hostEndpoint hash];
 }
 
-+ (FBSWorkspaceScenesClientIdentifier)identifierWithHostEndpoint:(uint64_t)a1
++ (FBSWorkspaceScenesClientIdentifier)identifierWithHostEndpoint:(uint64_t)endpoint
 {
   v2 = a2;
   objc_opt_self();
@@ -36,27 +36,27 @@
   peer = v3->_peer;
   v3->_peer = 0;
 
-  v7 = [v2 instance];
-  if (v7)
+  instance = [v2 instance];
+  if (instance)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [v2 targetDescription];
-    v10 = [v8 stringWithFormat:@"%@:%@", v9, v7];
+    targetDescription = [v2 targetDescription];
+    v10 = [v8 stringWithFormat:@"%@:%@", targetDescription, instance];
     description = v3->_description;
     v3->_description = v10;
   }
 
   else
   {
-    v12 = [v2 targetDescription];
-    v9 = v3->_description;
-    v3->_description = v12;
+    targetDescription2 = [v2 targetDescription];
+    targetDescription = v3->_description;
+    v3->_description = targetDescription2;
   }
 
   return v3;
 }
 
-+ (FBSWorkspaceScenesClientIdentifier)identifierWithPeer:(uint64_t)a1
++ (FBSWorkspaceScenesClientIdentifier)identifierWithPeer:(uint64_t)peer
 {
   v3 = a2;
   objc_opt_self();
@@ -65,8 +65,8 @@
     [FBSWorkspaceScenesClientIdentifier identifierWithPeer:?];
   }
 
-  v4 = [v3 remoteToken];
-  v5 = [v4 pid];
+  remoteToken = [v3 remoteToken];
+  v5 = [remoteToken pid];
 
   if (v5 < 1)
   {
@@ -89,10 +89,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -111,27 +111,27 @@
   return v6;
 }
 
-- (id)tokenWithIdentity:(uint64_t)a1
+- (id)tokenWithIdentity:(uint64_t)identity
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (identity)
   {
-    if (*(a1 + 16))
+    if (*(identity + 16))
     {
-      v5 = *(a1 + 32);
-      v6 = [MEMORY[0x1E69C75F0] identityOfCurrentProcess];
-      v7 = [v4 internalWorkspaceIdentifier];
-      v8 = [v4 identifier];
-      v9 = [FBSSceneIdentityToken tokenWithHostPID:v5 directEndpointTarget:v6 workspace:v7 identifier:v8];
+      v5 = *(identity + 32);
+      identityOfCurrentProcess = [MEMORY[0x1E69C75F0] identityOfCurrentProcess];
+      internalWorkspaceIdentifier = [v4 internalWorkspaceIdentifier];
+      identifier = [v4 identifier];
+      v9 = [FBSSceneIdentityToken tokenWithHostPID:v5 directEndpointTarget:identityOfCurrentProcess workspace:internalWorkspaceIdentifier identifier:identifier];
     }
 
     else
     {
-      v10 = *(a1 + 8);
-      v6 = [v3 internalWorkspaceIdentifier];
-      v7 = [v4 identifier];
-      v9 = [FBSSceneIdentityToken tokenWithHostEndpoint:v10 workspace:v6 identifier:v7];
+      v10 = *(identity + 8);
+      identityOfCurrentProcess = [v3 internalWorkspaceIdentifier];
+      internalWorkspaceIdentifier = [v4 identifier];
+      v9 = [FBSSceneIdentityToken tokenWithHostEndpoint:v10 workspace:identityOfCurrentProcess identifier:internalWorkspaceIdentifier];
     }
   }
 

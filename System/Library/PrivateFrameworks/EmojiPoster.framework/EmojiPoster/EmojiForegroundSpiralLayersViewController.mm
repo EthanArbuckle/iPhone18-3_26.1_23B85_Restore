@@ -1,25 +1,25 @@
 @interface EmojiForegroundSpiralLayersViewController
-- (_TtC11EmojiPoster41EmojiForegroundSpiralLayersViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11EmojiPoster41EmojiForegroundSpiralLayersViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation EmojiForegroundSpiralLayersViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_249FF1308();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v5.receiver = self;
   v5.super_class = type metadata accessor for EmojiForegroundSpiralLayersViewController();
   v4 = v5.receiver;
-  [(EmojiForegroundSpiralLayersViewController *)&v5 viewIsAppearing:v3];
+  [(EmojiForegroundSpiralLayersViewController *)&v5 viewIsAppearing:appearingCopy];
   sub_249FF1754();
 }
 
@@ -32,7 +32,7 @@
   sub_249FF1BCC();
 }
 
-- (_TtC11EmojiPoster41EmojiForegroundSpiralLayersViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11EmojiPoster41EmojiForegroundSpiralLayersViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

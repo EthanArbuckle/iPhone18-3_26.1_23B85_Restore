@@ -1,14 +1,14 @@
 @interface ARCCredentialWrapper
 - (_TtC16CryptoKitPrivate20ARCCredentialWrapper)init;
-- (_TtC16CryptoKitPrivate20ARCCredentialWrapper)initWithCredentialData:(id)a3 error:(id *)a4;
-- (id)getCredentialDataAndReturnError:(id *)a3;
-- (id)makePresentationWithPresentationContext:(id)a3 presentationLimit:(int64_t)a4 error:(id *)a5;
-- (int64_t)getRemainingPresentationCountWithPresentationContext:(id)a3 presentationLimit:(int64_t)a4;
+- (_TtC16CryptoKitPrivate20ARCCredentialWrapper)initWithCredentialData:(id)data error:(id *)error;
+- (id)getCredentialDataAndReturnError:(id *)error;
+- (id)makePresentationWithPresentationContext:(id)context presentationLimit:(int64_t)limit error:(id *)error;
+- (int64_t)getRemainingPresentationCountWithPresentationContext:(id)context presentationLimit:(int64_t)limit;
 @end
 
 @implementation ARCCredentialWrapper
 
-- (id)getCredentialDataAndReturnError:(id *)a3
+- (id)getCredentialDataAndReturnError:(id *)error
 {
   v4 = (self + OBJC_IVAR____TtC16CryptoKitPrivate20ARCCredentialWrapper_credential);
   swift_beginAccess();
@@ -26,7 +26,7 @@
   v8 = *(v4 + 8);
   v23 = v8;
   v9 = *(&v5 + 1);
-  v10 = self;
+  selfCopy = self;
   sub_1C0D13734(v17, v16, &qword_1EBE6D450, &unk_1C0D7BF20);
   sub_1C0D13734(v22, v16, &qword_1EBE6D420, &qword_1C0D7BF10);
   v11 = sub_1C0D11774(v9, v8);
@@ -40,36 +40,36 @@
   return v14;
 }
 
-- (_TtC16CryptoKitPrivate20ARCCredentialWrapper)initWithCredentialData:(id)a3 error:(id *)a4
+- (_TtC16CryptoKitPrivate20ARCCredentialWrapper)initWithCredentialData:(id)data error:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_1C0D7832C();
   v7 = v6;
 
   return ARCCredentialWrapper.init(credentialData:)(v5, v7);
 }
 
-- (id)makePresentationWithPresentationContext:(id)a3 presentationLimit:(int64_t)a4 error:(id *)a5
+- (id)makePresentationWithPresentationContext:(id)context presentationLimit:(int64_t)limit error:(id *)error
 {
-  v7 = a3;
-  v8 = self;
+  contextCopy = context;
+  selfCopy = self;
   v9 = sub_1C0D7832C();
   v11 = v10;
 
-  v12 = sub_1C0D0C338(v9, v11, a4);
+  v12 = sub_1C0D0C338(v9, v11, limit);
   sub_1C0CF448C(v9, v11);
 
   return v12;
 }
 
-- (int64_t)getRemainingPresentationCountWithPresentationContext:(id)a3 presentationLimit:(int64_t)a4
+- (int64_t)getRemainingPresentationCountWithPresentationContext:(id)context presentationLimit:(int64_t)limit
 {
-  v6 = a3;
-  v7 = self;
+  contextCopy = context;
+  selfCopy = self;
   v8 = sub_1C0D7832C();
   v10 = v9;
 
-  v11 = sub_1C0D0C7D0(v8, v10, a4);
+  v11 = sub_1C0D0C7D0(v8, v10, limit);
   sub_1C0CF448C(v8, v10);
 
   return v11;

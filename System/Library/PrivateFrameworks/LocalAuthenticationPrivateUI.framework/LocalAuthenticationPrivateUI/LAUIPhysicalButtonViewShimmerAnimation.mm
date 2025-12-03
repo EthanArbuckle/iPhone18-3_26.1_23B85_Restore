@@ -1,9 +1,9 @@
 @interface LAUIPhysicalButtonViewShimmerAnimation
 - (double)duration;
-- (void)_beginReducedMotionAnimationWithDelay:(double)a3;
-- (void)_beginRegularMotionAnimationWithDelay:(double)a3;
+- (void)_beginReducedMotionAnimationWithDelay:(double)delay;
+- (void)_beginRegularMotionAnimationWithDelay:(double)delay;
 - (void)_endShimmerAnimation;
-- (void)beginWithDelay:(double)a3;
+- (void)beginWithDelay:(double)delay;
 - (void)endImmediately;
 @end
 
@@ -11,9 +11,9 @@
 
 - (double)duration
 {
-  v2 = [(LAUIPhysicalButtonViewShimmerAnimation *)self _isReducedMotionEnabled];
+  _isReducedMotionEnabled = [(LAUIPhysicalButtonViewShimmerAnimation *)self _isReducedMotionEnabled];
   result = 2.5;
-  if (v2)
+  if (_isReducedMotionEnabled)
   {
     return 3.5;
   }
@@ -21,20 +21,20 @@
   return result;
 }
 
-- (void)beginWithDelay:(double)a3
+- (void)beginWithDelay:(double)delay
 {
   if (![(LAUIPhysicalButtonViewAnimation *)self isRunning])
   {
     if ([(LAUIPhysicalButtonViewShimmerAnimation *)self _isReducedMotionEnabled])
     {
 
-      [(LAUIPhysicalButtonViewShimmerAnimation *)self _beginReducedMotionAnimationWithDelay:a3];
+      [(LAUIPhysicalButtonViewShimmerAnimation *)self _beginReducedMotionAnimationWithDelay:delay];
     }
 
     else
     {
 
-      [(LAUIPhysicalButtonViewShimmerAnimation *)self _beginRegularMotionAnimationWithDelay:a3];
+      [(LAUIPhysicalButtonViewShimmerAnimation *)self _beginRegularMotionAnimationWithDelay:delay];
     }
   }
 }
@@ -51,7 +51,7 @@
   [(LAUIPhysicalButtonViewAnimation *)&v3 endImmediately];
 }
 
-- (void)_beginReducedMotionAnimationWithDelay:(double)a3
+- (void)_beginReducedMotionAnimationWithDelay:(double)delay
 {
   WeakRetained = objc_loadWeakRetained(&self->super._layer);
   LODWORD(v6) = *"ff&?";
@@ -59,7 +59,7 @@
 
   v9 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"opacity"];
   [v9 setValues:&unk_28682FE98];
-  [v9 setBeginTime:a3];
+  [v9 setBeginTime:delay];
   [v9 setBeginTimeMode:*MEMORY[0x277CDA080]];
   [v9 setKeyTimes:&unk_28682FEB0];
   [(LAUIPhysicalButtonViewShimmerAnimation *)self duration];
@@ -70,7 +70,7 @@
   [(LAUIPhysicalButtonViewAnimation *)self addAdditiveAnimation:v9 to:v8 keyPath:0];
 }
 
-- (void)_beginRegularMotionAnimationWithDelay:(double)a3
+- (void)_beginRegularMotionAnimationWithDelay:(double)delay
 {
   [(LAUIPhysicalButtonViewShimmerAnimation *)self _endShimmerAnimation];
   v10[0] = MEMORY[0x277D85DD0];
@@ -89,7 +89,7 @@
   v9[1] = 3221225472;
   v9[2] = __80__LAUIPhysicalButtonViewShimmerAnimation__beginRegularMotionAnimationWithDelay___block_invoke_26;
   v9[3] = &unk_279821848;
-  *&v9[5] = a3;
+  *&v9[5] = delay;
   v9[4] = self;
   v8 = __80__LAUIPhysicalButtonViewShimmerAnimation__beginRegularMotionAnimationWithDelay___block_invoke_26(v9);
   [(LAUIPhysicalButtonViewAnimation *)self addAdditiveAnimation:v8 to:self->_shimmerGradient keyPath:0];

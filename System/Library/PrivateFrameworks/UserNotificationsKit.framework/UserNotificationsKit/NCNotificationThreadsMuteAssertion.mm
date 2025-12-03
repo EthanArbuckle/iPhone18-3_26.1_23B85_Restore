@@ -1,42 +1,42 @@
 @interface NCNotificationThreadsMuteAssertion
-+ (id)threadsMuteAssertionWithMutedThreadIDs:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithMutedThreadIDs:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)threadsMuteAssertionWithMutedThreadIDs:(id)ds;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithMutedThreadIDs:(id)ds;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (unint64_t)activeMuteAssertionLevelForThreadIdentifier:(id)a3;
+- (unint64_t)activeMuteAssertionLevelForThreadIdentifier:(id)identifier;
 - (unint64_t)hash;
 @end
 
 @implementation NCNotificationThreadsMuteAssertion
 
-+ (id)threadsMuteAssertionWithMutedThreadIDs:(id)a3
++ (id)threadsMuteAssertionWithMutedThreadIDs:(id)ds
 {
-  v3 = a3;
-  v4 = [[NCNotificationThreadsMuteAssertion alloc] _initWithMutedThreadIDs:v3];
+  dsCopy = ds;
+  v4 = [[NCNotificationThreadsMuteAssertion alloc] _initWithMutedThreadIDs:dsCopy];
 
   return v4;
 }
 
-- (id)_initWithMutedThreadIDs:(id)a3
+- (id)_initWithMutedThreadIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = NCNotificationThreadsMuteAssertion;
   v6 = [(NCNotificationThreadsMuteAssertion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mutedThreadIDs, a3);
+    objc_storeStrong(&v6->_mutedThreadIDs, ds);
   }
 
   return v7;
 }
 
-- (unint64_t)activeMuteAssertionLevelForThreadIdentifier:(id)a3
+- (unint64_t)activeMuteAssertionLevelForThreadIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     return [(NSSet *)self->_mutedThreadIDs containsObject:?];
   }
@@ -80,11 +80,11 @@ uint64_t __42__NCNotificationThreadsMuteAssertion_hash__block_invoke(uint64_t a1
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v5 = v4) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v5 = equalCopy) != 0)
   {
     v6 = v5;
     v7 = NCIsEqualToSet(self->_mutedThreadIDs, v5[1]);
@@ -98,18 +98,18 @@ uint64_t __42__NCNotificationThreadsMuteAssertion_hash__block_invoke(uint64_t a1
   return v7;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(NCNotificationThreadsMuteAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(NCNotificationThreadsMuteAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -117,8 +117,8 @@ uint64_t __42__NCNotificationThreadsMuteAssertion_hash__block_invoke(uint64_t a1
   v10[3] = &unk_279E0D9F0;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -126,10 +126,10 @@ uint64_t __42__NCNotificationThreadsMuteAssertion_hash__block_invoke(uint64_t a1
 
 - (id)succinctDescription
 {
-  v2 = [(NCNotificationThreadsMuteAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(NCNotificationThreadsMuteAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

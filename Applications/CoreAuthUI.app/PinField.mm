@@ -1,38 +1,38 @@
 @interface PinField
-- (PinField)initWithPinLength:(id)a3 minLength:(id)a4 maxLength:(id)a5 charset:(id)a6;
+- (PinField)initWithPinLength:(id)length minLength:(id)minLength maxLength:(id)maxLength charset:(id)charset;
 - (PinFieldDelegate)delegate;
 - (void)_enterPin;
-- (void)_handleReturnKeyTapped:(id)a3;
+- (void)_handleReturnKeyTapped:(id)tapped;
 - (void)_setupForFixedLength;
 - (void)_setupForVariableLength;
-- (void)appendPinCharacter:(id)a3;
+- (void)appendPinCharacter:(id)character;
 - (void)deleteLastPinCharacter;
 - (void)layoutSubviews;
-- (void)updateLayoutForWidth:(double)a3;
+- (void)updateLayoutForWidth:(double)width;
 @end
 
 @implementation PinField
 
-- (PinField)initWithPinLength:(id)a3 minLength:(id)a4 maxLength:(id)a5 charset:(id)a6
+- (PinField)initWithPinLength:(id)length minLength:(id)minLength maxLength:(id)maxLength charset:(id)charset
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lengthCopy = length;
+  minLengthCopy = minLength;
+  maxLengthCopy = maxLength;
+  charsetCopy = charset;
   v23.receiver = self;
   v23.super_class = PinField;
   v15 = [(PinField *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_pinFixedLength, a3);
-    objc_storeStrong(&v16->_pinMinLength, a4);
-    objc_storeStrong(&v16->_pinMaxLength, a5);
-    objc_storeStrong(&v16->_pinCharset, a6);
-    if (v16->_pinFixedLength && (v17 = [v11 unsignedIntValue], v16->_pinLength = v17, v17 - 4 <= 8))
+    objc_storeStrong(&v15->_pinFixedLength, length);
+    objc_storeStrong(&v16->_pinMinLength, minLength);
+    objc_storeStrong(&v16->_pinMaxLength, maxLength);
+    objc_storeStrong(&v16->_pinCharset, charset);
+    if (v16->_pinFixedLength && (v17 = [lengthCopy unsignedIntValue], v16->_pinLength = v17, v17 - 4 <= 8))
     {
       [(PinField *)v16 _setupForFixedLength];
-      if (!v14)
+      if (!charsetCopy)
       {
         goto LABEL_9;
       }
@@ -41,7 +41,7 @@
     else
     {
       [(PinField *)v16 _setupForVariableLength];
-      if (!v14)
+      if (!charsetCopy)
       {
 LABEL_9:
         v19 = [&stru_1000992A0 stringByPaddingToLength:v16->_pinLength withString:@" " startingAtIndex:0];
@@ -54,7 +54,7 @@ LABEL_9:
       }
     }
 
-    if ([v14 unsignedIntValue])
+    if ([charsetCopy unsignedIntValue])
     {
       v18 = +[NSNotificationCenter defaultCenter];
       [v18 addObserver:v16 selector:"_handleReturnKeyTapped:" name:UIKeyboardReturnKeyPressed object:0];
@@ -130,13 +130,13 @@ LABEL_10:
   [obj setBorderStyle:3];
   [obj setUserInteractionEnabled:0];
   objc_storeStrong(&self->_pinTextField, obj);
-  v3 = [(PinField *)self pinTextField];
-  [(PinField *)self addSubview:v3];
+  pinTextField = [(PinField *)self pinTextField];
+  [(PinField *)self addSubview:pinTextField];
 
-  v4 = [(PinField *)self pinCharset];
-  v5 = [v4 unsignedIntValue];
+  pinCharset = [(PinField *)self pinCharset];
+  unsignedIntValue = [pinCharset unsignedIntValue];
 
-  if (!v5)
+  if (!unsignedIntValue)
   {
     v6 = [UIButton buttonWithType:1];
     v7 = [NSBundle bundleForClass:objc_opt_class()];
@@ -154,33 +154,33 @@ LABEL_10:
     okButton = self->_okButton;
     self->_okButton = v6;
 
-    v12 = [(PinField *)self okButton];
-    [(PinField *)self addSubview:v12];
+    okButton = [(PinField *)self okButton];
+    [(PinField *)self addSubview:okButton];
   }
 
   self->_variableLength = 1;
 }
 
-- (void)updateLayoutForWidth:(double)a3
+- (void)updateLayoutForWidth:(double)width
 {
-  v5 = [(PinField *)self variableLength];
+  variableLength = [(PinField *)self variableLength];
   y = CGRectZero.origin.y;
-  if (v5)
+  if (variableLength)
   {
-    [(PinField *)self setFrame:CGRectZero.origin.x, CGRectZero.origin.y, a3, 30.0];
-    v7 = [(PinField *)self pinMaxLength];
-    [v7 intValue];
+    [(PinField *)self setFrame:CGRectZero.origin.x, CGRectZero.origin.y, width, 30.0];
+    pinMaxLength = [(PinField *)self pinMaxLength];
+    [pinMaxLength intValue];
 
     UIRectCenteredXInRect();
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(PinField *)self pinTextField];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    pinTextField = [(PinField *)self pinTextField];
+    [pinTextField setFrame:{v9, v11, v13, v15}];
 
-    v35 = [(PinField *)self okButton];
-    [v35 setFrame:{v9 + v13, 0.0, 50.0, 30.0}];
+    okButton = [(PinField *)self okButton];
+    [okButton setFrame:{v9 + v13, 0.0, 50.0, 30.0}];
   }
 
   else
@@ -190,9 +190,9 @@ LABEL_10:
     pinLength = self->_pinLength;
     v20 = pinLength;
     v21 = (slotWidth + 25.0) * pinLength + -25.0;
-    if (v21 > a3 + -25.0)
+    if (v21 > width + -25.0)
     {
-      v18 = (a3 + -25.0 - slotWidth * v20) / (pinLength - 1);
+      v18 = (width + -25.0 - slotWidth * v20) / (pinLength - 1);
       v21 = -(v18 - (slotWidth + v18) * v20);
     }
 
@@ -240,11 +240,11 @@ LABEL_10:
   if ([(PinField *)self variableLength])
   {
     v3 = [(LACSecureData *)self->_pinValue length];
-    v4 = [(PinField *)self pinMinLength];
-    v5 = v3 < [v4 unsignedIntValue];
+    pinMinLength = [(PinField *)self pinMinLength];
+    v5 = v3 < [pinMinLength unsignedIntValue];
 
-    v13 = [(PinField *)self okButton];
-    [v13 setHidden:v5];
+    okButton = [(PinField *)self okButton];
+    [okButton setHidden:v5];
   }
 
   else if (self->_pinLength)
@@ -277,9 +277,9 @@ LABEL_10:
       [v10 removeFromSuperview];
 
       v11 = [*(&self->super.super.super.isa + *v9) objectAtIndexedSubscript:v6];
-      v12 = [v11 superview];
+      superview = [v11 superview];
 
-      if (!v12)
+      if (!superview)
       {
         [(PinField *)self addSubview:v11];
       }
@@ -291,59 +291,59 @@ LABEL_10:
   }
 }
 
-- (void)appendPinCharacter:(id)a3
+- (void)appendPinCharacter:(id)character
 {
-  v15 = a3;
+  characterCopy = character;
   if ([(PinField *)self variableLength])
   {
-    v4 = [(PinField *)self pinMaxLength];
-    if (v4)
+    pinMaxLength = [(PinField *)self pinMaxLength];
+    if (pinMaxLength)
     {
-      v5 = [(PinField *)self pinMaxLength];
-      v6 = [v5 unsignedIntValue];
+      pinMaxLength2 = [(PinField *)self pinMaxLength];
+      unsignedIntValue = [pinMaxLength2 unsignedIntValue];
     }
 
     else
     {
-      v6 = -1;
+      unsignedIntValue = -1;
     }
   }
 
   else
   {
-    v6 = [(PinField *)self pinLength];
+    unsignedIntValue = [(PinField *)self pinLength];
   }
 
-  if (-[LACSecureData length](self->_pinValue, "length") < v6 && ([v15 isEqualToString:@"\n"] & 1) == 0)
+  if (-[LACSecureData length](self->_pinValue, "length") < unsignedIntValue && ([characterCopy isEqualToString:@"\n"] & 1) == 0)
   {
-    v7 = [(PinField *)self pinCharset];
-    v8 = [v7 unsignedIntValue];
+    pinCharset = [(PinField *)self pinCharset];
+    unsignedIntValue2 = [pinCharset unsignedIntValue];
 
-    if (v8 == 2)
+    if (unsignedIntValue2 == 2)
     {
-      v9 = [v15 uppercaseString];
+      uppercaseString = [characterCopy uppercaseString];
 
-      v10 = v9;
+      v10 = uppercaseString;
     }
 
     else
     {
-      v10 = v15;
+      v10 = characterCopy;
     }
 
-    v15 = v10;
+    characterCopy = v10;
     [(LACSecureData *)self->_pinValue appendString:?];
     if ([(PinField *)self variableLength])
     {
-      v11 = [(PinField *)self pinTextField];
-      v12 = [v11 text];
-      v13 = [v12 stringByAppendingString:v15];
-      v14 = [(PinField *)self pinTextField];
-      [v14 setText:v13];
+      pinTextField = [(PinField *)self pinTextField];
+      text = [pinTextField text];
+      v13 = [text stringByAppendingString:characterCopy];
+      pinTextField2 = [(PinField *)self pinTextField];
+      [pinTextField2 setText:v13];
     }
 
     [(PinField *)self setNeedsLayout];
-    if ([(LACSecureData *)self->_pinValue length]== v6)
+    if ([(LACSecureData *)self->_pinValue length]== unsignedIntValue)
     {
       [(PinField *)self _enterPin];
     }
@@ -357,20 +357,20 @@ LABEL_10:
     [(LACSecureData *)self->_pinValue removeLastCharacter];
     if ([(PinField *)self variableLength])
     {
-      v3 = [(PinField *)self pinTextField];
-      v4 = [v3 text];
-      v5 = [(PinField *)self pinTextField];
-      v6 = [v5 text];
-      v7 = [v4 substringToIndex:{objc_msgSend(v6, "length") - 1}];
-      v8 = [(PinField *)self pinTextField];
-      [v8 setText:v7];
+      pinTextField = [(PinField *)self pinTextField];
+      text = [pinTextField text];
+      pinTextField2 = [(PinField *)self pinTextField];
+      text2 = [pinTextField2 text];
+      v7 = [text substringToIndex:{objc_msgSend(text2, "length") - 1}];
+      pinTextField3 = [(PinField *)self pinTextField];
+      [pinTextField3 setText:v7];
     }
 
     [(PinField *)self setNeedsLayout];
   }
 }
 
-- (void)_handleReturnKeyTapped:(id)a3
+- (void)_handleReturnKeyTapped:(id)tapped
 {
   if (![(PinField *)self variableLength]|| (v4 = [(LACSecureData *)self->_pinValue length], v4 >= [(NSNumber *)self->_pinMinLength unsignedIntValue]))
   {

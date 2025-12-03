@@ -1,103 +1,103 @@
 @interface RTClientListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (RTClientListener)initWithAccountManager:(id)a3 assetManager:(id)a4 authorizationManager:(id)a5 backgroundInertialOdometryManager:(id)a6 bluePOITileManager:(id)a7 contactsManager:(id)a8 defaultsManager:(id)a9 deviceLocationPredictor:(id)a10 diagnostics:(id)a11 elevationManager:(id)a12 eventAgentManager:(id)a13 eventModelProvider:(id)a14 authorizedLocationManager:(id)a15 fingerprintManager:(id)a16 healthKitManager:(id)a17 hintManager:(id)a18 intermittentGNSSManager:(id)a19 learnedLocationManager:(id)a20 learnedLocationStore:(id)a21 locationManager:(id)a22 locationContextManager:(id)a23 locationStore:(id)a24 mapServiceManager:(id)a25 metricManager:(id)a26 motionActivityManager:(id)a27 peopleDiscoveryProvider:(id)a28 placeInferenceManager:(id)a29 predictedContextManager:(id)a30 purgeManager:(id)a31 scenarioTriggerManager:(id)a32 timerManager:(id)a33 tripSegmentManager:(id)a34 userCurationManager:(id)a35 vehicleLocationProvider:(id)a36 vehicleStore:(id)a37 visitManager:(id)a38 wifiManager:(id)a39 tripClusterManager:(id)a40 visitConsolidator:(id)a41;
-- (id)handleClientConnection:(id)a3;
-- (id)handleRestorationForDaemonClient:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (RTClientListener)initWithAccountManager:(id)manager assetManager:(id)assetManager authorizationManager:(id)authorizationManager backgroundInertialOdometryManager:(id)odometryManager bluePOITileManager:(id)tileManager contactsManager:(id)contactsManager defaultsManager:(id)defaultsManager deviceLocationPredictor:(id)self0 diagnostics:(id)self1 elevationManager:(id)self2 eventAgentManager:(id)self3 eventModelProvider:(id)self4 authorizedLocationManager:(id)self5 fingerprintManager:(id)self6 healthKitManager:(id)self7 hintManager:(id)self8 intermittentGNSSManager:(id)self9 learnedLocationManager:(id)learnedLocationManager learnedLocationStore:(id)store locationManager:(id)a22 locationContextManager:(id)contextManager locationStore:(id)locationStore mapServiceManager:(id)serviceManager metricManager:(id)metricManager motionActivityManager:(id)activityManager peopleDiscoveryProvider:(id)discoveryProvider placeInferenceManager:(id)inferenceManager predictedContextManager:(id)manager0 purgeManager:(id)manager1 scenarioTriggerManager:(id)manager2 timerManager:(id)manager3 tripSegmentManager:(id)manager4 userCurationManager:(id)manager5 vehicleLocationProvider:(id)manager6 vehicleStore:(id)manager7 visitManager:(id)manager8 wifiManager:(id)manager9 tripClusterManager:(id)assetManager0 visitConsolidator:(id)assetManager1;
+- (id)handleClientConnection:(id)connection;
+- (id)handleRestorationForDaemonClient:(id)client;
 - (void)_setup;
-- (void)_setupConnection:(id)a3 forClient:(id)a4;
-- (void)handleDisconnectionForDaemonClient:(id)a3;
-- (void)saveDaemonClient:(id)a3;
+- (void)_setupConnection:(id)connection forClient:(id)client;
+- (void)handleDisconnectionForDaemonClient:(id)client;
+- (void)saveDaemonClient:(id)client;
 @end
 
 @implementation RTClientListener
 
-- (RTClientListener)initWithAccountManager:(id)a3 assetManager:(id)a4 authorizationManager:(id)a5 backgroundInertialOdometryManager:(id)a6 bluePOITileManager:(id)a7 contactsManager:(id)a8 defaultsManager:(id)a9 deviceLocationPredictor:(id)a10 diagnostics:(id)a11 elevationManager:(id)a12 eventAgentManager:(id)a13 eventModelProvider:(id)a14 authorizedLocationManager:(id)a15 fingerprintManager:(id)a16 healthKitManager:(id)a17 hintManager:(id)a18 intermittentGNSSManager:(id)a19 learnedLocationManager:(id)a20 learnedLocationStore:(id)a21 locationManager:(id)a22 locationContextManager:(id)a23 locationStore:(id)a24 mapServiceManager:(id)a25 metricManager:(id)a26 motionActivityManager:(id)a27 peopleDiscoveryProvider:(id)a28 placeInferenceManager:(id)a29 predictedContextManager:(id)a30 purgeManager:(id)a31 scenarioTriggerManager:(id)a32 timerManager:(id)a33 tripSegmentManager:(id)a34 userCurationManager:(id)a35 vehicleLocationProvider:(id)a36 vehicleStore:(id)a37 visitManager:(id)a38 wifiManager:(id)a39 tripClusterManager:(id)a40 visitConsolidator:(id)a41
+- (RTClientListener)initWithAccountManager:(id)manager assetManager:(id)assetManager authorizationManager:(id)authorizationManager backgroundInertialOdometryManager:(id)odometryManager bluePOITileManager:(id)tileManager contactsManager:(id)contactsManager defaultsManager:(id)defaultsManager deviceLocationPredictor:(id)self0 diagnostics:(id)self1 elevationManager:(id)self2 eventAgentManager:(id)self3 eventModelProvider:(id)self4 authorizedLocationManager:(id)self5 fingerprintManager:(id)self6 healthKitManager:(id)self7 hintManager:(id)self8 intermittentGNSSManager:(id)self9 learnedLocationManager:(id)learnedLocationManager learnedLocationStore:(id)store locationManager:(id)a22 locationContextManager:(id)contextManager locationStore:(id)locationStore mapServiceManager:(id)serviceManager metricManager:(id)metricManager motionActivityManager:(id)activityManager peopleDiscoveryProvider:(id)discoveryProvider placeInferenceManager:(id)inferenceManager predictedContextManager:(id)manager0 purgeManager:(id)manager1 scenarioTriggerManager:(id)manager2 timerManager:(id)manager3 tripSegmentManager:(id)manager4 userCurationManager:(id)manager5 vehicleLocationProvider:(id)manager6 vehicleStore:(id)manager7 visitManager:(id)manager8 wifiManager:(id)manager9 tripClusterManager:(id)assetManager0 visitConsolidator:(id)assetManager1
 {
-  v178 = a3;
-  v177 = a4;
-  v176 = a5;
-  v175 = a6;
-  v174 = a7;
-  v138 = a8;
-  v173 = a8;
-  v172 = a9;
-  v171 = a10;
-  v170 = a11;
-  v169 = a12;
-  v168 = a13;
-  v167 = a14;
-  v166 = a15;
-  v165 = a16;
-  v164 = a17;
-  v163 = a18;
-  v162 = a19;
-  v161 = a20;
-  v160 = a21;
+  managerCopy = manager;
+  assetManagerCopy = assetManager;
+  authorizationManagerCopy = authorizationManager;
+  odometryManagerCopy = odometryManager;
+  tileManagerCopy = tileManager;
+  contactsManagerCopy = contactsManager;
+  contactsManagerCopy2 = contactsManager;
+  defaultsManagerCopy = defaultsManager;
+  predictorCopy = predictor;
+  diagnosticsCopy = diagnostics;
+  elevationManagerCopy = elevationManager;
+  agentManagerCopy = agentManager;
+  providerCopy = provider;
+  locationManagerCopy = locationManager;
+  fingerprintManagerCopy = fingerprintManager;
+  kitManagerCopy = kitManager;
+  hintManagerCopy = hintManager;
+  sManagerCopy = sManager;
+  learnedLocationManagerCopy = learnedLocationManager;
+  storeCopy = store;
   v159 = a22;
-  v158 = a23;
-  v157 = a24;
-  v156 = a25;
-  v155 = a26;
-  v154 = a27;
-  v153 = a28;
-  v152 = a29;
-  v151 = a30;
-  v150 = a31;
-  v149 = a32;
-  v148 = a33;
-  v147 = a34;
-  v146 = a35;
-  v145 = a36;
-  v144 = a37;
-  v143 = a38;
-  v142 = a39;
-  v141 = a40;
-  v140 = a41;
+  contextManagerCopy = contextManager;
+  locationStoreCopy = locationStore;
+  serviceManagerCopy = serviceManager;
+  metricManagerCopy = metricManager;
+  activityManagerCopy = activityManager;
+  discoveryProviderCopy = discoveryProvider;
+  inferenceManagerCopy = inferenceManager;
+  predictedContextManagerCopy = predictedContextManager;
+  purgeManagerCopy = purgeManager;
+  triggerManagerCopy = triggerManager;
+  timerManagerCopy = timerManager;
+  segmentManagerCopy = segmentManager;
+  curationManagerCopy = curationManager;
+  locationProviderCopy = locationProvider;
+  vehicleStoreCopy = vehicleStore;
+  visitManagerCopy = visitManager;
+  wifiManagerCopy = wifiManager;
+  clusterManagerCopy = clusterManager;
+  consolidatorCopy = consolidator;
   v180.receiver = self;
   v180.super_class = RTClientListener;
   v46 = [(RTXPCListener *)&v180 initWithMachServiceName:@"com.apple.routined.registration"];
   v47 = v46;
   if (v46)
   {
-    objc_storeStrong(&v46->_accountManager, a3);
-    objc_storeStrong(&v47->_assetManager, a4);
-    objc_storeStrong(&v47->_authorizationManager, a5);
-    objc_storeStrong(&v47->_backgroundInertialOdometryManager, a6);
-    objc_storeStrong(&v47->_bluePOITileManager, a7);
-    objc_storeStrong(&v47->_contactsManager, v138);
-    objc_storeStrong(&v47->_defaultsManager, a9);
-    objc_storeStrong(&v47->_deviceLocationPredictor, a10);
-    objc_storeStrong(&v47->_diagnostics, a11);
-    objc_storeStrong(&v47->_elevationManager, a12);
-    objc_storeStrong(&v47->_eventAgentManager, a13);
-    objc_storeStrong(&v47->_eventModelProvider, a14);
-    objc_storeStrong(&v47->_fingerprintManager, a16);
-    objc_storeStrong(&v47->_authorizedLocationManager, a15);
-    objc_storeStrong(&v47->_healthKitManager, a17);
-    objc_storeStrong(&v47->_hintManager, a18);
-    objc_storeStrong(&v47->_intermittentGNSSManager, a19);
-    objc_storeStrong(&v47->_learnedLocationManager, a20);
-    objc_storeStrong(&v47->_learnedLocationStore, a21);
+    objc_storeStrong(&v46->_accountManager, manager);
+    objc_storeStrong(&v47->_assetManager, assetManager);
+    objc_storeStrong(&v47->_authorizationManager, authorizationManager);
+    objc_storeStrong(&v47->_backgroundInertialOdometryManager, odometryManager);
+    objc_storeStrong(&v47->_bluePOITileManager, tileManager);
+    objc_storeStrong(&v47->_contactsManager, contactsManagerCopy);
+    objc_storeStrong(&v47->_defaultsManager, defaultsManager);
+    objc_storeStrong(&v47->_deviceLocationPredictor, predictor);
+    objc_storeStrong(&v47->_diagnostics, diagnostics);
+    objc_storeStrong(&v47->_elevationManager, elevationManager);
+    objc_storeStrong(&v47->_eventAgentManager, agentManager);
+    objc_storeStrong(&v47->_eventModelProvider, provider);
+    objc_storeStrong(&v47->_fingerprintManager, fingerprintManager);
+    objc_storeStrong(&v47->_authorizedLocationManager, locationManager);
+    objc_storeStrong(&v47->_healthKitManager, kitManager);
+    objc_storeStrong(&v47->_hintManager, hintManager);
+    objc_storeStrong(&v47->_intermittentGNSSManager, sManager);
+    objc_storeStrong(&v47->_learnedLocationManager, learnedLocationManager);
+    objc_storeStrong(&v47->_learnedLocationStore, store);
     objc_storeStrong(&v47->_locationManager, a22);
-    objc_storeStrong(&v47->_locationContextManager, a23);
-    objc_storeStrong(&v47->_locationStore, a24);
-    objc_storeStrong(&v47->_mapServiceManager, a25);
-    objc_storeStrong(&v47->_metricManager, a26);
-    objc_storeStrong(&v47->_motionActivityManager, a27);
-    objc_storeStrong(&v47->_peopleDiscoveryProvider, a28);
-    objc_storeStrong(&v47->_placeInferenceManager, a29);
-    objc_storeStrong(&v47->_predictedContextManager, a30);
-    objc_storeStrong(&v47->_purgeManager, a31);
-    objc_storeStrong(&v47->_scenarioTriggerManager, a32);
-    objc_storeStrong(&v47->_timerManager, a33);
-    objc_storeStrong(&v47->_tripSegmentManager, a34);
-    objc_storeStrong(&v47->_userCurationManager, a35);
-    objc_storeStrong(&v47->_vehicleLocationProvider, a36);
-    objc_storeStrong(&v47->_vehicleStore, a37);
-    objc_storeStrong(&v47->_visitManager, a38);
-    objc_storeStrong(&v47->_wifiManager, a39);
-    objc_storeStrong(&v47->_tripClusterManager, a40);
-    objc_storeStrong(&v47->_visitConsolidator, a41);
+    objc_storeStrong(&v47->_locationContextManager, contextManager);
+    objc_storeStrong(&v47->_locationStore, locationStore);
+    objc_storeStrong(&v47->_mapServiceManager, serviceManager);
+    objc_storeStrong(&v47->_metricManager, metricManager);
+    objc_storeStrong(&v47->_motionActivityManager, activityManager);
+    objc_storeStrong(&v47->_peopleDiscoveryProvider, discoveryProvider);
+    objc_storeStrong(&v47->_placeInferenceManager, inferenceManager);
+    objc_storeStrong(&v47->_predictedContextManager, predictedContextManager);
+    objc_storeStrong(&v47->_purgeManager, purgeManager);
+    objc_storeStrong(&v47->_scenarioTriggerManager, triggerManager);
+    objc_storeStrong(&v47->_timerManager, timerManager);
+    objc_storeStrong(&v47->_tripSegmentManager, segmentManager);
+    objc_storeStrong(&v47->_userCurationManager, curationManager);
+    objc_storeStrong(&v47->_vehicleLocationProvider, locationProvider);
+    objc_storeStrong(&v47->_vehicleStore, vehicleStore);
+    objc_storeStrong(&v47->_visitManager, visitManager);
+    objc_storeStrong(&v47->_wifiManager, wifiManager);
+    objc_storeStrong(&v47->_tripClusterManager, clusterManager);
+    objc_storeStrong(&v47->_visitConsolidator, consolidator);
     v48 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28465E648];
     frameworkInterface = v47->_frameworkInterface;
     v47->_frameworkInterface = v48;
@@ -247,21 +247,21 @@
   v5 = [v3 dictionaryWithContentsOfFile:v4];
   [(RTClientListener *)self setPersistedClients:v5];
 
-  v6 = [(RTClientListener *)self persistedClients];
+  persistedClients = [(RTClientListener *)self persistedClients];
 
-  if (!v6 || (-[RTClientListener persistedClients](self, "persistedClients"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:@"$archiver"], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  if (!persistedClients || (-[RTClientListener persistedClients](self, "persistedClients"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:@"$archiver"], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
     v9 = objc_opt_new();
     [(RTClientListener *)self setPersistedClients:v9];
   }
 
-  v10 = [(RTClientListener *)self persistedClients];
+  persistedClients2 = [(RTClientListener *)self persistedClients];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __26__RTClientListener__setup__block_invoke;
   v12[3] = &unk_2788D20D8;
   v12[4] = self;
-  [v10 enumerateKeysAndObjectsUsingBlock:v12];
+  [persistedClients2 enumerateKeysAndObjectsUsingBlock:v12];
 
   v11.receiver = self;
   v11.super_class = RTClientListener;
@@ -282,61 +282,61 @@ void __26__RTClientListener__setup__block_invoke(uint64_t a1, uint64_t a2, void 
   [v7 addObject:v10];
 }
 
-- (id)handleClientConnection:(id)a3
+- (id)handleClientConnection:(id)connection
 {
-  v8 = a3;
+  connectionCopy = connection;
   v7 = [RTDaemonClient alloc];
-  v4 = [(RTXPCListener *)self queue];
-  v5 = [(RTDaemonClient *)v7 initWithQueue:v4 restorationData:0 accountManager:self->_accountManager assetManager:self->_assetManager authorizationManager:self->_authorizationManager backgroundInertialOdometryManager:self->_backgroundInertialOdometryManager contactsManager:self->_contactsManager defaultsManager:self->_defaultsManager deviceLocationPredictor:self->_deviceLocationPredictor diagnostics:self->_diagnostics elevationManager:self->_elevationManager eventAgentManager:self->_eventAgentManager eventModelProvider:self->_eventModelProvider authorizedLocationManager:self->_authorizedLocationManager fingerprintManager:self->_fingerprintManager healthKitManager:self->_healthKitManager hintManager:self->_hintManager intermittentGNSSManager:self->_intermittentGNSSManager learnedLocationManager:self->_learnedLocationManager learnedLocationStore:self->_learnedLocationStore locationManager:self->_locationManager locationContextManager:self->_locationContextManager locationStore:self->_locationStore mapServiceManager:self->_mapServiceManager metricManager:self->_metricManager motionActivityManager:self->_motionActivityManager peopleDiscoveryProvider:self->_peopleDiscoveryProvider placeInferenceManager:self->_placeInferenceManager predictedContextManager:self->_predictedContextManager purgeManager:self->_purgeManager scenarioTriggerManager:self->_scenarioTriggerManager timerManager:self->_timerManager tripSegmentManager:self->_tripSegmentManager userCurationManager:self->_userCurationManager vehicleLocationProvider:self->_vehicleLocationProvider vehicleStore:self->_vehicleStore visitManager:self->_visitManager wifiManager:self->_wifiManager tripClusterManager:self->_tripClusterManager visitConsolidator:self->_visitConsolidator];
+  queue = [(RTXPCListener *)self queue];
+  v5 = [(RTDaemonClient *)v7 initWithQueue:queue restorationData:0 accountManager:self->_accountManager assetManager:self->_assetManager authorizationManager:self->_authorizationManager backgroundInertialOdometryManager:self->_backgroundInertialOdometryManager contactsManager:self->_contactsManager defaultsManager:self->_defaultsManager deviceLocationPredictor:self->_deviceLocationPredictor diagnostics:self->_diagnostics elevationManager:self->_elevationManager eventAgentManager:self->_eventAgentManager eventModelProvider:self->_eventModelProvider authorizedLocationManager:self->_authorizedLocationManager fingerprintManager:self->_fingerprintManager healthKitManager:self->_healthKitManager hintManager:self->_hintManager intermittentGNSSManager:self->_intermittentGNSSManager learnedLocationManager:self->_learnedLocationManager learnedLocationStore:self->_learnedLocationStore locationManager:self->_locationManager locationContextManager:self->_locationContextManager locationStore:self->_locationStore mapServiceManager:self->_mapServiceManager metricManager:self->_metricManager motionActivityManager:self->_motionActivityManager peopleDiscoveryProvider:self->_peopleDiscoveryProvider placeInferenceManager:self->_placeInferenceManager predictedContextManager:self->_predictedContextManager purgeManager:self->_purgeManager scenarioTriggerManager:self->_scenarioTriggerManager timerManager:self->_timerManager tripSegmentManager:self->_tripSegmentManager userCurationManager:self->_userCurationManager vehicleLocationProvider:self->_vehicleLocationProvider vehicleStore:self->_vehicleStore visitManager:self->_visitManager wifiManager:self->_wifiManager tripClusterManager:self->_tripClusterManager visitConsolidator:self->_visitConsolidator];
 
   [(RTDaemonClient *)v5 setClientManagerDelegate:self];
-  [(RTClientListener *)self _setupConnection:v8 forClient:v5];
+  [(RTClientListener *)self _setupConnection:connectionCopy forClient:v5];
 
   return v5;
 }
 
-- (void)_setupConnection:(id)a3 forClient:(id)a4
+- (void)_setupConnection:(id)connection forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 suspend];
-  v8 = [(RTXPCListener *)self queue];
-  [v6 _setQueue:v8];
+  connectionCopy = connection;
+  clientCopy = client;
+  [connectionCopy suspend];
+  queue = [(RTXPCListener *)self queue];
+  [connectionCopy _setQueue:queue];
 
-  [v6 setRemoteObjectInterface:self->_frameworkInterface];
-  [v6 setExportedInterface:self->_daemonInterface];
-  [v6 setExportedObject:v7];
-  objc_initWeak(&location, v7);
+  [connectionCopy setRemoteObjectInterface:self->_frameworkInterface];
+  [connectionCopy setExportedInterface:self->_daemonInterface];
+  [connectionCopy setExportedObject:clientCopy];
+  objc_initWeak(&location, clientCopy);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __47__RTClientListener__setupConnection_forClient___block_invoke;
   v17[3] = &unk_2788C5908;
   objc_copyWeak(&v18, &location);
-  [v6 setInterruptionHandler:v17];
+  [connectionCopy setInterruptionHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __47__RTClientListener__setupConnection_forClient___block_invoke_312;
   v15[3] = &unk_2788C5908;
   objc_copyWeak(&v16, &location);
-  [v6 setInvalidationHandler:v15];
-  [v6 resume];
-  v9 = [RTXPC executablePathOfConnection:v6];
-  [v7 setExecutablePath:v9];
+  [connectionCopy setInvalidationHandler:v15];
+  [connectionCopy resume];
+  v9 = [RTXPC executablePathOfConnection:connectionCopy];
+  [clientCopy setExecutablePath:v9];
 
-  v10 = [v7 executablePath];
-  v11 = [v10 lastPathComponent];
-  [v7 setExecutableName:v11];
+  executablePath = [clientCopy executablePath];
+  lastPathComponent = [executablePath lastPathComponent];
+  [clientCopy setExecutableName:lastPathComponent];
 
-  [v7 setProcessIdentifier:{objc_msgSend(v6, "processIdentifier")}];
-  v12 = [RTXPC signingIdentifierOfConnection:v6];
-  [v7 setSigningIdentifier:v12];
+  [clientCopy setProcessIdentifier:{objc_msgSend(connectionCopy, "processIdentifier")}];
+  v12 = [RTXPC signingIdentifierOfConnection:connectionCopy];
+  [clientCopy setSigningIdentifier:v12];
 
-  v13 = [v7 signingIdentifier];
-  [v7 setBundleIdentifier:v13];
+  signingIdentifier = [clientCopy signingIdentifier];
+  [clientCopy setBundleIdentifier:signingIdentifier];
 
-  [v7 setXpcConnection:v6];
-  v14 = [v7 xpcConnection];
-  [v14 setDelegate:v7];
+  [clientCopy setXpcConnection:connectionCopy];
+  xpcConnection = [clientCopy xpcConnection];
+  [xpcConnection setDelegate:clientCopy];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v18);
@@ -383,15 +383,15 @@ void __47__RTClientListener__setupConnection_forClient___block_invoke_312(uint64
   [v4 handleDisconnectionForDaemonClient:WeakRetained];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v23 = 0;
-    v8 = [RTXPC clientCodeSignatureIsValid:v7 error:&v23];
+    v8 = [RTXPC clientCodeSignatureIsValid:connectionCopy error:&v23];
     v9 = v23;
     if (v8)
     {
@@ -400,33 +400,33 @@ void __47__RTClientListener__setupConnection_forClient___block_invoke_312(uint64
         v10 = _rt_log_facility_get_os_log(RTLogFacilityConnection);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          v19 = [v7 processIdentifier];
-          v20 = [(RTXPCListener *)self machServiceName];
+          processIdentifier = [connectionCopy processIdentifier];
+          machServiceName = [(RTXPCListener *)self machServiceName];
           *buf = 67109378;
-          *v25 = v19;
+          *v25 = processIdentifier;
           *&v25[4] = 2112;
-          *&v25[6] = v20;
+          *&v25[6] = machServiceName;
           _os_log_debug_impl(&dword_2304B3000, v10, OS_LOG_TYPE_DEBUG, "listener received incoming connection from pid %d, for service, %@", buf, 0x12u);
         }
       }
 
-      v11 = [(RTClientListener *)self handleClientConnection:v7];
+      v11 = [(RTClientListener *)self handleClientConnection:connectionCopy];
       if (v11)
       {
         v12 = v11;
-        v13 = [(RTXPCListener *)self connectedClients];
-        [v13 addObject:v12];
+        connectedClients = [(RTXPCListener *)self connectedClients];
+        [connectedClients addObject:v12];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v14 = _rt_log_facility_get_os_log(RTLogFacilityConnection);
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
-            v15 = [(RTXPCListener *)self machServiceName];
+            machServiceName2 = [(RTXPCListener *)self machServiceName];
             *buf = 138412546;
             *v25 = v12;
             *&v25[8] = 2112;
-            *&v25[10] = v15;
+            *&v25[10] = machServiceName2;
             _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "client connected, %@, to service, %@", buf, 0x16u);
           }
         }
@@ -441,12 +441,12 @@ void __47__RTClientListener__setupConnection_forClient___block_invoke_312(uint64
         v17 = _rt_log_facility_get_os_log(RTLogFacilityConnection);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          v21 = [v7 processIdentifier];
-          v22 = [(RTXPCListener *)self machServiceName];
+          processIdentifier2 = [connectionCopy processIdentifier];
+          machServiceName3 = [(RTXPCListener *)self machServiceName];
           *buf = 67109378;
-          *v25 = v21;
+          *v25 = processIdentifier2;
           *&v25[4] = 2112;
-          *&v25[6] = v22;
+          *&v25[6] = machServiceName3;
           _os_log_debug_impl(&dword_2304B3000, v17, OS_LOG_TYPE_DEBUG, "failed to create client for connection from pid, %d, for service, %@", buf, 0x12u);
         }
       }
@@ -491,24 +491,24 @@ LABEL_28:
   return v16;
 }
 
-- (id)handleRestorationForDaemonClient:(id)a3
+- (id)handleRestorationForDaemonClient:(id)client
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 restorationIdentifier];
+  clientCopy = client;
+  restorationIdentifier = [clientCopy restorationIdentifier];
 
-  if (v5)
+  if (restorationIdentifier)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityConnection);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [v4 restorationIdentifier];
+        restorationIdentifier2 = [clientCopy restorationIdentifier];
         *buf = 138412546;
-        *&buf[4] = v4;
+        *&buf[4] = clientCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v7;
+        *&buf[14] = restorationIdentifier2;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "rehydrate any existing session for client, %@, restoration identifier, %@", buf, 0x16u);
       }
     }
@@ -519,29 +519,29 @@ LABEL_28:
     v44 = __Block_byref_object_copy__176;
     v45 = __Block_byref_object_dispose__176;
     v46 = 0;
-    v8 = [(RTXPCListener *)self disconnectedClients];
+    disconnectedClients = [(RTXPCListener *)self disconnectedClients];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __53__RTClientListener_handleRestorationForDaemonClient___block_invoke;
     v36[3] = &unk_2788D2100;
-    v9 = v4;
+    v9 = clientCopy;
     v37 = v9;
     v38 = buf;
-    [v8 enumerateObjectsUsingBlock:v36];
+    [disconnectedClients enumerateObjectsUsingBlock:v36];
 
     if (*(*&buf[8] + 40))
     {
-      v10 = [v9 xpcConnection];
-      [(RTClientListener *)self _setupConnection:v10 forClient:*(*&buf[8] + 40)];
+      xpcConnection = [v9 xpcConnection];
+      [(RTClientListener *)self _setupConnection:xpcConnection forClient:*(*&buf[8] + 40)];
 
-      v11 = [(RTXPCListener *)self disconnectedClients];
-      [v11 removeObject:*(*&buf[8] + 40)];
+      disconnectedClients2 = [(RTXPCListener *)self disconnectedClients];
+      [disconnectedClients2 removeObject:*(*&buf[8] + 40)];
 
-      v12 = [(RTXPCListener *)self connectedClients];
-      [v12 addObject:*(*&buf[8] + 40)];
+      connectedClients = [(RTXPCListener *)self connectedClients];
+      [connectedClients addObject:*(*&buf[8] + 40)];
 
-      v13 = [(RTXPCListener *)self connectedClients];
-      [v13 removeObject:v9];
+      connectedClients2 = [(RTXPCListener *)self connectedClients];
+      [connectedClients2 removeObject:v9];
 
       [v9 setXpcConnection:0];
       [v9 shutdown];
@@ -557,7 +557,7 @@ LABEL_28:
       v33 = __Block_byref_object_copy__176;
       v34 = __Block_byref_object_dispose__176;
       v35 = 0;
-      v15 = [(RTXPCListener *)self connectedClients];
+      connectedClients3 = [(RTXPCListener *)self connectedClients];
       v24 = MEMORY[0x277D85DD0];
       v25 = 3221225472;
       v26 = __53__RTClientListener_handleRestorationForDaemonClient___block_invoke_2;
@@ -565,27 +565,27 @@ LABEL_28:
       v16 = v9;
       v28 = v16;
       v29 = &v30;
-      [v15 enumerateObjectsUsingBlock:&v24];
+      [connectedClients3 enumerateObjectsUsingBlock:&v24];
 
       if (v31[5])
       {
         v17 = _rt_log_facility_get_os_log(RTLogFacilityConnection);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v16 restorationIdentifier];
+          restorationIdentifier3 = [v16 restorationIdentifier];
           *v39 = 138412546;
           v40 = v16;
           v41 = 2112;
-          v42 = v23;
+          v42 = restorationIdentifier3;
           _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "client, %@, already rehydrated session for restoration identifier, %@, terminating connection, this is likely a programming error that multiple instances of RTRoutineManager from the same process are using the same restoration identifier", v39, 0x16u);
         }
 
-        v18 = [v16 xpcConnection];
-        [v18 invalidate];
+        xpcConnection2 = [v16 xpcConnection];
+        [xpcConnection2 invalidate];
 
         [v16 shutdown];
-        v19 = [(RTXPCListener *)self connectedClients];
-        [v19 removeObject:v16];
+        connectedClients4 = [(RTXPCListener *)self connectedClients];
+        [connectedClients4 removeObject:v16];
 
         [(RTXPCListener *)self logClients];
       }
@@ -595,9 +595,9 @@ LABEL_28:
         v20 = _rt_log_facility_get_os_log(RTLogFacilityConnection);
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
-          v21 = [v16 restorationIdentifier];
+          restorationIdentifier4 = [v16 restorationIdentifier];
           *v39 = 138412290;
-          v40 = v21;
+          v40 = restorationIdentifier4;
           _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_INFO, "client, %@, does not have any existing sessions", v39, 0xCu);
         }
       }
@@ -650,13 +650,13 @@ void __53__RTClientListener_handleRestorationForDaemonClient___block_invoke_2(ui
   }
 }
 
-- (void)saveDaemonClient:(id)a3
+- (void)saveDaemonClient:(id)client
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 restorationIdentifier];
+  clientCopy = client;
+  restorationIdentifier = [clientCopy restorationIdentifier];
 
-  if (v6)
+  if (restorationIdentifier)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -664,39 +664,39 @@ void __53__RTClientListener_handleRestorationForDaemonClient___block_invoke_2(ui
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         v16 = NSStringFromSelector(a2);
-        v17 = [v5 restorationIdentifier];
-        v18 = [v5 restorationData];
+        restorationIdentifier2 = [clientCopy restorationIdentifier];
+        restorationData = [clientCopy restorationData];
         v20 = 138413058;
         v21 = v16;
         v22 = 2112;
-        v23 = v5;
+        v23 = clientCopy;
         v24 = 2112;
-        v25 = v17;
+        v25 = restorationIdentifier2;
         v26 = 2112;
-        v27 = v18;
+        v27 = restorationData;
         _os_log_debug_impl(&dword_2304B3000, v7, OS_LOG_TYPE_DEBUG, "%@%@, restorationIdentifier, %@, restorationData, %@", &v20, 0x2Au);
       }
     }
 
-    v8 = [v5 restorationData];
+    restorationData2 = [clientCopy restorationData];
 
-    v9 = [(RTClientListener *)self persistedClients];
-    if (v8)
+    persistedClients = [(RTClientListener *)self persistedClients];
+    if (restorationData2)
     {
-      v10 = [v5 restorationData];
-      v11 = [v5 restorationIdentifier];
-      [v9 setObject:v10 forKey:v11];
+      restorationData3 = [clientCopy restorationData];
+      restorationIdentifier3 = [clientCopy restorationIdentifier];
+      [persistedClients setObject:restorationData3 forKey:restorationIdentifier3];
     }
 
     else
     {
-      v10 = [v5 restorationIdentifier];
-      [v9 removeObjectForKey:v10];
+      restorationData3 = [clientCopy restorationIdentifier];
+      [persistedClients removeObjectForKey:restorationData3];
     }
 
-    v12 = [(RTClientListener *)self persistedClients];
+    persistedClients2 = [(RTClientListener *)self persistedClients];
     v13 = +[RTClientListener persistedClientsPath];
-    v14 = [v12 writeToFile:v13 atomically:0];
+    v14 = [persistedClients2 writeToFile:v13 atomically:0];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -717,25 +717,25 @@ void __53__RTClientListener_handleRestorationForDaemonClient___block_invoke_2(ui
   }
 }
 
-- (void)handleDisconnectionForDaemonClient:(id)a3
+- (void)handleDisconnectionForDaemonClient:(id)client
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityConnection);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = clientCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "client disconnected, %@", &v9, 0xCu);
     }
   }
 
-  v6 = [(RTXPCListener *)self connectedClients];
-  [v6 removeObject:v4];
+  connectedClients = [(RTXPCListener *)self connectedClients];
+  [connectedClients removeObject:clientCopy];
 
-  if ([v4 hasReasonToOutliveClientConnection])
+  if ([clientCopy hasReasonToOutliveClientConnection])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -743,18 +743,18 @@ void __53__RTClientListener_handleRestorationForDaemonClient___block_invoke_2(ui
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         v9 = 138412290;
-        v10 = v4;
+        v10 = clientCopy;
         _os_log_debug_impl(&dword_2304B3000, v7, OS_LOG_TYPE_DEBUG, "client, %@, has a reason outlive client connection", &v9, 0xCu);
       }
     }
 
-    v8 = [(RTXPCListener *)self disconnectedClients];
-    [v8 addObject:v4];
+    disconnectedClients = [(RTXPCListener *)self disconnectedClients];
+    [disconnectedClients addObject:clientCopy];
   }
 
   else
   {
-    [v4 shutdown];
+    [clientCopy shutdown];
   }
 
   [(RTXPCListener *)self logClients];

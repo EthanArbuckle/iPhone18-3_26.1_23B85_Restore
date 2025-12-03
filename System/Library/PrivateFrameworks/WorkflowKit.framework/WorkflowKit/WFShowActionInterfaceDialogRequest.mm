@@ -1,9 +1,9 @@
 @interface WFShowActionInterfaceDialogRequest
 - (NSString)catalystInterfaceClassName;
-- (WFShowActionInterfaceDialogRequest)initWithActionClassName:(id)a3 classNamesByType:(id)a4 attribution:(id)a5;
-- (WFShowActionInterfaceDialogRequest)initWithCoder:(id)a3;
+- (WFShowActionInterfaceDialogRequest)initWithActionClassName:(id)name classNamesByType:(id)type attribution:(id)attribution;
+- (WFShowActionInterfaceDialogRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFShowActionInterfaceDialogRequest
@@ -23,17 +23,17 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFShowActionInterfaceDialogRequest;
-  v4 = a3;
-  [(WFDialogRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDialogRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = [(WFShowActionInterfaceDialogRequest *)self actionClassName:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"actionClassName"];
+  [coderCopy encodeObject:v5 forKey:@"actionClassName"];
 
-  v6 = [(WFShowActionInterfaceDialogRequest *)self classNamesByType];
-  [v4 encodeObject:v6 forKey:@"classNamesByType"];
+  classNamesByType = [(WFShowActionInterfaceDialogRequest *)self classNamesByType];
+  [coderCopy encodeObject:classNamesByType forKey:@"classNamesByType"];
 }
 
 - (id)description
@@ -41,29 +41,29 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFShowActionInterfaceDialogRequest *)self actionClassName];
-  v7 = [(WFShowActionInterfaceDialogRequest *)self classNamesByType];
-  v8 = [v3 stringWithFormat:@"<%@: %p, actionClassName: %@, classNamesByType: %@>", v5, self, v6, v7];
+  actionClassName = [(WFShowActionInterfaceDialogRequest *)self actionClassName];
+  classNamesByType = [(WFShowActionInterfaceDialogRequest *)self classNamesByType];
+  v8 = [v3 stringWithFormat:@"<%@: %p, actionClassName: %@, classNamesByType: %@>", v5, self, actionClassName, classNamesByType];
 
   return v8;
 }
 
-- (WFShowActionInterfaceDialogRequest)initWithCoder:(id)a3
+- (WFShowActionInterfaceDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = WFShowActionInterfaceDialogRequest;
-  v5 = [(WFDialogRequest *)&v15 initWithCoder:v4];
+  v5 = [(WFDialogRequest *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionClassName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionClassName"];
     actionClassName = v5->_actionClassName;
     v5->_actionClassName = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"classNamesByType"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"classNamesByType"];
     classNamesByType = v5->_classNamesByType;
     v5->_classNamesByType = v11;
 
@@ -73,20 +73,20 @@
   return v5;
 }
 
-- (WFShowActionInterfaceDialogRequest)initWithActionClassName:(id)a3 classNamesByType:(id)a4 attribution:(id)a5
+- (WFShowActionInterfaceDialogRequest)initWithActionClassName:(id)name classNamesByType:(id)type attribution:(id)attribution
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  typeCopy = type;
   v17.receiver = self;
   v17.super_class = WFShowActionInterfaceDialogRequest;
-  v10 = [(WFDialogRequest *)&v17 initWithAttribution:a5 prompt:0];
+  v10 = [(WFDialogRequest *)&v17 initWithAttribution:attribution prompt:0];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     actionClassName = v10->_actionClassName;
     v10->_actionClassName = v11;
 
-    v13 = [v9 copy];
+    v13 = [typeCopy copy];
     classNamesByType = v10->_classNamesByType;
     v10->_classNamesByType = v13;
 

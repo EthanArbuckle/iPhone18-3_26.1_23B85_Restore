@@ -1,58 +1,58 @@
 @interface PXEditMemoryAction
-- (PXEditMemoryAction)initWithMemory:(id)a3 photosGraphData:(id)a4 storyColorGradeKind:(int64_t)a5 keyAsset:(id)a6 userCuratedAssets:(id)a7 customUserAssetsEdit:(id)a8;
-- (void)_changePhotosGraphData:(id)a3 storyColorGradeKind:(int64_t)a4 keyAsset:(id)a5 userCuratedAssets:(id)a6 customUserAssetsEdit:(id)a7 completionHandler:(id)a8;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXEditMemoryAction)initWithMemory:(id)memory photosGraphData:(id)data storyColorGradeKind:(int64_t)kind keyAsset:(id)asset userCuratedAssets:(id)assets customUserAssetsEdit:(id)edit;
+- (void)_changePhotosGraphData:(id)data storyColorGradeKind:(int64_t)kind keyAsset:(id)asset userCuratedAssets:(id)assets customUserAssetsEdit:(id)edit completionHandler:(id)handler;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXEditMemoryAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v9 = [(PXEditMemoryAction *)self undoPhotosGraphData];
-  v5 = [(PXEditMemoryAction *)self undoStoryColorGradeKind];
-  v6 = [(PXEditMemoryAction *)self undoKeyAsset];
-  v7 = [(PXEditMemoryAction *)self undoUserCuratedAssets];
-  v8 = [(PXEditMemoryAction *)self undoCustomUserAssetsEdit];
-  [(PXEditMemoryAction *)self _changePhotosGraphData:v9 storyColorGradeKind:v5 keyAsset:v6 userCuratedAssets:v7 customUserAssetsEdit:v8 completionHandler:v4];
+  undoCopy = undo;
+  undoPhotosGraphData = [(PXEditMemoryAction *)self undoPhotosGraphData];
+  undoStoryColorGradeKind = [(PXEditMemoryAction *)self undoStoryColorGradeKind];
+  undoKeyAsset = [(PXEditMemoryAction *)self undoKeyAsset];
+  undoUserCuratedAssets = [(PXEditMemoryAction *)self undoUserCuratedAssets];
+  undoCustomUserAssetsEdit = [(PXEditMemoryAction *)self undoCustomUserAssetsEdit];
+  [(PXEditMemoryAction *)self _changePhotosGraphData:undoPhotosGraphData storyColorGradeKind:undoStoryColorGradeKind keyAsset:undoKeyAsset userCuratedAssets:undoUserCuratedAssets customUserAssetsEdit:undoCustomUserAssetsEdit completionHandler:undoCopy];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v9 = [(PXEditMemoryAction *)self redoPhotosGraphData];
-  v5 = [(PXEditMemoryAction *)self redoStoryColorGradeKind];
-  v6 = [(PXEditMemoryAction *)self redoKeyAsset];
-  v7 = [(PXEditMemoryAction *)self redoUserCuratedAssets];
-  v8 = [(PXEditMemoryAction *)self redoCustomUserAssetsEdit];
-  [(PXEditMemoryAction *)self _changePhotosGraphData:v9 storyColorGradeKind:v5 keyAsset:v6 userCuratedAssets:v7 customUserAssetsEdit:v8 completionHandler:v4];
+  actionCopy = action;
+  redoPhotosGraphData = [(PXEditMemoryAction *)self redoPhotosGraphData];
+  redoStoryColorGradeKind = [(PXEditMemoryAction *)self redoStoryColorGradeKind];
+  redoKeyAsset = [(PXEditMemoryAction *)self redoKeyAsset];
+  redoUserCuratedAssets = [(PXEditMemoryAction *)self redoUserCuratedAssets];
+  redoCustomUserAssetsEdit = [(PXEditMemoryAction *)self redoCustomUserAssetsEdit];
+  [(PXEditMemoryAction *)self _changePhotosGraphData:redoPhotosGraphData storyColorGradeKind:redoStoryColorGradeKind keyAsset:redoKeyAsset userCuratedAssets:redoUserCuratedAssets customUserAssetsEdit:redoCustomUserAssetsEdit completionHandler:actionCopy];
 }
 
-- (void)_changePhotosGraphData:(id)a3 storyColorGradeKind:(int64_t)a4 keyAsset:(id)a5 userCuratedAssets:(id)a6 customUserAssetsEdit:(id)a7 completionHandler:(id)a8
+- (void)_changePhotosGraphData:(id)data storyColorGradeKind:(int64_t)kind keyAsset:(id)asset userCuratedAssets:(id)assets customUserAssetsEdit:(id)edit completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(PXEditMemoryAction *)self memory];
+  dataCopy = data;
+  assetCopy = asset;
+  assetsCopy = assets;
+  editCopy = edit;
+  handlerCopy = handler;
+  memory = [(PXEditMemoryAction *)self memory];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __131__PXEditMemoryAction__changePhotosGraphData_storyColorGradeKind_keyAsset_userCuratedAssets_customUserAssetsEdit_completionHandler___block_invoke;
   v25[3] = &unk_1E772FD10;
-  v26 = v19;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
-  v30 = v17;
-  v31 = a4;
-  v20 = v17;
-  v21 = v16;
-  v22 = v15;
-  v23 = v14;
-  v24 = v19;
-  [(PXPhotosAction *)self performChanges:v25 completionHandler:v18];
+  v26 = memory;
+  v27 = dataCopy;
+  v28 = assetCopy;
+  v29 = assetsCopy;
+  v30 = editCopy;
+  kindCopy = kind;
+  v20 = editCopy;
+  v21 = assetsCopy;
+  v22 = assetCopy;
+  v23 = dataCopy;
+  v24 = memory;
+  [(PXPhotosAction *)self performChanges:v25 completionHandler:handlerCopy];
 }
 
 void __131__PXEditMemoryAction__changePhotosGraphData_storyColorGradeKind_keyAsset_userCuratedAssets_customUserAssetsEdit_completionHandler___block_invoke(uint64_t a1)
@@ -93,32 +93,32 @@ void __131__PXEditMemoryAction__changePhotosGraphData_storyColorGradeKind_keyAss
   }
 }
 
-- (PXEditMemoryAction)initWithMemory:(id)a3 photosGraphData:(id)a4 storyColorGradeKind:(int64_t)a5 keyAsset:(id)a6 userCuratedAssets:(id)a7 customUserAssetsEdit:(id)a8
+- (PXEditMemoryAction)initWithMemory:(id)memory photosGraphData:(id)data storyColorGradeKind:(int64_t)kind keyAsset:(id)asset userCuratedAssets:(id)assets customUserAssetsEdit:(id)edit
 {
-  v13 = a3;
-  v15 = a3;
-  v16 = a4;
-  v36 = a6;
-  v17 = a7;
-  obj = a8;
-  v18 = a8;
-  v19 = [v15 photoLibrary];
+  memoryCopy = memory;
+  memoryCopy2 = memory;
+  dataCopy = data;
+  assetCopy = asset;
+  assetsCopy = assets;
+  obj = edit;
+  editCopy = edit;
+  photoLibrary = [memoryCopy2 photoLibrary];
   v37.receiver = self;
   v37.super_class = PXEditMemoryAction;
-  v20 = [(PXPhotosAction *)&v37 initWithPhotoLibrary:v19];
+  v20 = [(PXPhotosAction *)&v37 initWithPhotoLibrary:photoLibrary];
 
-  v21 = v16;
+  v21 = dataCopy;
   if (v20)
   {
-    objc_storeStrong(&v20->_memory, v13);
-    objc_storeStrong(&v20->_redoPhotosGraphData, a4);
-    if (v16)
+    objc_storeStrong(&v20->_memory, memoryCopy);
+    objc_storeStrong(&v20->_redoPhotosGraphData, data);
+    if (dataCopy)
     {
       v22 = MEMORY[0x1E69788F0];
-      v13 = [v15 photosGraphProperties];
+      memoryCopy = [memoryCopy2 photosGraphProperties];
       v23 = v22;
-      v21 = v16;
-      v24 = [v23 px_photosGraphDataFromProperties:v13 error:0];
+      v21 = dataCopy;
+      v24 = [v23 px_photosGraphDataFromProperties:memoryCopy error:0];
     }
 
     else
@@ -131,36 +131,36 @@ void __131__PXEditMemoryAction__changePhotosGraphData_storyColorGradeKind_keyAss
     {
     }
 
-    v20->_redoStoryColorGradeKind = a5;
-    if (a5)
+    v20->_redoStoryColorGradeKind = kind;
+    if (kind)
     {
-      v25 = [v15 storyColorGradeKind];
+      storyColorGradeKind = [memoryCopy2 storyColorGradeKind];
     }
 
     else
     {
-      v25 = 0;
+      storyColorGradeKind = 0;
     }
 
-    v20->_undoStoryColorGradeKind = v25;
-    objc_storeStrong(&v20->_redoKeyAsset, a6);
-    if (v36)
+    v20->_undoStoryColorGradeKind = storyColorGradeKind;
+    objc_storeStrong(&v20->_redoKeyAsset, asset);
+    if (assetCopy)
     {
-      v13 = [MEMORY[0x1E6978630] fetchKeyAssetsInAssetCollection:v15 options:0];
-      v26 = [v13 firstObject];
+      memoryCopy = [MEMORY[0x1E6978630] fetchKeyAssetsInAssetCollection:memoryCopy2 options:0];
+      firstObject = [memoryCopy firstObject];
     }
 
     else
     {
-      v26 = 0;
+      firstObject = 0;
     }
 
-    objc_storeStrong(&v20->_undoKeyAsset, v26);
-    if (v36)
+    objc_storeStrong(&v20->_undoKeyAsset, firstObject);
+    if (assetCopy)
     {
     }
 
-    if (v17)
+    if (assetsCopy)
     {
       PXDisplayAssetFetchResultFastEnumeration();
     }
@@ -168,11 +168,11 @@ void __131__PXEditMemoryAction__changePhotosGraphData_storyColorGradeKind_keyAss
     objc_storeStrong(&v20->_redoUserCuratedAssets, 0);
     objc_storeStrong(&v20->_undoUserCuratedAssets, 0);
     v27 = MEMORY[0x1E6978630];
-    v28 = [v15 photoLibrary];
-    v29 = [v28 librarySpecificFetchOptions];
-    v30 = [v27 fetchCustomUserAssetsInMemory:v15 options:v29];
+    photoLibrary2 = [memoryCopy2 photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary2 librarySpecificFetchOptions];
+    v30 = [v27 fetchCustomUserAssetsInMemory:memoryCopy2 options:librarySpecificFetchOptions];
 
-    if (v18)
+    if (editCopy)
     {
       objc_storeStrong(&v20->_redoCustomUserAssetsEdit, obja);
       v31 = [[PXMemoryCustomUserAssetsEdit alloc] initWithAssets:v30];
@@ -187,9 +187,9 @@ void __131__PXEditMemoryAction__changePhotosGraphData_storyColorGradeKind_keyAss
       v31 = 0;
     }
 
-    v21 = v16;
+    v21 = dataCopy;
     objc_storeStrong(&v20->_undoCustomUserAssetsEdit, v31);
-    if (v18)
+    if (editCopy)
     {
     }
   }

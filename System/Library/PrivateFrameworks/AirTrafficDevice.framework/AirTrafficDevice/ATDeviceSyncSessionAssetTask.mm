@@ -1,37 +1,37 @@
 @interface ATDeviceSyncSessionAssetTask
-- (ATDeviceSyncSessionAssetTask)initWithDataClass:(id)a3 onMessageLink:(id)a4;
-- (id)_getMetricsWithCurrentProgressForInflightAssetsFromAssetMetrics:(id)a3;
+- (ATDeviceSyncSessionAssetTask)initWithDataClass:(id)class onMessageLink:(id)link;
+- (id)_getMetricsWithCurrentProgressForInflightAssetsFromAssetMetrics:(id)metrics;
 - (id)_getRawInstalledAssetMetricsFromAssetClient;
-- (id)_prepareInstalledAssetMetricsWithSerializedOutputFromClientMetrics:(id)a3;
-- (id)_serializedAssetRequestsFromRequestDictionary:(id)a3;
-- (id)_serializedAssetSyncProgressFromAssetCacheDictionary:(id)a3;
-- (id)_serializedAssetsToDownloadDictionaryWithUpdatedProgressFromDownloadDictionary:(id)a3;
-- (id)_serializedDownloadedAssetsDictionaryFromDownloadedAssetsDictionary:(id)a3;
-- (id)_updateProgressAndGetFileProgressParamsForAsset:(id)a3;
-- (unint64_t)_bytesDownloadedForAsset:(id)a3;
-- (void)_assetRequestsCompletedWithError:(id)a3;
-- (void)_finishTaskWithError:(id)a3;
-- (void)_handleAssetDownloadProgressed:(id)a3 onMessageLink:(id)a4;
-- (void)_handleAssetRequest:(id)a3 onMessagLink:(id)a4;
-- (void)_handleBeginAssetTaskRequest:(id)a3 onMessagLink:(id)a4;
-- (void)_handleEndAssetTaskRequest:(id)a3 onMessagLink:(id)a4;
-- (void)_handleFinishedAsset:(id)a3;
-- (void)_handleInstalledAssetMetricsChanged:(id)a3 onMessageLink:(id)a4;
-- (void)_handleUpdateSessionTaskRequest:(id)a3 onMessageLink:(id)a4;
-- (void)_handleUpdatedAsset:(id)a3;
+- (id)_prepareInstalledAssetMetricsWithSerializedOutputFromClientMetrics:(id)metrics;
+- (id)_serializedAssetRequestsFromRequestDictionary:(id)dictionary;
+- (id)_serializedAssetSyncProgressFromAssetCacheDictionary:(id)dictionary;
+- (id)_serializedAssetsToDownloadDictionaryWithUpdatedProgressFromDownloadDictionary:(id)dictionary;
+- (id)_serializedDownloadedAssetsDictionaryFromDownloadedAssetsDictionary:(id)dictionary;
+- (id)_updateProgressAndGetFileProgressParamsForAsset:(id)asset;
+- (unint64_t)_bytesDownloadedForAsset:(id)asset;
+- (void)_assetRequestsCompletedWithError:(id)error;
+- (void)_finishTaskWithError:(id)error;
+- (void)_handleAssetDownloadProgressed:(id)progressed onMessageLink:(id)link;
+- (void)_handleAssetRequest:(id)request onMessagLink:(id)link;
+- (void)_handleBeginAssetTaskRequest:(id)request onMessagLink:(id)link;
+- (void)_handleEndAssetTaskRequest:(id)request onMessagLink:(id)link;
+- (void)_handleFinishedAsset:(id)asset;
+- (void)_handleInstalledAssetMetricsChanged:(id)changed onMessageLink:(id)link;
+- (void)_handleUpdateSessionTaskRequest:(id)request onMessageLink:(id)link;
+- (void)_handleUpdatedAsset:(id)asset;
 - (void)_loadInstalledAssetMetricsFromSyncClient;
-- (void)_removeAssetFromProgressMap:(id)a3;
+- (void)_removeAssetFromProgressMap:(id)map;
 - (void)_sendUpdatedInstallMetrics;
 - (void)_shouldDeviceReportSyncProgress;
-- (void)_updateCachedInstalledAssetMetricsWithNewMetrics:(id)a3;
-- (void)_updateDetailedProgressForCompletedAsset:(id)a3;
-- (void)_updateProgressWithBytesTransferred:(unint64_t)a3 forAsset:(id)a4;
+- (void)_updateCachedInstalledAssetMetricsWithNewMetrics:(id)metrics;
+- (void)_updateDetailedProgressForCompletedAsset:(id)asset;
+- (void)_updateProgressWithBytesTransferred:(unint64_t)transferred forAsset:(id)asset;
 - (void)_updateProperties;
 - (void)_updateTaskDescription;
 - (void)cancel;
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4;
+- (void)messageLink:(id)link didReceiveRequest:(id)request;
 - (void)start;
-- (void)updateProgressWithCount:(unint64_t)a3 totalItemCount:(unint64_t)a4;
+- (void)updateProgressWithCount:(unint64_t)count totalItemCount:(unint64_t)itemCount;
 @end
 
 @implementation ATDeviceSyncSessionAssetTask
@@ -57,12 +57,12 @@
 
   v4 = v3;
   _Block_object_dispose(&v18, 8);
-  v5 = [v3 sharedInstance];
-  v6 = [v5 getActivePairedDevice];
+  sharedInstance = [v3 sharedInstance];
+  getActivePairedDevice = [sharedInstance getActivePairedDevice];
 
-  if (v6)
+  if (getActivePairedDevice)
   {
-    v7 = v6;
+    v7 = getActivePairedDevice;
     v18 = 0;
     v19 = &v18;
     v20 = 0x2020000000;
@@ -85,9 +85,9 @@
     _Block_object_dispose(&v18, 8);
     if (!v8)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NRProductVersionWatchOS __ATDeviceSyncSessionAssetTaskNRWatchOSVersionForRemoteDevice(NRDevice *__strong)"];
-      [v16 handleFailureInFunction:v17 file:@"ATDeviceSyncSessionAssetTask.m" lineNumber:27 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v17 file:@"ATDeviceSyncSessionAssetTask.m" lineNumber:27 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
@@ -134,36 +134,36 @@
   }
 }
 
-- (void)_updateProgressWithBytesTransferred:(unint64_t)a3 forAsset:(id)a4
+- (void)_updateProgressWithBytesTransferred:(unint64_t)transferred forAsset:(id)asset
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([v6 assetParts])
+  assetCopy = asset;
+  if ([assetCopy assetParts])
   {
-    v7 = [(ATSessionTask *)self totalBytesTransferred];
-    v8 = [v7 unsignedLongLongValue];
+    totalBytesTransferred = [(ATSessionTask *)self totalBytesTransferred];
+    unsignedLongLongValue = [totalBytesTransferred unsignedLongLongValue];
 
-    v9 = [(ATSessionTask *)self totalBytesToTransfer];
-    v10 = [v9 unsignedLongLongValue];
+    totalBytesToTransfer = [(ATSessionTask *)self totalBytesToTransfer];
+    unsignedLongLongValue2 = [totalBytesToTransfer unsignedLongLongValue];
 
-    if (v8 + a3 >= v10)
+    if (unsignedLongLongValue + transferred >= unsignedLongLongValue2)
     {
-      v11 = v10;
+      v11 = unsignedLongLongValue2;
     }
 
     else
     {
-      v11 = v8 + a3;
+      v11 = unsignedLongLongValue + transferred;
     }
 
-    v12 = [v6 assetType];
-    if (v12)
+    assetType = [assetCopy assetType];
+    if (assetType)
     {
-      v13 = [(NSMutableDictionary *)self->_syncProgresByAssetType objectForKey:v12];
+      v13 = [(NSMutableDictionary *)self->_syncProgresByAssetType objectForKey:assetType];
       v14 = v13;
       if (v13)
       {
-        [v13 updateBytesDownloaded:a3];
+        [v13 updateBytesDownloaded:transferred];
       }
     }
 
@@ -171,9 +171,9 @@
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v11];
     [(ATSessionTask *)self setTotalBytesTransferred:v15];
 
-    if (v10)
+    if (unsignedLongLongValue2)
     {
-      v16 = v11 / v10;
+      v16 = v11 / unsignedLongLongValue2;
     }
 
     else
@@ -187,86 +187,86 @@
     {
       [(ATSessionTask *)self progress];
       v19 = 134218752;
-      v20 = v10;
+      v20 = unsignedLongLongValue2;
       v21 = 2048;
       v22 = v11;
       v23 = 2048;
       v24 = v18;
       v25 = 2048;
-      v26 = [(ATSessionTask *)self completedItemCount];
+      completedItemCount = [(ATSessionTask *)self completedItemCount];
       _os_log_impl(&dword_223819000, v17, OS_LOG_TYPE_DEFAULT, "total bytes to transfer:%llu, bytes transferred so far:%llu, progress:%f, completed asset count:%lu", &v19, 0x2Au);
     }
   }
 }
 
-- (id)_updateProgressAndGetFileProgressParamsForAsset:(id)a3
+- (id)_updateProgressAndGetFileProgressParamsForAsset:(id)asset
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 assetParts] & 1) == 0)
+  assetCopy = asset;
+  v5 = assetCopy;
+  if (!assetCopy || ([assetCopy assetParts] & 1) == 0)
   {
     v6 = 0;
     goto LABEL_25;
   }
 
-  v7 = [v5 identifier];
-  v8 = [v5 assetType];
-  if (v8)
+  identifier = [v5 identifier];
+  assetType = [v5 assetType];
+  if (assetType)
   {
-    v9 = [(NSMutableDictionary *)self->_progressMap objectForKey:v8];
-    if (!v9)
+    dictionary = [(NSMutableDictionary *)self->_progressMap objectForKey:assetType];
+    if (!dictionary)
     {
-      v9 = [MEMORY[0x277CBEB38] dictionary];
-      [(NSMutableDictionary *)self->_progressMap setObject:v9 forKey:v8];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(NSMutableDictionary *)self->_progressMap setObject:dictionary forKey:assetType];
     }
 
-    v10 = [v5 totalBytes];
-    v11 = v10;
-    if (!v10)
+    totalBytes = [v5 totalBytes];
+    unsignedLongLongValue = totalBytes;
+    if (!totalBytes)
     {
       itemsWithEstimatedFileSize = self->_itemsWithEstimatedFileSize;
-      v13 = [v5 identifier];
-      v14 = [(NSDictionary *)itemsWithEstimatedFileSize objectForKey:v13];
+      identifier2 = [v5 identifier];
+      v14 = [(NSDictionary *)itemsWithEstimatedFileSize objectForKey:identifier2];
 
-      v11 = [v14 unsignedLongLongValue];
+      unsignedLongLongValue = [v14 unsignedLongLongValue];
     }
 
-    v15 = [v9 objectForKey:v7];
-    v16 = [v15 unsignedLongLongValue];
+    v15 = [dictionary objectForKey:identifier];
+    unsignedLongLongValue2 = [v15 unsignedLongLongValue];
 
-    v17 = [v5 bytesRemaining];
-    if (!v10)
+    bytesRemaining = [v5 bytesRemaining];
+    if (!totalBytes)
     {
-      if (v11 < v17)
+      if (unsignedLongLongValue < bytesRemaining)
       {
         v18 = _ATLogCategoryDeviceSync();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [v5 identifier];
+          identifier3 = [v5 identifier];
           *buf = 138544130;
-          v29 = self;
+          selfCopy = self;
           v30 = 2048;
-          v31 = v11;
+          v31 = unsignedLongLongValue;
           v32 = 2114;
-          v33 = v19;
+          v33 = identifier3;
           v34 = 2048;
-          v35 = [v5 bytesRemaining];
+          bytesRemaining2 = [v5 bytesRemaining];
           _os_log_impl(&dword_223819000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ Undercalculated fileSize (%llu) for %{public}@ - bytesRemaining (%llu) ", buf, 0x2Au);
         }
 
-        v20 = v11;
+        v20 = unsignedLongLongValue;
         goto LABEL_17;
       }
 
-      v17 = [v5 bytesRemaining];
+      bytesRemaining = [v5 bytesRemaining];
     }
 
-    v20 = v11 - v17;
+    v20 = unsignedLongLongValue - bytesRemaining;
 LABEL_17:
-    if (v20 >= v16)
+    if (v20 >= unsignedLongLongValue2)
     {
-      v21 = v20 - v16;
+      v21 = v20 - unsignedLongLongValue2;
     }
 
     else
@@ -274,16 +274,16 @@ LABEL_17:
       v21 = 0;
     }
 
-    if (!v16 || (v6 = 0, v21 >= 0x40000))
+    if (!unsignedLongLongValue2 || (v6 = 0, v21 >= 0x40000))
     {
       v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v20];
-      [v9 setObject:v22 forKey:v7];
+      [dictionary setObject:v22 forKey:identifier];
 
       v23 = MEMORY[0x277CBEAC0];
-      v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v11];
+      v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue];
       v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v21];
       v26 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v20];
-      v6 = [v23 dictionaryWithObjectsAndKeys:{v24, @"FileSize", v25, @"AssetProgress", v26, @"ATBytesDownloadedForAsset", v8, @"AssetType", v7, @"ATLibraryIdentifierForAsset", 0}];
+      v6 = [v23 dictionaryWithObjectsAndKeys:{v24, @"FileSize", v25, @"AssetProgress", v26, @"ATBytesDownloadedForAsset", assetType, @"AssetType", identifier, @"ATLibraryIdentifierForAsset", 0}];
     }
 
     goto LABEL_24;
@@ -297,92 +297,92 @@ LABEL_25:
   return v6;
 }
 
-- (void)_removeAssetFromProgressMap:(id)a3
+- (void)_removeAssetFromProgressMap:(id)map
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  mapCopy = map;
+  v5 = mapCopy;
+  if (mapCopy)
   {
-    v6 = [v4 identifier];
-    v7 = [v5 assetType];
-    if (v7)
+    identifier = [mapCopy identifier];
+    assetType = [v5 assetType];
+    if (assetType)
     {
-      v8 = [(NSMutableDictionary *)self->_progressMap objectForKey:v7];
+      v8 = [(NSMutableDictionary *)self->_progressMap objectForKey:assetType];
       if (v8)
       {
         v9 = _ATLogCategoryDeviceSync();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v5 shortDescription];
+          shortDescription = [v5 shortDescription];
           v11 = 138543618;
-          v12 = self;
+          selfCopy = self;
           v13 = 2114;
-          v14 = v10;
+          v14 = shortDescription;
           _os_log_impl(&dword_223819000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Removed %{public}@ from our progress map", &v11, 0x16u);
         }
 
-        [v8 removeObjectForKey:v6];
+        [v8 removeObjectForKey:identifier];
       }
     }
   }
 }
 
-- (unint64_t)_bytesDownloadedForAsset:(id)a3
+- (unint64_t)_bytesDownloadedForAsset:(id)asset
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assetCopy = asset;
+  v5 = assetCopy;
+  if (assetCopy)
   {
-    v6 = [v4 identifier];
-    v7 = [v5 assetType];
-    if (v7)
+    identifier = [assetCopy identifier];
+    assetType = [v5 assetType];
+    if (assetType)
     {
-      v8 = [(NSMutableDictionary *)self->_progressMap objectForKey:v7];
+      v8 = [(NSMutableDictionary *)self->_progressMap objectForKey:assetType];
       v9 = v8;
       if (v8)
       {
-        v10 = [v8 objectForKey:v6];
-        v11 = [v10 unsignedIntegerValue];
+        v10 = [v8 objectForKey:identifier];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
         v12 = _ATLogCategoryDeviceSync();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v5 shortDescription];
+          shortDescription = [v5 shortDescription];
           v15 = 138543874;
-          v16 = self;
+          selfCopy = self;
           v17 = 2048;
-          v18 = v11;
+          v18 = unsignedIntegerValue;
           v19 = 2114;
-          v20 = v13;
+          v20 = shortDescription;
           _os_log_impl(&dword_223819000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: %llu bytes have been reported downloaded for %{public}@", &v15, 0x20u);
         }
       }
 
       else
       {
-        v11 = 0;
+        unsignedIntegerValue = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      unsignedIntegerValue = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v11;
+  return unsignedIntegerValue;
 }
 
 - (void)_loadInstalledAssetMetricsFromSyncClient
 {
-  v8 = [(ATDeviceSyncSessionAssetTask *)self _getRawInstalledAssetMetricsFromAssetClient];
-  v3 = [(ATDeviceSyncSessionAssetTask *)self _prepareInstalledAssetMetricsWithSerializedOutputFromClientMetrics:v8];
+  _getRawInstalledAssetMetricsFromAssetClient = [(ATDeviceSyncSessionAssetTask *)self _getRawInstalledAssetMetricsFromAssetClient];
+  v3 = [(ATDeviceSyncSessionAssetTask *)self _prepareInstalledAssetMetricsWithSerializedOutputFromClientMetrics:_getRawInstalledAssetMetricsFromAssetClient];
   installedAssetMetrics = self->_installedAssetMetrics;
   self->_installedAssetMetrics = v3;
 
@@ -406,7 +406,7 @@ LABEL_25:
     }
 
     v12 = 138543362;
-    v13 = self;
+    selfCopy4 = self;
     v8 = "%{public}@: no ATAssetClient to get installed asset metrics";
 LABEL_9:
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, v8, &v12, 0xCu);
@@ -422,7 +422,7 @@ LABEL_9:
     }
 
     v12 = 138543362;
-    v13 = self;
+    selfCopy4 = self;
     v8 = "%{public}@: client doesn't conform to ATClient";
     goto LABEL_9;
   }
@@ -430,8 +430,8 @@ LABEL_9:
   v5 = v4;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 installedAssetMetrics];
-    v7 = [(ATDeviceSyncSessionAssetTask *)self _getMetricsWithCurrentProgressForInflightAssetsFromAssetMetrics:v6];
+    installedAssetMetrics = [v5 installedAssetMetrics];
+    v7 = [(ATDeviceSyncSessionAssetTask *)self _getMetricsWithCurrentProgressForInflightAssetsFromAssetMetrics:installedAssetMetrics];
 
     goto LABEL_14;
   }
@@ -440,7 +440,7 @@ LABEL_9:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_223819000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: client doesn't respond to selector", &v12, 0xCu);
   }
 
@@ -452,7 +452,7 @@ LABEL_14:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy4 = self;
     v14 = 2114;
     v15 = v7;
     _os_log_impl(&dword_223819000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: raw installed asset metrics: %{public}@", &v12, 0x16u);
@@ -461,17 +461,17 @@ LABEL_14:
   return v7;
 }
 
-- (id)_serializedDownloadedAssetsDictionaryFromDownloadedAssetsDictionary:(id)a3
+- (id)_serializedDownloadedAssetsDictionaryFromDownloadedAssetsDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -482,35 +482,35 @@ LABEL_14:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v3 objectForKey:v10];
+        v11 = [dictionaryCopy objectForKey:v10];
         v12 = [ATDetailedRequestInfoForAssetType serializedRequestInfoFromATDetailedRequestInfoForAssetType:v11];
-        [v4 setObject:v12 forKey:v10];
+        [dictionary setObject:v12 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (id)_serializedAssetsToDownloadDictionaryWithUpdatedProgressFromDownloadDictionary:(id)a3
+- (id)_serializedAssetsToDownloadDictionaryWithUpdatedProgressFromDownloadDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -521,28 +521,28 @@ LABEL_14:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v3 objectForKey:v10];
+        v11 = [dictionaryCopy objectForKey:v10];
         v12 = [ATDetailedRequestInfoForAssetType serializedRequestInfoFromATDetailedRequestInfoForAssetType:v11];
-        [v4 setObject:v12 forKey:v10];
+        [dictionary setObject:v12 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (id)_getMetricsWithCurrentProgressForInflightAssetsFromAssetMetrics:(id)a3
+- (id)_getMetricsWithCurrentProgressForInflightAssetsFromAssetMetrics:(id)metrics
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [a3 mutableCopy];
+  v3 = [metrics mutableCopy];
   v4 = [v3 objectForKey:@"InstalledMediaAssetMetrics"];
   v5 = [v4 mutableCopy];
 
@@ -554,8 +554,8 @@ LABEL_14:
   v32 = 0u;
   v33 = 0u;
   v26 = v7;
-  v8 = [v7 allKeys];
-  v27 = [v8 countByEnumeratingWithState:&v32 objects:v41 count:16];
+  allKeys = [v7 allKeys];
+  v27 = [allKeys countByEnumeratingWithState:&v32 objects:v41 count:16];
   if (v27)
   {
     v21 = v5;
@@ -568,7 +568,7 @@ LABEL_14:
       {
         if (*v33 != v24)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v32 + 1) + 8 * i);
@@ -578,8 +578,8 @@ LABEL_14:
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v13 = [v12 allValues];
-        v14 = [v13 countByEnumeratingWithState:&v28 objects:v40 count:16];
+        allValues = [v12 allValues];
+        v14 = [allValues countByEnumeratingWithState:&v28 objects:v40 count:16];
         if (v14)
         {
           v15 = v14;
@@ -591,13 +591,13 @@ LABEL_14:
             {
               if (*v29 != v17)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(allValues);
               }
 
               v16 += [*(*(&v28 + 1) + 8 * j) unsignedLongLongValue];
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v28 objects:v40 count:16];
+            v15 = [allValues countByEnumeratingWithState:&v28 objects:v40 count:16];
           }
 
           while (v15);
@@ -625,7 +625,7 @@ LABEL_14:
         }
       }
 
-      v27 = [v8 countByEnumeratingWithState:&v32 objects:v41 count:16];
+      v27 = [allKeys countByEnumeratingWithState:&v32 objects:v41 count:16];
     }
 
     while (v27);
@@ -646,11 +646,11 @@ LABEL_14:
   return v3;
 }
 
-- (id)_prepareInstalledAssetMetricsWithSerializedOutputFromClientMetrics:(id)a3
+- (id)_prepareInstalledAssetMetricsWithSerializedOutputFromClientMetrics:(id)metrics
 {
-  if (a3)
+  if (metrics)
   {
-    v4 = [a3 mutableCopy];
+    v4 = [metrics mutableCopy];
     v5 = [v4 objectForKey:@"InstalledMediaAssetMetrics"];
     v6 = [v5 mutableCopy];
 
@@ -676,11 +676,11 @@ LABEL_14:
   return v4;
 }
 
-- (void)_updateCachedInstalledAssetMetricsWithNewMetrics:(id)a3
+- (void)_updateCachedInstalledAssetMetricsWithNewMetrics:(id)metrics
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"InstalledMediaAssetMetrics"];
+  metricsCopy = metrics;
+  v5 = [metricsCopy objectForKey:@"InstalledMediaAssetMetrics"];
   v6 = [v5 objectForKey:@"DetailedRequestInfoByAssetType"];
   if ([v6 count])
   {
@@ -694,10 +694,10 @@ LABEL_14:
     {
       v28 = v6;
       v29 = v5;
-      v30 = v4;
+      v30 = metricsCopy;
       v31 = *v42;
       v32 = v7;
-      v33 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v34; ++i)
@@ -710,15 +710,15 @@ LABEL_14:
           v9 = *(*(&v41 + 1) + 8 * i);
           v10 = [(NSMutableDictionary *)self->_progressMap objectForKey:v9];
           v35 = [v7 objectForKey:v9];
-          v11 = [v35 getContributors];
-          v12 = [MEMORY[0x277CBEB18] array];
+          getContributors = [v35 getContributors];
+          array = [MEMORY[0x277CBEB18] array];
           v37 = 0u;
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
           v36 = v10;
-          v13 = [v10 allKeys];
-          v14 = [v13 countByEnumeratingWithState:&v37 objects:v51 count:16];
+          allKeys = [v10 allKeys];
+          v14 = [allKeys countByEnumeratingWithState:&v37 objects:v51 count:16];
           if (v14)
           {
             v15 = v14;
@@ -729,38 +729,38 @@ LABEL_14:
               {
                 if (*v38 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v18 = *(*(&v37 + 1) + 8 * j);
-                v19 = [v11 objectForKey:v18];
+                v19 = [getContributors objectForKey:v18];
 
                 if (!v19)
                 {
-                  [(NSDictionary *)v12 addObject:v18];
+                  [(NSDictionary *)array addObject:v18];
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v37 objects:v51 count:16];
+              v15 = [allKeys countByEnumeratingWithState:&v37 objects:v51 count:16];
             }
 
             while (v15);
           }
 
           v20 = _ATLogCategoryDeviceSync();
-          self = v33;
+          self = selfCopy;
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543874;
-            v46 = v33;
+            selfCopy3 = selfCopy;
             v47 = 2114;
-            v48 = v12;
+            v48 = array;
             v49 = 2114;
             v50 = v9;
             _os_log_impl(&dword_223819000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: Removing progress for %{public}@ asetType %{public}@ as they are cancelled assets", buf, 0x20u);
           }
 
-          [v36 removeObjectsForKeys:v12];
+          [v36 removeObjectsForKeys:array];
           v7 = v32;
         }
 
@@ -769,7 +769,7 @@ LABEL_14:
 
       while (v34);
       v5 = v29;
-      v4 = v30;
+      metricsCopy = v30;
       v6 = v28;
     }
   }
@@ -781,22 +781,22 @@ LABEL_14:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v46 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_223819000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: No active downloads - clearing our progress map", buf, 0xCu);
     }
   }
 
-  v21 = [(ATDeviceSyncSessionAssetTask *)self _prepareInstalledAssetMetricsWithSerializedOutputFromClientMetrics:v4];
+  v21 = [(ATDeviceSyncSessionAssetTask *)self _prepareInstalledAssetMetricsWithSerializedOutputFromClientMetrics:metricsCopy];
   v22 = _ATLogCategoryDeviceSync_Oversize();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     installedAssetMetrics = self->_installedAssetMetrics;
     *buf = 138543874;
-    v46 = self;
+    selfCopy3 = self;
     v47 = 2114;
     v48 = installedAssetMetrics;
     v49 = 2114;
-    v50 = v4;
+    v50 = metricsCopy;
     _os_log_impl(&dword_223819000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: Updating installed asset metrics from %{public}@ to %{public}@", buf, 0x20u);
   }
 
@@ -811,13 +811,13 @@ LABEL_14:
 
 - (void)_sendUpdatedInstallMetrics
 {
-  v3 = [(ATDeviceSyncSessionTask *)self queue];
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__ATDeviceSyncSessionAssetTask__sendUpdatedInstallMetrics__block_invoke;
   block[3] = &unk_2784E5938;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __58__ATDeviceSyncSessionAssetTask__sendUpdatedInstallMetrics__block_invoke(uint64_t a1)
@@ -964,17 +964,17 @@ void __58__ATDeviceSyncSessionAssetTask__sendUpdatedInstallMetrics__block_invoke
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.atc.installedassetmetricschanged", 0, 0, 1u);
 }
 
-- (id)_serializedAssetSyncProgressFromAssetCacheDictionary:(id)a3
+- (id)_serializedAssetSyncProgressFromAssetCacheDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -985,19 +985,19 @@ void __58__ATDeviceSyncSessionAssetTask__sendUpdatedInstallMetrics__block_invoke
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v3 objectForKey:v10];
+        v11 = [dictionaryCopy objectForKey:v10];
         if (v11)
         {
           v12 = [ATDetailedProgressInfoForAssetType serializedProgressInfoFromATDetailedProgressInfoForAssetType:v11];
-          [v4 setObject:v12 forKey:v10];
+          [dictionary setObject:v12 forKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v7);
@@ -1007,26 +1007,26 @@ void __58__ATDeviceSyncSessionAssetTask__sendUpdatedInstallMetrics__block_invoke
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v4;
+    v23 = dictionary;
     _os_log_impl(&dword_223819000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: serializedProgressDictionary %{public}@", buf, 0x16u);
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (id)_serializedAssetRequestsFromRequestDictionary:(id)a3
+- (id)_serializedAssetRequestsFromRequestDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1037,19 +1037,19 @@ void __58__ATDeviceSyncSessionAssetTask__sendUpdatedInstallMetrics__block_invoke
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v3 objectForKey:v10];
+        v11 = [dictionaryCopy objectForKey:v10];
         if (v11)
         {
           v12 = [ATDetailedRequestInfoForAssetType serializedRequestInfoFromATDetailedRequestInfoForAssetType:v11];
-          [v4 setObject:v12 forKey:v10];
+          [dictionary setObject:v12 forKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v7);
@@ -1059,27 +1059,27 @@ void __58__ATDeviceSyncSessionAssetTask__sendUpdatedInstallMetrics__block_invoke
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v4;
+    v23 = dictionary;
     _os_log_impl(&dword_223819000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: serializedAssetsDictionary %{public}@", buf, 0x16u);
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (void)_finishTaskWithError:(id)a3
+- (void)_finishTaskWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(ATDeviceSyncSessionTask *)self queue];
+  errorCopy = error;
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__ATDeviceSyncSessionAssetTask__finishTaskWithError___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(queue, v7);
 }
 
 void __53__ATDeviceSyncSessionAssetTask__finishTaskWithError___block_invoke(uint64_t a1)
@@ -1212,13 +1212,13 @@ void __53__ATDeviceSyncSessionAssetTask__finishTaskWithError___block_invoke_2(ui
 
 - (void)_updateTaskDescription
 {
-  v3 = [(ATDeviceSyncSessionTask *)self queue];
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__ATDeviceSyncSessionAssetTask__updateTaskDescription__block_invoke;
   block[3] = &unk_2784E5938;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __54__ATDeviceSyncSessionAssetTask__updateTaskDescription__block_invoke(uint64_t a1)
@@ -1328,46 +1328,46 @@ void __54__ATDeviceSyncSessionAssetTask__updateTaskDescription__block_invoke(uin
   [(ATSessionTask *)self setProperties:v7];
 }
 
-- (void)_updateDetailedProgressForCompletedAsset:(id)a3
+- (void)_updateDetailedProgressForCompletedAsset:(id)asset
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = [a3 variantOptions];
-  v5 = [v4 objectForKey:@"AssetParts"];
-  v6 = [v5 stringValue];
+  variantOptions = [asset variantOptions];
+  v5 = [variantOptions objectForKey:@"AssetParts"];
+  stringValue = [v5 stringValue];
 
-  if (v6)
+  if (stringValue)
   {
-    v7 = [(NSMutableDictionary *)self->_detailedProgress objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_detailedProgress objectForKey:stringValue];
     v8 = [v7 objectForKey:@"CompletedCount"];
-    v9 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
 
     v10 = [v7 objectForKey:@"TotalCount"];
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
     v15[0] = @"TotalCount";
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue2];
     v15[1] = @"CompletedCount";
     v16[0] = v12;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9 + 1];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
     v16[1] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
-    [(NSMutableDictionary *)self->_detailedProgress setObject:v14 forKey:v6];
+    [(NSMutableDictionary *)self->_detailedProgress setObject:v14 forKey:stringValue];
   }
 }
 
-- (void)_assetRequestsCompletedWithError:(id)a3
+- (void)_assetRequestsCompletedWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(ATDeviceSyncSessionTask *)self queue];
+  errorCopy = error;
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  selfCopy = self;
+  v6 = errorCopy;
+  dispatch_async(queue, v7);
 }
 
 void __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block_invoke(uint64_t a1)
@@ -1529,17 +1529,17 @@ void __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block
   }
 }
 
-- (void)_handleAssetDownloadProgressed:(id)a3 onMessageLink:(id)a4
+- (void)_handleAssetDownloadProgressed:(id)progressed onMessageLink:(id)link
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 parameters];
-  v9 = [v8 objectForKey:@"AssetProgress"];
-  v10 = [v9 unsignedLongLongValue];
+  progressedCopy = progressed;
+  linkCopy = link;
+  parameters = [progressedCopy parameters];
+  v9 = [parameters objectForKey:@"AssetProgress"];
+  unsignedLongLongValue = [v9 unsignedLongLongValue];
 
-  v11 = [v6 parameters];
-  v12 = [v11 objectForKey:@"AssetType"];
+  parameters2 = [progressedCopy parameters];
+  v12 = [parameters2 objectForKey:@"AssetType"];
 
   v13 = [(NSMutableDictionary *)self->_syncProgresByAssetType objectForKey:v12];
   v14 = _ATLogCategoryDeviceSync();
@@ -1549,15 +1549,15 @@ void __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543874;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
       v20 = v12;
       v21 = 2048;
-      v22 = v10;
+      v22 = unsignedLongLongValue;
       _os_log_impl(&dword_223819000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Updating sync progress for asset type: %{public}@, bytesDownloaded:%llu", &v17, 0x20u);
     }
 
-    [v13 updateBytesDownloaded:v10];
+    [v13 updateBytesDownloaded:unsignedLongLongValue];
     [(ATDeviceSyncSessionAssetTask *)self _updateProperties];
   }
 
@@ -1566,30 +1566,30 @@ void __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v17 = 138543618;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
       v20 = v12;
       _os_log_impl(&dword_223819000, v15, OS_LOG_TYPE_ERROR, "%{public}@: No ATDetailedProgressInfoForAssetType for assetType: %{public}@", &v17, 0x16u);
     }
   }
 
-  v16 = [v6 responseWithError:0 parameters:0];
-  [v7 sendResponse:v16 withCompletion:0];
+  v16 = [progressedCopy responseWithError:0 parameters:0];
+  [linkCopy sendResponse:v16 withCompletion:0];
 }
 
-- (void)_handleInstalledAssetMetricsChanged:(id)a3 onMessageLink:(id)a4
+- (void)_handleInstalledAssetMetricsChanged:(id)changed onMessageLink:(id)link
 {
   v90 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 parameters];
-  v8 = [v7 objectForKey:@"InstalledMediaAssetMetrics"];
+  changedCopy = changed;
+  linkCopy = link;
+  parameters = [changedCopy parameters];
+  v8 = [parameters objectForKey:@"InstalledMediaAssetMetrics"];
 
   v9 = _ATLogCategoryDeviceSync_Oversize();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v87 = self;
+    selfCopy = self;
     v88 = 2114;
     v89 = v8;
     _os_log_impl(&dword_223819000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Installed media metrics changed - media metrics dict %{public}@", buf, 0x16u);
@@ -1598,9 +1598,9 @@ void __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block
   if (v8)
   {
     v10 = [v8 objectForKey:@"KeepLocalAssetByteCountForSyncSettings"];
-    v65 = [v10 unsignedLongLongValue];
+    unsignedLongLongValue = [v10 unsignedLongLongValue];
     v11 = [v8 objectForKey:@"DownloadedAssetByteCountForSyncSettings"];
-    v64 = [v11 unsignedLongLongValue];
+    unsignedLongLongValue2 = [v11 unsignedLongLongValue];
 
     v12 = [v8 objectForKey:@"DetailedRequestInfoByAssetType"];
     v13 = [v8 objectForKey:@"DetailedDownloadInfoByAssetType"];
@@ -1609,9 +1609,9 @@ void __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block
     v61 = v13;
     if ([v12 count] || objc_msgSend(v13, "count"))
     {
-      v56 = v6;
-      v57 = v5;
-      v14 = [MEMORY[0x277CBEB38] dictionary];
+      v56 = linkCopy;
+      v57 = changedCopy;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v74 = 0u;
       v75 = 0u;
       v76 = 0u;
@@ -1634,13 +1634,13 @@ void __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block
             v19 = *(*(&v74 + 1) + 8 * i);
             v20 = [v61 objectForKey:v19];
             v21 = [v20 objectForKey:@"TotalBytesToSync"];
-            v22 = [v21 unsignedLongLongValue];
+            unsignedLongLongValue3 = [v21 unsignedLongLongValue];
 
             v23 = [v20 objectForKey:@"TotalAssetsToSync"];
-            v24 = [v23 unsignedLongLongValue];
+            unsignedLongLongValue4 = [v23 unsignedLongLongValue];
 
-            v25 = [[ATDetailedProgressInfoForAssetType alloc] initWithAssetType:v19 assetCountToSync:v24 byteCountToSync:v64 + v65 assetCountSynced:v24 byteCountSyned:v22];
-            [v14 setObject:v25 forKey:v19];
+            v25 = [[ATDetailedProgressInfoForAssetType alloc] initWithAssetType:v19 assetCountToSync:unsignedLongLongValue4 byteCountToSync:unsignedLongLongValue2 + unsignedLongLongValue assetCountSynced:unsignedLongLongValue4 byteCountSyned:unsignedLongLongValue3];
+            [dictionary setObject:v25 forKey:v19];
           }
 
           v16 = [obj countByEnumeratingWithState:&v74 objects:v84 count:16];
@@ -1671,27 +1671,27 @@ void __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block
             v30 = *(*(&v70 + 1) + 8 * j);
             v31 = [v62 objectForKey:v30];
             v32 = [v31 objectForKey:@"TotalBytesToSync"];
-            v33 = [v32 unsignedLongLongValue];
+            unsignedLongLongValue5 = [v32 unsignedLongLongValue];
 
             v34 = [v31 objectForKey:@"TotalAssetsToSync"];
-            v35 = [v34 unsignedLongLongValue];
+            unsignedLongLongValue6 = [v34 unsignedLongLongValue];
 
             v36 = [v31 objectForKey:@"TotalBytesSynced"];
-            v37 = [v36 unsignedLongLongValue];
+            unsignedLongLongValue7 = [v36 unsignedLongLongValue];
 
-            v38 = [v14 objectForKey:v30];
+            v38 = [dictionary objectForKey:v30];
             if (v38)
             {
               v39 = v38;
-              [(ATDetailedProgressInfoForAssetType *)v38 updateAssetsToDownload:v35];
-              [(ATDetailedProgressInfoForAssetType *)v39 updateBytesDownloaded:v37];
-              [(ATDetailedProgressInfoForAssetType *)v39 updateBytesToDownload:v33];
+              [(ATDetailedProgressInfoForAssetType *)v38 updateAssetsToDownload:unsignedLongLongValue6];
+              [(ATDetailedProgressInfoForAssetType *)v39 updateBytesDownloaded:unsignedLongLongValue7];
+              [(ATDetailedProgressInfoForAssetType *)v39 updateBytesToDownload:unsignedLongLongValue5];
             }
 
             else
             {
-              v39 = [[ATDetailedProgressInfoForAssetType alloc] initWithAssetType:v30 assetCountToSync:v35 byteCountToSync:v64 + v65 assetCountSynced:0 byteCountSyned:v37];
-              [v14 setObject:v39 forKey:v30];
+              v39 = [[ATDetailedProgressInfoForAssetType alloc] initWithAssetType:v30 assetCountToSync:unsignedLongLongValue6 byteCountToSync:unsignedLongLongValue2 + unsignedLongLongValue assetCountSynced:0 byteCountSyned:unsignedLongLongValue7];
+              [dictionary setObject:v39 forKey:v30];
             }
           }
 
@@ -1705,8 +1705,8 @@ void __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block
       v69 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v40 = [v14 allKeys];
-      v41 = [v40 countByEnumeratingWithState:&v66 objects:v82 count:16];
+      allKeys = [dictionary allKeys];
+      v41 = [allKeys countByEnumeratingWithState:&v66 objects:v82 count:16];
       if (v41)
       {
         v42 = v41;
@@ -1717,40 +1717,40 @@ void __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block
           {
             if (*v67 != v43)
             {
-              objc_enumerationMutation(v40);
+              objc_enumerationMutation(allKeys);
             }
 
             v45 = *(*(&v66 + 1) + 8 * k);
             syncProgresByAssetType = self->_syncProgresByAssetType;
-            v47 = [v14 objectForKey:v45];
+            v47 = [dictionary objectForKey:v45];
             [(NSMutableDictionary *)syncProgresByAssetType setObject:v47 forKey:v45];
           }
 
-          v42 = [v40 countByEnumeratingWithState:&v66 objects:v82 count:16];
+          v42 = [allKeys countByEnumeratingWithState:&v66 objects:v82 count:16];
         }
 
         while (v42);
       }
 
-      v6 = v56;
-      v5 = v57;
+      linkCopy = v56;
+      changedCopy = v57;
     }
 
     else
     {
-      v14 = [(NSMutableDictionary *)self->_syncProgresByAssetType allKeys];
+      dictionary = [(NSMutableDictionary *)self->_syncProgresByAssetType allKeys];
       v78 = 0u;
       v79 = 0u;
       v80 = 0u;
       v81 = 0u;
-      v49 = [v14 countByEnumeratingWithState:&v78 objects:v85 count:16];
+      v49 = [dictionary countByEnumeratingWithState:&v78 objects:v85 count:16];
       if (!v49)
       {
         goto LABEL_32;
       }
 
       v50 = v49;
-      v51 = v6;
+      v51 = linkCopy;
       v52 = *v79;
       do
       {
@@ -1758,7 +1758,7 @@ void __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block
         {
           if (*v79 != v52)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(dictionary);
           }
 
           v54 = *(*(&v78 + 1) + 8 * m);
@@ -1766,11 +1766,11 @@ void __65__ATDeviceSyncSessionAssetTask__assetRequestsCompletedWithError___block
           [(NSMutableDictionary *)self->_syncProgresByAssetType setObject:v55 forKey:v54];
         }
 
-        v50 = [v14 countByEnumeratingWithState:&v78 objects:v85 count:16];
+        v50 = [dictionary countByEnumeratingWithState:&v78 objects:v85 count:16];
       }
 
       while (v50);
-      v6 = v51;
+      linkCopy = v51;
     }
 
     v8 = v58;
@@ -1780,63 +1780,63 @@ LABEL_32:
     [(ATDeviceSyncSessionAssetTask *)self _updateProperties];
   }
 
-  v48 = [v5 responseWithError:0 parameters:0];
-  [v6 sendResponse:v48 withCompletion:0];
+  v48 = [changedCopy responseWithError:0 parameters:0];
+  [linkCopy sendResponse:v48 withCompletion:0];
 }
 
-- (void)_handleUpdateSessionTaskRequest:(id)a3 onMessageLink:(id)a4
+- (void)_handleUpdateSessionTaskRequest:(id)request onMessageLink:(id)link
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 parameters];
-  v9 = [v8 objectForKey:@"_TotalItemCount"];
+  requestCopy = request;
+  linkCopy = link;
+  parameters = [requestCopy parameters];
+  v9 = [parameters objectForKey:@"_TotalItemCount"];
 
-  v10 = [v6 parameters];
-  v11 = [v10 objectForKey:@"_CompletedItemCount"];
+  parameters2 = [requestCopy parameters];
+  v11 = [parameters2 objectForKey:@"_CompletedItemCount"];
 
-  v12 = [v6 parameters];
-  v13 = [v12 objectForKey:@"SyncedAssetATAssetType"];
+  parameters3 = [requestCopy parameters];
+  v13 = [parameters3 objectForKey:@"SyncedAssetATAssetType"];
 
   v38 = v13;
   if (v13)
   {
     v35 = v11;
-    v14 = [v6 parameters];
-    v15 = [v14 objectForKey:@"ATLibraryIdentifierForAsset"];
+    parameters4 = [requestCopy parameters];
+    v15 = [parameters4 objectForKey:@"ATLibraryIdentifierForAsset"];
 
-    v16 = [v6 parameters];
-    v17 = [v16 objectForKey:@"AssetDownloadedWithError"];
+    parameters5 = [requestCopy parameters];
+    v17 = [parameters5 objectForKey:@"AssetDownloadedWithError"];
 
-    v18 = [v6 parameters];
-    v19 = [v18 objectForKey:@"AssetProgress"];
+    parameters6 = [requestCopy parameters];
+    v19 = [parameters6 objectForKey:@"AssetProgress"];
 
-    v20 = [v6 parameters];
-    v21 = [v20 objectForKey:@"FileSize"];
+    parameters7 = [requestCopy parameters];
+    v21 = [parameters7 objectForKey:@"FileSize"];
 
     if (v19)
     {
-      v37 = [v19 unsignedLongLongValue];
+      unsignedLongLongValue = [v19 unsignedLongLongValue];
     }
 
     else
     {
-      v37 = 0;
+      unsignedLongLongValue = 0;
     }
 
     v36 = v9;
     if (v21)
     {
-      v22 = [v21 unsignedLongLongValue];
+      unsignedLongLongValue2 = [v21 unsignedLongLongValue];
     }
 
     else
     {
-      v22 = 0;
+      unsignedLongLongValue2 = 0;
     }
 
     v23 = [(NSMutableDictionary *)self->_syncProgresByAssetType objectForKey:v38];
-    v34 = v7;
+    v34 = linkCopy;
     if (v17)
     {
       v24 = [v17 BOOLValue] ^ 1;
@@ -1851,7 +1851,7 @@ LABEL_32:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544642;
-      v40 = self;
+      selfCopy2 = self;
       v41 = 2114;
       v42 = v15;
       v43 = 2114;
@@ -1859,32 +1859,32 @@ LABEL_32:
       v45 = 1024;
       v46 = v24;
       v47 = 2048;
-      v48 = v22;
+      v48 = unsignedLongLongValue2;
       v49 = 2048;
-      v50 = v37;
+      v50 = unsignedLongLongValue;
       _os_log_impl(&dword_223819000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: Asset id %{public}@ finished - type:%{public}@, succeeded:%d, fileSize:%llu, deltaBytes:%llu", buf, 0x3Au);
     }
 
     if (v23)
     {
-      [v23 updateAsset:v15 syncedWithSuccess:v24 bytesDownloaded:v37];
+      [v23 updateAsset:v15 syncedWithSuccess:v24 bytesDownloaded:unsignedLongLongValue];
     }
 
     v11 = v35;
     v9 = v36;
-    v7 = v34;
+    linkCopy = v34;
   }
 
   -[ATDeviceSyncSessionAssetTask updateProgressWithCount:totalItemCount:](self, "updateProgressWithCount:totalItemCount:", [v11 unsignedIntegerValue], objc_msgSend(v9, "unsignedIntegerValue"));
-  v26 = [v6 parameters];
-  v27 = [v26 objectForKey:@"_DetailedProgress"];
+  parameters8 = [requestCopy parameters];
+  v27 = [parameters8 objectForKey:@"_DetailedProgress"];
   v28 = [v27 mutableCopy];
   detailedProgress = self->_detailedProgress;
   self->_detailedProgress = v28;
 
   [(ATDeviceSyncSessionAssetTask *)self _updateProperties];
-  v30 = [v6 responseWithError:0 parameters:0];
-  [v7 sendResponse:v30 withCompletion:0];
+  v30 = [requestCopy responseWithError:0 parameters:0];
+  [linkCopy sendResponse:v30 withCompletion:0];
 
   if (v9 == v11)
   {
@@ -1892,40 +1892,40 @@ LABEL_32:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v40 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_223819000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@: all downloads complete - waiting for task to finish", buf, 0xCu);
     }
 
     if (self->_addedTransportUpgradeException)
     {
-      v32 = [(ATDeviceSyncSessionTask *)self messageLink];
-      v33 = [v32 socket];
-      [v33 removeTransportUpgradeException];
+      messageLink = [(ATDeviceSyncSessionTask *)self messageLink];
+      socket = [messageLink socket];
+      [socket removeTransportUpgradeException];
 
       self->_addedTransportUpgradeException = 0;
     }
   }
 }
 
-- (void)_handleAssetRequest:(id)a3 onMessagLink:(id)a4
+- (void)_handleAssetRequest:(id)request onMessagLink:(id)link
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 parameters];
-  v9 = [v8 count];
+  requestCopy = request;
+  linkCopy = link;
+  parameters = [requestCopy parameters];
+  v9 = [parameters count];
 
   if (v9)
   {
     v10 = MEMORY[0x277CEA438];
-    v11 = [v6 parameters];
-    v12 = [v10 assetWithSerializedAsset:v11];
+    parameters2 = [requestCopy parameters];
+    v12 = [v10 assetWithSerializedAsset:parameters2];
 
     v13 = _ATLogCategoryDeviceSync();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v29 = self;
+      selfCopy4 = self;
       v30 = 2114;
       v31 = v12;
       _os_log_impl(&dword_223819000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ - processing download request for asset %{public}@", buf, 0x16u);
@@ -1944,8 +1944,8 @@ LABEL_32:
         v24[3] = &unk_2784E4D58;
         v24[4] = self;
         v25 = v12;
-        v26 = v6;
-        v27 = v7;
+        v26 = requestCopy;
+        v27 = linkCopy;
         [WeakRetained getDataForAsset:v25 withCompletion:v24];
 
 LABEL_17:
@@ -1956,14 +1956,14 @@ LABEL_17:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v29 = self;
+        selfCopy4 = self;
         v30 = 2114;
         v31 = v12;
         _os_log_impl(&dword_223819000, v22, OS_LOG_TYPE_ERROR, "%{public}@ - received unsupported upload request for asset %{public}@", buf, 0x16u);
       }
 
       v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATError" code:21 userInfo:0];
-      v20 = [v6 responseWithError:v23 parameters:0];
+      v20 = [requestCopy responseWithError:v23 parameters:0];
 
       v21 = &__block_literal_global_172;
     }
@@ -1973,21 +1973,21 @@ LABEL_17:
       v17 = _ATLogCategoryDeviceSync();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v12 dataclass];
+        dataclass = [v12 dataclass];
         *buf = 138543618;
-        v29 = self;
+        selfCopy4 = self;
         v30 = 2114;
-        v31 = v18;
+        v31 = dataclass;
         _os_log_impl(&dword_223819000, v17, OS_LOG_TYPE_ERROR, "%{public}@ - no client handles asset data class '%{public}@'", buf, 0x16u);
       }
 
       v19 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATError" code:21 userInfo:0];
-      v20 = [v6 responseWithError:v19 parameters:0];
+      v20 = [requestCopy responseWithError:v19 parameters:0];
 
       v21 = &__block_literal_global_169_1968;
     }
 
-    [v7 sendResponse:v20 withCompletion:v21];
+    [linkCopy sendResponse:v20 withCompletion:v21];
 
     goto LABEL_17;
   }
@@ -1996,16 +1996,16 @@ LABEL_17:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v29 = self;
+    selfCopy4 = self;
     v30 = 2114;
-    v31 = v6;
+    v31 = requestCopy;
     _os_log_impl(&dword_223819000, v15, OS_LOG_TYPE_ERROR, "%{public}@ - Rejecting asset request with no params: %{public}@", buf, 0x16u);
   }
 
   v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATError" code:23 userInfo:0];
-  v12 = [v6 responseWithError:v16 parameters:0];
+  v12 = [requestCopy responseWithError:v16 parameters:0];
 
-  [v7 sendResponse:v12 withCompletion:&__block_literal_global_1964];
+  [linkCopy sendResponse:v12 withCompletion:&__block_literal_global_1964];
 LABEL_18:
 }
 
@@ -2206,24 +2206,24 @@ uint64_t __65__ATDeviceSyncSessionAssetTask__handleAssetRequest_onMessagLink___b
   return result;
 }
 
-- (void)_handleEndAssetTaskRequest:(id)a3 onMessagLink:(id)a4
+- (void)_handleEndAssetTaskRequest:(id)request onMessagLink:(id)link
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 parameters];
-  v9 = [v8 objectForKey:@"_EndAssetTaskError"];
-  v10 = [v9 integerValue];
+  linkCopy = link;
+  requestCopy = request;
+  parameters = [requestCopy parameters];
+  v9 = [parameters objectForKey:@"_EndAssetTaskError"];
+  integerValue = [v9 integerValue];
 
-  if (v10 && !self->_requestsComplete)
+  if (integerValue && !self->_requestsComplete)
   {
     v15 = _ATLogCategoryDeviceSync();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 2048;
-      v23 = v10;
+      v23 = integerValue;
       _os_log_impl(&dword_223819000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: cancelling due to error on the peer. err=%ld", buf, 0x16u);
     }
 
@@ -2241,13 +2241,13 @@ uint64_t __65__ATDeviceSyncSessionAssetTask__handleAssetRequest_onMessagLink___b
       if (v13)
       {
         *buf = 138543362;
-        v21 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_223819000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: all asset transfers are completed - finishing task", buf, 0xCu);
       }
 
-      if (v10)
+      if (integerValue)
       {
-        v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATError" code:v10 userInfo:0];
+        v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATError" code:integerValue userInfo:0];
         [(ATDeviceSyncSessionAssetTask *)self _finishTaskWithError:v14];
       }
 
@@ -2262,13 +2262,13 @@ uint64_t __65__ATDeviceSyncSessionAssetTask__handleAssetRequest_onMessagLink___b
       if (v13)
       {
         *buf = 138543362;
-        v21 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_223819000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: peer is finished - waiting for our assets to complete", buf, 0xCu);
       }
     }
   }
 
-  v16 = [v7 responseWithError:0 parameters:0];
+  v16 = [requestCopy responseWithError:0 parameters:0];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -2277,7 +2277,7 @@ uint64_t __65__ATDeviceSyncSessionAssetTask__handleAssetRequest_onMessagLink___b
   v18[4] = self;
   v19 = v16;
   v17 = v16;
-  [v6 sendResponse:v17 withCompletion:v18];
+  [linkCopy sendResponse:v17 withCompletion:v18];
 }
 
 void __72__ATDeviceSyncSessionAssetTask__handleEndAssetTaskRequest_onMessagLink___block_invoke(uint64_t a1, void *a2)
@@ -2301,41 +2301,41 @@ void __72__ATDeviceSyncSessionAssetTask__handleEndAssetTaskRequest_onMessagLink_
   }
 }
 
-- (void)_handleBeginAssetTaskRequest:(id)a3 onMessagLink:(id)a4
+- (void)_handleBeginAssetTaskRequest:(id)request onMessagLink:(id)link
 {
   v100 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  linkCopy = link;
   WeakRetained = objc_loadWeakRetained(&self->_assetClient);
 
   if (WeakRetained)
   {
-    v59 = v7;
-    v9 = [v6 parameters];
-    v10 = [v9 objectForKey:@"_BeginAssetTaskTotalCount"];
-    v11 = [v10 unsignedIntegerValue];
+    v59 = linkCopy;
+    parameters = [requestCopy parameters];
+    v10 = [parameters objectForKey:@"_BeginAssetTaskTotalCount"];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-    v12 = [v6 parameters];
-    v13 = [v12 objectForKey:@"_BeginAssetTaskDetailedCount"];
+    parameters2 = [requestCopy parameters];
+    v13 = [parameters2 objectForKey:@"_BeginAssetTaskDetailedCount"];
 
-    v14 = [v6 parameters];
-    v15 = [v14 objectForKey:@"InstalledAssetMetrics"];
+    parameters3 = [requestCopy parameters];
+    v15 = [parameters3 objectForKey:@"InstalledAssetMetrics"];
 
     [v15 objectForKey:@"InstalledMediaAssetMetrics"];
-    v61 = v60 = v6;
-    v16 = [v6 parameters];
-    v17 = [v16 objectForKey:@"_BeginAssetTaskTrackByteCount"];
-    v18 = [v17 unsignedLongLongValue];
+    v61 = v60 = requestCopy;
+    parameters4 = [requestCopy parameters];
+    v17 = [parameters4 objectForKey:@"_BeginAssetTaskTrackByteCount"];
+    unsignedLongLongValue = [v17 unsignedLongLongValue];
 
     v19 = _ATLogCategoryDeviceSync();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544386;
-      v85 = self;
+      selfCopy3 = self;
       v86 = 2048;
-      v87 = v11;
+      v87 = unsignedIntegerValue;
       v88 = 2048;
-      v89 = v18;
+      v89 = unsignedLongLongValue;
       v90 = 2114;
       v91 = v13;
       v92 = 2114;
@@ -2343,20 +2343,20 @@ void __72__ATDeviceSyncSessionAssetTask__handleEndAssetTaskRequest_onMessagLink_
       _os_log_impl(&dword_223819000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: peer is going to request %lu assets, %llu total bytes (for track assets), detailed counts=%{public}@ installedAssetMetrics=%{public}@", buf, 0x34u);
     }
 
-    v57 = v11;
+    v57 = unsignedIntegerValue;
     v58 = v15;
 
-    v56 = v18;
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v18];
+    v56 = unsignedLongLongValue;
+    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue];
     [(ATSessionTask *)self setTotalBytesToTransfer:v20];
 
-    v21 = [&unk_2836F50C8 stringValue];
-    v22 = [v13 objectForKey:v21];
-    v55 = [v22 unsignedIntegerValue];
+    stringValue = [&unk_2836F50C8 stringValue];
+    v22 = [v13 objectForKey:stringValue];
+    unsignedIntegerValue2 = [v22 unsignedIntegerValue];
 
-    v23 = [&unk_2836F50E0 stringValue];
-    v24 = [v13 objectForKey:v23];
-    v54 = [v24 unsignedIntegerValue];
+    stringValue2 = [&unk_2836F50E0 stringValue];
+    v24 = [v13 objectForKey:stringValue2];
+    unsignedIntegerValue3 = [v24 unsignedIntegerValue];
 
     v81 = 0u;
     v82 = 0u;
@@ -2365,7 +2365,7 @@ void __72__ATDeviceSyncSessionAssetTask__handleEndAssetTaskRequest_onMessagLink_
     v65 = v13;
     obj = [v13 allKeys];
     v25 = [obj countByEnumeratingWithState:&v79 objects:v99 count:16];
-    v69 = self;
+    selfCopy2 = self;
     if (v25)
     {
       v26 = v25;
@@ -2381,14 +2381,14 @@ void __72__ATDeviceSyncSessionAssetTask__handleEndAssetTaskRequest_onMessagLink_
 
           v29 = *(*(&v79 + 1) + 8 * i);
           v97[0] = @"TotalCount";
-          v30 = [v65 objectForKey:{v29, v54}];
+          v30 = [v65 objectForKey:{v29, unsignedIntegerValue3}];
           v97[1] = @"CompletedCount";
           v98[0] = v30;
           v98[1] = &unk_2836F50B0;
           v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v98 forKeys:v97 count:2];
 
-          self = v69;
-          [(NSMutableDictionary *)v69->_detailedProgress setObject:v31 forKey:v29];
+          self = selfCopy2;
+          [(NSMutableDictionary *)selfCopy2->_detailedProgress setObject:v31 forKey:v29];
         }
 
         v26 = [obj countByEnumeratingWithState:&v79 objects:v99 count:16];
@@ -2405,7 +2405,7 @@ void __72__ATDeviceSyncSessionAssetTask__handleEndAssetTaskRequest_onMessagLink_
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v85 = self;
+      selfCopy3 = self;
       v86 = 2114;
       v87 = v32;
       v88 = 2114;
@@ -2417,8 +2417,8 @@ void __72__ATDeviceSyncSessionAssetTask__handleEndAssetTaskRequest_onMessagLink_
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v62 = [v32 allKeys];
-    obja = [v62 countByEnumeratingWithState:&v75 objects:v96 count:16];
+    allKeys = [v32 allKeys];
+    obja = [allKeys countByEnumeratingWithState:&v75 objects:v96 count:16];
     if (obja)
     {
       v63 = *v76;
@@ -2429,20 +2429,20 @@ void __72__ATDeviceSyncSessionAssetTask__handleEndAssetTaskRequest_onMessagLink_
         {
           if (*v76 != v63)
           {
-            objc_enumerationMutation(v62);
+            objc_enumerationMutation(allKeys);
           }
 
           v36 = *(*(&v75 + 1) + 8 * j);
-          v37 = [v32 objectForKey:{v36, v54}];
+          v37 = [v32 objectForKey:{v36, unsignedIntegerValue3}];
           v38 = [v66 objectForKey:v36];
           v39 = v38;
           if (v38)
           {
             v40 = [v38 objectForKey:@"TotalAssetsToSync"];
-            v41 = [v40 unsignedLongLongValue];
+            unsignedLongLongValue2 = [v40 unsignedLongLongValue];
 
             v42 = [v39 objectForKey:@"TotalBytesToSync"];
-            v43 = [v42 unsignedLongLongValue];
+            unsignedLongLongValue3 = [v42 unsignedLongLongValue];
 
             if (v37)
             {
@@ -2452,68 +2452,68 @@ void __72__ATDeviceSyncSessionAssetTask__handleEndAssetTaskRequest_onMessagLink_
 
           else
           {
-            v43 = 0;
-            v41 = 0;
+            unsignedLongLongValue3 = 0;
+            unsignedLongLongValue2 = 0;
             if (v37)
             {
 LABEL_20:
               v44 = [v37 objectForKey:@"TotalAssetsToSync"];
-              v45 = [v44 unsignedLongLongValue];
+              unsignedLongLongValue4 = [v44 unsignedLongLongValue];
 
               v46 = [v37 objectForKey:@"TotalBytesToSync"];
-              v47 = [v46 unsignedLongLongValue];
+              unsignedLongLongValue5 = [v46 unsignedLongLongValue];
 
               goto LABEL_23;
             }
           }
 
-          v47 = 0;
-          v45 = 0;
+          unsignedLongLongValue5 = 0;
+          unsignedLongLongValue4 = 0;
 LABEL_23:
-          v48 = [[ATDetailedProgressInfoForAssetType alloc] initWithAssetType:v36 assetCountToSync:v45 + v41 byteCountToSync:v47 + v43 assetCountSynced:v41 byteCountSyned:v43];
-          [(NSMutableDictionary *)v69->_syncProgresByAssetType setObject:v48 forKey:v36];
+          v48 = [[ATDetailedProgressInfoForAssetType alloc] initWithAssetType:v36 assetCountToSync:unsignedLongLongValue4 + unsignedLongLongValue2 byteCountToSync:unsignedLongLongValue5 + unsignedLongLongValue3 assetCountSynced:unsignedLongLongValue2 byteCountSyned:unsignedLongLongValue3];
+          [(NSMutableDictionary *)selfCopy2->_syncProgresByAssetType setObject:v48 forKey:v36];
           v49 = _ATLogCategoryDeviceSync();
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138544642;
-            v85 = v69;
+            selfCopy3 = selfCopy2;
             v86 = 2114;
             v87 = v36;
             v88 = 2048;
-            v89 = v41;
+            v89 = unsignedLongLongValue2;
             v90 = 2048;
-            v91 = v43;
+            v91 = unsignedLongLongValue3;
             v92 = 2048;
-            v93 = v45;
+            v93 = unsignedLongLongValue4;
             v94 = 2048;
-            v95 = v47;
+            v95 = unsignedLongLongValue5;
             _os_log_impl(&dword_223819000, v49, OS_LOG_TYPE_DEFAULT, "%{public}@: asset type %{public}@ downloaded asset count %llu, downloaded byte count %llu, asset count to download %llu byte count to download %llu", buf, 0x3Eu);
           }
 
           v32 = v64;
         }
 
-        obja = [v62 countByEnumeratingWithState:&v75 objects:v96 count:16];
+        obja = [allKeys countByEnumeratingWithState:&v75 objects:v96 count:16];
       }
 
       while (obja);
     }
 
-    [(ATDeviceSyncSessionAssetTask *)v69 _updateProperties];
-    [(ATSessionTask *)v69 setTotalItemCount:[(ATSessionTask *)v69 totalItemCount]+ v57];
-    v6 = v60;
+    [(ATDeviceSyncSessionAssetTask *)selfCopy2 _updateProperties];
+    [(ATSessionTask *)selfCopy2 setTotalItemCount:[(ATSessionTask *)selfCopy2 totalItemCount]+ v57];
+    requestCopy = v60;
     v50 = [v60 responseWithError:0 parameters:0];
     v70[0] = MEMORY[0x277D85DD0];
     v70[1] = 3221225472;
     v70[2] = __74__ATDeviceSyncSessionAssetTask__handleBeginAssetTaskRequest_onMessagLink___block_invoke_162;
     v70[3] = &unk_2784E4C68;
-    v70[4] = v69;
+    v70[4] = selfCopy2;
     v71 = v50;
-    v72 = v55;
-    v73 = v54;
+    v72 = unsignedIntegerValue2;
+    v73 = unsignedIntegerValue3;
     v74 = v56;
     v51 = v50;
-    v7 = v59;
+    linkCopy = v59;
     [v59 sendResponse:v51 withCompletion:v70];
 
     v52 = v65;
@@ -2523,13 +2523,13 @@ LABEL_23:
   else
   {
     v52 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATError" code:21 userInfo:0];
-    v53 = [v6 responseWithError:v52 parameters:0];
+    v53 = [requestCopy responseWithError:v52 parameters:0];
     v83[0] = MEMORY[0x277D85DD0];
     v83[1] = 3221225472;
     v83[2] = __74__ATDeviceSyncSessionAssetTask__handleBeginAssetTaskRequest_onMessagLink___block_invoke;
     v83[3] = &unk_2784E58E8;
     v83[4] = self;
-    [v7 sendResponse:v53 withCompletion:v83];
+    [linkCopy sendResponse:v53 withCompletion:v83];
     [(ATDeviceSyncSessionAssetTask *)self _finishTaskWithError:0];
   }
 }
@@ -2601,18 +2601,18 @@ void __74__ATDeviceSyncSessionAssetTask__handleBeginAssetTaskRequest_onMessagLin
   }
 }
 
-- (void)_handleUpdatedAsset:(id)a3
+- (void)_handleUpdatedAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(ATDeviceSyncSessionTask *)self queue];
+  assetCopy = asset;
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__ATDeviceSyncSessionAssetTask__handleUpdatedAsset___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = assetCopy;
+  v6 = assetCopy;
+  dispatch_async(queue, v7);
 }
 
 void __52__ATDeviceSyncSessionAssetTask__handleUpdatedAsset___block_invoke(uint64_t a1)
@@ -2658,20 +2658,20 @@ void __52__ATDeviceSyncSessionAssetTask__handleUpdatedAsset___block_invoke(uint6
   }
 }
 
-- (void)_handleFinishedAsset:(id)a3
+- (void)_handleFinishedAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(ATDeviceSyncSessionTask *)self queue];
+  assetCopy = asset;
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__ATDeviceSyncSessionAssetTask__handleFinishedAsset___block_invoke;
   block[3] = &unk_2784E5960;
   block[4] = self;
-  v6 = v4;
+  v6 = assetCopy;
   v12 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
-  v7 = [(ATDeviceSyncSessionTask *)self queue];
+  queue2 = [(ATDeviceSyncSessionTask *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__ATDeviceSyncSessionAssetTask__handleFinishedAsset___block_invoke_2;
@@ -2679,7 +2679,7 @@ void __52__ATDeviceSyncSessionAssetTask__handleUpdatedAsset___block_invoke(uint6
   v9[4] = self;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, v9);
+  dispatch_async(queue2, v9);
 }
 
 uint64_t __53__ATDeviceSyncSessionAssetTask__handleFinishedAsset___block_invoke_2(uint64_t a1)
@@ -2878,21 +2878,21 @@ LABEL_23:
   return [*(*(a1 + 32) + 328) removeObject:*(a1 + 40)];
 }
 
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4
+- (void)messageLink:(id)link didReceiveRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATDeviceSyncSessionTask *)self queue];
+  linkCopy = link;
+  requestCopy = request;
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__ATDeviceSyncSessionAssetTask_messageLink_didReceiveRequest___block_invoke;
   block[3] = &unk_2784E59B0;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = linkCopy;
+  v9 = linkCopy;
+  v10 = requestCopy;
+  dispatch_async(queue, block);
 }
 
 void __62__ATDeviceSyncSessionAssetTask_messageLink_didReceiveRequest___block_invoke(uint64_t a1)
@@ -2985,17 +2985,17 @@ void __62__ATDeviceSyncSessionAssetTask_messageLink_didReceiveRequest___block_in
   }
 }
 
-- (void)updateProgressWithCount:(unint64_t)a3 totalItemCount:(unint64_t)a4
+- (void)updateProgressWithCount:(unint64_t)count totalItemCount:(unint64_t)itemCount
 {
-  [(ATSessionTask *)self setCompletedItemCount:a3];
-  [(ATSessionTask *)self setTotalItemCount:a4];
-  v9 = [(ATSessionTask *)self totalBytesToTransfer];
-  if ([v9 unsignedLongLongValue])
+  [(ATSessionTask *)self setCompletedItemCount:count];
+  [(ATSessionTask *)self setTotalItemCount:itemCount];
+  totalBytesToTransfer = [(ATSessionTask *)self totalBytesToTransfer];
+  if ([totalBytesToTransfer unsignedLongLongValue])
   {
-    v6 = [(ATSessionTask *)self totalBytesTransferred];
-    v7 = [v6 unsignedLongLongValue];
-    v8 = [(ATSessionTask *)self totalBytesToTransfer];
-    -[ATSessionTask setProgress:](self, "setProgress:", v7 / [v8 unsignedLongLongValue]);
+    totalBytesTransferred = [(ATSessionTask *)self totalBytesTransferred];
+    unsignedLongLongValue = [totalBytesTransferred unsignedLongLongValue];
+    totalBytesToTransfer2 = [(ATSessionTask *)self totalBytesToTransfer];
+    -[ATSessionTask setProgress:](self, "setProgress:", unsignedLongLongValue / [totalBytesToTransfer2 unsignedLongLongValue]);
   }
 
   else
@@ -3006,13 +3006,13 @@ void __62__ATDeviceSyncSessionAssetTask_messageLink_didReceiveRequest___block_in
 
 - (void)cancel
 {
-  v3 = [(ATDeviceSyncSessionTask *)self queue];
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__ATDeviceSyncSessionAssetTask_cancel__block_invoke;
   block[3] = &unk_2784E5938;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __38__ATDeviceSyncSessionAssetTask_cancel__block_invoke(uint64_t a1)
@@ -3126,13 +3126,13 @@ LABEL_15:
 
 - (void)start
 {
-  v3 = [(ATDeviceSyncSessionTask *)self queue];
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__ATDeviceSyncSessionAssetTask_start__block_invoke;
   block[3] = &unk_2784E5938;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __37__ATDeviceSyncSessionAssetTask_start__block_invoke(uint64_t a1)
@@ -3500,12 +3500,12 @@ void __37__ATDeviceSyncSessionAssetTask_start__block_invoke_2(uint64_t a1)
   }
 }
 
-- (ATDeviceSyncSessionAssetTask)initWithDataClass:(id)a3 onMessageLink:(id)a4
+- (ATDeviceSyncSessionAssetTask)initWithDataClass:(id)class onMessageLink:(id)link
 {
   v44 = *MEMORY[0x277D85DE8];
   v42.receiver = self;
   v42.super_class = ATDeviceSyncSessionAssetTask;
-  v4 = [(ATDeviceSyncSessionTask *)&v42 initWithDataClass:a3 onMessageLink:a4];
+  v4 = [(ATDeviceSyncSessionTask *)&v42 initWithDataClass:class onMessageLink:link];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB40]);
@@ -3520,21 +3520,21 @@ void __37__ATDeviceSyncSessionAssetTask_start__block_invoke_2(uint64_t a1)
     serverAssetsInProgress = v4->_serverAssetsInProgress;
     v4->_serverAssetsInProgress = v9;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     finishedAssets = v4->_finishedAssets;
-    v4->_finishedAssets = v11;
+    v4->_finishedAssets = array;
 
-    v13 = [MEMORY[0x277CE53F0] sharedInstance];
+    mEMORY[0x277CE53F0] = [MEMORY[0x277CE53F0] sharedInstance];
     assetController = v4->_assetController;
-    v4->_assetController = v13;
+    v4->_assetController = mEMORY[0x277CE53F0];
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     detailedProgress = v4->_detailedProgress;
-    v4->_detailedProgress = v15;
+    v4->_detailedProgress = dictionary;
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     syncProgresByAssetType = v4->_syncProgresByAssetType;
-    v4->_syncProgresByAssetType = v17;
+    v4->_syncProgresByAssetType = dictionary2;
 
     v19 = objc_alloc_init(MEMORY[0x277CBEB58]);
     assetStreams = v4->_assetStreams;
@@ -3549,18 +3549,18 @@ void __37__ATDeviceSyncSessionAssetTask_start__block_invoke_2(uint64_t a1)
     workQueue = v4->_workQueue;
     v4->_workQueue = v23;
 
-    v25 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     assetToBytesMap = v4->_assetToBytesMap;
-    v4->_assetToBytesMap = v25;
+    v4->_assetToBytesMap = weakToStrongObjectsMapTable;
 
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
     v27 = +[ATClientController sharedInstance];
-    v28 = [v27 allClients];
+    allClients = [v27 allClients];
 
-    v29 = [v28 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    v29 = [allClients countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v29)
     {
       v30 = v29;
@@ -3571,15 +3571,15 @@ void __37__ATDeviceSyncSessionAssetTask_start__block_invoke_2(uint64_t a1)
         {
           if (*v39 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(allClients);
           }
 
           v33 = *(*(&v38 + 1) + 8 * i);
           if ([v33 conformsToProtocol:&unk_2837091E8])
           {
-            v34 = [v33 assetDataClass];
-            v35 = [(ATSessionTask *)v4 dataClass];
-            v36 = [v34 isEqualToString:v35];
+            assetDataClass = [v33 assetDataClass];
+            dataClass = [(ATSessionTask *)v4 dataClass];
+            v36 = [assetDataClass isEqualToString:dataClass];
 
             if (v36)
             {
@@ -3589,7 +3589,7 @@ void __37__ATDeviceSyncSessionAssetTask_start__block_invoke_2(uint64_t a1)
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v38 objects:v43 count:16];
+        v30 = [allClients countByEnumeratingWithState:&v38 objects:v43 count:16];
         if (v30)
         {
           continue;

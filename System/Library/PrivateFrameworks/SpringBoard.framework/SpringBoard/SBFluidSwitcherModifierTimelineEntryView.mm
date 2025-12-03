@@ -1,29 +1,29 @@
 @interface SBFluidSwitcherModifierTimelineEntryView
-- (SBFluidSwitcherModifierTimelineEntryView)initWithFrame:(CGRect)a3 entry:(id)a4;
+- (SBFluidSwitcherModifierTimelineEntryView)initWithFrame:(CGRect)frame entry:(id)entry;
 - (SBFluidSwitcherModifierTimelineEntryViewDelegate)delegate;
-- (id)_appendRecursiveDescriptionToString:(id)a3 level:(unint64_t)a4 snapshot:(id)a5;
-- (id)_attributedStringsForStack:(id)a3;
-- (id)_randomColorWithSeed:(unint64_t)a3;
-- (void)_tap:(id)a3;
+- (id)_appendRecursiveDescriptionToString:(id)string level:(unint64_t)level snapshot:(id)snapshot;
+- (id)_attributedStringsForStack:(id)stack;
+- (id)_randomColorWithSeed:(unint64_t)seed;
+- (void)_tap:(id)_tap;
 - (void)layoutSubviews;
 @end
 
 @implementation SBFluidSwitcherModifierTimelineEntryView
 
-- (SBFluidSwitcherModifierTimelineEntryView)initWithFrame:(CGRect)a3 entry:(id)a4
+- (SBFluidSwitcherModifierTimelineEntryView)initWithFrame:(CGRect)frame entry:(id)entry
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  entryCopy = entry;
   v61.receiver = self;
   v61.super_class = SBFluidSwitcherModifierTimelineEntryView;
-  v11 = [(SBFluidSwitcherModifierTimelineEntryView *)&v61 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(SBFluidSwitcherModifierTimelineEntryView *)&v61 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_entry, a4);
+    objc_storeStrong(&height->_entry, entry);
     v13 = objc_alloc(MEMORY[0x277D756B8]);
     v14 = *MEMORY[0x277CBF3A0];
     v15 = *(MEMORY[0x277CBF3A0] + 8);
@@ -38,14 +38,14 @@
     [(UILabel *)v20 setFont:v21];
 
     v22 = v12->_nameLabel;
-    v23 = [MEMORY[0x277D75348] darkGrayColor];
-    [(UILabel *)v22 setTextColor:v23];
+    darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+    [(UILabel *)v22 setTextColor:darkGrayColor];
 
     [(UILabel *)v12->_nameLabel setTextAlignment:1];
     v24 = v12->_nameLabel;
-    v25 = [v10 eventSnapshot];
-    v26 = [v25 eventName];
-    [(UILabel *)v24 setText:v26];
+    eventSnapshot = [entryCopy eventSnapshot];
+    eventName = [eventSnapshot eventName];
+    [(UILabel *)v24 setText:eventName];
 
     [(SBFluidSwitcherModifierTimelineEntryView *)v12 addSubview:v12->_nameLabel];
     v27 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v14, v15, v16, v17}];
@@ -58,18 +58,18 @@
     [(UILabel *)v29 setFont:v30];
 
     v60 = v12->_actionsLabel;
-    v31 = v10;
+    v31 = entryCopy;
     v32 = MEMORY[0x277CCACA8];
-    v33 = [v31 responseSnapshot];
-    v34 = [v33 responseNames];
-    v35 = [v34 count];
-    v36 = [v31 responseSnapshot];
-    v37 = [v36 responseNames];
-    v38 = [v37 componentsJoinedByString:@"\n• "];
+    responseSnapshot = [v31 responseSnapshot];
+    responseNames = [responseSnapshot responseNames];
+    v35 = [responseNames count];
+    responseSnapshot2 = [v31 responseSnapshot];
+    responseNames2 = [responseSnapshot2 responseNames];
+    v38 = [responseNames2 componentsJoinedByString:@"\n• "];
     v39 = [v32 stringWithFormat:@"Responses: (%lu)\n• %@", v35, v38];
     [(UILabel *)v60 setText:v39];
 
-    v10 = v31;
+    entryCopy = v31;
     [(SBFluidSwitcherModifierTimelineEntryView *)v12 addSubview:v12->_actionsLabel];
     v40 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v14, v15, v16, v17}];
     postStackLabel = v12->_postStackLabel;
@@ -82,12 +82,12 @@
 
     v44 = objc_alloc(MEMORY[0x277CCAB48]);
     v45 = MEMORY[0x277CCACA8];
-    v46 = [v31 stackSnapshotAfterEvent];
-    v47 = [v45 stringWithFormat:@"Resulting Modifier Stack: (%lu)\n", objc_msgSend(v46, "countOfAllChildSnapshots")];
+    stackSnapshotAfterEvent = [v31 stackSnapshotAfterEvent];
+    v47 = [v45 stringWithFormat:@"Resulting Modifier Stack: (%lu)\n", objc_msgSend(stackSnapshotAfterEvent, "countOfAllChildSnapshots")];
     v48 = [v44 initWithString:v47];
 
-    v49 = [v10 stackSnapshotAfterEvent];
-    v50 = [(SBFluidSwitcherModifierTimelineEntryView *)v12 _attributedStringsForStack:v49];
+    stackSnapshotAfterEvent2 = [entryCopy stackSnapshotAfterEvent];
+    v50 = [(SBFluidSwitcherModifierTimelineEntryView *)v12 _attributedStringsForStack:stackSnapshotAfterEvent2];
     [v48 appendAttributedString:v50];
 
     [(UILabel *)v12->_postStackLabel setAttributedText:v48];
@@ -97,21 +97,21 @@
     v12->_tapRecognizer = v51;
 
     [(SBFluidSwitcherModifierTimelineEntryView *)v12 addGestureRecognizer:v12->_tapRecognizer];
-    v53 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(SBFluidSwitcherModifierTimelineEntryView *)v12 setBackgroundColor:v53];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(SBFluidSwitcherModifierTimelineEntryView *)v12 setBackgroundColor:systemBackgroundColor];
 
-    v54 = [(SBFluidSwitcherModifierTimelineEntryView *)v12 layer];
-    [v54 setCornerRadius:20.0];
+    layer = [(SBFluidSwitcherModifierTimelineEntryView *)v12 layer];
+    [layer setCornerRadius:20.0];
 
-    v55 = [(SBFluidSwitcherModifierTimelineEntryView *)v12 layer];
-    [v55 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer2 = [(SBFluidSwitcherModifierTimelineEntryView *)v12 layer];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
 
-    v56 = [(SBFluidSwitcherModifierTimelineEntryView *)v12 layer];
-    [v56 setShadowRadius:10.0];
+    layer3 = [(SBFluidSwitcherModifierTimelineEntryView *)v12 layer];
+    [layer3 setShadowRadius:10.0];
 
-    v57 = [(SBFluidSwitcherModifierTimelineEntryView *)v12 layer];
+    layer4 = [(SBFluidSwitcherModifierTimelineEntryView *)v12 layer];
     LODWORD(v58) = 1045220557;
-    [v57 setShadowOpacity:v58];
+    [layer4 setShadowOpacity:v58];
 
     [(SBFluidSwitcherModifierTimelineEntryView *)v12 setClipsToBounds:0];
   }
@@ -140,63 +140,63 @@
   [(SBFluidSwitcherModifierTimelineEntryView *)self setFrame:v11];
 }
 
-- (void)_tap:(id)a3
+- (void)_tap:(id)_tap
 {
-  v4 = [(SBFluidSwitcherModifierTimelineEntryView *)self delegate];
-  [v4 didSelectEntryView:self];
+  delegate = [(SBFluidSwitcherModifierTimelineEntryView *)self delegate];
+  [delegate didSelectEntryView:self];
 }
 
-- (id)_attributedStringsForStack:(id)a3
+- (id)_attributedStringsForStack:(id)stack
 {
-  v4 = a3;
+  stackCopy = stack;
   v5 = objc_opt_new();
-  v6 = [(SBFluidSwitcherModifierTimelineEntryView *)self _appendRecursiveDescriptionToString:v5 level:0 snapshot:v4];
+  v6 = [(SBFluidSwitcherModifierTimelineEntryView *)self _appendRecursiveDescriptionToString:v5 level:0 snapshot:stackCopy];
 
   return v6;
 }
 
-- (id)_appendRecursiveDescriptionToString:(id)a3 level:(unint64_t)a4 snapshot:(id)a5
+- (id)_appendRecursiveDescriptionToString:(id)string level:(unint64_t)level snapshot:(id)snapshot
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  stringCopy = string;
+  snapshotCopy = snapshot;
   v10 = objc_opt_new();
-  if (a4)
+  if (level)
   {
-    v11 = a4;
+    levelCopy = level;
     do
     {
       [v10 appendString:@"   "];
-      --v11;
+      --levelCopy;
     }
 
-    while (v11);
+    while (levelCopy);
   }
 
   [v10 appendString:@"• "];
-  v12 = [v9 modifierName];
-  v13 = -[SBFluidSwitcherModifierTimelineEntryView _randomColorWithSeed:](self, "_randomColorWithSeed:", [v12 hash]);
+  modifierName = [snapshotCopy modifierName];
+  v13 = -[SBFluidSwitcherModifierTimelineEntryView _randomColorWithSeed:](self, "_randomColorWithSeed:", [modifierName hash]);
   v14 = objc_alloc(MEMORY[0x277CCA898]);
   v33 = *MEMORY[0x277D740C0];
   v34[0] = v13;
   v26 = v13;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-  v16 = [v14 initWithString:v12 attributes:v15];
+  v16 = [v14 initWithString:modifierName attributes:v15];
 
   v17 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v10];
-  [v8 appendAttributedString:v17];
+  [stringCopy appendAttributedString:v17];
 
-  [v8 appendAttributedString:v16];
+  [stringCopy appendAttributedString:v16];
   v18 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"\n"];
-  [v8 appendAttributedString:v18];
+  [stringCopy appendAttributedString:v18];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v27 = v9;
-  v19 = [v9 childSnapshots];
-  v20 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v27 = snapshotCopy;
+  childSnapshots = [snapshotCopy childSnapshots];
+  v20 = [childSnapshots countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v20)
   {
     v21 = v20;
@@ -207,29 +207,29 @@
       {
         if (*v29 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(childSnapshots);
         }
 
-        v24 = [(SBFluidSwitcherModifierTimelineEntryView *)self _appendRecursiveDescriptionToString:v8 level:a4 + 1 snapshot:*(*(&v28 + 1) + 8 * i)];
+        v24 = [(SBFluidSwitcherModifierTimelineEntryView *)self _appendRecursiveDescriptionToString:stringCopy level:level + 1 snapshot:*(*(&v28 + 1) + 8 * i)];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v21 = [childSnapshots countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v21);
   }
 
-  return v8;
+  return stringCopy;
 }
 
-- (id)_randomColorWithSeed:(unint64_t)a3
+- (id)_randomColorWithSeed:(unint64_t)seed
 {
   v5 = MEMORY[0x277D75348];
   [(SBFluidSwitcherModifierTimelineEntryView *)self _randomFloatFromSeed:0.0 min:1.0 max:?];
   v7 = v6;
-  [(SBFluidSwitcherModifierTimelineEntryView *)self _randomFloatFromSeed:a3 min:0.4 max:0.9];
+  [(SBFluidSwitcherModifierTimelineEntryView *)self _randomFloatFromSeed:seed min:0.4 max:0.9];
   v9 = v8;
-  [(SBFluidSwitcherModifierTimelineEntryView *)self _randomFloatFromSeed:a3 min:0.6 max:1.0];
+  [(SBFluidSwitcherModifierTimelineEntryView *)self _randomFloatFromSeed:seed min:0.6 max:1.0];
 
   return [v5 colorWithHue:v7 saturation:v9 brightness:v10 alpha:1.0];
 }

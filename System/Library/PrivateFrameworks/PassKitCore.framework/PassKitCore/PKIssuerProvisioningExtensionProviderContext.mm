@@ -1,39 +1,39 @@
 @interface PKIssuerProvisioningExtensionProviderContext
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)connect;
-- (void)generateRequestWithEntryIdentifier:(id)a3 configuration:(id)a4 certificateChain:(id)a5 nonce:(id)a6 nonceSignature:(id)a7 completionHandler:(id)a8;
-- (void)passEntriesWithCompletion:(id)a3;
-- (void)remotePassEntriesWithCompletion:(id)a3;
-- (void)statusWithCompletion:(id)a3;
+- (void)generateRequestWithEntryIdentifier:(id)identifier configuration:(id)configuration certificateChain:(id)chain nonce:(id)nonce nonceSignature:(id)signature completionHandler:(id)handler;
+- (void)passEntriesWithCompletion:(id)completion;
+- (void)remotePassEntriesWithCompletion:(id)completion;
+- (void)statusWithCompletion:(id)completion;
 @end
 
 @implementation PKIssuerProvisioningExtensionProviderContext
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PKIssuerProvisioningExtensionProviderContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(PKIssuerProvisioningExtensionProviderContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PKIssuerProvisioningExtensionProviderContext *)self _auxiliaryConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(PKIssuerProvisioningExtensionProviderContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (void)statusWithCompletion:(id)a3
+- (void)statusWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v4;
+    v7 = completionCopy;
     v5 = objc_autoreleasePoolPush();
     handler = self->_handler;
     if (handler)
@@ -47,16 +47,16 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)passEntriesWithCompletion:(id)a3
+- (void)passEntriesWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v4;
+    v7 = completionCopy;
     v5 = objc_autoreleasePoolPush();
     handler = self->_handler;
     if (handler)
@@ -70,16 +70,16 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)remotePassEntriesWithCompletion:(id)a3
+- (void)remotePassEntriesWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v4;
+    v7 = completionCopy;
     v5 = objc_autoreleasePoolPush();
     handler = self->_handler;
     if (handler)
@@ -93,30 +93,30 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)generateRequestWithEntryIdentifier:(id)a3 configuration:(id)a4 certificateChain:(id)a5 nonce:(id)a6 nonceSignature:(id)a7 completionHandler:(id)a8
+- (void)generateRequestWithEntryIdentifier:(id)identifier configuration:(id)configuration certificateChain:(id)chain nonce:(id)nonce nonceSignature:(id)signature completionHandler:(id)handler
 {
-  v21 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v18)
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  chainCopy = chain;
+  nonceCopy = nonce;
+  signatureCopy = signature;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v19 = objc_autoreleasePoolPush();
     handler = self->_handler;
     if (handler)
     {
-      [(PKIssuerProvisioningExtensionHandler *)handler generateAddPaymentPassRequestForPassEntryWithIdentifier:v21 configuration:v14 certificateChain:v15 nonce:v16 nonceSignature:v17 completionHandler:v18];
+      [(PKIssuerProvisioningExtensionHandler *)handler generateAddPaymentPassRequestForPassEntryWithIdentifier:identifierCopy configuration:configurationCopy certificateChain:chainCopy nonce:nonceCopy nonceSignature:signatureCopy completionHandler:handlerCopy];
     }
 
     else
     {
-      v18[2](v18, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     objc_autoreleasePoolPop(v19);

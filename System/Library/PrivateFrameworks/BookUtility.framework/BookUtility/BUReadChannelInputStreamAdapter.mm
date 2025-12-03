@@ -1,24 +1,24 @@
 @interface BUReadChannelInputStreamAdapter
 - (BOOL)canSeek;
-- (BUReadChannelInputStreamAdapter)initWithReadChannel:(id)a3;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
+- (BUReadChannelInputStreamAdapter)initWithReadChannel:(id)channel;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
 - (void)close;
 - (void)dealloc;
-- (void)seekToOffset:(int64_t)a3;
+- (void)seekToOffset:(int64_t)offset;
 @end
 
 @implementation BUReadChannelInputStreamAdapter
 
-- (BUReadChannelInputStreamAdapter)initWithReadChannel:(id)a3
+- (BUReadChannelInputStreamAdapter)initWithReadChannel:(id)channel
 {
-  v5 = a3;
+  channelCopy = channel;
   v9.receiver = self;
   v9.super_class = BUReadChannelInputStreamAdapter;
   v6 = [(BUReadChannelInputStreamAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_readChannel, a3);
+    objc_storeStrong(&v6->_readChannel, channel);
     objc_storeStrong(&v7->_leftoverData, MEMORY[0x277D85CC8]);
   }
 
@@ -33,19 +33,19 @@
   [(BUReadChannelInputStreamAdapter *)&v4 dealloc];
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
   v46 = 0;
   v47 = &v46;
   v48 = 0x2020000000;
-  v49 = a4;
+  sizeCopy = size;
   v45[0] = 0;
   v45[1] = v45;
   v45[2] = 0x2020000000;
-  v45[3] = a3;
+  v45[3] = buffer;
   leftoverData = self->_leftoverData;
   size = dispatch_data_get_size(leftoverData);
-  v8 = a4;
+  sizeCopy2 = size;
   if (size)
   {
     applier[0] = MEMORY[0x277D85DD0];
@@ -66,14 +66,14 @@
       v11 = objc_msgSend_leftoverData(self, v9, v10);
       v12 = v47[3];
       v13 = dispatch_data_get_size(self->_leftoverData);
-      subrange = dispatch_data_create_subrange(v11, a4 - v12, v13 - a4 - v12);
+      subrange = dispatch_data_create_subrange(v11, size - v12, v13 - size - v12);
       objc_msgSend_setLeftoverData_(self, v15, subrange);
     }
 
-    v8 = v47[3];
+    sizeCopy2 = v47[3];
   }
 
-  if (v8 && self->_readChannel)
+  if (sizeCopy2 && self->_readChannel)
   {
     v38 = 0;
     v39 = &v38;
@@ -122,10 +122,10 @@
     _Block_object_dispose(v36, 8);
     _Block_object_dispose(&v38, 8);
 
-    v8 = v47[3];
+    sizeCopy2 = v47[3];
   }
 
-  v28 = a4 - v8;
+  v28 = size - sizeCopy2;
   _Block_object_dispose(v45, 8);
   _Block_object_dispose(&v46, 8);
   return v28;
@@ -147,13 +147,13 @@
   return v4;
 }
 
-- (void)seekToOffset:(int64_t)a3
+- (void)seekToOffset:(int64_t)offset
 {
-  v5 = objc_msgSend_readChannel(self, a2, a3);
+  v5 = objc_msgSend_readChannel(self, a2, offset);
 
   if (v5)
   {
-    objc_msgSend_setOffset_(self, v6, a3);
+    objc_msgSend_setOffset_(self, v6, offset);
     v8 = MEMORY[0x277D85CC8];
 
     objc_msgSend_setLeftoverData_(self, v7, v8);

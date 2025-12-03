@@ -1,17 +1,17 @@
 @interface NSFetchIndexElementDescription
-- (BOOL)isEqual:(id)a3;
-- (NSFetchIndexElementDescription)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSFetchIndexElementDescription)initWithCoder:(id)coder;
 - (NSFetchIndexElementDescription)initWithProperty:(NSPropertyDescription *)property collationType:(NSFetchIndexElementType)collationType;
 - (NSPropertyDescription)property;
-- (_DWORD)initWithPropertyName:(uint64_t)a3 collationType:;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_DWORD)initWithPropertyName:(uint64_t)name collationType:;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (uint64_t)_validateCollationType:(void *)a3 forProperty:;
-- (void)_setIndexDescription:(uint64_t)a1;
+- (uint64_t)_validateCollationType:(void *)type forProperty:;
+- (void)_setIndexDescription:(uint64_t)description;
 - (void)_throwIfNotEditable;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithPropertyName:(void *)a3 property:(uint64_t)a4 collationType:(int)a5 ascending:;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithPropertyName:(void *)name property:(uint64_t)property collationType:(int)type ascending:;
 - (void)setAscending:(BOOL)ascending;
 - (void)setCollationType:(NSFetchIndexElementType)collationType;
 @end
@@ -40,10 +40,10 @@
     indexDescription = self->_indexDescription;
     if (indexDescription)
     {
-      v6 = [(NSFetchIndexDescription *)indexDescription entity];
-      if (v6)
+      entity = [(NSFetchIndexDescription *)indexDescription entity];
+      if (entity)
       {
-        property = [*(v6 + 96) objectForKey:self->_propertyName];
+        property = [*(entity + 96) objectForKey:self->_propertyName];
       }
 
       else
@@ -74,14 +74,14 @@
   return property;
 }
 
-- (uint64_t)_validateCollationType:(void *)a3 forProperty:
+- (uint64_t)_validateCollationType:(void *)type forProperty:
 {
   v12[1] = *MEMORY[0x1E69E9840];
   if (result && a2 == 1)
   {
-    if ([a3 _propertyType] == 2 || objc_msgSend(a3, "_propertyType") == 6)
+    if ([type _propertyType] == 2 || objc_msgSend(type, "_propertyType") == 6)
     {
-      result = [a3 attributeType];
+      result = [type attributeType];
       if (result == 100 || result == 200 || result == 600)
       {
         goto LABEL_8;
@@ -90,8 +90,8 @@
       v5 = MEMORY[0x1E695DF30];
       v6 = *MEMORY[0x1E695D940];
       v9 = @"property";
-      v10 = a3;
-      v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
+      typeCopy = type;
+      v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&typeCopy forKeys:&v9 count:1];
       v8 = @"Invalid collation type (rtree indexes can only be created for floats or integers < 32 bit).";
     }
 
@@ -100,7 +100,7 @@
       v5 = MEMORY[0x1E695DF30];
       v6 = *MEMORY[0x1E695D940];
       v11 = @"property";
-      v12[0] = a3;
+      v12[0] = type;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
       v8 = @"Invalid collation type (rtree indexes can only be created on attributes).";
     }
@@ -133,10 +133,10 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  v7 = [(NSPropertyDescription *)property _propertyType];
-  if (v7 - 4 >= 3 && v7 != 2)
+  _propertyType = [(NSPropertyDescription *)property _propertyType];
+  if (_propertyType - 4 >= 3 && _propertyType != 2)
   {
-    if (v7 == 7)
+    if (_propertyType == 7)
     {
 
       v11 = MEMORY[0x1E695DF30];
@@ -183,14 +183,14 @@ LABEL_17:
   return v8;
 }
 
-- (_DWORD)initWithPropertyName:(uint64_t)a3 collationType:
+- (_DWORD)initWithPropertyName:(uint64_t)name collationType:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = NSFetchIndexElementDescription;
   v5 = objc_msgSendSuper2(&v9, sel_init);
   if (v5)
@@ -198,29 +198,29 @@ LABEL_17:
     v6 = a2;
     v7 = v5[10];
     *(v5 + 2) = v6;
-    *(v5 + 3) = a3;
+    *(v5 + 3) = name;
     v5[10] = v7 & 0xFFFFFFFC | 1;
   }
 
   return v5;
 }
 
-- (void)initWithPropertyName:(void *)a3 property:(uint64_t)a4 collationType:(int)a5 ascending:
+- (void)initWithPropertyName:(void *)name property:(uint64_t)property collationType:(int)type ascending:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = NSFetchIndexElementDescription;
   v9 = objc_msgSendSuper2(&v12, sel_init);
   if (v9)
   {
     v9[2] = a2;
-    if (a3 && [a3 _propertyType] == 5)
+    if (name && [name _propertyType] == 5)
     {
-      v9[1] = a3;
+      v9[1] = name;
       v10 = *(v9 + 10) | 2;
     }
 
@@ -230,29 +230,29 @@ LABEL_17:
       v10 = v9[5] & 0xFFFFFFFD;
     }
 
-    v9[3] = a4;
-    *(v9 + 10) = v10 & 0xFFFFFFFE | a5;
+    v9[3] = property;
+    *(v9 + 10) = v10 & 0xFFFFFFFE | type;
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_propertyName forKey:@"NSPropertyName"];
+  [coder encodeObject:self->_propertyName forKey:@"NSPropertyName"];
   if ([(NSPropertyDescription *)self->_property _propertyType]== 5)
   {
-    [a3 encodeObject:self->_property forKey:@"NSIndexedProperty"];
+    [coder encodeObject:self->_property forKey:@"NSIndexedProperty"];
   }
 
-  [a3 encodeInteger:self->_collationType forKey:@"NSFetchIndexElementType"];
-  [a3 encodeObject:self->_indexDescription forKey:@"NSFetchIndexDescription"];
+  [coder encodeInteger:self->_collationType forKey:@"NSFetchIndexElementType"];
+  [coder encodeObject:self->_indexDescription forKey:@"NSFetchIndexDescription"];
   v5 = *&self->_indexElementDescriptionFlags & 1;
 
-  [a3 encodeBool:v5 forKey:@"NSAscending"];
+  [coder encodeBool:v5 forKey:@"NSAscending"];
 }
 
-- (NSFetchIndexElementDescription)initWithCoder:(id)a3
+- (NSFetchIndexElementDescription)initWithCoder:(id)coder
 {
   v20.receiver = self;
   v20.super_class = NSFetchIndexElementDescription;
@@ -265,7 +265,7 @@ LABEL_17:
     v17 = __48__NSFetchIndexElementDescription_initWithCoder___block_invoke;
     v18 = &unk_1E6EC16F0;
     v19 = v5;
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSPropertyName"];
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSPropertyName"];
     v4->_propertyName = v6;
     if (v6 && ([(NSString *)v6 isNSString]& 1) == 0)
     {
@@ -274,12 +274,12 @@ LABEL_17:
 
     else
     {
-      v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSFetchIndexDescription"];
+      v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSFetchIndexDescription"];
       v4->_indexDescription = v7;
       if (!v7)
       {
 LABEL_13:
-        v12 = [a3 decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E695DFD8] forKey:{"setWithObjects:", objc_opt_class(), 0, v15, v16), @"NSIndexedProperty"}];
+        v12 = [coder decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E695DFD8] forKey:{"setWithObjects:", objc_opt_class(), 0, v15, v16), @"NSIndexedProperty"}];
         if (!v12)
         {
           goto LABEL_17;
@@ -300,12 +300,12 @@ LABEL_17:
           v13 = *&v4->_indexElementDescriptionFlags & 0xFFFFFFFD;
 LABEL_23:
           v4->_indexElementDescriptionFlags = v13;
-          v4->_collationType = [a3 decodeIntegerForKey:@"NSFetchIndexElementType"];
-          v4->_indexElementDescriptionFlags = (*&v4->_indexElementDescriptionFlags & 0xFFFFFFFE | [a3 decodeBoolForKey:@"NSAscending"]);
+          v4->_collationType = [coder decodeIntegerForKey:@"NSFetchIndexElementType"];
+          v4->_indexElementDescriptionFlags = (*&v4->_indexElementDescriptionFlags & 0xFFFFFFFE | [coder decodeBoolForKey:@"NSAscending"]);
           goto LABEL_24;
         }
 
-        [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, &unk_1EF4358A0)}];
+        [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, &unk_1EF4358A0)}];
 
 LABEL_20:
         v4 = 0;
@@ -349,7 +349,7 @@ LABEL_24:
       }
     }
 
-    [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, v11)}];
+    [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, v11)}];
 
     goto LABEL_20;
   }
@@ -357,9 +357,9 @@ LABEL_24:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -367,15 +367,15 @@ LABEL_24:
     *(v4 + 16) = [(NSString *)self->_propertyName copy];
     if ([(NSPropertyDescription *)self->_property _propertyType]== 5)
     {
-      v6 = [(NSPropertyDescription *)self->_property copy];
+      property = [(NSPropertyDescription *)self->_property copy];
     }
 
     else
     {
-      v6 = [(NSFetchIndexElementDescription *)self property];
+      property = [(NSFetchIndexElementDescription *)self property];
     }
 
-    *(v5 + 8) = v6;
+    *(v5 + 8) = property;
     v7 = *(v5 + 40) | 2;
     *(v5 + 40) = v7;
     *(v5 + 24) = self->_collationType;
@@ -385,11 +385,11 @@ LABEL_24:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
-    LOBYTE(v13) = 1;
+    LOBYTE(propertyName) = 1;
   }
 
   else
@@ -397,26 +397,26 @@ LABEL_24:
     v19 = v5;
     v20 = v4;
     v21 = v3;
-    if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (collationType = self->_collationType, collationType == [a3 collationType]) && (v12 = -[NSFetchIndexElementDescription isAscending](self, "isAscending"), v12 == objc_msgSend(a3, "isAscending")))
+    if (equal && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (collationType = self->_collationType, collationType == [equal collationType]) && (v12 = -[NSFetchIndexElementDescription isAscending](self, "isAscending"), v12 == objc_msgSend(equal, "isAscending")))
     {
       propertyName = self->_propertyName;
-      v13 = [a3 propertyName];
-      if (propertyName == v13 || (v15 = v13, LOBYTE(v13) = 0, propertyName) && v15 && (LODWORD(v13) = [(NSString *)propertyName isEqual:?], v13))
+      propertyName = [equal propertyName];
+      if (propertyName == propertyName || (v15 = propertyName, LOBYTE(propertyName) = 0, propertyName) && v15 && (LODWORD(propertyName) = [(NSString *)propertyName isEqual:?], propertyName))
       {
-        if (-[NSPropertyDescription _propertyType](self->_property, "_propertyType", v6, v19, v20, v21, v7, v8) != 5 || (property = self->_property, v13 = [a3 property], property == v13) || (v17 = v13, LOBYTE(v13) = 0, property) && v17 && (LODWORD(v13) = -[NSPropertyDescription isEqual:](property, "isEqual:"), v13))
+        if (-[NSPropertyDescription _propertyType](self->_property, "_propertyType", v6, v19, v20, v21, v7, v8) != 5 || (property = self->_property, propertyName = [equal property], property == propertyName) || (v17 = propertyName, LOBYTE(propertyName) = 0, property) && v17 && (LODWORD(propertyName) = -[NSPropertyDescription isEqual:](property, "isEqual:"), propertyName))
         {
-          LOBYTE(v13) = 1;
+          LOBYTE(propertyName) = 1;
         }
       }
     }
 
     else
     {
-      LOBYTE(v13) = 0;
+      LOBYTE(propertyName) = 0;
     }
   }
 
-  return v13;
+  return propertyName;
 }
 
 - (id)description
@@ -435,9 +435,9 @@ LABEL_24:
   }
 
   collationType = self->_collationType;
-  v8 = [(NSFetchIndexElementDescription *)self isAscending];
+  isAscending = [(NSFetchIndexElementDescription *)self isAscending];
   v9 = @"descending";
-  if (v8)
+  if (isAscending)
   {
     v9 = @"ascending";
   }
@@ -454,8 +454,8 @@ LABEL_24:
   if (result)
   {
     v1 = result;
-    v2 = [result property];
-    if (!v2 && v1[2])
+    property = [result property];
+    if (!property && v1[2])
     {
       v5 = *MEMORY[0x1E695D930];
       v6 = @"offender";
@@ -465,7 +465,7 @@ LABEL_24:
 
     v3 = *MEMORY[0x1E69E9840];
 
-    return [v2 _throwIfNotEditable];
+    return [property _throwIfNotEditable];
   }
 
   else
@@ -494,11 +494,11 @@ LABEL_24:
   self->_indexElementDescriptionFlags = (*&self->_indexElementDescriptionFlags & 0xFFFFFFFE | v3);
 }
 
-- (void)_setIndexDescription:(uint64_t)a1
+- (void)_setIndexDescription:(uint64_t)description
 {
-  if (a1)
+  if (description)
   {
-    if (!a2 || *(a1 + 32) || [*(a1 + 8) _propertyType] == 5)
+    if (!a2 || *(description + 32) || [*(description + 8) _propertyType] == 5)
     {
       goto LABEL_10;
     }
@@ -506,24 +506,24 @@ LABEL_24:
     if ([a2 entity])
     {
 
-      *(a1 + 8) = 0;
-      v4 = *(a1 + 40) & 0xFFFFFFFD;
+      *(description + 8) = 0;
+      v4 = *(description + 40) & 0xFFFFFFFD;
     }
 
     else
     {
-      if ((*(a1 + 40) & 2) != 0)
+      if ((*(description + 40) & 2) != 0)
       {
 LABEL_10:
-        *(a1 + 32) = a2;
+        *(description + 32) = a2;
         return;
       }
 
-      v5 = *(a1 + 8);
-      v4 = *(a1 + 40) | 2;
+      v5 = *(description + 8);
+      v4 = *(description + 40) | 2;
     }
 
-    *(a1 + 40) = v4;
+    *(description + 40) = v4;
     goto LABEL_10;
   }
 }

@@ -1,32 +1,32 @@
 @interface LNActionDescriptionIconImage
-- (BOOL)isEqual:(id)a3;
-- (LNActionDescriptionIconImage)initWithCoder:(id)a3;
-- (LNActionDescriptionIconImage)initWithImage:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNActionDescriptionIconImage)initWithCoder:(id)coder;
+- (LNActionDescriptionIconImage)initWithImage:(id)image;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionDescriptionIconImage
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNActionDescriptionIconImage *)self image];
-      v8 = [(LNActionDescriptionIconImage *)v6 image];
-      v9 = v7;
-      v10 = v8;
+      image = [(LNActionDescriptionIconImage *)self image];
+      image2 = [(LNActionDescriptionIconImage *)v6 image];
+      v9 = image;
+      v10 = image2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -54,8 +54,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(LNActionDescriptionIconImage *)self image];
-  v3 = [v2 hash];
+  image = [(LNActionDescriptionIconImage *)self image];
+  v3 = [image hash];
 
   return v3;
 }
@@ -65,45 +65,45 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNActionDescriptionIconImage *)self image];
-  v7 = [v3 stringWithFormat:@"<%@: %p, image: %@>", v5, self, v6];
+  image = [(LNActionDescriptionIconImage *)self image];
+  v7 = [v3 stringWithFormat:@"<%@: %p, image: %@>", v5, self, image];
 
   return v7;
 }
 
-- (LNActionDescriptionIconImage)initWithCoder:(id)a3
+- (LNActionDescriptionIconImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
 
   if (v5)
   {
     self = [(LNActionDescriptionIconImage *)self initWithImage:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNActionDescriptionIconImage *)self image];
-  [v4 encodeObject:v5 forKey:@"image"];
+  coderCopy = coder;
+  image = [(LNActionDescriptionIconImage *)self image];
+  [coderCopy encodeObject:image forKey:@"image"];
 }
 
-- (LNActionDescriptionIconImage)initWithImage:(id)a3
+- (LNActionDescriptionIconImage)initWithImage:(id)image
 {
-  v6 = a3;
-  if (!v6)
+  imageCopy = image;
+  if (!imageCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNActionDescriptionIcon.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"image"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionDescriptionIcon.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"image"}];
   }
 
   v12.receiver = self;
@@ -112,7 +112,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_image, a3);
+    objc_storeStrong(&v7->_image, image);
     v9 = v8;
   }
 

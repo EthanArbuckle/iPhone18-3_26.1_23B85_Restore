@@ -1,13 +1,13 @@
 @interface CloudServiceSetupView.Coordinator
-- (void)musicKit_cloudServiceSetupViewControllerDidDismiss:(id)a3;
+- (void)musicKit_cloudServiceSetupViewControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation CloudServiceSetupView.Coordinator
 
-- (void)musicKit_cloudServiceSetupViewControllerDidDismiss:(id)a3
+- (void)musicKit_cloudServiceSetupViewControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_216666690();
 }
 

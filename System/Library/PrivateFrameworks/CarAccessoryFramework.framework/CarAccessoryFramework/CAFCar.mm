@@ -1,7 +1,7 @@
 @interface CAFCar
-- (BOOL)hasAccessoryType:(id)a3;
+- (BOOL)hasAccessoryType:(id)type;
 - (BOOL)isConfigured;
-- (BOOL)registeredForAccessory:(id)a3;
+- (BOOL)registeredForAccessory:(id)accessory;
 - (BOOL)rightHandDrive;
 - (BOOL)usable;
 - (CAFAudioSettings)audioSettings;
@@ -10,7 +10,7 @@
 - (CAFAutomakerNotificationHistory)automakerNotificationHistory;
 - (CAFAutomakerOverlays)automakerOverlays;
 - (CAFAutomakerSettings)automakerSettings;
-- (CAFCar)initWithManager:(id)a3 car:(id)a4;
+- (CAFCar)initWithManager:(id)manager car:(id)car;
 - (CAFCarObserver)combineObserver;
 - (CAFCharging)charging;
 - (CAFClimate)climate;
@@ -48,52 +48,52 @@
 - (NSString)name;
 - (NSString)np_titleForCurrentMediaSource;
 - (NSUUID)uniqueIdentifier;
-- (id)accessoriesForCategory:(id)a3;
-- (id)currentDescriptionForCache:(id)a3;
-- (id)mediaSourceWithIdentifier:(id)a3;
+- (id)accessoriesForCategory:(id)category;
+- (id)currentDescriptionForCache:(id)cache;
+- (id)mediaSourceWithIdentifier:(id)identifier;
 - (unint64_t)state;
 - (unsigned)np_currentFrequency;
-- (void)_accessoryDidUpdate:(id)a3 service:(id)a4 characteristic:(id)a5;
-- (void)_accessoryDidUpdate:(id)a3 service:(id)a4 control:(id)a5;
-- (void)_accessoryReceivedAllValues:(id)a3;
-- (void)_groupInitialization:(id)a3 controls:(id)a4;
+- (void)_accessoryDidUpdate:(id)update service:(id)service characteristic:(id)characteristic;
+- (void)_accessoryDidUpdate:(id)update service:(id)service control:(id)control;
+- (void)_accessoryReceivedAllValues:(id)values;
+- (void)_groupInitialization:(id)initialization controls:(id)controls;
 - (void)_refreshAccessories;
-- (void)addRegistrationForCharacteristics:(id)a3;
+- (void)addRegistrationForCharacteristics:(id)characteristics;
 - (void)dealloc;
-- (void)didNotifyPluginID:(id)a3 instanceID:(id)a4 value:(id)a5;
-- (void)didRequestPluginID:(id)a3 instanceID:(id)a4 value:(id)a5 withResponse:(id)a6;
-- (void)didUpdatePluginID:(id)a3 values:(id)a4;
+- (void)didNotifyPluginID:(id)d instanceID:(id)iD value:(id)value;
+- (void)didRequestPluginID:(id)d instanceID:(id)iD value:(id)value withResponse:(id)response;
+- (void)didUpdatePluginID:(id)d values:(id)values;
 - (void)invalidate;
-- (void)notifyControl:(id)a3 value:(id)a4;
-- (void)performGroupRead:(id)a3 completion:(id)a4;
-- (void)performGroupWrite:(id)a3 completion:(id)a4;
-- (void)performGroupedRequest:(id)a3 key:(id)a4 value:(id)a5 withResponse:(id)a6;
-- (void)readCharacteristic:(id)a3 response:(id)a4;
+- (void)notifyControl:(id)control value:(id)value;
+- (void)performGroupRead:(id)read completion:(id)completion;
+- (void)performGroupWrite:(id)write completion:(id)completion;
+- (void)performGroupedRequest:(id)request key:(id)key value:(id)value withResponse:(id)response;
+- (void)readCharacteristic:(id)characteristic response:(id)response;
 - (void)refreshAllCharacteristics;
-- (void)refreshCharacteristics:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)removeRegistrationForCharacteristics:(id)a3;
-- (void)requestControl:(id)a3 value:(id)a4 response:(id)a5;
-- (void)setReceivedAllValues:(BOOL)a3;
+- (void)refreshCharacteristics:(id)characteristics;
+- (void)registerObserver:(id)observer;
+- (void)removeRegistrationForCharacteristics:(id)characteristics;
+- (void)requestControl:(id)control value:(id)value response:(id)response;
+- (void)setReceivedAllValues:(BOOL)values;
 - (void)trimAccessories;
-- (void)unregisterObserver:(id)a3;
-- (void)writeCharacteristic:(id)a3 value:(id)a4 response:(id)a5;
+- (void)unregisterObserver:(id)observer;
+- (void)writeCharacteristic:(id)characteristic value:(id)value response:(id)response;
 @end
 
 @implementation CAFCar
 
-- (CAFCar)initWithManager:(id)a3 car:(id)a4
+- (CAFCar)initWithManager:(id)manager car:(id)car
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  carCopy = car;
   v40.receiver = self;
   v40.super_class = CAFCar;
   v9 = [(CAFCar *)&v40 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_carManager, a3);
-    objc_storeStrong(&v10->_car, a4);
+    objc_storeStrong(&v9->_carManager, manager);
+    objc_storeStrong(&v10->_car, car);
     [(CAFCarConfiguration *)v10->_car setDelegate:v10];
     v11 = [objc_alloc(MEMORY[0x277CF89C0]) initWithProtocol:&unk_28468B110];
     observers = v10->_observers;
@@ -142,16 +142,16 @@
     processedPluginIDs = v10->_processedPluginIDs;
     v10->_processedPluginIDs = v33;
 
-    v35 = [v8 pluginConfigs];
-    v36 = [v35 count];
+    pluginConfigs = [carCopy pluginConfigs];
+    v36 = [pluginConfigs count];
 
     if (v36)
     {
       [(CAFCar *)v10 _refreshAccessories];
     }
 
-    v37 = [(CAFCar *)v10 cachedDescription];
-    [v37 setNeedsRefreshDescription];
+    cachedDescription = [(CAFCar *)v10 cachedDescription];
+    [cachedDescription setNeedsRefreshDescription];
 
     v38 = CAFCarLogging();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -174,26 +174,26 @@
 - (BOOL)rightHandDrive
 {
   v2 = [(CAFCar *)self car];
-  v3 = [v2 rightHandDrive];
+  rightHandDrive = [v2 rightHandDrive];
 
-  return v3;
+  return rightHandDrive;
 }
 
 - (NSArray)sortedAccessories
 {
-  v2 = [(CAFCar *)self accessories];
-  v3 = [v2 allValues];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  accessories = [(CAFCar *)self accessories];
+  allValues = [accessories allValues];
+  v4 = [allValues sortedArrayUsingSelector:sel_compare_];
 
   return v4;
 }
 
-- (void)setReceivedAllValues:(BOOL)a3
+- (void)setReceivedAllValues:(BOOL)values
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (self->_receivedAllValues != a3)
+  if (self->_receivedAllValues != values)
   {
-    v3 = a3;
+    valuesCopy = values;
     v5 = CAFCarLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -209,8 +209,8 @@
       }
 
       v13 = 138543874;
-      v14 = self;
-      if (v3)
+      selfCopy2 = self;
+      if (valuesCopy)
       {
         v11 = @"YES";
       }
@@ -222,31 +222,31 @@
       _os_log_debug_impl(&dword_231618000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ receivedAllValues transitioning from %@ to %@", &v13, 0x20u);
     }
 
-    if (v3)
+    if (valuesCopy)
     {
-      self->_receivedAllValues = v3;
-      v6 = [(CAFCar *)self cachedDescription];
-      [v6 setNeedsRefreshDescription];
+      self->_receivedAllValues = valuesCopy;
+      cachedDescription = [(CAFCar *)self cachedDescription];
+      [cachedDescription setNeedsRefreshDescription];
 
       v7 = CARSignpostLogForCategory();
       if (os_signpost_enabled(v7))
       {
         v13 = 138412290;
-        v14 = self;
+        selfCopy2 = self;
         _os_signpost_emit_with_name_impl(&dword_231618000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ReceivedAllValues", "%@", &v13, 0xCu);
       }
 
-      v8 = [(CAFCar *)self combineObserver];
-      [v8 carDidUpdate:self receivedAllValues:1];
+      combineObserver = [(CAFCar *)self combineObserver];
+      [combineObserver carDidUpdate:self receivedAllValues:1];
 
-      v9 = [(CAFCar *)self observers];
-      [v9 carDidUpdate:self receivedAllValues:1];
+      observers = [(CAFCar *)self observers];
+      [observers carDidUpdate:self receivedAllValues:1];
     }
 
     else
     {
-      v9 = CAFGeneralLogging();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+      observers = CAFGeneralLogging();
+      if (os_log_type_enabled(observers, OS_LOG_TYPE_FAULT))
       {
         [CAFCar setReceivedAllValues:];
       }
@@ -256,11 +256,11 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)accessoriesForCategory:(id)a3
+- (id)accessoriesForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(CAFCar *)self accessoriesByCategory];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  categoryCopy = category;
+  accessoriesByCategory = [(CAFCar *)self accessoriesByCategory];
+  v6 = [accessoriesByCategory objectForKeyedSubscript:categoryCopy];
 
   return v6;
 }
@@ -274,24 +274,24 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFCar *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFCar *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFCar *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFCar *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
 - (NSString)description
 {
-  v2 = [(CAFCar *)self cachedDescription];
-  v3 = [v2 description];
+  cachedDescription = [(CAFCar *)self cachedDescription];
+  v3 = [cachedDescription description];
 
   return v3;
 }
@@ -706,38 +706,38 @@ void __29__CAFCar__refreshAccessories__block_invoke_2(uint64_t a1, void *a2)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performGroupRead:(id)a3 completion:(id)a4
+- (void)performGroupRead:(id)read completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  readCopy = read;
   v8 = [(CAFGroupRequest *)[CAFGroupReadRequest alloc] initWithCar:self];
-  [(CAFGroupRequest *)v8 addCharacteristics:v7];
+  [(CAFGroupRequest *)v8 addCharacteristics:readCopy];
 
-  [(CAFGroupRequest *)v8 performWithCompletion:v6];
+  [(CAFGroupRequest *)v8 performWithCompletion:completionCopy];
 }
 
-- (void)performGroupWrite:(id)a3 completion:(id)a4
+- (void)performGroupWrite:(id)write completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  writeCopy = write;
   v8 = [(CAFGroupRequest *)[CAFGroupWriteRequest alloc] initWithCar:self];
-  [(CAFGroupWriteRequest *)v8 addCharacteristicsAndValues:v7];
+  [(CAFGroupWriteRequest *)v8 addCharacteristicsAndValues:writeCopy];
 
-  [(CAFGroupRequest *)v8 performWithCompletion:v6];
+  [(CAFGroupRequest *)v8 performWithCompletion:completionCopy];
 }
 
-- (void)_groupInitialization:(id)a3 controls:(id)a4
+- (void)_groupInitialization:(id)initialization controls:(id)controls
 {
   v74 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v47 = a4;
+  initializationCopy = initialization;
+  controlsCopy = controls;
   v7 = [(CAFGroupRequest *)[CAFGroupReadRequest alloc] initWithCar:self];
   v8 = [(CAFGroupRequest *)[CAFGroupEnableNotificationRequest alloc] initWithCar:self];
   v9 = CAFCarLogging();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    v61 = [v6 count];
+    v61 = [initializationCopy count];
     v62 = 2112;
     v63 = v7;
     v64 = 2112;
@@ -751,7 +751,7 @@ void __29__CAFCar__refreshAccessories__block_invoke_2(uint64_t a1, void *a2)
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v10 = v6;
+  v10 = initializationCopy;
   v11 = [v10 countByEnumeratingWithState:&v56 objects:v73 count:16];
   v49 = v8;
   v50 = v10;
@@ -787,12 +787,12 @@ void __29__CAFCar__refreshAccessories__block_invoke_2(uint64_t a1, void *a2)
           goto LABEL_13;
         }
 
-        v19 = [v17 pluginID];
-        v20 = [v17 instanceID];
+        pluginID = [v17 pluginID];
+        instanceID = [v17 instanceID];
         *buf = 138412546;
-        v61 = v19;
+        v61 = pluginID;
         v62 = 2112;
-        v63 = v20;
+        v63 = instanceID;
         v21 = v18;
         v22 = "Skipping pluginID: %@ instanceID: %@";
         goto LABEL_26;
@@ -809,12 +809,12 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v19 = [v17 pluginID];
-        v20 = [v17 instanceID];
+        pluginID = [v17 pluginID];
+        instanceID = [v17 instanceID];
         *buf = 138412546;
-        v61 = v19;
+        v61 = pluginID;
         v62 = 2112;
-        v63 = v20;
+        v63 = instanceID;
         v21 = v18;
         v22 = "Skipping large payload pluginID: %@ instanceID: %@";
 LABEL_26:
@@ -829,12 +829,12 @@ LABEL_26:
         v23 = CAFCarLogging();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          v25 = [v17 pluginID];
-          v26 = [v17 instanceID];
+          pluginID2 = [v17 pluginID];
+          instanceID2 = [v17 instanceID];
           *buf = 138412546;
-          v61 = v25;
+          v61 = pluginID2;
           v62 = 2112;
-          v63 = v26;
+          v63 = instanceID2;
           _os_log_debug_impl(&dword_231618000, v23, OS_LOG_TYPE_DEBUG, "Notifies pluginID: %@ instanceID: %@", buf, 0x16u);
 
           v8 = v49;
@@ -851,12 +851,12 @@ LABEL_26:
         v24 = CAFCarLogging();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
-          v27 = [v17 pluginID];
-          v28 = [v17 instanceID];
+          pluginID3 = [v17 pluginID];
+          instanceID3 = [v17 instanceID];
           *buf = 138412546;
-          v61 = v27;
+          v61 = pluginID3;
           v62 = 2112;
-          v63 = v28;
+          v63 = instanceID3;
           _os_log_debug_impl(&dword_231618000, v24, OS_LOG_TYPE_DEBUG, "Read pluginID: %@ instanceID: %@", buf, 0x16u);
 
           v10 = v50;
@@ -884,7 +884,7 @@ LABEL_30:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v30 = v47;
+  v30 = controlsCopy;
   v31 = [v30 countByEnumeratingWithState:&v52 objects:v72 count:16];
   if (v31)
   {
@@ -907,12 +907,12 @@ LABEL_30:
             v36 = CAFCarLogging();
             if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
             {
-              v40 = [v35 pluginID];
-              v41 = [v35 instanceID];
+              pluginID4 = [v35 pluginID];
+              instanceID4 = [v35 instanceID];
               *buf = 138412546;
-              v61 = v40;
+              v61 = pluginID4;
               v62 = 2112;
-              v63 = v41;
+              v63 = instanceID4;
               _os_log_debug_impl(&dword_231618000, v36, OS_LOG_TYPE_DEBUG, "Notifies pluginID: %@ instanceID: %@", buf, 0x16u);
 
               v8 = v49;
@@ -928,12 +928,12 @@ LABEL_30:
           v37 = CAFCarLogging();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
           {
-            v38 = [v35 pluginID];
-            v39 = [v35 instanceID];
+            pluginID5 = [v35 pluginID];
+            instanceID5 = [v35 instanceID];
             *buf = 138412546;
-            v61 = v38;
+            v61 = pluginID5;
             v62 = 2112;
-            v63 = v39;
+            v63 = instanceID5;
             _os_log_debug_impl(&dword_231618000, v37, OS_LOG_TYPE_DEBUG, "Skipping pluginID: %@ instanceID: %@", buf, 0x16u);
 
             v8 = v49;
@@ -1006,22 +1006,22 @@ void __40__CAFCar__groupInitialization_controls___block_invoke_109()
   }
 }
 
-- (BOOL)registeredForAccessory:(id)a3
+- (BOOL)registeredForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(CAFCar *)self carManager];
-  v6 = [v5 config];
-  v7 = [v6 registrations];
-  v8 = [v7 hasAccessory:v4];
+  accessoryCopy = accessory;
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  v8 = [registrations hasAccessory:accessoryCopy];
 
   return v8;
 }
 
-- (BOOL)hasAccessoryType:(id)a3
+- (BOOL)hasAccessoryType:(id)type
 {
-  v4 = a3;
-  v5 = [(CAFCar *)self accessoryTypes];
-  v6 = [v5 containsObject:v4];
+  typeCopy = type;
+  accessoryTypes = [(CAFCar *)self accessoryTypes];
+  v6 = [accessoryTypes containsObject:typeCopy];
 
   return v6;
 }
@@ -1031,8 +1031,8 @@ void __40__CAFCar__groupInitialization_controls___block_invoke_109()
   v3 = [(CAFCar *)self car];
   if ([v3 isConfigured])
   {
-    v4 = [(CAFCar *)self processedPluginIDs];
-    v5 = [v4 count];
+    processedPluginIDs = [(CAFCar *)self processedPluginIDs];
+    v5 = [processedPluginIDs count];
     v6 = [(CAFCar *)self car];
     v7 = v5 == [v6 pluginCount];
   }
@@ -1047,13 +1047,13 @@ void __40__CAFCar__groupInitialization_controls___block_invoke_109()
 
 - (void)trimAccessories
 {
-  v3 = [(CAFCar *)self refreshQueue];
+  refreshQueue = [(CAFCar *)self refreshQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __25__CAFCar_trimAccessories__block_invoke;
   block[3] = &unk_27890D4D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(refreshQueue, block);
 }
 
 uint64_t __25__CAFCar_trimAccessories__block_invoke(uint64_t a1)
@@ -1071,19 +1071,19 @@ uint64_t __25__CAFCar_trimAccessories__block_invoke(uint64_t a1)
   return [*(a1 + 32) setTrimmedAccessories:1];
 }
 
-- (void)removeRegistrationForCharacteristics:(id)a3
+- (void)removeRegistrationForCharacteristics:(id)characteristics
 {
-  v4 = a3;
+  characteristicsCopy = characteristics;
   v5 = [(CAFGroupRequest *)[CAFGroupDisableNotificationRequest alloc] initWithCar:self];
   [(CAFGroupDisableNotificationRequest *)v5 setNeedsForced];
-  [(CAFGroupRequest *)v5 addCharacteristics:v4];
+  [(CAFGroupRequest *)v5 addCharacteristics:characteristicsCopy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__CAFCar_removeRegistrationForCharacteristics___block_invoke;
   v7[3] = &unk_27890D820;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = characteristicsCopy;
+  v6 = characteristicsCopy;
   [(CAFGroupRequest *)v5 performWithCompletion:v7];
 }
 
@@ -1096,18 +1096,18 @@ void __47__CAFCar_removeRegistrationForCharacteristics___block_invoke(uint64_t a
   }
 }
 
-- (void)addRegistrationForCharacteristics:(id)a3
+- (void)addRegistrationForCharacteristics:(id)characteristics
 {
-  v4 = a3;
+  characteristicsCopy = characteristics;
   v5 = [(CAFGroupRequest *)[CAFGroupEnableNotificationRequest alloc] initWithCar:self];
-  [(CAFGroupRequest *)v5 addCharacteristics:v4];
+  [(CAFGroupRequest *)v5 addCharacteristics:characteristicsCopy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__CAFCar_addRegistrationForCharacteristics___block_invoke;
   v7[3] = &unk_27890D820;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = characteristicsCopy;
+  v6 = characteristicsCopy;
   [(CAFGroupRequest *)v5 performWithCompletion:v7];
 }
 
@@ -1120,12 +1120,12 @@ void __44__CAFCar_addRegistrationForCharacteristics___block_invoke(uint64_t a1)
   }
 }
 
-- (void)didUpdatePluginID:(id)a3 values:(id)a4
+- (void)didUpdatePluginID:(id)d values:(id)values
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dCopy = d;
+  valuesCopy = values;
+  if (!valuesCopy)
   {
     v11 = CAFGeneralLogging();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1142,7 +1142,7 @@ void __44__CAFCar_addRegistrationForCharacteristics___block_invoke(uint64_t a1)
     v11 = CAFGeneralLogging();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(CAFCar *)v6 didUpdatePluginID:v7 values:v11];
+      [(CAFCar *)dCopy didUpdatePluginID:valuesCopy values:v11];
     }
 
 LABEL_10:
@@ -1158,9 +1158,9 @@ LABEL_12:
     if (os_signpost_enabled(v8))
     {
       *buf = 138412546;
-      v19 = v6;
+      v19 = dCopy;
       v20 = 2048;
-      v21 = [v7 count];
+      v21 = [valuesCopy count];
       _os_signpost_emit_with_name_impl(&dword_231618000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v10, "Car-UpdateValues", "Update values from pluginID: %@ with value count %ld", buf, 0x16u);
     }
 
@@ -1180,18 +1180,18 @@ LABEL_14:
   v12 = CAFGeneralLogging();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [CAFCar didUpdatePluginID:v6 values:v7];
+    [CAFCar didUpdatePluginID:dCopy values:valuesCopy];
   }
 
-  v13 = [(CAFCar *)self refreshQueue];
+  refreshQueue = [(CAFCar *)self refreshQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__CAFCar_didUpdatePluginID_values___block_invoke;
   block[3] = &unk_27890D598;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  dispatch_async(v13, block);
+  v16 = dCopy;
+  v17 = valuesCopy;
+  dispatch_async(refreshQueue, block);
 
 LABEL_17:
   v14 = *MEMORY[0x277D85DE8];
@@ -1316,13 +1316,13 @@ void __35__CAFCar_didUpdatePluginID_values___block_invoke_119(uint64_t a1, uint6
   [v4 _didUpdateValuesForGroupedCharacteristics:v5];
 }
 
-- (void)didRequestPluginID:(id)a3 instanceID:(id)a4 value:(id)a5 withResponse:(id)a6
+- (void)didRequestPluginID:(id)d instanceID:(id)iD value:(id)value withResponse:(id)response
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  valueCopy = value;
+  responseCopy = response;
   v14 = CARSignpostLogForCategory();
   if (self)
   {
@@ -1343,11 +1343,11 @@ void __35__CAFCar_didUpdatePluginID_values___block_invoke_119(uint64_t a1, uint6
   if (os_signpost_enabled(v14))
   {
     *buf = 138412802;
-    v31 = v10;
+    v31 = dCopy;
     v32 = 2112;
-    v33 = v11;
+    v33 = iDCopy;
     v34 = 2048;
-    v35 = [v12 count];
+    v35 = [valueCopy count];
     _os_signpost_emit_with_name_impl(&dword_231618000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v16, "Car-RequestValues", "Request from pluginID: %@ instanceID: %@ with request count %ld", buf, 0x20u);
   }
 
@@ -1356,31 +1356,31 @@ LABEL_7:
   v17 = CAFGeneralLogging();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [v12 count];
+    v24 = [valueCopy count];
     *buf = 138412802;
-    v31 = v10;
+    v31 = dCopy;
     v32 = 2112;
-    v33 = v11;
+    v33 = iDCopy;
     v34 = 2048;
     v35 = v24;
     _os_log_debug_impl(&dword_231618000, v17, OS_LOG_TYPE_DEBUG, "Request received from pluginID: %@ instanceID: %@ with request count %ld START", buf, 0x20u);
   }
 
-  v18 = [(CAFCar *)self refreshQueue];
+  refreshQueue = [(CAFCar *)self refreshQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__CAFCar_didRequestPluginID_instanceID_value_withResponse___block_invoke;
   block[3] = &unk_27890D890;
   block[4] = self;
-  v26 = v10;
-  v28 = v12;
-  v29 = v13;
-  v27 = v11;
-  v19 = v12;
-  v20 = v11;
-  v21 = v13;
-  v22 = v10;
-  dispatch_async(v18, block);
+  v26 = dCopy;
+  v28 = valueCopy;
+  v29 = responseCopy;
+  v27 = iDCopy;
+  v19 = valueCopy;
+  v20 = iDCopy;
+  v21 = responseCopy;
+  v22 = dCopy;
+  dispatch_async(refreshQueue, block);
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -1501,12 +1501,12 @@ LABEL_24:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didNotifyPluginID:(id)a3 instanceID:(id)a4 value:(id)a5
+- (void)didNotifyPluginID:(id)d instanceID:(id)iD value:(id)value
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  valueCopy = value;
   v11 = CARSignpostLogForCategory();
   if (self)
   {
@@ -1527,11 +1527,11 @@ LABEL_24:
   if (os_signpost_enabled(v11))
   {
     *buf = 138412802;
-    v26 = v8;
+    v26 = dCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = iDCopy;
     v29 = 2048;
-    v30 = [v10 count];
+    v30 = [valueCopy count];
     _os_signpost_emit_with_name_impl(&dword_231618000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v13, "Car-RequestValues", "Notification from pluginID: %@ instanceID: %@ with request count %ld", buf, 0x20u);
   }
 
@@ -1540,29 +1540,29 @@ LABEL_7:
   v14 = CAFGeneralLogging();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v20 = [v10 count];
+    v20 = [valueCopy count];
     *buf = 138412802;
-    v26 = v8;
+    v26 = dCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = iDCopy;
     v29 = 2048;
     v30 = v20;
     _os_log_debug_impl(&dword_231618000, v14, OS_LOG_TYPE_DEBUG, "Notification received from pluginID: %@ instanceID: %@ with request count %ld START", buf, 0x20u);
   }
 
-  v15 = [(CAFCar *)self refreshQueue];
+  refreshQueue = [(CAFCar *)self refreshQueue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __45__CAFCar_didNotifyPluginID_instanceID_value___block_invoke;
   v21[3] = &unk_27890D8B8;
   v21[4] = self;
-  v22 = v8;
-  v23 = v9;
-  v24 = v10;
-  v16 = v10;
-  v17 = v9;
-  v18 = v8;
-  dispatch_async(v15, v21);
+  v22 = dCopy;
+  v23 = iDCopy;
+  v24 = valueCopy;
+  v16 = valueCopy;
+  v17 = iDCopy;
+  v18 = dCopy;
+  dispatch_async(refreshQueue, v21);
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -1677,68 +1677,68 @@ LABEL_25:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestControl:(id)a3 value:(id)a4 response:(id)a5
+- (void)requestControl:(id)control value:(id)value response:(id)response
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CAFCar *)self carManager];
-  [v11 requestControl:v10 value:v9 response:v8];
+  responseCopy = response;
+  valueCopy = value;
+  controlCopy = control;
+  carManager = [(CAFCar *)self carManager];
+  [carManager requestControl:controlCopy value:valueCopy response:responseCopy];
 }
 
-- (void)notifyControl:(id)a3 value:(id)a4
+- (void)notifyControl:(id)control value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CAFCar *)self carManager];
-  [v8 notifyControl:v7 value:v6];
+  valueCopy = value;
+  controlCopy = control;
+  carManager = [(CAFCar *)self carManager];
+  [carManager notifyControl:controlCopy value:valueCopy];
 }
 
-- (void)readCharacteristic:(id)a3 response:(id)a4
+- (void)readCharacteristic:(id)characteristic response:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CAFCar *)self carManager];
-  [v8 readCharacteristic:v7 response:v6];
+  responseCopy = response;
+  characteristicCopy = characteristic;
+  carManager = [(CAFCar *)self carManager];
+  [carManager readCharacteristic:characteristicCopy response:responseCopy];
 }
 
-- (void)writeCharacteristic:(id)a3 value:(id)a4 response:(id)a5
+- (void)writeCharacteristic:(id)characteristic value:(id)value response:(id)response
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CAFCar *)self carManager];
-  [v11 writeCharacteristic:v10 value:v9 response:v8];
+  responseCopy = response;
+  valueCopy = value;
+  characteristicCopy = characteristic;
+  carManager = [(CAFCar *)self carManager];
+  [carManager writeCharacteristic:characteristicCopy value:valueCopy response:responseCopy];
 }
 
-- (void)performGroupedRequest:(id)a3 key:(id)a4 value:(id)a5 withResponse:(id)a6
+- (void)performGroupedRequest:(id)request key:(id)key value:(id)value withResponse:(id)response
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CAFCar *)self carManager];
-  [v14 performGroupedRequest:v13 key:v12 value:v11 withResponse:v10];
+  responseCopy = response;
+  valueCopy = value;
+  keyCopy = key;
+  requestCopy = request;
+  carManager = [(CAFCar *)self carManager];
+  [carManager performGroupedRequest:requestCopy key:keyCopy value:valueCopy withResponse:responseCopy];
 }
 
-- (void)_accessoryDidUpdate:(id)a3 service:(id)a4 characteristic:(id)a5
+- (void)_accessoryDidUpdate:(id)update service:(id)service characteristic:(id)characteristic
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CAFCar *)self observers];
-  [v11 carDidUpdate:self accessory:v10 service:v9 characteristic:v8];
+  characteristicCopy = characteristic;
+  serviceCopy = service;
+  updateCopy = update;
+  observers = [(CAFCar *)self observers];
+  [observers carDidUpdate:self accessory:updateCopy service:serviceCopy characteristic:characteristicCopy];
 }
 
-- (void)refreshCharacteristics:(id)a3
+- (void)refreshCharacteristics:(id)characteristics
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  characteristicsCopy = characteristics;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [characteristicsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1750,14 +1750,14 @@ LABEL_25:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(characteristicsCopy);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) updateValueRequiringRead:1];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [characteristicsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1766,40 +1766,40 @@ LABEL_25:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_accessoryReceivedAllValues:(id)a3
+- (void)_accessoryReceivedAllValues:(id)values
 {
-  v4 = a3;
-  v6 = [(CAFCar *)self valueMonitor];
-  v5 = [v4 uniqueIdentifier];
+  valuesCopy = values;
+  valueMonitor = [(CAFCar *)self valueMonitor];
+  uniqueIdentifier = [valuesCopy uniqueIdentifier];
 
-  -[CAFCar setReceivedAllValues:](self, "setReceivedAllValues:", [v6 valueReceivedFor:v5]);
+  -[CAFCar setReceivedAllValues:](self, "setReceivedAllValues:", [valueMonitor valueReceivedFor:uniqueIdentifier]);
 }
 
-- (void)_accessoryDidUpdate:(id)a3 service:(id)a4 control:(id)a5
+- (void)_accessoryDidUpdate:(id)update service:(id)service control:(id)control
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CAFCar *)self observers];
-  [v11 carDidUpdate:self accessory:v10 service:v9 control:v8];
+  controlCopy = control;
+  serviceCopy = service;
+  updateCopy = update;
+  observers = [(CAFCar *)self observers];
+  [observers carDidUpdate:self accessory:updateCopy service:serviceCopy control:controlCopy];
 }
 
 - (NSUUID)uniqueIdentifier
 {
   v2 = [(CAFCar *)self car];
-  v3 = [v2 uniqueIdentifier];
+  uniqueIdentifier = [v2 uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
 - (NSString)name
 {
   v2 = [(CAFCar *)self car];
-  v3 = [v2 name];
-  v4 = v3;
-  if (v3)
+  name = [v2 name];
+  v4 = name;
+  if (name)
   {
-    v5 = v3;
+    v5 = name;
   }
 
   else
@@ -1814,8 +1814,8 @@ LABEL_25:
 
 - (BOOL)usable
 {
-  v2 = [(CAFCar *)self accessories];
-  v3 = [v2 count] != 0;
+  accessories = [(CAFCar *)self accessories];
+  v3 = [accessories count] != 0;
 
   return v3;
 }
@@ -1823,8 +1823,8 @@ LABEL_25:
 - (void)invalidate
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 allAccessories];
-  [v1 count];
+  allAccessories = [self allAccessories];
+  [allAccessories count];
   OUTLINED_FUNCTION_5();
   OUTLINED_FUNCTION_2_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -1834,10 +1834,10 @@ LABEL_25:
 
 - (CAFCarObserver)combineObserver
 {
-  v2 = [(CAFCar *)self observableCache];
-  if ([v2 conformsToProtocol:&unk_28468B070])
+  observableCache = [(CAFCar *)self observableCache];
+  if ([observableCache conformsToProtocol:&unk_28468B070])
   {
-    v3 = v2;
+    v3 = observableCache;
   }
 
   else
@@ -1848,7 +1848,7 @@ LABEL_25:
   return v3;
 }
 
-- (id)currentDescriptionForCache:(id)a3
+- (id)currentDescriptionForCache:(id)cache
 {
   if ([(CAFCar *)self trimmedAccessories])
   {
@@ -1859,16 +1859,16 @@ LABEL_25:
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = MEMORY[0x277CCABB0];
-    v7 = [(CAFCar *)self accessories];
-    v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+    accessories = [(CAFCar *)self accessories];
+    v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(accessories, "count")}];
     v4 = [v5 stringWithFormat:@"accessoriesCount=%@", v8];
   }
 
   v9 = MEMORY[0x277CCACA8];
   v10 = objc_opt_class();
   v11 = [(CAFCar *)self car];
-  v12 = [(CAFCar *)self name];
-  v13 = [(CAFCar *)self uniqueIdentifier];
+  name = [(CAFCar *)self name];
+  uniqueIdentifier = [(CAFCar *)self uniqueIdentifier];
   if ([(CAFCar *)self isConfigured])
   {
     v14 = @"YES";
@@ -1889,7 +1889,7 @@ LABEL_25:
     v15 = @"NO";
   }
 
-  v16 = [v9 stringWithFormat:@"<%@ %p(%p): name=%@ uniqueIdentifier=%@ %@ isConfigured=%@ recievedAllValues=%@>", v10, self, v11, v12, v13, v4, v14, v15];
+  v16 = [v9 stringWithFormat:@"<%@ %p(%p): name=%@ uniqueIdentifier=%@ %@ isConfigured=%@ recievedAllValues=%@>", v10, self, v11, name, uniqueIdentifier, v4, v14, v15];
 
   return v16;
 }
@@ -1909,17 +1909,17 @@ LABEL_25:
 
 - (CAFAudioSettings)audioSettings
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000002000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000002000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000002000001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -1932,17 +1932,17 @@ LABEL_25:
 
 - (CAFAutomakerApps)automakerApps
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000001800001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000001800001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000001800001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -1955,17 +1955,17 @@ LABEL_25:
 
 - (CAFAutomakerExteriorCamera)automakerExteriorCamera
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000001300001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000001300001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000001300001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -1978,10 +1978,10 @@ LABEL_25:
 
 - (NSArray)automakerInputStreams
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x000000000C000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x000000000C000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x000000000C000001"];
@@ -2000,17 +2000,17 @@ LABEL_25:
 
 - (CAFAutomakerNotificationHistory)automakerNotificationHistory
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000001400001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000001400001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000001400001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2023,10 +2023,10 @@ LABEL_25:
 
 - (NSArray)automakerNotifications
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000006000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000006000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000006000001"];
@@ -2045,17 +2045,17 @@ LABEL_25:
 
 - (CAFAutomakerOverlays)automakerOverlays
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x000000000C000002"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x000000000C000002"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x000000000C000002"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2068,10 +2068,10 @@ LABEL_25:
 
 - (NSArray)automakerRequestContent
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000001200001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000001200001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000001200001"];
@@ -2090,17 +2090,17 @@ LABEL_25:
 
 - (CAFAutomakerSettings)automakerSettings
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000005000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000005000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000005000001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2113,17 +2113,17 @@ LABEL_25:
 
 - (CAFCharging)charging
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000009000008"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000009000008"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000009000008"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2136,17 +2136,17 @@ LABEL_25:
 
 - (CAFClimate)climate
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000001000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000001000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000001000001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2159,17 +2159,17 @@ LABEL_25:
 
 - (CAFClosure)closure
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x000000000D000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x000000000D000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x000000000D000001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2182,17 +2182,17 @@ LABEL_25:
 
 - (CAFDriveState)driveState
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000009000003"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000009000003"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000009000003"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2205,10 +2205,10 @@ LABEL_25:
 
 - (NSArray)driverAssistance
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x000000000E000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x000000000E000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x000000000E000001"];
@@ -2227,17 +2227,17 @@ LABEL_25:
 
 - (CAFElectricEngine)electricEngine
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000009000004"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000009000004"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000009000004"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2250,17 +2250,17 @@ LABEL_25:
 
 - (CAFEnvironmentalConditions)environmentalConditions
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000001600001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000001600001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000001600001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2273,17 +2273,17 @@ LABEL_25:
 
 - (CAFFuel)fuel
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000009000006"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000009000006"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000009000006"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2296,17 +2296,17 @@ LABEL_25:
 
 - (CAFHighVoltageBattery)highVoltageBattery
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000009000007"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000009000007"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000009000007"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2319,17 +2319,17 @@ LABEL_25:
 
 - (CAFIndicators)indicators
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000001900001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000001900001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000001900001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2342,17 +2342,17 @@ LABEL_25:
 
 - (CAFInternalCombustionEngine)internalCombustionEngine
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000009000005"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000009000005"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000009000005"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2365,17 +2365,17 @@ LABEL_25:
 
 - (CAFLighting)lighting
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000002100001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000002100001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000002100001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2388,17 +2388,17 @@ LABEL_25:
 
 - (CAFMedia)media
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000003000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000003000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000003000001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2411,17 +2411,17 @@ LABEL_25:
 
 - (CAFNavigation)navigation
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x000000000E000002"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x000000000E000002"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x000000000E000002"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2434,17 +2434,17 @@ LABEL_25:
 
 - (CAFNowPlayingInformation)nowPlayingInformation
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x000000000F000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x000000000F000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x000000000F000001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2457,17 +2457,17 @@ LABEL_25:
 
 - (CAFPairedDevices)pairedDevices
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x000000000B000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x000000000B000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x000000000B000001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2480,17 +2480,17 @@ LABEL_25:
 
 - (CAFSeat)seat
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000001500001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000001500001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000001500001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2503,17 +2503,17 @@ LABEL_25:
 
 - (CAFStatusIndicators)statusIndicators
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000005100001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000005100001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000005100001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2526,10 +2526,10 @@ LABEL_25:
 
 - (NSArray)testingUseOnly
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x00000000FD000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x00000000FD000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x00000000FD000001"];
@@ -2548,17 +2548,17 @@ LABEL_25:
 
 - (CAFTire)tire
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x000000000A000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x000000000A000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x000000000A000001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2571,17 +2571,17 @@ LABEL_25:
 
 - (CAFTripComputer)tripComputer
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000004000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000004000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000004000001"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2594,10 +2594,10 @@ LABEL_25:
 
 - (NSArray)uiControl
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000001100001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000001100001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000001100001"];
@@ -2616,10 +2616,10 @@ LABEL_25:
 
 - (NSArray)vehicleMotion
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000009000001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000009000001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000009000001"];
@@ -2638,17 +2638,17 @@ LABEL_25:
 
 - (CAFVehicleResources)vehicleResources
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000001200002"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000001200002"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000001200002"];
-  v7 = [v6 firstObject];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -2661,10 +2661,10 @@ LABEL_25:
 
 - (NSArray)vehicleUnits
 {
-  v3 = [(CAFCar *)self carManager];
-  v4 = [v3 config];
-  v5 = [v4 registrations];
-  [v5 validateRegisteredForAccessory:@"0x0000000001700001"];
+  carManager = [(CAFCar *)self carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  [registrations validateRegisteredForAccessory:@"0x0000000001700001"];
 
   objc_opt_class();
   v6 = [(CAFCar *)self accessoriesForCategory:@"0x0000000001700001"];
@@ -2681,18 +2681,18 @@ LABEL_25:
   return v7;
 }
 
-- (id)mediaSourceWithIdentifier:(id)a3
+- (id)mediaSourceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CAFCar *)self media];
-  v6 = [v5 mediaSources];
+  identifierCopy = identifier;
+  media = [(CAFCar *)self media];
+  mediaSources = [media mediaSources];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __51__CAFCar_CAFNowPlaying__mediaSourceWithIdentifier___block_invoke;
   v13[3] = &unk_27890EFA8;
-  v7 = v4;
+  v7 = identifierCopy;
   v14 = v7;
-  v8 = [v6 indexOfObjectPassingTest:v13];
+  v8 = [mediaSources indexOfObjectPassingTest:v13];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -2701,9 +2701,9 @@ LABEL_25:
 
   else
   {
-    v10 = [(CAFCar *)self media];
-    v11 = [v10 mediaSources];
-    v9 = [v11 objectAtIndexedSubscript:v8];
+    media2 = [(CAFCar *)self media];
+    mediaSources2 = [media2 mediaSources];
+    v9 = [mediaSources2 objectAtIndexedSubscript:v8];
   }
 
   return v9;
@@ -2719,45 +2719,45 @@ uint64_t __51__CAFCar_CAFNowPlaying__mediaSourceWithIdentifier___block_invoke(ui
 
 - (CAFMediaSource)currentMediaSource
 {
-  v3 = [(CAFCar *)self nowPlayingInformation];
-  v4 = [v3 nowPlaying];
-  v5 = [v4 currentMediaSourceIdentifier];
+  nowPlayingInformation = [(CAFCar *)self nowPlayingInformation];
+  nowPlaying = [nowPlayingInformation nowPlaying];
+  currentMediaSourceIdentifier = [nowPlaying currentMediaSourceIdentifier];
 
-  v6 = [(CAFCar *)self mediaSourceWithIdentifier:v5];
+  v6 = [(CAFCar *)self mediaSourceWithIdentifier:currentMediaSourceIdentifier];
 
   return v6;
 }
 
 - (unsigned)np_currentFrequency
 {
-  v2 = [(CAFCar *)self currentMediaSource];
-  v3 = [v2 currentFrequency];
+  currentMediaSource = [(CAFCar *)self currentMediaSource];
+  currentFrequency = [currentMediaSource currentFrequency];
 
-  return v3;
+  return currentFrequency;
 }
 
 - (CAFUInt32Range)np_currentFrequencyRange
 {
-  v2 = [(CAFCar *)self currentMediaSource];
-  v3 = [v2 currentFrequencyRange];
+  currentMediaSource = [(CAFCar *)self currentMediaSource];
+  currentFrequencyRange = [currentMediaSource currentFrequencyRange];
 
-  return v3;
+  return currentFrequencyRange;
 }
 
 - (CAFMediaItems)np_currentMediaItems
 {
-  v2 = [(CAFCar *)self currentMediaSource];
-  v3 = [v2 mediaItems];
+  currentMediaSource = [(CAFCar *)self currentMediaSource];
+  mediaItems = [currentMediaSource mediaItems];
 
-  return v3;
+  return mediaItems;
 }
 
 - (NSString)np_titleForCurrentMediaSource
 {
-  v2 = [(CAFCar *)self currentMediaSource];
-  v3 = [v2 userVisibleLabel];
+  currentMediaSource = [(CAFCar *)self currentMediaSource];
+  userVisibleLabel = [currentMediaSource userVisibleLabel];
 
-  return v3;
+  return userVisibleLabel;
 }
 
 - (void)initWithManager:car:.cold.1()

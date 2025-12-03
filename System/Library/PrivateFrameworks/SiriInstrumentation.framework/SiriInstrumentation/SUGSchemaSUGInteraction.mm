@@ -1,28 +1,28 @@
 @interface SUGSchemaSUGInteraction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SUGSchemaSUGInteraction)initWithDictionary:(id)a3;
-- (SUGSchemaSUGInteraction)initWithJSON:(id)a3;
+- (SUGSchemaSUGInteraction)initWithDictionary:(id)dictionary;
+- (SUGSchemaSUGInteraction)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasHasOccurredWithinHour:(BOOL)a3;
-- (void)setHasRelatedSuggestionsShownCount:(BOOL)a3;
-- (void)setHasTriggerType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasHasOccurredWithinHour:(BOOL)hour;
+- (void)setHasRelatedSuggestionsShownCount:(BOOL)count;
+- (void)setHasTriggerType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SUGSchemaSUGInteraction
 
-- (SUGSchemaSUGInteraction)initWithDictionary:(id)a3
+- (SUGSchemaSUGInteraction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = SUGSchemaSUGInteraction;
   v5 = [(SUGSchemaSUGInteraction *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"relatedSuggestionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"relatedSuggestionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,28 +30,28 @@
       [(SUGSchemaSUGInteraction *)v5 setRelatedSuggestionId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"relatedSuggestionEventSequenceNum"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"relatedSuggestionEventSequenceNum"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUGSchemaSUGInteraction setRelatedSuggestionEventSequenceNum:](v5, "setRelatedSuggestionEventSequenceNum:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"relatedSuggestionsShownCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"relatedSuggestionsShownCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUGSchemaSUGInteraction setRelatedSuggestionsShownCount:](v5, "setRelatedSuggestionsShownCount:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"hasOccurredWithinHour"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"hasOccurredWithinHour"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUGSchemaSUGInteraction setHasOccurredWithinHour:](v5, "setHasOccurredWithinHour:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"triggerType"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"triggerType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (SUGSchemaSUGInteraction)initWithJSON:(id)a3
+- (SUGSchemaSUGInteraction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SUGSchemaSUGInteraction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SUGSchemaSUGInteraction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SUGSchemaSUGInteraction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,12 +100,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[SUGSchemaSUGInteraction hasOccurredWithinHour](self, "hasOccurredWithinHour")}];
-    [v3 setObject:v5 forKeyedSubscript:@"hasOccurredWithinHour"];
+    [dictionary setObject:v5 forKeyedSubscript:@"hasOccurredWithinHour"];
 
     has = self->_has;
   }
@@ -113,35 +113,35 @@
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SUGSchemaSUGInteraction relatedSuggestionEventSequenceNum](self, "relatedSuggestionEventSequenceNum")}];
-    [v3 setObject:v6 forKeyedSubscript:@"relatedSuggestionEventSequenceNum"];
+    [dictionary setObject:v6 forKeyedSubscript:@"relatedSuggestionEventSequenceNum"];
   }
 
   if (self->_relatedSuggestionId)
   {
-    v7 = [(SUGSchemaSUGInteraction *)self relatedSuggestionId];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"relatedSuggestionId"];
+    relatedSuggestionId = [(SUGSchemaSUGInteraction *)self relatedSuggestionId];
+    v8 = [relatedSuggestionId copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"relatedSuggestionId"];
   }
 
   v9 = self->_has;
   if ((v9 & 2) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SUGSchemaSUGInteraction relatedSuggestionsShownCount](self, "relatedSuggestionsShownCount")}];
-    [v3 setObject:v10 forKeyedSubscript:@"relatedSuggestionsShownCount"];
+    [dictionary setObject:v10 forKeyedSubscript:@"relatedSuggestionsShownCount"];
 
     v9 = self->_has;
   }
 
   if ((v9 & 8) != 0)
   {
-    v11 = [(SUGSchemaSUGInteraction *)self triggerType];
+    triggerType = [(SUGSchemaSUGInteraction *)self triggerType];
     v12 = @"SUGTRIGGERTYPE_UNKNOWN";
-    if (v11 == 1)
+    if (triggerType == 1)
     {
       v12 = @"SUGTRIGGERTYPE_HS";
     }
 
-    if (v11 == 2)
+    if (triggerType == 2)
     {
       v13 = @"SUGTRIGGERTYPE_BUTTON";
     }
@@ -151,12 +151,12 @@
       v13 = v12;
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"triggerType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"triggerType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -214,30 +214,30 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(SUGSchemaSUGInteraction *)self relatedSuggestionId];
-  v6 = [v4 relatedSuggestionId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  relatedSuggestionId = [(SUGSchemaSUGInteraction *)self relatedSuggestionId];
+  relatedSuggestionId2 = [equalCopy relatedSuggestionId];
+  v7 = relatedSuggestionId2;
+  if ((relatedSuggestionId != 0) == (relatedSuggestionId2 == 0))
   {
 
     goto LABEL_24;
   }
 
-  v8 = [(SUGSchemaSUGInteraction *)self relatedSuggestionId];
-  if (v8)
+  relatedSuggestionId3 = [(SUGSchemaSUGInteraction *)self relatedSuggestionId];
+  if (relatedSuggestionId3)
   {
-    v9 = v8;
-    v10 = [(SUGSchemaSUGInteraction *)self relatedSuggestionId];
-    v11 = [v4 relatedSuggestionId];
-    v12 = [v10 isEqual:v11];
+    v9 = relatedSuggestionId3;
+    relatedSuggestionId4 = [(SUGSchemaSUGInteraction *)self relatedSuggestionId];
+    relatedSuggestionId5 = [equalCopy relatedSuggestionId];
+    v12 = [relatedSuggestionId4 isEqual:relatedSuggestionId5];
 
     if (!v12)
     {
@@ -250,7 +250,7 @@ LABEL_5:
   }
 
   has = self->_has;
-  v14 = v4[32];
+  v14 = equalCopy[32];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_24:
@@ -261,13 +261,13 @@ LABEL_24:
   if (*&has)
   {
     relatedSuggestionEventSequenceNum = self->_relatedSuggestionEventSequenceNum;
-    if (relatedSuggestionEventSequenceNum != [v4 relatedSuggestionEventSequenceNum])
+    if (relatedSuggestionEventSequenceNum != [equalCopy relatedSuggestionEventSequenceNum])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v14 = v4[32];
+    v14 = equalCopy[32];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -279,13 +279,13 @@ LABEL_24:
   if (v16)
   {
     relatedSuggestionsShownCount = self->_relatedSuggestionsShownCount;
-    if (relatedSuggestionsShownCount != [v4 relatedSuggestionsShownCount])
+    if (relatedSuggestionsShownCount != [equalCopy relatedSuggestionsShownCount])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v14 = v4[32];
+    v14 = equalCopy[32];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -297,10 +297,10 @@ LABEL_24:
   if (v18)
   {
     hasOccurredWithinHour = self->_hasOccurredWithinHour;
-    if (hasOccurredWithinHour == [v4 hasOccurredWithinHour])
+    if (hasOccurredWithinHour == [equalCopy hasOccurredWithinHour])
     {
       has = self->_has;
-      v14 = v4[32];
+      v14 = equalCopy[32];
       goto LABEL_20;
     }
 
@@ -317,7 +317,7 @@ LABEL_20:
   if (v20)
   {
     triggerType = self->_triggerType;
-    if (triggerType != [v4 triggerType])
+    if (triggerType != [equalCopy triggerType])
     {
       goto LABEL_24;
     }
@@ -329,12 +329,12 @@ LABEL_25:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(SUGSchemaSUGInteraction *)self relatedSuggestionId];
+  toCopy = to;
+  relatedSuggestionId = [(SUGSchemaSUGInteraction *)self relatedSuggestionId];
 
-  if (v4)
+  if (relatedSuggestionId)
   {
     PBDataWriterWriteStringField();
   }
@@ -346,11 +346,11 @@ LABEL_25:
     has = self->_has;
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v6 = v7;
+    v6 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -370,20 +370,20 @@ LABEL_7:
   }
 
   PBDataWriterWriteBOOLField();
-  v6 = v7;
+  v6 = toCopy;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
     PBDataWriterWriteInt32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 
 LABEL_9:
 }
 
-- (void)setHasTriggerType:(BOOL)a3
+- (void)setHasTriggerType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -396,9 +396,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasHasOccurredWithinHour:(BOOL)a3
+- (void)setHasHasOccurredWithinHour:(BOOL)hour
 {
-  if (a3)
+  if (hour)
   {
     v3 = 4;
   }
@@ -411,9 +411,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRelatedSuggestionsShownCount:(BOOL)a3
+- (void)setHasRelatedSuggestionsShownCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }

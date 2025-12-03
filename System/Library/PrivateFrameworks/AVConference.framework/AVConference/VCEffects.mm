@@ -1,8 +1,8 @@
 @interface VCEffects
 - (VCEffects)init;
 - (void)dealloc;
-- (void)setEffectsMode:(int)a3;
-- (void)setEffectsType:(int)a3;
+- (void)setEffectsMode:(int)mode;
+- (void)setEffectsType:(int)type;
 @end
 
 @implementation VCEffects
@@ -31,11 +31,11 @@
   [(VCEffects *)&v3 dealloc];
 }
 
-- (void)setEffectsMode:(int)a3
+- (void)setEffectsMode:(int)mode
 {
   v12 = *MEMORY[0x1E69E9840];
-  self->_effectsMode = a3;
-  if (!a3)
+  self->_effectsMode = mode;
+  if (!mode)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -57,11 +57,11 @@
   }
 }
 
-- (void)setEffectsType:(int)a3
+- (void)setEffectsType:(int)type
 {
-  self->_effectsType = a3;
-  self->_faceMeshTrackingEnabled = a3 == 2;
-  self->_effectsApplied = (a3 - 1) < 2;
+  self->_effectsType = type;
+  self->_faceMeshTrackingEnabled = type == 2;
+  self->_effectsApplied = (type - 1) < 2;
 }
 
 @end

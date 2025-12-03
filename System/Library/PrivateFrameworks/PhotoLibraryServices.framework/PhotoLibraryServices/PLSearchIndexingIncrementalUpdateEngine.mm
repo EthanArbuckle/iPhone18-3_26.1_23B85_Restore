@@ -1,15 +1,15 @@
 @interface PLSearchIndexingIncrementalUpdateEngine
-- (PLSearchIndexingIncrementalUpdateEngine)initWithDelegate:(id)a3;
+- (PLSearchIndexingIncrementalUpdateEngine)initWithDelegate:(id)delegate;
 - (PLSearchIndexingIncrementalUpdateEngineDelegate)delegate;
-- (id)_inPerformBlock_batchFromType:(signed __int16)a3 flags:(int64_t)a4 library:(id)a5;
-- (id)processJobObjectIDs:(id)a3 entity:(unint64_t)a4 library:(id)a5 completion:(id)a6;
-- (void)_donateBatch:(id)a3 library:(id)a4 progress:(id)a5 completion:(id)a6;
-- (void)_handleDonationCompleteWithResult:(id)a3 batch:(id)a4 library:(id)a5;
-- (void)_lock_runSingleLoopOfProcessingIncrementalUpdatesWithLibrary:(id)a3;
-- (void)_processIncrementalUpdatesWithLibrary:(id)a3 completion:(id)a4;
-- (void)fetchRemainingWorkWithLibrary:(id)a3 completion:(id)a4;
-- (void)processBatchOfJobsWithType:(signed __int16)a3 flags:(int64_t)a4 library:(id)a5 progress:(id)a6 completion:(id)a7;
-- (void)resumeWithLibrary:(id)a3 completion:(id)a4;
+- (id)_inPerformBlock_batchFromType:(signed __int16)type flags:(int64_t)flags library:(id)library;
+- (id)processJobObjectIDs:(id)ds entity:(unint64_t)entity library:(id)library completion:(id)completion;
+- (void)_donateBatch:(id)batch library:(id)library progress:(id)progress completion:(id)completion;
+- (void)_handleDonationCompleteWithResult:(id)result batch:(id)batch library:(id)library;
+- (void)_lock_runSingleLoopOfProcessingIncrementalUpdatesWithLibrary:(id)library;
+- (void)_processIncrementalUpdatesWithLibrary:(id)library completion:(id)completion;
+- (void)fetchRemainingWorkWithLibrary:(id)library completion:(id)completion;
+- (void)processBatchOfJobsWithType:(signed __int16)type flags:(int64_t)flags library:(id)library progress:(id)progress completion:(id)completion;
+- (void)resumeWithLibrary:(id)library completion:(id)completion;
 @end
 
 @implementation PLSearchIndexingIncrementalUpdateEngine
@@ -21,23 +21,23 @@
   return WeakRetained;
 }
 
-- (void)_donateBatch:(id)a3 library:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)_donateBatch:(id)batch library:(id)library progress:(id)progress completion:(id)completion
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  [v10 inPerformBlock_prepareDonationsWithLibrary:v11];
-  if ([v10 hasDonations])
+  batchCopy = batch;
+  libraryCopy = library;
+  completionCopy = completion;
+  progressCopy = progress;
+  [batchCopy inPerformBlock_prepareDonationsWithLibrary:libraryCopy];
+  if ([batchCopy hasDonations])
   {
-    v14 = [v10 ineligibleIdentifiers];
-    if ([v10 targetEntity] == 7)
+    ineligibleIdentifiers = [batchCopy ineligibleIdentifiers];
+    if ([batchCopy targetEntity] == 7)
     {
 
       v35 = &unk_1F0FBC730;
-      v15 = [v10 ineligibleIdentifiers];
-      v36[0] = v15;
+      ineligibleIdentifiers2 = [batchCopy ineligibleIdentifiers];
+      v36[0] = ineligibleIdentifiers2;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
 
       v27 = 0;
@@ -46,45 +46,45 @@
     else
     {
       v16 = 0;
-      v27 = v14;
+      v27 = ineligibleIdentifiers;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v23 = [v10 eligibleManagedObjects];
-    v24 = [v10 partialUpdateMasks];
-    v26 = [v10 targetEntity];
+    eligibleManagedObjects = [batchCopy eligibleManagedObjects];
+    partialUpdateMasks = [batchCopy partialUpdateMasks];
+    targetEntity = [batchCopy targetEntity];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __84__PLSearchIndexingIncrementalUpdateEngine__donateBatch_library_progress_completion___block_invoke;
     v31[3] = &unk_1E756BE58;
     v31[4] = self;
-    v32 = v10;
-    v33 = v11;
-    v34 = v12;
-    v25 = v11;
-    v21 = v10;
+    v32 = batchCopy;
+    v33 = libraryCopy;
+    v34 = completionCopy;
+    v25 = libraryCopy;
+    v21 = batchCopy;
     v17 = v27;
-    [WeakRetained inLibraryPerform_donateForIncrementalUpdateEngine:self managedObjects:v23 partialUpdateMasks:v24 entity:v26 deleteIdentifiers:v27 identifiersRequiringAdditionalWorkByEntity:v16 library:v25 progress:v13 completion:v31];
+    [WeakRetained inLibraryPerform_donateForIncrementalUpdateEngine:self managedObjects:eligibleManagedObjects partialUpdateMasks:partialUpdateMasks entity:targetEntity deleteIdentifiers:v27 identifiersRequiringAdditionalWorkByEntity:v16 library:v25 progress:progressCopy completion:v31];
   }
 
   else
   {
-    [v13 setCompletedUnitCount:{objc_msgSend(v13, "totalUnitCount")}];
+    [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "totalUnitCount")}];
 
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __84__PLSearchIndexingIncrementalUpdateEngine__donateBatch_library_progress_completion___block_invoke_56;
     v28[3] = &unk_1E7578848;
-    v29 = v10;
-    v30 = v11;
-    v16 = v11;
-    v17 = v10;
+    v29 = batchCopy;
+    v30 = libraryCopy;
+    v16 = libraryCopy;
+    v17 = batchCopy;
     [v16 performTransactionAndWait:v28];
     v18 = MEMORY[0x1E69BF2D0];
-    v19 = [MEMORY[0x1E695DFB0] null];
-    v20 = [v18 successWithResult:v19];
+    null = [MEMORY[0x1E695DFB0] null];
+    v20 = [v18 successWithResult:null];
 
-    (*(v12 + 2))(v12, v20);
+    (*(completionCopy + 2))(completionCopy, v20);
     v21 = v29;
   }
 }
@@ -113,66 +113,66 @@ void __84__PLSearchIndexingIncrementalUpdateEngine__donateBatch_library_progress
   }
 }
 
-- (id)_inPerformBlock_batchFromType:(signed __int16)a3 flags:(int64_t)a4 library:(id)a5
+- (id)_inPerformBlock_batchFromType:(signed __int16)type flags:(int64_t)flags library:(id)library
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = PLBatchSizeForJobFlags(a4);
-  v9 = [v7 managedObjectContext];
+  typeCopy = type;
+  libraryCopy = library;
+  v8 = PLBatchSizeForJobFlags(flags);
+  managedObjectContext = [libraryCopy managedObjectContext];
 
-  v10 = [PLBackgroundJobWorkItem searchIndexWorkItemsForIncrementalUpdatesInManagedObjectContext:v9 jobType:v6 jobFlags:a4 fetchLimit:v8];
+  v10 = [PLBackgroundJobWorkItem searchIndexWorkItemsForIncrementalUpdatesInManagedObjectContext:managedObjectContext jobType:typeCopy jobFlags:flags fetchLimit:v8];
 
   if ([v10 isSuccess])
   {
     v11 = [PLSearchIndexingIncrementalUpdateBatch alloc];
-    v12 = [v10 result];
-    v13 = [(PLSearchIndexingIncrementalUpdateBatch *)v11 initWithWorkItems:v12 flags:a4];
+    result = [v10 result];
+    error = [(PLSearchIndexingIncrementalUpdateBatch *)v11 initWithWorkItems:result flags:flags];
 
-    [MEMORY[0x1E69BF2D0] successWithResult:v13];
+    [MEMORY[0x1E69BF2D0] successWithResult:error];
   }
 
   else
   {
     v14 = MEMORY[0x1E69BF2D0];
-    v13 = [v10 error];
-    [v14 failureWithError:v13];
+    error = [v10 error];
+    [v14 failureWithError:error];
   }
   v15 = ;
 
   return v15;
 }
 
-- (void)_handleDonationCompleteWithResult:(id)a3 batch:(id)a4 library:(id)a5
+- (void)_handleDonationCompleteWithResult:(id)result batch:(id)batch library:(id)library
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v7 isFailure])
+  resultCopy = result;
+  batchCopy = batch;
+  libraryCopy = library;
+  if (![resultCopy isFailure])
   {
     goto LABEL_7;
   }
 
-  v10 = [v7 error];
-  v11 = [v10 domain];
-  if (([v11 isEqualToString:*MEMORY[0x1E696A250]] & 1) == 0)
+  error = [resultCopy error];
+  domain = [error domain];
+  if (([domain isEqualToString:*MEMORY[0x1E696A250]] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v12 = [v7 error];
-  v13 = [v12 code];
+  error2 = [resultCopy error];
+  code = [error2 code];
 
-  if (v13 != 3072)
+  if (code != 3072)
   {
 LABEL_7:
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __91__PLSearchIndexingIncrementalUpdateEngine__handleDonationCompleteWithResult_batch_library___block_invoke;
     v15[3] = &unk_1E75761B8;
-    v16 = v7;
-    v17 = v8;
-    v18 = v9;
+    v16 = resultCopy;
+    v17 = batchCopy;
+    v18 = libraryCopy;
     [v18 performTransactionAndWait:v15];
 
     v14 = v16;
@@ -207,9 +207,9 @@ uint64_t __91__PLSearchIndexingIncrementalUpdateEngine__handleDonationCompleteWi
   return [*(a1 + 40) inPerformTransaction_cleanUpWithSuccess:objc_msgSend(*(a1 + 32) library:{"isSuccess"), *(a1 + 48)}];
 }
 
-- (void)_lock_runSingleLoopOfProcessingIncrementalUpdatesWithLibrary:(id)a3
+- (void)_lock_runSingleLoopOfProcessingIncrementalUpdatesWithLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = [[PLTimedDispatchGroup alloc] initWithQueue:self->_queue name:@"Incrmeental donation"];
   v6 = [(PLTimedDispatchGroup *)v5 enterWithName:@"Rebuild donation"];
   objc_storeStrong(&self->_lock_donationInFlightDispatchGroupSession, v6);
@@ -219,15 +219,15 @@ uint64_t __91__PLSearchIndexingIncrementalUpdateEngine__handleDonationCompleteWi
   v14[3] = &unk_1E756E038;
   v7 = v6;
   v15 = v7;
-  [(PLSearchIndexingIncrementalUpdateEngine *)self _processIncrementalUpdatesWithLibrary:v4 completion:v14];
+  [(PLSearchIndexingIncrementalUpdateEngine *)self _processIncrementalUpdatesWithLibrary:libraryCopy completion:v14];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __104__PLSearchIndexingIncrementalUpdateEngine__lock_runSingleLoopOfProcessingIncrementalUpdatesWithLibrary___block_invoke_2;
   v10[3] = &unk_1E75761B8;
   v11 = v7;
-  v12 = self;
-  v13 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v13 = libraryCopy;
+  v8 = libraryCopy;
   v9 = v7;
   [(PLTimedDispatchGroup *)v5 notify:v10];
 }
@@ -329,21 +329,21 @@ void __104__PLSearchIndexingIncrementalUpdateEngine__lock_runSingleLoopOfProcess
   }
 }
 
-- (void)_processIncrementalUpdatesWithLibrary:(id)a3 completion:(id)a4
+- (void)_processIncrementalUpdatesWithLibrary:(id)library completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  completionCopy = completion;
   v8 = +[PLConcurrencyLimiter sharedLimiter];
   queue = self->_queue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __92__PLSearchIndexingIncrementalUpdateEngine__processIncrementalUpdatesWithLibrary_completion___block_invoke;
   v12[3] = &unk_1E7576F38;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v10 = v7;
-  v11 = v6;
+  selfCopy = self;
+  v15 = completionCopy;
+  v13 = libraryCopy;
+  v10 = completionCopy;
+  v11 = libraryCopy;
   [v8 dispatchAsync:queue block:v12];
 }
 
@@ -491,12 +491,12 @@ void __48__PLSearchIndexingIncrementalUpdateEngine_pause__block_invoke(uint64_t 
   }
 }
 
-- (void)resumeWithLibrary:(id)a3 completion:(id)a4
+- (void)resumeWithLibrary:(id)library completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v8;
-  v6 = v7;
+  libraryCopy = library;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = libraryCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -536,24 +536,24 @@ void __72__PLSearchIndexingIncrementalUpdateEngine_resumeWithLibrary_completion_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)processBatchOfJobsWithType:(signed __int16)a3 flags:(int64_t)a4 library:(id)a5 progress:(id)a6 completion:(id)a7
+- (void)processBatchOfJobsWithType:(signed __int16)type flags:(int64_t)flags library:(id)library progress:(id)progress completion:(id)completion
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  libraryCopy = library;
+  progressCopy = progress;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __104__PLSearchIndexingIncrementalUpdateEngine_processBatchOfJobsWithType_flags_library_progress_completion___block_invoke;
   v18[3] = &unk_1E756DFE8;
-  v23 = a3;
-  v21 = v14;
-  v22 = a4;
+  typeCopy = type;
+  v21 = completionCopy;
+  flagsCopy = flags;
   v18[4] = self;
-  v19 = v12;
-  v20 = v13;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
+  v19 = libraryCopy;
+  v20 = progressCopy;
+  v15 = completionCopy;
+  v16 = progressCopy;
+  v17 = libraryCopy;
   [v17 performBlock:v18];
 }
 
@@ -589,25 +589,25 @@ void __104__PLSearchIndexingIncrementalUpdateEngine_processBatchOfJobsWithType_f
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)processJobObjectIDs:(id)a3 entity:(unint64_t)a4 library:(id)a5 completion:(id)a6
+- (id)processJobObjectIDs:(id)ds entity:(unint64_t)entity library:(id)library completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(v9, "count")}];
+  dsCopy = ds;
+  libraryCopy = library;
+  completionCopy = completion;
+  v12 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(dsCopy, "count")}];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __89__PLSearchIndexingIncrementalUpdateEngine_processJobObjectIDs_entity_library_completion___block_invoke;
   v20[3] = &unk_1E7576EE8;
-  v21 = v9;
-  v22 = v10;
-  v23 = self;
+  v21 = dsCopy;
+  v22 = libraryCopy;
+  selfCopy = self;
   v13 = v12;
   v24 = v13;
-  v25 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = v9;
+  v25 = completionCopy;
+  v14 = completionCopy;
+  v15 = libraryCopy;
+  v16 = dsCopy;
   [v15 performBlock:v20];
   v17 = v25;
   v18 = v13;
@@ -654,19 +654,19 @@ void __89__PLSearchIndexingIncrementalUpdateEngine_processJobObjectIDs_entity_li
   }
 }
 
-- (void)fetchRemainingWorkWithLibrary:(id)a3 completion:(id)a4
+- (void)fetchRemainingWorkWithLibrary:(id)library completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__PLSearchIndexingIncrementalUpdateEngine_fetchRemainingWorkWithLibrary_completion___block_invoke;
   v10[3] = &unk_1E7576F38;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = libraryCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = libraryCopy;
   [v9 performBlock:v10];
 }
 
@@ -731,23 +731,23 @@ uint64_t __84__PLSearchIndexingIncrementalUpdateEngine_fetchRemainingWorkWithLib
   return v2 & 1;
 }
 
-- (PLSearchIndexingIncrementalUpdateEngine)initWithDelegate:(id)a3
+- (PLSearchIndexingIncrementalUpdateEngine)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = PLSearchIndexingIncrementalUpdateEngine;
   v5 = [(PLSearchIndexingIncrementalUpdateEngine *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = [v8 stringByAppendingString:@".searchIndexIncrementalUpdate"];
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = qos_class_self();
     v12 = dispatch_queue_attr_make_with_qos_class(0, v11, 0);
-    v13 = dispatch_queue_create(v10, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     queue = v6->_queue;
     v6->_queue = v13;
 

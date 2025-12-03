@@ -2,8 +2,8 @@
 - (NSArray)pause_counts;
 - (NSString)speech_id;
 - (NSString)task_name;
-- (Offset<siri::speech::schema_fb::ServerEndpointFeatures>)addObjectToBuffer:(void *)a3;
-- (QSSServerEndpointFeatures)initWithFlatbuffData:(id)a3 root:(const ServerEndpointFeatures *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::ServerEndpointFeatures>)addObjectToBuffer:(void *)buffer;
+- (QSSServerEndpointFeatures)initWithFlatbuffData:(id)data root:(const ServerEndpointFeatures *)root verify:(BOOL)verify;
 - (double)eos_likelihood;
 - (double)silence_posterior;
 - (id)flatbuffData;
@@ -43,24 +43,24 @@ flatbuffers::DetachedBuffer *__41__QSSServerEndpointFeatures_flatbuffData__block
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::ServerEndpointFeatures>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::ServerEndpointFeatures>)addObjectToBuffer:(void *)buffer
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSServerEndpointFeatures *)self processed_audio_duration_ms];
-  v6 = [(QSSServerEndpointFeatures *)self num_of_words];
-  v7 = [(QSSServerEndpointFeatures *)self trailing_silence_duration];
+  processed_audio_duration_ms = [(QSSServerEndpointFeatures *)self processed_audio_duration_ms];
+  num_of_words = [(QSSServerEndpointFeatures *)self num_of_words];
+  trailing_silence_duration = [(QSSServerEndpointFeatures *)self trailing_silence_duration];
   [(QSSServerEndpointFeatures *)self eos_likelihood];
   v9 = v8;
   memset(&v40, 0, sizeof(v40));
-  v10 = [(QSSServerEndpointFeatures *)self pause_counts];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v40, [v10 count]);
+  pause_counts = [(QSSServerEndpointFeatures *)self pause_counts];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v40, [pause_counts count]);
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v11 = [(QSSServerEndpointFeatures *)self pause_counts];
-  v12 = [v11 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  pause_counts2 = [(QSSServerEndpointFeatures *)self pause_counts];
+  v12 = [pause_counts2 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v12)
   {
     v13 = *v37;
@@ -70,14 +70,14 @@ flatbuffers::DetachedBuffer *__41__QSSServerEndpointFeatures_flatbuffData__block
       {
         if (*v37 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(pause_counts2);
         }
 
-        v35 = [*(*(&v36 + 1) + 8 * i) intValue];
-        std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v40, &v35);
+        intValue = [*(*(&v36 + 1) + 8 * i) intValue];
+        std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v40, &intValue);
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v12 = [pause_counts2 countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v12);
@@ -94,45 +94,45 @@ flatbuffers::DetachedBuffer *__41__QSSServerEndpointFeatures_flatbuffData__block
     v16 = v40.__begin_;
   }
 
-  v17 = flatbuffers::FlatBufferBuilder::CreateVector<int>(a3, v16, v40.__end_ - v40.__begin_);
+  v17 = flatbuffers::FlatBufferBuilder::CreateVector<int>(buffer, v16, v40.__end_ - v40.__begin_);
   [(QSSServerEndpointFeatures *)self silence_posterior];
   v19 = v18;
-  v20 = [(QSSServerEndpointFeatures *)self task_name];
-  v21 = v20;
-  if (!v20)
+  task_name = [(QSSServerEndpointFeatures *)self task_name];
+  v21 = task_name;
+  if (!task_name)
   {
-    v20 = &stru_2879AE8E0;
+    task_name = &stru_2879AE8E0;
   }
 
-  v22 = [(__CFString *)v20 UTF8String];
-  v23 = strlen(v22);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v22, v23);
+  uTF8String = [(__CFString *)task_name UTF8String];
+  v23 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v23);
 
-  v25 = [(QSSServerEndpointFeatures *)self speech_id];
-  v26 = v25;
-  if (!v25)
+  speech_id = [(QSSServerEndpointFeatures *)self speech_id];
+  v26 = speech_id;
+  if (!speech_id)
   {
-    v25 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v27 = [(__CFString *)v25 UTF8String];
-  v28 = strlen(v27);
-  v34 = flatbuffers::FlatBufferBuilder::CreateString(a3, v27, v28);
+  uTF8String2 = [(__CFString *)speech_id UTF8String];
+  v28 = strlen(uTF8String2);
+  v34 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v28);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  LODWORD(v27) = *(a3 + 8);
-  v29 = *(a3 + 12);
-  v30 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v6);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v7);
-  flatbuffers::FlatBufferBuilder::AddElement<double>(a3, 10, v9);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 12, v17);
-  flatbuffers::FlatBufferBuilder::AddElement<double>(a3, 14, v19);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 16, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 18, v34);
-  v31.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v27 - v29 + v30);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  LODWORD(uTF8String2) = *(buffer + 8);
+  v29 = *(buffer + 12);
+  v30 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, processed_audio_duration_ms);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, num_of_words);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, trailing_silence_duration);
+  flatbuffers::FlatBufferBuilder::AddElement<double>(buffer, 10, v9);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 12, v17);
+  flatbuffers::FlatBufferBuilder::AddElement<double>(buffer, 14, v19);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 16, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 18, v34);
+  v31.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, uTF8String2 - v29 + v30);
   if (begin)
   {
     operator delete(begin);
@@ -207,10 +207,10 @@ flatbuffers::DetachedBuffer *__41__QSSServerEndpointFeatures_flatbuffData__block
 
 - (NSArray)pause_counts
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"pause_counts"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"pause_counts"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0xDu)
@@ -229,7 +229,7 @@ flatbuffers::DetachedBuffer *__41__QSSServerEndpointFeatures_flatbuffData__block
             v11 = *v10->var0;
             v10 += 4;
             v12 = [MEMORY[0x277CCABB0] numberWithInt:v11];
-            [v3 addObject:v12];
+            [array addObject:v12];
 
             v9 -= 4;
           }
@@ -239,10 +239,10 @@ flatbuffers::DetachedBuffer *__41__QSSServerEndpointFeatures_flatbuffData__block
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"pause_counts"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"pause_counts"];
   }
 
-  return v3;
+  return array;
 }
 
 - (double)eos_likelihood
@@ -307,42 +307,42 @@ flatbuffers::DetachedBuffer *__41__QSSServerEndpointFeatures_flatbuffData__block
   }
 }
 
-- (QSSServerEndpointFeatures)initWithFlatbuffData:(id)a3 root:(const ServerEndpointFeatures *)a4 verify:(BOOL)a5
+- (QSSServerEndpointFeatures)initWithFlatbuffData:(id)data root:(const ServerEndpointFeatures *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSServerEndpointFeatures;
   v10 = [(QSSServerEndpointFeatures *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -364,9 +364,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

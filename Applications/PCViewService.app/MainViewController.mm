@@ -1,75 +1,75 @@
 @interface MainViewController
-- (MainViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (MainViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)didInvalidateForRemoteAlert;
-- (void)handleButtonActions:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)handleButtonActions:(id)actions;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 @end
 
 @implementation MainViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_10000EEE4;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_10000B524(a3, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_10000B524(context, v6);
   sub_10000B17C(v6);
 }
 
 - (void)didInvalidateForRemoteAlert
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000BBDC();
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
   sub_10000ED88(0, &qword_1000DA1E0, SBUIRemoteAlertButtonAction_ptr);
   sub_10000EDD0();
   v4 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_10000BE94(v4);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10000D910(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10000D910(change);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10000DBB8(a3);
+  selfCopy = self;
+  sub_10000DBB8(appear);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000DD80();
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v7 = a3;
-  v8 = self;
-  sub_10000DF90(a3, a4);
+  windowCopy = window;
+  selfCopy = self;
+  sub_10000DF90(window, disappear);
 }
 
-- (MainViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MainViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -81,8 +81,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10000E750(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10000E750(v5, v7, bundle);
 }
 
 @end

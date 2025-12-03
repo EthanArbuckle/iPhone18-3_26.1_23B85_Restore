@@ -1,12 +1,12 @@
 @interface ClimateDeepLinkAutomakerSettingButton
-- (void)deepLinkSettingService:(id)a3 didUpdateUserVisibleValue:(id)a4;
+- (void)deepLinkSettingService:(id)service didUpdateUserVisibleValue:(id)value;
 @end
 
 @implementation ClimateDeepLinkAutomakerSettingButton
 
-- (void)deepLinkSettingService:(id)a3 didUpdateUserVisibleValue:(id)a4
+- (void)deepLinkSettingService:(id)service didUpdateUserVisibleValue:(id)value
 {
-  v4 = self;
+  selfCopy = self;
   sub_1000BF7B4();
 }
 

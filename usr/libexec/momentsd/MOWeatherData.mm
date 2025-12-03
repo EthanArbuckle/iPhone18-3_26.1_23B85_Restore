@@ -1,15 +1,15 @@
 @interface MOWeatherData
 - (_TtC8momentsd13MOWeatherData)init;
-- (_TtC8momentsd13MOWeatherData)initWithTemperature:(id)a3 windSpeed:(id)a4 weatherSummry:(id)a5 symbolName:(id)a6;
+- (_TtC8momentsd13MOWeatherData)initWithTemperature:(id)temperature windSpeed:(id)speed weatherSummry:(id)summry symbolName:(id)name;
 - (id)getSymbolName;
 - (id)getWeatherSummary;
-- (void)setTemperature:(id)a3;
-- (void)setWindSpeed:(id)a3;
+- (void)setTemperature:(id)temperature;
+- (void)setWindSpeed:(id)speed;
 @end
 
 @implementation MOWeatherData
 
-- (void)setTemperature:(id)a3
+- (void)setTemperature:(id)temperature
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo17NSUnitTemperatureCGMd, &_s10Foundation11MeasurementVySo17NSUnitTemperatureCGMR);
   v5 = *(v4 - 8);
@@ -21,12 +21,12 @@
   v10 = OBJC_IVAR____TtC8momentsd13MOWeatherData_temperature;
   swift_beginAccess();
   v11 = *(v5 + 40);
-  v12 = self;
+  selfCopy = self;
   v11(self + v10, v9, v4);
   swift_endAccess();
 }
 
-- (void)setWindSpeed:(id)a3
+- (void)setWindSpeed:(id)speed
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo11NSUnitSpeedCGMd, &_s10Foundation11MeasurementVySo11NSUnitSpeedCGMR);
   v5 = *(v4 - 8);
@@ -38,12 +38,12 @@
   v10 = OBJC_IVAR____TtC8momentsd13MOWeatherData_windSpeed;
   swift_beginAccess();
   v11 = *(v5 + 40);
-  v12 = self;
+  selfCopy = self;
   v11(self + v10, v9, v4);
   swift_endAccess();
 }
 
-- (_TtC8momentsd13MOWeatherData)initWithTemperature:(id)a3 windSpeed:(id)a4 weatherSummry:(id)a5 symbolName:(id)a6
+- (_TtC8momentsd13MOWeatherData)initWithTemperature:(id)temperature windSpeed:(id)speed weatherSummry:(id)summry symbolName:(id)name
 {
   v31 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo11NSUnitSpeedCGMd, &_s10Foundation11MeasurementVySo11NSUnitSpeedCGMR);
   v7 = *(v31 - 8);
@@ -85,7 +85,7 @@
 - (id)getWeatherSummary
 {
   v2 = *((swift_isaMask & *self) + 0xA0);
-  v3 = self;
+  selfCopy = self;
   v2();
 
   v4 = String._bridgeToObjectiveC()();
@@ -96,7 +96,7 @@
 - (id)getSymbolName
 {
   v2 = *((swift_isaMask & *self) + 0xB8);
-  v3 = self;
+  selfCopy = self;
   v2();
 
   v4 = String._bridgeToObjectiveC()();

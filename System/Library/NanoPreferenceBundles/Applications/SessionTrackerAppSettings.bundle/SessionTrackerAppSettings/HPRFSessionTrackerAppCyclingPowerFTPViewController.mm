@@ -1,33 +1,33 @@
 @interface HPRFSessionTrackerAppCyclingPowerFTPViewController
 + (id)numberFormatter;
-- (HPRFSessionTrackerAppCyclingPowerFTPViewController)initWithConfiguration:(id)a3 updateDelegate:(id)a4;
+- (HPRFSessionTrackerAppCyclingPowerFTPViewController)initWithConfiguration:(id)configuration updateDelegate:(id)delegate;
 - (WOCyclingPowerZonesConfigurationUpdateDelegate)updateDelegate;
 - (id)_functionalThresholdPower;
 - (id)applicationBundleIdentifier;
 - (id)localizedPaneTitle;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_didBeginEditing:(id)a3;
-- (void)_insertFunctionalThresholdPowerSpecifiers:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_didBeginEditing:(id)editing;
+- (void)_insertFunctionalThresholdPowerSpecifiers:(id)specifiers;
 - (void)_pressedTableView;
-- (void)_setFunctionalThresholdPower:(id)a3;
-- (void)setConfiguration:(id)a3;
+- (void)_setFunctionalThresholdPower:(id)power;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation HPRFSessionTrackerAppCyclingPowerFTPViewController
 
-- (HPRFSessionTrackerAppCyclingPowerFTPViewController)initWithConfiguration:(id)a3 updateDelegate:(id)a4
+- (HPRFSessionTrackerAppCyclingPowerFTPViewController)initWithConfiguration:(id)configuration updateDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = HPRFSessionTrackerAppCyclingPowerFTPViewController;
   v9 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_updateDelegate, v8);
-    objc_storeStrong(&v10->_configuration, a3);
+    objc_storeWeak(&v9->_updateDelegate, delegateCopy);
+    objc_storeStrong(&v10->_configuration, configuration);
     v11 = [[UITapGestureRecognizer alloc] initWithTarget:v10 action:"_pressedTableView"];
     tapGesture = v10->_tapGesture;
     v10->_tapGesture = v11;
@@ -48,16 +48,16 @@
 - (id)applicationBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)specifiers
 {
   v3 = objc_opt_new();
-  v4 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self localizedPaneTitle];
-  [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self setTitle:v4];
+  localizedPaneTitle = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self localizedPaneTitle];
+  [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self setTitle:localizedPaneTitle];
 
   [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self _insertFunctionalThresholdPowerSpecifiers:v3];
   v5 = OBJC_IVAR___PSListController__specifiers;
@@ -71,36 +71,36 @@
   return v8;
 }
 
-- (void)_insertFunctionalThresholdPowerSpecifiers:(id)a3
+- (void)_insertFunctionalThresholdPowerSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v18 = [PSSpecifier groupSpecifierWithID:@"CYCLING_POWER_EDIT_FTP_GROUP_ID"];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"CYCLING_POWER_CONFIGURATION_EDIT_FTP_HEADER" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   [v18 setName:v6];
 
-  v7 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self configuration];
-  v8 = [HPRFSessionTrackerAppCyclingPowerConfigViewController automaticFTPString:v7];
+  configuration = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self configuration];
+  v8 = [HPRFSessionTrackerAppCyclingPowerConfigViewController automaticFTPString:configuration];
 
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"CYCLING_POWER_CONFIGURATION_FTP_MANUAL_FOOTER" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v11 = [NSString stringWithFormat:v10, v8];
 
   [v18 setProperty:v11 forKey:PSFooterTextGroupKey];
-  [v4 addObject:v18];
+  [specifiersCopy addObject:v18];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"CYCLING_POWER_CONFIGURATION_EDIT_FTP_TITLE" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:self set:"_setFunctionalThresholdPower:" get:"_functionalThresholdPower" detail:0 cell:8 edit:0];
   [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self setFunctionalThresholdPowerSpecifier:v14];
 
-  v15 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self functionalThresholdPowerSpecifier];
-  [v15 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
+  functionalThresholdPowerSpecifier = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self functionalThresholdPowerSpecifier];
+  [functionalThresholdPowerSpecifier setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
 
-  v16 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self functionalThresholdPowerSpecifier];
-  [v16 setProperty:&__kCFBooleanTrue forKey:PSNumberKeyboardKey];
+  functionalThresholdPowerSpecifier2 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self functionalThresholdPowerSpecifier];
+  [functionalThresholdPowerSpecifier2 setProperty:&__kCFBooleanTrue forKey:PSNumberKeyboardKey];
 
-  v17 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self functionalThresholdPowerSpecifier];
-  [v4 addObject:v17];
+  functionalThresholdPowerSpecifier3 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self functionalThresholdPowerSpecifier];
+  [specifiersCopy addObject:functionalThresholdPowerSpecifier3];
 }
 
 + (id)numberFormatter
@@ -117,30 +117,30 @@
 
 - (id)_functionalThresholdPower
 {
-  v3 = [objc_opt_class() numberFormatter];
-  v4 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self configuration];
-  v5 = [v4 functionalThresholdPower];
-  v6 = [v5 quantity];
-  [v6 _value];
+  numberFormatter = [objc_opt_class() numberFormatter];
+  configuration = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self configuration];
+  functionalThresholdPower = [configuration functionalThresholdPower];
+  quantity = [functionalThresholdPower quantity];
+  [quantity _value];
   v7 = [NSNumber numberWithDouble:?];
-  v8 = [v3 stringFromNumber:v7];
+  v8 = [numberFormatter stringFromNumber:v7];
 
   return v8;
 }
 
-- (void)_setFunctionalThresholdPower:(id)a3
+- (void)_setFunctionalThresholdPower:(id)power
 {
-  v9 = a3;
-  if ([v9 length])
+  powerCopy = power;
+  if ([powerCopy length])
   {
-    v4 = [objc_opt_class() numberFormatter];
-    v5 = [v4 numberFromString:v9];
+    numberFormatter = [objc_opt_class() numberFormatter];
+    v5 = [numberFormatter numberFromString:powerCopy];
 
     if (v5)
     {
-      v6 = [v5 integerValue];
-      v7 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self configuration];
-      v8 = [WOCyclingPowerZonesConfigurationEditor changeFunctionalThresholdPowerTo:v7 using:v6];
+      integerValue = [v5 integerValue];
+      configuration = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self configuration];
+      v8 = [WOCyclingPowerZonesConfigurationEditor changeFunctionalThresholdPowerTo:configuration using:integerValue];
       [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self setConfiguration:v8];
     }
   }
@@ -148,47 +148,47 @@
   [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self reloadSpecifiers];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_configuration, a3);
-  v5 = a3;
-  v6 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self updateDelegate];
-  [v6 updateWithConfiguration:v5];
+  objc_storeStrong(&self->_configuration, configuration);
+  configurationCopy = configuration;
+  updateDelegate = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self updateDelegate];
+  [updateDelegate updateWithConfiguration:configurationCopy];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = HPRFSessionTrackerAppCyclingPowerFTPViewController;
-  v5 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)&v8 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)&v8 tableView:view cellForRowAtIndexPath:path];
   if ([v5 tag] == &dword_8)
   {
-    v6 = [v5 editableTextField];
-    [v6 setReturnKeyGoesToNextResponder:0];
-    [v6 setReturnKeyType:9];
-    [v6 setKeyboardType:4];
-    [v6 setTextAlignment:{2 * (objc_msgSend(v6, "effectiveUserInterfaceLayoutDirection") == 0)}];
-    [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self setEditableTextField:v6];
+    editableTextField = [v5 editableTextField];
+    [editableTextField setReturnKeyGoesToNextResponder:0];
+    [editableTextField setReturnKeyType:9];
+    [editableTextField setKeyboardType:4];
+    [editableTextField setTextAlignment:{2 * (objc_msgSend(editableTextField, "effectiveUserInterfaceLayoutDirection") == 0)}];
+    [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self setEditableTextField:editableTextField];
   }
 
   return v5;
 }
 
-- (void)_didBeginEditing:(id)a3
+- (void)_didBeginEditing:(id)editing
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_7734;
   block[3] = &unk_35180;
-  v5 = a3;
-  v3 = v5;
+  editingCopy = editing;
+  v3 = editingCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
 - (void)_pressedTableView
 {
-  v2 = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self table];
-  [v2 endEditing:1];
+  table = [(HPRFSessionTrackerAppCyclingPowerFTPViewController *)self table];
+  [table endEditing:1];
 }
 
 - (WOCyclingPowerZonesConfigurationUpdateDelegate)updateDelegate

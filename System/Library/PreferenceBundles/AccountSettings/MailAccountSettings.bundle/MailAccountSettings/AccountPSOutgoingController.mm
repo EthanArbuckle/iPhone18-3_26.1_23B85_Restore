@@ -1,44 +1,44 @@
 @interface AccountPSOutgoingController
-- (id)_getStatusForServer:(id)a3;
-- (id)specifierForDeliveryAccount:(id)a3 isPrimary:(BOOL)a4 isCarrierAccount:(BOOL)a5;
+- (id)_getStatusForServer:(id)server;
+- (id)specifierForDeliveryAccount:(id)account isPrimary:(BOOL)primary isCarrierAccount:(BOOL)carrierAccount;
 - (id)specifiers;
 - (void)canceledAccountSetup;
 - (void)finishedAccountSetup;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AccountPSOutgoingController
 
-- (id)_getStatusForServer:(id)a3
+- (id)_getStatusForServer:(id)server
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"OutgoingAccountAccountKey"];
+  serverCopy = server;
+  userInfo = [serverCopy userInfo];
+  v6 = [userInfo objectForKey:@"OutgoingAccountAccountKey"];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKey:@"OutgoingAccountIsCarrierAccountKey"];
-  v9 = [v8 BOOLValue];
+  userInfo2 = [serverCopy userInfo];
+  v8 = [userInfo2 objectForKey:@"OutgoingAccountIsCarrierAccountKey"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKey:@"OutgoingAccountIsPrimaryAccountKey"];
+  userInfo3 = [serverCopy userInfo];
+  v11 = [userInfo3 objectForKey:@"OutgoingAccountIsPrimaryAccountKey"];
   LODWORD(v8) = [v11 BOOLValue];
 
-  v12 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v13 = [v12 objectForKey:@"ExistingMessageAccount"];
+  userInfo4 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v13 = [userInfo4 objectForKey:@"ExistingMessageAccount"];
 
   if (!v8)
   {
-    if (v9)
+    if (bOOLValue)
     {
-      v15 = [v13 canUseCarrierDeliveryFallback];
+      canUseCarrierDeliveryFallback = [v13 canUseCarrierDeliveryFallback];
     }
 
     else
     {
-      v15 = [v13 canUseDeliveryAccount:v6];
+      canUseCarrierDeliveryFallback = [v13 canUseDeliveryAccount:v6];
     }
 
-    if (v15)
+    if (canUseCarrierDeliveryFallback)
     {
       goto LABEL_4;
     }
@@ -60,25 +60,25 @@ LABEL_10:
   return v14;
 }
 
-- (id)specifierForDeliveryAccount:(id)a3 isPrimary:(BOOL)a4 isCarrierAccount:(BOOL)a5
+- (id)specifierForDeliveryAccount:(id)account isPrimary:(BOOL)primary isCarrierAccount:(BOOL)carrierAccount
 {
-  v34 = a5;
-  v5 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  carrierAccountCopy = carrierAccount;
+  primaryCopy = primary;
+  accountCopy = account;
+  v7 = accountCopy;
+  if (accountCopy)
   {
-    v8 = [v6 displayHostname];
+    displayHostname = [accountCopy displayHostname];
   }
 
   else
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [v9 localizedStringForKey:@"NO_PRIMARY_SMTP_SERVER_CONFIGURED" value:&stru_B9FC8 table:@"AccountPreferences"];
+    displayHostname = [v9 localizedStringForKey:@"NO_PRIMARY_SMTP_SERVER_CONFIGURED" value:&stru_B9FC8 table:@"AccountPreferences"];
   }
 
-  v32 = v5;
-  if (v34)
+  v32 = primaryCopy;
+  if (carrierAccountCopy)
   {
     v10 = +[MFNetworkController sharedInstance];
     v11 = [v10 copyCarrierBundleValue:@"CarrierName"];
@@ -97,15 +97,15 @@ LABEL_10:
 
       v15 = [NSBundle bundleForClass:objc_opt_class()];
       v16 = [v15 localizedStringForKey:@"CELL_DATA_ONLY" value:&stru_B9FC8 table:@"AccountPreferences"];
-      v14 = [NSString stringWithFormat:v13, v8, v16];
+      v14 = [NSString stringWithFormat:v13, displayHostname, v16];
 
-      v8 = v15;
+      displayHostname = v15;
     }
 
-    v8 = v14;
+    displayHostname = v14;
   }
 
-  v17 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:0 get:"_getStatusForServer:" detail:objc_opt_class() cell:2 edit:0];
+  v17 = [PSSpecifier preferenceSpecifierNamed:displayHostname target:self set:0 get:"_getStatusForServer:" detail:objc_opt_class() cell:2 edit:0];
   v18 = [NSArray arrayWithObjects:@"OFF", @"ON", 0];
   v19 = [NSBundle bundleForClass:objc_opt_class()];
   v20 = [v19 localizedStringForKey:@"OFF" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -114,8 +114,8 @@ LABEL_10:
   v23 = [NSArray arrayWithObjects:v20, v22, 0];
   [v17 setValues:v18 titles:v23];
 
-  v24 = [v7 uniqueID];
-  [v17 setProperty:v24 forKey:PSIDKey];
+  uniqueID = [v7 uniqueID];
+  [v17 setProperty:uniqueID forKey:PSIDKey];
 
   v25 = objc_alloc_init(NSMutableDictionary);
   v26 = v25;
@@ -124,8 +124,8 @@ LABEL_10:
     [v25 setObject:v7 forKey:@"OutgoingAccountAccountKey"];
   }
 
-  v27 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v28 = [v27 objectForKey:@"ExistingMessageAccount"];
+  userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v28 = [userInfo objectForKey:@"ExistingMessageAccount"];
   [v26 setObject:v28 forKey:@"OutgoingAccountViewingAccountKey"];
 
   if (v32)
@@ -134,7 +134,7 @@ LABEL_10:
     [v26 setObject:v29 forKey:@"OutgoingAccountIsPrimaryAccountKey"];
   }
 
-  if (v34)
+  if (carrierAccountCopy)
   {
     v30 = [NSNumber numberWithBool:1];
     [v26 setObject:v30 forKey:@"OutgoingAccountIsCarrierAccountKey"];
@@ -148,16 +148,16 @@ LABEL_10:
 - (id)specifiers
 {
   v2 = OBJC_IVAR___PSViewController__specifier;
-  v37 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v38 = [v37 objectForKey:@"ExistingMessageAccount"];
+  userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v38 = [userInfo objectForKey:@"ExistingMessageAccount"];
   v42 = [NSMutableArray arrayWithCapacity:6];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"PRIMARY_SERVER" value:&stru_B9FC8 table:@"AccountPreferences"];
   v5 = [PSSpecifier preferenceSpecifierNamed:v4 target:0 set:0 get:0 detail:0 cell:0 edit:0];
   [v42 addObject:v5];
 
-  v46 = [v38 deliveryAccount];
-  v6 = [(AccountPSOutgoingController *)self specifierForDeliveryAccount:v46 isPrimary:1 isCarrierAccount:0];
+  deliveryAccount = [v38 deliveryAccount];
+  v6 = [(AccountPSOutgoingController *)self specifierForDeliveryAccount:deliveryAccount isPrimary:1 isCarrierAccount:0];
   [v42 addObject:v6];
 
   v7 = [NSBundle bundleForClass:objc_opt_class()];
@@ -188,7 +188,7 @@ LABEL_10:
         }
 
         v14 = *(*(&v51 + 1) + 8 * i);
-        if (([v14 isEqual:v46] & 1) == 0 && objc_msgSend(v14, "canBeFallbackAccount"))
+        if (([v14 isEqual:deliveryAccount] & 1) == 0 && objc_msgSend(v14, "canBeFallbackAccount"))
         {
           v15 = [(AccountPSOutgoingController *)self specifierForDeliveryAccount:v14 isPrimary:0 isCarrierAccount:0];
           [v42 addObject:v15];
@@ -214,17 +214,17 @@ LABEL_10:
 
   objc_storeStrong(&self->_newOutgoingAccountSpecifier, v40);
   v41 = objc_alloc_init(NSMutableDictionary);
-  v19 = [*&self->PSListController_opaque[v2] userInfo];
-  v20 = [v19 objectForKey:@"ExistingMessageAccount"];
+  userInfo2 = [*&self->PSListController_opaque[v2] userInfo];
+  v20 = [userInfo2 objectForKey:@"ExistingMessageAccount"];
   [v41 setObject:v20 forKey:@"OutgoingAccountViewingAccountKey"];
 
   [v41 setObject:kCFBooleanTrue forKey:@"disableForModificationRestrictions"];
   [v40 setUserInfo:v41];
   [v42 addObject:v40];
   v21 = +[MCProfileConnection sharedConnection];
-  LODWORD(v19) = [v21 effectiveBoolValueForSetting:MCFeatureAccountModificationAllowed] == 2;
+  LODWORD(userInfo2) = [v21 effectiveBoolValueForSetting:MCFeatureAccountModificationAllowed] == 2;
 
-  if (v19)
+  if (userInfo2)
   {
     v49 = 0u;
     v50 = 0u;
@@ -246,11 +246,11 @@ LABEL_10:
           }
 
           v26 = *(*(&v47 + 1) + 8 * j);
-          v27 = [v26 userInfo];
-          v28 = [v27 objectForKeyedSubscript:@"disableForModificationRestrictions"];
-          v29 = [v28 BOOLValue];
+          userInfo3 = [v26 userInfo];
+          v28 = [userInfo3 objectForKeyedSubscript:@"disableForModificationRestrictions"];
+          bOOLValue = [v28 BOOLValue];
 
-          if (v29)
+          if (bOOLValue)
           {
             [v26 setProperty:kCFBooleanFalse forKey:v24];
           }
@@ -277,42 +277,42 @@ LABEL_10:
 - (void)finishedAccountSetup
 {
   [(AccountPSOutgoingController *)self reloadOutgoingAccounts];
-  v3 = [(AccountPSOutgoingController *)self parentController];
-  [v3 reloadSpecifiers];
+  parentController = [(AccountPSOutgoingController *)self parentController];
+  [parentController reloadSpecifiers];
 }
 
 - (void)canceledAccountSetup
 {
-  v4 = [(AccountPSOutgoingController *)self parentController];
+  parentController = [(AccountPSOutgoingController *)self parentController];
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
   {
-    v5 = [(AccountPSOutgoingController *)self parentController];
-    [v5 performSelector:"didFinishEditingDeliveryAccount"];
+    parentController2 = [(AccountPSOutgoingController *)self parentController];
+    [parentController2 performSelector:"didFinishEditingDeliveryAccount"];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{-[AccountPSOutgoingController indexForIndexPath:](self, "indexForIndexPath:", v7)}];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{-[AccountPSOutgoingController indexForIndexPath:](self, "indexForIndexPath:", pathCopy)}];
   if (self->_newOutgoingAccountSpecifier == v8)
   {
-    v9 = [(AccountPSOutgoingController *)self parentController];
+    parentController = [(AccountPSOutgoingController *)self parentController];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(AccountPSOutgoingController *)self parentController];
-      [v11 performSelector:"didFinishEditingDeliveryAccount"];
+      parentController2 = [(AccountPSOutgoingController *)self parentController];
+      [parentController2 performSelector:"didFinishEditingDeliveryAccount"];
     }
   }
 
   v12.receiver = self;
   v12.super_class = AccountPSOutgoingController;
-  [(AccountPSOutgoingController *)&v12 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(AccountPSOutgoingController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 @end

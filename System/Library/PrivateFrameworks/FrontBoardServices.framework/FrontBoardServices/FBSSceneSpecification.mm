@@ -1,11 +1,11 @@
 @interface FBSSceneSpecification
 + (id)specification;
-- (BOOL)_isSignificantTransitionContext:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isSignificantTransitionContext:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (FBSSceneSpecification)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
@@ -14,22 +14,22 @@
 
 - (BOOL)isValid
 {
-  v3 = [(FBSSceneSpecification *)self settingsClass];
-  if (v3)
+  settingsClass = [(FBSSceneSpecification *)self settingsClass];
+  if (settingsClass)
   {
-    v3 = [(FBSSceneSpecification *)self clientSettingsClass];
-    if (v3)
+    settingsClass = [(FBSSceneSpecification *)self clientSettingsClass];
+    if (settingsClass)
     {
-      LOBYTE(v3) = [(FBSSceneSpecification *)self transitionContextClass]!= 0;
+      LOBYTE(settingsClass) = [(FBSSceneSpecification *)self transitionContextClass]!= 0;
     }
   }
 
-  return v3;
+  return settingsClass;
 }
 
 + (id)specification
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -48,14 +48,14 @@
   return v3;
 }
 
-- (BOOL)_isSignificantTransitionContext:(id)a3
+- (BOOL)_isSignificantTransitionContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy)
   {
     v6 = 1;
-    if ([v4 _isEmptyForCoding:1])
+    if ([contextCopy _isEmptyForCoding:1])
     {
       v7 = objc_opt_class();
       v6 = v7 != [(FBSSceneSpecification *)self transitionContextClass];
@@ -70,64 +70,64 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v23 = 1;
   }
 
   else
   {
-    v5 = [off_1E76BC9C0 builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-    v6 = [(FBSSceneSpecification *)self hostAgentClass];
+    v5 = [off_1E76BC9C0 builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+    hostAgentClass = [(FBSSceneSpecification *)self hostAgentClass];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __33__FBSSceneSpecification_isEqual___block_invoke;
     v38[3] = &unk_1E76BEDF0;
-    v7 = v4;
+    v7 = equalCopy;
     v39 = v7;
-    v8 = [v5 appendClass:v6 counterpart:v38];
-    v9 = [(FBSSceneSpecification *)self clientAgentClass];
+    v8 = [v5 appendClass:hostAgentClass counterpart:v38];
+    clientAgentClass = [(FBSSceneSpecification *)self clientAgentClass];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __33__FBSSceneSpecification_isEqual___block_invoke_2;
     v36[3] = &unk_1E76BEDF0;
     v10 = v7;
     v37 = v10;
-    v11 = [v5 appendClass:v9 counterpart:v36];
-    v12 = [(FBSSceneSpecification *)self settingsClass];
+    v11 = [v5 appendClass:clientAgentClass counterpart:v36];
+    settingsClass = [(FBSSceneSpecification *)self settingsClass];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __33__FBSSceneSpecification_isEqual___block_invoke_3;
     v34[3] = &unk_1E76BEDF0;
     v13 = v10;
     v35 = v13;
-    v14 = [v5 appendClass:v12 counterpart:v34];
-    v15 = [(FBSSceneSpecification *)self clientSettingsClass];
+    v14 = [v5 appendClass:settingsClass counterpart:v34];
+    clientSettingsClass = [(FBSSceneSpecification *)self clientSettingsClass];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __33__FBSSceneSpecification_isEqual___block_invoke_4;
     v32[3] = &unk_1E76BEDF0;
     v16 = v13;
     v33 = v16;
-    v17 = [v5 appendClass:v15 counterpart:v32];
-    v18 = [(FBSSceneSpecification *)self transitionContextClass];
+    v17 = [v5 appendClass:clientSettingsClass counterpart:v32];
+    transitionContextClass = [(FBSSceneSpecification *)self transitionContextClass];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __33__FBSSceneSpecification_isEqual___block_invoke_5;
     v30[3] = &unk_1E76BEDF0;
     v19 = v16;
     v31 = v19;
-    v20 = [v5 appendClass:v18 counterpart:v30];
-    v21 = [(FBSSceneSpecification *)self defaultExtensions];
+    v20 = [v5 appendClass:transitionContextClass counterpart:v30];
+    defaultExtensions = [(FBSSceneSpecification *)self defaultExtensions];
     v25 = MEMORY[0x1E69E9820];
     v26 = 3221225472;
     v27 = __33__FBSSceneSpecification_isEqual___block_invoke_6;
     v28 = &unk_1E76BE088;
     v29 = v19;
-    v22 = [v5 appendObject:v21 counterpart:&v25];
+    v22 = [v5 appendObject:defaultExtensions counterpart:&v25];
 
     v23 = [v5 isEqual];
   }
@@ -137,41 +137,41 @@
 
 - (unint64_t)hash
 {
-  v3 = [off_1E76BC9C8 builder];
-  v4 = [v3 appendClass:{-[FBSSceneSpecification settingsClass](self, "settingsClass")}];
-  v5 = [v3 hash];
+  builder = [off_1E76BC9C8 builder];
+  v4 = [builder appendClass:{-[FBSSceneSpecification settingsClass](self, "settingsClass")}];
+  v5 = [builder hash];
 
   return v5;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBSSceneSpecification *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSSceneSpecification *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSSceneSpecification *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSSceneSpecification *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSSceneSpecification *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSSceneSpecification *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__FBSSceneSpecification_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E76BCD60;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

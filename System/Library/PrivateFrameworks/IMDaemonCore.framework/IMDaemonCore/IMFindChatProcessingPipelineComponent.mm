@@ -1,79 +1,79 @@
 @interface IMFindChatProcessingPipelineComponent
-+ (id)findGroupChatWithFromIdentifier:(id)a3 toIdentifier:(id)a4 groupName:(id)a5 participants:(id)a6 groupID:(id)a7 serviceName:(id)a8 chatRegistry:(id)a9;
-- (BOOL)_participantsContainBizID:(id)a3;
-- (BOOL)_shouldDropMessageGroupID:(id)a3 participants:(id)a4 fromIdentifier:(id)a5 toIdentifier:(id)a6;
-- (BOOL)shouldDropDueToGroupSize:(id)a3;
-- (IMFindChatProcessingPipelineComponent)initWithChatRegistry:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
++ (id)findGroupChatWithFromIdentifier:(id)identifier toIdentifier:(id)toIdentifier groupName:(id)name participants:(id)participants groupID:(id)d serviceName:(id)serviceName chatRegistry:(id)registry;
+- (BOOL)_participantsContainBizID:(id)d;
+- (BOOL)_shouldDropMessageGroupID:(id)d participants:(id)participants fromIdentifier:(id)identifier toIdentifier:(id)toIdentifier;
+- (BOOL)shouldDropDueToGroupSize:(id)size;
+- (IMFindChatProcessingPipelineComponent)initWithChatRegistry:(id)registry;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMFindChatProcessingPipelineComponent
 
-- (IMFindChatProcessingPipelineComponent)initWithChatRegistry:(id)a3
+- (IMFindChatProcessingPipelineComponent)initWithChatRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v9.receiver = self;
   v9.super_class = IMFindChatProcessingPipelineComponent;
   v6 = [(IMFindChatProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_chatRegistry, a3);
+    objc_storeStrong(&v6->_chatRegistry, registry);
   }
 
   return v7;
 }
 
-+ (id)findGroupChatWithFromIdentifier:(id)a3 toIdentifier:(id)a4 groupName:(id)a5 participants:(id)a6 groupID:(id)a7 serviceName:(id)a8 chatRegistry:(id)a9
++ (id)findGroupChatWithFromIdentifier:(id)identifier toIdentifier:(id)toIdentifier groupName:(id)name participants:(id)participants groupID:(id)d serviceName:(id)serviceName chatRegistry:(id)registry
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v22 = [v21 isOneChatEnabled];
+  identifierCopy = identifier;
+  toIdentifierCopy = toIdentifier;
+  nameCopy = name;
+  participantsCopy = participants;
+  dCopy = d;
+  serviceNameCopy = serviceName;
+  registryCopy = registry;
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isOneChatEnabled = [mEMORY[0x277D1A9B8] isOneChatEnabled];
 
-  if (v22)
+  if (isOneChatEnabled)
   {
     v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v24 = v23;
-    if (v18)
+    if (dCopy)
     {
-      [v23 addObject:v18];
+      [v23 addObject:dCopy];
     }
 
-    v25 = [v20 bestCandidateGroupChatWithFromIdentifier:v14 toIdentifier:v15 displayName:v16 participants:v17 updatingToLatestiMessageGroupID:v18 sortedIdentifiers:v24 serviceName:v19];
+    v25 = [registryCopy bestCandidateGroupChatWithFromIdentifier:identifierCopy toIdentifier:toIdentifierCopy displayName:nameCopy participants:participantsCopy updatingToLatestiMessageGroupID:dCopy sortedIdentifiers:v24 serviceName:serviceNameCopy];
   }
 
   else
   {
-    v25 = [v20 bestCandidateGroupChatWithFromIdentifier:v14 toIdentifier:v15 displayName:v16 participants:v17 groupID:v18 serviceName:v19];
+    v25 = [registryCopy bestCandidateGroupChatWithFromIdentifier:identifierCopy toIdentifier:toIdentifierCopy displayName:nameCopy participants:participantsCopy groupID:dCopy serviceName:serviceNameCopy];
   }
 
   return v25;
 }
 
-- (BOOL)shouldDropDueToGroupSize:(id)a3
+- (BOOL)shouldDropDueToGroupSize:(id)size
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  sizeCopy = size;
   v4 = [MEMORY[0x277D18A10] sharedInstanceForBagType:1];
   v5 = [v4 objectForKey:@"md-max-chat-participants-incoming"];
 
   if (v5)
   {
-    v6 = [v5 unsignedIntegerValue];
-    if (!v6)
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
+    if (!unsignedIntegerValue)
     {
 LABEL_11:
       v11 = 0;
       goto LABEL_12;
     }
 
-    v7 = v6 + 1;
+    v7 = unsignedIntegerValue + 1;
   }
 
   else
@@ -81,7 +81,7 @@ LABEL_11:
     v7 = 51;
   }
 
-  v8 = [v3 count];
+  v8 = [sizeCopy count];
   if (v8 <= v7)
   {
     goto LABEL_11;
@@ -108,15 +108,15 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)_participantsContainBizID:(id)a3
+- (BOOL)_participantsContainBizID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  dCopy = d;
+  v4 = [dCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -126,7 +126,7 @@ LABEL_12:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dCopy);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -138,7 +138,7 @@ LABEL_12:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [dCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -154,22 +154,22 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)_shouldDropMessageGroupID:(id)a3 participants:(id)a4 fromIdentifier:(id)a5 toIdentifier:(id)a6
+- (BOOL)_shouldDropMessageGroupID:(id)d participants:(id)participants fromIdentifier:(id)identifier toIdentifier:(id)toIdentifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  participantsCopy = participants;
+  identifierCopy = identifier;
+  toIdentifierCopy = toIdentifier;
   if (IMSharedHelperAreObjectsLogicallySame())
   {
     goto LABEL_2;
   }
 
-  if ([v10 length])
+  if ([dCopy length])
   {
-    v15 = [MEMORY[0x277D1A9E8] sharedInstance];
-    v16 = [v15 isGroupInBlocklist:v10];
+    mEMORY[0x277D1A9E8] = [MEMORY[0x277D1A9E8] sharedInstance];
+    v16 = [mEMORY[0x277D1A9E8] isGroupInBlocklist:dCopy];
 
     if (v16)
     {
@@ -184,7 +184,7 @@ LABEL_10:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v20 = 138412290;
-        v21 = v10;
+        v21 = dCopy;
         _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "GroupID %@ was found in blocklist, dropping message", &v20, 0xCu);
       }
 
@@ -194,12 +194,12 @@ LABEL_8:
     }
   }
 
-  if ([(IMFindChatProcessingPipelineComponent *)self shouldDropDueToGroupSize:v11])
+  if ([(IMFindChatProcessingPipelineComponent *)self shouldDropDueToGroupSize:participantsCopy])
   {
     goto LABEL_10;
   }
 
-  if ([(IMFindChatProcessingPipelineComponent *)self _participantsContainBizID:v11])
+  if ([(IMFindChatProcessingPipelineComponent *)self _participantsContainBizID:participantsCopy])
   {
     if (!IMOSLoggingEnabled())
     {
@@ -210,7 +210,7 @@ LABEL_8:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v20 = 138412290;
-      v21 = v11;
+      v21 = participantsCopy;
       _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "Dropping message because participant list contains biz id. participants: %@", &v20, 0xCu);
     }
 
@@ -225,10 +225,10 @@ LABEL_11:
   return v14;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -239,20 +239,20 @@ LABEL_11:
     }
   }
 
-  v6 = [v4 chat];
+  chat = [inputCopy chat];
 
-  if (!v6)
+  if (!chat)
   {
-    v10 = [v4 participantIdentifiers];
-    v11 = [v10 count] > 2;
+    participantIdentifiers = [inputCopy participantIdentifiers];
+    v11 = [participantIdentifiers count] > 2;
 
     if (v11)
     {
-      v12 = [v4 groupID];
-      v13 = [v4 participantIdentifiers];
-      v14 = [v4 fromIdentifier];
-      v15 = [v4 toIdentifier];
-      v16 = [(IMFindChatProcessingPipelineComponent *)self _shouldDropMessageGroupID:v12 participants:v13 fromIdentifier:v14 toIdentifier:v15];
+      groupID = [inputCopy groupID];
+      participantIdentifiers2 = [inputCopy participantIdentifiers];
+      fromIdentifier = [inputCopy fromIdentifier];
+      toIdentifier = [inputCopy toIdentifier];
+      v16 = [(IMFindChatProcessingPipelineComponent *)self _shouldDropMessageGroupID:groupID participants:participantIdentifiers2 fromIdentifier:fromIdentifier toIdentifier:toIdentifier];
 
       if (v16)
       {
@@ -261,12 +261,12 @@ LABEL_11:
           v17 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
-            v18 = [v4 groupID];
-            v19 = [v4 participantIdentifiers];
+            groupID2 = [inputCopy groupID];
+            participantIdentifiers3 = [inputCopy participantIdentifiers];
             *buf = 138412546;
-            v39 = v18;
+            v39 = groupID2;
             v40 = 2112;
-            v41 = v19;
+            v41 = participantIdentifiers3;
             _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "Dropping message from MessageGroupController. groupID: %@ participants: %@", buf, 0x16u);
           }
         }
@@ -277,26 +277,26 @@ LABEL_11:
         goto LABEL_30;
       }
 
-      v26 = [v4 account];
-      v27 = [v26 service];
-      v24 = [v27 internalName];
+      account = [inputCopy account];
+      service = [account service];
+      internalName = [service internalName];
 
       v28 = objc_opt_class();
-      v25 = [v4 fromIdentifier];
-      v29 = [v4 toIdentifier];
-      v30 = [v4 currentGroupName];
-      v31 = [v4 participantIdentifiers];
-      v32 = [v31 _IDsFromURIs];
-      v33 = [v4 groupID];
-      v21 = [v28 findGroupChatWithFromIdentifier:v25 toIdentifier:v29 groupName:v30 participants:v32 groupID:v33 serviceName:v24 chatRegistry:self->_chatRegistry];
+      fromIdentifier2 = [inputCopy fromIdentifier];
+      toIdentifier2 = [inputCopy toIdentifier];
+      currentGroupName = [inputCopy currentGroupName];
+      participantIdentifiers4 = [inputCopy participantIdentifiers];
+      _IDsFromURIs = [participantIdentifiers4 _IDsFromURIs];
+      groupID3 = [inputCopy groupID];
+      v21 = [v28 findGroupChatWithFromIdentifier:fromIdentifier2 toIdentifier:toIdentifier2 groupName:currentGroupName participants:_IDsFromURIs groupID:groupID3 serviceName:internalName chatRegistry:self->_chatRegistry];
     }
 
     else
     {
       chatRegistry = self->_chatRegistry;
-      v24 = [v4 fromDisplayID];
-      v25 = [v4 account];
-      v21 = [(IMDChatRegistry *)chatRegistry existingChatForID:v24 account:v25];
+      internalName = [inputCopy fromDisplayID];
+      fromIdentifier2 = [inputCopy account];
+      v21 = [(IMDChatRegistry *)chatRegistry existingChatForID:internalName account:fromIdentifier2];
     }
 
     v34 = IMOSLoggingEnabled();
@@ -328,8 +328,8 @@ LABEL_28:
       goto LABEL_28;
     }
 
-    [v4 setChat:v21];
-    v22 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+    [inputCopy setChat:v21];
+    v22 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
 LABEL_30:
     v9 = v22;
 
@@ -341,14 +341,14 @@ LABEL_30:
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v4 chat];
+      chat2 = [inputCopy chat];
       *buf = 138412290;
-      v39 = v8;
+      v39 = chat2;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "<IMFindChatProcessingPipelineComponent> Found pre-supplied chat: %@", buf, 0xCu);
     }
   }
 
-  v9 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+  v9 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
 LABEL_31:
 
   v36 = *MEMORY[0x277D85DE8];

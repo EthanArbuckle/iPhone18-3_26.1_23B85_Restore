@@ -1,40 +1,40 @@
 @interface CATSendSerialIDSMessagesOperation
-- (CATSendSerialIDSMessagesOperation)initWithIDSPrimitives:(id)a3 workQueue:(id)a4 messages:(id)a5 destinationAddress:(id)a6 sourceAppleID:(id)a7 options:(id)a8;
-- (void)didSendMessagesWithError:(id)a3;
+- (CATSendSerialIDSMessagesOperation)initWithIDSPrimitives:(id)primitives workQueue:(id)queue messages:(id)messages destinationAddress:(id)address sourceAppleID:(id)d options:(id)options;
+- (void)didSendMessagesWithError:(id)error;
 - (void)sendMessages;
 @end
 
 @implementation CATSendSerialIDSMessagesOperation
 
-- (CATSendSerialIDSMessagesOperation)initWithIDSPrimitives:(id)a3 workQueue:(id)a4 messages:(id)a5 destinationAddress:(id)a6 sourceAppleID:(id)a7 options:(id)a8
+- (CATSendSerialIDSMessagesOperation)initWithIDSPrimitives:(id)primitives workQueue:(id)queue messages:(id)messages destinationAddress:(id)address sourceAppleID:(id)d options:(id)options
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  primitivesCopy = primitives;
+  queueCopy = queue;
+  messagesCopy = messages;
+  addressCopy = address;
+  dCopy = d;
+  optionsCopy = options;
   v32.receiver = self;
   v32.super_class = CATSendSerialIDSMessagesOperation;
   v21 = [(CATOperation *)&v32 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->mPrimitives, a3);
-    objc_storeStrong(&v22->mWorkQueue, a4);
-    v23 = [v17 copy];
+    objc_storeStrong(&v21->mPrimitives, primitives);
+    objc_storeStrong(&v22->mWorkQueue, queue);
+    v23 = [messagesCopy copy];
     mMessages = v22->mMessages;
     v22->mMessages = v23;
 
-    v25 = [v18 copy];
+    v25 = [addressCopy copy];
     mDestinationAddress = v22->mDestinationAddress;
     v22->mDestinationAddress = v25;
 
-    v27 = [v19 copy];
+    v27 = [dCopy copy];
     mSourceAppleID = v22->mSourceAppleID;
     v22->mSourceAppleID = v27;
 
-    v29 = [v20 copy];
+    v29 = [optionsCopy copy];
     mOptions = v22->mOptions;
     v22->mOptions = v29;
 
@@ -80,7 +80,7 @@
         v7 = objc_autoreleasePoolPush();
         v8 = [[CATIDSMessagePayload alloc] initWithMessage:v6];
         mPrimitives = self->mPrimitives;
-        v10 = [(CATIDSMessagePayload *)v8 dictionaryValue];
+        dictionaryValue = [(CATIDSMessagePayload *)v8 dictionaryValue];
         mDestinationAddress = self->mDestinationAddress;
         mSourceAppleID = self->mSourceAppleID;
         mOptions = self->mOptions;
@@ -91,7 +91,7 @@
         v16[4] = self;
         v16[5] = v21;
         v16[6] = v22;
-        [(CATIDSPrimitives *)mPrimitives sendMessage:v10 toAddress:mDestinationAddress fromID:mSourceAppleID options:mOptions completion:v16];
+        [(CATIDSPrimitives *)mPrimitives sendMessage:dictionaryValue toAddress:mDestinationAddress fromID:mSourceAppleID options:mOptions completion:v16];
 
         objc_autoreleasePoolPop(v7);
         ++v5;
@@ -134,9 +134,9 @@ void __49__CATSendSerialIDSMessagesOperation_sendMessages__block_invoke(uint64_t
   os_unfair_lock_unlock((*(a1 + 32) + 424));
 }
 
-- (void)didSendMessagesWithError:(id)a3
+- (void)didSendMessagesWithError:(id)error
 {
-  if (a3)
+  if (error)
   {
     [(CATOperation *)self endOperationWithError:?];
   }

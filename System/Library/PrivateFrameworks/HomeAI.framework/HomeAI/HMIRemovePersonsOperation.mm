@@ -1,23 +1,23 @@
 @interface HMIRemovePersonsOperation
-- (HMIRemovePersonsOperation)initWithDataSource:(id)a3 personUUIDs:(id)a4;
+- (HMIRemovePersonsOperation)initWithDataSource:(id)source personUUIDs:(id)ds;
 - (void)main;
 - (void)mainInsideAutoreleasePool;
 @end
 
 @implementation HMIRemovePersonsOperation
 
-- (HMIRemovePersonsOperation)initWithDataSource:(id)a3 personUUIDs:(id)a4
+- (HMIRemovePersonsOperation)initWithDataSource:(id)source personUUIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  dsCopy = ds;
   v12.receiver = self;
   v12.super_class = HMIRemovePersonsOperation;
   v9 = [(HMFOperation *)&v12 initWithTimeout:20.0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSource, a3);
-    objc_storeStrong(&v10->_personUUIDs, a4);
+    objc_storeStrong(&v9->_dataSource, source);
+    objc_storeStrong(&v10->_personUUIDs, ds);
   }
 
   return v10;
@@ -34,14 +34,14 @@
 - (void)mainInsideAutoreleasePool
 {
   objc_initWeak(&location, self);
-  v3 = [(HMIRemovePersonsOperation *)self dataSource];
-  v4 = [(HMIRemovePersonsOperation *)self personUUIDs];
+  dataSource = [(HMIRemovePersonsOperation *)self dataSource];
+  personUUIDs = [(HMIRemovePersonsOperation *)self personUUIDs];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __54__HMIRemovePersonsOperation_mainInsideAutoreleasePool__block_invoke;
   v5[3] = &unk_2787528E0;
   objc_copyWeak(&v6, &location);
-  [v3 removePersonsWithUUIDs:v4 completion:v5];
+  [dataSource removePersonsWithUUIDs:personUUIDs completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);

@@ -1,7 +1,7 @@
 @interface IMSPIHandle
 - (BOOL)isBusiness;
-- (BOOL)isEqual:(id)a3;
-- (IMSPIHandle)initWithAddress:(id)a3 countryCode:(id)a4 isMe:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (IMSPIHandle)initWithAddress:(id)address countryCode:(id)code isMe:(BOOL)me;
 - (NSString)businessName;
 - (NSString)cnContactID;
 - (NSString)displayName;
@@ -84,19 +84,19 @@ LABEL_13:
   return v22;
 }
 
-- (IMSPIHandle)initWithAddress:(id)a3 countryCode:(id)a4 isMe:(BOOL)a5
+- (IMSPIHandle)initWithAddress:(id)address countryCode:(id)code isMe:(BOOL)me
 {
-  v9 = a3;
-  v10 = a4;
+  addressCopy = address;
+  codeCopy = code;
   v14.receiver = self;
   v14.super_class = IMSPIHandle;
   v11 = [(IMSPIHandle *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_address, a3);
-    objc_storeStrong(&v12->_countryCode, a4);
-    v12->_isMe = a5;
+    objc_storeStrong(&v11->_address, address);
+    objc_storeStrong(&v12->_countryCode, code);
+    v12->_isMe = me;
   }
 
   return v12;
@@ -165,10 +165,10 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -178,7 +178,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       address = self->_address;
       v9 = objc_msgSend_address(v5, v7, v8);
       LODWORD(address) = objc_msgSend_isEqualToString_(address, v10, v9);

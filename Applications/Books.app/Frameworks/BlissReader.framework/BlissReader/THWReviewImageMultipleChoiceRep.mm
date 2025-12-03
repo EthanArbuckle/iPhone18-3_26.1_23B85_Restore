@@ -1,18 +1,18 @@
 @interface THWReviewImageMultipleChoiceRep
 - (id)additionalLayersOverLayer;
-- (id)p_choiceAtIndex:(unint64_t)a3;
+- (id)p_choiceAtIndex:(unint64_t)index;
 - (id)p_questionHost;
-- (id)p_repForChoiceIndex:(unint64_t)a3;
-- (int)reviewQuestionStateForChoiceIndex:(unint64_t)a3;
-- (void)control:(id)a3 repWasAdded:(id)a4;
-- (void)control:(id)a3 repWillBeRemoved:(id)a4;
+- (id)p_repForChoiceIndex:(unint64_t)index;
+- (int)reviewQuestionStateForChoiceIndex:(unint64_t)index;
+- (void)control:(id)control repWasAdded:(id)added;
+- (void)control:(id)control repWillBeRemoved:(id)removed;
 - (void)dealloc;
 - (void)p_updateChoiceStates;
 - (void)p_updateMoreAnswersLayer;
 - (void)reviewQuestionAnswerUpdated;
-- (void)reviewQuestionUpdateChoiceIndex:(unint64_t)a3 withState:(int)a4;
+- (void)reviewQuestionUpdateChoiceIndex:(unint64_t)index withState:(int)state;
 - (void)screenScaleDidChange;
-- (void)setQuestionState:(int)a3;
+- (void)setQuestionState:(int)state;
 - (void)updateChildrenFromLayout;
 @end
 
@@ -46,13 +46,13 @@
 
     self->_choiceStates = 0;
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(THWReviewImageMultipleChoiceRep *)self p_questionHost];
+    p_questionHost = [(THWReviewImageMultipleChoiceRep *)self p_questionHost];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [objc_msgSend(-[THWReviewImageMultipleChoiceRep layout](self layout];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    layout = [objc_msgSend(-[THWReviewImageMultipleChoiceRep layout](self layout];
+    v7 = [layout countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -64,17 +64,17 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(layout);
           }
 
-          v11 = [[THWReviewImageAnswerChoiceState alloc] initWithChoice:*(*(&v12 + 1) + 8 * v10) questionRep:self questionHost:v5];
+          v11 = [[THWReviewImageAnswerChoiceState alloc] initWithChoice:*(*(&v12 + 1) + 8 * v10) questionRep:self questionHost:p_questionHost];
           [v4 addObject:v11];
 
           v10 = v10 + 1;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [layout countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -115,10 +115,10 @@
 
 - (void)p_updateMoreAnswersLayer
 {
-  v3 = [(THWReviewImageMultipleChoiceRep *)self canvas];
-  [v3 viewScale];
+  canvas = [(THWReviewImageMultipleChoiceRep *)self canvas];
+  [canvas viewScale];
   v5 = v4;
-  [v3 contentsScale];
+  [canvas contentsScale];
   v7 = v6;
   if (!self->_moreAnswersLayer)
   {
@@ -142,31 +142,31 @@
   [(THWReviewMoreAnswersLayer *)moreAnswersLayer setPosition:v10, v12];
 }
 
-- (void)control:(id)a3 repWasAdded:(id)a4
+- (void)control:(id)control repWasAdded:(id)added
 {
-  if (![a3 tag])
+  if (![control tag])
   {
     [(THWReviewImageMultipleChoiceRep *)self p_updateChoiceStates];
     objc_opt_class();
     v6 = TSUDynamicCast();
-    v7 = [a3 index];
-    if (v7 >= [(NSArray *)self->_choiceStates count])
+    index = [control index];
+    if (index >= [(NSArray *)self->_choiceStates count])
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = -[NSArray objectAtIndex:](self->_choiceStates, "objectAtIndex:", [a3 index]);
+      v8 = -[NSArray objectAtIndex:](self->_choiceStates, "objectAtIndex:", [control index]);
     }
 
     [v6 setDelegate:v8];
   }
 }
 
-- (void)control:(id)a3 repWillBeRemoved:(id)a4
+- (void)control:(id)control repWillBeRemoved:(id)removed
 {
-  if (![a3 tag])
+  if (![control tag])
   {
     objc_opt_class();
     v4 = TSUDynamicCast();
@@ -175,14 +175,14 @@
   }
 }
 
-- (int)reviewQuestionStateForChoiceIndex:(unint64_t)a3
+- (int)reviewQuestionStateForChoiceIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_choiceStates count]<= a3)
+  if ([(NSArray *)self->_choiceStates count]<= index)
   {
     return 0;
   }
 
-  v5 = [(NSArray *)self->_choiceStates objectAtIndex:a3];
+  v5 = [(NSArray *)self->_choiceStates objectAtIndex:index];
   if (!v5)
   {
     return 0;
@@ -191,17 +191,17 @@
   return [v5 choiceState];
 }
 
-- (void)reviewQuestionUpdateChoiceIndex:(unint64_t)a3 withState:(int)a4
+- (void)reviewQuestionUpdateChoiceIndex:(unint64_t)index withState:(int)state
 {
-  v4 = *&a4;
-  if ([(NSArray *)self->_choiceStates count]<= a3)
+  v4 = *&state;
+  if ([(NSArray *)self->_choiceStates count]<= index)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [(NSArray *)self->_choiceStates objectAtIndex:a3];
+    v7 = [(NSArray *)self->_choiceStates objectAtIndex:index];
   }
 
   [v7 setChoiceState:v4];
@@ -238,11 +238,11 @@
   }
 }
 
-- (void)setQuestionState:(int)a3
+- (void)setQuestionState:(int)state
 {
-  if (self->_questionState != a3)
+  if (self->_questionState != state)
   {
-    self->_questionState = a3;
+    self->_questionState = state;
     [-[THWReviewImageMultipleChoiceRep canvas](self "canvas")];
     if (self->_questionState <= 2u)
     {
@@ -266,7 +266,7 @@
             }
 
             v10 = *(*(&v11 + 1) + 8 * i);
-            if (a3 < 2 || [*(*(&v11 + 1) + 8 * i) choiceState] != 1)
+            if (state < 2 || [*(*(&v11 + 1) + 8 * i) choiceState] != 1)
             {
               [v10 setChoiceState:0];
               [v10 updateRadioState];
@@ -284,18 +284,18 @@
   }
 }
 
-- (id)p_choiceAtIndex:(unint64_t)a3
+- (id)p_choiceAtIndex:(unint64_t)index
 {
   v4 = [objc_msgSend(-[THWReviewImageMultipleChoiceRep layout](self "layout")];
-  if ([v4 count] <= a3)
+  if ([v4 count] <= index)
   {
     return 0;
   }
 
-  return [v4 objectAtIndex:a3];
+  return [v4 objectAtIndex:index];
 }
 
-- (id)p_repForChoiceIndex:(unint64_t)a3
+- (id)p_repForChoiceIndex:(unint64_t)index
 {
   objc_opt_class();
   [-[THWReviewImageMultipleChoiceRep interactiveCanvasController](self "interactiveCanvasController")];
@@ -305,9 +305,9 @@
 
 - (id)p_questionHost
 {
-  v3 = [(THWReviewImageMultipleChoiceRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewImageMultipleChoiceRep *)self interactiveCanvasController];
 
-  return [v3 ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewQuestionHosting];
+  return [interactiveCanvasController ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewQuestionHosting];
 }
 
 @end

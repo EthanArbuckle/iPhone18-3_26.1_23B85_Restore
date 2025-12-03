@@ -1,7 +1,7 @@
 @interface ConcreteAXUIClient
 - (_TtC16ScreenSharingKit18ConcreteAXUIClient)init;
-- (id)userInterfaceClient:(id)a3 accessQueueForProcessingMessageWithIdentifier:(int64_t)a4;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (id)userInterfaceClient:(id)client accessQueueForProcessingMessageWithIdentifier:(int64_t)identifier;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 @end
 
 @implementation ConcreteAXUIClient
@@ -21,18 +21,18 @@
   return [(ConcreteAXUIClient *)&v7 init];
 }
 
-- (id)userInterfaceClient:(id)a3 accessQueueForProcessingMessageWithIdentifier:(int64_t)a4
+- (id)userInterfaceClient:(id)client accessQueueForProcessingMessageWithIdentifier:(int64_t)identifier
 {
-  v4 = [objc_opt_self() mainAccessQueue];
+  mainAccessQueue = [objc_opt_self() mainAccessQueue];
 
-  return v4;
+  return mainAccessQueue;
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
-  v5 = a3;
-  v6 = self;
-  sub_264AB16FC(a3);
+  clientCopy = client;
+  selfCopy = self;
+  sub_264AB16FC(client);
 }
 
 @end

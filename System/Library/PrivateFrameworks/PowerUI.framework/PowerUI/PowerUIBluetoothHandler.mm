@@ -1,10 +1,10 @@
 @interface PowerUIBluetoothHandler
-- (BOOL)isDeviceConnected:(BTDeviceImpl *)a3 forSession:(BTSessionImpl *)a4;
-- (BTDeviceImpl)getDeviceForAddressString:(id)a3 forSession:(BTSessionImpl *)a4;
+- (BOOL)isDeviceConnected:(BTDeviceImpl *)connected forSession:(BTSessionImpl *)session;
+- (BTDeviceImpl)getDeviceForAddressString:(id)string forSession:(BTSessionImpl *)session;
 - (PowerUIBluetoothHandler)init;
-- (id)getAddressStringForDevice:(BTDeviceImpl *)a3;
-- (unsigned)productIDForDevice:(BTDeviceImpl *)a3;
-- (unsigned)protocolForDevice:(BTDeviceImpl *)a3;
+- (id)getAddressStringForDevice:(BTDeviceImpl *)device;
+- (unsigned)productIDForDevice:(BTDeviceImpl *)device;
+- (unsigned)protocolForDevice:(BTDeviceImpl *)device;
 @end
 
 @implementation PowerUIBluetoothHandler
@@ -16,7 +16,7 @@
   return [(PowerUIBluetoothHandler *)&v3 init];
 }
 
-- (id)getAddressStringForDevice:(BTDeviceImpl *)a3
+- (id)getAddressStringForDevice:(BTDeviceImpl *)device
 {
   v7 = *MEMORY[0x277D85DE8];
   BTDeviceGetAddressString();
@@ -26,12 +26,12 @@
   return v3;
 }
 
-- (BTDeviceImpl)getDeviceForAddressString:(id)a3 forSession:(BTSessionImpl *)a4
+- (BTDeviceImpl)getDeviceForAddressString:(id)string forSession:(BTSessionImpl *)session
 {
-  result = a3;
-  if (a3)
+  result = string;
+  if (string)
   {
-    [a3 UTF8String];
+    [string UTF8String];
     if (BTDeviceAddressFromString() || BTDeviceFromAddress())
     {
       return 0;
@@ -46,24 +46,24 @@
   return result;
 }
 
-- (BOOL)isDeviceConnected:(BTDeviceImpl *)a3 forSession:(BTSessionImpl *)a4
+- (BOOL)isDeviceConnected:(BTDeviceImpl *)connected forSession:(BTSessionImpl *)session
 {
   BTAccessoryManagerGetDefault();
   BTDeviceGetConnectedServices();
   return 0;
 }
 
-- (unsigned)protocolForDevice:(BTDeviceImpl *)a3
+- (unsigned)protocolForDevice:(BTDeviceImpl *)device
 {
   v13 = 0;
-  v5 = [(PowerUIBluetoothHandler *)self isAppleAudioDeviceWrapperWithDevice:a3 withBool:&v13];
+  v5 = [(PowerUIBluetoothHandler *)self isAppleAudioDeviceWrapperWithDevice:device withBool:&v13];
   v6 = 0;
   if (!v5)
   {
     v12 = 0;
     v11 = 0;
     v10 = 0;
-    v7 = [(PowerUIBluetoothHandler *)self getDeviceIDWrapperWithDevice:a3 withVendorIdSource:&v12 withVendorId:&v11 + 4 withProductId:&v11 withVersionId:&v10];
+    v7 = [(PowerUIBluetoothHandler *)self getDeviceIDWrapperWithDevice:device withVendorIdSource:&v12 withVendorId:&v11 + 4 withProductId:&v11 withVersionId:&v10];
     v6 = 0;
     if (!v7)
     {
@@ -105,12 +105,12 @@
   return v6;
 }
 
-- (unsigned)productIDForDevice:(BTDeviceImpl *)a3
+- (unsigned)productIDForDevice:(BTDeviceImpl *)device
 {
   v6 = 0;
   v5 = 0;
   v4 = 0;
-  if ([(PowerUIBluetoothHandler *)self getDeviceIDWrapperWithDevice:a3 withVendorIdSource:&v6 withVendorId:&v5 withProductId:&v4 + 4 withVersionId:&v4])
+  if ([(PowerUIBluetoothHandler *)self getDeviceIDWrapperWithDevice:device withVendorIdSource:&v6 withVendorId:&v5 withProductId:&v4 + 4 withVersionId:&v4])
   {
     return 0;
   }

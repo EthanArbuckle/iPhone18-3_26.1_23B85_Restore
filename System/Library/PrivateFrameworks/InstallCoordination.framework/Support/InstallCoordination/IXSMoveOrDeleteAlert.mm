@@ -8,10 +8,10 @@
 
 - (id)title
 {
-  v3 = [(IXSUninstallAlert *)self appRecord];
-  v4 = [v3 isManagedAppDistributor];
+  appRecord = [(IXSUninstallAlert *)self appRecord];
+  isManagedAppDistributor = [appRecord isManagedAppDistributor];
 
-  if (v4)
+  if (isManagedAppDistributor)
   {
     v5 = @"UNINSTALL_ICON_TITLE_MOVE_TO_APP_LIBRARY_OR_DELETE_MARKETPLACE";
   }
@@ -27,19 +27,19 @@
   }
 
   v6 = [(IXSUninstallAlert *)self localizedStringForKey:v5 withFormatHint:@"Remove “%@”?"];
-  v7 = [(IXSUninstallAlert *)self appRecord];
-  v8 = [v7 localizedName];
-  v9 = [NSString localizedStringWithFormat:v6, v8];
+  appRecord2 = [(IXSUninstallAlert *)self appRecord];
+  localizedName = [appRecord2 localizedName];
+  v9 = [NSString localizedStringWithFormat:v6, localizedName];
 
   return v9;
 }
 
 - (id)message
 {
-  v3 = [(IXSUninstallAlert *)self appRecord];
-  v4 = [v3 isManagedAppDistributor];
+  appRecord = [(IXSUninstallAlert *)self appRecord];
+  isManagedAppDistributor = [appRecord isManagedAppDistributor];
 
-  if (v4)
+  if (isManagedAppDistributor)
   {
     v5 = @"UNINSTALL_ICON_BODY_MOVE_TO_APP_LIBRARY_MARKETPLACE";
     v6 = @"Removing from Home Screen will keep the app marketplace in your App Library. If you delete this marketplace, apps installed from this marketplace will no longer update.";
@@ -58,10 +58,10 @@
 
 - (id)defaultButtonLabel
 {
-  v3 = [(IXSUninstallAlert *)self appRecord];
-  v4 = [v3 isManagedAppDistributor];
+  appRecord = [(IXSUninstallAlert *)self appRecord];
+  isManagedAppDistributor = [appRecord isManagedAppDistributor];
 
-  if (v4)
+  if (isManagedAppDistributor)
   {
     v5 = @"UNINSTALL_ICON_BUTTON_DELETE_MARKETPLACE";
     v6 = @"Delete App Marketplace";

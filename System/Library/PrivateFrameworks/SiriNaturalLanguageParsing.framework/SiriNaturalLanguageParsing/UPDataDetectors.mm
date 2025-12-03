@@ -1,9 +1,9 @@
 @interface UPDataDetectors
-- (id)_matchSpansForDetectedDataArray:(__CFArray *)a3 label:(id)a4;
-- (id)initLoadFromDataDetectorsDirectoryPath:(id)a3 forLocale:(id)a4;
-- (id)matchSpans:(id)a3;
-- (id)matchSpansForDetectedData:(id)a3;
-- (id)matchSpansForUtterance:(id)a3;
+- (id)_matchSpansForDetectedDataArray:(__CFArray *)array label:(id)label;
+- (id)initLoadFromDataDetectorsDirectoryPath:(id)path forLocale:(id)locale;
+- (id)matchSpans:(id)spans;
+- (id)matchSpansForDetectedData:(id)data;
+- (id)matchSpansForUtterance:(id)utterance;
 - (void)dealloc;
 @end
 
@@ -31,43 +31,43 @@
   [(UPDataDetectors *)&v5 dealloc];
 }
 
-- (id)_matchSpansForDetectedDataArray:(__CFArray *)a3 label:(id)a4
+- (id)_matchSpansForDetectedDataArray:(__CFArray *)array label:(id)label
 {
-  v9 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  if (CFArrayGetCount(a3) >= 1)
+  labelCopy = label;
+  array = [MEMORY[0x277CBEB18] array];
+  if (CFArrayGetCount(array) >= 1)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(a3, 0);
+    ValueAtIndex = CFArrayGetValueAtIndex(array, 0);
     DDResultGetRange();
     memset(v10, 0, sizeof(v10));
     uaap::DDUsoMapper::toItemizedUsos(self->_ddUsoMapper, ValueAtIndex, v10);
   }
 
+  return array;
+}
+
+- (id)matchSpansForDetectedData:(id)data
+{
+  dataCopy = data;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dataDetectorResult = [dataCopy dataDetectorResult];
+  label = [dataCopy label];
+  v8 = [(UPDataDetectors *)selfCopy _matchSpansForDetectedDataArray:dataDetectorResult label:label];
+
+  objc_sync_exit(selfCopy);
+
   return v8;
 }
 
-- (id)matchSpansForDetectedData:(id)a3
+- (id)matchSpansForUtterance:(id)utterance
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 dataDetectorResult];
-  v7 = [v4 label];
-  v8 = [(UPDataDetectors *)v5 _matchSpansForDetectedDataArray:v6 label:v7];
-
-  objc_sync_exit(v5);
-
-  return v8;
-}
-
-- (id)matchSpansForUtterance:(id)a3
-{
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
-  uaap::UPDataDetector::matchSpans([(UPDataDetectors *)v5 dataDetector], __p, &v14);
-  v6 = [MEMORY[0x277CBEB18] array];
+  utteranceCopy = utterance;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  std::string::basic_string[abi:ne200100]<0>(__p, [utteranceCopy UTF8String]);
+  uaap::UPDataDetector::matchSpans([(UPDataDetectors *)selfCopy dataDetector], __p, &v14);
+  array = [MEMORY[0x277CBEB18] array];
   v7 = v14;
   for (i = v15; v7 != i; v7 += 40)
   {
@@ -84,8 +84,8 @@
     }
 
     v11 = [MEMORY[0x277CCACA8] stringWithCharacters:v10 length:v9];
-    v12 = [(UPDataDetectors *)v5 _matchSpansForDetectedDataArray:*(v7 + 24) label:v11];
-    [v6 addObjectsFromArray:v12];
+    v12 = [(UPDataDetectors *)selfCopy _matchSpansForDetectedDataArray:*(v7 + 24) label:v11];
+    [array addObjectsFromArray:v12];
   }
 
   v18 = &v14;
@@ -95,18 +95,18 @@
     operator delete(__p[0]);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  return v6;
+  return array;
 }
 
-- (id)matchSpans:(id)a3
+- (id)matchSpans:(id)spans
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
-  uaap::UPDataDetector::matchSpans([(UPDataDetectors *)v5 dataDetector], __p, &v16);
+  spansCopy = spans;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  std::string::basic_string[abi:ne200100]<0>(__p, [spansCopy UTF8String]);
+  uaap::UPDataDetector::matchSpans([(UPDataDetectors *)selfCopy dataDetector], __p, &v16);
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:0xCCCCCCCCCCCCCCCDLL * ((v17 - v16) >> 3)];
   v7 = v16;
   for (i = v17; v7 != i; v7 += 40)
@@ -138,22 +138,22 @@
     operator delete(__p[0]);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)initLoadFromDataDetectorsDirectoryPath:(id)a3 forLocale:(id)a4
+- (id)initLoadFromDataDetectorsDirectoryPath:(id)path forLocale:(id)locale
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  localeCopy = locale;
   v34.receiver = self;
   v34.super_class = UPDataDetectors;
   if ([(UPDataDetectors *)&v34 init])
   {
-    v8 = v6;
-    __p[0] = [v6 UTF8String];
+    v8 = pathCopy;
+    __p[0] = [pathCopy UTF8String];
     std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&v33, __p);
     memset(v32, 0, sizeof(v32));
     v31 = 0u;
@@ -255,9 +255,9 @@
       operator delete(v35.__pn_.__r_.__value_.__l.__data_);
     }
 
-    v9 = [v7 languageCode];
-    v10 = v9;
-    std::string::basic_string[abi:ne200100]<0>(&v25, [v9 UTF8String]);
+    languageCode = [localeCopy languageCode];
+    v10 = languageCode;
+    std::string::basic_string[abi:ne200100]<0>(&v25, [languageCode UTF8String]);
     v11 = std::string::insert(&v25, 0, "addresses_");
     v12 = *&v11->__r_.__value_.__l.__data_;
     v26.__r_.__value_.__r.__words[2] = v11->__r_.__value_.__r.__words[2];
@@ -304,9 +304,9 @@
       operator delete(v36.__pn_.__r_.__value_.__l.__data_);
     }
 
-    v16 = [v7 localeIdentifier];
-    v17 = v16;
-    std::string::basic_string[abi:ne200100]<0>(&v25, [v16 UTF8String]);
+    localeIdentifier = [localeCopy localeIdentifier];
+    v17 = localeIdentifier;
+    std::string::basic_string[abi:ne200100]<0>(&v25, [localeIdentifier UTF8String]);
     v18 = std::string::insert(&v25, 0, "date_time_");
     v19 = *&v18->__r_.__value_.__l.__data_;
     v26.__r_.__value_.__r.__words[2] = v18->__r_.__value_.__r.__words[2];

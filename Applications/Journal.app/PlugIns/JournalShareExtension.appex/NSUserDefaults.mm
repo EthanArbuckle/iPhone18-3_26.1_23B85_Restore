@@ -1,24 +1,24 @@
 @interface NSUserDefaults
 - (BOOL)hasSeenBothHealthTCCs;
 - (NSData)journalingScheduleData;
-- (void)setHasSeenBothHealthTCCs:(BOOL)a3;
-- (void)setIsJournalingScheduleEnabled:(BOOL)a3;
-- (void)setIsStreakReminderEnabled:(BOOL)a3;
-- (void)setJournalingScheduleData:(id)a3;
+- (void)setHasSeenBothHealthTCCs:(BOOL)cs;
+- (void)setIsJournalingScheduleEnabled:(BOOL)enabled;
+- (void)setIsStreakReminderEnabled:(BOOL)enabled;
+- (void)setJournalingScheduleData:(id)data;
 @end
 
 @implementation NSUserDefaults
 
 - (BOOL)hasSeenBothHealthTCCs
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100100F94();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   if (v4)
   {
     v5 = sub_100100F94();
-    v6 = [(NSUserDefaults *)v2 BOOLForKey:v5];
+    v6 = [(NSUserDefaults *)selfCopy BOOLForKey:v5];
   }
 
   else
@@ -29,27 +29,27 @@
   return v6;
 }
 
-- (void)setHasSeenBothHealthTCCs:(BOOL)a3
+- (void)setHasSeenBothHealthTCCs:(BOOL)cs
 {
-  v3 = a3;
-  v6 = self;
+  csCopy = cs;
+  selfCopy = self;
   v4 = sub_100100F94();
-  [(NSUserDefaults *)v6 setBool:v3 forKey:v4];
+  [(NSUserDefaults *)selfCopy setBool:csCopy forKey:v4];
 
   v5 = sub_100100F94();
-  [(NSUserDefaults *)v6 setBool:v3 forKey:v5];
+  [(NSUserDefaults *)selfCopy setBool:csCopy forKey:v5];
 }
 
-- (void)setIsStreakReminderEnabled:(BOOL)a3
+- (void)setIsStreakReminderEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_100092248(a3, &enum case for SettingsKey.isStreakReminderEnabled(_:), &enum case for SettingsKey.streakReminderHour(_:), &enum case for SettingsKey.streakReminderMinute(_:));
+  selfCopy = self;
+  sub_100092248(enabled, &enum case for SettingsKey.isStreakReminderEnabled(_:), &enum case for SettingsKey.streakReminderHour(_:), &enum case for SettingsKey.streakReminderMinute(_:));
 }
 
-- (void)setIsJournalingScheduleEnabled:(BOOL)a3
+- (void)setIsJournalingScheduleEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_100092248(a3, &enum case for SettingsKey.isJournalingScheduleEnabled(_:), &enum case for SettingsKey.journalingScheduleData(_:), &enum case for SettingsKey.journalingScheduleDataLegacy(_:));
+  selfCopy = self;
+  sub_100092248(enabled, &enum case for SettingsKey.isJournalingScheduleEnabled(_:), &enum case for SettingsKey.journalingScheduleData(_:), &enum case for SettingsKey.journalingScheduleDataLegacy(_:));
 }
 
 - (NSData)journalingScheduleData
@@ -59,12 +59,12 @@
   __chkstk_darwin(v3);
   v6 = &v15 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   (*(v4 + 104))(v6, enum case for SettingsKey.journalingScheduleData(_:), v3);
-  v7 = self;
+  selfCopy = self;
   sub_1000FFC74();
   (*(v4 + 8))(v6, v3);
   v8 = sub_100100F94();
 
-  v9 = [(NSUserDefaults *)v7 dataForKey:v8];
+  v9 = [(NSUserDefaults *)selfCopy dataForKey:v8];
 
   if (v9)
   {
@@ -84,25 +84,25 @@
   return v13.super.isa;
 }
 
-- (void)setJournalingScheduleData:(id)a3
+- (void)setJournalingScheduleData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_1000FF564();
+    selfCopy = self;
+    v5 = dataCopy;
+    dataCopy = sub_1000FF564();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
   sub_100092A98();
-  sub_1000064AC(v3, v7);
+  sub_1000064AC(dataCopy, v7);
 }
 
 @end

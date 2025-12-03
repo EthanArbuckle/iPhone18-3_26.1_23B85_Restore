@@ -1,25 +1,25 @@
 @interface _TUIHostingGeometryMapUpdate
-- (_TUIHostingGeometryMapUpdate)initWithFrom:(id)a3 to:(id)a4 reuseTypes:(id)a5;
+- (_TUIHostingGeometryMapUpdate)initWithFrom:(id)from to:(id)to reuseTypes:(id)types;
 @end
 
 @implementation _TUIHostingGeometryMapUpdate
 
-- (_TUIHostingGeometryMapUpdate)initWithFrom:(id)a3 to:(id)a4 reuseTypes:(id)a5
+- (_TUIHostingGeometryMapUpdate)initWithFrom:(id)from to:(id)to reuseTypes:(id)types
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  fromCopy = from;
+  toCopy = to;
+  typesCopy = types;
   v24.receiver = self;
   v24.super_class = _TUIHostingGeometryMapUpdate;
   v12 = [(_TUIHostingGeometryMapUpdate *)&v24 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_from, a3);
-    objc_storeStrong(&v13->_to, a4);
-    if (v10 == v9)
+    objc_storeStrong(&v12->_from, from);
+    objc_storeStrong(&v13->_to, to);
+    if (toCopy == fromCopy)
     {
-      if (v10)
+      if (toCopy)
       {
         goto LABEL_6;
       }
@@ -27,14 +27,14 @@
 
     else
     {
-      if (v10)
+      if (toCopy)
       {
-        v14 = [v10 computeDifferencesWithMap:v9];
+        v14 = [toCopy computeDifferencesWithMap:fromCopy];
         differences = v13->_differences;
         v13->_differences = v14;
 
 LABEL_6:
-        v16 = [[_TUIHostingGeometryReuseMap alloc] initWithMap:v10 reuseTypes:v11];
+        v16 = [[_TUIHostingGeometryReuseMap alloc] initWithMap:toCopy reuseTypes:typesCopy];
 LABEL_10:
         toReuseMap = v13->_toReuseMap;
         v13->_toReuseMap = v16;
@@ -42,12 +42,12 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      if (v9)
+      if (fromCopy)
       {
         v17 = [NSSet alloc];
-        v18 = [v9 identifierEnumerator];
-        v19 = [v18 allObjects];
-        v20 = [v17 initWithArray:v19];
+        identifierEnumerator = [fromCopy identifierEnumerator];
+        allObjects = [identifierEnumerator allObjects];
+        v20 = [v17 initWithArray:allObjects];
         v21 = v13->_differences;
         v13->_differences = v20;
       }

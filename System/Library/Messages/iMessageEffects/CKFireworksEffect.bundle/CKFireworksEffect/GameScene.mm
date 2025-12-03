@@ -1,15 +1,15 @@
 @interface GameScene
 - (GameScene)init;
-- (float)launchTrailAt:(CGPoint)a3 angle:(float)a4 speed:(float)a5 group:(id)a6;
-- (void)createFireworkTypeOneAt:(CGPoint)a3 scale:(float)a4;
-- (void)createFireworkTypeTwoAt:(CGPoint)a3 scale:(float)a4 color:(unint64_t)a5;
+- (float)launchTrailAt:(CGPoint)at angle:(float)angle speed:(float)speed group:(id)group;
+- (void)createFireworkTypeOneAt:(CGPoint)at scale:(float)scale;
+- (void)createFireworkTypeTwoAt:(CGPoint)at scale:(float)scale color:(unint64_t)color;
 - (void)runChoregraphy;
-- (void)runEndingSparkleParticleEmitter:(CGPoint)a3 scale:(float)a4 radius:(float)a5 color:(id)a6;
-- (void)runLightHaloEffectAt:(CGPoint)a3 scale:(float)a4 color:(unint64_t)a5;
-- (void)runOrbParticleEmitter:(CGPoint)a3 scale:(float)a4 color:(id)a5;
-- (void)runSmokeEmitter:(CGPoint)a3 scale:(float)a4 color:(id)a5;
-- (void)runSparkleEmitter:(CGPoint)a3 scale:(float)a4 rangeRatio:(float)a5 particleSizeRatio:(float)a6 color:(unint64_t)a7 texture:(id)a8;
-- (void)runTrailParticleEmitter:(CGPoint)a3 scale:(float)a4;
+- (void)runEndingSparkleParticleEmitter:(CGPoint)emitter scale:(float)scale radius:(float)radius color:(id)color;
+- (void)runLightHaloEffectAt:(CGPoint)at scale:(float)scale color:(unint64_t)color;
+- (void)runOrbParticleEmitter:(CGPoint)emitter scale:(float)scale color:(id)color;
+- (void)runSmokeEmitter:(CGPoint)emitter scale:(float)scale color:(id)color;
+- (void)runSparkleEmitter:(CGPoint)emitter scale:(float)scale rangeRatio:(float)ratio particleSizeRatio:(float)sizeRatio color:(unint64_t)color texture:(id)texture;
+- (void)runTrailParticleEmitter:(CGPoint)emitter scale:(float)scale;
 - (void)setup;
 @end
 
@@ -32,8 +32,8 @@
 
 - (void)setup
 {
-  v3 = [(GameScene *)self physicsWorld];
-  [v3 setGravity:{0.0, -0.08}];
+  physicsWorld = [(GameScene *)self physicsWorld];
+  [physicsWorld setGravity:{0.0, -0.08}];
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [UIImage imageNamed:@"Emitter__Glow-Sphere" inBundle:v4];
@@ -96,20 +96,20 @@
   v22 = [SKPhysicsBody bodyWithCircleOfRadius:1.0];
   [(SKNode *)self->_trailContainer setPhysicsBody:v22];
 
-  v23 = [(SKNode *)self->_trailContainer physicsBody];
-  [v23 setAffectedByGravity:0];
+  physicsBody = [(SKNode *)self->_trailContainer physicsBody];
+  [physicsBody setAffectedByGravity:0];
 
-  v24 = [(SKNode *)self->_trailContainer physicsBody];
-  [v24 setCollisionBitMask:0];
+  physicsBody2 = [(SKNode *)self->_trailContainer physicsBody];
+  [physicsBody2 setCollisionBitMask:0];
 
-  v25 = [(SKNode *)self->_trailContainer physicsBody];
-  [v25 setContactTestBitMask:0];
+  physicsBody3 = [(SKNode *)self->_trailContainer physicsBody];
+  [physicsBody3 setContactTestBitMask:0];
 
-  v26 = [(SKNode *)self->_trailContainer physicsBody];
-  [v26 setFieldBitMask:3];
+  physicsBody4 = [(SKNode *)self->_trailContainer physicsBody];
+  [physicsBody4 setFieldBitMask:3];
 
-  v27 = [(SKNode *)self->_trailContainer physicsBody];
-  [v27 setCategoryBitMask:1];
+  physicsBody5 = [(SKNode *)self->_trailContainer physicsBody];
+  [physicsBody5 setCategoryBitMask:1];
 
   self->_type1FireworkTrailCount = 100;
   v28 = [SKKeyframeSequence alloc];
@@ -159,14 +159,14 @@
   v37 = [SKPhysicsBody bodyWithCircleOfRadius:0.5];
   [(SKEmitterNode *)v35 setPhysicsBody:v37];
 
-  v38 = [(SKEmitterNode *)v35 physicsBody];
-  [v38 setAffectedByGravity:0];
+  physicsBody6 = [(SKEmitterNode *)v35 physicsBody];
+  [physicsBody6 setAffectedByGravity:0];
 
-  v39 = [(SKEmitterNode *)v35 physicsBody];
-  [v39 setCollisionBitMask:0];
+  physicsBody7 = [(SKEmitterNode *)v35 physicsBody];
+  [physicsBody7 setCollisionBitMask:0];
 
-  v40 = [(SKEmitterNode *)v35 physicsBody];
-  [v40 setFieldBitMask:0];
+  physicsBody8 = [(SKEmitterNode *)v35 physicsBody];
+  [physicsBody8 setFieldBitMask:0];
 
   self->_type2FireworkScale = 1.6;
   v41 = objc_opt_new();
@@ -201,14 +201,14 @@
   v44 = [SKPhysicsBody bodyWithCircleOfRadius:0.5];
   [(SKEmitterNode *)v43 setPhysicsBody:v44];
 
-  v45 = [(SKEmitterNode *)v43 physicsBody];
-  [v45 setAffectedByGravity:1];
+  physicsBody9 = [(SKEmitterNode *)v43 physicsBody];
+  [physicsBody9 setAffectedByGravity:1];
 
-  v46 = [(SKEmitterNode *)v43 physicsBody];
-  [v46 setCollisionBitMask:0];
+  physicsBody10 = [(SKEmitterNode *)v43 physicsBody];
+  [physicsBody10 setCollisionBitMask:0];
 
-  v47 = [(SKEmitterNode *)v43 physicsBody];
-  [v47 setFieldBitMask:0];
+  physicsBody11 = [(SKEmitterNode *)v43 physicsBody];
+  [physicsBody11 setFieldBitMask:0];
 
   objc_storeStrong(&self->_sparklesType1Texture, self->_sparkTexture);
   objc_storeStrong(&self->_sparklesType2Texture, self->_sparkSoftGlowTexture);
@@ -247,14 +247,14 @@
   v51 = [SKPhysicsBody bodyWithCircleOfRadius:0.5];
   [(SKEmitterNode *)v50 setPhysicsBody:v51];
 
-  v52 = [(SKEmitterNode *)v50 physicsBody];
-  [v52 setAffectedByGravity:1];
+  physicsBody12 = [(SKEmitterNode *)v50 physicsBody];
+  [physicsBody12 setAffectedByGravity:1];
 
-  v53 = [(SKEmitterNode *)v50 physicsBody];
-  [v53 setCollisionBitMask:0];
+  physicsBody13 = [(SKEmitterNode *)v50 physicsBody];
+  [physicsBody13 setCollisionBitMask:0];
 
-  v54 = [(SKEmitterNode *)v50 physicsBody];
-  [v54 setFieldBitMask:0];
+  physicsBody14 = [(SKEmitterNode *)v50 physicsBody];
+  [physicsBody14 setFieldBitMask:0];
 
   v55 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
   whiteColor = self->_whiteColor;
@@ -491,9 +491,9 @@
   }
 
   v161 = v160;
-  v162 = [SKSpriteNode spriteNodeWithTexture:self->_backGlowTexture size:v161, v161, v170];
+  v170 = [SKSpriteNode spriteNodeWithTexture:self->_backGlowTexture size:v161, v161, v170];
   lightHalo = self->_lightHalo;
-  self->_lightHalo = v162;
+  self->_lightHalo = v170;
 
   self->_backGlowScale = 0.75;
   self->_backGlowAlpha = 1.0;
@@ -507,15 +507,15 @@
   self->_backgroundLitColor = v166;
 
   v168 = self->_backgroundColor;
-  v169 = [(GameScene *)self scene];
-  [v169 setBackgroundColor:v168];
+  scene = [(GameScene *)self scene];
+  [scene setBackgroundColor:v168];
 }
 
 - (void)runChoregraphy
 {
   [(GameScene *)self removeAllActions];
-  v3 = [(GameScene *)self view];
-  [v3 bounds];
+  view = [(GameScene *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -635,7 +635,7 @@
   v58 = v35;
   v36 = v34;
   v59 = v36;
-  v60 = self;
+  selfCopy = self;
   v44 = objc_retainBlock(v57);
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
@@ -643,7 +643,7 @@
   v53[3] = &unk_C278;
   v54 = v36;
   v55 = v35;
-  v56 = self;
+  selfCopy2 = self;
   v46 = v35;
   v45 = v36;
   v37 = objc_retainBlock(v53);
@@ -660,18 +660,18 @@
   [(GameScene *)self runAction:v43];
 }
 
-- (void)runLightHaloEffectAt:(CGPoint)a3 scale:(float)a4 color:(unint64_t)a5
+- (void)runLightHaloEffectAt:(CGPoint)at scale:(float)scale color:(unint64_t)color
 {
-  y = a3.y;
-  x = a3.x;
+  y = at.y;
+  x = at.x;
   v10 = [(SKSpriteNode *)self->_lightHalo copy];
   [v10 setPosition:{x, y}];
-  [v10 setScale:(self->_backGlowScale * a4)];
+  [v10 setScale:(self->_backGlowScale * scale)];
   [v10 setAlpha:self->_backGlowAlpha];
   [v10 setColorBlendFactor:1.0];
-  if (a5 <= 3)
+  if (color <= 3)
   {
-    [v10 setColor:*(&self->super.super.super.super.super.isa + *(&off_C418)[a5])];
+    [v10 setColor:*(&self->super.super.super.super.super.isa + *(&off_C418)[color])];
   }
 
   [(GameScene *)self addChild:v10];
@@ -684,35 +684,35 @@
   [v10 runAction:v14];
 }
 
-- (void)createFireworkTypeOneAt:(CGPoint)a3 scale:(float)a4
+- (void)createFireworkTypeOneAt:(CGPoint)at scale:(float)scale
 {
-  y = a3.y;
-  x = a3.x;
+  y = at.y;
+  x = at.x;
   [GameScene runOrbParticleEmitter:"runOrbParticleEmitter:scale:color:" scale:self->_whiteColor color:?];
   LODWORD(v8) = 1.0;
   LODWORD(v9) = 1.0;
-  *&v10 = a4;
+  *&v10 = scale;
   [(GameScene *)self runSparkleEmitter:0 scale:self->_sparklesType1Texture rangeRatio:x particleSizeRatio:y color:v10 texture:v8, v9];
-  *&v11 = a4;
+  *&v11 = scale;
   [(GameScene *)self runTrailParticleEmitter:x scale:y, v11];
-  *&v12 = a4;
+  *&v12 = scale;
   [(GameScene *)self runSmokeEmitter:self->_type1SmokeColor scale:x color:y, v12];
 
-  *&v13 = a4 * 0.5;
+  *&v13 = scale * 0.5;
   [(GameScene *)self runLightHaloEffectAt:0 scale:x color:y, v13];
 }
 
-- (void)createFireworkTypeTwoAt:(CGPoint)a3 scale:(float)a4 color:(unint64_t)a5
+- (void)createFireworkTypeTwoAt:(CGPoint)at scale:(float)scale color:(unint64_t)color
 {
-  y = a3.y;
-  x = a3.x;
+  y = at.y;
+  x = at.x;
   v9 = &OBJC_IVAR___GameScene__type2FireworkOuterPinkColor;
   v10 = &OBJC_IVAR___GameScene__type2FireworkInnerBlueColor;
   v11 = &OBJC_IVAR___GameScene__type2FireworkOuterBlueColor;
   v12 = 6;
   v13 = 7;
   v14 = 2;
-  if (a5 == 3)
+  if (color == 3)
   {
     v11 = &OBJC_IVAR___GameScene__type2FireworkOuterGreenColor;
     v10 = &OBJC_IVAR___GameScene__type2FireworkInnerGreenColor;
@@ -721,7 +721,7 @@
     v12 = 8;
   }
 
-  if (a5 == 1)
+  if (color == 1)
   {
     v15 = &OBJC_IVAR___GameScene__type2FireworkInnerPinkColor;
   }
@@ -732,7 +732,7 @@
     v15 = v10;
   }
 
-  if (a5 == 1)
+  if (color == 1)
   {
     v16 = 1;
   }
@@ -742,7 +742,7 @@
     v16 = v14;
   }
 
-  if (a5 == 1)
+  if (color == 1)
   {
     v17 = 5;
   }
@@ -752,7 +752,7 @@
     v17 = v13;
   }
 
-  if (a5 == 1)
+  if (color == 1)
   {
     v18 = 4;
   }
@@ -764,41 +764,41 @@
 
   v19 = *(&self->super.super.super.super.super.isa + *v9);
   v35 = *(&self->super.super.super.super.super.isa + *v15);
-  *&v20 = a4;
+  *&v20 = scale;
   [(GameScene *)self runSmokeEmitter:v19 scale:x color:y, v20];
   LODWORD(v21) = 1066192077;
   LODWORD(v22) = 0.5;
-  *&v23 = a4;
+  *&v23 = scale;
   [(GameScene *)self runSparkleEmitter:0 scale:self->_sparklesType2Texture rangeRatio:x particleSizeRatio:y color:v23 texture:v21, v22];
   LODWORD(v24) = 1.5;
-  *&v25 = a4;
+  *&v25 = scale;
   [(GameScene *)self runEndingSparkleParticleEmitter:v19 scale:x radius:y color:v25, v24];
   LODWORD(v26) = 0.5;
-  *&v27 = a4;
+  *&v27 = scale;
   [(GameScene *)self runEndingSparkleParticleEmitter:v35 scale:x radius:y color:v27, v26];
   LODWORD(v28) = 1.0;
   LODWORD(v29) = 1.5;
-  *&v30 = a4;
+  *&v30 = scale;
   [(GameScene *)self runSparkleEmitter:v17 scale:self->_sparklesType2Texture rangeRatio:x particleSizeRatio:y color:v30 texture:v28, v29];
   LODWORD(v31) = 1051931443;
   LODWORD(v32) = 1.0;
-  *&v33 = a4;
+  *&v33 = scale;
   [(GameScene *)self runSparkleEmitter:v18 scale:self->_sparklesType2Texture rangeRatio:x particleSizeRatio:y color:v33 texture:v31, v32];
-  *&v34 = a4 * 0.5;
+  *&v34 = scale * 0.5;
   [(GameScene *)self runLightHaloEffectAt:v16 scale:x color:y, v34];
 }
 
-- (void)runSparkleEmitter:(CGPoint)a3 scale:(float)a4 rangeRatio:(float)a5 particleSizeRatio:(float)a6 color:(unint64_t)a7 texture:(id)a8
+- (void)runSparkleEmitter:(CGPoint)emitter scale:(float)scale rangeRatio:(float)ratio particleSizeRatio:(float)sizeRatio color:(unint64_t)color texture:(id)texture
 {
-  y = a3.y;
-  x = a3.x;
-  v15 = a8;
+  y = emitter.y;
+  x = emitter.x;
+  textureCopy = texture;
   v16 = [(SKEmitterNode *)self->_sparklesParticleEmitter copy];
   [v16 setPosition:{x, y}];
   [v16 particleScale];
-  [v16 setParticleScale:v17 * (a4 * a6)];
+  [v16 setParticleScale:v17 * (scale * sizeRatio)];
   [v16 particleSpeed];
-  v18 = (a4 * a5);
+  v18 = (scale * ratio);
   [v16 setParticleSpeed:v19 * v18];
   [v16 particleSpeedRange];
   [v16 setParticleSpeedRange:v20 * v18];
@@ -814,7 +814,7 @@
 
   else
   {
-    if (a5 >= 1.0)
+    if (ratio >= 1.0)
     {
       goto LABEL_6;
     }
@@ -824,17 +824,17 @@
 
   [v16 setNumParticlesToEmit:{(v21 * objc_msgSend(v16, "numParticlesToEmit"))}];
 LABEL_6:
-  if (a7 <= 5)
+  if (color <= 5)
   {
-    if (a7)
+    if (color)
     {
-      if (a7 == 4)
+      if (color == 4)
       {
         v22 = 120;
         goto LABEL_21;
       }
 
-      if (a7 == 5)
+      if (color == 5)
       {
         v22 = 128;
 LABEL_21:
@@ -850,9 +850,9 @@ LABEL_21:
 
   else
   {
-    if (a7 <= 7)
+    if (color <= 7)
     {
-      if (a7 == 6)
+      if (color == 6)
       {
         v22 = 152;
       }
@@ -865,20 +865,20 @@ LABEL_21:
       goto LABEL_21;
     }
 
-    if (a7 == 8)
+    if (color == 8)
     {
       v22 = 184;
       goto LABEL_21;
     }
 
-    if (a7 == 9)
+    if (color == 9)
     {
       v22 = 192;
       goto LABEL_21;
     }
   }
 
-  [v16 setParticleTexture:v15];
+  [v16 setParticleTexture:textureCopy];
   v54[0] = _NSConcreteStackBlock;
   v54[1] = 3221225472;
   v54[2] = sub_4080;
@@ -912,19 +912,19 @@ LABEL_21:
   [v23 runAction:v38];
 
   [(GameScene *)self addChild:v23];
-  v39 = [v23 subEmitterNode];
-  v40 = [v23 subEmitterNode];
-  [v40 particleScale];
-  [v40 setParticleScale:v41 * 0.5];
-  [v40 particleSpeed];
-  [v40 setParticleSpeed:v42 * 0.2];
-  [v40 setNumParticlesToEmit:{(objc_msgSend(v40, "numParticlesToEmit") * 0.2)}];
-  [v40 setParticleBirthRate:{objc_msgSend(v40, "numParticlesToEmit") * 10.0}];
+  subEmitterNode = [v23 subEmitterNode];
+  subEmitterNode2 = [v23 subEmitterNode];
+  [subEmitterNode2 particleScale];
+  [subEmitterNode2 setParticleScale:v41 * 0.5];
+  [subEmitterNode2 particleSpeed];
+  [subEmitterNode2 setParticleSpeed:v42 * 0.2];
+  [subEmitterNode2 setNumParticlesToEmit:{(objc_msgSend(subEmitterNode2, "numParticlesToEmit") * 0.2)}];
+  [subEmitterNode2 setParticleBirthRate:{objc_msgSend(subEmitterNode2, "numParticlesToEmit") * 10.0}];
   [v23 particleScale];
   v52 = v43;
   [v23 particleSpeed];
   v45 = v44;
-  v46 = [v23 numParticlesToEmit];
+  numParticlesToEmit = [v23 numParticlesToEmit];
   [v23 particleBirthRate];
   v47.f64[0] = v52;
   v47.f64[1] = v48;
@@ -933,33 +933,33 @@ LABEL_21:
   v51 = xmmword_81A0;
   do
   {
-    v50 = [v23 subEmitterNode];
+    subEmitterNode3 = [v23 subEmitterNode];
     v45 = v45 * 0.8;
-    v46 = v46 * 0.5;
+    numParticlesToEmit = numParticlesToEmit * 0.5;
     v53 = vcvt_f32_f64(vmulq_f64(vcvtq_f64_f32(v53), v51));
-    [v50 setParticleScale:v53.f32[0]];
-    [v50 setParticleSpeed:v45];
-    [v50 setNumParticlesToEmit:v46];
-    [v50 setParticleBirthRate:v53.f32[1]];
-    [v23 addChild:v50];
+    [subEmitterNode3 setParticleScale:v53.f32[0]];
+    [subEmitterNode3 setParticleSpeed:v45];
+    [subEmitterNode3 setNumParticlesToEmit:numParticlesToEmit];
+    [subEmitterNode3 setParticleBirthRate:v53.f32[1]];
+    [v23 addChild:subEmitterNode3];
 
     --v49;
   }
 
   while (v49);
-  [v23 addChild:v39];
-  [v23 addChild:v40];
+  [v23 addChild:subEmitterNode];
+  [v23 addChild:subEmitterNode2];
 }
 
-- (void)runSmokeEmitter:(CGPoint)a3 scale:(float)a4 color:(id)a5
+- (void)runSmokeEmitter:(CGPoint)emitter scale:(float)scale color:(id)color
 {
-  y = a3.y;
-  x = a3.x;
+  y = emitter.y;
+  x = emitter.x;
   smokeParticleEmitter = self->_smokeParticleEmitter;
-  v10 = a5;
+  colorCopy = color;
   v11 = [(SKEmitterNode *)smokeParticleEmitter copy];
   [v11 setPosition:{x, y}];
-  [v11 setParticleColor:v10];
+  [v11 setParticleColor:colorCopy];
 
   [v11 particleLifetime];
   v22 = _NSConcreteStackBlock;
@@ -983,16 +983,16 @@ LABEL_21:
   v21 = [SKAction sequence:v20];
 
   [v13 runAction:v21];
-  [v13 setScale:a4];
+  [v13 setScale:scale];
   [(GameScene *)self addChild:v13];
 }
 
-- (void)runOrbParticleEmitter:(CGPoint)a3 scale:(float)a4 color:(id)a5
+- (void)runOrbParticleEmitter:(CGPoint)emitter scale:(float)scale color:(id)color
 {
-  y = a3.y;
-  x = a3.x;
+  y = emitter.y;
+  x = emitter.x;
   orbParticleEmitter = self->_orbParticleEmitter;
-  v10 = a5;
+  colorCopy = color;
   v11 = [(SKEmitterNode *)orbParticleEmitter copy];
   v12 = [(SKEmitterNode *)self->_orbParticleEmitter copy];
   [v11 particleScale];
@@ -1002,12 +1002,12 @@ LABEL_21:
   [v11 particleBirthRate];
   v18 = v17;
   [v11 emissionDistance];
-  v19 = a4;
-  v21 = v20 * v19;
-  [v11 setParticleColor:v10];
+  scaleCopy = scale;
+  v21 = v20 * scaleCopy;
+  [v11 setParticleColor:colorCopy];
 
-  v22 = [v11 particleColor];
-  [v12 setParticleColor:v22];
+  particleColor = [v11 particleColor];
+  [v12 setParticleColor:particleColor];
 
   v49[0] = _NSConcreteStackBlock;
   v49[1] = 3221225472;
@@ -1057,29 +1057,29 @@ LABEL_21:
 
   [v26 setPosition:{x, y}];
   [v25 setPosition:{x, y}];
-  [v26 setScale:v19];
-  [v25 setScale:v19];
+  [v26 setScale:scaleCopy];
+  [v25 setScale:scaleCopy];
   [(GameScene *)self addChild:v26];
   [v26 runAction:v35];
   [(GameScene *)self addChild:v25];
   [v25 runAction:v42];
 }
 
-- (void)runEndingSparkleParticleEmitter:(CGPoint)a3 scale:(float)a4 radius:(float)a5 color:(id)a6
+- (void)runEndingSparkleParticleEmitter:(CGPoint)emitter scale:(float)scale radius:(float)radius color:(id)color
 {
-  y = a3.y;
-  x = a3.x;
+  y = emitter.y;
+  x = emitter.x;
   orbParticleEmitter = self->_orbParticleEmitter;
-  v12 = a6;
+  colorCopy = color;
   v13 = [(SKEmitterNode *)orbParticleEmitter copy];
   [v13 emissionDistance];
   v15 = v14;
-  [v13 setParticleColor:v12];
+  [v13 setParticleColor:colorCopy];
 
   [v13 setParticleAlpha:1.0];
   [v13 setParticleAlphaRange:0.0];
   [v13 setParticleBirthRate:0.0];
-  v37 = self;
+  selfCopy = self;
   [v13 setParticleTexture:self->_sparklesType2Texture];
   [v13 setParticleLifetime:0.6];
   [v13 setParticleLifetimeRange:1.0];
@@ -1089,13 +1089,13 @@ LABEL_21:
   [v13 particleScaleRange];
   [v13 setParticleScaleRange:v16 * 1.5];
   [v13 particleScale];
-  v17 = a4;
-  [v13 setParticleScale:v18 * v17];
+  scaleCopy = scale;
+  [v13 setParticleScale:v18 * scaleCopy];
   [v13 setYAcceleration:-30.0];
-  v19 = [v13 physicsBody];
-  [v19 setAffectedByGravity:1];
+  physicsBody = [v13 physicsBody];
+  [physicsBody setAffectedByGravity:1];
 
-  [v13 setEmissionDistance:(v15 * a5)];
+  [v13 setEmissionDistance:(v15 * radius)];
   [v13 emissionDistance];
   [v13 setEmissionDistanceRange:v20 + v20];
   if ([(GameScene *)self shouldReduceParticles])
@@ -1142,18 +1142,18 @@ LABEL_21:
   v35 = [SKAction sequence:v34];
 
   [v23 setPosition:{x, y}];
-  [v23 setScale:v17];
-  [(GameScene *)v37 addChild:v23];
+  [v23 setScale:scaleCopy];
+  [(GameScene *)selfCopy addChild:v23];
   [v23 runAction:v35];
 }
 
-- (void)runTrailParticleEmitter:(CGPoint)a3 scale:(float)a4
+- (void)runTrailParticleEmitter:(CGPoint)emitter scale:(float)scale
 {
-  y = a3.y;
-  x = a3.x;
+  y = emitter.y;
+  x = emitter.x;
   v8 = [(SKEmitterNode *)self->_trailParticleEmitter copy];
   [v8 setParticleBlendMode:1];
-  [v8 setScale:a4];
+  [v8 setScale:scale];
   [(GameScene *)self addChild:v8];
   type1FireworkTrailCount = self->_type1FireworkTrailCount;
   if (type1FireworkTrailCount < 1)
@@ -1213,34 +1213,34 @@ LABEL_21:
   [v8 runAction:v30];
 }
 
-- (float)launchTrailAt:(CGPoint)a3 angle:(float)a4 speed:(float)a5 group:(id)a6
+- (float)launchTrailAt:(CGPoint)at angle:(float)angle speed:(float)speed group:(id)group
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = a6;
+  y = at.y;
+  x = at.x;
+  groupCopy = group;
   v11 = [(SKNode *)self->_trailContainer copy];
-  v51 = v10;
-  v12 = [v10 subEmitterNode];
-  [v11 addChild:v12];
+  v51 = groupCopy;
+  subEmitterNode = [groupCopy subEmitterNode];
+  [v11 addChild:subEmitterNode];
   [v51 addChild:v11];
   [v51 xScale];
   v14 = v13;
   [v51 xScale];
   [v11 setScale:1.0 / (v14 * v15)];
-  v16 = __sincosf_stret(a4);
-  [v12 setPosition:{x, y}];
-  [v12 setTargetNode:self];
+  v16 = __sincosf_stret(angle);
+  [subEmitterNode setPosition:{x, y}];
+  [subEmitterNode setTargetNode:self];
   v43 = drand48();
   v47 = drand48();
-  [v12 particleLifetime];
+  [subEmitterNode particleLifetime];
   v42 = v17;
-  [v12 particleScale];
+  [subEmitterNode particleScale];
   v19 = v18;
-  [v12 particleScale];
+  [subEmitterNode particleScale];
   v21 = v20;
-  [v12 particleBirthRate];
+  [subEmitterNode particleBirthRate];
   v23 = v22;
-  [v12 particleBirthRate];
+  [subEmitterNode particleBirthRate];
   v25 = v24;
   v75[0] = 0;
   v75[1] = v75;
@@ -1259,7 +1259,7 @@ LABEL_21:
   v68 = v26;
   cosval = v16.__cosval;
   sinval = v16.__sinval;
-  v72 = a5;
+  speedCopy = speed;
   v46 = objc_retainBlock(v67);
   *&y = v47 * 0.2 + 1.28;
   *&x = v19;
@@ -1269,7 +1269,7 @@ LABEL_21:
   v58[2] = sub_5544;
   v58[3] = &unk_C3D0;
   v62 = LODWORD(y);
-  v28 = v12;
+  v28 = subEmitterNode;
   v63 = LODWORD(x);
   v64 = *&v19;
   v27 = v23;

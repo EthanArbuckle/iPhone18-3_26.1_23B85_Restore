@@ -1,23 +1,23 @@
 @interface TSDMovieFingerprint
-- (BOOL)isEqual:(id)a3;
-- (TSDMovieFingerprint)initWithTracks:(id)a3 version:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (TSDMovieFingerprint)initWithTracks:(id)tracks version:(unint64_t)version;
 - (id)description;
-- (id)initFromMessage:(const void *)a3 unarchiver:(id)a4;
+- (id)initFromMessage:(const void *)message unarchiver:(id)unarchiver;
 - (unint64_t)version;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation TSDMovieFingerprint
 
-- (TSDMovieFingerprint)initWithTracks:(id)a3 version:(unint64_t)a4
+- (TSDMovieFingerprint)initWithTracks:(id)tracks version:(unint64_t)version
 {
-  v5 = a3;
+  tracksCopy = tracks;
   v12.receiver = self;
   v12.super_class = TSDMovieFingerprint;
   v8 = [(TSDMovieFingerprint *)&v12 init];
   if (v8)
   {
-    v9 = objc_msgSend_copy(v5, v6, v7);
+    v9 = objc_msgSend_copy(tracksCopy, v6, v7);
     tracks = v8->_tracks;
     v8->_tracks = v9;
 
@@ -30,10 +30,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -152,17 +152,17 @@
   return v6 | v4 | versionPatch;
 }
 
-- (id)initFromMessage:(const void *)a3 unarchiver:(id)a4
+- (id)initFromMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v45.receiver = self;
   v45.super_class = TSDMovieFingerprint;
-  v43 = v6;
+  v43 = unarchiverCopy;
   v7 = [(TSDMovieFingerprint *)&v45 init];
   v8 = v7;
   if (v7)
   {
-    v9 = *(a3 + 6);
+    v9 = *(message + 6);
     v41 = v7;
     v10 = objc_alloc(MEMORY[0x277CBEB18]);
     v44 = objc_msgSend_initWithCapacity_(v10, v11, v9);
@@ -173,7 +173,7 @@
       do
       {
         v16 = [TSDMovieFingerprintTrack alloc];
-        v19 = objc_msgSend_initFromMessage_unarchiver_(v16, v17, *(*(a3 + 4) + v15), v6);
+        v19 = objc_msgSend_initFromMessage_unarchiver_(v16, v17, *(*(message + 4) + v15), unarchiverCopy);
         if (v19)
         {
           objc_msgSend_addObject_(v44, v18, v19);
@@ -186,7 +186,7 @@
           v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/animation/TSDMovieFingerprint.mm");
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v24, v21, v23, 135, 0, "Failed to unarchive a track.");
 
-          v6 = v43;
+          unarchiverCopy = v43;
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26);
           v14 = 0;
         }
@@ -204,7 +204,7 @@
     v42->_tracks = v27;
 
     v29 = objc_alloc(MEMORY[0x277D80898]);
-    v31 = objc_msgSend_initWithVersionMessage_(v29, v30, a3 + 40);
+    v31 = objc_msgSend_initWithVersionMessage_(v29, v30, message + 40);
     if (UnsafePointer())
     {
       if (v14)
@@ -215,7 +215,7 @@
 LABEL_13:
         v42->_versionPatch = 0;
 
-        v6 = v43;
+        unarchiverCopy = v43;
         goto LABEL_14;
       }
     }
@@ -240,10 +240,10 @@ LABEL_14:
   return v8;
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -264,36 +264,36 @@ LABEL_14:
         }
 
         v13 = *(*(&v26 + 1) + 8 * v12);
-        v14 = *(a3 + 4);
+        v14 = *(message + 4);
         if (!v14)
         {
           goto LABEL_11;
         }
 
-        v15 = *(a3 + 6);
+        v15 = *(message + 6);
         v16 = *v14;
         if (v15 < *v14)
         {
-          *(a3 + 6) = v15 + 1;
-          objc_msgSend_saveToMessage_archiver_(v13, v9, *&v14[2 * v15 + 2], v6, v26);
+          *(message + 6) = v15 + 1;
+          objc_msgSend_saveToMessage_archiver_(v13, v9, *&v14[2 * v15 + 2], archiverCopy, v26);
           goto LABEL_13;
         }
 
-        if (v16 == *(a3 + 7))
+        if (v16 == *(message + 7))
         {
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-          v14 = *(a3 + 4);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((message + 16));
+          v14 = *(message + 4);
           v16 = *v14;
         }
 
         *v14 = v16 + 1;
-        v17 = google::protobuf::Arena::CreateMaybeMessage<TSD::MovieFingerprintTrack>(*(a3 + 2));
-        v18 = *(a3 + 6);
-        v19 = *(a3 + 4) + 8 * v18;
-        *(a3 + 6) = v18 + 1;
+        v17 = google::protobuf::Arena::CreateMaybeMessage<TSD::MovieFingerprintTrack>(*(message + 2));
+        v18 = *(message + 6);
+        v19 = *(message + 4) + 8 * v18;
+        *(message + 6) = v18 + 1;
         *(v19 + 8) = v17;
-        objc_msgSend_saveToMessage_archiver_(v13, v20, v17, v6, v26);
+        objc_msgSend_saveToMessage_archiver_(v13, v20, v17, archiverCopy, v26);
 LABEL_13:
         ++v12;
       }
@@ -306,7 +306,7 @@ LABEL_13:
   }
 
   v21 = objc_alloc(MEMORY[0x277D80890]);
-  v23 = objc_msgSend_initWithVersionMessage_(v21, v22, a3 + 40);
+  v23 = objc_msgSend_initWithVersionMessage_(v21, v22, message + 40);
   objc_msgSend_version(self, v24, v25);
   UnsafePointer();
 }

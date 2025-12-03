@@ -12,7 +12,7 @@
     +[AXWebProcessGlue accessibilityInitializeBundle];
   }
 
-  [a1 _initializeAXRuntime];
+  [self _initializeAXRuntime];
 }
 
 void __49__AXWebProcessGlue_accessibilityInitializeBundle__block_invoke()
@@ -50,20 +50,20 @@ void __49__AXWebProcessGlue_accessibilityInitializeBundle__block_invoke_4(uint64
 
 + (void)_initializeAXRuntime
 {
-  v3 = [MEMORY[0x29EDBD810] sharedManager];
-  [v3 setAttributeCallback:&__block_literal_global_322];
-  [v3 setParameterizedAttributeCallback:&__block_literal_global_325];
-  [v3 setSetAttributeCallback:&__block_literal_global_328];
-  [v3 setPerformActionCallback:&__block_literal_global_331];
-  [v3 setHitTestCallback:&__block_literal_global_334];
-  [v3 setApplicationElementCallback:&__block_literal_global_338];
-  [v3 setOutgoingValuePreprocessor:&__block_literal_global_353];
-  [v3 setClientObserverCallback:&__block_literal_global_357];
-  [v3 start];
+  mEMORY[0x29EDBD810] = [MEMORY[0x29EDBD810] sharedManager];
+  [mEMORY[0x29EDBD810] setAttributeCallback:&__block_literal_global_322];
+  [mEMORY[0x29EDBD810] setParameterizedAttributeCallback:&__block_literal_global_325];
+  [mEMORY[0x29EDBD810] setSetAttributeCallback:&__block_literal_global_328];
+  [mEMORY[0x29EDBD810] setPerformActionCallback:&__block_literal_global_331];
+  [mEMORY[0x29EDBD810] setHitTestCallback:&__block_literal_global_334];
+  [mEMORY[0x29EDBD810] setApplicationElementCallback:&__block_literal_global_338];
+  [mEMORY[0x29EDBD810] setOutgoingValuePreprocessor:&__block_literal_global_353];
+  [mEMORY[0x29EDBD810] setClientObserverCallback:&__block_literal_global_357];
+  [mEMORY[0x29EDBD810] start];
   _UIAXInitializeConstantValues();
   [UIAccessibilityLoaderForWebKit _performInitialAccessibilityBundleLoad:1 monitorForFutureLoadEvents:1 trackingMode:2];
-  v2 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v2 postNotificationName:@"AccessibilityCategoryInstalled" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:@"AccessibilityCategoryInstalled" object:0];
 }
 
 id __40__AXWebProcessGlue__initializeAXRuntime__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)

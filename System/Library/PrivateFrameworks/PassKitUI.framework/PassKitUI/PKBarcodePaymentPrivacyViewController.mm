@@ -1,22 +1,22 @@
 @interface PKBarcodePaymentPrivacyViewController
-- (PKBarcodePaymentPrivacyViewController)initWithIssuerName:(id)a3 displayContext:(unint64_t)a4 paymentSetupContext:(int64_t)a5;
+- (PKBarcodePaymentPrivacyViewController)initWithIssuerName:(id)name displayContext:(unint64_t)context paymentSetupContext:(int64_t)setupContext;
 - (void)_dismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation PKBarcodePaymentPrivacyViewController
 
-- (PKBarcodePaymentPrivacyViewController)initWithIssuerName:(id)a3 displayContext:(unint64_t)a4 paymentSetupContext:(int64_t)a5
+- (PKBarcodePaymentPrivacyViewController)initWithIssuerName:(id)name displayContext:(unint64_t)context paymentSetupContext:(int64_t)setupContext
 {
-  v9 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = PKBarcodePaymentPrivacyViewController;
-  v10 = [(PKExplanationViewController *)&v13 initWithContext:a5];
+  v10 = [(PKExplanationViewController *)&v13 initWithContext:setupContext];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_issuerName, a3);
-    v11->_displayContext = a4;
+    objc_storeStrong(&v10->_issuerName, name);
+    v11->_displayContext = context;
   }
 
   return v11;
@@ -27,15 +27,15 @@
   v11.receiver = self;
   v11.super_class = PKBarcodePaymentPrivacyViewController;
   [(PKExplanationViewController *)&v11 viewDidLoad];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  v4 = [v3 dockView];
-  v5 = v4;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  v5 = dockView;
   displayContext = self->_displayContext;
   if (displayContext == 1)
   {
-    v7 = [v4 primaryButton];
+    primaryButton = [dockView primaryButton];
     v8 = PKLocalizedAquamanString(&cfstr_Done.isa);
-    [v7 setTitle:v8 forState:0];
+    [primaryButton setTitle:v8 forState:0];
   }
 
   else if (!displayContext)
@@ -46,18 +46,18 @@
 
   [(PKExplanationViewController *)self setShowCancelButton:0];
   v9 = PKLocalizedAquamanString(&cfstr_BarcodePayment_7.isa, &stru_1F3BD5BF0.isa, self->_issuerName);
-  [v3 setTitleText:v9];
+  [explanationView setTitleText:v9];
 
   v10 = PKLocalizedAquamanString(&cfstr_BarcodePayment_8.isa, &stru_1F3BDAC30.isa, self->_issuerName, self->_issuerName, self->_issuerName);
-  [v3 setBodyText:v10];
+  [explanationView setBodyText:v10];
 
-  [v3 setShowPrivacyView:0];
+  [explanationView setShowPrivacyView:0];
 }
 
 - (void)_dismiss
 {
-  v2 = [(PKBarcodePaymentPrivacyViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKBarcodePaymentPrivacyViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

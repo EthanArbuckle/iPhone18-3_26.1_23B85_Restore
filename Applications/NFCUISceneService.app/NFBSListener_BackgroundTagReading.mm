@@ -2,13 +2,13 @@
 - (NFBSListener_BackgroundTagReading)init;
 - (id)bsInterface;
 - (void)activate;
-- (void)activateUIRemoteAlertWithExtension:(id)a3 ndefMessage:(id)a4 tag:(id)a5;
+- (void)activateUIRemoteAlertWithExtension:(id)extension ndefMessage:(id)message tag:(id)tag;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)processNDEF:(id)a3 tag:(id)a4 reply:(id)a5;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)processNDEF:(id)f tag:(id)tag reply:(id)reply;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation NFBSListener_BackgroundTagReading
@@ -98,11 +98,11 @@
   return v3;
 }
 
-- (void)activateUIRemoteAlertWithExtension:(id)a3 ndefMessage:(id)a4 tag:(id)a5
+- (void)activateUIRemoteAlertWithExtension:(id)extension ndefMessage:(id)message tag:(id)tag
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  messageCopy = message;
+  tagCopy = tag;
+  extensionCopy = extension;
   v11 = [SBSRemoteAlertDefinition alloc];
   v12 = +[RBSProcessIdentity identityOfCurrentProcess];
   v13 = [v11 initWithSceneProvidingProcess:v12 configurationIdentifier:@"action:remote-alert-on-background-tag-reading"];
@@ -115,21 +115,21 @@
   [v16 setReason:@"Process NDEF"];
   v17 = [NSMutableDictionary alloc];
   v29[0] = @"ExUUID";
-  v18 = [v10 identity];
-  v19 = [v18 uniqueIdentifier];
-  v20 = [v19 UUIDString];
-  v30[0] = v20;
-  v30[1] = v8;
-  v26 = v8;
-  v21 = v9;
+  identity = [extensionCopy identity];
+  uniqueIdentifier = [identity uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v30[0] = uUIDString;
+  v30[1] = messageCopy;
+  v26 = messageCopy;
+  v21 = tagCopy;
   v29[1] = @"ndef";
   v29[2] = @"tag";
-  v30[2] = v9;
+  v30[2] = tagCopy;
   v22 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:3];
   v23 = [v17 initWithDictionary:v22];
 
-  LODWORD(v20) = [v10 swipeToDismiss];
-  if (v20)
+  LODWORD(uUIDString) = [extensionCopy swipeToDismiss];
+  if (uUIDString)
   {
     [v23 setObject:&__kCFBooleanTrue forKeyedSubscript:@"swipeToDismiss"];
   }
@@ -146,9 +146,9 @@
   [v15 activateWithContext:v16];
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v5 = a3;
+  activateCopy = activate;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -164,7 +164,7 @@
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i handle %@ activate", v10, ClassName, Name, 121, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i handle %@ activate", v10, ClassName, Name, 121, activateCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -191,14 +191,14 @@
     v22 = 1024;
     v23 = 121;
     v24 = 2112;
-    v25 = v5;
+    v25 = activateCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i handle %@ activate", buf, 0x2Cu);
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v5 = a3;
+  deactivateCopy = deactivate;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -214,7 +214,7 @@
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i handle %@ deactivate", v10, ClassName, Name, 126, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i handle %@ deactivate", v10, ClassName, Name, 126, deactivateCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -241,15 +241,15 @@
     v22 = 1024;
     v23 = 126;
     v24 = 2112;
-    v25 = v5;
+    v25 = deactivateCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i handle %@ deactivate", buf, 0x2Cu);
   }
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -265,7 +265,7 @@
       v14 = 43;
     }
 
-    v10(6, "%c[%{public}s %{public}s]:%i Handle %@ invalidated; error=%@", v14, ClassName, Name, 131, v7, v8);
+    v10(6, "%c[%{public}s %{public}s]:%i Handle %@ invalidated; error=%@", v14, ClassName, Name, 131, handleCopy, errorCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -292,16 +292,16 @@
     v25 = 1024;
     v26 = 131;
     v27 = 2112;
-    v28 = v7;
+    v28 = handleCopy;
     v29 = 2112;
-    v30 = v8;
+    v30 = errorCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Handle %@ invalidated; error=%@", buf, 0x36u);
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
+  connectionCopy = connection;
   v7 = +[NFCUISceneServiceLogger defaultLogger];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -309,9 +309,9 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[NFBSListener_BackgroundTagReading] connection requested", buf, 2u);
   }
 
-  v8 = [v6 remoteProcess];
-  v9 = v8;
-  if (v8 && ([v8 hasEntitlement:@"com.apple.nfcd.background.tag.reading.extension"] & 1) != 0)
+  remoteProcess = [connectionCopy remoteProcess];
+  v9 = remoteProcess;
+  if (remoteProcess && ([remoteProcess hasEntitlement:@"com.apple.nfcd.background.tag.reading.extension"] & 1) != 0)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -328,7 +328,7 @@
     v11[2] = sub_10000D23C;
     v11[3] = &unk_100018B98;
     v11[4] = self;
-    [v6 configureConnection:v11];
+    [connectionCopy configureConnection:v11];
     v10 = +[NFCUISceneServiceLogger defaultLogger];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -336,20 +336,20 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[NFBSListener_BackgroundTagReading] connection activated", buf, 2u);
     }
 
-    [v6 activate];
+    [connectionCopy activate];
   }
 
   else
   {
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
-- (void)processNDEF:(id)a3 tag:(id)a4 reply:(id)a5
+- (void)processNDEF:(id)f tag:(id)tag reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  fCopy = f;
+  tagCopy = tag;
+  replyCopy = reply;
   v12 = +[NFCUISceneServiceLogger defaultLogger];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -366,36 +366,36 @@
 
   v14 = objc_opt_class();
   v62 = 0;
-  v15 = [NSKeyedUnarchiver unarchivedObjectOfClass:v14 fromData:v10 error:&v62];
+  v15 = [NSKeyedUnarchiver unarchivedObjectOfClass:v14 fromData:tagCopy error:&v62];
   v16 = v62;
-  v52 = v11;
+  v52 = replyCopy;
   if (!v16)
   {
     v22 = objc_opt_class();
     v61 = 0;
-    v23 = [NSKeyedUnarchiver unarchivedObjectOfClass:v22 fromData:v9 error:&v61];
+    v23 = [NSKeyedUnarchiver unarchivedObjectOfClass:v22 fromData:fCopy error:&v61];
     v24 = v61;
     if (v24)
     {
       v17 = v24;
-      v51 = v9;
+      v51 = fCopy;
       v48 = [NSError alloc];
       v25 = [NSString stringWithUTF8String:"nfcd"];
-      v26 = [v17 code];
+      code = [v17 code];
       v65[0] = NSLocalizedDescriptionKey;
       v49 = v15;
-      v50 = v10;
+      v50 = tagCopy;
       if ([v17 code] > 75)
       {
-        v27 = 76;
+        code2 = 76;
       }
 
       else
       {
-        v27 = [v17 code];
+        code2 = [v17 code];
       }
 
-      v38 = [NSString stringWithUTF8String:(&off_100018BB8)[v27]];
+      v38 = [NSString stringWithUTF8String:(&off_100018BB8)[code2]];
       v66[0] = v38;
       v66[1] = v17;
       v65[1] = NSUnderlyingErrorKey;
@@ -408,7 +408,7 @@
       v40 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 198];
       v66[4] = v40;
       v41 = [NSDictionary dictionaryWithObjects:v66 forKeys:v65 count:5];
-      v42 = [v48 initWithDomain:v25 code:v26 userInfo:v41];
+      v42 = [v48 initWithDomain:v25 code:code userInfo:v41];
       (v52[2])(v52, v42);
 
       v43 = +[NFCUISceneServiceLogger defaultLogger];
@@ -434,7 +434,7 @@
     if (*(v56 + 5))
     {
       v35 = v15;
-      v11[2](v11);
+      replyCopy[2](replyCopy);
       v36 = +[NFCUISceneServiceLogger defaultLogger];
       if (!os_signpost_enabled(v36))
       {
@@ -475,7 +475,7 @@ LABEL_34:
 
         v35 = v15;
 
-        [(NFBSListener_BackgroundTagReading *)self activateUIRemoteAlertWithExtension:v34 ndefMessage:v9 tag:v10];
+        [(NFBSListener_BackgroundTagReading *)self activateUIRemoteAlertWithExtension:v34 ndefMessage:fCopy tag:tagCopy];
         v46 = *(v56 + 5);
         *(v56 + 5) = 0;
       }
@@ -492,7 +492,7 @@ LABEL_34:
         [(NFBackgroundTagReadingExtensionManager *)v47 processNdef:v23 tag:v15 targetExtension:v34 completion:v53];
       }
 
-      (v11[2])(v11, *(v56 + 5));
+      (replyCopy[2])(replyCopy, *(v56 + 5));
       v36 = +[NFCUISceneServiceLogger defaultLogger];
       if (!os_signpost_enabled(v36))
       {
@@ -508,24 +508,24 @@ LABEL_34:
   }
 
   v17 = v16;
-  v50 = v10;
-  v51 = v9;
+  v50 = tagCopy;
+  v51 = fCopy;
   v18 = [NSError alloc];
   v19 = [NSString stringWithUTF8String:"nfcd"];
-  v20 = [v17 code];
+  code3 = [v17 code];
   v67[0] = NSLocalizedDescriptionKey;
   v49 = v15;
   if ([v17 code] > 75)
   {
-    v21 = 76;
+    code4 = 76;
   }
 
   else
   {
-    v21 = [v17 code];
+    code4 = [v17 code];
   }
 
-  v28 = [NSString stringWithUTF8String:(&off_100018BB8)[v21]];
+  v28 = [NSString stringWithUTF8String:(&off_100018BB8)[code4]];
   v68[0] = v28;
   v68[1] = v17;
   v67[1] = NSUnderlyingErrorKey;
@@ -538,7 +538,7 @@ LABEL_34:
   v30 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 188];
   v68[4] = v30;
   v31 = [NSDictionary dictionaryWithObjects:v68 forKeys:v67 count:5];
-  v32 = [v18 initWithDomain:v19 code:v20 userInfo:v31];
+  v32 = [v18 initWithDomain:v19 code:code3 userInfo:v31];
   (v52[2])(v52, v32);
 
   v23 = +[NFCUISceneServiceLogger defaultLogger];
@@ -549,9 +549,9 @@ LABEL_34:
   }
 
 LABEL_21:
-  v10 = v50;
-  v9 = v51;
-  v11 = v52;
+  tagCopy = v50;
+  fCopy = v51;
+  replyCopy = v52;
   v35 = v49;
 LABEL_22:
 }

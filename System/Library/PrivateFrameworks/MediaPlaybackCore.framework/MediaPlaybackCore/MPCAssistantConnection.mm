@@ -1,20 +1,20 @@
 @interface MPCAssistantConnection
-- (void)connectToEndpoint:(void *)a3 completion:(id)a4;
-- (void)connectToEndpointObject:(id)a3 completion:(id)a4;
+- (void)connectToEndpoint:(void *)endpoint completion:(id)completion;
+- (void)connectToEndpointObject:(id)object completion:(id)completion;
 @end
 
 @implementation MPCAssistantConnection
 
-- (void)connectToEndpoint:(void *)a3 completion:(id)a4
+- (void)connectToEndpoint:(void *)endpoint completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__MPCAssistantConnection_connectToEndpoint_completion___block_invoke;
   v8[3] = &unk_1E8230DA0;
-  v9 = v6;
-  v7 = v6;
-  [(MPCAssistantConnection *)self connectToEndpointObject:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(MPCAssistantConnection *)self connectToEndpointObject:endpoint completion:v8];
 }
 
 uint64_t __55__MPCAssistantConnection_connectToEndpoint_completion___block_invoke(uint64_t a1)
@@ -28,11 +28,11 @@ uint64_t __55__MPCAssistantConnection_connectToEndpoint_completion___block_invok
   return result;
 }
 
-- (void)connectToEndpointObject:(id)a3 completion:(id)a4
+- (void)connectToEndpointObject:(id)object completion:(id)completion
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  completionCopy = completion;
   v13 = *MEMORY[0x1E69B0918];
   v14[0] = @"MPCAssistantConnection";
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
@@ -40,10 +40,10 @@ uint64_t __55__MPCAssistantConnection_connectToEndpoint_completion___block_invok
   v10[1] = 3221225472;
   v10[2] = __61__MPCAssistantConnection_connectToEndpointObject_completion___block_invoke;
   v10[3] = &unk_1E8236B80;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = objectCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = objectCopy;
   [v9 connectToExternalDeviceWithOptions:0 userInfo:v7 completion:v10];
 }
 

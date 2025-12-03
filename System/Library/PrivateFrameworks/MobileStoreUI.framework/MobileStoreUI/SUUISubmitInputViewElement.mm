@@ -1,18 +1,18 @@
 @interface SUUISubmitInputViewElement
-- (SUUISubmitInputViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUISubmitInputViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SUUISubmitInputViewElement
 
-- (SUUISubmitInputViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUISubmitInputViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = SUUISubmitInputViewElement;
-  v9 = [(SUUIInputViewElement *)&v12 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIInputViewElement *)&v12 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"value"];
+    v10 = [elementCopy getAttribute:@"value"];
     if (v10)
     {
       objc_storeStrong(&v9->_label, v10);

@@ -1,12 +1,12 @@
 @interface GTTelemetryRequestToken
-- (GTTelemetryRequestToken)initWithService:(id)a3 andTokenId:(unint64_t)a4;
+- (GTTelemetryRequestToken)initWithService:(id)service andTokenId:(unint64_t)id;
 @end
 
 @implementation GTTelemetryRequestToken
 
-- (GTTelemetryRequestToken)initWithService:(id)a3 andTokenId:(unint64_t)a4
+- (GTTelemetryRequestToken)initWithService:(id)service andTokenId:(unint64_t)id
 {
-  v7 = a3;
+  serviceCopy = service;
   v13.receiver = self;
   v13.super_class = GTTelemetryRequestToken;
   v8 = [(GTTelemetryRequestToken *)&v13 init];
@@ -16,8 +16,8 @@
     finished = v8->_finished;
     v8->_finished = v9;
 
-    v8->_tokenId = a4;
-    objc_storeStrong(&v8->_service, a3);
+    v8->_tokenId = id;
+    objc_storeStrong(&v8->_service, service);
     v11 = v8;
   }
 

@@ -1,8 +1,8 @@
 @interface WeatherVisibilityFormatter
 + (id)convenienceFormatter;
 - (WeatherVisibilityFormatter)init;
-- (id)stringFromDistance:(double)a3 isDataMetric:(BOOL)a4;
-- (void)setLocale:(id)a3;
+- (id)stringFromDistance:(double)distance isDataMetric:(BOOL)metric;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation WeatherVisibilityFormatter
@@ -39,35 +39,35 @@ uint64_t __50__WeatherVisibilityFormatter_convenienceFormatter__block_invoke()
   v2 = [(NSLengthFormatter *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
     locale = v2->_locale;
-    v2->_locale = v3;
+    v2->_locale = autoupdatingCurrentLocale;
 
-    v5 = [(NSLengthFormatter *)v2 numberFormatter];
-    [v5 setMaximumFractionDigits:1];
+    numberFormatter = [(NSLengthFormatter *)v2 numberFormatter];
+    [numberFormatter setMaximumFractionDigits:1];
   }
 
   return v2;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  objc_storeStrong(&self->_locale, a3);
-  v5 = a3;
-  v6 = [(NSLengthFormatter *)self numberFormatter];
-  [v6 setLocale:v5];
+  objc_storeStrong(&self->_locale, locale);
+  localeCopy = locale;
+  numberFormatter = [(NSLengthFormatter *)self numberFormatter];
+  [numberFormatter setLocale:localeCopy];
 }
 
-- (id)stringFromDistance:(double)a3 isDataMetric:(BOOL)a4
+- (id)stringFromDistance:(double)distance isDataMetric:(BOOL)metric
 {
-  if (!a4)
+  if (!metric)
   {
-    a3 = a3 * 1.60934;
+    distance = distance * 1.60934;
   }
 
   v6.receiver = self;
   v6.super_class = WeatherVisibilityFormatter;
-  v4 = [(NSLengthFormatter *)&v6 stringFromMeters:a3 * 1000.0];
+  v4 = [(NSLengthFormatter *)&v6 stringFromMeters:distance * 1000.0];
 
   return v4;
 }

@@ -1,26 +1,26 @@
 @interface CMWaterSubmersionMeasurement
-- (CMWaterSubmersionMeasurement)initWithCoder:(id)a3;
-- (CMWaterSubmersionMeasurement)initWithDepth:(id)a3 andPressure:(id)a4 andSurfacePressure:(id)a5 andState:(int64_t)a6 andDate:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMWaterSubmersionMeasurement)initWithCoder:(id)coder;
+- (CMWaterSubmersionMeasurement)initWithDepth:(id)depth andPressure:(id)pressure andSurfacePressure:(id)surfacePressure andState:(int64_t)state andDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMWaterSubmersionMeasurement
 
-- (CMWaterSubmersionMeasurement)initWithDepth:(id)a3 andPressure:(id)a4 andSurfacePressure:(id)a5 andState:(int64_t)a6 andDate:(id)a7
+- (CMWaterSubmersionMeasurement)initWithDepth:(id)depth andPressure:(id)pressure andSurfacePressure:(id)surfacePressure andState:(int64_t)state andDate:(id)date
 {
   v14.receiver = self;
   v14.super_class = CMWaterSubmersionMeasurement;
   v12 = [(CMWaterSubmersionMeasurement *)&v14 init];
   if (v12)
   {
-    v12->_depth = a3;
-    v12->_pressure = a4;
-    v12->_surfacePressure = a5;
-    v12->_submersionState = a6;
-    v12->_date = a7;
+    v12->_depth = depth;
+    v12->_pressure = pressure;
+    v12->_surfacePressure = surfacePressure;
+    v12->_submersionState = state;
+    v12->_date = date;
   }
 
   return v12;
@@ -33,10 +33,10 @@
   [(CMWaterSubmersionMeasurement *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_depth(self, v8, v9);
   objc_msgSend_pressure(self, v11, v12);
   objc_msgSend_surfacePressure(self, v13, v14);
@@ -46,7 +46,7 @@
   return MEMORY[0x1EEE66B58](v7, sel_initWithDepth_andPressure_andSurfacePressure_andState_andDate_, v10);
 }
 
-- (CMWaterSubmersionMeasurement)initWithCoder:(id)a3
+- (CMWaterSubmersionMeasurement)initWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = CMWaterSubmersionMeasurement;
@@ -54,32 +54,32 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->_depth = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMWaterSubmersionMeasurementUpdateDepth");
+    v4->_depth = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMWaterSubmersionMeasurementUpdateDepth");
     v7 = objc_opt_class();
-    v4->_pressure = objc_msgSend_decodeObjectOfClass_forKey_(a3, v8, v7, @"kCMWaterSubmersionMeasurementUpdatePressure");
+    v4->_pressure = objc_msgSend_decodeObjectOfClass_forKey_(coder, v8, v7, @"kCMWaterSubmersionMeasurementUpdatePressure");
     v9 = objc_opt_class();
-    v4->_surfacePressure = objc_msgSend_decodeObjectOfClass_forKey_(a3, v10, v9, @"kCMWaterSubmersionMeasurementUpdateSurfacePressure");
-    v4->_submersionState = objc_msgSend_decodeIntForKey_(a3, v11, @"kCMWaterSubmersionMeasurementUpdateState");
+    v4->_surfacePressure = objc_msgSend_decodeObjectOfClass_forKey_(coder, v10, v9, @"kCMWaterSubmersionMeasurementUpdateSurfacePressure");
+    v4->_submersionState = objc_msgSend_decodeIntForKey_(coder, v11, @"kCMWaterSubmersionMeasurementUpdateState");
     v12 = objc_opt_class();
-    v4->_date = objc_msgSend_decodeObjectOfClass_forKey_(a3, v13, v12, @"kCMWaterSubmersionMeasurementUpdateDate");
+    v4->_date = objc_msgSend_decodeObjectOfClass_forKey_(coder, v13, v12, @"kCMWaterSubmersionMeasurementUpdateDate");
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = objc_msgSend_depth(self, a2, a3);
-  objc_msgSend_encodeObject_forKey_(a3, v6, v5, @"kCMWaterSubmersionMeasurementUpdateDepth");
+  v5 = objc_msgSend_depth(self, a2, coder);
+  objc_msgSend_encodeObject_forKey_(coder, v6, v5, @"kCMWaterSubmersionMeasurementUpdateDepth");
   v9 = objc_msgSend_pressure(self, v7, v8);
-  objc_msgSend_encodeObject_forKey_(a3, v10, v9, @"kCMWaterSubmersionMeasurementUpdatePressure");
+  objc_msgSend_encodeObject_forKey_(coder, v10, v9, @"kCMWaterSubmersionMeasurementUpdatePressure");
   v13 = objc_msgSend_surfacePressure(self, v11, v12);
-  objc_msgSend_encodeObject_forKey_(a3, v14, v13, @"kCMWaterSubmersionMeasurementUpdateSurfacePressure");
+  objc_msgSend_encodeObject_forKey_(coder, v14, v13, @"kCMWaterSubmersionMeasurementUpdateSurfacePressure");
   v17 = objc_msgSend_submersionState(self, v15, v16);
-  objc_msgSend_encodeInteger_forKey_(a3, v18, v17, @"kCMWaterSubmersionMeasurementUpdateState");
+  objc_msgSend_encodeInteger_forKey_(coder, v18, v17, @"kCMWaterSubmersionMeasurementUpdateState");
   v22 = objc_msgSend_date(self, v19, v20);
 
-  objc_msgSend_encodeObject_forKey_(a3, v21, v22, @"kCMWaterSubmersionMeasurementUpdateDate");
+  objc_msgSend_encodeObject_forKey_(coder, v21, v22, @"kCMWaterSubmersionMeasurementUpdateDate");
 }
 
 - (id)description

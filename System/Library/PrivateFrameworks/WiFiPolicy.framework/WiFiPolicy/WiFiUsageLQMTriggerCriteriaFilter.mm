@@ -1,62 +1,62 @@
 @interface WiFiUsageLQMTriggerCriteriaFilter
-- (WiFiUsageLQMTriggerCriteriaFilter)initWith:(id)a3 forFields:(id)a4 andFeatures:(id)a5;
+- (WiFiUsageLQMTriggerCriteriaFilter)initWith:(id)with forFields:(id)fields andFeatures:(id)features;
 @end
 
 @implementation WiFiUsageLQMTriggerCriteriaFilter
 
-- (WiFiUsageLQMTriggerCriteriaFilter)initWith:(id)a3 forFields:(id)a4 andFeatures:(id)a5
+- (WiFiUsageLQMTriggerCriteriaFilter)initWith:(id)with forFields:(id)fields andFeatures:(id)features
 {
   v44 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 objectForKey:@"type"];
+  withCopy = with;
+  fieldsCopy = fields;
+  featuresCopy = features;
+  v12 = [withCopy objectForKey:@"type"];
   if (v12)
   {
   }
 
   else
   {
-    v13 = [v9 objectForKey:@"test"];
+    v13 = [withCopy objectForKey:@"test"];
 
     if (!v13)
     {
-      NSLog(&cfstr_SFailedToParse.isa, "[WiFiUsageLQMTriggerCriteriaFilter initWith:forFields:andFeatures:]", v9);
+      NSLog(&cfstr_SFailedToParse.isa, "[WiFiUsageLQMTriggerCriteriaFilter initWith:forFields:andFeatures:]", withCopy);
 LABEL_36:
-      v5 = 0;
+      selfCopy = 0;
       goto LABEL_37;
     }
   }
 
   v37 = objc_opt_new();
   v14 = objc_opt_new();
-  v15 = [v9 objectForKey:@"type"];
+  v15 = [withCopy objectForKey:@"type"];
   if (v15)
   {
-    v16 = [v9 objectForKey:@"type"];
+    v16 = [withCopy objectForKey:@"type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v9 objectForKey:@"type"];
-      v17 = [(WiFiUsageLQMTriggerCriteriaFilter *)v5 isEqualToString:@"filter"];
+      selfCopy = [withCopy objectForKey:@"type"];
+      v17 = [(WiFiUsageLQMTriggerCriteriaFilter *)selfCopy isEqualToString:@"filter"];
 
       if (v17)
       {
-        v18 = [v9 objectForKey:@"filterconditions"];
+        v18 = [withCopy objectForKey:@"filterconditions"];
         if (v18)
         {
-          v19 = [v9 objectForKey:@"filterconditions"];
+          v19 = [withCopy objectForKey:@"filterconditions"];
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && ([v9 objectForKey:@"conditions"], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+          if ((objc_opt_isKindOfClass() & 1) != 0 && ([withCopy objectForKey:@"conditions"], (selfCopy = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v20 = [v9 objectForKey:@"conditions"];
+            v20 = [withCopy objectForKey:@"conditions"];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
             if (isKindOfClass)
             {
-              v33 = [v9 objectForKey:@"filterconditions"];
-              v22 = [objc_opt_class() parseCriteria:v33 intoRequiredFields:0 andFeatures:0 forFields:v10 withType:0 isFilter:1];
+              v33 = [withCopy objectForKey:@"filterconditions"];
+              v22 = [objc_opt_class() parseCriteria:v33 intoRequiredFields:0 andFeatures:0 forFields:fieldsCopy withType:0 isFilter:1];
               if (v22)
               {
                 v23 = [MEMORY[0x277CCAC30] predicateWithFormat:v22];
@@ -64,7 +64,7 @@ LABEL_36:
                 v42 = 0u;
                 v39 = 0u;
                 v40 = 0u;
-                obj = [v9 objectForKey:@"conditions"];
+                obj = [withCopy objectForKey:@"conditions"];
                 v36 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
                 if (v36)
                 {
@@ -82,16 +82,16 @@ LABEL_36:
                       objc_opt_class();
                       if ((objc_opt_isKindOfClass() & 1) == 0)
                       {
-                        NSLog(&cfstr_SFailedToParse_2.isa, "[WiFiUsageLQMTriggerCriteriaFilter initWith:forFields:andFeatures:]", v9);
+                        NSLog(&cfstr_SFailedToParse_2.isa, "[WiFiUsageLQMTriggerCriteriaFilter initWith:forFields:andFeatures:]", withCopy);
 
                         goto LABEL_34;
                       }
 
-                      v26 = [[WiFiUsageLQMTriggerCriteria alloc] initWith:v25 forFields:v10 andFeatures:v37];
+                      v26 = [[WiFiUsageLQMTriggerCriteria alloc] initWith:v25 forFields:fieldsCopy andFeatures:v37];
                       if (v26)
                       {
-                        v5 = [WiFiUsageLQMTriggerCriteria predicateNoQuotes:v23];
-                        [(WiFiUsageLQMTriggerCriteria *)v26 setFilterCriteria:v5];
+                        selfCopy = [WiFiUsageLQMTriggerCriteria predicateNoQuotes:v23];
+                        [(WiFiUsageLQMTriggerCriteria *)v26 setFilterCriteria:selfCopy];
 
                         [v14 addObject:v26];
                       }
@@ -122,7 +122,7 @@ LABEL_36:
           }
         }
 
-        NSLog(&cfstr_SFailedToParse_0.isa, "[WiFiUsageLQMTriggerCriteriaFilter initWith:forFields:andFeatures:]", v9);
+        NSLog(&cfstr_SFailedToParse_0.isa, "[WiFiUsageLQMTriggerCriteriaFilter initWith:forFields:andFeatures:]", withCopy);
         goto LABEL_33;
       }
     }
@@ -132,11 +132,11 @@ LABEL_36:
     }
   }
 
-  v27 = [v9 objectForKey:@"test"];
+  v27 = [withCopy objectForKey:@"test"];
 
   if (v27)
   {
-    v28 = [[WiFiUsageLQMTriggerCriteria alloc] initWith:v9 forFields:v10 andFeatures:v11];
+    v28 = [[WiFiUsageLQMTriggerCriteria alloc] initWith:withCopy forFields:fieldsCopy andFeatures:featuresCopy];
     [v14 addObject:v28];
 
     v22 = 0;
@@ -152,19 +152,19 @@ LABEL_26:
       objc_storeStrong(&v29->_criterias, v14);
       self = v29;
       v30 = 0;
-      v5 = self;
+      selfCopy = self;
     }
 
     else
     {
       v30 = 0;
-      v5 = 0;
+      selfCopy = 0;
     }
 
     goto LABEL_35;
   }
 
-  NSLog(&cfstr_SFailedToParse_3.isa, "[WiFiUsageLQMTriggerCriteriaFilter initWith:forFields:andFeatures:]", v9);
+  NSLog(&cfstr_SFailedToParse_3.isa, "[WiFiUsageLQMTriggerCriteriaFilter initWith:forFields:andFeatures:]", withCopy);
 LABEL_33:
   v22 = 0;
   v23 = 0;
@@ -180,7 +180,7 @@ LABEL_35:
 LABEL_37:
 
   v31 = *MEMORY[0x277D85DE8];
-  return v5;
+  return selfCopy;
 }
 
 @end

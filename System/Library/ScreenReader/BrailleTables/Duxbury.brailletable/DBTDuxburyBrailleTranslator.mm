@@ -1,25 +1,25 @@
 @interface DBTDuxburyBrailleTranslator
-+ (_NSRange)_mappedRange:(_NSRange)a3 withPreprocessedMap:(id)a4;
-- (BOOL)_loadTable:(id)a3 translationHandle:(void *)a4 backTranslationHandle:(void *)a5;
++ (_NSRange)_mappedRange:(_NSRange)range withPreprocessedMap:(id)map;
+- (BOOL)_loadTable:(id)table translationHandle:(void *)handle backTranslationHandle:(void *)translationHandle;
 - (DBTDuxburyBrailleTranslator)init;
-- (id)_eightDotPrintBrailleForText:(id)a3 locations:(id *)a4 textFormattingRanges:(id)a5;
-- (id)_eightDotTextForPrintBraille:(id)a3 locations:(id *)a4;
-- (id)_newPrintPreprocessorsForTable:(id)a3 primaryLanguageCode:(id)a4;
-- (id)_printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7 optimize:(BOOL)a8;
-- (id)_scrubDollarCodesInBuffer:(int *)a3 originalLength:(unint64_t)a4 originalLocations:(id)a5 newLocations:(id)a6 convertASCIIBrailleToUnicode:(BOOL)a7 limitRange:(_NSRange)a8;
-- (id)_tableInfoForKey:(id)a3;
-- (id)printBrailleForTechnicalText:(id)a3 useTechnicalTable:(BOOL)a4 locations:(id *)a5;
-- (id)printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7;
-- (id)textForPrintBraille:(id)a3 mode:(unint64_t)a4 locations:(id *)a5;
-- (unint64_t)_prepBuffersForConversion:(BOOL)a3 withString:(id)a4 mode:(unint64_t)a5 prefixLength:(unint64_t)a6;
-- (void)_eightDotTablesFromRawTable:(id)a3 translationTable:(id *)a4 backTranslationTable:(id *)a5;
-- (void)_populatePrintBrailleForTextLocations:(id *)a3 inLength:(unint64_t)a4 outLength:(unint64_t)a5 translationHandle:(void *)a6 offsetToBraille:(unsigned __int16)a7 prefixCodeLength:(unsigned __int16)a8 preprocessedMap:(id)a9 optimize:(BOOL)a10;
-- (void)_populateTextForPrintBrailleLocations:(id *)a3 inLength:(unint64_t)a4 outLength:(unint64_t)a5 offsetToBraille:(unsigned __int16)a6 prefixLength:(unint64_t)a7 optimize:(BOOL)a8;
+- (id)_eightDotPrintBrailleForText:(id)text locations:(id *)locations textFormattingRanges:(id)ranges;
+- (id)_eightDotTextForPrintBraille:(id)braille locations:(id *)locations;
+- (id)_newPrintPreprocessorsForTable:(id)table primaryLanguageCode:(id)code;
+- (id)_printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges optimize:(BOOL)optimize;
+- (id)_scrubDollarCodesInBuffer:(int *)buffer originalLength:(unint64_t)length originalLocations:(id)locations newLocations:(id)newLocations convertASCIIBrailleToUnicode:(BOOL)unicode limitRange:(_NSRange)range;
+- (id)_tableInfoForKey:(id)key;
+- (id)printBrailleForTechnicalText:(id)text useTechnicalTable:(BOOL)table locations:(id *)locations;
+- (id)printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges;
+- (id)textForPrintBraille:(id)braille mode:(unint64_t)mode locations:(id *)locations;
+- (unint64_t)_prepBuffersForConversion:(BOOL)conversion withString:(id)string mode:(unint64_t)mode prefixLength:(unint64_t)length;
+- (void)_eightDotTablesFromRawTable:(id)table translationTable:(id *)translationTable backTranslationTable:(id *)backTranslationTable;
+- (void)_populatePrintBrailleForTextLocations:(id *)locations inLength:(unint64_t)length outLength:(unint64_t)outLength translationHandle:(void *)handle offsetToBraille:(unsigned __int16)braille prefixCodeLength:(unsigned __int16)codeLength preprocessedMap:(id)map optimize:(BOOL)self0;
+- (void)_populateTextForPrintBrailleLocations:(id *)locations inLength:(unint64_t)length outLength:(unint64_t)outLength offsetToBraille:(unsigned __int16)braille prefixLength:(unint64_t)prefixLength optimize:(BOOL)optimize;
 - (void)_unloadTables;
 - (void)_unloadTechnicalTable;
 - (void)dealloc;
 - (void)loadNemethTable;
-- (void)setActiveTable:(id)a3;
+- (void)setActiveTable:(id)table;
 @end
 
 @implementation DBTDuxburyBrailleTranslator
@@ -151,12 +151,12 @@
   }
 }
 
-- (id)_tableInfoForKey:(id)a3
+- (id)_tableInfoForKey:(id)key
 {
-  v3 = a3;
-  if ([v3 length] >= 6)
+  keyCopy = key;
+  if ([keyCopy length] >= 6)
   {
-    v4 = [v3 substringWithRange:{objc_msgSend(v3, "length") - 5, 5}];
+    v4 = [keyCopy substringWithRange:{objc_msgSend(keyCopy, "length") - 5, 5}];
     if ([&off_353C8 containsObject:v4])
     {
       v5 = -5;
@@ -164,22 +164,22 @@
     }
   }
 
-  v6 = v3;
-  if ([v3 length] < 4)
+  v6 = keyCopy;
+  if ([keyCopy length] < 4)
   {
     goto LABEL_11;
   }
 
-  v4 = [v3 substringWithRange:{objc_msgSend(v3, "length") - 3, 3}];
+  v4 = [keyCopy substringWithRange:{objc_msgSend(keyCopy, "length") - 3, 3}];
   if (![&off_353E0 containsObject:v4])
   {
-    v6 = v3;
+    v6 = keyCopy;
     goto LABEL_10;
   }
 
   v5 = -3;
 LABEL_8:
-  v6 = [v3 substringToIndex:{objc_msgSend(v3, "length") + v5}];
+  v6 = [keyCopy substringToIndex:{objc_msgSend(keyCopy, "length") + v5}];
 
 LABEL_10:
 LABEL_11:
@@ -208,15 +208,15 @@ LABEL_11:
   return v11;
 }
 
-- (id)_newPrintPreprocessorsForTable:(id)a3 primaryLanguageCode:(id)a4
+- (id)_newPrintPreprocessorsForTable:(id)table primaryLanguageCode:(id)code
 {
-  v5 = a3;
-  v6 = a4;
+  tableCopy = table;
+  codeCopy = code;
   v7 = +[NSMutableArray array];
   v8 = objc_opt_new();
   [v7 addObject:v8];
 
-  if ([v5 isEqualToString:@"jpn"])
+  if ([tableCopy isEqualToString:@"jpn"])
   {
     v9 = objc_opt_new();
     [v7 addObject:v9];
@@ -225,7 +225,7 @@ LABEL_11:
     [v7 addObject:v10];
   }
 
-  if (([v5 isEqualToString:@"zh-cn"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"zh-tw"))
+  if (([tableCopy isEqualToString:@"zh-cn"] & 1) != 0 || objc_msgSend(tableCopy, "isEqualToString:", @"zh-tw"))
   {
     v11 = objc_opt_new();
     [v11 setTokenizerUnit:1];
@@ -236,7 +236,7 @@ LABEL_11:
     [v7 addObject:v12];
   }
 
-  v13 = [[BRLTEmojiPrintPreprocessor alloc] initWithPrimaryLanguageCode:v6];
+  v13 = [[BRLTEmojiPrintPreprocessor alloc] initWithPrimaryLanguageCode:codeCopy];
 
   [v7 addObject:v13];
   v14 = objc_opt_new();
@@ -245,10 +245,10 @@ LABEL_11:
   return v7;
 }
 
-- (unint64_t)_prepBuffersForConversion:(BOOL)a3 withString:(id)a4 mode:(unint64_t)a5 prefixLength:(unint64_t)a6
+- (unint64_t)_prepBuffersForConversion:(BOOL)conversion withString:(id)string mode:(unint64_t)mode prefixLength:(unint64_t)length
 {
-  v9 = a4;
-  v10 = [v9 length];
+  stringCopy = string;
+  v10 = [stringCopy length];
   if (v10 + 4 >= self->_inBufferLen)
   {
     DBTWideCharBufferFree(self->_inBuffer);
@@ -263,10 +263,10 @@ LABEL_11:
     self->_tmpBuffer = DBTWideCharBufferOfLength(self->_tmpBufferLen, 1);
   }
 
-  if (a5 == 4)
+  if (mode == 4)
   {
     v12 = &_TechnicalPrefix;
-    if (!a6)
+    if (!length)
     {
       goto LABEL_12;
     }
@@ -277,43 +277,43 @@ LABEL_11:
   if (self->_supportsContraction)
   {
     v12 = &_UnContractedPrefix;
-    if (a5 == 3)
+    if (mode == 3)
     {
       v12 = &_ContractedGrade2Prefix;
     }
 
-    if (a6)
+    if (length)
     {
 LABEL_10:
       inBuffer = self->_inBuffer;
-      v14 = a6;
+      lengthCopy = length;
       do
       {
         v15 = *v12++;
         *inBuffer++ = v15;
-        --v14;
+        --lengthCopy;
       }
 
-      while (v14);
+      while (lengthCopy);
     }
   }
 
 LABEL_12:
-  DBTAppendNSStringIntoWideCharBufferAtOffset(v9, self->_inBuffer, a6);
+  DBTAppendNSStringIntoWideCharBufferAtOffset(stringCopy, self->_inBuffer, length);
 
   return v10;
 }
 
-- (void)setActiveTable:(id)a3
+- (void)setActiveTable:(id)table
 {
-  v4 = a3;
-  if (([v4 isEqualToString:self->_activeTable] & 1) == 0)
+  tableCopy = table;
+  if (([tableCopy isEqualToString:self->_activeTable] & 1) == 0)
   {
     [(DBTDuxburyBrailleTranslator *)self _unloadTables];
-    if ([(DBTDuxburyBrailleTranslator *)self _loadTable:v4 translationHandle:&self->_translationHandle backTranslationHandle:&self->_backTranslationHandle])
+    if ([(DBTDuxburyBrailleTranslator *)self _loadTable:tableCopy translationHandle:&self->_translationHandle backTranslationHandle:&self->_backTranslationHandle])
     {
       v5 = [NSBundle bundleForClass:objc_opt_class()];
-      v6 = [(DBTDuxburyBrailleTranslator *)self _tableInfoForKey:v4];
+      v6 = [(DBTDuxburyBrailleTranslator *)self _tableInfoForKey:tableCopy];
       v7 = [v6 objectForKey:@"8dot"];
       if ([v7 length])
       {
@@ -324,7 +324,7 @@ LABEL_12:
       }
 
       v11 = [v5 objectForInfoDictionaryKey:@"BrailleTables"];
-      v12 = [v11 objectForKey:v4];
+      v12 = [v11 objectForKey:tableCopy];
       v13 = [v12 objectForKey:@"contracted"];
       self->_contracted = [v13 BOOLValue];
 
@@ -346,7 +346,7 @@ LABEL_12:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v21 = [v20 firstObject];
+        firstObject = [v20 firstObject];
       }
 
       else
@@ -354,17 +354,17 @@ LABEL_12:
         v22 = DBTLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          [(DBTDuxburyBrailleTranslator *)v4 setActiveTable:v22];
+          [(DBTDuxburyBrailleTranslator *)tableCopy setActiveTable:v22];
         }
 
-        v21 = 0;
+        firstObject = 0;
       }
 
-      v23 = [(DBTDuxburyBrailleTranslator *)self _newPrintPreprocessorsForTable:v4 primaryLanguageCode:v21];
+      v23 = [(DBTDuxburyBrailleTranslator *)self _newPrintPreprocessorsForTable:tableCopy primaryLanguageCode:firstObject];
       printPreprocessors = self->_printPreprocessors;
       self->_printPreprocessors = v23;
 
-      v25 = [v4 copy];
+      v25 = [tableCopy copy];
       activeTable = self->_activeTable;
       self->_activeTable = v25;
     }
@@ -385,10 +385,10 @@ LABEL_12:
   }
 }
 
-- (BOOL)_loadTable:(id)a3 translationHandle:(void *)a4 backTranslationHandle:(void *)a5
+- (BOOL)_loadTable:(id)table translationHandle:(void *)handle backTranslationHandle:(void *)translationHandle
 {
-  v8 = a3;
-  v9 = [(DBTDuxburyBrailleTranslator *)self _tableInfoForKey:v8];
+  tableCopy = table;
+  v9 = [(DBTDuxburyBrailleTranslator *)self _tableInfoForKey:tableCopy];
   v10 = DBTLog();
   v11 = v10;
   if (v9)
@@ -401,21 +401,21 @@ LABEL_12:
     }
 
     v11 = [NSBundle bundleForClass:objc_opt_class()];
-    v12 = [v11 resourcePath];
-    v13 = DBTWideCharBufferOfFullPath(v12, @"chitab", @"txt");
-    v38 = a5;
+    resourcePath = [v11 resourcePath];
+    v13 = DBTWideCharBufferOfFullPath(resourcePath, @"chitab", @"txt");
+    translationHandleCopy = translationHandle;
     v39 = v9;
-    if (a4)
+    if (handle)
     {
-      v36 = a4;
-      v37 = v8;
+      handleCopy = handle;
+      v37 = tableCopy;
       v14 = v13;
       v15 = [v9 objectForKey:@"trans"];
-      v16 = [v15 objectForKey:@"btb"];
+      handleCopy2 = [v15 objectForKey:@"btb"];
       v17 = [v15 objectForKey:@"sct"];
       *buf = 0;
-      v18 = DBTWideCharBufferOfFullPath(v12, v16, @"btb");
-      v19 = DBTWideCharBufferOfFullPath(v12, v17, @"sct");
+      v18 = DBTWideCharBufferOfFullPath(resourcePath, handleCopy2, @"btb");
+      v19 = DBTWideCharBufferOfFullPath(resourcePath, v17, @"sct");
       v20 = BRLTRN_CreateW(v18, v19, buf, 0, v14);
       DBTWideCharBufferFree(v18);
       DBTWideCharBufferFree(v19);
@@ -430,21 +430,21 @@ LABEL_12:
 
         DBTWideCharBufferFree(v14);
         v23 = 0;
-        v8 = v37;
+        tableCopy = v37;
         goto LABEL_21;
       }
 
       v33 = *buf;
       *(*buf + 240) = 0;
       v33[73] = 4;
-      *v36 = v33;
+      *handleCopy = v33;
 
       v24 = v17;
-      a4 = v16;
-      v8 = v37;
+      handle = handleCopy2;
+      tableCopy = v37;
       v13 = v14;
       v9 = v39;
-      if (!v38)
+      if (!translationHandleCopy)
       {
         goto LABEL_18;
       }
@@ -453,11 +453,11 @@ LABEL_12:
     else
     {
       v24 = 0;
-      if (!a5)
+      if (!translationHandle)
       {
 LABEL_18:
         v21 = v24;
-        v16 = a4;
+        handleCopy2 = handle;
 LABEL_20:
         DBTWideCharBufferFree(v13);
         v23 = 1;
@@ -470,19 +470,19 @@ LABEL_21:
 
     v25 = v13;
     v26 = [v9 objectForKey:@"back"];
-    v16 = [v26 objectForKey:@"btb"];
+    handleCopy2 = [v26 objectForKey:@"btb"];
 
     v27 = [v26 objectForKey:@"sct"];
 
     *buf = 0;
-    v28 = DBTWideCharBufferOfFullPath(v12, v16, @"btb");
-    v29 = DBTWideCharBufferOfFullPath(v12, v27, @"sct");
+    v28 = DBTWideCharBufferOfFullPath(resourcePath, handleCopy2, @"btb");
+    v29 = DBTWideCharBufferOfFullPath(resourcePath, v27, @"sct");
     v30 = BRLTRN_CreateW(v28, v29, buf, 0, v25);
     DBTWideCharBufferFree(v28);
     DBTWideCharBufferFree(v29);
     if (v30)
     {
-      v31 = v8;
+      v31 = tableCopy;
       v32 = DBTLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
@@ -491,7 +491,7 @@ LABEL_21:
 
       DBTWideCharBufferFree(v25);
       v23 = 0;
-      v8 = v31;
+      tableCopy = v31;
       v21 = v27;
       goto LABEL_21;
     }
@@ -499,7 +499,7 @@ LABEL_21:
     v34 = *buf;
     *(*buf + 240) = 0;
     v34[73] = 4;
-    *v38 = v34;
+    *translationHandleCopy = v34;
 
     v13 = v25;
     v21 = v27;
@@ -508,7 +508,7 @@ LABEL_21:
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [DBTDuxburyBrailleTranslator _loadTable:v8 translationHandle:v11 backTranslationHandle:?];
+    [DBTDuxburyBrailleTranslator _loadTable:tableCopy translationHandle:v11 backTranslationHandle:?];
   }
 
   v23 = 0;
@@ -517,23 +517,23 @@ LABEL_22:
   return v23;
 }
 
-- (void)_populatePrintBrailleForTextLocations:(id *)a3 inLength:(unint64_t)a4 outLength:(unint64_t)a5 translationHandle:(void *)a6 offsetToBraille:(unsigned __int16)a7 prefixCodeLength:(unsigned __int16)a8 preprocessedMap:(id)a9 optimize:(BOOL)a10
+- (void)_populatePrintBrailleForTextLocations:(id *)locations inLength:(unint64_t)length outLength:(unint64_t)outLength translationHandle:(void *)handle offsetToBraille:(unsigned __int16)braille prefixCodeLength:(unsigned __int16)codeLength preprocessedMap:(id)map optimize:(BOOL)self0
 {
-  v10 = a8;
-  v11 = a7;
-  v67 = a7;
-  v64 = a9;
-  v62 = 8 * a5;
-  v17 = malloc_type_malloc(8 * a5, 0x100004000313F17uLL);
+  codeLengthCopy = codeLength;
+  brailleCopy = braille;
+  brailleCopy2 = braille;
+  mapCopy = map;
+  v62 = 8 * outLength;
+  v17 = malloc_type_malloc(8 * outLength, 0x100004000313F17uLL);
   v63 = &v61;
-  v18 = &v61 - ((4 * a4 + 15) & 0xFFFFFFFFFFFFFFF0);
-  bzero(v18, 4 * a4);
-  v65 = a3;
-  if (a4)
+  v18 = &v61 - ((4 * length + 15) & 0xFFFFFFFFFFFFFFF0);
+  bzero(v18, 4 * length);
+  locationsCopy = locations;
+  if (length)
   {
-    v19 = v11 - v10;
-    v20 = (a4 + 3) & 0xFFFFFFFFFFFFFFFCLL;
-    v21 = vdupq_n_s64(a4 - 1);
+    v19 = brailleCopy - codeLengthCopy;
+    v20 = (length + 3) & 0xFFFFFFFFFFFFFFFCLL;
+    v21 = vdupq_n_s64(length - 1);
     v22 = xmmword_2B8F0;
     v23 = xmmword_2B900;
     v24 = v18 + 8;
@@ -565,17 +565,17 @@ LABEL_22:
 
     while (v20);
     bzero(self->_tmpBuffer, self->_tmpBufferLen);
-    if (!a10)
+    if (!optimize)
     {
-      v27 = v10;
+      v27 = codeLengthCopy;
       inBuffer = self->_inBuffer;
-      v29 = a4;
-      v30 = (&v61 - ((4 * a4 + 15) & 0xFFFFFFFFFFFFFFF0));
+      lengthCopy = length;
+      v30 = (&v61 - ((4 * length + 15) & 0xFFFFFFFFFFFFFFF0));
       while (1)
       {
-        v31 = BRLTRN_TranslateString(a6, inBuffer, self->_tmpBuffer, LOWORD(self->_tmpBufferLen), v27, &v67);
+        v31 = BRLTRN_TranslateString(handle, inBuffer, self->_tmpBuffer, LOWORD(self->_tmpBufferLen), v27, &brailleCopy2);
         inBuffer = self->_inBuffer;
-        v32 = inBuffer[v27] == 31 ? *(v30 - 1) : v67 - v10;
+        v32 = inBuffer[v27] == 31 ? *(v30 - 1) : brailleCopy2 - codeLengthCopy;
         *v30 = v32;
         if (v31)
         {
@@ -584,7 +584,7 @@ LABEL_22:
 
         ++v30;
         ++v27;
-        if (!--v29)
+        if (!--lengthCopy)
         {
           goto LABEL_30;
         }
@@ -595,21 +595,21 @@ LABEL_22:
   else
   {
     bzero(self->_tmpBuffer, self->_tmpBufferLen);
-    if (!a10)
+    if (!optimize)
     {
       goto LABEL_30;
     }
   }
 
   v66 = 0;
-  LocationMap = BRLTRN_TranslateStringAndGetLocationMap(a6, self->_inBuffer, self->_tmpBuffer, LOWORD(self->_tmpBufferLen), &v66);
+  LocationMap = BRLTRN_TranslateStringAndGetLocationMap(handle, self->_inBuffer, self->_tmpBuffer, LOWORD(self->_tmpBufferLen), &v66);
   v34 = v66;
-  if (!LocationMap && a4)
+  if (!LocationMap && length)
   {
-    v35 = &v66[2 * v10];
-    v36 = &self->_inBuffer[v10];
-    v37 = a4;
-    v38 = (&v61 - ((4 * a4 + 15) & 0xFFFFFFFFFFFFFFF0));
+    v35 = &v66[2 * codeLengthCopy];
+    v36 = &self->_inBuffer[codeLengthCopy];
+    lengthCopy2 = length;
+    v38 = (&v61 - ((4 * length + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
       v39 = *v36++;
@@ -620,15 +620,15 @@ LABEL_22:
 
       else
       {
-        v40 = *v35 - v10;
+        v40 = *v35 - codeLengthCopy;
       }
 
       *v38++ = v40;
       v35 += 2;
-      --v37;
+      --lengthCopy2;
     }
 
-    while (v37);
+    while (lengthCopy2);
   }
 
   if (v34)
@@ -641,31 +641,31 @@ LABEL_22:
 LABEL_29:
     v41 = v62;
     bzero(v17, v62);
-    v43 = v64;
-    v42 = v65;
+    v43 = mapCopy;
+    v42 = locationsCopy;
     goto LABEL_54;
   }
 
 LABEL_30:
-  v43 = v64;
-  v44 = [v64 bytes];
-  v45 = a4 - 1;
-  v42 = v65;
+  v43 = mapCopy;
+  bytes = [mapCopy bytes];
+  v45 = length - 1;
+  v42 = locationsCopy;
   v41 = v62;
-  if ((a4 - 1) >= 0)
+  if ((length - 1) >= 0)
   {
     v46 = 0;
     v47 = 0;
     v48 = self->_inBuffer;
-    v49 = &v48[v10];
-    v50 = a5;
+    v49 = &v48[codeLengthCopy];
+    outLengthCopy2 = outLength;
     do
     {
-      v51 = a4;
-      a4 = v45;
-      if (v45 && *&v18[4 * v45] == *&v18[4 * v51 - 8])
+      lengthCopy3 = length;
+      length = v45;
+      if (v45 && *&v18[4 * v45] == *&v18[4 * lengthCopy3 - 8])
       {
-        if (v45 >= 3 && v49[v51 - 2] == 31 && (v52 = &v48[v51 + v10], *(v52 - 12) == 101) && *(v52 - 16) != 28)
+        if (v45 >= 3 && v49[lengthCopy3 - 2] == 31 && (v52 = &v48[lengthCopy3 + codeLengthCopy], *(v52 - 12) == 101) && *(v52 - 16) != 28)
         {
           v53 = 0;
           v47 = 1;
@@ -682,45 +682,45 @@ LABEL_30:
         v53 = 0;
       }
 
-      v54 = v49[a4];
+      v54 = v49[length];
       v55 = v46 | (v54 == 31) & v47;
       if ((v53 & 1) == 0 && (v55 & 1) == 0)
       {
-        v56 = *&v18[4 * a4];
-        if (v50 >= a5)
+        v56 = *&v18[4 * length];
+        if (outLengthCopy2 >= outLength)
         {
-          v50 = a5;
+          outLengthCopy2 = outLength;
         }
 
-        v57 = v50 > v56;
-        v58 = v50 - v56;
+        v57 = outLengthCopy2 > v56;
+        v58 = outLengthCopy2 - v56;
         if (v57)
         {
           v59 = &v17[8 * v56];
           do
           {
-            v60 = a4;
-            if (v44)
+            lengthCopy4 = length;
+            if (bytes)
             {
-              v60 = v44[a4];
+              lengthCopy4 = bytes[length];
             }
 
-            *v59++ = v60;
+            *v59++ = lengthCopy4;
             --v58;
           }
 
           while (v58);
         }
 
-        v50 = v56;
+        outLengthCopy2 = v56;
       }
 
       v47 &= v54 != 31;
       v46 = (v54 != 28) & v55;
-      v45 = a4 - 1;
+      v45 = length - 1;
     }
 
-    while (a4 > 0);
+    while (length > 0);
   }
 
 LABEL_54:
@@ -728,38 +728,38 @@ LABEL_54:
   free(v17);
 }
 
-- (id)_scrubDollarCodesInBuffer:(int *)a3 originalLength:(unint64_t)a4 originalLocations:(id)a5 newLocations:(id)a6 convertASCIIBrailleToUnicode:(BOOL)a7 limitRange:(_NSRange)a8
+- (id)_scrubDollarCodesInBuffer:(int *)buffer originalLength:(unint64_t)length originalLocations:(id)locations newLocations:(id)newLocations convertASCIIBrailleToUnicode:(BOOL)unicode limitRange:(_NSRange)range
 {
-  v8 = a7;
-  v12 = a5;
-  v13 = a6;
-  v23 = v12;
-  if (v12)
+  unicodeCopy = unicode;
+  locationsCopy = locations;
+  newLocationsCopy = newLocations;
+  v23 = locationsCopy;
+  if (locationsCopy)
   {
-    v12 = [v12 bytes];
+    locationsCopy = [locationsCopy bytes];
   }
 
   v14 = 0;
-  if (a4)
+  if (length)
   {
     v15 = 0;
     do
     {
-      v16 = a3[v15];
-      if (v16 != 28 || v15 >= a4)
+      v16 = buffer[v15];
+      if (v16 != 28 || v15 >= length)
       {
 LABEL_12:
-        if (v8)
+        if (unicodeCopy)
         {
           v16 = ASCIIBrailleToUnicode(v16);
         }
 
-        a3[v14++] = v16;
-        if (v12)
+        buffer[v14++] = v16;
+        if (locationsCopy)
         {
-          if (a8.location == 0x7FFFFFFFFFFFFFFFLL || ((v19 = *&v12[8 * v15], v19 >= a8.location) ? (v20 = v19 > a8.location + a8.length) : (v20 = 1), !v20))
+          if (range.location == 0x7FFFFFFFFFFFFFFFLL || ((v19 = *&locationsCopy[8 * v15], v19 >= range.location) ? (v20 = v19 > range.location + range.length) : (v20 = 1), !v20))
           {
-            [v13 appendBytes:&v12[8 * v15] length:8];
+            [newLocationsCopy appendBytes:&locationsCopy[8 * v15] length:8];
           }
         }
       }
@@ -767,9 +767,9 @@ LABEL_12:
       else
       {
         v18 = v15;
-        while (a3[v18] != 31)
+        while (buffer[v18] != 31)
         {
-          if (a4 == ++v18)
+          if (length == ++v18)
           {
             goto LABEL_12;
           }
@@ -781,20 +781,20 @@ LABEL_12:
       ++v15;
     }
 
-    while (v15 < a4);
+    while (v15 < length);
   }
 
-  v21 = DBTNSStringFromWideCharBuffer(a3, v14);
+  v21 = DBTNSStringFromWideCharBuffer(buffer, v14);
 
   return v21;
 }
 
-+ (_NSRange)_mappedRange:(_NSRange)a3 withPreprocessedMap:(id)a4
++ (_NSRange)_mappedRange:(_NSRange)range withPreprocessedMap:(id)map
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
-  v7 = v6;
+  length = range.length;
+  location = range.location;
+  mapCopy = map;
+  v7 = mapCopy;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0x7FFFFFFFFFFFFFFFLL;
@@ -802,7 +802,7 @@ LABEL_12:
 
   else
   {
-    v9 = [v6 bytes];
+    bytes = [mapCopy bytes];
     v10 = [v7 length];
     v11 = v10 >> 3;
     if (v10 < 8)
@@ -814,7 +814,7 @@ LABEL_7:
     else
     {
       v8 = 0;
-      while (v9[v8] < location)
+      while (bytes[v8] < location)
       {
         if (v11 == ++v8)
         {
@@ -826,7 +826,7 @@ LABEL_7:
     if (v8 < v11)
     {
       v12 = v8;
-      while (v9[v12] < location + length)
+      while (bytes[v12] < location + length)
       {
         if (v11 == ++v12)
         {
@@ -848,26 +848,26 @@ LABEL_14:
   return result;
 }
 
-- (id)_printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7 optimize:(BOOL)a8
+- (id)_printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges optimize:(BOOL)optimize
 {
-  length = a6.length;
-  location = a6.location;
-  v53 = a8;
-  v12 = a7;
+  length = range.length;
+  location = range.location;
+  optimizeCopy = optimize;
+  rangesCopy = ranges;
   composedCharacterPreprocessor = self->_composedCharacterPreprocessor;
   v69 = 0;
-  v61 = v12;
-  v14 = [(DBTComposedCharactersPreprocessor *)composedCharacterPreprocessor preprocessPrintString:a3 withLocationMap:&v69 isEightDot:0 textFormattingRanges:?];
+  v61 = rangesCopy;
+  v14 = [(DBTComposedCharactersPreprocessor *)composedCharacterPreprocessor preprocessPrintString:text withLocationMap:&v69 isEightDot:0 textFormattingRanges:?];
   v15 = v69;
   v16 = v14;
   v17 = [(NSArray *)self->_printPreprocessors count];
   v18 = v16;
   v19 = v15;
-  v60 = self;
+  selfCopy = self;
   if (v17)
   {
-    v54 = a4;
-    v55 = a5;
+    modeCopy = mode;
+    locationsCopy = locations;
     v68 = 0u;
     v67 = 0u;
     v66 = 0u;
@@ -917,13 +917,13 @@ LABEL_14:
 
     v15 = v59;
     v16 = v58;
-    a5 = v55;
-    self = v60;
-    a4 = v54;
+    locations = locationsCopy;
+    self = selfCopy;
+    mode = modeCopy;
   }
 
   translationHandle = self->_translationHandle;
-  if (a4 == 4)
+  if (mode == 4)
   {
     if (translationHandle)
     {
@@ -944,7 +944,7 @@ LABEL_14:
   }
 
   v31 = v30;
-  v32 = [(DBTDuxburyBrailleTranslator *)self _prepBuffersForConversion:1 withString:v18 mode:a4 prefixLength:v30];
+  v32 = [(DBTDuxburyBrailleTranslator *)self _prepBuffersForConversion:1 withString:v18 mode:mode prefixLength:v30];
   v63 = 0;
   bzero(self->_outBuffer, self->_outBufferLen);
   if (BRLTRN_TranslateString(translationHandle, self->_inBuffer, self->_outBuffer, LOWORD(self->_outBufferLen), v30, &v63))
@@ -967,7 +967,7 @@ LABEL_14:
     v38 = v35 - v31;
     if (v35 != v31)
     {
-      v39 = &v60->_outBuffer[v31];
+      v39 = &selfCopy->_outBuffer[v31];
       v40 = v37;
       v41 = v35 - v31;
       do
@@ -980,14 +980,14 @@ LABEL_14:
       while (v41);
     }
 
-    if (a5)
+    if (locations)
     {
       v62 = 0;
-      LOBYTE(v51) = v53;
-      v43 = v60;
+      LOBYTE(v51) = optimizeCopy;
+      v43 = selfCopy;
       v44 = v32;
       v45 = v35 - v31;
-      [(DBTDuxburyBrailleTranslator *)v60 _populatePrintBrailleForTextLocations:&v62 inLength:v44 outLength:v38 translationHandle:translationHandle offsetToBraille:v63 prefixCodeLength:v31 preprocessedMap:v19 optimize:v51];
+      [(DBTDuxburyBrailleTranslator *)selfCopy _populatePrintBrailleForTextLocations:&v62 inLength:v44 outLength:v38 translationHandle:translationHandle offsetToBraille:v63 prefixCodeLength:v31 preprocessedMap:v19 optimize:v51];
       v46 = v62;
       v47 = +[NSMutableData dataWithCapacity:](NSMutableData, "dataWithCapacity:", [v46 length]);
       v38 = v45;
@@ -998,124 +998,124 @@ LABEL_14:
     {
       v46 = 0;
       v48 = 0;
-      v43 = v60;
+      v43 = selfCopy;
     }
 
     v34 = [(DBTDuxburyBrailleTranslator *)v43 _scrubDollarCodesInBuffer:v37 originalLength:v38 originalLocations:v46 newLocations:v48 convertASCIIBrailleToUnicode:1 limitRange:location, length];
-    if (a5)
+    if (locations)
     {
       v49 = v48;
-      *a5 = v48;
+      *locations = v48;
     }
   }
 
   return v34;
 }
 
-- (id)printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7
+- (id)printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges
 {
-  length = a6.length;
-  location = a6.location;
-  v13 = a3;
-  v14 = a7;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  rangesCopy = ranges;
   v15 = _os_feature_enabled_impl();
-  if (a4 != 4 && v15)
+  if (mode != 4 && v15)
   {
     if (!self->_supportsEightDot)
     {
       if (self->_contracted)
       {
-        a4 = 3;
+        mode = 3;
       }
 
       else
       {
-        a4 = 1;
+        mode = 1;
       }
 
       goto LABEL_15;
     }
 
 LABEL_10:
-    v16 = [(DBTDuxburyBrailleTranslator *)self _eightDotPrintBrailleForText:v13 locations:a5 textFormattingRanges:v14];
+    rangesCopy = [(DBTDuxburyBrailleTranslator *)self _eightDotPrintBrailleForText:textCopy locations:locations textFormattingRanges:rangesCopy];
     goto LABEL_16;
   }
 
-  if (a4 == 4)
+  if (mode == 4)
   {
     if (self->_supportsTechnical)
     {
-      v16 = [(DBTDuxburyBrailleTranslator *)self printBrailleForTechnicalText:v13 useTechnicalTable:1 locations:a5];
+      rangesCopy = [(DBTDuxburyBrailleTranslator *)self printBrailleForTechnicalText:textCopy useTechnicalTable:1 locations:locations];
       goto LABEL_16;
     }
 
-    a4 = 4;
+    mode = 4;
   }
 
-  else if (a4 == 2)
+  else if (mode == 2)
   {
     if (self->_supportsEightDot)
     {
       goto LABEL_10;
     }
 
-    a4 = 2;
+    mode = 2;
   }
 
 LABEL_15:
-  v16 = [(DBTDuxburyBrailleTranslator *)self _printBrailleForText:v13 mode:a4 locations:a5 textPositionsRange:location textFormattingRanges:length, v14];
+  rangesCopy = [(DBTDuxburyBrailleTranslator *)self _printBrailleForText:textCopy mode:mode locations:locations textPositionsRange:location textFormattingRanges:length, rangesCopy];
 LABEL_16:
-  v17 = v16;
+  v17 = rangesCopy;
 
   return v17;
 }
 
-- (id)printBrailleForTechnicalText:(id)a3 useTechnicalTable:(BOOL)a4 locations:(id *)a5
+- (id)printBrailleForTechnicalText:(id)text useTechnicalTable:(BOOL)table locations:(id *)locations
 {
-  v6 = a4;
-  v8 = a3;
-  if (v6 && (([(DBTDuxburyBrailleTranslator *)self loadNemethTable], self->_supportsTechnical) || self->_technicalTranslationHandle))
+  tableCopy = table;
+  textCopy = text;
+  if (tableCopy && (([(DBTDuxburyBrailleTranslator *)self loadNemethTable], self->_supportsTechnical) || self->_technicalTranslationHandle))
   {
-    v9 = [v8 length];
-    v10 = self;
-    v11 = v8;
+    v9 = [textCopy length];
+    selfCopy2 = self;
+    v11 = textCopy;
     v12 = 4;
   }
 
   else
   {
-    v9 = [v8 length];
-    v10 = self;
-    v11 = v8;
+    v9 = [textCopy length];
+    selfCopy2 = self;
+    v11 = textCopy;
     v12 = 1;
   }
 
-  v13 = [(DBTDuxburyBrailleTranslator *)v10 _printBrailleForText:v11 mode:v12 locations:a5 textPositionsRange:0 textFormattingRanges:v9, 0];
+  v13 = [(DBTDuxburyBrailleTranslator *)selfCopy2 _printBrailleForText:v11 mode:v12 locations:locations textPositionsRange:0 textFormattingRanges:v9, 0];
 
   return v13;
 }
 
-- (void)_populateTextForPrintBrailleLocations:(id *)a3 inLength:(unint64_t)a4 outLength:(unint64_t)a5 offsetToBraille:(unsigned __int16)a6 prefixLength:(unint64_t)a7 optimize:(BOOL)a8
+- (void)_populateTextForPrintBrailleLocations:(id *)locations inLength:(unint64_t)length outLength:(unint64_t)outLength offsetToBraille:(unsigned __int16)braille prefixLength:(unint64_t)prefixLength optimize:(BOOL)optimize
 {
-  v10 = a6;
-  v11 = a5;
-  v38 = a6;
-  v36 = 8 * a5;
-  v15 = malloc_type_malloc(8 * a5, 0x100004000313F17uLL);
-  v16 = (&v36 - ((4 * a4 + 15) & 0xFFFFFFFFFFFFFFF0));
-  *v16 = v10 - a7;
+  brailleCopy = braille;
+  outLengthCopy = outLength;
+  brailleCopy2 = braille;
+  v36 = 8 * outLength;
+  v15 = malloc_type_malloc(8 * outLength, 0x100004000313F17uLL);
+  v16 = (&v36 - ((4 * length + 15) & 0xFFFFFFFFFFFFFFF0));
+  *v16 = brailleCopy - prefixLength;
   bzero(self->_tmpBuffer, self->_tmpBufferLen);
-  if (!a8)
+  if (!optimize)
   {
-    if (a4 >= 2)
+    if (length >= 2)
     {
-      v23 = a4 - 1;
+      v23 = length - 1;
       v24 = v16 + 1;
-      v25 = a7 + 1;
+      v25 = prefixLength + 1;
       while (1)
       {
-        v26 = BRLTRN_TranslateString(self->_backTranslationHandle, self->_inBuffer, self->_tmpBuffer, LOWORD(self->_tmpBufferLen), v25, &v38);
-        *v24 = v38 - a7;
+        v26 = BRLTRN_TranslateString(self->_backTranslationHandle, self->_inBuffer, self->_tmpBuffer, LOWORD(self->_tmpBufferLen), v25, &brailleCopy2);
+        *v24 = brailleCopy2 - prefixLength;
         if (v26)
         {
           goto LABEL_15;
@@ -1136,7 +1136,7 @@ LABEL_16:
   v37 = 0;
   LocationMap = BRLTRN_TranslateStringAndGetLocationMap(self->_backTranslationHandle, self->_inBuffer, self->_tmpBuffer, LOWORD(self->_tmpBufferLen), &v37);
   v18 = v37;
-  if (LocationMap || !a4)
+  if (LocationMap || !length)
   {
     if (!v37)
     {
@@ -1146,18 +1146,18 @@ LABEL_16:
 
   else
   {
-    v19 = &v37[2 * a7];
-    v20 = (&v36 - ((4 * a4 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v21 = a4;
+    v19 = &v37[2 * prefixLength];
+    v20 = (&v36 - ((4 * length + 15) & 0xFFFFFFFFFFFFFFF0));
+    lengthCopy = length;
     do
     {
       v22 = *v19;
       v19 += 2;
-      *v20++ = v22 - a7;
-      --v21;
+      *v20++ = v22 - prefixLength;
+      --lengthCopy;
     }
 
-    while (v21);
+    while (lengthCopy);
   }
 
   free(v18);
@@ -1165,31 +1165,31 @@ LABEL_14:
   if (!LocationMap)
   {
 LABEL_16:
-    v28 = a4 - 1;
+    v28 = length - 1;
     v27 = v36;
-    if ((a4 - 1) < 0)
+    if ((length - 1) < 0)
     {
       goto LABEL_30;
     }
 
     while (1)
     {
-      v29 = a4;
-      a4 = v28;
+      lengthCopy2 = length;
+      length = v28;
       if (!v28)
       {
         break;
       }
 
       v30 = v16[v28];
-      if (v30 != v16[v29 - 2])
+      if (v30 != v16[lengthCopy2 - 2])
       {
         goto LABEL_21;
       }
 
 LABEL_29:
-      v28 = a4 - 1;
-      if (a4 <= 0)
+      v28 = length - 1;
+      if (length <= 0)
       {
         goto LABEL_30;
       }
@@ -1198,31 +1198,31 @@ LABEL_29:
     v30 = *v16;
 LABEL_21:
     v31 = v30;
-    if (v11 > v30)
+    if (outLengthCopy > v30)
     {
       v32 = 0;
-      v33 = vdupq_n_s64(v11 - v31 - 1);
+      v33 = vdupq_n_s64(outLengthCopy - v31 - 1);
       v34 = &v15[8 * v31];
       do
       {
         v35 = vmovn_s64(vcgeq_u64(v33, vorrq_s8(vdupq_n_s64(v32), xmmword_2B900)));
         if (v35.i8[0])
         {
-          *&v34[8 * v32] = a4;
+          *&v34[8 * v32] = length;
         }
 
         if (v35.i8[4])
         {
-          *&v34[8 * v32 + 8] = a4;
+          *&v34[8 * v32 + 8] = length;
         }
 
         v32 += 2;
       }
 
-      while (((v11 - v31 + 1) & 0xFFFFFFFFFFFFFFFELL) != v32);
+      while (((outLengthCopy - v31 + 1) & 0xFFFFFFFFFFFFFFFELL) != v32);
     }
 
-    v11 = v31;
+    outLengthCopy = v31;
     goto LABEL_29;
   }
 
@@ -1230,67 +1230,67 @@ LABEL_15:
   v27 = v36;
   bzero(v15, v36);
 LABEL_30:
-  *a3 = [NSData dataWithBytes:v15 length:v27, v36];
+  *locations = [NSData dataWithBytes:v15 length:v27, v36];
   free(v15);
 }
 
-- (id)textForPrintBraille:(id)a3 mode:(unint64_t)a4 locations:(id *)a5
+- (id)textForPrintBraille:(id)braille mode:(unint64_t)mode locations:(id *)locations
 {
-  v8 = a3;
+  brailleCopy = braille;
   v9 = _os_feature_enabled_impl();
-  if (a4 != 4 && v9)
+  if (mode != 4 && v9)
   {
     if (!self->_supportsEightDot)
     {
       if (self->_contracted)
       {
-        a4 = 3;
+        mode = 3;
       }
 
       else
       {
-        a4 = 1;
+        mode = 1;
       }
 
       goto LABEL_11;
     }
 
 LABEL_9:
-    v10 = [(DBTDuxburyBrailleTranslator *)self _eightDotTextForPrintBraille:v8 locations:a5];
+    v10 = [(DBTDuxburyBrailleTranslator *)self _eightDotTextForPrintBraille:brailleCopy locations:locations];
     goto LABEL_12;
   }
 
-  if (a4 == 2)
+  if (mode == 2)
   {
     if (self->_supportsEightDot)
     {
       goto LABEL_9;
     }
 
-    a4 = 2;
+    mode = 2;
   }
 
 LABEL_11:
-  v10 = [(DBTDuxburyBrailleTranslator *)self _textForPrintBraille:v8 mode:a4 locations:a5];
+  v10 = [(DBTDuxburyBrailleTranslator *)self _textForPrintBraille:brailleCopy mode:mode locations:locations];
 LABEL_12:
   v11 = v10;
 
   return v11;
 }
 
-- (id)_eightDotPrintBrailleForText:(id)a3 locations:(id *)a4 textFormattingRanges:(id)a5
+- (id)_eightDotPrintBrailleForText:(id)text locations:(id *)locations textFormattingRanges:(id)ranges
 {
-  v54 = a4;
-  v7 = a5;
+  locationsCopy = locations;
+  rangesCopy = ranges;
   composedCharacterPreprocessor = self->_composedCharacterPreprocessor;
   v70 = 0;
-  v59 = v7;
-  v9 = [(DBTComposedCharactersPreprocessor *)composedCharacterPreprocessor preprocessPrintString:a3 withLocationMap:&v70 isEightDot:0 textFormattingRanges:?];
+  v59 = rangesCopy;
+  v9 = [(DBTComposedCharactersPreprocessor *)composedCharacterPreprocessor preprocessPrintString:text withLocationMap:&v70 isEightDot:0 textFormattingRanges:?];
   v10 = v70;
   v11 = v9;
   v12 = [(NSArray *)self->_printPreprocessors count];
   v56 = v11;
-  v57 = self;
+  selfCopy = self;
   v13 = v10;
   v55 = v10;
   if (v12)
@@ -1340,13 +1340,13 @@ LABEL_12:
       while (v15);
     }
 
-    self = v57;
+    self = selfCopy;
   }
 
   Length = CFStringGetLength(v11);
-  v58 = &v54;
+  v58 = &locationsCopy;
   v23 = __chkstk_darwin();
-  v25 = &v54 - ((v24 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v25 = &locationsCopy - ((v24 + 15) & 0xFFFFFFFFFFFFFFF0);
   v62 = 0u;
   v63 = 0u;
   v61 = 0u;
@@ -1450,18 +1450,18 @@ LABEL_22:
       ++v29;
       --v28;
       ++v30;
-      self = v57;
+      self = selfCopy;
     }
 
     while (Length != v29);
   }
 
   v45 = [NSString stringWithCharacters:v25 length:Length];
-  v46 = v54;
+  v46 = locationsCopy;
   v47 = v55;
-  if (v54)
+  if (locationsCopy)
   {
-    v48 = [v13 bytes];
+    bytes = [v13 bytes];
     if ([v45 length] >= 1)
     {
       v49 = __chkstk_darwin();
@@ -1469,12 +1469,12 @@ LABEL_22:
       do
       {
         v52 = v51;
-        if (v48)
+        if (bytes)
         {
-          v52 = v48[v51];
+          v52 = bytes[v51];
         }
 
-        *(&(&v54)[v51] - ((v50 + 15) & 0xFFFFFFFFFFFFFFF0)) = v52;
+        *(&(&locationsCopy)[v51] - ((v50 + 15) & 0xFFFFFFFFFFFFFFF0)) = v52;
         v51 = (v51 + 1);
       }
 
@@ -1486,21 +1486,21 @@ LABEL_22:
   return v45;
 }
 
-- (id)_eightDotTextForPrintBraille:(id)a3 locations:(id *)a4
+- (id)_eightDotTextForPrintBraille:(id)braille locations:(id *)locations
 {
-  v6 = a3;
-  Length = CFStringGetLength(v6);
+  brailleCopy = braille;
+  Length = CFStringGetLength(brailleCopy);
   v8 = __chkstk_darwin();
   v10 = v42 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v46 = v6;
+  v46 = brailleCopy;
   v49 = 0;
   v50 = v8;
-  CharactersPtr = CFStringGetCharactersPtr(v6);
+  CharactersPtr = CFStringGetCharactersPtr(brailleCopy);
   CStringPtr = 0;
   v47 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(v6, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(brailleCopy, 0x600u);
   }
 
   memset(buffer, 0, sizeof(buffer));
@@ -1510,8 +1510,8 @@ LABEL_22:
   if (Length >= 1)
   {
     v42[1] = v42;
-    v43 = v6;
-    v44 = a4;
+    v43 = brailleCopy;
+    locationsCopy = locations;
     v13 = 0;
     v14 = 0;
     v15 = 0;
@@ -1596,7 +1596,7 @@ LABEL_13:
       ++v16;
       if (Length == v15)
       {
-        a4 = v44;
+        locations = locationsCopy;
         if (v14 <= 0)
         {
           v31 = 0;
@@ -1607,8 +1607,8 @@ LABEL_13:
           v31 = [NSString stringWithCharacters:v10 length:v14];
         }
 
-        v6 = v43;
-        if (a4)
+        brailleCopy = v43;
+        if (locations)
         {
           goto LABEL_35;
         }
@@ -1619,7 +1619,7 @@ LABEL_13:
   }
 
   v31 = 0;
-  if (a4)
+  if (locations)
   {
 LABEL_35:
     if ([v31 length] >= 1)
@@ -1648,7 +1648,7 @@ LABEL_35:
       }
 
       while (((v32 + 1) & 0xFFFFFFFFFFFFFFFELL) != v35);
-      *a4 = [NSData dataWithBytes:*v36.i64 length:?];
+      *locations = [NSData dataWithBytes:*v36.i64 length:?];
     }
   }
 
@@ -1657,9 +1657,9 @@ LABEL_43:
   return v31;
 }
 
-- (void)_eightDotTablesFromRawTable:(id)a3 translationTable:(id *)a4 backTranslationTable:(id *)a5
+- (void)_eightDotTablesFromRawTable:(id)table translationTable:(id *)translationTable backTranslationTable:(id *)backTranslationTable
 {
-  v5 = a3;
+  tableCopy = table;
   v6 = [objc_allocWithZone(NSMutableDictionary) init];
   v7 = [objc_allocWithZone(NSMutableDictionary) init];
   v50 = [objc_allocWithZone(NSMutableArray) init];
@@ -1670,7 +1670,7 @@ LABEL_43:
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v8 = v5;
+  v8 = tableCopy;
   v9 = [v8 countByEnumeratingWithState:&v59 objects:v65 count:16];
   if (v9)
   {
@@ -1772,8 +1772,8 @@ LABEL_43:
           }
 
           v22 = [v50 objectAtIndex:0];
-          v23 = [v22 integerValue];
-          if (v23 < 1)
+          integerValue = [v22 integerValue];
+          if (integerValue < 1)
           {
             v27 = 10240;
           }
@@ -1783,14 +1783,14 @@ LABEL_43:
             v24 = 0;
             do
             {
-              v25 = ~(10 * (v23 / 0xA)) + v23;
+              v25 = ~(10 * (integerValue / 0xA)) + integerValue;
               if (v25 <= 7)
               {
                 v24 |= _DotValue[2 * v25];
               }
 
-              v26 = v23 > 9;
-              v23 /= 0xAuLL;
+              v26 = integerValue > 9;
+              integerValue /= 0xAuLL;
             }
 
             while (v26);
@@ -1803,8 +1803,8 @@ LABEL_43:
 
         else
         {
-          v28 = [v12 integerValue];
-          if (v28 < 1)
+          integerValue2 = [v12 integerValue];
+          if (integerValue2 < 1)
           {
             v31 = 10240;
           }
@@ -1814,14 +1814,14 @@ LABEL_43:
             v29 = 0;
             do
             {
-              v30 = ~(10 * (v28 / 0xA)) + v28;
+              v30 = ~(10 * (integerValue2 / 0xA)) + integerValue2;
               if (v30 <= 7)
               {
                 v29 |= _DotValue[2 * v30];
               }
 
-              v26 = v28 > 9;
-              v28 /= 0xAuLL;
+              v26 = integerValue2 > 9;
+              integerValue2 /= 0xAuLL;
             }
 
             while (v26);
@@ -1903,14 +1903,14 @@ LABEL_58:
     while (v41);
   }
 
-  if (a4)
+  if (translationTable)
   {
-    objc_storeStrong(a4, v7);
+    objc_storeStrong(translationTable, v7);
   }
 
-  if (a5)
+  if (backTranslationTable)
   {
-    objc_storeStrong(a5, v6);
+    objc_storeStrong(backTranslationTable, v6);
   }
 }
 

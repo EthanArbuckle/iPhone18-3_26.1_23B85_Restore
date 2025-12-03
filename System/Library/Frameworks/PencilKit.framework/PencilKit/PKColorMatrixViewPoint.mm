@@ -1,23 +1,23 @@
 @interface PKColorMatrixViewPoint
-+ (id)pointWithRow:(int64_t)a3 col:(int64_t)a4;
-- (PKColorMatrixViewPoint)initWithRow:(int64_t)a3 col:(int64_t)a4;
++ (id)pointWithRow:(int64_t)row col:(int64_t)col;
+- (PKColorMatrixViewPoint)initWithRow:(int64_t)row col:(int64_t)col;
 @end
 
 @implementation PKColorMatrixViewPoint
 
-- (PKColorMatrixViewPoint)initWithRow:(int64_t)a3 col:(int64_t)a4
+- (PKColorMatrixViewPoint)initWithRow:(int64_t)row col:(int64_t)col
 {
   v7.receiver = self;
   v7.super_class = PKColorMatrixViewPoint;
   result = [(PKColorMatrixViewPoint *)&v7 init];
-  result->_row = a3;
-  result->_col = a4;
+  result->_row = row;
+  result->_col = col;
   return result;
 }
 
-+ (id)pointWithRow:(int64_t)a3 col:(int64_t)a4
++ (id)pointWithRow:(int64_t)row col:(int64_t)col
 {
-  v4 = [[a1 alloc] initWithRow:a3 col:a4];
+  v4 = [[self alloc] initWithRow:row col:col];
 
   return v4;
 }

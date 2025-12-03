@@ -1,15 +1,15 @@
 @interface PUILocationIndicatorExplanationView
-- (PUILocationIndicatorExplanationView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4;
-- (void)layoutForWidth:(double)a3 inTableView:(id)a4;
+- (PUILocationIndicatorExplanationView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view;
+- (void)layoutForWidth:(double)width inTableView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation PUILocationIndicatorExplanationView
 
-- (PUILocationIndicatorExplanationView)initWithSpecifier:(id)a3
+- (PUILocationIndicatorExplanationView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   if (loadLocationFillSystemImage_onceToken != -1)
   {
     [PUILocationIndicatorExplanationView initWithSpecifier:];
@@ -42,8 +42,8 @@
     v17 = PreferencesTableViewFooterColor();
     [(UILabel *)v9->_activeLabel setTextColor:v17];
 
-    v18 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v9->_activeLabel setBackgroundColor:v18];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v9->_activeLabel setBackgroundColor:clearColor];
 
     [(UILabel *)v9->_activeLabel setTextAlignment:4];
     [(UILabel *)v9->_activeLabel setLineBreakMode:0];
@@ -67,8 +67,8 @@
     v26 = PreferencesTableViewFooterColor();
     [(UILabel *)v9->_recentLabel setTextColor:v26];
 
-    v27 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v9->_recentLabel setBackgroundColor:v27];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v9->_recentLabel setBackgroundColor:clearColor2];
 
     [(UILabel *)v9->_recentLabel setLineBreakMode:0];
     [(UILabel *)v9->_recentLabel setNumberOfLines:0];
@@ -76,8 +76,8 @@
     explanationLabel = v9->_explanationLabel;
     v9->_explanationLabel = v28;
 
-    v30 = [(PUILocationIndicatorExplanationView *)v9 generalExplanationItemString];
-    [(UILabel *)v9->_explanationLabel setText:v30];
+    generalExplanationItemString = [(PUILocationIndicatorExplanationView *)v9 generalExplanationItemString];
+    [(UILabel *)v9->_explanationLabel setText:generalExplanationItemString];
 
     v31 = PreferencesTableViewFooterFont();
     [(UILabel *)v9->_explanationLabel setFont:v31];
@@ -85,8 +85,8 @@
     v32 = PreferencesTableViewFooterColor();
     [(UILabel *)v9->_explanationLabel setTextColor:v32];
 
-    v33 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v9->_explanationLabel setBackgroundColor:v33];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v9->_explanationLabel setBackgroundColor:clearColor3];
 
     [(UILabel *)v9->_explanationLabel setTextAlignment:4];
     [(UILabel *)v9->_explanationLabel setLineBreakMode:0];
@@ -101,9 +101,9 @@
   return v9;
 }
 
-- (void)layoutForWidth:(double)a3 inTableView:(id)a4
+- (void)layoutForWidth:(double)width inTableView:(id)view
 {
-  [a4 _backgroundInset];
+  [view _backgroundInset];
   v7 = v6 + 12.0;
   [(UIImageView *)self->_activeIcon frame];
   v9 = v8;
@@ -114,21 +114,21 @@
   v59 = v13;
   [(UILabel *)self->_recentLabel frame];
   [(UILabel *)self->_explanationLabel frame];
-  v14 = [(UILabel *)self->_explanationLabel text];
-  v15 = [(UILabel *)self->_explanationLabel font];
-  [v14 _legacy_sizeWithFont:v15 constrainedToSize:-[UILabel lineBreakMode](self->_explanationLabel lineBreakMode:{"lineBreakMode"), a3 + (v7 + 4.0) * -2.0, 1.79769313e308}];
+  text = [(UILabel *)self->_explanationLabel text];
+  font = [(UILabel *)self->_explanationLabel font];
+  [text _legacy_sizeWithFont:font constrainedToSize:-[UILabel lineBreakMode](self->_explanationLabel lineBreakMode:{"lineBreakMode"), width + (v7 + 4.0) * -2.0, 1.79769313e308}];
   v58 = v16;
   v18 = v17;
 
-  v19 = [MEMORY[0x277D75128] sharedApplication];
-  v20 = [v19 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-  if (v20)
+  if (userInterfaceLayoutDirection)
   {
-    v21 = [MEMORY[0x277D75418] currentDevice];
-    v22 = [v21 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v22 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v23 = v7 + 4.0;
     }
@@ -146,12 +146,12 @@
     v57 = v7 + 4.0;
   }
 
-  v24 = [MEMORY[0x277D75128] sharedApplication];
-  v25 = [v24 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection2 = [mEMORY[0x277D75128]2 userInterfaceLayoutDirection];
 
-  if (v25)
+  if (userInterfaceLayoutDirection2)
   {
-    v26 = a3 - v7 - v9;
+    v26 = width - v7 - v9;
   }
 
   else
@@ -166,35 +166,35 @@
   v30 = v29;
   PSRoundToPixel();
   v55 = v12;
-  v32 = a3 + v7 * -2.0 + -10.0 - v31;
-  v33 = [MEMORY[0x277D75128] sharedApplication];
-  v34 = [v33 userInterfaceLayoutDirection];
+  v32 = width + v7 * -2.0 + -10.0 - v31;
+  mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection3 = [mEMORY[0x277D75128]3 userInterfaceLayoutDirection];
 
   v35 = v30 + 10.0;
-  if (v34)
+  if (userInterfaceLayoutDirection3)
   {
     v35 = v7;
   }
 
   v54 = v35;
-  v36 = [(UILabel *)self->_activeLabel text];
-  v37 = [(UILabel *)self->_activeLabel font];
-  [v36 _legacy_sizeWithFont:v37 constrainedToSize:-[UILabel lineBreakMode](self->_activeLabel lineBreakMode:{"lineBreakMode"), v32, 1.79769313e308}];
+  text2 = [(UILabel *)self->_activeLabel text];
+  font2 = [(UILabel *)self->_activeLabel font];
+  [text2 _legacy_sizeWithFont:font2 constrainedToSize:-[UILabel lineBreakMode](self->_activeLabel lineBreakMode:{"lineBreakMode"), v32, 1.79769313e308}];
   v52 = v38;
   v53 = v39;
 
   PSRoundToPixel();
   v41 = v40;
-  v42 = [(UILabel *)self->_recentLabel text];
-  v43 = [(UILabel *)self->_recentLabel font];
-  [v42 _legacy_sizeWithFont:v43 constrainedToSize:-[UILabel lineBreakMode](self->_recentLabel lineBreakMode:{"lineBreakMode"), v32, 1.79769313e308}];
+  text3 = [(UILabel *)self->_recentLabel text];
+  font3 = [(UILabel *)self->_recentLabel font];
+  [text3 _legacy_sizeWithFont:font3 constrainedToSize:-[UILabel lineBreakMode](self->_recentLabel lineBreakMode:{"lineBreakMode"), v32, 1.79769313e308}];
   v45 = v44;
   v51 = v46;
 
-  v47 = [MEMORY[0x277D75128] sharedApplication];
-  v48 = [v47 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128]4 = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection4 = [mEMORY[0x277D75128]4 userInterfaceLayoutDirection];
 
-  if (v48 == 1)
+  if (userInterfaceLayoutDirection4 == 1)
   {
     v49 = v32;
   }
@@ -204,7 +204,7 @@
     v49 = v58;
   }
 
-  if (v48 == 1)
+  if (userInterfaceLayoutDirection4 == 1)
   {
     v45 = v32;
   }
@@ -230,13 +230,13 @@
   [(PUILocationIndicatorExplanationView *)&v6 layoutSubviews];
   [(PUILocationIndicatorExplanationView *)self bounds];
   v4 = v3;
-  v5 = [(PUILocationIndicatorExplanationView *)self superview];
-  [(PUILocationIndicatorExplanationView *)self layoutForWidth:v5 inTableView:v4];
+  superview = [(PUILocationIndicatorExplanationView *)self superview];
+  [(PUILocationIndicatorExplanationView *)self layoutForWidth:superview inTableView:v4];
 }
 
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view
 {
-  [(PUILocationIndicatorExplanationView *)self layoutForWidth:a4 inTableView:a3];
+  [(PUILocationIndicatorExplanationView *)self layoutForWidth:view inTableView:width];
   [(UIImageView *)self->_recentIcon frame];
   v7 = v5 + v6;
   [(UILabel *)self->_recentLabel frame];

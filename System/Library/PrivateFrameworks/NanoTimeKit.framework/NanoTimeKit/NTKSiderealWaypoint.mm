@@ -1,58 +1,58 @@
 @interface NTKSiderealWaypoint
-+ (id)waypointFromSolarEvent:(id)a3;
-+ (id)waypointWithType:(int64_t)a3 degree:(double)a4;
-+ (int64_t)_waypointTypeFromSolarEventType:(int64_t)a3;
-- (NTKSiderealWaypoint)initWithCoder:(id)a3;
-- (NTKSiderealWaypoint)initWithType:(int64_t)a3 degree:(double)a4;
++ (id)waypointFromSolarEvent:(id)event;
++ (id)waypointWithType:(int64_t)type degree:(double)degree;
++ (int64_t)_waypointTypeFromSolarEventType:(int64_t)type;
+- (NTKSiderealWaypoint)initWithCoder:(id)coder;
+- (NTKSiderealWaypoint)initWithType:(int64_t)type degree:(double)degree;
 - (id)localizedName;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKSiderealWaypoint
 
-+ (id)waypointFromSolarEvent:(id)a3
++ (id)waypointFromSolarEvent:(id)event
 {
-  v3 = a3;
-  v4 = +[NTKSiderealWaypoint _waypointTypeFromSolarEventType:](NTKSiderealWaypoint, "_waypointTypeFromSolarEventType:", [v3 type]);
-  [v3 degree];
+  eventCopy = event;
+  v4 = +[NTKSiderealWaypoint _waypointTypeFromSolarEventType:](NTKSiderealWaypoint, "_waypointTypeFromSolarEventType:", [eventCopy type]);
+  [eventCopy degree];
   v6 = v5;
 
   return [NTKSiderealWaypoint waypointWithType:v4 degree:v6];
 }
 
-+ (id)waypointWithType:(int64_t)a3 degree:(double)a4
++ (id)waypointWithType:(int64_t)type degree:(double)degree
 {
-  v4 = [[NTKSiderealWaypoint alloc] initWithType:a3 degree:a4];
+  v4 = [[NTKSiderealWaypoint alloc] initWithType:type degree:degree];
 
   return v4;
 }
 
-- (NTKSiderealWaypoint)initWithType:(int64_t)a3 degree:(double)a4
+- (NTKSiderealWaypoint)initWithType:(int64_t)type degree:(double)degree
 {
   v7.receiver = self;
   v7.super_class = NTKSiderealWaypoint;
   result = [(NTKSiderealWaypoint *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_degree = a4;
+    result->_type = type;
+    result->_degree = degree;
   }
 
   return result;
 }
 
-- (NTKSiderealWaypoint)initWithCoder:(id)a3
+- (NTKSiderealWaypoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = NTKSiderealWaypoint;
   v5 = [(NTKSiderealWaypoint *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v6 integerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"degree"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"degree"];
     [v7 doubleValue];
     v5->_degree = v8;
   }
@@ -60,16 +60,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   type = self->_type;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithInteger:type];
-  [v6 encodeObject:v7 forKey:@"type"];
+  [coderCopy encodeObject:v7 forKey:@"type"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_degree];
-  [v6 encodeObject:v8 forKey:@"degree"];
+  [coderCopy encodeObject:v8 forKey:@"degree"];
 }
 
 - (id)localizedName
@@ -90,16 +90,16 @@
   return v5;
 }
 
-+ (int64_t)_waypointTypeFromSolarEventType:(int64_t)a3
++ (int64_t)_waypointTypeFromSolarEventType:(int64_t)type
 {
-  if (a3 > 9)
+  if (type > 9)
   {
     return 0;
   }
 
   else
   {
-    return qword_22DCE8BC8[a3];
+    return qword_22DCE8BC8[type];
   }
 }
 

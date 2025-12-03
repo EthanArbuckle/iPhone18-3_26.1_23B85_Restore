@@ -1,27 +1,27 @@
 @interface _MKMapItemUserRatingSnippetReview
 - (NSURL)_reviewerImageURL;
-- (_MKMapItemUserRatingSnippetReview)initWithMapItem:(id)a3 review:(id)a4;
-- (void)showWithCompletionHandler:(id)a3;
+- (_MKMapItemUserRatingSnippetReview)initWithMapItem:(id)item review:(id)review;
+- (void)showWithCompletionHandler:(id)handler;
 @end
 
 @implementation _MKMapItemUserRatingSnippetReview
 
-- (void)showWithCompletionHandler:(id)a3
+- (void)showWithCompletionHandler:(id)handler
 {
-  v5 = [(MKMapItem *)self->_mapItem _reviewsAttribution];
-  v4 = [v5 urlsForReview:self];
+  _reviewsAttribution = [(MKMapItem *)self->_mapItem _reviewsAttribution];
+  v4 = [_reviewsAttribution urlsForReview:self];
   if ([v4 count])
   {
-    [MKAppLaunchController launchAttributionURLs:v4 withAttribution:v5 completionHandler:0];
+    [MKAppLaunchController launchAttributionURLs:v4 withAttribution:_reviewsAttribution completionHandler:0];
   }
 }
 
 - (NSURL)_reviewerImageURL
 {
-  v2 = [(GEOMapItemReview *)self->_review _reviewerImageURLString];
-  if ([v2 length])
+  _reviewerImageURLString = [(GEOMapItemReview *)self->_review _reviewerImageURLString];
+  if ([_reviewerImageURLString length])
   {
-    v3 = [MEMORY[0x1E695DFF8] URLWithString:v2];
+    v3 = [MEMORY[0x1E695DFF8] URLWithString:_reviewerImageURLString];
   }
 
   else
@@ -32,18 +32,18 @@
   return v3;
 }
 
-- (_MKMapItemUserRatingSnippetReview)initWithMapItem:(id)a3 review:(id)a4
+- (_MKMapItemUserRatingSnippetReview)initWithMapItem:(id)item review:(id)review
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  reviewCopy = review;
   v13.receiver = self;
   v13.super_class = _MKMapItemUserRatingSnippetReview;
   v9 = [(_MKMapItemUserRatingSnippetReview *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mapItem, a3);
-    objc_storeStrong(&v10->_review, a4);
+    objc_storeStrong(&v9->_mapItem, item);
+    objc_storeStrong(&v10->_review, review);
     v11 = v10;
   }
 

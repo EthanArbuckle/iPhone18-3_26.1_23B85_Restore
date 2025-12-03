@@ -1,13 +1,13 @@
 @interface SFMExampleUtterance
 - (NSString)utteranceText;
-- (void)setUtteranceText:(id)a3;
+- (void)setUtteranceText:(id)text;
 @end
 
 @implementation SFMExampleUtterance
 
 - (NSString)utteranceText
 {
-  v2 = self;
+  selfCopy = self;
   sub_266D7CDE8();
   v4 = v3;
 
@@ -24,9 +24,9 @@
   return v5;
 }
 
-- (void)setUtteranceText:(id)a3
+- (void)setUtteranceText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_266DAA70C();
     v6 = v5;
@@ -38,7 +38,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_266D7CEF8(v4, v6);
 }
 

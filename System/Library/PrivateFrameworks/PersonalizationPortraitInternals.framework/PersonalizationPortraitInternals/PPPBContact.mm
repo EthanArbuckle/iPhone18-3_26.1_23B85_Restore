@@ -1,46 +1,46 @@
 @interface PPPBContact
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEmailAddresses:(id)a3;
-- (void)addPhoneNumbers:(id)a3;
-- (void)addPostalAddresses:(id)a3;
-- (void)addSocialProfiles:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDisplayNameOrder:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEmailAddresses:(id)addresses;
+- (void)addPhoneNumbers:(id)numbers;
+- (void)addPostalAddresses:(id)addresses;
+- (void)addSocialProfiles:(id)profiles;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDisplayNameOrder:(BOOL)order;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPPBContact
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 7))
+  fromCopy = from;
+  if (*(fromCopy + 7))
   {
     [(PPPBContact *)self setIdentifier:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PPPBContact *)self setGivenName:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(PPPBContact *)self setMiddleName:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PPPBContact *)self setFamilyName:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PPPBContact *)self setNickname:?];
   }
@@ -49,7 +49,7 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v5 = *(v4 + 14);
+  v5 = *(fromCopy + 14);
   v6 = [v5 countByEnumeratingWithState:&v42 objects:v49 count:16];
   if (v6)
   {
@@ -77,7 +77,7 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   v11 = [v10 countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (v11)
   {
@@ -105,7 +105,7 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v15 = *(v4 + 15);
+  v15 = *(fromCopy + 15);
   v16 = [v15 countByEnumeratingWithState:&v34 objects:v47 count:16];
   if (v16)
   {
@@ -129,13 +129,13 @@
     while (v17);
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(PPPBContact *)self setOrganizationName:?];
   }
 
   birthday = self->_birthday;
-  v21 = *(v4 + 2);
+  v21 = *(fromCopy + 2);
   if (birthday)
   {
     if (v21)
@@ -150,7 +150,7 @@
   }
 
   nonGregorianBirthday = self->_nonGregorianBirthday;
-  v23 = *(v4 + 12);
+  v23 = *(fromCopy + 12);
   if (nonGregorianBirthday)
   {
     if (v23)
@@ -168,7 +168,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v24 = *(v4 + 16);
+  v24 = *(fromCopy + 16);
   v25 = [v24 countByEnumeratingWithState:&v30 objects:v46 count:16];
   if (v25)
   {
@@ -192,35 +192,35 @@
     while (v26);
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PPPBContact *)self setNamePrefix:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PPPBContact *)self setNameSuffix:?];
   }
 
-  if ((*(v4 + 152) & 2) != 0)
+  if ((*(fromCopy + 152) & 2) != 0)
   {
-    self->_displayNameOrder = *(v4 + 6);
+    self->_displayNameOrder = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(PPPBContact *)self setSortingGivenName:?];
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(PPPBContact *)self setSortingFamilyName:?];
   }
 
-  if (*(v4 + 152))
+  if (*(fromCopy + 152))
   {
-    self->_createdAt = *(v4 + 1);
+    self->_createdAt = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -268,16 +268,16 @@
   return v20 ^ v21 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v14 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 7))
+  if (identifier | *(equalCopy + 7))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -286,7 +286,7 @@
   }
 
   givenName = self->_givenName;
-  if (givenName | *(v4 + 6))
+  if (givenName | *(equalCopy + 6))
   {
     if (![(NSString *)givenName isEqual:?])
     {
@@ -295,7 +295,7 @@
   }
 
   middleName = self->_middleName;
-  if (middleName | *(v4 + 8))
+  if (middleName | *(equalCopy + 8))
   {
     if (![(NSString *)middleName isEqual:?])
     {
@@ -304,7 +304,7 @@
   }
 
   familyName = self->_familyName;
-  if (familyName | *(v4 + 5))
+  if (familyName | *(equalCopy + 5))
   {
     if (![(NSString *)familyName isEqual:?])
     {
@@ -313,7 +313,7 @@
   }
 
   nickname = self->_nickname;
-  if (nickname | *(v4 + 11))
+  if (nickname | *(equalCopy + 11))
   {
     if (![(NSString *)nickname isEqual:?])
     {
@@ -322,7 +322,7 @@
   }
 
   phoneNumbers = self->_phoneNumbers;
-  if (phoneNumbers | *(v4 + 14))
+  if (phoneNumbers | *(equalCopy + 14))
   {
     if (![(NSMutableArray *)phoneNumbers isEqual:?])
     {
@@ -331,7 +331,7 @@
   }
 
   emailAddresses = self->_emailAddresses;
-  if (emailAddresses | *(v4 + 4))
+  if (emailAddresses | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)emailAddresses isEqual:?])
     {
@@ -340,7 +340,7 @@
   }
 
   postalAddresses = self->_postalAddresses;
-  if (postalAddresses | *(v4 + 15))
+  if (postalAddresses | *(equalCopy + 15))
   {
     if (![(NSMutableArray *)postalAddresses isEqual:?])
     {
@@ -349,7 +349,7 @@
   }
 
   organizationName = self->_organizationName;
-  if (organizationName | *(v4 + 13))
+  if (organizationName | *(equalCopy + 13))
   {
     if (![(NSString *)organizationName isEqual:?])
     {
@@ -358,7 +358,7 @@
   }
 
   birthday = self->_birthday;
-  if (birthday | *(v4 + 2))
+  if (birthday | *(equalCopy + 2))
   {
     if (![(PPPBDateComponents *)birthday isEqual:?])
     {
@@ -367,7 +367,7 @@
   }
 
   nonGregorianBirthday = self->_nonGregorianBirthday;
-  if (nonGregorianBirthday | *(v4 + 12))
+  if (nonGregorianBirthday | *(equalCopy + 12))
   {
     if (![(PPPBDateComponents *)nonGregorianBirthday isEqual:?])
     {
@@ -376,7 +376,7 @@
   }
 
   socialProfiles = self->_socialProfiles;
-  if (socialProfiles | *(v4 + 16))
+  if (socialProfiles | *(equalCopy + 16))
   {
     if (![(NSMutableArray *)socialProfiles isEqual:?])
     {
@@ -385,7 +385,7 @@
   }
 
   namePrefix = self->_namePrefix;
-  if (namePrefix | *(v4 + 9))
+  if (namePrefix | *(equalCopy + 9))
   {
     if (![(NSString *)namePrefix isEqual:?])
     {
@@ -394,7 +394,7 @@
   }
 
   nameSuffix = self->_nameSuffix;
-  if (nameSuffix | *(v4 + 10))
+  if (nameSuffix | *(equalCopy + 10))
   {
     if (![(NSString *)nameSuffix isEqual:?])
     {
@@ -402,16 +402,16 @@
     }
   }
 
-  v19 = *(v4 + 152);
+  v19 = *(equalCopy + 152);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 152) & 2) == 0 || self->_displayNameOrder != *(v4 + 6))
+    if ((*(equalCopy + 152) & 2) == 0 || self->_displayNameOrder != *(equalCopy + 6))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 152) & 2) != 0)
+  else if ((*(equalCopy + 152) & 2) != 0)
   {
 LABEL_43:
     v22 = 0;
@@ -419,13 +419,13 @@ LABEL_43:
   }
 
   sortingGivenName = self->_sortingGivenName;
-  if (sortingGivenName | *(v4 + 18) && ![(NSString *)sortingGivenName isEqual:?])
+  if (sortingGivenName | *(equalCopy + 18) && ![(NSString *)sortingGivenName isEqual:?])
   {
     goto LABEL_43;
   }
 
   sortingFamilyName = self->_sortingFamilyName;
-  if (sortingFamilyName | *(v4 + 17))
+  if (sortingFamilyName | *(equalCopy + 17))
   {
     if (![(NSString *)sortingFamilyName isEqual:?])
     {
@@ -433,10 +433,10 @@ LABEL_43:
     }
   }
 
-  v22 = (*(v4 + 152) & 1) == 0;
+  v22 = (*(equalCopy + 152) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 152) & 1) == 0 || self->_createdAt != *(v4 + 1))
+    if ((*(equalCopy + 152) & 1) == 0 || self->_createdAt != *(equalCopy + 1))
     {
       goto LABEL_43;
     }
@@ -449,27 +449,27 @@ LABEL_44:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v76 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(NSString *)self->_givenName copyWithZone:a3];
+  v8 = [(NSString *)self->_givenName copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(NSString *)self->_middleName copyWithZone:a3];
+  v10 = [(NSString *)self->_middleName copyWithZone:zone];
   v11 = *(v5 + 64);
   *(v5 + 64) = v10;
 
-  v12 = [(NSString *)self->_familyName copyWithZone:a3];
+  v12 = [(NSString *)self->_familyName copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(NSString *)self->_nickname copyWithZone:a3];
+  v14 = [(NSString *)self->_nickname copyWithZone:zone];
   v15 = *(v5 + 88);
   *(v5 + 88) = v14;
 
@@ -493,7 +493,7 @@ LABEL_44:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v68 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v68 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addPhoneNumbers:v21];
 
         ++v20;
@@ -526,7 +526,7 @@ LABEL_44:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v64 + 1) + 8 * v26) copyWithZone:a3];
+        v27 = [*(*(&v64 + 1) + 8 * v26) copyWithZone:zone];
         [v5 addEmailAddresses:v27];
 
         ++v26;
@@ -559,7 +559,7 @@ LABEL_44:
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v60 + 1) + 8 * v32) copyWithZone:a3];
+        v33 = [*(*(&v60 + 1) + 8 * v32) copyWithZone:zone];
         [v5 addPostalAddresses:v33];
 
         ++v32;
@@ -572,15 +572,15 @@ LABEL_44:
     while (v30);
   }
 
-  v34 = [(NSString *)self->_organizationName copyWithZone:a3];
+  v34 = [(NSString *)self->_organizationName copyWithZone:zone];
   v35 = *(v5 + 104);
   *(v5 + 104) = v34;
 
-  v36 = [(PPPBDateComponents *)self->_birthday copyWithZone:a3];
+  v36 = [(PPPBDateComponents *)self->_birthday copyWithZone:zone];
   v37 = *(v5 + 16);
   *(v5 + 16) = v36;
 
-  v38 = [(PPPBDateComponents *)self->_nonGregorianBirthday copyWithZone:a3];
+  v38 = [(PPPBDateComponents *)self->_nonGregorianBirthday copyWithZone:zone];
   v39 = *(v5 + 96);
   *(v5 + 96) = v38;
 
@@ -604,7 +604,7 @@ LABEL_44:
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v56 + 1) + 8 * v44) copyWithZone:{a3, v56}];
+        v45 = [*(*(&v56 + 1) + 8 * v44) copyWithZone:{zone, v56}];
         [v5 addSocialProfiles:v45];
 
         ++v44;
@@ -617,11 +617,11 @@ LABEL_44:
     while (v42);
   }
 
-  v46 = [(NSString *)self->_namePrefix copyWithZone:a3];
+  v46 = [(NSString *)self->_namePrefix copyWithZone:zone];
   v47 = *(v5 + 72);
   *(v5 + 72) = v46;
 
-  v48 = [(NSString *)self->_nameSuffix copyWithZone:a3];
+  v48 = [(NSString *)self->_nameSuffix copyWithZone:zone];
   v49 = *(v5 + 80);
   *(v5 + 80) = v48;
 
@@ -631,11 +631,11 @@ LABEL_44:
     *(v5 + 152) |= 2u;
   }
 
-  v50 = [(NSString *)self->_sortingGivenName copyWithZone:a3, v56];
+  v50 = [(NSString *)self->_sortingGivenName copyWithZone:zone, v56];
   v51 = *(v5 + 144);
   *(v5 + 144) = v50;
 
-  v52 = [(NSString *)self->_sortingFamilyName copyWithZone:a3];
+  v52 = [(NSString *)self->_sortingFamilyName copyWithZone:zone];
   v53 = *(v5 + 136);
   *(v5 + 136) = v52;
 
@@ -649,119 +649,119 @@ LABEL_44:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v21 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
-    [v21 setIdentifier:?];
+    [toCopy setIdentifier:?];
   }
 
   if (self->_givenName)
   {
-    [v21 setGivenName:?];
+    [toCopy setGivenName:?];
   }
 
   if (self->_middleName)
   {
-    [v21 setMiddleName:?];
+    [toCopy setMiddleName:?];
   }
 
   if (self->_familyName)
   {
-    [v21 setFamilyName:?];
+    [toCopy setFamilyName:?];
   }
 
   if (self->_nickname)
   {
-    [v21 setNickname:?];
+    [toCopy setNickname:?];
   }
 
   if ([(PPPBContact *)self phoneNumbersCount])
   {
-    [v21 clearPhoneNumbers];
-    v4 = [(PPPBContact *)self phoneNumbersCount];
-    if (v4)
+    [toCopy clearPhoneNumbers];
+    phoneNumbersCount = [(PPPBContact *)self phoneNumbersCount];
+    if (phoneNumbersCount)
     {
-      v5 = v4;
+      v5 = phoneNumbersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PPPBContact *)self phoneNumbersAtIndex:i];
-        [v21 addPhoneNumbers:v7];
+        [toCopy addPhoneNumbers:v7];
       }
     }
   }
 
   if ([(PPPBContact *)self emailAddressesCount])
   {
-    [v21 clearEmailAddresses];
-    v8 = [(PPPBContact *)self emailAddressesCount];
-    if (v8)
+    [toCopy clearEmailAddresses];
+    emailAddressesCount = [(PPPBContact *)self emailAddressesCount];
+    if (emailAddressesCount)
     {
-      v9 = v8;
+      v9 = emailAddressesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PPPBContact *)self emailAddressesAtIndex:j];
-        [v21 addEmailAddresses:v11];
+        [toCopy addEmailAddresses:v11];
       }
     }
   }
 
   if ([(PPPBContact *)self postalAddressesCount])
   {
-    [v21 clearPostalAddresses];
-    v12 = [(PPPBContact *)self postalAddressesCount];
-    if (v12)
+    [toCopy clearPostalAddresses];
+    postalAddressesCount = [(PPPBContact *)self postalAddressesCount];
+    if (postalAddressesCount)
     {
-      v13 = v12;
+      v13 = postalAddressesCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(PPPBContact *)self postalAddressesAtIndex:k];
-        [v21 addPostalAddresses:v15];
+        [toCopy addPostalAddresses:v15];
       }
     }
   }
 
   if (self->_organizationName)
   {
-    [v21 setOrganizationName:?];
+    [toCopy setOrganizationName:?];
   }
 
   if (self->_birthday)
   {
-    [v21 setBirthday:?];
+    [toCopy setBirthday:?];
   }
 
   if (self->_nonGregorianBirthday)
   {
-    [v21 setNonGregorianBirthday:?];
+    [toCopy setNonGregorianBirthday:?];
   }
 
   if ([(PPPBContact *)self socialProfilesCount])
   {
-    [v21 clearSocialProfiles];
-    v16 = [(PPPBContact *)self socialProfilesCount];
-    if (v16)
+    [toCopy clearSocialProfiles];
+    socialProfilesCount = [(PPPBContact *)self socialProfilesCount];
+    if (socialProfilesCount)
     {
-      v17 = v16;
+      v17 = socialProfilesCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(PPPBContact *)self socialProfilesAtIndex:m];
-        [v21 addSocialProfiles:v19];
+        [toCopy addSocialProfiles:v19];
       }
     }
   }
 
   if (self->_namePrefix)
   {
-    [v21 setNamePrefix:?];
+    [toCopy setNamePrefix:?];
   }
 
-  v20 = v21;
+  v20 = toCopy;
   if (self->_nameSuffix)
   {
-    [v21 setNameSuffix:?];
-    v20 = v21;
+    [toCopy setNameSuffix:?];
+    v20 = toCopy;
   }
 
   if ((*&self->_has & 2) != 0)
@@ -772,14 +772,14 @@ LABEL_44:
 
   if (self->_sortingGivenName)
   {
-    [v21 setSortingGivenName:?];
-    v20 = v21;
+    [toCopy setSortingGivenName:?];
+    v20 = toCopy;
   }
 
   if (self->_sortingFamilyName)
   {
-    [v21 setSortingFamilyName:?];
-    v20 = v21;
+    [toCopy setSortingFamilyName:?];
+    v20 = toCopy;
   }
 
   if (*&self->_has)
@@ -789,10 +789,10 @@ LABEL_44:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -999,12 +999,12 @@ LABEL_44:
 - (id)dictionaryRepresentation
 {
   v71 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   givenName = self->_givenName;
@@ -1053,8 +1053,8 @@ LABEL_44:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v63 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v63 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v63 objects:v70 count:16];
@@ -1088,8 +1088,8 @@ LABEL_44:
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v59 + 1) + 8 * j) dictionaryRepresentation];
-          [v17 addObject:v23];
+          dictionaryRepresentation2 = [*(*(&v59 + 1) + 8 * j) dictionaryRepresentation];
+          [v17 addObject:dictionaryRepresentation2];
         }
 
         v20 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v59 objects:v69 count:16];
@@ -1123,8 +1123,8 @@ LABEL_44:
             objc_enumerationMutation(v25);
           }
 
-          v30 = [*(*(&v55 + 1) + 8 * k) dictionaryRepresentation];
-          [v24 addObject:v30];
+          dictionaryRepresentation3 = [*(*(&v55 + 1) + 8 * k) dictionaryRepresentation];
+          [v24 addObject:dictionaryRepresentation3];
         }
 
         v27 = [(NSMutableArray *)v25 countByEnumeratingWithState:&v55 objects:v68 count:16];
@@ -1145,15 +1145,15 @@ LABEL_44:
   birthday = self->_birthday;
   if (birthday)
   {
-    v33 = [(PPPBDateComponents *)birthday dictionaryRepresentation];
-    [v4 setObject:v33 forKey:@"birthday"];
+    dictionaryRepresentation4 = [(PPPBDateComponents *)birthday dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"birthday"];
   }
 
   nonGregorianBirthday = self->_nonGregorianBirthday;
   if (nonGregorianBirthday)
   {
-    v35 = [(PPPBDateComponents *)nonGregorianBirthday dictionaryRepresentation];
-    [v4 setObject:v35 forKey:@"nonGregorianBirthday"];
+    dictionaryRepresentation5 = [(PPPBDateComponents *)nonGregorianBirthday dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"nonGregorianBirthday"];
   }
 
   if ([(NSMutableArray *)self->_socialProfiles count])
@@ -1178,8 +1178,8 @@ LABEL_44:
             objc_enumerationMutation(v37);
           }
 
-          v42 = [*(*(&v51 + 1) + 8 * m) dictionaryRepresentation];
-          [v36 addObject:v42];
+          dictionaryRepresentation6 = [*(*(&v51 + 1) + 8 * m) dictionaryRepresentation];
+          [v36 addObject:dictionaryRepresentation6];
         }
 
         v39 = [(NSMutableArray *)v37 countByEnumeratingWithState:&v51 objects:v67 count:16];
@@ -1238,15 +1238,15 @@ LABEL_44:
   v8.receiver = self;
   v8.super_class = PPPBContact;
   v4 = [(PPPBContact *)&v8 description];
-  v5 = [(PPPBContact *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPPBContact *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasDisplayNameOrder:(BOOL)a3
+- (void)setHasDisplayNameOrder:(BOOL)order
 {
-  if (a3)
+  if (order)
   {
     v3 = 2;
   }
@@ -1259,76 +1259,76 @@ LABEL_44:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSocialProfiles:(id)a3
+- (void)addSocialProfiles:(id)profiles
 {
-  v4 = a3;
+  profilesCopy = profiles;
   socialProfiles = self->_socialProfiles;
-  v8 = v4;
+  v8 = profilesCopy;
   if (!socialProfiles)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_socialProfiles;
     self->_socialProfiles = v6;
 
-    v4 = v8;
+    profilesCopy = v8;
     socialProfiles = self->_socialProfiles;
   }
 
-  [(NSMutableArray *)socialProfiles addObject:v4];
+  [(NSMutableArray *)socialProfiles addObject:profilesCopy];
 }
 
-- (void)addPostalAddresses:(id)a3
+- (void)addPostalAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   postalAddresses = self->_postalAddresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!postalAddresses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_postalAddresses;
     self->_postalAddresses = v6;
 
-    v4 = v8;
+    addressesCopy = v8;
     postalAddresses = self->_postalAddresses;
   }
 
-  [(NSMutableArray *)postalAddresses addObject:v4];
+  [(NSMutableArray *)postalAddresses addObject:addressesCopy];
 }
 
-- (void)addEmailAddresses:(id)a3
+- (void)addEmailAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   emailAddresses = self->_emailAddresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!emailAddresses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_emailAddresses;
     self->_emailAddresses = v6;
 
-    v4 = v8;
+    addressesCopy = v8;
     emailAddresses = self->_emailAddresses;
   }
 
-  [(NSMutableArray *)emailAddresses addObject:v4];
+  [(NSMutableArray *)emailAddresses addObject:addressesCopy];
 }
 
-- (void)addPhoneNumbers:(id)a3
+- (void)addPhoneNumbers:(id)numbers
 {
-  v4 = a3;
+  numbersCopy = numbers;
   phoneNumbers = self->_phoneNumbers;
-  v8 = v4;
+  v8 = numbersCopy;
   if (!phoneNumbers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_phoneNumbers;
     self->_phoneNumbers = v6;
 
-    v4 = v8;
+    numbersCopy = v8;
     phoneNumbers = self->_phoneNumbers;
   }
 
-  [(NSMutableArray *)phoneNumbers addObject:v4];
+  [(NSMutableArray *)phoneNumbers addObject:numbersCopy];
 }
 
 @end

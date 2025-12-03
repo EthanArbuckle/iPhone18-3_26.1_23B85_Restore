@@ -1,32 +1,32 @@
 @interface SBSwitcherDemoFilteringController
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setHiddenApplicationBundleIDs:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)setHiddenApplicationBundleIDs:(id)ds;
 @end
 
 @implementation SBSwitcherDemoFilteringController
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers removeObject:a3];
+  [(NSHashTable *)self->_observers removeObject:observer];
   if (![(NSHashTable *)self->_observers count])
   {
     observers = self->_observers;
@@ -34,14 +34,14 @@
   }
 }
 
-- (void)setHiddenApplicationBundleIDs:(id)a3
+- (void)setHiddenApplicationBundleIDs:(id)ds
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   hiddenApplicationBundleIDs = self->_hiddenApplicationBundleIDs;
-  if (hiddenApplicationBundleIDs != v4 && ([(NSArray *)hiddenApplicationBundleIDs isEqual:v4]& 1) == 0)
+  if (hiddenApplicationBundleIDs != dsCopy && ([(NSArray *)hiddenApplicationBundleIDs isEqual:dsCopy]& 1) == 0)
   {
-    v6 = [(NSArray *)v4 copy];
+    v6 = [(NSArray *)dsCopy copy];
     v7 = self->_hiddenApplicationBundleIDs;
     self->_hiddenApplicationBundleIDs = v6;
 
@@ -49,8 +49,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [(NSHashTable *)self->_observers allObjects];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = v9;
@@ -62,14 +62,14 @@
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allObjects);
           }
 
           [*(*(&v13 + 1) + 8 * v12++) switcherDemoFilteringControllerDidChangeHiddenApplicationBundleIDs:self];
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v10 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v10);

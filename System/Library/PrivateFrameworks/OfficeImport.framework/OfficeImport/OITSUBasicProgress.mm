@@ -1,13 +1,13 @@
 @interface OITSUBasicProgress
-- (OITSUBasicProgress)initWithMaxValue:(double)a3;
+- (OITSUBasicProgress)initWithMaxValue:(double)value;
 - (void)dealloc;
-- (void)setIndeterminate:(BOOL)a3;
-- (void)setValue:(double)a3;
+- (void)setIndeterminate:(BOOL)indeterminate;
+- (void)setValue:(double)value;
 @end
 
 @implementation OITSUBasicProgress
 
-- (OITSUBasicProgress)initWithMaxValue:(double)a3
+- (OITSUBasicProgress)initWithMaxValue:(double)value
 {
   v7.receiver = self;
   v7.super_class = OITSUBasicProgress;
@@ -16,7 +16,7 @@
   {
     v5 = objc_alloc_init(OITSUBasicProgressStorage);
     v4->mStorage = v5;
-    [(OITSUBasicProgressStorage *)v5 setMaxValue:a3];
+    [(OITSUBasicProgressStorage *)v5 setMaxValue:value];
   }
 
   return v4;
@@ -29,16 +29,16 @@
   [(OITSUProgress *)&v3 dealloc];
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  [(OITSUBasicProgressStorage *)self->mStorage setValue:a3];
+  [(OITSUBasicProgressStorage *)self->mStorage setValue:value];
 
   [(OITSUProgress *)self protected_progressDidChange];
 }
 
-- (void)setIndeterminate:(BOOL)a3
+- (void)setIndeterminate:(BOOL)indeterminate
 {
-  [(OITSUBasicProgressStorage *)self->mStorage setIndeterminate:a3];
+  [(OITSUBasicProgressStorage *)self->mStorage setIndeterminate:indeterminate];
 
   [(OITSUProgress *)self protected_progressDidChange];
 }

@@ -1,18 +1,18 @@
 @interface SocialPersonVerticalCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SocialPersonVerticalCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.SocialPersonVerticalCell" hasInstanceMethod:@"accessibilityPersonName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SocialPersonVerticalCell" hasInstanceMethod:@"accessibilityPersonSubtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SocialPersonVerticalCell" hasInstanceMethod:@"accessibilityFollowButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SocialPersonVerticalCell" hasInstanceMethod:@"accessibilityCloseButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.SocialPersonVerticalCell" hasInstanceMethod:@"accessibilityPersonName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SocialPersonVerticalCell" hasInstanceMethod:@"accessibilityPersonSubtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SocialPersonVerticalCell" hasInstanceMethod:@"accessibilityFollowButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SocialPersonVerticalCell" hasInstanceMethod:@"accessibilityCloseButton" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -24,14 +24,14 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(SocialPersonVerticalCellAccessibility *)self safeValueForKey:@"accessibilityFollowButton"];
   v5 = [(SocialPersonVerticalCellAccessibility *)self safeValueForKey:@"accessibilityPersonName"];
   [v4 setAccessibilityValue:v5];
 
   if (v4)
   {
-    [v3 addObject:v4];
+    [array addObject:v4];
   }
 
   v6 = [(SocialPersonVerticalCellAccessibility *)self safeValueForKey:@"accessibilityCloseButton"];
@@ -43,10 +43,10 @@
 
   if (v6)
   {
-    [v3 addObject:v6];
+    [array addObject:v6];
   }
 
-  return v3;
+  return array;
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface PLAssetsdLibraryManagementService
-- (BOOL)_validateClientPermissionsToCloseLibraryAtURL:(id)a3 delete:(BOOL)a4 error:(id *)a5;
-- (PLAssetsdLibraryManagementService)initWithConnectionAuthorization:(id)a3 bundleController:(id)a4;
-- (void)_closePhotoLibraryAtURL:(id)a3 delete:(BOOL)a4 reply:(id)a5;
-- (void)closeAndDeletePhotoLibraryAtURL:(id)a3 sandboxExtension:(id)a4 reply:(id)a5;
-- (void)closePhotoLibraryAtURL:(id)a3 reply:(id)a4;
-- (void)createManagedPhotoLibraryWithOptions:(id)a3 sandboxExtension:(id)a4 reply:(id)a5;
-- (void)filesystemSizeForLibraryURL:(id)a3 reply:(id)a4;
-- (void)findPhotoLibraryIdentifiersMatchingSearchCriteria:(id)a3 reply:(id)a4;
-- (void)getPhotoLibraryIdentifierWithLibraryURL:(id)a3 reply:(id)a4;
-- (void)getPhotoLibraryURLsWithLibraryURL:(id)a3 reply:(id)a4;
-- (void)resetSyndicationLibraryWithReply:(id)a3;
-- (void)setSystemPhotoLibraryURL:(id)a3 sandboxExtension:(id)a4 options:(unsigned __int16)a5 reply:(id)a6;
+- (BOOL)_validateClientPermissionsToCloseLibraryAtURL:(id)l delete:(BOOL)delete error:(id *)error;
+- (PLAssetsdLibraryManagementService)initWithConnectionAuthorization:(id)authorization bundleController:(id)controller;
+- (void)_closePhotoLibraryAtURL:(id)l delete:(BOOL)delete reply:(id)reply;
+- (void)closeAndDeletePhotoLibraryAtURL:(id)l sandboxExtension:(id)extension reply:(id)reply;
+- (void)closePhotoLibraryAtURL:(id)l reply:(id)reply;
+- (void)createManagedPhotoLibraryWithOptions:(id)options sandboxExtension:(id)extension reply:(id)reply;
+- (void)filesystemSizeForLibraryURL:(id)l reply:(id)reply;
+- (void)findPhotoLibraryIdentifiersMatchingSearchCriteria:(id)criteria reply:(id)reply;
+- (void)getPhotoLibraryIdentifierWithLibraryURL:(id)l reply:(id)reply;
+- (void)getPhotoLibraryURLsWithLibraryURL:(id)l reply:(id)reply;
+- (void)resetSyndicationLibraryWithReply:(id)reply;
+- (void)setSystemPhotoLibraryURL:(id)l sandboxExtension:(id)extension options:(unsigned __int16)options reply:(id)reply;
 @end
 
 @implementation PLAssetsdLibraryManagementService
 
-- (void)createManagedPhotoLibraryWithOptions:(id)a3 sandboxExtension:(id)a4 reply:(id)a5
+- (void)createManagedPhotoLibraryWithOptions:(id)options sandboxExtension:(id)extension reply:(id)reply
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  extensionCopy = extension;
+  replyCopy = reply;
   v36 = 0u;
   *sel = 0u;
   v35 = 0u;
-  v11 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v35) = v11;
-  if (v11)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v35) = enabled;
+  if (enabled)
   {
     v12 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: createManagedPhotoLibraryWithOptions:sandboxExtension:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v13 = *(&v35 + 1);
@@ -35,18 +35,18 @@
     os_activity_scope_enter(v12, (&v36 + 8));
   }
 
-  v14 = [v8 objectForKeyedSubscript:@"PLPhotoLibraryOpenerOptionsBundleURLKey"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"PLPhotoLibraryOpenerOptionsBundleURLKey"];
   if (!v14)
   {
-    v15 = [v8 objectForKeyedSubscript:@"PLPhotoLibraryOpenerOptionsTestOptionsKey"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"PLPhotoLibraryOpenerOptionsTestOptionsKey"];
     v14 = [v15 objectForKey:*MEMORY[0x1E69BFED0]];
   }
 
-  if (v9 && v14)
+  if (extensionCopy && v14)
   {
-    v16 = [MEMORY[0x1E69BF278] sharedBookmarkManager];
+    mEMORY[0x1E69BF278] = [MEMORY[0x1E69BF278] sharedBookmarkManager];
     v34 = 0;
-    v17 = [v16 URLFromClientLibraryURL:v14 sandboxExtension:v9 error:&v34];
+    v17 = [mEMORY[0x1E69BF278] URLFromClientLibraryURL:v14 sandboxExtension:extensionCopy error:&v34];
     v18 = v34;
 
     if (v17 || !v18)
@@ -73,7 +73,7 @@
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
         v25 = [v23 errorWithDomain:v22 code:46018 userInfo:v24];
 
-        v10[2](v10, 0, v25);
+        replyCopy[2](replyCopy, 0, v25);
         goto LABEL_17;
       }
     }
@@ -84,20 +84,20 @@
     v17 = v14;
   }
 
-  v25 = [[PLLibraryOpenerCreationOptions alloc] initWithOptionsDictionary:v8 connectionAuthorization:self->_connectionAuthorization];
+  v25 = [[PLLibraryOpenerCreationOptions alloc] initWithOptionsDictionary:optionsCopy connectionAuthorization:self->_connectionAuthorization];
   if (v25)
   {
     v33 = 0;
     v26 = [PLPhotoLibraryOpener createManagedPhotoLibraryOnFilesystemWithOptions:v25 error:&v33];
     v27 = v33;
-    v28 = [v26 libraryURL];
-    (v10)[2](v10, v28, v27);
+    libraryURL = [v26 libraryURL];
+    (replyCopy)[2](replyCopy, libraryURL, v27);
   }
 
   else
   {
     v27 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:46018 userInfo:0];
-    v10[2](v10, 0, v27);
+    replyCopy[2](replyCopy, 0, v27);
   }
 
 LABEL_17:
@@ -121,17 +121,17 @@ LABEL_17:
   }
 }
 
-- (void)findPhotoLibraryIdentifiersMatchingSearchCriteria:(id)a3 reply:(id)a4
+- (void)findPhotoLibraryIdentifiersMatchingSearchCriteria:(id)criteria reply:(id)reply
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  criteriaCopy = criteria;
+  replyCopy = reply;
   v18 = 0u;
   *sel = 0u;
   v17 = 0u;
-  v7 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v17) = v7;
-  if (v7)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v17) = enabled;
+  if (enabled)
   {
     v8 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: findPhotoLibraryIdentifiersMatchingSearchCriteria:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v9 = *(&v17 + 1);
@@ -141,9 +141,9 @@ LABEL_17:
   }
 
   v16 = 0;
-  v10 = [PLPhotoLibraryOpener findPhotoLibraryIdentifiersMatchingSearchCriteria:v5 error:&v16];
+  v10 = [PLPhotoLibraryOpener findPhotoLibraryIdentifiersMatchingSearchCriteria:criteriaCopy error:&v16];
   v11 = v16;
-  v6[2](v6, v10, v11);
+  replyCopy[2](replyCopy, v10, v11);
 
   if (v17 == 1)
   {
@@ -165,17 +165,17 @@ LABEL_17:
   }
 }
 
-- (void)getPhotoLibraryIdentifierWithLibraryURL:(id)a3 reply:(id)a4
+- (void)getPhotoLibraryIdentifierWithLibraryURL:(id)l reply:(id)reply
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  replyCopy = reply;
   v18 = 0u;
   *sel = 0u;
   v17 = 0u;
-  v7 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v17) = v7;
-  if (v7)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v17) = enabled;
+  if (enabled)
   {
     v8 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: getPhotoLibraryIdentifierWithLibraryURL:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v9 = *(&v17 + 1);
@@ -185,9 +185,9 @@ LABEL_17:
   }
 
   v16 = 0;
-  v10 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:v5 createIfMissing:1 error:&v16];
+  v10 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:lCopy createIfMissing:1 error:&v16];
   v11 = v16;
-  v6[2](v6, v10, v11);
+  replyCopy[2](replyCopy, v10, v11);
 
   if (v17 == 1)
   {
@@ -209,17 +209,17 @@ LABEL_17:
   }
 }
 
-- (void)filesystemSizeForLibraryURL:(id)a3 reply:(id)a4
+- (void)filesystemSizeForLibraryURL:(id)l reply:(id)reply
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  replyCopy = reply;
   v20 = 0u;
   *sel = 0u;
   v19 = 0u;
-  v7 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v19) = v7;
-  if (v7)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v19) = enabled;
+  if (enabled)
   {
     v8 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: filesystemSizeForLibraryURL:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v9 = *(&v19 + 1);
@@ -229,13 +229,13 @@ LABEL_17:
   }
 
   v10 = +[PLPhotoLibraryBundleController sharedBundleController];
-  v11 = [v10 lookupOrCreateBundleForLibraryURL:v5];
+  v11 = [v10 lookupOrCreateBundleForLibraryURL:lCopy];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __71__PLAssetsdLibraryManagementService_filesystemSizeForLibraryURL_reply___block_invoke;
   v17[3] = &unk_1E7576D48;
-  v12 = v6;
+  v12 = replyCopy;
   v18 = v12;
   [v11 calculateTotalSizeWithResult:v17];
 
@@ -259,40 +259,40 @@ LABEL_17:
   }
 }
 
-- (void)_closePhotoLibraryAtURL:(id)a3 delete:(BOOL)a4 reply:(id)a5
+- (void)_closePhotoLibraryAtURL:(id)l delete:(BOOL)delete reply:(id)reply
 {
-  v6 = a4;
+  selfCopy = delete;
   v64[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  replyCopy = reply;
   v54 = 0;
-  v10 = [(PLAssetsdLibraryManagementService *)self _validateClientPermissionsToCloseLibraryAtURL:v8 delete:v6 error:&v54];
+  v10 = [(PLAssetsdLibraryManagementService *)self _validateClientPermissionsToCloseLibraryAtURL:lCopy delete:selfCopy error:&v54];
   v11 = v54;
   v12 = v11;
   if (!v10)
   {
-    v9[2](v9, 0, v11);
+    replyCopy[2](replyCopy, 0, v11);
     goto LABEL_37;
   }
 
   v50 = v11;
   v51 = +[PLPhotoLibraryBundleController sharedBundleController];
-  v13 = [v51 openBundleAtLibraryURL:v8];
+  v13 = [v51 openBundleAtLibraryURL:lCopy];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 libraryServicesManager];
-    v16 = v15;
-    if (v6 && v15)
+    libraryServicesManager = [v13 libraryServicesManager];
+    v16 = libraryServicesManager;
+    if (selfCopy && libraryServicesManager)
     {
       v53 = 0;
-      v17 = [v15 disableiCPLForLibraryDeletionWithError:&v53];
+      v17 = [libraryServicesManager disableiCPLForLibraryDeletionWithError:&v53];
       v18 = v53;
       v19 = v18;
       if (!v17)
       {
         v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        [v29 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A998]];
+        [v29 setObject:lCopy forKeyedSubscript:*MEMORY[0x1E696A998]];
         [v29 setObject:@"Couldn't open library" forKeyedSubscript:*MEMORY[0x1E696A278]];
         [v29 setObject:v19 forKeyedSubscript:*MEMORY[0x1E696AA08]];
         v30 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:41003 userInfo:v29];
@@ -301,7 +301,7 @@ LABEL_17:
       }
     }
 
-    if (v6)
+    if (selfCopy)
     {
       v20 = 41025;
     }
@@ -312,21 +312,21 @@ LABEL_17:
     }
 
     v21 = MEMORY[0x1E696ABC0];
-    v22 = v9;
+    v22 = replyCopy;
     v23 = v16;
-    v24 = v6;
-    v6 = self;
+    v24 = selfCopy;
+    selfCopy = self;
     v25 = v14;
     v26 = *MEMORY[0x1E69BFF48];
     v63 = *MEMORY[0x1E696A998];
-    v64[0] = v8;
+    v64[0] = lCopy;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:&v63 count:1];
     v27 = v26;
     v14 = v25;
-    self = v6;
-    LODWORD(v6) = v24;
+    self = selfCopy;
+    LODWORD(selfCopy) = v24;
     v16 = v23;
-    v9 = v22;
+    replyCopy = v22;
     v28 = 1;
     v29 = [v21 errorWithDomain:v27 code:v20 userInfo:v19];
     [v51 shutdownBundle:v14 reason:v29];
@@ -345,15 +345,15 @@ LABEL_18:
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v56 = v8;
+    v56 = lCopy;
     _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_DEFAULT, "_closePhotoLibraryAtURL: No bundle found for libraryURL %@", buf, 0xCu);
   }
 
-  if ((v6 & 1) == 0)
+  if ((selfCopy & 1) == 0)
   {
     v49 = 0;
     v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v32 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A998]];
+    [v32 setObject:lCopy forKeyedSubscript:*MEMORY[0x1E696A998]];
     [v32 setObject:@"No bundle found for libraryURL" forKeyedSubscript:*MEMORY[0x1E696A278]];
     v33 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:41004 userInfo:v32];
     v28 = 0;
@@ -367,18 +367,18 @@ LABEL_33:
   v30 = 0;
   v28 = 1;
 LABEL_19:
-  if (v6)
+  if (selfCopy)
   {
     v34 = PLBackendGetLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      v35 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization clientProcessIdentifier];
+      clientProcessIdentifier = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization clientProcessIdentifier];
       [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
       v37 = v36 = v14;
       *buf = 138412802;
-      v56 = v8;
+      v56 = lCopy;
       v57 = 1024;
-      *v58 = v35;
+      *v58 = clientProcessIdentifier;
       *&v58[4] = 2114;
       *&v58[6] = v37;
       _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_ERROR, "Deleting photo library from file system at %@, requested by [%d] %{public}@", buf, 0x1Cu);
@@ -386,16 +386,16 @@ LABEL_19:
       v14 = v36;
     }
 
-    v38 = [MEMORY[0x1E69BF2A0] photosLibrariesDataVaultPath];
-    v39 = [v38 path];
+    photosLibrariesDataVaultPath = [MEMORY[0x1E69BF2A0] photosLibrariesDataVaultPath];
+    path = [photosLibrariesDataVaultPath path];
 
     v40 = MEMORY[0x1E69BF238];
-    v41 = [v8 path];
+    path2 = [lCopy path];
     v49 = v14;
-    if ([v40 filePath:v41 hasPrefix:v39])
+    if ([v40 filePath:path2 hasPrefix:path])
     {
-      v42 = [v8 path];
-      v43 = [v42 containsString:@"/Application/"];
+      path3 = [lCopy path];
+      v43 = [path3 containsString:@"/Application/"];
     }
 
     else
@@ -404,16 +404,16 @@ LABEL_19:
     }
 
     v52 = 0;
-    v28 = [PLPhotoLibraryOpener deleteLibraryFromFilesystemAtURL:v8 shouldWriteTombstone:v43 error:&v52];
+    v28 = [PLPhotoLibraryOpener deleteLibraryFromFilesystemAtURL:lCopy shouldWriteTombstone:v43 error:&v52];
     v32 = v52;
-    v44 = [MEMORY[0x1E69BF278] sharedBookmarkManager];
-    [v44 removeSSBForLibraryURL:v8];
+    mEMORY[0x1E69BF278] = [MEMORY[0x1E69BF278] sharedBookmarkManager];
+    [mEMORY[0x1E69BF278] removeSSBForLibraryURL:lCopy];
 
     v45 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v46 = v45;
-    if (v8)
+    if (lCopy)
     {
-      [v45 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A998]];
+      [v45 setObject:lCopy forKeyedSubscript:*MEMORY[0x1E696A998]];
     }
 
     if (v32)
@@ -444,25 +444,25 @@ LABEL_34:
     v57 = 2048;
     *v58 = self;
     *&v58[8] = 2112;
-    *&v58[10] = v8;
+    *&v58[10] = lCopy;
     v59 = 1024;
-    v60 = v6;
+    v60 = selfCopy;
     v61 = 2112;
     v62 = v30;
     _os_log_impl(&dword_19BF1F000, v47, OS_LOG_TYPE_DEBUG, "%@ %p _closePhotoLibraryURL:%@ delete:%d error:%@", buf, 0x30u);
   }
 
-  v9[2](v9, v28, v30);
+  replyCopy[2](replyCopy, v28, v30);
   v12 = v50;
 LABEL_37:
 }
 
-- (BOOL)_validateClientPermissionsToCloseLibraryAtURL:(id)a3 delete:(BOOL)a4 error:(id *)a5
+- (BOOL)_validateClientPermissionsToCloseLibraryAtURL:(id)l delete:(BOOL)delete error:(id *)error
 {
-  v6 = a4;
+  deleteCopy = delete;
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (([MEMORY[0x1E69BF2A0] isSystemPhotoLibraryURL:v8] & 1) != 0 || objc_msgSend(MEMORY[0x1E69BF2A0], "wellKnownPhotoLibraryIdentifierForURL:", v8))
+  lCopy = l;
+  if (([MEMORY[0x1E69BF2A0] isSystemPhotoLibraryURL:lCopy] & 1) != 0 || objc_msgSend(MEMORY[0x1E69BF2A0], "wellKnownPhotoLibraryIdentifierForURL:", lCopy))
   {
     v9 = 41005;
   }
@@ -478,7 +478,7 @@ LABEL_37:
     v15 = PLBackendGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      if (v6)
+      if (deleteCopy)
       {
         v16 = @"close and delete";
       }
@@ -488,11 +488,11 @@ LABEL_37:
         v16 = @"close";
       }
 
-      v17 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
+      trustedCallerBundleID = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
       v18 = 138543618;
       v19 = v16;
       v20 = 2112;
-      v21 = v17;
+      v21 = trustedCallerBundleID;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Cannot %{public}@ library, client %@ is missing required entitlements", &v18, 0x16u);
     }
 
@@ -501,10 +501,10 @@ LABEL_37:
 
   v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:v9 userInfo:0];
   v11 = v10;
-  if (a5)
+  if (error)
   {
     v12 = v10;
-    *a5 = v11;
+    *error = v11;
   }
 
   v13 = 0;
@@ -513,16 +513,16 @@ LABEL_7:
   return v13;
 }
 
-- (void)resetSyndicationLibraryWithReply:(id)a3
+- (void)resetSyndicationLibraryWithReply:(id)reply
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  replyCopy = reply;
   v22 = 0u;
   *sel = 0u;
   v21 = 0u;
-  v4 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v21) = v4;
-  if (v4)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v21) = enabled;
+  if (enabled)
   {
     v5 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: resetSyndicationLibraryWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v6 = *(&v21 + 1);
@@ -556,7 +556,7 @@ LABEL_7:
     [v13 performBlockAndWait:v12];
   }
 
-  (*(v3 + 2))(v3, *(v18 + 24), *(*(&buf + 1) + 40));
+  (*(replyCopy + 2))(replyCopy, *(v18 + 24), *(*(&buf + 1) + 40));
 
   _Block_object_dispose(&buf, 8);
   _Block_object_dispose(&v17, 8);
@@ -643,18 +643,18 @@ void __70__PLAssetsdLibraryManagementService_resetSyndicationLibraryWithReply___
   }
 }
 
-- (void)closeAndDeletePhotoLibraryAtURL:(id)a3 sandboxExtension:(id)a4 reply:(id)a5
+- (void)closeAndDeletePhotoLibraryAtURL:(id)l sandboxExtension:(id)extension reply:(id)reply
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  extensionCopy = extension;
+  replyCopy = reply;
   v26 = 0u;
   *sel = 0u;
   v25 = 0u;
-  v11 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v25) = v11;
-  if (v11)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v25) = enabled;
+  if (enabled)
   {
     v12 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: closeAndDeletePhotoLibraryAtURL:sandboxExtension:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v13 = *(&v25 + 1);
@@ -663,22 +663,22 @@ void __70__PLAssetsdLibraryManagementService_resetSyndicationLibraryWithReply___
     os_activity_scope_enter(v12, (&v26 + 8));
   }
 
-  if (!v9)
+  if (!extensionCopy)
   {
-    v15 = v8;
+    v15 = lCopy;
     goto LABEL_7;
   }
 
-  v14 = [MEMORY[0x1E69BF278] sharedBookmarkManager];
+  mEMORY[0x1E69BF278] = [MEMORY[0x1E69BF278] sharedBookmarkManager];
   v24 = 0;
-  v15 = [v14 URLFromClientLibraryURL:v8 sandboxExtension:v9 error:&v24];
+  v15 = [mEMORY[0x1E69BF278] URLFromClientLibraryURL:lCopy sandboxExtension:extensionCopy error:&v24];
   v16 = v24;
 
   if (v15)
   {
 
 LABEL_7:
-    [(PLAssetsdLibraryManagementService *)self _closePhotoLibraryAtURL:v15 delete:1 reply:v10];
+    [(PLAssetsdLibraryManagementService *)self _closePhotoLibraryAtURL:v15 delete:1 reply:replyCopy];
     goto LABEL_14;
   }
 
@@ -700,7 +700,7 @@ LABEL_7:
   {
   }
 
-  v10[2](v10, 0, v19);
+  replyCopy[2](replyCopy, 0, v19);
 
   v15 = 0;
 LABEL_14:
@@ -724,24 +724,24 @@ LABEL_14:
   }
 }
 
-- (void)closePhotoLibraryAtURL:(id)a3 reply:(id)a4
+- (void)closePhotoLibraryAtURL:(id)l reply:(id)reply
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  replyCopy = reply;
   v14 = 0u;
   *sel = 0u;
   v12 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v12) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v12) = enabled;
+  if (enabled)
   {
     *(&v12 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: closePhotoLibraryAtURL:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v12 + 1), (&v14 + 8));
   }
 
-  [(PLAssetsdLibraryManagementService *)self _closePhotoLibraryAtURL:v6 delete:0 reply:v7, v12];
+  [(PLAssetsdLibraryManagementService *)self _closePhotoLibraryAtURL:lCopy delete:0 reply:replyCopy, v12];
   if (v13 == 1)
   {
     os_activity_scope_leave((&v14 + 8));
@@ -761,17 +761,17 @@ LABEL_14:
   }
 }
 
-- (void)getPhotoLibraryURLsWithLibraryURL:(id)a3 reply:(id)a4
+- (void)getPhotoLibraryURLsWithLibraryURL:(id)l reply:(id)reply
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  replyCopy = reply;
   v38 = 0u;
   *sel = 0u;
   v37 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v37) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v37) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: getPhotoLibraryURLsWithLibraryURL:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v37 + 1);
@@ -780,8 +780,8 @@ LABEL_14:
     os_activity_scope_enter(v9, (&v38 + 8));
   }
 
-  v11 = [MEMORY[0x1E69BF2A8] systemLibraryURL];
-  v12 = v11;
+  systemLibraryURL = [MEMORY[0x1E69BF2A8] systemLibraryURL];
+  v12 = systemLibraryURL;
   p_buf = &buf;
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -789,18 +789,18 @@ LABEL_14:
   v42 = __Block_byref_object_copy__110208;
   v43 = __Block_byref_object_dispose__110209;
   v44 = 0;
-  if (v11)
+  if (systemLibraryURL)
   {
-    if ([v11 isEqual:v6])
+    if ([systemLibraryURL isEqual:lCopy])
     {
-      v14 = [(PLPhotoLibraryBundleController *)self->_bundleController libraryBundles];
+      libraryBundles = [(PLPhotoLibraryBundleController *)self->_bundleController libraryBundles];
       v31 = MEMORY[0x1E69E9820];
       v32 = 3221225472;
       v33 = __77__PLAssetsdLibraryManagementService_getPhotoLibraryURLsWithLibraryURL_reply___block_invoke;
       v34 = &unk_1E7576D20;
       v35 = v12;
       v36 = &buf;
-      [v14 enumerateObjectsUsingBlock:&v31];
+      [libraryBundles enumerateObjectsUsingBlock:&v31];
 
       v15 = v35;
       goto LABEL_8;
@@ -809,14 +809,14 @@ LABEL_14:
     p_buf = *(&buf + 1);
   }
 
-  v16 = v6;
+  v16 = lCopy;
   v15 = *(p_buf + 5);
   *(p_buf + 5) = v16;
 LABEL_8:
 
   if ([(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization isClientAuthorizedForSandboxExtensions])
   {
-    v17 = [MEMORY[0x1E69BF278] sharedBookmarkManager];
+    mEMORY[0x1E69BF278] = [MEMORY[0x1E69BF278] sharedBookmarkManager];
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (v12)
     {
@@ -832,8 +832,8 @@ LABEL_8:
         v30 = 0u;
       }
 
-      v20 = [v12 path];
-      v21 = [v17 newSandboxExtensionDataForClient:&v29 path:v20 writable:0];
+      path = [v12 path];
+      v21 = [mEMORY[0x1E69BF278] newSandboxExtensionDataForClient:&v29 path:path writable:0];
 
       if (v21)
       {
@@ -856,8 +856,8 @@ LABEL_8:
         v30 = 0u;
       }
 
-      v23 = [v22 path];
-      v24 = [v17 newSandboxExtensionDataForClient:&v29 path:v23 writable:0];
+      path2 = [v22 path];
+      v24 = [mEMORY[0x1E69BF278] newSandboxExtensionDataForClient:&v29 path:path2 writable:0];
 
       if (v24)
       {
@@ -871,7 +871,7 @@ LABEL_8:
     v18 = 0;
   }
 
-  (*(v7 + 2))(v7, v12, *(*(&buf + 1) + 40), v18, 0);
+  (*(replyCopy + 2))(replyCopy, v12, *(*(&buf + 1) + 40), v18, 0);
 
   _Block_object_dispose(&buf, 8);
   if (v37 == 1)
@@ -930,19 +930,19 @@ void __77__PLAssetsdLibraryManagementService_getPhotoLibraryURLsWithLibraryURL_r
   }
 }
 
-- (void)setSystemPhotoLibraryURL:(id)a3 sandboxExtension:(id)a4 options:(unsigned __int16)a5 reply:(id)a6
+- (void)setSystemPhotoLibraryURL:(id)l sandboxExtension:(id)extension options:(unsigned __int16)options reply:(id)reply
 {
-  v7 = a5;
+  optionsCopy = options;
   v77[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v58 = a4;
-  v10 = a6;
+  lCopy = l;
+  extensionCopy = extension;
+  replyCopy = reply;
   v64 = 0u;
   *sel = 0u;
   v63 = 0u;
-  v11 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v63) = v11;
-  if (v11)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v63) = enabled;
+  if (enabled)
   {
     v12 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: setSystemPhotoLibraryURL:sandboxExtension:options:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v13 = *(&v63 + 1);
@@ -951,34 +951,34 @@ void __77__PLAssetsdLibraryManagementService_getPhotoLibraryURLsWithLibraryURL_r
     os_activity_scope_enter(v12, (&v64 + 8));
   }
 
-  v14 = [MEMORY[0x1E69BF2A8] systemLibraryURL];
-  if ((v7 & 3) == 2)
+  systemLibraryURL = [MEMORY[0x1E69BF2A8] systemLibraryURL];
+  if ((optionsCopy & 3) == 2)
   {
-    if (!v9)
+    if (!lCopy)
     {
-      v59 = [MEMORY[0x1E69BF2A8] systemLibraryURL];
+      systemLibraryURL2 = [MEMORY[0x1E69BF2A8] systemLibraryURL];
       v21 = 0;
       v15 = 0;
       v56 = 1;
-      if (!v14)
+      if (!systemLibraryURL)
       {
         goto LABEL_32;
       }
 
 LABEL_24:
-      v26 = [MEMORY[0x1E696AC08] defaultManager];
-      v27 = [v14 path];
-      v28 = [v26 fileExistsAtPath:v27];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [systemLibraryURL path];
+      v28 = [defaultManager fileExistsAtPath:path];
 
       if (v28)
       {
-        if ([PLCacheDeleteSupport clearPurgeableFlagsForAllResourcesInPhotoLibraryURL:v14])
+        if ([PLCacheDeleteSupport clearPurgeableFlagsForAllResourcesInPhotoLibraryURL:systemLibraryURL])
         {
           v29 = PLBackendGetLog();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v67 = v14;
+            v67 = systemLibraryURL;
             v30 = "Cleared purgeable flags for %@";
             v31 = v29;
             v32 = OS_LOG_TYPE_DEFAULT;
@@ -993,7 +993,7 @@ LABEL_30:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v67 = v14;
+            v67 = systemLibraryURL;
             v30 = "Failed to clear purgeable flags for %@";
             v31 = v29;
             v32 = OS_LOG_TYPE_ERROR;
@@ -1010,13 +1010,13 @@ LABEL_32:
       v22 = [v33 errorWithDomain:*MEMORY[0x1E69BFF48] code:41019 userInfo:v34];
 
       v54 = os_transaction_create();
-      if (v14)
+      if (systemLibraryURL)
       {
-        v35 = [(PLPhotoLibraryBundleController *)self->_bundleController openBundleAtLibraryURL:v14, v54];
+        v35 = [(PLPhotoLibraryBundleController *)self->_bundleController openBundleAtLibraryURL:systemLibraryURL, v54];
         [v35 invalidateClientConnectionsWithReason:v22];
-        v36 = [v35 libraryServicesManager];
+        libraryServicesManager = [v35 libraryServicesManager];
         v61 = 0;
-        v37 = [v36 willBecomeNonSyncablePhotoLibrary:&v61];
+        v37 = [libraryServicesManager willBecomeNonSyncablePhotoLibrary:&v61];
         v38 = v61;
 
         if ((v37 & 1) == 0)
@@ -1025,7 +1025,7 @@ LABEL_32:
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v67 = v14;
+            v67 = systemLibraryURL;
             v68 = 2112;
             v69 = v38;
             _os_log_impl(&dword_19BF1F000, v39, OS_LOG_TYPE_DEFAULT, "SPL Change: failed to prepare previous SPL %@ to become non-SPL: %@", buf, 0x16u);
@@ -1060,11 +1060,11 @@ LABEL_32:
         [(PLPhotoLibraryBundleController *)self->_bundleController shutdownBundle:v40 reason:v22];
       }
 
-      if (v15 || (v60 = 0, v42 = [MEMORY[0x1E69BF2A8] setSystemLibraryURL:v21 options:v7 error:&v60], v15 = v60, !v42))
+      if (v15 || (v60 = 0, v42 = [MEMORY[0x1E69BF2A8] setSystemLibraryURL:v21 options:optionsCopy error:&v60], v15 = v60, !v42))
       {
 LABEL_49:
-        v46 = [v35 libraryServicesManager];
-        [v46 didRemainSyncablePhotoLibrary];
+        libraryServicesManager2 = [v35 libraryServicesManager];
+        [libraryServicesManager2 didRemainSyncablePhotoLibrary];
         v47 = 0;
       }
 
@@ -1076,23 +1076,23 @@ LABEL_49:
           *buf = 138412546;
           v67 = v21;
           v68 = 2112;
-          v69 = v14;
+          v69 = systemLibraryURL;
           _os_log_impl(&dword_19BF1F000, v43, OS_LOG_TYPE_DEFAULT, "SPL Changed to: %@ from: %@", buf, 0x16u);
         }
 
         v44 = MEMORY[0x1E69BF2A8];
-        v45 = [v14 path];
-        [v44 recordPrevSystemLibraryPath:v45];
+        path2 = [systemLibraryURL path];
+        [v44 recordPrevSystemLibraryPath:path2];
 
-        v46 = [v35 libraryServicesManager];
-        [v46 didBecomeNonSyncablePhotoLibrary];
+        libraryServicesManager2 = [v35 libraryServicesManager];
+        [libraryServicesManager2 didBecomeNonSyncablePhotoLibrary];
         v47 = 1;
       }
 
-      if (v59)
+      if (systemLibraryURL2)
       {
-        v48 = [MEMORY[0x1E69BF278] sharedBookmarkManager];
-        [v48 removeSSBForLibraryURL:v59];
+        mEMORY[0x1E69BF278] = [MEMORY[0x1E69BF278] sharedBookmarkManager];
+        [mEMORY[0x1E69BF278] removeSSBForLibraryURL:systemLibraryURL2];
       }
 
       if ((v47 & 1) == 0)
@@ -1105,38 +1105,38 @@ LABEL_49:
           v68 = 2112;
           v69 = v21;
           v70 = 2112;
-          v71 = v14;
+          v71 = systemLibraryURL;
           _os_log_impl(&dword_19BF1F000, v49, OS_LOG_TYPE_ERROR, "Unable to set the System Photo Library URL (error = %@) to %@ from %@", buf, 0x20u);
         }
       }
 
       [v35 clearInvalidateClientsReason];
-      v10[2](v10, v15);
+      replyCopy[2](replyCopy, v15);
 
-      v9 = v21;
+      lCopy = v21;
       goto LABEL_57;
     }
 
-    v9 = v9;
+    lCopy = lCopy;
     v15 = 0;
-    v59 = v9;
+    systemLibraryURL2 = lCopy;
   }
 
   else
   {
-    if ([MEMORY[0x1E69BF238] fileURL:v9 isEqualToFileURL:v14])
+    if ([MEMORY[0x1E69BF238] fileURL:lCopy isEqualToFileURL:systemLibraryURL])
     {
-      v10[2](v10, 0);
+      replyCopy[2](replyCopy, 0);
       v15 = 0;
       goto LABEL_58;
     }
 
     v15 = 0;
-    if (v9 && v58)
+    if (lCopy && extensionCopy)
     {
-      v16 = [MEMORY[0x1E69BF278] sharedBookmarkManager];
+      mEMORY[0x1E69BF278]2 = [MEMORY[0x1E69BF278] sharedBookmarkManager];
       v62 = 0;
-      v17 = [v16 URLFromClientLibraryURL:v9 sandboxExtension:v58 error:&v62];
+      v17 = [mEMORY[0x1E69BF278]2 URLFromClientLibraryURL:lCopy sandboxExtension:extensionCopy error:&v62];
       v18 = v62;
 
       v15 = 0;
@@ -1152,15 +1152,15 @@ LABEL_49:
 
     else
     {
-      v17 = v9;
+      v17 = lCopy;
     }
 
     v21 = 0;
     if (!v17)
     {
       v56 = 1;
-      v59 = 0;
-      if (!v14)
+      systemLibraryURL2 = 0;
+      if (!systemLibraryURL)
       {
         goto LABEL_32;
       }
@@ -1168,17 +1168,17 @@ LABEL_49:
       goto LABEL_24;
     }
 
-    v9 = v17;
-    v59 = 0;
+    lCopy = v17;
+    systemLibraryURL2 = 0;
   }
 
-  v22 = [objc_alloc(MEMORY[0x1E69BF2A0]) initWithLibraryURL:v9];
+  v22 = [objc_alloc(MEMORY[0x1E69BF2A0]) initWithLibraryURL:lCopy];
   if (![v22 isAppLibraryPathManager])
   {
 
     v56 = 0;
-    v21 = v9;
-    if (!v14)
+    v21 = lCopy;
+    if (!systemLibraryURL)
     {
       goto LABEL_32;
     }
@@ -1192,7 +1192,7 @@ LABEL_49:
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
   v25 = [v23 errorWithDomain:*MEMORY[0x1E69BFF48] code:41019 userInfo:v24];
 
-  v10[2](v10, v25);
+  replyCopy[2](replyCopy, v25);
   v15 = v25;
 LABEL_57:
 
@@ -1217,18 +1217,18 @@ LABEL_58:
   }
 }
 
-- (PLAssetsdLibraryManagementService)initWithConnectionAuthorization:(id)a3 bundleController:(id)a4
+- (PLAssetsdLibraryManagementService)initWithConnectionAuthorization:(id)authorization bundleController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  authorizationCopy = authorization;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = PLAssetsdLibraryManagementService;
   v9 = [(PLAssetsdLibraryManagementService *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connectionAuthorization, a3);
-    objc_storeStrong(&v10->_bundleController, a4);
+    objc_storeStrong(&v9->_connectionAuthorization, authorization);
+    objc_storeStrong(&v10->_bundleController, controller);
   }
 
   return v10;

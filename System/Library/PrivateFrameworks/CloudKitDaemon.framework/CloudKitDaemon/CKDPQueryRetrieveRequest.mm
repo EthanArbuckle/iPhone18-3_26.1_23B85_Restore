@@ -1,13 +1,13 @@
 @interface CKDPQueryRetrieveRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPQueryRetrieveRequest
@@ -82,104 +82,104 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_query)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_continuationMarker)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     limit = self->_limit;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_zoneIdentifier)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_requestedFields)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_assetsToDownload)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   query = self->_query;
-  v11 = v4;
+  v11 = toCopy;
   if (query)
   {
-    objc_msgSend_setQuery_(v4, v5, query);
-    v4 = v11;
+    objc_msgSend_setQuery_(toCopy, v5, query);
+    toCopy = v11;
   }
 
   continuationMarker = self->_continuationMarker;
   if (continuationMarker)
   {
     objc_msgSend_setContinuationMarker_(v11, v5, continuationMarker);
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_limit;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 6) = self->_limit;
+    *(toCopy + 56) |= 1u;
   }
 
   zoneIdentifier = self->_zoneIdentifier;
   if (zoneIdentifier)
   {
     objc_msgSend_setZoneIdentifier_(v11, v5, zoneIdentifier);
-    v4 = v11;
+    toCopy = v11;
   }
 
   requestedFields = self->_requestedFields;
   if (requestedFields)
   {
     objc_msgSend_setRequestedFields_(v11, v5, requestedFields);
-    v4 = v11;
+    toCopy = v11;
   }
 
   assetsToDownload = self->_assetsToDownload;
   if (assetsToDownload)
   {
     objc_msgSend_setAssetsToDownload_(v11, v5, assetsToDownload);
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_query, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_query, v11, zone);
   v13 = *(v10 + 32);
   *(v10 + 32) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_continuationMarker, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_continuationMarker, v14, zone);
   v16 = *(v10 + 16);
   *(v10 + 16) = v15;
 
@@ -189,32 +189,32 @@
     *(v10 + 56) |= 1u;
   }
 
-  v18 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v17, zone);
   v19 = *(v10 + 48);
   *(v10 + 48) = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_requestedFields, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_requestedFields, v20, zone);
   v22 = *(v10 + 40);
   *(v10 + 40) = v21;
 
-  v24 = objc_msgSend_copyWithZone_(self->_assetsToDownload, v23, a3);
+  v24 = objc_msgSend_copyWithZone_(self->_assetsToDownload, v23, zone);
   v25 = *(v10 + 8);
   *(v10 + 8) = v24;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_17;
   }
 
   query = self->_query;
-  v9 = v4[4];
+  v9 = equalCopy[4];
   if (query | v9)
   {
     if (!objc_msgSend_isEqual_(query, v7, v9))
@@ -224,7 +224,7 @@
   }
 
   continuationMarker = self->_continuationMarker;
-  v11 = v4[2];
+  v11 = equalCopy[2];
   if (continuationMarker | v11)
   {
     if (!objc_msgSend_isEqual_(continuationMarker, v7, v11))
@@ -233,16 +233,16 @@
     }
   }
 
-  v12 = *(v4 + 56);
+  v12 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((v4[7] & 1) == 0 || self->_limit != *(v4 + 6))
+    if ((equalCopy[7] & 1) == 0 || self->_limit != *(equalCopy + 6))
     {
       goto LABEL_17;
     }
   }
 
-  else if (v4[7])
+  else if (equalCopy[7])
   {
 LABEL_17:
     isEqual = 0;
@@ -250,14 +250,14 @@ LABEL_17:
   }
 
   zoneIdentifier = self->_zoneIdentifier;
-  v14 = v4[6];
+  v14 = equalCopy[6];
   if (zoneIdentifier | v14 && !objc_msgSend_isEqual_(zoneIdentifier, v7, v14))
   {
     goto LABEL_17;
   }
 
   requestedFields = self->_requestedFields;
-  v16 = v4[5];
+  v16 = equalCopy[5];
   if (requestedFields | v16)
   {
     if (!objc_msgSend_isEqual_(requestedFields, v7, v16))
@@ -267,7 +267,7 @@ LABEL_17:
   }
 
   assetsToDownload = self->_assetsToDownload;
-  v18 = v4[1];
+  v18 = equalCopy[1];
   if (assetsToDownload | v18)
   {
     isEqual = objc_msgSend_isEqual_(assetsToDownload, v7, v18);
@@ -302,12 +302,12 @@ LABEL_18:
   return v11 ^ v14 ^ objc_msgSend_hash(self->_assetsToDownload, v15, v16);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   query = self->_query;
-  v6 = *(v4 + 4);
-  v14 = v4;
+  v6 = *(fromCopy + 4);
+  v14 = fromCopy;
   if (query)
   {
     if (!v6)
@@ -315,7 +315,7 @@ LABEL_18:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(query, v4, v6);
+    objc_msgSend_mergeFrom_(query, fromCopy, v6);
   }
 
   else
@@ -325,26 +325,26 @@ LABEL_18:
       goto LABEL_7;
     }
 
-    objc_msgSend_setQuery_(self, v4, v6);
+    objc_msgSend_setQuery_(self, fromCopy, v6);
   }
 
-  v4 = v14;
+  fromCopy = v14;
 LABEL_7:
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   if (v7)
   {
-    objc_msgSend_setContinuationMarker_(self, v4, v7);
-    v4 = v14;
+    objc_msgSend_setContinuationMarker_(self, fromCopy, v7);
+    fromCopy = v14;
   }
 
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
-    self->_limit = *(v4 + 6);
+    self->_limit = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
   zoneIdentifier = self->_zoneIdentifier;
-  v9 = *(v4 + 6);
+  v9 = *(fromCopy + 6);
   if (zoneIdentifier)
   {
     if (!v9)
@@ -352,7 +352,7 @@ LABEL_7:
       goto LABEL_17;
     }
 
-    objc_msgSend_mergeFrom_(zoneIdentifier, v4, v9);
+    objc_msgSend_mergeFrom_(zoneIdentifier, fromCopy, v9);
   }
 
   else
@@ -362,13 +362,13 @@ LABEL_7:
       goto LABEL_17;
     }
 
-    objc_msgSend_setZoneIdentifier_(self, v4, v9);
+    objc_msgSend_setZoneIdentifier_(self, fromCopy, v9);
   }
 
-  v4 = v14;
+  fromCopy = v14;
 LABEL_17:
   requestedFields = self->_requestedFields;
-  v11 = *(v4 + 5);
+  v11 = *(fromCopy + 5);
   if (requestedFields)
   {
     if (!v11)
@@ -376,7 +376,7 @@ LABEL_17:
       goto LABEL_23;
     }
 
-    objc_msgSend_mergeFrom_(requestedFields, v4, v11);
+    objc_msgSend_mergeFrom_(requestedFields, fromCopy, v11);
   }
 
   else
@@ -386,24 +386,24 @@ LABEL_17:
       goto LABEL_23;
     }
 
-    objc_msgSend_setRequestedFields_(self, v4, v11);
+    objc_msgSend_setRequestedFields_(self, fromCopy, v11);
   }
 
-  v4 = v14;
+  fromCopy = v14;
 LABEL_23:
   assetsToDownload = self->_assetsToDownload;
-  v13 = *(v4 + 1);
+  v13 = *(fromCopy + 1);
   if (assetsToDownload)
   {
     if (v13)
     {
-      objc_msgSend_mergeFrom_(assetsToDownload, v4, v13);
+      objc_msgSend_mergeFrom_(assetsToDownload, fromCopy, v13);
     }
   }
 
   else if (v13)
   {
-    objc_msgSend_setAssetsToDownload_(self, v4, v13);
+    objc_msgSend_setAssetsToDownload_(self, fromCopy, v13);
   }
 
   MEMORY[0x2821F96F8]();

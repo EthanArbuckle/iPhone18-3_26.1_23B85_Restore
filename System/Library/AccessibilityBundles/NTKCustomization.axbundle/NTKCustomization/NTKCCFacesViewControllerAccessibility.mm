@@ -1,19 +1,19 @@
 @interface NTKCCFacesViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKCCFacesViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKCCFacesViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCCFacesViewController" hasInstanceMethod:@"editButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCCFacesViewController" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCCFacesViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCCFacesViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKCCFacesViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCCFacesViewController" hasInstanceMethod:@"editButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCCFacesViewController" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCCFacesViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCCFacesViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -48,11 +48,11 @@
     v11 = [(NTKCCFacesViewControllerAccessibility *)self safeValueForKey:@"collectionView"];
     [v10 axSafelyAddObject:v11];
 
-    v12 = [v9 view];
-    [v12 setAccessibilityElements:v10];
+    view = [v9 view];
+    [view setAccessibilityElements:v10];
 
-    v13 = [v9 view];
-    [v13 setIsAccessibilityElement:0];
+    view2 = [v9 view];
+    [view2 setIsAccessibilityElement:0];
   }
 }
 

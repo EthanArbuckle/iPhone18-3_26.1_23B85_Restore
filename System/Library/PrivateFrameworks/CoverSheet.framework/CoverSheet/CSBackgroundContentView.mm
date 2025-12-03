@@ -1,20 +1,20 @@
 @interface CSBackgroundContentView
-- (CSBackgroundContentView)initWithPresentationView:(id)a3;
+- (CSBackgroundContentView)initWithPresentationView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation CSBackgroundContentView
 
-- (CSBackgroundContentView)initWithPresentationView:(id)a3
+- (CSBackgroundContentView)initWithPresentationView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = CSBackgroundContentView;
   v6 = [(CSBackgroundContentView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_presentationView, a3);
+    objc_storeStrong(&v6->_presentationView, view);
     [(CSBackgroundContentView *)v7 addSubview:v7->_presentationView];
   }
 

@@ -2,11 +2,11 @@
 + (TSUExecutionContext)sharedContext;
 + (void)beginApplicationContext;
 + (void)beginApplicationExtensionContext;
-+ (void)performWithApplication:(id)a3;
++ (void)performWithApplication:(id)application;
 - (BOOL)isApplicationContext;
 - (BOOL)isUILayoutRTL;
 - (UIApplication)application;
-- (void)performWithApplication:(id)a3;
+- (void)performWithApplication:(id)application;
 @end
 
 @implementation TSUExecutionContext
@@ -23,13 +23,13 @@
   }
 
   v5 = objc_alloc_init(TSUApplicationExecutionContext);
-  [a1 setSharedContext:v5];
+  [self setSharedContext:v5];
 }
 
 + (void)beginApplicationExtensionContext
 {
   v3 = objc_alloc_init(TSUApplicationExtensionExecutionContext);
-  [a1 setSharedContext:v3];
+  [self setSharedContext:v3];
 }
 
 + (TSUExecutionContext)sharedContext
@@ -95,9 +95,9 @@
   objc_exception_throw(v12);
 }
 
-- (void)performWithApplication:(id)a3
+- (void)performWithApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUExecutionContext performWithApplication:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUExecutionContext.m"];
   v6 = objc_opt_class();
@@ -117,11 +117,11 @@
   objc_exception_throw(v14);
 }
 
-+ (void)performWithApplication:(id)a3
++ (void)performWithApplication:(id)application
 {
-  v4 = a3;
-  v5 = [a1 sharedContext];
-  [v5 performWithApplication:v4];
+  applicationCopy = application;
+  sharedContext = [self sharedContext];
+  [sharedContext performWithApplication:applicationCopy];
 }
 
 - (BOOL)isUILayoutRTL

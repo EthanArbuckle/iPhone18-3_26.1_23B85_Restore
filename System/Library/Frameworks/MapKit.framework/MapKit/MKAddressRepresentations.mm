@@ -1,63 +1,63 @@
 @interface MKAddressRepresentations
-- (BOOL)isEqual:(id)a3;
-- (MKAddressRepresentations)initWithGeoMapItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MKAddressRepresentations)initWithGeoMapItem:(id)item;
 - (NSString)cityName;
 - (NSString)cityWithContext;
 - (NSString)regionName;
-- (id)cityWithContextUsingStyle:(int64_t)a3;
+- (id)cityWithContextUsingStyle:(int64_t)style;
 - (id)description;
-- (id)fullAddressIncludingRegion:(BOOL)a3 singleLine:(BOOL)a4;
+- (id)fullAddressIncludingRegion:(BOOL)region singleLine:(BOOL)line;
 @end
 
 @implementation MKAddressRepresentations
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(MKAddressRepresentations *)self cityName];
-  [v3 setObject:v4 forKeyedSubscript:@"cityName"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  cityName = [(MKAddressRepresentations *)self cityName];
+  [dictionary setObject:cityName forKeyedSubscript:@"cityName"];
 
-  v5 = [(MKAddressRepresentations *)self cityWithContext];
-  [v3 setObject:v5 forKeyedSubscript:@"cityWithContext"];
+  cityWithContext = [(MKAddressRepresentations *)self cityWithContext];
+  [dictionary setObject:cityWithContext forKeyedSubscript:@"cityWithContext"];
 
   v6 = [(MKAddressRepresentations *)self cityWithContextUsingStyle:2];
-  [v3 setObject:v6 forKeyedSubscript:@"cityWithContextUsingStyle(.full)"];
+  [dictionary setObject:v6 forKeyedSubscript:@"cityWithContextUsingStyle(.full)"];
 
-  v7 = [(MKAddressRepresentations *)self regionName];
-  [v3 setObject:v7 forKeyedSubscript:@"regionName"];
+  regionName = [(MKAddressRepresentations *)self regionName];
+  [dictionary setObject:regionName forKeyedSubscript:@"regionName"];
 
-  v8 = [(MKAddressRepresentations *)self regionCode];
-  [v3 setObject:v8 forKeyedSubscript:@"regionCode"];
+  regionCode = [(MKAddressRepresentations *)self regionCode];
+  [dictionary setObject:regionCode forKeyedSubscript:@"regionCode"];
 
   v9 = [(MKAddressRepresentations *)self fullAddressIncludingRegion:1 singleLine:1];
-  [v3 setObject:v9 forKeyedSubscript:@"fullAddress"];
+  [dictionary setObject:v9 forKeyedSubscript:@"fullAddress"];
 
   v10 = MEMORY[0x1E696AEC0];
   v14.receiver = self;
   v14.super_class = MKAddressRepresentations;
   v11 = [(MKAddressRepresentations *)&v14 description];
-  v12 = [v10 stringWithFormat:@"%@ %@", v11, v3];
+  v12 = [v10 stringWithFormat:@"%@ %@", v11, dictionary];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     geoMapItem = self->_geoMapItem;
-    v6 = v4;
-    v7 = [(GEOMapItem *)geoMapItem geoAddress];
-    v8 = [v7 formattedAddressLines];
+    v6 = equalCopy;
+    geoAddress = [(GEOMapItem *)geoMapItem geoAddress];
+    formattedAddressLines = [geoAddress formattedAddressLines];
 
-    v9 = [v6 _geoMapItem];
+    _geoMapItem = [v6 _geoMapItem];
 
-    v10 = [v9 geoAddress];
-    v11 = [v10 formattedAddressLines];
+    geoAddress2 = [_geoMapItem geoAddress];
+    formattedAddressLines2 = [geoAddress2 formattedAddressLines];
 
-    v12 = [v8 isEqual:v11];
+    v12 = [formattedAddressLines isEqual:formattedAddressLines2];
   }
 
   else
@@ -70,35 +70,35 @@
 
 - (NSString)regionName
 {
-  v2 = [(GEOMapItem *)self->_geoMapItem addressObject];
-  v3 = [v2 countryName];
+  addressObject = [(GEOMapItem *)self->_geoMapItem addressObject];
+  countryName = [addressObject countryName];
 
-  return v3;
+  return countryName;
 }
 
-- (id)cityWithContextUsingStyle:(int64_t)a3
+- (id)cityWithContextUsingStyle:(int64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
-    v4 = [(GEOMapItem *)self->_geoMapItem addressObject];
-    v5 = [v4 cityAndAboveWithFallback:0];
+    addressObject = [(GEOMapItem *)self->_geoMapItem addressObject];
+    v5 = [addressObject cityAndAboveWithFallback:0];
   }
 
-  else if (a3 == 1)
+  else if (style == 1)
   {
-    v4 = [(GEOMapItem *)self->_geoMapItem addressObject];
-    v5 = [v4 cityAndAboveNoCountryWithFallback:0];
+    addressObject = [(GEOMapItem *)self->_geoMapItem addressObject];
+    v5 = [addressObject cityAndAboveNoCountryWithFallback:0];
   }
 
   else
   {
-    if (a3)
+    if (style)
     {
       goto LABEL_8;
     }
 
-    v4 = [(GEOMapItem *)self->_geoMapItem addressObject];
-    v5 = [v4 cityAndAboveNoCurrentCountryWithFallback:0];
+    addressObject = [(GEOMapItem *)self->_geoMapItem addressObject];
+    v5 = [addressObject cityAndAboveNoCurrentCountryWithFallback:0];
   }
 
   v3 = v5;
@@ -110,65 +110,65 @@ LABEL_8:
 
 - (NSString)cityWithContext
 {
-  v2 = [(GEOMapItem *)self->_geoMapItem addressObject];
-  v3 = [v2 cityAndAboveNoCurrentCountryWithFallback:0];
+  addressObject = [(GEOMapItem *)self->_geoMapItem addressObject];
+  v3 = [addressObject cityAndAboveNoCurrentCountryWithFallback:0];
 
   return v3;
 }
 
 - (NSString)cityName
 {
-  v2 = [(GEOMapItem *)self->_geoMapItem addressObject];
-  v3 = [v2 cityDisplayNameWithFallback:1];
+  addressObject = [(GEOMapItem *)self->_geoMapItem addressObject];
+  v3 = [addressObject cityDisplayNameWithFallback:1];
 
   return v3;
 }
 
-- (id)fullAddressIncludingRegion:(BOOL)a3 singleLine:(BOOL)a4
+- (id)fullAddressIncludingRegion:(BOOL)region singleLine:(BOOL)line
 {
-  v4 = a4;
-  v6 = [(GEOMapItem *)self->_geoMapItem addressObject];
-  v7 = v6;
-  v8 = !v4;
-  if (a3)
+  lineCopy = line;
+  addressObject = [(GEOMapItem *)self->_geoMapItem addressObject];
+  v7 = addressObject;
+  v8 = !lineCopy;
+  if (region)
   {
-    [v6 fullAddressWithMultiline:v8];
+    [addressObject fullAddressWithMultiline:v8];
   }
 
   else
   {
-    [v6 fullAddressNoCurrentCountryWithMultiline:v8];
+    [addressObject fullAddressNoCurrentCountryWithMultiline:v8];
   }
   v9 = ;
 
   return v9;
 }
 
-- (MKAddressRepresentations)initWithGeoMapItem:(id)a3
+- (MKAddressRepresentations)initWithGeoMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = MKAddressRepresentations;
   v6 = [(MKAddressRepresentations *)&v11 init];
   if (v6)
   {
-    v7 = [v5 addressObject];
-    if (v7)
+    addressObject = [itemCopy addressObject];
+    if (addressObject)
     {
     }
 
     else
     {
-      v8 = [v5 _iso3166CountryCode];
+      _iso3166CountryCode = [itemCopy _iso3166CountryCode];
 
-      if (!v8)
+      if (!_iso3166CountryCode)
       {
         v9 = 0;
         goto LABEL_7;
       }
     }
 
-    objc_storeStrong(&v6->_geoMapItem, a3);
+    objc_storeStrong(&v6->_geoMapItem, item);
   }
 
   v9 = v6;

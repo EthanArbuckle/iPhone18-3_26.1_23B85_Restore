@@ -1,12 +1,12 @@
 @interface PKPaymentContentDataItem
-- (PKPaymentContentDataItem)initWithContentItem:(id)a3;
+- (PKPaymentContentDataItem)initWithContentItem:(id)item;
 @end
 
 @implementation PKPaymentContentDataItem
 
-- (PKPaymentContentDataItem)initWithContentItem:(id)a3
+- (PKPaymentContentDataItem)initWithContentItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = PKPaymentContentDataItem;
   v6 = [(PKPaymentContentDataItem *)&v8 init];
@@ -14,7 +14,7 @@
   {
     -[PKPaymentDataItem setType:](v6, "setType:", [objc_opt_class() dataType]);
     [(PKPaymentDataItem *)v6 setStatus:0];
-    objc_storeStrong(&v6->_contentItem, a3);
+    objc_storeStrong(&v6->_contentItem, item);
   }
 
   return v6;

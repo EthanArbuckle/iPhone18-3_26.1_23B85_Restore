@@ -1,14 +1,14 @@
 @interface MSDSignedManifestFactoryMetadata
-+ (id)languageIdentifiersForMetadataList:(id)a3;
-+ (id)loadManifestMetadata:(id)a3;
-+ (id)metadataWithLanugageIdentifier:(id)a3 fromList:(id)a4;
-- (MSDSignedManifestFactoryMetadata)initWithContentPlistFile:(id)a3;
++ (id)languageIdentifiersForMetadataList:(id)list;
++ (id)loadManifestMetadata:(id)metadata;
++ (id)metadataWithLanugageIdentifier:(id)identifier fromList:(id)list;
+- (MSDSignedManifestFactoryMetadata)initWithContentPlistFile:(id)file;
 - (id)description;
 @end
 
 @implementation MSDSignedManifestFactoryMetadata
 
-+ (id)loadManifestMetadata:(id)a3
++ (id)loadManifestMetadata:(id)metadata
 {
   v22 = 0;
   v19 = 0;
@@ -16,8 +16,8 @@
   v20[1] = 0x3032000000;
   v20[2] = sub_100093F4C;
   v20[3] = sub_100093F5C;
-  v3 = a3;
-  v21 = v3;
+  metadataCopy = metadata;
+  v21 = metadataCopy;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -69,15 +69,15 @@ LABEL_4:
   return v6;
 }
 
-+ (id)languageIdentifiersForMetadataList:(id)a3
++ (id)languageIdentifiersForMetadataList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = listCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -96,10 +96,10 @@ LABEL_4:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 languageIdentifier];
-          if (v11)
+          languageIdentifier = [v10 languageIdentifier];
+          if (languageIdentifier)
           {
-            [v4 addObject:v11];
+            [v4 addObject:languageIdentifier];
           }
         }
       }
@@ -115,15 +115,15 @@ LABEL_4:
   return v12;
 }
 
-+ (id)metadataWithLanugageIdentifier:(id)a3 fromList:(id)a4
++ (id)metadataWithLanugageIdentifier:(id)identifier fromList:(id)list
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  listCopy = list;
+  v7 = [listCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -133,15 +133,15 @@ LABEL_4:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(listCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 languageIdentifier];
-          if ([v11 isEqualToString:v5])
+          languageIdentifier = [v10 languageIdentifier];
+          if ([languageIdentifier isEqualToString:identifierCopy])
           {
             v7 = v10;
 
@@ -150,7 +150,7 @@ LABEL_4:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [listCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -165,18 +165,18 @@ LABEL_13:
   return v7;
 }
 
-- (MSDSignedManifestFactoryMetadata)initWithContentPlistFile:(id)a3
+- (MSDSignedManifestFactoryMetadata)initWithContentPlistFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v38.receiver = self;
   v38.super_class = MSDSignedManifestFactoryMetadata;
   v5 = [(MSDSignedManifestFactoryMetadata *)&v38 init];
   if (v5)
   {
     v6 = +[NSFileManager defaultManager];
-    if ([v6 fileExistsAtPath:v4])
+    if ([v6 fileExistsAtPath:fileCopy])
     {
-      v7 = [NSMutableDictionary dictionaryWithContentsOfFile:v4];
+      v7 = [NSMutableDictionary dictionaryWithContentsOfFile:fileCopy];
       v8 = sub_100063A54();
       v9 = v8;
       if (v7)
@@ -184,7 +184,7 @@ LABEL_13:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v40 = v4;
+          v40 = fileCopy;
           v41 = 2114;
           v42 = v7;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Content.plist at path %{public}@: %{public}@", buf, 0x16u);
@@ -217,22 +217,22 @@ LABEL_13:
 
         if (v16)
         {
-          v23 = [v16 BOOLValue];
+          bOOLValue = [v16 BOOLValue];
         }
 
         else
         {
-          v23 = 0;
+          bOOLValue = 0;
         }
 
-        v5->_isPrimaryBundle = v23;
+        v5->_isPrimaryBundle = bOOLValue;
 
         goto LABEL_10;
       }
 
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        sub_1000E2D84(v4, v9, v32, v33, v34, v35, v36, v37);
+        sub_1000E2D84(fileCopy, v9, v32, v33, v34, v35, v36, v37);
       }
     }
 
@@ -241,7 +241,7 @@ LABEL_13:
       v9 = sub_100063A54();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_1000E2D18(v4, v9, v26, v27, v28, v29, v30, v31);
+        sub_1000E2D18(fileCopy, v9, v26, v27, v28, v29, v30, v31);
       }
     }
 
@@ -260,10 +260,10 @@ LABEL_11:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(MSDSignedManifestFactoryMetadata *)self name];
-  v6 = [(MSDSignedManifestFactoryMetadata *)self languageIdentifier];
-  v7 = [(MSDSignedManifestFactoryMetadata *)self regionCode];
-  v8 = [NSString stringWithFormat:@"<%@: Name: %@ Language: %@; Region: %@>", v4, v5, v6, v7];;
+  name = [(MSDSignedManifestFactoryMetadata *)self name];
+  languageIdentifier = [(MSDSignedManifestFactoryMetadata *)self languageIdentifier];
+  regionCode = [(MSDSignedManifestFactoryMetadata *)self regionCode];
+  v8 = [NSString stringWithFormat:@"<%@: Name: %@ Language: %@; Region: %@>", v4, name, languageIdentifier, regionCode];;
 
   return v8;
 }

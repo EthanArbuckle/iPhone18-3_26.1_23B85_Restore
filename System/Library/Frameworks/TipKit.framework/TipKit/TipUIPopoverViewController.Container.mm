@@ -1,6 +1,6 @@
 @interface TipUIPopoverViewController.Container
 - (UIEdgeInsets)safeAreaInsets;
-- (_TtCC6TipKit26TipUIPopoverViewControllerP33_3C6E95058702E04B23C6D12101E9B7609Container)initWithFrame:(CGRect)a3;
+- (_TtCC6TipKit26TipUIPopoverViewControllerP33_3C6E95058702E04B23C6D12101E9B7609Container)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TipUIPopoverViewController.Container
@@ -15,7 +15,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1A3618B50();
   v5 = v4;
   v7 = v6;
@@ -33,12 +33,12 @@
   return result;
 }
 
-- (_TtCC6TipKit26TipUIPopoverViewControllerP33_3C6E95058702E04B23C6D12101E9B7609Container)initWithFrame:(CGRect)a3
+- (_TtCC6TipKit26TipUIPopoverViewControllerP33_3C6E95058702E04B23C6D12101E9B7609Container)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_1A3622E3C();
   sub_1A3622E2C();
   sub_1A3622DFC();

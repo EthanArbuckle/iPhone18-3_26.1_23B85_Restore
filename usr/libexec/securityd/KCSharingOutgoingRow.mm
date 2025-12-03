@@ -1,8 +1,8 @@
 @interface KCSharingOutgoingRow
 + (NSSet)requiredAttributeKeys;
-- (KCSharingOutgoingRow)initWithAttributes:(id)a3 error:(id *)a4;
-- (KCSharingOutgoingRow)initWithOutgoingDatabaseItem:(SecDbItem *)a3 error:(id *)a4;
-- (id)attributesWithAccessGroups:(id)a3 error:(id *)a4;
+- (KCSharingOutgoingRow)initWithAttributes:(id)attributes error:(id *)error;
+- (KCSharingOutgoingRow)initWithOutgoingDatabaseItem:(SecDbItem *)item error:(id *)error;
+- (id)attributesWithAccessGroups:(id)groups error:(id *)error;
 @end
 
 @implementation KCSharingOutgoingRow
@@ -19,37 +19,37 @@
   return v3;
 }
 
-- (id)attributesWithAccessGroups:(id)a3 error:(id *)a4
+- (id)attributesWithAccessGroups:(id)groups error:(id *)error
 {
-  v4 = a3;
+  groupsCopy = groups;
   v5 = [NSException exceptionWithName:NSInternalInconsistencyException reason:0 userInfo:0];
   objc_exception_throw(v5);
 }
 
-- (KCSharingOutgoingRow)initWithAttributes:(id)a3 error:(id *)a4
+- (KCSharingOutgoingRow)initWithAttributes:(id)attributes error:(id *)error
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = [NSException exceptionWithName:NSInternalInconsistencyException reason:0 userInfo:0];
   objc_exception_throw(v5);
 }
 
-- (KCSharingOutgoingRow)initWithOutgoingDatabaseItem:(SecDbItem *)a3 error:(id *)a4
+- (KCSharingOutgoingRow)initWithOutgoingDatabaseItem:(SecDbItem *)item error:(id *)error
 {
-  v7 = [objc_opt_class() requiredAttributeKeys];
-  v8 = sub_100017964(a3, v7, a4);
+  requiredAttributeKeys = [objc_opt_class() requiredAttributeKeys];
+  v8 = sub_100017964(item, requiredAttributeKeys, error);
 
   if (v8)
   {
-    self = [(KCSharingOutgoingRow *)self initWithAttributes:v8 error:a4];
-    v9 = self;
+    self = [(KCSharingOutgoingRow *)self initWithAttributes:v8 error:error];
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  v10 = v9;
+  v10 = selfCopy;
 
   return v10;
 }

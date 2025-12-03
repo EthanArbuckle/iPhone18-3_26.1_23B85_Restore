@@ -1,48 +1,48 @@
 @interface CSPaddingView
-- (CSPaddingView)initWithWrappedView:(id)a3;
+- (CSPaddingView)initWithWrappedView:(id)view;
 - (void)_updateConstraints;
-- (void)setHorizontalPadding:(double)a3;
-- (void)setVerticalPadding:(double)a3;
+- (void)setHorizontalPadding:(double)padding;
+- (void)setVerticalPadding:(double)padding;
 @end
 
 @implementation CSPaddingView
 
-- (CSPaddingView)initWithWrappedView:(id)a3
+- (CSPaddingView)initWithWrappedView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v28.receiver = self;
   v28.super_class = CSPaddingView;
   v6 = [(CSPaddingView *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedView, a3);
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [v5 leadingAnchor];
-    v9 = [(CSPaddingView *)v7 leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:v7->_leadingPadding];
+    objc_storeStrong(&v6->_wrappedView, view);
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    leadingAnchor = [viewCopy leadingAnchor];
+    leadingAnchor2 = [(CSPaddingView *)v7 leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v7->_leadingPadding];
     leadingConstraint = v7->_leadingConstraint;
     v7->_leadingConstraint = v10;
 
-    v12 = [v5 trailingAnchor];
-    v13 = [(CSPaddingView *)v7 trailingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13 constant:-v7->_trailingPadding];
+    trailingAnchor = [viewCopy trailingAnchor];
+    trailingAnchor2 = [(CSPaddingView *)v7 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v7->_trailingPadding];
     trailingConstraint = v7->_trailingConstraint;
     v7->_trailingConstraint = v14;
 
-    v16 = [v5 topAnchor];
-    v17 = [(CSPaddingView *)v7 topAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:v7->_topPadding];
+    topAnchor = [viewCopy topAnchor];
+    topAnchor2 = [(CSPaddingView *)v7 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v7->_topPadding];
     topConstraint = v7->_topConstraint;
     v7->_topConstraint = v18;
 
-    v20 = [v5 bottomAnchor];
-    v21 = [(CSPaddingView *)v7 bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:-v7->_bottomPadding];
+    bottomAnchor = [viewCopy bottomAnchor];
+    bottomAnchor2 = [(CSPaddingView *)v7 bottomAnchor];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v7->_bottomPadding];
     bottomConstraint = v7->_bottomConstraint;
     v7->_bottomConstraint = v22;
 
-    [(CSPaddingView *)v7 addSubview:v5];
+    [(CSPaddingView *)v7 addSubview:viewCopy];
     v24 = MEMORY[0x277CCAAD0];
     v27[0] = v7->_leadingConstraint;
     v27[1] = v7->_trailingConstraint;
@@ -55,17 +55,17 @@
   return v7;
 }
 
-- (void)setHorizontalPadding:(double)a3
+- (void)setHorizontalPadding:(double)padding
 {
-  self->_leadingPadding = a3;
-  self->_trailingPadding = a3;
+  self->_leadingPadding = padding;
+  self->_trailingPadding = padding;
   [(CSPaddingView *)self _updateConstraints];
 }
 
-- (void)setVerticalPadding:(double)a3
+- (void)setVerticalPadding:(double)padding
 {
-  self->_topPadding = a3;
-  self->_bottomPadding = a3;
+  self->_topPadding = padding;
+  self->_bottomPadding = padding;
   [(CSPaddingView *)self _updateConstraints];
 }
 

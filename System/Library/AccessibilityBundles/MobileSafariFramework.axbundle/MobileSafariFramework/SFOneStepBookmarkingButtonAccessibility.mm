@@ -1,16 +1,16 @@
 @interface SFOneStepBookmarkingButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SFOneStepBookmarkingButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFOneStepBookmarkingButton" conformsToProtocol:@"SFTooltipProviding"];
-  [v3 validateProtocol:@"SFTooltipProviding" hasMethod:@"tooltip" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"SFTooltip" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFOneStepBookmarkingButton" conformsToProtocol:@"SFTooltipProviding"];
+  [validationsCopy validateProtocol:@"SFTooltipProviding" hasMethod:@"tooltip" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"SFTooltip" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

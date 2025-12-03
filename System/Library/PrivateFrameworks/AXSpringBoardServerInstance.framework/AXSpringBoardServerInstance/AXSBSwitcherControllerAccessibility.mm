@@ -1,36 +1,36 @@
 @interface AXSBSwitcherControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)configureRequest:(id)a3 forSwitcherTransitionRequest:(id)a4 withEventLabel:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)configureRequest:(id)request forSwitcherTransitionRequest:(id)transitionRequest withEventLabel:(id)label;
 @end
 
 @implementation AXSBSwitcherControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBSwitcherController"];
-  [v3 validateClass:@"SBAppLayout"];
-  [v3 validateClass:@"SBDisplayItem"];
-  [v3 validateClass:@"SBSwitcherController" hasInstanceMethod:@"configureRequest:forSwitcherTransitionRequest: withEventLabel:" withFullSignature:{"v", "@", "@", "@", 0}];
-  [v3 validateClass:@"SBDisplayItem" hasInstanceMethod:@"isEqual:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"SBSwitcherTransitionRequest" hasInstanceMethod:@"unlockedEnvironmentMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBSwitcherTransitionRequest" hasInstanceMethod:@"appLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSwitcherTransitionRequest" hasInstanceMethod:@"activatingDisplayItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBDisplayItem" hasClassMethod:@"homeScreenDisplayItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBAppLayout" hasClassMethod:@"homeScreenAppLayout" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBSwitcherController"];
+  [validationsCopy validateClass:@"SBAppLayout"];
+  [validationsCopy validateClass:@"SBDisplayItem"];
+  [validationsCopy validateClass:@"SBSwitcherController" hasInstanceMethod:@"configureRequest:forSwitcherTransitionRequest: withEventLabel:" withFullSignature:{"v", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBDisplayItem" hasInstanceMethod:@"isEqual:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"SBSwitcherTransitionRequest" hasInstanceMethod:@"unlockedEnvironmentMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBSwitcherTransitionRequest" hasInstanceMethod:@"appLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSwitcherTransitionRequest" hasInstanceMethod:@"activatingDisplayItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBDisplayItem" hasClassMethod:@"homeScreenDisplayItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBAppLayout" hasClassMethod:@"homeScreenAppLayout" withFullSignature:{"@", 0}];
 }
 
-- (void)configureRequest:(id)a3 forSwitcherTransitionRequest:(id)a4 withEventLabel:(id)a5
+- (void)configureRequest:(id)request forSwitcherTransitionRequest:(id)transitionRequest withEventLabel:(id)label
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  transitionRequestCopy = transitionRequest;
+  labelCopy = label;
   v32.receiver = self;
   v32.super_class = AXSBSwitcherControllerAccessibility;
-  [(AXSBSwitcherControllerAccessibility *)&v32 configureRequest:v8 forSwitcherTransitionRequest:v9 withEventLabel:v10];
-  v11 = [v9 safeIntegerForKey:@"unlockedEnvironmentMode"];
-  v12 = [v9 safeValueForKey:@"appLayout"];
-  v13 = [v9 safeValueForKey:@"activatingDisplayItem"];
+  [(AXSBSwitcherControllerAccessibility *)&v32 configureRequest:requestCopy forSwitcherTransitionRequest:transitionRequestCopy withEventLabel:labelCopy];
+  v11 = [transitionRequestCopy safeIntegerForKey:@"unlockedEnvironmentMode"];
+  v12 = [transitionRequestCopy safeValueForKey:@"appLayout"];
+  v13 = [transitionRequestCopy safeValueForKey:@"activatingDisplayItem"];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -69,9 +69,9 @@
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  v18 = [MEMORY[0x277CE7E20] sharedInstance];
-  v19 = [v18 liveCaptionsTransitionToHomeOrAppSwitcherNotification];
-  CFNotificationCenterPostNotification(DarwinNotifyCenter, v19, 0, 0, 1u);
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  liveCaptionsTransitionToHomeOrAppSwitcherNotification = [mEMORY[0x277CE7E20] liveCaptionsTransitionToHomeOrAppSwitcherNotification];
+  CFNotificationCenterPostNotification(DarwinNotifyCenter, liveCaptionsTransitionToHomeOrAppSwitcherNotification, 0, 0, 1u);
 
 LABEL_7:
   _Block_object_dispose(&v28, 8);

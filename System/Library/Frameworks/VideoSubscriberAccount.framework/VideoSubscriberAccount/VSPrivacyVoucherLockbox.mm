@@ -1,14 +1,14 @@
 @interface VSPrivacyVoucherLockbox
-+ (id)getVouchersFromSelectedAppDescriptions:(id)a3 forProviderID:(id)a4;
++ (id)getVouchersFromSelectedAppDescriptions:(id)descriptions forProviderID:(id)d;
 - (NSArray)unredeemedVouchers;
 - (VSPrivacyVoucherLockbox)init;
 - (id)_voucherArchiveURL;
-- (void)issueVouchers:(id)a3;
-- (void)issueVouchersForAppDescriptions:(id)a3 providerID:(id)a4;
-- (void)issueVouchersForApps:(id)a3 providerID:(id)a4;
-- (void)redeemVoucher:(id)a3;
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4;
-- (void)setUnredeemedVouchers:(id)a3;
+- (void)issueVouchers:(id)vouchers;
+- (void)issueVouchersForAppDescriptions:(id)descriptions providerID:(id)d;
+- (void)issueVouchersForApps:(id)apps providerID:(id)d;
+- (void)redeemVoucher:(id)voucher;
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info;
+- (void)setUnredeemedVouchers:(id)vouchers;
 @end
 
 @implementation VSPrivacyVoucherLockbox
@@ -30,56 +30,56 @@
   return v2;
 }
 
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info
 {
-  [(VSPrivacyVoucherLockbox *)self willChangeValueForKey:@"unredeemedVouchers", a4];
+  [(VSPrivacyVoucherLockbox *)self willChangeValueForKey:@"unredeemedVouchers", info];
 
   [(VSPrivacyVoucherLockbox *)self didChangeValueForKey:@"unredeemedVouchers"];
 }
 
-- (void)issueVouchersForApps:(id)a3 providerID:(id)a4
+- (void)issueVouchersForApps:(id)apps providerID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  appsCopy = apps;
   [(VSPrivacyVoucherLockbox *)self removeAllVouchers];
-  v8 = [v7 nonChannelApps];
-  if ([v7 hasUserChannelList])
+  nonChannelApps = [appsCopy nonChannelApps];
+  if ([appsCopy hasUserChannelList])
   {
-    [v7 subscribedApps];
+    [appsCopy subscribedApps];
   }
 
   else
   {
-    [v7 availableApps];
+    [appsCopy availableApps];
   }
   v9 = ;
 
-  v10 = [v8 arrayByAddingObjectsFromArray:v9];
+  v10 = [nonChannelApps arrayByAddingObjectsFromArray:v9];
 
-  [(VSPrivacyVoucherLockbox *)self issueVouchersForAppDescriptions:v10 providerID:v6];
+  [(VSPrivacyVoucherLockbox *)self issueVouchersForAppDescriptions:v10 providerID:dCopy];
 }
 
-- (void)issueVouchersForAppDescriptions:(id)a3 providerID:(id)a4
+- (void)issueVouchersForAppDescriptions:(id)descriptions providerID:(id)d
 {
-  v5 = [VSPrivacyVoucherLockbox getVouchersFromSelectedAppDescriptions:a3 forProviderID:a4];
+  v5 = [VSPrivacyVoucherLockbox getVouchersFromSelectedAppDescriptions:descriptions forProviderID:d];
   [(VSPrivacyVoucherLockbox *)self issueVouchers:v5];
 }
 
-- (void)issueVouchers:(id)a3
+- (void)issueVouchers:(id)vouchers
 {
-  v4 = a3;
-  v5 = [(VSPrivacyVoucherLockbox *)self unredeemedVouchers];
-  v6 = [v5 mutableCopy];
+  vouchersCopy = vouchers;
+  unredeemedVouchers = [(VSPrivacyVoucherLockbox *)self unredeemedVouchers];
+  v6 = [unredeemedVouchers mutableCopy];
 
-  [v6 addObjectsFromArray:v4];
+  [v6 addObjectsFromArray:vouchersCopy];
   [(VSPrivacyVoucherLockbox *)self setUnredeemedVouchers:v6];
 }
 
-- (void)redeemVoucher:(id)a3
+- (void)redeemVoucher:(id)voucher
 {
-  v4 = a3;
+  voucherCopy = voucher;
   v5 = [(VSPrivacyVoucherLockbox *)self mutableArrayValueForKey:@"unredeemedVouchers"];
-  [v5 removeObject:v4];
+  [v5 removeObject:voucherCopy];
 }
 
 - (id)_voucherArchiveURL
@@ -98,30 +98,30 @@
   return v5;
 }
 
-- (void)setUnredeemedVouchers:(id)a3
+- (void)setUnredeemedVouchers:(id)vouchers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  vouchersCopy = vouchers;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v4;
+    v23 = vouchersCopy;
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "Setting unredeemed vouchers: %@", buf, 0xCu);
   }
 
-  v6 = [(VSPrivacyVoucherLockbox *)self undoManager];
-  if (v6)
+  undoManager = [(VSPrivacyVoucherLockbox *)self undoManager];
+  if (undoManager)
   {
-    v7 = [(VSPrivacyVoucherLockbox *)self unredeemedVouchers];
-    v8 = [v6 prepareWithInvocationTarget:self];
-    [v8 setUnredeemedVouchers:v7];
+    unredeemedVouchers = [(VSPrivacyVoucherLockbox *)self unredeemedVouchers];
+    v8 = [undoManager prepareWithInvocationTarget:self];
+    [v8 setUnredeemedVouchers:unredeemedVouchers];
   }
 
-  v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
-  v10 = [(VSPrivacyVoucherLockbox *)self _voucherArchiveURL];
+  v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:vouchersCopy requiringSecureCoding:1 error:0];
+  _voucherArchiveURL = [(VSPrivacyVoucherLockbox *)self _voucherArchiveURL];
   v21 = 0;
-  v11 = [v9 writeToURL:v10 options:0 error:&v21];
+  v11 = [v9 writeToURL:_voucherArchiveURL options:0 error:&v21];
   v12 = v21;
 
   if ((v11 & 1) == 0)
@@ -133,22 +133,22 @@
     }
   }
 
-  v20 = [(VSPrivacyVoucherLockbox *)self remoteNotifier];
-  [v20 postNotification];
+  remoteNotifier = [(VSPrivacyVoucherLockbox *)self remoteNotifier];
+  [remoteNotifier postNotification];
 }
 
 - (NSArray)unredeemedVouchers
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v2 = [(VSPrivacyVoucherLockbox *)self _voucherArchiveURL];
+  _voucherArchiveURL = [(VSPrivacyVoucherLockbox *)self _voucherArchiveURL];
   v3 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v4 = [v2 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  path = [_voucherArchiveURL path];
+  v5 = [v3 fileExistsAtPath:path];
 
   if (v5)
   {
     v36 = 0;
-    v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v2 options:0 error:&v36];
+    v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:_voucherArchiveURL options:0 error:&v36];
     v7 = v36;
     if (v6)
     {
@@ -228,17 +228,17 @@
   return v18;
 }
 
-+ (id)getVouchersFromSelectedAppDescriptions:(id)a3 forProviderID:(id)a4
++ (id)getVouchersFromSelectedAppDescriptions:(id)descriptions forProviderID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  descriptionsCopy = descriptions;
+  dCopy = d;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = descriptionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v9)
   {
@@ -254,17 +254,17 @@
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 adamID];
-        v15 = [v14 stringValue];
+        adamID = [v13 adamID];
+        stringValue = [adamID stringValue];
 
-        if (v15)
+        if (stringValue)
         {
           if ([v13 appType] == 2)
           {
             goto LABEL_12;
           }
 
-          v16 = [[VSPrivacyConsentVoucher alloc] initWithAppAdamID:v15 providerID:v6];
+          v16 = [[VSPrivacyConsentVoucher alloc] initWithAppAdamID:stringValue providerID:dCopy];
           [v7 addObject:v16];
         }
 

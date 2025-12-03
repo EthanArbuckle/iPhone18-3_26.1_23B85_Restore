@@ -1,21 +1,21 @@
 @interface IPPEndpoint
-- (IPPEndpoint)initWithSession:(id)a3 endpoint:(id)a4;
+- (IPPEndpoint)initWithSession:(id)session endpoint:(id)endpoint;
 @end
 
 @implementation IPPEndpoint
 
-- (IPPEndpoint)initWithSession:(id)a3 endpoint:(id)a4
+- (IPPEndpoint)initWithSession:(id)session endpoint:(id)endpoint
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  endpointCopy = endpoint;
   v12.receiver = self;
   v12.super_class = IPPEndpoint;
   v9 = [(IPPEndpoint *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_session, a3);
-    objc_storeStrong(&v10->_endpoint, a4);
+    objc_storeStrong(&v9->_session, session);
+    objc_storeStrong(&v10->_endpoint, endpoint);
   }
 
   return v10;

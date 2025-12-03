@@ -1,28 +1,28 @@
 @interface UIKBUndoInteractionHUD
-- (BOOL)availableOfControl:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)availableOfControl:(id)control;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIInteractiveUndoHUDActionDelegate)actionDelegate;
-- (UIKBUndoInteractionHUD)initWithKeyboardAppearance:(int64_t)a3 isRTL:(BOOL)a4 mode:(int64_t)a5 sceneBounds:(CGRect)a6;
-- (id)controlForType:(int64_t)a3;
+- (UIKBUndoInteractionHUD)initWithKeyboardAppearance:(int64_t)appearance isRTL:(BOOL)l mode:(int64_t)mode sceneBounds:(CGRect)bounds;
+- (id)controlForType:(int64_t)type;
 - (id)createSeparatorView;
-- (void)controlActionDown:(id)a3;
-- (void)controlActionUpInside:(id)a3 forEvent:(id)a4;
-- (void)controlActionUpOutside:(id)a3;
+- (void)controlActionDown:(id)down;
+- (void)controlActionUpInside:(id)inside forEvent:(id)event;
+- (void)controlActionUpOutside:(id)outside;
 - (void)layoutSubviews;
 - (void)performDelegateRedoAndUpdateHUDIfNeeded;
 - (void)performDelegateUndoAndUpdateHUDIfNeeded;
-- (void)updateControlWithDirection:(int64_t)a3 travelProgress:(double)a4 isRTL:(BOOL)a5;
+- (void)updateControlWithDirection:(int64_t)direction travelProgress:(double)progress isRTL:(BOOL)l;
 - (void)updateHUDControlState;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation UIKBUndoInteractionHUD
 
-- (UIKBUndoInteractionHUD)initWithKeyboardAppearance:(int64_t)a3 isRTL:(BOOL)a4 mode:(int64_t)a5 sceneBounds:(CGRect)a6
+- (UIKBUndoInteractionHUD)initWithKeyboardAppearance:(int64_t)appearance isRTL:(BOOL)l mode:(int64_t)mode sceneBounds:(CGRect)bounds
 {
-  v7 = a4;
-  height = a6.size.height;
-  width = a6.size.width;
+  lCopy = l;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v291[1] = *MEMORY[0x1E69E9840];
   v288.receiver = self;
   v288.super_class = UIKBUndoInteractionHUD;
@@ -33,22 +33,22 @@
     goto LABEL_47;
   }
 
-  v11->_mode = a5;
-  if ((a3 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  v11->_mode = mode;
+  if ((appearance - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v13 = [(UIView *)v11 traitCollection];
-    if ([v13 userInterfaceStyle] == 2)
+    traitCollection = [(UIView *)v11 traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
-      a3 = 1;
+      appearance = 1;
     }
 
     else
     {
-      a3 = 2;
+      appearance = 2;
     }
   }
 
-  v14 = [[UIKBUndoStyling alloc] initWithKeyboardAppearance:a3 isRTL:v7];
+  v14 = [[UIKBUndoStyling alloc] initWithKeyboardAppearance:appearance isRTL:lCopy];
   style = v12->_style;
   v12->_style = v14;
 
@@ -62,7 +62,7 @@
     v16 = width;
   }
 
-  v287 = v7;
+  v287 = lCopy;
   if (v16 < 425.0)
   {
     [(UIKBUndoStyling *)v12->_style setUndoRedoIconOnly:1];
@@ -73,8 +73,8 @@
   }
 
   v290 = *off_1E70EC918;
-  v17 = [(UIKBUndoStyling *)v12->_style undoInteractiveControlLabelFont];
-  v291[0] = v17;
+  undoInteractiveControlLabelFont = [(UIKBUndoStyling *)v12->_style undoInteractiveControlLabelFont];
+  v291[0] = undoInteractiveControlLabelFont;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v291 forKeys:&v290 count:1];
 
   v19 = _UILocalizedStringInSystemLanguage(@"UNDO_BUTTON_TITLE_LABEL_IN_HUD", @"Undo");
@@ -167,8 +167,8 @@ LABEL_36:
   [(UIKBUndoStyling *)v12->_style setUndoControlMinWidth:?];
   UICeilToViewScale(v12);
   [(UIKBUndoStyling *)v12->_style setCutControlMinWidth:?];
-  v39 = [(UIView *)v12 heightAnchor];
-  v40 = [v39 constraintEqualToConstant:37.0];
+  heightAnchor = [(UIView *)v12 heightAnchor];
+  v40 = [heightAnchor constraintEqualToConstant:37.0];
   [v40 setActive:1];
 
   v41 = objc_alloc_init(UIVisualEffectView);
@@ -186,45 +186,45 @@ LABEL_36:
   v45 = +[UIColor separatorColor];
   [(UIView *)v12->_shadowView setBackgroundColor:v45];
 
-  v46 = [(UIView *)v12->_shadowView layer];
-  [v46 setMasksToBounds:0];
+  layer = [(UIView *)v12->_shadowView layer];
+  [layer setMasksToBounds:0];
 
-  v47 = [(UIView *)v12->_shadowView layer];
-  [v47 setCornerRadius:18.5];
+  layer2 = [(UIView *)v12->_shadowView layer];
+  [layer2 setCornerRadius:18.5];
 
-  v48 = [(UIKBUndoStyling *)v12->_style HUDShadowColor];
-  v49 = [v48 CGColor];
-  v50 = [(UIView *)v12->_shadowView layer];
-  [v50 setShadowColor:v49];
+  hUDShadowColor = [(UIKBUndoStyling *)v12->_style HUDShadowColor];
+  cGColor = [hUDShadowColor CGColor];
+  layer3 = [(UIView *)v12->_shadowView layer];
+  [layer3 setShadowColor:cGColor];
 
-  v51 = [(UIView *)v12->_shadowView layer];
-  [v51 setShadowOffset:{0.0, 0.0}];
+  layer4 = [(UIView *)v12->_shadowView layer];
+  [layer4 setShadowOffset:{0.0, 0.0}];
 
-  v52 = [(UIView *)v12->_shadowView layer];
+  layer5 = [(UIView *)v12->_shadowView layer];
   LODWORD(v53) = 0.5;
-  [v52 setShadowOpacity:v53];
+  [layer5 setShadowOpacity:v53];
 
-  v54 = [(UIView *)v12->_shadowView layer];
-  [v54 setShadowRadius:15.0];
+  layer6 = [(UIView *)v12->_shadowView layer];
+  [layer6 setShadowRadius:15.0];
 
-  v55 = [(UIView *)v12->_shadowView centerXAnchor];
-  v56 = [(UIView *)v12 centerXAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56];
+  centerXAnchor = [(UIView *)v12->_shadowView centerXAnchor];
+  centerXAnchor2 = [(UIView *)v12 centerXAnchor];
+  v57 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v57 setActive:1];
 
-  v58 = [(UIView *)v12->_shadowView centerYAnchor];
-  v59 = [(UIView *)v12 centerYAnchor];
-  v60 = [v58 constraintEqualToAnchor:v59];
+  centerYAnchor = [(UIView *)v12->_shadowView centerYAnchor];
+  centerYAnchor2 = [(UIView *)v12 centerYAnchor];
+  v60 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v60 setActive:1];
 
-  v61 = [(UIView *)v12->_shadowView widthAnchor];
-  v62 = [(UIView *)v12 widthAnchor];
-  v63 = [v61 constraintEqualToAnchor:v62];
+  widthAnchor = [(UIView *)v12->_shadowView widthAnchor];
+  widthAnchor2 = [(UIView *)v12 widthAnchor];
+  v63 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v63 setActive:1];
 
-  v64 = [(UIView *)v12->_shadowView heightAnchor];
-  v65 = [(UIView *)v12 heightAnchor];
-  v66 = [v64 constraintEqualToAnchor:v65];
+  heightAnchor2 = [(UIView *)v12->_shadowView heightAnchor];
+  heightAnchor3 = [(UIView *)v12 heightAnchor];
+  v66 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   [v66 setActive:1];
 
   v67 = objc_alloc_init(UIKBUndoHUDContainerView);
@@ -233,91 +233,91 @@ LABEL_36:
 
   [(UIView *)v12->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)v12 addSubview:v12->_containerView];
-  v69 = [(UIView *)v12->_containerView layer];
-  [v69 setCornerRadius:18.5];
+  layer7 = [(UIView *)v12->_containerView layer];
+  [layer7 setCornerRadius:18.5];
 
   [(UIView *)v12->_containerView setClipsToBounds:1];
   v70 = +[UIColor separatorColor];
   v71 = [v70 colorWithAlphaComponent:0.33];
   [(UIView *)v12->_containerView setBackgroundColor:v71];
 
-  v72 = [(UIView *)v12->_containerView centerXAnchor];
-  v73 = [(UIView *)v12 centerXAnchor];
-  v74 = [v72 constraintEqualToAnchor:v73];
+  centerXAnchor3 = [(UIView *)v12->_containerView centerXAnchor];
+  centerXAnchor4 = [(UIView *)v12 centerXAnchor];
+  v74 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v74 setActive:1];
 
-  v75 = [(UIView *)v12->_containerView centerYAnchor];
-  v76 = [(UIView *)v12 centerYAnchor];
-  v77 = [v75 constraintEqualToAnchor:v76];
+  centerYAnchor3 = [(UIView *)v12->_containerView centerYAnchor];
+  centerYAnchor4 = [(UIView *)v12 centerYAnchor];
+  v77 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v77 setActive:1];
 
-  v78 = [(UIView *)v12->_containerView widthAnchor];
-  v79 = [(UIView *)v12 widthAnchor];
-  v80 = [v78 constraintEqualToAnchor:v79];
+  widthAnchor3 = [(UIView *)v12->_containerView widthAnchor];
+  widthAnchor4 = [(UIView *)v12 widthAnchor];
+  v80 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   [v80 setActive:1];
 
-  v81 = [(UIView *)v12->_containerView heightAnchor];
-  v82 = [(UIView *)v12 heightAnchor];
-  v83 = [v81 constraintEqualToAnchor:v82];
+  heightAnchor4 = [(UIView *)v12->_containerView heightAnchor];
+  heightAnchor5 = [(UIView *)v12 heightAnchor];
+  v83 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
   [v83 setActive:1];
 
   v84 = [UIVisualEffectView alloc];
-  v85 = [(UIKBUndoInteractionHUD *)v12 style];
-  v86 = [v85 backgroundBlurEffect];
-  v87 = [(UIVisualEffectView *)v84 initWithEffect:v86];
+  style = [(UIKBUndoInteractionHUD *)v12 style];
+  backgroundBlurEffect = [style backgroundBlurEffect];
+  v87 = [(UIVisualEffectView *)v84 initWithEffect:backgroundBlurEffect];
 
   [(UIView *)v87 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)v12->_containerView addSubview:v87];
-  v88 = [(UIView *)v87 centerXAnchor];
-  v89 = [(UIView *)v12 centerXAnchor];
-  v90 = [v88 constraintEqualToAnchor:v89];
+  centerXAnchor5 = [(UIView *)v87 centerXAnchor];
+  centerXAnchor6 = [(UIView *)v12 centerXAnchor];
+  v90 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   [v90 setActive:1];
 
-  v91 = [(UIView *)v87 centerYAnchor];
-  v92 = [(UIView *)v12 centerYAnchor];
-  v93 = [v91 constraintEqualToAnchor:v92];
+  centerYAnchor5 = [(UIView *)v87 centerYAnchor];
+  centerYAnchor6 = [(UIView *)v12 centerYAnchor];
+  v93 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   [v93 setActive:1];
 
-  v94 = [(UIView *)v87 heightAnchor];
-  v95 = [(UIView *)v12 heightAnchor];
-  v96 = [v94 constraintEqualToAnchor:v95 multiplier:1.0];
+  heightAnchor6 = [(UIView *)v87 heightAnchor];
+  heightAnchor7 = [(UIView *)v12 heightAnchor];
+  v96 = [heightAnchor6 constraintEqualToAnchor:heightAnchor7 multiplier:1.0];
   [v96 setActive:1];
 
-  v97 = [(UIView *)v87 widthAnchor];
-  v98 = [(UIView *)v12->_containerView widthAnchor];
-  v99 = [v97 constraintEqualToAnchor:v98 multiplier:1.0];
+  widthAnchor5 = [(UIView *)v87 widthAnchor];
+  widthAnchor6 = [(UIView *)v12->_containerView widthAnchor];
+  v99 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 multiplier:1.0];
   [v99 setActive:1];
 
   v100 = [UIVisualEffectView alloc];
-  v101 = [(UIKBUndoInteractionHUD *)v12 style];
-  v102 = [v101 backgroundVibrancyEffect];
-  v103 = [(UIVisualEffectView *)v100 initWithEffect:v102];
+  style2 = [(UIKBUndoInteractionHUD *)v12 style];
+  backgroundVibrancyEffect = [style2 backgroundVibrancyEffect];
+  v103 = [(UIVisualEffectView *)v100 initWithEffect:backgroundVibrancyEffect];
   backgroundEffectView = v12->_backgroundEffectView;
   v12->_backgroundEffectView = v103;
 
   [(UIView *)v12->_backgroundEffectView setTranslatesAutoresizingMaskIntoConstraints:0];
   v286 = v87;
-  v105 = [(UIVisualEffectView *)v87 contentView];
-  [v105 addSubview:v12->_backgroundEffectView];
+  contentView = [(UIVisualEffectView *)v87 contentView];
+  [contentView addSubview:v12->_backgroundEffectView];
 
-  v106 = [(UIView *)v12->_backgroundEffectView centerXAnchor];
-  v107 = [(UIView *)v12 centerXAnchor];
-  v108 = [v106 constraintEqualToAnchor:v107];
+  centerXAnchor7 = [(UIView *)v12->_backgroundEffectView centerXAnchor];
+  centerXAnchor8 = [(UIView *)v12 centerXAnchor];
+  v108 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   [v108 setActive:1];
 
-  v109 = [(UIView *)v12->_backgroundEffectView centerYAnchor];
-  v110 = [(UIView *)v12 centerYAnchor];
-  v111 = [v109 constraintEqualToAnchor:v110];
+  centerYAnchor7 = [(UIView *)v12->_backgroundEffectView centerYAnchor];
+  centerYAnchor8 = [(UIView *)v12 centerYAnchor];
+  v111 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
   [v111 setActive:1];
 
-  v112 = [(UIView *)v12->_backgroundEffectView heightAnchor];
-  v113 = [(UIView *)v12 heightAnchor];
-  v114 = [v112 constraintEqualToAnchor:v113 multiplier:1.0];
+  heightAnchor8 = [(UIView *)v12->_backgroundEffectView heightAnchor];
+  heightAnchor9 = [(UIView *)v12 heightAnchor];
+  v114 = [heightAnchor8 constraintEqualToAnchor:heightAnchor9 multiplier:1.0];
   [v114 setActive:1];
 
-  v115 = [(UIView *)v12->_backgroundEffectView widthAnchor];
-  v116 = [(UIView *)v12 widthAnchor];
-  v117 = [v115 constraintEqualToAnchor:v116 multiplier:1.0];
+  widthAnchor7 = [(UIView *)v12->_backgroundEffectView widthAnchor];
+  widthAnchor8 = [(UIView *)v12 widthAnchor];
+  v117 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8 multiplier:1.0];
   [v117 setActive:1];
 
   mode = v12->_mode;
@@ -329,31 +329,31 @@ LABEL_36:
 
     [(UIView *)v12->_aPasteButtonView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v12->_containerView addSubview:v12->_aPasteButtonView];
-    v235 = [(UIView *)v12->_aPasteButtonView trailingAnchor];
-    v236 = [(UIView *)v12->_containerView trailingAnchor];
-    v237 = [v235 constraintEqualToAnchor:v236];
+    trailingAnchor = [(UIView *)v12->_aPasteButtonView trailingAnchor];
+    trailingAnchor2 = [(UIView *)v12->_containerView trailingAnchor];
+    v237 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v237 setActive:1];
 
-    v238 = [(UIView *)v12->_aPasteButtonView topAnchor];
-    v239 = [(UIView *)v12 topAnchor];
-    v240 = [v238 constraintEqualToAnchor:v239];
+    topAnchor = [(UIView *)v12->_aPasteButtonView topAnchor];
+    topAnchor2 = [(UIView *)v12 topAnchor];
+    v240 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v240 setActive:1];
 
-    v241 = [(UIView *)v12->_aPasteButtonView bottomAnchor];
-    v242 = [(UIView *)v12 bottomAnchor];
-    v243 = [v241 constraintEqualToAnchor:v242];
+    bottomAnchor = [(UIView *)v12->_aPasteButtonView bottomAnchor];
+    bottomAnchor2 = [(UIView *)v12 bottomAnchor];
+    v243 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v243 setActive:1];
 
     [(UIControl *)v12->_aPasteButtonView addTarget:v12 action:sel_controlActionUpInside_forEvent_ forControlEvents:64];
     if (v285)
     {
-      v244 = [(UIView *)v12->_aPasteButtonView leadingAnchor];
-      v245 = [(UIView *)v12->_containerView leadingAnchor];
-      v246 = [v244 constraintEqualToAnchor:v245];
+      leadingAnchor = [(UIView *)v12->_aPasteButtonView leadingAnchor];
+      leadingAnchor2 = [(UIView *)v12->_containerView leadingAnchor];
+      v246 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v246 setActive:1];
 
-      v217 = [(UIView *)v12->_aPasteButtonView widthAnchor];
-      v232 = [v217 constraintEqualToConstant:116.0];
+      widthAnchor9 = [(UIView *)v12->_aPasteButtonView widthAnchor];
+      v232 = [widthAnchor9 constraintEqualToConstant:116.0];
       [v232 setActive:1];
     }
 
@@ -363,8 +363,8 @@ LABEL_36:
       instructionalLabel = v12->_instructionalLabel;
       v12->_instructionalLabel = v247;
 
-      v249 = [(UIKBUndoStyling *)v12->_style undoInteractiveControlLabelFont];
-      [(UILabel *)v12->_instructionalLabel setFont:v249];
+      undoInteractiveControlLabelFont2 = [(UIKBUndoStyling *)v12->_style undoInteractiveControlLabelFont];
+      [(UILabel *)v12->_instructionalLabel setFont:undoInteractiveControlLabelFont2];
 
       v250 = _UILocalizedStringInSystemLanguage(@"PASTE_CONFIRMATION_LABEL_TEXT", @"This application is trying to read the clipboard.");
       [(UILabel *)v12->_instructionalLabel setText:v250];
@@ -372,59 +372,59 @@ LABEL_36:
       [(UILabel *)v12->_instructionalLabel setTextAlignment:1];
       [(UIView *)v12->_containerView addSubview:v12->_instructionalLabel];
       [(UIView *)v12->_instructionalLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-      v251 = [(UIView *)v12->_instructionalLabel leadingAnchor];
-      v252 = [(UIView *)v12->_containerView leadingAnchor];
-      v253 = [v251 constraintEqualToAnchor:v252 constant:16.0];
+      leadingAnchor3 = [(UIView *)v12->_instructionalLabel leadingAnchor];
+      leadingAnchor4 = [(UIView *)v12->_containerView leadingAnchor];
+      v253 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
       [v253 setActive:1];
 
-      v254 = [(UIView *)v12->_instructionalLabel firstBaselineAnchor];
-      v255 = [(UIView *)v12->_aPasteButtonView firstBaselineAnchor];
-      v256 = [v254 constraintEqualToAnchor:v255];
+      firstBaselineAnchor = [(UIView *)v12->_instructionalLabel firstBaselineAnchor];
+      firstBaselineAnchor2 = [(UIView *)v12->_aPasteButtonView firstBaselineAnchor];
+      v256 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
       [v256 setActive:1];
 
-      v217 = [(UIKBUndoInteractionHUD *)v12 createSeparatorView];
-      v257 = [(UIVisualEffectView *)v12->_backgroundEffectView contentView];
-      [v257 addSubview:v217];
+      widthAnchor9 = [(UIKBUndoInteractionHUD *)v12 createSeparatorView];
+      contentView2 = [(UIVisualEffectView *)v12->_backgroundEffectView contentView];
+      [contentView2 addSubview:widthAnchor9];
 
-      v258 = [v217 heightAnchor];
-      v259 = [(UIView *)v12->_containerView heightAnchor];
-      v260 = [v258 constraintEqualToAnchor:v259];
+      heightAnchor10 = [widthAnchor9 heightAnchor];
+      heightAnchor11 = [(UIView *)v12->_containerView heightAnchor];
+      v260 = [heightAnchor10 constraintEqualToAnchor:heightAnchor11];
       [v260 setActive:1];
 
-      v261 = [v217 leadingAnchor];
-      v262 = [(UIView *)v12->_instructionalLabel trailingAnchor];
-      v263 = [v261 constraintEqualToAnchor:v262 constant:16.0];
+      leadingAnchor5 = [widthAnchor9 leadingAnchor];
+      trailingAnchor3 = [(UIView *)v12->_instructionalLabel trailingAnchor];
+      v263 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:16.0];
       [v263 setActive:1];
 
-      v264 = [(UIView *)v12->_aPasteButtonView leadingAnchor];
-      v265 = [v217 trailingAnchor];
-      v266 = [v264 constraintEqualToAnchor:v265];
+      leadingAnchor6 = [(UIView *)v12->_aPasteButtonView leadingAnchor];
+      trailingAnchor4 = [widthAnchor9 trailingAnchor];
+      v266 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor4];
       [v266 setActive:1];
 
       v232 = objc_opt_new();
-      v267 = [(UIKBUndoStyling *)v12->_style HUDbackgroundColor];
-      [v232 setBackgroundColor:v267];
+      hUDbackgroundColor = [(UIKBUndoStyling *)v12->_style HUDbackgroundColor];
+      [v232 setBackgroundColor:hUDbackgroundColor];
 
       [v232 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIView *)v12->_containerView insertSubview:v232 below:v12->_instructionalLabel];
-      v268 = [v232 leadingAnchor];
-      v269 = [(UIView *)v12 leadingAnchor];
-      v270 = [v268 constraintEqualToAnchor:v269];
+      leadingAnchor7 = [v232 leadingAnchor];
+      leadingAnchor8 = [(UIView *)v12 leadingAnchor];
+      v270 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
       [v270 setActive:1];
 
-      v271 = [v232 trailingAnchor];
-      v272 = [v217 leadingAnchor];
-      v273 = [v271 constraintEqualToAnchor:v272];
+      trailingAnchor5 = [v232 trailingAnchor];
+      leadingAnchor9 = [widthAnchor9 leadingAnchor];
+      v273 = [trailingAnchor5 constraintEqualToAnchor:leadingAnchor9];
       [v273 setActive:1];
 
-      v274 = [v232 topAnchor];
-      v275 = [(UIView *)v12 topAnchor];
-      v276 = [v274 constraintEqualToAnchor:v275];
+      topAnchor3 = [v232 topAnchor];
+      topAnchor4 = [(UIView *)v12 topAnchor];
+      v276 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       [v276 setActive:1];
 
-      v277 = [v232 bottomAnchor];
-      v278 = [(UIView *)v12 bottomAnchor];
-      v279 = [v277 constraintEqualToAnchor:v278];
+      bottomAnchor3 = [v232 bottomAnchor];
+      bottomAnchor4 = [(UIView *)v12 bottomAnchor];
+      v279 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       [v279 setActive:1];
     }
 
@@ -439,28 +439,28 @@ LABEL_36:
 
     [(UIView *)v12->_leftButtonView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v12->_containerView addSubview:v12->_leftButtonView];
-    v121 = [(UIView *)v12->_leftButtonView leadingAnchor];
-    v122 = [(UIView *)v12 leadingAnchor];
-    v123 = [v121 constraintEqualToAnchor:v122];
+    leadingAnchor10 = [(UIView *)v12->_leftButtonView leadingAnchor];
+    leadingAnchor11 = [(UIView *)v12 leadingAnchor];
+    v123 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
     [v123 setActive:1];
 
-    v124 = [(UIView *)v12->_leftButtonView centerYAnchor];
-    v125 = [(UIView *)v12 centerYAnchor];
-    v126 = [v124 constraintEqualToAnchor:v125];
+    centerYAnchor9 = [(UIView *)v12->_leftButtonView centerYAnchor];
+    centerYAnchor10 = [(UIView *)v12 centerYAnchor];
+    v126 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10];
     [v126 setActive:1];
 
-    v127 = [(UIView *)v12->_leftButtonView heightAnchor];
-    v128 = [(UIView *)v12 heightAnchor];
-    v129 = [v127 constraintEqualToAnchor:v128 multiplier:1.0];
+    heightAnchor12 = [(UIView *)v12->_leftButtonView heightAnchor];
+    heightAnchor13 = [(UIView *)v12 heightAnchor];
+    v129 = [heightAnchor12 constraintEqualToAnchor:heightAnchor13 multiplier:1.0];
     [v129 setActive:1];
 
-    v130 = [(UIView *)v12->_leftButtonView widthAnchor];
+    widthAnchor10 = [(UIView *)v12->_leftButtonView widthAnchor];
     [(UIKBUndoStyling *)v12->_style undoControlMinWidth];
-    v131 = [v130 constraintGreaterThanOrEqualToConstant:?];
+    v131 = [widthAnchor10 constraintGreaterThanOrEqualToConstant:?];
     [v131 setActive:1];
 
-    v132 = [(UIView *)v12->_leftButtonView widthAnchor];
-    v133 = [v132 constraintLessThanOrEqualToConstant:120.0];
+    widthAnchor11 = [(UIView *)v12->_leftButtonView widthAnchor];
+    v133 = [widthAnchor11 constraintLessThanOrEqualToConstant:120.0];
     [v133 setActive:1];
 
     [(UIControl *)v12->_leftButtonView addTarget:v12 action:sel_controlActionDown_ forControlEvents:1];
@@ -472,24 +472,24 @@ LABEL_36:
 
     [(UIView *)v12->_rightButtonView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v12->_containerView addSubview:v12->_rightButtonView];
-    v136 = [(UIView *)v12->_rightButtonView trailingAnchor];
-    v137 = [(UIView *)v12 trailingAnchor];
-    v138 = [v136 constraintEqualToAnchor:v137];
+    trailingAnchor6 = [(UIView *)v12->_rightButtonView trailingAnchor];
+    trailingAnchor7 = [(UIView *)v12 trailingAnchor];
+    v138 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     [v138 setActive:1];
 
-    v139 = [(UIView *)v12->_rightButtonView centerYAnchor];
-    v140 = [(UIView *)v12 centerYAnchor];
-    v141 = [v139 constraintEqualToAnchor:v140];
+    centerYAnchor11 = [(UIView *)v12->_rightButtonView centerYAnchor];
+    centerYAnchor12 = [(UIView *)v12 centerYAnchor];
+    v141 = [centerYAnchor11 constraintEqualToAnchor:centerYAnchor12];
     [v141 setActive:1];
 
-    v142 = [(UIView *)v12->_rightButtonView heightAnchor];
-    v143 = [(UIView *)v12 heightAnchor];
-    v144 = [v142 constraintEqualToAnchor:v143 multiplier:1.0];
+    heightAnchor14 = [(UIView *)v12->_rightButtonView heightAnchor];
+    heightAnchor15 = [(UIView *)v12 heightAnchor];
+    v144 = [heightAnchor14 constraintEqualToAnchor:heightAnchor15 multiplier:1.0];
     [v144 setActive:1];
 
-    v145 = [(UIView *)v12->_rightButtonView widthAnchor];
-    v146 = [(UIView *)v12->_leftButtonView widthAnchor];
-    v147 = [v145 constraintEqualToAnchor:v146 multiplier:1.0];
+    widthAnchor12 = [(UIView *)v12->_rightButtonView widthAnchor];
+    widthAnchor13 = [(UIView *)v12->_leftButtonView widthAnchor];
+    v147 = [widthAnchor12 constraintEqualToAnchor:widthAnchor13 multiplier:1.0];
     [v147 setActive:1];
 
     [(UIControl *)v12->_rightButtonView addTarget:v12 action:sel_controlActionDown_ forControlEvents:1];
@@ -501,40 +501,40 @@ LABEL_36:
 
     [(UIView *)v12->_aCutButtonView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v12->_containerView addSubview:v12->_aCutButtonView];
-    v150 = [(UIKBUndoInteractionHUD *)v12 createSeparatorView];
-    v151 = [(UIVisualEffectView *)v12->_backgroundEffectView contentView];
-    [v151 addSubview:v150];
+    createSeparatorView = [(UIKBUndoInteractionHUD *)v12 createSeparatorView];
+    contentView3 = [(UIVisualEffectView *)v12->_backgroundEffectView contentView];
+    [contentView3 addSubview:createSeparatorView];
 
-    v152 = [v150 heightAnchor];
-    v153 = [(UIKBUndoInteractionHUD *)v12 containerView];
-    v154 = [v153 heightAnchor];
-    v155 = [v152 constraintEqualToAnchor:v154];
+    heightAnchor16 = [createSeparatorView heightAnchor];
+    containerView = [(UIKBUndoInteractionHUD *)v12 containerView];
+    heightAnchor17 = [containerView heightAnchor];
+    v155 = [heightAnchor16 constraintEqualToAnchor:heightAnchor17];
     [v155 setActive:1];
 
-    v284 = v150;
-    v156 = [v150 leadingAnchor];
-    v157 = [(UIView *)v12->_leftButtonView trailingAnchor];
-    v158 = [v156 constraintEqualToAnchor:v157];
+    v284 = createSeparatorView;
+    leadingAnchor12 = [createSeparatorView leadingAnchor];
+    trailingAnchor8 = [(UIView *)v12->_leftButtonView trailingAnchor];
+    v158 = [leadingAnchor12 constraintEqualToAnchor:trailingAnchor8];
     [v158 setActive:1];
 
-    v159 = [(UIView *)v12->_aCutButtonView leadingAnchor];
-    v160 = [v150 trailingAnchor];
-    v161 = [v159 constraintEqualToAnchor:v160];
+    leadingAnchor13 = [(UIView *)v12->_aCutButtonView leadingAnchor];
+    trailingAnchor9 = [createSeparatorView trailingAnchor];
+    v161 = [leadingAnchor13 constraintEqualToAnchor:trailingAnchor9];
     [v161 setActive:1];
 
-    v162 = [(UIView *)v12->_aCutButtonView centerYAnchor];
-    v163 = [(UIView *)v12 centerYAnchor];
-    v164 = [v162 constraintEqualToAnchor:v163];
+    centerYAnchor13 = [(UIView *)v12->_aCutButtonView centerYAnchor];
+    centerYAnchor14 = [(UIView *)v12 centerYAnchor];
+    v164 = [centerYAnchor13 constraintEqualToAnchor:centerYAnchor14];
     [v164 setActive:1];
 
-    v165 = [(UIView *)v12->_aCutButtonView heightAnchor];
-    v166 = [(UIView *)v12 heightAnchor];
-    v167 = [v165 constraintEqualToAnchor:v166 multiplier:1.0];
+    heightAnchor18 = [(UIView *)v12->_aCutButtonView heightAnchor];
+    heightAnchor19 = [(UIView *)v12 heightAnchor];
+    v167 = [heightAnchor18 constraintEqualToAnchor:heightAnchor19 multiplier:1.0];
     [v167 setActive:1];
 
-    v168 = [(UIView *)v12->_aCutButtonView widthAnchor];
+    widthAnchor14 = [(UIView *)v12->_aCutButtonView widthAnchor];
     [(UIKBUndoStyling *)v12->_style cutControlMinWidth];
-    v169 = [v168 constraintGreaterThanOrEqualToConstant:?];
+    v169 = [widthAnchor14 constraintGreaterThanOrEqualToConstant:?];
     [v169 setActive:1];
 
     [(UIControl *)v12->_aCutButtonView addTarget:v12 action:sel_controlActionDown_ forControlEvents:1];
@@ -546,45 +546,45 @@ LABEL_36:
 
     [(UIView *)v12->_aCopyButtonView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v12->_containerView addSubview:v12->_aCopyButtonView];
-    v172 = [(UIKBUndoInteractionHUD *)v12 createSeparatorView];
-    v173 = [(UIVisualEffectView *)v12->_backgroundEffectView contentView];
-    [v173 addSubview:v172];
+    createSeparatorView2 = [(UIKBUndoInteractionHUD *)v12 createSeparatorView];
+    contentView4 = [(UIVisualEffectView *)v12->_backgroundEffectView contentView];
+    [contentView4 addSubview:createSeparatorView2];
 
-    v174 = [v172 heightAnchor];
-    v175 = [(UIKBUndoInteractionHUD *)v12 containerView];
-    v176 = [v175 heightAnchor];
-    v177 = [v174 constraintEqualToAnchor:v176];
+    heightAnchor20 = [createSeparatorView2 heightAnchor];
+    containerView2 = [(UIKBUndoInteractionHUD *)v12 containerView];
+    heightAnchor21 = [containerView2 heightAnchor];
+    v177 = [heightAnchor20 constraintEqualToAnchor:heightAnchor21];
     [v177 setActive:1];
 
-    v283 = v172;
-    v178 = [v172 leadingAnchor];
-    v179 = [(UIView *)v12->_aCutButtonView trailingAnchor];
-    v180 = [v178 constraintEqualToAnchor:v179];
+    v283 = createSeparatorView2;
+    leadingAnchor14 = [createSeparatorView2 leadingAnchor];
+    trailingAnchor10 = [(UIView *)v12->_aCutButtonView trailingAnchor];
+    v180 = [leadingAnchor14 constraintEqualToAnchor:trailingAnchor10];
     [v180 setActive:1];
 
-    v181 = [(UIView *)v12->_aCopyButtonView centerXAnchor];
-    v182 = [(UIView *)v12 centerXAnchor];
-    v183 = [v181 constraintEqualToAnchor:v182];
+    centerXAnchor9 = [(UIView *)v12->_aCopyButtonView centerXAnchor];
+    centerXAnchor10 = [(UIView *)v12 centerXAnchor];
+    v183 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
     [v183 setActive:1];
 
-    v184 = [(UIView *)v12->_aCopyButtonView leadingAnchor];
-    v185 = [v172 trailingAnchor];
-    v186 = [v184 constraintEqualToAnchor:v185];
+    leadingAnchor15 = [(UIView *)v12->_aCopyButtonView leadingAnchor];
+    trailingAnchor11 = [createSeparatorView2 trailingAnchor];
+    v186 = [leadingAnchor15 constraintEqualToAnchor:trailingAnchor11];
     [v186 setActive:1];
 
-    v187 = [(UIView *)v12->_aCopyButtonView centerYAnchor];
-    v188 = [(UIView *)v12 centerYAnchor];
-    v189 = [v187 constraintEqualToAnchor:v188];
+    centerYAnchor15 = [(UIView *)v12->_aCopyButtonView centerYAnchor];
+    centerYAnchor16 = [(UIView *)v12 centerYAnchor];
+    v189 = [centerYAnchor15 constraintEqualToAnchor:centerYAnchor16];
     [v189 setActive:1];
 
-    v190 = [(UIView *)v12->_aCopyButtonView heightAnchor];
-    v191 = [(UIView *)v12->_aCutButtonView heightAnchor];
-    v192 = [v190 constraintEqualToAnchor:v191 multiplier:1.0];
+    heightAnchor22 = [(UIView *)v12->_aCopyButtonView heightAnchor];
+    heightAnchor23 = [(UIView *)v12->_aCutButtonView heightAnchor];
+    v192 = [heightAnchor22 constraintEqualToAnchor:heightAnchor23 multiplier:1.0];
     [v192 setActive:1];
 
-    v193 = [(UIView *)v12->_aCopyButtonView widthAnchor];
-    v194 = [(UIView *)v12->_aCutButtonView widthAnchor];
-    v195 = [v193 constraintEqualToAnchor:v194 multiplier:1.0];
+    widthAnchor15 = [(UIView *)v12->_aCopyButtonView widthAnchor];
+    widthAnchor16 = [(UIView *)v12->_aCutButtonView widthAnchor];
+    v195 = [widthAnchor15 constraintEqualToAnchor:widthAnchor16 multiplier:1.0];
     [v195 setActive:1];
 
     [(UIControl *)v12->_aCopyButtonView addTarget:v12 action:sel_controlActionDown_ forControlEvents:1];
@@ -596,63 +596,63 @@ LABEL_36:
 
     [(UIView *)v12->_aPasteButtonView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v12->_containerView addSubview:v12->_aPasteButtonView];
-    v198 = [(UIKBUndoInteractionHUD *)v12 createSeparatorView];
-    v199 = [(UIVisualEffectView *)v12->_backgroundEffectView contentView];
-    [v199 addSubview:v198];
+    createSeparatorView3 = [(UIKBUndoInteractionHUD *)v12 createSeparatorView];
+    contentView5 = [(UIVisualEffectView *)v12->_backgroundEffectView contentView];
+    [contentView5 addSubview:createSeparatorView3];
 
-    v200 = [v198 heightAnchor];
-    v201 = [(UIKBUndoInteractionHUD *)v12 containerView];
-    v202 = [v201 heightAnchor];
-    v203 = [v200 constraintEqualToAnchor:v202];
+    heightAnchor24 = [createSeparatorView3 heightAnchor];
+    containerView3 = [(UIKBUndoInteractionHUD *)v12 containerView];
+    heightAnchor25 = [containerView3 heightAnchor];
+    v203 = [heightAnchor24 constraintEqualToAnchor:heightAnchor25];
     [v203 setActive:1];
 
-    v204 = [v198 leadingAnchor];
-    v205 = [(UIView *)v12->_aCopyButtonView trailingAnchor];
-    v206 = [v204 constraintEqualToAnchor:v205];
+    leadingAnchor16 = [createSeparatorView3 leadingAnchor];
+    trailingAnchor12 = [(UIView *)v12->_aCopyButtonView trailingAnchor];
+    v206 = [leadingAnchor16 constraintEqualToAnchor:trailingAnchor12];
     [v206 setActive:1];
 
-    v207 = [(UIView *)v12->_aPasteButtonView leadingAnchor];
-    v208 = [v198 trailingAnchor];
-    v209 = [v207 constraintEqualToAnchor:v208];
+    leadingAnchor17 = [(UIView *)v12->_aPasteButtonView leadingAnchor];
+    trailingAnchor13 = [createSeparatorView3 trailingAnchor];
+    v209 = [leadingAnchor17 constraintEqualToAnchor:trailingAnchor13];
     [v209 setActive:1];
 
-    v210 = [(UIView *)v12->_aPasteButtonView centerYAnchor];
-    v211 = [(UIView *)v12 centerYAnchor];
-    v212 = [v210 constraintEqualToAnchor:v211];
+    centerYAnchor17 = [(UIView *)v12->_aPasteButtonView centerYAnchor];
+    centerYAnchor18 = [(UIView *)v12 centerYAnchor];
+    v212 = [centerYAnchor17 constraintEqualToAnchor:centerYAnchor18];
     [v212 setActive:1];
 
-    v213 = [(UIView *)v12->_aPasteButtonView heightAnchor];
-    v214 = [(UIView *)v12->_aCutButtonView heightAnchor];
-    v215 = [v213 constraintEqualToAnchor:v214 multiplier:1.0];
+    heightAnchor26 = [(UIView *)v12->_aPasteButtonView heightAnchor];
+    heightAnchor27 = [(UIView *)v12->_aCutButtonView heightAnchor];
+    v215 = [heightAnchor26 constraintEqualToAnchor:heightAnchor27 multiplier:1.0];
     [v215 setActive:1];
 
-    v216 = [(UIView *)v12->_aPasteButtonView widthAnchor];
-    v217 = v284;
-    v218 = [(UIView *)v12->_aCutButtonView widthAnchor];
-    v219 = [v216 constraintEqualToAnchor:v218 multiplier:1.0];
+    widthAnchor17 = [(UIView *)v12->_aPasteButtonView widthAnchor];
+    widthAnchor9 = v284;
+    widthAnchor18 = [(UIView *)v12->_aCutButtonView widthAnchor];
+    v219 = [widthAnchor17 constraintEqualToAnchor:widthAnchor18 multiplier:1.0];
     [v219 setActive:1];
 
     [(UIControl *)v12->_aPasteButtonView addTarget:v12 action:sel_controlActionDown_ forControlEvents:1];
     [(UIControl *)v12->_aPasteButtonView addTarget:v12 action:sel_controlActionUpInside_forEvent_ forControlEvents:64];
     [(UIControl *)v12->_aPasteButtonView addTarget:v12 action:sel_controlActionUpOutside_ forControlEvents:128];
-    v220 = [(UIKBUndoInteractionHUD *)v12 createSeparatorView];
-    v221 = [(UIVisualEffectView *)v12->_backgroundEffectView contentView];
-    [v221 addSubview:v220];
+    createSeparatorView4 = [(UIKBUndoInteractionHUD *)v12 createSeparatorView];
+    contentView6 = [(UIVisualEffectView *)v12->_backgroundEffectView contentView];
+    [contentView6 addSubview:createSeparatorView4];
 
-    v222 = [v220 heightAnchor];
-    v223 = [(UIKBUndoInteractionHUD *)v12 containerView];
-    v224 = [v223 heightAnchor];
-    v225 = [v222 constraintEqualToAnchor:v224];
+    heightAnchor28 = [createSeparatorView4 heightAnchor];
+    containerView4 = [(UIKBUndoInteractionHUD *)v12 containerView];
+    heightAnchor29 = [containerView4 heightAnchor];
+    v225 = [heightAnchor28 constraintEqualToAnchor:heightAnchor29];
     [v225 setActive:1];
 
-    v226 = [v220 leadingAnchor];
-    v227 = [(UIView *)v12->_aPasteButtonView trailingAnchor];
-    v228 = [v226 constraintEqualToAnchor:v227];
+    leadingAnchor18 = [createSeparatorView4 leadingAnchor];
+    trailingAnchor14 = [(UIView *)v12->_aPasteButtonView trailingAnchor];
+    v228 = [leadingAnchor18 constraintEqualToAnchor:trailingAnchor14];
     [v228 setActive:1];
 
-    v229 = [(UIView *)v12->_rightButtonView leadingAnchor];
-    v230 = [v220 trailingAnchor];
-    v231 = [v229 constraintEqualToAnchor:v230];
+    leadingAnchor19 = [(UIView *)v12->_rightButtonView leadingAnchor];
+    trailingAnchor15 = [createSeparatorView4 trailingAnchor];
+    v231 = [leadingAnchor19 constraintEqualToAnchor:trailingAnchor15];
     [v231 setActive:1];
 
     v232 = v283;
@@ -693,12 +693,12 @@ LABEL_47:
   [(UIView *)v2 setBackgroundColor:v4];
 
   [(UIView *)v2 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [objc_opt_self() mainScreen];
-  [v5 nativeScale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen nativeScale];
   v7 = 1.0 / v6;
 
-  v8 = [(UIView *)v2 widthAnchor];
-  v9 = [v8 constraintEqualToConstant:v7];
+  widthAnchor = [(UIView *)v2 widthAnchor];
+  v9 = [widthAnchor constraintEqualToConstant:v7];
   [v9 setActive:1];
 
   return v2;
@@ -709,8 +709,8 @@ LABEL_47:
   v8.receiver = self;
   v8.super_class = UIKBUndoInteractionHUD;
   [(UIView *)&v8 layoutSubviews];
-  v3 = [(UIView *)self traitCollection];
-  if ([v3 userInterfaceStyle] == 1)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 1)
   {
     v4 = 2;
   }
@@ -720,18 +720,18 @@ LABEL_47:
     v4 = 1;
   }
 
-  v5 = [(UIKBUndoInteractionHUD *)self style];
-  [v5 setAppearance:v4];
+  style = [(UIKBUndoInteractionHUD *)self style];
+  [style setAppearance:v4];
 
-  v6 = [(UIView *)self traitOverrides];
+  traitOverrides = [(UIView *)self traitOverrides];
   v7 = objc_opt_self();
-  [v6 setNSIntegerValue:v4 forTrait:v7];
+  [traitOverrides setNSIntegerValue:v4 forTrait:v7];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(UIView *)self bounds];
   v7 = v6 + -20.0;
   v9 = v8 + 40.0;
@@ -743,18 +743,18 @@ LABEL_47:
   return CGRectContainsPoint(*&v7, *&v14);
 }
 
-- (id)controlForType:(int64_t)a3
+- (id)controlForType:(int64_t)type
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3 > 3)
+  if (type > 3)
   {
-    if ((a3 - 5) < 2)
+    if ((type - 5) < 2)
     {
       v4 = 456;
       goto LABEL_16;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       v4 = 448;
       goto LABEL_16;
@@ -763,7 +763,7 @@ LABEL_47:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 1:
         v4 = 424;
@@ -785,7 +785,7 @@ LABEL_16:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
       v9 = 134217984;
-      v10 = a3;
+      typeCopy2 = type;
       _os_log_fault_impl(&dword_188A29000, v8, OS_LOG_TYPE_FAULT, "Unexpected control type: %ld", &v9, 0xCu);
     }
   }
@@ -796,7 +796,7 @@ LABEL_16:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v9 = 134217984;
-      v10 = a3;
+      typeCopy2 = type;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "Unexpected control type: %ld", &v9, 0xCu);
     }
   }
@@ -807,54 +807,54 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)availableOfControl:(id)a3
+- (BOOL)availableOfControl:(id)control
 {
-  v4 = a3;
-  if ([v4 type] == 1)
+  controlCopy = control;
+  if ([controlCopy type] == 1)
   {
-    v5 = [(UIKBUndoInteractionHUD *)self actionDelegate];
-    v6 = [v5 canUndo];
+    actionDelegate = [(UIKBUndoInteractionHUD *)self actionDelegate];
+    canUndo = [actionDelegate canUndo];
   }
 
-  else if ([v4 type] == 2)
+  else if ([controlCopy type] == 2)
   {
-    v5 = [(UIKBUndoInteractionHUD *)self actionDelegate];
-    v6 = [v5 canRedo];
+    actionDelegate = [(UIKBUndoInteractionHUD *)self actionDelegate];
+    canUndo = [actionDelegate canRedo];
   }
 
-  else if ([v4 type] == 3)
+  else if ([controlCopy type] == 3)
   {
-    v5 = [(UIKBUndoInteractionHUD *)self actionDelegate];
-    v6 = [v5 canCut];
+    actionDelegate = [(UIKBUndoInteractionHUD *)self actionDelegate];
+    canUndo = [actionDelegate canCut];
   }
 
-  else if ([v4 type] == 4)
+  else if ([controlCopy type] == 4)
   {
-    v5 = [(UIKBUndoInteractionHUD *)self actionDelegate];
-    v6 = [v5 canCopy];
+    actionDelegate = [(UIKBUndoInteractionHUD *)self actionDelegate];
+    canUndo = [actionDelegate canCopy];
   }
 
   else
   {
-    if ([v4 type] != 5)
+    if ([controlCopy type] != 5)
     {
-      v7 = [v4 type] == 6;
+      v7 = [controlCopy type] == 6;
       goto LABEL_12;
     }
 
-    v5 = [(UIKBUndoInteractionHUD *)self actionDelegate];
-    v6 = [v5 canPaste];
+    actionDelegate = [(UIKBUndoInteractionHUD *)self actionDelegate];
+    canUndo = [actionDelegate canPaste];
   }
 
-  v7 = v6;
+  v7 = canUndo;
 
 LABEL_12:
   return v7;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (a3)
+  if (window)
   {
     v4 = [MEMORY[0x1E695DF00] now];
     [(UIKBUndoInteractionHUD *)self setAppearanceDate:v4];
@@ -869,173 +869,173 @@ LABEL_12:
 
 - (void)updateHUDControlState
 {
-  v3 = [(UIKBUndoInteractionHUD *)self leftButtonView];
-  v4 = [(UIKBUndoInteractionHUD *)self availableOfControl:v3];
-  v5 = [(UIKBUndoInteractionHUD *)self leftButtonView];
-  [v5 setEnabled:v4];
+  leftButtonView = [(UIKBUndoInteractionHUD *)self leftButtonView];
+  v4 = [(UIKBUndoInteractionHUD *)self availableOfControl:leftButtonView];
+  leftButtonView2 = [(UIKBUndoInteractionHUD *)self leftButtonView];
+  [leftButtonView2 setEnabled:v4];
 
-  v6 = [(UIKBUndoInteractionHUD *)self leftButtonView];
-  [v6 updateUndoControlStyle];
+  leftButtonView3 = [(UIKBUndoInteractionHUD *)self leftButtonView];
+  [leftButtonView3 updateUndoControlStyle];
 
-  v7 = [(UIKBUndoInteractionHUD *)self rightButtonView];
-  v8 = [(UIKBUndoInteractionHUD *)self availableOfControl:v7];
-  v9 = [(UIKBUndoInteractionHUD *)self rightButtonView];
-  [v9 setEnabled:v8];
+  rightButtonView = [(UIKBUndoInteractionHUD *)self rightButtonView];
+  v8 = [(UIKBUndoInteractionHUD *)self availableOfControl:rightButtonView];
+  rightButtonView2 = [(UIKBUndoInteractionHUD *)self rightButtonView];
+  [rightButtonView2 setEnabled:v8];
 
-  v10 = [(UIKBUndoInteractionHUD *)self rightButtonView];
-  [v10 updateUndoControlStyle];
+  rightButtonView3 = [(UIKBUndoInteractionHUD *)self rightButtonView];
+  [rightButtonView3 updateUndoControlStyle];
 
-  v11 = [(UIKBUndoInteractionHUD *)self aCutButtonView];
-  v12 = [(UIKBUndoInteractionHUD *)self availableOfControl:v11];
-  v13 = [(UIKBUndoInteractionHUD *)self aCutButtonView];
-  [v13 setEnabled:v12];
+  aCutButtonView = [(UIKBUndoInteractionHUD *)self aCutButtonView];
+  v12 = [(UIKBUndoInteractionHUD *)self availableOfControl:aCutButtonView];
+  aCutButtonView2 = [(UIKBUndoInteractionHUD *)self aCutButtonView];
+  [aCutButtonView2 setEnabled:v12];
 
-  v14 = [(UIKBUndoInteractionHUD *)self aCutButtonView];
-  [v14 updateUndoControlStyle];
+  aCutButtonView3 = [(UIKBUndoInteractionHUD *)self aCutButtonView];
+  [aCutButtonView3 updateUndoControlStyle];
 
-  v15 = [(UIKBUndoInteractionHUD *)self aCopyButtonView];
-  v16 = [(UIKBUndoInteractionHUD *)self availableOfControl:v15];
-  v17 = [(UIKBUndoInteractionHUD *)self aCopyButtonView];
-  [v17 setEnabled:v16];
+  aCopyButtonView = [(UIKBUndoInteractionHUD *)self aCopyButtonView];
+  v16 = [(UIKBUndoInteractionHUD *)self availableOfControl:aCopyButtonView];
+  aCopyButtonView2 = [(UIKBUndoInteractionHUD *)self aCopyButtonView];
+  [aCopyButtonView2 setEnabled:v16];
 
-  v18 = [(UIKBUndoInteractionHUD *)self aCopyButtonView];
-  [v18 updateUndoControlStyle];
+  aCopyButtonView3 = [(UIKBUndoInteractionHUD *)self aCopyButtonView];
+  [aCopyButtonView3 updateUndoControlStyle];
 
-  v19 = [(UIKBUndoInteractionHUD *)self aPasteButtonView];
-  v20 = [(UIKBUndoInteractionHUD *)self availableOfControl:v19];
-  v21 = [(UIKBUndoInteractionHUD *)self aPasteButtonView];
-  [v21 setEnabled:v20];
+  aPasteButtonView = [(UIKBUndoInteractionHUD *)self aPasteButtonView];
+  v20 = [(UIKBUndoInteractionHUD *)self availableOfControl:aPasteButtonView];
+  aPasteButtonView2 = [(UIKBUndoInteractionHUD *)self aPasteButtonView];
+  [aPasteButtonView2 setEnabled:v20];
 
-  v22 = [(UIKBUndoInteractionHUD *)self aPasteButtonView];
-  [v22 updateUndoControlStyle];
+  aPasteButtonView3 = [(UIKBUndoInteractionHUD *)self aPasteButtonView];
+  [aPasteButtonView3 updateUndoControlStyle];
 
   [(UIView *)self layoutIfNeeded];
 }
 
 - (void)performDelegateUndoAndUpdateHUDIfNeeded
 {
-  v3 = [(UIKBUndoInteractionHUD *)self actionDelegate];
+  actionDelegate = [(UIKBUndoInteractionHUD *)self actionDelegate];
 
-  if (v3)
+  if (actionDelegate)
   {
-    v4 = [(UIKBUndoInteractionHUD *)self actionDelegate];
-    [v4 undo:0];
+    actionDelegate2 = [(UIKBUndoInteractionHUD *)self actionDelegate];
+    [actionDelegate2 undo:0];
   }
 }
 
 - (void)performDelegateRedoAndUpdateHUDIfNeeded
 {
-  v3 = [(UIKBUndoInteractionHUD *)self actionDelegate];
+  actionDelegate = [(UIKBUndoInteractionHUD *)self actionDelegate];
 
-  if (v3)
+  if (actionDelegate)
   {
-    v4 = [(UIKBUndoInteractionHUD *)self actionDelegate];
-    [v4 redo:0];
+    actionDelegate2 = [(UIKBUndoInteractionHUD *)self actionDelegate];
+    [actionDelegate2 redo:0];
   }
 }
 
-- (void)controlActionDown:(id)a3
+- (void)controlActionDown:(id)down
 {
-  v5 = a3;
-  if ([v5 state] != 2)
+  downCopy = down;
+  if ([downCopy state] != 2)
   {
-    if ([v5 type] == 5)
+    if ([downCopy type] == 5)
     {
-      v4 = [(UIKBUndoInteractionHUD *)self appearanceDate];
-      _UIPasteboardAnalyticsReportEvent(@"UndoHUD", v4);
+      appearanceDate = [(UIKBUndoInteractionHUD *)self appearanceDate];
+      _UIPasteboardAnalyticsReportEvent(@"UndoHUD", appearanceDate);
     }
 
-    [v5 updateUndoControlStyle];
+    [downCopy updateUndoControlStyle];
   }
 }
 
-- (void)controlActionUpInside:(id)a3 forEvent:(id)a4
+- (void)controlActionUpInside:(id)inside forEvent:(id)event
 {
-  v13 = a3;
-  v6 = a4;
-  if ([v13 state] != 2)
+  insideCopy = inside;
+  eventCopy = event;
+  if ([insideCopy state] != 2)
   {
     v7 = +[UIKeyboardImpl activeInstance];
     [v7 updateIdleDetection:5];
 
-    if ([v13 type] == 1)
+    if ([insideCopy type] == 1)
     {
       [(UIKBUndoInteractionHUD *)self performDelegateUndoAndUpdateHUDIfNeeded];
       v8 = UIKBAnalyticsTextEditingOperationUndo;
     }
 
-    else if ([v13 type] == 2)
+    else if ([insideCopy type] == 2)
     {
       [(UIKBUndoInteractionHUD *)self performDelegateRedoAndUpdateHUDIfNeeded];
       v8 = UIKBAnalyticsTextEditingOperationRedo;
     }
 
-    else if ([v13 type] == 3)
+    else if ([insideCopy type] == 3)
     {
-      v9 = [(UIKBUndoInteractionHUD *)self actionDelegate];
-      [v9 cutOperation];
+      actionDelegate = [(UIKBUndoInteractionHUD *)self actionDelegate];
+      [actionDelegate cutOperation];
 
       v8 = UIKBAnalyticsTextEditingOperationCut;
     }
 
-    else if ([v13 type] == 4)
+    else if ([insideCopy type] == 4)
     {
-      v10 = [(UIKBUndoInteractionHUD *)self actionDelegate];
-      [v10 copyOperation];
+      actionDelegate2 = [(UIKBUndoInteractionHUD *)self actionDelegate];
+      [actionDelegate2 copyOperation];
 
       v8 = UIKBAnalyticsTextEditingOperationCopy;
     }
 
     else
     {
-      if ([v13 type] != 5 && objc_msgSend(v13, "type") != 6)
+      if ([insideCopy type] != 5 && objc_msgSend(insideCopy, "type") != 6)
       {
         goto LABEL_14;
       }
 
-      v11 = [v6 _authenticationMessage];
-      [UIPasteboard _attemptAuthenticationWithMessage:v11];
+      _authenticationMessage = [eventCopy _authenticationMessage];
+      [UIPasteboard _attemptAuthenticationWithMessage:_authenticationMessage];
 
-      v12 = [(UIKBUndoInteractionHUD *)self actionDelegate];
-      [v12 pasteOperation];
+      actionDelegate3 = [(UIKBUndoInteractionHUD *)self actionDelegate];
+      [actionDelegate3 pasteOperation];
 
       v8 = UIKBAnalyticsTextEditingOperationPaste;
     }
 
     [UIKBAnalyticsDispatcher analyticsDispatchEventTextEditingOperation:*v8 trigger:@"UndoHUDControl"];
 LABEL_14:
-    [v13 setHighlighted:0];
-    [v13 updateUndoControlStyle];
+    [insideCopy setHighlighted:0];
+    [insideCopy updateUndoControlStyle];
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)controlActionUpOutside:(id)a3
+- (void)controlActionUpOutside:(id)outside
 {
-  v4 = a3;
-  if ([v4 state] != 2)
+  outsideCopy = outside;
+  if ([outsideCopy state] != 2)
   {
-    [v4 updateUndoControlStyle];
+    [outsideCopy updateUndoControlStyle];
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)updateControlWithDirection:(int64_t)a3 travelProgress:(double)a4 isRTL:(BOOL)a5
+- (void)updateControlWithDirection:(int64_t)direction travelProgress:(double)progress isRTL:(BOOL)l
 {
-  v5 = a5;
+  lCopy = l;
   v7 = 0;
-  if (a3 > 7)
+  if (direction > 7)
   {
-    switch(a3)
+    switch(direction)
     {
       case 8:
-        v8 = [(UIKBUndoInteractionHUD *)self aCopyButtonView];
+        aCopyButtonView = [(UIKBUndoInteractionHUD *)self aCopyButtonView];
         break;
       case 9:
-        v8 = [(UIKBUndoInteractionHUD *)self aCutButtonView];
+        aCopyButtonView = [(UIKBUndoInteractionHUD *)self aCutButtonView];
         break;
       case 10:
-        v8 = [(UIKBUndoInteractionHUD *)self aPasteButtonView];
+        aCopyButtonView = [(UIKBUndoInteractionHUD *)self aPasteButtonView];
         break;
       default:
         goto LABEL_15;
@@ -1044,35 +1044,35 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a3 != 2)
+  if (direction != 2)
   {
-    if (a3 != 3)
+    if (direction != 3)
     {
       goto LABEL_15;
     }
 
-    if (!a5)
+    if (!l)
     {
       goto LABEL_9;
     }
 
 LABEL_13:
-    v8 = [(UIKBUndoInteractionHUD *)self leftButtonView];
+    aCopyButtonView = [(UIKBUndoInteractionHUD *)self leftButtonView];
     goto LABEL_14;
   }
 
-  if (!a5)
+  if (!l)
   {
     goto LABEL_13;
   }
 
 LABEL_9:
-  v8 = [(UIKBUndoInteractionHUD *)self rightButtonView];
+  aCopyButtonView = [(UIKBUndoInteractionHUD *)self rightButtonView];
 LABEL_14:
-  v7 = v8;
+  v7 = aCopyButtonView;
 LABEL_15:
   v9 = v7;
-  [v7 updateCoverWithTavelProcess:v5 isRTL:a4];
+  [v7 updateCoverWithTavelProcess:lCopy isRTL:progress];
 }
 
 - (UIInteractiveUndoHUDActionDelegate)actionDelegate

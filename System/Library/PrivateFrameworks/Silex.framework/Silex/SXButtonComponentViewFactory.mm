@@ -1,48 +1,48 @@
 @interface SXButtonComponentViewFactory
-- (SXButtonComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6 interactionHandlerFactory:(id)a7 interactionHandlerManager:(id)a8;
-- (id)componentViewForComponent:(id)a3;
+- (SXButtonComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory interactionHandlerFactory:(id)handlerFactory interactionHandlerManager:(id)manager;
+- (id)componentViewForComponent:(id)component;
 @end
 
 @implementation SXButtonComponentViewFactory
 
-- (SXButtonComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6 interactionHandlerFactory:(id)a7 interactionHandlerManager:(id)a8
+- (SXButtonComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory interactionHandlerFactory:(id)handlerFactory interactionHandlerManager:(id)manager
 {
-  v15 = a7;
-  v16 = a8;
+  handlerFactoryCopy = handlerFactory;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = SXButtonComponentViewFactory;
-  v17 = [(SXComponentViewFactory *)&v20 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegateProvider:a5 componentStyleRendererFactory:a6];
+  v17 = [(SXComponentViewFactory *)&v20 initWithDOMObjectProvider:provider viewport:viewport presentationDelegateProvider:delegateProvider componentStyleRendererFactory:factory];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_interactionHandlerFactory, a7);
-    objc_storeStrong(&v18->_interactionHandlerManager, a8);
+    objc_storeStrong(&v17->_interactionHandlerFactory, handlerFactory);
+    objc_storeStrong(&v18->_interactionHandlerManager, manager);
   }
 
   return v18;
 }
 
-- (id)componentViewForComponent:(id)a3
+- (id)componentViewForComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v5 = [SXButtonComponentView alloc];
-  v6 = [(SXComponentViewFactory *)self DOMObjectProvider];
-  v7 = [(SXComponentViewFactory *)self viewport];
-  v8 = [(SXComponentViewFactory *)self presentationDelegateProvider];
-  v9 = [v8 presentationDelegate];
-  v10 = [(SXComponentViewFactory *)self componentStyleRendererFactory];
-  v11 = [(SXButtonComponentView *)v5 initWithDOMObjectProvider:v6 viewport:v7 presentationDelegate:v9 componentStyleRendererFactory:v10];
+  dOMObjectProvider = [(SXComponentViewFactory *)self DOMObjectProvider];
+  viewport = [(SXComponentViewFactory *)self viewport];
+  presentationDelegateProvider = [(SXComponentViewFactory *)self presentationDelegateProvider];
+  presentationDelegate = [presentationDelegateProvider presentationDelegate];
+  componentStyleRendererFactory = [(SXComponentViewFactory *)self componentStyleRendererFactory];
+  v11 = [(SXButtonComponentView *)v5 initWithDOMObjectProvider:dOMObjectProvider viewport:viewport presentationDelegate:presentationDelegate componentStyleRendererFactory:componentStyleRendererFactory];
 
   v12 = [SXButtonComponentActionProvider alloc];
-  v13 = [v4 action];
+  action = [componentCopy action];
 
-  v14 = [(SXButtonComponentActionProvider *)v12 initWithAction:v13];
-  v15 = [(SXButtonComponentViewFactory *)self interactionHandlerFactory];
-  v16 = [(SXButtonComponentActionProvider *)v14 action];
-  v17 = [v15 interactionHandlerForAction:v16];
+  v14 = [(SXButtonComponentActionProvider *)v12 initWithAction:action];
+  interactionHandlerFactory = [(SXButtonComponentViewFactory *)self interactionHandlerFactory];
+  action2 = [(SXButtonComponentActionProvider *)v14 action];
+  v17 = [interactionHandlerFactory interactionHandlerForAction:action2];
 
-  v18 = [(SXButtonComponentViewFactory *)self interactionHandlerManager];
-  [v18 addInteractionHandler:v17 componentView:v11 types:2];
+  interactionHandlerManager = [(SXButtonComponentViewFactory *)self interactionHandlerManager];
+  [interactionHandlerManager addInteractionHandler:v17 componentView:v11 types:2];
 
   return v11;
 }

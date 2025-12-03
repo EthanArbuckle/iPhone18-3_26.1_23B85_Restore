@@ -1,48 +1,48 @@
 @interface MRLegacyController
-- (MRLegacyController)initWithExternalDevice:(id)a3 outputDeviceUID:(id)a4;
-- (MRLegacyController)initWithOutputDevice:(id)a3;
+- (MRLegacyController)initWithExternalDevice:(id)device outputDeviceUID:(id)d;
+- (MRLegacyController)initWithOutputDevice:(id)device;
 - (MRLegacyControllerDelegate)delegate;
 - (void)connect;
 - (void)dealloc;
-- (void)getMasterVolumeCapabilitiesWithCompletion:(id)a3;
-- (void)getMasterVolumeWithCompletion:(id)a3;
-- (void)getOutputDeviceVolume:(id)a3 completion:(id)a4;
-- (void)getOutputDeviceVolumeCapabilities:(id)a3 completion:(id)a4;
-- (void)handleVolumeCapabilitiesDidChangeNotification:(id)a3;
-- (void)setMasterVolume:(float)a3 completion:(id)a4;
-- (void)setVolume:(float)a3 forOutputDeviceID:(id)a4 completion:(id)a5;
+- (void)getMasterVolumeCapabilitiesWithCompletion:(id)completion;
+- (void)getMasterVolumeWithCompletion:(id)completion;
+- (void)getOutputDeviceVolume:(id)volume completion:(id)completion;
+- (void)getOutputDeviceVolumeCapabilities:(id)capabilities completion:(id)completion;
+- (void)handleVolumeCapabilitiesDidChangeNotification:(id)notification;
+- (void)setMasterVolume:(float)volume completion:(id)completion;
+- (void)setVolume:(float)volume forOutputDeviceID:(id)d completion:(id)completion;
 - (void)setupExternalDevice;
 - (void)tearDown;
 @end
 
 @implementation MRLegacyController
 
-- (MRLegacyController)initWithExternalDevice:(id)a3 outputDeviceUID:(id)a4
+- (MRLegacyController)initWithExternalDevice:(id)device outputDeviceUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = MRLegacyController;
   v9 = [(MRLegacyController *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    [(MRLegacyController *)v9 setOutputDeviceUID:v8];
+    [(MRLegacyController *)v9 setOutputDeviceUID:dCopy];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.mediaremote/MRLegacyController", v11);
     queue = v10->_queue;
     v10->_queue = v12;
 
-    objc_storeStrong(&v10->_externalDevice, a3);
+    objc_storeStrong(&v10->_externalDevice, device);
     [(MRLegacyController *)v10 setupExternalDevice];
   }
 
   return v10;
 }
 
-- (MRLegacyController)initWithOutputDevice:(id)a3
+- (MRLegacyController)initWithOutputDevice:(id)device
 {
-  v4 = [a3 uid];
+  v4 = [device uid];
   v5 = [(MRLegacyController *)self initWithExternalDevice:0 outputDeviceUID:v4];
 
   return v5;
@@ -60,51 +60,51 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getMasterVolumeWithCompletion:(id)a3
+- (void)getMasterVolumeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MRLegacyController *)self externalDevice];
-  [v5 outputDeviceVolume:0 queue:self->_queue completion:v4];
+  completionCopy = completion;
+  externalDevice = [(MRLegacyController *)self externalDevice];
+  [externalDevice outputDeviceVolume:0 queue:self->_queue completion:completionCopy];
 }
 
-- (void)getOutputDeviceVolume:(id)a3 completion:(id)a4
+- (void)getOutputDeviceVolume:(id)volume completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MRLegacyController *)self externalDevice];
-  [v8 outputDeviceVolume:v7 queue:self->_queue completion:v6];
+  completionCopy = completion;
+  volumeCopy = volume;
+  externalDevice = [(MRLegacyController *)self externalDevice];
+  [externalDevice outputDeviceVolume:volumeCopy queue:self->_queue completion:completionCopy];
 }
 
-- (void)getMasterVolumeCapabilitiesWithCompletion:(id)a3
+- (void)getMasterVolumeCapabilitiesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MRLegacyController *)self externalDevice];
-  [v5 outputDeviceVolumeControlCapabilities:0 queue:self->_queue completion:v4];
+  completionCopy = completion;
+  externalDevice = [(MRLegacyController *)self externalDevice];
+  [externalDevice outputDeviceVolumeControlCapabilities:0 queue:self->_queue completion:completionCopy];
 }
 
-- (void)getOutputDeviceVolumeCapabilities:(id)a3 completion:(id)a4
+- (void)getOutputDeviceVolumeCapabilities:(id)capabilities completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MRLegacyController *)self externalDevice];
-  [v8 outputDeviceVolumeControlCapabilities:v7 queue:self->_queue completion:v6];
+  completionCopy = completion;
+  capabilitiesCopy = capabilities;
+  externalDevice = [(MRLegacyController *)self externalDevice];
+  [externalDevice outputDeviceVolumeControlCapabilities:capabilitiesCopy queue:self->_queue completion:completionCopy];
 }
 
-- (void)setMasterVolume:(float)a3 completion:(id)a4
+- (void)setMasterVolume:(float)volume completion:(id)completion
 {
-  v6 = a4;
-  v8 = [(MRLegacyController *)self externalDevice];
-  *&v7 = a3;
-  [v8 setOutputDeviceVolume:0 outputDeviceUID:self->_queue queue:v6 completion:v7];
+  completionCopy = completion;
+  externalDevice = [(MRLegacyController *)self externalDevice];
+  *&v7 = volume;
+  [externalDevice setOutputDeviceVolume:0 outputDeviceUID:self->_queue queue:completionCopy completion:v7];
 }
 
-- (void)setVolume:(float)a3 forOutputDeviceID:(id)a4 completion:(id)a5
+- (void)setVolume:(float)volume forOutputDeviceID:(id)d completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v11 = [(MRLegacyController *)self externalDevice];
-  *&v10 = a3;
-  [v11 setOutputDeviceVolume:v9 outputDeviceUID:self->_queue queue:v8 completion:v10];
+  completionCopy = completion;
+  dCopy = d;
+  externalDevice = [(MRLegacyController *)self externalDevice];
+  *&v10 = volume;
+  [externalDevice setOutputDeviceVolume:dCopy outputDeviceUID:self->_queue queue:completionCopy completion:v10];
 }
 
 - (void)tearDown
@@ -143,8 +143,8 @@
   v6[3] = &unk_1E769A030;
   objc_copyWeak(&v7, &location);
   [(MRExternalDevice *)v4 setConnectionStateCallback:v6 withQueue:self->_queue];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_handleVolumeCapabilitiesDidChangeNotification_ name:@"kMRAVEndpointVolumeControlCapabilitiesDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleVolumeCapabilitiesDidChangeNotification_ name:@"kMRAVEndpointVolumeControlCapabilitiesDidChangeNotification" object:0];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
@@ -208,25 +208,25 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)handleVolumeCapabilitiesDidChangeNotification:(id)a3
+- (void)handleVolumeCapabilitiesDidChangeNotification:(id)notification
 {
-  v14 = a3;
-  v4 = [v14 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"kMRAVEndpointIdentifierUserInfoKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"kMRAVEndpointIdentifierUserInfoKey"];
 
   v6 = [v5 containsString:self->_outputDeviceUID];
-  v7 = [v14 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"kMRAVEndpointOutputDeviceIdentifierUserInfoKey"];
+  userInfo2 = [notificationCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:@"kMRAVEndpointOutputDeviceIdentifierUserInfoKey"];
 
   v9 = [v8 isEqualToString:self->_outputDeviceUID];
   if ((v6 & 1) != 0 || v9)
   {
-    v10 = [v14 userInfo];
-    v11 = [v10 objectForKeyedSubscript:@"kMRAVEndpointVolumeControlCapabilitiesUserInfoKey"];
-    v12 = [v11 intValue];
+    userInfo3 = [notificationCopy userInfo];
+    v11 = [userInfo3 objectForKeyedSubscript:@"kMRAVEndpointVolumeControlCapabilitiesUserInfoKey"];
+    intValue = [v11 intValue];
 
-    v13 = [(MRLegacyController *)self delegate];
-    [v13 legacyController:self volumeControlAvailabilityDidChange:v12 != 0 forOutputDevice:v8];
+    delegate = [(MRLegacyController *)self delegate];
+    [delegate legacyController:self volumeControlAvailabilityDidChange:intValue != 0 forOutputDevice:v8];
   }
 }
 

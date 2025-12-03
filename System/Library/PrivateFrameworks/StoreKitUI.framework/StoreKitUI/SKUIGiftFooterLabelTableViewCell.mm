@@ -1,9 +1,9 @@
 @interface SKUIGiftFooterLabelTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)footerLabel;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFooterLabel:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setFooterLabel:(id)label;
 @end
 
 @implementation SKUIGiftFooterLabelTableViewCell
@@ -22,14 +22,14 @@
     }
   }
 
-  v11 = [(UILabel *)self->_footerLabel text];
+  text = [(UILabel *)self->_footerLabel text];
 
-  return v11;
+  return text;
 }
 
-- (void)setFooterLabel:(id)a3
+- (void)setFooterLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -42,11 +42,11 @@
     }
   }
 
-  v13 = [(SKUIGiftFooterLabelTableViewCell *)self footerLabel];
-  if (v13 != v4 && ([v4 isEqualToString:v13] & 1) == 0)
+  footerLabel = [(SKUIGiftFooterLabelTableViewCell *)self footerLabel];
+  if (footerLabel != labelCopy && ([labelCopy isEqualToString:footerLabel] & 1) == 0)
   {
     footerLabel = self->_footerLabel;
-    if (v4)
+    if (labelCopy)
     {
       if (!footerLabel)
       {
@@ -55,8 +55,8 @@
         self->_footerLabel = v15;
 
         v17 = self->_footerLabel;
-        v18 = [(SKUIGiftFooterLabelTableViewCell *)self backgroundColor];
-        [(UILabel *)v17 setBackgroundColor:v18];
+        backgroundColor = [(SKUIGiftFooterLabelTableViewCell *)self backgroundColor];
+        [(UILabel *)v17 setBackgroundColor:backgroundColor];
 
         v19 = self->_footerLabel;
         v20 = [MEMORY[0x277D74300] systemFontOfSize:15.0];
@@ -65,16 +65,16 @@
         [(UILabel *)self->_footerLabel setNumberOfLines:2];
         [(UILabel *)self->_footerLabel setTextAlignment:1];
         v21 = self->_footerLabel;
-        v22 = [MEMORY[0x277D75348] _secondaryLabelColor];
-        [(UILabel *)v21 setTextColor:v22];
+        _secondaryLabelColor = [MEMORY[0x277D75348] _secondaryLabelColor];
+        [(UILabel *)v21 setTextColor:_secondaryLabelColor];
 
-        v23 = [(SKUIGiftFooterLabelTableViewCell *)self contentView];
-        [v23 addSubview:self->_footerLabel];
+        contentView = [(SKUIGiftFooterLabelTableViewCell *)self contentView];
+        [contentView addSubview:self->_footerLabel];
 
         footerLabel = self->_footerLabel;
       }
 
-      [(UILabel *)footerLabel setText:v4];
+      [(UILabel *)footerLabel setText:labelCopy];
     }
 
     else
@@ -105,17 +105,17 @@
   v16.receiver = self;
   v16.super_class = SKUIGiftFooterLabelTableViewCell;
   [(SKUIGiftFooterLabelTableViewCell *)&v16 layoutSubviews];
-  v11 = [(SKUIGiftFooterLabelTableViewCell *)self contentView];
-  [v11 bounds];
+  contentView = [(SKUIGiftFooterLabelTableViewCell *)self contentView];
+  [contentView bounds];
   v13 = v12;
   v15 = v14;
 
   [(UILabel *)self->_footerLabel setFrame:15.0, 6.0, v13 + -30.0, v15 + -6.0];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -128,15 +128,15 @@
     }
   }
 
-  [(UILabel *)self->_footerLabel setBackgroundColor:v4];
+  [(UILabel *)self->_footerLabel setBackgroundColor:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUIGiftFooterLabelTableViewCell;
-  [(SKUIGiftFooterLabelTableViewCell *)&v13 setBackgroundColor:v4];
+  [(SKUIGiftFooterLabelTableViewCell *)&v13 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())

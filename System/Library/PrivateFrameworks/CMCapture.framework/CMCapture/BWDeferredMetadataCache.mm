@@ -1,25 +1,25 @@
 @interface BWDeferredMetadataCache
-- (BWDeferredMetadataCache)initWithCaptureStream:(id)a3 atomicTransactions:(BOOL)a4;
-- (void)addMetadataAttachmentToSampleBuffer:(opaqueCMSampleBuffer *)a3 withDutyCycleMetadataCache:(id)a4;
+- (BWDeferredMetadataCache)initWithCaptureStream:(id)stream atomicTransactions:(BOOL)transactions;
+- (void)addMetadataAttachmentToSampleBuffer:(opaqueCMSampleBuffer *)buffer withDutyCycleMetadataCache:(id)cache;
 - (void)dealloc;
 - (void)flush;
-- (void)setNumberOfExpectedSampleBuffersForEachPTS:(int)a3;
+- (void)setNumberOfExpectedSampleBuffersForEachPTS:(int)s;
 @end
 
 @implementation BWDeferredMetadataCache
 
-- (BWDeferredMetadataCache)initWithCaptureStream:(id)a3 atomicTransactions:(BOOL)a4
+- (BWDeferredMetadataCache)initWithCaptureStream:(id)stream atomicTransactions:(BOOL)transactions
 {
-  if (a3)
+  if (stream)
   {
-    v4 = a4;
+    transactionsCopy = transactions;
     v8.receiver = self;
     v8.super_class = BWDeferredMetadataCache;
     v6 = [(BWDeferredMetadataCache *)&v8 init];
     if (v6)
     {
-      v6->_stream = a3;
-      if (v4)
+      v6->_stream = stream;
+      if (transactionsCopy)
       {
         v6->_lock = FigSimpleMutexCreate();
       }
@@ -65,12 +65,12 @@
   [(BWDeferredMetadataCache *)&v7 dealloc];
 }
 
-- (void)addMetadataAttachmentToSampleBuffer:(opaqueCMSampleBuffer *)a3 withDutyCycleMetadataCache:(id)a4
+- (void)addMetadataAttachmentToSampleBuffer:(opaqueCMSampleBuffer *)buffer withDutyCycleMetadataCache:(id)cache
 {
-  if (a3)
+  if (buffer)
   {
     memset(&v25, 0, sizeof(v25));
-    CMSampleBufferGetPresentationTimeStamp(&v25, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v25, buffer);
     if (self->_lock)
     {
       FigSimpleMutexLock();
@@ -94,16 +94,16 @@
       p_metadataDict += 5;
       if (!--v8)
       {
-        if (![(BWFigCaptureStream *)self->_stream addAttachmentsToSampleBuffer:a3 options:0])
+        if (![(BWFigCaptureStream *)self->_stream addAttachmentsToSampleBuffer:buffer options:0])
         {
-          if (a4)
+          if (cache)
           {
-            FigCaptureMetadataUtilitiesAddMissingDutyCycleMetadata(a3, a4);
+            FigCaptureMetadataUtilitiesAddMissingDutyCycleMetadata(buffer, cache);
           }
 
           memset(&time1, 0, sizeof(time1));
-          CMSampleBufferGetPresentationTimeStamp(&time1, a3);
-          v9 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+          CMSampleBufferGetPresentationTimeStamp(&time1, buffer);
+          v9 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
           if (v9 && (time1.flags & 1) != 0)
           {
             v10 = v9;
@@ -164,7 +164,7 @@
     *(p_metadataDict + 4) = v20;
     if (self->_numberOfExpectedSampleBuffersForEachPTS <= v20)
     {
-      dmc_attachMetadataDictToSampleBufferAndPixelBufferAndCleanupPrivateCaptureStreamAttachments(a3, *p_metadataDict);
+      dmc_attachMetadataDictToSampleBufferAndPixelBufferAndCleanupPrivateCaptureStreamAttachments(buffer, *p_metadataDict);
       v23 = MEMORY[0x1E6960C70];
       *(p_metadataDict - 3) = *MEMORY[0x1E6960C70];
       *(p_metadataDict - 1) = *(v23 + 16);
@@ -183,7 +183,7 @@
       if (v21)
       {
         v22 = v21;
-        dmc_attachMetadataDictToSampleBufferAndPixelBufferAndCleanupPrivateCaptureStreamAttachments(a3, v21);
+        dmc_attachMetadataDictToSampleBufferAndPixelBufferAndCleanupPrivateCaptureStreamAttachments(buffer, v21);
         CFRelease(v22);
       }
     }
@@ -230,16 +230,16 @@ LABEL_29:
   }
 }
 
-- (void)setNumberOfExpectedSampleBuffersForEachPTS:(int)a3
+- (void)setNumberOfExpectedSampleBuffersForEachPTS:(int)s
 {
-  if (a3 <= 1)
+  if (s <= 1)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Can't set the expected number of sample buffers for each PTS to a number smaller than 2 (if you don't expect multiple per PTS userInfo:{why use to cache"), 0, v3, v4}];
   }
 
-  if (self->_numberOfExpectedSampleBuffersForEachPTS != a3)
+  if (self->_numberOfExpectedSampleBuffersForEachPTS != s)
   {
-    self->_numberOfExpectedSampleBuffersForEachPTS = a3;
+    self->_numberOfExpectedSampleBuffersForEachPTS = s;
   }
 }
 

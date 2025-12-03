@@ -1,5 +1,5 @@
 @interface _UIKeyShortcutHUDShortcut
-+ (id)shortcutWithUIKeyCommand:(id)a3;
++ (id)shortcutWithUIKeyCommand:(id)command;
 - (BOOL)_isEquivalentToPasteAndMatchStyleShortcut;
 - (BOOL)_isEquivalentToPasteShortcut;
 - (BOOL)isPasteShortcut;
@@ -9,24 +9,24 @@
 - (NSString)input;
 - (_UIKeyShortcutHUDShortcut)baseShortcutForAlternate;
 - (_UIKeyShortcutHUDShortcut)init;
-- (_UIKeyShortcutHUDShortcut)initWithCoder:(id)a3;
+- (_UIKeyShortcutHUDShortcut)initWithCoder:(id)coder;
 - (_UIMenuLeafAlternate)alternateForBaseShortcut;
 - (id)originalTarget;
-- (id)shortcutToDisplayForModifierFlags:(int64_t)a3;
+- (id)shortcutToDisplayForModifierFlags:(int64_t)flags;
 - (int64_t)modifierFlags;
 - (unint64_t)attributes;
-- (void)_acceptMenuVisit:(id)a3 shortcutVisit:(id)a4;
+- (void)_acceptMenuVisit:(id)visit shortcutVisit:(id)shortcutVisit;
 - (void)_updateOverrideTitle;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIKeyShortcutHUDShortcut
 
-+ (id)shortcutWithUIKeyCommand:(id)a3
++ (id)shortcutWithUIKeyCommand:(id)command
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS____UIKeyShortcutHUDShortcut;
-  v3 = objc_msgSendSuper2(&v5, sel_elementWithUIMenuElement_, a3);
+  v3 = objc_msgSendSuper2(&v5, sel_elementWithUIMenuElement_, command);
   [v3 _updateOverrideTitle];
 
   return v3;
@@ -39,13 +39,13 @@
   v2 = [(_UIKeyShortcutHUDShortcut *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     displayableAlternates = v2->_displayableAlternates;
-    v2->_displayableAlternates = v3;
+    v2->_displayableAlternates = array;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     alternatesMap = v2->_alternatesMap;
-    v2->_alternatesMap = v5;
+    v2->_alternatesMap = dictionary;
   }
 
   return v2;
@@ -53,47 +53,47 @@
 
 - (NSString)discoverabilityTitle
 {
-  v2 = [(_UIKeyShortcutHUDShortcut *)self uiKeyCommand];
-  v3 = [v2 discoverabilityTitle];
+  uiKeyCommand = [(_UIKeyShortcutHUDShortcut *)self uiKeyCommand];
+  discoverabilityTitle = [uiKeyCommand discoverabilityTitle];
 
-  return v3;
+  return discoverabilityTitle;
 }
 
 - (NSString)hudTitle
 {
   if ([(NSString *)self->_overrideTitle length])
   {
-    v3 = self->_overrideTitle;
+    discoverabilityTitle2 = self->_overrideTitle;
   }
 
   else
   {
-    v4 = [(_UIKeyShortcutHUDShortcut *)self discoverabilityTitle];
-    v5 = [v4 length];
+    discoverabilityTitle = [(_UIKeyShortcutHUDShortcut *)self discoverabilityTitle];
+    v5 = [discoverabilityTitle length];
 
     if (v5)
     {
-      v3 = [(_UIKeyShortcutHUDShortcut *)self discoverabilityTitle];
+      discoverabilityTitle2 = [(_UIKeyShortcutHUDShortcut *)self discoverabilityTitle];
     }
 
     else
     {
-      v6 = [(_UIKeyShortcutHUDMenuElement *)self title];
-      v7 = [v6 length];
+      title = [(_UIKeyShortcutHUDMenuElement *)self title];
+      v7 = [title length];
 
       if (v7)
       {
-        v3 = [(_UIKeyShortcutHUDMenuElement *)self title];
+        discoverabilityTitle2 = [(_UIKeyShortcutHUDMenuElement *)self title];
       }
 
       else
       {
-        v3 = @"No Title";
+        discoverabilityTitle2 = @"No Title";
       }
     }
   }
 
-  return v3;
+  return discoverabilityTitle2;
 }
 
 - (void)_updateOverrideTitle
@@ -103,9 +103,9 @@
     v3 = sel_paste_;
 LABEL_5:
     v7 = [(UICommand *)UIKeyCommand _originalCommandForAction:v3];
-    v4 = [v7 title];
+    title = [v7 title];
     overrideTitle = self->_overrideTitle;
-    self->_overrideTitle = v4;
+    self->_overrideTitle = title;
 
     v6 = v7;
     goto LABEL_7;
@@ -124,8 +124,8 @@ LABEL_7:
 
 - (int64_t)modifierFlags
 {
-  v3 = [(_UIKeyShortcutHUDShortcut *)self discoverabilityUIKeyCommand];
-  if (v3)
+  discoverabilityUIKeyCommand = [(_UIKeyShortcutHUDShortcut *)self discoverabilityUIKeyCommand];
+  if (discoverabilityUIKeyCommand)
   {
     [(_UIKeyShortcutHUDShortcut *)self discoverabilityUIKeyCommand];
   }
@@ -135,15 +135,15 @@ LABEL_7:
     [(_UIKeyShortcutHUDShortcut *)self uiKeyCommand];
   }
   v4 = ;
-  v5 = [v4 _layoutAwareModifierFlags];
+  _layoutAwareModifierFlags = [v4 _layoutAwareModifierFlags];
 
-  return v5;
+  return _layoutAwareModifierFlags;
 }
 
 - (NSString)input
 {
-  v3 = [(_UIKeyShortcutHUDShortcut *)self discoverabilityUIKeyCommand];
-  if (v3)
+  discoverabilityUIKeyCommand = [(_UIKeyShortcutHUDShortcut *)self discoverabilityUIKeyCommand];
+  if (discoverabilityUIKeyCommand)
   {
     [(_UIKeyShortcutHUDShortcut *)self discoverabilityUIKeyCommand];
   }
@@ -153,46 +153,46 @@ LABEL_7:
     [(_UIKeyShortcutHUDShortcut *)self uiKeyCommand];
   }
   v4 = ;
-  v5 = [v4 _layoutAwareInput];
+  _layoutAwareInput = [v4 _layoutAwareInput];
 
-  return v5;
+  return _layoutAwareInput;
 }
 
 - (unint64_t)attributes
 {
-  v2 = [(_UIKeyShortcutHUDShortcut *)self uiKeyCommand];
-  v3 = [v2 attributes];
+  uiKeyCommand = [(_UIKeyShortcutHUDShortcut *)self uiKeyCommand];
+  attributes = [uiKeyCommand attributes];
 
-  return v3;
+  return attributes;
 }
 
 - (NSArray)shortcutAlternates
 {
-  v2 = [(_UIKeyShortcutHUDShortcut *)self alternatesMap];
-  v3 = [v2 allValues];
+  alternatesMap = [(_UIKeyShortcutHUDShortcut *)self alternatesMap];
+  allValues = [alternatesMap allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)shortcutToDisplayForModifierFlags:(int64_t)a3
+- (id)shortcutToDisplayForModifierFlags:(int64_t)flags
 {
-  v4 = self;
-  v5 = [(_UIKeyShortcutHUDShortcut *)v4 uiKeyCommand];
-  v6 = _UIMenuLeafAlternateForModifierFlagsUsingAlternates(v5, v4->_displayableAlternates, a3);
+  selfCopy = self;
+  uiKeyCommand = [(_UIKeyShortcutHUDShortcut *)selfCopy uiKeyCommand];
+  v6 = _UIMenuLeafAlternateForModifierFlagsUsingAlternates(uiKeyCommand, selfCopy->_displayableAlternates, flags);
 
   if (v6)
   {
-    v7 = [(NSMutableDictionary *)v4->_alternatesMap objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)selfCopy->_alternatesMap objectForKeyedSubscript:v6];
     v8 = v7;
     if (v7)
     {
       v9 = v7;
 
-      v4 = v9;
+      selfCopy = v9;
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (BOOL)isPasteShortcut
@@ -207,51 +207,51 @@ LABEL_7:
 
 - (BOOL)_isEquivalentToPasteShortcut
 {
-  v2 = [(_UIKeyShortcutHUDShortcut *)self uiKeyCommand];
-  v3 = [v2 action] == sel_paste_;
+  uiKeyCommand = [(_UIKeyShortcutHUDShortcut *)self uiKeyCommand];
+  v3 = [uiKeyCommand action] == sel_paste_;
 
   return v3;
 }
 
 - (BOOL)_isEquivalentToPasteAndMatchStyleShortcut
 {
-  v2 = [(_UIKeyShortcutHUDShortcut *)self uiKeyCommand];
-  v3 = [v2 action] == sel_pasteAndMatchStyle_;
+  uiKeyCommand = [(_UIKeyShortcutHUDShortcut *)self uiKeyCommand];
+  v3 = [uiKeyCommand action] == sel_pasteAndMatchStyle_;
 
   return v3;
 }
 
-- (void)_acceptMenuVisit:(id)a3 shortcutVisit:(id)a4
+- (void)_acceptMenuVisit:(id)visit shortcutVisit:(id)shortcutVisit
 {
-  if (a4)
+  if (shortcutVisit)
   {
-    (*(a4 + 2))(a4, self);
+    (*(shortcutVisit + 2))(shortcutVisit, self);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIKeyShortcutHUDShortcut;
-  v4 = a3;
-  [(_UIKeyShortcutHUDMenuElement *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_displayableAlternates forKey:{@"displayableAlternates", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_alternatesMap forKey:@"alternatesMap"];
+  coderCopy = coder;
+  [(_UIKeyShortcutHUDMenuElement *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_displayableAlternates forKey:{@"displayableAlternates", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_alternatesMap forKey:@"alternatesMap"];
 }
 
-- (_UIKeyShortcutHUDShortcut)initWithCoder:(id)a3
+- (_UIKeyShortcutHUDShortcut)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = _UIKeyShortcutHUDShortcut;
-  v5 = [(_UIKeyShortcutHUDMenuElement *)&v24 initWithCoder:v4];
+  v5 = [(_UIKeyShortcutHUDMenuElement *)&v24 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_self();
     v8 = objc_opt_self();
     v9 = [v6 setWithObjects:{v7, v8, 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"displayableAlternates"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"displayableAlternates"];
     displayableAlternates = v5->_displayableAlternates;
     v5->_displayableAlternates = v10;
 
@@ -260,7 +260,7 @@ LABEL_7:
     v14 = objc_opt_self();
     v15 = objc_opt_self();
     v16 = [v12 setWithObjects:{v13, v14, v15, 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"alternatesMap"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"alternatesMap"];
     alternatesMap = v5->_alternatesMap;
     v5->_alternatesMap = v17;
 

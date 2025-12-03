@@ -1,7 +1,7 @@
 @interface MRNowPlayingPlayerClientCallbacks
 - (BOOL)hasPlaybackQueueCallbacks;
-- (BOOL)removePlaybackQueueDataSourceCallback:(id)a3;
-- (MRNowPlayingPlayerClientCallbacks)initWithPlayerPath:(id)a3 queue:(id)a4;
+- (BOOL)removePlaybackQueueDataSourceCallback:(id)callback;
+- (MRNowPlayingPlayerClientCallbacks)initWithPlayerPath:(id)path queue:(id)queue;
 - (NSArray)commandHandlerBlocks;
 - (id)audioAmplitudeSamplesCallback;
 - (id)beginLyricsEventCallback;
@@ -15,23 +15,23 @@
 - (id)videoThumbnailsCallback;
 - (unint64_t)_onQueue_capabilities;
 - (unint64_t)capabilities;
-- (void)addCommandHandlerBlock:(id)a3 forKey:(id)a4;
-- (void)registerNowPlayingInfoAnimatedArtworkCallback:(id)a3;
-- (void)registerNowPlayingInfoArtworkAssetCallback:(id)a3;
-- (void)registerNowPlayingInfoAssetCallbacks:(id)a3;
+- (void)addCommandHandlerBlock:(id)block forKey:(id)key;
+- (void)registerNowPlayingInfoAnimatedArtworkCallback:(id)callback;
+- (void)registerNowPlayingInfoArtworkAssetCallback:(id)callback;
+- (void)registerNowPlayingInfoAssetCallbacks:(id)callbacks;
 - (void)registerNowPlayingInfoBackedPlaybackQueueDataSourceCallbacks;
-- (void)registerNowPlayingInfoCallbacks:(id)a3;
-- (void)removeCommandHandlerBlockForKey:(id)a3;
-- (void)setAudioAmplitudeSamplesCallback:(id)a3;
-- (void)setBeginLyricsEventCallback:(id)a3;
-- (void)setEndLyricsEventCallback:(id)a3;
-- (void)setPlaybackSessionCallback:(id)a3;
-- (void)setPlaybackSessionMigrateBeginCallback:(id)a3;
-- (void)setPlaybackSessionMigrateEndCallback:(id)a3;
-- (void)setPlaybackSessionMigrateFinalizeCallback:(id)a3;
-- (void)setPlaybackSessionMigratePostCallback:(id)a3;
-- (void)setPlaybackSessionMigrateRequestCallback:(id)a3;
-- (void)setVideoThumbnailsCallback:(id)a3;
+- (void)registerNowPlayingInfoCallbacks:(id)callbacks;
+- (void)removeCommandHandlerBlockForKey:(id)key;
+- (void)setAudioAmplitudeSamplesCallback:(id)callback;
+- (void)setBeginLyricsEventCallback:(id)callback;
+- (void)setEndLyricsEventCallback:(id)callback;
+- (void)setPlaybackSessionCallback:(id)callback;
+- (void)setPlaybackSessionMigrateBeginCallback:(id)callback;
+- (void)setPlaybackSessionMigrateEndCallback:(id)callback;
+- (void)setPlaybackSessionMigrateFinalizeCallback:(id)callback;
+- (void)setPlaybackSessionMigratePostCallback:(id)callback;
+- (void)setPlaybackSessionMigrateRequestCallback:(id)callback;
+- (void)setVideoThumbnailsCallback:(id)callback;
 @end
 
 @implementation MRNowPlayingPlayerClientCallbacks
@@ -111,27 +111,27 @@ uint64_t __49__MRNowPlayingPlayerClientCallbacks_capabilities__block_invoke(uint
   return result;
 }
 
-- (MRNowPlayingPlayerClientCallbacks)initWithPlayerPath:(id)a3 queue:(id)a4
+- (MRNowPlayingPlayerClientCallbacks)initWithPlayerPath:(id)path queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  queueCopy = queue;
   v39.receiver = self;
   v39.super_class = MRNowPlayingPlayerClientCallbacks;
   v9 = [(MRNowPlayingPlayerClientCallbacks *)&v39 init];
   if (v9)
   {
-    if (!v8)
+    if (!queueCopy)
     {
       [MRNowPlayingPlayerClientCallbacks initWithPlayerPath:queue:];
     }
 
-    if (([v7 isResolved] & 1) == 0)
+    if (([pathCopy isResolved] & 1) == 0)
     {
       [MRNowPlayingPlayerClientCallbacks initWithPlayerPath:queue:];
     }
 
-    objc_storeStrong(&v9->_serialQueue, a4);
-    objc_storeStrong(&v9->_playerPath, a3);
+    objc_storeStrong(&v9->_serialQueue, queue);
+    objc_storeStrong(&v9->_playerPath, path);
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     commandHandlerBlocks = v9->_commandHandlerBlocks;
     v9->_commandHandlerBlocks = v10;
@@ -217,12 +217,12 @@ void __60__MRNowPlayingPlayerClientCallbacks_videoThumbnailsCallback__block_invo
   *(v3 + 40) = v2;
 }
 
-- (void)setVideoThumbnailsCallback:(id)a3
+- (void)setVideoThumbnailsCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = callbackCopy;
+  v6 = callbackCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -259,12 +259,12 @@ void __66__MRNowPlayingPlayerClientCallbacks_audioAmplitudeSamplesCallback__bloc
   *(v3 + 40) = v2;
 }
 
-- (void)setAudioAmplitudeSamplesCallback:(id)a3
+- (void)setAudioAmplitudeSamplesCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = callbackCopy;
+  v6 = callbackCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -301,12 +301,12 @@ void __60__MRNowPlayingPlayerClientCallbacks_playbackSessionCallback__block_invo
   *(v3 + 40) = v2;
 }
 
-- (void)setPlaybackSessionCallback:(id)a3
+- (void)setPlaybackSessionCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = callbackCopy;
+  v6 = callbackCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -343,12 +343,12 @@ void __72__MRNowPlayingPlayerClientCallbacks_playbackSessionMigrateBeginCallback
   *(v3 + 40) = v2;
 }
 
-- (void)setPlaybackSessionMigrateBeginCallback:(id)a3
+- (void)setPlaybackSessionMigrateBeginCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = callbackCopy;
+  v6 = callbackCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -385,12 +385,12 @@ void __70__MRNowPlayingPlayerClientCallbacks_playbackSessionMigrateEndCallback__
   *(v3 + 40) = v2;
 }
 
-- (void)setPlaybackSessionMigrateEndCallback:(id)a3
+- (void)setPlaybackSessionMigrateEndCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = callbackCopy;
+  v6 = callbackCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -427,12 +427,12 @@ void __75__MRNowPlayingPlayerClientCallbacks_playbackSessionMigrateFinalizeCallb
   *(v3 + 40) = v2;
 }
 
-- (void)setPlaybackSessionMigrateFinalizeCallback:(id)a3
+- (void)setPlaybackSessionMigrateFinalizeCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = callbackCopy;
+  v6 = callbackCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -469,12 +469,12 @@ void __74__MRNowPlayingPlayerClientCallbacks_playbackSessionMigrateRequestCallba
   *(v3 + 40) = v2;
 }
 
-- (void)setPlaybackSessionMigrateRequestCallback:(id)a3
+- (void)setPlaybackSessionMigrateRequestCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = callbackCopy;
+  v6 = callbackCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -511,12 +511,12 @@ void __59__MRNowPlayingPlayerClientCallbacks_endLyricsEventCallback__block_invok
   *(v3 + 40) = v2;
 }
 
-- (void)setBeginLyricsEventCallback:(id)a3
+- (void)setBeginLyricsEventCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = callbackCopy;
+  v6 = callbackCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -553,12 +553,12 @@ void __61__MRNowPlayingPlayerClientCallbacks_beginLyricsEventCallback__block_inv
   *(v3 + 40) = v2;
 }
 
-- (void)setEndLyricsEventCallback:(id)a3
+- (void)setEndLyricsEventCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = callbackCopy;
+  v6 = callbackCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -595,12 +595,12 @@ void __71__MRNowPlayingPlayerClientCallbacks_playbackSessionMigratePostCallback_
   *(v3 + 40) = v2;
 }
 
-- (void)setPlaybackSessionMigratePostCallback:(id)a3
+- (void)setPlaybackSessionMigratePostCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = callbackCopy;
+  v6 = callbackCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -620,8 +620,8 @@ void __75__MRNowPlayingPlayerClientCallbacks_setPlaybackSessionMigratePostCallba
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
-  v5 = [v4 playbackQueueCallback];
-  v6 = v5 != 0;
+  playbackQueueCallback = [v4 playbackQueueCallback];
+  v6 = playbackQueueCallback != 0;
 
   v12 = v6;
   serialQueue = self->_serialQueue;
@@ -652,20 +652,20 @@ uint64_t __62__MRNowPlayingPlayerClientCallbacks_hasPlaybackQueueCallbacks__bloc
   return result;
 }
 
-- (void)addCommandHandlerBlock:(id)a3 forKey:(id)a4
+- (void)addCommandHandlerBlock:(id)block forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  keyCopy = key;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__MRNowPlayingPlayerClientCallbacks_addCommandHandlerBlock_forKey___block_invoke;
   block[3] = &unk_1E769B250;
-  v12 = v7;
-  v13 = v6;
+  v12 = keyCopy;
+  v13 = blockCopy;
   block[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = keyCopy;
+  v10 = blockCopy;
   dispatch_sync(serialQueue, block);
 }
 
@@ -676,17 +676,17 @@ void __67__MRNowPlayingPlayerClientCallbacks_addCommandHandlerBlock_forKey___blo
   [v2 setObject:v3 forKey:*(a1 + 40)];
 }
 
-- (void)removeCommandHandlerBlockForKey:(id)a3
+- (void)removeCommandHandlerBlockForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__MRNowPlayingPlayerClientCallbacks_removeCommandHandlerBlockForKey___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -746,9 +746,9 @@ void __97__MRNowPlayingPlayerClientCallbacks_registerNowPlayingInfoBackedPlaybac
   registerNowPlayingInfoBackedPlaybackQueueDataSourceCallbacks_queue = v0;
 }
 
-- (void)registerNowPlayingInfoCallbacks:(id)a3
+- (void)registerNowPlayingInfoCallbacks:(id)callbacks
 {
-  v4 = a3;
+  callbacksCopy = callbacks;
   if (!self->_createItemToken)
   {
     objc_initWeak(&location, self);
@@ -760,7 +760,7 @@ void __97__MRNowPlayingPlayerClientCallbacks_registerNowPlayingInfoBackedPlaybac
     v19[3] = &unk_1E76A1A50;
     objc_copyWeak(&v20, &location);
     v7 = MEMORY[0x1A58E3570](v19);
-    v8 = [v6 callbackWithQueue:v4 block:v7];
+    v8 = [v6 callbackWithQueue:callbacksCopy block:v7];
     v9 = MRMediaRemotePlaybackQueueDataSourceSourceAddCallbackToList(createItemForOffsetCallbacks, 2, v8);
     createItemToken = self->_createItemToken;
     self->_createItemToken = v9;
@@ -780,7 +780,7 @@ void __97__MRNowPlayingPlayerClientCallbacks_registerNowPlayingInfoBackedPlaybac
     v17[3] = &unk_1E76A1A78;
     objc_copyWeak(&v18, &location);
     v13 = MEMORY[0x1A58E3570](v17);
-    v14 = [v12 callbackWithQueue:v4 block:v13];
+    v14 = [v12 callbackWithQueue:callbacksCopy block:v13];
     v15 = MRMediaRemotePlaybackQueueDataSourceSourceAddCallbackToList(createItemForIdentifierCallbacks, 2, v14);
     createItemForIdentifierToken = self->_createItemForIdentifierToken;
     self->_createItemForIdentifierToken = v15;
@@ -852,9 +852,9 @@ uint64_t __69__MRNowPlayingPlayerClientCallbacks_registerNowPlayingInfoCallbacks
   return v5;
 }
 
-- (void)registerNowPlayingInfoAssetCallbacks:(id)a3
+- (void)registerNowPlayingInfoAssetCallbacks:(id)callbacks
 {
-  v4 = a3;
+  callbacksCopy = callbacks;
   if (!self->_metadataToken || !self->_languageToken)
   {
     objc_initWeak(&location, self);
@@ -865,7 +865,7 @@ uint64_t __69__MRNowPlayingPlayerClientCallbacks_registerNowPlayingInfoCallbacks
     v15 = &unk_1E76A1AA0;
     objc_copyWeak(&v16, &location);
     v6 = MEMORY[0x1A58E3570](&v12);
-    v7 = [v5 callbackWithQueue:v4 block:{v6, v12, v13, v14, v15}];
+    v7 = [v5 callbackWithQueue:callbacksCopy block:{v6, v12, v13, v14, v15}];
 
     if (!self->_metadataToken)
     {
@@ -948,9 +948,9 @@ void __74__MRNowPlayingPlayerClientCallbacks_registerNowPlayingInfoAssetCallback
   v9[2](v9);
 }
 
-- (void)registerNowPlayingInfoArtworkAssetCallback:(id)a3
+- (void)registerNowPlayingInfoArtworkAssetCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (!self->_artworkToken)
   {
     objc_initWeak(&location, self);
@@ -962,7 +962,7 @@ void __74__MRNowPlayingPlayerClientCallbacks_registerNowPlayingInfoAssetCallback
     v14 = &unk_1E76A1AA0;
     objc_copyWeak(&v15, &location);
     v7 = MEMORY[0x1A58E3570](&v11);
-    v8 = [v6 callbackWithQueue:v4 block:{v7, v11, v12, v13, v14}];
+    v8 = [v6 callbackWithQueue:callbackCopy block:{v7, v11, v12, v13, v14}];
     v9 = MRMediaRemotePlaybackQueueDataSourceSourceAddCallbackToList(artworkCallbacks, 2, v8);
     artworkToken = self->_artworkToken;
     self->_artworkToken = v9;
@@ -1024,9 +1024,9 @@ void __80__MRNowPlayingPlayerClientCallbacks_registerNowPlayingInfoArtworkAssetC
   v6[2](v6);
 }
 
-- (void)registerNowPlayingInfoAnimatedArtworkCallback:(id)a3
+- (void)registerNowPlayingInfoAnimatedArtworkCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (!self->_animatedArtworkToken)
   {
     objc_initWeak(&location, self);
@@ -1037,7 +1037,7 @@ void __80__MRNowPlayingPlayerClientCallbacks_registerNowPlayingInfoArtworkAssetC
     v12[2] = __83__MRNowPlayingPlayerClientCallbacks_registerNowPlayingInfoAnimatedArtworkCallback___block_invoke;
     v12[3] = &unk_1E76A1B40;
     objc_copyWeak(&v14, &location);
-    v7 = v4;
+    v7 = callbackCopy;
     v13 = v7;
     v8 = MEMORY[0x1A58E3570](v12);
     v9 = [v6 callbackWithQueue:v7 block:v8];
@@ -1315,9 +1315,9 @@ uint64_t __83__MRNowPlayingPlayerClientCallbacks_registerNowPlayingInfoAnimatedA
   return v3();
 }
 
-- (BOOL)removePlaybackQueueDataSourceCallback:(id)a3
+- (BOOL)removePlaybackQueueDataSourceCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1327,10 +1327,10 @@ uint64_t __83__MRNowPlayingPlayerClientCallbacks_registerNowPlayingInfoAnimatedA
   block[1] = 3221225472;
   block[2] = __75__MRNowPlayingPlayerClientCallbacks_removePlaybackQueueDataSourceCallback___block_invoke;
   block[3] = &unk_1E76A1B68;
-  v9 = v4;
+  v9 = callbackCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = callbackCopy;
   dispatch_sync(serialQueue, block);
   LOBYTE(serialQueue) = *(v12 + 24);
 

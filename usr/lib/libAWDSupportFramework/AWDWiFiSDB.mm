@@ -1,15 +1,15 @@
 @interface AWDWiFiSDB
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSliceStats:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addSliceStats:(id)stats;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRealTimeSessionStateResultingInSubmission:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasRealTimeSessionStateResultingInSubmission:(BOOL)submission;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiSDB
@@ -22,7 +22,7 @@
   [(AWDWiFiSDB *)&v3 dealloc];
 }
 
-- (void)addSliceStats:(id)a3
+- (void)addSliceStats:(id)stats
 {
   sliceStats = self->_sliceStats;
   if (!sliceStats)
@@ -31,12 +31,12 @@
     self->_sliceStats = sliceStats;
   }
 
-  [(NSMutableArray *)sliceStats addObject:a3];
+  [(NSMutableArray *)sliceStats addObject:stats];
 }
 
-- (void)setHasRealTimeSessionStateResultingInSubmission:(BOOL)a3
+- (void)setHasRealTimeSessionStateResultingInSubmission:(BOOL)submission
 {
-  if (a3)
+  if (submission)
   {
     v3 = 2;
   }
@@ -59,10 +59,10 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   if ([(NSMutableArray *)self->_sliceStats count])
@@ -96,19 +96,19 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"sliceStats"];
+    [dictionary setObject:v4 forKey:@"sliceStats"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_realTimeSessionStateResultingInSubmission), @"realTimeSessionStateResultingInSubmission"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_realTimeSessionStateResultingInSubmission), @"realTimeSessionStateResultingInSubmission"}];
   }
 
   v10 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -155,39 +155,39 @@
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
   }
 
   if ([(AWDWiFiSDB *)self sliceStatsCount])
   {
-    [a3 clearSliceStats];
-    v5 = [(AWDWiFiSDB *)self sliceStatsCount];
-    if (v5)
+    [to clearSliceStats];
+    sliceStatsCount = [(AWDWiFiSDB *)self sliceStatsCount];
+    if (sliceStatsCount)
     {
-      v6 = v5;
+      v6 = sliceStatsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addSliceStats:{-[AWDWiFiSDB sliceStatsAtIndex:](self, "sliceStatsAtIndex:", i)}];
+        [to addSliceStats:{-[AWDWiFiSDB sliceStatsAtIndex:](self, "sliceStatsAtIndex:", i)}];
       }
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 4) = self->_realTimeSessionStateResultingInSubmission;
-    *(a3 + 32) |= 2u;
+    *(to + 4) = self->_realTimeSessionStateResultingInSubmission;
+    *(to + 32) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -214,7 +214,7 @@
           objc_enumerationMutation(sliceStats);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v15 + 1) + 8 * i) copyWithZone:zone];
         [v6 addSliceStats:v12];
       }
 
@@ -234,22 +234,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 32);
+    v7 = *(equal + 32);
     if (has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
 LABEL_14:
       LOBYTE(v5) = 0;
@@ -257,7 +257,7 @@ LABEL_14:
     }
 
     sliceStats = self->_sliceStats;
-    if (sliceStats | *(a3 + 3))
+    if (sliceStats | *(equal + 3))
     {
       v5 = [(NSMutableArray *)sliceStats isEqual:?];
       if (!v5)
@@ -268,10 +268,10 @@ LABEL_14:
       has = self->_has;
     }
 
-    LOBYTE(v5) = (*(a3 + 32) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 32) & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_realTimeSessionStateResultingInSubmission != *(a3 + 4))
+      if ((*(equal + 32) & 2) == 0 || self->_realTimeSessionStateResultingInSubmission != *(equal + 4))
       {
         goto LABEL_14;
       }
@@ -309,12 +309,12 @@ LABEL_14:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
@@ -322,7 +322,7 @@ LABEL_14:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(a3 + 3);
+  v5 = *(from + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -346,9 +346,9 @@ LABEL_14:
     while (v7);
   }
 
-  if ((*(a3 + 32) & 2) != 0)
+  if ((*(from + 32) & 2) != 0)
   {
-    self->_realTimeSessionStateResultingInSubmission = *(a3 + 4);
+    self->_realTimeSessionStateResultingInSubmission = *(from + 4);
     *&self->_has |= 2u;
   }
 

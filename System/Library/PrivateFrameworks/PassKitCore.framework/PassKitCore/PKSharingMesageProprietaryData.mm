@@ -1,6 +1,6 @@
 @interface PKSharingMesageProprietaryData
 - (PKSharingMesageProprietaryData)init;
-- (PKSharingMesageProprietaryData)initWithDictionary:(id)a3;
+- (PKSharingMesageProprietaryData)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
@@ -14,33 +14,33 @@
   return [(PKSharingMesageProprietaryData *)&v3 init];
 }
 
-- (PKSharingMesageProprietaryData)initWithDictionary:(id)a3
+- (PKSharingMesageProprietaryData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v5 = [(PKSharingMesageProprietaryData *)self init];
     if (v5)
     {
-      v6 = [v4 PKArrayContaining:objc_opt_class() forKey:@"displayableSharedEntitlements"];
+      v6 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"displayableSharedEntitlements"];
       v7 = [v6 pk_arrayBySafelyApplyingBlock:&__block_literal_global_13];
       displayableSharedEntitlements = v5->_displayableSharedEntitlements;
       v5->_displayableSharedEntitlements = v7;
 
-      v9 = [v4 PKStringForKey:@"accessType"];
+      v9 = [dictionaryCopy PKStringForKey:@"accessType"];
       v5->_accessType = PKSecureElementAccessPassTypeFromString(v9);
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 PKDisplayablePassEntitlement *__53__PKSharingMesageProprietaryData_initWithDictionary___block_invoke(uint64_t a1, void *a2)

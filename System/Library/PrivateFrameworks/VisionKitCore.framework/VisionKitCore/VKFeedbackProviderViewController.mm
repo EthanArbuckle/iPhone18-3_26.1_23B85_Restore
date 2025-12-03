@@ -1,9 +1,9 @@
 @interface VKFeedbackProviderViewController
-- (VKFeedbackProviderViewController)initWithOptions:(unint64_t)a3 attachments:(id)a4;
+- (VKFeedbackProviderViewController)initWithOptions:(unint64_t)options attachments:(id)attachments;
 - (VKFeedbackProviderViewControllerDelegate)delegate;
-- (id)_contentRowButtonWithTitle:(id)a3 tag:(int64_t)a4 allowToggle:(BOOL)a5;
+- (id)_contentRowButtonWithTitle:(id)title tag:(int64_t)tag allowToggle:(BOOL)toggle;
 - (void)_createContentView;
-- (void)_toggleContentRowButton:(id)a3;
+- (void)_toggleContentRowButton:(id)button;
 - (void)dealloc;
 - (void)loadView;
 - (void)present;
@@ -12,18 +12,18 @@
 
 @implementation VKFeedbackProviderViewController
 
-- (VKFeedbackProviderViewController)initWithOptions:(unint64_t)a3 attachments:(id)a4
+- (VKFeedbackProviderViewController)initWithOptions:(unint64_t)options attachments:(id)attachments
 {
-  v7 = a4;
+  attachmentsCopy = attachments;
   v13.receiver = self;
   v13.super_class = VKFeedbackProviderViewController;
   v8 = [(VKFeedbackProviderViewController *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_attachments, a4);
-    v9->_options = a3;
-    v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v7, "count")}];
+    objc_storeStrong(&v8->_attachments, attachments);
+    v9->_options = options;
+    v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(attachmentsCopy, "count")}];
     selectedAttachments = v9->_selectedAttachments;
     v9->_selectedAttachments = v10;
   }
@@ -86,8 +86,8 @@
     {
       v8 = [(NSArray *)self->_attachments objectAtIndexedSubscript:v7];
       [(NSMutableSet *)self->_selectedAttachments addObject:v8];
-      v9 = [v8 label];
-      v10 = -[VKFeedbackProviderViewController _contentRowButtonWithTitle:tag:allowToggle:](self, "_contentRowButtonWithTitle:tag:allowToggle:", v9, v7, [v8 isOptional]);
+      label = [v8 label];
+      v10 = -[VKFeedbackProviderViewController _contentRowButtonWithTitle:tag:allowToggle:](self, "_contentRowButtonWithTitle:tag:allowToggle:", label, v7, [v8 isOptional]);
       [v3 addArrangedSubview:v10];
 
       ++v7;
@@ -97,44 +97,44 @@
   }
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(VKFeedbackProviderViewController *)self view];
-  [v11 addSubview:v3];
+  view = [(VKFeedbackProviderViewController *)self view];
+  [view addSubview:v3];
 
   v23 = MEMORY[0x1E696ACD8];
-  v28 = [v3 leadingAnchor];
-  v29 = [(VKFeedbackProviderViewController *)self view];
-  v27 = [v29 leadingAnchor];
-  v26 = [v28 constraintEqualToSystemSpacingAfterAnchor:v27 multiplier:2.0];
+  leadingAnchor = [v3 leadingAnchor];
+  view2 = [(VKFeedbackProviderViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v26 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:2.0];
   v30[0] = v26;
-  v25 = [(VKFeedbackProviderViewController *)self view];
-  v24 = [v25 trailingAnchor];
-  v22 = [v3 trailingAnchor];
-  v21 = [v24 constraintEqualToSystemSpacingAfterAnchor:v22 multiplier:2.0];
+  view3 = [(VKFeedbackProviderViewController *)self view];
+  trailingAnchor = [view3 trailingAnchor];
+  trailingAnchor2 = [v3 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:2.0];
   v30[1] = v21;
-  v12 = [v3 topAnchor];
-  v13 = [(VKFeedbackProviderViewController *)self view];
-  v14 = [v13 topAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  topAnchor = [v3 topAnchor];
+  view4 = [(VKFeedbackProviderViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v30[2] = v15;
-  v16 = [(VKFeedbackProviderViewController *)self view];
-  v17 = [v16 bottomAnchor];
-  v18 = [v3 bottomAnchor];
-  v19 = [v17 constraintEqualToSystemSpacingBelowAnchor:v18 multiplier:1.0];
+  view5 = [(VKFeedbackProviderViewController *)self view];
+  bottomAnchor = [view5 bottomAnchor];
+  bottomAnchor2 = [v3 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
   v30[3] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
   [v23 activateConstraints:v20];
 }
 
-- (id)_contentRowButtonWithTitle:(id)a3 tag:(int64_t)a4 allowToggle:(BOOL)a5
+- (id)_contentRowButtonWithTitle:(id)title tag:(int64_t)tag allowToggle:(BOOL)toggle
 {
-  v5 = a5;
+  toggleCopy = toggle;
   v8 = MEMORY[0x1E69DC740];
-  v9 = a3;
-  v10 = [v8 plainButtonConfiguration];
-  [v10 setImagePadding:8.0];
+  titleCopy = title;
+  plainButtonConfiguration = [v8 plainButtonConfiguration];
+  [plainButtonConfiguration setImagePadding:8.0];
   v11 = [MEMORY[0x1E69DC738] buttonWithType:0];
-  [v11 setConfiguration:v10];
-  [v11 setTitle:v9 forState:0];
+  [v11 setConfiguration:plainButtonConfiguration];
+  [v11 setTitle:titleCopy forState:0];
 
   v12 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"circle"];
   [v11 setImage:v12 forState:0];
@@ -142,11 +142,11 @@
   v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.circle.fill"];
   [v11 setImage:v13 forState:4];
 
-  v14 = [MEMORY[0x1E69DC888] labelColor];
-  [v11 setTitleColor:v14 forState:0];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [v11 setTitleColor:labelColor forState:0];
 
   [v11 setSelected:1];
-  if (v5)
+  if (toggleCopy)
   {
     [v11 addTarget:self action:sel__toggleContentRowButton_ forControlEvents:64];
   }
@@ -154,22 +154,22 @@
   else
   {
     [v11 setUserInteractionEnabled:0];
-    v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v11 setTintColor:v15];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v11 setTintColor:secondaryLabelColor];
   }
 
-  [v11 setTag:a4];
+  [v11 setTag:tag];
 
   return v11;
 }
 
-- (void)_toggleContentRowButton:(id)a3
+- (void)_toggleContentRowButton:(id)button
 {
-  v12 = a3;
-  v4 = [v12 isSelected];
-  v5 = v4;
-  [v12 setSelected:v4 ^ 1u];
-  v6 = [v12 tag];
+  buttonCopy = button;
+  isSelected = [buttonCopy isSelected];
+  v5 = isSelected;
+  [buttonCopy setSelected:isSelected ^ 1u];
+  v6 = [buttonCopy tag];
   if (v6 == -2)
   {
     options = self->_options;
@@ -188,7 +188,7 @@
   {
     if (v6 != -1)
     {
-      v10 = -[NSArray objectAtIndexedSubscript:](self->_attachments, "objectAtIndexedSubscript:", [v12 tag]);
+      v10 = -[NSArray objectAtIndexedSubscript:](self->_attachments, "objectAtIndexedSubscript:", [buttonCopy tag]);
       selectedAttachments = self->_selectedAttachments;
       if (v5)
       {
@@ -222,13 +222,13 @@ LABEL_14:
 - (void)present
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v4 = [v3 connectedScenes];
-  v5 = [v4 countByEnumeratingWithState:&v51 objects:v56 count:16];
+  connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
+  v5 = [connectedScenes countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v5)
   {
     v6 = v5;
@@ -239,7 +239,7 @@ LABEL_14:
       {
         if (*v52 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v9 = *(*(&v51 + 1) + 8 * i);
@@ -250,7 +250,7 @@ LABEL_14:
 
           if (v10)
           {
-            v11 = 0;
+            rootViewController2 = 0;
             v12 = 1;
             goto LABEL_26;
           }
@@ -259,7 +259,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v51 objects:v56 count:16];
+      v6 = [connectedScenes countByEnumeratingWithState:&v51 objects:v56 count:16];
       if (v6)
       {
         continue;
@@ -274,8 +274,8 @@ LABEL_13:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v13 = [v3 windows];
-  v14 = [v13 countByEnumeratingWithState:&v47 objects:v55 count:16];
+  windows = [mEMORY[0x1E69DC668] windows];
+  v14 = [windows countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (!v14)
   {
 LABEL_23:
@@ -298,12 +298,12 @@ LABEL_15:
   {
     if (*v48 != v16)
     {
-      objc_enumerationMutation(v13);
+      objc_enumerationMutation(windows);
     }
 
     v18 = *(*(&v47 + 1) + 8 * v17);
-    v19 = [v18 windowScene];
-    if (![v19 activationState])
+    windowScene = [v18 windowScene];
+    if (![windowScene activationState])
     {
       break;
     }
@@ -311,7 +311,7 @@ LABEL_15:
 LABEL_21:
     if (v15 == ++v17)
     {
-      v15 = [v13 countByEnumeratingWithState:&v47 objects:v55 count:16];
+      v15 = [windows countByEnumeratingWithState:&v47 objects:v55 count:16];
       if (v15)
       {
         goto LABEL_15;
@@ -321,16 +321,16 @@ LABEL_21:
     }
   }
 
-  v20 = [v18 rootViewController];
+  rootViewController = [v18 rootViewController];
 
-  if (!v20)
+  if (!rootViewController)
   {
     goto LABEL_21;
   }
 
-  v11 = [v18 rootViewController];
+  rootViewController2 = [v18 rootViewController];
 
-  if (!v11)
+  if (!rootViewController2)
   {
     goto LABEL_29;
   }
@@ -340,15 +340,15 @@ LABEL_21:
 LABEL_26:
   v21 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Scarlett Feedback" message:@"Select attachments to submit with your feedback.\nRadar template window will automatically open once all attachments are ready." preferredStyle:1];
   [v21 setContentViewController:self];
-  v22 = [(VKFeedbackProviderViewController *)self delegate];
+  delegate = [(VKFeedbackProviderViewController *)self delegate];
   v23 = MEMORY[0x1E69DC648];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __43__VKFeedbackProviderViewController_present__block_invoke;
   v44[3] = &unk_1E7BE48F0;
-  v24 = v22;
+  v24 = delegate;
   v45 = v24;
-  v46 = self;
+  selfCopy = self;
   v25 = [v23 actionWithTitle:@"Cancel" style:1 handler:v44];
   [v21 addAction:v25];
 
@@ -359,7 +359,7 @@ LABEL_26:
   v41[3] = &unk_1E7BE48F0;
   v27 = v24;
   v42 = v27;
-  v43 = self;
+  selfCopy2 = self;
   v28 = [v26 actionWithTitle:@"Submit" style:0 handler:v41];
   [v21 addAction:v28];
 
@@ -374,24 +374,24 @@ LABEL_26:
     [(UIWindow *)self->_window setRootViewController:v31];
 
     v32 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.15];
-    v33 = [(UIWindow *)self->_window rootViewController];
-    v34 = [v33 view];
-    [v34 setBackgroundColor:v32];
+    rootViewController3 = [(UIWindow *)self->_window rootViewController];
+    view = [rootViewController3 view];
+    [view setBackgroundColor:v32];
 
     [(UIWindow *)self->_window makeKeyAndVisible];
-    v35 = [(UIWindow *)self->_window rootViewController];
+    rootViewController4 = [(UIWindow *)self->_window rootViewController];
 
-    v11 = v35;
+    rootViewController2 = rootViewController4;
   }
 
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __43__VKFeedbackProviderViewController_present__block_invoke_3;
   v38[3] = &unk_1E7BE4768;
-  v39 = v11;
+  v39 = rootViewController2;
   v40 = v21;
   v36 = v21;
-  v37 = v11;
+  v37 = rootViewController2;
   dispatch_async(MEMORY[0x1E69E96A0], v38);
 
 LABEL_31:

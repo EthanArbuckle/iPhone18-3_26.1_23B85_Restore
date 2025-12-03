@@ -1,59 +1,59 @@
 @interface DDSManager
-- (DDSManager)initWithProvider:(id)a3 tracker:(id)a4;
-- (DDSManager)initWithProvider:(id)a3 tracker:(id)a4 dataSource:(id)a5;
-- (DDSManager)initWithProvider:(id)a3 tracker:(id)a4 dataSource:(id)a5 autoAssetManager:(id)a6;
+- (DDSManager)initWithProvider:(id)provider tracker:(id)tracker;
+- (DDSManager)initWithProvider:(id)provider tracker:(id)tracker dataSource:(id)source;
+- (DDSManager)initWithProvider:(id)provider tracker:(id)tracker dataSource:(id)source autoAssetManager:(id)manager;
 - (DDSManagingDelegate)delegate;
-- (id)autoAssetQueryForAssertion:(id)a3;
-- (id)catalogUpdateDateForAssetType:(id)a3;
-- (int64_t)assetUpdateStatusForAssertion:(id)a3;
-- (int64_t)modifyAssetUpdateStatusForAssertion:(id)a3 status:(int64_t)a4;
-- (void)addAssertionForQuery:(id)a3 policy:(id)a4 assertionID:(id)a5 clientID:(id)a6;
-- (void)assertionIDsForClientID:(id)a3 reply:(id)a4;
+- (id)autoAssetQueryForAssertion:(id)assertion;
+- (id)catalogUpdateDateForAssetType:(id)type;
+- (int64_t)assetUpdateStatusForAssertion:(id)assertion;
+- (int64_t)modifyAssetUpdateStatusForAssertion:(id)assertion status:(int64_t)status;
+- (void)addAssertionForQuery:(id)query policy:(id)policy assertionID:(id)d clientID:(id)iD;
+- (void)assertionIDsForClientID:(id)d reply:(id)reply;
 - (void)createAutoAssetAssertionForExistingAssertions;
-- (void)createRemoteSyncStateForAssetType:(id)a3;
+- (void)createRemoteSyncStateForAssetType:(id)type;
 - (void)deleteV1AssetsIfNecessary;
-- (void)didChangeDownloadState:(unint64_t)a3 forAsset:(id)a4;
-- (void)didCompleteDownloadForAssertion:(id)a3 error:(id)a4;
-- (void)didCompleteDownloadForAssertions:(id)a3 error:(id)a4;
-- (void)didEndUpdateCycleWithAssetType:(id)a3 error:(id)a4;
-- (void)didStartUpdateCycleForAssetType:(id)a3;
-- (void)didUpdateCatalogWithAssetType:(id)a3 error:(id)a4;
-- (void)fetchAssetUpdateStatusForQuery:(id)a3 callback:(id)a4;
-- (void)fetchCatalogBasedAssetUpdateStatusForAssertion:(id)a3 callback:(id)a4;
-- (void)handleAddedNewDescriptor:(id)a3 forAssertion:(id)a4;
-- (void)handleNewAssertions:(id)a3;
-- (void)handleRemovedAssertions:(id)a3;
-- (void)remoteSyncStateRequestsResetForAssetType:(id)a3;
-- (void)remoteSyncStateRequestsRetryForAssetType:(id)a3;
-- (void)remoteSyncStateRequestsUpdateForAssetType:(id)a3;
-- (void)removeAssertionWithID:(id)a3;
+- (void)didChangeDownloadState:(unint64_t)state forAsset:(id)asset;
+- (void)didCompleteDownloadForAssertion:(id)assertion error:(id)error;
+- (void)didCompleteDownloadForAssertions:(id)assertions error:(id)error;
+- (void)didEndUpdateCycleWithAssetType:(id)type error:(id)error;
+- (void)didStartUpdateCycleForAssetType:(id)type;
+- (void)didUpdateCatalogWithAssetType:(id)type error:(id)error;
+- (void)fetchAssetUpdateStatusForQuery:(id)query callback:(id)callback;
+- (void)fetchCatalogBasedAssetUpdateStatusForAssertion:(id)assertion callback:(id)callback;
+- (void)handleAddedNewDescriptor:(id)descriptor forAssertion:(id)assertion;
+- (void)handleNewAssertions:(id)assertions;
+- (void)handleRemovedAssertions:(id)assertions;
+- (void)remoteSyncStateRequestsResetForAssetType:(id)type;
+- (void)remoteSyncStateRequestsRetryForAssetType:(id)type;
+- (void)remoteSyncStateRequestsUpdateForAssetType:(id)type;
+- (void)removeAssertionWithID:(id)d;
 - (void)removeOldAssets;
-- (void)serverDidUpdateAssetsWithType:(id)a3;
-- (void)setCatalogUpdateDate:(id)a3 forAssetType:(id)a4;
-- (void)triggerDumpWithReply:(id)a3;
+- (void)serverDidUpdateAssetsWithType:(id)type;
+- (void)setCatalogUpdateDate:(id)date forAssetType:(id)type;
+- (void)triggerDumpWithReply:(id)reply;
 - (void)triggerUpdate;
-- (void)updateAssetForQuery:(id)a3 callback:(id)a4;
-- (void)updateAutoAssetForAssetType:(id)a3;
-- (void)updateCatalogBasedAssetForAssertion:(id)a3 callback:(id)a4;
-- (void)updateCatalogForAssetType:(id)a3 withCompletion:(id)a4;
+- (void)updateAssetForQuery:(id)query callback:(id)callback;
+- (void)updateAutoAssetForAssetType:(id)type;
+- (void)updateCatalogBasedAssetForAssertion:(id)assertion callback:(id)callback;
+- (void)updateCatalogForAssetType:(id)type withCompletion:(id)completion;
 @end
 
 @implementation DDSManager
 
-- (DDSManager)initWithProvider:(id)a3 tracker:(id)a4 dataSource:(id)a5 autoAssetManager:(id)a6
+- (DDSManager)initWithProvider:(id)provider tracker:(id)tracker dataSource:(id)source autoAssetManager:(id)manager
 {
   v41 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  trackerCopy = tracker;
+  sourceCopy = source;
+  managerCopy = manager;
   v39.receiver = self;
   v39.super_class = DDSManager;
   v15 = [(DDSManager *)&v39 init];
   v16 = v15;
   if (v15)
   {
-    v34 = v12;
+    v34 = trackerCopy;
     v15->_lock._os_unfair_lock_opaque = 0;
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
     pendingAssertionsToUpdateByAssetType = v16->_pendingAssertionsToUpdateByAssetType;
@@ -63,22 +63,22 @@
     workQueue = v16->_workQueue;
     v16->_workQueue = v19;
 
-    objc_storeStrong(&v16->_tracker, a4);
+    objc_storeStrong(&v16->_tracker, tracker);
     [(DDSAssetTracking *)v16->_tracker setDelegate:v16];
-    objc_storeStrong(&v16->_provider, a3);
+    objc_storeStrong(&v16->_provider, provider);
     [(DDSAssetProviding *)v16->_provider setDelegate:v16];
-    objc_storeStrong(&v16->_dataSource, a5);
-    objc_storeStrong(&v16->_autoAssetManager, a6);
-    v21 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v16->_dataSource, source);
+    objc_storeStrong(&v16->_autoAssetManager, manager);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     remoteSyncStateByAssetType = v16->_remoteSyncStateByAssetType;
-    v16->_remoteSyncStateByAssetType = v21;
+    v16->_remoteSyncStateByAssetType = dictionary;
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v23 = [(DDSAssetTracking *)v16->_tracker trackedAssetTypes];
-    v24 = [v23 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    trackedAssetTypes = [(DDSAssetTracking *)v16->_tracker trackedAssetTypes];
+    v24 = [trackedAssetTypes countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v24)
     {
       v25 = v24;
@@ -89,7 +89,7 @@
         {
           if (*v36 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(trackedAssetTypes);
           }
 
           v28 = *(*(&v35 + 1) + 8 * i);
@@ -98,7 +98,7 @@
           [(DDSRemoteSyncState *)v29 loadStateAndScheduleUpdate];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v35 objects:v40 count:16];
+        v25 = [trackedAssetTypes countByEnumeratingWithState:&v35 objects:v40 count:16];
       }
 
       while (v25);
@@ -112,30 +112,30 @@
     [(DDSAssetObserving *)v16->_assetObserver observeAssetType:@"com.apple.MobileAsset.LinguisticData"];
     [(DDSManager *)v16 removeOldAssets];
     [(DDSManager *)v16 createAutoAssetAssertionForExistingAssertions];
-    v12 = v34;
+    trackerCopy = v34;
   }
 
   v32 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-- (DDSManager)initWithProvider:(id)a3 tracker:(id)a4
+- (DDSManager)initWithProvider:(id)provider tracker:(id)tracker
 {
-  v6 = a4;
-  v7 = a3;
+  trackerCopy = tracker;
+  providerCopy = provider;
   v8 = objc_alloc_init(DDSManagerDataSource);
-  v9 = [(DDSManager *)self initWithProvider:v7 tracker:v6 dataSource:v8];
+  v9 = [(DDSManager *)self initWithProvider:providerCopy tracker:trackerCopy dataSource:v8];
 
   return v9;
 }
 
-- (DDSManager)initWithProvider:(id)a3 tracker:(id)a4 dataSource:(id)a5
+- (DDSManager)initWithProvider:(id)provider tracker:(id)tracker dataSource:(id)source
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  sourceCopy = source;
+  trackerCopy = tracker;
+  providerCopy = provider;
   v11 = objc_alloc_init(DDSMAAutoAssetManager);
-  v12 = [(DDSManager *)self initWithProvider:v10 tracker:v9 dataSource:v8 autoAssetManager:v11];
+  v12 = [(DDSManager *)self initWithProvider:providerCopy tracker:trackerCopy dataSource:sourceCopy autoAssetManager:v11];
 
   return v12;
 }
@@ -393,61 +393,61 @@ LABEL_30:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addAssertionForQuery:(id)a3 policy:(id)a4 assertionID:(id)a5 clientID:(id)a6
+- (void)addAssertionForQuery:(id)query policy:(id)policy assertionID:(id)d clientID:(id)iD
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  queryCopy = query;
+  policyCopy = policy;
+  dCopy = d;
+  iDCopy = iD;
   v14 = UpdateLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138544130;
-    v20 = v10;
+    v20 = queryCopy;
     v21 = 2114;
-    v22 = v11;
+    v22 = policyCopy;
     v23 = 2114;
-    v24 = v12;
+    v24 = dCopy;
     v25 = 2114;
-    v26 = v13;
+    v26 = iDCopy;
     _os_log_impl(&dword_1DF7C6000, v14, OS_LOG_TYPE_DEFAULT, "Add assertion for query: %{public}@ policy: (%{public}@) assertionID: (%{public}@) clientID: (%{public}@)", &v19, 0x2Au);
   }
 
-  v15 = [(DDSManager *)self assetObserver];
-  v16 = [v10 assetType];
-  [v15 observeAssetType:v16];
+  assetObserver = [(DDSManager *)self assetObserver];
+  assetType = [queryCopy assetType];
+  [assetObserver observeAssetType:assetType];
 
-  v17 = [(DDSManager *)self tracker];
-  [v17 addAssertionForQuery:v10 policy:v11 assertionID:v12 clientID:v13];
+  tracker = [(DDSManager *)self tracker];
+  [tracker addAssertionForQuery:queryCopy policy:policyCopy assertionID:dCopy clientID:iDCopy];
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAssertionWithID:(id)a3
+- (void)removeAssertionWithID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = UpdateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&dword_1DF7C6000, v5, OS_LOG_TYPE_DEFAULT, "Remove assertion with ID: (%{public}@)", &v8, 0xCu);
   }
 
-  v6 = [(DDSManager *)self tracker];
-  [v6 removeAssertionWithID:v4];
+  tracker = [(DDSManager *)self tracker];
+  [tracker removeAssertionWithID:dCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)assertionIDsForClientID:(id)a3 reply:(id)a4
+- (void)assertionIDsForClientID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DDSManager *)self tracker];
-  v9 = [v8 assertionIDsForClientID:v6];
+  dCopy = d;
+  replyCopy = reply;
+  tracker = [(DDSManager *)self tracker];
+  v9 = [tracker assertionIDsForClientID:dCopy];
 
   v10 = DefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -455,28 +455,28 @@ LABEL_30:
     [DDSManager assertionIDsForClientID:reply:];
   }
 
-  v7[2](v7, v9);
+  replyCopy[2](replyCopy, v9);
 }
 
-- (void)triggerDumpWithReply:(id)a3
+- (void)triggerDumpWithReply:(id)reply
 {
   v47 = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  replyCopy = reply;
   v4 = DefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [DDSManager triggerDumpWithReply:v4];
   }
 
-  v35 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v5 = [(DDSManager *)self tracker];
-  v6 = [v5 trackedAssetTypes];
+  tracker = [(DDSManager *)self tracker];
+  trackedAssetTypes = [tracker trackedAssetTypes];
 
-  v7 = [v6 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  v7 = [trackedAssetTypes countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v7)
   {
     v8 = v7;
@@ -487,7 +487,7 @@ LABEL_5:
     {
       if (*v42 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(trackedAssetTypes);
       }
 
       v11 = *(*(&v41 + 1) + 8 * v10);
@@ -498,12 +498,12 @@ LABEL_5:
       [(DDSAssetQuery *)v14 setInstalledOnly:1];
       [(DDSAssetQuery *)v14 setLatestOnly:0];
       [(DDSAssetQuery *)v14 setLocalOnly:1];
-      v15 = [(DDSManager *)self provider];
+      provider = [(DDSManager *)self provider];
       v40 = 0;
-      v16 = [v15 assetsForQuery:v14 errorPtr:&v40];
+      v16 = [provider assetsForQuery:v14 errorPtr:&v40];
       v17 = v40;
 
-      [v35 addObjectsFromArray:v16];
+      [array addObjectsFromArray:v16];
       if (v17)
       {
         break;
@@ -511,7 +511,7 @@ LABEL_5:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v8 = [trackedAssetTypes countByEnumeratingWithState:&v41 objects:v46 count:16];
         if (v8)
         {
           goto LABEL_5;
@@ -533,10 +533,10 @@ LABEL_11:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v19 = [(DDSManager *)self tracker];
-  v20 = [v19 allAssertions];
+  tracker2 = [(DDSManager *)self tracker];
+  allAssertions = [tracker2 allAssertions];
 
-  v21 = [v20 countByEnumeratingWithState:&v36 objects:v45 count:16];
+  v21 = [allAssertions countByEnumeratingWithState:&v36 objects:v45 count:16];
   if (v21)
   {
     v22 = v21;
@@ -547,27 +547,27 @@ LABEL_11:
       {
         if (*v37 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(allAssertions);
         }
 
-        v25 = [(DDSManager *)self autoAssetQueryForAssertion:*(*(&v36 + 1) + 8 * i), v34];
-        if (v25)
+        replyCopy = [(DDSManager *)self autoAssetQueryForAssertion:*(*(&v36 + 1) + 8 * i), replyCopy];
+        if (replyCopy)
         {
-          v26 = [(DDSManager *)self autoAssetManager];
-          v27 = [v26 assetsForQuery:v25];
+          autoAssetManager = [(DDSManager *)self autoAssetManager];
+          v27 = [autoAssetManager assetsForQuery:replyCopy];
 
           [v18 addObjectsFromArray:v27];
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v36 objects:v45 count:16];
+      v22 = [allAssertions countByEnumeratingWithState:&v36 objects:v45 count:16];
     }
 
     while (v22);
   }
 
-  v28 = [v18 allObjects];
-  [v35 addObjectsFromArray:v28];
+  allObjects = [v18 allObjects];
+  [array addObjectsFromArray:allObjects];
 
   if (v17)
   {
@@ -583,12 +583,12 @@ LABEL_11:
   else
   {
     v29 = +[DDSAnalytics sharedInstance];
-    v31 = [(DDSManager *)self tracker];
-    v32 = [v31 allAssertions];
-    v30 = [v29 dumpAssetLogWithAssertions:v32 installedAssets:v35];
+    tracker3 = [(DDSManager *)self tracker];
+    allAssertions2 = [tracker3 allAssertions];
+    v30 = [v29 dumpAssetLogWithAssertions:allAssertions2 installedAssets:array];
   }
 
-  v34[2](v34, v30);
+  replyCopy[2](replyCopy, v30);
   v33 = *MEMORY[0x1E69E9840];
 }
 
@@ -606,10 +606,10 @@ LABEL_11:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(DDSManager *)self tracker];
-  v5 = [v4 trackedAssetTypes];
+  tracker = [(DDSManager *)self tracker];
+  trackedAssetTypes = [tracker trackedAssetTypes];
 
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  v6 = [trackedAssetTypes countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -621,14 +621,14 @@ LABEL_11:
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(trackedAssetTypes);
         }
 
         [(DDSManager *)self beginUpdateCycleForAssetType:*(*(&v25 + 1) + 8 * v9++) forced:1 discretionaryDownload:0];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v7 = [trackedAssetTypes countByEnumeratingWithState:&v25 objects:v31 count:16];
     }
 
     while (v7);
@@ -638,10 +638,10 @@ LABEL_11:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [(DDSManager *)self tracker];
-  v11 = [v10 allAssertions];
+  tracker2 = [(DDSManager *)self tracker];
+  allAssertions = [tracker2 allAssertions];
 
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v30 count:16];
+  v12 = [allAssertions countByEnumeratingWithState:&v21 objects:v30 count:16];
   if (v12)
   {
     v13 = v12;
@@ -653,26 +653,26 @@ LABEL_11:
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allAssertions);
         }
 
         v16 = [(DDSManager *)self autoAssetQueryForAssertion:*(*(&v21 + 1) + 8 * v15)];
         if (v16)
         {
-          v17 = [(DDSManager *)self autoAssetManager];
+          autoAssetManager = [(DDSManager *)self autoAssetManager];
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __27__DDSManager_triggerUpdate__block_invoke;
           v19[3] = &unk_1E86C66D0;
           v20 = v16;
-          [v17 updateAssetForQuery:v20 callback:v19];
+          [autoAssetManager updateAssetForQuery:v20 callback:v19];
         }
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v21 objects:v30 count:16];
+      v13 = [allAssertions countByEnumeratingWithState:&v21 objects:v30 count:16];
     }
 
     while (v13);
@@ -693,51 +693,51 @@ void __27__DDSManager_triggerUpdate__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (id)autoAssetQueryForAssertion:(id)a3
+- (id)autoAssetQueryForAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [v4 query];
-  v6 = [v5 assetType];
-  v7 = [DDSMAAutoAssetManager isAutoAssetType:v6];
+  assertionCopy = assertion;
+  query = [assertionCopy query];
+  assetType = [query assetType];
+  v7 = [DDSMAAutoAssetManager isAutoAssetType:assetType];
 
   if (v7)
   {
-    v8 = [v4 query];
+    query2 = [assertionCopy query];
   }
 
   else
   {
-    v9 = [(DDSManager *)self autoAssetManager];
-    v10 = [v4 query];
-    v11 = [v10 assetType];
-    v12 = [v9 autoAssetTypeForAsserType:v11];
+    autoAssetManager = [(DDSManager *)self autoAssetManager];
+    query3 = [assertionCopy query];
+    assetType2 = [query3 assetType];
+    v12 = [autoAssetManager autoAssetTypeForAsserType:assetType2];
 
     if (v12)
     {
       v13 = [DDSAssetQuery alloc];
-      v14 = [v4 query];
-      v15 = [v14 filter];
-      v8 = [(DDSAssetQuery *)v13 initWithAssetType:v12 filter:v15];
+      query4 = [assertionCopy query];
+      filter = [query4 filter];
+      query2 = [(DDSAssetQuery *)v13 initWithAssetType:v12 filter:filter];
     }
 
     else
     {
-      v8 = 0;
+      query2 = 0;
     }
   }
 
-  return v8;
+  return query2;
 }
 
-- (void)handleNewAssertions:(id)a3
+- (void)handleNewAssertions:(id)assertions
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionsCopy = assertions;
   v5 = UpdateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = assertionsCopy;
     _os_log_impl(&dword_1DF7C6000, v5, OS_LOG_TYPE_DEFAULT, "Handle new assertions: %{public}@", &buf, 0xCu);
   }
 
@@ -747,16 +747,16 @@ void __27__DDSManager_triggerUpdate__block_invoke(uint64_t a1, uint64_t a2)
   v25 = __Block_byref_object_copy__4;
   v26 = __Block_byref_object_dispose__4;
   v27 = [MEMORY[0x1E695DFA8] set];
-  v6 = [(DDSManager *)self workQueue];
+  workQueue = [(DDSManager *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__DDSManager_handleNewAssertions___block_invoke;
   block[3] = &unk_1E86C65A8;
-  v7 = v4;
+  v7 = assertionsCopy;
   v19 = v7;
-  v20 = self;
+  selfCopy = self;
   p_buf = &buf;
-  dispatch_sync(v6, block);
+  dispatch_sync(workQueue, block);
 
   v16 = 0u;
   v17 = 0u;
@@ -910,42 +910,42 @@ void __34__DDSManager_handleNewAssertions___block_invoke(uint64_t a1)
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAddedNewDescriptor:(id)a3 forAssertion:(id)a4
+- (void)handleAddedNewDescriptor:(id)descriptor forAssertion:(id)assertion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  descriptorCopy = descriptor;
+  assertionCopy = assertion;
   v7 = DefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = v5;
+    v10 = descriptorCopy;
     v11 = 2114;
-    v12 = v6;
+    v12 = assertionCopy;
     _os_log_impl(&dword_1DF7C6000, v7, OS_LOG_TYPE_DEFAULT, "New descriptor : %{public}@ added for assertion: %{public}@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRemovedAssertions:(id)a3
+- (void)handleRemovedAssertions:(id)assertions
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionsCopy = assertions;
   v5 = UpdateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v63 = v4;
+    v63 = assertionsCopy;
     _os_log_impl(&dword_1DF7C6000, v5, OS_LOG_TYPE_DEFAULT, "Asked to remove assertions: %{public}@, will let garbage collection collect.", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v7 = v4;
+  v7 = assertionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v54 objects:v61 count:16];
   if (v8)
   {
@@ -963,7 +963,7 @@ void __34__DDSManager_handleNewAssertions___block_invoke(uint64_t a1)
         v12 = [(DDSManager *)self autoAssetQueryForAssertion:*(*(&v54 + 1) + 8 * i)];
         if (v12)
         {
-          [v6 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -973,7 +973,7 @@ void __34__DDSManager_handleNewAssertions___block_invoke(uint64_t a1)
     while (v9);
   }
 
-  if ([v6 count])
+  if ([array count])
   {
     v36 = v7;
     v13 = AutoAssetLog();
@@ -988,10 +988,10 @@ void __34__DDSManager_handleNewAssertions___block_invoke(uint64_t a1)
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v15 = [(DDSManager *)self tracker];
-    v16 = [v15 allAssertions];
+    tracker = [(DDSManager *)self tracker];
+    allAssertions = [tracker allAssertions];
 
-    v17 = [v16 countByEnumeratingWithState:&v50 objects:v60 count:16];
+    v17 = [allAssertions countByEnumeratingWithState:&v50 objects:v60 count:16];
     if (v17)
     {
       v18 = v17;
@@ -1002,20 +1002,20 @@ void __34__DDSManager_handleNewAssertions___block_invoke(uint64_t a1)
         {
           if (*v51 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allAssertions);
           }
 
           v21 = [(DDSManager *)self autoAssetQueryForAssertion:*(*(&v50 + 1) + 8 * j), v36];
           if (v21)
           {
-            v22 = [(DDSManager *)self autoAssetManager];
-            v23 = [v22 autoAssetSelectorsForQuery:v21];
+            autoAssetManager = [(DDSManager *)self autoAssetManager];
+            v23 = [autoAssetManager autoAssetSelectorsForQuery:v21];
 
             [v14 addObjectsFromArray:v23];
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v50 objects:v60 count:16];
+        v18 = [allAssertions countByEnumeratingWithState:&v50 objects:v60 count:16];
       }
 
       while (v18);
@@ -1025,8 +1025,8 @@ void __34__DDSManager_handleNewAssertions___block_invoke(uint64_t a1)
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v37 = v6;
-    obj = v6;
+    v37 = array;
+    obj = array;
     v40 = [obj countByEnumeratingWithState:&v46 objects:v59 count:16];
     if (v40)
     {
@@ -1043,8 +1043,8 @@ void __34__DDSManager_handleNewAssertions___block_invoke(uint64_t a1)
 
           v41 = v24;
           v25 = *(*(&v46 + 1) + 8 * v24);
-          v26 = [(DDSManager *)self autoAssetManager];
-          v27 = [v26 autoAssetSelectorsForQuery:v25];
+          autoAssetManager2 = [(DDSManager *)self autoAssetManager];
+          v27 = [autoAssetManager2 autoAssetSelectorsForQuery:v25];
 
           v44 = 0u;
           v45 = 0u;
@@ -1068,19 +1068,19 @@ void __34__DDSManager_handleNewAssertions___block_invoke(uint64_t a1)
                 v33 = *(*(&v42 + 1) + 8 * k);
                 if ([v14 containsObject:v33])
                 {
-                  v34 = AutoAssetLog();
-                  if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+                  autoAssetManager3 = AutoAssetLog();
+                  if (os_log_type_enabled(autoAssetManager3, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138543362;
                     v63 = v33;
-                    _os_log_impl(&dword_1DF7C6000, v34, OS_LOG_TYPE_DEFAULT, "Cannot eliminate interest in content for asset selector: %{public}@", buf, 0xCu);
+                    _os_log_impl(&dword_1DF7C6000, autoAssetManager3, OS_LOG_TYPE_DEFAULT, "Cannot eliminate interest in content for asset selector: %{public}@", buf, 0xCu);
                   }
                 }
 
                 else
                 {
-                  v34 = [(DDSManager *)self autoAssetManager];
-                  [v34 unregisterInterestInContentForAssetSelector:v33];
+                  autoAssetManager3 = [(DDSManager *)self autoAssetManager];
+                  [autoAssetManager3 unregisterInterestInContentForAssetSelector:v33];
                 }
               }
 
@@ -1101,37 +1101,37 @@ void __34__DDSManager_handleNewAssertions___block_invoke(uint64_t a1)
     }
 
     v7 = v36;
-    v6 = v37;
+    array = v37;
   }
 
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didChangeDownloadState:(unint64_t)a3 forAsset:(id)a4
+- (void)didChangeDownloadState:(unint64_t)state forAsset:(id)asset
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  assetCopy = asset;
   v6 = DefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 debuggingID];
+    debuggingID = [assetCopy debuggingID];
     v12 = 134349314;
-    v13 = a3;
+    stateCopy = state;
     v14 = 2114;
-    v15 = v7;
+    v15 = debuggingID;
     _os_log_impl(&dword_1DF7C6000, v6, OS_LOG_TYPE_DEFAULT, "Download state: %{public}lu for asset: %{public}@", &v12, 0x16u);
   }
 
-  if (a3 > 9)
+  if (state > 9)
   {
-    if (a3 == 10)
+    if (state == 10)
     {
       v9 = +[DDSAnalytics sharedInstance];
-      [v9 cancelRecordingForAsset:v5];
+      [v9 cancelRecordingForAsset:assetCopy];
       goto LABEL_13;
     }
 
-    if (a3 == 11)
+    if (state == 11)
     {
       v8 = +[DDSAnalytics sharedInstance];
       v9 = v8;
@@ -1142,7 +1142,7 @@ void __34__DDSManager_handleNewAssertions___block_invoke(uint64_t a1)
 
   else
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       v8 = +[DDSAnalytics sharedInstance];
       v9 = v8;
@@ -1150,13 +1150,13 @@ void __34__DDSManager_handleNewAssertions___block_invoke(uint64_t a1)
       goto LABEL_11;
     }
 
-    if (a3 == 9)
+    if (state == 9)
     {
       v8 = +[DDSAnalytics sharedInstance];
       v9 = v8;
       v10 = 3;
 LABEL_11:
-      [v8 recordAssetAction:v10 forAsset:v5];
+      [v8 recordAssetAction:v10 forAsset:assetCopy];
 LABEL_13:
     }
   }
@@ -1164,43 +1164,43 @@ LABEL_13:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didCompleteDownloadForAssertion:(id)a3 error:(id)a4
+- (void)didCompleteDownloadForAssertion:(id)assertion error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  errorCopy = error;
   v8 = UpdateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = v6;
+    v13 = assertionCopy;
     v14 = 2114;
-    v15 = v7;
+    v15 = errorCopy;
     _os_log_impl(&dword_1DF7C6000, v8, OS_LOG_TYPE_DEFAULT, "Completed download for assertion (%{public}@) with error: %{public}@", &v12, 0x16u);
   }
 
-  if (!v7)
+  if (!errorCopy)
   {
-    v9 = [(DDSManager *)self tracker];
+    tracker = [(DDSManager *)self tracker];
     v10 = [MEMORY[0x1E695DF00] now];
-    [v9 didUpdateAssertion:v6 atDate:v10];
+    [tracker didUpdateAssertion:assertionCopy atDate:v10];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didCompleteDownloadForAssertions:(id)a3 error:(id)a4
+- (void)didCompleteDownloadForAssertions:(id)assertions error:(id)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assertionsCopy = assertions;
+  errorCopy = error;
   v8 = UpdateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v35 = v6;
+    v35 = assertionsCopy;
     v36 = 2114;
-    v37 = v7;
+    v37 = errorCopy;
     _os_log_impl(&dword_1DF7C6000, v8, OS_LOG_TYPE_DEFAULT, "Completed download for assertions (%{public}@) with error: %{public}@", buf, 0x16u);
   }
 
@@ -1216,7 +1216,7 @@ LABEL_13:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v11 = v6;
+  v11 = assertionsCopy;
   v12 = [v11 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v12)
   {
@@ -1232,9 +1232,9 @@ LABEL_13:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v28 + 1) + 8 * v15) query];
-        v17 = [v16 assetType];
-        [v10 addObject:v17];
+        query = [*(*(&v28 + 1) + 8 * v15) query];
+        assetType = [query assetType];
+        [v10 addObject:assetType];
 
         ++v15;
       }
@@ -1266,7 +1266,7 @@ LABEL_13:
           objc_enumerationMutation(v18);
         }
 
-        [(DDSManager *)self didEndUpdateCycleWithAssetType:*(*(&v24 + 1) + 8 * v22++) error:v7, v24];
+        [(DDSManager *)self didEndUpdateCycleWithAssetType:*(*(&v24 + 1) + 8 * v22++) error:errorCopy, v24];
       }
 
       while (v20 != v22);
@@ -1279,75 +1279,75 @@ LABEL_13:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didUpdateCatalogWithAssetType:(id)a3 error:(id)a4
+- (void)didUpdateCatalogWithAssetType:(id)type error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  errorCopy = error;
   v8 = UpdateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = v6;
+    v13 = typeCopy;
     v14 = 2114;
-    v15 = v7;
+    v15 = errorCopy;
     _os_log_impl(&dword_1DF7C6000, v8, OS_LOG_TYPE_DEFAULT, "didUpdateCatalogWithAssetType for asset type: %{public}@ with error: %{public}@", &v12, 0x16u);
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    [(DDSManager *)self didEndUpdateCycleWithAssetType:v6 error:v7];
+    [(DDSManager *)self didEndUpdateCycleWithAssetType:typeCopy error:errorCopy];
   }
 
   else
   {
-    v9 = [(DDSManager *)self dataSource];
-    v10 = [v9 date];
-    [(DDSManager *)self setCatalogUpdateDate:v10 forAssetType:v6];
+    dataSource = [(DDSManager *)self dataSource];
+    date = [dataSource date];
+    [(DDSManager *)self setCatalogUpdateDate:date forAssetType:typeCopy];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createRemoteSyncStateForAssetType:(id)a3
+- (void)createRemoteSyncStateForAssetType:(id)type
 {
-  v7 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(DDSManager *)self remoteSyncStateByAssetType];
-  v5 = [v4 objectForKey:v7];
+  remoteSyncStateByAssetType = [(DDSManager *)self remoteSyncStateByAssetType];
+  v5 = [remoteSyncStateByAssetType objectForKey:typeCopy];
 
   if (!v5)
   {
-    v5 = [[DDSRemoteSyncState alloc] initWithDelegate:self assetType:v7];
-    v6 = [(DDSManager *)self remoteSyncStateByAssetType];
-    [v6 setObject:v5 forKey:v7];
+    v5 = [[DDSRemoteSyncState alloc] initWithDelegate:self assetType:typeCopy];
+    remoteSyncStateByAssetType2 = [(DDSManager *)self remoteSyncStateByAssetType];
+    [remoteSyncStateByAssetType2 setObject:v5 forKey:typeCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updateAutoAssetForAssetType:(id)a3
+- (void)updateAutoAssetForAssetType:(id)type
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = UpdateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = typeCopy;
     _os_log_impl(&dword_1DF7C6000, v5, OS_LOG_TYPE_DEFAULT, "Begin update cycle for auto asset corresponding to asset type %@ ...", buf, 0xCu);
   }
 
-  v15 = v4;
+  v15 = typeCopy;
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(DDSManager *)self tracker];
-  v7 = [v6 allAssertions];
+  tracker = [(DDSManager *)self tracker];
+  allAssertions = [tracker allAssertions];
 
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [allAssertions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1359,26 +1359,26 @@ LABEL_13:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allAssertions);
         }
 
         v12 = [(DDSManager *)self autoAssetQueryForAssertion:*(*(&v18 + 1) + 8 * v11), v15];
         if (v12)
         {
-          v13 = [(DDSManager *)self autoAssetManager];
+          autoAssetManager = [(DDSManager *)self autoAssetManager];
           v16[0] = MEMORY[0x1E69E9820];
           v16[1] = 3221225472;
           v16[2] = __42__DDSManager_updateAutoAssetForAssetType___block_invoke;
           v16[3] = &unk_1E86C66D0;
           v17 = v12;
-          [v13 updateAssetForQuery:v17 callback:v16];
+          [autoAssetManager updateAssetForQuery:v17 callback:v16];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [allAssertions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -1412,125 +1412,125 @@ void __42__DDSManager_updateAutoAssetForAssetType___block_invoke(uint64_t a1, ui
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)remoteSyncStateRequestsUpdateForAssetType:(id)a3
+- (void)remoteSyncStateRequestsUpdateForAssetType:(id)type
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = UpdateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = typeCopy;
     _os_log_impl(&dword_1DF7C6000, v5, OS_LOG_TYPE_DEFAULT, "Begin update cycle requested for %@ ...", &v7, 0xCu);
   }
 
-  [(DDSManager *)self updateAutoAssetForAssetType:v4];
-  [(DDSManager *)self beginUpdateCycleForAssetType:v4 forced:0 discretionaryDownload:1];
+  [(DDSManager *)self updateAutoAssetForAssetType:typeCopy];
+  [(DDSManager *)self beginUpdateCycleForAssetType:typeCopy forced:0 discretionaryDownload:1];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)remoteSyncStateRequestsRetryForAssetType:(id)a3
+- (void)remoteSyncStateRequestsRetryForAssetType:(id)type
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = UpdateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = typeCopy;
     _os_log_impl(&dword_1DF7C6000, v5, OS_LOG_TYPE_DEFAULT, "Retry update cycle requested for %@ ...", &v7, 0xCu);
   }
 
   [(DDSManager *)self willRetryUpdateCycle];
-  [(DDSManager *)self beginUpdateCycleForAssetType:v4 forced:0 discretionaryDownload:0];
+  [(DDSManager *)self beginUpdateCycleForAssetType:typeCopy forced:0 discretionaryDownload:0];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)remoteSyncStateRequestsResetForAssetType:(id)a3
+- (void)remoteSyncStateRequestsResetForAssetType:(id)type
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = UpdateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = typeCopy;
     _os_log_impl(&dword_1DF7C6000, v5, OS_LOG_TYPE_DEFAULT, "DDS assertion reset requested, initiating forced update for %@", &v8, 0xCu);
   }
 
-  [(DDSManager *)self updateAutoAssetForAssetType:v4];
-  v6 = [(DDSManager *)self tracker];
-  [v6 resetAssertionDueDatesForAssetType:v4];
+  [(DDSManager *)self updateAutoAssetForAssetType:typeCopy];
+  tracker = [(DDSManager *)self tracker];
+  [tracker resetAssertionDueDatesForAssetType:typeCopy];
 
-  [(DDSManager *)self beginUpdateCycleForAssetType:v4 forced:1 discretionaryDownload:0];
+  [(DDSManager *)self beginUpdateCycleForAssetType:typeCopy forced:1 discretionaryDownload:0];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didStartUpdateCycleForAssetType:(id)a3
+- (void)didStartUpdateCycleForAssetType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(DDSManager *)self remoteSyncStateByAssetType];
-  v6 = [v5 objectForKey:v4];
+  remoteSyncStateByAssetType = [(DDSManager *)self remoteSyncStateByAssetType];
+  v6 = [remoteSyncStateByAssetType objectForKey:typeCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   [v6 beganUpdateCycle];
 }
 
-- (void)didEndUpdateCycleWithAssetType:(id)a3 error:(id)a4
+- (void)didEndUpdateCycleWithAssetType:(id)type error:(id)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  errorCopy = error;
   v8 = UpdateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = errorCopy;
     _os_log_impl(&dword_1DF7C6000, v8, OS_LOG_TYPE_DEFAULT, "Update cycled ended with error: %{public}@", &buf, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(DDSManager *)self remoteSyncStateByAssetType];
-  v10 = [v9 objectForKey:v6];
+  remoteSyncStateByAssetType = [(DDSManager *)self remoteSyncStateByAssetType];
+  v10 = [remoteSyncStateByAssetType objectForKey:typeCopy];
 
   os_unfair_lock_unlock(&self->_lock);
-  [v10 completedUpdateCycleWithError:v7];
-  if (v7)
+  [v10 completedUpdateCycleWithError:errorCopy];
+  if (errorCopy)
   {
-    v11 = [(DDSManager *)self workQueue];
+    workQueue = [(DDSManager *)self workQueue];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __51__DDSManager_didEndUpdateCycleWithAssetType_error___block_invoke_304;
     v20 = &unk_1E86C5C70;
-    v21 = self;
-    v22 = v6;
-    dispatch_sync(v11, &v17);
+    selfCopy = self;
+    v22 = typeCopy;
+    dispatch_sync(workQueue, &v17);
 
     [v10 syncStatus];
   }
 
   else
   {
-    v12 = [(DDSManager *)self assetObserver];
-    [v12 notifyObserversAssetsUpdatedForType:v6];
+    assetObserver = [(DDSManager *)self assetObserver];
+    [assetObserver notifyObserversAssetsUpdatedForType:typeCopy];
 
     *&buf = 0;
     *(&buf + 1) = &buf;
     v28 = 0x2020000000;
     v29 = 0;
-    v13 = [(DDSManager *)self workQueue];
+    workQueue2 = [(DDSManager *)self workQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__DDSManager_didEndUpdateCycleWithAssetType_error___block_invoke;
     block[3] = &unk_1E86C65A8;
     block[4] = self;
-    v14 = v6;
+    v14 = typeCopy;
     v25 = v14;
     p_buf = &buf;
-    dispatch_sync(v13, block);
+    dispatch_sync(workQueue2, block);
 
     if (*(*(&buf + 1) + 24) == 1)
     {
@@ -1577,17 +1577,17 @@ void __51__DDSManager_didEndUpdateCycleWithAssetType_error___block_invoke_304(ui
   [v3 setObject:v2 forKey:*(a1 + 40)];
 }
 
-- (void)serverDidUpdateAssetsWithType:(id)a3
+- (void)serverDidUpdateAssetsWithType:(id)type
 {
-  v4 = a3;
-  v5 = [(DDSManager *)self provider];
-  [v5 serverDidUpdateAssetsWithType:v4];
+  typeCopy = type;
+  provider = [(DDSManager *)self provider];
+  [provider serverDidUpdateAssetsWithType:typeCopy];
 }
 
 - (void)deleteV1AssetsIfNecessary
 {
-  v2 = [(DDSManager *)self workQueue];
-  dispatch_assert_queue_V2(v2);
+  workQueue = [(DDSManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v3 = DefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1607,13 +1607,13 @@ void __51__DDSManager_didEndUpdateCycleWithAssetType_error___block_invoke_304(ui
 
 - (void)removeOldAssets
 {
-  v3 = [(DDSManager *)self workQueue];
+  workQueue = [(DDSManager *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__DDSManager_removeOldAssets__block_invoke;
   block[3] = &unk_1E86C5AF0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __29__DDSManager_removeOldAssets__block_invoke(uint64_t a1)
@@ -1641,10 +1641,10 @@ void __29__DDSManager_removeOldAssets__block_invoke(uint64_t a1)
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(DDSManager *)self tracker];
-  v5 = [v4 allAssertions];
+  tracker = [(DDSManager *)self tracker];
+  allAssertions = [tracker allAssertions];
 
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v6 = [allAssertions countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1656,31 +1656,31 @@ void __29__DDSManager_removeOldAssets__block_invoke(uint64_t a1)
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allAssertions);
         }
 
         v10 = *(*(&v21 + 1) + 8 * v9);
-        v11 = [(DDSManager *)self autoAssetManager];
-        v12 = [v10 query];
-        v13 = [v12 assetType];
-        v14 = [v11 autoAssetTypeForAsserType:v13];
+        autoAssetManager = [(DDSManager *)self autoAssetManager];
+        query = [v10 query];
+        assetType = [query assetType];
+        v14 = [autoAssetManager autoAssetTypeForAsserType:assetType];
 
         if (v14)
         {
           v15 = [DDSAssetQuery alloc];
-          v16 = [v10 query];
-          v17 = [v16 filter];
-          v18 = [(DDSAssetQuery *)v15 initWithAssetType:v14 filter:v17];
+          query2 = [v10 query];
+          filter = [query2 filter];
+          v18 = [(DDSAssetQuery *)v15 initWithAssetType:v14 filter:filter];
 
-          v19 = [(DDSManager *)self autoAssetManager];
-          [v19 registerInterestInContentForQuery:v18];
+          autoAssetManager2 = [(DDSManager *)self autoAssetManager];
+          [autoAssetManager2 registerInterestInContentForQuery:v18];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v7 = [allAssertions countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v7);
@@ -1689,129 +1689,129 @@ void __29__DDSManager_removeOldAssets__block_invoke(uint64_t a1)
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)assetUpdateStatusForAssertion:(id)a3
+- (int64_t)assetUpdateStatusForAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [(DDSManager *)self provider];
-  v6 = [v5 updatableAssetsForAssertion:v4];
+  assertionCopy = assertion;
+  provider = [(DDSManager *)self provider];
+  v6 = [provider updatableAssetsForAssertion:assertionCopy];
 
   v7 = [v6 count] != 0;
   v8 = DefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(DDSManager *)v4 assetUpdateStatusForAssertion:v7, v8];
+    [(DDSManager *)assertionCopy assetUpdateStatusForAssertion:v7, v8];
   }
 
   return v7;
 }
 
-- (void)updateCatalogForAssetType:(id)a3 withCompletion:(id)a4
+- (void)updateCatalogForAssetType:(id)type withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DDSManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  completionCopy = completion;
+  typeCopy = type;
+  workQueue = [(DDSManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_alloc_init(MEMORY[0x1E69B1948]);
   [v9 setAllowsCellularAccess:1];
   [v9 setAllowsExpensiveAccess:1];
   [v9 setDiscretionary:0];
-  v10 = [(DDSManager *)self provider];
+  provider = [(DDSManager *)self provider];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55__DDSManager_updateCatalogForAssetType_withCompletion___block_invoke;
   v12[3] = &unk_1E86C6410;
-  v13 = v6;
-  v11 = v6;
-  [v10 startCatalogDownloadForAssetType:v7 withDownloadOptions:v9 withCompletion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [provider startCatalogDownloadForAssetType:typeCopy withDownloadOptions:v9 withCompletion:v12];
 }
 
-- (void)setCatalogUpdateDate:(id)a3 forAssetType:(id)a4
+- (void)setCatalogUpdateDate:(id)date forAssetType:(id)type
 {
-  v6 = a3;
-  v8 = [DDSManager updateCatalogMetadataKeyForAssetType:a4];
-  v7 = [(DDSManager *)self dataSource];
-  [v7 setDate:v6 forPreferenceKey:v8];
+  dateCopy = date;
+  v8 = [DDSManager updateCatalogMetadataKeyForAssetType:type];
+  dataSource = [(DDSManager *)self dataSource];
+  [dataSource setDate:dateCopy forPreferenceKey:v8];
 }
 
-- (id)catalogUpdateDateForAssetType:(id)a3
+- (id)catalogUpdateDateForAssetType:(id)type
 {
-  v4 = a3;
-  v5 = [(DDSManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  typeCopy = type;
+  workQueue = [(DDSManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [DDSManager updateCatalogMetadataKeyForAssetType:v4];
+  v6 = [DDSManager updateCatalogMetadataKeyForAssetType:typeCopy];
 
-  v7 = [(DDSManager *)self dataSource];
-  v8 = [v7 dateForPreferenceKey:v6];
+  dataSource = [(DDSManager *)self dataSource];
+  v8 = [dataSource dateForPreferenceKey:v6];
 
   return v8;
 }
 
-- (int64_t)modifyAssetUpdateStatusForAssertion:(id)a3 status:(int64_t)a4
+- (int64_t)modifyAssetUpdateStatusForAssertion:(id)assertion status:(int64_t)status
 {
-  v6 = a3;
-  v7 = [(DDSManager *)self tracker];
-  v8 = [v7 updateStatusForAssertion:v6];
+  assertionCopy = assertion;
+  tracker = [(DDSManager *)self tracker];
+  v8 = [tracker updateStatusForAssertion:assertionCopy];
 
   if (v8 == 2)
   {
-    a4 = 2;
+    status = 2;
   }
 
   else
   {
-    v9 = [(DDSManager *)self tracker];
-    [v9 modifyUpdateStatusForAssertion:v6 toStatus:a4];
+    tracker2 = [(DDSManager *)self tracker];
+    [tracker2 modifyUpdateStatusForAssertion:assertionCopy toStatus:status];
   }
 
-  return a4;
+  return status;
 }
 
-- (void)fetchCatalogBasedAssetUpdateStatusForAssertion:(id)a3 callback:(id)a4
+- (void)fetchCatalogBasedAssetUpdateStatusForAssertion:(id)assertion callback:(id)callback
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 query];
-  v9 = [v8 assetType];
-  v10 = [(DDSManager *)self catalogUpdateDateForAssetType:v9];
+  assertionCopy = assertion;
+  callbackCopy = callback;
+  query = [assertionCopy query];
+  assetType = [query assetType];
+  v10 = [(DDSManager *)self catalogUpdateDateForAssetType:assetType];
 
   if (v10 && ([v10 timeIntervalSinceNow], v11 > -86400.0))
   {
     v12 = DefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v6 query];
-      v14 = [v13 assetType];
+      query2 = [assertionCopy query];
+      assetType2 = [query2 assetType];
       *buf = 138412546;
-      v27 = v14;
+      v27 = assetType2;
       v28 = 2112;
       v29 = v10;
       _os_log_impl(&dword_1DF7C6000, v12, OS_LOG_TYPE_DEFAULT, "Catalog is already updated for asset type: %@ at %@, hence skip updating it again", buf, 0x16u);
     }
 
-    v15 = [(DDSManager *)self assetUpdateStatusForAssertion:v6];
-    v16 = [(DDSManager *)self tracker];
-    [v16 modifyUpdateStatusForAssertion:v6 toStatus:v15];
+    v15 = [(DDSManager *)self assetUpdateStatusForAssertion:assertionCopy];
+    tracker = [(DDSManager *)self tracker];
+    [tracker modifyUpdateStatusForAssertion:assertionCopy toStatus:v15];
 
-    v7[2](v7, v15, 0);
+    callbackCopy[2](callbackCopy, v15, 0);
   }
 
   else
   {
-    v17 = [v6 query];
-    v18 = [v17 assetType];
+    query3 = [assertionCopy query];
+    assetType3 = [query3 assetType];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __70__DDSManager_fetchCatalogBasedAssetUpdateStatusForAssertion_callback___block_invoke;
     v21[3] = &unk_1E86C66F8;
-    v22 = v17;
-    v23 = self;
-    v24 = v6;
-    v25 = v7;
-    v19 = v17;
-    [(DDSManager *)self updateCatalogForAssetType:v18 withCompletion:v21];
+    v22 = query3;
+    selfCopy = self;
+    v24 = assertionCopy;
+    v25 = callbackCopy;
+    v19 = query3;
+    [(DDSManager *)self updateCatalogForAssetType:assetType3 withCompletion:v21];
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -1857,21 +1857,21 @@ void __70__DDSManager_fetchCatalogBasedAssetUpdateStatusForAssertion_callback___
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAssetUpdateStatusForQuery:(id)a3 callback:(id)a4
+- (void)fetchAssetUpdateStatusForQuery:(id)query callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DDSManager *)self workQueue];
+  queryCopy = query;
+  callbackCopy = callback;
+  workQueue = [(DDSManager *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__DDSManager_fetchAssetUpdateStatusForQuery_callback___block_invoke;
   block[3] = &unk_1E86C5C48;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = queryCopy;
+  selfCopy = self;
+  v14 = callbackCopy;
+  v9 = callbackCopy;
+  v10 = queryCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __54__DDSManager_fetchAssetUpdateStatusForQuery_callback___block_invoke(uint64_t a1)
@@ -2074,21 +2074,21 @@ void __54__DDSManager_fetchAssetUpdateStatusForQuery_callback___block_invoke_315
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateCatalogBasedAssetForAssertion:(id)a3 callback:(id)a4
+- (void)updateCatalogBasedAssetForAssertion:(id)assertion callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DDSManager *)self workQueue];
+  assertionCopy = assertion;
+  callbackCopy = callback;
+  workQueue = [(DDSManager *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__DDSManager_updateCatalogBasedAssetForAssertion_callback___block_invoke;
   block[3] = &unk_1E86C5C48;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = assertionCopy;
+  selfCopy = self;
+  v14 = callbackCopy;
+  v9 = callbackCopy;
+  v10 = assertionCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __59__DDSManager_updateCatalogBasedAssetForAssertion_callback___block_invoke(id *a1)
@@ -2246,21 +2246,21 @@ void __59__DDSManager_updateCatalogBasedAssetForAssertion_callback___block_invok
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAssetForQuery:(id)a3 callback:(id)a4
+- (void)updateAssetForQuery:(id)query callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DDSManager *)self workQueue];
+  queryCopy = query;
+  callbackCopy = callback;
+  workQueue = [(DDSManager *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__DDSManager_updateAssetForQuery_callback___block_invoke;
   block[3] = &unk_1E86C5C48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = queryCopy;
+  v13 = callbackCopy;
+  v9 = callbackCopy;
+  v10 = queryCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __43__DDSManager_updateAssetForQuery_callback___block_invoke(uint64_t a1)

@@ -1,7 +1,7 @@
 @interface SearchUIRichTitleCardSectionView
 - (id)setupContentView;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
-- (void)updateWithRowModel:(id)a3;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIRichTitleCardSectionView
@@ -22,54 +22,54 @@
   return v6;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 cardSection];
+  modelCopy = model;
+  cardSection = [modelCopy cardSection];
   v35.receiver = self;
   v35.super_class = SearchUIRichTitleCardSectionView;
-  [(SearchUICardSectionView *)&v35 updateWithRowModel:v4];
-  v6 = [v5 isCentered];
-  v7 = [(SearchUIRichTitleCardSectionView *)self headerView];
+  [(SearchUICardSectionView *)&v35 updateWithRowModel:modelCopy];
+  isCentered = [cardSection isCentered];
+  headerView = [(SearchUIRichTitleCardSectionView *)self headerView];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __55__SearchUIRichTitleCardSectionView_updateWithRowModel___block_invoke;
   v31[3] = &unk_1E85B2900;
-  v8 = v5;
+  v8 = cardSection;
   v32 = v8;
-  v9 = v7;
+  v9 = headerView;
   v33 = v9;
-  v34 = v6;
+  v34 = isCentered;
   [v9 performBatchUpdates:v31];
-  v10 = [v8 buttonItems];
-  if (v10)
+  buttonItems = [v8 buttonItems];
+  if (buttonItems)
   {
-    v11 = [(SearchUIRichTitleCardSectionView *)self buttonStackView];
+    buttonStackView = [(SearchUIRichTitleCardSectionView *)self buttonStackView];
 
-    if (!v11)
+    if (!buttonStackView)
     {
       v12 = objc_opt_new();
       [(SearchUIRichTitleCardSectionView *)self setButtonStackView:v12];
 
-      v13 = [(SearchUIRichTitleCardSectionView *)self buttonStackView];
-      [v13 setShouldReverseButtonOrder:1];
+      buttonStackView2 = [(SearchUIRichTitleCardSectionView *)self buttonStackView];
+      [buttonStackView2 setShouldReverseButtonOrder:1];
 
-      v14 = [(SearchUIRichTitleCardSectionView *)self buttonStackView];
-      [SearchUIAutoLayout requireIntrinsicSizeForView:v14];
+      buttonStackView3 = [(SearchUIRichTitleCardSectionView *)self buttonStackView];
+      [SearchUIAutoLayout requireIntrinsicSizeForView:buttonStackView3];
 
-      v15 = [(SearchUICardSectionView *)self contentView];
-      v16 = [(SearchUIRichTitleCardSectionView *)self buttonStackView];
-      [v15 addArrangedSubview:v16];
+      contentView = [(SearchUICardSectionView *)self contentView];
+      buttonStackView4 = [(SearchUIRichTitleCardSectionView *)self buttonStackView];
+      [contentView addArrangedSubview:buttonStackView4];
     }
 
-    v17 = [(SearchUIRichTitleCardSectionView *)self buttonStackView];
-    v18 = [(SearchUICardSectionView *)self feedbackDelegate];
-    [v17 updateWithButtonItems:v10 maxButtonItems:0 buttonItemViewType:1 rowModel:v4 feedbackDelegate:v18];
+    buttonStackView5 = [(SearchUIRichTitleCardSectionView *)self buttonStackView];
+    feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+    [buttonStackView5 updateWithButtonItems:buttonItems maxButtonItems:0 buttonItemViewType:1 rowModel:modelCopy feedbackDelegate:feedbackDelegate];
   }
 
-  v19 = [v10 count];
-  v20 = [(SearchUIRichTitleCardSectionView *)self buttonStackView];
-  [v20 setHidden:v19 == 0];
+  v19 = [buttonItems count];
+  buttonStackView6 = [(SearchUIRichTitleCardSectionView *)self buttonStackView];
+  [buttonStackView6 setHidden:v19 == 0];
 
   v21 = 0.0;
   v22 = 0.0;
@@ -99,11 +99,11 @@
 
   [v9 effectiveLayoutMargins];
   v28 = 8.0 - v27;
-  v29 = [(SearchUICardSectionView *)self contentView];
-  [v29 setSpacing:v28];
+  contentView2 = [(SearchUICardSectionView *)self contentView];
+  [contentView2 setSpacing:v28];
 
-  v30 = [(SearchUICardSectionView *)self contentView];
-  [v30 setDirectionalLayoutMargins:{0.0, v22, 0.0, v21}];
+  contentView3 = [(SearchUICardSectionView *)self contentView];
+  [contentView3 setDirectionalLayoutMargins:{0.0, v22, 0.0, v21}];
 }
 
 void __55__SearchUIRichTitleCardSectionView_updateWithRowModel___block_invoke(uint64_t a1)
@@ -170,14 +170,14 @@ void __55__SearchUIRichTitleCardSectionView_updateWithRowModel___block_invoke(ui
   [*(a1 + 40) setAxis:*(a1 + 48)];
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
   v8.receiver = self;
   v8.super_class = SearchUIRichTitleCardSectionView;
-  [(SearchUICardSectionView *)&v8 containerView:a3 willMeasureArrangedSubviewsFittingSize:a5 forReason:a4.width, a4.height];
-  v6 = [(SearchUICardSectionView *)self isCompactWidth];
-  v7 = [(SearchUIRichTitleCardSectionView *)self headerView];
-  [v7 setUseCompactWidth:v6];
+  [(SearchUICardSectionView *)&v8 containerView:view willMeasureArrangedSubviewsFittingSize:reason forReason:size.width, size.height];
+  isCompactWidth = [(SearchUICardSectionView *)self isCompactWidth];
+  headerView = [(SearchUIRichTitleCardSectionView *)self headerView];
+  [headerView setUseCompactWidth:isCompactWidth];
 }
 
 @end

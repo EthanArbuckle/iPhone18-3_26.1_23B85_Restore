@@ -1,16 +1,16 @@
 @interface WebScriptWorld
-+ (id)findOrCreateWorld:(void *)a3;
-+ (id)scriptWorldForJavaScriptContext:(id)a3;
++ (id)findOrCreateWorld:(void *)world;
++ (id)scriptWorldForJavaScriptContext:(id)context;
 + (id)standardWorld;
 + (id)world;
 - (WebScriptWorld)init;
-- (WebScriptWorld)initWithWorld:(void *)a3;
+- (WebScriptWorld)initWithWorld:(void *)world;
 - (void)dealloc;
 @end
 
 @implementation WebScriptWorld
 
-- (WebScriptWorld)initWithWorld:(void *)a3
+- (WebScriptWorld)initWithWorld:(void *)world
 {
   v35.receiver = self;
   v35.super_class = WebScriptWorld;
@@ -22,8 +22,8 @@
 
   v6 = objc_alloc_init(WebScriptWorldPrivate);
   v4->_private = v6;
-  v7 = *a3;
-  *a3 = 0;
+  v7 = *world;
+  *world = 0;
   m_ptr = v6->world.m_ptr;
   v6->world.m_ptr = v7;
   if (!m_ptr)
@@ -397,7 +397,7 @@ LABEL_19:
 
 + (id)world
 {
-  result = objc_alloc_init(a1);
+  result = objc_alloc_init(self);
   if (result)
   {
     v3 = result;
@@ -408,19 +408,19 @@ LABEL_19:
   return result;
 }
 
-+ (id)scriptWorldForJavaScriptContext:(id)a3
++ (id)scriptWorldForJavaScriptContext:(id)context
 {
-  v4 = [a3 JSGlobalContextRef];
+  jSGlobalContextRef = [context JSGlobalContextRef];
 
-  return [a1 scriptWorldForGlobalContext:v4];
+  return [self scriptWorldForGlobalContext:jSGlobalContextRef];
 }
 
-+ (id)findOrCreateWorld:(void *)a3
++ (id)findOrCreateWorld:(void *)world
 {
-  if (WebCore::mainThreadNormalWorldSingleton(a1) == a3)
+  if (WebCore::mainThreadNormalWorldSingleton(self) == world)
   {
 
-    return [a1 standardWorld];
+    return [self standardWorld];
   }
 
   else
@@ -431,7 +431,7 @@ LABEL_19:
       if (*qword_1ED6A6160)
       {
         v6 = *(v5 - 8);
-        v7 = (a3 + ~(a3 << 32)) ^ ((a3 + ~(a3 << 32)) >> 22);
+        v7 = (world + ~(world << 32)) ^ ((world + ~(world << 32)) >> 22);
         v8 = 9 * ((v7 + ~(v7 << 13)) ^ ((v7 + ~(v7 << 13)) >> 8));
         v9 = (v8 ^ (v8 >> 15)) + ~((v8 ^ (v8 >> 15)) << 27);
         v10 = v6 & ((v9 >> 31) ^ v9);
@@ -454,7 +454,7 @@ LABEL_19:
               return result;
             }
 
-            if (v14 == a3)
+            if (v14 == world)
             {
               break;
             }
@@ -482,18 +482,18 @@ LABEL_19:
     }
 
 LABEL_16:
-    v18 = [a1 alloc];
-    ++*a3;
-    v24 = a3;
-    v19 = [v18 initWithWorld:&v24];
+    v18 = [self alloc];
+    ++*world;
+    worldCopy = world;
+    v19 = [v18 initWithWorld:&worldCopy];
     v15 = v19;
     if (v19)
     {
       v20 = v19;
     }
 
-    v21 = v24;
-    v24 = 0;
+    v21 = worldCopy;
+    worldCopy = 0;
     if (!v21)
     {
       return v15;

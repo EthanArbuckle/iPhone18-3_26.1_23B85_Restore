@@ -1,48 +1,48 @@
 @interface DESDediscoUploader
-+ (BOOL)hasAllZeroData:(id)a3;
-+ (BOOL)uploadViaDedisco:(id)a3 jsonResult:(id)a4 recipe:(id)a5 bundleIdentifier:(id)a6 submissionCount:(unsigned int *)a7 error:(id *)a8;
-- (BOOL)donateCategoricalMetadata:(id)a3 dediscoMetadata:(id)a4 recorder:(id)a5;
-- (BOOL)donateFedStatsMetrics:(id)a3 dataKey:(id)a4 dataTypeContent:(id)a5 dediscoMetadata:(id)a6 error:(id *)a7 recorder:(id)a8;
-- (BOOL)donateMetrics:(id)a3 dediscoMetadata:(id)a4 recorder:(id)a5;
-- (BOOL)scaleData:(id)a3 withScalingFactor:(double)a4;
-- (DESDediscoUploader)initWithBundleIdentifier:(id)a3 recipe:(id)a4;
-- (unsigned)donateResult:(id)a3 dediscoMetadata:(id)a4 recorder:(id)a5;
++ (BOOL)hasAllZeroData:(id)data;
++ (BOOL)uploadViaDedisco:(id)dedisco jsonResult:(id)result recipe:(id)recipe bundleIdentifier:(id)identifier submissionCount:(unsigned int *)count error:(id *)error;
+- (BOOL)donateCategoricalMetadata:(id)metadata dediscoMetadata:(id)dediscoMetadata recorder:(id)recorder;
+- (BOOL)donateFedStatsMetrics:(id)metrics dataKey:(id)key dataTypeContent:(id)content dediscoMetadata:(id)metadata error:(id *)error recorder:(id)recorder;
+- (BOOL)donateMetrics:(id)metrics dediscoMetadata:(id)metadata recorder:(id)recorder;
+- (BOOL)scaleData:(id)data withScalingFactor:(double)factor;
+- (DESDediscoUploader)initWithBundleIdentifier:(id)identifier recipe:(id)recipe;
+- (unsigned)donateResult:(id)result dediscoMetadata:(id)metadata recorder:(id)recorder;
 @end
 
 @implementation DESDediscoUploader
 
-+ (BOOL)uploadViaDedisco:(id)a3 jsonResult:(id)a4 recipe:(id)a5 bundleIdentifier:(id)a6 submissionCount:(unsigned int *)a7 error:(id *)a8
++ (BOOL)uploadViaDedisco:(id)dedisco jsonResult:(id)result recipe:(id)recipe bundleIdentifier:(id)identifier submissionCount:(unsigned int *)count error:(id *)error
 {
   v107[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = [[DESDediscoUploader alloc] initWithBundleIdentifier:v17 recipe:v16];
+  dediscoCopy = dedisco;
+  resultCopy = result;
+  recipeCopy = recipe;
+  identifierCopy = identifier;
+  v18 = [[DESDediscoUploader alloc] initWithBundleIdentifier:identifierCopy recipe:recipeCopy];
   if (v18)
   {
-    v84 = a1;
+    selfCopy = self;
     v104 = *MEMORY[0x277D05410];
     v105 = &stru_285C10228;
-    v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v105 forKeys:&v104 count:1];
-    if (v14)
+    identifierCopy = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v105 forKeys:&v104 count:1];
+    if (dediscoCopy)
     {
       v20 = objc_alloc_init(DESDPFloatValueRecorder);
-      v21 = [(DESDediscoUploader *)v18 donateResult:v14 dediscoMetadata:v19 recorder:v20];
-      if (a7)
+      v21 = [(DESDediscoUploader *)v18 donateResult:dediscoCopy dediscoMetadata:identifierCopy recorder:v20];
+      if (count)
       {
-        *a7 += v21;
+        *count += v21;
       }
 
       if (!v21)
       {
-        v85 = v17;
-        v51 = a8;
-        v52 = v15;
+        v85 = identifierCopy;
+        errorCopy = error;
+        v52 = resultCopy;
         v53 = MEMORY[0x277CCACA8];
         v54 = [(DESDediscoUploader *)v18 key];
-        v55 = [v54 resultsKeyString];
-        v90 = [v53 stringWithFormat:@"Failed to submit result to Dedisco for %@, skip metadata submission", v55];
+        resultsKeyString = [v54 resultsKeyString];
+        v90 = [v53 stringWithFormat:@"Failed to submit result to Dedisco for %@, skip metadata submission", resultsKeyString];
 
         v56 = +[DESLogging coreChannel];
         if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
@@ -50,11 +50,11 @@
           +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
         }
 
-        v15 = v52;
-        if (!v51)
+        resultCopy = v52;
+        if (!errorCopy)
         {
-          LOBYTE(a8) = 0;
-          v17 = v85;
+          LOBYTE(error) = 0;
+          identifierCopy = v85;
 LABEL_66:
 
           goto LABEL_67;
@@ -65,31 +65,31 @@ LABEL_66:
         v103 = v90;
         v58 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v103 forKeys:&v102 count:1];
         [v57 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2006 userInfo:v58];
-        *v51 = LOBYTE(a8) = 0;
-        v17 = v85;
+        *errorCopy = LOBYTE(error) = 0;
+        identifierCopy = v85;
 LABEL_65:
 
         goto LABEL_66;
       }
     }
 
-    v89 = v19;
+    v89 = identifierCopy;
     v93 = 0;
-    v22 = [DESFedStatsDataType extractFedStatsDataTypeFrom:v16 forKey:&v93];
+    v22 = [DESFedStatsDataType extractFedStatsDataTypeFrom:recipeCopy forKey:&v93];
     v23 = v93;
     v20 = v23;
     v90 = v22;
-    v87 = v15;
-    v88 = v14;
+    v87 = resultCopy;
+    v88 = dediscoCopy;
     if (v22 && v23)
     {
-      v82 = v16;
+      v82 = recipeCopy;
       v24 = objc_alloc_init(DESFedStatsRecorder);
       v92 = 0;
-      v25 = [(DESDediscoUploader *)v18 donateFedStatsMetrics:v15 dataKey:v20 dataTypeContent:v22 dediscoMetadata:v89 error:&v92 recorder:v24];
+      v25 = [(DESDediscoUploader *)v18 donateFedStatsMetrics:resultCopy dataKey:v20 dataTypeContent:v22 dediscoMetadata:v89 error:&v92 recorder:v24];
       v26 = v92;
       v27 = [(DESDediscoUploader *)v18 key];
-      v28 = [v27 metadataEncodedMetricsKeyString];
+      metadataEncodedMetricsKeyString = [v27 metadataEncodedMetricsKeyString];
 
       v29 = +[DESLogging coreChannel];
       v30 = v29;
@@ -101,44 +101,44 @@ LABEL_65:
         }
 
         v58 = v26;
-        if (a8)
+        if (error)
         {
           v62 = MEMORY[0x277CCA9B8];
           v100 = *MEMORY[0x277CCA470];
-          v63 = [v26 localizedDescription];
-          v101 = v63;
+          localizedDescription = [v26 localizedDescription];
+          v101 = localizedDescription;
           v64 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
-          *a8 = [v62 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2012 userInfo:v64];
+          *error = [v62 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2012 userInfo:v64];
 
           v58 = v26;
         }
 
-        LOBYTE(a8) = 0;
-        v15 = v87;
-        v14 = v88;
-        v16 = v82;
+        LOBYTE(error) = 0;
+        resultCopy = v87;
+        dediscoCopy = v88;
+        recipeCopy = v82;
         goto LABEL_64;
       }
 
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v99 = v28;
+        v99 = metadataEncodedMetricsKeyString;
         _os_log_impl(&dword_248FF7000, v30, OS_LOG_TYPE_INFO, "Donated data for: %@ using FedStats encoding", buf, 0xCu);
       }
 
-      v14 = v88;
-      if (a7)
+      dediscoCopy = v88;
+      if (count)
       {
-        ++*a7;
+        ++*count;
       }
 
-      v15 = v87;
-      v16 = v82;
+      resultCopy = v87;
+      recipeCopy = v82;
     }
 
     v91 = 0;
-    v24 = [DESAggregatableMetadata encodeMetadata:v15 recipe:v16 error:&v91];
+    v24 = [DESAggregatableMetadata encodeMetadata:resultCopy recipe:recipeCopy error:&v91];
     v83 = v91;
     if (!v24)
     {
@@ -149,23 +149,23 @@ LABEL_65:
       }
 
       v58 = v83;
-      if (a8)
+      if (error)
       {
         v60 = v83;
-        v61 = a8;
-        LOBYTE(a8) = 0;
-        *v61 = v83;
+        errorCopy2 = error;
+        LOBYTE(error) = 0;
+        *errorCopy2 = v83;
       }
 
       goto LABEL_64;
     }
 
-    v81 = a8;
+    errorCopy3 = error;
     v31 = [(DESFedStatsRecorder *)v24 objectForKeyedSubscript:@"encodedNumericMetadata"];
     if ([(DESDPFloatValueRecorder *)v31 length])
     {
       v32 = [(DESFedStatsRecorder *)v24 objectForKeyedSubscript:@"encodedNumericMetadata"];
-      v33 = [v84 hasAllZeroData:v32];
+      v33 = [selfCopy hasAllZeroData:v32];
 
       if (v33)
       {
@@ -178,11 +178,11 @@ LABEL_65:
 
       if (!v35)
       {
-        v86 = v17;
+        v86 = identifierCopy;
         v65 = MEMORY[0x277CCACA8];
         v66 = [(DESDediscoUploader *)v18 key];
-        v67 = [v66 metricsKeyString];
-        v68 = [v65 stringWithFormat:@"Failed to donate aggregatable metrics for: %@", v67];
+        metricsKeyString = [v66 metricsKeyString];
+        v68 = [v65 stringWithFormat:@"Failed to donate aggregatable metrics for: %@", metricsKeyString];
 
         v69 = +[DESLogging coreChannel];
         if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
@@ -190,20 +190,20 @@ LABEL_65:
           +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
         }
 
-        if (v81)
+        if (errorCopy3)
         {
           v70 = MEMORY[0x277CCA9B8];
           v96 = *MEMORY[0x277CCA470];
           v97 = v68;
           v71 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v97 forKeys:&v96 count:1];
-          *v81 = [v70 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2006 userInfo:v71];
+          *errorCopy3 = [v70 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2006 userInfo:v71];
         }
 
 LABEL_62:
-        LOBYTE(a8) = 0;
-        v15 = v87;
-        v14 = v88;
-        v17 = v86;
+        LOBYTE(error) = 0;
+        resultCopy = v87;
+        dediscoCopy = v88;
+        identifierCopy = v86;
         goto LABEL_63;
       }
 
@@ -211,15 +211,15 @@ LABEL_62:
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
         v37 = [(DESDediscoUploader *)v18 key];
-        v38 = [v37 metricsKeyString];
+        metricsKeyString2 = [v37 metricsKeyString];
         *buf = 138412290;
-        v99 = v38;
+        v99 = metricsKeyString2;
         _os_log_impl(&dword_248FF7000, v36, OS_LOG_TYPE_INFO, "Donated aggregatable metrics for: %@", buf, 0xCu);
       }
 
-      if (a7)
+      if (count)
       {
-        ++*a7;
+        ++*count;
       }
     }
 
@@ -228,13 +228,13 @@ LABEL_24:
     if ([v39 length])
     {
       v40 = [(DESFedStatsRecorder *)v24 objectForKeyedSubscript:@"encodedCategoricalMetadata"];
-      v41 = [v84 hasAllZeroData:v40];
+      v41 = [selfCopy hasAllZeroData:v40];
 
       if ((v41 & 1) == 0)
       {
-        a8 = objc_alloc_init(DESDPBitValueRecorder);
+        error = objc_alloc_init(DESDPBitValueRecorder);
         v42 = [(DESFedStatsRecorder *)v24 objectForKeyedSubscript:@"encodedCategoricalMetadata"];
-        v43 = [(DESDediscoUploader *)v18 donateCategoricalMetadata:v42 dediscoMetadata:v89 recorder:a8];
+        v43 = [(DESDediscoUploader *)v18 donateCategoricalMetadata:v42 dediscoMetadata:v89 recorder:error];
 
         if (v43)
         {
@@ -242,28 +242,28 @@ LABEL_24:
           if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
           {
             v45 = [(DESDediscoUploader *)v18 key];
-            v46 = [v45 metadataKeyString];
+            metadataKeyString = [v45 metadataKeyString];
             *buf = 138412290;
-            v99 = v46;
+            v99 = metadataKeyString;
             _os_log_impl(&dword_248FF7000, v44, OS_LOG_TYPE_INFO, "Donated categorical metadata for: %@", buf, 0xCu);
           }
 
-          v15 = v87;
-          if (a7)
+          resultCopy = v87;
+          if (count)
           {
-            ++*a7;
+            ++*count;
           }
 
-          LOBYTE(a8) = 1;
-          v14 = v88;
+          LOBYTE(error) = 1;
+          dediscoCopy = v88;
           goto LABEL_63;
         }
 
-        v86 = v17;
+        v86 = identifierCopy;
         v72 = MEMORY[0x277CCACA8];
         v73 = [(DESDediscoUploader *)v18 key];
-        v74 = [v73 metadataKeyString];
-        v75 = [v72 stringWithFormat:@"Failed to donate categorical metadata for: %@", v74];
+        metadataKeyString2 = [v73 metadataKeyString];
+        v75 = [v72 stringWithFormat:@"Failed to donate categorical metadata for: %@", metadataKeyString2];
 
         v76 = +[DESLogging coreChannel];
         if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
@@ -271,13 +271,13 @@ LABEL_24:
           +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
         }
 
-        if (v81)
+        if (errorCopy3)
         {
           v77 = MEMORY[0x277CCA9B8];
           v94 = *MEMORY[0x277CCA470];
           v95 = v75;
           v78 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v95 forKeys:&v94 count:1];
-          *v81 = [v77 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2006 userInfo:v78];
+          *errorCopy3 = [v77 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2006 userInfo:v78];
         }
 
         goto LABEL_62;
@@ -288,46 +288,46 @@ LABEL_24:
     {
     }
 
-    LOBYTE(a8) = 1;
-    v15 = v87;
-    v14 = v88;
+    LOBYTE(error) = 1;
+    resultCopy = v87;
+    dediscoCopy = v88;
 LABEL_63:
     v58 = v83;
 LABEL_64:
 
-    v19 = v89;
+    identifierCopy = v89;
     goto LABEL_65;
   }
 
-  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create DESDediscoUploader for: %@", v17];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create DESDediscoUploader for: %@", identifierCopy];
   v47 = +[DESLogging coreChannel];
   if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
   {
     +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
   }
 
-  if (a8)
+  if (error)
   {
     v48 = MEMORY[0x277CCA9B8];
-    v49 = v17;
-    v50 = a8;
+    v49 = identifierCopy;
+    errorCopy4 = error;
     v106 = *MEMORY[0x277CCA470];
-    v107[0] = v19;
+    v107[0] = identifierCopy;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v107 forKeys:&v106 count:1];
     [v48 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2006 userInfo:v20];
-    *v50 = LOBYTE(a8) = 0;
-    v17 = v49;
+    *errorCopy4 = LOBYTE(error) = 0;
+    identifierCopy = v49;
 LABEL_67:
   }
 
   v79 = *MEMORY[0x277D85DE8];
-  return a8;
+  return error;
 }
 
-- (DESDediscoUploader)initWithBundleIdentifier:(id)a3 recipe:(id)a4
+- (DESDediscoUploader)initWithBundleIdentifier:(id)identifier recipe:(id)recipe
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  recipeCopy = recipe;
   v23.receiver = self;
   v23.super_class = DESDediscoUploader;
   v8 = [(DESDediscoUploader *)&v23 init];
@@ -341,63 +341,63 @@ LABEL_67:
     }
 
     v11 = v10;
-    v12 = [v7 privacyIdentifierExt];
-    v22 = v6;
-    if (v12)
+    privacyIdentifierExt = [recipeCopy privacyIdentifierExt];
+    v22 = identifierCopy;
+    if (privacyIdentifierExt)
     {
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v6, v12];
+      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", identifierCopy, privacyIdentifierExt];
     }
 
     else
     {
-      v13 = v6;
+      v13 = identifierCopy;
     }
 
     v14 = v13;
-    v15 = [v7 recipeUserInfo];
-    v16 = [v15 objectForKeyedSubscript:@"ramsayRecipeID"];
+    recipeUserInfo = [recipeCopy recipeUserInfo];
+    v16 = [recipeUserInfo objectForKeyedSubscript:@"ramsayRecipeID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v7 recipeUserInfo];
-      v18 = [v17 objectForKeyedSubscript:@"ramsayRecipeID"];
+      recipeUserInfo2 = [recipeCopy recipeUserInfo];
+      recipeID = [recipeUserInfo2 objectForKeyedSubscript:@"ramsayRecipeID"];
     }
 
     else
     {
-      v18 = [v7 recipeID];
+      recipeID = [recipeCopy recipeID];
     }
 
-    v19 = [[DESDediscoKey alloc] initWithPrivacyID:v14 environment:v11 recipeID:v18];
+    v19 = [[DESDediscoKey alloc] initWithPrivacyID:v14 environment:v11 recipeID:recipeID];
     key = v8->_key;
     v8->_key = v19;
 
-    objc_storeStrong(&v8->_recipe, a4);
-    v6 = v22;
+    objc_storeStrong(&v8->_recipe, recipe);
+    identifierCopy = v22;
   }
 
   return v8;
 }
 
-- (unsigned)donateResult:(id)a3 dediscoMetadata:(id)a4 recorder:(id)a5
+- (unsigned)donateResult:(id)result dediscoMetadata:(id)metadata recorder:(id)recorder
 {
   v80 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v66 = a5;
+  resultCopy = result;
+  metadataCopy = metadata;
+  recorderCopy = recorder;
   v10 = [(DESDediscoUploader *)self key];
-  v11 = [v10 resultsKeyString];
+  resultsKeyString = [v10 resultsKeyString];
 
-  v12 = self;
-  v13 = [[DESGaussianAlgorithmParameters alloc] initWith:v11 recipe:self->_recipe];
+  selfCopy = self;
+  v13 = [[DESGaussianAlgorithmParameters alloc] initWith:resultsKeyString recipe:self->_recipe];
   v14 = v13;
   if (v13)
   {
     [(DESGaussianAlgorithmParameters *)v13 clippingBound];
     v16 = v15;
-    v17 = [v9 mutableCopy];
-    v18 = [(DESRecipe *)self->_recipe federatedBufferDownScalingFactor];
-    if (!v18)
+    v17 = [metadataCopy mutableCopy];
+    federatedBufferDownScalingFactor = [(DESRecipe *)self->_recipe federatedBufferDownScalingFactor];
+    if (!federatedBufferDownScalingFactor)
     {
       p_super = +[DESLogging coreChannel];
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
@@ -408,7 +408,7 @@ LABEL_67:
       goto LABEL_46;
     }
 
-    v65 = self;
+    selfCopy2 = self;
     if ([(DESRecipe *)self->_recipe useSparsification])
     {
       v19 = objc_alloc_init(DESSparsification);
@@ -424,12 +424,12 @@ LABEL_67:
       }
 
       v20 = v19;
-      v21 = v12;
-      recipe = v12->_recipe;
+      v21 = selfCopy;
+      recipe = selfCopy->_recipe;
       v23 = [(DESDediscoUploader *)v21 key];
       v72 = 0;
       v63 = v20;
-      v24 = [(DESSparsification *)v20 splitResultToChunksWithResult:v8 recipe:recipe baseKey:v23 error:&v72];
+      v24 = [(DESSparsification *)v20 splitResultToChunksWithResult:resultCopy recipe:recipe baseKey:v23 error:&v72];
       p_super = v72;
 
       if (p_super)
@@ -437,7 +437,7 @@ LABEL_67:
         v26 = +[DESLogging coreChannel];
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          [DESDediscoUploader donateResult:v65 dediscoMetadata:p_super recorder:?];
+          [DESDediscoUploader donateResult:selfCopy2 dediscoMetadata:p_super recorder:?];
         }
 
         goto LABEL_45;
@@ -450,9 +450,9 @@ LABEL_45:
         goto LABEL_46;
       }
 
-      v60 = v11;
-      v61 = v9;
-      v62 = v8;
+      v60 = resultsKeyString;
+      v61 = metadataCopy;
+      v62 = resultCopy;
       v70 = 0u;
       v71 = 0u;
       v68 = 0u;
@@ -468,7 +468,7 @@ LABEL_45:
       v37 = v36;
       v64 = 0;
       v67 = *v69;
-      v38 = v65;
+      v38 = selfCopy2;
 LABEL_30:
       v39 = 0;
       while (1)
@@ -479,34 +479,34 @@ LABEL_30:
         }
 
         v40 = *(*(&v68 + 1) + 8 * v39);
-        v41 = [v40 clippingBound];
-        [v41 doubleValue];
+        clippingBound = [v40 clippingBound];
+        [clippingBound doubleValue];
         v43 = v42;
 
-        [v18 doubleValue];
+        [federatedBufferDownScalingFactor doubleValue];
         v45 = v43 * v44;
         -[DESGaussianAlgorithmParameters addPerChunkParametersWith:numChunks:](v14, "addPerChunkParametersWith:numChunks:", [v35 count], v43);
-        v46 = [(DESGaussianAlgorithmParameters *)v14 parameters];
-        [v17 setObject:v46 forKeyedSubscript:@"AlgorithmParameters"];
+        parameters = [(DESGaussianAlgorithmParameters *)v14 parameters];
+        [v17 setObject:parameters forKeyedSubscript:@"AlgorithmParameters"];
 
-        v47 = [v40 data];
-        v48 = [(DESDediscoUploader *)v38 scaleData:v47 withScalingFactor:v45];
+        data = [v40 data];
+        v48 = [(DESDediscoUploader *)v38 scaleData:data withScalingFactor:v45];
 
         if (v48)
         {
-          v49 = v18;
+          v49 = federatedBufferDownScalingFactor;
           v50 = v14;
           v51 = [v40 key];
-          v52 = [v40 data];
+          data2 = [v40 data];
           v53 = v17;
-          v54 = [v66 record:v51 data:v52 metadata:v17];
+          v54 = [recorderCopy record:v51 data:data2 metadata:v17];
 
           if (!v54)
           {
             v17 = v53;
             v14 = v50;
-            v18 = v49;
-            v38 = v65;
+            federatedBufferDownScalingFactor = v49;
+            v38 = selfCopy2;
             goto LABEL_42;
           }
 
@@ -519,8 +519,8 @@ LABEL_30:
 
           v17 = v53;
           v14 = v50;
-          v18 = v49;
-          v38 = v65;
+          federatedBufferDownScalingFactor = v49;
+          v38 = selfCopy2;
         }
 
         else
@@ -546,10 +546,10 @@ LABEL_42:
           {
 LABEL_50:
 
-            v8 = v62;
+            resultCopy = v62;
             p_super = &v63->super;
-            v11 = v60;
-            v9 = v61;
+            resultsKeyString = v60;
+            metadataCopy = v61;
             v27 = v64;
             goto LABEL_47;
           }
@@ -559,24 +559,24 @@ LABEL_50:
       }
     }
 
-    if ([v8 length] >= 0xE7EF1)
+    if ([resultCopy length] >= 0xE7EF1)
     {
       p_super = +[DESLogging coreChannel];
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
-        [DESDediscoUploader donateResult:v8 dediscoMetadata:self recorder:?];
+        [DESDediscoUploader donateResult:resultCopy dediscoMetadata:self recorder:?];
       }
 
       goto LABEL_46;
     }
 
-    [v18 doubleValue];
+    [federatedBufferDownScalingFactor doubleValue];
     v29 = v16 * v28;
     [(DESGaussianAlgorithmParameters *)v14 addPerChunkParametersWith:1 numChunks:v16];
-    v30 = [(DESGaussianAlgorithmParameters *)v14 parameters];
-    [v17 setObject:v30 forKeyedSubscript:@"AlgorithmParameters"];
+    parameters2 = [(DESGaussianAlgorithmParameters *)v14 parameters];
+    [v17 setObject:parameters2 forKeyedSubscript:@"AlgorithmParameters"];
 
-    p_super = [v8 mutableCopy];
+    p_super = [resultCopy mutableCopy];
     if (![(DESDediscoUploader *)self scaleData:p_super withScalingFactor:v29])
     {
       v34 = +[DESLogging coreChannel];
@@ -588,7 +588,7 @@ LABEL_50:
       goto LABEL_46;
     }
 
-    if (![v66 record:v11 data:p_super metadata:v17])
+    if (![recorderCopy record:resultsKeyString data:p_super metadata:v17])
     {
 LABEL_46:
       v27 = 0;
@@ -599,9 +599,9 @@ LABEL_46:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       v32 = [(DESDediscoUploader *)self key];
-      v33 = [v32 resultsKeyString];
+      resultsKeyString2 = [v32 resultsKeyString];
       *buf = 138412290;
-      v76 = v33;
+      v76 = resultsKeyString2;
       _os_log_impl(&dword_248FF7000, v31, OS_LOG_TYPE_INFO, "Donated result for key: %@", buf, 0xCu);
     }
 
@@ -624,67 +624,67 @@ LABEL_47:
   return v27;
 }
 
-- (BOOL)donateMetrics:(id)a3 dediscoMetadata:(id)a4 recorder:(id)a5
+- (BOOL)donateMetrics:(id)metrics dediscoMetadata:(id)metadata recorder:(id)recorder
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  recorderCopy = recorder;
+  metadataCopy = metadata;
+  metricsCopy = metrics;
   v11 = [(DESDediscoUploader *)self key];
-  v12 = [v11 metricsKeyString];
+  metricsKeyString = [v11 metricsKeyString];
 
-  LOBYTE(v11) = [v8 record:v12 data:v10 metadata:v9];
+  LOBYTE(v11) = [recorderCopy record:metricsKeyString data:metricsCopy metadata:metadataCopy];
   return v11;
 }
 
-- (BOOL)donateCategoricalMetadata:(id)a3 dediscoMetadata:(id)a4 recorder:(id)a5
+- (BOOL)donateCategoricalMetadata:(id)metadata dediscoMetadata:(id)dediscoMetadata recorder:(id)recorder
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  recorderCopy = recorder;
+  dediscoMetadataCopy = dediscoMetadata;
+  metadataCopy = metadata;
   v11 = [(DESDediscoUploader *)self key];
-  v12 = [v11 metadataKeyString];
+  metadataKeyString = [v11 metadataKeyString];
 
-  LOBYTE(v11) = [v8 record:v12 data:v10 metadata:v9];
+  LOBYTE(v11) = [recorderCopy record:metadataKeyString data:metadataCopy metadata:dediscoMetadataCopy];
   return v11;
 }
 
-- (BOOL)donateFedStatsMetrics:(id)a3 dataKey:(id)a4 dataTypeContent:(id)a5 dediscoMetadata:(id)a6 error:(id *)a7 recorder:(id)a8
+- (BOOL)donateFedStatsMetrics:(id)metrics dataKey:(id)key dataTypeContent:(id)content dediscoMetadata:(id)metadata error:(id *)error recorder:(id)recorder
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = [v14 valueForKeyPath:v15];
+  metricsCopy = metrics;
+  keyCopy = key;
+  contentCopy = content;
+  metadataCopy = metadata;
+  recorderCopy = recorder;
+  v19 = [metricsCopy valueForKeyPath:keyCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v21 = [(DESDediscoUploader *)self key];
-    v22 = [v21 metadataEncodedMetricsKeyString];
+    metadataEncodedMetricsKeyString = [v21 metadataEncodedMetricsKeyString];
 
-    v23 = [v14 valueForKeyPath:v15];
-    v24 = [v18 record:v22 data:v23 dataTypeContent:v16 metadata:v17 errorOut:a7];
+    v23 = [metricsCopy valueForKeyPath:keyCopy];
+    v24 = [recorderCopy record:metadataEncodedMetricsKeyString data:v23 dataTypeContent:contentCopy metadata:metadataCopy errorOut:error];
   }
 
   else
   {
-    v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"Value of key %@ is not array type, cannot use FedStats Encoding", v15];
+    keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Value of key %@ is not array type, cannot use FedStats Encoding", keyCopy];
     v26 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
     }
 
-    if (a7)
+    if (error)
     {
       v27 = MEMORY[0x277CCA9B8];
       v31 = *MEMORY[0x277CCA470];
-      v32[0] = v25;
+      v32[0] = keyCopy;
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-      *a7 = [v27 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2012 userInfo:v28];
+      *error = [v27 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2012 userInfo:v28];
     }
 
     v24 = 0;
@@ -694,22 +694,22 @@ LABEL_47:
   return v24;
 }
 
-- (BOOL)scaleData:(id)a3 withScalingFactor:(double)a4
+- (BOOL)scaleData:(id)data withScalingFactor:(double)factor
 {
-  v5 = a3;
-  v6 = v5;
+  dataCopy = data;
+  v6 = dataCopy;
   v7 = 0;
-  v8 = fabs(a4) == INFINITY;
-  if (a4 > 2.22507386e-308 && !v8)
+  v8 = fabs(factor) == INFINITY;
+  if (factor > 2.22507386e-308 && !v8)
   {
-    v9 = [v5 mutableBytes];
+    mutableBytes = [dataCopy mutableBytes];
     if ([v6 length] >= 4)
     {
       v10 = 0;
       do
       {
-        v11 = *(v9 + 4 * v10) / a4;
-        *(v9 + 4 * v10++) = v11;
+        v11 = *(mutableBytes + 4 * v10) / factor;
+        *(mutableBytes + 4 * v10++) = v11;
       }
 
       while (v10 < [v6 length] >> 2);
@@ -721,16 +721,16 @@ LABEL_47:
   return v7;
 }
 
-+ (BOOL)hasAllZeroData:(id)a3
++ (BOOL)hasAllZeroData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  if ([v3 length] >= 4)
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  if ([dataCopy length] >= 4)
   {
     v6 = 0;
     do
     {
-      v7 = *(v4 + 4 * v6);
+      v7 = *(bytes + 4 * v6);
       v5 = v7 == 0;
       if (v7)
       {
@@ -740,7 +740,7 @@ LABEL_47:
       ++v6;
     }
 
-    while (v6 < [v3 length] >> 2);
+    while (v6 < [dataCopy length] >> 2);
   }
 
   else

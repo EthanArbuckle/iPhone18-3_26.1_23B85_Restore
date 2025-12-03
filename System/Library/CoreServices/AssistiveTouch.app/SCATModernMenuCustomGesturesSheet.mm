@@ -1,38 +1,38 @@
 @interface SCATModernMenuCustomGesturesSheet
-- (BOOL)shouldUpdateMenuItem:(id)a3;
+- (BOOL)shouldUpdateMenuItem:(id)item;
 - (SCATMenuCustomGestureItemsViewDelegate)delegate;
-- (SCATModernMenuCustomGesturesSheet)initWithType:(int)a3 menu:(id)a4;
+- (SCATModernMenuCustomGesturesSheet)initWithType:(int)type menu:(id)menu;
 - (id)makeMenuItemsIfNeeded;
 - (void)_loadGestures;
-- (void)menuItemWasActivated:(id)a3;
-- (void)sheetWillAppear:(BOOL)a3;
+- (void)menuItemWasActivated:(id)activated;
+- (void)sheetWillAppear:(BOOL)appear;
 @end
 
 @implementation SCATModernMenuCustomGesturesSheet
 
-- (SCATModernMenuCustomGesturesSheet)initWithType:(int)a3 menu:(id)a4
+- (SCATModernMenuCustomGesturesSheet)initWithType:(int)type menu:(id)menu
 {
   v6.receiver = self;
   v6.super_class = SCATModernMenuCustomGesturesSheet;
-  result = [(SCATModernMenuSheet *)&v6 initWithMenu:a4];
+  result = [(SCATModernMenuSheet *)&v6 initWithMenu:menu];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (void)sheetWillAppear:(BOOL)a3
+- (void)sheetWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SCATModernMenuCustomGesturesSheet;
-  [(SCATModernMenuSheet *)&v6 sheetWillAppear:a3];
+  [(SCATModernMenuSheet *)&v6 sheetWillAppear:appear];
   [(SCATModernMenuCustomGesturesSheet *)self _loadGestures];
   [(SCATModernMenuSheet *)self invalidateMenuItems];
-  v4 = [(SCATModernMenuSheet *)self menu];
-  v5 = [v4 menuVisualProvider];
-  [v5 reloadMenuVisuals];
+  menu = [(SCATModernMenuSheet *)self menu];
+  menuVisualProvider = [menu menuVisualProvider];
+  [menuVisualProvider reloadMenuVisuals];
 }
 
 - (id)makeMenuItemsIfNeeded
@@ -45,17 +45,17 @@
     {
       v5 = [(NSMutableArray *)self->_gestures objectAtIndex:i];
       v6 = self->_type == 1;
-      v7 = [v5 name];
+      name = [v5 name];
       if ([v5 hasLocalizableName])
       {
-        v8 = sub_100042B24(v7);
+        v8 = sub_100042B24(name);
 
-        v7 = v8;
+        name = v8;
       }
 
       v9 = 2 * v6;
       v10 = [@"gestures_replay" stringByAppendingFormat:@"%lu", i];
-      v11 = [SCATModernMenuItem itemWithIdentifier:v10 delegate:self title:v7 imageName:0 activateBehavior:v9];
+      v11 = [SCATModernMenuItem itemWithIdentifier:v10 delegate:self title:name imageName:0 activateBehavior:v9];
 
       [v11 setCustomGesture:v5];
       [v26 addObject:v11];
@@ -70,13 +70,13 @@
     [v26 addObject:v13];
 
     v14 = +[AXSettings sharedInstance];
-    v15 = [v14 assistiveTouchRecentGestures];
+    assistiveTouchRecentGestures = [v14 assistiveTouchRecentGestures];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v16 = v15;
+    v16 = assistiveTouchRecentGestures;
     v17 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
     v18 = v16;
     if (v17)
@@ -117,24 +117,24 @@ LABEL_17:
   return v26;
 }
 
-- (BOOL)shouldUpdateMenuItem:(id)a3
+- (BOOL)shouldUpdateMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 hasPrefix:@"gestures_replay"];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  v6 = [identifier hasPrefix:@"gestures_replay"];
   if (v6)
   {
-    v7 = [(SCATModernMenuCustomGesturesSheet *)self delegate];
-    v8 = [v7 contextForCustomGestureItemsViewController:self];
+    delegate = [(SCATModernMenuCustomGesturesSheet *)self delegate];
+    v8 = [delegate contextForCustomGestureItemsViewController:self];
 
-    v9 = [v4 customGesture];
+    customGesture = [itemCopy customGesture];
     +[SCATModernMenuItem imageSize];
     v11 = v10;
     v13 = v12;
     [v8 frame];
     v15 = v14;
     v17 = v16;
-    v18 = v9;
+    v18 = customGesture;
     v19 = +[UIScreen mainScreen];
     [v19 scale];
     v21 = v20;
@@ -146,30 +146,30 @@ LABEL_17:
     if (CurrentContext)
     {
       v23 = CurrentContext;
-      v49 = v4;
+      v49 = itemCopy;
       v48 = v6;
       v46 = v8;
-      v47 = v5;
+      v47 = identifier;
       if ([v18 shouldPerformAtOriginalLocation])
       {
         v24 = +[SCATStyleProvider sharedStyleProvider];
-        v25 = [v24 scannerBlueColor];
-        v26 = [v25 CGColor];
+        scannerBlueColor = [v24 scannerBlueColor];
+        cGColor = [scannerBlueColor CGColor];
       }
 
       else
       {
         v24 = +[UIColor whiteColor];
-        v26 = [v24 CGColor];
+        cGColor = [v24 CGColor];
       }
 
-      CGContextSetStrokeColorWithColor(v23, v26);
+      CGContextSetStrokeColorWithColor(v23, cGColor);
       CGContextSetLineWidth(v23, 5.0);
       v28 = +[NSMutableSet set];
-      v29 = [v18 numberOfEvents];
-      if (v29)
+      numberOfEvents = [v18 numberOfEvents];
+      if (numberOfEvents)
       {
-        for (i = 0; i != v29; ++i)
+        for (i = 0; i != numberOfEvents; ++i)
         {
           v31 = [v18 fingerIdentifiersAtEventIndex:i];
           [v28 addObjectsFromArray:v31];
@@ -196,7 +196,7 @@ LABEL_17:
               objc_enumerationMutation(obj);
             }
 
-            if (v29)
+            if (numberOfEvents)
             {
               v35 = 0;
               LOBYTE(v36) = 0;
@@ -235,7 +235,7 @@ LABEL_17:
                 ++v35;
               }
 
-              while (v29 != v35);
+              while (numberOfEvents != v35);
               if (v36)
               {
                 CGContextStrokePath(v23);
@@ -251,10 +251,10 @@ LABEL_17:
 
       v27 = UIGraphicsGetImageFromCurrentImageContext();
 
-      v4 = v49;
+      itemCopy = v49;
       LOBYTE(v6) = v48;
       v8 = v46;
-      v5 = v47;
+      identifier = v47;
     }
 
     else
@@ -264,43 +264,43 @@ LABEL_17:
 
     UIGraphicsEndImageContext();
 
-    [v4 setImage:v27];
+    [itemCopy setImage:v27];
   }
 
   return v6 ^ 1;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 hasPrefix:@"gestures_replay"] && (objc_msgSend(v5, "substringFromIndex:", objc_msgSend(@"gestures_replay", "length")), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "integerValue"), v6, v7 != 0x7FFFFFFFFFFFFFFFLL))
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  if ([identifier hasPrefix:@"gestures_replay"] && (objc_msgSend(identifier, "substringFromIndex:", objc_msgSend(@"gestures_replay", "length")), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "integerValue"), v6, v7 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v9 = [(SCATModernMenuCustomGesturesSheet *)self delegate];
+    delegate = [(SCATModernMenuCustomGesturesSheet *)self delegate];
     v10 = [(NSMutableArray *)self->_gestures objectAtIndexedSubscript:v7];
-    [v9 customGestureItemsViewController:self didChooseGesture:v10];
+    [delegate customGestureItemsViewController:self didChooseGesture:v10];
   }
 
   else
   {
-    if ([v5 isEqualToString:@"gestures_addRecent"])
+    if ([identifier isEqualToString:@"gestures_addRecent"])
     {
-      v8 = [(SCATModernMenuCustomGesturesSheet *)self delegate];
-      [v8 didChooseAddRecentInCustomGestureItemsViewController:self];
+      delegate2 = [(SCATModernMenuCustomGesturesSheet *)self delegate];
+      [delegate2 didChooseAddRecentInCustomGestureItemsViewController:self];
     }
 
     else
     {
-      if (![v5 isEqualToString:@"gestures_create"])
+      if (![identifier isEqualToString:@"gestures_create"])
       {
         v11.receiver = self;
         v11.super_class = SCATModernMenuCustomGesturesSheet;
-        [(SCATModernMenuSheet *)&v11 menuItemWasActivated:v4];
+        [(SCATModernMenuSheet *)&v11 menuItemWasActivated:activatedCopy];
         goto LABEL_10;
       }
 
-      v8 = [(SCATModernMenuCustomGesturesSheet *)self delegate];
-      [v8 didChooseCreateInCustomGestureItemsViewController:self];
+      delegate2 = [(SCATModernMenuCustomGesturesSheet *)self delegate];
+      [delegate2 didChooseCreateInCustomGestureItemsViewController:self];
     }
   }
 
@@ -314,16 +314,16 @@ LABEL_10:
   type = self->_type;
   if (!type)
   {
-    v6 = [v3 assistiveTouchSavedGestures];
+    assistiveTouchSavedGestures = [v3 assistiveTouchSavedGestures];
     goto LABEL_5;
   }
 
   if (type == 1)
   {
-    v6 = [v3 assistiveTouchRecentGestures];
+    assistiveTouchSavedGestures = [v3 assistiveTouchRecentGestures];
 LABEL_5:
-    v7 = v6;
-    v8 = [v6 mutableCopy];
+    v7 = assistiveTouchSavedGestures;
+    v8 = [assistiveTouchSavedGestures mutableCopy];
     gestures = self->_gestures;
     self->_gestures = v8;
 
@@ -335,12 +335,12 @@ LABEL_5:
 LABEL_7:
   if (self->_type == 1)
   {
-    v10 = [v4 assistiveTouchSavedGestures];
+    assistiveTouchSavedGestures2 = [v4 assistiveTouchSavedGestures];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v11 = [assistiveTouchSavedGestures2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -351,13 +351,13 @@ LABEL_7:
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(assistiveTouchSavedGestures2);
           }
 
           [(NSMutableArray *)self->_gestures removeObject:*(*(&v16 + 1) + 8 * i), v15];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [assistiveTouchSavedGestures2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);

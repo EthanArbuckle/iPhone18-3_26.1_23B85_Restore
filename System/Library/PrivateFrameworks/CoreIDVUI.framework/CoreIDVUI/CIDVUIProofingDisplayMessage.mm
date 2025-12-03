@@ -1,8 +1,8 @@
 @interface CIDVUIProofingDisplayMessage
 - (CIDVUIProofingDisplayMessage)init;
-- (CIDVUIProofingDisplayMessage)initWithTitle:(id)a3 message:(id)a4 actions:(id)a5;
+- (CIDVUIProofingDisplayMessage)initWithTitle:(id)title message:(id)message actions:(id)actions;
 - (NSArray)actions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CIDVUIProofingDisplayMessage
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (CIDVUIProofingDisplayMessage)initWithTitle:(id)a3 message:(id)a4 actions:(id)a5
+- (CIDVUIProofingDisplayMessage)initWithTitle:(id)title message:(id)message actions:(id)actions
 {
   v6 = sub_245910A04();
   v8 = v7;
@@ -36,11 +36,11 @@
   return [(CIDVUIProofingDisplayMessage *)&v16 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2458C727C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2458C727C(coderCopy);
 }
 
 - (CIDVUIProofingDisplayMessage)init

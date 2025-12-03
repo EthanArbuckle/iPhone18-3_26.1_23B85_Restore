@@ -1,5 +1,5 @@
 @interface ProximityCardViewController
-- (_TtC13MediaRemoteUI27ProximityCardViewController)initWithContentView:(id)a3;
+- (_TtC13MediaRemoteUI27ProximityCardViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000139B8();
 }
 
-- (_TtC13MediaRemoteUI27ProximityCardViewController)initWithContentView:(id)a3
+- (_TtC13MediaRemoteUI27ProximityCardViewController)initWithContentView:(id)view
 {
   v5 = &self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC13MediaRemoteUI27ProximityCardViewController_deviceName];
   *v5 = 0;
@@ -22,7 +22,7 @@
   (*(*(v7 - 8) + 56))(&self->PRXCardContentViewController_opaque[v6], 1, 1, v7);
   v9.receiver = self;
   v9.super_class = type metadata accessor for ProximityCardViewController();
-  return [(ProximityCardViewController *)&v9 initWithContentView:a3];
+  return [(ProximityCardViewController *)&v9 initWithContentView:view];
 }
 
 @end

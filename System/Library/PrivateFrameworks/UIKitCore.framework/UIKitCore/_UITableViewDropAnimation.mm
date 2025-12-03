@@ -1,70 +1,70 @@
 @interface _UITableViewDropAnimation
-- (_UITableViewDropAnimation)initWithDragItem:(id)a3;
-- (void)_addClientBlocksToAnimator:(id)a3;
+- (_UITableViewDropAnimation)initWithDragItem:(id)item;
+- (void)_addClientBlocksToAnimator:(id)animator;
 - (void)_executeCompletionBlocks;
-- (void)addAnimations:(id)a3;
-- (void)addCompletion:(id)a3;
+- (void)addAnimations:(id)animations;
+- (void)addCompletion:(id)completion;
 @end
 
 @implementation _UITableViewDropAnimation
 
-- (_UITableViewDropAnimation)initWithDragItem:(id)a3
+- (_UITableViewDropAnimation)initWithDragItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = _UITableViewDropAnimation;
   v6 = [(_UITableViewDropAnimation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dragItem, a3);
+    objc_storeStrong(&v6->_dragItem, item);
   }
 
   return v7;
 }
 
-- (void)addAnimations:(id)a3
+- (void)addAnimations:(id)animations
 {
-  v4 = a3;
+  animationsCopy = animations;
   animationsBlocks = self->_animationsBlocks;
-  aBlock = v4;
+  aBlock = animationsCopy;
   if (!animationsBlocks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_animationsBlocks;
-    self->_animationsBlocks = v6;
+    self->_animationsBlocks = array;
 
-    v4 = aBlock;
+    animationsCopy = aBlock;
     animationsBlocks = self->_animationsBlocks;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(animationsCopy);
   [(NSMutableArray *)animationsBlocks addObject:v8];
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   completionBlocks = self->_completionBlocks;
-  aBlock = v4;
+  aBlock = completionCopy;
   if (!completionBlocks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_completionBlocks;
-    self->_completionBlocks = v6;
+    self->_completionBlocks = array;
 
-    v4 = aBlock;
+    completionCopy = aBlock;
     completionBlocks = self->_completionBlocks;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(completionCopy);
   [(NSMutableArray *)completionBlocks addObject:v8];
 }
 
-- (void)_addClientBlocksToAnimator:(id)a3
+- (void)_addClientBlocksToAnimator:(id)animator
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  animatorCopy = animator;
   animationsBlocks = self->_animationsBlocks;
   if (animationsBlocks)
   {
@@ -88,7 +88,7 @@
             objc_enumerationMutation(v6);
           }
 
-          [v4 addAnimations:*(*(&v21 + 1) + 8 * v10++)];
+          [animatorCopy addAnimations:*(*(&v21 + 1) + 8 * v10++)];
         }
 
         while (v8 != v10);
@@ -124,7 +124,7 @@
             objc_enumerationMutation(v12);
           }
 
-          [v4 addCompletion:{*(*(&v17 + 1) + 8 * v16++), v17}];
+          [animatorCopy addCompletion:{*(*(&v17 + 1) + 8 * v16++), v17}];
         }
 
         while (v14 != v16);

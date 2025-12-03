@@ -33,8 +33,8 @@
   }
 
   [(LPShadowStyle *)v2 setOpacity:v4];
-  v5 = [MEMORY[0x1E69DC888] blackColor];
-  [(LPShadowStyle *)v2 setColor:v5];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(LPShadowStyle *)v2 setColor:blackColor];
 
   return v2;
 }
@@ -51,8 +51,8 @@
   }
 
   [(LPShadowStyle *)v2 setOpacity:v4];
-  v5 = [MEMORY[0x1E69DC888] blackColor];
-  [(LPShadowStyle *)v2 setColor:v5];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(LPShadowStyle *)v2 setColor:blackColor];
 
   v6 = [[LPSize alloc] initWithSize:0.0, 1.0];
   [(LPShadowStyle *)v2 setOffset:v6];

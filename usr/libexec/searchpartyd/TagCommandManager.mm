@@ -1,9 +1,9 @@
 @interface TagCommandManager
 - (_TtC12searchpartyd17TagCommandManager)init;
-- (void)findMyAccessoryManager:(id)a3 didDisconnectDevice:(id)a4;
-- (void)findMyAccessoryManager:(id)a3 didFailWithError:(id)a4 forDevice:(id)a5;
-- (void)findMyAccessoryManager:(id)a3 didFetchUserStats:(id)a4 forDevice:(id)a5 withError:(id)a6;
-- (void)findMyAccessoryManager:(id)a3 didFetchUserStats:(id)a4 fromDevice:(id)a5 withError:(id)a6;
+- (void)findMyAccessoryManager:(id)manager didDisconnectDevice:(id)device;
+- (void)findMyAccessoryManager:(id)manager didFailWithError:(id)error forDevice:(id)device;
+- (void)findMyAccessoryManager:(id)manager didFetchUserStats:(id)stats forDevice:(id)device withError:(id)error;
+- (void)findMyAccessoryManager:(id)manager didFetchUserStats:(id)stats fromDevice:(id)device withError:(id)error;
 @end
 
 @implementation TagCommandManager
@@ -15,21 +15,21 @@
   return result;
 }
 
-- (void)findMyAccessoryManager:(id)a3 didFetchUserStats:(id)a4 fromDevice:(id)a5 withError:(id)a6
+- (void)findMyAccessoryManager:(id)manager didFetchUserStats:(id)stats fromDevice:(id)device withError:(id)error
 {
   v11 = type metadata accessor for UUID();
   v12 = *(v11 - 8);
   v13 = *(v12 + 64);
   __chkstk_darwin(v11);
   v15 = &v23 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = self;
-  if (a4)
+  managerCopy = manager;
+  deviceCopy = device;
+  errorCopy = error;
+  selfCopy = self;
+  if (stats)
   {
-    v20 = a4;
-    a4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    statsCopy = stats;
+    stats = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v22 = v21;
   }
 
@@ -40,13 +40,13 @@
 
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
 
-  sub_1008A67BC(a4, v22, v15, a6, self);
-  sub_100006654(a4, v22);
+  sub_1008A67BC(stats, v22, v15, error, self);
+  sub_100006654(stats, v22);
 
   (*(v12 + 8))(v15, v11);
 }
 
-- (void)findMyAccessoryManager:(id)a3 didFetchUserStats:(id)a4 forDevice:(id)a5 withError:(id)a6
+- (void)findMyAccessoryManager:(id)manager didFetchUserStats:(id)stats forDevice:(id)device withError:(id)error
 {
   v10 = type metadata accessor for UUID();
   v11 = *(v10 - 8);
@@ -54,22 +54,22 @@
   __chkstk_darwin(v10);
   v14 = &v19 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v15 = a3;
-  v16 = a4;
-  v17 = self;
-  v18 = a6;
-  sub_1008A703C(v16, v14, a6, v17);
+  managerCopy = manager;
+  statsCopy = stats;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1008A703C(statsCopy, v14, error, selfCopy);
 
   (*(v11 + 8))(v14, v10);
 }
 
-- (void)findMyAccessoryManager:(id)a3 didFailWithError:(id)a4 forDevice:(id)a5
+- (void)findMyAccessoryManager:(id)manager didFailWithError:(id)error forDevice:(id)device
 {
   v9 = sub_1000BC4D4(&qword_1016980D0, &unk_10138F3B0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v18 - v11;
-  if (a5)
+  if (device)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = type metadata accessor for UUID();
@@ -82,15 +82,15 @@
     (*(*(v14 - 8) + 56))(v12, 1, 1, v14);
   }
 
-  v15 = a3;
-  v16 = a4;
-  v17 = self;
-  sub_1008A7700(v16, v12);
+  managerCopy = manager;
+  errorCopy = error;
+  selfCopy = self;
+  sub_1008A7700(errorCopy, v12);
 
   sub_10000B3A8(v12, &qword_1016980D0, &unk_10138F3B0);
 }
 
-- (void)findMyAccessoryManager:(id)a3 didDisconnectDevice:(id)a4
+- (void)findMyAccessoryManager:(id)manager didDisconnectDevice:(id)device
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
@@ -98,9 +98,9 @@
   __chkstk_darwin(v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  sub_1008A7D8C(v10, v12);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_1008A7D8C(v10, selfCopy);
 
   (*(v7 + 8))(v10, v6);
 }

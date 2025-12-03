@@ -2,20 +2,20 @@
 + (id)sharedInstance;
 - (BKHIDSystem)init;
 - (BKHIDSystemDelegate)delegate;
-- (__IOHIDEvent)systemEventOfType:(unsigned int)a3 matchingEvent:(__IOHIDEvent *)a4 options:(unsigned int)a5;
-- (id)IOHIDServicesMatching:(id)a3;
-- (id)systemPropertyForKey:(id)a3;
-- (void)_asyncScheduleWithHIDEventQuue:(id)a3;
-- (void)buffer:(id)a3 drainEvent:(__IOHIDEvent *)a4 withContext:(id)a5 sender:(id)a6 sequence:(id)a7 toResolution:(id)a8;
+- (__IOHIDEvent)systemEventOfType:(unsigned int)type matchingEvent:(__IOHIDEvent *)event options:(unsigned int)options;
+- (id)IOHIDServicesMatching:(id)matching;
+- (id)systemPropertyForKey:(id)key;
+- (void)_asyncScheduleWithHIDEventQuue:(id)quue;
+- (void)buffer:(id)buffer drainEvent:(__IOHIDEvent *)event withContext:(id)context sender:(id)sender sequence:(id)sequence toResolution:(id)resolution;
 - (void)dealloc;
-- (void)injectGSEvent:(__GSEvent *)a3;
-- (void)registerIOHIDServicesCallback:(void *)a3 matchingDictionary:(id)a4 target:(void *)a5 refCon:(void *)a6;
-- (void)requestBufferReevaluationWithContext:(id)a3;
-- (void)setSystemProperty:(id)a3 forKey:(id)a4;
-- (void)startEventProcessor:(id)a3 mainDisplayObserver:(id)a4 deliveryManager:(id)a5 dispatcherProvider:(id)a6;
+- (void)injectGSEvent:(__GSEvent *)event;
+- (void)registerIOHIDServicesCallback:(void *)callback matchingDictionary:(id)dictionary target:(void *)target refCon:(void *)con;
+- (void)requestBufferReevaluationWithContext:(id)context;
+- (void)setSystemProperty:(id)property forKey:(id)key;
+- (void)startEventProcessor:(id)processor mainDisplayObserver:(id)observer deliveryManager:(id)manager dispatcherProvider:(id)provider;
 - (void)startEventRouting;
 - (void)startHIDSystem;
-- (void)unregisterIOHIDServicesCallback:(void *)a3 matchingDictionary:(id)a4 target:(void *)a5 refCon:(void *)a6;
+- (void)unregisterIOHIDServicesCallback:(void *)callback matchingDictionary:(id)dictionary target:(void *)target refCon:(void *)con;
 @end
 
 @implementation BKHIDSystem
@@ -39,34 +39,34 @@
   return WeakRetained;
 }
 
-- (void)buffer:(id)a3 drainEvent:(__IOHIDEvent *)a4 withContext:(id)a5 sender:(id)a6 sequence:(id)a7 toResolution:(id)a8
+- (void)buffer:(id)buffer drainEvent:(__IOHIDEvent *)event withContext:(id)context sender:(id)sender sequence:(id)sequence toResolution:(id)resolution
 {
-  v22 = a4;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a3;
-  v19 = [(BKHIDSystem *)self dispatcherProvider];
-  v20 = [v19 dispatcherForEvent:a4];
-  v21 = [v15 processor];
-  [v21 processEvent:&v22 withContext:v17 buffer:v18 sequence:v15 sender:v16 dispatcher:v20 resolution:v14];
+  eventCopy = event;
+  resolutionCopy = resolution;
+  sequenceCopy = sequence;
+  senderCopy = sender;
+  contextCopy = context;
+  bufferCopy = buffer;
+  dispatcherProvider = [(BKHIDSystem *)self dispatcherProvider];
+  v20 = [dispatcherProvider dispatcherForEvent:event];
+  processor = [sequenceCopy processor];
+  [processor processEvent:&eventCopy withContext:contextCopy buffer:bufferCopy sequence:sequenceCopy sender:senderCopy dispatcher:v20 resolution:resolutionCopy];
 }
 
-- (void)requestBufferReevaluationWithContext:(id)a3
+- (void)requestBufferReevaluationWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__BKHIDSystem_requestBufferReevaluationWithContext___block_invoke;
   v6[3] = &unk_2784F7270;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = contextCopy;
+  v5 = contextCopy;
   [(BKHIDSystem *)self _asyncScheduleWithHIDEventQuue:v6];
 }
 
-- (void)unregisterIOHIDServicesCallback:(void *)a3 matchingDictionary:(id)a4 target:(void *)a5 refCon:(void *)a6
+- (void)unregisterIOHIDServicesCallback:(void *)callback matchingDictionary:(id)dictionary target:(void *)target refCon:(void *)con
 {
   v13 = *MEMORY[0x277D85DE8];
   if (self->_HIDEventSystem)
@@ -91,7 +91,7 @@
   }
 }
 
-- (void)registerIOHIDServicesCallback:(void *)a3 matchingDictionary:(id)a4 target:(void *)a5 refCon:(void *)a6
+- (void)registerIOHIDServicesCallback:(void *)callback matchingDictionary:(id)dictionary target:(void *)target refCon:(void *)con
 {
   v13 = *MEMORY[0x277D85DE8];
   if (self->_HIDEventSystem)
@@ -116,7 +116,7 @@
   }
 }
 
-- (id)IOHIDServicesMatching:(id)a3
+- (id)IOHIDServicesMatching:(id)matching
 {
   v11 = *MEMORY[0x277D85DE8];
   if (self->_HIDEventSystem)
@@ -143,16 +143,16 @@
   return v3;
 }
 
-- (void)_asyncScheduleWithHIDEventQuue:(id)a3
+- (void)_asyncScheduleWithHIDEventQuue:(id)quue
 {
-  v3 = a3;
+  quueCopy = quue;
   Main = CFRunLoopGetMain();
-  CFRunLoopPerformBlock(Main, *MEMORY[0x277CBF058], v3);
+  CFRunLoopPerformBlock(Main, *MEMORY[0x277CBF058], quueCopy);
 
   CFRunLoopWakeUp(Main);
 }
 
-- (__IOHIDEvent)systemEventOfType:(unsigned int)a3 matchingEvent:(__IOHIDEvent *)a4 options:(unsigned int)a5
+- (__IOHIDEvent)systemEventOfType:(unsigned int)type matchingEvent:(__IOHIDEvent *)event options:(unsigned int)options
 {
   v14 = *MEMORY[0x277D85DE8];
   if (self->_HIDEventSystem)
@@ -170,7 +170,7 @@
       v10 = 138543618;
       Name = IOHIDEventTypeGetName();
       v12 = 2114;
-      v13 = a4;
+      eventCopy = event;
       _os_log_impl(&dword_223CBE000, v7, OS_LOG_TYPE_DEFAULT, "HIDSystem is not fully initialized, dropping systemEventOfType request: %{public}@ %{public}@", &v10, 0x16u);
     }
 
@@ -179,17 +179,17 @@
   }
 }
 
-- (void)injectGSEvent:(__GSEvent *)a3
+- (void)injectGSEvent:(__GSEvent *)event
 {
-  if (a3)
+  if (event)
   {
-    CFRetain(a3);
+    CFRetain(event);
     gsEventQueue = self->_gsEventQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __29__BKHIDSystem_injectGSEvent___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a3;
+    block[4] = event;
     dispatch_async(gsEventQueue, block);
   }
 }
@@ -261,11 +261,11 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSystemProperty:(id)a3 forKey:(id)a4
+- (void)setSystemProperty:(id)property forKey:(id)key
 {
   v26 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   if (!self->_HIDEventSystem)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"need HID system"];
@@ -279,7 +279,7 @@ LABEL_14:
       v16 = 2114;
       v17 = v12;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = @"BKHIDSystem.m";
       v22 = 1024;
@@ -300,10 +300,10 @@ LABEL_14:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)systemPropertyForKey:(id)a3
+- (id)systemPropertyForKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  keyCopy = key;
   if (!self->_HIDEventSystem)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"need HID system"];
@@ -317,7 +317,7 @@ LABEL_14:
       v15 = 2114;
       v16 = v12;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BKHIDSystem.m";
       v21 = 1024;
@@ -340,16 +340,16 @@ LABEL_14:
   return v6;
 }
 
-- (void)startEventProcessor:(id)a3 mainDisplayObserver:(id)a4 deliveryManager:(id)a5 dispatcherProvider:(id)a6
+- (void)startEventProcessor:(id)processor mainDisplayObserver:(id)observer deliveryManager:(id)manager dispatcherProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  objc_storeStrong(&self->_eventProcessor, a3);
-  objc_storeStrong(&self->_mainDisplayObserver, a4);
-  objc_storeStrong(&self->_dispatcherProvider, a6);
-  objc_storeStrong(&self->_deliveryManager, a5);
+  processorCopy = processor;
+  observerCopy = observer;
+  managerCopy = manager;
+  providerCopy = provider;
+  objc_storeStrong(&self->_eventProcessor, processor);
+  objc_storeStrong(&self->_mainDisplayObserver, observer);
+  objc_storeStrong(&self->_dispatcherProvider, provider);
+  objc_storeStrong(&self->_deliveryManager, manager);
   objc_initWeak(&location, self);
   mainDisplayObserver = self->_mainDisplayObserver;
   v17 = MEMORY[0x277D85DD0];
@@ -404,7 +404,7 @@ void __90__BKHIDSystem_startEventProcessor_mainDisplayObserver_deliveryManager_d
       v23 = 2114;
       v24 = v12;
       v25 = 2048;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2114;
       v28 = @"BKHIDSystem.m";
       v29 = 1024;
@@ -433,7 +433,7 @@ void __90__BKHIDSystem_startEventProcessor_mainDisplayObserver_deliveryManager_d
       v23 = 2114;
       v24 = v16;
       v25 = 2048;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2114;
       v28 = @"BKHIDSystem.m";
       v29 = 1024;
@@ -464,7 +464,7 @@ void __90__BKHIDSystem_startEventProcessor_mainDisplayObserver_deliveryManager_d
       v23 = 2114;
       v24 = v20;
       v25 = 2048;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2114;
       v28 = @"BKHIDSystem.m";
       v29 = 1024;

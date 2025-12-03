@@ -1,43 +1,43 @@
 @interface PPTemporalClusterStorage
 + (id)defaultStorage;
-+ (id)enrichEntities:(id)a3 mediaRecords:(id)a4;
-- (PPTemporalClusterStorage)initWithEventStore:(id)a3 topicStore:(id)a4 entityStore:(id)a5 locationStore:(id)a6 contactStore:(id)a7;
-- (id)createTemporalClusterForEvent:(void *)a3 startDate:(void *)a4 endDate:(void *)a5 error:;
-- (id)eventsWithStartDate:(id)a3 endDate:(id)a4;
-- (id)rankedTemporalClusterForStartDate:(id)a3 endDate:(id)a4 error:(id *)a5;
++ (id)enrichEntities:(id)entities mediaRecords:(id)records;
+- (PPTemporalClusterStorage)initWithEventStore:(id)store topicStore:(id)topicStore entityStore:(id)entityStore locationStore:(id)locationStore contactStore:(id)contactStore;
+- (id)createTemporalClusterForEvent:(void *)event startDate:(void *)date endDate:(void *)endDate error:;
+- (id)eventsWithStartDate:(id)date endDate:(id)endDate;
+- (id)rankedTemporalClusterForStartDate:(id)date endDate:(id)endDate error:(id *)error;
 @end
 
 @implementation PPTemporalClusterStorage
 
-- (id)eventsWithStartDate:(id)a3 endDate:(id)a4
+- (id)eventsWithStartDate:(id)date endDate:(id)endDate
 {
   eventStore = self->_eventStore;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PPLocalEventStore *)eventStore eventsFromDate:v8 toDate:v7];
-  v10 = [(PPLocalEventStore *)self->_eventStore nlEventsFromDate:v8 toDate:v7];
+  endDateCopy = endDate;
+  dateCopy = date;
+  v9 = [(PPLocalEventStore *)eventStore eventsFromDate:dateCopy toDate:endDateCopy];
+  v10 = [(PPLocalEventStore *)self->_eventStore nlEventsFromDate:dateCopy toDate:endDateCopy];
 
   v11 = [v9 arrayByAddingObjectsFromArray:v10];
 
   return v11;
 }
 
-- (id)rankedTemporalClusterForStartDate:(id)a3 endDate:(id)a4 error:(id *)a5
+- (id)rankedTemporalClusterForStartDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v10 = objc_opt_new();
   v35 = 0;
-  v11 = [(PPTemporalClusterStorage *)self createTemporalClusterForEvent:v8 startDate:v9 endDate:&v35 error:?];
+  v11 = [(PPTemporalClusterStorage *)self createTemporalClusterForEvent:dateCopy startDate:endDateCopy endDate:&v35 error:?];
   v12 = v35;
   v29 = v10;
   [v10 addObject:v11];
 
-  v13 = self;
-  v26 = v9;
-  v27 = v8;
-  [(PPTemporalClusterStorage *)self eventsWithStartDate:v8 endDate:v9];
+  selfCopy = self;
+  v26 = endDateCopy;
+  v27 = dateCopy;
+  [(PPTemporalClusterStorage *)self eventsWithStartDate:dateCopy endDate:endDateCopy];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -58,17 +58,17 @@
         }
 
         v19 = *(*(&v31 + 1) + 8 * i);
-        v20 = [v19 startDate];
-        v21 = [v19 endDate];
+        startDate = [v19 startDate];
+        endDate = [v19 endDate];
         v30 = v18;
-        v22 = [(PPTemporalClusterStorage *)v13 createTemporalClusterForEvent:v19 startDate:v20 endDate:v21 error:&v30];
+        v22 = [(PPTemporalClusterStorage *)selfCopy createTemporalClusterForEvent:v19 startDate:startDate endDate:endDate error:&v30];
         v12 = v30;
 
         [v29 addObject:v22];
-        if (a5 && v12)
+        if (error && v12)
         {
           v23 = v12;
-          *a5 = v12;
+          *error = v12;
         }
       }
 
@@ -83,28 +83,28 @@
   return v29;
 }
 
-- (id)createTemporalClusterForEvent:(void *)a3 startDate:(void *)a4 endDate:(void *)a5 error:
+- (id)createTemporalClusterForEvent:(void *)event startDate:(void *)date endDate:(void *)endDate error:
 {
   v216 = *MEMORY[0x277D85DE8];
   v137 = a2;
-  v8 = a3;
-  v9 = a4;
-  v139 = v8;
-  v140 = v9;
-  if (!a1)
+  eventCopy = event;
+  dateCopy = date;
+  v139 = eventCopy;
+  v140 = dateCopy;
+  if (!self)
   {
     v129 = 0;
     goto LABEL_115;
   }
 
-  v10 = v9;
+  v10 = dateCopy;
   v11 = objc_opt_new();
-  [v11 setFromDate:v8];
+  [v11 setFromDate:eventCopy];
   [v11 setToDate:v10];
   [v11 setScoringDate:v10];
   [v11 setFilterByRelevanceDate:1];
-  v153 = a1;
-  v12 = a1[2];
+  selfCopy = self;
+  v12 = self[2];
   v201 = 0;
   v136 = v11;
   v13 = [v12 rankedTopicsWithQuery:v11 error:&v201];
@@ -128,10 +128,10 @@
         _os_log_error_impl(&dword_23224A000, v16, OS_LOG_TYPE_ERROR, "PPTemporalClusterStorage: Topics Store query error: %@", &buf, 0xCu);
       }
 
-      if (a5)
+      if (endDate)
       {
         v17 = v14;
-        *a5 = v14;
+        *endDate = v14;
       }
     }
 
@@ -148,7 +148,7 @@
   objc_autoreleasePoolPop(v18);
   [v142 setExcludingAlgorithms:v19];
 
-  v20 = v153[3];
+  v20 = selfCopy[3];
   v200 = v14;
   v144 = [v20 rankedNamedEntitiesWithQuery:v142 error:&v200];
   v21 = v200;
@@ -172,10 +172,10 @@
         _os_log_error_impl(&dword_23224A000, v23, OS_LOG_TYPE_ERROR, "PPTemporalClusterStorage: Named Entities Store query error: %@", &buf, 0xCu);
       }
 
-      if (a5)
+      if (endDate)
       {
         v24 = v21;
-        *a5 = v21;
+        *endDate = v21;
       }
     }
 
@@ -193,7 +193,7 @@
   v197 = __Block_byref_object_copy__26836;
   v198 = __Block_byref_object_dispose__26837;
   v199 = objc_opt_new();
-  v25 = v153[4];
+  v25 = selfCopy[4];
   v193 = v21;
   v192[0] = MEMORY[0x277D85DD0];
   v192[1] = 3221225472;
@@ -213,10 +213,10 @@
       _os_log_error_impl(&dword_23224A000, v27, OS_LOG_TYPE_ERROR, "PPTemporalClusterStorage: Locations Store query error: %@", &buf, 0xCu);
     }
 
-    if (a5)
+    if (endDate)
     {
       v28 = v26;
-      *a5 = v26;
+      *endDate = v26;
     }
   }
 
@@ -243,20 +243,20 @@
 
         v31 = *(*(&v188 + 1) + 8 * v160);
         context = objc_autoreleasePoolPush();
-        v32 = [v31 item];
-        v33 = [v32 mostRelevantRecord];
-        v34 = [v33 source];
-        v35 = [v34 metadata];
-        v36 = [v35 contactHandleCount] == 0;
+        item = [v31 item];
+        mostRelevantRecord = [item mostRelevantRecord];
+        source = [mostRelevantRecord source];
+        metadata = [source metadata];
+        v36 = [metadata contactHandleCount] == 0;
 
         if (!v36)
         {
-          v37 = v153[5];
-          v38 = [v31 item];
-          v39 = [v38 mostRelevantRecord];
-          v40 = [v39 source];
+          v37 = selfCopy[5];
+          item2 = [v31 item];
+          mostRelevantRecord2 = [item2 mostRelevantRecord];
+          source2 = [mostRelevantRecord2 source];
           v187 = v26;
-          v41 = [v37 contactHandlesForSource:v40 error:&v187];
+          v41 = [v37 contactHandlesForSource:source2 error:&v187];
           v154 = v187;
 
           if (!v41)
@@ -340,20 +340,20 @@
 
         v55 = *(*(&v179 + 1) + 8 * v161);
         contexta = objc_autoreleasePoolPush();
-        v56 = [v55 item];
-        v57 = [v56 mostRelevantRecord];
-        v58 = [v57 source];
-        v59 = [v58 metadata];
-        v60 = [v59 contactHandleCount] == 0;
+        item3 = [v55 item];
+        mostRelevantRecord3 = [item3 mostRelevantRecord];
+        source3 = [mostRelevantRecord3 source];
+        metadata2 = [source3 metadata];
+        v60 = [metadata2 contactHandleCount] == 0;
 
         if (!v60)
         {
-          v61 = v153[5];
-          v62 = [v55 item];
-          v63 = [v62 mostRelevantRecord];
-          v64 = [v63 source];
+          v61 = selfCopy[5];
+          item4 = [v55 item];
+          mostRelevantRecord4 = [item4 mostRelevantRecord];
+          source4 = [mostRelevantRecord4 source];
           v178 = v26;
-          v65 = [v61 contactHandlesForSource:v64 error:&v178];
+          v65 = [v61 contactHandlesForSource:source4 error:&v178];
           v155 = v178;
 
           if (!v65)
@@ -428,9 +428,9 @@ LABEL_91:
     }
 
     v80 = objc_opt_new();
-    v81 = v153[1];
-    v82 = [v79 eventIdentifier];
-    v83 = [v81 customObjectForKey:*MEMORY[0x277D3A760] eventIdentifier:v82];
+    v81 = selfCopy[1];
+    eventIdentifier = [v79 eventIdentifier];
+    v83 = [v81 customObjectForKey:*MEMORY[0x277D3A760] eventIdentifier:eventIdentifier];
 
     if (!v83 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -449,19 +449,19 @@ LABEL_91:
       if (isKindOfClass)
       {
         v88 = [v84 objectForKeyedSubscript:@"SGEventMetadataSchemaOrgKey"];
-        v89 = [v88 firstObject];
-        v90 = [v89 objectForKeyedSubscript:@"reservationFor"];
+        firstObject = [v88 firstObject];
+        v90 = [firstObject objectForKeyedSubscript:@"reservationFor"];
 
         if (v90)
         {
-          v91 = [v89 objectForKeyedSubscript:@"reservationFor"];
+          v91 = [firstObject objectForKeyedSubscript:@"reservationFor"];
           v92 = [v91 objectForKeyedSubscript:@"name"];
 
 LABEL_81:
 LABEL_82:
           if ([v92 length])
           {
-            v93 = [v92 lowercaseString];
+            lowercaseString = [v92 lowercaseString];
 
             v94 = objc_opt_new();
             v95 = objc_autoreleasePoolPush();
@@ -470,13 +470,13 @@ LABEL_82:
             objc_autoreleasePoolPop(v95);
             [v94 setMatchingSourceBundleIds:v97];
 
-            v98 = v153[3];
+            v98 = selfCopy[3];
             v202 = 0;
             *&buf = MEMORY[0x277D85DD0];
             *(&buf + 1) = 3221225472;
             v212 = __53__PPTemporalClusterStorage_fetchRelatedMediaRecords___block_invoke;
             v213 = &unk_2789795D8;
-            v92 = v93;
+            v92 = lowercaseString;
             v214 = v92;
             v215 = v80;
             LOBYTE(v98) = [v98 iterNamedEntityRecordsWithQuery:v94 error:&v202 block:&buf];
@@ -548,20 +548,20 @@ LABEL_92:
 
         v102 = *(*(&v170 + 1) + 8 * v162);
         contextb = objc_autoreleasePoolPush();
-        v103 = [v102 location];
-        v104 = [v103 mostRelevantRecord];
-        v105 = [v104 source];
-        v106 = [v105 metadata];
-        v107 = [v106 contactHandleCount] == 0;
+        location = [v102 location];
+        mostRelevantRecord5 = [location mostRelevantRecord];
+        source5 = [mostRelevantRecord5 source];
+        metadata3 = [source5 metadata];
+        v107 = [metadata3 contactHandleCount] == 0;
 
         if (!v107)
         {
-          v108 = v153[5];
-          v109 = [v102 location];
-          v110 = [v109 mostRelevantRecord];
-          v111 = [v110 source];
+          v108 = selfCopy[5];
+          location2 = [v102 location];
+          mostRelevantRecord6 = [location2 mostRelevantRecord];
+          source6 = [mostRelevantRecord6 source];
           v169 = v26;
-          v112 = [v108 contactHandlesForSource:v111 error:&v169];
+          v112 = [v108 contactHandlesForSource:source6 error:&v169];
           v156 = v169;
 
           if (!v112)
@@ -599,8 +599,8 @@ LABEL_92:
                 [v120 doubleValue];
                 v122 = v121;
                 [v102 score];
-                v124 = [v119 numberWithDouble:v122 + v123];
-                [v29 setObject:v124 forKeyedSubscript:v118];
+                v123 = [v119 numberWithDouble:v122 + v123];
+                [v29 setObject:v123 forKeyedSubscript:v118];
               }
 
               v115 = [v114 countByEnumeratingWithState:&v165 objects:v203 count:16];
@@ -623,10 +623,10 @@ LABEL_92:
     while (v101);
   }
 
-  if (a5)
+  if (endDate)
   {
     v125 = v26;
-    *a5 = v26;
+    *endDate = v26;
   }
 
   v126 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v29, "count")}];
@@ -684,40 +684,40 @@ void __53__PPTemporalClusterStorage_fetchRelatedMediaRecords___block_invoke(uint
   }
 }
 
-- (PPTemporalClusterStorage)initWithEventStore:(id)a3 topicStore:(id)a4 entityStore:(id)a5 locationStore:(id)a6 contactStore:(id)a7
+- (PPTemporalClusterStorage)initWithEventStore:(id)store topicStore:(id)topicStore entityStore:(id)entityStore locationStore:(id)locationStore contactStore:(id)contactStore
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  storeCopy = store;
+  topicStoreCopy = topicStore;
+  entityStoreCopy = entityStore;
+  locationStoreCopy = locationStore;
+  contactStoreCopy = contactStore;
   v21.receiver = self;
   v21.super_class = PPTemporalClusterStorage;
   v17 = [(PPTemporalClusterStorage *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_eventStore, a3);
-    objc_storeStrong(&v18->_topicStore, a4);
-    objc_storeStrong(&v18->_entityStore, a5);
-    objc_storeStrong(&v18->_locationStore, a6);
-    objc_storeStrong(&v18->_contactStore, a7);
+    objc_storeStrong(&v17->_eventStore, store);
+    objc_storeStrong(&v18->_topicStore, topicStore);
+    objc_storeStrong(&v18->_entityStore, entityStore);
+    objc_storeStrong(&v18->_locationStore, locationStore);
+    objc_storeStrong(&v18->_contactStore, contactStore);
   }
 
   return v18;
 }
 
-+ (id)enrichEntities:(id)a3 mediaRecords:(id)a4
++ (id)enrichEntities:(id)entities mediaRecords:(id)records
 {
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entitiesCopy = entities;
+  recordsCopy = records;
   v7 = objc_opt_new();
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v6;
+  obj = recordsCopy;
   v8 = [obj countByEnumeratingWithState:&v53 objects:v59 count:16];
   if (v8)
   {
@@ -732,9 +732,9 @@ void __53__PPTemporalClusterStorage_fetchRelatedMediaRecords___block_invoke(uint
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v53 + 1) + 8 * i) entity];
-        v13 = [v12 name];
-        [v7 addObject:v13];
+        entity = [*(*(&v53 + 1) + 8 * i) entity];
+        name = [entity name];
+        [v7 addObject:name];
       }
 
       v9 = [obj countByEnumeratingWithState:&v53 objects:v59 count:16];
@@ -748,7 +748,7 @@ void __53__PPTemporalClusterStorage_fetchRelatedMediaRecords___block_invoke(uint
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v44 = v5;
+  v44 = entitiesCopy;
   v15 = [v44 countByEnumeratingWithState:&v49 objects:v58 count:16];
   if (v15)
   {
@@ -765,20 +765,20 @@ void __53__PPTemporalClusterStorage_fetchRelatedMediaRecords___block_invoke(uint
 
         v19 = *(*(&v49 + 1) + 8 * j);
         v20 = objc_autoreleasePoolPush();
-        v21 = [v19 item];
-        v22 = [v21 name];
-        v23 = [v7 containsObject:v22];
+        item = [v19 item];
+        name2 = [item name];
+        v23 = [v7 containsObject:name2];
 
         if (v23)
         {
           v24 = objc_alloc(MEMORY[0x277D3A498]);
-          v25 = [v19 item];
-          v26 = [v24 initWithItem:v25 score:1.0];
+          item2 = [v19 item];
+          v26 = [v24 initWithItem:item2 score:1.0];
           [v14 addObject:v26];
 
-          v27 = [v19 item];
-          v28 = [v27 name];
-          [v7 removeObject:v28];
+          item3 = [v19 item];
+          name3 = [item3 name];
+          [v7 removeObject:name3];
         }
 
         else
@@ -815,15 +815,15 @@ void __53__PPTemporalClusterStorage_fetchRelatedMediaRecords___block_invoke(uint
         }
 
         v34 = *(*(&v45 + 1) + 8 * k);
-        v35 = [v34 entity];
-        v36 = [v35 name];
-        v37 = [v7 containsObject:v36];
+        entity2 = [v34 entity];
+        name4 = [entity2 name];
+        v37 = [v7 containsObject:name4];
 
         if (v37)
         {
           v38 = objc_alloc(MEMORY[0x277D3A498]);
-          v39 = [v34 entity];
-          v40 = [v38 initWithItem:v39 score:1.0];
+          entity3 = [v34 entity];
+          v40 = [v38 initWithItem:entity3 score:1.0];
           [v14 addObject:v40];
         }
       }

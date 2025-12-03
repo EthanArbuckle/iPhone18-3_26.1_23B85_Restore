@@ -1,26 +1,26 @@
 @interface PSDeleteButtonCell
 + (Class)alternativeCellClass;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSDeleteButtonCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = PSDeleteButtonCell;
-  v4 = a3;
-  [(PSTableCell *)&v7 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"buttonColor", v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"buttonColor", v7.receiver, v7.super_class}];
 
-  v6 = v5;
+  systemRedColor = v5;
   if (!v5)
   {
-    v6 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
   }
 
-  objc_storeStrong(&self->_buttonColor, v6);
+  objc_storeStrong(&self->_buttonColor, systemRedColor);
   if (!v5)
   {
   }
@@ -39,46 +39,46 @@
   v16.receiver = self;
   v16.super_class = PSDeleteButtonCell;
   [(PSTableCell *)&v16 layoutSubviews];
-  v3 = [(PSDeleteButtonCell *)self textLabel];
-  [v3 setTextAlignment:1];
+  textLabel = [(PSDeleteButtonCell *)self textLabel];
+  [textLabel setTextAlignment:1];
 
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
   WeakRetained = objc_loadWeakRetained(&self->super._specifier);
   v7 = [WeakRetained propertyForKey:@"alignment"];
 
   if (v7)
   {
-    v8 = [v7 intValue];
-    if (v8 == 3)
+    intValue = [v7 intValue];
+    if (intValue == 3)
     {
-      v9 = v5 == 0;
+      v9 = userInterfaceLayoutDirection == 0;
       goto LABEL_8;
     }
 
-    if (v8 == 1)
+    if (intValue == 1)
     {
-      v9 = v5 != 0;
+      v9 = userInterfaceLayoutDirection != 0;
 LABEL_8:
       v10 = 2 * v9;
-      v11 = [(PSDeleteButtonCell *)self textLabel];
-      [v11 setTextAlignment:v10];
+      textLabel2 = [(PSDeleteButtonCell *)self textLabel];
+      [textLabel2 setTextAlignment:v10];
     }
   }
 
   buttonColor = self->_buttonColor;
-  v13 = [(PSTableCell *)self titleLabel];
-  [v13 setTextColor:buttonColor];
+  titleLabel = [(PSTableCell *)self titleLabel];
+  [titleLabel setTextColor:buttonColor];
 
   v14 = self->_buttonColor;
-  v15 = [(PSTableCell *)self titleLabel];
-  [v15 setHighlightedTextColor:v14];
+  titleLabel2 = [(PSTableCell *)self titleLabel];
+  [titleLabel2 setHighlightedTextColor:v14];
 }
 
 + (Class)alternativeCellClass
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
   }

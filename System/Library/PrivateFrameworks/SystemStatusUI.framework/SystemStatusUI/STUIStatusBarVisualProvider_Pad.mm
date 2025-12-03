@@ -1,5 +1,5 @@
 @interface STUIStatusBarVisualProvider_Pad
-+ (Class)visualProviderSubclassForScreen:(id)a3 visualProviderInfo:(id)a4;
++ (Class)visualProviderSubclassForScreen:(id)screen visualProviderInfo:(id)info;
 + (NSDirectionalEdgeInsets)edgeInsets;
 + (UIEdgeInsets)regionCursorInsets;
 + (double)baseFontSize;
@@ -9,52 +9,52 @@
 + (double)menuBarHeight;
 + (double)pillFontSize;
 - (BOOL)_updateDateAndTimePlacements;
-- (BOOL)_updateToShowMenuBarFromMode:(int64_t)a3 toMode:(int64_t)a4;
-- (BOOL)_updateToShowShowBackgroundFromMode:(int64_t)a3 toMode:(int64_t)a4;
-- (CGRect)clockBoundsForLayoutItem:(id)a3;
+- (BOOL)_updateToShowMenuBarFromMode:(int64_t)mode toMode:(int64_t)toMode;
+- (BOOL)_updateToShowShowBackgroundFromMode:(int64_t)mode toMode:(int64_t)toMode;
+- (CGRect)clockBoundsForLayoutItem:(id)item;
 - (CGSize)expandedPillSize;
 - (CGSize)pillSize;
 - (CGSize)smallPillSize;
 - (NSDirectionalEdgeInsets)expandedEdgeInsets;
 - (STUIStatusBarVisualProvider_Pad)init;
 - (UIFont)clockFont;
-- (double)airplaneShouldFadeForAnimationType:(int64_t)a3;
-- (double)airplaneSpeedForAnimationType:(int64_t)a3;
-- (double)airplaneTravelOffsetInProposedPartWithIdentifier:(id *)a3 animationType:(int64_t)a4;
+- (double)airplaneShouldFadeForAnimationType:(int64_t)type;
+- (double)airplaneSpeedForAnimationType:(int64_t)type;
+- (double)airplaneTravelOffsetInProposedPartWithIdentifier:(id *)identifier animationType:(int64_t)type;
 - (double)maximumPossibleMenuBarWidth;
-- (id)displayItemIdentifiersForPartWithIdentifier:(id)a3;
+- (id)displayItemIdentifiersForPartWithIdentifier:(id)identifier;
 - (id)emphasizedFont;
 - (id)expandedFont;
 - (id)expandedPillFont;
 - (id)normalFont;
-- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)a3;
-- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)a3;
+- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)identifier;
+- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)identifier;
 - (id)pillFont;
 - (id)pillSmallFont;
-- (id)regionIdentifiersForBackgroundLumaView:(id)a3;
-- (id)regionIdentifiersForPartWithIdentifier:(id)a3;
-- (id)setupInContainerView:(id)a3;
-- (id)styleAttributesForStyle:(int64_t)a3;
+- (id)regionIdentifiersForBackgroundLumaView:(id)view;
+- (id)regionIdentifiersForPartWithIdentifier:(id)identifier;
+- (id)setupInContainerView:(id)view;
+- (id)styleAttributesForStyle:(int64_t)style;
 - (void)_dateTimePreferencesUpdated;
-- (void)_updateConstraintsForAvoidanceFrame:(CGRect)a3;
-- (void)actionable:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5;
-- (void)avoidanceFrameUpdatedFromFrame:(CGRect)a3 withAnimationSettings:(id)a4 options:(unint64_t)a5;
+- (void)_updateConstraintsForAvoidanceFrame:(CGRect)frame;
+- (void)actionable:(id)actionable highlighted:(BOOL)highlighted initialPress:(BOOL)press;
+- (void)avoidanceFrameUpdatedFromFrame:(CGRect)frame withAnimationSettings:(id)settings options:(unint64_t)options;
 - (void)dealloc;
-- (void)itemCreated:(id)a3;
-- (void)modeUpdatedFromMode:(int64_t)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)sizeUpdatedFromSize:(CGSize)a3;
+- (void)itemCreated:(id)created;
+- (void)modeUpdatedFromMode:(int64_t)mode;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)sizeUpdatedFromSize:(CGSize)size;
 - (void)statusBarEnabledPartsUpdated;
 @end
 
 @implementation STUIStatusBarVisualProvider_Pad
 
-+ (Class)visualProviderSubclassForScreen:(id)a3 visualProviderInfo:(id)a4
++ (Class)visualProviderSubclassForScreen:(id)screen visualProviderInfo:(id)info
 {
-  v5 = a3;
-  if ([v5 _isMainLikeScreen])
+  screenCopy = screen;
+  if ([screenCopy _isMainLikeScreen])
   {
-    v6 = [v5 _isEmbeddedScreen] ^ 1;
+    v6 = [screenCopy _isEmbeddedScreen] ^ 1;
   }
 
   else
@@ -62,21 +62,21 @@
     v6 = 0;
   }
 
-  [v5 _displayCornerRadius];
+  [screenCopy _displayCornerRadius];
   v8 = v7;
-  [v5 _displayCornerRadiusIgnoringZoom];
+  [screenCopy _displayCornerRadiusIgnoringZoom];
   if (v6 || v8 > 0.0)
   {
     v9 = objc_opt_class();
-    v10 = STUIStatusBarGetVisualProviderSubclassForScreenWithVisualProviderInfo(v9, v5, 0);
+    selfCopy = STUIStatusBarGetVisualProviderSubclassForScreenWithVisualProviderInfo(v9, screenCopy, 0);
   }
 
   else
   {
-    v10 = a1;
+    selfCopy = self;
   }
 
-  v11 = v10;
+  v11 = selfCopy;
 
   return v11;
 }
@@ -150,7 +150,7 @@
     return 14.0;
   }
 
-  [a1 baselineOffset];
+  [self baselineOffset];
   return result;
 }
 
@@ -159,9 +159,9 @@
   [objc_opt_class() edgeInsets];
   v4 = v3;
   v6 = v5;
-  v7 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-  v8 = [v7 containerView];
-  [v8 bounds];
+  statusBar = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+  containerView = [statusBar containerView];
+  [containerView bounds];
   v10 = v9 - v4 - v6;
   [(STUIStatusBarVisualProvider_Pad *)self regionSpacing];
   v12 = v10 + v11 * -2.0;
@@ -425,10 +425,10 @@
 - (UIFont)clockFont
 {
   v3 = +[STUIStatusBarSettingsDomain rootSettings];
-  v4 = [v3 visualProviderSettings];
-  v5 = [v4 hasBoldTime];
+  visualProviderSettings = [v3 visualProviderSettings];
+  hasBoldTime = [visualProviderSettings hasBoldTime];
 
-  if (v5)
+  if (hasBoldTime)
   {
     [(STUIStatusBarVisualProvider_Pad *)self emphasizedFont];
   }
@@ -465,12 +465,12 @@
   [(STUIStatusBarVisualProvider_Pad *)&v4 dealloc];
 }
 
-- (id)setupInContainerView:(id)a3
+- (id)setupInContainerView:(id)view
 {
   v181[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v175 = [MEMORY[0x277CBEB18] array];
-  v178 = [MEMORY[0x277CBEB18] array];
+  viewCopy = view;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   [objc_opt_class() baselineOffset];
   v6 = v5;
   [objc_opt_class() expandedBaselineOffset];
@@ -489,12 +489,12 @@
   v19 = v18;
   [(STUIStatusBarVisualProvider_Pad *)self regionSpacing];
   v21 = v20;
-  v22 = [(STUIStatusBarVisualProvider_Pad *)self normalFont];
-  [v22 capHeight];
+  normalFont = [(STUIStatusBarVisualProvider_Pad *)self normalFont];
+  [normalFont capHeight];
   v24 = v23;
 
-  v25 = [(STUIStatusBarVisualProvider_Pad *)self expandedFont];
-  [v25 capHeight];
+  expandedFont = [(STUIStatusBarVisualProvider_Pad *)self expandedFont];
+  [expandedFont capHeight];
   v172 = v26;
 
   [(STUIStatusBarVisualProvider_Pad *)self pillSize];
@@ -511,28 +511,28 @@
 
     [(STUIStatusBarRegion *)v28 setLayout:v29];
     [(STUIStatusBarRegion *)v28 disableWithToken:21];
-    v32 = [(STUIStatusBarRegion *)v28 layoutItem];
-    v33 = [v32 leadingAnchor];
-    v34 = [v4 leadingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
-    [v175 addObject:v35];
+    layoutItem = [(STUIStatusBarRegion *)v28 layoutItem];
+    leadingAnchor = [layoutItem leadingAnchor];
+    leadingAnchor2 = [viewCopy leadingAnchor];
+    v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v35];
 
-    v36 = [v32 trailingAnchor];
-    v37 = [v4 trailingAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
-    [v175 addObject:v38];
+    trailingAnchor = [layoutItem trailingAnchor];
+    trailingAnchor2 = [viewCopy trailingAnchor];
+    v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v38];
 
-    v39 = [v32 topAnchor];
-    v40 = [v4 topAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
-    [v175 addObject:v41];
+    topAnchor = [layoutItem topAnchor];
+    topAnchor2 = [viewCopy topAnchor];
+    v41 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v41];
 
-    v42 = [v32 heightAnchor];
-    v43 = [v42 constraintEqualToConstant:v9];
-    [v175 addObject:v43];
+    heightAnchor = [layoutItem heightAnchor];
+    v43 = [heightAnchor constraintEqualToConstant:v9];
+    [array addObject:v43];
 
-    [v4 _ui_addSubLayoutItem:v32];
-    [v178 addObject:v28];
+    [viewCopy _ui_addSubLayoutItem:layoutItem];
+    [array2 addObject:v28];
   }
 
   v44 = [[STUIStatusBarRegion alloc] initWithIdentifier:@"leading"];
@@ -553,27 +553,27 @@
 
   UIRoundToViewScale();
   [(STUIStatusBarRegion *)v44 setExtendedHoverInsets:-v49, -v11, 0.0, 0.0];
-  v50 = [(STUIStatusBarRegion *)v44 layoutItem];
-  v51 = [v50 bottomAnchor];
-  v52 = [v4 topAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52 constant:v6];
+  layoutItem2 = [(STUIStatusBarRegion *)v44 layoutItem];
+  bottomAnchor = [layoutItem2 bottomAnchor];
+  topAnchor3 = [viewCopy topAnchor];
+  v53 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:v6];
   leadingRegionBaselineConstraint = self->_leadingRegionBaselineConstraint;
   self->_leadingRegionBaselineConstraint = v53;
 
-  [v175 addObject:self->_leadingRegionBaselineConstraint];
-  v55 = [v50 leadingAnchor];
-  v56 = [v4 leadingAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56 constant:v11];
-  [v175 addObject:v57];
+  [array addObject:self->_leadingRegionBaselineConstraint];
+  leadingAnchor3 = [layoutItem2 leadingAnchor];
+  leadingAnchor4 = [viewCopy leadingAnchor];
+  v57 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v11];
+  [array addObject:v57];
 
-  v58 = [v50 heightAnchor];
-  v59 = [v58 constraintEqualToConstant:v24];
-  [v175 addObject:v59];
+  heightAnchor2 = [layoutItem2 heightAnchor];
+  v59 = [heightAnchor2 constraintEqualToConstant:v24];
+  [array addObject:v59];
 
-  v177 = v50;
-  [v4 _ui_addSubLayoutItem:v50];
+  v177 = layoutItem2;
+  [viewCopy _ui_addSubLayoutItem:layoutItem2];
 
-  [v178 addObject:v44];
+  [array2 addObject:v44];
   v60 = [[STUIStatusBarRegion alloc] initWithIdentifier:@"trailing"];
   v61 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
   v62 = objc_alloc_init(STUIStatusBarRegionAxisStackingLayout);
@@ -590,30 +590,30 @@
   v64 = +[STUIStatusBarHoverRegionAction trailingHoverAction];
   [(STUIStatusBarRegion *)v60 setHoverAction:v64];
 
-  v65 = v4;
+  v65 = viewCopy;
   UIRoundToViewScale();
   [(STUIStatusBarRegion *)v60 setExtendedHoverInsets:-v66, 0.0, 0.0, -v13];
-  v67 = [(STUIStatusBarRegion *)v60 layoutItem];
-  v68 = [v67 bottomAnchor];
-  v69 = [v65 topAnchor];
-  v70 = [v68 constraintEqualToAnchor:v69 constant:v6];
+  layoutItem3 = [(STUIStatusBarRegion *)v60 layoutItem];
+  bottomAnchor2 = [layoutItem3 bottomAnchor];
+  topAnchor4 = [v65 topAnchor];
+  v70 = [bottomAnchor2 constraintEqualToAnchor:topAnchor4 constant:v6];
   trailingRegionBaselineConstraint = self->_trailingRegionBaselineConstraint;
   self->_trailingRegionBaselineConstraint = v70;
 
-  [v175 addObject:self->_trailingRegionBaselineConstraint];
-  v72 = [v67 trailingAnchor];
-  v73 = [v65 trailingAnchor];
-  v74 = [v72 constraintEqualToAnchor:v73 constant:-v13];
-  [v175 addObject:v74];
+  [array addObject:self->_trailingRegionBaselineConstraint];
+  trailingAnchor3 = [layoutItem3 trailingAnchor];
+  trailingAnchor4 = [v65 trailingAnchor];
+  v74 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v13];
+  [array addObject:v74];
 
-  v75 = [v67 heightAnchor];
-  v76 = [v75 constraintEqualToConstant:v24];
-  [v175 addObject:v76];
+  heightAnchor3 = [layoutItem3 heightAnchor];
+  v76 = [heightAnchor3 constraintEqualToConstant:v24];
+  [array addObject:v76];
 
-  v176 = v67;
-  [v65 _ui_addSubLayoutItem:v67];
+  v176 = layoutItem3;
+  [v65 _ui_addSubLayoutItem:layoutItem3];
 
-  [v178 addObject:v60];
+  [array2 addObject:v60];
   v77 = [[STUIStatusBarRegion alloc] initWithIdentifier:@"center"];
   v78 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
   v79 = objc_alloc_init(STUIStatusBarRegionAxisCenteringLayout);
@@ -632,74 +632,74 @@
     [(STUIStatusBarRegion *)v77 setActionInsets:-20.0, -20.0, -20.0, -20.0];
   }
 
-  v82 = [(STUIStatusBarRegion *)v77 layoutItem];
-  v83 = [v82 centerXAnchor];
-  v84 = [v81 centerXAnchor];
-  v85 = [v83 constraintEqualToAnchor:v84];
+  layoutItem4 = [(STUIStatusBarRegion *)v77 layoutItem];
+  centerXAnchor = [layoutItem4 centerXAnchor];
+  centerXAnchor2 = [v81 centerXAnchor];
+  v85 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   LODWORD(v86) = 1132068864;
   [v85 _ui_constraintWithPriority:v86];
   v87 = v179 = v81;
-  [v175 addObject:v87];
+  [array addObject:v87];
 
-  v88 = [v82 widthAnchor];
-  v89 = [v88 constraintEqualToConstant:0.0];
+  widthAnchor = [layoutItem4 widthAnchor];
+  v89 = [widthAnchor constraintEqualToConstant:0.0];
   LODWORD(v90) = 1132003328;
   v91 = [v89 _ui_constraintWithPriority:v90];
-  [v175 addObject:v91];
+  [array addObject:v91];
 
-  v92 = [v82 bottomAnchor];
-  v93 = [v179 topAnchor];
-  v94 = [v92 constraintEqualToAnchor:v93 constant:v6];
+  bottomAnchor3 = [layoutItem4 bottomAnchor];
+  topAnchor5 = [v179 topAnchor];
+  v94 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5 constant:v6];
   centerRegionBaselineConstraint = self->_centerRegionBaselineConstraint;
   self->_centerRegionBaselineConstraint = v94;
 
-  [v175 addObject:self->_centerRegionBaselineConstraint];
-  v96 = [v82 heightAnchor];
-  v97 = [v96 constraintEqualToConstant:v24];
-  [v175 addObject:v97];
+  [array addObject:self->_centerRegionBaselineConstraint];
+  heightAnchor4 = [layoutItem4 heightAnchor];
+  v97 = [heightAnchor4 constraintEqualToConstant:v24];
+  [array addObject:v97];
 
-  v98 = [v82 leadingAnchor];
-  v99 = [v177 trailingAnchor];
-  v100 = [v98 constraintGreaterThanOrEqualToAnchor:v99 constant:v21];
-  [v175 addObject:v100];
+  leadingAnchor5 = [layoutItem4 leadingAnchor];
+  trailingAnchor5 = [v177 trailingAnchor];
+  v100 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:trailingAnchor5 constant:v21];
+  [array addObject:v100];
 
-  v101 = [v176 leadingAnchor];
-  v102 = [v82 trailingAnchor];
-  v103 = [v101 constraintGreaterThanOrEqualToAnchor:v102 constant:v21];
-  [v175 addObject:v103];
+  leadingAnchor6 = [v176 leadingAnchor];
+  trailingAnchor6 = [layoutItem4 trailingAnchor];
+  v103 = [leadingAnchor6 constraintGreaterThanOrEqualToAnchor:trailingAnchor6 constant:v21];
+  [array addObject:v103];
 
-  v104 = [v82 leadingAnchor];
-  v105 = [v177 trailingAnchor];
-  v106 = [v104 constraintEqualToAnchor:v105 constant:v21];
+  leadingAnchor7 = [layoutItem4 leadingAnchor];
+  trailingAnchor7 = [v177 trailingAnchor];
+  v106 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor7 constant:v21];
   LODWORD(v107) = 1132003328;
   v108 = [v106 _ui_constraintWithPriority:v107];
-  [v175 addObject:v108];
+  [array addObject:v108];
 
-  v109 = [v176 leadingAnchor];
-  v110 = [v82 trailingAnchor];
-  v111 = [v109 constraintEqualToAnchor:v110 constant:v21];
+  leadingAnchor8 = [v176 leadingAnchor];
+  trailingAnchor8 = [layoutItem4 trailingAnchor];
+  v111 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor8 constant:v21];
   LODWORD(v112) = 1132003328;
   v113 = [v111 _ui_constraintWithPriority:v112];
-  [v175 addObject:v113];
+  [array addObject:v113];
 
-  v114 = [v179 centerXAnchor];
-  v115 = [v177 trailingAnchor];
-  v116 = [v114 constraintGreaterThanOrEqualToAnchor:v115 constant:0.0];
+  centerXAnchor3 = [v179 centerXAnchor];
+  trailingAnchor9 = [v177 trailingAnchor];
+  v116 = [centerXAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor9 constant:0.0];
   leadingRegionTrailingAnchorConstraint = self->_leadingRegionTrailingAnchorConstraint;
   self->_leadingRegionTrailingAnchorConstraint = v116;
 
-  [v175 addObject:self->_leadingRegionTrailingAnchorConstraint];
-  v118 = [v176 leadingAnchor];
-  v119 = [v179 centerXAnchor];
-  v120 = [v118 constraintGreaterThanOrEqualToAnchor:v119 constant:0.0];
+  [array addObject:self->_leadingRegionTrailingAnchorConstraint];
+  leadingAnchor9 = [v176 leadingAnchor];
+  centerXAnchor4 = [v179 centerXAnchor];
+  v120 = [leadingAnchor9 constraintGreaterThanOrEqualToAnchor:centerXAnchor4 constant:0.0];
   trailingRegionLeadingAnchorConstraint = self->_trailingRegionLeadingAnchorConstraint;
   self->_trailingRegionLeadingAnchorConstraint = v120;
 
-  [v175 addObject:self->_trailingRegionLeadingAnchorConstraint];
-  v168 = v82;
-  [v179 _ui_addSubLayoutItem:v82];
+  [array addObject:self->_trailingRegionLeadingAnchorConstraint];
+  v168 = layoutItem4;
+  [v179 _ui_addSubLayoutItem:layoutItem4];
 
-  [v178 addObject:v77];
+  [array2 addObject:v77];
   v122 = [[STUIStatusBarRegion alloc] initWithIdentifier:@"expandedLeading"];
   v123 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
   v124 = objc_alloc_init(STUIStatusBarRegionAxisStackingLayout);
@@ -716,23 +716,23 @@
 
   [(STUIStatusBarRegion *)v122 setOffsetable:1];
   [(STUIStatusBarRegion *)v122 disableWithToken:10];
-  v127 = [(STUIStatusBarRegion *)v122 layoutItem];
-  v128 = [v127 leadingAnchor];
-  v129 = [v179 leadingAnchor];
-  v130 = [v128 constraintEqualToAnchor:v129 constant:v169];
-  [v175 addObject:v130];
+  layoutItem5 = [(STUIStatusBarRegion *)v122 layoutItem];
+  leadingAnchor10 = [layoutItem5 leadingAnchor];
+  leadingAnchor11 = [v179 leadingAnchor];
+  v130 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11 constant:v169];
+  [array addObject:v130];
 
-  v131 = [v127 bottomAnchor];
-  v132 = [v179 topAnchor];
-  v133 = [v131 constraintEqualToAnchor:v132 constant:v173];
-  [v175 addObject:v133];
+  bottomAnchor4 = [layoutItem5 bottomAnchor];
+  topAnchor6 = [v179 topAnchor];
+  v133 = [bottomAnchor4 constraintEqualToAnchor:topAnchor6 constant:v173];
+  [array addObject:v133];
 
-  v134 = [v127 heightAnchor];
-  v135 = [v134 constraintEqualToConstant:v172];
-  [v175 addObject:v135];
+  heightAnchor5 = [layoutItem5 heightAnchor];
+  v135 = [heightAnchor5 constraintEqualToConstant:v172];
+  [array addObject:v135];
 
-  [v179 _ui_addSubLayoutItem:v127];
-  [v178 addObject:v122];
+  [v179 _ui_addSubLayoutItem:layoutItem5];
+  [array2 addObject:v122];
 
   v136 = [[STUIStatusBarRegion alloc] initWithIdentifier:@"expandedTrailing"];
   v137 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
@@ -750,64 +750,64 @@
 
   [(STUIStatusBarRegion *)v136 setOffsetable:1];
   [(STUIStatusBarRegion *)v136 disableWithToken:10];
-  v141 = [(STUIStatusBarRegion *)v136 layoutItem];
-  v142 = [v141 leadingAnchor];
-  v143 = [v127 trailingAnchor];
-  v144 = [v142 constraintEqualToAnchor:v143 constant:v21];
-  [v175 addObject:v144];
+  layoutItem6 = [(STUIStatusBarRegion *)v136 layoutItem];
+  leadingAnchor12 = [layoutItem6 leadingAnchor];
+  trailingAnchor10 = [layoutItem5 trailingAnchor];
+  v144 = [leadingAnchor12 constraintEqualToAnchor:trailingAnchor10 constant:v21];
+  [array addObject:v144];
 
-  v145 = [v141 widthAnchor];
-  v170 = v127;
-  v146 = [v127 widthAnchor];
-  v147 = [v145 constraintEqualToAnchor:v146];
+  widthAnchor2 = [layoutItem6 widthAnchor];
+  v170 = layoutItem5;
+  widthAnchor3 = [layoutItem5 widthAnchor];
+  v147 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
   LODWORD(v148) = 1131741184;
   v149 = [v147 _ui_constraintWithPriority:v148];
-  [v175 addObject:v149];
+  [array addObject:v149];
 
-  v150 = [v141 trailingAnchor];
-  v151 = [v179 trailingAnchor];
-  v152 = [v150 constraintEqualToAnchor:v151 constant:-v171];
-  [v175 addObject:v152];
+  trailingAnchor11 = [layoutItem6 trailingAnchor];
+  trailingAnchor12 = [v179 trailingAnchor];
+  v152 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12 constant:-v171];
+  [array addObject:v152];
 
-  v153 = [v141 bottomAnchor];
-  v154 = [v179 topAnchor];
-  v155 = [v153 constraintEqualToAnchor:v154 constant:v173];
-  [v175 addObject:v155];
+  bottomAnchor5 = [layoutItem6 bottomAnchor];
+  topAnchor7 = [v179 topAnchor];
+  v155 = [bottomAnchor5 constraintEqualToAnchor:topAnchor7 constant:v173];
+  [array addObject:v155];
 
-  v156 = [v141 heightAnchor];
-  v157 = [v156 constraintEqualToConstant:v172];
-  [v175 addObject:v157];
+  heightAnchor6 = [layoutItem6 heightAnchor];
+  v157 = [heightAnchor6 constraintEqualToConstant:v172];
+  [array addObject:v157];
 
-  [v179 _ui_addSubLayoutItem:v141];
-  [v178 addObject:v136];
+  [v179 _ui_addSubLayoutItem:layoutItem6];
+  [array2 addObject:v136];
 
-  v158 = STUIStatusBarAddLumaView(v179, v175, v177, 1, v174);
+  v158 = STUIStatusBarAddLumaView(v179, array, v177, 1, v174);
   [(STUIStatusBarVisualProvider_Pad *)self setLeadingBackgroundLumaView:v158];
 
-  v159 = STUIStatusBarAddLumaView(v179, v175, v176, 2, v174);
+  v159 = STUIStatusBarAddLumaView(v179, array, v176, 2, v174);
   [(STUIStatusBarVisualProvider_Pad *)self setTrailingBackgroundLumaView:v159];
 
   if (_UIEnhancedMainMenuEnabled())
   {
     v160 = v168;
-    v161 = STUIStatusBarAddLumaView(v179, v175, v168, 0, v174);
+    v161 = STUIStatusBarAddLumaView(v179, array, v168, 0, v174);
     [(STUIStatusBarVisualProvider_Pad *)self setCenterBackgroundLumaView:v161];
 
-    v162 = [(STUIStatusBarVisualProvider_Pad *)self leadingBackgroundLumaView];
-    v180[0] = v162;
-    v163 = [(STUIStatusBarVisualProvider_Pad *)self centerBackgroundLumaView];
-    v180[1] = v163;
-    v164 = [(STUIStatusBarVisualProvider_Pad *)self trailingBackgroundLumaView];
-    v180[2] = v164;
+    leadingBackgroundLumaView = [(STUIStatusBarVisualProvider_Pad *)self leadingBackgroundLumaView];
+    v180[0] = leadingBackgroundLumaView;
+    centerBackgroundLumaView = [(STUIStatusBarVisualProvider_Pad *)self centerBackgroundLumaView];
+    v180[1] = centerBackgroundLumaView;
+    trailingBackgroundLumaView = [(STUIStatusBarVisualProvider_Pad *)self trailingBackgroundLumaView];
+    v180[2] = trailingBackgroundLumaView;
     v165 = [MEMORY[0x277CBEA60] arrayWithObjects:v180 count:3];
   }
 
   else
   {
-    v162 = [(STUIStatusBarVisualProvider_Pad *)self leadingBackgroundLumaView];
-    v181[0] = v162;
-    v163 = [(STUIStatusBarVisualProvider_Pad *)self trailingBackgroundLumaView];
-    v181[1] = v163;
+    leadingBackgroundLumaView = [(STUIStatusBarVisualProvider_Pad *)self leadingBackgroundLumaView];
+    v181[0] = leadingBackgroundLumaView;
+    centerBackgroundLumaView = [(STUIStatusBarVisualProvider_Pad *)self trailingBackgroundLumaView];
+    v181[1] = centerBackgroundLumaView;
     v165 = [MEMORY[0x277CBEA60] arrayWithObjects:v181 count:2];
     v160 = v168;
   }
@@ -815,19 +815,19 @@
   v166 = [objc_alloc(MEMORY[0x277D760C8]) initWithTransitionBoundaries:self minimumDifference:v165 delegate:0.4 views:{0.7, 0.5}];
   [(STUIStatusBarVisualProvider_iOS *)self setLumaTrackingGroup:v166];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v175];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 
-  return v178;
+  return array2;
 }
 
-- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)a3
+- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)identifier
 {
   v109[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   orderedDisplayItemPlacements = self->_orderedDisplayItemPlacements;
   if (!orderedDisplayItemPlacements)
   {
-    v86 = v4;
+    v86 = identifierCopy;
     v6 = +[(STUIStatusBarCellularItem *)STUIStatusBarCellularExpandedItem];
     v7 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v6 priority:1003];
 
@@ -874,8 +874,8 @@
     [v23 addObjectsFromArray:v30];
 
     v31 = +[STUIStatusBarSettingsDomain rootSettings];
-    v32 = [v31 visualProviderSettings];
-    LODWORD(v26) = [v32 showsDateBeforeTime];
+    visualProviderSettings = [v31 visualProviderSettings];
+    LODWORD(v26) = [visualProviderSettings showsDateBeforeTime];
 
     if (v26)
     {
@@ -903,7 +903,7 @@
     [(STUIStatusBarVisualProvider_iOS *)v22 bluetoothPaddingInset];
     v38 = [STUIStatusBarDisplayItemPlacementIndicatorsGroup groupWithHighPriority:3400 lowPriority:3100 bluetoothPaddingInset:?];
     v91 = +[STUIStatusBarDisplayItemPlacementBatteryGroup groupWithHighPriority:lowPriority:](STUIStatusBarDisplayItemPlacementBatteryGroup, "groupWithHighPriority:lowPriority:", [v90 maximumPriority] + 1, objc_msgSend(v38, "minimumPriority") - 5);
-    v39 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v40 = +[(STUIStatusBarItem *)STUIStatusBarSensorActivityItem];
     v89 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v40 priority:3720];
 
@@ -914,8 +914,8 @@
     v43 = +[(STUIStatusBarItem *)STUIStatusBarVoiceControlPillItem];
     v87 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v43 priority:3680];
 
-    v44 = [v38 unstablePlacements];
-    [v39 addObjectsFromArray:v44];
+    unstablePlacements = [v38 unstablePlacements];
+    [array addObjectsFromArray:unstablePlacements];
 
     [(STUIStatusBarVisualProvider_iOS *)v35 itemSpacing];
     v92 = v38;
@@ -923,8 +923,8 @@
     v101 = v42;
     v46 = [MEMORY[0x277CBEA60] arrayWithObjects:&v101 count:1];
     v47 = [v82 requiringAllPlacements:v46];
-    v48 = [v38 unstablePlacements];
-    v49 = [v47 requiringAnyPlacements:v48];
+    unstablePlacements2 = [v38 unstablePlacements];
+    v49 = [v47 requiringAnyPlacements:unstablePlacements2];
     v102[0] = v49;
     v102[1] = v42;
     v83 = v35;
@@ -937,34 +937,34 @@
     v102[2] = v53;
     v102[3] = v89;
     v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v102 count:4];
-    [v39 addObjectsFromArray:v54];
+    [array addObjectsFromArray:v54];
 
-    v55 = [v88 placements];
-    [v39 addObjectsFromArray:v55];
+    placements = [v88 placements];
+    [array addObjectsFromArray:placements];
 
     v99[0] = v87;
     v56 = +[(STUIStatusBarItem *)STUIStatusBarIndicatorAirplaneModeItem];
     v57 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v56 priority:3600];
-    v58 = [v90 cellularGroup];
-    v59 = [v58 placementsAffectedByAirplaneMode];
-    v60 = [v57 excludingPlacements:v59];
+    cellularGroup = [v90 cellularGroup];
+    placementsAffectedByAirplaneMode = [cellularGroup placementsAffectedByAirplaneMode];
+    v60 = [v57 excludingPlacements:placementsAffectedByAirplaneMode];
     v99[1] = v60;
     v61 = [MEMORY[0x277CBEA60] arrayWithObjects:v99 count:2];
-    [v39 addObjectsFromArray:v61];
+    [array addObjectsFromArray:v61];
 
-    v62 = [v90 placements];
-    [v39 addObjectsFromArray:v62];
+    placements2 = [v90 placements];
+    [array addObjectsFromArray:placements2];
 
-    v63 = [v92 stablePlacements];
-    [v39 addObjectsFromArray:v63];
+    stablePlacements = [v92 stablePlacements];
+    [array addObjectsFromArray:stablePlacements];
 
     v64 = +[(STUIStatusBarItem *)STUIStatusBarIndicatorDisplayWarningItem];
     v65 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v64 priority:3730];
-    [v39 addObject:v65];
+    [array addObject:v65];
 
-    v66 = [v91 placements];
-    v67 = v39;
-    [v39 addObjectsFromArray:v66];
+    placements3 = [v91 placements];
+    v67 = array;
+    [array addObjectsFromArray:placements3];
 
     if (_UIEnhancedMainMenuEnabled())
     {
@@ -999,30 +999,30 @@
     v95[2] = v70;
     v94[2] = @"center";
     v94[3] = @"expandedLeading";
-    v76 = [(STUIStatusBarVisualProvider_iOS *)v83 expandedLeadingPlacements];
-    v95[3] = v76;
+    expandedLeadingPlacements = [(STUIStatusBarVisualProvider_iOS *)v83 expandedLeadingPlacements];
+    v95[3] = expandedLeadingPlacements;
     v94[4] = @"expandedTrailing";
-    v77 = [(STUIStatusBarVisualProvider_iOS *)v83 expandedTrailingPlacements];
+    expandedTrailingPlacements = [(STUIStatusBarVisualProvider_iOS *)v83 expandedTrailingPlacements];
     v94[5] = @"background";
-    v95[4] = v77;
+    v95[4] = expandedTrailingPlacements;
     v95[5] = v73;
     v78 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v95 forKeys:v94 count:6];
     v79 = v83->_orderedDisplayItemPlacements;
     v83->_orderedDisplayItemPlacements = v78;
 
     orderedDisplayItemPlacements = v83->_orderedDisplayItemPlacements;
-    v4 = v86;
+    identifierCopy = v86;
   }
 
-  v80 = [(NSDictionary *)orderedDisplayItemPlacements objectForKeyedSubscript:v4];
+  v80 = [(NSDictionary *)orderedDisplayItemPlacements objectForKeyedSubscript:identifierCopy];
 
   return v80;
 }
 
-- (id)regionIdentifiersForPartWithIdentifier:(id)a3
+- (id)regionIdentifiersForPartWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqual:@"leadingPartIdentifier"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqual:@"leadingPartIdentifier"])
   {
     v4 = MEMORY[0x277CBEB98];
     v9 = @"expandedLeading";
@@ -1034,20 +1034,20 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v3 isEqual:@"trailingPartIdentifier"])
+  if ([identifierCopy isEqual:@"trailingPartIdentifier"])
   {
     [MEMORY[0x277CBEB98] setWithObjects:{@"trailing", @"expandedTrailing", 0, v11, v12}];
     v6 = LABEL_14:;
     goto LABEL_15;
   }
 
-  if ([v3 isEqual:@"centerPartIdentifier"])
+  if ([identifierCopy isEqual:@"centerPartIdentifier"])
   {
     [MEMORY[0x277CBEB98] setWithObjects:{@"center", @"background", 0, v11, v12}];
     goto LABEL_14;
   }
 
-  if ([v3 isEqual:@"normalPartIdentifier"])
+  if ([identifierCopy isEqual:@"normalPartIdentifier"])
   {
     v4 = MEMORY[0x277CBEB98];
     v11 = @"background";
@@ -1057,7 +1057,7 @@ LABEL_13:
     goto LABEL_3;
   }
 
-  if (([v3 isEqual:@"expandedPartIdentifier"] & 1) != 0 || objc_msgSend(v3, "isEqual:", @"visibleExpandedPartIdentifier"))
+  if (([identifierCopy isEqual:@"expandedPartIdentifier"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqual:", @"visibleExpandedPartIdentifier"))
   {
     v4 = MEMORY[0x277CBEB98];
     v9 = @"expandedTrailing";
@@ -1073,13 +1073,13 @@ LABEL_15:
   return v7;
 }
 
-- (id)displayItemIdentifiersForPartWithIdentifier:(id)a3
+- (id)displayItemIdentifiersForPartWithIdentifier:(id)identifier
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqual:@"fittingLeadingPartIdentifier"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqual:@"fittingLeadingPartIdentifier"])
   {
-    v5 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+    statusBar = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
     if ([(STUIStatusBarVisualProvider_iOS *)self expanded])
     {
       v16[0] = @"expandedLeading";
@@ -1094,13 +1094,13 @@ LABEL_15:
 
 LABEL_11:
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-    v9 = [v5 displayItemIdentifiersInRegionsWithIdentifiers:v8];
+    v9 = [statusBar displayItemIdentifiersInRegionsWithIdentifiers:v8];
     goto LABEL_12;
   }
 
-  if ([v4 isEqual:@"fittingTrailingPartIdentifier"])
+  if ([identifierCopy isEqual:@"fittingTrailingPartIdentifier"])
   {
-    v5 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+    statusBar = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
     if ([(STUIStatusBarVisualProvider_iOS *)self expanded])
     {
       v14 = @"expandedTrailing";
@@ -1116,12 +1116,12 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v4 isEqual:@"clockPartIdentifier"])
+  if ([identifierCopy isEqual:@"clockPartIdentifier"])
   {
     v7 = MEMORY[0x277CBEB98];
-    v5 = +[STUIStatusBarTimeItem shortTimeDisplayIdentifier];
+    statusBar = +[STUIStatusBarTimeItem shortTimeDisplayIdentifier];
     v8 = +[STUIStatusBarTimeItem timeDisplayIdentifier];
-    v9 = [v7 setWithObjects:{v5, v8, 0}];
+    v9 = [v7 setWithObjects:{statusBar, v8, 0}];
 LABEL_12:
     v10 = v9;
 
@@ -1130,26 +1130,26 @@ LABEL_12:
 
   v12.receiver = self;
   v12.super_class = STUIStatusBarVisualProvider_Pad;
-  v10 = [(STUIStatusBarVisualProvider_iOS *)&v12 displayItemIdentifiersForPartWithIdentifier:v4];
+  v10 = [(STUIStatusBarVisualProvider_iOS *)&v12 displayItemIdentifiersForPartWithIdentifier:identifierCopy];
 LABEL_13:
 
   return v10;
 }
 
-- (CGRect)clockBoundsForLayoutItem:(id)a3
+- (CGRect)clockBoundsForLayoutItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
   v6 = +[STUIStatusBarTimeItem timeDisplayIdentifier];
 
-  v7 = [v4 view];
+  view = [itemCopy view];
 
-  if (v5 == v6)
+  if (identifier == v6)
   {
-    v16 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-    v17 = [v16 currentAggregatedData];
-    v18 = [v17 shortTimeEntry];
-    v19 = [v18 stringValue];
+    statusBar = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+    currentAggregatedData = [statusBar currentAggregatedData];
+    shortTimeEntry = [currentAggregatedData shortTimeEntry];
+    stringValue = [shortTimeEntry stringValue];
 
     _StatusBar_UITimeSizeForLabel();
     v13 = v20;
@@ -1161,7 +1161,7 @@ LABEL_13:
 
   else
   {
-    [v7 bounds];
+    [view bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -1179,83 +1179,83 @@ LABEL_13:
   return result;
 }
 
-- (id)styleAttributesForStyle:(int64_t)a3
+- (id)styleAttributesForStyle:(int64_t)style
 {
   v20.receiver = self;
   v20.super_class = STUIStatusBarVisualProvider_Pad;
-  v4 = [(STUIStatusBarVisualProvider_iOS *)&v20 styleAttributesForStyle:a3];
-  v5 = [v4 mode];
-  if (v5 <= 1)
+  v4 = [(STUIStatusBarVisualProvider_iOS *)&v20 styleAttributesForStyle:style];
+  mode = [v4 mode];
+  if (mode <= 1)
   {
-    if (v5)
+    if (mode)
     {
-      if (v5 != 1)
+      if (mode != 1)
       {
         goto LABEL_11;
       }
 
       [v4 setIconScale:1.16];
-      v10 = [v4 traitCollection];
-      [v10 displayScale];
+      traitCollection = [v4 traitCollection];
+      [traitCollection displayScale];
       [v4 setIconSize:15];
 
-      v11 = [(STUIStatusBarVisualProvider_Pad *)self expandedFont];
+      expandedFont = [(STUIStatusBarVisualProvider_Pad *)self expandedFont];
       goto LABEL_9;
     }
   }
 
-  else if ((v5 - 2) >= 3)
+  else if ((mode - 2) >= 3)
   {
-    if (v5 != 5)
+    if (mode != 5)
     {
       goto LABEL_11;
     }
 
     [v4 setIconScale:1.0];
-    v6 = [v4 traitCollection];
-    [v6 displayScale];
+    traitCollection2 = [v4 traitCollection];
+    [traitCollection2 displayScale];
     [v4 setIconSize:14];
 
-    v7 = [(STUIStatusBarVisualProvider_Pad *)self normalFont];
-    [v4 setFont:v7];
+    normalFont = [(STUIStatusBarVisualProvider_Pad *)self normalFont];
+    [v4 setFont:normalFont];
 
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    [v4 setTextColor:v8];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v4 setTextColor:whiteColor];
 
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [v4 setImageTintColor:v9];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [v4 setImageTintColor:whiteColor2];
     goto LABEL_10;
   }
 
   [v4 setIconScale:1.0];
-  v12 = [v4 traitCollection];
-  [v12 displayScale];
+  traitCollection3 = [v4 traitCollection];
+  [traitCollection3 displayScale];
   [v4 setIconSize:14];
 
-  v11 = [(STUIStatusBarVisualProvider_Pad *)self normalFont];
+  expandedFont = [(STUIStatusBarVisualProvider_Pad *)self normalFont];
 LABEL_9:
-  v9 = v11;
-  [v4 setFont:v11];
+  whiteColor2 = expandedFont;
+  [v4 setFont:expandedFont];
 LABEL_10:
 
 LABEL_11:
   v13 = +[STUIStatusBarSettingsDomain rootSettings];
-  v14 = [v13 visualProviderSettings];
-  v15 = [v14 hasBoldTime];
+  visualProviderSettings = [v13 visualProviderSettings];
+  hasBoldTime = [visualProviderSettings hasBoldTime];
 
-  if (v15)
+  if (hasBoldTime)
   {
     v16 = MEMORY[0x277D74300];
-    v17 = [(STUIStatusBarVisualProvider_Pad *)self normalFont];
-    [v17 pointSize];
+    normalFont2 = [(STUIStatusBarVisualProvider_Pad *)self normalFont];
+    [normalFont2 pointSize];
     v18 = [v16 systemFontOfSize:? weight:?];
     [v4 setEmphasizedFont:v18];
   }
 
   else
   {
-    v17 = [v4 font];
-    [v4 setEmphasizedFont:v17];
+    normalFont2 = [v4 font];
+    [v4 setEmphasizedFont:normalFont2];
   }
 
   [v4 setImageNamePrefixes:&unk_287D1AE28];
@@ -1263,19 +1263,19 @@ LABEL_11:
   return v4;
 }
 
-- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)a3
+- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[STUIStatusBarPillBackgroundActivityItem pillCombinedDisplayIdentifier];
 
-  if (v5 == v4)
+  if (v5 == identifierCopy)
   {
     v8 = +[STUIStatusBarStyleAttributes overriddenStyleAttributes];
-    v9 = [(STUIStatusBarVisualProvider_Pad *)self pillFont];
-    [v8 setFont:v9];
+    pillFont = [(STUIStatusBarVisualProvider_Pad *)self pillFont];
+    [v8 setFont:pillFont];
 
-    v10 = [(STUIStatusBarVisualProvider_Pad *)self pillSmallFont];
-    [v8 setSmallFont:v10];
+    pillSmallFont = [(STUIStatusBarVisualProvider_Pad *)self pillSmallFont];
+    [v8 setSmallFont:pillSmallFont];
 
     [(STUIStatusBarVisualProvider_Pad *)self pillSize];
 LABEL_7:
@@ -1286,14 +1286,14 @@ LABEL_7:
 
   v6 = +[(STUIStatusBarPillBackgroundActivityItem *)STUIStatusBarExpandedPillBackgroundActivityItem];
 
-  if (v6 == v4)
+  if (v6 == identifierCopy)
   {
     v8 = +[STUIStatusBarStyleAttributes overriddenStyleAttributes];
-    v12 = [(STUIStatusBarVisualProvider_Pad *)self expandedPillFont];
-    [v8 setFont:v12];
+    expandedPillFont = [(STUIStatusBarVisualProvider_Pad *)self expandedPillFont];
+    [v8 setFont:expandedPillFont];
 
-    v13 = [(STUIStatusBarVisualProvider_Pad *)self expandedPillFont];
-    [v8 setSmallFont:v13];
+    expandedPillFont2 = [(STUIStatusBarVisualProvider_Pad *)self expandedPillFont];
+    [v8 setSmallFont:expandedPillFont2];
 
     [(STUIStatusBarVisualProvider_Pad *)self expandedPillSize];
     goto LABEL_7;
@@ -1301,11 +1301,11 @@ LABEL_7:
 
   v7 = +[(STUIStatusBarItem *)STUIStatusBarMenuBarItem];
 
-  if (v7 == v4)
+  if (v7 == identifierCopy)
   {
     v8 = +[STUIStatusBarStyleAttributes overriddenStyleAttributes];
-    v15 = [(STUIStatusBarVisualProvider_Pad *)self emphasizedFont];
-    [v8 setEmphasizedFont:v15];
+    emphasizedFont = [(STUIStatusBarVisualProvider_Pad *)self emphasizedFont];
+    [v8 setEmphasizedFont:emphasizedFont];
   }
 
   else
@@ -1318,12 +1318,12 @@ LABEL_8:
   return v8;
 }
 
-- (void)actionable:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5
+- (void)actionable:(id)actionable highlighted:(BOOL)highlighted initialPress:(BOOL)press
 {
-  v5 = a5;
-  v6 = a4;
+  pressCopy = press;
+  highlightedCopy = highlighted;
   v19[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  actionableCopy = actionable;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1331,41 +1331,41 @@ LABEL_8:
 LABEL_8:
     v16.receiver = self;
     v16.super_class = STUIStatusBarVisualProvider_Pad;
-    [(STUIStatusBarVisualProvider_iOS *)&v16 actionable:v8 highlighted:v6 initialPress:v5];
+    [(STUIStatusBarVisualProvider_iOS *)&v16 actionable:actionableCopy highlighted:highlightedCopy initialPress:pressCopy];
     goto LABEL_9;
   }
 
-  v9 = v8;
+  v9 = actionableCopy;
   v10 = v9;
   if (!v9)
   {
     goto LABEL_8;
   }
 
-  v11 = [v9 identifier];
+  identifier = [v9 identifier];
   v12 = +[STUIStatusBarPillBackgroundActivityItem pillCombinedDisplayIdentifier];
 
-  if (v11 != v12)
+  if (identifier != v12)
   {
     goto LABEL_8;
   }
 
-  v13 = [v10 highlightView];
-  if (!v13)
+  highlightView = [v10 highlightView];
+  if (!highlightView)
   {
-    v13 = objc_alloc_init(STUIStatusBarRoundedCornerView);
-    [v10 setHighlightView:v13];
+    highlightView = objc_alloc_init(STUIStatusBarRoundedCornerView);
+    [v10 setHighlightView:highlightView];
   }
 
   v14 = MEMORY[0x277D75220];
-  v19[0] = v13;
+  v19[0] = highlightView;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __71__STUIStatusBarVisualProvider_Pad_actionable_highlighted_initialPress___block_invoke;
   v17[3] = &__block_descriptor_33_e16_v16__0__UIView_8l;
-  v18 = v6;
-  [v14 _setVisuallyHighlighted:v6 forViews:v15 initialPress:v5 highlightBlock:v17];
+  v18 = highlightedCopy;
+  [v14 _setVisuallyHighlighted:highlightedCopy forViews:v15 initialPress:pressCopy highlightBlock:v17];
 
 LABEL_9:
 }
@@ -1373,25 +1373,25 @@ LABEL_9:
 - (void)statusBarEnabledPartsUpdated
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v3 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-  v4 = [v3 regionWithIdentifier:@"leading"];
+  statusBar = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+  v4 = [statusBar regionWithIdentifier:@"leading"];
 
-  v5 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-  v6 = [v5 regionWithIdentifier:@"trailing"];
+  statusBar2 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+  v6 = [statusBar2 regionWithIdentifier:@"trailing"];
 
-  v7 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-  v8 = [v7 containerView];
-  v9 = [v8 centerXAnchor];
+  statusBar3 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+  containerView = [statusBar3 containerView];
+  centerXAnchor = [containerView centerXAnchor];
 
-  v10 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-  v11 = [v10 containerView];
-  v12 = [v11 centerXAnchor];
+  statusBar4 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+  containerView2 = [statusBar4 containerView];
+  centerXAnchor2 = [containerView2 centerXAnchor];
 
-  v13 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-  v14 = [v13 regionWithIdentifier:@"center"];
-  v15 = [v14 isEnabled];
+  statusBar5 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+  v14 = [statusBar5 regionWithIdentifier:@"center"];
+  isEnabled = [v14 isEnabled];
 
-  if ((v15 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
     if ([v4 isEnabled])
     {
@@ -1400,29 +1400,29 @@ LABEL_9:
         goto LABEL_7;
       }
 
-      v16 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-      v17 = [v16 containerView];
-      v18 = [v17 trailingAnchor];
-      v19 = v9;
-      v9 = v18;
+      statusBar6 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+      containerView3 = [statusBar6 containerView];
+      trailingAnchor = [containerView3 trailingAnchor];
+      v19 = centerXAnchor;
+      centerXAnchor = trailingAnchor;
     }
 
     else
     {
-      v16 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-      v17 = [v16 containerView];
-      v20 = [v17 leadingAnchor];
-      v19 = v12;
-      v12 = v20;
+      statusBar6 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+      containerView3 = [statusBar6 containerView];
+      leadingAnchor = [containerView3 leadingAnchor];
+      v19 = centerXAnchor2;
+      centerXAnchor2 = leadingAnchor;
     }
   }
 
 LABEL_7:
   v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
   v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-  v23 = [(NSLayoutConstraint *)self->_leadingRegionTrailingAnchorConstraint firstAnchor];
+  firstAnchor = [(NSLayoutConstraint *)self->_leadingRegionTrailingAnchorConstraint firstAnchor];
 
-  if (v9 != v23)
+  if (centerXAnchor != firstAnchor)
   {
     [v21 addObject:self->_leadingRegionTrailingAnchorConstraint];
     v24 = MEMORY[0x277CCAAD0];
@@ -1431,10 +1431,10 @@ LABEL_7:
     v26 = v25 = v6;
     [v24 deactivateConstraints:v26];
 
-    v27 = [v4 layoutItem];
-    v28 = [v27 trailingAnchor];
+    layoutItem = [v4 layoutItem];
+    trailingAnchor2 = [layoutItem trailingAnchor];
     [(NSLayoutConstraint *)self->_leadingRegionTrailingAnchorConstraint constant];
-    v29 = [v9 constraintGreaterThanOrEqualToAnchor:v28 constant:?];
+    v29 = [centerXAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:?];
     leadingRegionTrailingAnchorConstraint = self->_leadingRegionTrailingAnchorConstraint;
     self->_leadingRegionTrailingAnchorConstraint = v29;
 
@@ -1442,16 +1442,16 @@ LABEL_7:
     [v22 addObject:self->_leadingRegionTrailingAnchorConstraint];
   }
 
-  v31 = [(NSLayoutConstraint *)self->_trailingRegionLeadingAnchorConstraint secondAnchor];
+  secondAnchor = [(NSLayoutConstraint *)self->_trailingRegionLeadingAnchorConstraint secondAnchor];
 
-  if (v12 != v31)
+  if (centerXAnchor2 != secondAnchor)
   {
     [v21 addObject:self->_trailingRegionLeadingAnchorConstraint];
-    v32 = [v6 layoutItem];
-    [v32 leadingAnchor];
+    layoutItem2 = [v6 layoutItem];
+    [layoutItem2 leadingAnchor];
     v34 = v33 = v6;
     [(NSLayoutConstraint *)self->_trailingRegionLeadingAnchorConstraint constant];
-    v35 = [v34 constraintGreaterThanOrEqualToAnchor:v12 constant:?];
+    v35 = [v34 constraintGreaterThanOrEqualToAnchor:centerXAnchor2 constant:?];
     trailingRegionLeadingAnchorConstraint = self->_trailingRegionLeadingAnchorConstraint;
     self->_trailingRegionLeadingAnchorConstraint = v35;
 
@@ -1463,8 +1463,8 @@ LABEL_7:
   {
     [MEMORY[0x277CCAAD0] deactivateConstraints:v21];
     [MEMORY[0x277CCAAD0] activateConstraints:v22];
-    v37 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-    [v37 avoidanceFrame];
+    statusBar7 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+    [statusBar7 avoidanceFrame];
     v39 = v38;
     v41 = v40;
     v43 = v42;
@@ -1481,14 +1481,14 @@ LABEL_7:
   }
 }
 
-- (void)_updateConstraintsForAvoidanceFrame:(CGRect)a3
+- (void)_updateConstraintsForAvoidanceFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-  [v8 bounds];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  statusBar = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+  [statusBar bounds];
   r1.origin.x = v9;
   v11 = v10;
   v13 = v12;
@@ -1540,25 +1540,25 @@ LABEL_7:
     v58.size.width = v13;
     v58.size.height = v23;
     v26 = fmax(MaxX - CGRectGetMidX(v58), 0.0);
-    v27 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-    v28 = [v27 regionWithIdentifier:@"center"];
-    v29 = [v28 isEnabled];
+    statusBar2 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+    v28 = [statusBar2 regionWithIdentifier:@"center"];
+    isEnabled = [v28 isEnabled];
 
-    if ((v29 & 1) == 0)
+    if ((isEnabled & 1) == 0)
     {
-      v30 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-      v31 = [v30 regionWithIdentifier:@"leading"];
-      v32 = [v31 isEnabled];
+      statusBar3 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+      v31 = [statusBar3 regionWithIdentifier:@"leading"];
+      isEnabled2 = [v31 isEnabled];
 
-      if (v32)
+      if (isEnabled2)
       {
-        v33 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-        v34 = [v33 regionWithIdentifier:@"trailing"];
-        v35 = [v34 isEnabled];
+        statusBar4 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+        v34 = [statusBar4 regionWithIdentifier:@"trailing"];
+        isEnabled3 = [v34 isEnabled];
 
         v36 = v11;
         v37 = v48;
-        if ((v35 & 1) == 0)
+        if ((isEnabled3 & 1) == 0)
         {
           v38 = r1.origin.x;
           v39 = v23;
@@ -1569,10 +1569,10 @@ LABEL_7:
           v59.size.height = height;
           v41 = fmax(v40 - CGRectGetMinX(v59), 0.0);
 LABEL_10:
-          v43 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-          v44 = [v43 _shouldReverseLayoutDirection];
+          statusBar5 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+          _shouldReverseLayoutDirection = [statusBar5 _shouldReverseLayoutDirection];
 
-          if (v44)
+          if (_shouldReverseLayoutDirection)
           {
             v16 = v41;
           }
@@ -1582,7 +1582,7 @@ LABEL_10:
             v16 = v26;
           }
 
-          if (v44)
+          if (_shouldReverseLayoutDirection)
           {
             v17 = v26;
           }
@@ -1641,23 +1641,23 @@ LABEL_16:
   *&r1.size.width = 3221225472;
   *&r1.size.height = __71__STUIStatusBarVisualProvider_Pad__updateConstraintsForAvoidanceFrame___block_invoke;
   v51 = &unk_279D37F00;
-  v52 = self;
+  selfCopy = self;
   [MEMORY[0x277D75D18] performWithoutAnimation:&r1.origin.y];
 }
 
-- (void)avoidanceFrameUpdatedFromFrame:(CGRect)a3 withAnimationSettings:(id)a4 options:(unint64_t)a5
+- (void)avoidanceFrameUpdatedFromFrame:(CGRect)frame withAnimationSettings:(id)settings options:(unint64_t)options
 {
-  v6 = [(STUIStatusBarVisualProvider_iOS *)self statusBar:a4];
+  v6 = [(STUIStatusBarVisualProvider_iOS *)self statusBar:settings];
   [v6 avoidanceFrame];
   [(STUIStatusBarVisualProvider_Pad *)self _updateConstraintsForAvoidanceFrame:?];
 }
 
-- (void)sizeUpdatedFromSize:(CGSize)a3
+- (void)sizeUpdatedFromSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-  [v6 avoidanceFrame];
+  height = size.height;
+  width = size.width;
+  statusBar = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+  [statusBar avoidanceFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1669,8 +1669,8 @@ LABEL_16:
   v21.size.height = v14;
   if (!CGRectIsEmpty(v21))
   {
-    v15 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-    [v15 bounds];
+    statusBar2 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+    [statusBar2 bounds];
     v17 = v16;
     v19 = v18;
 
@@ -1682,47 +1682,47 @@ LABEL_16:
   }
 }
 
-- (void)itemCreated:(id)a3
+- (void)itemCreated:(id)created
 {
-  v11 = a3;
+  createdCopy = created;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v11 setShowsDisabledSignalBars:0];
+    [createdCopy setShowsDisabledSignalBars:0];
     goto LABEL_10;
   }
 
-  v4 = [v11 identifier];
+  identifier = [createdCopy identifier];
   v5 = +[(STUIStatusBarItem *)STUIStatusBarPillBackgroundActivityItem];
 
-  if (v4 == v5)
+  if (identifier == v5)
   {
-    v10 = v11;
+    v10 = createdCopy;
     [(STUIStatusBarVisualProvider_Pad *)self pillSize];
   }
 
   else
   {
-    v6 = [v11 identifier];
+    identifier2 = [createdCopy identifier];
     v7 = +[(STUIStatusBarItem *)STUIStatusBarVoiceControlPillItem];
 
-    if (v6 == v7)
+    if (identifier2 == v7)
     {
-      v10 = v11;
+      v10 = createdCopy;
       [(STUIStatusBarVisualProvider_Pad *)self smallPillSize];
     }
 
     else
     {
-      v8 = [v11 identifier];
+      identifier3 = [createdCopy identifier];
       v9 = +[(STUIStatusBarItem *)STUIStatusBarExpandedPillBackgroundActivityItem];
 
-      if (v8 != v9)
+      if (identifier3 != v9)
       {
         goto LABEL_10;
       }
 
-      v10 = v11;
+      v10 = createdCopy;
       [(STUIStatusBarVisualProvider_Pad *)self expandedPillSize];
     }
   }
@@ -1761,19 +1761,19 @@ LABEL_10:
 {
   if ([(STUIStatusBarVisualProvider_Pad *)self _updateDateAndTimePlacements])
   {
-    v3 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-    [v3 updateWithAnimations:MEMORY[0x277CBEBF8]];
+    statusBar = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+    [statusBar updateWithAnimations:MEMORY[0x277CBEBF8]];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = __UIKitUserDefaults();
 
-  if (v13 == v11)
+  if (v13 == objectCopy)
   {
     [(STUIStatusBarVisualProvider_Pad *)self _dateTimePreferencesUpdated];
   }
@@ -1782,25 +1782,25 @@ LABEL_10:
   {
     v14.receiver = self;
     v14.super_class = STUIStatusBarVisualProvider_Pad;
-    [(STUIStatusBarVisualProvider_Pad *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(STUIStatusBarVisualProvider_Pad *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (double)airplaneTravelOffsetInProposedPartWithIdentifier:(id *)a3 animationType:(int64_t)a4
+- (double)airplaneTravelOffsetInProposedPartWithIdentifier:(id *)identifier animationType:(int64_t)type
 {
   if ([(STUIStatusBarVisualProvider_iOS *)self expanded]&& [(STUIStatusBarVisualProvider_iOS *)self wantsExpandedLeadingPlacements])
   {
     v37.receiver = self;
     v37.super_class = STUIStatusBarVisualProvider_Pad;
-    [(STUIStatusBarVisualProvider_iOS *)&v37 airplaneTravelOffsetInProposedPartWithIdentifier:a3 animationType:a4];
+    [(STUIStatusBarVisualProvider_iOS *)&v37 airplaneTravelOffsetInProposedPartWithIdentifier:identifier animationType:type];
     return v7;
   }
 
   else
   {
     v9 = +[(STUIStatusBarItem *)STUIStatusBarIndicatorAirplaneModeItem];
-    v10 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-    [v10 frameForDisplayItemWithIdentifier:v9];
+    statusBar = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+    [statusBar frameForDisplayItemWithIdentifier:v9];
     v12 = v11;
     v35 = v13;
     v36 = v11;
@@ -1809,8 +1809,8 @@ LABEL_10:
     v18 = v17;
     v34 = v17;
 
-    v19 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-    [v19 frameForPartWithIdentifier:*a3 includeInternalItems:1];
+    statusBar2 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+    [statusBar2 frameForPartWithIdentifier:*identifier includeInternalItems:1];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -1846,7 +1846,7 @@ LABEL_10:
       v8 = v31;
     }
 
-    if (a4 == 1)
+    if (type == 1)
     {
       v42.origin.x = v36;
       v42.origin.y = v35;
@@ -1856,13 +1856,13 @@ LABEL_10:
     }
 
     v32 = +[(STUIStatusBarItem *)STUIStatusBarIndicatorAirplaneModeItem];
-    *a3 = [v32 stringRepresentation];
+    *identifier = [v32 stringRepresentation];
   }
 
   return v8;
 }
 
-- (double)airplaneSpeedForAnimationType:(int64_t)a3
+- (double)airplaneSpeedForAnimationType:(int64_t)type
 {
   if (![(STUIStatusBarVisualProvider_iOS *)self expanded]|| ![(STUIStatusBarVisualProvider_iOS *)self wantsExpandedLeadingPlacements])
   {
@@ -1871,48 +1871,48 @@ LABEL_10:
 
   v6.receiver = self;
   v6.super_class = STUIStatusBarVisualProvider_Pad;
-  [(STUIStatusBarVisualProvider_iOS *)&v6 airplaneSpeedForAnimationType:a3];
+  [(STUIStatusBarVisualProvider_iOS *)&v6 airplaneSpeedForAnimationType:type];
   return result;
 }
 
-- (double)airplaneShouldFadeForAnimationType:(int64_t)a3
+- (double)airplaneShouldFadeForAnimationType:(int64_t)type
 {
-  v5 = [(STUIStatusBarVisualProvider_iOS *)self expanded];
+  expanded = [(STUIStatusBarVisualProvider_iOS *)self expanded];
   result = 1.0;
-  if (v5)
+  if (expanded)
   {
     v7.receiver = self;
     v7.super_class = STUIStatusBarVisualProvider_Pad;
-    [(STUIStatusBarVisualProvider_iOS *)&v7 airplaneShouldFadeForAnimationType:a3, 1.0];
+    [(STUIStatusBarVisualProvider_iOS *)&v7 airplaneShouldFadeForAnimationType:type, 1.0];
   }
 
   return result;
 }
 
-- (id)regionIdentifiersForBackgroundLumaView:(id)a3
+- (id)regionIdentifiersForBackgroundLumaView:(id)view
 {
-  v4 = a3;
-  v5 = [(STUIStatusBarVisualProvider_Pad *)self leadingBackgroundLumaView];
+  viewCopy = view;
+  leadingBackgroundLumaView = [(STUIStatusBarVisualProvider_Pad *)self leadingBackgroundLumaView];
 
-  if (v5 == v4)
+  if (leadingBackgroundLumaView == viewCopy)
   {
     [MEMORY[0x277CBEB98] setWithObjects:{@"leading", 0}];
   }
 
   else
   {
-    v6 = [(STUIStatusBarVisualProvider_Pad *)self trailingBackgroundLumaView];
+    trailingBackgroundLumaView = [(STUIStatusBarVisualProvider_Pad *)self trailingBackgroundLumaView];
 
-    if (v6 == v4)
+    if (trailingBackgroundLumaView == viewCopy)
     {
       [MEMORY[0x277CBEB98] setWithObjects:{@"trailing", 0}];
     }
 
     else
     {
-      v7 = [(STUIStatusBarVisualProvider_Pad *)self centerBackgroundLumaView];
+      centerBackgroundLumaView = [(STUIStatusBarVisualProvider_Pad *)self centerBackgroundLumaView];
 
-      if (v7 != v4)
+      if (centerBackgroundLumaView != viewCopy)
       {
         v8 = [MEMORY[0x277CBEB98] set];
         goto LABEL_9;
@@ -1928,16 +1928,16 @@ LABEL_9:
   return v9;
 }
 
-- (void)modeUpdatedFromMode:(int64_t)a3
+- (void)modeUpdatedFromMode:(int64_t)mode
 {
   v9.receiver = self;
   v9.super_class = STUIStatusBarVisualProvider_Pad;
   [(STUIStatusBarVisualProvider_iOS *)&v9 modeUpdatedFromMode:?];
-  v5 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-  v6 = [v5 mode];
+  statusBar = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+  mode = [statusBar mode];
 
-  v7 = [(STUIStatusBarVisualProvider_Pad *)self _updateToShowShowBackgroundFromMode:a3 toMode:v6];
-  if ([(STUIStatusBarVisualProvider_Pad *)self _updateToShowMenuBarFromMode:a3 toMode:v6]|| v7)
+  v7 = [(STUIStatusBarVisualProvider_Pad *)self _updateToShowShowBackgroundFromMode:mode toMode:mode];
+  if ([(STUIStatusBarVisualProvider_Pad *)self _updateToShowMenuBarFromMode:mode toMode:mode]|| v7)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -1948,13 +1948,13 @@ LABEL_9:
   }
 }
 
-- (BOOL)_updateToShowShowBackgroundFromMode:(int64_t)a3 toMode:(int64_t)a4
+- (BOOL)_updateToShowShowBackgroundFromMode:(int64_t)mode toMode:(int64_t)toMode
 {
-  v4 = (a3 != 5) ^ (a4 == 5);
-  if ((a3 != 5) == (a4 == 5))
+  v4 = (mode != 5) ^ (toMode == 5);
+  if ((mode != 5) == (toMode == 5))
   {
     v7 = objc_opt_class();
-    if (a4 == 5)
+    if (toMode == 5)
     {
       [v7 overlayMenuBaselineOffset];
     }
@@ -1968,10 +1968,10 @@ LABEL_9:
     [(NSLayoutConstraint *)self->_leadingRegionBaselineConstraint setConstant:?];
     [(NSLayoutConstraint *)self->_centerRegionBaselineConstraint setConstant:v9];
     [(NSLayoutConstraint *)self->_trailingRegionBaselineConstraint setConstant:v9];
-    v10 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-    v11 = [v10 regionWithIdentifier:@"background"];
+    statusBar = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+    v11 = [statusBar regionWithIdentifier:@"background"];
 
-    if (a4 == 5)
+    if (toMode == 5)
     {
       [v11 enableWithToken:21];
     }
@@ -1985,26 +1985,26 @@ LABEL_9:
   return v4 ^ 1;
 }
 
-- (BOOL)_updateToShowMenuBarFromMode:(int64_t)a3 toMode:(int64_t)a4
+- (BOOL)_updateToShowMenuBarFromMode:(int64_t)mode toMode:(int64_t)toMode
 {
-  v4 = a4 & 0xFFFFFFFFFFFFFFFELL;
-  v5 = ((a3 & 0xFFFFFFFFFFFFFFFELL) != 4) ^ ((a4 & 0xFFFFFFFFFFFFFFFELL) == 4);
-  if (((a3 & 0xFFFFFFFFFFFFFFFELL) != 4) == ((a4 & 0xFFFFFFFFFFFFFFFELL) == 4))
+  v4 = toMode & 0xFFFFFFFFFFFFFFFELL;
+  v5 = ((mode & 0xFFFFFFFFFFFFFFFELL) != 4) ^ ((toMode & 0xFFFFFFFFFFFFFFFELL) == 4);
+  if (((mode & 0xFFFFFFFFFFFFFFFELL) != 4) == ((toMode & 0xFFFFFFFFFFFFFFFELL) == 4))
   {
-    v6 = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
-    v7 = [v6 regionWithIdentifier:@"center"];
+    statusBar = [(STUIStatusBarVisualProvider_iOS *)self statusBar];
+    v7 = [statusBar regionWithIdentifier:@"center"];
     v8 = v7;
     if (v4 == 4)
     {
       [v7 enableWithToken:20];
-      v9 = [v8 contentView];
-      [v9 _setTouchInsets:{-20.0, -20.0, -20.0, -20.0}];
+      contentView = [v8 contentView];
+      [contentView _setTouchInsets:{-20.0, -20.0, -20.0, -20.0}];
 
-      v10 = [v6 regionWithIdentifier:@"leading"];
-      v11 = [v6 regionWithIdentifier:@"trailing"];
-      v12 = [v10 layout];
+      contentView2 = [statusBar regionWithIdentifier:@"leading"];
+      v11 = [statusBar regionWithIdentifier:@"trailing"];
+      layout = [contentView2 layout];
       v13 = objc_opt_class();
-      v14 = v12;
+      v14 = layout;
       if (v13)
       {
         if (objc_opt_isKindOfClass())
@@ -2025,10 +2025,10 @@ LABEL_9:
 
       v16 = v15;
 
-      v17 = [v16 horizontalLayout];
+      horizontalLayout = [v16 horizontalLayout];
 
       v18 = objc_opt_class();
-      v19 = v17;
+      v19 = horizontalLayout;
       if (v18)
       {
         if (objc_opt_isKindOfClass())
@@ -2050,9 +2050,9 @@ LABEL_9:
       v21 = v20;
 
       [v21 setConstrainDisplayItemsToRegionBounds:1];
-      v22 = [v11 layout];
+      layout2 = [v11 layout];
       v23 = objc_opt_class();
-      v24 = v22;
+      v24 = layout2;
       if (v23)
       {
         if (objc_opt_isKindOfClass())
@@ -2073,10 +2073,10 @@ LABEL_9:
 
       v26 = v25;
 
-      v27 = [v26 horizontalLayout];
+      horizontalLayout2 = [v26 horizontalLayout];
 
       v28 = objc_opt_class();
-      v29 = v27;
+      v29 = horizontalLayout2;
       if (v28)
       {
         if (objc_opt_isKindOfClass())
@@ -2103,8 +2103,8 @@ LABEL_9:
     else
     {
       [v7 disableWithToken:20];
-      v10 = [v8 contentView];
-      [v10 _setTouchInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+      contentView2 = [v8 contentView];
+      [contentView2 _setTouchInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
     }
   }
 

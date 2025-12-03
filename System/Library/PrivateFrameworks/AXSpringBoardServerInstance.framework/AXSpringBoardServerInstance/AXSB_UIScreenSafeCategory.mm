@@ -9,31 +9,31 @@
   if (AXProcessIsSpringBoard() && _UIAccessibilityFullKeyboardAccessEnabled() && ([(AXSB_UIScreenSafeCategory *)self _isCarScreen]& 1) == 0)
   {
     v5 = +[AXSpringBoardServerHelper sharedServerHelper];
-    v6 = [v5 presentationWindow];
-    v7 = v6;
-    if (v6)
+    presentationWindow = [v5 presentationWindow];
+    v7 = presentationWindow;
+    if (presentationWindow)
     {
-      v8 = v6;
+      _preferredFocusedWindow = presentationWindow;
     }
 
     else
     {
       v10.receiver = self;
       v10.super_class = AXSB_UIScreenSafeCategory;
-      v8 = [(AXSB_UIScreenSafeCategory *)&v10 _preferredFocusedWindow];
+      _preferredFocusedWindow = [(AXSB_UIScreenSafeCategory *)&v10 _preferredFocusedWindow];
     }
 
-    v3 = v8;
+    _preferredFocusedWindow2 = _preferredFocusedWindow;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = AXSB_UIScreenSafeCategory;
-    v3 = [(AXSB_UIScreenSafeCategory *)&v9 _preferredFocusedWindow];
+    _preferredFocusedWindow2 = [(AXSB_UIScreenSafeCategory *)&v9 _preferredFocusedWindow];
   }
 
-  return v3;
+  return _preferredFocusedWindow2;
 }
 
 @end

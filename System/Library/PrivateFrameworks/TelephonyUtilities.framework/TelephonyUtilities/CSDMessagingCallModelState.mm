@@ -1,21 +1,21 @@
 @interface CSDMessagingCallModelState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAddCallAllowed:(BOOL)a3;
-- (void)setHasEndAndAnswerAllowed:(BOOL)a3;
-- (void)setHasHardPauseAvailable:(BOOL)a3;
-- (void)setHasHoldAllowed:(BOOL)a3;
-- (void)setHasHoldAndAnswerAllowed:(BOOL)a3;
-- (void)setHasMergeable:(BOOL)a3;
-- (void)setHasSendToVoicemailAllowed:(BOOL)a3;
-- (void)setHasSwappable:(BOOL)a3;
-- (void)setHasTakingCallsPrivateAllowed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAddCallAllowed:(BOOL)allowed;
+- (void)setHasEndAndAnswerAllowed:(BOOL)allowed;
+- (void)setHasHardPauseAvailable:(BOOL)available;
+- (void)setHasHoldAllowed:(BOOL)allowed;
+- (void)setHasHoldAndAnswerAllowed:(BOOL)allowed;
+- (void)setHasMergeable:(BOOL)mergeable;
+- (void)setHasSendToVoicemailAllowed:(BOOL)allowed;
+- (void)setHasSwappable:(BOOL)swappable;
+- (void)setHasTakingCallsPrivateAllowed:(BOOL)allowed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingCallModelState
@@ -174,9 +174,9 @@ LABEL_12:
   return v3;
 }
 
-- (void)setHasSwappable:(BOOL)a3
+- (void)setHasSwappable:(BOOL)swappable
 {
-  if (a3)
+  if (swappable)
   {
     v3 = 256;
   }
@@ -189,9 +189,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasMergeable:(BOOL)a3
+- (void)setHasMergeable:(BOOL)mergeable
 {
-  if (a3)
+  if (mergeable)
   {
     v3 = 64;
   }
@@ -204,9 +204,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasHoldAllowed:(BOOL)a3
+- (void)setHasHoldAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 16;
   }
@@ -219,9 +219,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasAddCallAllowed:(BOOL)a3
+- (void)setHasAddCallAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 2;
   }
@@ -234,9 +234,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasTakingCallsPrivateAllowed:(BOOL)a3
+- (void)setHasTakingCallsPrivateAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 512;
   }
@@ -249,9 +249,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasHardPauseAvailable:(BOOL)a3
+- (void)setHasHardPauseAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 8;
   }
@@ -264,9 +264,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasEndAndAnswerAllowed:(BOOL)a3
+- (void)setHasEndAndAnswerAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 4;
   }
@@ -279,9 +279,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasHoldAndAnswerAllowed:(BOOL)a3
+- (void)setHasHoldAndAnswerAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 32;
   }
@@ -294,9 +294,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasSendToVoicemailAllowed:(BOOL)a3
+- (void)setHasSendToVoicemailAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 128;
   }
@@ -314,15 +314,15 @@ LABEL_12:
   v7.receiver = self;
   v7.super_class = CSDMessagingCallModelState;
   v3 = [(CSDMessagingCallModelState *)&v7 description];
-  v4 = [(CSDMessagingCallModelState *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingCallModelState *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -463,14 +463,14 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_ambiguityState;
-    *(v4 + 12) |= 1u;
+    toCopy[2] = self->_ambiguityState;
+    *(toCopy + 12) |= 1u;
     has = self->_has;
     if ((has & 0x100) == 0)
     {
@@ -489,8 +489,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 19) = self->_swappable;
-  *(v4 + 12) |= 0x100u;
+  *(toCopy + 19) = self->_swappable;
+  *(toCopy + 12) |= 0x100u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -504,8 +504,8 @@ LABEL_4:
   }
 
 LABEL_17:
-  *(v4 + 17) = self->_mergeable;
-  *(v4 + 12) |= 0x40u;
+  *(toCopy + 17) = self->_mergeable;
+  *(toCopy + 12) |= 0x40u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -519,8 +519,8 @@ LABEL_5:
   }
 
 LABEL_18:
-  *(v4 + 15) = self->_holdAllowed;
-  *(v4 + 12) |= 0x10u;
+  *(toCopy + 15) = self->_holdAllowed;
+  *(toCopy + 12) |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -534,8 +534,8 @@ LABEL_6:
   }
 
 LABEL_19:
-  *(v4 + 12) = self->_addCallAllowed;
-  *(v4 + 12) |= 2u;
+  *(toCopy + 12) = self->_addCallAllowed;
+  *(toCopy + 12) |= 2u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -549,8 +549,8 @@ LABEL_7:
   }
 
 LABEL_20:
-  *(v4 + 20) = self->_takingCallsPrivateAllowed;
-  *(v4 + 12) |= 0x200u;
+  *(toCopy + 20) = self->_takingCallsPrivateAllowed;
+  *(toCopy + 12) |= 0x200u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -564,8 +564,8 @@ LABEL_8:
   }
 
 LABEL_21:
-  *(v4 + 14) = self->_hardPauseAvailable;
-  *(v4 + 12) |= 8u;
+  *(toCopy + 14) = self->_hardPauseAvailable;
+  *(toCopy + 12) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -579,8 +579,8 @@ LABEL_9:
   }
 
 LABEL_22:
-  *(v4 + 13) = self->_endAndAnswerAllowed;
-  *(v4 + 12) |= 4u;
+  *(toCopy + 13) = self->_endAndAnswerAllowed;
+  *(toCopy + 12) |= 4u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -594,21 +594,21 @@ LABEL_10:
   }
 
 LABEL_23:
-  *(v4 + 16) = self->_holdAndAnswerAllowed;
-  *(v4 + 12) |= 0x20u;
+  *(toCopy + 16) = self->_holdAndAnswerAllowed;
+  *(toCopy + 12) |= 0x20u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_11:
-    *(v4 + 18) = self->_sendToVoicemailAllowed;
-    *(v4 + 12) |= 0x80u;
+    *(toCopy + 18) = self->_sendToVoicemailAllowed;
+    *(toCopy + 12) |= 0x80u;
   }
 
 LABEL_12:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -750,19 +750,19 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_78;
   }
 
   has = self->_has;
-  v6 = *(v4 + 12);
+  v6 = *(equalCopy + 12);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_ambiguityState != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_ambiguityState != *(equalCopy + 2))
     {
       goto LABEL_78;
     }
@@ -775,27 +775,27 @@ LABEL_11:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 12) & 0x100) == 0)
+    if ((*(equalCopy + 12) & 0x100) == 0)
     {
       goto LABEL_78;
     }
 
-    v8 = *(v4 + 19);
+    v8 = *(equalCopy + 19);
     if (self->_swappable)
     {
-      if ((*(v4 + 19) & 1) == 0)
+      if ((*(equalCopy + 19) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 19))
+    else if (*(equalCopy + 19))
     {
       goto LABEL_78;
     }
   }
 
-  else if ((*(v4 + 12) & 0x100) != 0)
+  else if ((*(equalCopy + 12) & 0x100) != 0)
   {
     goto LABEL_78;
   }
@@ -807,16 +807,16 @@ LABEL_11:
       goto LABEL_78;
     }
 
-    v9 = *(v4 + 17);
+    v9 = *(equalCopy + 17);
     if (self->_mergeable)
     {
-      if ((*(v4 + 17) & 1) == 0)
+      if ((*(equalCopy + 17) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 17))
+    else if (*(equalCopy + 17))
     {
       goto LABEL_78;
     }
@@ -834,16 +834,16 @@ LABEL_11:
       goto LABEL_78;
     }
 
-    v10 = *(v4 + 15);
+    v10 = *(equalCopy + 15);
     if (self->_holdAllowed)
     {
-      if ((*(v4 + 15) & 1) == 0)
+      if ((*(equalCopy + 15) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 15))
+    else if (*(equalCopy + 15))
     {
       goto LABEL_78;
     }
@@ -861,16 +861,16 @@ LABEL_11:
       goto LABEL_78;
     }
 
-    v11 = *(v4 + 12);
+    v11 = *(equalCopy + 12);
     if (self->_addCallAllowed)
     {
-      if ((*(v4 + 12) & 1) == 0)
+      if ((*(equalCopy + 12) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 12))
+    else if (*(equalCopy + 12))
     {
       goto LABEL_78;
     }
@@ -883,27 +883,27 @@ LABEL_11:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 12) & 0x200) == 0)
+    if ((*(equalCopy + 12) & 0x200) == 0)
     {
       goto LABEL_78;
     }
 
-    v12 = *(v4 + 20);
+    v12 = *(equalCopy + 20);
     if (self->_takingCallsPrivateAllowed)
     {
-      if ((*(v4 + 20) & 1) == 0)
+      if ((*(equalCopy + 20) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 20))
+    else if (*(equalCopy + 20))
     {
       goto LABEL_78;
     }
   }
 
-  else if ((*(v4 + 12) & 0x200) != 0)
+  else if ((*(equalCopy + 12) & 0x200) != 0)
   {
     goto LABEL_78;
   }
@@ -915,16 +915,16 @@ LABEL_11:
       goto LABEL_78;
     }
 
-    v13 = *(v4 + 14);
+    v13 = *(equalCopy + 14);
     if (self->_hardPauseAvailable)
     {
-      if ((*(v4 + 14) & 1) == 0)
+      if ((*(equalCopy + 14) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 14))
+    else if (*(equalCopy + 14))
     {
       goto LABEL_78;
     }
@@ -942,16 +942,16 @@ LABEL_11:
       goto LABEL_78;
     }
 
-    v14 = *(v4 + 13);
+    v14 = *(equalCopy + 13);
     if (self->_endAndAnswerAllowed)
     {
-      if ((*(v4 + 13) & 1) == 0)
+      if ((*(equalCopy + 13) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 13))
+    else if (*(equalCopy + 13))
     {
       goto LABEL_78;
     }
@@ -969,16 +969,16 @@ LABEL_11:
       goto LABEL_78;
     }
 
-    v15 = *(v4 + 16);
+    v15 = *(equalCopy + 16);
     if (self->_holdAndAnswerAllowed)
     {
-      if ((*(v4 + 16) & 1) == 0)
+      if ((*(equalCopy + 16) & 1) == 0)
       {
         goto LABEL_78;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_78;
     }
@@ -995,13 +995,13 @@ LABEL_11:
     {
       if (self->_sendToVoicemailAllowed)
       {
-        if (*(v4 + 18))
+        if (*(equalCopy + 18))
         {
           goto LABEL_80;
         }
       }
 
-      else if (!*(v4 + 18))
+      else if (!*(equalCopy + 18))
       {
 LABEL_80:
         v7 = 1;
@@ -1159,15 +1159,15 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 12);
+  fromCopy = from;
+  v5 = *(fromCopy + 12);
   if (v5)
   {
-    self->_ambiguityState = *(v4 + 2);
+    self->_ambiguityState = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 12);
+    v5 = *(fromCopy + 12);
     if ((v5 & 0x100) == 0)
     {
 LABEL_3:
@@ -1180,14 +1180,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 12) & 0x100) == 0)
+  else if ((*(fromCopy + 12) & 0x100) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_swappable = *(v4 + 19);
+  self->_swappable = *(fromCopy + 19);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 12);
+  v5 = *(fromCopy + 12);
   if ((v5 & 0x40) == 0)
   {
 LABEL_4:
@@ -1200,9 +1200,9 @@ LABEL_4:
   }
 
 LABEL_17:
-  self->_mergeable = *(v4 + 17);
+  self->_mergeable = *(fromCopy + 17);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 12);
+  v5 = *(fromCopy + 12);
   if ((v5 & 0x10) == 0)
   {
 LABEL_5:
@@ -1215,9 +1215,9 @@ LABEL_5:
   }
 
 LABEL_18:
-  self->_holdAllowed = *(v4 + 15);
+  self->_holdAllowed = *(fromCopy + 15);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 12);
+  v5 = *(fromCopy + 12);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -1230,9 +1230,9 @@ LABEL_6:
   }
 
 LABEL_19:
-  self->_addCallAllowed = *(v4 + 12);
+  self->_addCallAllowed = *(fromCopy + 12);
   *&self->_has |= 2u;
-  v5 = *(v4 + 12);
+  v5 = *(fromCopy + 12);
   if ((v5 & 0x200) == 0)
   {
 LABEL_7:
@@ -1245,9 +1245,9 @@ LABEL_7:
   }
 
 LABEL_20:
-  self->_takingCallsPrivateAllowed = *(v4 + 20);
+  self->_takingCallsPrivateAllowed = *(fromCopy + 20);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 12);
+  v5 = *(fromCopy + 12);
   if ((v5 & 8) == 0)
   {
 LABEL_8:
@@ -1260,9 +1260,9 @@ LABEL_8:
   }
 
 LABEL_21:
-  self->_hardPauseAvailable = *(v4 + 14);
+  self->_hardPauseAvailable = *(fromCopy + 14);
   *&self->_has |= 8u;
-  v5 = *(v4 + 12);
+  v5 = *(fromCopy + 12);
   if ((v5 & 4) == 0)
   {
 LABEL_9:
@@ -1275,9 +1275,9 @@ LABEL_9:
   }
 
 LABEL_22:
-  self->_endAndAnswerAllowed = *(v4 + 13);
+  self->_endAndAnswerAllowed = *(fromCopy + 13);
   *&self->_has |= 4u;
-  v5 = *(v4 + 12);
+  v5 = *(fromCopy + 12);
   if ((v5 & 0x20) == 0)
   {
 LABEL_10:
@@ -1290,12 +1290,12 @@ LABEL_10:
   }
 
 LABEL_23:
-  self->_holdAndAnswerAllowed = *(v4 + 16);
+  self->_holdAndAnswerAllowed = *(fromCopy + 16);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 12) & 0x80) != 0)
+  if ((*(fromCopy + 12) & 0x80) != 0)
   {
 LABEL_11:
-    self->_sendToVoicemailAllowed = *(v4 + 18);
+    self->_sendToVoicemailAllowed = *(fromCopy + 18);
     *&self->_has |= 0x80u;
   }
 

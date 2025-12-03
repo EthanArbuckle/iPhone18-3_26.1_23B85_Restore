@@ -11,9 +11,9 @@
   [(PKPassFooterContentView *)&v4 layoutSubviews];
   if (PKUIGetMinScreenType() <= 3)
   {
-    v3 = [(PKPassFooterContentView *)self bottomRule];
-    [v3 frame];
-    [v3 setFrame:?];
+    bottomRule = [(PKPassFooterContentView *)self bottomRule];
+    [bottomRule frame];
+    [bottomRule setFrame:?];
   }
 }
 

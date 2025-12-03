@@ -2,61 +2,61 @@
 - (UIBarButtonItem)doneBarButtonItem;
 - (UITableViewCell)includeCell;
 - (UITextField)nameTextField;
-- (_TtC9Reminders29TTRIGroupDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9Reminders29TTRIGroupDetailViewController)initWithStyle:(int64_t)a3;
-- (void)didTapCancel:(id)a3;
-- (void)didTapCreate:(id)a3;
-- (void)nameTextFieldDidChange:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC9Reminders29TTRIGroupDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9Reminders29TTRIGroupDetailViewController)initWithStyle:(int64_t)style;
+- (void)didTapCancel:(id)cancel;
+- (void)didTapCreate:(id)create;
+- (void)nameTextFieldDidChange:(id)change;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TTRIGroupDetailViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100541210();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TTRIGroupDetailViewController *)&v5 viewWillAppear:v3];
+  [(TTRIGroupDetailViewController *)&v5 viewWillAppear:appearCopy];
   sub_10054161C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100541864(a3);
+  selfCopy = self;
+  sub_100541864(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TTRIGroupDetailViewController *)&v5 viewWillDisappear:v3];
+  [(TTRIGroupDetailViewController *)&v5 viewWillDisappear:disappearCopy];
   [v4 resignFirstResponder];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_10054210C();
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
@@ -68,7 +68,7 @@
   v14 = &v17 - v13;
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   (*(v6 + 16))(v11, v14, v5);
-  v15 = self;
+  selfCopy = self;
   IndexPath.init(item:section:)();
   LOBYTE(self) = static IndexPath.== infix(_:_:)();
   v16 = *(v6 + 8);
@@ -108,20 +108,20 @@
   return Strong;
 }
 
-- (void)didTapCancel:(id)a3
+- (void)didTapCancel:(id)cancel
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_10014FA60();
   sub_100004758(&v5);
 }
 
-- (void)didTapCreate:(id)a3
+- (void)didTapCreate:(id)create
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_100541DBC();
@@ -129,10 +129,10 @@
   sub_100004758(&v5);
 }
 
-- (void)nameTextFieldDidChange:(id)a3
+- (void)nameTextFieldDidChange:(id)change
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_100541EC4();
@@ -140,14 +140,14 @@
   sub_100004758(&v5);
 }
 
-- (_TtC9Reminders29TTRIGroupDetailViewController)initWithStyle:(int64_t)a3
+- (_TtC9Reminders29TTRIGroupDetailViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9Reminders29TTRIGroupDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders29TTRIGroupDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

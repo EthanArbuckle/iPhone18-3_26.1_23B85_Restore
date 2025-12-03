@@ -1,29 +1,29 @@
 @interface UIGestureEnvironment
 - (BOOL)_hasGesturesNeedingUpdate;
 - (UIGestureEnvironment)init;
-- (id)_gesturesWithDelayedTouchForTouch:(uint64_t)a1 event:(void *)a2;
-- (id)_nodeForGestureRecognizer:(id *)a1;
+- (id)_gesturesWithDelayedTouchForTouch:(uint64_t)touch event:(void *)event;
+- (id)_nodeForGestureRecognizer:(id *)recognizer;
 - (id)nodeCoordinator;
-- (uint64_t)_activeRelationshipsForGestureRecognizer:(uint64_t)a1;
+- (uint64_t)_activeRelationshipsForGestureRecognizer:(uint64_t)recognizer;
 - (uint64_t)_clearGestureNeedsUpdate:(uint64_t)result;
-- (uint64_t)gestureRecognizer:(uint64_t)a3 requiresGestureRecognizerToFail:;
+- (uint64_t)gestureRecognizer:(uint64_t)recognizer requiresGestureRecognizerToFail:;
 - (uint64_t)setGestureNeedsUpdate:(uint64_t)result;
-- (uint64_t)unmetRequirementsForGestureRecognizer:(uint64_t)a1;
-- (void)_cancelGestureRecognizers:(uint64_t)a1;
+- (uint64_t)unmetRequirementsForGestureRecognizer:(uint64_t)recognizer;
+- (void)_cancelGestureRecognizers:(uint64_t)recognizers;
 - (void)_forceUpdateForSpringBoardOnly;
-- (void)_gestureNeedsReset:(uint64_t)a1;
-- (void)_notifyDependentsGestureRecognizerHasCompleted:(uint64_t)a1;
-- (void)_performTouchContinuationWithOverrideHitTestedView:(id *)a1;
-- (void)_queueGestureRecognizersForResetIfFinished:(uint64_t)a1;
-- (void)_removeNodeFromGestureGraph:(id *)a1;
+- (void)_gestureNeedsReset:(uint64_t)reset;
+- (void)_notifyDependentsGestureRecognizerHasCompleted:(uint64_t)completed;
+- (void)_performTouchContinuationWithOverrideHitTestedView:(id *)view;
+- (void)_queueGestureRecognizersForResetIfFinished:(uint64_t)finished;
+- (void)_removeNodeFromGestureGraph:(id *)graph;
 - (void)_runTouchContinuationActions;
 - (void)_scheduleTouchContinuationDeliveryForGestureRecognizer:(void *)aBlock deliveryBlock:;
-- (void)_updateForEvent:(uint64_t)a3 window:;
-- (void)addGestureRecognizer:(id)a3;
-- (void)addRequirementForGestureRecognizer:(uint64_t)a3 requiringGestureRecognizerToFail:;
+- (void)_updateForEvent:(uint64_t)event window:;
+- (void)addGestureRecognizer:(id)recognizer;
+- (void)addRequirementForGestureRecognizer:(uint64_t)recognizer requiringGestureRecognizerToFail:;
 - (void)dealloc;
-- (void)removeGestureRecognizer:(id)a3;
-- (void)removeRequirementForGestureRecognizer:(uint64_t)a3 requiringGestureRecognizerToFail:;
+- (void)removeGestureRecognizer:(id)recognizer;
+- (void)removeRequirementForGestureRecognizer:(uint64_t)recognizer requiringGestureRecognizerToFail:;
 - (void)setNeedsExclusivityUpdate;
 @end
 
@@ -114,9 +114,9 @@
       gestureRecognizersNeedingRemoval = v2->_gestureRecognizersNeedingRemoval;
       v2->_gestureRecognizersNeedingRemoval = v9;
 
-      v11 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       dirtyGestureRecognizers = v2->_dirtyGestureRecognizers;
-      v2->_dirtyGestureRecognizers = v11;
+      v2->_dirtyGestureRecognizers = array;
 
       v13 = [MEMORY[0x1E695DFA8] set];
       gestureRecognizersBlockedFromReset = v2->_gestureRecognizersBlockedFromReset;
@@ -127,14 +127,14 @@
       dependencyGraph = v2->_dependencyGraph;
       v2->_dependencyGraph = v15;
 
-      v17 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       nodesByGestureRecognizer = v2->_nodesByGestureRecognizer;
-      v2->_nodesByGestureRecognizer = v17;
+      v2->_nodesByGestureRecognizer = strongToStrongObjectsMapTable;
     }
 
-    v19 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     touchContinuationDeliveryActions = v2->_touchContinuationDeliveryActions;
-    v2->_touchContinuationDeliveryActions = v19;
+    v2->_touchContinuationDeliveryActions = strongToStrongObjectsMapTable2;
   }
 
   return v2;
@@ -172,15 +172,15 @@ void __39__UIGestureEnvironment_nodeCoordinator__block_invoke(uint64_t a1)
 - (void)_runTouchContinuationActions
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a1 && [a1[9] count])
+  if (self && [self[9] count])
   {
-    v2 = [a1[9] copy];
+    v2 = [self[9] copy];
     if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
     {
       dispatch_once(&_UIIsGesturesFrameworkEnabled_onceToken, &__block_literal_global_225);
     }
 
-    if (_UIIsGesturesFrameworkEnabled_enabled == 1 && ([(UIGestureEnvironment *)a1 nodeCoordinator], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_opt_respondsToSelector(), v3, (v4 & 1) != 0))
+    if (_UIIsGesturesFrameworkEnabled_enabled == 1 && ([(UIGestureEnvironment *)self nodeCoordinator], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_opt_respondsToSelector(), v3, (v4 & 1) != 0))
     {
       v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v2, "count")}];
       v26 = 0u;
@@ -218,13 +218,13 @@ void __39__UIGestureEnvironment_nodeCoordinator__block_invoke(uint64_t a1)
         while (v8);
       }
 
-      v13 = [(UIGestureEnvironment *)a1 nodeCoordinator];
+      nodeCoordinator = [(UIGestureEnvironment *)self nodeCoordinator];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __52__UIGestureEnvironment__runTouchContinuationActions__block_invoke;
       v24[3] = &unk_1E710B4E0;
       v25 = v6;
-      [v13 enqueueUpdatesForNodes:v5 inBlock:v24 reason:@"touchContinuation"];
+      [nodeCoordinator enqueueUpdatesForNodes:v5 inBlock:v24 reason:@"touchContinuation"];
     }
 
     else
@@ -260,7 +260,7 @@ void __39__UIGestureEnvironment_nodeCoordinator__block_invoke(uint64_t a1)
       }
     }
 
-    [a1[9] removeAllObjects];
+    [self[9] removeAllObjects];
   }
 }
 
@@ -275,8 +275,8 @@ void __39__UIGestureEnvironment_nodeCoordinator__block_invoke(uint64_t a1)
 
     if (_UIIsGesturesFrameworkEnabled_enabled == 1)
     {
-      v2 = [(UIGestureEnvironment *)val nodeCoordinator];
-      [v2 updateWithNodes:MEMORY[0x1E695E0F0] reason:@"SpringBoard" updateHandler:&__block_literal_global_77_0];
+      nodeCoordinator = [(UIGestureEnvironment *)val nodeCoordinator];
+      [nodeCoordinator updateWithNodes:MEMORY[0x1E695E0F0] reason:@"SpringBoard" updateHandler:&__block_literal_global_77_0];
     }
 
     else
@@ -317,21 +317,21 @@ id __69__UIGestureEnvironment__configureBlockResetStateCaptureTokenIfNeeded__blo
   [(UIGestureEnvironment *)&v3 dealloc];
 }
 
-- (id)_nodeForGestureRecognizer:(id *)a1
+- (id)_nodeForGestureRecognizer:(id *)recognizer
 {
-  if (a1)
+  if (recognizer)
   {
-    a1 = [a1[12] objectForKey:a2];
+    recognizer = [recognizer[12] objectForKey:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return recognizer;
 }
 
-- (void)_notifyDependentsGestureRecognizerHasCompleted:(uint64_t)a1
+- (void)_notifyDependentsGestureRecognizerHasCompleted:(uint64_t)completed
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (completed)
   {
     if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
     {
@@ -361,13 +361,13 @@ id __69__UIGestureEnvironment__configureBlockResetStateCaptureTokenIfNeeded__blo
       }
     }
 
-    [*(a1 + 96) objectForKey:a2];
+    [*(completed + 96) objectForKey:a2];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v22 = v26 = 0u;
-    v5 = [v22 outEdges];
-    v6 = [v5 countByEnumeratingWithState:&v23 objects:v33 count:16];
+    outEdges = [v22 outEdges];
+    v6 = [outEdges countByEnumeratingWithState:&v23 objects:v33 count:16];
     if (v6)
     {
       v7 = v6;
@@ -379,11 +379,11 @@ id __69__UIGestureEnvironment__configureBlockResetStateCaptureTokenIfNeeded__blo
         {
           if (*v24 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(outEdges);
           }
 
-          v10 = [*(*(&v23 + 1) + 8 * v9) targetNode];
-          v11 = [v10 propertyForKey:@"gestureRecognizerNode"];
+          targetNode = [*(*(&v23 + 1) + 8 * v9) targetNode];
+          v11 = [targetNode propertyForKey:@"gestureRecognizerNode"];
 
           CategoryCachedImpl = __UILogGetCategoryCachedImpl("GestureEnvironment", &qword_1ED498320);
           if (*CategoryCachedImpl)
@@ -392,12 +392,12 @@ id __69__UIGestureEnvironment__configureBlockResetStateCaptureTokenIfNeeded__blo
             if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
             {
               log = v13;
-              v14 = [v11 _briefDescription];
+              _briefDescription = [v11 _briefDescription];
               if (a2)
               {
-                v15 = [(UIGestureRecognizer *)a2 _state];
+                _state = [(UIGestureRecognizer *)a2 _state];
                 v16 = @"will be unblocked";
-                if ((v15 - 1) < 3)
+                if ((_state - 1) < 3)
                 {
                   v16 = @"will be failed";
                 }
@@ -409,13 +409,13 @@ id __69__UIGestureEnvironment__configureBlockResetStateCaptureTokenIfNeeded__blo
               }
 
               v20 = v16;
-              v19 = [a2 _briefDescription];
+              _briefDescription2 = [a2 _briefDescription];
               *buf = 138412802;
-              v28 = v14;
+              v28 = _briefDescription;
               v29 = 2112;
               v30 = v20;
               v31 = 2112;
-              v32 = v19;
+              v32 = _briefDescription2;
               _os_log_impl(&dword_188A29000, log, OS_LOG_TYPE_ERROR, "%@ %@ by %@", buf, 0x20u);
             }
           }
@@ -426,7 +426,7 @@ id __69__UIGestureEnvironment__configureBlockResetStateCaptureTokenIfNeeded__blo
         }
 
         while (v7 != v9);
-        v17 = [v5 countByEnumeratingWithState:&v23 objects:v33 count:16];
+        v17 = [outEdges countByEnumeratingWithState:&v23 objects:v33 count:16];
         v7 = v17;
       }
 
@@ -435,7 +435,7 @@ id __69__UIGestureEnvironment__configureBlockResetStateCaptureTokenIfNeeded__blo
   }
 }
 
-- (uint64_t)_activeRelationshipsForGestureRecognizer:(uint64_t)a1
+- (uint64_t)_activeRelationshipsForGestureRecognizer:(uint64_t)recognizer
 {
   v22 = *MEMORY[0x1E69E9840];
   if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
@@ -466,13 +466,13 @@ id __69__UIGestureEnvironment__configureBlockResetStateCaptureTokenIfNeeded__blo
     }
   }
 
-  v5 = [*(a1 + 96) objectForKey:a2];
+  v5 = [*(recognizer + 96) objectForKey:a2];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 allEdges];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  allEdges = [v5 allEdges];
+  v7 = [allEdges countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -483,7 +483,7 @@ id __69__UIGestureEnvironment__configureBlockResetStateCaptureTokenIfNeeded__blo
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allEdges);
         }
 
         v11 = [*(*(&v16 + 1) + 8 * i) oppositeNode:v5];
@@ -497,7 +497,7 @@ id __69__UIGestureEnvironment__configureBlockResetStateCaptureTokenIfNeeded__blo
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v8 = [allEdges countByEnumeratingWithState:&v16 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -513,9 +513,9 @@ LABEL_17:
   return v13;
 }
 
-- (uint64_t)gestureRecognizer:(uint64_t)a3 requiresGestureRecognizerToFail:
+- (uint64_t)gestureRecognizer:(uint64_t)recognizer requiresGestureRecognizerToFail:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -548,17 +548,17 @@ LABEL_17:
     }
   }
 
-  v7 = [*(a1 + 96) objectForKey:a2];
-  v8 = [*(a1 + 96) objectForKey:a3];
+  v7 = [*(self + 96) objectForKey:a2];
+  v8 = [*(self + 96) objectForKey:recognizer];
   v9 = [v7 hasEdgeFromNode:v8];
 
   return v9;
 }
 
-- (uint64_t)unmetRequirementsForGestureRecognizer:(uint64_t)a1
+- (uint64_t)unmetRequirementsForGestureRecognizer:(uint64_t)recognizer
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!recognizer)
   {
     return 0;
   }
@@ -591,13 +591,13 @@ LABEL_17:
     }
   }
 
-  v5 = [*(a1 + 96) objectForKey:a2];
+  v5 = [*(recognizer + 96) objectForKey:a2];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 inEdges];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  inEdges = [v5 inEdges];
+  v7 = [inEdges countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -608,21 +608,21 @@ LABEL_17:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(inEdges);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) sourceNode];
-        v12 = [v11 propertyForKey:@"gestureRecognizerNode"];
+        sourceNode = [*(*(&v16 + 1) + 8 * i) sourceNode];
+        v12 = [sourceNode propertyForKey:@"gestureRecognizerNode"];
 
-        LOBYTE(v11) = [(UIGestureRecognizer *)v12 _isActive];
-        if (v11)
+        LOBYTE(sourceNode) = [(UIGestureRecognizer *)v12 _isActive];
+        if (sourceNode)
         {
           v13 = 1;
           goto LABEL_18;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v8 = [inEdges countByEnumeratingWithState:&v16 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -638,9 +638,9 @@ LABEL_18:
   return v13;
 }
 
-- (void)removeRequirementForGestureRecognizer:(uint64_t)a3 requiringGestureRecognizerToFail:
+- (void)removeRequirementForGestureRecognizer:(uint64_t)recognizer requiringGestureRecognizerToFail:
 {
-  if (a1)
+  if (self)
   {
     if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
     {
@@ -670,13 +670,13 @@ LABEL_18:
       }
     }
 
-    v7 = [*(a1 + 96) objectForKey:a2];
-    v8 = [*(a1 + 96) objectForKey:a3];
+    v7 = [*(self + 96) objectForKey:a2];
+    v8 = [*(self + 96) objectForKey:recognizer];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringGestureRecognizerToFail___block_invoke;
     v10[3] = &unk_1E710B470;
-    v10[4] = a1;
+    v10[4] = self;
     [v7 enumerateEdgesFromNode:v8 usingBlock:v10];
   }
 }
@@ -694,10 +694,10 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
   }
 }
 
-- (void)addRequirementForGestureRecognizer:(uint64_t)a3 requiringGestureRecognizerToFail:
+- (void)addRequirementForGestureRecognizer:(uint64_t)recognizer requiringGestureRecognizerToFail:
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
     {
@@ -727,12 +727,12 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
       }
     }
 
-    v7 = [*(a1 + 96) objectForKey:a3];
-    v8 = [*(a1 + 96) objectForKey:a2];
+    v7 = [*(self + 96) objectForKey:recognizer];
+    v8 = [*(self + 96) objectForKey:a2];
     v9 = v8;
     if (v7 && v8)
     {
-      v10 = [*(a1 + 88) addUniqueEdgeWithLabel:@"failureRequirement" sourceNode:v7 targetNode:v8 directed:1 properties:0];
+      v10 = [*(self + 88) addUniqueEdgeWithLabel:@"failureRequirement" sourceNode:v7 targetNode:v8 directed:1 properties:0];
     }
 
     else
@@ -752,12 +752,12 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
   }
 }
 
-- (void)addGestureRecognizer:(id)a3
+- (void)addGestureRecognizer:(id)recognizer
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (recognizer)
   {
-    [(UIGestureRecognizer *)a3 setGestureEnvironment:?];
+    [(UIGestureRecognizer *)recognizer setGestureEnvironment:?];
     if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
     {
       dispatch_once(&_UIIsGesturesFrameworkEnabled_onceToken, &__block_literal_global_225);
@@ -765,24 +765,24 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
 
     if ((_UIIsGesturesFrameworkEnabled_enabled & 1) == 0)
     {
-      [(NSMutableSet *)self->_gestureRecognizersNeedingRemoval removeObject:a3];
-      v5 = [(UIGestureEnvironment *)&self->super.isa _nodeForGestureRecognizer:a3];
+      [(NSMutableSet *)self->_gestureRecognizersNeedingRemoval removeObject:recognizer];
+      v5 = [(UIGestureEnvironment *)&self->super.isa _nodeForGestureRecognizer:recognizer];
       if (!v5)
       {
         dependencyGraph = self->_dependencyGraph;
         v28 = @"gestureRecognizerNode";
-        v29[0] = a3;
+        v29[0] = recognizer;
         v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
         v5 = [(UIGestureGraph *)dependencyGraph addNodeWithLabel:@"gestureRecognizerNode" properties:v7];
 
-        [(NSMapTable *)self->_nodesByGestureRecognizer setObject:v5 forKey:a3];
+        [(NSMapTable *)self->_nodesByGestureRecognizer setObject:v5 forKey:recognizer];
       }
 
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v8 = *(a3 + 21);
+      v8 = *(recognizer + 21);
       v9 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
       if (v9)
       {
@@ -797,7 +797,7 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
               objc_enumerationMutation(v8);
             }
 
-            [(UIGestureEnvironment *)self addRequirementForGestureRecognizer:a3 requiringGestureRecognizerToFail:*(*(&v22 + 1) + 8 * i)];
+            [(UIGestureEnvironment *)self addRequirementForGestureRecognizer:recognizer requiringGestureRecognizerToFail:*(*(&v22 + 1) + 8 * i)];
           }
 
           v10 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
@@ -810,7 +810,7 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v13 = *(a3 + 22);
+      v13 = *(recognizer + 22);
       v14 = [v13 countByEnumeratingWithState:&v18 objects:v26 count:16];
       if (v14)
       {
@@ -825,7 +825,7 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
               objc_enumerationMutation(v13);
             }
 
-            [(UIGestureEnvironment *)self addRequirementForGestureRecognizer:a3 requiringGestureRecognizerToFail:?];
+            [(UIGestureEnvironment *)self addRequirementForGestureRecognizer:recognizer requiringGestureRecognizerToFail:?];
           }
 
           v15 = [v13 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -837,10 +837,10 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
   }
 }
 
-- (void)removeGestureRecognizer:(id)a3
+- (void)removeGestureRecognizer:(id)recognizer
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (recognizer)
   {
     v5 = &qword_1ED4A3000;
     if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
@@ -850,17 +850,17 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
 
     if ((_UIIsGesturesFrameworkEnabled_enabled & 1) == 0)
     {
-      v6 = [(UIGestureEnvironment *)&self->super.isa _nodeForGestureRecognizer:a3];
+      v6 = [(UIGestureEnvironment *)&self->super.isa _nodeForGestureRecognizer:recognizer];
       if (v6)
       {
-        v7 = [a3 container];
+        container = [recognizer container];
 
-        if (v7)
+        if (container)
         {
-          [a3 setContainer:0];
+          [recognizer setContainer:0];
         }
 
-        if ((*(a3 + 12) & 8) != 0)
+        if ((*(recognizer + 12) & 8) != 0)
         {
           CategoryCachedImpl = __UILogGetCategoryCachedImpl("GestureEnvironment", &qword_1ED498340);
           if (*CategoryCachedImpl)
@@ -869,16 +869,16 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
             if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
             {
               v15 = v14;
-              v16 = [a3 _briefDescription];
+              _briefDescription = [recognizer _briefDescription];
               v18 = 138412290;
-              v19 = v16;
+              v19 = _briefDescription;
               _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "queueing gesture for removal from environment %@", &v18, 0xCu);
 
               v5 = &qword_1ED4A3000;
             }
           }
 
-          [(NSMutableSet *)self->_gestureRecognizersNeedingRemoval addObject:a3];
+          [(NSMutableSet *)self->_gestureRecognizersNeedingRemoval addObject:recognizer];
           if (v5[217] != -1)
           {
             dispatch_once(&_UIIsGesturesFrameworkEnabled_onceToken, &__block_literal_global_225);
@@ -907,9 +907,9 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
             }
           }
 
-          if ([a3 state] >= 3 && (-[UIGestureEnvironment _activeRelationshipsForGestureRecognizer:](self, a3) & 1) == 0)
+          if ([recognizer state] >= 3 && (-[UIGestureEnvironment _activeRelationshipsForGestureRecognizer:](self, recognizer) & 1) == 0)
           {
-            [(UIGestureEnvironment *)self _gestureNeedsReset:a3];
+            [(UIGestureEnvironment *)self _gestureNeedsReset:recognizer];
           }
         }
 
@@ -928,9 +928,9 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
           if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
           {
             v10 = v9;
-            v11 = [a3 _briefDescription];
+            _briefDescription2 = [recognizer _briefDescription];
             v18 = 138412290;
-            v19 = v11;
+            v19 = _briefDescription2;
             _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "ERROR - Unable to find node for gesture %@", &v18, 0xCu);
           }
         }
@@ -939,10 +939,10 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
   }
 }
 
-- (void)_removeNodeFromGestureGraph:(id *)a1
+- (void)_removeNodeFromGestureGraph:(id *)graph
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (graph)
   {
     if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
     {
@@ -980,29 +980,29 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         v8 = v7;
-        v9 = [v5 _briefDescription];
+        _briefDescription = [v5 _briefDescription];
         v11 = 138412290;
-        v12 = v9;
+        v12 = _briefDescription;
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "removing gesture from environment %@", &v11, 0xCu);
       }
     }
 
-    [a1[12] removeObjectForKey:v5];
-    [a1[11] removeNode:a2];
-    [a1[4] removeObject:v5];
+    [graph[12] removeObjectForKey:v5];
+    [graph[11] removeNode:a2];
+    [graph[4] removeObject:v5];
     [(UIGestureRecognizer *)v5 setGestureEnvironment:?];
   }
 }
 
-- (id)_gesturesWithDelayedTouchForTouch:(uint64_t)a1 event:(void *)a2
+- (id)_gesturesWithDelayedTouchForTouch:(uint64_t)touch event:(void *)event
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (a1 && [a2 isDelayed])
+  if (touch && [event isDelayed])
   {
-    v4 = [MEMORY[0x1E695DFA8] setWithArray:*(a1 + 40)];
+    v4 = [MEMORY[0x1E695DFA8] setWithArray:*(touch + 40)];
     v5 = MEMORY[0x1E695DFA8];
-    v6 = [a2 gestureRecognizers];
-    v7 = [v5 setWithArray:v6];
+    gestureRecognizers = [event gestureRecognizers];
+    v7 = [v5 setWithArray:gestureRecognizers];
 
     [v4 minusSet:v7];
     if ([v4 count])
@@ -1066,7 +1066,7 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
 
                   v17 = v16;
 
-                  if (v17 == a2)
+                  if (v17 == event)
                   {
                     if (!v8)
                     {
@@ -1112,23 +1112,23 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
   return v8;
 }
 
-- (void)_updateForEvent:(uint64_t)a3 window:
+- (void)_updateForEvent:(uint64_t)event window:
 {
   v54 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [(UIGestureEnvironment *)a1 _runTouchContinuationActions];
-    v6 = [a2 _gestureRecognizersForWindow:a3];
+    [(UIGestureEnvironment *)self _runTouchContinuationActions];
+    v6 = [a2 _gestureRecognizersForWindow:event];
     v7 = [v6 copy];
 
-    if (([a2 _consumeBeforeDeliveryToGestureRecognizers:v7 inWindow:a3] & 1) == 0)
+    if (([a2 _consumeBeforeDeliveryToGestureRecognizers:v7 inWindow:event] & 1) == 0)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __47__UIGestureEnvironment__updateForEvent_window___block_invoke;
       aBlock[3] = &unk_1E710B580;
       aBlock[4] = a2;
-      aBlock[5] = a1;
+      aBlock[5] = self;
       v8 = _Block_copy(aBlock);
       if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
       {
@@ -1174,13 +1174,13 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
           while (v12);
         }
 
-        v17 = [(UIGestureEnvironment *)a1 nodeCoordinator];
+        nodeCoordinator = [(UIGestureEnvironment *)self nodeCoordinator];
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35;
         v41[3] = &unk_1E710B498;
         v41[4] = v8;
-        [v17 updateWithNodes:v9 reason:@"events" updateHandler:v41];
+        [nodeCoordinator updateWithNodes:v9 reason:@"events" updateHandler:v41];
 
         v39 = 0u;
         v40 = 0u;
@@ -1208,9 +1208,9 @@ void __95__UIGestureEnvironment_removeRequirementForGestureRecognizer_requiringG
                 v24 = 0;
 LABEL_24:
                 v25 = v24;
-                v26 = [v25 isBlocked];
+                isBlocked = [v25 isBlocked];
 
-                if (!v26)
+                if (!isBlocked)
                 {
                   goto LABEL_26;
                 }
@@ -1272,10 +1272,10 @@ LABEL_26:
           while (v30);
         }
 
-        [(UIGestureEnvironment *)a1 _queueGestureRecognizersForResetIfFinished:v28];
-        if (-[UIGestureEnvironment _hasGesturesNeedingUpdate](a1) || ([UIApp _gestureDelayedEventComponentDispatcher], (v33 = objc_claimAutoreleasedReturnValue()) != 0) && (v34 = v33, v35 = objc_msgSend(*(v33 + 16), "count"), v34, v35))
+        [(UIGestureEnvironment *)self _queueGestureRecognizersForResetIfFinished:v28];
+        if (-[UIGestureEnvironment _hasGesturesNeedingUpdate](self) || ([UIApp _gestureDelayedEventComponentDispatcher], (v33 = objc_claimAutoreleasedReturnValue()) != 0) && (v34 = v33, v35 = objc_msgSend(*(v33 + 16), "count"), v34, v35))
         {
-          _UIGestureEnvironmentUpdate(a1);
+          _UIGestureEnvironmentUpdate(self);
         }
       }
 
@@ -1418,13 +1418,13 @@ LABEL_19:
         }
 
 LABEL_16:
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v7 handleFailureInMethod:sel_setGestureNeedsUpdate_ object:v3 file:@"UIGestureEnvironment.m" lineNumber:1180 description:{@"Invalid parameter not satisfying: %@", @"gestureRecognizer"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel_setGestureNeedsUpdate_ object:v3 file:@"UIGestureEnvironment.m" lineNumber:1180 description:{@"Invalid parameter not satisfying: %@", @"gestureRecognizer"}];
 
 LABEL_9:
-        v5 = [a2 container];
+        container = [a2 container];
 
-        if (v5)
+        if (container)
         {
           return [*(v3 + 16) addObject:a2];
         }
@@ -1461,10 +1461,10 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)_queueGestureRecognizersForResetIfFinished:(uint64_t)a1
+- (void)_queueGestureRecognizersForResetIfFinished:(uint64_t)finished
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (finished)
   {
     if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
     {
@@ -1514,9 +1514,9 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          if ([v10 state] >= 3 && (-[UIGestureEnvironment _activeRelationshipsForGestureRecognizer:](a1, v10) & 1) == 0)
+          if ([v10 state] >= 3 && (-[UIGestureEnvironment _activeRelationshipsForGestureRecognizer:](finished, v10) & 1) == 0)
           {
-            [(UIGestureEnvironment *)a1 _gestureNeedsReset:v10];
+            [(UIGestureEnvironment *)finished _gestureNeedsReset:v10];
           }
         }
 
@@ -1567,22 +1567,22 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
   return result;
 }
 
-- (void)_performTouchContinuationWithOverrideHitTestedView:(id *)a1
+- (void)_performTouchContinuationWithOverrideHitTestedView:(id *)view
 {
   v125 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (view)
   {
     v2 = UIApp;
-    v3 = [a2 _window];
-    v4 = [v2 _touchesEventForWindow:v3];
+    _window = [a2 _window];
+    v4 = [v2 _touchesEventForWindow:_window];
 
     v79 = v4;
-    v5 = [v4 allTouches];
+    allTouches = [v4 allTouches];
     v112 = 0u;
     v113 = 0u;
     v114 = 0u;
     v115 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v112 objects:v124 count:16];
+    v6 = [allTouches countByEnumeratingWithState:&v112 objects:v124 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1593,7 +1593,7 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
         {
           if (*v113 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allTouches);
           }
 
           v10 = *(*(&v112 + 1) + 8 * i);
@@ -1601,8 +1601,8 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
           v109 = 0u;
           v110 = 0u;
           v111 = 0u;
-          v11 = [v10 gestureRecognizers];
-          v12 = [v11 countByEnumeratingWithState:&v108 objects:v123 count:16];
+          gestureRecognizers = [v10 gestureRecognizers];
+          v12 = [gestureRecognizers countByEnumeratingWithState:&v108 objects:v123 count:16];
           if (v12)
           {
             v13 = v12;
@@ -1613,7 +1613,7 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
               {
                 if (*v109 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(gestureRecognizers);
                 }
 
                 v16 = *(*(&v108 + 1) + 8 * j);
@@ -1623,14 +1623,14 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v108 objects:v123 count:16];
+              v13 = [gestureRecognizers countByEnumeratingWithState:&v108 objects:v123 count:16];
             }
 
             while (v13);
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v112 objects:v124 count:16];
+        v7 = [allTouches countByEnumeratingWithState:&v112 objects:v124 count:16];
       }
 
       while (v7);
@@ -1640,7 +1640,7 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
     v107 = 0u;
     v104 = 0u;
     v105 = 0u;
-    obj = v5;
+    obj = allTouches;
     v17 = [obj countByEnumeratingWithState:&v104 objects:v122 count:16];
     if (v17)
     {
@@ -1657,9 +1657,9 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
           }
 
           v22 = *(*(&v104 + 1) + 8 * k);
-          v23 = [v22 _responder];
+          _responder = [v22 _responder];
 
-          if (v23)
+          if (_responder)
           {
             if ([v22 phase] <= 3)
             {
@@ -1688,21 +1688,21 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
 
     if (_UIIsGesturesFrameworkEnabled_enabled == 1)
     {
-      v25 = [(UIGestureEnvironment *)a1 nodeCoordinator];
-      [v25 updateWithNodes:MEMORY[0x1E695E0F0] reason:@"TouchContinuation" updateHandler:&__block_literal_global_289];
+      nodeCoordinator = [(UIGestureEnvironment *)view nodeCoordinator];
+      [nodeCoordinator updateWithNodes:MEMORY[0x1E695E0F0] reason:@"TouchContinuation" updateHandler:&__block_literal_global_289];
     }
 
     else
     {
-      _UIGestureEnvironmentUpdate(a1);
+      _UIGestureEnvironmentUpdate(view);
     }
 
     v102 = 0u;
     v103 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v67 = [v79 _allWindows];
-    v71 = [v67 countByEnumeratingWithState:&v100 objects:v121 count:16];
+    _allWindows = [v79 _allWindows];
+    v71 = [_allWindows countByEnumeratingWithState:&v100 objects:v121 count:16];
     if (v71)
     {
       v70 = *v101;
@@ -1713,7 +1713,7 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
         {
           if (*v101 != v70)
           {
-            objc_enumerationMutation(v67);
+            objc_enumerationMutation(_allWindows);
           }
 
           v72 = v26;
@@ -1794,7 +1794,7 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
         }
 
         while (v72 + 1 != v71);
-        v71 = [v67 countByEnumeratingWithState:&v100 objects:v121 count:16];
+        v71 = [_allWindows countByEnumeratingWithState:&v100 objects:v121 count:16];
       }
 
       while (v71);
@@ -1829,10 +1829,10 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
 
           objc_setAssociatedObject(v45, &_MergedGlobals_62, 0, 1);
           objc_setAssociatedObject(v45, &unk_1ED498309, 0, 1);
-          v48 = [v45 phase];
+          phase = [v45 phase];
           if (v45)
           {
-            v49 = v48 <= 2;
+            v49 = phase <= 2;
           }
 
           else
@@ -1875,40 +1875,40 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
           v55 = *(*(&v84 + 1) + 8 * jj);
           if (v51)
           {
-            v56 = v51;
+            _rehitTest = v51;
           }
 
           else
           {
-            v56 = [(UITouch *)*(*(&v84 + 1) + 8 * jj) _rehitTest];
-            if (!v56)
+            _rehitTest = [(UITouch *)*(*(&v84 + 1) + 8 * jj) _rehitTest];
+            if (!_rehitTest)
             {
               continue;
             }
           }
 
-          v57 = [v56 _eventReceivingWindow];
-          v58 = [v79 _exclusiveTouchWindows];
-          [v58 removeObject:v57];
+          _eventReceivingWindow = [_rehitTest _eventReceivingWindow];
+          _exclusiveTouchWindows = [v79 _exclusiveTouchWindows];
+          [_exclusiveTouchWindows removeObject:_eventReceivingWindow];
 
-          [v57 _setExclusiveTouchView:0];
-          [v55 _setResponder:v56];
-          v59 = [v56 _eventReceivingWindow];
-          v60 = [v55 window];
+          [_eventReceivingWindow _setExclusiveTouchView:0];
+          [v55 _setResponder:_rehitTest];
+          _eventReceivingWindow2 = [_rehitTest _eventReceivingWindow];
+          window = [v55 window];
 
-          if (v59 != v60)
+          if (_eventReceivingWindow2 != window)
           {
-            v61 = [v56 _eventReceivingWindow];
-            [v55 setWindow:v61];
+            _eventReceivingWindow3 = [_rehitTest _eventReceivingWindow];
+            [v55 setWindow:_eventReceivingWindow3];
           }
 
-          [v79 _addGestureRecognizersForTouchContinuationFromContainer:v56 toTouch:v55];
+          [v79 _addGestureRecognizersForTouchContinuationFromContainer:_rehitTest toTouch:v55];
           v82 = 0u;
           v83 = 0u;
           v80 = 0u;
           v81 = 0u;
-          v62 = [v55 gestureRecognizers];
-          v63 = [v62 countByEnumeratingWithState:&v80 objects:v116 count:16];
+          gestureRecognizers2 = [v55 gestureRecognizers];
+          v63 = [gestureRecognizers2 countByEnumeratingWithState:&v80 objects:v116 count:16];
           if (v63)
           {
             v64 = v63;
@@ -1919,13 +1919,13 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
               {
                 if (*v81 != v65)
                 {
-                  objc_enumerationMutation(v62);
+                  objc_enumerationMutation(gestureRecognizers2);
                 }
 
                 [*(*(&v80 + 1) + 8 * kk) _addTouch:v55 forEvent:v79];
               }
 
-              v64 = [v62 countByEnumeratingWithState:&v80 objects:v116 count:16];
+              v64 = [gestureRecognizers2 countByEnumeratingWithState:&v80 objects:v116 count:16];
             }
 
             while (v64);
@@ -1944,23 +1944,23 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
 
 - (void)_scheduleTouchContinuationDeliveryForGestureRecognizer:(void *)aBlock deliveryBlock:
 {
-  if (a1 && aBlock)
+  if (self && aBlock)
   {
-    v4 = *(a1 + 72);
+    v4 = *(self + 72);
     v5 = _Block_copy(aBlock);
     [v4 setObject:v5 forKey:a2];
   }
 }
 
-- (void)_cancelGestureRecognizers:(uint64_t)a1
+- (void)_cancelGestureRecognizers:(uint64_t)recognizers
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!recognizers)
   {
     return;
   }
 
-  v2 = a1;
+  recognizersCopy = recognizers;
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
@@ -1979,7 +1979,7 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
   *&v5 = 138412290;
   v27 = v5;
   v28 = v3;
-  v29 = v2;
+  v29 = recognizersCopy;
   do
   {
     v9 = 0;
@@ -2031,11 +2031,11 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
         goto LABEL_34;
       }
 
-      v16 = [v10 container];
+      container = [v10 container];
 
-      if (!v16)
+      if (!container)
       {
-        [(UIGestureEnvironment *)v2 _clearGestureNeedsUpdate:v10];
+        [(UIGestureEnvironment *)recognizersCopy _clearGestureNeedsUpdate:v10];
       }
 
       if (v10 && (*(v10 + 12) & 8) != 0 && [v10 state] <= 2)
@@ -2044,8 +2044,8 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v17 = [v10 _activeEvents];
-        v18 = [v17 countByEnumeratingWithState:&v31 objects:v40 count:16];
+        _activeEvents = [v10 _activeEvents];
+        v18 = [_activeEvents countByEnumeratingWithState:&v31 objects:v40 count:16];
         if (v18)
         {
           v19 = v18;
@@ -2056,7 +2056,7 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
             {
               if (*v32 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(_activeEvents);
               }
 
               v22 = *(*(&v31 + 1) + 8 * i);
@@ -2064,7 +2064,7 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
               [v22 _removeGestureRecognizersSendingCancelledEvent:v23];
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v31 objects:v40 count:16];
+            v19 = [_activeEvents countByEnumeratingWithState:&v31 objects:v40 count:16];
           }
 
           while (v19);
@@ -2073,7 +2073,7 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
         if ([v10 state])
         {
           v3 = v28;
-          v2 = v29;
+          recognizersCopy = v29;
           v7 = &qword_1ED4A3000;
           v6 = &qword_1ED4A3000;
           if ([v10 state] <= 2)
@@ -2087,18 +2087,18 @@ void __47__UIGestureEnvironment__updateForEvent_window___block_invoke_35(uint64_
         {
           v24 = 5;
           v3 = v28;
-          v2 = v29;
+          recognizersCopy = v29;
           v7 = &qword_1ED4A3000;
           v6 = &qword_1ED4A3000;
 LABEL_31:
           [v10 setState:{v24, v27}];
         }
 
-        [(UIGestureEnvironment *)v2 _clearGestureNeedsUpdate:v10];
+        [(UIGestureEnvironment *)recognizersCopy _clearGestureNeedsUpdate:v10];
         [(UIGestureRecognizer *)v10 _updateGestureForActiveEvents];
         if ([v10 state] >= 3)
         {
-          [(UIGestureEnvironment *)v2 _notifyDependentsGestureRecognizerHasCompleted:v10];
+          [(UIGestureEnvironment *)recognizersCopy _notifyDependentsGestureRecognizerHasCompleted:v10];
         }
       }
 
@@ -2121,7 +2121,7 @@ LABEL_40:
 
   if ((v7[215] & 1) == 0)
   {
-    [(UIGestureEnvironment *)v2 _queueGestureRecognizersForResetIfFinished:v3];
+    [(UIGestureEnvironment *)recognizersCopy _queueGestureRecognizersForResetIfFinished:v3];
   }
 }
 
@@ -2168,8 +2168,8 @@ LABEL_40:
     }
 
 LABEL_14:
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:sel__clearGestureNeedsUpdate_ object:v3 file:@"UIGestureEnvironment.m" lineNumber:1151 description:{@"Invalid parameter not satisfying: %@", @"gestureRecognizer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__clearGestureNeedsUpdate_ object:v3 file:@"UIGestureEnvironment.m" lineNumber:1151 description:{@"Invalid parameter not satisfying: %@", @"gestureRecognizer"}];
 
     return [*(v3 + 16) removeObject:a2];
   }
@@ -2177,7 +2177,7 @@ LABEL_14:
   return result;
 }
 
-- (void)_gestureNeedsReset:(uint64_t)a1
+- (void)_gestureNeedsReset:(uint64_t)reset
 {
   v22[1] = *MEMORY[0x1E69E9840];
   if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
@@ -2210,8 +2210,8 @@ LABEL_14:
 
   if (!a2)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:sel__gestureNeedsReset_ object:a1 file:@"UIGestureEnvironment.m" lineNumber:1191 description:{@"Invalid parameter not satisfying: %@", @"gestureRecognizer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__gestureNeedsReset_ object:reset file:@"UIGestureEnvironment.m" lineNumber:1191 description:{@"Invalid parameter not satisfying: %@", @"gestureRecognizer"}];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("GestureEnvironment", &qword_1ED498380);
@@ -2221,16 +2221,16 @@ LABEL_14:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = v12;
-      v14 = [a2 _briefDescription];
+      _briefDescription = [a2 _briefDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v14;
-      v15 = v14;
+      *(&buf + 4) = _briefDescription;
+      v15 = _briefDescription;
       _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "Queueing gesture for reset: %@", &buf, 0xCu);
     }
   }
 
-  [*(a1 + 24) addObject:a2];
-  [*(a1 + 48) addObject:a2];
+  [*(reset + 24) addObject:a2];
+  [*(reset + 48) addObject:a2];
   if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
   {
     dispatch_once(&_UIIsGesturesFrameworkEnabled_onceToken, &__block_literal_global_225);
@@ -2259,9 +2259,9 @@ LABEL_14:
     }
   }
 
-  if (!*(a1 + 64))
+  if (!*(reset + 64))
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, reset);
     v7 = MEMORY[0x1E69E96A0];
     *&buf = MEMORY[0x1E69E9820];
     *(&buf + 1) = 3221225472;
@@ -2269,8 +2269,8 @@ LABEL_14:
     v21 = &unk_1E70F6320;
     objc_copyWeak(v22, &location);
     v8 = BSLogAddStateCaptureBlockWithTitle();
-    v9 = *(a1 + 64);
-    *(a1 + 64) = v8;
+    v9 = *(reset + 64);
+    *(reset + 64) = v8;
 
     objc_destroyWeak(v22);
     objc_destroyWeak(&location);
@@ -2289,7 +2289,7 @@ LABEL_14:
 
 - (void)setNeedsExclusivityUpdate
 {
-  if (a1)
+  if (self)
   {
     if (_UIIsGesturesFrameworkEnabled_onceToken != -1)
     {
@@ -2319,7 +2319,7 @@ LABEL_14:
       }
     }
 
-    *(a1 + 81) = 1;
+    *(self + 81) = 1;
   }
 }
 

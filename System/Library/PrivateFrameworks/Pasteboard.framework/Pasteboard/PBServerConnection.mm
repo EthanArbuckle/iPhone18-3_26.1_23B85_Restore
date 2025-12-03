@@ -1,23 +1,23 @@
 @interface PBServerConnection
 + (id)defaultConnection;
 + (unint64_t)beginListeningToPasteboardChangeNotifications;
-+ (void)simulateCrashReportForAuthorizationWithAuthenticationMessage:(id)a3;
++ (void)simulateCrashReportForAuthorizationWithAuthenticationMessage:(id)message;
 - (NSXPCConnection)serverConnection;
 - (PBServerConnection)init;
-- (id)localGeneralPasteboardWithAuthenticationBlock:(id)a3 dataOwnerBlock:(id)a4 error:(id *)a5;
-- (id)remoteContentForLayerContextWithId:(unint64_t)a3 slotStyle:(id)a4 pasteButtonTag:(id)a5 error:(id *)a6;
-- (id)requestSecurePasteAuthenticationMessageWithContext:(unint64_t)a3 forClientVersionedPID:(int64_t)a4 error:(id *)a5;
-- (id)savePasteboard:(id)a3 dataProviderEndpoint:(id)a4 error:(id *)a5;
-- (unint64_t)deletePersistentPasteboardWithName:(id)a3 error:(id *)a4;
-- (void)deletePersistentPasteboardWithName:(id)a3 completionBlock:(id)a4;
-- (void)didPastePasteboard:(id)a3;
-- (void)getAllPasteboardsCompletionBlock:(id)a3;
-- (void)helloCompletionBlock:(id)a3;
-- (void)localGeneralPasteboardWithAuthenticationBlock:(id)a3 dataOwnerBlock:(id)a4 completionBlock:(id)a5;
-- (void)performJanitorialTasksCompletionBlock:(id)a3;
-- (void)requestItemFromPasteboardWithName:(id)a3 UUID:(id)a4 authenticationMessage:(id)a5 itemIndex:(unint64_t)a6 typeIdentifier:(id)a7 dataOwner:(int64_t)a8 loadContext:(id)a9 completionBlock:(id)a10;
-- (void)requestPatternDetectionsFromPasteboardWithName:(id)a3 UUID:(id)a4 authenticationMessage:(id)a5 itemIndex:(unint64_t)a6 patterns:(id)a7 needValues:(BOOL)a8 dataOwner:(int64_t)a9 completionBlock:(id)a10;
-- (void)savePasteboard:(id)a3 dataProviderEndpoint:(id)a4 completionBlock:(id)a5;
+- (id)localGeneralPasteboardWithAuthenticationBlock:(id)block dataOwnerBlock:(id)ownerBlock error:(id *)error;
+- (id)remoteContentForLayerContextWithId:(unint64_t)id slotStyle:(id)style pasteButtonTag:(id)tag error:(id *)error;
+- (id)requestSecurePasteAuthenticationMessageWithContext:(unint64_t)context forClientVersionedPID:(int64_t)d error:(id *)error;
+- (id)savePasteboard:(id)pasteboard dataProviderEndpoint:(id)endpoint error:(id *)error;
+- (unint64_t)deletePersistentPasteboardWithName:(id)name error:(id *)error;
+- (void)deletePersistentPasteboardWithName:(id)name completionBlock:(id)block;
+- (void)didPastePasteboard:(id)pasteboard;
+- (void)getAllPasteboardsCompletionBlock:(id)block;
+- (void)helloCompletionBlock:(id)block;
+- (void)localGeneralPasteboardWithAuthenticationBlock:(id)block dataOwnerBlock:(id)ownerBlock completionBlock:(id)completionBlock;
+- (void)performJanitorialTasksCompletionBlock:(id)block;
+- (void)requestItemFromPasteboardWithName:(id)name UUID:(id)d authenticationMessage:(id)message itemIndex:(unint64_t)index typeIdentifier:(id)identifier dataOwner:(int64_t)owner loadContext:(id)context completionBlock:(id)self0;
+- (void)requestPatternDetectionsFromPasteboardWithName:(id)name UUID:(id)d authenticationMessage:(id)message itemIndex:(unint64_t)index patterns:(id)patterns needValues:(BOOL)values dataOwner:(int64_t)owner completionBlock:(id)self0;
+- (void)savePasteboard:(id)pasteboard dataProviderEndpoint:(id)endpoint completionBlock:(id)block;
 @end
 
 @implementation PBServerConnection
@@ -117,14 +117,14 @@ uint64_t __67__PBServerConnection_beginListeningToPasteboardChangeNotifications_
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(PBServerConnection *)self memberQueue];
+  memberQueue = [(PBServerConnection *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__PBServerConnection_serverConnection__block_invoke;
   v6[3] = &unk_279A066F0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -154,11 +154,11 @@ uint64_t __38__PBServerConnection_serverConnection__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)simulateCrashReportForAuthorizationWithAuthenticationMessage:(id)a3
++ (void)simulateCrashReportForAuthorizationWithAuthenticationMessage:(id)message
 {
   v4 = _PBLog();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_FAULT);
-  if (a3)
+  if (message)
   {
     if (v5)
     {
@@ -179,18 +179,18 @@ LABEL_7:
   }
 }
 
-- (void)helloCompletionBlock:(id)a3
+- (void)helloCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PBServerConnection *)self serverConnection];
+  blockCopy = block;
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__PBServerConnection_helloCompletionBlock___block_invoke;
   v9[3] = &unk_279A06718;
-  v10 = v4;
-  v6 = v4;
+  v10 = blockCopy;
+  v6 = blockCopy;
   v7 = _loggingErrorHandler("[PBServerConnection helloCompletionBlock:]", v9);
-  v8 = [v5 remoteObjectProxyWithErrorHandler:v7];
+  v8 = [serverConnection remoteObjectProxyWithErrorHandler:v7];
 
   [v8 helloCompletionBlock:v6];
 }
@@ -258,20 +258,20 @@ void __107__PBServerConnection_pasteboardWithName_createIfNeeded_authenticationB
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localGeneralPasteboardWithAuthenticationBlock:(id)a3 dataOwnerBlock:(id)a4 completionBlock:(id)a5
+- (void)localGeneralPasteboardWithAuthenticationBlock:(id)block dataOwnerBlock:(id)ownerBlock completionBlock:(id)completionBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PBServerConnection *)self serverConnection];
+  blockCopy = block;
+  ownerBlockCopy = ownerBlock;
+  completionBlockCopy = completionBlock;
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __99__PBServerConnection_localGeneralPasteboardWithAuthenticationBlock_dataOwnerBlock_completionBlock___block_invoke;
   v24[3] = &unk_279A06718;
-  v12 = v10;
+  v12 = completionBlockCopy;
   v25 = v12;
   v13 = _loggingErrorHandler("[PBServerConnection localGeneralPasteboardWithAuthenticationBlock:dataOwnerBlock:completionBlock:]", v24);
-  v14 = [v11 remoteObjectProxyWithErrorHandler:v13];
+  v14 = [serverConnection remoteObjectProxyWithErrorHandler:v13];
 
   v15 = _PBLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -284,12 +284,12 @@ void __107__PBServerConnection_pasteboardWithName_createIfNeeded_authenticationB
   v19[1] = 3221225472;
   v19[2] = __99__PBServerConnection_localGeneralPasteboardWithAuthenticationBlock_dataOwnerBlock_completionBlock___block_invoke_7;
   v19[3] = &unk_279A06768;
-  v20 = v8;
-  v21 = v9;
+  v20 = blockCopy;
+  v21 = ownerBlockCopy;
   v22 = v12;
   v16 = v12;
-  v17 = v9;
-  v18 = v8;
+  v17 = ownerBlockCopy;
+  v18 = blockCopy;
   [v14 localGeneralPasteboardCompletionBlock:v19];
 }
 
@@ -340,28 +340,28 @@ void __99__PBServerConnection_localGeneralPasteboardWithAuthenticationBlock_data
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)savePasteboard:(id)a3 dataProviderEndpoint:(id)a4 completionBlock:(id)a5
+- (void)savePasteboard:(id)pasteboard dataProviderEndpoint:(id)endpoint completionBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(PBServerConnection *)self serverConnection];
+  pasteboardCopy = pasteboard;
+  blockCopy = block;
+  endpointCopy = endpoint;
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __74__PBServerConnection_savePasteboard_dataProviderEndpoint_completionBlock___block_invoke;
   v23[3] = &unk_279A06718;
-  v12 = v9;
+  v12 = blockCopy;
   v24 = v12;
   v13 = _loggingErrorHandler("[PBServerConnection savePasteboard:dataProviderEndpoint:completionBlock:]", v23);
-  v14 = [v11 remoteObjectProxyWithErrorHandler:v13];
+  v14 = [serverConnection remoteObjectProxyWithErrorHandler:v13];
 
   v15 = _PBLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v8 name];
+    name = [pasteboardCopy name];
     *buf = 138412290;
-    v26 = v16;
+    v26 = name;
     _os_log_impl(&dword_25E138000, v15, OS_LOG_TYPE_DEFAULT, "Saving pasteboard name %@", buf, 0xCu);
   }
 
@@ -369,11 +369,11 @@ void __99__PBServerConnection_localGeneralPasteboardWithAuthenticationBlock_data
   v20[1] = 3221225472;
   v20[2] = __74__PBServerConnection_savePasteboard_dataProviderEndpoint_completionBlock___block_invoke_8;
   v20[3] = &unk_279A06790;
-  v21 = v8;
+  v21 = pasteboardCopy;
   v22 = v12;
   v17 = v12;
-  v18 = v8;
-  [v14 savePasteboard:v18 dataProviderEndpoint:v10 completionBlock:v20];
+  v18 = pasteboardCopy;
+  [v14 savePasteboard:v18 dataProviderEndpoint:endpointCopy completionBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -427,36 +427,36 @@ void __74__PBServerConnection_savePasteboard_dataProviderEndpoint_completionBloc
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestItemFromPasteboardWithName:(id)a3 UUID:(id)a4 authenticationMessage:(id)a5 itemIndex:(unint64_t)a6 typeIdentifier:(id)a7 dataOwner:(int64_t)a8 loadContext:(id)a9 completionBlock:(id)a10
+- (void)requestItemFromPasteboardWithName:(id)name UUID:(id)d authenticationMessage:(id)message itemIndex:(unint64_t)index typeIdentifier:(id)identifier dataOwner:(int64_t)owner loadContext:(id)context completionBlock:(id)self0
 {
   v43 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a10;
-  v20 = a9;
-  v21 = [(PBServerConnection *)self serverConnection];
+  nameCopy = name;
+  dCopy = d;
+  messageCopy = message;
+  identifierCopy = identifier;
+  blockCopy = block;
+  contextCopy = context;
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __146__PBServerConnection_requestItemFromPasteboardWithName_UUID_authenticationMessage_itemIndex_typeIdentifier_dataOwner_loadContext_completionBlock___block_invoke;
   v33[3] = &unk_279A06718;
-  v22 = v19;
+  v22 = blockCopy;
   v34 = v22;
   v23 = _loggingErrorHandler("[PBServerConnection requestItemFromPasteboardWithName:UUID:authenticationMessage:itemIndex:typeIdentifier:dataOwner:loadContext:completionBlock:]", v33);
-  v24 = [v21 remoteObjectProxyWithErrorHandler:v23];
+  v24 = [serverConnection remoteObjectProxyWithErrorHandler:v23];
 
   v25 = _PBLog();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109890;
-    v36 = a6;
+    indexCopy = index;
     v37 = 2112;
-    v38 = v18;
+    v38 = identifierCopy;
     v39 = 2112;
-    v40 = v15;
+    v40 = nameCopy;
     v41 = 2112;
-    v42 = v16;
+    v42 = dCopy;
     _os_log_impl(&dword_25E138000, v25, OS_LOG_TYPE_DEFAULT, "Requesting item %u of type %@ from pasteboard named %@, UUID %@", buf, 0x26u);
   }
 
@@ -464,11 +464,11 @@ void __74__PBServerConnection_savePasteboard_dataProviderEndpoint_completionBloc
   v30[1] = 3221225472;
   v30[2] = __146__PBServerConnection_requestItemFromPasteboardWithName_UUID_authenticationMessage_itemIndex_typeIdentifier_dataOwner_loadContext_completionBlock___block_invoke_10;
   v30[3] = &unk_279A067B8;
-  v31 = v17;
+  v31 = messageCopy;
   v32 = v22;
   v26 = v22;
-  v27 = v17;
-  [v24 requestItemFromPasteboardWithName:v15 UUID:v16 authenticationMessage:v27 itemIndex:a6 typeIdentifier:v18 dataOwner:a8 loadContext:v20 completionBlock:v30];
+  v27 = messageCopy;
+  [v24 requestItemFromPasteboardWithName:nameCopy UUID:dCopy authenticationMessage:v27 itemIndex:index typeIdentifier:identifierCopy dataOwner:owner loadContext:contextCopy completionBlock:v30];
 
   v28 = *MEMORY[0x277D85DE8];
 }
@@ -522,36 +522,36 @@ void __146__PBServerConnection_requestItemFromPasteboardWithName_UUID_authentica
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestPatternDetectionsFromPasteboardWithName:(id)a3 UUID:(id)a4 authenticationMessage:(id)a5 itemIndex:(unint64_t)a6 patterns:(id)a7 needValues:(BOOL)a8 dataOwner:(int64_t)a9 completionBlock:(id)a10
+- (void)requestPatternDetectionsFromPasteboardWithName:(id)name UUID:(id)d authenticationMessage:(id)message itemIndex:(unint64_t)index patterns:(id)patterns needValues:(BOOL)values dataOwner:(int64_t)owner completionBlock:(id)self0
 {
-  v27 = a8;
+  valuesCopy = values;
   v40 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a10;
-  v19 = a5;
-  v20 = [(PBServerConnection *)self serverConnection];
+  nameCopy = name;
+  dCopy = d;
+  patternsCopy = patterns;
+  blockCopy = block;
+  messageCopy = message;
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __152__PBServerConnection_requestPatternDetectionsFromPasteboardWithName_UUID_authenticationMessage_itemIndex_patterns_needValues_dataOwner_completionBlock___block_invoke;
   v30[3] = &unk_279A06718;
-  v21 = v18;
+  v21 = blockCopy;
   v31 = v21;
   v22 = _loggingErrorHandler("[PBServerConnection requestPatternDetectionsFromPasteboardWithName:UUID:authenticationMessage:itemIndex:patterns:needValues:dataOwner:completionBlock:]", v30);
-  v23 = [v20 remoteObjectProxyWithErrorHandler:v22];
+  v23 = [serverConnection remoteObjectProxyWithErrorHandler:v22];
 
   v24 = _PBLog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v33 = v17;
+    v33 = patternsCopy;
     v34 = 2048;
-    v35 = a6;
+    indexCopy = index;
     v36 = 2112;
-    v37 = v15;
+    v37 = nameCopy;
     v38 = 2112;
-    v39 = v16;
+    v39 = dCopy;
     _os_log_impl(&dword_25E138000, v24, OS_LOG_TYPE_DEFAULT, "Requesting detection of patterns %@ from item %lu of pasteboard named %@, UUID %@", buf, 0x2Au);
   }
 
@@ -561,7 +561,7 @@ void __146__PBServerConnection_requestItemFromPasteboardWithName_UUID_authentica
   v28[3] = &unk_279A067E0;
   v29 = v21;
   v25 = v21;
-  [v23 requestPatternDetectionsFromPasteboardWithName:v15 UUID:v16 authenticationMessage:v19 itemIndex:a6 patterns:v17 needValues:v27 dataOwner:a9 completionBlock:v28];
+  [v23 requestPatternDetectionsFromPasteboardWithName:nameCopy UUID:dCopy authenticationMessage:messageCopy itemIndex:index patterns:patternsCopy needValues:valuesCopy dataOwner:owner completionBlock:v28];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -608,26 +608,26 @@ void __152__PBServerConnection_requestPatternDetectionsFromPasteboardWithName_UU
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePersistentPasteboardWithName:(id)a3 completionBlock:(id)a4
+- (void)deletePersistentPasteboardWithName:(id)name completionBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PBServerConnection *)self serverConnection];
+  nameCopy = name;
+  blockCopy = block;
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __73__PBServerConnection_deletePersistentPasteboardWithName_completionBlock___block_invoke;
   v17[3] = &unk_279A06718;
-  v9 = v7;
+  v9 = blockCopy;
   v18 = v9;
   v10 = _loggingErrorHandler("[PBServerConnection deletePersistentPasteboardWithName:completionBlock:]", v17);
-  v11 = [v8 remoteObjectProxyWithErrorHandler:v10];
+  v11 = [serverConnection remoteObjectProxyWithErrorHandler:v10];
 
   v12 = _PBLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = nameCopy;
     _os_log_impl(&dword_25E138000, v12, OS_LOG_TYPE_DEFAULT, "Deleting persistent pasteboard named %@", buf, 0xCu);
   }
 
@@ -637,7 +637,7 @@ void __152__PBServerConnection_requestPatternDetectionsFromPasteboardWithName_UU
   v15[3] = &unk_279A06808;
   v16 = v9;
   v13 = v9;
-  [v11 deletePersistentPasteboardWithName:v6 completionBlock:v15];
+  [v11 deletePersistentPasteboardWithName:nameCopy completionBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -683,11 +683,11 @@ void __73__PBServerConnection_deletePersistentPasteboardWithName_completionBlock
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didPastePasteboard:(id)a3
+- (void)didPastePasteboard:(id)pasteboard
 {
-  v4 = a3;
-  v5 = [(PBServerConnection *)self serverConnection];
-  v6 = [v5 remoteObjectProxy];
+  pasteboardCopy = pasteboard;
+  serverConnection = [(PBServerConnection *)self serverConnection];
+  remoteObjectProxy = [serverConnection remoteObjectProxy];
 
   v7 = _PBLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -696,24 +696,24 @@ void __73__PBServerConnection_deletePersistentPasteboardWithName_completionBlock
     _os_log_impl(&dword_25E138000, v7, OS_LOG_TYPE_INFO, "Notifying pasted of a paste event.", v10, 2u);
   }
 
-  v8 = [v4 name];
-  v9 = [v4 UUID];
+  name = [pasteboardCopy name];
+  uUID = [pasteboardCopy UUID];
 
-  [v6 didPasteContentsFromPasteboardWithName:v8 UUID:v9 completionBlock:&__block_literal_global_17];
+  [remoteObjectProxy didPasteContentsFromPasteboardWithName:name UUID:uUID completionBlock:&__block_literal_global_17];
 }
 
-- (void)performJanitorialTasksCompletionBlock:(id)a3
+- (void)performJanitorialTasksCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PBServerConnection *)self serverConnection];
+  blockCopy = block;
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __60__PBServerConnection_performJanitorialTasksCompletionBlock___block_invoke;
   v14[3] = &unk_279A06718;
-  v6 = v4;
+  v6 = blockCopy;
   v15 = v6;
   v7 = _loggingErrorHandler("[PBServerConnection performJanitorialTasksCompletionBlock:]", v14);
-  v8 = [v5 remoteObjectProxyWithErrorHandler:v7];
+  v8 = [serverConnection remoteObjectProxyWithErrorHandler:v7];
 
   v9 = _PBLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -760,18 +760,18 @@ uint64_t __60__PBServerConnection_performJanitorialTasksCompletionBlock___block_
   return result;
 }
 
-- (void)getAllPasteboardsCompletionBlock:(id)a3
+- (void)getAllPasteboardsCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PBServerConnection *)self serverConnection];
+  blockCopy = block;
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__PBServerConnection_getAllPasteboardsCompletionBlock___block_invoke;
   v14[3] = &unk_279A06718;
-  v6 = v4;
+  v6 = blockCopy;
   v15 = v6;
   v7 = _loggingErrorHandler("[PBServerConnection getAllPasteboardsCompletionBlock:]", v14);
-  v8 = [v5 remoteObjectProxyWithErrorHandler:v7];
+  v8 = [serverConnection remoteObjectProxyWithErrorHandler:v7];
 
   v9 = _PBLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -894,10 +894,10 @@ void __97__PBServerConnection_pasteboardWithName_createIfNeeded_authenticationBl
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)localGeneralPasteboardWithAuthenticationBlock:(id)a3 dataOwnerBlock:(id)a4 error:(id *)a5
+- (id)localGeneralPasteboardWithAuthenticationBlock:(id)block dataOwnerBlock:(id)ownerBlock error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  blockCopy = block;
+  ownerBlockCopy = ownerBlock;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -910,14 +910,14 @@ void __97__PBServerConnection_pasteboardWithName_createIfNeeded_authenticationBl
   v23 = __Block_byref_object_copy__0;
   v24 = __Block_byref_object_dispose__0;
   v25 = 0;
-  v10 = [(PBServerConnection *)self serverConnection];
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __89__PBServerConnection_localGeneralPasteboardWithAuthenticationBlock_dataOwnerBlock_error___block_invoke;
   v19[3] = &unk_279A06858;
   v19[4] = &v26;
   v11 = _loggingErrorHandler("[PBServerConnection localGeneralPasteboardWithAuthenticationBlock:dataOwnerBlock:error:]", v19);
-  v12 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v12 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v13 = _PBLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -936,15 +936,15 @@ void __97__PBServerConnection_pasteboardWithName_createIfNeeded_authenticationBl
   v14 = v27[5];
   if (v14)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v14;
+      *error = v14;
     }
   }
 
   else
   {
-    [v21[5] setUsesServerConnectionToLoadDataWithAuthenticationBlock:v8 dataOwnerBlock:v9];
+    [v21[5] setUsesServerConnectionToLoadDataWithAuthenticationBlock:blockCopy dataOwnerBlock:ownerBlockCopy];
   }
 
   v15 = v21[5];
@@ -1000,11 +1000,11 @@ void __89__PBServerConnection_localGeneralPasteboardWithAuthenticationBlock_data
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)savePasteboard:(id)a3 dataProviderEndpoint:(id)a4 error:(id *)a5
+- (id)savePasteboard:(id)pasteboard dataProviderEndpoint:(id)endpoint error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  pasteboardCopy = pasteboard;
+  endpointCopy = endpoint;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -1021,21 +1021,21 @@ void __89__PBServerConnection_localGeneralPasteboardWithAuthenticationBlock_data
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v10 = [(PBServerConnection *)self serverConnection];
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __64__PBServerConnection_savePasteboard_dataProviderEndpoint_error___block_invoke;
   v20[3] = &unk_279A06858;
   v20[4] = &v31;
   v11 = _loggingErrorHandler("[PBServerConnection savePasteboard:dataProviderEndpoint:error:]", v20);
-  v12 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v12 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v13 = _PBLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v8 name];
+    name = [pasteboardCopy name];
     *buf = 138412290;
-    v38 = v14;
+    v38 = name;
     _os_log_impl(&dword_25E138000, v13, OS_LOG_TYPE_DEFAULT, "Saving pasteboard name %@", buf, 0xCu);
   }
 
@@ -1046,19 +1046,19 @@ void __89__PBServerConnection_localGeneralPasteboardWithAuthenticationBlock_data
   v19[4] = &v21;
   v19[5] = &v31;
   v19[6] = &v25;
-  [v12 savePasteboard:v8 dataProviderEndpoint:v9 completionBlock:v19];
+  [v12 savePasteboard:pasteboardCopy dataProviderEndpoint:endpointCopy completionBlock:v19];
   v15 = v32[5];
   if (v15)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v15;
+      *error = v15;
     }
   }
 
   else
   {
-    [v8 setChangeCount:v22[3]];
+    [pasteboardCopy setChangeCount:v22[3]];
   }
 
   v16 = v26[5];
@@ -1118,10 +1118,10 @@ void __64__PBServerConnection_savePasteboard_dataProviderEndpoint_error___block_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)deletePersistentPasteboardWithName:(id)a3 error:(id *)a4
+- (unint64_t)deletePersistentPasteboardWithName:(id)name error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1132,20 +1132,20 @@ void __64__PBServerConnection_savePasteboard_dataProviderEndpoint_error___block_
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v7 = [(PBServerConnection *)self serverConnection];
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__PBServerConnection_deletePersistentPasteboardWithName_error___block_invoke;
   v15[3] = &unk_279A06858;
   v15[4] = &v20;
   v8 = _loggingErrorHandler("[PBServerConnection deletePersistentPasteboardWithName:error:]", v15);
-  v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  v9 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v8];
 
   v10 = _PBLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = nameCopy;
     _os_log_impl(&dword_25E138000, v10, OS_LOG_TYPE_DEFAULT, "Deleting persistent pasteboard named %@", buf, 0xCu);
   }
 
@@ -1155,10 +1155,10 @@ void __64__PBServerConnection_savePasteboard_dataProviderEndpoint_error___block_
   v14[3] = &unk_279A068F8;
   v14[4] = &v16;
   v14[5] = &v20;
-  [v9 deletePersistentPasteboardWithName:v6 completionBlock:v14];
-  if (a4)
+  [v9 deletePersistentPasteboardWithName:nameCopy completionBlock:v14];
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v11 = v17[3];
@@ -1210,10 +1210,10 @@ void __63__PBServerConnection_deletePersistentPasteboardWithName_error___block_i
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)remoteContentForLayerContextWithId:(unint64_t)a3 slotStyle:(id)a4 pasteButtonTag:(id)a5 error:(id *)a6
+- (id)remoteContentForLayerContextWithId:(unint64_t)id slotStyle:(id)style pasteButtonTag:(id)tag error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  styleCopy = style;
+  tagCopy = tag;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1226,14 +1226,14 @@ void __63__PBServerConnection_deletePersistentPasteboardWithName_error___block_i
   v22 = __Block_byref_object_copy__0;
   v23 = __Block_byref_object_dispose__0;
   v24 = 0;
-  v12 = [(PBServerConnection *)self serverConnection];
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __88__PBServerConnection_remoteContentForLayerContextWithId_slotStyle_pasteButtonTag_error___block_invoke;
   v18[3] = &unk_279A06858;
   v18[4] = &v25;
   v13 = _loggingErrorHandler("[PBServerConnection remoteContentForLayerContextWithId:slotStyle:pasteButtonTag:error:]", v18);
-  v14 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v14 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -1241,10 +1241,10 @@ void __63__PBServerConnection_deletePersistentPasteboardWithName_error___block_i
   v17[3] = &unk_279A06920;
   v17[4] = &v19;
   v17[5] = &v25;
-  [v14 getRemoteContentForLayerContextWithId:a3 slotStyle:v10 pasteButtonTag:v11 completionBlock:v17];
-  if (a6)
+  [v14 getRemoteContentForLayerContextWithId:id slotStyle:styleCopy pasteButtonTag:tagCopy completionBlock:v17];
+  if (error)
   {
-    *a6 = v26[5];
+    *error = v26[5];
   }
 
   v15 = v20[5];
@@ -1293,7 +1293,7 @@ void __67__PBServerConnection_beginListeningToPasteboardChangeNotifications__blo
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (id)requestSecurePasteAuthenticationMessageWithContext:(unint64_t)a3 forClientVersionedPID:(int64_t)a4 error:(id *)a5
+- (id)requestSecurePasteAuthenticationMessageWithContext:(unint64_t)context forClientVersionedPID:(int64_t)d error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
   v27 = 0;
@@ -1308,14 +1308,14 @@ void __67__PBServerConnection_beginListeningToPasteboardChangeNotifications__blo
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
   v26 = 0;
-  v8 = [(PBServerConnection *)self serverConnection];
+  serverConnection = [(PBServerConnection *)self serverConnection];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __101__PBServerConnection_requestSecurePasteAuthenticationMessageWithContext_forClientVersionedPID_error___block_invoke;
   v20[3] = &unk_279A06858;
   v20[4] = &v21;
   v9 = _loggingErrorHandler("[PBServerConnection requestSecurePasteAuthenticationMessageWithContext:forClientVersionedPID:error:]", v20);
-  v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v10 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v11 = _PBLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -1330,7 +1330,7 @@ void __67__PBServerConnection_beginListeningToPasteboardChangeNotifications__blo
   v19[3] = &unk_279A069A0;
   v19[4] = &v27;
   v19[5] = &v21;
-  [v10 requestSecurePasteAuthenticationMessageWithContext:a3 forClientVersionedPID:a4 completionBlock:v19];
+  [v10 requestSecurePasteAuthenticationMessageWithContext:context forClientVersionedPID:d completionBlock:v19];
   v12 = v28[5];
   v13 = _PBLog();
   v14 = v13;
@@ -1351,9 +1351,9 @@ void __67__PBServerConnection_beginListeningToPasteboardChangeNotifications__blo
     _os_log_error_impl(&dword_25E138000, v14, OS_LOG_TYPE_ERROR, "Authentication message was not generated: %@", buf, 0xCu);
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v22[5];
+    *error = v22[5];
   }
 
   v15 = v28[5];

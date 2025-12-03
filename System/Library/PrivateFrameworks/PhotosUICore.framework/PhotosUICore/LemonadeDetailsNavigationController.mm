@@ -1,11 +1,11 @@
 @interface LemonadeDetailsNavigationController
 - (PXPagingViewControllerDelegate)pagingViewControllerDelegate;
 - (UIViewController)childViewControllerForStatusBarStyle;
-- (_TtC12PhotosUICoreP33_5A77AA35E7CED42F2D112515D5FBA02135LemonadeDetailsNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC12PhotosUICoreP33_5A77AA35E7CED42F2D112515D5FBA02135LemonadeDetailsNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC12PhotosUICoreP33_5A77AA35E7CED42F2D112515D5FBA02135LemonadeDetailsNavigationController)initWithRootViewController:(id)a3;
+- (_TtC12PhotosUICoreP33_5A77AA35E7CED42F2D112515D5FBA02135LemonadeDetailsNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC12PhotosUICoreP33_5A77AA35E7CED42F2D112515D5FBA02135LemonadeDetailsNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC12PhotosUICoreP33_5A77AA35E7CED42F2D112515D5FBA02135LemonadeDetailsNavigationController)initWithRootViewController:(id)controller;
 - (int64_t)pagingViewControllerNumberOfItems;
-- (void)setPagingViewControllerDelegate:(id)a3;
+- (void)setPagingViewControllerDelegate:(id)delegate;
 - (void)viewDidLoad;
 @end
 
@@ -13,9 +13,9 @@
 
 - (UIViewController)childViewControllerForStatusBarStyle
 {
-  v2 = [(LemonadeDetailsNavigationController *)self topViewController];
+  topViewController = [(LemonadeDetailsNavigationController *)self topViewController];
 
-  return v2;
+  return topViewController;
 }
 
 - (void)viewDidLoad
@@ -26,8 +26,8 @@
   [(LemonadeDetailsNavigationController *)&v7 viewDidLoad];
   v3 = objc_opt_self();
   sub_1A3C52C70(0, &qword_1EB126A10);
-  v4 = [swift_getObjCClassFromMetadata() sharedInstance];
-  [v4 simulatedDetailsViewLoadingDelay];
+  sharedInstance = [swift_getObjCClassFromMetadata() sharedInstance];
+  [sharedInstance simulatedDetailsViewLoadingDelay];
   v6 = v5;
 
   [v3 sleepForTimeInterval_];
@@ -35,17 +35,17 @@
 
 - (PXPagingViewControllerDelegate)pagingViewControllerDelegate
 {
-  v2 = self;
-  v3 = [(LemonadeDetailsNavigationController *)v2 topViewController];
-  if (v3)
+  selfCopy = self;
+  topViewController = [(LemonadeDetailsNavigationController *)selfCopy topViewController];
+  if (topViewController)
   {
-    v4 = v3;
+    v4 = topViewController;
     v5 = swift_dynamicCastObjCProtocolConditional();
     if (v5)
     {
-      v6 = [v5 pagingViewControllerDelegate];
+      pagingViewControllerDelegate = [v5 pagingViewControllerDelegate];
 
-      v7 = v6;
+      v7 = pagingViewControllerDelegate;
       goto LABEL_7;
     }
   }
@@ -60,14 +60,14 @@ LABEL_7:
   return v7;
 }
 
-- (void)setPagingViewControllerDelegate:(id)a3
+- (void)setPagingViewControllerDelegate:(id)delegate
 {
-  v7 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
-  v4 = [(LemonadeDetailsNavigationController *)v7 topViewController];
-  if (v4)
+  topViewController = [(LemonadeDetailsNavigationController *)selfCopy topViewController];
+  if (topViewController)
   {
-    v5 = v4;
+    v5 = topViewController;
     v6 = swift_dynamicCastObjCProtocolConditional();
     if (v6)
     {
@@ -90,17 +90,17 @@ LABEL_7:
 
 - (int64_t)pagingViewControllerNumberOfItems
 {
-  v2 = self;
-  v3 = [(LemonadeDetailsNavigationController *)v2 topViewController];
-  if (v3)
+  selfCopy = self;
+  topViewController = [(LemonadeDetailsNavigationController *)selfCopy topViewController];
+  if (topViewController)
   {
-    v4 = v3;
+    v4 = topViewController;
     v5 = swift_dynamicCastObjCProtocolConditional();
     if (v5)
     {
-      v6 = [v5 pagingViewControllerNumberOfItems];
+      pagingViewControllerNumberOfItems = [v5 pagingViewControllerNumberOfItems];
 
-      return v6;
+      return pagingViewControllerNumberOfItems;
     }
   }
 
@@ -111,38 +111,38 @@ LABEL_7:
   return 0;
 }
 
-- (_TtC12PhotosUICoreP33_5A77AA35E7CED42F2D112515D5FBA02135LemonadeDetailsNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC12PhotosUICoreP33_5A77AA35E7CED42F2D112515D5FBA02135LemonadeDetailsNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for LemonadeDetailsNavigationController();
-  return [(LemonadeDetailsNavigationController *)&v7 initWithNavigationBarClass:a3 toolbarClass:a4];
+  return [(LemonadeDetailsNavigationController *)&v7 initWithNavigationBarClass:class toolbarClass:toolbarClass];
 }
 
-- (_TtC12PhotosUICoreP33_5A77AA35E7CED42F2D112515D5FBA02135LemonadeDetailsNavigationController)initWithRootViewController:(id)a3
+- (_TtC12PhotosUICoreP33_5A77AA35E7CED42F2D112515D5FBA02135LemonadeDetailsNavigationController)initWithRootViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for LemonadeDetailsNavigationController();
-  return [(LemonadeDetailsNavigationController *)&v5 initWithRootViewController:a3];
+  return [(LemonadeDetailsNavigationController *)&v5 initWithRootViewController:controller];
 }
 
-- (_TtC12PhotosUICoreP33_5A77AA35E7CED42F2D112515D5FBA02135LemonadeDetailsNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12PhotosUICoreP33_5A77AA35E7CED42F2D112515D5FBA02135LemonadeDetailsNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1A524C674();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_1A524C634();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for LemonadeDetailsNavigationController();
-  v9 = [(LemonadeDetailsNavigationController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(LemonadeDetailsNavigationController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }

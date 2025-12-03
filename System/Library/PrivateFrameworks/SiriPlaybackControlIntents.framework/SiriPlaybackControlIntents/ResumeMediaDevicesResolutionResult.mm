@@ -1,13 +1,13 @@
 @interface ResumeMediaDevicesResolutionResult
-+ (id)unsupportedForReason:(int64_t)a3;
++ (id)unsupportedForReason:(int64_t)reason;
 @end
 
 @implementation ResumeMediaDevicesResolutionResult
 
-+ (id)unsupportedForReason:(int64_t)a3
++ (id)unsupportedForReason:(int64_t)reason
 {
   swift_getObjCClassMetadata();
-  v4 = sub_268B17B04(a3);
+  v4 = sub_268B17B04(reason);
 
   return v4;
 }

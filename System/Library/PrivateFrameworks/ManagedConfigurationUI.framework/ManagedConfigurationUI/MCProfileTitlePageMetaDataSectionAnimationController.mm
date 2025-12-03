@@ -1,6 +1,6 @@
 @interface MCProfileTitlePageMetaDataSectionAnimationController
-- (BOOL)_putBackViewIfNeeded:(id)a3 toView:(id)a4;
-- (BOOL)_relocateViewIfNeeded:(id)a3 fromView:(id)a4 toView:(id)a5;
+- (BOOL)_putBackViewIfNeeded:(id)needed toView:(id)view;
+- (BOOL)_relocateViewIfNeeded:(id)needed fromView:(id)view toView:(id)toView;
 - (CGRect)iconViewOriginFrame;
 - (CGRect)titleLabelOriginFrame;
 - (MCProfileTitlePageMetaDataSectionController)sectionController;
@@ -10,39 +10,39 @@
 - (UIView)subtitleView;
 - (UIView)titleView;
 - (UIView)topBar;
-- (double)_alphaWithProgress:(double)a3 keys:(id)a4 values:(id)a5;
-- (unint64_t)_binarySearch:(id)a3 target:(double)a4;
-- (void)_animateView:(id)a3 progress:(double)a4 startFrame:(CGRect)a5 endY:(double)a6 endScale:(double)a7 extraYOffset:(double)a8;
-- (void)startTrackingWithMetaDataSectionController:(id)a3 topBar:(id)a4;
+- (double)_alphaWithProgress:(double)progress keys:(id)keys values:(id)values;
+- (unint64_t)_binarySearch:(id)search target:(double)target;
+- (void)_animateView:(id)view progress:(double)progress startFrame:(CGRect)frame endY:(double)y endScale:(double)scale extraYOffset:(double)offset;
+- (void)startTrackingWithMetaDataSectionController:(id)controller topBar:(id)bar;
 @end
 
 @implementation MCProfileTitlePageMetaDataSectionAnimationController
 
-- (void)startTrackingWithMetaDataSectionController:(id)a3 topBar:(id)a4
+- (void)startTrackingWithMetaDataSectionController:(id)controller topBar:(id)bar
 {
-  v6 = a4;
-  v7 = a3;
-  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setSectionController:v7];
-  v8 = [v7 titleCell];
-  v9 = [v8 titleLabel];
-  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setTitleView:v9];
+  barCopy = bar;
+  controllerCopy = controller;
+  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setSectionController:controllerCopy];
+  titleCell = [controllerCopy titleCell];
+  titleLabel = [titleCell titleLabel];
+  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setTitleView:titleLabel];
 
-  v10 = [v7 subtitleCell];
-  v11 = [v10 titleLabel];
-  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setSubtitleView:v11];
+  subtitleCell = [controllerCopy subtitleCell];
+  titleLabel2 = [subtitleCell titleLabel];
+  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setSubtitleView:titleLabel2];
 
-  v12 = [v7 iconCell];
-  v13 = [v12 iconImageView];
-  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setIconView:v13];
+  iconCell = [controllerCopy iconCell];
+  iconImageView = [iconCell iconImageView];
+  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setIconView:iconImageView];
 
-  v14 = [v7 orgCell];
-  v15 = [v14 contentView];
-  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setOrgView:v15];
+  orgCell = [controllerCopy orgCell];
+  contentView = [orgCell contentView];
+  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setOrgView:contentView];
 
-  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setTopBar:v6];
-  v16 = [v7 tableView];
+  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setTopBar:barCopy];
+  tableView = [controllerCopy tableView];
 
-  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setTableView:v16];
+  [(MCProfileTitlePageMetaDataSectionAnimationController *)self setTableView:tableView];
 }
 
 void __124__MCProfileTitlePageMetaDataSectionAnimationController_updateProgressWithTranslationDistance_referenceDistance_isScrolling___block_invoke()
@@ -72,67 +72,67 @@ void __124__MCProfileTitlePageMetaDataSectionAnimationController_updateProgressW
   updateProgressWithTranslationDistance_referenceDistance_isScrolling__topBarAlphaValueArray = &unk_28694CB48;
 }
 
-- (BOOL)_putBackViewIfNeeded:(id)a3 toView:(id)a4
+- (BOOL)_putBackViewIfNeeded:(id)needed toView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 superview];
+  neededCopy = needed;
+  viewCopy = view;
+  superview = [neededCopy superview];
 
-  if (v7 != v6)
+  if (superview != viewCopy)
   {
-    [v5 removeFromSuperview];
-    [v6 addSubview:v5];
+    [neededCopy removeFromSuperview];
+    [viewCopy addSubview:neededCopy];
   }
 
-  return v7 != v6;
+  return superview != viewCopy;
 }
 
-- (BOOL)_relocateViewIfNeeded:(id)a3 fromView:(id)a4 toView:(id)a5
+- (BOOL)_relocateViewIfNeeded:(id)needed fromView:(id)view toView:(id)toView
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 superview];
+  neededCopy = needed;
+  viewCopy = view;
+  toViewCopy = toView;
+  superview = [neededCopy superview];
 
-  if (v10 == v8)
+  if (superview == viewCopy)
   {
-    [v7 frame];
-    [v8 convertRect:v9 toView:?];
+    [neededCopy frame];
+    [viewCopy convertRect:toViewCopy toView:?];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    [v7 removeFromSuperview];
-    [v9 addSubview:v7];
-    [v7 setFrame:{v12, v14, v16, v18}];
+    [neededCopy removeFromSuperview];
+    [toViewCopy addSubview:neededCopy];
+    [neededCopy setFrame:{v12, v14, v16, v18}];
   }
 
-  return v10 == v8;
+  return superview == viewCopy;
 }
 
-- (void)_animateView:(id)a3 progress:(double)a4 startFrame:(CGRect)a5 endY:(double)a6 endScale:(double)a7 extraYOffset:(double)a8
+- (void)_animateView:(id)view progress:(double)progress startFrame:(CGRect)frame endY:(double)y endScale:(double)scale extraYOffset:(double)offset
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
   v20.size.height = height;
-  v17 = (CGRectGetMidY(v20) - a6) * a4;
-  CGAffineTransformMakeScale(&v19, 1.0 - (1.0 - a7) * a4, 1.0 - (1.0 - a7) * a4);
+  v17 = (CGRectGetMidY(v20) - y) * progress;
+  CGAffineTransformMakeScale(&v19, 1.0 - (1.0 - scale) * progress, 1.0 - (1.0 - scale) * progress);
   v18 = v19;
-  [v16 setTransform:&v18];
-  [v16 setFrame:{x, y - (v17 + a8), width, height}];
+  [viewCopy setTransform:&v18];
+  [viewCopy setFrame:{x, y - (v17 + offset), width, height}];
 }
 
-- (double)_alphaWithProgress:(double)a3 keys:(id)a4 values:(id)a5
+- (double)_alphaWithProgress:(double)progress keys:(id)keys values:(id)values
 {
-  v8 = a4;
-  v9 = a5;
-  if ([v8 count] == 2)
+  keysCopy = keys;
+  valuesCopy = values;
+  if ([keysCopy count] == 2)
   {
     v10 = 0;
     v11 = 1;
@@ -140,8 +140,8 @@ void __124__MCProfileTitlePageMetaDataSectionAnimationController_updateProgressW
 
   else
   {
-    v10 = [(MCProfileTitlePageMetaDataSectionAnimationController *)self _binarySearch:v8 target:a3];
-    if (v10 == [v8 count] - 1)
+    v10 = [(MCProfileTitlePageMetaDataSectionAnimationController *)self _binarySearch:keysCopy target:progress];
+    if (v10 == [keysCopy count] - 1)
     {
       v11 = v10;
     }
@@ -152,36 +152,36 @@ void __124__MCProfileTitlePageMetaDataSectionAnimationController_updateProgressW
     }
   }
 
-  v12 = [v8 objectAtIndexedSubscript:v10];
+  v12 = [keysCopy objectAtIndexedSubscript:v10];
   [v12 floatValue];
   v14 = v13;
 
-  v15 = [v8 objectAtIndexedSubscript:v11];
+  v15 = [keysCopy objectAtIndexedSubscript:v11];
   [v15 floatValue];
   v17 = v16;
 
-  v18 = [v9 objectAtIndexedSubscript:v10];
+  v18 = [valuesCopy objectAtIndexedSubscript:v10];
   [v18 floatValue];
   v20 = v19;
   v21 = v19;
 
-  v22 = [v9 objectAtIndexedSubscript:v11];
+  v22 = [valuesCopy objectAtIndexedSubscript:v11];
 
   [v22 floatValue];
   v24 = v23;
 
   if (v20 != v24)
   {
-    v21 = v21 + (v24 - v21) * ((a3 - v14) / (v17 - v14));
+    v21 = v21 + (v24 - v21) * ((progress - v14) / (v17 - v14));
   }
 
   return v21;
 }
 
-- (unint64_t)_binarySearch:(id)a3 target:(double)a4
+- (unint64_t)_binarySearch:(id)search target:(double)target
 {
-  v5 = a3;
-  v6 = [v5 count] - 1;
+  searchCopy = search;
+  v6 = [searchCopy count] - 1;
   if (v6 < 2)
   {
     v7 = 0;
@@ -192,11 +192,11 @@ void __124__MCProfileTitlePageMetaDataSectionAnimationController_updateProgressW
     v7 = 0;
     do
     {
-      v8 = [v5 objectAtIndexedSubscript:v7 + ((v6 - v7) >> 1)];
+      v8 = [searchCopy objectAtIndexedSubscript:v7 + ((v6 - v7) >> 1)];
       [v8 floatValue];
       v10 = v9;
 
-      if (v10 <= a4)
+      if (v10 <= target)
       {
         v7 += (v6 - v7) >> 1;
       }
@@ -210,11 +210,11 @@ void __124__MCProfileTitlePageMetaDataSectionAnimationController_updateProgressW
     while (v7 + 1 < v6);
   }
 
-  v11 = [v5 objectAtIndexedSubscript:v6];
+  v11 = [searchCopy objectAtIndexedSubscript:v6];
   [v11 floatValue];
   v13 = v12;
 
-  if (v13 > a4)
+  if (v13 > target)
   {
     v6 = v7;
   }

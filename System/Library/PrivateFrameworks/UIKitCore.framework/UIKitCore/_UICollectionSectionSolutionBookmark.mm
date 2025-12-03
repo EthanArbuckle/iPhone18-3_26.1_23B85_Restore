@@ -1,10 +1,10 @@
 @interface _UICollectionSectionSolutionBookmark
-- (double)_layoutFrameIncludingContentInsets:(int)a3 supplementaries:(char)a4 clampingToContainer:;
+- (double)_layoutFrameIncludingContentInsets:(int)insets supplementaries:(char)supplementaries clampingToContainer:;
 - (double)contentInsetsOffset;
 - (double)sectionAuxiliaryContentInsetsOffset;
 - (float64x2_t)memoizedDescriptor;
 - (id)description;
-- (id)initWithSolution:(void *)a3 globalFrame:(void *)a4 globalPinningFrame:(void *)a5 insetEnvironment:(void *)a6 supplementaryInsetEnvironment:(double)a7 section:(double)a8 preferredSizes:(double)a9;
+- (id)initWithSolution:(void *)solution globalFrame:(void *)frame globalPinningFrame:(void *)pinningFrame insetEnvironment:(void *)environment supplementaryInsetEnvironment:(double)insetEnvironment section:(double)section preferredSizes:(double)sizes;
 - (uint64_t)_containerAxis;
 @end
 
@@ -13,20 +13,20 @@
 - (double)sectionAuxiliaryContentInsetsOffset
 {
   v1 = 0.0;
-  if (a1)
+  if (self)
   {
-    v3 = [(_UICollectionSectionSolutionBookmark *)a1 _containerAxis];
-    if (v3 == 1)
+    _containerAxis = [(_UICollectionSectionSolutionBookmark *)self _containerAxis];
+    if (_containerAxis == 1)
     {
       v4 = 2;
     }
 
     else
     {
-      v4 = v3 == 2;
+      v4 = _containerAxis == 2;
     }
 
-    [(_UIContentInsetsEnvironment *)*(a1 + 96) effectiveInsets];
+    [(_UIContentInsetsEnvironment *)*(self + 96) effectiveInsets];
     if (v4 && v4 != 2)
     {
       return v5;
@@ -38,42 +38,42 @@
 
 - (uint64_t)_containerAxis
 {
-  v2 = [*(a1 + 8) layoutAxis];
-  v3 = [*(a1 + 16) scrollsOrthogonally];
-  v4 = v2 == 2;
-  if (v2 == 1)
+  layoutAxis = [*(self + 8) layoutAxis];
+  scrollsOrthogonally = [*(self + 16) scrollsOrthogonally];
+  v4 = layoutAxis == 2;
+  if (layoutAxis == 1)
   {
     v4 = 2;
   }
 
-  if (v3)
+  if (scrollsOrthogonally)
   {
     return v4;
   }
 
   else
   {
-    return v2;
+    return layoutAxis;
   }
 }
 
 - (double)contentInsetsOffset
 {
   v1 = 0.0;
-  if (a1)
+  if (self)
   {
-    v3 = [(_UICollectionSectionSolutionBookmark *)a1 _containerAxis];
-    if (v3 == 1)
+    _containerAxis = [(_UICollectionSectionSolutionBookmark *)self _containerAxis];
+    if (_containerAxis == 1)
     {
       v4 = 2;
     }
 
     else
     {
-      v4 = v3 == 2;
+      v4 = _containerAxis == 2;
     }
 
-    [(_UIContentInsetsEnvironment *)*(a1 + 88) effectiveInsets];
+    [(_UIContentInsetsEnvironment *)*(self + 88) effectiveInsets];
     if (v4 && v4 != 2)
     {
       return v5;
@@ -85,10 +85,10 @@
 
 - (float64x2_t)memoizedDescriptor
 {
-  if (a1)
+  if (self)
   {
-    v3 = (a1 + 112);
-    v2 = *(a1 + 112);
+    v3 = (self + 112);
+    v2 = *(self + 112);
     if (v2)
     {
       v4 = v2;
@@ -96,24 +96,24 @@
 
     else
     {
-      v5 = *(a1 + 16);
-      v6 = *(a1 + 8);
+      v5 = *(self + 16);
+      v6 = *(self + 8);
       v4 = objc_opt_new();
-      v7 = [v6 layoutAxis];
-      v8 = [v5 orthogonalScrollingBehavior];
-      v9 = v8 & 0xFFFFFFFFFFFFFFFELL;
-      v10 = [v5 _orthogonalScrollingProperties];
-      v11 = v10;
-      if (v10)
+      layoutAxis = [v6 layoutAxis];
+      orthogonalScrollingBehavior = [v5 orthogonalScrollingBehavior];
+      v9 = orthogonalScrollingBehavior & 0xFFFFFFFFFFFFFFFELL;
+      _orthogonalScrollingProperties = [v5 _orthogonalScrollingProperties];
+      v11 = _orthogonalScrollingProperties;
+      if (_orthogonalScrollingProperties)
       {
-        [v10 decelerationRate];
+        [_orthogonalScrollingProperties decelerationRate];
         v90 = v12;
-        v89 = [v11 bounce];
+        bounce = [v11 bounce];
       }
 
       else
       {
-        v89 = 0;
+        bounce = 0;
         v90 = *off_1E70ECC78;
       }
 
@@ -127,13 +127,13 @@
       v88 = v14;
       if ([v5 scrollsOrthogonally])
       {
-        [v6 _dimensionForRootGroupAlongAxis:v7];
+        [v6 _dimensionForRootGroupAlongAxis:layoutAxis];
         v16 = v15;
         [v5 interGroupSpacing];
         v13 = v16 + v17;
       }
 
-      v91 = v7;
+      v91 = layoutAxis;
       v18 = 0.0;
       if (v9 == 4)
       {
@@ -143,18 +143,18 @@
       v86 = v18;
       [v5 _cornerRadius];
       v85 = v19;
-      v84 = [v5 _clipsContentToBounds];
-      v20 = [v5 _excludesBoundarySupplementariesFromClipping];
+      _clipsContentToBounds = [v5 _clipsContentToBounds];
+      _excludesBoundarySupplementariesFromClipping = [v5 _excludesBoundarySupplementariesFromClipping];
       v87 = v13;
-      if (v20)
+      if (_excludesBoundarySupplementariesFromClipping)
       {
         v21 = 0;
       }
 
       else
       {
-        v22 = [v5 boundarySupplementaryItems];
-        v21 = [v22 count] != 0;
+        boundarySupplementaryItems = [v5 boundarySupplementaryItems];
+        v21 = [boundarySupplementaryItems count] != 0;
       }
 
       [v5 _clippingInsets];
@@ -162,21 +162,21 @@
       v26 = v25;
       v93 = v27;
       v29 = v28;
-      v30 = [v6 traitCollection];
-      [v30 displayScale];
+      traitCollection = [v6 traitCollection];
+      [traitCollection displayScale];
       v32 = v31;
 
-      v33 = [(_UICollectionSectionSolutionBookmark *)a1 _layoutFrameIncludingContentInsets:1 supplementaries:1 clampingToContainer:?];
+      v33 = [(_UICollectionSectionSolutionBookmark *)self _layoutFrameIncludingContentInsets:1 supplementaries:1 clampingToContainer:?];
       v82 = v34;
       v83 = v33;
       v80 = v36;
       v81 = v35;
-      v37 = [(_UICollectionSectionSolutionBookmark *)a1 _layoutFrameIncludingContentInsets:0 supplementaries:0 clampingToContainer:?];
+      v37 = [(_UICollectionSectionSolutionBookmark *)self _layoutFrameIncludingContentInsets:0 supplementaries:0 clampingToContainer:?];
       v78 = v38;
       v79 = v37;
       v76 = v40;
       v77 = v39;
-      v96.origin.x = [(_UICollectionSectionSolutionBookmark *)a1 _layoutFrameIncludingContentInsets:0 supplementaries:1 clampingToContainer:?];
+      v96.origin.x = [(_UICollectionSectionSolutionBookmark *)self _layoutFrameIncludingContentInsets:0 supplementaries:1 clampingToContainer:?];
       x = v96.origin.x;
       y = v96.origin.y;
       width = v96.size.width;
@@ -197,7 +197,7 @@
       v99.size.width = width;
       v99.size.height = height;
       v71 = CGRectGetHeight(v99);
-      v45 = v26 + [(_UICollectionSectionSolutionBookmark *)a1 _layoutFrameIncludingContentInsets:v21 supplementaries:1 clampingToContainer:?];
+      v45 = v26 + [(_UICollectionSectionSolutionBookmark *)self _layoutFrameIncludingContentInsets:v21 supplementaries:1 clampingToContainer:?];
       v47 = v46 - (v29 + v26);
       v49 = v24 + v48;
       v51 = v50 - (v24 + v93);
@@ -225,7 +225,7 @@
       if (v4)
       {
         *&v4[1].f64[0] = v91;
-        *&v4[1].f64[1] = v8;
+        *&v4[1].f64[1] = orthogonalScrollingBehavior;
         v53 = 1.0;
         v4[2].f64[0] = v90;
         if (fabs(v32) >= 2.22044605e-16)
@@ -234,9 +234,9 @@
         }
 
         v94 = *&v53;
-        *&v4[2].f64[1] = v89;
-        LOBYTE(v4->f64[1]) = v84;
-        BYTE1(v4->f64[1]) = v20;
+        *&v4[2].f64[1] = bounce;
+        LOBYTE(v4->f64[1]) = _clipsContentToBounds;
+        BYTE1(v4->f64[1]) = _excludesBoundarySupplementariesFromClipping;
         v4[3].f64[0] = v85;
         [v6 orthogonalScrollingPrefetchingUnitVector];
         v4[5].f64[0] = v54;
@@ -294,17 +294,17 @@
   return v4;
 }
 
-- (id)initWithSolution:(void *)a3 globalFrame:(void *)a4 globalPinningFrame:(void *)a5 insetEnvironment:(void *)a6 supplementaryInsetEnvironment:(double)a7 section:(double)a8 preferredSizes:(double)a9
+- (id)initWithSolution:(void *)solution globalFrame:(void *)frame globalPinningFrame:(void *)pinningFrame insetEnvironment:(void *)environment supplementaryInsetEnvironment:(double)insetEnvironment section:(double)section preferredSizes:(double)sizes
 {
-  v14 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
-    return v14;
+    return selfCopy;
   }
 
   if (a2)
   {
-    if (a3)
+    if (solution)
     {
       goto LABEL_4;
     }
@@ -312,22 +312,22 @@
 
   else
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:sel_initWithSolution_globalFrame_globalPinningFrame_insetEnvironment_supplementaryInsetEnvironment_section_preferredSizes_ object:v14 file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3697 description:{@"Invalid parameter not satisfying: %@", @"solution != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_initWithSolution_globalFrame_globalPinningFrame_insetEnvironment_supplementaryInsetEnvironment_section_preferredSizes_ object:selfCopy file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3697 description:{@"Invalid parameter not satisfying: %@", @"solution != nil"}];
 
-    if (a3)
+    if (solution)
     {
 LABEL_4:
-      if (a4)
+      if (frame)
       {
         goto LABEL_5;
       }
 
 LABEL_14:
-      v34 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v34 handleFailureInMethod:sel_initWithSolution_globalFrame_globalPinningFrame_insetEnvironment_supplementaryInsetEnvironment_section_preferredSizes_ object:v14 file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3699 description:{@"Invalid parameter not satisfying: %@", @"supplementaryInsetEnvironment != nil"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel_initWithSolution_globalFrame_globalPinningFrame_insetEnvironment_supplementaryInsetEnvironment_section_preferredSizes_ object:selfCopy file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3699 description:{@"Invalid parameter not satisfying: %@", @"supplementaryInsetEnvironment != nil"}];
 
-      if (a5)
+      if (pinningFrame)
       {
         goto LABEL_6;
       }
@@ -336,58 +336,58 @@ LABEL_14:
     }
   }
 
-  v33 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v33 handleFailureInMethod:sel_initWithSolution_globalFrame_globalPinningFrame_insetEnvironment_supplementaryInsetEnvironment_section_preferredSizes_ object:v14 file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3698 description:{@"Invalid parameter not satisfying: %@", @"insetEnvironment != nil"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:sel_initWithSolution_globalFrame_globalPinningFrame_insetEnvironment_supplementaryInsetEnvironment_section_preferredSizes_ object:selfCopy file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3698 description:{@"Invalid parameter not satisfying: %@", @"insetEnvironment != nil"}];
 
-  if (!a4)
+  if (!frame)
   {
     goto LABEL_14;
   }
 
 LABEL_5:
-  if (a5)
+  if (pinningFrame)
   {
     goto LABEL_6;
   }
 
 LABEL_15:
-  v35 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v35 handleFailureInMethod:sel_initWithSolution_globalFrame_globalPinningFrame_insetEnvironment_supplementaryInsetEnvironment_section_preferredSizes_ object:v14 file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3700 description:{@"Invalid parameter not satisfying: %@", @"section != nil"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:sel_initWithSolution_globalFrame_globalPinningFrame_insetEnvironment_supplementaryInsetEnvironment_section_preferredSizes_ object:selfCopy file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3700 description:{@"Invalid parameter not satisfying: %@", @"section != nil"}];
 
 LABEL_6:
-  v36.receiver = v14;
+  v36.receiver = selfCopy;
   v36.super_class = _UICollectionSectionSolutionBookmark;
   v28 = objc_msgSendSuper2(&v36, sel_init);
-  v14 = v28;
+  selfCopy = v28;
   if (v28)
   {
     objc_storeStrong(v28 + 1, a2);
-    *(v14 + 3) = a7;
-    *(v14 + 4) = a8;
-    *(v14 + 5) = a9;
-    *(v14 + 6) = a10;
-    *(v14 + 7) = a11;
-    *(v14 + 8) = a12;
-    *(v14 + 9) = a13;
-    *(v14 + 10) = a14;
-    objc_storeStrong(v14 + 11, a3);
-    objc_storeStrong(v14 + 12, a4);
-    objc_storeStrong(v14 + 2, a5);
-    if (a6)
+    *(selfCopy + 3) = insetEnvironment;
+    *(selfCopy + 4) = section;
+    *(selfCopy + 5) = sizes;
+    *(selfCopy + 6) = a10;
+    *(selfCopy + 7) = a11;
+    *(selfCopy + 8) = a12;
+    *(selfCopy + 9) = a13;
+    *(selfCopy + 10) = a14;
+    objc_storeStrong(selfCopy + 11, solution);
+    objc_storeStrong(selfCopy + 12, frame);
+    objc_storeStrong(selfCopy + 2, pinningFrame);
+    if (environment)
     {
-      v29 = a6;
+      environmentCopy = environment;
     }
 
     else
     {
-      v29 = objc_alloc_init(_UICollectionPreferredSizes);
+      environmentCopy = objc_alloc_init(_UICollectionPreferredSizes);
     }
 
-    v30 = v14[13];
-    v14[13] = v29;
+    v30 = selfCopy[13];
+    selfCopy[13] = environmentCopy;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)description
@@ -398,47 +398,47 @@ LABEL_6:
   v6 = NSStringFromRect(self->_globalFrame);
   insetEnvironment = self->_insetEnvironment;
   section = self->_section;
-  v9 = [(_UICollectionPreferredSizes *)self->_preferredSizes indexes];
-  v10 = [v3 stringWithFormat:@"<%@ %p: frame=%@ insetEnvironment=%@; section=%p; preferredSizes:%@>", v5, self, v6, insetEnvironment, section, v9];;
+  indexes = [(_UICollectionPreferredSizes *)self->_preferredSizes indexes];
+  v10 = [v3 stringWithFormat:@"<%@ %p: frame=%@ insetEnvironment=%@; section=%p; preferredSizes:%@>", v5, self, v6, insetEnvironment, section, indexes];;
 
   return v10;
 }
 
-- (double)_layoutFrameIncludingContentInsets:(int)a3 supplementaries:(char)a4 clampingToContainer:
+- (double)_layoutFrameIncludingContentInsets:(int)insets supplementaries:(char)supplementaries clampingToContainer:
 {
-  v8 = *(a1 + 8);
-  v9 = *(a1 + 24);
-  v10 = *(a1 + 32);
-  v11 = [(_UICollectionSectionSolutionBookmark *)a1 _containerAxis];
-  v12 = v11;
-  if (v11 == 1)
+  v8 = *(self + 8);
+  v9 = *(self + 24);
+  v10 = *(self + 32);
+  _containerAxis = [(_UICollectionSectionSolutionBookmark *)self _containerAxis];
+  v12 = _containerAxis;
+  if (_containerAxis == 1)
   {
     v13 = 2;
   }
 
   else
   {
-    v13 = v11 == 2;
+    v13 = _containerAxis == 2;
   }
 
-  v14 = [v8 layoutSection];
-  [v14 contentInsets];
+  layoutSection = [v8 layoutSection];
+  [layoutSection contentInsets];
   v60 = v16;
   v61 = v15;
   v58 = v18;
   v59 = v17;
 
-  if (a3)
+  if (insets)
   {
     v56 = v10;
     v57 = v9;
-    v19 = [(_UIContentInsetsEnvironment *)*(a1 + 88) effectiveInsets];
+    effectiveInsets = [(_UIContentInsetsEnvironment *)*(self + 88) effectiveInsets];
     v21 = v20;
-    v22 = [(_UIContentInsetsEnvironment *)*(a1 + 96) effectiveInsets];
+    effectiveInsets2 = [(_UIContentInsetsEnvironment *)*(self + 96) effectiveInsets];
     v52 = v23;
-    v53 = v22;
-    v24 = _UILeadingOffsetForInsetsAlongAxis(v13, v22, v23);
-    v25 = _UILeadingOffsetForInsetsAlongAxis(v13, v19, v21);
+    v53 = effectiveInsets2;
+    v24 = _UILeadingOffsetForInsetsAlongAxis(v13, effectiveInsets2, v23);
+    v25 = _UILeadingOffsetForInsetsAlongAxis(v13, effectiveInsets, v21);
     [v8 contentFrameIncludingAuxiliaries];
     v54 = v27;
     v55 = v26;
@@ -446,14 +446,14 @@ LABEL_6:
     v63 = v28;
     if (v24 < v25)
     {
-      v30 = [v8 supplementaryContainer];
+      supplementaryContainer = [v8 supplementaryContainer];
       v21 = v52;
-      v19 = v53;
+      effectiveInsets = v53;
     }
 
     else
     {
-      v30 = [v8 container];
+      supplementaryContainer = [v8 container];
     }
 
     v10 = v56;
@@ -469,24 +469,24 @@ LABEL_6:
     v34 = v33;
     v62 = v36;
     v63 = v35;
-    v19 = [(_UIContentInsetsEnvironment *)*(a1 + 88) effectiveInsets];
+    effectiveInsets = [(_UIContentInsetsEnvironment *)*(self + 88) effectiveInsets];
     v21 = v37;
-    v30 = [v8 container];
+    supplementaryContainer = [v8 container];
   }
 
   v38 = _UIAddPointValueForAxisFromPoint(v12, v32, v34, v9, v10);
-  v39 = _UILeadingOffsetForInsetsAlongAxis(v13, v19, v21);
+  v39 = _UILeadingOffsetForInsetsAlongAxis(v13, effectiveInsets, v21);
   v40 = v38 + _UISetPointValueForAxis(v13, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v39);
-  if (a3)
+  if (insets)
   {
-    if (a4)
+    if (supplementaries)
     {
       if (a2)
       {
         v42 = v62;
         v41 = v63;
 LABEL_16:
-        [v30 contentSize];
+        [supplementaryContainer contentSize];
 LABEL_19:
         v50 = _UISizeValueForAxis(v13, v43, v44);
         _UISetSizeValueForAxis(v13, v41, v42, v50);
@@ -495,7 +495,7 @@ LABEL_19:
 
 LABEL_18:
       v45 = _UITotalEdgeDimensionsForLayoutAxis(v13, v61, v59, v58, v60);
-      [v30 contentSize];
+      [supplementaryContainer contentSize];
       v47 = v46;
       v43 = v48 + _UISetSizeValueForAxis(v13, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8), -v45);
       v44 = v47 + v49;
@@ -510,13 +510,13 @@ LABEL_18:
     v40 = v40 - v59;
     v41 = v63 - (-v59 - v60);
     v42 = v62 - (-v58 - v61);
-    if (a4)
+    if (supplementaries)
     {
       goto LABEL_16;
     }
   }
 
-  else if (a4)
+  else if (supplementaries)
   {
     goto LABEL_18;
   }

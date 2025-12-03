@@ -1,88 +1,88 @@
 @interface TVButtonContent
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TVButtonContent)initWithFrame:(CGRect)a3 blurEffectStyle:(int64_t)a4 blurEnabled:(BOOL)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TVButtonContent)initWithFrame:(CGRect)frame blurEffectStyle:(int64_t)style blurEnabled:(BOOL)enabled;
 - (double)_imageMarginFromText;
-- (void)_setFocused:(BOOL)a3 animationCoordinator:(id)a4;
-- (void)_updateBackgroundColorForState:(unint64_t)a3;
-- (void)_updateFloaingViewFocusState:(BOOL)a3 coordinator:(id)a4;
-- (void)_updateFocusStateWithCoordinator:(id)a3;
+- (void)_setFocused:(BOOL)focused animationCoordinator:(id)coordinator;
+- (void)_updateBackgroundColorForState:(unint64_t)state;
+- (void)_updateFloaingViewFocusState:(BOOL)state coordinator:(id)coordinator;
+- (void)_updateFocusStateWithCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)setAccessoryView:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setFocusSizeIncrease:(double)a3;
-- (void)setHighlightColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImageView:(id)a3;
-- (void)setTextContentView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessoryView:(id)view;
+- (void)setBackgroundColor:(id)color;
+- (void)setCornerRadius:(double)radius;
+- (void)setFocusSizeIncrease:(double)increase;
+- (void)setHighlightColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImageView:(id)view;
+- (void)setTextContentView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TVButtonContent
 
-- (TVButtonContent)initWithFrame:(CGRect)a3 blurEffectStyle:(int64_t)a4 blurEnabled:(BOOL)a5
+- (TVButtonContent)initWithFrame:(CGRect)frame blurEffectStyle:(int64_t)style blurEnabled:(BOOL)enabled
 {
   v10.receiver = self;
   v10.super_class = TVButtonContent;
-  v7 = [(_UIFloatingContentView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(_UIFloatingContentView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
     v7->_focused = 0;
-    v7->_backdropStyle = a4;
-    v7->_blurEnabled = a5;
+    v7->_backdropStyle = style;
+    v7->_blurEnabled = enabled;
     [(TVButtonContent *)v7 setUserInteractionEnabled:0];
   }
 
   return v8;
 }
 
-- (void)setFocusSizeIncrease:(double)a3
+- (void)setFocusSizeIncrease:(double)increase
 {
-  if (self->_focusSizeIncrease != a3)
+  if (self->_focusSizeIncrease != increase)
   {
-    self->_focusSizeIncrease = a3;
+    self->_focusSizeIncrease = increase;
     if (+[TVMLUtilities _isSolariumMetricsEnabled])
     {
 
-      [(_UIFloatingContentView *)self setAsymmetricFocusedSizeIncrease:a3, a3];
+      [(_UIFloatingContentView *)self setAsymmetricFocusedSizeIncrease:increase, increase];
     }
 
     else
     {
 
-      [(_UIFloatingContentView *)self setFocusedSizeIncrease:a3];
+      [(_UIFloatingContentView *)self setFocusedSizeIncrease:increase];
     }
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = TVButtonContent;
-  v4 = a3;
-  [(TVButtonContent *)&v7 setBackgroundColor:v4];
-  v5 = [v4 copy];
+  colorCopy = color;
+  [(TVButtonContent *)&v7 setBackgroundColor:colorCopy];
+  v5 = [colorCopy copy];
 
   backgroundColor = self->__backgroundColor;
   self->__backgroundColor = v5;
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  v5 = a3;
-  if (self->_highlightColor != v5)
+  colorCopy = color;
+  if (self->_highlightColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_highlightColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_highlightColor, color);
+    colorCopy = v6;
   }
 }
 
-- (void)_updateBackgroundColorForState:(unint64_t)a3
+- (void)_updateBackgroundColorForState:(unint64_t)state
 {
   v3 = &OBJC_IVAR___TVButtonContent__highlightColor;
-  if ((a3 & 0xD) == 0)
+  if ((state & 0xD) == 0)
   {
     v3 = &OBJC_IVAR___TVButtonContent___backgroundColor;
   }
@@ -93,27 +93,27 @@
   [(TVButtonContent *)&v5 setBackgroundColor:v4];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
-    v5 = [(TVButtonContent *)self layer];
-    [v5 setCornerRadius:a3];
+    self->_cornerRadius = radius;
+    layer = [(TVButtonContent *)self layer];
+    [layer setCornerRadius:radius];
 
     [(TVButtonContent *)self setNeedsLayout];
   }
 }
 
-- (void)setTextContentView:(id)a3
+- (void)setTextContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   textContentView = self->_textContentView;
-  v7 = v5;
-  if (textContentView != v5)
+  v7 = viewCopy;
+  if (textContentView != viewCopy)
   {
     [(UILabel *)textContentView removeFromSuperview];
-    objc_storeStrong(&self->_textContentView, a3);
+    objc_storeStrong(&self->_textContentView, view);
     if (self->_textContentView)
     {
       [(TVButtonContent *)self addSubview:?];
@@ -124,15 +124,15 @@
   [(TVButtonContent *)self setNeedsLayout];
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   imageView = self->_imageView;
-  v7 = v5;
-  if (imageView != v5)
+  v7 = viewCopy;
+  if (imageView != viewCopy)
   {
     [(_TVImageView *)imageView removeFromSuperview];
-    objc_storeStrong(&self->_imageView, a3);
+    objc_storeStrong(&self->_imageView, view);
     if (self->_imageView)
     {
       [(TVButtonContent *)self addSubview:?];
@@ -144,15 +144,15 @@
   [(TVButtonContent *)self setNeedsLayout];
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   accessoryView = self->_accessoryView;
-  v7 = v5;
-  if (accessoryView != v5)
+  v7 = viewCopy;
+  if (accessoryView != viewCopy)
   {
     [(_TVImageView *)accessoryView removeFromSuperview];
-    objc_storeStrong(&self->_accessoryView, a3);
+    objc_storeStrong(&self->_accessoryView, view);
     if (self->_accessoryView)
     {
       [(TVButtonContent *)self addSubview:?];
@@ -164,9 +164,9 @@
   [(TVButtonContent *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIView *)self tv_itemWidth:a3.width];
+  [(UIView *)self tv_itemWidth:fits.width];
   v56 = v4;
   [(UIView *)self tv_itemHeight];
   v55 = v5;
@@ -183,36 +183,36 @@
   v52 = v12;
   v15 = v14;
   v50 = v16;
-  v17 = [(TVButtonContent *)self accessoryView];
-  [v17 tv_margin];
+  accessoryView = [(TVButtonContent *)self accessoryView];
+  [accessoryView tv_margin];
   v47 = v19;
   v48 = v18;
 
-  v20 = [(TVButtonContent *)self imageView];
+  imageView = [(TVButtonContent *)self imageView];
   v21 = *MEMORY[0x277CBF3A8];
   v22 = *(MEMORY[0x277CBF3A8] + 8);
-  [v20 sizeThatFits:{*MEMORY[0x277CBF3A8], v22}];
+  [imageView sizeThatFits:{*MEMORY[0x277CBF3A8], v22}];
   v49 = v23;
 
   [(TVButtonContent *)self _imageMarginFromText];
   v25 = v24;
-  v26 = [(TVButtonContent *)self textContentView];
-  [v26 sizeThatFits:{v21, v22}];
+  textContentView = [(TVButtonContent *)self textContentView];
+  [textContentView sizeThatFits:{v21, v22}];
   v28 = v27;
   v30 = v29;
 
-  v31 = [(TVButtonContent *)self accessoryView];
-  [v31 sizeThatFits:{v21, v22}];
+  accessoryView2 = [(TVButtonContent *)self accessoryView];
+  [accessoryView2 sizeThatFits:{v21, v22}];
   v33 = v32;
 
-  v34 = [(TVButtonContent *)self accessoryView];
+  accessoryView3 = [(TVButtonContent *)self accessoryView];
 
-  if (v34)
+  if (accessoryView3)
   {
-    v35 = [(TVButtonContent *)self accessoryView];
-    v36 = [v35 tv_alignment];
+    accessoryView4 = [(TVButtonContent *)self accessoryView];
+    tv_alignment = [accessoryView4 tv_alignment];
 
-    if (v36 == 1)
+    if (tv_alignment == 1)
     {
       v37 = v15;
     }
@@ -309,29 +309,29 @@
   v102 = v6;
   v111 = v10 - (v15 + v16);
   v112 = v6 + v15;
-  v17 = [(TVButtonContent *)self textContentView];
-  v18 = [v17 tv_alignment];
+  textContentView = [(TVButtonContent *)self textContentView];
+  tv_alignment = [textContentView tv_alignment];
 
-  v19 = [(TVButtonContent *)self accessoryView];
-  v20 = [v19 tv_alignment];
+  accessoryView = [(TVButtonContent *)self accessoryView];
+  tv_alignment2 = [accessoryView tv_alignment];
 
-  v21 = [(TVButtonContent *)self accessoryView];
+  accessoryView2 = [(TVButtonContent *)self accessoryView];
 
   v22 = MEMORY[0x277CBF3A8];
   v109 = v8;
-  if (v21)
+  if (accessoryView2)
   {
-    v23 = [(TVButtonContent *)self accessoryView];
-    [v23 sizeThatFits:{*v22, v22[1]}];
+    accessoryView3 = [(TVButtonContent *)self accessoryView];
+    [accessoryView3 sizeThatFits:{*v22, v22[1]}];
     v25 = v24;
     v27 = v26;
 
-    v28 = [(TVButtonContent *)self accessoryView];
-    [v28 tv_margin];
+    accessoryView4 = [(TVButtonContent *)self accessoryView];
+    [accessoryView4 tv_margin];
     v30 = v29;
     v32 = v31;
 
-    if (v20 == 1)
+    if (tv_alignment2 == 1)
     {
       v33 = v12 + v30;
     }
@@ -348,8 +348,8 @@
     v35 = v32 + v25 + v30;
     v36 = v12 + v35;
     v37 = v14 + v35;
-    v38 = v18 & 0xFFFFFFFFFFFFFFFDLL;
-    if (v20 == 1)
+    v38 = tv_alignment & 0xFFFFFFFFFFFFFFFDLL;
+    if (tv_alignment2 == 1)
     {
       v39 = v36;
     }
@@ -361,13 +361,13 @@
 
     v40 = fmax(v39, fmax(v12, v14));
     v41 = fmax(v36, v12);
-    if (v20 != 1)
+    if (tv_alignment2 != 1)
     {
       v41 = v12;
     }
 
     v42 = fmax(v37, v14);
-    if (v20 == 1)
+    if (tv_alignment2 == 1)
     {
       v42 = v14;
     }
@@ -393,8 +393,8 @@
       v34 = v40 + v40;
     }
 
-    v44 = [(TVButtonContent *)self accessoryView];
-    [v44 setFrame:{v33, v112 + floor((v111 - v27) * 0.5), v25, v27}];
+    accessoryView5 = [(TVButtonContent *)self accessoryView];
+    [accessoryView5 setFrame:{v33, v112 + floor((v111 - v27) * 0.5), v25, v27}];
 
     v8 = v109;
   }
@@ -404,12 +404,12 @@
     v34 = v12 + v14;
   }
 
-  v45 = [(TVButtonContent *)self imageView];
+  imageView = [(TVButtonContent *)self imageView];
   v106 = v8 - v34;
-  if (v45)
+  if (imageView)
   {
-    v46 = [(TVButtonContent *)self textContentView];
-    if (v46)
+    textContentView2 = [(TVButtonContent *)self textContentView];
+    if (textContentView2)
     {
       v47 = ![(TVButtonContent *)self imageTrailsTextContent];
     }
@@ -432,15 +432,15 @@
   v110 = v48;
   v49 = *MEMORY[0x277CBF3A0];
   v50 = *(MEMORY[0x277CBF3A0] + 8);
-  v51 = [(TVButtonContent *)self textContentView];
-  [v51 tv_alignmentInsetsForExpectedWidth:0.0];
+  textContentView3 = [(TVButtonContent *)self textContentView];
+  [textContentView3 tv_alignmentInsetsForExpectedWidth:0.0];
   v107 = v52;
   v103 = v53;
 
-  v54 = [(TVButtonContent *)self imageView];
+  imageView2 = [(TVButtonContent *)self imageView];
   v55 = *v22;
   v56 = v22[1];
-  [v54 sizeThatFits:{*v22, v56}];
+  [imageView2 sizeThatFits:{*v22, v56}];
   v58 = v57;
   v60 = v59;
 
@@ -449,8 +449,8 @@
   v117.size.width = v58;
   v117.size.height = v60;
   v61 = v112 + floor((v111 - CGRectGetHeight(v117)) * 0.5);
-  v62 = [(TVButtonContent *)self textContentView];
-  [v62 sizeThatFits:{v55, v56}];
+  textContentView4 = [(TVButtonContent *)self textContentView];
+  [textContentView4 sizeThatFits:{v55, v56}];
   v64 = v63;
   v66 = v65;
 
@@ -478,7 +478,7 @@
   v72 = v112;
   v74 = v112 + floor((v111 - (Height - (v107 + v103))) * 0.5) - v107;
   v108 = v74;
-  if (v18 == 3)
+  if (tv_alignment == 3)
   {
     v81 = v105;
     v82 = v106;
@@ -519,7 +519,7 @@
     v80 = x + v85;
   }
 
-  else if (v18 == 1)
+  else if (tv_alignment == 1)
   {
     v75 = 0.0;
     v76 = v60;
@@ -598,57 +598,57 @@
     v91 = v108;
   }
 
-  v97 = [(TVButtonContent *)self textContentView];
-  [v97 setFrame:{x, v91, v70, v113}];
+  textContentView5 = [(TVButtonContent *)self textContentView];
+  [textContentView5 setFrame:{x, v91, v70, v113}];
 
-  v98 = [(TVButtonContent *)self imageView];
-  [v98 setFrame:{v80, v77, rect, v76}];
+  imageView3 = [(TVButtonContent *)self imageView];
+  [imageView3 setFrame:{v80, v77, rect, v76}];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  if (v4)
+  changeCopy = change;
+  if (changeCopy)
   {
-    v5 = [(TVButtonContent *)self traitCollection];
-    if ([v5 userInterfaceStyle])
+    traitCollection = [(TVButtonContent *)self traitCollection];
+    if ([traitCollection userInterfaceStyle])
     {
-      [v4 userInterfaceStyle];
-      v6 = [(TVButtonContent *)self traitCollection];
-      [v6 userInterfaceStyle];
+      [changeCopy userInterfaceStyle];
+      traitCollection2 = [(TVButtonContent *)self traitCollection];
+      [traitCollection2 userInterfaceStyle];
     }
   }
 
   v7.receiver = self;
   v7.super_class = TVButtonContent;
-  [(_UIFloatingContentView *)&v7 traitCollectionDidChange:v4];
+  [(_UIFloatingContentView *)&v7 traitCollectionDidChange:changeCopy];
 }
 
 - (double)_imageMarginFromText
 {
-  v3 = [(TVButtonContent *)self imageView];
+  imageView = [(TVButtonContent *)self imageView];
   v4 = 0.0;
-  if (v3)
+  if (imageView)
   {
-    v5 = v3;
-    v6 = [(TVButtonContent *)self textContentView];
+    v5 = imageView;
+    textContentView = [(TVButtonContent *)self textContentView];
 
-    if (v6)
+    if (textContentView)
     {
-      v7 = [(TVButtonContent *)self imageTrailsTextContent];
-      v8 = [(TVButtonContent *)self imageView];
-      [v8 tv_margin];
+      imageTrailsTextContent = [(TVButtonContent *)self imageTrailsTextContent];
+      imageView2 = [(TVButtonContent *)self imageView];
+      [imageView2 tv_margin];
       v10 = v9;
       v12 = v11;
 
-      v13 = [(TVButtonContent *)self textContentView];
-      [v13 tv_margin];
+      textContentView2 = [(TVButtonContent *)self textContentView];
+      [textContentView2 tv_margin];
       v15 = v14;
       v17 = v16;
 
       v18 = fmax(v17, v10);
       v19 = fmax(v12, v15);
-      if (v7)
+      if (imageTrailsTextContent)
       {
         return v18;
       }
@@ -663,27 +663,27 @@
   return v4;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = TVButtonContent;
   [(UIView *)&v5 setHighlighted:?];
-  [(TVButtonContent *)self setSelected:v3 animated:0];
+  [(TVButtonContent *)self setSelected:highlightedCopy animated:0];
 }
 
-- (void)_setFocused:(BOOL)a3 animationCoordinator:(id)a4
+- (void)_setFocused:(BOOL)focused animationCoordinator:(id)coordinator
 {
-  if (self->_focused != a3)
+  if (self->_focused != focused)
   {
-    self->_focused = a3;
-    [(TVButtonContent *)self _updateFocusStateWithCoordinator:a4];
+    self->_focused = focused;
+    [(TVButtonContent *)self _updateFocusStateWithCoordinator:coordinator];
   }
 }
 
-- (void)_updateFloaingViewFocusState:(BOOL)a3 coordinator:(id)a4
+- (void)_updateFloaingViewFocusState:(BOOL)state coordinator:(id)coordinator
 {
-  if (a3)
+  if (state)
   {
     v4 = 8;
   }
@@ -693,13 +693,13 @@
     v4 = 0;
   }
 
-  [(_UIFloatingContentView *)self setControlState:v4 withAnimationCoordinator:a4];
+  [(_UIFloatingContentView *)self setControlState:v4 withAnimationCoordinator:coordinator];
 }
 
-- (void)_updateFocusStateWithCoordinator:(id)a3
+- (void)_updateFocusStateWithCoordinator:(id)coordinator
 {
-  v5 = [(TVButtonContent *)self isFocused];
-  if (v5)
+  isFocused = [(TVButtonContent *)self isFocused];
+  if (isFocused)
   {
     v6 = 8;
   }
@@ -710,40 +710,40 @@
   }
 
   [(TVButtonContent *)self _updateBackgroundColorForState:v6];
-  v7 = [(TVButtonContent *)self textContentView];
-  [v7 setHighlighted:v5];
+  textContentView = [(TVButtonContent *)self textContentView];
+  [textContentView setHighlighted:isFocused];
 
-  v8 = [(TVButtonContent *)self textContentView];
-  [v8 setMarqueeEnabled:v5];
+  textContentView2 = [(TVButtonContent *)self textContentView];
+  [textContentView2 setMarqueeEnabled:isFocused];
 
-  v9 = [(TVButtonContent *)self textContentView];
-  [v9 setMarqueeRunning:v5];
+  textContentView3 = [(TVButtonContent *)self textContentView];
+  [textContentView3 setMarqueeRunning:isFocused];
 
-  if (v5)
+  if (isFocused)
   {
     v10 = 0.2;
   }
 
   else
   {
-    v11 = [(TVButtonContent *)self textContentView];
-    [v11 setLineBreakMode:4];
+    textContentView4 = [(TVButtonContent *)self textContentView];
+    [textContentView4 setLineBreakMode:4];
 
     v10 = 1.0;
   }
 
-  v12 = [(TVButtonContent *)self imageView];
-  [v12 setSelected:v5 animated:0];
+  imageView = [(TVButtonContent *)self imageView];
+  [imageView setSelected:isFocused animated:0];
 
-  v13 = [(TVButtonContent *)self accessoryView];
-  [v13 setSelected:v5 animated:0];
+  accessoryView = [(TVButtonContent *)self accessoryView];
+  [accessoryView setSelected:isFocused animated:0];
 
   v14 = 0.37;
   v15[1] = 3221225472;
   v15[0] = MEMORY[0x277D85DD0];
   v15[2] = __52__TVButtonContent__updateFocusStateWithCoordinator___block_invoke;
   v15[3] = &unk_279D6E8B8;
-  if (!a3)
+  if (!coordinator)
   {
     v14 = 0.0;
   }

@@ -1,20 +1,20 @@
 @interface TRIFileLock
-+ ($A5A652246548B43F8BC05201A1C72A70)acquireLockOnPath:(id)a3 fileLockMode:(id)a4 blocking:(BOOL)a5 andRunBlock:(id)a6;
-+ (int)_lockingFlagsFromFileLockMode:(id)a3;
++ ($A5A652246548B43F8BC05201A1C72A70)acquireLockOnPath:(id)path fileLockMode:(id)mode blocking:(BOOL)blocking andRunBlock:(id)block;
++ (int)_lockingFlagsFromFileLockMode:(id)mode;
 @end
 
 @implementation TRIFileLock
 
-+ ($A5A652246548B43F8BC05201A1C72A70)acquireLockOnPath:(id)a3 fileLockMode:(id)a4 blocking:(BOOL)a5 andRunBlock:(id)a6
++ ($A5A652246548B43F8BC05201A1C72A70)acquireLockOnPath:(id)path fileLockMode:(id)mode blocking:(BOOL)blocking andRunBlock:(id)block
 {
-  v7 = a5;
+  blockingCopy = blocking;
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  pathCopy = path;
+  blockCopy = block;
   v12 = objc_autoreleasePoolPush();
-  v13 = [v10 stringByAppendingString:@".lock"];
-  v14 = [a1 _lockingFlagsFromFileLockMode:a4.var0];
-  if (v7)
+  v13 = [pathCopy stringByAppendingString:@".lock"];
+  v14 = [self _lockingFlagsFromFileLockMode:mode.var0];
+  if (blockingCopy)
   {
     v15 = v14;
   }
@@ -24,11 +24,11 @@
     v15 = v14 | 4;
   }
 
-  if (a4.var0 == 1)
+  if (mode.var0 == 1)
   {
     v17 = MEMORY[0x277CCAA00];
-    v18 = [v13 stringByDeletingLastPathComponent];
-    LODWORD(v17) = [v17 triIdempotentCreateDirectoryOrFaultWithPath:v18];
+    stringByDeletingLastPathComponent = [v13 stringByDeletingLastPathComponent];
+    LODWORD(v17) = [v17 triIdempotentCreateDirectoryOrFaultWithPath:stringByDeletingLastPathComponent];
 
     if (!v17)
     {
@@ -40,7 +40,7 @@
 
   else
   {
-    if (a4.var0)
+    if (mode.var0)
     {
 LABEL_11:
       if (*__error() == 2)
@@ -62,7 +62,7 @@ LABEL_11:
         v26 = strerror(*v25);
         v27 = *__error();
         *buf = 138412802;
-        v29 = v10;
+        v29 = pathCopy;
         v30 = 2080;
         v31 = v26;
         v32 = 1024;
@@ -86,7 +86,7 @@ LABEL_18:
 
   v20 = objc_autoreleasePoolPush();
   *buf = v19;
-  v11[2](v11, buf);
+  blockCopy[2](blockCopy, buf);
   objc_autoreleasePoolPop(v20);
   close(v19);
   v21.var0 = 0;
@@ -97,9 +97,9 @@ LABEL_19:
   return v21;
 }
 
-+ (int)_lockingFlagsFromFileLockMode:(id)a3
++ (int)_lockingFlagsFromFileLockMode:(id)mode
 {
-  if (a3.var0)
+  if (mode.var0)
   {
     return 32;
   }

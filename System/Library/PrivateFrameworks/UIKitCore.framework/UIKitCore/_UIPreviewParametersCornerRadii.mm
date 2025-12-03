@@ -1,9 +1,9 @@
 @interface _UIPreviewParametersCornerRadii
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CACornerRadii)radii;
 - (_UIPreviewParametersCornerRadii)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setRadii:(CACornerRadii *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setRadii:(CACornerRadii *)radii;
 @end
 
 @implementation _UIPreviewParametersCornerRadii
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   minXMinY = self->_radii.minXMinY;
@@ -35,18 +35,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  if (v4)
+  if (equalCopy)
   {
-    [v4 radii];
+    [equalCopy radii];
   }
 
   minXMaxY = self->_radii.minXMaxY;
@@ -56,9 +56,9 @@
   if (CACornerRadiiEqualToRadii())
   {
     curve = self->_curve;
-    v6 = [v4 curve];
+    curve = [equalCopy curve];
     v7 = curve;
-    v8 = v6;
+    v8 = curve;
     v9 = v8;
     if (v7 == v8)
     {
@@ -95,12 +95,12 @@ LABEL_9:
   return self;
 }
 
-- (void)setRadii:(CACornerRadii *)a3
+- (void)setRadii:(CACornerRadii *)radii
 {
-  minXMaxY = a3->minXMaxY;
-  maxXMaxY = a3->maxXMaxY;
-  minXMinY = a3->minXMinY;
-  self->_radii.maxXMinY = a3->maxXMinY;
+  minXMaxY = radii->minXMaxY;
+  maxXMaxY = radii->maxXMaxY;
+  minXMinY = radii->minXMinY;
+  self->_radii.maxXMinY = radii->maxXMinY;
   self->_radii.minXMinY = minXMinY;
   self->_radii.minXMaxY = minXMaxY;
   self->_radii.maxXMaxY = maxXMaxY;

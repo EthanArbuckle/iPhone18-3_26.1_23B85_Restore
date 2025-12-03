@@ -1,10 +1,10 @@
 @interface RMModelStatusServicesBackgroundTask_LaunchdDeviceManagement
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithConfigurationIdentifier:(id)a3 assetIdentifier:(id)a4 assetServerToken:(id)a5;
-+ (id)buildWithConfigurationIdentifier:(id)a3 assetIdentifier:(id)a4 assetServerToken:(id)a5;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithConfigurationIdentifier:(id)identifier assetIdentifier:(id)assetIdentifier assetServerToken:(id)token;
++ (id)buildWithConfigurationIdentifier:(id)identifier assetIdentifier:(id)assetIdentifier assetServerToken:(id)token;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusServicesBackgroundTask_LaunchdDeviceManagement
@@ -24,40 +24,40 @@
   return v4;
 }
 
-+ (id)buildWithConfigurationIdentifier:(id)a3 assetIdentifier:(id)a4 assetServerToken:(id)a5
++ (id)buildWithConfigurationIdentifier:(id)identifier assetIdentifier:(id)assetIdentifier assetServerToken:(id)token
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  tokenCopy = token;
+  assetIdentifierCopy = assetIdentifier;
+  identifierCopy = identifier;
   v10 = objc_opt_new();
-  [v10 setStatusConfigurationIdentifier:v9];
+  [v10 setStatusConfigurationIdentifier:identifierCopy];
 
-  [v10 setStatusAssetIdentifier:v8];
-  [v10 setStatusAssetServerToken:v7];
+  [v10 setStatusAssetIdentifier:assetIdentifierCopy];
+  [v10 setStatusAssetServerToken:tokenCopy];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithConfigurationIdentifier:(id)a3 assetIdentifier:(id)a4 assetServerToken:(id)a5
++ (id)buildRequiredOnlyWithConfigurationIdentifier:(id)identifier assetIdentifier:(id)assetIdentifier assetServerToken:(id)token
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  tokenCopy = token;
+  assetIdentifierCopy = assetIdentifier;
+  identifierCopy = identifier;
   v10 = objc_opt_new();
-  [v10 setStatusConfigurationIdentifier:v9];
+  [v10 setStatusConfigurationIdentifier:identifierCopy];
 
-  [v10 setStatusAssetIdentifier:v8];
-  [v10 setStatusAssetServerToken:v7];
+  [v10 setStatusAssetIdentifier:assetIdentifierCopy];
+  [v10 setStatusAssetServerToken:tokenCopy];
 
   return v10;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelStatusServicesBackgroundTask_LaunchdDeviceManagement allowedStatusKeys];
   [v10 minusSet:v11];
@@ -65,32 +65,32 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"configuration-identifier" forKeyPath:@"statusConfigurationIdentifier" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"asset-identifier" forKeyPath:@"statusAssetIdentifier" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"asset-server-token" forKeyPath:@"statusAssetServerToken" isRequired:1 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"configuration-identifier" forKeyPath:@"statusConfigurationIdentifier" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"asset-identifier" forKeyPath:@"statusAssetIdentifier" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"asset-server-token" forKeyPath:@"statusAssetServerToken" isRequired:1 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelStatusServicesBackgroundTask_LaunchdDeviceManagement *)self statusConfigurationIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"configuration-identifier" value:v5 isRequired:1 defaultValue:0];
+  statusConfigurationIdentifier = [(RMModelStatusServicesBackgroundTask_LaunchdDeviceManagement *)self statusConfigurationIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"configuration-identifier" value:statusConfigurationIdentifier isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelStatusServicesBackgroundTask_LaunchdDeviceManagement *)self statusAssetIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"asset-identifier" value:v6 isRequired:1 defaultValue:0];
+  statusAssetIdentifier = [(RMModelStatusServicesBackgroundTask_LaunchdDeviceManagement *)self statusAssetIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"asset-identifier" value:statusAssetIdentifier isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelStatusServicesBackgroundTask_LaunchdDeviceManagement *)self statusAssetServerToken];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"asset-server-token" value:v7 isRequired:1 defaultValue:0];
+  statusAssetServerToken = [(RMModelStatusServicesBackgroundTask_LaunchdDeviceManagement *)self statusAssetServerToken];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"asset-server-token" value:statusAssetServerToken isRequired:1 defaultValue:0];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelStatusServicesBackgroundTask_LaunchdDeviceManagement;
-  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:zone];
   v5 = [(NSString *)self->_statusConfigurationIdentifier copy];
   v6 = v4[2];
   v4[2] = v5;

@@ -1,10 +1,10 @@
 @interface CRLiOSFolderGridViewController.iCloudStatusFooter
-- (_TtCC8Freeform30CRLiOSFolderGridViewController18iCloudStatusFooter)initWithCoder:(id)a3;
+- (_TtCC8Freeform30CRLiOSFolderGridViewController18iCloudStatusFooter)initWithCoder:(id)coder;
 @end
 
 @implementation CRLiOSFolderGridViewController.iCloudStatusFooter
 
-- (_TtCC8Freeform30CRLiOSFolderGridViewController18iCloudStatusFooter)initWithCoder:(id)a3
+- (_TtCC8Freeform30CRLiOSFolderGridViewController18iCloudStatusFooter)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtCC8Freeform30CRLiOSFolderGridViewController18iCloudStatusFooter_iCloudStatusLabel;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];

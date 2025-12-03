@@ -1,30 +1,30 @@
 @interface SBHIconGridSizeClassDomain
-+ (SBHIconGridSizeClassDomain)allocWithZone:(_NSZone *)a3;
++ (SBHIconGridSizeClassDomain)allocWithZone:(_NSZone *)zone;
 + (SBHIconGridSizeClassDomain)builtInDomain;
 + (SBHMutableIconGridSizeClassDomain)globalDomain;
-+ (id)effectiveGridSizeClassDomainForDomain:(id)a3;
-- (BOOL)containsGridSizeClass:(id)a3;
-- (SBHIconGridSizeClassDomain)initWithGridSizeClass:(id)a3 info:(id)a4;
-- (SBHIconGridSizeClassDomain)initWithGridSizeClasses:(id)a3;
-- (SBHIconGridSizeClassDomain)initWithGridSizeClasses:(id)a3 order:(id)a4 fallbackDomain:(id)a5;
-- (SBHIconGridSizeClassDomain)initWithIconGridSizeClassDomain:(id)a3;
++ (id)effectiveGridSizeClassDomainForDomain:(id)domain;
+- (BOOL)containsGridSizeClass:(id)class;
+- (SBHIconGridSizeClassDomain)initWithGridSizeClass:(id)class info:(id)info;
+- (SBHIconGridSizeClassDomain)initWithGridSizeClasses:(id)classes;
+- (SBHIconGridSizeClassDomain)initWithGridSizeClasses:(id)classes order:(id)order fallbackDomain:(id)domain;
+- (SBHIconGridSizeClassDomain)initWithIconGridSizeClassDomain:(id)domain;
 - (SBHIconGridSizeClassSet)allGridSizeClasses;
 - (SBHIconGridSizeClassSet)allNonDefaultGridSizeClasses;
-- (id)gridSizeClassForArchiveValue:(id)a3;
-- (id)gridSizeClassForDescription:(id)a3;
+- (id)gridSizeClassForArchiveValue:(id)value;
+- (id)gridSizeClassForDescription:(id)description;
 - (id)gridSizeClassOrder;
-- (id)iconGridSizeClassForATXStackLayoutSize:(unint64_t)a3;
-- (id)iconGridSizeClassForCHSWidgetFamily:(int64_t)a3;
-- (id)iconGridSizeClassPassingTest:(id)a3;
-- (id)infoForIconGridSizeClass:(id)a3;
-- (id)infoValueForGridSizeClass:(id)a3 forKey:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)chsWidgetFamilyForIconGridSizeClass:(id)a3;
-- (unint64_t)atxStackLayoutSizeForIconGridSizeClass:(id)a3;
-- (unint64_t)filterKnownCHSWidgetFamilies:(unint64_t)a3;
-- (void)addIconGridSizeClassesToSet:(id)a3;
-- (void)enumerateGridSizeClassesFilteredBySet:(id)a3 usingBlock:(id)a4;
-- (void)enumerateGridSizeClassesUsingBlock:(id)a3;
+- (id)iconGridSizeClassForATXStackLayoutSize:(unint64_t)size;
+- (id)iconGridSizeClassForCHSWidgetFamily:(int64_t)family;
+- (id)iconGridSizeClassPassingTest:(id)test;
+- (id)infoForIconGridSizeClass:(id)class;
+- (id)infoValueForGridSizeClass:(id)class forKey:(id)key;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)chsWidgetFamilyForIconGridSizeClass:(id)class;
+- (unint64_t)atxStackLayoutSizeForIconGridSizeClass:(id)class;
+- (unint64_t)filterKnownCHSWidgetFamilies:(unint64_t)families;
+- (void)addIconGridSizeClassesToSet:(id)set;
+- (void)enumerateGridSizeClassesFilteredBySet:(id)set usingBlock:(id)block;
+- (void)enumerateGridSizeClassesUsingBlock:(id)block;
 @end
 
 @implementation SBHIconGridSizeClassDomain
@@ -44,10 +44,10 @@
 - (id)gridSizeClassOrder
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(SBHIconGridSizeClassDomain *)self registeredGridSizeClassOrder];
+  registeredGridSizeClassOrder = [(SBHIconGridSizeClassDomain *)self registeredGridSizeClassOrder];
   v6[0] = @"SBHIconGridSizeClassDefault";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
-  v4 = [v3 arrayByAddingObjectsFromArray:v2];
+  v4 = [v3 arrayByAddingObjectsFromArray:registeredGridSizeClassOrder];
 
   return v4;
 }
@@ -78,77 +78,77 @@ uint64_t __43__SBHIconGridSizeClassDomain_builtInDomain__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (SBHIconGridSizeClassDomain)allocWithZone:(_NSZone *)a3
++ (SBHIconGridSizeClassDomain)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
 
-    return [(SBHIconGridSizeClassDomain *)SBHImmutableIconGridSizeClassDomain allocWithZone:a3];
+    return [(SBHIconGridSizeClassDomain *)SBHImmutableIconGridSizeClassDomain allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SBHIconGridSizeClassDomain;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-- (SBHIconGridSizeClassDomain)initWithGridSizeClass:(id)a3 info:(id)a4
+- (SBHIconGridSizeClassDomain)initWithGridSizeClass:(id)class info:(id)info
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13[0] = a4;
+  classCopy = class;
+  v13[0] = info;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
+  infoCopy = info;
+  classCopy2 = class;
+  v9 = [v6 dictionaryWithObjects:v13 forKeys:&classCopy count:1];
 
   v10 = [(SBHIconGridSizeClassDomain *)self initWithGridSizeClasses:v9];
   return v10;
 }
 
-- (SBHIconGridSizeClassDomain)initWithGridSizeClasses:(id)a3
+- (SBHIconGridSizeClassDomain)initWithGridSizeClasses:(id)classes
 {
-  v4 = a3;
-  v5 = [v4 allKeys];
-  v6 = [(SBHIconGridSizeClassDomain *)self initWithGridSizeClasses:v4 order:v5 fallbackDomain:0];
+  classesCopy = classes;
+  allKeys = [classesCopy allKeys];
+  v6 = [(SBHIconGridSizeClassDomain *)self initWithGridSizeClasses:classesCopy order:allKeys fallbackDomain:0];
 
   return v6;
 }
 
-- (SBHIconGridSizeClassDomain)initWithGridSizeClasses:(id)a3 order:(id)a4 fallbackDomain:(id)a5
+- (SBHIconGridSizeClassDomain)initWithGridSizeClasses:(id)classes order:(id)order fallbackDomain:(id)domain
 {
   v6.receiver = self;
   v6.super_class = SBHIconGridSizeClassDomain;
-  return [(SBHIconGridSizeClassDomain *)&v6 init:a3];
+  return [(SBHIconGridSizeClassDomain *)&v6 init:classes];
 }
 
-- (SBHIconGridSizeClassDomain)initWithIconGridSizeClassDomain:(id)a3
+- (SBHIconGridSizeClassDomain)initWithIconGridSizeClassDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [v4 registeredGridSizeClasses];
-  v6 = [v4 registeredGridSizeClassOrder];
-  v7 = [v4 fallbackDomain];
+  domainCopy = domain;
+  registeredGridSizeClasses = [domainCopy registeredGridSizeClasses];
+  registeredGridSizeClassOrder = [domainCopy registeredGridSizeClassOrder];
+  fallbackDomain = [domainCopy fallbackDomain];
 
-  v8 = [(SBHIconGridSizeClassDomain *)self initWithGridSizeClasses:v5 order:v6 fallbackDomain:v7];
+  v8 = [(SBHIconGridSizeClassDomain *)self initWithGridSizeClasses:registeredGridSizeClasses order:registeredGridSizeClassOrder fallbackDomain:fallbackDomain];
   return v8;
 }
 
-- (id)infoValueForGridSizeClass:(id)a3 forKey:(id)a4
+- (id)infoValueForGridSizeClass:(id)class forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(SBHIconGridSizeClassDomain *)self infoForIconGridSizeClass:a3];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  v7 = [(SBHIconGridSizeClassDomain *)self infoForIconGridSizeClass:class];
+  v8 = [v7 objectForKey:keyCopy];
 
   return v8;
 }
 
-- (id)iconGridSizeClassPassingTest:(id)a3
+- (id)iconGridSizeClassPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -160,15 +160,15 @@ uint64_t __43__SBHIconGridSizeClassDomain_builtInDomain__block_invoke()
   v12[2] = __59__SBHIconGridSizeClassDomain_iconGridSizeClassPassingTest___block_invoke;
   v12[3] = &unk_1E808C978;
   v12[4] = self;
-  v5 = v4;
+  v5 = testCopy;
   v13 = v5;
   v14 = &v15;
   [(SBHIconGridSizeClassDomain *)self enumerateGridSizeClassesUsingBlock:v12];
   v6 = v16[5];
   if (!v6)
   {
-    v7 = [(SBHIconGridSizeClassDomain *)self fallbackDomain];
-    v8 = [v7 iconGridSizeClassPassingTest:v5];
+    fallbackDomain = [(SBHIconGridSizeClassDomain *)self fallbackDomain];
+    v8 = [fallbackDomain iconGridSizeClassPassingTest:v5];
     v9 = v16[5];
     v16[5] = v8;
 
@@ -193,15 +193,15 @@ void __59__SBHIconGridSizeClassDomain_iconGridSizeClassPassingTest___block_invok
   }
 }
 
-- (id)gridSizeClassForDescription:(id)a3
+- (id)gridSizeClassForDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__SBHIconGridSizeClassDomain_gridSizeClassForDescription___block_invoke;
   v8[3] = &unk_1E808C9A0;
-  v9 = v4;
-  v5 = v4;
+  v9 = descriptionCopy;
+  v5 = descriptionCopy;
   v6 = [(SBHIconGridSizeClassDomain *)self iconGridSizeClassPassingTest:v8];
 
   return v6;
@@ -215,15 +215,15 @@ uint64_t __58__SBHIconGridSizeClassDomain_gridSizeClassForDescription___block_in
   return v4;
 }
 
-- (id)gridSizeClassForArchiveValue:(id)a3
+- (id)gridSizeClassForArchiveValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__SBHIconGridSizeClassDomain_gridSizeClassForArchiveValue___block_invoke;
   v8[3] = &unk_1E808C9A0;
-  v9 = v4;
-  v5 = v4;
+  v9 = valueCopy;
+  v5 = valueCopy;
   v6 = [(SBHIconGridSizeClassDomain *)self iconGridSizeClassPassingTest:v8];
 
   return v6;
@@ -237,9 +237,9 @@ uint64_t __59__SBHIconGridSizeClassDomain_gridSizeClassForArchiveValue___block_i
   return v4;
 }
 
-- (BOOL)containsGridSizeClass:(id)a3
+- (BOOL)containsGridSizeClass:(id)class
 {
-  v3 = [(SBHIconGridSizeClassDomain *)self infoForIconGridSizeClass:a3];
+  v3 = [(SBHIconGridSizeClassDomain *)self infoForIconGridSizeClass:class];
   v4 = v3 != 0;
 
   return v4;
@@ -288,10 +288,10 @@ uint64_t __58__SBHIconGridSizeClassDomain_allNonDefaultGridSizeClasses__block_in
   }
 }
 
-- (void)enumerateGridSizeClassesUsingBlock:(id)a3
+- (void)enumerateGridSizeClassesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SBHIconGridSizeClassDomain *)self gridSizeClassOrder];
+  blockCopy = block;
+  gridSizeClassOrder = [(SBHIconGridSizeClassDomain *)self gridSizeClassOrder];
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -299,10 +299,10 @@ uint64_t __58__SBHIconGridSizeClassDomain_allNonDefaultGridSizeClasses__block_in
   v15[3] = &unk_1E808A710;
   v7 = v6;
   v16 = v7;
-  v8 = v4;
+  v8 = blockCopy;
   v17 = v8;
-  [v5 enumerateObjectsWithOptions:2 usingBlock:v15];
-  v9 = [(SBHIconGridSizeClassDomain *)self fallbackDomain];
+  [gridSizeClassOrder enumerateObjectsWithOptions:2 usingBlock:v15];
+  fallbackDomain = [(SBHIconGridSizeClassDomain *)self fallbackDomain];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__SBHIconGridSizeClassDomain_enumerateGridSizeClassesUsingBlock___block_invoke_2;
@@ -311,7 +311,7 @@ uint64_t __58__SBHIconGridSizeClassDomain_allNonDefaultGridSizeClasses__block_in
   v14 = v8;
   v10 = v8;
   v11 = v7;
-  [v9 enumerateGridSizeClassesUsingBlock:v12];
+  [fallbackDomain enumerateGridSizeClassesUsingBlock:v12];
 }
 
 void __65__SBHIconGridSizeClassDomain_enumerateGridSizeClassesUsingBlock___block_invoke(uint64_t a1, void *a2)
@@ -332,18 +332,18 @@ void __65__SBHIconGridSizeClassDomain_enumerateGridSizeClassesUsingBlock___block
   }
 }
 
-- (void)enumerateGridSizeClassesFilteredBySet:(id)a3 usingBlock:(id)a4
+- (void)enumerateGridSizeClassesFilteredBySet:(id)set usingBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  blockCopy = block;
+  if (set)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [a3 allGridSizeClasses];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allGridSizeClasses = [set allGridSizeClasses];
+    v8 = [allGridSizeClasses countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -354,7 +354,7 @@ void __65__SBHIconGridSizeClassDomain_enumerateGridSizeClassesUsingBlock___block
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allGridSizeClasses);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
@@ -362,7 +362,7 @@ void __65__SBHIconGridSizeClassDomain_enumerateGridSizeClassesUsingBlock___block
           if (v13)
           {
             v14 = 0;
-            v6[2](v6, v12, &v14);
+            blockCopy[2](blockCopy, v12, &v14);
             if (v14)
             {
 
@@ -371,7 +371,7 @@ void __65__SBHIconGridSizeClassDomain_enumerateGridSizeClassesUsingBlock___block
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [allGridSizeClasses countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           continue;
@@ -386,41 +386,41 @@ LABEL_14:
 
   else
   {
-    [(SBHIconGridSizeClassDomain *)self enumerateGridSizeClassesUsingBlock:v6];
+    [(SBHIconGridSizeClassDomain *)self enumerateGridSizeClassesUsingBlock:blockCopy];
   }
 }
 
-+ (id)effectiveGridSizeClassDomainForDomain:(id)a3
++ (id)effectiveGridSizeClassDomainForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  domainCopy = domain;
+  v5 = domainCopy;
+  if (domainCopy)
   {
-    v6 = v4;
+    globalDomain = domainCopy;
   }
 
   else
   {
-    v6 = [a1 globalDomain];
+    globalDomain = [self globalDomain];
   }
 
-  v7 = v6;
+  v7 = globalDomain;
 
   return v7;
 }
 
-- (id)infoForIconGridSizeClass:(id)a3
+- (id)infoForIconGridSizeClass:(id)class
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isEqualToString:@"SBHIconGridSizeClassDefault"] & 1) == 0)
+  classCopy = class;
+  v5 = classCopy;
+  if (classCopy && ([classCopy isEqualToString:@"SBHIconGridSizeClassDefault"] & 1) == 0)
   {
-    v7 = [(SBHIconGridSizeClassDomain *)self registeredGridSizeClasses];
-    v6 = [v7 objectForKey:v5];
+    registeredGridSizeClasses = [(SBHIconGridSizeClassDomain *)self registeredGridSizeClasses];
+    v6 = [registeredGridSizeClasses objectForKey:v5];
     if (!v6)
     {
-      v8 = [(SBHIconGridSizeClassDomain *)self fallbackDomain];
-      v6 = [v8 infoForIconGridSizeClass:v5];
+      fallbackDomain = [(SBHIconGridSizeClassDomain *)self fallbackDomain];
+      v6 = [fallbackDomain infoForIconGridSizeClass:v5];
     }
   }
 
@@ -432,41 +432,41 @@ LABEL_14:
   return v6;
 }
 
-- (void)addIconGridSizeClassesToSet:(id)a3
+- (void)addIconGridSizeClassesToSet:(id)set
 {
-  v6 = a3;
-  v4 = [(SBHIconGridSizeClassDomain *)self registeredGridSizeClassOrder];
-  if (v4)
+  setCopy = set;
+  registeredGridSizeClassOrder = [(SBHIconGridSizeClassDomain *)self registeredGridSizeClassOrder];
+  if (registeredGridSizeClassOrder)
   {
-    [v6 addObjectsFromArray:v4];
+    [setCopy addObjectsFromArray:registeredGridSizeClassOrder];
   }
 
-  v5 = [(SBHIconGridSizeClassDomain *)self fallbackDomain];
-  [v5 addIconGridSizeClassesToSet:v6];
+  fallbackDomain = [(SBHIconGridSizeClassDomain *)self fallbackDomain];
+  [fallbackDomain addIconGridSizeClassesToSet:setCopy];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBHMutableIconGridSizeClassDomain alloc];
 
   return [(SBHIconGridSizeClassDomain *)v4 initWithIconGridSizeClassDomain:self];
 }
 
-- (unint64_t)atxStackLayoutSizeForIconGridSizeClass:(id)a3
+- (unint64_t)atxStackLayoutSizeForIconGridSizeClass:(id)class
 {
-  v3 = [(SBHIconGridSizeClassDomain *)self infoValueForGridSizeClass:a3 forKey:@"SBHIconGridSizeClassRegistrationInfoKeyATXStackLayoutSize"];
-  v4 = [v3 integerValue];
+  v3 = [(SBHIconGridSizeClassDomain *)self infoValueForGridSizeClass:class forKey:@"SBHIconGridSizeClassRegistrationInfoKeyATXStackLayoutSize"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (id)iconGridSizeClassForATXStackLayoutSize:(unint64_t)a3
+- (id)iconGridSizeClassForATXStackLayoutSize:(unint64_t)size
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __92__SBHIconGridSizeClassDomain_SBHATXStackLayoutSize__iconGridSizeClassForATXStackLayoutSize___block_invoke;
   v5[3] = &__block_descriptor_40_e22_B16__0__NSDictionary_8l;
-  v5[4] = a3;
+  v5[4] = size;
   v3 = [(SBHIconGridSizeClassDomain *)self iconGridSizeClassPassingTest:v5];
 
   return v3;
@@ -480,21 +480,21 @@ BOOL __92__SBHIconGridSizeClassDomain_SBHATXStackLayoutSize__iconGridSizeClassFo
   return v4;
 }
 
-- (int64_t)chsWidgetFamilyForIconGridSizeClass:(id)a3
+- (int64_t)chsWidgetFamilyForIconGridSizeClass:(id)class
 {
-  v3 = [(SBHIconGridSizeClassDomain *)self infoValueForGridSizeClass:a3 forKey:@"SBHIconGridSizeClassRegistrationInfoKeyCHSWidgetFamily"];
-  v4 = [v3 integerValue];
+  v3 = [(SBHIconGridSizeClassDomain *)self infoValueForGridSizeClass:class forKey:@"SBHIconGridSizeClassRegistrationInfoKeyCHSWidgetFamily"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (id)iconGridSizeClassForCHSWidgetFamily:(int64_t)a3
+- (id)iconGridSizeClassForCHSWidgetFamily:(int64_t)family
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __86__SBHIconGridSizeClassDomain_SBHCHSWidgetFamily__iconGridSizeClassForCHSWidgetFamily___block_invoke;
   v5[3] = &__block_descriptor_40_e22_B16__0__NSDictionary_8l;
-  v5[4] = a3;
+  v5[4] = family;
   v3 = [(SBHIconGridSizeClassDomain *)self iconGridSizeClassPassingTest:v5];
 
   return v3;
@@ -508,7 +508,7 @@ BOOL __86__SBHIconGridSizeClassDomain_SBHCHSWidgetFamily__iconGridSizeClassForCH
   return v4;
 }
 
-- (unint64_t)filterKnownCHSWidgetFamilies:(unint64_t)a3
+- (unint64_t)filterKnownCHSWidgetFamilies:(unint64_t)families
 {
   v7 = 0;
   v8 = &v7;
@@ -523,7 +523,7 @@ BOOL __86__SBHIconGridSizeClassDomain_SBHCHSWidgetFamily__iconGridSizeClassForCH
   [(SBHIconGridSizeClassDomain *)self enumerateGridSizeClassesUsingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
-  return v4 & a3;
+  return v4 & families;
 }
 
 uint64_t __79__SBHIconGridSizeClassDomain_SBHCHSWidgetFamily__filterKnownCHSWidgetFamilies___block_invoke(uint64_t a1, uint64_t a2)

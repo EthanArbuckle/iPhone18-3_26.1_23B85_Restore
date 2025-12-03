@@ -1,38 +1,38 @@
 @interface PKCurrencyAmount
-+ (id)maximumCurrencyAmount:(id)a3 otherCurrencyAmount:(id)a4;
-+ (id)minimumCurrencyAmount:(id)a3 otherCurrencyAmount:(id)a4;
-- (BOOL)currencyAmountEqualToCurrencyAmount:(id)a3;
-- (BOOL)currencyAmountGreaterThanCurrencyAmount:(id)a3;
-- (BOOL)currencyAmountLessThanCurrencyAmount:(id)a3;
++ (id)maximumCurrencyAmount:(id)amount otherCurrencyAmount:(id)currencyAmount;
++ (id)minimumCurrencyAmount:(id)amount otherCurrencyAmount:(id)currencyAmount;
+- (BOOL)currencyAmountEqualToCurrencyAmount:(id)amount;
+- (BOOL)currencyAmountGreaterThanCurrencyAmount:(id)amount;
+- (BOOL)currencyAmountLessThanCurrencyAmount:(id)amount;
 - (BOOL)isCurrency;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCurrencyAmount:(id)a3;
-- (PKCurrencyAmount)initWithAmount:(id)a3 currency:(id)a4 exponent:(int64_t)a5;
-- (PKCurrencyAmount)initWithAmount:(id)a3 exponent:(int64_t)a4 preformattedString:(id)a5;
-- (PKCurrencyAmount)initWithCoder:(id)a3;
-- (PKCurrencyAmount)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCurrencyAmount:(id)amount;
+- (PKCurrencyAmount)initWithAmount:(id)amount currency:(id)currency exponent:(int64_t)exponent;
+- (PKCurrencyAmount)initWithAmount:(id)amount exponent:(int64_t)exponent preformattedString:(id)string;
+- (PKCurrencyAmount)initWithCoder:(id)coder;
+- (PKCurrencyAmount)initWithDictionary:(id)dictionary;
 - (id)absoluteValue;
 - (id)amountByConvertingToSmallestCommonCurrencyUnit;
-- (id)currencyAmountByAddingCurrencyAmount:(id)a3;
-- (id)currencyAmountBySubtractingCurrencyAmount:(id)a3;
+- (id)currencyAmountByAddingCurrencyAmount:(id)amount;
+- (id)currencyAmountBySubtractingCurrencyAmount:(id)amount;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)formattedStringValue;
-- (id)minimalFormattedStringValueInLocale:(id)a3;
+- (id)minimalFormattedStringValueInLocale:(id)locale;
 - (id)negativeValue;
-- (int64_t)compareToCurrencyCode:(id)a3 amount:(id)a4;
+- (int64_t)compareToCurrencyCode:(id)code amount:(id)amount;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCurrencyAmount
 
-- (int64_t)compareToCurrencyCode:(id)a3 amount:(id)a4
+- (int64_t)compareToCurrencyCode:(id)code amount:(id)amount
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKCurrencyAmount *)self currency];
-  v9 = [v8 caseInsensitiveCompare:v7];
+  amountCopy = amount;
+  codeCopy = code;
+  currency = [(PKCurrencyAmount *)self currency];
+  v9 = [currency caseInsensitiveCompare:codeCopy];
 
   if (v9)
   {
@@ -41,20 +41,20 @@
 
   else
   {
-    v11 = [(PKCurrencyAmount *)self amount];
-    v10 = [v11 compare:v6];
+    amount = [(PKCurrencyAmount *)self amount];
+    v10 = [amount compare:amountCopy];
   }
 
   return v10;
 }
 
-- (PKCurrencyAmount)initWithAmount:(id)a3 currency:(id)a4 exponent:(int64_t)a5
+- (PKCurrencyAmount)initWithAmount:(id)amount currency:(id)currency exponent:(int64_t)exponent
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  v11 = 0;
-  if (v8 && v9)
+  amountCopy = amount;
+  currencyCopy = currency;
+  v10 = currencyCopy;
+  selfCopy = 0;
+  if (amountCopy && currencyCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -64,7 +64,7 @@
       v12 = [(PKCurrencyAmount *)&v18 init];
       if (v12)
       {
-        v13 = [v8 copy];
+        v13 = [amountCopy copy];
         amount = v12->_amount;
         v12->_amount = v13;
 
@@ -72,30 +72,30 @@
         currency = v12->_currency;
         v12->_currency = v15;
 
-        v12->_exponent = a5;
+        v12->_exponent = exponent;
       }
 
       self = v12;
-      v11 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (PKCurrencyAmount)initWithAmount:(id)a3 exponent:(int64_t)a4 preformattedString:(id)a5
+- (PKCurrencyAmount)initWithAmount:(id)amount exponent:(int64_t)exponent preformattedString:(id)string
 {
-  v8 = a5;
-  v9 = v8;
-  v10 = 0;
-  if (a3 && v8)
+  stringCopy = string;
+  v9 = stringCopy;
+  selfCopy = 0;
+  if (amount && stringCopy)
   {
-    v11 = [(PKCurrencyAmount *)self initWithAmount:a3 currency:@"XXX" exponent:a4];
+    v11 = [(PKCurrencyAmount *)self initWithAmount:amount currency:@"XXX" exponent:exponent];
     if (v11)
     {
       v12 = [v9 copy];
@@ -104,17 +104,17 @@
     }
 
     self = v11;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (PKCurrencyAmount)initWithDictionary:(id)a3
+- (PKCurrencyAmount)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count] >= 2)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy && [dictionaryCopy count] >= 2)
   {
     v7 = [v5 PKDecimalNumberFromStringForKey:@"amount"];
     v8 = [v5 PKStringForKey:@"currencyCode"];
@@ -146,28 +146,28 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCurrencyAmount *)self isEqualToCurrencyAmount:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCurrencyAmount *)self isEqualToCurrencyAmount:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToCurrencyAmount:(id)a3
+- (BOOL)isEqualToCurrencyAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   amount = self->_amount;
-  v6 = v4[1];
+  v6 = amountCopy[1];
   if (amount)
   {
     v7 = v6 == 0;
@@ -197,12 +197,12 @@ LABEL_20:
     }
   }
 
-  if (self->_exponent != v4[3])
+  if (self->_exponent != amountCopy[3])
   {
     goto LABEL_20;
   }
 
-  v9 = v4[4];
+  v9 = amountCopy[4];
   v10 = self->_preformattedString;
   v11 = v9;
   v12 = v11;
@@ -227,7 +227,7 @@ LABEL_20:
 
 LABEL_16:
   currency = self->_currency;
-  v15 = v4[2];
+  v15 = amountCopy[2];
   if (currency && v15)
   {
     v16 = [(NSString *)currency isEqual:?];
@@ -245,44 +245,44 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_amount];
-  [v3 safelyAddObject:self->_currency];
-  [v3 safelyAddObject:self->_preformattedString];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_amount];
+  [array safelyAddObject:self->_currency];
+  [array safelyAddObject:self->_preformattedString];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_exponent - v4 + 32 * v4;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v5 = a3;
-  [v5 encodeObject:amount forKey:@"amount"];
-  [v5 encodeObject:self->_currency forKey:@"currency"];
-  [v5 encodeInteger:self->_exponent forKey:@"exponent"];
-  [v5 encodeObject:self->_preformattedString forKey:@"preformattedString"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_currency forKey:@"currency"];
+  [coderCopy encodeInteger:self->_exponent forKey:@"exponent"];
+  [coderCopy encodeObject:self->_preformattedString forKey:@"preformattedString"];
 }
 
-- (PKCurrencyAmount)initWithCoder:(id)a3
+- (PKCurrencyAmount)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKCurrencyAmount;
   v5 = [(PKCurrencyAmount *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
     currency = v5->_currency;
     v5->_currency = v8;
 
-    v5->_exponent = [v4 decodeIntegerForKey:@"exponent"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preformattedString"];
+    v5->_exponent = [coderCopy decodeIntegerForKey:@"exponent"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preformattedString"];
     preformattedString = v5->_preformattedString;
     v5->_preformattedString = v10;
 
@@ -319,9 +319,9 @@ LABEL_21:
 
   else if (self->_currency && self->_amount)
   {
-    v5 = [(PKCurrencyAmount *)self isCurrency];
+    isCurrency = [(PKCurrencyAmount *)self isCurrency];
     amount = self->_amount;
-    if (v5)
+    if (isCurrency)
     {
       PKFormattedCurrencyStringFromNumber(amount, self->_currency);
     }
@@ -352,9 +352,9 @@ LABEL_21:
   return currency;
 }
 
-- (id)minimalFormattedStringValueInLocale:(id)a3
+- (id)minimalFormattedStringValueInLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   preformattedString = self->_preformattedString;
   if (preformattedString)
   {
@@ -369,10 +369,10 @@ LABEL_3:
     amount = self->_amount;
     if (amount)
     {
-      v9 = [(NSDecimalNumber *)amount pk_isIntegralNumber];
-      if (v4)
+      pk_isIntegralNumber = [(NSDecimalNumber *)amount pk_isIntegralNumber];
+      if (localeCopy)
       {
-        if (v9)
+        if (pk_isIntegralNumber)
         {
           PKMutableNumberFormatterWithMinimalFractionDigitsForCurrencyCode(self->_currency);
         }
@@ -382,14 +382,14 @@ LABEL_3:
           PKMutableNumberFormatterForCurrencyCode(self->_currency);
         }
         v11 = ;
-        [v11 setLocale:v4];
+        [v11 setLocale:localeCopy];
         v7 = [v11 stringFromNumber:self->_amount];
 
         goto LABEL_15;
       }
 
       currency = self->_currency;
-      if (v9)
+      if (pk_isIntegralNumber)
       {
         PKFormattedCurrencyStringWithMinimalFractionDigitsFromNumber(self->_amount, currency);
       }
@@ -413,9 +413,9 @@ LABEL_15:
 {
   v7[2] = *MEMORY[0x1E69E9840];
   v6[0] = @"amount";
-  v3 = [(NSDecimalNumber *)self->_amount stringValue];
+  stringValue = [(NSDecimalNumber *)self->_amount stringValue];
   v6[1] = @"currency";
-  v7[0] = v3;
+  v7[0] = stringValue;
   v7[1] = self->_currency;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
@@ -424,17 +424,17 @@ LABEL_15:
 
 - (id)absoluteValue
 {
-  v3 = [(NSDecimalNumber *)self->_amount pk_absoluteValue];
+  pk_absoluteValue = [(NSDecimalNumber *)self->_amount pk_absoluteValue];
   preformattedString = self->_preformattedString;
   v5 = [PKCurrencyAmount alloc];
   if (preformattedString)
   {
-    v6 = [(PKCurrencyAmount *)v5 initWithAmount:v3 exponent:self->_exponent preformattedString:self->_preformattedString];
+    v6 = [(PKCurrencyAmount *)v5 initWithAmount:pk_absoluteValue exponent:self->_exponent preformattedString:self->_preformattedString];
   }
 
   else
   {
-    v6 = [(PKCurrencyAmount *)v5 initWithAmount:v3 currency:self->_currency exponent:self->_exponent];
+    v6 = [(PKCurrencyAmount *)v5 initWithAmount:pk_absoluteValue currency:self->_currency exponent:self->_exponent];
   }
 
   v7 = v6;
@@ -444,17 +444,17 @@ LABEL_15:
 
 - (id)negativeValue
 {
-  v3 = [(NSDecimalNumber *)self->_amount pk_negativeValue];
+  pk_negativeValue = [(NSDecimalNumber *)self->_amount pk_negativeValue];
   preformattedString = self->_preformattedString;
   v5 = [PKCurrencyAmount alloc];
   if (preformattedString)
   {
-    v6 = [(PKCurrencyAmount *)v5 initWithAmount:v3 exponent:self->_exponent preformattedString:self->_preformattedString];
+    v6 = [(PKCurrencyAmount *)v5 initWithAmount:pk_negativeValue exponent:self->_exponent preformattedString:self->_preformattedString];
   }
 
   else
   {
-    v6 = [(PKCurrencyAmount *)v5 initWithAmount:v3 currency:self->_currency exponent:self->_exponent];
+    v6 = [(PKCurrencyAmount *)v5 initWithAmount:pk_negativeValue currency:self->_currency exponent:self->_exponent];
   }
 
   v7 = v6;
@@ -462,13 +462,13 @@ LABEL_15:
   return v7;
 }
 
-- (id)currencyAmountByAddingCurrencyAmount:(id)a3
+- (id)currencyAmountByAddingCurrencyAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   currency = self->_currency;
-  v6 = [v4 currency];
+  currency = [amountCopy currency];
   v7 = currency;
-  v8 = v6;
+  v8 = currency;
   v9 = v8;
   if (v7 == v8)
   {
@@ -501,8 +501,8 @@ LABEL_11:
   {
 LABEL_10:
     amount = self->_amount;
-    v14 = [v4 amount];
-    v9 = [(NSDecimalNumber *)amount decimalNumberByAdding:v14];
+    amount = [amountCopy amount];
+    v9 = [(NSDecimalNumber *)amount decimalNumberByAdding:amount];
 
     v11 = PKCurrencyAmountCreate(v9, self->_currency, 0);
     goto LABEL_11;
@@ -514,13 +514,13 @@ LABEL_12:
   return v11;
 }
 
-- (id)currencyAmountBySubtractingCurrencyAmount:(id)a3
+- (id)currencyAmountBySubtractingCurrencyAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   currency = self->_currency;
-  v6 = [v4 currency];
+  currency = [amountCopy currency];
   v7 = currency;
-  v8 = v6;
+  v8 = currency;
   v9 = v8;
   if (v7 == v8)
   {
@@ -553,8 +553,8 @@ LABEL_11:
   {
 LABEL_10:
     amount = self->_amount;
-    v14 = [v4 amount];
-    v9 = [(NSDecimalNumber *)amount decimalNumberBySubtracting:v14];
+    amount = [amountCopy amount];
+    v9 = [(NSDecimalNumber *)amount decimalNumberBySubtracting:amount];
 
     v11 = PKCurrencyAmountCreate(v9, self->_currency, 0);
     goto LABEL_11;
@@ -566,14 +566,14 @@ LABEL_12:
   return v11;
 }
 
-+ (id)minimumCurrencyAmount:(id)a3 otherCurrencyAmount:(id)a4
++ (id)minimumCurrencyAmount:(id)amount otherCurrencyAmount:(id)currencyAmount
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 currency];
-  v8 = [v6 currency];
-  v9 = v7;
-  v10 = v8;
+  amountCopy = amount;
+  currencyAmountCopy = currencyAmount;
+  currency = [amountCopy currency];
+  currency2 = [currencyAmountCopy currency];
+  v9 = currency;
+  v10 = currency2;
   v11 = v10;
   if (v9 == v10)
   {
@@ -591,18 +591,18 @@ LABEL_12:
     }
 
 LABEL_7:
-    v13 = [v5 amount];
-    v14 = [v6 amount];
-    v15 = [v13 compare:v14];
+    amount = [amountCopy amount];
+    amount2 = [currencyAmountCopy amount];
+    v15 = [amount compare:amount2];
 
     if (v15 == -1)
     {
-      v16 = v5;
+      v16 = amountCopy;
     }
 
     else
     {
-      v16 = v6;
+      v16 = currencyAmountCopy;
     }
 
     v17 = v16;
@@ -616,14 +616,14 @@ LABEL_13:
   return v17;
 }
 
-+ (id)maximumCurrencyAmount:(id)a3 otherCurrencyAmount:(id)a4
++ (id)maximumCurrencyAmount:(id)amount otherCurrencyAmount:(id)currencyAmount
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 currency];
-  v8 = [v6 currency];
-  v9 = v7;
-  v10 = v8;
+  amountCopy = amount;
+  currencyAmountCopy = currencyAmount;
+  currency = [amountCopy currency];
+  currency2 = [currencyAmountCopy currency];
+  v9 = currency;
+  v10 = currency2;
   v11 = v10;
   if (v9 == v10)
   {
@@ -641,18 +641,18 @@ LABEL_13:
     }
 
 LABEL_7:
-    v13 = [v5 amount];
-    v14 = [v6 amount];
-    v15 = [v13 compare:v14];
+    amount = [amountCopy amount];
+    amount2 = [currencyAmountCopy amount];
+    v15 = [amount compare:amount2];
 
     if (v15 == 1)
     {
-      v16 = v5;
+      v16 = amountCopy;
     }
 
     else
     {
-      v16 = v6;
+      v16 = currencyAmountCopy;
     }
 
     v17 = v16;
@@ -684,21 +684,21 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)currencyAmountLessThanCurrencyAmount:(id)a3
+- (BOOL)currencyAmountLessThanCurrencyAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   currency = self->_currency;
-  v6 = [v4 currency];
+  currency = [amountCopy currency];
   v7 = currency;
-  v8 = v6;
-  v9 = v8;
+  v8 = currency;
+  amount = v8;
   if (v7 == v8)
   {
 
 LABEL_10:
     amount = self->_amount;
-    v9 = [v4 amount];
-    v11 = [(NSDecimalNumber *)amount compare:v9]== NSOrderedAscending;
+    amount = [amountCopy amount];
+    v11 = [(NSDecimalNumber *)amount compare:amount]== NSOrderedAscending;
     goto LABEL_11;
   }
 
@@ -732,21 +732,21 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)currencyAmountGreaterThanCurrencyAmount:(id)a3
+- (BOOL)currencyAmountGreaterThanCurrencyAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   currency = self->_currency;
-  v6 = [v4 currency];
+  currency = [amountCopy currency];
   v7 = currency;
-  v8 = v6;
-  v9 = v8;
+  v8 = currency;
+  amount = v8;
   if (v7 == v8)
   {
 
 LABEL_10:
     amount = self->_amount;
-    v9 = [v4 amount];
-    v11 = [(NSDecimalNumber *)amount compare:v9]== NSOrderedDescending;
+    amount = [amountCopy amount];
+    v11 = [(NSDecimalNumber *)amount compare:amount]== NSOrderedDescending;
     goto LABEL_11;
   }
 
@@ -780,21 +780,21 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)currencyAmountEqualToCurrencyAmount:(id)a3
+- (BOOL)currencyAmountEqualToCurrencyAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   currency = self->_currency;
-  v6 = [v4 currency];
+  currency = [amountCopy currency];
   v7 = currency;
-  v8 = v6;
-  v9 = v8;
+  v8 = currency;
+  amount = v8;
   if (v7 == v8)
   {
 
 LABEL_10:
     amount = self->_amount;
-    v9 = [v4 amount];
-    v11 = [(NSDecimalNumber *)amount compare:v9]== NSOrderedSame;
+    amount = [amountCopy amount];
+    v11 = [(NSDecimalNumber *)amount compare:amount]== NSOrderedSame;
     goto LABEL_11;
   }
 

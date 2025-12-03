@@ -8,13 +8,13 @@
 - (void)shouldFireInResponseToEvent:()BiomeContext triggerIdentifier:completion:
 {
   v13 = a5;
-  v7 = [a3 eventBody];
-  if (v7)
+  eventBody = [a3 eventBody];
+  if (eventBody)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = eventBody;
     }
 
     else
@@ -30,16 +30,16 @@
 
   v9 = v8;
 
-  v10 = [v9 starting];
-  if (v10 == [a1 onEnable])
+  starting = [v9 starting];
+  if (starting == [self onEnable])
   {
     v12 = 1;
   }
 
   else
   {
-    v11 = [v9 starting];
-    v12 = v11 ^ [a1 onDisable];
+    starting2 = [v9 starting];
+    v12 = starting2 ^ [self onDisable];
   }
 
   v13[2](v13, v12);
@@ -49,12 +49,12 @@
 {
   v3 = a3;
   v4 = BiomeLibrary();
-  v5 = [v4 Device];
-  v6 = [v5 Power];
-  v7 = [v6 LowPowerMode];
+  device = [v4 Device];
+  power = [device Power];
+  lowPowerMode = [power LowPowerMode];
 
-  v8 = [v7 DSLPublisher];
-  v9 = [v8 subscribeOn:v3];
+  dSLPublisher = [lowPowerMode DSLPublisher];
+  v9 = [dSLPublisher subscribeOn:v3];
 
   return v9;
 }

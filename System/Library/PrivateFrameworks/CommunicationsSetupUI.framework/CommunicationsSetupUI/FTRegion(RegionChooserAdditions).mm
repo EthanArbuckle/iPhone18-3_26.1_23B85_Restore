@@ -7,11 +7,11 @@
 
 - (BOOL)isLeafNode
 {
-  v2 = [a1 subRegions];
-  if (v2)
+  subRegions = [self subRegions];
+  if (subRegions)
   {
-    v3 = [a1 subRegions];
-    v4 = [v3 count] == 0;
+    subRegions2 = [self subRegions];
+    v4 = [subRegions2 count] == 0;
   }
 
   else
@@ -29,13 +29,13 @@
   v7 = a4;
   if (v6 && [v6 length])
   {
-    if ([a1 isLeafNode])
+    if ([self isLeafNode])
     {
-      v8 = [a1 label];
-      v9 = v8;
-      if (v8 && [v8 length] && (v10 = objc_msgSend(v9, "length"), objc_msgSend(a1, "label"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "rangeOfString:options:range:locale:", v6, 1, 0, v10, 0), v11, v12 != 0x7FFFFFFFFFFFFFFFLL))
+      label = [self label];
+      v9 = label;
+      if (label && [label length] && (v10 = objc_msgSend(v9, "length"), objc_msgSend(self, "label"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "rangeOfString:options:range:locale:", v6, 1, 0, v10, 0), v11, v12 != 0x7FFFFFFFFFFFFFFFLL))
       {
-        [v7 addObject:a1];
+        [v7 addObject:self];
         LOBYTE(v13) = 1;
       }
 
@@ -51,8 +51,8 @@
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v14 = [a1 subRegions];
-      v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      subRegions = [self subRegions];
+      v15 = [subRegions countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v15)
       {
         v16 = v15;
@@ -64,13 +64,13 @@
           {
             if (*v22 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(subRegions);
             }
 
             v13 |= [*(*(&v21 + 1) + 8 * i) search:v6 withResults:v7];
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v16 = [subRegions countByEnumeratingWithState:&v21 objects:v25 count:16];
         }
 
         while (v16);

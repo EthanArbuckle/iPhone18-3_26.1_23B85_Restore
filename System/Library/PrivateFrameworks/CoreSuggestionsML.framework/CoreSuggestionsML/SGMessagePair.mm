@@ -1,25 +1,25 @@
 @interface SGMessagePair
-- (SGMessagePair)initWithReply:(id)a3 prompt:(id)a4 handle:(id)a5 sentAt:(id)a6;
+- (SGMessagePair)initWithReply:(id)reply prompt:(id)prompt handle:(id)handle sentAt:(id)at;
 @end
 
 @implementation SGMessagePair
 
-- (SGMessagePair)initWithReply:(id)a3 prompt:(id)a4 handle:(id)a5 sentAt:(id)a6
+- (SGMessagePair)initWithReply:(id)reply prompt:(id)prompt handle:(id)handle sentAt:(id)at
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  replyCopy = reply;
+  promptCopy = prompt;
+  handleCopy = handle;
+  atCopy = at;
   v18.receiver = self;
   v18.super_class = SGMessagePair;
   v15 = [(SGMessagePair *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_reply, a3);
-    objc_storeStrong(&v16->_prompt, a4);
-    objc_storeStrong(&v16->_handle, a5);
-    objc_storeStrong(&v16->_sentAt, a6);
+    objc_storeStrong(&v15->_reply, reply);
+    objc_storeStrong(&v16->_prompt, prompt);
+    objc_storeStrong(&v16->_handle, handle);
+    objc_storeStrong(&v16->_sentAt, at);
   }
 
   return v16;

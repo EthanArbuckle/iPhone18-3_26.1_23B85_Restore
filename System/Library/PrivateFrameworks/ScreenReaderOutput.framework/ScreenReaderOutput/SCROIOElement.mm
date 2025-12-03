@@ -1,23 +1,23 @@
 @interface SCROIOElement
-- (BOOL)isEqual:(id)a3;
-- (SCROIOElement)initWithIOObject:(unsigned int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SCROIOElement)initWithIOObject:(unsigned int)object;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation SCROIOElement
 
-- (SCROIOElement)initWithIOObject:(unsigned int)a3
+- (SCROIOElement)initWithIOObject:(unsigned int)object
 {
   v6.receiver = self;
   v6.super_class = SCROIOElement;
   v4 = [(SCROIOElement *)&v6 init];
   if (v4)
   {
-    if (a3)
+    if (object)
     {
-      IOObjectRetain(a3);
-      v4->_ioObject = a3;
+      IOObjectRetain(object);
+      v4->_ioObject = object;
     }
 
     v4->_identifier = atomic_fetch_add_explicit(_currentIdentifier_1, 1u, memory_order_relaxed);
@@ -39,9 +39,9 @@
   [(SCROIOElement *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     ioObject = self->_ioObject;
@@ -56,12 +56,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = SCROIOElement;
-  if ([(SCROIOElement *)&v9 isEqual:v4])
+  if ([(SCROIOElement *)&v9 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -71,12 +71,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 ioObject];
+      ioObject = [equalCopy ioObject];
       ioObject = self->_ioObject;
-      v5 = (ioObject | v6) == 0;
-      if (ioObject && v6)
+      v5 = (ioObject | ioObject) == 0;
+      if (ioObject && ioObject)
       {
-        v5 = IOObjectIsEqualTo(ioObject, v6) != 0;
+        v5 = IOObjectIsEqualTo(ioObject, ioObject) != 0;
       }
     }
 

@@ -1,10 +1,10 @@
 @interface LACAuthenticatorHelper
 + (LACAuthenticatorHelper)sharedInstance;
-- (BOOL)isAdministratorRequiredForUserID:(id)a3 authenticator:(int64_t)a4;
-- (BOOL)isRequirementMetForUserID:(id)a3 authenticator:(int64_t)a4;
+- (BOOL)isAdministratorRequiredForUserID:(id)d authenticator:(int64_t)authenticator;
+- (BOOL)isRequirementMetForUserID:(id)d authenticator:(int64_t)authenticator;
 - (LACADMUserProviding)userProvider;
 - (LACAuthenticatorHelper)init;
-- (LACAuthenticatorHelper)initWithUserProvider:(id)a3;
+- (LACAuthenticatorHelper)initWithUserProvider:(id)provider;
 @end
 
 @implementation LACAuthenticatorHelper
@@ -29,31 +29,31 @@
   return v3;
 }
 
-- (LACAuthenticatorHelper)initWithUserProvider:(id)a3
+- (LACAuthenticatorHelper)initWithUserProvider:(id)provider
 {
-  *(&self->super.isa + OBJC_IVAR___LACAuthenticatorHelper_userProvider) = a3;
+  *(&self->super.isa + OBJC_IVAR___LACAuthenticatorHelper_userProvider) = provider;
   v4.receiver = self;
   v4.super_class = LACAuthenticatorHelper;
   swift_unknownObjectRetain();
   return [(LACAuthenticatorHelper *)&v4 init];
 }
 
-- (BOOL)isAdministratorRequiredForUserID:(id)a3 authenticator:(int64_t)a4
+- (BOOL)isAdministratorRequiredForUserID:(id)d authenticator:(int64_t)authenticator
 {
-  v7 = a3;
-  v8 = self;
-  LOBYTE(a4) = LACAuthenticatorHelper.isAdministratorRequired(forUserID:authenticator:)(a3, a4);
+  dCopy = d;
+  selfCopy = self;
+  LOBYTE(authenticator) = LACAuthenticatorHelper.isAdministratorRequired(forUserID:authenticator:)(d, authenticator);
 
-  return a4 & 1;
+  return authenticator & 1;
 }
 
-- (BOOL)isRequirementMetForUserID:(id)a3 authenticator:(int64_t)a4
+- (BOOL)isRequirementMetForUserID:(id)d authenticator:(int64_t)authenticator
 {
-  v7 = a3;
-  v8 = self;
-  LOBYTE(a4) = LACAuthenticatorHelper.isRequirementMet(forUserID:authenticator:)(a3, a4);
+  dCopy = d;
+  selfCopy = self;
+  LOBYTE(authenticator) = LACAuthenticatorHelper.isRequirementMet(forUserID:authenticator:)(d, authenticator);
 
-  return a4 & 1;
+  return authenticator & 1;
 }
 
 - (LACAuthenticatorHelper)init

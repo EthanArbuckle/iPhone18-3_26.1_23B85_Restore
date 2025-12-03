@@ -1,26 +1,26 @@
 @interface TagFieldHostView.Coordinator
-- (void)revealAction:(id)a3 preScrollHandler:(id)a4 goBackHandler:(id)a5 scrolledAwayHandler:(id)a6;
-- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)a3 variableProvider:(id)a4 completionHandler:(id)a5;
-- (void)showParameterEditingHint:(id)a3;
+- (void)revealAction:(id)action preScrollHandler:(id)handler goBackHandler:(id)backHandler scrolledAwayHandler:(id)awayHandler;
+- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)input variableProvider:(id)provider completionHandler:(id)handler;
+- (void)showParameterEditingHint:(id)hint;
 @end
 
 @implementation TagFieldHostView.Coordinator
 
-- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)a3 variableProvider:(id)a4 completionHandler:(id)a5
+- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)input variableProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v6;
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   sub_2744A54A4();
   swift_unknownObjectRelease();
 }
 
-- (void)revealAction:(id)a3 preScrollHandler:(id)a4 goBackHandler:(id)a5 scrolledAwayHandler:(id)a6
+- (void)revealAction:(id)action preScrollHandler:(id)handler goBackHandler:(id)backHandler scrolledAwayHandler:(id)awayHandler
 {
-  v10 = _Block_copy(a4);
-  v11 = _Block_copy(a5);
-  v12 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
+  v11 = _Block_copy(backHandler);
+  v12 = _Block_copy(awayHandler);
   *(swift_allocObject() + 16) = v10;
   v13 = swift_allocObject();
   *(v13 + 16) = v11;
@@ -36,20 +36,20 @@
     v14 = 0;
   }
 
-  v15 = a3;
-  v16 = self;
-  sub_2744A5688(v15, v17, v18, sub_27445B624, v13, v12, v14);
+  actionCopy = action;
+  selfCopy = self;
+  sub_2744A5688(actionCopy, v17, v18, sub_27445B624, v13, v12, v14);
   sub_274406A94(v12);
 }
 
-- (void)showParameterEditingHint:(id)a3
+- (void)showParameterEditingHint:(id)hint
 {
-  if (a3)
+  if (hint)
   {
     sub_27463B6AC();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_2744A5CF8();
 }
 

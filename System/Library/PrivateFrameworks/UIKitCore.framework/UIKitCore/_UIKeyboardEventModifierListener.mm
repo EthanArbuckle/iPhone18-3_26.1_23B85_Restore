@@ -1,28 +1,28 @@
 @interface _UIKeyboardEventModifierListener
 - (_UIKeyboardEventModifierListenerDelegate)delegate;
-- (void)handleKeyboardEvent:(id)a3;
+- (void)handleKeyboardEvent:(id)event;
 @end
 
 @implementation _UIKeyboardEventModifierListener
 
-- (void)handleKeyboardEvent:(id)a3
+- (void)handleKeyboardEvent:(id)event
 {
-  v8 = a3;
-  v4 = [v8 modifierFlags] & 0xFFFFFFFFFFFEFFFFLL;
+  eventCopy = event;
+  v4 = [eventCopy modifierFlags] & 0xFFFFFFFFFFFEFFFFLL;
   currentModifierFlags = self->_currentModifierFlags;
   self->_currentModifierFlags = v4;
-  if ([v8 _isModifierKey])
+  if ([eventCopy _isModifierKey])
   {
-    [v8 _isKeyDown];
+    [eventCopy _isKeyDown];
   }
 
   else
   {
-    v7 = [v8 _isGlobeKey];
-    if ([v8 _isKeyDown] && (v7 & 1) == 0)
+    _isGlobeKey = [eventCopy _isGlobeKey];
+    if ([eventCopy _isKeyDown] && (_isGlobeKey & 1) == 0)
     {
-      v6 = [(_UIKeyboardEventModifierListener *)self delegate];
-      [v6 modifierListenerDidPressNonModifierKey:self];
+      delegate = [(_UIKeyboardEventModifierListener *)self delegate];
+      [delegate modifierListenerDidPressNonModifierKey:self];
       goto LABEL_8;
     }
   }
@@ -32,8 +32,8 @@
     goto LABEL_9;
   }
 
-  v6 = [(_UIKeyboardEventModifierListener *)self delegate];
-  [v6 modifierListener:self didUpdateModifierFlag:currentModifierFlags ^ v4];
+  delegate = [(_UIKeyboardEventModifierListener *)self delegate];
+  [delegate modifierListener:self didUpdateModifierFlag:currentModifierFlags ^ v4];
 LABEL_8:
 
 LABEL_9:

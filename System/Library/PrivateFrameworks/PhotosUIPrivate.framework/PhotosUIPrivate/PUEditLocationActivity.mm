@@ -1,29 +1,29 @@
 @interface PUEditLocationActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)activityViewController;
 @end
 
 @implementation PUEditLocationActivity
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 1;
-    v5 = [(PXActivity *)self itemSourceController];
-    v6 = [v5 assets];
-    v7 = [v6 array];
+    itemSourceController = [(PXActivity *)self itemSourceController];
+    assets = [itemSourceController assets];
+    array = [assets array];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __54__PUEditLocationActivity_canPerformWithActivityItems___block_invoke;
     v10[3] = &unk_1E7B7BAA0;
     v10[4] = &v11;
-    [v7 enumerateObjectsUsingBlock:v10];
+    [array enumerateObjectsUsingBlock:v10];
     v8 = *(v12 + 24);
 
     _Block_object_dispose(&v11, 8);
@@ -47,11 +47,11 @@ uint64_t __54__PUEditLocationActivity_canPerformWithActivityItems___block_invoke
 
 - (id)activityViewController
 {
-  v3 = [(PXActivity *)self itemSourceController];
-  v4 = [v3 assets];
-  v5 = [v4 array];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  array = [assets array];
 
-  v6 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:v5 title:0];
+  v6 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:array title:0];
   v7 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v6 options:0];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;

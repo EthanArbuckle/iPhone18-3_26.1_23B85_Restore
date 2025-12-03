@@ -1,5 +1,5 @@
 @interface PPDecayedFeedbackCounts
-- (PPDecayedFeedbackCounts)initWithLatestDate:(id)a3 engagedExplicitly:(double)a4 engagedImplicitly:(double)a5 rejectedExplicitly:(double)a6 rejectedImplicitly:(double)a7;
+- (PPDecayedFeedbackCounts)initWithLatestDate:(id)date engagedExplicitly:(double)explicitly engagedImplicitly:(double)implicitly rejectedExplicitly:(double)rejectedExplicitly rejectedImplicitly:(double)rejectedImplicitly;
 - (id)toDictionary;
 @end
 
@@ -13,13 +13,13 @@
   v4 = objc_autoreleasePoolPush();
   v14[0] = @"latestDate";
   latestDate = self->_latestDate;
-  v6 = latestDate;
+  null = latestDate;
   if (!latestDate)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v15[0] = v6;
+  v15[0] = null;
   v14[1] = @"engagedExplicitly";
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_engagedExplicitly];
   v15[1] = v7;
@@ -45,20 +45,20 @@
   return v11;
 }
 
-- (PPDecayedFeedbackCounts)initWithLatestDate:(id)a3 engagedExplicitly:(double)a4 engagedImplicitly:(double)a5 rejectedExplicitly:(double)a6 rejectedImplicitly:(double)a7
+- (PPDecayedFeedbackCounts)initWithLatestDate:(id)date engagedExplicitly:(double)explicitly engagedImplicitly:(double)implicitly rejectedExplicitly:(double)rejectedExplicitly rejectedImplicitly:(double)rejectedImplicitly
 {
-  v13 = a3;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = PPDecayedFeedbackCounts;
   v14 = [(PPDecayedFeedbackCounts *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_latestDate, a3);
-    v15->_engagedExplicitly = a4;
-    v15->_engagedImplicitly = a5;
-    v15->_rejectedExplicitly = a6;
-    v15->_rejectedImplicitly = a7;
+    objc_storeStrong(&v14->_latestDate, date);
+    v15->_engagedExplicitly = explicitly;
+    v15->_engagedImplicitly = implicitly;
+    v15->_rejectedExplicitly = rejectedExplicitly;
+    v15->_rejectedImplicitly = rejectedImplicitly;
   }
 
   return v15;

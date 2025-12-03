@@ -1,45 +1,45 @@
 @interface DUDefinitionDictionary
-+ (id)displayNameForLanguageIdentifier:(id)a3 context:(int64_t)a4;
-- (BOOL)_hasDefinitionForTerm:(id)a3;
++ (id)displayNameForLanguageIdentifier:(id)identifier context:(int64_t)context;
+- (BOOL)_hasDefinitionForTerm:(id)term;
 - (BOOL)needsDownloadNewerVersion;
-- (DUDefinitionDictionary)initWithAsset:(id)a3;
+- (DUDefinitionDictionary)initWithAsset:(id)asset;
 - (NSString)localizedDictionaryName;
 - (NSString)localizedLanguageName;
 - (NSString)localizedSortName;
-- (id)_definitionValueForTerm:(id)a3;
+- (id)_definitionValueForTerm:(id)term;
 - (id)description;
 - (void)dealloc;
-- (void)setActivated:(BOOL)a3;
+- (void)setActivated:(BOOL)activated;
 @end
 
 @implementation DUDefinitionDictionary
 
-- (DUDefinitionDictionary)initWithAsset:(id)a3
+- (DUDefinitionDictionary)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v15.receiver = self;
   v15.super_class = DUDefinitionDictionary;
   v6 = [(DUDefinitionDictionary *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawAsset, a3);
-    v8 = [(MAAsset *)v7->_rawAsset attributes];
-    v9 = [v8 objectForKey:@"Language"];
+    objc_storeStrong(&v6->_rawAsset, asset);
+    attributes = [(MAAsset *)v7->_rawAsset attributes];
+    v9 = [attributes objectForKey:@"Language"];
     definitionLanguage = v7->_definitionLanguage;
     v7->_definitionLanguage = v9;
 
     if ([(MAAsset *)v7->_rawAsset wasLocal])
     {
-      v11 = [(MAAsset *)v7->_rawAsset attributes];
+      attributes2 = [(MAAsset *)v7->_rawAsset attributes];
       [(MAAsset *)v7->_rawAsset getLocalFileUrl];
       v7->_dictionary = DCSDictionaryCreateWithAssetAttributes();
 
       v7->_activated = 0;
     }
 
-    v12 = [(MAAsset *)v7->_rawAsset attributes];
-    v13 = [v12 objectForKeyedSubscript:@"DictionaryPackageName"];
+    attributes3 = [(MAAsset *)v7->_rawAsset attributes];
+    v13 = [attributes3 objectForKeyedSubscript:@"DictionaryPackageName"];
 
     -[DUDefinitionDictionary setIsAppleDictionary:](v7, "setIsAppleDictionary:", [v13 isEqualToString:@"Apple Dictionary.dictionary"]);
     -[DUDefinitionDictionary setIsTTYDictionary:](v7, "setIsTTYDictionary:", [v13 isEqualToString:@"TTY Abbreviations Dictionary.dictionary"]);
@@ -64,8 +64,8 @@
 
 - (NSString)localizedLanguageName
 {
-  v2 = [(MAAsset *)self->_rawAsset attributes];
-  v3 = [v2 objectForKey:@"IndexLanguages"];
+  attributes = [(MAAsset *)self->_rawAsset attributes];
+  v3 = [attributes objectForKey:@"IndexLanguages"];
 
   if ([v3 count])
   {
@@ -105,15 +105,15 @@
 {
   if ([(DUDefinitionDictionary *)self isAppleDictionary]|| [(DUDefinitionDictionary *)self isTTYDictionary])
   {
-    v3 = [(DUDefinitionDictionary *)self localizedDictionaryName];
+    localizedDictionaryName = [(DUDefinitionDictionary *)self localizedDictionaryName];
   }
 
   else
   {
-    v3 = [(DUDefinitionDictionary *)self localizedLanguageName];
+    localizedDictionaryName = [(DUDefinitionDictionary *)self localizedLanguageName];
   }
 
-  return v3;
+  return localizedDictionaryName;
 }
 
 - (NSString)localizedDictionaryName
@@ -121,52 +121,52 @@
   if ([(DUDefinitionDictionary *)self isAppleDictionary])
   {
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v4 = v3;
+    attributes = v3;
     v5 = @"Apple Dictionary";
 LABEL_5:
-    v6 = [v3 localizedStringForKey:v5 value:&stru_285B95F20 table:@"DictionaryUI"];
+    stringByDeletingPathExtension = [v3 localizedStringForKey:v5 value:&stru_285B95F20 table:@"DictionaryUI"];
     goto LABEL_6;
   }
 
   if ([(DUDefinitionDictionary *)self isTTYDictionary])
   {
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v4 = v3;
+    attributes = v3;
     v5 = @"TTY Dictionary";
     goto LABEL_5;
   }
 
-  v4 = [(MAAsset *)self->_rawAsset attributes];
-  v6 = [v4 objectForKey:@"DictionaryPackageDisplayName"];
-  if (![v6 length])
+  attributes = [(MAAsset *)self->_rawAsset attributes];
+  stringByDeletingPathExtension = [attributes objectForKey:@"DictionaryPackageDisplayName"];
+  if (![stringByDeletingPathExtension length])
   {
-    v8 = [v4 objectForKey:@"DictionaryPackageName"];
+    v8 = [attributes objectForKey:@"DictionaryPackageName"];
 
-    v6 = [v8 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [v8 stringByDeletingPathExtension];
   }
 
-  if (![v6 length])
+  if (![stringByDeletingPathExtension length])
   {
-    v9 = [(DUDefinitionDictionary *)self localizedLanguageName];
+    localizedLanguageName = [(DUDefinitionDictionary *)self localizedLanguageName];
 
-    v6 = v9;
+    stringByDeletingPathExtension = localizedLanguageName;
   }
 
 LABEL_6:
 
-  return v6;
+  return stringByDeletingPathExtension;
 }
 
-+ (id)displayNameForLanguageIdentifier:(id)a3 context:(int64_t)a4
++ (id)displayNameForLanguageIdentifier:(id)identifier context:(int64_t)context
 {
   v5 = displayNameForLanguageIdentifier_context____onceToken;
-  v6 = a3;
+  identifierCopy = identifier;
   if (v5 != -1)
   {
     +[DUDefinitionDictionary displayNameForLanguageIdentifier:context:];
   }
 
-  v7 = [displayNameForLanguageIdentifier_context____displayLocale localizedStringForLanguage:v6 context:a4];
+  v7 = [displayNameForLanguageIdentifier_context____displayLocale localizedStringForLanguage:identifierCopy context:context];
 
   return v7;
 }
@@ -184,10 +184,10 @@ void __67__DUDefinitionDictionary_displayNameForLanguageIdentifier_context___blo
   displayNameForLanguageIdentifier_context____displayLocale = v4;
 }
 
-- (BOOL)_hasDefinitionForTerm:(id)a3
+- (BOOL)_hasDefinitionForTerm:(id)term
 {
-  v4 = a3;
-  v5 = [v4 length];
+  termCopy = term;
+  v5 = [termCopy length];
   if (v5 >= 0xFA)
   {
     v6 = 250;
@@ -198,7 +198,7 @@ void __67__DUDefinitionDictionary_displayNameForLanguageIdentifier_context___blo
     v6 = v5;
   }
 
-  v7 = [v4 substringToIndex:v6];
+  v7 = [termCopy substringToIndex:v6];
 
   dictionary = self->_dictionary;
   if (dictionary)
@@ -210,20 +210,20 @@ void __67__DUDefinitionDictionary_displayNameForLanguageIdentifier_context___blo
   return dictionary;
 }
 
-- (id)_definitionValueForTerm:(id)a3
+- (id)_definitionValueForTerm:(id)term
 {
-  v4 = a3;
-  v5 = [[DUDefinitionValue alloc] initWithDefinitionDictionary:self term:v4];
+  termCopy = term;
+  v5 = [[DUDefinitionValue alloc] initWithDefinitionDictionary:self term:termCopy];
 
   [(DUDefinitionValue *)v5 setRawAsset:self->_rawAsset];
 
   return v5;
 }
 
-- (void)setActivated:(BOOL)a3
+- (void)setActivated:(BOOL)activated
 {
-  self->_activated = a3;
-  if (!a3)
+  self->_activated = activated;
+  if (!activated)
   {
     assetToUpgrade = self->_assetToUpgrade;
     if (assetToUpgrade)
@@ -251,15 +251,15 @@ void __67__DUDefinitionDictionary_displayNameForLanguageIdentifier_context___blo
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(DUDefinitionDictionary *)self localizedDictionaryName];
-  v7 = [(DUDefinitionDictionary *)self activated];
+  localizedDictionaryName = [(DUDefinitionDictionary *)self localizedDictionaryName];
+  activated = [(DUDefinitionDictionary *)self activated];
   v8 = @"inactive";
-  if (v7)
+  if (activated)
   {
     v8 = @"active";
   }
 
-  v9 = [v3 stringWithFormat:@"%@ <%p>: Dictionary name: %@ (%@), Asset: %@", v5, self, v6, v8, self->_rawAsset];
+  v9 = [v3 stringWithFormat:@"%@ <%p>: Dictionary name: %@ (%@), Asset: %@", v5, self, localizedDictionaryName, v8, self->_rawAsset];
 
   return v9;
 }

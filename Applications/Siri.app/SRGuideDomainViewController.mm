@@ -1,30 +1,30 @@
 @interface SRGuideDomainViewController
-- (BOOL)_showsCategoriesForSection:(unint64_t)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (SRGuideDomainViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)_showsCategoriesForSection:(unint64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (SRGuideDomainViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIEdgeInsets)_headerViewEdgeInsets;
 - (double)desiredHeightForHeaderView;
-- (double)desiredHeightForWidth:(double)a3;
-- (id)_phraseForIndexPath:(id)a3;
-- (id)_titleForSection:(unint64_t)a3;
-- (id)_utterancesForSection:(unint64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)_cellTypeForIndexPath:(id)a3;
+- (double)desiredHeightForWidth:(double)width;
+- (id)_phraseForIndexPath:(id)path;
+- (id)_titleForSection:(unint64_t)section;
+- (id)_utterancesForSection:(unint64_t)section;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)_cellTypeForIndexPath:(id)path;
 - (int64_t)_numberOfSections;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)configureReusableHeaderView:(id)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)configureReusableHeaderView:(id)view;
 - (void)loadView;
-- (void)setSnippet:(id)a3;
+- (void)setSnippet:(id)snippet;
 @end
 
 @implementation SRGuideDomainViewController
 
-- (SRGuideDomainViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SRGuideDomainViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = SRGuideDomainViewController;
-  v4 = [(SRGuideDomainViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(SRGuideDomainViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -39,61 +39,61 @@
   v12.receiver = self;
   v12.super_class = SRGuideDomainViewController;
   [(SRGuideDomainViewController *)&v12 loadView];
-  v3 = [(SRGuideDomainViewController *)self collectionView];
+  collectionView = [(SRGuideDomainViewController *)self collectionView];
   v4 = objc_opt_class();
   v5 = +[SRGuideDetailSectionHeaderCollectionViewCell reuseIdentifier];
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v5];
+  [collectionView registerClass:v4 forCellWithReuseIdentifier:v5];
 
   v6 = objc_opt_class();
   v7 = +[SRGuideDetailPhraseViewCell reuseIdentifier];
-  [v3 registerClass:v6 forCellWithReuseIdentifier:v7];
+  [collectionView registerClass:v6 forCellWithReuseIdentifier:v7];
 
   v8 = objc_opt_class();
   v9 = +[SiriUIContentCollectionViewCell reuseIdentifier];
-  [v3 registerClass:v8 forCellWithReuseIdentifier:v9];
+  [collectionView registerClass:v8 forCellWithReuseIdentifier:v9];
 
   v10 = objc_opt_class();
   v11 = +[SRGuideViewHeader reuseIdentifier];
-  [v3 registerClass:v10 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v11];
+  [collectionView registerClass:v10 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v11];
 }
 
-- (void)configureReusableHeaderView:(id)a3
+- (void)configureReusableHeaderView:(id)view
 {
-  v6 = a3;
-  v4 = [(SRGuideDomainViewController *)self snippet];
-  v5 = [v4 domainDisplayName];
-  [v6 setTitle:v5];
+  viewCopy = view;
+  snippet = [(SRGuideDomainViewController *)self snippet];
+  domainDisplayName = [snippet domainDisplayName];
+  [viewCopy setTitle:domainDisplayName];
 
   [(SRGuideDomainViewController *)self _headerViewEdgeInsets];
-  [v6 setEdgeInsets:?];
+  [viewCopy setEdgeInsets:?];
 }
 
 - (double)desiredHeightForHeaderView
 {
-  v3 = [(SRGuideDomainViewController *)self delegate];
-  [v3 siriViewControllerExpectedWidth:self];
+  delegate = [(SRGuideDomainViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   v5 = v4;
-  v6 = [(SRGuideDomainViewController *)self snippet];
-  v7 = [v6 domainDisplayName];
+  snippet = [(SRGuideDomainViewController *)self snippet];
+  domainDisplayName = [snippet domainDisplayName];
   [(SRGuideDomainViewController *)self _headerViewEdgeInsets];
-  [SRGuideViewHeader sizeThatFits:v7 text:v5 edgeInsets:1.79769313e308, v8, v9, v10, v11];
+  [SRGuideViewHeader sizeThatFits:domainDisplayName text:v5 edgeInsets:1.79769313e308, v8, v9, v10, v11];
   v13 = v12;
 
   return v13;
 }
 
-- (int64_t)_cellTypeForIndexPath:(id)a3
+- (int64_t)_cellTypeForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = 1;
-  if (![v4 item])
+  if (![pathCopy item])
   {
-    v6 = [(SRGuideDomainViewController *)self snippet];
-    v7 = [v6 guideSections];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+    snippet = [(SRGuideDomainViewController *)self snippet];
+    guideSections = [snippet guideSections];
+    v8 = [guideSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v9 = [v8 sectionName];
-    v10 = [v9 length];
+    sectionName = [v8 sectionName];
+    v10 = [sectionName length];
 
     if (v10)
     {
@@ -119,25 +119,25 @@
 
 - (int64_t)_numberOfSections
 {
-  v2 = [(SRGuideDomainViewController *)self snippet];
-  v3 = [v2 guideSections];
-  v4 = [v3 count];
+  snippet = [(SRGuideDomainViewController *)self snippet];
+  guideSections = [snippet guideSections];
+  v4 = [guideSections count];
 
   return v4;
 }
 
-- (id)_utterancesForSection:(unint64_t)a3
+- (id)_utterancesForSection:(unint64_t)section
 {
-  v4 = [(SRGuideDomainViewController *)self snippet];
-  v5 = [v4 guideSections];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  snippet = [(SRGuideDomainViewController *)self snippet];
+  guideSections = [snippet guideSections];
+  v6 = [guideSections objectAtIndexedSubscript:section];
 
-  v7 = [v6 guideUtterances];
+  guideUtterances = [v6 guideUtterances];
 
-  return v7;
+  return guideUtterances;
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
   if ([(SRGuideDomainViewController *)self _numberOfSections]< 1)
   {
@@ -150,12 +150,12 @@
   {
     if ([(SRGuideDomainViewController *)self _showsCategoriesForSection:v5])
     {
-      v7 = [(SRGuideDomainViewController *)self snippet];
-      v8 = [v7 guideSections];
-      v9 = [v8 objectAtIndexedSubscript:v5];
+      snippet = [(SRGuideDomainViewController *)self snippet];
+      guideSections = [snippet guideSections];
+      v9 = [guideSections objectAtIndexedSubscript:v5];
 
-      v10 = [v9 sectionName];
-      [SRGuideDetailSectionHeaderCollectionViewCell sizeThatFits:v10 text:a3, 1.79769313e308];
+      sectionName = [v9 sectionName];
+      [SRGuideDetailSectionHeaderCollectionViewCell sizeThatFits:sectionName text:width, 1.79769313e308];
       v6 = v6 + v11;
     }
 
@@ -178,7 +178,7 @@
             objc_enumerationMutation(v12);
           }
 
-          [SRGuideDetailPhraseViewCell sizeThatFits:*(*(&v19 + 1) + 8 * i) text:a3, 1.79769313e308];
+          [SRGuideDetailPhraseViewCell sizeThatFits:*(*(&v19 + 1) + 8 * i) text:width, 1.79769313e308];
           v6 = v6 + v17;
         }
 
@@ -195,79 +195,79 @@
   return v6;
 }
 
-- (id)_titleForSection:(unint64_t)a3
+- (id)_titleForSection:(unint64_t)section
 {
-  v4 = [(SRGuideDomainViewController *)self snippet];
-  v5 = [v4 guideSections];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  snippet = [(SRGuideDomainViewController *)self snippet];
+  guideSections = [snippet guideSections];
+  v6 = [guideSections objectAtIndexedSubscript:section];
 
-  v7 = [v6 sectionName];
+  sectionName = [v6 sectionName];
 
-  return v7;
+  return sectionName;
 }
 
-- (BOOL)_showsCategoriesForSection:(unint64_t)a3
+- (BOOL)_showsCategoriesForSection:(unint64_t)section
 {
-  v3 = [(SRGuideDomainViewController *)self _titleForSection:a3];
+  v3 = [(SRGuideDomainViewController *)self _titleForSection:section];
   v4 = [v3 length] != 0;
 
   return v4;
 }
 
-- (id)_phraseForIndexPath:(id)a3
+- (id)_phraseForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = &v5[--[SRGuideDomainViewController _showsCategoriesForSection:](self, "_showsCategoriesForSection:", [v4 section])];
-  v7 = [v4 section];
+  pathCopy = path;
+  item = [pathCopy item];
+  v6 = &item[--[SRGuideDomainViewController _showsCategoriesForSection:](self, "_showsCategoriesForSection:", [pathCopy section])];
+  section = [pathCopy section];
 
-  v8 = [(SRGuideDomainViewController *)self _utterancesForSection:v7];
+  v8 = [(SRGuideDomainViewController *)self _utterancesForSection:section];
   v9 = [v8 objectAtIndexedSubscript:v6];
 
   return v9;
 }
 
-- (void)setSnippet:(id)a3
+- (void)setSnippet:(id)snippet
 {
   v5.receiver = self;
   v5.super_class = SRGuideDomainViewController;
-  [(SRGuideDomainViewController *)&v5 setSnippet:a3];
+  [(SRGuideDomainViewController *)&v5 setSnippet:snippet];
   if ([(SRGuideDomainViewController *)self isViewLoaded])
   {
-    v4 = [(SRGuideDomainViewController *)self collectionView];
-    [v4 reloadData];
+    collectionView = [(SRGuideDomainViewController *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[SRGuideViewHeader reuseIdentifier];
-  v9 = [v7 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v8 forIndexPath:pathCopy];
 
   return v9;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = [(SRGuideDomainViewController *)self _utterancesForSection:a4];
+  v6 = [(SRGuideDomainViewController *)self _utterancesForSection:section];
   v7 = [v6 count];
 
-  return v7 + [(SRGuideDomainViewController *)self _showsCategoriesForSection:a4];
+  return v7 + [(SRGuideDomainViewController *)self _showsCategoriesForSection:section];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SRGuideDomainViewController *)self _cellTypeForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SRGuideDomainViewController *)self _cellTypeForIndexPath:pathCopy];
   if (v8 == 1)
   {
     v15 = +[SRGuideDetailPhraseViewCell reuseIdentifier];
-    v10 = [v6 dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:v7];
+    v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:pathCopy];
 
-    v13 = [(SRGuideDomainViewController *)self _phraseForIndexPath:v7];
+    v13 = [(SRGuideDomainViewController *)self _phraseForIndexPath:pathCopy];
     [v10 setText:v13];
     goto LABEL_5;
   }
@@ -275,14 +275,14 @@
   if (!v8)
   {
     v9 = +[SRGuideDetailSectionHeaderCollectionViewCell reuseIdentifier];
-    v10 = [v6 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v7];
+    v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
-    v11 = [(SRGuideDomainViewController *)self snippet];
-    v12 = [v11 guideSections];
-    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
+    snippet = [(SRGuideDomainViewController *)self snippet];
+    guideSections = [snippet guideSections];
+    v13 = [guideSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v14 = [v13 sectionName];
-    [v10 setText:v14];
+    sectionName = [v13 sectionName];
+    [v10 setText:sectionName];
 
 LABEL_5:
     goto LABEL_7;
@@ -294,17 +294,17 @@ LABEL_7:
   return v10;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(SRGuideDomainViewController *)self _cellTypeForIndexPath:v6];
-  v8 = [(SRGuideDomainViewController *)self delegate];
-  [v8 siriViewControllerExpectedWidth:self];
+  pathCopy = path;
+  v7 = [(SRGuideDomainViewController *)self _cellTypeForIndexPath:pathCopy];
+  delegate = [(SRGuideDomainViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   v10 = v9;
 
   if (v7 == 1)
   {
-    v13 = [(SRGuideDomainViewController *)self _phraseForIndexPath:v6];
+    v13 = [(SRGuideDomainViewController *)self _phraseForIndexPath:pathCopy];
     [SRGuideDetailPhraseViewCell sizeThatFits:v13 text:v10, 1.79769313e308];
     height = v17;
   }
@@ -317,12 +317,12 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v11 = [(SRGuideDomainViewController *)self snippet];
-    v12 = [v11 guideSections];
-    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+    snippet = [(SRGuideDomainViewController *)self snippet];
+    guideSections = [snippet guideSections];
+    v13 = [guideSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v14 = [v13 sectionName];
-    [SRGuideDetailSectionHeaderCollectionViewCell sizeThatFits:v14 text:v10, 1.79769313e308];
+    sectionName = [v13 sectionName];
+    [SRGuideDetailSectionHeaderCollectionViewCell sizeThatFits:sectionName text:v10, 1.79769313e308];
     height = v15;
   }
 

@@ -1,11 +1,11 @@
 @interface LoadingStatusView
-- (_TtC28HealthExposureNotificationUI17LoadingStatusView)initWithCoder:(id)a3;
-- (_TtC28HealthExposureNotificationUI17LoadingStatusView)initWithFrame:(CGRect)a3;
+- (_TtC28HealthExposureNotificationUI17LoadingStatusView)initWithCoder:(id)coder;
+- (_TtC28HealthExposureNotificationUI17LoadingStatusView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation LoadingStatusView
 
-- (_TtC28HealthExposureNotificationUI17LoadingStatusView)initWithCoder:(id)a3
+- (_TtC28HealthExposureNotificationUI17LoadingStatusView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC28HealthExposureNotificationUI17LoadingStatusView_spinnerView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle_];
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (_TtC28HealthExposureNotificationUI17LoadingStatusView)initWithFrame:(CGRect)a3
+- (_TtC28HealthExposureNotificationUI17LoadingStatusView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

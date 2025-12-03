@@ -1,94 +1,94 @@
 @interface PCPPredictedContextSource
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPredictedContextSource:(id)a3;
+- (int)StringAsPredictedContextSource:(id)source;
 - (int)predictedContextSource;
 - (unint64_t)hash;
 - (void)clearOneofValuesForPredictedContextSource;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setCalendarEvent:(id)a3;
-- (void)setHealthKitWorkout:(id)a3;
-- (void)setHomekitHome:(id)a3;
-- (void)setMapsActiveNavigation:(id)a3;
-- (void)setMapsViewedPlace:(id)a3;
-- (void)setParkedCar:(id)a3;
-- (void)setPropagatedLocation:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setCalendarEvent:(id)event;
+- (void)setHealthKitWorkout:(id)workout;
+- (void)setHomekitHome:(id)home;
+- (void)setMapsActiveNavigation:(id)navigation;
+- (void)setMapsViewedPlace:(id)place;
+- (void)setParkedCar:(id)car;
+- (void)setPropagatedLocation:(id)location;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPPredictedContextSource
 
-- (void)setMapsViewedPlace:(id)a3
+- (void)setMapsViewedPlace:(id)place
 {
-  v4 = a3;
+  placeCopy = place;
   [(PCPPredictedContextSource *)self clearOneofValuesForPredictedContextSource];
   *&self->_has |= 1u;
   self->_predictedContextSource = 1;
   mapsViewedPlace = self->_mapsViewedPlace;
-  self->_mapsViewedPlace = v4;
+  self->_mapsViewedPlace = placeCopy;
 }
 
-- (void)setMapsActiveNavigation:(id)a3
+- (void)setMapsActiveNavigation:(id)navigation
 {
-  v4 = a3;
+  navigationCopy = navigation;
   [(PCPPredictedContextSource *)self clearOneofValuesForPredictedContextSource];
   *&self->_has |= 1u;
   self->_predictedContextSource = 2;
   mapsActiveNavigation = self->_mapsActiveNavigation;
-  self->_mapsActiveNavigation = v4;
+  self->_mapsActiveNavigation = navigationCopy;
 }
 
-- (void)setCalendarEvent:(id)a3
+- (void)setCalendarEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(PCPPredictedContextSource *)self clearOneofValuesForPredictedContextSource];
   *&self->_has |= 1u;
   self->_predictedContextSource = 3;
   calendarEvent = self->_calendarEvent;
-  self->_calendarEvent = v4;
+  self->_calendarEvent = eventCopy;
 }
 
-- (void)setHomekitHome:(id)a3
+- (void)setHomekitHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   [(PCPPredictedContextSource *)self clearOneofValuesForPredictedContextSource];
   *&self->_has |= 1u;
   self->_predictedContextSource = 4;
   homekitHome = self->_homekitHome;
-  self->_homekitHome = v4;
+  self->_homekitHome = homeCopy;
 }
 
-- (void)setHealthKitWorkout:(id)a3
+- (void)setHealthKitWorkout:(id)workout
 {
-  v4 = a3;
+  workoutCopy = workout;
   [(PCPPredictedContextSource *)self clearOneofValuesForPredictedContextSource];
   *&self->_has |= 1u;
   self->_predictedContextSource = 5;
   healthKitWorkout = self->_healthKitWorkout;
-  self->_healthKitWorkout = v4;
+  self->_healthKitWorkout = workoutCopy;
 }
 
-- (void)setParkedCar:(id)a3
+- (void)setParkedCar:(id)car
 {
-  v4 = a3;
+  carCopy = car;
   [(PCPPredictedContextSource *)self clearOneofValuesForPredictedContextSource];
   *&self->_has |= 1u;
   self->_predictedContextSource = 6;
   parkedCar = self->_parkedCar;
-  self->_parkedCar = v4;
+  self->_parkedCar = carCopy;
 }
 
-- (void)setPropagatedLocation:(id)a3
+- (void)setPropagatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   [(PCPPredictedContextSource *)self clearOneofValuesForPredictedContextSource];
   *&self->_has |= 1u;
   self->_predictedContextSource = 7;
   propagatedLocation = self->_propagatedLocation;
-  self->_propagatedLocation = v4;
+  self->_propagatedLocation = locationCopy;
 }
 
 - (int)predictedContextSource
@@ -104,45 +104,45 @@
   }
 }
 
-- (int)StringAsPredictedContextSource:(id)a3
+- (int)StringAsPredictedContextSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"mapsViewedPlace"])
+  else if ([sourceCopy isEqualToString:@"mapsViewedPlace"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"mapsActiveNavigation"])
+  else if ([sourceCopy isEqualToString:@"mapsActiveNavigation"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"calendarEvent"])
+  else if ([sourceCopy isEqualToString:@"calendarEvent"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"homekitHome"])
+  else if ([sourceCopy isEqualToString:@"homekitHome"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"healthKitWorkout"])
+  else if ([sourceCopy isEqualToString:@"healthKitWorkout"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"parkedCar"])
+  else if ([sourceCopy isEqualToString:@"parkedCar"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"propagatedLocation"])
+  else if ([sourceCopy isEqualToString:@"propagatedLocation"])
   {
     v4 = 7;
   }
@@ -187,62 +187,62 @@
   v8.receiver = self;
   v8.super_class = PCPPredictedContextSource;
   v4 = [(PCPPredictedContextSource *)&v8 description];
-  v5 = [(PCPPredictedContextSource *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPPredictedContextSource *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   mapsViewedPlace = self->_mapsViewedPlace;
   if (mapsViewedPlace)
   {
-    v5 = [(PCPMapsViewedPlace *)mapsViewedPlace dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"mapsViewedPlace"];
+    dictionaryRepresentation = [(PCPMapsViewedPlace *)mapsViewedPlace dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"mapsViewedPlace"];
   }
 
   mapsActiveNavigation = self->_mapsActiveNavigation;
   if (mapsActiveNavigation)
   {
-    v7 = [(PCPMapsActiveNavigation *)mapsActiveNavigation dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"mapsActiveNavigation"];
+    dictionaryRepresentation2 = [(PCPMapsActiveNavigation *)mapsActiveNavigation dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"mapsActiveNavigation"];
   }
 
   calendarEvent = self->_calendarEvent;
   if (calendarEvent)
   {
-    v9 = [(PCPCalendarEvent *)calendarEvent dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"calendarEvent"];
+    dictionaryRepresentation3 = [(PCPCalendarEvent *)calendarEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"calendarEvent"];
   }
 
   homekitHome = self->_homekitHome;
   if (homekitHome)
   {
-    v11 = [(PCPHomeKitHome *)homekitHome dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"homekitHome"];
+    dictionaryRepresentation4 = [(PCPHomeKitHome *)homekitHome dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"homekitHome"];
   }
 
   healthKitWorkout = self->_healthKitWorkout;
   if (healthKitWorkout)
   {
-    v13 = [(PCPHealthKitWorkout *)healthKitWorkout dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"healthKitWorkout"];
+    dictionaryRepresentation5 = [(PCPHealthKitWorkout *)healthKitWorkout dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"healthKitWorkout"];
   }
 
   parkedCar = self->_parkedCar;
   if (parkedCar)
   {
-    v15 = [(PCPParkedCar *)parkedCar dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"parkedCar"];
+    dictionaryRepresentation6 = [(PCPParkedCar *)parkedCar dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"parkedCar"];
   }
 
   propagatedLocation = self->_propagatedLocation;
   if (propagatedLocation)
   {
-    v17 = [(PCPLocationWithTimestamp *)propagatedLocation dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"propagatedLocation"];
+    dictionaryRepresentation7 = [(PCPLocationWithTimestamp *)propagatedLocation dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"propagatedLocation"];
   }
 
   if (*&self->_has)
@@ -258,115 +258,115 @@
       v19 = off_1E83B8608[predictedContextSource];
     }
 
-    [v3 setObject:v19 forKey:@"predictedContextSource"];
+    [dictionary setObject:v19 forKey:@"predictedContextSource"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_mapsViewedPlace)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mapsActiveNavigation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_calendarEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_homekitHome)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_healthKitWorkout)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_parkedCar)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_propagatedLocation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[14] = self->_predictedContextSource;
-    *(v4 + 72) |= 1u;
+    toCopy[14] = self->_predictedContextSource;
+    *(toCopy + 72) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_mapsViewedPlace)
   {
-    [v4 setMapsViewedPlace:?];
-    v4 = v5;
+    [toCopy setMapsViewedPlace:?];
+    toCopy = v5;
   }
 
   if (self->_mapsActiveNavigation)
   {
     [v5 setMapsActiveNavigation:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_calendarEvent)
   {
     [v5 setCalendarEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_homekitHome)
   {
     [v5 setHomekitHome:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_healthKitWorkout)
   {
     [v5 setHealthKitWorkout:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_parkedCar)
   {
     [v5 setParkedCar:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_propagatedLocation)
   {
     [v5 setPropagatedLocation:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -374,55 +374,55 @@
     *(v5 + 72) |= 1u;
   }
 
-  v7 = [(PCPMapsViewedPlace *)self->_mapsViewedPlace copyWithZone:a3];
+  v7 = [(PCPMapsViewedPlace *)self->_mapsViewedPlace copyWithZone:zone];
   v8 = v6[5];
   v6[5] = v7;
 
-  v9 = [(PCPMapsActiveNavigation *)self->_mapsActiveNavigation copyWithZone:a3];
+  v9 = [(PCPMapsActiveNavigation *)self->_mapsActiveNavigation copyWithZone:zone];
   v10 = v6[4];
   v6[4] = v9;
 
-  v11 = [(PCPCalendarEvent *)self->_calendarEvent copyWithZone:a3];
+  v11 = [(PCPCalendarEvent *)self->_calendarEvent copyWithZone:zone];
   v12 = v6[1];
   v6[1] = v11;
 
-  v13 = [(PCPHomeKitHome *)self->_homekitHome copyWithZone:a3];
+  v13 = [(PCPHomeKitHome *)self->_homekitHome copyWithZone:zone];
   v14 = v6[3];
   v6[3] = v13;
 
-  v15 = [(PCPHealthKitWorkout *)self->_healthKitWorkout copyWithZone:a3];
+  v15 = [(PCPHealthKitWorkout *)self->_healthKitWorkout copyWithZone:zone];
   v16 = v6[2];
   v6[2] = v15;
 
-  v17 = [(PCPParkedCar *)self->_parkedCar copyWithZone:a3];
+  v17 = [(PCPParkedCar *)self->_parkedCar copyWithZone:zone];
   v18 = v6[6];
   v6[6] = v17;
 
-  v19 = [(PCPLocationWithTimestamp *)self->_propagatedLocation copyWithZone:a3];
+  v19 = [(PCPLocationWithTimestamp *)self->_propagatedLocation copyWithZone:zone];
   v20 = v6[8];
   v6[8] = v19;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(equalCopy + 72);
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_predictedContextSource != *(v4 + 14))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_predictedContextSource != *(equalCopy + 14))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
 LABEL_21:
     v13 = 0;
@@ -430,13 +430,13 @@ LABEL_21:
   }
 
   mapsViewedPlace = self->_mapsViewedPlace;
-  if (mapsViewedPlace | *(v4 + 5) && ![(PCPMapsViewedPlace *)mapsViewedPlace isEqual:?])
+  if (mapsViewedPlace | *(equalCopy + 5) && ![(PCPMapsViewedPlace *)mapsViewedPlace isEqual:?])
   {
     goto LABEL_21;
   }
 
   mapsActiveNavigation = self->_mapsActiveNavigation;
-  if (mapsActiveNavigation | *(v4 + 4))
+  if (mapsActiveNavigation | *(equalCopy + 4))
   {
     if (![(PCPMapsActiveNavigation *)mapsActiveNavigation isEqual:?])
     {
@@ -445,7 +445,7 @@ LABEL_21:
   }
 
   calendarEvent = self->_calendarEvent;
-  if (calendarEvent | *(v4 + 1))
+  if (calendarEvent | *(equalCopy + 1))
   {
     if (![(PCPCalendarEvent *)calendarEvent isEqual:?])
     {
@@ -454,7 +454,7 @@ LABEL_21:
   }
 
   homekitHome = self->_homekitHome;
-  if (homekitHome | *(v4 + 3))
+  if (homekitHome | *(equalCopy + 3))
   {
     if (![(PCPHomeKitHome *)homekitHome isEqual:?])
     {
@@ -463,7 +463,7 @@ LABEL_21:
   }
 
   healthKitWorkout = self->_healthKitWorkout;
-  if (healthKitWorkout | *(v4 + 2))
+  if (healthKitWorkout | *(equalCopy + 2))
   {
     if (![(PCPHealthKitWorkout *)healthKitWorkout isEqual:?])
     {
@@ -472,7 +472,7 @@ LABEL_21:
   }
 
   parkedCar = self->_parkedCar;
-  if (parkedCar | *(v4 + 6))
+  if (parkedCar | *(equalCopy + 6))
   {
     if (![(PCPParkedCar *)parkedCar isEqual:?])
     {
@@ -481,7 +481,7 @@ LABEL_21:
   }
 
   propagatedLocation = self->_propagatedLocation;
-  if (propagatedLocation | *(v4 + 8))
+  if (propagatedLocation | *(equalCopy + 8))
   {
     v13 = [(PCPLocationWithTimestamp *)propagatedLocation isEqual:?];
   }
@@ -517,13 +517,13 @@ LABEL_22:
   return v9 ^ [(PCPLocationWithTimestamp *)self->_propagatedLocation hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 72))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 72))
   {
-    self->_predictedContextSource = *(v4 + 14);
+    self->_predictedContextSource = *(fromCopy + 14);
     *&self->_has |= 1u;
   }
 

@@ -6,9 +6,9 @@
 
 - (BOOL)isSiriColor
 {
-  v2 = [(NTKFaceColorPalette *)self configuration];
-  v3 = [v2 colorOption];
-  v4 = [v3 isEqualToString:@"siri"];
+  configuration = [(NTKFaceColorPalette *)self configuration];
+  colorOption = [configuration colorOption];
+  v4 = [colorOption isEqualToString:@"siri"];
 
   return v4;
 }

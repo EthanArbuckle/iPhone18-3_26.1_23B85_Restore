@@ -1,33 +1,33 @@
 @interface HRUIClinicalAccountLoginSession
-- (BOOL)startLoginWithGateway:(id)a3 loginCancelledHandler:(id)a4 callbackErrorHandler:(id)a5 error:(id *)a6;
-- (BOOL)startReloginToAccount:(id)a3 viewController:(id)a4 profile:(id)a5 loginCancelledHandler:(id)a6 callbackErrorHandler:(id)a7 error:(id *)a8;
+- (BOOL)startLoginWithGateway:(id)gateway loginCancelledHandler:(id)handler callbackErrorHandler:(id)errorHandler error:(id *)error;
+- (BOOL)startReloginToAccount:(id)account viewController:(id)controller profile:(id)profile loginCancelledHandler:(id)handler callbackErrorHandler:(id)errorHandler error:(id *)error;
 - (HRUIClinicalAccountLoginSession)init;
-- (HRUIClinicalAccountLoginSession)initWithAccountStore:(id)a3 presentationAnchor:(id)a4 funnelContext:(int64_t)a5;
+- (HRUIClinicalAccountLoginSession)initWithAccountStore:(id)store presentationAnchor:(id)anchor funnelContext:(int64_t)context;
 @end
 
 @implementation HRUIClinicalAccountLoginSession
 
-- (HRUIClinicalAccountLoginSession)initWithAccountStore:(id)a3 presentationAnchor:(id)a4 funnelContext:(int64_t)a5
+- (HRUIClinicalAccountLoginSession)initWithAccountStore:(id)store presentationAnchor:(id)anchor funnelContext:(int64_t)context
 {
   ObjectType = swift_getObjectType();
   *(&self->super.isa + OBJC_IVAR___HRUIClinicalAccountLoginSession_authSession) = 0;
-  *(&self->super.isa + OBJC_IVAR___HRUIClinicalAccountLoginSession_accountStore) = a3;
-  *(&self->super.isa + OBJC_IVAR___HRUIClinicalAccountLoginSession_presentationAnchor) = a4;
-  *(&self->super.isa + OBJC_IVAR___HRUIClinicalAccountLoginSession_funnelContext) = a5;
+  *(&self->super.isa + OBJC_IVAR___HRUIClinicalAccountLoginSession_accountStore) = store;
+  *(&self->super.isa + OBJC_IVAR___HRUIClinicalAccountLoginSession_presentationAnchor) = anchor;
+  *(&self->super.isa + OBJC_IVAR___HRUIClinicalAccountLoginSession_funnelContext) = context;
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v10 = a3;
-  v11 = a4;
+  storeCopy = store;
+  anchorCopy = anchor;
   return [(HRUIClinicalAccountLoginSession *)&v13 init];
 }
 
-- (BOOL)startLoginWithGateway:(id)a3 loginCancelledHandler:(id)a4 callbackErrorHandler:(id)a5 error:(id *)a6
+- (BOOL)startLoginWithGateway:(id)gateway loginCancelledHandler:(id)handler callbackErrorHandler:(id)errorHandler error:(id *)error
 {
   sub_1D10C74B8(0, &qword_1EE06A650, MEMORY[0x1E69E85F0]);
   MEMORY[0x1EEE9AC00](v10 - 8);
   v12 = &v25 - v11;
-  v13 = _Block_copy(a4);
-  v14 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
+  v14 = _Block_copy(errorHandler);
   if (v13)
   {
     v15 = swift_allocObject();
@@ -45,9 +45,9 @@
   v17 = sub_1D13905DC();
   (*(*(v17 - 8) + 56))(v12, 1, 1, v17);
   sub_1D13905AC();
-  v18 = a3;
-  v19 = self;
-  v20 = v18;
+  gatewayCopy = gateway;
+  selfCopy = self;
+  v20 = gatewayCopy;
   sub_1D102CE24(v13);
 
   v21 = sub_1D139059C();
@@ -55,7 +55,7 @@
   v23 = MEMORY[0x1E69E85E0];
   v22[2] = v21;
   v22[3] = v23;
-  v22[4] = v19;
+  v22[4] = selfCopy;
   v22[5] = v20;
   v22[6] = v13;
   v22[7] = v15;
@@ -68,14 +68,14 @@
   return 1;
 }
 
-- (BOOL)startReloginToAccount:(id)a3 viewController:(id)a4 profile:(id)a5 loginCancelledHandler:(id)a6 callbackErrorHandler:(id)a7 error:(id *)a8
+- (BOOL)startReloginToAccount:(id)account viewController:(id)controller profile:(id)profile loginCancelledHandler:(id)handler callbackErrorHandler:(id)errorHandler error:(id *)error
 {
-  v33 = self;
+  selfCopy = self;
   sub_1D10C74B8(0, &qword_1EE06A650, MEMORY[0x1E69E85F0]);
   MEMORY[0x1EEE9AC00](v13 - 8);
   v15 = &v32 - v14;
-  v16 = _Block_copy(a6);
-  v17 = _Block_copy(a7);
+  v16 = _Block_copy(handler);
+  v17 = _Block_copy(errorHandler);
   if (v16)
   {
     v18 = swift_allocObject();
@@ -93,13 +93,13 @@
   v20 = sub_1D13905DC();
   (*(*(v20 - 8) + 56))(v15, 1, 1, v20);
   sub_1D13905AC();
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = v33;
-  v25 = v21;
-  v26 = v22;
-  v27 = v23;
+  accountCopy = account;
+  controllerCopy = controller;
+  profileCopy = profile;
+  v24 = selfCopy;
+  v25 = accountCopy;
+  v26 = controllerCopy;
+  v27 = profileCopy;
   sub_1D102CE24(v16);
 
   v28 = sub_1D139059C();

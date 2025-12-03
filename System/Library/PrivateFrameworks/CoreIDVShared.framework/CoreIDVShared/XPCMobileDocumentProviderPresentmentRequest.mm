@@ -1,24 +1,24 @@
 @interface XPCMobileDocumentProviderPresentmentRequest
 - (_TtC13CoreIDVShared43XPCMobileDocumentProviderPresentmentRequest)init;
-- (_TtC13CoreIDVShared43XPCMobileDocumentProviderPresentmentRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared43XPCMobileDocumentProviderPresentmentRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XPCMobileDocumentProviderPresentmentRequest
 
-- (_TtC13CoreIDVShared43XPCMobileDocumentProviderPresentmentRequest)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared43XPCMobileDocumentProviderPresentmentRequest)initWithCoder:(id)coder
 {
   swift_getObjectType();
-  v4 = sub_225C57884(a3);
+  v4 = sub_225C57884(coder);
   swift_deallocPartialClassInstance();
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _s13CoreIDVShared43XPCMobileDocumentProviderPresentmentRequestC6encode4withySo7NSCoderC_tF_0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _s13CoreIDVShared43XPCMobileDocumentProviderPresentmentRequestC6encode4withySo7NSCoderC_tF_0(coderCopy);
 }
 
 - (_TtC13CoreIDVShared43XPCMobileDocumentProviderPresentmentRequest)init

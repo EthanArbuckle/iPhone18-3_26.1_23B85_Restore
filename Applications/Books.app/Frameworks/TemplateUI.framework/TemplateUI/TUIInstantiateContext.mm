@@ -1,114 +1,114 @@
 @interface TUIInstantiateContext
-- ($0220C184157FC9E8AD112820945A9326)animationDefinitonWithNode:(id)a3 nameAttribute:(unsigned __int16)a4;
-- ($0220C184157FC9E8AD112820945A9326)elementDefinitionWithNameAttribute:(unsigned __int16)a3 node:(id)a4;
-- ($0220C184157FC9E8AD112820945A9326)letDefinitionWithNameAttribute:(unsigned __int16)a3 valueAttribute:(unsigned __int16)a4 node:(id)a5;
-- ($201E9A47BE70A2B12CCA2F48B75AA2F7)bindingNameForAttribute:(unsigned __int16)a3 node:(id)a4;
-- ($201E9A47BE70A2B12CCA2F48B75AA2F7)constantNameForAttribute:(unsigned __int16)a3 node:(id)a4;
-- ($201E9A47BE70A2B12CCA2F48B75AA2F7)globalsNameForAttribute:(unsigned __int16)a3 node:(id)a4;
-- ($2940F3BBF0C500EC413214967FDB6F62)springTimingParametersForAttribute:(SEL)a3 node:(unsigned __int16)a4;
-- ($2940F3BBF0C500EC413214967FDB6F62)springTimingParametersFromValue:(SEL)a3;
-- ($738B17BD11CC339B30296C0EA03CEC2B)closureForNode:(id)a3;
-- ($738B17BD11CC339B30296C0EA03CEC2B)elementReferenceForAttribute:(unsigned __int16)a3 node:(id)a4;
-- ($738B17BD11CC339B30296C0EA03CEC2B)enumeratorWithAttribute:(unsigned __int16)a3 node:(id)a4;
-- ($738B17BD11CC339B30296C0EA03CEC2B)lookupUnconditionalAttribute:(unsigned __int16)a3 attributes:(id)a4;
-- ($738B17BD11CC339B30296C0EA03CEC2B)nameReferenceForAttribute:(unsigned __int16)a3 node:(id)a4;
-- ($738B17BD11CC339B30296C0EA03CEC2B)unresolvedValueForAttribute:(unsigned __int16)a3 node:(id)a4;
-- ($7E080378D8F67055EE0984892F39872B)propertyNameForAttribute:(unsigned __int16)a3 node:(id)a4;
-- ($BCFAEF449BEAD7B465B9C350BA76DD22)styleDefinitionWithNode:(SEL)a3 nameAttribute:(id)a4 inheritAttribute:(unsigned __int16)a5;
-- ($E297CC25127479E857BE23A4F8632EA4)lengthForAttribute:(SEL)a3 node:(unsigned __int16)a4;
-- ($E297CC25127479E857BE23A4F8632EA4)lengthFromValue:(SEL)a3;
-- ($E756168898AF8F0D74815393AFAB5A0B)animationReferenceForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (BOOL)BOOLForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (BOOL)BOOLForAttribute:(unsigned __int16)a3 withDefault:(BOOL)a4 node:(id)a5;
-- (BOOL)BOOLForCondition:(id)a3;
-- (BOOL)BOOLFromValue:(id)a3;
-- (CGAffineTransform)transformForAttribute:(SEL)a3 node:(unsigned __int16)a4;
-- (CGAffineTransform)transformFromValue:(SEL)a3;
-- (CGSize)sizeForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (CGSize)sizeFromValue:(id)a3;
+- ($0220C184157FC9E8AD112820945A9326)animationDefinitonWithNode:(id)node nameAttribute:(unsigned __int16)attribute;
+- ($0220C184157FC9E8AD112820945A9326)elementDefinitionWithNameAttribute:(unsigned __int16)attribute node:(id)node;
+- ($0220C184157FC9E8AD112820945A9326)letDefinitionWithNameAttribute:(unsigned __int16)attribute valueAttribute:(unsigned __int16)valueAttribute node:(id)node;
+- ($201E9A47BE70A2B12CCA2F48B75AA2F7)bindingNameForAttribute:(unsigned __int16)attribute node:(id)node;
+- ($201E9A47BE70A2B12CCA2F48B75AA2F7)constantNameForAttribute:(unsigned __int16)attribute node:(id)node;
+- ($201E9A47BE70A2B12CCA2F48B75AA2F7)globalsNameForAttribute:(unsigned __int16)attribute node:(id)node;
+- ($2940F3BBF0C500EC413214967FDB6F62)springTimingParametersForAttribute:(SEL)attribute node:(unsigned __int16)node;
+- ($2940F3BBF0C500EC413214967FDB6F62)springTimingParametersFromValue:(SEL)value;
+- ($738B17BD11CC339B30296C0EA03CEC2B)closureForNode:(id)node;
+- ($738B17BD11CC339B30296C0EA03CEC2B)elementReferenceForAttribute:(unsigned __int16)attribute node:(id)node;
+- ($738B17BD11CC339B30296C0EA03CEC2B)enumeratorWithAttribute:(unsigned __int16)attribute node:(id)node;
+- ($738B17BD11CC339B30296C0EA03CEC2B)lookupUnconditionalAttribute:(unsigned __int16)attribute attributes:(id)attributes;
+- ($738B17BD11CC339B30296C0EA03CEC2B)nameReferenceForAttribute:(unsigned __int16)attribute node:(id)node;
+- ($738B17BD11CC339B30296C0EA03CEC2B)unresolvedValueForAttribute:(unsigned __int16)attribute node:(id)node;
+- ($7E080378D8F67055EE0984892F39872B)propertyNameForAttribute:(unsigned __int16)attribute node:(id)node;
+- ($BCFAEF449BEAD7B465B9C350BA76DD22)styleDefinitionWithNode:(SEL)node nameAttribute:(id)attribute inheritAttribute:(unsigned __int16)inheritAttribute;
+- ($E297CC25127479E857BE23A4F8632EA4)lengthForAttribute:(SEL)attribute node:(unsigned __int16)node;
+- ($E297CC25127479E857BE23A4F8632EA4)lengthFromValue:(SEL)value;
+- ($E756168898AF8F0D74815393AFAB5A0B)animationReferenceForAttribute:(unsigned __int16)attribute node:(id)node;
+- (BOOL)BOOLForAttribute:(unsigned __int16)attribute node:(id)node;
+- (BOOL)BOOLForAttribute:(unsigned __int16)attribute withDefault:(BOOL)default node:(id)node;
+- (BOOL)BOOLForCondition:(id)condition;
+- (BOOL)BOOLFromValue:(id)value;
+- (CGAffineTransform)transformForAttribute:(SEL)attribute node:(unsigned __int16)node;
+- (CGAffineTransform)transformFromValue:(SEL)value;
+- (CGSize)sizeForAttribute:(unsigned __int16)attribute node:(id)node;
+- (CGSize)sizeFromValue:(id)value;
 - (TUIActionHandlerDelegate)actionDelegate;
 - (TUIDynamicControlling)dynamicController;
-- (TUIInstantiateContext)initWithDelegate:(id)a3 package:(id)a4 manager:(id)a5 identifierMap:(id)a6 environment:(id)a7 state:(id)a8 feedId:(id)a9;
+- (TUIInstantiateContext)initWithDelegate:(id)delegate package:(id)package manager:(id)manager identifierMap:(id)map environment:(id)environment state:(id)state feedId:(id)id;
 - (TUIInstantiateContextDelegate)delegate;
 - (TUITransactionCoordinating)transactionCoordinator;
-- (UIEdgeInsets)insetsForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (UIEdgeInsets)insetsForAttribute:(unsigned __int16)a3 withDefault:(UIEdgeInsets)a4 node:(id)a5;
-- (const)_resolvedValueForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (double)floatForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (double)floatForAttribute:(unsigned __int16)a3 withDefault:(double)a4 node:(id)a5;
-- (double)floatFromValue:(id)a3 default:(double)a4;
-- (id)_xpathForLocation:(id)a3;
-- (id)baseURLForNode:(id)a3;
-- (id)colorArrayForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (id)colorForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (id)colorFromValue:(id)a3;
-- (id)debugDumpEnvironmentContainerStructure:(id)a3;
-- (id)dynamicStateForKind:(id)a3 instance:(id)a4 parameters:(id)a5;
-- (id)environmentChildContainersForContainer:(id)a3;
-- (id)evaluateStringForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (id)focusStyleForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (id)guideSpecFromValue:(id)a3;
-- (id)guidesForNode:(id)a3;
-- (id)instantiateBinding:(id)a3 withDynamicProvider:(id)a4 childrenOfNode:(id)a5;
-- (id)instantiateEnumerator:(id)a3 withChildrenOfNode:(id)a4 options:(id)a5;
-- (id)instantiateTemplate:(id)a3 bindings:(id)a4 actionObject:(id)a5;
-- (id)modelIdentifierByAppendingString:(id)a3 node:(id)a4;
-- (id)modelIdentifierWithNode:(id)a3;
-- (id)objectForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (id)objectFromValue:(id)a3;
-- (id)pointerStyleForNode:(id)a3;
+- (UIEdgeInsets)insetsForAttribute:(unsigned __int16)attribute node:(id)node;
+- (UIEdgeInsets)insetsForAttribute:(unsigned __int16)attribute withDefault:(UIEdgeInsets)default node:(id)node;
+- (const)_resolvedValueForAttribute:(unsigned __int16)attribute node:(id)node;
+- (double)floatForAttribute:(unsigned __int16)attribute node:(id)node;
+- (double)floatForAttribute:(unsigned __int16)attribute withDefault:(double)default node:(id)node;
+- (double)floatFromValue:(id)value default:(double)default;
+- (id)_xpathForLocation:(id)location;
+- (id)baseURLForNode:(id)node;
+- (id)colorArrayForAttribute:(unsigned __int16)attribute node:(id)node;
+- (id)colorForAttribute:(unsigned __int16)attribute node:(id)node;
+- (id)colorFromValue:(id)value;
+- (id)debugDumpEnvironmentContainerStructure:(id)structure;
+- (id)dynamicStateForKind:(id)kind instance:(id)instance parameters:(id)parameters;
+- (id)environmentChildContainersForContainer:(id)container;
+- (id)evaluateStringForAttribute:(unsigned __int16)attribute node:(id)node;
+- (id)focusStyleForAttribute:(unsigned __int16)attribute node:(id)node;
+- (id)guideSpecFromValue:(id)value;
+- (id)guidesForNode:(id)node;
+- (id)instantiateBinding:(id)binding withDynamicProvider:(id)provider childrenOfNode:(id)node;
+- (id)instantiateEnumerator:(id)enumerator withChildrenOfNode:(id)node options:(id)options;
+- (id)instantiateTemplate:(id)template bindings:(id)bindings actionObject:(id)object;
+- (id)modelIdentifierByAppendingString:(id)string node:(id)node;
+- (id)modelIdentifierWithNode:(id)node;
+- (id)objectForAttribute:(unsigned __int16)attribute node:(id)node;
+- (id)objectFromValue:(id)value;
+- (id)pointerStyleForNode:(id)node;
 - (id)saveState;
-- (id)serviceConformingToProtocol:(id)a3;
-- (id)stringArrayForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (id)stringForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (id)stringFromName:(id)a3;
-- (id)stringFromValue:(id)a3;
-- (id)structForAttribute:(unsigned __int16)a3 node:(id)a4;
-- (int64_t)integerForAttribute:(unsigned __int16)a3 withDefault:(int64_t)a4 node:(id)a5;
-- (int64_t)integerFromValue:(id)a3 default:(int64_t)a4;
-- (unint64_t)animationCalculationModeAndCurveForNode:(id)a3;
-- (unint64_t)childCountForNode:(id)a3;
-- (unint64_t)evaluateBinding:(id)a3 withObject:(id)a4 atIndex:(unint64_t)a5 count:(unint64_t)a6 uniqueID:(id)a7 block:(id)a8;
-- (unint64_t)evaluateEnumerator:(id)a3 withObject:(id)a4 atIndex:(unint64_t)a5 count:(unint64_t)a6 uniqueID:(id)a7 block:(id)a8;
-- (unint64_t)unsignedIntegerForAttribute:(unsigned __int16)a3 withDefault:(unint64_t)a4 node:(id)a5;
-- (unint64_t)unsignedIntegerFromValue:(id)a3 default:(unint64_t)a4;
+- (id)serviceConformingToProtocol:(id)protocol;
+- (id)stringArrayForAttribute:(unsigned __int16)attribute node:(id)node;
+- (id)stringForAttribute:(unsigned __int16)attribute node:(id)node;
+- (id)stringFromName:(id)name;
+- (id)stringFromValue:(id)value;
+- (id)structForAttribute:(unsigned __int16)attribute node:(id)node;
+- (int64_t)integerForAttribute:(unsigned __int16)attribute withDefault:(int64_t)default node:(id)node;
+- (int64_t)integerFromValue:(id)value default:(int64_t)default;
+- (unint64_t)animationCalculationModeAndCurveForNode:(id)node;
+- (unint64_t)childCountForNode:(id)node;
+- (unint64_t)evaluateBinding:(id)binding withObject:(id)object atIndex:(unint64_t)index count:(unint64_t)count uniqueID:(id)d block:(id)block;
+- (unint64_t)evaluateEnumerator:(id)enumerator withObject:(id)object atIndex:(unint64_t)index count:(unint64_t)count uniqueID:(id)d block:(id)block;
+- (unint64_t)unsignedIntegerForAttribute:(unsigned __int16)attribute withDefault:(unint64_t)default node:(id)node;
+- (unint64_t)unsignedIntegerFromValue:(id)value default:(unint64_t)default;
 - (void)dealloc;
-- (void)defineBindingWithName:(id)a3 value:(id)a4;
-- (void)defineBool:(BOOL)a3 withName:(id)a4;
-- (void)defineComponentBindingWithName:(id)a3 value:(id)a4;
-- (void)defineConstantWithName:(id)a3 value:(id)a4;
-- (void)defineElement:(id)a3 closure:(id)a4;
-- (void)defineLet:(id)a3 closure:(id)a4;
-- (void)defineStyle:(id *)a3 closure:(id)a4;
-- (void)enumerateChildrenOfNode:(id)a3 block:(id)a4;
-- (void)evaluateWithSnapshot:(id)a3 block:(id)a4;
-- (void)includeTemplateWithURL:(id)a3;
-- (void)setEnvironment:(id)a3;
-- (void)setStatsCollector:(id)a3;
+- (void)defineBindingWithName:(id)name value:(id)value;
+- (void)defineBool:(BOOL)bool withName:(id)name;
+- (void)defineComponentBindingWithName:(id)name value:(id)value;
+- (void)defineConstantWithName:(id)name value:(id)value;
+- (void)defineElement:(id)element closure:(id)closure;
+- (void)defineLet:(id)let closure:(id)closure;
+- (void)defineStyle:(id *)style closure:(id)closure;
+- (void)enumerateChildrenOfNode:(id)node block:(id)block;
+- (void)evaluateWithSnapshot:(id)snapshot block:(id)block;
+- (void)includeTemplateWithURL:(id)l;
+- (void)setEnvironment:(id)environment;
+- (void)setStatsCollector:(id)collector;
 @end
 
 @implementation TUIInstantiateContext
 
-- (TUIInstantiateContext)initWithDelegate:(id)a3 package:(id)a4 manager:(id)a5 identifierMap:(id)a6 environment:(id)a7 state:(id)a8 feedId:(id)a9
+- (TUIInstantiateContext)initWithDelegate:(id)delegate package:(id)package manager:(id)manager identifierMap:(id)map environment:(id)environment state:(id)state feedId:(id)id
 {
-  obj = a3;
-  v15 = a4;
-  v22 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  obj = delegate;
+  packageCopy = package;
+  managerCopy = manager;
+  mapCopy = map;
+  environmentCopy = environment;
+  stateCopy = state;
   v24.receiver = self;
   v24.super_class = TUIInstantiateContext;
   v19 = [(TUIInstantiateContext *)&v24 init];
   p_isa = &v19->super.isa;
   if (v19)
   {
-    v19->_feedId.uniqueIdentifier = a9.var0;
+    v19->_feedId.uniqueIdentifier = id.var0;
     objc_storeWeak(&v19->_delegate, obj);
-    objc_storeStrong(p_isa + 6, a6);
-    objc_storeStrong(p_isa + 7, a7);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 4, a5);
+    objc_storeStrong(p_isa + 6, map);
+    objc_storeStrong(p_isa + 7, environment);
+    objc_storeStrong(p_isa + 2, package);
+    objc_storeStrong(p_isa + 4, manager);
     operator new();
   }
 
@@ -142,31 +142,31 @@
   [(TUIInstantiateContext *)&v6 dealloc];
 }
 
-- (id)serviceConformingToProtocol:(id)a3
+- (id)serviceConformingToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [(TUIInstantiateContext *)self delegate];
-  v6 = [v5 instantiateContext:self serviceConformingToProtocol:v4];
+  protocolCopy = protocol;
+  delegate = [(TUIInstantiateContext *)self delegate];
+  v6 = [delegate instantiateContext:self serviceConformingToProtocol:protocolCopy];
 
   return v6;
 }
 
-- (id)instantiateTemplate:(id)a3 bindings:(id)a4 actionObject:(id)a5
+- (id)instantiateTemplate:(id)template bindings:(id)bindings actionObject:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  templateCopy = template;
+  bindingsCopy = bindings;
+  objectCopy = object;
   v11 = *(self->_context + 96);
   if (v11)
   {
     *(v11 + 27848) = mach_absolute_time();
   }
 
-  if (v8)
+  if (templateCopy)
   {
-    v12 = [v8 package];
-    v13 = v12;
-    if (v12 != self->_package)
+    package = [templateCopy package];
+    v13 = package;
+    if (package != self->_package)
     {
       v14 = 0;
 LABEL_12:
@@ -178,7 +178,7 @@ LABEL_12:
     {
       kdebug_trace();
       [(TUIInstantiateContext *)self clearErrors];
-      v15 = [[_TUIInstantiateEntry alloc] initWithTemplate:v8 bindings:v9 actionObject:v10];
+      v15 = [[_TUIInstantiateEntry alloc] initWithTemplate:templateCopy bindings:bindingsCopy actionObject:objectCopy];
       v16 = objc_autoreleasePoolPush();
       TUI::Evaluation::Context::reset(self->_context);
       v17 = TUI::Evaluation::Context::instantiateEntry(self->_context, v15);
@@ -219,19 +219,19 @@ LABEL_14:
   return v5;
 }
 
-- (void)setEnvironment:(id)a3
+- (void)setEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   environment = self->_environment;
-  v7 = v5;
-  if (environment != v5 && ![(TUIEnvironment *)environment isEqualToEnvironment:v5])
+  v7 = environmentCopy;
+  if (environment != environmentCopy && ![(TUIEnvironment *)environment isEqualToEnvironment:environmentCopy])
   {
-    objc_storeStrong(&self->_environment, a3);
+    objc_storeStrong(&self->_environment, environment);
     TUI::Evaluation::Context::setEnvironment(self->_context, v7);
   }
 }
 
-- ($E297CC25127479E857BE23A4F8632EA4)lengthFromValue:(SEL)a3
+- ($E297CC25127479E857BE23A4F8632EA4)lengthFromValue:(SEL)value
 {
   [(TUIStatsEventCollector *)self->_statsCollector recordEvent:5];
   if (!TUIValueNotNil(a4.var0))
@@ -245,48 +245,48 @@ LABEL_14:
   return v6;
 }
 
-- (double)floatFromValue:(id)a3 default:(double)a4
+- (double)floatFromValue:(id)value default:(double)default
 {
   [(TUIStatsEventCollector *)self->_statsCollector recordEvent:1];
-  if (TUIValueNotNil(a3.var0))
+  if (TUIValueNotNil(value.var0))
   {
-    TUI::Evaluation::Context::resolve(self->_context, a3.var0, v8);
-    a4 = TUI::Evaluation::ResolvedValue::floatValue(v8, self->_context);
+    TUI::Evaluation::Context::resolve(self->_context, value.var0, v8);
+    default = TUI::Evaluation::ResolvedValue::floatValue(v8, self->_context);
   }
 
-  return a4;
+  return default;
 }
 
-- (unint64_t)unsignedIntegerFromValue:(id)a3 default:(unint64_t)a4
+- (unint64_t)unsignedIntegerFromValue:(id)value default:(unint64_t)default
 {
   [(TUIStatsEventCollector *)self->_statsCollector recordEvent:2];
-  if (TUIValueNotNil(a3.var0))
+  if (TUIValueNotNil(value.var0))
   {
-    TUI::Evaluation::Context::resolve(self->_context, a3.var0, v8);
-    a4 = TUI::Evaluation::ResolvedValue::integerValue(v8, self->_context);
+    TUI::Evaluation::Context::resolve(self->_context, value.var0, v8);
+    default = TUI::Evaluation::ResolvedValue::integerValue(v8, self->_context);
   }
 
-  return a4;
+  return default;
 }
 
-- (int64_t)integerFromValue:(id)a3 default:(int64_t)a4
+- (int64_t)integerFromValue:(id)value default:(int64_t)default
 {
   [(TUIStatsEventCollector *)self->_statsCollector recordEvent:2];
-  if (TUIValueNotNil(a3.var0))
+  if (TUIValueNotNil(value.var0))
   {
-    TUI::Evaluation::Context::resolve(self->_context, a3.var0, v8);
-    a4 = TUI::Evaluation::ResolvedValue::integerValue(v8, self->_context);
+    TUI::Evaluation::Context::resolve(self->_context, value.var0, v8);
+    default = TUI::Evaluation::ResolvedValue::integerValue(v8, self->_context);
   }
 
-  return a4;
+  return default;
 }
 
-- (CGSize)sizeFromValue:(id)a3
+- (CGSize)sizeFromValue:(id)value
 {
   [(TUIStatsEventCollector *)self->_statsCollector recordEvent:8];
-  if (TUIValueNotNil(a3.var0))
+  if (TUIValueNotNil(value.var0))
   {
-    TUI::Evaluation::Context::resolve(self->_context, a3.var0, v10);
+    TUI::Evaluation::Context::resolve(self->_context, value.var0, v10);
     width = TUI::Evaluation::ResolvedValue::sizeValue(v10, self->_context);
     height = v6;
   }
@@ -304,12 +304,12 @@ LABEL_14:
   return result;
 }
 
-- (id)colorFromValue:(id)a3
+- (id)colorFromValue:(id)value
 {
   [(TUIStatsEventCollector *)self->_statsCollector recordEvent:10];
-  if (TUIValueNotNil(a3.var0))
+  if (TUIValueNotNil(value.var0))
   {
-    TUI::Evaluation::Context::resolve(self->_context, a3.var0, v7);
+    TUI::Evaluation::Context::resolve(self->_context, value.var0, v7);
     v5 = TUI::Evaluation::ResolvedValue::colorValue(v7, self->_context);
   }
 
@@ -321,24 +321,24 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)BOOLFromValue:(id)a3
+- (BOOL)BOOLFromValue:(id)value
 {
   [(TUIStatsEventCollector *)self->_statsCollector recordEvent:3];
-  if (!TUIValueNotNil(a3.var0))
+  if (!TUIValueNotNil(value.var0))
   {
     return 0;
   }
 
-  TUI::Evaluation::Context::resolve(self->_context, a3.var0, v7);
+  TUI::Evaluation::Context::resolve(self->_context, value.var0, v7);
   v5 = TUI::Evaluation::ResolvedValue::BOOLValue(v7, self->_context);
 
   return v5;
 }
 
-- (BOOL)BOOLForCondition:(id)a3
+- (BOOL)BOOLForCondition:(id)condition
 {
-  var0 = a3.var0;
-  if (!TUIConditionNotNil(a3.var0))
+  var0 = condition.var0;
+  if (!TUIConditionNotNil(condition.var0))
   {
     return 1;
   }
@@ -350,12 +350,12 @@ LABEL_14:
   return v5;
 }
 
-- (id)stringFromValue:(id)a3
+- (id)stringFromValue:(id)value
 {
   [(TUIStatsEventCollector *)self->_statsCollector recordEvent:6];
-  if (TUIValueNotNil(a3.var0))
+  if (TUIValueNotNil(value.var0))
   {
-    TUI::Evaluation::Context::resolve(self->_context, a3.var0, v7);
+    TUI::Evaluation::Context::resolve(self->_context, value.var0, v7);
     v5 = TUI::Evaluation::ResolvedValue::stringValue(v7, self->_context);
   }
 
@@ -367,12 +367,12 @@ LABEL_14:
   return v5;
 }
 
-- (id)objectFromValue:(id)a3
+- (id)objectFromValue:(id)value
 {
   [(TUIStatsEventCollector *)self->_statsCollector recordEvent:7];
-  if (TUIValueNotNil(a3.var0))
+  if (TUIValueNotNil(value.var0))
   {
-    TUI::Evaluation::Context::resolve(self->_context, a3.var0, v7);
+    TUI::Evaluation::Context::resolve(self->_context, value.var0, v7);
     v5 = TUI::Evaluation::ResolvedValue::objectValue(v7, self->_context);
   }
 
@@ -384,7 +384,7 @@ LABEL_14:
   return v5;
 }
 
-- (CGAffineTransform)transformFromValue:(SEL)a3
+- (CGAffineTransform)transformFromValue:(SEL)value
 {
   [(TUIStatsEventCollector *)self->_statsCollector recordEvent:4];
   result = TUIValueNotNil(a4.var0);
@@ -405,7 +405,7 @@ LABEL_14:
   return result;
 }
 
-- ($2940F3BBF0C500EC413214967FDB6F62)springTimingParametersFromValue:(SEL)a3
+- ($2940F3BBF0C500EC413214967FDB6F62)springTimingParametersFromValue:(SEL)value
 {
   [(TUIStatsEventCollector *)self->_statsCollector recordEvent:28];
   result = TUIValueNotNil(a4.var0);
@@ -425,12 +425,12 @@ LABEL_14:
   return result;
 }
 
-- (id)stringFromName:(id)a3
+- (id)stringFromName:(id)name
 {
-  v4 = a3;
-  if (TUINameIsValid(*&a3))
+  nameCopy = name;
+  if (TUINameIsValid(*&name))
   {
-    v5 = TUI::Symbol::Tab::string(*(self->_context + 70), v4);
+    v5 = TUI::Symbol::Tab::string(*(self->_context + 70), nameCopy);
   }
 
   else
@@ -441,10 +441,10 @@ LABEL_14:
   return v5;
 }
 
-- (id)guideSpecFromValue:(id)a3
+- (id)guideSpecFromValue:(id)value
 {
-  var0 = a3.var0;
-  if (TUIValueNotNil(a3.var0))
+  var0 = value.var0;
+  if (TUIValueNotNil(value.var0))
   {
     TUI::Evaluation::Context::resolve(self->_context, var0, v7);
     v5 = TUI::Evaluation::ResolvedValue::guideValue(v7, self->_context);
@@ -458,11 +458,11 @@ LABEL_14:
   return v5;
 }
 
-- (id)instantiateBinding:(id)a3 withDynamicProvider:(id)a4 childrenOfNode:(id)a5
+- (id)instantiateBinding:(id)binding withDynamicProvider:(id)provider childrenOfNode:(id)node
 {
-  v8 = a4;
-  var0 = a5.var0;
-  v10 = TUI::Evaluation::Context::childrenOfNode(self->_context, a5.var0);
+  providerCopy = provider;
+  var0 = node.var0;
+  v10 = TUI::Evaluation::Context::childrenOfNode(self->_context, node.var0);
   v11 = TUI::Evaluation::Context::closureForNode(self->_context, var0);
   context = self->_context;
   if (*(context + 184))
@@ -475,22 +475,22 @@ LABEL_14:
     v13 = 0;
   }
 
-  v14 = objc_opt_class();
+  builderClassForDynamicInstantiation = objc_opt_class();
   if (objc_opt_respondsToSelector())
   {
-    v14 = [*(context + 21) builderClassForDynamicInstantiation];
+    builderClassForDynamicInstantiation = [*(context + 21) builderClassForDynamicInstantiation];
   }
 
-  v15 = v14;
+  v15 = builderClassForDynamicInstantiation;
   v16 = [(TUIInstantiateContext *)self snapshotWithClosure:v11];
-  v17 = [v8 instantiateAsBinding:*&a3 options:0 flags:v13 builderClass:v14 nodes:v10 snapshot:v16 context:self];
+  v17 = [providerCopy instantiateAsBinding:*&binding options:0 flags:v13 builderClass:builderClassForDynamicInstantiation nodes:v10 snapshot:v16 context:self];
 
   return v17;
 }
 
-- (id)instantiateEnumerator:(id)a3 withChildrenOfNode:(id)a4 options:(id)a5
+- (id)instantiateEnumerator:(id)enumerator withChildrenOfNode:(id)node options:(id)options
 {
-  v8 = a5;
+  optionsCopy = options;
   context = self->_context;
   if (context[184])
   {
@@ -502,20 +502,20 @@ LABEL_14:
     v10 = 0;
   }
 
-  var0 = a4.var0;
-  v12 = TUI::Evaluation::Context::childrenOfNode(self->_context, a4.var0);
+  var0 = node.var0;
+  v12 = TUI::Evaluation::Context::childrenOfNode(self->_context, node.var0);
   v13 = TUI::Evaluation::Context::closureForNode(self->_context, var0);
-  v14 = TUI::Evaluation::Context::instantiateEnumeratorWithNodes(context, a3.var0, v12, v13, v8, v10);
+  v14 = TUI::Evaluation::Context::instantiateEnumeratorWithNodes(context, enumerator.var0, v12, v13, optionsCopy, v10);
 
   return v14;
 }
 
-- (unint64_t)evaluateEnumerator:(id)a3 withObject:(id)a4 atIndex:(unint64_t)a5 count:(unint64_t)a6 uniqueID:(id)a7 block:(id)a8
+- (unint64_t)evaluateEnumerator:(id)enumerator withObject:(id)object atIndex:(unint64_t)index count:(unint64_t)count uniqueID:(id)d block:(id)block
 {
-  v14 = a4;
-  v15 = a8;
-  v16 = !TUIEnumeratorNotNil(a3.var0);
-  if (!v15)
+  objectCopy = object;
+  blockCopy = block;
+  v16 = !TUIEnumeratorNotNil(enumerator.var0);
+  if (!blockCopy)
   {
     LOBYTE(v16) = 1;
   }
@@ -528,30 +528,30 @@ LABEL_14:
   else
   {
     v17 = *(self->_context + 72);
-    if (*(v17 + 264) <= a3.var0)
+    if (*(v17 + 264) <= enumerator.var0)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = (*(v17 + 256) + 16 * a3.var0);
+      v18 = (*(v17 + 256) + 16 * enumerator.var0);
     }
 
     sub_8BE78(&v22, v18);
     v20 = v23;
-    v19 = TUI::Evaluation::Context::evaluateEnumeratorWithBlock(self->_context, v22, v20, v14, a5, a6, a7.var0, v15);
+    v19 = TUI::Evaluation::Context::evaluateEnumeratorWithBlock(self->_context, v22, v20, objectCopy, index, count, d.var0, blockCopy);
   }
 
   return v19;
 }
 
-- (unint64_t)evaluateBinding:(id)a3 withObject:(id)a4 atIndex:(unint64_t)a5 count:(unint64_t)a6 uniqueID:(id)a7 block:(id)a8
+- (unint64_t)evaluateBinding:(id)binding withObject:(id)object atIndex:(unint64_t)index count:(unint64_t)count uniqueID:(id)d block:(id)block
 {
-  v14 = a4;
-  v15 = a8;
-  v17 = !TUINameIsValid(*&a3);
-  if (!v15)
+  objectCopy = object;
+  blockCopy = block;
+  v17 = !TUINameIsValid(*&binding);
+  if (!blockCopy)
   {
     LOBYTE(v17) = 1;
   }
@@ -563,45 +563,45 @@ LABEL_14:
 
   else
   {
-    v18 = TUI::Package::Enumerator::Entry::binding(*&a3, v16);
+    v18 = TUI::Package::Enumerator::Entry::binding(*&binding, v16);
     v20 = v19;
-    v21 = TUI::Evaluation::Context::evaluateEnumeratorWithBlock(self->_context, v18, v20, v14, a5, a6, a7.var0, v15);
+    v21 = TUI::Evaluation::Context::evaluateEnumeratorWithBlock(self->_context, v18, v20, objectCopy, index, count, d.var0, blockCopy);
   }
 
   return v21;
 }
 
-- (id)modelIdentifierWithNode:(id)a3
+- (id)modelIdentifierWithNode:(id)node
 {
-  v4 = TUI::Evaluation::Context::identifierWithNode(self->_context, a3.var0);
-  v5 = [(TUIIdentifierMap *)self->_identifierMap UUID];
-  v6 = [v4 tui_identifierByPrependingUUID:v5];
+  v4 = TUI::Evaluation::Context::identifierWithNode(self->_context, node.var0);
+  uUID = [(TUIIdentifierMap *)self->_identifierMap UUID];
+  v6 = [v4 tui_identifierByPrependingUUID:uUID];
 
   return v6;
 }
 
-- (id)modelIdentifierByAppendingString:(id)a3 node:(id)a4
+- (id)modelIdentifierByAppendingString:(id)string node:(id)node
 {
-  v6 = a3;
-  v7 = TUI::Evaluation::Context::identifierWithNode(self->_context, a4.var0);
-  v8 = [v7 tui_identifierByAppendingString:v6];
-  v9 = [(TUIIdentifierMap *)self->_identifierMap UUID];
-  v10 = [v8 tui_identifierByPrependingUUID:v9];
+  stringCopy = string;
+  v7 = TUI::Evaluation::Context::identifierWithNode(self->_context, node.var0);
+  v8 = [v7 tui_identifierByAppendingString:stringCopy];
+  uUID = [(TUIIdentifierMap *)self->_identifierMap UUID];
+  v10 = [v8 tui_identifierByPrependingUUID:uUID];
 
   return v10;
 }
 
-- (void)evaluateWithSnapshot:(id)a3 block:(id)a4
+- (void)evaluateWithSnapshot:(id)snapshot block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  snapshotCopy = snapshot;
+  blockCopy = block;
+  v8 = blockCopy;
+  if (snapshotCopy)
   {
-    if (v7)
+    if (blockCopy)
     {
       context = self->_context;
-      [v6 contextSnapshot];
+      [snapshotCopy contextSnapshot];
       TUI::Evaluation::Context::evaluateWithSnapshot(context, &v10, v8);
       if (v11)
       {
@@ -611,62 +611,62 @@ LABEL_14:
   }
 }
 
-- (void)setStatsCollector:(id)a3
+- (void)setStatsCollector:(id)collector
 {
-  v5 = a3;
-  objc_storeStrong(&self->_statsCollector, a3);
+  collectorCopy = collector;
+  objc_storeStrong(&self->_statsCollector, collector);
   context = self->_context;
   v7 = context[67];
-  context[67] = v5;
+  context[67] = collectorCopy;
 }
 
-- (void)defineBindingWithName:(id)a3 value:(id)a4
+- (void)defineBindingWithName:(id)name value:(id)value
 {
-  v7 = a4;
-  if (TUINameIsValid(*&a3))
+  valueCopy = value;
+  if (TUINameIsValid(*&name))
   {
-    v6 = a3;
-    TUI::Evaluation::Context::pushBinding(self->_context, v6, v7);
+    nameCopy = name;
+    TUI::Evaluation::Context::pushBinding(self->_context, nameCopy, valueCopy);
   }
 }
 
-- (void)defineComponentBindingWithName:(id)a3 value:(id)a4
+- (void)defineComponentBindingWithName:(id)name value:(id)value
 {
-  v7 = a4;
-  if (TUINameIsValid(*&a3))
+  valueCopy = value;
+  if (TUINameIsValid(*&name))
   {
-    v6 = a3;
-    TUI::Evaluation::Context::defineComponentBinding(self->_context, v6, v7);
+    nameCopy = name;
+    TUI::Evaluation::Context::defineComponentBinding(self->_context, nameCopy, valueCopy);
   }
 }
 
-- (void)defineConstantWithName:(id)a3 value:(id)a4
+- (void)defineConstantWithName:(id)name value:(id)value
 {
-  if (TUINameIsValid(*&a3) && TUIValueNotNil(a4.var0))
+  if (TUINameIsValid(*&name) && TUIValueNotNil(value.var0))
   {
     context = self->_context;
 
-    TUI::Evaluation::Context::pushConstant(context, *&a3, a4.var0);
+    TUI::Evaluation::Context::pushConstant(context, *&name, value.var0);
   }
 }
 
-- (void)defineBool:(BOOL)a3 withName:(id)a4
+- (void)defineBool:(BOOL)bool withName:(id)name
 {
-  if (TUINameIsValid(*&a4))
+  if (TUINameIsValid(*&name))
   {
     context = self->_context;
     v9._kind = 12;
     v9._object = 0;
-    v9.var0._BOOL = a3;
-    v8 = a4;
-    TUI::Evaluation::Context::pushConstant(context, v8, &v9);
+    v9.var0._BOOL = bool;
+    nameCopy = name;
+    TUI::Evaluation::Context::pushConstant(context, nameCopy, &v9);
   }
 }
 
-- (void)defineLet:(id)a3 closure:(id)a4
+- (void)defineLet:(id)let closure:(id)closure
 {
-  var0 = a3.var0.var0;
-  if (TUIDefinitionNotNil(a3.var0.var0) && TUIValueNotNil(a3.var1.var0))
+  var0 = let.var0.var0;
+  if (TUIDefinitionNotNil(let.var0.var0) && TUIValueNotNil(let.var1.var0))
   {
     context = self->_context;
     v8 = context[72];
@@ -688,21 +688,21 @@ LABEL_14:
               if (*(v9 + 2) != -1)
               {
 
-                TUI::Evaluation::Context::pushFunction(context, a3.var0.var0);
+                TUI::Evaluation::Context::pushFunction(context, let.var0.var0);
               }
             }
 
             else if (v14 == 1)
             {
 
-              TUI::Evaluation::Context::pushNamedElement(context, v13, HIDWORD(*&a3));
+              TUI::Evaluation::Context::pushNamedElement(context, v13, HIDWORD(*&let));
             }
           }
 
           else
           {
 
-            TUI::Evaluation::Context::pushConstant(context, v13, HIDWORD(*&a3));
+            TUI::Evaluation::Context::pushConstant(context, v13, HIDWORD(*&let));
           }
         }
       }
@@ -710,49 +710,49 @@ LABEL_14:
   }
 }
 
-- (void)defineElement:(id)a3 closure:(id)a4
+- (void)defineElement:(id)element closure:(id)closure
 {
-  if (TUIDefinitionNotNil(a3.var0.var0) && TUIElementNodeNotNil(a3.var1.var0))
+  if (TUIDefinitionNotNil(element.var0.var0) && TUIElementNodeNotNil(element.var1.var0))
   {
     context = self->_context;
 
-    TUI::Evaluation::Context::pushDefinedElement(context, a3.var0.var0);
+    TUI::Evaluation::Context::pushDefinedElement(context, element.var0.var0);
   }
 }
 
-- (void)defineStyle:(id *)a3 closure:(id)a4
+- (void)defineStyle:(id *)style closure:(id)closure
 {
   context = self->_context;
-  v5 = *a3;
+  v5 = *style;
   TUI::Evaluation::Context::pushStyle(context, &v5);
 }
 
-- (id)dynamicStateForKind:(id)a3 instance:(id)a4 parameters:(id)a5
+- (id)dynamicStateForKind:(id)kind instance:(id)instance parameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUIManager *)self->_manager dynamicRegistry];
-  v12 = [v11 stateProviderForKind:v8];
+  kindCopy = kind;
+  instanceCopy = instance;
+  parametersCopy = parameters;
+  dynamicRegistry = [(TUIManager *)self->_manager dynamicRegistry];
+  v12 = [dynamicRegistry stateProviderForKind:kindCopy];
 
-  v13 = [v12 dynamicStateForKind:v8 instance:v9 parameters:v10];
+  v13 = [v12 dynamicStateForKind:kindCopy instance:instanceCopy parameters:parametersCopy];
   if (v13)
   {
     capture = self->_capture;
     if (capture)
     {
-      [(TUIInstantiateCapturing *)capture captureDynamicState:v13 forKind:v8 instance:v9 parameters:v10];
+      [(TUIInstantiateCapturing *)capture captureDynamicState:v13 forKind:kindCopy instance:instanceCopy parameters:parametersCopy];
     }
   }
 
   return v13;
 }
 
-- (id)_xpathForLocation:(id)a3
+- (id)_xpathForLocation:(id)location
 {
-  var0 = a3.var0;
-  v5 = a3.var0;
-  if (TUILocationNotNil(a3.var0))
+  var0 = location.var0;
+  v5 = location.var0;
+  if (TUILocationNotNil(location.var0))
   {
     v6 = *(self->_context + 72);
     if (*(v6 + 17) > v5 >> 12 && (v7 = (*(v6 + 16) + 8 * (v5 >> 12))) != 0)
@@ -780,21 +780,21 @@ LABEL_14:
   return v11;
 }
 
-- ($738B17BD11CC339B30296C0EA03CEC2B)unresolvedValueForAttribute:(unsigned __int16)a3 node:(id)a4
+- ($738B17BD11CC339B30296C0EA03CEC2B)unresolvedValueForAttribute:(unsigned __int16)attribute node:(id)node
 {
   context = self->_context;
-  v7 = a3;
-  if (a3 == 0xFFFF)
+  attributeCopy = attribute;
+  if (attribute == 0xFFFF)
   {
     goto LABEL_5;
   }
 
-  if (a3 >= 0x100u)
+  if (attribute >= 0x100u)
   {
     sub_8BEBC("bitset test argument out of range");
   }
 
-  if (((*(context + ((a3 >> 3) & 0x1FF8) + 248) >> a3) & 1) == 0)
+  if (((*(context + ((attribute >> 3) & 0x1FF8) + 248) >> attribute) & 1) == 0)
   {
 LABEL_5:
     v5 = &TUIValueNil;
@@ -802,48 +802,48 @@ LABEL_5:
 
   else
   {
-    v5 = sub_11F88(context + 39, &v7) + 5;
+    v5 = sub_11F88(context + 39, &attributeCopy) + 5;
   }
 
   return v5->var0;
 }
 
-- ($7E080378D8F67055EE0984892F39872B)propertyNameForAttribute:(unsigned __int16)a3 node:(id)a4
+- ($7E080378D8F67055EE0984892F39872B)propertyNameForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:attribute node:node.var0];
   context = self->_context;
 
   return TUI::Instruction::Decoder::propertyName(v5, context, v6);
 }
 
-- (const)_resolvedValueForAttribute:(unsigned __int16)a3 node:(id)a4
+- (const)_resolvedValueForAttribute:(unsigned __int16)attribute node:(id)node
 {
   context = self->_context;
-  v6 = a3;
-  if (a3 == 0xFFFF)
+  attributeCopy = attribute;
+  if (attribute == 0xFFFF)
   {
     return 0;
   }
 
-  if (a3 >= 0x100u)
+  if (attribute >= 0x100u)
   {
     sub_8BEBC("bitset test argument out of range");
   }
 
-  if (((*(context + ((a3 >> 3) & 0x1FF8) + 280) >> a3) & 1) == 0)
+  if (((*(context + ((attribute >> 3) & 0x1FF8) + 280) >> attribute) & 1) == 0)
   {
     return 0;
   }
 
   else
   {
-    return (sub_11F88(context + 44, &v6) + 3);
+    return (sub_11F88(context + 44, &attributeCopy) + 3);
   }
 }
 
-- ($E297CC25127479E857BE23A4F8632EA4)lengthForAttribute:(SEL)a3 node:(unsigned __int16)a4
+- ($E297CC25127479E857BE23A4F8632EA4)lengthForAttribute:(SEL)attribute node:(unsigned __int16)node
 {
-  v6 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a4 node:a5.var0];
+  v6 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:node node:a5.var0];
   if (v6)
   {
     return TUI::Evaluation::ResolvedValue::lengthValue(v6, self->_context);
@@ -855,9 +855,9 @@ LABEL_5:
   }
 }
 
-- (UIEdgeInsets)insetsForAttribute:(unsigned __int16)a3 node:(id)a4
+- (UIEdgeInsets)insetsForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (v5)
   {
     top = TUI::Evaluation::ResolvedValue::insetsValue(v5, self->_context);
@@ -878,13 +878,13 @@ LABEL_5:
   return result;
 }
 
-- (UIEdgeInsets)insetsForAttribute:(unsigned __int16)a3 withDefault:(UIEdgeInsets)a4 node:(id)a5
+- (UIEdgeInsets)insetsForAttribute:(unsigned __int16)attribute withDefault:(UIEdgeInsets)default node:(id)node
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v10 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a5.var0];
+  right = default.right;
+  bottom = default.bottom;
+  left = default.left;
+  top = default.top;
+  v10 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (v10)
   {
     top = TUI::Evaluation::ResolvedValue::insetsValue(v10, self->_context);
@@ -904,9 +904,9 @@ LABEL_5:
   return result;
 }
 
-- (double)floatForAttribute:(unsigned __int16)a3 node:(id)a4
+- (double)floatForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (!v5)
   {
     return 0.0;
@@ -917,12 +917,12 @@ LABEL_5:
   return TUI::Evaluation::ResolvedValue::floatValue(v5, context);
 }
 
-- (double)floatForAttribute:(unsigned __int16)a3 withDefault:(double)a4 node:(id)a5
+- (double)floatForAttribute:(unsigned __int16)attribute withDefault:(double)default node:(id)node
 {
-  v7 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a5.var0];
+  v7 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (!v7)
   {
-    return a4;
+    return default;
   }
 
   context = self->_context;
@@ -930,12 +930,12 @@ LABEL_5:
   return TUI::Evaluation::ResolvedValue::floatValue(v7, context);
 }
 
-- (int64_t)integerForAttribute:(unsigned __int16)a3 withDefault:(int64_t)a4 node:(id)a5
+- (int64_t)integerForAttribute:(unsigned __int16)attribute withDefault:(int64_t)default node:(id)node
 {
-  v7 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a5.var0];
+  v7 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (!v7)
   {
-    return a4;
+    return default;
   }
 
   context = self->_context;
@@ -943,12 +943,12 @@ LABEL_5:
   return TUI::Evaluation::ResolvedValue::integerValue(v7, context);
 }
 
-- (unint64_t)unsignedIntegerForAttribute:(unsigned __int16)a3 withDefault:(unint64_t)a4 node:(id)a5
+- (unint64_t)unsignedIntegerForAttribute:(unsigned __int16)attribute withDefault:(unint64_t)default node:(id)node
 {
-  v7 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a5.var0];
+  v7 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (!v7)
   {
-    return a4;
+    return default;
   }
 
   context = self->_context;
@@ -956,9 +956,9 @@ LABEL_5:
   return TUI::Evaluation::ResolvedValue::integerValue(v7, context);
 }
 
-- (CGSize)sizeForAttribute:(unsigned __int16)a3 node:(id)a4
+- (CGSize)sizeForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (v5)
   {
     width = TUI::Evaluation::ResolvedValue::sizeValue(v5, self->_context);
@@ -975,9 +975,9 @@ LABEL_5:
   return result;
 }
 
-- (id)colorForAttribute:(unsigned __int16)a3 node:(id)a4
+- (id)colorForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (v5)
   {
     v5 = TUI::Evaluation::ResolvedValue::colorValue(v5, self->_context);
@@ -986,9 +986,9 @@ LABEL_5:
   return v5;
 }
 
-- (id)colorArrayForAttribute:(unsigned __int16)a3 node:(id)a4
+- (id)colorArrayForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (v5)
   {
     v5 = TUI::Evaluation::ResolvedValue::colorArrayValue(v5, self->_context);
@@ -997,9 +997,9 @@ LABEL_5:
   return v5;
 }
 
-- (id)stringArrayForAttribute:(unsigned __int16)a3 node:(id)a4
+- (id)stringArrayForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (v5)
   {
     v5 = TUI::Evaluation::ResolvedValue::stringArrayValue(v5, self->_context);
@@ -1008,9 +1008,9 @@ LABEL_5:
   return v5;
 }
 
-- (id)stringForAttribute:(unsigned __int16)a3 node:(id)a4
+- (id)stringForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (v5)
   {
     v5 = TUI::Evaluation::ResolvedValue::stringValue(v5, self->_context);
@@ -1019,9 +1019,9 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)BOOLForAttribute:(unsigned __int16)a3 node:(id)a4
+- (BOOL)BOOLForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (v5)
   {
     context = self->_context;
@@ -1032,12 +1032,12 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)BOOLForAttribute:(unsigned __int16)a3 withDefault:(BOOL)a4 node:(id)a5
+- (BOOL)BOOLForAttribute:(unsigned __int16)attribute withDefault:(BOOL)default node:(id)node
 {
-  v7 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a5.var0];
+  v7 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (!v7)
   {
-    return a4;
+    return default;
   }
 
   context = self->_context;
@@ -1045,9 +1045,9 @@ LABEL_5:
   return TUI::Evaluation::ResolvedValue::BOOLValue(v7, context);
 }
 
-- (id)objectForAttribute:(unsigned __int16)a3 node:(id)a4
+- (id)objectForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:attribute node:node.var0];
   if (v5)
   {
     v5 = TUI::Evaluation::ResolvedValue::objectValue(v5, self->_context);
@@ -1056,9 +1056,9 @@ LABEL_5:
   return v5;
 }
 
-- (CGAffineTransform)transformForAttribute:(SEL)a3 node:(unsigned __int16)a4
+- (CGAffineTransform)transformForAttribute:(SEL)attribute node:(unsigned __int16)node
 {
-  result = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a4 node:a5.var0];
+  result = [(TUIInstantiateContext *)self _resolvedValueForAttribute:node node:a5.var0];
   if (result)
   {
     context = self->_context;
@@ -1077,9 +1077,9 @@ LABEL_5:
   return result;
 }
 
-- ($2940F3BBF0C500EC413214967FDB6F62)springTimingParametersForAttribute:(SEL)a3 node:(unsigned __int16)a4
+- ($2940F3BBF0C500EC413214967FDB6F62)springTimingParametersForAttribute:(SEL)attribute node:(unsigned __int16)node
 {
-  result = [(TUIInstantiateContext *)self _resolvedValueForAttribute:a4 node:a5.var0];
+  result = [(TUIInstantiateContext *)self _resolvedValueForAttribute:node node:a5.var0];
   if (result)
   {
     context = self->_context;
@@ -1097,10 +1097,10 @@ LABEL_5:
   return result;
 }
 
-- (unint64_t)animationCalculationModeAndCurveForNode:(id)a3
+- (unint64_t)animationCalculationModeAndCurveForNode:(id)node
 {
-  var0 = a3.var0;
-  v5 = [(TUIInstantiateContext *)self stringForAttribute:64 node:a3.var0];
+  var0 = node.var0;
+  v5 = [(TUIInstantiateContext *)self stringForAttribute:64 node:node.var0];
   if ([v5 isEqualToString:@"ease-in-out"])
   {
     v6 = 0;
@@ -1158,10 +1158,10 @@ LABEL_5:
   return v6;
 }
 
-- (id)guidesForNode:(id)a3
+- (id)guidesForNode:(id)node
 {
-  var0 = a3.var0;
-  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:121 node:a3.var0];
+  var0 = node.var0;
+  v5 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:121 node:node.var0];
   v6 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:209 node:var0];
   v7 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:207 node:var0];
   v8 = [(TUIInstantiateContext *)self _resolvedValueForAttribute:43 node:var0];
@@ -1211,7 +1211,7 @@ LABEL_16:
   return v10;
 }
 
-- (id)pointerStyleForNode:(id)a3
+- (id)pointerStyleForNode:(id)node
 {
   v4 = objc_opt_class();
   context = self->_context;
@@ -1232,23 +1232,23 @@ LABEL_16:
   return v8;
 }
 
-- (id)focusStyleForAttribute:(unsigned __int16)a3 node:(id)a4
+- (id)focusStyleForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v4 = a3;
+  attributeCopy = attribute;
   v6 = objc_opt_class();
   context = self->_context;
-  v12 = v4;
-  if (v4 == 0xFFFF)
+  v12 = attributeCopy;
+  if (attributeCopy == 0xFFFF)
   {
     goto LABEL_5;
   }
 
-  if (v4 >= 0x100)
+  if (attributeCopy >= 0x100)
   {
     sub_8BEBC("bitset test argument out of range");
   }
 
-  if (((*(context + ((v4 >> 3) & 0x1FF8) + 280) >> v4) & 1) == 0)
+  if (((*(context + ((attributeCopy >> 3) & 0x1FF8) + 280) >> attributeCopy) & 1) == 0)
   {
 LABEL_5:
     v9 = 0;
@@ -1265,57 +1265,57 @@ LABEL_5:
   return v10;
 }
 
-- ($738B17BD11CC339B30296C0EA03CEC2B)elementReferenceForAttribute:(unsigned __int16)a3 node:(id)a4
+- ($738B17BD11CC339B30296C0EA03CEC2B)elementReferenceForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:attribute node:node.var0];
   context = self->_context;
 
   return TUI::Instruction::Decoder::elementReference(v5, context, v6);
 }
 
-- ($738B17BD11CC339B30296C0EA03CEC2B)nameReferenceForAttribute:(unsigned __int16)a3 node:(id)a4
+- ($738B17BD11CC339B30296C0EA03CEC2B)nameReferenceForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:attribute node:node.var0];
   context = self->_context;
 
   return TUI::Instruction::Decoder::nameReference(v5, context, v6);
 }
 
-- ($201E9A47BE70A2B12CCA2F48B75AA2F7)bindingNameForAttribute:(unsigned __int16)a3 node:(id)a4
+- ($201E9A47BE70A2B12CCA2F48B75AA2F7)bindingNameForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:attribute node:node.var0];
   context = self->_context;
 
   return TUI::Instruction::Decoder::bindingName(v5, context, v6);
 }
 
-- ($201E9A47BE70A2B12CCA2F48B75AA2F7)constantNameForAttribute:(unsigned __int16)a3 node:(id)a4
+- ($201E9A47BE70A2B12CCA2F48B75AA2F7)constantNameForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:attribute node:node.var0];
   context = self->_context;
 
   return TUI::Instruction::Decoder::constantName(v5, context, v6);
 }
 
-- ($201E9A47BE70A2B12CCA2F48B75AA2F7)globalsNameForAttribute:(unsigned __int16)a3 node:(id)a4
+- ($201E9A47BE70A2B12CCA2F48B75AA2F7)globalsNameForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:attribute node:node.var0];
   context = self->_context;
 
   return TUI::Instruction::Decoder::globalsName(v5, context, v6);
 }
 
-- ($738B17BD11CC339B30296C0EA03CEC2B)lookupUnconditionalAttribute:(unsigned __int16)a3 attributes:(id)a4
+- ($738B17BD11CC339B30296C0EA03CEC2B)lookupUnconditionalAttribute:(unsigned __int16)attribute attributes:(id)attributes
 {
   v20.var0 = 0;
-  var1 = a4.var1;
-  if (a4.var1)
+  var1 = attributes.var1;
+  if (attributes.var1)
   {
-    v5 = a3;
+    attributeCopy = attribute;
     v6 = 0;
     v7 = *(self->_context + 72);
-    var0 = a4.var0;
-    v21 = a4.var1;
+    var0 = attributes.var0;
+    v21 = attributes.var1;
     do
     {
       if (v7[31] <= (v6 + var0))
@@ -1349,7 +1349,7 @@ LABEL_5:
       v13 = 0xFFFFFFFFLL;
       v12 = 0xFFFFLL;
 LABEL_11:
-      if (v12 == v5 && (v12 | v9) >= 0x10000)
+      if (v12 == attributeCopy && (v12 | v9) >= 0x10000)
       {
         v14 = v9 >> 16;
         v15 = 12 * v13;
@@ -1400,30 +1400,30 @@ LABEL_23:
   return v20;
 }
 
-- ($738B17BD11CC339B30296C0EA03CEC2B)closureForNode:(id)a3
+- ($738B17BD11CC339B30296C0EA03CEC2B)closureForNode:(id)node
 {
   context = self->_context;
   v4 = context[72];
-  if (*(v4 + 216) <= a3.var0)
+  if (*(v4 + 216) <= node.var0)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = *(v4 + 208) + 28 * a3.var0;
+    v5 = *(v4 + 208) + 28 * node.var0;
   }
 
   return TUI::Evaluation::Context::closureForElement(context, v5);
 }
 
-- ($0220C184157FC9E8AD112820945A9326)letDefinitionWithNameAttribute:(unsigned __int16)a3 valueAttribute:(unsigned __int16)a4 node:(id)a5
+- ($0220C184157FC9E8AD112820945A9326)letDefinitionWithNameAttribute:(unsigned __int16)attribute valueAttribute:(unsigned __int16)valueAttribute node:(id)node
 {
-  v5 = a4;
-  var0 = a5.var0;
-  v8 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:a3 node:a5.var0];
+  valueAttributeCopy = valueAttribute;
+  var0 = node.var0;
+  v8 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:attribute node:node.var0];
   v10 = TUI::Instruction::Decoder::definition(v8, self->_context, v9);
-  v11 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:v5 node:var0];
+  v11 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:valueAttributeCopy node:var0];
   v12 = TUILetDefinitionNil;
   v13 = *algn_2E3DC4;
   v14 = TUIDefinitionNotNil(v10);
@@ -1450,21 +1450,21 @@ LABEL_23:
   return (v15 | (v16 << 32));
 }
 
-- ($BCFAEF449BEAD7B465B9C350BA76DD22)styleDefinitionWithNode:(SEL)a3 nameAttribute:(id)a4 inheritAttribute:(unsigned __int16)a5
+- ($BCFAEF449BEAD7B465B9C350BA76DD22)styleDefinitionWithNode:(SEL)node nameAttribute:(id)attribute inheritAttribute:(unsigned __int16)inheritAttribute
 {
   v6 = a6;
-  v7 = a5;
+  inheritAttributeCopy = inheritAttribute;
   result = [(TUIPackageInternal *)self->_package packageBuffer];
-  if (*&result[9].var0.var0 > a4.var0 && (v12 = *&result[8].var2.var0.var1 + 28 * a4.var0) != 0)
+  if (*&result[9].var0.var0 > attribute.var0 && (v12 = *&result[8].var2.var0.var1 + 28 * attribute.var0) != 0)
   {
-    v13 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:v7 node:a4.var0];
+    v13 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:inheritAttributeCopy node:attribute.var0];
     v15 = TUI::Instruction::Decoder::definition(v13, self->_context, v14);
     *&retstr->var0.var0 = TUIStyleDefinitionNil;
     *&retstr->var2.var0.var1 = qword_2E3DD8;
     result = TUIDefinitionNotNil(v15);
     if (result)
     {
-      v16 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:v6 node:a4.var0];
+      v16 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:v6 node:attribute.var0];
       result = TUI::Instruction::Decoder::styleReference(v16, self->_context, v17);
       retstr->var0.var0 = v15;
       retstr->var1 = (*(v12 + 16) | (*(v12 + 2) << 32));
@@ -1482,13 +1482,13 @@ LABEL_23:
   return result;
 }
 
-- ($0220C184157FC9E8AD112820945A9326)animationDefinitonWithNode:(id)a3 nameAttribute:(unsigned __int16)a4
+- ($0220C184157FC9E8AD112820945A9326)animationDefinitonWithNode:(id)node nameAttribute:(unsigned __int16)attribute
 {
-  v4 = a4;
-  v7 = [(TUIPackageInternal *)self->_package packageBuffer];
-  if (v7[27] > a3.var0 && 28 * a3.var0 + v7[26])
+  attributeCopy = attribute;
+  packageBuffer = [(TUIPackageInternal *)self->_package packageBuffer];
+  if (packageBuffer[27] > node.var0 && 28 * node.var0 + packageBuffer[26])
   {
-    v10 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:v4 node:?];
+    v10 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:attributeCopy node:?];
     v12 = TUI::Instruction::Decoder::definition(v10, self->_context, v11);
     v13 = TUIAnimationDefinitionNil;
     v14 = dword_2E3DE4;
@@ -1505,7 +1505,7 @@ LABEL_23:
 
     if (v15)
     {
-      var0 = a3.var0;
+      var0 = node.var0;
     }
 
     else
@@ -1523,15 +1523,15 @@ LABEL_23:
   return (v8 | (var0 << 32));
 }
 
-- ($0220C184157FC9E8AD112820945A9326)elementDefinitionWithNameAttribute:(unsigned __int16)a3 node:(id)a4
+- ($0220C184157FC9E8AD112820945A9326)elementDefinitionWithNameAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = a3;
-  v7 = [(TUIPackageInternal *)self->_package packageBuffer];
-  if (v7[27] > a4.var0 && 28 * a4.var0 + v7[26])
+  attributeCopy = attribute;
+  packageBuffer = [(TUIPackageInternal *)self->_package packageBuffer];
+  if (packageBuffer[27] > node.var0 && 28 * node.var0 + packageBuffer[26])
   {
     v10 = TUIElementDefinitionNil;
     v11 = dword_2E3DEC;
-    v12 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:v5 node:?];
+    v12 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:attributeCopy node:?];
     v14 = TUI::Instruction::Decoder::definition(v12, self->_context, v13);
     v15 = TUIDefinitionNotNil(v14);
     if (v15)
@@ -1546,7 +1546,7 @@ LABEL_23:
 
     if (v15)
     {
-      var0 = a4.var0;
+      var0 = node.var0;
     }
 
     else
@@ -1564,26 +1564,26 @@ LABEL_23:
   return (v8 | (var0 << 32));
 }
 
-- ($738B17BD11CC339B30296C0EA03CEC2B)enumeratorWithAttribute:(unsigned __int16)a3 node:(id)a4
+- ($738B17BD11CC339B30296C0EA03CEC2B)enumeratorWithAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:attribute node:node.var0];
   context = self->_context;
 
   return TUI::Instruction::Decoder::enumerator(v5, context, v6);
 }
 
-- ($E756168898AF8F0D74815393AFAB5A0B)animationReferenceForAttribute:(unsigned __int16)a3 node:(id)a4
+- ($E756168898AF8F0D74815393AFAB5A0B)animationReferenceForAttribute:(unsigned __int16)attribute node:(id)node
 {
-  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:a3 node:a4.var0];
+  v5 = [(TUIInstantiateContext *)self unresolvedValueForAttribute:attribute node:node.var0];
   context = self->_context;
 
   return TUI::Instruction::Decoder::animationReference(v5, context, v6);
 }
 
-- (id)baseURLForNode:(id)a3
+- (id)baseURLForNode:(id)node
 {
   v3 = *(self->_context + 72);
-  if (v3[27] > a3.var0 && (v4 = v3[26] + 28 * a3.var0) != 0 && (v5 = *(v4 + 24) & 0xFFF, v3[14] > v5) && (v6 = v3[13]) != 0)
+  if (v3[27] > node.var0 && (v4 = v3[26] + 28 * node.var0) != 0 && (v5 = *(v4 + 24) & 0xFFF, v3[14] > v5) && (v6 = v3[13]) != 0)
   {
     v7 = [NSString stringWithUTF8String:v6 + *(v3[15] + 4 * v5)];
     v8 = [NSURL URLWithString:v7 relativeToURL:*v3];
@@ -1597,24 +1597,24 @@ LABEL_23:
   return v8;
 }
 
-- (void)includeTemplateWithURL:(id)a3
+- (void)includeTemplateWithURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     v5 = *(self->_context + 95);
-    v6 = [v5 package];
+    package = [v5 package];
 
     if (objc_opt_respondsToSelector())
     {
-      v7 = [NSURLComponents componentsWithURL:v4 resolvingAgainstBaseURL:1];
-      v8 = [v7 path];
-      v9 = [v8 stringByStandardizingPath];
-      [v7 setPath:v9];
+      v7 = [NSURLComponents componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+      path = [v7 path];
+      stringByStandardizingPath = [path stringByStandardizingPath];
+      [v7 setPath:stringByStandardizingPath];
 
       v10 = [v7 URL];
-      v11 = [v6 prebuiltTemplates];
-      v12 = [v11 objectForKeyedSubscript:v10];
+      prebuiltTemplates = [package prebuiltTemplates];
+      v12 = [prebuiltTemplates objectForKeyedSubscript:v10];
 
       if (v12)
       {
@@ -1627,12 +1627,12 @@ LABEL_23:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           uniqueIdentifier = self->_feedId.uniqueIdentifier;
-          v15 = [v4 absoluteURL];
-          v16 = [v6 url];
+          absoluteURL = [lCopy absoluteURL];
+          v16 = [package url];
           v17 = 134218498;
           v18 = uniqueIdentifier;
           v19 = 2114;
-          v20 = v15;
+          v20 = absoluteURL;
           v21 = 2114;
           v22 = v16;
           _os_log_error_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "[fid:%lu] failed to find template: %{public}@ in package: %{public}@", &v17, 0x20u);
@@ -1656,10 +1656,10 @@ LABEL_23:
   }
 }
 
-- (unint64_t)childCountForNode:(id)a3
+- (unint64_t)childCountForNode:(id)node
 {
   v3 = *(self->_context + 72);
-  if (*(v3 + 216) > a3.var0 && (v4 = *(v3 + 208) + 28 * a3.var0) != 0)
+  if (*(v3 + 216) > node.var0 && (v4 = *(v3 + 208) + 28 * node.var0) != 0)
   {
     return *(v4 + 4);
   }
@@ -1670,17 +1670,17 @@ LABEL_23:
   }
 }
 
-- (id)environmentChildContainersForContainer:(id)a3
+- (id)environmentChildContainersForContainer:(id)container
 {
-  v3 = TUI::Evaluation::Context::environmentChildContainersForContainer(self->_context, a3);
+  v3 = TUI::Evaluation::Context::environmentChildContainersForContainer(self->_context, container);
 
   return v3;
 }
 
-- (void)enumerateChildrenOfNode:(id)a3 block:(id)a4
+- (void)enumerateChildrenOfNode:(id)node block:(id)block
 {
-  v9 = a4;
-  v6 = TUI::Evaluation::Context::childrenOfNode(self->_context, a3.var0);
+  blockCopy = block;
+  v6 = TUI::Evaluation::Context::childrenOfNode(self->_context, node.var0);
   if ((v6 & 0xFFFF00000000) != 0)
   {
     v7 = 0;
@@ -1689,7 +1689,7 @@ LABEL_23:
     {
       if (TUI::Evaluation::Context::evaluateCconditionForNode(self->_context, v6))
       {
-        v9[2](v9, v6);
+        blockCopy[2](blockCopy, v6);
       }
 
       ++v7;
@@ -1700,11 +1700,11 @@ LABEL_23:
   }
 }
 
-- (id)evaluateStringForAttribute:(unsigned __int16)a3 node:(id)a4
+- (id)evaluateStringForAttribute:(unsigned __int16)attribute node:(id)node
 {
   v7 = 0;
   v8 = 0;
-  if (TUI::Evaluation::Context::evaluateAttributeForNode(self->_context, a3, a4.var0, &v7))
+  if (TUI::Evaluation::Context::evaluateAttributeForNode(self->_context, attribute, node.var0, &v7))
   {
     v5 = TUI::Evaluation::ResolvedValue::stringValue(&v7, self->_context);
   }
@@ -1717,28 +1717,28 @@ LABEL_23:
   return v5;
 }
 
-- (id)debugDumpEnvironmentContainerStructure:(id)a3
+- (id)debugDumpEnvironmentContainerStructure:(id)structure
 {
-  v3 = TUI::Evaluation::Context::debugDumpEnvironmentContainerStructure(self->_context, a3);
+  v3 = TUI::Evaluation::Context::debugDumpEnvironmentContainerStructure(self->_context, structure);
 
   return v3;
 }
 
-- (id)structForAttribute:(unsigned __int16)a3 node:(id)a4
+- (id)structForAttribute:(unsigned __int16)attribute node:(id)node
 {
   context = self->_context;
-  v9 = a3;
-  if (a3 == 0xFFFF)
+  attributeCopy = attribute;
+  if (attribute == 0xFFFF)
   {
     goto LABEL_5;
   }
 
-  if (a3 >= 0x100u)
+  if (attribute >= 0x100u)
   {
     sub_8BEBC("bitset test argument out of range");
   }
 
-  if (((*(context + ((a3 >> 3) & 0x1FF8) + 280) >> a3) & 1) == 0)
+  if (((*(context + ((attribute >> 3) & 0x1FF8) + 280) >> attribute) & 1) == 0)
   {
 LABEL_5:
     v7 = 0;
@@ -1746,7 +1746,7 @@ LABEL_5:
 
   else
   {
-    v6 = sub_11F88(context + 44, &v9);
+    v6 = sub_11F88(context + 44, &attributeCopy);
     v7 = TUI::Evaluation::ResolvedValue::structValue(v6 + 3, self->_context);
   }
 

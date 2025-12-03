@@ -1,9 +1,9 @@
 @interface ZWMenuZoomModeChooserViewController
 - (ZWMenuZoomModeChooserViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ZWMenuZoomModeChooserViewController
@@ -14,72 +14,72 @@
   v5.super_class = ZWMenuZoomModeChooserViewController;
   [(ZWMenuChooserTableViewController *)&v5 loadView];
   v3 = AXZoomUserSelectableLensModes();
-  v4 = [v3 array];
-  [(ZWMenuZoomModeChooserViewController *)self setZoomModeIdentifiers:v4];
+  array = [v3 array];
+  [(ZWMenuZoomModeChooserViewController *)self setZoomModeIdentifiers:array];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = ZWMenuZoomModeChooserViewController;
-  v6 = a4;
-  [(ZWMenuChooserTableViewController *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
+  pathCopy = path;
+  [(ZWMenuChooserTableViewController *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
   v7 = [(ZWMenuZoomModeChooserViewController *)self delegate:v11.receiver];
-  v8 = [(ZWMenuZoomModeChooserViewController *)self zoomModeIdentifiers];
-  v9 = [v6 row];
+  zoomModeIdentifiers = [(ZWMenuZoomModeChooserViewController *)self zoomModeIdentifiers];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [zoomModeIdentifiers objectAtIndex:v9];
   [v7 menuZoomModeChooserViewController:self didChooseZoomMode:v10];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(ZWMenuZoomModeChooserViewController *)self zoomModeIdentifiers:a3];
+  v4 = [(ZWMenuZoomModeChooserViewController *)self zoomModeIdentifiers:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v19.receiver = self;
   v19.super_class = ZWMenuZoomModeChooserViewController;
-  v6 = a4;
-  v7 = [(ZWMenuChooserTableViewController *)&v19 tableView:a3 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [(ZWMenuChooserTableViewController *)&v19 tableView:view cellForRowAtIndexPath:pathCopy];
   v8 = [(ZWMenuZoomModeChooserViewController *)self zoomModeIdentifiers:v19.receiver];
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [v8 objectAtIndex:v9];
 
   if (_UISolariumEnabled() && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v11 = AXUILocalizedTitleForZoomLensMode();
-    v12 = [v7 cellLabel];
-    [v12 setText:v11];
+    textLabel2 = AXUILocalizedTitleForZoomLensMode();
+    cellLabel = [v7 cellLabel];
+    [cellLabel setText:textLabel2];
   }
 
   else
   {
     v13 = AXUILocalizedTitleForZoomLensMode();
-    v14 = [v7 textLabel];
-    [v14 setText:v13];
+    textLabel = [v7 textLabel];
+    [textLabel setText:v13];
 
-    v11 = [v7 textLabel];
-    [v11 setTextAlignment:4];
+    textLabel2 = [v7 textLabel];
+    [textLabel2 setTextAlignment:4];
   }
 
   v15 = +[AXSettings sharedInstance];
-  v16 = [v15 zoomPreferredCurrentLensMode];
+  zoomPreferredCurrentLensMode = [v15 zoomPreferredCurrentLensMode];
 
   if (_UISolariumEnabled() && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     [v7 setAccessoryType:0];
-    [v7 setIsChecked:{objc_msgSend(v16, "isEqualToString:", v10)}];
+    [v7 setIsChecked:{objc_msgSend(zoomPreferredCurrentLensMode, "isEqualToString:", v10)}];
   }
 
   else
   {
-    if ([v16 isEqualToString:v10])
+    if ([zoomPreferredCurrentLensMode isEqualToString:v10])
     {
       v17 = 3;
     }

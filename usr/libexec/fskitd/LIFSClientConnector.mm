@@ -1,15 +1,15 @@
 @interface LIFSClientConnector
-+ (void)getLiveFSClientForProvider:(id)a3 handler:(id)a4;
-+ (void)getLiveFilesConnectionForProvider:(id)a3 volume:(id)a4 withHandler:(id)a5;
++ (void)getLiveFSClientForProvider:(id)provider handler:(id)handler;
++ (void)getLiveFilesConnectionForProvider:(id)provider volume:(id)volume withHandler:(id)handler;
 @end
 
 @implementation LIFSClientConnector
 
-+ (void)getLiveFSClientForProvider:(id)a3 handler:(id)a4
++ (void)getLiveFSClientForProvider:(id)provider handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"com.apple.filesystems.UserFS.FileProvider"])
+  providerCopy = provider;
+  handlerCopy = handler;
+  if ([providerCopy isEqualToString:@"com.apple.filesystems.UserFS.FileProvider"])
   {
     v7 = @"machp://com.apple.filesystems.localLiveFiles";
 LABEL_5:
@@ -24,12 +24,12 @@ LABEL_5:
       v9 = [NSError errorWithDomain:NSPOSIXErrorDomain code:65 userInfo:0];
     }
 
-    v6[2](v6, v8, v9);
+    handlerCopy[2](handlerCopy, v8, v9);
 
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:@"com.apple.SMBClientProvider.FileProvider"])
+  if ([providerCopy isEqualToString:@"com.apple.SMBClientProvider.FileProvider"])
   {
     v7 = @"machp://com.apple.filesystems.smbclientd";
     goto LABEL_5;
@@ -42,15 +42,15 @@ LABEL_5:
     sub_100041198();
   }
 
-  v6[2](v6, 0, v9);
+  handlerCopy[2](handlerCopy, 0, v9);
 LABEL_12:
 }
 
-+ (void)getLiveFilesConnectionForProvider:(id)a3 volume:(id)a4 withHandler:(id)a5
++ (void)getLiveFilesConnectionForProvider:(id)provider volume:(id)volume withHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  providerCopy = provider;
+  volumeCopy = volume;
+  handlerCopy = handler;
   v27 = 0;
   v28[0] = &v27;
   v28[1] = 0x3032000000;
@@ -70,9 +70,9 @@ LABEL_12:
   v20[3] = &unk_100061EB8;
   v20[4] = &v27;
   v20[5] = &v21;
-  [LIFSClientConnector getLiveFSClientForProvider:v7 handler:v20];
+  [LIFSClientConnector getLiveFSClientForProvider:providerCopy handler:v20];
   v11 = v22[5];
-  if (v11 && (v12 = (v28[0] + 40), obj = *(v28[0] + 40), [v11 listenerForVolume:v8 error:&obj], v13 = objc_claimAutoreleasedReturnValue(), objc_storeStrong(v12, obj), v13))
+  if (v11 && (v12 = (v28[0] + 40), obj = *(v28[0] + 40), [v11 listenerForVolume:volumeCopy error:&obj], v13 = objc_claimAutoreleasedReturnValue(), objc_storeStrong(v12, obj), v13))
   {
     v14 = v22[5];
     v22[5] = 0;
@@ -91,12 +91,12 @@ LABEL_12:
       sub_10004120C(v15, v28, v18);
     }
 
-    v9[2](v9, v15, *(v28[0] + 40));
+    handlerCopy[2](handlerCopy, v15, *(v28[0] + 40));
   }
 
   else
   {
-    v9[2](v9, 0, *(v28[0] + 40));
+    handlerCopy[2](handlerCopy, 0, *(v28[0] + 40));
     v15 = 0;
     v13 = 0;
   }

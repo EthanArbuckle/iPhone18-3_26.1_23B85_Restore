@@ -1,7 +1,7 @@
 @interface HKAxisConfiguration
 - (HKAxisConfiguration)init;
 - (HKAxisLabelDataSource)labelDataSource;
-- (void)applyOverridesFromAxisConfiguration:(id)a3;
+- (void)applyOverridesFromAxisConfiguration:(id)configuration;
 @end
 
 @implementation HKAxisConfiguration
@@ -39,115 +39,115 @@
   return v3;
 }
 
-- (void)applyOverridesFromAxisConfiguration:(id)a3
+- (void)applyOverridesFromAxisConfiguration:(id)configuration
 {
-  v34 = a3;
+  configurationCopy = configuration;
   v4 = objc_alloc_init(HKAxisConfiguration);
-  v5 = [v34 preferredStyle];
-  v6 = [(HKAxisConfiguration *)v4 preferredStyle];
+  preferredStyle = [configurationCopy preferredStyle];
+  preferredStyle2 = [(HKAxisConfiguration *)v4 preferredStyle];
 
-  if (v5 != v6)
+  if (preferredStyle != preferredStyle2)
   {
-    v7 = [v34 preferredStyle];
-    [(HKAxisConfiguration *)self setPreferredStyle:v7];
+    preferredStyle3 = [configurationCopy preferredStyle];
+    [(HKAxisConfiguration *)self setPreferredStyle:preferredStyle3];
   }
 
-  v8 = [v34 maxLabels];
-  if (v8 != [(HKAxisConfiguration *)v4 maxLabels])
+  maxLabels = [configurationCopy maxLabels];
+  if (maxLabels != [(HKAxisConfiguration *)v4 maxLabels])
   {
-    -[HKAxisConfiguration setMaxLabels:](self, "setMaxLabels:", [v34 maxLabels]);
+    -[HKAxisConfiguration setMaxLabels:](self, "setMaxLabels:", [configurationCopy maxLabels]);
   }
 
-  v9 = [v34 minLabels];
-  if (v9 != [(HKAxisConfiguration *)v4 minLabels])
+  minLabels = [configurationCopy minLabels];
+  if (minLabels != [(HKAxisConfiguration *)v4 minLabels])
   {
-    -[HKAxisConfiguration setMinLabels:](self, "setMinLabels:", [v34 minLabels]);
+    -[HKAxisConfiguration setMinLabels:](self, "setMinLabels:", [configurationCopy minLabels]);
   }
 
-  v10 = [v34 maxLabelWidth];
-  v11 = [(HKAxisConfiguration *)v4 maxLabelWidth];
-  v12 = v11;
-  if (v10 == v11)
+  maxLabelWidth = [configurationCopy maxLabelWidth];
+  maxLabelWidth2 = [(HKAxisConfiguration *)v4 maxLabelWidth];
+  v12 = maxLabelWidth2;
+  if (maxLabelWidth == maxLabelWidth2)
   {
 
 LABEL_14:
     goto LABEL_15;
   }
 
-  v13 = [(HKAxisConfiguration *)v4 maxLabelWidth];
-  if (!v13)
+  maxLabelWidth3 = [(HKAxisConfiguration *)v4 maxLabelWidth];
+  if (!maxLabelWidth3)
   {
 
     goto LABEL_13;
   }
 
-  v14 = v13;
-  v15 = [v34 maxLabelWidth];
-  v16 = [(HKAxisConfiguration *)v4 maxLabelWidth];
-  v17 = [v15 isEqual:v16];
+  v14 = maxLabelWidth3;
+  maxLabelWidth4 = [configurationCopy maxLabelWidth];
+  maxLabelWidth5 = [(HKAxisConfiguration *)v4 maxLabelWidth];
+  v17 = [maxLabelWidth4 isEqual:maxLabelWidth5];
 
   if ((v17 & 1) == 0)
   {
 LABEL_13:
-    v10 = [v34 maxLabelWidth];
-    [(HKAxisConfiguration *)self setMaxLabelWidth:v10];
+    maxLabelWidth = [configurationCopy maxLabelWidth];
+    [(HKAxisConfiguration *)self setMaxLabelWidth:maxLabelWidth];
     goto LABEL_14;
   }
 
 LABEL_15:
-  v18 = [v34 horizontalAxisLabelSpacePadding];
-  v19 = [(HKAxisConfiguration *)v4 horizontalAxisLabelSpacePadding];
+  horizontalAxisLabelSpacePadding = [configurationCopy horizontalAxisLabelSpacePadding];
+  horizontalAxisLabelSpacePadding2 = [(HKAxisConfiguration *)v4 horizontalAxisLabelSpacePadding];
 
-  if (v18 != v19)
+  if (horizontalAxisLabelSpacePadding != horizontalAxisLabelSpacePadding2)
   {
-    v20 = [v34 horizontalAxisLabelSpacePadding];
-    [(HKAxisConfiguration *)self setHorizontalAxisLabelSpacePadding:v20];
+    horizontalAxisLabelSpacePadding3 = [configurationCopy horizontalAxisLabelSpacePadding];
+    [(HKAxisConfiguration *)self setHorizontalAxisLabelSpacePadding:horizontalAxisLabelSpacePadding3];
   }
 
-  v21 = [v34 transform];
-  v22 = [(HKAxisConfiguration *)v4 transform];
-  v23 = [v21 isEqual:v22];
+  transform = [configurationCopy transform];
+  transform2 = [(HKAxisConfiguration *)v4 transform];
+  v23 = [transform isEqual:transform2];
 
   if ((v23 & 1) == 0)
   {
-    v24 = [v34 transform];
-    [(HKAxisConfiguration *)self setTransform:v24];
+    transform3 = [configurationCopy transform];
+    [(HKAxisConfiguration *)self setTransform:transform3];
   }
 
-  v25 = [v34 zoomScaleEngine];
-  v26 = [(HKAxisConfiguration *)v4 zoomScaleEngine];
+  zoomScaleEngine = [configurationCopy zoomScaleEngine];
+  zoomScaleEngine2 = [(HKAxisConfiguration *)v4 zoomScaleEngine];
 
-  if (v25 != v26)
+  if (zoomScaleEngine != zoomScaleEngine2)
   {
-    v27 = [v34 zoomScaleEngine];
-    [(HKAxisConfiguration *)self setZoomScaleEngine:v27];
+    zoomScaleEngine3 = [configurationCopy zoomScaleEngine];
+    [(HKAxisConfiguration *)self setZoomScaleEngine:zoomScaleEngine3];
   }
 
-  v28 = [v34 labelDataSource];
-  v29 = [(HKAxisConfiguration *)v4 labelDataSource];
+  labelDataSource = [configurationCopy labelDataSource];
+  labelDataSource2 = [(HKAxisConfiguration *)v4 labelDataSource];
 
-  if (v28 != v29)
+  if (labelDataSource != labelDataSource2)
   {
-    v30 = [v34 labelDataSource];
-    [(HKAxisConfiguration *)self setLabelDataSource:v30];
+    labelDataSource3 = [configurationCopy labelDataSource];
+    [(HKAxisConfiguration *)self setLabelDataSource:labelDataSource3];
   }
 
-  v31 = [v34 overrideNoTopBaseline];
-  if (v31 != [(HKAxisConfiguration *)v4 overrideNoTopBaseline])
+  overrideNoTopBaseline = [configurationCopy overrideNoTopBaseline];
+  if (overrideNoTopBaseline != [(HKAxisConfiguration *)v4 overrideNoTopBaseline])
   {
-    -[HKAxisConfiguration setOverrideNoTopBaseline:](self, "setOverrideNoTopBaseline:", [v34 overrideNoTopBaseline]);
+    -[HKAxisConfiguration setOverrideNoTopBaseline:](self, "setOverrideNoTopBaseline:", [configurationCopy overrideNoTopBaseline]);
   }
 
-  v32 = [v34 axisAnnotationsExcludeInterstitialAxisLabels];
-  if (v32 != [(HKAxisConfiguration *)v4 axisAnnotationsExcludeInterstitialAxisLabels])
+  axisAnnotationsExcludeInterstitialAxisLabels = [configurationCopy axisAnnotationsExcludeInterstitialAxisLabels];
+  if (axisAnnotationsExcludeInterstitialAxisLabels != [(HKAxisConfiguration *)v4 axisAnnotationsExcludeInterstitialAxisLabels])
   {
-    -[HKAxisConfiguration setAxisAnnotationsExcludeInterstitialAxisLabels:](self, "setAxisAnnotationsExcludeInterstitialAxisLabels:", [v34 axisAnnotationsExcludeInterstitialAxisLabels]);
+    -[HKAxisConfiguration setAxisAnnotationsExcludeInterstitialAxisLabels:](self, "setAxisAnnotationsExcludeInterstitialAxisLabels:", [configurationCopy axisAnnotationsExcludeInterstitialAxisLabels]);
   }
 
-  v33 = [v34 axisLabelsDependOnPointTransform];
-  if (v33 != [(HKAxisConfiguration *)v4 axisLabelsDependOnPointTransform])
+  axisLabelsDependOnPointTransform = [configurationCopy axisLabelsDependOnPointTransform];
+  if (axisLabelsDependOnPointTransform != [(HKAxisConfiguration *)v4 axisLabelsDependOnPointTransform])
   {
-    -[HKAxisConfiguration setAxisLabelsDependOnPointTransform:](self, "setAxisLabelsDependOnPointTransform:", [v34 axisLabelsDependOnPointTransform]);
+    -[HKAxisConfiguration setAxisLabelsDependOnPointTransform:](self, "setAxisLabelsDependOnPointTransform:", [configurationCopy axisLabelsDependOnPointTransform]);
   }
 }
 

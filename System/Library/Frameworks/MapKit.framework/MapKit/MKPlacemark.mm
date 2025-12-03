@@ -13,30 +13,30 @@
 {
   v8.receiver = self;
   v8.super_class = MKPlacemark;
-  v3 = [(MKPlacemark *)&v8 thoroughfare];
-  v4 = v3;
-  if (v3)
+  thoroughfare = [(MKPlacemark *)&v8 thoroughfare];
+  v4 = thoroughfare;
+  if (thoroughfare)
   {
-    v5 = v3;
+    fullThoroughfare = thoroughfare;
   }
 
   else
   {
-    v5 = [(MKPlacemark *)self fullThoroughfare];
+    fullThoroughfare = [(MKPlacemark *)self fullThoroughfare];
   }
 
-  v6 = v5;
+  v6 = fullThoroughfare;
 
   return v6;
 }
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v3 = [(MKPlacemark *)self location];
-  if (v3)
+  location = [(MKPlacemark *)self location];
+  if (location)
   {
-    v4 = [(MKPlacemark *)self location];
-    [v4 coordinate];
+    location2 = [(MKPlacemark *)self location];
+    [location2 coordinate];
     v6 = v5;
     v8 = v7;
   }
@@ -56,19 +56,19 @@
 
 - (NSString)title
 {
-  v3 = [(MKPlacemark *)self formattedAddressLines];
-  if ([v3 count])
+  formattedAddressLines = [(MKPlacemark *)self formattedAddressLines];
+  if ([formattedAddressLines count])
   {
-    v4 = [v3 _mapkit_joinedAddressComponents];
+    _mapkit_joinedAddressComponents = [formattedAddressLines _mapkit_joinedAddressComponents];
   }
 
   else
   {
-    v5 = [(MKPlacemark *)self mkPostalAddressDictionary];
-    v4 = MKAddressStringForAddressDictionary(v5, 1u);
+    mkPostalAddressDictionary = [(MKPlacemark *)self mkPostalAddressDictionary];
+    _mapkit_joinedAddressComponents = MKAddressStringForAddressDictionary(mkPostalAddressDictionary, 1u);
   }
 
-  return v4;
+  return _mapkit_joinedAddressComponents;
 }
 
 - (MKPlacemark)initWithCoordinate:(CLLocationCoordinate2D)coordinate postalAddress:(CNPostalAddress *)postalAddress
@@ -76,9 +76,9 @@
   longitude = coordinate.longitude;
   latitude = coordinate.latitude;
   v7 = MKAddressDictionaryFromPostalAddress(postalAddress);
-  v8 = [(MKPlacemark *)self initWithCoordinate:v7 addressDictionary:latitude, longitude];
+  longitude = [(MKPlacemark *)self initWithCoordinate:v7 addressDictionary:latitude, longitude];
 
-  return v8;
+  return longitude;
 }
 
 - (MKPlacemark)initWithCoordinate:(CLLocationCoordinate2D)coordinate addressDictionary:(NSDictionary *)addressDictionary

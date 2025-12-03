@@ -1,7 +1,7 @@
 @interface IMPair
-+ (id)pairWithFirst:(id)a3 second:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (IMPair)initWithFirst:(id)a3 second:(id)a4;
++ (id)pairWithFirst:(id)first second:(id)second;
+- (BOOL)isEqual:(id)equal;
+- (IMPair)initWithFirst:(id)first second:(id)second;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -22,29 +22,29 @@
   [(IMPair *)&v5 dealloc];
 }
 
-- (IMPair)initWithFirst:(id)a3 second:(id)a4
+- (IMPair)initWithFirst:(id)first second:(id)second
 {
-  v6 = a3;
-  v7 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v13.receiver = self;
   v13.super_class = IMPair;
   v8 = [(IMPair *)&v13 init];
   v10 = v8;
   if (v8)
   {
-    objc_msgSend_setFirst_(v8, v9, v6);
-    objc_msgSend_setSecond_(v10, v11, v7);
+    objc_msgSend_setFirst_(v8, v9, firstCopy);
+    objc_msgSend_setSecond_(v10, v11, secondCopy);
   }
 
   return v10;
 }
 
-+ (id)pairWithFirst:(id)a3 second:(id)a4
++ (id)pairWithFirst:(id)first second:(id)second
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  second = objc_msgSend_initWithFirst_second_(v8, v9, v7, v6);
+  secondCopy = second;
+  firstCopy = first;
+  v8 = [self alloc];
+  second = objc_msgSend_initWithFirst_second_(v8, v9, firstCopy, secondCopy);
 
   return second;
 }
@@ -59,18 +59,18 @@
   return v13 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
     v9 = objc_msgSend_first(self, v6, v7);
-    v12 = objc_msgSend_first(v4, v10, v11);
+    v12 = objc_msgSend_first(equalCopy, v10, v11);
     if (objc_msgSend_isEqual_(v9, v13, v12))
     {
       v16 = objc_msgSend_second(self, v14, v15);
-      v19 = objc_msgSend_second(v4, v17, v18);
+      v19 = objc_msgSend_second(equalCopy, v17, v18);
       isEqual = objc_msgSend_isEqual_(v16, v20, v19);
     }
 

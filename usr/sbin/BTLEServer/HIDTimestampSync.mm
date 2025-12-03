@@ -1,20 +1,20 @@
 @interface HIDTimestampSync
 - (BOOL)isTimestampSyncEnabled;
-- (BOOL)obtainTimestampFromDriver:(unint64_t *)a3 count:(unint64_t *)a4 period:(unsigned int *)a5;
-- (BOOL)timestampSyncIsValid:(unint64_t)a3 hostTimestamp:(unint64_t)a4 btSyncTimestampUs:(unint64_t)a5;
-- (HIDTimestampSync)initWithBtClockMask:(unint64_t)a3;
-- (int64_t)calculateTimestampDifference:(unint64_t)a3 current:(unint64_t)a4 threshold:(unint64_t)a5 compensation:(unint64_t)a6 errorHandler:(id)a7;
-- (unint64_t)applyInverseTimestampOffset:(unint64_t)a3;
-- (unint64_t)applyTimestampOffset:(unsigned int)a3 precise:(BOOL)a4;
-- (unint64_t)machTimeToMicrosec:(unint64_t)a3;
-- (unint64_t)microsecToMachTime:(unint64_t)a3;
+- (BOOL)obtainTimestampFromDriver:(unint64_t *)driver count:(unint64_t *)count period:(unsigned int *)period;
+- (BOOL)timestampSyncIsValid:(unint64_t)valid hostTimestamp:(unint64_t)timestamp btSyncTimestampUs:(unint64_t)us;
+- (HIDTimestampSync)initWithBtClockMask:(unint64_t)mask;
+- (int64_t)calculateTimestampDifference:(unint64_t)difference current:(unint64_t)current threshold:(unint64_t)threshold compensation:(unint64_t)compensation errorHandler:(id)handler;
+- (unint64_t)applyInverseTimestampOffset:(unint64_t)offset;
+- (unint64_t)applyTimestampOffset:(unsigned int)offset precise:(BOOL)precise;
+- (unint64_t)machTimeToMicrosec:(unint64_t)microsec;
+- (unint64_t)microsecToMachTime:(unint64_t)time;
 - (void)dealloc;
-- (void)processTimestampSync:(unsigned int)a3 phase:(unsigned int)a4;
+- (void)processTimestampSync:(unsigned int)sync phase:(unsigned int)phase;
 @end
 
 @implementation HIDTimestampSync
 
-- (HIDTimestampSync)initWithBtClockMask:(unint64_t)a3
+- (HIDTimestampSync)initWithBtClockMask:(unint64_t)mask
 {
   v18.receiver = self;
   v18.super_class = HIDTimestampSync;
@@ -22,8 +22,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_btClockMask = a3;
-    v6 = [(HIDTimestampSync *)v4 convertBTClockToMicrosec:a3];
+    v4->_btClockMask = mask;
+    v6 = [(HIDTimestampSync *)v4 convertBTClockToMicrosec:mask];
     v5->_btSyncCompensation = &v6[[(HIDTimestampSync *)v5 convertBTClockToMicrosec:1]];
     v5->_syncService = 0;
     v7 = IOServiceNameMatching("AppleMultitouchTimestampSync");
@@ -99,7 +99,7 @@ LABEL_9:
   [(HIDTimestampSync *)&v4 dealloc];
 }
 
-- (BOOL)obtainTimestampFromDriver:(unint64_t *)a3 count:(unint64_t *)a4 period:(unsigned int *)a5
+- (BOOL)obtainTimestampFromDriver:(unint64_t *)driver count:(unint64_t *)count period:(unsigned int *)period
 {
   syncService = self->_syncService;
   if (!syncService)
@@ -108,7 +108,7 @@ LABEL_9:
     return v20;
   }
 
-  if (a3)
+  if (driver)
   {
     CFProperty = IORegistryEntryCreateCFProperty(syncService, @"Last Timestamp Sync", kCFAllocatorDefault, 0);
     if (!CFProperty)
@@ -118,11 +118,11 @@ LABEL_9:
     }
 
     v11 = CFProperty;
-    CFNumberGetValue(CFProperty, kCFNumberSInt64Type, a3);
+    CFNumberGetValue(CFProperty, kCFNumberSInt64Type, driver);
     CFRelease(v11);
   }
 
-  if (a4)
+  if (count)
   {
     v12 = IORegistryEntryCreateCFProperty(self->_syncService, @"Timestamp Sync Count", kCFAllocatorDefault, 0);
     if (!v12)
@@ -132,11 +132,11 @@ LABEL_9:
     }
 
     v13 = v12;
-    CFNumberGetValue(v12, kCFNumberSInt64Type, a4);
+    CFNumberGetValue(v12, kCFNumberSInt64Type, count);
     CFRelease(v13);
   }
 
-  if (a5)
+  if (period)
   {
     v14 = IORegistryEntryCreateCFProperty(self->_syncService, @"Timestamp Sync Period", kCFAllocatorDefault, 0);
     if (!v14)
@@ -146,7 +146,7 @@ LABEL_9:
     }
 
     v15 = v14;
-    CFNumberGetValue(v14, kCFNumberSInt32Type, a5);
+    CFNumberGetValue(v14, kCFNumberSInt32Type, period);
     CFRelease(v15);
   }
 
@@ -185,16 +185,16 @@ LABEL_9:
   return 0;
 }
 
-- (unint64_t)applyTimestampOffset:(unsigned int)a3 precise:(BOOL)a4
+- (unint64_t)applyTimestampOffset:(unsigned int)offset precise:(BOOL)precise
 {
-  v4 = a4;
+  preciseCopy = precise;
   if (![(HIDTimestampSync *)self isTimestampSyncEnabled])
   {
     return 0;
   }
 
-  v7 = [(HIDTimestampSync *)self convertBTClockToMicrosec:a3];
-  if (v4)
+  v7 = [(HIDTimestampSync *)self convertBTClockToMicrosec:offset];
+  if (preciseCopy)
   {
     v8 = 2000 * self->_periodMs;
     btSyncCompensation = self->_btSyncCompensation;
@@ -234,7 +234,7 @@ LABEL_9:
   return v11;
 }
 
-- (unint64_t)applyInverseTimestampOffset:(unint64_t)a3
+- (unint64_t)applyInverseTimestampOffset:(unint64_t)offset
 {
   if (![(HIDTimestampSync *)self isTimestampSyncEnabled])
   {
@@ -251,7 +251,7 @@ LABEL_9:
     return 0;
   }
 
-  v5 = a3 - self->_lastHostTimestampUs;
+  v5 = offset - self->_lastHostTimestampUs;
   v6 = self->_lastBTSyncTimestampUs + v5;
   v7 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
@@ -261,7 +261,7 @@ LABEL_9:
     v11 = 134219008;
     v12 = lastHostTimestampUs;
     v13 = 2048;
-    v14 = a3;
+    offsetCopy = offset;
     v15 = 2048;
     v16 = v5;
     v17 = 2048;
@@ -274,27 +274,27 @@ LABEL_9:
   return v6;
 }
 
-- (int64_t)calculateTimestampDifference:(unint64_t)a3 current:(unint64_t)a4 threshold:(unint64_t)a5 compensation:(unint64_t)a6 errorHandler:(id)a7
+- (int64_t)calculateTimestampDifference:(unint64_t)difference current:(unint64_t)current threshold:(unint64_t)threshold compensation:(unint64_t)compensation errorHandler:(id)handler
 {
-  v11 = a7;
-  if (a6 < a5 || (v12 = a6 - a3, a6 < a3) || (v13 = a6 - a4, a6 < a4))
+  handlerCopy = handler;
+  if (compensation < threshold || (v12 = compensation - difference, compensation < difference) || (v13 = compensation - current, compensation < current))
   {
-    [NSString stringWithFormat:@"Compensation should be equal or larger than timestamps and threshold.(compensation=%llu, threshold=%llu, previous=%llu, current=%llu)", a6, a5, a3, a4, v18];
+    [NSString stringWithFormat:@"Compensation should be equal or larger than timestamps and threshold.(compensation=%llu, threshold=%llu, previous=%llu, current=%llu)", compensation, threshold, difference, current, v18];
     v15 = LABEL_8:;
-    [v11 reportFailure:v15];
+    [handlerCopy reportFailure:v15];
 
     v14 = 0;
     goto LABEL_9;
   }
 
-  if ((a4 - a3) > a5 || (a4 - a3) < -a5)
+  if ((current - difference) > threshold || (current - difference) < -threshold)
   {
-    if (a4 <= a3)
+    if (current <= difference)
     {
-      v14 = v12 + a4;
-      if ((v12 + a4) > a5)
+      v14 = v12 + current;
+      if ((v12 + current) > threshold)
       {
-        [NSString stringWithFormat:@"Timestamp going backwards (%llu=>%llu, diff=%lld). This is not a rollover(threshold=%llu, compensation=%llu).", a3, a4, a4 - a3, a5, a6];
+        [NSString stringWithFormat:@"Timestamp going backwards (%llu=>%llu, diff=%lld). This is not a rollover(threshold=%llu, compensation=%llu).", difference, current, current - difference, threshold, compensation];
         goto LABEL_8;
       }
 
@@ -307,10 +307,10 @@ LABEL_9:
 
     else
     {
-      v14 = v13 + a3;
-      if ((v13 + a3) > a5)
+      v14 = v13 + difference;
+      if ((v13 + difference) > threshold)
       {
-        [NSString stringWithFormat:@"Compensation should be equal or larger than timestamps and threshold.Timestamp jump (%llu=>%llu, diff=%lld). This is not a rollover(threshold=%llu, compensation=%llu).", a3, a4, a4 - a3, a5, a6];
+        [NSString stringWithFormat:@"Compensation should be equal or larger than timestamps and threshold.Timestamp jump (%llu=>%llu, diff=%lld). This is not a rollover(threshold=%llu, compensation=%llu).", difference, current, current - difference, threshold, compensation];
         goto LABEL_8;
       }
 
@@ -322,35 +322,35 @@ LABEL_9:
     }
 
     *buf = 134219008;
-    v20 = a3;
+    differenceCopy = difference;
     v21 = 2048;
-    v22 = a4;
+    currentCopy = current;
     v23 = 2048;
     v24 = v14;
     v25 = 2048;
-    v26 = a5;
+    thresholdCopy = threshold;
     v27 = 2048;
-    v28 = a6;
+    compensationCopy = compensation;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Rollover detected (%llu=>%llu). Return diff=%lld (threshold=%llu, compensation=%llu)", buf, 0x34u);
     goto LABEL_9;
   }
 
-  v14 = a4 - a3;
+  v14 = current - difference;
 LABEL_9:
 
   return v14;
 }
 
-- (BOOL)timestampSyncIsValid:(unint64_t)a3 hostTimestamp:(unint64_t)a4 btSyncTimestampUs:(unint64_t)a5
+- (BOOL)timestampSyncIsValid:(unint64_t)valid hostTimestamp:(unint64_t)timestamp btSyncTimestampUs:(unint64_t)us
 {
   lastHostTimestampCount = self->_lastHostTimestampCount;
   if (lastHostTimestampCount)
   {
-    if (a4 != 1 && lastHostTimestampCount + 1 != a4)
+    if (timestamp != 1 && lastHostTimestampCount + 1 != timestamp)
     {
       btSyncErrorHandler = self->_btSyncErrorHandler;
-      v11 = [NSString stringWithFormat:@"Host timestamp jump detected (%llu:%llu -> %llu:%llu). Discard this BTSync packet.", lastHostTimestampCount, self->_lastHostTimestampUs, a4, a3];
-      [(HIDTimestampSyncErrorHandler *)btSyncErrorHandler reportFailure:v11];
+      valid = [NSString stringWithFormat:@"Host timestamp jump detected (%llu:%llu -> %llu:%llu). Discard this BTSync packet.", lastHostTimestampCount, self->_lastHostTimestampUs, timestamp, valid];
+      [(HIDTimestampSyncErrorHandler *)btSyncErrorHandler reportFailure:valid];
 
       lastHostTimestampUs = self->_lastHostTimestampUs;
       v12 = self->_lastHostTimestampCount;
@@ -358,7 +358,7 @@ LABEL_9:
       return 0;
     }
 
-    if (a4 < 2)
+    if (timestamp < 2)
     {
       v21 = 0;
     }
@@ -366,14 +366,14 @@ LABEL_9:
     else
     {
       v19 = self->_lastHostTimestampUs;
-      v20 = [(HIDTimestampSync *)self calculateTimestampDifference:self->_lastBTSyncTimestampUs current:a5 threshold:2000 * self->_periodMs compensation:self->_btSyncCompensation errorHandler:self->_btSyncErrorHandler];
-      v21 = a3 - v19 - v20;
+      v20 = [(HIDTimestampSync *)self calculateTimestampDifference:self->_lastBTSyncTimestampUs current:us threshold:2000 * self->_periodMs compensation:self->_btSyncCompensation errorHandler:self->_btSyncErrorHandler];
+      v21 = valid - v19 - v20;
       if (self->_lastHostTimestampUs && self->_lastBTSyncTimestampUs)
       {
         kdebug_trace();
       }
 
-      if (v20 || self->_lastBTSyncTimestampUs == a5)
+      if (v20 || self->_lastBTSyncTimestampUs == us)
       {
         [(HIDTimestampSyncErrorHandler *)self->_btSyncErrorHandler reportSuccess];
       }
@@ -386,17 +386,17 @@ LABEL_9:
       v23 = self->_lastHostTimestampCount;
       lastBTSyncTimestampUs = self->_lastBTSyncTimestampUs;
       *buf = 134219520;
-      v27 = v23;
+      timestampCopy2 = v23;
       v28 = 2048;
-      v29 = v24;
+      validCopy2 = v24;
       v30 = 2048;
-      v31 = a4;
+      usCopy2 = timestamp;
       v32 = 2048;
-      v33 = a3;
+      validCopy = valid;
       v34 = 2048;
       v35 = lastBTSyncTimestampUs;
       v36 = 2048;
-      v37 = a5;
+      usCopy = us;
       v38 = 2048;
       v39 = v21;
       v16 = "New timestamp sync (Host=%llu:%llu->%llu:%llu, BT=%llu->%llu, drift=%lld)";
@@ -412,11 +412,11 @@ LABEL_9:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218496;
-      v27 = a4;
+      timestampCopy2 = timestamp;
       v28 = 2048;
-      v29 = a3;
+      validCopy2 = valid;
       v30 = 2048;
-      v31 = a5;
+      usCopy2 = us;
       v16 = "First timestamp sync (Host=%llu:%llu, BT=%llu)";
       v17 = v15;
       v18 = 32;
@@ -428,7 +428,7 @@ LABEL_17:
   return 1;
 }
 
-- (unint64_t)machTimeToMicrosec:(unint64_t)a3
+- (unint64_t)machTimeToMicrosec:(unint64_t)microsec
 {
   v4 = dword_1000DDB04;
   if (!dword_1000DDB04)
@@ -437,10 +437,10 @@ LABEL_17:
     v4 = dword_1000DDB04;
   }
 
-  return a3 / v4 * dword_1000DDB00 / 0x3E8;
+  return microsec / v4 * dword_1000DDB00 / 0x3E8;
 }
 
-- (unint64_t)microsecToMachTime:(unint64_t)a3
+- (unint64_t)microsecToMachTime:(unint64_t)time
 {
   v4 = dword_1000DDB0C;
   if (!dword_1000DDB0C)
@@ -449,17 +449,17 @@ LABEL_17:
     v4 = dword_1000DDB0C;
   }
 
-  return 1000 * a3 * v4 / dword_1000DDB08;
+  return 1000 * time * v4 / dword_1000DDB08;
 }
 
-- (void)processTimestampSync:(unsigned int)a3 phase:(unsigned int)a4
+- (void)processTimestampSync:(unsigned int)sync phase:(unsigned int)phase
 {
-  v6 = [(HIDTimestampSync *)self convertBTClockToMicrosec:a3];
+  v6 = [(HIDTimestampSync *)self convertBTClockToMicrosec:sync];
   v11 = 0;
   v12 = 0;
   if ([(HIDTimestampSync *)self obtainTimestampFromDriver:&v12 count:&v11 period:&self->_periodMs])
   {
-    v7 = v6 + a4;
+    v7 = v6 + phase;
     v8 = 1000 * v12;
     if ([(HIDTimestampSync *)self timestampSyncIsValid:1000 * v12 hostTimestamp:v11 btSyncTimestampUs:v7])
     {

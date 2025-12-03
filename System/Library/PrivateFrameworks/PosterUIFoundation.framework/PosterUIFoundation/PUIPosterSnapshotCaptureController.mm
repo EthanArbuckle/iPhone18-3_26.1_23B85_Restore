@@ -2,28 +2,28 @@
 - (BOOL)_isSceneReadyForSnapshotting;
 - (FBSScene)scene;
 - (PUIPosterSnapshotCaptureController)init;
-- (PUIPosterSnapshotCaptureController)initWithFBSScene:(id)a3;
+- (PUIPosterSnapshotCaptureController)initWithFBSScene:(id)scene;
 - (PUIPosterSnapshotCaptureControllerDelegate)delegate;
-- (id)enqueueCaptureForDescriptor:(id)a3 outputURL:(id)a4;
+- (id)enqueueCaptureForDescriptor:(id)descriptor outputURL:(id)l;
 - (void)_kickCaptureQueue;
 - (void)_lock_kickCaptureQueue;
 - (void)_updateSceneSnapshotReadinessActions;
-- (void)handleSceneSnapshotReadinessAction:(id)a3;
+- (void)handleSceneSnapshotReadinessAction:(id)action;
 - (void)invalidate;
 @end
 
 @implementation PUIPosterSnapshotCaptureController
 
-- (PUIPosterSnapshotCaptureController)initWithFBSScene:(id)a3
+- (PUIPosterSnapshotCaptureController)initWithFBSScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v14.receiver = self;
   v14.super_class = PUIPosterSnapshotCaptureController;
   v5 = [(PUIPosterSnapshotCaptureController *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
     v7 = objc_opt_new();
     captureQueue = v6->_captureQueue;
     v6->_captureQueue = v7;
@@ -47,24 +47,24 @@
   return 0;
 }
 
-- (id)enqueueCaptureForDescriptor:(id)a3 outputURL:(id)a4
+- (id)enqueueCaptureForDescriptor:(id)descriptor outputURL:(id)l
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  lCopy = l;
   v8 = PUILogSnapshotting();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->_scene);
-    v10 = [WeakRetained identifier];
+    identifier = [WeakRetained identifier];
     *buf = 138412290;
-    v29 = v10;
+    v29 = identifier;
     _os_log_impl(&dword_1A8C85000, v8, OS_LOG_TYPE_DEFAULT, "(%@) enqueuing capture...", buf, 0xCu);
   }
 
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = objc_loadWeakRetained(&v11->_scene);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = objc_loadWeakRetained(&selfCopy->_scene);
   v13 = v12 == 0;
 
   if (v13)
@@ -72,33 +72,33 @@
     v25 = MEMORY[0x1E69C5258];
     v16 = PFFunctionNameForAddress();
     v26 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
-    v24 = [v25 futureWithError:{v26, 0}];
+    future = [v25 futureWithError:{v26, 0}];
   }
 
   else
   {
     v14 = [_PUIPosterSnapshotCapture alloc];
-    v15 = objc_loadWeakRetained(&v11->_scene);
-    v16 = [(_PUIPosterSnapshotCapture *)v14 initWithScene:v15 captureController:v11 snapshotDescriptor:v6 outputURL:v7];
+    v15 = objc_loadWeakRetained(&selfCopy->_scene);
+    v16 = [(_PUIPosterSnapshotCapture *)v14 initWithScene:v15 captureController:selfCopy snapshotDescriptor:descriptorCopy outputURL:lCopy];
 
-    [(NSMutableArray *)v11->_captureQueue addObject:v16];
-    v17 = [(NSMutableArray *)v11->_captureQueue count];
+    [(NSMutableArray *)selfCopy->_captureQueue addObject:v16];
+    v17 = [(NSMutableArray *)selfCopy->_captureQueue count];
     v18 = v17;
-    captureQueueHighWaterMark = v11->_captureQueueHighWaterMark;
+    captureQueueHighWaterMark = selfCopy->_captureQueueHighWaterMark;
     if (v17 > captureQueueHighWaterMark)
     {
       captureQueueHighWaterMark = v17;
     }
 
-    v11->_captureQueueHighWaterMark = captureQueueHighWaterMark;
+    selfCopy->_captureQueueHighWaterMark = captureQueueHighWaterMark;
     v20 = PUILogSnapshotting();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = objc_loadWeakRetained(&v11->_scene);
-      v22 = [v21 identifier];
-      v23 = v11->_captureQueueHighWaterMark;
+      v21 = objc_loadWeakRetained(&selfCopy->_scene);
+      identifier2 = [v21 identifier];
+      v23 = selfCopy->_captureQueueHighWaterMark;
       *buf = 138413058;
-      v29 = v22;
+      v29 = identifier2;
       v30 = 2048;
       v31 = v16;
       v32 = 2048;
@@ -108,22 +108,22 @@
       _os_log_impl(&dword_1A8C85000, v20, OS_LOG_TYPE_DEFAULT, "(%@) Enqueued capture %p; %lu snapshots pending; high water mark: %lu", buf, 0x2Au);
     }
 
-    [(PUIPosterSnapshotCaptureController *)v11 _lock_kickCaptureQueue];
-    v24 = [(_PUIPosterSnapshotCapture *)v16 future];
+    [(PUIPosterSnapshotCaptureController *)selfCopy _lock_kickCaptureQueue];
+    future = [(_PUIPosterSnapshotCapture *)v16 future];
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 
-  return v24;
+  return future;
 }
 
-- (void)handleSceneSnapshotReadinessAction:(id)a3
+- (void)handleSceneSnapshotReadinessAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = a3;
+    actionCopy = action;
     BSDispatchQueueAssertMain();
-    [(NSMutableSet *)self->_sceneReadinessActions addObject:v4];
+    [(NSMutableSet *)self->_sceneReadinessActions addObject:actionCopy];
 
     [(PUIPosterSnapshotCaptureController *)self _updateSceneSnapshotReadinessActions];
   }
@@ -139,21 +139,21 @@
     goto LABEL_20;
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_captureQueue count];
-  WeakRetained = objc_loadWeakRetained(&v4->_scene);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_captureQueue count];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_scene);
 
-  objc_sync_exit(v4);
-  v6 = [(PUIPosterSnapshotCaptureController *)v4 _isSceneReadyForSnapshotting];
+  objc_sync_exit(selfCopy);
+  _isSceneReadyForSnapshotting = [(PUIPosterSnapshotCaptureController *)selfCopy _isSceneReadyForSnapshotting];
   if (!WeakRetained)
   {
     v8 = MEMORY[0x1E698E600];
     v9 = PFFunctionNameForAddress();
     v10 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
-    v7 = [v8 responseForError:{v10, 0}];
+    response = [v8 responseForError:{v10, 0}];
 
-    if (!v7)
+    if (!response)
     {
       goto LABEL_20;
     }
@@ -161,10 +161,10 @@
     goto LABEL_7;
   }
 
-  if (v6)
+  if (_isSceneReadyForSnapshotting)
   {
-    v7 = [MEMORY[0x1E698E600] response];
-    if (!v7)
+    response = [MEMORY[0x1E698E600] response];
+    if (!response)
     {
       goto LABEL_20;
     }
@@ -191,7 +191,7 @@ LABEL_7:
           v15 = *(*(&v24 + 1) + 8 * i);
           if ([v15 isValid])
           {
-            [v15 sendResponse:v7];
+            [v15 sendResponse:response];
           }
         }
 
@@ -202,8 +202,8 @@ LABEL_7:
     }
 
     [(NSMutableSet *)self->_sceneReadinessActions minusSet:v11];
-    snapshotReadinessObserver = v4->_snapshotReadinessObserver;
-    p_snapshotReadinessObserver = &v4->_snapshotReadinessObserver;
+    snapshotReadinessObserver = selfCopy->_snapshotReadinessObserver;
+    p_snapshotReadinessObserver = &selfCopy->_snapshotReadinessObserver;
     [(PUIPosterSnapshotReadinessSceneObserver *)snapshotReadinessObserver invalidate];
     v18 = *p_snapshotReadinessObserver;
     *p_snapshotReadinessObserver = 0;
@@ -211,17 +211,17 @@ LABEL_7:
     goto LABEL_20;
   }
 
-  if (!v4->_snapshotReadinessObserver)
+  if (!selfCopy->_snapshotReadinessObserver)
   {
     v19 = [PUIPosterSnapshotReadinessSceneObserver alloc];
-    v20 = objc_loadWeakRetained(&v4->_scene);
+    v20 = objc_loadWeakRetained(&selfCopy->_scene);
     v21 = [(PUIPosterSnapshotReadinessSceneObserver *)v19 initWithFBSScene:v20];
-    v22 = v4->_snapshotReadinessObserver;
-    v4->_snapshotReadinessObserver = v21;
+    v22 = selfCopy->_snapshotReadinessObserver;
+    selfCopy->_snapshotReadinessObserver = v21;
   }
 
-  objc_initWeak(&location, v4);
-  v23 = v4->_snapshotReadinessObserver;
+  objc_initWeak(&location, selfCopy);
+  v23 = selfCopy->_snapshotReadinessObserver;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __74__PUIPosterSnapshotCaptureController__updateSceneSnapshotReadinessActions__block_invoke;
@@ -259,10 +259,10 @@ void __74__PUIPosterSnapshotCaptureController__updateSceneSnapshotReadinessActio
 {
   BSDispatchQueueAssertMain();
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v4 = [WeakRetained clientSettings];
-  v5 = [v4 pui_didFinishInitialization];
+  clientSettings = [WeakRetained clientSettings];
+  pui_didFinishInitialization = [clientSettings pui_didFinishInitialization];
 
-  if (!v5)
+  if (!pui_didFinishInitialization)
   {
     return 0;
   }
@@ -276,21 +276,21 @@ void __74__PUIPosterSnapshotCaptureController__updateSceneSnapshotReadinessActio
 - (void)invalidate
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = PUILogSnapshotting();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = v2;
+    v18 = selfCopy;
     _os_log_impl(&dword_1A8C85000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating PUIPosterSnapshotCaptureController: %p", buf, 0xCu);
   }
 
-  objc_storeWeak(&v2->_scene, 0);
-  v4 = [(NSMutableArray *)v2->_captureQueue copy];
-  [(NSMutableArray *)v2->_captureQueue removeAllObjects];
-  captureQueue = v2->_captureQueue;
-  v2->_captureQueue = 0;
+  objc_storeWeak(&selfCopy->_scene, 0);
+  v4 = [(NSMutableArray *)selfCopy->_captureQueue copy];
+  [(NSMutableArray *)selfCopy->_captureQueue removeAllObjects];
+  captureQueue = selfCopy->_captureQueue;
+  selfCopy->_captureQueue = 0;
 
   v14 = 0u;
   v15 = 0u;
@@ -321,18 +321,18 @@ void __74__PUIPosterSnapshotCaptureController__updateSceneSnapshotReadinessActio
     while (v7);
   }
 
-  [(_PUIPosterSnapshotCapture *)v2->_activeCapture invalidate];
-  activeCapture = v2->_activeCapture;
-  v2->_activeCapture = 0;
+  [(_PUIPosterSnapshotCapture *)selfCopy->_activeCapture invalidate];
+  activeCapture = selfCopy->_activeCapture;
+  selfCopy->_activeCapture = 0;
 
-  [(PUIPosterSnapshotReadinessSceneObserver *)v2->_snapshotReadinessObserver invalidate];
-  snapshotReadinessObserver = v2->_snapshotReadinessObserver;
-  v2->_snapshotReadinessObserver = 0;
+  [(PUIPosterSnapshotReadinessSceneObserver *)selfCopy->_snapshotReadinessObserver invalidate];
+  snapshotReadinessObserver = selfCopy->_snapshotReadinessObserver;
+  selfCopy->_snapshotReadinessObserver = 0;
 
-  [(PUIPosterSnapshotCaptureController *)v2 _updateSceneSnapshotReadinessActions];
-  [(BSAtomicFlag *)v2->_isSnapshottingFlag setFlag:0];
+  [(PUIPosterSnapshotCaptureController *)selfCopy _updateSceneSnapshotReadinessActions];
+  [(BSAtomicFlag *)selfCopy->_isSnapshottingFlag setFlag:0];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_kickCaptureQueue
@@ -364,14 +364,14 @@ void __74__PUIPosterSnapshotCaptureController__updateSceneSnapshotReadinessActio
       [(NSMutableArray *)self->_captureQueue removeObjectAtIndex:0];
       objc_storeStrong(&self->_activeCapture, v6);
       v7 = objc_loadWeakRetained(&self->_scene);
-      v8 = [v7 identifier];
+      identifier = [v7 identifier];
 
       v9 = self->_activeCapture;
       v10 = PUILogSnapshotting();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = v21;
-        v34 = v8;
+        v34 = identifier;
         v35 = 2048;
         v36 = v9;
         _os_log_impl(&dword_1A8C85000, v10, OS_LOG_TYPE_DEFAULT, "(%@) Activating capture %p", buf, 0x16u);
@@ -380,13 +380,13 @@ void __74__PUIPosterSnapshotCaptureController__updateSceneSnapshotReadinessActio
       [(BSAtomicFlag *)self->_isSnapshottingFlag setFlag:1];
       [v6 start];
       objc_initWeak(buf, self);
-      v11 = [(_PUIPosterSnapshotCapture *)self->_activeCapture future];
+      future = [(_PUIPosterSnapshotCapture *)self->_activeCapture future];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __60__PUIPosterSnapshotCaptureController__lock_kickCaptureQueue__block_invoke;
       v29[3] = &unk_1E7854D80;
       objc_copyWeak(&v32, buf);
-      v12 = v8;
+      v12 = identifier;
       v30 = v12;
       v13 = v9;
       v31 = v13;
@@ -399,8 +399,8 @@ void __74__PUIPosterSnapshotCaptureController__updateSceneSnapshotReadinessActio
       v26 = v14;
       v15 = v13;
       v27 = v15;
-      v16 = [MEMORY[0x1E69C5268] mainThreadScheduler];
-      [v11 addSuccessBlock:v29 andFailureBlock:v25 scheduler:v16];
+      mainThreadScheduler = [MEMORY[0x1E69C5268] mainThreadScheduler];
+      [future addSuccessBlock:v29 andFailureBlock:v25 scheduler:mainThreadScheduler];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(&v32);

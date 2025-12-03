@@ -1,26 +1,26 @@
 @interface SISchemaTRPRequestLink
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaTRPRequestLink)initWithDictionary:(id)a3;
-- (SISchemaTRPRequestLink)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaTRPRequestLink)initWithDictionary:(id)dictionary;
+- (SISchemaTRPRequestLink)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaTRPRequestLink
 
-- (SISchemaTRPRequestLink)initWithDictionary:(id)a3
+- (SISchemaTRPRequestLink)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SISchemaTRPRequestLink;
   v5 = [(SISchemaTRPRequestLink *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"trpId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"trpId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(SISchemaTRPRequestLink *)v5 setTrpId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(SISchemaTRPRequestLink *)v5 setRequestId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"source"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"source"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (SISchemaTRPRequestLink)initWithJSON:(id)a3
+- (SISchemaTRPRequestLink)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaTRPRequestLink *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaTRPRequestLink *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaTRPRequestLink *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,33 +85,33 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_requestId)
   {
-    v4 = [(SISchemaTRPRequestLink *)self requestId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    requestId = [(SISchemaTRPRequestLink *)self requestId];
+    dictionaryRepresentation = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"requestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"requestId"];
     }
   }
 
   if (*&self->_has)
   {
-    v7 = [(SISchemaTRPRequestLink *)self source];
+    source = [(SISchemaTRPRequestLink *)self source];
     v8 = @"TRPREQUESTLINKSOURCE_UNKNOWN";
-    if (v7 == 1)
+    if (source == 1)
     {
       v8 = @"TRPREQUESTLINKSOURCE_TURN_TAKING_MANAGER";
     }
 
-    if (v7 == 2)
+    if (source == 2)
     {
       v9 = @"TRPREQUESTLINKSOURCE_CORE_SPEECH";
     }
@@ -121,28 +121,28 @@
       v9 = v8;
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"source"];
+    [dictionary setObject:v9 forKeyedSubscript:@"source"];
   }
 
   if (self->_trpId)
   {
-    v10 = [(SISchemaTRPRequestLink *)self trpId];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    trpId = [(SISchemaTRPRequestLink *)self trpId];
+    dictionaryRepresentation2 = [trpId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"trpId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"trpId"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"trpId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"trpId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -162,28 +162,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaTRPRequestLink *)self trpId];
-  v6 = [v4 trpId];
-  if ((v5 != 0) == (v6 == 0))
+  trpId = [(SISchemaTRPRequestLink *)self trpId];
+  trpId2 = [equalCopy trpId];
+  if ((trpId != 0) == (trpId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaTRPRequestLink *)self trpId];
-  if (v7)
+  trpId3 = [(SISchemaTRPRequestLink *)self trpId];
+  if (trpId3)
   {
-    v8 = v7;
-    v9 = [(SISchemaTRPRequestLink *)self trpId];
-    v10 = [v4 trpId];
-    v11 = [v9 isEqual:v10];
+    v8 = trpId3;
+    trpId4 = [(SISchemaTRPRequestLink *)self trpId];
+    trpId5 = [equalCopy trpId];
+    v11 = [trpId4 isEqual:trpId5];
 
     if (!v11)
     {
@@ -195,22 +195,22 @@
   {
   }
 
-  v5 = [(SISchemaTRPRequestLink *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) == (v6 == 0))
+  trpId = [(SISchemaTRPRequestLink *)self requestId];
+  trpId2 = [equalCopy requestId];
+  if ((trpId != 0) == (trpId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(SISchemaTRPRequestLink *)self requestId];
-  if (v12)
+  requestId = [(SISchemaTRPRequestLink *)self requestId];
+  if (requestId)
   {
-    v13 = v12;
-    v14 = [(SISchemaTRPRequestLink *)self requestId];
-    v15 = [v4 requestId];
-    v16 = [v14 isEqual:v15];
+    v13 = requestId;
+    requestId2 = [(SISchemaTRPRequestLink *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v16 = [requestId2 isEqual:requestId3];
 
     if (!v16)
     {
@@ -222,9 +222,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (source = self->_source, source == [v4 source]))
+    if ((*&self->_has & 1) == 0 || (source = self->_source, source == [equalCopy source]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -238,22 +238,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaTRPRequestLink *)self trpId];
+  toCopy = to;
+  trpId = [(SISchemaTRPRequestLink *)self trpId];
 
-  if (v4)
+  if (trpId)
   {
-    v5 = [(SISchemaTRPRequestLink *)self trpId];
+    trpId2 = [(SISchemaTRPRequestLink *)self trpId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SISchemaTRPRequestLink *)self requestId];
+  requestId = [(SISchemaTRPRequestLink *)self requestId];
 
-  if (v6)
+  if (requestId)
   {
-    v7 = [(SISchemaTRPRequestLink *)self requestId];
+    requestId2 = [(SISchemaTRPRequestLink *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -263,26 +263,26 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = SISchemaTRPRequestLink;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(SISchemaTRPRequestLink *)self trpId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  trpId = [(SISchemaTRPRequestLink *)self trpId];
+  v7 = [trpId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaTRPRequestLink *)self deleteTrpId];
   }
 
-  v9 = [(SISchemaTRPRequestLink *)self requestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestId = [(SISchemaTRPRequestLink *)self requestId];
+  v10 = [requestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaTRPRequestLink *)self deleteRequestId];
   }

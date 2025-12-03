@@ -1,12 +1,12 @@
 @interface ABPKPoseEstimationPipeline
 - (ABPKPoseEstimationPipeline)init;
 - (BOOL)initAlgorithmModules;
-- (int)runABPKPoseEstimationWithInputData:(id)a3 andGetOutput:(id)a4;
-- (void)computeRootTransforms:(float32x4_t)a3 withCameraExtrinsics:(float32x4_t)a4 withVioPose:(uint64_t)a5 withVioPoseValidity:(uint64_t)a6;
+- (int)runABPKPoseEstimationWithInputData:(id)data andGetOutput:(id)output;
+- (void)computeRootTransforms:(float32x4_t)transforms withCameraExtrinsics:(float32x4_t)extrinsics withVioPose:(uint64_t)pose withVioPoseValidity:(uint64_t)validity;
 - (void)dealloc;
 - (void)initializeOutput;
-- (void)runABPKAlgorithmWithInputData:(id)a3 andGetOutput:(id)a4;
-- (void)saveInputData:(id)a3 andOutputData:(id)a4 ToDir:(id)a5 withFileNamePrefix:(id)a6;
+- (void)runABPKAlgorithmWithInputData:(id)data andGetOutput:(id)output;
+- (void)saveInputData:(id)data andOutputData:(id)outputData ToDir:(id)dir withFileNamePrefix:(id)prefix;
 @end
 
 @implementation ABPKPoseEstimationPipeline
@@ -260,48 +260,48 @@ LABEL_26:
   [(ABPKPoseEstimationPipeline *)&v4 dealloc];
 }
 
-- (void)runABPKAlgorithmWithInputData:(id)a3 andGetOutput:(id)a4
+- (void)runABPKAlgorithmWithInputData:(id)data andGetOutput:(id)output
 {
-  v23 = a3;
-  v6 = a4;
+  dataCopy = data;
+  outputCopy = output;
   [(ABPKPoseEstimationPipeline *)self _startExecuteAlgorithmSignpost];
   +[ABPKTime nowInSeconds];
   *&v7 = v7;
-  [v6 setTimeABPKAlgorithmStart:v7];
+  [outputCopy setTimeABPKAlgorithmStart:v7];
   v8 = objc_alloc_init(ABPKAlgorithmState);
-  [v6 setAlgState:v8];
+  [outputCopy setAlgState:v8];
 
-  [v23 timestamp];
-  [v6 setTimestamp:?];
-  [v6 setAlgorithmReturnCode:{-[ABPKPoseEstimationPipeline runABPKPoseEstimationWithInputData:andGetOutput:](self, "runABPKPoseEstimationWithInputData:andGetOutput:", v23, v6)}];
-  [v6 setRawDetection2dSkeletonABPK:self->_rawDetection2dSkeleton];
-  [v6 setRawDetection2dSkeletonABPKArray:self->_rawDetection2dSkeletonArray];
-  [v6 setDetection2dSkeletonABPK:self->_detection2dSkeleton];
-  [v6 setLiftingSkeletonABPK:self->_liftingSkeleton];
-  [v6 setRegistered2dSkeletonABPK:self->_registered2dSkeleton];
-  [v6 setRetargetedSkeletonABPK:self->_retargetedSkeleton];
-  v9 = [v23 cameraParams];
-  [v9 extrinsics];
+  [dataCopy timestamp];
+  [outputCopy setTimestamp:?];
+  [outputCopy setAlgorithmReturnCode:{-[ABPKPoseEstimationPipeline runABPKPoseEstimationWithInputData:andGetOutput:](self, "runABPKPoseEstimationWithInputData:andGetOutput:", dataCopy, outputCopy)}];
+  [outputCopy setRawDetection2dSkeletonABPK:self->_rawDetection2dSkeleton];
+  [outputCopy setRawDetection2dSkeletonABPKArray:self->_rawDetection2dSkeletonArray];
+  [outputCopy setDetection2dSkeletonABPK:self->_detection2dSkeleton];
+  [outputCopy setLiftingSkeletonABPK:self->_liftingSkeleton];
+  [outputCopy setRegistered2dSkeletonABPK:self->_registered2dSkeleton];
+  [outputCopy setRetargetedSkeletonABPK:self->_retargetedSkeleton];
+  cameraParams = [dataCopy cameraParams];
+  [cameraParams extrinsics];
   v21 = v11;
   v22 = v10;
   v19 = v13;
   v20 = v12;
-  [v23 vioPose];
-  -[ABPKPoseEstimationPipeline computeRootTransforms:withCameraExtrinsics:withVioPose:withVioPoseValidity:](self, "computeRootTransforms:withCameraExtrinsics:withVioPose:withVioPoseValidity:", v6, [v23 isVioPoseValid], v22, v21, v20, v19, v14, v15, v16, v17);
+  [dataCopy vioPose];
+  -[ABPKPoseEstimationPipeline computeRootTransforms:withCameraExtrinsics:withVioPose:withVioPoseValidity:](self, "computeRootTransforms:withCameraExtrinsics:withVioPose:withVioPoseValidity:", outputCopy, [dataCopy isVioPoseValid], v22, v21, v20, v19, v14, v15, v16, v17);
 
   +[ABPKTime nowInSeconds];
   *&v18 = v18;
-  [v6 setTimeABPKAlgorithmFinished:v18];
+  [outputCopy setTimeABPKAlgorithmFinished:v18];
   [(ABPKPoseEstimationPipeline *)self _endExecuteAlgorithmSignpost];
 }
 
-- (int)runABPKPoseEstimationWithInputData:(id)a3 andGetOutput:(id)a4
+- (int)runABPKPoseEstimationWithInputData:(id)data andGetOutput:(id)output
 {
   v202 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  Width = CVPixelBufferGetWidth([v6 image]);
-  Height = CVPixelBufferGetHeight([v6 image]);
+  dataCopy = data;
+  outputCopy = output;
+  Width = CVPixelBufferGetWidth([dataCopy image]);
+  Height = CVPixelBufferGetHeight([dataCopy image]);
   v10 = __ABPKLogSharedInstance();
   v11 = Width;
   v12 = Height;
@@ -314,19 +314,19 @@ LABEL_26:
     _os_log_impl(&dword_23EDDC000, v10, OS_LOG_TYPE_DEBUG, " Sensor image resolution: (height,width):(%f,%f) ", buf, 0x16u);
   }
 
-  v13 = [v6 cameraParams];
-  v14 = [v13 deviceOrientation];
+  cameraParams = [dataCopy cameraParams];
+  deviceOrientation = [cameraParams deviceOrientation];
 
-  v15 = [v6 cameraParams];
-  [v7 setCameraParams:v15];
+  cameraParams2 = [dataCopy cameraParams];
+  [outputCopy setCameraParams:cameraParams2];
 
-  if ([(ABPK2DDetectionConfiguration *)self->_config2D abpkDeviceOrientation]!= v14)
+  if ([(ABPK2DDetectionConfiguration *)self->_config2D abpkDeviceOrientation]!= deviceOrientation)
   {
     v16 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v17 = convertABPKDeviceOrientationEnumToString([(ABPK2DDetectionConfiguration *)self->_config2D abpkDeviceOrientation]);
-      v18 = convertABPKDeviceOrientationEnumToString(v14);
+      v18 = convertABPKDeviceOrientationEnumToString(deviceOrientation);
       *buf = 138412546;
       *&buf[4] = v17;
       *&buf[12] = 2112;
@@ -334,7 +334,7 @@ LABEL_26:
       _os_log_impl(&dword_23EDDC000, v16, OS_LOG_TYPE_DEBUG, " Device orientation changed from %@ to %@ ", buf, 0x16u);
     }
 
-    [(ABPK2DDetectionConfiguration *)self->_config2D setAbpkDeviceOrientation:v14];
+    [(ABPK2DDetectionConfiguration *)self->_config2D setAbpkDeviceOrientation:deviceOrientation];
   }
 
   [ABPK2DMLModelConfigSelector inputDimensionsForModelWithABPKNetworkConfig:self->_config2D];
@@ -375,7 +375,7 @@ LABEL_26:
   }
 
   [(ABPKPoseEstimationPipeline *)self _startImagePreprocessingSignpost];
-  if ([(ABPK2DDetectionConfiguration *)self->_config2D abpkDeviceOrientation]!= v14 || !self->_mlImage)
+  if ([(ABPK2DDetectionConfiguration *)self->_config2D abpkDeviceOrientation]!= deviceOrientation || !self->_mlImage)
   {
     v197 = *MEMORY[0x277CC4DE8];
     v198 = MEMORY[0x277CBEC10];
@@ -395,7 +395,7 @@ LABEL_27:
     }
   }
 
-  v29 = -[ABPKImagePreProcessing preprocessData:outputBuffer:](self->_imagePreprocessor, "preprocessData:outputBuffer:", [v6 image], self->_mlImage);
+  v29 = -[ABPKImagePreProcessing preprocessData:outputBuffer:](self->_imagePreprocessor, "preprocessData:outputBuffer:", [dataCopy image], self->_mlImage);
   [(ABPKImagePreProcessing *)self->_imagePreprocessor logProfilingDetails];
   [(ABPKPoseEstimationPipeline *)self _endImagePreprocessingSignpost];
   if (v29)
@@ -412,8 +412,8 @@ LABEL_27:
 
   if (self->_exitPoint)
   {
-    v33 = [v7 algState];
-    [v33 setImage_preprocessing:1];
+    algState = [outputCopy algState];
+    [algState setImage_preprocessing:1];
 
     v34 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -431,8 +431,8 @@ LABEL_27:
 
     v36 = [ABPKMLImageData alloc];
     mlImage = self->_mlImage;
-    [v6 timestamp];
-    v24 = [(ABPKMLImageData *)v36 initWithPixelBuffer:mlImage timestamp:v14 abpkDeviceOrientation:self->_imagePreProcessingParams preprocessingParameters:?];
+    [dataCopy timestamp];
+    v24 = [(ABPKMLImageData *)v36 initWithPixelBuffer:mlImage timestamp:deviceOrientation abpkDeviceOrientation:self->_imagePreProcessingParams preprocessingParameters:?];
     if ([(ABPK2DPoseEstimation *)self->_poseEstimation2D runWithMLImageData:v24 rotationOfResultTensor:0]== -6661)
     {
       v38 = __ABPKLogSharedInstance();
@@ -452,8 +452,8 @@ LABEL_27:
     [(ABPK2DPoseEstimation *)self->_poseEstimation2D getTrackedHumanSkeleton:self->_detection2dSkeleton];
     v190 = [[ABPK2dSkeleton alloc] initWithType:1];
     [(ABPK2DPoseEstimation *)self->_poseEstimation2D getTrackedHumanForLiftingSkeleton:?];
-    v39 = [v7 algState];
-    [v39 setDetection2d:1];
+    algState2 = [outputCopy algState];
+    [algState2 setDetection2d:1];
 
     if (self->_deviceANEVersionPriorOrEqualToH12)
     {
@@ -509,15 +509,15 @@ LABEL_101:
     if (self->_deviceANEVersionPriorOrEqualToH12)
     {
       v43 = [ABPK2D3DLiftingData alloc];
-      v44 = [(ABPK2dSkeleton *)v190 normalizedKeypoints2d];
-      v45 = [(ABPK2dSkeleton *)v190 skeletonDefinition];
-      v40 = -[ABPK2D3DLiftingData initWithJoints:numberOfJoints:](v43, "initWithJoints:numberOfJoints:", v44, [v45 jointCount]);
+      normalizedKeypoints2d = [(ABPK2dSkeleton *)v190 normalizedKeypoints2d];
+      skeletonDefinition = [(ABPK2dSkeleton *)v190 skeletonDefinition];
+      v40 = -[ABPK2D3DLiftingData initWithJoints:numberOfJoints:](v43, "initWithJoints:numberOfJoints:", normalizedKeypoints2d, [skeletonDefinition jointCount]);
 
       v46 = [ABPK2DDetectionResult alloc];
-      v47 = [(ABPK2dSkeleton *)self->_detection2dSkeleton normalizedKeypoints2d];
-      v48 = [(ABPK2dSkeleton *)self->_detection2dSkeleton visibility];
-      v49 = [(ABPK2dSkeleton *)self->_detection2dSkeleton skeletonDefinition];
-      v188 = -[ABPK2DDetectionResult initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:](v46, "initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:", v47, v48, [v49 jointCount], 0, v40, 0.0, 0.0, 1.0, 1.0);
+      normalizedKeypoints2d2 = [(ABPK2dSkeleton *)self->_detection2dSkeleton normalizedKeypoints2d];
+      visibility = [(ABPK2dSkeleton *)self->_detection2dSkeleton visibility];
+      skeletonDefinition2 = [(ABPK2dSkeleton *)self->_detection2dSkeleton skeletonDefinition];
+      v116 = -[ABPK2DDetectionResult initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:](v46, "initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:", normalizedKeypoints2d2, visibility, [skeletonDefinition2 jointCount], 0, v40, 0.0, 0.0, 1.0, 1.0);
 
       if (!v40)
       {
@@ -548,8 +548,8 @@ LABEL_100:
       }
 
       liftingAlgorithm = self->_liftingAlgorithm;
-      [v6 timestamp];
-      if ([(ABPK3DLifting *)liftingAlgorithm runLiftingModelWithData:v188 atTimestamp:?])
+      [dataCopy timestamp];
+      if ([(ABPK3DLifting *)liftingAlgorithm runLiftingModelWithData:v116 atTimestamp:?])
       {
         v52 = __ABPKLogSharedInstance();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
@@ -582,15 +582,15 @@ LABEL_100:
         _os_log_impl(&dword_23EDDC000, v70, OS_LOG_TYPE_DEBUG, " \t Post-processing output ", buf, 2u);
       }
 
-      v71 = [(ABPK3DLifting *)self->_liftingAlgorithm getLiftingResults];
-      if (!v71)
+      getLiftingResults = [(ABPK3DLifting *)self->_liftingAlgorithm getLiftingResults];
+      if (!getLiftingResults)
       {
         v30 = -6662;
         goto LABEL_99;
       }
 
-      v72 = [v7 algState];
-      [v72 setLifting3d:1];
+      algState3 = [outputCopy algState];
+      [algState3 setLifting3d:1];
 
       [(ABPKSkeleton *)self->_liftingSkeleton setModelPoses:[(ABPK3DLifting *)self->_liftingAlgorithm get3DLiftingResultsAsModelPoses] andUpdateLocalPoses:1];
 LABEL_131:
@@ -599,7 +599,7 @@ LABEL_131:
       if (self->_exitPoint == 5)
       {
         v107 = __ABPKLogSharedInstance();
-        v188 = v107;
+        v116 = v107;
         if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
         {
           *buf = 0;
@@ -617,30 +617,30 @@ LABEL_131:
         }
 
         bodyRegistration = self->_bodyRegistration;
-        v110 = [v6 cameraParams];
-        [v110 intrinsics];
+        cameraParams3 = [dataCopy cameraParams];
+        [cameraParams3 intrinsics];
         v185 = v112;
         v189 = v111;
         v180 = v113;
-        v114 = [v6 cameraParams];
-        [v114 inputRes];
-        v188 = [(ABPKCameraRegistration *)bodyRegistration runCameraRegistrationWithImageIntrinsics:v71 imageResolution:v189 liftingResult:v185, v180, v115, v116];
+        cameraParams4 = [dataCopy cameraParams];
+        [cameraParams4 inputRes];
+        v116 = [(ABPKCameraRegistration *)bodyRegistration runCameraRegistrationWithImageIntrinsics:getLiftingResults imageResolution:v189 liftingResult:v185, v180, v115, v116];
 
-        if (([(ABPK2DDetectionResult *)v188 success]& 1) == 0)
+        if (([(ABPK2DDetectionResult *)v116 success]& 1) == 0)
         {
           v30 = -6664;
 LABEL_164:
-          v40 = v71;
+          v40 = getLiftingResults;
           goto LABEL_99;
         }
 
-        v117 = [v7 algState];
-        [v117 setRegistration:1];
+        algState4 = [outputCopy algState];
+        [algState4 setRegistration:1];
 
         liftingSkeleton = self->_liftingSkeleton;
-        [(ABPK2DDetectionResult *)v188 cameraFromBodyPose];
+        [(ABPK2DDetectionResult *)v116 cameraFromBodyPose];
         [(ABPKSkeleton *)liftingSkeleton setCameraRootTransform:?];
-        [(ABPK2DDetectionResult *)v188 cameraFromBodyPose];
+        [(ABPK2DDetectionResult *)v116 cameraFromBodyPose];
         v176 = v120;
         v178 = v119;
         v181 = v122;
@@ -664,10 +664,10 @@ LABEL_164:
         v179 = *&v200;
         [(ABPKSkeleton *)self->_liftingSkeleton setRenderingCameraRootTransform:?];
         registered2dSkeleton = self->_registered2dSkeleton;
-        v129 = [(ABPK2DDetectionResult *)v188 joints2d];
-        v130 = [v6 cameraParams];
-        [v130 inputRes];
-        [(ABPK2dSkeleton *)registered2dSkeleton setKeypoints2d:v129 withImageRes:?];
+        joints2d = [(ABPK2DDetectionResult *)v116 joints2d];
+        cameraParams5 = [dataCopy cameraParams];
+        [cameraParams5 inputRes];
+        [(ABPK2dSkeleton *)registered2dSkeleton setKeypoints2d:joints2d withImageRes:?];
 
         if (self->_exitPoint == 6)
         {
@@ -681,39 +681,39 @@ LABEL_164:
 
         else
         {
-          [v6 timestamp];
+          [dataCopy timestamp];
           [(ABPKPoseEstimationPipeline *)self _startScaleEstimationSignpostWithTimestamp:?];
-          if (![v6 isDepthDataValid])
+          if (![dataCopy isDepthDataValid])
           {
             goto LABEL_149;
           }
 
-          if (![v6 depthMap])
+          if (![dataCopy depthMap])
           {
             goto LABEL_149;
           }
 
-          if (![v6 depthConfidenceBuffer])
+          if (![dataCopy depthConfidenceBuffer])
           {
             goto LABEL_149;
           }
 
           scaleEstimation = self->_scaleEstimation;
-          v133 = [v6 depthMap];
-          v134 = [v6 depthConfidenceBuffer];
-          [v6 timestamp];
+          depthMap = [dataCopy depthMap];
+          depthConfidenceBuffer = [dataCopy depthConfidenceBuffer];
+          [dataCopy timestamp];
           v136 = v135;
-          v137 = [v6 cameraParams];
-          [v137 inputRes];
+          cameraParams6 = [dataCopy cameraParams];
+          [cameraParams6 inputRes];
           v139 = v138;
           v141 = v140;
-          v142 = [v6 cameraParams];
-          [v142 intrinsics];
+          cameraParams7 = [dataCopy cameraParams];
+          [cameraParams7 intrinsics];
           v174 = v144;
           v175 = v143;
           v173 = v145;
-          [(ABPK2DDetectionResult *)v188 cameraFromBodyPose];
-          [(ABPKDepthBasedScaleEstimation *)scaleEstimation estimateScaleFromDepthData:v133 depthConfidenceData:v134 timestamp:v71 imageResolution:v136 imageIntrinsics:v139 cameraFromBodyPose:v141 liftingResult:v175, v174, v173, v146, v147, v148, v149, v150, v151, v152, v153];
+          [(ABPK2DDetectionResult *)v116 cameraFromBodyPose];
+          [(ABPKDepthBasedScaleEstimation *)scaleEstimation estimateScaleFromDepthData:depthMap depthConfidenceData:depthConfidenceBuffer timestamp:getLiftingResults imageResolution:v136 imageIntrinsics:v139 cameraFromBodyPose:v141 liftingResult:v175, v174, v173, v146, v147, v148, v149, v150, v151, v152, v153];
           previousValidScale = v154;
 
           if (previousValidScale != -1.0)
@@ -736,11 +736,11 @@ LABEL_149:
           }
 
           *&v157 = previousValidScale;
-          [(ABPK3DLiftingResult *)v71 setEstimatedScale:v157];
+          [(ABPK3DLiftingResult *)getLiftingResults setEstimatedScale:v157];
           *&v158 = previousValidScale;
           [(ABPKSkeleton *)self->_liftingSkeleton setEstimatedScale:v158];
           [(ABPKSkeleton *)self->_liftingSkeleton updateJointPosesAndRootTransformUsingDepthEstimatedScale];
-          [v6 timestamp];
+          [dataCopy timestamp];
           [(ABPKPoseEstimationPipeline *)self _endScaleEstimationSignpostWithTimestamp:?];
           v159 = __ABPKLogSharedInstance();
           if (os_log_type_enabled(v159, OS_LOG_TYPE_DEBUG))
@@ -749,32 +749,32 @@ LABEL_149:
             _os_log_impl(&dword_23EDDC000, v159, OS_LOG_TYPE_DEBUG, " Performing retargeting ", buf, 2u);
           }
 
-          [v6 timestamp];
+          [dataCopy timestamp];
           [(ABPKPoseEstimationPipeline *)self _startRetargettingSignpostWithTimestamp:?];
-          v131 = [(ABPKRetargeting *)self->_retargeting processData:v71];
-          v160 = [v7 algState];
-          [v160 setRetargeting:1];
+          v131 = [(ABPKRetargeting *)self->_retargeting processData:getLiftingResults];
+          algState5 = [outputCopy algState];
+          [algState5 setRetargeting:1];
 
-          v161 = [v131 jointModelTransforms];
-          v162 = [v131 jointModelTransforms];
-          v163 = [v131 jointTransformCount];
+          jointModelTransforms = [v131 jointModelTransforms];
+          jointModelTransforms2 = [v131 jointModelTransforms];
+          jointTransformCount = [v131 jointTransformCount];
           memset(buf, 0, 24);
-          std::vector<simd_float4x4>::__init_with_size[abi:ne200100]<simd_float4x4 const*,simd_float4x4 const*>(buf, v161, v162 + (v163 << 6), (v162 + (v163 << 6) - v161) >> 6);
-          v164 = [v131 jointLocalTransforms];
-          v165 = [v131 jointLocalTransforms];
-          v166 = [v131 jointTransformCount];
+          std::vector<simd_float4x4>::__init_with_size[abi:ne200100]<simd_float4x4 const*,simd_float4x4 const*>(buf, jointModelTransforms, jointModelTransforms2 + (jointTransformCount << 6), (jointModelTransforms2 + (jointTransformCount << 6) - jointModelTransforms) >> 6);
+          jointLocalTransforms = [v131 jointLocalTransforms];
+          jointLocalTransforms2 = [v131 jointLocalTransforms];
+          jointTransformCount2 = [v131 jointTransformCount];
           __p[0] = 0;
           __p[1] = 0;
           *&v192 = 0;
-          std::vector<simd_float4x4>::__init_with_size[abi:ne200100]<simd_float4x4 const*,simd_float4x4 const*>(__p, v164, v165 + (v166 << 6), (v165 + (v166 << 6) - v164) >> 6);
+          std::vector<simd_float4x4>::__init_with_size[abi:ne200100]<simd_float4x4 const*,simd_float4x4 const*>(__p, jointLocalTransforms, jointLocalTransforms2 + (jointTransformCount2 << 6), (jointLocalTransforms2 + (jointTransformCount2 << 6) - jointLocalTransforms) >> 6);
           [(ABPKSkeleton *)self->_retargetedSkeleton setModelPoses:*buf andUpdateLocalPoses:0];
           retargetedSkeleton = self->_retargetedSkeleton;
-          [(ABPK2DDetectionResult *)v188 cameraFromBodyPose];
+          [(ABPK2DDetectionResult *)v116 cameraFromBodyPose];
           [(ABPKSkeleton *)retargetedSkeleton setCameraRootTransform:?];
           [(ABPKSkeleton *)self->_retargetedSkeleton setRenderingCameraRootTransform:v187, v182, v179, v177];
           *&v168 = previousValidScale;
           [(ABPKSkeleton *)self->_retargetedSkeleton setEstimatedScale:v168];
-          [v6 timestamp];
+          [dataCopy timestamp];
           [(ABPKPoseEstimationPipeline *)self _endRetargettingSignpostWithTimestamp:?];
           [(ABPKSkeleton *)self->_retargetedSkeleton computeHeight];
           v170 = v169;
@@ -815,15 +815,15 @@ LABEL_149:
     v40 = [[ABPK2dSkeleton alloc] initWithType:1];
     [(ABPK2DPoseEstimation *)self->_poseEstimation2D getRawTrackedHumanForLiftingSkeleton:v40];
     v53 = [ABPK2D3DLiftingData alloc];
-    v54 = [(ABPK2dSkeleton *)v40 normalizedKeypoints2d];
-    v55 = [(ABPK2dSkeleton *)v40 skeletonDefinition];
-    v188 = -[ABPK2D3DLiftingData initWithJoints:numberOfJoints:](v53, "initWithJoints:numberOfJoints:", v54, [v55 jointCount]);
+    normalizedKeypoints2d3 = [(ABPK2dSkeleton *)v40 normalizedKeypoints2d];
+    skeletonDefinition3 = [(ABPK2dSkeleton *)v40 skeletonDefinition];
+    v116 = -[ABPK2D3DLiftingData initWithJoints:numberOfJoints:](v53, "initWithJoints:numberOfJoints:", normalizedKeypoints2d3, [skeletonDefinition3 jointCount]);
 
     v56 = [ABPK2DDetectionResult alloc];
-    v57 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton normalizedKeypoints2d];
-    v58 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton visibility];
-    v59 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton skeletonDefinition];
-    v60 = -[ABPK2DDetectionResult initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:](v56, "initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:", v57, v58, [v59 jointCount], 0, v188, 0.0, 0.0, 1.0, 1.0);
+    normalizedKeypoints2d4 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton normalizedKeypoints2d];
+    visibility2 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton visibility];
+    skeletonDefinition4 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton skeletonDefinition];
+    v60 = -[ABPK2DDetectionResult initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:](v56, "initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:", normalizedKeypoints2d4, visibility2, [skeletonDefinition4 jointCount], 0, v116, 0.0, 0.0, 1.0, 1.0);
 
     if (self->_useLSTM3D)
     {
@@ -847,8 +847,8 @@ LABEL_149:
       }
 
       liftingAlgorithmLSTM = self->_liftingAlgorithmLSTM;
-      [v6 timestamp];
-      if ([(ABPK3DLiftingLSTM *)liftingAlgorithmLSTM runLiftingModelWithData:v60 imageResolution:v14 deviceOrientation:v11 atTimestamp:v12, v64])
+      [dataCopy timestamp];
+      if ([(ABPK3DLiftingLSTM *)liftingAlgorithmLSTM runLiftingModelWithData:v60 imageResolution:deviceOrientation deviceOrientation:v11 atTimestamp:v12, v64])
       {
         v65 = __ABPKLogSharedInstance();
         if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
@@ -881,24 +881,24 @@ LABEL_79:
         _os_log_impl(&dword_23EDDC000, v92, OS_LOG_TYPE_DEBUG, " \t Post-processing output ", buf, 2u);
       }
 
-      v93 = [(ABPK3DLiftingLSTM *)self->_liftingAlgorithmLSTM getLiftingResults];
-      v94 = v93;
-      if (v93)
+      getLiftingResults2 = [(ABPK3DLiftingLSTM *)self->_liftingAlgorithmLSTM getLiftingResults];
+      v94 = getLiftingResults2;
+      if (getLiftingResults2)
       {
-        if ([v93 rawNetworkOutputJoints])
+        if ([getLiftingResults2 rawNetworkOutputJoints])
         {
-          [v7 setRawLiftingNetworkOutputJoints:{objc_msgSend(v94, "rawNetworkOutputJoints")}];
+          [outputCopy setRawLiftingNetworkOutputJoints:{objc_msgSend(v94, "rawNetworkOutputJoints")}];
         }
 
-        v95 = [(ABPK2dSkeleton *)self->_detection2dSkeleton skeletonDefinition];
+        skeletonDefinition5 = [(ABPK2dSkeleton *)self->_detection2dSkeleton skeletonDefinition];
         v184 = v94;
-        v96 = [v95 jointCount];
+        jointCount = [skeletonDefinition5 jointCount];
 
-        v97 = [(ABPK2dSkeleton *)self->_detection2dSkeleton normalizedKeypoints2d];
-        v98 = [(ABPK2dSkeleton *)self->_detection2dSkeleton normalizedKeypoints2d];
+        normalizedKeypoints2d5 = [(ABPK2dSkeleton *)self->_detection2dSkeleton normalizedKeypoints2d];
+        normalizedKeypoints2d6 = [(ABPK2dSkeleton *)self->_detection2dSkeleton normalizedKeypoints2d];
         memset(buf, 0, 24);
-        _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(buf, v97, v98 + 8 * v96, (v98 + 8 * v96 - v97) >> 3);
-        if (v96)
+        _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(buf, normalizedKeypoints2d5, normalizedKeypoints2d6 + 8 * jointCount, (normalizedKeypoints2d6 + 8 * jointCount - normalizedKeypoints2d5) >> 3);
+        if (jointCount)
         {
           v99 = 0;
           __asm { FMOV            V8.2S, #-1.0 }
@@ -913,18 +913,18 @@ LABEL_79:
             ++v99;
           }
 
-          while (v96 != v99);
+          while (jointCount != v99);
         }
 
         v101 = [ABPK2DDetectionResult alloc];
         v102 = *buf;
-        v103 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton visibility];
-        v104 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton skeletonDefinition];
-        v105 = -[ABPK2DDetectionResult initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:](v101, "initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:", v102, v103, [v104 jointCount], 0, v188, 0.0, 0.0, 1.0, 1.0);
+        visibility3 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton visibility];
+        skeletonDefinition6 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton skeletonDefinition];
+        v105 = -[ABPK2DDetectionResult initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:](v101, "initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:", v102, visibility3, [skeletonDefinition6 jointCount], 0, v116, 0.0, 0.0, 1.0, 1.0);
 
-        v71 = -[ABPK3DLiftingResult initWithJoints:numberOfJoints:referenceDetectionResult:]([ABPK3DLiftingResult alloc], "initWithJoints:numberOfJoints:referenceDetectionResult:", [v184 joints], 17, v105);
-        v106 = [v7 algState];
-        [v106 setLifting3d:1];
+        getLiftingResults = -[ABPK3DLiftingResult initWithJoints:numberOfJoints:referenceDetectionResult:]([ABPK3DLiftingResult alloc], "initWithJoints:numberOfJoints:referenceDetectionResult:", [v184 joints], 17, v105);
+        algState6 = [outputCopy algState];
+        [algState6 setLifting3d:1];
 
         [(ABPKSkeleton *)self->_liftingSkeleton setModelPoses:[(ABPK3DLiftingLSTM *)self->_liftingAlgorithmLSTM get3DLiftingResultsAsModelPoses] andUpdateLocalPoses:1];
 LABEL_128:
@@ -948,8 +948,8 @@ LABEL_128:
       }
 
       liftingAlgorithmSequence = self->_liftingAlgorithmSequence;
-      [v6 timestamp];
-      if ([(ABPK3DLiftingSequence *)liftingAlgorithmSequence runLiftingModelWithData:v60 imageResolution:v14 deviceOrientation:v11 atTimestamp:v12, v68])
+      [dataCopy timestamp];
+      if ([(ABPK3DLiftingSequence *)liftingAlgorithmSequence runLiftingModelWithData:v60 imageResolution:deviceOrientation deviceOrientation:v11 atTimestamp:v12, v68])
       {
         v65 = __ABPKLogSharedInstance();
         if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
@@ -988,24 +988,24 @@ LABEL_96:
         _os_log_impl(&dword_23EDDC000, v73, OS_LOG_TYPE_DEBUG, " \t Post-processing output ", buf, 2u);
       }
 
-      v74 = [(ABPK3DLiftingSequence *)self->_liftingAlgorithmSequence getLiftingResults];
-      v75 = v74;
-      if (v74)
+      getLiftingResults3 = [(ABPK3DLiftingSequence *)self->_liftingAlgorithmSequence getLiftingResults];
+      v75 = getLiftingResults3;
+      if (getLiftingResults3)
       {
-        if ([v74 rawNetworkOutputJoints])
+        if ([getLiftingResults3 rawNetworkOutputJoints])
         {
-          [v7 setRawLiftingNetworkOutputJoints:{objc_msgSend(v75, "rawNetworkOutputJoints")}];
+          [outputCopy setRawLiftingNetworkOutputJoints:{objc_msgSend(v75, "rawNetworkOutputJoints")}];
         }
 
-        v76 = [(ABPK2dSkeleton *)self->_detection2dSkeleton skeletonDefinition];
+        skeletonDefinition7 = [(ABPK2dSkeleton *)self->_detection2dSkeleton skeletonDefinition];
         v183 = v75;
-        v77 = [v76 jointCount];
+        jointCount2 = [skeletonDefinition7 jointCount];
 
-        v78 = [(ABPK2dSkeleton *)self->_detection2dSkeleton normalizedKeypoints2d];
-        v79 = [(ABPK2dSkeleton *)self->_detection2dSkeleton normalizedKeypoints2d];
+        normalizedKeypoints2d7 = [(ABPK2dSkeleton *)self->_detection2dSkeleton normalizedKeypoints2d];
+        normalizedKeypoints2d8 = [(ABPK2dSkeleton *)self->_detection2dSkeleton normalizedKeypoints2d];
         memset(buf, 0, 24);
-        _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(buf, v78, v79 + 8 * v77, (v79 + 8 * v77 - v78) >> 3);
-        if (v77)
+        _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(buf, normalizedKeypoints2d7, normalizedKeypoints2d8 + 8 * jointCount2, (normalizedKeypoints2d8 + 8 * jointCount2 - normalizedKeypoints2d7) >> 3);
+        if (jointCount2)
         {
           v80 = 0;
           __asm { FMOV            V8.2S, #-1.0 }
@@ -1020,18 +1020,18 @@ LABEL_96:
             ++v80;
           }
 
-          while (v77 != v80);
+          while (jointCount2 != v80);
         }
 
         v86 = [ABPK2DDetectionResult alloc];
         v87 = *buf;
-        v88 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton visibility];
-        v89 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton skeletonDefinition];
-        v90 = -[ABPK2DDetectionResult initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:](v86, "initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:", v87, v88, [v89 jointCount], 0, v188, 0.0, 0.0, 1.0, 1.0);
+        visibility4 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton visibility];
+        skeletonDefinition8 = [(ABPK2dSkeleton *)self->_rawDetection2dSkeleton skeletonDefinition];
+        v90 = -[ABPK2DDetectionResult initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:](v86, "initWithJoints:trackingStates:numberOfJoints:rotation:croppedRect:liftingData:", v87, visibility4, [skeletonDefinition8 jointCount], 0, v116, 0.0, 0.0, 1.0, 1.0);
 
-        v71 = -[ABPK3DLiftingResult initWithJoints:numberOfJoints:referenceDetectionResult:]([ABPK3DLiftingResult alloc], "initWithJoints:numberOfJoints:referenceDetectionResult:", [v183 joints], 17, v90);
-        v91 = [v7 algState];
-        [v91 setLifting3d:1];
+        getLiftingResults = -[ABPK3DLiftingResult initWithJoints:numberOfJoints:referenceDetectionResult:]([ABPK3DLiftingResult alloc], "initWithJoints:numberOfJoints:referenceDetectionResult:", [v183 joints], 17, v90);
+        algState7 = [outputCopy algState];
+        [algState7 setLifting3d:1];
 
         [(ABPKSkeleton *)self->_liftingSkeleton setModelPoses:[(ABPK3DLiftingSequence *)self->_liftingAlgorithmSequence get3DLiftingResultsAsModelPoses] andUpdateLocalPoses:1];
         goto LABEL_128;
@@ -1056,17 +1056,17 @@ LABEL_28:
   return v30;
 }
 
-- (void)computeRootTransforms:(float32x4_t)a3 withCameraExtrinsics:(float32x4_t)a4 withVioPose:(uint64_t)a5 withVioPoseValidity:(uint64_t)a6
+- (void)computeRootTransforms:(float32x4_t)transforms withCameraExtrinsics:(float32x4_t)extrinsics withVioPose:(uint64_t)pose withVioPoseValidity:(uint64_t)validity
 {
   v33 = a7;
-  v7 = [v33 liftingSkeletonABPK];
-  [v7 cameraRootTransform];
+  liftingSkeletonABPK = [v33 liftingSkeletonABPK];
+  [liftingSkeletonABPK cameraRootTransform];
   v21 = v9;
   v22 = v8;
   v23 = v11;
   v24 = v10;
-  v12 = [v33 liftingSkeletonABPK];
-  v13 = v12;
+  liftingSkeletonABPK2 = [v33 liftingSkeletonABPK];
+  v13 = liftingSkeletonABPK2;
   v14 = 0;
   v34[0] = v22;
   v34[1] = v21;
@@ -1074,29 +1074,29 @@ LABEL_28:
   v34[3] = v23;
   do
   {
-    *(&v35 + v14 * 16) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a1, COERCE_FLOAT(v34[v14])), a2, *&v34[v14], 1), a3, v34[v14], 2), a4, v34[v14], 3);
+    *(&v35 + v14 * 16) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(self, COERCE_FLOAT(v34[v14])), a2, *&v34[v14], 1), transforms, v34[v14], 2), extrinsics, v34[v14], 3);
     ++v14;
   }
 
   while (v14 != 4);
-  [v12 setDeviceRootTransform:{*&v35, *&v36, *&v37, *&v38}];
+  [liftingSkeletonABPK2 setDeviceRootTransform:{*&v35, *&v36, *&v37, *&v38}];
 
-  v15 = [v33 liftingSkeletonABPK];
-  [v15 deviceRootTransform];
+  liftingSkeletonABPK3 = [v33 liftingSkeletonABPK];
+  [liftingSkeletonABPK3 deviceRootTransform];
   v30 = v17;
   v32 = v16;
   v26 = v19;
   v28 = v18;
-  v20 = [v33 retargetedSkeletonABPK];
-  [v20 setDeviceRootTransform:{v32, v30, v28, v26}];
+  retargetedSkeletonABPK = [v33 retargetedSkeletonABPK];
+  [retargetedSkeletonABPK setDeviceRootTransform:{v32, v30, v28, v26}];
 }
 
-- (void)saveInputData:(id)a3 andOutputData:(id)a4 ToDir:(id)a5 withFileNamePrefix:(id)a6
+- (void)saveInputData:(id)data andOutputData:(id)outputData ToDir:(id)dir withFileNamePrefix:(id)prefix
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  outputDataCopy = outputData;
+  dirCopy = dir;
+  prefixCopy = prefix;
   v13 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -1104,7 +1104,7 @@ LABEL_28:
     _os_log_impl(&dword_23EDDC000, v13, OS_LOG_TYPE_DEBUG, " \t\t Recording input data ", buf, 2u);
   }
 
-  [v9 saveDataToDir:v11 withFileNamePrefix:v12];
+  [dataCopy saveDataToDir:dirCopy withFileNamePrefix:prefixCopy];
   v14 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -1112,7 +1112,7 @@ LABEL_28:
     _os_log_impl(&dword_23EDDC000, v14, OS_LOG_TYPE_DEBUG, " \t\t Recording output data ", v15, 2u);
   }
 
-  [v10 saveDataToDir:v11 withFileNamePrefix:v12];
+  [outputDataCopy saveDataToDir:dirCopy withFileNamePrefix:prefixCopy];
 }
 
 @end

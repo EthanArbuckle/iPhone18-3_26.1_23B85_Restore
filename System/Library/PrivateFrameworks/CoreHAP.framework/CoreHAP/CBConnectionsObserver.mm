@@ -1,12 +1,12 @@
 @interface CBConnectionsObserver
 + (void)initialize;
-- (BOOL)attachSessionWithError:(id *)a3;
-- (BOOL)cleanupWithError:(id *)a3;
-- (CBConnectionsObserver)initWithCentralManager:(id)a3 Queue:(id)a4 Error:(id *)a5;
+- (BOOL)attachSessionWithError:(id *)error;
+- (BOOL)cleanupWithError:(id *)error;
+- (CBConnectionsObserver)initWithCentralManager:(id)manager Queue:(id)queue Error:(id *)error;
 - (OS_dispatch_queue)dispatchQueue;
 - (int)getAvailableHAPConnections;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)updateBleStatus:(BTRemoteContext *)a3;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)updateBleStatus:(BTRemoteContext *)status;
 @end
 
 @implementation CBConnectionsObserver
@@ -18,29 +18,29 @@
   return WeakRetained;
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_autoreleasePoolPush();
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = HMFGetLogIdentifier();
     v8 = cbManagerState2String;
-    v9 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v4, "state")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(stateCopy, "state")}];
     v10 = [v8 objectForKeyedSubscript:v9];
     *buf = 138543874;
     v21 = v7;
     v22 = 2112;
     v23 = v10;
     v24 = 2048;
-    v25 = [v4 state];
+    state = [stateCopy state];
     _os_log_impl(&dword_22AADC000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@[CBConnectionsObserver] centralManagerDidUpdateState state %@ (%ld)", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if ([v4 state] == 5)
+  if ([stateCopy state] == 5)
   {
     v11 = objc_autoreleasePoolPush();
     v12 = HMFGetOSLogHandle();
@@ -77,24 +77,24 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateBleStatus:(BTRemoteContext *)a3
+- (void)updateBleStatus:(BTRemoteContext *)status
 {
   v38 = *MEMORY[0x277D85DE8];
-  a3->var6.lowEnergyConnections = 0;
-  v5 = [(CBConnectionsObserver *)self central];
-  if (v5)
+  status->var6.lowEnergyConnections = 0;
+  central = [(CBConnectionsObserver *)self central];
+  if (central)
   {
-    v6 = v5;
-    v7 = [(CBConnectionsObserver *)self central];
-    v8 = [v7 state];
+    v6 = central;
+    central2 = [(CBConnectionsObserver *)self central];
+    state = [central2 state];
 
-    if (v8 == 5)
+    if (state == 5)
     {
-      v9 = [(CBConnectionsObserver *)self central];
-      v10 = [v9 retrieveConnectedPeripheralsWithServices:MEMORY[0x277CBEBF8] allowAll:1];
+      central3 = [(CBConnectionsObserver *)self central];
+      v10 = [central3 retrieveConnectedPeripheralsWithServices:MEMORY[0x277CBEBF8] allowAll:1];
 
-      a3->var6.lowEnergyConnections = [v10 count];
-      if (a3->var5.var0)
+      status->var6.lowEnergyConnections = [v10 count];
+      if (status->var5.var0)
       {
         v31 = 0u;
         v32 = 0u;
@@ -132,7 +132,7 @@
               objc_autoreleasePoolPop(v17);
               if ([v16 hasTag:@"FastConnection"])
               {
-                ++a3->var6.leRemote;
+                ++status->var6.leRemote;
                 v20 = objc_autoreleasePoolPush();
                 v21 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -161,7 +161,7 @@
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         v25 = HMFGetLogIdentifier();
-        lowEnergyConnections = a3->var6.lowEnergyConnections;
+        lowEnergyConnections = status->var6.lowEnergyConnections;
         *buf = 138543618;
         v34 = v25;
         v35 = 2048;
@@ -264,8 +264,8 @@ LABEL_12:
   if (byte_27D8AF7C8 == 1)
   {
     v13 = [ATVModel atvStateFromState:buf];
-    v14 = [(CBConnectionsObserver *)self model];
-    v15 = [v14 findTupleForATVState:v13];
+    model = [(CBConnectionsObserver *)self model];
+    v15 = [model findTupleForATVState:v13];
   }
 
   else
@@ -392,28 +392,28 @@ LABEL_12:
     v48 = HMFGetLogIdentifier();
     [v15 maxBandwidth];
     v50 = v49;
-    v51 = [v15 maxHAPConnections];
+    maxHAPConnections = [v15 maxHAPConnections];
     *v61 = 138543874;
     v62 = v48;
     v63 = 2048;
     v64 = v50;
     v65 = 1024;
-    v66 = v51;
+    v66 = maxHAPConnections;
     _os_log_impl(&dword_22AADC000, v47, OS_LOG_TYPE_DEFAULT, "%{public}@[CBConnectionsObserver] max bandwidth: %f%% maxHAPConnections %d \n", v61, 0x1Cu);
   }
 
   objc_autoreleasePoolPop(v46);
-  v52 = [v15 maxHAPConnections];
+  maxHAPConnections2 = [v15 maxHAPConnections];
   if (byte_27D8AF7C8 == 1)
   {
-    if (v52 <= 1)
+    if (maxHAPConnections2 <= 1)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = v52;
+      v8 = maxHAPConnections2;
     }
 
     v53 = objc_autoreleasePoolPush();
@@ -433,7 +433,7 @@ LABEL_12:
 
   else
   {
-    v8 = v52 & ~(v52 >> 31);
+    v8 = maxHAPConnections2 & ~(maxHAPConnections2 >> 31);
   }
 
   v56 = objc_autoreleasePoolPush();
@@ -454,7 +454,7 @@ LABEL_50:
   return v8;
 }
 
-- (BOOL)attachSessionWithError:(id *)a3
+- (BOOL)attachSessionWithError:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = qword_27D8AF7C0 != 0;
@@ -474,7 +474,7 @@ LABEL_50:
   else
   {
     [sessionName UTF8String];
-    v8 = [(CBConnectionsObserver *)self dispatchQueue];
+    dispatchQueue = [(CBConnectionsObserver *)self dispatchQueue];
     v9 = BTSessionAttachWithQueue();
 
     if (!v9)
@@ -502,12 +502,12 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)cleanupWithError:(id *)a3
+- (BOOL)cleanupWithError:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   if (![(CBConnectionsObserver *)self hasStarted])
@@ -542,14 +542,14 @@ LABEL_8:
       }
 
       objc_autoreleasePoolPop(v8);
-      if (a3)
+      if (error)
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to detach session, code %d", v7];
         v12 = MEMORY[0x277CCA9B8];
         v16 = *MEMORY[0x277CCA450];
         v17 = v11;
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-        *a3 = [v12 errorWithDomain:@"CBConnectionsObserver" code:1 userInfo:v13];
+        *error = [v12 errorWithDomain:@"CBConnectionsObserver" code:1 userInfo:v13];
       }
     }
 
@@ -566,24 +566,24 @@ LABEL_13:
   return v6;
 }
 
-- (CBConnectionsObserver)initWithCentralManager:(id)a3 Queue:(id)a4 Error:(id *)a5
+- (CBConnectionsObserver)initWithCentralManager:(id)manager Queue:(id)queue Error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v35.receiver = self;
   v35.super_class = CBConnectionsObserver;
   v10 = [(CBConnectionsObserver *)&v35 init];
   v11 = v10;
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   if (v10)
   {
     v10->_hasStarted = 1;
-    objc_storeWeak(&v10->_dispatchQueue, v9);
+    objc_storeWeak(&v10->_dispatchQueue, queueCopy);
     v12 = MEMORY[0x277CCACA8];
     v13 = getprogname();
     v14 = [v12 stringWithFormat:@"%s-%u", v13, getpid()];
@@ -645,7 +645,7 @@ LABEL_13:
     *&dword_27D8AF7EC = 0x3E4CCCCD3D4CCCCDLL;
     dword_27D8AF7F4 = 1086324736;
     dword_27D8AF7E8 = 5;
-    v25 = [objc_alloc(MEMORY[0x277CBDFF8]) initWithDelegate:v11 queue:v9];
+    v25 = [objc_alloc(MEMORY[0x277CBDFF8]) initWithDelegate:v11 queue:queueCopy];
     central = v11->_central;
     v11->_central = v25;
 
@@ -669,10 +669,10 @@ LABEL_13:
         }
 
         objc_autoreleasePoolPop(v28);
-        if (a5)
+        if (error)
         {
           v31 = v27;
-          *a5 = v27;
+          *error = v27;
         }
       }
     }

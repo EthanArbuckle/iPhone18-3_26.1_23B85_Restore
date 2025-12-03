@@ -1,13 +1,13 @@
 @interface PNPetPromoter
-+ (id)statusWithPhotoLibrary:(id)a3 delegate:(id)a4;
-+ (void)promoteUnverifiedPetsInPhotoLibrary:(id)a3 withUpdateBlock:(id)a4;
++ (id)statusWithPhotoLibrary:(id)library delegate:(id)delegate;
++ (void)promoteUnverifiedPetsInPhotoLibrary:(id)library withUpdateBlock:(id)block;
 - (NSDictionary)metrics;
 - (PHPhotoLibrary)photoLibrary;
 - (PNPersonPromoterDelegate)delegate;
-- (PNPetPromoter)initWithPhotoLibrary:(id)a3 andDelegate:(id)a4;
-- (void)incrementMetricForKey:(id)a3 withValue:(unint64_t)a4;
-- (void)promoteUnverifiedPetsWithUpdateBlock:(id)a3;
-- (void)setMetrics:(id)a3;
+- (PNPetPromoter)initWithPhotoLibrary:(id)library andDelegate:(id)delegate;
+- (void)incrementMetricForKey:(id)key withValue:(unint64_t)value;
+- (void)promoteUnverifiedPetsWithUpdateBlock:(id)block;
+- (void)setMetrics:(id)metrics;
 @end
 
 @implementation PNPetPromoter
@@ -35,41 +35,41 @@
   return v2;
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
   sub_1C6F65BE8(0, &qword_1EDD108E0);
   v4 = sub_1C75504AC();
-  v5 = self;
+  selfCopy = self;
   sub_1C72275B8(v4);
 }
 
-- (PNPetPromoter)initWithPhotoLibrary:(id)a3 andDelegate:(id)a4
+- (PNPetPromoter)initWithPhotoLibrary:(id)library andDelegate:(id)delegate
 {
-  v5 = a3;
+  libraryCopy = library;
   swift_unknownObjectRetain();
-  return PetPromoter.init(with:delegate:)(v5, a4);
+  return PetPromoter.init(with:delegate:)(libraryCopy, delegate);
 }
 
-- (void)promoteUnverifiedPetsWithUpdateBlock:(id)a3
+- (void)promoteUnverifiedPetsWithUpdateBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
   sub_1C7227714();
 }
 
-- (void)incrementMetricForKey:(id)a3 withValue:(unint64_t)a4
+- (void)incrementMetricForKey:(id)key withValue:(unint64_t)value
 {
   v6 = sub_1C755068C();
   v8 = v7;
-  v9 = self;
-  sub_1C722FE48(v6, v8, a4);
+  selfCopy = self;
+  sub_1C722FE48(v6, v8, value);
 }
 
-+ (id)statusWithPhotoLibrary:(id)a3 delegate:(id)a4
++ (id)statusWithPhotoLibrary:(id)library delegate:(id)delegate
 {
   swift_getObjCClassMetadata();
-  v5 = a3;
+  libraryCopy = library;
   swift_unknownObjectRetain();
   static PetPromoter.status(with:delegate:)();
 
@@ -79,13 +79,13 @@
   return v6;
 }
 
-+ (void)promoteUnverifiedPetsInPhotoLibrary:(id)a3 withUpdateBlock:(id)a4
++ (void)promoteUnverifiedPetsInPhotoLibrary:(id)library withUpdateBlock:(id)block
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(block);
   ObjCClassMetadata = swift_getObjCClassMetadata();
   _Block_copy(v5);
-  v7 = a3;
-  sub_1C7232664(v7, ObjCClassMetadata, v5);
+  libraryCopy = library;
+  sub_1C7232664(libraryCopy, ObjCClassMetadata, v5);
   _Block_release(v5);
 }
 

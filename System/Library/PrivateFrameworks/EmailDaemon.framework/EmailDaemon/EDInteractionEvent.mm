@@ -8,16 +8,16 @@
 {
   v3 = objc_opt_new();
   [v3 appendFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(EDInteractionEvent *)self eventID];
-  v5 = v4 == 0;
-  if (v4)
+  eventID = [(EDInteractionEvent *)self eventID];
+  v5 = eventID == 0;
+  if (eventID)
   {
     [v3 appendFormat:@" eventID=%lld", -[EDInteractionEvent eventID](self, "eventID")];
   }
 
   if ([(EDInteractionEvent *)self version])
   {
-    if (v4)
+    if (eventID)
     {
       [v3 appendString:{@", "}];
     }
@@ -26,47 +26,47 @@
     v5 = 0;
   }
 
-  v6 = [(EDInteractionEvent *)self name];
+  name = [(EDInteractionEvent *)self name];
 
-  if (v6)
+  if (name)
   {
     if (!v5)
     {
       [v3 appendString:{@", "}];
     }
 
-    v7 = [(EDInteractionEvent *)self name];
-    [v3 appendFormat:@" name=%@", v7];
+    name2 = [(EDInteractionEvent *)self name];
+    [v3 appendFormat:@" name=%@", name2];
 
     v5 = 0;
   }
 
-  v8 = [(EDInteractionEvent *)self date];
+  date = [(EDInteractionEvent *)self date];
 
-  if (v8)
+  if (date)
   {
     if (!v5)
     {
       [v3 appendString:{@", "}];
     }
 
-    v9 = [(EDInteractionEvent *)self date];
-    [v3 appendFormat:@" date=%@", v9];
+    date2 = [(EDInteractionEvent *)self date];
+    [v3 appendFormat:@" date=%@", date2];
 
     v5 = 0;
   }
 
-  v10 = [(EDInteractionEvent *)self accountID];
+  accountID = [(EDInteractionEvent *)self accountID];
 
-  if (v10)
+  if (accountID)
   {
     if (!v5)
     {
       [v3 appendString:{@", "}];
     }
 
-    v11 = [(EDInteractionEvent *)self accountID];
-    [v3 appendFormat:@" accountID=%@", v11];
+    accountID2 = [(EDInteractionEvent *)self accountID];
+    [v3 appendFormat:@" accountID=%@", accountID2];
 
     v5 = 0;
   }
@@ -115,17 +115,17 @@
     v5 = 0;
   }
 
-  v12 = [(EDInteractionEvent *)self data];
+  data = [(EDInteractionEvent *)self data];
 
-  if (v12)
+  if (data)
   {
     if (!v5)
     {
       [v3 appendString:{@", "}];
     }
 
-    v13 = [(EDInteractionEvent *)self data];
-    [v3 appendFormat:@" data=%@", v13];
+    data2 = [(EDInteractionEvent *)self data];
+    [v3 appendFormat:@" data=%@", data2];
   }
 
   [v3 appendString:@">"];

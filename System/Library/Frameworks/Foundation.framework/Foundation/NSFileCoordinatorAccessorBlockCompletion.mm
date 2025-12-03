@@ -1,5 +1,5 @@
 @interface NSFileCoordinatorAccessorBlockCompletion
-+ (id)completionWithBlock:(id)a3;
++ (id)completionWithBlock:(id)block;
 - (void)dealloc;
 - (void)decrement;
 - (void)increment;
@@ -37,15 +37,15 @@
   [(NSFileCoordinatorAccessorBlockCompletion *)&v4 dealloc];
 }
 
-+ (id)completionWithBlock:(id)a3
++ (id)completionWithBlock:(id)block
 {
-  if (!a3)
+  if (!block)
   {
     return 0;
   }
 
   v4 = objc_opt_new();
-  *(v4 + 1) = [a3 copy];
+  *(v4 + 1) = [block copy];
   atomic_store(1u, v4 + 4);
   return v4;
 }

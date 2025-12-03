@@ -1,70 +1,70 @@
 @interface HMDUIDialogPresenter
 + (id)sharedUIDialogPresenter;
-- (BOOL)_addCurrentNotification:(__CFUserNotification *)a3 withContext:(id)a4;
-- (BOOL)_addToPendingContext:(id)a3;
-- (BOOL)_addToPendingContextSkippingPlatformChecks:(id)a3;
-- (BOOL)_isPendingContext:(id)a3;
-- (BOOL)_presentDialogWithInfo:(id)a3 options:(unint64_t)a4 targetResponse:(unint64_t)a5 textField:(id *)a6 withContext:(id)a7 selectedByPeerDevice:(BOOL *)a8 timeout:(double)a9;
-- (BOOL)_removeCurrentNotification:(__CFUserNotification *)a3 currentSelection:(BOOL)a4 selectedByPeerDevice:(BOOL *)a5 andContext:(id)a6;
+- (BOOL)_addCurrentNotification:(__CFUserNotification *)notification withContext:(id)context;
+- (BOOL)_addToPendingContext:(id)context;
+- (BOOL)_addToPendingContextSkippingPlatformChecks:(id)checks;
+- (BOOL)_isPendingContext:(id)context;
+- (BOOL)_presentDialogWithInfo:(id)info options:(unint64_t)options targetResponse:(unint64_t)response textField:(id *)field withContext:(id)context selectedByPeerDevice:(BOOL *)device timeout:(double)timeout;
+- (BOOL)_removeCurrentNotification:(__CFUserNotification *)notification currentSelection:(BOOL)selection selectedByPeerDevice:(BOOL *)device andContext:(id)context;
 - (HMDUIDialogPresenter)init;
-- (void)_displayInternalTTRErrorWithContext:(id)a3 message:(id)a4 completionHandler:(id)a5;
-- (void)_displayKeychainSyncForHome:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)_displayUpgradeNeededWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)_displayiCloudSwitchWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)_requestUserPermissionForBridgeAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)_requestUserPermissionForDeletionOfHomeWithName:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)_requestUserPermissionForLegacyWACAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)_requestUserPermissionForRemovalOfRouter:(id)a3 accessoriesRequiringManualReconfiguration:(id)a4 withContext:(id)a5 queue:(id)a6 completionHandler:(id)a7;
-- (void)_requestUserPermissionForRemovalOfSpecificWiFiCredentialedAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)_requestUserPermissionForUnauthenticatedAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)_requestUserPermissionForUnauthenticatedAliroLockWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)_requestUserPermissionWithAccessoryPPIDInfo:(id)a3 name:(id)a4 category:(id)a5 withContext:(id)a6 queue:(id)a7 completionHandler:(id)a8;
-- (void)_showUserDialogForIncompatibleAccessory:(id)a3 name:(id)a4 category:(id)a5 withContext:(id)a6 queue:(id)a7 completionHandler:(id)a8;
-- (void)confirmReportAccessory:(id)a3 context:(id)a4 completionQueue:(id)a5 completionHandler:(id)a6;
+- (void)_displayInternalTTRErrorWithContext:(id)context message:(id)message completionHandler:(id)handler;
+- (void)_displayKeychainSyncForHome:(id)home withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)_displayUpgradeNeededWithContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)_displayiCloudSwitchWithContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)_requestUserPermissionForBridgeAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)_requestUserPermissionForDeletionOfHomeWithName:(id)name withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)_requestUserPermissionForLegacyWACAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)_requestUserPermissionForRemovalOfRouter:(id)router accessoriesRequiringManualReconfiguration:(id)reconfiguration withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)_requestUserPermissionForRemovalOfSpecificWiFiCredentialedAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)_requestUserPermissionForUnauthenticatedAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)_requestUserPermissionForUnauthenticatedAliroLockWithContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)_requestUserPermissionWithAccessoryPPIDInfo:(id)info name:(id)name category:(id)category withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)_showUserDialogForIncompatibleAccessory:(id)accessory name:(id)name category:(id)category withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)confirmReportAccessory:(id)accessory context:(id)context completionQueue:(id)queue completionHandler:(id)handler;
 - (void)dealloc;
-- (void)dismissPendingDialogWithContext:(id)a3;
-- (void)dismissPendingDialogWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)displayExecutionErrorOfTrigger:(id)a3 partialSuccess:(BOOL)a4 context:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7;
-- (void)displayInternalTTRErrorWithContext:(id)a3 message:(id)a4 waitForResponse:(BOOL)a5 completionHandler:(id)a6;
-- (void)displayKeychainSyncForHome:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)displayRestrictedBluetoothCharacteristicsWarningWithDeviceName:(id)a3 completionHandler:(id)a4;
-- (void)displayUpgradeNeededWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)displayiCloudSwitchWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)requestUserPermissionForBridgeAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)requestUserPermissionForDeletionOfHomeWithName:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)requestUserPermissionForLegacyWACAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)requestUserPermissionForRemovalOfRouter:(id)a3 accessoriesRequiringManualReconfiguration:(id)a4 withContext:(id)a5 queue:(id)a6 completionHandler:(id)a7;
-- (void)requestUserPermissionForRemovalOfSpecificWiFiCredentialedAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)requestUserPermissionForUnauthenticatedAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)requestUserPermissionForUnauthenticatedAliroLockWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)requestUserPermissionWithAccessoryPPIDInfo:(id)a3 name:(id)a4 category:(id)a5 withContext:(id)a6 queue:(id)a7 completionHandler:(id)a8;
-- (void)setCurrentNotification:(__CFUserNotification *)a3;
-- (void)showUserDialogForIncompatibleAccessory:(id)a3 name:(id)a4 category:(id)a5 withContext:(id)a6 queue:(id)a7 completionHandler:(id)a8;
+- (void)dismissPendingDialogWithContext:(id)context;
+- (void)dismissPendingDialogWithContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)displayExecutionErrorOfTrigger:(id)trigger partialSuccess:(BOOL)success context:(id)context completionQueue:(id)queue completionHandler:(id)handler;
+- (void)displayInternalTTRErrorWithContext:(id)context message:(id)message waitForResponse:(BOOL)response completionHandler:(id)handler;
+- (void)displayKeychainSyncForHome:(id)home withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)displayRestrictedBluetoothCharacteristicsWarningWithDeviceName:(id)name completionHandler:(id)handler;
+- (void)displayUpgradeNeededWithContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)displayiCloudSwitchWithContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)requestUserPermissionForBridgeAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)requestUserPermissionForDeletionOfHomeWithName:(id)name withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)requestUserPermissionForLegacyWACAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)requestUserPermissionForRemovalOfRouter:(id)router accessoriesRequiringManualReconfiguration:(id)reconfiguration withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)requestUserPermissionForRemovalOfSpecificWiFiCredentialedAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)requestUserPermissionForUnauthenticatedAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)requestUserPermissionForUnauthenticatedAliroLockWithContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)requestUserPermissionWithAccessoryPPIDInfo:(id)info name:(id)name category:(id)category withContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)setCurrentNotification:(__CFUserNotification *)notification;
+- (void)showUserDialogForIncompatibleAccessory:(id)accessory name:(id)name category:(id)category withContext:(id)context queue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation HMDUIDialogPresenter
 
-- (BOOL)_presentDialogWithInfo:(id)a3 options:(unint64_t)a4 targetResponse:(unint64_t)a5 textField:(id *)a6 withContext:(id)a7 selectedByPeerDevice:(BOOL *)a8 timeout:(double)a9
+- (BOOL)_presentDialogWithInfo:(id)info options:(unint64_t)options targetResponse:(unint64_t)response textField:(id *)field withContext:(id)context selectedByPeerDevice:(BOOL *)device timeout:(double)timeout
 {
-  v16 = a7;
+  contextCopy = context;
   error = -1;
-  v17 = CFUserNotificationCreate(*MEMORY[0x277CBECE8], a9, a4, &error, a3);
-  if (error || ![(HMDUIDialogPresenter *)self _addCurrentNotification:v17 withContext:v16]|| (v21 = 0, CFUserNotificationReceiveResponse(v17, 0.0, &v21)) || (v21 & 3) != a5)
+  v17 = CFUserNotificationCreate(*MEMORY[0x277CBECE8], timeout, options, &error, info);
+  if (error || ![(HMDUIDialogPresenter *)self _addCurrentNotification:v17 withContext:contextCopy]|| (v21 = 0, CFUserNotificationReceiveResponse(v17, 0.0, &v21)) || (v21 & 3) != response)
   {
     v18 = 0;
   }
 
   else
   {
-    if (a6)
+    if (field)
     {
-      *a6 = CFUserNotificationGetResponseValue(v17, *MEMORY[0x277CBF238], 0);
+      *field = CFUserNotificationGetResponseValue(v17, *MEMORY[0x277CBF238], 0);
     }
 
     v18 = 1;
   }
 
-  v19 = [(HMDUIDialogPresenter *)self _removeCurrentNotification:v17 currentSelection:v18 selectedByPeerDevice:a8 andContext:v16];
+  v19 = [(HMDUIDialogPresenter *)self _removeCurrentNotification:v17 currentSelection:v18 selectedByPeerDevice:device andContext:contextCopy];
   if (v17)
   {
     CFRelease(v17);
@@ -73,21 +73,21 @@
   return v19;
 }
 
-- (void)displayRestrictedBluetoothCharacteristicsWarningWithDeviceName:(id)a3 completionHandler:(id)a4
+- (void)displayRestrictedBluetoothCharacteristicsWarningWithDeviceName:(id)name completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUIDialogPresenter *)self workQueue];
+  nameCopy = name;
+  handlerCopy = handler;
+  workQueue = [(HMDUIDialogPresenter *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __105__HMDUIDialogPresenter_displayRestrictedBluetoothCharacteristicsWarningWithDeviceName_completionHandler___block_invoke;
   block[3] = &unk_278689F98;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = nameCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = nameCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __105__HMDUIDialogPresenter_displayRestrictedBluetoothCharacteristicsWarningWithDeviceName_completionHandler___block_invoke(uint64_t a1)
@@ -141,28 +141,28 @@ void __105__HMDUIDialogPresenter_displayRestrictedBluetoothCharacteristicsWarnin
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayExecutionErrorOfTrigger:(id)a3 partialSuccess:(BOOL)a4 context:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7
+- (void)displayExecutionErrorOfTrigger:(id)trigger partialSuccess:(BOOL)success context:(id)context completionQueue:(id)queue completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(HMDUIDialogPresenter *)self workQueue];
+  triggerCopy = trigger;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  workQueue = [(HMDUIDialogPresenter *)self workQueue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __112__HMDUIDialogPresenter_displayExecutionErrorOfTrigger_partialSuccess_context_completionQueue_completionHandler___block_invoke;
   v21[3] = &unk_27867A020;
   v21[4] = self;
-  v22 = v13;
-  v24 = v12;
-  v25 = v15;
-  v26 = a4;
-  v23 = v14;
-  v17 = v12;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  dispatch_async(v16, v21);
+  v22 = contextCopy;
+  v24 = triggerCopy;
+  v25 = handlerCopy;
+  successCopy = success;
+  v23 = queueCopy;
+  v17 = triggerCopy;
+  v18 = handlerCopy;
+  v19 = queueCopy;
+  v20 = contextCopy;
+  dispatch_async(workQueue, v21);
 }
 
 void __112__HMDUIDialogPresenter_displayExecutionErrorOfTrigger_partialSuccess_context_completionQueue_completionHandler___block_invoke(uint64_t a1)
@@ -307,40 +307,40 @@ LABEL_19:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)confirmReportAccessory:(id)a3 context:(id)a4 completionQueue:(id)a5 completionHandler:(id)a6
+- (void)confirmReportAccessory:(id)accessory context:(id)context completionQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([(HMDUIDialogPresenter *)self _addToPendingContext:v11])
+  accessoryCopy = accessory;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
-    v14 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue = [(HMDUIDialogPresenter *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_completionHandler___block_invoke;
     block[3] = &unk_278688978;
     v15 = v19;
-    v19[0] = v10;
+    v19[0] = accessoryCopy;
     v19[1] = self;
-    v20 = v11;
-    v21 = v12;
-    v22 = v13;
-    dispatch_async(v14, block);
+    v20 = contextCopy;
+    v21 = queueCopy;
+    v22 = handlerCopy;
+    dispatch_async(workQueue, block);
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  if (v12 && v13)
+  if (queueCopy && handlerCopy)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_completionHandler___block_invoke_2;
     v16[3] = &unk_278688B80;
     v15 = &v17;
-    v17 = v13;
-    dispatch_async(v12, v16);
+    v17 = handlerCopy;
+    dispatch_async(queueCopy, v16);
     goto LABEL_6;
   }
 
@@ -416,19 +416,19 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_displayInternalTTRErrorWithContext:(id)a3 message:(id)a4 completionHandler:(id)a5
+- (void)_displayInternalTTRErrorWithContext:(id)context message:(id)message completionHandler:(id)handler
 {
   v19[4] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  messageCopy = message;
+  contextCopy = context;
   v11 = HMDLocalizedStringForKey(@"REPORT_PROBLEM");
   v12 = HMDLocalizedStringForKey(@"NOT_NOW");
   v13 = *MEMORY[0x277CBF198];
   v18[0] = *MEMORY[0x277CBF188];
   v18[1] = v13;
   v19[0] = v11;
-  v19[1] = v9;
+  v19[1] = messageCopy;
   v14 = *MEMORY[0x277CBF1E8];
   v18[2] = *MEMORY[0x277CBF218];
   v18[3] = v14;
@@ -436,60 +436,60 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
   v19[3] = @"Tap-to-Radar";
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
 
-  v16 = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v15 options:0 textField:0 withContext:v10];
-  v8[2](v8, v16);
+  v16 = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v15 options:0 textField:0 withContext:contextCopy];
+  handlerCopy[2](handlerCopy, v16);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayInternalTTRErrorWithContext:(id)a3 message:(id)a4 waitForResponse:(BOOL)a5 completionHandler:(id)a6
+- (void)displayInternalTTRErrorWithContext:(id)context message:(id)message waitForResponse:(BOOL)response completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (isInternalBuild() && [(HMDUIDialogPresenter *)self _addToPendingContext:v10])
+  responseCopy = response;
+  contextCopy = context;
+  messageCopy = message;
+  handlerCopy = handler;
+  if (isInternalBuild() && [(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
-    v13 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue = [(HMDUIDialogPresenter *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __101__HMDUIDialogPresenter_displayInternalTTRErrorWithContext_message_waitForResponse_completionHandler___block_invoke;
     block[3] = &unk_278689AB8;
     block[4] = self;
-    v20 = v10;
-    v21 = v11;
-    v22 = v12;
-    dispatch_async(v13, block);
+    v20 = contextCopy;
+    v21 = messageCopy;
+    v22 = handlerCopy;
+    dispatch_async(workQueue, block);
 
     v14 = v20;
   }
 
   else
   {
-    v15 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue2 = [(HMDUIDialogPresenter *)self workQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __101__HMDUIDialogPresenter_displayInternalTTRErrorWithContext_message_waitForResponse_completionHandler___block_invoke_2;
     v17[3] = &unk_278688B80;
-    v18 = v12;
-    dispatch_async(v15, v17);
+    v18 = handlerCopy;
+    dispatch_async(workQueue2, v17);
 
     v14 = v18;
   }
 
-  if (v7)
+  if (responseCopy)
   {
-    v16 = [(HMDUIDialogPresenter *)self workQueue];
-    dispatch_sync(v16, &__block_literal_global_131);
+    workQueue3 = [(HMDUIDialogPresenter *)self workQueue];
+    dispatch_sync(workQueue3, &__block_literal_global_131);
   }
 }
 
-- (void)_displayUpgradeNeededWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)_displayUpgradeNeededWithContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  queueCopy = queue;
+  contextCopy = context;
   v11 = HMDLocalizedStringForKey(@"OS_UPGRADE_NEEDED_TITLE");
   v12 = HMDLocalizedStringForKey(@"OS_UPGRADE_NEEDED_INFO");
   v13 = HMDLocalizedStringForKey(@"OK");
@@ -501,37 +501,37 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
   v20[2] = *MEMORY[0x277CBF1E8];
   v21[2] = v13;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3];
-  [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v15 options:0 textField:0 withContext:v10];
+  [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v15 options:0 textField:0 withContext:contextCopy];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __81__HMDUIDialogPresenter__displayUpgradeNeededWithContext_queue_completionHandler___block_invoke;
   v18[3] = &unk_278688B80;
-  v19 = v8;
-  v16 = v8;
-  dispatch_async(v9, v18);
+  v19 = handlerCopy;
+  v16 = handlerCopy;
+  dispatch_async(queueCopy, v18);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayUpgradeNeededWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)displayUpgradeNeededWithContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(HMDUIDialogPresenter *)self _addToPendingContext:v8])
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
-    v11 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue = [(HMDUIDialogPresenter *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __80__HMDUIDialogPresenter_displayUpgradeNeededWithContext_queue_completionHandler___block_invoke;
     block[3] = &unk_278689AB8;
     block[4] = self;
-    v18 = v8;
-    v19 = v9;
-    v20 = v10;
-    v12 = v10;
-    dispatch_async(v11, block);
+    v18 = contextCopy;
+    v19 = queueCopy;
+    v20 = handlerCopy;
+    v12 = handlerCopy;
+    dispatch_async(workQueue, block);
 
     v13 = v18;
   }
@@ -542,19 +542,19 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
     v15[1] = 3221225472;
     v15[2] = __80__HMDUIDialogPresenter_displayUpgradeNeededWithContext_queue_completionHandler___block_invoke_2;
     v15[3] = &unk_278688B80;
-    v16 = v10;
-    v14 = v10;
-    dispatch_async(v9, v15);
+    v16 = handlerCopy;
+    v14 = handlerCopy;
+    dispatch_async(queueCopy, v15);
     v13 = v16;
   }
 }
 
-- (void)_displayiCloudSwitchWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)_displayiCloudSwitchWithContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
   v24[4] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  queueCopy = queue;
+  contextCopy = context;
   v11 = HMDLocalizedStringForKey(@"ENABLE_ICLOUD_SWITCH_TITLE");
   v12 = HMDLocalizedStringForKey(@"ICLOUD_SWITCH_INFO");
   v13 = HMDLocalizedStringForKey(@"CANCEL");
@@ -570,38 +570,38 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
   v24[2] = v14;
   v24[3] = v13;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:4];
-  LOBYTE(self) = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v17 options:0 textField:0 withContext:v10];
+  LOBYTE(self) = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v17 options:0 textField:0 withContext:contextCopy];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__HMDUIDialogPresenter__displayiCloudSwitchWithContext_queue_completionHandler___block_invoke;
   block[3] = &unk_2786750D0;
-  v21 = v8;
-  v22 = self;
-  v18 = v8;
-  dispatch_async(v9, block);
+  v21 = handlerCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  dispatch_async(queueCopy, block);
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayiCloudSwitchWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)displayiCloudSwitchWithContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(HMDUIDialogPresenter *)self _addToPendingContext:v8])
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
-    v11 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue = [(HMDUIDialogPresenter *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __79__HMDUIDialogPresenter_displayiCloudSwitchWithContext_queue_completionHandler___block_invoke;
     block[3] = &unk_278689AB8;
     block[4] = self;
-    v18 = v8;
-    v19 = v9;
-    v20 = v10;
-    v12 = v10;
-    dispatch_async(v11, block);
+    v18 = contextCopy;
+    v19 = queueCopy;
+    v20 = handlerCopy;
+    v12 = handlerCopy;
+    dispatch_async(workQueue, block);
 
     v13 = v18;
   }
@@ -612,32 +612,32 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
     v15[1] = 3221225472;
     v15[2] = __79__HMDUIDialogPresenter_displayiCloudSwitchWithContext_queue_completionHandler___block_invoke_2;
     v15[3] = &unk_278688B80;
-    v16 = v10;
-    v14 = v10;
-    dispatch_async(v9, v15);
+    v16 = handlerCopy;
+    v14 = handlerCopy;
+    dispatch_async(queueCopy, v15);
     v13 = v16;
   }
 }
 
-- (void)_displayKeychainSyncForHome:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)_displayKeychainSyncForHome:(id)home withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  homeCopy = home;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
   v14 = HMDLocalizedStringForKey(@"ENABLE_KEYCHAIN_SYNC_TITLE");
   v15 = MEMORY[0x277CCACA8];
   v16 = HMDLocalizedStringForKey(@"KEYCHAIN_SYNC_INFO");
   v37 = 0;
-  v33 = v10;
-  v17 = [v15 localizedStringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:&v37, v10];
+  v33 = homeCopy;
+  homeCopy = [v15 localizedStringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:&v37, homeCopy];
   v18 = v37;
 
-  v19 = v17;
-  if (!v17)
+  v19 = homeCopy;
+  if (!homeCopy)
   {
-    v32 = v13;
+    v32 = handlerCopy;
     v20 = objc_autoreleasePoolPush();
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -656,7 +656,7 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
 
     objc_autoreleasePoolPop(v20);
     v19 = @"KEYCHAIN_SYNC_INFO";
-    v13 = v32;
+    handlerCopy = v32;
   }
 
   v23 = v19;
@@ -674,39 +674,39 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
   v39[2] = v25;
   v39[3] = v24;
   v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:4];
-  v29 = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v28 options:0 textField:0 withContext:v11];
+  v29 = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v28 options:0 textField:0 withContext:contextCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__HMDUIDialogPresenter__displayKeychainSyncForHome_withContext_queue_completionHandler___block_invoke;
   block[3] = &unk_2786750D0;
-  v35 = v13;
+  v35 = handlerCopy;
   v36 = v29;
-  v30 = v13;
-  dispatch_async(v12, block);
+  v30 = handlerCopy;
+  dispatch_async(queueCopy, block);
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayKeychainSyncForHome:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)displayKeychainSyncForHome:(id)home withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([(HMDUIDialogPresenter *)self _addToPendingContext:v11])
+  homeCopy = home;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
-    v14 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue = [(HMDUIDialogPresenter *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __87__HMDUIDialogPresenter_displayKeychainSyncForHome_withContext_queue_completionHandler___block_invoke;
     block[3] = &unk_278688978;
     block[4] = self;
-    v21 = v10;
-    v22 = v11;
-    v23 = v12;
-    v24 = v13;
-    v15 = v13;
-    dispatch_async(v14, block);
+    v21 = homeCopy;
+    v22 = contextCopy;
+    v23 = queueCopy;
+    v24 = handlerCopy;
+    v15 = handlerCopy;
+    dispatch_async(workQueue, block);
 
     v16 = v21;
   }
@@ -717,32 +717,32 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
     v18[1] = 3221225472;
     v18[2] = __87__HMDUIDialogPresenter_displayKeychainSyncForHome_withContext_queue_completionHandler___block_invoke_2;
     v18[3] = &unk_278688B80;
-    v19 = v13;
-    v17 = v13;
-    dispatch_async(v12, v18);
+    v19 = handlerCopy;
+    v17 = handlerCopy;
+    dispatch_async(queueCopy, v18);
     v16 = v19;
   }
 }
 
-- (void)_requestUserPermissionForLegacyWACAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)_requestUserPermissionForLegacyWACAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
   v50 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  accessoryCopy = accessory;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
   v13 = HMDLocalizedStringForKey(@"ACCESSORY_LEGACYWAC_TITLE");
   v14 = MEMORY[0x277CCACA8];
   v15 = localizedWiFiStringKey();
   v16 = HMDLocalizedStringForKey(v15);
   v39 = 0;
-  v35 = v9;
-  v17 = [v14 localizedStringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:&v39, v9];
+  v35 = accessoryCopy;
+  accessoryCopy = [v14 localizedStringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:&v39, accessoryCopy];
   v18 = v39;
 
-  if (v17)
+  if (accessoryCopy)
   {
-    v19 = v17;
+    v19 = accessoryCopy;
   }
 
   else
@@ -786,25 +786,25 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
   v41[2] = v25;
   v41[3] = v26;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:4];
-  v30 = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v29 options:0 textField:0 withContext:v10];
+  v30 = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v29 options:0 textField:0 withContext:contextCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __104__HMDUIDialogPresenter__requestUserPermissionForLegacyWACAccessory_withContext_queue_completionHandler___block_invoke;
   block[3] = &unk_2786750D0;
-  v37 = v12;
+  v37 = handlerCopy;
   v38 = v30;
-  v31 = v12;
-  dispatch_async(v11, block);
+  v31 = handlerCopy;
+  dispatch_async(queueCopy, block);
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_showUserDialogForIncompatibleAccessory:(id)a3 name:(id)a4 category:(id)a5 withContext:(id)a6 queue:(id)a7 completionHandler:(id)a8
+- (void)_showUserDialogForIncompatibleAccessory:(id)accessory name:(id)name category:(id)category withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v11 = a8;
-  v12 = a7;
-  v13 = a6;
+  handlerCopy = handler;
+  queueCopy = queue;
+  contextCopy = context;
   v14 = HMDLocalizedStringForKey(@"ACCESSORY_INCOMPATIBLE_HEADER");
   v15 = HMDLocalizedStringForKey(@"ACCESSORY_INCOMPATIBLE_DETAIL");
   v16 = HMDLocalizedStringForKey(@"OK");
@@ -816,43 +816,43 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
   v23[2] = *MEMORY[0x277CBF1E8];
   v24[2] = v16;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:3];
-  [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v18 options:0 textField:0 withContext:v13];
+  [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v18 options:0 textField:0 withContext:contextCopy];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __114__HMDUIDialogPresenter__showUserDialogForIncompatibleAccessory_name_category_withContext_queue_completionHandler___block_invoke;
   v21[3] = &unk_278688B80;
-  v22 = v11;
-  v19 = v11;
-  dispatch_async(v12, v21);
+  v22 = handlerCopy;
+  v19 = handlerCopy;
+  dispatch_async(queueCopy, v21);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showUserDialogForIncompatibleAccessory:(id)a3 name:(id)a4 category:(id)a5 withContext:(id)a6 queue:(id)a7 completionHandler:(id)a8
+- (void)showUserDialogForIncompatibleAccessory:(id)accessory name:(id)name category:(id)category withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if ([(HMDUIDialogPresenter *)self _addToPendingContext:v17])
+  accessoryCopy = accessory;
+  nameCopy = name;
+  categoryCopy = category;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
-    v20 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue = [(HMDUIDialogPresenter *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __113__HMDUIDialogPresenter_showUserDialogForIncompatibleAccessory_name_category_withContext_queue_completionHandler___block_invoke;
     block[3] = &unk_2786873D8;
     block[4] = self;
-    v27 = v14;
-    v28 = v15;
-    v29 = v16;
-    v30 = v17;
-    v31 = v18;
-    v32 = v19;
-    v21 = v19;
-    dispatch_async(v20, block);
+    v27 = accessoryCopy;
+    v28 = nameCopy;
+    v29 = categoryCopy;
+    v30 = contextCopy;
+    v31 = queueCopy;
+    v32 = handlerCopy;
+    v21 = handlerCopy;
+    dispatch_async(workQueue, block);
 
     v22 = v27;
   }
@@ -863,30 +863,30 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
     v24[1] = 3221225472;
     v24[2] = __113__HMDUIDialogPresenter_showUserDialogForIncompatibleAccessory_name_category_withContext_queue_completionHandler___block_invoke_2;
     v24[3] = &unk_278688B80;
-    v25 = v19;
-    v23 = v19;
-    dispatch_async(v18, v24);
+    v25 = handlerCopy;
+    v23 = handlerCopy;
+    dispatch_async(queueCopy, v24);
     v22 = v25;
   }
 }
 
-- (void)_requestUserPermissionForRemovalOfSpecificWiFiCredentialedAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)_requestUserPermissionForRemovalOfSpecificWiFiCredentialedAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
   v45[5] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accessoryCopy = accessory;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
   v44[0] = *MEMORY[0x277CBF188];
   v14 = MEMORY[0x277CCACA8];
   v15 = HMDLocalizedStringForKey(@"ACCESSORY_WITH_SPECIFIC_WIFI_CREDENTIAL_REMOVAL_CONFIRM_TITLE");
   v35 = 0;
-  v31 = v10;
-  v16 = [v14 localizedStringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:&v35, v10];
+  v31 = accessoryCopy;
+  accessoryCopy = [v14 localizedStringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:&v35, accessoryCopy];
   v17 = v35;
 
-  v18 = v16;
-  if (!v16)
+  v18 = accessoryCopy;
+  if (!accessoryCopy)
   {
     v19 = objc_autoreleasePoolPush();
     v20 = HMFGetOSLogHandle();
@@ -927,57 +927,57 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
   v45[4] = &unk_283E72368;
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:5];
 
-  v27 = [(HMDUIDialogPresenter *)self _addToPendingContext:v11];
+  v27 = [(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy];
   if (v27)
   {
-    LOBYTE(v27) = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v26 options:0 textField:0 withContext:v11];
+    LOBYTE(v27) = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v26 options:0 textField:0 withContext:contextCopy];
   }
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __128__HMDUIDialogPresenter__requestUserPermissionForRemovalOfSpecificWiFiCredentialedAccessory_withContext_queue_completionHandler___block_invoke;
   block[3] = &unk_2786750D0;
-  v33 = v13;
+  v33 = handlerCopy;
   v34 = v27;
-  v28 = v13;
-  dispatch_async(v12, block);
+  v28 = handlerCopy;
+  dispatch_async(queueCopy, block);
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestUserPermissionForRemovalOfSpecificWiFiCredentialedAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)requestUserPermissionForRemovalOfSpecificWiFiCredentialedAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDUIDialogPresenter *)self workQueue];
+  accessoryCopy = accessory;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  workQueue = [(HMDUIDialogPresenter *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __127__HMDUIDialogPresenter_requestUserPermissionForRemovalOfSpecificWiFiCredentialedAccessory_withContext_queue_completionHandler___block_invoke;
   block[3] = &unk_278688978;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = accessoryCopy;
+  v21 = contextCopy;
+  v22 = queueCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = queueCopy;
+  v17 = contextCopy;
+  v18 = accessoryCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)_requestUserPermissionForRemovalOfRouter:(id)a3 accessoriesRequiringManualReconfiguration:(id)a4 withContext:(id)a5 queue:(id)a6 completionHandler:(id)a7
+- (void)_requestUserPermissionForRemovalOfRouter:(id)router accessoriesRequiringManualReconfiguration:(id)reconfiguration withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
   v72[5] = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v11 = a4;
-  v12 = a5;
-  queue = a6;
-  v52 = a7;
-  v54 = v11;
-  v13 = [v11 count];
+  routerCopy = router;
+  reconfigurationCopy = reconfiguration;
+  contextCopy = context;
+  queue = queue;
+  handlerCopy = handler;
+  v54 = reconfigurationCopy;
+  v13 = [reconfigurationCopy count];
   v47 = *MEMORY[0x277CBF188];
   v71[0] = *MEMORY[0x277CBF188];
   v14 = localizedWiFiStringKey();
@@ -1021,8 +1021,8 @@ void __89__HMDUIDialogPresenter_confirmReportAccessory_context_completionQueue_c
   v72[4] = v21;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v72 forKeys:v71 count:5];
 
-  v24 = v12;
-  if (![(HMDUIDialogPresenter *)self _addToPendingContext:v12])
+  v24 = contextCopy;
+  if (![(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
     v25 = v23;
     v27 = 0;
@@ -1111,55 +1111,55 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __143__HMDUIDialogPresenter__requestUserPermissionForRemovalOfRouter_accessoriesRequiringManualReconfiguration_withContext_queue_completionHandler___block_invoke;
   block[3] = &unk_2786750D0;
-  v58 = v52;
+  v58 = handlerCopy;
   v59 = v27;
-  v44 = v52;
+  v44 = handlerCopy;
   dispatch_async(queue, block);
 
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestUserPermissionForRemovalOfRouter:(id)a3 accessoriesRequiringManualReconfiguration:(id)a4 withContext:(id)a5 queue:(id)a6 completionHandler:(id)a7
+- (void)requestUserPermissionForRemovalOfRouter:(id)router accessoriesRequiringManualReconfiguration:(id)reconfiguration withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(HMDUIDialogPresenter *)self workQueue];
+  routerCopy = router;
+  reconfigurationCopy = reconfiguration;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  workQueue = [(HMDUIDialogPresenter *)self workQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __142__HMDUIDialogPresenter_requestUserPermissionForRemovalOfRouter_accessoriesRequiringManualReconfiguration_withContext_queue_completionHandler___block_invoke;
   v23[3] = &unk_278688B58;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
-  dispatch_async(v17, v23);
+  v24 = routerCopy;
+  v25 = reconfigurationCopy;
+  v26 = contextCopy;
+  v27 = queueCopy;
+  v28 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = queueCopy;
+  v20 = contextCopy;
+  v21 = reconfigurationCopy;
+  v22 = routerCopy;
+  dispatch_async(workQueue, v23);
 }
 
-- (void)_requestUserPermissionForDeletionOfHomeWithName:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)_requestUserPermissionForDeletionOfHomeWithName:(id)name withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
   v54 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v38 = a4;
-  queue = a5;
-  v10 = a6;
+  nameCopy = name;
+  contextCopy = context;
+  queue = queue;
+  handlerCopy = handler;
   v11 = MEMORY[0x277CCACA8];
   v12 = HMDLocalizedStringForKey(@"HOME_DELETION_CONFIRM_TITLE");
   v43 = 0;
-  v13 = [v11 localizedStringWithValidatedFormat:v12 validFormatSpecifiers:@"%@" error:&v43, v9];
+  nameCopy = [v11 localizedStringWithValidatedFormat:v12 validFormatSpecifiers:@"%@" error:&v43, nameCopy];
   v14 = v43;
 
-  v15 = v13;
-  if (!v13)
+  v15 = nameCopy;
+  if (!nameCopy)
   {
     v16 = objc_autoreleasePoolPush();
     v17 = HMFGetOSLogHandle();
@@ -1186,11 +1186,11 @@ LABEL_20:
   v20 = MEMORY[0x277CCACA8];
   v21 = HMDLocalizedStringForKey(@"HOME_DELETION_CONFIRM_BUTTON");
   v42 = 0;
-  v22 = [v20 localizedStringWithValidatedFormat:v21 validFormatSpecifiers:@"%@" error:&v42, v9];
+  nameCopy2 = [v20 localizedStringWithValidatedFormat:v21 validFormatSpecifiers:@"%@" error:&v42, nameCopy];
   v23 = v42;
 
-  v24 = v22;
-  if (!v22)
+  v24 = nameCopy2;
+  if (!nameCopy2)
   {
     v25 = objc_autoreleasePoolPush();
     v26 = HMFGetOSLogHandle();
@@ -1226,39 +1226,39 @@ LABEL_20:
   v45[2] = &unk_283E72368;
   v45[3] = v29;
   v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:4];
-  v33 = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v32 options:0 textField:0 withContext:v38];
+  v33 = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v32 options:0 textField:0 withContext:contextCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __108__HMDUIDialogPresenter__requestUserPermissionForDeletionOfHomeWithName_withContext_queue_completionHandler___block_invoke;
   block[3] = &unk_2786750D0;
-  v40 = v10;
+  v40 = handlerCopy;
   v41 = v33;
-  v34 = v10;
+  v34 = handlerCopy;
   dispatch_async(queue, block);
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestUserPermissionForDeletionOfHomeWithName:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)requestUserPermissionForDeletionOfHomeWithName:(id)name withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([(HMDUIDialogPresenter *)self _addToPendingContext:v11])
+  nameCopy = name;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
-    v14 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue = [(HMDUIDialogPresenter *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __107__HMDUIDialogPresenter_requestUserPermissionForDeletionOfHomeWithName_withContext_queue_completionHandler___block_invoke;
     block[3] = &unk_278688978;
     block[4] = self;
-    v21 = v10;
-    v22 = v11;
-    v23 = v12;
-    v24 = v13;
-    v15 = v13;
-    dispatch_async(v14, block);
+    v21 = nameCopy;
+    v22 = contextCopy;
+    v23 = queueCopy;
+    v24 = handlerCopy;
+    v15 = handlerCopy;
+    dispatch_async(workQueue, block);
 
     v16 = v21;
   }
@@ -1269,26 +1269,26 @@ LABEL_20:
     v18[1] = 3221225472;
     v18[2] = __107__HMDUIDialogPresenter_requestUserPermissionForDeletionOfHomeWithName_withContext_queue_completionHandler___block_invoke_2;
     v18[3] = &unk_278688B80;
-    v19 = v13;
-    v17 = v13;
-    dispatch_async(v12, v18);
+    v19 = handlerCopy;
+    v17 = handlerCopy;
+    dispatch_async(queueCopy, v18);
     v16 = v19;
   }
 }
 
-- (void)_requestUserPermissionWithAccessoryPPIDInfo:(id)a3 name:(id)a4 category:(id)a5 withContext:(id)a6 queue:(id)a7 completionHandler:(id)a8
+- (void)_requestUserPermissionWithAccessoryPPIDInfo:(id)info name:(id)name category:(id)category withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
   v79 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  queue = a7;
-  v18 = a8;
-  if ([v14 isDenylisted])
+  infoCopy = info;
+  nameCopy = name;
+  categoryCopy = category;
+  contextCopy = context;
+  queue = queue;
+  handlerCopy = handler;
+  if ([infoCopy isDenylisted])
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -1303,20 +1303,20 @@ LABEL_20:
     block[1] = 3221225472;
     block[2] = __118__HMDUIDialogPresenter__requestUserPermissionWithAccessoryPPIDInfo_name_category_withContext_queue_completionHandler___block_invoke;
     block[3] = &unk_278688B80;
-    v68 = v18;
-    v23 = v18;
-    v24 = queue;
+    v68 = handlerCopy;
+    v23 = handlerCopy;
+    queueCopy2 = queue;
     dispatch_async(queue, block);
     v25 = v68;
   }
 
   else
   {
-    v59 = self;
+    selfCopy2 = self;
     v23 = HMDLocalizedStringForKey(@"ACCESSORY_CONFIRM_PPID_INFO_TITLE");
-    v60 = v16;
-    v58 = v17;
-    if (([v14 isCertified] & 1) == 0)
+    v60 = categoryCopy;
+    v58 = contextCopy;
+    if (([infoCopy isCertified] & 1) == 0)
     {
       v26 = HMDLocalizedStringForKey(@"ACCESSORY_CONFIRM_UNCERTIFIED_PPID_INFO_TITLE");
 
@@ -1326,13 +1326,13 @@ LABEL_20:
     v27 = MEMORY[0x277CCACA8];
     v28 = HMDLocalizedStringForKey(@"ACCESSORY_CONFIRM_UNKNOWN_DETAIL");
     v66 = 0;
-    v29 = [v27 localizedStringWithValidatedFormat:v28 validFormatSpecifiers:@"%@" error:&v66, v15];
+    nameCopy = [v27 localizedStringWithValidatedFormat:v28 validFormatSpecifiers:@"%@" error:&v66, nameCopy];
     v30 = v66;
 
-    v31 = v29;
-    if (!v29)
+    v31 = nameCopy;
+    if (!nameCopy)
     {
-      v57 = v15;
+      v57 = nameCopy;
       v32 = objc_autoreleasePoolPush();
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -1351,28 +1351,28 @@ LABEL_20:
 
       objc_autoreleasePoolPop(v32);
       v31 = @"ACCESSORY_CONFIRM_UNKNOWN_DETAIL";
-      v15 = v57;
+      nameCopy = v57;
     }
 
     v25 = v31;
 
-    v35 = [v14 category];
-    if (v35)
+    category = [infoCopy category];
+    if (category)
     {
-      v36 = v35;
-      v37 = [v14 manufacturer];
+      v36 = category;
+      manufacturer = [infoCopy manufacturer];
 
-      if (v37)
+      if (manufacturer)
       {
         v38 = MEMORY[0x277CCACA8];
         v39 = HMDLocalizedStringForKey(@"ACCESSORY_CONFIRM_PPID_DETAIL");
         v65 = 0;
-        [v14 manufacturer];
-        v41 = v40 = v15;
+        [infoCopy manufacturer];
+        v41 = v40 = nameCopy;
         v42 = [v38 localizedStringWithValidatedFormat:v39 validFormatSpecifiers:@"%@ %@" error:&v65, v60, v41];
         v43 = v65;
 
-        v15 = v40;
+        nameCopy = v40;
         v44 = v42;
         if (!v42)
         {
@@ -1391,7 +1391,7 @@ LABEL_20:
             v78 = v43;
             _os_log_impl(&dword_229538000, v46, OS_LOG_TYPE_ERROR, "%{public}@Failed to determined localized string for format key %@ and valid format specifiers %@: %@", buf, 0x2Au);
 
-            v15 = v40;
+            nameCopy = v40;
           }
 
           objc_autoreleasePoolPop(v45);
@@ -1417,48 +1417,48 @@ LABEL_20:
     v70[2] = v49;
     v70[3] = v50;
     v53 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v70 forKeys:v69 count:4];
-    v17 = v58;
-    v54 = [(HMDUIDialogPresenter *)v59 _presentDialogWithInfo:v53 options:0 textField:0 withContext:v58];
+    contextCopy = v58;
+    v54 = [(HMDUIDialogPresenter *)selfCopy2 _presentDialogWithInfo:v53 options:0 textField:0 withContext:v58];
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
     v62[2] = __118__HMDUIDialogPresenter__requestUserPermissionWithAccessoryPPIDInfo_name_category_withContext_queue_completionHandler___block_invoke_62;
     v62[3] = &unk_2786750D0;
-    v63 = v18;
+    v63 = handlerCopy;
     v64 = v54;
-    v55 = v18;
-    v24 = queue;
+    v55 = handlerCopy;
+    queueCopy2 = queue;
     dispatch_async(queue, v62);
 
-    v16 = v60;
+    categoryCopy = v60;
   }
 
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestUserPermissionWithAccessoryPPIDInfo:(id)a3 name:(id)a4 category:(id)a5 withContext:(id)a6 queue:(id)a7 completionHandler:(id)a8
+- (void)requestUserPermissionWithAccessoryPPIDInfo:(id)info name:(id)name category:(id)category withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if ([(HMDUIDialogPresenter *)self _addToPendingContext:v17])
+  infoCopy = info;
+  nameCopy = name;
+  categoryCopy = category;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
-    v20 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue = [(HMDUIDialogPresenter *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __117__HMDUIDialogPresenter_requestUserPermissionWithAccessoryPPIDInfo_name_category_withContext_queue_completionHandler___block_invoke;
     block[3] = &unk_2786873D8;
     block[4] = self;
-    v27 = v14;
-    v28 = v15;
-    v29 = v16;
-    v30 = v17;
-    v31 = v18;
-    v32 = v19;
-    v21 = v19;
-    dispatch_async(v20, block);
+    v27 = infoCopy;
+    v28 = nameCopy;
+    v29 = categoryCopy;
+    v30 = contextCopy;
+    v31 = queueCopy;
+    v32 = handlerCopy;
+    v21 = handlerCopy;
+    dispatch_async(workQueue, block);
 
     v22 = v27;
   }
@@ -1469,33 +1469,33 @@ LABEL_20:
     v24[1] = 3221225472;
     v24[2] = __117__HMDUIDialogPresenter_requestUserPermissionWithAccessoryPPIDInfo_name_category_withContext_queue_completionHandler___block_invoke_2;
     v24[3] = &unk_278688B80;
-    v25 = v19;
-    v23 = v19;
-    dispatch_async(v18, v24);
+    v25 = handlerCopy;
+    v23 = handlerCopy;
+    dispatch_async(queueCopy, v24);
     v22 = v25;
   }
 }
 
-- (void)requestUserPermissionForLegacyWACAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)requestUserPermissionForLegacyWACAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([(HMDUIDialogPresenter *)self _addToPendingContext:v11])
+  accessoryCopy = accessory;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
-    v14 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue = [(HMDUIDialogPresenter *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __103__HMDUIDialogPresenter_requestUserPermissionForLegacyWACAccessory_withContext_queue_completionHandler___block_invoke;
     block[3] = &unk_278688978;
     block[4] = self;
-    v21 = v10;
-    v22 = v11;
-    v23 = v12;
-    v24 = v13;
-    v15 = v13;
-    dispatch_async(v14, block);
+    v21 = accessoryCopy;
+    v22 = contextCopy;
+    v23 = queueCopy;
+    v24 = handlerCopy;
+    v15 = handlerCopy;
+    dispatch_async(workQueue, block);
 
     v16 = v21;
   }
@@ -1506,19 +1506,19 @@ LABEL_20:
     v18[1] = 3221225472;
     v18[2] = __103__HMDUIDialogPresenter_requestUserPermissionForLegacyWACAccessory_withContext_queue_completionHandler___block_invoke_2;
     v18[3] = &unk_278688B80;
-    v19 = v13;
-    v17 = v13;
-    dispatch_async(v12, v18);
+    v19 = handlerCopy;
+    v17 = handlerCopy;
+    dispatch_async(queueCopy, v18);
     v16 = v19;
   }
 }
 
-- (void)_requestUserPermissionForBridgeAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)_requestUserPermissionForBridgeAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  handlerCopy = handler;
+  queueCopy = queue;
+  contextCopy = context;
   v12 = HMDLocalizedStringForKey(@"BRIDGE_ACCESSORIES_HOME_BEHAVIOR_TITLE");
   v13 = HMDLocalizedStringForKey(@"BRIDGE_ACCESSORIES_HOME_BEHAVIOR_DETAIL");
   v14 = HMDLocalizedStringForKey(@"OK");
@@ -1534,40 +1534,40 @@ LABEL_20:
   v25[2] = v14;
   v25[3] = v15;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:4];
-  LOBYTE(self) = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v18 options:0 textField:0 withContext:v11];
+  LOBYTE(self) = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v18 options:0 textField:0 withContext:contextCopy];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__HMDUIDialogPresenter__requestUserPermissionForBridgeAccessory_withContext_queue_completionHandler___block_invoke;
   block[3] = &unk_2786750D0;
-  v22 = v9;
-  v23 = self;
-  v19 = v9;
-  dispatch_async(v10, block);
+  v22 = handlerCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  dispatch_async(queueCopy, block);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestUserPermissionForBridgeAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)requestUserPermissionForBridgeAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([(HMDUIDialogPresenter *)self _addToPendingContext:v11])
+  accessoryCopy = accessory;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
-    v14 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue = [(HMDUIDialogPresenter *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __100__HMDUIDialogPresenter_requestUserPermissionForBridgeAccessory_withContext_queue_completionHandler___block_invoke;
     block[3] = &unk_278688978;
     block[4] = self;
-    v21 = v10;
-    v22 = v11;
-    v23 = v12;
-    v24 = v13;
-    v15 = v13;
-    dispatch_async(v14, block);
+    v21 = accessoryCopy;
+    v22 = contextCopy;
+    v23 = queueCopy;
+    v24 = handlerCopy;
+    v15 = handlerCopy;
+    dispatch_async(workQueue, block);
 
     v16 = v21;
   }
@@ -1578,21 +1578,21 @@ LABEL_20:
     v18[1] = 3221225472;
     v18[2] = __100__HMDUIDialogPresenter_requestUserPermissionForBridgeAccessory_withContext_queue_completionHandler___block_invoke_2;
     v18[3] = &unk_278688B80;
-    v19 = v13;
-    v17 = v13;
-    dispatch_async(v12, v18);
+    v19 = handlerCopy;
+    v17 = handlerCopy;
+    dispatch_async(queueCopy, v18);
     v16 = v19;
   }
 }
 
-- (void)_requestUserPermissionForUnauthenticatedAliroLockWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)_requestUserPermissionForUnauthenticatedAliroLockWithContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HMDUIDialogPresenter *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  handlerCopy = handler;
+  queueCopy = queue;
+  contextCopy = context;
+  workQueue = [(HMDUIDialogPresenter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v12 = HMDLocalizedStringForKey(@"NOAUTH_ALIRO_LOCK_TITLE");
   v13 = HMDLocalizedStringForKey(@"NOAUTH_ALIRO_LOCK_BODY");
@@ -1609,38 +1609,38 @@ LABEL_20:
   v25[2] = v14;
   v25[3] = v15;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:4];
-  LOBYTE(self) = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v18 options:0 textField:0 withContext:v10];
+  LOBYTE(self) = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v18 options:0 textField:0 withContext:contextCopy];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __109__HMDUIDialogPresenter__requestUserPermissionForUnauthenticatedAliroLockWithContext_queue_completionHandler___block_invoke;
   block[3] = &unk_2786750D0;
-  v22 = v8;
-  v23 = self;
-  v19 = v8;
-  dispatch_async(v9, block);
+  v22 = handlerCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  dispatch_async(queueCopy, block);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestUserPermissionForUnauthenticatedAliroLockWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)requestUserPermissionForUnauthenticatedAliroLockWithContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(HMDUIDialogPresenter *)self _addToPendingContext:v8])
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
-    v11 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue = [(HMDUIDialogPresenter *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __108__HMDUIDialogPresenter_requestUserPermissionForUnauthenticatedAliroLockWithContext_queue_completionHandler___block_invoke;
     block[3] = &unk_278689AB8;
     block[4] = self;
-    v18 = v8;
-    v19 = v9;
-    v20 = v10;
-    v12 = v10;
-    dispatch_async(v11, block);
+    v18 = contextCopy;
+    v19 = queueCopy;
+    v20 = handlerCopy;
+    v12 = handlerCopy;
+    dispatch_async(workQueue, block);
 
     v13 = v18;
   }
@@ -1651,19 +1651,19 @@ LABEL_20:
     v15[1] = 3221225472;
     v15[2] = __108__HMDUIDialogPresenter_requestUserPermissionForUnauthenticatedAliroLockWithContext_queue_completionHandler___block_invoke_2;
     v15[3] = &unk_278688B80;
-    v16 = v10;
-    v14 = v10;
-    dispatch_async(v9, v15);
+    v16 = handlerCopy;
+    v14 = handlerCopy;
+    dispatch_async(queueCopy, v15);
     v13 = v16;
   }
 }
 
-- (void)_requestUserPermissionForUnauthenticatedAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)_requestUserPermissionForUnauthenticatedAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  handlerCopy = handler;
+  queueCopy = queue;
+  contextCopy = context;
   v12 = HMDLocalizedStringForKey(@"ACCESSORY_NOAUTH_TITLE");
   v13 = HMDLocalizedStringForKey(@"ACCESSORY_NOAUTH_DETAIL");
   v14 = HMDLocalizedStringForKey(@"ADD_ANYWAY");
@@ -1679,40 +1679,40 @@ LABEL_20:
   v25[2] = v14;
   v25[3] = v15;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:4];
-  LOBYTE(self) = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v18 options:0 textField:0 withContext:v11];
+  LOBYTE(self) = [(HMDUIDialogPresenter *)self _presentDialogWithInfo:v18 options:0 textField:0 withContext:contextCopy];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __110__HMDUIDialogPresenter__requestUserPermissionForUnauthenticatedAccessory_withContext_queue_completionHandler___block_invoke;
   block[3] = &unk_2786750D0;
-  v22 = v9;
-  v23 = self;
-  v19 = v9;
-  dispatch_async(v10, block);
+  v22 = handlerCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  dispatch_async(queueCopy, block);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestUserPermissionForUnauthenticatedAccessory:(id)a3 withContext:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)requestUserPermissionForUnauthenticatedAccessory:(id)accessory withContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([(HMDUIDialogPresenter *)self _addToPendingContext:v11])
+  accessoryCopy = accessory;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([(HMDUIDialogPresenter *)self _addToPendingContext:contextCopy])
   {
-    v14 = [(HMDUIDialogPresenter *)self workQueue];
+    workQueue = [(HMDUIDialogPresenter *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __109__HMDUIDialogPresenter_requestUserPermissionForUnauthenticatedAccessory_withContext_queue_completionHandler___block_invoke;
     block[3] = &unk_278688978;
     block[4] = self;
-    v21 = v10;
-    v22 = v11;
-    v23 = v12;
-    v24 = v13;
-    v15 = v13;
-    dispatch_async(v14, block);
+    v21 = accessoryCopy;
+    v22 = contextCopy;
+    v23 = queueCopy;
+    v24 = handlerCopy;
+    v15 = handlerCopy;
+    dispatch_async(workQueue, block);
 
     v16 = v21;
   }
@@ -1723,33 +1723,33 @@ LABEL_20:
     v18[1] = 3221225472;
     v18[2] = __109__HMDUIDialogPresenter_requestUserPermissionForUnauthenticatedAccessory_withContext_queue_completionHandler___block_invoke_2;
     v18[3] = &unk_278688B80;
-    v19 = v13;
-    v17 = v13;
-    dispatch_async(v12, v18);
+    v19 = handlerCopy;
+    v17 = handlerCopy;
+    dispatch_async(queueCopy, v18);
     v16 = v19;
   }
 }
 
-- (BOOL)_removeCurrentNotification:(__CFUserNotification *)a3 currentSelection:(BOOL)a4 selectedByPeerDevice:(BOOL *)a5 andContext:(id)a6
+- (BOOL)_removeCurrentNotification:(__CFUserNotification *)notification currentSelection:(BOOL)selection selectedByPeerDevice:(BOOL *)device andContext:(id)context
 {
-  v10 = a6;
-  if (a5)
+  contextCopy = context;
+  if (device)
   {
-    *a5 = 0;
+    *device = 0;
   }
 
   os_unfair_lock_lock_with_options();
-  v11 = [(HMDUIDialogPresenter *)self pendingContexts];
-  [v11 removeObject:v10];
+  pendingContexts = [(HMDUIDialogPresenter *)self pendingContexts];
+  [pendingContexts removeObject:contextCopy];
 
-  if ([(HMDUIDialogPresenter *)self currentNotification]&& [(HMDUIDialogPresenter *)self currentNotification]== a3)
+  if ([(HMDUIDialogPresenter *)self currentNotification]&& [(HMDUIDialogPresenter *)self currentNotification]== notification)
   {
     if ([(HMDUIDialogPresenter *)self selectedByPeerDevice])
     {
-      a4 = [(HMDUIDialogPresenter *)self peerDeviceAcceptedSelection];
-      if (a5)
+      selection = [(HMDUIDialogPresenter *)self peerDeviceAcceptedSelection];
+      if (device)
       {
-        *a5 = 1;
+        *device = 1;
       }
     }
 
@@ -1761,20 +1761,20 @@ LABEL_20:
   [(HMDUIDialogPresenter *)self setPeerDeviceAcceptedSelection:0];
   os_unfair_lock_unlock(&self->_lock);
 
-  return a4;
+  return selection;
 }
 
-- (BOOL)_addCurrentNotification:(__CFUserNotification *)a3 withContext:(id)a4
+- (BOOL)_addCurrentNotification:(__CFUserNotification *)notification withContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   os_unfair_lock_lock_with_options();
-  v7 = [(HMDUIDialogPresenter *)self pendingContexts];
-  v8 = [v7 containsObject:v6];
+  pendingContexts = [(HMDUIDialogPresenter *)self pendingContexts];
+  v8 = [pendingContexts containsObject:contextCopy];
 
   if (v8)
   {
-    [(HMDUIDialogPresenter *)self setCurrentNotification:a3];
-    [(HMDUIDialogPresenter *)self setCurrentContext:v6];
+    [(HMDUIDialogPresenter *)self setCurrentNotification:notification];
+    [(HMDUIDialogPresenter *)self setCurrentContext:contextCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -1782,19 +1782,19 @@ LABEL_20:
   return v8;
 }
 
-- (BOOL)_addToPendingContextSkippingPlatformChecks:(id)a3
+- (BOOL)_addToPendingContextSkippingPlatformChecks:(id)checks
 {
-  v4 = a3;
-  if (v4)
+  checksCopy = checks;
+  if (checksCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5 = [(HMDUIDialogPresenter *)self pendingContexts];
-    v6 = [v5 containsObject:v4];
+    pendingContexts = [(HMDUIDialogPresenter *)self pendingContexts];
+    v6 = [pendingContexts containsObject:checksCopy];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [(HMDUIDialogPresenter *)self pendingContexts];
-      [v7 addObject:v4];
+      pendingContexts2 = [(HMDUIDialogPresenter *)self pendingContexts];
+      [pendingContexts2 addObject:checksCopy];
     }
 
     v8 = v6 ^ 1;
@@ -1809,39 +1809,39 @@ LABEL_20:
   return v8;
 }
 
-- (BOOL)_addToPendingContext:(id)a3
+- (BOOL)_addToPendingContext:(id)context
 {
-  v4 = a3;
-  v5 = !isAppleTV() && [(HMDUIDialogPresenter *)self _addToPendingContextSkippingPlatformChecks:v4];
+  contextCopy = context;
+  v5 = !isAppleTV() && [(HMDUIDialogPresenter *)self _addToPendingContextSkippingPlatformChecks:contextCopy];
 
   return v5;
 }
 
-- (BOOL)_isPendingContext:(id)a3
+- (BOOL)_isPendingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDUIDialogPresenter *)self pendingContexts];
-  v6 = [v5 containsObject:v4];
+  pendingContexts = [(HMDUIDialogPresenter *)self pendingContexts];
+  v6 = [pendingContexts containsObject:contextCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v6;
 }
 
-- (void)dismissPendingDialogWithContext:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)dismissPendingDialogWithContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v8 = a5;
-  queue = a4;
-  [(HMDUIDialogPresenter *)self dismissPendingDialogWithContext:a3];
-  dispatch_async(queue, v8);
+  handlerCopy = handler;
+  queue = queue;
+  [(HMDUIDialogPresenter *)self dismissPendingDialogWithContext:context];
+  dispatch_async(queue, handlerCopy);
 }
 
-- (void)dismissPendingDialogWithContext:(id)a3
+- (void)dismissPendingDialogWithContext:(id)context
 {
-  v7 = a3;
+  contextCopy = context;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDUIDialogPresenter *)self currentContext];
-  v5 = [v4 isEqual:v7];
+  currentContext = [(HMDUIDialogPresenter *)self currentContext];
+  v5 = [currentContext isEqual:contextCopy];
 
   if (v5)
   {
@@ -1850,21 +1850,21 @@ LABEL_20:
 
   else
   {
-    v6 = [(HMDUIDialogPresenter *)self pendingContexts];
-    [v6 removeObject:v7];
+    pendingContexts = [(HMDUIDialogPresenter *)self pendingContexts];
+    [pendingContexts removeObject:contextCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setCurrentNotification:(__CFUserNotification *)a3
+- (void)setCurrentNotification:(__CFUserNotification *)notification
 {
   currentNotification = self->_currentNotification;
-  if (currentNotification != a3)
+  if (currentNotification != notification)
   {
-    if (a3)
+    if (notification)
     {
-      CFRetain(a3);
+      CFRetain(notification);
       currentNotification = self->_currentNotification;
     }
 
@@ -1873,7 +1873,7 @@ LABEL_20:
       CFRelease(currentNotification);
     }
 
-    self->_currentNotification = a3;
+    self->_currentNotification = notification;
   }
 }
 
@@ -1902,9 +1902,9 @@ LABEL_20:
     workQueue = v2->_workQueue;
     v2->_workQueue = v4;
 
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pendingContexts = v2->_pendingContexts;
-    v2->_pendingContexts = v6;
+    v2->_pendingContexts = array;
   }
 
   return v2;

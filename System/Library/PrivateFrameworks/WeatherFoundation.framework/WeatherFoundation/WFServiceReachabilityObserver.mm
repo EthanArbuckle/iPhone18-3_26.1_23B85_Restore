@@ -1,16 +1,16 @@
 @interface WFServiceReachabilityObserver
 + (id)sharedObserver;
-- (BOOL)removeBlockObserverWithHandle:(id)a3;
-- (BOOL)removeObserver:(id)a3;
+- (BOOL)removeBlockObserverWithHandle:(id)handle;
+- (BOOL)removeObserver:(id)observer;
 - (OS_dispatch_queue)callbackQueue;
 - (id)_init;
-- (id)addBlockObserver:(id)a3;
+- (id)addBlockObserver:(id)observer;
 - (int64_t)reachability;
-- (void)_deliverReachabilityUpdate:(int64_t)a3;
+- (void)_deliverReachabilityUpdate:(int64_t)update;
 - (void)_setupReachability;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeAllObservers;
 @end
 
@@ -48,8 +48,8 @@ uint64_t __47__WFServiceReachabilityObserver_sharedObserver__block_invoke()
     v4 = objc_opt_new();
     [(WFServiceReachabilityObserver *)v2 setBlockObserversForUUID:v4];
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(WFServiceReachabilityObserver *)v2 setObserverObjects:v5];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(WFServiceReachabilityObserver *)v2 setObserverObjects:weakObjectsHashTable];
 
     [(WFServiceReachabilityObserver *)v2 _setupReachability];
   }
@@ -60,13 +60,13 @@ uint64_t __47__WFServiceReachabilityObserver_sharedObserver__block_invoke()
 - (void)dealloc
 {
   [(WFServiceReachabilityObserver *)self removeAllObservers];
-  v3 = [(WFServiceReachabilityObserver *)self observerQueue];
+  observerQueue = [(WFServiceReachabilityObserver *)self observerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__WFServiceReachabilityObserver_dealloc__block_invoke;
   block[3] = &unk_279E6D9A8;
   block[4] = self;
-  dispatch_barrier_sync(v3, block);
+  dispatch_barrier_sync(observerQueue, block);
 
   v4.receiver = self;
   v4.super_class = WFServiceReachabilityObserver;
@@ -98,36 +98,36 @@ void __40__WFServiceReachabilityObserver_dealloc__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(WFServiceReachabilityObserver *)self observerQueue];
+  observerQueue = [(WFServiceReachabilityObserver *)self observerQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__WFServiceReachabilityObserver_reachability__block_invoke;
   v6[3] = &unk_279E6DB60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(observerQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    objc_initWeak(&location, v4);
-    v5 = [(WFServiceReachabilityObserver *)self observerObjects];
-    v6 = [(WFServiceReachabilityObserver *)self observerQueue];
+    objc_initWeak(&location, observerCopy);
+    observerObjects = [(WFServiceReachabilityObserver *)self observerObjects];
+    observerQueue = [(WFServiceReachabilityObserver *)self observerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __45__WFServiceReachabilityObserver_addObserver___block_invoke;
     block[3] = &unk_279E6E920;
-    v9 = v5;
-    v7 = v5;
+    v9 = observerObjects;
+    v7 = observerObjects;
     objc_copyWeak(&v10, &location);
-    dispatch_barrier_async(v6, block);
+    dispatch_barrier_async(observerQueue, block);
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -141,38 +141,38 @@ void __45__WFServiceReachabilityObserver_addObserver___block_invoke(uint64_t a1)
   [v1 addObject:WeakRetained];
 }
 
-- (BOOL)removeObserver:(id)a3
+- (BOOL)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    objc_initWeak(&location, v4);
-    v5 = [(WFServiceReachabilityObserver *)self observerObjects];
+    objc_initWeak(&location, observerCopy);
+    observerObjects = [(WFServiceReachabilityObserver *)self observerObjects];
     v18 = 0;
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 0;
-    v6 = [(WFServiceReachabilityObserver *)self observerQueue];
+    observerQueue = [(WFServiceReachabilityObserver *)self observerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __48__WFServiceReachabilityObserver_removeObserver___block_invoke;
     block[3] = &unk_279E6EB60;
     v16 = &v18;
-    v7 = v5;
+    v7 = observerObjects;
     v15 = v7;
     objc_copyWeak(&v17, &location);
-    dispatch_sync(v6, block);
+    dispatch_sync(observerQueue, block);
 
     if (*(v19 + 24) == 1)
     {
-      v8 = [(WFServiceReachabilityObserver *)self observerQueue];
+      observerQueue2 = [(WFServiceReachabilityObserver *)self observerQueue];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __48__WFServiceReachabilityObserver_removeObserver___block_invoke_2;
       v11[3] = &unk_279E6E920;
       v12 = v7;
       objc_copyWeak(&v13, &location);
-      dispatch_barrier_async(v8, v11);
+      dispatch_barrier_async(observerQueue2, v11);
 
       objc_destroyWeak(&v13);
       v9 = *(v19 + 24);
@@ -211,45 +211,45 @@ void __48__WFServiceReachabilityObserver_removeObserver___block_invoke_2(uint64_
   [v1 removeObject:WeakRetained];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  if ([v10 isEqualToString:@"path"])
+  pathCopy = path;
+  changeCopy = change;
+  objectCopy = object;
+  if ([pathCopy isEqualToString:@"path"])
   {
-    v13 = [v12 path];
+    path = [objectCopy path];
 
-    v14 = [v13 status];
-    [(WFServiceReachabilityObserver *)self _deliverReachabilityUpdate:(v14 & 0xFFFFFFFFFFFFFFFDLL) == 1];
+    status = [path status];
+    [(WFServiceReachabilityObserver *)self _deliverReachabilityUpdate:(status & 0xFFFFFFFFFFFFFFFDLL) == 1];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = WFServiceReachabilityObserver;
-    [(WFServiceReachabilityObserver *)&v15 observeValueForKeyPath:v10 ofObject:v12 change:v11 context:a6];
+    [(WFServiceReachabilityObserver *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (id)addBlockObserver:(id)a3
+- (id)addBlockObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = [(WFServiceReachabilityObserver *)self blockObserversForUUID];
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [(WFServiceReachabilityObserver *)self observerQueue];
+    blockObserversForUUID = [(WFServiceReachabilityObserver *)self blockObserversForUUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    observerQueue = [(WFServiceReachabilityObserver *)self observerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__WFServiceReachabilityObserver_addBlockObserver___block_invoke;
     block[3] = &unk_279E6EB88;
-    v14 = v5;
-    v16 = v4;
-    v8 = v6;
+    v14 = blockObserversForUUID;
+    v16 = observerCopy;
+    v8 = uUID;
     v15 = v8;
-    v9 = v5;
-    dispatch_barrier_async(v7, block);
+    v9 = blockObserversForUUID;
+    dispatch_barrier_async(observerQueue, block);
 
     v10 = v15;
     v11 = v8;
@@ -270,38 +270,38 @@ void __50__WFServiceReachabilityObserver_addBlockObserver___block_invoke(uint64_
   [v2 setObject:v3 forKey:*(a1 + 40)];
 }
 
-- (BOOL)removeBlockObserverWithHandle:(id)a3
+- (BOOL)removeBlockObserverWithHandle:(id)handle
 {
-  v4 = a3;
-  if (v4)
+  handleCopy = handle;
+  if (handleCopy)
   {
-    v5 = [(WFServiceReachabilityObserver *)self blockObserversForUUID];
+    blockObserversForUUID = [(WFServiceReachabilityObserver *)self blockObserversForUUID];
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v6 = [(WFServiceReachabilityObserver *)self observerQueue];
+    observerQueue = [(WFServiceReachabilityObserver *)self observerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__WFServiceReachabilityObserver_removeBlockObserverWithHandle___block_invoke;
     block[3] = &unk_279E6EBB0;
     v18 = &v19;
-    v7 = v5;
+    v7 = blockObserversForUUID;
     v16 = v7;
-    v8 = v4;
+    v8 = handleCopy;
     v17 = v8;
-    dispatch_sync(v6, block);
+    dispatch_sync(observerQueue, block);
 
     if (*(v20 + 24) == 1)
     {
-      v9 = [(WFServiceReachabilityObserver *)self observerQueue];
+      observerQueue2 = [(WFServiceReachabilityObserver *)self observerQueue];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __63__WFServiceReachabilityObserver_removeBlockObserverWithHandle___block_invoke_2;
       v12[3] = &unk_279E6EA40;
       v13 = v7;
       v14 = v8;
-      dispatch_barrier_async(v9, v12);
+      dispatch_barrier_async(observerQueue2, v12);
 
       v10 = *(v20 + 24);
     }
@@ -336,7 +336,7 @@ uint64_t __63__WFServiceReachabilityObserver_removeBlockObserverWithHandle___blo
   v8 = 0x3032000000;
   v9 = __Block_byref_object_copy__1;
   v10 = __Block_byref_object_dispose__1;
-  v11 = [(WFServiceReachabilityObserver *)self serviceReachabilityEvaluator];
+  serviceReachabilityEvaluator = [(WFServiceReachabilityObserver *)self serviceReachabilityEvaluator];
   if (!v7[5])
   {
     v3 = [WFReachabilityConfigurationRequest alloc];
@@ -355,25 +355,25 @@ uint64_t __63__WFServiceReachabilityObserver_removeBlockObserverWithHandle___blo
   _Block_object_dispose(&v6, 8);
 }
 
-- (void)_deliverReachabilityUpdate:(int64_t)a3
+- (void)_deliverReachabilityUpdate:(int64_t)update
 {
-  v5 = [(WFServiceReachabilityObserver *)self blockObserversForUUID];
-  v6 = [(WFServiceReachabilityObserver *)self observerObjects];
-  v7 = [(WFServiceReachabilityObserver *)self callbackQueue];
-  v8 = [(WFServiceReachabilityObserver *)self observerQueue];
+  blockObserversForUUID = [(WFServiceReachabilityObserver *)self blockObserversForUUID];
+  observerObjects = [(WFServiceReachabilityObserver *)self observerObjects];
+  callbackQueue = [(WFServiceReachabilityObserver *)self callbackQueue];
+  observerQueue = [(WFServiceReachabilityObserver *)self observerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__WFServiceReachabilityObserver__deliverReachabilityUpdate___block_invoke;
   block[3] = &unk_279E6EC50;
-  v15 = v7;
-  v16 = a3;
+  v15 = callbackQueue;
+  updateCopy = update;
   block[4] = self;
-  v13 = v6;
-  v14 = v5;
-  v9 = v7;
-  v10 = v5;
-  v11 = v6;
-  dispatch_barrier_async(v8, block);
+  v13 = observerObjects;
+  v14 = blockObserversForUUID;
+  v9 = callbackQueue;
+  v10 = blockObserversForUUID;
+  v11 = observerObjects;
+  dispatch_barrier_async(observerQueue, block);
 }
 
 void __60__WFServiceReachabilityObserver__deliverReachabilityUpdate___block_invoke(uint64_t a1)
@@ -464,18 +464,18 @@ void __60__WFServiceReachabilityObserver__deliverReachabilityUpdate___block_invo
 
 - (void)removeAllObservers
 {
-  v3 = [(WFServiceReachabilityObserver *)self blockObserversForUUID];
-  v4 = [(WFServiceReachabilityObserver *)self observerObjects];
-  v5 = [(WFServiceReachabilityObserver *)self observerQueue];
+  blockObserversForUUID = [(WFServiceReachabilityObserver *)self blockObserversForUUID];
+  observerObjects = [(WFServiceReachabilityObserver *)self observerObjects];
+  observerQueue = [(WFServiceReachabilityObserver *)self observerQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__WFServiceReachabilityObserver_removeAllObservers__block_invoke;
   v8[3] = &unk_279E6EA40;
-  v9 = v3;
-  v10 = v4;
-  v6 = v4;
-  v7 = v3;
-  dispatch_barrier_async(v5, v8);
+  v9 = blockObserversForUUID;
+  v10 = observerObjects;
+  v6 = observerObjects;
+  v7 = blockObserversForUUID;
+  dispatch_barrier_async(observerQueue, v8);
 }
 
 uint64_t __51__WFServiceReachabilityObserver_removeAllObservers__block_invoke(uint64_t a1)

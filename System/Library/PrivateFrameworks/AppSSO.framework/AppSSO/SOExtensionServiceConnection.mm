@@ -1,15 +1,15 @@
 @interface SOExtensionServiceConnection
 - (BOOL)_connectToService;
-- (SOExtensionServiceConnection)initWithListenerEndpoint:(id)a3;
+- (SOExtensionServiceConnection)initWithListenerEndpoint:(id)endpoint;
 - (void)_connectToService;
-- (void)beginAuthorizationWithCompletion:(id)a3;
+- (void)beginAuthorizationWithCompletion:(id)completion;
 @end
 
 @implementation SOExtensionServiceConnection
 
-- (SOExtensionServiceConnection)initWithListenerEndpoint:(id)a3
+- (SOExtensionServiceConnection)initWithListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v10.receiver = self;
   v10.super_class = SOExtensionServiceConnection;
   v5 = [(SOExtensionServiceConnection *)&v10 init];
@@ -19,9 +19,9 @@
     goto LABEL_4;
   }
 
-  if (v4)
+  if (endpointCopy)
   {
-    [(SOExtensionServiceConnection *)v5 setServiceXpcEndpoint:v4];
+    [(SOExtensionServiceConnection *)v5 setServiceXpcEndpoint:endpointCopy];
     [(SOExtensionServiceConnection *)v6 _connectToService];
 LABEL_4:
     v7 = v6;
@@ -43,9 +43,9 @@ LABEL_8:
 - (BOOL)_connectToService
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(SOExtensionServiceConnection *)self xpcConnection];
+  xpcConnection = [(SOExtensionServiceConnection *)self xpcConnection];
 
-  if (v3)
+  if (xpcConnection)
   {
     v4 = SO_LOG_SOExtensionServiceConnection();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -59,13 +59,13 @@ LABEL_11:
   }
 
   v5 = objc_alloc(MEMORY[0x1E696B0B8]);
-  v6 = [(SOExtensionServiceConnection *)self serviceXpcEndpoint];
-  v7 = [v5 initWithListenerEndpoint:v6];
+  serviceXpcEndpoint = [(SOExtensionServiceConnection *)self serviceXpcEndpoint];
+  v7 = [v5 initWithListenerEndpoint:serviceXpcEndpoint];
   [(SOExtensionServiceConnection *)self setXpcConnection:v7];
 
-  v8 = [(SOExtensionServiceConnection *)self xpcConnection];
+  xpcConnection2 = [(SOExtensionServiceConnection *)self xpcConnection];
 
-  if (v8)
+  if (xpcConnection2)
   {
     location = 0;
     p_location = &location;
@@ -86,8 +86,8 @@ LABEL_11:
     v10 = v9;
     _Block_object_dispose(&location, 8);
     v11 = [v9 interfaceWithInternalProtocol:&unk_1F4090810];
-    v12 = [(SOExtensionServiceConnection *)self xpcConnection];
-    [v12 setRemoteObjectInterface:v11];
+    xpcConnection3 = [(SOExtensionServiceConnection *)self xpcConnection];
+    [xpcConnection3 setRemoteObjectInterface:v11];
 
     objc_initWeak(&location, self);
     v22[0] = MEMORY[0x1E69E9820];
@@ -95,16 +95,16 @@ LABEL_11:
     v22[2] = __49__SOExtensionServiceConnection__connectToService__block_invoke;
     v22[3] = &unk_1E813E290;
     objc_copyWeak(&v23, &location);
-    v13 = [(SOExtensionServiceConnection *)self xpcConnection];
-    [v13 setInvalidationHandler:v22];
+    xpcConnection4 = [(SOExtensionServiceConnection *)self xpcConnection];
+    [xpcConnection4 setInvalidationHandler:v22];
 
     v20 = MEMORY[0x1E69E9820];
     objc_copyWeak(&v21, &location);
     v14 = [(SOExtensionServiceConnection *)self xpcConnection:v20];
     [v14 setInterruptionHandler:&v20];
 
-    v15 = [(SOExtensionServiceConnection *)self xpcConnection];
-    [v15 resume];
+    xpcConnection5 = [(SOExtensionServiceConnection *)self xpcConnection];
+    [xpcConnection5 resume];
 
     v16 = SO_LOG_SOExtensionServiceConnection();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -159,19 +159,19 @@ void __49__SOExtensionServiceConnection__connectToService__block_invoke_46(uint6
   }
 }
 
-- (void)beginAuthorizationWithCompletion:(id)a3
+- (void)beginAuthorizationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(SOExtensionServiceConnection *)self _connectToService])
   {
-    v5 = [(SOExtensionServiceConnection *)self xpcConnection];
+    xpcConnection = [(SOExtensionServiceConnection *)self xpcConnection];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __65__SOExtensionServiceConnection_beginAuthorizationWithCompletion___block_invoke;
     v15 = &unk_1E813E2B8;
-    v6 = v4;
+    v6 = completionCopy;
     v16 = v6;
-    v7 = [v5 remoteObjectProxyWithErrorHandler:&v12];
+    v7 = [xpcConnection remoteObjectProxyWithErrorHandler:&v12];
     [v7 beginAuthorizationWithCompletion:{v6, v12, v13, v14, v15}];
 
     v8 = v16;
@@ -186,7 +186,7 @@ LABEL_9:
     [SOExtensionServiceConnection beginAuthorizationWithCompletion:];
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v18 = 0;
     v19 = &v18;
@@ -207,7 +207,7 @@ LABEL_9:
     v11 = v10;
     _Block_object_dispose(&v18, 8);
     v8 = [v10 silentInternalErrorWithMessage:@"Failed to connect to AppSSO service"];
-    (*(v4 + 2))(v4, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, v8);
     goto LABEL_9;
   }
 

@@ -8,7 +8,7 @@
 {
   v2 = objc_opt_class();
 
-  return [a1 valueForNSIntegerTrait:v2];
+  return [self valueForNSIntegerTrait:v2];
 }
 
 @end

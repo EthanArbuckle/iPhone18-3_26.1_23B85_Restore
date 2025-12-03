@@ -1,14 +1,14 @@
 @interface CDUnrecognizedUserGetAuthInfoResponse
-- (CDUnrecognizedUserGetAuthInfoResponse)initWithRapportDictionary:(id)a3;
+- (CDUnrecognizedUserGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDUnrecognizedUserGetAuthInfoResponse
 
-- (CDUnrecognizedUserGetAuthInfoResponse)initWithRapportDictionary:(id)a3
+- (CDUnrecognizedUserGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = CDUnrecognizedUserGetAuthInfoResponse;
   v5 = [(CDUnrecognizedUserGetAuthInfoResponse *)&v9 init];
@@ -36,9 +36,9 @@
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   [v3 appendString:self->_deviceName withName:@"deviceName" skipIfEmpty:1];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

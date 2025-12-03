@@ -1,9 +1,9 @@
 @interface FeedbackCommunityIDManager
 + (_TtC4Maps26FeedbackCommunityIDManager)shared;
 - (_TtC4Maps26FeedbackCommunityIDManager)init;
-- (void)fetchAuthenticationInfoForRAPReportWithReportID:(id)a3 completion:(id)a4;
-- (void)fetchAuthenticationInfoForRAPReportWithReportID:(id)a3 shouldIncreaseCount:(BOOL)a4 completion:(id)a5;
-- (void)fetchAuthenticationInfoForReviewedPlaceWithMuid:(unint64_t)a3 identifierHistory:(id)a4 shouldIncreaseCount:(BOOL)a5 completion:(id)a6;
+- (void)fetchAuthenticationInfoForRAPReportWithReportID:(id)d completion:(id)completion;
+- (void)fetchAuthenticationInfoForRAPReportWithReportID:(id)d shouldIncreaseCount:(BOOL)count completion:(id)completion;
+- (void)fetchAuthenticationInfoForReviewedPlaceWithMuid:(unint64_t)muid identifierHistory:(id)history shouldIncreaseCount:(BOOL)count completion:(id)completion;
 @end
 
 @implementation FeedbackCommunityIDManager
@@ -36,9 +36,9 @@
   return [(FeedbackCommunityIDManager *)&v7 init];
 }
 
-- (void)fetchAuthenticationInfoForReviewedPlaceWithMuid:(unint64_t)a3 identifierHistory:(id)a4 shouldIncreaseCount:(BOOL)a5 completion:(id)a6
+- (void)fetchAuthenticationInfoForReviewedPlaceWithMuid:(unint64_t)muid identifierHistory:(id)history shouldIncreaseCount:(BOOL)count completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   if (v10)
   {
     v11 = swift_allocObject();
@@ -53,11 +53,11 @@
 
   v12 = objc_opt_self();
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
+  *(v13 + 16) = muid;
   *(v13 + 24) = v10;
   *(v13 + 32) = v11;
   *(v13 + 40) = self;
-  *(v13 + 48) = a5;
+  *(v13 + 48) = count;
   v17[4] = sub_100425568;
   v17[5] = v13;
   v17[0] = _NSConcreteStackBlock;
@@ -65,24 +65,24 @@
   v17[2] = sub_100423014;
   v17[3] = &unk_1016187E8;
   v14 = _Block_copy(v17);
-  v15 = self;
-  v16 = a4;
+  selfCopy = self;
+  historyCopy = history;
   sub_1000CD9D4(v10);
 
-  [v12 fetchReviewedPlaceForMUID:a3 withIdentifierHistory:v16 completion:v14];
+  [v12 fetchReviewedPlaceForMUID:muid withIdentifierHistory:historyCopy completion:v14];
 
   sub_1000588AC(v10);
   _Block_release(v14);
 }
 
-- (void)fetchAuthenticationInfoForRAPReportWithReportID:(id)a3 completion:(id)a4
+- (void)fetchAuthenticationInfoForRAPReportWithReportID:(id)d completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = v6;
-  if (a3)
+  if (d)
   {
     v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v9;
+    d = v9;
     if (v7)
     {
 LABEL_3:
@@ -104,19 +104,19 @@ LABEL_3:
 
   v10 = 0;
 LABEL_6:
-  v11 = self;
-  sub_1004239B4(v8, a3, v7, v10);
+  selfCopy = self;
+  sub_1004239B4(v8, d, v7, v10);
   sub_1000588AC(v7);
 }
 
-- (void)fetchAuthenticationInfoForRAPReportWithReportID:(id)a3 shouldIncreaseCount:(BOOL)a4 completion:(id)a5
+- (void)fetchAuthenticationInfoForRAPReportWithReportID:(id)d shouldIncreaseCount:(BOOL)count completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = v8;
-  if (a3)
+  if (d)
   {
     v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v11;
+    d = v11;
     if (v9)
     {
 LABEL_3:
@@ -138,8 +138,8 @@ LABEL_3:
 
   v12 = 0;
 LABEL_6:
-  v13 = self;
-  sub_100423B74(v10, a3, a4, v9, v12);
+  selfCopy = self;
+  sub_100423B74(v10, d, count, v9, v12);
   sub_1000588AC(v9);
 }
 

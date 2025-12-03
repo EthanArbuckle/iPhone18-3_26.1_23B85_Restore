@@ -1,22 +1,22 @@
 @interface ExtensionsDebugController
-- (void)_addSectionWithMapsExtensionPointName:(id)a3;
+- (void)_addSectionWithMapsExtensionPointName:(id)name;
 - (void)prepareContent;
-- (void)setExtensions:(id)a3;
+- (void)setExtensions:(id)extensions;
 @end
 
 @implementation ExtensionsDebugController
 
-- (void)setExtensions:(id)a3
+- (void)setExtensions:(id)extensions
 {
-  objc_storeStrong(&self->_extensions, a3);
+  objc_storeStrong(&self->_extensions, extensions);
 
   [(MapsDebugValuesViewController *)self rebuildSections];
 }
 
-- (void)_addSectionWithMapsExtensionPointName:(id)a3
+- (void)_addSectionWithMapsExtensionPointName:(id)name
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_extensions objectForKeyedSubscript:v4];
+  nameCopy = name;
+  v5 = [(NSDictionary *)self->_extensions objectForKeyedSubscript:nameCopy];
 
   if (v5)
   {
@@ -26,7 +26,7 @@
     v7[2] = sub_100CFFD84;
     v7[3] = &unk_101658D78;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = nameCopy;
     v6 = [(MapsDebugValuesViewController *)self addSectionWithTitle:v8 content:v7];
 
     objc_destroyWeak(&v9);

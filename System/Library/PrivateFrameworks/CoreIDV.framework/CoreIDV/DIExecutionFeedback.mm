@@ -1,34 +1,34 @@
 @interface DIExecutionFeedback
 - (BOOL)consumed;
 - (DIExecutionFeedback)init;
-- (DIExecutionFeedback)initWithCoder:(id)a3;
+- (DIExecutionFeedback)initWithCoder:(id)coder;
 - (NSDate)finishDate;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConsumed:(BOOL)a3;
-- (void)setFinishDate:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConsumed:(BOOL)consumed;
+- (void)setFinishDate:(id)date;
 @end
 
 @implementation DIExecutionFeedback
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  [v4 encodeBool:self->_consumed forKey:@"consumed"];
-  [v4 encodeObject:self->_finishDate forKey:@"finishDate"];
+  [coderCopy encodeBool:self->_consumed forKey:@"consumed"];
+  [coderCopy encodeObject:self->_finishDate forKey:@"finishDate"];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (DIExecutionFeedback)initWithCoder:(id)a3
+- (DIExecutionFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DIExecutionFeedback *)self init];
   if (v5)
   {
-    v5->_consumed = [v4 decodeBoolForKey:@"consumed"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"finishDate"];
+    v5->_consumed = [coderCopy decodeBoolForKey:@"consumed"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"finishDate"];
     finishDate = v5->_finishDate;
     v5->_finishDate = v6;
   }
@@ -46,9 +46,9 @@
   {
     v2->_lock._os_unfair_lock_opaque = 0;
     v2->_consumed = 1;
-    v4 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     finishDate = v3->_finishDate;
-    v3->_finishDate = v4;
+    v3->_finishDate = distantPast;
   }
 
   return v3;
@@ -62,10 +62,10 @@
   return consumed;
 }
 
-- (void)setConsumed:(BOOL)a3
+- (void)setConsumed:(BOOL)consumed
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_consumed = a3;
+  self->_consumed = consumed;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -79,13 +79,13 @@
   return v3;
 }
 
-- (void)setFinishDate:(id)a3
+- (void)setFinishDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_finishDate != v6)
+  if (self->_finishDate != dateCopy)
   {
-    v4 = [(NSDate *)v6 copyWithZone:0];
+    v4 = [(NSDate *)dateCopy copyWithZone:0];
     finishDate = self->_finishDate;
     self->_finishDate = v4;
   }

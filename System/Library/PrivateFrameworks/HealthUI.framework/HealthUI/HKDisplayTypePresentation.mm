@@ -1,13 +1,13 @@
 @interface HKDisplayTypePresentation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKDisplayTypePresentation)init;
-- (HKDisplayTypePresentation)initWithDefaultConfiguration:(id)a3 configurationOverrides:(id)a4 scaleFactor:(double)a5 showAllDataHierarchically:(BOOL)a6 showAppDataHierarchically:(BOOL)a7 shouldDisplayUnitStringOnYAxis:(BOOL)a8 useSecondsWhenDisplayingDuration:(BOOL)a9 isCriticalForAutoscale:(BOOL)a10 dataTypeIconImageName:(id)a11 detailImageName:(id)a12 listIconImageNameOverride:(id)a13 summaryAttribution:(id)a14;
+- (HKDisplayTypePresentation)initWithDefaultConfiguration:(id)configuration configurationOverrides:(id)overrides scaleFactor:(double)factor showAllDataHierarchically:(BOOL)hierarchically showAppDataHierarchically:(BOOL)dataHierarchically shouldDisplayUnitStringOnYAxis:(BOOL)axis useSecondsWhenDisplayingDuration:(BOOL)duration isCriticalForAutoscale:(BOOL)self0 dataTypeIconImageName:(id)self1 detailImageName:(id)self2 listIconImageNameOverride:(id)self3 summaryAttribution:(id)self4;
 - (double)adjustedDoubleForClientDouble:(double)result;
 - (double)adjustedDoubleForDaemonDouble:(double)result;
-- (id)adjustedValueForClientValue:(id)a3;
-- (id)adjustedValueForDaemonValue:(id)a3;
-- (id)configurationForTimeScope:(int64_t)a3;
-- (id)copyWithListIconImageNameOverride:(id)a3;
+- (id)adjustedValueForClientValue:(id)value;
+- (id)adjustedValueForDaemonValue:(id)value;
+- (id)configurationForTimeScope:(int64_t)scope;
+- (id)copyWithListIconImageNameOverride:(id)override;
 - (unint64_t)hash;
 @end
 
@@ -23,46 +23,46 @@
   return 0;
 }
 
-- (HKDisplayTypePresentation)initWithDefaultConfiguration:(id)a3 configurationOverrides:(id)a4 scaleFactor:(double)a5 showAllDataHierarchically:(BOOL)a6 showAppDataHierarchically:(BOOL)a7 shouldDisplayUnitStringOnYAxis:(BOOL)a8 useSecondsWhenDisplayingDuration:(BOOL)a9 isCriticalForAutoscale:(BOOL)a10 dataTypeIconImageName:(id)a11 detailImageName:(id)a12 listIconImageNameOverride:(id)a13 summaryAttribution:(id)a14
+- (HKDisplayTypePresentation)initWithDefaultConfiguration:(id)configuration configurationOverrides:(id)overrides scaleFactor:(double)factor showAllDataHierarchically:(BOOL)hierarchically showAppDataHierarchically:(BOOL)dataHierarchically shouldDisplayUnitStringOnYAxis:(BOOL)axis useSecondsWhenDisplayingDuration:(BOOL)duration isCriticalForAutoscale:(BOOL)self0 dataTypeIconImageName:(id)self1 detailImageName:(id)self2 listIconImageNameOverride:(id)self3 summaryAttribution:(id)self4
 {
-  v20 = a3;
-  v21 = a4;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
+  configurationCopy = configuration;
+  overridesCopy = overrides;
+  nameCopy = name;
+  imageNameCopy = imageName;
+  overrideCopy = override;
+  attributionCopy = attribution;
   v41.receiver = self;
   v41.super_class = HKDisplayTypePresentation;
   v26 = [(HKDisplayTypePresentation *)&v41 init];
   if (v26)
   {
-    v27 = [v20 copy];
+    v27 = [configurationCopy copy];
     defaultConfiguration = v26->_defaultConfiguration;
     v26->_defaultConfiguration = v27;
 
-    v29 = [v21 copy];
+    v29 = [overridesCopy copy];
     configurationOverrides = v26->_configurationOverrides;
     v26->_configurationOverrides = v29;
 
-    v26->_scaleFactor = a5;
-    v26->_showAllDataHierarchically = a6;
-    v26->_showAppDataHierarchically = a7;
-    v26->_shouldDisplayUnitStringOnYAxis = a8;
-    v26->_useSecondsWhenDisplayingDuration = a9;
-    v26->_isCriticalForAutoscale = a10;
-    v31 = [v22 copy];
+    v26->_scaleFactor = factor;
+    v26->_showAllDataHierarchically = hierarchically;
+    v26->_showAppDataHierarchically = dataHierarchically;
+    v26->_shouldDisplayUnitStringOnYAxis = axis;
+    v26->_useSecondsWhenDisplayingDuration = duration;
+    v26->_isCriticalForAutoscale = autoscale;
+    v31 = [nameCopy copy];
     dataTypeIconImageName = v26->_dataTypeIconImageName;
     v26->_dataTypeIconImageName = v31;
 
-    v33 = [v23 copy];
+    v33 = [imageNameCopy copy];
     detailImageName = v26->_detailImageName;
     v26->_detailImageName = v33;
 
-    v35 = [v24 copy];
+    v35 = [overrideCopy copy];
     listIconImageNameOverride = v26->_listIconImageNameOverride;
     v26->_listIconImageNameOverride = v35;
 
-    v37 = [v25 copy];
+    v37 = [attributionCopy copy];
     summaryAttribution = v26->_summaryAttribution;
     v26->_summaryAttribution = v37;
   }
@@ -70,10 +70,10 @@
   return v26;
 }
 
-- (id)configurationForTimeScope:(int64_t)a3
+- (id)configurationForTimeScope:(int64_t)scope
 {
   configurationOverrides = self->_configurationOverrides;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:scope];
   v6 = [(NSDictionary *)configurationOverrides objectForKeyedSubscript:v5];
 
   defaultConfiguration = v6;
@@ -87,21 +87,21 @@
   return v8;
 }
 
-- (id)adjustedValueForDaemonValue:(id)a3
+- (id)adjustedValueForDaemonValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy)
   {
     if (fabs(self->_scaleFactor + -1.0) >= 0.00000011920929)
     {
-      [v4 doubleValue];
+      [valueCopy doubleValue];
       v6 = [MEMORY[0x1E696AD98] numberWithDouble:v8 * self->_scaleFactor];
     }
 
     else
     {
-      v6 = v4;
+      v6 = valueCopy;
     }
 
     v7 = v6;
@@ -115,21 +115,21 @@
   return v7;
 }
 
-- (id)adjustedValueForClientValue:(id)a3
+- (id)adjustedValueForClientValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy)
   {
     if (fabs(self->_scaleFactor + -1.0) >= 0.00000011920929)
     {
-      [v4 doubleValue];
+      [valueCopy doubleValue];
       v6 = [MEMORY[0x1E696AD98] numberWithDouble:v8 / self->_scaleFactor];
     }
 
     else
     {
-      v6 = v4;
+      v6 = valueCopy;
     }
 
     v7 = v6;
@@ -169,12 +169,12 @@
   return result;
 }
 
-- (id)copyWithListIconImageNameOverride:(id)a3
+- (id)copyWithListIconImageNameOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   v5 = [HKDisplayTypePresentation alloc];
   LOBYTE(v8) = self->_isCriticalForAutoscale;
-  v6 = [(HKDisplayTypePresentation *)v5 initWithDefaultConfiguration:self->_defaultConfiguration configurationOverrides:self->_configurationOverrides scaleFactor:self->_showAllDataHierarchically showAllDataHierarchically:self->_showAppDataHierarchically showAppDataHierarchically:self->_shouldDisplayUnitStringOnYAxis shouldDisplayUnitStringOnYAxis:self->_useSecondsWhenDisplayingDuration useSecondsWhenDisplayingDuration:self->_scaleFactor isCriticalForAutoscale:v8 dataTypeIconImageName:self->_dataTypeIconImageName detailImageName:self->_detailImageName listIconImageNameOverride:v4 summaryAttribution:self->_summaryAttribution];
+  v6 = [(HKDisplayTypePresentation *)v5 initWithDefaultConfiguration:self->_defaultConfiguration configurationOverrides:self->_configurationOverrides scaleFactor:self->_showAllDataHierarchically showAllDataHierarchically:self->_showAppDataHierarchically showAppDataHierarchically:self->_shouldDisplayUnitStringOnYAxis shouldDisplayUnitStringOnYAxis:self->_useSecondsWhenDisplayingDuration useSecondsWhenDisplayingDuration:self->_scaleFactor isCriticalForAutoscale:v8 dataTypeIconImageName:self->_dataTypeIconImageName detailImageName:self->_detailImageName listIconImageNameOverride:overrideCopy summaryAttribution:self->_summaryAttribution];
 
   return v6;
 }
@@ -202,78 +202,78 @@
   return *&veor_s8(*v16.i8, *&vextq_s8(v16, v16, 8uLL)) ^ (32 * isCriticalForAutoscale) ^ v12 ^ v11 ^ v10 ^ v9 ^ v3 ^ v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_22;
   }
 
-  if (![(HKDisplayTypePresentationConfiguration *)self->_defaultConfiguration isEqual:*(v4 + 1)])
+  if (![(HKDisplayTypePresentationConfiguration *)self->_defaultConfiguration isEqual:*(equalCopy + 1)])
   {
     goto LABEL_22;
   }
 
-  if (![(NSDictionary *)self->_configurationOverrides isEqual:*(v4 + 2)])
+  if (![(NSDictionary *)self->_configurationOverrides isEqual:*(equalCopy + 2)])
   {
     goto LABEL_22;
   }
 
-  if (vabdd_f64(self->_scaleFactor, *(v4 + 4)) >= 0.00000011920929)
+  if (vabdd_f64(self->_scaleFactor, *(equalCopy + 4)) >= 0.00000011920929)
   {
     goto LABEL_22;
   }
 
-  if (self->_showAllDataHierarchically != v4[24])
+  if (self->_showAllDataHierarchically != equalCopy[24])
   {
     goto LABEL_22;
   }
 
-  if (self->_showAppDataHierarchically != v4[25])
+  if (self->_showAppDataHierarchically != equalCopy[25])
   {
     goto LABEL_22;
   }
 
-  if (self->_shouldDisplayUnitStringOnYAxis != v4[26])
+  if (self->_shouldDisplayUnitStringOnYAxis != equalCopy[26])
   {
     goto LABEL_22;
   }
 
-  if (self->_useSecondsWhenDisplayingDuration != v4[27])
+  if (self->_useSecondsWhenDisplayingDuration != equalCopy[27])
   {
     goto LABEL_22;
   }
 
-  if (self->_isCriticalForAutoscale != v4[28])
+  if (self->_isCriticalForAutoscale != equalCopy[28])
   {
     goto LABEL_22;
   }
 
   dataTypeIconImageName = self->_dataTypeIconImageName;
-  v6 = *(v4 + 5);
+  v6 = *(equalCopy + 5);
   if (dataTypeIconImageName != v6 && (!v6 || ![(NSString *)dataTypeIconImageName isEqualToString:?]))
   {
     goto LABEL_22;
   }
 
   detailImageName = self->_detailImageName;
-  v8 = *(v4 + 6);
+  v8 = *(equalCopy + 6);
   if (detailImageName != v8 && (!v8 || ![(NSString *)detailImageName isEqualToString:?]))
   {
     goto LABEL_22;
   }
 
   listIconImageNameOverride = self->_listIconImageNameOverride;
-  v10 = *(v4 + 7);
+  v10 = *(equalCopy + 7);
   if (listIconImageNameOverride != v10 && (!v10 || ![(NSString *)listIconImageNameOverride isEqualToString:?]))
   {
     goto LABEL_22;
   }
 
   summaryAttribution = self->_summaryAttribution;
-  v12 = *(v4 + 8);
+  v12 = *(equalCopy + 8);
   if (summaryAttribution == v12)
   {
     v13 = 1;

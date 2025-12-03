@@ -1,14 +1,14 @@
 @interface CSEndpointDelayReporter
-- (CSEndpointDelayReporter)initWithRequestMHUUID:(id)a3 turnIdentifier:(id)a4 withMedocEnabled:(BOOL)a5;
+- (CSEndpointDelayReporter)initWithRequestMHUUID:(id)d turnIdentifier:(id)identifier withMedocEnabled:(BOOL)enabled;
 - (unint64_t)estimatedUserSpeakingEndedHostTime;
 - (unint64_t)estimatedUserSpeakingStartedHostTime;
-- (void)_emitEndpointDelayMessage:(double)a3 epdModel:(double)a4 speakingStart:(double)a5 speakingEnd:(double)a6 epdV2:(double)a7;
+- (void)_emitEndpointDelayMessage:(double)message epdModel:(double)model speakingStart:(double)start speakingEnd:(double)end epdV2:(double)v2;
 - (void)_reportUserSpeakingContext;
-- (void)instrumentEndpointSignpostsForServerEndpointWithEndTime:(double)a3 leadingSilence:(double)a4 trailingSilence:(double)a5 stopRecordingMachContinuousTime:(unint64_t)a6 skippedSamplesTimeInSec:(double)a7 firstAudioSampleSensorHostTime:(unint64_t)a8;
+- (void)instrumentEndpointSignpostsForServerEndpointWithEndTime:(double)time leadingSilence:(double)silence trailingSilence:(double)trailingSilence stopRecordingMachContinuousTime:(unint64_t)continuousTime skippedSamplesTimeInSec:(double)sec firstAudioSampleSensorHostTime:(unint64_t)hostTime;
 - (void)reportEndpointDelayIfNeed;
 - (void)reset;
-- (void)setSpeechRecognizedContext:(id)a3 withEndpointerMetrics:(id)a4;
-- (void)setSpeechRecognizedContext:(id)a3 withEndpointerMetrics:(id)a4 withTrpId:(id)a5;
+- (void)setSpeechRecognizedContext:(id)context withEndpointerMetrics:(id)metrics;
+- (void)setSpeechRecognizedContext:(id)context withEndpointerMetrics:(id)metrics withTrpId:(id)id;
 @end
 
 @implementation CSEndpointDelayReporter
@@ -120,16 +120,16 @@
   }
 }
 
-- (void)_emitEndpointDelayMessage:(double)a3 epdModel:(double)a4 speakingStart:(double)a5 speakingEnd:(double)a6 epdV2:(double)a7
+- (void)_emitEndpointDelayMessage:(double)message epdModel:(double)model speakingStart:(double)start speakingEnd:(double)end epdV2:(double)v2
 {
   v13 = objc_alloc_init(MHSchemaMHEndpointDelayContext);
-  [v13 setEndpointDelayInNs:a3];
-  [v13 setEndpointModelDelayInNs:a4];
-  [v13 setSpeakingStartInNs:a5];
-  [v13 setSpeakingEndInNs:a6];
-  if (a7 != 0.0)
+  [v13 setEndpointDelayInNs:message];
+  [v13 setEndpointModelDelayInNs:model];
+  [v13 setSpeakingStartInNs:start];
+  [v13 setSpeakingEndInNs:end];
+  if (v2 != 0.0)
   {
-    [v13 setEndpointDelayInNsV2:a7];
+    [v13 setEndpointDelayInNsV2:v2];
   }
 
   v14 = [CSEndpointLoggingHelper getMHClientEventByMhUUID:self->_requestMHUUID];
@@ -137,32 +137,32 @@
   v15 = +[AssistantSiriAnalytics sharedStream];
   [v15 emitMessage:v14];
 
-  if (a3 >= 3.0e10)
+  if (message >= 3.0e10)
   {
     v16 = +[CSDiagnosticReporter sharedInstance];
     v17 = kCSDiagnosticReporterEndpointDelayTooHigh;
     v20 = @"EPD";
-    v18 = [NSNumber numberWithDouble:a3];
+    v18 = [NSNumber numberWithDouble:message];
     v21 = v18;
     v19 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     [v16 submitEndpointerIssueReport:v17 withContext:v19];
   }
 }
 
-- (void)instrumentEndpointSignpostsForServerEndpointWithEndTime:(double)a3 leadingSilence:(double)a4 trailingSilence:(double)a5 stopRecordingMachContinuousTime:(unint64_t)a6 skippedSamplesTimeInSec:(double)a7 firstAudioSampleSensorHostTime:(unint64_t)a8
+- (void)instrumentEndpointSignpostsForServerEndpointWithEndTime:(double)time leadingSilence:(double)silence trailingSilence:(double)trailingSilence stopRecordingMachContinuousTime:(unint64_t)continuousTime skippedSamplesTimeInSec:(double)sec firstAudioSampleSensorHostTime:(unint64_t)hostTime
 {
   CSMachAbsoluteTimeToMachContinuousTime();
   CSMachAbsoluteTimeAddTimeInterval();
-  v14 = a3 - a5;
+  v14 = time - trailingSilence;
   v15 = CSMachAbsoluteTimeAddTimeInterval();
-  if (a6 >= v15)
+  if (continuousTime >= v15)
   {
     CSMachAbsoluteTimeGetTimeInterval();
     *&v19 = v19;
     v20 = [CSFTimeUtils secondsToNs:v19];
-    *&v21 = a5;
+    *&v21 = trailingSilence;
     v22 = [CSFTimeUtils millisecondsToNs:v21];
-    *&v23 = a4;
+    *&v23 = silence;
     v24 = [CSFTimeUtils millisecondsToNs:v23];
     *&v25 = v14;
     [(CSEndpointDelayReporter *)self _emitEndpointDelayMessage:v20 epdModel:v22 speakingStart:v24 speakingEnd:[CSFTimeUtils epdV2:"millisecondsToNs:" millisecondsToNs:v25], 0.0];
@@ -171,7 +171,7 @@
     {
       requestMHUUID = self->_requestMHUUID;
       v31 = 136316418;
-      v32 = "[CSEndpointDelayReporter instrumentEndpointSignpostsForServerEndpointWithEndTime:leadingSilence:trailingSilence:stopRecordingMachContinuousTime:skippedSamplesTimeInSec:firstAudioSampleSensorHostTime:]";
+      continuousTimeCopy = "[CSEndpointDelayReporter instrumentEndpointSignpostsForServerEndpointWithEndTime:leadingSilence:trailingSilence:stopRecordingMachContinuousTime:skippedSamplesTimeInSec:firstAudioSampleSensorHostTime:]";
       v33 = 2112;
       v34 = *&requestMHUUID;
       v35 = 2050;
@@ -181,7 +181,7 @@
       v39 = 2050;
       v40 = (v20 - v22) / 1000000.0;
       v41 = 2050;
-      v42 = a7;
+      secCopy = sec;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "KeyLog - %s Submitted SEP to SELF for MH ID: %@ - EPD (ms): %{public}f, EPD_Model (ms): %{public}f, EPD_Latency (ms): %{public}f, Skipped Samples (sec): %{public}f", &v31, 0x3Eu);
     }
 
@@ -202,7 +202,7 @@
       if (os_signpost_enabled(v29))
       {
         v31 = 134349570;
-        v32 = v15;
+        continuousTimeCopy = v15;
         v33 = 2080;
         v34 = COERCE_DOUBLE("SiriX");
         v35 = 2080;
@@ -214,7 +214,7 @@
       if (os_signpost_enabled(v17))
       {
         v31 = 134349570;
-        v32 = a6;
+        continuousTimeCopy = continuousTime;
         v33 = 2080;
         v34 = COERCE_DOUBLE("SiriX");
         v35 = 2080;
@@ -235,9 +235,9 @@
     v17 = v16;
     CSMachAbsoluteTimeGetTimeInterval();
     v31 = 136315650;
-    v32 = "[CSEndpointDelayReporter instrumentEndpointSignpostsForServerEndpointWithEndTime:leadingSilence:trailingSilence:stopRecordingMachContinuousTime:skippedSamplesTimeInSec:firstAudioSampleSensorHostTime:]";
+    continuousTimeCopy = "[CSEndpointDelayReporter instrumentEndpointSignpostsForServerEndpointWithEndTime:leadingSilence:trailingSilence:stopRecordingMachContinuousTime:skippedSamplesTimeInSec:firstAudioSampleSensorHostTime:]";
     v33 = 2050;
-    v34 = a3 / 1000.0;
+    v34 = time / 1000.0;
     v35 = 2050;
     v36 = v18;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s Server End Time - %{public}f, Host Recording Time - %{public}f", &v31, 0x20u);
@@ -449,15 +449,15 @@ LABEL_19:
   }
 }
 
-- (void)setSpeechRecognizedContext:(id)a3 withEndpointerMetrics:(id)a4
+- (void)setSpeechRecognizedContext:(id)context withEndpointerMetrics:(id)metrics
 {
-  v6 = a4;
-  if (a3)
+  metricsCopy = metrics;
+  if (context)
   {
-    v7 = a3;
-    v8 = [v7 objectForKey:@"leadingSilence"];
-    v9 = [v7 objectForKey:@"trailingSilence"];
-    v10 = [v7 objectForKey:@"endTime"];
+    contextCopy = context;
+    v8 = [contextCopy objectForKey:@"leadingSilence"];
+    v9 = [contextCopy objectForKey:@"trailingSilence"];
+    v10 = [contextCopy objectForKey:@"endTime"];
 
     if (v8 && v9 && v10)
     {
@@ -467,14 +467,14 @@ LABEL_19:
       v13 = v12;
       [v9 doubleValue];
       self->_userSpeakingEndedTimeInMs = v13 - v14;
-      self->_endpointBufferHostTime = [v6 endpointBufferHostTime];
-      self->_endpointHostTime = [v6 endpointHostTime];
-      self->_audioDeliveryHostTimeDelta = [v6 audioDeliveryHostTimeDelta];
-      [v6 totalAudioRecorded];
+      self->_endpointBufferHostTime = [metricsCopy endpointBufferHostTime];
+      self->_endpointHostTime = [metricsCopy endpointHostTime];
+      self->_audioDeliveryHostTimeDelta = [metricsCopy audioDeliveryHostTimeDelta];
+      [metricsCopy totalAudioRecorded];
       self->_endpointTimeInMs = v15;
       self->_userSpeakingStartedHostTime = [(CSEndpointDelayReporter *)self estimatedUserSpeakingStartedHostTime];
-      v16 = [(CSEndpointDelayReporter *)self estimatedUserSpeakingEndedHostTime];
-      self->_userSpeakingEndedHostTime = v16;
+      estimatedUserSpeakingEndedHostTime = [(CSEndpointDelayReporter *)self estimatedUserSpeakingEndedHostTime];
+      self->_userSpeakingEndedHostTime = estimatedUserSpeakingEndedHostTime;
       v17 = CSLogCategoryEP;
       if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEFAULT))
       {
@@ -494,7 +494,7 @@ LABEL_19:
         v31 = 2050;
         v32 = userSpeakingStartedHostTime;
         v33 = 2050;
-        v34 = v16;
+        v34 = estimatedUserSpeakingEndedHostTime;
         v35 = 2050;
         v36 = stopRecordingHostTime;
         v37 = 2050;
@@ -511,12 +511,12 @@ LABEL_19:
   }
 }
 
-- (void)setSpeechRecognizedContext:(id)a3 withEndpointerMetrics:(id)a4 withTrpId:(id)a5
+- (void)setSpeechRecognizedContext:(id)context withEndpointerMetrics:(id)metrics withTrpId:(id)id
 {
-  objc_storeStrong(&self->_curTRPId, a5);
-  v8 = a4;
-  v9 = a3;
-  [(CSEndpointDelayReporter *)self setSpeechRecognizedContext:v9 withEndpointerMetrics:v8];
+  objc_storeStrong(&self->_curTRPId, id);
+  metricsCopy = metrics;
+  contextCopy = context;
+  [(CSEndpointDelayReporter *)self setSpeechRecognizedContext:contextCopy withEndpointerMetrics:metricsCopy];
 }
 
 - (unint64_t)estimatedUserSpeakingEndedHostTime
@@ -601,25 +601,25 @@ LABEL_19:
   self->_curTRPId = 0;
 }
 
-- (CSEndpointDelayReporter)initWithRequestMHUUID:(id)a3 turnIdentifier:(id)a4 withMedocEnabled:(BOOL)a5
+- (CSEndpointDelayReporter)initWithRequestMHUUID:(id)d turnIdentifier:(id)identifier withMedocEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  enabledCopy = enabled;
+  dCopy = d;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = CSEndpointDelayReporter;
   v10 = [(CSEndpointDelayReporter *)&v19 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     requestMHUUID = v10->_requestMHUUID;
     v10->_requestMHUUID = v11;
 
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     turnIdentifier = v10->_turnIdentifier;
     v10->_turnIdentifier = v13;
 
-    v10->_isMedocEnabled = v5;
+    v10->_isMedocEnabled = enabledCopy;
     v15 = CSLogCategoryEP;
     if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEFAULT))
     {
@@ -632,7 +632,7 @@ LABEL_19:
       v24 = 2112;
       v25 = v17;
       v26 = 1024;
-      v27 = v5;
+      v27 = enabledCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s _requestMHUUID: %@, _turnIdentifier: %@ _medocEnabled: %d", buf, 0x26u);
     }
 

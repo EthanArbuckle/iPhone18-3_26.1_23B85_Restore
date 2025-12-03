@@ -1,25 +1,25 @@
 @interface URLBagFeatureFlag
 - (_TtC3akd17URLBagFeatureFlag)init;
-- (_TtC3akd17URLBagFeatureFlag)initWithUrlBagKey:(id)a3 urlBagProvider:(id)a4;
-- (void)featureStatusWithCompletionHandler:(id)a3;
-- (void)fetchURLWithCompletionHandler:(id)a3;
+- (_TtC3akd17URLBagFeatureFlag)initWithUrlBagKey:(id)key urlBagProvider:(id)provider;
+- (void)featureStatusWithCompletionHandler:(id)handler;
+- (void)fetchURLWithCompletionHandler:(id)handler;
 @end
 
 @implementation URLBagFeatureFlag
 
-- (_TtC3akd17URLBagFeatureFlag)initWithUrlBagKey:(id)a3 urlBagProvider:(id)a4
+- (_TtC3akd17URLBagFeatureFlag)initWithUrlBagKey:(id)key urlBagProvider:(id)provider
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(provider);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
+  keyCopy = key;
   swift_defaultActor_initialize();
   v9 = OBJC_IVAR____TtC3akd17URLBagFeatureFlag_cachedURL;
   v10 = type metadata accessor for URL();
   (*(*(v10 - 8) + 56))(&self->$defaultActor[v9], 1, 1, v10);
   *&self->$defaultActor[OBJC_IVAR____TtC3akd17URLBagFeatureFlag_cachedStatus] = 0;
   *&self->$defaultActor[OBJC_IVAR____TtC3akd17URLBagFeatureFlag_urlBagFetchTask] = 0;
-  *&self->$defaultActor[OBJC_IVAR____TtC3akd17URLBagFeatureFlag_urlBagKey] = v8;
+  *&self->$defaultActor[OBJC_IVAR____TtC3akd17URLBagFeatureFlag_urlBagKey] = keyCopy;
   v11 = &self->$defaultActor[OBJC_IVAR____TtC3akd17URLBagFeatureFlag_urlBagProvider];
   *v11 = sub_10022B974;
   v11[1] = v7;
@@ -28,13 +28,13 @@
   return [(URLBagFeatureFlag *)&v13 init];
 }
 
-- (void)fetchURLWithCompletionHandler:(id)a3
+- (void)fetchURLWithCompletionHandler:(id)handler
 {
   v5 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -54,13 +54,13 @@
   sub_100244978(0, 0, v8, &unk_10029F4F0, v13);
 }
 
-- (void)featureStatusWithCompletionHandler:(id)a3
+- (void)featureStatusWithCompletionHandler:(id)handler
 {
   v5 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

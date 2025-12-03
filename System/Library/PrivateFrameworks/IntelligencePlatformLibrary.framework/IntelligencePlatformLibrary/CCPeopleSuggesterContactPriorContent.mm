@@ -1,29 +1,29 @@
 @interface CCPeopleSuggesterContactPriorContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCPeopleSuggesterContactPriorContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCPeopleSuggesterContactPriorContent)initWithVersion:(id)a3 minVersion:(id)a4 sourceSharedIdentifier:(id)a5 priorScore:(id)a6 modelName:(id)a7 modelVersion:(id)a8 referenceDate:(id)a9 error:(id *)a10;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCPeopleSuggesterContactPriorContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCPeopleSuggesterContactPriorContent)initWithVersion:(id)version minVersion:(id)minVersion sourceSharedIdentifier:(id)identifier priorScore:(id)score modelName:(id)name modelVersion:(id)modelVersion referenceDate:(id)date error:(id *)self0;
 - (NSString)modelName;
 - (NSString)modelVersion;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCPeopleSuggesterContactPriorContent
 
-- (CCPeopleSuggesterContactPriorContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCPeopleSuggesterContactPriorContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v64 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v61 = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"version"];
-    v10 = [v6 objectForKeyedSubscript:@"minVersion"];
-    v11 = [v6 objectForKeyedSubscript:@"sourceSharedIdentifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"version"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"minVersion"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"sourceSharedIdentifier"];
     if (v11)
     {
       v12 = v11;
@@ -45,7 +45,7 @@ LABEL_33:
 
       v41 = v10;
       v42 = v9;
-      v45 = self;
+      selfCopy = self;
       v15 = objc_opt_new();
       v56 = 0u;
       v57 = 0u;
@@ -53,7 +53,7 @@ LABEL_33:
       v59 = 0u;
       v16 = v12;
       v17 = [v16 countByEnumeratingWithState:&v56 objects:v63 count:16];
-      v48 = a4;
+      errorCopy = error;
       if (v17)
       {
         v18 = v17;
@@ -81,7 +81,7 @@ LABEL_33:
 
               v24 = 0;
               v15 = v16;
-              self = v45;
+              self = selfCopy;
               v10 = v41;
               v9 = v42;
               goto LABEL_33;
@@ -104,10 +104,10 @@ LABEL_33:
       }
 
       v8 = v14;
-      self = v45;
+      self = selfCopy;
       v10 = v41;
       v9 = v42;
-      a4 = v48;
+      error = errorCopy;
     }
 
     else
@@ -115,7 +115,7 @@ LABEL_33:
       v15 = 0;
     }
 
-    v25 = [v6 objectForKeyedSubscript:@"priorScore"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"priorScore"];
     if (v25)
     {
       v26 = v25;
@@ -132,10 +132,10 @@ LABEL_33:
       }
 
       v40 = v15;
-      v46 = self;
-      v49 = a4;
+      selfCopy2 = self;
+      errorCopy3 = error;
       v43 = v9;
-      v44 = v6;
+      v44 = dictionaryCopy;
       v28 = objc_opt_new();
       v50 = 0u;
       v51 = 0u;
@@ -168,8 +168,8 @@ LABEL_33:
               CCSetError();
 
               v24 = 0;
-              v6 = v44;
-              self = v46;
+              dictionaryCopy = v44;
+              self = selfCopy2;
               v9 = v43;
               v15 = v40;
               goto LABEL_32;
@@ -192,23 +192,23 @@ LABEL_33:
         }
       }
 
-      v6 = v44;
-      self = v46;
+      dictionaryCopy = v44;
+      self = selfCopy2;
       v9 = v43;
     }
 
     else
     {
       v40 = v15;
-      v49 = a4;
+      errorCopy3 = error;
       v28 = 0;
       v14 = v8;
     }
 
-    v47 = [v6 objectForKeyedSubscript:@"modelName"];
-    v36 = [v6 objectForKeyedSubscript:@"modelVersion"];
-    v37 = [v6 objectForKeyedSubscript:@"referenceDate"];
-    v24 = [[CCPeopleSuggesterContactPriorContent alloc] initWithVersion:v9 minVersion:v10 sourceSharedIdentifier:v40 priorScore:v28 modelName:v47 modelVersion:v36 referenceDate:v37 error:v49];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"modelName"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"referenceDate"];
+    v24 = [[CCPeopleSuggesterContactPriorContent alloc] initWithVersion:v9 minVersion:v10 sourceSharedIdentifier:v40 priorScore:v28 modelName:v47 modelVersion:v36 referenceDate:v37 error:errorCopy3];
 
     v26 = v28;
     v15 = v40;
@@ -243,14 +243,14 @@ LABEL_34:
   if (self->_sourceSharedIdentifier)
   {
     v6 = objc_opt_new();
-    v7 = [(CCPeopleSuggesterContactPriorContent *)self sourceSharedIdentifier];
+    sourceSharedIdentifier = [(CCPeopleSuggesterContactPriorContent *)self sourceSharedIdentifier];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __54__CCPeopleSuggesterContactPriorContent_jsonDictionary__block_invoke;
     v23[3] = &unk_1E73E8EF0;
     v24 = v6;
     v8 = v6;
-    [v7 enumerateInt64ValuesWithBlock:v23];
+    [sourceSharedIdentifier enumerateInt64ValuesWithBlock:v23];
 
     [v3 setObject:v8 forKeyedSubscript:@"sourceSharedIdentifier"];
   }
@@ -258,28 +258,28 @@ LABEL_34:
   if (self->_priorScore)
   {
     v9 = objc_opt_new();
-    v10 = [(CCPeopleSuggesterContactPriorContent *)self priorScore];
+    priorScore = [(CCPeopleSuggesterContactPriorContent *)self priorScore];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __54__CCPeopleSuggesterContactPriorContent_jsonDictionary__block_invoke_2;
     v21 = &unk_1E73E7CB8;
     v22 = v9;
     v11 = v9;
-    [v10 enumerateFloatValuesWithBlock:&v18];
+    [priorScore enumerateFloatValuesWithBlock:&v18];
 
     [v3 setObject:v11 forKeyedSubscript:{@"priorScore", v18, v19, v20, v21}];
   }
 
   if (self->_modelName)
   {
-    v12 = [(CCPeopleSuggesterContactPriorContent *)self modelName];
-    [v3 setObject:v12 forKeyedSubscript:@"modelName"];
+    modelName = [(CCPeopleSuggesterContactPriorContent *)self modelName];
+    [v3 setObject:modelName forKeyedSubscript:@"modelName"];
   }
 
   if (self->_modelVersion)
   {
-    v13 = [(CCPeopleSuggesterContactPriorContent *)self modelVersion];
-    [v3 setObject:v13 forKeyedSubscript:@"modelVersion"];
+    modelVersion = [(CCPeopleSuggesterContactPriorContent *)self modelVersion];
+    [v3 setObject:modelVersion forKeyedSubscript:@"modelVersion"];
   }
 
   if (self->_hasReferenceDate)
@@ -309,49 +309,49 @@ void __54__CCPeopleSuggesterContactPriorContent_jsonDictionary__block_invoke_2(u
   [v1 addObject:v2];
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v12 = a3;
+  blockCopy = block;
   if (self->_hasVersion)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:40569 uint32Value:self->_version];
-    v12[2](v12, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_hasMinVersion)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:40570 uint32Value:self->_minVersion];
-    v12[2](v12, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_sourceSharedIdentifier)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:40571 repeatedInt64Value:self->_sourceSharedIdentifier];
-    v12[2](v12, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_priorScore)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:40572 repeatedFloatValue:self->_priorScore];
-    v12[2](v12, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_modelName)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:40573 stringValue:self->_modelName];
-    v12[2](v12, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_modelVersion)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:40574 stringValue:self->_modelVersion];
-    v12[2](v12, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_hasReferenceDate)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:40575 doubleValue:self->_referenceDate];
-    v12[2](v12, v11);
+    blockCopy[2](blockCopy, v11);
   }
 }
 
@@ -369,10 +369,10 @@ void __54__CCPeopleSuggesterContactPriorContent_jsonDictionary__block_invoke_2(u
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   if (*&v7[*MEMORY[0x1E6993AB8]] < *&v7[*MEMORY[0x1E6993AB0]])
@@ -564,14 +564,14 @@ LABEL_44:
               v39 = objc_opt_class();
               NSStringFromClass(v39);
               v67 = v10;
-              v40 = a4;
-              v42 = v41 = v6;
+              errorCopy = error;
+              v42 = v41 = dataCopy;
               v43 = *&v7[*MEMORY[0x1E6993AA8]];
               v11 = CCSkipFieldErrorForMessage();
 
               v12 = MEMORY[0x1E6993AA8];
-              v6 = v41;
-              a4 = v40;
+              dataCopy = v41;
+              error = errorCopy;
               v10 = v67;
               goto LABEL_70;
             }
@@ -687,10 +687,10 @@ LABEL_74:
     v61 = NSStringFromClass(v60);
     v62 = *&v7[*v59];
     CCInvalidBufferErrorForMessage();
-    v64 = v63 = v6;
+    v64 = v63 = dataCopy;
     CCSetError();
 
-    v6 = v63;
+    dataCopy = v63;
   }
 
   v65 = 0;
@@ -699,17 +699,17 @@ LABEL_79:
   return v65;
 }
 
-- (CCPeopleSuggesterContactPriorContent)initWithVersion:(id)a3 minVersion:(id)a4 sourceSharedIdentifier:(id)a5 priorScore:(id)a6 modelName:(id)a7 modelVersion:(id)a8 referenceDate:(id)a9 error:(id *)a10
+- (CCPeopleSuggesterContactPriorContent)initWithVersion:(id)version minVersion:(id)minVersion sourceSharedIdentifier:(id)identifier priorScore:(id)score modelName:(id)name modelVersion:(id)modelVersion referenceDate:(id)date error:(id *)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v39 = a8;
-  v38 = a9;
+  versionCopy = version;
+  minVersionCopy = minVersion;
+  identifierCopy = identifier;
+  scoreCopy = score;
+  nameCopy = name;
+  modelVersionCopy = modelVersion;
+  dateCopy = date;
   v20 = objc_opt_new();
-  if (v15)
+  if (versionCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -719,13 +719,13 @@ LABEL_79:
       goto LABEL_26;
     }
 
-    [v15 unsignedIntValue];
+    [versionCopy unsignedIntValue];
     CCPBDataWriterWriteUint32Field();
-    if (!v16)
+    if (!minVersionCopy)
     {
 LABEL_4:
       v23 = v22;
-      if (v17)
+      if (identifierCopy)
       {
         goto LABEL_5;
       }
@@ -737,7 +737,7 @@ LABEL_4:
   else
   {
     v22 = 0;
-    if (!v16)
+    if (!minVersionCopy)
     {
       goto LABEL_4;
     }
@@ -752,9 +752,9 @@ LABEL_4:
     goto LABEL_21;
   }
 
-  [v16 unsignedIntValue];
+  [minVersionCopy unsignedIntValue];
   CCPBDataWriterWriteUint32Field();
-  if (v17)
+  if (identifierCopy)
   {
 LABEL_5:
     objc_opt_class();
@@ -767,7 +767,7 @@ LABEL_5:
     }
 
     CCPBDataWriterWriteRepeatedInt64Field();
-    if (!v18)
+    if (!scoreCopy)
     {
       goto LABEL_7;
     }
@@ -777,7 +777,7 @@ LABEL_5:
 
 LABEL_11:
   v22 = v23;
-  if (!v18)
+  if (!scoreCopy)
   {
 LABEL_7:
     v23 = v22;
@@ -797,7 +797,7 @@ LABEL_12:
   CCPBDataWriterWriteRepeatedFloatField();
 LABEL_14:
   v27 = 0x1E696A000uLL;
-  if (!v19)
+  if (!nameCopy)
   {
     v22 = v23;
     goto LABEL_18;
@@ -818,7 +818,7 @@ LABEL_26:
   CCPBDataWriterWriteStringField();
   v27 = 0x1E696A000;
 LABEL_18:
-  if (!v39)
+  if (!modelVersionCopy)
   {
     v23 = v22;
     goto LABEL_23;
@@ -833,7 +833,7 @@ LABEL_18:
   {
     CCPBDataWriterWriteStringField();
 LABEL_23:
-    if (!v38)
+    if (!dateCopy)
     {
       v22 = v23;
       goto LABEL_30;
@@ -845,13 +845,13 @@ LABEL_23:
 
     if (v32)
     {
-      [v38 doubleValue];
+      [dateCopy doubleValue];
       CCPBDataWriterWriteDoubleField();
 LABEL_30:
-      v35 = [v20 immutableData];
-      v33 = [v37 initWithData:v35 error:a10];
+      immutableData = [v20 immutableData];
+      selfCopy = [v37 initWithData:immutableData error:error];
 
-      v31 = v33;
+      v31 = selfCopy;
       goto LABEL_28;
     }
 
@@ -863,22 +863,22 @@ LABEL_21:
   v31 = 0;
   v22 = v23;
 LABEL_27:
-  v33 = self;
+  selfCopy = self;
 LABEL_28:
 
   return v31;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 + 24968) > 7u)
+  if ((identifier + 24968) > 7u)
   {
     return 0;
   }
 
   else
   {
-    return off_1E73E7CD8[(a3 + 24968)];
+    return off_1E73E7CD8[(identifier + 24968)];
   }
 }
 

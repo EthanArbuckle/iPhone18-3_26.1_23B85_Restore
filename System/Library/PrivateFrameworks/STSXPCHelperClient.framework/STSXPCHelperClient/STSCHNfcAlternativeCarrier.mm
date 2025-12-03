@@ -1,70 +1,70 @@
 @interface STSCHNfcAlternativeCarrier
-+ (id)connectionHandoverAlternativeCarrierWithBundle:(id)a3;
-- (STSCHNfcAlternativeCarrier)initWithCoder:(id)a3;
-- (STSCHNfcAlternativeCarrier)initWithMaxLcField:(int64_t)a3 maxLeField:(int64_t)a4 auxiliaryRecords:(id)a5;
-- (STSCHNfcAlternativeCarrier)initWithNdefRecordBundle:(id)a3;
++ (id)connectionHandoverAlternativeCarrierWithBundle:(id)bundle;
+- (STSCHNfcAlternativeCarrier)initWithCoder:(id)coder;
+- (STSCHNfcAlternativeCarrier)initWithMaxLcField:(int64_t)field maxLeField:(int64_t)leField auxiliaryRecords:(id)records;
+- (STSCHNfcAlternativeCarrier)initWithNdefRecordBundle:(id)bundle;
 - (id)_createCarrierConfigurationRecord;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCHNfcAlternativeCarrier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = STSCHNfcAlternativeCarrier;
-  v4 = a3;
-  [(STSCHAlternativeCarrier *)&v7 encodeWithCoder:v4];
-  objc_msgSend_encodeInteger_forKey_(v4, v5, self->_maxLc, @"maxLc", v7.receiver, v7.super_class);
-  objc_msgSend_encodeInteger_forKey_(v4, v6, self->_maxLe, @"maxLe");
+  coderCopy = coder;
+  [(STSCHAlternativeCarrier *)&v7 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v5, self->_maxLc, @"maxLc", v7.receiver, v7.super_class);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v6, self->_maxLe, @"maxLe");
 }
 
-- (STSCHNfcAlternativeCarrier)initWithCoder:(id)a3
+- (STSCHNfcAlternativeCarrier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = STSCHNfcAlternativeCarrier;
-  v6 = [(STSCHAlternativeCarrier *)&v9 initWithCoder:v4];
+  v6 = [(STSCHAlternativeCarrier *)&v9 initWithCoder:coderCopy];
   if (v6)
   {
-    v6->_maxLc = objc_msgSend_decodeIntegerForKey_(v4, v5, @"maxLc");
-    v6->_maxLe = objc_msgSend_decodeIntegerForKey_(v4, v7, @"maxLe");
+    v6->_maxLc = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"maxLc");
+    v6->_maxLe = objc_msgSend_decodeIntegerForKey_(coderCopy, v7, @"maxLe");
   }
 
   return v6;
 }
 
-- (STSCHNfcAlternativeCarrier)initWithMaxLcField:(int64_t)a3 maxLeField:(int64_t)a4 auxiliaryRecords:(id)a5
+- (STSCHNfcAlternativeCarrier)initWithMaxLcField:(int64_t)field maxLeField:(int64_t)leField auxiliaryRecords:(id)records
 {
-  v8 = a5;
+  recordsCopy = records;
   v21.receiver = self;
   v21.super_class = STSCHNfcAlternativeCarrier;
   v9 = [(STSCHNfcAlternativeCarrier *)&v21 init];
   v11 = v9;
   if (v9)
   {
-    v12 = 4096;
-    if (a3 >= 1)
+    leFieldCopy = 4096;
+    if (field >= 1)
     {
-      v13 = a3;
+      fieldCopy = field;
     }
 
     else
     {
-      v13 = 4096;
+      fieldCopy = 4096;
     }
 
-    v9->_maxLc = v13;
-    if (a4 >= 1)
+    v9->_maxLc = fieldCopy;
+    if (leField >= 1)
     {
-      v12 = a4;
+      leFieldCopy = leField;
     }
 
-    v9->_maxLe = v12;
+    v9->_maxLe = leFieldCopy;
     objc_msgSend_setType_(v9, v10, 3);
     objc_msgSend_setPowerState_(v11, v14, 1);
-    objc_msgSend_setAuxiliaryRecords_(v11, v15, v8);
+    objc_msgSend_setAuxiliaryRecords_(v11, v15, recordsCopy);
     v18 = objc_msgSend__createCarrierConfigurationRecord(v11, v16, v17);
     objc_msgSend_setCarrierRecord_(v11, v19, v18);
   }
@@ -72,23 +72,23 @@
   return v11;
 }
 
-- (STSCHNfcAlternativeCarrier)initWithNdefRecordBundle:(id)a3
+- (STSCHNfcAlternativeCarrier)initWithNdefRecordBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v45.receiver = self;
   v45.super_class = STSCHNfcAlternativeCarrier;
-  v7 = [(STSCHAlternativeCarrier *)&v45 initWithNdefRecordBundle:v4];
+  v7 = [(STSCHAlternativeCarrier *)&v45 initWithNdefRecordBundle:bundleCopy];
   if (!v7)
   {
     goto LABEL_19;
   }
 
-  v8 = objc_msgSend_configurationRecord(v4, v5, v6);
+  v8 = objc_msgSend_configurationRecord(bundleCopy, v5, v6);
   v11 = objc_msgSend_payload(v8, v9, v10);
   v12 = v11;
   v15 = objc_msgSend_bytes(v12, v13, v14);
 
-  v18 = objc_msgSend_configurationRecord(v4, v16, v17);
+  v18 = objc_msgSend_configurationRecord(bundleCopy, v16, v17);
   v21 = objc_msgSend_payload(v18, v19, v20);
   v24 = objc_msgSend_length(v21, v22, v23);
 
@@ -201,16 +201,16 @@ LABEL_24:
   return v40;
 }
 
-+ (id)connectionHandoverAlternativeCarrierWithBundle:(id)a3
++ (id)connectionHandoverAlternativeCarrierWithBundle:(id)bundle
 {
-  v4 = a3;
-  v7 = objc_msgSend_configurationRecord(v4, v5, v6);
+  bundleCopy = bundle;
+  v7 = objc_msgSend_configurationRecord(bundleCopy, v5, v6);
   isNfcConfigurationRecord = objc_msgSend_isNfcConfigurationRecord(v7, v8, v9);
 
   if (isNfcConfigurationRecord)
   {
-    v11 = [a1 alloc];
-    v13 = objc_msgSend_initWithNdefRecordBundle_(v11, v12, v4);
+    v11 = [self alloc];
+    v13 = objc_msgSend_initWithNdefRecordBundle_(v11, v12, bundleCopy);
   }
 
   else

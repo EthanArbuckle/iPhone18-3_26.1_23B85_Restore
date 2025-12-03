@@ -1,22 +1,22 @@
 @interface ContentImageResolutionResult
-+ (id)confirmationRequiredWithContentImageToConfirm:(id)a3;
-+ (id)disambiguationWithContentImagesToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedContentImage:(id)a3;
++ (id)confirmationRequiredWithContentImageToConfirm:(id)confirm;
++ (id)disambiguationWithContentImagesToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedContentImage:(id)image;
 @end
 
 @implementation ContentImageResolutionResult
 
-+ (id)successWithResolvedContentImage:(id)a3
++ (id)successWithResolvedContentImage:(id)image
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static ContentImageResolutionResult.success(with:)(v4);
+  imageCopy = image;
+  v5 = static ContentImageResolutionResult.success(with:)(imageCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithContentImagesToDisambiguate:(id)a3
++ (id)disambiguationWithContentImagesToDisambiguate:(id)disambiguate
 {
   type metadata accessor for ContentImage();
   v3 = sub_269854CB4();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithContentImageToConfirm:(id)a3
++ (id)confirmationRequiredWithContentImageToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static ContentImageResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static ContentImageResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_26984C7F8();
   sub_269854CB4();

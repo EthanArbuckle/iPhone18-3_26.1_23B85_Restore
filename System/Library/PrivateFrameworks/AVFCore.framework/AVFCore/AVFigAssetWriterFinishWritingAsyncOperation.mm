@@ -1,10 +1,10 @@
 @interface AVFigAssetWriterFinishWritingAsyncOperation
 - (AVFigAssetWriterFinishWritingAsyncOperation)init;
-- (AVFigAssetWriterFinishWritingAsyncOperation)initWithFigAssetWriter:(OpaqueFigAssetWriter *)a3;
+- (AVFigAssetWriterFinishWritingAsyncOperation)initWithFigAssetWriter:(OpaqueFigAssetWriter *)writer;
 - (void)cancel;
 - (void)dealloc;
 - (void)didEnterTerminalState;
-- (void)didReceiveFigAssetWriterNotificationWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)didReceiveFigAssetWriterNotificationWithSuccess:(BOOL)success error:(id)error;
 - (void)start;
 @end
 
@@ -19,16 +19,16 @@
   objc_exception_throw(v12);
 }
 
-- (AVFigAssetWriterFinishWritingAsyncOperation)initWithFigAssetWriter:(OpaqueFigAssetWriter *)a3
+- (AVFigAssetWriterFinishWritingAsyncOperation)initWithFigAssetWriter:(OpaqueFigAssetWriter *)writer
 {
-  if (!a3)
+  if (!writer)
   {
-    v6 = self;
+    selfCopy = self;
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v7, v8, v9, v10, v11, "figAssetWriter != NULL"), 0}];
     objc_exception_throw(v12);
   }
 
-  [(AVFigAssetWriterFinishWritingAsyncOperation *)self initWithFigAssetWriter:a3, &v14];
+  [(AVFigAssetWriterFinishWritingAsyncOperation *)self initWithFigAssetWriter:writer, &v14];
   return v14;
 }
 
@@ -108,16 +108,16 @@
   }
 }
 
-- (void)didReceiveFigAssetWriterNotificationWithSuccess:(BOOL)a3 error:(id)a4
+- (void)didReceiveFigAssetWriterNotificationWithSuccess:(BOOL)success error:(id)error
 {
-  if (a3)
+  if (success)
   {
-    [(AVOperation *)self markAsCompleted:a3];
+    [(AVOperation *)self markAsCompleted:success];
   }
 
   else
   {
-    [(AVOperation *)self markAsFailedWithError:a4];
+    [(AVOperation *)self markAsFailedWithError:error];
   }
 }
 

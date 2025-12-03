@@ -1,29 +1,29 @@
 @interface SOSCoordinator
 + (SOSCoordinator)sharedInstance;
-- (BOOL)_sendUrgentMessageToPairedDevice:(id)a3 retries:(id)a4;
-- (BOOL)isIncomingMessageValidHandoffAck:(id)a3;
-- (BOOL)isIncomingMessageValidSOSHandoff:(id)a3;
+- (BOOL)_sendUrgentMessageToPairedDevice:(id)device retries:(id)retries;
+- (BOOL)isIncomingMessageValidHandoffAck:(id)ack;
+- (BOOL)isIncomingMessageValidSOSHandoff:(id)handoff;
 - (BOOL)isPairedDeviceNearby;
-- (BOOL)processEventWithUUID:(id)a3 triggerMechanism:(int64_t)a4;
-- (BOOL)shouldHandoffToPairedDevice:(int64_t)a3;
-- (BOOL)shouldRetryMessage:(id)a3;
-- (BOOL)tryPushToPairedDeviceWithUUID:(id)a3 triggerMechanism:(int64_t)a4;
+- (BOOL)processEventWithUUID:(id)d triggerMechanism:(int64_t)mechanism;
+- (BOOL)shouldHandoffToPairedDevice:(int64_t)device;
+- (BOOL)shouldRetryMessage:(id)message;
+- (BOOL)tryPushToPairedDeviceWithUUID:(id)d triggerMechanism:(int64_t)mechanism;
 - (SOSCoordinator)init;
 - (id)effectivePairedDevice;
-- (int64_t)SOSCoordinationMessageTypeForString:(id)a3;
-- (void)_handleServiceUpdate:(id)a3;
-- (void)_updateStateForPairedDevice:(id)a3;
-- (void)addObserver:(id)a3;
+- (int64_t)SOSCoordinationMessageTypeForString:(id)string;
+- (void)_handleServiceUpdate:(id)update;
+- (void)_updateStateForPairedDevice:(id)device;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)handleSOSMessageTypeHandoffSOS:(id)a3;
-- (void)handleSOSMessageTypeHandoffSOSAck:(id)a3;
-- (void)handleSOSMessageTypeProgressionSync:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)reportHandoff:(int64_t)a3 result:(int64_t)a4;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
-- (void)syncProgressionWithPairedDevice:(int64_t)a3 sosStatus:(id)a4;
+- (void)handleSOSMessageTypeHandoffSOS:(id)s;
+- (void)handleSOSMessageTypeHandoffSOSAck:(id)ack;
+- (void)handleSOSMessageTypeProgressionSync:(id)sync;
+- (void)removeObserver:(id)observer;
+- (void)reportHandoff:(int64_t)handoff result:(int64_t)result;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
+- (void)syncProgressionWithPairedDevice:(int64_t)device sosStatus:(id)status;
 @end
 
 @implementation SOSCoordinator
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __32__SOSCoordinator_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -92,9 +92,9 @@ uint64_t __32__SOSCoordinator_sharedInstance__block_invoke(uint64_t a1)
     pendingMessageRetriesById = v2->_pendingMessageRetriesById;
     v2->_pendingMessageRetriesById = v15;
 
-    v17 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v17;
+    v2->_observers = weakObjectsHashTable;
 
     v19 = +[SOSCoreAnalyticsReporter sharedInstance];
     coreAnalyticsReporter = v2->_coreAnalyticsReporter;
@@ -112,29 +112,29 @@ uint64_t __32__SOSCoordinator_sharedInstance__block_invoke(uint64_t a1)
   [(SOSCoordinator *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SOSCoordinator *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(SOSCoordinator *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SOSCoordinator *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(SOSCoordinator *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (BOOL)shouldHandoffToPairedDevice:(int64_t)a3
+- (BOOL)shouldHandoffToPairedDevice:(int64_t)device
 {
-  if (a3 == 7)
+  if (device == 7)
   {
-    v4 = [(SOSCoordinator *)self effectivePairedDevice];
-    v5 = v4;
-    if (v4)
+    effectivePairedDevice = [(SOSCoordinator *)self effectivePairedDevice];
+    v5 = effectivePairedDevice;
+    if (effectivePairedDevice)
     {
-      if ([v4 isNearby])
+      if ([effectivePairedDevice isNearby])
       {
         v6 = 1;
 LABEL_9:
@@ -155,38 +155,38 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  [(SOSCoordinator *)self reportHandoff:a3 result:6];
+  [(SOSCoordinator *)self reportHandoff:device result:6];
   return 0;
 }
 
-- (BOOL)tryPushToPairedDeviceWithUUID:(id)a3 triggerMechanism:(int64_t)a4
+- (BOOL)tryPushToPairedDeviceWithUUID:(id)d triggerMechanism:(int64_t)mechanism
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = sos_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v12 = 138412290;
-    v13 = v8;
+    v13 = uUIDString;
     _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_DEFAULT, "SOSCoordinator, New event, Trigger ID: %@", &v12, 0xCu);
   }
 
-  v9 = [(SOSCoordinator *)self processEventWithUUID:v6 triggerMechanism:a4];
+  v9 = [(SOSCoordinator *)self processEventWithUUID:dCopy triggerMechanism:mechanism];
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)processEventWithUUID:(id)a3 triggerMechanism:(int64_t)a4
+- (BOOL)processEventWithUUID:(id)d triggerMechanism:(int64_t)mechanism
 {
-  v6 = a3;
+  dCopy = d;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = SOSStringForSOSTriggerMechanism(a4);
+  v8 = SOSStringForSOSTriggerMechanism(mechanism);
   [v7 setObject:v8 forKey:@"SOSCoordinationTriggerKey"];
 
   [v7 setObject:@"SOSCoordinationMessageTypeHandoffSOS" forKey:@"SOSCoordinationMessageTypeKey"];
-  v9 = [v6 UUIDString];
-  [v7 setObject:v9 forKey:@"SOSEventUUIDKey"];
+  uUIDString = [dCopy UUIDString];
+  [v7 setObject:uUIDString forKey:@"SOSEventUUIDKey"];
 
   v10 = dispatch_semaphore_create(0);
   eventProcessingSemaphore = self->_eventProcessingSemaphore;
@@ -200,7 +200,7 @@ LABEL_9:
     block[2] = __56__SOSCoordinator_processEventWithUUID_triggerMechanism___block_invoke;
     block[3] = &unk_279B53BA0;
     block[4] = self;
-    v13 = v6;
+    v13 = dCopy;
     v28 = v13;
     dispatch_sync(eventUUIDArrayQueue, block);
     v14 = self->_eventProcessingSemaphore;
@@ -219,10 +219,10 @@ LABEL_9:
       v21 = 3221225472;
       v22 = __56__SOSCoordinator_processEventWithUUID_triggerMechanism___block_invoke_346;
       v23 = &unk_279B53BA0;
-      v24 = self;
+      selfCopy = self;
       v25 = v13;
       dispatch_sync(v17, &v20);
-      [(SOSCoordinator *)self reportHandoff:a4 result:5, v20, v21, v22, v23, v24];
+      [(SOSCoordinator *)self reportHandoff:mechanism result:5, v20, v21, v22, v23, selfCopy];
     }
 
     else
@@ -230,13 +230,13 @@ LABEL_9:
       if (self->_ackSuccess)
       {
         v18 = 1;
-        [(SOSCoordinator *)self reportHandoff:a4 result:1];
+        [(SOSCoordinator *)self reportHandoff:mechanism result:1];
 LABEL_11:
 
         goto LABEL_12;
       }
 
-      [(SOSCoordinator *)self reportHandoff:a4 result:4];
+      [(SOSCoordinator *)self reportHandoff:mechanism result:4];
     }
 
     v18 = 0;
@@ -263,18 +263,18 @@ void __56__SOSCoordinator_processEventWithUUID_triggerMechanism___block_invoke_3
   [v1 removeObject:v2];
 }
 
-- (void)syncProgressionWithPairedDevice:(int64_t)a3 sosStatus:(id)a4
+- (void)syncProgressionWithPairedDevice:(int64_t)device sosStatus:(id)status
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  statusCopy = status;
   if ([(SOSCoordinator *)self isPairedDeviceNearby])
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v7 setObject:@"SOSMessageTypeProgressionSync" forKey:@"SOSCoordinationMessageTypeKey"];
-    v8 = SOSStringForSOSProgression(a3);
+    v8 = SOSStringForSOSProgression(device);
     [v7 setObject:v8 forKey:@"SOSProgressionKey"];
 
-    v9 = [[SOSMessagingStatus alloc] initWithSOSStatus:v6];
+    v9 = [[SOSMessagingStatus alloc] initWithSOSStatus:statusCopy];
     v10 = sos_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -286,8 +286,8 @@ void __56__SOSCoordinator_processEventWithUUID_triggerMechanism___block_invoke_3
 
     if (v9)
     {
-      v12 = [(SOSMessagingStatus *)v9 data];
-      [v7 setObject:v12 forKey:@"SOSStatusKey"];
+      data = [(SOSMessagingStatus *)v9 data];
+      [v7 setObject:data forKey:@"SOSStatusKey"];
 
       [(SOSCoordinator *)self sendUrgentMessageToPairedDevice:v7];
     }
@@ -315,22 +315,22 @@ void __56__SOSCoordinator_processEventWithUUID_triggerMechanism___block_invoke_3
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d
 {
-  v7 = a5;
-  v8 = [v7 objectForKeyedSubscript:@"SOSCoordinationMessageTypeKey"];
+  messageCopy = message;
+  v8 = [messageCopy objectForKeyedSubscript:@"SOSCoordinationMessageTypeKey"];
   v9 = [(SOSCoordinator *)self SOSCoordinationMessageTypeForString:v8];
 
   if (v9 > 1)
   {
     if (v9 == 2)
     {
-      [(SOSCoordinator *)self handleSOSMessageTypeHandoffSOSAck:v7];
+      [(SOSCoordinator *)self handleSOSMessageTypeHandoffSOSAck:messageCopy];
     }
 
     else if (v9 == 4)
     {
-      [(SOSCoordinator *)self handleSOSMessageTypeProgressionSync:v7];
+      [(SOSCoordinator *)self handleSOSMessageTypeProgressionSync:messageCopy];
     }
   }
 
@@ -338,7 +338,7 @@ void __56__SOSCoordinator_processEventWithUUID_triggerMechanism___block_invoke_3
   {
     if (v9 == 1)
     {
-      [(SOSCoordinator *)self handleSOSMessageTypeHandoffSOS:v7];
+      [(SOSCoordinator *)self handleSOSMessageTypeHandoffSOS:messageCopy];
     }
   }
 
@@ -353,45 +353,45 @@ void __56__SOSCoordinator_processEventWithUUID_triggerMechanism___block_invoke_3
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   v16 = sos_default_log();
   v17 = v16;
-  if (v15)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [SOSCoordinator service:v14 account:v15 identifier:v17 didSendWithSuccess:? error:?];
+      [SOSCoordinator service:identifierCopy account:errorCopy identifier:v17 didSendWithSuccess:? error:?];
     }
   }
 
   else if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v14;
+    v29 = identifierCopy;
     _os_log_impl(&dword_264323000, v17, OS_LOG_TYPE_DEFAULT, "IDS didSendWithSuccess identifier=%@ Success!", buf, 0xCu);
   }
 
-  if (v14)
+  if (identifierCopy)
   {
-    v18 = [(NSMutableDictionary *)self->_pendingMessagesById objectForKeyedSubscript:v14];
-    v19 = [(NSMutableDictionary *)self->_pendingMessageRetriesById objectForKeyedSubscript:v14];
+    v18 = [(NSMutableDictionary *)self->_pendingMessagesById objectForKeyedSubscript:identifierCopy];
+    v19 = [(NSMutableDictionary *)self->_pendingMessageRetriesById objectForKeyedSubscript:identifierCopy];
     v20 = v19;
-    if (!a6 && [v19 integerValue] >= 1 && -[SOSCoordinator shouldRetryMessage:](self, "shouldRetryMessage:", v18))
+    if (!success && [v19 integerValue] >= 1 && -[SOSCoordinator shouldRetryMessage:](self, "shouldRetryMessage:", v18))
     {
       v21 = sos_default_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v20 integerValue];
+        integerValue = [v20 integerValue];
         *buf = 138412546;
-        v29 = v14;
+        v29 = identifierCopy;
         v30 = 1024;
-        v31 = v22;
+        v31 = integerValue;
         _os_log_impl(&dword_264323000, v21, OS_LOG_TYPE_DEFAULT, "SOSCoordinator, retrying failed message with id %@ and %d retries", buf, 0x12u);
       }
 
@@ -405,7 +405,7 @@ void __56__SOSCoordinator_processEventWithUUID_triggerMechanism___block_invoke_3
     v26[2] = __70__SOSCoordinator_service_account_identifier_didSendWithSuccess_error___block_invoke;
     v26[3] = &unk_279B53BA0;
     v26[4] = self;
-    v27 = v14;
+    v27 = identifierCopy;
     dispatch_sync(pendingMessagesQueue, v26);
   }
 
@@ -430,9 +430,9 @@ uint64_t __70__SOSCoordinator_service_account_identifier_didSendWithSuccess_erro
   return [v3 removeObjectForKey:v2];
 }
 
-- (BOOL)isIncomingMessageValidSOSHandoff:(id)a3
+- (BOOL)isIncomingMessageValidSOSHandoff:(id)handoff
 {
-  v3 = [a3 objectForKeyedSubscript:@"SOSCoordinationTriggerKey"];
+  v3 = [handoff objectForKeyedSubscript:@"SOSCoordinationTriggerKey"];
   v4 = SOSStringForSOSTriggerMechanism(7uLL);
   v5 = [v3 isEqualToString:v4];
 
@@ -449,9 +449,9 @@ uint64_t __70__SOSCoordinator_service_account_identifier_didSendWithSuccess_erro
   return v5;
 }
 
-- (BOOL)isIncomingMessageValidHandoffAck:(id)a3
+- (BOOL)isIncomingMessageValidHandoffAck:(id)ack
 {
-  v4 = a3;
+  ackCopy = ack;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -461,10 +461,10 @@ uint64_t __70__SOSCoordinator_service_account_identifier_didSendWithSuccess_erro
   block[1] = 3221225472;
   block[2] = __51__SOSCoordinator_isIncomingMessageValidHandoffAck___block_invoke;
   block[3] = &unk_279B53C50;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
-  v9 = v4;
-  v6 = v4;
+  v9 = ackCopy;
+  v6 = ackCopy;
   dispatch_sync(eventUUIDArrayQueue, block);
   LOBYTE(eventUUIDArrayQueue) = *(v13 + 24);
 
@@ -507,9 +507,9 @@ LABEL_9:
   *(*(*(a1 + 48) + 8) + 24) = v3;
 }
 
-- (void)handleSOSMessageTypeHandoffSOSAck:(id)a3
+- (void)handleSOSMessageTypeHandoffSOSAck:(id)ack
 {
-  v4 = a3;
+  ackCopy = ack;
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -517,18 +517,18 @@ LABEL_9:
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "SOSCoordinator, handleSOSMessageTypeHandoffSOSAck", v7, 2u);
   }
 
-  if ([(SOSCoordinator *)self isIncomingMessageValidHandoffAck:v4])
+  if ([(SOSCoordinator *)self isIncomingMessageValidHandoffAck:ackCopy])
   {
-    v6 = [v4 objectForKeyedSubscript:@"SOSHandoffAckSuccessKey"];
+    v6 = [ackCopy objectForKeyedSubscript:@"SOSHandoffAckSuccessKey"];
     self->_ackSuccess = [v6 BOOLValue];
 
     dispatch_semaphore_signal(self->_eventProcessingSemaphore);
   }
 }
 
-- (void)handleSOSMessageTypeHandoffSOS:(id)a3
+- (void)handleSOSMessageTypeHandoffSOS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -536,13 +536,13 @@ LABEL_9:
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "SOSCoordinator, handleSOSMessageTypeHandoffSOS", buf, 2u);
   }
 
-  if ([(SOSCoordinator *)self isIncomingMessageValidSOSHandoff:v4])
+  if ([(SOSCoordinator *)self isIncomingMessageValidSOSHandoff:sCopy])
   {
     v6 = objc_alloc(MEMORY[0x277CCAD78]);
-    v7 = [v4 objectForKeyedSubscript:@"SOSEventUUIDKey"];
+    v7 = [sCopy objectForKeyedSubscript:@"SOSEventUUIDKey"];
     v8 = [v6 initWithUUIDString:v7];
 
-    v9 = [v4 objectForKeyedSubscript:@"SOSCoordinationTriggerKey"];
+    v9 = [sCopy objectForKeyedSubscript:@"SOSCoordinationTriggerKey"];
     v10 = [SOSUtilities SOSTriggerMechanismForString:v9];
 
     v11 = +[SOSEngine sharedInstance];
@@ -551,19 +551,19 @@ LABEL_9:
     v12[2] = __49__SOSCoordinator_handleSOSMessageTypeHandoffSOS___block_invoke;
     v12[3] = &unk_279B53C78;
     v12[4] = self;
-    v13 = v4;
+    v13 = sCopy;
     [v11 triggerSOSWithUUID:v8 triggerMechanism:v10 source:1 completion:v12];
   }
 
   else
   {
-    [(SOSCoordinator *)self sendAckToHandoffMessage:v4 success:0];
+    [(SOSCoordinator *)self sendAckToHandoffMessage:sCopy success:0];
   }
 }
 
-- (void)handleSOSMessageTypeProgressionSync:(id)a3
+- (void)handleSOSMessageTypeProgressionSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -571,13 +571,13 @@ LABEL_9:
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "SOSCoordinator, handleSOSMessageTypeProgressionSync", v14, 2u);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"SOSProgressionKey"];
+  v6 = [syncCopy objectForKeyedSubscript:@"SOSProgressionKey"];
   v7 = [SOSUtilities SOSProgressionForString:v6];
 
   if (v7 == 2)
   {
-    v9 = [v4 objectForKeyedSubscript:@"SOSCoordinationShouldHandleThirdPartyKey"];
-    v10 = [v9 BOOLValue];
+    v9 = [syncCopy objectForKeyedSubscript:@"SOSCoordinationShouldHandleThirdPartyKey"];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
@@ -593,22 +593,22 @@ LABEL_9:
       goto LABEL_14;
     }
 
-    v10 = 0;
+    bOOLValue = 0;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"SOSStatusKey"];
+  v8 = [syncCopy objectForKeyedSubscript:@"SOSStatusKey"];
   v11 = [[SOSMessagingStatus alloc] initWithData:v8];
   v12 = v11;
   if (v11)
   {
-    v13 = [(SOSMessagingStatus *)v11 sosStatus];
-    [(SOSCoordinator *)self sendUpdateToObserversWithStatus:v13 progression:v7 shouldHandleThirdParty:v10];
+    sosStatus = [(SOSMessagingStatus *)v11 sosStatus];
+    [(SOSCoordinator *)self sendUpdateToObserversWithStatus:sosStatus progression:v7 shouldHandleThirdParty:bOOLValue];
   }
 
   else
   {
-    v13 = sos_default_log();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    sosStatus = sos_default_log();
+    if (os_log_type_enabled(sosStatus, OS_LOG_TYPE_ERROR))
     {
       [SOSCoordinator handleSOSMessageTypeProgressionSync:];
     }
@@ -617,29 +617,29 @@ LABEL_9:
 LABEL_14:
 }
 
-- (BOOL)_sendUrgentMessageToPairedDevice:(id)a3 retries:(id)a4
+- (BOOL)_sendUrgentMessageToPairedDevice:(id)device retries:(id)retries
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  retriesCopy = retries;
   v8 = *MEMORY[0x277D185B0];
   v30[0] = *MEMORY[0x277D18650];
   v30[1] = v8;
   v31[0] = &unk_2875D2AB8;
   v31[1] = MEMORY[0x277CBEC38];
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
-  v10 = [(SOSCoordinator *)self effectivePairedDevice];
-  v11 = v10;
-  if (v10)
+  effectivePairedDevice = [(SOSCoordinator *)self effectivePairedDevice];
+  v11 = effectivePairedDevice;
+  if (effectivePairedDevice)
   {
-    v12 = [v10 destination];
-    if (v12)
+    destination = [effectivePairedDevice destination];
+    if (destination)
     {
       idsService = self->_idsService;
-      v14 = [MEMORY[0x277CBEB98] setWithObject:v12];
+      v14 = [MEMORY[0x277CBEB98] setWithObject:destination];
       v28 = 0;
       v29 = 0;
-      v15 = [(IDSService *)idsService sendMessage:v6 toDestinations:v14 priority:300 options:v9 identifier:&v29 error:&v28];
+      v15 = [(IDSService *)idsService sendMessage:deviceCopy toDestinations:v14 priority:300 options:v9 identifier:&v29 error:&v28];
       v16 = v29;
       v17 = v28;
 
@@ -658,9 +658,9 @@ LABEL_14:
       block[2] = __59__SOSCoordinator__sendUrgentMessageToPairedDevice_retries___block_invoke;
       block[3] = &unk_279B53CA0;
       v24 = v16;
-      v25 = self;
-      v26 = v6;
-      v27 = v7;
+      selfCopy = self;
+      v26 = deviceCopy;
+      v27 = retriesCopy;
       v20 = v16;
       dispatch_sync(pendingMessagesQueue, block);
     }
@@ -679,8 +679,8 @@ LABEL_14:
 
   else
   {
-    v12 = sos_default_log();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    destination = sos_default_log();
+    if (os_log_type_enabled(destination, OS_LOG_TYPE_ERROR))
     {
       [SOSCoordinator _sendUrgentMessageToPairedDevice:retries:];
     }
@@ -708,9 +708,9 @@ void *__59__SOSCoordinator__sendUrgentMessageToPairedDevice_retries___block_invo
   return result;
 }
 
-- (BOOL)shouldRetryMessage:(id)a3
+- (BOOL)shouldRetryMessage:(id)message
 {
-  v4 = [a3 objectForKeyedSubscript:@"SOSCoordinationMessageTypeKey"];
+  v4 = [message objectForKeyedSubscript:@"SOSCoordinationMessageTypeKey"];
   v5 = [(SOSCoordinator *)self SOSCoordinationMessageTypeForString:v4];
 
   return (v5 < 5) & (v5 ^ 1);
@@ -723,8 +723,8 @@ void *__59__SOSCoordinator__sendUrgentMessageToPairedDevice_retries___block_invo
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(IDSService *)self->_idsService devices];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  devices = [(IDSService *)self->_idsService devices];
+  v3 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -734,7 +734,7 @@ void *__59__SOSCoordinator__sendUrgentMessageToPairedDevice_retries___block_invo
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -745,7 +745,7 @@ void *__59__SOSCoordinator__sendUrgentMessageToPairedDevice_retries___block_invo
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -762,25 +762,25 @@ LABEL_12:
   return v3;
 }
 
-- (int64_t)SOSCoordinationMessageTypeForString:(id)a3
+- (int64_t)SOSCoordinationMessageTypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SOSMessageTypeUnspecified"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"SOSMessageTypeUnspecified"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SOSCoordinationMessageTypeHandoffSOS"])
+  else if ([stringCopy isEqualToString:@"SOSCoordinationMessageTypeHandoffSOS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SOSCoordinationEventHandoffSOSAck"])
+  else if ([stringCopy isEqualToString:@"SOSCoordinationEventHandoffSOSAck"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SOSMessageTypeProgressionSync"])
+  else if ([stringCopy isEqualToString:@"SOSMessageTypeProgressionSync"])
   {
     v4 = 4;
   }
@@ -795,24 +795,24 @@ LABEL_12:
 
 - (BOOL)isPairedDeviceNearby
 {
-  v2 = [(SOSCoordinator *)self effectivePairedDevice];
-  v3 = v2;
-  if (v2)
+  effectivePairedDevice = [(SOSCoordinator *)self effectivePairedDevice];
+  v3 = effectivePairedDevice;
+  if (effectivePairedDevice)
   {
-    v4 = [v2 isNearby];
+    isNearby = [effectivePairedDevice isNearby];
   }
 
   else
   {
-    v4 = 0;
+    isNearby = 0;
   }
 
-  return v4;
+  return isNearby;
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
-  v5 = a3;
+  serviceCopy = service;
   v6 = sos_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -820,21 +820,21 @@ LABEL_12:
     _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "SOSCoordinator nearbyDevicesChanged", v7, 2u);
   }
 
-  [(SOSCoordinator *)self _handleServiceUpdate:v5];
+  [(SOSCoordinator *)self _handleServiceUpdate:serviceCopy];
 }
 
-- (void)_handleServiceUpdate:(id)a3
+- (void)_handleServiceUpdate:(id)update
 {
-  v4 = [(SOSCoordinator *)self effectivePairedDevice];
-  [(SOSCoordinator *)self _updateStateForPairedDevice:v4];
+  effectivePairedDevice = [(SOSCoordinator *)self effectivePairedDevice];
+  [(SOSCoordinator *)self _updateStateForPairedDevice:effectivePairedDevice];
 }
 
-- (void)_updateStateForPairedDevice:(id)a3
+- (void)_updateStateForPairedDevice:(id)device
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 isNearby])
+  deviceCopy = device;
+  v5 = deviceCopy;
+  if (deviceCopy && [deviceCopy isNearby])
   {
     v6 = +[SOSUtilities currentDeviceSOSStatus];
     v7 = sos_default_log();
@@ -849,17 +849,17 @@ LABEL_12:
 
       if ([v6 flowState])
       {
-        v9 = self;
+        selfCopy2 = self;
         v10 = 3;
       }
 
       else
       {
-        v9 = self;
+        selfCopy2 = self;
         v10 = 1;
       }
 
-      [(SOSCoordinator *)v9 syncProgressionWithPairedDevice:v10 sosStatus:v6];
+      [(SOSCoordinator *)selfCopy2 syncProgressionWithPairedDevice:v10 sosStatus:v6];
     }
 
     else
@@ -894,10 +894,10 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportHandoff:(int64_t)a3 result:(int64_t)a4
+- (void)reportHandoff:(int64_t)handoff result:(int64_t)result
 {
-  v7 = [(SOSCoordinator *)self coreAnalyticsReporter];
-  [v7 reportSOSTriggerHandoff:a3 source:-[SOSCoordinator sourceDevice](self destination:"sourceDevice") result:{1, a4}];
+  coreAnalyticsReporter = [(SOSCoordinator *)self coreAnalyticsReporter];
+  [coreAnalyticsReporter reportSOSTriggerHandoff:handoff source:-[SOSCoordinator sourceDevice](self destination:"sourceDevice") result:{1, result}];
 }
 
 - (void)service:(os_log_t)log account:identifier:didSendWithSuccess:error:.cold.1(uint64_t a1, uint64_t a2, os_log_t log)

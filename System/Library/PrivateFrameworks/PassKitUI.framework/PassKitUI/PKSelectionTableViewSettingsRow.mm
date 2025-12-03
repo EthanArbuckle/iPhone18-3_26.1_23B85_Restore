@@ -1,39 +1,39 @@
 @interface PKSelectionTableViewSettingsRow
 + (id)cellReuseIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (PKSelectionTableViewSettingsRow)initWithIdentifier:(id)a3 title:(id)a4 value:(id)a5 tapHandler:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (PKSelectionTableViewSettingsRow)initWithIdentifier:(id)identifier title:(id)title value:(id)value tapHandler:(id)handler;
 - (UIPopoverPresentationControllerSourceItem)sourceItem;
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4;
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path;
 - (unint64_t)hash;
 - (void)handleCellSelection;
 @end
 
 @implementation PKSelectionTableViewSettingsRow
 
-- (PKSelectionTableViewSettingsRow)initWithIdentifier:(id)a3 title:(id)a4 value:(id)a5 tapHandler:(id)a6
+- (PKSelectionTableViewSettingsRow)initWithIdentifier:(id)identifier title:(id)title value:(id)value tapHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  titleCopy = title;
+  valueCopy = value;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = PKSelectionTableViewSettingsRow;
   v14 = [(PKSelectionTableViewSettingsRow *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [titleCopy copy];
     title = v14->_title;
     v14->_title = v17;
 
-    v19 = [v12 copy];
+    v19 = [valueCopy copy];
     value = v14->_value;
     v14->_value = v19;
 
-    v21 = [v13 copy];
+    v21 = [handlerCopy copy];
     changeHandler = v14->_changeHandler;
     v14->_changeHandler = v21;
   }
@@ -53,18 +53,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -126,29 +126,29 @@ LABEL_19:
   return NSStringFromClass(v2);
 }
 
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [objc_opt_class() cellReuseIdentifier];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  viewCopy = view;
+  cellReuseIdentifier = [objc_opt_class() cellReuseIdentifier];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:cellReuseIdentifier];
 
   if (!v7)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:v6];
+    v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:cellReuseIdentifier];
   }
 
-  v8 = [v7 defaultContentConfiguration];
-  [v8 setText:self->_title];
-  [v8 setSecondaryText:self->_value];
-  [v8 setPrefersSideBySideTextAndSecondaryText:1];
-  v9 = [v8 secondaryTextProperties];
+  defaultContentConfiguration = [v7 defaultContentConfiguration];
+  [defaultContentConfiguration setText:self->_title];
+  [defaultContentConfiguration setSecondaryText:self->_value];
+  [defaultContentConfiguration setPrefersSideBySideTextAndSecondaryText:1];
+  secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
   v10 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], 0);
-  [v9 setFont:v10];
+  [secondaryTextProperties setFont:v10];
 
-  v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v9 setColor:v11];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  [v7 setContentConfiguration:v8];
+  [v7 setContentConfiguration:defaultContentConfiguration];
   [v7 setAccessoryType:1];
   [v7 setAccessibilityIdentifier:self->_identifier];
   [(PKSelectionTableViewSettingsRow *)self setSourceItem:v7];

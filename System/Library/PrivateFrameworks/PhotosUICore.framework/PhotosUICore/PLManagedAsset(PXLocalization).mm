@@ -6,17 +6,17 @@
 
 - (uint64_t)px_displayType
 {
-  v2 = [a1 playbackStyle];
-  if (v2 <= 2)
+  playbackStyle = [self playbackStyle];
+  if (playbackStyle <= 2)
   {
-    if (!v2)
+    if (!playbackStyle)
     {
       return 1;
     }
 
-    if (v2 != 1)
+    if (playbackStyle != 1)
     {
-      if (v2 == 2)
+      if (playbackStyle == 2)
       {
         return 6;
       }
@@ -30,20 +30,20 @@
     goto LABEL_10;
   }
 
-  if (v2 != 5)
+  if (playbackStyle != 5)
   {
-    if (v2 == 4)
+    if (playbackStyle == 4)
     {
       return 2;
     }
 
-    if (v2 != 3)
+    if (playbackStyle != 3)
     {
       return 0;
     }
 
 LABEL_10:
-    if ([a1 playbackVariation] == 3)
+    if ([self playbackVariation] == 3)
     {
       return 5;
     }
@@ -54,14 +54,14 @@ LABEL_10:
     }
   }
 
-  v4 = [a1 playbackVariation];
+  playbackVariation = [self playbackVariation];
   v5 = 2;
-  if (v4 == 2)
+  if (playbackVariation == 2)
   {
     v5 = 3;
   }
 
-  if (v4 == 1)
+  if (playbackVariation == 1)
   {
     return 4;
   }

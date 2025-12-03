@@ -6,8 +6,8 @@
 
 - (BOOL)isNull
 {
-  v2 = [MEMORY[0x277CBEB68] null];
-  v3 = v2 == a1;
+  null = [MEMORY[0x277CBEB68] null];
+  v3 = null == self;
 
   return v3;
 }

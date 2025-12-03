@@ -1,44 +1,44 @@
 @interface UIRevealInteraction
-+ (id)revealItemForTextInput:(id)a3 locationInTextInputView:(CGPoint)a4;
++ (id)revealItemForTextInput:(id)input locationInTextInputView:(CGPoint)view;
 @end
 
 @implementation UIRevealInteraction
 
-+ (id)revealItemForTextInput:(id)a3 locationInTextInputView:(CGPoint)a4
++ (id)revealItemForTextInput:(id)input locationInTextInputView:(CGPoint)view
 {
-  y = a4.y;
-  x = a4.x;
+  y = view.y;
+  x = view.x;
   v33[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 closestPositionToPoint:{x, y}];
-  v8 = [v6 positionFromPosition:v7 offset:-1];
+  inputCopy = input;
+  v7 = [inputCopy closestPositionToPoint:{x, y}];
+  v8 = [inputCopy positionFromPosition:v7 offset:-1];
   if (v8)
   {
-    v9 = [v6 textRangeFromPosition:v8 toPosition:v7];
+    v9 = [inputCopy textRangeFromPosition:v8 toPosition:v7];
   }
 
   else
   {
-    v8 = [v6 positionFromPosition:v7 offset:1];
+    v8 = [inputCopy positionFromPosition:v7 offset:1];
     if (!v8)
     {
       v10 = 0;
       goto LABEL_18;
     }
 
-    v9 = [v6 textRangeFromPosition:v7 toPosition:v8];
+    v9 = [inputCopy textRangeFromPosition:v7 toPosition:v8];
   }
 
   v10 = v9;
   if (v9)
   {
-    v11 = [v6 _nsrangeForTextRange:v9];
-    v27 = [v6 _selectedNSRange];
+    v11 = [inputCopy _nsrangeForTextRange:v9];
+    _selectedNSRange = [inputCopy _selectedNSRange];
     v13 = v12;
-    v14 = [v6 beginningOfDocument];
-    v15 = [v6 endOfDocument];
-    v16 = [v6 textRangeFromPosition:v14 toPosition:v15];
-    v17 = [v6 textInRange:v16];
+    beginningOfDocument = [inputCopy beginningOfDocument];
+    endOfDocument = [inputCopy endOfDocument];
+    v16 = [inputCopy textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
+    v17 = [inputCopy textInRange:v16];
 
     v18 = [v17 length];
     if (v18 && v18 == v11)
@@ -79,7 +79,7 @@ LABEL_16:
     v23 = v22;
     if (v13)
     {
-      v24 = [MEMORY[0x1E696B098] valueWithRange:{v27, v13}];
+      v24 = [MEMORY[0x1E696B098] valueWithRange:{_selectedNSRange, v13}];
       v33[0] = v24;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
       v19 = [v23 initWithText:v17 clickedIndex:v11 selectionRanges:v25 shouldUpdateSelection:0];

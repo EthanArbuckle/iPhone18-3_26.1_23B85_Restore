@@ -1,29 +1,29 @@
 @interface _SFNavigationBar
-+ (double)estimatedDefaultHeightForStatusBarHeight:(double)a3;
-+ (double)estimatedMinimumHeightForStatusBarHeight:(double)a3;
++ (double)estimatedDefaultHeightForStatusBarHeight:(double)height;
++ (double)estimatedMinimumHeightForStatusBarHeight:(double)height;
 + (void)initialize;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)clickInteractionShouldBegin:(id)a3;
-- (BOOL)containsBarItem:(int64_t)a3;
+- (BOOL)clickInteractionShouldBegin:(id)begin;
+- (BOOL)containsBarItem:(int64_t)item;
 - (BOOL)hasToolbar;
-- (BOOL)navigationBarURLButton:(id)a3 canWriteAtLocation:(CGPoint)a4;
-- (BOOL)navigationBarURLButton:(id)a3 shouldAllowLongPressAtPoint:(CGPoint)a4;
-- (BOOL)navigationBarURLButton:(id)a3 shouldShowMenuForGestureWithRecognizer:(id)a4;
-- (BOOL)navigationBarURLButtonShouldCopy:(id)a3;
-- (BOOL)navigationBarURLButtonShouldPaste:(id)a3;
+- (BOOL)navigationBarURLButton:(id)button canWriteAtLocation:(CGPoint)location;
+- (BOOL)navigationBarURLButton:(id)button shouldAllowLongPressAtPoint:(CGPoint)point;
+- (BOOL)navigationBarURLButton:(id)button shouldShowMenuForGestureWithRecognizer:(id)recognizer;
+- (BOOL)navigationBarURLButtonShouldCopy:(id)copy;
+- (BOOL)navigationBarURLButtonShouldPaste:(id)paste;
 - (CGRect)URLOutlineFrameInNavigationBarSpace;
-- (CGRect)urlOutlineFrameRelativeToView:(id)a3;
+- (CGRect)urlOutlineFrameRelativeToView:(id)view;
 - (CGSize)dismissButtonSize;
 - (NSArray)popoverPassthroughViews;
 - (_BYTE)_updateToolbarAndCancelButtonAlpha;
 - (_BYTE)_viewToInsertProgressBarIn;
-- (_SFNavigationBar)initWithFrame:(CGRect)a3 inputMode:(unint64_t)a4;
+- (_SFNavigationBar)initWithFrame:(CGRect)frame inputMode:(unint64_t)mode;
 - (_SFNavigationBarDelegate)delegate;
 - (_SFPopoverSourceInfo)URLOutlinePopoverSourceInfo;
 - (_SFPopoverSourceInfo)formatMenuButtonPopoverSourceInfo;
 - (_SFPopoverSourceInfo)reloadButtonPopoverSourceInfo;
-- (char)_navigationBarTrailingButtonWithType:(char *)a1;
-- (double)_auxiliaryBarSquishedVerticalOffsetForSquishTransform:(uint64_t)a1;
+- (char)_navigationBarTrailingButtonWithType:(char *)type;
+- (double)_auxiliaryBarSquishedVerticalOffsetForSquishTransform:(uint64_t)transform;
 - (double)_controlsAlpha;
 - (double)_defaultHeightExcludingAuxiliaryBar;
 - (double)_layoutBounds;
@@ -33,7 +33,7 @@
 - (double)_privateBrowsingLabelRevealPercent;
 - (double)_textFieldTopMargin;
 - (double)_urlOutlineOriginY;
-- (double)_widthForAccessoryButtonType:(uint64_t)a1;
+- (double)_widthForAccessoryButtonType:(uint64_t)type;
 - (double)defaultHeight;
 - (double)dismissButtonPadding;
 - (double)minimumHeight;
@@ -46,20 +46,20 @@
 - (id)_mediaStateMuteButtonColor;
 - (id)_notSecureAnnotationColor;
 - (id)_placeholderText;
-- (id)_searchIndicatorColorForSquishTransformFactor:(id *)a1;
+- (id)_searchIndicatorColorForSquishTransformFactor:(id *)factor;
 - (id)_timingFunctionForAnimation;
-- (id)_toolbarForBarItem:(id *)a1;
-- (id)_viewForAccessoryButtonType:(uint64_t)a1;
-- (id)availabilityDisplayController:(id)a3 determineBestLabelsForPresentation:(id)a4;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)popoverSourceInfoForBarItem:(int64_t)a3;
-- (id)textForNavigationBarURLButton:(id)a3;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4;
+- (id)_toolbarForBarItem:(id *)item;
+- (id)_viewForAccessoryButtonType:(uint64_t)type;
+- (id)availabilityDisplayController:(id)controller determineBestLabelsForPresentation:(id)presentation;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)popoverSourceInfoForBarItem:(int64_t)item;
+- (id)textForNavigationBarURLButton:(id)button;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session;
 - (uint64_t)_adjustLabelRectForLeadingButtonWithDelay:(uint64_t)result;
-- (uint64_t)_shouldUpdateBackdropStyleForTransitionFromItem:(void *)a3 toItem:;
+- (uint64_t)_shouldUpdateBackdropStyleForTransitionFromItem:(void *)item toItem:;
 - (uint64_t)_showsPrivateAnnotation;
 - (uint64_t)_updateFormatButtonAccessories;
 - (uint64_t)_updateProgressViewCornerRadius;
@@ -69,28 +69,28 @@
 - (uint64_t)_updateTextMetrics;
 - (uint64_t)_updateURLOutlineCornerRadius;
 - (void)_URLLabelFont;
-- (void)_URLTapped:(id)a3;
+- (void)_URLTapped:(id)tapped;
 - (void)_barMetricTraitsDidChange;
 - (void)_barMetricsDidChange;
-- (void)_cancelButtonTapped:(id)a3;
+- (void)_cancelButtonTapped:(id)tapped;
 - (void)_compressedBarTapped;
 - (void)_configureNavigationBarTrailingButtonTintedImages;
 - (void)_copyNavigationBarURLToPasteboard;
-- (void)_customButtonHorizontalPaddingWithInset:(uint64_t *)a1;
+- (void)_customButtonHorizontalPaddingWithInset:(uint64_t *)inset;
 - (void)_didUpdateEffectiveTheme;
-- (void)_dismissButtonTapped:(id)a3;
-- (void)_formatToggleButtonTapped:(id)a3;
-- (void)_hideAvailabilityLabelAnimated:(uint64_t)a1;
-- (void)_mediaStateMuteButtonTapped:(id)a3;
+- (void)_dismissButtonTapped:(id)tapped;
+- (void)_formatToggleButtonTapped:(id)tapped;
+- (void)_hideAvailabilityLabelAnimated:(uint64_t)animated;
+- (void)_mediaStateMuteButtonTapped:(id)tapped;
 - (void)_reloadButtonPressed;
-- (void)_setHidePlaceholderURLItemsForPencilInput:(uint64_t)a1;
+- (void)_setHidePlaceholderURLItemsForPencilInput:(uint64_t)input;
 - (void)_setUpFormatToggleButtonIfNeeded;
 - (void)_stopButtonPressed;
-- (void)_transitionFromView:(void *)a3 toView:(int)a4 animated:;
+- (void)_transitionFromView:(void *)view toView:(int)toView animated:;
 - (void)_updateAccessoryButtonsAlpha;
 - (void)_updateAccessoryButtonsVisibility;
 - (void)_updateActiveURLLabelAccessory;
-- (void)_updateAvailabilityAndPageMenuButtonAnimated:(uint64_t)a1;
+- (void)_updateAvailabilityAndPageMenuButtonAnimated:(uint64_t)animated;
 - (void)_updateBackdropFrame;
 - (void)_updateButtonMetrics;
 - (void)_updateEffectiveTheme;
@@ -105,41 +105,41 @@
 - (void)_updateSearchIndicator;
 - (void)_updateSecurityWarningsVisibility;
 - (void)_updateShowsSearchIndicator;
-- (void)_updateTemporarySuppressionOfItemText:(id *)a1;
+- (void)_updateTemporarySuppressionOfItemText:(id *)text;
 - (void)_updateText;
 - (void)_updateTextColor;
-- (void)animateLinkImage:(CGImage *)a3 fromRect:(CGRect)a4 inView:(id)a5 toBarItem:(int64_t)a6 afterDestinationLayerBouncesBlock:(id)a7;
-- (void)clickInteractionDidClickDown:(id)a3;
+- (void)animateLinkImage:(CGImage *)image fromRect:(CGRect)rect inView:(id)view toBarItem:(int64_t)item afterDestinationLayerBouncesBlock:(id)block;
+- (void)clickInteractionDidClickDown:(id)down;
 - (void)dealloc;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)fluidProgressViewDidShowProgress:(id)a3;
-- (void)fluidProgressViewWillShowProgress:(id)a3;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)fluidProgressViewDidShowProgress:(id)progress;
+- (void)fluidProgressViewWillShowProgress:(id)progress;
 - (void)layoutSubviews;
-- (void)navigationBarItemDidUpdateContentOptions:(id)a3 resetDisplay:(BOOL)a4;
-- (void)navigationBarItemDidUpdateCustomPlaceholderText:(id)a3;
-- (void)navigationBarItemDidUpdateHasHiddenElements:(id)a3;
-- (void)navigationBarItemDidUpdateOverlayConfiguration:(id)a3;
-- (void)navigationBarURLButtonDidReceivePasteCommand:(id)a3;
-- (void)navigationBarURLButtonDidRequestFocusForPencilInput:(id)a3 completionHandler:(id)a4;
-- (void)setBackdropGroupDisabled:(BOOL)a3;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setContentUnderStatusBarHeight:(double)a3;
-- (void)setControlsHidden:(BOOL)a3;
-- (void)setDismissButtonStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)setExpanded:(BOOL)a3 completionHandler:(id)a4;
-- (void)setExpanded:(BOOL)a3 textFieldSelectionRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)setHasToolbar:(BOOL)a3;
-- (void)setItem:(id)a3;
-- (void)setLockdownStatusBar:(id)a3;
-- (void)setMinimumBackdropHeight:(double)a3;
-- (void)setPocketContainerInteraction:(id)a3;
-- (void)setSuppressesBlur:(BOOL)a3;
-- (void)setTheme:(id)a3;
-- (void)setUnifiedFieldShowsProgressView:(BOOL)a3;
-- (void)setUsesFaintSeparator:(BOOL)a3;
-- (void)setUsesNarrowLayout:(BOOL)a3;
+- (void)navigationBarItemDidUpdateContentOptions:(id)options resetDisplay:(BOOL)display;
+- (void)navigationBarItemDidUpdateCustomPlaceholderText:(id)text;
+- (void)navigationBarItemDidUpdateHasHiddenElements:(id)elements;
+- (void)navigationBarItemDidUpdateOverlayConfiguration:(id)configuration;
+- (void)navigationBarURLButtonDidReceivePasteCommand:(id)command;
+- (void)navigationBarURLButtonDidRequestFocusForPencilInput:(id)input completionHandler:(id)handler;
+- (void)setBackdropGroupDisabled:(BOOL)disabled;
+- (void)setBackdropGroupName:(id)name;
+- (void)setContentUnderStatusBarHeight:(double)height;
+- (void)setControlsHidden:(BOOL)hidden;
+- (void)setDismissButtonStyle:(int64_t)style animated:(BOOL)animated;
+- (void)setExpanded:(BOOL)expanded completionHandler:(id)handler;
+- (void)setExpanded:(BOOL)expanded textFieldSelectionRange:(_NSRange)range completionHandler:(id)handler;
+- (void)setHasToolbar:(BOOL)toolbar;
+- (void)setItem:(id)item;
+- (void)setLockdownStatusBar:(id)bar;
+- (void)setMinimumBackdropHeight:(double)height;
+- (void)setPocketContainerInteraction:(id)interaction;
+- (void)setSuppressesBlur:(BOOL)blur;
+- (void)setTheme:(id)theme;
+- (void)setUnifiedFieldShowsProgressView:(BOOL)view;
+- (void)setUsesFaintSeparator:(BOOL)separator;
+- (void)setUsesNarrowLayout:(BOOL)layout;
 - (void)tintColorDidChange;
 @end
 
@@ -147,27 +147,27 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && initializeConstants_once != -1)
+  if (objc_opt_class() == self && initializeConstants_once != -1)
   {
     +[_SFNavigationBar initialize];
   }
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v6 = self->_item;
   v7 = v6;
-  if (v6 != v5)
+  if (v6 != itemCopy)
   {
     [(SFNavigationBarItem *)v6 removeObserver:self];
-    v8 = [(SFNavigationBarItem *)v7 fluidProgressController];
-    [v8 unregisterObserver:self->_progressView];
+    fluidProgressController = [(SFNavigationBarItem *)v7 fluidProgressController];
+    [fluidProgressController unregisterObserver:self->_progressView];
 
-    objc_storeStrong(&self->_item, a3);
-    [(SFNavigationBarItem *)v5 addObserver:self];
-    v9 = [(SFNavigationBarItem *)v5 fluidProgressController];
-    [v9 registerObserver:self->_progressView];
+    objc_storeStrong(&self->_item, item);
+    [(SFNavigationBarItem *)itemCopy addObserver:self];
+    fluidProgressController2 = [(SFNavigationBarItem *)itemCopy fluidProgressController];
+    [fluidProgressController2 registerObserver:self->_progressView];
 
     v10 = MEMORY[0x1E69DD250];
     v11[0] = MEMORY[0x1E69E9820];
@@ -176,31 +176,31 @@
     v11[3] = &unk_1E848F6B0;
     v11[4] = self;
     v12 = v7;
-    v13 = v5;
+    v13 = itemCopy;
     [v10 performWithoutAnimation:v11];
   }
 }
 
-- (void)setUsesNarrowLayout:(BOOL)a3
+- (void)setUsesNarrowLayout:(BOOL)layout
 {
-  if (self->_usesNarrowLayout != a3)
+  if (self->_usesNarrowLayout != layout)
   {
-    v3 = a3;
-    self->_usesNarrowLayout = a3;
+    layoutCopy = layout;
+    self->_usesNarrowLayout = layout;
     [(_SFNavigationBar *)self _updateToolbarAndCancelButtonAlpha];
-    v5 = [(_SFNavigationBar *)self _editingLabelFont];
-    v6 = 1.0;
+    _editingLabelFont = [(_SFNavigationBar *)self _editingLabelFont];
+    narrowEditingScaleFactor = 1.0;
     if (self->_usesNarrowLayout)
     {
-      v6 = [(SFNavigationBarMetrics *)self->_barMetrics narrowEditingScaleFactor];
+      narrowEditingScaleFactor = [(SFNavigationBarMetrics *)self->_barMetrics narrowEditingScaleFactor];
     }
 
-    [(UITextField *)self->_textField setFont:v5];
-    [(UILabel *)self->_expandedURLLabel setFont:v5];
+    [(UITextField *)self->_textField setFont:_editingLabelFont];
+    [(UILabel *)self->_expandedURLLabel setFont:_editingLabelFont];
     expandedURLLabel = self->_expandedURLLabel;
-    CGAffineTransformMakeScale(&v8, 1.0 / v6, 1.0 / v6);
+    CGAffineTransformMakeScale(&v8, 1.0 / narrowEditingScaleFactor, 1.0 / narrowEditingScaleFactor);
     [(UILabel *)expandedURLLabel setTransform:&v8];
-    if (v3)
+    if (layoutCopy)
     {
       [(UIView *)self->_controlsContainer addSubview:self->_cancelButton];
     }
@@ -215,36 +215,36 @@
   }
 }
 
-- (void)setUnifiedFieldShowsProgressView:(BOOL)a3
+- (void)setUnifiedFieldShowsProgressView:(BOOL)view
 {
-  if (self->_unifiedFieldShowsProgressView == !a3)
+  if (self->_unifiedFieldShowsProgressView == !view)
   {
-    self->_unifiedFieldShowsProgressView = a3;
+    self->_unifiedFieldShowsProgressView = view;
     [(_SFNavigationBar *)self _updateProgressViewCornerRadius];
     [(_SFNavigationBar *)self _updateProgressViewFillColor];
     if ([(_SFFluidProgressView *)self->_progressView isShowingProgress])
     {
-      v5 = [(_SFNavigationBar *)self _viewToInsertProgressBarIn];
-      [v5 addSubview:self->_progressView];
+      _viewToInsertProgressBarIn = [(_SFNavigationBar *)self _viewToInsertProgressBarIn];
+      [_viewToInsertProgressBarIn addSubview:self->_progressView];
     }
 
     [(_SFNavigationBar *)self setNeedsLayout];
   }
 }
 
-- (void)setDismissButtonStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setDismissButtonStyle:(int64_t)style animated:(BOOL)animated
 {
-  v4 = a4;
-  if ([(SFDismissButton *)self->_dismissButton style]!= a3)
+  animatedCopy = animated;
+  if ([(SFDismissButton *)self->_dismissButton style]!= style)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __51___SFNavigationBar_setDismissButtonStyle_animated___block_invoke;
     v8[3] = &unk_1E848F638;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = style;
     v7 = _Block_copy(v8);
-    if (v4)
+    if (animatedCopy)
     {
       [(_SFNavigationBar *)self layoutIfNeeded];
       [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:0 animations:v7 completion:0];
@@ -267,14 +267,14 @@
   return result;
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v4 = a3;
-  if (!v4)
+  themeCopy = theme;
+  if (!themeCopy)
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v6 = [v5 traitCollection];
-    if ([v6 userInterfaceStyle] == 2)
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       v7 = 2;
     }
@@ -284,49 +284,49 @@
       v7 = 1;
     }
 
-    v4 = [MEMORY[0x1E69B1C20] themeWithBarTintStyle:v7];
+    themeCopy = [MEMORY[0x1E69B1C20] themeWithBarTintStyle:v7];
   }
 
   theme = self->_theme;
-  if (theme != v4)
+  if (theme != themeCopy)
   {
-    obj = v4;
-    v9 = [(_SFBarTheme *)theme isEqual:v4];
-    v4 = obj;
+    obj = themeCopy;
+    v9 = [(_SFBarTheme *)theme isEqual:themeCopy];
+    themeCopy = obj;
     if (!v9)
     {
       objc_storeStrong(&self->_theme, obj);
       [(_SFNavigationBar *)self _updateEffectiveTheme];
-      v4 = obj;
+      themeCopy = obj;
     }
   }
 }
 
-+ (double)estimatedDefaultHeightForStatusBarHeight:(double)a3
++ (double)estimatedDefaultHeightForStatusBarHeight:(double)height
 {
   v5 = estimatedBarMetrics();
-  [(SFNavigationBarMetrics *)v5 updateForStatusBarHeight:a3];
-  v6 = -[SFNavigationBarMetrics barHeightWithBarMetricsCategory:](v5, [a1 _metricsCategory]);
+  [(SFNavigationBarMetrics *)v5 updateForStatusBarHeight:height];
+  v6 = -[SFNavigationBarMetrics barHeightWithBarMetricsCategory:](v5, [self _metricsCategory]);
 
   return v6;
 }
 
-+ (double)estimatedMinimumHeightForStatusBarHeight:(double)a3
++ (double)estimatedMinimumHeightForStatusBarHeight:(double)height
 {
   v4 = estimatedBarMetrics();
-  [(SFNavigationBarMetrics *)v4 updateForStatusBarHeight:a3];
-  v5 = [(SFNavigationBarMetrics *)v4 minimumBarHeight];
+  [(SFNavigationBarMetrics *)v4 updateForStatusBarHeight:height];
+  minimumBarHeight = [(SFNavigationBarMetrics *)v4 minimumBarHeight];
 
-  return v5;
+  return minimumBarHeight;
 }
 
 - (double)minimumHeight
 {
-  v3 = [(SFNavigationBarMetrics *)self->_barMetrics minimumBarHeight];
+  minimumBarHeight = [(SFNavigationBarMetrics *)self->_barMetrics minimumBarHeight];
   [(SFLockdownStatusBar *)self->_lockdownStatusBar preferredSize];
   if (v4 == 0.0)
   {
-    return v3;
+    return minimumBarHeight;
   }
 
   [_SFNavigationBar _auxiliaryBarSquishedVerticalOffsetForSquishTransform:?];
@@ -387,19 +387,19 @@
   return v12;
 }
 
-- (void)setHasToolbar:(BOOL)a3
+- (void)setHasToolbar:(BOOL)toolbar
 {
-  v3 = a3;
-  if ([(_SFNavigationBar *)self hasToolbar]!= a3)
+  toolbarCopy = toolbar;
+  if ([(_SFNavigationBar *)self hasToolbar]!= toolbar)
   {
-    if (v3)
+    if (toolbarCopy)
     {
       if ([MEMORY[0x1E69C8880] isSolariumEnabled])
       {
         v5 = [SFBarButtonGroupContainerConfiguration alloc];
         theme = self->_theme;
-        v7 = [(SFNavigationBarMetrics *)self->_barMetrics traitCollectionForButtonMetrics];
-        v8 = [(SFBarButtonGroupContainerConfiguration *)v5 initWithTheme:theme preferredTraitCollection:v7];
+        traitCollectionForButtonMetrics = [(SFNavigationBarMetrics *)self->_barMetrics traitCollectionForButtonMetrics];
+        v8 = [(SFBarButtonGroupContainerConfiguration *)v5 initWithTheme:theme preferredTraitCollection:traitCollectionForButtonMetrics];
 
         v9 = [[SFBarButtonGroupContainer alloc] initWithConfiguration:v8];
         leadingBarButtonGroupContainer = self->_leadingBarButtonGroupContainer;
@@ -407,8 +407,8 @@
 
         v11 = [SFBarButtonGroupContainerConfiguration alloc];
         v12 = self->_theme;
-        v13 = [(SFNavigationBarMetrics *)self->_barMetrics traitCollectionForButtonMetrics];
-        v14 = [(SFBarButtonGroupContainerConfiguration *)v11 initWithTheme:v12 preferredTraitCollection:v13];
+        traitCollectionForButtonMetrics2 = [(SFNavigationBarMetrics *)self->_barMetrics traitCollectionForButtonMetrics];
+        v14 = [(SFBarButtonGroupContainerConfiguration *)v11 initWithTheme:v12 preferredTraitCollection:traitCollectionForButtonMetrics2];
 
         v15 = [[SFBarButtonGroupContainer alloc] initWithConfiguration:v14];
         trailingBarButtonGroupContainer = self->_trailingBarButtonGroupContainer;
@@ -420,7 +420,7 @@
 
       else
       {
-        v23 = [(_SFNavigationBar *)self _minimumURLOutlineToBoundsPadding];
+        _minimumURLOutlineToBoundsPadding = [(_SFNavigationBar *)self _minimumURLOutlineToBoundsPadding];
         v24 = [[_SFToolbar alloc] initWithPlacement:0];
         leadingToolbar = self->_leadingToolbar;
         self->_leadingToolbar = v24;
@@ -431,7 +431,7 @@
         leadingToolbarContainer = self->_leadingToolbarContainer;
         self->_leadingToolbarContainer = v26;
 
-        [(SFToolbarContainer *)self->_leadingToolbarContainer setMinimumWidth:v23];
+        [(SFToolbarContainer *)self->_leadingToolbarContainer setMinimumWidth:_minimumURLOutlineToBoundsPadding];
         [(SFToolbarContainer *)self->_leadingToolbarContainer _setTouchInsets:-20.0, 0.0, -20.0, 0.0];
         [(UIView *)self->_controlsContainer addSubview:self->_leadingToolbarContainer];
         v28 = [[_SFToolbar alloc] initWithPlacement:0];
@@ -444,7 +444,7 @@
         trailingToolbarContainer = self->_trailingToolbarContainer;
         self->_trailingToolbarContainer = v30;
 
-        [(SFToolbarContainer *)self->_trailingToolbarContainer setMinimumWidth:v23];
+        [(SFToolbarContainer *)self->_trailingToolbarContainer setMinimumWidth:_minimumURLOutlineToBoundsPadding];
         [(SFToolbarContainer *)self->_trailingToolbarContainer _setTouchInsets:-20.0, 0.0, -20.0, 0.0];
         [(UIView *)self->_controlsContainer addSubview:self->_trailingToolbarContainer];
       }
@@ -498,9 +498,9 @@
 
 - (BOOL)hasToolbar
 {
-  v3 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   v4 = &OBJC_IVAR____SFNavigationBar__leadingToolbar;
-  if (v3)
+  if (isSolariumEnabled)
   {
     v4 = &OBJC_IVAR____SFNavigationBar__leadingBarButtonGroupContainer;
   }
@@ -510,22 +510,22 @@
 
 - (void)_barMetricTraitsDidChange
 {
-  v3 = [(_SFNavigationBar *)self traitCollection];
-  if ([(SFNavigationBarMetrics *)self->_barMetrics updateForTraitCollection:v3])
+  traitCollection = [(_SFNavigationBar *)self traitCollection];
+  if ([(SFNavigationBarMetrics *)self->_barMetrics updateForTraitCollection:traitCollection])
   {
     [(_SFNavigationBar *)self _barMetricsDidChange];
   }
 }
 
-- (_SFNavigationBar)initWithFrame:(CGRect)a3 inputMode:(unint64_t)a4
+- (_SFNavigationBar)initWithFrame:(CGRect)frame inputMode:(unint64_t)mode
 {
   v8.receiver = self;
   v8.super_class = _SFNavigationBar;
-  v5 = [(_SFNavigationBar *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(_SFNavigationBar *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    [_SFNavigationBar initWithFrame:v5 inputMode:a4];
+    [_SFNavigationBar initWithFrame:v5 inputMode:mode];
   }
 
   return v6;
@@ -537,7 +537,7 @@
   [WeakRetained navigationBarReloadButtonWasTapped:self];
 }
 
-- (BOOL)clickInteractionShouldBegin:(id)a3
+- (BOOL)clickInteractionShouldBegin:(id)begin
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationBarFormatMenuButtonStartedInteraction:self];
@@ -545,7 +545,7 @@
   return 1;
 }
 
-- (void)clickInteractionDidClickDown:(id)a3
+- (void)clickInteractionDidClickDown:(id)down
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationBarReaderButtonWasTapped:self];
@@ -563,7 +563,7 @@
   [WeakRetained compressedNavigationBarWasTapped:self];
 }
 
-- (void)_URLTapped:(id)a3
+- (void)_URLTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -572,7 +572,7 @@
   }
 }
 
-- (void)_formatToggleButtonTapped:(id)a3
+- (void)_formatToggleButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = WeakRetained;
@@ -621,7 +621,7 @@
 LABEL_10:
 }
 
-- (void)_mediaStateMuteButtonTapped:(id)a3
+- (void)_mediaStateMuteButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -630,13 +630,13 @@ LABEL_10:
   }
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationBarCancelButtonWasTapped:self];
 }
 
-- (void)_dismissButtonTapped:(id)a3
+- (void)_dismissButtonTapped:(id)tapped
 {
   v4 = WBS_LOG_CHANNEL_PREFIXUserInterface();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -675,23 +675,23 @@ LABEL_10:
 
 - (double)_controlsAlpha
 {
-  v3 = [(SFNavigationBarItem *)self->_item overlayConfiguration];
+  overlayConfiguration = [(SFNavigationBarItem *)self->_item overlayConfiguration];
 
-  if (v3)
+  if (overlayConfiguration)
   {
     return 0.0;
   }
 
   [(_SFNavigationBar *)self minimumHeight];
   v6 = v5;
-  v7 = [(_SFNavigationBar *)self bounds];
+  bounds = [(_SFNavigationBar *)self bounds];
   v9.n128_f64[0] = fmin(fmax((v8 - v6) / (self->_maximumHeight - v6), 0.0), 1.0);
 
-  MEMORY[0x1EEE1E3E0](v7, v9);
+  MEMORY[0x1EEE1E3E0](bounds, v9);
   return result;
 }
 
-- (void)fluidProgressViewDidShowProgress:(id)a3
+- (void)fluidProgressViewDidShowProgress:(id)progress
 {
   if ([MEMORY[0x1E69C8880] isSolariumEnabled] && !self->_unifiedFieldShowsProgressView)
   {
@@ -717,33 +717,33 @@ LABEL_10:
   }
 }
 
-- (id)_viewForAccessoryButtonType:(uint64_t)a1
+- (id)_viewForAccessoryButtonType:(uint64_t)type
 {
   v4 = 0;
-  if (a1 && a2 <= 3)
+  if (type && a2 <= 3)
   {
-    v4 = *(a1 + *off_1E8490B20[a2]);
+    v4 = *(type + *off_1E8490B20[a2]);
   }
 
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v78 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [(_SFNavigationBar *)self layer];
-  v9 = [(_SFNavigationBar *)self layer];
-  v10 = [v9 presentationLayer];
-  [v8 convertPoint:v10 toLayer:{x, y}];
+  eventCopy = event;
+  layer = [(_SFNavigationBar *)self layer];
+  layer2 = [(_SFNavigationBar *)self layer];
+  presentationLayer = [layer2 presentationLayer];
+  [layer convertPoint:presentationLayer toLayer:{x, y}];
   v12 = v11;
   v14 = v13;
 
   v76.receiver = self;
   v76.super_class = _SFNavigationBar;
-  v15 = [(_SFNavigationBar *)&v76 hitTest:v7 withEvent:v12, v14];
+  v15 = [(_SFNavigationBar *)&v76 hitTest:eventCopy withEvent:v12, v14];
   if (!v15)
   {
     v18 = 0;
@@ -765,9 +765,9 @@ LABEL_30:
     [(UITextField *)self->_textField convertPoint:self fromView:v12, v14];
     v20 = v19;
     v22 = v21;
-    if ([(UITextField *)self->_textField pointInside:v7 withEvent:?])
+    if ([(UITextField *)self->_textField pointInside:eventCopy withEvent:?])
     {
-      v17 = [(UITextField *)self->_textField hitTest:v7 withEvent:v20, v22];
+      v17 = [(UITextField *)self->_textField hitTest:eventCopy withEvent:v20, v22];
       goto LABEL_30;
     }
 
@@ -785,10 +785,10 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v23 = [(SFNavigationBarItem *)self->_item overlayConfiguration];
-  if (v23)
+  overlayConfiguration = [(SFNavigationBarItem *)self->_item overlayConfiguration];
+  if (overlayConfiguration)
   {
-    v24 = v23;
+    v24 = overlayConfiguration;
     v25 = [(_SFNavigationBarURLButton *)v15 isDescendantOfView:self->_URLOutline];
 
     if (v25)
@@ -797,12 +797,12 @@ LABEL_29:
     }
   }
 
-  v26 = [(_SFNavigationBar *)self _hitTestCandidateViews];
+  _hitTestCandidateViews = [(_SFNavigationBar *)self _hitTestCandidateViews];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v27 = [v26 countByEnumeratingWithState:&v72 objects:v77 count:16];
+  v27 = [_hitTestCandidateViews countByEnumeratingWithState:&v72 objects:v77 count:16];
   if (v27)
   {
     v28 = v27;
@@ -815,7 +815,7 @@ LABEL_29:
       {
         if (*v73 != v30)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(_hitTestCandidateViews);
         }
 
         v33 = *(*(&v72 + 1) + 8 * i);
@@ -824,9 +824,9 @@ LABEL_29:
           [*(*(&v72 + 1) + 8 * i) alpha];
           if (v34 >= 0.01 && ([v33 isHidden] & 1) == 0)
           {
-            v35 = [v33 superview];
+            superview = [v33 superview];
 
-            if (v35)
+            if (superview)
             {
               [v33 bounds];
               [v33 convertRect:self toView:?];
@@ -852,7 +852,7 @@ LABEL_29:
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v72 objects:v77 count:16];
+      v28 = [_hitTestCandidateViews countByEnumeratingWithState:&v72 objects:v77 count:16];
     }
 
     while (v28);
@@ -906,14 +906,14 @@ LABEL_31:
   return v18;
 }
 
-- (void)setExpanded:(BOOL)a3 completionHandler:(id)a4
+- (void)setExpanded:(BOOL)expanded completionHandler:(id)handler
 {
-  v4 = a3;
-  v9 = a4;
-  if (v4)
+  expandedCopy = expanded;
+  handlerCopy = handler;
+  if (expandedCopy)
   {
-    v6 = [(SFNavigationBarItem *)self->_item textWhenExpanded];
-    v7 = [v6 length];
+    textWhenExpanded = [(SFNavigationBarItem *)self->_item textWhenExpanded];
+    v7 = [textWhenExpanded length];
 
     v8 = 0;
   }
@@ -924,55 +924,55 @@ LABEL_31:
     v8 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [(_SFNavigationBar *)self setExpanded:v4 textFieldSelectionRange:v8 completionHandler:v7, v9];
+  [(_SFNavigationBar *)self setExpanded:expandedCopy textFieldSelectionRange:v8 completionHandler:v7, handlerCopy];
 }
 
-- (void)setLockdownStatusBar:(id)a3
+- (void)setLockdownStatusBar:(id)bar
 {
-  v5 = a3;
+  barCopy = bar;
   lockdownStatusBar = self->_lockdownStatusBar;
-  if (lockdownStatusBar != v5)
+  if (lockdownStatusBar != barCopy)
   {
-    v9 = v5;
+    v9 = barCopy;
     if (lockdownStatusBar)
     {
       [(SFLockdownStatusBar *)lockdownStatusBar removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_lockdownStatusBar, a3);
-    v7 = [(SFLockdownStatusBar *)self->_lockdownStatusBar layer];
-    [v7 setAnchorPoint:{0.5, 0.0}];
+    objc_storeStrong(&self->_lockdownStatusBar, bar);
+    layer = [(SFLockdownStatusBar *)self->_lockdownStatusBar layer];
+    [layer setAnchorPoint:{0.5, 0.0}];
 
     [(_SFNavigationBar *)self addSubview:self->_lockdownStatusBar];
     [(_SFNavigationBar *)self defaultHeight];
     self->_maximumHeight = v8;
     [(_SFNavigationBar *)self setNeedsLayout];
-    v5 = v9;
+    barCopy = v9;
   }
 }
 
-- (void)setExpanded:(BOOL)a3 textFieldSelectionRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)setExpanded:(BOOL)expanded textFieldSelectionRange:(_NSRange)range completionHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  expandedCopy = expanded;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74___SFNavigationBar_setExpanded_textFieldSelectionRange_completionHandler___block_invoke;
   aBlock[3] = &unk_1E84909E8;
-  v10 = v9;
+  v10 = handlerCopy;
   v50 = v10;
   v11 = _Block_copy(aBlock);
   v12 = v11;
-  if (self->_expanded == v7)
+  if (self->_expanded == expandedCopy)
   {
     (*(v11 + 2))(v11);
   }
 
   else
   {
-    self->_expanded = v7;
+    self->_expanded = expandedCopy;
     shouldHidePlaceholderURLItemsForPencilInput = self->_shouldHidePlaceholderURLItemsForPencilInput;
     v13 = dispatch_group_create();
     v48[0] = MEMORY[0x1E69E9820];
@@ -1022,8 +1022,8 @@ LABEL_31:
     [v17 _animateUsingDefaultTimingWithOptions:0 animations:v44 completion:v42];
     if (location != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v19 = [(SFNavigationBarItem *)self->_item textWhenExpanded];
-      v20 = [v19 length];
+      textWhenExpanded = [(SFNavigationBarItem *)self->_item textWhenExpanded];
+      v20 = [textWhenExpanded length];
 
       if (v20)
       {
@@ -1088,22 +1088,22 @@ LABEL_31:
   }
 }
 
-- (void)setControlsHidden:(BOOL)a3
+- (void)setControlsHidden:(BOOL)hidden
 {
-  if (self->_controlsHidden != a3)
+  if (self->_controlsHidden != hidden)
   {
-    self->_controlsHidden = a3;
+    self->_controlsHidden = hidden;
     [(_SFNavigationBar *)self _updateSeparatorAlpha];
 
     [(_SFNavigationBar *)self setNeedsLayout];
   }
 }
 
-- (void)setMinimumBackdropHeight:(double)a3
+- (void)setMinimumBackdropHeight:(double)height
 {
-  if (self->_minimumBackdropHeight != a3)
+  if (self->_minimumBackdropHeight != height)
   {
-    self->_minimumBackdropHeight = a3;
+    self->_minimumBackdropHeight = height;
     [(_SFNavigationBar *)self setNeedsLayout];
   }
 }
@@ -1121,11 +1121,11 @@ LABEL_31:
   return result;
 }
 
-- (CGRect)urlOutlineFrameRelativeToView:(id)a3
+- (CGRect)urlOutlineFrameRelativeToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(_SFNavigationBar *)self URLOutlineFrameInNavigationBarSpace];
-  [(_SFNavigationBar *)self convertRect:v4 toView:?];
+  [(_SFNavigationBar *)self convertRect:viewCopy toView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1162,45 +1162,45 @@ LABEL_31:
   }
 }
 
-- (void)setContentUnderStatusBarHeight:(double)a3
+- (void)setContentUnderStatusBarHeight:(double)height
 {
-  if (self->_contentUnderStatusBarHeight != a3)
+  if (self->_contentUnderStatusBarHeight != height)
   {
-    self->_contentUnderStatusBarHeight = a3;
-    [(SFNavigationBarMetrics *)self->_barMetrics updateForStatusBarHeight:a3];
+    self->_contentUnderStatusBarHeight = height;
+    [(SFNavigationBarMetrics *)self->_barMetrics updateForStatusBarHeight:height];
 
     [(_SFNavigationBar *)self setNeedsLayout];
   }
 }
 
-- (void)setSuppressesBlur:(BOOL)a3
+- (void)setSuppressesBlur:(BOOL)blur
 {
-  if (self->_suppressesBlur != a3)
+  if (self->_suppressesBlur != blur)
   {
-    self->_suppressesBlur = a3;
-    [(UIVisualEffectView *)self->_backdrop setAllowsBlurring:!a3];
+    self->_suppressesBlur = blur;
+    [(UIVisualEffectView *)self->_backdrop setAllowsBlurring:!blur];
     v4 = WBS_LOG_CHANNEL_PREFIXUserInterface();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      [(_SFNavigationBar *)a3 setSuppressesBlur:v4];
+      [(_SFNavigationBar *)blur setSuppressesBlur:v4];
     }
   }
 }
 
-- (void)setUsesFaintSeparator:(BOOL)a3
+- (void)setUsesFaintSeparator:(BOOL)separator
 {
-  if (self->_usesFaintSeparator != a3)
+  if (self->_usesFaintSeparator != separator)
   {
-    [(_SFNavigationBar *)a3 setUsesFaintSeparator:a3, self];
+    [(_SFNavigationBar *)separator setUsesFaintSeparator:separator, self];
   }
 }
 
-- (void)setBackdropGroupDisabled:(BOOL)a3
+- (void)setBackdropGroupDisabled:(BOOL)disabled
 {
-  if (self->_backdropGroupDisabled == !a3)
+  if (self->_backdropGroupDisabled == !disabled)
   {
-    self->_backdropGroupDisabled = a3;
-    if (a3)
+    self->_backdropGroupDisabled = disabled;
+    if (disabled)
     {
       backdropGroupName = 0;
     }
@@ -1214,15 +1214,15 @@ LABEL_31:
   }
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   backdropGroupName = self->_backdropGroupName;
-  if (backdropGroupName != v4)
+  if (backdropGroupName != nameCopy)
   {
-    v10 = v4;
-    v6 = [(NSString *)backdropGroupName isEqualToString:v4];
-    v4 = v10;
+    v10 = nameCopy;
+    v6 = [(NSString *)backdropGroupName isEqualToString:nameCopy];
+    nameCopy = v10;
     if (!v6)
     {
       v7 = [(NSString *)v10 copy];
@@ -1240,39 +1240,39 @@ LABEL_31:
       }
 
       [(UIVisualEffectView *)self->_backdrop _setGroupName:v9];
-      v4 = v10;
+      nameCopy = v10;
     }
   }
 }
 
-- (void)setPocketContainerInteraction:(id)a3
+- (void)setPocketContainerInteraction:(id)interaction
 {
-  v8 = a3;
-  v5 = [MEMORY[0x1E69C8880] isSolariumEnabled];
-  v6 = v8;
-  if (v5)
+  interactionCopy = interaction;
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  v6 = interactionCopy;
+  if (isSolariumEnabled)
   {
     pocketContainerInteraction = self->_pocketContainerInteraction;
-    if (pocketContainerInteraction != v8)
+    if (pocketContainerInteraction != interactionCopy)
     {
       if (pocketContainerInteraction)
       {
         [(_SFNavigationBar *)self removeInteraction:?];
       }
 
-      objc_storeStrong(&self->_pocketContainerInteraction, a3);
-      [(_SFNavigationBar *)self addInteraction:v8];
-      v6 = v8;
+      objc_storeStrong(&self->_pocketContainerInteraction, interaction);
+      [(_SFNavigationBar *)self addInteraction:interactionCopy];
+      v6 = interactionCopy;
     }
   }
 }
 
 - (id)_placeholderText
 {
-  v2 = [(SFNavigationBarItem *)self->_item customPlaceholderText];
-  if ([v2 length])
+  customPlaceholderText = [(SFNavigationBarItem *)self->_item customPlaceholderText];
+  if ([customPlaceholderText length])
   {
-    v3 = v2;
+    v3 = customPlaceholderText;
   }
 
   else
@@ -1285,47 +1285,47 @@ LABEL_31:
   return v4;
 }
 
-- (id)textForNavigationBarURLButton:(id)a3
+- (id)textForNavigationBarURLButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained navigationBarURLForSharing:self];
-  v6 = [v5 safari_userVisibleString];
+  safari_userVisibleString = [v5 safari_userVisibleString];
 
-  return v6;
+  return safari_userVisibleString;
 }
 
-- (void)navigationBarURLButtonDidReceivePasteCommand:(id)a3
+- (void)navigationBarURLButtonDidReceivePasteCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
     objc_initWeak(&location, self);
-    v6 = [MEMORY[0x1E69DCD50] generalPasteboard];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __65___SFNavigationBar_navigationBarURLButtonDidReceivePasteCommand___block_invoke;
     v7[3] = &unk_1E8490A60;
     objc_copyWeak(&v9, &location);
     v8 = WeakRetained;
-    [v6 safari_bestStringForPastingIntoURLFieldCompletionHandler:v7];
+    [generalPasteboard safari_bestStringForPastingIntoURLFieldCompletionHandler:v7];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
 }
 
-- (BOOL)navigationBarURLButtonShouldCopy:(id)a3
+- (BOOL)navigationBarURLButtonShouldCopy:(id)copy
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained navigationBarURLForSharing:v3];
-  LOBYTE(v3) = v5 != 0;
+  v5 = [WeakRetained navigationBarURLForSharing:selfCopy];
+  LOBYTE(selfCopy) = v5 != 0;
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)navigationBarURLButtonShouldPaste:(id)a3
+- (BOOL)navigationBarURLButtonShouldPaste:(id)paste
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v4 = objc_opt_respondsToSelector();
@@ -1335,30 +1335,30 @@ LABEL_31:
     return 0;
   }
 
-  v5 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  v6 = [v5 safari_canPasteAndNavigate];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  safari_canPasteAndNavigate = [generalPasteboard safari_canPasteAndNavigate];
 
-  return v6;
+  return safari_canPasteAndNavigate;
 }
 
-- (void)navigationBarURLButtonDidRequestFocusForPencilInput:(id)a3 completionHandler:(id)a4
+- (void)navigationBarURLButtonDidRequestFocusForPencilInput:(id)input completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(_SFNavigationBar *)self textField];
-    v8 = [v7 isFirstResponder];
+    textField = [(_SFNavigationBar *)self textField];
+    isFirstResponder = [textField isFirstResponder];
     v9 = WBS_LOG_CHANNEL_PREFIXPencilInput();
     v10 = v9;
-    if (v8)
+    if (isFirstResponder)
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         [_SFNavigationBar navigationBarURLButtonDidRequestFocusForPencilInput:completionHandler:];
       }
 
-      v5[2](v5);
+      handlerCopy[2](handlerCopy);
     }
 
     else
@@ -1368,15 +1368,15 @@ LABEL_31:
         [_SFNavigationBar navigationBarURLButtonDidRequestFocusForPencilInput:v10 completionHandler:?];
       }
 
-      [v7 setText:&stru_1F4FE9E38];
+      [textField setText:&stru_1F4FE9E38];
       [(_SFNavigationBar *)&self->super.super.super.isa _updateTemporarySuppressionOfItemText:?];
-      [WeakRetained navigationBarURLWasTapped:self completionHandler:v5];
+      [WeakRetained navigationBarURLWasTapped:self completionHandler:handlerCopy];
     }
   }
 
   else
   {
-    v5[2](v5);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -1391,26 +1391,26 @@ LABEL_31:
 
 - (BOOL)canBecomeFirstResponder
 {
-  v3 = [(_SFNavigationBar *)self inputAccessoryView];
-  if (v3)
+  inputAccessoryView = [(_SFNavigationBar *)self inputAccessoryView];
+  if (inputAccessoryView)
   {
-    v4 = 1;
+    canBecomeFirstResponder = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = _SFNavigationBar;
-    v4 = [(_SFNavigationBar *)&v6 canBecomeFirstResponder];
+    canBecomeFirstResponder = [(_SFNavigationBar *)&v6 canBecomeFirstResponder];
   }
 
-  return v4;
+  return canBecomeFirstResponder;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v29[4] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  sessionCopy = session;
   mediaStateMuteButton = self->_mediaStateMuteButton;
   v29[0] = self->_formatToggleButton;
   v29[1] = mediaStateMuteButton;
@@ -1441,7 +1441,7 @@ LABEL_31:
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
-        [v5 locationInView:{v16, v23}];
+        [sessionCopy locationInView:{v16, v23}];
         v17 = [v16 hitTest:0 withEvent:?];
 
         if (v17)
@@ -1494,11 +1494,11 @@ LABEL_19:
   return v14;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
   v6 = objc_alloc_init(MEMORY[0x1E69DC9A0]);
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
   v8 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:self->_URLOutline parameters:v6];
   [v8 set_springboardParameters:&unk_1F5024198];
@@ -1506,14 +1506,14 @@ LABEL_19:
   return v8;
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72___SFNavigationBar_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke;
   aBlock[3] = &unk_1E848FA00;
   aBlock[4] = self;
-  v5 = a4;
+  animatorCopy = animator;
   v6 = _Block_copy(aBlock);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1521,40 +1521,40 @@ LABEL_19:
   v11[3] = &unk_1E84909E8;
   v7 = v6;
   v12 = v7;
-  [v5 addAnimations:v11];
+  [animatorCopy addAnimations:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72___SFNavigationBar_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke_3;
   v9[3] = &unk_1E8490A88;
   v10 = v7;
   v8 = v7;
-  [v5 addCompletion:v9];
+  [animatorCopy addCompletion:v9];
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  v5 = a4;
+  beginCopy = begin;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
     v7 = [WeakRetained currentContentUUIDForNavigationBar:self];
-    [v5 setLocalContext:v7];
+    [beginCopy setLocalContext:v7];
   }
 
-  v8 = [v5 items];
-  v9 = [v8 firstObject];
+  items = [beginCopy items];
+  firstObject = [items firstObject];
 
-  v10 = [v9 localObject];
+  localObject = [firstObject localObject];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53___SFNavigationBar_dragInteraction_sessionWillBegin___block_invoke;
   v12[3] = &unk_1E8490AB0;
-  v13 = v10;
-  v11 = v10;
-  [v9 setPreviewProvider:v12];
+  v13 = localObject;
+  v11 = localObject;
+  [firstObject setPreviewProvider:v12];
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1579,18 +1579,18 @@ LABEL_19:
   return v7;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [v5 localDragSession];
+  localDragSession = [updateCopy localDragSession];
 
-  v8 = [v7 localContext];
+  localContext = [localDragSession localContext];
 
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (localContext && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v9 = [WeakRetained currentContentUUIDForNavigationBar:self];
-    if ([v9 isEqual:v8])
+    if ([v9 isEqual:localContext])
     {
       v10 = [objc_alloc(MEMORY[0x1E69DC9C0]) initWithDropOperation:0];
 
@@ -1604,17 +1604,17 @@ LABEL_7:
   return v10;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
   v5 = MEMORY[0x1E69B1C50];
-  v6 = a4;
-  v7 = [v5 builder];
+  dropCopy = drop;
+  builder = [v5 builder];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48___SFNavigationBar_dropInteraction_performDrop___block_invoke;
   v8[3] = &unk_1E8490AD8;
   v8[4] = self;
-  [v7 buildNavigationIntentForDropSession:v6 completionHandler:v8];
+  [builder buildNavigationIntentForDropSession:dropCopy completionHandler:v8];
 }
 
 - (_SFPopoverSourceInfo)formatMenuButtonPopoverSourceInfo
@@ -1651,78 +1651,78 @@ LABEL_7:
 
 - (NSArray)popoverPassthroughViews
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 addObject:self->_textField];
-  [v3 safari_addObjectUnlessNil:self->_leadingToolbar];
-  [v3 safari_addObjectUnlessNil:self->_trailingToolbar];
-  v4 = [v3 copy];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:self->_textField];
+  [array safari_addObjectUnlessNil:self->_leadingToolbar];
+  [array safari_addObjectUnlessNil:self->_trailingToolbar];
+  v4 = [array copy];
 
   return v4;
 }
 
-- (void)animateLinkImage:(CGImage *)a3 fromRect:(CGRect)a4 inView:(id)a5 toBarItem:(int64_t)a6 afterDestinationLayerBouncesBlock:(id)a7
+- (void)animateLinkImage:(CGImage *)image fromRect:(CGRect)rect inView:(id)view toBarItem:(int64_t)item afterDestinationLayerBouncesBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a5;
-  v15 = a7;
-  v16 = [(_SFNavigationBar *)&self->super.super.super.isa _toolbarForBarItem:a6];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  blockCopy = block;
+  v16 = [(_SFNavigationBar *)&self->super.super.super.isa _toolbarForBarItem:item];
   v17 = v16;
   if (v16)
   {
-    [v16 animateLinkImage:a3 fromRect:v18 inView:a6 toBarItem:v15 afterDestinationLayerBouncesBlock:{x, y, width, height}];
+    [v16 animateLinkImage:image fromRect:viewCopy inView:item toBarItem:blockCopy afterDestinationLayerBouncesBlock:{x, y, width, height}];
   }
 
-  else if (v15)
+  else if (blockCopy)
   {
-    dispatch_async(MEMORY[0x1E69E96A0], v15);
+    dispatch_async(MEMORY[0x1E69E96A0], blockCopy);
   }
 }
 
-- (id)popoverSourceInfoForBarItem:(int64_t)a3
+- (id)popoverSourceInfoForBarItem:(int64_t)item
 {
   v5 = 600;
-  v6 = [(SFBarButtonGroupContainer *)self->_leadingBarButtonGroupContainer barRegistration];
-  v7 = [v6 containsBarItem:a3];
+  barRegistration = [(SFBarButtonGroupContainer *)self->_leadingBarButtonGroupContainer barRegistration];
+  v7 = [barRegistration containsBarItem:item];
 
-  if (v7 || (v5 = 608, -[SFBarButtonGroupContainer barRegistration](self->_trailingBarButtonGroupContainer, "barRegistration"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsBarItem:a3], v8, v9))
+  if (v7 || (v5 = 608, -[SFBarButtonGroupContainer barRegistration](self->_trailingBarButtonGroupContainer, "barRegistration"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsBarItem:item], v8, v9))
   {
-    v10 = [*(&self->super.super.super.isa + v5) popoverSourceInfoForBarItem:a3];
+    v10 = [*(&self->super.super.super.isa + v5) popoverSourceInfoForBarItem:item];
   }
 
   else
   {
-    v12 = [(_SFNavigationBar *)&self->super.super.super.isa _toolbarForBarItem:a3];
-    v10 = [v12 popoverSourceInfoForBarItem:a3];
+    v12 = [(_SFNavigationBar *)&self->super.super.super.isa _toolbarForBarItem:item];
+    v10 = [v12 popoverSourceInfoForBarItem:item];
   }
 
   return v10;
 }
 
-- (void)navigationBarItemDidUpdateContentOptions:(id)a3 resetDisplay:(BOOL)a4
+- (void)navigationBarItemDidUpdateContentOptions:(id)options resetDisplay:(BOOL)display
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  displayCopy = display;
+  optionsCopy = options;
+  if (displayCopy)
   {
     [(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController resetDisplay];
   }
 
-  -[WBSContentAvailabilityDisplayController updateToContentOptions:](self->_availabilityDisplayController, "updateToContentOptions:", [v6 contentOptions]);
+  -[WBSContentAvailabilityDisplayController updateToContentOptions:](self->_availabilityDisplayController, "updateToContentOptions:", [optionsCopy contentOptions]);
 }
 
-- (id)availabilityDisplayController:(id)a3 determineBestLabelsForPresentation:(id)a4
+- (id)availabilityDisplayController:(id)controller determineBestLabelsForPresentation:(id)presentation
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 count];
+  presentationCopy = presentation;
+  v6 = [presentationCopy count];
   v30 = v6 - 1;
   if (v6 == 1)
   {
 LABEL_9:
-    v11 = [v5 lastObject];
+    lastObject = [presentationCopy lastObject];
   }
 
   else
@@ -1731,18 +1731,18 @@ LABEL_9:
     v8 = *MEMORY[0x1E69DB648];
     v9 = 0x1EC7D6000uLL;
     v10 = 0x1E695D000uLL;
-    v31 = v5;
+    v31 = presentationCopy;
     v29 = *MEMORY[0x1E69DB648];
     while (1)
     {
-      v11 = [v5 objectAtIndexedSubscript:{v7, v29}];
+      lastObject = [presentationCopy objectAtIndexedSubscript:{v7, v29}];
       v32 = v8;
       v12 = *(v9 + 3240);
-      v13 = [*(&self->super.super.super.isa + v12) font];
-      v33[0] = v13;
+      font = [*(&self->super.super.super.isa + v12) font];
+      v33[0] = font;
       v14 = [*(v10 + 3872) dictionaryWithObjects:v33 forKeys:&v32 count:1];
 
-      v15 = [v11 count];
+      v15 = [lastObject count];
       if (!v15)
       {
         break;
@@ -1753,7 +1753,7 @@ LABEL_9:
       while (1)
       {
         v18 = objc_alloc(MEMORY[0x1E696AAB0]);
-        v19 = [v11 textForOptionsAtIndex:v17];
+        v19 = [lastObject textForOptionsAtIndex:v17];
         v20 = [v18 initWithString:v19 attributes:v14];
 
         v21 = CTLineCreateWithAttributedString(v20);
@@ -1783,7 +1783,7 @@ LABEL_9:
       }
 
       ++v7;
-      v5 = v31;
+      presentationCopy = v31;
       v8 = v29;
       v9 = 0x1EC7D6000;
       v10 = 0x1E695D000;
@@ -1795,10 +1795,10 @@ LABEL_9:
 
 LABEL_10:
 
-    v5 = v31;
+    presentationCopy = v31;
   }
 
-  return v11;
+  return lastObject;
 }
 
 - (_SFNavigationBarDelegate)delegate
@@ -1810,10 +1810,10 @@ LABEL_10:
 
 - (void)_updatePlaceholderText
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1[109];
-    [a1 _placeholderText];
+    v1 = self[109];
+    [self _placeholderText];
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_23();
     [v1 setPlaceholder:?];
@@ -1822,11 +1822,11 @@ LABEL_10:
 
 - (void)_updateShowsSearchIndicator
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 848) showsSearchIndicator];
-    v3 = *(a1 + 448);
-    if (v2)
+    showsSearchIndicator = [*(self + 848) showsSearchIndicator];
+    v3 = *(self + 448);
+    if (showsSearchIndicator)
     {
       [v3 setFadeOutEdge:1];
       v4 = OUTLINED_FUNCTION_21();
@@ -1838,38 +1838,38 @@ LABEL_10:
         [OUTLINED_FUNCTION_21() setTintAdjustmentMode:1];
         OUTLINED_FUNCTION_35(objc_alloc_init(MEMORY[0x1E69DCAE0]), 672);
         [OUTLINED_FUNCTION_12(672) setImage:?];
-        [*(a1 + 672) setTintAdjustmentMode:1];
+        [*(self + 672) setTintAdjustmentMode:1];
 
         v4 = OUTLINED_FUNCTION_21();
       }
 
-      v6 = [v4 superview];
+      superview = [v4 superview];
 
-      if (!v6)
+      if (!superview)
       {
-        [*(a1 + 432) addSubview:*(a1 + 664)];
-        [*(a1 + 680) addSubview:*(a1 + 672)];
-        [(_SFNavigationBar *)a1 _updateSearchIndicator];
+        [*(self + 432) addSubview:*(self + 664)];
+        [*(self + 680) addSubview:*(self + 672)];
+        [(_SFNavigationBar *)self _updateSearchIndicator];
       }
     }
 
     else
     {
       [v3 setFadeOutEdge:0];
-      [*(a1 + 664) removeFromSuperview];
-      [*(a1 + 672) removeFromSuperview];
+      [*(self + 664) removeFromSuperview];
+      [*(self + 672) removeFromSuperview];
     }
 
-    [(_SFNavigationBar *)a1 _updateActiveURLLabelAccessory];
-    [a1 setNeedsLayout];
+    [(_SFNavigationBar *)self _updateActiveURLLabelAccessory];
+    [self setNeedsLayout];
 
-    [(_SFNavigationBar *)a1 _updateAccessoryButtonsVisibility];
+    [(_SFNavigationBar *)self _updateAccessoryButtonsVisibility];
   }
 }
 
 - (void)_updateAccessoryButtonsVisibility
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_66();
     v2 = v1;
@@ -1945,15 +1945,15 @@ LABEL_10:
 
 - (void)_updateMediaStateMuteButton
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_66();
     v2 = v1;
     [v1[106] mediaStateIcon];
     v11 = _SFImageForMediaStateIcon();
-    v3 = [(_SFNavigationBar *)v2 _mediaStateMuteButtonColor];
-    v4 = [v11 flattenedImageWithColor:v3];
-    v5 = [v3 colorWithAlphaComponent:0.2];
+    _mediaStateMuteButtonColor = [(_SFNavigationBar *)v2 _mediaStateMuteButtonColor];
+    v4 = [v11 flattenedImageWithColor:_mediaStateMuteButtonColor];
+    v5 = [_mediaStateMuteButtonColor colorWithAlphaComponent:0.2];
     v6 = [v11 flattenedImageWithColor:v5];
 
     v7 = [v2[97] imageForState:0];
@@ -1974,41 +1974,41 @@ LABEL_10:
 
 - (void)_updateNavigationBarTrailingButtonType
 {
-  if (a1)
+  if (self)
   {
     [_SFNavigationBar _updateAccessoryButtonsArrangement];
-    v2 = *(a1 + 736);
+    v2 = *(self + 736);
     v3 = v2 ? *(v2 + 16) : 0;
-    v4 = [v3 firstObject];
-    v5 = [v4 integerValue];
+    firstObject = [v3 firstObject];
+    integerValue = [firstObject integerValue];
 
-    if (*(a1 + 784) != v5 && (![MEMORY[0x1E69C8880] isSolariumEnabled] || v5 != 2))
+    if (*(self + 784) != integerValue && (![MEMORY[0x1E69C8880] isSolariumEnabled] || integerValue != 2))
     {
-      v7 = [(_SFNavigationBar *)a1 _navigationBarTrailingButtonWithType:?];
-      v6 = [(_SFNavigationBar *)a1 _navigationBarTrailingButtonWithType:v5];
-      *(a1 + 784) = v5;
-      -[_SFNavigationBar _transitionFromView:toView:animated:](a1, v7, v6, [MEMORY[0x1E69DD250] areAnimationsEnabled]);
+      v7 = [(_SFNavigationBar *)self _navigationBarTrailingButtonWithType:?];
+      v6 = [(_SFNavigationBar *)self _navigationBarTrailingButtonWithType:integerValue];
+      *(self + 784) = integerValue;
+      -[_SFNavigationBar _transitionFromView:toView:animated:](self, v7, v6, [MEMORY[0x1E69DD250] areAnimationsEnabled]);
     }
   }
 }
 
 - (void)_updateTextColor
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 848) text];
-    v3 = [v2 length];
+    text = [*(self + 848) text];
+    v3 = [text length];
 
     [OUTLINED_FUNCTION_30() platterPlaceholderTextColor];
     objc_claimAutoreleasedReturnValue();
-    [OUTLINED_FUNCTION_2() setTextFieldPlaceHolderColor:v2];
-    [a1 minimumHeight];
+    [OUTLINED_FUNCTION_2() setTextFieldPlaceHolderColor:text];
+    [self minimumHeight];
     v5 = v4;
-    [a1 bounds];
+    [self bounds];
     OUTLINED_FUNCTION_38();
     if (!v7)
     {
-      OUTLINED_FUNCTION_1_1(v6 - v5, *(a1 + 904) - v5);
+      OUTLINED_FUNCTION_1_1(v6 - v5, *(self + 904) - v5);
       SFBarBackgroundAlphaForSquishTransformFactor();
     }
 
@@ -2021,12 +2021,12 @@ LABEL_10:
 
     else
     {
-      v10 = v2;
+      v10 = text;
     }
 
     v11 = v10;
     OUTLINED_FUNCTION_23();
-    [*(a1 + 448) setTextColor:?];
+    [*(self + 448) setTextColor:?];
     [OUTLINED_FUNCTION_20(456) setTextColor:?];
     [OUTLINED_FUNCTION_20(472) setTextColor:?];
     [OUTLINED_FUNCTION_41(872) setTextColor:?];
@@ -2042,30 +2042,30 @@ LABEL_10:
     v12 = ;
     [OUTLINED_FUNCTION_60(872) setTintColor:?];
 
-    [*(a1 + 872) setOverrideUserInterfaceStyle:{objc_msgSend(OUTLINED_FUNCTION_30(), "platterTextFieldOverrideUserInterfaceStyle")}];
-    [*(a1 + 872) setKeyboardAppearance:{objc_msgSend(OUTLINED_FUNCTION_30(), "platterKeyboardOverrideAppearance")}];
-    v13 = [(_SFNavigationBar *)a1 _attributedStringSecurityAnnotation];
+    [*(self + 872) setOverrideUserInterfaceStyle:{objc_msgSend(OUTLINED_FUNCTION_30(), "platterTextFieldOverrideUserInterfaceStyle")}];
+    [*(self + 872) setKeyboardAppearance:{objc_msgSend(OUTLINED_FUNCTION_30(), "platterKeyboardOverrideAppearance")}];
+    _attributedStringSecurityAnnotation = [(_SFNavigationBar *)self _attributedStringSecurityAnnotation];
     [OUTLINED_FUNCTION_60(480) setAttributedText:?];
 
-    v14 = [OUTLINED_FUNCTION_30() annotationTextColor];
+    annotationTextColor = [OUTLINED_FUNCTION_30() annotationTextColor];
     [OUTLINED_FUNCTION_60(464) setTextColor:?];
 
-    [*(a1 + 448) setEffect:0];
+    [*(self + 448) setEffect:0];
   }
 }
 
 - (void)_updateProgressView
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 704);
-    v3 = [*(a1 + 848) fluidProgressStateSource];
-    v4 = [v3 progressState];
-    [v2 setProgressToCurrentPositionForState:v4];
+    v2 = *(self + 704);
+    fluidProgressStateSource = [*(self + 848) fluidProgressStateSource];
+    progressState = [fluidProgressStateSource progressState];
+    [v2 setProgressToCurrentPositionForState:progressState];
 
-    [(_SFNavigationBar *)a1 _updateProgressViewCornerRadius];
+    [(_SFNavigationBar *)self _updateProgressViewCornerRadius];
 
-    [(_SFNavigationBar *)a1 _updateProgressViewFillColor];
+    [(_SFNavigationBar *)self _updateProgressViewFillColor];
   }
 }
 
@@ -2074,9 +2074,9 @@ LABEL_10:
   if (result)
   {
     v1 = result;
-    v2 = [*(result + 848) hasHiddenElements];
+    hasHiddenElements = [*(result + 848) hasHiddenElements];
     v3 = *(v1 + 744);
-    if (v2)
+    if (hasHiddenElements)
     {
       v4 = &unk_1F5023CC8;
     }
@@ -2092,37 +2092,37 @@ LABEL_10:
   return result;
 }
 
-- (uint64_t)_shouldUpdateBackdropStyleForTransitionFromItem:(void *)a3 toItem:
+- (uint64_t)_shouldUpdateBackdropStyleForTransitionFromItem:(void *)item toItem:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  itemCopy = item;
+  if (self)
   {
-    if (*(a1 + 843))
+    if (*(self + 843))
     {
-      a1 = 0;
+      self = 0;
     }
 
     else
     {
-      v7 = [v5 overrideBarStyleForSecurityWarning];
-      a1 = v7 ^ [v6 overrideBarStyleForSecurityWarning];
+      overrideBarStyleForSecurityWarning = [v5 overrideBarStyleForSecurityWarning];
+      self = overrideBarStyleForSecurityWarning ^ [itemCopy overrideBarStyleForSecurityWarning];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_updateEffectiveTheme
 {
-  if (a1)
+  if (self)
   {
-    obj = [(_SFBarTheme *)_SFNavigationBarTheme themeWithTheme:*(a1 + 856)];
-    if ([*(a1 + 848) overrideBarStyleForSecurityWarning])
+    obj = [(_SFBarTheme *)_SFNavigationBarTheme themeWithTheme:*(self + 856)];
+    if ([*(self + 848) overrideBarStyleForSecurityWarning])
     {
-      v2 = [obj fallbackTheme];
+      fallbackTheme = [obj fallbackTheme];
 
-      v3 = v2;
+      v3 = fallbackTheme;
     }
 
     else
@@ -2130,7 +2130,7 @@ LABEL_10:
       v3 = obj;
     }
 
-    v4 = *(a1 + 864);
+    v4 = *(self + 864);
     if (v4 != v3)
     {
       obja = v3;
@@ -2138,7 +2138,7 @@ LABEL_10:
       v3 = obja;
       if ((v5 & 1) == 0)
       {
-        objc_storeStrong((a1 + 864), obja);
+        objc_storeStrong((self + 864), obja);
         [_SFNavigationBar _didUpdateEffectiveTheme];
         v3 = obja;
       }
@@ -2185,10 +2185,10 @@ LABEL_10:
 
 - (id)_editingLabelFont
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 840);
-    v3 = *(a1 + 648);
+    v2 = *(self + 840);
+    v3 = *(self + 648);
     if (v2)
     {
       [(SFNavigationBarMetrics *)v3 narrowEditingLabelFont];
@@ -2198,11 +2198,11 @@ LABEL_10:
     {
       [(SFNavigationBarMetrics *)v3 defaultLabelFont];
     }
-    a1 = ;
+    self = ;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_updateProgressViewCornerRadius
@@ -2210,14 +2210,14 @@ LABEL_10:
   if (result)
   {
     v1 = result;
-    v2 = 0.0;
+    urlOutlineCornerRadius = 0.0;
     if (*(result + 841) == 1)
     {
       v3 = OUTLINED_FUNCTION_53();
-      v2 = [(SFNavigationBarMetrics *)v3 urlOutlineCornerRadius];
+      urlOutlineCornerRadius = [(SFNavigationBarMetrics *)v3 urlOutlineCornerRadius];
     }
 
-    [*(v1 + 704) setCornerRadius:v2];
+    [*(v1 + 704) setCornerRadius:urlOutlineCornerRadius];
     result = [MEMORY[0x1E69C8880] isSolariumEnabled];
     if (result)
     {
@@ -2234,10 +2234,10 @@ LABEL_10:
 
 - (void)_updateProgressViewFillColor
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 841);
-    v3 = *(a1 + 864);
+    v2 = *(self + 841);
+    v3 = *(self + 864);
     if (v2)
     {
       [v3 platterProgressBarTintColor];
@@ -2248,25 +2248,25 @@ LABEL_10:
       [v3 progressBarTintColor];
     }
     v4 = ;
-    [*(a1 + 704) setProgressBarFillColor:v4];
+    [*(self + 704) setProgressBarFillColor:v4];
   }
 }
 
 - (_BYTE)_viewToInsertProgressBarIn
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if ((a1[841] & 1) != 0 || [MEMORY[0x1E69C8880] isSolariumEnabled])
+    selfCopy = self;
+    if ((self[841] & 1) != 0 || [MEMORY[0x1E69C8880] isSolariumEnabled])
     {
-      v2 = v2[87];
+      selfCopy = selfCopy[87];
     }
 
-    a1 = v2;
+    self = selfCopy;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (double)dismissButtonPadding
@@ -2291,8 +2291,8 @@ LABEL_10:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_2() setTintColor:v0];
 
-    v3 = [OUTLINED_FUNCTION_22() backdropIsDark];
-    if (v3)
+    backdropIsDark = [OUTLINED_FUNCTION_22() backdropIsDark];
+    if (backdropIsDark)
     {
       v4 = 2;
     }
@@ -2307,7 +2307,7 @@ LABEL_10:
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_23();
     [*(v2 + 744) setGlyphTintColor:?];
-    [*(v2 + 744) setUsesInsetFromBackground:{v3 ^ objc_msgSend(OUTLINED_FUNCTION_22(), "platterBackdropIsDark")}];
+    [*(v2 + 744) setUsesInsetFromBackground:{backdropIsDark ^ objc_msgSend(OUTLINED_FUNCTION_22(), "platterBackdropIsDark")}];
     [(_SFNavigationBarURLButton *)*(v2 + 696) setTheme:?];
     [OUTLINED_FUNCTION_20(752) setTintColor:?];
     [OUTLINED_FUNCTION_20(760) setTintColor:?];
@@ -2322,12 +2322,12 @@ LABEL_10:
     if ([MEMORY[0x1E69C8880] isSolariumEnabled])
     {
       v5 = *(v2 + 864);
-      v6 = [*(v2 + 600) configuration];
-      [v6 setTheme:v5];
+      configuration = [*(v2 + 600) configuration];
+      [configuration setTheme:v5];
 
       v7 = *(v2 + 864);
-      v8 = [*(v2 + 608) configuration];
-      [v8 setTheme:v7];
+      configuration2 = [*(v2 + 608) configuration];
+      [configuration2 setTheme:v7];
     }
 
     OUTLINED_FUNCTION_61();
@@ -2347,9 +2347,9 @@ LABEL_10:
     v2 = 0.0;
     if ((*(result + 842) & 1) == 0)
     {
-      v3 = [*(result + 864) backdropIsDark];
+      backdropIsDark = [*(result + 864) backdropIsDark];
       v2 = 1.0;
-      if (v3)
+      if (backdropIsDark)
       {
         LOBYTE(v2) = *(v1 + 846);
         v2 = *&v2;
@@ -2366,20 +2366,20 @@ LABEL_10:
 
 - (double)_defaultHeightExcludingAuxiliaryBar
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = *(a1 + 648);
-  v2 = [objc_opt_class() _metricsCategory];
+  v1 = *(self + 648);
+  _metricsCategory = [objc_opt_class() _metricsCategory];
 
-  return [(SFNavigationBarMetrics *)v1 barHeightWithBarMetricsCategory:v2];
+  return [(SFNavigationBarMetrics *)v1 barHeightWithBarMetricsCategory:_metricsCategory];
 }
 
 - (double)defaultHeight
 {
-  v3 = [(_SFNavigationBar *)self _defaultHeightExcludingAuxiliaryBar];
+  _defaultHeightExcludingAuxiliaryBar = [(_SFNavigationBar *)self _defaultHeightExcludingAuxiliaryBar];
   if (self)
   {
     [(SFLockdownStatusBar *)self->_lockdownStatusBar preferredSize];
@@ -2391,26 +2391,26 @@ LABEL_10:
       [(SFLockdownStatusBar *)self->_lockdownStatusBar titleBaselineInsetFromBottom];
       [(SFNavigationBarMetrics *)self->_barMetrics distanceFromLabelBaselineToURLOutlineBottom];
       _SFRoundFloatToPixels();
-      return v3 + v6;
+      return _defaultHeightExcludingAuxiliaryBar + v6;
     }
   }
 
-  return v3;
+  return _defaultHeightExcludingAuxiliaryBar;
 }
 
 - (double)_urlOutlineOriginY
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = [(_SFNavigationBar *)a1 _layoutBounds];
+  _layoutBounds = [(_SFNavigationBar *)self _layoutBounds];
   v4 = v3;
   v6 = v5;
-  [a1 bounds];
+  [self bounds];
   v8 = v7;
-  [a1[56] urlSize];
+  [self[56] urlSize];
   OUTLINED_FUNCTION_47(v6 - v9);
   _SFRoundFloatToPixels();
   v11 = v10;
@@ -2420,41 +2420,41 @@ LABEL_10:
   return v13 - [(SFNavigationBarMetrics *)v14 urlContainerTop];
 }
 
-- (double)_auxiliaryBarSquishedVerticalOffsetForSquishTransform:(uint64_t)a1
+- (double)_auxiliaryBarSquishedVerticalOffsetForSquishTransform:(uint64_t)transform
 {
-  if (!a1)
+  if (!transform)
   {
     return 0.0;
   }
 
-  [(SFNavigationBarMetrics *)*(a1 + 648) urlOutlineHeight];
+  [(SFNavigationBarMetrics *)*(transform + 648) urlOutlineHeight];
   v2 = OUTLINED_FUNCTION_46();
   [(SFNavigationBarMetrics *)v2 distanceFromLabelBaselineToURLOutlineBottom];
-  v3 = *(a1 + 648);
-  v4 = [objc_opt_class() _metricsCategory];
-  [(SFNavigationBarMetrics *)v3 squishHeightQuantizationOffsetWithBarMetricsCategory:v4];
-  [*(a1 + 944) titleCapHeightInsetFromTop];
-  [*(a1 + 944) titleCapHeightInsetFromTop];
+  v3 = *(transform + 648);
+  _metricsCategory = [objc_opt_class() _metricsCategory];
+  [(SFNavigationBarMetrics *)v3 squishHeightQuantizationOffsetWithBarMetricsCategory:_metricsCategory];
+  [*(transform + 944) titleCapHeightInsetFromTop];
+  [*(transform + 944) titleCapHeightInsetFromTop];
 
   _SFRoundFloatToPixels();
   return result;
 }
 
-- (void)_customButtonHorizontalPaddingWithInset:(uint64_t *)a1
+- (void)_customButtonHorizontalPaddingWithInset:(uint64_t *)inset
 {
-  if (a1)
+  if (inset)
   {
     if ([MEMORY[0x1E69C8880] isSolariumEnabled])
     {
-      [(SFNavigationBarMetrics *)a1[81] useNarrowInsets];
+      [(SFNavigationBarMetrics *)inset[81] useNarrowInsets];
     }
 
-    else if (a1[103] == 1)
+    else if (inset[103] == 1)
     {
-      if ([a1 hasToolbar])
+      if ([inset hasToolbar])
       {
-        v2 = [a1 traitCollection];
-        [v2 horizontalSizeClass];
+        traitCollection = [inset traitCollection];
+        [traitCollection horizontalSizeClass];
       }
     }
   }
@@ -2462,18 +2462,18 @@ LABEL_10:
 
 - (double)_minimumURLOutlineToBoundsPadding
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   result = 9.5;
-  if (v2)
+  if (isSolariumEnabled)
   {
-    v4 = [(SFNavigationBarMetrics *)*(a1 + 648) useNarrowInsets];
+    useNarrowInsets = [(SFNavigationBarMetrics *)*(self + 648) useNarrowInsets];
     result = 16.0;
-    if (v4)
+    if (useNarrowInsets)
     {
       return 10.0;
     }
@@ -2484,31 +2484,31 @@ LABEL_10:
 
 - (void)_updateFonts
 {
-  if (a1)
+  if (self)
   {
-    v5 = [(_SFNavigationBar *)a1 _editingLabelFont];
-    [(SFNavigationBarMetrics *)*(a1 + 648) defaultLabelFont];
+    _editingLabelFont = [(_SFNavigationBar *)self _editingLabelFont];
+    [(SFNavigationBarMetrics *)*(self + 648) defaultLabelFont];
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_2();
-    v4 = [(_SFNavigationBar *)v3 _URLLabelFont];
+    _URLLabelFont = [(_SFNavigationBar *)v3 _URLLabelFont];
     [OUTLINED_FUNCTION_20(872) setFont:?];
     [OUTLINED_FUNCTION_20(456) setFont:?];
     [OUTLINED_FUNCTION_41(448) setFont:?];
     [OUTLINED_FUNCTION_41(464) setFont:?];
-    [*(a1 + 464) sizeToFit];
+    [*(self + 464) sizeToFit];
     [OUTLINED_FUNCTION_12(472) setFont:?];
     [OUTLINED_FUNCTION_12(480) setFont:?];
-    [(_SFNavigationBar *)a1 _updateTextMetrics];
-    [*(a1 + 472) sizeToFit];
+    [(_SFNavigationBar *)self _updateTextMetrics];
+    [*(self + 472) sizeToFit];
   }
 }
 
 - (void)_URLLabelFont
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[103];
-    v3 = a1[81];
+    v2 = self[103];
+    v3 = self[81];
     if (v2 == 1)
     {
       [(SFNavigationBarMetrics *)v3 defaultBoldFont];
@@ -2518,11 +2518,11 @@ LABEL_10:
     {
       [(SFNavigationBarMetrics *)v3 defaultLabelFont];
     }
-    a1 = ;
+    self = ;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_updateTextMetrics
@@ -2545,9 +2545,9 @@ LABEL_10:
 
 - (void)_updateButtonMetrics
 {
-  if (a1)
+  if (self)
   {
-    [(SFNavigationBarMetrics *)*(a1 + 648) mediumButtonImageSymbolConfiguration];
+    [(SFNavigationBarMetrics *)*(self + 648) mediumButtonImageSymbolConfiguration];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_19() setPreferredSymbolConfiguration:? forImageInState:?];
 
@@ -2557,40 +2557,40 @@ LABEL_10:
     [OUTLINED_FUNCTION_19() setPreferredSymbolConfiguration:? forImageInState:?];
 
     v4 = OUTLINED_FUNCTION_29();
-    v5 = [(SFNavigationBarMetrics *)v4 mediumButtonImageSymbolConfiguration];
+    mediumButtonImageSymbolConfiguration = [(SFNavigationBarMetrics *)v4 mediumButtonImageSymbolConfiguration];
     [OUTLINED_FUNCTION_12(744) setPreferredSymbolConfiguration:?];
 
     v6 = OUTLINED_FUNCTION_29();
-    v7 = [(SFNavigationBarMetrics *)v6 traitCollectionForButtonMetrics];
-    [(SFDismissButton *)*(a1 + 816) setPreferredTraitCollection:v7];
+    traitCollectionForButtonMetrics = [(SFNavigationBarMetrics *)v6 traitCollectionForButtonMetrics];
+    [(SFDismissButton *)*(self + 816) setPreferredTraitCollection:traitCollectionForButtonMetrics];
 
     v8 = MEMORY[0x1E69DB878];
-    v9 = [MEMORY[0x1E69DCA40] defaultMetrics];
+    defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
     [MEMORY[0x1E69DB878] labelFontSize];
     v11 = v10;
     v12 = OUTLINED_FUNCTION_29();
-    v13 = [(SFNavigationBarMetrics *)v12 traitCollectionForButtonMetrics];
-    [v9 scaledValueForValue:v13 compatibleWithTraitCollection:v11];
+    traitCollectionForButtonMetrics2 = [(SFNavigationBarMetrics *)v12 traitCollectionForButtonMetrics];
+    [defaultMetrics scaledValueForValue:traitCollectionForButtonMetrics2 compatibleWithTraitCollection:v11];
     v15 = [v8 systemFontOfSize:round(v14)];
-    v16 = [*(a1 + 800) titleLabel];
-    [v16 setFont:v15];
+    titleLabel = [*(self + 800) titleLabel];
+    [titleLabel setFont:v15];
 
-    [*(a1 + 800) sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
-    *(a1 + 808) = v17;
-    v18 = [*(a1 + 600) configuration];
-    v25 = [v18 copy];
+    [*(self + 800) sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    *(self + 808) = v17;
+    configuration = [*(self + 600) configuration];
+    v25 = [configuration copy];
 
     v19 = OUTLINED_FUNCTION_29();
-    v20 = [(SFNavigationBarMetrics *)v19 traitCollectionForButtonMetrics];
-    [v25 setPreferredTraitCollection:v20];
+    traitCollectionForButtonMetrics3 = [(SFNavigationBarMetrics *)v19 traitCollectionForButtonMetrics];
+    [v25 setPreferredTraitCollection:traitCollectionForButtonMetrics3];
 
     [OUTLINED_FUNCTION_20(600) setConfiguration:?];
-    v21 = [*(a1 + 608) configuration];
-    v22 = [v21 copy];
+    configuration2 = [*(self + 608) configuration];
+    v22 = [configuration2 copy];
 
     v23 = OUTLINED_FUNCTION_29();
-    v24 = [(SFNavigationBarMetrics *)v23 traitCollectionForButtonMetrics];
-    [v22 setPreferredTraitCollection:v24];
+    traitCollectionForButtonMetrics4 = [(SFNavigationBarMetrics *)v23 traitCollectionForButtonMetrics];
+    [v22 setPreferredTraitCollection:traitCollectionForButtonMetrics4];
 
     [OUTLINED_FUNCTION_41(608) setConfiguration:?];
   }
@@ -2601,11 +2601,11 @@ LABEL_10:
   if (result)
   {
     v1 = result;
-    v2 = [(SFNavigationBarMetrics *)*(result + 648) urlOutlineCornerRadius];
+    urlOutlineCornerRadius = [(SFNavigationBarMetrics *)*(result + 648) urlOutlineCornerRadius];
     v3 = *(v1 + 696);
-    if (v3 && *(v3 + 832) != v2)
+    if (v3 && *(v3 + 832) != urlOutlineCornerRadius)
     {
-      *(v3 + 832) = v2;
+      *(v3 + 832) = urlOutlineCornerRadius;
       [*(v3 + 768) _setContinuousCornerRadius:?];
     }
 
@@ -2620,46 +2620,46 @@ LABEL_10:
 
 - (void)_barMetricsDidChange
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 616) = *MEMORY[0x1E695F060];
-    [(_SFNavigationBar *)a1 _updateURLOutlineCornerRadius];
-    [(_SFNavigationBar *)a1 _updateFonts];
-    [a1 _updateText];
-    [(_SFNavigationBar *)a1 _updateActiveURLLabelAccessory];
-    [(_SFNavigationBar *)a1 _updateTextColor];
-    [(_SFNavigationBar *)a1 _updateSearchIndicator];
-    [(_SFNavigationBar *)a1 _updateButtonMetrics];
-    [*(a1 + 744) setResizableBackgroundCornerRadius:-[SFNavigationBarMetrics urlOutlineCornerRadius](*(a1 + 648))];
-    WeakRetained = objc_loadWeakRetained((a1 + 888));
-    *(a1 + 847) = 1;
+    *(self + 616) = *MEMORY[0x1E695F060];
+    [(_SFNavigationBar *)self _updateURLOutlineCornerRadius];
+    [(_SFNavigationBar *)self _updateFonts];
+    [self _updateText];
+    [(_SFNavigationBar *)self _updateActiveURLLabelAccessory];
+    [(_SFNavigationBar *)self _updateTextColor];
+    [(_SFNavigationBar *)self _updateSearchIndicator];
+    [(_SFNavigationBar *)self _updateButtonMetrics];
+    [*(self + 744) setResizableBackgroundCornerRadius:-[SFNavigationBarMetrics urlOutlineCornerRadius](*(self + 648))];
+    WeakRetained = objc_loadWeakRetained((self + 888));
+    *(self + 847) = 1;
     v3 = WeakRetained;
     if (objc_opt_respondsToSelector())
     {
-      [v3 navigationBarMetricsDidChange:a1];
+      [v3 navigationBarMetricsDidChange:self];
     }
 
-    *(a1 + 847) = 0;
+    *(self + 847) = 0;
   }
 }
 
 - (void)_updateActiveURLLabelAccessory
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(_SFURLLabelAccessoryItem);
-    [(_SFURLLabelAccessoryItem *)v2 setView:*(a1 + 664)];
+    [(_SFURLLabelAccessoryItem *)v2 setView:*(self + 664)];
     [(_SFURLLabelAccessoryItem *)v2 setSpacing:4.0];
-    [(_SFURLLabelAccessoryItem *)v2 setSquishedView:*(a1 + 672)];
-    if ([*(a1 + 848) showsSearchIndicator])
+    [(_SFURLLabelAccessoryItem *)v2 setSquishedView:*(self + 672)];
+    if ([*(self + 848) showsSearchIndicator])
     {
       v9[0] = v2;
       v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-      v4 = *(a1 + 688);
-      *(a1 + 688) = v3;
+      v4 = *(self + 688);
+      *(self + 688) = v3;
 
-      [*(a1 + 664) setHidden:0];
+      [*(self + 664) setHidden:0];
     }
 
     else
@@ -2669,10 +2669,10 @@ LABEL_10:
       [(_SFURLLabelAccessoryItem *)v5 setSpacing:0.0];
       v8 = v5;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v8 count:1];
-      v7 = *(a1 + 688);
-      *(a1 + 688) = v6;
+      v7 = *(self + 688);
+      *(self + 688) = v6;
 
-      [*(a1 + 664) setHidden:1];
+      [*(self + 664) setHidden:1];
     }
   }
 }
@@ -2680,21 +2680,21 @@ LABEL_10:
 - (id)_attributedStringSecurityAnnotation
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = _WBSLocalizedString();
     v3 = objc_alloc(MEMORY[0x1E696AD40]);
     v15 = *MEMORY[0x1E69DB650];
     v4 = v15;
-    v5 = [(_SFNavigationBar *)a1 _notSecureAnnotationColor];
-    v16[0] = v5;
+    _notSecureAnnotationColor = [(_SFNavigationBar *)self _notSecureAnnotationColor];
+    v16[0] = _notSecureAnnotationColor;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v7 = [v3 initWithString:v2 attributes:v6];
 
     v8 = objc_alloc(MEMORY[0x1E696AAB0]);
     v13 = v4;
-    v9 = [(_SFNavigationBar *)a1 _notSecureGrayColor];
-    v14 = v9;
+    _notSecureGrayColor = [(_SFNavigationBar *)self _notSecureGrayColor];
+    v14 = _notSecureGrayColor;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     v11 = [v8 initWithString:@" —" attributes:v10];
 
@@ -2711,7 +2711,7 @@ LABEL_10:
 
 - (void)_configureNavigationBarTrailingButtonTintedImages
 {
-  if (a1)
+  if (self)
   {
     v2 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.clockwise"];
     v1 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark"];
@@ -2760,37 +2760,37 @@ LABEL_10:
 - (double)_privateBrowsingLabelRevealPercent
 {
   v1 = 0.0;
-  if (a1 && [(_SFNavigationBar *)a1 _showsPrivateAnnotation])
+  if (self && [(_SFNavigationBar *)self _showsPrivateAnnotation])
   {
-    [a1 minimumHeight];
+    [self minimumHeight];
     v4 = v3;
-    [a1 bounds];
-    v6 = OUTLINED_FUNCTION_1_1(v5 - v4, a1[113] - v4);
+    [self bounds];
+    v6 = OUTLINED_FUNCTION_1_1(v5 - v4, self[113] - v4);
     return v7 - v6;
   }
 
   return v1;
 }
 
-- (void)_transitionFromView:(void *)a3 toView:(int)a4 animated:
+- (void)_transitionFromView:(void *)view toView:(int)toView animated:
 {
   v43[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v8 = a3;
-    v9 = [a2 layer];
-    [v9 animationForKey:@"show"];
+    viewCopy = view;
+    layer = [a2 layer];
+    [layer animationForKey:@"show"];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_2() removeAnimationForKey:@"show"];
-    v10 = [v8 layer];
+    layer2 = [viewCopy layer];
 
-    v11 = [v10 animationForKey:@"hide"];
-    [v10 removeAnimationForKey:@"hide"];
-    [a1 _controlsAlpha];
+    v11 = [layer2 animationForKey:@"hide"];
+    [layer2 removeAnimationForKey:@"hide"];
+    [self _controlsAlpha];
     v13 = v12;
-    if (a4)
+    if (toView)
     {
-      if (v10)
+      if (layer2)
       {
         v14 = v11 == 0;
       }
@@ -2806,7 +2806,7 @@ LABEL_10:
       if (v4 && v15)
       {
         v18 = MEMORY[0x1E69795C0];
-        v19 = reverseAnimation(v4);
+        animation = reverseAnimation(v4);
       }
 
       else
@@ -2838,23 +2838,23 @@ LABEL_10:
         [OUTLINED_FUNCTION_17() setFromValue:?];
 
         [v27 setToValue:&unk_1F5022EA0];
-        v19 = [MEMORY[0x1E6979308] animation];
+        animation = [MEMORY[0x1E6979308] animation];
         v43[0] = v24;
         v43[1] = v27;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:2];
-        [v19 setAnimations:v28];
+        [animation setAnimations:v28];
 
-        [v19 setDuration:0.375];
-        [v19 setRemovedOnCompletion:1];
-        [v19 setFrameInterval:0.0166666667];
+        [animation setDuration:0.375];
+        [animation setRemovedOnCompletion:1];
+        [animation setFrameInterval:0.0166666667];
       }
 
-      [v9 addAnimation:v19 forKey:@"hide"];
+      [layer addAnimation:animation forKey:@"hide"];
 
       v29 = OUTLINED_FUNCTION_52();
       CATransform3DMakeScale(v30, v29, v31, 0.0);
-      [v9 setTransform:v41];
-      [v9 setOpacity:0.0];
+      [layer setTransform:v41];
+      [layer setOpacity:0.0];
       if (v4)
       {
         v32 = 1;
@@ -2862,12 +2862,12 @@ LABEL_10:
 
       else
       {
-        v32 = v9 == 0;
+        v32 = layer == 0;
       }
 
       if (v32 && v11)
       {
-        v33 = reverseAnimation(v11);
+        animation2 = reverseAnimation(v11);
       }
 
       else
@@ -2902,32 +2902,32 @@ LABEL_10:
         [OUTLINED_FUNCTION_17() setFromValue:?];
 
         [v39 setToValue:&unk_1F5022EA0];
-        v33 = [MEMORY[0x1E6979308] animation];
+        animation2 = [MEMORY[0x1E6979308] animation];
         v42[0] = v34;
         v42[1] = v39;
         v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:2];
-        [v33 setAnimations:v40];
+        [animation2 setAnimations:v40];
 
-        [v33 setDuration:0.95];
-        [v33 setRemovedOnCompletion:1];
-        [v33 setFrameInterval:0.0166666667];
+        [animation2 setDuration:0.95];
+        [animation2 setRemovedOnCompletion:1];
+        [animation2 setFrameInterval:0.0166666667];
       }
 
-      [v10 addAnimation:v33 forKey:@"show"];
+      [layer2 addAnimation:animation2 forKey:@"show"];
     }
 
     else
     {
       v20 = OUTLINED_FUNCTION_52();
       CATransform3DMakeScale(v21, v20, v22, 0.0);
-      [v9 setTransform:v41];
-      [v9 setOpacity:0.0];
+      [layer setTransform:v41];
+      [layer setOpacity:0.0];
     }
 
     *&v23 = v13;
-    [v10 setOpacity:v23];
+    [layer2 setOpacity:v23];
     memcpy(v41, MEMORY[0x1E69792E8], sizeof(v41));
-    [v10 setTransform:v41];
+    [layer2 setTransform:v41];
   }
 }
 
@@ -2938,8 +2938,8 @@ LABEL_10:
   {
     v3 = objc_alloc(MEMORY[0x1E69B1B48]);
     v4 = OUTLINED_FUNCTION_2();
-    v5 = [(_SFNavigationBar *)v4 _formatToggleButtonImage];
-    OUTLINED_FUNCTION_35([v0 initWithImage:v5 forInputMode:*(v2 + 824)], 744);
+    _formatToggleButtonImage = [(_SFNavigationBar *)v4 _formatToggleButtonImage];
+    OUTLINED_FUNCTION_35([v0 initWithImage:_formatToggleButtonImage forInputMode:*(v2 + 824)], 744);
 
     if ([MEMORY[0x1E69C8880] isSolariumEnabled])
     {
@@ -2978,68 +2978,68 @@ LABEL_10:
 
 - (id)_formatToggleButtonImage
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if (([a1[51] isDisplaying] & 1) != 0 || !objc_msgSend(OUTLINED_FUNCTION_31(), "showsSiriReaderPlayingIcon"))
+    selfCopy = self;
+    if (([self[51] isDisplaying] & 1) != 0 || !objc_msgSend(OUTLINED_FUNCTION_31(), "showsSiriReaderPlayingIcon"))
     {
-      if ([OUTLINED_FUNCTION_31() showsTranslationIcon] && !objc_msgSend(OUTLINED_FUNCTION_31(), "readerButtonSelected") || v2[99] == 2)
+      if ([OUTLINED_FUNCTION_31() showsTranslationIcon] && !objc_msgSend(OUTLINED_FUNCTION_31(), "readerButtonSelected") || selfCopy[99] == 2)
       {
-        a1 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"translate"];
+        self = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"translate"];
       }
 
-      else if (([OUTLINED_FUNCTION_31() readerButtonSelected] & 1) != 0 || v2[99] == 1)
+      else if (([OUTLINED_FUNCTION_31() readerButtonSelected] & 1) != 0 || selfCopy[99] == 1)
       {
-        a1 = [MEMORY[0x1E69B1B48] readerImageWithSummary:objc_msgSend(v2[51] usingMulticolorSymbol:{"cumulativeOptions") & 1, 0}];
+        self = [MEMORY[0x1E69B1B48] readerImageWithSummary:objc_msgSend(selfCopy[51] usingMulticolorSymbol:{"cumulativeOptions") & 1, 0}];
       }
 
       else
       {
-        a1 = [MEMORY[0x1E69B1B48] pageMenuImageWithIntelligence:(objc_msgSend(v2[51] usingMulticolorSymbol:{"cumulativeOptions") & 0x1F) != 0, 0}];
+        self = [MEMORY[0x1E69B1B48] pageMenuImageWithIntelligence:(objc_msgSend(selfCopy[51] usingMulticolorSymbol:{"cumulativeOptions") & 0x1F) != 0, 0}];
       }
     }
 
     else
     {
-      a1 = [MEMORY[0x1E69B1B48] siriReaderPlayingImage];
+      self = [MEMORY[0x1E69B1B48] siriReaderPlayingImage];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_updateAccessoryButtonsAlpha
 {
-  if (a1)
+  if (self)
   {
-    [a1 _controlsAlpha];
+    [self _controlsAlpha];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __48___SFNavigationBar__updateAccessoryButtonsAlpha__block_invoke;
     v4[3] = &unk_1E8490900;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = v2;
     v3 = _Block_copy(v4);
     v3[2](v3, 1);
-    [a1[94] setAlpha:?];
+    [self[94] setAlpha:?];
     v3[2](v3, 0);
-    [a1[95] setAlpha:?];
+    [self[95] setAlpha:?];
     v3[2](v3, 3);
-    [a1[97] setAlpha:?];
+    [self[97] setAlpha:?];
     v3[2](v3, 2);
-    [a1[93] setAlpha:?];
+    [self[93] setAlpha:?];
   }
 }
 
-- (char)_navigationBarTrailingButtonWithType:(char *)a1
+- (char)_navigationBarTrailingButtonWithType:(char *)type
 {
-  if (!a1)
+  if (!type)
   {
 LABEL_7:
 
-    return a1;
+    return type;
   }
 
   if (!a2)
@@ -3052,13 +3052,13 @@ LABEL_7:
   {
     v3 = &OBJC_IVAR____SFNavigationBar__stopButton;
 LABEL_6:
-    a1 = *&a1[*v3];
+    type = *&type[*v3];
     goto LABEL_7;
   }
 
-  a1 = 0;
+  type = 0;
 
-  return a1;
+  return type;
 }
 
 - (void)tintColorDidChange
@@ -3069,10 +3069,10 @@ LABEL_6:
   [(_SFNavigationBar *)self _updateProgressViewFillColor];
 }
 
-- (void)fluidProgressViewWillShowProgress:(id)a3
+- (void)fluidProgressViewWillShowProgress:(id)progress
 {
-  v4 = [(_SFNavigationBar *)self _viewToInsertProgressBarIn];
-  [v4 addSubview:self->_progressView];
+  _viewToInsertProgressBarIn = [(_SFNavigationBar *)self _viewToInsertProgressBarIn];
+  [_viewToInsertProgressBarIn addSubview:self->_progressView];
 
   if ([MEMORY[0x1E69C8880] isSolariumEnabled] && !self->_unifiedFieldShowsProgressView)
   {
@@ -3083,19 +3083,19 @@ LABEL_6:
 
 - (void)_updateBackdropFrame
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 712) superview];
+    superview = [*(self + 712) superview];
 
-    if (v2 == a1)
+    if (superview == self)
     {
-      [a1 bounds];
+      [self bounds];
       v4 = v3;
-      v6 = v5 + fmax(*(a1 + 896), *(a1 + 912) - v5);
+      v6 = v5 + fmax(*(self + 896), *(self + 912) - v5);
       OUTLINED_FUNCTION_40();
       OUTLINED_FUNCTION_16();
       [v7 setFrame:?];
-      v8 = *(a1 + 720);
+      v8 = *(self + 720);
       OUTLINED_FUNCTION_16();
       v12.size.height = v6;
       MaxY = CGRectGetMaxY(v12);
@@ -3116,8 +3116,8 @@ LABEL_6:
     v7 = v6;
     [*(v3 + 696) center];
     OUTLINED_FUNCTION_50();
-    v8 = [*(v3 + 696) layer];
-    [v8 anchorPoint];
+    layer = [*(v3 + 696) layer];
+    [layer anchorPoint];
     v10 = v9;
     v12 = v11;
 
@@ -3131,22 +3131,22 @@ LABEL_6:
 
 - (double)_textFieldTopMargin
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = [*(a1 + 872) font];
-  [v2 lineHeight];
+  font = [*(self + 872) font];
+  [font lineHeight];
   v4 = v3;
 
   v5 = OUTLINED_FUNCTION_52();
   [v6 textRectForBounds:v5];
   v8 = v7;
   v10 = 100.0 - (v7 + v9);
-  [*(a1 + 872) bounds];
+  [*(self + 872) bounds];
   v12 = v11 - v8 - v10;
-  [*(a1 + 872) paddingBottom];
+  [*(self + 872) paddingBottom];
   OUTLINED_FUNCTION_47(v12 - v13 - v4);
 
   _SFRoundFloatToPixels();
@@ -3157,19 +3157,19 @@ LABEL_6:
 {
   v2139 = *MEMORY[0x1E69E9840];
   [(_SFNavigationBar *)self _updateBackdropFrame];
-  v1809 = [(SFNavigationBarMetrics *)self->_barMetrics urlOutlineHeight];
-  v1145 = [(SFNavigationBarMetrics *)self->_barMetrics urlContainerTop];
+  urlOutlineHeight = [(SFNavigationBarMetrics *)self->_barMetrics urlOutlineHeight];
+  urlContainerTop = [(SFNavigationBarMetrics *)self->_barMetrics urlContainerTop];
   [(_SFNavigationBar *)self safeAreaInsets];
   [_SFNavigationBar _customButtonHorizontalPaddingWithInset:?];
   v1853 = v3;
   [(_SFNavigationBar *)self safeAreaInsets];
   [_SFNavigationBar _customButtonHorizontalPaddingWithInset:?];
   v2021 = v4;
-  v5 = [(_SFNavigationBar *)self _sf_usesLeftToRightLayout];
-  v1650 = [(SFNavigationBarMetrics *)self->_barMetrics barButtonHeight];
-  v6 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  _sf_usesLeftToRightLayout = [(_SFNavigationBar *)self _sf_usesLeftToRightLayout];
+  barButtonHeight = [(SFNavigationBarMetrics *)self->_barMetrics barButtonHeight];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   v7 = 0.0;
-  if (v6)
+  if (isSolariumEnabled)
   {
     v7 = 6.0;
   }
@@ -3185,7 +3185,7 @@ LABEL_6:
   v745 = v16;
   v1941 = *&self->_contentUnderStatusBarHeight;
   v1742 = kSeparatorHeight;
-  v2004 = [(_SFNavigationBar *)&self->super.super.super.isa _urlOutlineOriginY];
+  _urlOutlineOriginY = [(_SFNavigationBar *)&self->super.super.super.isa _urlOutlineOriginY];
   [(_SFNavigationBar *)self safeAreaInsets];
   v18 = v17;
   v20 = v19;
@@ -3211,8 +3211,8 @@ LABEL_6:
     v24 = v23;
   }
 
-  obj = v5;
-  if (v5)
+  obj = _sf_usesLeftToRightLayout;
+  if (_sf_usesLeftToRightLayout)
   {
     v25 = v22;
   }
@@ -3222,7 +3222,7 @@ LABEL_6:
     v25 = v21;
   }
 
-  if (v5)
+  if (_sf_usesLeftToRightLayout)
   {
     v26 = v21;
   }
@@ -3232,7 +3232,7 @@ LABEL_6:
     v26 = v24;
   }
 
-  if (v5)
+  if (_sf_usesLeftToRightLayout)
   {
     v27 = v21;
   }
@@ -3242,7 +3242,7 @@ LABEL_6:
     v27 = v22;
   }
 
-  if (v5)
+  if (_sf_usesLeftToRightLayout)
   {
     v28 = v24;
   }
@@ -3257,14 +3257,14 @@ LABEL_6:
   [(SFToolbarContainer *)self->_trailingToolbarContainer setEdgeMargins:v27, 0.0, v28];
   p_leadingToolbarContainer = &self->_leadingToolbarContainer;
   v1765 = 840;
-  v2092 = self;
+  selfCopy = self;
   v1831 = 648;
-  v29 = [(SFNavigationBarMetrics *)self->_barMetrics traitCollectionForButtonMetrics];
-  v30 = OUTLINED_FUNCTION_62(v29);
+  traitCollectionForButtonMetrics = [(SFNavigationBarMetrics *)self->_barMetrics traitCollectionForButtonMetrics];
+  v30 = OUTLINED_FUNCTION_62(traitCollectionForButtonMetrics);
   v32 = v31;
 
-  v33 = [(SFNavigationBarMetrics *)self->_barMetrics traitCollectionForButtonMetrics];
-  v34 = OUTLINED_FUNCTION_62(v33);
+  traitCollectionForButtonMetrics2 = [(SFNavigationBarMetrics *)self->_barMetrics traitCollectionForButtonMetrics];
+  v34 = OUTLINED_FUNCTION_62(traitCollectionForButtonMetrics2);
   v36 = v35;
 
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
@@ -3293,7 +3293,7 @@ LABEL_6:
   {
     [(SFDismissButton *)dismissButton frame];
     Width = CGRectGetWidth(v2141);
-    if (v5)
+    if (_sf_usesLeftToRightLayout)
     {
       v42 = *&v1853;
     }
@@ -3312,7 +3312,7 @@ LABEL_6:
   }
 
   v44 = v30 + v43 + *&v1515 * 2.0;
-  if (v5)
+  if (_sf_usesLeftToRightLayout)
   {
     v45 = *&v2021;
   }
@@ -3323,7 +3323,7 @@ LABEL_6:
   }
 
   v46 = v45 + v34;
-  if (self->_inputMode == 1 || (-[_SFToolbar items](self->_leadingToolbar, "items"), v47 = objc_claimAutoreleasedReturnValue(), v48 = [v47 count], -[_SFToolbar items](v2092->_trailingToolbar, "items"), v49 = objc_claimAutoreleasedReturnValue(), v50 = objc_msgSend(v49, "count"), v49, v47, v48 == v50))
+  if (self->_inputMode == 1 || (-[_SFToolbar items](self->_leadingToolbar, "items"), v47 = objc_claimAutoreleasedReturnValue(), v48 = [v47 count], -[_SFToolbar items](selfCopy->_trailingToolbar, "items"), v49 = objc_claimAutoreleasedReturnValue(), v50 = objc_msgSend(v49, "count"), v49, v47, v48 == v50))
   {
     v51 = fmax(v44, v46);
     v52 = v51 + v51;
@@ -3353,15 +3353,15 @@ LABEL_6:
   _SFClamp();
   _SFRoundFloatToPixels();
   v55 = (__34___SFNavigationBar_layoutSubviews__block_invoke)(v2135, v34, *&v1964);
-  v63 = OUTLINED_FUNCTION_34(v55, v56, v57, v58, v59, v60, v61, v62, v678, v711, v745, v778, v811, v844, p_leadingToolbarContainer, v909, v943, v977, v1011, v1044, v1078, v1111, v1145, v1178, v1212, p_trailingToolbarContainer, v1279, v1312, sx, v1379, v1413, v1447, v1481, v1515, v1543, v1571, v1598, v1624, v1650, v1673, v1695, v1718, v1742, v1765, 3221225472, v1809, v1831, v1853, 824, 816, v1919, v1941, v1964, v32, v2004, v2021, v2038, v2054, rect, v2081, v2092);
+  v63 = OUTLINED_FUNCTION_34(v55, v56, v57, v58, v59, v60, v61, v62, v678, v711, v745, v778, v811, v844, p_leadingToolbarContainer, v909, v943, v977, v1011, v1044, v1078, v1111, urlContainerTop, v1178, v1212, p_trailingToolbarContainer, v1279, v1312, sx, v1379, v1413, v1447, v1481, v1515, v1543, v1571, v1598, v1624, barButtonHeight, v1673, v1695, v1718, v1742, v1765, 3221225472, urlOutlineHeight, v1831, v1853, 824, 816, v1919, v1941, v1964, v32, _urlOutlineOriginY, v2021, v2038, v2054, rect, v2081, selfCopy);
   if (v63)
   {
     [v63 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     v65 = v64;
     v67 = v66;
-    v68 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    isSolariumEnabled2 = [MEMORY[0x1E69C8880] isSolariumEnabled];
     v75 = *&v1651;
-    if (v68)
+    if (isSolariumEnabled2)
     {
       v76 = *&v1651;
     }
@@ -3371,7 +3371,7 @@ LABEL_6:
       v76 = v65;
     }
 
-    if (!v68)
+    if (!isSolariumEnabled2)
     {
       v75 = v67;
     }
@@ -3379,15 +3379,15 @@ LABEL_6:
     *&v1674 = v75;
     v1544 = *&v1854;
     *&v1572 = v76;
-    if ((v5 & 1) == 0)
+    if ((_sf_usesLeftToRightLayout & 1) == 0)
     {
       v2144.origin.x = OUTLINED_FUNCTION_13(*&v1854, v76, v69, v70, v71, v72, v73, v74, v679, v712, v746, v779, v812, v845, v877, v910, v944, v978, v1012, v1045, v1079, v1112, v1146, v1179, v1213, v1247, v1280, v1313, sxa, v1380, v1414, v1448, v1482, v1516, *&v1854, v76, v1599, v1625, *&v1651, v75, *&v1696, *&v1719, *&v1743, *&v1766, *&v1788, *&v1810, *&v1832, *&v1854, *&v1876, *&v1898, *&v1920, *&v1942, *&v1965, *&v1987, *&v2005, *&v2022, *&v2039, *&v2055);
       v1544 = CGRectGetWidth(v2144) - *&v1572 - *&v2022;
     }
 
-    v77 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    isSolariumEnabled3 = [MEMORY[0x1E69C8880] isSolariumEnabled];
     v78 = *&v1810 * 0.5 + *&v2005 - *&v1674 * 0.5;
-    if (v77)
+    if (isSolariumEnabled3)
     {
       v78 = *&v2005;
     }
@@ -3422,7 +3422,7 @@ LABEL_6:
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
   {
     v89 = *&v2082;
-    if ((v5 & 1) != 0 || (OUTLINED_FUNCTION_18(), !v97))
+    if ((_sf_usesLeftToRightLayout & 1) != 0 || (OUTLINED_FUNCTION_18(), !v97))
     {
       v99 = v2039;
       v98 = v2055;
@@ -3455,7 +3455,7 @@ LABEL_6:
     }
   }
 
-  if (([MEMORY[0x1E69C8880] isSolariumEnabled] & v5) == 1)
+  if (([MEMORY[0x1E69C8880] isSolariumEnabled] & _sf_usesLeftToRightLayout) == 1)
   {
     OUTLINED_FUNCTION_18();
     if (v122)
@@ -3503,12 +3503,12 @@ LABEL_6:
         }
 
         v195 = *(*(&v2131 + 1) + 8 * i);
-        v196 = [v195 view];
-        v197 = [v196 superview];
-        if (v197)
+        view = [v195 view];
+        superview = [view superview];
+        if (superview)
         {
-          v198 = [v195 view];
-          [v198 sizeThatFits:{v192, v193}];
+          view2 = [v195 view];
+          [view2 sizeThatFits:{v192, v193}];
           [v195 setSize:?];
         }
 
@@ -3662,7 +3662,7 @@ LABEL_91:
   v1424 = *v254;
   v920 = v254[1];
   HIDWORD(v1087) = [(_SFNavigationBar *)v248 _showsPrivateAnnotation];
-  v1055 = [(_SFNavigationBar *)v2097 _privateBrowsingLabelRevealPercent];
+  _privateBrowsingLabelRevealPercent = [(_SFNavigationBar *)v2097 _privateBrowsingLabelRevealPercent];
   v255 = 0.0;
   v256 = 0.0;
   if (HIDWORD(v1087))
@@ -3705,7 +3705,7 @@ LABEL_91:
   _SFRoundRectToPixels();
   v1995 = *&v269;
   v2012 = *&v268;
-  v2155.origin.x = OUTLINED_FUNCTION_25(v270, v268, v271, v269, v272, v273, v274, v275, v687, v721, v754, COERCE_DOUBLE(848), v820, v852, v885, v920, v954, v988, *&v1020, v1055, v1087, v1122, v1154, v1188, v1222, v1255, v1288, v1321, sxd, v1389, v1424, v1457, v1491, v1524, v1552, v1578, v1605, v1631, v1657, v1680, v1702, v1727, v1750, v1772, v1794, v1816, v1838, v1860, v1882, v1904, v1926, v271, v270);
+  v2155.origin.x = OUTLINED_FUNCTION_25(v270, v268, v271, v269, v272, v273, v274, v275, v687, v721, v754, COERCE_DOUBLE(848), v820, v852, v885, v920, v954, v988, *&v1020, _privateBrowsingLabelRevealPercent, v1087, v1122, v1154, v1188, v1222, v1255, v1288, v1321, sxd, v1389, v1424, v1457, v1491, v1524, v1552, v1578, v1605, v1631, v1657, v1680, v1702, v1727, v1750, v1772, v1794, v1816, v1838, v1860, v1882, v1904, v1926, v271, v270);
   v822 = CGRectGetWidth(v2155);
   if (*(v2097 + v1773) == 1)
   {
@@ -3723,8 +3723,8 @@ LABEL_91:
         v278 = (v2097 + 576);
       }
 
-      v279 = [*v278 items];
-      if ([v279 count])
+      items = [*v278 items];
+      if ([items count])
       {
         v277 = *&v1861 + *(v2097 + 808);
       }
@@ -3761,8 +3761,8 @@ LABEL_91:
   v283 = v282;
   OUTLINED_FUNCTION_54();
   v284 = *(v2097 + v1839);
-  v285 = [objc_opt_class() _metricsCategory];
-  [(SFNavigationBarMetrics *)v284 squishHeightQuantizationOffsetWithBarMetricsCategory:v285];
+  _metricsCategory = [objc_opt_class() _metricsCategory];
+  [(SFNavigationBarMetrics *)v284 squishHeightQuantizationOffsetWithBarMetricsCategory:_metricsCategory];
   _SFRoundFloatToPixels();
   CGAffineTransformMakeTranslation(&v2125, (1.0 - *&v2029) * v255, (1.0 - *&v2029) * (v283 + *&v1156 * -0.7 - v286));
   v2123 = v2125;
@@ -3779,8 +3779,8 @@ LABEL_91:
   [v2099[87] ss_setUntransformedFrame:?];
   if (*(v2099 + v1909))
   {
-    v319 = [v2099 _controlsAlpha];
-    [OUTLINED_FUNCTION_34(v319 v320];
+    _controlsAlpha = [v2099 _controlsAlpha];
+    [OUTLINED_FUNCTION_34(_controlsAlpha v320];
   }
 
   if (v1931)
@@ -3827,8 +3827,8 @@ LABEL_91:
       OUTLINED_FUNCTION_36();
     }
 
-    v363 = [v328 layer];
-    [v363 setAnchorPoint:{v347, v348}];
+    layer = [v328 layer];
+    [layer setAnchorPoint:{v347, v348}];
 
     [v328 setTransform:{&v2125, OUTLINED_FUNCTION_7().n128_f64[0]}];
     v372 = OUTLINED_FUNCTION_28(v364, v365, v366, v367, v368, v369, v370, v371, v694, v728, v761, v794, v827, v859, v892, v926, v960, v994, v1027, v1061, v1094, v1128, v1161, v1195, v1229, v1262, v1295, v1328, sxg, v1396, v1430, v1464, v1498, v1530, v1558, v1584, v1611, v1637);
@@ -3874,8 +3874,8 @@ LABEL_91:
       OUTLINED_FUNCTION_36();
     }
 
-    v410 = [v375 layer];
-    [v410 setAnchorPoint:{v394, v395}];
+    layer2 = [v375 layer];
+    [layer2 setAnchorPoint:{v394, v395}];
 
     [v375 setTransform:{&v2125, OUTLINED_FUNCTION_7().n128_f64[0]}];
     v419 = OUTLINED_FUNCTION_27(v411, v412, v413, v414, v415, v416, v417, v418, v698, v732, v765, v798, v831, v863, v896, v930, v964, v998, v1031, v1065, v1098, v1132, v1165, v1199, v1233, v1266, v1299, v1332, sxi, v1400, v1434, v1468, v1502);
@@ -3904,7 +3904,7 @@ LABEL_91:
   scaleView(v436, v435);
   v437 = OUTLINED_FUNCTION_56(*(v2100 + 843));
   scaleView(v438, v437);
-  v439 = [v2100 effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [v2100 effectiveUserInterfaceLayoutDirection];
   v448 = v2100;
   v449 = 0.0;
   if (*(v2100 + v1888) != 1)
@@ -3951,7 +3951,7 @@ LABEL_169:
   *&v2122[6] = v449;
   v2122[7] = v1822;
   v2122[8] = v1663;
-  [(SFNavigationBarAccessoryButtonArrangement *)v461 enumerateButtonTypesFromEdge:v439 withLayoutDirection:v2122 usingBlock:?];
+  [(SFNavigationBarAccessoryButtonArrangement *)v461 enumerateButtonTypesFromEdge:effectiveUserInterfaceLayoutDirection withLayoutDirection:v2122 usingBlock:?];
   v469 = *(*&v2123.b + 24);
   v470 = *(v448 + v1888);
   if (v469 == 0.0 || v470)
@@ -4002,7 +4002,7 @@ LABEL_169:
   v2117[5] = &v2118;
   *&v2117[10] = v472;
   v2117[11] = v1822;
-  [(SFNavigationBarAccessoryButtonArrangement *)v474 enumerateButtonTypesFromEdge:v439 withLayoutDirection:v2117 usingBlock:?];
+  [(SFNavigationBarAccessoryButtonArrangement *)v474 enumerateButtonTypesFromEdge:effectiveUserInterfaceLayoutDirection withLayoutDirection:v2117 usingBlock:?];
   v475 = v2119[3];
   if (v475 != 0.0)
   {
@@ -4061,10 +4061,10 @@ LABEL_169:
   {
     [MEMORY[0x1E69B1C40] progressBarHeightWithPreferredStyle:0];
     v485 = v492;
-    v493 = [*(v448 + 704) progressBarFillColor];
-    v494 = [MEMORY[0x1E69DC888] whiteColor];
+    progressBarFillColor = [*(v448 + 704) progressBarFillColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     v495 = 0.0;
-    if ([v493 isEqual:v494])
+    if ([progressBarFillColor isEqual:whiteColor])
     {
       _SFOnePixel();
       v495 = v496;
@@ -4085,9 +4085,9 @@ LABEL_169:
   [(_SFNavigationBar *)v448 _updateTextFieldFrame];
   if (*(v448 + 843) == 1)
   {
-    v508 = [*(v448 + 872) _clearButton];
-    v509 = [*(v448 + v801) textWhenExpanded];
-    if ([v509 length])
+    _clearButton = [*(v448 + 872) _clearButton];
+    textWhenExpanded = [*(v448 + v801) textWhenExpanded];
+    if ([textWhenExpanded length])
     {
       [*(v448 + 872) clearButtonRect];
     }
@@ -4122,7 +4122,7 @@ LABEL_169:
   [*(v448 + 448) urlSize];
   [*(v448 + 512) ss_setUntransformedFrame:{0.0, v522, v523, v524}];
   v525 = 0.91;
-  v1687 = 1.0;
+  narrowEditingScaleFactor = 1.0;
   if (!*(v448 + v868))
   {
     v525 = 1.0;
@@ -4135,7 +4135,7 @@ LABEL_169:
   v527 = rectd;
   if (*(v448 + v1779) == 1)
   {
-    v1687 = [(SFNavigationBarMetrics *)*(v448 + v1845) narrowEditingScaleFactor];
+    narrowEditingScaleFactor = [(SFNavigationBarMetrics *)*(v448 + v1845) narrowEditingScaleFactor];
     v527 = rectd;
   }
 
@@ -4155,23 +4155,23 @@ LABEL_169:
   aBlock[12] = v527;
   *&aBlock[13] = *&v969 + *&v1070 * *&v1003;
   *&aBlock[14] = v221;
-  *&aBlock[15] = v1687;
+  *&aBlock[15] = narrowEditingScaleFactor;
   aBlock[16] = v2033;
   v2113 = v2126;
   v528 = _Block_copy(aBlock);
-  v536 = [OUTLINED_FUNCTION_49(v528 v529];
+  v529 = [OUTLINED_FUNCTION_49(v528 v529];
 
-  if (v536)
+  if (v529)
   {
     v537 = [_SFNavigationBar _searchIndicatorColorForSquishTransformFactor:v2101];
     [*(v2101 + 664) setTintColor:v537];
     [*(v2101 + 672) setTintColor:v537];
   }
 
-  v538 = [MEMORY[0x1E69DD250] areAnimationsEnabled];
+  areAnimationsEnabled = [MEMORY[0x1E69DD250] areAnimationsEnabled];
   [MEMORY[0x1E69DD250] setAnimationsEnabled:*(v2101 + 640)];
   (*(v1802 + 16))();
-  [MEMORY[0x1E69DD250] setAnimationsEnabled:v538];
+  [MEMORY[0x1E69DD250] setAnimationsEnabled:areAnimationsEnabled];
   v539 = [*(v2101 + 480) setHidden:HIDWORD(v1710) ^ 1u];
   v547 = 0x1EC7D6000uLL;
   v548 = MEMORY[0x1E695EFF8];
@@ -4246,8 +4246,8 @@ LABEL_169:
   {
     [MEMORY[0x1EC7D61D8] setAlpha:0.0];
     [MEMORY[0x1EC7D61D8] removeFromSuperview];
-    v567 = [(_SFNavigationBar *)0x1EC7D6000 _formatToggleButtonImage];
-    [MEMORY[0x1EC7D62E8] setImage:v567];
+    _formatToggleButtonImage = [(_SFNavigationBar *)0x1EC7D6000 _formatToggleButtonImage];
+    [MEMORY[0x1EC7D62E8] setImage:_formatToggleButtonImage];
 
     v547 = v2103;
     [*(v2103 + 744) setHighlightsBackground:0];
@@ -4262,8 +4262,8 @@ LABEL_169:
   [*(v547 + 448) frame];
   CGRectGetWidth(v2183);
   v569 = *(v2103 + 843);
-  v570 = [*(v2103 + 432) layer];
-  [v570 setAnchorPoint:{(v569 ^ 1u), 0.0}];
+  layer3 = [*(v2103 + 432) layer];
+  [layer3 setAnchorPoint:{(v569 ^ 1u), 0.0}];
 
   v2184.origin.x = OUTLINED_FUNCTION_25(v571, v572, v573, v574, v575, v576, v577, v578, v706, v740, v773, v806, v839, v871, v904, v938, v972, v1006, v1039, v1073, v1106, v1140, v1173, v1207, v1241, v1274, v1307, v1340, sxm, v1408, v1442, v1476, v1510, v1538, v1566, v1593, v1619, v1645, v1668, v1690, v1712, v1737, v1760, v1782, v1804, v1826, v1848, v1870, v1892, v1914, v1936, v1958, v1981);
   v579 = CGRectGetWidth(v2184);
@@ -4278,8 +4278,8 @@ LABEL_169:
       goto LABEL_227;
     }
 
-    v583 = [*(v2103 + *&v1669) superview];
-    if (v583)
+    superview2 = [*(v2103 + *&v1669) superview];
+    if (superview2)
     {
       if ([*(v2103 + *&v1669) isShowingProgress])
       {
@@ -4296,15 +4296,15 @@ LABEL_169:
   v582 = v2103;
 LABEL_227:
   v584 = *(v582 + 843);
-  v585 = [*(v582 + 432) layer];
-  v586 = v585;
+  layer4 = [*(v582 + 432) layer];
+  v586 = layer4;
   v587 = v579 * 0.5 - v580 + -7.0;
   if (v584)
   {
     v587 = 0.0;
   }
 
-  [v585 setPosition:{v587, v581}];
+  [layer4 setPosition:{v587, v581}];
 
   v2186.origin.x = OUTLINED_FUNCTION_25(v588, v589, v590, v591, v592, v593, v594, v595, v707, v741, v774, v807, v840, v872, v905, v939, v973, v1007, v1040, v1074, v1107, v1141, v1174, v1208, v1242, v1275, v1308, v1341, sxn, v1409, v1443, v1477, v1511, v1539, v1567, v1594, v1620, v1646, v1669, v1691, v1713, v1738, v1761, v1783, v1805, v1827, v1849, v1871, v1893, v1915, v1937, v1959, v1982);
   CGRectGetWidth(v2186);
@@ -4382,11 +4382,11 @@ LABEL_227:
   v618 = 0.0;
   if (*(v2103 + 843) == 1)
   {
-    v619 = [(_SFNavigationBar *)v2103 _textFieldTopMargin];
+    _textFieldTopMargin = [(_SFNavigationBar *)v2103 _textFieldTopMargin];
     [*(v2103 + 440) convertPoint:*(v2103 + 872) toView:{*v548, v548[1]}];
     v621 = v620;
     [*(v2103 + 440) center];
-    v618 = v619 - v621 + v622;
+    v618 = _textFieldTopMargin - v621 + v622;
   }
 
   [*(v2103 + 440) setPosition:{7.0, v618}];
@@ -4402,8 +4402,8 @@ LABEL_227:
     [(_SFNavigationBar *)v2103 _updateFakeViews];
   }
 
-  v624 = [*(v2103 + 864) backdropIsDark];
-  if (v624 != [*(v2103 + 864) platterBackdropIsDark])
+  backdropIsDark = [*(v2103 + 864) backdropIsDark];
+  if (backdropIsDark != [*(v2103 + 864) platterBackdropIsDark])
   {
     [(_SFNavigationBar *)v2103 _updateTextColor];
   }
@@ -4414,10 +4414,10 @@ LABEL_227:
   v635 = 0.0;
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
   {
-    v636 = [*(v2103 + *&v1670) isShowingProgress];
+    isShowingProgress = [*(v2103 + *&v1670) isShowingProgress];
     v627 = 0.0;
     v628 = 7.0;
-    if (v636)
+    if (isShowingProgress)
     {
       v635 = 7.0;
     }
@@ -4430,11 +4430,11 @@ LABEL_227:
 
   v2191.origin.x = OUTLINED_FUNCTION_25(v627, v628, v629, v630, v631, v632, v633, v634, v708, v742, v775, v808, v841, v873, v906, v940, v974, v1008, v1041, v1075, v1108, v1142, v1175, v1209, v1243, v1276, v1309, v1342, sxo, v1410, v1444, v1478, v1512, v1540, v1568, v1595, v1621, v1647, v1670, v1692, v1714, v1739, v1762, v1784, v1806, v1828, v1850, v1872, v1894, v1916, v1938, v1960, v1983);
   v637 = CGRectGetMaxY(v2191);
-  v638 = [(SFNavigationBarMetrics *)*(v2103 + *&v1851) distanceFromLabelBaselineToURLOutlineBottom];
-  v2192.origin.x = OUTLINED_FUNCTION_13(v638, v639, v640, v641, v642, v643, v644, v645, v709, v743, v776, v809, v842, v874, v907, v941, v975, v1009, v1042, v1076, v1109, v1143, v1176, v1210, v1244, v1277, v1310, v1343, sxbg, v1411, v1445, v1479, v1513, v1541, v1569, v1596, v1622, v1648, v1671, v1693, v1715, v1740, v1763, v1785, v1807, v1829, v1851, v1873, v1895, v1917, v1939, v1961, v1984, v2002, v2019, v2036, v2052, v2068);
+  distanceFromLabelBaselineToURLOutlineBottom = [(SFNavigationBarMetrics *)*(v2103 + *&v1851) distanceFromLabelBaselineToURLOutlineBottom];
+  v2192.origin.x = OUTLINED_FUNCTION_13(distanceFromLabelBaselineToURLOutlineBottom, v639, v640, v641, v642, v643, v644, v645, v709, v743, v776, v809, v842, v874, v907, v941, v975, v1009, v1042, v1076, v1109, v1143, v1176, v1210, v1244, v1277, v1310, v1343, sxbg, v1411, v1445, v1479, v1513, v1541, v1569, v1596, v1622, v1648, v1671, v1693, v1715, v1740, v1763, v1785, v1807, v1829, v1851, v1873, v1895, v1917, v1939, v1961, v1984, v2002, v2019, v2036, v2052, v2068);
   v646 = CGRectGetWidth(v2192);
   [*(v2103 + 944) preferredSize];
-  [*(v2103 + 944) ss_setUntransformedFrame:{0.0, v635 + v626 + v637 - v638, v646, v647}];
+  [*(v2103 + 944) ss_setUntransformedFrame:{0.0, v635 + v626 + v637 - distanceFromLabelBaselineToURLOutlineBottom, v646, v647}];
   OUTLINED_FUNCTION_54();
   v648 = [_SFNavigationBar _auxiliaryBarSquishedVerticalOffsetForSquishTransform:v2103];
   CGAffineTransformMakeTranslation(&v2125, 0.0, -v648);
@@ -4462,34 +4462,34 @@ LABEL_227:
         }
 
         v653 = *(*(&v2107 + 1) + 8 * k);
-        v654 = [v653 squishedView];
-        v655 = [v653 squishedEffectView];
-        v656 = v655;
-        if (v655)
+        squishedView = [v653 squishedView];
+        squishedEffectView = [v653 squishedEffectView];
+        v656 = squishedEffectView;
+        if (squishedEffectView)
         {
-          v657 = v655;
+          v657 = squishedEffectView;
         }
 
         else
         {
-          v657 = v654;
+          v657 = squishedView;
         }
 
         v658 = v657;
-        v659 = [v654 image];
-        v660 = [v654 preferredSymbolConfiguration];
-        v661 = [v659 imageWithSymbolConfiguration:v660];
+        image = [squishedView image];
+        preferredSymbolConfiguration = [squishedView preferredSymbolConfiguration];
+        v661 = [image imageWithSymbolConfiguration:preferredSymbolConfiguration];
         [v661 size];
         OUTLINED_FUNCTION_50();
 
         v662 = OUTLINED_FUNCTION_8();
         [v663 setBounds:v662];
-        v664 = [v653 view];
-        v665 = [v658 superview];
-        [v664 center];
+        view3 = [v653 view];
+        superview3 = [v658 superview];
+        [view3 center];
         OUTLINED_FUNCTION_50();
-        v666 = [v664 superview];
-        [v665 convertPoint:v666 fromView:{v626, v646}];
+        superview4 = [view3 superview];
+        [superview3 convertPoint:superview4 fromView:{v626, v646}];
         [v658 setCenter:?];
 
         [v658 frame];
@@ -4498,7 +4498,7 @@ LABEL_227:
         if (v656)
         {
           [v656 bounds];
-          [v654 setFrame:?];
+          [squishedView setFrame:?];
         }
       }
 
@@ -4526,47 +4526,47 @@ LABEL_227:
 
 - (double)_layoutBounds
 {
-  if (a1)
+  if (self)
   {
-    [a1 bounds];
-    v2 = [a1 window];
-    v3 = [v2 windowScene];
-    v4 = [v3 statusBarManager];
-    if (([v4 isStatusBarHidden] & 1) == 0 && *(a1 + 896) != 0.0)
+    [self bounds];
+    window = [self window];
+    windowScene = [window windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    if (([statusBarManager isStatusBarHidden] & 1) == 0 && *(self + 896) != 0.0)
     {
       _SFDeviceStatusBarHasNonTransparentBackground();
     }
 
-    v5 = *(a1 + 648);
-    v6 = [objc_opt_class() _metricsCategory];
-    [(SFNavigationBarMetrics *)v5 barHeightWithBarMetricsCategory:v6];
+    v5 = *(self + 648);
+    _metricsCategory = [objc_opt_class() _metricsCategory];
+    [(SFNavigationBarMetrics *)v5 barHeightWithBarMetricsCategory:_metricsCategory];
   }
 
   return 0.0;
 }
 
-- (double)_widthForAccessoryButtonType:(uint64_t)a1
+- (double)_widthForAccessoryButtonType:(uint64_t)type
 {
   result = 0.0;
-  if (a1)
+  if (type)
   {
     if (a2 < 2)
     {
-      return fmin([(SFNavigationBarMetrics *)*(a1 + 648) urlOutlineHeight], 44.0);
+      return fmin([(SFNavigationBarMetrics *)*(type + 648) urlOutlineHeight], 44.0);
     }
 
     else if (a2 == 2)
     {
       if ([MEMORY[0x1E69C8880] isSolariumEnabled])
       {
-        v5 = *(a1 + 648);
+        v5 = *(type + 648);
 
         return [(SFNavigationBarMetrics *)v5 barButtonHeight];
       }
 
-      else if ([*(a1 + 848) hasHiddenElements])
+      else if ([*(type + 848) hasHiddenElements])
       {
-        [*(a1 + 744) intrinsicContentSize];
+        [*(type + 744) intrinsicContentSize];
       }
 
       else
@@ -4577,7 +4577,7 @@ LABEL_227:
 
     else if (a2 == 3)
     {
-      v4 = *(a1 + 648);
+      v4 = *(type + 648);
 
       return [(SFNavigationBarMetrics *)v4 urlOutlineHeight];
     }
@@ -4586,15 +4586,15 @@ LABEL_227:
   return result;
 }
 
-- (id)_searchIndicatorColorForSquishTransformFactor:(id *)a1
+- (id)_searchIndicatorColorForSquishTransformFactor:(id *)factor
 {
-  if (a1)
+  if (factor)
   {
-    v2 = a1;
-    v3 = [a1[106] text];
-    v4 = [v3 length];
+    factorCopy = factor;
+    text = [factor[106] text];
+    v4 = [text length];
 
-    v5 = v2[108];
+    v5 = factorCopy[108];
     if (v4)
     {
       OUTLINED_FUNCTION_38();
@@ -4603,31 +4603,31 @@ LABEL_227:
         SFBarBackgroundAlphaForSquishTransformFactor();
       }
 
-      a1 = [v5 platterTextColorForPlatterAlpha:?];
+      factor = [v5 platterTextColorForPlatterAlpha:?];
     }
 
     else
     {
-      a1 = [v2[108] platterPlaceholderTextColor];
+      factor = [factorCopy[108] platterPlaceholderTextColor];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return factor;
 }
 
 - (void)_updateFakeViews
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 536);
-    v3 = *(a1 + 544) - v2;
-    [*(a1 + 456) bounds];
+    v2 = *(self + 536);
+    v3 = *(self + 544) - v2;
+    [*(self + 456) bounds];
     v5 = v4;
-    v6 = *(a1 + 512);
+    v6 = *(self + 512);
     [v6 bounds];
-    [v6 convertRect:*(a1 + 456) toView:?];
+    [v6 convertRect:*(self + 456) toView:?];
     MaxX = CGRectGetMaxX(v23);
     v24.origin.y = 0.0;
     v24.origin.x = v2;
@@ -4640,16 +4640,16 @@ LABEL_227:
       v3 = v9;
     }
 
-    v21 = [*(a1 + 456) font];
-    [v21 ascender];
+    font = [*(self + 456) font];
+    [font ascender];
     v11 = v10;
-    [*(a1 + 456) _firstLineBaselineFrameOriginY];
+    [*(self + 456) _firstLineBaselineFrameOriginY];
     v13 = v12 - v11 + -1.0;
-    [v21 descender];
+    [font descender];
     v15 = v11 - v14 + 1.0;
     UIRoundToViewScale();
-    [*(a1 + 456) convertRect:*(a1 + 696) toView:{v2, v13, v3, v16 + v15}];
-    [*(a1 + 696) bounds];
+    [*(self + 456) convertRect:*(self + 696) toView:{v2, v13, v3, v16 + v15}];
+    [*(self + 696) bounds];
     v25.origin.x = OUTLINED_FUNCTION_8();
     v26 = CGRectIntersection(v25, v33);
     height = v26.size.height;
@@ -4677,30 +4677,30 @@ LABEL_227:
     CGRectGetMinY(v32);
     OUTLINED_FUNCTION_16();
     [v18 setFrame:?];
-    v19 = [*(a1 + 872) _clearButton];
-    v20 = *(a1 + 872);
+    _clearButton = [*(self + 872) _clearButton];
+    v20 = *(self + 872);
     [v20 clearButtonRect];
-    [v20 convertRect:*(a1 + 696) toView:?];
+    [v20 convertRect:*(self + 696) toView:?];
     _SFRoundRectToPixels();
-    [*(a1 + 552) ss_setUntransformedFrame:?];
+    [*(self + 552) ss_setUntransformedFrame:?];
   }
 }
 
 - (id)_hitTestCandidateViews
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     [_SFNavigationBar _setUpFormatToggleButtonIfNeeded];
-    v2 = *(a1 + 776);
-    if (*(a1 + 840) == 1)
+    v2 = *(self + 776);
+    if (*(self + 840) == 1)
     {
-      v15 = *(a1 + 744);
+      v15 = *(self + 744);
       v16 = v2;
-      v3 = *(a1 + 760);
-      v17 = *(a1 + 752);
+      v3 = *(self + 760);
+      v17 = *(self + 752);
       v18 = v3;
-      v19 = *(a1 + 800);
+      v19 = *(self + 800);
       v4 = MEMORY[0x1E695DEC8];
       v5 = &v15;
       v6 = 5;
@@ -4708,10 +4708,10 @@ LABEL_227:
 
     else
     {
-      v11 = *(a1 + 744);
+      v11 = *(self + 744);
       v12 = v2;
-      v7 = *(a1 + 760);
-      v13 = *(a1 + 752);
+      v7 = *(self + 760);
+      v13 = *(self + 752);
       v14 = v7;
       v4 = MEMORY[0x1E695DEC8];
       v5 = &v11;
@@ -4721,7 +4721,7 @@ LABEL_227:
     v8 = [v4 arrayWithObjects:v5 count:{v6, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20}];
     v9 = [v8 mutableCopy];
 
-    if (*(a1 + 816))
+    if (*(self + 816))
     {
       [v9 addObject:?];
     }
@@ -4737,13 +4737,13 @@ LABEL_227:
 
 - (id)_expandedURLLabelParagraphStyle
 {
-  if (a1)
+  if (self)
   {
     v2 = _expandedURLLabelParagraphStyle_paragraphStyle;
     if (!_expandedURLLabelParagraphStyle_paragraphStyle)
     {
-      v3 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-      v4 = [v3 mutableCopy];
+      defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+      v4 = [defaultParagraphStyle mutableCopy];
       v5 = _expandedURLLabelParagraphStyle_paragraphStyle;
       _expandedURLLabelParagraphStyle_paragraphStyle = v4;
 
@@ -4752,28 +4752,28 @@ LABEL_227:
       v2 = _expandedURLLabelParagraphStyle_paragraphStyle;
     }
 
-    a1 = v2;
+    self = v2;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_updateText
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v3 = [(SFNavigationBarItem *)self->_item text];
-  v4 = [(SFNavigationBarItem *)self->_item textWhenExpanded];
-  v25 = [(SFNavigationBarItem *)self->_item startIndexOfTextInExpandedText];
-  if (![v3 length])
+  text = [(SFNavigationBarItem *)self->_item text];
+  textWhenExpanded = [(SFNavigationBarItem *)self->_item textWhenExpanded];
+  startIndexOfTextInExpandedText = [(SFNavigationBarItem *)self->_item startIndexOfTextInExpandedText];
+  if (![text length])
   {
-    v5 = v4;
-    v6 = [(UITextField *)self->_textField placeholder];
-    [(SFURLLabel *)self->_URLLabel setText:v6];
+    v5 = textWhenExpanded;
+    placeholder = [(UITextField *)self->_textField placeholder];
+    [(SFURLLabel *)self->_URLLabel setText:placeholder];
     goto LABEL_9;
   }
 
-  [(SFURLLabel *)self->_URLLabel setText:v3];
+  [(SFURLLabel *)self->_URLLabel setText:text];
   if (![(SFNavigationBarItem *)self->_item showsSecurityAnnotation])
   {
     securityAnnotationLabel = self->_securityAnnotationLabel;
@@ -4797,13 +4797,13 @@ LABEL_7:
     [(UILabel *)securityAnnotationLabel setAlpha:v10];
   }
 
-  v5 = v4;
-  v6 = v4;
+  v5 = textWhenExpanded;
+  placeholder = textWhenExpanded;
 LABEL_9:
   v11 = objc_alloc(MEMORY[0x1E696AAB0]);
-  if (v6)
+  if (placeholder)
   {
-    v12 = v6;
+    v12 = placeholder;
   }
 
   else
@@ -4812,40 +4812,40 @@ LABEL_9:
   }
 
   v27[0] = *MEMORY[0x1E69DB688];
-  v13 = [(_SFNavigationBar *)self _expandedURLLabelParagraphStyle];
-  v28[0] = v13;
+  _expandedURLLabelParagraphStyle = [(_SFNavigationBar *)self _expandedURLLabelParagraphStyle];
+  v28[0] = _expandedURLLabelParagraphStyle;
   v27[1] = *MEMORY[0x1E69DB648];
-  v14 = [(UILabel *)self->_expandedURLLabel font];
-  v28[1] = v14;
+  font = [(UILabel *)self->_expandedURLLabel font];
+  v28[1] = font;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
   v16 = [v11 initWithString:v12 attributes:v15];
   attributedTextWhenExpanded = self->_attributedTextWhenExpanded;
   self->_attributedTextWhenExpanded = v16;
 
   [(UILabel *)self->_expandedURLLabel setAttributedText:self->_attributedTextWhenExpanded];
-  if ([v3 length])
+  if ([text length])
   {
-    if (v25 && v25 != 0x7FFFFFFFFFFFFFFFLL && [v5 length])
+    if (startIndexOfTextInExpandedText && startIndexOfTextInExpandedText != 0x7FFFFFFFFFFFFFFFLL && [v5 length])
     {
       v21 = CTLineCreateWithAttributedString(self->_attributedTextWhenExpanded);
-      if ([v3 characterAtIndex:0] == 8206)
+      if ([text characterAtIndex:0] == 8206)
       {
-        v22 = v25 + 1;
+        v22 = startIndexOfTextInExpandedText + 1;
       }
 
       else
       {
-        v22 = v25;
+        v22 = startIndexOfTextInExpandedText;
       }
 
       OffsetForStringIndex = CTLineGetOffsetForStringIndex(v21, v22, 0);
-      v24 = 1.0;
+      narrowEditingScaleFactor = 1.0;
       if (self->_usesNarrowLayout)
       {
-        v24 = [(SFNavigationBarMetrics *)self->_barMetrics narrowEditingScaleFactor];
+        narrowEditingScaleFactor = [(SFNavigationBarMetrics *)self->_barMetrics narrowEditingScaleFactor];
       }
 
-      self->_offsetOfURLInExpandedURL = OffsetForStringIndex / v24;
+      self->_offsetOfURLInExpandedURL = OffsetForStringIndex / narrowEditingScaleFactor;
       CFRelease(v21);
     }
 
@@ -4877,26 +4877,26 @@ LABEL_9:
 
 - (void)_updateSearchIndicator
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 664) superview];
+    superview = [*(self + 664) superview];
 
-    if (v2)
+    if (superview)
     {
       [OUTLINED_FUNCTION_21() intrinsicContentSize];
       v4 = v3;
       v6 = v5;
-      v7 = [(SFNavigationBarMetrics *)*(a1 + 648) accessoryImageSymbolConfiguration];
+      accessoryImageSymbolConfiguration = [(SFNavigationBarMetrics *)*(self + 648) accessoryImageSymbolConfiguration];
       [OUTLINED_FUNCTION_12(664) setPreferredSymbolConfiguration:?];
 
-      v8 = [(SFNavigationBarMetrics *)*(a1 + 648) squishedAccessoryImageSymbolConfiguration];
+      squishedAccessoryImageSymbolConfiguration = [(SFNavigationBarMetrics *)*(self + 648) squishedAccessoryImageSymbolConfiguration];
       [OUTLINED_FUNCTION_12(672) setPreferredSymbolConfiguration:?];
 
       [OUTLINED_FUNCTION_21() intrinsicContentSize];
       if (v4 != v10 || v6 != v9)
       {
 
-        [a1 setNeedsLayout];
+        [self setNeedsLayout];
       }
     }
   }
@@ -4904,57 +4904,57 @@ LABEL_9:
 
 - (id)_notSecureAnnotationColor
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if ([a1[106] hasFocusedSensitiveFieldOnCurrentPage])
+    selfCopy = self;
+    if ([self[106] hasFocusedSensitiveFieldOnCurrentPage])
     {
-      [(_SFNavigationBar *)v2 _notSecureWarningColor];
+      [(_SFNavigationBar *)selfCopy _notSecureWarningColor];
     }
 
     else
     {
-      [(_SFNavigationBar *)v2 _notSecureGrayColor];
+      [(_SFNavigationBar *)selfCopy _notSecureGrayColor];
     }
-    a1 = ;
+    self = ;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (double)_notSecureGrayColor
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = *(a1 + 108);
-    [a1 minimumHeight];
+    selfCopy = self;
+    v3 = *(self + 108);
+    [self minimumHeight];
     v5 = v4;
-    [v2 bounds];
+    [selfCopy bounds];
     OUTLINED_FUNCTION_38();
     if (!v7)
     {
-      OUTLINED_FUNCTION_1_1(v6 - v5, v2[113] - v5);
+      OUTLINED_FUNCTION_1_1(v6 - v5, selfCopy[113] - v5);
       SFBarBackgroundAlphaForSquishTransformFactor();
     }
 
-    a1 = [v3 annotationTextColorForPlatterAlpha:?];
+    self = [v3 annotationTextColorForPlatterAlpha:?];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_updateAvailabilityAndPageMenuButtonAnimated:(uint64_t)a1
+- (void)_updateAvailabilityAndPageMenuButtonAnimated:(uint64_t)animated
 {
-  if (a1)
+  if (animated)
   {
-    if ([*(a1 + 408) isDisplaying])
+    if ([*(animated + 408) isDisplaying])
     {
-      if ([(SFNavigationBarAccessoryButtonArrangement *)*(a1 + 736) containsButtonType:?])
+      if ([(SFNavigationBarAccessoryButtonArrangement *)*(animated + 736) containsButtonType:?])
       {
-        v4 = *(a1 + 843) ^ 1;
+        v4 = *(animated + 843) ^ 1;
       }
 
       else
@@ -4963,13 +4963,13 @@ LABEL_9:
       }
 
       v6 = v4 & 1;
-      [*(a1 + 408) currentOptions];
+      [*(animated + 408) currentOptions];
       OUTLINED_FUNCTION_0_2();
       OUTLINED_FUNCTION_45();
       v11 = __65___SFNavigationBar__updateAvailabilityAndPageMenuButtonAnimated___block_invoke;
       v12 = &unk_1E848F610;
       v15 = v6;
-      v13 = a1;
+      animatedCopy = animated;
       v14 = v7;
       v8 = _Block_copy(aBlock);
       v9 = v8;
@@ -4986,49 +4986,49 @@ LABEL_9:
 
     else
     {
-      [*(a1 + 472) alpha];
+      [*(animated + 472) alpha];
       if (v5 == 0.0)
       {
 
-        [(_SFNavigationBar *)a1 _updateFormatButtonSelected];
+        [(_SFNavigationBar *)animated _updateFormatButtonSelected];
       }
 
       else
       {
 
-        [(_SFNavigationBar *)a1 _hideAvailabilityLabelAnimated:a2];
+        [(_SFNavigationBar *)animated _hideAvailabilityLabelAnimated:a2];
       }
     }
   }
 }
 
-- (void)_setHidePlaceholderURLItemsForPencilInput:(uint64_t)a1
+- (void)_setHidePlaceholderURLItemsForPencilInput:(uint64_t)input
 {
-  if (a1 && *(a1 + 656) != a2)
+  if (input && *(input + 656) != a2)
   {
-    *(a1 + 656) = a2;
-    [*(a1 + 432) setHidden:a2];
-    [*(a1 + 872) setClearsPlaceholderOnBeginEditing:a2];
-    [*(a1 + 848) setTemporarilySuppressText:a2];
-    [a1 _updateText];
-    [(_SFNavigationBar *)a1 _updateFakeViews];
+    *(input + 656) = a2;
+    [*(input + 432) setHidden:a2];
+    [*(input + 872) setClearsPlaceholderOnBeginEditing:a2];
+    [*(input + 848) setTemporarilySuppressText:a2];
+    [input _updateText];
+    [(_SFNavigationBar *)input _updateFakeViews];
 
-    [(_SFNavigationBar *)a1 _updateAccessoryButtonsVisibility];
+    [(_SFNavigationBar *)input _updateAccessoryButtonsVisibility];
   }
 }
 
-- (void)_hideAvailabilityLabelAnimated:(uint64_t)a1
+- (void)_hideAvailabilityLabelAnimated:(uint64_t)animated
 {
-  if (a1)
+  if (animated)
   {
-    [*(a1 + 472) alpha];
+    [*(animated + 472) alpha];
     if (v4 != 0.0)
     {
       OUTLINED_FUNCTION_0_2();
       OUTLINED_FUNCTION_45();
       v8 = __51___SFNavigationBar__hideAvailabilityLabelAnimated___block_invoke;
       v9 = &unk_1E848F810;
-      v10 = a1;
+      animatedCopy = animated;
       v5 = _Block_copy(aBlock);
       v6 = v5;
       if (a2)
@@ -5046,23 +5046,23 @@ LABEL_9:
 
 - (void)_updateFormatButtonSelected
 {
-  if (a1)
+  if (self)
   {
-    if ([a1[106] readerButtonSelected] & 1) != 0 || (objc_msgSend(OUTLINED_FUNCTION_31(), "showsTranslationIcon"))
+    if ([self[106] readerButtonSelected] & 1) != 0 || (objc_msgSend(OUTLINED_FUNCTION_31(), "showsTranslationIcon"))
     {
-      v2 = 1;
+      showsSiriReaderPlayingIcon = 1;
     }
 
     else
     {
-      v2 = [OUTLINED_FUNCTION_31() showsSiriReaderPlayingIcon];
+      showsSiriReaderPlayingIcon = [OUTLINED_FUNCTION_31() showsSiriReaderPlayingIcon];
     }
 
-    [a1[93] setSelected:v2];
-    v3 = [(_SFNavigationBar *)a1 _formatToggleButtonImage];
+    [self[93] setSelected:showsSiriReaderPlayingIcon];
+    _formatToggleButtonImage = [(_SFNavigationBar *)self _formatToggleButtonImage];
     [OUTLINED_FUNCTION_12(744) setImage:?];
 
-    [(_SFNavigationBar *)a1 _updateNavigationBarTrailingButtonType];
+    [(_SFNavigationBar *)self _updateNavigationBarTrailingButtonType];
   }
 }
 
@@ -5083,55 +5083,55 @@ LABEL_9:
 
 - (id)_mediaStateMuteButtonColor
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if ([a1[108] backdropIsRed])
+    selfCopy = self;
+    if ([self[108] backdropIsRed])
     {
-      [v2[108] URLAccessoryButtonTintColorForInputMode:v2[103]];
+      [selfCopy[108] URLAccessoryButtonTintColorForInputMode:selfCopy[103]];
     }
 
     else
     {
       [MEMORY[0x1E69DC888] systemRedColor];
     }
-    a1 = ;
+    self = ;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (double)_notSecureWarningColor
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = *(a1 + 108);
-    [a1 minimumHeight];
+    selfCopy = self;
+    v3 = *(self + 108);
+    [self minimumHeight];
     v5 = v4;
-    [v2 bounds];
+    [selfCopy bounds];
     OUTLINED_FUNCTION_38();
     if (!v7)
     {
-      OUTLINED_FUNCTION_1_1(v6 - v5, v2[113] - v5);
+      OUTLINED_FUNCTION_1_1(v6 - v5, selfCopy[113] - v5);
       SFBarBackgroundAlphaForSquishTransformFactor();
     }
 
-    a1 = [v3 platterWarningTextColorForPlatterAlpha:?];
+    self = [v3 platterWarningTextColorForPlatterAlpha:?];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)navigationBarURLButton:(id)a3 shouldShowMenuForGestureWithRecognizer:(id)a4
+- (BOOL)navigationBarURLButton:(id)button shouldShowMenuForGestureWithRecognizer:(id)recognizer
 {
-  v5 = a4;
+  recognizerCopy = recognizer;
   if ([(SFNavigationBarAccessoryButtonArrangement *)self->_accessoryButtonArrangement containsButtonType:?])
   {
     mediaStateMuteButton = self->_mediaStateMuteButton;
-    [v5 locationInView:mediaStateMuteButton];
+    [recognizerCopy locationInView:mediaStateMuteButton];
     v7 = [(UIButton *)mediaStateMuteButton pointInside:0 withEvent:?]^ 1;
   }
 
@@ -5145,13 +5145,13 @@ LABEL_9:
 
 - (void)_copyNavigationBarURLToPasteboard
 {
-  if (a1)
+  if (self)
   {
-    objc_loadWeakRetained((a1 + 888));
+    objc_loadWeakRetained((self + 888));
     OUTLINED_FUNCTION_58();
     v5 = [v2 navigationBarURLForSharing:?];
 
-    v3 = [v5 safari_userVisibleString];
+    safari_userVisibleString = [v5 safari_userVisibleString];
     [MEMORY[0x1E69DCD50] generalPasteboard];
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_58();
@@ -5159,13 +5159,13 @@ LABEL_9:
   }
 }
 
-- (BOOL)navigationBarURLButton:(id)a3 shouldAllowLongPressAtPoint:(CGPoint)a4
+- (BOOL)navigationBarURLButton:(id)button shouldAllowLongPressAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = v9;
-  if (v9 && *(v9 + 105))
+  y = point.y;
+  x = point.x;
+  buttonCopy = button;
+  v10 = buttonCopy;
+  if (buttonCopy && *(buttonCopy + 105))
   {
     LOBYTE(v11) = 0;
   }
@@ -5194,23 +5194,23 @@ LABEL_9:
   return v11;
 }
 
-- (void)_updateTemporarySuppressionOfItemText:(id *)a1
+- (void)_updateTemporarySuppressionOfItemText:(id *)text
 {
-  if (a1)
+  if (text)
   {
-    [a1[106] setTemporarilySuppressText:a2];
-    [a1 _updateText];
+    [text[106] setTemporarilySuppressText:a2];
+    [text _updateText];
 
-    [(_SFNavigationBar *)a1 _updateFakeViews];
+    [(_SFNavigationBar *)text _updateFakeViews];
   }
 }
 
-- (BOOL)navigationBarURLButton:(id)a3 canWriteAtLocation:(CGPoint)a4
+- (BOOL)navigationBarURLButton:(id)button canWriteAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  buttonCopy = button;
   [(_SFNavigationBar *)self _hitTestCandidateViews];
   v17 = 0u;
   v18 = 0u;
@@ -5231,7 +5231,7 @@ LABEL_9:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        [v13 convertPoint:v7 fromView:{x, y, v17}];
+        [v13 convertPoint:buttonCopy fromView:{x, y, v17}];
         v14 = [v13 hitTest:0 withEvent:?];
 
         if (v14)
@@ -5257,63 +5257,63 @@ LABEL_11:
   return v15;
 }
 
-- (id)_toolbarForBarItem:(id *)a1
+- (id)_toolbarForBarItem:(id *)item
 {
-  if (a1)
+  if (item)
   {
-    v4 = a1;
+    itemCopy = item;
     v5 = &OBJC_IVAR____SFNavigationBar__leadingToolbar;
-    v6 = [a1[71] barRegistration];
-    v7 = [v6 containsBarItem:a2];
+    barRegistration = [item[71] barRegistration];
+    v7 = [barRegistration containsBarItem:a2];
 
-    if ((v7 & 1) != 0 || (v5 = &OBJC_IVAR____SFNavigationBar__trailingToolbar, [v4[72] barRegistration], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "containsBarItem:", a2), v8, v9))
+    if ((v7 & 1) != 0 || (v5 = &OBJC_IVAR____SFNavigationBar__trailingToolbar, [itemCopy[72] barRegistration], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "containsBarItem:", a2), v8, v9))
     {
-      a1 = *(v4 + *v5);
+      item = *(itemCopy + *v5);
     }
 
     else
     {
-      a1 = 0;
+      item = 0;
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return item;
 }
 
-- (BOOL)containsBarItem:(int64_t)a3
+- (BOOL)containsBarItem:(int64_t)item
 {
-  v3 = [(_SFNavigationBar *)&self->super.super.super.isa _toolbarForBarItem:a3];
+  v3 = [(_SFNavigationBar *)&self->super.super.super.isa _toolbarForBarItem:item];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)navigationBarItemDidUpdateCustomPlaceholderText:(id)a3
+- (void)navigationBarItemDidUpdateCustomPlaceholderText:(id)text
 {
   [(_SFNavigationBar *)self _updatePlaceholderText];
 
   [(_SFNavigationBar *)self _updateText];
 }
 
-- (void)navigationBarItemDidUpdateHasHiddenElements:(id)a3
+- (void)navigationBarItemDidUpdateHasHiddenElements:(id)elements
 {
   [(_SFNavigationBar *)self _updateFormatButtonAccessories];
 
   [(_SFNavigationBar *)self setNeedsLayout];
 }
 
-- (void)navigationBarItemDidUpdateOverlayConfiguration:(id)a3
+- (void)navigationBarItemDidUpdateOverlayConfiguration:(id)configuration
 {
-  v4 = [a3 overlayConfiguration];
+  overlayConfiguration = [configuration overlayConfiguration];
   [_SFNavigationBarURLButton setOverlayConfiguration:];
 
   OUTLINED_FUNCTION_0_2();
   OUTLINED_FUNCTION_45();
   v7 = __67___SFNavigationBar_navigationBarItemDidUpdateOverlayConfiguration___block_invoke;
   v8 = &unk_1E848F810;
-  v9 = self;
+  selfCopy = self;
   [v5 _animateUsingDefaultTimingWithOptions:0 animations:v6 completion:0];
 }
 
@@ -5636,11 +5636,11 @@ LABEL_11:
 
 - (uint64_t)_updateSecurityWarningsVisibility
 {
-  [a1 layoutIfNeeded];
-  [a1 setNeedsLayout];
-  [a1 _updateText];
-  *(a1 + 640) = 1;
-  v4 = *(a1 + 432);
+  [self layoutIfNeeded];
+  [self setNeedsLayout];
+  [self _updateText];
+  *(self + 640) = 1;
+  v4 = *(self + 432);
   if (v4)
   {
     *(v4 + 408) = 1;
@@ -5651,10 +5651,10 @@ LABEL_11:
   a2[1] = 3221225472;
   a2[2] = __53___SFNavigationBar__updateSecurityWarningsVisibility__block_invoke;
   a2[3] = &unk_1E848F810;
-  a2[4] = a1;
+  a2[4] = self;
   result = [v5 animateWithDuration:0 delay:a2 usingSpringWithDamping:0 initialSpringVelocity:0.35 options:0.0 animations:2.5 completion:0.0];
-  *(a1 + 640) = 0;
-  v7 = *(a1 + 432);
+  *(self + 640) = 0;
+  v7 = *(self + 432);
   if (v7)
   {
     *(v7 + 408) = 0;

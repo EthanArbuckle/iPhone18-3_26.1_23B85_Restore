@@ -1,20 +1,20 @@
 @interface FAFamilyDetailsRequest
-- (FAFamilyDetailsRequest)initWithAccount:(id)a3;
+- (FAFamilyDetailsRequest)initWithAccount:(id)account;
 - (id)urlRequest;
 @end
 
 @implementation FAFamilyDetailsRequest
 
-- (FAFamilyDetailsRequest)initWithAccount:(id)a3
+- (FAFamilyDetailsRequest)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = FAFamilyDetailsRequest;
-  v6 = [(FAFamilyDetailsRequest *)&v9 initWithAccount:v5];
+  v6 = [(FAFamilyDetailsRequest *)&v9 initWithAccount:accountCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -24,8 +24,8 @@
 {
   v8.receiver = self;
   v8.super_class = FAFamilyDetailsRequest;
-  v3 = [(FAFamilyDetailsRequest *)&v8 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(FAFamilyDetailsRequest *)&v8 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   v5 = [[FARequestConfigurator alloc] initWithAccount:self->_account];
   [v5 addFresnoPayloadToRequest:v4 additionalPayload:0];

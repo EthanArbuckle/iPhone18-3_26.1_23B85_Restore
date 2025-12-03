@@ -9,7 +9,7 @@
 - (uint64_t)performSelector:()NSOrderedPerforming target:argument:order:modes:
 {
   v33 = *MEMORY[0x1E69E9840];
-  result = [a1 getCFRunLoop];
+  result = [self getCFRunLoop];
   rl = result;
   if (result)
   {
@@ -17,7 +17,7 @@
     result = [a7 count];
     if (result)
     {
-      objc_sync_enter(a1);
+      objc_sync_enter(self);
       v13 = malloc_default_zone();
       v14 = malloc_type_zone_calloc(v13, 1uLL, 0x30uLL, 0x2C221C3EuLL);
       context.info = v14;
@@ -25,7 +25,7 @@
       v14[1] = a3;
       v14[2] = a5;
       v14[3] = [a7 copyWithZone:0];
-      v14[5] = a1;
+      v14[5] = self;
       if (a6 >= 0x7FFFFFFFFFFFFFFFLL)
       {
         v15 = 0x7FFFFFFFFFFFFFFFLL;
@@ -79,9 +79,9 @@
         while (v18);
       }
 
-      CFArrayAppendValue([a1 _perft], v16);
+      CFArrayAppendValue([self _perft], v16);
       CFRelease(v16);
-      return objc_sync_exit(a1);
+      return objc_sync_exit(self);
     }
   }
 
@@ -91,13 +91,13 @@
 - (uint64_t)cancelPerformSelector:()NSOrderedPerforming target:argument:
 {
   v35 = *MEMORY[0x1E69E9840];
-  result = [a1 getCFRunLoop];
+  result = [self getCFRunLoop];
   if (result)
   {
     v10 = result;
-    objc_sync_enter(a1);
-    obj = a1;
-    v11 = [objc_msgSend(a1 "_perft")];
+    objc_sync_enter(self);
+    obj = self;
+    v11 = [objc_msgSend(self "_perft")];
     if (v11)
     {
       v12 = *MEMORY[0x1E695DA28];
@@ -183,13 +183,13 @@
 - (uint64_t)cancelPerformSelectorsWithTarget:()NSOrderedPerforming
 {
   v28 = *MEMORY[0x1E69E9840];
-  result = [a1 getCFRunLoop];
+  result = [self getCFRunLoop];
   if (result)
   {
     v6 = result;
-    objc_sync_enter(a1);
-    obj = a1;
-    v7 = [objc_msgSend(a1 "_perft")];
+    objc_sync_enter(self);
+    obj = self;
+    v7 = [objc_msgSend(self "_perft")];
     if (v7)
     {
       v8 = *MEMORY[0x1E695DA28];

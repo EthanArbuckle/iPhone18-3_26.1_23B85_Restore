@@ -9,31 +9,31 @@
 - (IMCloudKitSyncState)syncState;
 - (NSTimer)fetchStatsTimer;
 - (id)logHandle;
-- (id)syncStateWithDictionary:(id)a3;
+- (id)syncStateWithDictionary:(id)dictionary;
 - (void)_cancelStatsFetchingTimer;
-- (void)_fetchSyncStateStatistics:(id)a3;
+- (void)_fetchSyncStateStatistics:(id)statistics;
 - (void)_rescheduleFetchSyncProgress;
 - (void)_sendHiddenProgressToEventListeners;
-- (void)_sendProgressToEventListeners:(id)a3;
+- (void)_sendProgressToEventListeners:(id)listeners;
 - (void)_sendProgressToEventListenersDeferred;
-- (void)_sendSyncStateChangedEventToEventListeners:(id)a3;
-- (void)_sendSyncStatisticsToEventHandlers:(id)a3 error:(id)a4;
-- (void)_syncStateDidChange:(id)a3;
-- (void)_timerExpiredForSyncStatsFetching:(id)a3;
-- (void)_updateProgressWithState:(id)a3;
+- (void)_sendSyncStateChangedEventToEventListeners:(id)listeners;
+- (void)_sendSyncStatisticsToEventHandlers:(id)handlers error:(id)error;
+- (void)_syncStateDidChange:(id)change;
+- (void)_timerExpiredForSyncStatsFetching:(id)fetching;
+- (void)_updateProgressWithState:(id)state;
 - (void)disableAllSyncEnabledCloudKitDevices;
-- (void)fetchRampStateWithCompletion:(id)a3;
-- (void)fetchSyncDebuggingInfo:(id)a3;
+- (void)fetchRampStateWithCompletion:(id)completion;
+- (void)fetchSyncDebuggingInfo:(id)info;
 - (void)fetchSyncState;
 - (void)fetchSyncStateAfterClearingErrors;
-- (void)fetchSyncStateAfterClearingErrorsWithRepairSuccess:(BOOL)a3 completion:(id)a4;
+- (void)fetchSyncStateAfterClearingErrorsWithRepairSuccess:(BOOL)success completion:(id)completion;
 - (void)fetchSyncStateAfterFetchingAccountStatus;
 - (void)fetchSyncStateStatistics;
-- (void)fetchSyncStateStatisticsWithCompletion:(id)a3;
-- (void)fetchSyncStateWithCompletion:(id)a3;
+- (void)fetchSyncStateStatisticsWithCompletion:(id)completion;
+- (void)fetchSyncStateWithCompletion:(id)completion;
 - (void)performAdditionalStorageRequiredCheck;
-- (void)setCloudKitSyncEnabled:(BOOL)a3;
-- (void)setCloudKitSyncEnabled:(BOOL)a3 withCompletion:(id)a4;
+- (void)setCloudKitSyncEnabled:(BOOL)enabled;
+- (void)setCloudKitSyncEnabled:(BOOL)enabled withCompletion:(id)completion;
 - (void)startInitialSync;
 - (void)startPeriodicSync;
 - (void)startUserInitiatedSync;
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = sub_1A8257A60;
   block[3] = &unk_1E78102B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED767730 != -1)
   {
     dispatch_once(&qword_1ED767730, block);
@@ -168,33 +168,33 @@
   return v4;
 }
 
-- (id)syncStateWithDictionary:(id)a3
+- (id)syncStateWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [IMCloudKitSyncState alloc];
   v8 = objc_msgSend_accountHasiMessageEnabled(self, v6, v7);
-  v10 = objc_msgSend_initWithAccountEnabled_stateDictionary_(v5, v9, v8, v4);
+  v10 = objc_msgSend_initWithAccountEnabled_stateDictionary_(v5, v9, v8, dictionaryCopy);
 
   return v10;
 }
 
-- (void)_sendSyncStateChangedEventToEventListeners:(id)a3
+- (void)_sendSyncStateChangedEventToEventListeners:(id)listeners
 {
-  v4 = a3;
+  listenersCopy = listeners;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1A82A4CC4;
   v7[3] = &unk_1E78109C8;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = listenersCopy;
+  v5 = listenersCopy;
   objc_msgSend_visitEventHandlers_(self, v6, v7);
 }
 
-- (void)_syncStateDidChange:(id)a3
+- (void)_syncStateDidChange:(id)change
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend_userInfo(a3, a2, a3);
+  v4 = objc_msgSend_userInfo(change, a2, change);
   v6 = objc_msgSend_syncStateWithDictionary_(self, v5, v4);
 
   objc_msgSend_setPreviousState_(self, v7, v6);
@@ -228,9 +228,9 @@
   objc_msgSend_broadcastCloudKitStateAfterFetchingAccountStatus(v6, v7, v8);
 }
 
-- (void)fetchSyncStateWithCompletion:(id)a3
+- (void)fetchSyncStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7 = objc_msgSend_notificationManager(self, v5, v6);
   v9 = objc_msgSend_createEventListenerForNotificationName_object_(v7, v8, @"com.apple.IMCore.IMCloudKitHooks.ValuesChanged", 0);
 
@@ -239,14 +239,14 @@
   v12[2] = sub_1A82A4FF4;
   v12[3] = &unk_1E7810A10;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
+  v13 = completionCopy;
+  v10 = completionCopy;
   objc_msgSend_startListeningForEventTarget_sendStartingEvent_completion_(v9, v11, self, &unk_1F1B6DF60, v12);
 }
 
-- (void)fetchRampStateWithCompletion:(id)a3
+- (void)fetchRampStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7 = objc_msgSend_notificationManager(self, v5, v6);
   v9 = objc_msgSend_createEventListenerForNotificationName_object_(v7, v8, @"IMCloudKitFetchedRampStateNotification", 0);
 
@@ -254,8 +254,8 @@
   v12[1] = 3221225472;
   v12[2] = sub_1A82A5228;
   v12[3] = &unk_1E7810A38;
-  v13 = v4;
-  v10 = v4;
+  v13 = completionCopy;
+  v10 = completionCopy;
   objc_msgSend_startListeningForEventTarget_sendStartingEvent_completion_(v9, v11, self, &unk_1F1B6DF80, v12);
 }
 
@@ -271,9 +271,9 @@
   }
 }
 
-- (void)fetchSyncStateAfterClearingErrorsWithRepairSuccess:(BOOL)a3 completion:(id)a4
+- (void)fetchSyncStateAfterClearingErrorsWithRepairSuccess:(BOOL)success completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v9 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v7, v8);
   isMessagesIniCloudVersion2 = objc_msgSend_isMessagesIniCloudVersion2(v9, v10, v11);
 
@@ -287,15 +287,15 @@
     v19[2] = sub_1A82A5528;
     v19[3] = &unk_1E7810A60;
     v19[4] = self;
-    v20 = v6;
-    v21 = a3;
+    v20 = completionCopy;
+    successCopy = success;
     objc_msgSend_startListeningForEventTarget_sendStartingEvent_completion_(v17, v18, self, &unk_1F1B6DFA0, v19);
   }
 }
 
-- (void)setCloudKitSyncEnabled:(BOOL)a3
+- (void)setCloudKitSyncEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
   {
@@ -303,7 +303,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = @"NO";
-      if (v3)
+      if (enabledCopy)
       {
         v8 = @"YES";
       }
@@ -321,22 +321,22 @@
   v14[1] = 3221225472;
   v14[2] = sub_1A82A5998;
   v14[3] = &unk_1E7810AC8;
-  v15 = v3;
+  v15 = enabledCopy;
   objc_msgSend_startListeningForEventTarget_sendStartingEvent_completion_(v11, v12, self, v14, &unk_1F1B6DFC0);
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCloudKitSyncEnabled:(BOOL)a3 withCompletion:(id)a4
+- (void)setCloudKitSyncEnabled:(BOOL)enabled withCompletion:(id)completion
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v9 = objc_msgSend_logHandle(self, v7, v8);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v23 = v4;
+    v23 = enabledCopy;
     _os_log_impl(&dword_1A823F000, v9, OS_LOG_TYPE_INFO, "set messages in cloud enabled: %{BOOL}d", buf, 8u);
   }
 
@@ -347,13 +347,13 @@
   v20[1] = 3221225472;
   v20[2] = sub_1A82A5B94;
   v20[3] = &unk_1E7810AC8;
-  v21 = v4;
+  v21 = enabledCopy;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = sub_1A82A5BE8;
   v18[3] = &unk_1E7810A38;
-  v19 = v6;
-  v15 = v6;
+  v19 = completionCopy;
+  v15 = completionCopy;
   objc_msgSend_startListeningForEventTarget_sendStartingEvent_completion_(v14, v16, self, v20, v18);
 
   v17 = *MEMORY[0x1E69E9840];
@@ -448,9 +448,9 @@
   objc_msgSend_startListeningForEventTarget_sendStartingEvent_completion_(v8, v9, self, &unk_1F1B6E060, &unk_1F1B6E040);
 }
 
-- (void)_fetchSyncStateStatistics:(id)a3
+- (void)_fetchSyncStateStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   v7 = objc_msgSend_logHandle(self, v5, v6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -461,29 +461,29 @@
   v17 = 3221225472;
   v18 = sub_1A82A6800;
   v19 = &unk_1E7810A10;
-  v20 = self;
-  v21 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v21 = statisticsCopy;
+  v8 = statisticsCopy;
   v9 = _Block_copy(&v16);
-  v12 = objc_msgSend_notificationManager(self, v10, v11, v16, v17, v18, v19, v20);
+  v12 = objc_msgSend_notificationManager(self, v10, v11, v16, v17, v18, v19, selfCopy);
   v14 = objc_msgSend_createEventListenerForNotificationName_object_(v12, v13, @"IMCloudKitFetchedSyncStatsNotification", 0);
 
   objc_msgSend_startListeningForEventTarget_sendStartingEvent_completion_(v14, v15, self, &unk_1F1B6E080, v9);
 }
 
-- (void)_sendSyncStatisticsToEventHandlers:(id)a3 error:(id)a4
+- (void)_sendSyncStatisticsToEventHandlers:(id)handlers error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  handlersCopy = handlers;
+  errorCopy = error;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_1A82A6A5C;
   v11[3] = &unk_1E7810B38;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v12 = handlersCopy;
+  v13 = errorCopy;
+  v8 = errorCopy;
+  v9 = handlersCopy;
   objc_msgSend_visitEventHandlers_(self, v10, v11);
 }
 
@@ -497,16 +497,16 @@
   objc_msgSend__fetchSyncStateStatistics_(self, a2, v2);
 }
 
-- (void)fetchSyncStateStatisticsWithCompletion:(id)a3
+- (void)fetchSyncStateStatisticsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1A82A6BD0;
   v7[3] = &unk_1E7810B88;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   objc_msgSend__fetchSyncStateStatistics_(self, v6, v7);
 }
 
@@ -522,9 +522,9 @@
   }
 }
 
-- (void)_timerExpiredForSyncStatsFetching:(id)a3
+- (void)_timerExpiredForSyncStatsFetching:(id)fetching
 {
-  v4 = objc_msgSend_logHandle(self, a2, a3);
+  v4 = objc_msgSend_logHandle(self, a2, fetching);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *v8 = 0;
@@ -598,10 +598,10 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendProgressToEventListeners:(id)a3
+- (void)_sendProgressToEventListeners:(id)listeners
 {
-  v4 = a3;
-  objc_msgSend_setProgressToSend_(self, v5, v4);
+  listenersCopy = listeners;
+  objc_msgSend_setProgressToSend_(self, v5, listenersCopy);
   v8 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v6, v7);
   isMessagesIniCloudVersion2 = objc_msgSend_isMessagesIniCloudVersion2(v8, v9, v10);
 
@@ -614,10 +614,10 @@
   {
     objc_msgSend_progressBroadcastDelay(self, v12, v13);
     v15 = v14;
-    objc_msgSend_broadcastDeferralOverride(v4, v16, v17);
+    objc_msgSend_broadcastDeferralOverride(listenersCopy, v16, v17);
     if (v15 <= v20)
     {
-      objc_msgSend_broadcastDeferralOverride(v4, v18, v19);
+      objc_msgSend_broadcastDeferralOverride(listenersCopy, v18, v19);
     }
 
     else
@@ -644,9 +644,9 @@
   objc_msgSend__sendProgressToEventListeners_(self, v5, v6);
 }
 
-- (void)_updateProgressWithState:(id)a3
+- (void)_updateProgressWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v7 = objc_msgSend_fetchStatsTimer(self, v5, v6);
 
   if (v7)
@@ -669,14 +669,14 @@
       sub_1A84DF74C(v15);
     }
 
-    v17 = objc_msgSend_createSyncProgressWithSyncStatistics_(v4, v16, 0);
+    v17 = objc_msgSend_createSyncProgressWithSyncStatistics_(stateCopy, v16, 0);
     objc_msgSend__sendProgressToEventListeners_(self, v18, v17);
   }
 }
 
-- (void)fetchSyncDebuggingInfo:(id)a3
+- (void)fetchSyncDebuggingInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -694,8 +694,8 @@
   v13[1] = 3221225472;
   v13[2] = sub_1A82A76E0;
   v13[3] = &unk_1E7810C00;
-  v14 = v4;
-  v11 = v4;
+  v14 = infoCopy;
+  v11 = infoCopy;
   objc_msgSend_startListeningForEventTarget_sendStartingEvent_completion_(v10, v12, self, v13, &unk_1F1B6E0A0);
 }
 

@@ -1,120 +1,120 @@
 @interface BuddyProximitySetupDependentController
 - (BuddyPASUIDependentViewPresenterDelegate)delegate;
-- (BuddyProximitySetupDependentController)initWithMessageSession:(id)a3 featureFlags:(id)a4;
-- (void)_accountTypeSelected:(int64_t)a3;
+- (BuddyProximitySetupDependentController)initWithMessageSession:(id)session featureFlags:(id)flags;
+- (void)_accountTypeSelected:(int64_t)selected;
 - (void)connectionTerminated;
-- (void)proximitySetupCompletedWithResult:(id)a3;
-- (void)proximitySetupSelectedAccount:(int64_t)a3 completion:(id)a4;
-- (void)setAccountType:(int64_t)a3;
-- (void)setAccountTypeSelectedBlock:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDelegateOnClient:(id)a3;
-- (void)setDependentViewPresenter:(id)a3;
-- (void)setParentViewController:(id)a3;
-- (void)setReadyForPresentation:(id)a3;
-- (void)setViewControllerAvailableBlock:(id)a3;
-- (void)setupPasscodeAndBiometricWithCompletion:(id)a3;
-- (void)setupPerformAIDASignInWith:(id)a3 completion:(id)a4;
-- (void)waitForSelectedAccountType:(id)a3;
-- (void)waitForViewController:(id)a3;
+- (void)proximitySetupCompletedWithResult:(id)result;
+- (void)proximitySetupSelectedAccount:(int64_t)account completion:(id)completion;
+- (void)setAccountType:(int64_t)type;
+- (void)setAccountTypeSelectedBlock:(id)block;
+- (void)setDelegate:(id)delegate;
+- (void)setDelegateOnClient:(id)client;
+- (void)setDependentViewPresenter:(id)presenter;
+- (void)setParentViewController:(id)controller;
+- (void)setReadyForPresentation:(id)presentation;
+- (void)setViewControllerAvailableBlock:(id)block;
+- (void)setupPasscodeAndBiometricWithCompletion:(id)completion;
+- (void)setupPerformAIDASignInWith:(id)with completion:(id)completion;
+- (void)waitForSelectedAccountType:(id)type;
+- (void)waitForViewController:(id)controller;
 @end
 
 @implementation BuddyProximitySetupDependentController
 
-- (BuddyProximitySetupDependentController)initWithMessageSession:(id)a3 featureFlags:(id)a4
+- (BuddyProximitySetupDependentController)initWithMessageSession:(id)session featureFlags:(id)flags
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   obj = 0;
-  objc_storeStrong(&obj, a4);
-  v5 = v23;
-  v23 = 0;
+  objc_storeStrong(&obj, flags);
+  v5 = selfCopy;
+  selfCopy = 0;
   v20.receiver = v5;
   v20.super_class = BuddyProximitySetupDependentController;
-  v23 = [(BuddyProximitySetupDependentController *)&v20 init];
-  objc_storeStrong(&v23, v23);
-  if (v23)
+  selfCopy = [(BuddyProximitySetupDependentController *)&v20 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v6 = objc_alloc_init(BuddyProximitySetupDependentParentViewController);
-    v7 = *(v23 + 4);
-    *(v23 + 4) = v6;
+    v7 = *(selfCopy + 4);
+    *(selfCopy + 4) = v6;
 
-    v8 = [BuddyOverridesFactory dependentViewPresenterWithParentViewController:*(v23 + 4)];
-    v9 = *(v23 + 5);
-    *(v23 + 5) = v8;
+    v8 = [BuddyOverridesFactory dependentViewPresenterWithParentViewController:*(selfCopy + 4)];
+    v9 = *(selfCopy + 5);
+    *(selfCopy + 5) = v8;
 
-    [*(v23 + 5) setDelegate:v23];
-    objc_storeStrong(v23 + 3, obj);
-    v10 = *(v23 + 5);
+    [*(selfCopy + 5) setDelegate:selfCopy];
+    objc_storeStrong(selfCopy + 3, obj);
+    v10 = *(selfCopy + 5);
     v11 = location[0];
     v14 = _NSConcreteStackBlock;
     v15 = -1073741824;
     v16 = 0;
     v17 = sub_10017C644;
     v18 = &unk_10032DE80;
-    v19 = v23;
+    v19 = selfCopy;
     [v10 activateWithTemplateMessageSession:v11 completion:&v14];
     objc_storeStrong(&v19, 0);
   }
 
-  v12 = v23;
+  v12 = selfCopy;
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v12;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegate);
 
-  objc_storeWeak(&v10->_delegate, location[0]);
-  v3 = [(BuddyProximitySetupDependentController *)v10 result];
+  objc_storeWeak(&selfCopy->_delegate, location[0]);
+  result = [(BuddyProximitySetupDependentController *)selfCopy result];
 
-  if (v3)
+  if (result)
   {
-    v4 = [(BuddyProximitySetupDependentController *)v10 delegate];
-    v5 = [(BuddyProximitySetupDependentController *)v10 result];
-    [(BuddyPASUIDependentViewPresenterDelegate *)v4 proximitySetupCompletedWithResult:v5];
+    delegate = [(BuddyProximitySetupDependentController *)selfCopy delegate];
+    result2 = [(BuddyProximitySetupDependentController *)selfCopy result];
+    [(BuddyPASUIDependentViewPresenterDelegate *)delegate proximitySetupCompletedWithResult:result2];
 
-    [(BuddyProximitySetupDependentController *)v10 setResult:0];
+    [(BuddyProximitySetupDependentController *)selfCopy setResult:0];
   }
 
   else
   {
-    v6 = [(BuddyProximitySetupDependentController *)v10 passcodeSetUpCompletionBlock];
+    passcodeSetUpCompletionBlock = [(BuddyProximitySetupDependentController *)selfCopy passcodeSetUpCompletionBlock];
 
-    if (v6)
+    if (passcodeSetUpCompletionBlock)
     {
-      v7 = [(BuddyProximitySetupDependentController *)v10 delegate];
-      v8 = [(BuddyProximitySetupDependentController *)v10 passcodeSetUpCompletionBlock];
-      [(BuddyPASUIDependentViewPresenterDelegate *)v7 setupPasscodeAndBiometricWithCompletion:v8];
+      delegate2 = [(BuddyProximitySetupDependentController *)selfCopy delegate];
+      passcodeSetUpCompletionBlock2 = [(BuddyProximitySetupDependentController *)selfCopy passcodeSetUpCompletionBlock];
+      [(BuddyPASUIDependentViewPresenterDelegate *)delegate2 setupPasscodeAndBiometricWithCompletion:passcodeSetUpCompletionBlock2];
 
-      [(BuddyProximitySetupDependentController *)v10 setPasscodeSetUpCompletionBlock:0];
+      [(BuddyProximitySetupDependentController *)selfCopy setPasscodeSetUpCompletionBlock:0];
     }
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)waitForViewController:(id)a3
+- (void)waitForViewController:(id)controller
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_10017CABC;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -123,19 +123,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)waitForSelectedAccountType:(id)a3
+- (void)waitForSelectedAccountType:(id)type
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_10017CC68;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -144,127 +144,127 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setParentViewController:(id)a3
+- (void)setParentViewController:(id)controller
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v3 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v3);
 
-  objc_storeStrong(&v5->_parentViewController, location[0]);
+  objc_storeStrong(&selfCopy->_parentViewController, location[0]);
   objc_storeStrong(location, 0);
 }
 
-- (void)setDependentViewPresenter:(id)a3
+- (void)setDependentViewPresenter:(id)presenter
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, presenter);
   v3 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v3);
 
-  objc_storeStrong(&v5->_dependentViewPresenter, location[0]);
+  objc_storeStrong(&selfCopy->_dependentViewPresenter, location[0]);
   objc_storeStrong(location, 0);
 }
 
-- (void)setReadyForPresentation:(id)a3
+- (void)setReadyForPresentation:(id)presentation
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, presentation);
   v3 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v3);
 
-  objc_storeStrong(&v5->_readyForPresentation, location[0]);
+  objc_storeStrong(&selfCopy->_readyForPresentation, location[0]);
   objc_storeStrong(location, 0);
 }
 
-- (void)setViewControllerAvailableBlock:(id)a3
+- (void)setViewControllerAvailableBlock:(id)block
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, block);
   v3 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v3);
 
   v4 = objc_retainBlock(location[0]);
-  viewControllerAvailableBlock = v7->_viewControllerAvailableBlock;
-  v7->_viewControllerAvailableBlock = v4;
+  viewControllerAvailableBlock = selfCopy->_viewControllerAvailableBlock;
+  selfCopy->_viewControllerAvailableBlock = v4;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setAccountType:(int64_t)a3
+- (void)setAccountType:(int64_t)type
 {
   v3 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v3);
 
-  self->_accountType = a3;
+  self->_accountType = type;
 }
 
-- (void)setAccountTypeSelectedBlock:(id)a3
+- (void)setAccountTypeSelectedBlock:(id)block
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, block);
   v3 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v3);
 
   v4 = objc_retainBlock(location[0]);
-  accountTypeSelectedBlock = v7->_accountTypeSelectedBlock;
-  v7->_accountTypeSelectedBlock = v4;
+  accountTypeSelectedBlock = selfCopy->_accountTypeSelectedBlock;
+  selfCopy->_accountTypeSelectedBlock = v4;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_accountTypeSelected:(int64_t)a3
+- (void)_accountTypeSelected:(int64_t)selected
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  selectedCopy = selected;
   v3 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v3);
 
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100077E48(buf, v7);
+    sub_100077E48(buf, selectedCopy);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Source device selected account type: %ld", buf, 0xCu);
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyProximitySetupDependentController *)v9 setHasAccountType:1];
-  [(BuddyProximitySetupDependentController *)v9 setAccountType:v7];
-  v4 = [(BuddyProximitySetupDependentController *)v9 accountTypeSelectedBlock];
+  [(BuddyProximitySetupDependentController *)selfCopy setHasAccountType:1];
+  [(BuddyProximitySetupDependentController *)selfCopy setAccountType:selectedCopy];
+  accountTypeSelectedBlock = [(BuddyProximitySetupDependentController *)selfCopy accountTypeSelectedBlock];
 
-  if (v4)
+  if (accountTypeSelectedBlock)
   {
-    v5 = [(BuddyProximitySetupDependentController *)v9 accountTypeSelectedBlock];
-    v5[2](v5, v7);
+    accountTypeSelectedBlock2 = [(BuddyProximitySetupDependentController *)selfCopy accountTypeSelectedBlock];
+    accountTypeSelectedBlock2[2](accountTypeSelectedBlock2, selectedCopy);
 
-    [(BuddyProximitySetupDependentController *)v9 setAccountTypeSelectedBlock:0];
+    [(BuddyProximitySetupDependentController *)selfCopy setAccountTypeSelectedBlock:0];
   }
 }
 
-- (void)setupPasscodeAndBiometricWithCompletion:(id)a3
+- (void)setupPasscodeAndBiometricWithCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyProximitySetupDependentController *)v11 setPasscodeSetUpCompletionBlock:location[0]];
-  v3 = [(BuddyProximitySetupDependentController *)v11 delegate];
+  objc_storeStrong(location, completion);
+  [(BuddyProximitySetupDependentController *)selfCopy setPasscodeSetUpCompletionBlock:location[0]];
+  delegate = [(BuddyProximitySetupDependentController *)selfCopy delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(BuddyProximitySetupDependentController *)v11 delegate];
-    [(BuddyPASUIDependentViewPresenterDelegate *)v4 setupPasscodeAndBiometricWithCompletion:location[0]];
+    delegate2 = [(BuddyProximitySetupDependentController *)selfCopy delegate];
+    [(BuddyPASUIDependentViewPresenterDelegate *)delegate2 setupPasscodeAndBiometricWithCompletion:location[0]];
   }
 
   else
@@ -285,28 +285,28 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)proximitySetupCompletedWithResult:(id)a3
+- (void)proximitySetupCompletedWithResult:(id)result
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyProximitySetupDependentController *)v15 setResult:location[0]];
+  objc_storeStrong(location, result);
+  [(BuddyProximitySetupDependentController *)selfCopy setResult:location[0]];
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = sub_10017D450;
   v11 = &unk_10032B838;
-  v12 = v15;
+  v12 = selfCopy;
   v13 = location[0];
   dispatch_async(v3, &block);
 
-  v4 = [(BuddyProximitySetupDependentController *)v15 delegate];
-  if (v4)
+  delegate = [(BuddyProximitySetupDependentController *)selfCopy delegate];
+  if (delegate)
   {
-    v5 = [(BuddyProximitySetupDependentController *)v15 delegate];
-    [(BuddyPASUIDependentViewPresenterDelegate *)v5 proximitySetupCompletedWithResult:location[0]];
+    delegate2 = [(BuddyProximitySetupDependentController *)selfCopy delegate];
+    [(BuddyPASUIDependentViewPresenterDelegate *)delegate2 proximitySetupCompletedWithResult:location[0]];
   }
 
   else
@@ -326,21 +326,21 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)proximitySetupSelectedAccount:(int64_t)a3 completion:(id)a4
+- (void)proximitySetupSelectedAccount:(int64_t)account completion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  accountCopy = account;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v4 = &_dispatch_main_q;
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_10017D608;
   v9 = &unk_10032B718;
-  v10[0] = v14;
-  v10[1] = v12;
+  v10[0] = selfCopy;
+  v10[1] = accountCopy;
   dispatch_async(v4, &v5);
 
   if (location)
@@ -352,16 +352,16 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)setupPerformAIDASignInWith:(id)a3 completion:(id)a4
+- (void)setupPerformAIDASignInWith:(id)with completion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, with);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(BuddyProximitySetupDependentController *)v8 delegate];
-  [(BuddyPASUIDependentViewPresenterDelegate *)v5 setupPerformAIDASignInWith:location[0] completion:v6];
+  objc_storeStrong(&v6, completion);
+  delegate = [(BuddyProximitySetupDependentController *)selfCopy delegate];
+  [(BuddyPASUIDependentViewPresenterDelegate *)delegate setupPerformAIDASignInWith:location[0] completion:v6];
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
@@ -369,7 +369,7 @@
 
 - (void)connectionTerminated
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
@@ -377,26 +377,26 @@
   v5 = 0;
   v6 = sub_10017D79C;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
+  v8[0] = selfCopy;
   dispatch_async(v2, &block);
 
   objc_storeStrong(v8, 0);
 }
 
-- (void)setDelegateOnClient:(id)a3
+- (void)setDelegateOnClient:(id)client
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximitySetupDependentController *)v9 dependentViewPresenter];
+  objc_storeStrong(location, client);
+  dependentViewPresenter = [(BuddyProximitySetupDependentController *)selfCopy dependentViewPresenter];
   v6 = 0;
   v4 = 0;
-  if (v3)
+  if (dependentViewPresenter)
   {
-    v7 = [(BuddyProximitySetupDependentController *)v9 dependentViewPresenter];
+    dependentViewPresenter2 = [(BuddyProximitySetupDependentController *)selfCopy dependentViewPresenter];
     v6 = 1;
-    v4 = [(BuddyPASUIDependentViewPresenter *)v7 conformsToProtocol:&OBJC_PROTOCOL___BuddyUsesTargetClientOverride];
+    v4 = [(BuddyPASUIDependentViewPresenter *)dependentViewPresenter2 conformsToProtocol:&OBJC_PROTOCOL___BuddyUsesTargetClientOverride];
   }
 
   if (v6)
@@ -405,8 +405,8 @@
 
   if (v4)
   {
-    v5 = [(BuddyProximitySetupDependentController *)v9 dependentViewPresenter];
-    [(BuddyPASUIDependentViewPresenter *)v5 setDelegateOnClient:location[0]];
+    dependentViewPresenter3 = [(BuddyProximitySetupDependentController *)selfCopy dependentViewPresenter];
+    [(BuddyPASUIDependentViewPresenter *)dependentViewPresenter3 setDelegateOnClient:location[0]];
   }
 
   objc_storeStrong(location, 0);

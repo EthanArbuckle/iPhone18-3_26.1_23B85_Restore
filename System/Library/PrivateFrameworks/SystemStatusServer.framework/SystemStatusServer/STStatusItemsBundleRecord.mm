@@ -1,23 +1,23 @@
 @interface STStatusItemsBundleRecord
-- (STStatusItemsBundleRecord)initWithBundleInfoDictionary:(id)a3 bundleRecordIdentifier:(id)a4 bundleURL:(id)a5;
+- (STStatusItemsBundleRecord)initWithBundleInfoDictionary:(id)dictionary bundleRecordIdentifier:(id)identifier bundleURL:(id)l;
 @end
 
 @implementation STStatusItemsBundleRecord
 
-- (STStatusItemsBundleRecord)initWithBundleInfoDictionary:(id)a3 bundleRecordIdentifier:(id)a4 bundleURL:(id)a5
+- (STStatusItemsBundleRecord)initWithBundleInfoDictionary:(id)dictionary bundleRecordIdentifier:(id)identifier bundleURL:(id)l
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = STStatusItemsBundleRecord;
-  v9 = [(STBundleRecord_Base *)&v36 initWithBundleInfoDictionary:v8 bundleRecordIdentifier:a4 bundleURL:a5];
+  v9 = [(STBundleRecord_Base *)&v36 initWithBundleInfoDictionary:dictionaryCopy bundleRecordIdentifier:identifier bundleURL:l];
   v10 = v9;
   if (v9)
   {
     v29 = v9;
-    v31 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v30 = [MEMORY[0x277CBEB58] set];
-    v11 = [v8 bs_safeArrayForKey:@"STStatusItems"];
+    v11 = [dictionaryCopy bs_safeArrayForKey:@"STStatusItems"];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -68,7 +68,7 @@
 
             else
             {
-              [v31 setObject:v19 forKey:v17];
+              [dictionary setObject:v19 forKey:v17];
               [v30 addObject:v17];
             }
           }
@@ -83,7 +83,7 @@
       while (v13);
     }
 
-    v23 = [v31 copy];
+    v23 = [dictionary copy];
     v10 = v29;
     statusItemsToVisualDescriptors = v29->_statusItemsToVisualDescriptors;
     v29->_statusItemsToVisualDescriptors = v23;

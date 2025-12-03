@@ -100,10 +100,10 @@
   [(CIImage *)self->inputImage extent];
   v25 = v24;
   v26 = v23 / v25;
-  v27 = [v16 imageByClampingToExtent];
+  imageByClampingToExtent = [v16 imageByClampingToExtent];
 
   CGAffineTransformMakeScale(&v56, v21, v26);
-  v28 = [v27 imageByApplyingTransform:&v56];
+  v28 = [imageByClampingToExtent imageByApplyingTransform:&v56];
   v29 = [v28 imageByApplyingGaussianBlurWithSigma:5.0];
 
   [(NSNumber *)self->inputScale floatValue];
@@ -128,7 +128,7 @@
   [(CIImage *)self->inputImage extent];
   v41 = [v40 imageByCroppingToRect:?];
 
-  v42 = [(PILocalContrastHDR *)self _kernelLocalContrast];
+  _kernelLocalContrast = [(PILocalContrastHDR *)self _kernelLocalContrast];
   [(CIImage *)self->inputImage extent];
   v44 = v43;
   v46 = v45;
@@ -141,7 +141,7 @@
   v57[2] = v51;
   v57[3] = inputStrength;
   v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:4];
-  v54 = [v42 applyWithExtent:v53 arguments:{v44, v46, v48, v50}];
+  v54 = [_kernelLocalContrast applyWithExtent:v53 arguments:{v44, v46, v48, v50}];
 
   return v54;
 }

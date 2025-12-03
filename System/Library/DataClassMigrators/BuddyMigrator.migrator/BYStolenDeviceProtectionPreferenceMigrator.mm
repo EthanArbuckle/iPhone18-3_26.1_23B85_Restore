@@ -1,39 +1,39 @@
 @interface BYStolenDeviceProtectionPreferenceMigrator
-- (BYStolenDeviceProtectionPreferenceMigrator)initWithMigrationContext:(int64_t)a3 sourcePreferences:(id)a4 targetPreferences:(id)a5;
+- (BYStolenDeviceProtectionPreferenceMigrator)initWithMigrationContext:(int64_t)context sourcePreferences:(id)preferences targetPreferences:(id)targetPreferences;
 - (void)_clearPreferenceKeyFromSourcePreferences;
 - (void)_migratePreferenceKeyIfNeeded;
-- (void)migratePreferenceWithSDPEnabledState:(BOOL)a3;
+- (void)migratePreferenceWithSDPEnabledState:(BOOL)state;
 @end
 
 @implementation BYStolenDeviceProtectionPreferenceMigrator
 
-- (BYStolenDeviceProtectionPreferenceMigrator)initWithMigrationContext:(int64_t)a3 sourcePreferences:(id)a4 targetPreferences:(id)a5
+- (BYStolenDeviceProtectionPreferenceMigrator)initWithMigrationContext:(int64_t)context sourcePreferences:(id)preferences targetPreferences:(id)targetPreferences
 {
-  v9 = a4;
-  v10 = a5;
+  preferencesCopy = preferences;
+  targetPreferencesCopy = targetPreferences;
   v14.receiver = self;
   v14.super_class = BYStolenDeviceProtectionPreferenceMigrator;
   v11 = [(BYStolenDeviceProtectionPreferenceMigrator *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_migrationContext = a3;
-    objc_storeStrong(&v11->_sourcePreferences, a4);
-    objc_storeStrong(&v12->_targetPreferences, a5);
+    v11->_migrationContext = context;
+    objc_storeStrong(&v11->_sourcePreferences, preferences);
+    objc_storeStrong(&v12->_targetPreferences, targetPreferences);
   }
 
   return v12;
 }
 
-- (void)migratePreferenceWithSDPEnabledState:(BOOL)a3
+- (void)migratePreferenceWithSDPEnabledState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   if ([(BYStolenDeviceProtectionPreferenceMigrator *)self migrationContext]> 1)
   {
     objc_exception_throw(@"Neither postRestoreFromBackup or postSoftwareUpdate are set");
   }
 
-  if (v3)
+  if (stateCopy)
   {
     [(BYStolenDeviceProtectionPreferenceMigrator *)self _migratePreferenceKeyIfNeeded];
   }
@@ -55,7 +55,7 @@
       v9 = 1024;
       v10 = didClear;
       v11 = 1024;
-      v12 = v3;
+      v12 = stateCopy;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "SDP preferences updated. didMigrate: %d, didClear: %d. SDP State: %d", v8, 0x14u);
     }
   }
@@ -72,22 +72,22 @@
 
 - (void)_migratePreferenceKeyIfNeeded
 {
-  v3 = [(BYStolenDeviceProtectionPreferenceMigrator *)self targetPreferences];
-  v8 = [v3 objectForKey:@"StolenDeviceProtectionPresented"];
+  targetPreferences = [(BYStolenDeviceProtectionPreferenceMigrator *)self targetPreferences];
+  v8 = [targetPreferences objectForKey:@"StolenDeviceProtectionPresented"];
 
   if (!v8)
   {
-    v4 = [(BYStolenDeviceProtectionPreferenceMigrator *)self sourcePreferences];
-    v5 = [v4 objectForKey:@"StolenDeviceProtectionPresented"];
+    sourcePreferences = [(BYStolenDeviceProtectionPreferenceMigrator *)self sourcePreferences];
+    v5 = [sourcePreferences objectForKey:@"StolenDeviceProtectionPresented"];
 
     if (v5)
     {
       self->_didMigrate = 1;
-      v6 = [(BYStolenDeviceProtectionPreferenceMigrator *)self targetPreferences];
-      [v6 setObject:v5 forKey:@"StolenDeviceProtectionPresented"];
+      targetPreferences2 = [(BYStolenDeviceProtectionPreferenceMigrator *)self targetPreferences];
+      [targetPreferences2 setObject:v5 forKey:@"StolenDeviceProtectionPresented"];
 
-      v7 = [(BYStolenDeviceProtectionPreferenceMigrator *)self targetPreferences];
-      [v7 persist];
+      targetPreferences3 = [(BYStolenDeviceProtectionPreferenceMigrator *)self targetPreferences];
+      [targetPreferences3 persist];
     }
   }
 
@@ -96,17 +96,17 @@
 
 - (void)_clearPreferenceKeyFromSourcePreferences
 {
-  v3 = [(BYStolenDeviceProtectionPreferenceMigrator *)self sourcePreferences];
-  v4 = [v3 objectForKey:@"StolenDeviceProtectionPresented"];
+  sourcePreferences = [(BYStolenDeviceProtectionPreferenceMigrator *)self sourcePreferences];
+  v4 = [sourcePreferences objectForKey:@"StolenDeviceProtectionPresented"];
 
   if (v4)
   {
     self->_didClear = 1;
-    v5 = [(BYStolenDeviceProtectionPreferenceMigrator *)self sourcePreferences];
-    [v5 removeObjectForKey:@"StolenDeviceProtectionPresented" onlyFromMemory:0];
+    sourcePreferences2 = [(BYStolenDeviceProtectionPreferenceMigrator *)self sourcePreferences];
+    [sourcePreferences2 removeObjectForKey:@"StolenDeviceProtectionPresented" onlyFromMemory:0];
 
-    v6 = [(BYStolenDeviceProtectionPreferenceMigrator *)self sourcePreferences];
-    [v6 persist];
+    sourcePreferences3 = [(BYStolenDeviceProtectionPreferenceMigrator *)self sourcePreferences];
+    [sourcePreferences3 persist];
   }
 }
 

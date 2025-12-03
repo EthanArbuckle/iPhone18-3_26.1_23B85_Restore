@@ -1,16 +1,16 @@
 @interface WFResizeToCropActionMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFResizeToCropActionMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"128") == 3)
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"128") == 3)
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.image.resize", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.image.resize", migrationCopy);
   }
 
   else
@@ -24,11 +24,11 @@
 - (void)migrateWorkflow
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [(WFWorkflowMigration *)self actions];
-  v4 = [(WFWorkflowMigration *)self actionIdentifierKey];
-  v5 = [v3 filteredArrayForKey:v4 value:@"is.workflow.actions.image.resize"];
+  actions = [(WFWorkflowMigration *)self actions];
+  actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+  v5 = [actions filteredArrayForKey:actionIdentifierKey value:@"is.workflow.actions.image.resize"];
 
-  v6 = self;
+  selfCopy = self;
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
@@ -50,9 +50,9 @@
         }
 
         v9 = *(*(&v45 + 1) + 8 * v8);
-        v10 = [(WFWorkflowMigration *)v6 actionParametersKey];
+        actionParametersKey = [(WFWorkflowMigration *)selfCopy actionParametersKey];
         v42 = v9;
-        v11 = [v9 objectForKey:v10];
+        v11 = [v9 objectForKey:actionParametersKey];
 
         v12 = [v11 objectForKeyedSubscript:@"WFImageResizeCropEnabled"];
         v13 = [v11 objectForKeyedSubscript:@"WFImageResizeWidth"];
@@ -128,18 +128,18 @@
           [v27 setObject:v29 forKeyedSubscript:@"WFImageCropX"];
           [v27 setObject:v30 forKeyedSubscript:@"WFImageCropY"];
           v31 = objc_opt_new();
-          v32 = [(WFWorkflowMigration *)v6 actionIdentifierKey];
-          [v31 setObject:@"is.workflow.actions.image.crop" forKeyedSubscript:v32];
+          actionIdentifierKey2 = [(WFWorkflowMigration *)selfCopy actionIdentifierKey];
+          [v31 setObject:@"is.workflow.actions.image.crop" forKeyedSubscript:actionIdentifierKey2];
 
-          v33 = [(WFWorkflowMigration *)v6 actionParametersKey];
-          [v31 setObject:v27 forKeyedSubscript:v33];
+          actionParametersKey2 = [(WFWorkflowMigration *)selfCopy actionParametersKey];
+          [v31 setObject:v27 forKeyedSubscript:actionParametersKey2];
 
-          v34 = [(WFWorkflowMigration *)v6 actions];
-          [(WFWorkflowMigration *)v6 actions];
-          v36 = v35 = v6;
-          [v34 insertObject:v31 atIndex:{objc_msgSend(v36, "indexOfObject:", v42) + 1}];
+          actions2 = [(WFWorkflowMigration *)selfCopy actions];
+          [(WFWorkflowMigration *)selfCopy actions];
+          v36 = v35 = selfCopy;
+          [actions2 insertObject:v31 atIndex:{objc_msgSend(v36, "indexOfObject:", v42) + 1}];
 
-          v6 = v35;
+          selfCopy = v35;
           v7 = v39;
         }
 
@@ -158,7 +158,7 @@
     while (v37);
   }
 
-  [(WFWorkflowMigration *)v6 finish];
+  [(WFWorkflowMigration *)selfCopy finish];
   v38 = *MEMORY[0x1E69E9840];
 }
 

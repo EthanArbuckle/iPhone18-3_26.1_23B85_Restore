@@ -8,17 +8,17 @@
 + (ACAccount)activeAccountFromDefaultStore
 {
   v2 = +[ACAccountStore ams_sharedAccountStore];
-  v3 = [v2 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v2 ams_activeiTunesAccount];
 
-  return v3;
+  return ams_activeiTunesAccount;
 }
 
 + (NSNumber)uniqueIdentifierFromActiveAccountInDefaultStore
 {
-  v2 = [a1 activeAccountFromDefaultStore];
-  v3 = [v2 ams_DSID];
+  activeAccountFromDefaultStore = [self activeAccountFromDefaultStore];
+  ams_DSID = [activeAccountFromDefaultStore ams_DSID];
 
-  return v3;
+  return ams_DSID;
 }
 
 @end

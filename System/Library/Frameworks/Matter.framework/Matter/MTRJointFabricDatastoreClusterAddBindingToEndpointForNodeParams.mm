@@ -1,8 +1,8 @@
 @interface MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,23 +36,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams);
-  v5 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self nodeID];
-  [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)v4 setNodeID:v5];
+  nodeID = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self nodeID];
+  [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)v4 setNodeID:nodeID];
 
-  v6 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self endpointID];
-  [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)v4 setEndpointID:v6];
+  endpointID = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self endpointID];
+  [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)v4 setEndpointID:endpointID];
 
-  v7 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
-  [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)v4 setBinding:v7];
+  binding = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
+  [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)v4 setBinding:binding];
 
-  v8 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self timedInvokeTimeoutMs];
-  [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self timedInvokeTimeoutMs];
+  [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self serverSideProcessingTimeout];
-  [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self serverSideProcessingTimeout];
+  [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -67,10 +67,10 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v39 = 0;
-  v40 = 0;
+  unsignedLongLongValue = 0;
+  unsignedShortValue = 0;
   v41 = 0;
   v43 = 0;
   v45 = 0;
@@ -78,58 +78,58 @@
   v38[0] = 0;
   v38[1] = 0;
   v37 = v38;
-  v5 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self nodeID];
-  v39 = [v5 unsignedLongLongValue];
+  nodeID = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self nodeID];
+  unsignedLongLongValue = [nodeID unsignedLongLongValue];
 
-  v6 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self endpointID];
-  v40 = [v6 unsignedShortValue];
+  endpointID = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self endpointID];
+  unsignedShortValue = [endpointID unsignedShortValue];
 
-  v7 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
-  v8 = [v7 node];
+  binding = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
+  node = [binding node];
 
-  if (v8)
+  if (node)
   {
     v41 = 1;
-    v42 = 0;
-    v9 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
-    v10 = [v9 node];
-    v42 = [v10 unsignedLongLongValue];
+    unsignedLongLongValue2 = 0;
+    binding2 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
+    node2 = [binding2 node];
+    unsignedLongLongValue2 = [node2 unsignedLongLongValue];
   }
 
-  v11 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
-  v12 = [v11 group];
+  binding3 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
+  group = [binding3 group];
 
-  if (v12)
+  if (group)
   {
     v43 = 1;
-    v44 = 0;
-    v13 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
-    v14 = [v13 group];
-    v44 = [v14 unsignedShortValue];
+    unsignedShortValue2 = 0;
+    binding4 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
+    group2 = [binding4 group];
+    unsignedShortValue2 = [group2 unsignedShortValue];
   }
 
-  v15 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
-  v16 = [v15 endpoint];
+  binding5 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
+  endpoint = [binding5 endpoint];
 
-  if (v16)
+  if (endpoint)
   {
     v45 = 1;
-    v46 = 0;
-    v17 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
-    v18 = [v17 endpoint];
-    v46 = [v18 unsignedShortValue];
+    unsignedShortValue3 = 0;
+    binding6 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
+    endpoint2 = [binding6 endpoint];
+    unsignedShortValue3 = [endpoint2 unsignedShortValue];
   }
 
-  v19 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
-  v20 = [v19 cluster];
+  binding7 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
+  cluster = [binding7 cluster];
 
-  if (v20)
+  if (cluster)
   {
     v47 = 1;
-    v48 = 0;
-    v21 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
-    v22 = [v21 cluster];
-    v48 = [v22 unsignedIntValue];
+    unsignedIntValue = 0;
+    binding8 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self binding];
+    cluster2 = [binding8 cluster];
+    unsignedIntValue = [cluster2 unsignedIntValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v36);
@@ -142,7 +142,7 @@
     v35 = 0;
     sub_238EA16C4(&v32, &v36, 0);
     sub_2393C7BF0(v31, &v32, 0xFFFFFFFF);
-    v23 = sub_238F1BA30(&v39, v31, 0x100uLL);
+    v23 = sub_238F1BA30(&unsignedLongLongValue, v31, 0x100uLL);
     v25 = v23;
     if (v23 || (v23 = sub_238DD2EFC(v31, &v36), v25 = v23, v23))
     {
@@ -151,8 +151,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v36);
-      v23 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v36);
+      v23 = sub_2393C7114(reader, 21, 256);
       v26 = v30;
       v25 = v23;
     }
@@ -180,19 +180,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRJointFabricDatastoreClusterAddBindingToEndpointForNodeParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -203,7 +203,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x9FF500000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

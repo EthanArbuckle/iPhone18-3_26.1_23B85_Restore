@@ -1,13 +1,13 @@
 @interface POXSDoubleDefinition
-- (id)valueFromString:(id)a3;
+- (id)valueFromString:(id)string;
 @end
 
 @implementation POXSDoubleDefinition
 
-- (id)valueFromString:(id)a3
+- (id)valueFromString:(id)string
 {
   v3 = MEMORY[0x277CCABB0];
-  [a3 doubleValue];
+  [string doubleValue];
 
   return [v3 numberWithDouble:?];
 }

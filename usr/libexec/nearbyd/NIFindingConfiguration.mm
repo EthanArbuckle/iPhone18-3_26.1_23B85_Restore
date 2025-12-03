@@ -1,59 +1,59 @@
 @interface NIFindingConfiguration
-- (BOOL)canUpdateToConfiguration:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NIFindingConfiguration)initWithCoder:(id)a3;
-- (id)_initInternalWithConfigType:(int64_t)a3 isFinder:(BOOL)a4 isObserver:(BOOL)a5 specifiedToken:(id)a6 preferredUpdateRate:(int64_t)a7 requestedMeasurementQuality:(int64_t)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)canUpdateToConfiguration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
+- (NIFindingConfiguration)initWithCoder:(id)coder;
+- (id)_initInternalWithConfigType:(int64_t)type isFinder:(BOOL)finder isObserver:(BOOL)observer specifiedToken:(id)token preferredUpdateRate:(int64_t)rate requestedMeasurementQuality:(int64_t)quality;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIFindingConfiguration
 
-- (id)_initInternalWithConfigType:(int64_t)a3 isFinder:(BOOL)a4 isObserver:(BOOL)a5 specifiedToken:(id)a6 preferredUpdateRate:(int64_t)a7 requestedMeasurementQuality:(int64_t)a8
+- (id)_initInternalWithConfigType:(int64_t)type isFinder:(BOOL)finder isObserver:(BOOL)observer specifiedToken:(id)token preferredUpdateRate:(int64_t)rate requestedMeasurementQuality:(int64_t)quality
 {
-  v15 = a6;
+  tokenCopy = token;
   v21.receiver = self;
   v21.super_class = NIFindingConfiguration;
-  v16 = [(NIConfiguration *)&v21 initInternal];
-  v17 = v16;
-  if (v16)
+  initInternal = [(NIConfiguration *)&v21 initInternal];
+  v17 = initInternal;
+  if (initInternal)
   {
-    *(v16 + 34) = a4;
-    *(v16 + 35) = a5;
-    v16[8] = a3;
-    objc_storeStrong(v16 + 9, a6);
-    v17[5] = a7;
+    *(initInternal + 34) = finder;
+    *(initInternal + 35) = observer;
+    initInternal[8] = type;
+    objc_storeStrong(initInternal + 9, token);
+    v17[5] = rate;
     v17[6] = 0;
     *(v17 + 32) = 0;
     *(v17 + 33) = 1;
     v18 = v17[10];
     v17[10] = 0;
 
-    if (v15)
+    if (tokenCopy)
     {
-      v19 = [v15 tokenVariant];
+      tokenVariant = [tokenCopy tokenVariant];
     }
 
     else
     {
-      v19 = 0;
+      tokenVariant = 0;
     }
 
-    v17[11] = v19;
-    v17[12] = a8;
+    v17[11] = tokenVariant;
+    v17[12] = quality;
   }
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = NIFindingConfiguration;
-  v4 = [(NIConfiguration *)&v8 copyWithZone:a3];
+  v4 = [(NIConfiguration *)&v8 copyWithZone:zone];
   [v4 setIsFinder:self->_isFinder];
   [v4 setIsObserver:self->_isObserver];
   [v4 setConfigType:self->_configType];
@@ -73,42 +73,42 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = NIFindingConfiguration;
-  [(NIConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_isFinder forKey:@"isFinder"];
-  [v4 encodeBool:self->_isObserver forKey:@"isObserver"];
-  [v4 encodeInteger:self->_configType forKey:@"configType"];
-  [v4 encodeObject:self->_specifiedToken forKey:@"specifiedToken"];
-  [v4 encodeInteger:self->_preferredUpdateRate forKey:@"preferredUpdateRate"];
-  [v4 encodeInteger:self->_preferredDiscoveryPriority forKey:@"preferredDiscoveryPriority"];
-  [v4 encodeBool:self->_cameraAssistanceEnabled forKey:@"cameraAssistanceEnabled"];
-  [v4 encodeBool:self->_cameraAssistanceInClientProcess forKey:@"cameraAssistanceInClientProcess"];
-  [v4 encodeObject:self->_debugParameters forKey:@"debugParameters"];
-  [v4 encodeInteger:self->_discoveryTokenVariant forKey:@"discoveryTokenVariant"];
-  [v4 encodeInteger:self->_requestedMeasurementQuality forKey:@"requestedMeasurementQuality"];
-  [v4 encodeObject:self->_monitoredRegions forKey:@"monitoredRegions"];
+  [(NIConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_isFinder forKey:@"isFinder"];
+  [coderCopy encodeBool:self->_isObserver forKey:@"isObserver"];
+  [coderCopy encodeInteger:self->_configType forKey:@"configType"];
+  [coderCopy encodeObject:self->_specifiedToken forKey:@"specifiedToken"];
+  [coderCopy encodeInteger:self->_preferredUpdateRate forKey:@"preferredUpdateRate"];
+  [coderCopy encodeInteger:self->_preferredDiscoveryPriority forKey:@"preferredDiscoveryPriority"];
+  [coderCopy encodeBool:self->_cameraAssistanceEnabled forKey:@"cameraAssistanceEnabled"];
+  [coderCopy encodeBool:self->_cameraAssistanceInClientProcess forKey:@"cameraAssistanceInClientProcess"];
+  [coderCopy encodeObject:self->_debugParameters forKey:@"debugParameters"];
+  [coderCopy encodeInteger:self->_discoveryTokenVariant forKey:@"discoveryTokenVariant"];
+  [coderCopy encodeInteger:self->_requestedMeasurementQuality forKey:@"requestedMeasurementQuality"];
+  [coderCopy encodeObject:self->_monitoredRegions forKey:@"monitoredRegions"];
 }
 
-- (NIFindingConfiguration)initWithCoder:(id)a3
+- (NIFindingConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = NIFindingConfiguration;
-  v5 = [(NIConfiguration *)&v26 initWithCoder:v4];
+  v5 = [(NIConfiguration *)&v26 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeBoolForKey:@"isFinder"];
-    v7 = [v4 decodeBoolForKey:@"isObserver"];
-    v8 = [v4 decodeIntegerForKey:@"configType"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"specifiedToken"];
-    if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v10 = [v4 decodeIntegerForKey:@"preferredUpdateRate"], +[NIInternalUtils isIntValidNearbyObjectUpdateRate:](NIInternalUtils, "isIntValidNearbyObjectUpdateRate:", v10)) && (v24 = objc_msgSend(v4, "decodeIntegerForKey:", @"preferredDiscoveryPriority"), +[NIInternalUtils isIntValidNearbyObjectDiscoveryPriority:](NIInternalUtils, "isIntValidNearbyObjectDiscoveryPriority:", v24)))
+    v6 = [coderCopy decodeBoolForKey:@"isFinder"];
+    v7 = [coderCopy decodeBoolForKey:@"isObserver"];
+    v8 = [coderCopy decodeIntegerForKey:@"configType"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"specifiedToken"];
+    if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v10 = [coderCopy decodeIntegerForKey:@"preferredUpdateRate"], +[NIInternalUtils isIntValidNearbyObjectUpdateRate:](NIInternalUtils, "isIntValidNearbyObjectUpdateRate:", v10)) && (v24 = objc_msgSend(coderCopy, "decodeIntegerForKey:", @"preferredDiscoveryPriority"), +[NIInternalUtils isIntValidNearbyObjectDiscoveryPriority:](NIInternalUtils, "isIntValidNearbyObjectDiscoveryPriority:", v24)))
     {
-      v23 = [v4 decodeBoolForKey:@"cameraAssistanceEnabled"];
-      v22 = [v4 decodeBoolForKey:@"cameraAssistanceInClientProcess"];
+      v23 = [coderCopy decodeBoolForKey:@"cameraAssistanceEnabled"];
+      v22 = [coderCopy decodeBoolForKey:@"cameraAssistanceInClientProcess"];
       v28 = objc_opt_class();
       v11 = [NSArray arrayWithObjects:&v28 count:1];
       v25 = [NSSet setWithArray:v11];
@@ -117,16 +117,16 @@
       v12 = [NSArray arrayWithObjects:&v27 count:1];
       v13 = [NSSet setWithArray:v12];
 
-      v14 = [v4 decodeDictionaryWithKeysOfClasses:v25 objectsOfClasses:v13 forKey:@"debugParameters"];
-      v15 = [v4 decodeIntegerForKey:@"discoveryTokenVariant"];
+      v14 = [coderCopy decodeDictionaryWithKeysOfClasses:v25 objectsOfClasses:v13 forKey:@"debugParameters"];
+      v15 = [coderCopy decodeIntegerForKey:@"discoveryTokenVariant"];
       v5->_isFinder = v6;
       v5->_isObserver = v7;
       if (v8 == 1)
       {
         v16 = v15;
         v5->_configType = 1;
-        v17 = [v4 decodeIntegerForKey:@"requestedMeasurementQuality"];
-        v18 = [v4 decodeObjectForKey:@"monitoredRegions"];
+        v17 = [coderCopy decodeIntegerForKey:@"requestedMeasurementQuality"];
+        v18 = [coderCopy decodeObjectForKey:@"monitoredRegions"];
         objc_storeStrong(&v5->_specifiedToken, v9);
         v5->_preferredUpdateRate = v10;
         v5->_preferredDiscoveryPriority = v24;
@@ -161,44 +161,44 @@
   return v20;
 }
 
-- (BOOL)canUpdateToConfiguration:(id)a3
+- (BOOL)canUpdateToConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy)
   {
-    if (self == v4)
+    if (self == configurationCopy)
     {
       v18 = 1;
     }
 
     else
     {
-      v6 = [(NIFindingConfiguration *)v4 isFinder];
+      isFinder = [(NIFindingConfiguration *)configurationCopy isFinder];
       isFinder = self->_isFinder;
-      v8 = [(NIFindingConfiguration *)v5 isObserver];
+      isObserver = [(NIFindingConfiguration *)v5 isObserver];
       isObserver = self->_isObserver;
-      v10 = [(NIFindingConfiguration *)v5 configType];
+      configType = [(NIFindingConfiguration *)v5 configType];
       configType = self->_configType;
       specifiedToken = v5->_specifiedToken;
       v13 = self->_specifiedToken;
       v28 = [specifiedToken isEqual:v13];
       v14 = (specifiedToken | v13) == 0;
-      v15 = [(NIFindingConfiguration *)v5 isCameraAssistanceEnabled];
+      isCameraAssistanceEnabled = [(NIFindingConfiguration *)v5 isCameraAssistanceEnabled];
       cameraAssistanceEnabled = self->_cameraAssistanceEnabled;
-      v26 = [(NIFindingConfiguration *)v5 isCameraAssistanceInClientProcess];
+      isCameraAssistanceInClientProcess = [(NIFindingConfiguration *)v5 isCameraAssistanceInClientProcess];
       cameraAssistanceInClientProcess = self->_cameraAssistanceInClientProcess;
-      v24 = [(NIFindingConfiguration *)v5 discoveryTokenVariant];
+      discoveryTokenVariant = [(NIFindingConfiguration *)v5 discoveryTokenVariant];
       discoveryTokenVariant = self->_discoveryTokenVariant;
-      v22 = [(NIFindingConfiguration *)v5 requestedMeasurementQuality];
+      requestedMeasurementQuality = [(NIFindingConfiguration *)v5 requestedMeasurementQuality];
       requestedMeasurementQuality = self->_requestedMeasurementQuality;
       monitoredRegions = v5->_monitoredRegions;
       v20 = (monitoredRegions | self->_monitoredRegions) == 0;
       v17 = [monitoredRegions isEqual:?];
       v18 = 0;
-      if (isFinder == v6 && isObserver == v8 && v10 == configType && (((v14 | v28) ^ 1) & 1) == 0 && cameraAssistanceEnabled == v15 && cameraAssistanceInClientProcess == v26 && v24 == discoveryTokenVariant)
+      if (isFinder == isFinder && isObserver == isObserver && configType == configType && (((v14 | v28) ^ 1) & 1) == 0 && cameraAssistanceEnabled == isCameraAssistanceEnabled && cameraAssistanceInClientProcess == isCameraAssistanceInClientProcess && discoveryTokenVariant == discoveryTokenVariant)
       {
-        v18 = (v22 == requestedMeasurementQuality) & (v20 | v17);
+        v18 = (requestedMeasurementQuality == requestedMeasurementQuality) & (v20 | v17);
       }
     }
   }
@@ -211,13 +211,13 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (v5 == self)
     {
       v13 = 1;
@@ -257,8 +257,8 @@
   v3 = [NSMutableString alloc];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NIFindingConfiguration *)self descriptionInternal];
-  v7 = [v3 initWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NIFindingConfiguration *)self descriptionInternal];
+  v7 = [v3 initWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }
@@ -268,11 +268,11 @@
   isFinder = self->_isFinder;
   isObserver = self->_isObserver;
   configType_low = LODWORD(self->_configType);
-  v6 = [(NIDiscoveryToken *)self->_specifiedToken descriptionInternal];
+  descriptionInternal = [(NIDiscoveryToken *)self->_specifiedToken descriptionInternal];
   v7 = [NIInternalUtils NINearbyObjectUpdateRateToString:self->_preferredUpdateRate];
   v8 = [NIInternalUtils NINearbyObjectDiscoveryPriorityToString:self->_preferredDiscoveryPriority];
   discoveryTokenVariant = self->_discoveryTokenVariant;
-  v10 = [NSString stringWithFormat:@"<finder: %d [observer %d], cfg-type: %d, ses-token: %@, rate: %s, disc-prio: %s, camera: %d [client %d], debug-params: %@, disc-token-var: %d>, requested-meas-qual: %d", isFinder, isObserver, configType_low, v6, v7, v8, self->_cameraAssistanceEnabled, self->_cameraAssistanceInClientProcess, self->_debugParameters, discoveryTokenVariant, self->_requestedMeasurementQuality];
+  v10 = [NSString stringWithFormat:@"<finder: %d [observer %d], cfg-type: %d, ses-token: %@, rate: %s, disc-prio: %s, camera: %d [client %d], debug-params: %@, disc-token-var: %d>, requested-meas-qual: %d", isFinder, isObserver, configType_low, descriptionInternal, v7, v8, self->_cameraAssistanceEnabled, self->_cameraAssistanceInClientProcess, self->_debugParameters, discoveryTokenVariant, self->_requestedMeasurementQuality];
 
   return v10;
 }

@@ -1,53 +1,53 @@
 @interface PHAPrivateFederatedLearningTransformersDecoder
 - (PHAPrivateFederatedLearningTransformersDecoder)init;
-- (id)_generateErrorWithErrorCode:(int64_t)a3 errorMessage:(id)a4;
-- (id)instanceForTransformerConfig:(id)a3 error:(id *)a4;
-- (id)instancesForTransformerConfigList:(id)a3 error:(id *)a4;
-- (id)transformersForFeatureExtractorsFromDictionary:(id)a3 error:(id *)a4;
+- (id)_generateErrorWithErrorCode:(int64_t)code errorMessage:(id)message;
+- (id)instanceForTransformerConfig:(id)config error:(id *)error;
+- (id)instancesForTransformerConfigList:(id)list error:(id *)error;
+- (id)transformersForFeatureExtractorsFromDictionary:(id)dictionary error:(id *)error;
 @end
 
 @implementation PHAPrivateFederatedLearningTransformersDecoder
 
-- (id)_generateErrorWithErrorCode:(int64_t)a3 errorMessage:(id)a4
+- (id)_generateErrorWithErrorCode:(int64_t)code errorMessage:(id)message
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
   v11 = *MEMORY[0x277CCA450];
-  v12[0] = a4;
+  v12[0] = message;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
+  messageCopy = message;
   v8 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v9 = [v5 errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningTransformersDecoder" code:a3 userInfo:v8];
+  v9 = [v5 errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningTransformersDecoder" code:code userInfo:v8];
 
   return v9;
 }
 
-- (id)instanceForTransformerConfig:(id)a3 error:(id *)a4
+- (id)instanceForTransformerConfig:(id)config error:(id *)error
 {
-  v6 = a3;
+  configCopy = config;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectForKeyedSubscript:@"name"];
+    v7 = [configCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(PHAPrivateFederatedLearningTransformersDecoder *)self transformerNameToClass];
-      v9 = [v8 objectForKeyedSubscript:v7];
+      transformerNameToClass = [(PHAPrivateFederatedLearningTransformersDecoder *)self transformerNameToClass];
+      v9 = [transformerNameToClass objectForKeyedSubscript:v7];
 
       if (v9)
       {
-        v10 = [v6 objectForKeyedSubscript:@"params"];
+        v10 = [configCopy objectForKeyedSubscript:@"params"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v9 instanceWithParameters:v10 error:a4];
+          v11 = [v9 instanceWithParameters:v10 error:error];
         }
 
-        else if (a4)
+        else if (error)
         {
           [(PHAPrivateFederatedLearningTransformersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid transformers format: transformer parameters is not an array."];
-          *a4 = v11 = 0;
+          *error = v11 = 0;
         }
 
         else
@@ -58,17 +58,17 @@
         goto LABEL_18;
       }
 
-      if (a4)
+      if (error)
       {
         v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Transformer not supported: %@", v7];
-        *a4 = [(PHAPrivateFederatedLearningTransformersDecoder *)self _generateErrorWithErrorCode:0 errorMessage:v12];
+        *error = [(PHAPrivateFederatedLearningTransformersDecoder *)self _generateErrorWithErrorCode:0 errorMessage:v12];
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [(PHAPrivateFederatedLearningTransformersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid transformers format: transformer name is not a string."];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
 LABEL_18:
 
       goto LABEL_19;
@@ -78,10 +78,10 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (a4)
+  if (error)
   {
     [(PHAPrivateFederatedLearningTransformersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid transformers format: transformer configuration is not dictionary."];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -94,10 +94,10 @@ LABEL_19:
   return v11;
 }
 
-- (id)instancesForTransformerConfigList:(id)a3 error:(id *)a4
+- (id)instancesForTransformerConfigList:(id)list error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  listCopy = list;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -106,7 +106,7 @@ LABEL_19:
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v6;
+    v8 = listCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -121,7 +121,7 @@ LABEL_19:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [(PHAPrivateFederatedLearningTransformersDecoder *)self instanceForTransformerConfig:*(*(&v17 + 1) + 8 * i) error:a4, v17];
+          v13 = [(PHAPrivateFederatedLearningTransformersDecoder *)self instanceForTransformerConfig:*(*(&v17 + 1) + 8 * i) error:error, v17];
           if (!v13)
           {
 
@@ -147,10 +147,10 @@ LABEL_19:
 LABEL_14:
   }
 
-  else if (a4)
+  else if (error)
   {
     [(PHAPrivateFederatedLearningTransformersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid transformers format: value for transformer name is not an array."];
-    *a4 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -161,16 +161,16 @@ LABEL_14:
   return v15;
 }
 
-- (id)transformersForFeatureExtractorsFromDictionary:(id)a3 error:(id *)a4
+- (id)transformersForFeatureExtractorsFromDictionary:(id)dictionary error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = objc_alloc_init(MEMORY[0x277D3B8F0]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = dictionaryCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -187,7 +187,7 @@ LABEL_14:
 
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = [v8 objectForKeyedSubscript:{v13, v19}];
-        v15 = [(PHAPrivateFederatedLearningTransformersDecoder *)self instancesForTransformerConfigList:v14 error:a4];
+        v15 = [(PHAPrivateFederatedLearningTransformersDecoder *)self instancesForTransformerConfigList:v14 error:error];
         if (!v15)
         {
 
@@ -223,23 +223,23 @@ LABEL_11:
   v2 = [(PHAPrivateFederatedLearningTransformersDecoder *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D3B8E0] name];
-    v13[0] = v3;
+    name = [MEMORY[0x277D3B8E0] name];
+    v13[0] = name;
     v14[0] = objc_opt_class();
-    v4 = [MEMORY[0x277D3B8E8] name];
-    v13[1] = v4;
+    name2 = [MEMORY[0x277D3B8E8] name];
+    v13[1] = name2;
     v14[1] = objc_opt_class();
-    v5 = [MEMORY[0x277D3B8D0] name];
-    v13[2] = v5;
+    name3 = [MEMORY[0x277D3B8D0] name];
+    v13[2] = name3;
     v14[2] = objc_opt_class();
-    v6 = [MEMORY[0x277D3B8C0] name];
-    v13[3] = v6;
+    name4 = [MEMORY[0x277D3B8C0] name];
+    v13[3] = name4;
     v14[3] = objc_opt_class();
-    v7 = [MEMORY[0x277D3B8C8] name];
-    v13[4] = v7;
+    name5 = [MEMORY[0x277D3B8C8] name];
+    v13[4] = name5;
     v14[4] = objc_opt_class();
-    v8 = [MEMORY[0x277D3B8D8] name];
-    v13[5] = v8;
+    name6 = [MEMORY[0x277D3B8D8] name];
+    v13[5] = name6;
     v14[5] = objc_opt_class();
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:6];
     transformerNameToClass = v2->_transformerNameToClass;

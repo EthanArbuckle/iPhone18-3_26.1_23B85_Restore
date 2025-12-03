@@ -1,13 +1,13 @@
 @interface CAROEMPunchThrough
-- (CAROEMPunchThrough)initWithDictionary:(id)a3;
+- (CAROEMPunchThrough)initWithDictionary:(id)dictionary;
 - (CGSize)size;
 @end
 
 @implementation CAROEMPunchThrough
 
-- (CAROEMPunchThrough)initWithDictionary:(id)a3
+- (CAROEMPunchThrough)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = CAROEMPunchThrough;
   v5 = [(CAROEMPunchThrough *)&v36 init];
@@ -17,7 +17,7 @@
   }
 
   objc_opt_class();
-  v6 = [v4 objectForKey:@"inputStreamUID"];
+  v6 = [dictionaryCopy objectForKey:@"inputStreamUID"];
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v7 = v6;
@@ -33,7 +33,7 @@
     v7 = CarGeneralLogging();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(CAROEMPunchThrough *)v4 initWithDictionary:v7, v14, v15, v16, v17, v18, v19];
+      [(CAROEMPunchThrough *)dictionaryCopy initWithDictionary:v7, v14, v15, v16, v17, v18, v19];
     }
 
     goto LABEL_28;
@@ -44,7 +44,7 @@
   v5->_identifier = v8;
 
   objc_opt_class();
-  v10 = [v4 objectForKey:@"viewArea"];
+  v10 = [dictionaryCopy objectForKey:@"viewArea"];
   if (v10 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v11 = v10;
@@ -60,7 +60,7 @@
     v11 = CarGeneralLogging();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(CAROEMPunchThrough *)v4 initWithDictionary:v11, v22, v23, v24, v25, v26, v27];
+      [(CAROEMPunchThrough *)dictionaryCopy initWithDictionary:v11, v22, v23, v24, v25, v26, v27];
     }
 
     goto LABEL_27;
@@ -68,7 +68,7 @@
 
   CRSizeFromAirPlayDictionary(v11, &v5->_size.width);
   objc_opt_class();
-  v12 = [v4 objectForKey:@"inputStreamType"];
+  v12 = [dictionaryCopy objectForKey:@"inputStreamType"];
   if (v12 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v13 = v12;
@@ -79,13 +79,13 @@
     v13 = 0;
   }
 
-  v20 = [v13 unsignedIntValue];
-  if (!v13 || v20 >= 4)
+  unsignedIntValue = [v13 unsignedIntValue];
+  if (!v13 || unsignedIntValue >= 4)
   {
     v28 = CarGeneralLogging();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      [(CAROEMPunchThrough *)v4 initWithDictionary:v28, v29, v30, v31, v32, v33, v34];
+      [(CAROEMPunchThrough *)dictionaryCopy initWithDictionary:v28, v29, v30, v31, v32, v33, v34];
     }
 
 LABEL_27:
@@ -95,7 +95,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v5->_type = v20;
+  v5->_type = unsignedIntValue;
 
 LABEL_21:
   v21 = v5;

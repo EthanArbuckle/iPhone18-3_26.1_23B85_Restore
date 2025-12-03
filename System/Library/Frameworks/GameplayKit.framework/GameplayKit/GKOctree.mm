@@ -55,7 +55,7 @@
   __p = 0;
   v29 = 0;
   v30 = 0;
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = *(self->_cOctree + 1);
   v7 = *(v6 + 96);
   if (COERCE_FLOAT(*(v6 + 48)) < v7 || COERCE_FLOAT(HIDWORD(*(v6 + 48))) < v7 || COERCE_FLOAT(*(v6 + 56)) < v7)
@@ -72,7 +72,7 @@ LABEL_26:
       {
         do
         {
-          [v5 addObject:*v21++];
+          [array addObject:*v21++];
         }
 
         while (v21 != v29);
@@ -137,7 +137,7 @@ LABEL_26:
     operator delete(v24);
   }
 
-  return v5;
+  return array;
 }
 
 - (NSArray)elementsInBox:(GKBox *)box
@@ -149,7 +149,7 @@ LABEL_26:
   __p = 0;
   v18 = 0;
   v19 = 0;
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   cOctree = self->_cOctree;
   v16 = vsubq_f32(v15, v14);
   GKCOctreeNode<NSObject>::queryBox(cOctree[1], &v20, &v16, &__p);
@@ -158,7 +158,7 @@ LABEL_26:
   {
     do
     {
-      [v6 addObject:*v8++];
+      [array addObject:*v8++];
     }
 
     while (v8 != v18);
@@ -184,18 +184,18 @@ LABEL_26:
     operator delete(v11);
   }
 
-  return v6;
+  return array;
 }
 
 - (BOOL)removeElement:(id)element withNode:(GKOctreeNode *)node
 {
   v5 = element;
   v6 = node;
-  v7 = [(GKOctreeNode *)v6 cOctreeNode];
+  cOctreeNode = [(GKOctreeNode *)v6 cOctreeNode];
   v8 = v5;
   v9 = v8;
-  v11 = *(v7 + 176);
-  v10 = *(v7 + 184);
+  v11 = *(cOctreeNode + 176);
+  v10 = *(cOctreeNode + 184);
   if (v11 == v10)
   {
 LABEL_4:
@@ -226,7 +226,7 @@ LABEL_4:
       }
 
       while (v11 + 1 != v10);
-      v10 = *(v7 + 184);
+      v10 = *(cOctreeNode + 184);
     }
 
     while (v10 != v11)
@@ -234,7 +234,7 @@ LABEL_4:
       v15 = *--v10;
     }
 
-    *(v7 + 184) = v11;
+    *(cOctreeNode + 184) = v11;
     v12 = 1;
   }
 

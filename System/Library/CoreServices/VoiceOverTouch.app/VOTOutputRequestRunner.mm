@@ -1,17 +1,17 @@
 @interface VOTOutputRequestRunner
 - (VOTOutputRequestRunner)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_handleNotifications:(id)a3;
-- (void)_handleProcessActions:(id)a3;
+- (void)_handleNotifications:(id)notifications;
+- (void)_handleProcessActions:(id)actions;
 - (void)_initializeThread;
-- (void)_performAction:(id)a3 withComponent:(id)a4;
+- (void)_performAction:(id)action withComponent:(id)component;
 - (void)_processActions;
 - (void)dealloc;
-- (void)handleEvent:(id)a3;
+- (void)handleEvent:(id)event;
 - (void)resume;
-- (void)runOutputRequest:(id)a3;
-- (void)sendNotification:(unsigned int)a3;
+- (void)runOutputRequest:(id)request;
+- (void)sendNotification:(unsigned int)notification;
 @end
 
 @implementation VOTOutputRequestRunner
@@ -43,9 +43,9 @@
   [(VOTOutputRequestRunner *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v4[3] = self->_currentActionIndex;
   v5 = [(NSArray *)self->_currentActions copy];
   v6 = *(v4 + 2);
@@ -65,20 +65,20 @@
   [v4 setName:v3];
 }
 
-- (void)runOutputRequest:(id)a3
+- (void)runOutputRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v6 = [objc_allocWithZone(NSNumber) initWithUnsignedInt:4];
   v5 = [objc_allocWithZone(AXIndexMap) init];
   [v5 setObject:v6 forIndex:1];
-  [v5 setObject:v4 forIndex:14];
+  [v5 setObject:requestCopy forIndex:14];
 
   [(SCRCThread *)self->_runnerThread performSelector:"handleEvent:" onTarget:self cancelMask:0xFFFFFFFFLL count:1 objects:v5];
 }
 
-- (void)sendNotification:(unsigned int)a3
+- (void)sendNotification:(unsigned int)notification
 {
-  v3 = *&a3;
+  v3 = *&notification;
   v7 = [objc_allocWithZone(AXIndexMap) init];
   v5 = [objc_allocWithZone(NSNumber) initWithUnsignedInt:v3];
   v6 = [objc_allocWithZone(NSNumber) initWithUnsignedInt:5];
@@ -87,22 +87,22 @@
   [(SCRCThread *)self->_runnerThread performSelector:"handleEvent:" onTarget:self count:1 objects:v7];
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   if (![(VOTOutputRequestRunner *)self onHold])
   {
-    v4 = [v6 objectForIndex:1];
-    v5 = [v4 unsignedIntValue];
+    v4 = [eventCopy objectForIndex:1];
+    unsignedIntValue = [v4 unsignedIntValue];
 
-    if (v5 == 5)
+    if (unsignedIntValue == 5)
     {
-      [(VOTOutputRequestRunner *)self _handleNotifications:v6];
+      [(VOTOutputRequestRunner *)self _handleNotifications:eventCopy];
     }
 
-    else if (v5 == 4)
+    else if (unsignedIntValue == 4)
     {
-      [(VOTOutputRequestRunner *)self _handleProcessActions:v6];
+      [(VOTOutputRequestRunner *)self _handleProcessActions:eventCopy];
     }
   }
 
@@ -113,11 +113,11 @@
 {
   [(VOTOutputRequestRunner *)self setOnHold:0];
   v6 = [(NSArray *)self->_currentActions objectAtIndex:self->_currentActionIndex];
-  v3 = [v6 originalString];
+  originalString = [v6 originalString];
   location = self->_currentRange.location;
-  if (location < [v3 length])
+  if (location < [originalString length])
   {
-    v5 = [v3 substringFromIndex:self->_currentRange.location];
+    v5 = [originalString substringFromIndex:self->_currentRange.location];
     [v6 setString:v5];
   }
 
@@ -125,16 +125,16 @@
   [(VOTOutputRequestRunner *)self _processActions];
 }
 
-- (void)_handleNotifications:(id)a3
+- (void)_handleNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   if (self->_currentActions)
   {
-    v19 = v4;
-    v5 = [v4 objectForIndex:10];
-    v6 = [v5 unsignedIntValue];
+    v19 = notificationsCopy;
+    v5 = [notificationsCopy objectForIndex:10];
+    unsignedIntValue = [v5 unsignedIntValue];
 
-    if (v6 == 22)
+    if (unsignedIntValue == 22)
     {
       v7 = [v19 objectForIndex:14];
       self->_currentRange.location = [v7 rangeValue];
@@ -143,8 +143,8 @@
 
     else
     {
-      v4 = v19;
-      if (v6 == 21)
+      notificationsCopy = v19;
+      if (unsignedIntValue == 21)
       {
         currentActions = self->_currentActions;
         self->_currentActions = 0;
@@ -156,38 +156,38 @@
 
       else
       {
-        if (v6 != 19)
+        if (unsignedIntValue != 19)
         {
           goto LABEL_17;
         }
 
         v7 = [v19 objectForIndex:14];
-        v8 = [v7 outputRequest];
+        outputRequest = [v7 outputRequest];
         if ([(NSArray *)self->_currentActions indexOfObject:v7]== 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v8 setFinishedSuccessfully:0];
+          [outputRequest setFinishedSuccessfully:0];
           v9 = +[VOTOutputManager outputManager];
-          [v9 finishedOutputRequest:v8];
+          [v9 finishedOutputRequest:outputRequest];
         }
 
         else
         {
           v12 = [v19 objectForIndex:20];
-          v13 = [v12 BOOLValue];
+          bOOLValue = [v12 BOOLValue];
 
           v14 = self->_currentActions;
-          if (v13)
+          if (bOOLValue)
           {
             v15 = [(NSArray *)v14 objectAtIndex:self->_currentActionIndex];
 
             if (v15 == v7)
             {
-              v16 = [v8 actionCompletionBlock];
+              actionCompletionBlock = [outputRequest actionCompletionBlock];
 
-              if (v16)
+              if (actionCompletionBlock)
               {
-                v17 = [v8 actionCompletionBlock];
-                (v17)[2](v17, v8, v7);
+                actionCompletionBlock2 = [outputRequest actionCompletionBlock];
+                (actionCompletionBlock2)[2](actionCompletionBlock2, outputRequest, v7);
               }
 
               [(VOTOutputRequestRunner *)self _processActions];
@@ -207,21 +207,21 @@
       }
     }
 
-    v4 = v19;
+    notificationsCopy = v19;
   }
 
 LABEL_17:
 }
 
-- (void)_handleProcessActions:(id)a3
+- (void)_handleProcessActions:(id)actions
 {
-  v4 = [a3 objectForIndex:14];
-  v5 = [(VOTOutputRequest *)v4 outputActions];
+  v4 = [actions objectForIndex:14];
+  outputActions = [(VOTOutputRequest *)v4 outputActions];
   self->_didProcessNoSyncActions = 0;
   self->_currentActionIndex = 0;
   currentActions = self->_currentActions;
-  self->_currentActions = v5;
-  v7 = v5;
+  self->_currentActions = outputActions;
+  v7 = outputActions;
 
   currentRequest = self->_currentRequest;
   self->_currentRequest = v4;
@@ -229,16 +229,16 @@ LABEL_17:
   [(VOTOutputRequestRunner *)self _processActions];
 }
 
-- (void)_performAction:(id)a3 withComponent:(id)a4
+- (void)_performAction:(id)action withComponent:(id)component
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  componentCopy = component;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v6 outputEvents];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  outputEvents = [actionCopy outputEvents];
+  v9 = [outputEvents countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -250,7 +250,7 @@ LABEL_17:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(outputEvents);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
@@ -261,14 +261,14 @@ LABEL_17:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [outputEvents countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 
-  [v6 setHasBeenDispatched:1];
-  [v7 performAction:v6 owner:self];
+  [actionCopy setHasBeenDispatched:1];
+  [componentCopy performAction:actionCopy owner:self];
 }
 
 - (void)_processActions
@@ -333,7 +333,7 @@ LABEL_17:
     {
       v16 = [(NSArray *)self->_currentActions objectAtIndex:?];
       v17 = [v16 objectForVariant:61];
-      v18 = [v17 BOOLValue];
+      bOOLValue = [v17 BOOLValue];
 
       if (([v16 hasBeenDispatched] & 1) == 0)
       {
@@ -357,7 +357,7 @@ LABEL_17:
         }
       }
 
-      v15 |= v18;
+      v15 |= bOOLValue;
       ++self->_currentActionIndex;
 
       if (v4 <= self->_currentActionIndex)

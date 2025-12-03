@@ -1,6 +1,6 @@
 @interface SFDeviceSetupAppleTVSession
 - (BOOL)_shouldSkipHomeKitSetup;
-- (BOOL)_verifyiCloudMatch:(unint64_t)a3 error:(id *)a4;
+- (BOOL)_verifyiCloudMatch:(unint64_t)match error:(id *)error;
 - (SFDeviceSetupAppleTVSession)init;
 - (id)_videoSubscriberAccountData;
 - (int)_runAppleIDSetup;
@@ -8,11 +8,11 @@
 - (int)_runCDPSetup;
 - (int)_runCaptiveJoin;
 - (int)_runCaptivePrompt;
-- (int)_runFinish:(BOOL)a3;
+- (int)_runFinish:(BOOL)finish;
 - (int)_runHomeKitHH2Check;
 - (int)_runHomeKitSetup;
 - (int)_runHomeKitUserInput;
-- (int)_runPairSetupWithFlags:(unsigned int)a3;
+- (int)_runPairSetupWithFlags:(unsigned int)flags;
 - (int)_runPreAuth;
 - (int)_runPreflightHomeKit;
 - (int)_runPreflightWiFi;
@@ -29,31 +29,31 @@
 - (uint64_t)_runHomeKitSetup;
 - (uint64_t)_runTRSessionStart;
 - (void)_cleanup;
-- (void)_homeKitUpdateiCloudSwitchState:(BOOL)a3;
-- (void)_reportError:(id)a3 label:(id)a4;
-- (void)_reportErrorMetrics:(id)a3 errorLabel:(id)a4 isFatal:(BOOL)a5;
-- (void)_reportMainMetrics:(id)a3 errorLabel:(id)a4 userWaitSeconds:(double)a5;
+- (void)_homeKitUpdateiCloudSwitchState:(BOOL)state;
+- (void)_reportError:(id)error label:(id)label;
+- (void)_reportErrorMetrics:(id)metrics errorLabel:(id)label isFatal:(BOOL)fatal;
+- (void)_reportMainMetrics:(id)metrics errorLabel:(id)label userWaitSeconds:(double)seconds;
 - (void)_run;
 - (void)_runAppleIDSetupRequest;
-- (void)_runAppleIDSetupResponse:(id)a3 error:(id)a4;
+- (void)_runAppleIDSetupResponse:(id)response error:(id)error;
 - (void)_runBasicConfigRequest;
-- (void)_runBasicConfigResponse:(id)a3 error:(id)a4;
+- (void)_runBasicConfigResponse:(id)response error:(id)error;
 - (void)_runPreAuthRequest;
-- (void)_runPreAuthResponse:(id)a3 error:(id)a4;
+- (void)_runPreAuthResponse:(id)response error:(id)error;
 - (void)_runTRSessionStart;
-- (void)_runTVLatencySetupEnded:(int)a3;
+- (void)_runTVLatencySetupEnded:(int)ended;
 - (void)_runTVLatencySetupEstimate;
-- (void)_runTVLatencySetupProgressEvent:(unint64_t)a3 info:(id)a4;
+- (void)_runTVLatencySetupProgressEvent:(unint64_t)event info:(id)info;
 - (void)_runTVLatencySetupRequest;
-- (void)_setNumberOfDevicesOnAccount:(id)a3;
+- (void)_setNumberOfDevicesOnAccount:(id)account;
 - (void)activate;
 - (void)captiveConfirmed;
 - (void)dealloc;
-- (void)homeKitSelectHome:(id)a3;
-- (void)homeKitSelectRoom:(id)a3;
+- (void)homeKitSelectHome:(id)home;
+- (void)homeKitSelectRoom:(id)room;
 - (void)homeiCloudEnable;
 - (void)invalidate;
-- (void)pairSetupTryPIN:(id)a3;
+- (void)pairSetupTryPIN:(id)n;
 - (void)switchToManualAuth;
 @end
 
@@ -311,17 +311,17 @@ uint64_t __47__SFDeviceSetupAppleTVSession_homeiCloudEnable__block_invoke(uint64
   return [v2 _run];
 }
 
-- (void)homeKitSelectHome:(id)a3
+- (void)homeKitSelectHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__SFDeviceSetupAppleTVSession_homeKitSelectHome___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = homeCopy;
+  v6 = homeCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -358,51 +358,51 @@ uint64_t __47__SFDeviceSetupAppleTVSession_captiveConfirmed__block_invoke(uint64
   }
 }
 
-- (void)homeKitSelectRoom:(id)a3
+- (void)homeKitSelectRoom:(id)room
 {
-  v4 = a3;
+  roomCopy = room;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__SFDeviceSetupAppleTVSession_homeKitSelectRoom___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = roomCopy;
+  v6 = roomCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)pairSetupTryPIN:(id)a3
+- (void)pairSetupTryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__SFDeviceSetupAppleTVSession_pairSetupTryPIN___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_reportError:(id)a3 label:(id)a4
+- (void)_reportError:(id)error label:(id)label
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  errorCopy = error;
+  labelCopy = label;
   if (gLogCategory_SFDeviceSetupAppleTVSession <= 60 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
   {
-    v26 = v9;
-    v27 = v8;
+    v26 = labelCopy;
+    v27 = errorCopy;
     LogPrintF();
   }
 
   if (self->_isCLIMode && IsAppleInternalBuild())
   {
     v10 = *MEMORY[0x1E69E9858];
-    v26 = v9;
-    v27 = v8;
+    v26 = labelCopy;
+    v27 = errorCopy;
     FPrintF();
   }
 
@@ -418,8 +418,8 @@ uint64_t __47__SFDeviceSetupAppleTVSession_captiveConfirmed__block_invoke(uint64
   if (progressHandler)
   {
     v32 = @"eo";
-    v14 = v8;
-    if (!v8)
+    v14 = errorCopy;
+    if (!errorCopy)
     {
       v15 = MEMORY[0x1E696ABC0];
       v16 = *MEMORY[0x1E696A768];
@@ -441,7 +441,7 @@ uint64_t __47__SFDeviceSetupAppleTVSession_captiveConfirmed__block_invoke(uint64
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:{1, v26, v27}];
     progressHandler[2](progressHandler, 30, v19);
 
-    if (!v8)
+    if (!errorCopy)
     {
     }
   }
@@ -449,18 +449,18 @@ uint64_t __47__SFDeviceSetupAppleTVSession_captiveConfirmed__block_invoke(uint64
   if (!self->_metricsReported)
   {
     self->_metricsReported = 1;
-    [(SFDeviceSetupAppleTVSession *)self _reportMainMetrics:v8 errorLabel:v9 userWaitSeconds:self->_userWaitSeconds];
-    [(SFDeviceSetupAppleTVSession *)self _reportErrorMetrics:v8 errorLabel:v9 isFatal:[(SFDeviceSetupAppleTVSession *)self _isPreflightError:v8]^ 1];
+    [(SFDeviceSetupAppleTVSession *)self _reportMainMetrics:errorCopy errorLabel:labelCopy userWaitSeconds:self->_userWaitSeconds];
+    [(SFDeviceSetupAppleTVSession *)self _reportErrorMetrics:errorCopy errorLabel:labelCopy isFatal:[(SFDeviceSetupAppleTVSession *)self _isPreflightError:errorCopy]^ 1];
   }
 
-  v29[0] = v9;
+  v29[0] = labelCopy;
   v28[0] = @"label";
   v28[1] = @"errDomain";
-  v20 = [v8 domain];
-  v21 = v20;
-  if (v20)
+  domain = [errorCopy domain];
+  v21 = domain;
+  if (domain)
   {
-    v22 = v20;
+    v22 = domain;
   }
 
   else
@@ -470,7 +470,7 @@ uint64_t __47__SFDeviceSetupAppleTVSession_captiveConfirmed__block_invoke(uint64
 
   v29[1] = v22;
   v28[2] = @"errCode";
-  v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "code")}];
+  v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
   v29[2] = v23;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:3];
   SFMetricsLog(@"com.apple.sharing.AppleTVSetupResult", v24);
@@ -480,13 +480,13 @@ uint64_t __47__SFDeviceSetupAppleTVSession_captiveConfirmed__block_invoke(uint64
 
 - (BOOL)_shouldSkipHomeKitSetup
 {
-  v3 = [(HMHomeManager *)self->_homeManager hasOptedToHH2];
-  if (v3)
+  hasOptedToHH2 = [(HMHomeManager *)self->_homeManager hasOptedToHH2];
+  if (hasOptedToHH2)
   {
-    LOBYTE(v3) = (self->_peerFeatureFlags & 0x800) == 0;
+    LOBYTE(hasOptedToHH2) = (self->_peerFeatureFlags & 0x800) == 0;
   }
 
-  return v3;
+  return hasOptedToHH2;
 }
 
 - (int)_runPreflightWiFi
@@ -718,19 +718,19 @@ LABEL_57:
       }
 
       self->_preflightiTunesState = 1;
-      v6 = [(objc_class *)getSSAccountStoreClass_1() defaultStore];
-      v7 = [v6 activeAccount];
+      defaultStore = [(objc_class *)getSSAccountStoreClass_1() defaultStore];
+      activeAccount = [defaultStore activeAccount];
 
-      if (v7)
+      if (activeAccount)
       {
         if (gLogCategory_SFDeviceSetupAppleTVSession <= 30 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
         {
           [SFDeviceSetupAppleTVSession _runPreflightiTunes];
         }
 
-        v8 = [v7 accountName];
+        accountName = [activeAccount accountName];
         iTunesUserID = self->_iTunesUserID;
-        self->_iTunesUserID = v8;
+        self->_iTunesUserID = accountName;
 
         v10 = 4;
       }
@@ -757,7 +757,7 @@ LABEL_57:
   result = self->_homeKitHH2CheckState;
   if (!result)
   {
-    v4 = [(HMHomeManager *)self->_homeManager hasOptedToHH2];
+    hasOptedToHH2 = [(HMHomeManager *)self->_homeManager hasOptedToHH2];
     IsVirtualMachine = SFDeviceIsVirtualMachine();
     peerFeatureFlags = self->_peerFeatureFlags;
     if (gLogCategory_SFDeviceSetupAppleTVSession <= 30 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
@@ -765,7 +765,7 @@ LABEL_57:
       LogPrintF();
     }
 
-    if (((v4 | IsVirtualMachine) & 1) != 0 || (peerFeatureFlags & 0x800) == 0)
+    if (((hasOptedToHH2 | IsVirtualMachine) & 1) != 0 || (peerFeatureFlags & 0x800) == 0)
     {
       result = 4;
       self->_homeKitHH2CheckState = 4;
@@ -845,9 +845,9 @@ LABEL_23:
   }
 
   v7 = objc_alloc_init(getACAccountStoreClass_4());
-  v8 = [v7 aa_primaryAppleAccount];
-  v9 = v8;
-  if (!v8)
+  aa_primaryAppleAccount = [v7 aa_primaryAppleAccount];
+  v9 = aa_primaryAppleAccount;
+  if (!aa_primaryAppleAccount)
   {
     if (gLogCategory_SFDeviceSetupAppleTVSession <= 30 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
     {
@@ -859,7 +859,7 @@ LABEL_23:
     goto LABEL_30;
   }
 
-  if ([v8 isEnabledForDataclass:*MEMORY[0x1E6959B10]])
+  if ([aa_primaryAppleAccount isEnabledForDataclass:*MEMORY[0x1E6959B10]])
   {
     goto LABEL_37;
   }
@@ -1136,12 +1136,12 @@ uint64_t __49__SFDeviceSetupAppleTVSession__runSFSessionStart__block_invoke_5(ui
 - (void)_runPreAuthRequest
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v5 = [v4 firstObject];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"lang"];
+    [v3 setObject:firstObject forKeyedSubscript:@"lang"];
   }
 
   else if (gLogCategory_SFDeviceSetupAppleTVSession <= 60 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
@@ -1149,10 +1149,10 @@ uint64_t __49__SFDeviceSetupAppleTVSession__runSFSessionStart__block_invoke_5(ui
     [SFDeviceSetupAppleTVSession _runPreAuthRequest];
   }
 
-  v6 = [MEMORY[0x1E695DF58] preferredLanguages];
-  if (v6)
+  preferredLanguages2 = [MEMORY[0x1E695DF58] preferredLanguages];
+  if (preferredLanguages2)
   {
-    [v3 setObject:v6 forKeyedSubscript:@"langs"];
+    [v3 setObject:preferredLanguages2 forKeyedSubscript:@"langs"];
   }
 
   else if (gLogCategory_SFDeviceSetupAppleTVSession <= 60 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
@@ -1160,12 +1160,12 @@ uint64_t __49__SFDeviceSetupAppleTVSession__runSFSessionStart__block_invoke_5(ui
     [SFDeviceSetupAppleTVSession _runPreAuthRequest];
   }
 
-  v7 = [MEMORY[0x1E695DF58] currentLocale];
-  v8 = [v7 localeIdentifier];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  if (v8)
+  if (localeIdentifier)
   {
-    [v3 setObject:v8 forKeyedSubscript:@"locale"];
+    [v3 setObject:localeIdentifier forKeyedSubscript:@"locale"];
   }
 
   else if (gLogCategory_SFDeviceSetupAppleTVSession <= 60 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
@@ -1181,33 +1181,33 @@ uint64_t __49__SFDeviceSetupAppleTVSession__runSFSessionStart__block_invoke_5(ui
   v11 = [v10 numberWithFloat:?];
   [v3 setObject:v11 forKeyedSubscript:@"vosr"];
 
-  v12 = [(objc_class *)getAXSettingsClass() sharedInstance];
-  v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v12, "touchAccommodationsHoldDurationEnabled")}];
+  sharedInstance = [(objc_class *)getAXSettingsClass() sharedInstance];
+  v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(sharedInstance, "touchAccommodationsHoldDurationEnabled")}];
   [v3 setObject:v13 forKeyedSubscript:@"taHE"];
 
   v14 = MEMORY[0x1E696AD98];
-  [v12 touchAccommodationsHoldDuration];
+  [sharedInstance touchAccommodationsHoldDuration];
   v15 = [v14 numberWithDouble:?];
   [v3 setObject:v15 forKeyedSubscript:@"taHD"];
 
-  v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v12, "touchAccommodationsIgnoreRepeatEnabled")}];
+  v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(sharedInstance, "touchAccommodationsIgnoreRepeatEnabled")}];
   [v3 setObject:v16 forKeyedSubscript:@"taIRE"];
 
   v17 = MEMORY[0x1E696AD98];
-  [v12 touchAccommodationsIgnoreRepeatDuration];
+  [sharedInstance touchAccommodationsIgnoreRepeatDuration];
   v18 = [v17 numberWithDouble:?];
   [v3 setObject:v18 forKeyedSubscript:@"taIRD"];
 
-  v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v12, "touchAccommodationsTapActivationMethod")}];
+  v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(sharedInstance, "touchAccommodationsTapActivationMethod")}];
   [v3 setObject:v19 forKeyedSubscript:@"taTAM"];
 
   v20 = MEMORY[0x1E696AD98];
-  [v12 touchAccommodationsTapActivationTimeout];
+  [sharedInstance touchAccommodationsTapActivationTimeout];
   v21 = [v20 numberWithDouble:?];
   [v3 setObject:v21 forKeyedSubscript:@"taTAT"];
 
   v22 = MEMORY[0x1E696AD98];
-  [v12 voiceOverDoubleTapInterval];
+  [sharedInstance voiceOverDoubleTapInterval];
   v23 = [v22 numberWithDouble:?];
   [v3 setObject:v23 forKeyedSubscript:@"vodti"];
 
@@ -1239,17 +1239,17 @@ uint64_t __49__SFDeviceSetupAppleTVSession__runSFSessionStart__block_invoke_5(ui
   [(SFSession *)sfSession sendRequestID:@"_pa" options:&unk_1F1D7D420 request:v3 responseHandler:v26];
 }
 
-- (void)_runPreAuthResponse:(id)a3 error:(id)a4
+- (void)_runPreAuthResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || v7)
+  responseCopy = response;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (!responseCopy || errorCopy)
   {
     self->_preAuthState = 3;
-    if (v7)
+    if (errorCopy)
     {
-      [(SFDeviceSetupAppleTVSession *)self _reportError:v7 label:@"PreAuth"];
+      [(SFDeviceSetupAppleTVSession *)self _reportError:errorCopy label:@"PreAuth"];
     }
 
     else
@@ -1311,7 +1311,7 @@ uint64_t __49__SFDeviceSetupAppleTVSession__runSFSessionStart__block_invoke_5(ui
   }
 }
 
-- (int)_runPairSetupWithFlags:(unsigned int)a3
+- (int)_runPairSetupWithFlags:(unsigned int)flags
 {
   pairSetupState = self->_pairSetupState;
   if (pairSetupState != 4 && pairSetupState != 2)
@@ -1363,7 +1363,7 @@ uint64_t __49__SFDeviceSetupAppleTVSession__runSFSessionStart__block_invoke_5(ui
       v13[3] = &unk_1E788F738;
       v13[4] = self;
       v13[5] = v8;
-      [(SFSession *)sfSession pairSetupWithFlags:a3 | 0x80008 completion:v13];
+      [(SFSession *)sfSession pairSetupWithFlags:flags | 0x80008 completion:v13];
     }
   }
 
@@ -1588,14 +1588,14 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
     [SFDeviceSetupAppleTVSession _runBasicConfigRequest];
   }
 
-  v5 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v6 = [v5 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE68]] == 1;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v6 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADE68]] == 1;
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:v6];
   [v3 setObject:v7 forKeyedSubscript:@"eca"];
 
-  v8 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v9 = [v8 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE40]];
+  mEMORY[0x1E69ADFB8]2 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v9 = [mEMORY[0x1E69ADFB8]2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE40]];
 
   if ((v9 - 1) <= 1)
   {
@@ -1603,8 +1603,8 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
     [v3 setObject:v10 forKeyedSubscript:@"dsub"];
   }
 
-  v11 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v12 = [v11 effectiveBoolValueForSetting:*MEMORY[0x1E69ADD88]];
+  mEMORY[0x1E69ADFB8]3 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v12 = [mEMORY[0x1E69ADFB8]3 effectiveBoolValueForSetting:*MEMORY[0x1E69ADD88]];
 
   if ((v12 - 1) <= 1)
   {
@@ -1658,12 +1658,12 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
     [SFDeviceSetupAppleTVSession _runBasicConfigRequest];
   }
 
-  v19 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v20 = [v19 firstObject];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  if (v20)
+  if (firstObject)
   {
-    [v3 setObject:v20 forKeyedSubscript:@"lang"];
+    [v3 setObject:firstObject forKeyedSubscript:@"lang"];
   }
 
   else if (gLogCategory_SFDeviceSetupAppleTVSession <= 60 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
@@ -1673,10 +1673,10 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
 
   if (_os_feature_enabled_impl())
   {
-    v21 = [MEMORY[0x1E695DF58] preferredLanguages];
-    if (v21)
+    preferredLanguages2 = [MEMORY[0x1E695DF58] preferredLanguages];
+    if (preferredLanguages2)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"langs"];
+      [v3 setObject:preferredLanguages2 forKeyedSubscript:@"langs"];
     }
 
     else if (gLogCategory_SFDeviceSetupAppleTVSession <= 60 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
@@ -1699,12 +1699,12 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
     }
   }
 
-  v24 = [MEMORY[0x1E695DF58] currentLocale];
-  v25 = [v24 localeIdentifier];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  if (v25)
+  if (localeIdentifier)
   {
-    [v3 setObject:v25 forKeyedSubscript:@"locale"];
+    [v3 setObject:localeIdentifier forKeyedSubscript:@"locale"];
   }
 
   else if (gLogCategory_SFDeviceSetupAppleTVSession <= 60 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
@@ -1712,8 +1712,8 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
     [SFDeviceSetupAppleTVSession _runBasicConfigRequest];
   }
 
-  v26 = [MEMORY[0x1E695DF58] currentLocale];
-  v27 = [v26 objectForKey:*MEMORY[0x1E695D9F0]];
+  currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+  v27 = [currentLocale2 objectForKey:*MEMORY[0x1E695D9F0]];
 
   if (v27)
   {
@@ -1727,12 +1727,12 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
 
   OBBundleClass = getOBBundleClass();
   v29 = [(objc_class *)OBBundleClass bundleWithIdentifier:getOBPrivacyPrivacyPaneIdentifier()];
-  v30 = [v29 privacyFlow];
-  v31 = [v30 contentVersion];
+  privacyFlow = [v29 privacyFlow];
+  contentVersion = [privacyFlow contentVersion];
 
-  if (v31)
+  if (contentVersion)
   {
-    v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v31];
+    v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:contentVersion];
     [v3 setObject:v32 forKeyedSubscript:@"pfcv"];
   }
 
@@ -1741,11 +1741,11 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
     [SFDeviceSetupAppleTVSession _runBasicConfigRequest];
   }
 
-  v33 = [(objc_class *)getAFPreferencesClass_0() sharedPreferences];
-  v34 = v33;
-  if (v33)
+  sharedPreferences = [(objc_class *)getAFPreferencesClass_0() sharedPreferences];
+  v34 = sharedPreferences;
+  if (sharedPreferences)
   {
-    v35 = SFDeviceSetupSiriInfo(v33);
+    v35 = SFDeviceSetupSiriInfo(sharedPreferences);
     if (v35)
     {
       [v3 addEntriesFromDictionary:v35];
@@ -1762,8 +1762,8 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
     [SFDeviceSetupAppleTVSession _runBasicConfigRequest];
   }
 
-  v36 = [MEMORY[0x1E695DF00] date];
-  [v3 setObject:v36 forKeyedSubscript:@"time"];
+  date = [MEMORY[0x1E695DF00] date];
+  [v3 setObject:date forKeyedSubscript:@"time"];
 
   v37 = *MEMORY[0x1E695E890];
   if (CFPreferencesGetAppBooleanValue(@"AppleICUForce12HourTime", *MEMORY[0x1E695E890], 0))
@@ -1787,12 +1787,12 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
   v40 = [MEMORY[0x1E696AD98] numberWithBool:softLinkTMIsAutomaticTimeEnabled() != 0];
   [v3 setObject:v40 forKeyedSubscript:@"timeAuto"];
 
-  v41 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  v42 = [v41 name];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  name = [systemTimeZone name];
 
-  if (v42)
+  if (name)
   {
-    [v3 setObject:v42 forKeyedSubscript:@"tz"];
+    [v3 setObject:name forKeyedSubscript:@"tz"];
   }
 
   else if (gLogCategory_SFDeviceSetupAppleTVSession <= 60 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
@@ -1803,10 +1803,10 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
   v43 = [MEMORY[0x1E696AD98] numberWithBool:softLinkTMIsAutomaticTimeZoneEnabled() != 0];
   [v3 setObject:v43 forKeyedSubscript:@"tzAuto"];
 
-  v44 = [(SFDeviceSetupAppleTVSession *)self _videoSubscriberAccountData];
-  if (v44)
+  _videoSubscriberAccountData = [(SFDeviceSetupAppleTVSession *)self _videoSubscriberAccountData];
+  if (_videoSubscriberAccountData)
   {
-    [v3 setObject:v44 forKeyedSubscript:@"vsad"];
+    [v3 setObject:_videoSubscriberAccountData forKeyedSubscript:@"vsad"];
   }
 
   if (gLogCategory_SFDeviceSetupAppleTVSession <= 30 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
@@ -1823,13 +1823,13 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
   [(SFSession *)sfSession sendRequestID:@"_bc" options:0 request:v3 responseHandler:v49];
 }
 
-- (void)_runBasicConfigResponse:(id)a3 error:(id)a4
+- (void)_runBasicConfigResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  responseCopy = response;
+  errorCopy = error;
+  v8 = errorCopy;
   v12 = 0;
-  if (v6 && !v7)
+  if (responseCopy && !errorCopy)
   {
     if (gLogCategory_SFDeviceSetupAppleTVSession <= 30 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
     {
@@ -1851,7 +1851,7 @@ void __51__SFDeviceSetupAppleTVSession__runHomeKitUserInput__block_invoke_2(uint
   }
 
   self->_basicConfigState = 3;
-  if (!v7)
+  if (!errorCopy)
   {
     v10 = NSErrorWithOSStatusF();
     [(SFDeviceSetupAppleTVSession *)self _reportError:v10 label:@"BasicConfig"];
@@ -1860,7 +1860,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  [(SFDeviceSetupAppleTVSession *)self _reportError:v7 label:@"BasicConfig"];
+  [(SFDeviceSetupAppleTVSession *)self _reportError:errorCopy label:@"BasicConfig"];
 LABEL_15:
 }
 
@@ -1896,9 +1896,9 @@ LABEL_15:
 
         if (self->_useSFSession || self->_isCLIMode)
         {
-          v10 = [(SFSession *)self->_sfSession trSession];
+          trSession = [(SFSession *)self->_sfSession trSession];
           trSession = self->_trSession;
-          self->_trSession = v10;
+          self->_trSession = trSession;
 
           if (self->_trSession)
           {
@@ -2924,20 +2924,20 @@ void __51__SFDeviceSetupAppleTVSession__runTRAuthentication__block_invoke_2(uint
   [(SFSession *)sfSession sendRequestID:@"_appleIDSetup" options:MEMORY[0x1E695E0F8] request:v3 responseHandler:v5];
 }
 
-- (void)_runAppleIDSetupResponse:(id)a3 error:(id)a4
+- (void)_runAppleIDSetupResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  errorCopy = error;
   Int64 = CFDictionaryGetInt64();
-  if (v6 && !v7 && Int64)
+  if (responseCopy && !errorCopy && Int64)
   {
     if (gLogCategory_SFDeviceSetupAppleTVSession <= 30 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
     {
       [SFDeviceSetupAppleTVSession _runAppleIDSetupResponse:error:];
     }
 
-    v9 = [(SFSession *)self->_sfSession messageSessionTemplate];
-    if (v9)
+    messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+    if (messageSessionTemplate)
     {
       v10 = objc_alloc_init(getAISSetupContextClass_0[0]());
       v11 = [MEMORY[0x1E695DFD8] setWithObject:*MEMORY[0x1E698C218]];
@@ -2949,7 +2949,7 @@ void __51__SFDeviceSetupAppleTVSession__runTRAuthentication__block_invoke_2(uint
       [v10 setShouldBackgroundDesiredServices:1];
       [v10 setLocalRole:1];
       [v10 setRemoteRole:3];
-      [v10 setMessageSessionTemplate:v9];
+      [v10 setMessageSessionTemplate:messageSessionTemplate];
       [v10 setIsPreEstablishedClient:1];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -3013,16 +3013,16 @@ void __51__SFDeviceSetupAppleTVSession__runTRAuthentication__block_invoke_2(uint
   }
 
   self->_appleIDSetupState = 3;
-  if (!v7)
+  if (!errorCopy)
   {
-    v9 = NSErrorWithOSStatusF();
-    [(SFDeviceSetupAppleTVSession *)self _reportError:v9 label:@"AppleIDSetup"];
+    messageSessionTemplate = NSErrorWithOSStatusF();
+    [(SFDeviceSetupAppleTVSession *)self _reportError:messageSessionTemplate label:@"AppleIDSetup"];
 LABEL_29:
 
     goto LABEL_30;
   }
 
-  [(SFDeviceSetupAppleTVSession *)self _reportError:v7 label:@"AppleIDSetup"];
+  [(SFDeviceSetupAppleTVSession *)self _reportError:errorCopy label:@"AppleIDSetup"];
 LABEL_30:
 }
 
@@ -3458,16 +3458,16 @@ void __56__SFDeviceSetupAppleTVSession__runTVLatencySetupRequest__block_invoke(u
   }
 
   self->_tvLatencySetupState = 12;
-  v3 = [(SFSession *)self->_sfSession messageSessionTemplate];
-  if (v3)
+  messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+  if (messageSessionTemplate)
   {
-    v4 = [objc_alloc(getTVLAudioLatencyEstimatorClass_0()) initWithMessageSession:v3];
+    v4 = [objc_alloc(getTVLAudioLatencyEstimatorClass_0()) initWithMessageSession:messageSessionTemplate];
     objc_storeStrong(&self->_tvLatencyEstimator, v4);
     v7 = MEMORY[0x1E69E9820];
     v8 = 3221225472;
     v9 = __57__SFDeviceSetupAppleTVSession__runTVLatencySetupEstimate__block_invoke;
     v10 = &unk_1E788B598;
-    v11 = self;
+    selfCopy = self;
     v12 = v4;
     v5 = v4;
     [v5 setProgressEventHandler:&v7];
@@ -3511,78 +3511,78 @@ uint64_t __57__SFDeviceSetupAppleTVSession__runTVLatencySetupEstimate__block_inv
   return result;
 }
 
-- (void)_runTVLatencySetupProgressEvent:(unint64_t)a3 info:(id)a4
+- (void)_runTVLatencySetupProgressEvent:(unint64_t)event info:(id)info
 {
-  v6 = a4;
-  v16 = v6;
+  infoCopy = info;
+  v16 = infoCopy;
   if (gLogCategory_SFDeviceSetupAppleTVSession <= 30)
   {
-    if (gLogCategory_SFDeviceSetupAppleTVSession != -1 || (v7 = _LogCategory_Initialize(), v6 = v16, v7))
+    if (gLogCategory_SFDeviceSetupAppleTVSession != -1 || (v7 = _LogCategory_Initialize(), infoCopy = v16, v7))
     {
-      v14 = a3;
-      v15 = v6;
+      eventCopy = event;
+      v15 = infoCopy;
       LogPrintF();
-      v6 = v16;
+      infoCopy = v16;
     }
   }
 
-  if (a3 > 1)
+  if (event > 1)
   {
-    switch(a3)
+    switch(event)
     {
       case 2uLL:
-        v8 = self;
+        selfCopy3 = self;
         v9 = 274;
         break;
       case 3uLL:
         [(SFDeviceSetupAppleTVSession *)self _reportProgress:272 info:v16];
-        v12 = self;
+        selfCopy4 = self;
         v13 = 4;
         goto LABEL_16;
       case 4uLL:
-        v8 = self;
+        selfCopy3 = self;
         v9 = 276;
         break;
       default:
         goto LABEL_20;
     }
 
-    [(SFDeviceSetupAppleTVSession *)v8 _reportProgress:v9 info:v16, v14, v15];
-    v12 = self;
+    [(SFDeviceSetupAppleTVSession *)selfCopy3 _reportProgress:v9 info:v16, eventCopy, v15];
+    selfCopy4 = self;
     v13 = 2;
 LABEL_16:
-    [(SFDeviceSetupAppleTVSession *)v12 _runTVLatencySetupEnded:v13, v14, v15];
+    [(SFDeviceSetupAppleTVSession *)selfCopy4 _runTVLatencySetupEnded:v13, eventCopy, v15];
     goto LABEL_19;
   }
 
-  if (a3)
+  if (event)
   {
-    if (a3 != 1)
+    if (event != 1)
     {
       goto LABEL_20;
     }
 
-    v10 = self;
+    selfCopy6 = self;
     v11 = 277;
   }
 
   else
   {
-    v10 = self;
+    selfCopy6 = self;
     v11 = 270;
   }
 
-  [(SFDeviceSetupAppleTVSession *)v10 _reportProgress:v11 info:v16, v14, v15];
+  [(SFDeviceSetupAppleTVSession *)selfCopy6 _reportProgress:v11 info:v16, eventCopy, v15];
 LABEL_19:
-  v6 = v16;
+  infoCopy = v16;
 LABEL_20:
 }
 
-- (void)_runTVLatencySetupEnded:(int)a3
+- (void)_runTVLatencySetupEnded:(int)ended
 {
   if (gLogCategory_SFDeviceSetupAppleTVSession <= 30 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
   {
-    [SFDeviceSetupAppleTVSession _runTVLatencySetupEnded:a3];
+    [SFDeviceSetupAppleTVSession _runTVLatencySetupEnded:ended];
   }
 
   [(TVLAudioLatencyEstimator *)self->_tvLatencyEstimator invalidate];
@@ -3591,7 +3591,7 @@ LABEL_20:
 
   if (self->_tvLatencySetupState == 12)
   {
-    self->_tvLatencySetupState = a3;
+    self->_tvLatencySetupState = ended;
 
     [(SFDeviceSetupAppleTVSession *)self _run];
   }
@@ -3696,12 +3696,12 @@ void __47__SFDeviceSetupAppleTVSession__runTRCompletion__block_invoke_2(uint64_t
   }
 }
 
-- (int)_runFinish:(BOOL)a3
+- (int)_runFinish:(BOOL)finish
 {
   result = self->_finishState;
   if (!result)
   {
-    if (!a3)
+    if (!finish)
     {
       if (self->_isCLIMode && IsAppleInternalBuild())
       {
@@ -3746,14 +3746,14 @@ void __47__SFDeviceSetupAppleTVSession__runTRCompletion__block_invoke_2(uint64_t
   return result;
 }
 
-- (void)_homeKitUpdateiCloudSwitchState:(BOOL)a3
+- (void)_homeKitUpdateiCloudSwitchState:(BOOL)state
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__SFDeviceSetupAppleTVSession__homeKitUpdateiCloudSwitchState___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v5 = a3;
+  stateCopy = state;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -3813,8 +3813,8 @@ LABEL_13:
   v15 = __Block_byref_object_copy__12;
   v16 = __Block_byref_object_dispose__12;
   v17 = 0;
-  v2 = [(objc_class *)getVSAccountSerializationCenterClass() defaultSerializationCenter];
-  if (v2)
+  defaultSerializationCenter = [(objc_class *)getVSAccountSerializationCenterClass() defaultSerializationCenter];
+  if (defaultSerializationCenter)
   {
     v3 = dispatch_semaphore_create(0);
     v9[0] = MEMORY[0x1E69E9820];
@@ -3824,7 +3824,7 @@ LABEL_13:
     v11 = &v12;
     v4 = v3;
     v10 = v4;
-    v5 = [v2 exportDataWithCompletionHandler:v9];
+    v5 = [defaultSerializationCenter exportDataWithCompletionHandler:v9];
     v6 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v4, v6) && gLogCategory_SFDeviceSetupAppleTVSession <= 90 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
     {
@@ -3866,20 +3866,20 @@ void __58__SFDeviceSetupAppleTVSession__videoSubscriberAccountData__block_invoke
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_verifyiCloudMatch:(unint64_t)a3 error:(id *)a4
+- (BOOL)_verifyiCloudMatch:(unint64_t)match error:(id *)error
 {
   v7 = SFMyAltDSID();
-  v8 = [v7 UTF8String];
+  uTF8String = [v7 UTF8String];
 
-  if (v8)
+  if (uTF8String)
   {
     v9 = [(SFSession *)self->_sfSession pairingDeriveKeyForIdentifier:@"AltDSID" keyLength:16];
     v10 = v9;
     if (v9)
     {
       [v9 bytes];
-      strlen(v8);
-      if (SipHash() == a3)
+      strlen(uTF8String);
+      if (SipHash() == match)
       {
         v11 = 0;
         v12 = 0;
@@ -3897,10 +3897,10 @@ void __58__SFDeviceSetupAppleTVSession__videoSubscriberAccountData__block_invoke
   }
 
   v11 = v12 != 0;
-  if (a4 && v12)
+  if (error && v12)
   {
     v14 = v12;
-    *a4 = v12;
+    *error = v12;
     v11 = 1;
   }
 
@@ -3909,30 +3909,30 @@ LABEL_5:
   return !v11;
 }
 
-- (void)_reportMainMetrics:(id)a3 errorLabel:(id)a4 userWaitSeconds:(double)a5
+- (void)_reportMainMetrics:(id)metrics errorLabel:(id)label userWaitSeconds:(double)seconds
 {
   v42[12] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 code];
-  v11 = [v8 domain];
-  v12 = [v8 underlyingErrors];
-  v13 = [v12 firstObject];
-  v38 = [v13 code];
+  metricsCopy = metrics;
+  labelCopy = label;
+  code = [metricsCopy code];
+  domain = [metricsCopy domain];
+  underlyingErrors = [metricsCopy underlyingErrors];
+  firstObject = [underlyingErrors firstObject];
+  code2 = [firstObject code];
 
-  v14 = [v8 underlyingErrors];
-  v15 = [v14 firstObject];
-  v16 = [v15 domain];
-  v17 = v16;
+  underlyingErrors2 = [metricsCopy underlyingErrors];
+  firstObject2 = [underlyingErrors2 firstObject];
+  domain2 = [firstObject2 domain];
+  v17 = domain2;
   v18 = @"NoUnderlyingError";
-  if (v16)
+  if (domain2)
   {
-    v18 = v16;
+    v18 = domain2;
   }
 
   v40 = v18;
 
-  v19 = [(NSUUID *)self->_sessionID UUIDString];
+  uUIDString = [(NSUUID *)self->_sessionID UUIDString];
   v41[0] = @"AppleTVModel";
   v41[1] = @"AppleTVSetupDeviceBuild";
   appleTVBuild = self->_appleTVBuild;
@@ -3950,11 +3950,11 @@ LABEL_5:
   v42[0] = appleTVModel;
   v42[1] = appleTVBuild;
   v41[2] = @"errorCode";
-  v22 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
+  v22 = [MEMORY[0x1E696AD98] numberWithInteger:code];
   v23 = v22;
-  if (v11)
+  if (domain)
   {
-    v24 = v11;
+    v24 = domain;
   }
 
   else
@@ -3966,10 +3966,10 @@ LABEL_5:
   v42[3] = v24;
   v41[3] = @"errorDomain";
   v41[4] = @"errorLabel";
-  v39 = v9;
-  if (v9)
+  v39 = labelCopy;
+  if (labelCopy)
   {
-    v25 = v9;
+    v25 = labelCopy;
   }
 
   else
@@ -3980,9 +3980,9 @@ LABEL_5:
   v42[4] = v25;
   v41[5] = @"isPreFlightLabel";
   v26 = MEMORY[0x1E696AD98];
-  if (v8)
+  if (metricsCopy)
   {
-    v27 = [(SFDeviceSetupAppleTVSession *)self _isPreflightError:v8];
+    v27 = [(SFDeviceSetupAppleTVSession *)self _isPreflightError:metricsCopy];
   }
 
   else
@@ -3998,9 +3998,9 @@ LABEL_5:
   v41[7] = @"numberOfHomePodsOnAccount";
   v30 = [MEMORY[0x1E696AD98] numberWithInt:self->_numberOfAppleTVsOnAccount];
   v31 = v30;
-  if (v19)
+  if (uUIDString)
   {
-    v32 = v19;
+    v32 = uUIDString;
   }
 
   else
@@ -4012,13 +4012,13 @@ LABEL_5:
   v42[8] = v32;
   v41[8] = @"sessionIdentifier";
   v41[9] = @"underlyingErrorCode";
-  v33 = [MEMORY[0x1E696AD98] numberWithInteger:v38];
+  v33 = [MEMORY[0x1E696AD98] numberWithInteger:code2];
   v42[9] = v33;
   v42[10] = v40;
   v41[10] = @"underlyingErrorDomain";
   v41[11] = @"userWaitTimeMs";
-  v34 = a5 * 1000.0;
-  if (a5 == 0.0)
+  v34 = seconds * 1000.0;
+  if (seconds == 0.0)
   {
     v34 = 0.0;
   }
@@ -4036,23 +4036,23 @@ LABEL_5:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_reportErrorMetrics:(id)a3 errorLabel:(id)a4 isFatal:(BOOL)a5
+- (void)_reportErrorMetrics:(id)metrics errorLabel:(id)label isFatal:(BOOL)fatal
 {
-  v46 = a5;
+  fatalCopy = fatal;
   v56[14] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 code];
-  v10 = [v7 domain];
-  v11 = [v7 underlyingErrors];
-  v12 = [v11 firstObject];
+  metricsCopy = metrics;
+  labelCopy = label;
+  code = [metricsCopy code];
+  domain = [metricsCopy domain];
+  underlyingErrors = [metricsCopy underlyingErrors];
+  firstObject = [underlyingErrors firstObject];
 
-  v47 = [v12 code];
-  v13 = [v12 domain];
-  v14 = v13;
-  if (v13)
+  code2 = [firstObject code];
+  domain2 = [firstObject domain];
+  v14 = domain2;
+  if (domain2)
   {
-    v15 = v13;
+    v15 = domain2;
   }
 
   else
@@ -4062,16 +4062,16 @@ LABEL_5:
 
   v54 = v15;
 
-  v49 = v12;
-  v16 = [v12 underlyingErrors];
-  v17 = [v16 firstObject];
+  v49 = firstObject;
+  underlyingErrors2 = [firstObject underlyingErrors];
+  firstObject2 = [underlyingErrors2 firstObject];
 
-  v45 = [v17 code];
-  v18 = [v17 domain];
-  v19 = v18;
-  if (v18)
+  code3 = [firstObject2 code];
+  domain3 = [firstObject2 domain];
+  v19 = domain3;
+  if (domain3)
   {
-    v20 = v18;
+    v20 = domain3;
   }
 
   else
@@ -4081,16 +4081,16 @@ LABEL_5:
 
   v53 = v20;
 
-  v21 = [v17 underlyingErrors];
-  v22 = [v21 firstObject];
+  underlyingErrors3 = [firstObject2 underlyingErrors];
+  firstObject3 = [underlyingErrors3 firstObject];
 
-  v44 = [v22 code];
-  v48 = v22;
-  v23 = [v22 domain];
-  v24 = v23;
-  if (v23)
+  code4 = [firstObject3 code];
+  v48 = firstObject3;
+  domain4 = [firstObject3 domain];
+  v24 = domain4;
+  if (domain4)
   {
-    v25 = v23;
+    v25 = domain4;
   }
 
   else
@@ -4100,7 +4100,7 @@ LABEL_5:
 
   v52 = v25;
 
-  v26 = [(NSUUID *)self->_sessionID UUIDString];
+  uUIDString = [(NSUUID *)self->_sessionID UUIDString];
   v55[0] = @"AppleTVModel";
   v55[1] = @"AppleTVSetupDeviceBuild";
   appleTVBuild = self->_appleTVBuild;
@@ -4118,13 +4118,13 @@ LABEL_5:
   v56[0] = appleTVModel;
   v56[1] = appleTVBuild;
   v55[2] = @"errorCode";
-  v29 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
+  v29 = [MEMORY[0x1E696AD98] numberWithInteger:code];
   v30 = v29;
-  v50 = v10;
-  v51 = v8;
-  if (v10)
+  v50 = domain;
+  v51 = labelCopy;
+  if (domain)
   {
-    v31 = v10;
+    v31 = domain;
   }
 
   else
@@ -4136,9 +4136,9 @@ LABEL_5:
   v56[3] = v31;
   v55[3] = @"errorDomain";
   v55[4] = @"errorLabel";
-  if (v8)
+  if (labelCopy)
   {
-    v32 = v8;
+    v32 = labelCopy;
   }
 
   else
@@ -4148,13 +4148,13 @@ LABEL_5:
 
   v56[4] = v32;
   v55[5] = @"isFatalError";
-  v33 = [MEMORY[0x1E696AD98] numberWithInt:v46];
+  v33 = [MEMORY[0x1E696AD98] numberWithInt:fatalCopy];
   v56[5] = v33;
   v55[6] = @"isPreFlight";
   v34 = MEMORY[0x1E696AD98];
-  if (v7)
+  if (metricsCopy)
   {
-    v35 = [(SFDeviceSetupAppleTVSession *)self _isPreflightError:v7];
+    v35 = [(SFDeviceSetupAppleTVSession *)self _isPreflightError:metricsCopy];
   }
 
   else
@@ -4164,9 +4164,9 @@ LABEL_5:
 
   v36 = [v34 numberWithInt:v35];
   v37 = v36;
-  if (v26)
+  if (uUIDString)
   {
-    v38 = v26;
+    v38 = uUIDString;
   }
 
   else
@@ -4178,17 +4178,17 @@ LABEL_5:
   v56[7] = v38;
   v55[7] = @"sessionIdentifier";
   v55[8] = @"underlyingErrorCode1";
-  v39 = [MEMORY[0x1E696AD98] numberWithInteger:v47];
+  v39 = [MEMORY[0x1E696AD98] numberWithInteger:code2];
   v56[8] = v39;
   v56[9] = v54;
   v55[9] = @"underlyingErrorDomain1";
   v55[10] = @"underlyingErrorCode2";
-  v40 = [MEMORY[0x1E696AD98] numberWithInteger:v45];
+  v40 = [MEMORY[0x1E696AD98] numberWithInteger:code3];
   v56[10] = v40;
   v56[11] = v53;
   v55[11] = @"underlyingErrorDomain2";
   v55[12] = @"underlyingErrorCode3";
-  v41 = [MEMORY[0x1E696AD98] numberWithInteger:v44];
+  v41 = [MEMORY[0x1E696AD98] numberWithInteger:code4];
   v55[13] = @"underlyingErrorDomain3";
   v56[12] = v41;
   v56[13] = v52;
@@ -4203,19 +4203,19 @@ LABEL_5:
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setNumberOfDevicesOnAccount:(id)a3
+- (void)_setNumberOfDevicesOnAccount:(id)account
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   *&self->_numberOfAppleTVsOnAccount = 0;
-  obj = v4;
-  if (v4)
+  obj = accountCopy;
+  if (accountCopy)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v24 = [v4 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    v24 = [accountCopy countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v24)
     {
       p_numberOfAppleTVsOnAccount = &self->_numberOfAppleTVsOnAccount;
@@ -4237,8 +4237,8 @@ LABEL_5:
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v9 = [v8 accessories];
-          v10 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          accessories = [v8 accessories];
+          v10 = [accessories countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v10)
           {
             v11 = v10;
@@ -4249,23 +4249,23 @@ LABEL_5:
               {
                 if (*v27 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(accessories);
                 }
 
-                v14 = [*(*(&v26 + 1) + 8 * i) category];
-                v15 = [v14 categoryType];
+                category = [*(*(&v26 + 1) + 8 * i) category];
+                categoryType = [category categoryType];
 
                 v16 = getHMAccessoryCategoryTypeHomePod_1();
-                v17 = [v15 isEqualToString:v16];
+                v17 = [categoryType isEqualToString:v16];
 
                 v18 = p_numberOfHomePodsOnAccount;
-                if ((v17 & 1) != 0 || (getHMAccessoryCategoryTypeAppleTV_0(), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v15 isEqualToString:v19], v19, v18 = p_numberOfAppleTVsOnAccount, v20))
+                if ((v17 & 1) != 0 || (getHMAccessoryCategoryTypeAppleTV_0(), v19 = objc_claimAutoreleasedReturnValue(), v20 = [categoryType isEqualToString:v19], v19, v18 = p_numberOfAppleTVsOnAccount, v20))
                 {
                   ++*v18;
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
+              v11 = [accessories countByEnumeratingWithState:&v26 objects:v34 count:16];
             }
 
             while (v11);
@@ -4289,70 +4289,70 @@ LABEL_5:
 {
   if (gLogCategory_SFDeviceSetupAppleTVSession <= 30 && (gLogCategory_SFDeviceSetupAppleTVSession != -1 || _LogCategory_Initialize()))
   {
-    v45 = [(SFSession *)self->_sfSession identifier];
+    identifier = [(SFSession *)self->_sfSession identifier];
     LogPrintF();
   }
 
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_invalidateCalled)
   {
-    v3 = [(SFDeviceSetupAppleTVSession *)self _runPreflightWiFi];
-    if (v3 == 4 || v3 == 2)
+    _runPreflightWiFi = [(SFDeviceSetupAppleTVSession *)self _runPreflightWiFi];
+    if (_runPreflightWiFi == 4 || _runPreflightWiFi == 2)
     {
-      v5 = [(SFDeviceSetupAppleTVSession *)self _runCaptivePrompt];
-      if (v5 == 4 || v5 == 2)
+      _runCaptivePrompt = [(SFDeviceSetupAppleTVSession *)self _runCaptivePrompt];
+      if (_runCaptivePrompt == 4 || _runCaptivePrompt == 2)
       {
         if (self->_appleIDSetupEnabled || ((v7 = [(SFDeviceSetupAppleTVSession *)self _runPreflightiTunes], v7 != 4) ? (v8 = v7 == 2) : (v8 = 1), v8))
         {
-          v9 = [(SFDeviceSetupAppleTVSession *)self _runPreflightHomeKit];
-          if (v9 == 4 || v9 == 2)
+          _runPreflightHomeKit = [(SFDeviceSetupAppleTVSession *)self _runPreflightHomeKit];
+          if (_runPreflightHomeKit == 4 || _runPreflightHomeKit == 2)
           {
             if (!self->_useSFSession && !self->_isCLIMode)
             {
               goto LABEL_61;
             }
 
-            v11 = [(SFDeviceSetupAppleTVSession *)self _runSFSessionStart];
-            if (v11 == 4 || v11 == 2)
+            _runSFSessionStart = [(SFDeviceSetupAppleTVSession *)self _runSFSessionStart];
+            if (_runSFSessionStart == 4 || _runSFSessionStart == 2)
             {
-              v13 = [(SFDeviceSetupAppleTVSession *)self _runPreAuth];
-              if (v13 == 4 || v13 == 2)
+              _runPreAuth = [(SFDeviceSetupAppleTVSession *)self _runPreAuth];
+              if (_runPreAuth == 4 || _runPreAuth == 2)
               {
-                v15 = [(SFDeviceSetupAppleTVSession *)self _runHomeKitHH2Check];
-                if (v15 == 4 || v15 == 2)
+                _runHomeKitHH2Check = [(SFDeviceSetupAppleTVSession *)self _runHomeKitHH2Check];
+                if (_runHomeKitHH2Check == 4 || _runHomeKitHH2Check == 2)
                 {
                   v17 = [(SFDeviceSetupAppleTVSession *)self _runPairSetupWithFlags:0];
                   if (v17 == 4 || v17 == 2)
                   {
                     if (!self->_homeKitDoFullSetup && !self->_isCLIMode || ((v19 = [(SFDeviceSetupAppleTVSession *)self _runHomeKitUserInput], v19 != 4) ? (v20 = v19 == 2) : (v20 = 1), v20))
                     {
-                      v21 = [(SFDeviceSetupAppleTVSession *)self _runBasicConfig];
-                      if (v21 == 4 || v21 == 2)
+                      _runBasicConfig = [(SFDeviceSetupAppleTVSession *)self _runBasicConfig];
+                      if (_runBasicConfig == 4 || _runBasicConfig == 2)
                       {
 LABEL_61:
-                        v23 = [(SFDeviceSetupAppleTVSession *)self _runTRSessionStart];
-                        if (v23 == 4 || v23 == 2)
+                        _runTRSessionStart = [(SFDeviceSetupAppleTVSession *)self _runTRSessionStart];
+                        if (_runTRSessionStart == 4 || _runTRSessionStart == 2)
                         {
-                          v25 = [(SFDeviceSetupAppleTVSession *)self _runTRSetupConfiguration];
-                          if (v25 == 4 || v25 == 2)
+                          _runTRSetupConfiguration = [(SFDeviceSetupAppleTVSession *)self _runTRSetupConfiguration];
+                          if (_runTRSetupConfiguration == 4 || _runTRSetupConfiguration == 2)
                           {
-                            v27 = v25;
+                            _runWiFiSetup = _runTRSetupConfiguration;
                             if (!SFDeviceIsVirtualMachine())
                             {
-                              v27 = [(SFDeviceSetupAppleTVSession *)self _runWiFiSetup];
+                              _runWiFiSetup = [(SFDeviceSetupAppleTVSession *)self _runWiFiSetup];
                             }
 
-                            if (v27 == 4 || v27 == 2)
+                            if (_runWiFiSetup == 4 || _runWiFiSetup == 2)
                             {
                               if (!self->_doCaptiveJoin || ((v29 = [(SFDeviceSetupAppleTVSession *)self _runCaptiveJoin], v29 != 4) ? (v30 = v29 == 2) : (v30 = 1), v30))
                               {
-                                v31 = [(SFDeviceSetupAppleTVSession *)self _runTRActivation];
-                                if (v31 == 4 || v31 == 2)
+                                _runTRActivation = [(SFDeviceSetupAppleTVSession *)self _runTRActivation];
+                                if (_runTRActivation == 4 || _runTRActivation == 2)
                                 {
                                   if (self->_appleIDSetupEnabled && (self->_peerFeatureFlags & 0x8000) != 0)
                                   {
-                                    v37 = [(SFDeviceSetupAppleTVSession *)self _runAppleIDSetup];
-                                    if (v37 != 2 && v37 != 4)
+                                    _runAppleIDSetup = [(SFDeviceSetupAppleTVSession *)self _runAppleIDSetup];
+                                    if (_runAppleIDSetup != 2 && _runAppleIDSetup != 4)
                                     {
                                       return;
                                     }
@@ -4360,16 +4360,16 @@ LABEL_61:
 
                                   else
                                   {
-                                    v33 = [(SFDeviceSetupAppleTVSession *)self _runTRAuthentication];
-                                    if (v33 != 4 && v33 != 2)
+                                    _runTRAuthentication = [(SFDeviceSetupAppleTVSession *)self _runTRAuthentication];
+                                    if (_runTRAuthentication != 4 && _runTRAuthentication != 2)
                                     {
                                       return;
                                     }
 
                                     if (self->_cdpEnabled && (self->_peerFeatureFlags & 0x10) != 0)
                                     {
-                                      v35 = [(SFDeviceSetupAppleTVSession *)self _runCDPSetup];
-                                      if (v35 != 4 && v35 != 2)
+                                      _runCDPSetup = [(SFDeviceSetupAppleTVSession *)self _runCDPSetup];
+                                      if (_runCDPSetup != 4 && _runCDPSetup != 2)
                                       {
                                         return;
                                       }
@@ -4380,8 +4380,8 @@ LABEL_61:
                                   {
                                     if (!self->_tvLatencyEnabled || (self->_peerFeatureFlags & 0x40) == 0 || ((v41 = [(SFDeviceSetupAppleTVSession *)self _runTVLatencySetup], v41 != 4) ? (v42 = v41 == 2) : (v42 = 1), v42))
                                     {
-                                      v43 = [(SFDeviceSetupAppleTVSession *)self _runTRCompletion];
-                                      if (v43 == 4 || v43 == 2)
+                                      _runTRCompletion = [(SFDeviceSetupAppleTVSession *)self _runTRCompletion];
+                                      if (_runTRCompletion == 4 || _runTRCompletion == 2)
                                       {
 
                                         [(SFDeviceSetupAppleTVSession *)self _runFinish:0];
@@ -4453,7 +4453,7 @@ uint64_t __44__SFDeviceSetupAppleTVSession__runWiFiSetup__block_invoke_cold_1(ui
 
 - (uint64_t)_runHomeKitSetup
 {
-  *a1;
+  *self;
   v3 = *a2;
   return LogPrintF();
 }

@@ -1,20 +1,20 @@
 @interface AMSLocalizations
-+ (id)localizedStringForKey:(id)a3 bundle:(id)a4 table:(id)a5 bag:(id)a6;
-+ (id)localizedStringForKey:(id)a3 bundle:(id)a4 table:(id)a5 languageCode:(id)a6;
-+ (id)localizedStringPromiseForKey:(id)a3 bundle:(id)a4 table:(id)a5 bag:(id)a6;
-+ (id)localizedStringPromiseForKey:(id)a3 bundle:(id)a4 table:(id)a5 languageCode:(id)a6;
++ (id)localizedStringForKey:(id)key bundle:(id)bundle table:(id)table bag:(id)bag;
++ (id)localizedStringForKey:(id)key bundle:(id)bundle table:(id)table languageCode:(id)code;
++ (id)localizedStringPromiseForKey:(id)key bundle:(id)bundle table:(id)table bag:(id)bag;
++ (id)localizedStringPromiseForKey:(id)key bundle:(id)bundle table:(id)table languageCode:(id)code;
 @end
 
 @implementation AMSLocalizations
 
-+ (id)localizedStringForKey:(id)a3 bundle:(id)a4 table:(id)a5 bag:(id)a6
++ (id)localizedStringForKey:(id)key bundle:(id)bundle table:(id)table bag:(id)bag
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a1 localizedStringPromiseForKey:v10 bundle:v11 table:v12 bag:v13];
+  keyCopy = key;
+  bundleCopy = bundle;
+  tableCopy = table;
+  bagCopy = bag;
+  v14 = [self localizedStringPromiseForKey:keyCopy bundle:bundleCopy table:tableCopy bag:bagCopy];
   v24 = 0;
   v15 = [v14 resultWithTimeout:&v24 error:3.0];
   v16 = v24;
@@ -27,8 +27,8 @@
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v19 = objc_opt_class();
       v20 = AMSLogKey();
@@ -38,31 +38,31 @@
       v27 = 2114;
       v28 = v20;
       v29 = 2114;
-      v30 = v10;
+      v30 = keyCopy;
       v31 = 2114;
-      v32 = v11;
+      v32 = bundleCopy;
       v33 = 2114;
-      v34 = v12;
+      v34 = tableCopy;
       v35 = 2114;
-      v36 = v13;
+      v36 = bagCopy;
       v37 = 2114;
       v38 = v21;
       v22 = v21;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Localized string not found (key: %{public}@, bundle: %{public}@, table: %{public}@, bag: %{public}@, error: %{public}@)", buf, 0x48u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Localized string not found (key: %{public}@, bundle: %{public}@, table: %{public}@, bag: %{public}@, error: %{public}@)", buf, 0x48u);
     }
   }
 
   return v15;
 }
 
-+ (id)localizedStringPromiseForKey:(id)a3 bundle:(id)a4 table:(id)a5 bag:(id)a6
++ (id)localizedStringPromiseForKey:(id)key bundle:(id)bundle table:(id)table bag:(id)bag
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (a6)
+  keyCopy = key;
+  bundleCopy = bundle;
+  tableCopy = table;
+  if (bag)
   {
-    v12 = [a6 stringForKey:@"language-tag"];
+    v12 = [bag stringForKey:@"language-tag"];
     [v12 valuePromise];
   }
 
@@ -77,11 +77,11 @@
   v27[1] = 3221225472;
   v27[2] = __66__AMSLocalizations_localizedStringPromiseForKey_bundle_table_bag___block_invoke;
   v27[3] = &unk_1E73B87D8;
-  v14 = v9;
+  v14 = keyCopy;
   v28 = v14;
-  v15 = v10;
+  v15 = bundleCopy;
   v29 = v15;
-  v16 = v11;
+  v16 = tableCopy;
   v30 = v16;
   v17 = [v13 thenWithBlock:v27];
   v23[0] = MEMORY[0x1E69E9820];
@@ -125,25 +125,25 @@ id __66__AMSLocalizations_localizedStringPromiseForKey_bundle_table_bag___block_
   return v3;
 }
 
-+ (id)localizedStringForKey:(id)a3 bundle:(id)a4 table:(id)a5 languageCode:(id)a6
++ (id)localizedStringForKey:(id)key bundle:(id)bundle table:(id)table languageCode:(id)code
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  keyCopy = key;
+  bundleCopy = bundle;
+  tableCopy = table;
+  codeCopy = code;
+  if (codeCopy)
   {
     v13 = MEMORY[0x1E696AAE8];
-    v14 = [v10 localizations];
-    v22[0] = v12;
+    localizations = [bundleCopy localizations];
+    v22[0] = codeCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-    v16 = [v13 preferredLocalizationsFromArray:v14 forPreferences:v15];
-    v17 = [v16 firstObject];
+    v16 = [v13 preferredLocalizationsFromArray:localizations forPreferences:v15];
+    firstObject = [v16 firstObject];
 
-    v18 = [v10 localizedStringForKey:v9 value:0 table:v11 localization:v17];
+    v18 = [bundleCopy localizedStringForKey:keyCopy value:0 table:tableCopy localization:firstObject];
 
-    if (v18 != v9 && v18 != 0)
+    if (v18 != keyCopy && v18 != 0)
     {
       goto LABEL_9;
     }
@@ -154,7 +154,7 @@ id __66__AMSLocalizations_localizedStringPromiseForKey_bundle_table_bag___block_
     v18 = 0;
   }
 
-  v20 = [v10 localizedStringForKey:v9 value:0 table:v11];
+  v20 = [bundleCopy localizedStringForKey:keyCopy value:0 table:tableCopy];
 
   v18 = v20;
 LABEL_9:
@@ -162,26 +162,26 @@ LABEL_9:
   return v18;
 }
 
-+ (id)localizedStringPromiseForKey:(id)a3 bundle:(id)a4 table:(id)a5 languageCode:(id)a6
++ (id)localizedStringPromiseForKey:(id)key bundle:(id)bundle table:(id)table languageCode:(id)code
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  bundleCopy = bundle;
+  tableCopy = table;
+  codeCopy = code;
   v14 = [AMSMutableLazyPromise alloc];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __75__AMSLocalizations_localizedStringPromiseForKey_bundle_table_languageCode___block_invoke;
   v21[3] = &unk_1E73B8828;
-  v25 = v13;
-  v26 = a1;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v25 = codeCopy;
+  selfCopy = self;
+  v22 = keyCopy;
+  v23 = bundleCopy;
+  v24 = tableCopy;
+  v15 = codeCopy;
+  v16 = tableCopy;
+  v17 = bundleCopy;
+  v18 = keyCopy;
   v19 = [(AMSMutableLazyPromise *)v14 initWithBlock:v21];
 
   return v19;

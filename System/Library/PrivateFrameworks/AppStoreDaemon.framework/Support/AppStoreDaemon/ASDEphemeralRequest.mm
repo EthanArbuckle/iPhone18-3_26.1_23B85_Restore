@@ -1,17 +1,17 @@
 @interface ASDEphemeralRequest
-- (void)startUsingProxy:(id)a3 withErrorHandler:(id)a4;
+- (void)startUsingProxy:(id)proxy withErrorHandler:(id)handler;
 @end
 
 @implementation ASDEphemeralRequest
 
-- (void)startUsingProxy:(id)a3 withErrorHandler:(id)a4
+- (void)startUsingProxy:(id)proxy withErrorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() requestType];
-  if (v6)
+  proxyCopy = proxy;
+  handlerCopy = handler;
+  requestType = [objc_opt_class() requestType];
+  if (proxyCopy)
   {
-    WeakRetained = objc_loadWeakRetained(v6 + 1);
+    WeakRetained = objc_loadWeakRetained(proxyCopy + 1);
     v10 = WeakRetained;
     if (WeakRetained)
     {
@@ -28,10 +28,10 @@
   v11 = 0;
 LABEL_4:
   v12 = v11;
-  v13 = [(ASDEphemeralRequest *)self options];
+  options = [(ASDEphemeralRequest *)self options];
   v14 = v12;
-  v15 = v13;
-  switch(v8)
+  v15 = options;
+  switch(requestType)
   {
     case 0uLL:
       v16 = AccountLookupRequestTask;
@@ -59,10 +59,10 @@ LABEL_4:
       goto LABEL_20;
     case 8uLL:
       v17 = [[MigrationRequestTask alloc] initForClient:v14 withOptions:v15];
-      v21 = [v14 clientID];
+      clientID = [v14 clientID];
       if (v17)
       {
-        objc_setProperty_atomic_copy(v17, v20, v21, 64);
+        objc_setProperty_atomic_copy(v17, v20, clientID, 64);
       }
 
       break;
@@ -101,17 +101,17 @@ LABEL_20:
   v22[3] = &unk_1005286F8;
   objc_copyWeak(&v25, &location);
   v22[4] = self;
-  v18 = v6;
+  v18 = proxyCopy;
   v23 = v18;
-  v19 = v7;
+  v19 = handlerCopy;
   v24 = v19;
   [v17 setCompletionBlock:v22];
-  if (v6)
+  if (proxyCopy)
   {
-    v6 = objc_loadWeakRetained(v18 + 1);
+    proxyCopy = objc_loadWeakRetained(v18 + 1);
   }
 
-  sub_1003ED574(v6, v17);
+  sub_1003ED574(proxyCopy, v17);
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);

@@ -1,9 +1,9 @@
 @interface NEIKEv2NotifyPayload
 + (NEIKEv2NotifyPayload)createNotifyPayloadType:;
-+ (NEIKEv2NotifyPayload)createNotifyPayloadType:(void *)a3 data:;
++ (NEIKEv2NotifyPayload)createNotifyPayloadType:(void *)type data:;
 - (BOOL)generatePayloadData;
 - (BOOL)hasRequiredFields;
-- (BOOL)parsePayloadData:(id)a3;
+- (BOOL)parsePayloadData:(id)data;
 - (__CFString)copyError;
 - (__CFString)copyNotifyTypeDescription;
 - (uint64_t)copyPPKID;
@@ -12,16 +12,16 @@
 
 @implementation NEIKEv2NotifyPayload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   if (v5 > 3)
   {
     v6 = v5;
     v26 = 0;
-    [v4 getBytes:&v26 length:4];
+    [dataCopy getBytes:&v26 length:4];
     v7 = BYTE1(v26);
     v8 = BYTE1(v26) + 4;
     if (v6 < v8)
@@ -47,7 +47,7 @@
       if (v7 == 8)
       {
         *buf = 0;
-        [v4 getBytes:buf range:{4, 8}];
+        [dataCopy getBytes:buf range:{4, 8}];
         v9 = NEIKEv2TLSSPI;
         goto LABEL_15;
       }
@@ -79,7 +79,7 @@
       if (v7 == 4)
       {
         *buf = 0;
-        [v4 getBytes:buf range:{4, 4}];
+        [dataCopy getBytes:buf range:{4, 4}];
         v10 = [NEIKEv2ESPSPI alloc];
         v11 = [(NEIKEv2ESPSPI *)v10 initWithValue:*buf];
         goto LABEL_16;
@@ -117,7 +117,7 @@
       if (v7 == 8)
       {
         *buf = 0;
-        [v4 getBytes:buf range:{4, 8}];
+        [dataCopy getBytes:buf range:{4, 8}];
         v9 = NEIKEv2IKESPI;
 LABEL_15:
         v13 = [v9 alloc];
@@ -160,14 +160,14 @@ LABEL_18:
 LABEL_19:
     if (v6 > v8)
     {
-      v16 = [v4 subdataWithRange:{v8, v6 - v8}];
+      v16 = [dataCopy subdataWithRange:{v8, v6 - v8}];
       if (self)
       {
         objc_setProperty_atomic(self, v15, v16, 40);
       }
     }
 
-    v17 = [(NEIKEv2NotifyPayload *)self hasRequiredFields];
+    hasRequiredFields = [(NEIKEv2NotifyPayload *)self hasRequiredFields];
     goto LABEL_24;
   }
 
@@ -179,11 +179,11 @@ LABEL_19:
     _os_log_error_impl(&dword_1BA83C000, v20, OS_LOG_TYPE_ERROR, "BACKTRACE %s called with null (payloadDataLength >= sizeof(ikev2_payload_notify_hdr_t))", buf, 0xCu);
   }
 
-  v17 = 0;
+  hasRequiredFields = 0;
 LABEL_24:
 
   v18 = *MEMORY[0x1E69E9840];
-  return v17;
+  return hasRequiredFields;
 }
 
 - (BOOL)generatePayloadData
@@ -207,13 +207,13 @@ LABEL_13:
       if (v5)
       {
         v6 = v5;
-        v7 = [v5 copySPIData];
-        v8 = [v7 length];
-        BYTE1(v18[0]) = [v7 length];
+        copySPIData = [v5 copySPIData];
+        v8 = [copySPIData length];
+        BYTE1(v18[0]) = [copySPIData length];
         LOBYTE(v18[0]) = [v6 protocol];
         v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:{v8 + 4, v18[0]}];
         [v9 appendBytes:v18 length:4];
-        [v9 appendData:v7];
+        [v9 appendData:copySPIData];
 
         objc_storeStrong(&self->super._payloadSubHeader, v9);
 LABEL_9:
@@ -577,16 +577,16 @@ LABEL_14:
   return result;
 }
 
-+ (NEIKEv2NotifyPayload)createNotifyPayloadType:(void *)a3 data:
++ (NEIKEv2NotifyPayload)createNotifyPayloadType:(void *)type data:
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_self();
   v5 = objc_alloc_init(NEIKEv2NotifyPayload);
   v7 = v5;
   if (v5)
   {
     v5->_notifyType = a2;
-    objc_setProperty_atomic(v5, v6, v4, 40);
+    objc_setProperty_atomic(v5, v6, typeCopy, 40);
   }
 
   return v7;
@@ -594,29 +594,29 @@ LABEL_14:
 
 - (__CFString)copyError
 {
-  v1 = a1;
+  selfCopy = self;
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (a1[1].isa - 1 > 0x3FFE)
+    if (self[1].isa - 1 > 0x3FFE)
     {
-      v1 = 0;
+      selfCopy = 0;
     }
 
     else
     {
       v2 = objc_alloc(MEMORY[0x1E696ABC0]);
-      isa = v1[1].isa;
+      isa = selfCopy[1].isa;
       v8 = *MEMORY[0x1E696A278];
-      v4 = [(NEIKEv2NotifyPayload *)v1 copyNotifyTypeDescription];
-      v9[0] = v4;
+      copyNotifyTypeDescription = [(NEIKEv2NotifyPayload *)selfCopy copyNotifyTypeDescription];
+      v9[0] = copyNotifyTypeDescription;
       v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-      v1 = [v2 initWithDomain:@"NEIKEv2ProtocolErrorDomain" code:isa userInfo:v5];
+      selfCopy = [v2 initWithDomain:@"NEIKEv2ProtocolErrorDomain" code:isa userInfo:v5];
     }
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)getPPKIDType
@@ -628,7 +628,7 @@ LABEL_14:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
       v7 = 138412290;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_fault_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_FAULT, "Cannot get PPK ID type from notification %@", &v7, 0xCu);
     }
 
@@ -641,7 +641,7 @@ LABEL_14:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 138412290;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_ERROR, "Cannot get PPK ID type from too short notification %@", &v7, 0xCu);
     }
 
@@ -668,7 +668,7 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_fault_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_FAULT, "Cannot copy PPK ID from notification %@", &v10, 0xCu);
     }
 
@@ -681,7 +681,7 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_ERROR, "Cannot copy PPK ID from too short notification %@", &v10, 0xCu);
     }
 

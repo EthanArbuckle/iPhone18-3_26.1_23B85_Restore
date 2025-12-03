@@ -1,29 +1,29 @@
 @interface IMDCoreSpotlightChatReindexingJob
-- (IMDCoreSpotlightChatReindexingJob)initWithIndex:(id)a3 reason:(int64_t)a4 delegate:(id)a5;
+- (IMDCoreSpotlightChatReindexingJob)initWithIndex:(id)index reason:(int64_t)reason delegate:(id)delegate;
 - (IMDCoreSpotlightChatReindexingJobDelegate)delegate;
-- (id)_chatDictionaryForChatAtIndex:(unint64_t)a3 withChats:(id)a4;
-- (id)_newSearchableChatItemsForChats:(id)a3;
+- (id)_chatDictionaryForChatAtIndex:(unint64_t)index withChats:(id)chats;
+- (id)_newSearchableChatItemsForChats:(id)chats;
 - (id)_nextBatchOfSearchableItems;
-- (void)_indexAllSearchableItemsWithCompletionBlock:(id)a3;
-- (void)_indexNextBatchOfSearchableItemsWithCompletionBlock:(id)a3;
-- (void)runWithCompletionBlock:(id)a3;
+- (void)_indexAllSearchableItemsWithCompletionBlock:(id)block;
+- (void)_indexNextBatchOfSearchableItemsWithCompletionBlock:(id)block;
+- (void)runWithCompletionBlock:(id)block;
 @end
 
 @implementation IMDCoreSpotlightChatReindexingJob
 
-- (IMDCoreSpotlightChatReindexingJob)initWithIndex:(id)a3 reason:(int64_t)a4 delegate:(id)a5
+- (IMDCoreSpotlightChatReindexingJob)initWithIndex:(id)index reason:(int64_t)reason delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
+  indexCopy = index;
+  delegateCopy = delegate;
   v33.receiver = self;
   v33.super_class = IMDCoreSpotlightChatReindexingJob;
   v11 = [(IMDCoreSpotlightChatReindexingJob *)&v33 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_index, a3);
-    v12->_reason = a4;
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeStrong(&v11->_index, index);
+    v12->_reason = reason;
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     v13 = objc_alloc_init(MEMORY[0x1E69A6170]);
     timingCollection = v12->_timingCollection;
     v12->_timingCollection = v13;
@@ -94,9 +94,9 @@
   return v23;
 }
 
-- (void)_indexNextBatchOfSearchableItemsWithCompletionBlock:(id)a3
+- (void)_indexNextBatchOfSearchableItemsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_autoreleasePoolPush();
   v8 = objc_msgSend__nextBatchOfSearchableItems(self, v6, v7);
   if (objc_msgSend_count(v8, v9, v10))
@@ -121,35 +121,35 @@
     v39[1] = 3221225472;
     v39[2] = sub_1B7B932D4;
     v39[3] = &unk_1E7CBB328;
-    v40 = v4;
+    v40 = blockCopy;
     objc_msgSend_runWithCompletion_(v32, v38, v39);
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(blockCopy + 2))(blockCopy, 1, 0);
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_indexAllSearchableItemsWithCompletionBlock:(id)a3
+- (void)_indexAllSearchableItemsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1B7B93380;
   v7[3] = &unk_1E7CBB718;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = blockCopy;
+  v5 = blockCopy;
   objc_msgSend__indexNextBatchOfSearchableItemsWithCompletionBlock_(self, v6, v7);
 }
 
-- (id)_chatDictionaryForChatAtIndex:(unint64_t)a3 withChats:(id)a4
+- (id)_chatDictionaryForChatAtIndex:(unint64_t)index withChats:(id)chats
 {
-  v5 = a4;
-  v7 = objc_msgSend_objectAtIndexedSubscript_(v5, v6, a3);
+  chatsCopy = chats;
+  v7 = objc_msgSend_objectAtIndexedSubscript_(chatsCopy, v6, index);
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -171,21 +171,21 @@
   return v10;
 }
 
-- (id)_newSearchableChatItemsForChats:(id)a3
+- (id)_newSearchableChatItemsForChats:(id)chats
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  chatsCopy = chats;
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
-  v8 = objc_msgSend_count(v4, v6, v7);
+  v8 = objc_msgSend_count(chatsCopy, v6, v7);
   v47 = objc_msgSend_initWithCapacity_(v5, v9, v8);
-  if (objc_msgSend_count(v4, v10, v11))
+  if (objc_msgSend_count(chatsCopy, v10, v11))
   {
     v15 = 0;
     *&v14 = 138412290;
     v46 = v14;
     do
     {
-      v16 = objc_msgSend__chatDictionaryForChatAtIndex_withChats_(self, v12, v15, v4, v46);
+      v16 = objc_msgSend__chatDictionaryForChatAtIndex_withChats_(self, v12, v15, chatsCopy, v46);
       v18 = _IMDCoreSpotlightChatUIDForChatDictionary(v16);
       if (v18)
       {
@@ -224,7 +224,7 @@
       ++v15;
     }
 
-    while (v15 < objc_msgSend_count(v4, v38, v39));
+    while (v15 < objc_msgSend_count(chatsCopy, v38, v39));
   }
 
   v40 = objc_msgSend_allValues(v47, v12, v13);
@@ -234,10 +234,10 @@
   return v43;
 }
 
-- (void)runWithCompletionBlock:(id)a3
+- (void)runWithCompletionBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   IMDIndexingAssertClientRequestQueue();
   v7 = objc_msgSend_chatBatchSize(MEMORY[0x1E69A7FF8], v5, v6);
   if (IMOSLoggingEnabled())
@@ -262,8 +262,8 @@
   v21[2] = sub_1B7B93948;
   v21[3] = &unk_1E7CBB398;
   v21[4] = self;
-  v22 = v4;
-  v18 = v4;
+  v22 = blockCopy;
+  v18 = blockCopy;
   objc_msgSend__indexAllSearchableItemsWithCompletionBlock_(self, v19, v21);
 
   v20 = *MEMORY[0x1E69E9840];

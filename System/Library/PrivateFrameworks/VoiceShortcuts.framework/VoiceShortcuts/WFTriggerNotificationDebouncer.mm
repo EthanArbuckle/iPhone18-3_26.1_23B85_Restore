@@ -1,8 +1,8 @@
 @interface WFTriggerNotificationDebouncer
 - (WFTriggerNotificationDebouncer)init;
 - (WFTriggerNotificationDebouncerDelegate)delegate;
-- (void)addEventsWithIdentifiers:(id)a3 notificationType:(unint64_t)a4 configuredTrigger:(id)a5 workflowReference:(id)a6;
-- (void)debouncerDidFire:(id)a3;
+- (void)addEventsWithIdentifiers:(id)identifiers notificationType:(unint64_t)type configuredTrigger:(id)trigger workflowReference:(id)reference;
+- (void)debouncerDidFire:(id)fire;
 @end
 
 @implementation WFTriggerNotificationDebouncer
@@ -14,21 +14,21 @@
   return WeakRetained;
 }
 
-- (void)debouncerDidFire:(id)a3
+- (void)debouncerDidFire:(id)fire
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFTriggerNotificationDebouncer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  queue = [(WFTriggerNotificationDebouncer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 userInfo];
+  userInfo = [fireCopy userInfo];
 
-  if (v6)
+  if (userInfo)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = userInfo;
     }
 
     else
@@ -44,11 +44,11 @@
 
   v8 = v7;
 
-  v9 = [(WFTriggerNotificationDebouncer *)self notificationItemTable];
-  v10 = [v9 objectForKey:v8];
+  notificationItemTable = [(WFTriggerNotificationDebouncer *)self notificationItemTable];
+  v10 = [notificationItemTable objectForKey:v8];
 
   v11 = getWFTriggersLogObject();
-  v12 = v11;
+  delegate = v11;
   if (v10)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -57,16 +57,16 @@
       v21 = "[WFTriggerNotificationDebouncer debouncerDidFire:]";
       v22 = 2114;
       v23 = v10;
-      _os_log_impl(&dword_23103C000, v12, OS_LOG_TYPE_DEBUG, "%s Debouncer fired with notification item: %{public}@", &v20, 0x16u);
+      _os_log_impl(&dword_23103C000, delegate, OS_LOG_TYPE_DEBUG, "%s Debouncer fired with notification item: %{public}@", &v20, 0x16u);
     }
 
-    v12 = [(WFTriggerNotificationDebouncer *)self delegate];
-    v13 = [v10 configuredTrigger];
-    v14 = [v10 notificationType];
-    v15 = [v10 reference];
-    v16 = [v10 triggerEventIDs];
-    v17 = [v16 allObjects];
-    [v12 postActionRequiredNotificationForTrigger:v13 notificationType:v14 workflowReference:v15 pendingTriggerEventIDs:v17];
+    delegate = [(WFTriggerNotificationDebouncer *)self delegate];
+    configuredTrigger = [v10 configuredTrigger];
+    notificationType = [v10 notificationType];
+    reference = [v10 reference];
+    triggerEventIDs = [v10 triggerEventIDs];
+    allObjects = [triggerEventIDs allObjects];
+    [delegate postActionRequiredNotificationForTrigger:configuredTrigger notificationType:notificationType workflowReference:reference pendingTriggerEventIDs:allObjects];
   }
 
   else if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -75,34 +75,34 @@
     v21 = "[WFTriggerNotificationDebouncer debouncerDidFire:]";
     v22 = 2114;
     v23 = v8;
-    _os_log_impl(&dword_23103C000, v12, OS_LOG_TYPE_FAULT, "%s No WFTriggerNotificationDebouncerItem item found for trigger identifier: %{public}@", &v20, 0x16u);
+    _os_log_impl(&dword_23103C000, delegate, OS_LOG_TYPE_FAULT, "%s No WFTriggerNotificationDebouncerItem item found for trigger identifier: %{public}@", &v20, 0x16u);
   }
 
-  v18 = [(WFTriggerNotificationDebouncer *)self notificationItemTable];
-  [v18 removeObjectForKey:v8];
+  notificationItemTable2 = [(WFTriggerNotificationDebouncer *)self notificationItemTable];
+  [notificationItemTable2 removeObjectForKey:v8];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEventsWithIdentifiers:(id)a3 notificationType:(unint64_t)a4 configuredTrigger:(id)a5 workflowReference:(id)a6
+- (void)addEventsWithIdentifiers:(id)identifiers notificationType:(unint64_t)type configuredTrigger:(id)trigger workflowReference:(id)reference
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(WFTriggerNotificationDebouncer *)self queue];
+  identifiersCopy = identifiers;
+  triggerCopy = trigger;
+  referenceCopy = reference;
+  queue = [(WFTriggerNotificationDebouncer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __112__WFTriggerNotificationDebouncer_addEventsWithIdentifiers_notificationType_configuredTrigger_workflowReference___block_invoke;
   block[3] = &unk_2788FE468;
-  v18 = v10;
-  v19 = v11;
-  v21 = v12;
-  v22 = a4;
-  v20 = self;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = identifiersCopy;
+  v19 = triggerCopy;
+  v21 = referenceCopy;
+  typeCopy = type;
+  selfCopy = self;
+  v14 = referenceCopy;
+  v15 = triggerCopy;
+  v16 = identifiersCopy;
+  dispatch_async(queue, block);
 }
 
 void __112__WFTriggerNotificationDebouncer_addEventsWithIdentifiers_notificationType_configuredTrigger_workflowReference___block_invoke(uint64_t a1)

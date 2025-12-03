@@ -1,35 +1,35 @@
 @interface LSApplicationWorkspaceRemoteObserver
-- (BOOL)messageObserversWithSelector:(SEL)a3;
-- (BOOL)messageObserversWithSelector:(SEL)a3 andApps:(id)a4 filterLaunchProhibited:(BOOL)a5;
+- (BOOL)messageObserversWithSelector:(SEL)selector;
+- (BOOL)messageObserversWithSelector:(SEL)selector andApps:(id)apps filterLaunchProhibited:(BOOL)prohibited;
 - (LSApplicationWorkspaceRemoteObserver)init;
-- (LSApplicationWorkspaceRemoteObserver)initWithCoder:(id)a3;
+- (LSApplicationWorkspaceRemoteObserver)initWithCoder:(id)coder;
 - (id)localObservers;
 - (unint64_t)currentObserverCount;
-- (void)addLocalObserver:(id)a3;
-- (void)applicationIconDidChange:(id)a3;
-- (void)applicationInstallsArePrioritized:(id)a3 arePaused:(id)a4;
-- (void)applicationInstallsDidCancel:(id)a3;
-- (void)applicationInstallsDidChange:(id)a3;
-- (void)applicationInstallsDidPause:(id)a3;
-- (void)applicationInstallsDidPrioritize:(id)a3;
-- (void)applicationInstallsDidResume:(id)a3;
-- (void)applicationInstallsDidStart:(id)a3;
-- (void)applicationInstallsDidUpdateIcon:(id)a3;
-- (void)applicationStateDidChange:(id)a3;
-- (void)applicationsDidChangePersonas:(id)a3;
-- (void)applicationsDidFailToInstall:(id)a3;
-- (void)applicationsDidFailToUninstall:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)applicationsWillInstall:(id)a3;
-- (void)applicationsWillUninstall:(id)a3;
+- (void)addLocalObserver:(id)observer;
+- (void)applicationIconDidChange:(id)change;
+- (void)applicationInstallsArePrioritized:(id)prioritized arePaused:(id)paused;
+- (void)applicationInstallsDidCancel:(id)cancel;
+- (void)applicationInstallsDidChange:(id)change;
+- (void)applicationInstallsDidPause:(id)pause;
+- (void)applicationInstallsDidPrioritize:(id)prioritize;
+- (void)applicationInstallsDidResume:(id)resume;
+- (void)applicationInstallsDidStart:(id)start;
+- (void)applicationInstallsDidUpdateIcon:(id)icon;
+- (void)applicationStateDidChange:(id)change;
+- (void)applicationsDidChangePersonas:(id)personas;
+- (void)applicationsDidFailToInstall:(id)install;
+- (void)applicationsDidFailToUninstall:(id)uninstall;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)applicationsWillInstall:(id)install;
+- (void)applicationsWillUninstall:(id)uninstall;
 - (void)databaseWasRebuilt;
-- (void)deviceManagementPolicyDidChange:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)pluginsDidInstall:(id)a3;
-- (void)pluginsDidUninstall:(id)a3;
-- (void)pluginsWillUninstall:(id)a3;
-- (void)removeLocalObserver:(id)a3;
+- (void)deviceManagementPolicyDidChange:(id)change;
+- (void)encodeWithCoder:(id)coder;
+- (void)pluginsDidInstall:(id)install;
+- (void)pluginsDidUninstall:(id)uninstall;
+- (void)pluginsWillUninstall:(id)uninstall;
+- (void)removeLocalObserver:(id)observer;
 @end
 
 @implementation LSApplicationWorkspaceRemoteObserver
@@ -46,9 +46,9 @@
     v2->_uuid = v3;
 
     v2->_observinglsd = 0;
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_attr_make_with_qos_class(v7, QOS_CLASS_BACKGROUND, 0);
@@ -63,9 +63,9 @@
 
 - (unint64_t)currentObserverCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  observers = v2->_observers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = selfCopy->_observers;
   if (observers)
   {
     v4 = [(NSHashTable *)observers count];
@@ -76,39 +76,39 @@
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (id)localObservers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSHashTable *)v2->_observers allObjects];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(NSHashTable *)selfCopy->_observers allObjects];
+  v4 = [allObjects copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LSApplicationWorkspaceRemoteObserver *)self uuid];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  uuid = [(LSApplicationWorkspaceRemoteObserver *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 }
 
-- (LSApplicationWorkspaceRemoteObserver)initWithCoder:(id)a3
+- (LSApplicationWorkspaceRemoteObserver)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = LSApplicationWorkspaceRemoteObserver;
   v5 = [(LSApplicationWorkspaceRemoteObserver *)&v9 init];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
   }
@@ -116,45 +116,45 @@
   return v5;
 }
 
-- (void)addLocalObserver:(id)a3
+- (void)addLocalObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v5)
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (observerCopy)
   {
-    [(NSHashTable *)v4->_observers addObject:v5];
+    [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeLocalObserver:(id)a3
+- (void)removeLocalObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v5)
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (observerCopy)
   {
-    [(NSHashTable *)v4->_observers removeObject:v5];
+    [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)messageObserversWithSelector:(SEL)a3 andApps:(id)a4 filterLaunchProhibited:(BOOL)a5
+- (BOOL)messageObserversWithSelector:(SEL)selector andApps:(id)apps filterLaunchProhibited:(BOOL)prohibited
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v24 = v8;
-  if (a5)
+  appsCopy = apps;
+  v24 = appsCopy;
+  if (prohibited)
   {
-    v9 = [MEMORY[0x1E695DEC8] arrayByFilteringLaunchProhibitedAppsFrom:v8];
+    v9 = [MEMORY[0x1E695DEC8] arrayByFilteringLaunchProhibitedAppsFrom:appsCopy];
   }
 
   else
   {
-    v9 = v8;
+    v9 = appsCopy;
   }
 
   v10 = v9;
@@ -162,8 +162,8 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = [(LSApplicationWorkspaceRemoteObserver *)self localObservers];
-  v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  localObservers = [(LSApplicationWorkspaceRemoteObserver *)self localObservers];
+  v12 = [localObservers countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
     v13 = v12;
@@ -175,7 +175,7 @@
       {
         if (*v26 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(localObservers);
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
@@ -183,14 +183,14 @@
         {
           if (objc_opt_respondsToSelector() & 1) != 0 && ([v17 valueForKey:@"observeLaunchProhibitedApps"], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "BOOLValue"), v19, v18 = v24, (v20) || (v21 = objc_msgSend(v10, "count", v18), v18 = v10, v21))
           {
-            [v17 a3];
+            [v17 selector];
           }
 
           v14 = 1;
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v13 = [localObservers countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v13);
@@ -205,15 +205,15 @@
   return v14 & 1;
 }
 
-- (BOOL)messageObserversWithSelector:(SEL)a3
+- (BOOL)messageObserversWithSelector:(SEL)selector
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(LSApplicationWorkspaceRemoteObserver *)self localObservers];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  localObservers = [(LSApplicationWorkspaceRemoteObserver *)self localObservers];
+  v5 = [localObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -225,18 +225,18 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(localObservers);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v10 a3];
+          [v10 selector];
           v7 = 1;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [localObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -251,16 +251,16 @@
   return v7 & 1;
 }
 
-- (void)applicationInstallsDidStart:(id)a3
+- (void)applicationInstallsDidStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__LSApplicationWorkspaceRemoteObserver_applicationInstallsDidStart___block_invoke;
   v6[3] = &unk_1E6A18F50;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = startCopy;
+  selfCopy = self;
+  v5 = startCopy;
   dispatchAsyncToCallbackQueueWithTransaction("com.apple.launchservices.applicationInstallsDidStart", v6);
 }
 
@@ -333,16 +333,16 @@ void __68__LSApplicationWorkspaceRemoteObserver_applicationInstallsDidStart___bl
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationInstallsDidUpdateIcon:(id)a3
+- (void)applicationInstallsDidUpdateIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73__LSApplicationWorkspaceRemoteObserver_applicationInstallsDidUpdateIcon___block_invoke;
   v6[3] = &unk_1E6A18F50;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = iconCopy;
+  selfCopy = self;
+  v5 = iconCopy;
   dispatchAsyncToCallbackQueueWithTransaction("com.apple.launchservices.applicationInstallsDidUpdateIcon", v6);
 }
 
@@ -364,16 +364,16 @@ uint64_t __73__LSApplicationWorkspaceRemoteObserver_applicationInstallsDidUpdate
   return result;
 }
 
-- (void)applicationInstallsDidChange:(id)a3
+- (void)applicationInstallsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__LSApplicationWorkspaceRemoteObserver_applicationInstallsDidChange___block_invoke;
   v6[3] = &unk_1E6A18F50;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changeCopy;
+  selfCopy = self;
+  v5 = changeCopy;
   dispatchAsyncToCallbackQueueWithTransaction("com.apple.launchservices.applicationInstallsDidChange", v6);
 }
 
@@ -448,16 +448,16 @@ void __69__LSApplicationWorkspaceRemoteObserver_applicationInstallsDidChange___b
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationsWillInstall:(id)a3
+- (void)applicationsWillInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__LSApplicationWorkspaceRemoteObserver_applicationsWillInstall___block_invoke;
   v6[3] = &unk_1E6A18F50;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = installCopy;
+  selfCopy = self;
+  v5 = installCopy;
   dispatchAsyncToCallbackQueueWithTransaction("com.apple.launchservices.applicationsWillInstall", v6);
 }
 
@@ -479,15 +479,15 @@ uint64_t __64__LSApplicationWorkspaceRemoteObserver_applicationsWillInstall___bl
   return result;
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  installCopy = install;
   v5 = _LSInstallLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = installCopy;
     _os_log_impl(&dword_18162D000, v5, OS_LOG_TYPE_DEFAULT, "Received applicationsDidInstall:%@", buf, 0xCu);
   }
 
@@ -495,9 +495,9 @@ uint64_t __64__LSApplicationWorkspaceRemoteObserver_applicationsWillInstall___bl
   v8[1] = 3221225472;
   v8[2] = __63__LSApplicationWorkspaceRemoteObserver_applicationsDidInstall___block_invoke;
   v8[3] = &unk_1E6A18F50;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
+  v9 = installCopy;
+  selfCopy = self;
+  v6 = installCopy;
   dispatchAsyncToCallbackQueueWithTransaction("com.apple.launchservices.applicationsDidInstall", v8);
 
   v7 = *MEMORY[0x1E69E9840];
@@ -672,15 +672,15 @@ LABEL_24:
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pluginsDidInstall:(id)a3
+- (void)pluginsDidInstall:(id)install
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  installCopy = install;
   v5 = _LSInstallLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = installCopy;
     _os_log_impl(&dword_18162D000, v5, OS_LOG_TYPE_DEFAULT, "LaunchServices observer: Installed plugins %@", buf, 0xCu);
   }
 
@@ -689,8 +689,8 @@ LABEL_24:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(LSApplicationWorkspaceRemoteObserver *)self localObservers];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  localObservers = [(LSApplicationWorkspaceRemoteObserver *)self localObservers];
+  v7 = [localObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -702,20 +702,20 @@ LABEL_24:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(localObservers);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 pluginsDidInstall:v4];
+          [v11 pluginsDidInstall:installCopy];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [localObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -724,16 +724,16 @@ LABEL_24:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationsDidFailToInstall:(id)a3
+- (void)applicationsDidFailToInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToInstall___block_invoke;
   v6[3] = &unk_1E6A18F50;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = installCopy;
+  selfCopy = self;
+  v5 = installCopy;
   dispatchAsyncToCallbackQueueWithTransaction("com.apple.launchservices.applicationsDidFailToInstall", v6);
 }
 
@@ -749,15 +749,15 @@ uint64_t __69__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToInstall
   return [*(a1 + 40) messageObserversWithSelector:sel_applicationsDidFailToInstall_ andApps:*(a1 + 32)];
 }
 
-- (void)pluginsWillUninstall:(id)a3
+- (void)pluginsWillUninstall:(id)uninstall
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  uninstallCopy = uninstall;
   v5 = _LSInstallLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = uninstallCopy;
     _os_log_impl(&dword_18162D000, v5, OS_LOG_TYPE_DEFAULT, "LaunchServices observer: Plugins will be removed: %@", buf, 0xCu);
   }
 
@@ -765,8 +765,8 @@ uint64_t __69__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToInstall
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(LSApplicationWorkspaceRemoteObserver *)self localObservers];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  localObservers = [(LSApplicationWorkspaceRemoteObserver *)self localObservers];
+  v7 = [localObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -778,20 +778,20 @@ uint64_t __69__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToInstall
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(localObservers);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 pluginsWillUninstall:v4];
+          [v11 pluginsWillUninstall:uninstallCopy];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [localObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -800,16 +800,16 @@ uint64_t __69__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToInstall
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationsWillUninstall:(id)a3
+- (void)applicationsWillUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__LSApplicationWorkspaceRemoteObserver_applicationsWillUninstall___block_invoke;
   v6[3] = &unk_1E6A18F50;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = uninstallCopy;
+  selfCopy = self;
+  v5 = uninstallCopy;
   dispatchAsyncToCallbackQueueWithTransaction("com.apple.launchservices.applicationsWillUninstall", v6);
 }
 
@@ -831,16 +831,16 @@ uint64_t __66__LSApplicationWorkspaceRemoteObserver_applicationsWillUninstall___
   return result;
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__LSApplicationWorkspaceRemoteObserver_applicationsDidUninstall___block_invoke;
   v6[3] = &unk_1E6A18F50;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = uninstallCopy;
+  selfCopy = self;
+  v5 = uninstallCopy;
   dispatchAsyncToCallbackQueueWithTransaction("com.apple.launchservices.applicationsDidUninstall", v6);
 }
 
@@ -865,15 +865,15 @@ void __65__LSApplicationWorkspaceRemoteObserver_applicationsDidUninstall___block
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pluginsDidUninstall:(id)a3
+- (void)pluginsDidUninstall:(id)uninstall
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  uninstallCopy = uninstall;
   v5 = _LSInstallLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = uninstallCopy;
     _os_log_impl(&dword_18162D000, v5, OS_LOG_TYPE_DEFAULT, "LaunchServices observer: Uninstalled plugins %@", buf, 0xCu);
   }
 
@@ -881,8 +881,8 @@ void __65__LSApplicationWorkspaceRemoteObserver_applicationsDidUninstall___block
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(LSApplicationWorkspaceRemoteObserver *)self localObservers];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  localObservers = [(LSApplicationWorkspaceRemoteObserver *)self localObservers];
+  v7 = [localObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -894,20 +894,20 @@ void __65__LSApplicationWorkspaceRemoteObserver_applicationsDidUninstall___block
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(localObservers);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 pluginsDidUninstall:v4];
+          [v11 pluginsDidUninstall:uninstallCopy];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [localObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -916,16 +916,16 @@ void __65__LSApplicationWorkspaceRemoteObserver_applicationsDidUninstall___block
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationsDidFailToUninstall:(id)a3
+- (void)applicationsDidFailToUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToUninstall___block_invoke;
   v6[3] = &unk_1E6A18F50;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = uninstallCopy;
+  selfCopy = self;
+  v5 = uninstallCopy;
   dispatchAsyncToCallbackQueueWithTransaction("com.apple.launchservices.applicationsDidFailToUninstall", v6);
 }
 
@@ -940,11 +940,11 @@ uint64_t __71__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToUninsta
   return [*(a1 + 40) messageObserversWithSelector:sel_applicationsDidFailToUninstall_ andApps:*(a1 + 32)];
 }
 
-- (void)applicationInstallsArePrioritized:(id)a3 arePaused:(id)a4
+- (void)applicationInstallsArePrioritized:(id)prioritized arePaused:(id)paused
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  prioritizedCopy = prioritized;
+  pausedCopy = paused;
   v8 = _LSInstallLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -968,8 +968,8 @@ uint64_t __71__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToUninsta
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v11 = [(LSApplicationWorkspaceRemoteObserver *)self localObservers];
-  v12 = [v11 countByEnumeratingWithState:&v60 objects:v71 count:16];
+  localObservers = [(LSApplicationWorkspaceRemoteObserver *)self localObservers];
+  v12 = [localObservers countByEnumeratingWithState:&v60 objects:v71 count:16];
   if (v12)
   {
     v13 = v12;
@@ -980,7 +980,7 @@ uint64_t __71__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToUninsta
       {
         if (*v61 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(localObservers);
         }
 
         v16 = *(*(&v60 + 1) + 8 * i);
@@ -990,7 +990,7 @@ uint64_t __71__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToUninsta
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v60 objects:v71 count:16];
+      v13 = [localObservers countByEnumeratingWithState:&v60 objects:v71 count:16];
     }
 
     while (v13);
@@ -998,14 +998,14 @@ uint64_t __71__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToUninsta
 
   if ([v47 count])
   {
-    v46 = v7;
+    v46 = pausedCopy;
     v17 = objc_opt_new();
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v45 = v6;
-    v18 = v6;
+    v45 = prioritizedCopy;
+    v18 = prioritizedCopy;
     v19 = [v18 countByEnumeratingWithState:&v56 objects:v70 count:16];
     if (v19)
     {
@@ -1022,10 +1022,10 @@ uint64_t __71__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToUninsta
 
           v23 = *(*(&v56 + 1) + 8 * j);
           v24 = [LSApplicationProxy applicationProxyForIdentifier:v23, v45];
-          v25 = [v24 appState];
-          v26 = [v25 isValid];
+          appState = [v24 appState];
+          isValid = [appState isValid];
 
-          if (v26)
+          if (isValid)
           {
             [v17 addObject:v24];
           }
@@ -1072,10 +1072,10 @@ uint64_t __71__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToUninsta
 
           v34 = *(*(&v52 + 1) + 8 * k);
           v35 = [LSApplicationProxy applicationProxyForIdentifier:v34, v45];
-          v36 = [v35 appState];
-          v37 = [v36 isValid];
+          appState2 = [v35 appState];
+          isValid2 = [appState2 isValid];
 
-          if (v37)
+          if (isValid2)
           {
             [v28 addObject:v35];
           }
@@ -1106,7 +1106,7 @@ uint64_t __71__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToUninsta
     v49 = 0u;
     v39 = v47;
     v40 = [v39 countByEnumeratingWithState:&v48 objects:v64 count:16];
-    v6 = v45;
+    prioritizedCopy = v45;
     if (v40)
     {
       v41 = v40;
@@ -1129,140 +1129,140 @@ uint64_t __71__LSApplicationWorkspaceRemoteObserver_applicationsDidFailToUninsta
       while (v41);
     }
 
-    v7 = v46;
+    pausedCopy = v46;
   }
 
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationInstallsDidPause:(id)a3
+- (void)applicationInstallsDidPause:(id)pause
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pauseCopy = pause;
   v5 = _LSInstallLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = pauseCopy;
     _os_log_impl(&dword_18162D000, v5, OS_LOG_TYPE_DEFAULT, "LaunchServices observer: PAUSE %@", &v7, 0xCu);
   }
 
-  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_applicationInstallsDidPause_ andApps:v4];
+  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_applicationInstallsDidPause_ andApps:pauseCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationInstallsDidResume:(id)a3
+- (void)applicationInstallsDidResume:(id)resume
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resumeCopy = resume;
   v5 = _LSInstallLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = resumeCopy;
     _os_log_impl(&dword_18162D000, v5, OS_LOG_TYPE_DEFAULT, "LaunchServices observer: RESUME %@", &v7, 0xCu);
   }
 
-  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_applicationInstallsDidResume_ andApps:v4];
+  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_applicationInstallsDidResume_ andApps:resumeCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationInstallsDidCancel:(id)a3
+- (void)applicationInstallsDidCancel:(id)cancel
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = _LSInstallLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = cancelCopy;
     _os_log_impl(&dword_18162D000, v5, OS_LOG_TYPE_DEFAULT, "LaunchServices observer: CANCEL %@", &v7, 0xCu);
   }
 
-  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_applicationInstallsDidCancel_ andApps:v4];
+  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_applicationInstallsDidCancel_ andApps:cancelCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationInstallsDidPrioritize:(id)a3
+- (void)applicationInstallsDidPrioritize:(id)prioritize
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  prioritizeCopy = prioritize;
   v5 = _LSInstallLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = prioritizeCopy;
     _os_log_impl(&dword_18162D000, v5, OS_LOG_TYPE_DEFAULT, "LaunchServices observer: PRIORITIZE %@", &v7, 0xCu);
   }
 
-  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_applicationInstallsDidPrioritize_ andApps:v4];
+  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_applicationInstallsDidPrioritize_ andApps:prioritizeCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationStateDidChange:(id)a3
+- (void)applicationStateDidChange:(id)change
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = _LSInstallLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = changeCopy;
     _os_log_impl(&dword_18162D000, v5, OS_LOG_TYPE_DEFAULT, "LaunchServices observer: StateChange %@", &v7, 0xCu);
   }
 
   _LSContextInvalidate();
-  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_applicationStateDidChange_ andApps:v4];
+  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_applicationStateDidChange_ andApps:changeCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationIconDidChange:(id)a3
+- (void)applicationIconDidChange:(id)change
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = _LSInstallLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = changeCopy;
     _os_log_impl(&dword_18162D000, v5, OS_LOG_TYPE_DEFAULT, "LaunchServices observer: IconChange %@", &v7, 0xCu);
   }
 
   _LSContextInvalidate();
-  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_applicationIconDidChange_ andApps:v4];
+  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_applicationIconDidChange_ andApps:changeCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deviceManagementPolicyDidChange:(id)a3
+- (void)deviceManagementPolicyDidChange:(id)change
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = _LSInstallLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = changeCopy;
     _os_log_impl(&dword_18162D000, v5, OS_LOG_TYPE_DEFAULT, "LaunchServices observer: deviceManagementPolicyDidChange %@", &v7, 0xCu);
   }
 
   _LSContextInvalidate();
-  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_deviceManagementPolicyDidChange_ andApps:v4];
+  [(LSApplicationWorkspaceRemoteObserver *)self messageObserversWithSelector:sel_deviceManagementPolicyDidChange_ andApps:changeCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationsDidChangePersonas:(id)a3
+- (void)applicationsDidChangePersonas:(id)personas
 {
-  v4 = a3;
+  personasCopy = personas;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__LSApplicationWorkspaceRemoteObserver_applicationsDidChangePersonas___block_invoke;
   v6[3] = &unk_1E6A18F50;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = personasCopy;
+  selfCopy = self;
+  v5 = personasCopy;
   dispatchAsyncToCallbackQueueWithTransaction("com.apple.launchservices.applicationsDidChangePersonas", v6);
 }
 

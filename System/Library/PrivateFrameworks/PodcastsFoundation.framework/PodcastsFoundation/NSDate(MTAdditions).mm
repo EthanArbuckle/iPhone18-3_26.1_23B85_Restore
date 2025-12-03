@@ -33,15 +33,15 @@
 
 - (id)friendlyDisplayString
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 startOfDayForDate:a1];
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [v2 startOfDayForDate:v4];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar startOfDayForDate:self];
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [currentCalendar startOfDayForDate:date];
 
   if ([v3 isEqualToDate:v5])
   {
-    v6 = [MEMORY[0x1E695DF00] mt_dateFormatterRelativeDay];
-    v7 = v6;
+    mt_dateFormatterRelativeDay = [MEMORY[0x1E695DF00] mt_dateFormatterRelativeDay];
+    v7 = mt_dateFormatterRelativeDay;
     v8 = v5;
   }
 
@@ -65,12 +65,12 @@
     {
       [MEMORY[0x1E695DF00] mt_dateFormatterWithYear];
     }
-    v6 = ;
-    v7 = v6;
+    mt_dateFormatterRelativeDay = ;
+    v7 = mt_dateFormatterRelativeDay;
     v8 = v3;
   }
 
-  v11 = [v6 stringFromDate:v8];
+  v11 = [mt_dateFormatterRelativeDay stringFromDate:v8];
 
 LABEL_10:
 
@@ -79,23 +79,23 @@ LABEL_10:
 
 - (id)yearString
 {
-  v2 = [MEMORY[0x1E695DF00] mt_dateFormatterJustYear];
-  v3 = [v2 stringFromDate:a1];
+  mt_dateFormatterJustYear = [MEMORY[0x1E695DF00] mt_dateFormatterJustYear];
+  v3 = [mt_dateFormatterJustYear stringFromDate:self];
 
   return v3;
 }
 
 - (id)abbreviatedFriendlyDisplayString
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 startOfDayForDate:a1];
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [v2 startOfDayForDate:v4];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar startOfDayForDate:self];
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [currentCalendar startOfDayForDate:date];
 
   if ([v3 isEqualToDate:v5])
   {
-    v6 = [MEMORY[0x1E695DF00] mt_dateFormatterRelativeDay];
-    v7 = v6;
+    mt_dateFormatterRelativeDay = [MEMORY[0x1E695DF00] mt_dateFormatterRelativeDay];
+    v7 = mt_dateFormatterRelativeDay;
     v8 = v5;
   }
 
@@ -119,12 +119,12 @@ LABEL_10:
     {
       [MEMORY[0x1E695DF00] mt_dateFormatterWithYear];
     }
-    v6 = ;
-    v7 = v6;
+    mt_dateFormatterRelativeDay = ;
+    v7 = mt_dateFormatterRelativeDay;
     v8 = v3;
   }
 
-  v11 = [v6 stringFromDate:v8];
+  v11 = [mt_dateFormatterRelativeDay stringFromDate:v8];
 
 LABEL_10:
 
@@ -133,23 +133,23 @@ LABEL_10:
 
 - (id)microDateString
 {
-  v2 = [MEMORY[0x1E695DF00] mt_dateFormatterNoYearAbbrevMonth];
-  v3 = [v2 stringFromDate:a1];
+  mt_dateFormatterNoYearAbbrevMonth = [MEMORY[0x1E695DF00] mt_dateFormatterNoYearAbbrevMonth];
+  v3 = [mt_dateFormatterNoYearAbbrevMonth stringFromDate:self];
 
   return v3;
 }
 
 - (id)microFriendlyDisplayString:()MTAdditions
 {
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [v5 startOfDayForDate:a1];
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [v5 startOfDayForDate:v7];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v6 = [currentCalendar startOfDayForDate:self];
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [currentCalendar startOfDayForDate:date];
 
   if ([v6 isEqualToDate:v8])
   {
-    v9 = [MEMORY[0x1E695DF00] mt_dateFormatterRelativeDay];
-    v10 = v9;
+    mt_dateFormatterRelativeDay = [MEMORY[0x1E695DF00] mt_dateFormatterRelativeDay];
+    v10 = mt_dateFormatterRelativeDay;
     v11 = v8;
   }
 
@@ -173,12 +173,12 @@ LABEL_10:
     {
       [MEMORY[0x1E695DF00] mt_dateFormatterNoDayWithYear];
     }
-    v9 = ;
-    v10 = v9;
+    mt_dateFormatterRelativeDay = ;
+    v10 = mt_dateFormatterRelativeDay;
     v11 = v6;
   }
 
-  v14 = [v9 stringFromDate:v11];
+  v14 = [mt_dateFormatterRelativeDay stringFromDate:v11];
 
 LABEL_10:
 
@@ -187,15 +187,15 @@ LABEL_10:
 
 - (id)nanoFriendlyDisplayString
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 startOfDayForDate:a1];
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [v2 startOfDayForDate:v4];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar startOfDayForDate:self];
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [currentCalendar startOfDayForDate:date];
 
   if ([v3 isEqualToDate:v5])
   {
-    v6 = [MEMORY[0x1E695DF00] mt_dateFormatterRelativeDay];
-    v7 = v6;
+    mt_dateFormatterRelativeDay = [MEMORY[0x1E695DF00] mt_dateFormatterRelativeDay];
+    v7 = mt_dateFormatterRelativeDay;
     v8 = v5;
   }
 
@@ -219,12 +219,12 @@ LABEL_10:
     {
       [MEMORY[0x1E695DF00] mt_dateFormatterShortStyleWithYear];
     }
-    v6 = ;
-    v7 = v6;
+    mt_dateFormatterRelativeDay = ;
+    v7 = mt_dateFormatterRelativeDay;
     v8 = v3;
   }
 
-  v11 = [v6 stringFromDate:v8];
+  v11 = [mt_dateFormatterRelativeDay stringFromDate:v8];
 
 LABEL_10:
 
@@ -262,52 +262,52 @@ LABEL_10:
 
 - (id)verboseDisplayString
 {
-  v2 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
-  v3 = [v2 localizedStringForKey:@"DATE_AT_TIME" value:&stru_1F548B930 table:0];
+  podcastsFoundationBundle = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
+  v3 = [podcastsFoundationBundle localizedStringForKey:@"DATE_AT_TIME" value:&stru_1F548B930 table:0];
 
-  v4 = [MEMORY[0x1E695DF00] mt_verboseDateFormatter];
-  v5 = [v4 stringFromDate:a1];
+  mt_verboseDateFormatter = [MEMORY[0x1E695DF00] mt_verboseDateFormatter];
+  v5 = [mt_verboseDateFormatter stringFromDate:self];
 
-  v6 = [a1 timeString];
-  v7 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v3 validFormatSpecifiers:@"%@ %@" error:0, v5, v6];
+  timeString = [self timeString];
+  v7 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v3 validFormatSpecifiers:@"%@ %@" error:0, v5, timeString];
 
   return v7;
 }
 
 - (id)lessVerboseDisplayString
 {
-  v2 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
-  v3 = [v2 localizedStringForKey:@"DATE_AT_TIME" value:&stru_1F548B930 table:0];
+  podcastsFoundationBundle = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
+  v3 = [podcastsFoundationBundle localizedStringForKey:@"DATE_AT_TIME" value:&stru_1F548B930 table:0];
 
-  v4 = [MEMORY[0x1E695DF00] mt_lessVerboseDateFormatter];
-  v5 = [v4 stringFromDate:a1];
+  mt_lessVerboseDateFormatter = [MEMORY[0x1E695DF00] mt_lessVerboseDateFormatter];
+  v5 = [mt_lessVerboseDateFormatter stringFromDate:self];
 
-  v6 = [a1 timeString];
-  v7 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v3 validFormatSpecifiers:@"%@ %@" error:0, v5, v6];
+  timeString = [self timeString];
+  v7 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v3 validFormatSpecifiers:@"%@ %@" error:0, v5, timeString];
 
   return v7;
 }
 
 - (id)verboseDisplayStringWithoutTime
 {
-  v2 = [MEMORY[0x1E695DF00] mt_verboseDateFormatter];
-  v3 = [v2 stringFromDate:a1];
+  mt_verboseDateFormatter = [MEMORY[0x1E695DF00] mt_verboseDateFormatter];
+  v3 = [mt_verboseDateFormatter stringFromDate:self];
 
   return v3;
 }
 
 - (id)lessVerboseDisplayStringWithoutTime
 {
-  v2 = [MEMORY[0x1E695DF00] mt_lessVerboseDateFormatter];
-  v3 = [v2 stringFromDate:a1];
+  mt_lessVerboseDateFormatter = [MEMORY[0x1E695DF00] mt_lessVerboseDateFormatter];
+  v3 = [mt_lessVerboseDateFormatter stringFromDate:self];
 
   return v3;
 }
 
 - (id)verboseDisplayStringWithoutTimeAndCurrentYear
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 startOfDayForDate:a1];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar startOfDayForDate:self];
   if ([v3 isThisYear])
   {
     [MEMORY[0x1E695DF00] mt_dateFormatterNoYear];
@@ -325,8 +325,8 @@ LABEL_10:
 
 - (id)lessVerboseDisplayStringWithoutTimeAndCurrentYear
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 startOfDayForDate:a1];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar startOfDayForDate:self];
   if ([v3 isThisYear])
   {
     [MEMORY[0x1E695DF00] mt_dateFormatterNoYear];
@@ -351,13 +351,13 @@ LABEL_10:
 
   v2 = timeString_fmt;
 
-  return [v2 stringFromDate:a1];
+  return [v2 stringFromDate:self];
 }
 
 - (uint64_t)isThisYear
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [a1 inSameYearAs:v2];
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [self inSameYearAs:date];
 
   return v3;
 }
@@ -366,12 +366,12 @@ LABEL_10:
 {
   v4 = MEMORY[0x1E695DEE8];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 components:4 fromDate:a1];
-  v8 = [v6 components:4 fromDate:v5];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar components:4 fromDate:self];
+  v8 = [currentCalendar components:4 fromDate:v5];
 
-  v9 = [v7 year];
-  v10 = v9 == [v8 year];
+  year = [v7 year];
+  v10 = year == [v8 year];
 
   return v10;
 }
@@ -380,9 +380,9 @@ LABEL_10:
 {
   v4 = MEMORY[0x1E695DEE8];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 component:512 fromDate:a1];
-  v8 = [v6 component:512 fromDate:v5];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar component:512 fromDate:self];
+  v8 = [currentCalendar component:512 fromDate:v5];
 
   return v7 == v8;
 }
@@ -497,10 +497,10 @@ LABEL_10:
 
 - (BOOL)isLessThanDaysOld:()MTAdditions
 {
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [v5 startOfDayForDate:a1];
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [v5 startOfDayForDate:v7];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v6 = [currentCalendar startOfDayForDate:self];
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [currentCalendar startOfDayForDate:date];
 
   v9 = [v8 mt_dateWithDeltaDays:-a3];
   v10 = [v6 compare:v9] == 1;
@@ -510,10 +510,10 @@ LABEL_10:
 
 - (id)mt_dateWithDeltaDays:()MTAdditions
 {
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v6 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v6 setDay:a3];
-  v7 = [v5 dateByAddingComponents:v6 toDate:a1 options:0];
+  v7 = [currentCalendar dateByAddingComponents:v6 toDate:self options:0];
 
   return v7;
 }

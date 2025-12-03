@@ -1,15 +1,15 @@
 @interface UITintColor
 - (BOOL)_isDeepColor;
-- (BOOL)getHue:(double *)a3 saturation:(double *)a4 brightness:(double *)a5 alpha:(double *)a6;
-- (BOOL)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6;
-- (BOOL)getWhite:(double *)a3 alpha:(double *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)getHue:(double *)hue saturation:(double *)saturation brightness:(double *)brightness alpha:(double *)alpha;
+- (BOOL)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha;
+- (BOOL)getWhite:(double *)white alpha:(double *)alpha;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPatternColor;
 - (CGColor)CGColor;
 - (UITintColor)init;
 - (double)alphaComponent;
-- (id)_resolvedColorWithTraitCollection:(id)a3;
-- (id)_resolvedMaterialWithTraitCollection:(id)a3;
+- (id)_resolvedColorWithTraitCollection:(id)collection;
+- (id)_resolvedMaterialWithTraitCollection:(id)collection;
 - (id)colorSpaceName;
 - (unint64_t)hash;
 - (void)set;
@@ -119,15 +119,15 @@
   {
     v10.receiver = self;
     v10.super_class = UITintColor;
-    v7 = [(UIDynamicColor *)&v10 CGColor];
+    cGColor = [(UIDynamicColor *)&v10 CGColor];
   }
 
   else
   {
-    v7 = [(UITintColor *)v4 CGColor];
+    cGColor = [(UITintColor *)v4 CGColor];
   }
 
-  v8 = v7;
+  v8 = cGColor;
 
   return v8;
 }
@@ -160,9 +160,9 @@
   }
 }
 
-- (id)_resolvedColorWithTraitCollection:(id)a3
+- (id)_resolvedColorWithTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   if (pthread_main_np() == 1)
   {
     v6 = _UIGetCurrentFallbackView();
@@ -172,55 +172,55 @@
     }
   }
 
-  v7 = [v5 _tintColor];
-  v8 = v7;
-  if (!v7 || v7 == self)
+  _tintColor = [collectionCopy _tintColor];
+  v8 = _tintColor;
+  if (!_tintColor || _tintColor == self)
   {
-    if (v5)
+    if (collectionCopy)
     {
-      v10 = [v5 userInterfaceIdiom];
+      userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
     }
 
     else
     {
       v3 = +[UIDevice currentDevice];
-      v10 = [v3 userInterfaceIdiom];
+      userInterfaceIdiom = [v3 userInterfaceIdiom];
     }
 
-    v9 = [UIView _defaultInteractionTintColorForIdiom:v10];
+    v9 = [UIView _defaultInteractionTintColorForIdiom:userInterfaceIdiom];
 
-    if (!v5)
+    if (!collectionCopy)
     {
     }
   }
 
   else
   {
-    v9 = v7;
+    v9 = _tintColor;
   }
 
   return v9;
 }
 
-- (id)_resolvedMaterialWithTraitCollection:(id)a3
+- (id)_resolvedMaterialWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(UITintColor *)self _resolvedColorWithTraitCollection:v4];
-  v6 = [v5 _resolvedMaterialWithTraitCollection:v4];
+  collectionCopy = collection;
+  v5 = [(UITintColor *)self _resolvedColorWithTraitCollection:collectionCopy];
+  v6 = [v5 _resolvedMaterialWithTraitCollection:collectionCopy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -256,7 +256,7 @@
   }
 }
 
-- (BOOL)getWhite:(double *)a3 alpha:(double *)a4
+- (BOOL)getWhite:(double *)white alpha:(double *)alpha
 {
   v7 = +[UITraitCollection _currentTraitCollectionWithUnmarkedFallback];
   v8 = [(UITintColor *)self _resolvedColorWithTraitCollection:v7];
@@ -275,12 +275,12 @@
   {
     v14.receiver = self;
     v14.super_class = UITintColor;
-    v11 = [(UIDynamicColor *)&v14 getWhite:a3 alpha:a4];
+    v11 = [(UIDynamicColor *)&v14 getWhite:white alpha:alpha];
   }
 
   else
   {
-    v11 = [(UITintColor *)v8 getWhite:a3 alpha:a4];
+    v11 = [(UITintColor *)v8 getWhite:white alpha:alpha];
   }
 
   v12 = v11;
@@ -288,7 +288,7 @@
   return v12;
 }
 
-- (BOOL)getHue:(double *)a3 saturation:(double *)a4 brightness:(double *)a5 alpha:(double *)a6
+- (BOOL)getHue:(double *)hue saturation:(double *)saturation brightness:(double *)brightness alpha:(double *)alpha
 {
   v11 = +[UITraitCollection _currentTraitCollectionWithUnmarkedFallback];
   v12 = [(UITintColor *)self _resolvedColorWithTraitCollection:v11];
@@ -307,12 +307,12 @@
   {
     v18.receiver = self;
     v18.super_class = UITintColor;
-    v15 = [(UIDynamicColor *)&v18 getHue:a3 saturation:a4 brightness:a5 alpha:a6];
+    v15 = [(UIDynamicColor *)&v18 getHue:hue saturation:saturation brightness:brightness alpha:alpha];
   }
 
   else
   {
-    v15 = [(UITintColor *)v12 getHue:a3 saturation:a4 brightness:a5 alpha:a6];
+    v15 = [(UITintColor *)v12 getHue:hue saturation:saturation brightness:brightness alpha:alpha];
   }
 
   v16 = v15;
@@ -320,7 +320,7 @@
   return v16;
 }
 
-- (BOOL)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6
+- (BOOL)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha
 {
   v11 = +[UITraitCollection _currentTraitCollectionWithUnmarkedFallback];
   v12 = [(UITintColor *)self _resolvedColorWithTraitCollection:v11];
@@ -339,12 +339,12 @@
   {
     v18.receiver = self;
     v18.super_class = UITintColor;
-    v15 = [(UIDynamicColor *)&v18 getRed:a3 green:a4 blue:a5 alpha:a6];
+    v15 = [(UIDynamicColor *)&v18 getRed:red green:green blue:blue alpha:alpha];
   }
 
   else
   {
-    v15 = [(UITintColor *)v12 getRed:a3 green:a4 blue:a5 alpha:a6];
+    v15 = [(UITintColor *)v12 getRed:red green:green blue:blue alpha:alpha];
   }
 
   v16 = v15;
@@ -371,15 +371,15 @@
   {
     v10.receiver = self;
     v10.super_class = UITintColor;
-    v7 = [(UIDynamicColor *)&v10 isPatternColor];
+    isPatternColor = [(UIDynamicColor *)&v10 isPatternColor];
   }
 
   else
   {
-    v7 = [(UITintColor *)v4 isPatternColor];
+    isPatternColor = [(UITintColor *)v4 isPatternColor];
   }
 
-  v8 = v7;
+  v8 = isPatternColor;
 
   return v8;
 }
@@ -403,15 +403,15 @@
   {
     v10.receiver = self;
     v10.super_class = UITintColor;
-    v7 = [(UIDynamicColor *)&v10 _isDeepColor];
+    _isDeepColor = [(UIDynamicColor *)&v10 _isDeepColor];
   }
 
   else
   {
-    v7 = [(UITintColor *)v4 _isDeepColor];
+    _isDeepColor = [(UITintColor *)v4 _isDeepColor];
   }
 
-  v8 = v7;
+  v8 = _isDeepColor;
 
   return v8;
 }
@@ -435,15 +435,15 @@
   {
     v10.receiver = self;
     v10.super_class = UITintColor;
-    v7 = [(UIDynamicColor *)&v10 colorSpaceName];
+    colorSpaceName = [(UIDynamicColor *)&v10 colorSpaceName];
   }
 
   else
   {
-    v7 = [(UITintColor *)v4 colorSpaceName];
+    colorSpaceName = [(UITintColor *)v4 colorSpaceName];
   }
 
-  v8 = v7;
+  v8 = colorSpaceName;
 
   return v8;
 }

@@ -1,15 +1,15 @@
 @interface CRBeganEditingCommand
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)commandDirection;
 @end
 
 @implementation CRBeganEditingCommand
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(CRBeganEditingCommand);
-  v6 = [(CRBeganEditingCommand *)self userInfo];
-  v7 = [v6 copyWithZone:a3];
+  userInfo = [(CRBeganEditingCommand *)self userInfo];
+  v7 = [userInfo copyWithZone:zone];
   [(CRBeganEditingCommand *)v5 setUserInfo:v7];
 
   [(CRBeganEditingCommand *)v5 setCommandDirection:[(CRBeganEditingCommand *)self commandDirection]];

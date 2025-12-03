@@ -1,22 +1,22 @@
 @interface NTKProtoPigment
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFromStore:(BOOL)a3;
-- (void)setHasIsAddable:(BOOL)a3;
-- (void)setHasSupportsSlider:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFromStore:(BOOL)store;
+- (void)setHasIsAddable:(BOOL)addable;
+- (void)setHasSupportsSlider:(BOOL)slider;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NTKProtoPigment
 
-- (void)setHasIsAddable:(BOOL)a3
+- (void)setHasIsAddable:(BOOL)addable
 {
-  if (a3)
+  if (addable)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSupportsSlider:(BOOL)a3
+- (void)setHasSupportsSlider:(BOOL)slider
 {
-  if (a3)
+  if (slider)
   {
     v3 = 8;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasFromStore:(BOOL)a3
+- (void)setHasFromStore:(BOOL)store
 {
-  if (a3)
+  if (store)
   {
     v3 = 2;
   }
@@ -65,20 +65,20 @@
   v8.receiver = self;
   v8.super_class = NTKProtoPigment;
   v4 = [(NTKProtoPigment *)&v8 description];
-  v5 = [(NTKProtoPigment *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NTKProtoPigment *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v5 = dictionary;
   optionName = self->_optionName;
   if (optionName)
   {
-    [v3 setObject:optionName forKey:@"optionName"];
+    [dictionary setObject:optionName forKey:@"optionName"];
   }
 
   collectionName = self->_collectionName;
@@ -144,27 +144,27 @@ LABEL_9:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_optionName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_collectionName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -184,55 +184,55 @@ LABEL_7:
   }
 
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_9:
   if (self->_alternativeLocalizedStringTableName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundlePrincipalClassName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_optionName)
   {
-    [v4 setOptionName:?];
-    v4 = v6;
+    [toCopy setOptionName:?];
+    toCopy = v6;
   }
 
   if (self->_collectionName)
   {
     [v6 setCollectionName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 8) = LODWORD(self->_colorFraction);
-    *(v4 + 52) |= 1u;
+    *(toCopy + 8) = LODWORD(self->_colorFraction);
+    *(toCopy + 52) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -251,43 +251,43 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 49) = self->_isAddable;
-  *(v4 + 52) |= 4u;
+  *(toCopy + 49) = self->_isAddable;
+  *(toCopy + 52) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
-    *(v4 + 50) = self->_supportsSlider;
-    *(v4 + 52) |= 8u;
+    *(toCopy + 50) = self->_supportsSlider;
+    *(toCopy + 52) |= 8u;
   }
 
 LABEL_9:
   if (self->_alternativeLocalizedStringTableName)
   {
     [v6 setAlternativeLocalizedStringTableName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundlePrincipalClassName)
   {
     [v6 setBundlePrincipalClassName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 48) = self->_fromStore;
-    *(v4 + 52) |= 2u;
+    *(toCopy + 48) = self->_fromStore;
+    *(toCopy + 52) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_optionName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_optionName copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_collectionName copyWithZone:a3];
+  v8 = [(NSString *)self->_collectionName copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -324,11 +324,11 @@ LABEL_4:
   }
 
 LABEL_5:
-  v11 = [(NSString *)self->_alternativeLocalizedStringTableName copyWithZone:a3];
+  v11 = [(NSString *)self->_alternativeLocalizedStringTableName copyWithZone:zone];
   v12 = *(v5 + 8);
   *(v5 + 8) = v11;
 
-  v13 = [(NSString *)self->_bundlePrincipalClassName copyWithZone:a3];
+  v13 = [(NSString *)self->_bundlePrincipalClassName copyWithZone:zone];
   v14 = *(v5 + 16);
   *(v5 + 16) = v13;
 
@@ -341,16 +341,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   optionName = self->_optionName;
-  if (optionName | *(v4 + 5))
+  if (optionName | *(equalCopy + 5))
   {
     if (![(NSString *)optionName isEqual:?])
     {
@@ -359,7 +359,7 @@ LABEL_5:
   }
 
   collectionName = self->_collectionName;
-  if (collectionName | *(v4 + 3))
+  if (collectionName | *(equalCopy + 3))
   {
     if (![(NSString *)collectionName isEqual:?])
     {
@@ -369,77 +369,77 @@ LABEL_5:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_colorFraction != *(v4 + 8))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_colorFraction != *(equalCopy + 8))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0)
+    if ((*(equalCopy + 52) & 4) == 0)
     {
       goto LABEL_35;
     }
 
     if (self->_isAddable)
     {
-      if ((*(v4 + 49) & 1) == 0)
+      if ((*(equalCopy + 49) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 49))
+    else if (*(equalCopy + 49))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0)
+    if ((*(equalCopy + 52) & 8) == 0)
     {
       goto LABEL_35;
     }
 
     if (self->_supportsSlider)
     {
-      if ((*(v4 + 50) & 1) == 0)
+      if ((*(equalCopy + 50) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 50))
+    else if (*(equalCopy + 50))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_35;
   }
 
   alternativeLocalizedStringTableName = self->_alternativeLocalizedStringTableName;
-  if (alternativeLocalizedStringTableName | *(v4 + 1) && ![(NSString *)alternativeLocalizedStringTableName isEqual:?])
+  if (alternativeLocalizedStringTableName | *(equalCopy + 1) && ![(NSString *)alternativeLocalizedStringTableName isEqual:?])
   {
     goto LABEL_35;
   }
 
   bundlePrincipalClassName = self->_bundlePrincipalClassName;
-  if (bundlePrincipalClassName | *(v4 + 2))
+  if (bundlePrincipalClassName | *(equalCopy + 2))
   {
     if (![(NSString *)bundlePrincipalClassName isEqual:?])
     {
@@ -447,20 +447,20 @@ LABEL_5:
     }
   }
 
-  v9 = (*(v4 + 52) & 2) == 0;
+  v9 = (*(equalCopy + 52) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) != 0)
+    if ((*(equalCopy + 52) & 2) != 0)
     {
       if (self->_fromStore)
       {
-        if (*(v4 + 48))
+        if (*(equalCopy + 48))
         {
           goto LABEL_38;
         }
       }
 
-      else if (!*(v4 + 48))
+      else if (!*(equalCopy + 48))
       {
 LABEL_38:
         v9 = 1;
@@ -551,28 +551,28 @@ LABEL_14:
   return v4 ^ v3 ^ v7 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(NTKProtoPigment *)self setOptionName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NTKProtoPigment *)self setCollectionName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if (v5)
   {
-    self->_colorFraction = *(v4 + 8);
+    self->_colorFraction = *(fromCopy + 8);
     *&self->_has |= 1u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
     if ((v5 & 4) == 0)
     {
 LABEL_7:
@@ -585,36 +585,36 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 52) & 4) == 0)
+  else if ((*(fromCopy + 52) & 4) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_isAddable = *(v4 + 49);
+  self->_isAddable = *(fromCopy + 49);
   *&self->_has |= 4u;
-  if ((*(v4 + 52) & 8) != 0)
+  if ((*(fromCopy + 52) & 8) != 0)
   {
 LABEL_8:
-    self->_supportsSlider = *(v4 + 50);
+    self->_supportsSlider = *(fromCopy + 50);
     *&self->_has |= 8u;
   }
 
 LABEL_9:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NTKProtoPigment *)self setAlternativeLocalizedStringTableName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NTKProtoPigment *)self setBundlePrincipalClassName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 52) & 2) != 0)
+  if ((*(fromCopy + 52) & 2) != 0)
   {
-    self->_fromStore = *(v4 + 48);
+    self->_fromStore = *(fromCopy + 48);
     *&self->_has |= 2u;
   }
 }

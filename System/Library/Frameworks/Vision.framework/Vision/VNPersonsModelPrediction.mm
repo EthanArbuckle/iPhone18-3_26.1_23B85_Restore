@@ -1,10 +1,10 @@
 @interface VNPersonsModelPrediction
-- (BOOL)isEqual:(id)a3;
-- (VNPersonsModelPrediction)initWithCoder:(id)a3;
-- (VNPersonsModelPrediction)initWithFaceObservation:(id)a3 predictedPersonUniqueIdentifier:(id)a4 confidence:(float)a5;
+- (BOOL)isEqual:(id)equal;
+- (VNPersonsModelPrediction)initWithCoder:(id)coder;
+- (VNPersonsModelPrediction)initWithFaceObservation:(id)observation predictedPersonUniqueIdentifier:(id)identifier confidence:(float)confidence;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNPersonsModelPrediction
@@ -14,9 +14,9 @@
   v8.receiver = self;
   v8.super_class = VNPersonsModelPrediction;
   v3 = [(VNPersonsModelPrediction *)&v8 description];
-  v4 = [(VNPersonsModelPrediction *)self predictedPersonUniqueIdentifier];
+  predictedPersonUniqueIdentifier = [(VNPersonsModelPrediction *)self predictedPersonUniqueIdentifier];
   [(VNPersonsModelPrediction *)self confidence];
-  v6 = [v3 stringByAppendingFormat:@" '%@' confidence %f", v4, v5];
+  v6 = [v3 stringByAppendingFormat:@" '%@' confidence %f", predictedPersonUniqueIdentifier, v5];
 
   return v6;
 }
@@ -34,10 +34,10 @@
   return v5 ^ __ROR8__(v3, 51);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -47,15 +47,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(VNPersonsModelPrediction *)self confidence];
       v7 = v6;
       [(VNPersonsModelPrediction *)v5 confidence];
       if (v7 == v8 && (-[VNPersonsModelPrediction predictedPersonUniqueIdentifier](self, "predictedPersonUniqueIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), -[VNPersonsModelPrediction predictedPersonUniqueIdentifier](v5, "predictedPersonUniqueIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v9 isEqual:v10], v10, v9, (v11 & 1) != 0))
       {
-        v12 = [(VNPersonsModelPrediction *)self faceObservation];
-        v13 = [(VNPersonsModelPrediction *)v5 faceObservation];
-        v14 = [v12 isEqual:v13];
+        faceObservation = [(VNPersonsModelPrediction *)self faceObservation];
+        faceObservation2 = [(VNPersonsModelPrediction *)v5 faceObservation];
+        v14 = [faceObservation isEqual:faceObservation2];
       }
 
       else
@@ -73,56 +73,56 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_faceObservation forKey:@"face"];
-  [v5 vn_encodePersonUniqueIdentifier:self->_predictedPersonUniqueIdentifier forKey:@"personUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_faceObservation forKey:@"face"];
+  [coderCopy vn_encodePersonUniqueIdentifier:self->_predictedPersonUniqueIdentifier forKey:@"personUID"];
   *&v4 = self->_confidence;
-  [v5 encodeFloat:@"confidence" forKey:v4];
+  [coderCopy encodeFloat:@"confidence" forKey:v4];
 }
 
-- (VNPersonsModelPrediction)initWithCoder:(id)a3
+- (VNPersonsModelPrediction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 vn_decodePersonUniqueIdentifierForKey:@"personUID"];
+  coderCopy = coder;
+  v5 = [coderCopy vn_decodePersonUniqueIdentifierForKey:@"personUID"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"face"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"face"];
     if (v6)
     {
-      [v4 decodeFloatForKey:@"confidence"];
+      [coderCopy decodeFloatForKey:@"confidence"];
       self = [(VNPersonsModelPrediction *)self initWithFaceObservation:v6 predictedPersonUniqueIdentifier:v5 confidence:?];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (VNPersonsModelPrediction)initWithFaceObservation:(id)a3 predictedPersonUniqueIdentifier:(id)a4 confidence:(float)a5
+- (VNPersonsModelPrediction)initWithFaceObservation:(id)observation predictedPersonUniqueIdentifier:(id)identifier confidence:(float)confidence
 {
-  v9 = a3;
-  v10 = a4;
+  observationCopy = observation;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = VNPersonsModelPrediction;
   v11 = [(VNPersonsModelPrediction *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_faceObservation, a3);
-    objc_storeStrong(&v12->_predictedPersonUniqueIdentifier, a4);
-    v12->_confidence = a5;
+    objc_storeStrong(&v11->_faceObservation, observation);
+    objc_storeStrong(&v12->_predictedPersonUniqueIdentifier, identifier);
+    v12->_confidence = confidence;
     v13 = v12;
   }
 

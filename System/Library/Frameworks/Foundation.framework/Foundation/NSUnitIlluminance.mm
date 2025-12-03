@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (NSUnitIlluminance == a1)
+  if (NSUnitIlluminance == self)
   {
     objc_opt_class();
   }

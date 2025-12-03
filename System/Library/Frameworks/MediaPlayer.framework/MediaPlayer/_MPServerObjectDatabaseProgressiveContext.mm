@@ -1,36 +1,36 @@
 @interface _MPServerObjectDatabaseProgressiveContext
 - (BOOL)isInvalid;
 - (id)onInvalidate;
-- (void)_createdObjectForIdentifiers:(uint64_t)a1;
-- (void)database:(id)a3 didFinishImportRequest:(id)a4 result:(id)a5;
+- (void)_createdObjectForIdentifiers:(uint64_t)identifiers;
+- (void)database:(id)database didFinishImportRequest:(id)request result:(id)result;
 - (void)dealloc;
-- (void)setOnInvalidate:(id)a3;
+- (void)setOnInvalidate:(id)invalidate;
 @end
 
 @implementation _MPServerObjectDatabaseProgressiveContext
 
-- (void)_createdObjectForIdentifiers:(uint64_t)a1
+- (void)_createdObjectForIdentifiers:(uint64_t)identifiers
 {
   v3 = a2;
-  if (a1)
+  if (identifiers)
   {
     os_unfair_lock_lock_with_options();
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __74___MPServerObjectDatabaseProgressiveContext__createdObjectForIdentifiers___block_invoke;
     aBlock[3] = &unk_1E7682518;
-    aBlock[4] = a1;
+    aBlock[4] = identifiers;
     v4 = _Block_copy(aBlock);
-    [*(a1 + 8) addObject:v3];
+    [*(identifiers + 8) addObject:v3];
     v4[2](v4);
   }
 }
 
-- (void)database:(id)a3 didFinishImportRequest:(id)a4 result:(id)a5
+- (void)database:(id)database didFinishImportRequest:(id)request result:(id)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  databaseCopy = database;
+  requestCopy = request;
+  resultCopy = result;
   os_unfair_lock_lock_with_options();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -44,8 +44,8 @@
   if (!invalid)
   {
     v13 = MEMORY[0x1E695DFD8];
-    v14 = [v10 importedIdentifiers];
-    v15 = [v13 setWithArray:v14];
+    importedIdentifiers = [resultCopy importedIdentifiers];
+    v15 = [v13 setWithArray:importedIdentifiers];
 
     os_unfair_lock_lock_with_options();
     v21[0] = MEMORY[0x1E69E9820];
@@ -102,9 +102,9 @@
   return self;
 }
 
-- (void)setOnInvalidate:(id)a3
+- (void)setOnInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   os_unfair_lock_lock_with_options();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -114,12 +114,12 @@
   v5 = _Block_copy(aBlock);
   if (self->_invalid)
   {
-    v4[2](v4);
+    invalidateCopy[2](invalidateCopy);
   }
 
   else
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(invalidateCopy);
     onInvalidate = self->_onInvalidate;
     self->_onInvalidate = v6;
   }

@@ -4,10 +4,10 @@
 - (NSError)error;
 - (NSString)hostname;
 - (NSString)name;
-- (id)createConnectionWithUserInfo:(id)a3;
+- (id)createConnectionWithUserInfo:(id)info;
 - (int64_t)port;
-- (void)resetWithError:(id)a3;
-- (void)setShouldUseSystemAuthenticationPrompt:(BOOL)a3;
+- (void)resetWithError:(id)error;
+- (void)setShouldUseSystemAuthenticationPrompt:(BOOL)prompt;
 @end
 
 @implementation MRExternalDeviceTransport
@@ -67,7 +67,7 @@
   objc_exception_throw(v5);
 }
 
-- (void)setShouldUseSystemAuthenticationPrompt:(BOOL)a3
+- (void)setShouldUseSystemAuthenticationPrompt:(BOOL)prompt
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -89,9 +89,9 @@
   objc_exception_throw(v5);
 }
 
-- (id)createConnectionWithUserInfo:(id)a3
+- (id)createConnectionWithUserInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDeviceTransport createConnectionWithUserInfo:]"];
@@ -101,9 +101,9 @@
   objc_exception_throw(v7);
 }
 
-- (void)resetWithError:(id)a3
+- (void)resetWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDeviceTransport resetWithError:]"];

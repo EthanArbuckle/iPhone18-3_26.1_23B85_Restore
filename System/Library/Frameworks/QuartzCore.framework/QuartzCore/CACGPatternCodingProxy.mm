@@ -1,8 +1,8 @@
 @interface CACGPatternCodingProxy
-- (CACGPatternCodingProxy)initWithCoder:(id)a3;
-- (CACGPatternCodingProxy)initWithObject:(id)a3;
+- (CACGPatternCodingProxy)initWithCoder:(id)coder;
+- (CACGPatternCodingProxy)initWithObject:(id)object;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CACGPatternCodingProxy
@@ -16,7 +16,7 @@
   [(CACGPatternCodingProxy *)&v3 dealloc];
 }
 
-- (CACGPatternCodingProxy)initWithCoder:(id)a3
+- (CACGPatternCodingProxy)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
   memset(&v20, 0, sizeof(v20));
@@ -25,9 +25,9 @@
   v17.receiver = self;
   v17.super_class = CACGPatternCodingProxy;
   v4 = [(CACGPatternCodingProxy *)&v17 init];
-  if (v4 && [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"CGPatternType", "isEqualToString:", @"tiling"}])
+  if (v4 && [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"CGPatternType", "isEqualToString:", @"tiling"}])
   {
-    if (([a3 CA_decodeCGFloatArray:&v20 count:6 forKey:@"CGPatternMatrix"] & 1) == 0)
+    if (([coder CA_decodeCGFloatArray:&v20 count:6 forKey:@"CGPatternMatrix"] & 1) == 0)
     {
       v5 = *(MEMORY[0x1E695EFD0] + 16);
       *&v20.a = *MEMORY[0x1E695EFD0];
@@ -35,21 +35,21 @@
       *&v20.tx = *(MEMORY[0x1E695EFD0] + 32);
     }
 
-    if (([a3 CA_decodeCGFloatArray:&v19 count:4 forKey:@"CGPatternBounds"] & 1) == 0)
+    if (([coder CA_decodeCGFloatArray:&v19 count:4 forKey:@"CGPatternBounds"] & 1) == 0)
     {
       v6 = *(MEMORY[0x1E695F050] + 16);
       v19.origin = *MEMORY[0x1E695F050];
       v19.size = v6;
     }
 
-    if (([a3 CA_decodeCGFloatArray:&v18 count:2 forKey:@"CGPatternStep"] & 1) == 0)
+    if (([coder CA_decodeCGFloatArray:&v18 count:2 forKey:@"CGPatternStep"] & 1) == 0)
     {
       v18 = *MEMORY[0x1E695F060];
     }
 
-    v7 = [a3 decodeIntForKey:@"CGPatternTiling"];
-    v8 = [a3 decodeIntForKey:@"CGPatternColored"];
-    v9 = [a3 CA_decodeObjectForKey:@"CGPatternImage"];
+    v7 = [coder decodeIntForKey:@"CGPatternTiling"];
+    v8 = [coder decodeIntForKey:@"CGPatternColored"];
+    v9 = [coder CA_decodeObjectForKey:@"CGPatternImage"];
     if (v9)
     {
       v10 = v9;
@@ -79,27 +79,27 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v26 = *MEMORY[0x1E69E9840];
   if (!CGPatternGetType())
   {
     memset(v25, 0, sizeof(v25));
-    [a3 encodeObject:@"tiling" forKey:@"CGPatternType"];
+    [coder encodeObject:@"tiling" forKey:@"CGPatternType"];
     CGPatternGetMatrix();
-    [a3 CA_encodeCGFloatArray:v25 count:6 forKey:@"CGPatternMatrix"];
+    [coder CA_encodeCGFloatArray:v25 count:6 forKey:@"CGPatternMatrix"];
     CGPatternGetBounds();
     v24[0] = v5;
     v24[1] = v6;
     v24[2] = v7;
     v24[3] = v8;
-    [a3 CA_encodeCGFloatArray:v24 count:4 forKey:@"CGPatternBounds"];
+    [coder CA_encodeCGFloatArray:v24 count:4 forKey:@"CGPatternBounds"];
     CGPatternGetStep();
     v23[0] = v9;
     v23[1] = v10;
-    [a3 CA_encodeCGFloatArray:v23 count:2 forKey:@"CGPatternStep"];
-    [a3 encodeInt:CGPatternGetTiling() forKey:@"CGPatternTiling"];
-    [a3 encodeInt:CGPatternIsColored() forKey:@"CGPatternColored"];
+    [coder CA_encodeCGFloatArray:v23 count:2 forKey:@"CGPatternStep"];
+    [coder encodeInt:CGPatternGetTiling() forKey:@"CGPatternTiling"];
+    [coder encodeInt:CGPatternIsColored() forKey:@"CGPatternColored"];
     Image = CGPatternGetImage();
     if (Image)
     {
@@ -115,7 +115,7 @@
     if (!pattern_image)
     {
 LABEL_3:
-      [a3 CA_encodeObject:Image forKey:@"CGPatternImage" conditional:0];
+      [coder CA_encodeObject:Image forKey:@"CGPatternImage" conditional:0];
     }
 
     else
@@ -127,13 +127,13 @@ LABEL_3:
         (*(*v20 + 16))(v20);
       }
 
-      [a3 CA_encodeObject:v21 forKey:@"CGPatternImage" conditional:0];
+      [coder CA_encodeObject:v21 forKey:@"CGPatternImage" conditional:0];
       CGImageRelease(v21);
     }
   }
 }
 
-- (CACGPatternCodingProxy)initWithObject:(id)a3
+- (CACGPatternCodingProxy)initWithObject:(id)object
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -141,7 +141,7 @@ LABEL_3:
   v4 = [(CACGPatternCodingProxy *)&v6 init];
   if (v4)
   {
-    v4->_pattern = CGPatternRetain(a3);
+    v4->_pattern = CGPatternRetain(object);
   }
 
   return v4;

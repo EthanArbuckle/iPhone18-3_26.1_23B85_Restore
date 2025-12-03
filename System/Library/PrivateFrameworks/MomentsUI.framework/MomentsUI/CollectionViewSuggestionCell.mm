@@ -1,10 +1,10 @@
 @interface CollectionViewSuggestionCell
-- (_TtC9MomentsUI28CollectionViewSuggestionCell)initWithCoder:(id)a3;
+- (_TtC9MomentsUI28CollectionViewSuggestionCell)initWithCoder:(id)coder;
 @end
 
 @implementation CollectionViewSuggestionCell
 
-- (_TtC9MomentsUI28CollectionViewSuggestionCell)initWithCoder:(id)a3
+- (_TtC9MomentsUI28CollectionViewSuggestionCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI28CollectionViewSuggestionCell_titleLabel;
   *(&self->super.super.super.super.super.isa + v4) = closure #1 in variable initialization expression of CollectionViewSuggestionCell.titleLabel(&selRef_labelColor, specialized static CommonTheme.Font.footnoteEmphShortFont());

@@ -2,13 +2,13 @@
 - (id)compact;
 - (id)description;
 - (id)protectedArray;
-- (id)putWithChar:(unsigned __int16)a3;
-- (id)putWithInt:(int)a3 withChar:(unsigned __int16)a4;
+- (id)putWithChar:(unsigned __int16)char;
+- (id)putWithInt:(int)int withChar:(unsigned __int16)char;
 - (id)slice;
-- (id)subSequenceFrom:(int)a3 to:(int)a4;
+- (id)subSequenceFrom:(int)from to:(int)to;
 - (int)protectedArrayOffset;
 - (unsigned)get;
-- (unsigned)getWithInt:(int)a3;
+- (unsigned)getWithInt:(int)int;
 - (void)dealloc;
 @end
 
@@ -85,7 +85,7 @@
   return *(&backingArray->super.size_ + v6 + 2);
 }
 
-- (unsigned)getWithInt:(int)a3
+- (unsigned)getWithInt:(int)int
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   backingArray = self->backingArray_;
@@ -95,7 +95,7 @@
   }
 
   size = backingArray->super.size_;
-  v7 = (self->arrayOffset_ + a3);
+  v7 = (self->arrayOffset_ + int);
   if (v7 < 0 || v7 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v7);
@@ -104,22 +104,22 @@
   return *(&backingArray->super.size_ + v7 + 2);
 }
 
-- (id)subSequenceFrom:(int)a3 to:(int)a4
+- (id)subSequenceFrom:(int)from to:(int)to
 {
   [JavaNioBuffer checkStartEndRemainingWithInt:"checkStartEndRemainingWithInt:withInt:" withInt:?];
-  v7 = [(JavaNioCharArrayBuffer *)self duplicate];
-  if (!v7)
+  duplicate = [(JavaNioCharArrayBuffer *)self duplicate];
+  if (!duplicate)
   {
     JreThrowNullPointerException();
   }
 
-  v8 = v7;
-  [v7 limitWithInt:(self->super.super.position_ + a4)];
-  [v8 positionWithInt:(self->super.super.position_ + a3)];
+  v8 = duplicate;
+  [duplicate limitWithInt:(self->super.super.position_ + to)];
+  [v8 positionWithInt:(self->super.super.position_ + from)];
   return v8;
 }
 
-- (id)putWithChar:(unsigned __int16)a3
+- (id)putWithChar:(unsigned __int16)char
 {
   if (self->isReadOnly_)
   {
@@ -150,11 +150,11 @@ LABEL_11:
     IOSArray_throwOutOfBoundsWithMsg(size, (arrayOffset + position));
   }
 
-  *(&backingArray->super.size_ + v8 + 2) = a3;
+  *(&backingArray->super.size_ + v8 + 2) = char;
   return self;
 }
 
-- (id)putWithInt:(int)a3 withChar:(unsigned __int16)a4
+- (id)putWithInt:(int)int withChar:(unsigned __int16)char
 {
   if (self->isReadOnly_)
   {
@@ -170,13 +170,13 @@ LABEL_11:
   }
 
   size = backingArray->super.size_;
-  v9 = (self->arrayOffset_ + a3);
+  v9 = (self->arrayOffset_ + int);
   if (v9 < 0 || v9 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v9);
   }
 
-  *(&backingArray->super.size_ + v9 + 2) = a4;
+  *(&backingArray->super.size_ + v9 + 2) = char;
   return self;
 }
 
@@ -185,9 +185,9 @@ LABEL_11:
   backingArray = self->backingArray_;
   arrayOffset = self->arrayOffset_;
   position = self->super.super.position_;
-  v5 = [(JavaNioBuffer *)self remaining];
+  remaining = [(JavaNioBuffer *)self remaining];
 
-  return NSString_valueOfChars_offset_count_(backingArray, (position + arrayOffset), v5);
+  return NSString_valueOfChars_offset_count_(backingArray, (position + arrayOffset), remaining);
 }
 
 - (void)dealloc

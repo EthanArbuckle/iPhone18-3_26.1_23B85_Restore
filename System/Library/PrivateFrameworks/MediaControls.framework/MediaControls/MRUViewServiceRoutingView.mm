@@ -1,25 +1,25 @@
 @interface MRUViewServiceRoutingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUViewServiceRoutingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUViewServiceRoutingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAlertView:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setFooterVisible:(BOOL)a3;
-- (void)setShowAlertView:(BOOL)a3;
-- (void)setState:(int64_t)a3;
-- (void)setStylingProvider:(id)a3;
+- (void)setAlertView:(id)view;
+- (void)setContentView:(id)view;
+- (void)setCornerRadius:(double)radius;
+- (void)setFooterVisible:(BOOL)visible;
+- (void)setShowAlertView:(BOOL)view;
+- (void)setState:(int64_t)state;
+- (void)setStylingProvider:(id)provider;
 - (void)updateVisibility;
 @end
 
 @implementation MRUViewServiceRoutingView
 
-- (MRUViewServiceRoutingView)initWithFrame:(CGRect)a3
+- (MRUViewServiceRoutingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v22.receiver = self;
   v22.super_class = MRUViewServiceRoutingView;
   v7 = [(MRUViewServiceRoutingView *)&v22 initWithFrame:?];
@@ -46,8 +46,8 @@
 
     [(UITableView *)v7->_tableView setSeparatorStyle:0];
     [(UITableView *)v7->_tableView setAlwaysBounceVertical:1];
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITableView *)v7->_tableView setBackgroundColor:v19];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITableView *)v7->_tableView setBackgroundColor:clearColor];
 
     [(UITableView *)v7->_tableView setEstimatedRowHeight:108.0];
     [(UITableView *)v7->_tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
@@ -129,15 +129,15 @@
   [(UIView *)self->_contentView setFrame:v21, v23, v25, v27];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = MRUDefaultExpandedWidth(self);
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v8 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     preferredWidth = self->_preferredWidth;
     if (v6 >= preferredWidth)
@@ -209,85 +209,85 @@
   return result;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(MRUViewServiceRoutingView *)self addSubview:v7];
     contentView = [(MRUViewServiceRoutingView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](contentView, v5);
+  MEMORY[0x1EEE66BB8](contentView, viewCopy);
 }
 
-- (void)setAlertView:(id)a3
+- (void)setAlertView:(id)view
 {
-  v5 = a3;
-  if (self->_alertView != v5)
+  viewCopy = view;
+  if (self->_alertView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_alertView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_alertView, view);
     [(MRUViewServiceRoutingView *)self addSubview:self->_alertView];
     [(MRUViewServiceRoutingView *)self setNeedsLayout];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUViewServiceRoutingHeaderView *)self->_headerView setStylingProvider:v6];
     [(MRUViewServiceRoutingFooterView *)self->_footerView setStylingProvider:v6];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(MRUViewServiceRoutingView *)self updateVisibility];
 
     [(MRUViewServiceRoutingView *)self setNeedsLayout];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  self->_cornerRadius = a3;
+  self->_cornerRadius = radius;
   [(MRUViewServiceRoutingView *)self _setContinuousCornerRadius:?];
   tableView = self->_tableView;
 
-  [(UITableView *)tableView setScrollIndicatorInsets:0.0, 0.0, a3, 0.0];
+  [(UITableView *)tableView setScrollIndicatorInsets:0.0, 0.0, radius, 0.0];
 }
 
-- (void)setFooterVisible:(BOOL)a3
+- (void)setFooterVisible:(BOOL)visible
 {
-  if (self->_footerVisible != a3)
+  if (self->_footerVisible != visible)
   {
-    self->_footerVisible = a3;
+    self->_footerVisible = visible;
     [(MRUViewServiceRoutingView *)self updateVisibility];
 
     [(MRUViewServiceRoutingView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowAlertView:(BOOL)a3
+- (void)setShowAlertView:(BOOL)view
 {
-  if (self->_showAlertView != a3)
+  if (self->_showAlertView != view)
   {
-    self->_showAlertView = a3;
+    self->_showAlertView = view;
     [(MRUViewServiceRoutingView *)self updateVisibility];
 
     [(MRUViewServiceRoutingView *)self setNeedsLayout];

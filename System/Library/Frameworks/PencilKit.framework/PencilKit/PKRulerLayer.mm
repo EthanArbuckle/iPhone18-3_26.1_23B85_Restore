@@ -1,44 +1,44 @@
 @interface PKRulerLayer
 - (BOOL)compactRuler;
-- (BOOL)viewPointInRuler:(CGPoint)a3;
+- (BOOL)viewPointInRuler:(CGPoint)ruler;
 - (CGAffineTransform)previousRulerTransform;
 - (CGAffineTransform)rulerTransform;
 - (CGAffineTransform)rulerZoomStartTransform;
-- (CGPoint)getRulerCenterLineOriginAndTangent:(CGPoint *)a3;
+- (CGPoint)getRulerCenterLineOriginAndTangent:(CGPoint *)tangent;
 - (PKRulerController)rulerController;
-- (PKRulerLayer)initWithRulerController:(id)a3;
+- (PKRulerLayer)initWithRulerController:(id)controller;
 - (double)_distanceMarkerFontSize;
-- (double)_fontSizeForRulerTextHUD:(id)a3;
+- (double)_fontSizeForRulerTextHUD:(id)d;
 - (double)rulerWidth;
 - (id)_rulerImage;
-- (id)_textForRulerHUD:(double)a3;
-- (id)addOpacityAnimationOnLayer:(id)a3 delegate:(id)a4 toOpacity:(double)a5;
-- (id)addScaleAnimationOnLayer:(id)a3 delegate:(id)a4 fromScale:(double)a5 toScale:(double)a6;
+- (id)_textForRulerHUD:(double)d;
+- (id)addOpacityAnimationOnLayer:(id)layer delegate:(id)delegate toOpacity:(double)opacity;
+- (id)addScaleAnimationOnLayer:(id)layer delegate:(id)delegate fromScale:(double)scale toScale:(double)toScale;
 - (id)rulerDialImage;
 - (id)rulerDialLevelImage;
 - (int64_t)currentAngle;
 - (int64_t)userAngle;
-- (void)addScaleAndOpacityAnimationOnLayer:(id)a3 delegate:(id)a4 fromScale:(double)a5 toScale:(double)a6 fromAlpha:(double)a7 toAlpha:(double)a8;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)addScaleAndOpacityAnimationOnLayer:(id)layer delegate:(id)delegate fromScale:(double)scale toScale:(double)toScale fromAlpha:(double)alpha toAlpha:(double)toAlpha;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)hideRulerAngleMarker;
-- (void)hideRulerAnimated:(BOOL)a3;
+- (void)hideRulerAnimated:(BOOL)animated;
 - (void)removeRulerMarkers;
-- (void)setPreviousRulerTransform:(CGAffineTransform *)a3;
-- (void)setRulerTransform:(CGAffineTransform *)a3;
-- (void)setRulerZoomStartTransform:(CGAffineTransform *)a3;
+- (void)setPreviousRulerTransform:(CGAffineTransform *)transform;
+- (void)setRulerTransform:(CGAffineTransform *)transform;
+- (void)setRulerZoomStartTransform:(CGAffineTransform *)transform;
 - (void)showRuler;
-- (void)updateAngleWithAngleMarkerPosition:(CGPoint)a3;
-- (void)updateDistanceMarkerWithSpacing:(double)a3;
-- (void)updateRulerAlpha:(double)a3;
-- (void)updateRulerMarkerForLocation:(CGPoint)a3 firstTouch:(BOOL)a4;
+- (void)updateAngleWithAngleMarkerPosition:(CGPoint)position;
+- (void)updateDistanceMarkerWithSpacing:(double)spacing;
+- (void)updateRulerAlpha:(double)alpha;
+- (void)updateRulerMarkerForLocation:(CGPoint)location firstTouch:(BOOL)touch;
 - (void)updateRulerTickMarkImage;
 @end
 
 @implementation PKRulerLayer
 
-- (PKRulerLayer)initWithRulerController:(id)a3
+- (PKRulerLayer)initWithRulerController:(id)controller
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, controller);
   v7.receiver = self;
   v7.super_class = PKRulerLayer;
   v4 = [(PKRulerLayer *)&v7 init];
@@ -54,8 +54,8 @@
 
 - (BOOL)compactRuler
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 0;
 
   return v3;
 }
@@ -125,63 +125,63 @@
 
 - (double)rulerWidth
 {
-  v2 = [(PKRulerLayer *)self _rulerImage];
-  [v2 size];
+  _rulerImage = [(PKRulerLayer *)self _rulerImage];
+  [_rulerImage size];
   v4 = v3;
 
   return v4;
 }
 
-- (void)updateRulerAlpha:(double)a3
+- (void)updateRulerAlpha:(double)alpha
 {
-  v14 = [(PKRulerLayer *)self rulerLayer];
-  [v14 opacity];
+  rulerLayer = [(PKRulerLayer *)self rulerLayer];
+  [rulerLayer opacity];
   v6 = v5;
 
-  if (v6 != a3)
+  if (v6 != alpha)
   {
-    v7 = a3;
-    v15 = [(PKRulerLayer *)self rulerLayer];
-    *&v8 = v7;
-    [v15 setOpacity:v8];
+    alphaCopy = alpha;
+    rulerLayer2 = [(PKRulerLayer *)self rulerLayer];
+    *&v8 = alphaCopy;
+    [rulerLayer2 setOpacity:v8];
 
-    v9 = [(PKRulerLayer *)self rulerController];
-    if (v9)
+    rulerController = [(PKRulerLayer *)self rulerController];
+    if (rulerController)
     {
-      v10 = v9[18];
+      v10 = rulerController[18];
 
       if (v10 != 1)
       {
         return;
       }
 
-      v16 = [(PKRulerLayer *)self rulerAngleMarker];
-      *&v11 = v7;
-      [v16 setOpacity:v11];
+      rulerAngleMarker = [(PKRulerLayer *)self rulerAngleMarker];
+      *&v11 = alphaCopy;
+      [rulerAngleMarker setOpacity:v11];
 
-      v17 = [(PKRulerLayer *)self rulerAngleTick];
-      *&v12 = v7;
-      [v17 setOpacity:v12];
+      rulerAngleTick = [(PKRulerLayer *)self rulerAngleTick];
+      *&v12 = alphaCopy;
+      [rulerAngleTick setOpacity:v12];
 
-      v18 = [(PKRulerLayer *)self rulerAngleText];
-      *&v13 = v7;
-      [v18 setOpacity:v13];
+      rulerAngleText = [(PKRulerLayer *)self rulerAngleText];
+      *&v13 = alphaCopy;
+      [rulerAngleText setOpacity:v13];
     }
 
     else
     {
-      v18 = 0;
+      rulerAngleText = 0;
     }
   }
 }
 
 - (CGAffineTransform)rulerTransform
 {
-  v4 = [(PKRulerLayer *)self rulerLayer];
-  v6 = v4;
-  if (v4)
+  rulerLayer = [(PKRulerLayer *)self rulerLayer];
+  v6 = rulerLayer;
+  if (rulerLayer)
   {
-    [v4 affineTransform];
+    [rulerLayer affineTransform];
   }
 
   else
@@ -194,20 +194,20 @@
   return result;
 }
 
-- (void)setRulerTransform:(CGAffineTransform *)a3
+- (void)setRulerTransform:(CGAffineTransform *)transform
 {
-  v3 = [(PKRulerLayer *)self rulerLayer:*&a3->a];
+  v3 = [(PKRulerLayer *)self rulerLayer:*&transform->a];
   [v3 setAffineTransform:&v4];
 }
 
 - (void)updateRulerTickMarkImage
 {
-  v3 = [(PKRulerLayer *)self rulerLayer];
+  rulerLayer = [(PKRulerLayer *)self rulerLayer];
 
-  if (v3)
+  if (rulerLayer)
   {
-    v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v4 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v6 = v5;
 
     [(PKRulerLayer *)self rulerWidth];
@@ -216,14 +216,14 @@
     v39.height = v8;
     UIGraphicsBeginImageContextWithOptions(v39, 0, v6);
     CurrentContext = UIGraphicsGetCurrentContext();
-    v10 = [(PKRulerLayer *)self _rulerImage];
+    _rulerImage = [(PKRulerLayer *)self _rulerImage];
     [(PKRulerLayer *)self rulerWidth];
-    [v10 drawInRect:{0.0, 0.0, 50.0, v11}];
+    [_rulerImage drawInRect:{0.0, 0.0, 50.0, v11}];
 
     Mutable = CGPathCreateMutable();
-    v13 = [(PKRulerLayer *)self compactRuler];
+    compactRuler = [(PKRulerLayer *)self compactRuler];
     v14 = 0;
-    if (v13)
+    if (compactRuler)
     {
       v15 = 10.0;
     }
@@ -233,7 +233,7 @@
       v15 = 16.0;
     }
 
-    if (v13)
+    if (compactRuler)
     {
       v16 = 6.0;
     }
@@ -243,7 +243,7 @@
       v16 = 8.0;
     }
 
-    if (v13)
+    if (compactRuler)
     {
       v17 = 3.0;
     }
@@ -302,9 +302,9 @@
     UIGraphicsEndImageContext();
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setAnimationDuration:0.0];
-    v25 = [v24 CGImage];
-    v26 = [(PKRulerLayer *)self rulerLayer];
-    [v26 setContents:v25];
+    cGImage = [v24 CGImage];
+    rulerLayer2 = [(PKRulerLayer *)self rulerLayer];
+    [rulerLayer2 setContents:cGImage];
 
     if ([(PKRulerLayer *)self zooming])
     {
@@ -314,100 +314,100 @@
       v30 = v29;
       [(PKRulerLayer *)self rulerZoomStartCenterTValueOnScreen];
       v32 = v31;
-      v33 = [(PKRulerLayer *)self rulerController];
+      rulerController = [(PKRulerLayer *)self rulerController];
       [(PKRulerLayer *)self rulerZoomStartTransform];
       CGAffineTransformTranslate(&v37, &v36, (v32 - v28 * 50.0 / floor(v30 * 50.0)) * 4000.0, 0.0);
-      v34 = [(PKRulerLayer *)self rulerLayer];
+      rulerLayer3 = [(PKRulerLayer *)self rulerLayer];
       v37 = v38;
-      [v34 setAffineTransform:&v37];
+      [rulerLayer3 setAffineTransform:&v37];
     }
 
     [MEMORY[0x1E6979518] commit];
   }
 }
 
-- (id)addOpacityAnimationOnLayer:(id)a3 delegate:(id)a4 toOpacity:(double)a5
+- (id)addOpacityAnimationOnLayer:(id)layer delegate:(id)delegate toOpacity:(double)opacity
 {
-  v7 = a3;
-  v8 = a4;
+  layerCopy = layer;
+  delegateCopy = delegate;
   v9 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   v10 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
   [v9 setTimingFunction:v10];
 
   v11 = MEMORY[0x1E696AD98];
-  [v7 opacity];
+  [layerCopy opacity];
   v12 = [v11 numberWithFloat:?];
   [v9 setFromValue:v12];
 
-  v13 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v13 = [MEMORY[0x1E696AD98] numberWithDouble:opacity];
   [v9 setToValue:v13];
 
-  [v7 opacity];
-  [v9 setDuration:{vabdd_f64(v14, a5) * 0.3}];
-  if (v8)
+  [layerCopy opacity];
+  [v9 setDuration:{vabdd_f64(v14, opacity) * 0.3}];
+  if (delegateCopy)
   {
-    [v9 setValue:v7 forKey:@"ICLayer"];
-    [v9 setDelegate:v8];
+    [v9 setValue:layerCopy forKey:@"ICLayer"];
+    [v9 setDelegate:delegateCopy];
   }
 
-  *&v15 = a5;
-  [v7 setOpacity:v15];
-  [v7 addAnimation:v9 forKey:@"fade"];
+  *&v15 = opacity;
+  [layerCopy setOpacity:v15];
+  [layerCopy addAnimation:v9 forKey:@"fade"];
 
   return v9;
 }
 
-- (id)addScaleAnimationOnLayer:(id)a3 delegate:(id)a4 fromScale:(double)a5 toScale:(double)a6
+- (id)addScaleAnimationOnLayer:(id)layer delegate:(id)delegate fromScale:(double)scale toScale:(double)toScale
 {
-  v9 = a3;
-  v10 = a4;
+  layerCopy = layer;
+  delegateCopy = delegate;
   v11 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
   v12 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
   [v11 setTimingFunction:v12];
 
   v13 = MEMORY[0x1E696B098];
-  CATransform3DMakeScale(&v19, a5, a5, 1.0);
+  CATransform3DMakeScale(&v19, scale, scale, 1.0);
   v14 = [v13 valueWithCATransform3D:&v19];
   [v11 setFromValue:v14];
 
   v15 = MEMORY[0x1E696B098];
-  CATransform3DMakeScale(&v19, a6, a6, 1.0);
+  CATransform3DMakeScale(&v19, toScale, toScale, 1.0);
   v16 = [v15 valueWithCATransform3D:&v19];
   [v11 setToValue:v16];
 
   [v11 setDuration:0.2];
   [v11 setFillMode:*MEMORY[0x1E69797E8]];
   [v11 setRemovedOnCompletion:0];
-  if (v10)
+  if (delegateCopy)
   {
-    [v11 setValue:v9 forKey:@"ICLayer"];
-    [v11 setDelegate:v10];
+    [v11 setValue:layerCopy forKey:@"ICLayer"];
+    [v11 setDelegate:delegateCopy];
   }
 
-  CATransform3DMakeScale(&v18, a6, a6, 1.0);
+  CATransform3DMakeScale(&v18, toScale, toScale, 1.0);
   v19 = v18;
-  [v9 setTransform:&v19];
-  [v9 addAnimation:v11 forKey:@"scale"];
+  [layerCopy setTransform:&v19];
+  [layerCopy addAnimation:v11 forKey:@"scale"];
 
   return v11;
 }
 
-- (void)addScaleAndOpacityAnimationOnLayer:(id)a3 delegate:(id)a4 fromScale:(double)a5 toScale:(double)a6 fromAlpha:(double)a7 toAlpha:(double)a8
+- (void)addScaleAndOpacityAnimationOnLayer:(id)layer delegate:(id)delegate fromScale:(double)scale toScale:(double)toScale fromAlpha:(double)alpha toAlpha:(double)toAlpha
 {
   v52[4] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  if (a5 <= a6)
+  layerCopy = layer;
+  delegateCopy = delegate;
+  if (scale <= toScale)
   {
-    v15 = a6;
+    scaleCopy = toScale;
   }
 
   else
   {
-    v15 = a5;
+    scaleCopy = scale;
   }
 
-  if (a5 <= a6)
+  if (scale <= toScale)
   {
     v16 = 0.133333333;
   }
@@ -417,7 +417,7 @@
     v16 = 0.0666666667;
   }
 
-  if (a5 <= a6)
+  if (scale <= toScale)
   {
     v17 = 0.0666666667;
   }
@@ -433,11 +433,11 @@
   [v18 setTimingFunction:v20];
 
   v21 = MEMORY[0x1E696B098];
-  CATransform3DMakeScale(&v51, a5, a5, 1.0);
+  CATransform3DMakeScale(&v51, scale, scale, 1.0);
   v22 = [v21 valueWithCATransform3D:&v51];
   [v18 setFromValue:v22];
 
-  v23 = v15 * 1.066;
+  v23 = scaleCopy * 1.066;
   v24 = MEMORY[0x1E696B098];
   CATransform3DMakeScale(&v51, v23, v23, 1.0);
   v25 = [v24 valueWithCATransform3D:&v51];
@@ -447,10 +447,10 @@
   v26 = *MEMORY[0x1E69797E8];
   [v18 setFillMode:*MEMORY[0x1E69797E8]];
   [v18 setRemovedOnCompletion:0];
-  if (v14)
+  if (delegateCopy)
   {
-    [v18 setValue:v13 forKey:@"ICLayer"];
-    [v18 setDelegate:v14];
+    [v18 setValue:layerCopy forKey:@"ICLayer"];
+    [v18 setDelegate:delegateCopy];
   }
 
   v27 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
@@ -463,7 +463,7 @@
   [v27 setFromValue:v30];
 
   v31 = MEMORY[0x1E696B098];
-  CATransform3DMakeScale(&v51, a6, a6, 1.0);
+  CATransform3DMakeScale(&v51, toScale, toScale, 1.0);
   v32 = [v31 valueWithCATransform3D:&v51];
   [v27 setToValue:v32];
 
@@ -471,45 +471,45 @@
   [v27 setDuration:v17];
   [v27 setFillMode:v26];
   [v27 setRemovedOnCompletion:0];
-  if (v14)
+  if (delegateCopy)
   {
-    [v27 setValue:v13 forKey:@"ICLayer"];
-    [v27 setDelegate:v14];
+    [v27 setValue:layerCopy forKey:@"ICLayer"];
+    [v27 setDelegate:delegateCopy];
   }
 
-  CATransform3DMakeScale(&v50, a6, a6, 1.0);
+  CATransform3DMakeScale(&v50, toScale, toScale, 1.0);
   v51 = v50;
-  [v13 setTransform:&v51];
+  [layerCopy setTransform:&v51];
   v33 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   v34 = [MEMORY[0x1E69793D0] functionWithName:v19];
   [v33 setTimingFunction:v34];
 
-  *&v35 = a7;
+  *&v35 = alpha;
   v36 = [MEMORY[0x1E696AD98] numberWithFloat:v35];
   [v33 setFromValue:v36];
 
-  if (a5 <= a6)
+  if (scale <= toScale)
   {
-    v37 = a8;
+    alphaCopy = toAlpha;
   }
 
   else
   {
-    v37 = a7;
+    alphaCopy = alpha;
   }
 
-  v38 = v37;
-  *&v37 = v38;
-  v39 = [MEMORY[0x1E696AD98] numberWithFloat:v37];
+  v38 = alphaCopy;
+  *&alphaCopy = v38;
+  v39 = [MEMORY[0x1E696AD98] numberWithFloat:alphaCopy];
   [v33 setToValue:v39];
 
   [v33 setDuration:v16];
   [v33 setFillMode:v26];
   [v33 setRemovedOnCompletion:0];
-  if (v14)
+  if (delegateCopy)
   {
-    [v33 setValue:v13 forKey:@"ICLayer"];
-    [v33 setDelegate:v14];
+    [v33 setValue:layerCopy forKey:@"ICLayer"];
+    [v33 setDelegate:delegateCopy];
   }
 
   v40 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
@@ -520,8 +520,8 @@
   v43 = [MEMORY[0x1E696AD98] numberWithFloat:v42];
   [v40 setFromValue:v43];
 
-  v44 = a8;
-  *&v45 = v44;
+  toAlphaCopy2 = toAlpha;
+  *&v45 = toAlphaCopy2;
   v46 = [MEMORY[0x1E696AD98] numberWithFloat:v45];
   [v40 setToValue:v46];
 
@@ -529,43 +529,43 @@
   [v40 setDuration:v17];
   [v40 setFillMode:v26];
   [v40 setRemovedOnCompletion:0];
-  if (v14)
+  if (delegateCopy)
   {
-    [v40 setValue:v13 forKey:@"ICLayer"];
-    [v40 setDelegate:v14];
+    [v40 setValue:layerCopy forKey:@"ICLayer"];
+    [v40 setDelegate:delegateCopy];
   }
 
-  *&v47 = v44;
-  [v13 setOpacity:v47];
-  v48 = [MEMORY[0x1E6979308] animation];
+  *&v47 = toAlphaCopy2;
+  [layerCopy setOpacity:v47];
+  animation = [MEMORY[0x1E6979308] animation];
   v52[0] = v18;
   v52[1] = v27;
   v52[2] = v33;
   v52[3] = v40;
   v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:4];
-  [v48 setAnimations:v49];
+  [animation setAnimations:v49];
 
-  [v48 setDuration:0.2];
-  [v13 addAnimation:v48 forKey:@"scaleAndFade"];
+  [animation setDuration:0.2];
+  [layerCopy addAnimation:animation forKey:@"scaleAndFade"];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v6 = a3;
-  v4 = [v6 valueForKey:@"ICLayer"];
+  stopCopy = stop;
+  v4 = [stopCopy valueForKey:@"ICLayer"];
 
   if (v4)
   {
-    v5 = [v6 valueForKey:@"ICLayer"];
+    v5 = [stopCopy valueForKey:@"ICLayer"];
     [v5 removeFromSuperlayer];
   }
 }
 
 - (void)showRuler
 {
-  v3 = [(PKRulerLayer *)self rulerLayer];
+  rulerLayer = [(PKRulerLayer *)self rulerLayer];
 
-  if (!v3)
+  if (!rulerLayer)
   {
     [(PKRulerLayer *)self previousRulerTransform];
     v4 = sqrt(*(v34 + 1) * *(v34 + 1) + *v34 * *v34);
@@ -576,27 +576,27 @@
 
     else
     {
-      v3 = [(PKRulerLayer *)self rulerController];
-      v5 = [(PKRulerController *)v3 defaultRulerTransform];
+      rulerLayer = [(PKRulerLayer *)self rulerController];
+      defaultRulerTransform = [(PKRulerController *)rulerLayer defaultRulerTransform];
     }
 
-    v6 = [(PKRulerLayer *)self rulerController];
-    if (v6)
+    rulerController = [(PKRulerLayer *)self rulerController];
+    if (rulerController)
     {
       v7 = v35[1];
-      v6[7] = v35[0];
-      v6[8] = v7;
-      v6[9] = v35[2];
+      rulerController[7] = v35[0];
+      rulerController[8] = v7;
+      rulerController[9] = v35[2];
     }
 
     if (v4 <= 0.01)
     {
     }
 
-    v8 = [(PKRulerLayer *)self rulerController];
-    if (v8)
+    rulerController2 = [(PKRulerLayer *)self rulerController];
+    if (rulerController2)
     {
-      v8[18] = 0;
+      rulerController2[18] = 0;
     }
 
     v9 = objc_alloc_init(MEMORY[0x1E6979398]);
@@ -604,33 +604,33 @@
 
     [(PKRulerLayer *)self rulerWidth];
     v11 = v10;
-    v12 = [(PKRulerLayer *)self rulerLayer];
-    [v12 setFrame:{0.0, 0.0, 4000.0, v11}];
+    rulerLayer2 = [(PKRulerLayer *)self rulerLayer];
+    [rulerLayer2 setFrame:{0.0, 0.0, 4000.0, v11}];
 
     v13 = *MEMORY[0x1E695EFF8];
     v14 = *(MEMORY[0x1E695EFF8] + 8);
-    v15 = [(PKRulerLayer *)self rulerLayer];
-    [v15 setPosition:{v13, v14}];
+    rulerLayer3 = [(PKRulerLayer *)self rulerLayer];
+    [rulerLayer3 setPosition:{v13, v14}];
 
-    v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v16 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v18 = v17;
-    v19 = [(PKRulerLayer *)self rulerLayer];
-    [v19 setContentsScale:v18];
+    rulerLayer4 = [(PKRulerLayer *)self rulerLayer];
+    [rulerLayer4 setContentsScale:v18];
 
     [(PKRulerLayer *)self updateRulerTickMarkImage];
     v20 = *MEMORY[0x1E6979670];
-    v21 = [(PKRulerLayer *)self rulerLayer];
-    [v21 setContentsScaling:v20];
+    rulerLayer5 = [(PKRulerLayer *)self rulerLayer];
+    [rulerLayer5 setContentsScaling:v20];
 
-    v22 = [(PKRulerLayer *)self rulerController];
-    v23 = v22;
-    if (v22)
+    rulerController3 = [(PKRulerLayer *)self rulerController];
+    v23 = rulerController3;
+    if (rulerController3)
     {
-      v24 = v22[8];
-      v31 = v22[7];
+      v24 = rulerController3[8];
+      v31 = rulerController3[7];
       v32 = v24;
-      v33 = v22[9];
+      v33 = rulerController3[9];
     }
 
     else
@@ -640,17 +640,17 @@
       v31 = 0u;
     }
 
-    v25 = [(PKRulerLayer *)self rulerLayer];
+    rulerLayer6 = [(PKRulerLayer *)self rulerLayer];
     v34[0] = v31;
     v34[1] = v32;
     v34[2] = v33;
-    [v25 setAffineTransform:v34];
+    [rulerLayer6 setAffineTransform:v34];
 
-    v26 = [(PKRulerLayer *)self rulerLayer];
-    [(PKRulerLayer *)self addSublayer:v26];
+    rulerLayer7 = [(PKRulerLayer *)self rulerLayer];
+    [(PKRulerLayer *)self addSublayer:rulerLayer7];
 
-    v27 = [(PKRulerLayer *)self rulerLayer];
-    [v27 setOpacity:0.0];
+    rulerLayer8 = [(PKRulerLayer *)self rulerLayer];
+    [rulerLayer8 setOpacity:0.0];
 
     [MEMORY[0x1E6979518] begin];
     v30[0] = MEMORY[0x1E69E9820];
@@ -659,44 +659,44 @@
     v30[3] = &unk_1E82D6388;
     v30[4] = self;
     [MEMORY[0x1E6979518] setCompletionBlock:v30];
-    v28 = [(PKRulerLayer *)self rulerLayer];
-    v29 = [(PKRulerLayer *)self addOpacityAnimationOnLayer:v28 delegate:0 toOpacity:1.0];
+    rulerLayer9 = [(PKRulerLayer *)self rulerLayer];
+    v29 = [(PKRulerLayer *)self addOpacityAnimationOnLayer:rulerLayer9 delegate:0 toOpacity:1.0];
 
     [MEMORY[0x1E6979518] commit];
   }
 }
 
-- (void)hideRulerAnimated:(BOOL)a3
+- (void)hideRulerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PKRulerLayer *)self rulerLayer];
+  animatedCopy = animated;
+  rulerLayer = [(PKRulerLayer *)self rulerLayer];
 
-  if (v5)
+  if (rulerLayer)
   {
-    if (v3)
+    if (animatedCopy)
     {
       [(PKRulerLayer *)self removeRulerMarkers];
-      v6 = [(PKRulerLayer *)self rulerAngleMarker];
-      v7 = [(PKRulerLayer *)self addOpacityAnimationOnLayer:v6 delegate:0 toOpacity:0.0];
+      rulerAngleMarker = [(PKRulerLayer *)self rulerAngleMarker];
+      v7 = [(PKRulerLayer *)self addOpacityAnimationOnLayer:rulerAngleMarker delegate:0 toOpacity:0.0];
 
-      v8 = [(PKRulerLayer *)self rulerLayer];
-      v9 = [(PKRulerLayer *)self addOpacityAnimationOnLayer:v8 delegate:self toOpacity:0.0];
+      rulerLayer2 = [(PKRulerLayer *)self rulerLayer];
+      v9 = [(PKRulerLayer *)self addOpacityAnimationOnLayer:rulerLayer2 delegate:self toOpacity:0.0];
     }
 
     else
     {
-      v10 = [(PKRulerLayer *)self rulerLayer];
-      [v10 removeFromSuperlayer];
+      rulerLayer3 = [(PKRulerLayer *)self rulerLayer];
+      [rulerLayer3 removeFromSuperlayer];
 
-      v8 = [(PKRulerLayer *)self rulerDistanceHUD];
-      [v8 removeFromSuperlayer];
+      rulerLayer2 = [(PKRulerLayer *)self rulerDistanceHUD];
+      [rulerLayer2 removeFromSuperlayer];
     }
 
-    v11 = [(PKRulerLayer *)self rulerLayer];
-    v12 = v11;
-    if (v11)
+    rulerLayer4 = [(PKRulerLayer *)self rulerLayer];
+    v12 = rulerLayer4;
+    if (rulerLayer4)
     {
-      [v11 affineTransform];
+      [rulerLayer4 affineTransform];
     }
 
     else
@@ -716,10 +716,10 @@
   [(PKRulerLayer *)self setRulerAngleMarker:0];
 }
 
-- (void)updateAngleWithAngleMarkerPosition:(CGPoint)a3
+- (void)updateAngleWithAngleMarkerPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v88[1] = *MEMORY[0x1E69E9840];
   if ([(PKRulerLayer *)self compactRuler])
   {
@@ -736,118 +736,118 @@
     v6 = v6 + 10.0;
   }
 
-  v7 = [(PKRulerLayer *)self rulerAngleMarker];
+  rulerAngleMarker = [(PKRulerLayer *)self rulerAngleMarker];
 
-  if (!v7)
+  if (!rulerAngleMarker)
   {
     v8 = objc_alloc_init(MEMORY[0x1E6979398]);
     [(PKRulerLayer *)self setRulerAngleMarker:v8];
 
-    v9 = [(PKRulerLayer *)self rulerDialImage];
-    [v9 size];
+    rulerDialImage = [(PKRulerLayer *)self rulerDialImage];
+    [rulerDialImage size];
     v11 = v10;
     v13 = v12;
-    v14 = [(PKRulerLayer *)self rulerAngleMarker];
-    [v14 setFrame:{0.0, 0.0, v11, v13}];
+    rulerAngleMarker2 = [(PKRulerLayer *)self rulerAngleMarker];
+    [rulerAngleMarker2 setFrame:{0.0, 0.0, v11, v13}];
 
-    v15 = [v9 CGImage];
-    v16 = [(PKRulerLayer *)self rulerAngleMarker];
-    [v16 setContents:v15];
+    cGImage = [rulerDialImage CGImage];
+    rulerAngleMarker3 = [(PKRulerLayer *)self rulerAngleMarker];
+    [rulerAngleMarker3 setContents:cGImage];
 
-    v17 = [(PKRulerLayer *)self rulerAngleMarker];
-    [v17 setOpacity:0.0];
+    rulerAngleMarker4 = [(PKRulerLayer *)self rulerAngleMarker];
+    [rulerAngleMarker4 setOpacity:0.0];
 
-    v18 = [(PKRulerLayer *)self rulerAngleMarker];
-    v19 = [(PKRulerLayer *)self rulerLayer];
-    [(PKRulerLayer *)self insertSublayer:v18 above:v19];
+    rulerAngleMarker5 = [(PKRulerLayer *)self rulerAngleMarker];
+    rulerLayer = [(PKRulerLayer *)self rulerLayer];
+    [(PKRulerLayer *)self insertSublayer:rulerAngleMarker5 above:rulerLayer];
 
     v20 = objc_alloc_init(MEMORY[0x1E6979398]);
     [(PKRulerLayer *)self setRulerAngleTick:v20];
 
-    v21 = [(PKRulerLayer *)self rulerDialLevelImage];
-    [v21 size];
+    rulerDialLevelImage = [(PKRulerLayer *)self rulerDialLevelImage];
+    [rulerDialLevelImage size];
     v23 = v22;
     v25 = v24;
-    v26 = [(PKRulerLayer *)self rulerAngleTick];
-    [v26 setFrame:{0.0, 0.0, v23, v25}];
+    rulerAngleTick = [(PKRulerLayer *)self rulerAngleTick];
+    [rulerAngleTick setFrame:{0.0, 0.0, v23, v25}];
 
-    [v9 size];
+    [rulerDialImage size];
     v28 = v27;
-    [v9 size];
+    [rulerDialImage size];
     v30 = v29;
-    v31 = [(PKRulerLayer *)self rulerAngleTick];
-    [v31 setPosition:{v28 * 0.5, v30 * 0.5}];
+    rulerAngleTick2 = [(PKRulerLayer *)self rulerAngleTick];
+    [rulerAngleTick2 setPosition:{v28 * 0.5, v30 * 0.5}];
 
-    v32 = [v21 CGImage];
-    v33 = [(PKRulerLayer *)self rulerAngleTick];
-    [v33 setContents:v32];
+    cGImage2 = [rulerDialLevelImage CGImage];
+    rulerAngleTick3 = [(PKRulerLayer *)self rulerAngleTick];
+    [rulerAngleTick3 setContents:cGImage2];
 
-    v34 = [(PKRulerLayer *)self rulerAngleTick];
+    rulerAngleTick4 = [(PKRulerLayer *)self rulerAngleTick];
     LODWORD(v35) = 1.0;
-    [v34 setOpacity:v35];
+    [rulerAngleTick4 setOpacity:v35];
 
-    v36 = [(PKRulerLayer *)self rulerAngleMarker];
-    v37 = [(PKRulerLayer *)self rulerAngleTick];
-    v38 = [(PKRulerLayer *)self rulerAngleMarker];
-    [v36 insertSublayer:v37 above:v38];
+    rulerAngleMarker6 = [(PKRulerLayer *)self rulerAngleMarker];
+    rulerAngleTick5 = [(PKRulerLayer *)self rulerAngleTick];
+    rulerAngleMarker7 = [(PKRulerLayer *)self rulerAngleMarker];
+    [rulerAngleMarker6 insertSublayer:rulerAngleTick5 above:rulerAngleMarker7];
 
     v39 = objc_alloc_init(MEMORY[0x1E6979508]);
     [(PKRulerLayer *)self setRulerAngleText:v39];
 
-    v40 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v40 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v42 = v41;
-    v43 = [(PKRulerLayer *)self rulerAngleText];
-    [v43 setContentsScale:v42];
+    rulerAngleText = [(PKRulerLayer *)self rulerAngleText];
+    [rulerAngleText setContentsScale:v42];
 
-    v44 = [(PKRulerLayer *)self rulerAngleText];
-    [v44 setFrame:{0.0, 0.0, 75.0, v6 + 4.0}];
+    rulerAngleText2 = [(PKRulerLayer *)self rulerAngleText];
+    [rulerAngleText2 setFrame:{0.0, 0.0, 75.0, v6 + 4.0}];
 
-    [v9 size];
+    [rulerDialImage size];
     v46 = v45;
-    [v9 size];
+    [rulerDialImage size];
     v48 = v47;
-    v49 = [(PKRulerLayer *)self rulerAngleText];
-    [v49 setPosition:{v46 * 0.5, v48 * 0.5}];
+    rulerAngleText3 = [(PKRulerLayer *)self rulerAngleText];
+    [rulerAngleText3 setPosition:{v46 * 0.5, v48 * 0.5}];
 
-    v50 = [(PKRulerLayer *)self rulerAngleText];
-    [v50 setAlignmentMode:*MEMORY[0x1E6979560]];
+    rulerAngleText4 = [(PKRulerLayer *)self rulerAngleText];
+    [rulerAngleText4 setAlignmentMode:*MEMORY[0x1E6979560]];
 
-    v51 = [MEMORY[0x1E69DC888] blackColor];
-    v52 = [v51 CGColor];
-    v53 = [(PKRulerLayer *)self rulerAngleText];
-    [v53 setForegroundColor:v52];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
+    rulerAngleText5 = [(PKRulerLayer *)self rulerAngleText];
+    [rulerAngleText5 setForegroundColor:cGColor];
 
-    v54 = [(PKRulerLayer *)self rulerAngleMarker];
-    v55 = [(PKRulerLayer *)self rulerAngleText];
-    v56 = [(PKRulerLayer *)self rulerAngleTick];
-    [v54 insertSublayer:v55 above:v56];
+    rulerAngleMarker8 = [(PKRulerLayer *)self rulerAngleMarker];
+    rulerAngleText6 = [(PKRulerLayer *)self rulerAngleText];
+    rulerAngleTick6 = [(PKRulerLayer *)self rulerAngleTick];
+    [rulerAngleMarker8 insertSublayer:rulerAngleText6 above:rulerAngleTick6];
   }
 
-  v57 = [(PKRulerLayer *)self rulerAngleMarker];
-  [v57 opacity];
+  rulerAngleMarker9 = [(PKRulerLayer *)self rulerAngleMarker];
+  [rulerAngleMarker9 opacity];
   v59 = v58;
-  v60 = [(PKRulerLayer *)self rulerLayer];
-  [v60 opacity];
+  rulerLayer2 = [(PKRulerLayer *)self rulerLayer];
+  [rulerLayer2 opacity];
   v62 = v61;
 
   if (v59 < v62)
   {
-    v63 = [(PKRulerLayer *)self rulerAngleMarker];
-    v64 = [(PKRulerLayer *)self addOpacityAnimationOnLayer:v63 delegate:0 toOpacity:1.0];
+    rulerAngleMarker10 = [(PKRulerLayer *)self rulerAngleMarker];
+    v64 = [(PKRulerLayer *)self addOpacityAnimationOnLayer:rulerAngleMarker10 delegate:0 toOpacity:1.0];
   }
 
-  v65 = [(PKRulerLayer *)self rulerAngleMarker];
-  [v65 setPosition:{x, y}];
+  rulerAngleMarker11 = [(PKRulerLayer *)self rulerAngleMarker];
+  [rulerAngleMarker11 setPosition:{x, y}];
 
   v85 = 0u;
   v86 = 0u;
   v84 = 0u;
-  v66 = [(PKRulerLayer *)self rulerLayer];
-  v67 = v66;
-  if (v66)
+  rulerLayer3 = [(PKRulerLayer *)self rulerLayer];
+  v67 = rulerLayer3;
+  if (rulerLayer3)
   {
-    [v66 affineTransform];
+    [rulerLayer3 affineTransform];
   }
 
   else
@@ -861,29 +861,29 @@
   v81 = v84;
   v82 = v85;
   v83 = 0uLL;
-  v68 = [(PKRulerLayer *)self rulerAngleTick];
+  rulerAngleTick7 = [(PKRulerLayer *)self rulerAngleTick];
   v80[0] = v81;
   v80[1] = v82;
   v80[2] = 0uLL;
-  [v68 setAffineTransform:v80];
+  [rulerAngleTick7 setAffineTransform:v80];
 
-  v69 = [(PKRulerLayer *)self userAngle];
+  userAngle = [(PKRulerLayer *)self userAngle];
   v70 = objc_alloc(MEMORY[0x1E696AD40]);
   v71 = MEMORY[0x1E696AEC0];
   v72 = _PencilKitBundle();
   v73 = [v72 localizedStringForKey:@"°%d°" value:@"°%d°" table:@"Localizable"];
-  v74 = [v71 localizedStringWithFormat:v73, v69];
+  v74 = [v71 localizedStringWithFormat:v73, userAngle];
   v87 = *MEMORY[0x1E69DB648];
   v75 = [MEMORY[0x1E69DB878] systemFontOfSize:v6];
   v88[0] = v75;
   v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v88 forKeys:&v87 count:1];
   v77 = [v70 initWithString:v74 attributes:v76];
 
-  v78 = [MEMORY[0x1E69DC888] clearColor];
-  [v77 addAttribute:*MEMORY[0x1E69DB650] value:v78 range:{0, 1}];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v77 addAttribute:*MEMORY[0x1E69DB650] value:clearColor range:{0, 1}];
 
-  v79 = [(PKRulerLayer *)self rulerAngleText];
-  [v79 setString:v77];
+  rulerAngleText7 = [(PKRulerLayer *)self rulerAngleText];
+  [rulerAngleText7 setString:v77];
 }
 
 - (int64_t)currentAngle
@@ -911,37 +911,37 @@
 
 - (int64_t)userAngle
 {
-  v2 = [(PKRulerLayer *)self currentAngle];
-  if (v2 % 180 <= 90)
+  currentAngle = [(PKRulerLayer *)self currentAngle];
+  if (currentAngle % 180 <= 90)
   {
-    return v2 % 180;
+    return currentAngle % 180;
   }
 
   else
   {
-    return 180 - v2 % 180;
+    return 180 - currentAngle % 180;
   }
 }
 
 - (void)hideRulerAngleMarker
 {
-  v4 = [(PKRulerLayer *)self rulerAngleMarker];
+  rulerAngleMarker = [(PKRulerLayer *)self rulerAngleMarker];
   v3 = [PKRulerLayer addOpacityAnimationOnLayer:"addOpacityAnimationOnLayer:delegate:toOpacity:" delegate:0.0 toOpacity:?];
 }
 
-- (BOOL)viewPointInRuler:(CGPoint)a3
+- (BOOL)viewPointInRuler:(CGPoint)ruler
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PKRulerLayer *)self rulerLayer];
+  y = ruler.y;
+  x = ruler.x;
+  rulerLayer = [(PKRulerLayer *)self rulerLayer];
 
-  if (!v6)
+  if (!rulerLayer)
   {
     return 0;
   }
 
-  v7 = [(PKRulerLayer *)self rulerLayer];
-  [v7 convertPoint:self fromLayer:{x, y}];
+  rulerLayer2 = [(PKRulerLayer *)self rulerLayer];
+  [rulerLayer2 convertPoint:self fromLayer:{x, y}];
   v9 = v8;
 
   [(PKRulerLayer *)self rulerWidth];
@@ -954,14 +954,14 @@
   return v9 < v11 * 0.85;
 }
 
-- (CGPoint)getRulerCenterLineOriginAndTangent:(CGPoint *)a3
+- (CGPoint)getRulerCenterLineOriginAndTangent:(CGPoint *)tangent
 {
   memset(&v26, 0, sizeof(v26));
-  v5 = [(PKRulerLayer *)self rulerLayer];
-  v6 = v5;
-  if (v5)
+  rulerLayer = [(PKRulerLayer *)self rulerLayer];
+  v6 = rulerLayer;
+  if (rulerLayer)
   {
-    [v5 affineTransform];
+    [rulerLayer affineTransform];
   }
 
   else
@@ -970,9 +970,9 @@
   }
 
   memset(&v25, 0, sizeof(v25));
-  v7 = [(PKRulerLayer *)self rulerController];
-  v8 = v7;
-  if (v7 && (WeakRetained = objc_loadWeakRetained((v7 + 40))) != 0)
+  rulerController = [(PKRulerLayer *)self rulerController];
+  v8 = rulerController;
+  if (rulerController && (WeakRetained = objc_loadWeakRetained((rulerController + 40))) != 0)
   {
     v10 = WeakRetained;
     [WeakRetained strokeTransform];
@@ -993,9 +993,9 @@
   _Q1 = *&v24.a;
   v12 = *&v24.tx;
   v13 = vmulq_f64(*&v24.c, 0);
-  if (a3)
+  if (tangent)
   {
-    *a3 = vaddq_f64(*&v24.tx, vmlaq_f64(v13, vdupq_n_s64(0x409F400000000000uLL), *&v24.a));
+    *tangent = vaddq_f64(*&v24.tx, vmlaq_f64(v13, vdupq_n_s64(0x409F400000000000uLL), *&v24.a));
   }
 
   _D4 = 0xC09F400000000000;
@@ -1008,11 +1008,11 @@
   return result;
 }
 
-- (double)_fontSizeForRulerTextHUD:(id)a3
+- (double)_fontSizeForRulerTextHUD:(id)d
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v4 = [&stru_1F476BD20 stringByPaddingToLength:objc_msgSend(v29 withString:"length") startingAtIndex:{@"X", 0}];
+  dCopy = d;
+  v4 = [&stru_1F476BD20 stringByPaddingToLength:objc_msgSend(dCopy withString:"length") startingAtIndex:{@"X", 0}];
   [(PKRulerLayer *)self _distanceMarkerFontSize];
   v6 = v5;
   v7 = *MEMORY[0x1E69DB648];
@@ -1073,7 +1073,7 @@
   return v15;
 }
 
-- (id)_textForRulerHUD:(double)a3
+- (id)_textForRulerHUD:(double)d
 {
   v31[1] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_rulerController);
@@ -1109,7 +1109,7 @@
         v15 = 0;
       }
 
-      v16 = [v15 rulerHostingStringFromPixels:a3];
+      v16 = [v15 rulerHostingStringFromPixels:d];
 
       [(PKRulerLayer *)self _fontSizeForRulerTextHUD:v16];
       v18 = v17;
@@ -1129,7 +1129,7 @@
   {
   }
 
-  v16 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld", a3];
+  v16 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld", d];
   [(PKRulerLayer *)self _fontSizeForRulerTextHUD:v16];
   v25 = v24;
   v26 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -1145,9 +1145,9 @@ LABEL_11:
 
 - (double)_distanceMarkerFontSize
 {
-  v2 = [(PKRulerLayer *)self compactRuler];
+  compactRuler = [(PKRulerLayer *)self compactRuler];
   result = 18.0;
-  if (v2)
+  if (compactRuler)
   {
     return 14.0;
   }
@@ -1155,7 +1155,7 @@ LABEL_11:
   return result;
 }
 
-- (void)updateDistanceMarkerWithSpacing:(double)a3
+- (void)updateDistanceMarkerWithSpacing:(double)spacing
 {
   v86[1] = *MEMORY[0x1E69E9840];
   if ([(PKRulerLayer *)self compactRuler])
@@ -1180,9 +1180,9 @@ LABEL_11:
     v8 = 13.0;
   }
 
-  v9 = [(PKRulerLayer *)self shouldUseLargestRulerTextFontSize];
+  shouldUseLargestRulerTextFontSize = [(PKRulerLayer *)self shouldUseLargestRulerTextFontSize];
   v10 = v7 + 10.0;
-  if (v9)
+  if (shouldUseLargestRulerTextFontSize)
   {
     v11 = v8 + 7.0;
   }
@@ -1192,7 +1192,7 @@ LABEL_11:
     v11 = v8;
   }
 
-  if (v9)
+  if (shouldUseLargestRulerTextFontSize)
   {
     v12 = v7 + 10.0;
   }
@@ -1202,7 +1202,7 @@ LABEL_11:
     v12 = v7;
   }
 
-  if (v9)
+  if (shouldUseLargestRulerTextFontSize)
   {
     v13 = v5 + 26.0;
   }
@@ -1216,9 +1216,9 @@ LABEL_11:
   v15 = v14;
   [(PKRulerLayer *)self minTValueForSnappedDrawing];
   v17 = v16;
-  v18 = [(PKRulerLayer *)self rulerDistanceText];
+  rulerDistanceText = [(PKRulerLayer *)self rulerDistanceText];
 
-  if (!v18)
+  if (!rulerDistanceText)
   {
     [(PKRulerLayer *)self maxTValueForSnappedDrawing];
     v20 = v19;
@@ -1231,71 +1231,71 @@ LABEL_11:
     v26 = objc_alloc_init(MEMORY[0x1E6979398]);
     [(PKRulerLayer *)self setRulerDistanceHUD:v26];
 
-    v27 = [(PKRulerLayer *)self rulerDistanceHUD];
-    [v27 setFrame:{0.0, 0.0, v13, v13}];
+    rulerDistanceHUD = [(PKRulerLayer *)self rulerDistanceHUD];
+    [rulerDistanceHUD setFrame:{0.0, 0.0, v13, v13}];
 
     v28 = [MEMORY[0x1E69DC888] colorWithWhite:0.96 alpha:0.8];
-    v29 = [v28 CGColor];
-    v30 = [(PKRulerLayer *)self rulerDistanceHUD];
-    [v30 setBackgroundColor:v29];
+    cGColor = [v28 CGColor];
+    rulerDistanceHUD2 = [(PKRulerLayer *)self rulerDistanceHUD];
+    [rulerDistanceHUD2 setBackgroundColor:cGColor];
 
-    v31 = [(PKRulerLayer *)self rulerDistanceHUD];
-    [v31 setCornerRadius:v13 * 0.5];
+    rulerDistanceHUD3 = [(PKRulerLayer *)self rulerDistanceHUD];
+    [rulerDistanceHUD3 setCornerRadius:v13 * 0.5];
 
-    v32 = [(PKRulerLayer *)self rulerDistanceHUD];
-    v33 = [(PKRulerLayer *)self rulerLayer];
-    [(PKRulerLayer *)self insertSublayer:v32 above:v33];
+    rulerDistanceHUD4 = [(PKRulerLayer *)self rulerDistanceHUD];
+    rulerLayer = [(PKRulerLayer *)self rulerLayer];
+    [(PKRulerLayer *)self insertSublayer:rulerDistanceHUD4 above:rulerLayer];
 
     v34 = objc_alloc_init(MEMORY[0x1E6979508]);
     [(PKRulerLayer *)self setRulerDistanceText:v34];
 
     v35 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v36 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld", 1234567890];
+    1234567890 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld", 1234567890];
     v85 = *MEMORY[0x1E69DB648];
     v37 = [MEMORY[0x1E69DB878] systemFontOfSize:v12];
     v86[0] = v37;
     v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v86 forKeys:&v85 count:1];
-    v39 = [v35 initWithString:v36 attributes:v38];
+    v39 = [v35 initWithString:1234567890 attributes:v38];
     [v39 size];
     v41 = v40;
 
-    v42 = [MEMORY[0x1E69DC888] blackColor];
-    v43 = v42;
-    v44 = [v42 CGColor];
-    v45 = [(PKRulerLayer *)self rulerDistanceText];
-    [v45 setForegroundColor:v44];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v43 = blackColor;
+    cGColor2 = [blackColor CGColor];
+    rulerDistanceText2 = [(PKRulerLayer *)self rulerDistanceText];
+    [rulerDistanceText2 setForegroundColor:cGColor2];
 
-    v46 = [(PKRulerLayer *)self rulerDistanceText];
-    [v46 setFontSize:v12];
+    rulerDistanceText3 = [(PKRulerLayer *)self rulerDistanceText];
+    [rulerDistanceText3 setFontSize:v12];
 
-    v47 = [(PKRulerLayer *)self rulerDistanceText];
-    [v47 setFrame:{0.0, v11, v13, v41}];
+    rulerDistanceText4 = [(PKRulerLayer *)self rulerDistanceText];
+    [rulerDistanceText4 setFrame:{0.0, v11, v13, v41}];
 
-    v48 = [(PKRulerLayer *)self rulerDistanceText];
-    [v48 setAlignmentMode:*MEMORY[0x1E6979560]];
+    rulerDistanceText5 = [(PKRulerLayer *)self rulerDistanceText];
+    [rulerDistanceText5 setAlignmentMode:*MEMORY[0x1E6979560]];
 
-    v49 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v49 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v51 = v50;
-    v52 = [(PKRulerLayer *)self rulerDistanceText];
-    [v52 setContentsScale:v51];
+    rulerDistanceText6 = [(PKRulerLayer *)self rulerDistanceText];
+    [rulerDistanceText6 setContentsScale:v51];
 
-    v53 = [(PKRulerLayer *)self rulerDistanceHUD];
-    v54 = [(PKRulerLayer *)self rulerDistanceText];
-    v55 = [(PKRulerLayer *)self rulerDistanceHUD];
-    [v53 insertSublayer:v54 above:v55];
+    rulerDistanceHUD5 = [(PKRulerLayer *)self rulerDistanceHUD];
+    rulerDistanceText7 = [(PKRulerLayer *)self rulerDistanceText];
+    rulerDistanceHUD6 = [(PKRulerLayer *)self rulerDistanceHUD];
+    [rulerDistanceHUD5 insertSublayer:rulerDistanceText7 above:rulerDistanceHUD6];
 
-    v56 = [(PKRulerLayer *)self rulerDistanceHUD];
-    [(PKRulerLayer *)self addScaleAndOpacityAnimationOnLayer:v56 delegate:0 fromScale:0.25 toScale:1.0 fromAlpha:0.0 toAlpha:1.0];
+    rulerDistanceHUD7 = [(PKRulerLayer *)self rulerDistanceHUD];
+    [(PKRulerLayer *)self addScaleAndOpacityAnimationOnLayer:rulerDistanceHUD7 delegate:0 fromScale:0.25 toScale:1.0 fromAlpha:0.0 toAlpha:1.0];
   }
 
   [(PKRulerLayer *)self currentTValueForSnappedDrawing];
   v58 = v57;
-  v59 = [(PKRulerLayer *)self rulerLayer];
-  v60 = v59;
-  if (v59)
+  rulerLayer2 = [(PKRulerLayer *)self rulerLayer];
+  v60 = rulerLayer2;
+  if (rulerLayer2)
   {
-    [v59 affineTransform];
+    [rulerLayer2 affineTransform];
     v80 = v82;
     v81 = v84;
     v61 = vmulq_f64(v83, 0);
@@ -1310,48 +1310,48 @@ LABEL_11:
 
   v79 = v61;
 
-  v62 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v62 scale];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 scale];
   v78 = v63;
-  v64 = [(PKRulerLayer *)self rulerDistanceHUD];
-  [v64 setPosition:{vmulq_n_f64(vrndaq_f64(vmulq_n_f64(vaddq_f64(v81, vmlaq_n_f64(v79, v80, v58 + -2000.0)), v78)), 1.0 / v78)}];
+  rulerDistanceHUD8 = [(PKRulerLayer *)self rulerDistanceHUD];
+  [rulerDistanceHUD8 setPosition:{vmulq_n_f64(vrndaq_f64(vmulq_n_f64(vaddq_f64(v81, vmlaq_n_f64(v79, v80, v58 + -2000.0)), v78)), 1.0 / v78)}];
 
-  v65 = (v15 - v17) / (a3 * 0.5);
+  v65 = (v15 - v17) / (spacing * 0.5);
   v66 = [(PKRulerLayer *)self _textForRulerHUD:v65];
-  v67 = [(PKRulerLayer *)self rulerDistanceHUD];
-  [v67 size];
+  rulerDistanceHUD9 = [(PKRulerLayer *)self rulerDistanceHUD];
+  [rulerDistanceHUD9 size];
   v69 = v68;
-  v70 = [(PKRulerLayer *)self rulerDistanceHUD];
-  [v70 size];
+  rulerDistanceHUD10 = [(PKRulerLayer *)self rulerDistanceHUD];
+  [rulerDistanceHUD10 size];
   v72 = v71;
   [v66 size];
   v74 = v73;
 
-  v75 = [(PKRulerLayer *)self rulerDistanceText];
-  [v75 setFrame:{v69 * 0.5 - v13 * 0.5, v72 * 0.5 - v74 * 0.5, v13, v74}];
+  rulerDistanceText8 = [(PKRulerLayer *)self rulerDistanceText];
+  [rulerDistanceText8 setFrame:{v69 * 0.5 - v13 * 0.5, v72 * 0.5 - v74 * 0.5, v13, v74}];
 
   v76 = [(PKRulerLayer *)self _textForRulerHUD:v65];
-  v77 = [(PKRulerLayer *)self rulerDistanceText];
-  [v77 setString:v76];
+  rulerDistanceText9 = [(PKRulerLayer *)self rulerDistanceText];
+  [rulerDistanceText9 setString:v76];
 }
 
-- (void)updateRulerMarkerForLocation:(CGPoint)a3 firstTouch:(BOOL)a4
+- (void)updateRulerMarkerForLocation:(CGPoint)location firstTouch:(BOOL)touch
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  touchCopy = touch;
+  y = location.y;
+  x = location.x;
   v29 = *MEMORY[0x1E69E9840];
-  v8 = [(PKRulerLayer *)self rulerLayer];
-  if (!v8)
+  rulerLayer = [(PKRulerLayer *)self rulerLayer];
+  if (!rulerLayer)
   {
     return;
   }
 
-  v9 = [(PKRulerLayer *)self rulerController];
-  v10 = v9;
-  if (v9)
+  rulerController = [(PKRulerLayer *)self rulerController];
+  v10 = rulerController;
+  if (rulerController)
   {
-    WeakRetained = objc_loadWeakRetained((v9 + 40));
+    WeakRetained = objc_loadWeakRetained((rulerController + 40));
   }
 
   else
@@ -1362,7 +1362,7 @@ LABEL_11:
   if (![WeakRetained isDrawing])
   {
 
-    if (!v4)
+    if (!touchCopy)
     {
       return;
     }
@@ -1370,11 +1370,11 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v12 = [(PKRulerLayer *)self rulerController];
-  v13 = v12;
-  if (v12)
+  rulerController2 = [(PKRulerLayer *)self rulerController];
+  v13 = rulerController2;
+  if (rulerController2)
   {
-    v14 = objc_loadWeakRetained((v12 + 40));
+    v14 = objc_loadWeakRetained((rulerController2 + 40));
   }
 
   else
@@ -1382,9 +1382,9 @@ LABEL_11:
     v14 = 0;
   }
 
-  v15 = [v14 drawingController];
-  v16 = [(PKController *)v15 inputController];
-  v17 = [v16 isSnappedToRuler] | v4;
+  drawingController = [v14 drawingController];
+  inputController = [(PKController *)drawingController inputController];
+  v17 = [inputController isSnappedToRuler] | touchCopy;
 
   if (v17)
   {
@@ -1394,7 +1394,7 @@ LABEL_10:
     *&v26[7] = v19;
     v20 = ((y - v19) * (v28 - v19) + (x - v18) * (v27 - v18)) / ((v28 - v19) * (v28 - v19) + (v27 - v18) * (v27 - v18)) * 4000.0;
     [(PKRulerLayer *)self setCurrentTValueForSnappedDrawing:v20];
-    if (v4)
+    if (touchCopy)
     {
       [(PKRulerLayer *)self setMinTValueForSnappedDrawing:v20];
       [(PKRulerLayer *)self setMaxTValueForSnappedDrawing:v20];
@@ -1407,8 +1407,8 @@ LABEL_10:
       [(PKRulerLayer *)self setMinTValueForSnappedDrawing:fmin(v21, v20)];
       [(PKRulerLayer *)self maxTValueForSnappedDrawing];
       [(PKRulerLayer *)self setMaxTValueForSnappedDrawing:fmax(v22, v20)];
-      v23 = [(PKRulerLayer *)self rulerController];
-      [(PKRulerController *)v23 canvasTransform];
+      rulerController3 = [(PKRulerLayer *)self rulerController];
+      [(PKRulerController *)rulerController3 canvasTransform];
       v24 = *v26;
       v25 = *&v26[1];
 
@@ -1427,9 +1427,9 @@ LABEL_10:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(PKRulerLayer *)self rulerLayer];
-  v4 = [v3 sublayers];
-  v5 = [v4 copy];
+  rulerLayer = [(PKRulerLayer *)self rulerLayer];
+  sublayers = [rulerLayer sublayers];
+  v5 = [sublayers copy];
 
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
@@ -1455,13 +1455,13 @@ LABEL_10:
     while (v6);
   }
 
-  v9 = [(PKRulerLayer *)self rulerDistanceHUD];
-  [(PKRulerLayer *)self addScaleAndOpacityAnimationOnLayer:v9 delegate:self fromScale:1.0 toScale:0.25 fromAlpha:1.0 toAlpha:0.0];
+  rulerDistanceHUD = [(PKRulerLayer *)self rulerDistanceHUD];
+  [(PKRulerLayer *)self addScaleAndOpacityAnimationOnLayer:rulerDistanceHUD delegate:self fromScale:1.0 toScale:0.25 fromAlpha:1.0 toAlpha:0.0];
 
   [(PKRulerLayer *)self setRulerDistanceHUD:0];
   [(PKRulerLayer *)self setRulerDistanceText:0];
-  v10 = [(PKRulerLayer *)self rulerAngleMarker];
-  [v10 removeFromSuperlayer];
+  rulerAngleMarker = [(PKRulerLayer *)self rulerAngleMarker];
+  [rulerAngleMarker removeFromSuperlayer];
 
   [(PKRulerLayer *)self setRulerAngleMarker:0];
   [(PKRulerLayer *)self setRulerDistanceText:0];
@@ -1483,11 +1483,11 @@ LABEL_10:
   return self;
 }
 
-- (void)setPreviousRulerTransform:(CGAffineTransform *)a3
+- (void)setPreviousRulerTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_previousRulerTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_previousRulerTransform.a = *&transform->a;
   *&self->_previousRulerTransform.c = v4;
   *&self->_previousRulerTransform.tx = v3;
 }
@@ -1501,11 +1501,11 @@ LABEL_10:
   return self;
 }
 
-- (void)setRulerZoomStartTransform:(CGAffineTransform *)a3
+- (void)setRulerZoomStartTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_rulerZoomStartTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_rulerZoomStartTransform.a = *&transform->a;
   *&self->_rulerZoomStartTransform.c = v4;
   *&self->_rulerZoomStartTransform.tx = v3;
 }

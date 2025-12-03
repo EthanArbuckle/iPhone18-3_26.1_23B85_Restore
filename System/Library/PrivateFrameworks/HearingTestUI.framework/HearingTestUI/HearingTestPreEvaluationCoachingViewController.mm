@@ -1,5 +1,5 @@
 @interface HearingTestPreEvaluationCoachingViewController
-- (void)continueButtonTapped:(id)a3;
+- (void)continueButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -17,14 +17,14 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for HearingTestPreEvaluationCoachingViewController();
-  v3 = self;
+  selfCopy = self;
   [(OBBaseWelcomeController *)&v4 viewDidLoad];
   sub_20CDBAB20();
   sub_20CDBAD48();
   sub_20CDBB0A8();
 }
 
-- (void)continueButtonTapped:(id)a3
+- (void)continueButtonTapped:(id)tapped
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -35,7 +35,7 @@
   }
 
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20CE13FC4();
   swift_unknownObjectRelease();
   sub_20CDBBB04();

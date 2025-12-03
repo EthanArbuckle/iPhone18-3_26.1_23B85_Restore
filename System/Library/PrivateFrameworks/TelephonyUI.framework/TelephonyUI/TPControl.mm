@@ -1,20 +1,20 @@
 @interface TPControl
-- (TPControl)initWithCoder:(id)a3;
-- (TPControl)initWithFrame:(CGRect)a3;
+- (TPControl)initWithCoder:(id)coder;
+- (TPControl)initWithFrame:(CGRect)frame;
 - (void)commonInit;
-- (void)setAccessiblityConstraintsEnabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessiblityConstraintsEnabled:(BOOL)enabled;
+- (void)traitCollectionDidChange:(id)change;
 - (void)unloadConstraints;
 - (void)updateConstraints;
 @end
 
 @implementation TPControl
 
-- (TPControl)initWithFrame:(CGRect)a3
+- (TPControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TPControl;
-  v3 = [(TPControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TPControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (TPControl)initWithCoder:(id)a3
+- (TPControl)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TPControl;
-  v3 = [(TPControl *)&v6 initWithCoder:a3];
+  v3 = [(TPControl *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -40,14 +40,14 @@
 
 - (void)commonInit
 {
-  v3 = [(TPControl *)self traitCollection];
-  self->_accessiblityConstraintsEnabled = [v3 isPreferredContentSizeCategoryAccessible];
+  traitCollection = [(TPControl *)self traitCollection];
+  self->_accessiblityConstraintsEnabled = [traitCollection isPreferredContentSizeCategoryAccessible];
 }
 
 - (void)unloadConstraints
 {
-  v3 = [(TPControl *)self constraints];
-  [(TPControl *)self removeConstraints:v3];
+  constraints = [(TPControl *)self constraints];
+  [(TPControl *)self removeConstraints:constraints];
 
   [(TPControl *)self setConstraintsLoaded:0];
 }
@@ -66,27 +66,27 @@
   [(TPControl *)&v3 updateConstraints];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = TPControl;
-  v4 = a3;
-  [(TPControl *)&v11 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(TPControl *)&v11 traitCollectionDidChange:changeCopy];
   v5 = [(TPControl *)self traitCollection:v11.receiver];
-  v6 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v7 = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [v5 preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v8 = [v5 isPreferredContentSizeCategoryAccessible];
+    isPreferredContentSizeCategoryAccessible = [v5 isPreferredContentSizeCategoryAccessible];
     v9 = *MEMORY[0x1E69DDC90];
-    v10 = v8 ^ [(TPControl *)self isAccessiblityConstraintsEnabled];
-    if (v6 == v9)
+    v10 = isPreferredContentSizeCategoryAccessible ^ [(TPControl *)self isAccessiblityConstraintsEnabled];
+    if (preferredContentSizeCategory == v9)
     {
       if (v10)
       {
-        self->_accessiblityConstraintsEnabled = v8;
+        self->_accessiblityConstraintsEnabled = isPreferredContentSizeCategoryAccessible;
       }
     }
 
@@ -94,7 +94,7 @@
     {
       if (v10)
       {
-        [(TPControl *)self setAccessiblityConstraintsEnabled:v8];
+        [(TPControl *)self setAccessiblityConstraintsEnabled:isPreferredContentSizeCategoryAccessible];
       }
 
       [(TPControl *)self updateFonts];
@@ -103,11 +103,11 @@
   }
 }
 
-- (void)setAccessiblityConstraintsEnabled:(BOOL)a3
+- (void)setAccessiblityConstraintsEnabled:(BOOL)enabled
 {
-  if (self->_accessiblityConstraintsEnabled != a3)
+  if (self->_accessiblityConstraintsEnabled != enabled)
   {
-    self->_accessiblityConstraintsEnabled = a3;
+    self->_accessiblityConstraintsEnabled = enabled;
     [(TPControl *)self unloadConstraints];
 
     [(TPControl *)self updateConstraints];

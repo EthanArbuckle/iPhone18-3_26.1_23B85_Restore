@@ -7,9 +7,9 @@
 - (id)externalMessageSessionController
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, "BSNSXPCTransport");
+    v2 = objc_getAssociatedObject(self, "BSNSXPCTransport");
     if (!v2)
     {
       v5 = MEMORY[0x1E696AEC0];
@@ -27,7 +27,7 @@
         v25 = 2114;
         v26 = v11;
         v27 = 2048;
-        v28 = a1;
+        selfCopy2 = self;
         v29 = 2114;
         v30 = @"BSNSXPCTransport.m";
         v31 = 1024;
@@ -48,13 +48,13 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v13 = MEMORY[0x1E696AEC0];
-      v14 = [v2 classForCoder];
-      if (!v14)
+      classForCoder = [v2 classForCoder];
+      if (!classForCoder)
       {
-        v14 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v15 = NSStringFromClass(v14);
+      v15 = NSStringFromClass(classForCoder);
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
       v18 = [v13 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"transport", v15, v17];
@@ -69,7 +69,7 @@
         v25 = 2114;
         v26 = v21;
         v27 = 2048;
-        v28 = a1;
+        selfCopy2 = self;
         v29 = 2114;
         v30 = @"BSNSXPCTransport.m";
         v31 = 1024;

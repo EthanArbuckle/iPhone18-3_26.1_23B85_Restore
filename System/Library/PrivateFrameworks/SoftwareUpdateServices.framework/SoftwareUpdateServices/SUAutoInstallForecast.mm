@@ -1,20 +1,20 @@
 @interface SUAutoInstallForecast
 + (id)createForecast;
-+ (id)createForecastForNow:(id)a3;
-- (BOOL)_isDateExpired:(id)a3;
++ (id)createForecastForNow:(id)now;
+- (BOOL)_isDateExpired:(id)expired;
 - (BOOL)_isForecastExpired;
 - (BOOL)_isForecastLogicallyExpired;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SUAutoInstallForecast)init;
-- (SUAutoInstallForecast)initWithCoder:(id)a3;
+- (SUAutoInstallForecast)initWithCoder:(id)coder;
 - (id)_calendar;
 - (id)_forecastDateCache;
 - (id)_roundedEndTime;
 - (id)_roundedStartTime;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)scheduleType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUAutoInstallForecast
@@ -38,33 +38,33 @@
 
 - (int64_t)scheduleType
 {
-  v2 = [(SUAutoInstallForecast *)self _forecastDateCache];
-  v3 = [v2 scheduleType];
+  _forecastDateCache = [(SUAutoInstallForecast *)self _forecastDateCache];
+  scheduleType = [_forecastDateCache scheduleType];
 
-  return v3;
+  return scheduleType;
 }
 
 - (id)description
 {
   v16 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
-  v4 = [(SUAutoInstallForecast *)self unlockStartDate];
-  v5 = [SUUtility prettyPrintDate:v4];
-  v6 = [(SUAutoInstallForecast *)self unlockEndDate];
-  v7 = [SUUtility prettyPrintDate:v6];
-  v8 = [(SUAutoInstallForecast *)self suStartDate];
-  v9 = [SUUtility prettyPrintDate:v8];
-  v10 = [(SUAutoInstallForecast *)self suEndDate];
-  v11 = [SUUtility prettyPrintDate:v10];
-  v12 = [(SUAutoInstallForecast *)self scheduleType];
-  if ((v12 - 1) > 2)
+  unlockStartDate = [(SUAutoInstallForecast *)self unlockStartDate];
+  v5 = [SUUtility prettyPrintDate:unlockStartDate];
+  unlockEndDate = [(SUAutoInstallForecast *)self unlockEndDate];
+  v7 = [SUUtility prettyPrintDate:unlockEndDate];
+  suStartDate = [(SUAutoInstallForecast *)self suStartDate];
+  v9 = [SUUtility prettyPrintDate:suStartDate];
+  suEndDate = [(SUAutoInstallForecast *)self suEndDate];
+  v11 = [SUUtility prettyPrintDate:suEndDate];
+  scheduleType = [(SUAutoInstallForecast *)self scheduleType];
+  if ((scheduleType - 1) > 2)
   {
     v13 = @"Unknown";
   }
 
   else
   {
-    v13 = off_279CACEB0[v12 - 1];
+    v13 = off_279CACEB0[scheduleType - 1];
   }
 
   v14 = [v16 stringWithFormat:@"[<%@:%p>unlockStart:%@|unlockEnd:%@|suStart:%@|suEnd:%@|scheduleType:%@]", v3, self, v5, v7, v9, v11, v13];
@@ -72,10 +72,10 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -85,22 +85,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUAutoInstallForecast *)self unlockStartDate];
-      v7 = [(SUAutoInstallForecast *)v5 unlockStartDate];
-      if ([v6 isEqualToDate:v7])
+      v5 = equalCopy;
+      unlockStartDate = [(SUAutoInstallForecast *)self unlockStartDate];
+      unlockStartDate2 = [(SUAutoInstallForecast *)v5 unlockStartDate];
+      if ([unlockStartDate isEqualToDate:unlockStartDate2])
       {
-        v8 = [(SUAutoInstallForecast *)self unlockEndDate];
-        v9 = [(SUAutoInstallForecast *)v5 unlockEndDate];
-        if ([v8 isEqualToDate:v9])
+        unlockEndDate = [(SUAutoInstallForecast *)self unlockEndDate];
+        unlockEndDate2 = [(SUAutoInstallForecast *)v5 unlockEndDate];
+        if ([unlockEndDate isEqualToDate:unlockEndDate2])
         {
-          v10 = [(SUAutoInstallForecast *)self suStartDate];
-          v11 = [(SUAutoInstallForecast *)v5 suStartDate];
-          if ([v10 isEqualToDate:v11])
+          suStartDate = [(SUAutoInstallForecast *)self suStartDate];
+          suStartDate2 = [(SUAutoInstallForecast *)v5 suStartDate];
+          if ([suStartDate isEqualToDate:suStartDate2])
           {
-            v15 = [(SUAutoInstallForecast *)self suEndDate];
-            v12 = [(SUAutoInstallForecast *)v5 suEndDate];
-            v13 = [v15 isEqualToDate:v12];
+            suEndDate = [(SUAutoInstallForecast *)self suEndDate];
+            suEndDate2 = [(SUAutoInstallForecast *)v5 suEndDate];
+            v13 = [suEndDate isEqualToDate:suEndDate2];
           }
 
           else
@@ -132,44 +132,44 @@
 
 - (id)_calendar
 {
-  v2 = [(SUAutoInstallForecast *)self _forecastDateCache];
-  v3 = [v2 calendar];
+  _forecastDateCache = [(SUAutoInstallForecast *)self _forecastDateCache];
+  calendar = [_forecastDateCache calendar];
 
-  return v3;
+  return calendar;
 }
 
 - (BOOL)_isForecastLogicallyExpired
 {
-  v2 = self;
-  v3 = [(SUAutoInstallForecast *)self suStartDate];
-  LOBYTE(v2) = [(SUAutoInstallForecast *)v2 _isDateExpired:v3];
+  selfCopy = self;
+  suStartDate = [(SUAutoInstallForecast *)self suStartDate];
+  LOBYTE(selfCopy) = [(SUAutoInstallForecast *)selfCopy _isDateExpired:suStartDate];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_isForecastExpired
 {
-  v2 = self;
-  v3 = [(SUAutoInstallForecast *)self suEndDate];
-  LOBYTE(v2) = [(SUAutoInstallForecast *)v2 _isDateExpired:v3];
+  selfCopy = self;
+  suEndDate = [(SUAutoInstallForecast *)self suEndDate];
+  LOBYTE(selfCopy) = [(SUAutoInstallForecast *)selfCopy _isDateExpired:suEndDate];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_roundedStartTime
 {
-  v2 = [(SUAutoInstallForecast *)self _forecastDateCache];
-  v3 = [v2 roundedStartTime];
+  _forecastDateCache = [(SUAutoInstallForecast *)self _forecastDateCache];
+  roundedStartTime = [_forecastDateCache roundedStartTime];
 
-  return v3;
+  return roundedStartTime;
 }
 
 - (id)_roundedEndTime
 {
-  v2 = [(SUAutoInstallForecast *)self _forecastDateCache];
-  v3 = [v2 roundedEndTime];
+  _forecastDateCache = [(SUAutoInstallForecast *)self _forecastDateCache];
+  roundedEndTime = [_forecastDateCache roundedEndTime];
 
-  return v3;
+  return roundedEndTime;
 }
 
 - (id)_forecastDateCache
@@ -187,30 +187,30 @@
   return lazy_forecastDateCache;
 }
 
-- (BOOL)_isDateExpired:(id)a3
+- (BOOL)_isDateExpired:(id)expired
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 date];
-  v6 = [v4 laterDate:v5];
+  expiredCopy = expired;
+  date = [v3 date];
+  v6 = [expiredCopy laterDate:date];
 
-  return v6 == v5;
+  return v6 == date;
 }
 
 + (id)createForecast
 {
   v3 = [MEMORY[0x277CBEAA8] now];
-  v4 = [a1 createForecastForNow:v3];
+  v4 = [self createForecastForNow:v3];
 
   return v4;
 }
 
-+ (id)createForecastForNow:(id)a3
++ (id)createForecastForNow:(id)now
 {
-  v3 = a3;
+  nowCopy = now;
   v4 = objc_alloc_init(MEMORY[0x277CFE118]);
-  v5 = [v4 getUnlockAndSoftwareUpdateTimes];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CFE310]];
+  getUnlockAndSoftwareUpdateTimes = [v4 getUnlockAndSoftwareUpdateTimes];
+  v6 = [getUnlockAndSoftwareUpdateTimes objectForKeyedSubscript:*MEMORY[0x277CFE310]];
   v14 = v6;
   if (!v6 || ([v6 dateByAddingTimeInterval:-7200.0], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
   {
@@ -220,31 +220,31 @@
   }
 
   v16 = v15;
-  v17 = [v5 objectForKeyedSubscript:*MEMORY[0x277CFE300]];
+  v17 = [getUnlockAndSoftwareUpdateTimes objectForKeyedSubscript:*MEMORY[0x277CFE300]];
   if (v17)
   {
     v25 = v17;
-    v26 = [MEMORY[0x277CBEAA8] date];
-    v27 = [v25 laterDate:v26];
+    date = [MEMORY[0x277CBEAA8] date];
+    v27 = [v25 laterDate:date];
 
     if (v27 == v25)
     {
       v119 = v25;
-      v36 = specificTimeOnDate(v3, 2, 0, 0);
-      v37 = specificTimeOnDate(v3, 4, 0, 0);
-      v38 = specificTimeOnDate(v3, 5, 0, 0);
+      v36 = specificTimeOnDate(nowCopy, 2, 0, 0);
+      v37 = specificTimeOnDate(nowCopy, 4, 0, 0);
+      v38 = specificTimeOnDate(nowCopy, 5, 0, 0);
       v39 = [v36 dateByAddingTimeInterval:86400.0];
       v40 = [v38 dateByAddingTimeInterval:86400.0];
-      v41 = [v3 compare:v36];
+      v41 = [nowCopy compare:v36];
       v124 = v36;
       v42 = v36;
       v43 = v38;
       if (v41 != -1)
       {
-        v44 = [v3 compare:v37];
+        v44 = [nowCopy compare:v37];
         if (v44 == -1)
         {
-          v42 = v3;
+          v42 = nowCopy;
         }
 
         else
@@ -280,14 +280,14 @@
       {
         v118 = v45;
         v57 = +[SUPreferences sharedInstance];
-        v58 = [v57 autoSUStartDelta];
+        autoSUStartDelta = [v57 autoSUStartDelta];
 
         v59 = v119;
-        if (v58)
+        if (autoSUStartDelta)
         {
           v60 = +[SUPreferences sharedInstance];
-          v61 = [v60 autoSUStartDelta];
-          v62 = (60 * [v61 unsignedIntegerValue]);
+          autoSUStartDelta2 = [v60 autoSUStartDelta];
+          v62 = (60 * [autoSUStartDelta2 unsignedIntegerValue]);
 
           v63 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v62];
 
@@ -298,13 +298,13 @@
         }
 
         v71 = +[SUPreferences sharedInstance];
-        v72 = [v71 autoSUEndDelta];
+        autoSUEndDelta = [v71 autoSUEndDelta];
 
-        if (v72)
+        if (autoSUEndDelta)
         {
           v73 = +[SUPreferences sharedInstance];
-          v74 = [v73 autoSUEndDelta];
-          v75 = (60 * [v74 unsignedIntegerValue]);
+          autoSUEndDelta2 = [v73 autoSUEndDelta];
+          v75 = (60 * [autoSUEndDelta2 unsignedIntegerValue]);
 
           v76 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v75];
 
@@ -315,13 +315,13 @@
         }
 
         v84 = +[SUPreferences sharedInstance];
-        v85 = [v84 autoSUUnlockStartDelta];
+        autoSUUnlockStartDelta = [v84 autoSUUnlockStartDelta];
 
-        if (v85)
+        if (autoSUUnlockStartDelta)
         {
           v86 = +[SUPreferences sharedInstance];
-          v87 = [v86 autoSUUnlockStartDelta];
-          v88 = (60 * [v87 unsignedIntegerValue]);
+          autoSUUnlockStartDelta2 = [v86 autoSUUnlockStartDelta];
+          v88 = (60 * [autoSUUnlockStartDelta2 unsignedIntegerValue]);
 
           v89 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v88];
 
@@ -332,13 +332,13 @@
         }
 
         v97 = +[SUPreferences sharedInstance];
-        v98 = [v97 autoSUUnlockEndDelta];
+        autoSUUnlockEndDelta = [v97 autoSUUnlockEndDelta];
 
-        if (v98)
+        if (autoSUUnlockEndDelta)
         {
           v99 = +[SUPreferences sharedInstance];
-          v100 = [v99 autoSUUnlockEndDelta];
-          v101 = (60 * [v100 unsignedIntegerValue]);
+          autoSUUnlockEndDelta2 = [v99 autoSUUnlockEndDelta];
+          v101 = (60 * [autoSUUnlockEndDelta2 unsignedIntegerValue]);
 
           v102 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v101];
 
@@ -383,60 +383,60 @@ LABEL_29:
   return v35;
 }
 
-- (SUAutoInstallForecast)initWithCoder:(id)a3
+- (SUAutoInstallForecast)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SUAutoInstallForecast;
   v5 = [(SUAutoInstallForecast *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UnlockStart"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UnlockStart"];
     [(SUAutoInstallForecast *)v5 setUnlockStartDate:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UnlockEnd"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UnlockEnd"];
     [(SUAutoInstallForecast *)v5 setUnlockEndDate:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUStart"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUStart"];
     [(SUAutoInstallForecast *)v5 setSuStartDate:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUEnd"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUEnd"];
     [(SUAutoInstallForecast *)v5 setSuEndDate:v9];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUAutoInstallForecast *)self unlockStartDate];
-  [v4 encodeObject:v5 forKey:@"UnlockStart"];
+  coderCopy = coder;
+  unlockStartDate = [(SUAutoInstallForecast *)self unlockStartDate];
+  [coderCopy encodeObject:unlockStartDate forKey:@"UnlockStart"];
 
-  v6 = [(SUAutoInstallForecast *)self unlockEndDate];
-  [v4 encodeObject:v6 forKey:@"UnlockEnd"];
+  unlockEndDate = [(SUAutoInstallForecast *)self unlockEndDate];
+  [coderCopy encodeObject:unlockEndDate forKey:@"UnlockEnd"];
 
-  v7 = [(SUAutoInstallForecast *)self suStartDate];
-  [v4 encodeObject:v7 forKey:@"SUStart"];
+  suStartDate = [(SUAutoInstallForecast *)self suStartDate];
+  [coderCopy encodeObject:suStartDate forKey:@"SUStart"];
 
-  v8 = [(SUAutoInstallForecast *)self suEndDate];
-  [v4 encodeObject:v8 forKey:@"SUEnd"];
+  suEndDate = [(SUAutoInstallForecast *)self suEndDate];
+  [coderCopy encodeObject:suEndDate forKey:@"SUEnd"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SUAutoInstallForecast);
-  v5 = [(SUAutoInstallForecast *)self unlockStartDate];
-  [(SUAutoInstallForecast *)v4 setUnlockStartDate:v5];
+  unlockStartDate = [(SUAutoInstallForecast *)self unlockStartDate];
+  [(SUAutoInstallForecast *)v4 setUnlockStartDate:unlockStartDate];
 
-  v6 = [(SUAutoInstallForecast *)self unlockEndDate];
-  [(SUAutoInstallForecast *)v4 setUnlockEndDate:v6];
+  unlockEndDate = [(SUAutoInstallForecast *)self unlockEndDate];
+  [(SUAutoInstallForecast *)v4 setUnlockEndDate:unlockEndDate];
 
-  v7 = [(SUAutoInstallForecast *)self suStartDate];
-  [(SUAutoInstallForecast *)v4 setSuStartDate:v7];
+  suStartDate = [(SUAutoInstallForecast *)self suStartDate];
+  [(SUAutoInstallForecast *)v4 setSuStartDate:suStartDate];
 
-  v8 = [(SUAutoInstallForecast *)self suEndDate];
-  [(SUAutoInstallForecast *)v4 setSuEndDate:v8];
+  suEndDate = [(SUAutoInstallForecast *)self suEndDate];
+  [(SUAutoInstallForecast *)v4 setSuEndDate:suEndDate];
 
   return v4;
 }

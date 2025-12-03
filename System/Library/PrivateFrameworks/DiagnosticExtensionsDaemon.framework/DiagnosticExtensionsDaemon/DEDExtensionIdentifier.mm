@@ -1,13 +1,13 @@
 @interface DEDExtensionIdentifier
 + (id)archivedClasses;
 + (id)log;
-+ (id)parseDEDIdentifierString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (DEDExtensionIdentifier)initWithCoder:(id)a3;
-- (DEDExtensionIdentifier)initWithExtensionIdentifier:(id)a3 invocationNumber:(int64_t)a4;
-- (DEDExtensionIdentifier)initWithString:(id)a3;
++ (id)parseDEDIdentifierString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (DEDExtensionIdentifier)initWithCoder:(id)coder;
+- (DEDExtensionIdentifier)initWithExtensionIdentifier:(id)identifier invocationNumber:(int64_t)number;
+- (DEDExtensionIdentifier)initWithString:(id)string;
 - (NSString)stringValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DEDExtensionIdentifier
@@ -32,29 +32,29 @@ void __29__DEDExtensionIdentifier_log__block_invoke()
   log_log_3 = v0;
 }
 
-+ (id)parseDEDIdentifierString:(id)a3
++ (id)parseDEDIdentifierString:(id)string
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@"."];
+  stringCopy = string;
+  v4 = [stringCopy componentsSeparatedByString:@"."];
   v5 = [v4 mutableCopy];
 
-  v6 = [v5 lastObject];
-  v7 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  lastObject = [v5 lastObject];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  v8 = [lastObject stringByTrimmingCharactersInSet:decimalDigitCharacterSet];
 
   if ([v8 isEqualToString:&stru_285B72378])
   {
     [v5 removeLastObject];
     v9 = [v5 componentsJoinedByString:@"."];
     v13[0] = v9;
-    v13[1] = v6;
+    v13[1] = lastObject;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   }
 
   else
   {
-    v14[0] = v3;
+    v14[0] = stringCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   }
 
@@ -63,9 +63,9 @@ void __29__DEDExtensionIdentifier_log__block_invoke()
   return v10;
 }
 
-- (DEDExtensionIdentifier)initWithString:(id)a3
+- (DEDExtensionIdentifier)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = DEDExtensionIdentifier;
   v5 = [(DEDExtensionIdentifier *)&v15 init];
@@ -76,27 +76,27 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v6 = [objc_opt_class() parseDEDIdentifierString:v4];
+  v6 = [objc_opt_class() parseDEDIdentifierString:stringCopy];
   v7 = v6;
   if (v6 && [v6 count])
   {
     if ([v7 count] == 1)
     {
-      v8 = [v7 firstObject];
+      firstObject = [v7 firstObject];
       extensionIdentifier = v5->_extensionIdentifier;
-      v5->_extensionIdentifier = v8;
+      v5->_extensionIdentifier = firstObject;
 
       v5->_invocationNumber = 0;
     }
 
     else
     {
-      v11 = [v7 lastObject];
-      v5->_invocationNumber = [v11 integerValue];
+      lastObject = [v7 lastObject];
+      v5->_invocationNumber = [lastObject integerValue];
 
-      v12 = [v7 firstObject];
+      firstObject2 = [v7 firstObject];
       v13 = v5->_extensionIdentifier;
-      v5->_extensionIdentifier = v12;
+      v5->_extensionIdentifier = firstObject2;
     }
 
     goto LABEL_9;
@@ -108,17 +108,17 @@ LABEL_10:
   return v10;
 }
 
-- (DEDExtensionIdentifier)initWithExtensionIdentifier:(id)a3 invocationNumber:(int64_t)a4
+- (DEDExtensionIdentifier)initWithExtensionIdentifier:(id)identifier invocationNumber:(int64_t)number
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = DEDExtensionIdentifier;
   v8 = [(DEDExtensionIdentifier *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_extensionIdentifier, a3);
-    v9->_invocationNumber = a4;
+    objc_storeStrong(&v8->_extensionIdentifier, identifier);
+    v9->_invocationNumber = number;
   }
 
   return v9;
@@ -129,40 +129,40 @@ LABEL_10:
   if ([(DEDExtensionIdentifier *)self invocationNumber])
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [(DEDExtensionIdentifier *)self extensionIdentifier];
-    v5 = [v3 stringWithFormat:@"%@.%ld", v4, -[DEDExtensionIdentifier invocationNumber](self, "invocationNumber")];
+    extensionIdentifier = [(DEDExtensionIdentifier *)self extensionIdentifier];
+    extensionIdentifier2 = [v3 stringWithFormat:@"%@.%ld", extensionIdentifier, -[DEDExtensionIdentifier invocationNumber](self, "invocationNumber")];
   }
 
   else
   {
-    v5 = [(DEDExtensionIdentifier *)self extensionIdentifier];
+    extensionIdentifier2 = [(DEDExtensionIdentifier *)self extensionIdentifier];
   }
 
-  return v5;
+  return extensionIdentifier2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(DEDExtensionIdentifier *)self extensionIdentifier];
-  [v5 encodeObject:v4 forKey:@"extensionIdentifier"];
+  coderCopy = coder;
+  extensionIdentifier = [(DEDExtensionIdentifier *)self extensionIdentifier];
+  [coderCopy encodeObject:extensionIdentifier forKey:@"extensionIdentifier"];
 
-  [v5 encodeInteger:-[DEDExtensionIdentifier invocationNumber](self forKey:{"invocationNumber"), @"invocationNumber"}];
+  [coderCopy encodeInteger:-[DEDExtensionIdentifier invocationNumber](self forKey:{"invocationNumber"), @"invocationNumber"}];
 }
 
-- (DEDExtensionIdentifier)initWithCoder:(id)a3
+- (DEDExtensionIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DEDExtensionIdentifier;
   v5 = [(DEDExtensionIdentifier *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionIdentifier"];
     extensionIdentifier = v5->_extensionIdentifier;
     v5->_extensionIdentifier = v6;
 
-    v5->_invocationNumber = [v4 decodeIntegerForKey:@"invocationNumber"];
+    v5->_invocationNumber = [coderCopy decodeIntegerForKey:@"invocationNumber"];
   }
 
   return v5;
@@ -174,7 +174,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __41__DEDExtensionIdentifier_archivedClasses__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (archivedClasses_onceToken_2 != -1)
   {
     dispatch_once(&archivedClasses_onceToken_2, block);
@@ -195,18 +195,18 @@ uint64_t __41__DEDExtensionIdentifier_archivedClasses__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(DEDExtensionIdentifier *)self extensionIdentifier];
-    v7 = [v5 extensionIdentifier];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    extensionIdentifier = [(DEDExtensionIdentifier *)self extensionIdentifier];
+    extensionIdentifier2 = [v5 extensionIdentifier];
+    if ([extensionIdentifier isEqualToString:extensionIdentifier2])
     {
-      v8 = [(DEDExtensionIdentifier *)self invocationNumber];
-      v9 = v8 == [v5 invocationNumber];
+      invocationNumber = [(DEDExtensionIdentifier *)self invocationNumber];
+      v9 = invocationNumber == [v5 invocationNumber];
     }
 
     else

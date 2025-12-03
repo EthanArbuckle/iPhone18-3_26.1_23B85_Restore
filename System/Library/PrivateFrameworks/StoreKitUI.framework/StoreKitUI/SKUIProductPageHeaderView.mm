@@ -1,43 +1,43 @@
 @interface SKUIProductPageHeaderView
-- (SKUIProductPageHeaderView)initWithClientContext:(id)a3;
-- (void)_cancelConfirmationAction:(id)a3;
+- (SKUIProductPageHeaderView)initWithClientContext:(id)context;
+- (void)_cancelConfirmationAction:(id)action;
 - (void)_finishButtonAnimation;
-- (void)_getBottomLayoutProperties:(id *)a3 origins:(double *)a4 height:(double *)a5 forWidth:(double)a6;
-- (void)_getTopLayoutProperties:(id *)a3 origins:(double *)a4 height:(double *)a5 forWidth:(double)a6;
-- (void)_reloadItemOfferButton:(BOOL)a3;
-- (void)_showConfirmationAction:(id)a3;
-- (void)contentRatingArtworkLoader:(id)a3 didLoadImage:(id)a4 forContentRating:(id)a5;
+- (void)_getBottomLayoutProperties:(id *)properties origins:(double *)origins height:(double *)height forWidth:(double)width;
+- (void)_getTopLayoutProperties:(id *)properties origins:(double *)origins height:(double *)height forWidth:(double)width;
+- (void)_reloadItemOfferButton:(BOOL)button;
+- (void)_showConfirmationAction:(id)action;
+- (void)contentRatingArtworkLoader:(id)loader didLoadImage:(id)image forContentRating:(id)rating;
 - (void)dealloc;
-- (void)itemOfferButtonWillAnimateTransition:(id)a3;
+- (void)itemOfferButtonWillAnimateTransition:(id)transition;
 - (void)layoutSubviews;
-- (void)setAgeBandString:(id)a3;
-- (void)setArtistName:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setContentRating:(id)a3;
-- (void)setContentRatingArtworkLoader:(id)a3;
-- (void)setEditorialBadge:(id)a3;
-- (void)setHeaderImage:(id)a3;
-- (void)setHeaderImageHeight:(double)a3;
-- (void)setIconImage:(id)a3;
-- (void)setInAppPurchasesString:(id)a3;
-- (void)setItemOffer:(id)a3;
-- (void)setItemOfferExplanationText:(id)a3;
-- (void)setItemOfferExplanationTitle:(id)a3;
-- (void)setItemState:(id)a3 animated:(BOOL)a4;
-- (void)setNumberOfUserRatings:(int64_t)a3;
-- (void)setRestricted:(BOOL)a3;
-- (void)setSecondaryContentRating:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUserRating:(double)a3;
+- (void)setAgeBandString:(id)string;
+- (void)setArtistName:(id)name;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setContentRating:(id)rating;
+- (void)setContentRatingArtworkLoader:(id)loader;
+- (void)setEditorialBadge:(id)badge;
+- (void)setHeaderImage:(id)image;
+- (void)setHeaderImageHeight:(double)height;
+- (void)setIconImage:(id)image;
+- (void)setInAppPurchasesString:(id)string;
+- (void)setItemOffer:(id)offer;
+- (void)setItemOfferExplanationText:(id)text;
+- (void)setItemOfferExplanationTitle:(id)title;
+- (void)setItemState:(id)state animated:(BOOL)animated;
+- (void)setNumberOfUserRatings:(int64_t)ratings;
+- (void)setRestricted:(BOOL)restricted;
+- (void)setSecondaryContentRating:(id)rating;
+- (void)setTitle:(id)title;
+- (void)setUserRating:(double)rating;
 - (void)sizeToFit;
 @end
 
 @implementation SKUIProductPageHeaderView
 
-- (SKUIProductPageHeaderView)initWithClientContext:(id)a3
+- (SKUIProductPageHeaderView)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageHeaderView initWithClientContext:];
@@ -49,7 +49,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
     if (SKUIUserInterfaceIdiom(v7->_clientContext) == 1)
     {
       v8 = [MEMORY[0x277D755B8] kitImageNamed:@"UIButtonBarAction"];
@@ -60,17 +60,17 @@
       LODWORD(v11) = -1.0;
       [(UIButton *)v7->_shareButton setCharge:v11];
       v12 = v7->_shareButton;
-      v13 = [(SKUIColorScheme *)v7->_colorScheme secondaryTextColor];
-      v14 = v13;
-      if (!v13)
+      secondaryTextColor = [(SKUIColorScheme *)v7->_colorScheme secondaryTextColor];
+      tintColor = secondaryTextColor;
+      if (!secondaryTextColor)
       {
-        v14 = [(SKUIProductPageHeaderView *)v7 tintColor];
+        tintColor = [(SKUIProductPageHeaderView *)v7 tintColor];
       }
 
-      v15 = [v8 _flatImageWithColor:v14];
+      v15 = [v8 _flatImageWithColor:tintColor];
       [(UIButton *)v12 setImage:v15 forState:0];
 
-      if (!v13)
+      if (!secondaryTextColor)
       {
       }
 
@@ -96,17 +96,17 @@
   [(SKUIProductPageHeaderView *)&v4 dealloc];
 }
 
-- (void)setAgeBandString:(id)a3
+- (void)setAgeBandString:(id)string
 {
-  v19 = a3;
-  v4 = [(SKUIProductPageHeaderView *)self ageBandString];
-  v5 = [v19 isEqualToString:v4];
+  stringCopy = string;
+  ageBandString = [(SKUIProductPageHeaderView *)self ageBandString];
+  v5 = [stringCopy isEqualToString:ageBandString];
 
-  v7 = v19;
+  v7 = stringCopy;
   if ((v5 & 1) == 0)
   {
     ageBandLabel = self->_ageBandLabel;
-    if (v19)
+    if (stringCopy)
     {
       if (!ageBandLabel)
       {
@@ -115,18 +115,18 @@
         self->_ageBandLabel = v9;
 
         v11 = self->_ageBandLabel;
-        v12 = [(SKUIProductPageHeaderView *)self backgroundColor];
-        [(UILabel *)v11 setBackgroundColor:v12];
+        backgroundColor = [(SKUIProductPageHeaderView *)self backgroundColor];
+        [(UILabel *)v11 setBackgroundColor:backgroundColor];
 
         v13 = self->_ageBandLabel;
         v14 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
         [(UILabel *)v13 setFont:v14];
 
         v15 = self->_ageBandLabel;
-        v16 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-        if (v16)
+        primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+        if (primaryTextColor)
         {
-          [(UILabel *)v15 setTextColor:v16];
+          [(UILabel *)v15 setTextColor:primaryTextColor];
         }
 
         else
@@ -137,7 +137,7 @@
 
         [(SKUIProductPageHeaderView *)self addSubview:self->_ageBandLabel];
         ageBandLabel = self->_ageBandLabel;
-        v7 = v19;
+        v7 = stringCopy;
       }
 
       [(UILabel *)ageBandLabel setText:v7];
@@ -151,20 +151,20 @@
       self->_ageBandLabel = 0;
     }
 
-    v6 = [(SKUIProductPageHeaderView *)self setNeedsLayout];
+    setNeedsLayout = [(SKUIProductPageHeaderView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F9730](v6);
+  MEMORY[0x2821F9730](setNeedsLayout);
 }
 
-- (void)setArtistName:(id)a3
+- (void)setArtistName:(id)name
 {
-  v19 = a3;
-  v4 = [(SKUIProductPageHeaderView *)self artistName];
-  if (v4 != v19 && ([v4 isEqualToString:v19] & 1) == 0)
+  nameCopy = name;
+  artistName = [(SKUIProductPageHeaderView *)self artistName];
+  if (artistName != nameCopy && ([artistName isEqualToString:nameCopy] & 1) == 0)
   {
     artistButton = self->_artistButton;
-    if (v19)
+    if (nameCopy)
     {
       if (!artistButton)
       {
@@ -185,15 +185,15 @@
         v10 = ;
         [(UIButton *)v8 setBackgroundColor:v10];
 
-        v11 = [(UIButton *)self->_artistButton titleLabel];
+        titleLabel = [(UIButton *)self->_artistButton titleLabel];
         v12 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
-        [v11 setFont:v12];
+        [titleLabel setFont:v12];
 
         v13 = self->_artistButton;
-        v14 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-        if (v14)
+        primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+        if (primaryTextColor)
         {
-          [(UIButton *)v13 setTitleColor:v14 forState:0];
+          [(UIButton *)v13 setTitleColor:primaryTextColor forState:0];
         }
 
         else
@@ -203,16 +203,16 @@
         }
 
         v16 = self->_artistButton;
-        v17 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-        if (v17)
+        primaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+        if (primaryTextColor2)
         {
-          [(UIButton *)v16 setTitleColor:v17 forState:1];
+          [(UIButton *)v16 setTitleColor:primaryTextColor2 forState:1];
         }
 
         else
         {
-          v18 = [MEMORY[0x277D75348] blackColor];
-          [(UIButton *)v16 setTitleColor:v18 forState:1];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UIButton *)v16 setTitleColor:blackColor forState:1];
         }
 
         [(SKUIProductPageHeaderView *)self addSubview:self->_artistButton];
@@ -234,37 +234,37 @@
   }
 }
 
-- (void)setContentRatingArtworkLoader:(id)a3
+- (void)setContentRatingArtworkLoader:(id)loader
 {
-  v5 = a3;
+  loaderCopy = loader;
   contentRatingArtworkLoader = self->_contentRatingArtworkLoader;
-  if (contentRatingArtworkLoader != v5)
+  if (contentRatingArtworkLoader != loaderCopy)
   {
-    v7 = v5;
+    v7 = loaderCopy;
     [(SKUIContentRatingArtworkResourceLoader *)contentRatingArtworkLoader removeObserver:self];
-    objc_storeStrong(&self->_contentRatingArtworkLoader, a3);
+    objc_storeStrong(&self->_contentRatingArtworkLoader, loader);
     contentRatingArtworkLoader = [(SKUIContentRatingArtworkResourceLoader *)self->_contentRatingArtworkLoader addObserver:self];
-    v5 = v7;
+    loaderCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](contentRatingArtworkLoader, v5);
+  MEMORY[0x2821F96F8](contentRatingArtworkLoader, loaderCopy);
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v30 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
-    v6 = [(SKUIProductPageHeaderView *)self backgroundColor];
-    [(SKUIProductPageHeaderView *)self setBackgroundColor:v6];
+    v30 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
+    backgroundColor = [(SKUIProductPageHeaderView *)self backgroundColor];
+    [(SKUIProductPageHeaderView *)self setBackgroundColor:backgroundColor];
 
     artistButton = self->_artistButton;
-    v8 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v8)
+    primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(UIButton *)artistButton setTitleColor:v8 forState:0];
+      [(UIButton *)artistButton setTitleColor:primaryTextColor forState:0];
     }
 
     else
@@ -274,10 +274,10 @@
     }
 
     inAppPurchasesLabel = self->_inAppPurchasesLabel;
-    v11 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v11)
+    primaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor2)
     {
-      [(UILabel *)inAppPurchasesLabel setTextColor:v11];
+      [(UILabel *)inAppPurchasesLabel setTextColor:primaryTextColor2];
     }
 
     else
@@ -287,10 +287,10 @@
     }
 
     ageBandLabel = self->_ageBandLabel;
-    v14 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v14)
+    primaryTextColor3 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor3)
     {
-      [(UILabel *)ageBandLabel setTextColor:v14];
+      [(UILabel *)ageBandLabel setTextColor:primaryTextColor3];
     }
 
     else
@@ -300,10 +300,10 @@
     }
 
     titleLabel = self->_titleLabel;
-    v17 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v17)
+    secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [(SKUIProductPageHeaderLabel *)titleLabel setTextColor:v17];
+      [(SKUIProductPageHeaderLabel *)titleLabel setTextColor:secondaryTextColor];
     }
 
     else
@@ -313,10 +313,10 @@
     }
 
     userRatingLabel = self->_userRatingLabel;
-    v20 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v20)
+    primaryTextColor4 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor4)
     {
-      [(UILabel *)userRatingLabel setTextColor:v20];
+      [(UILabel *)userRatingLabel setTextColor:primaryTextColor4];
     }
 
     else
@@ -326,10 +326,10 @@
     }
 
     editorialBadgeLabel = self->_editorialBadgeLabel;
-    v23 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v23)
+    primaryTextColor5 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor5)
     {
-      [(SKUIBadgeLabel *)editorialBadgeLabel setBackgroundColor:v23];
+      [(SKUIBadgeLabel *)editorialBadgeLabel setBackgroundColor:primaryTextColor5];
     }
 
     else
@@ -340,48 +340,48 @@
 
     v25 = [MEMORY[0x277D755B8] kitImageNamed:@"UIButtonBarAction"];
     shareButton = self->_shareButton;
-    v27 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    v28 = v27;
-    if (!v27)
+    secondaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    tintColor = secondaryTextColor2;
+    if (!secondaryTextColor2)
     {
-      v28 = [(SKUIProductPageHeaderView *)self tintColor];
+      tintColor = [(SKUIProductPageHeaderView *)self tintColor];
     }
 
-    v29 = [v25 _flatImageWithColor:v28];
+    v29 = [v25 _flatImageWithColor:tintColor];
     [(UIButton *)shareButton setImage:v29 forState:0];
 
-    if (!v27)
+    if (!secondaryTextColor2)
     {
     }
 
-    v5 = v30;
+    schemeCopy = v30;
   }
 }
 
-- (void)setContentRating:(id)a3
+- (void)setContentRating:(id)rating
 {
-  v5 = a3;
-  if (self->_contentRating != v5)
+  ratingCopy = rating;
+  if (self->_contentRating != ratingCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_contentRating, a3);
+    v8 = ratingCopy;
+    objc_storeStrong(&self->_contentRating, rating);
     titleLabel = self->_titleLabel;
-    v7 = [(SKUIItemContentRating *)self->_contentRating contentRatingName];
-    [(SKUIProductPageHeaderLabel *)titleLabel setContentRating:v7];
+    contentRatingName = [(SKUIItemContentRating *)self->_contentRating contentRatingName];
+    [(SKUIProductPageHeaderLabel *)titleLabel setContentRating:contentRatingName];
 
     [(SKUIProductPageHeaderView *)self setNeedsLayout];
-    v5 = v8;
+    ratingCopy = v8;
   }
 }
 
-- (void)setEditorialBadge:(id)a3
+- (void)setEditorialBadge:(id)badge
 {
-  v15 = a3;
-  v4 = [(SKUIBadgeLabel *)self->_editorialBadgeLabel text];
-  if (v4 != v15 && ([v4 isEqualToString:v15] & 1) == 0)
+  badgeCopy = badge;
+  text = [(SKUIBadgeLabel *)self->_editorialBadgeLabel text];
+  if (text != badgeCopy && ([text isEqualToString:badgeCopy] & 1) == 0)
   {
     editorialBadgeLabel = self->_editorialBadgeLabel;
-    if (v15)
+    if (badgeCopy)
     {
       if (!editorialBadgeLabel)
       {
@@ -390,10 +390,10 @@
         self->_editorialBadgeLabel = v6;
 
         v8 = self->_editorialBadgeLabel;
-        v9 = [(SKUIProductPageHeaderView *)self backgroundColor];
-        if (v9)
+        backgroundColor = [(SKUIProductPageHeaderView *)self backgroundColor];
+        if (backgroundColor)
         {
-          [(SKUIBadgeLabel *)v8 setTextColor:v9];
+          [(SKUIBadgeLabel *)v8 setTextColor:backgroundColor];
         }
 
         else
@@ -403,10 +403,10 @@
         }
 
         v12 = self->_editorialBadgeLabel;
-        v13 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-        if (v13)
+        primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+        if (primaryTextColor)
         {
-          [(SKUIBadgeLabel *)v12 setBackgroundColor:v13];
+          [(SKUIBadgeLabel *)v12 setBackgroundColor:primaryTextColor];
         }
 
         else
@@ -433,15 +433,15 @@
   }
 }
 
-- (void)setHeaderImage:(id)a3
+- (void)setHeaderImage:(id)image
 {
-  v12 = a3;
-  v4 = [(UIImageView *)self->_headerImageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_headerImageView image];
 
-  if (v4 != v12)
+  if (image != imageCopy)
   {
     headerImageView = self->_headerImageView;
-    if (v12)
+    if (imageCopy)
     {
       if (!headerImageView)
       {
@@ -450,8 +450,8 @@
         self->_headerImageView = v7;
 
         v9 = self->_headerImageView;
-        v10 = [(SKUIProductPageHeaderView *)self backgroundColor];
-        [(UIImageView *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SKUIProductPageHeaderView *)self backgroundColor];
+        [(UIImageView *)v9 setBackgroundColor:backgroundColor];
 
         [(SKUIProductPageHeaderView *)self addSubview:self->_headerImageView];
         headerImageView = self->_headerImageView;
@@ -468,30 +468,30 @@
       self->_headerImageView = 0;
     }
 
-    v5 = [(SKUIProductPageHeaderView *)self setNeedsLayout];
+    setNeedsLayout = [(SKUIProductPageHeaderView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](setNeedsLayout);
 }
 
-- (void)setHeaderImageHeight:(double)a3
+- (void)setHeaderImageHeight:(double)height
 {
-  if (self->_headerImageHeight != a3)
+  if (self->_headerImageHeight != height)
   {
-    self->_headerImageHeight = a3;
+    self->_headerImageHeight = height;
     [(SKUIProductPageHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v12 = a3;
-  v4 = [(UIImageView *)self->_iconImageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_iconImageView image];
 
-  if (v4 != v12)
+  if (image != imageCopy)
   {
     iconImageView = self->_iconImageView;
-    if (v12)
+    if (imageCopy)
     {
       if (!iconImageView)
       {
@@ -527,20 +527,20 @@
       self->_iconImageView = 0;
     }
 
-    v5 = [(SKUIProductPageHeaderView *)self setNeedsLayout];
+    setNeedsLayout = [(SKUIProductPageHeaderView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](setNeedsLayout);
 }
 
-- (void)setInAppPurchasesString:(id)a3
+- (void)setInAppPurchasesString:(id)string
 {
-  v16 = a3;
-  v4 = [(UILabel *)self->_inAppPurchasesLabel text];
-  if (v4 != v16 && ([v4 isEqualToString:v16] & 1) == 0)
+  stringCopy = string;
+  text = [(UILabel *)self->_inAppPurchasesLabel text];
+  if (text != stringCopy && ([text isEqualToString:stringCopy] & 1) == 0)
   {
     inAppPurchasesLabel = self->_inAppPurchasesLabel;
-    if (v16)
+    if (stringCopy)
     {
       if (!inAppPurchasesLabel)
       {
@@ -549,18 +549,18 @@
         self->_inAppPurchasesLabel = v6;
 
         v8 = self->_inAppPurchasesLabel;
-        v9 = [(SKUIProductPageHeaderView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SKUIProductPageHeaderView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_inAppPurchasesLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
         [(UILabel *)v10 setFont:v11];
 
         v12 = self->_inAppPurchasesLabel;
-        v13 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-        if (v13)
+        primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+        if (primaryTextColor)
         {
-          [(UILabel *)v12 setTextColor:v13];
+          [(UILabel *)v12 setTextColor:primaryTextColor];
         }
 
         else
@@ -588,29 +588,29 @@
   }
 }
 
-- (void)setItemOffer:(id)a3
+- (void)setItemOffer:(id)offer
 {
-  v5 = a3;
-  if (self->_itemOffer != v5)
+  offerCopy = offer;
+  if (self->_itemOffer != offerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_itemOffer, a3);
+    v6 = offerCopy;
+    objc_storeStrong(&self->_itemOffer, offer);
     [(SKUIProductPageHeaderView *)self _reloadItemOfferButton:0];
-    v5 = v6;
+    offerCopy = v6;
   }
 }
 
-- (void)setItemOfferExplanationText:(id)a3
+- (void)setItemOfferExplanationText:(id)text
 {
-  v17 = a3;
-  v4 = [(UILabel *)self->_itemOfferExplanationLabel text];
-  v5 = [v4 isEqualToString:v17];
+  textCopy = text;
+  text = [(UILabel *)self->_itemOfferExplanationLabel text];
+  v5 = [text isEqualToString:textCopy];
 
   if ((v5 & 1) == 0)
   {
     itemOfferExplanationLabel = self->_itemOfferExplanationLabel;
-    v7 = v17;
-    if (v17)
+    v7 = textCopy;
+    if (textCopy)
     {
       if (!itemOfferExplanationLabel)
       {
@@ -619,8 +619,8 @@
         self->_itemOfferExplanationLabel = v8;
 
         v10 = self->_itemOfferExplanationLabel;
-        v11 = [(SKUIProductPageHeaderView *)self backgroundColor];
-        [(UILabel *)v10 setBackgroundColor:v11];
+        backgroundColor = [(SKUIProductPageHeaderView *)self backgroundColor];
+        [(UILabel *)v10 setBackgroundColor:backgroundColor];
 
         v12 = self->_itemOfferExplanationLabel;
         v13 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
@@ -631,7 +631,7 @@
         [(UILabel *)v14 setTextColor:v15];
 
         [(SKUIProductPageHeaderView *)self addSubview:self->_itemOfferExplanationLabel];
-        v7 = v17;
+        v7 = textCopy;
         itemOfferExplanationLabel = self->_itemOfferExplanationLabel;
       }
 
@@ -648,17 +648,17 @@
   }
 }
 
-- (void)setItemOfferExplanationTitle:(id)a3
+- (void)setItemOfferExplanationTitle:(id)title
 {
-  v17 = a3;
-  v4 = [(UILabel *)self->_itemOfferExplanationTitleLabel text];
-  v5 = [v4 isEqualToString:v17];
+  titleCopy = title;
+  text = [(UILabel *)self->_itemOfferExplanationTitleLabel text];
+  v5 = [text isEqualToString:titleCopy];
 
   if ((v5 & 1) == 0)
   {
     itemOfferExplanationTitleLabel = self->_itemOfferExplanationTitleLabel;
-    v7 = v17;
-    if (v17)
+    v7 = titleCopy;
+    if (titleCopy)
     {
       if (!itemOfferExplanationTitleLabel)
       {
@@ -667,19 +667,19 @@
         self->_itemOfferExplanationTitleLabel = v8;
 
         v10 = self->_itemOfferExplanationTitleLabel;
-        v11 = [(SKUIProductPageHeaderView *)self backgroundColor];
-        [(UILabel *)v10 setBackgroundColor:v11];
+        backgroundColor = [(SKUIProductPageHeaderView *)self backgroundColor];
+        [(UILabel *)v10 setBackgroundColor:backgroundColor];
 
         v12 = self->_itemOfferExplanationTitleLabel;
         v13 = [MEMORY[0x277D74300] boldSystemFontOfSize:12.0];
         [(UILabel *)v12 setFont:v13];
 
         v14 = self->_itemOfferExplanationTitleLabel;
-        v15 = [MEMORY[0x277D75348] blackColor];
-        [(UILabel *)v14 setTextColor:v15];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        [(UILabel *)v14 setTextColor:blackColor];
 
         [(SKUIProductPageHeaderView *)self addSubview:self->_itemOfferExplanationTitleLabel];
-        v7 = v17;
+        v7 = titleCopy;
         itemOfferExplanationTitleLabel = self->_itemOfferExplanationTitleLabel;
       }
 
@@ -696,27 +696,27 @@
   }
 }
 
-- (void)setItemState:(id)a3 animated:(BOOL)a4
+- (void)setItemState:(id)state animated:(BOOL)animated
 {
-  if (self->_itemState != a3)
+  if (self->_itemState != state)
   {
-    v4 = a4;
-    v6 = [a3 copy];
+    animatedCopy = animated;
+    v6 = [state copy];
     itemState = self->_itemState;
     self->_itemState = v6;
 
-    [(SKUIProductPageHeaderView *)self _reloadItemOfferButton:v4];
+    [(SKUIProductPageHeaderView *)self _reloadItemOfferButton:animatedCopy];
   }
 }
 
-- (void)setNumberOfUserRatings:(int64_t)a3
+- (void)setNumberOfUserRatings:(int64_t)ratings
 {
-  if (self->_numberOfUserRatings == a3 && self->_userRatingLabel)
+  if (self->_numberOfUserRatings == ratings && self->_userRatingLabel)
   {
     return;
   }
 
-  self->_numberOfUserRatings = a3;
+  self->_numberOfUserRatings = ratings;
   if (!self->_userRatingLabel)
   {
     v10 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -724,18 +724,18 @@
     self->_userRatingLabel = v10;
 
     v12 = self->_userRatingLabel;
-    v13 = [(SKUIProductPageHeaderView *)self backgroundColor];
-    [(UILabel *)v12 setBackgroundColor:v13];
+    backgroundColor = [(SKUIProductPageHeaderView *)self backgroundColor];
+    [(UILabel *)v12 setBackgroundColor:backgroundColor];
 
     v14 = self->_userRatingLabel;
     v15 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
     [(UILabel *)v14 setFont:v15];
 
     v16 = self->_userRatingLabel;
-    v17 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v17)
+    primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(UILabel *)v16 setTextColor:v17];
+      [(UILabel *)v16 setTextColor:primaryTextColor];
     }
 
     else
@@ -767,7 +767,7 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if (!a3)
+  if (!ratings)
   {
     goto LABEL_10;
   }
@@ -787,23 +787,23 @@ LABEL_14:
   [(SKUIProductPageHeaderView *)self setNeedsLayout];
 }
 
-- (void)setRestricted:(BOOL)a3
+- (void)setRestricted:(BOOL)restricted
 {
-  if (self->_restricted != a3)
+  if (self->_restricted != restricted)
   {
-    self->_restricted = a3;
+    self->_restricted = restricted;
     [(SKUIProductPageHeaderView *)self _reloadItemOfferButton:0];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v18 = a3;
-  v4 = [(SKUIProductPageHeaderLabel *)self->_titleLabel text];
-  if (v4 != v18 && ([v4 isEqualToString:v18] & 1) == 0)
+  titleCopy = title;
+  text = [(SKUIProductPageHeaderLabel *)self->_titleLabel text];
+  if (text != titleCopy && ([text isEqualToString:titleCopy] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v18)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -826,10 +826,10 @@ LABEL_14:
         [(SKUIProductPageHeaderLabel *)v8 setBackgroundColor:v10];
 
         v11 = self->_titleLabel;
-        v12 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v12)
+        secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(SKUIProductPageHeaderLabel *)v11 setRatingColor:v12];
+          [(SKUIProductPageHeaderLabel *)v11 setRatingColor:secondaryTextColor];
         }
 
         else
@@ -839,10 +839,10 @@ LABEL_14:
         }
 
         v14 = self->_titleLabel;
-        v15 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v15)
+        secondaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor2)
         {
-          [(SKUIProductPageHeaderLabel *)v14 setTextColor:v15];
+          [(SKUIProductPageHeaderLabel *)v14 setTextColor:secondaryTextColor2];
         }
 
         else
@@ -857,14 +857,14 @@ LABEL_14:
 
       [(SKUIProductPageHeaderLabel *)titleLabel setText:?];
       v17 = self->_titleLabel;
-      v9 = [(SKUIProductPageHeaderView *)self contentRatingName];
-      [(SKUIProductPageHeaderLabel *)v17 setContentRating:v9];
+      contentRatingName = [(SKUIProductPageHeaderView *)self contentRatingName];
+      [(SKUIProductPageHeaderLabel *)v17 setContentRating:contentRatingName];
     }
 
     else
     {
       [(SKUIProductPageHeaderLabel *)titleLabel removeFromSuperview];
-      v9 = self->_titleLabel;
+      contentRatingName = self->_titleLabel;
       self->_titleLabel = 0;
     }
 
@@ -872,11 +872,11 @@ LABEL_14:
   }
 }
 
-- (void)setSecondaryContentRating:(id)a3
+- (void)setSecondaryContentRating:(id)rating
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIContentRatingArtworkResourceLoader *)self->_contentRatingArtworkLoader cachedImageForContentRating:v4 withClientContext:self->_clientContext];
+  ratingCopy = rating;
+  v5 = [(SKUIContentRatingArtworkResourceLoader *)self->_contentRatingArtworkLoader cachedImageForContentRating:ratingCopy withClientContext:self->_clientContext];
   v6 = v5;
   if (v5)
   {
@@ -890,15 +890,15 @@ LABEL_14:
 
   else
   {
-    [(SKUIContentRatingArtworkResourceLoader *)self->_contentRatingArtworkLoader loadImageForContentRating:v4 clientContent:self->_clientContext reason:1];
+    [(SKUIContentRatingArtworkResourceLoader *)self->_contentRatingArtworkLoader loadImageForContentRating:ratingCopy clientContent:self->_clientContext reason:1];
   }
 }
 
-- (void)setUserRating:(double)a3
+- (void)setUserRating:(double)rating
 {
-  if (self->_userRating != a3 || !self->_userRatingStarsView)
+  if (self->_userRating != rating || !self->_userRatingStarsView)
   {
-    self->_userRating = a3;
+    self->_userRating = rating;
     if (!self->_userRatingStarsView)
     {
       v4 = objc_alloc_init(MEMORY[0x277D755E8]);
@@ -906,8 +906,8 @@ LABEL_14:
       self->_userRatingStarsView = v4;
 
       v6 = self->_userRatingStarsView;
-      v7 = [(SKUIProductPageHeaderView *)self backgroundColor];
-      [(UIImageView *)v6 setBackgroundColor:v7];
+      backgroundColor = [(SKUIProductPageHeaderView *)self backgroundColor];
+      [(UIImageView *)v6 setBackgroundColor:backgroundColor];
 
       [(SKUIProductPageHeaderView *)self addSubview:self->_userRatingStarsView];
     }
@@ -924,9 +924,9 @@ LABEL_14:
 - (void)layoutSubviews
 {
   v106 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUIItemOfferButton *)self->_itemOfferButton layer];
-  v4 = [v3 animationKeys];
-  v5 = [v4 count];
+  layer = [(SKUIItemOfferButton *)self->_itemOfferButton layer];
+  animationKeys = [layer animationKeys];
+  v5 = [animationKeys count];
 
   if (v5)
   {
@@ -1114,9 +1114,9 @@ LABEL_38:
     v46 = v10;
     if (userRatingStarsView)
     {
-      v47 = [(UIImageView *)userRatingStarsView isHidden];
+      isHidden = [(UIImageView *)userRatingStarsView isHidden];
       v46 = v10;
-      if ((v47 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
         [(UIImageView *)self->_userRatingStarsView frame];
         [(UIImageView *)self->_userRatingStarsView setFrame:v10, v42 + *(v84 + 1) + 2.0];
@@ -1235,12 +1235,12 @@ LABEL_38:
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v13.receiver = self;
   v13.super_class = SKUIProductPageHeaderView;
-  [(SKUIProductPageHeaderView *)&v13 setBackgroundColor:v4];
+  [(SKUIProductPageHeaderView *)&v13 setBackgroundColor:colorCopy];
   artistButton = self->_artistButton;
   if (self->_headerImageHeight == 0.0)
   {
@@ -1280,17 +1280,17 @@ LABEL_38:
   v10 = ;
   [(SKUIProductPageHeaderLabel *)titleLabel setBackgroundColor:v10];
 
-  [(UILabel *)self->_ageBandLabel setBackgroundColor:v4];
-  [(UILabel *)self->_inAppPurchasesLabel setBackgroundColor:v4];
-  [(SKUIItemOfferButton *)self->_itemOfferButton setBackgroundColor:v4];
-  [(UILabel *)self->_itemOfferExplanationLabel setBackgroundColor:v4];
-  [(UILabel *)self->_itemOfferExplanationTitleLabel setBackgroundColor:v4];
-  [(UILabel *)self->_userRatingLabel setBackgroundColor:v4];
-  [(UIImageView *)self->_userRatingStarsView setBackgroundColor:v4];
+  [(UILabel *)self->_ageBandLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_inAppPurchasesLabel setBackgroundColor:colorCopy];
+  [(SKUIItemOfferButton *)self->_itemOfferButton setBackgroundColor:colorCopy];
+  [(UILabel *)self->_itemOfferExplanationLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_itemOfferExplanationTitleLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_userRatingLabel setBackgroundColor:colorCopy];
+  [(UIImageView *)self->_userRatingStarsView setBackgroundColor:colorCopy];
   editorialBadgeLabel = self->_editorialBadgeLabel;
-  if (v4)
+  if (colorCopy)
   {
-    [(SKUIBadgeLabel *)editorialBadgeLabel setTextColor:v4];
+    [(SKUIBadgeLabel *)editorialBadgeLabel setTextColor:colorCopy];
   }
 
   else
@@ -1385,7 +1385,7 @@ LABEL_38:
   [(SKUIProductPageHeaderView *)self setFrame:v4, v6, v8, v20];
 }
 
-- (void)itemOfferButtonWillAnimateTransition:(id)a3
+- (void)itemOfferButtonWillAnimateTransition:(id)transition
 {
   [(SKUIItemOfferButton *)self->_itemOfferButton frame];
   v5 = v4;
@@ -1454,20 +1454,20 @@ LABEL_38:
   [(SKUIProductPageHeaderView *)self performSelector:sel__finishButtonAnimation withObject:0 afterDelay:1.0];
 }
 
-- (void)contentRatingArtworkLoader:(id)a3 didLoadImage:(id)a4 forContentRating:(id)a5
+- (void)contentRatingArtworkLoader:(id)loader didLoadImage:(id)image forContentRating:(id)rating
 {
   v11 = *MEMORY[0x277D85DE8];
   titleLabel = self->_titleLabel;
-  v10 = a4;
+  imageCopy = image;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a4;
-  v9 = [v7 arrayWithObjects:&v10 count:1];
-  [(SKUIProductPageHeaderLabel *)titleLabel setSecondaryContentRatingImages:v9, v10, v11];
+  imageCopy2 = image;
+  v9 = [v7 arrayWithObjects:&imageCopy count:1];
+  [(SKUIProductPageHeaderLabel *)titleLabel setSecondaryContentRatingImages:v9, imageCopy, v11];
 
   [(SKUIProductPageHeaderView *)self setNeedsLayout];
 }
 
-- (void)_cancelConfirmationAction:(id)a3
+- (void)_cancelConfirmationAction:(id)action
 {
   [(SKUIProductPageHeaderView *)self bringSubviewToFront:self->_itemOfferButton];
   itemOfferButton = self->_itemOfferButton;
@@ -1475,7 +1475,7 @@ LABEL_38:
   [(SKUIItemOfferButton *)itemOfferButton setShowingConfirmation:0 animated:1];
 }
 
-- (void)_showConfirmationAction:(id)a3
+- (void)_showConfirmationAction:(id)action
 {
   [(SKUIProductPageHeaderView *)self bringSubviewToFront:self->_itemOfferButton];
   itemOfferButton = self->_itemOfferButton;
@@ -1494,9 +1494,9 @@ LABEL_38:
   }
 }
 
-- (void)_reloadItemOfferButton:(BOOL)a3
+- (void)_reloadItemOfferButton:(BOOL)button
 {
-  if (self->_itemOffer && (v4 = a3, ![(SKUIProductPageHeaderView *)self isRestricted]))
+  if (self->_itemOffer && (v4 = button, ![(SKUIProductPageHeaderView *)self isRestricted]))
   {
     itemOfferButton = self->_itemOfferButton;
     if (!itemOfferButton)
@@ -1508,8 +1508,8 @@ LABEL_38:
       [(SKUIItemOfferButton *)self->_itemOfferButton addTarget:self action:sel__cancelConfirmationAction_ forControlEvents:0x10000];
       [(SKUIItemOfferButton *)self->_itemOfferButton addTarget:self action:sel__showConfirmationAction_ forControlEvents:0x40000];
       v9 = self->_itemOfferButton;
-      v10 = [(SKUIProductPageHeaderView *)self backgroundColor];
-      [(SKUIItemOfferButton *)v9 setBackgroundColor:v10];
+      backgroundColor = [(SKUIProductPageHeaderView *)self backgroundColor];
+      [(SKUIItemOfferButton *)v9 setBackgroundColor:backgroundColor];
 
       LODWORD(v11) = -1.0;
       [(SKUIItemOfferButton *)self->_itemOfferButton setCharge:v11];
@@ -1536,13 +1536,13 @@ LABEL_38:
   }
 }
 
-- (void)_getTopLayoutProperties:(id *)a3 origins:(double *)a4 height:(double *)a5 forWidth:(double)a6
+- (void)_getTopLayoutProperties:(id *)properties origins:(double *)origins height:(double *)height forWidth:(double)width
 {
   titleLabel = self->_titleLabel;
   if (titleLabel)
   {
-    v12 = *a3;
-    [(SKUIProductPageHeaderLabel *)titleLabel sizeThatFits:a6, 1.79769313e308];
+    v12 = *properties;
+    [(SKUIProductPageHeaderLabel *)titleLabel sizeThatFits:width, 1.79769313e308];
     *v12 = v13;
     *(v12 + 1) = v14;
     *(v12 + 1) = xmmword_215F3FAB0;
@@ -1553,8 +1553,8 @@ LABEL_38:
   artistButton = self->_artistButton;
   if (artistButton)
   {
-    v16 = *a3;
-    [(UIButton *)artistButton sizeThatFits:a6, 1.79769313e308];
+    v16 = *properties;
+    [(UIButton *)artistButton sizeThatFits:width, 1.79769313e308];
     *(v16 + 6) = v17;
     *(v16 + 7) = v18;
     *(v16 + 4) = xmmword_215F3FAC0;
@@ -1565,8 +1565,8 @@ LABEL_38:
   editorialBadgeLabel = self->_editorialBadgeLabel;
   if (editorialBadgeLabel)
   {
-    v20 = *a3;
-    [(SKUIBadgeLabel *)editorialBadgeLabel sizeThatFits:a6, 1.79769313e308];
+    v20 = *properties;
+    [(SKUIBadgeLabel *)editorialBadgeLabel sizeThatFits:width, 1.79769313e308];
     *(v20 + 12) = v21;
     *(v20 + 13) = v22;
     *(v20 + 14) = 0;
@@ -1581,8 +1581,8 @@ LABEL_38:
   v41 = _Q0;
   if (inAppPurchasesLabel)
   {
-    v29 = *a3;
-    [(UILabel *)inAppPurchasesLabel sizeThatFits:a6, 1.79769313e308];
+    v29 = *properties;
+    [(UILabel *)inAppPurchasesLabel sizeThatFits:width, 1.79769313e308];
     *(v29 + 18) = v30;
     *(v29 + 19) = v31;
     *(v29 + 10) = v41;
@@ -1593,8 +1593,8 @@ LABEL_38:
   ageBandLabel = self->_ageBandLabel;
   if (ageBandLabel)
   {
-    v33 = *a3;
-    [(UILabel *)ageBandLabel sizeThatFits:a6, 1.79769313e308];
+    v33 = *properties;
+    [(UILabel *)ageBandLabel sizeThatFits:width, 1.79769313e308];
     v35 = v34;
     v37 = v36;
     v38 = SKUIUserInterfaceIdiom(self->_clientContext);
@@ -1611,12 +1611,12 @@ LABEL_38:
     *(v33 + 232) = 0;
   }
 
-  v40 = *a3;
+  v40 = *properties;
 
-  SKUIGetLayoutProperties(v40, 5, a4, a5);
+  SKUIGetLayoutProperties(v40, 5, origins, height);
 }
 
-- (void)_getBottomLayoutProperties:(id *)a3 origins:(double *)a4 height:(double *)a5 forWidth:(double)a6
+- (void)_getBottomLayoutProperties:(id *)properties origins:(double *)origins height:(double *)height forWidth:(double)width
 {
   if (self->_userRatingLabel)
   {
@@ -1635,9 +1635,9 @@ LABEL_38:
       v14 = 0.0;
     }
 
-    v16 = a6 - v14;
+    v16 = width - v14;
     [(UILabel *)self->_userRatingLabel sizeThatFits:v16, 1.79769313e308];
-    v15 = *a3;
+    v15 = *properties;
     if (v16 < v17)
     {
       v17 = v16;
@@ -1653,10 +1653,10 @@ LABEL_38:
 
   else
   {
-    v15 = *a3;
+    v15 = *properties;
   }
 
-  SKUIGetLayoutProperties(v15, 5, a4, a5);
+  SKUIGetLayoutProperties(v15, 5, origins, height);
 }
 
 - (void)initWithClientContext:.cold.1()

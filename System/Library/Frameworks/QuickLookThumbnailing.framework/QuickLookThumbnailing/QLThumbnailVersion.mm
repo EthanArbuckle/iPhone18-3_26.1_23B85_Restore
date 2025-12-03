@@ -1,29 +1,29 @@
 @interface QLThumbnailVersion
 - (BOOL)isAutomaticallyGenerated;
 - (BOOL)isDefaultVersion;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)shouldBeInvalidatedByThumbnailWithVersion:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)shouldBeInvalidatedByThumbnailWithVersion:(id)version;
 - (QLThumbnailVersion)init;
-- (QLThumbnailVersion)initWithCoder:(id)a3;
-- (QLThumbnailVersion)initWithDictionaryRepresentation:(id)a3;
-- (QLThumbnailVersion)initWithFPItem:(id)a3 automaticallyGenerated:(BOOL)a4;
-- (QLThumbnailVersion)initWithFPItem:(id)a3 generatorID:(id)a4 generatorVersion:(id)a5;
-- (QLThumbnailVersion)initWithFileURL:(id)a3 automaticallyGenerated:(BOOL)a4;
-- (QLThumbnailVersion)initWithFileURL:(id)a3 generatorID:(id)a4 generatorVersion:(id)a5;
-- (QLThumbnailVersion)initWithModificationDate:(id)a3 fileSize:(unint64_t)a4 filenameExtension:(id)a5 versionIdentifier:(id)a6 ino:(unint64_t)a7 generatorID:(id)a8 generatorVersion:(id)a9;
+- (QLThumbnailVersion)initWithCoder:(id)coder;
+- (QLThumbnailVersion)initWithDictionaryRepresentation:(id)representation;
+- (QLThumbnailVersion)initWithFPItem:(id)item automaticallyGenerated:(BOOL)generated;
+- (QLThumbnailVersion)initWithFPItem:(id)item generatorID:(id)d generatorVersion:(id)version;
+- (QLThumbnailVersion)initWithFileURL:(id)l automaticallyGenerated:(BOOL)generated;
+- (QLThumbnailVersion)initWithFileURL:(id)l generatorID:(id)d generatorVersion:(id)version;
+- (QLThumbnailVersion)initWithModificationDate:(id)date fileSize:(unint64_t)size filenameExtension:(id)extension versionIdentifier:(id)identifier ino:(unint64_t)ino generatorID:(id)d generatorVersion:(id)version;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLThumbnailVersion
 
 - (BOOL)isDefaultVersion
 {
-  v3 = [(QLThumbnailVersion *)self generatorID];
-  v4 = [v3 isEqualToString:@"com.apple.MobileQuickLook"];
-  v5 = [(QLThumbnailVersion *)self generatorVersion];
-  v6 = [v5 isEqualToString:@"1"];
+  generatorID = [(QLThumbnailVersion *)self generatorID];
+  v4 = [generatorID isEqualToString:@"com.apple.MobileQuickLook"];
+  generatorVersion = [(QLThumbnailVersion *)self generatorVersion];
+  v6 = [generatorVersion isEqualToString:@"1"];
 
   return v4 & v6;
 }
@@ -35,42 +35,42 @@
   return 0;
 }
 
-- (QLThumbnailVersion)initWithModificationDate:(id)a3 fileSize:(unint64_t)a4 filenameExtension:(id)a5 versionIdentifier:(id)a6 ino:(unint64_t)a7 generatorID:(id)a8 generatorVersion:(id)a9
+- (QLThumbnailVersion)initWithModificationDate:(id)date fileSize:(unint64_t)size filenameExtension:(id)extension versionIdentifier:(id)identifier ino:(unint64_t)ino generatorID:(id)d generatorVersion:(id)version
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
+  dateCopy = date;
+  extensionCopy = extension;
+  identifierCopy = identifier;
+  dCopy = d;
+  versionCopy = version;
   v23.receiver = self;
   v23.super_class = QLThumbnailVersion;
   v20 = [(QLThumbnailVersion *)&v23 init];
   v21 = v20;
   if (v20)
   {
-    [(QLThumbnailVersion *)v20 setModificationDate:v15];
-    [(QLThumbnailVersion *)v21 setFileSize:a4];
-    [(QLThumbnailVersion *)v21 setFilenameExtension:v16];
-    [(QLThumbnailVersion *)v21 setVersionIdentifier:v17];
-    [(QLThumbnailVersion *)v21 setGeneratorID:v18];
-    [(QLThumbnailVersion *)v21 setGeneratorVersion:v19];
-    [(QLThumbnailVersion *)v21 setIno:a7];
+    [(QLThumbnailVersion *)v20 setModificationDate:dateCopy];
+    [(QLThumbnailVersion *)v21 setFileSize:size];
+    [(QLThumbnailVersion *)v21 setFilenameExtension:extensionCopy];
+    [(QLThumbnailVersion *)v21 setVersionIdentifier:identifierCopy];
+    [(QLThumbnailVersion *)v21 setGeneratorID:dCopy];
+    [(QLThumbnailVersion *)v21 setGeneratorVersion:versionCopy];
+    [(QLThumbnailVersion *)v21 setIno:ino];
   }
 
   return v21;
 }
 
-- (QLThumbnailVersion)initWithFileURL:(id)a3 generatorID:(id)a4 generatorVersion:(id)a5
+- (QLThumbnailVersion)initWithFileURL:(id)l generatorID:(id)d generatorVersion:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  dCopy = d;
+  versionCopy = version;
   if (initWithFileURL_generatorID_generatorVersion__once != -1)
   {
     [QLThumbnailVersion initWithFileURL:generatorID:generatorVersion:];
   }
 
-  v11 = [v8 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
   v12 = _CFURLPromiseCopyPhysicalURL();
   v13 = v12;
   if (v12)
@@ -80,7 +80,7 @@
 
   else
   {
-    v14 = v8;
+    v14 = lCopy;
   }
 
   v15 = v14;
@@ -98,26 +98,26 @@
     }
   }
 
-  if (v11)
+  if (startAccessingSecurityScopedResource)
   {
-    [v8 stopAccessingSecurityScopedResource];
+    [lCopy stopAccessingSecurityScopedResource];
   }
 
   if (v16)
   {
     v19 = [v16 objectForKeyedSubscript:*MEMORY[0x1E695DA98]];
     v20 = [v16 objectForKeyedSubscript:*MEMORY[0x1E695DB50]];
-    v21 = v9;
-    v22 = [v20 unsignedIntegerValue];
+    v21 = dCopy;
+    unsignedIntegerValue = [v20 unsignedIntegerValue];
 
-    v23 = [v8 pathExtension];
+    pathExtension = [lCopy pathExtension];
     v24 = [v16 objectForKeyedSubscript:*MEMORY[0x1E695DB58]];
-    v25 = self;
+    selfCopy = self;
     v26 = v17;
     v27 = v24;
-    v28 = v22;
-    v9 = v21;
-    v29 = [(QLThumbnailVersion *)v25 initWithModificationDate:v19 fileSize:v28 filenameExtension:v23 versionIdentifier:v24 ino:v32.st_ino generatorID:v21 generatorVersion:v10];
+    v28 = unsignedIntegerValue;
+    dCopy = v21;
+    v29 = [(QLThumbnailVersion *)selfCopy initWithModificationDate:v19 fileSize:v28 filenameExtension:pathExtension versionIdentifier:v24 ino:v32.st_ino generatorID:v21 generatorVersion:versionCopy];
 
     v17 = v26;
     self = v29;
@@ -153,11 +153,11 @@ void __67__QLThumbnailVersion_initWithFileURL_generatorID_generatorVersion___blo
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (QLThumbnailVersion)initWithFileURL:(id)a3 automaticallyGenerated:(BOOL)a4
+- (QLThumbnailVersion)initWithFileURL:(id)l automaticallyGenerated:(BOOL)generated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  generatedCopy = generated;
+  lCopy = l;
+  if (generatedCopy)
   {
     v11 = 0;
     v12 = 0;
@@ -172,34 +172,34 @@ void __67__QLThumbnailVersion_initWithFileURL_generatorID_generatorVersion___blo
     v8 = 0;
   }
 
-  v9 = [(QLThumbnailVersion *)self initWithFileURL:v6 generatorID:v7 generatorVersion:v8];
+  v9 = [(QLThumbnailVersion *)self initWithFileURL:lCopy generatorID:v7 generatorVersion:v8];
 
   return v9;
 }
 
-- (QLThumbnailVersion)initWithFPItem:(id)a3 generatorID:(id)a4 generatorVersion:(id)a5
+- (QLThumbnailVersion)initWithFPItem:(id)item generatorID:(id)d generatorVersion:(id)version
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 contentModificationDate];
-  v12 = [v10 documentSize];
-  v13 = [v12 unsignedIntegerValue];
-  v14 = [v10 filename];
-  v15 = [v14 pathExtension];
-  v16 = [v10 itemVersion];
+  versionCopy = version;
+  dCopy = d;
+  itemCopy = item;
+  contentModificationDate = [itemCopy contentModificationDate];
+  documentSize = [itemCopy documentSize];
+  unsignedIntegerValue = [documentSize unsignedIntegerValue];
+  filename = [itemCopy filename];
+  pathExtension = [filename pathExtension];
+  itemVersion = [itemCopy itemVersion];
 
-  v17 = [v16 contentVersion];
-  v18 = [(QLThumbnailVersion *)self initWithModificationDate:v11 fileSize:v13 filenameExtension:v15 versionIdentifier:v17 ino:0 generatorID:v9 generatorVersion:v8];
+  contentVersion = [itemVersion contentVersion];
+  v18 = [(QLThumbnailVersion *)self initWithModificationDate:contentModificationDate fileSize:unsignedIntegerValue filenameExtension:pathExtension versionIdentifier:contentVersion ino:0 generatorID:dCopy generatorVersion:versionCopy];
 
   return v18;
 }
 
-- (QLThumbnailVersion)initWithFPItem:(id)a3 automaticallyGenerated:(BOOL)a4
+- (QLThumbnailVersion)initWithFPItem:(id)item automaticallyGenerated:(BOOL)generated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  generatedCopy = generated;
+  itemCopy = item;
+  if (generatedCopy)
   {
     v11 = 0;
     v12 = 0;
@@ -214,40 +214,40 @@ void __67__QLThumbnailVersion_initWithFileURL_generatorID_generatorVersion___blo
     v8 = 0;
   }
 
-  v9 = [(QLThumbnailVersion *)self initWithFPItem:v6 generatorID:v7 generatorVersion:v8];
+  v9 = [(QLThumbnailVersion *)self initWithFPItem:itemCopy generatorID:v7 generatorVersion:v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   generatorID = self->_generatorID;
-  v6 = a3;
-  [v6 encodeObject:generatorID forKey:@"g"];
-  [v6 encodeObject:self->_generatorVersion forKey:@"v"];
+  coderCopy = coder;
+  [coderCopy encodeObject:generatorID forKey:@"g"];
+  [coderCopy encodeObject:self->_generatorVersion forKey:@"v"];
   v5 = [(NSData *)self->_versionIdentifier copy];
-  [v6 encodeObject:v5 forKey:@"vi"];
+  [coderCopy encodeObject:v5 forKey:@"vi"];
 
-  [v6 encodeObject:self->_modificationDate forKey:@"m"];
-  [v6 encodeInteger:self->_fileSize forKey:@"s"];
-  [v6 encodeObject:self->_filenameExtension forKey:@"e"];
-  [v6 encodeInt64:self->_ino forKey:@"i"];
+  [coderCopy encodeObject:self->_modificationDate forKey:@"m"];
+  [coderCopy encodeInteger:self->_fileSize forKey:@"s"];
+  [coderCopy encodeObject:self->_filenameExtension forKey:@"e"];
+  [coderCopy encodeInt64:self->_ino forKey:@"i"];
 }
 
-- (QLThumbnailVersion)initWithCoder:(id)a3
+- (QLThumbnailVersion)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"g"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"v"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"m"];
-  v6 = [v3 decodeIntegerForKey:@"s"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"e"];
-  v8 = [v3 decodeInt64ForKey:@"i"];
+  coderCopy = coder;
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"g"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"v"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"m"];
+  v6 = [coderCopy decodeIntegerForKey:@"s"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"e"];
+  v8 = [coderCopy decodeInt64ForKey:@"i"];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
-  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"vi"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"vi"];
 
   v14 = [(QLThumbnailVersion *)self initWithModificationDate:v5 fileSize:v6 filenameExtension:v7 versionIdentifier:v13 ino:v8 generatorID:v16 generatorVersion:v4];
   return v14;
@@ -304,14 +304,14 @@ void __67__QLThumbnailVersion_initWithFileURL_generatorID_generatorVersion___blo
   return v4;
 }
 
-- (QLThumbnailVersion)initWithDictionaryRepresentation:(id)a3
+- (QLThumbnailVersion)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"g"];
-  v6 = [v4 objectForKeyedSubscript:@"gV"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"g"];
+  v6 = [representationCopy objectForKeyedSubscript:@"gV"];
   v7 = MEMORY[0x1E696ACD0];
   v8 = objc_opt_class();
-  v9 = [v4 objectForKeyedSubscript:@"vI"];
+  v9 = [representationCopy objectForKeyedSubscript:@"vI"];
   v23 = 0;
   v10 = [v7 unarchivedObjectOfClass:v8 fromData:v9 error:&v23];
   v11 = v23;
@@ -321,36 +321,36 @@ void __67__QLThumbnailVersion_initWithFileURL_generatorID_generatorVersion___blo
     v12 = _log_0();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [QLThumbnailVersion initWithDictionaryRepresentation:v4];
+      [QLThumbnailVersion initWithDictionaryRepresentation:representationCopy];
     }
   }
 
-  v13 = [v4 objectForKeyedSubscript:@"mD"];
-  [v4 objectForKeyedSubscript:@"s"];
+  v13 = [representationCopy objectForKeyedSubscript:@"mD"];
+  [representationCopy objectForKeyedSubscript:@"s"];
   v22 = v11;
   v15 = v14 = self;
-  v16 = [v15 integerValue];
+  integerValue = [v15 integerValue];
 
-  v17 = [v4 objectForKeyedSubscript:@"e"];
-  v18 = [v4 objectForKeyedSubscript:@"i"];
-  v19 = [v18 unsignedLongLongValue];
+  v17 = [representationCopy objectForKeyedSubscript:@"e"];
+  v18 = [representationCopy objectForKeyedSubscript:@"i"];
+  unsignedLongLongValue = [v18 unsignedLongLongValue];
 
-  v20 = [(QLThumbnailVersion *)v14 initWithModificationDate:v13 fileSize:v16 filenameExtension:v17 versionIdentifier:v10 ino:v19 generatorID:v5 generatorVersion:v6];
+  v20 = [(QLThumbnailVersion *)v14 initWithModificationDate:v13 fileSize:integerValue filenameExtension:v17 versionIdentifier:v10 ino:unsignedLongLongValue generatorID:v5 generatorVersion:v6];
   return v20;
 }
 
-- (BOOL)shouldBeInvalidatedByThumbnailWithVersion:(id)a3
+- (BOOL)shouldBeInvalidatedByThumbnailWithVersion:(id)version
 {
-  v7 = a3;
-  v8 = [(QLThumbnailVersion *)self versionIdentifier];
-  if (v8)
+  versionCopy = version;
+  versionIdentifier = [(QLThumbnailVersion *)self versionIdentifier];
+  if (versionIdentifier)
   {
-    v3 = [v7 versionIdentifier];
-    if (v3)
+    versionIdentifier2 = [versionCopy versionIdentifier];
+    if (versionIdentifier2)
     {
-      v4 = [(QLThumbnailVersion *)self versionIdentifier];
-      v5 = [v7 versionIdentifier];
-      if (([v4 isEqual:v5] & 1) == 0)
+      versionIdentifier3 = [(QLThumbnailVersion *)self versionIdentifier];
+      versionIdentifier4 = [versionCopy versionIdentifier];
+      if (([versionIdentifier3 isEqual:versionIdentifier4] & 1) == 0)
       {
 
         goto LABEL_25;
@@ -370,15 +370,15 @@ void __67__QLThumbnailVersion_initWithFileURL_generatorID_generatorVersion___blo
     v9 = 0;
   }
 
-  v10 = [(QLThumbnailVersion *)self versionIdentifier];
-  v11 = [v7 versionIdentifier];
-  v12 = (v10 != 0) ^ (v11 != 0);
+  versionIdentifier5 = [(QLThumbnailVersion *)self versionIdentifier];
+  versionIdentifier6 = [versionCopy versionIdentifier];
+  v12 = (versionIdentifier5 != 0) ^ (versionIdentifier6 != 0);
 
   if (v9)
   {
   }
 
-  if (v8)
+  if (versionIdentifier)
   {
   }
 
@@ -388,51 +388,51 @@ void __67__QLThumbnailVersion_initWithFileURL_generatorID_generatorVersion___blo
   }
 
   v13 = [(QLThumbnailVersion *)self ino];
-  if (v13 != [v7 ino])
+  if (v13 != [versionCopy ino])
   {
     goto LABEL_25;
   }
 
-  v14 = [(QLThumbnailVersion *)self modificationDate];
-  if (!v14)
+  modificationDate = [(QLThumbnailVersion *)self modificationDate];
+  if (!modificationDate)
   {
 LABEL_21:
-    v24 = [(QLThumbnailVersion *)self modificationDate];
-    v25 = [v7 modificationDate];
-    v26 = v25 == 0;
+    modificationDate2 = [(QLThumbnailVersion *)self modificationDate];
+    modificationDate3 = [versionCopy modificationDate];
+    v26 = modificationDate3 == 0;
 
-    if ((v24 != 0) == v26)
+    if ((modificationDate2 != 0) == v26)
     {
       goto LABEL_25;
     }
 
-    v27 = [(QLThumbnailVersion *)self fileSize];
-    if (v27 != [v7 fileSize] && -[QLThumbnailVersion fileSize](self, "fileSize") && objc_msgSend(v7, "fileSize"))
+    fileSize = [(QLThumbnailVersion *)self fileSize];
+    if (fileSize != [versionCopy fileSize] && -[QLThumbnailVersion fileSize](self, "fileSize") && objc_msgSend(versionCopy, "fileSize"))
     {
       goto LABEL_25;
     }
 
-    v30 = [(QLThumbnailVersion *)self generatorID];
+    generatorID = [(QLThumbnailVersion *)self generatorID];
 
-    if (v30)
+    if (generatorID)
     {
-      v31 = [v7 generatorID];
-      if (v31)
+      generatorID2 = [versionCopy generatorID];
+      if (generatorID2)
       {
-        v32 = v31;
-        v33 = [(QLThumbnailVersion *)self generatorID];
+        v32 = generatorID2;
+        generatorID3 = [(QLThumbnailVersion *)self generatorID];
 
-        if (v33)
+        if (generatorID3)
         {
-          v34 = [(QLThumbnailVersion *)self generatorID];
-          v35 = [v7 generatorID];
-          v36 = [v34 isEqual:v35];
+          generatorID4 = [(QLThumbnailVersion *)self generatorID];
+          generatorID5 = [versionCopy generatorID];
+          v36 = [generatorID4 isEqual:generatorID5];
 
           if (v36)
           {
-            v37 = [(QLThumbnailVersion *)self generatorVersion];
-            v38 = [v7 generatorVersion];
-            v28 = QLCompareVersion(v37, v38) == -1;
+            generatorVersion = [(QLThumbnailVersion *)self generatorVersion];
+            generatorVersion2 = [versionCopy generatorVersion];
+            v28 = QLCompareVersion(generatorVersion, generatorVersion2) == -1;
 
             goto LABEL_26;
           }
@@ -445,27 +445,27 @@ LABEL_32:
     goto LABEL_26;
   }
 
-  v15 = v14;
-  v16 = [v7 modificationDate];
-  if (!v16)
+  v15 = modificationDate;
+  modificationDate4 = [versionCopy modificationDate];
+  if (!modificationDate4)
   {
 
     goto LABEL_21;
   }
 
-  v17 = v16;
-  v18 = [(QLThumbnailVersion *)self modificationDate];
-  v19 = [v7 modificationDate];
-  v20 = [v18 isEqual:v19];
+  v17 = modificationDate4;
+  modificationDate5 = [(QLThumbnailVersion *)self modificationDate];
+  modificationDate6 = [versionCopy modificationDate];
+  v20 = [modificationDate5 isEqual:modificationDate6];
 
   if (v20)
   {
     goto LABEL_21;
   }
 
-  v21 = [(QLThumbnailVersion *)self modificationDate];
-  v22 = [v7 modificationDate];
-  v23 = [v21 compare:v22];
+  modificationDate7 = [(QLThumbnailVersion *)self modificationDate];
+  modificationDate8 = [versionCopy modificationDate];
+  v23 = [modificationDate7 compare:modificationDate8];
 
   if (v23 != -1)
   {
@@ -486,16 +486,16 @@ LABEL_26:
 
 - (BOOL)isAutomaticallyGenerated
 {
-  v2 = [(QLThumbnailVersion *)self generatorID];
-  v3 = v2 != 0;
+  generatorID = [(QLThumbnailVersion *)self generatorID];
+  v3 = generatorID != 0;
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -505,36 +505,36 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       generatorID = self->_generatorID;
-      v8 = [(QLThumbnailVersion *)v6 generatorID];
-      if (generatorID != v8)
+      generatorID = [(QLThumbnailVersion *)v6 generatorID];
+      if (generatorID != generatorID)
       {
         v9 = self->_generatorID;
-        v10 = [(QLThumbnailVersion *)v6 generatorID];
-        if (![(NSString *)v9 isEqual:v10])
+        generatorID2 = [(QLThumbnailVersion *)v6 generatorID];
+        if (![(NSString *)v9 isEqual:generatorID2])
         {
           v11 = 0;
           goto LABEL_36;
         }
 
-        v39 = v10;
+        v39 = generatorID2;
       }
 
       generatorVersion = self->_generatorVersion;
-      v13 = [(QLThumbnailVersion *)v6 generatorVersion];
-      if (generatorVersion != v13)
+      generatorVersion = [(QLThumbnailVersion *)v6 generatorVersion];
+      if (generatorVersion != generatorVersion)
       {
         v14 = self->_generatorVersion;
-        v3 = [(QLThumbnailVersion *)v6 generatorVersion];
-        if (![(NSString *)v14 isEqual:v3])
+        generatorVersion2 = [(QLThumbnailVersion *)v6 generatorVersion];
+        if (![(NSString *)v14 isEqual:generatorVersion2])
         {
           v11 = 0;
 LABEL_34:
 
 LABEL_35:
-          v10 = v39;
-          if (generatorID == v8)
+          generatorID2 = v39;
+          if (generatorID == generatorID)
           {
 LABEL_37:
 
@@ -548,24 +548,24 @@ LABEL_36:
       }
 
       modificationDate = self->_modificationDate;
-      v16 = [(QLThumbnailVersion *)v6 modificationDate];
+      modificationDate = [(QLThumbnailVersion *)v6 modificationDate];
       v38 = modificationDate;
-      if (modificationDate == v16)
+      if (modificationDate == modificationDate)
       {
-        v37 = v3;
+        v37 = generatorVersion2;
       }
 
       else
       {
         v17 = self->_modificationDate;
-        v36 = [(QLThumbnailVersion *)v6 modificationDate];
+        modificationDate2 = [(QLThumbnailVersion *)v6 modificationDate];
         if (![(NSDate *)v17 isEqual:?])
         {
           v11 = 0;
 LABEL_32:
 
 LABEL_33:
-          if (generatorVersion == v13)
+          if (generatorVersion == generatorVersion)
           {
             goto LABEL_35;
           }
@@ -573,13 +573,13 @@ LABEL_33:
           goto LABEL_34;
         }
 
-        v37 = v3;
+        v37 = generatorVersion2;
       }
 
       versionIdentifier = self->_versionIdentifier;
-      v19 = [(QLThumbnailVersion *)v6 versionIdentifier];
+      versionIdentifier = [(QLThumbnailVersion *)v6 versionIdentifier];
       v34 = versionIdentifier;
-      if (versionIdentifier == v19)
+      if (versionIdentifier == versionIdentifier)
       {
         fileSize = self->_fileSize;
         if (fileSize != [(QLThumbnailVersion *)v6 fileSize])
@@ -592,16 +592,16 @@ LABEL_33:
       else
       {
         v20 = self->_versionIdentifier;
-        v35 = [(QLThumbnailVersion *)v6 versionIdentifier];
+        versionIdentifier2 = [(QLThumbnailVersion *)v6 versionIdentifier];
         if (([(NSData *)v20 isEqual:?]& 1) == 0 || (v21 = self->_fileSize, v21 != [(QLThumbnailVersion *)v6 fileSize]))
         {
           v11 = 0;
-          v22 = v35;
+          v22 = versionIdentifier2;
 LABEL_30:
 
 LABEL_31:
-          v3 = v37;
-          if (v38 == v16)
+          generatorVersion2 = v37;
+          if (v38 == modificationDate)
           {
             goto LABEL_33;
           }
@@ -610,10 +610,10 @@ LABEL_31:
         }
       }
 
-      v33 = v19;
+      v33 = versionIdentifier;
       filenameExtension = self->_filenameExtension;
-      v25 = [(QLThumbnailVersion *)v6 filenameExtension];
-      if (filenameExtension == v25)
+      filenameExtension = [(QLThumbnailVersion *)v6 filenameExtension];
+      if (filenameExtension == filenameExtension)
       {
         ino = self->_ino;
         v11 = ino == [(QLThumbnailVersion *)v6 ino];
@@ -622,16 +622,16 @@ LABEL_31:
       else
       {
         v26 = self->_filenameExtension;
-        v27 = [(QLThumbnailVersion *)v6 filenameExtension];
+        filenameExtension2 = [(QLThumbnailVersion *)v6 filenameExtension];
         v28 = v26;
-        v29 = v27;
+        v29 = filenameExtension2;
         if (![(NSString *)v28 isEqual:?])
         {
 
           v11 = 0;
 LABEL_29:
-          v19 = v33;
-          v22 = v35;
+          versionIdentifier = v33;
+          v22 = versionIdentifier2;
           if (v34 == v33)
           {
             goto LABEL_31;

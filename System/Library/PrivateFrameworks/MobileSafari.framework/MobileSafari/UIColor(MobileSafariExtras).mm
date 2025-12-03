@@ -17,7 +17,7 @@
 - (uint64_t)sf_isDarkColor
 {
   v2 = 0.0;
-  LODWORD(result) = [a1 getWhite:&v2 alpha:0];
+  LODWORD(result) = [self getWhite:&v2 alpha:0];
   if (v2 < 0.6)
   {
     return result;
@@ -34,8 +34,8 @@
   v0 = sf_alternateLabelColor_alternateLabelColor;
   if (!sf_alternateLabelColor_alternateLabelColor)
   {
-    v1 = [MEMORY[0x1E69DC888] labelColor];
-    v2 = dynamicAlteranteColor(v1);
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v2 = dynamicAlteranteColor(labelColor);
     v3 = sf_alternateLabelColor_alternateLabelColor;
     sf_alternateLabelColor_alternateLabelColor = v2;
 
@@ -50,8 +50,8 @@
   v0 = sf_alternateSecondaryLabelColor_alternateSecondaryLabelColor;
   if (!sf_alternateSecondaryLabelColor_alternateSecondaryLabelColor)
   {
-    v1 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v2 = dynamicAlteranteColor(v1);
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v2 = dynamicAlteranteColor(secondaryLabelColor);
     v3 = sf_alternateSecondaryLabelColor_alternateSecondaryLabelColor;
     sf_alternateSecondaryLabelColor_alternateSecondaryLabelColor = v2;
 
@@ -65,8 +65,8 @@
 {
   v4 = MEMORY[0x1E696AAE8];
   v5 = a3;
-  v6 = [v4 sf_mobileSafariFrameworkBundle];
-  v7 = [a1 colorNamed:v5 inBundle:v6 compatibleWithTraitCollection:0];
+  sf_mobileSafariFrameworkBundle = [v4 sf_mobileSafariFrameworkBundle];
+  v7 = [self colorNamed:v5 inBundle:sf_mobileSafariFrameworkBundle compatibleWithTraitCollection:0];
 
   return v7;
 }
@@ -77,7 +77,7 @@
   v3 = 0.0;
   v4 = 0.0;
   v2 = 0;
-  result = [a1 getHue:&v5 saturation:&v4 brightness:&v3 alpha:&v2];
+  result = [self getHue:&v5 saturation:&v4 brightness:&v3 alpha:&v2];
   if (result)
   {
     return v4 < 0.05 && v3 >= 0.9;
@@ -92,17 +92,17 @@
   v7 = 0.0;
   v4 = 0.0;
   v5 = 0.0;
-  if ([a1 getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4])
+  if ([self getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4])
   {
-    v2 = [MEMORY[0x1E69DC888] colorWithHue:v7 saturation:v6 brightness:v5 * 0.75 alpha:v4];
+    selfCopy = [MEMORY[0x1E69DC888] colorWithHue:v7 saturation:v6 brightness:v5 * 0.75 alpha:v4];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)sf_slightlyDarkenedColor
@@ -111,17 +111,17 @@
   v7 = 0.0;
   v4 = 0.0;
   v5 = 0.0;
-  if ([a1 getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4])
+  if ([self getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4])
   {
-    v2 = [MEMORY[0x1E69DC888] colorWithHue:v7 saturation:v6 brightness:v5 * 0.9 alpha:v4];
+    selfCopy = [MEMORY[0x1E69DC888] colorWithHue:v7 saturation:v6 brightness:v5 * 0.9 alpha:v4];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)sf_brightenedColor
@@ -130,17 +130,17 @@
   v7 = 0.0;
   v4 = 0.0;
   v5 = 0.0;
-  if ([a1 getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4])
+  if ([self getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4])
   {
-    v2 = [MEMORY[0x1E69DC888] colorWithHue:v7 saturation:v6 brightness:v5 * 1.25 alpha:v4];
+    selfCopy = [MEMORY[0x1E69DC888] colorWithHue:v7 saturation:v6 brightness:v5 * 1.25 alpha:v4];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)sf_muchBrightenedColor
@@ -149,17 +149,17 @@
   v7 = 0.0;
   v4 = 0.0;
   v5 = 0.0;
-  if ([a1 getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4])
+  if ([self getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4])
   {
-    v2 = [MEMORY[0x1E69DC888] colorWithHue:v7 saturation:v6 brightness:v5 * 1.5 alpha:v4];
+    selfCopy = [MEMORY[0x1E69DC888] colorWithHue:v7 saturation:v6 brightness:v5 * 1.5 alpha:v4];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)sf_muchDarkenedColor
@@ -168,35 +168,35 @@
   v7 = 0.0;
   v4 = 0.0;
   v5 = 0.0;
-  if ([a1 getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4])
+  if ([self getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4])
   {
-    v2 = [MEMORY[0x1E69DC888] colorWithHue:v7 saturation:v6 brightness:v5 * 0.5 alpha:v4];
+    selfCopy = [MEMORY[0x1E69DC888] colorWithHue:v7 saturation:v6 brightness:v5 * 0.5 alpha:v4];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 + (id)safari_labelColorFromNumber:()MobileSafariExtras
 {
-  v3 = [a3 integerValue];
-  if (v3 == 2)
+  integerValue = [a3 integerValue];
+  if (integerValue == 2)
   {
-    v4 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
   }
 
-  else if (v3 == 1)
+  else if (integerValue == 1)
   {
-    v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
   else
   {
-    if (v3)
+    if (integerValue)
     {
       [MEMORY[0x1E69DC888] quaternaryLabelColor];
     }
@@ -205,10 +205,10 @@
     {
       [MEMORY[0x1E69DC888] labelColor];
     }
-    v4 = ;
+    tertiaryLabelColor = ;
   }
 
-  return v4;
+  return tertiaryLabelColor;
 }
 
 @end

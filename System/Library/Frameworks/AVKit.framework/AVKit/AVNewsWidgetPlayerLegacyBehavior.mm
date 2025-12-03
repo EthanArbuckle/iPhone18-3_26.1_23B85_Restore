@@ -1,9 +1,9 @@
 @interface AVNewsWidgetPlayerLegacyBehavior
 - (AVPlayerViewControllerContentTransitioning_NewsOnly)legacyDelegate;
-- (id)playerForContentTransitionType:(int64_t)a3;
+- (id)playerForContentTransitionType:(int64_t)type;
 - (void)didCancelContentTransition;
 - (void)didCompleteContentTransition;
-- (void)didUpdateContentTransitionProgress:(double)a3;
+- (void)didUpdateContentTransitionProgress:(double)progress;
 - (void)willBeginContentTransition;
 - (void)willCancelContentTransition;
 - (void)willCompleteContentTransition;
@@ -20,58 +20,58 @@
 
 - (void)didCancelContentTransition
 {
-  v5 = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
-  v3 = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
-  v4 = [v3 playerViewController];
-  [v5 playerViewControllerDidCancelContentTransition:v4];
+  legacyDelegate = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
+  behaviorContext = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
+  playerViewController = [behaviorContext playerViewController];
+  [legacyDelegate playerViewControllerDidCancelContentTransition:playerViewController];
 }
 
 - (void)willCancelContentTransition
 {
-  v5 = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
-  v3 = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
-  v4 = [v3 playerViewController];
-  [v5 playerViewControllerWillCancelContentTransition:v4];
+  legacyDelegate = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
+  behaviorContext = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
+  playerViewController = [behaviorContext playerViewController];
+  [legacyDelegate playerViewControllerWillCancelContentTransition:playerViewController];
 }
 
 - (void)didCompleteContentTransition
 {
-  v5 = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
-  v3 = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
-  v4 = [v3 playerViewController];
-  [v5 playerViewControllerDidCompleteContentTransition:v4];
+  legacyDelegate = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
+  behaviorContext = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
+  playerViewController = [behaviorContext playerViewController];
+  [legacyDelegate playerViewControllerDidCompleteContentTransition:playerViewController];
 }
 
 - (void)willCompleteContentTransition
 {
-  v5 = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
-  v3 = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
-  v4 = [v3 playerViewController];
-  [v5 playerViewControllerWillCompleteContentTransition:v4];
+  legacyDelegate = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
+  behaviorContext = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
+  playerViewController = [behaviorContext playerViewController];
+  [legacyDelegate playerViewControllerWillCompleteContentTransition:playerViewController];
 }
 
-- (void)didUpdateContentTransitionProgress:(double)a3
+- (void)didUpdateContentTransitionProgress:(double)progress
 {
-  v7 = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
-  v5 = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
-  v6 = [v5 playerViewController];
-  [v7 playerViewController:v6 didUpdateContentTransitionProgress:a3];
+  legacyDelegate = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
+  behaviorContext = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
+  playerViewController = [behaviorContext playerViewController];
+  [legacyDelegate playerViewController:playerViewController didUpdateContentTransitionProgress:progress];
 }
 
 - (void)willBeginContentTransition
 {
-  v5 = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
-  v3 = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
-  v4 = [v3 playerViewController];
-  [v5 playerViewControllerWillBeginContentTransition:v4];
+  legacyDelegate = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
+  behaviorContext = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
+  playerViewController = [behaviorContext playerViewController];
+  [legacyDelegate playerViewControllerWillBeginContentTransition:playerViewController];
 }
 
-- (id)playerForContentTransitionType:(int64_t)a3
+- (id)playerForContentTransitionType:(int64_t)type
 {
-  v5 = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
-  v6 = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
-  v7 = [v6 playerViewController];
-  v8 = [v5 playerViewController:v7 playerForContentTransitionType:a3];
+  legacyDelegate = [(AVNewsWidgetPlayerLegacyBehavior *)self legacyDelegate];
+  behaviorContext = [(AVNewsWidgetPlayerBehavior *)self behaviorContext];
+  playerViewController = [behaviorContext playerViewController];
+  v8 = [legacyDelegate playerViewController:playerViewController playerForContentTransitionType:type];
 
   return v8;
 }

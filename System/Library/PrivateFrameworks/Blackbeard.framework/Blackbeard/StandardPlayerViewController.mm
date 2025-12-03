@@ -1,10 +1,10 @@
 @interface StandardPlayerViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC20FitnessPlayerService28StandardPlayerViewController)initWithCoder:(id)a3;
-- (_TtC20FitnessPlayerService28StandardPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20FitnessPlayerService28StandardPlayerViewController)initWithCoder:(id)coder;
+- (_TtC20FitnessPlayerService28StandardPlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)modalPresentationStyle;
-- (void)setModalPresentationStyle:(int64_t)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setModalPresentationStyle:(int64_t)style;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation StandardPlayerViewController
@@ -19,7 +19,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   StandardPlayerViewController.preferredFocusEnvironments.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ED078268, &qword_1E65FBB30);
@@ -38,12 +38,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC20FitnessPlayerService28StandardPlayerViewController_playerViewController) modalPresentationStyle];
+  modalPresentationStyle = [*(&self->super.super.super.isa + OBJC_IVAR____TtC20FitnessPlayerService28StandardPlayerViewController_playerViewController) modalPresentationStyle];
 
-  return v3;
+  return modalPresentationStyle;
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
   sub_1E65E6058();
   sub_1E65E6048();
@@ -56,7 +56,7 @@
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC20FitnessPlayerService28StandardPlayerViewController_playerViewController) setModalPresentationStyle_];
 }
 
-- (_TtC20FitnessPlayerService28StandardPlayerViewController)initWithCoder:(id)a3
+- (_TtC20FitnessPlayerService28StandardPlayerViewController)initWithCoder:(id)coder
 {
   sub_1E65E6058();
   sub_1E65E6048();
@@ -71,7 +71,7 @@
   return result;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   sub_1E65E6058();
   sub_1E65E6048();
@@ -81,11 +81,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  StandardPlayerViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  StandardPlayerViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (_TtC20FitnessPlayerService28StandardPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20FitnessPlayerService28StandardPlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_1E65E6058();
   sub_1E65E6048();

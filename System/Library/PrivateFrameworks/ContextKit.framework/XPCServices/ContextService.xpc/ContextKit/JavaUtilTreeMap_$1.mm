@@ -1,17 +1,17 @@
 @interface JavaUtilTreeMap_$1
-- (int)compareWithId:(id)a3 withId:(id)a4;
+- (int)compareWithId:(id)id withId:(id)withId;
 @end
 
 @implementation JavaUtilTreeMap_$1
 
-- (int)compareWithId:(id)a3 withId:(id)a4
+- (int)compareWithId:(id)id withId:(id)withId
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 compareToWithId:a4];
+  return [id compareToWithId:withId];
 }
 
 @end

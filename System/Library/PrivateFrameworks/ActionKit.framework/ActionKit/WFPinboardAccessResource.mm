@@ -3,11 +3,11 @@
 + (id)pinboardToken;
 + (id)pinboardUsername;
 + (id)userInterfaceClasses;
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3;
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context;
 - (id)username;
 - (unint64_t)status;
 - (void)logOut;
-- (void)makeAvailableWithRemoteInterface:(id)a3 completionHandler:(id)a4;
+- (void)makeAvailableWithRemoteInterface:(id)interface completionHandler:(id)handler;
 @end
 
 @implementation WFPinboardAccessResource
@@ -28,11 +28,11 @@
 
 + (id)pinboardToken
 {
-  v2 = [a1 pinboardUsername];
-  v3 = v2;
-  if (v2)
+  pinboardUsername = [self pinboardUsername];
+  v3 = pinboardUsername;
+  if (pinboardUsername)
   {
-    v4 = WFPinboardGetSecretForUsername(v2, @"token");
+    v4 = WFPinboardGetSecretForUsername(pinboardUsername, @"token");
   }
 
   else
@@ -45,11 +45,11 @@
 
 + (id)pinboardPassword
 {
-  v2 = [a1 pinboardUsername];
-  v3 = v2;
-  if (v2)
+  pinboardUsername = [self pinboardUsername];
+  v3 = pinboardUsername;
+  if (pinboardUsername)
   {
-    v4 = WFPinboardGetSecretForUsername(v2, @"password");
+    v4 = WFPinboardGetSecretForUsername(pinboardUsername, @"password");
   }
 
   else
@@ -62,20 +62,20 @@
 
 + (id)pinboardUsername
 {
-  v2 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  v3 = [v2 objectForKey:@"WFPinboardUsername"];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  v3 = [workflowUserDefaults objectForKey:@"WFPinboardUsername"];
 
   return v3;
 }
 
 - (void)logOut
 {
-  v4 = [(WFPinboardAccessResource *)self username];
-  v3 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  [v3 removeObjectForKey:@"WFPinboardUsername"];
+  username = [(WFPinboardAccessResource *)self username];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  [workflowUserDefaults removeObjectForKey:@"WFPinboardUsername"];
 
-  WFPinboardStoreSecretForUsername(v4, 0, @"password");
-  WFPinboardStoreSecretForUsername(v4, 0, @"token");
+  WFPinboardStoreSecretForUsername(username, 0, @"password");
+  WFPinboardStoreSecretForUsername(username, 0, @"token");
   [(WFResource *)self refreshAvailabilityWithNotification];
 }
 
@@ -86,17 +86,17 @@
   return [v2 pinboardUsername];
 }
 
-- (void)makeAvailableWithRemoteInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithRemoteInterface:(id)interface completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__WFPinboardAccessResource_makeAvailableWithRemoteInterface_completionHandler___block_invoke;
   v8[3] = &unk_278C20360;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 authorizeWithCompletionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [interface authorizeWithCompletionHandler:v8];
 }
 
 void __79__WFPinboardAccessResource_makeAvailableWithRemoteInterface_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -109,12 +109,12 @@ void __79__WFPinboardAccessResource_makeAvailableWithRemoteInterface_completionH
 
 - (unint64_t)status
 {
-  v3 = [objc_opt_class() pinboardUsername];
-  v4 = [v3 length];
+  pinboardUsername = [objc_opt_class() pinboardUsername];
+  v4 = [pinboardUsername length];
   if (v4)
   {
-    v2 = [objc_opt_class() pinboardPassword];
-    if ([v2 length])
+    pinboardPassword = [objc_opt_class() pinboardPassword];
+    if ([pinboardPassword length])
     {
       v5 = 4;
 LABEL_8:
@@ -123,8 +123,8 @@ LABEL_8:
     }
   }
 
-  v6 = [objc_opt_class() pinboardToken];
-  if ([v6 length])
+  pinboardToken = [objc_opt_class() pinboardToken];
+  if ([pinboardToken length])
   {
     v5 = 4;
   }
@@ -144,11 +144,11 @@ LABEL_9:
   return v5;
 }
 
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"your Pinboard account", @"your Pinboard account");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

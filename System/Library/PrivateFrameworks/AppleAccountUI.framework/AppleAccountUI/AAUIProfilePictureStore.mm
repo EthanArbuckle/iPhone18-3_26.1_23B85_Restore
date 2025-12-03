@@ -1,74 +1,74 @@
 @interface AAUIProfilePictureStore
 - (AAUIProfilePictureStore)init;
-- (AAUIProfilePictureStore)initWithAppleAccount:(id)a3 grandSlamAccount:(id)a4 accountStore:(id)a5;
-- (AAUIProfilePictureStore)initWithAppleAccount:(id)a3 grandSlamSigner:(id)a4;
-- (AAUIProfilePictureStore)initWithAppleAccount:(id)a3 store:(id)a4;
-- (AAUIProfilePictureStore)initWithGrandSlamSigner:(id)a3;
-- (BOOL)_contactSyncsWithiCloud:(id)a3 error:(id *)a4;
-- (BOOL)_isCachedProfilePictureUpdated:(id)a3;
+- (AAUIProfilePictureStore)initWithAppleAccount:(id)account grandSlamAccount:(id)slamAccount accountStore:(id)store;
+- (AAUIProfilePictureStore)initWithAppleAccount:(id)account grandSlamSigner:(id)signer;
+- (AAUIProfilePictureStore)initWithAppleAccount:(id)account store:(id)store;
+- (AAUIProfilePictureStore)initWithGrandSlamSigner:(id)signer;
+- (BOOL)_contactSyncsWithiCloud:(id)cloud error:(id *)error;
+- (BOOL)_isCachedProfilePictureUpdated:(id)updated;
 - (BOOL)_isProfilePictureCachePresent;
-- (id)_contactWithImageDataMatchingFamilyMember:(id)a3 error:(id *)a4;
-- (id)_correctlySizedImageFromImage:(id)a3;
-- (id)_fallbackProfilePictureForPersonWithFirstName:(id)a3 lastName:(id)a4;
-- (id)_familyMemberPersonPicture:(id)a3;
-- (id)_getAccountIdentifierForContact:(id)a3 error:(id *)a4;
+- (id)_contactWithImageDataMatchingFamilyMember:(id)member error:(id *)error;
+- (id)_correctlySizedImageFromImage:(id)image;
+- (id)_fallbackProfilePictureForPersonWithFirstName:(id)name lastName:(id)lastName;
+- (id)_familyMemberPersonPicture:(id)picture;
+- (id)_getAccountIdentifierForContact:(id)contact error:(id *)error;
 - (id)_initWithoutAppleAccount;
-- (id)_meCardForAccountWithError:(id *)a3;
+- (id)_meCardForAccountWithError:(id *)error;
 - (id)_meCardPicture;
-- (id)_monogrammedContactImage:(id)a3;
+- (id)_monogrammedContactImage:(id)image;
 - (id)_monogrammer;
-- (id)_profilePictureForFamilyMemberWithoutMonogramFallback:(id)a3;
-- (id)_profilePictureForPicture:(id)a3 crop:(BOOL)a4 cropRect:(CGRect)a5 cacheable:(BOOL)a6;
+- (id)_profilePictureForFamilyMemberWithoutMonogramFallback:(id)fallback;
+- (id)_profilePictureForPicture:(id)picture crop:(BOOL)crop cropRect:(CGRect)rect cacheable:(BOOL)cacheable;
 - (id)_readProfilePictureFromCache;
-- (id)_sizedProfilePictureWithFallback:(id)a3;
-- (id)cacheablePictureForPicture:(id)a3 cropRect:(CGRect)a4;
+- (id)_sizedProfilePictureWithFallback:(id)fallback;
+- (id)cacheablePictureForPicture:(id)picture cropRect:(CGRect)rect;
 - (id)monogramForCurrentAccount;
 - (id)profilePictureForAccountOwner;
 - (id)profilePictureForAccountOwnerWithoutMonogramFallback;
-- (id)profilePictureForFamilyMember:(id)a3;
-- (id)profilePictureForLocalContact:(id)a3;
+- (id)profilePictureForFamilyMember:(id)member;
+- (id)profilePictureForLocalContact:(id)contact;
 - (id)renderingScope;
 - (void)_beginObservingContactStoreDidChangeNotifications;
-- (void)_contactStoreDidChange:(id)a3;
-- (void)_decodeImageAndCropRectForContact:(id)a3 completion:(id)a4;
+- (void)_contactStoreDidChange:(id)change;
+- (void)_decodeImageAndCropRectForContact:(id)contact completion:(id)completion;
 - (void)_endObservingContactStoreDidChangeNotifications;
-- (void)_familyMember:(id)a3 rawImageAndCropRect:(id)a4;
-- (void)_fetchAndCacheRawImageAndCropRectWithRequest:(id)a3 personID:(id)a4 completion:(id)a5;
-- (void)_fetchProfilePictureForAccountOwnerFromServer:(id)a3 serverCacheTag:(id)a4 completion:(id)a5;
-- (void)_fetchProfilePictureForFamilyMemberFromServer:(id)a3 serverCacheTag:(id)a4 completion:(id)a5;
-- (void)_fetchProfilePictureSupersetWithRequest:(id)a3 personID:(id)a4 completion:(id)a5;
-- (void)_fetchProfilePictureWithRequest:(id)a3 personID:(id)a4 completion:(id)a5;
+- (void)_familyMember:(id)member rawImageAndCropRect:(id)rect;
+- (void)_fetchAndCacheRawImageAndCropRectWithRequest:(id)request personID:(id)d completion:(id)completion;
+- (void)_fetchProfilePictureForAccountOwnerFromServer:(id)server serverCacheTag:(id)tag completion:(id)completion;
+- (void)_fetchProfilePictureForFamilyMemberFromServer:(id)server serverCacheTag:(id)tag completion:(id)completion;
+- (void)_fetchProfilePictureSupersetWithRequest:(id)request personID:(id)d completion:(id)completion;
+- (void)_fetchProfilePictureWithRequest:(id)request personID:(id)d completion:(id)completion;
 - (void)_invalidateMonogrammer;
 - (void)_meCardPicture;
-- (void)_meCardRawImageAndCropRect:(id)a3;
-- (void)_saveProfilePictureToCache:(id)a3;
-- (void)_saveProfilePictureToCacheIfNeeded:(id)a3;
-- (void)_updateServerProfilePictureForAccountOwner:(id)a3 cropRect:(id)a4;
+- (void)_meCardRawImageAndCropRect:(id)rect;
+- (void)_saveProfilePictureToCache:(id)cache;
+- (void)_saveProfilePictureToCacheIfNeeded:(id)needed;
+- (void)_updateServerProfilePictureForAccountOwner:(id)owner cropRect:(id)rect;
 - (void)dealloc;
-- (void)fetchProfilePictureForAccountOwner:(id)a3;
-- (void)fetchProfilePictureForFamilyMember:(id)a3 completion:(id)a4;
-- (void)fetchProfilePictureFromCacheForAccountOwner:(id)a3;
-- (void)fetchRawImageAndCropRectForAccountOwner:(id)a3;
-- (void)fetchRawImageAndCropRectForFamilyMember:(id)a3 completion:(id)a4;
-- (void)meCardWithVisualIdentity:(id)a3;
-- (void)profilePictureForAccountOwnerWithCompletion:(id)a3;
-- (void)setMonogramType:(int64_t)a3;
-- (void)setPictureDiameter:(double)a3;
-- (void)setProfilePictureForAccountOwner:(id)a3 cropRect:(id)a4;
-- (void)updateCacheWithPhoto:(id)a3 cropRect:(id)a4 forPersonID:(id)a5;
+- (void)fetchProfilePictureForAccountOwner:(id)owner;
+- (void)fetchProfilePictureForFamilyMember:(id)member completion:(id)completion;
+- (void)fetchProfilePictureFromCacheForAccountOwner:(id)owner;
+- (void)fetchRawImageAndCropRectForAccountOwner:(id)owner;
+- (void)fetchRawImageAndCropRectForFamilyMember:(id)member completion:(id)completion;
+- (void)meCardWithVisualIdentity:(id)identity;
+- (void)profilePictureForAccountOwnerWithCompletion:(id)completion;
+- (void)setMonogramType:(int64_t)type;
+- (void)setPictureDiameter:(double)diameter;
+- (void)setProfilePictureForAccountOwner:(id)owner cropRect:(id)rect;
+- (void)updateCacheWithPhoto:(id)photo cropRect:(id)rect forPersonID:(id)d;
 @end
 
 @implementation AAUIProfilePictureStore
 
 - (AAUIProfilePictureStore)init
 {
-  v3 = [MEMORY[0x1E6959A48] defaultStore];
-  v4 = [v3 aa_primaryAppleAccount];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
   self->_monogrammerLock._os_unfair_lock_opaque = 0;
-  if (v4)
+  if (aa_primaryAppleAccount)
   {
-    v5 = [v3 aa_grandSlamAccountForiCloudAccount:v4];
-    v6 = [(AAUIProfilePictureStore *)self initWithAppleAccount:v4 grandSlamAccount:v5 accountStore:v3];
+    v5 = [defaultStore aa_grandSlamAccountForiCloudAccount:aa_primaryAppleAccount];
+    _initWithoutAppleAccount = [(AAUIProfilePictureStore *)self initWithAppleAccount:aa_primaryAppleAccount grandSlamAccount:v5 accountStore:defaultStore];
   }
 
   else
@@ -80,10 +80,10 @@
       _os_log_impl(&dword_1C5355000, v7, OS_LOG_TYPE_DEFAULT, "No primary iCloud account found! Creating AAUIProfilePictureStore without primary account.", v9, 2u);
     }
 
-    v6 = [(AAUIProfilePictureStore *)self _initWithoutAppleAccount];
+    _initWithoutAppleAccount = [(AAUIProfilePictureStore *)self _initWithoutAppleAccount];
   }
 
-  return v6;
+  return _initWithoutAppleAccount;
 }
 
 - (id)_initWithoutAppleAccount
@@ -112,15 +112,15 @@
 - (void)_beginObservingContactStoreDidChangeNotifications
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [MEMORY[0x1E696ADC8] mainQueue];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   v5 = *MEMORY[0x1E695C3D8];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76__AAUIProfilePictureStore__beginObservingContactStoreDidChangeNotifications__block_invoke;
   v8[3] = &unk_1E820BAF8;
   objc_copyWeak(&v9, &location);
-  v6 = [v3 addObserverForName:v5 object:0 queue:v4 usingBlock:v8];
+  v6 = [defaultCenter addObserverForName:v5 object:0 queue:mainQueue usingBlock:v8];
   contactStoreDidChangeObserver = self->_contactStoreDidChangeObserver;
   self->_contactStoreDidChangeObserver = v6;
 
@@ -147,33 +147,33 @@ void __49__AAUIProfilePictureStore__invalidateMonogrammer__block_invoke(uint64_t
   *(v1 + 48) = 0;
 }
 
-- (AAUIProfilePictureStore)initWithAppleAccount:(id)a3 grandSlamSigner:(id)a4
+- (AAUIProfilePictureStore)initWithAppleAccount:(id)account grandSlamSigner:(id)signer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(AAUIProfilePictureStore *)self _initWithoutAppleAccount];
-  v10 = v9;
-  if (v9)
+  accountCopy = account;
+  signerCopy = signer;
+  _initWithoutAppleAccount = [(AAUIProfilePictureStore *)self _initWithoutAppleAccount];
+  v10 = _initWithoutAppleAccount;
+  if (_initWithoutAppleAccount)
   {
-    objc_storeStrong(v9 + 1, a3);
-    v11 = [v8 accountStore];
+    objc_storeStrong(_initWithoutAppleAccount + 1, account);
+    accountStore = [signerCopy accountStore];
     accountStore = v10->_accountStore;
-    v10->_accountStore = v11;
+    v10->_accountStore = accountStore;
 
-    objc_storeStrong(&v10->_grandSlamSigner, a4);
+    objc_storeStrong(&v10->_grandSlamSigner, signer);
   }
 
   return v10;
 }
 
-- (AAUIProfilePictureStore)initWithAppleAccount:(id)a3 grandSlamAccount:(id)a4 accountStore:(id)a5
+- (AAUIProfilePictureStore)initWithAppleAccount:(id)account grandSlamAccount:(id)slamAccount accountStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 accountType];
-  v12 = [v11 identifier];
-  v13 = [v12 isEqualToString:*MEMORY[0x1E69597F8]];
+  accountCopy = account;
+  slamAccountCopy = slamAccount;
+  storeCopy = store;
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  v13 = [identifier isEqualToString:*MEMORY[0x1E69597F8]];
 
   v14 = _AAUIPPSLogSystem();
   v15 = v14;
@@ -185,8 +185,8 @@ void __49__AAUIProfilePictureStore__invalidateMonogrammer__block_invoke(uint64_t
     }
 
     v16 = objc_alloc(MEMORY[0x1E698B8D0]);
-    v17 = [v16 initWithAccountStore:v10 grandSlamAccount:v9 appTokenID:*MEMORY[0x1E698B7C0]];
-    v18 = [(AAUIProfilePictureStore *)self initWithAppleAccount:v8 grandSlamSigner:v17];
+    v17 = [v16 initWithAccountStore:storeCopy grandSlamAccount:slamAccountCopy appTokenID:*MEMORY[0x1E698B7C0]];
+    _initWithoutAppleAccount = [(AAUIProfilePictureStore *)self initWithAppleAccount:accountCopy grandSlamSigner:v17];
   }
 
   else
@@ -197,36 +197,36 @@ void __49__AAUIProfilePictureStore__invalidateMonogrammer__block_invoke(uint64_t
       _os_log_impl(&dword_1C5355000, v15, OS_LOG_TYPE_DEFAULT, "Cannot create AAUIProfilePictureStore with a non-iCloud account! Returning default store without account", v20, 2u);
     }
 
-    v18 = [(AAUIProfilePictureStore *)self _initWithoutAppleAccount];
+    _initWithoutAppleAccount = [(AAUIProfilePictureStore *)self _initWithoutAppleAccount];
   }
 
-  return v18;
+  return _initWithoutAppleAccount;
 }
 
-- (AAUIProfilePictureStore)initWithAppleAccount:(id)a3 store:(id)a4
+- (AAUIProfilePictureStore)initWithAppleAccount:(id)account store:(id)store
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 aa_grandSlamAccountForiCloudAccount:v7];
-  v9 = [(AAUIProfilePictureStore *)self initWithAppleAccount:v7 grandSlamAccount:v8 accountStore:v6];
+  storeCopy = store;
+  accountCopy = account;
+  v8 = [storeCopy aa_grandSlamAccountForiCloudAccount:accountCopy];
+  v9 = [(AAUIProfilePictureStore *)self initWithAppleAccount:accountCopy grandSlamAccount:v8 accountStore:storeCopy];
 
   return v9;
 }
 
-- (AAUIProfilePictureStore)initWithGrandSlamSigner:(id)a3
+- (AAUIProfilePictureStore)initWithGrandSlamSigner:(id)signer
 {
-  v4 = a3;
+  signerCopy = signer;
   v5 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [AAUIProfilePictureStore initWithGrandSlamSigner:];
   }
 
-  v6 = [v4 grandSlamAccount];
-  v7 = [v6 aida_alternateDSID];
+  grandSlamAccount = [signerCopy grandSlamAccount];
+  aida_alternateDSID = [grandSlamAccount aida_alternateDSID];
 
-  v8 = [v4 accountStore];
-  v9 = [v8 aa_appleAccountWithAltDSID:v7];
+  accountStore = [signerCopy accountStore];
+  v9 = [accountStore aa_appleAccountWithAltDSID:aida_alternateDSID];
 
   if (!v9)
   {
@@ -236,8 +236,8 @@ void __49__AAUIProfilePictureStore__invalidateMonogrammer__block_invoke(uint64_t
       [AAUIProfilePictureStore initWithGrandSlamSigner:];
     }
 
-    v11 = [v4 grandSlamAccount];
-    v12 = [v11 aida_dsid];
+    grandSlamAccount2 = [signerCopy grandSlamAccount];
+    aida_dsid = [grandSlamAccount2 aida_dsid];
 
     v13 = _AAUIPPSLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -245,11 +245,11 @@ void __49__AAUIProfilePictureStore__invalidateMonogrammer__block_invoke(uint64_t
       [AAUIProfilePictureStore initWithGrandSlamSigner:];
     }
 
-    v14 = [v4 accountStore];
-    v9 = [v14 aa_appleAccountWithPersonID:v12];
+    accountStore2 = [signerCopy accountStore];
+    v9 = [accountStore2 aa_appleAccountWithPersonID:aida_dsid];
   }
 
-  v15 = [(AAUIProfilePictureStore *)self initWithAppleAccount:v9 grandSlamSigner:v4];
+  v15 = [(AAUIProfilePictureStore *)self initWithAppleAccount:v9 grandSlamSigner:signerCopy];
 
   return v15;
 }
@@ -293,20 +293,20 @@ id __39__AAUIProfilePictureStore__monogrammer__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)setPictureDiameter:(double)a3
+- (void)setPictureDiameter:(double)diameter
 {
-  if (self->_pictureDiameter != a3)
+  if (self->_pictureDiameter != diameter)
   {
-    self->_pictureDiameter = a3;
+    self->_pictureDiameter = diameter;
     [(AAUIProfilePictureStore *)self _invalidateMonogrammer];
   }
 }
 
-- (void)setMonogramType:(int64_t)a3
+- (void)setMonogramType:(int64_t)type
 {
-  if (self->_monogramType != a3)
+  if (self->_monogramType != type)
   {
-    self->_monogramType = a3;
+    self->_monogramType = type;
     [(AAUIProfilePictureStore *)self _invalidateMonogrammer];
   }
 }
@@ -315,8 +315,8 @@ id __39__AAUIProfilePictureStore__monogrammer__block_invoke(uint64_t a1)
 {
   v2 = MEMORY[0x1E695D0B0];
   pictureDiameter = self->_pictureDiameter;
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v6 = [v2 scopeWithPointSize:1 scale:0 rightToLeft:pictureDiameter style:{pictureDiameter, v5}];
 
   return v6;
@@ -324,15 +324,15 @@ id __39__AAUIProfilePictureStore__monogrammer__block_invoke(uint64_t a1)
 
 - (id)profilePictureForAccountOwner
 {
-  v3 = [(AAUIProfilePictureStore *)self profilePictureForAccountOwnerWithoutMonogramFallback];
-  v4 = [(AAUIProfilePictureStore *)self _sizedProfilePictureWithFallback:v3];
+  profilePictureForAccountOwnerWithoutMonogramFallback = [(AAUIProfilePictureStore *)self profilePictureForAccountOwnerWithoutMonogramFallback];
+  v4 = [(AAUIProfilePictureStore *)self _sizedProfilePictureWithFallback:profilePictureForAccountOwnerWithoutMonogramFallback];
 
   return v4;
 }
 
-- (void)profilePictureForAccountOwnerWithCompletion:(id)a3
+- (void)profilePictureForAccountOwnerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -347,8 +347,8 @@ id __39__AAUIProfilePictureStore__monogrammer__block_invoke(uint64_t a1)
   v8[3] = &unk_1E820B968;
   objc_copyWeak(&v10, &location);
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(v6, v8);
 
   objc_destroyWeak(&v10);
@@ -460,16 +460,16 @@ void __71__AAUIProfilePictureStore_profilePictureForAccountOwnerWithCompletion__
   (*(v8 + 16))(v8, v9, v5);
 }
 
-- (id)_sizedProfilePictureWithFallback:(id)a3
+- (id)_sizedProfilePictureWithFallback:(id)fallback
 {
-  v4 = a3;
+  fallbackCopy = fallback;
   v5 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [AAUIProfilePictureStore _sizedProfilePictureWithFallback:];
   }
 
-  v6 = v4;
+  v6 = fallbackCopy;
   v7 = v6;
   if (!v6)
   {
@@ -479,9 +479,9 @@ void __71__AAUIProfilePictureStore_profilePictureForAccountOwnerWithCompletion__
       [AAUIProfilePictureStore _sizedProfilePictureWithFallback:];
     }
 
-    v9 = [(ACAccount *)self->_account aa_firstName];
-    v10 = [(ACAccount *)self->_account aa_lastName];
-    v7 = [(AAUIProfilePictureStore *)self _fallbackProfilePictureForPersonWithFirstName:v9 lastName:v10];
+    aa_firstName = [(ACAccount *)self->_account aa_firstName];
+    aa_lastName = [(ACAccount *)self->_account aa_lastName];
+    v7 = [(AAUIProfilePictureStore *)self _fallbackProfilePictureForPersonWithFirstName:aa_firstName lastName:aa_lastName];
   }
 
   v11 = [(AAUIProfilePictureStore *)self _correctlySizedImageFromImage:v7];
@@ -508,12 +508,12 @@ void __71__AAUIProfilePictureStore_profilePictureForAccountOwnerWithCompletion__
     [AAUIProfilePictureStore profilePictureForAccountOwnerWithoutMonogramFallback];
   }
 
-  v5 = [(AAUIProfilePictureStore *)self _meCardPicture];
-  if (!v5)
+  _meCardPicture = [(AAUIProfilePictureStore *)self _meCardPicture];
+  if (!_meCardPicture)
   {
 LABEL_7:
-    v6 = [(ACAccount *)self->_account aa_personID];
-    v7 = [v6 copy];
+    aa_personID = [(ACAccount *)self->_account aa_personID];
+    v7 = [aa_personID copy];
 
     v8 = +[AAUIServerSuppliedProfilePictureCache sharedCache];
     pictureDiameter = self->_pictureDiameter;
@@ -521,21 +521,21 @@ LABEL_7:
     v14 = 3221225472;
     v15 = __79__AAUIProfilePictureStore_profilePictureForAccountOwnerWithoutMonogramFallback__block_invoke;
     v16 = &unk_1E820B990;
-    v17 = self;
+    selfCopy = self;
     v18 = v7;
     v10 = v7;
-    v5 = [v8 profilePictureForPersonID:v10 diameter:&v13 serverFetchBlock:pictureDiameter];
+    _meCardPicture = [v8 profilePictureForPersonID:v10 diameter:&v13 serverFetchBlock:pictureDiameter];
   }
 
-  v11 = [(AAUIProfilePictureStore *)self _correctlySizedImageFromImage:v5, v13, v14, v15, v16, v17];
-  [(AAUIProfilePictureStore *)self _saveProfilePictureToCacheIfNeeded:v11];
+  selfCopy = [(AAUIProfilePictureStore *)self _correctlySizedImageFromImage:_meCardPicture, v13, v14, v15, v16, selfCopy];
+  [(AAUIProfilePictureStore *)self _saveProfilePictureToCacheIfNeeded:selfCopy];
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)fetchProfilePictureForAccountOwner:(id)a3
+- (void)fetchProfilePictureForAccountOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v5 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -550,8 +550,8 @@ LABEL_7:
   v8[3] = &unk_1E820BA08;
   objc_copyWeak(&v10, &location);
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = ownerCopy;
+  v7 = ownerCopy;
   dispatch_async(v6, v8);
 
   objc_destroyWeak(&v10);
@@ -685,9 +685,9 @@ void __62__AAUIProfilePictureStore_fetchProfilePictureForAccountOwner___block_in
   (*(v11 + 16))(v11, v12, v6);
 }
 
-- (void)fetchProfilePictureFromCacheForAccountOwner:(id)a3
+- (void)fetchProfilePictureFromCacheForAccountOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v5 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -699,8 +699,8 @@ void __62__AAUIProfilePictureStore_fetchProfilePictureForAccountOwner___block_in
   v7[2] = __71__AAUIProfilePictureStore_fetchProfilePictureFromCacheForAccountOwner___block_invoke;
   v7[3] = &unk_1E820BA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = ownerCopy;
+  v6 = ownerCopy;
   [(AAUIProfilePictureStore *)self fetchProfilePictureForAccountOwner:v7];
 }
 
@@ -712,9 +712,9 @@ void __71__AAUIProfilePictureStore_fetchProfilePictureFromCacheForAccountOwner__
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_saveProfilePictureToCache:(id)a3
+- (void)_saveProfilePictureToCache:(id)cache
 {
-  v3 = UIImagePNGRepresentation(a3);
+  v3 = UIImagePNGRepresentation(cache);
   [v3 writeToFile:@"/var/mobile/Library/Caches/com.apple.AppleAccount/cachedProfilePicture.png" atomically:1];
   CFPreferencesSetAppValue(*MEMORY[0x1E698BA78], @"/var/mobile/Library/Caches/com.apple.AppleAccount/cachedProfilePicture.png", @"com.apple.appleaccount.informationcache");
   v4 = _AAUIPPSLogSystem();
@@ -732,15 +732,15 @@ void __71__AAUIProfilePictureStore_fetchProfilePictureFromCacheForAccountOwner__
   return v3;
 }
 
-- (BOOL)_isCachedProfilePictureUpdated:(id)a3
+- (BOOL)_isCachedProfilePictureUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(AAUIProfilePictureStore *)self _readProfilePictureFromCache];
-  v6 = UIImagePNGRepresentation(v5);
-  v7 = UIImagePNGRepresentation(v4);
+  updatedCopy = updated;
+  _readProfilePictureFromCache = [(AAUIProfilePictureStore *)self _readProfilePictureFromCache];
+  v6 = UIImagePNGRepresentation(_readProfilePictureFromCache);
+  v7 = UIImagePNGRepresentation(updatedCopy);
 
-  LOBYTE(v4) = [v6 isEqualToData:v7];
-  return v4;
+  LOBYTE(updatedCopy) = [v6 isEqualToData:v7];
+  return updatedCopy;
 }
 
 - (BOOL)_isProfilePictureCachePresent
@@ -751,19 +751,19 @@ void __71__AAUIProfilePictureStore_fetchProfilePictureFromCacheForAccountOwner__
   return v3;
 }
 
-- (void)_saveProfilePictureToCacheIfNeeded:(id)a3
+- (void)_saveProfilePictureToCacheIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(ACAccount *)self->_account aa_isAccountClass:*MEMORY[0x1E698B760]])
   {
     if (![(AAUIProfilePictureStore *)self _isProfilePictureCachePresent])
     {
 LABEL_7:
-      [(AAUIProfilePictureStore *)self _saveProfilePictureToCache:v4];
+      [(AAUIProfilePictureStore *)self _saveProfilePictureToCache:neededCopy];
       goto LABEL_8;
     }
 
-    if (![(AAUIProfilePictureStore *)self _isCachedProfilePictureUpdated:v4])
+    if (![(AAUIProfilePictureStore *)self _isCachedProfilePictureUpdated:neededCopy])
     {
       v5 = _AAUIPPSLogSystem();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -778,10 +778,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setProfilePictureForAccountOwner:(id)a3 cropRect:(id)a4
+- (void)setProfilePictureForAccountOwner:(id)owner cropRect:(id)rect
 {
-  v6 = a3;
-  v7 = a4;
+  ownerCopy = owner;
+  rectCopy = rect;
   v8 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -802,18 +802,18 @@ LABEL_8:
     v12 = [v9 mutableCopy];
     v13 = _AAUIPPSLogSystem();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
-    if (v6)
+    if (ownerCopy)
     {
       if (v14)
       {
         [AAUIProfilePictureStore setProfilePictureForAccountOwner:cropRect:];
       }
 
-      v15 = UIImageJPEGRepresentation(v6, 0.8);
+      v15 = UIImageJPEGRepresentation(ownerCopy, 0.8);
       [v12 setImageData:v15];
-      if (v7)
+      if (rectCopy)
       {
-        [v7 CGRectValue];
+        [rectCopy CGRectValue];
         [v12 setCropRect:?];
       }
     }
@@ -884,7 +884,7 @@ LABEL_8:
       [AAUIProfilePictureStore setProfilePictureForAccountOwner:cropRect:];
     }
 
-    [(AAUIProfilePictureStore *)self _updateServerProfilePictureForAccountOwner:v6 cropRect:v7];
+    [(AAUIProfilePictureStore *)self _updateServerProfilePictureForAccountOwner:ownerCopy cropRect:rectCopy];
     goto LABEL_35;
   }
 
@@ -895,37 +895,37 @@ LABEL_32:
     [AAUIProfilePictureStore setProfilePictureForAccountOwner:cropRect:];
   }
 
-  v28 = [(ACAccount *)self->_account aa_personID];
-  [(AAUIProfilePictureStore *)self updateCacheWithPhoto:v6 cropRect:v7 forPersonID:v28];
+  aa_personID = [(ACAccount *)self->_account aa_personID];
+  [(AAUIProfilePictureStore *)self updateCacheWithPhoto:ownerCopy cropRect:rectCopy forPersonID:aa_personID];
 
 LABEL_35:
 }
 
-- (id)profilePictureForFamilyMember:(id)a3
+- (id)profilePictureForFamilyMember:(id)member
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  memberCopy = member;
   v5 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 appleID];
-    v7 = [v4 firstName];
-    v8 = [v4 lastName];
+    appleID = [memberCopy appleID];
+    firstName = [memberCopy firstName];
+    lastName = [memberCopy lastName];
     v14 = 138412802;
-    v15 = v6;
+    v15 = appleID;
     v16 = 2112;
-    v17 = v7;
+    v17 = firstName;
     v18 = 2112;
-    v19 = v8;
+    v19 = lastName;
     _os_log_impl(&dword_1C5355000, v5, OS_LOG_TYPE_DEFAULT, "AAUIProfilePictureStore profilePictureForFamilyMember: %@ %@ %@", &v14, 0x20u);
   }
 
-  v9 = [(AAUIProfilePictureStore *)self _profilePictureForFamilyMemberWithoutMonogramFallback:v4];
+  v9 = [(AAUIProfilePictureStore *)self _profilePictureForFamilyMemberWithoutMonogramFallback:memberCopy];
   if (!v9)
   {
-    v10 = [v4 firstName];
-    v11 = [v4 lastName];
-    v9 = [(AAUIProfilePictureStore *)self _fallbackProfilePictureForPersonWithFirstName:v10 lastName:v11];
+    firstName2 = [memberCopy firstName];
+    lastName2 = [memberCopy lastName];
+    v9 = [(AAUIProfilePictureStore *)self _fallbackProfilePictureForPersonWithFirstName:firstName2 lastName:lastName2];
   }
 
   v12 = [(AAUIProfilePictureStore *)self _correctlySizedImageFromImage:v9];
@@ -933,37 +933,37 @@ LABEL_35:
   return v12;
 }
 
-- (void)fetchProfilePictureForFamilyMember:(id)a3 completion:(id)a4
+- (void)fetchProfilePictureForFamilyMember:(id)member completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  memberCopy = member;
+  completionCopy = completion;
   v8 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 appleID];
-    v10 = [v6 firstName];
-    v11 = [v6 lastName];
+    appleID = [memberCopy appleID];
+    firstName = [memberCopy firstName];
+    lastName = [memberCopy lastName];
     *buf = 138412802;
-    v22 = v9;
+    v22 = appleID;
     v23 = 2112;
-    v24 = v10;
+    v24 = firstName;
     v25 = 2112;
-    v26 = v11;
+    v26 = lastName;
     _os_log_impl(&dword_1C5355000, v8, OS_LOG_TYPE_DEFAULT, "AAUIProfilePictureStore fetchProfilePictureForFamilyMember: %@ %@ %@ completion:", buf, 0x20u);
   }
 
-  if ([(ACAccount *)self->_account isEnabledForDataclass:*MEMORY[0x1E6959AF0]]&& ([(AAUIProfilePictureStore *)self _familyMemberPersonPicture:v6], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ([(ACAccount *)self->_account isEnabledForDataclass:*MEMORY[0x1E6959AF0]]&& ([(AAUIProfilePictureStore *)self _familyMemberPersonPicture:memberCopy], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v13 = v12;
+    stringValue = v12;
     v14 = [(AAUIProfilePictureStore *)self _correctlySizedImageFromImage:v12];
-    v7[2](v7, v14, 0);
+    completionCopy[2](completionCopy, v14, 0);
   }
 
   else
   {
-    v15 = [v6 personID];
-    v13 = [v15 stringValue];
+    personID = [memberCopy personID];
+    stringValue = [personID stringValue];
 
     v16 = +[AAUIServerSuppliedProfilePictureCache sharedCache];
     pictureDiameter = self->_pictureDiameter;
@@ -972,9 +972,9 @@ LABEL_35:
     v18[2] = __73__AAUIProfilePictureStore_fetchProfilePictureForFamilyMember_completion___block_invoke;
     v18[3] = &unk_1E820BA80;
     v18[4] = self;
-    v19 = v6;
-    v20 = v7;
-    [v16 profilePictureForPersonID:v13 diameter:v18 completion:pictureDiameter];
+    v19 = memberCopy;
+    v20 = completionCopy;
+    [v16 profilePictureForPersonID:stringValue diameter:v18 completion:pictureDiameter];
   }
 }
 
@@ -1029,15 +1029,15 @@ void __73__AAUIProfilePictureStore_fetchProfilePictureForFamilyMember_completion
   (*(v9 + 16))(v9, v10, v5);
 }
 
-- (void)fetchRawImageAndCropRectForAccountOwner:(id)a3
+- (void)fetchRawImageAndCropRectForAccountOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__AAUIProfilePictureStore_fetchRawImageAndCropRectForAccountOwner___block_invoke;
   aBlock[3] = &unk_1E820B780;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = ownerCopy;
   v11 = v5;
   v6 = _Block_copy(aBlock);
   if ([(ACAccount *)self->_account isEnabledForDataclass:*MEMORY[0x1E6959AF0]])
@@ -1103,18 +1103,18 @@ uint64_t __67__AAUIProfilePictureStore_fetchRawImageAndCropRectForAccountOwner__
   }
 }
 
-- (void)fetchRawImageAndCropRectForFamilyMember:(id)a3 completion:(id)a4
+- (void)fetchRawImageAndCropRectForFamilyMember:(id)member completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  memberCopy = member;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__AAUIProfilePictureStore_fetchRawImageAndCropRectForFamilyMember_completion___block_invoke;
   aBlock[3] = &unk_1E820BAD0;
-  v8 = v6;
+  v8 = memberCopy;
   v15 = v8;
-  v9 = v7;
-  v16 = self;
+  v9 = completionCopy;
+  selfCopy = self;
   v17 = v9;
   v10 = _Block_copy(aBlock);
   if ([(ACAccount *)self->_account isEnabledForDataclass:*MEMORY[0x1E6959AF0]])
@@ -1182,30 +1182,30 @@ uint64_t __78__AAUIProfilePictureStore_fetchRawImageAndCropRectForFamilyMember_c
   }
 }
 
-- (id)profilePictureForLocalContact:(id)a3
+- (id)profilePictureForLocalContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [AAUIProfilePictureStore profilePictureForLocalContact:];
   }
 
-  v6 = [v4 imageData];
+  imageData = [contactCopy imageData];
 
-  if (v6)
+  if (imageData)
   {
     v7 = MEMORY[0x1E69DCAB8];
-    v8 = [v4 imageData];
-    v9 = [v7 imageWithData:v8];
-    [(AAUIProfilePictureStore *)self profilePictureForPicture:v9];
+    imageData2 = [contactCopy imageData];
+    lastName = [v7 imageWithData:imageData2];
+    [(AAUIProfilePictureStore *)self profilePictureForPicture:lastName];
   }
 
   else
   {
-    v8 = [v4 firstName];
-    v9 = [v4 lastName];
-    [(AAUIProfilePictureStore *)self _fallbackProfilePictureForPersonWithFirstName:v8 lastName:v9];
+    imageData2 = [contactCopy firstName];
+    lastName = [contactCopy lastName];
+    [(AAUIProfilePictureStore *)self _fallbackProfilePictureForPersonWithFirstName:imageData2 lastName:lastName];
   }
   v10 = ;
 
@@ -1234,7 +1234,7 @@ void __76__AAUIProfilePictureStore__beginObservingContactStoreDidChangeNotificat
   [WeakRetained _contactStoreDidChange:v3];
 }
 
-- (void)_contactStoreDidChange:(id)a3
+- (void)_contactStoreDidChange:(id)change
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v4 = _AAUIPPSLogSystem();
@@ -1243,28 +1243,28 @@ void __76__AAUIProfilePictureStore__beginObservingContactStoreDidChangeNotificat
     [AAUIProfilePictureStore _contactStoreDidChange:];
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"AAUIProfilePictureStoreDidChange" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"AAUIProfilePictureStoreDidChange" object:self];
 }
 
 - (void)_endObservingContactStoreDidChangeNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_contactStoreDidChangeObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_contactStoreDidChangeObserver];
 }
 
-- (id)_fallbackProfilePictureForPersonWithFirstName:(id)a3 lastName:(id)a4
+- (id)_fallbackProfilePictureForPersonWithFirstName:(id)name lastName:(id)lastName
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  lastNameCopy = lastName;
   v8 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [AAUIProfilePictureStore _fallbackProfilePictureForPersonWithFirstName:lastName:];
   }
 
-  if (!v6 || !v7)
+  if (!nameCopy || !lastNameCopy)
   {
     goto LABEL_8;
   }
@@ -1276,13 +1276,13 @@ void __76__AAUIProfilePictureStore__beginObservingContactStoreDidChangeNotificat
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E695CF18]);
-  [v10 setGivenName:v6];
-  [v10 setFamilyName:v7];
-  v11 = [(AAUIProfilePictureStore *)self _monogrammer];
+  [v10 setGivenName:nameCopy];
+  [v10 setFamilyName:lastNameCopy];
+  _monogrammer = [(AAUIProfilePictureStore *)self _monogrammer];
   v22[0] = v10;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-  v13 = [(AAUIProfilePictureStore *)self renderingScope];
-  v14 = [v11 avatarImageForContacts:v12 scope:v13];
+  renderingScope = [(AAUIProfilePictureStore *)self renderingScope];
+  v14 = [_monogrammer avatarImageForContacts:v12 scope:renderingScope];
 
   if (!v14)
   {
@@ -1294,35 +1294,35 @@ LABEL_8:
     }
 
     v16 = self->_pictureDiameter * 0.5;
-    v17 = [(AAUIProfilePictureStore *)self _monogrammer];
-    v18 = [v17 placeholderImageProvider];
-    v19 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v19 scale];
-    v14 = [v18 imageForSize:0 scale:v16 style:{v16, v20}];
+    _monogrammer2 = [(AAUIProfilePictureStore *)self _monogrammer];
+    placeholderImageProvider = [_monogrammer2 placeholderImageProvider];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v14 = [placeholderImageProvider imageForSize:0 scale:v16 style:{v16, v20}];
   }
 
   return v14;
 }
 
-- (void)_fetchAndCacheRawImageAndCropRectWithRequest:(id)a3 personID:(id)a4 completion:(id)a5
+- (void)_fetchAndCacheRawImageAndCropRectWithRequest:(id)request personID:(id)d completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__AAUIProfilePictureStore__fetchAndCacheRawImageAndCropRectWithRequest_personID_completion___block_invoke;
   v10[3] = &unk_1E820BB20;
-  v11 = v8;
-  v9 = v8;
-  [(AAUIProfilePictureStore *)self _fetchProfilePictureSupersetWithRequest:a3 personID:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(AAUIProfilePictureStore *)self _fetchProfilePictureSupersetWithRequest:request personID:d completion:v10];
 }
 
-- (id)_correctlySizedImageFromImage:(id)a3
+- (id)_correctlySizedImageFromImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  imageCopy = image;
+  v5 = imageCopy;
+  if (imageCopy)
   {
-    [v4 size];
+    [imageCopy size];
     v7 = v6;
     [(AAUIProfilePictureStore *)self pictureDiameter];
     if (v7 == v8)
@@ -1355,15 +1355,15 @@ LABEL_8:
   return v9;
 }
 
-- (void)_fetchProfilePictureForAccountOwnerFromServer:(id)a3 serverCacheTag:(id)a4 completion:(id)a5
+- (void)_fetchProfilePictureForAccountOwnerFromServer:(id)server serverCacheTag:(id)tag completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E698B910];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  tagCopy = tag;
+  serverCopy = server;
   v12 = [[v8 alloc] initWithAccount:self->_account];
-  [v12 setServerCacheTag:v10];
+  [v12 setServerCacheTag:tagCopy];
 
   v13 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1373,25 +1373,25 @@ LABEL_8:
     _os_log_impl(&dword_1C5355000, v13, OS_LOG_TYPE_DEFAULT, "Fetching account owner profile picture from server with request %@", &v14, 0xCu);
   }
 
-  [(AAUIProfilePictureStore *)self _fetchProfilePictureWithRequest:v12 personID:v11 completion:v9];
+  [(AAUIProfilePictureStore *)self _fetchProfilePictureWithRequest:v12 personID:serverCopy completion:completionCopy];
 }
 
-- (void)_fetchProfilePictureSupersetWithRequest:(id)a3 personID:(id)a4 completion:(id)a5
+- (void)_fetchProfilePictureSupersetWithRequest:(id)request personID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  dCopy = d;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __87__AAUIProfilePictureStore__fetchProfilePictureSupersetWithRequest_personID_completion___block_invoke;
   v14[3] = &unk_1E820BB70;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = requestCopy;
+  selfCopy = self;
+  v17 = dCopy;
+  v18 = completionCopy;
+  v11 = completionCopy;
+  v12 = dCopy;
+  v13 = requestCopy;
   [v13 performRequestWithHandler:v14];
 }
 
@@ -1532,16 +1532,16 @@ LABEL_26:
   }
 }
 
-- (void)_fetchProfilePictureWithRequest:(id)a3 personID:(id)a4 completion:(id)a5
+- (void)_fetchProfilePictureWithRequest:(id)request personID:(id)d completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79__AAUIProfilePictureStore__fetchProfilePictureWithRequest_personID_completion___block_invoke;
   v10[3] = &unk_1E820BB20;
-  v11 = v8;
-  v9 = v8;
-  [(AAUIProfilePictureStore *)self _fetchProfilePictureSupersetWithRequest:a3 personID:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(AAUIProfilePictureStore *)self _fetchProfilePictureSupersetWithRequest:request personID:d completion:v10];
 }
 
 uint64_t __79__AAUIProfilePictureStore__fetchProfilePictureWithRequest_personID_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6)
@@ -1555,45 +1555,45 @@ uint64_t __79__AAUIProfilePictureStore__fetchProfilePictureWithRequest_personID_
   return result;
 }
 
-- (id)_profilePictureForFamilyMemberWithoutMonogramFallback:(id)a3
+- (id)_profilePictureForFamilyMemberWithoutMonogramFallback:(id)fallback
 {
-  v4 = a3;
-  if (![(ACAccount *)self->_account isEnabledForDataclass:*MEMORY[0x1E6959AF0]]|| ([(AAUIProfilePictureStore *)self _familyMemberPersonPicture:v4], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  fallbackCopy = fallback;
+  if (![(ACAccount *)self->_account isEnabledForDataclass:*MEMORY[0x1E6959AF0]]|| ([(AAUIProfilePictureStore *)self _familyMemberPersonPicture:fallbackCopy], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6 = +[AAUIServerSuppliedProfilePictureCache sharedCache];
-    v7 = [v4 personID];
-    v8 = [v7 stringValue];
+    personID = [fallbackCopy personID];
+    stringValue = [personID stringValue];
     pictureDiameter = self->_pictureDiameter;
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __81__AAUIProfilePictureStore__profilePictureForFamilyMemberWithoutMonogramFallback___block_invoke;
     v15 = &unk_1E820B990;
-    v16 = self;
-    v17 = v4;
-    v5 = [v6 profilePictureForPersonID:v8 diameter:&v12 serverFetchBlock:pictureDiameter];
+    selfCopy = self;
+    v17 = fallbackCopy;
+    v5 = [v6 profilePictureForPersonID:stringValue diameter:&v12 serverFetchBlock:pictureDiameter];
   }
 
-  v10 = [(AAUIProfilePictureStore *)self _correctlySizedImageFromImage:v5, v12, v13, v14, v15, v16];
+  selfCopy = [(AAUIProfilePictureStore *)self _correctlySizedImageFromImage:v5, v12, v13, v14, v15, selfCopy];
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)_fetchProfilePictureForFamilyMemberFromServer:(id)a3 serverCacheTag:(id)a4 completion:(id)a5
+- (void)_fetchProfilePictureForFamilyMemberFromServer:(id)server serverCacheTag:(id)tag completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  serverCopy = server;
   v9 = MEMORY[0x1E699C068];
-  v10 = a5;
-  v11 = a4;
+  completionCopy = completion;
+  tagCopy = tag;
   v12 = [[v9 alloc] initWithGrandSlamSigner:self->_grandSlamSigner];
-  v13 = [v8 personID];
-  [v12 setFamilyMemberDSID:v13];
+  personID = [serverCopy personID];
+  [v12 setFamilyMemberDSID:personID];
 
-  v14 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v15 = [v14 ams_activeiTunesAccount];
-  [v12 setiTunesAccount:v15];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+  [v12 setiTunesAccount:ams_activeiTunesAccount];
 
-  [v12 setServerCacheTag:v11];
+  [v12 setServerCacheTag:tagCopy];
   v16 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -1602,9 +1602,9 @@ uint64_t __79__AAUIProfilePictureStore__fetchProfilePictureWithRequest_personID_
     _os_log_impl(&dword_1C5355000, v16, OS_LOG_TYPE_DEFAULT, "Fetching family member profile picture from server with request %@", &v19, 0xCu);
   }
 
-  v17 = [v8 personID];
-  v18 = [v17 stringValue];
-  [(AAUIProfilePictureStore *)self _fetchProfilePictureWithRequest:v12 personID:v18 completion:v10];
+  personID2 = [serverCopy personID];
+  stringValue = [personID2 stringValue];
+  [(AAUIProfilePictureStore *)self _fetchProfilePictureWithRequest:v12 personID:stringValue completion:completionCopy];
 }
 
 - (id)_meCardPicture
@@ -1626,9 +1626,9 @@ uint64_t __79__AAUIProfilePictureStore__fetchProfilePictureWithRequest_personID_
     v4 = v7;
     if (v6)
     {
-      v8 = [v6 imageData];
+      imageData = [v6 imageData];
 
-      if (!v8)
+      if (!imageData)
       {
         goto LABEL_26;
       }
@@ -1640,8 +1640,8 @@ uint64_t __79__AAUIProfilePictureStore__fetchProfilePictureWithRequest_personID_
       }
 
       v10 = objc_alloc(MEMORY[0x1E69DCAB8]);
-      v11 = [v6 imageData];
-      v12 = [v10 initWithData:v11];
+      imageData2 = [v6 imageData];
+      v12 = [v10 initWithData:imageData2];
 
       [v6 cropRect];
       IsEmpty = CGRectIsEmpty(v28);
@@ -1720,10 +1720,10 @@ LABEL_26:
   return v20;
 }
 
-- (void)meCardWithVisualIdentity:(id)a3
+- (void)meCardWithVisualIdentity:(id)identity
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1743,19 +1743,19 @@ LABEL_26:
     _os_log_impl(&dword_1C5355000, v9, OS_LOG_TYPE_DEFAULT, "meCard exists %d", buf, 8u);
   }
 
-  v10 = [v18[5] imageData];
+  imageData = [v18[5] imageData];
 
   v11 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v24 = v10 != 0;
+    v24 = imageData != 0;
     _os_log_impl(&dword_1C5355000, v11, OS_LOG_TYPE_DEFAULT, "meCard.image exists %d", buf, 8u);
   }
 
-  if (v10)
+  if (imageData)
   {
-    v4[2](v4, v18[5]);
+    identityCopy[2](identityCopy, v18[5]);
   }
 
   else
@@ -1767,7 +1767,7 @@ LABEL_26:
     v15 = v8;
     v14 = &v17;
     v12[4] = self;
-    v13 = v4;
+    v13 = identityCopy;
     [(AAUIProfilePictureStore *)self fetchRawImageAndCropRectForAccountOwner:v12];
   }
 
@@ -1924,27 +1924,27 @@ uint64_t __52__AAUIProfilePictureStore_meCardWithVisualIdentity___block_invoke_7
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)_decodeImageAndCropRectForContact:(id)a3 completion:(id)a4
+- (void)_decodeImageAndCropRectForContact:(id)contact completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 imageData];
-  if (v7)
+  contactCopy = contact;
+  completionCopy = completion;
+  imageData = [contactCopy imageData];
+  if (imageData)
   {
     v8 = dispatch_get_global_queue(25, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __72__AAUIProfilePictureStore__decodeImageAndCropRectForContact_completion___block_invoke;
     block[3] = &unk_1E820BBE8;
-    v12 = v6;
-    v10 = v7;
-    v11 = v5;
+    v12 = completionCopy;
+    v10 = imageData;
+    v11 = contactCopy;
     dispatch_async(v8, block);
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
+    (*(completionCopy + 2))(completionCopy, 0, 0, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
   }
 }
 
@@ -1956,9 +1956,9 @@ void __72__AAUIProfilePictureStore__decodeImageAndCropRectForContact_completion_
   (*(v2 + 16))(v2, v3, 0);
 }
 
-- (void)_meCardRawImageAndCropRect:(id)a3
+- (void)_meCardRawImageAndCropRect:(id)rect
 {
-  v4 = a3;
+  rectCopy = rect;
   if ([MEMORY[0x1E695CE18] authorizationStatusForEntityType:0] == 3)
   {
     v8 = 0;
@@ -1966,12 +1966,12 @@ void __72__AAUIProfilePictureStore__decodeImageAndCropRectForContact_completion_
     v6 = v8;
     if (v5)
     {
-      [(AAUIProfilePictureStore *)self _decodeImageAndCropRectForContact:v5 completion:v4];
+      [(AAUIProfilePictureStore *)self _decodeImageAndCropRectForContact:v5 completion:rectCopy];
     }
 
     else
     {
-      v4[2](v4, 0, v6, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
+      rectCopy[2](rectCopy, 0, v6, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
     }
   }
 
@@ -1984,14 +1984,14 @@ void __72__AAUIProfilePictureStore__decodeImageAndCropRectForContact_completion_
       _os_log_impl(&dword_1C5355000, v7, OS_LOG_TYPE_DEFAULT, "AAUIProfilePictureStore skipping CNContact lookup because we are not authorized", buf, 2u);
     }
 
-    v4[2](v4, 0, 0, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
+    rectCopy[2](rectCopy, 0, 0, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
   }
 }
 
-- (id)_familyMemberPersonPicture:(id)a3
+- (id)_familyMemberPersonPicture:(id)picture
 {
   v10 = 0;
-  v4 = [(AAUIProfilePictureStore *)self _contactWithImageDataMatchingFamilyMember:a3 error:&v10];
+  v4 = [(AAUIProfilePictureStore *)self _contactWithImageDataMatchingFamilyMember:picture error:&v10];
   v5 = v10;
   v6 = v5;
   if (v4)
@@ -2016,51 +2016,51 @@ void __72__AAUIProfilePictureStore__decodeImageAndCropRectForContact_completion_
   return v7;
 }
 
-- (void)_familyMember:(id)a3 rawImageAndCropRect:(id)a4
+- (void)_familyMember:(id)member rawImageAndCropRect:(id)rect
 {
   v9 = 0;
-  v6 = a4;
-  v7 = [(AAUIProfilePictureStore *)self _contactWithImageDataMatchingFamilyMember:a3 error:&v9];
+  rectCopy = rect;
+  v7 = [(AAUIProfilePictureStore *)self _contactWithImageDataMatchingFamilyMember:member error:&v9];
   v8 = v9;
-  [(AAUIProfilePictureStore *)self _decodeImageAndCropRectForContact:v7 completion:v6];
+  [(AAUIProfilePictureStore *)self _decodeImageAndCropRectForContact:v7 completion:rectCopy];
   if (v7)
   {
-    [(AAUIProfilePictureStore *)self _decodeImageAndCropRectForContact:v7 completion:v6];
+    [(AAUIProfilePictureStore *)self _decodeImageAndCropRectForContact:v7 completion:rectCopy];
   }
 
   else
   {
-    v6[2](v6, 0, v8, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
+    rectCopy[2](rectCopy, 0, v8, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
   }
 }
 
-- (id)_monogrammedContactImage:(id)a3
+- (id)_monogrammedContactImage:(id)image
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AAUIProfilePictureStore *)self _monogrammer];
-  v10[0] = v4;
+  imageCopy = image;
+  _monogrammer = [(AAUIProfilePictureStore *)self _monogrammer];
+  v10[0] = imageCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
-  v7 = [(AAUIProfilePictureStore *)self renderingScope];
-  v8 = [v5 avatarImageForContacts:v6 scope:v7];
+  renderingScope = [(AAUIProfilePictureStore *)self renderingScope];
+  v8 = [_monogrammer avatarImageForContacts:v6 scope:renderingScope];
 
   return v8;
 }
 
-- (id)_contactWithImageDataMatchingFamilyMember:(id)a3 error:(id *)a4
+- (id)_contactWithImageDataMatchingFamilyMember:(id)member error:(id *)error
 {
-  v6 = a3;
+  memberCopy = member;
   if ([MEMORY[0x1E695CE18] authorizationStatusForEntityType:0] == 3)
   {
     v7 = MEMORY[0x1E695CD58];
-    v8 = [v6 appleID];
-    v9 = [v7 predicateForContactsMatchingEmailAddress:v8];
+    appleID = [memberCopy appleID];
+    v9 = [v7 predicateForContactsMatchingEmailAddress:appleID];
 
     contactStore = self->_contactStore;
     v11 = _AAUIDefaultFetchDescriptors();
-    v12 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v9 keysToFetch:v11 error:a4];
-    v13 = [v12 firstObject];
+    v12 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v9 keysToFetch:v11 error:error];
+    firstObject = [v12 firstObject];
   }
 
   else
@@ -2072,23 +2072,23 @@ void __72__AAUIProfilePictureStore__decodeImageAndCropRectForContact_completion_
       _os_log_impl(&dword_1C5355000, v14, OS_LOG_TYPE_DEFAULT, "AAUIProfilePictureStore skipping CNContact lookup for family member because we are not authorized", v16, 2u);
     }
 
-    v13 = 0;
+    firstObject = 0;
   }
 
-  return v13;
+  return firstObject;
 }
 
-- (BOOL)_contactSyncsWithiCloud:(id)a3 error:(id *)a4
+- (BOOL)_contactSyncsWithiCloud:(id)cloud error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  cloudCopy = cloud;
   v7 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [AAUIProfilePictureStore _contactSyncsWithiCloud:error:];
   }
 
-  if ([v6 isUnified])
+  if ([cloudCopy isUnified])
   {
     v8 = _AAUIPPSLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -2100,8 +2100,8 @@ void __72__AAUIProfilePictureStore__decodeImageAndCropRectForContact_completion_
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v9 = [v6 linkedContacts];
-    v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    linkedContacts = [cloudCopy linkedContacts];
+    v10 = [linkedContacts countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2112,10 +2112,10 @@ void __72__AAUIProfilePictureStore__decodeImageAndCropRectForContact_completion_
         {
           if (*v26 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(linkedContacts);
           }
 
-          if ([(AAUIProfilePictureStore *)self _contactSyncsWithiCloud:*(*(&v25 + 1) + 8 * i) error:a4])
+          if ([(AAUIProfilePictureStore *)self _contactSyncsWithiCloud:*(*(&v25 + 1) + 8 * i) error:error])
           {
             v14 = _AAUIPPSLogSystem();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -2128,7 +2128,7 @@ void __72__AAUIProfilePictureStore__decodeImageAndCropRectForContact_completion_
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v11 = [linkedContacts countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v11)
         {
           continue;
@@ -2141,22 +2141,22 @@ void __72__AAUIProfilePictureStore__decodeImageAndCropRectForContact_completion_
     goto LABEL_20;
   }
 
-  v9 = [(AAUIProfilePictureStore *)self _getAccountIdentifierForContact:v6 error:a4];
-  if (v9)
+  linkedContacts = [(AAUIProfilePictureStore *)self _getAccountIdentifierForContact:cloudCopy error:error];
+  if (linkedContacts)
   {
-    v14 = [(ACAccountStore *)self->_accountStore accountWithIdentifier:v9 error:a4];
-    v15 = [v14 accountType];
-    v16 = [v15 identifier];
+    v14 = [(ACAccountStore *)self->_accountStore accountWithIdentifier:linkedContacts error:error];
+    accountType = [v14 accountType];
+    identifier = [accountType identifier];
     v17 = *MEMORY[0x1E69597F8];
-    v18 = [v16 isEqualToString:*MEMORY[0x1E69597F8]];
+    v18 = [identifier isEqualToString:*MEMORY[0x1E69597F8]];
 
-    v19 = [v14 parentAccount];
-    v20 = v19;
+    parentAccount = [v14 parentAccount];
+    parentAccount2 = parentAccount;
     if ((v18 & 1) == 0)
     {
-      v21 = [v19 accountType];
-      v22 = [v21 identifier];
-      v23 = [v22 isEqualToString:v17];
+      accountType2 = [parentAccount accountType];
+      identifier2 = [accountType2 identifier];
+      v23 = [identifier2 isEqualToString:v17];
 
       if (!v23)
       {
@@ -2165,10 +2165,10 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v20 = [v14 parentAccount];
+      parentAccount2 = [v14 parentAccount];
     }
 
-    LOBYTE(v23) = [v20 isEnabledForDataclass:*MEMORY[0x1E6959AF0]];
+    LOBYTE(v23) = [parentAccount2 isEnabledForDataclass:*MEMORY[0x1E6959AF0]];
 
     goto LABEL_24;
   }
@@ -2180,56 +2180,56 @@ LABEL_25:
   return v23;
 }
 
-- (id)_getAccountIdentifierForContact:(id)a3 error:(id *)a4
+- (id)_getAccountIdentifierForContact:(id)contact error:(id *)error
 {
   v6 = MEMORY[0x1E695CE48];
-  v7 = [a3 identifier];
-  v8 = [v6 predicateForContainerOfContactWithIdentifier:v7];
+  identifier = [contact identifier];
+  v8 = [v6 predicateForContainerOfContactWithIdentifier:identifier];
 
-  v9 = [(CNContactStore *)self->_contactStore containersMatchingPredicate:v8 error:a4];
-  v10 = [v9 firstObject];
+  v9 = [(CNContactStore *)self->_contactStore containersMatchingPredicate:v8 error:error];
+  firstObject = [v9 firstObject];
 
-  if (v10)
+  if (firstObject)
   {
     v11 = MEMORY[0x1E695CD10];
-    v12 = [v10 identifier];
-    v13 = [v11 predicateForAccountForContainerWithIdentifier:v12];
+    identifier2 = [firstObject identifier];
+    v13 = [v11 predicateForAccountForContainerWithIdentifier:identifier2];
 
-    v14 = [(CNContactStore *)self->_contactStore accountsMatchingPredicate:v13 error:a4];
-    v15 = [v14 firstObject];
+    v14 = [(CNContactStore *)self->_contactStore accountsMatchingPredicate:v13 error:error];
+    firstObject2 = [v14 firstObject];
 
-    if (v15 && ([v15 externalIdentifierString], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v16, v17))
+    if (firstObject2 && ([firstObject2 externalIdentifierString], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v16, v17))
     {
-      v18 = [v15 externalIdentifierString];
+      externalIdentifierString = [firstObject2 externalIdentifierString];
     }
 
     else
     {
-      v18 = 0;
+      externalIdentifierString = 0;
     }
   }
 
   else
   {
-    v18 = 0;
+    externalIdentifierString = 0;
   }
 
-  return v18;
+  return externalIdentifierString;
 }
 
-- (void)_updateServerProfilePictureForAccountOwner:(id)a3 cropRect:(id)a4
+- (void)_updateServerProfilePictureForAccountOwner:(id)owner cropRect:(id)rect
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[AAUIUpdateMyPhotoRequest alloc] initWithAccount:self->_account photo:v6 cropRect:v7];
+  ownerCopy = owner;
+  rectCopy = rect;
+  v8 = [[AAUIUpdateMyPhotoRequest alloc] initWithAccount:self->_account photo:ownerCopy cropRect:rectCopy];
   v9 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v16 = v6;
+    v16 = ownerCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = rectCopy;
     v19 = 2112;
     v20 = v8;
     _os_log_impl(&dword_1C5355000, v9, OS_LOG_TYPE_DEFAULT, "Updating account owner profile picture on server to %@ cropRect %@ with request %@", buf, 0x20u);
@@ -2240,10 +2240,10 @@ LABEL_25:
   v12[2] = __79__AAUIProfilePictureStore__updateServerProfilePictureForAccountOwner_cropRect___block_invoke;
   v12[3] = &unk_1E820BC10;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = ownerCopy;
+  v14 = rectCopy;
+  v10 = rectCopy;
+  v11 = ownerCopy;
   [(AARequest *)v8 performRequestWithHandler:v12];
 }
 
@@ -2289,21 +2289,21 @@ void __79__AAUIProfilePictureStore__updateServerProfilePictureForAccountOwner_cr
   }
 }
 
-- (void)updateCacheWithPhoto:(id)a3 cropRect:(id)a4 forPersonID:(id)a5
+- (void)updateCacheWithPhoto:(id)photo cropRect:(id)rect forPersonID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  photoCopy = photo;
+  rectCopy = rect;
+  dCopy = d;
   v11 = _AAUIPPSLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [AAUIProfilePictureStore updateCacheWithPhoto:cropRect:forPersonID:];
   }
 
-  if (v10)
+  if (dCopy)
   {
     v12 = +[AAUIServerSuppliedProfilePictureCache sharedCache];
-    v13 = [v12 serverCacheTagForPersonID:v10 diameter:self->_pictureDiameter];
+    v13 = [v12 serverCacheTagForPersonID:dCopy diameter:self->_pictureDiameter];
 
     v14 = _AAUIPPSLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -2311,9 +2311,9 @@ void __79__AAUIProfilePictureStore__updateServerProfilePictureForAccountOwner_cr
       [AAUIProfilePictureStore updateCacheWithPhoto:cropRect:forPersonID:];
     }
 
-    if (v9)
+    if (rectCopy)
     {
-      [v9 CGRectValue];
+      [rectCopy CGRectValue];
       v16 = v15;
       v18 = v17;
       v20 = v19;
@@ -2328,11 +2328,11 @@ void __79__AAUIProfilePictureStore__updateServerProfilePictureForAccountOwner_cr
       v22 = *(MEMORY[0x1E695F058] + 24);
     }
 
-    v23 = [(AAUIProfilePictureStore *)self cacheablePictureForPicture:v8 cropRect:v16, v18, v20, v22];
-    v24 = [_AAUIRawImageAndCropRectCacheEntry entryWithRawImage:v8 rawCropRect:v13 serverCacheTag:v16, v18, v20, v22];
-    [_AAUIRawImageAndCropRectCache setEntry:v24 forPersonID:v10];
+    v23 = [(AAUIProfilePictureStore *)self cacheablePictureForPicture:photoCopy cropRect:v16, v18, v20, v22];
+    v24 = [_AAUIRawImageAndCropRectCacheEntry entryWithRawImage:photoCopy rawCropRect:v13 serverCacheTag:v16, v18, v20, v22];
+    [_AAUIRawImageAndCropRectCache setEntry:v24 forPersonID:dCopy];
     v25 = +[AAUIServerSuppliedProfilePictureCache sharedCache];
-    v26 = [v25 updateProfilePicture:v23 didReceiveNewPicture:1 serverCacheTag:v13 forPersonID:v10];
+    v26 = [v25 updateProfilePicture:v23 didReceiveNewPicture:1 serverCacheTag:v13 forPersonID:dCopy];
 
     v27 = _AAUIPPSLogSystem();
     v28 = v27;
@@ -2371,13 +2371,13 @@ void __69__AAUIProfilePictureStore_updateCacheWithPhoto_cropRect_forPersonID___b
   [v0 postNotificationName:@"AAUIProfilePictureStoreDidChange" object:0];
 }
 
-- (id)cacheablePictureForPicture:(id)a3 cropRect:(CGRect)a4
+- (id)cacheablePictureForPicture:(id)picture cropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pictureCopy = picture;
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
@@ -2388,15 +2388,15 @@ void __69__AAUIProfilePictureStore_updateCacheWithPhoto_cropRect_forPersonID___b
     v11 = *(MEMORY[0x1E695F058] + 8);
     v12 = *(MEMORY[0x1E695F058] + 16);
     v13 = *(MEMORY[0x1E695F058] + 24);
-    v14 = self;
-    v15 = v9;
+    selfCopy2 = self;
+    v15 = pictureCopy;
     v16 = 0;
   }
 
   else
   {
-    v14 = self;
-    v15 = v9;
+    selfCopy2 = self;
+    v15 = pictureCopy;
     v16 = 1;
     v10 = x;
     v11 = y;
@@ -2404,23 +2404,23 @@ void __69__AAUIProfilePictureStore_updateCacheWithPhoto_cropRect_forPersonID___b
     v13 = height;
   }
 
-  v17 = [(AAUIProfilePictureStore *)v14 _profilePictureForPicture:v15 crop:v16 cropRect:1 cacheable:v10, v11, v12, v13];
+  v17 = [(AAUIProfilePictureStore *)selfCopy2 _profilePictureForPicture:v15 crop:v16 cropRect:1 cacheable:v10, v11, v12, v13];
 
   return v17;
 }
 
-- (id)_profilePictureForPicture:(id)a3 crop:(BOOL)a4 cropRect:(CGRect)a5 cacheable:(BOOL)a6
+- (id)_profilePictureForPicture:(id)picture crop:(BOOL)crop cropRect:(CGRect)rect cacheable:(BOOL)cacheable
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v13 = a3;
-  if (v13)
+  cacheableCopy = cacheable;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  cropCopy = crop;
+  pictureCopy = picture;
+  if (pictureCopy)
   {
-    if (v6)
+    if (cacheableCopy)
     {
       v14 = +[AAUIServerSuppliedProfilePictureCache sharedCache];
       [v14 pictureDiameter];
@@ -2437,14 +2437,14 @@ void __69__AAUIProfilePictureStore_updateCacheWithPhoto_cropRect_forPersonID___b
     UIGraphicsBeginImageContextWithOptions(v22, 0, 0.0);
     v18 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{0.0, 0.0, pictureDiameter, pictureDiameter}];
     [v18 addClip];
-    if (v11)
+    if (cropCopy)
     {
-      v19 = [v13 imageByCroppingToRect:{x, y, width, height}];
+      v19 = [pictureCopy imageByCroppingToRect:{x, y, width, height}];
 
-      v13 = v19;
+      pictureCopy = v19;
     }
 
-    [v13 drawInRect:{0.0, 0.0, pictureDiameter, pictureDiameter}];
+    [pictureCopy drawInRect:{0.0, 0.0, pictureDiameter, pictureDiameter}];
     v17 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
   }
@@ -2457,15 +2457,15 @@ void __69__AAUIProfilePictureStore_updateCacheWithPhoto_cropRect_forPersonID___b
   return v17;
 }
 
-- (id)_meCardForAccountWithError:(id *)a3
+- (id)_meCardForAccountWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   if ([(ACAccount *)self->_account aa_isAccountClass:*MEMORY[0x1E698B760]])
   {
-    v5 = [(ACAccount *)self->_account aa_primaryEmail];
-    v6 = v5;
+    aa_primaryEmail = [(ACAccount *)self->_account aa_primaryEmail];
+    v6 = aa_primaryEmail;
     v7 = @"YES";
-    if (v5 && ![v5 isEqualToString:&stru_1F447F790])
+    if (aa_primaryEmail && ![aa_primaryEmail isEqualToString:&stru_1F447F790])
     {
       v7 = @"NO";
     }
@@ -2479,9 +2479,9 @@ void __69__AAUIProfilePictureStore_updateCacheWithPhoto_cropRect_forPersonID___b
     }
 
     contactStore = self->_contactStore;
-    v10 = [(ACAccount *)self->_account aa_primaryEmail];
+    aa_primaryEmail2 = [(ACAccount *)self->_account aa_primaryEmail];
     v11 = _AAUIDefaultFetchDescriptors();
-    v12 = [(CNContactStore *)contactStore unifiedMeContactMatchingEmailAddress:v10 keysToFetch:v11 error:a3];
+    v12 = [(CNContactStore *)contactStore unifiedMeContactMatchingEmailAddress:aa_primaryEmail2 keysToFetch:v11 error:error];
   }
 
   else

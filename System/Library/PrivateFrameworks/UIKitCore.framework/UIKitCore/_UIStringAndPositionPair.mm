@@ -1,42 +1,42 @@
 @interface _UIStringAndPositionPair
-- (BOOL)isEqualToPair:(void *)a3 inputDelegate:;
-- (id)initWithString:(void *)a3 position:;
+- (BOOL)isEqualToPair:(void *)pair inputDelegate:;
+- (id)initWithString:(void *)string position:;
 @end
 
 @implementation _UIStringAndPositionPair
 
-- (id)initWithString:(void *)a3 position:
+- (id)initWithString:(void *)string position:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  stringCopy = string;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = _UIStringAndPositionPair;
-    a1 = objc_msgSendSuper2(&v10, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v10, sel_init);
+    if (self)
     {
       v7 = [v5 copy];
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = self[1];
+      self[1] = v7;
 
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, string);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqualToPair:(void *)a3 inputDelegate:
+- (BOOL)isEqualToPair:(void *)pair inputDelegate:
 {
   v5 = a2;
-  v6 = a3;
+  pairCopy = pair;
   v7 = 0;
-  if (a1 && v5)
+  if (self && v5)
   {
-    if ([*(a1 + 8) isEqualToString:v5[1]])
+    if ([*(self + 8) isEqualToString:v5[1]])
     {
-      v7 = [v6 comparePosition:*(a1 + 16) toPosition:v5[2]] == 0;
+      v7 = [pairCopy comparePosition:*(self + 16) toPosition:v5[2]] == 0;
     }
 
     else

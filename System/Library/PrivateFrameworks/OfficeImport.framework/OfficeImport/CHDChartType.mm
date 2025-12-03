@@ -1,18 +1,18 @@
 @interface CHDChartType
-+ (id)chartTypeWithChart:(id)a3;
++ (id)chartTypeWithChart:(id)chart;
 - (BOOL)isPlotedOnSecondaryAxis;
-- (CHDChartType)initWithChart:(id)a3;
+- (CHDChartType)initWithChart:(id)chart;
 - (id)axes;
-- (id)axisForClass:(Class)a3;
+- (id)axisForClass:(Class)class;
 - (id)chart;
 - (id)contentFormat;
-- (id)defaultTitleWithResources:(id)a3;
+- (id)defaultTitleWithResources:(id)resources;
 - (id)description;
 - (int)defaultLabelPosition;
 - (unint64_t)categoryCount;
-- (void)setDefaultDataLabel:(id)a3;
-- (void)setSeriesCollection:(id)a3;
-- (void)switchAxes:(id)a3;
+- (void)setDefaultDataLabel:(id)label;
+- (void)setSeriesCollection:(id)collection;
+- (void)switchAxes:(id)axes;
 @end
 
 @implementation CHDChartType
@@ -26,10 +26,10 @@
 
 - (id)axes
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   WeakRetained = objc_loadWeakRetained(&self->mChart);
-  v5 = [WeakRetained plotArea];
-  v6 = [v5 axes];
+  plotArea = [WeakRetained plotArea];
+  axes = [plotArea axes];
 
   v7 = [(EDCollection *)self->mAxisIds count];
   if (v7)
@@ -37,17 +37,17 @@
     for (i = 0; i != v7; ++i)
     {
       v9 = [(EDCollection *)self->mAxisIds objectAtIndex:i];
-      v10 = [v9 intValue];
+      intValue = [v9 intValue];
 
-      v11 = [v6 objectWithKey:v10];
+      v11 = [axes objectWithKey:intValue];
       if (v11)
       {
-        [v3 addObject:v11];
+        [array addObject:v11];
       }
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (unint64_t)categoryCount
@@ -68,10 +68,10 @@
     {
       if (([v7 isEmpty] & 1) == 0)
       {
-        v9 = [v8 categoryCount];
-        if (v9 > v5)
+        categoryCount = [v8 categoryCount];
+        if (categoryCount > v5)
         {
-          v5 = v9;
+          v5 = categoryCount;
         }
       }
     }
@@ -80,21 +80,21 @@
   return v5;
 }
 
-- (CHDChartType)initWithChart:(id)a3
+- (CHDChartType)initWithChart:(id)chart
 {
-  v4 = a3;
+  chartCopy = chart;
   v12.receiver = self;
   v12.super_class = CHDChartType;
   v5 = [(CHDChartType *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mChart, v4);
+    objc_storeWeak(&v5->mChart, chartCopy);
     v7 = objc_alloc_init(EDCollection);
     mAxisIds = v6->mAxisIds;
     v6->mAxisIds = v7;
 
-    v9 = [[CHDSeriesCollection alloc] initWithChart:v4];
+    v9 = [[CHDSeriesCollection alloc] initWithChart:chartCopy];
     mSeries = v6->mSeries;
     v6->mSeries = v9;
 
@@ -104,10 +104,10 @@
   return v6;
 }
 
-+ (id)chartTypeWithChart:(id)a3
++ (id)chartTypeWithChart:(id)chart
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithChart:v3];
+  chartCopy = chart;
+  v4 = [objc_alloc(objc_opt_class()) initWithChart:chartCopy];
 
   return v4;
 }
@@ -115,17 +115,17 @@
 - (BOOL)isPlotedOnSecondaryAxis
 {
   WeakRetained = objc_loadWeakRetained(&self->mChart);
-  v4 = [WeakRetained plotArea];
-  v5 = [v4 hasSecondaryAxis];
+  plotArea = [WeakRetained plotArea];
+  hasSecondaryAxis = [plotArea hasSecondaryAxis];
 
-  if (!v5)
+  if (!hasSecondaryAxis)
   {
     return 0;
   }
 
   v6 = objc_loadWeakRetained(&self->mChart);
-  v7 = [v6 plotArea];
-  v8 = [v7 axes];
+  plotArea2 = [v6 plotArea];
+  axes = [plotArea2 axes];
 
   v9 = [(EDCollection *)self->mAxisIds count];
   if (v9)
@@ -134,9 +134,9 @@
     while (1)
     {
       v11 = [(EDCollection *)self->mAxisIds objectAtIndex:v10];
-      v12 = [v11 intValue];
+      intValue = [v11 intValue];
 
-      v13 = [v8 objectWithKey:v12];
+      v13 = [axes objectWithKey:intValue];
       v14 = v13;
       if (v13)
       {
@@ -164,31 +164,31 @@ LABEL_7:
   return v15;
 }
 
-- (void)switchAxes:(id)a3
+- (void)switchAxes:(id)axes
 {
-  v17 = a3;
+  axesCopy = axes;
   WeakRetained = objc_loadWeakRetained(&self->mChart);
-  v5 = [WeakRetained plotArea];
-  v6 = [v5 axes];
+  plotArea = [WeakRetained plotArea];
+  axes = [plotArea axes];
 
-  v7 = [v6 count];
-  v8 = [v17 count];
+  v7 = [axes count];
+  v8 = [axesCopy count];
   if (v7 == 4 && v8 == 2)
   {
-    v9 = [v17 objectAtIndex:0];
-    v10 = [v9 intValue];
+    v9 = [axesCopy objectAtIndex:0];
+    intValue = [v9 intValue];
 
-    v11 = [v17 objectAtIndex:1];
-    v12 = [v11 intValue];
+    v11 = [axesCopy objectAtIndex:1];
+    intValue2 = [v11 intValue];
 
     for (i = 0; i != 4; ++i)
     {
-      v14 = [v6 objectAtIndex:i];
+      v14 = [axes objectAtIndex:i];
       v15 = v14;
       if (v14)
       {
-        v16 = [v14 axisId];
-        if (v16 != v10 && v16 != v12)
+        axisId = [v14 axisId];
+        if (axisId != intValue && axisId != intValue2)
         {
           [v15 setSecondary:1];
         }
@@ -197,11 +197,11 @@ LABEL_7:
   }
 }
 
-- (id)axisForClass:(Class)a3
+- (id)axisForClass:(Class)class
 {
   WeakRetained = objc_loadWeakRetained(&self->mChart);
-  v5 = [WeakRetained plotArea];
-  v6 = [v5 axes];
+  plotArea = [WeakRetained plotArea];
+  axes = [plotArea axes];
 
   v7 = [(EDCollection *)self->mAxisIds count];
   if (v7)
@@ -210,7 +210,7 @@ LABEL_7:
     while (1)
     {
       v9 = [(EDCollection *)self->mAxisIds objectAtIndex:v8];
-      v10 = [v6 objectWithKey:{objc_msgSend(v9, "intValue")}];
+      v10 = [axes objectWithKey:{objc_msgSend(v9, "intValue")}];
 
       if (v10)
       {
@@ -236,38 +236,38 @@ LABEL_6:
   return v10;
 }
 
-- (void)setSeriesCollection:(id)a3
+- (void)setSeriesCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   mSeries = self->mSeries;
   p_mSeries = &self->mSeries;
-  if (mSeries != v5)
+  if (mSeries != collectionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mSeries, a3);
-    v5 = v8;
+    v8 = collectionCopy;
+    objc_storeStrong(p_mSeries, collection);
+    collectionCopy = v8;
   }
 }
 
-- (void)setDefaultDataLabel:(id)a3
+- (void)setDefaultDataLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   mDefaultDataLabel = self->mDefaultDataLabel;
   p_mDefaultDataLabel = &self->mDefaultDataLabel;
-  if (mDefaultDataLabel != v5)
+  if (mDefaultDataLabel != labelCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mDefaultDataLabel, a3);
-    v5 = v8;
+    v8 = labelCopy;
+    objc_storeStrong(p_mDefaultDataLabel, label);
+    labelCopy = v8;
   }
 }
 
 - (id)contentFormat
 {
   WeakRetained = objc_loadWeakRetained(&self->mChart);
-  v3 = [WeakRetained defaultContentFormat];
+  defaultContentFormat = [WeakRetained defaultContentFormat];
 
-  return v3;
+  return defaultContentFormat;
 }
 
 - (int)defaultLabelPosition
@@ -281,20 +281,20 @@ LABEL_6:
   return mDefaultDataLabel;
 }
 
-- (id)defaultTitleWithResources:(id)a3
+- (id)defaultTitleWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   if ([(EDCollection *)self->mSeries count]== 1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = [(EDCollection *)self->mSeries objectAtIndex:0];
-    v6 = [v5 lastCachedName];
+    lastCachedName = [v5 lastCachedName];
 
-    if (v6)
+    if (lastCachedName)
     {
-      EDValue::EDValue(&v10, [v6 value]);
+      EDValue::EDValue(&v10, [lastCachedName value]);
       if (EDValue::isStringType(&v10))
       {
-        v7 = EDValue::resolvedEDStringValue(&v10, v4);
+        v7 = EDValue::resolvedEDStringValue(&v10, resourcesCopy);
         v8 = [v7 copy];
       }
 

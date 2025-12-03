@@ -1,24 +1,24 @@
 @interface SearchUITLKMultilineTextConverter
-+ (id)formattedTextForSearchUIText:(id)a3;
-+ (id)richTextForSearchUIText:(id)a3 withCompletionHandler:(id)a4;
-+ (id)textForSearchUIString:(id)a3;
-+ (id)textForSearchUIText:(id)a3;
-+ (void)applyRichText:(id)a3 toTLKRichText:(id)a4 isAsync:(BOOL)a5;
++ (id)formattedTextForSearchUIText:(id)text;
++ (id)richTextForSearchUIText:(id)text withCompletionHandler:(id)handler;
++ (id)textForSearchUIString:(id)string;
++ (id)textForSearchUIText:(id)text;
++ (void)applyRichText:(id)text toTLKRichText:(id)richText isAsync:(BOOL)async;
 @end
 
 @implementation SearchUITLKMultilineTextConverter
 
-+ (id)textForSearchUIText:(id)a3
++ (id)textForSearchUIText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v3 = MEMORY[0x1E69D91B8];
-    v4 = a3;
-    v5 = [v4 text];
-    v6 = [v3 textWithString:v5];
+    textCopy = text;
+    text = [textCopy text];
+    v6 = [v3 textWithString:text];
 
-    v7 = [v4 maxLines];
-    [v6 setMaxLines:v7];
+    maxLines = [textCopy maxLines];
+    [v6 setMaxLines:maxLines];
   }
 
   else
@@ -29,9 +29,9 @@
   return v6;
 }
 
-+ (id)textForSearchUIString:(id)a3
++ (id)textForSearchUIString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v3 = [MEMORY[0x1E69D91B8] textWithString:?];
     [v3 setMaxLines:1];
@@ -45,32 +45,32 @@
   return v3;
 }
 
-+ (id)richTextForSearchUIText:(id)a3 withCompletionHandler:(id)a4
++ (id)richTextForSearchUIText:(id)text withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  textCopy = text;
+  handlerCopy = handler;
+  if (textCopy)
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
-    v20 = [a1 richTextOverridesAsyncLoader:v6];
+    v20 = [self richTextOverridesAsyncLoader:textCopy];
     v8 = objc_opt_new();
     if (*(v18 + 24) == 1)
     {
-      objc_initWeak(&location, v6);
+      objc_initWeak(&location, textCopy);
       objc_initWeak(&from, v8);
-      [a1 applyRichText:v6 toTLKRichText:v8 isAsync:1];
+      [self applyRichText:textCopy toTLKRichText:v8 isAsync:1];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __83__SearchUITLKMultilineTextConverter_richTextForSearchUIText_withCompletionHandler___block_invoke;
       v10[3] = &unk_1E85B4908;
       objc_copyWeak(&v13, &location);
       objc_copyWeak(v14, &from);
-      v14[1] = a1;
-      v11 = v7;
+      v14[1] = self;
+      v11 = handlerCopy;
       v12 = &v17;
-      [v6 loadRichTextWithCompletionHandler:v10];
+      [textCopy loadRichTextWithCompletionHandler:v10];
 
       objc_destroyWeak(v14);
       objc_destroyWeak(&v13);
@@ -80,10 +80,10 @@
 
     else
     {
-      [a1 applyRichText:v6 toTLKRichText:v8 isAsync:0];
-      if (v7)
+      [self applyRichText:textCopy toTLKRichText:v8 isAsync:0];
+      if (handlerCopy)
       {
-        (*(v7 + 2))(v7, v6, v8, *(v18 + 24));
+        (*(handlerCopy + 2))(handlerCopy, textCopy, v8, *(v18 + 24));
       }
     }
 
@@ -129,19 +129,19 @@ void __83__SearchUITLKMultilineTextConverter_richTextForSearchUIText_withComplet
   }
 }
 
-+ (void)applyRichText:(id)a3 toTLKRichText:(id)a4 isAsync:(BOOL)a5
++ (void)applyRichText:(id)text toTLKRichText:(id)richText isAsync:(BOOL)async
 {
-  v30 = a5;
+  asyncCopy = async;
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v31 = a4;
+  textCopy = text;
+  richTextCopy = richText;
   v8 = objc_opt_new();
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v9 = [v7 formattedTextPieces];
-  v10 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  formattedTextPieces = [textCopy formattedTextPieces];
+  v10 = [formattedTextPieces countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v10)
   {
     v11 = v10;
@@ -152,14 +152,14 @@ void __83__SearchUITLKMultilineTextConverter_richTextForSearchUIText_withComplet
       {
         if (*v38 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(formattedTextPieces);
         }
 
-        v14 = [a1 formattedTextForSearchUIText:*(*(&v37 + 1) + 8 * i)];
+        v14 = [self formattedTextForSearchUIText:*(*(&v37 + 1) + 8 * i)];
         [v8 addObject:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v11 = [formattedTextPieces countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v11);
@@ -169,7 +169,7 @@ void __83__SearchUITLKMultilineTextConverter_richTextForSearchUIText_withComplet
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = [v7 icons];
+  obj = [textCopy icons];
   v15 = [obj countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v15)
   {
@@ -199,64 +199,64 @@ void __83__SearchUITLKMultilineTextConverter_richTextForSearchUIText_withComplet
     while (v16);
   }
 
-  [v7 starRating];
+  [textCopy starRating];
   if (v23 > 0.0)
   {
     v24 = objc_opt_new();
-    [v7 starRating];
+    [textCopy starRating];
     [v24 setStarRating:?];
     [v8 addObject:v24];
   }
 
-  v25 = [v7 contentAdvisory];
-  v26 = [v25 length];
+  contentAdvisory = [textCopy contentAdvisory];
+  v26 = [contentAdvisory length];
 
   if (v26)
   {
-    v25 = objc_opt_new();
-    v27 = [v7 contentAdvisory];
-    [v25 setString:v27];
+    contentAdvisory = objc_opt_new();
+    contentAdvisory2 = [textCopy contentAdvisory];
+    [contentAdvisory setString:contentAdvisory2];
 
-    [v8 addObject:v25];
+    [v8 addObject:contentAdvisory];
   }
 
-  [v31 setFormattedTextItems:v8];
-  if (v30)
+  [richTextCopy setFormattedTextItems:v8];
+  if (asyncCopy)
   {
-    v25 = [v7 text];
-    if (![v25 length])
+    contentAdvisory = [textCopy text];
+    if (![contentAdvisory length])
     {
-      [v31 setText:@" "];
+      [richTextCopy setText:@" "];
       goto LABEL_24;
     }
   }
 
-  v28 = [v7 text];
-  [v31 setText:v28];
+  text = [textCopy text];
+  [richTextCopy setText:text];
 
-  if (v30)
+  if (asyncCopy)
   {
 LABEL_24:
 
-    v29 = 1;
+    maxLines = 1;
     goto LABEL_25;
   }
 
-  v29 = [v7 maxLines];
+  maxLines = [textCopy maxLines];
 LABEL_25:
-  [v31 setMaxLines:v29];
+  [richTextCopy setMaxLines:maxLines];
 }
 
-+ (id)formattedTextForSearchUIText:(id)a3
++ (id)formattedTextForSearchUIText:(id)text
 {
-  v3 = a3;
-  v4 = [v3 glyph];
+  textCopy = text;
+  glyph = [textCopy glyph];
 
-  if (v4)
+  if (glyph)
   {
     v5 = objc_opt_new();
-    v6 = [v3 glyph];
-    v7 = [SearchUIImage imageWithSFImage:v6 variantForAppIcon:0];
+    glyph2 = [textCopy glyph];
+    v7 = [SearchUIImage imageWithSFImage:glyph2 variantForAppIcon:0];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ![v7 symbolScale])
@@ -271,27 +271,27 @@ LABEL_25:
   else
   {
     v5 = objc_opt_new();
-    v9 = [v3 text];
-    [v5 setString:v9];
+    text = [textCopy text];
+    [v5 setString:text];
 
-    [v5 setMaxLines:{objc_msgSend(v3, "maxLines")}];
-    v10 = [v3 encapsulationStyle];
-    if (v10 == 1)
+    [v5 setMaxLines:{objc_msgSend(textCopy, "maxLines")}];
+    encapsulationStyle = [textCopy encapsulationStyle];
+    if (encapsulationStyle == 1)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = 2 * (v10 == 2);
+      v11 = 2 * (encapsulationStyle == 2);
     }
 
     [v5 setEncapsulationStyle:v11];
   }
 
-  [v5 setColor:{+[SearchUITLKConverters colorForSFColor:](SearchUITLKConverters, "colorForSFColor:", objc_msgSend(v3, "textColor"))}];
-  [v5 setIsBold:{objc_msgSend(v3, "isBold")}];
-  [v5 setIsEmphasized:{objc_msgSend(v3, "isEmphasized")}];
+  [v5 setColor:{+[SearchUITLKConverters colorForSFColor:](SearchUITLKConverters, "colorForSFColor:", objc_msgSend(textCopy, "textColor"))}];
+  [v5 setIsBold:{objc_msgSend(textCopy, "isBold")}];
+  [v5 setIsEmphasized:{objc_msgSend(textCopy, "isEmphasized")}];
 
   return v5;
 }

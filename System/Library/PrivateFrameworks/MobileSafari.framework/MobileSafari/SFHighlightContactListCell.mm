@@ -1,45 +1,45 @@
 @interface SFHighlightContactListCell
-- (SFHighlightContactListCell)initWithContact:(id)a3;
+- (SFHighlightContactListCell)initWithContact:(id)contact;
 - (SFHighlightContactListCellDelegate)delegate;
-- (void)_didReceiveTap:(id)a3;
+- (void)_didReceiveTap:(id)tap;
 - (void)_updateMaskedCorners;
-- (void)setFirstInList:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLastInList:(BOOL)a3;
+- (void)setFirstInList:(BOOL)list;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLastInList:(BOOL)list;
 @end
 
 @implementation SFHighlightContactListCell
 
-- (SFHighlightContactListCell)initWithContact:(id)a3
+- (SFHighlightContactListCell)initWithContact:(id)contact
 {
   v93[1] = *MEMORY[0x1E69E9840];
-  v84 = a3;
+  contactCopy = contact;
   v91.receiver = self;
   v91.super_class = SFHighlightContactListCell;
   v4 = [(SFHighlightContactListCell *)&v91 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v4)
   {
     objc_initWeak(&location, v4);
-    v5 = [v84 copy];
+    v5 = [contactCopy copy];
     contact = v4->_contact;
     v4->_contact = v5;
 
-    v7 = [MEMORY[0x1E69C8F00] sharedContactStoreManager];
-    v79 = [v7 contactStore];
+    mEMORY[0x1E69C8F00] = [MEMORY[0x1E69C8F00] sharedContactStoreManager];
+    contactStore = [mEMORY[0x1E69C8F00] contactStore];
 
-    v78 = [MEMORY[0x1E695D0E0] settingsWithContactStore:v79];
+    v78 = [MEMORY[0x1E695D0E0] settingsWithContactStore:contactStore];
     v80 = [objc_alloc(MEMORY[0x1E695D0C8]) initWithSettings:v78];
-    if (v84)
+    if (contactCopy)
     {
-      v93[0] = v84;
+      v93[0] = contactCopy;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v93 count:1];
       [v80 setContacts:v8];
     }
 
-    v9 = [v80 view];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(SFHighlightContactListCell *)v4 addSubview:v9];
-    v85 = v9;
+    view = [v80 view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(SFHighlightContactListCell *)v4 addSubview:view];
+    v85 = view;
     v77 = objc_alloc_init(MEMORY[0x1E695CD80]);
     v10 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     v11 = *MEMORY[0x1E69DDCF8];
@@ -50,7 +50,7 @@
     [v10 setNumberOfLines:0];
     [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v10 setAdjustsFontForContentSizeCategory:1];
-    v13 = [v77 stringFromContact:v84];
+    v13 = [v77 stringFromContact:contactCopy];
     [v10 setText:v13];
 
     LODWORD(v14) = 1144586240;
@@ -58,10 +58,10 @@
     LODWORD(v15) = 1131413504;
     [v10 setContentHuggingPriority:0 forAxis:v15];
     [(SFHighlightContactListCell *)v4 addSubview:v10];
-    v81 = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
-    [v81 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+    borderlessButtonConfiguration = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
+    [borderlessButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
     v16 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:v11 scale:2];
-    [v81 setPreferredSymbolConfigurationForImage:v16];
+    [borderlessButtonConfiguration setPreferredSymbolConfigurationForImage:v16];
 
     v17 = MEMORY[0x1E69DC738];
     v18 = MEMORY[0x1E69DC628];
@@ -71,62 +71,62 @@
     v87[2] = __46__SFHighlightContactListCell_initWithContact___block_invoke;
     v87[3] = &unk_1E721C6E0;
     objc_copyWeak(&v89, &location);
-    v88 = v84;
+    v88 = contactCopy;
     v20 = [v18 actionWithTitle:&stru_1EFF36230 image:v19 identifier:0 handler:v87];
-    v82 = [v17 buttonWithConfiguration:v81 primaryAction:v20];
+    v82 = [v17 buttonWithConfiguration:borderlessButtonConfiguration primaryAction:v20];
 
     [v82 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SFHighlightContactListCell *)v4 addSubview:v82];
-    v83 = [(SFHighlightContactListCell *)v4 layoutMarginsGuide];
+    layoutMarginsGuide = [(SFHighlightContactListCell *)v4 layoutMarginsGuide];
     v48 = MEMORY[0x1E696ACD8];
-    v76 = [v85 leadingAnchor];
-    v75 = [v83 leadingAnchor];
-    v74 = [v76 constraintEqualToAnchor:v75];
+    leadingAnchor = [v85 leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v74 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v92[0] = v74;
-    v73 = [v85 widthAnchor];
-    v72 = [v73 constraintEqualToConstant:22.0];
+    widthAnchor = [v85 widthAnchor];
+    v72 = [widthAnchor constraintEqualToConstant:22.0];
     v92[1] = v72;
-    v71 = [v85 centerYAnchor];
-    v70 = [(SFHighlightContactListCell *)v4 centerYAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    centerYAnchor = [v85 centerYAnchor];
+    centerYAnchor2 = [(SFHighlightContactListCell *)v4 centerYAnchor];
+    v69 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v92[2] = v69;
-    v68 = [v85 heightAnchor];
-    v67 = [v68 constraintEqualToConstant:22.0];
+    heightAnchor = [v85 heightAnchor];
+    v67 = [heightAnchor constraintEqualToConstant:22.0];
     v92[3] = v67;
-    v66 = [v85 topAnchor];
-    v65 = [v83 topAnchor];
-    v64 = [v66 constraintGreaterThanOrEqualToAnchor:v65];
+    topAnchor = [v85 topAnchor];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v64 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v92[4] = v64;
-    v63 = [v86 leadingAnchor];
-    v62 = [v85 trailingAnchor];
-    v61 = [v63 constraintEqualToSystemSpacingAfterAnchor:v62 multiplier:1.0];
+    leadingAnchor3 = [v86 leadingAnchor];
+    trailingAnchor = [v85 trailingAnchor];
+    v61 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
     v92[5] = v61;
-    v60 = [v86 centerYAnchor];
-    v59 = [(SFHighlightContactListCell *)v4 centerYAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59];
+    centerYAnchor3 = [v86 centerYAnchor];
+    centerYAnchor4 = [(SFHighlightContactListCell *)v4 centerYAnchor];
+    v58 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v92[6] = v58;
-    v57 = [v86 topAnchor];
-    v56 = [v83 topAnchor];
-    v55 = [v57 constraintGreaterThanOrEqualToAnchor:v56];
+    topAnchor3 = [v86 topAnchor];
+    topAnchor4 = [layoutMarginsGuide topAnchor];
+    v55 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
     v92[7] = v55;
-    v54 = [v82 leadingAnchor];
-    v53 = [v86 trailingAnchor];
-    v52 = [v54 constraintEqualToSystemSpacingAfterAnchor:v53 multiplier:2.0];
+    leadingAnchor4 = [v82 leadingAnchor];
+    trailingAnchor2 = [v86 trailingAnchor];
+    v52 = [leadingAnchor4 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:2.0];
     v92[8] = v52;
-    v51 = [v82 centerYAnchor];
-    v50 = [(SFHighlightContactListCell *)v4 centerYAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    centerYAnchor5 = [v82 centerYAnchor];
+    centerYAnchor6 = [(SFHighlightContactListCell *)v4 centerYAnchor];
+    v49 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v92[9] = v49;
-    v21 = [v82 topAnchor];
-    v22 = [v83 topAnchor];
-    v23 = [v21 constraintGreaterThanOrEqualToAnchor:v22];
+    topAnchor5 = [v82 topAnchor];
+    topAnchor6 = [layoutMarginsGuide topAnchor];
+    v23 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6];
     v92[10] = v23;
-    v24 = [v82 trailingAnchor];
-    v25 = [v83 trailingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    trailingAnchor3 = [v82 trailingAnchor];
+    trailingAnchor4 = [layoutMarginsGuide trailingAnchor];
+    v26 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v92[11] = v26;
-    v27 = [(SFHighlightContactListCell *)v4 heightAnchor];
-    v28 = [v27 constraintGreaterThanOrEqualToConstant:44.0];
+    heightAnchor2 = [(SFHighlightContactListCell *)v4 heightAnchor];
+    v28 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:44.0];
     v92[12] = v28;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:13];
     [v48 activateConstraints:v29];
@@ -153,8 +153,8 @@
     v4->_separator = v42;
 
     [(UIView *)v4->_separator setAutoresizingMask:10];
-    v44 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)v4->_separator setBackgroundColor:v44];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)v4->_separator setBackgroundColor:separatorColor];
 
     [(SFHighlightContactListCell *)v4 addSubview:v4->_separator];
     [(SFHighlightContactListCell *)v4 _updateMaskedCorners];
@@ -206,15 +206,15 @@ void __46__SFHighlightContactListCell_initWithContact___block_invoke_2(uint64_t 
   [WeakRetained dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v6.receiver = self;
   v6.super_class = SFHighlightContactListCell;
   [(SFHighlightContactListCell *)&v6 setHighlighted:?];
-  if (a3)
+  if (highlighted)
   {
-    v5 = [MEMORY[0x1E69DC888] systemGray4Color];
-    [(SFHighlightContactListCell *)self setBackgroundColor:v5];
+    systemGray4Color = [MEMORY[0x1E69DC888] systemGray4Color];
+    [(SFHighlightContactListCell *)self setBackgroundColor:systemGray4Color];
   }
 
   else
@@ -223,20 +223,20 @@ void __46__SFHighlightContactListCell_initWithContact___block_invoke_2(uint64_t 
   }
 }
 
-- (void)setFirstInList:(BOOL)a3
+- (void)setFirstInList:(BOOL)list
 {
-  if (self->_firstInList != a3)
+  if (self->_firstInList != list)
   {
-    self->_firstInList = a3;
+    self->_firstInList = list;
     [(SFHighlightContactListCell *)self _updateMaskedCorners];
   }
 }
 
-- (void)setLastInList:(BOOL)a3
+- (void)setLastInList:(BOOL)list
 {
-  if (self->_lastInList != a3)
+  if (self->_lastInList != list)
   {
-    self->_lastInList = a3;
+    self->_lastInList = list;
     [(UIView *)self->_separator setHidden:?];
 
     [(SFHighlightContactListCell *)self _updateMaskedCorners];
@@ -261,11 +261,11 @@ void __46__SFHighlightContactListCell_initWithContact___block_invoke_2(uint64_t 
     v3 = v2;
   }
 
-  v4 = [(SFHighlightContactListCell *)self layer];
-  [v4 setMaskedCorners:v3];
+  layer = [(SFHighlightContactListCell *)self layer];
+  [layer setMaskedCorners:v3];
 }
 
-- (void)_didReceiveTap:(id)a3
+- (void)_didReceiveTap:(id)tap
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained cellDidReceiveTap:self];

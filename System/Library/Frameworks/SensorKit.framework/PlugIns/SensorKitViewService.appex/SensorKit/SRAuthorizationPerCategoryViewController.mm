@@ -1,13 +1,13 @@
 @interface SRAuthorizationPerCategoryViewController
-+ (id)perCategoryViewControllerWithBundle:(id)a3 services:(id)a4 authStore:(id)a5 completionHandler:(id)a6 cancelHandler:(id)a7;
++ (id)perCategoryViewControllerWithBundle:(id)bundle services:(id)services authStore:(id)store completionHandler:(id)handler cancelHandler:(id)cancelHandler;
 + (void)initialize;
 - (id)currentAuthGroup;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)cancelPrompt;
 - (void)dealloc;
 - (void)deny;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -15,17 +15,17 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100015F38 = os_log_create("com.apple.SensorKit", "SRAuthorizationPerCategoryViewController");
   }
 }
 
-+ (id)perCategoryViewControllerWithBundle:(id)a3 services:(id)a4 authStore:(id)a5 completionHandler:(id)a6 cancelHandler:(id)a7
++ (id)perCategoryViewControllerWithBundle:(id)bundle services:(id)services authStore:(id)store completionHandler:(id)handler cancelHandler:(id)cancelHandler
 {
   v12 = objc_alloc_init(SRAuthorizationPerCategoryViewController);
-  [(SRAuthorizationPerCategoryViewController *)v12 setAppBundle:a3];
-  [(SRAuthorizationPerCategoryViewController *)v12 setServices:a4];
+  [(SRAuthorizationPerCategoryViewController *)v12 setAppBundle:bundle];
+  [(SRAuthorizationPerCategoryViewController *)v12 setServices:services];
   [(SRAuthorizationPerCategoryViewController *)v12 setAuthIndex:0];
   v13 = [NSMutableArray arrayWithCapacity:[(NSArray *)[(SRAuthorizationPerCategoryViewController *)v12 services] count]];
   if ([(NSArray *)[(SRAuthorizationPerCategoryViewController *)v12 services] count])
@@ -41,9 +41,9 @@
   }
 
   [(SRAuthorizationPerCategoryViewController *)v12 setAuthState:v13];
-  [(SRAuthorizationPerCategoryViewController *)v12 setCompletionHandler:a6];
-  [(SRAuthorizationPerCategoryViewController *)v12 setCancelHandler:a7];
-  [(SRAuthorizationPerCategoryViewController *)v12 setAuthStore:a5];
+  [(SRAuthorizationPerCategoryViewController *)v12 setCompletionHandler:handler];
+  [(SRAuthorizationPerCategoryViewController *)v12 setCancelHandler:cancelHandler];
+  [(SRAuthorizationPerCategoryViewController *)v12 setAuthStore:store];
 
   return v12;
 }
@@ -105,15 +105,15 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [a4 row];
+  v6 = [path row];
   switch(v6)
   {
     case 2u:
-      v12 = [(SRAuthorizationPerCategoryViewController *)self tableView];
+      tableView = [(SRAuthorizationPerCategoryViewController *)self tableView];
       v13 = objc_opt_class();
-      v7 = [v12 dequeueReusableCellWithIdentifier:NSStringFromClass(v13)];
+      v7 = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(v13)];
       if (!v7)
       {
         v14 = [SRButtonTrayCell alloc];
@@ -130,7 +130,7 @@
       return v7;
     case 1u:
 
-      return [UITableViewCell skui_tableViewCellForDataSample:a3];
+      return [UITableViewCell skui_tableViewCellForDataSample:view];
     case 0u:
       v7 = +[SRAuthorizationCategoryDetailCell categoryDetailCellForAuthGroup:bundle:titleFont:bodyFont:textColor:OBKStyle:](SRAuthorizationCategoryDetailCell, "categoryDetailCellForAuthGroup:bundle:titleFont:bodyFont:textColor:OBKStyle:", [(SRAuthorizationPerCategoryViewController *)self currentAuthGroup], [(SRAuthorizationPerCategoryViewController *)self appBundle], +[UIFont fontWithDescriptor:size:](UIFont, "fontWithDescriptor:size:", [+[UIFontDescriptor preferredFontDescriptorWithTextStyle:](UIFontDescriptor fontDescriptorWithSymbolicTraits:UIFontTextStyleBody), "fontDescriptorWithSymbolicTraits:", 2], 0.0), +[UIFont preferredFontForTextStyle:](UIFont, "preferredFontForTextStyle:", UIFontTextStyleBody), +[UIColor labelColor], 1);
       [-[SRButtonTrayCell categorySubTitleLabel](v7 "categorySubTitleLabel")];
@@ -161,46 +161,46 @@
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  if ([a5 row] && objc_msgSend(a5, "row") != 1)
+  if ([path row] && objc_msgSend(path, "row") != 1)
   {
 
-    [a4 setSeparatorStyle:0];
+    [cell setSeparatorStyle:0];
   }
 
   else
   {
-    [a4 setSeparatorStyle:1];
+    [cell setSeparatorStyle:1];
     left = UIEdgeInsetsZero.left;
     bottom = UIEdgeInsetsZero.bottom;
     right = UIEdgeInsetsZero.right;
 
-    [a4 setSeparatorInset:{UIEdgeInsetsZero.top, left, bottom, right}];
+    [cell setSeparatorInset:{UIEdgeInsetsZero.top, left, bottom, right}];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  if ([a4 row] == 1)
+  if ([path row] == 1)
   {
     [-[SRAuthorizationPerCategoryViewController navigationController](self "navigationController")];
   }
 
-  [a3 deselectRowAtIndexPath:a4 animated:0];
+  [view deselectRowAtIndexPath:path animated:0];
 }
 
 - (void)deny
 {
   objc_initWeak(&location, self);
-  v3 = [(SRAuthorizationPerCategoryViewController *)self appBundle];
-  v4 = [(SRAuthorizationPerCategoryViewController *)self currentAuthGroup];
+  appBundle = [(SRAuthorizationPerCategoryViewController *)self appBundle];
+  currentAuthGroup = [(SRAuthorizationPerCategoryViewController *)self currentAuthGroup];
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
   v8 = sub_100005F08;
   v9 = &unk_100010510;
   objc_copyWeak(&v10, &location);
-  v5 = [UIAlertController skui_alertControllerForRequiredAuthorizationIfNeccesaryForBundle:v3 authGroup:v4 destructiveHandler:&v6];
+  v5 = [UIAlertController skui_alertControllerForRequiredAuthorizationIfNeccesaryForBundle:appBundle authGroup:currentAuthGroup destructiveHandler:&v6];
   if (v5)
   {
     [(SRAuthorizationPerCategoryViewController *)self presentViewController:v5 animated:1 completion:0, v6, v7, v8, v9];

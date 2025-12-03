@@ -1,10 +1,10 @@
 @interface IAFeedbackServiceSwiftBridge
 - (IAFeedbackServiceSwiftBridge)init;
-- (IAFeedbackServiceSwiftBridge)initWithFeatureDomain:(int64_t)a3 action:(int64_t)a4 originalContent:(id)a5 generatedContent:(id)a6 modelInfo:(id)a7;
+- (IAFeedbackServiceSwiftBridge)initWithFeatureDomain:(int64_t)domain action:(int64_t)action originalContent:(id)content generatedContent:(id)generatedContent modelInfo:(id)info;
 - (NSString)modelInfo;
-- (void)launchFeedbackWithCompletionHandler:(id)a3;
-- (void)reportPresentedWithCompletionHandler:(id)a3;
-- (void)setModelInfo:(id)a3;
+- (void)launchFeedbackWithCompletionHandler:(id)handler;
+- (void)reportPresentedWithCompletionHandler:(id)handler;
+- (void)setModelInfo:(id)info;
 @end
 
 @implementation IAFeedbackServiceSwiftBridge
@@ -27,9 +27,9 @@
   return v4;
 }
 
-- (void)setModelInfo:(id)a3
+- (void)setModelInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     v4 = sub_1D462EFA4();
   }
@@ -46,21 +46,21 @@
   v6[1] = v5;
 }
 
-- (IAFeedbackServiceSwiftBridge)initWithFeatureDomain:(int64_t)a3 action:(int64_t)a4 originalContent:(id)a5 generatedContent:(id)a6 modelInfo:(id)a7
+- (IAFeedbackServiceSwiftBridge)initWithFeatureDomain:(int64_t)domain action:(int64_t)action originalContent:(id)content generatedContent:(id)generatedContent modelInfo:(id)info
 {
-  v8 = a6;
-  if (a5)
+  generatedContentCopy = generatedContent;
+  if (content)
   {
     v11 = sub_1D462EFA4();
     v13 = v12;
-    if (v8)
+    if (generatedContentCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v15 = 0;
-    if (a7)
+    if (info)
     {
       goto LABEL_4;
     }
@@ -68,20 +68,20 @@ LABEL_6:
 LABEL_7:
     v16 = 0;
     v18 = 0;
-    return sub_1D4628F08(a3, a4, v11, v13, v8, v15, v16, v18);
+    return sub_1D4628F08(domain, action, v11, v13, generatedContentCopy, v15, v16, v18);
   }
 
   v11 = 0;
   v13 = 0;
-  if (!a6)
+  if (!generatedContent)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v8 = sub_1D462EFA4();
+  generatedContentCopy = sub_1D462EFA4();
   v15 = v14;
-  if (!a7)
+  if (!info)
   {
     goto LABEL_7;
   }
@@ -89,15 +89,15 @@ LABEL_3:
 LABEL_4:
   v16 = sub_1D462EFA4();
   v18 = v17;
-  return sub_1D4628F08(a3, a4, v11, v13, v8, v15, v16, v18);
+  return sub_1D4628F08(domain, action, v11, v13, generatedContentCopy, v15, v16, v18);
 }
 
-- (void)reportPresentedWithCompletionHandler:(id)a3
+- (void)reportPresentedWithCompletionHandler:(id)handler
 {
   v5 = (*(*(sub_1D462AD20(&qword_1EC7D65A0, &qword_1D4631EB0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x1EEE9AC00]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -113,16 +113,16 @@ LABEL_4:
   v12[3] = 0;
   v12[4] = &unk_1D4631F38;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1D462B264(0, 0, v7, &unk_1D4631F40, v12);
 }
 
-- (void)launchFeedbackWithCompletionHandler:(id)a3
+- (void)launchFeedbackWithCompletionHandler:(id)handler
 {
   v5 = (*(*(sub_1D462AD20(&qword_1EC7D65A0, &qword_1D4631EB0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x1EEE9AC00]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -138,7 +138,7 @@ LABEL_4:
   v12[3] = 0;
   v12[4] = &unk_1D4631ED0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1D462B264(0, 0, v7, &unk_1D4631EE0, v12);
 }
 

@@ -1,7 +1,7 @@
 @interface _CPEngagementTriggerRatio
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPEngagementTriggerRatio
@@ -21,13 +21,13 @@
   return v8.i64[0] ^ (2654435761 * self->_totalEngagements) ^ v8.i64[1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (go = self->_go, objc_msgSend(v4, "go"), go == v6) && (tap = self->_tap, objc_msgSend(v4, "tap"), tap == v8))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (go = self->_go, objc_msgSend(equalCopy, "go"), go == v6) && (tap = self->_tap, objc_msgSend(equalCopy, "tap"), tap == v8))
   {
     totalEngagements = self->_totalEngagements;
-    v9 = totalEngagements == [v4 totalEngagements];
+    v9 = totalEngagements == [equalCopy totalEngagements];
   }
 
   else
@@ -38,9 +38,9 @@
   return v9;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   [(_CPEngagementTriggerRatio *)self go];
   if (v4 != 0.0)
   {

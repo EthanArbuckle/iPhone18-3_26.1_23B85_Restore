@@ -1,10 +1,10 @@
 @interface HKOnboardingPage
-- (HKOnboardingPage)initWithViewControllerClass:(Class)a3 sequencePage:(int64_t)a4;
+- (HKOnboardingPage)initWithViewControllerClass:(Class)class sequencePage:(int64_t)page;
 @end
 
 @implementation HKOnboardingPage
 
-- (HKOnboardingPage)initWithViewControllerClass:(Class)a3 sequencePage:(int64_t)a4
+- (HKOnboardingPage)initWithViewControllerClass:(Class)class sequencePage:(int64_t)page
 {
   v9.receiver = self;
   v9.super_class = HKOnboardingPage;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewControllerClass, a3);
-    v7->_sequencePage = a4;
+    objc_storeStrong(&v6->_viewControllerClass, class);
+    v7->_sequencePage = page;
   }
 
   return v7;

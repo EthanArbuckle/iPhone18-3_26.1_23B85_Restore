@@ -1,29 +1,29 @@
 @interface BLItemImageCollection
-- (BLItemImageCollection)initWithImageCollection:(id)a3;
-- (BLItemImageCollection)initWithItemImages:(id)a3;
-- (id)_imagesForSize:(CGSize)a3 scale:(double)a4;
-- (id)_newImagesForDictionary:(id)a3;
-- (id)bestImageForSize:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)imagesForKind:(id)a3;
-- (id)imagesForSize:(CGSize)a3;
+- (BLItemImageCollection)initWithImageCollection:(id)collection;
+- (BLItemImageCollection)initWithItemImages:(id)images;
+- (id)_imagesForSize:(CGSize)size scale:(double)scale;
+- (id)_newImagesForDictionary:(id)dictionary;
+- (id)bestImageForSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)imagesForKind:(id)kind;
+- (id)imagesForSize:(CGSize)size;
 @end
 
 @implementation BLItemImageCollection
 
-- (BLItemImageCollection)initWithImageCollection:(id)a3
+- (BLItemImageCollection)initWithImageCollection:(id)collection
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  collectionCopy = collection;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v3)
+  if (collectionCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [MEMORY[0x277CBEA60] arrayWithObject:v3];
+      v5 = [MEMORY[0x277CBEA60] arrayWithObject:collectionCopy];
 
-      v3 = v5;
+      collectionCopy = v5;
     }
   }
 
@@ -31,7 +31,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v3;
+  v6 = collectionCopy;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v7)
   {
@@ -98,15 +98,15 @@
   return v18;
 }
 
-- (BLItemImageCollection)initWithItemImages:(id)a3
+- (BLItemImageCollection)initWithItemImages:(id)images
 {
-  v4 = a3;
+  imagesCopy = images;
   v9.receiver = self;
   v9.super_class = BLItemImageCollection;
   v5 = [(BLItemImageCollection *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [imagesCopy copy];
     itemImages = v5->_itemImages;
     v5->_itemImages = v6;
   }
@@ -114,36 +114,36 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSArray *)self->_itemImages copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSArray *)self->_itemImages copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (id)bestImageForSize:(CGSize)a3
+- (id)bestImageForSize:(CGSize)size
 {
-  v3 = [(BLItemImageCollection *)self imagesForSize:a3.width, a3.height];
+  v3 = [(BLItemImageCollection *)self imagesForSize:size.width, size.height];
   if ([v3 count])
   {
-    v4 = [v3 lastObject];
+    lastObject = [v3 lastObject];
   }
 
   else
   {
-    v4 = 0;
+    lastObject = 0;
   }
 
-  return v4;
+  return lastObject;
 }
 
-- (id)imagesForSize:(CGSize)a3
+- (id)imagesForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   GSMainScreenScaleFactor();
   v8 = [(BLItemImageCollection *)self _imagesForSize:width scale:height, v7];
@@ -155,18 +155,18 @@
     [v6 addObjectsFromArray:v9];
   }
 
-  v10 = [v6 allObjects];
-  v11 = [v10 sortedArrayUsingFunction:sub_241D4F748 context:0];
+  allObjects = [v6 allObjects];
+  v11 = [allObjects sortedArrayUsingFunction:sub_241D4F748 context:0];
 
   return v11;
 }
 
-- (id)imagesForKind:(id)a3
+- (id)imagesForKind:(id)kind
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
+  kindCopy = kind;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   GSMainScreenScaleFactor();
   v8 = v7;
   v23 = 0u;
@@ -190,18 +190,18 @@
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [v15 imageKind];
-        v17 = [v16 isEqualToString:v4];
+        imageKind = [v15 imageKind];
+        v17 = [imageKind isEqualToString:kindCopy];
 
         if (v17)
         {
           [v15 imageScale];
           if (v18 == v12)
           {
-            [v6 addObject:v15];
+            [array2 addObject:v15];
           }
 
-          [v5 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -211,14 +211,14 @@
     while (v11);
   }
 
-  if ([v6 count])
+  if ([array2 count])
   {
-    v19 = v6;
+    v19 = array2;
   }
 
   else
   {
-    v19 = v5;
+    v19 = array;
   }
 
   v20 = [v19 sortedArrayUsingFunction:sub_241D4F748 context:{0, v23}];
@@ -228,12 +228,12 @@
   return v20;
 }
 
-- (id)_imagesForSize:(CGSize)a3 scale:(double)a4
+- (id)_imagesForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v59 = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -257,9 +257,9 @@
         [v14 imageSize];
         if (width == v16 && height == v15)
         {
-          if (a4 < 0.00000011920929 || ([v14 imageScale], v18 == a4))
+          if (scale < 0.00000011920929 || ([v14 imageScale], v18 == scale))
           {
-            [v8 addObject:v14];
+            [array addObject:v14];
           }
         }
       }
@@ -270,7 +270,7 @@
     while (v11);
   }
 
-  if (![v8 count])
+  if (![array count])
   {
     v50 = 0u;
     v51 = 0u;
@@ -295,9 +295,9 @@
           [v24 imageSize];
           if (BLItemImageSizeEqualToSize(width, height, v25, v26))
           {
-            if (a4 < 0.00000011920929 || ([v24 imageScale], v27 == a4))
+            if (scale < 0.00000011920929 || ([v24 imageScale], v27 == scale))
             {
-              [v8 addObject:v24];
+              [array addObject:v24];
             }
           }
         }
@@ -309,7 +309,7 @@
     }
   }
 
-  if (![v8 count])
+  if (![array count])
   {
     v46 = 0u;
     v47 = 0u;
@@ -338,10 +338,10 @@
         }
 
         v36 = *(*(&v44 + 1) + 8 * k);
-        if (a4 >= 0.00000011920929)
+        if (scale >= 0.00000011920929)
         {
           [*(*(&v44 + 1) + 8 * k) imageScale];
-          if (v37 != a4)
+          if (v37 != scale)
           {
             continue;
           }
@@ -365,22 +365,22 @@
 
     if (v31)
     {
-      [v8 addObject:v31];
+      [array addObject:v31];
 LABEL_44:
     }
   }
 
   v42 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
-- (id)_newImagesForDictionary:(id)a3
+- (id)_newImagesForDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [v3 objectForKey:@"image-type"];
+  v4 = [dictionaryCopy objectForKey:@"image-type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -388,7 +388,7 @@ LABEL_44:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v3;
+    v5 = dictionaryCopy;
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
@@ -409,9 +409,9 @@ LABEL_44:
           if (objc_opt_isKindOfClass())
           {
             v12 = [[BLItemArtworkImage alloc] initWithArtworkDictionary:v11];
-            v13 = [(BLItemArtworkImage *)v12 URLString];
+            uRLString = [(BLItemArtworkImage *)v12 URLString];
 
-            if (v13)
+            if (uRLString)
             {
               [(BLItemArtworkImage *)v12 setImageKindWithTypeName:v4 variantName:v10];
               [v18 addObject:v12];
@@ -428,10 +428,10 @@ LABEL_44:
 
   else
   {
-    v14 = [[BLItemArtworkImage alloc] initWithArtworkDictionary:v3];
-    v15 = [(BLItemArtworkImage *)v14 URLString];
+    v14 = [[BLItemArtworkImage alloc] initWithArtworkDictionary:dictionaryCopy];
+    uRLString2 = [(BLItemArtworkImage *)v14 URLString];
 
-    if (v15)
+    if (uRLString2)
     {
       [v18 addObject:v14];
     }

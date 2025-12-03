@@ -11,8 +11,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x29EDC7C40] mainScreen];
-  [v11 bounds];
+  mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+  [mainScreen bounds];
   v19.origin.x = v4;
   v19.origin.y = v6;
   v19.size.width = v8;

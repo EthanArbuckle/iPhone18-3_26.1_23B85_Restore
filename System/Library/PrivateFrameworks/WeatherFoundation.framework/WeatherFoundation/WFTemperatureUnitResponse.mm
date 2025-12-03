@@ -1,33 +1,33 @@
 @interface WFTemperatureUnitResponse
-- (WFTemperatureUnitResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFTemperatureUnitResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFTemperatureUnitResponse
 
-- (WFTemperatureUnitResponse)initWithCoder:(id)a3
+- (WFTemperatureUnitResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = WFTemperatureUnitResponse;
-  v5 = [(WFResponse *)&v8 initWithCoder:v4];
+  v5 = [(WFResponse *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"WFTemperatureUnitResponseKey"];
+    v6 = [coderCopy decodeObjectForKey:@"WFTemperatureUnitResponseKey"];
     [(WFTemperatureUnitResponse *)v5 setTemperatureUnit:NSStringToWFTemperatureUnit(v6)];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFTemperatureUnitResponse;
-  v4 = a3;
-  [(WFResponse *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFResponse *)&v6 encodeWithCoder:coderCopy];
   v5 = NSStringFromWFTemperatureUnit([(WFTemperatureUnitResponse *)self temperatureUnit:v6.receiver]);
-  [v4 encodeObject:v5 forKey:@"WFTemperatureUnitResponseKey"];
+  [coderCopy encodeObject:v5 forKey:@"WFTemperatureUnitResponseKey"];
 }
 
 @end

@@ -6,7 +6,7 @@
 
 + (id)_ui_canonicalTimeZoneNameForTimeZoneName:()UIKitAdditions
 {
-  MEMORY[0x1EEE9AC00](a1);
+  MEMORY[0x1EEE9AC00](self);
   v8 = *MEMORY[0x1E69E9840];
   v2 = v1;
   v3 = v2;

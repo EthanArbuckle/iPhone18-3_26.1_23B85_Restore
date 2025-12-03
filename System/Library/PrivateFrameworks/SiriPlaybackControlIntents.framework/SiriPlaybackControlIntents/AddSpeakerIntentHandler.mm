@@ -1,16 +1,16 @@
 @interface AddSpeakerIntentHandler
-- (void)confirmAddSpeaker:(id)a3 completion:(id)a4;
+- (void)confirmAddSpeaker:(id)speaker completion:(id)completion;
 @end
 
 @implementation AddSpeakerIntentHandler
 
-- (void)confirmAddSpeaker:(id)a3 completion:(id)a4
+- (void)confirmAddSpeaker:(id)speaker completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_268995E2C(v7, v8, v6);
+  speakerCopy = speaker;
+  selfCopy = self;
+  sub_268995E2C(speakerCopy, selfCopy, v6);
   _Block_release(v6);
 }
 

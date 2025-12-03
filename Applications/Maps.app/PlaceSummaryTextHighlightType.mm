@@ -1,14 +1,14 @@
 @interface PlaceSummaryTextHighlightType
 - (_TtC4Maps29PlaceSummaryTextHighlightType)init;
-- (_TtC4Maps29PlaceSummaryTextHighlightType)initWithHighlightType:(int64_t)a3;
+- (_TtC4Maps29PlaceSummaryTextHighlightType)initWithHighlightType:(int64_t)type;
 @end
 
 @implementation PlaceSummaryTextHighlightType
 
-- (_TtC4Maps29PlaceSummaryTextHighlightType)initWithHighlightType:(int64_t)a3
+- (_TtC4Maps29PlaceSummaryTextHighlightType)initWithHighlightType:(int64_t)type
 {
-  v3 = a3 == 1;
-  if (a3 == 2)
+  v3 = type == 1;
+  if (type == 2)
   {
     v3 = 2;
   }

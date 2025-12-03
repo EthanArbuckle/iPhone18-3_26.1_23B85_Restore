@@ -1,36 +1,36 @@
 @interface USOSchemaUSOEntitySpanTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USOSchemaUSOEntitySpanTier1)initWithDictionary:(id)a3;
-- (USOSchemaUSOEntitySpanTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (USOSchemaUSOEntitySpanTier1)initWithDictionary:(id)dictionary;
+- (USOSchemaUSOEntitySpanTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAlternatives:(id)a3;
-- (void)addProperties:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAlternatives:(id)alternatives;
+- (void)addProperties:(id)properties;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USOSchemaUSOEntitySpanTier1
 
-- (USOSchemaUSOEntitySpanTier1)initWithDictionary:(id)a3
+- (USOSchemaUSOEntitySpanTier1)initWithDictionary:(id)dictionary
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = USOSchemaUSOEntitySpanTier1;
   v5 = [(USOSchemaUSOEntitySpanTier1 *)&v39 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"index"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"index"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOEntitySpanTier1 setIndex:](v5, "setIndex:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"originAppId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"originAppId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(USOSchemaUSOEntitySpanTier1 *)v5 setOriginAppId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"properties"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"properties"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
       v9 = v10;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"alternatives"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"alternatives"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -122,7 +122,7 @@
       v9 = v30;
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"originEntityId"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"originEntityId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,30 +136,30 @@
   return v5;
 }
 
-- (USOSchemaUSOEntitySpanTier1)initWithJSON:(id)a3
+- (USOSchemaUSOEntitySpanTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USOSchemaUSOEntitySpanTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USOSchemaUSOEntitySpanTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USOSchemaUSOEntitySpanTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -173,10 +173,10 @@
 - (id)dictionaryRepresentation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_alternatives count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -196,16 +196,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -215,32 +215,32 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"alternatives"];
+    [dictionary setObject:array forKeyedSubscript:@"alternatives"];
   }
 
   if (*&self->_has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOEntitySpanTier1 index](self, "index")}];
-    [v3 setObject:v12 forKeyedSubscript:@"index"];
+    [dictionary setObject:v12 forKeyedSubscript:@"index"];
   }
 
   if (self->_originAppId)
   {
-    v13 = [(USOSchemaUSOEntitySpanTier1 *)self originAppId];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"originAppId"];
+    originAppId = [(USOSchemaUSOEntitySpanTier1 *)self originAppId];
+    v14 = [originAppId copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"originAppId"];
   }
 
   if (self->_originEntityId)
   {
-    v15 = [(USOSchemaUSOEntitySpanTier1 *)self originEntityId];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"originEntityId"];
+    originEntityId = [(USOSchemaUSOEntitySpanTier1 *)self originEntityId];
+    v16 = [originEntityId copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"originEntityId"];
   }
 
   if ([(NSArray *)self->_properties count])
   {
-    v17 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -260,16 +260,16 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v26 + 1) + 8 * j) dictionaryRepresentation];
-          if (v23)
+          dictionaryRepresentation2 = [*(*(&v26 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v17 addObject:v23];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v24 = [MEMORY[0x1E695DFB0] null];
-            [v17 addObject:v24];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -279,12 +279,12 @@
       while (v20);
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"properties"];
+    [dictionary setObject:array2 forKeyedSubscript:@"properties"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v26];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v26];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -305,15 +305,15 @@
   return v6 ^ [(NSString *)self->_originEntityId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  if ((*&self->_has & 1) != (v4[48] & 1))
+  if ((*&self->_has & 1) != (equalCopy[48] & 1))
   {
     goto LABEL_25;
   }
@@ -321,26 +321,26 @@
   if (*&self->_has)
   {
     index = self->_index;
-    if (index != [v4 index])
+    if (index != [equalCopy index])
     {
       goto LABEL_25;
     }
   }
 
-  v6 = [(USOSchemaUSOEntitySpanTier1 *)self originAppId];
-  v7 = [v4 originAppId];
-  if ((v6 != 0) == (v7 == 0))
+  originAppId = [(USOSchemaUSOEntitySpanTier1 *)self originAppId];
+  originAppId2 = [equalCopy originAppId];
+  if ((originAppId != 0) == (originAppId2 == 0))
   {
     goto LABEL_24;
   }
 
-  v8 = [(USOSchemaUSOEntitySpanTier1 *)self originAppId];
-  if (v8)
+  originAppId3 = [(USOSchemaUSOEntitySpanTier1 *)self originAppId];
+  if (originAppId3)
   {
-    v9 = v8;
-    v10 = [(USOSchemaUSOEntitySpanTier1 *)self originAppId];
-    v11 = [v4 originAppId];
-    v12 = [v10 isEqual:v11];
+    v9 = originAppId3;
+    originAppId4 = [(USOSchemaUSOEntitySpanTier1 *)self originAppId];
+    originAppId5 = [equalCopy originAppId];
+    v12 = [originAppId4 isEqual:originAppId5];
 
     if (!v12)
     {
@@ -352,20 +352,20 @@
   {
   }
 
-  v6 = [(USOSchemaUSOEntitySpanTier1 *)self properties];
-  v7 = [v4 properties];
-  if ((v6 != 0) == (v7 == 0))
+  originAppId = [(USOSchemaUSOEntitySpanTier1 *)self properties];
+  originAppId2 = [equalCopy properties];
+  if ((originAppId != 0) == (originAppId2 == 0))
   {
     goto LABEL_24;
   }
 
-  v13 = [(USOSchemaUSOEntitySpanTier1 *)self properties];
-  if (v13)
+  properties = [(USOSchemaUSOEntitySpanTier1 *)self properties];
+  if (properties)
   {
-    v14 = v13;
-    v15 = [(USOSchemaUSOEntitySpanTier1 *)self properties];
-    v16 = [v4 properties];
-    v17 = [v15 isEqual:v16];
+    v14 = properties;
+    properties2 = [(USOSchemaUSOEntitySpanTier1 *)self properties];
+    properties3 = [equalCopy properties];
+    v17 = [properties2 isEqual:properties3];
 
     if (!v17)
     {
@@ -377,20 +377,20 @@
   {
   }
 
-  v6 = [(USOSchemaUSOEntitySpanTier1 *)self alternatives];
-  v7 = [v4 alternatives];
-  if ((v6 != 0) == (v7 == 0))
+  originAppId = [(USOSchemaUSOEntitySpanTier1 *)self alternatives];
+  originAppId2 = [equalCopy alternatives];
+  if ((originAppId != 0) == (originAppId2 == 0))
   {
     goto LABEL_24;
   }
 
-  v18 = [(USOSchemaUSOEntitySpanTier1 *)self alternatives];
-  if (v18)
+  alternatives = [(USOSchemaUSOEntitySpanTier1 *)self alternatives];
+  if (alternatives)
   {
-    v19 = v18;
-    v20 = [(USOSchemaUSOEntitySpanTier1 *)self alternatives];
-    v21 = [v4 alternatives];
-    v22 = [v20 isEqual:v21];
+    v19 = alternatives;
+    alternatives2 = [(USOSchemaUSOEntitySpanTier1 *)self alternatives];
+    alternatives3 = [equalCopy alternatives];
+    v22 = [alternatives2 isEqual:alternatives3];
 
     if (!v22)
     {
@@ -402,12 +402,12 @@
   {
   }
 
-  v6 = [(USOSchemaUSOEntitySpanTier1 *)self originEntityId];
-  v7 = [v4 originEntityId];
-  if ((v6 != 0) != (v7 == 0))
+  originAppId = [(USOSchemaUSOEntitySpanTier1 *)self originEntityId];
+  originAppId2 = [equalCopy originEntityId];
+  if ((originAppId != 0) != (originAppId2 == 0))
   {
-    v23 = [(USOSchemaUSOEntitySpanTier1 *)self originEntityId];
-    if (!v23)
+    originEntityId = [(USOSchemaUSOEntitySpanTier1 *)self originEntityId];
+    if (!originEntityId)
     {
 
 LABEL_28:
@@ -415,10 +415,10 @@ LABEL_28:
       goto LABEL_26;
     }
 
-    v24 = v23;
-    v25 = [(USOSchemaUSOEntitySpanTier1 *)self originEntityId];
-    v26 = [v4 originEntityId];
-    v27 = [v25 isEqual:v26];
+    v24 = originEntityId;
+    originEntityId2 = [(USOSchemaUSOEntitySpanTier1 *)self originEntityId];
+    originEntityId3 = [equalCopy originEntityId];
+    v27 = [originEntityId2 isEqual:originEntityId3];
 
     if (v27)
     {
@@ -438,18 +438,18 @@ LABEL_26:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint32Field();
   }
 
-  v5 = [(USOSchemaUSOEntitySpanTier1 *)self originAppId];
+  originAppId = [(USOSchemaUSOEntitySpanTier1 *)self originAppId];
 
-  if (v5)
+  if (originAppId)
   {
     PBDataWriterWriteStringField();
   }
@@ -516,92 +516,92 @@ LABEL_26:
     while (v13);
   }
 
-  v16 = [(USOSchemaUSOEntitySpanTier1 *)self originEntityId];
+  originEntityId = [(USOSchemaUSOEntitySpanTier1 *)self originEntityId];
 
-  if (v16)
+  if (originEntityId)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)addAlternatives:(id)a3
+- (void)addAlternatives:(id)alternatives
 {
-  v4 = a3;
+  alternativesCopy = alternatives;
   alternatives = self->_alternatives;
-  v8 = v4;
+  v8 = alternativesCopy;
   if (!alternatives)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_alternatives;
-    self->_alternatives = v6;
+    self->_alternatives = array;
 
-    v4 = v8;
+    alternativesCopy = v8;
     alternatives = self->_alternatives;
   }
 
-  [(NSArray *)alternatives addObject:v4];
+  [(NSArray *)alternatives addObject:alternativesCopy];
 }
 
-- (void)addProperties:(id)a3
+- (void)addProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   properties = self->_properties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!properties)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_properties;
-    self->_properties = v6;
+    self->_properties = array;
 
-    v4 = v8;
+    propertiesCopy = v8;
     properties = self->_properties;
   }
 
-  [(NSArray *)properties addObject:v4];
+  [(NSArray *)properties addObject:propertiesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v11.receiver = self;
   v11.super_class = USOSchemaUSOEntitySpanTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(USOSchemaUSOEntitySpanTier1 *)self deleteOriginAppId];
     [(USOSchemaUSOEntitySpanTier1 *)self deleteOriginEntityId];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(USOSchemaUSOEntitySpanTier1 *)self deleteOriginAppId];
     [(USOSchemaUSOEntitySpanTier1 *)self deleteOriginEntityId];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(USOSchemaUSOEntitySpanTier1 *)self deleteOriginAppId];
     [(USOSchemaUSOEntitySpanTier1 *)self deleteOriginEntityId];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(USOSchemaUSOEntitySpanTier1 *)self deleteOriginAppId];
     [(USOSchemaUSOEntitySpanTier1 *)self deleteOriginEntityId];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(USOSchemaUSOEntitySpanTier1 *)self deleteOriginAppId];
     [(USOSchemaUSOEntitySpanTier1 *)self deleteOriginEntityId];
   }
 
-  v6 = [(USOSchemaUSOEntitySpanTier1 *)self properties];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  properties = [(USOSchemaUSOEntitySpanTier1 *)self properties];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:properties underConditions:policyCopy];
   [(USOSchemaUSOEntitySpanTier1 *)self setProperties:v7];
 
-  v8 = [(USOSchemaUSOEntitySpanTier1 *)self alternatives];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  alternatives = [(USOSchemaUSOEntitySpanTier1 *)self alternatives];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:alternatives underConditions:policyCopy];
   [(USOSchemaUSOEntitySpanTier1 *)self setAlternatives:v9];
 
   return v5;

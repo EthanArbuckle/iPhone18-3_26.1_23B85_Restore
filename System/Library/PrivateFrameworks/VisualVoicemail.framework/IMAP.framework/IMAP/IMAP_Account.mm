@@ -1,37 +1,37 @@
 @interface IMAP_Account
-+ (void)_deleteQueuedMailboxes:(id)a3;
-- (BOOL)_deleteMailbox:(id)a3;
-- (BOOL)_setChildren:(id)a3 forMailboxUid:(id)a4;
++ (void)_deleteQueuedMailboxes:(id)mailboxes;
+- (BOOL)_deleteMailbox:(id)mailbox;
+- (BOOL)_setChildren:(id)children forMailboxUid:(id)uid;
 - (BOOL)canFetch;
-- (BOOL)canMailboxBeDeleted:(id)a3;
-- (BOOL)connectAndAuthenticate:(id)a3;
-- (BOOL)connection:(id)a3 shouldHandleUntaggedResponse:(id)a4 forCommand:(id *)a5;
-- (BOOL)getMailboxListWithConnection:(id)a3 statusDataItems:(id)a4 statusEntriesByMailbox:(id *)a5;
+- (BOOL)canMailboxBeDeleted:(id)deleted;
+- (BOOL)connectAndAuthenticate:(id)authenticate;
+- (BOOL)connection:(id)connection shouldHandleUntaggedResponse:(id)response forCommand:(id *)command;
+- (BOOL)getMailboxListWithConnection:(id)connection statusDataItems:(id)items statusEntriesByMailbox:(id *)mailbox;
 - (BOOL)hasPendingOfflineOperations;
-- (BOOL)isMailboxLocalForType:(int)a3;
-- (BOOL)isSpecialMailbox:(id)a3;
+- (BOOL)isMailboxLocalForType:(int)type;
+- (BOOL)isSpecialMailbox:(id)mailbox;
 - (BOOL)needToSynchronizeMailboxCaches;
-- (BOOL)newMailboxNameIsAcceptable:(id)a3 reasonForFailure:(id *)a4;
-- (BOOL)renameMailbox:(id)a3 newName:(id)a4 parent:(id)a5;
-- (BOOL)storeMailboxTypeOnServer:(int)a3;
-- (BOOL)verifyESearchSupportWithBlock:(id)a3;
-- (IMAP_Account)initWithLibrary:(id)a3;
+- (BOOL)newMailboxNameIsAcceptable:(id)acceptable reasonForFailure:(id *)failure;
+- (BOOL)renameMailbox:(id)mailbox newName:(id)name parent:(id)parent;
+- (BOOL)storeMailboxTypeOnServer:(int)server;
+- (BOOL)verifyESearchSupportWithBlock:(id)block;
+- (IMAP_Account)initWithLibrary:(id)library;
 - (id)_fileSystemServerPathPrefix;
-- (id)_infoForMatchingURL:(id)a3;
-- (id)_listingForMailboxUid:(id)a3 listAllChildren:(BOOL)a4 onlySubscribed:(BOOL)a5 statusDataItems:(id)a6 withConnection:(id)a7 statusEntriesByMailbox:(id *)a8;
+- (id)_infoForMatchingURL:(id)l;
+- (id)_listingForMailboxUid:(id)uid listAllChildren:(BOOL)children onlySubscribed:(BOOL)subscribed statusDataItems:(id)items withConnection:(id)connection statusEntriesByMailbox:(id *)mailbox;
 - (id)_mailboxPathPrefix;
-- (id)_mailboxUidForName:(id)a3;
-- (id)_nameForMailboxUid:(id)a3;
-- (id)_pathComponentForUidName:(id)a3;
-- (id)_uidNameForPathComponent:(id)a3;
+- (id)_mailboxUidForName:(id)name;
+- (id)_nameForMailboxUid:(id)uid;
+- (id)_pathComponentForUidName:(id)name;
+- (id)_uidNameForPathComponent:(id)component;
 - (id)allMailMailboxUid;
-- (id)connectionForStore:(id)a3 delegate:(id)a4 options:(unsigned int)a5;
-- (id)errorForResponse:(id)a3;
+- (id)connectionForStore:(id)store delegate:(id)delegate options:(unsigned int)options;
+- (id)errorForResponse:(id)response;
 - (id)fetchLimits;
-- (id)flagChangesForMailboxPath:(id)a3 UID:(unsigned int)a4 connectTime:(double)a5;
+- (id)flagChangesForMailboxPath:(id)path UID:(unsigned int)d connectTime:(double)time;
 - (id)hostname;
 - (id)lastKnownCapabilities;
-- (id)nameForMailboxUid:(id)a3;
+- (id)nameForMailboxUid:(id)uid;
 - (id)offlineCache;
 - (id)offlineCacheDirectoryPath;
 - (id)offlineCacheIfExists;
@@ -39,57 +39,57 @@
 - (id)separatorChar;
 - (id)serverPathPrefix;
 - (id)serverPathPrefixAccountValue;
-- (id)specialUseAttributeForType:(int)a3;
-- (id)specialUseAttributesForMailbox:(id)a3;
+- (id)specialUseAttributeForType:(int)type;
+- (id)specialUseAttributesForMailbox:(id)mailbox;
 - (unint64_t)greatestInboxUid;
 - (unsigned)readBufferSize;
-- (void)_didSynchronizeMailboxCachesAndFoundChanges:(BOOL)a3;
+- (void)_didSynchronizeMailboxCachesAndFoundChanges:(BOOL)changes;
 - (void)_flushOfflineCache;
-- (void)_mailboxesWereRemovedFromTree:(id)a3 withFileSystemPaths:(id)a4;
+- (void)_mailboxesWereRemovedFromTree:(id)tree withFileSystemPaths:(id)paths;
 - (void)_purgeStaleFlagChanges;
-- (void)_readCustomInfoFromMailboxCache:(id)a3;
-- (void)_releaseAllConnectionsAndCallSuper:(BOOL)a3 edgeForcedOnly:(BOOL)a4 ifIdleForTimeInterval:(double)a5 saveOfflineCache:(BOOL)a6;
-- (void)_renameLocalSpecialMailboxesToName:(id)a3;
-- (void)_setCapabilities:(id)a3;
+- (void)_readCustomInfoFromMailboxCache:(id)cache;
+- (void)_releaseAllConnectionsAndCallSuper:(BOOL)super edgeForcedOnly:(BOOL)only ifIdleForTimeInterval:(double)interval saveOfflineCache:(BOOL)cache;
+- (void)_renameLocalSpecialMailboxesToName:(id)name;
+- (void)_setCapabilities:(id)capabilities;
 - (void)_synchronizeAccountWithServer;
-- (void)_synchronouslyLoadListingForParent:(id)a3;
-- (void)_updateSeparatorAndNamespaceWithConnection:(id)a3;
+- (void)_synchronouslyLoadListingForParent:(id)parent;
+- (void)_updateSeparatorAndNamespaceWithConnection:(id)connection;
 - (void)_waitForMailboxListingLoadToComplete;
-- (void)_writeCustomInfoToMailboxCache:(id)a3;
-- (void)checkInConnection:(id)a3 destroy:(BOOL)a4;
-- (void)checkInConnectionsForStore:(id)a3;
-- (void)connection:(id)a3 didReceiveResponse:(id)a4 forCommand:(id *)a5;
-- (void)connectionDidDisconnect:(id)a3;
+- (void)_writeCustomInfoToMailboxCache:(id)cache;
+- (void)checkInConnection:(id)connection destroy:(BOOL)destroy;
+- (void)checkInConnectionsForStore:(id)store;
+- (void)connection:(id)connection didReceiveResponse:(id)response forCommand:(id *)command;
+- (void)connectionDidDisconnect:(id)disconnect;
 - (void)dealloc;
-- (void)filterMailboxList:(id)a3 forMailbox:(id)a4 options:(int)a5;
+- (void)filterMailboxList:(id)list forMailbox:(id)mailbox options:(int)options;
 - (void)flushOfflineCache;
-- (void)handleAlertResponse:(id)a3;
-- (void)messagesAdded:(id)a3;
+- (void)handleAlertResponse:(id)response;
+- (void)messagesAdded:(id)added;
 - (void)networkChanged;
 - (void)nowWouldBeAGoodTimeToStartBackgroundSynchronization;
 - (void)releaseAllForcedConnections;
-- (void)removeFlagChanges:(id)a3 forMessages:(id)a4;
-- (void)removeFlagChangesCommittedBefore:(double)a3;
+- (void)removeFlagChanges:(id)changes forMessages:(id)messages;
+- (void)removeFlagChangesCommittedBefore:(double)before;
 - (void)saveState;
-- (void)setAllowsPartialDownloads:(BOOL)a3;
-- (void)setCommitTime:(double)a3 forConnectionTag:(unsigned int)a4;
-- (void)setDisplayName:(id)a3;
-- (void)setHandlerForOfflineCacheFlush:(id)a3;
-- (void)setIsOffline:(BOOL)a3;
-- (void)setLibrary:(id)a3;
-- (void)setServerPathPrefix:(id)a3 shouldSync:(BOOL)a4;
-- (void)throttledGetMailboxListWithConnection:(id)a3;
-- (void)unselectMailbox:(id)a3;
+- (void)setAllowsPartialDownloads:(BOOL)downloads;
+- (void)setCommitTime:(double)time forConnectionTag:(unsigned int)tag;
+- (void)setDisplayName:(id)name;
+- (void)setHandlerForOfflineCacheFlush:(id)flush;
+- (void)setIsOffline:(BOOL)offline;
+- (void)setLibrary:(id)library;
+- (void)setServerPathPrefix:(id)prefix shouldSync:(BOOL)sync;
+- (void)throttledGetMailboxListWithConnection:(id)connection;
+- (void)unselectMailbox:(id)mailbox;
 @end
 
 @implementation IMAP_Account
 
-- (IMAP_Account)initWithLibrary:(id)a3
+- (IMAP_Account)initWithLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v20.receiver = self;
   v20.super_class = IMAP_Account;
-  v5 = [(MailAccount *)&v20 initWithLibrary:v4];
+  v5 = [(MailAccount *)&v20 initWithLibrary:libraryCopy];
   v6 = v5;
   if (v5)
   {
@@ -131,21 +131,21 @@
   return v6;
 }
 
-- (void)messagesAdded:(id)a3
+- (void)messagesAdded:(id)added
 {
   v21 = *MEMORY[0x277D85DE8];
-  v15 = [a3 userInfo];
-  v4 = [v15 objectForKey:@"mailboxes"];
+  userInfo = [added userInfo];
+  v4 = [userInfo objectForKey:@"mailboxes"];
   if ([v4 count])
   {
-    v14 = [v4 lastObject];
-    if ([v14 type] == 7)
+    lastObject = [v4 lastObject];
+    if ([lastObject type] == 7)
     {
-      v5 = [v14 account];
+      account = [lastObject account];
 
-      if (v5 == self)
+      if (account == self)
       {
-        [v15 objectForKey:@"messages"];
+        [userInfo objectForKey:@"messages"];
         v18 = 0u;
         v19 = 0u;
         v16 = 0u;
@@ -194,10 +194,10 @@
   result = self->_greatestInboxUid;
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(MailAccount *)self primaryMailboxUid];
-    v5 = [(MailAccount *)self library];
-    v6 = [v4 URLString];
-    self->_greatestInboxUid = [v5 maximumRemoteIDForMailbox:v6];
+    primaryMailboxUid = [(MailAccount *)self primaryMailboxUid];
+    library = [(MailAccount *)self library];
+    uRLString = [primaryMailboxUid URLString];
+    self->_greatestInboxUid = [library maximumRemoteIDForMailbox:uRLString];
 
     return self->_greatestInboxUid;
   }
@@ -205,11 +205,11 @@
   return result;
 }
 
-- (void)_readCustomInfoFromMailboxCache:(id)a3
+- (void)_readCustomInfoFromMailboxCache:(id)cache
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"separator"];
-  v6 = [v4 objectForKey:@"namespace"];
+  cacheCopy = cache;
+  v5 = [cacheCopy objectForKey:@"separator"];
+  v6 = [cacheCopy objectForKey:@"namespace"];
   _MFLockGlobalLock();
   if (v5)
   {
@@ -233,7 +233,7 @@
 
   if (!self->_lastKnownCapabilities)
   {
-    v9 = [v4 objectForKey:@"capabilities"];
+    v9 = [cacheCopy objectForKey:@"capabilities"];
     lastKnownCapabilities = self->_lastKnownCapabilities;
     self->_lastKnownCapabilities = v9;
   }
@@ -241,41 +241,41 @@
   _MFUnlockGlobalLock();
   v11.receiver = self;
   v11.super_class = IMAP_Account;
-  [(MailAccount *)&v11 _readCustomInfoFromMailboxCache:v4];
+  [(MailAccount *)&v11 _readCustomInfoFromMailboxCache:cacheCopy];
 }
 
-- (void)_writeCustomInfoToMailboxCache:(id)a3
+- (void)_writeCustomInfoToMailboxCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   _MFLockGlobalLock();
   separatorChar = self->_separatorChar;
   if (separatorChar)
   {
-    [v4 setObject:separatorChar forKey:@"separator"];
+    [cacheCopy setObject:separatorChar forKey:@"separator"];
   }
 
   serverNamespace = self->_serverNamespace;
   if (serverNamespace)
   {
-    [v4 setObject:serverNamespace forKey:@"namespace"];
+    [cacheCopy setObject:serverNamespace forKey:@"namespace"];
   }
 
   lastKnownCapabilities = self->_lastKnownCapabilities;
   if (lastKnownCapabilities)
   {
-    [v4 setObject:lastKnownCapabilities forKey:@"capabilities"];
+    [cacheCopy setObject:lastKnownCapabilities forKey:@"capabilities"];
   }
 
   _MFUnlockGlobalLock();
   v8.receiver = self;
   v8.super_class = IMAP_Account;
-  [(MailAccount *)&v8 _writeCustomInfoToMailboxCache:v4];
+  [(MailAccount *)&v8 _writeCustomInfoToMailboxCache:cacheCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   cachedConnections = self->_cachedConnections;
   if (cachedConnections)
@@ -297,8 +297,8 @@
 
 - (void)saveState
 {
-  v3 = [(IMAP_Account *)self offlineCacheIfExists];
-  [v3 saveChanges];
+  offlineCacheIfExists = [(IMAP_Account *)self offlineCacheIfExists];
+  [offlineCacheIfExists saveChanges];
 
   v4.receiver = self;
   v4.super_class = IMAP_Account;
@@ -309,27 +309,27 @@
 {
   v5.receiver = self;
   v5.super_class = IMAP_Account;
-  v3 = [(MFAccount *)&v5 hostname];
-  [(MailAccount *)self setLastKnownHostname:v3];
+  hostname = [(MFAccount *)&v5 hostname];
+  [(MailAccount *)self setLastKnownHostname:hostname];
 
-  return v3;
+  return hostname;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = a3;
-  [(IMAP_Account *)self _renameLocalSpecialMailboxesToName:v4];
+  nameCopy = name;
+  [(IMAP_Account *)self _renameLocalSpecialMailboxesToName:nameCopy];
   v5.receiver = self;
   v5.super_class = IMAP_Account;
-  [(MFAccount *)&v5 setDisplayName:v4];
+  [(MFAccount *)&v5 setDisplayName:nameCopy];
 }
 
 - (BOOL)needToSynchronizeMailboxCaches
 {
   v3 = [(MFAccount *)self _objectForAccountInfoKey:@"DaysBetweenSyncs"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (!v4)
+  if (!intValue)
   {
     return 1;
   }
@@ -343,50 +343,50 @@
   v6 = v5;
   v7 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
   v8 = [v7 dateByAddingUnit:64 value:-30 toDate:v6 options:0];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v7 components:16 fromDate:v8 toDate:v9 options:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [v7 components:16 fromDate:v8 toDate:date options:0];
 
-  v11 = [v10 day] >= v4;
+  v11 = [v10 day] >= intValue;
   return v11;
 }
 
-- (void)_didSynchronizeMailboxCachesAndFoundChanges:(BOOL)a3
+- (void)_didSynchronizeMailboxCachesAndFoundChanges:(BOOL)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   _MFLockGlobalLock();
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(MFAccount *)self setAccountProperty:v5 forKey:@"DateOfLastSync"];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(MFAccount *)self setAccountProperty:date forKey:@"DateOfLastSync"];
 
   _MFUnlockGlobalLock();
   v6 = [(MFAccount *)self _objectForAccountInfoKey:@"DaysBetweenSyncs"];
-  v7 = [v6 unsignedIntValue];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  if (!v7)
+  if (!unsignedIntValue)
   {
     v8 = 7;
     goto LABEL_15;
   }
 
-  if (!v3)
+  if (!changesCopy)
   {
-    if (v7 <= 6)
+    if (unsignedIntValue <= 6)
     {
-      v8 = v7 + 1;
+      v8 = unsignedIntValue + 1;
       goto LABEL_15;
     }
 
-    if (v7 >= 0x1C)
+    if (unsignedIntValue >= 0x1C)
     {
-      v8 = v7;
+      v8 = unsignedIntValue;
     }
 
     else
     {
-      v8 = v7 + 7;
+      v8 = unsignedIntValue + 7;
     }
 
 LABEL_14:
-    if (v7 == v8)
+    if (unsignedIntValue == v8)
     {
       return;
     }
@@ -394,22 +394,22 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v7 < 8)
+  if (unsignedIntValue < 8)
   {
-    if (v7 == 1)
+    if (unsignedIntValue == 1)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = v7 - 1;
+      v8 = unsignedIntValue - 1;
     }
 
     goto LABEL_14;
   }
 
-  v8 = v7 - 7;
+  v8 = unsignedIntValue - 7;
 LABEL_15:
   _MFLockGlobalLock();
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v8];
@@ -418,21 +418,21 @@ LABEL_15:
   _MFUnlockGlobalLock();
 }
 
-- (BOOL)_setChildren:(id)a3 forMailboxUid:(id)a4
+- (BOOL)_setChildren:(id)children forMailboxUid:(id)uid
 {
   v5.receiver = self;
   v5.super_class = IMAP_Account;
-  return [(MailAccount *)&v5 _setChildren:a3 forMailboxUid:a4];
+  return [(MailAccount *)&v5 _setChildren:children forMailboxUid:uid];
 }
 
-- (BOOL)storeMailboxTypeOnServer:(int)a3
+- (BOOL)storeMailboxTypeOnServer:(int)server
 {
   v3 = 0;
   do
   {
     v6 = *&_storeOnServer[v3];
     v7 = *&_storeOnServer[v3 + 4];
-    if (v6 == a3)
+    if (v6 == server)
     {
       break;
     }
@@ -445,12 +445,12 @@ LABEL_15:
   return _storeOnServerForTuple(self, &v6);
 }
 
-- (void)handleAlertResponse:(id)a3
+- (void)handleAlertResponse:(id)response
 {
-  v11 = a3;
+  responseCopy = response;
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(MailAccount *)self displayName];
-  v6 = [v4 stringWithFormat:@"The IMAP server for “%@” wishes to alert you to the following:\n\n%@", v5, v11];
+  displayName = [(MailAccount *)self displayName];
+  responseCopy = [v4 stringWithFormat:@"The IMAP server for “%@” wishes to alert you to the following:\n\n%@", displayName, responseCopy];
 
   _MFLockGlobalLock();
   v7 = [IMAP_Account handleAlertResponse:]::_handledAlerts;
@@ -463,29 +463,29 @@ LABEL_15:
     v7 = [IMAP_Account handleAlertResponse:]::_handledAlerts;
   }
 
-  if ([v7 containsObject:v6])
+  if ([v7 containsObject:responseCopy])
   {
 
-    v6 = 0;
+    responseCopy = 0;
   }
 
   else
   {
-    [-[IMAP_Account handleAlertResponse:]::_handledAlerts addObject:v6];
+    [-[IMAP_Account handleAlertResponse:]::_handledAlerts addObject:responseCopy];
   }
 
   _MFUnlockGlobalLock();
-  if (v6)
+  if (responseCopy)
   {
-    v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1030 localizedDescription:v6 title:@"Warning" userInfo:0];
+    v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1030 localizedDescription:responseCopy title:@"Warning" userInfo:0];
     [(MailAccount *)self setConnectionError:v10];
   }
 }
 
-- (id)errorForResponse:(id)a3
+- (id)errorForResponse:(id)response
 {
-  v3 = a3;
-  if (([v3 isResponseWithCode:17] & 1) != 0 || objc_msgSend(v3, "isAlertResponse"))
+  responseCopy = response;
+  if (([responseCopy isResponseWithCode:17] & 1) != 0 || objc_msgSend(responseCopy, "isAlertResponse"))
   {
     v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1039 localizedDescription:0];
   }
@@ -510,28 +510,28 @@ LABEL_15:
   return readBufferSize;
 }
 
-- (void)setAllowsPartialDownloads:(BOOL)a3
+- (void)setAllowsPartialDownloads:(BOOL)downloads
 {
-  v3 = a3;
+  downloadsCopy = downloads;
   _MFLockGlobalLock();
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:!v3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:!downloadsCopy];
   [(MFAccount *)self setAccountProperty:v5 forKey:@"PreventDismemberment"];
 
   _MFUnlockGlobalLock();
 }
 
-- (BOOL)connectAndAuthenticate:(id)a3
+- (BOOL)connectAndAuthenticate:(id)authenticate
 {
-  v4 = a3;
+  authenticateCopy = authenticate;
   v5 = *(self + 312);
   v6 = +[MFActivityMonitor currentMonitor];
-  v7 = [v4 connectionState];
-  if ((v7 - 2) >= 2)
+  connectionState = [authenticateCopy connectionState];
+  if ((connectionState - 2) >= 2)
   {
     v8 = (v5 >> 1) & 1;
-    if (v7)
+    if (connectionState)
     {
-      if (v7 == 1)
+      if (connectionState == 1)
       {
         v9 = 0;
         goto LABEL_5;
@@ -540,32 +540,32 @@ LABEL_15:
 
     else if (([v6 shouldCancel] & 1) == 0)
     {
-      if (([v4 connectUsingAccount:self] & 1) == 0)
+      if (([authenticateCopy connectUsingAccount:self] & 1) == 0)
       {
-        v16 = [v6 error];
-        v13 = v16;
-        if (!v16 || ([v16 mf_isUserCancelledError] & 1) != 0)
+        error = [v6 error];
+        preferredAuthScheme = error;
+        if (!error || ([error mf_isUserCancelledError] & 1) != 0)
         {
           v8 = 0;
-          v10 = 0;
+          error2 = 0;
           goto LABEL_22;
         }
 
-        v10 = [v6 error];
+        error2 = [v6 error];
 LABEL_21:
         v8 = 1;
 LABEL_22:
 
-        if (v10)
+        if (error2)
         {
           v14 = +[MFNetworkController sharedInstance];
-          v15 = [v14 isNetworkUp];
+          isNetworkUp = [v14 isNetworkUp];
 
-          if (v15)
+          if (isNetworkUp)
           {
-            if (([v10 mf_isUserCancelledError] & 1) == 0)
+            if (([error2 mf_isUserCancelledError] & 1) == 0)
             {
-              [(MailAccount *)self setConnectionError:v10];
+              [(MailAccount *)self setConnectionError:error2];
             }
           }
         }
@@ -582,41 +582,41 @@ LABEL_12:
 
       v9 = 1;
 LABEL_5:
-      if ([v4 authenticateUsingAccount:self])
+      if ([authenticateCopy authenticateUsingAccount:self])
       {
         [(MailAccount *)self setConnectionError:0];
         if (v9)
         {
-          [(IMAP_Account *)self _updateSeparatorAndNamespaceWithConnection:v4];
-          [(IMAP_Account *)self throttledGetMailboxListWithConnection:v4];
+          [(IMAP_Account *)self _updateSeparatorAndNamespaceWithConnection:authenticateCopy];
+          [(IMAP_Account *)self throttledGetMailboxListWithConnection:authenticateCopy];
         }
 
         goto LABEL_8;
       }
 
-      v10 = [v6 error];
-      if ([(MFAccount *)self shouldEnableAfterError:v10])
+      error2 = [v6 error];
+      if ([(MFAccount *)self shouldEnableAfterError:error2])
       {
         [(MFAccount *)self enableAccount];
       }
 
-      if (!v10)
+      if (!error2)
       {
-        v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1033 localizedDescription:0];
-        [v6 setError:v10];
+        error2 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1033 localizedDescription:0];
+        [v6 setError:error2];
       }
 
-      v13 = [(MFAccount *)self preferredAuthScheme];
-      [(MFAccount *)self reportAuthenticationError:v10 authScheme:v13];
+      preferredAuthScheme = [(MFAccount *)self preferredAuthScheme];
+      [(MFAccount *)self reportAuthenticationError:error2 authScheme:preferredAuthScheme];
       goto LABEL_21;
     }
 
-    v10 = 0;
+    error2 = 0;
     goto LABEL_12;
   }
 
 LABEL_8:
-  v10 = 0;
+  error2 = 0;
   v11 = 1;
   if ((*(self + 312) & 2) == 0)
   {
@@ -628,7 +628,7 @@ LABEL_13:
   [(IMAP_Account *)self setIsOffline:v8];
   if ((v8 & 1) == 0)
   {
-    [v4 setReadBufferSize:{-[IMAP_Account readBufferSize](self, "readBufferSize")}];
+    [authenticateCopy setReadBufferSize:{-[IMAP_Account readBufferSize](self, "readBufferSize")}];
   }
 
 LABEL_15:
@@ -636,24 +636,24 @@ LABEL_15:
   return v11;
 }
 
-- (id)connectionForStore:(id)a3 delegate:(id)a4 options:(unsigned int)a5
+- (id)connectionForStore:(id)store delegate:(id)delegate options:(unsigned int)options
 {
   v81 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v66 = a4;
-  v63 = v6;
-  v64 = [v6 mailboxUid];
-  if (v6)
+  storeCopy = store;
+  delegateCopy = delegate;
+  v63 = storeCopy;
+  mailboxUid = [storeCopy mailboxUid];
+  if (storeCopy)
   {
-    v7 = [v6 mailboxName];
-    if (!v7)
+    mailboxName = [storeCopy mailboxName];
+    if (!mailboxName)
     {
-      v7 = [(IMAP_Account *)self _nameForMailboxUid:v64];
-      if (!v7)
+      mailboxName = [(IMAP_Account *)self _nameForMailboxUid:mailboxUid];
+      if (!mailboxName)
         v8 = {;
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          [IMAP_Account connectionForStore:v6 delegate:v8 options:?];
+          [IMAP_Account connectionForStore:storeCopy delegate:v8 options:?];
         }
 
         v68 = 0;
@@ -664,44 +664,44 @@ LABEL_15:
 
   else
   {
-    v7 = 0;
+    mailboxName = 0;
   }
 
-  v69 = v7;
+  v69 = mailboxName;
   while (2)
   {
-    v9 = self;
+    selfCopy = self;
     v68 = v69;
-    v11 = v10 = v66;
+    v11 = v10 = delegateCopy;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      mambaID = v9->super.super.mambaID;
+      mambaID = selfCopy->super.super.mambaID;
       *buf = 136316930;
       *&buf[4] = mambaID;
       *&buf[12] = 2080;
       *&buf[14] = " ";
       *&buf[22] = 2112;
-      v71 = self;
+      selfCopy2 = self;
       *v72 = 2112;
       *&v72[2] = v69;
       v73 = 2112;
-      v74 = v66;
+      v74 = delegateCopy;
       v75 = 1024;
-      v76 = a5 & 1;
+      v76 = options & 1;
       v77 = 1024;
-      v78 = (a5 >> 3) & 1;
+      v78 = (options >> 3) & 1;
       v79 = 1024;
-      v80 = (a5 >> 2) & 1;
+      v80 = (options >> 2) & 1;
       _os_log_impl(&dword_2720B1000, v11, OS_LOG_TYPE_DEFAULT, "#I %s%s_getPotentialConnectionForMailbox : account:%@ mailboxName:%@, delegate:%@, createIfNeeded:%d, dontCareAboutMailbox:%d, lock:%d", buf, 0x46u);
     }
 
     v13 = +[MFActivityMonitor currentMonitor];
     [v13 setError:0];
 
-    [(NSRecursiveLock *)v9->_connectionLock lock];
-    [(IMAP_Account *)v9 mf_lock];
-    cachedConnections = v9->_cachedConnections;
-    if (a5)
+    [(NSRecursiveLock *)selfCopy->_connectionLock lock];
+    [(IMAP_Account *)selfCopy mf_lock];
+    cachedConnections = selfCopy->_cachedConnections;
+    if (options)
     {
       if (cachedConnections)
       {
@@ -710,10 +710,10 @@ LABEL_15:
 
       *buf = 0;
       *&buf[8] = *(MEMORY[0x277CBF128] + 8);
-      v71 = *(MEMORY[0x277CBF128] + 24);
+      selfCopy2 = *(MEMORY[0x277CBF128] + 24);
       *v72 = 0;
       cachedConnections = CFArrayCreateMutable(0, 0, buf);
-      v9->_cachedConnections = cachedConnections;
+      selfCopy->_cachedConnections = cachedConnections;
     }
 
     if (!cachedConnections)
@@ -728,13 +728,13 @@ LABEL_15:
     v16 = LABEL_17:;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = v9->super.super.mambaID;
+      v17 = selfCopy->super.super.mambaID;
       *buf = 136315650;
       *&buf[4] = v17;
       *&buf[12] = 2080;
       *&buf[14] = " ";
       *&buf[22] = 2048;
-      v71 = v15;
+      selfCopy2 = v15;
       _os_log_impl(&dword_2720B1000, v16, OS_LOG_TYPE_DEFAULT, "#I %s%s_getPotentialConnectionForMailbox : %lu cached connections", buf, 0x20u);
     }
 
@@ -744,34 +744,34 @@ LABEL_15:
       v19 = 0;
       while (1)
       {
-        v20 = CFArrayGetValueAtIndex(v9->_cachedConnections, v18);
+        v20 = CFArrayGetValueAtIndex(selfCopy->_cachedConnections, v18);
         v21 = objc_claimAutoreleasedReturnValue();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = v9->super.super.mambaID;
+          v22 = selfCopy->super.super.mambaID;
           *buf = 136315906;
           *&buf[4] = v22;
           *&buf[12] = 2080;
           *&buf[14] = " ";
           *&buf[22] = 2048;
-          v71 = v18;
+          selfCopy2 = v18;
           *v72 = 2112;
           *&v72[2] = v20;
           _os_log_impl(&dword_2720B1000, v21, OS_LOG_TYPE_DEFAULT, "#I %s%sconnection %lu: %@", buf, 0x2Au);
         }
 
-        v23 = [(_anonymous_namespace_::staticLogger_t *)v20 delegate];
-        v24 = v23;
-        if (v23 != v10)
+        delegate = [(_anonymous_namespace_::staticLogger_t *)v20 delegate];
+        v24 = delegate;
+        if (delegate != v10)
         {
           break;
         }
 
-        if ((a5 & 4) != 0)
+        if ((options & 4) != 0)
         {
-          v25 = [(_anonymous_namespace_::staticLogger_t *)v20 mf_tryLock];
+          mf_tryLock = [(_anonymous_namespace_::staticLogger_t *)v20 mf_tryLock];
 
-          if ((v25 & 1) == 0)
+          if ((mf_tryLock & 1) == 0)
           {
             goto LABEL_25;
           }
@@ -795,24 +795,24 @@ LABEL_31:
           v39 = 0;
           while (1)
           {
-            v40 = CFArrayGetValueAtIndex(v9->_cachedConnections, v39);
-            v41 = [v40 delegate];
-            if (v41)
+            v40 = CFArrayGetValueAtIndex(selfCopy->_cachedConnections, v39);
+            delegate2 = [v40 delegate];
+            if (delegate2)
             {
             }
 
-            else if ((a5 & 4) == 0 || [v40 mf_tryLock])
+            else if ((options & 4) == 0 || [v40 mf_tryLock])
             {
               if (v69)
               {
-                v42 = [v40 selectedMailbox];
-                v43 = [v42 isEqualToString:v68];
+                selectedMailbox = [v40 selectedMailbox];
+                v43 = [selectedMailbox isEqualToString:v68];
 
                 if (v43)
                 {
 LABEL_81:
                   v8 = v40;
-                  if ((a5 & 4) == 0)
+                  if ((options & 4) == 0)
                   {
                     goto LABEL_68;
                   }
@@ -823,13 +823,13 @@ LABEL_81:
 
               else
               {
-                if ((a5 & 8) != 0)
+                if ((options & 8) != 0)
                 {
                   goto LABEL_81;
                 }
 
-                v44 = [v40 selectedMailbox];
-                v45 = v44 == 0;
+                selectedMailbox2 = [v40 selectedMailbox];
+                v45 = selectedMailbox2 == 0;
 
                 if (v45)
                 {
@@ -838,7 +838,7 @@ LABEL_81:
               }
 
               v8 = 0;
-              if ((a5 & 4) == 0)
+              if ((options & 4) == 0)
               {
                 goto LABEL_68;
               }
@@ -878,7 +878,7 @@ LABEL_25:
     v27 = 1;
 LABEL_36:
     v26 = 0;
-    if ((a5 & 1) == 0 || !v27)
+    if ((options & 1) == 0 || !v27)
     {
       goto LABEL_55;
     }
@@ -886,27 +886,27 @@ LABEL_36:
     if (!v69 || !v15)
     {
 LABEL_50:
-      v31 = v8 = [(MFAccount *)v9 _newConnection];
+      v31 = v8 = [(MFAccount *)selfCopy _newConnection];
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = v9->super.super.mambaID;
+        v32 = selfCopy->super.super.mambaID;
         *buf = 136315650;
         *&buf[4] = v32;
         *&buf[12] = 2080;
         *&buf[14] = " ";
         *&buf[22] = 2112;
-        v71 = v8;
+        selfCopy2 = v8;
         _os_log_impl(&dword_2720B1000, v31, OS_LOG_TYPE_DEFAULT, "#I %s%screated new connection: %@", buf, 0x20u);
       }
 
-      if ((a5 & 4) != 0)
+      if ((options & 4) != 0)
       {
         [v8 mf_lock];
       }
 
-      [v8 setTag:v9->_nextConnectionTag++];
-      [v8 setMailboxListFilter:v9];
-      CFArrayAppendValue(v9->_cachedConnections, v8);
+      [v8 setTag:selfCopy->_nextConnectionTag++];
+      [v8 setMailboxListFilter:selfCopy];
+      CFArrayAppendValue(selfCopy->_cachedConnections, v8);
       v26 = 1;
       v19 = v15;
       goto LABEL_55;
@@ -915,13 +915,13 @@ LABEL_50:
     v28 = 0;
     do
     {
-      v29 = CFArrayGetValueAtIndex(v9->_cachedConnections, v28);
-      v30 = [v29 delegate];
-      if (v30)
+      v29 = CFArrayGetValueAtIndex(selfCopy->_cachedConnections, v28);
+      delegate3 = [v29 delegate];
+      if (delegate3)
       {
       }
 
-      else if ((a5 & 4) == 0 || [v29 mf_tryLock])
+      else if ((options & 4) == 0 || [v29 mf_tryLock])
       {
         v8 = v29;
         v19 = v28;
@@ -943,13 +943,13 @@ LABEL_47:
 LABEL_34:
     v26 = 0;
 LABEL_55:
-    [(IMAP_Account *)v9 mf_unlock];
+    [(IMAP_Account *)selfCopy mf_unlock];
     if (!v8)
     {
       goto LABEL_102;
     }
 
-    if ((a5 & 1) == 0)
+    if ((options & 1) == 0)
     {
       if ([v8 connectionState]>= 2)
       {
@@ -957,16 +957,16 @@ LABEL_55:
       }
 
 LABEL_85:
-      v38 = 0;
+      isFatPipe = 0;
       goto LABEL_88;
     }
 
     v33 = MFUserAgent();
-    v34 = [v33 isMobileMail];
+    isMobileMail = [v33 isMobileMail];
 
-    if (!v34)
+    if (!isMobileMail)
     {
-      if ([(IMAP_Account *)v9 connectAndAuthenticate:v8])
+      if ([(IMAP_Account *)selfCopy connectAndAuthenticate:v8])
       {
         goto LABEL_91;
       }
@@ -974,75 +974,75 @@ LABEL_85:
       goto LABEL_85;
     }
 
-    CFArrayRemoveValueAtIndex(v9->_cachedConnections, v19);
-    [(NSRecursiveLock *)v9->_connectionLock unlock];
-    v35 = [(IMAP_Account *)v9 connectAndAuthenticate:v8];
-    [(NSRecursiveLock *)v9->_connectionLock lock];
-    Mutable = v9->_cachedConnections;
+    CFArrayRemoveValueAtIndex(selfCopy->_cachedConnections, v19);
+    [(NSRecursiveLock *)selfCopy->_connectionLock unlock];
+    v35 = [(IMAP_Account *)selfCopy connectAndAuthenticate:v8];
+    [(NSRecursiveLock *)selfCopy->_connectionLock lock];
+    Mutable = selfCopy->_cachedConnections;
     if (!Mutable)
     {
       *buf = 0;
       *&buf[8] = *(MEMORY[0x277CBF128] + 8);
-      v71 = *(MEMORY[0x277CBF128] + 24);
+      selfCopy2 = *(MEMORY[0x277CBF128] + 24);
       *v72 = 0;
       Mutable = CFArrayCreateMutable(0, 0, buf);
-      v9->_cachedConnections = Mutable;
+      selfCopy->_cachedConnections = Mutable;
     }
 
     CFArrayAppendValue(Mutable, v8);
     if ([v8 isCellularConnection])
     {
       v37 = +[MFNetworkController sharedInstance];
-      v38 = [v37 isFatPipe];
+      isFatPipe = [v37 isFatPipe];
     }
 
     else
     {
-      v38 = 0;
+      isFatPipe = 0;
     }
 
-    if ((v38 | !v35))
+    if ((isFatPipe | !v35))
     {
 LABEL_88:
-      if ((a5 & 4) != 0)
+      if ((options & 4) != 0)
       {
         [v8 mf_unlock];
       }
 
-      [(IMAP_Account *)v9 checkInConnection:v8 destroy:v38];
+      [(IMAP_Account *)selfCopy checkInConnection:v8 destroy:isFatPipe];
       goto LABEL_100;
     }
 
 LABEL_91:
-    offlineCache = v9->_offlineCache;
+    offlineCache = selfCopy->_offlineCache;
     if (!offlineCache)
     {
-      v47 = [objc_allocWithZone(MFIMAPOperationCache) initWithIMAPAccount:v9];
-      v48 = v9->_offlineCache;
-      v9->_offlineCache = v47;
+      v47 = [objc_allocWithZone(MFIMAPOperationCache) initWithIMAPAccount:selfCopy];
+      v48 = selfCopy->_offlineCache;
+      selfCopy->_offlineCache = v47;
 
-      offlineCache = v9->_offlineCache;
+      offlineCache = selfCopy->_offlineCache;
     }
 
     if ([(MFIMAPOperationCache *)offlineCache hasPendingOfflineOperations])
     {
-      [(MFIMAPOperationCache *)v9->_offlineCache performDeferredOperationsWithConnection:v8];
+      [(MFIMAPOperationCache *)selfCopy->_offlineCache performDeferredOperationsWithConnection:v8];
     }
 
     if ([v8 isValid])
     {
-      v49 = v9->_offlineCache;
-      v9->_offlineCache = 0;
+      v49 = selfCopy->_offlineCache;
+      selfCopy->_offlineCache = 0;
     }
 
     else
     {
-      if ((a5 & 4) != 0)
+      if ((options & 4) != 0)
       {
         [v8 mf_unlock];
       }
 
-      [(IMAP_Account *)v9 checkInConnection:v8];
+      [(IMAP_Account *)selfCopy checkInConnection:v8];
 LABEL_100:
       v49 = v8;
       v8 = 0;
@@ -1051,12 +1051,12 @@ LABEL_100:
 LABEL_102:
     if (v69)
     {
-      v50 = [v8 selectedMailbox];
-      v51 = [v8 delegate];
+      selectedMailbox3 = [v8 selectedMailbox];
+      delegate4 = [v8 delegate];
       v52 = 1;
-      if (v51 == v10 && v50)
+      if (delegate4 == v10 && selectedMailbox3)
       {
-        v52 = [v68 isEqualToString:v50] ^ 1;
+        v52 = [v68 isEqualToString:selectedMailbox3] ^ 1;
       }
     }
 
@@ -1066,11 +1066,11 @@ LABEL_102:
     }
 
     [v8 setDelegate:v10];
-    [(NSRecursiveLock *)v9->_connectionLock unlock];
+    [(NSRecursiveLock *)selfCopy->_connectionLock unlock];
 
     if (v8)
     {
-      if ((a5 & 0x10) != 0)
+      if ((options & 0x10) != 0)
       {
         v53 = v26;
       }
@@ -1087,23 +1087,23 @@ LABEL_102:
 
       if (v52)
       {
-        if ((a5 & 2) == 0)
+        if ((options & 2) == 0)
         {
-          if ([v8 selectMailbox:v68 withAccount:v9])
+          if ([v8 selectMailbox:v68 withAccount:selfCopy])
           {
-            [(IMAP_Account *)v9 setCommitTime:[v8 tag] forConnectionTag:CFAbsoluteTimeGetCurrent()];
+            [(IMAP_Account *)selfCopy setCommitTime:[v8 tag] forConnectionTag:CFAbsoluteTimeGetCurrent()];
             break;
           }
 
 LABEL_119:
-          if ((a5 & 4) != 0)
+          if ((options & 4) != 0)
           {
             [v8 mf_unlock];
           }
 
           if (![v8 isValid])
           {
-            [(IMAP_Account *)v9 checkInConnection:v8];
+            [(IMAP_Account *)selfCopy checkInConnection:v8];
 
             if (v26)
             {
@@ -1116,14 +1116,14 @@ LABEL_127:
           }
 
           v54 = +[MFActivityMonitor currentMonitor];
-          v55 = [v54 error];
+          error = [v54 error];
 
-          if (v55)
+          if (error)
           {
             v56 = MEMORY[0x277CCACA8];
-            v57 = [v64 displayName];
-            v58 = [v56 stringWithFormat:@"Unable to open “%@”", v57];
-            v59 = [v55 setShortDescription:v58];
+            displayName = [mailboxUid displayName];
+            v58 = [v56 stringWithFormat:@"Unable to open “%@”", displayName];
+            v59 = [error setShortDescription:v58];
 
             v60 = +[MFActivityMonitor currentMonitor];
             [v60 setError:v59];
@@ -1192,13 +1192,13 @@ LABEL_126:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     mambaID = self->super.super.mambaID;
-    v14 = [(MFAccount *)self vf_publicDescription];
+    vf_publicDescription = [(MFAccount *)self vf_publicDescription];
     v17 = 136315650;
     v18 = mambaID;
     v19 = 2080;
     v20 = " ";
     v21 = 2114;
-    v22 = v14;
+    v22 = vf_publicDescription;
     _os_log_impl(&dword_2720B1000, v12, OS_LOG_TYPE_DEFAULT, "#I %s%s#IMAPFlagChanges removing all changes: %{public}@", &v17, 0x20u);
   }
 
@@ -1210,31 +1210,31 @@ LABEL_14:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkInConnection:(id)a3 destroy:(BOOL)a4
+- (void)checkInConnection:(id)connection destroy:(BOOL)destroy
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     goto LABEL_25;
   }
 
   [(NSRecursiveLock *)self->_connectionLock lock];
-  if (![v6 mf_tryLock])
+  if (![connectionCopy mf_tryLock])
   {
     goto LABEL_13;
   }
 
-  [v6 setDelegate:0];
-  v7 = [v6 connectionState];
-  [v6 mf_unlock];
+  [connectionCopy setDelegate:0];
+  connectionState = [connectionCopy connectionState];
+  [connectionCopy mf_unlock];
   [(IMAP_Account *)self mf_lock];
-  if ([v6 gotBadResponse])
+  if ([connectionCopy gotBadResponse])
   {
     [(IMAP_Account *)self _setCapabilities:0];
   }
 
-  if (a4)
+  if (destroy)
   {
     v8 = 0;
     v9 = 1;
@@ -1248,17 +1248,17 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ((v7 - 2) >= 2)
+  if ((connectionState - 2) >= 2)
   {
     v9 = 0;
-    if (!v7)
+    if (!connectionState)
     {
 LABEL_12:
       v8 = 0;
       goto LABEL_15;
     }
 
-    if (v7 == 1)
+    if (connectionState == 1)
     {
       v9 = 1;
       goto LABEL_12;
@@ -1269,7 +1269,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v25 = [v6 selectedMailbox];
+  selectedMailbox = [connectionCopy selectedMailbox];
   Count = CFArrayGetCount(self->_cachedConnections);
   if (Count < 1)
   {
@@ -1284,7 +1284,7 @@ LABEL_14:
   {
     v16 = CFArrayGetValueAtIndex(self->_cachedConnections, v15 - 1);
     v17 = v16;
-    if (v16 != v6)
+    if (v16 != connectionCopy)
     {
       break;
     }
@@ -1305,13 +1305,13 @@ LABEL_32:
     goto LABEL_37;
   }
 
-  v18 = [v16 selectedMailbox];
-  v19 = [v18 isEqual:v25];
+  selectedMailbox2 = [v16 selectedMailbox];
+  v19 = [selectedMailbox2 isEqual:selectedMailbox];
 
   if (!v19)
   {
-    v20 = [v17 delegate];
-    v21 = v20 == 0;
+    delegate = [v17 delegate];
+    v21 = delegate == 0;
 
     v9 |= v21;
     goto LABEL_32;
@@ -1320,8 +1320,8 @@ LABEL_32:
   v8 = 0;
   v9 = 1;
 LABEL_37:
-  v22 = [(MailAccount *)self _shouldLogDeleteActivity];
-  if (v22)
+  _shouldLogDeleteActivity = [(MailAccount *)self _shouldLogDeleteActivity];
+  if (_shouldLogDeleteActivity)
     v23 = {;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -1331,9 +1331,9 @@ LABEL_37:
       v28 = 2080;
       v29 = " ";
       v30 = 2112;
-      v31 = v25;
+      v31 = selectedMailbox;
       v32 = 2112;
-      v33 = v6;
+      v33 = connectionCopy;
       _os_log_impl(&dword_2720B1000, v23, OS_LOG_TYPE_DEFAULT, "#W %s%sUnselected connection checked back in, mailbox: %@, connection: %@", buf, 0x2Au);
     }
   }
@@ -1342,19 +1342,19 @@ LABEL_15:
   [(IMAP_Account *)self mf_unlock];
   if (v9)
   {
-    if ([v6 logout])
+    if ([connectionCopy logout])
     {
-      -[IMAP_Account setCommitTime:forConnectionTag:](self, "setCommitTime:forConnectionTag:", [v6 tag], CFAbsoluteTimeGetCurrent());
+      -[IMAP_Account setCommitTime:forConnectionTag:](self, "setCommitTime:forConnectionTag:", [connectionCopy tag], CFAbsoluteTimeGetCurrent());
     }
 
-    [v6 disconnectAndNotifyDelegate:0 reason:"IMAP_Account-> should logout"];
+    [connectionCopy disconnectAndNotifyDelegate:0 reason:"IMAP_Account-> should logout"];
   }
 
   if (!((self->_cachedConnections == 0) | v8 & 1))
   {
     [(IMAP_Account *)self mf_lock];
     v10 = CFArrayGetCount(self->_cachedConnections);
-    v11 = v6;
+    v11 = connectionCopy;
     while (1)
     {
       v35.location = 0;
@@ -1379,46 +1379,46 @@ LABEL_25:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkInConnectionsForStore:(id)a3
+- (void)checkInConnectionsForStore:(id)store
 {
-  v13 = a3;
-  if (v13 && self->_cachedConnections)
+  storeCopy = store;
+  if (storeCopy && self->_cachedConnections)
   {
     [(NSRecursiveLock *)self->_connectionLock lock];
     [(IMAP_Account *)self mf_lock];
     cachedConnections = self->_cachedConnections;
     if (cachedConnections && (Count = CFArrayGetCount(cachedConnections), Count >= 1))
     {
-      v6 = 0;
+      array = 0;
       for (i = 0; i != Count; ++i)
       {
         v8 = CFArrayGetValueAtIndex(self->_cachedConnections, i);
-        v9 = [v8 delegate];
+        delegate = [v8 delegate];
 
-        if (v9 == v13)
+        if (delegate == storeCopy)
         {
-          if (!v6)
+          if (!array)
           {
-            v6 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          [v6 addObject:v8];
+          [array addObject:v8];
         }
       }
     }
 
     else
     {
-      v6 = 0;
+      array = 0;
     }
 
     [(IMAP_Account *)self mf_unlock];
-    v10 = [v6 count];
+    v10 = [array count];
     if (v10 >= 1)
     {
       for (j = 0; j != v10; ++j)
       {
-        v12 = [v6 objectAtIndex:j];
+        v12 = [array objectAtIndex:j];
         [(IMAP_Account *)self checkInConnection:v12];
       }
     }
@@ -1427,9 +1427,9 @@ LABEL_25:
   }
 }
 
-- (BOOL)verifyESearchSupportWithBlock:(id)a3
+- (BOOL)verifyESearchSupportWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(NSLock *)self->_eSearchSupportedLock lock];
   eSearchSupported = self->_eSearchSupported;
   if (eSearchSupported)
@@ -1439,7 +1439,7 @@ LABEL_25:
 
   else
   {
-    v6 = v4[2](v4);
+    v6 = blockCopy[2](blockCopy);
     v7 = [MEMORY[0x277CCABB0] numberWithBool:v6];
     v8 = self->_eSearchSupported;
     self->_eSearchSupported = v7;
@@ -1450,10 +1450,10 @@ LABEL_25:
   return v6;
 }
 
-- (void)unselectMailbox:(id)a3
+- (void)unselectMailbox:(id)mailbox
 {
-  v14 = a3;
-  if (v14 && self->_cachedConnections)
+  mailboxCopy = mailbox;
+  if (mailboxCopy && self->_cachedConnections)
   {
     [(NSRecursiveLock *)self->_connectionLock lock];
     [(IMAP_Account *)self mf_lock];
@@ -1461,20 +1461,20 @@ LABEL_25:
     if (cachedConnections && (Count = CFArrayGetCount(cachedConnections), Count >= 1))
     {
       v6 = 0;
-      v7 = 0;
+      array = 0;
       do
       {
         v8 = CFArrayGetValueAtIndex(self->_cachedConnections, v6);
-        v9 = [v8 selectedMailbox];
-        v10 = v9;
-        if (v9 && [v9 isEqualToString:v14])
+        selectedMailbox = [v8 selectedMailbox];
+        v10 = selectedMailbox;
+        if (selectedMailbox && [selectedMailbox isEqualToString:mailboxCopy])
         {
-          if (!v7)
+          if (!array)
           {
-            v7 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          [v7 addObject:v8];
+          [array addObject:v8];
           CFArrayRemoveValueAtIndex(self->_cachedConnections, v6);
           --Count;
         }
@@ -1490,16 +1490,16 @@ LABEL_25:
 
     else
     {
-      v7 = 0;
+      array = 0;
     }
 
     [(IMAP_Account *)self mf_unlock];
-    v11 = [v7 count];
+    v11 = [array count];
     if (v11 >= 1)
     {
       for (i = 0; i != v11; ++i)
       {
-        v13 = [v7 objectAtIndex:i];
+        v13 = [array objectAtIndex:i];
         if ([v13 isValid] && objc_msgSend(v13, "logout"))
         {
           -[IMAP_Account setCommitTime:forConnectionTag:](self, "setCommitTime:forConnectionTag:", [v13 tag], CFAbsoluteTimeGetCurrent());
@@ -1513,20 +1513,20 @@ LABEL_25:
   }
 }
 
-- (void)filterMailboxList:(id)a3 forMailbox:(id)a4 options:(int)a5
+- (void)filterMailboxList:(id)list forMailbox:(id)mailbox options:(int)options
 {
-  v9 = a3;
-  v5 = [v9 count];
+  listCopy = list;
+  v5 = [listCopy count];
   if (v5)
   {
     v6 = v5 - 1;
     do
     {
-      v7 = [v9 objectAtIndex:v6];
+      v7 = [listCopy objectAtIndex:v6];
       v8 = [v7 objectForKey:@"MailboxName"];
       if ([v8 isEqualToString:@"Apple Mail To Do"])
       {
-        [v9 removeObjectAtIndex:v6];
+        [listCopy removeObjectAtIndex:v6];
       }
 
       --v6;
@@ -1536,23 +1536,23 @@ LABEL_25:
   }
 }
 
-- (void)_releaseAllConnectionsAndCallSuper:(BOOL)a3 edgeForcedOnly:(BOOL)a4 ifIdleForTimeInterval:(double)a5 saveOfflineCache:(BOOL)a6
+- (void)_releaseAllConnectionsAndCallSuper:(BOOL)super edgeForcedOnly:(BOOL)only ifIdleForTimeInterval:(double)interval saveOfflineCache:(BOOL)cache
 {
-  v58 = a6;
-  v59 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  superCopy = super;
+  onlyCopy = only;
   v9 = v83 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     mambaID = self->super.super.mambaID;
-    v11 = [MEMORY[0x277CCACC8] isMainThread];
+    isMainThread = [MEMORY[0x277CCACC8] isMainThread];
     v12 = objc_opt_class();
     v13 = @"BT";
     *buf = 136316930;
     v68 = mambaID;
     v69 = 2080;
     v70 = " ";
-    if (v11)
+    if (isMainThread)
     {
       v13 = @"MT";
     }
@@ -1562,7 +1562,7 @@ LABEL_25:
     v14 = @"YES";
     v73 = 2112;
     v74 = v12;
-    if (v59)
+    if (superCopy)
     {
       v15 = @"YES";
     }
@@ -1573,7 +1573,7 @@ LABEL_25:
     }
 
     v75 = 2112;
-    if (v7)
+    if (onlyCopy)
     {
       v16 = @"YES";
     }
@@ -1584,7 +1584,7 @@ LABEL_25:
     }
 
     v76 = v15;
-    if (!v58)
+    if (!cacheCopy)
     {
       v14 = @"NO";
     }
@@ -1592,7 +1592,7 @@ LABEL_25:
     v77 = 2112;
     v78 = v16;
     v79 = 2048;
-    v80 = a5;
+    intervalCopy = interval;
     v81 = 2112;
     v82 = v14;
     v17 = v12;
@@ -1602,7 +1602,7 @@ LABEL_25:
   v65[0] = @"method";
   v65[1] = @"edgeOnly";
   v66[0] = @"_releaseAllConnectionsAndCallSuper";
-  v18 = asNSStringBOOL(v7);
+  v18 = asNSStringBOOL(onlyCopy);
   v66[1] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v66 forKeys:v65 count:2];
   [MFPowerController powerlog:@"IMAP_Account" eventData:v19];
@@ -1617,10 +1617,10 @@ LABEL_25:
       v61[2] = __105__IMAP_Account__releaseAllConnectionsAndCallSuper_edgeForcedOnly_ifIdleForTimeInterval_saveOfflineCache___block_invoke;
       v61[3] = &unk_279E34C20;
       v61[4] = self;
-      v62 = v59;
-      v63 = v7;
-      *&v61[5] = a5;
-      v64 = v58;
+      v62 = superCopy;
+      v63 = onlyCopy;
+      *&v61[5] = interval;
+      v64 = cacheCopy;
       v20 = [v61 copy];
       v21 = MEMORY[0x2743C3100]();
       v22 = [MFMonitoredInvocation invocationWithSelector:sel__invokeBlock_ target:self object:v21 taskName:0 priority:3 canBeCancelled:1];
@@ -1634,7 +1634,7 @@ LABEL_25:
     goto LABEL_71;
   }
 
-  v24 = [(IMAP_Account *)self compactWhenClosingMailboxes];
+  compactWhenClosingMailboxes = [(IMAP_Account *)self compactWhenClosingMailboxes];
   [(NSRecursiveLock *)self->_connectionLock lock];
   [(IMAP_Account *)self mf_lock];
   v25 = [(__CFArray *)self->_cachedConnections mutableCopy];
@@ -1655,8 +1655,8 @@ LABEL_25:
     }
   }
 
-  v30 = [(IMAP_Account *)self mf_unlock];
-  if (!v7)
+  mf_unlock = [(IMAP_Account *)self mf_unlock];
+  if (!onlyCopy)
   {
     goto LABEL_31;
   }
@@ -1671,11 +1671,11 @@ LABEL_25:
     _os_log_impl(&dword_2720B1000, v31, OS_LOG_TYPE_DEFAULT, "#I %s%s#Network EDGE ONLY", buf, 0x16u);
   }
 
-  v30 = [(_anonymous_namespace_::staticLogger_t *)v26 count];
-  if (v30)
+  mf_unlock = [(_anonymous_namespace_::staticLogger_t *)v26 count];
+  if (mf_unlock)
   {
     v33 = 0;
-    v34 = v30 - 1;
+    v34 = mf_unlock - 1;
     do
     {
       v35 = [(_anonymous_namespace_::staticLogger_t *)v26 objectAtIndex:v34];
@@ -1701,7 +1701,7 @@ LABEL_31:
     LOBYTE(v33) = 0;
   }
 
-  if (a5 > 0.0)
+  if (interval > 0.0)
   {
     v36 = [(_anonymous_namespace_::staticLogger_t *)v26 count];
     Current = CFAbsoluteTimeGetCurrent();
@@ -1714,7 +1714,7 @@ LABEL_31:
         v40 = [(_anonymous_namespace_::staticLogger_t *)v26 objectAtIndex:v39];
         [v40 mf_lock];
         [v40 lastUsedTime];
-        if (v41 + a5 > v38)
+        if (v41 + interval > v38)
         {
           [(_anonymous_namespace_::staticLogger_t *)v26 removeObjectAtIndex:v39];
         }
@@ -1748,7 +1748,7 @@ LABEL_31:
     if ([(_anonymous_namespace_::staticLogger_t *)v26 count])
     {
       v45 = [(_anonymous_namespace_::staticLogger_t *)v26 objectAtIndex:0];
-      v46 = [v45 delegate];
+      delegate = [v45 delegate];
       [(_anonymous_namespace_::staticLogger_t *)v26 removeObjectAtIndex:0];
       v47 = self->_cachedConnections;
       if (v47)
@@ -1762,7 +1762,7 @@ LABEL_31:
         }
       }
 
-      v49 = v46;
+      v49 = delegate;
       v42 = v45;
     }
 
@@ -1787,7 +1787,7 @@ LABEL_31:
     {
       v44 = v42;
 LABEL_51:
-      if (!v24)
+      if (!compactWhenClosingMailboxes)
       {
         goto LABEL_55;
       }
@@ -1796,25 +1796,25 @@ LABEL_51:
     }
 
     v44 = 0;
-    if (!v24)
+    if (!compactWhenClosingMailboxes)
     {
       goto LABEL_55;
     }
 
 LABEL_52:
-    v50 = [v42 selectedMailbox];
-    v51 = v50 == 0;
+    selectedMailbox = [v42 selectedMailbox];
+    v51 = selectedMailbox == 0;
 
     if (!v51)
     {
-      v52 = [v42 closeAndLogout];
+      closeAndLogout = [v42 closeAndLogout];
       goto LABEL_56;
     }
 
 LABEL_55:
-    v52 = [v42 logout];
+    closeAndLogout = [v42 logout];
 LABEL_56:
-    if (v52)
+    if (closeAndLogout)
     {
       [(IMAP_Account *)self setCommitTime:[v42 tag] forConnectionTag:CFAbsoluteTimeGetCurrent()];
     }
@@ -1830,8 +1830,8 @@ LABEL_56:
   [(IMAP_Account *)self _purgeStaleFlagChanges];
   if (v33)
   {
-    v53 = [v44 selectedMailbox];
-    v54 = [(IMAP_Account *)self _mailboxUidForName:v53];
+    selectedMailbox2 = [v44 selectedMailbox];
+    v54 = [(IMAP_Account *)self _mailboxUidForName:selectedMailbox2];
   }
 
   else
@@ -1846,17 +1846,17 @@ LABEL_56:
     [v55 autofetchAccount:self mailboxUid:v54];
   }
 
-  if (v59)
+  if (superCopy)
   {
     v60.receiver = self;
     v60.super_class = IMAP_Account;
     [(MailAccount *)&v60 releaseAllConnections];
   }
 
-  if (v58)
+  if (cacheCopy)
   {
-    v56 = [(IMAP_Account *)self offlineCacheIfExists];
-    [v56 saveChanges];
+    offlineCacheIfExists = [(IMAP_Account *)self offlineCacheIfExists];
+    [offlineCacheIfExists saveChanges];
   }
 
 LABEL_71:
@@ -1896,89 +1896,89 @@ LABEL_71:
   }
 }
 
-- (void)setHandlerForOfflineCacheFlush:(id)a3
+- (void)setHandlerForOfflineCacheFlush:(id)flush
 {
-  v4 = a3;
-  if (self->_offlineCacheFlushHandler != v4)
+  flushCopy = flush;
+  if (self->_offlineCacheFlushHandler != flushCopy)
   {
-    if (v4)
+    if (flushCopy)
     {
-      v8 = v4;
-      v5 = [v4 copy];
+      v8 = flushCopy;
+      v5 = [flushCopy copy];
 
-      v4 = v5;
+      flushCopy = v5;
     }
 
-    v9 = v4;
+    v9 = flushCopy;
     v6 = MEMORY[0x2743C3100]();
     offlineCacheFlushHandler = self->_offlineCacheFlushHandler;
     self->_offlineCacheFlushHandler = v6;
 
-    v4 = v9;
+    flushCopy = v9;
   }
 }
 
-- (void)connectionDidDisconnect:(id)a3
+- (void)connectionDidDisconnect:(id)disconnect
 {
   v4 = v14 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     mambaID = self->super.super.mambaID;
-    v6 = [(MailAccount *)self displayName];
+    displayName = [(MailAccount *)self displayName];
     v8 = 136315650;
     v9 = mambaID;
     v10 = 2080;
     v11 = " ";
     v12 = 2112;
-    v13 = v6;
+    v13 = displayName;
     _os_log_impl(&dword_2720B1000, v4, OS_LOG_TYPE_DEFAULT, "#I %s%s(%@) Connection to server was lost/closed.", &v8, 0x20u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)connection:(id)a3 shouldHandleUntaggedResponse:(id)a4 forCommand:(id *)a5
+- (BOOL)connection:(id)connection shouldHandleUntaggedResponse:(id)response forCommand:(id *)command
 {
-  v7 = a4;
-  v8 = [v7 isAlertResponse];
-  if (v8)
+  responseCopy = response;
+  isAlertResponse = [responseCopy isAlertResponse];
+  if (isAlertResponse)
   {
-    v9 = [v7 userString];
-    [(IMAP_Account *)self handleAlertResponse:v9];
+    userString = [responseCopy userString];
+    [(IMAP_Account *)self handleAlertResponse:userString];
 LABEL_3:
 
     goto LABEL_14;
   }
 
-  if (a5->var0 == 8 && [v7 responseType] == 13)
+  if (command->var0 == 8 && [responseCopy responseType] == 13)
   {
-    v10 = [v7 mailboxName];
-    v9 = [(IMAP_Account *)self _mailboxUidForName:v10];
+    mailboxName = [responseCopy mailboxName];
+    userString = [(IMAP_Account *)self _mailboxUidForName:mailboxName];
 
-    v11 = [v7 statusEntries];
-    v12 = [v9 URLString];
+    statusEntries = [responseCopy statusEntries];
+    uRLString = [userString URLString];
 
-    if (v12)
+    if (uRLString)
     {
-      v13 = [v11 objectForKey:@"UIDNEXT"];
+      v13 = [statusEntries objectForKey:@"UIDNEXT"];
       if (v13)
       {
-        v14 = [v9 userInfoObjectForKey:@"UIDNEXT"];
-        v15 = [v14 intValue];
+        v14 = [userString userInfoObjectForKey:@"UIDNEXT"];
+        intValue = [v14 intValue];
 
-        v16 = [v13 unsignedIntValue];
-        if (v15 != v16)
+        unsignedIntValue = [v13 unsignedIntValue];
+        if (intValue != unsignedIntValue)
         {
-          v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", v16];
-          [v9 setUserInfoObject:v17 forKey:@"UIDNEXT"];
+          v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", unsignedIntValue];
+          [userString setUserInfoObject:v17 forKey:@"UIDNEXT"];
         }
       }
 
-      v18 = [v11 objectForKeyedSubscript:@"UNSEEN"];
+      v18 = [statusEntries objectForKeyedSubscript:@"UNSEEN"];
 
       if (v18)
       {
-        [v9 updateMostRecentStatusCount:{objc_msgSend(v18, "unsignedIntegerValue")}];
+        [userString updateMostRecentStatusCount:{objc_msgSend(v18, "unsignedIntegerValue")}];
       }
     }
 
@@ -1987,22 +1987,22 @@ LABEL_3:
 
 LABEL_14:
 
-  return v8 ^ 1;
+  return isAlertResponse ^ 1;
 }
 
-- (void)connection:(id)a3 didReceiveResponse:(id)a4 forCommand:(id *)a5
+- (void)connection:(id)connection didReceiveResponse:(id)response forCommand:(id *)command
 {
-  v7 = a4;
-  if ([v7 isAlertResponse])
+  responseCopy = response;
+  if ([responseCopy isAlertResponse])
   {
-    v6 = [v7 userString];
-    [(IMAP_Account *)self handleAlertResponse:v6];
+    userString = [responseCopy userString];
+    [(IMAP_Account *)self handleAlertResponse:userString];
   }
 }
 
-- (void)setIsOffline:(BOOL)a3
+- (void)setIsOffline:(BOOL)offline
 {
-  v3 = a3;
+  offlineCopy = offline;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     if ([IMAP_Account setIsOffline:]::sOnceToken != -1)
@@ -2015,16 +2015,16 @@ LABEL_14:
     block[2] = __29__IMAP_Account_setIsOffline___block_invoke_2;
     block[3] = &unk_279E34640;
     block[4] = self;
-    v10 = v3;
+    v10 = offlineCopy;
     dispatch_async([IMAP_Account setIsOffline:]::sOfflineStatusChangeQueue, block);
   }
 
   else
   {
     v5 = *(self + 312);
-    if (((((v5 & 2) == 0) ^ v3) & 1) == 0)
+    if (((((v5 & 2) == 0) ^ offlineCopy) & 1) == 0)
     {
-      if (v3)
+      if (offlineCopy)
       {
         [(IMAP_Account *)self _releaseAllConnectionsAndCallSuper:0];
         v5 = *(self + 312);
@@ -2039,23 +2039,23 @@ LABEL_14:
       *(self + 312) = v5 & 0xFD | v6;
       if ([(MailAccount *)self isActive])
       {
-        v8 = [MEMORY[0x277CCAB98] defaultCenter];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
         v7 = [MEMORY[0x277CCAB88] notificationWithName:@"AccountOfflineStatusDidChange" object:self userInfo:0];
-        [v8 postNotification:v7];
+        [defaultCenter postNotification:v7];
       }
     }
   }
 }
 
-- (void)_updateSeparatorAndNamespaceWithConnection:(id)a3
+- (void)_updateSeparatorAndNamespaceWithConnection:(id)connection
 {
-  v6 = a3;
+  connectionCopy = connection;
   [(NSRecursiveLock *)self->_connectionLock lock];
   if ((*(self + 344) & 1) == 0)
   {
-    v4 = [v6 separatorChar];
-    v5 = [v6 serverPathPrefix];
-    _setSeparatorCharAndNamespace(self, v4, v5);
+    separatorChar = [connectionCopy separatorChar];
+    serverPathPrefix = [connectionCopy serverPathPrefix];
+    _setSeparatorCharAndNamespace(self, separatorChar, serverPathPrefix);
     *(self + 344) |= 1u;
   }
 
@@ -2065,19 +2065,19 @@ LABEL_14:
 - (id)separatorChar
 {
   _MFLockGlobalLock();
-  v3 = self->_separatorChar;
+  separatorChar = self->_separatorChar;
   _MFUnlockGlobalLock();
-  if (!v3)
+  if (!separatorChar)
   {
-    v5 = [(MailAccount *)self rootMailboxUid];
+    rootMailboxUid = [(MailAccount *)self rootMailboxUid];
     _MFLockGlobalLock();
-    v3 = self->_separatorChar;
+    separatorChar = self->_separatorChar;
     _MFUnlockGlobalLock();
-    if ((*(self + 312) & 2) == 0 && !v3)
+    if ((*(self + 312) & 2) == 0 && !separatorChar)
     {
       if ([MEMORY[0x277CCACC8] isMainThread])
       {
-        v3 = 0;
+        separatorChar = 0;
       }
 
       else
@@ -2086,10 +2086,10 @@ LABEL_14:
         v7 = v6;
         if (v6)
         {
-          v3 = [v6 separatorChar];
-          if (v3)
+          separatorChar = [v6 separatorChar];
+          if (separatorChar)
           {
-            _setSeparatorCharAndNamespace(self, v3, 0);
+            _setSeparatorCharAndNamespace(self, separatorChar, 0);
           }
 
           [(IMAP_Account *)self checkInConnection:v7];
@@ -2097,18 +2097,18 @@ LABEL_14:
 
         else
         {
-          v3 = 0;
+          separatorChar = 0;
         }
       }
     }
   }
 
-  return v3;
+  return separatorChar;
 }
 
 - (id)lastKnownCapabilities
 {
-  v3 = [(MailAccount *)self rootMailboxUid];
+  rootMailboxUid = [(MailAccount *)self rootMailboxUid];
   _MFLockGlobalLock();
   v4 = self->_lastKnownCapabilities;
   _MFUnlockGlobalLock();
@@ -2116,15 +2116,15 @@ LABEL_14:
   return v4;
 }
 
-- (void)_setCapabilities:(id)a3
+- (void)_setCapabilities:(id)capabilities
 {
-  v9 = a3;
+  capabilitiesCopy = capabilities;
   _MFLockGlobalLock();
   lastKnownCapabilities = self->_lastKnownCapabilities;
-  if (v9 | lastKnownCapabilities)
+  if (capabilitiesCopy | lastKnownCapabilities)
   {
     v6 = lastKnownCapabilities;
-    objc_storeStrong(&self->_lastKnownCapabilities, a3);
+    objc_storeStrong(&self->_lastKnownCapabilities, capabilities);
     flags = self->super._flags;
     if ((*&flags & 0x40000) == 0)
     {
@@ -2138,9 +2138,9 @@ LABEL_14:
   }
 
   _MFUnlockGlobalLock();
-  if (v9 | v6)
+  if (capabilitiesCopy | v6)
   {
-    v8 = [v9 isEqualToArray:v6] ^ 1;
+    v8 = [capabilitiesCopy isEqualToArray:v6] ^ 1;
   }
 
   else
@@ -2154,11 +2154,11 @@ LABEL_14:
 - (id)fetchLimits
 {
   v2 = +[MFNetworkController sharedInstance];
-  v3 = [v2 isFatPipe];
+  isFatPipe = [v2 isFatPipe];
   v4 = +[MFPowerController sharedInstance];
-  v5 = [v4 isPluggedIn];
+  isPluggedIn = [v4 isPluggedIn];
 
-  if (v3 & v5)
+  if (isFatPipe & isPluggedIn)
   {
     v6 = 0x7FFFFFFFFFFFFFFFLL;
     v7 = 0x7FFFFFFFFFFFFFFFLL;
@@ -2167,16 +2167,16 @@ LABEL_14:
 
   else
   {
-    v9 = [v2 is3GConnection];
-    v10 = v3 | [v2 is4GConnection];
+    is3GConnection = [v2 is3GConnection];
+    v10 = isFatPipe | [v2 is4GConnection];
     v11 = 4096;
-    if (v9)
+    if (is3GConnection)
     {
       v11 = 0x10000;
     }
 
     v12 = 0x4000;
-    if (v9)
+    if (is3GConnection)
     {
       v12 = 0x80000;
     }
@@ -2212,19 +2212,19 @@ LABEL_14:
   return v13;
 }
 
-- (id)_listingForMailboxUid:(id)a3 listAllChildren:(BOOL)a4 onlySubscribed:(BOOL)a5 statusDataItems:(id)a6 withConnection:(id)a7 statusEntriesByMailbox:(id *)a8
+- (id)_listingForMailboxUid:(id)uid listAllChildren:(BOOL)children onlySubscribed:(BOOL)subscribed statusDataItems:(id)items withConnection:(id)connection statusEntriesByMailbox:(id *)mailbox
 {
-  v11 = a5;
-  v12 = a4;
-  v14 = a3;
-  v43 = a6;
-  v15 = a7;
-  if (v15 || ([(IMAP_Account *)self connectionForStore:0 delegate:self options:9], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+  subscribedCopy = subscribed;
+  childrenCopy = children;
+  uidCopy = uid;
+  itemsCopy = items;
+  connectionCopy = connection;
+  if (connectionCopy || ([(IMAP_Account *)self connectionForStore:0 delegate:self options:9], (connectionCopy = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v42 = [(IMAP_Account *)self serverPathPrefixAccountValue];
-    if ([v42 length])
+    serverPathPrefixAccountValue = [(IMAP_Account *)self serverPathPrefixAccountValue];
+    if ([serverPathPrefixAccountValue length])
     {
-      v16 = [(NSString *)self->_serverNamespace isEqualToString:v42];
+      v16 = [(NSString *)self->_serverNamespace isEqualToString:serverPathPrefixAccountValue];
     }
 
     else
@@ -2232,24 +2232,24 @@ LABEL_14:
       v16 = 1;
     }
 
-    if (self->super._rootMailboxUid == v14 && v16)
+    if (self->super._rootMailboxUid == uidCopy && v16)
     {
       v17 = &stru_288159858;
     }
 
-    else if (self->super._inboxMailboxUid == v14 && (-[IMAP_Account serverPathPrefix](self, "serverPathPrefix"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 isEqualToString:@"INBOX"], v18, v19))
+    else if (self->super._inboxMailboxUid == uidCopy && (-[IMAP_Account serverPathPrefix](self, "serverPathPrefix"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 isEqualToString:@"INBOX"], v18, v19))
     {
       v20 = MEMORY[0x277CCACA8];
-      v21 = [(IMAP_Account *)self separatorChar];
-      v17 = [v20 stringWithFormat:@"INBOX%@INBOX", v21];
+      separatorChar = [(IMAP_Account *)self separatorChar];
+      v17 = [v20 stringWithFormat:@"INBOX%@INBOX", separatorChar];
     }
 
     else
     {
-      v17 = [(IMAP_Account *)self _nameForMailboxUid:v14];
+      v17 = [(IMAP_Account *)self _nameForMailboxUid:uidCopy];
     }
 
-    if (v12)
+    if (childrenCopy)
     {
       v22 = 2;
     }
@@ -2259,11 +2259,11 @@ LABEL_14:
       v22 = 1;
     }
 
-    if (!v11 || ([v15 subscribedListingForMailbox:v17 options:v22], (v23 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!subscribedCopy || ([connectionCopy subscribedListingForMailbox:v17 options:v22], (v23 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      if ([v15 supportsCapability:22])
+      if ([connectionCopy supportsCapability:22])
       {
-        v24 = ([v15 supportsCapability:20] & 1) != 0 || -[IMAP_Account xListSupportedOnConnection:](self, "xListSupportedOnConnection:", v15);
+        v24 = ([connectionCopy supportsCapability:20] & 1) != 0 || -[IMAP_Account xListSupportedOnConnection:](self, "xListSupportedOnConnection:", connectionCopy);
       }
 
       else
@@ -2271,9 +2271,9 @@ LABEL_14:
         v24 = 0;
       }
 
-      v25 = [v15 listingForMailbox:v17 options:v22 getSpecialUse:v24 statusDataItems:v43 statusEntriesByMailbox:a8];
+      v25 = [connectionCopy listingForMailbox:v17 options:v22 getSpecialUse:v24 statusDataItems:itemsCopy statusEntriesByMailbox:mailbox];
       v26 = v25;
-      if (self->super._rootMailboxUid == v14 && self->_serverNamespace != 0 && v16)
+      if (self->super._rootMailboxUid == uidCopy && self->_serverNamespace != 0 && v16)
       {
         v41 = [(NSArray *)v25 mutableCopy];
         v27 = _mailboxDictionaryWithName(v26, self->_serverNamespace, 0);
@@ -2318,8 +2318,8 @@ LABEL_14:
 
           else
           {
-            v37 = [MEMORY[0x277CBEAC0] dictionary];
-            [v38 setObject:v37 forKey:@"MailboxChildren"];
+            dictionary = [MEMORY[0x277CBEAC0] dictionary];
+            [v38 setObject:dictionary forKey:@"MailboxChildren"];
 
             [(NSArray *)v23 vf_insertObject:v38 usingSortFunction:_MFCompareMailboxDictionariesByName context:0 allowDuplicates:1];
           }
@@ -2332,7 +2332,7 @@ LABEL_14:
       }
     }
 
-    [(IMAP_Account *)self checkInConnection:v15];
+    [(IMAP_Account *)self checkInConnection:connectionCopy];
   }
 
   else
@@ -2343,22 +2343,22 @@ LABEL_14:
   return v23;
 }
 
-- (BOOL)_deleteMailbox:(id)a3
+- (BOOL)_deleteMailbox:(id)mailbox
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mailboxCopy = mailbox;
   v22.receiver = self;
   v22.super_class = IMAP_Account;
-  if ([(MailAccount *)&v22 _deleteMailbox:v4])
+  if ([(MailAccount *)&v22 _deleteMailbox:mailboxCopy])
   {
-    v5 = [(IMAP_Account *)self _nameForMailboxUid:v4];
+    v5 = [(IMAP_Account *)self _nameForMailboxUid:mailboxCopy];
     [(IMAP_Account *)self unselectMailbox:v5];
-    v6 = [(IMAP_Account *)self offlineCacheIfOffline];
-    v7 = v6;
-    if (v6)
+    offlineCacheIfOffline = [(IMAP_Account *)self offlineCacheIfOffline];
+    v7 = offlineCacheIfOffline;
+    if (offlineCacheIfOffline)
     {
       v8 = 0;
-      [v6 deleteMailbox:v5];
+      [offlineCacheIfOffline deleteMailbox:v5];
       v9 = 1;
 LABEL_22:
 
@@ -2379,21 +2379,21 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      if ([v4 isStore])
+      if ([mailboxCopy isStore])
       {
         v9 = 0;
         goto LABEL_21;
       }
 
-      v13 = [v4 parent];
-      if (v13)
+      parent = [mailboxCopy parent];
+      if (parent)
       {
         v15 = +[MFActivityMonitor currentMonitor];
-        v16 = [v15 error];
-        v17 = [(IMAP_Account *)self _listingForMailboxUid:v13 listAllChildren:0];
-        if ([v17 count] && (objc_msgSend(v4, "name"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "mf_indexOfMailboxDictionaryWithName:", v18) == 0x7FFFFFFFFFFFFFFFLL, v18, !v19))
+        error = [v15 error];
+        v17 = [(IMAP_Account *)self _listingForMailboxUid:parent listAllChildren:0];
+        if ([v17 count] && (objc_msgSend(mailboxCopy, "name"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "mf_indexOfMailboxDictionaryWithName:", v18) == 0x7FFFFFFFFFFFFFFFLL, v18, !v19))
         {
-          [v15 setError:v16];
+          [v15 setError:error];
           v9 = 0;
         }
 
@@ -2411,15 +2411,15 @@ LABEL_21:
     }
 
     else
-      v13 = {;
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      parent = {;
+      if (os_log_type_enabled(parent, OS_LOG_TYPE_DEFAULT))
       {
         mambaID = self->super.super.mambaID;
         *buf = 136315394;
         v24 = mambaID;
         v25 = 2080;
         v26 = " ";
-        _os_log_impl(&dword_2720B1000, v13, OS_LOG_TYPE_DEFAULT, "#I %s%sNo connection!! What's going on?", buf, 0x16u);
+        _os_log_impl(&dword_2720B1000, parent, OS_LOG_TYPE_DEFAULT, "#I %s%sNo connection!! What's going on?", buf, 0x16u);
       }
 
       v11 = 0;
@@ -2436,9 +2436,9 @@ LABEL_23:
   return v9;
 }
 
-- (BOOL)isMailboxLocalForType:(int)a3
+- (BOOL)isMailboxLocalForType:(int)type
 {
-  if ((a3 - 2) > 3)
+  if ((type - 2) > 3)
   {
     return 0;
   }
@@ -2449,9 +2449,9 @@ LABEL_23:
   }
 }
 
-- (void)_renameLocalSpecialMailboxesToName:(id)a3
+- (void)_renameLocalSpecialMailboxesToName:(id)name
 {
-  v18 = a3;
+  nameCopy = name;
   if ([(IMAP_Account *)self storeMailboxTypeOnServer:5])
   {
     v4 = 0;
@@ -2461,10 +2461,10 @@ LABEL_23:
   else
   {
     v6 = [(MailAccount *)self mailboxUidOfType:5 createIfNeeded:0];
-    v7 = [(MailAccount *)self _localMailboxNameForType:5 usingDisplayName:v18];
-    v8 = [v6 account];
-    v9 = [v6 parent];
-    [v8 renameMailbox:v6 newName:v7 parent:v9];
+    v7 = [(MailAccount *)self _localMailboxNameForType:5 usingDisplayName:nameCopy];
+    account = [v6 account];
+    parent = [v6 parent];
+    [account renameMailbox:v6 newName:v7 parent:parent];
 
     v4 = v7;
     v5 = v6;
@@ -2474,11 +2474,11 @@ LABEL_23:
   {
     v10 = [(MailAccount *)self mailboxUidOfType:4 createIfNeeded:0];
 
-    v11 = [(MailAccount *)self _localMailboxNameForType:4 usingDisplayName:v18];
+    v11 = [(MailAccount *)self _localMailboxNameForType:4 usingDisplayName:nameCopy];
 
-    v12 = [v10 account];
-    v13 = [v10 parent];
-    [v12 renameMailbox:v10 newName:v11 parent:v13];
+    account2 = [v10 account];
+    parent2 = [v10 parent];
+    [account2 renameMailbox:v10 newName:v11 parent:parent2];
 
     v4 = v11;
     v5 = v10;
@@ -2494,15 +2494,15 @@ LABEL_23:
   {
     v15 = [(MailAccount *)self mailboxUidOfType:3 createIfNeeded:0];
 
-    v14 = [(MailAccount *)self _localMailboxNameForType:3 usingDisplayName:v18];
+    v14 = [(MailAccount *)self _localMailboxNameForType:3 usingDisplayName:nameCopy];
 
-    v16 = [v15 account];
-    v17 = [v15 parent];
-    [v16 renameMailbox:v15 newName:v14 parent:v17];
+    account3 = [v15 account];
+    parent3 = [v15 parent];
+    [account3 renameMailbox:v15 newName:v14 parent:parent3];
   }
 }
 
-- (id)specialUseAttributeForType:(int)a3
+- (id)specialUseAttributeForType:(int)type
 {
   if ([IMAP_Account specialUseAttributeForType:]::onceToken != -1)
   {
@@ -2511,47 +2511,47 @@ LABEL_23:
 
   v4 = [IMAP_Account specialUseAttributeForType:]::map;
 
-  return CFDictionaryGetValue(v4, a3);
+  return CFDictionaryGetValue(v4, type);
 }
 
 - (id)allMailMailboxUid
 {
-  v2 = [(MailAccount *)self rootMailboxUid];
-  v3 = [v2 descendantWithExtraAttribute:@"\\All"];
+  rootMailboxUid = [(MailAccount *)self rootMailboxUid];
+  v3 = [rootMailboxUid descendantWithExtraAttribute:@"\\All"];
 
   return v3;
 }
 
-- (BOOL)isSpecialMailbox:(id)a3
+- (BOOL)isSpecialMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   v8.receiver = self;
   v8.super_class = IMAP_Account;
-  if ([(MailAccount *)&v8 isSpecialMailbox:v4])
+  if ([(MailAccount *)&v8 isSpecialMailbox:mailboxCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(IMAP_Account *)self specialUseAttributesForMailbox:v4];
+    v6 = [(IMAP_Account *)self specialUseAttributesForMailbox:mailboxCopy];
     v5 = [v6 count] != 0;
   }
 
   return v5;
 }
 
-- (id)specialUseAttributesForMailbox:(id)a3
+- (id)specialUseAttributesForMailbox:(id)mailbox
 {
-  v3 = a3;
+  mailboxCopy = mailbox;
   if ([IMAP_Account specialUseAttributesForMailbox:]::onceToken != -1)
   {
     [IMAP_Account specialUseAttributesForMailbox:];
   }
 
   v4 = MEMORY[0x277CBEB58];
-  v5 = [v3 extraAttributes];
-  v6 = [v4 setWithArray:v5];
+  extraAttributes = [mailboxCopy extraAttributes];
+  v6 = [v4 setWithArray:extraAttributes];
 
   [v6 intersectSet:-[IMAP_Account specialUseAttributesForMailbox:]::knownSpecialAttributes];
 
@@ -2573,9 +2573,9 @@ LABEL_23:
   }
 }
 
-- (BOOL)getMailboxListWithConnection:(id)a3 statusDataItems:(id)a4 statusEntriesByMailbox:(id *)a5
+- (BOOL)getMailboxListWithConnection:(id)connection statusDataItems:(id)items statusEntriesByMailbox:(id *)mailbox
 {
-  v6 = [(IMAP_Account *)self _listingForMailboxUid:self->super._rootMailboxUid listAllChildren:1 onlySubscribed:0 statusDataItems:a4 withConnection:a3 statusEntriesByMailbox:a5];
+  v6 = [(IMAP_Account *)self _listingForMailboxUid:self->super._rootMailboxUid listAllChildren:1 onlySubscribed:0 statusDataItems:items withConnection:connection statusEntriesByMailbox:mailbox];
   if (v6)
   {
     [(IMAP_Account *)self mf_lock];
@@ -2599,28 +2599,28 @@ LABEL_23:
   return v6 != 0;
 }
 
-- (void)throttledGetMailboxListWithConnection:(id)a3
+- (void)throttledGetMailboxListWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   Current = CFAbsoluteTimeGetCurrent();
   v6 = MFUserAgent();
-  v7 = [v6 isForeground];
+  isForeground = [v6 isForeground];
 
-  if ((*(self + 312) & 1) == 0 || v7 && Current - self->_timeLastFetchedMailboxList > 300.0)
+  if ((*(self + 312) & 1) == 0 || isForeground && Current - self->_timeLastFetchedMailboxList > 300.0)
   {
     self->_timeLastFetchedMailboxList = Current;
     *(self + 312) |= 1u;
     v8 = +[MFActivityMonitor currentMonitor];
-    v9 = [(MailAccount *)self rootMailboxUid];
-    [v8 setMailbox:v9];
+    rootMailboxUid = [(MailAccount *)self rootMailboxUid];
+    [v8 setMailbox:rootMailboxUid];
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"CHECKING_FOR_MAIL" value:&stru_288159858 table:@"Main"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"CHECKING_FOR_MAIL" value:&stru_288159858 table:@"Main"];
     [v8 setDisplayName:v11];
 
     v12 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{@"UNSEEN", 0}];
     v27 = 0;
-    v13 = [(IMAP_Account *)self getMailboxListWithConnection:v4 statusDataItems:v12 statusEntriesByMailbox:&v27];
+    v13 = [(IMAP_Account *)self getMailboxListWithConnection:connectionCopy statusDataItems:v12 statusEntriesByMailbox:&v27];
     v14 = v27;
     v15 = v14;
     if (v13)
@@ -2633,13 +2633,13 @@ LABEL_23:
       [v14 enumerateKeysAndObjectsUsingBlock:v26];
       if (!v15)
       {
-        if (!v4)
+        if (!connectionCopy)
         {
-          v4 = [(IMAP_Account *)self connectionForStore:0 delegate:self options:9];
+          connectionCopy = [(IMAP_Account *)self connectionForStore:0 delegate:self options:9];
         }
 
-        v16 = [(MailAccount *)self allMailboxUids];
-        v17 = [v16 vf_filter:&__block_literal_global_239];
+        allMailboxUids = [(MailAccount *)self allMailboxUids];
+        v17 = [allMailboxUids vf_filter:&__block_literal_global_239];
 
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
@@ -2649,8 +2649,8 @@ LABEL_23:
         v18 = [v17 vf_map:v25];
         v19 = [v18 vf_filter:&__block_literal_global_3];
 
-        [v4 fetchStatusForMailboxes:v19 args:v12];
-        [(IMAP_Account *)self checkInConnection:v4];
+        [connectionCopy fetchStatusForMailboxes:v19 args:v12];
+        [(IMAP_Account *)self checkInConnection:connectionCopy];
       }
     }
 
@@ -2675,8 +2675,8 @@ LABEL_23:
 {
   v3 = objc_autoreleasePoolPush();
   v4 = +[MFActivityMonitor currentMonitor];
-  v5 = [(MFAccount *)self password];
-  if (v5)
+  password = [(MFAccount *)self password];
+  if (password)
   {
     v6 = [(IMAP_Account *)self connectionForStore:0 delegate:self options:1];
     if (v6 && ([v4 shouldCancel] & 1) == 0)
@@ -2704,14 +2704,14 @@ LABEL_23:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)_synchronouslyLoadListingForParent:(id)a3
+- (void)_synchronouslyLoadListingForParent:(id)parent
 {
-  v7 = a3;
+  parentCopy = parent;
   v4 = [IMAP_Account _listingForMailboxUid:"_listingForMailboxUid:listAllChildren:" listAllChildren:?];
   if (v4)
   {
-    v5 = [v7 name];
-    v6 = [(MailAccount *)self _loadMailboxListingIntoCache:v5 attributes:0 children:v4 parent:v7];
+    name = [parentCopy name];
+    v6 = [(MailAccount *)self _loadMailboxListingIntoCache:name attributes:0 children:v4 parent:parentCopy];
 
     if (v6)
     {
@@ -2727,10 +2727,10 @@ LABEL_23:
   [(IMAP_Account *)self mf_unlock];
 }
 
-- (void)_mailboxesWereRemovedFromTree:(id)a3 withFileSystemPaths:(id)a4
+- (void)_mailboxesWereRemovedFromTree:(id)tree withFileSystemPaths:(id)paths
 {
-  v6 = a3;
-  v7 = a4;
+  treeCopy = tree;
+  pathsCopy = paths;
   _MFLockGlobalLock();
   if (!_mailboxDeletionQueue)
   {
@@ -2741,24 +2741,24 @@ LABEL_23:
 
   _MFUnlockGlobalLock();
   v10 = objc_alloc_init(_MFIMAPMailboxDeletionQueueEntry);
-  [(_MFIMAPMailboxDeletionQueueEntry *)v10 setUrls:v6];
-  [(_MFIMAPMailboxDeletionQueueEntry *)v10 setPaths:v7];
+  [(_MFIMAPMailboxDeletionQueueEntry *)v10 setUrls:treeCopy];
+  [(_MFIMAPMailboxDeletionQueueEntry *)v10 setPaths:pathsCopy];
   [(_MFIMAPMailboxDeletionQueueEntry *)v10 setAccount:self];
   v11 = [MFMonitoredInvocation invocationWithSelector:sel__deleteQueuedMailboxes_ target:objc_opt_class() object:v10 taskName:@"Removing old cache files..." priority:12 canBeCancelled:1];
   [_mailboxDeletionQueue addInvocation:v11];
   v12.receiver = self;
   v12.super_class = IMAP_Account;
-  [(MailAccount *)&v12 _mailboxesWereRemovedFromTree:v6 withFileSystemPaths:v7];
+  [(MailAccount *)&v12 _mailboxesWereRemovedFromTree:treeCopy withFileSystemPaths:pathsCopy];
 }
 
-+ (void)_deleteQueuedMailboxes:(id)a3
++ (void)_deleteQueuedMailboxes:(id)mailboxes
 {
-  v18 = a3;
-  v4 = [v18 account];
-  [v4 _waitForMailboxListingLoadToComplete];
+  mailboxesCopy = mailboxes;
+  account = [mailboxesCopy account];
+  [account _waitForMailboxListingLoadToComplete];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v18 urls];
-  v7 = [v6 count];
+  urls = [mailboxesCopy urls];
+  v7 = [urls count];
 
   if (v7)
   {
@@ -2766,15 +2766,15 @@ LABEL_23:
     v9 = *MEMORY[0x277CBEEE8];
     do
     {
-      v10 = [v18 urls];
-      v11 = [v10 objectAtIndex:v8];
+      urls2 = [mailboxesCopy urls];
+      v11 = [urls2 objectAtIndex:v8];
 
-      v12 = [a1 mailboxUidFromActiveAccountsForURL:v11];
+      v12 = [self mailboxUidFromActiveAccountsForURL:v11];
       v13 = v12;
       if (!v12 || ([v12 isValid] & 1) == 0)
       {
-        v14 = [v18 paths];
-        v15 = [v14 objectAtIndex:v8];
+        paths = [mailboxesCopy paths];
+        v15 = [paths objectAtIndex:v8];
 
         if (v15 != v9)
         {
@@ -2790,23 +2790,23 @@ LABEL_23:
     while (v7 != v8);
   }
 
-  v17 = [v4 library];
-  [v17 deleteMailboxes:v5 account:v4];
+  library = [account library];
+  [library deleteMailboxes:v5 account:account];
 }
 
-- (BOOL)newMailboxNameIsAcceptable:(id)a3 reasonForFailure:(id *)a4
+- (BOOL)newMailboxNameIsAcceptable:(id)acceptable reasonForFailure:(id *)failure
 {
-  v6 = a3;
+  acceptableCopy = acceptable;
   v12.receiver = self;
   v12.super_class = IMAP_Account;
-  if ([(MailAccount *)&v12 newMailboxNameIsAcceptable:v6 reasonForFailure:a4])
+  if ([(MailAccount *)&v12 newMailboxNameIsAcceptable:acceptableCopy reasonForFailure:failure])
   {
-    v7 = [(IMAP_Account *)self separatorChar];
-    if (v7)
+    separatorChar = [(IMAP_Account *)self separatorChar];
+    if (separatorChar)
     {
-      v8 = [v6 rangeOfString:v7];
+      v8 = [acceptableCopy rangeOfString:separatorChar];
       v9 = v8 == 0x7FFFFFFFFFFFFFFFLL;
-      if (!a4)
+      if (!failure)
       {
 LABEL_10:
 
@@ -2815,22 +2815,22 @@ LABEL_10:
 
       if (v8 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Mailbox names may not include “%@”.", v7];
-        *a4 = v10;
+        v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Mailbox names may not include “%@”.", separatorChar];
+        *failure = v10;
 
         v9 = 0;
         goto LABEL_10;
       }
     }
 
-    else if (!a4)
+    else if (!failure)
     {
 LABEL_9:
       v9 = 1;
       goto LABEL_10;
     }
 
-    *a4 = 0;
+    *failure = 0;
     goto LABEL_9;
   }
 
@@ -2840,12 +2840,12 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)renameMailbox:(id)a3 newName:(id)a4 parent:(id)a5
+- (BOOL)renameMailbox:(id)mailbox newName:(id)name parent:(id)parent
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v23 = [(IMAP_Account *)self _nameForMailboxUid:v8];
+  mailboxCopy = mailbox;
+  nameCopy = name;
+  parentCopy = parent;
+  v23 = [(IMAP_Account *)self _nameForMailboxUid:mailboxCopy];
   if (![(IMAP_Account *)self isOffline])
   {
     v14 = [(IMAP_Account *)self connectionForStore:0 delegate:self options:1];
@@ -2856,7 +2856,7 @@ LABEL_11:
     }
 
     inboxMailboxUid = self->super._inboxMailboxUid;
-    if (inboxMailboxUid && [(MFMailboxUid *)inboxMailboxUid isEqual:v8])
+    if (inboxMailboxUid && [(MFMailboxUid *)inboxMailboxUid isEqual:mailboxCopy])
     {
       v16 = self->super._inboxMailboxUid;
     }
@@ -2866,22 +2866,22 @@ LABEL_11:
       v16 = 0;
     }
 
-    v13 = [(IMAP_Account *)self _nameForMailboxUid:v10];
-    if (v9)
+    v13 = [(IMAP_Account *)self _nameForMailboxUid:parentCopy];
+    if (nameCopy)
     {
-      [(IMAP_Account *)self _uidNameForPathComponent:v9];
+      [(IMAP_Account *)self _uidNameForPathComponent:nameCopy];
     }
 
     else
     {
-      [v8 name];
+      [mailboxCopy name];
     }
     v17 = ;
     if ([v13 length])
     {
       v19 = [v13 mutableCopyWithZone:0];
-      v20 = [v14 separatorChar];
-      [v19 appendString:v20];
+      separatorChar = [v14 separatorChar];
+      [v19 appendString:separatorChar];
 
       [v19 appendString:v17];
       v17 = v19;
@@ -2896,9 +2896,9 @@ LABEL_11:
 
       v24.receiver = self;
       v24.super_class = IMAP_Account;
-      [(MailAccount *)&v24 renameMailbox:v8 newName:v9 parent:v10];
-      v21 = [v8 store];
-      [v21 reselectMailbox];
+      [(MailAccount *)&v24 renameMailbox:mailboxCopy newName:nameCopy parent:parentCopy];
+      store = [mailboxCopy store];
+      [store reselectMailbox];
 
       v18 = 1;
       if (!v16)
@@ -2937,44 +2937,44 @@ LABEL_24:
   return v18;
 }
 
-- (id)_pathComponentForUidName:(id)a3
+- (id)_pathComponentForUidName:(id)name
 {
-  v3 = [a3 mf_decodedIMAPMailboxName];
+  mf_decodedIMAPMailboxName = [name mf_decodedIMAPMailboxName];
 
-  return v3;
+  return mf_decodedIMAPMailboxName;
 }
 
-- (id)_uidNameForPathComponent:(id)a3
+- (id)_uidNameForPathComponent:(id)component
 {
-  v3 = [a3 mf_encodedIMAPMailboxName];
+  mf_encodedIMAPMailboxName = [component mf_encodedIMAPMailboxName];
 
-  return v3;
+  return mf_encodedIMAPMailboxName;
 }
 
-- (id)_nameForMailboxUid:(id)a3
+- (id)_nameForMailboxUid:(id)uid
 {
-  v4 = a3;
-  if (self->super._inboxMailboxUid == v4)
+  uidCopy = uid;
+  if (self->super._inboxMailboxUid == uidCopy)
   {
     v6 = @"INBOX";
     goto LABEL_32;
   }
 
-  v5 = [(IMAP_Account *)self serverPathPrefix];
-  if (!v5 && ([(MFMailboxUid *)v4 parent], v7 = objc_claimAutoreleasedReturnValue(), rootMailboxUid = self->super._rootMailboxUid, v7, v7 == rootMailboxUid))
+  serverPathPrefix = [(IMAP_Account *)self serverPathPrefix];
+  if (!serverPathPrefix && ([(MFMailboxUid *)uidCopy parent], v7 = objc_claimAutoreleasedReturnValue(), rootMailboxUid = self->super._rootMailboxUid, v7, v7 == rootMailboxUid))
   {
-    v12 = [(MFMailboxUid *)v4 name];
+    name = [(MFMailboxUid *)uidCopy name];
   }
 
   else
   {
-    if (self->super._rootMailboxUid != v4)
+    if (self->super._rootMailboxUid != uidCopy)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      if ([(__CFString *)v5 length])
+      if ([(__CFString *)serverPathPrefix length])
       {
-        v10 = ![(MFMailboxUid *)v4 isShared];
-        if (!v4)
+        v10 = ![(MFMailboxUid *)uidCopy isShared];
+        if (!uidCopy)
         {
           goto LABEL_16;
         }
@@ -2983,12 +2983,12 @@ LABEL_24:
       else
       {
         v10 = 0;
-        if (!v4)
+        if (!uidCopy)
         {
 LABEL_16:
           if (v10)
           {
-            v15 = [(__CFString *)v5 mutableCopyWithZone:0];
+            v15 = [(__CFString *)serverPathPrefix mutableCopyWithZone:0];
           }
 
           else
@@ -2997,7 +2997,7 @@ LABEL_16:
           }
 
           v16 = [v9 count];
-          v17 = [(IMAP_Account *)self separatorChar];
+          separatorChar = [(IMAP_Account *)self separatorChar];
           if (v16)
           {
             for (i = v16 - 1; i != -1; --i)
@@ -3006,14 +3006,14 @@ LABEL_16:
               v20 = v19;
               if (v15)
               {
-                if (!v17)
+                if (!separatorChar)
                 {
 
                   v15 = 0;
                   break;
                 }
 
-                [v15 appendString:v17];
+                [v15 appendString:separatorChar];
                 [v15 appendString:v20];
               }
 
@@ -3032,33 +3032,33 @@ LABEL_16:
 
       do
       {
-        if (v4 == self->super._rootMailboxUid)
+        if (uidCopy == self->super._rootMailboxUid)
         {
           break;
         }
 
-        v13 = [(MFMailboxUid *)v4 name];
-        [v9 addObject:v13];
+        name2 = [(MFMailboxUid *)uidCopy name];
+        [v9 addObject:name2];
 
-        v14 = [(MFMailboxUid *)v4 parent];
+        parent = [(MFMailboxUid *)uidCopy parent];
 
-        v4 = v14;
+        uidCopy = parent;
       }
 
-      while (v14);
+      while (parent);
       goto LABEL_16;
     }
 
     v11 = &stru_288159858;
-    if (v5)
+    if (serverPathPrefix)
     {
-      v11 = v5;
+      v11 = serverPathPrefix;
     }
 
-    v12 = v11;
+    name = v11;
   }
 
-  v6 = v12;
+  v6 = name;
 LABEL_31:
 
 LABEL_32:
@@ -3066,44 +3066,44 @@ LABEL_32:
   return v6;
 }
 
-- (id)nameForMailboxUid:(id)a3
+- (id)nameForMailboxUid:(id)uid
 {
-  v3 = [(IMAP_Account *)self _nameForMailboxUid:a3];
+  v3 = [(IMAP_Account *)self _nameForMailboxUid:uid];
 
   return v3;
 }
 
-- (id)_mailboxUidForName:(id)a3
+- (id)_mailboxUidForName:(id)name
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (!nameCopy)
   {
-    v15 = 0;
+    rootMailboxUid = 0;
     goto LABEL_26;
   }
 
-  v6 = [(__CFString *)v4 caseInsensitiveCompare:@"INBOX"];
+  v6 = [(__CFString *)nameCopy caseInsensitiveCompare:@"INBOX"];
   if (!v6)
   {
 
     v5 = @"INBOX";
   }
 
-  v7 = [(IMAP_Account *)self serverPathPrefix];
-  v8 = [(IMAP_Account *)self separatorChar];
-  if (!v7 || ![v7 length] || !v6)
+  serverPathPrefix = [(IMAP_Account *)self serverPathPrefix];
+  separatorChar = [(IMAP_Account *)self separatorChar];
+  if (!serverPathPrefix || ![serverPathPrefix length] || !v6)
   {
     goto LABEL_14;
   }
 
-  v9 = [(__CFString *)v5 rangeOfString:v7 options:8];
+  v9 = [(__CFString *)v5 rangeOfString:serverPathPrefix options:8];
   if (v10)
   {
     v11 = [(__CFString *)v5 substringFromIndex:v9 + v10];
 
-    if (v8 && v11 && (v12 = [(__CFString *)v11 rangeOfString:v8 options:8], v13))
+    if (separatorChar && v11 && (v12 = [(__CFString *)v11 rangeOfString:separatorChar options:8], v13))
     {
       v14 = [(__CFString *)v11 substringFromIndex:v12 + v13];
 
@@ -3116,11 +3116,11 @@ LABEL_32:
     }
 
 LABEL_14:
-    v15 = 0;
-    if (v8 && v5)
+    rootMailboxUid = 0;
+    if (separatorChar && v5)
     {
-      v16 = [(__CFString *)v5 componentsSeparatedByString:v8];
-      v15 = [(MailAccount *)self rootMailboxUid];
+      v16 = [(__CFString *)v5 componentsSeparatedByString:separatorChar];
+      rootMailboxUid = [(MailAccount *)self rootMailboxUid];
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
@@ -3133,7 +3133,7 @@ LABEL_14:
         do
         {
           v20 = 0;
-          v21 = v15;
+          v21 = rootMailboxUid;
           do
           {
             if (*v25 != v19)
@@ -3141,10 +3141,10 @@ LABEL_14:
               objc_enumerationMutation(v17);
             }
 
-            v15 = [v21 childWithName:{*(*(&v24 + 1) + 8 * v20), v24}];
+            rootMailboxUid = [v21 childWithName:{*(*(&v24 + 1) + 8 * v20), v24}];
 
             ++v20;
-            v21 = v15;
+            v21 = rootMailboxUid;
           }
 
           while (v18 != v20);
@@ -3159,19 +3159,19 @@ LABEL_14:
   }
 
   v5 = 0;
-  v15 = 0;
+  rootMailboxUid = 0;
 LABEL_25:
 
 LABEL_26:
   v22 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return rootMailboxUid;
 }
 
-- (BOOL)canMailboxBeDeleted:(id)a3
+- (BOOL)canMailboxBeDeleted:(id)deleted
 {
-  v4 = a3;
-  if ([v4 isEqual:self->super._inboxMailboxUid])
+  deletedCopy = deleted;
+  if ([deletedCopy isEqual:self->super._inboxMailboxUid])
   {
     v5 = 0;
   }
@@ -3180,7 +3180,7 @@ LABEL_26:
   {
     v7.receiver = self;
     v7.super_class = IMAP_Account;
-    v5 = [(MailAccount *)&v7 canMailboxBeDeleted:v4];
+    v5 = [(MailAccount *)&v7 canMailboxBeDeleted:deletedCopy];
   }
 
   return v5;
@@ -3188,13 +3188,13 @@ LABEL_26:
 
 - (id)serverPathPrefix
 {
-  v3 = [(IMAP_Account *)self serverPathPrefixAccountValue];
-  if (!v3)
+  serverPathPrefixAccountValue = [(IMAP_Account *)self serverPathPrefixAccountValue];
+  if (!serverPathPrefixAccountValue)
   {
-    v3 = self->_serverNamespace;
+    serverPathPrefixAccountValue = self->_serverNamespace;
   }
 
-  return v3;
+  return serverPathPrefixAccountValue;
 }
 
 - (id)serverPathPrefixAccountValue
@@ -3215,21 +3215,21 @@ LABEL_26:
   return v3;
 }
 
-- (void)setServerPathPrefix:(id)a3 shouldSync:(BOOL)a4
+- (void)setServerPathPrefix:(id)prefix shouldSync:(BOOL)sync
 {
-  v4 = a4;
-  v14 = a3;
-  v6 = [(IMAP_Account *)self serverPathPrefixAccountValue];
-  v7 = v14;
-  if (!v14)
+  syncCopy = sync;
+  prefixCopy = prefix;
+  serverPathPrefixAccountValue = [(IMAP_Account *)self serverPathPrefixAccountValue];
+  v7 = prefixCopy;
+  if (!prefixCopy)
   {
     v7 = &stru_288159858;
   }
 
   v15 = v7;
-  if (v6)
+  if (serverPathPrefixAccountValue)
   {
-    v8 = v6;
+    v8 = serverPathPrefixAccountValue;
   }
 
   else
@@ -3237,10 +3237,10 @@ LABEL_26:
     v8 = &stru_288159858;
   }
 
-  v10 = [(IMAP_Account *)self separatorChar];
-  if (v10)
+  separatorChar = [(IMAP_Account *)self separatorChar];
+  if (separatorChar)
   {
-    v9 = [v15 rangeOfString:v10 options:12];
+    v9 = [v15 rangeOfString:separatorChar options:12];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = [v15 substringToIndex:v9];
@@ -3252,8 +3252,8 @@ LABEL_26:
   v12 = [v15 length];
   if (v12 != -[__CFString length](v8, "length") || ([v15 isEqual:v8] & 1) == 0)
   {
-    v13 = [(MailAccount *)self allMailboxUids];
-    [v13 makeObjectsPerformSelector:sel_URLString];
+    allMailboxUids = [(MailAccount *)self allMailboxUids];
+    [allMailboxUids makeObjectsPerformSelector:sel_URLString];
 
     _MFLockGlobalLock();
     if (v15 && [v15 length])
@@ -3267,7 +3267,7 @@ LABEL_26:
     }
 
     _MFUnlockGlobalLock();
-    if (v4)
+    if (syncCopy)
     {
       [(IMAP_Account *)self releaseAllConnections];
       [(IMAP_Account *)self nowWouldBeAGoodTimeToStartBackgroundSynchronization];
@@ -3277,27 +3277,27 @@ LABEL_26:
 
 - (id)_fileSystemServerPathPrefix
 {
-  v3 = [(IMAP_Account *)self serverPathPrefix];
-  v4 = [(IMAP_Account *)self separatorChar];
-  v5 = v4;
+  serverPathPrefix = [(IMAP_Account *)self serverPathPrefix];
+  separatorChar = [(IMAP_Account *)self separatorChar];
+  v5 = separatorChar;
   v6 = 0;
-  if (v3 && v4)
+  if (serverPathPrefix && separatorChar)
   {
-    v8 = [v3 rangeOfString:v4 options:8];
+    v8 = [serverPathPrefix rangeOfString:separatorChar options:8];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      if ([v3 length] <= (v8 + v7))
+      if ([serverPathPrefix length] <= (v8 + v7))
       {
         v6 = 0;
         goto LABEL_11;
       }
 
-      v9 = [v3 substringFromIndex:?];
+      v9 = [serverPathPrefix substringFromIndex:?];
 
-      v3 = v9;
+      serverPathPrefix = v9;
     }
 
-    v10 = [v3 componentsSeparatedByString:v5];
+    v10 = [serverPathPrefix componentsSeparatedByString:v5];
     v11 = [v10 mutableCopy];
 
     v12 = [v11 count];
@@ -3321,11 +3321,11 @@ LABEL_11:
 
 - (id)_mailboxPathPrefix
 {
-  v2 = [(IMAP_Account *)self _fileSystemServerPathPrefix];
-  v3 = v2;
-  if (v2)
+  _fileSystemServerPathPrefix = [(IMAP_Account *)self _fileSystemServerPathPrefix];
+  v3 = _fileSystemServerPathPrefix;
+  if (_fileSystemServerPathPrefix)
   {
-    v4 = v2;
+    v4 = _fileSystemServerPathPrefix;
   }
 
   else
@@ -3403,61 +3403,61 @@ LABEL_11:
 
 - (id)offlineCacheDirectoryPath
 {
-  v2 = [(MailAccount *)self path];
-  v3 = [v2 stringByAppendingPathComponent:@".OfflineCache"];
+  path = [(MailAccount *)self path];
+  v3 = [path stringByAppendingPathComponent:@".OfflineCache"];
 
   return v3;
 }
 
 - (BOOL)hasPendingOfflineOperations
 {
-  v2 = [(IMAP_Account *)self offlineCache];
-  v3 = [v2 hasPendingOfflineOperations];
+  offlineCache = [(IMAP_Account *)self offlineCache];
+  hasPendingOfflineOperations = [offlineCache hasPendingOfflineOperations];
 
-  return v3;
+  return hasPendingOfflineOperations;
 }
 
-- (id)_infoForMatchingURL:(id)a3
+- (id)_infoForMatchingURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [v4 path];
-  [v5 setObject:self forKey:@"Account"];
-  if (v6)
+  lCopy = l;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  path = [lCopy path];
+  [dictionary setObject:self forKey:@"Account"];
+  if (path)
   {
-    v7 = [(IMAP_Account *)self separatorChar];
-    v9 = [v6 rangeOfString:@"/" options:8];
+    separatorChar = [(IMAP_Account *)self separatorChar];
+    v9 = [path rangeOfString:@"/" options:8];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [v6 substringWithRange:{v9 + v8, objc_msgSend(v6, "length") - (v9 + v8)}];
+      v10 = [path substringWithRange:{v9 + v8, objc_msgSend(path, "length") - (v9 + v8)}];
 
-      v6 = v10;
+      path = v10;
     }
 
-    if (v7)
+    if (separatorChar)
     {
-      v12 = [v6 rangeOfString:v7 options:8];
+      v12 = [path rangeOfString:separatorChar options:8];
       if (v12 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v13 = [v6 substringWithRange:{v12 + v11, objc_msgSend(v6, "length") - (v12 + v11)}];
+        v13 = [path substringWithRange:{v12 + v11, objc_msgSend(path, "length") - (v12 + v11)}];
 
-        v6 = v13;
+        path = v13;
       }
     }
 
-    if (([v6 isEqualToString:&stru_288159858] & 1) == 0)
+    if (([path isEqualToString:&stru_288159858] & 1) == 0)
     {
-      [v5 setObject:v6 forKey:@"RelativePath"];
+      [dictionary setObject:path forKey:@"RelativePath"];
     }
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (id)flagChangesForMailboxPath:(id)a3 UID:(unsigned int)a4 connectTime:(double)a5
+- (id)flagChangesForMailboxPath:(id)path UID:(unsigned int)d connectTime:(double)time
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  pathCopy = path;
   [(NSRecursiveLock *)self->_flagChangesLock lock];
   v32 = 0u;
   v33 = 0u;
@@ -3465,7 +3465,7 @@ LABEL_11:
   v31 = 0u;
   v9 = self->_recentFlagChanges;
   v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v30 objects:v40 count:16];
-  v29 = self;
+  selfCopy = self;
   v11 = 0;
   if (v10)
   {
@@ -3481,19 +3481,19 @@ LABEL_11:
         }
 
         v14 = *(*(&v30 + 1) + 8 * v13);
-        if ([v14 uid] == a4 && objc_msgSend(v14, "connectionTag") == -1)
+        if ([v14 uid] == d && objc_msgSend(v14, "connectionTag") == -1)
         {
           [v14 commitTime];
-          if (v15 == 0.0 || ([v14 commitTime], v16 > a5))
+          if (v15 == 0.0 || ([v14 commitTime], v16 > time))
           {
-            v17 = [v14 path];
-            v18 = [v17 isEqualToString:v8];
+            path = [v14 path];
+            v18 = [path isEqualToString:pathCopy];
 
             if (v18)
               v20 = {;
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
               {
-                mambaID = v29->super.super.mambaID;
+                mambaID = selfCopy->super.super.mambaID;
                 *buf = 136315650;
                 v35 = mambaID;
                 v36 = 2080;
@@ -3503,15 +3503,15 @@ LABEL_11:
                 _os_log_impl(&dword_2720B1000, v20, OS_LOG_TYPE_DEFAULT, "#I %s%s#IMAPFlagChanges using changes from %@", buf, 0x20u);
               }
 
-              v22 = [v14 changes];
+              changes = [v14 changes];
               if (v11)
               {
-                [v11 addEntriesFromDictionary:v22];
+                [v11 addEntriesFromDictionary:changes];
               }
 
               else
               {
-                v11 = [v22 mutableCopy];
+                v11 = [changes mutableCopy];
               }
             }
           }
@@ -3528,12 +3528,12 @@ LABEL_11:
     while (v23);
   }
 
-  v24 = [(NSRecursiveLock *)v29->_flagChangesLock unlock];
+  unlock = [(NSRecursiveLock *)selfCopy->_flagChangesLock unlock];
   if (v11)
     v25 = {;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = v29->super.super.mambaID;
+      v26 = selfCopy->super.super.mambaID;
       *buf = 136315650;
       v35 = v26;
       v36 = 2080;
@@ -3549,11 +3549,11 @@ LABEL_11:
   return v11;
 }
 
-- (void)removeFlagChanges:(id)a3 forMessages:(id)a4
+- (void)removeFlagChanges:(id)changes forMessages:(id)messages
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v21 = a4;
+  changesCopy = changes;
+  messagesCopy = messages;
   [(NSRecursiveLock *)self->_flagChangesLock lock];
   v7 = [(NSMutableArray *)self->_recentFlagChanges count];
   while (v7)
@@ -3563,7 +3563,7 @@ LABEL_11:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = v21;
+    v9 = messagesCopy;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v32 count:16];
     if (v10)
     {
@@ -3581,8 +3581,8 @@ LABEL_11:
           v14 = [v8 uid];
           if (v14 == [v13 uid])
           {
-            v15 = [v8 changes];
-            v16 = [v15 isEqual:v6];
+            changes = [v8 changes];
+            v16 = [changes isEqual:changesCopy];
 
             if (v16)
               v18 = {;
@@ -3622,7 +3622,7 @@ LABEL_15:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeFlagChangesCommittedBefore:(double)a3
+- (void)removeFlagChangesCommittedBefore:(double)before
 {
   v25 = *MEMORY[0x277D85DE8];
   [(NSRecursiveLock *)self->_flagChangesLock lock];
@@ -3638,8 +3638,8 @@ LABEL_15:
       [(NSMutableArray *)v8 commitTime];
       if (v9 != 0.0)
       {
-        v10 = [(NSMutableArray *)v8 commitTime];
-        if (v11 < a3)
+        commitTime = [(NSMutableArray *)v8 commitTime];
+        if (v11 < before)
           v12 = {;
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
@@ -3680,7 +3680,7 @@ LABEL_15:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCommitTime:(double)a3 forConnectionTag:(unsigned int)a4
+- (void)setCommitTime:(double)time forConnectionTag:(unsigned int)tag
 {
   v29 = *MEMORY[0x277D85DE8];
   [(NSRecursiveLock *)self->_flagChangesLock lock];
@@ -3703,8 +3703,8 @@ LABEL_15:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 connectionTag];
-        if (v12 == a4)
+        connectionTag = [v11 connectionTag];
+        if (connectionTag == tag)
           v13 = {;
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
@@ -3714,13 +3714,13 @@ LABEL_15:
             v22 = 2080;
             v23 = " ";
             v24 = 1024;
-            v25 = a3;
+            timeCopy = time;
             v26 = 2112;
             v27 = v11;
             _os_log_impl(&dword_2720B1000, v13, OS_LOG_TYPE_DEFAULT, "#I %s%s#IMAPFlagChanges setting commit time %d for change %@", buf, 0x26u);
           }
 
-          [v11 setCommitTime:a3];
+          [v11 setCommitTime:time];
         }
       }
 
@@ -3734,19 +3734,19 @@ LABEL_15:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLibrary:(id)a3
+- (void)setLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  v6 = v5;
+  libraryCopy = library;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v6 = defaultCenter;
   if (self->super._library)
   {
-    [v5 removeObserver:self name:0 object:?];
+    [defaultCenter removeObserver:self name:0 object:?];
   }
 
   v7.receiver = self;
   v7.super_class = IMAP_Account;
-  [(MailAccount *)&v7 setLibrary:v4];
+  [(MailAccount *)&v7 setLibrary:libraryCopy];
   if (self->super._library)
   {
     [v6 addObserver:self selector:sel_messagesAdded_ name:@"MailMessageStoreMessagesAdded" object:?];

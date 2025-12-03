@@ -1,20 +1,20 @@
 @interface TSCHPresetImagerBubble
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8;
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache;
 @end
 
 @implementation TSCHPresetImagerBubble
 
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v90[10] = *MEMORY[0x277D85DE8];
-  v13 = a6;
+  presetCopy = preset;
   v78 = 0;
   v79 = &v78;
   v80 = 0x2020000000;
   v81 = 1;
-  v17 = objc_msgSend_seriesStyles(v13, v14, COERCE_DOUBLE(0x2020000000), v15, v16);
+  v17 = objc_msgSend_seriesStyles(presetCopy, v14, COERCE_DOUBLE(0x2020000000), v15, v16);
   v22 = objc_msgSend_objectAtIndexedSubscript_(v17, v18, v19, v20, v21, 0);
   if (objc_msgSend_count(v17, v23, v24, v25, v26) < 2)
   {
@@ -74,13 +74,13 @@
   v86[1] = v59;
   v87 = vmulq_n_f64(xmmword_2764D6F40, v59);
   v88 = v59 * 3.0;
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v62 = objc_msgSend_colorWithWhite_alpha_(MEMORY[0x277D81180], v60, 0.46, 1.0, v61);
   v67 = objc_msgSend_CGColor(v62, v63, v64, v65, v66);
-  CGContextSetStrokeColorWithColor(a3, v67);
-  CGContextSetLineCap(a3, kCGLineCapSquare);
-  CGContextSetLineJoin(a3, kCGLineJoinMiter);
-  CGContextSetLineWidth(a3, 1.0);
+  CGContextSetStrokeColorWithColor(context, v67);
+  CGContextSetLineCap(context, kCGLineCapSquare);
+  CGContextSetLineJoin(context, kCGLineJoinMiter);
+  CGContextSetLineWidth(context, 1.0);
   v91.origin.x = v41;
   v91.origin.y = v43;
   v91.size.width = v45;
@@ -129,26 +129,26 @@
   MaxY = CGRectGetMaxY(v98);
   v85[0] = v74;
   v85[1] = MaxY;
-  sub_27628C654(a3, &points.x, v83, 2, 1.0);
-  sub_27628C654(a3, v84, v85, 2, 1.0);
-  CGContextStrokeLineSegments(a3, &points, 4uLL);
-  CGContextRestoreGState(a3);
+  sub_27628C654(context, &points.x, v83, 2, 1.0);
+  sub_27628C654(context, v84, v85, 2, 1.0);
+  CGContextStrokeLineSegments(context, &points, 4uLL);
+  CGContextRestoreGState(context);
 
   v77[0] = MEMORY[0x277D85DD0];
   v77[1] = 3221225472;
   v77[2] = sub_27631BF84;
   v77[3] = &unk_27A6B99F0;
   v77[6] = 5;
-  v77[7] = a3;
+  v77[7] = context;
   v77[4] = self;
   v77[5] = &v78;
   v77[8] = v86;
   v76 = MEMORY[0x277C98B30](v77);
   (v76)[2](v76, v22, v90, 5);
   (v76)[2](v76, v36, v89, 5);
-  if (a8)
+  if (cache)
   {
-    *a8 = *(v79 + 24);
+    *cache = *(v79 + 24);
   }
 
   _Block_object_dispose(&v78, 8);

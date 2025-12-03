@@ -1,23 +1,23 @@
 @interface PKImageSequenceView
-- (id)initWitImages:(id)a3;
-- (void)_finishedTransitionToImage:(id)a3;
-- (void)_transitionToImage:(id)a3 immedately:(BOOL)a4 fast:(BOOL)a5;
+- (id)initWitImages:(id)images;
+- (void)_finishedTransitionToImage:(id)image;
+- (void)_transitionToImage:(id)image immedately:(BOOL)immedately fast:(BOOL)fast;
 - (void)layoutSubviews;
 - (void)startAnimation;
-- (void)updateImages:(id)a3;
+- (void)updateImages:(id)images;
 @end
 
 @implementation PKImageSequenceView
 
-- (id)initWitImages:(id)a3
+- (id)initWitImages:(id)images
 {
-  v4 = a3;
+  imagesCopy = images;
   v16.receiver = self;
   v16.super_class = PKImageSequenceView;
   v5 = [(PKImageSequenceView *)&v16 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [imagesCopy copy];
     images = v5->_images;
     v5->_images = v6;
 
@@ -26,8 +26,8 @@
     v5->_imageView = v8;
 
     v10 = v5->_imageView;
-    v11 = [(NSArray *)v5->_images firstObject];
-    [(UIImageView *)v10 setImage:v11];
+    firstObject = [(NSArray *)v5->_images firstObject];
+    [(UIImageView *)v10 setImage:firstObject];
 
     [(UIImageView *)v5->_imageView setContentMode:1];
     [(UIImageView *)v5->_imageView setAccessibilityIgnoresInvertColors:1];
@@ -40,10 +40,10 @@
     [(UIImageView *)v5->_fadeInImageView setAccessibilityIgnoresInvertColors:1];
     [(UIImageView *)v5->_fadeInImageView setAlpha:0.0];
     [(PKImageSequenceView *)v5 addSubview:v5->_fadeInImageView];
-    if (![v4 count])
+    if (![imagesCopy count])
     {
-      v14 = [MEMORY[0x1E69DC888] lightGrayColor];
-      [(PKImageSequenceView *)v5 setBackgroundColor:v14];
+      lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+      [(PKImageSequenceView *)v5 setBackgroundColor:lightGrayColor];
     }
   }
 
@@ -63,11 +63,11 @@
   [(UIImageView *)fadeInImageView setFrame:?];
 }
 
-- (void)updateImages:(id)a3
+- (void)updateImages:(id)images
 {
-  if (a3)
+  if (images)
   {
-    v4 = [a3 copy];
+    v4 = [images copy];
     images = self->_images;
     self->_images = v4;
 
@@ -86,12 +86,12 @@
       {
         self->_isAnimating = 1;
         v4 = [(NSArray *)self->_images count];
-        v5 = [(NSArray *)self->_images firstObject];
-        v12 = v5;
+        firstObject = [(NSArray *)self->_images firstObject];
+        v12 = firstObject;
         if (v4 < 2)
         {
-          v11 = v5;
-          v8 = self;
+          v11 = firstObject;
+          selfCopy2 = self;
           v7 = v11;
           v9 = 1;
           v10 = 1;
@@ -99,30 +99,30 @@
 
         else
         {
-          v6 = [(UIImageView *)self->_imageView image];
-          self->_activeImageIndex = v12 == v6;
+          image = [(UIImageView *)self->_imageView image];
+          self->_activeImageIndex = v12 == image;
 
           v7 = [(NSArray *)self->_images objectAtIndex:self->_activeImageIndex];
-          v8 = self;
+          selfCopy2 = self;
           v12 = v7;
           v9 = 0;
           v10 = 0;
         }
 
-        [(PKImageSequenceView *)v8 _transitionToImage:v7 immedately:v9 fast:v10];
+        [(PKImageSequenceView *)selfCopy2 _transitionToImage:v7 immedately:v9 fast:v10];
       }
     }
   }
 }
 
-- (void)_transitionToImage:(id)a3 immedately:(BOOL)a4 fast:(BOOL)a5
+- (void)_transitionToImage:(id)image immedately:(BOOL)immedately fast:(BOOL)fast
 {
-  v6 = a4;
-  v8 = a3;
+  immedatelyCopy = immedately;
+  imageCopy = image;
   objc_initWeak(&location, self);
   animationContext = self->_animationContext;
   [(UIImageView *)self->_fadeInImageView setAlpha:0.0];
-  [(UIImageView *)self->_fadeInImageView setImage:v8];
+  [(UIImageView *)self->_fadeInImageView setImage:imageCopy];
   [(PKImageSequenceView *)self bringSubviewToFront:self->_fadeInImageView];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -130,13 +130,13 @@
   aBlock[3] = &unk_1E801ED30;
   aBlock[4] = self;
   v18[1] = animationContext;
-  v19 = a5;
+  fastCopy = fast;
   objc_copyWeak(v18, &location);
-  v10 = v8;
+  v10 = imageCopy;
   v17 = v10;
   v11 = _Block_copy(aBlock);
   v12 = v11;
-  if (v6)
+  if (immedatelyCopy)
   {
     (*(v11 + 2))(v11);
   }
@@ -210,7 +210,7 @@ void __58__PKImageSequenceView__transitionToImage_immedately_fast___block_invoke
   }
 }
 
-- (void)_finishedTransitionToImage:(id)a3
+- (void)_finishedTransitionToImage:(id)image
 {
   fadeInImageView = self->_fadeInImageView;
   v7 = fadeInImageView;

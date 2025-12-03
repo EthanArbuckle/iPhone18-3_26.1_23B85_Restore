@@ -1,5 +1,5 @@
 @interface VSWebServerConnection
-- (VSWebServerConnection)initWithConnection:(_CFHTTPServerConnection *)a3;
+- (VSWebServerConnection)initWithConnection:(_CFHTTPServerConnection *)connection;
 - (VSWebServerConnectionDelegate)delegate;
 - (id)server;
 - (void)invalidate;
@@ -9,9 +9,9 @@
 
 @implementation VSWebServerConnection
 
-- (VSWebServerConnection)initWithConnection:(_CFHTTPServerConnection *)a3
+- (VSWebServerConnection)initWithConnection:(_CFHTTPServerConnection *)connection
 {
-  if (!a3)
+  if (!connection)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The connection parameter must not be nil."];
   }
@@ -22,7 +22,7 @@
   v6 = v5;
   if (v5)
   {
-    v5->_connection = a3;
+    v5->_connection = connection;
     _CFHTTPServerConnectionSetClient();
   }
 
@@ -60,11 +60,11 @@
 
 - (void)resume
 {
-  v3 = [(VSWebServerConnection *)self privateQueue];
-  if (v3)
+  privateQueue = [(VSWebServerConnection *)self privateQueue];
+  if (privateQueue)
   {
-    v4 = v3;
-    dispatch_resume(v3);
+    v4 = privateQueue;
+    dispatch_resume(privateQueue);
   }
 
   else
@@ -78,15 +78,15 @@
 
 - (void)suspend
 {
-  v2 = [(VSWebServerConnection *)self privateQueue];
-  dispatch_suspend(v2);
+  privateQueue = [(VSWebServerConnection *)self privateQueue];
+  dispatch_suspend(privateQueue);
 }
 
 - (void)invalidate
 {
-  v2 = [(VSWebServerConnection *)self connection];
+  connection = [(VSWebServerConnection *)self connection];
 
-  MEMORY[0x28210D0B0](v2);
+  MEMORY[0x28210D0B0](connection);
 }
 
 - (VSWebServerConnectionDelegate)delegate

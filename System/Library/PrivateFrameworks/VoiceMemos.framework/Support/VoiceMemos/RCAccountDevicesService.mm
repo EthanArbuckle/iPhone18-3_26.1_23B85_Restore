@@ -1,9 +1,9 @@
 @interface RCAccountDevicesService
-- (BOOL)_deviceRecordIsCompatible:(id)a3;
-- (BOOL)_recordsContainIncompatibleDevice:(id)a3;
-- (BOOL)_versionNumber:(id)a3 isGreaterThanOrEqualTo:(id)a4;
+- (BOOL)_deviceRecordIsCompatible:(id)compatible;
+- (BOOL)_recordsContainIncompatibleDevice:(id)device;
+- (BOOL)_versionNumber:(id)number isGreaterThanOrEqualTo:(id)to;
 - (RCAccountDevicesService)init;
-- (void)fetchDeviceCompatibility:(id)a3;
+- (void)fetchDeviceCompatibility:(id)compatibility;
 @end
 
 @implementation RCAccountDevicesService
@@ -29,28 +29,28 @@
   return v2;
 }
 
-- (void)fetchDeviceCompatibility:(id)a3
+- (void)fetchDeviceCompatibility:(id)compatibility
 {
-  v4 = a3;
+  compatibilityCopy = compatibility;
   v5 = objc_alloc_init(RCCloudKitService);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100022260;
   v7[3] = &unk_1000564C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = compatibilityCopy;
+  v6 = compatibilityCopy;
   [(RCCloudKitService *)v5 fetchDeviceRecords:v7];
 }
 
-- (BOOL)_recordsContainIncompatibleDevice:(id)a3
+- (BOOL)_recordsContainIncompatibleDevice:(id)device
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  deviceCopy = device;
+  v5 = [deviceCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -61,7 +61,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(deviceCopy);
         }
 
         if (![(RCAccountDevicesService *)self _deviceRecordIsCompatible:*(*(&v11 + 1) + 8 * i), v11])
@@ -71,7 +71,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [deviceCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -87,11 +87,11 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)_deviceRecordIsCompatible:(id)a3
+- (BOOL)_deviceRecordIsCompatible:(id)compatible
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"DeviceOSType"];
-  v6 = [v4 objectForKeyedSubscript:@"DeviceOSVersionNumber"];
+  compatibleCopy = compatible;
+  v5 = [compatibleCopy objectForKeyedSubscript:@"DeviceOSType"];
+  v6 = [compatibleCopy objectForKeyedSubscript:@"DeviceOSVersionNumber"];
 
   if (v5)
   {
@@ -110,8 +110,8 @@ LABEL_11:
 
   else
   {
-    v9 = [(RCAccountDevicesService *)self deviceTypesToMinimumVersions];
-    v10 = [v9 objectForKeyedSubscript:v5];
+    deviceTypesToMinimumVersions = [(RCAccountDevicesService *)self deviceTypesToMinimumVersions];
+    v10 = [deviceTypesToMinimumVersions objectForKeyedSubscript:v5];
 
     if (v10)
     {
@@ -127,9 +127,9 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)_versionNumber:(id)a3 isGreaterThanOrEqualTo:(id)a4
+- (BOOL)_versionNumber:(id)number isGreaterThanOrEqualTo:(id)to
 {
-  v4 = a4;
+  toCopy = to;
   _LSVersionNumberMakeWithString();
   _LSVersionNumberMakeWithString();
 

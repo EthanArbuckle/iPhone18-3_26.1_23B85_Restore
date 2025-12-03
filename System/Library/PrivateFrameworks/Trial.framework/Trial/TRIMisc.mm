@@ -1,8 +1,8 @@
 @interface TRIMisc
-+ (BOOL)convertFromString:(id)a3 usingBase:(int)a4 toI64:(int64_t *)a5;
-+ (BOOL)convertFromString:(id)a3 usingBase:(int)a4 toU64:(unint64_t *)a5;
-+ (id)bestEffortSymbolicateAddress:(void *)a3;
-+ (unint64_t)roundToOneSignificantDigitWithU64:(unint64_t)a3;
++ (BOOL)convertFromString:(id)string usingBase:(int)base toI64:(int64_t *)i64;
++ (BOOL)convertFromString:(id)string usingBase:(int)base toU64:(unint64_t *)u64;
++ (id)bestEffortSymbolicateAddress:(void *)address;
++ (unint64_t)roundToOneSignificantDigitWithU64:(unint64_t)u64;
 + (unint64_t)unsafeFirstAuthenticationState;
 @end
 
@@ -22,26 +22,26 @@
   }
 }
 
-+ (BOOL)convertFromString:(id)a3 usingBase:(int)a4 toU64:(unint64_t *)a5
++ (BOOL)convertFromString:(id)string usingBase:(int)base toU64:(unint64_t *)u64
 {
-  v9 = a3;
+  stringCopy = string;
   v10 = objc_autoreleasePoolPush();
-  if (!v9)
+  if (!stringCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"TRIMisc.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"string"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIMisc.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"string"}];
   }
 
-  v11 = [v9 triTrim];
+  triTrim = [stringCopy triTrim];
 
-  v12 = [v11 UTF8String];
-  if (v12)
+  uTF8String = [triTrim UTF8String];
+  if (uTF8String)
   {
-    v13 = v12;
-    v14 = strlen(v12);
+    v13 = uTF8String;
+    v14 = strlen(uTF8String);
     *__error() = 0;
     __endptr = 0;
-    v15 = strtoull(v13, &__endptr, a4);
+    v15 = strtoull(v13, &__endptr, base);
     if (*__error())
     {
       v16 = 0;
@@ -53,9 +53,9 @@
     }
 
     v17 = v16;
-    if (a5 && v17)
+    if (u64 && v17)
     {
-      *a5 = v15;
+      *u64 = v15;
     }
   }
 
@@ -69,26 +69,26 @@
   return v17;
 }
 
-+ (BOOL)convertFromString:(id)a3 usingBase:(int)a4 toI64:(int64_t *)a5
++ (BOOL)convertFromString:(id)string usingBase:(int)base toI64:(int64_t *)i64
 {
-  v9 = a3;
+  stringCopy = string;
   v10 = objc_autoreleasePoolPush();
-  if (!v9)
+  if (!stringCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"TRIMisc.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"string"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIMisc.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"string"}];
   }
 
-  v11 = [v9 triTrim];
+  triTrim = [stringCopy triTrim];
 
-  v12 = [v11 UTF8String];
-  if (v12)
+  uTF8String = [triTrim UTF8String];
+  if (uTF8String)
   {
-    v13 = v12;
-    v14 = strlen(v12);
+    v13 = uTF8String;
+    v14 = strlen(uTF8String);
     *__error() = 0;
     __endptr = 0;
-    v15 = strtoll(v13, &__endptr, a4);
+    v15 = strtoll(v13, &__endptr, base);
     if (*__error())
     {
       v16 = 0;
@@ -100,9 +100,9 @@
     }
 
     v17 = v16;
-    if (a5 && v17)
+    if (i64 && v17)
     {
-      *a5 = v15;
+      *i64 = v15;
     }
   }
 
@@ -116,12 +116,12 @@
   return v17;
 }
 
-+ (unint64_t)roundToOneSignificantDigitWithU64:(unint64_t)a3
++ (unint64_t)roundToOneSignificantDigitWithU64:(unint64_t)u64
 {
-  result = a3;
-  if (a3 >= 0xA)
+  result = u64;
+  if (u64 >= 0xA)
   {
-    if (a3 < 0x64)
+    if (u64 < 0x64)
     {
       v6 = 10;
     }
@@ -135,9 +135,9 @@
         v4 *= 10;
       }
 
-      while (a3 / v4 > 0x63);
+      while (u64 / v4 > 0x63);
       v6 = 100 * v5;
-      LOBYTE(result) = a3 / v4;
+      LOBYTE(result) = u64 / v4;
     }
 
     if (result % 0xAu <= 4)
@@ -156,9 +156,9 @@
   return result;
 }
 
-+ (id)bestEffortSymbolicateAddress:(void *)a3
++ (id)bestEffortSymbolicateAddress:(void *)address
 {
-  v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%p", a3, a3];
+  address = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%p", address, address];
   v4 = backtrace_symbols(&v12, 1);
   if (v4)
   {
@@ -172,18 +172,18 @@
 
     else
     {
-      v8 = v3;
+      v8 = address;
     }
 
     v9 = v8;
 
     free(v5);
-    v3 = v9;
+    address = v9;
   }
 
-  v10 = v3;
+  v10 = address;
 
-  return v3;
+  return address;
 }
 
 @end

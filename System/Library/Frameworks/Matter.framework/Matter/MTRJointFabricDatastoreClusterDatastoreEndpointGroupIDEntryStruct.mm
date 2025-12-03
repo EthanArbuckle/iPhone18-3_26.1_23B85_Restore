@@ -1,6 +1,6 @@
 @interface MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct
 - (MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -31,20 +31,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct);
-  v5 = [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)self nodeID];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)v4 setNodeID:v5];
+  nodeID = [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)self nodeID];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)v4 setNodeID:nodeID];
 
-  v6 = [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)self endpointID];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)v4 setEndpointID:v6];
+  endpointID = [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)self endpointID];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)v4 setEndpointID:endpointID];
 
-  v7 = [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)self groupID];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)v4 setGroupID:v7];
+  groupID = [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)self groupID];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)v4 setGroupID:groupID];
 
-  v8 = [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)self statusEntry];
-  [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)v4 setStatusEntry:v8];
+  statusEntry = [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)self statusEntry];
+  [(MTRJointFabricDatastoreClusterDatastoreEndpointGroupIDEntryStruct *)v4 setStatusEntry:statusEntry];
 
   return v4;
 }

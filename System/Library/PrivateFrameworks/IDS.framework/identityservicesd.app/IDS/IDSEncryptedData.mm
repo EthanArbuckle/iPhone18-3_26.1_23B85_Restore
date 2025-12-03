@@ -1,5 +1,5 @@
 @interface IDSEncryptedData
-- (IDSEncryptedData)initWithData:(id)a3 encryptionType:(int64_t)a4 payloadMetadata:(id)a5;
+- (IDSEncryptedData)initWithData:(id)data encryptionType:(int64_t)type payloadMetadata:(id)metadata;
 - (id)description;
 @end
 
@@ -14,19 +14,19 @@
   return v5;
 }
 
-- (IDSEncryptedData)initWithData:(id)a3 encryptionType:(int64_t)a4 payloadMetadata:(id)a5
+- (IDSEncryptedData)initWithData:(id)data encryptionType:(int64_t)type payloadMetadata:(id)metadata
 {
-  v9 = a3;
-  v10 = a5;
+  dataCopy = data;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = IDSEncryptedData;
   v11 = [(IDSEncryptedData *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_data, a3);
-    v12->_encryptionType = a4;
-    objc_storeStrong(&v12->_payloadMetadata, a5);
+    objc_storeStrong(&v11->_data, data);
+    v12->_encryptionType = type;
+    objc_storeStrong(&v12->_payloadMetadata, metadata);
   }
 
   return v12;

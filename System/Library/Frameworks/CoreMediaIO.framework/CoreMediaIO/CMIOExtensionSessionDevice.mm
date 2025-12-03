@@ -1,33 +1,33 @@
 @interface CMIOExtensionSessionDevice
-+ (id)sessionDeviceWithPropertyStates:(id)a3 streamsStates:(id)a4 provider:(id)a5;
-- (CMIOExtensionSessionDevice)initWithPropertyStates:(id)a3 streamsStates:(id)a4 provider:(id)a5;
++ (id)sessionDeviceWithPropertyStates:(id)states streamsStates:(id)streamsStates provider:(id)provider;
+- (CMIOExtensionSessionDevice)initWithPropertyStates:(id)states streamsStates:(id)streamsStates provider:(id)provider;
 - (NSArray)streams;
 - (NSSet)availableProperties;
-- (id)cachedPropertyStateForProperty:(id)a3;
-- (id)cachedPropertyStatesForProperties:(id)a3;
+- (id)cachedPropertyStateForProperty:(id)property;
+- (id)cachedPropertyStatesForProperties:(id)properties;
 - (id)description;
 - (void)completeTransaction;
 - (void)dealloc;
-- (void)propertyStatesForProperties:(id)availableProperties reply:(id)a4;
-- (void)setPropertyValues:(id)a3 reply:(id)a4;
+- (void)propertyStatesForProperties:(id)availableProperties reply:(id)reply;
+- (void)setPropertyValues:(id)values reply:(id)reply;
 - (void)unregister;
-- (void)updatePropertyStates:(id)a3;
-- (void)updateStreamIDs:(id)a3;
+- (void)updatePropertyStates:(id)states;
+- (void)updateStreamIDs:(id)ds;
 @end
 
 @implementation CMIOExtensionSessionDevice
 
-+ (id)sessionDeviceWithPropertyStates:(id)a3 streamsStates:(id)a4 provider:(id)a5
++ (id)sessionDeviceWithPropertyStates:(id)states streamsStates:(id)streamsStates provider:(id)provider
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithPropertyStates:a3 streamsStates:a4 provider:a5];
+  v5 = [objc_alloc(objc_opt_class()) initWithPropertyStates:states streamsStates:streamsStates provider:provider];
 
   return v5;
 }
 
-- (CMIOExtensionSessionDevice)initWithPropertyStates:(id)a3 streamsStates:(id)a4 provider:(id)a5
+- (CMIOExtensionSessionDevice)initWithPropertyStates:(id)states streamsStates:(id)streamsStates provider:(id)provider
 {
   v64 = *MEMORY[0x277D85DE8];
-  if (!a3 || !a4 || !a5)
+  if (!states || !streamsStates || !provider)
   {
 
     goto LABEL_9;
@@ -52,19 +52,19 @@ LABEL_10:
   v53[2] = __76__CMIOExtensionSessionDevice_initWithPropertyStates_streamsStates_provider___block_invoke;
   v53[3] = &unk_27885C010;
   v53[4] = v10;
-  v9->_availableProperties = [a3 keysOfEntriesPassingTest:v53];
-  v9->_localizedName = [objc_msgSend(a3 objectForKeyedSubscript:{0x284358D98), "value"}];
-  v11 = [a3 objectForKeyedSubscript:0x284358DB8];
+  v9->_availableProperties = [states keysOfEntriesPassingTest:v53];
+  v9->_localizedName = [objc_msgSend(states objectForKeyedSubscript:{0x284358D98), "value"}];
+  v11 = [states objectForKeyedSubscript:0x284358DB8];
   v9->_deviceID = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:{objc_msgSend(v11, "value")}];
-  v9->_legacyDeviceID = [objc_msgSend(a3 objectForKeyedSubscript:{0x284358DD8), "value"}];
-  v9->_manufacturer = [objc_msgSend(a3 objectForKeyedSubscript:{@"4cc_lmak_glob_0000", "value"}];
-  v9->_modelID = [objc_msgSend(a3 objectForKeyedSubscript:{@"CMIOExtensionPropertyDeviceModel", "value"}];
-  v9->_runningSomewhere = [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{0x284358E18), "value"), "BOOLValue"}];
-  v9->_streamIDs = [objc_msgSend(a3 objectForKeyedSubscript:{0x284358DF8), "value"}];
+  v9->_legacyDeviceID = [objc_msgSend(states objectForKeyedSubscript:{0x284358DD8), "value"}];
+  v9->_manufacturer = [objc_msgSend(states objectForKeyedSubscript:{@"4cc_lmak_glob_0000", "value"}];
+  v9->_modelID = [objc_msgSend(states objectForKeyedSubscript:{@"CMIOExtensionPropertyDeviceModel", "value"}];
+  v9->_runningSomewhere = [objc_msgSend(objc_msgSend(states objectForKeyedSubscript:{0x284358E18), "value"), "BOOLValue"}];
+  v9->_streamIDs = [objc_msgSend(states objectForKeyedSubscript:{0x284358DF8), "value"}];
   p_streamIDs = &v9->_streamIDs;
-  v9->_specialDeviceType = [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{@"CMIOExtensionPropertyDeviceSpecialDeviceType", "value"), "intValue"}];
-  v9->_deviceControlPID = [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{0x284358E58), "value"), "intValue"}];
-  v13 = [objc_msgSend(a3 objectForKeyedSubscript:{@"4cc_cfds_glob_0000", "value"}];
+  v9->_specialDeviceType = [objc_msgSend(objc_msgSend(states objectForKeyedSubscript:{@"CMIOExtensionPropertyDeviceSpecialDeviceType", "value"), "intValue"}];
+  v9->_deviceControlPID = [objc_msgSend(objc_msgSend(states objectForKeyedSubscript:{0x284358E58), "value"), "intValue"}];
+  v13 = [objc_msgSend(states objectForKeyedSubscript:{@"4cc_cfds_glob_0000", "value"}];
   if (v13)
   {
     objc_opt_class();
@@ -98,8 +98,8 @@ LABEL_10:
   }
 
 LABEL_18:
-  objc_storeWeak(&v9->_provider, a5);
-  v9->_propertyStates = [a3 mutableCopy];
+  objc_storeWeak(&v9->_provider, provider);
+  v9->_propertyStates = [states mutableCopy];
   v9->_streams = objc_opt_new();
   v9->_description = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"<CMIOExtensionSessionDevice: ID %@, legacy: %@>", v9->_deviceID, v9->_legacyDeviceID];
   if (v13)
@@ -122,7 +122,7 @@ LABEL_18:
     while (1)
     {
       v21 = v20;
-      v22 = [a4 objectForKeyedSubscript:{objc_msgSend(*p_streamIDs, "objectAtIndexedSubscript:", v17)}];
+      v22 = [streamsStates objectForKeyedSubscript:{objc_msgSend(*p_streamIDs, "objectAtIndexedSubscript:", v17)}];
       if (!v22)
       {
         v26 = CMIOLog();
@@ -185,7 +185,7 @@ LABEL_18:
 LABEL_36:
             if (!v19)
             {
-              v19 = [CMIOExtensionSessionStream sessionStreamWithPropertyStates:v23 provider:a5];
+              v19 = [CMIOExtensionSessionStream sessionStreamWithPropertyStates:v23 provider:provider];
             }
 
             goto LABEL_38;
@@ -194,7 +194,7 @@ LABEL_36:
 
         if (!v18)
         {
-          v18 = [CMIOExtensionSessionStream sessionStreamWithPropertyStates:v23 provider:a5];
+          v18 = [CMIOExtensionSessionStream sessionStreamWithPropertyStates:v23 provider:provider];
         }
       }
 
@@ -208,7 +208,7 @@ LABEL_38:
           v29 = v18;
           v14 = v9;
           v30 = [CMIOExtensionSessionDualStream sessionDualStreamWithPrimaryStream:v19 secondaryStream:v29];
-          if ([a5 registerStream:v30 streamID:{-[NSUUID UUIDString](-[CMIOExtensionSessionStream streamID](v19, "streamID"), "UUIDString")}] && objc_msgSend(a5, "registerStream:streamID:", v30, -[NSUUID UUIDString](-[CMIOExtensionSessionStream streamID](v29, "streamID"), "UUIDString")))
+          if ([provider registerStream:v30 streamID:{-[NSUUID UUIDString](-[CMIOExtensionSessionStream streamID](v19, "streamID"), "UUIDString")}] && objc_msgSend(provider, "registerStream:streamID:", v30, -[NSUUID UUIDString](-[CMIOExtensionSessionStream streamID](v29, "streamID"), "UUIDString")))
           {
             os_unfair_lock_lock(lock);
             [(NSMutableArray *)v9->_streams addObject:v30];
@@ -254,11 +254,11 @@ LABEL_9:
         }
 
         v36 = *(*(&v49 + 1) + 8 * i);
-        v37 = [a4 objectForKeyedSubscript:v36];
+        v37 = [streamsStates objectForKeyedSubscript:v36];
         if (v37)
         {
-          v38 = [CMIOExtensionSessionStream sessionStreamWithPropertyStates:v37 provider:a5];
-          if ([a5 registerStream:v38 streamID:v36])
+          v38 = [CMIOExtensionSessionStream sessionStreamWithPropertyStates:v37 provider:provider];
+          if ([provider registerStream:v38 streamID:v36])
           {
             os_unfair_lock_lock(lock);
             [(NSMutableArray *)v14->_streams addObject:v38];
@@ -351,7 +351,7 @@ LABEL_11:
         v11 = 2080;
         v12 = "[CMIOExtensionSessionDevice dealloc]";
         v13 = 2112;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v4, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
@@ -370,7 +370,7 @@ LABEL_11:
   return v2;
 }
 
-- (void)updatePropertyStates:(id)a3
+- (void)updatePropertyStates:(id)states
 {
   v20 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -393,18 +393,18 @@ LABEL_11:
         v16 = 2080;
         v17 = "[CMIOExtensionSessionDevice updatePropertyStates:]";
         v18 = 2112;
-        v19 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v12, 0x26u);
       }
     }
   }
 
-  if ([a3 count])
+  if ([states count])
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableDictionary *)self->_propertyStates addEntriesFromDictionary:a3];
+    [(NSMutableDictionary *)self->_propertyStates addEntriesFromDictionary:states];
     os_unfair_lock_unlock(&self->_lock);
-    v7 = [a3 objectForKeyedSubscript:0x284358E18];
+    v7 = [states objectForKeyedSubscript:0x284358E18];
     if (v7)
     {
       v8 = [objc_msgSend(v7 "value")];
@@ -412,7 +412,7 @@ LABEL_11:
       [objc_loadWeak(&self->_delegate) device:self runningSomewhereChanged:v8];
     }
 
-    v9 = [a3 objectForKeyedSubscript:0x284358E58];
+    v9 = [states objectForKeyedSubscript:0x284358E58];
     if (v9)
     {
       v10 = [objc_msgSend(v9 "value")];
@@ -420,13 +420,13 @@ LABEL_11:
       [objc_loadWeak(&self->_delegate) device:self deviceControlPIDChanged:v10];
     }
 
-    [objc_loadWeak(&self->_delegate) device:self propertiesChanged:a3];
+    [objc_loadWeak(&self->_delegate) device:self propertiesChanged:states];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateStreamIDs:(id)a3
+- (void)updateStreamIDs:(id)ds
 {
   v53 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -449,20 +449,20 @@ LABEL_11:
         v47 = 2080;
         v48 = "[CMIOExtensionSessionDevice updateStreamIDs:]";
         v49 = 2112;
-        v50 = self;
+        selfCopy = self;
         v51 = 2112;
-        v52 = a3;
+        dsCopy = ds;
         _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, streamIDs %@", buf, 0x30u);
       }
     }
   }
 
-  if (a3)
+  if (ds)
   {
-    v7 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:a3];
+    v7 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:ds];
     v8 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:self->_streamIDs];
     streamIDs = self->_streamIDs;
-    self->_streamIDs = a3;
+    self->_streamIDs = ds;
 
     v31 = v8;
     v10 = [v8 mutableCopy];
@@ -493,10 +493,10 @@ LABEL_11:
             os_unfair_lock_lock(&self->_lock);
             [(NSMutableArray *)self->_streams removeObject:v17];
             os_unfair_lock_unlock(&self->_lock);
-            v18 = [v17 delegate];
+            delegate = [v17 delegate];
             v13 = 1;
             [v17 setInvalidated:1];
-            [v18 streamHasBeenInvalidated:v17];
+            [delegate streamHasBeenInvalidated:v17];
           }
         }
 
@@ -535,7 +535,7 @@ LABEL_11:
           }
 
           v26 = *(*(&v33 + 1) + 8 * j);
-          v27 = [Weak hostContext];
+          hostContext = [Weak hostContext];
           v32[0] = MEMORY[0x277D85DD0];
           v32[1] = 3221225472;
           v32[2] = __46__CMIOExtensionSessionDevice_updateStreamIDs___block_invoke;
@@ -543,7 +543,7 @@ LABEL_11:
           v32[4] = Weak;
           v32[5] = v26;
           v32[6] = self;
-          [v27 streamPropertyStatesWithStreamID:v26 properties:0 reply:v32];
+          [hostContext streamPropertyStatesWithStreamID:v26 properties:0 reply:v32];
         }
 
         v23 = [v20 countByEnumeratingWithState:&v33 objects:v41 count:16];
@@ -603,8 +603,8 @@ void __46__CMIOExtensionSessionDevice_updateStreamIDs___block_invoke(uint64_t a1
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CMIOExtensionSessionDevice *)self streams];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  streams = [(CMIOExtensionSessionDevice *)self streams];
+  v4 = [(NSArray *)streams countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -616,14 +616,14 @@ void __46__CMIOExtensionSessionDevice_updateStreamIDs___block_invoke(uint64_t a1
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(streams);
         }
 
         [objc_loadWeak(&self->_provider) unregisterStreamID:{objc_msgSend(objc_msgSend(*(*(&v9 + 1) + 8 * v7++), "streamID"), "UUIDString")}];
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [(NSArray *)streams countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -648,15 +648,15 @@ void __46__CMIOExtensionSessionDevice_updateStreamIDs___block_invoke(uint64_t a1
   return v2;
 }
 
-- (id)cachedPropertyStateForProperty:(id)a3
+- (id)cachedPropertyStateForProperty:(id)property
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_propertyStates objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_propertyStates objectForKey:property];
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (id)cachedPropertyStatesForProperties:(id)a3
+- (id)cachedPropertyStatesForProperties:(id)properties
 {
   v30 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -679,20 +679,20 @@ void __46__CMIOExtensionSessionDevice_updateStreamIDs___block_invoke(uint64_t a1
         v26 = 2080;
         v27 = "[CMIOExtensionSessionDevice cachedPropertyStatesForProperties:]";
         v28 = 2112;
-        v29 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
   }
 
-  if (a3)
+  if (properties)
   {
     v7 = objc_opt_new();
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v8 = [properties countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -703,7 +703,7 @@ void __46__CMIOExtensionSessionDevice_updateStreamIDs___block_invoke(uint64_t a1
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(properties);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
@@ -716,7 +716,7 @@ void __46__CMIOExtensionSessionDevice_updateStreamIDs___block_invoke(uint64_t a1
           }
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [properties countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
@@ -736,7 +736,7 @@ void __46__CMIOExtensionSessionDevice_updateStreamIDs___block_invoke(uint64_t a1
   return v14;
 }
 
-- (void)propertyStatesForProperties:(id)availableProperties reply:(id)a4
+- (void)propertyStatesForProperties:(id)availableProperties reply:(id)reply
 {
   v25 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -759,29 +759,29 @@ void __46__CMIOExtensionSessionDevice_updateStreamIDs___block_invoke(uint64_t a1
         v21 = 2080;
         v22 = "[CMIOExtensionSessionDevice propertyStatesForProperties:reply:]";
         v23 = 2112;
-        v24 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
   }
 
-  v9 = [objc_loadWeak(&self->_provider) hostContext];
-  if (v9)
+  hostContext = [objc_loadWeak(&self->_provider) hostContext];
+  if (hostContext)
   {
-    v10 = v9;
+    v10 = hostContext;
     if (!availableProperties)
     {
       availableProperties = self->_availableProperties;
     }
 
-    v11 = [(NSUUID *)self->_deviceID UUIDString];
+    uUIDString = [(NSUUID *)self->_deviceID UUIDString];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __64__CMIOExtensionSessionDevice_propertyStatesForProperties_reply___block_invoke;
     v14[3] = &unk_27885C038;
     v14[4] = self;
-    v14[5] = a4;
-    [v10 devicePropertyStatesWithDeviceID:v11 properties:availableProperties reply:v14];
+    v14[5] = reply;
+    [v10 devicePropertyStatesWithDeviceID:uUIDString properties:availableProperties reply:v14];
   }
 
   else
@@ -789,7 +789,7 @@ void __46__CMIOExtensionSessionDevice_updateStreamIDs___block_invoke(uint64_t a1
     v12 = *MEMORY[0x277CCA590];
     v15 = *MEMORY[0x277CCA450];
     v16 = @"Invalid session";
-    (*(a4 + 2))(a4, 0, [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}]);
+    (*(reply + 2))(reply, 0, [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}]);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -809,7 +809,7 @@ uint64_t __64__CMIOExtensionSessionDevice_propertyStatesForProperties_reply___bl
   return v4();
 }
 
-- (void)setPropertyValues:(id)a3 reply:(id)a4
+- (void)setPropertyValues:(id)values reply:(id)reply
 {
   v27 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -832,25 +832,25 @@ uint64_t __64__CMIOExtensionSessionDevice_propertyStatesForProperties_reply___bl
         v21 = 2080;
         v22 = "[CMIOExtensionSessionDevice setPropertyValues:reply:]";
         v23 = 2112;
-        v24 = self;
+        selfCopy = self;
         v25 = 2112;
-        v26 = a3;
+        valuesCopy = values;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, propertyValues %@", buf, 0x30u);
       }
     }
   }
 
-  v9 = [objc_loadWeak(&self->_provider) hostContext];
-  if (v9)
+  hostContext = [objc_loadWeak(&self->_provider) hostContext];
+  if (hostContext)
   {
-    v10 = v9;
-    v11 = [(NSUUID *)self->_deviceID UUIDString];
+    v10 = hostContext;
+    uUIDString = [(NSUUID *)self->_deviceID UUIDString];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __54__CMIOExtensionSessionDevice_setPropertyValues_reply___block_invoke;
     v14[3] = &unk_27885C060;
-    v14[4] = a4;
-    [v10 setDevicePropertyValuesWithDeviceID:v11 propertyValues:a3 reply:v14];
+    v14[4] = reply;
+    [v10 setDevicePropertyValuesWithDeviceID:uUIDString propertyValues:values reply:v14];
   }
 
   else
@@ -858,7 +858,7 @@ uint64_t __64__CMIOExtensionSessionDevice_propertyStatesForProperties_reply___bl
     v12 = *MEMORY[0x277CCA590];
     v15 = *MEMORY[0x277CCA450];
     v16 = @"Invalid session";
-    (*(a4 + 2))(a4, [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}]);
+    (*(reply + 2))(reply, [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}]);
   }
 
   v13 = *MEMORY[0x277D85DE8];

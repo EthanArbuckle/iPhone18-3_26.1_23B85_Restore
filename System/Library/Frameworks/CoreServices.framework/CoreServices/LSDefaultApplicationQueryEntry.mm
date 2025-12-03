@@ -1,6 +1,6 @@
 @interface LSDefaultApplicationQueryEntry
-+ (id)createFromPlistRepresentation:(id)a3;
-- (LSDefaultApplicationQueryEntry)initWithWindowOpenDates:(id)a3 refreshDate:(id)a4 defaultForCategory:(BOOL)a5;
++ (id)createFromPlistRepresentation:(id)representation;
+- (LSDefaultApplicationQueryEntry)initWithWindowOpenDates:(id)dates refreshDate:(id)date defaultForCategory:(BOOL)category;
 - (id)newestWindowOpenDate;
 - (id)oldestWindowOpenDate;
 - (id)plistRepresentation;
@@ -8,21 +8,21 @@
 
 @implementation LSDefaultApplicationQueryEntry
 
-- (LSDefaultApplicationQueryEntry)initWithWindowOpenDates:(id)a3 refreshDate:(id)a4 defaultForCategory:(BOOL)a5
+- (LSDefaultApplicationQueryEntry)initWithWindowOpenDates:(id)dates refreshDate:(id)date defaultForCategory:(BOOL)category
 {
-  v8 = a3;
-  v9 = a4;
+  datesCopy = dates;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = LSDefaultApplicationQueryEntry;
   v10 = [(LSDefaultApplicationQueryEntry *)&v14 init];
   if (v10)
   {
-    v11 = [v8 sortedArrayUsingSelector:sel_compare_];
+    v11 = [datesCopy sortedArrayUsingSelector:sel_compare_];
     windowOpenDates = v10->_windowOpenDates;
     v10->_windowOpenDates = v11;
 
-    objc_storeStrong(&v10->_refreshDate, a4);
-    v10->_defaultForCategory = a5;
+    objc_storeStrong(&v10->_refreshDate, date);
+    v10->_defaultForCategory = category;
   }
 
   return v10;
@@ -46,10 +46,10 @@
   return v4;
 }
 
-+ (id)createFromPlistRepresentation:(id)a3
++ (id)createFromPlistRepresentation:(id)representation
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -57,7 +57,7 @@
     goto LABEL_22;
   }
 
-  v4 = [v3 objectForKey:@"Open"];
+  v4 = [representationCopy objectForKey:@"Open"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -78,7 +78,7 @@ LABEL_7:
   v8 = 0;
 LABEL_9:
   v9 = objc_opt_class();
-  v10 = [v3 objectForKey:@"Refresh"];
+  v10 = [representationCopy objectForKey:@"Refresh"];
   v11 = v10;
   if (v9 && v10 && (objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -87,7 +87,7 @@ LABEL_9:
   }
 
   v12 = objc_opt_class();
-  v13 = [v3 objectForKey:@"IsDefault"];
+  v13 = [representationCopy objectForKey:@"IsDefault"];
   v14 = v13;
   if (v12 && v13 && (objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -109,26 +109,26 @@ LABEL_22:
 
 - (id)oldestWindowOpenDate
 {
-  v4 = [(NSArray *)self->_windowOpenDates firstObject];
-  if (!v4)
+  firstObject = [(NSArray *)self->_windowOpenDates firstObject];
+  if (!firstObject)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"LSDefaultApplicationQueryBackend.mm" lineNumber:91 description:@"must have at least one known window"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSDefaultApplicationQueryBackend.mm" lineNumber:91 description:@"must have at least one known window"];
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (id)newestWindowOpenDate
 {
-  v4 = [(NSArray *)self->_windowOpenDates lastObject];
-  if (!v4)
+  lastObject = [(NSArray *)self->_windowOpenDates lastObject];
+  if (!lastObject)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"LSDefaultApplicationQueryBackend.mm" lineNumber:98 description:@"must have at least one known window"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSDefaultApplicationQueryBackend.mm" lineNumber:98 description:@"must have at least one known window"];
   }
 
-  return v4;
+  return lastObject;
 }
 
 @end

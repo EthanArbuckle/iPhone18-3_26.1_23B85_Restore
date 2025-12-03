@@ -8,11 +8,11 @@
 {
   v6 = a3;
   v7 = signingOperation();
-  v8 = [v7 sign:v6 withKey:a1 error:a4];
+  v8 = [v7 sign:v6 withKey:self error:a4];
 
-  v9 = [v8 signature];
+  signature = [v8 signature];
 
-  return v9;
+  return signature;
 }
 
 @end

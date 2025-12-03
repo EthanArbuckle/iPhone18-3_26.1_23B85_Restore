@@ -1,5 +1,5 @@
 @interface FinishDownloadsOperation
-- (FinishDownloadsOperation)initWithFinishedDownloadPredicate:(id)a3;
+- (FinishDownloadsOperation)initWithFinishedDownloadPredicate:(id)predicate;
 - (SSSQLitePredicate)finishedDownloadPredicate;
 - (void)dealloc;
 - (void)run;
@@ -7,14 +7,14 @@
 
 @implementation FinishDownloadsOperation
 
-- (FinishDownloadsOperation)initWithFinishedDownloadPredicate:(id)a3
+- (FinishDownloadsOperation)initWithFinishedDownloadPredicate:(id)predicate
 {
   v6.receiver = self;
   v6.super_class = FinishDownloadsOperation;
   v4 = [(FinishDownloadsOperation *)&v6 init];
   if (v4)
   {
-    v4->_predicate = [a3 copy];
+    v4->_predicate = [predicate copy];
   }
 
   return v4;
@@ -55,15 +55,15 @@
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
   if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_INFO))

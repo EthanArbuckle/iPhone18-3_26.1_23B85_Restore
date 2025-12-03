@@ -1,17 +1,17 @@
 @interface SUUINearMeViewElement
-- (SUUINearMeViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (void)_itemsDidChange:(id)a3;
+- (SUUINearMeViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (void)_itemsDidChange:(id)change;
 - (void)dealloc;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SUUINearMeViewElement
 
-- (SUUINearMeViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUINearMeViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
   v10.receiver = self;
   v10.super_class = SUUINearMeViewElement;
-  v5 = [(SUUIViewElement *)&v10 initWithDOMElement:a3 parent:a4 elementFactory:a5];
+  v5 = [(SUUIViewElement *)&v10 initWithDOMElement:element parent:parent elementFactory:factory];
   v6 = v5;
   if (v5)
   {
@@ -45,39 +45,39 @@ void __66__SUUINearMeViewElement_initWithDOMElement_parent_elementFactory___bloc
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SUUINearMeViewElement;
   [(SUUIViewElement *)&v4 dealloc];
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = SUUICoreLocationFramework();
   v6 = [SUUIWeakLinkedClassForString(&cfstr_Cllocationmana.isa v5)];
   if (SUUINearMeIsEnabledForAuthorizationStatus(v6))
   {
     v7.receiver = self;
     v7.super_class = SUUINearMeViewElement;
-    [(SUUIViewElement *)&v7 enumerateChildrenUsingBlock:v4];
+    [(SUUIViewElement *)&v7 enumerateChildrenUsingBlock:blockCopy];
   }
 }
 
-- (void)_itemsDidChange:(id)a3
+- (void)_itemsDidChange:(id)change
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = +[SUUINearMeController sharedController];
-  v5 = [v4 items];
+  items = [v4 items];
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = items;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -94,7 +94,7 @@ void __66__SUUINearMeViewElement_initWithDOMElement_parent_elementFactory___bloc
         }
 
         v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(*(*(&v20 + 1) + 8 * v11), "itemIdentifier")}];
-        [v6 addObject:v12];
+        [array addObject:v12];
 
         ++v11;
       }
@@ -107,11 +107,11 @@ void __66__SUUINearMeViewElement_initWithDOMElement_parent_elementFactory___bloc
   }
 
   v13 = +[SUUINearMeController sharedController];
-  v14 = [v13 responseDictionary];
+  responseDictionary = [v13 responseDictionary];
 
-  if (v14)
+  if (responseDictionary)
   {
-    v15 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v14 options:0 error:0];
+    v15 = [MEMORY[0x277CCAAA0] dataWithJSONObject:responseDictionary options:0 error:0];
     v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v15 encoding:4];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;

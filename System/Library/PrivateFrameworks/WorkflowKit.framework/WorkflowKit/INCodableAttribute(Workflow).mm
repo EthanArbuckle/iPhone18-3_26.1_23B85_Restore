@@ -9,7 +9,7 @@
 - (id)wf_contentItemForValue:()Workflow
 {
   v4 = a3;
-  v5 = [objc_msgSend(a1 "wf_contentItemClass")];
+  v5 = [objc_msgSend(self "wf_contentItemClass")];
 
   return v5;
 }
@@ -19,7 +19,7 @@
   v61[8] = *MEMORY[0x1E69E9840];
   v8 = a3;
   v42 = a5;
-  v43 = [[WFINCodableAttributeParameterName alloc] initWithAttribute:a1];
+  v43 = [[WFINCodableAttributeParameterName alloc] initWithAttribute:self];
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -31,24 +31,24 @@
   v10 = NSStringFromClass(a4);
   v60[0] = v10;
   v59[1] = @"Key";
-  v11 = [a1 propertyName];
-  v60[1] = v11;
+  propertyName = [self propertyName];
+  v60[1] = propertyName;
   v60[2] = v43;
   v59[2] = @"Label";
   v59[3] = @"IntentSlotName";
-  v12 = [a1 propertyName];
-  v60[3] = v12;
+  propertyName2 = [self propertyName];
+  v60[3] = propertyName2;
   v59[4] = @"AllowsMultipleValues";
-  v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a1, "modifier") == 0}];
+  v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(self, "modifier") == 0}];
   v60[4] = v13;
   v60[5] = @"Right";
   v59[5] = @"TextAlignment";
   v59[6] = @"FixedSizeArray";
-  v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "isFixedSizeArray")}];
+  v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "isFixedSizeArray")}];
   v60[6] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v60 forKeys:v59 count:7];
 
-  if ([a1 isFixedSizeArray])
+  if ([self isFixedSizeArray])
   {
     v16 = *MEMORY[0x1E696E548];
     v61[0] = *MEMORY[0x1E696E550];
@@ -67,13 +67,13 @@
     v46[1] = 3221225472;
     v46[2] = __87__INCodableAttribute_Workflow__wf_updatedParameterDefinition_parameterClass_localizer___block_invoke;
     v46[3] = &unk_1E837E220;
-    v46[4] = a1;
+    v46[4] = self;
     v21 = [v20 if_compactMap:v46];
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __87__INCodableAttribute_Workflow__wf_updatedParameterDefinition_parameterClass_localizer___block_invoke_2;
     v45[3] = &unk_1E8377820;
-    v45[4] = a1;
+    v45[4] = self;
     v22 = [v20 if_objectsPassingTest:v45];
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v22];
     v57 = @"ArraySizesForSizeClass";
@@ -90,13 +90,13 @@
   v44[3] = &unk_1E837D4A8;
   v44[4] = &v47;
   [v15 enumerateKeysAndObjectsUsingBlock:v44];
-  if (([a1 supportsDynamicEnumeration] & 1) == 0)
+  if (([self supportsDynamicEnumeration] & 1) == 0)
   {
     v26 = v48[5];
     v55 = @"Placeholder";
     v27 = [WFINCodableAttributePlaceholder alloc];
-    v28 = [a1 metadata];
-    v29 = [(WFINCodableAttributePlaceholder *)v27 initWithMetadata:v28];
+    metadata = [self metadata];
+    v29 = [(WFINCodableAttributePlaceholder *)v27 initWithMetadata:metadata];
     v56 = v29;
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
     v31 = [v26 definitionByAddingEntriesInDictionary:v30];
@@ -104,14 +104,14 @@
     v48[5] = v31;
   }
 
-  v33 = [a1 languageCode];
+  languageCode = [self languageCode];
 
-  if (v33)
+  if (languageCode)
   {
     v34 = v48[5];
     v53 = @"LanguageCodeOverride";
-    v35 = [a1 languageCode];
-    v54 = v35;
+    languageCode2 = [self languageCode];
+    v54 = languageCode2;
     v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
     v37 = [v34 definitionByAddingEntriesInDictionary:v36];
     v38 = v48[5];
@@ -128,16 +128,16 @@
 
 - (id)wf_contentItemClass
 {
-  if ([objc_msgSend(a1 "wf_objectClass")])
+  if ([objc_msgSend(self "wf_objectClass")])
   {
-    v2 = [objc_msgSend(a1 "wf_objectClass")];
+    v2 = [objc_msgSend(self "wf_objectClass")];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E6996D68] sharedRegistry];
-    v4 = [MEMORY[0x1E6996ED0] typeWithClass:{objc_msgSend(a1, "wf_objectClass")}];
-    v2 = [v3 contentItemClassForType:v4];
+    mEMORY[0x1E6996D68] = [MEMORY[0x1E6996D68] sharedRegistry];
+    v4 = [MEMORY[0x1E6996ED0] typeWithClass:{objc_msgSend(self, "wf_objectClass")}];
+    v2 = [mEMORY[0x1E6996D68] contentItemClassForType:v4];
   }
 
   return v2;

@@ -1,31 +1,31 @@
 @interface UIDictationMultilingualString
-- (BOOL)isEqual:(id)a3;
-- (UIDictationMultilingualString)initWithCoder:(id)a3;
-- (UIDictationMultilingualString)initWithDictionary:(id)a3;
-- (UIDictationMultilingualString)initWithText:(id)a3 forLanguage:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UIDictationMultilingualString)initWithCoder:(id)coder;
+- (UIDictationMultilingualString)initWithDictionary:(id)dictionary;
+- (UIDictationMultilingualString)initWithText:(id)text forLanguage:(id)language;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIDictationMultilingualString
 
-- (UIDictationMultilingualString)initWithText:(id)a3 forLanguage:(id)a4
+- (UIDictationMultilingualString)initWithText:(id)text forLanguage:(id)language
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  languageCopy = language;
   v14.receiver = self;
   v14.super_class = UIDictationMultilingualString;
   v8 = [(UIDictationMultilingualString *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [textCopy copy];
     text = v8->_text;
     v8->_text = v9;
 
-    v11 = [v7 copy];
+    v11 = [languageCopy copy];
     dominantLanguage = v8->_dominantLanguage;
     v8->_dominantLanguage = v11;
   }
@@ -33,39 +33,39 @@
   return v8;
 }
 
-- (UIDictationMultilingualString)initWithDictionary:(id)a3
+- (UIDictationMultilingualString)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"text"];
-  v6 = [v4 objectForKeyedSubscript:@"language"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"text"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"language"];
 
   if (v5)
   {
     self = [(UIDictationMultilingualString *)self initWithText:v5 forLanguage:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (UIDictationMultilingualString)initWithCoder:(id)a3
+- (UIDictationMultilingualString)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = UIDictationMultilingualString;
   v5 = [(UIDictationMultilingualString *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"language"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"language"];
     dominantLanguage = v5->_dominantLanguage;
     v5->_dominantLanguage = v8;
 
@@ -75,15 +75,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   text = self->_text;
-  v5 = a3;
-  [v5 encodeObject:text forKey:@"text"];
-  [v5 encodeObject:self->_dominantLanguage forKey:@"language"];
+  coderCopy = coder;
+  [coderCopy encodeObject:text forKey:@"text"];
+  [coderCopy encodeObject:self->_dominantLanguage forKey:@"language"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UIDictationMultilingualString);
   v5 = [(NSString *)self->_text copy];
@@ -97,16 +97,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(UIDictationMultilingualString *)self text];
-  v6 = [v4 text];
-  if ([v5 isEqualToString:v6])
+  equalCopy = equal;
+  text = [(UIDictationMultilingualString *)self text];
+  text2 = [equalCopy text];
+  if ([text isEqualToString:text2])
   {
-    v7 = [(UIDictationMultilingualString *)self dominantLanguage];
-    v8 = [v4 dominantLanguage];
-    v9 = [v7 isEqualToString:v8];
+    dominantLanguage = [(UIDictationMultilingualString *)self dominantLanguage];
+    dominantLanguage2 = [equalCopy dominantLanguage];
+    v9 = [dominantLanguage isEqualToString:dominantLanguage2];
   }
 
   else
@@ -119,18 +119,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(UIDictationMultilingualString *)self text];
-  v4 = [v3 hash];
-  v5 = [(UIDictationMultilingualString *)self dominantLanguage];
-  v6 = [v5 hash];
+  text = [(UIDictationMultilingualString *)self text];
+  v4 = [text hash];
+  dominantLanguage = [(UIDictationMultilingualString *)self dominantLanguage];
+  v6 = [dominantLanguage hash];
 
   return v6 ^ v4;
 }
 
 - (id)description
 {
-  v2 = [(UIDictationMultilingualString *)self dictionaryValue];
-  v3 = [v2 description];
+  dictionaryValue = [(UIDictationMultilingualString *)self dictionaryValue];
+  v3 = [dictionaryValue description];
 
   return v3;
 }

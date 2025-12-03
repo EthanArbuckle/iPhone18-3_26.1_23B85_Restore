@@ -14,11 +14,11 @@
 
 - (id)backgroundColor
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"_UITextViewVisualStyle.m" lineNumber:41 description:{@"%@ should provide an implementation for %@", v6, v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextViewVisualStyle.m" lineNumber:41 description:{@"%@ should provide an implementation for %@", v6, v7}];
 
   return 0;
 }

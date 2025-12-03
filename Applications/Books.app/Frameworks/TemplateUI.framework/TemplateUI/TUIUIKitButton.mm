@@ -1,18 +1,18 @@
 @interface TUIUIKitButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (TUIButtonDelegate)tui_delegate;
 - (UIEdgeInsets)computedTouchInsets;
 - (UIEdgeInsets)touchInsets;
-- (id)_accessibilityGetAXElementMatchFromArray:(id)a3;
+- (id)_accessibilityGetAXElementMatchFromArray:(id)array;
 - (id)_accessibilityUnderlyingElementForFocusItem;
 - (id)backgroundColor;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)menuDataDidUpdate;
-- (void)setBackgroundColor:(id)a3;
-- (void)setTui_menu:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setTui_menu:(id)tui_menu;
 @end
 
 @implementation TUIUIKitButton
@@ -21,32 +21,32 @@
 {
   if ([(TUIUIKitButton *)self buttonType])
   {
-    v3 = [(TUIUIKitButton *)self configuration];
-    v4 = [v3 baseBackgroundColor];
+    configuration = [(TUIUIKitButton *)self configuration];
+    baseBackgroundColor = [configuration baseBackgroundColor];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = TUIUIKitButton;
-    v4 = [(TUIUIKitButton *)&v6 backgroundColor];
+    baseBackgroundColor = [(TUIUIKitButton *)&v6 backgroundColor];
   }
 
-  return v4;
+  return baseBackgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if ([(TUIUIKitButton *)self buttonType])
   {
-    if (v4)
+    if (colorCopy)
     {
-      v5 = [(TUIUIKitButton *)self configuration];
-      v6 = v5;
-      if (v5)
+      configuration = [(TUIUIKitButton *)self configuration];
+      v6 = configuration;
+      if (configuration)
       {
-        v7 = v5;
+        v7 = configuration;
       }
 
       else
@@ -56,7 +56,7 @@
 
       v8 = v7;
 
-      [v8 setBaseBackgroundColor:v4];
+      [v8 setBaseBackgroundColor:colorCopy];
       [(TUIUIKitButton *)self setConfiguration:v8];
     }
 
@@ -70,23 +70,23 @@
   {
     v9.receiver = self;
     v9.super_class = TUIUIKitButton;
-    [(TUIUIKitButton *)&v9 setBackgroundColor:v4];
+    [(TUIUIKitButton *)&v9 setBackgroundColor:colorCopy];
   }
 }
 
-- (void)setTui_menu:(id)a3
+- (void)setTui_menu:(id)tui_menu
 {
-  v5 = a3;
+  tui_menuCopy = tui_menu;
   tui_menu = self->_tui_menu;
-  if (tui_menu != v5 && ![(TUIMenuModel *)tui_menu isEqual:v5])
+  if (tui_menu != tui_menuCopy && ![(TUIMenuModel *)tui_menu isEqual:tui_menuCopy])
   {
-    objc_storeStrong(&self->_tui_menu, a3);
-    v7 = [(TUIUIKitButton *)self isStaticMenu];
+    objc_storeStrong(&self->_tui_menu, tui_menu);
+    isStaticMenu = [(TUIUIKitButton *)self isStaticMenu];
     v8 = self->_tui_menu;
-    if (v7)
+    if (isStaticMenu)
     {
-      v9 = [(TUIMenuModel *)v8 newUIMenuElement];
-      [(TUIUIKitButton *)self setMenu:v9];
+      newUIMenuElement = [(TUIMenuModel *)v8 newUIMenuElement];
+      [(TUIUIKitButton *)self setMenu:newUIMenuElement];
     }
 
     else
@@ -95,13 +95,13 @@
     }
 
     [(TUIUIKitButton *)self setShowsMenuAsPrimaryAction:[(TUIMenuModel *)self->_tui_menu isPrimary]];
-    v10 = [(TUIUIKitButton *)self contextMenuInteraction];
+    contextMenuInteraction = [(TUIUIKitButton *)self contextMenuInteraction];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_181130;
     v11[3] = &unk_263820;
-    v12 = v5;
-    [v10 updateVisibleMenuWithBlock:v11];
+    v12 = tui_menuCopy;
+    [contextMenuInteraction updateVisibleMenuWithBlock:v11];
   }
 }
 
@@ -109,22 +109,22 @@
 {
   if ([(TUIUIKitButton *)self isStaticMenu])
   {
-    v3 = [(TUIMenuModel *)self->_tui_menu newUIMenuElement];
-    [(TUIUIKitButton *)self setMenu:v3];
+    newUIMenuElement = [(TUIMenuModel *)self->_tui_menu newUIMenuElement];
+    [(TUIUIKitButton *)self setMenu:newUIMenuElement];
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
   v8 = self->_tui_menu;
   if ([(TUIUIKitButton *)self isStaticMenu])
   {
     v14.receiver = self;
     v14.super_class = TUIUIKitButton;
-    v9 = [(TUIUIKitButton *)&v14 contextMenuInteraction:v7 configurationForMenuAtLocation:x, y];
+    v9 = [(TUIUIKitButton *)&v14 contextMenuInteraction:interactionCopy configurationForMenuAtLocation:x, y];
   }
 
   else if (v8)
@@ -148,55 +148,55 @@
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v12.receiver = self;
   v12.super_class = TUIUIKitButton;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(TUIUIKitButton *)&v12 contextMenuInteraction:v10 willDisplayMenuForConfiguration:v9 animator:v8];
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  interactionCopy = interaction;
+  [(TUIUIKitButton *)&v12 contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configurationCopy animator:animatorCopy];
   WeakRetained = objc_loadWeakRetained(&self->_tui_delegate);
-  [WeakRetained button:self contextMenuInteraction:v10 willDisplayMenuForConfiguration:v9 animator:{v8, v12.receiver, v12.super_class}];
+  [WeakRetained button:self contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configurationCopy animator:{animatorCopy, v12.receiver, v12.super_class}];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v12.receiver = self;
   v12.super_class = TUIUIKitButton;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(TUIUIKitButton *)&v12 contextMenuInteraction:v10 willEndForConfiguration:v9 animator:v8];
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  interactionCopy = interaction;
+  [(TUIUIKitButton *)&v12 contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animatorCopy];
   WeakRetained = objc_loadWeakRetained(&self->_tui_delegate);
-  [WeakRetained button:self contextMenuInteraction:v10 willEndForConfiguration:v9 animator:{v8, v12.receiver, v12.super_class}];
+  [WeakRetained button:self contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:{animatorCopy, v12.receiver, v12.super_class}];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v17.receiver = self;
   v17.super_class = TUIUIKitButton;
-  v8 = [(TUIUIKitButton *)&v17 hitTest:v7 withEvent:x, y];
+  selfCopy = [(TUIUIKitButton *)&v17 hitTest:eventCopy withEvent:x, y];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [(TUIUIKitButton *)v8 gestureRecognizers];
-    if ([v9 count])
+    gestureRecognizers = [(TUIUIKitButton *)selfCopy gestureRecognizers];
+    if ([gestureRecognizers count])
     {
 LABEL_5:
 
       goto LABEL_6;
     }
 
-    v10 = [(TUIUIKitButton *)self pointInside:v7 withEvent:x, y];
+    v10 = [(TUIUIKitButton *)self pointInside:eventCopy withEvent:x, y];
 
     if (v10)
     {
-      v9 = v8;
-      v8 = self;
+      gestureRecognizers = selfCopy;
+      selfCopy = self;
       goto LABEL_5;
     }
   }
@@ -210,16 +210,16 @@ LABEL_6:
   {
     v15 = v13;
 
-    v8 = v15;
+    selfCopy = v15;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(TUIUIKitButton *)self computedTouchInsets];
   v8 = v7;
   v10 = v9;
@@ -272,13 +272,13 @@ LABEL_6:
 {
   v3 = objc_opt_class();
   v4 = [(TUIUIKitButton *)self _accessibilityFindAncestor:&stru_263888 startWithSelf:0];
-  v5 = [v4 _accessibilityViewController];
-  v6 = TUIDynamicCast(v3, v5);
+  _accessibilityViewController = [v4 _accessibilityViewController];
+  v6 = TUIDynamicCast(v3, _accessibilityViewController);
 
-  v7 = [v6 topLevelAXElement];
+  topLevelAXElement = [v6 topLevelAXElement];
   v8 = objc_opt_class();
-  v9 = [v7 children];
-  v10 = TUIDynamicCast(v8, v9);
+  children = [topLevelAXElement children];
+  v10 = TUIDynamicCast(v8, children);
 
   v11 = [(TUIUIKitButton *)self _accessibilityGetAXElementMatchFromArray:v10];
   v12 = v11;
@@ -287,19 +287,19 @@ LABEL_6:
     self = v11;
   }
 
-  v13 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (id)_accessibilityGetAXElementMatchFromArray:(id)a3
+- (id)_accessibilityGetAXElementMatchFromArray:(id)array
 {
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  arrayCopy = array;
+  v5 = [arrayCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -310,7 +310,7 @@ LABEL_6:
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
@@ -332,8 +332,8 @@ LABEL_6:
         else
         {
           v22 = objc_opt_class();
-          v23 = [v9 children];
-          v24 = TUIDynamicCast(v22, v23);
+          children = [v9 children];
+          v24 = TUIDynamicCast(v22, children);
 
           v25 = [(TUIUIKitButton *)self _accessibilityGetAXElementMatchFromArray:v24];
 
@@ -344,7 +344,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v6 = [arrayCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v6);

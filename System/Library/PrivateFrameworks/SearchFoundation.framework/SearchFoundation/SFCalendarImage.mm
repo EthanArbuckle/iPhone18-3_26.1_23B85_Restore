@@ -1,32 +1,32 @@
 @interface SFCalendarImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCalendarImage)initWithCoder:(id)a3;
-- (SFCalendarImage)initWithDate:(id)a3;
-- (SFCalendarImage)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCalendarImage)initWithCoder:(id)coder;
+- (SFCalendarImage)initWithDate:(id)date;
+- (SFCalendarImage)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCalendarImage
 
-- (SFCalendarImage)initWithProtobuf:(id)a3
+- (SFCalendarImage)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFCalendarImage;
   v5 = [(SFCalendarImage *)&v12 init];
   if (v5)
   {
-    v6 = [v4 date];
+    date = [protobufCopy date];
 
-    if (v6)
+    if (date)
     {
-      v7 = [v4 date];
+      date2 = [protobufCopy date];
       v8 = MEMORY[0x1E695DF00];
-      [v7 secondsSince1970];
+      [date2 secondsSince1970];
       v9 = [v8 dateWithTimeIntervalSince1970:?];
       [(SFCalendarImage *)v5 setDate:v9];
     }
@@ -42,38 +42,38 @@
   v7.receiver = self;
   v7.super_class = SFCalendarImage;
   v3 = [(SFImage *)&v7 hash];
-  v4 = [(SFCalendarImage *)self date];
-  v5 = [v4 hash];
+  date = [(SFCalendarImage *)self date];
+  v5 = [date hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFCalendarImage *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFCalendarImage, [(SFImage *)&v13 isEqual:v4]))
+  else if ([(SFCalendarImage *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFCalendarImage, [(SFImage *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFCalendarImage *)self date];
-    v7 = [(SFCalendarImage *)v5 date];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    date = [(SFCalendarImage *)self date];
+    date2 = [(SFCalendarImage *)v5 date];
+    if ((date != 0) == (date2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFCalendarImage *)self date];
-      if (v8)
+      date3 = [(SFCalendarImage *)self date];
+      if (date3)
       {
-        v9 = [(SFCalendarImage *)self date];
-        v10 = [(SFCalendarImage *)v5 date];
-        v11 = [v9 isEqual:v10];
+        date4 = [(SFCalendarImage *)self date];
+        date5 = [(SFCalendarImage *)v5 date];
+        v11 = [date4 isEqual:date5];
       }
 
       else
@@ -91,13 +91,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFCalendarImage;
-  v4 = [(SFImage *)&v8 copyWithZone:a3];
-  v5 = [(SFCalendarImage *)self date];
-  v6 = [v5 copy];
+  v4 = [(SFImage *)&v8 copyWithZone:zone];
+  date = [(SFCalendarImage *)self date];
+  v6 = [date copy];
   [v4 setDate:v6];
 
   return v4;
@@ -106,31 +106,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBCalendarImage alloc] initWithFacade:self];
-  v3 = [(_SFPBCalendarImage *)v2 jsonData];
+  jsonData = [(_SFPBCalendarImage *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCalendarImage alloc] initWithFacade:self];
-  v3 = [(_SFPBCalendarImage *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCalendarImage *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBImage alloc] initWithFacade:self];
-  v5 = [(_SFPBImage *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBImage *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFCalendarImage)initWithCoder:(id)a3
+- (SFCalendarImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBImage alloc] initWithData:v5];
   v9.receiver = self;
@@ -140,14 +140,14 @@
   return v7;
 }
 
-- (SFCalendarImage)initWithDate:(id)a3
+- (SFCalendarImage)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [(SFCalendarImage *)self init];
   v6 = v5;
   if (v5)
   {
-    [(SFCalendarImage *)v5 setDate:v4];
+    [(SFCalendarImage *)v5 setDate:dateCopy];
   }
 
   return v6;

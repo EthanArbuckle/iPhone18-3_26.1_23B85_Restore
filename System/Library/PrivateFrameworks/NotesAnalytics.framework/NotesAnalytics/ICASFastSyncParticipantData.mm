@@ -1,22 +1,22 @@
 @interface ICASFastSyncParticipantData
-- (ICASFastSyncParticipantData)initWithCountOfUniqueAccounts:(id)a3 countOfUniqueDevices:(id)a4;
+- (ICASFastSyncParticipantData)initWithCountOfUniqueAccounts:(id)accounts countOfUniqueDevices:(id)devices;
 - (id)toDict;
 @end
 
 @implementation ICASFastSyncParticipantData
 
-- (ICASFastSyncParticipantData)initWithCountOfUniqueAccounts:(id)a3 countOfUniqueDevices:(id)a4
+- (ICASFastSyncParticipantData)initWithCountOfUniqueAccounts:(id)accounts countOfUniqueDevices:(id)devices
 {
-  v7 = a3;
-  v8 = a4;
+  accountsCopy = accounts;
+  devicesCopy = devices;
   v12.receiver = self;
   v12.super_class = ICASFastSyncParticipantData;
   v9 = [(ICASFastSyncParticipantData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_countOfUniqueAccounts, a3);
-    objc_storeStrong(&v10->_countOfUniqueDevices, a4);
+    objc_storeStrong(&v9->_countOfUniqueAccounts, accounts);
+    objc_storeStrong(&v10->_countOfUniqueDevices, devices);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"countOfUniqueAccounts";
-  v3 = [(ICASFastSyncParticipantData *)self countOfUniqueAccounts];
-  if (v3)
+  countOfUniqueAccounts = [(ICASFastSyncParticipantData *)self countOfUniqueAccounts];
+  if (countOfUniqueAccounts)
   {
-    v4 = [(ICASFastSyncParticipantData *)self countOfUniqueAccounts];
+    countOfUniqueAccounts2 = [(ICASFastSyncParticipantData *)self countOfUniqueAccounts];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    countOfUniqueAccounts2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = countOfUniqueAccounts2;
   v12[1] = @"countOfUniqueDevices";
-  v13[0] = v4;
-  v6 = [(ICASFastSyncParticipantData *)self countOfUniqueDevices];
-  if (v6)
+  v13[0] = countOfUniqueAccounts2;
+  countOfUniqueDevices = [(ICASFastSyncParticipantData *)self countOfUniqueDevices];
+  if (countOfUniqueDevices)
   {
-    v7 = [(ICASFastSyncParticipantData *)self countOfUniqueDevices];
+    countOfUniqueDevices2 = [(ICASFastSyncParticipantData *)self countOfUniqueDevices];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    countOfUniqueDevices2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = countOfUniqueDevices2;
+  v13[1] = countOfUniqueDevices2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

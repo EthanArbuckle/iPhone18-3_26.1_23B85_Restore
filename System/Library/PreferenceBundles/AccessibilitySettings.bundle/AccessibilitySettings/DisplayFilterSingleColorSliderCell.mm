@@ -1,30 +1,30 @@
 @interface DisplayFilterSingleColorSliderCell
-+ (id)colorNameForHue:(double)a3 saturation:(double)a4;
++ (id)colorNameForHue:(double)hue saturation:(double)saturation;
 - (id)accessibilityValue;
 @end
 
 @implementation DisplayFilterSingleColorSliderCell
 
-+ (id)colorNameForHue:(double)a3 saturation:(double)a4
++ (id)colorNameForHue:(double)hue saturation:(double)saturation
 {
   v5 = @"DISPLAY_FILTER_HUE_RED";
-  if (a3 >= 25.0)
+  if (hue >= 25.0)
   {
-    if (a3 >= 50.0)
+    if (hue >= 50.0)
     {
-      if (a3 >= 80.0)
+      if (hue >= 80.0)
       {
-        if (a3 >= 130.0)
+        if (hue >= 130.0)
         {
-          if (a3 >= 185.0)
+          if (hue >= 185.0)
           {
-            if (a3 >= 236.0)
+            if (hue >= 236.0)
             {
-              if (a3 >= 265.0)
+              if (hue >= 265.0)
               {
-                if (a3 >= 300.0)
+                if (hue >= 300.0)
                 {
-                  if (a3 < 330.0)
+                  if (hue < 330.0)
                   {
                     v5 = @"DISPLAY_FILTER_HUE_VIOLET";
                   }
@@ -79,23 +79,23 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(DisplayFilterSingleColorSliderCell *)self controlValue];
+  controlValue = [(DisplayFilterSingleColorSliderCell *)self controlValue];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_class();
-    [v3 floatValue];
-    v6 = [v4 colorNameForHue:v5 * 360.0 saturation:1.0];
+    [controlValue floatValue];
+    accessibilityValue = [v4 colorNameForHue:v5 * 360.0 saturation:1.0];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = DisplayFilterSingleColorSliderCell;
-    v6 = [(DisplayFilterSingleColorSliderCell *)&v9 accessibilityValue];
+    accessibilityValue = [(DisplayFilterSingleColorSliderCell *)&v9 accessibilityValue];
   }
 
-  v7 = v6;
+  v7 = accessibilityValue;
 
   return v7;
 }

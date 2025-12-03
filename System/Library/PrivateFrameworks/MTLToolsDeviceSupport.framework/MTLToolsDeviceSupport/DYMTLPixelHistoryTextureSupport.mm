@@ -1,29 +1,29 @@
 @interface DYMTLPixelHistoryTextureSupport
-+ (id)pixelValueFromTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 depthPlane:(unint64_t)a6 atX:(unint64_t)a7 y:(unint64_t)a8 inCommandBuffer:(id)a9 overHarvestForDepthStencil:(BOOL)a10;
-+ (void)pixelValueFromTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 depthPlane:(unint64_t)a6 atX:(unint64_t)a7 y:(unint64_t)a8 inCommandBuffer:(id)a9 overHarvestForDepthStencil:(BOOL)a10 completion:(id)a11;
-+ (void)pixelValueToTexture:(id)a3 buffer:(id)a4 level:(unint64_t)a5 slice:(unint64_t)a6 depthPlane:(unint64_t)a7 atX:(unint64_t)a8 y:(unint64_t)a9 inCommandBuffer:(id)a10;
++ (id)pixelValueFromTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice depthPlane:(unint64_t)plane atX:(unint64_t)x y:(unint64_t)y inCommandBuffer:(id)buffer overHarvestForDepthStencil:(BOOL)self0;
++ (void)pixelValueFromTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice depthPlane:(unint64_t)plane atX:(unint64_t)x y:(unint64_t)y inCommandBuffer:(id)buffer overHarvestForDepthStencil:(BOOL)self0 completion:(id)self1;
++ (void)pixelValueToTexture:(id)texture buffer:(id)buffer level:(unint64_t)level slice:(unint64_t)slice depthPlane:(unint64_t)plane atX:(unint64_t)x y:(unint64_t)y inCommandBuffer:(id)self0;
 @end
 
 @implementation DYMTLPixelHistoryTextureSupport
 
-+ (void)pixelValueFromTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 depthPlane:(unint64_t)a6 atX:(unint64_t)a7 y:(unint64_t)a8 inCommandBuffer:(id)a9 overHarvestForDepthStencil:(BOOL)a10 completion:(id)a11
++ (void)pixelValueFromTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice depthPlane:(unint64_t)plane atX:(unint64_t)x y:(unint64_t)y inCommandBuffer:(id)buffer overHarvestForDepthStencil:(BOOL)self0 completion:(id)self1
 {
-  v17 = a3;
-  v18 = a9;
-  v19 = a11;
-  if ([v17 width] && objc_msgSend(v17, "height"))
+  textureCopy = texture;
+  bufferCopy = buffer;
+  completionCopy = completion;
+  if ([textureCopy width] && objc_msgSend(textureCopy, "height"))
   {
-    LOBYTE(v22) = a10;
-    v20 = [a1 pixelValueFromTexture:v17 level:a4 slice:a5 depthPlane:a6 atX:a7 y:a8 inCommandBuffer:v18 overHarvestForDepthStencil:v22];
+    LOBYTE(v22) = stencil;
+    v20 = [self pixelValueFromTexture:textureCopy level:level slice:slice depthPlane:plane atX:x y:y inCommandBuffer:bufferCopy overHarvestForDepthStencil:v22];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __140__DYMTLPixelHistoryTextureSupport_pixelValueFromTexture_level_slice_depthPlane_atX_y_inCommandBuffer_overHarvestForDepthStencil_completion___block_invoke;
     v23[3] = &unk_27984F1F8;
     v24 = v20;
-    v26 = v19;
-    v25 = v17;
+    v26 = completionCopy;
+    v25 = textureCopy;
     v21 = v20;
-    [v18 addCompletedHandler:v23];
+    [bufferCopy addCompletedHandler:v23];
   }
 }
 
@@ -33,22 +33,22 @@ void __140__DYMTLPixelHistoryTextureSupport_pixelValueFromTexture_level_slice_de
   (*(*(a1 + 48) + 16))(*(a1 + 48), v2, [*(a1 + 40) pixelFormat]);
 }
 
-+ (id)pixelValueFromTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 depthPlane:(unint64_t)a6 atX:(unint64_t)a7 y:(unint64_t)a8 inCommandBuffer:(id)a9 overHarvestForDepthStencil:(BOOL)a10
++ (id)pixelValueFromTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice depthPlane:(unint64_t)plane atX:(unint64_t)x y:(unint64_t)y inCommandBuffer:(id)buffer overHarvestForDepthStencil:(BOOL)self0
 {
-  v15 = a3;
-  v16 = a9;
-  if ([v15 width] && objc_msgSend(v15, "height"))
+  textureCopy = texture;
+  bufferCopy = buffer;
+  if ([textureCopy width] && objc_msgSend(textureCopy, "height"))
   {
-    v21 = a8;
-    v22 = a4;
-    v17 = [v16 device];
-    [v15 pixelFormat];
+    yCopy = y;
+    levelCopy = level;
+    device = [bufferCopy device];
+    [textureCopy pixelFormat];
     v36 = 0;
     v34 = 0u;
     v35 = 0u;
     v33 = 0u;
     MTLPixelFormatGetInfoForDevice();
-    v18 = [v16 blitCommandEncoder];
+    blitCommandEncoder = [bufferCopy blitCommandEncoder];
     v32 = 0;
     v30 = 0u;
     v31 = 0u;
@@ -57,14 +57,14 @@ void __140__DYMTLPixelHistoryTextureSupport_pixelValueFromTexture_level_slice_de
     v26 = 0u;
     v27 = 0u;
     MTLGetTextureLevelInfoForDeviceWithOptions();
-    v19 = [v17 newBufferWithLength:0 options:0];
-    v25[0] = a7;
-    v25[1] = v21;
-    v25[2] = a6;
+    v19 = [device newBufferWithLength:0 options:0];
+    v25[0] = x;
+    v25[1] = yCopy;
+    v25[2] = plane;
     v23 = vdupq_n_s64(1uLL);
     *&v24 = 1;
-    [v18 copyFromTexture:v15 sourceSlice:a5 sourceLevel:v22 sourceOrigin:v25 sourceSize:&v23 toBuffer:v19 destinationOffset:0 destinationBytesPerRow:0 destinationBytesPerImage:0 options:0];
-    [v18 endEncoding];
+    [blitCommandEncoder copyFromTexture:textureCopy sourceSlice:slice sourceLevel:levelCopy sourceOrigin:v25 sourceSize:&v23 toBuffer:v19 destinationOffset:0 destinationBytesPerRow:0 destinationBytesPerImage:0 options:0];
+    [blitCommandEncoder endEncoding];
   }
 
   else
@@ -75,21 +75,21 @@ void __140__DYMTLPixelHistoryTextureSupport_pixelValueFromTexture_level_slice_de
   return v19;
 }
 
-+ (void)pixelValueToTexture:(id)a3 buffer:(id)a4 level:(unint64_t)a5 slice:(unint64_t)a6 depthPlane:(unint64_t)a7 atX:(unint64_t)a8 y:(unint64_t)a9 inCommandBuffer:(id)a10
++ (void)pixelValueToTexture:(id)texture buffer:(id)buffer level:(unint64_t)level slice:(unint64_t)slice depthPlane:(unint64_t)plane atX:(unint64_t)x y:(unint64_t)y inCommandBuffer:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a10;
-  if ([v15 width] && objc_msgSend(v15, "height"))
+  textureCopy = texture;
+  bufferCopy = buffer;
+  commandBufferCopy = commandBuffer;
+  if ([textureCopy width] && objc_msgSend(textureCopy, "height"))
   {
-    v18 = [v17 device];
-    [v15 pixelFormat];
+    device = [commandBufferCopy device];
+    [textureCopy pixelFormat];
     v33 = 0;
     v31 = 0u;
     v32 = 0u;
     v30 = 0u;
     MTLPixelFormatGetInfoForDevice();
-    v19 = [v17 blitCommandEncoder];
+    blitCommandEncoder = [commandBufferCopy blitCommandEncoder];
     v29 = 0;
     v27 = 0u;
     v28 = 0u;
@@ -100,11 +100,11 @@ void __140__DYMTLPixelHistoryTextureSupport_pixelValueFromTexture_level_slice_de
     MTLGetTextureLevelInfoForDeviceWithOptions();
     v21 = vdupq_n_s64(1uLL);
     *&v22 = 1;
-    v20[0] = a8;
-    v20[1] = a9;
-    v20[2] = a7;
-    [v19 copyFromBuffer:v16 sourceOffset:0 sourceBytesPerRow:0 sourceBytesPerImage:0 sourceSize:&v21 toTexture:v15 destinationSlice:a6 destinationLevel:a5 destinationOrigin:v20 options:0];
-    [v19 endEncoding];
+    v20[0] = x;
+    v20[1] = y;
+    v20[2] = plane;
+    [blitCommandEncoder copyFromBuffer:bufferCopy sourceOffset:0 sourceBytesPerRow:0 sourceBytesPerImage:0 sourceSize:&v21 toTexture:textureCopy destinationSlice:slice destinationLevel:level destinationOrigin:v20 options:0];
+    [blitCommandEncoder endEncoding];
   }
 }
 

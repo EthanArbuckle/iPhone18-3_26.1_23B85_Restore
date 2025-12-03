@@ -1,49 +1,49 @@
 @interface _BPSHandleEventsInner
-- (_BPSHandleEventsInner)initWithDownstream:(id)a3 handleEvents:(id)a4;
+- (_BPSHandleEventsInner)initWithDownstream:(id)downstream handleEvents:(id)events;
 - (id)upstreamSubscriptions;
-- (int64_t)receiveInput:(id)a3;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
-- (void)requestDemand:(int64_t)a3;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
+- (void)requestDemand:(int64_t)demand;
 - (void)upstreamSubscriptions;
 @end
 
 @implementation _BPSHandleEventsInner
 
-- (_BPSHandleEventsInner)initWithDownstream:(id)a3 handleEvents:(id)a4
+- (_BPSHandleEventsInner)initWithDownstream:(id)downstream handleEvents:(id)events
 {
-  v7 = a3;
-  v8 = a4;
+  downstreamCopy = downstream;
+  eventsCopy = events;
   v29.receiver = self;
   v29.super_class = _BPSHandleEventsInner;
   v9 = [(_BPSHandleEventsInner *)&v29 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_downstream, a3);
-    v11 = [v8 receiveSubscription];
-    v12 = [v11 copy];
+    objc_storeStrong(&v9->_downstream, downstream);
+    receiveSubscription = [eventsCopy receiveSubscription];
+    v12 = [receiveSubscription copy];
     receiveSubscription = v10->_receiveSubscription;
     v10->_receiveSubscription = v12;
 
-    v14 = [v8 receiveOutput];
-    v15 = [v14 copy];
+    receiveOutput = [eventsCopy receiveOutput];
+    v15 = [receiveOutput copy];
     receiveOutput = v10->_receiveOutput;
     v10->_receiveOutput = v15;
 
-    v17 = [v8 receiveCompletion];
-    v18 = [v17 copy];
+    receiveCompletion = [eventsCopy receiveCompletion];
+    v18 = [receiveCompletion copy];
     receiveCompletion = v10->_receiveCompletion;
     v10->_receiveCompletion = v18;
 
-    v20 = [v8 receiveCancel];
-    v21 = [v20 copy];
+    receiveCancel = [eventsCopy receiveCancel];
+    v21 = [receiveCancel copy];
     receiveCancel = v10->_receiveCancel;
     v10->_receiveCancel = v21;
 
-    v23 = [v8 receiveRequest];
-    v24 = [v23 copy];
+    receiveRequest = [eventsCopy receiveRequest];
+    v24 = [receiveRequest copy];
     receiveRequest = v10->_receiveRequest;
     v10->_receiveRequest = v24;
 
@@ -66,11 +66,11 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
+  completionCopy = completion;
+  selfCopy = self;
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -79,56 +79,56 @@
     _os_log_impl(&dword_1C871B000, v6, OS_LOG_TYPE_INFO, "%@ - completion", &v16, 0xCu);
   }
 
-  os_unfair_lock_lock(&v5->_lock);
-  v7 = _Block_copy(v5->_receiveCompletion);
+  os_unfair_lock_lock(&selfCopy->_lock);
+  v7 = _Block_copy(selfCopy->_receiveCompletion);
   if (v7)
   {
-    os_unfair_lock_unlock(&v5->_lock);
-    v7[2](v7, v4);
-    os_unfair_lock_lock(&v5->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    v7[2](v7, completionCopy);
+    os_unfair_lock_lock(&selfCopy->_lock);
   }
 
-  receiveSubscription = v5->_receiveSubscription;
-  v5->_receiveSubscription = 0;
+  receiveSubscription = selfCopy->_receiveSubscription;
+  selfCopy->_receiveSubscription = 0;
 
-  receiveOutput = v5->_receiveOutput;
-  v5->_receiveOutput = 0;
+  receiveOutput = selfCopy->_receiveOutput;
+  selfCopy->_receiveOutput = 0;
 
-  receiveCompletion = v5->_receiveCompletion;
-  v5->_receiveCompletion = 0;
+  receiveCompletion = selfCopy->_receiveCompletion;
+  selfCopy->_receiveCompletion = 0;
 
-  receiveCancel = v5->_receiveCancel;
-  v5->_receiveCancel = 0;
+  receiveCancel = selfCopy->_receiveCancel;
+  selfCopy->_receiveCancel = 0;
 
-  receiveRequest = v5->_receiveRequest;
-  v5->_receiveRequest = 0;
+  receiveRequest = selfCopy->_receiveRequest;
+  selfCopy->_receiveRequest = 0;
 
-  os_unfair_lock_unlock(&v5->_lock);
-  [(BPSSubscriber *)v5->_downstream receiveCompletion:v4];
-  os_unfair_lock_lock(&v5->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  [(BPSSubscriber *)selfCopy->_downstream receiveCompletion:completionCopy];
+  os_unfair_lock_lock(&selfCopy->_lock);
   v13 = +[BPSSubscriptionStatus terminal];
-  status = v5->_status;
-  v5->_status = v13;
+  status = selfCopy->_status;
+  selfCopy->_status = v13;
 
-  os_unfair_lock_unlock(&v5->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v4 = self;
-  v5 = a3;
-  os_unfair_lock_lock(&v4->_lock);
-  v6 = _Block_copy(v4->_receiveOutput);
-  os_unfair_lock_unlock(&v4->_lock);
+  selfCopy = self;
+  inputCopy = input;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  v6 = _Block_copy(selfCopy->_receiveOutput);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   if (v6)
   {
-    v6[2](v6, v5);
+    v6[2](v6, inputCopy);
   }
 
-  v7 = [(BPSSubscriber *)v4->_downstream receiveInput:v5];
+  v7 = [(BPSSubscriber *)selfCopy->_downstream receiveInput:inputCopy];
 
-  v8 = _Block_copy(v4->_receiveRequest);
+  v8 = _Block_copy(selfCopy->_receiveRequest);
   v9 = v8;
   if (v7 >= 1 && v8 != 0)
   {
@@ -138,51 +138,51 @@
   return v7;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v5 = a3;
+  subscriptionCopy = subscription;
   os_unfair_lock_lock(&self->_lock);
   v4 = _Block_copy(self->_receiveSubscription);
   if (v4)
   {
     os_unfair_lock_unlock(&self->_lock);
-    v4[2](v4, v5);
+    v4[2](v4, subscriptionCopy);
     os_unfair_lock_lock(&self->_lock);
   }
 
   if ([(BPSSubscriptionStatus *)self->_status state])
   {
     os_unfair_lock_unlock(&self->_lock);
-    [v5 cancel];
+    [subscriptionCopy cancel];
   }
 
   else
   {
     [(BPSSubscriptionStatus *)self->_status setState:1];
-    [(BPSSubscriptionStatus *)self->_status setSubscription:v5];
+    [(BPSSubscriptionStatus *)self->_status setSubscription:subscriptionCopy];
     os_unfair_lock_unlock(&self->_lock);
     [(BPSSubscriber *)self->_downstream receiveSubscription:self];
   }
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
-  v7 = self;
-  os_unfair_lock_lock(&v7->_lock);
-  v4 = _Block_copy(v7->_receiveRequest);
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  v4 = _Block_copy(selfCopy->_receiveRequest);
   if (v4)
   {
-    os_unfair_lock_unlock(&v7->_lock);
-    v4[2](v4, a3);
-    os_unfair_lock_lock(&v7->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    v4[2](v4, demand);
+    os_unfair_lock_lock(&selfCopy->_lock);
   }
 
-  v5 = [(BPSSubscriptionStatus *)v7->_status subscription];
-  v6 = [(BPSSubscriptionStatus *)v7->_status state];
-  os_unfair_lock_unlock(&v7->_lock);
-  if (v6 == 1)
+  subscription = [(BPSSubscriptionStatus *)selfCopy->_status subscription];
+  state = [(BPSSubscriptionStatus *)selfCopy->_status state];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  if (state == 1)
   {
-    [v5 requestDemand:a3];
+    [subscription requestDemand:demand];
   }
 }
 
@@ -190,11 +190,11 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BPSSubscriptionStatus *)self->_status subscription];
+  subscription = [(BPSSubscriptionStatus *)self->_status subscription];
   os_unfair_lock_unlock(&self->_lock);
-  if (v3)
+  if (subscription)
   {
-    v8[0] = v3;
+    v8[0] = subscription;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 

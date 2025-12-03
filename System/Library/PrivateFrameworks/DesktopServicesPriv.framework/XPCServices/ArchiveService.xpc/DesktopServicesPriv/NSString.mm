@@ -1,29 +1,29 @@
 @interface NSString
-+ (BOOL)ds_fileNameHasClaimedFileExtension:(id)a3;
-+ (id)ds_commonParentPathForItemURLs:(id)a3;
++ (BOOL)ds_fileNameHasClaimedFileExtension:(id)extension;
++ (id)ds_commonParentPathForItemURLs:(id)ls;
 @end
 
 @implementation NSString
 
-+ (id)ds_commonParentPathForItemURLs:(id)a3
++ (id)ds_commonParentPathForItemURLs:(id)ls
 {
-  v19 = a3;
-  if ([v19 count])
+  lsCopy = ls;
+  if ([lsCopy count])
   {
     v32 = 0;
     v33 = &v32;
     v34 = 0x3032000000;
     v35 = sub_10000A354;
     v36 = sub_10000A364;
-    v3 = [v19 firstObject];
-    v4 = [v3 URLByDeletingLastPathComponent];
-    v37 = [v4 pathComponents];
+    firstObject = [lsCopy firstObject];
+    uRLByDeletingLastPathComponent = [firstObject URLByDeletingLastPathComponent];
+    pathComponents = [uRLByDeletingLastPathComponent pathComponents];
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v5 = [v19 subarrayWithRange:{1, objc_msgSend(v19, "count") - 1}];
+    v5 = [lsCopy subarrayWithRange:{1, objc_msgSend(lsCopy, "count") - 1}];
     v6 = [v5 countByEnumeratingWithState:&v28 objects:v38 count:16];
     if (v6)
     {
@@ -37,7 +37,7 @@
             objc_enumerationMutation(v5);
           }
 
-          v9 = [*(*(&v28 + 1) + 8 * i) pathComponents];
+          pathComponents2 = [*(*(&v28 + 1) + 8 * i) pathComponents];
           v24 = 0;
           v25 = &v24;
           v26 = 0x2020000000;
@@ -48,7 +48,7 @@
           v20[3] = &unk_10002CF88;
           v22 = &v32;
           v23 = &v24;
-          v10 = v9;
+          v10 = pathComponents2;
           v21 = v10;
           [v10 enumerateObjectsUsingBlock:v20];
           if ((v25[3] & 1) == 0)
@@ -99,14 +99,14 @@
   return v16;
 }
 
-+ (BOOL)ds_fileNameHasClaimedFileExtension:(id)a3
++ (BOOL)ds_fileNameHasClaimedFileExtension:(id)extension
 {
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  if ([v4 length])
+  extensionCopy = extension;
+  pathExtension = [extensionCopy pathExtension];
+  if ([pathExtension length])
   {
-    v5 = [v3 pathExtension];
-    v6 = [UTType typeWithFilenameExtension:v5 conformingToType:UTTypeItem];
+    pathExtension2 = [extensionCopy pathExtension];
+    v6 = [UTType typeWithFilenameExtension:pathExtension2 conformingToType:UTTypeItem];
 
     if ([v6 isDeclared])
     {
@@ -116,13 +116,13 @@
     else
     {
       v8 = [LSClaimBinding alloc];
-      v9 = [v6 identifier];
-      v10 = [v8 initWithTypeIdentifier:v9 error:0];
+      identifier = [v6 identifier];
+      v10 = [v8 initWithTypeIdentifier:identifier error:0];
 
-      v11 = [v10 bundleRecord];
-      v12 = [v11 executableURL];
+      bundleRecord = [v10 bundleRecord];
+      executableURL = [bundleRecord executableURL];
 
-      v7 = v12 != 0;
+      v7 = executableURL != 0;
     }
   }
 

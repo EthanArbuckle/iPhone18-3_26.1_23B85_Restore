@@ -1,33 +1,33 @@
 @interface SFQuickLookDocumentView
-- (CGRect)frameForButtonAtIndex:(unint64_t)a3;
-- (SFQuickLookDocumentView)initWithFrame:(CGRect)a3;
+- (CGRect)frameForButtonAtIndex:(unint64_t)index;
+- (SFQuickLookDocumentView)initWithFrame:(CGRect)frame;
 - (SFQuickLookDocumentViewDelegate)quickLookDocumentViewDelegate;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4;
-- (void)_actionButtonTapped:(id)a3;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session;
+- (void)_actionButtonTapped:(id)tapped;
 - (void)_setUpLayoutConstraints;
 - (void)_updateOrientationBasedConstraints;
 - (void)_updatePropertiesDefinedByContentSizeCategory;
-- (void)updateActionTitles:(id)a3;
-- (void)updateDocumentIcon:(id)a3;
+- (void)updateActionTitles:(id)titles;
+- (void)updateDocumentIcon:(id)icon;
 @end
 
 @implementation SFQuickLookDocumentView
 
-- (SFQuickLookDocumentView)initWithFrame:(CGRect)a3
+- (SFQuickLookDocumentView)initWithFrame:(CGRect)frame
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = SFQuickLookDocumentView;
-  v3 = [(SFQuickLookDocumentView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFQuickLookDocumentView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-    [(SFQuickLookDocumentView *)v3 setBackgroundColor:v4];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    [(SFQuickLookDocumentView *)v3 setBackgroundColor:systemGroupedBackgroundColor];
 
-    v5 = [MEMORY[0x1E69DC888] sf_safariAccentColor];
-    [(SFQuickLookDocumentView *)v3 setTintColor:v5];
+    sf_safariAccentColor = [MEMORY[0x1E69DC888] sf_safariAccentColor];
+    [(SFQuickLookDocumentView *)v3 setTintColor:sf_safariAccentColor];
 
     [(SFQuickLookDocumentView *)v3 setAccessibilityIdentifier:@"QuickLookDocumentView"];
     v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -64,8 +64,8 @@
     [(UIStackView *)v3->_actionButtonsView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v3->_contentView addSubview:v3->_actionButtonsView];
     [(SFQuickLookDocumentView *)v3 _setUpLayoutConstraints];
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v3 selector:sel__updatePropertiesDefinedByContentSizeCategory name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__updatePropertiesDefinedByContentSizeCategory name:*MEMORY[0x1E69DDC48] object:0];
 
     [(SFQuickLookDocumentView *)v3 _updatePropertiesDefinedByContentSizeCategory];
     v22[0] = objc_opt_class();
@@ -78,7 +78,7 @@
   return v3;
 }
 
-- (void)updateActionTitles:(id)a3
+- (void)updateActionTitles:(id)titles
 {
   v28 = *MEMORY[0x1E69E9840];
   v25[0] = MEMORY[0x1E69E9820];
@@ -86,7 +86,7 @@
   v25[2] = __46__SFQuickLookDocumentView_updateActionTitles___block_invoke;
   v25[3] = &unk_1E721EF70;
   v25[4] = self;
-  v4 = [a3 safari_mapObjectsUsingBlock:v25];
+  v4 = [titles safari_mapObjectsUsingBlock:v25];
   actionButtons = self->_actionButtons;
   self->_actionButtons = v4;
 
@@ -94,8 +94,8 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(UIStackView *)self->_actionButtonsView arrangedSubviews];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  arrangedSubviews = [(UIStackView *)self->_actionButtonsView arrangedSubviews];
+  v7 = [arrangedSubviews countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -106,7 +106,7 @@
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
@@ -114,7 +114,7 @@
         [(UIStackView *)self->_actionButtonsView removeArrangedSubview:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v8 = [arrangedSubviews countByEnumeratingWithState:&v21 objects:v27 count:16];
     }
 
     while (v8);
@@ -163,17 +163,17 @@ id __46__SFQuickLookDocumentView_updateActionTitles___block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (void)updateDocumentIcon:(id)a3
+- (void)updateDocumentIcon:(id)icon
 {
   documentInfoView = self->_documentInfoView;
-  v4 = a3;
-  v5 = [(SFQuickLookDocumentInfoView *)documentInfoView iconImageView];
-  [v5 setImage:v4];
+  iconCopy = icon;
+  iconImageView = [(SFQuickLookDocumentInfoView *)documentInfoView iconImageView];
+  [iconImageView setImage:iconCopy];
 }
 
-- (CGRect)frameForButtonAtIndex:(unint64_t)a3
+- (CGRect)frameForButtonAtIndex:(unint64_t)index
 {
-  v4 = [(NSArray *)self->_actionButtons objectAtIndexedSubscript:a3];
+  v4 = [(NSArray *)self->_actionButtons objectAtIndexedSubscript:index];
   [v4 bounds];
   [(SFQuickLookDocumentView *)self convertRect:v4 fromView:?];
   v6 = v5;
@@ -195,86 +195,86 @@ id __46__SFQuickLookDocumentView_updateActionTitles___block_invoke(uint64_t a1, 
 - (void)_setUpLayoutConstraints
 {
   v64[19] = *MEMORY[0x1E69E9840];
-  v3 = [(UIStackView *)self->_actionButtonsView topAnchor];
-  v4 = [(SFQuickLookDocumentInfoView *)self->_documentInfoView bottomAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  topAnchor = [(UIStackView *)self->_actionButtonsView topAnchor];
+  bottomAnchor = [(SFQuickLookDocumentInfoView *)self->_documentInfoView bottomAnchor];
+  v5 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   documentInfoViewBottomAnchorConstraint = self->_documentInfoViewBottomAnchorConstraint;
   self->_documentInfoViewBottomAnchorConstraint = v5;
 
   v42 = MEMORY[0x1E696ACD8];
-  v63 = [(UIView *)self->_wrapperView topAnchor];
-  v62 = [(SFQuickLookDocumentView *)self topAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  topAnchor2 = [(UIView *)self->_wrapperView topAnchor];
+  topAnchor3 = [(SFQuickLookDocumentView *)self topAnchor];
+  v61 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v64[0] = v61;
-  v60 = [(UIView *)self->_wrapperView bottomAnchor];
-  v59 = [(SFQuickLookDocumentView *)self bottomAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  bottomAnchor2 = [(UIView *)self->_wrapperView bottomAnchor];
+  bottomAnchor3 = [(SFQuickLookDocumentView *)self bottomAnchor];
+  v58 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v64[1] = v58;
-  v57 = [(UIView *)self->_wrapperView leadingAnchor];
-  v56 = [(SFQuickLookDocumentView *)self leadingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  leadingAnchor = [(UIView *)self->_wrapperView leadingAnchor];
+  leadingAnchor2 = [(SFQuickLookDocumentView *)self leadingAnchor];
+  v55 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v64[2] = v55;
-  v54 = [(UIView *)self->_wrapperView trailingAnchor];
-  v53 = [(SFQuickLookDocumentView *)self trailingAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  trailingAnchor = [(UIView *)self->_wrapperView trailingAnchor];
+  trailingAnchor2 = [(SFQuickLookDocumentView *)self trailingAnchor];
+  v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v64[3] = v52;
-  v51 = [(UIView *)self->_wrapperView centerXAnchor];
-  v50 = [(SFQuickLookDocumentView *)self centerXAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  centerXAnchor = [(UIView *)self->_wrapperView centerXAnchor];
+  centerXAnchor2 = [(SFQuickLookDocumentView *)self centerXAnchor];
+  v49 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v64[4] = v49;
-  v48 = [(UIView *)self->_wrapperView heightAnchor];
-  v47 = [(SFQuickLookDocumentView *)self heightAnchor];
-  v46 = [v48 constraintGreaterThanOrEqualToAnchor:v47];
+  heightAnchor = [(UIView *)self->_wrapperView heightAnchor];
+  heightAnchor2 = [(SFQuickLookDocumentView *)self heightAnchor];
+  v46 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
   v64[5] = v46;
-  v45 = [(UIView *)self->_contentView topAnchor];
-  v44 = [(UIView *)self->_wrapperView topAnchor];
-  v43 = [v45 constraintGreaterThanOrEqualToAnchor:v44 constant:16.0];
+  topAnchor4 = [(UIView *)self->_contentView topAnchor];
+  topAnchor5 = [(UIView *)self->_wrapperView topAnchor];
+  v43 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5 constant:16.0];
   v64[6] = v43;
-  v41 = [(UIView *)self->_contentView bottomAnchor];
-  v40 = [(UIView *)self->_wrapperView bottomAnchor];
-  v39 = [v41 constraintLessThanOrEqualToAnchor:v40 constant:-16.0];
+  bottomAnchor4 = [(UIView *)self->_contentView bottomAnchor];
+  bottomAnchor5 = [(UIView *)self->_wrapperView bottomAnchor];
+  v39 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:bottomAnchor5 constant:-16.0];
   v64[7] = v39;
-  v38 = [(UIView *)self->_contentView leadingAnchor];
-  v37 = [(UIView *)self->_wrapperView leadingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37 constant:10.0];
+  leadingAnchor3 = [(UIView *)self->_contentView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_wrapperView leadingAnchor];
+  v36 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:10.0];
   v64[8] = v36;
-  v35 = [(UIView *)self->_contentView trailingAnchor];
-  v34 = [(UIView *)self->_wrapperView trailingAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34 constant:-10.0];
+  trailingAnchor3 = [(UIView *)self->_contentView trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_wrapperView trailingAnchor];
+  v33 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-10.0];
   v64[9] = v33;
-  v32 = [(UIView *)self->_contentView centerXAnchor];
-  v31 = [(UIView *)self->_wrapperView centerXAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  centerXAnchor3 = [(UIView *)self->_contentView centerXAnchor];
+  centerXAnchor4 = [(UIView *)self->_wrapperView centerXAnchor];
+  v30 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v64[10] = v30;
-  v29 = [(UIView *)self->_contentView centerYAnchor];
-  v28 = [(UIView *)self->_wrapperView centerYAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  centerYAnchor = [(UIView *)self->_contentView centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_wrapperView centerYAnchor];
+  v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v7 = self->_documentInfoViewBottomAnchorConstraint;
   v64[11] = v27;
   v64[12] = v7;
-  v26 = [(SFQuickLookDocumentInfoView *)self->_documentInfoView centerXAnchor];
-  v25 = [(UIView *)self->_contentView centerXAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  centerXAnchor5 = [(SFQuickLookDocumentInfoView *)self->_documentInfoView centerXAnchor];
+  centerXAnchor6 = [(UIView *)self->_contentView centerXAnchor];
+  v24 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v64[13] = v24;
-  v23 = [(SFQuickLookDocumentInfoView *)self->_documentInfoView topAnchor];
-  v22 = [(UIView *)self->_contentView topAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  topAnchor6 = [(SFQuickLookDocumentInfoView *)self->_documentInfoView topAnchor];
+  topAnchor7 = [(UIView *)self->_contentView topAnchor];
+  v21 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
   v64[14] = v21;
-  v20 = [(SFQuickLookDocumentInfoView *)self->_documentInfoView widthAnchor];
-  v19 = [(UIView *)self->_contentView widthAnchor];
-  v18 = [v20 constraintLessThanOrEqualToAnchor:v19];
+  widthAnchor = [(SFQuickLookDocumentInfoView *)self->_documentInfoView widthAnchor];
+  widthAnchor2 = [(UIView *)self->_contentView widthAnchor];
+  v18 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
   v64[15] = v18;
-  v17 = [(UIStackView *)self->_actionButtonsView centerXAnchor];
-  v8 = [(UIView *)self->_contentView centerXAnchor];
-  v9 = [v17 constraintEqualToAnchor:v8];
+  centerXAnchor7 = [(UIStackView *)self->_actionButtonsView centerXAnchor];
+  centerXAnchor8 = [(UIView *)self->_contentView centerXAnchor];
+  v9 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   v64[16] = v9;
-  v10 = [(UIStackView *)self->_actionButtonsView widthAnchor];
-  v11 = [(UIView *)self->_contentView widthAnchor];
-  v12 = [v10 constraintLessThanOrEqualToAnchor:v11];
+  widthAnchor3 = [(UIStackView *)self->_actionButtonsView widthAnchor];
+  widthAnchor4 = [(UIView *)self->_contentView widthAnchor];
+  v12 = [widthAnchor3 constraintLessThanOrEqualToAnchor:widthAnchor4];
   v64[17] = v12;
-  v13 = [(UIStackView *)self->_actionButtonsView bottomAnchor];
-  v14 = [(UIView *)self->_contentView bottomAnchor];
-  v15 = [v13 constraintLessThanOrEqualToAnchor:v14];
+  bottomAnchor6 = [(UIStackView *)self->_actionButtonsView bottomAnchor];
+  bottomAnchor7 = [(UIView *)self->_contentView bottomAnchor];
+  v15 = [bottomAnchor6 constraintLessThanOrEqualToAnchor:bottomAnchor7];
   v64[18] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:19];
   [v42 activateConstraints:v16];
@@ -284,11 +284,11 @@ id __46__SFQuickLookDocumentView_updateActionTitles___block_invoke(uint64_t a1, 
 
 - (void)_updateOrientationBasedConstraints
 {
-  v3 = [(SFQuickLookDocumentView *)self traitCollection];
-  v4 = [v3 verticalSizeClass];
+  traitCollection = [(SFQuickLookDocumentView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
   v5 = 56.0;
-  if (v4 == 1)
+  if (verticalSizeClass == 1)
   {
     v5 = 32.0;
   }
@@ -324,8 +324,8 @@ id __46__SFQuickLookDocumentView_updateActionTitles___block_invoke(uint64_t a1, 
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) titleLabel];
-        [v10 setFont:v4];
+        titleLabel = [*(*(&v11 + 1) + 8 * v9) titleLabel];
+        [titleLabel setFont:v4];
 
         ++v9;
       }
@@ -341,17 +341,17 @@ id __46__SFQuickLookDocumentView_updateActionTitles___block_invoke(uint64_t a1, 
   [(UIStackView *)self->_actionButtonsView setSpacing:?];
 }
 
-- (void)_actionButtonTapped:(id)a3
+- (void)_actionButtonTapped:(id)tapped
 {
-  v5 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_quickLookDocumentViewDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained quickLookDocumentView:self didSelectActionAtIndex:{-[NSArray indexOfObjectIdenticalTo:](self->_actionButtons, "indexOfObjectIdenticalTo:", v5)}];
+    [WeakRetained quickLookDocumentView:self didSelectActionAtIndex:{-[NSArray indexOfObjectIdenticalTo:](self->_actionButtons, "indexOfObjectIdenticalTo:", tappedCopy)}];
   }
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v10[1] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_quickLookDocumentViewDelegate);
@@ -371,20 +371,20 @@ id __46__SFQuickLookDocumentView_updateActionTitles___block_invoke(uint64_t a1, 
   return v8;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
   v6 = objc_alloc_init(MEMORY[0x1E69DC9A0]);
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
   v8 = objc_alloc(MEMORY[0x1E69DD068]);
-  v9 = [(SFQuickLookDocumentInfoView *)self->_documentInfoView iconImageView];
-  v10 = [v8 initWithView:v9 parameters:v6];
+  iconImageView = [(SFQuickLookDocumentInfoView *)self->_documentInfoView iconImageView];
+  v10 = [v8 initWithView:iconImageView parameters:v6];
 
   return v10;
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session
 {
   WeakRetained = objc_loadWeakRetained(&self->_quickLookDocumentViewDelegate);
   v6 = [WeakRetained dataOwnerForQuickLookDocumentView:self];

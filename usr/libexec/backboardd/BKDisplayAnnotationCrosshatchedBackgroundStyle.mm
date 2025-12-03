@@ -1,13 +1,13 @@
 @interface BKDisplayAnnotationCrosshatchedBackgroundStyle
-- (void)applyToLayer:(id)a3 forContent:(id)a4;
+- (void)applyToLayer:(id)layer forContent:(id)content;
 @end
 
 @implementation BKDisplayAnnotationCrosshatchedBackgroundStyle
 
-- (void)applyToLayer:(id)a3 forContent:(id)a4
+- (void)applyToLayer:(id)layer forContent:(id)content
 {
-  v4 = a3;
-  [v4 bk_setBackgroundColorRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+  layerCopy = layer;
+  [layerCopy bk_setBackgroundColorRed:0.0 green:0.0 blue:0.0 alpha:0.0];
   *&v10.version = unk_1000FA9D8;
   v10.releaseInfo = 0;
   CGAffineTransformMakeRotation(&matrix, 1.0);
@@ -28,12 +28,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v4 setFillColor:{v9, *&v10.version, v10.releaseInfo}];
+        [layerCopy setFillColor:{v9, *&v10.version, v10.releaseInfo}];
       }
 
       else
       {
-        [v4 setBackgroundColor:{v9, *&v10.version, v10.releaseInfo}];
+        [layerCopy setBackgroundColor:{v9, *&v10.version, v10.releaseInfo}];
       }
 
       CFRelease(v9);

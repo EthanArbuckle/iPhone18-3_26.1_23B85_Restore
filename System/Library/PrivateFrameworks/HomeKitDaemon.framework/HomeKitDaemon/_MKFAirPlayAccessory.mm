@@ -1,6 +1,6 @@
 @interface _MKFAirPlayAccessory
 + (NSPredicate)homeRelation;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFAirPlayAccessoryDatabaseID)databaseID;
 - (NSArray)pairedUsers;
 @end
@@ -19,9 +19,9 @@
   return v3;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -36,9 +36,9 @@
 - (NSArray)pairedUsers
 {
   v2 = [(_MKFAirPlayAccessory *)self valueForKey:@"pairedUsers_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFAirPlayAccessoryDatabaseID)databaseID

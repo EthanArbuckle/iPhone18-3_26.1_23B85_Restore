@@ -1,7 +1,7 @@
 @interface AKCircleRequestContext
 - (AKCircleRequestContext)init;
-- (AKCircleRequestContext)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AKCircleRequestContext)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKCircleRequestContext
@@ -26,69 +26,69 @@
   return v3;
 }
 
-- (AKCircleRequestContext)initWithCoder:(id)a3
+- (AKCircleRequestContext)initWithCoder:(id)coder
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v22;
-  v22 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v20.receiver = v3;
   v20.super_class = AKCircleRequestContext;
   v19 = [(AKCircleRequestContext *)&v20 init];
-  v22 = v19;
-  objc_storeStrong(&v22, v19);
+  selfCopy = v19;
+  objc_storeStrong(&selfCopy, v19);
   if (v19)
   {
     v4 = [location[0] decodeBoolForKey:@"_waitForReply"];
-    v22->_waitForReply = v4;
+    selfCopy->_waitForReply = v4;
     v5 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_identityTokenValue"];
-    identityTokenValue = v22->_identityTokenValue;
-    v22->_identityTokenValue = v5;
+    identityTokenValue = selfCopy->_identityTokenValue;
+    selfCopy->_identityTokenValue = v5;
     MEMORY[0x1E69E5920](identityTokenValue);
     v7 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_heartbeatTokenValue"];
-    heartbeatTokenValue = v22->_heartbeatTokenValue;
-    v22->_heartbeatTokenValue = v7;
+    heartbeatTokenValue = selfCopy->_heartbeatTokenValue;
+    selfCopy->_heartbeatTokenValue = v7;
     MEMORY[0x1E69E5920](heartbeatTokenValue);
     v9 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_pushToken"];
-    pushToken = v22->_pushToken;
-    v22->_pushToken = v9;
+    pushToken = selfCopy->_pushToken;
+    selfCopy->_pushToken = v9;
     MEMORY[0x1E69E5920](pushToken);
     v11 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_payload"];
-    payload = v22->_payload;
-    v22->_payload = v11;
+    payload = selfCopy->_payload;
+    selfCopy->_payload = v11;
     MEMORY[0x1E69E5920](payload);
     [location[0] decodeDoubleForKey:@"_waitForReplyTimeout"];
-    v22->_waitForReplyTimeout = v13;
+    selfCopy->_waitForReplyTimeout = v13;
     v14 = [location[0] decodeBoolForKey:@"__notifyOfTimeout"];
-    v22->__notifyOfTimeout = v14;
+    selfCopy->__notifyOfTimeout = v14;
     v15 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_authContext"];
-    authContext = v22->_authContext;
-    v22->_authContext = v15;
+    authContext = selfCopy->_authContext;
+    selfCopy->_authContext = v15;
     MEMORY[0x1E69E5920](authContext);
   }
 
-  v18 = MEMORY[0x1E69E5928](v22);
+  v18 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeBool:v4->_waitForReply forKey:@"_waitForReply"];
-  [location[0] encodeObject:v4->_identityTokenValue forKey:@"_identityTokenValue"];
-  [location[0] encodeObject:v4->_heartbeatTokenValue forKey:@"_heartbeatTokenValue"];
-  [location[0] encodeObject:v4->_pushToken forKey:@"_pushToken"];
-  [location[0] encodeObject:v4->_payload forKey:@"_payload"];
-  [location[0] encodeDouble:@"_waitForReplyTimeout" forKey:v4->_waitForReplyTimeout];
-  [location[0] encodeBool:v4->__notifyOfTimeout forKey:@"__notifyOfTimeout"];
-  [location[0] encodeObject:v4->_authContext forKey:@"_authContext"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeBool:selfCopy->_waitForReply forKey:@"_waitForReply"];
+  [location[0] encodeObject:selfCopy->_identityTokenValue forKey:@"_identityTokenValue"];
+  [location[0] encodeObject:selfCopy->_heartbeatTokenValue forKey:@"_heartbeatTokenValue"];
+  [location[0] encodeObject:selfCopy->_pushToken forKey:@"_pushToken"];
+  [location[0] encodeObject:selfCopy->_payload forKey:@"_payload"];
+  [location[0] encodeDouble:@"_waitForReplyTimeout" forKey:selfCopy->_waitForReplyTimeout];
+  [location[0] encodeBool:selfCopy->__notifyOfTimeout forKey:@"__notifyOfTimeout"];
+  [location[0] encodeObject:selfCopy->_authContext forKey:@"_authContext"];
   objc_storeStrong(location, 0);
 }
 

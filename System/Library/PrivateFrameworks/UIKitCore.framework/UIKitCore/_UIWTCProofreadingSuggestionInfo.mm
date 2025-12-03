@@ -1,98 +1,98 @@
 @interface _UIWTCProofreadingSuggestionInfo
 - (_NSRange)originalRange;
-- (_UIWTCProofreadingSuggestionInfo)initWithProofreadingSuggestionInfo:(id)a3 state:(int64_t)a4;
-- (_UIWTCProofreadingSuggestionInfo)initWithWTTextSuggestion:(id)a3 withOffset:(unint64_t)a4 inAttributedString:(id)a5 contextID:(id)a6;
-- (id)decorationContainerForSubrange:(_NSRange)a3;
+- (_UIWTCProofreadingSuggestionInfo)initWithProofreadingSuggestionInfo:(id)info state:(int64_t)state;
+- (_UIWTCProofreadingSuggestionInfo)initWithWTTextSuggestion:(id)suggestion withOffset:(unint64_t)offset inAttributedString:(id)string contextID:(id)d;
+- (id)decorationContainerForSubrange:(_NSRange)subrange;
 - (id)description;
 @end
 
 @implementation _UIWTCProofreadingSuggestionInfo
 
-- (_UIWTCProofreadingSuggestionInfo)initWithWTTextSuggestion:(id)a3 withOffset:(unint64_t)a4 inAttributedString:(id)a5 contextID:(id)a6
+- (_UIWTCProofreadingSuggestionInfo)initWithWTTextSuggestion:(id)suggestion withOffset:(unint64_t)offset inAttributedString:(id)string contextID:(id)d
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  suggestionCopy = suggestion;
+  stringCopy = string;
+  dCopy = d;
   v23.receiver = self;
   v23.super_class = _UIWTCProofreadingSuggestionInfo;
   v13 = [(_UIWTCProofreadingSuggestionInfo *)&v23 init];
   if (v13)
   {
-    v14 = [v10 uuid];
+    uuid = [suggestionCopy uuid];
     identifier = v13->_identifier;
-    v13->_identifier = v14;
+    v13->_identifier = uuid;
 
-    v13->_originalRange.location = [v10 originalRange] - a4;
+    v13->_originalRange.location = [suggestionCopy originalRange] - offset;
     v13->_originalRange.length = v16;
     v17 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v18 = [v10 replacement];
-    v19 = [v11 attributesAtIndex:v13->_originalRange.location effectiveRange:0];
-    v20 = [v17 initWithString:v18 attributes:v19];
+    replacement = [suggestionCopy replacement];
+    v19 = [stringCopy attributesAtIndex:v13->_originalRange.location effectiveRange:0];
+    v20 = [v17 initWithString:replacement attributes:v19];
     attributedString = v13->_attributedString;
     v13->_attributedString = v20;
 
     v13->_lengthDelta = [(NSAttributedString *)v13->_attributedString length]- v13->_originalRange.length;
-    v13->_state = [v10 state];
-    objc_storeStrong(&v13->_contextID, a6);
+    v13->_state = [suggestionCopy state];
+    objc_storeStrong(&v13->_contextID, d);
   }
 
   return v13;
 }
 
-- (_UIWTCProofreadingSuggestionInfo)initWithProofreadingSuggestionInfo:(id)a3 state:(int64_t)a4
+- (_UIWTCProofreadingSuggestionInfo)initWithProofreadingSuggestionInfo:(id)info state:(int64_t)state
 {
-  v6 = a3;
+  infoCopy = info;
   v23.receiver = self;
   v23.super_class = _UIWTCProofreadingSuggestionInfo;
   v7 = [(_UIWTCProofreadingSuggestionInfo *)&v23 init];
   v8 = v7;
   if (v7)
   {
-    v7->_state = a4;
-    v9 = [v6 identifier];
+    v7->_state = state;
+    identifier = [infoCopy identifier];
     identifier = v8->_identifier;
-    v8->_identifier = v9;
+    v8->_identifier = identifier;
 
-    v11 = [v6 contextID];
+    contextID = [infoCopy contextID];
     contextID = v8->_contextID;
-    v8->_contextID = v11;
+    v8->_contextID = contextID;
 
-    v8->_originalRange.location = [v6 originalRange];
+    v8->_originalRange.location = [infoCopy originalRange];
     v8->_originalRange.length = v13;
-    v14 = [v6 attributedString];
+    attributedString = [infoCopy attributedString];
     attributedString = v8->_attributedString;
-    v8->_attributedString = v14;
+    v8->_attributedString = attributedString;
 
-    v8->_lengthDelta = [v6 lengthDelta];
-    v16 = [v6 singleContainerSubrangesOfAdjustedOriginalRange];
+    v8->_lengthDelta = [infoCopy lengthDelta];
+    singleContainerSubrangesOfAdjustedOriginalRange = [infoCopy singleContainerSubrangesOfAdjustedOriginalRange];
     singleContainerSubrangesOfAdjustedOriginalRange = v8->_singleContainerSubrangesOfAdjustedOriginalRange;
-    v8->_singleContainerSubrangesOfAdjustedOriginalRange = v16;
+    v8->_singleContainerSubrangesOfAdjustedOriginalRange = singleContainerSubrangesOfAdjustedOriginalRange;
 
-    v18 = [v6 underlineInfo];
+    underlineInfo = [infoCopy underlineInfo];
     underlineInfo = v8->_underlineInfo;
-    v8->_underlineInfo = v18;
+    v8->_underlineInfo = underlineInfo;
 
-    v20 = [v6 highlightInfo];
+    highlightInfo = [infoCopy highlightInfo];
     highlightInfo = v8->_highlightInfo;
-    v8->_highlightInfo = v20;
+    v8->_highlightInfo = highlightInfo;
   }
 
   return v8;
 }
 
-- (id)decorationContainerForSubrange:(_NSRange)a3
+- (id)decorationContainerForSubrange:(_NSRange)subrange
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(_UIWTCProofreadingDecorationInfo *)self->_underlineInfo containers];
+  length = subrange.length;
+  location = subrange.location;
+  containers = [(_UIWTCProofreadingDecorationInfo *)self->_underlineInfo containers];
   v7 = [MEMORY[0x1E696B098] valueWithRange:{location, length}];
-  v8 = [v6 objectForKey:v7];
+  v8 = [containers objectForKey:v7];
 
   if (!v8)
   {
-    v9 = [(_UIWTCProofreadingDecorationInfo *)self->_highlightInfo containers];
+    containers2 = [(_UIWTCProofreadingDecorationInfo *)self->_highlightInfo containers];
     v10 = [MEMORY[0x1E696B098] valueWithRange:{location, length}];
-    v8 = [v9 objectForKey:v10];
+    v8 = [containers2 objectForKey:v10];
   }
 
   return v8;
@@ -138,8 +138,8 @@
     v7 = v10;
   }
 
-  v11 = [(NSAttributedString *)self->_attributedString string];
-  v12 = [v7 stringByAppendingFormat:@" replacement=%@", v11];
+  string = [(NSAttributedString *)self->_attributedString string];
+  v12 = [v7 stringByAppendingFormat:@" replacement=%@", string];
 
   return v12;
 }

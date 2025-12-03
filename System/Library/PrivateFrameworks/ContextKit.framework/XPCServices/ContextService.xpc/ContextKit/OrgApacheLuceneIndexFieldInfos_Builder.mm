@@ -1,35 +1,35 @@
 @interface OrgApacheLuceneIndexFieldInfos_Builder
-- (OrgApacheLuceneIndexFieldInfos_Builder)initWithOrgApacheLuceneIndexFieldInfos_FieldNumbers:(id)a3;
-- (id)addWithOrgApacheLuceneIndexFieldInfo:(id)a3;
-- (id)fieldInfoWithNSString:(id)a3;
+- (OrgApacheLuceneIndexFieldInfos_Builder)initWithOrgApacheLuceneIndexFieldInfos_FieldNumbers:(id)numbers;
+- (id)addWithOrgApacheLuceneIndexFieldInfo:(id)info;
+- (id)fieldInfoWithNSString:(id)string;
 - (id)finish;
-- (id)getOrAddWithNSString:(id)a3;
-- (void)addWithOrgApacheLuceneIndexFieldInfos:(id)a3;
+- (id)getOrAddWithNSString:(id)string;
+- (void)addWithOrgApacheLuceneIndexFieldInfos:(id)infos;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexFieldInfos_Builder
 
-- (OrgApacheLuceneIndexFieldInfos_Builder)initWithOrgApacheLuceneIndexFieldInfos_FieldNumbers:(id)a3
+- (OrgApacheLuceneIndexFieldInfos_Builder)initWithOrgApacheLuceneIndexFieldInfos_FieldNumbers:(id)numbers
 {
   v5 = new_JavaUtilHashMap_init();
   JreStrongAssignAndConsume(&self->byName_, v5);
-  JreStrongAssign(&self->globalFieldNumbers_, a3);
+  JreStrongAssign(&self->globalFieldNumbers_, numbers);
   return self;
 }
 
-- (void)addWithOrgApacheLuceneIndexFieldInfos:(id)a3
+- (void)addWithOrgApacheLuceneIndexFieldInfos:(id)infos
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  if (!a3)
+  if (!infos)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [infos countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -40,20 +40,20 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(infos);
         }
 
         [(OrgApacheLuceneIndexFieldInfos_Builder *)self addWithOrgApacheLuceneIndexFieldInfo:*(*(&v9 + 1) + 8 * i), v9];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [infos countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)getOrAddWithNSString:(id)a3
+- (id)getOrAddWithNSString:(id)string
 {
   v5 = [(OrgApacheLuceneIndexFieldInfos_Builder *)self fieldInfoWithNSString:?];
   if (!v5)
@@ -69,7 +69,7 @@
       sub_10001B990();
     }
 
-    v7 = [(OrgApacheLuceneIndexFieldInfos_FieldNumbers *)globalFieldNumbers addOrGetWithNSString:a3 withInt:0xFFFFFFFFLL withOrgApacheLuceneIndexDocValuesTypeEnum:OrgApacheLuceneIndexDocValuesTypeEnum_values_];
+    v7 = [(OrgApacheLuceneIndexFieldInfos_FieldNumbers *)globalFieldNumbers addOrGetWithNSString:string withInt:0xFFFFFFFFLL withOrgApacheLuceneIndexDocValuesTypeEnum:OrgApacheLuceneIndexDocValuesTypeEnum_values_];
     if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
     {
       sub_100015608();
@@ -83,7 +83,7 @@
 
     v9 = OrgApacheLuceneIndexDocValuesTypeEnum_values_;
     v10 = new_JavaUtilHashMap_init();
-    v5 = new_OrgApacheLuceneIndexFieldInfo_initWithNSString_withInt_withBoolean_withBoolean_withBoolean_withOrgApacheLuceneIndexIndexOptionsEnum_withOrgApacheLuceneIndexDocValuesTypeEnum_withLong_withJavaUtilMap_(a3, v7, 0, 0, 0, v8, v9, -1, v10);
+    v5 = new_OrgApacheLuceneIndexFieldInfo_initWithNSString_withInt_withBoolean_withBoolean_withBoolean_withOrgApacheLuceneIndexIndexOptionsEnum_withOrgApacheLuceneIndexDocValuesTypeEnum_withLong_withJavaUtilMap_(string, v7, 0, 0, 0, v8, v9, -1, v10);
     v11 = self->globalFieldNumbers_;
     v12 = JavaLangInteger_valueOfWithInt_(v5->number_);
     name = v5->name_;
@@ -99,25 +99,25 @@
   return v5;
 }
 
-- (id)addWithOrgApacheLuceneIndexFieldInfo:(id)a3
+- (id)addWithOrgApacheLuceneIndexFieldInfo:(id)info
 {
-  if (!a3)
+  if (!info)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = *(a3 + 1);
-  v6 = *(a3 + 4);
-  v7 = [a3 hasVectors];
-  v8 = [a3 omitsNorms];
-  v9 = [a3 hasPayloads];
-  v10 = [a3 getIndexOptions];
-  v11 = [a3 getDocValuesType];
+  v5 = *(info + 1);
+  v6 = *(info + 4);
+  hasVectors = [info hasVectors];
+  omitsNorms = [info omitsNorms];
+  hasPayloads = [info hasPayloads];
+  getIndexOptions = [info getIndexOptions];
+  getDocValuesType = [info getDocValuesType];
 
-  return sub_10003D340(&self->super.isa, v5, v6, v7, v8, v9, v10, v11);
+  return sub_10003D340(&self->super.isa, v5, v6, hasVectors, omitsNorms, hasPayloads, getIndexOptions, getDocValuesType);
 }
 
-- (id)fieldInfoWithNSString:(id)a3
+- (id)fieldInfoWithNSString:(id)string
 {
   byName = self->byName_;
   if (!byName)
@@ -125,7 +125,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilHashMap *)byName getWithId:a3];
+  return [(JavaUtilHashMap *)byName getWithId:string];
 }
 
 - (id)finish

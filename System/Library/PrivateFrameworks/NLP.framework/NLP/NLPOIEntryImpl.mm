@@ -1,13 +1,13 @@
 @interface NLPOIEntryImpl
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLPOIEntryImpl
@@ -31,12 +31,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v5 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   domain = self->_domain;
@@ -60,7 +60,7 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_name)
   {
@@ -81,42 +81,42 @@
   {
     v3.n128_u32[0] = LODWORD(self->_score);
 
-    MEMORY[0x2821A42D0](a3, 4, v3);
+    MEMORY[0x2821A42D0](to, 4, v3);
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_name)
   {
-    [a3 setName:?];
+    [to setName:?];
   }
 
   if (self->_domain)
   {
-    [a3 setDomain:?];
+    [to setDomain:?];
   }
 
   if (self->_category)
   {
-    [a3 setCategory:?];
+    [to setCategory:?];
   }
 
   if (*&self->_has)
   {
-    *(a3 + 8) = LODWORD(self->_score);
-    *(a3 + 36) |= 1u;
+    *(to + 8) = LODWORD(self->_score);
+    *(to + 36) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 24) = [(NSString *)self->_name copyWithZone:a3];
-  *(v5 + 16) = [(NSString *)self->_domain copyWithZone:a3];
+  *(v5 + 24) = [(NSString *)self->_name copyWithZone:zone];
+  *(v5 + 16) = [(NSString *)self->_domain copyWithZone:zone];
 
-  *(v5 + 8) = [(NSString *)self->_category copyWithZone:a3];
+  *(v5 + 8) = [(NSString *)self->_category copyWithZone:zone];
   if (*&self->_has)
   {
     *(v5 + 32) = self->_score;
@@ -126,24 +126,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     name = self->_name;
-    if (!(name | *(a3 + 3)) || (v5 = [(NSString *)name isEqual:?]) != 0)
+    if (!(name | *(equal + 3)) || (v5 = [(NSString *)name isEqual:?]) != 0)
     {
       domain = self->_domain;
-      if (!(domain | *(a3 + 2)) || (v5 = [(NSString *)domain isEqual:?]) != 0)
+      if (!(domain | *(equal + 2)) || (v5 = [(NSString *)domain isEqual:?]) != 0)
       {
         category = self->_category;
-        if (!(category | *(a3 + 1)) || (v5 = [(NSString *)category isEqual:?]) != 0)
+        if (!(category | *(equal + 1)) || (v5 = [(NSString *)category isEqual:?]) != 0)
         {
-          LOBYTE(v5) = (*(a3 + 36) & 1) == 0;
+          LOBYTE(v5) = (*(equal + 36) & 1) == 0;
           if (*&self->_has)
           {
-            LOBYTE(v5) = (*(a3 + 36) & 1) != 0 && self->_score == *(a3 + 8);
+            LOBYTE(v5) = (*(equal + 36) & 1) != 0 && self->_score == *(equal + 8);
           }
         }
       }
@@ -199,26 +199,26 @@
   return v4 ^ v3 ^ v5 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(NLPOIEntryImpl *)self setName:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(NLPOIEntryImpl *)self setDomain:?];
   }
 
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(NLPOIEntryImpl *)self setCategory:?];
   }
 
-  if (*(a3 + 36))
+  if (*(from + 36))
   {
-    self->_score = *(a3 + 8);
+    self->_score = *(from + 8);
     *&self->_has |= 1u;
   }
 }

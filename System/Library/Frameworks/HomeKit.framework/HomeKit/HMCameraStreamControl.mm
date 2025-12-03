@@ -1,71 +1,71 @@
 @interface HMCameraStreamControl
 - (HMCameraStream)cameraStream;
 - (HMCameraStreamControl)init;
-- (HMCameraStreamControl)initWithStreamControl:(id)a3;
+- (HMCameraStreamControl)initWithStreamControl:(id)control;
 - (HMCameraStreamState)streamState;
 - (id)delegate;
-- (void)cameraStreamControl:(id)a3 didStopStreamWithError:(id)a4;
-- (void)cameraStreamControlDidStartStream:(id)a3;
+- (void)cameraStreamControl:(id)control didStopStreamWithError:(id)error;
+- (void)cameraStreamControlDidStartStream:(id)stream;
 - (void)setDelegate:(id)delegate;
 - (void)startStream;
-- (void)startStreamWithPreferences:(id)a3;
+- (void)startStreamWithPreferences:(id)preferences;
 - (void)stopStream;
 @end
 
 @implementation HMCameraStreamControl
 
-- (void)cameraStreamControl:(id)a3 didStopStreamWithError:(id)a4
+- (void)cameraStreamControl:(id)control didStopStreamWithError:(id)error
 {
-  v6 = a4;
-  v5 = [(HMCameraStreamControl *)self delegate];
+  errorCopy = error;
+  delegate = [(HMCameraStreamControl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 cameraStreamControl:self didStopStreamWithError:v6];
+    [delegate cameraStreamControl:self didStopStreamWithError:errorCopy];
   }
 }
 
-- (void)cameraStreamControlDidStartStream:(id)a3
+- (void)cameraStreamControlDidStartStream:(id)stream
 {
-  v4 = [(HMCameraStreamControl *)self delegate];
+  delegate = [(HMCameraStreamControl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 cameraStreamControlDidStartStream:self];
+    [delegate cameraStreamControlDidStartStream:self];
   }
 }
 
 - (void)stopStream
 {
-  v2 = [(HMCameraStreamControl *)self streamControl];
-  [v2 stopStream];
+  streamControl = [(HMCameraStreamControl *)self streamControl];
+  [streamControl stopStream];
 }
 
-- (void)startStreamWithPreferences:(id)a3
+- (void)startStreamWithPreferences:(id)preferences
 {
-  v4 = a3;
-  v5 = [(HMCameraStreamControl *)self streamControl];
-  [v5 startStreamWithPreferences:v4];
+  preferencesCopy = preferences;
+  streamControl = [(HMCameraStreamControl *)self streamControl];
+  [streamControl startStreamWithPreferences:preferencesCopy];
 }
 
 - (void)startStream
 {
-  v2 = [(HMCameraStreamControl *)self streamControl];
-  [v2 startStreamWithPreferences:0];
+  streamControl = [(HMCameraStreamControl *)self streamControl];
+  [streamControl startStreamWithPreferences:0];
 }
 
 - (HMCameraStream)cameraStream
 {
-  v2 = [(HMCameraStreamControl *)self streamControl];
-  v3 = [v2 cameraStream];
+  streamControl = [(HMCameraStreamControl *)self streamControl];
+  cameraStream = [streamControl cameraStream];
 
-  return v3;
+  return cameraStream;
 }
 
 - (HMCameraStreamState)streamState
 {
-  v2 = [(HMCameraStreamControl *)self streamControl];
-  v3 = [v2 streamState];
+  streamControl = [(HMCameraStreamControl *)self streamControl];
+  streamState = [streamControl streamState];
 
-  return v3;
+  return streamState;
 }
 
 - (void)setDelegate:(id)delegate
@@ -86,16 +86,16 @@
   return WeakRetained;
 }
 
-- (HMCameraStreamControl)initWithStreamControl:(id)a3
+- (HMCameraStreamControl)initWithStreamControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   v9.receiver = self;
   v9.super_class = HMCameraStreamControl;
   v6 = [(HMCameraControl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_streamControl, a3);
+    objc_storeStrong(&v6->_streamControl, control);
     [(_HMCameraStreamControl *)v7->_streamControl setDelegate:v7];
   }
 

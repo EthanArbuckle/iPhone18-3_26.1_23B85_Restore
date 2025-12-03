@@ -13,8 +13,8 @@
   {
     v3 = BMRootLibraryBridge();
     v4 = [v3 App];
-    v5 = [v4 ContextualActions];
-    v6 = [v5 storeStreamWithLegacyClass:objc_opt_class()];
+    contextualActions = [v4 ContextualActions];
+    v6 = [contextualActions storeStreamWithLegacyClass:objc_opt_class()];
     storeStream = v2->_storeStream;
     v2->_storeStream = v6;
 

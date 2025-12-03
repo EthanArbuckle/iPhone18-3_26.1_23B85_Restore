@@ -1,11 +1,11 @@
 @interface NSSmartPunctuationController
 - (NSSmartPunctuationController)init;
 - (NSSmartQuoteOptions)smartQuoteOptions;
-- (void)clientDidReplaceRange:(_NSRange)a3 changeInLength:(int64_t)a4;
+- (void)clientDidReplaceRange:(_NSRange)range changeInLength:(int64_t)length;
 - (void)dealloc;
-- (void)setSmartDashesEnabled:(BOOL)a3;
-- (void)setSmartQuoteOptions:(id)a3;
-- (void)setSmartQuotesEnabled:(BOOL)a3;
+- (void)setSmartDashesEnabled:(BOOL)enabled;
+- (void)setSmartQuoteOptions:(id)options;
+- (void)setSmartQuotesEnabled:(BOOL)enabled;
 @end
 
 @implementation NSSmartPunctuationController
@@ -43,20 +43,20 @@
   return v2;
 }
 
-- (void)setSmartQuoteOptions:(id)a3
+- (void)setSmartQuoteOptions:(id)options
 {
   options = self->_options;
-  if (options != a3)
+  if (options != options)
   {
 
-    self->_options = [a3 copy];
+    self->_options = [options copy];
   }
 }
 
-- (void)setSmartQuotesEnabled:(BOOL)a3
+- (void)setSmartQuotesEnabled:(BOOL)enabled
 {
   v3 = 64;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -64,10 +64,10 @@
   self->_types = self->_types & 0xFFFFFFFFFFFFFFBFLL | v3;
 }
 
-- (void)setSmartDashesEnabled:(BOOL)a3
+- (void)setSmartDashesEnabled:(BOOL)enabled
 {
   v3 = 128;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -75,14 +75,14 @@
   self->_types = self->_types & 0xFFFFFFFFFFFFFF7FLL | v3;
 }
 
-- (void)clientDidReplaceRange:(_NSRange)a3 changeInLength:(int64_t)a4
+- (void)clientDidReplaceRange:(_NSRange)range changeInLength:(int64_t)length
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3.length + a4;
-  v5 = a3.location - 1;
-  if (a3.location)
+  v4 = range.length + length;
+  v5 = range.location - 1;
+  if (range.location)
   {
-    v6 = a3.length + a4 + 2;
+    v6 = range.length + length + 2;
   }
 
   else
@@ -90,9 +90,9 @@
     v6 = v4 + 1;
   }
 
-  if (a3.location)
+  if (range.location)
   {
-    v7 = a3.location - 1;
+    v7 = range.location - 1;
   }
 
   else
@@ -104,7 +104,7 @@
   {
     if (self->_options && v6 != 0)
     {
-      location = a3.location;
+      location = range.location;
       if ([(NSSmartPunctuationController *)self smartQuotesEnabled])
       {
         v47 = 0;
@@ -118,7 +118,7 @@
             v13 = [v11 length];
             if (v13 == v48)
             {
-              v42 = [MEMORY[0x1E695DF70] array];
+              array = [MEMORY[0x1E695DF70] array];
               v46 = +[NSCharacterSet alphanumericCharacterSet];
               v43 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
               if (!clientDidReplaceRange_changeInLength__openerCharacterSet)
@@ -190,21 +190,21 @@
                         v16 = v44;
                         if (v31 || v26)
                         {
-                          v35 = [(NSSmartQuoteOptions *)options leftDoubleQuote];
+                          leftDoubleQuote = [(NSSmartQuoteOptions *)options leftDoubleQuote];
                         }
 
                         else
                         {
-                          v35 = [(NSSmartQuoteOptions *)options rightDoubleQuote];
+                          leftDoubleQuote = [(NSSmartQuoteOptions *)options rightDoubleQuote];
                         }
 
-                        v36 = v35;
+                        leftSingleQuote = leftDoubleQuote;
                         v15 = v45;
                       }
 
                       else if (v31 || v28)
                       {
-                        v36 = [(NSSmartQuoteOptions *)self->_options leftSingleQuote];
+                        leftSingleQuote = [(NSSmartQuoteOptions *)self->_options leftSingleQuote];
                         v16 = v44;
                         v15 = v45;
                       }
@@ -216,23 +216,23 @@
                         v15 = v45;
                         if (v30 || v33)
                         {
-                          v38 = [(NSSmartQuoteOptions *)v37 rightSingleQuote];
+                          rightSingleQuote = [(NSSmartQuoteOptions *)v37 rightSingleQuote];
                         }
 
                         else
                         {
-                          v38 = [(NSSmartQuoteOptions *)v37 apostrophe];
+                          rightSingleQuote = [(NSSmartQuoteOptions *)v37 apostrophe];
                         }
 
-                        v36 = v38;
+                        leftSingleQuote = rightSingleQuote;
                       }
 
-                      [v12 rangeOfString:v36 options:8 range:{v14, 1}];
+                      [v12 rangeOfString:leftSingleQuote options:8 range:{v14, 1}];
                       if (!v39)
                       {
                         v40 = [NSQuoteCheckingResult alloc];
-                        v41 = [(NSSubstitutionCheckingResult *)v40 initWithRange:v47 + v14 replacementString:1, v36];
-                        [v42 addObject:v41];
+                        v41 = [(NSSubstitutionCheckingResult *)v40 initWithRange:v47 + v14 replacementString:1, leftSingleQuote];
+                        [array addObject:v41];
                       }
                     }
                   }
@@ -243,9 +243,9 @@
                 while (v14 < v48);
               }
 
-              if ([v42 count])
+              if ([array count])
               {
-                [(NSSmartPunctuationClient *)self->_client applySmartPunctuationResults:v42];
+                [(NSSmartPunctuationClient *)self->_client applySmartPunctuationResults:array];
               }
             }
           }

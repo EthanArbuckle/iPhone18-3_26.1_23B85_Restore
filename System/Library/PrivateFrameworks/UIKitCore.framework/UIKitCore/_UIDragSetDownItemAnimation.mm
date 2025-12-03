@@ -6,13 +6,13 @@
 - (CAPoint3D)center;
 - (CGRect)targetFrame;
 - (UIWindow)targetContainerWindow;
-- (_UIDragSetDownItemAnimation)initWithDragItem:(id)a3 droppedItem:(id)a4 dropContainerView:(id)a5 defaultAnimation:(BOOL)a6 sourceAnimation:(BOOL)a7 delegate:(id)a8;
+- (_UIDragSetDownItemAnimation)initWithDragItem:(id)item droppedItem:(id)droppedItem dropContainerView:(id)view defaultAnimation:(BOOL)animation sourceAnimation:(BOOL)sourceAnimation delegate:(id)delegate;
 - (_UIDragSetDownItemAnimationDelegate)delegate;
 - (double)estimatedFractionCompleteOfAnimation;
 - (id)animationCompletionHandler;
 - (id)effectiveDropPreview;
 - (int64_t)previewMode;
-- (void)_setCenterAndVelocityFromDroppedItem:(id)a3;
+- (void)_setCenterAndVelocityFromDroppedItem:(id)item;
 - (void)animationCompleted;
 - (void)animationReachedTarget;
 - (void)beginAnimation;
@@ -21,28 +21,28 @@
 - (void)configureSystemDefaultAnimation;
 - (void)dirtyTargetedDropPreview;
 - (void)executeCompletionHandler;
-- (void)performSpringAnimations:(id)a3;
-- (void)performTrackingAnimations:(id)a3;
+- (void)performSpringAnimations:(id)animations;
+- (void)performTrackingAnimations:(id)animations;
 - (void)prepareAnimationInWindow;
 - (void)prepareToBeginAnimation;
 - (void)previewContainerAnimationDidComplete;
 - (void)reparentRetargetingContainerViewInTargetContainer;
-- (void)setInitialTargetVelocity:(id)a3;
-- (void)setInitialVelocity:(id)a3;
+- (void)setInitialTargetVelocity:(id)velocity;
+- (void)setInitialVelocity:(id)velocity;
 - (void)updateAnimationTargeting;
 - (void)updateCurrentTargetFrame;
-- (void)updateDroppedItem:(id)a3;
-- (void)updateTargetedDropPreview:(id)a3;
+- (void)updateDroppedItem:(id)item;
+- (void)updateTargetedDropPreview:(id)preview;
 @end
 
 @implementation _UIDragSetDownItemAnimation
 
-- (_UIDragSetDownItemAnimation)initWithDragItem:(id)a3 droppedItem:(id)a4 dropContainerView:(id)a5 defaultAnimation:(BOOL)a6 sourceAnimation:(BOOL)a7 delegate:(id)a8
+- (_UIDragSetDownItemAnimation)initWithDragItem:(id)item droppedItem:(id)droppedItem dropContainerView:(id)view defaultAnimation:(BOOL)animation sourceAnimation:(BOOL)sourceAnimation delegate:(id)delegate
 {
-  v15 = a3;
-  v23 = a4;
-  v16 = a5;
-  v17 = a8;
+  itemCopy = item;
+  droppedItemCopy = droppedItem;
+  viewCopy = view;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = _UIDragSetDownItemAnimation;
   v24.receiver = [(_UIDragSetDownItemAnimation *)&v25 init];
@@ -51,25 +51,25 @@
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_item, a3);
-    objc_storeStrong(&v19->_droppedItem, a4);
-    objc_storeStrong(&v19->_dropContainerView, a5);
-    v19->_sourceAnimation = a7;
-    v19->_defaultAnimation = a6;
-    if (a7)
+    objc_storeStrong(&v18->_item, item);
+    objc_storeStrong(&v19->_droppedItem, droppedItem);
+    objc_storeStrong(&v19->_dropContainerView, view);
+    v19->_sourceAnimation = sourceAnimation;
+    v19->_defaultAnimation = animation;
+    if (sourceAnimation)
     {
-      [v15 _sourceVisualTarget];
+      [itemCopy _sourceVisualTarget];
     }
 
     else
     {
-      [v15 _destinationVisualTarget];
+      [itemCopy _destinationVisualTarget];
     }
     v20 = ;
     visualTarget = v19->_visualTarget;
     v19->_visualTarget = v20;
 
-    objc_storeWeak(&v19->_delegate, v17);
+    objc_storeWeak(&v19->_delegate, delegateCopy);
     [(_UIDragSetDownItemAnimation *)v19 prepareAnimationInWindow];
     [(_UIDragSetDownItemAnimation *)v19 configureAnimation];
   }
@@ -92,9 +92,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(_UIDragSetDownAnimationTarget *)v7 _window];
-    v9 = v8;
-    if (!v8 || ([v8 isHidden] & 1) != 0)
+    _window = [(_UIDragSetDownAnimationTarget *)v7 _window];
+    v9 = _window;
+    if (!_window || ([_window isHidden] & 1) != 0)
     {
 
 LABEL_6:
@@ -110,8 +110,8 @@ LABEL_9:
   }
 
   visualTarget = self->_visualTarget;
-  v12 = [(_UIDragSetDownItemAnimation *)self delegate];
-  v10 = [(_UIDragSetDownAnimationTarget *)visualTarget _setDownAnimation:v12 prepareForSetDownOfDragItem:self->_item visibleDroppedItem:self->_droppedItem];
+  delegate = [(_UIDragSetDownItemAnimation *)self delegate];
+  v10 = [(_UIDragSetDownAnimationTarget *)visualTarget _setDownAnimation:delegate prepareForSetDownOfDragItem:self->_item visibleDroppedItem:self->_droppedItem];
 
   v3 = _targetFrameForTargetedPreviewInContainerView(v10, self->_dropContainerView);
   v4 = v13;
@@ -156,12 +156,12 @@ LABEL_11:
     }
   }
 
-  v5 = [(_UIDragSetDownItemAnimation *)self delegate];
-  [(_UIDragSetDownAnimationTarget *)self->_visualTarget _setDownAnimation:v5 willAnimateSetDownOfDragItem:self->_item withAnimator:self->_propertyAnimator preview:self->_targetedDropPreview];
+  delegate = [(_UIDragSetDownItemAnimation *)self delegate];
+  [(_UIDragSetDownAnimationTarget *)self->_visualTarget _setDownAnimation:delegate willAnimateSetDownOfDragItem:self->_item withAnimator:self->_propertyAnimator preview:self->_targetedDropPreview];
   item = self->_item;
   if (item)
   {
-    objc_storeWeak(&item->__currentSetDownAnimation, v5);
+    objc_storeWeak(&item->__currentSetDownAnimation, delegate);
   }
 }
 
@@ -179,8 +179,8 @@ LABEL_11:
 - (void)animationReachedTarget
 {
   self->_reachedTarget = 1;
-  v3 = [(_UIDragSetDownItemAnimation *)self delegate];
-  [v3 itemAnimationReachedTarget:self];
+  delegate = [(_UIDragSetDownItemAnimation *)self delegate];
+  [delegate itemAnimationReachedTarget:self];
 }
 
 - (void)animationCompleted
@@ -192,17 +192,17 @@ LABEL_11:
   [(UIView *)self->_retargetingContainerPortalView removeFromSuperview];
   [(UIView *)self->_retargetingContainerView removeFromSuperview];
   [(UIView *)self->_defaultPlatterView removeFromSuperview];
-  v3 = [(_UIDragSetDownItemAnimation *)self delegate];
-  [v3 itemAnimationCompleted:self];
+  delegate = [(_UIDragSetDownItemAnimation *)self delegate];
+  [delegate itemAnimationCompleted:self];
 }
 
 - (UIWindow)targetContainerWindow
 {
-  v2 = [(UITargetedPreview *)self->_targetedDropPreview target];
-  v3 = [v2 container];
-  v4 = [v3 _window];
+  target = [(UITargetedPreview *)self->_targetedDropPreview target];
+  container = [target container];
+  _window = [container _window];
 
-  return v4;
+  return _window;
 }
 
 - (void)configureAnimation
@@ -227,17 +227,17 @@ LABEL_11:
   [(UIView *)v3 setCenter:self->_center.x, self->_center.y];
   objc_storeStrong(&self->_defaultPlatterView, v3);
   [(UIView *)self->_dropContainerView insertSubview:v3 atIndex:0];
-  v4 = [objc_opt_class() defaultSetDownPropertyAnimator];
+  defaultSetDownPropertyAnimator = [objc_opt_class() defaultSetDownPropertyAnimator];
   propertyAnimator = self->_propertyAnimator;
-  self->_propertyAnimator = v4;
+  self->_propertyAnimator = defaultSetDownPropertyAnimator;
 
   if (self->_sourceAnimation)
   {
-    v6 = [(_UIDragSetDownItemAnimation *)self droppedItem];
-    v7 = [v6 itemIndex];
+    droppedItem = [(_UIDragSetDownItemAnimation *)self droppedItem];
+    itemIndex = [droppedItem itemIndex];
 
     v8 = self->_propertyAnimator;
-    if (v7)
+    if (itemIndex)
     {
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
@@ -295,7 +295,7 @@ LABEL_11:
   propertyAnimator = self->_propertyAnimator;
   self->_propertyAnimator = v3;
 
-  v5 = [(_DUIVisibleDroppedItem *)self->_droppedItem preview];
+  preview = [(_DUIVisibleDroppedItem *)self->_droppedItem preview];
   v6 = [UIView alloc];
   [(UIView *)self->_dropContainerView bounds];
   v7 = [(UIView *)v6 initWithFrame:?];
@@ -304,8 +304,8 @@ LABEL_11:
   [(UIView *)self->_dropContainerView insertSubview:v7 atIndex:0];
   v69 = v7;
   objc_storeStrong(&self->_retargetingContainerView, v7);
-  v70 = v5;
-  [v5 unscaledSize];
+  v70 = preview;
+  [preview unscaledSize];
   v9 = v8;
   v11 = v10;
   v12 = [[_UIPlatterContainerView alloc] initWithFrame:0.0, 0.0, v8, v10];
@@ -318,11 +318,11 @@ LABEL_11:
   v95 = 0u;
   v96 = 0u;
   v94 = 0u;
-  v15 = [(UITargetedPreview *)self->_targetedDropPreview target];
-  v16 = v15;
-  if (v15)
+  target = [(UITargetedPreview *)self->_targetedDropPreview target];
+  v16 = target;
+  if (target)
   {
-    [v15 transform];
+    [target transform];
   }
 
   else
@@ -332,37 +332,37 @@ LABEL_11:
     v94 = 0u;
   }
 
-  v17 = [(UITargetedPreview *)self->_targetedDropPreview view];
-  v18 = [(UITargetedDragPreview *)self->_targetedDropPreview _duiPreview];
-  v19 = [v17 window];
-  if (v19)
+  view = [(UITargetedPreview *)self->_targetedDropPreview view];
+  _duiPreview = [(UITargetedDragPreview *)self->_targetedDropPreview _duiPreview];
+  window = [view window];
+  if (window)
   {
-    v20 = [(UITargetedPreview *)self->_targetedDropPreview parameters];
-    [v18 setHidesSourceView:{objc_msgSend(v20, "hidesSourceViewDuringDropAnimation")}];
+    parameters = [(UITargetedPreview *)self->_targetedDropPreview parameters];
+    [_duiPreview setHidesSourceView:{objc_msgSend(parameters, "hidesSourceViewDuringDropAnimation")}];
   }
 
   else
   {
-    [v18 setHidesSourceView:1];
+    [_duiPreview setHidesSourceView:1];
   }
 
-  v21 = [v17 window];
+  window2 = [view window];
 
-  if (!v21)
+  if (!window2)
   {
-    v22 = [(UITargetedPreview *)self->_targetedDropPreview target];
-    v23 = [v22 container];
-    [v23 addSubview:v17];
+    target2 = [(UITargetedPreview *)self->_targetedDropPreview target];
+    container = [target2 container];
+    [container addSubview:view];
 
-    [v17 setAlpha:0.0];
+    [view setAlpha:0.0];
   }
 
-  v24 = [[_UIPlatterView alloc] initWithDUIPreview:v18];
+  v24 = [[_UIPlatterView alloc] initWithDUIPreview:_duiPreview];
   appPlatterView = self->_appPlatterView;
   self->_appPlatterView = v24;
 
   [(_UIPlatterView *)self->_appPlatterView setTransformAppliedExternally:1];
-  [(_UIPlatterView *)self->_appPlatterView setSourceView:v17];
+  [(_UIPlatterView *)self->_appPlatterView setSourceView:view];
   [(_DUIVisibleDroppedItem *)self->_droppedItem rotation];
   [(_UIPlatterView *)self->_appPlatterView setStackRotation:?];
   droppedItem = self->_droppedItem;
@@ -383,7 +383,7 @@ LABEL_11:
   *&v89.m13 = v92;
   *&v89.m21 = v93;
   [(_UIPlatterView *)v27 setAppliedTransform:&v89];
-  if ([v18 previewMode] != 2)
+  if ([_duiPreview previewMode] != 2)
   {
     [(UIView *)self->_appPlatterView setAlpha:0.0];
     [(_UIPlatterView *)self->_appPlatterView setLifted:1];
@@ -393,17 +393,17 @@ LABEL_11:
 
   if (([(_UIDragSetDownItemAnimation *)self previewMode]- 3) < 2 || [(UITargetedPreview *)self->_targetedDropPreview _isDefaultPreview])
   {
-    v29 = [(UITargetedDragPreview *)self->_targetedDropPreview _duiPreview];
-    [v29 stackAlpha];
+    _duiPreview2 = [(UITargetedDragPreview *)self->_targetedDropPreview _duiPreview];
+    [_duiPreview2 stackAlpha];
     [(UIView *)v28 setAlpha:?];
 
     [(_UIPlatterView *)v28 setLifted:1];
     [(_UIPlatterView *)v28 setConstrainSize:[(_DUIVisibleDroppedItem *)self->_droppedItem constrainSize]];
     if ([(UITargetedPreview *)self->_targetedDropPreview _isDefaultPreview])
     {
-      v30 = [(_DUIVisibleDroppedItem *)self->_droppedItem preview];
-      v31 = [v30 shadowProperties];
-      [(_UIPlatterView *)v28 setShadowProperties:v31];
+      preview2 = [(_DUIVisibleDroppedItem *)self->_droppedItem preview];
+      shadowProperties = [preview2 shadowProperties];
+      [(_UIPlatterView *)v28 setShadowProperties:shadowProperties];
     }
 
     v32 = 0;
@@ -443,20 +443,20 @@ LABEL_25:
   *&v89.m13 = *&v90.c;
   *&v89.m21 = *&v90.tx;
   [(_UIPlatterContainerView *)v14 applyTransform:&v89 withSize:v9, v11];
-  v36 = [(UITargetedDragPreview *)self->_targetedDropPreview _previewContainer];
-  if (v36)
+  _previewContainer = [(UITargetedDragPreview *)self->_targetedDropPreview _previewContainer];
+  if (_previewContainer)
   {
-    v37 = [(_DUIVisibleDroppedItem *)self->_droppedItem imageComponent];
-    if (-[UITargetedPreview _isDefaultPreview](self->_targetedDropPreview, "_isDefaultPreview") && ([v37 representsPortal] & 1) == 0)
+    imageComponent = [(_DUIVisibleDroppedItem *)self->_droppedItem imageComponent];
+    if (-[UITargetedPreview _isDefaultPreview](self->_targetedDropPreview, "_isDefaultPreview") && ([imageComponent representsPortal] & 1) == 0)
     {
       v39 = [_UIDragSlotHostingView alloc];
-      [v37 frame];
+      [imageComponent frame];
       v41 = v40;
       v43 = v42;
       v45 = v44;
       v47 = v46;
-      [v37 size3D];
-      v38 = -[_UIDragSlotHostingView initWithFrame:contentSize:slotID:](v39, "initWithFrame:contentSize:slotID:", [v37 slotID], v41, v43, v45, v47, v48, v49, v50);
+      [imageComponent size3D];
+      v38 = -[_UIDragSlotHostingView initWithFrame:contentSize:slotID:](v39, "initWithFrame:contentSize:slotID:", [imageComponent slotID], v41, v43, v45, v47, v48, v49, v50);
     }
 
     else
@@ -464,17 +464,17 @@ LABEL_25:
       v38 = 0;
     }
 
-    [(_UIPlatterContainerView *)v14 installPreviewContainer:v36 overrideSourceView:v38];
+    [(_UIPlatterContainerView *)v14 installPreviewContainer:_previewContainer overrideSourceView:v38];
     ++self->_animationCount;
   }
 
-  v68 = v36;
+  v68 = _previewContainer;
   if ([(_UIDragSetDownItemAnimation *)self needsReparenting])
   {
     [(_UIDragSetDownItemAnimation *)self reparentRetargetingContainerViewInTargetContainer];
   }
 
-  v51 = v21 == 0;
+  v51 = window2 == 0;
   objc_initWeak(&v89, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -526,11 +526,11 @@ LABEL_25:
   v71[3] = &unk_1E712BA60;
   objc_copyWeak(&v73, &v89);
   v77 = v51;
-  v72 = v17;
+  v72 = view;
   v74 = v94;
   v75 = v95;
   v76 = v96;
-  v65 = v17;
+  v65 = view;
   v66 = _Block_copy(v71);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v66;
@@ -544,40 +544,40 @@ LABEL_25:
 - (void)reparentRetargetingContainerViewInTargetContainer
 {
   v3 = self->_dropContainerView;
-  v4 = [(UITargetedPreview *)self->_targetedDropPreview target];
-  v5 = [v4 container];
+  target = [(UITargetedPreview *)self->_targetedDropPreview target];
+  container = [target container];
 
-  [v5 bounds];
-  -[UIView _setFlipsHorizontalAxis:](self->_retargetingContainerView, "_setFlipsHorizontalAxis:", [v5 _flipsHorizontalAxis]);
-  v6 = [v5 layer];
-  v7 = [v6 presentationLayer];
-  v8 = [v5 _window];
-  v9 = [v8 layer];
-  v10 = [v9 presentationLayer];
-  v11 = [v7 isDescendantOf:v10];
+  [container bounds];
+  -[UIView _setFlipsHorizontalAxis:](self->_retargetingContainerView, "_setFlipsHorizontalAxis:", [container _flipsHorizontalAxis]);
+  layer = [container layer];
+  presentationLayer = [layer presentationLayer];
+  _window = [container _window];
+  layer2 = [_window layer];
+  presentationLayer2 = [layer2 presentationLayer];
+  v11 = [presentationLayer isDescendantOf:presentationLayer2];
 
-  v12 = [v5 layer];
-  v13 = v12;
+  layer3 = [container layer];
+  v13 = layer3;
   if (v11)
   {
-    v14 = [v12 presentationLayer];
+    presentationLayer3 = [layer3 presentationLayer];
 
-    v13 = v14;
+    v13 = presentationLayer3;
   }
 
-  v15 = [v5 _window];
-  v16 = [v15 layer];
-  [v16 convertPoint:v13 toLayer:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  _window2 = [container _window];
+  layer4 = [_window2 layer];
+  [layer4 convertPoint:v13 toLayer:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   v18 = v17;
   v20 = v19;
 
-  v21 = [v15 layer];
-  [v21 convertPoint:v13 toLayer:{1.0, 0.0}];
+  layer5 = [_window2 layer];
+  [layer5 convertPoint:v13 toLayer:{1.0, 0.0}];
   v23 = v22;
   v25 = v24;
 
-  v26 = [v15 layer];
-  [v26 convertPoint:v13 toLayer:{0.0, 1.0}];
+  layer6 = [_window2 layer];
+  [layer6 convertPoint:v13 toLayer:{0.0, 1.0}];
   v28 = v27;
   v30 = v29;
 
@@ -585,7 +585,7 @@ LABEL_25:
   v32 = hypot(v28 - v18, v30 - v20);
   memset(&v64, 0, sizeof(v64));
   CGAffineTransformMakeScale(&v64, v31, v32);
-  RotationAngleFromViewToView = DUIPreviewGetRotationAngleFromViewToView(v5, v3, 1);
+  RotationAngleFromViewToView = DUIPreviewGetRotationAngleFromViewToView(container, v3, 1);
   memset(&v63, 0, sizeof(v63));
   CGAffineTransformMakeRotation(&v63, -RotationAngleFromViewToView);
   t1 = v64;
@@ -595,28 +595,28 @@ LABEL_25:
   retargetingContainerView = self->_retargetingContainerView;
   v64 = v65;
   [(UIView *)retargetingContainerView setTransform:&v64];
-  [v5 addSubview:self->_retargetingContainerView];
+  [container addSubview:self->_retargetingContainerView];
   [(UIView *)v3 bounds];
   v37 = v36 + v35 * 0.5;
   v40 = v39 + v38 * 0.5;
-  v41 = [v5 _window];
-  [(UIView *)v3 convertPoint:v41 toCoordinateSpace:v37, v40];
+  _window3 = [container _window];
+  [(UIView *)v3 convertPoint:_window3 toCoordinateSpace:v37, v40];
   v43 = v42;
   v45 = v44;
 
-  v46 = [v5 _window];
-  v47 = [v46 layer];
-  [v47 convertPoint:v13 toLayer:{v43, v45}];
+  _window4 = [container _window];
+  layer7 = [_window4 layer];
+  [layer7 convertPoint:v13 toLayer:{v43, v45}];
   v49 = v48;
   v51 = v50;
 
   [(UIView *)self->_retargetingContainerView setCenter:v49, v51];
-  v52 = [(UITargetedPreview *)self->_targetedDropPreview view];
-  v53 = [v52 layer];
-  [v53 zPosition];
+  view = [(UITargetedPreview *)self->_targetedDropPreview view];
+  layer8 = [view layer];
+  [layer8 zPosition];
   v55 = v54;
-  v56 = [(UIView *)self->_retargetingContainerView layer];
-  [v56 setZPosition:v55];
+  layer9 = [(UIView *)self->_retargetingContainerView layer];
+  [layer9 setZPosition:v55];
 
   [(UIView *)self->_retargetingContainerView setAlpha:0.0];
   v57 = [_UIPortalView alloc];
@@ -662,11 +662,11 @@ LABEL_25:
 
 - (BOOL)shouldTerminateEarly
 {
-  v3 = [(_UIDragSetDownItemAnimation *)self effectiveDropPreview];
-  v4 = v3;
+  effectiveDropPreview = [(_UIDragSetDownItemAnimation *)self effectiveDropPreview];
+  v4 = effectiveDropPreview;
   if (self->_wasVisibleAtStart)
   {
-    v5 = [v3 _isVisibleIncludingAlpha:1] ^ 1;
+    v5 = [effectiveDropPreview _isVisibleIncludingAlpha:1] ^ 1;
   }
 
   else
@@ -686,32 +686,32 @@ LABEL_25:
   }
 
   v4 = updatedAppPlatterView;
-  v23 = [(_UIDragSetDownItemAnimation *)self effectiveDropPreview];
-  v5 = [v23 target];
-  v6 = [v5 container];
-  [v5 center];
-  [v6 convertPoint:self->_dropContainerView toCoordinateSpace:?];
+  effectiveDropPreview = [(_UIDragSetDownItemAnimation *)self effectiveDropPreview];
+  target = [effectiveDropPreview target];
+  container = [target container];
+  [target center];
+  [container convertPoint:self->_dropContainerView toCoordinateSpace:?];
   v8 = v7;
   v10 = v9;
 
-  LOBYTE(v6) = [(_UIPlatterView *)v4 constrainSize];
-  v11 = [v23 _duiPreview];
-  v12 = v11;
-  if (v6)
+  LOBYTE(container) = [(_UIPlatterView *)v4 constrainSize];
+  _duiPreview = [effectiveDropPreview _duiPreview];
+  v12 = _duiPreview;
+  if (container)
   {
-    [v11 scaledSize];
+    [_duiPreview scaledSize];
   }
 
   else
   {
-    [v11 unscaledSize];
+    [_duiPreview unscaledSize];
   }
 
   v15 = v13;
   v16 = v14;
 
-  v17 = [v5 container];
-  [v17 _currentScreenScale];
+  container2 = [target container];
+  [container2 _currentScreenScale];
   UIRectCenteredAboutPointScale(0.0, 0.0, v15, v16, v8, v10, v18);
   self->_targetFrame.origin.x = v19;
   self->_targetFrame.origin.y = v20;
@@ -721,9 +721,9 @@ LABEL_25:
 
 - (double)estimatedFractionCompleteOfAnimation
 {
-  v3 = [(UIView *)self->_platterContainerView layer];
-  v4 = [v3 presentationLayer];
-  [v4 position];
+  layer = [(UIView *)self->_platterContainerView layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer position];
   v6 = v5;
   v8 = v7;
 
@@ -733,12 +733,12 @@ LABEL_25:
   return (self->_initialDistanceFromTargetFrame - sqrt((v14 - v6) * (v14 - v6) + (v15 - v8) * (v15 - v8))) / self->_initialDistanceFromTargetFrame;
 }
 
-- (void)performTrackingAnimations:(id)a3
+- (void)performTrackingAnimations:(id)animations
 {
-  v4 = a3;
-  if (v4)
+  animationsCopy = animations;
+  if (animationsCopy)
   {
-    v5 = v4;
+    v5 = animationsCopy;
     if (_UIInternalPreferenceUsesDefault_1(&_MergedGlobals_959, @"DNDSetDownDampingRatio"))
     {
       v6 = 0.85;
@@ -768,22 +768,22 @@ LABEL_25:
     v8 = _Block_copy(aBlock);
     if (self->_hasStartedSpringAnimation)
     {
-      v9 = [(_UIDragSetDownItemAnimation *)self animationCompletionHandler];
-      [UIView _animateUsingSpringWithDampingRatio:1 response:v8 tracking:v9 dampingRatioSmoothing:v6 responseSmoothing:0.0015 targetSmoothing:1.0 projectionDeceleration:1.0 animations:0.0 completion:0.0];
+      animationCompletionHandler = [(_UIDragSetDownItemAnimation *)self animationCompletionHandler];
+      [UIView _animateUsingSpringWithDampingRatio:1 response:v8 tracking:animationCompletionHandler dampingRatioSmoothing:v6 responseSmoothing:0.0015 targetSmoothing:1.0 projectionDeceleration:1.0 animations:0.0 completion:0.0];
     }
 
     else
     {
       customSpringAnimationBehavior = self->_customSpringAnimationBehavior;
-      v9 = [(_UIDragSetDownItemAnimation *)self animationCompletionHandler];
+      animationCompletionHandler = [(_UIDragSetDownItemAnimation *)self animationCompletionHandler];
       if (customSpringAnimationBehavior)
       {
-        [UIView _animateUsingSpringBehavior:customSpringAnimationBehavior tracking:1 animations:v8 completion:v9];
+        [UIView _animateUsingSpringBehavior:customSpringAnimationBehavior tracking:1 animations:v8 completion:animationCompletionHandler];
       }
 
       else
       {
-        [UIView _animateUsingSpringWithDampingRatio:1 response:v8 tracking:v9 initialDampingRatio:v6 initialResponse:v7 dampingRatioSmoothing:v6 responseSmoothing:v7 targetSmoothing:1.0 projectionDeceleration:1.0 animations:0.0 completion:0.0];
+        [UIView _animateUsingSpringWithDampingRatio:1 response:v8 tracking:animationCompletionHandler initialDampingRatio:v6 initialResponse:v7 dampingRatioSmoothing:v6 responseSmoothing:v7 targetSmoothing:1.0 projectionDeceleration:1.0 animations:0.0 completion:0.0];
       }
     }
   }
@@ -791,27 +791,27 @@ LABEL_25:
 
 - (void)previewContainerAnimationDidComplete
 {
-  v2 = [(_UIDragSetDownItemAnimation *)self animationCompletionHandler];
-  v2[2](v2, 1, 0);
+  animationCompletionHandler = [(_UIDragSetDownItemAnimation *)self animationCompletionHandler];
+  animationCompletionHandler[2](animationCompletionHandler, 1, 0);
 }
 
-- (void)performSpringAnimations:(id)a3
+- (void)performSpringAnimations:(id)animations
 {
-  v4 = a3;
-  if (v4)
+  animationsCopy = animations;
+  if (animationsCopy)
   {
     ++self->_animationCount;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __55___UIDragSetDownItemAnimation_performSpringAnimations___block_invoke;
     aBlock[3] = &unk_1E70F0F78;
-    v13 = v4;
+    v13 = animationsCopy;
     v5 = _Block_copy(aBlock);
     customSpringAnimationBehavior = self->_customSpringAnimationBehavior;
     if (customSpringAnimationBehavior)
     {
-      v7 = [(_UIDragSetDownItemAnimation *)self animationCompletionHandler];
-      [UIView _animateUsingSpringBehavior:customSpringAnimationBehavior tracking:0 animations:v5 completion:v7];
+      animationCompletionHandler = [(_UIDragSetDownItemAnimation *)self animationCompletionHandler];
+      [UIView _animateUsingSpringBehavior:customSpringAnimationBehavior tracking:0 animations:v5 completion:animationCompletionHandler];
     }
 
     else
@@ -856,8 +856,8 @@ LABEL_25:
         v11 = *&qword_1ED48B880;
       }
 
-      v7 = [(_UIDragSetDownItemAnimation *)self animationCompletionHandler];
-      [UIView _animateUsingSpringWithDampingRatio:0 response:v5 tracking:v7 dampingRatioSmoothing:v8 responseSmoothing:v9 targetSmoothing:0.0 projectionDeceleration:0.0 animations:v10 completion:v11];
+      animationCompletionHandler = [(_UIDragSetDownItemAnimation *)self animationCompletionHandler];
+      [UIView _animateUsingSpringWithDampingRatio:0 response:v5 tracking:animationCompletionHandler dampingRatioSmoothing:v8 responseSmoothing:v9 targetSmoothing:0.0 projectionDeceleration:0.0 animations:v10 completion:v11];
     }
   }
 }
@@ -902,11 +902,11 @@ LABEL_25:
 
 - (int64_t)previewMode
 {
-  v2 = [(_UIDragSetDownItemAnimation *)self effectiveDropPreview];
-  v3 = [v2 _duiPreview];
+  effectiveDropPreview = [(_UIDragSetDownItemAnimation *)self effectiveDropPreview];
+  _duiPreview = [effectiveDropPreview _duiPreview];
 
-  v4 = [v3 previewMode];
-  return v4;
+  previewMode = [_duiPreview previewMode];
+  return previewMode;
 }
 
 - (void)updateAnimationTargeting
@@ -926,22 +926,22 @@ LABEL_25:
       {
         if ([(_UIDragSetDownItemAnimation *)self needsReparenting]&& self->_hasStartedSpringAnimation && !self->_reparentingCrossfadeComplete)
         {
-          v8 = [(UITargetedPreview *)self->_targetedDropPreview target];
-          v9 = [v8 container];
+          target = [(UITargetedPreview *)self->_targetedDropPreview target];
+          container = [target container];
 
-          v10 = [(UIView *)self->_platterContainerView layer];
-          v11 = [v10 presentationLayer];
+          layer = [(UIView *)self->_platterContainerView layer];
+          presentationLayer = [layer presentationLayer];
 
-          if (v11)
+          if (presentationLayer)
           {
-            v12 = [(UIView *)self->_platterContainerView layer];
-            v13 = [v12 presentationLayer];
-            [v13 position];
+            layer2 = [(UIView *)self->_platterContainerView layer];
+            presentationLayer2 = [layer2 presentationLayer];
+            [presentationLayer2 position];
             v15 = v14;
             v17 = v16;
 
-            [(UIView *)self->_retargetingContainerView convertPoint:v9 toCoordinateSpace:v15, v17];
-            if ([v9 pointInside:0 withEvent:?])
+            [(UIView *)self->_retargetingContainerView convertPoint:container toCoordinateSpace:v15, v17];
+            if ([container pointInside:0 withEvent:?])
             {
               self->_reparentingCrossfadeComplete = 1;
               v18 = _UIInternalPreferenceUsesDefault_1(&_UIInternalPreference_DNDSetDownReparentingCrossfadeDuration, @"DNDSetDownReparentingCrossfadeDuration");
@@ -1027,16 +1027,16 @@ LABEL_25:
       v6 = [MEMORY[0x1E696B098] valueWithCGPoint:{self->_initialTargetVelocity.var0.x, self->_initialTargetVelocity.var0.y}];
       [(UIView *)v5 _setTargetVelocity:v6 forKey:@"position"];
 
-      v7 = [(UIView *)self->_platterContainerView layer];
-      LODWORD(v6) = [v7 hasBeenCommitted];
+      layer3 = [(UIView *)self->_platterContainerView layer];
+      LODWORD(v6) = [layer3 hasBeenCommitted];
 
       if (v6)
       {
         [(_UIDragSetDownItemAnimation *)self performTrackingAnimations:self->_positionHandler];
         [(_UIDragSetDownItemAnimation *)self performSpringAnimations:self->_morphHandler];
         self->_hasStartedSpringAnimation = 1;
-        v38 = [(_UIDragSetDownItemAnimation *)self effectiveDropPreview];
-        self->_wasVisibleAtStart = [v38 _isVisibleIncludingAlpha:1];
+        effectiveDropPreview = [(_UIDragSetDownItemAnimation *)self effectiveDropPreview];
+        self->_wasVisibleAtStart = [effectiveDropPreview _isVisibleIncludingAlpha:1];
       }
     }
   }
@@ -1046,57 +1046,57 @@ LABEL_25:
 {
   if (!self->_defaultAnimation && !self->_almostToTarget)
   {
-    v4 = [(_UIDragSetDownItemAnimation *)self delegate];
-    v3 = [(_UIDragSetDownAnimationTarget *)self->_visualTarget _setDownAnimation:v4 updatedSetDownOfDragItem:self->_item preview:self->_targetedDropPreview];
+    delegate = [(_UIDragSetDownItemAnimation *)self delegate];
+    v3 = [(_UIDragSetDownAnimationTarget *)self->_visualTarget _setDownAnimation:delegate updatedSetDownOfDragItem:self->_item preview:self->_targetedDropPreview];
     [(_UIDragSetDownItemAnimation *)self updateTargetedDropPreview:v3];
   }
 }
 
-- (void)updateTargetedDropPreview:(id)a3
+- (void)updateTargetedDropPreview:(id)preview
 {
-  v5 = a3;
-  v6 = v5;
+  previewCopy = preview;
+  v6 = previewCopy;
   if (!self->_defaultAnimation && !self->_almostToTarget && !self->_updatedTargetedDropPreview)
   {
     if (self->_midwayToTarget)
     {
-      v26.origin.x = _targetFrameForTargetedPreviewInContainerView(v5, self->_dropContainerView);
+      v26.origin.x = _targetFrameForTargetedPreviewInContainerView(previewCopy, self->_dropContainerView);
       if (!CGRectIsNull(v26))
       {
-        objc_storeStrong(&self->_updatedTargetedDropPreview, a3);
-        v7 = [v6 view];
-        v8 = [v6 _duiPreview];
-        v9 = [v7 window];
-        [v8 setHidesSourceView:v9 == 0];
+        objc_storeStrong(&self->_updatedTargetedDropPreview, preview);
+        view = [v6 view];
+        _duiPreview = [v6 _duiPreview];
+        window = [view window];
+        [_duiPreview setHidesSourceView:window == 0];
 
-        v10 = [v7 window];
+        window2 = [view window];
 
-        if (!v10)
+        if (!window2)
         {
-          v11 = [v6 target];
-          v12 = [v11 container];
-          v13 = [(UIView *)self->_retargetingContainerView superview];
+          target = [v6 target];
+          container = [target container];
+          superview = [(UIView *)self->_retargetingContainerView superview];
 
-          v14 = [v6 target];
-          v15 = [v14 container];
-          v16 = v15;
-          if (v12 == v13)
+          target2 = [v6 target];
+          container2 = [target2 container];
+          v16 = container2;
+          if (container == superview)
           {
-            [v15 _addSubview:v7 positioned:-3 relativeTo:self->_retargetingContainerView];
+            [container2 _addSubview:view positioned:-3 relativeTo:self->_retargetingContainerView];
           }
 
           else
           {
-            [v15 addSubview:v7];
+            [container2 addSubview:view];
           }
 
-          [v7 setAlpha:0.0];
+          [view setAlpha:0.0];
           self->_updatedPreviewWasAdded = 1;
         }
 
-        v19 = [[_UIPlatterView alloc] initWithDUIPreview:v8];
+        v19 = [[_UIPlatterView alloc] initWithDUIPreview:_duiPreview];
         [(_UIPlatterView *)v19 setTransformAppliedExternally:1];
-        [(_UIPlatterView *)v19 setSourceView:v7];
+        [(_UIPlatterView *)v19 setSourceView:view];
         [(UIView *)v19 setAlpha:0.0];
         [(_UIPlatterView *)v19 setLifted:0];
         [(_UIPlatterView *)v19 setShadowVisible:0];
@@ -1134,16 +1134,16 @@ LABEL_25:
   }
 }
 
-- (void)updateDroppedItem:(id)a3
+- (void)updateDroppedItem:(id)item
 {
-  v4 = a3;
-  [(_UIDragSetDownItemAnimation *)self _setCenterAndVelocityFromDroppedItem:v4];
-  [v4 rotation];
+  itemCopy = item;
+  [(_UIDragSetDownItemAnimation *)self _setCenterAndVelocityFromDroppedItem:itemCopy];
+  [itemCopy rotation];
   v6 = v5;
   memset(&v11, 0, sizeof(v11));
-  if (v4)
+  if (itemCopy)
   {
-    [v4 appliedTransform];
+    [itemCopy appliedTransform];
   }
 
   else
@@ -1156,27 +1156,27 @@ LABEL_25:
   [(UIView *)self->_platterContainerView setCenter:self->_center.x, self->_center.y];
   [(_UIPlatterContainerView *)self->_platterContainerView applyRotation:v7];
   z = self->_center.z;
-  v9 = [(UIView *)self->_platterContainerView layer];
-  [v9 setZPosition:z];
+  layer = [(UIView *)self->_platterContainerView layer];
+  [layer setZPosition:z];
 
   [(_UIPlatterView *)self->_appPlatterView setStackRotation:v7];
   [(_UIPlatterView *)self->_druidPlatterView setStackRotation:v7];
   [(UIView *)self->_defaultPlatterView setCenter:self->_center.x, self->_center.y];
 }
 
-- (void)_setCenterAndVelocityFromDroppedItem:(id)a3
+- (void)_setCenterAndVelocityFromDroppedItem:(id)item
 {
-  v4 = a3;
-  [v4 center];
+  itemCopy = item;
+  [itemCopy center];
   self->_center.x = v5.f64[0];
   self->_center.y = v6;
   self->_center.z = 0.0;
-  if (v4)
+  if (itemCopy)
   {
-    [v4 velocity3D];
+    [itemCopy velocity3D];
     *&self->_initialVelocity.var0.x = v13;
     *&self->_initialVelocity.var0.z = v14;
-    [v4 targetVelocity3D];
+    [itemCopy targetVelocity3D];
     v5 = *&self->_center.x;
   }
 
@@ -1239,7 +1239,7 @@ LABEL_25:
   return result;
 }
 
-- (void)setInitialVelocity:(id)a3
+- (void)setInitialVelocity:(id)velocity
 {
   v4 = v3[1];
   *&self->_initialVelocity.var0.x = *v3;
@@ -1257,7 +1257,7 @@ LABEL_25:
   return result;
 }
 
-- (void)setInitialTargetVelocity:(id)a3
+- (void)setInitialTargetVelocity:(id)velocity
 {
   v4 = v3[1];
   *&self->_initialTargetVelocity.var0.x = *v3;

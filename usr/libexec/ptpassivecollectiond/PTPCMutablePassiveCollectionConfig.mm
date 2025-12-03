@@ -1,6 +1,6 @@
 @interface PTPCMutablePassiveCollectionConfig
-+ (BOOL)resetPersistedDefaults:(id)a3 errorOut:(id *)a4;
-+ (id)currentPersistedSettings:(id)a3 errorOut:(id *)a4;
++ (BOOL)resetPersistedDefaults:(id)defaults errorOut:(id *)out;
++ (id)currentPersistedSettings:(id)settings errorOut:(id *)out;
 + (id)keyToExpectedClassDict;
 - (BOOL)collectAppInFocus;
 - (BOOL)collectLoggingAppLaunch;
@@ -21,39 +21,39 @@
 - (NSNumber)collectMSSNum;
 - (NSNumber)collectionLookbackIntervalNum;
 - (NSNumber)imitationRecordStartTimeSinceReferenceDate;
-- (PTPCMutablePassiveCollectionConfig)initWithDefaultsDomain:(id)a3 errorOut:(id *)a4;
+- (PTPCMutablePassiveCollectionConfig)initWithDefaultsDomain:(id)domain errorOut:(id *)out;
 - (double)collectionLookbackInterval;
-- (id)_numberValueForKey:(id)a3 defaultValue:(id)a4;
-- (void)_setValueForKey:(id)a3 newValue:(id)a4;
+- (id)_numberValueForKey:(id)key defaultValue:(id)value;
+- (void)_setValueForKey:(id)key newValue:(id)value;
 - (void)resetSettings;
-- (void)setCollectAppInFocusNum:(id)a3;
-- (void)setCollectLoggingAppLaunchNum:(id)a3;
-- (void)setCollectLoggingHangsNum:(id)a3;
-- (void)setCollectLoggingMetalFramePacingNum:(id)a3;
-- (void)setCollectLoggingPerfPowerMetricsNum:(id)a3;
-- (void)setCollectLoggingScrollingNum:(id)a3;
-- (void)setCollectLoggingUserInteractionNum:(id)a3;
-- (void)setCollectMSSNum:(id)a3;
-- (void)setCollectionLookbackInterval:(double)a3;
-- (void)setCollectionLookbackIntervalNum:(id)a3;
-- (void)setImitationRecordStartDate:(id)a3;
-- (void)setImitationRecordStartTimeSinceReferenceDate:(id)a3;
+- (void)setCollectAppInFocusNum:(id)num;
+- (void)setCollectLoggingAppLaunchNum:(id)num;
+- (void)setCollectLoggingHangsNum:(id)num;
+- (void)setCollectLoggingMetalFramePacingNum:(id)num;
+- (void)setCollectLoggingPerfPowerMetricsNum:(id)num;
+- (void)setCollectLoggingScrollingNum:(id)num;
+- (void)setCollectLoggingUserInteractionNum:(id)num;
+- (void)setCollectMSSNum:(id)num;
+- (void)setCollectionLookbackInterval:(double)interval;
+- (void)setCollectionLookbackIntervalNum:(id)num;
+- (void)setImitationRecordStartDate:(id)date;
+- (void)setImitationRecordStartTimeSinceReferenceDate:(id)date;
 @end
 
 @implementation PTPCMutablePassiveCollectionConfig
 
-+ (id)currentPersistedSettings:(id)a3 errorOut:(id *)a4
++ (id)currentPersistedSettings:(id)settings errorOut:(id *)out
 {
-  v5 = a3;
-  v6 = [[PTPCMutablePassiveCollectionConfig alloc] initWithDefaultsDomain:v5 errorOut:a4];
+  settingsCopy = settings;
+  v6 = [[PTPCMutablePassiveCollectionConfig alloc] initWithDefaultsDomain:settingsCopy errorOut:out];
 
   return v6;
 }
 
-+ (BOOL)resetPersistedDefaults:(id)a3 errorOut:(id *)a4
++ (BOOL)resetPersistedDefaults:(id)defaults errorOut:(id *)out
 {
-  v5 = a3;
-  v6 = sub_100004414(v5, a4);
+  defaultsCopy = defaults;
+  v6 = sub_100004414(defaultsCopy, out);
   v7 = v6;
   if (v6)
   {
@@ -62,9 +62,9 @@
     if (os_signpost_enabled(v8))
     {
       v9 = @"com.apple.PerformanceTrace.passive.config";
-      if (v5)
+      if (defaultsCopy)
       {
-        v9 = v5;
+        v9 = defaultsCopy;
       }
 
       v14 = 138543362;
@@ -82,9 +82,9 @@ LABEL_10:
     if (os_signpost_enabled(v8))
     {
       v12 = @"com.apple.PerformanceTrace.passive.config";
-      if (v5)
+      if (defaultsCopy)
       {
-        v12 = v5;
+        v12 = defaultsCopy;
       }
 
       v14 = 138543362;
@@ -110,12 +110,12 @@ LABEL_10:
   return v3;
 }
 
-- (PTPCMutablePassiveCollectionConfig)initWithDefaultsDomain:(id)a3 errorOut:(id *)a4
+- (PTPCMutablePassiveCollectionConfig)initWithDefaultsDomain:(id)domain errorOut:(id *)out
 {
-  v6 = a3;
-  if (v6)
+  domainCopy = domain;
+  if (domainCopy)
   {
-    v7 = v6;
+    v7 = domainCopy;
   }
 
   else
@@ -124,8 +124,8 @@ LABEL_10:
   }
 
   v8 = [PTPCDefaultsManager alloc];
-  v9 = [objc_opt_class() keyToExpectedClassDict];
-  v10 = [(PTPCDefaultsManager *)v8 initWithDefaultsDomain:v7 configurationDictKey:@"CollectionConfiguration" keyToExpectedClassDict:v9 errorOut:a4];
+  keyToExpectedClassDict = [objc_opt_class() keyToExpectedClassDict];
+  v10 = [(PTPCDefaultsManager *)v8 initWithDefaultsDomain:v7 configurationDictKey:@"CollectionConfiguration" keyToExpectedClassDict:keyToExpectedClassDict errorOut:out];
 
   if (v10)
   {
@@ -140,15 +140,15 @@ LABEL_10:
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)resetSettings
@@ -163,12 +163,12 @@ LABEL_10:
   os_unfair_lock_unlock(&self->_syncLock);
 }
 
-- (id)_numberValueForKey:(id)a3 defaultValue:(id)a4
+- (id)_numberValueForKey:(id)key defaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PTPCMutablePassiveCollectionConfig *)self defaultsManager];
-  v9 = [v8 objectForKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  defaultsManager = [(PTPCMutablePassiveCollectionConfig *)self defaultsManager];
+  v9 = [defaultsManager objectForKey:keyCopy];
 
   v10 = sub_1000045A4();
   v11 = os_signpost_enabled(v10);
@@ -178,7 +178,7 @@ LABEL_10:
     if (v11)
     {
       v15 = 138543618;
-      v16 = v6;
+      v16 = keyCopy;
       v17 = 2114;
       v18 = v9;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "LookingUpKey", "Returning value for key '%{public}@': %{public}@", &v15, 0x16u);
@@ -188,15 +188,15 @@ LABEL_10:
 
   else
   {
-    v12 = v7;
+    v12 = valueCopy;
     if (v11)
     {
       v15 = 138543618;
-      v16 = v6;
+      v16 = keyCopy;
       v17 = 2114;
-      v18 = v7;
+      v18 = valueCopy;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "LookingUpKey", "Returning default for key '%{public}@': %{public}@", &v15, 0x16u);
-      v12 = v7;
+      v12 = valueCopy;
     }
   }
 
@@ -205,21 +205,21 @@ LABEL_10:
   return v13;
 }
 
-- (void)_setValueForKey:(id)a3 newValue:(id)a4
+- (void)_setValueForKey:(id)key newValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PTPCMutablePassiveCollectionConfig *)self defaultsManager];
-  v9 = [v8 setObjectForKey:v6 objectValue:v7];
+  keyCopy = key;
+  valueCopy = value;
+  defaultsManager = [(PTPCMutablePassiveCollectionConfig *)self defaultsManager];
+  v9 = [defaultsManager setObjectForKey:keyCopy objectValue:valueCopy];
 
   if (v9)
   {
     v10 = sub_1000045A4();
     if (os_signpost_enabled(v10))
     {
-      if (v7)
+      if (valueCopy)
       {
-        v11 = v7;
+        v11 = valueCopy;
       }
 
       else
@@ -227,14 +227,14 @@ LABEL_10:
         v11 = @"nil";
       }
 
-      v12 = [v9 localizedDescription];
-      v13 = v12;
+      localizedDescription = [v9 localizedDescription];
+      v13 = localizedDescription;
       v14 = @"Unknown";
       v17 = 138543874;
-      v18 = v6;
-      if (v12)
+      v18 = keyCopy;
+      if (localizedDescription)
       {
-        v14 = v12;
+        v14 = localizedDescription;
       }
 
       v19 = 2114;
@@ -249,13 +249,13 @@ LABEL_10:
   if (os_signpost_enabled(v15))
   {
     v16 = @"nil";
-    if (v7)
+    if (valueCopy)
     {
-      v16 = v7;
+      v16 = valueCopy;
     }
 
     v17 = 138543618;
-    v18 = v6;
+    v18 = keyCopy;
     v19 = 2114;
     v20 = v16;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v15, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CollectionConfigurationUpdate", "Updated key '%{public}@' to %{public}@", &v17, 0x16u);
@@ -274,7 +274,7 @@ LABEL_10:
   v6[1] = 3221225472;
   v7 = sub_100004E40;
   v8 = &unk_1000208D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_syncLock);
@@ -287,26 +287,26 @@ LABEL_10:
   return v4;
 }
 
-- (void)setCollectMSSNum:(id)a3
+- (void)setCollectMSSNum:(id)num
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100004F50;
   v5[3] = &unk_1000208F8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_syncLock);
+  selfCopy = self;
+  numCopy = num;
+  v4 = numCopy;
+  os_unfair_lock_lock(&selfCopy->_syncLock);
   sub_100004F50(v5);
   os_unfair_lock_unlock(&self->_syncLock);
 }
 
 - (BOOL)collectMSS
 {
-  v2 = [(PTPCMutablePassiveCollectionConfig *)self collectMSSNum];
-  v3 = [v2 BOOLValue];
+  collectMSSNum = [(PTPCMutablePassiveCollectionConfig *)self collectMSSNum];
+  bOOLValue = [collectMSSNum BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)collectAppInFocusNum
@@ -321,7 +321,7 @@ LABEL_10:
   v6[1] = 3221225472;
   v7 = sub_100005134;
   v8 = &unk_1000208D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_syncLock);
@@ -334,26 +334,26 @@ LABEL_10:
   return v4;
 }
 
-- (void)setCollectAppInFocusNum:(id)a3
+- (void)setCollectAppInFocusNum:(id)num
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100005244;
   v5[3] = &unk_1000208F8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_syncLock);
+  selfCopy = self;
+  numCopy = num;
+  v4 = numCopy;
+  os_unfair_lock_lock(&selfCopy->_syncLock);
   sub_100005244(v5);
   os_unfair_lock_unlock(&self->_syncLock);
 }
 
 - (BOOL)collectAppInFocus
 {
-  v2 = [(PTPCMutablePassiveCollectionConfig *)self collectAppInFocusNum];
-  v3 = [v2 BOOLValue];
+  collectAppInFocusNum = [(PTPCMutablePassiveCollectionConfig *)self collectAppInFocusNum];
+  bOOLValue = [collectAppInFocusNum BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)collectLoggingUserInteractionNum
@@ -368,7 +368,7 @@ LABEL_10:
   v6[1] = 3221225472;
   v7 = sub_100005428;
   v8 = &unk_1000208D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_syncLock);
@@ -381,26 +381,26 @@ LABEL_10:
   return v4;
 }
 
-- (void)setCollectLoggingUserInteractionNum:(id)a3
+- (void)setCollectLoggingUserInteractionNum:(id)num
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100005538;
   v5[3] = &unk_1000208F8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_syncLock);
+  selfCopy = self;
+  numCopy = num;
+  v4 = numCopy;
+  os_unfair_lock_lock(&selfCopy->_syncLock);
   sub_100005538(v5);
   os_unfair_lock_unlock(&self->_syncLock);
 }
 
 - (BOOL)collectLoggingUserInteraction
 {
-  v2 = [(PTPCMutablePassiveCollectionConfig *)self collectLoggingUserInteractionNum];
-  v3 = [v2 BOOLValue];
+  collectLoggingUserInteractionNum = [(PTPCMutablePassiveCollectionConfig *)self collectLoggingUserInteractionNum];
+  bOOLValue = [collectLoggingUserInteractionNum BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)collectLoggingMetalFramePacingNum
@@ -415,7 +415,7 @@ LABEL_10:
   v6[1] = 3221225472;
   v7 = sub_10000571C;
   v8 = &unk_1000208D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_syncLock);
@@ -428,26 +428,26 @@ LABEL_10:
   return v4;
 }
 
-- (void)setCollectLoggingMetalFramePacingNum:(id)a3
+- (void)setCollectLoggingMetalFramePacingNum:(id)num
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000582C;
   v5[3] = &unk_1000208F8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_syncLock);
+  selfCopy = self;
+  numCopy = num;
+  v4 = numCopy;
+  os_unfair_lock_lock(&selfCopy->_syncLock);
   sub_10000582C(v5);
   os_unfair_lock_unlock(&self->_syncLock);
 }
 
 - (BOOL)collectLoggingMetalFramePacing
 {
-  v2 = [(PTPCMutablePassiveCollectionConfig *)self collectLoggingMetalFramePacingNum];
-  v3 = [v2 BOOLValue];
+  collectLoggingMetalFramePacingNum = [(PTPCMutablePassiveCollectionConfig *)self collectLoggingMetalFramePacingNum];
+  bOOLValue = [collectLoggingMetalFramePacingNum BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)collectLoggingScrollingNum
@@ -462,7 +462,7 @@ LABEL_10:
   v6[1] = 3221225472;
   v7 = sub_100005A10;
   v8 = &unk_1000208D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_syncLock);
@@ -475,26 +475,26 @@ LABEL_10:
   return v4;
 }
 
-- (void)setCollectLoggingScrollingNum:(id)a3
+- (void)setCollectLoggingScrollingNum:(id)num
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100005B20;
   v5[3] = &unk_1000208F8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_syncLock);
+  selfCopy = self;
+  numCopy = num;
+  v4 = numCopy;
+  os_unfair_lock_lock(&selfCopy->_syncLock);
   sub_100005B20(v5);
   os_unfair_lock_unlock(&self->_syncLock);
 }
 
 - (BOOL)collectLoggingScrolling
 {
-  v2 = [(PTPCMutablePassiveCollectionConfig *)self collectLoggingScrollingNum];
-  v3 = [v2 BOOLValue];
+  collectLoggingScrollingNum = [(PTPCMutablePassiveCollectionConfig *)self collectLoggingScrollingNum];
+  bOOLValue = [collectLoggingScrollingNum BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)collectLoggingPerfPowerMetricsNum
@@ -509,7 +509,7 @@ LABEL_10:
   v6[1] = 3221225472;
   v7 = sub_100005D04;
   v8 = &unk_1000208D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_syncLock);
@@ -522,26 +522,26 @@ LABEL_10:
   return v4;
 }
 
-- (void)setCollectLoggingPerfPowerMetricsNum:(id)a3
+- (void)setCollectLoggingPerfPowerMetricsNum:(id)num
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100005E14;
   v5[3] = &unk_1000208F8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_syncLock);
+  selfCopy = self;
+  numCopy = num;
+  v4 = numCopy;
+  os_unfair_lock_lock(&selfCopy->_syncLock);
   sub_100005E14(v5);
   os_unfair_lock_unlock(&self->_syncLock);
 }
 
 - (BOOL)collectLoggingPerfPowerMetrics
 {
-  v2 = [(PTPCMutablePassiveCollectionConfig *)self collectLoggingPerfPowerMetricsNum];
-  v3 = [v2 BOOLValue];
+  collectLoggingPerfPowerMetricsNum = [(PTPCMutablePassiveCollectionConfig *)self collectLoggingPerfPowerMetricsNum];
+  bOOLValue = [collectLoggingPerfPowerMetricsNum BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)collectLoggingAppLaunchNum
@@ -556,7 +556,7 @@ LABEL_10:
   v6[1] = 3221225472;
   v7 = sub_100005FF8;
   v8 = &unk_1000208D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_syncLock);
@@ -569,26 +569,26 @@ LABEL_10:
   return v4;
 }
 
-- (void)setCollectLoggingAppLaunchNum:(id)a3
+- (void)setCollectLoggingAppLaunchNum:(id)num
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100006108;
   v5[3] = &unk_1000208F8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_syncLock);
+  selfCopy = self;
+  numCopy = num;
+  v4 = numCopy;
+  os_unfair_lock_lock(&selfCopy->_syncLock);
   sub_100006108(v5);
   os_unfair_lock_unlock(&self->_syncLock);
 }
 
 - (BOOL)collectLoggingAppLaunch
 {
-  v2 = [(PTPCMutablePassiveCollectionConfig *)self collectLoggingAppLaunchNum];
-  v3 = [v2 BOOLValue];
+  collectLoggingAppLaunchNum = [(PTPCMutablePassiveCollectionConfig *)self collectLoggingAppLaunchNum];
+  bOOLValue = [collectLoggingAppLaunchNum BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)collectLoggingHangsNum
@@ -603,7 +603,7 @@ LABEL_10:
   v6[1] = 3221225472;
   v7 = sub_1000062EC;
   v8 = &unk_1000208D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_syncLock);
@@ -616,26 +616,26 @@ LABEL_10:
   return v4;
 }
 
-- (void)setCollectLoggingHangsNum:(id)a3
+- (void)setCollectLoggingHangsNum:(id)num
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000063FC;
   v5[3] = &unk_1000208F8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_syncLock);
+  selfCopy = self;
+  numCopy = num;
+  v4 = numCopy;
+  os_unfair_lock_lock(&selfCopy->_syncLock);
   sub_1000063FC(v5);
   os_unfair_lock_unlock(&self->_syncLock);
 }
 
 - (BOOL)collectLoggingHangs
 {
-  v2 = [(PTPCMutablePassiveCollectionConfig *)self collectLoggingHangsNum];
-  v3 = [v2 BOOLValue];
+  collectLoggingHangsNum = [(PTPCMutablePassiveCollectionConfig *)self collectLoggingHangsNum];
+  bOOLValue = [collectLoggingHangsNum BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)imitationRecordStartTimeSinceReferenceDate
@@ -650,7 +650,7 @@ LABEL_10:
   v6[1] = 3221225472;
   v7 = sub_1000065E0;
   v8 = &unk_1000208D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_syncLock);
@@ -663,27 +663,27 @@ LABEL_10:
   return v4;
 }
 
-- (void)setImitationRecordStartTimeSinceReferenceDate:(id)a3
+- (void)setImitationRecordStartTimeSinceReferenceDate:(id)date
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000066EC;
   v5[3] = &unk_1000208F8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_syncLock);
+  selfCopy = self;
+  dateCopy = date;
+  v4 = dateCopy;
+  os_unfair_lock_lock(&selfCopy->_syncLock);
   sub_1000066EC(v5);
   os_unfair_lock_unlock(&self->_syncLock);
 }
 
 - (NSDate)imitationRecordStartDate
 {
-  v2 = [(PTPCMutablePassiveCollectionConfig *)self imitationRecordStartTimeSinceReferenceDate];
-  if (v2)
+  imitationRecordStartTimeSinceReferenceDate = [(PTPCMutablePassiveCollectionConfig *)self imitationRecordStartTimeSinceReferenceDate];
+  if (imitationRecordStartTimeSinceReferenceDate)
   {
     v3 = [NSDate alloc];
-    [v2 doubleValue];
+    [imitationRecordStartTimeSinceReferenceDate doubleValue];
     v4 = [v3 initWithTimeIntervalSinceReferenceDate:?];
   }
 
@@ -695,11 +695,11 @@ LABEL_10:
   return v4;
 }
 
-- (void)setImitationRecordStartDate:(id)a3
+- (void)setImitationRecordStartDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v4 = [NSNumber numberWithDouble:?];
     [(PTPCMutablePassiveCollectionConfig *)self setImitationRecordStartTimeSinceReferenceDate:v4];
   }
@@ -723,7 +723,7 @@ LABEL_10:
   v6[1] = 3221225472;
   v7 = sub_100006934;
   v8 = &unk_1000208D0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_syncLock);
@@ -736,11 +736,11 @@ LABEL_10:
   return v4;
 }
 
-- (void)setCollectionLookbackIntervalNum:(id)a3
+- (void)setCollectionLookbackIntervalNum:(id)num
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 doubleValue], v6 <= 0.0))
+  numCopy = num;
+  v5 = numCopy;
+  if (numCopy && ([numCopy doubleValue], v6 <= 0.0))
   {
     v7 = sub_100004560();
     if (os_signpost_enabled(v7))
@@ -768,16 +768,16 @@ LABEL_10:
 
 - (double)collectionLookbackInterval
 {
-  v2 = [(PTPCMutablePassiveCollectionConfig *)self collectionLookbackIntervalNum];
-  [v2 doubleValue];
+  collectionLookbackIntervalNum = [(PTPCMutablePassiveCollectionConfig *)self collectionLookbackIntervalNum];
+  [collectionLookbackIntervalNum doubleValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCollectionLookbackInterval:(double)a3
+- (void)setCollectionLookbackInterval:(double)interval
 {
-  v4 = [NSNumber numberWithDouble:a3];
+  v4 = [NSNumber numberWithDouble:interval];
   [(PTPCMutablePassiveCollectionConfig *)self setCollectionLookbackIntervalNum:v4];
 }
 

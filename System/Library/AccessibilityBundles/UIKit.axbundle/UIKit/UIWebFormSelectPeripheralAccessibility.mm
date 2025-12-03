@@ -1,16 +1,16 @@
 @interface UIWebFormSelectPeripheralAccessibility
-+ (id)createPeripheralWithDOMHTMLSelectElement:(id)a3;
++ (id)createPeripheralWithDOMHTMLSelectElement:(id)element;
 @end
 
 @implementation UIWebFormSelectPeripheralAccessibility
 
-+ (id)createPeripheralWithDOMHTMLSelectElement:(id)a3
++ (id)createPeripheralWithDOMHTMLSelectElement:(id)element
 {
-  v8 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5.receiver = v8;
+  objc_storeStrong(location, element);
+  v5.receiver = selfCopy;
   v5.super_class = &OBJC_METACLASS___UIWebFormSelectPeripheralAccessibility;
   v6 = objc_msgSendSuper2(&v5, sel_createPeripheralWithDOMHTMLSelectElement_, location[0]);
   MEMORY[0x29ED3DFA0](0);

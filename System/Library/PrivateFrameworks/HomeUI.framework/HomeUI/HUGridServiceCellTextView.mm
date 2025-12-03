@@ -1,37 +1,37 @@
 @interface HUGridServiceCellTextView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (HUGridServiceCellTextView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (HUGridServiceCellTextView)initWithFrame:(CGRect)frame;
 - (double)lastBaselineToBottomDistance;
 - (double)lineHeight;
 - (double)topToFirstBaselineDistance;
 - (id)_combinedAttributedString;
-- (id)_commonTextAttributesWithLineBreakMode:(int64_t)a3;
+- (id)_commonTextAttributesWithLineBreakMode:(int64_t)mode;
 - (id)_effectiveTextColor;
 - (void)_drawCombinedLabel;
 - (void)_drawDescriptionLabel;
 - (void)_drawSeperateLabels;
 - (void)_updateMode;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setDescriptionText:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setLineHeight:(double)a3;
-- (void)setMode:(unint64_t)a3;
-- (void)setServiceNameComponents:(id)a3;
-- (void)setShouldShowRoomName:(BOOL)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextColorFollowsTintColor:(BOOL)a3;
+- (void)setDescriptionText:(id)text;
+- (void)setFont:(id)font;
+- (void)setLineHeight:(double)height;
+- (void)setMode:(unint64_t)mode;
+- (void)setServiceNameComponents:(id)components;
+- (void)setShouldShowRoomName:(BOOL)name;
+- (void)setTextColor:(id)color;
+- (void)setTextColorFollowsTintColor:(BOOL)color;
 - (void)tintColorDidChange;
 @end
 
 @implementation HUGridServiceCellTextView
 
-- (HUGridServiceCellTextView)initWithFrame:(CGRect)a3
+- (HUGridServiceCellTextView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HUGridServiceCellTextView;
-  v3 = [(HUGridServiceCellTextView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUGridServiceCellTextView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -52,53 +52,53 @@
   [(HUGridServiceCellTextView *)self setNeedsDisplay];
 }
 
-- (void)setServiceNameComponents:(id)a3
+- (void)setServiceNameComponents:(id)components
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_serviceNameComponents] & 1) == 0)
+  componentsCopy = components;
+  if (([componentsCopy isEqual:self->_serviceNameComponents] & 1) == 0)
   {
-    objc_storeStrong(&self->_serviceNameComponents, a3);
+    objc_storeStrong(&self->_serviceNameComponents, components);
     [(HUGridServiceCellTextView *)self setNeedsLayout];
     [(HUGridServiceCellTextView *)self setNeedsDisplay];
   }
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_descriptionText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqual:self->_descriptionText] & 1) == 0)
   {
-    objc_storeStrong(&self->_descriptionText, a3);
+    objc_storeStrong(&self->_descriptionText, text);
     [(HUGridServiceCellTextView *)self setNeedsDisplay];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_font] & 1) == 0)
+  fontCopy = font;
+  if (([fontCopy isEqual:self->_font] & 1) == 0)
   {
-    objc_storeStrong(&self->_font, a3);
+    objc_storeStrong(&self->_font, font);
     [(HUGridServiceCellTextView *)self setNeedsDisplay];
     [(HUGridServiceCellTextView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_textColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_textColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_textColor, a3);
+    objc_storeStrong(&self->_textColor, color);
     [(HUGridServiceCellTextView *)self setNeedsDisplay];
   }
 }
 
-- (void)setTextColorFollowsTintColor:(BOOL)a3
+- (void)setTextColorFollowsTintColor:(BOOL)color
 {
-  if (self->_textColorFollowsTintColor != a3)
+  if (self->_textColorFollowsTintColor != color)
   {
-    self->_textColorFollowsTintColor = a3;
+    self->_textColorFollowsTintColor = color;
     [(HUGridServiceCellTextView *)self setNeedsDisplay];
   }
 }
@@ -108,8 +108,8 @@
   result = self->_lineHeight;
   if (fabs(result) < 2.22044605e-16)
   {
-    v3 = [(HUGridServiceCellTextView *)self font];
-    [v3 lineHeight];
+    font = [(HUGridServiceCellTextView *)self font];
+    [font lineHeight];
     v5 = v4;
 
     return v5;
@@ -118,39 +118,39 @@
   return result;
 }
 
-- (void)setLineHeight:(double)a3
+- (void)setLineHeight:(double)height
 {
-  if (self->_lineHeight != a3)
+  if (self->_lineHeight != height)
   {
-    self->_lineHeight = a3;
+    self->_lineHeight = height;
     [(HUGridServiceCellTextView *)self invalidateIntrinsicContentSize];
 
     [(HUGridServiceCellTextView *)self setNeedsDisplay];
   }
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(HUGridServiceCellTextView *)self setNeedsLayout];
   }
 }
 
-- (void)setShouldShowRoomName:(BOOL)a3
+- (void)setShouldShowRoomName:(BOOL)name
 {
-  if (self->_shouldShowRoomName != a3)
+  if (self->_shouldShowRoomName != name)
   {
-    self->_shouldShowRoomName = a3;
+    self->_shouldShowRoomName = name;
     [(HUGridServiceCellTextView *)self setNeedsLayout];
   }
 }
 
 - (double)topToFirstBaselineDistance
 {
-  v2 = [(HUGridServiceCellTextView *)self font];
-  [v2 ascender];
+  font = [(HUGridServiceCellTextView *)self font];
+  [font ascender];
   v4 = v3;
 
   return v4;
@@ -160,8 +160,8 @@
 {
   [(HUGridServiceCellTextView *)self lineHeight];
   v4 = v3;
-  v5 = [(HUGridServiceCellTextView *)self font];
-  [v5 ascender];
+  font = [(HUGridServiceCellTextView *)self font];
+  [font ascender];
   v7 = v4 - v6;
 
   return v7;
@@ -182,8 +182,8 @@
   attrString = [v3 initWithString:@"X" attributes:v4];
 
   v5 = CTFramesetterCreateWithAttributedString(attrString);
-  v6 = [(HUGridServiceCellTextView *)self _combinedAttributedString];
-  v7 = CTFramesetterCreateWithAttributedString(v6);
+  _combinedAttributedString = [(HUGridServiceCellTextView *)self _combinedAttributedString];
+  v7 = CTFramesetterCreateWithAttributedString(_combinedAttributedString);
 
   [(HUGridServiceCellTextView *)self frame];
   v25.width = v8;
@@ -208,23 +208,23 @@
     CFRelease(v7);
   }
 
-  v13 = [(HUGridServiceCellTextView *)self serviceNameComponents];
-  v14 = [v13 serviceName];
+  serviceNameComponents = [(HUGridServiceCellTextView *)self serviceNameComponents];
+  serviceName = [serviceNameComponents serviceName];
 
   if ([(HUGridServiceCellTextView *)self shouldShowRoomName])
   {
-    v15 = [(HUGridServiceCellTextView *)self serviceNameComponents];
-    v16 = [v15 roomName];
+    serviceNameComponents2 = [(HUGridServiceCellTextView *)self serviceNameComponents];
+    roomName = [serviceNameComponents2 roomName];
   }
 
   else
   {
-    v16 = 0;
+    roomName = 0;
   }
 
-  if (![v14 length] || (v17 = objc_msgSend(v16, "length"), v18 = 1, !v17) && v12.height > v9.height)
+  if (![serviceName length] || (v17 = objc_msgSend(roomName, "length"), v18 = 1, !v17) && v12.height > v9.height)
   {
-    v19 = [v16 length];
+    v19 = [roomName length];
     if (v12.height <= v9.height && v19 == 0)
     {
       v18 = 0;
@@ -250,19 +250,19 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(HUGridServiceCellTextView *)self intrinsicContentSize:a3.width];
+  width = fits.width;
+  [(HUGridServiceCellTextView *)self intrinsicContentSize:fits.width];
   v5 = width;
   result.height = v4;
   result.width = v5;
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(HUGridServiceCellTextView *)self mode:a3.origin.x];
+  v4 = [(HUGridServiceCellTextView *)self mode:rect.origin.x];
   if (v4 == 2)
   {
     [(HUGridServiceCellTextView *)self _drawCombinedLabel];
@@ -273,50 +273,50 @@
     [(HUGridServiceCellTextView *)self _drawSeperateLabels];
   }
 
-  v5 = [(HUGridServiceCellTextView *)self descriptionText];
+  descriptionText = [(HUGridServiceCellTextView *)self descriptionText];
 
-  if (v5)
+  if (descriptionText)
   {
 
     [(HUGridServiceCellTextView *)self _drawDescriptionLabel];
   }
 }
 
-- (id)_commonTextAttributesWithLineBreakMode:(int64_t)a3
+- (id)_commonTextAttributesWithLineBreakMode:(int64_t)mode
 {
   v5 = objc_alloc_init(MEMORY[0x277D74240]);
   [(HUGridServiceCellTextView *)self lineHeight];
   [v5 setMinimumLineHeight:?];
   [(HUGridServiceCellTextView *)self lineHeight];
   [v5 setMaximumLineHeight:?];
-  [v5 setLineBreakMode:a3];
+  [v5 setLineBreakMode:mode];
   [v5 setAllowsDefaultTighteningForTruncation:{objc_msgSend(MEMORY[0x277D14670], "isHomeControlService") ^ 1}];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [(HUGridServiceCellTextView *)self font];
-  [v6 na_safeSetObject:v7 forKey:*MEMORY[0x277D740A8]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  font = [(HUGridServiceCellTextView *)self font];
+  [dictionary na_safeSetObject:font forKey:*MEMORY[0x277D740A8]];
 
-  v8 = [(HUGridServiceCellTextView *)self _effectiveTextColor];
-  [v6 na_safeSetObject:v8 forKey:*MEMORY[0x277D740C0]];
+  _effectiveTextColor = [(HUGridServiceCellTextView *)self _effectiveTextColor];
+  [dictionary na_safeSetObject:_effectiveTextColor forKey:*MEMORY[0x277D740C0]];
 
-  [v6 na_safeSetObject:v5 forKey:*MEMORY[0x277D74118]];
+  [dictionary na_safeSetObject:v5 forKey:*MEMORY[0x277D74118]];
 
-  return v6;
+  return dictionary;
 }
 
 - (id)_combinedAttributedString
 {
   v3 = [(HUGridServiceCellTextView *)self _commonTextAttributesWithLineBreakMode:0];
-  v4 = [(HUGridServiceCellTextView *)self shouldShowRoomName];
-  v5 = [(HUGridServiceCellTextView *)self serviceNameComponents];
-  v6 = v5;
-  if (v4)
+  shouldShowRoomName = [(HUGridServiceCellTextView *)self shouldShowRoomName];
+  serviceNameComponents = [(HUGridServiceCellTextView *)self serviceNameComponents];
+  v6 = serviceNameComponents;
+  if (shouldShowRoomName)
   {
-    [v5 composedString];
+    [serviceNameComponents composedString];
   }
 
   else
   {
-    [v5 serviceName];
+    [serviceNameComponents serviceName];
   }
   v7 = ;
 
@@ -334,8 +334,8 @@
   [(HUGridServiceCellTextView *)self bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [(HUGridServiceCellTextView *)self _combinedAttributedString];
-  [v9 drawWithRect:33 options:v10 context:{v3, v4, v6, v8}];
+  _combinedAttributedString = [(HUGridServiceCellTextView *)self _combinedAttributedString];
+  [_combinedAttributedString drawWithRect:33 options:v10 context:{v3, v4, v6, v8}];
 }
 
 - (void)_drawSeperateLabels
@@ -351,17 +351,17 @@
   v10 = objc_alloc_init(MEMORY[0x277D74260]);
   if ([(HUGridServiceCellTextView *)self shouldShowRoomName])
   {
-    v11 = [(HUGridServiceCellTextView *)self serviceNameComponents];
-    v12 = [v11 roomName];
-    v13 = [v12 stringWithAttributes:v18];
+    serviceNameComponents = [(HUGridServiceCellTextView *)self serviceNameComponents];
+    roomName = [serviceNameComponents roomName];
+    v13 = [roomName stringWithAttributes:v18];
 
     [v13 drawWithRect:0 options:v10 context:{0.0, v5, v7, v9}];
   }
 
-  v14 = [(HUGridServiceCellTextView *)self serviceNameComponents];
-  v15 = [v14 serviceName];
+  serviceNameComponents2 = [(HUGridServiceCellTextView *)self serviceNameComponents];
+  serviceName = [serviceNameComponents2 serviceName];
 
-  v16 = [v15 stringWithAttributes:v18];
+  v16 = [serviceName stringWithAttributes:v18];
   [(HUGridServiceCellTextView *)self lineHeight];
   [v16 drawWithRect:0 options:v10 context:{0.0, v5 + v17, v7, v9}];
 }
@@ -374,12 +374,12 @@
   [(HUGridServiceCellTextView *)self descriptionTextColorDimmingFactor];
   if (v5 < 1.0)
   {
-    v6 = [(HUGridServiceCellTextView *)self _effectiveTextColor];
+    _effectiveTextColor = [(HUGridServiceCellTextView *)self _effectiveTextColor];
     v20 = 1.0;
-    [v6 getWhite:0 alpha:&v20];
+    [_effectiveTextColor getWhite:0 alpha:&v20];
     [(HUGridServiceCellTextView *)self descriptionTextColorDimmingFactor];
     v20 = v7 * v20;
-    v8 = [v6 colorWithAlphaComponent:?];
+    v8 = [_effectiveTextColor colorWithAlphaComponent:?];
 
     [v4 setObject:v8 forKeyedSubscript:*MEMORY[0x277D740C0]];
   }
@@ -388,8 +388,8 @@
   [v9 ascender];
   v11 = v10;
 
-  v12 = [(HUGridServiceCellTextView *)self descriptionText];
-  v13 = [v12 stringWithAttributes:v4];
+  descriptionText = [(HUGridServiceCellTextView *)self descriptionText];
+  v13 = [descriptionText stringWithAttributes:v4];
 
   [(HUGridServiceCellTextView *)self bounds];
   v15 = v14;
@@ -402,30 +402,30 @@
 
 - (id)_effectiveTextColor
 {
-  v3 = [MEMORY[0x277D75348] labelColor];
+  labelColor = [MEMORY[0x277D75348] labelColor];
   if ([(HUGridServiceCellTextView *)self textColorFollowsTintColor])
   {
-    v4 = [(HUGridServiceCellTextView *)self tintColor];
+    tintColor = [(HUGridServiceCellTextView *)self tintColor];
   }
 
   else
   {
-    v5 = [(HUGridServiceCellTextView *)self textColor];
+    textColor = [(HUGridServiceCellTextView *)self textColor];
 
-    if (!v5)
+    if (!textColor)
     {
       goto LABEL_6;
     }
 
-    v4 = [(HUGridServiceCellTextView *)self textColor];
+    tintColor = [(HUGridServiceCellTextView *)self textColor];
   }
 
-  v6 = v4;
+  v6 = tintColor;
 
-  v3 = v6;
+  labelColor = v6;
 LABEL_6:
 
-  return v3;
+  return labelColor;
 }
 
 @end

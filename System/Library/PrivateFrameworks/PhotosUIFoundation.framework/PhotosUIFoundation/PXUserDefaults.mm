@@ -4,30 +4,30 @@
 - (NSNumber)includeScreenshots;
 - (NSNumber)includeSharedWithYou;
 - (PXUserDefaults)init;
-- (PXUserDefaults)initWithDataSource:(id)a3;
+- (PXUserDefaults)initWithDataSource:(id)source;
 - (PXUserDefaultsDataSource)dataSource;
-- (void)setAllPhotosAspectFit:(id)a3;
-- (void)setAllPhotosColumns:(id)a3;
-- (void)setAllPhotosLibraryPreferredIndividualItemsColumns:(id)a3;
-- (void)setCuratedLibraryZoomLevel:(id)a3;
-- (void)setDaysMarginScale:(id)a3;
-- (void)setDidShowCompletedCurationFooterAnimation:(id)a3;
-- (void)setDidShowCurationFooter:(id)a3;
-- (void)setIncludeFromMyMac:(id)a3;
-- (void)setIncludeScreenshots:(id)a3;
-- (void)setIncludeSharedWithYou:(id)a3;
-- (void)setInfoPanelLastSnappedPosition:(id)a3;
-- (void)setInfoPanelLastSnappedWidgetIdentifier:(id)a3;
-- (void)setInternalUIDisabled:(BOOL)a3;
-- (void)setLastRadarPromptAnsweredQuestionCount:(id)a3;
-- (void)setLastSurveyQuestionsRadarPromptDate:(id)a3;
-- (void)setPhotosGridAspectFit:(id)a3;
-- (void)setPhotosGridAspectFitInCompact:(id)a3;
-- (void)setPhotosGridColumns:(id)a3;
-- (void)setPhotosGridPreferredIndividualItemsColumns:(id)a3;
-- (void)setSearchPreferredIndividualItemsColumns:(id)a3;
-- (void)setSurveyQuestionsHideDate:(id)a3;
-- (void)setallPhotosAspectFitInCompact:(id)a3;
+- (void)setAllPhotosAspectFit:(id)fit;
+- (void)setAllPhotosColumns:(id)columns;
+- (void)setAllPhotosLibraryPreferredIndividualItemsColumns:(id)columns;
+- (void)setCuratedLibraryZoomLevel:(id)level;
+- (void)setDaysMarginScale:(id)scale;
+- (void)setDidShowCompletedCurationFooterAnimation:(id)animation;
+- (void)setDidShowCurationFooter:(id)footer;
+- (void)setIncludeFromMyMac:(id)mac;
+- (void)setIncludeScreenshots:(id)screenshots;
+- (void)setIncludeSharedWithYou:(id)you;
+- (void)setInfoPanelLastSnappedPosition:(id)position;
+- (void)setInfoPanelLastSnappedWidgetIdentifier:(id)identifier;
+- (void)setInternalUIDisabled:(BOOL)disabled;
+- (void)setLastRadarPromptAnsweredQuestionCount:(id)count;
+- (void)setLastSurveyQuestionsRadarPromptDate:(id)date;
+- (void)setPhotosGridAspectFit:(id)fit;
+- (void)setPhotosGridAspectFitInCompact:(id)compact;
+- (void)setPhotosGridColumns:(id)columns;
+- (void)setPhotosGridPreferredIndividualItemsColumns:(id)columns;
+- (void)setSearchPreferredIndividualItemsColumns:(id)columns;
+- (void)setSurveyQuestionsHideDate:(id)date;
+- (void)setallPhotosAspectFitInCompact:(id)compact;
 @end
 
 @implementation PXUserDefaults
@@ -102,532 +102,532 @@ uint64_t __38__PXUserDefaults_standardUserDefaults__block_invoke()
   return WeakRetained;
 }
 
-- (void)setInfoPanelLastSnappedPosition:(id)a3
+- (void)setInfoPanelLastSnappedPosition:(id)position
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_infoPanelLastSnappedPosition != v5)
+  positionCopy = position;
+  v6 = positionCopy;
+  if (self->_infoPanelLastSnappedPosition != positionCopy)
   {
-    v8 = v5;
-    v5 = [(NSNumber *)v5 isEqual:?];
+    v8 = positionCopy;
+    positionCopy = [(NSNumber *)positionCopy isEqual:?];
     v6 = v8;
-    if ((v5 & 1) == 0)
+    if ((positionCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_infoPanelLastSnappedPosition, a3);
-      v7 = [(PXUserDefaults *)self dataSource];
-      [v7 setPersistedValue:self->_infoPanelLastSnappedPosition forKey:@"infoPanelLastSnappedPosition"];
+      objc_storeStrong(&self->_infoPanelLastSnappedPosition, position);
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_infoPanelLastSnappedPosition forKey:@"infoPanelLastSnappedPosition"];
 
       v6 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](positionCopy, v6);
 }
 
-- (void)setInfoPanelLastSnappedWidgetIdentifier:(id)a3
+- (void)setInfoPanelLastSnappedWidgetIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_infoPanelLastSnappedWidgetIdentifier != v5)
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  if (self->_infoPanelLastSnappedWidgetIdentifier != identifierCopy)
   {
-    v8 = v5;
-    v5 = [v5 isEqual:?];
+    v8 = identifierCopy;
+    identifierCopy = [identifierCopy isEqual:?];
     v6 = v8;
-    if ((v5 & 1) == 0)
+    if ((identifierCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_infoPanelLastSnappedWidgetIdentifier, a3);
-      v7 = [(PXUserDefaults *)self dataSource];
-      [v7 setPersistedValue:self->_infoPanelLastSnappedWidgetIdentifier forKey:@"infoPanelLastSnappedWidgetIdentifier"];
+      objc_storeStrong(&self->_infoPanelLastSnappedWidgetIdentifier, identifier);
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_infoPanelLastSnappedWidgetIdentifier forKey:@"infoPanelLastSnappedWidgetIdentifier"];
 
       v6 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](identifierCopy, v6);
 }
 
-- (void)setSurveyQuestionsHideDate:(id)a3
+- (void)setSurveyQuestionsHideDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_surveyQuestionsHideDate != v4)
+  dateCopy = date;
+  v5 = dateCopy;
+  if (self->_surveyQuestionsHideDate != dateCopy)
   {
-    v9 = v4;
-    v4 = [(NSDate *)v4 isEqual:?];
+    v9 = dateCopy;
+    dateCopy = [(NSDate *)dateCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((dateCopy & 1) == 0)
     {
       v6 = [(NSDate *)v9 copy];
       surveyQuestionsHideDate = self->_surveyQuestionsHideDate;
       self->_surveyQuestionsHideDate = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_surveyQuestionsHideDate forKey:@"surveyQuestionsHideDate"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_surveyQuestionsHideDate forKey:@"surveyQuestionsHideDate"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](dateCopy, v5);
 }
 
-- (void)setLastSurveyQuestionsRadarPromptDate:(id)a3
+- (void)setLastSurveyQuestionsRadarPromptDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_lastSurveyQuestionsRadarPromptDate != v4)
+  dateCopy = date;
+  v5 = dateCopy;
+  if (self->_lastSurveyQuestionsRadarPromptDate != dateCopy)
   {
-    v9 = v4;
-    v4 = [(NSDate *)v4 isEqual:?];
+    v9 = dateCopy;
+    dateCopy = [(NSDate *)dateCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((dateCopy & 1) == 0)
     {
       v6 = [(NSDate *)v9 copy];
       lastSurveyQuestionsRadarPromptDate = self->_lastSurveyQuestionsRadarPromptDate;
       self->_lastSurveyQuestionsRadarPromptDate = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_lastSurveyQuestionsRadarPromptDate forKey:@"lastSurveyQuestionsRadarPromptDate"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_lastSurveyQuestionsRadarPromptDate forKey:@"lastSurveyQuestionsRadarPromptDate"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](dateCopy, v5);
 }
 
-- (void)setLastRadarPromptAnsweredQuestionCount:(id)a3
+- (void)setLastRadarPromptAnsweredQuestionCount:(id)count
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_lastRadarPromptAnsweredQuestionCount != v4)
+  countCopy = count;
+  v5 = countCopy;
+  if (self->_lastRadarPromptAnsweredQuestionCount != countCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = countCopy;
+    countCopy = [(NSNumber *)countCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((countCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       lastRadarPromptAnsweredQuestionCount = self->_lastRadarPromptAnsweredQuestionCount;
       self->_lastRadarPromptAnsweredQuestionCount = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_lastRadarPromptAnsweredQuestionCount forKey:@"lastRadarPromptAnsweredQuestionCount"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_lastRadarPromptAnsweredQuestionCount forKey:@"lastRadarPromptAnsweredQuestionCount"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](countCopy, v5);
 }
 
-- (void)setIncludeFromMyMac:(id)a3
+- (void)setIncludeFromMyMac:(id)mac
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_includeFromMyMac != v4)
+  macCopy = mac;
+  v5 = macCopy;
+  if (self->_includeFromMyMac != macCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = macCopy;
+    macCopy = [(NSNumber *)macCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((macCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       includeFromMyMac = self->_includeFromMyMac;
       self->_includeFromMyMac = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:v9 forKey:@"IncludeFromMyMac"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:v9 forKey:@"IncludeFromMyMac"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](macCopy, v5);
 }
 
-- (void)setIncludeSharedWithYou:(id)a3
+- (void)setIncludeSharedWithYou:(id)you
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_includeSharedWithYou != v4)
+  youCopy = you;
+  v5 = youCopy;
+  if (self->_includeSharedWithYou != youCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = youCopy;
+    youCopy = [(NSNumber *)youCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((youCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       includeSharedWithYou = self->_includeSharedWithYou;
       self->_includeSharedWithYou = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:v9 forKey:@"IncludeSharedWithYou"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:v9 forKey:@"IncludeSharedWithYou"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](youCopy, v5);
 }
 
-- (void)setIncludeScreenshots:(id)a3
+- (void)setIncludeScreenshots:(id)screenshots
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_includeScreenshots != v4)
+  screenshotsCopy = screenshots;
+  v5 = screenshotsCopy;
+  if (self->_includeScreenshots != screenshotsCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = screenshotsCopy;
+    screenshotsCopy = [(NSNumber *)screenshotsCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((screenshotsCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       includeScreenshots = self->_includeScreenshots;
       self->_includeScreenshots = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:v9 forKey:@"IncludeScreenshots"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:v9 forKey:@"IncludeScreenshots"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](screenshotsCopy, v5);
 }
 
-- (void)setDidShowCompletedCurationFooterAnimation:(id)a3
+- (void)setDidShowCompletedCurationFooterAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_didShowCompletedCurationFooterAnimation != v4)
+  animationCopy = animation;
+  v5 = animationCopy;
+  if (self->_didShowCompletedCurationFooterAnimation != animationCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = animationCopy;
+    animationCopy = [(NSNumber *)animationCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((animationCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       didShowCompletedCurationFooterAnimation = self->_didShowCompletedCurationFooterAnimation;
       self->_didShowCompletedCurationFooterAnimation = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_didShowCompletedCurationFooterAnimation forKey:@"didShowCompletedCurationFooterAnimation"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_didShowCompletedCurationFooterAnimation forKey:@"didShowCompletedCurationFooterAnimation"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](animationCopy, v5);
 }
 
-- (void)setDidShowCurationFooter:(id)a3
+- (void)setDidShowCurationFooter:(id)footer
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_didShowCurationFooter != v4)
+  footerCopy = footer;
+  v5 = footerCopy;
+  if (self->_didShowCurationFooter != footerCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = footerCopy;
+    footerCopy = [(NSNumber *)footerCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((footerCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       didShowCurationFooter = self->_didShowCurationFooter;
       self->_didShowCurationFooter = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_didShowCurationFooter forKey:@"didShowCurationFooter"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_didShowCurationFooter forKey:@"didShowCurationFooter"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](footerCopy, v5);
 }
 
-- (void)setSearchPreferredIndividualItemsColumns:(id)a3
+- (void)setSearchPreferredIndividualItemsColumns:(id)columns
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_searchPreferredIndividualItemsColumns != v4)
+  columnsCopy = columns;
+  v5 = columnsCopy;
+  if (self->_searchPreferredIndividualItemsColumns != columnsCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = columnsCopy;
+    columnsCopy = [(NSNumber *)columnsCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((columnsCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       searchPreferredIndividualItemsColumns = self->_searchPreferredIndividualItemsColumns;
       self->_searchPreferredIndividualItemsColumns = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_searchPreferredIndividualItemsColumns forKey:@"searchPreferredIndividualItemsColumns"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_searchPreferredIndividualItemsColumns forKey:@"searchPreferredIndividualItemsColumns"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](columnsCopy, v5);
 }
 
-- (void)setPhotosGridAspectFitInCompact:(id)a3
+- (void)setPhotosGridAspectFitInCompact:(id)compact
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_photosGridAspectFitInCompact != v4)
+  compactCopy = compact;
+  v5 = compactCopy;
+  if (self->_photosGridAspectFitInCompact != compactCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = compactCopy;
+    compactCopy = [(NSNumber *)compactCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((compactCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       photosGridAspectFitInCompact = self->_photosGridAspectFitInCompact;
       self->_photosGridAspectFitInCompact = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_photosGridAspectFitInCompact forKey:@"photosGridAspectFitInCompact"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_photosGridAspectFitInCompact forKey:@"photosGridAspectFitInCompact"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](compactCopy, v5);
 }
 
-- (void)setPhotosGridAspectFit:(id)a3
+- (void)setPhotosGridAspectFit:(id)fit
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_photosGridAspectFit != v4)
+  fitCopy = fit;
+  v5 = fitCopy;
+  if (self->_photosGridAspectFit != fitCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = fitCopy;
+    fitCopy = [(NSNumber *)fitCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((fitCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       photosGridAspectFit = self->_photosGridAspectFit;
       self->_photosGridAspectFit = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_photosGridAspectFit forKey:@"photosGridAspectFit"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_photosGridAspectFit forKey:@"photosGridAspectFit"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](fitCopy, v5);
 }
 
-- (void)setPhotosGridPreferredIndividualItemsColumns:(id)a3
+- (void)setPhotosGridPreferredIndividualItemsColumns:(id)columns
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_photosGridPreferredIndividualItemsColumns != v4)
+  columnsCopy = columns;
+  v5 = columnsCopy;
+  if (self->_photosGridPreferredIndividualItemsColumns != columnsCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = columnsCopy;
+    columnsCopy = [(NSNumber *)columnsCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((columnsCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       photosGridPreferredIndividualItemsColumns = self->_photosGridPreferredIndividualItemsColumns;
       self->_photosGridPreferredIndividualItemsColumns = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_photosGridPreferredIndividualItemsColumns forKey:@"photosGridPreferredIndividualItemsColumns"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_photosGridPreferredIndividualItemsColumns forKey:@"photosGridPreferredIndividualItemsColumns"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](columnsCopy, v5);
 }
 
-- (void)setPhotosGridColumns:(id)a3
+- (void)setPhotosGridColumns:(id)columns
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_photosGridColumns != v4)
+  columnsCopy = columns;
+  v5 = columnsCopy;
+  if (self->_photosGridColumns != columnsCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = columnsCopy;
+    columnsCopy = [(NSNumber *)columnsCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((columnsCopy & 1) == 0)
     {
-      v6 = [(PXUserDefaults *)self dataSource];
+      dataSource = [(PXUserDefaults *)self dataSource];
       v7 = [(NSNumber *)v9 copy];
       photosGridColumns = self->_photosGridColumns;
       self->_photosGridColumns = v7;
 
-      [v6 setPersistedValue:self->_photosGridColumns forKey:@"photosGridColumns"];
+      [dataSource setPersistedValue:self->_photosGridColumns forKey:@"photosGridColumns"];
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](columnsCopy, v5);
 }
 
-- (void)setallPhotosAspectFitInCompact:(id)a3
+- (void)setallPhotosAspectFitInCompact:(id)compact
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_allPhotosAspectFitInCompact != v4)
+  compactCopy = compact;
+  v5 = compactCopy;
+  if (self->_allPhotosAspectFitInCompact != compactCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = compactCopy;
+    compactCopy = [(NSNumber *)compactCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((compactCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       allPhotosAspectFitInCompact = self->_allPhotosAspectFitInCompact;
       self->_allPhotosAspectFitInCompact = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_allPhotosAspectFitInCompact forKey:@"allPhotosAspectFitInCompact"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_allPhotosAspectFitInCompact forKey:@"allPhotosAspectFitInCompact"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](compactCopy, v5);
 }
 
-- (void)setAllPhotosAspectFit:(id)a3
+- (void)setAllPhotosAspectFit:(id)fit
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_allPhotosAspectFit != v4)
+  fitCopy = fit;
+  v5 = fitCopy;
+  if (self->_allPhotosAspectFit != fitCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = fitCopy;
+    fitCopy = [(NSNumber *)fitCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((fitCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       allPhotosAspectFit = self->_allPhotosAspectFit;
       self->_allPhotosAspectFit = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_allPhotosAspectFit forKey:@"allPhotosAspectFit"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_allPhotosAspectFit forKey:@"allPhotosAspectFit"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](fitCopy, v5);
 }
 
-- (void)setAllPhotosLibraryPreferredIndividualItemsColumns:(id)a3
+- (void)setAllPhotosLibraryPreferredIndividualItemsColumns:(id)columns
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_allPhotosLibraryPreferredIndividualItemsColumns != v4)
+  columnsCopy = columns;
+  v5 = columnsCopy;
+  if (self->_allPhotosLibraryPreferredIndividualItemsColumns != columnsCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = columnsCopy;
+    columnsCopy = [(NSNumber *)columnsCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((columnsCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       allPhotosLibraryPreferredIndividualItemsColumns = self->_allPhotosLibraryPreferredIndividualItemsColumns;
       self->_allPhotosLibraryPreferredIndividualItemsColumns = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_allPhotosLibraryPreferredIndividualItemsColumns forKey:@"allPhotosLibraryPreferredIndividualItemsColumns"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_allPhotosLibraryPreferredIndividualItemsColumns forKey:@"allPhotosLibraryPreferredIndividualItemsColumns"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](columnsCopy, v5);
 }
 
-- (void)setAllPhotosColumns:(id)a3
+- (void)setAllPhotosColumns:(id)columns
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_allPhotosColumns != v4)
+  columnsCopy = columns;
+  v5 = columnsCopy;
+  if (self->_allPhotosColumns != columnsCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = columnsCopy;
+    columnsCopy = [(NSNumber *)columnsCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((columnsCopy & 1) == 0)
     {
-      v6 = [(PXUserDefaults *)self dataSource];
+      dataSource = [(PXUserDefaults *)self dataSource];
       v7 = [(NSNumber *)v9 copy];
       allPhotosColumns = self->_allPhotosColumns;
       self->_allPhotosColumns = v7;
 
-      [v6 setPersistedValue:self->_allPhotosColumns forKey:@"allPhotosColumns"];
+      [dataSource setPersistedValue:self->_allPhotosColumns forKey:@"allPhotosColumns"];
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](columnsCopy, v5);
 }
 
-- (void)setDaysMarginScale:(id)a3
+- (void)setDaysMarginScale:(id)scale
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_daysMarginScale != v4)
+  scaleCopy = scale;
+  v5 = scaleCopy;
+  if (self->_daysMarginScale != scaleCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = scaleCopy;
+    scaleCopy = [(NSNumber *)scaleCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((scaleCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       daysMarginScale = self->_daysMarginScale;
       self->_daysMarginScale = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_daysMarginScale forKey:@"daysMarginScale"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_daysMarginScale forKey:@"daysMarginScale"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](scaleCopy, v5);
 }
 
-- (void)setCuratedLibraryZoomLevel:(id)a3
+- (void)setCuratedLibraryZoomLevel:(id)level
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_curatedLibraryZoomLevel != v4)
+  levelCopy = level;
+  v5 = levelCopy;
+  if (self->_curatedLibraryZoomLevel != levelCopy)
   {
-    v9 = v4;
-    v4 = [(NSNumber *)v4 isEqual:?];
+    v9 = levelCopy;
+    levelCopy = [(NSNumber *)levelCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((levelCopy & 1) == 0)
     {
       v6 = [(NSNumber *)v9 copy];
       curatedLibraryZoomLevel = self->_curatedLibraryZoomLevel;
       self->_curatedLibraryZoomLevel = v6;
 
-      v8 = [(PXUserDefaults *)self dataSource];
-      [v8 setPersistedValue:self->_curatedLibraryZoomLevel forKey:@"curatedLibraryZoomLevel"];
+      dataSource = [(PXUserDefaults *)self dataSource];
+      [dataSource setPersistedValue:self->_curatedLibraryZoomLevel forKey:@"curatedLibraryZoomLevel"];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](levelCopy, v5);
 }
 
-- (void)setInternalUIDisabled:(BOOL)a3
+- (void)setInternalUIDisabled:(BOOL)disabled
 {
-  if (self->_internalUIDisabled != a3)
+  if (self->_internalUIDisabled != disabled)
   {
-    v4 = a3;
-    self->_internalUIDisabled = a3;
-    v5 = [(PXUserDefaults *)self dataSource];
-    v7 = v5;
-    if (v4)
+    disabledCopy = disabled;
+    self->_internalUIDisabled = disabled;
+    dataSource = [(PXUserDefaults *)self dataSource];
+    v7 = dataSource;
+    if (disabledCopy)
     {
       v6 = MEMORY[0x1E695E118];
     }
@@ -637,63 +637,63 @@ uint64_t __38__PXUserDefaults_standardUserDefaults__block_invoke()
       v6 = 0;
     }
 
-    [v5 setPersistedValue:v6 forKey:@"PXInternalUIDisabled"];
+    [dataSource setPersistedValue:v6 forKey:@"PXInternalUIDisabled"];
   }
 }
 
-- (PXUserDefaults)initWithDataSource:(id)a3
+- (PXUserDefaults)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v57.receiver = self;
   v57.super_class = PXUserDefaults;
   v5 = [(PXUserDefaults *)&v57 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
-    v7 = [v4 persistedValueForKey:@"curatedLibraryInitialNavigationVersion"];
-    v8 = [v7 integerValue];
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
+    v7 = [sourceCopy persistedValueForKey:@"curatedLibraryInitialNavigationVersion"];
+    integerValue = [v7 integerValue];
 
-    if (v8 != 2)
+    if (integerValue != 2)
     {
       v9 = [MEMORY[0x1E696AD98] numberWithInteger:2];
-      [v4 setPersistedValue:v9 forKey:@"curatedLibraryInitialNavigationVersion"];
+      [sourceCopy setPersistedValue:v9 forKey:@"curatedLibraryInitialNavigationVersion"];
 
-      [v4 setPersistedValue:0 forKey:@"curatedLibraryZoomLevel"];
-      [v4 setPersistedValue:0 forKey:@"daysMarginScale"];
-      [v4 setPersistedValue:0 forKey:@"allPhotosColumns"];
-      [v4 setPersistedValue:0 forKey:@"allPhotosColumnsDate"];
-      [v4 setPersistedValue:0 forKey:@"allPhotosLibraryPreferredIndividualItemsColumns"];
-      [v4 setPersistedValue:0 forKey:@"allPhotosGridAspectFitInCompact"];
+      [sourceCopy setPersistedValue:0 forKey:@"curatedLibraryZoomLevel"];
+      [sourceCopy setPersistedValue:0 forKey:@"daysMarginScale"];
+      [sourceCopy setPersistedValue:0 forKey:@"allPhotosColumns"];
+      [sourceCopy setPersistedValue:0 forKey:@"allPhotosColumnsDate"];
+      [sourceCopy setPersistedValue:0 forKey:@"allPhotosLibraryPreferredIndividualItemsColumns"];
+      [sourceCopy setPersistedValue:0 forKey:@"allPhotosGridAspectFitInCompact"];
     }
 
-    v10 = [v4 persistedValueForKey:@"userDefaultsPhotosGridVersion"];
-    v11 = [v10 integerValue];
+    v10 = [sourceCopy persistedValueForKey:@"userDefaultsPhotosGridVersion"];
+    integerValue2 = [v10 integerValue];
 
-    if (v11 != 3)
+    if (integerValue2 != 3)
     {
       v12 = [MEMORY[0x1E696AD98] numberWithInteger:3];
-      [v4 setPersistedValue:v12 forKey:@"userDefaultsPhotosGridVersion"];
+      [sourceCopy setPersistedValue:v12 forKey:@"userDefaultsPhotosGridVersion"];
 
-      [v4 setPersistedValue:0 forKey:@"allPhotosAspectFit"];
-      [v4 setPersistedValue:0 forKey:@"photosGridColumns"];
-      [v4 setPersistedValue:0 forKey:@"photosGridPreferredIndividualItemsColumns"];
-      [v4 setPersistedValue:0 forKey:@"photosGridAspectFit"];
-      [v4 setPersistedValue:0 forKey:@"photosGridAspectFitInCompact"];
+      [sourceCopy setPersistedValue:0 forKey:@"allPhotosAspectFit"];
+      [sourceCopy setPersistedValue:0 forKey:@"photosGridColumns"];
+      [sourceCopy setPersistedValue:0 forKey:@"photosGridPreferredIndividualItemsColumns"];
+      [sourceCopy setPersistedValue:0 forKey:@"photosGridAspectFit"];
+      [sourceCopy setPersistedValue:0 forKey:@"photosGridAspectFitInCompact"];
     }
 
-    v13 = [v4 persistedValueForKey:@"userDefaultsSearchVersion"];
-    v14 = [v13 integerValue];
+    v13 = [sourceCopy persistedValueForKey:@"userDefaultsSearchVersion"];
+    integerValue3 = [v13 integerValue];
 
-    if (v14 != 1)
+    if (integerValue3 != 1)
     {
       v15 = [MEMORY[0x1E696AD98] numberWithInteger:1];
-      [v4 setPersistedValue:v15 forKey:@"userDefaultsSearchVersion"];
+      [sourceCopy setPersistedValue:v15 forKey:@"userDefaultsSearchVersion"];
 
-      [v4 setPersistedValue:0 forKey:@"searchPreferredIndividualItemsColumns"];
+      [sourceCopy setPersistedValue:0 forKey:@"searchPreferredIndividualItemsColumns"];
     }
 
-    v16 = [v4 persistedValueForKey:@"PXInternalUIDisabled"];
+    v16 = [sourceCopy persistedValueForKey:@"PXInternalUIDisabled"];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v17 = v16;
@@ -705,79 +705,79 @@ uint64_t __38__PXUserDefaults_standardUserDefaults__block_invoke()
     }
 
     v6->_internalUIDisabled = [v17 BOOLValue];
-    v18 = [v4 persistedValueForKey:@"curatedLibraryZoomLevel"];
+    v18 = [sourceCopy persistedValueForKey:@"curatedLibraryZoomLevel"];
     curatedLibraryZoomLevel = v6->_curatedLibraryZoomLevel;
     v6->_curatedLibraryZoomLevel = v18;
 
-    v20 = [v4 persistedValueForKey:@"daysMarginScale"];
+    v20 = [sourceCopy persistedValueForKey:@"daysMarginScale"];
     daysMarginScale = v6->_daysMarginScale;
     v6->_daysMarginScale = v20;
 
-    v22 = [v4 persistedValueForKey:@"allPhotosColumns"];
+    v22 = [sourceCopy persistedValueForKey:@"allPhotosColumns"];
     allPhotosColumns = v6->_allPhotosColumns;
     v6->_allPhotosColumns = v22;
 
-    v24 = [v4 persistedValueForKey:@"allPhotosLibraryPreferredIndividualItemsColumns"];
+    v24 = [sourceCopy persistedValueForKey:@"allPhotosLibraryPreferredIndividualItemsColumns"];
     allPhotosLibraryPreferredIndividualItemsColumns = v6->_allPhotosLibraryPreferredIndividualItemsColumns;
     v6->_allPhotosLibraryPreferredIndividualItemsColumns = v24;
 
-    v26 = [v4 persistedValueForKey:@"allPhotosAspectFit"];
+    v26 = [sourceCopy persistedValueForKey:@"allPhotosAspectFit"];
     allPhotosAspectFit = v6->_allPhotosAspectFit;
     v6->_allPhotosAspectFit = v26;
 
-    v28 = [v4 persistedValueForKey:@"allPhotosAspectFitInCompact"];
+    v28 = [sourceCopy persistedValueForKey:@"allPhotosAspectFitInCompact"];
     allPhotosAspectFitInCompact = v6->_allPhotosAspectFitInCompact;
     v6->_allPhotosAspectFitInCompact = v28;
 
-    v30 = [v4 persistedValueForKey:@"photosGridColumns"];
+    v30 = [sourceCopy persistedValueForKey:@"photosGridColumns"];
     photosGridColumns = v6->_photosGridColumns;
     v6->_photosGridColumns = v30;
 
-    v32 = [v4 persistedValueForKey:@"photosGridPreferredIndividualItemsColumns"];
+    v32 = [sourceCopy persistedValueForKey:@"photosGridPreferredIndividualItemsColumns"];
     photosGridPreferredIndividualItemsColumns = v6->_photosGridPreferredIndividualItemsColumns;
     v6->_photosGridPreferredIndividualItemsColumns = v32;
 
-    v34 = [v4 persistedValueForKey:@"photosGridAspectFit"];
+    v34 = [sourceCopy persistedValueForKey:@"photosGridAspectFit"];
     photosGridAspectFit = v6->_photosGridAspectFit;
     v6->_photosGridAspectFit = v34;
 
-    v36 = [v4 persistedValueForKey:@"photosGridAspectFitInCompact"];
+    v36 = [sourceCopy persistedValueForKey:@"photosGridAspectFitInCompact"];
     photosGridAspectFitInCompact = v6->_photosGridAspectFitInCompact;
     v6->_photosGridAspectFitInCompact = v36;
 
-    v38 = [v4 persistedValueForKey:@"searchPreferredIndividualItemsColumns"];
+    v38 = [sourceCopy persistedValueForKey:@"searchPreferredIndividualItemsColumns"];
     searchPreferredIndividualItemsColumns = v6->_searchPreferredIndividualItemsColumns;
     v6->_searchPreferredIndividualItemsColumns = v38;
 
-    v40 = [v4 persistedValueForKey:@"didShowCurationFooter"];
+    v40 = [sourceCopy persistedValueForKey:@"didShowCurationFooter"];
     didShowCurationFooter = v6->_didShowCurationFooter;
     v6->_didShowCurationFooter = v40;
 
-    v42 = [v4 persistedValueForKey:@"didShowCompletedCurationFooterAnimation"];
+    v42 = [sourceCopy persistedValueForKey:@"didShowCompletedCurationFooterAnimation"];
     didShowCompletedCurationFooterAnimation = v6->_didShowCompletedCurationFooterAnimation;
     v6->_didShowCompletedCurationFooterAnimation = v42;
 
-    v44 = [v4 persistedValueForKey:@"IncludeScreenshots"];
+    v44 = [sourceCopy persistedValueForKey:@"IncludeScreenshots"];
     includeScreenshots = v6->_includeScreenshots;
     v6->_includeScreenshots = v44;
 
-    v46 = [v4 persistedValueForKey:@"IncludeSharedWithYou"];
+    v46 = [sourceCopy persistedValueForKey:@"IncludeSharedWithYou"];
     includeSharedWithYou = v6->_includeSharedWithYou;
     v6->_includeSharedWithYou = v46;
 
-    v48 = [v4 persistedValueForKey:@"IncludeFromMyMac"];
+    v48 = [sourceCopy persistedValueForKey:@"IncludeFromMyMac"];
     includeFromMyMac = v6->_includeFromMyMac;
     v6->_includeFromMyMac = v48;
 
-    v50 = [v4 persistedValueForKey:@"lastRadarPromptAnsweredQuestionCount"];
+    v50 = [sourceCopy persistedValueForKey:@"lastRadarPromptAnsweredQuestionCount"];
     lastRadarPromptAnsweredQuestionCount = v6->_lastRadarPromptAnsweredQuestionCount;
     v6->_lastRadarPromptAnsweredQuestionCount = v50;
 
-    v52 = [v4 persistedValueForKey:@"lastSurveyQuestionsRadarPromptDate"];
+    v52 = [sourceCopy persistedValueForKey:@"lastSurveyQuestionsRadarPromptDate"];
     lastSurveyQuestionsRadarPromptDate = v6->_lastSurveyQuestionsRadarPromptDate;
     v6->_lastSurveyQuestionsRadarPromptDate = v52;
 
-    v54 = [v4 persistedValueForKey:@"surveyQuestionsHideDate"];
+    v54 = [sourceCopy persistedValueForKey:@"surveyQuestionsHideDate"];
     surveyQuestionsHideDate = v6->_surveyQuestionsHideDate;
     v6->_surveyQuestionsHideDate = v54;
   }
@@ -787,8 +787,8 @@ uint64_t __38__PXUserDefaults_standardUserDefaults__block_invoke()
 
 - (PXUserDefaults)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXUserDefaults.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXUserDefaults init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXUserDefaults.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXUserDefaults init]"}];
 
   abort();
 }

@@ -1,8 +1,8 @@
 @interface SUScriptOperationDelegate
-- (void)_removeOperation:(id)a3;
+- (void)_removeOperation:(id)operation;
 - (void)cancelAllOperations;
 - (void)dealloc;
-- (void)enqueueOperation:(id)a3;
+- (void)enqueueOperation:(id)operation;
 @end
 
 @implementation SUScriptOperationDelegate
@@ -56,7 +56,7 @@
   }
 }
 
-- (void)enqueueOperation:(id)a3
+- (void)enqueueOperation:(id)operation
 {
   [(NSLock *)self->_lock lock];
   operations = self->_operations;
@@ -66,20 +66,20 @@
     self->_operations = operations;
   }
 
-  [(NSMutableArray *)operations addObject:a3];
+  [(NSMutableArray *)operations addObject:operation];
   [(NSLock *)self->_lock unlock];
-  [a3 setDelegate:self];
-  v6 = [MEMORY[0x1E69E4798] mainQueue];
+  [operation setDelegate:self];
+  mainQueue = [MEMORY[0x1E69E4798] mainQueue];
 
-  [v6 addOperation:a3];
+  [mainQueue addOperation:operation];
 }
 
-- (void)_removeOperation:(id)a3
+- (void)_removeOperation:(id)operation
 {
-  [a3 setDelegate:0];
-  [a3 setScriptOptions:0];
+  [operation setDelegate:0];
+  [operation setScriptOptions:0];
   [(NSLock *)self->_lock lock];
-  [(NSMutableArray *)self->_operations removeObject:a3];
+  [(NSMutableArray *)self->_operations removeObject:operation];
   lock = self->_lock;
 
   [(NSLock *)lock unlock];

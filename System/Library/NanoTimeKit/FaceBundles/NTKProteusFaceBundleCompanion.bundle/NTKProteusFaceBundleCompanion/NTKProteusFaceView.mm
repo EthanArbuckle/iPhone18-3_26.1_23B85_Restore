@@ -1,34 +1,34 @@
 @interface NTKProteusFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 - (BOOL)_wantsStatusBarIconShadow;
-- (NTKProteusFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_angleForDigit:(unint64_t)a3;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_contentAlphaForEditMode:(int64_t)a3;
-- (double)_dialAlphaForEditMode:(int64_t)a3;
-- (double)_digitWeight:(unint64_t)a3 forAngle:(double)a4;
+- (NTKProteusFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_angleForDigit:(unint64_t)digit;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_contentAlphaForEditMode:(int64_t)mode;
+- (double)_dialAlphaForEditMode:(int64_t)mode;
+- (double)_digitWeight:(unint64_t)weight forAngle:(double)angle;
 - (double)_horizontalPaddingForStatusBar;
-- (double)_timeAlphaForEditMode:(int64_t)a3;
-- (double)_timeAngle:(id)a3;
+- (double)_timeAlphaForEditMode:(int64_t)mode;
+- (double)_timeAngle:(id)angle;
 - (double)_verticalPaddingForStatusBar;
-- (double)_weightForCWDistance:(double)a3;
-- (id)_simpleTextComplicationColorForEditMode:(int64_t)a3;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (double)_weightForCWDistance:(double)distance;
+- (id)_simpleTextComplicationColorForEditMode:(int64_t)mode;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
-- (unint64_t)_digitForAngle:(double)a3;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyComplicationColor:(id)a3;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromBackgroundStyle:(unint64_t)a4 toBackgroundStyle:(unint64_t)a5;
-- (void)_applyTransitionFraction:(double)a3 fromColor:(id)a4 toColor:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (unint64_t)_digitForAngle:(double)angle;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyComplicationColor:(id)color;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromBackgroundStyle:(unint64_t)style toBackgroundStyle:(unint64_t)backgroundStyle;
+- (void)_applyTransitionFraction:(double)fraction fromColor:(id)color toColor:(id)toColor;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadSnapshotContentViews;
-- (void)_prepareForStatusChange:(BOOL)a3;
+- (void)_prepareForStatusChange:(BOOL)change;
 - (void)_removeProteusContentView;
 - (void)_removeViews;
 - (void)_reorderSwitcherSnapshotView;
@@ -37,33 +37,33 @@
 - (void)_unloadSnapshotContentViews;
 - (void)_updateDigitWeights;
 - (void)_updateNotchDigitWeights;
-- (void)_updateSimpleTextLabelColor:(id)a3;
-- (void)_updateSubDialRichComplicationsColor:(id)a3 alternateColor:(id)a4;
-- (void)_updateViewColorsWithPalette:(id)a3;
+- (void)_updateSimpleTextLabelColor:(id)color;
+- (void)_updateSubDialRichComplicationsColor:(id)color alternateColor:(id)alternateColor;
+- (void)_updateViewColorsWithPalette:(id)palette;
 - (void)applyColorOnAnalogHands;
-- (void)configureComplicationAlphaFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)configureComplicationAlphaFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)layoutSubviews;
-- (void)setBackgroundStyle:(unint64_t)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setBackgroundStyle:(unint64_t)style;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKProteusFaceView
 
-- (NTKProteusFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKProteusFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = NTKProteusFaceView;
-  v5 = [(NTKProteusFaceView *)&v16 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  v5 = [(NTKProteusFaceView *)&v16 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   if (v5)
   {
     v6 = objc_alloc_init(NTKCompositeComplicationFactory);
     v7 = [NTKFullscreenSubdialComplicationFactory alloc];
-    v8 = [(NTKProteusFaceView *)v5 device];
-    v9 = [v7 initForDevice:v8];
+    device = [(NTKProteusFaceView *)v5 device];
+    v9 = [v7 initForDevice:device];
 
     [v9 setFaceView:v5];
-    v10 = [(NTKProteusFaceView *)v5 device];
-    sub_66A4(v10, v13);
+    device2 = [(NTKProteusFaceView *)v5 device];
+    sub_66A4(device2, v13);
     [v9 setCircularComplicationDistanceFromCenter:{v14, v15}];
 
     [v9 setAlpha:v5 faceView:1.0];
@@ -112,17 +112,17 @@
   return result;
 }
 
-- (void)_prepareForStatusChange:(BOOL)a3
+- (void)_prepareForStatusChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v6.receiver = self;
   v6.super_class = NTKProteusFaceView;
   [(NTKProteusFaceView *)&v6 _prepareForStatusChange:?];
-  if (self->_showingStatus != v3)
+  if (self->_showingStatus != changeCopy)
   {
-    self->_showingStatus = v3;
+    self->_showingStatus = changeCopy;
     v5 = 0.0;
-    if (v3)
+    if (changeCopy)
     {
       v5 = 1.0;
     }
@@ -134,12 +134,12 @@
 
 - (void)_reorderSwitcherSnapshotView
 {
-  v3 = [(NTKProteusFaceView *)self switcherSnapshotView];
+  switcherSnapshotView = [(NTKProteusFaceView *)self switcherSnapshotView];
 
-  if (v3)
+  if (switcherSnapshotView)
   {
-    v4 = [(NTKProteusFaceView *)self switcherSnapshotView];
-    [(NTKProteusFaceView *)self bringSubviewToFront:v4];
+    switcherSnapshotView2 = [(NTKProteusFaceView *)self switcherSnapshotView];
+    [(NTKProteusFaceView *)self bringSubviewToFront:switcherSnapshotView2];
   }
 }
 
@@ -168,15 +168,15 @@
   v9 = v8;
   v11 = v10;
   style = self->_style;
-  v13 = [(NTKProteusFaceView *)self backgroundStyle];
-  v14 = [(NTKProteusFaceView *)self colorPalette];
-  v15 = [(NTKProteusFaceView *)self device];
-  v16 = [(NTKProteusContentView *)v3 initWithFrame:style style:v13 backgroundStyle:v14 colorPalette:v15 device:v5, v7, v9, v11];
+  backgroundStyle = [(NTKProteusFaceView *)self backgroundStyle];
+  colorPalette = [(NTKProteusFaceView *)self colorPalette];
+  device = [(NTKProteusFaceView *)self device];
+  v16 = [(NTKProteusContentView *)v3 initWithFrame:style style:backgroundStyle backgroundStyle:colorPalette colorPalette:device device:v5, v7, v9, v11];
   proteusContentView = self->_proteusContentView;
   self->_proteusContentView = v16;
 
-  v18 = [(NTKProteusFaceView *)self contentView];
-  [v18 addSubview:self->_proteusContentView];
+  contentView = [(NTKProteusFaceView *)self contentView];
+  [contentView addSubview:self->_proteusContentView];
 
   [(NTKProteusFaceView *)self _updateDigitWeights];
 }
@@ -190,13 +190,13 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NTKProteusFaceView *)self device];
-  v13 = [v3 initWithFrame:v12 forDeviceCornerRadius:{v5, v7, v9, v11}];
+  device = [(NTKProteusFaceView *)self device];
+  v13 = [v3 initWithFrame:device forDeviceCornerRadius:{v5, v7, v9, v11}];
   cornerView = self->_cornerView;
   self->_cornerView = v13;
 
-  v15 = [(NTKProteusFaceView *)self contentView];
-  [v15 addSubview:self->_cornerView];
+  contentView = [(NTKProteusFaceView *)self contentView];
+  [contentView addSubview:self->_cornerView];
 
   [(NTKProteusFaceView *)self applyColorOnAnalogHands];
 }
@@ -231,42 +231,42 @@
 
 - (void)applyColorOnAnalogHands
 {
-  v11 = [(NTKProteusFaceView *)self timeView];
+  timeView = [(NTKProteusFaceView *)self timeView];
   v3 = +[UIColor whiteColor];
-  v4 = [v11 hourHandView];
-  [v4 setInlayColor:v3];
+  hourHandView = [timeView hourHandView];
+  [hourHandView setInlayColor:v3];
 
-  v5 = [v11 minuteHandView];
-  [v5 setInlayColor:v3];
+  minuteHandView = [timeView minuteHandView];
+  [minuteHandView setInlayColor:v3];
 
-  v6 = [v11 hourHandView];
-  [v6 setColor:v3];
+  hourHandView2 = [timeView hourHandView];
+  [hourHandView2 setColor:v3];
 
-  v7 = [v11 minuteHandView];
-  [v7 setColor:v3];
+  minuteHandView2 = [timeView minuteHandView];
+  [minuteHandView2 setColor:v3];
 
-  v8 = [(NTKProteusFaceView *)self colorPalette];
-  v9 = [v8 secondHand];
-  v10 = [v11 secondHandView];
-  [v10 setColor:v9];
+  colorPalette = [(NTKProteusFaceView *)self colorPalette];
+  secondHand = [colorPalette secondHand];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setColor:secondHand];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v17 = a3;
-  v8 = a5;
-  switch(a4)
+  optionCopy = option;
+  slotCopy = slot;
+  switch(mode)
   {
     case 10:
-      v11 = [(NTKProteusFaceView *)self colorPalette];
-      [(NTKProteusFaceView *)self _updateViewColorsWithPalette:v11];
+      colorPalette = [(NTKProteusFaceView *)self colorPalette];
+      [(NTKProteusFaceView *)self _updateViewColorsWithPalette:colorPalette];
 
       [(NTKProteusFaceView *)self applyColorOnAnalogHands];
-      v12 = [(NTKProteusFaceView *)self colorPalette];
-      v13 = [v12 circularComplicationAColor];
-      v14 = [(NTKProteusFaceView *)self colorPalette];
-      v15 = [v14 circularComplicationB];
-      [(NTKProteusFaceView *)self _updateSubDialRichComplicationsColor:v13 alternateColor:v15];
+      colorPalette2 = [(NTKProteusFaceView *)self colorPalette];
+      circularComplicationAColor = [colorPalette2 circularComplicationAColor];
+      colorPalette3 = [(NTKProteusFaceView *)self colorPalette];
+      circularComplicationB = [colorPalette3 circularComplicationB];
+      [(NTKProteusFaceView *)self _updateSubDialRichComplicationsColor:circularComplicationAColor alternateColor:circularComplicationB];
 
       v9 = [(NTKProteusFaceView *)self _simpleTextComplicationColorForEditMode:10];
       [(NTKProteusFaceView *)self _updateSimpleTextLabelColor:v9];
@@ -274,8 +274,8 @@
     case 12:
       v9 = [(NTKProteusFaceView *)self optionForCustomEditMode:12 slot:0];
       -[NTKProteusFaceView setBackgroundStyle:](self, "setBackgroundStyle:", [v9 backgroundStyle]);
-      v10 = [(NTKProteusFaceView *)self colorPalette];
-      [(NTKProteusFaceView *)self _updateViewColorsWithPalette:v10];
+      colorPalette4 = [(NTKProteusFaceView *)self colorPalette];
+      [(NTKProteusFaceView *)self _updateViewColorsWithPalette:colorPalette4];
 
       break;
     case 15:
@@ -287,89 +287,89 @@
   }
 
 LABEL_8:
-  v16 = [(NTKProteusFaceView *)self delegate];
-  [v16 faceViewDidChangeWantsStatusBarIconShadow];
+  delegate = [(NTKProteusFaceView *)self delegate];
+  [delegate faceViewDidChangeWantsStatusBarIconShadow];
 }
 
-- (void)_updateSubDialRichComplicationsColor:(id)a3 alternateColor:(id)a4
+- (void)_updateSubDialRichComplicationsColor:(id)color alternateColor:(id)alternateColor
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_4EF8;
   v5[3] = &unk_104F8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  [(NTKProteusFaceView *)v6 enumerateComplicationDisplayWrappersWithBlock:v5];
+  selfCopy = self;
+  colorCopy = color;
+  v4 = colorCopy;
+  [(NTKProteusFaceView *)selfCopy enumerateComplicationDisplayWrappersWithBlock:v5];
 }
 
-- (void)setBackgroundStyle:(unint64_t)a3
+- (void)setBackgroundStyle:(unint64_t)style
 {
-  self->_backgroundStyle = a3;
-  v5 = [(NTKProteusFaceView *)self colorPalette];
-  [v5 setBackgroundStyle:a3];
+  self->_backgroundStyle = style;
+  colorPalette = [(NTKProteusFaceView *)self colorPalette];
+  [colorPalette setBackgroundStyle:style];
 
-  v6 = [(NTKProteusFaceView *)self colorPalette];
-  [(NTKProteusFaceView *)self _updateViewColorsWithPalette:v6];
+  colorPalette2 = [(NTKProteusFaceView *)self colorPalette];
+  [(NTKProteusFaceView *)self _updateViewColorsWithPalette:colorPalette2];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v14 = a4;
-  v12 = a5;
-  v13 = a7;
-  switch(a6)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  switch(mode)
   {
     case 10:
-      [(NTKProteusFaceView *)self _applyTransitionFraction:v14 fromColor:v12 toColor:a3];
+      [(NTKProteusFaceView *)self _applyTransitionFraction:optionCopy fromColor:toOptionCopy toColor:fraction];
       break;
     case 12:
-      -[NTKProteusFaceView _applyTransitionFraction:fromBackgroundStyle:toBackgroundStyle:](self, "_applyTransitionFraction:fromBackgroundStyle:toBackgroundStyle:", [v14 backgroundStyle], objc_msgSend(v12, "backgroundStyle"), a3);
+      -[NTKProteusFaceView _applyTransitionFraction:fromBackgroundStyle:toBackgroundStyle:](self, "_applyTransitionFraction:fromBackgroundStyle:toBackgroundStyle:", [optionCopy backgroundStyle], objc_msgSend(toOptionCopy, "backgroundStyle"), fraction);
       break;
     case 15:
-      -[NTKProteusFaceView _applyTransitionFraction:fromStyle:toStyle:](self, "_applyTransitionFraction:fromStyle:toStyle:", [v14 style], objc_msgSend(v12, "style"), a3);
+      -[NTKProteusFaceView _applyTransitionFraction:fromStyle:toStyle:](self, "_applyTransitionFraction:fromStyle:toStyle:", [optionCopy style], objc_msgSend(toOptionCopy, "style"), fraction);
       break;
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromColor:(id)a4 toColor:(id)a5
+- (void)_applyTransitionFraction:(double)fraction fromColor:(id)color toColor:(id)toColor
 {
-  v6 = [(NTKProteusFaceView *)self interpolatedColorPalette:a4];
+  v6 = [(NTKProteusFaceView *)self interpolatedColorPalette:color];
   [(NTKProteusFaceView *)self _updateViewColorsWithPalette:v6];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromBackgroundStyle:(unint64_t)a4 toBackgroundStyle:(unint64_t)a5
+- (void)_applyTransitionFraction:(double)fraction fromBackgroundStyle:(unint64_t)style toBackgroundStyle:(unint64_t)backgroundStyle
 {
-  v9 = [(NTKProteusFaceView *)self colorPalette];
-  v13 = [v9 copy];
+  colorPalette = [(NTKProteusFaceView *)self colorPalette];
+  v13 = [colorPalette copy];
 
-  [v13 setBackgroundStyle:a4];
-  v10 = [(NTKProteusFaceView *)self colorPalette];
-  v11 = [v10 copy];
+  [v13 setBackgroundStyle:style];
+  colorPalette2 = [(NTKProteusFaceView *)self colorPalette];
+  v11 = [colorPalette2 copy];
 
-  [v11 setBackgroundStyle:a5];
+  [v11 setBackgroundStyle:backgroundStyle];
   v12 = [[NTKInterpolatedColorPalette alloc] initWithFromPalette:v13 toPalette:v11];
-  [v12 setTransitionFraction:a3];
+  [v12 setTransitionFraction:fraction];
   [(NTKProteusFaceView *)self _updateViewColorsWithPalette:v12];
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  slotCopy = slot;
   v15.receiver = self;
   v15.super_class = NTKProteusFaceView;
-  [(NTKProteusFaceView *)&v15 _configureComplicationView:v6 forSlot:v7];
+  [(NTKProteusFaceView *)&v15 _configureComplicationView:viewCopy forSlot:slotCopy];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 isEqualToString:NTKComplicationSlotSubdialBottom])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [slotCopy isEqualToString:NTKComplicationSlotSubdialBottom])
   {
-    v8 = v6;
-    v9 = [(NTKProteusFaceView *)self colorPalette];
-    v10 = [v9 circularComplicationAColor];
-    [(NTKProteusFaceView *)self setComplicationColor:v10];
+    v8 = viewCopy;
+    colorPalette = [(NTKProteusFaceView *)self colorPalette];
+    circularComplicationAColor = [colorPalette circularComplicationAColor];
+    [(NTKProteusFaceView *)self setComplicationColor:circularComplicationAColor];
 
-    v11 = [(NTKProteusFaceView *)self complicationColor];
-    [(NTKProteusFaceView *)self setInterpolatedComplicationColor:v11];
+    complicationColor = [(NTKProteusFaceView *)self complicationColor];
+    [(NTKProteusFaceView *)self setInterpolatedComplicationColor:complicationColor];
 
     [v8 updateMonochromeColor];
 LABEL_8:
@@ -380,18 +380,18 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v6;
+    v12 = viewCopy;
     v8 = [(NTKProteusFaceView *)self _simpleTextComplicationColorForEditMode:[(NTKProteusFaceView *)self editing]];
-    v13 = [v12 label];
+    label = [v12 label];
 
-    [v13 setTextColor:v8];
+    [label setTextColor:v8];
     goto LABEL_8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v6;
+    v14 = viewCopy;
     v8 = [(NTKProteusFaceView *)self _simpleTextComplicationColorForEditMode:[(NTKProteusFaceView *)self editing]];
     [v14 setTextColor:v8];
 
@@ -401,74 +401,74 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_updateViewColorsWithPalette:(id)a3
+- (void)_updateViewColorsWithPalette:(id)palette
 {
   proteusContentView = self->_proteusContentView;
-  v5 = a3;
-  [(NTKProteusContentView *)proteusContentView setColorPalette:v5];
-  v16 = [(NTKProteusFaceView *)self timeView];
-  v6 = [v5 hourHandInlay];
-  v7 = [v16 hourHandView];
-  [v7 setInlayColor:v6];
+  paletteCopy = palette;
+  [(NTKProteusContentView *)proteusContentView setColorPalette:paletteCopy];
+  timeView = [(NTKProteusFaceView *)self timeView];
+  hourHandInlay = [paletteCopy hourHandInlay];
+  hourHandView = [timeView hourHandView];
+  [hourHandView setInlayColor:hourHandInlay];
 
-  v8 = [v5 hourHandInlay];
-  v9 = [v16 minuteHandView];
-  [v9 setInlayColor:v8];
+  hourHandInlay2 = [paletteCopy hourHandInlay];
+  minuteHandView = [timeView minuteHandView];
+  [minuteHandView setInlayColor:hourHandInlay2];
 
-  v10 = [v5 hourHandStroke];
-  v11 = [v16 hourHandView];
-  [v11 setColor:v10];
+  hourHandStroke = [paletteCopy hourHandStroke];
+  hourHandView2 = [timeView hourHandView];
+  [hourHandView2 setColor:hourHandStroke];
 
-  v12 = [v5 hourHandStroke];
-  v13 = [v16 minuteHandView];
-  [v13 setColor:v12];
+  hourHandStroke2 = [paletteCopy hourHandStroke];
+  minuteHandView2 = [timeView minuteHandView];
+  [minuteHandView2 setColor:hourHandStroke2];
 
-  v14 = [v5 secondHand];
-  v15 = [v16 secondHandView];
-  [v15 setColor:v14];
+  secondHand = [paletteCopy secondHand];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setColor:secondHand];
 
-  [(NTKProteusFaceView *)self _applyComplicationColor:v5];
+  [(NTKProteusFaceView *)self _applyComplicationColor:paletteCopy];
 }
 
-- (void)_applyComplicationColor:(id)a3
+- (void)_applyComplicationColor:(id)color
 {
-  v4 = a3;
-  v5 = [v4 circularComplicationAColor];
-  v6 = [v4 circularComplicationB];
-  [(NTKProteusFaceView *)self _updateSubDialRichComplicationsColor:v5 alternateColor:v6];
+  colorCopy = color;
+  circularComplicationAColor = [colorCopy circularComplicationAColor];
+  circularComplicationB = [colorCopy circularComplicationB];
+  [(NTKProteusFaceView *)self _updateSubDialRichComplicationsColor:circularComplicationAColor alternateColor:circularComplicationB];
 
-  v7 = [v4 simpleTextComplicationColor];
+  simpleTextComplicationColor = [colorCopy simpleTextComplicationColor];
 
-  [(NTKProteusFaceView *)self _updateSimpleTextLabelColor:v7];
+  [(NTKProteusFaceView *)self _updateSimpleTextLabelColor:simpleTextComplicationColor];
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v12.receiver = self;
   v12.super_class = NTKProteusFaceView;
-  [(NTKProteusFaceView *)&v12 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
+  [(NTKProteusFaceView *)&v12 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
   NTKLargeElementScaleForBreathingFraction();
   memset(&v11, 0, sizeof(v11));
   CGAffineTransformMakeScale(&v11, v6, v6);
-  v7 = [(NTKProteusFaceView *)self contentView];
+  contentView = [(NTKProteusFaceView *)self contentView];
   v10 = v11;
-  [v7 setTransform:&v10];
+  [contentView setTransform:&v10];
 
-  v8 = [(NTKProteusFaceView *)self timeView];
+  timeView = [(NTKProteusFaceView *)self timeView];
   v10 = v11;
-  [v8 setTransform:&v10];
+  [timeView setTransform:&v10];
 
-  v9 = [(NTKProteusFaceView *)self complicationContainerView];
+  complicationContainerView = [(NTKProteusFaceView *)self complicationContainerView];
   v10 = v11;
-  [v9 setTransform:&v10];
+  [complicationContainerView setTransform:&v10];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v9.receiver = self;
   v9.super_class = NTKProteusFaceView;
-  [(NTKProteusFaceView *)&v9 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKProteusFaceView *)&v9 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
     NTKScaleForRubberBandingFraction();
     CGAffineTransformMakeScale(&v8, v7, v7);
@@ -478,18 +478,18 @@ LABEL_9:
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v5.receiver = self;
   v5.super_class = NTKProteusFaceView;
-  [(NTKProteusFaceView *)&v5 setOverrideDate:a3 duration:a4];
+  [(NTKProteusFaceView *)&v5 setOverrideDate:date duration:duration];
   [(NTKProteusFaceView *)self _updateDigitWeights];
 }
 
 - (void)_updateNotchDigitWeights
 {
-  v9 = [(NTKProteusFaceView *)self currentDisplayDate];
-  [(NTKProteusFaceView *)self _timeAngle:v9];
+  currentDisplayDate = [(NTKProteusFaceView *)self currentDisplayDate];
+  [(NTKProteusFaceView *)self _timeAngle:currentDisplayDate];
   v4 = v3;
   [(NTKProteusFaceView *)self _digitWeight:1 forAngle:?];
   v6 = v5;
@@ -501,7 +501,7 @@ LABEL_9:
 
 - (void)_updateDigitWeights
 {
-  v6 = [(NTKProteusFaceView *)self currentDisplayDate];
+  currentDisplayDate = [(NTKProteusFaceView *)self currentDisplayDate];
   [(NTKProteusFaceView *)self _timeAngle:?];
   v4 = v3;
   for (i = 1; i != 13; ++i)
@@ -511,44 +511,44 @@ LABEL_9:
   }
 }
 
-- (double)_angleForDigit:(unint64_t)a3
+- (double)_angleForDigit:(unint64_t)digit
 {
-  if (a3 > 3)
+  if (digit > 3)
   {
-    return ((a3 - 3) / -6.0 + 2.0) * 3.14159265;
+    return ((digit - 3) / -6.0 + 2.0) * 3.14159265;
   }
 
   else
   {
-    return (3 - a3) * 3.14159265 / 6.0;
+    return (3 - digit) * 3.14159265 / 6.0;
   }
 }
 
-- (unint64_t)_digitForAngle:(double)a3
+- (unint64_t)_digitForAngle:(double)angle
 {
   v3 = 15;
-  if (a3 < 1.30899694)
+  if (angle < 1.30899694)
   {
     v3 = 3;
   }
 
-  return v3 - vcvtpd_u64_f64((a3 * 12.0 / 3.14159265 + -1.0) * 0.5);
+  return v3 - vcvtpd_u64_f64((angle * 12.0 / 3.14159265 + -1.0) * 0.5);
 }
 
-- (double)_timeAngle:(id)a3
+- (double)_timeAngle:(id)angle
 {
-  v4 = a3;
+  angleCopy = angle;
   v5 = +[NSCalendar currentCalendar];
-  v6 = [v5 components:32992 fromDate:v4];
+  v6 = [v5 components:32992 fromDate:angleCopy];
 
   -[NTKProteusFaceView _angleForDigit:](self, "_angleForDigit:", [v6 hour] % 12);
   v8 = v7;
   if ([v6 minute] == &stru_20.vmaddr + 3)
   {
-    v9 = [v6 second];
-    if (v9 >= 0x3A)
+    second = [v6 second];
+    if (second >= 0x3A)
     {
-      v10 = (1000 * v9 + [v6 nanosecond] / 0xF4240 - 58000) / 2000.0;
+      v10 = (1000 * second + [v6 nanosecond] / 0xF4240 - 58000) / 2000.0;
       if (v10 > 1.0)
       {
         v10 = 1.0;
@@ -561,96 +561,96 @@ LABEL_9:
   return v8;
 }
 
-- (double)_digitWeight:(unint64_t)a3 forAngle:(double)a4
+- (double)_digitWeight:(unint64_t)weight forAngle:(double)angle
 {
-  [(NTKProteusFaceView *)self _angleForDigit:a3];
+  [(NTKProteusFaceView *)self _angleForDigit:weight];
   [NTKProteusWave clockwiseDistance:"clockwiseDistance:fromStartAngle:" fromStartAngle:?];
 
   [(NTKProteusFaceView *)self _weightForCWDistance:?];
   return result;
 }
 
-- (double)_weightForCWDistance:(double)a3
+- (double)_weightForCWDistance:(double)distance
 {
-  if (a3 >= 0.523598776)
+  if (distance >= 0.523598776)
   {
-    return (a3 + -0.523598776) / 5.75958653;
+    return (distance + -0.523598776) / 5.75958653;
   }
 
   else
   {
-    return a3 / -0.523598776 + 1.0;
+    return distance / -0.523598776 + 1.0;
   }
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v12.receiver = self;
   v12.super_class = NTKProteusFaceView;
   [(NTKProteusFaceView *)&v12 _configureForEditMode:?];
-  [(NTKProteusFaceView *)self configureComplicationAlphaFraction:a3 fromEditMode:a3 toEditMode:1.0];
-  [(NTKProteusFaceView *)self _contentAlphaForEditMode:a3];
+  [(NTKProteusFaceView *)self configureComplicationAlphaFraction:mode fromEditMode:mode toEditMode:1.0];
+  [(NTKProteusFaceView *)self _contentAlphaForEditMode:mode];
   v6 = v5;
-  v7 = [(NTKProteusFaceView *)self proteusContentView];
-  [v7 setAlpha:v6];
+  proteusContentView = [(NTKProteusFaceView *)self proteusContentView];
+  [proteusContentView setAlpha:v6];
 
-  [(NTKProteusFaceView *)self _timeAlphaForEditMode:a3];
+  [(NTKProteusFaceView *)self _timeAlphaForEditMode:mode];
   v9 = v8;
-  v10 = [(NTKProteusFaceView *)self timeView];
-  [v10 setAlpha:v9];
+  timeView = [(NTKProteusFaceView *)self timeView];
+  [timeView setAlpha:v9];
 
-  v11 = [(NTKProteusFaceView *)self colorPalette];
-  [(NTKProteusFaceView *)self _updateViewColorsWithPalette:v11];
+  colorPalette = [(NTKProteusFaceView *)self colorPalette];
+  [(NTKProteusFaceView *)self _updateViewColorsWithPalette:colorPalette];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v18.receiver = self;
   v18.super_class = NTKProteusFaceView;
   [NTKProteusFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  [(NTKProteusFaceView *)self _contentAlphaForEditMode:a4];
-  [(NTKProteusFaceView *)self _contentAlphaForEditMode:a5];
+  [(NTKProteusFaceView *)self _contentAlphaForEditMode:mode];
+  [(NTKProteusFaceView *)self _contentAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v10 = v9;
-  v11 = [(NTKProteusFaceView *)self proteusContentView];
-  [v11 setAlpha:v10];
+  proteusContentView = [(NTKProteusFaceView *)self proteusContentView];
+  [proteusContentView setAlpha:v10];
 
-  [(NTKProteusFaceView *)self _timeAlphaForEditMode:a4];
-  [(NTKProteusFaceView *)self _timeAlphaForEditMode:a5];
+  [(NTKProteusFaceView *)self _timeAlphaForEditMode:mode];
+  [(NTKProteusFaceView *)self _timeAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v13 = v12;
-  v14 = [(NTKProteusFaceView *)self timeView];
-  [v14 setAlpha:v13];
+  timeView = [(NTKProteusFaceView *)self timeView];
+  [timeView setAlpha:v13];
 
-  [(NTKProteusFaceView *)self configureComplicationAlphaFraction:a4 fromEditMode:a5 toEditMode:a3];
-  v15 = [(NTKProteusFaceView *)self _simpleTextComplicationColorForEditMode:a4];
-  v16 = [(NTKProteusFaceView *)self _simpleTextComplicationColorForEditMode:a5];
+  [(NTKProteusFaceView *)self configureComplicationAlphaFraction:mode fromEditMode:editMode toEditMode:fraction];
+  v15 = [(NTKProteusFaceView *)self _simpleTextComplicationColorForEditMode:mode];
+  v16 = [(NTKProteusFaceView *)self _simpleTextComplicationColorForEditMode:editMode];
   v17 = NTKInterpolateBetweenColors();
 
   [(NTKProteusFaceView *)self _updateSimpleTextLabelColor:v17];
 }
 
-- (void)_updateSimpleTextLabelColor:(id)a3
+- (void)_updateSimpleTextLabelColor:(id)color
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_5EE4;
   v5[3] = &unk_10520;
-  v6 = a3;
-  v4 = v6;
+  colorCopy = color;
+  v4 = colorCopy;
   [(NTKProteusFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v5];
 }
 
-- (void)configureComplicationAlphaFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)configureComplicationAlphaFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_6048;
   v5[3] = &unk_10548;
   v5[4] = self;
-  v5[5] = a4;
-  v5[6] = a5;
-  *&v5[7] = a3;
+  v5[5] = mode;
+  v5[6] = editMode;
+  *&v5[7] = fraction;
   [(NTKProteusFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v5];
 }
 
@@ -659,14 +659,14 @@ LABEL_9:
   v4.receiver = self;
   v4.super_class = NTKProteusFaceView;
   [(NTKProteusFaceView *)&v4 _cleanupAfterEditing];
-  v3 = [(NTKProteusFaceView *)self delegate];
-  [v3 faceViewDidChangeWantsStatusBarIconShadow];
+  delegate = [(NTKProteusFaceView *)self delegate];
+  [delegate faceViewDidChangeWantsStatusBarIconShadow];
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 < 2)
+  if (mode < 2)
   {
     return 1.0;
   }
@@ -674,30 +674,30 @@ LABEL_9:
   return result;
 }
 
-- (id)_simpleTextComplicationColorForEditMode:(int64_t)a3
+- (id)_simpleTextComplicationColorForEditMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v3 = [UIColor colorWithWhite:0.95 alpha:1.0];
+    simpleTextComplicationColor = [UIColor colorWithWhite:0.95 alpha:1.0];
   }
 
   else
   {
-    v4 = [(NTKProteusFaceView *)self colorPalette];
-    v3 = [v4 simpleTextComplicationColor];
+    colorPalette = [(NTKProteusFaceView *)self colorPalette];
+    simpleTextComplicationColor = [colorPalette simpleTextComplicationColor];
   }
 
-  return v3;
+  return simpleTextComplicationColor;
 }
 
-- (double)_dialAlphaForEditMode:(int64_t)a3
+- (double)_dialAlphaForEditMode:(int64_t)mode
 {
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     return 0.0;
   }
@@ -705,10 +705,10 @@ LABEL_9:
   return NTKEditModeDimmedAlpha;
 }
 
-- (double)_contentAlphaForEditMode:(int64_t)a3
+- (double)_contentAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -716,10 +716,10 @@ LABEL_9:
   return result;
 }
 
-- (double)_timeAlphaForEditMode:(int64_t)a3
+- (double)_timeAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -727,15 +727,15 @@ LABEL_9:
   return result;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
   v4 = &off_10DB8;
-  if (a3 != 12)
+  if (options != 12)
   {
     v4 = 0;
   }
 
-  if (a3 == 15)
+  if (options == 15)
   {
     return &off_10DA0;
   }
@@ -746,29 +746,29 @@ LABEL_9:
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 == 15)
+  optionCopy = option;
+  optionsCopy = options;
+  v10 = optionsCopy;
+  if (mode == 15)
   {
-    v11 = v8;
+    v11 = optionCopy;
     v12 = [v10 objectForKeyedSubscript:&off_10B90];
   }
 
   else
   {
-    if (a4 != 12)
+    if (mode != 12)
     {
       v27.receiver = self;
       v27.super_class = NTKProteusFaceView;
-      v18 = [(NTKProteusFaceView *)&v27 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+      v18 = [(NTKProteusFaceView *)&v27 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
       goto LABEL_11;
     }
 
-    v11 = [v9 objectForKeyedSubscript:&off_10BD8];
-    v12 = v8;
+    v11 = [optionsCopy objectForKeyedSubscript:&off_10BD8];
+    v12 = optionCopy;
   }
 
   v13 = v12;
@@ -785,8 +785,8 @@ LABEL_9:
   if (!v18)
   {
     v19 = [NTKProteusFaceView alloc];
-    v20 = [(NTKProteusFaceView *)self device];
-    v21 = [(NTKProteusFaceView *)v19 initWithFaceStyle:44 forDevice:v20 clientIdentifier:0];
+    device = [(NTKProteusFaceView *)self device];
+    v21 = [(NTKProteusFaceView *)v19 initWithFaceStyle:44 forDevice:device clientIdentifier:0];
 
     [(NTKProteusFaceView *)self frame];
     [(NTKProteusFaceView *)v21 setFrame:?];
@@ -803,8 +803,8 @@ LABEL_9:
     v29.width = v23;
     v29.height = v24;
     UIGraphicsBeginImageContextWithOptions(v29, 0, 0.0);
-    v25 = [(NTKProteusFaceView *)v21 layer];
-    [v25 renderInContext:UIGraphicsGetCurrentContext()];
+    layer = [(NTKProteusFaceView *)v21 layer];
+    [layer renderInContext:UIGraphicsGetCurrentContext()];
 
     v18 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -820,8 +820,8 @@ LABEL_11:
 {
   v3 = [NTKProteusFaceColorPalette alloc];
   v4 = objc_opt_class();
-  v5 = [(NTKProteusFaceView *)self device];
-  v6 = [(NTKProteusFaceColorPalette *)v3 initWithFaceClass:v4 device:v5];
+  device = [(NTKProteusFaceView *)self device];
+  v6 = [(NTKProteusFaceColorPalette *)v3 initWithFaceClass:v4 device:device];
 
   [(NTKProteusFaceColorPalette *)v6 setBackgroundStyle:[(NTKProteusFaceView *)self backgroundStyle]];
 

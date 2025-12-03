@@ -1,7 +1,7 @@
 @interface TRINamespaceOptionalParams
 - (TRINamespaceOptionalParams)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setUpgradeNCVs:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setUpgradeNCVs:(id)vs;
 @end
 
 @implementation TRINamespaceOptionalParams
@@ -21,20 +21,20 @@
   return result;
 }
 
-- (void)setUpgradeNCVs:(id)a3
+- (void)setUpgradeNCVs:(id)vs
 {
-  if (a3)
+  if (vs)
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithSet:v5 copyItems:1];
+    vsCopy = vs;
+    v6 = [[v4 alloc] initWithSet:vsCopy copyItems:1];
 
     upgradeNCVs = self->_upgradeNCVs;
     self->_upgradeNCVs = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();

@@ -1,9 +1,9 @@
 @interface CATIDSServiceTransport
-- (CATIDSServiceTransport)initWithConnection:(id)a3;
+- (CATIDSServiceTransport)initWithConnection:(id)connection;
 - (id)name;
-- (id)operationToSendMessage:(id)a3;
-- (void)connection:(id)a3 receivedData:(id)a4;
-- (void)connectionClosed:(id)a3;
+- (id)operationToSendMessage:(id)message;
+- (void)connection:(id)connection receivedData:(id)data;
+- (void)connectionClosed:(id)closed;
 - (void)invalidateConnection;
 - (void)resumeConnection;
 - (void)serviceReceiveQueue;
@@ -13,9 +13,9 @@
 
 @implementation CATIDSServiceTransport
 
-- (CATIDSServiceTransport)initWithConnection:(id)a3
+- (CATIDSServiceTransport)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = CATIDSServiceTransport;
   v6 = [(CATTransport *)&v10 init];
@@ -25,7 +25,7 @@
     mReceiveQueue = v6->mReceiveQueue;
     v6->mReceiveQueue = v7;
 
-    objc_storeStrong(&v6->mConnection, a3);
+    objc_storeStrong(&v6->mConnection, connection);
     [(CATIDSServiceConnection *)v6->mConnection setDelegate:v6];
   }
 
@@ -39,11 +39,11 @@
 
   if ([(CATIDSServiceConnection *)self->mConnection isClosed])
   {
-    v4 = [(CATIDSServiceConnection *)self->mConnection closedError];
-    v5 = v4;
-    if (v4)
+    closedError = [(CATIDSServiceConnection *)self->mConnection closedError];
+    v5 = closedError;
+    if (closedError)
     {
-      v6 = v4;
+      v6 = closedError;
     }
 
     else
@@ -88,10 +88,10 @@
   }
 }
 
-- (id)operationToSendMessage:(id)a3
+- (id)operationToSendMessage:(id)message
 {
-  v4 = a3;
-  v5 = [[_CATIDSServiceTransportSendMessageOperation alloc] initWithConnection:self->mConnection message:v4];
+  messageCopy = message;
+  v5 = [[_CATIDSServiceTransportSendMessageOperation alloc] initWithConnection:self->mConnection message:messageCopy];
 
   return v5;
 }
@@ -99,24 +99,24 @@
 - (id)name
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CATIDSServiceConnection *)self->mConnection metadata];
-  v5 = [v4 connectionIdentifier];
-  v6 = [(CATIDSServiceConnection *)self->mConnection metadata];
-  v7 = [v6 destinationAppleID];
-  v8 = [v3 stringWithFormat:@"%@-%@", v5, v7];
+  metadata = [(CATIDSServiceConnection *)self->mConnection metadata];
+  connectionIdentifier = [metadata connectionIdentifier];
+  metadata2 = [(CATIDSServiceConnection *)self->mConnection metadata];
+  destinationAppleID = [metadata2 destinationAppleID];
+  v8 = [v3 stringWithFormat:@"%@-%@", connectionIdentifier, destinationAppleID];
 
   return v8;
 }
 
-- (void)connection:(id)a3 receivedData:(id)a4
+- (void)connection:(id)connection receivedData:(id)data
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dataCopy = data;
   v6 = CATGetCatalystQueue();
   CATAssertIsQueue(v6);
 
   v13 = 0;
-  v7 = [MEMORY[0x277CCAAC8] cat_unarchiveObjectOfClass:objc_opt_class() withData:v5 error:&v13];
+  v7 = [MEMORY[0x277CCAAC8] cat_unarchiveObjectOfClass:objc_opt_class() withData:dataCopy error:&v13];
 
   v8 = v13;
   v9 = v8;
@@ -138,20 +138,20 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectionClosed:(id)a3
+- (void)connectionClosed:(id)closed
 {
-  v7 = a3;
+  closedCopy = closed;
   v4 = CATGetCatalystQueue();
   CATAssertIsQueue(v4);
 
-  v5 = [v7 closedError];
+  closedError = [closedCopy closedError];
 
-  if (v5)
+  if (closedError)
   {
     if (self->mIsActive)
     {
-      v6 = [v7 closedError];
-      [(CATTransport *)self didInterruptWithError:v6];
+      closedError2 = [closedCopy closedError];
+      [(CATTransport *)self didInterruptWithError:closedError2];
     }
   }
 
@@ -177,9 +177,9 @@
 
   if (self->mIsActive && [(NSMutableArray *)self->mReceiveQueue count])
   {
-    v4 = [(NSMutableArray *)self->mReceiveQueue firstObject];
+    firstObject = [(NSMutableArray *)self->mReceiveQueue firstObject];
     [(NSMutableArray *)self->mReceiveQueue removeObjectAtIndex:0];
-    [(CATTransport *)self didReceiveMessage:v4];
+    [(CATTransport *)self didReceiveMessage:firstObject];
     [(CATIDSServiceTransport *)self serviceReceiveQueue];
   }
 }

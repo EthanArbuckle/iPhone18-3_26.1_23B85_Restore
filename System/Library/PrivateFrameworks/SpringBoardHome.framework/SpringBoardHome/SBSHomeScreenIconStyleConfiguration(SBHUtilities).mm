@@ -8,19 +8,19 @@
 
 - (SBHIconImageStyleConfiguration)sbh_iconImageStyleConfiguration
 {
-  v2 = [a1 sbh_configurationType];
-  v3 = [a1 sbh_configurationVariant];
-  v4 = [a1 tintColor];
-  v5 = [v4 UIColor];
+  sbh_configurationType = [self sbh_configurationType];
+  sbh_configurationVariant = [self sbh_configurationVariant];
+  tintColor = [self tintColor];
+  uIColor = [tintColor UIColor];
 
-  v6 = [[SBHIconImageStyleConfiguration alloc] initWithConfigurationType:v2 variant:v3 tintColor:v5];
+  v6 = [[SBHIconImageStyleConfiguration alloc] initWithConfigurationType:sbh_configurationType variant:sbh_configurationVariant tintColor:uIColor];
 
   return v6;
 }
 
 - (uint64_t)sbh_configurationVariant
 {
-  result = [a1 variant];
+  result = [self variant];
   if (result != 2)
   {
     return result == 1;
@@ -31,7 +31,7 @@
 
 - (uint64_t)sbh_configurationType
 {
-  result = [a1 updatedConfigurationType];
+  result = [self updatedConfigurationType];
   if (result != 2)
   {
     return result == 1;

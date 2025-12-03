@@ -1,12 +1,12 @@
 @interface SWURLShareItem
-- (SWURLShareItem)initWithURL:(id)a3;
+- (SWURLShareItem)initWithURL:(id)l;
 @end
 
 @implementation SWURLShareItem
 
-- (SWURLShareItem)initWithURL:(id)a3
+- (SWURLShareItem)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = SWURLShareItem;
   v5 = [(SWURLShareItem *)&v10 init];
@@ -14,7 +14,7 @@
   if (v5)
   {
     v5->_kind = 0;
-    v7 = [v4 copy];
+    v7 = [lCopy copy];
     url = v6->_url;
     v6->_url = v7;
   }

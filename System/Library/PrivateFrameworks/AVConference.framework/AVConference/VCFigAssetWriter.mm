@@ -1,30 +1,30 @@
 @interface VCFigAssetWriter
-- (BOOL)shouldAppendSampleBuffer:(opaqueCMSampleBuffer *)a3 RTPtimeStamp:(unsigned int)a4 mediaType:(unsigned __int8)a5;
-- (BOOL)shouldFinishWritingSampleBuffer:(opaqueCMSampleBuffer *)a3 RTPtimeStamp:(unsigned int)a4 mediaType:(unsigned __int8)a5;
-- (OpaqueVTCompressionSession)compressionSessionWithWidth:(unsigned int)a3 height:(unsigned int)a4;
-- (VCFigAssetWriter)initWithOutputURL:(id)a3 transactionID:(id)a4 videoCodec:(unsigned int)a5 keyFrameIntervalDuration:(double)a6;
+- (BOOL)shouldAppendSampleBuffer:(opaqueCMSampleBuffer *)buffer RTPtimeStamp:(unsigned int)stamp mediaType:(unsigned __int8)type;
+- (BOOL)shouldFinishWritingSampleBuffer:(opaqueCMSampleBuffer *)buffer RTPtimeStamp:(unsigned int)stamp mediaType:(unsigned __int8)type;
+- (OpaqueVTCompressionSession)compressionSessionWithWidth:(unsigned int)width height:(unsigned int)height;
+- (VCFigAssetWriter)initWithOutputURL:(id)l transactionID:(id)d videoCodec:(unsigned int)codec keyFrameIntervalDuration:(double)duration;
 - (int)_setupWriter;
-- (int)encodeAndAppendSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (int)trackIDForMediaType:(unsigned __int8)a3;
-- (int)trackIDForWriterMode:(unsigned __int8)a3;
+- (int)encodeAndAppendSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (int)trackIDForMediaType:(unsigned __int8)type;
+- (int)trackIDForWriterMode:(unsigned __int8)mode;
 - (void)_setupWriter;
-- (void)appendAudioBufferList:(__CFArray *)a3 type:(unsigned __int8)a4;
-- (void)appendAudioSampleBuffer:(opaqueCMSampleBuffer *)a3 mediaType:(unsigned __int8)a4;
+- (void)appendAudioBufferList:(__CFArray *)list type:(unsigned __int8)type;
+- (void)appendAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer mediaType:(unsigned __int8)type;
 - (void)appendEarlyAudioBuffers;
-- (void)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)a3 cameraStatus:(unsigned __int8)a4 mediaType:(unsigned __int8)a5;
-- (void)collectEarlyAudioBuffer:(opaqueCMSampleBuffer *)a3 type:(unsigned __int8)a4;
+- (void)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer cameraStatus:(unsigned __int8)status mediaType:(unsigned __int8)type;
+- (void)collectEarlyAudioBuffer:(opaqueCMSampleBuffer *)buffer type:(unsigned __int8)type;
 - (void)dealloc;
-- (void)finishWritingWithHandler:(id)a3;
-- (void)setMovieFragmentInterval:(id *)a3;
-- (void)setStillImageTime:(id *)a3;
+- (void)finishWritingWithHandler:(id)handler;
+- (void)setMovieFragmentInterval:(id *)interval;
+- (void)setStillImageTime:(id *)time;
 - (void)setStillImageTimeInternal;
-- (void)setupLivePhotoStillImageCameraStatusBit:(unsigned __int8)a3 resize:(BOOL)a4 imageSize:(CGSize)a5;
-- (void)writeIdentifierMetadata:(id)a3;
+- (void)setupLivePhotoStillImageCameraStatusBit:(unsigned __int8)bit resize:(BOOL)resize imageSize:(CGSize)size;
+- (void)writeIdentifierMetadata:(id)metadata;
 @end
 
 @implementation VCFigAssetWriter
 
-- (VCFigAssetWriter)initWithOutputURL:(id)a3 transactionID:(id)a4 videoCodec:(unsigned int)a5 keyFrameIntervalDuration:(double)a6
+- (VCFigAssetWriter)initWithOutputURL:(id)l transactionID:(id)d videoCodec:(unsigned int)codec keyFrameIntervalDuration:(double)duration
 {
   v37 = *MEMORY[0x1E69E9840];
   v28.receiver = self;
@@ -35,20 +35,20 @@
     return v10;
   }
 
-  if (!a3)
+  if (!l)
   {
     [VCFigAssetWriter initWithOutputURL:transactionID:videoCodec:keyFrameIntervalDuration:];
     goto LABEL_15;
   }
 
-  *(v10 + 26) = [a3 copy];
-  if (!a4)
+  *(v10 + 26) = [l copy];
+  if (!d)
   {
     [VCFigAssetWriter initWithOutputURL:transactionID:videoCodec:keyFrameIntervalDuration:];
     goto LABEL_15;
   }
 
-  *(v10 + 25) = [a4 copy];
+  *(v10 + 25) = [d copy];
   v11 = MEMORY[0x1E6960C70];
   v27 = *MEMORY[0x1E6960C70];
   *(v10 + 11) = *MEMORY[0x1E6960C70];
@@ -146,8 +146,8 @@ LABEL_9:
   *(v10 + 66) = 0;
   *(v10 + 81) = 0;
   v10[257] = 0;
-  *(v10 + 80) = a5;
-  *(v10 + 41) = a6;
+  *(v10 + 80) = codec;
+  *(v10 + 41) = duration;
   *(v10 + 45) = v12;
   *(v10 + 344) = v27;
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9C0]);
@@ -469,7 +469,7 @@ LABEL_49:
       v17 = 1024;
       v18 = 190;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCFigAssetWriter-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -479,21 +479,21 @@ LABEL_49:
   [(VCObject *)&v12 dealloc];
 }
 
-- (void)setupLivePhotoStillImageCameraStatusBit:(unsigned __int8)a3 resize:(BOOL)a4 imageSize:(CGSize)a5
+- (void)setupLivePhotoStillImageCameraStatusBit:(unsigned __int8)bit resize:(BOOL)resize imageSize:(CGSize)size
 {
-  self->_stillImageCameraStatusBit = a3;
-  self->_resize = a4;
-  if (a4)
+  self->_stillImageCameraStatusBit = bit;
+  self->_resize = resize;
+  if (resize)
   {
-    height = a5.height;
-    width = a5.width;
+    height = size.height;
+    width = size.width;
     self->_transferSession = VCMediaRecorderUtil_AllocTransferSession();
 
     VCMediaRecorderUtil_SetupBufferPool(@"AVConference:FigAssetWriter", &self->_bufferPool, width, height);
   }
 }
 
-- (void)finishWritingWithHandler:(id)a3
+- (void)finishWritingWithHandler:(id)handler
 {
   *&v36[13] = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
@@ -616,9 +616,9 @@ LABEL_25:
             CFRelease(self->_assetWriter);
             self->_assetWriter = 0;
 LABEL_19:
-            if (a3)
+            if (handler)
             {
-              (*(a3 + 2))(a3, self->_outputURL, 0);
+              (*(handler + 2))(handler, self->_outputURL, 0);
             }
 
             if (assetWriter)
@@ -719,26 +719,26 @@ LABEL_46:
 
 LABEL_47:
   objc_sync_exit(self);
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0, [MEMORY[0x1E696ABC0] errorWithDomain:@"VCMovieWriter" code:-1 userInfo:0]);
+    (*(handler + 2))(handler, 0, [MEMORY[0x1E696ABC0] errorWithDomain:@"VCMovieWriter" code:-1 userInfo:0]);
   }
 }
 
-- (int)trackIDForMediaType:(unsigned __int8)a3
+- (int)trackIDForMediaType:(unsigned __int8)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&self->super.super.isa + *off_1E85F9A30[(a3 - 1)]);
+    return *(&self->super.super.isa + *off_1E85F9A30[(type - 1)]);
   }
 }
 
-- (int)trackIDForWriterMode:(unsigned __int8)a3
+- (int)trackIDForWriterMode:(unsigned __int8)mode
 {
   if (self->_writerMode - 3 >= 2)
   {
@@ -753,10 +753,10 @@ LABEL_47:
   return *(&self->super.super.isa + *v3);
 }
 
-- (BOOL)shouldAppendSampleBuffer:(opaqueCMSampleBuffer *)a3 RTPtimeStamp:(unsigned int)a4 mediaType:(unsigned __int8)a5
+- (BOOL)shouldAppendSampleBuffer:(opaqueCMSampleBuffer *)buffer RTPtimeStamp:(unsigned int)stamp mediaType:(unsigned __int8)type
 {
   v17 = *MEMORY[0x1E69E9840];
-  IsMediaExpected = VCMediaWriterUtil_IsMediaExpected(a5, self->_writerMode);
+  IsMediaExpected = VCMediaWriterUtil_IsMediaExpected(type, self->_writerMode);
   if (IsMediaExpected)
   {
     if (self->_writerMode - 2 > 2)
@@ -765,7 +765,7 @@ LABEL_47:
       {
         stillImageTime = self->_stillImageTime;
         Seconds = CMTimeGetSeconds(&stillImageTime);
-        CMSampleBufferGetPresentationTimeStamp(&stillImageTime, a3);
+        CMSampleBufferGetPresentationTimeStamp(&stillImageTime, buffer);
         if (Seconds - CMTimeGetSeconds(&stillImageTime) <= 1.0)
         {
 LABEL_10:
@@ -774,7 +774,7 @@ LABEL_10:
         }
       }
 
-      CMSampleBufferGetPresentationTimeStamp(&stillImageTime, a3);
+      CMSampleBufferGetPresentationTimeStamp(&stillImageTime, buffer);
       v11 = CMTimeGetSeconds(&stillImageTime);
       stillImageTime = self->_startTime;
       LOBYTE(IsMediaExpected) = v11 - CMTimeGetSeconds(&stillImageTime) < 3.0;
@@ -785,7 +785,7 @@ LABEL_10:
       state = self->_state;
       if (state - 1 < 2)
       {
-        if (self->_isEndRTPTimestampSet && self->_endRTPTimeStamp < a4)
+        if (self->_isEndRTPTimestampSet && self->_endRTPTimeStamp < stamp)
         {
 LABEL_20:
           LOBYTE(IsMediaExpected) = 0;
@@ -801,8 +801,8 @@ LABEL_20:
       }
 
       startRTPTimeStamp = self->_startRTPTimeStamp;
-      v13 = a4 - startRTPTimeStamp < 0x7FFFFFFF && a4 < startRTPTimeStamp;
-      if (a4 <= startRTPTimeStamp && !v13)
+      v13 = stamp - startRTPTimeStamp < 0x7FFFFFFF && stamp < startRTPTimeStamp;
+      if (stamp <= startRTPTimeStamp && !v13)
       {
         goto LABEL_20;
       }
@@ -815,17 +815,17 @@ LABEL_20:
   return IsMediaExpected;
 }
 
-- (BOOL)shouldFinishWritingSampleBuffer:(opaqueCMSampleBuffer *)a3 RTPtimeStamp:(unsigned int)a4 mediaType:(unsigned __int8)a5
+- (BOOL)shouldFinishWritingSampleBuffer:(opaqueCMSampleBuffer *)buffer RTPtimeStamp:(unsigned int)stamp mediaType:(unsigned __int8)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  IsMediaExpected = VCMediaWriterUtil_IsMediaExpected(a5, self->_writerMode);
+  IsMediaExpected = VCMediaWriterUtil_IsMediaExpected(type, self->_writerMode);
   if (IsMediaExpected)
   {
     if (self->_writerMode - 2 > 2)
     {
-      if (a3)
+      if (buffer)
       {
-        CMSampleBufferGetPresentationTimeStamp(&startTime, a3);
+        CMSampleBufferGetPresentationTimeStamp(&startTime, buffer);
         Seconds = CMTimeGetSeconds(&startTime);
         startTime = self->_startTime;
         if (Seconds - CMTimeGetSeconds(&startTime) > 3.0)
@@ -840,8 +840,8 @@ LABEL_14:
     else if (self->_state == 1 && self->_isEndRTPTimestampSet)
     {
       endRTPTimeStamp = self->_endRTPTimeStamp;
-      v10 = a4 >= endRTPTimeStamp;
-      v11 = a4 - endRTPTimeStamp;
+      v10 = stamp >= endRTPTimeStamp;
+      v11 = stamp - endRTPTimeStamp;
       if (v11 != 0 && v10)
       {
         goto LABEL_14;
@@ -859,12 +859,12 @@ LABEL_14:
   return IsMediaExpected;
 }
 
-- (OpaqueVTCompressionSession)compressionSessionWithWidth:(unsigned int)a3 height:(unsigned int)a4
+- (OpaqueVTCompressionSession)compressionSessionWithWidth:(unsigned int)width height:(unsigned int)height
 {
   v35[1] = *MEMORY[0x1E69E9840];
   v35[0] = 0;
-  valuePtr = a3;
-  height = a4;
+  valuePtr = width;
+  height = height;
   v32 = VCVideoUtil_DefaultCameraCapturePixelFormat();
   codec = self->_codec;
   keyFrameIntervalDuration = self->_keyFrameIntervalDuration;
@@ -894,7 +894,7 @@ LABEL_14:
     v30 = v6;
   }
 
-  v24 = self;
+  selfCopy = self;
   v28 = 1;
   v29 = v6 >> 3;
   v7 = *MEMORY[0x1E695E480];
@@ -954,7 +954,7 @@ LABEL_14:
         CFDictionaryAddValue(theDict, *MEMORY[0x1E6966208], value);
         CFDictionaryAddValue(theDict, *MEMORY[0x1E69660B8], v16);
         CFDictionaryAddValue(theDict, *MEMORY[0x1E6966130], v10);
-        if (VTCompressionSessionCreate(v7, valuePtr, height, v24->_codec, 0, theDict, 0, 0, 0, v35))
+        if (VTCompressionSessionCreate(v7, valuePtr, height, selfCopy->_codec, 0, theDict, 0, 0, 0, v35))
         {
           [VCFigAssetWriter compressionSessionWithWidth:height:];
           goto LABEL_37;
@@ -967,7 +967,7 @@ LABEL_14:
           goto LABEL_37;
         }
 
-        v21 = v24->_codec;
+        v21 = selfCopy->_codec;
         if (v21 == 1752589105)
         {
           if (VTSessionSetProperty(v35[0], *MEMORY[0x1E69837D0], *MEMORY[0x1E6983FA0]))
@@ -986,7 +986,7 @@ LABEL_14:
               v23 = VRTraceErrorLogLevelToCSTR();
               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
               {
-                [VCFigAssetWriter compressionSessionWithWidth:v23 height:&v24->_codec];
+                [VCFigAssetWriter compressionSessionWithWidth:v23 height:&selfCopy->_codec];
               }
             }
 
@@ -1120,10 +1120,10 @@ LABEL_39:
   return v35[0];
 }
 
-- (int)encodeAndAppendSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (int)encodeAndAppendSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
     [VCFigAssetWriter encodeAndAppendSampleBuffer:];
     return presentationTimeStamp.value;
@@ -1147,7 +1147,7 @@ LABEL_39:
     return presentationTimeStamp.value;
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (!ImageBuffer)
   {
     [VCFigAssetWriter encodeAndAppendSampleBuffer:];
@@ -1156,9 +1156,9 @@ LABEL_39:
 
   v6 = ImageBuffer;
   memset(&v16, 170, sizeof(v16));
-  CMSampleBufferGetPresentationTimeStamp(&v16, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v16, buffer);
   memset(&v15, 170, sizeof(v15));
-  CMSampleBufferGetDuration(&v15, a3);
+  CMSampleBufferGetDuration(&v15, buffer);
   compressionSession = self->_compressionSession;
   outputHandler[0] = MEMORY[0x1E69E9820];
   outputHandler[1] = 3221225472;
@@ -1223,9 +1223,9 @@ void __48__VCFigAssetWriter_encodeAndAppendSampleBuffer___block_invoke(uint64_t 
   }
 }
 
-- (void)collectEarlyAudioBuffer:(opaqueCMSampleBuffer *)a3 type:(unsigned __int8)a4
+- (void)collectEarlyAudioBuffer:(opaqueCMSampleBuffer *)buffer type:(unsigned __int8)type
 {
-  if (a4 == 2)
+  if (type == 2)
   {
     earlyRemoteAudioBuffers = self->_earlyRemoteAudioBuffers;
     if (!earlyRemoteAudioBuffers)
@@ -1237,7 +1237,7 @@ void __48__VCFigAssetWriter_encodeAndAppendSampleBuffer___block_invoke(uint64_t 
     goto LABEL_6;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     earlyRemoteAudioBuffers = self->_earlyLocalAudioBuffers;
     if (!earlyRemoteAudioBuffers)
@@ -1248,7 +1248,7 @@ void __48__VCFigAssetWriter_encodeAndAppendSampleBuffer___block_invoke(uint64_t 
 
 LABEL_6:
 
-    CFArrayAppendValue(earlyRemoteAudioBuffers, a3);
+    CFArrayAppendValue(earlyRemoteAudioBuffers, buffer);
     return;
   }
 
@@ -1270,17 +1270,17 @@ LABEL_6:
   [(VCFigAssetWriter *)self appendAudioBufferList:earlyRemoteAudioBuffers type:2];
 }
 
-- (void)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)a3 cameraStatus:(unsigned __int8)a4 mediaType:(unsigned __int8)a5
+- (void)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer cameraStatus:(unsigned __int8)status mediaType:(unsigned __int8)type
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
     [VCFigAssetWriter appendVideoSampleBuffer:v43 cameraStatus:? mediaType:?];
     goto LABEL_37;
   }
 
-  v5 = a4;
-  if (self->_writerMode == 1 && self->_stillImageCameraStatusBit != a4)
+  statusCopy = status;
+  if (self->_writerMode == 1 && self->_stillImageCameraStatusBit != status)
   {
     [VCFigAssetWriter appendVideoSampleBuffer:v43 cameraStatus:? mediaType:?];
     goto LABEL_37;
@@ -1288,9 +1288,9 @@ LABEL_6:
 
   if (self->_resize)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     memset(v43, 170, 24);
-    CMSampleBufferGetPresentationTimeStamp(v43, a3);
+    CMSampleBufferGetPresentationTimeStamp(v43, buffer);
     ResizeFrame = VCMediaRecorderUtil_CreateResizeFrame(ImageBuffer, self->_transferSession, self->_bufferPool);
     v40 = *v43;
     *&v41 = *&v43[16];
@@ -1378,7 +1378,7 @@ LABEL_6:
     *&v43[16] = v34;
     *&v43[32] = v34;
     *v43 = v34;
-    videoOrientationInRadiansForCameraStatusBits(v5, v43);
+    videoOrientationInRadiansForCameraStatusBits(statusCopy, v43);
     v40 = *v43;
     v41 = *&v43[16];
     v42 = *&v43[32];
@@ -1551,9 +1551,9 @@ LABEL_37:
   FigSampleBufferRelease();
 }
 
-- (void)appendAudioSampleBuffer:(opaqueCMSampleBuffer *)a3 mediaType:(unsigned __int8)a4
+- (void)appendAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer mediaType:(unsigned __int8)type
 {
-  v4 = a4;
+  typeCopy = type;
   v38 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
   if (!self->_assetWriter)
@@ -1570,7 +1570,7 @@ LABEL_37:
     goto LABEL_25;
   }
 
-  if (!a3)
+  if (!buffer)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -1585,7 +1585,7 @@ LABEL_37:
   }
 
   memset(&v33, 170, sizeof(v33));
-  CMSampleBufferGetPresentationTimeStamp(&v33, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v33, buffer);
   p_startTime = &self->_startTime;
   if (self->_startTime.flags)
   {
@@ -1594,7 +1594,7 @@ LABEL_37:
 
   if (!VCMediaWriterUtil_IsAudioOnly(self->_writerMode))
   {
-    [(VCFigAssetWriter *)self collectEarlyAudioBuffer:a3 type:v4];
+    [(VCFigAssetWriter *)self collectEarlyAudioBuffer:buffer type:typeCopy];
     goto LABEL_12;
   }
 
@@ -1688,14 +1688,14 @@ LABEL_12:
     v32 = v33;
     if (CMTimeCompare(&time1, &v32) <= 0)
     {
-      v18 = [(VCFigAssetWriter *)self trackIDForMediaType:v4];
+      v18 = [(VCFigAssetWriter *)self trackIDForMediaType:typeCopy];
       if (v18)
       {
         v19 = self->_assetWriter;
         v20 = *(*(CMBaseObjectGetVTable() + 16) + 80);
         if (v20)
         {
-          v21 = v20(v19, v18, a3);
+          v21 = v20(v19, v18, buffer);
           if (!v21)
           {
             goto LABEL_25;
@@ -1713,7 +1713,7 @@ LABEL_12:
           v23 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
           {
-            CMSampleBufferGetPresentationTimeStamp(&v32, a3);
+            CMSampleBufferGetPresentationTimeStamp(&v32, buffer);
             v24 = CMTimeGetSeconds(&v32);
             LODWORD(time1.value) = 136316418;
             *(&time1.value + 4) = v22;
@@ -1726,7 +1726,7 @@ LABEL_12:
             *&v37[4] = 2048;
             *&v37[6] = v24;
             *&v37[14] = 1024;
-            *&v37[16] = v4;
+            *&v37[16] = typeCopy;
             v25 = " [%s] %s:%d FigAssetWriterAddSampleBuffer failed with err=%d timestamp=%f type=%d";
             v26 = v23;
             v27 = 50;
@@ -1751,12 +1751,12 @@ LABEL_25:
   objc_sync_exit(self);
 }
 
-- (void)writeIdentifierMetadata:(id)a3
+- (void)writeIdentifierMetadata:(id)metadata
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (metadata)
   {
-    MetaDataArrayWithIndentifier = VCMediaWriterUtil_GetMetaDataArrayWithIndentifier(a3);
+    MetaDataArrayWithIndentifier = VCMediaWriterUtil_GetMetaDataArrayWithIndentifier(metadata);
     assetWriter = self->_assetWriter;
     v6 = *(*(CMBaseObjectGetVTable() + 16) + 56);
     if (!v6 || v6(assetWriter, *MEMORY[0x1E6971C00], MetaDataArrayWithIndentifier))
@@ -1792,12 +1792,12 @@ LABEL_25:
   }
 }
 
-- (void)setStillImageTime:(id *)a3
+- (void)setStillImageTime:(id *)time
 {
   v12 = *MEMORY[0x1E69E9840];
   p_stillImageTime = &self->_stillImageTime;
-  var3 = a3->var3;
-  *&self->_stillImageTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_stillImageTime.value = *&time->var0;
   self->_stillImageTime.epoch = var3;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -1820,30 +1820,30 @@ LABEL_25:
   }
 }
 
-- (void)setMovieFragmentInterval:(id *)a3
+- (void)setMovieFragmentInterval:(id *)interval
 {
-  var3 = a3->var3;
-  *&self->_movieFragmentInterval.value = *&a3->var0;
+  var3 = interval->var3;
+  *&self->_movieFragmentInterval.value = *&interval->var0;
   self->_movieFragmentInterval.epoch = var3;
 }
 
-- (void)appendAudioBufferList:(__CFArray *)a3 type:(unsigned __int8)a4
+- (void)appendAudioBufferList:(__CFArray *)list type:(unsigned __int8)type
 {
-  if (a3)
+  if (list)
   {
-    v4 = a4;
-    if (CFArrayGetCount(a3) >= 1)
+    typeCopy = type;
+    if (CFArrayGetCount(list) >= 1)
     {
       v7 = 0;
       do
       {
-        [(VCFigAssetWriter *)self appendAudioSampleBuffer:CFArrayGetValueAtIndex(a3 mediaType:v7++), v4];
+        [(VCFigAssetWriter *)self appendAudioSampleBuffer:CFArrayGetValueAtIndex(list mediaType:v7++), typeCopy];
       }
 
-      while (v7 < CFArrayGetCount(a3));
+      while (v7 < CFArrayGetCount(list));
     }
 
-    CFArrayRemoveAllValues(a3);
+    CFArrayRemoveAllValues(list);
   }
 }
 

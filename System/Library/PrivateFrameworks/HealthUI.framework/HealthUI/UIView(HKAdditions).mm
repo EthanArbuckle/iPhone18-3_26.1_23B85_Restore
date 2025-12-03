@@ -39,7 +39,7 @@
   }
 
   v8 = [MEMORY[0x1E696ACD8] constraintWithItem:a4 attribute:a5 relatedBy:0 toItem:a6 attribute:v7 multiplier:1.0 constant:a2];
-  [a1 addConstraint:v8];
+  [self addConstraint:v8];
 
   return v8;
 }
@@ -57,7 +57,7 @@
   }
 
   v9 = [MEMORY[0x1E696ACD8] constraintWithItem:a4 attribute:a5 relatedBy:0 toItem:a6 attribute:v8 multiplier:1.0 constant:a2];
-  [a1 addConstraint:v9];
+  [self addConstraint:v9];
 
   return v9;
 }
@@ -65,7 +65,7 @@
 - (id)hk_addConstraintsWithFormat:()HKAdditions options:metrics:views:
 {
   v2 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:? options:? metrics:? views:?];
-  [a1 addConstraints:v2];
+  [self addConstraints:v2];
 
   return v2;
 }
@@ -77,7 +77,7 @@
     return 4;
   }
 
-  if ([a1 hk_isLeftToRight])
+  if ([self hk_isLeftToRight])
   {
     return 2;
   }
@@ -88,21 +88,21 @@
 - (void)hk_constrainToView:()HKAdditions fromEdge:toEdge:constant:
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E696ACD8] constraintWithItem:a1 attribute:a5 relatedBy:0 toItem:a4 attribute:a6 multiplier:1.0 constant:a2];
+  v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self attribute:a5 relatedBy:0 toItem:a4 attribute:a6 multiplier:1.0 constant:a2];
   v8 = MEMORY[0x1E696ACD8];
   v10[0] = v7;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   [v8 activateConstraints:v9];
 
-  [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)hk_constrainToSuperviewAlongEdges:()HKAdditions constant:
 {
   v27 = *MEMORY[0x1E69E9840];
   v6 = a4;
-  v7 = [a1 superview];
-  if (!v7)
+  superview = [self superview];
+  if (!superview)
   {
     goto LABEL_21;
   }
@@ -130,27 +130,27 @@
         objc_enumerationMutation(v9);
       }
 
-      v14 = [*(*(&v22 + 1) + 8 * i) integerValue];
-      v15 = v14;
-      if ((v14 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+      integerValue = [*(*(&v22 + 1) + 8 * i) integerValue];
+      v15 = integerValue;
+      if ((integerValue & 0xFFFFFFFFFFFFFFFDLL) == 1)
       {
         v16 = MEMORY[0x1E696ACD8];
         v17 = 1.0;
-        v18 = a1;
-        v19 = v7;
+        selfCopy = self;
+        selfCopy2 = superview;
 LABEL_15:
-        v21 = [v16 constraintWithItem:v18 attribute:v15 relatedBy:0 toItem:v19 attribute:v15 multiplier:v17 constant:a2];
+        v21 = [v16 constraintWithItem:selfCopy attribute:v15 relatedBy:0 toItem:selfCopy2 attribute:v15 multiplier:v17 constant:a2];
         [v8 addObject:v21];
 
         continue;
       }
 
-      if (v14 == 4 || v14 == 2)
+      if (integerValue == 4 || integerValue == 2)
       {
         v16 = MEMORY[0x1E696ACD8];
         v17 = 1.0;
-        v18 = v7;
-        v19 = a1;
+        selfCopy = superview;
+        selfCopy2 = self;
         goto LABEL_15;
       }
     }
@@ -163,7 +163,7 @@ LABEL_18:
   if ([v8 count])
   {
     [MEMORY[0x1E696ACD8] activateConstraints:v8];
-    [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [self setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
 LABEL_21:
@@ -172,151 +172,151 @@ LABEL_21:
 - (uint64_t)hk_alignConstraintsWithView:()HKAdditions
 {
   v4 = a3;
-  v5 = [a1 leadingAnchor];
-  v6 = [v4 leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  leadingAnchor = [self leadingAnchor];
+  leadingAnchor2 = [v4 leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v7 setActive:1];
 
-  v8 = [a1 trailingAnchor];
-  v9 = [v4 trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  trailingAnchor = [self trailingAnchor];
+  trailingAnchor2 = [v4 trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v10 setActive:1];
 
-  v11 = [a1 topAnchor];
-  v12 = [v4 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  topAnchor = [self topAnchor];
+  topAnchor2 = [v4 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v13 setActive:1];
 
-  v14 = [a1 bottomAnchor];
-  v15 = [v4 bottomAnchor];
+  bottomAnchor = [self bottomAnchor];
+  bottomAnchor2 = [v4 bottomAnchor];
 
-  v16 = [v14 constraintEqualToAnchor:v15];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v16 setActive:1];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hk_alignConstraintsWithGuide:()HKAdditions
 {
   v4 = a3;
-  v5 = [a1 topAnchor];
-  v6 = [v4 topAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  topAnchor = [self topAnchor];
+  topAnchor2 = [v4 topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v7 setActive:1];
 
-  v8 = [a1 trailingAnchor];
-  v9 = [v4 trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  trailingAnchor = [self trailingAnchor];
+  trailingAnchor2 = [v4 trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v10 setActive:1];
 
-  v11 = [a1 bottomAnchor];
-  v12 = [v4 bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor = [self bottomAnchor];
+  bottomAnchor2 = [v4 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v13 setActive:1];
 
-  v14 = [a1 leadingAnchor];
-  v15 = [v4 leadingAnchor];
+  leadingAnchor = [self leadingAnchor];
+  leadingAnchor2 = [v4 leadingAnchor];
 
-  v16 = [v14 constraintEqualToAnchor:v15];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v16 setActive:1];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hk_alignVerticalConstraintsWithView:()HKAdditions margin:
 {
   v6 = a4;
-  v7 = [a1 topAnchor];
-  v8 = [v6 topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 constant:a2];
+  topAnchor = [self topAnchor];
+  topAnchor2 = [v6 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:a2];
   [v9 setActive:1];
 
-  v10 = [a1 bottomAnchor];
-  v11 = [v6 bottomAnchor];
+  bottomAnchor = [self bottomAnchor];
+  bottomAnchor2 = [v6 bottomAnchor];
 
-  v12 = [v10 constraintEqualToAnchor:v11 constant:-a2];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-a2];
   [v12 setActive:1];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hk_alignHorizontalConstraintsWithView:()HKAdditions margin:
 {
   v6 = a4;
-  v7 = [a1 leadingAnchor];
-  v8 = [v6 leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 constant:a2];
+  leadingAnchor = [self leadingAnchor];
+  leadingAnchor2 = [v6 leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:a2];
   [v9 setActive:1];
 
-  v10 = [a1 trailingAnchor];
-  v11 = [v6 trailingAnchor];
+  trailingAnchor = [self trailingAnchor];
+  trailingAnchor2 = [v6 trailingAnchor];
 
-  v12 = [v10 constraintEqualToAnchor:v11 constant:-a2];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-a2];
   [v12 setActive:1];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hk_alignCenterConstraintsWithView:()HKAdditions
 {
   v4 = a3;
-  v5 = [a1 centerXAnchor];
-  v6 = [v4 centerXAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  centerXAnchor = [self centerXAnchor];
+  centerXAnchor2 = [v4 centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v7 setActive:1];
 
-  v8 = [a1 centerYAnchor];
-  v9 = [v4 centerYAnchor];
+  centerYAnchor = [self centerYAnchor];
+  centerYAnchor2 = [v4 centerYAnchor];
 
-  v10 = [v8 constraintEqualToAnchor:v9];
+  v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v10 setActive:1];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hk_alignConstraintsWithViewController:()HKAdditions
 {
   v4 = a3;
-  v5 = [a1 leadingAnchor];
-  v6 = [v4 view];
-  v7 = [v6 leadingAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  leadingAnchor = [self leadingAnchor];
+  view = [v4 view];
+  leadingAnchor2 = [view leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v8 setActive:1];
 
-  v9 = [a1 trailingAnchor];
-  v10 = [v4 view];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  trailingAnchor = [self trailingAnchor];
+  view2 = [v4 view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v12 setActive:1];
 
-  v13 = [a1 topAnchor];
-  v14 = [v4 view];
-  v15 = [v14 safeAreaLayoutGuide];
-  v16 = [v15 topAnchor];
-  v17 = [v13 constraintEqualToAnchor:v16];
+  topAnchor = [self topAnchor];
+  view3 = [v4 view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v17 setActive:1];
 
-  v18 = [a1 bottomAnchor];
-  v19 = [v4 view];
+  bottomAnchor = [self bottomAnchor];
+  view4 = [v4 view];
 
-  v20 = [v19 safeAreaLayoutGuide];
-  v21 = [v20 bottomAnchor];
-  v22 = [v18 constraintEqualToAnchor:v21];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v22 setActive:1];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)hk_alignConstraintsWithLeadingAnchor:()HKAdditions trailingAnchor:insets:
 {
   v12 = a8;
   v13 = a7;
-  v14 = [a1 leadingAnchor];
-  v15 = [v14 constraintEqualToAnchor:v13 constant:a3];
+  leadingAnchor = [self leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:v13 constant:a3];
 
   [v15 setActive:1];
-  v17 = [a1 trailingAnchor];
-  v16 = [v17 constraintEqualToAnchor:v12 constant:-a5];
+  trailingAnchor = [self trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:v12 constant:-a5];
 
   [v16 setActive:1];
 }
@@ -325,12 +325,12 @@ LABEL_21:
 {
   v11 = a7;
   v12 = a6;
-  v13 = [a1 topAnchor];
-  v14 = [v13 constraintEqualToAnchor:v12 constant:a2];
+  topAnchor = [self topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:v12 constant:a2];
 
   [v14 setActive:1];
-  v16 = [a1 bottomAnchor];
-  v15 = [v16 constraintEqualToAnchor:v11 constant:-a4];
+  bottomAnchor = [self bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:v11 constant:-a4];
 
   [v15 setActive:1];
 }
@@ -338,97 +338,97 @@ LABEL_21:
 - (uint64_t)hk_alignConstraintsWithView:()HKAdditions insets:
 {
   v12 = a7;
-  v13 = [v12 topAnchor];
-  v14 = [v12 bottomAnchor];
-  [a1 hk_alignConstraintsWithTopAnchor:v13 bottomAnchor:v14 insets:{a2, a3, a4, a5}];
+  topAnchor = [v12 topAnchor];
+  bottomAnchor = [v12 bottomAnchor];
+  [self hk_alignConstraintsWithTopAnchor:topAnchor bottomAnchor:bottomAnchor insets:{a2, a3, a4, a5}];
 
-  v15 = [v12 leadingAnchor];
-  v16 = [v12 trailingAnchor];
+  leadingAnchor = [v12 leadingAnchor];
+  trailingAnchor = [v12 trailingAnchor];
 
-  [a1 hk_alignConstraintsWithLeadingAnchor:v15 trailingAnchor:v16 insets:{a2, a3, a4, a5}];
+  [self hk_alignConstraintsWithLeadingAnchor:leadingAnchor trailingAnchor:trailingAnchor insets:{a2, a3, a4, a5}];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hk_alignHorizontalConstraintsWithView:()HKAdditions insets:
 {
   v12 = a7;
-  v13 = [v12 leadingAnchor];
-  v14 = [v12 trailingAnchor];
+  leadingAnchor = [v12 leadingAnchor];
+  trailingAnchor = [v12 trailingAnchor];
 
-  [a1 hk_alignConstraintsWithLeadingAnchor:v13 trailingAnchor:v14 insets:{a2, a3, a4, a5}];
+  [self hk_alignConstraintsWithLeadingAnchor:leadingAnchor trailingAnchor:trailingAnchor insets:{a2, a3, a4, a5}];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hk_alignVerticalConstraintsWithView:()HKAdditions insets:
 {
   v12 = a7;
-  v13 = [v12 topAnchor];
-  v14 = [v12 bottomAnchor];
+  topAnchor = [v12 topAnchor];
+  bottomAnchor = [v12 bottomAnchor];
 
-  [a1 hk_alignConstraintsWithTopAnchor:v13 bottomAnchor:v14 insets:{a2, a3, a4, a5}];
+  [self hk_alignConstraintsWithTopAnchor:topAnchor bottomAnchor:bottomAnchor insets:{a2, a3, a4, a5}];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hk_alignHorizontalConstraintsWithGuide:()HKAdditions insets:
 {
   v12 = a7;
-  v13 = [v12 leadingAnchor];
-  v14 = [v12 trailingAnchor];
+  leadingAnchor = [v12 leadingAnchor];
+  trailingAnchor = [v12 trailingAnchor];
 
-  [a1 hk_alignConstraintsWithLeadingAnchor:v13 trailingAnchor:v14 insets:{a2, a3, a4, a5}];
+  [self hk_alignConstraintsWithLeadingAnchor:leadingAnchor trailingAnchor:trailingAnchor insets:{a2, a3, a4, a5}];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (uint64_t)hk_alignVerticalConstraintsWithGuide:()HKAdditions insets:
 {
   v12 = a7;
-  v13 = [v12 topAnchor];
-  v14 = [v12 bottomAnchor];
+  topAnchor = [v12 topAnchor];
+  bottomAnchor = [v12 bottomAnchor];
 
-  [a1 hk_alignConstraintsWithTopAnchor:v13 bottomAnchor:v14 insets:{a2, a3, a4, a5}];
+  [self hk_alignConstraintsWithTopAnchor:topAnchor bottomAnchor:bottomAnchor insets:{a2, a3, a4, a5}];
 
-  return [a1 setTranslatesAutoresizingMaskIntoConstraints:0];
+  return [self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)hk_constraintAspectRatioFromSize:()HKAdditions
 {
-  v4 = [MEMORY[0x1E696ACD8] constraintWithItem:a1 attribute:8 relatedBy:0 toItem:a1 attribute:7 multiplier:a3 / a2 constant:0.0];
-  [a1 addConstraint:v4];
+  v4 = [MEMORY[0x1E696ACD8] constraintWithItem:self attribute:8 relatedBy:0 toItem:self attribute:7 multiplier:a3 / a2 constant:0.0];
+  [self addConstraint:v4];
 }
 
 - (void)hk_maskCorners:()HKAdditions radius:
 {
-  v7 = [a1 layer];
-  [v7 setCornerRadius:a2];
+  layer = [self layer];
+  [layer setCornerRadius:a2];
 
-  v8 = [a1 layer];
-  [v8 setMaskedCorners:a4 & 0xF];
+  layer2 = [self layer];
+  [layer2 setMaskedCorners:a4 & 0xF];
 
-  v9 = [a1 layer];
-  [v9 setMasksToBounds:1];
+  layer3 = [self layer];
+  [layer3 setMasksToBounds:1];
 }
 
 - (double)hk_layoutHeightFittingWidth:()HKAdditions
 {
   LODWORD(a4) = 1148846080;
   LODWORD(a5) = 1112014848;
-  [a1 systemLayoutSizeFittingSize:a2 withHorizontalFittingPriority:0.0 verticalFittingPriority:{a4, a5}];
+  [self systemLayoutSizeFittingSize:a2 withHorizontalFittingPriority:0.0 verticalFittingPriority:{a4, a5}];
   return v5;
 }
 
 - (double)hk_safeAreaAdjustedEdgeInsets:()HKAdditions
 {
-  [a1 safeAreaInsets];
-  v4 = [a1 traitCollection];
-  [v4 layoutDirection];
+  [self safeAreaInsets];
+  traitCollection = [self traitCollection];
+  [traitCollection layoutDirection];
 
-  [a1 safeAreaInsets];
+  [self safeAreaInsets];
   v6 = a2 + v5;
-  [a1 safeAreaInsets];
+  [self safeAreaInsets];
   return v6;
 }
 

@@ -1,6 +1,6 @@
 @interface MPSCNNSpatialNormalizationGradientNode
 + (MPSCNNSpatialNormalizationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelSize:(NSUInteger)kernelSize;
-- (MPSCNNSpatialNormalizationGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4;
+- (MPSCNNSpatialNormalizationGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter;
 - (MPSCNNSpatialNormalizationGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelSize:(NSUInteger)kernelSize;
 @end
 
@@ -8,7 +8,7 @@
 
 + (MPSCNNSpatialNormalizationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelSize:(NSUInteger)kernelSize
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v14 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_kernelSize_(v10, v11, sourceGradient, sourceImage, gradientState, kernelSize, v12, v13);
 
   return v14;
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (MPSCNNSpatialNormalizationGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4
+- (MPSCNNSpatialNormalizationGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter
 {
   objc_opt_class();
   objc_opt_isKindOfClass();
@@ -42,14 +42,14 @@
   {
     v9.receiver = self;
     v9.super_class = MPSCNNSpatialNormalizationGradientNode;
-    result = [(MPSNNGradientFilterNode *)&v9 initWithGradientImages:a3 forwardFilter:a4];
+    result = [(MPSNNGradientFilterNode *)&v9 initWithGradientImages:images forwardFilter:filter];
     if (result)
     {
-      result->_alpha = *(a4 + 14);
-      result->_beta = *(a4 + 15);
-      result->_delta = *(a4 + 16);
-      result->_kernelWidth = *(a4 + 9);
-      result->_kernelHeight = *(a4 + 10);
+      result->_alpha = *(filter + 14);
+      result->_beta = *(filter + 15);
+      result->_delta = *(filter + 16);
+      result->_kernelWidth = *(filter + 9);
+      result->_kernelHeight = *(filter + 10);
     }
   }
 

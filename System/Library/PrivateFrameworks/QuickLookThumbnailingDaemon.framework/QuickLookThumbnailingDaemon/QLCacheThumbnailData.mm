@@ -1,10 +1,10 @@
 @interface QLCacheThumbnailData
-- (BOOL)setState:(unint64_t)a3 changedState:(BOOL *)a4;
+- (BOOL)setState:(unint64_t)state changedState:(BOOL *)changedState;
 - (CGRect)contentRect;
-- (QLCacheThumbnailData)initWithCacheId:(unint64_t)a3 fileIdentifier:(id)a4 version:(id)a5 size:(float)a6 iconMode:(BOOL)a7 iconVariant:(int64_t)a8 interpolationQuality:(int)a9 hitCount:(unint64_t)a10 lastHitDate:(id)a11 bitmapFormat:(id)a12 bitmapData:(id)a13 metadata:(id)a14 flavor:(int)a15 contentRect:(CGRect)a16 badgeType:(unint64_t)a17 externalGeneratorDataHash:(unint64_t)a18;
-- (QLCacheThumbnailData)initWithCacheId:(unint64_t)a3 thumbnailRequest:(id)a4 size:(float)a5 badgeType:(unint64_t)a6;
-- (QLCacheThumbnailData)initWithCacheId:(unint64_t)a3 thumbnailRequest:(id)a4 size:(float)a5 bitmapFormat:(id)a6 bitmapData:(id)a7 metadata:(id)a8 flavor:(int)a9 contentRect:(CGRect)a10 badgeType:(unint64_t)a11;
-- (QLCacheThumbnailData)initWithUnsavedDataForThumbnailRequest:(id)a3 size:(float)a4 bitmapFormat:(id)a5 bitmapData:(id)a6 reservationInfo:(id)a7 metadata:(id)a8 reservationInfo:(id)a9 flavor:(int)a10 contentRect:(CGRect)a11 badgeType:(unint64_t)a12;
+- (QLCacheThumbnailData)initWithCacheId:(unint64_t)id fileIdentifier:(id)identifier version:(id)version size:(float)size iconMode:(BOOL)mode iconVariant:(int64_t)variant interpolationQuality:(int)quality hitCount:(unint64_t)self0 lastHitDate:(id)self1 bitmapFormat:(id)self2 bitmapData:(id)self3 metadata:(id)self4 flavor:(int)self5 contentRect:(CGRect)self6 badgeType:(unint64_t)self7 externalGeneratorDataHash:(unint64_t)self8;
+- (QLCacheThumbnailData)initWithCacheId:(unint64_t)id thumbnailRequest:(id)request size:(float)size badgeType:(unint64_t)type;
+- (QLCacheThumbnailData)initWithCacheId:(unint64_t)id thumbnailRequest:(id)request size:(float)size bitmapFormat:(id)format bitmapData:(id)data metadata:(id)metadata flavor:(int)flavor contentRect:(CGRect)self0 badgeType:(unint64_t)self1;
+- (QLCacheThumbnailData)initWithUnsavedDataForThumbnailRequest:(id)request size:(float)size bitmapFormat:(id)format bitmapData:(id)data reservationInfo:(id)info metadata:(id)metadata reservationInfo:(id)reservationInfo flavor:(int)self0 contentRect:(CGRect)self1 badgeType:(unint64_t)self2;
 - (void)dealloc;
 @end
 
@@ -30,110 +30,110 @@
   [(QLCacheThumbnailData *)&v2 dealloc];
 }
 
-- (QLCacheThumbnailData)initWithCacheId:(unint64_t)a3 fileIdentifier:(id)a4 version:(id)a5 size:(float)a6 iconMode:(BOOL)a7 iconVariant:(int64_t)a8 interpolationQuality:(int)a9 hitCount:(unint64_t)a10 lastHitDate:(id)a11 bitmapFormat:(id)a12 bitmapData:(id)a13 metadata:(id)a14 flavor:(int)a15 contentRect:(CGRect)a16 badgeType:(unint64_t)a17 externalGeneratorDataHash:(unint64_t)a18
+- (QLCacheThumbnailData)initWithCacheId:(unint64_t)id fileIdentifier:(id)identifier version:(id)version size:(float)size iconMode:(BOOL)mode iconVariant:(int64_t)variant interpolationQuality:(int)quality hitCount:(unint64_t)self0 lastHitDate:(id)self1 bitmapFormat:(id)self2 bitmapData:(id)self3 metadata:(id)self4 flavor:(int)self5 contentRect:(CGRect)self6 badgeType:(unint64_t)self7 externalGeneratorDataHash:(unint64_t)self8
 {
-  height = a16.size.height;
-  width = a16.size.width;
-  y = a16.origin.y;
-  x = a16.origin.x;
-  v26 = a4;
-  v27 = a5;
-  v28 = a11;
-  v39 = a12;
-  v38 = a13;
-  v29 = a14;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  identifierCopy = identifier;
+  versionCopy = version;
+  dateCopy = date;
+  formatCopy = format;
+  dataCopy = data;
+  metadataCopy = metadata;
   v41.receiver = self;
   v41.super_class = QLCacheThumbnailData;
   v30 = [(QLCacheThumbnailData *)&v41 init];
   v31 = v30;
   if (v30)
   {
-    v30->_cacheId = a3;
-    objc_storeStrong(&v30->_fileIdentifier, a4);
-    objc_storeStrong(&v31->_version, a5);
-    v31->_size = a6;
-    v31->_iconMode = a7;
-    v31->_interpolationQuality = a9;
-    v31->_iconVariant = a8;
-    v31->_badgeType = a17;
-    v31->_hitCount = a10;
-    objc_storeStrong(&v31->_lastHitDate, a11);
-    objc_storeStrong(&v31->_bitmapFormat, a12);
-    objc_storeStrong(&v31->_bitmapData, a13);
-    objc_storeStrong(&v31->_metadata, a14);
-    v31->_flavor = a15;
+    v30->_cacheId = id;
+    objc_storeStrong(&v30->_fileIdentifier, identifier);
+    objc_storeStrong(&v31->_version, version);
+    v31->_size = size;
+    v31->_iconMode = mode;
+    v31->_interpolationQuality = quality;
+    v31->_iconVariant = variant;
+    v31->_badgeType = type;
+    v31->_hitCount = count;
+    objc_storeStrong(&v31->_lastHitDate, date);
+    objc_storeStrong(&v31->_bitmapFormat, format);
+    objc_storeStrong(&v31->_bitmapData, data);
+    objc_storeStrong(&v31->_metadata, metadata);
+    v31->_flavor = flavor;
     v31->_contentRect.origin.x = x;
     v31->_contentRect.origin.y = y;
     v31->_contentRect.size.width = width;
     v31->_contentRect.size.height = height;
-    v31->_externalGeneratorDataHash = a18;
+    v31->_externalGeneratorDataHash = hash;
     v32 = dispatch_queue_create("quicklookd.thumbnail", 0);
     queue = v31->_queue;
     v31->_queue = v32;
 
-    v31->_state = a3 != 0;
+    v31->_state = id != 0;
   }
 
   return v31;
 }
 
-- (QLCacheThumbnailData)initWithCacheId:(unint64_t)a3 thumbnailRequest:(id)a4 size:(float)a5 bitmapFormat:(id)a6 bitmapData:(id)a7 metadata:(id)a8 flavor:(int)a9 contentRect:(CGRect)a10 badgeType:(unint64_t)a11
+- (QLCacheThumbnailData)initWithCacheId:(unint64_t)id thumbnailRequest:(id)request size:(float)size bitmapFormat:(id)format bitmapData:(id)data metadata:(id)metadata flavor:(int)flavor contentRect:(CGRect)self0 badgeType:(unint64_t)self1
 {
-  height = a10.size.height;
-  width = a10.size.width;
-  y = a10.origin.y;
-  x = a10.origin.x;
-  v33 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a4;
-  v37 = [v21 fileIdentifier];
-  v22 = [v37 fileIdentifier];
-  v23 = [v21 fileIdentifier];
-  v24 = [v23 version];
-  v25 = [v21 iconMode];
-  v26 = [v21 iconVariant];
-  v27 = [v21 interpolationQuality];
-  v28 = [v21 externalThumbnailGeneratorDataHash];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  metadataCopy = metadata;
+  dataCopy = data;
+  formatCopy = format;
+  requestCopy = request;
+  fileIdentifier = [requestCopy fileIdentifier];
+  v37FileIdentifier = [fileIdentifier fileIdentifier];
+  fileIdentifier2 = [requestCopy fileIdentifier];
+  version = [fileIdentifier2 version];
+  iconMode = [requestCopy iconMode];
+  iconVariant = [requestCopy iconVariant];
+  interpolationQuality = [requestCopy interpolationQuality];
+  externalThumbnailGeneratorDataHash = [requestCopy externalThumbnailGeneratorDataHash];
 
-  LODWORD(v32) = a9;
-  *&v29 = a5;
-  v30 = [(QLCacheThumbnailData *)self initWithCacheId:a3 fileIdentifier:v22 version:v24 size:v25 iconMode:v26 iconVariant:v27 interpolationQuality:v29 hitCount:x lastHitDate:y bitmapFormat:width bitmapData:height metadata:0 flavor:0 contentRect:v20 badgeType:v19 externalGeneratorDataHash:v33, v32, a11, v28];
+  LODWORD(v32) = flavor;
+  *&v29 = size;
+  v30 = [(QLCacheThumbnailData *)self initWithCacheId:id fileIdentifier:v37FileIdentifier version:version size:iconMode iconMode:iconVariant iconVariant:interpolationQuality interpolationQuality:v29 hitCount:x lastHitDate:y bitmapFormat:width bitmapData:height metadata:0 flavor:0 contentRect:formatCopy badgeType:dataCopy externalGeneratorDataHash:metadataCopy, v32, type, externalThumbnailGeneratorDataHash];
 
   return v30;
 }
 
-- (QLCacheThumbnailData)initWithCacheId:(unint64_t)a3 thumbnailRequest:(id)a4 size:(float)a5 badgeType:(unint64_t)a6
+- (QLCacheThumbnailData)initWithCacheId:(unint64_t)id thumbnailRequest:(id)request size:(float)size badgeType:(unint64_t)type
 {
-  v10 = a4;
+  requestCopy = request;
   v11 = objc_opt_new();
-  *&v12 = a5;
-  v13 = [(QLCacheThumbnailData *)self initWithCacheId:a3 thumbnailRequest:v10 size:v11 bitmapFormat:0 bitmapData:0 metadata:0 flavor:v12 contentRect:*MEMORY[0x277CBF3A0] badgeType:*(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), a6];
+  *&v12 = size;
+  type = [(QLCacheThumbnailData *)self initWithCacheId:id thumbnailRequest:requestCopy size:v11 bitmapFormat:0 bitmapData:0 metadata:0 flavor:v12 contentRect:*MEMORY[0x277CBF3A0] badgeType:*(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), type];
 
-  return v13;
+  return type;
 }
 
-- (QLCacheThumbnailData)initWithUnsavedDataForThumbnailRequest:(id)a3 size:(float)a4 bitmapFormat:(id)a5 bitmapData:(id)a6 reservationInfo:(id)a7 metadata:(id)a8 reservationInfo:(id)a9 flavor:(int)a10 contentRect:(CGRect)a11 badgeType:(unint64_t)a12
+- (QLCacheThumbnailData)initWithUnsavedDataForThumbnailRequest:(id)request size:(float)size bitmapFormat:(id)format bitmapData:(id)data reservationInfo:(id)info metadata:(id)metadata reservationInfo:(id)reservationInfo flavor:(int)self0 contentRect:(CGRect)self1 badgeType:(unint64_t)self2
 {
-  height = a11.size.height;
-  width = a11.size.width;
-  y = a11.origin.y;
-  x = a11.origin.x;
-  v29 = a7;
-  v24 = a9;
-  *&v25 = a4;
-  v26 = [(QLCacheThumbnailData *)self initWithCacheId:0 thumbnailRequest:a3 size:a5 bitmapFormat:a6 bitmapData:a8 metadata:a10 flavor:v25 contentRect:x badgeType:y, width, height, a12];
-  v27 = v26;
-  if (v26)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  infoCopy = info;
+  reservationInfoCopy = reservationInfo;
+  *&v25 = size;
+  type = [(QLCacheThumbnailData *)self initWithCacheId:0 thumbnailRequest:request size:format bitmapFormat:data bitmapData:metadata metadata:flavor flavor:v25 contentRect:x badgeType:y, width, height, type];
+  v27 = type;
+  if (type)
   {
-    objc_storeStrong(&v26->_bitmapDataToValidate, a7);
-    objc_storeStrong(&v27->_metadataToValidate, a9);
+    objc_storeStrong(&type->_bitmapDataToValidate, info);
+    objc_storeStrong(&v27->_metadataToValidate, reservationInfo);
   }
 
   return v27;
 }
 
-- (BOOL)setState:(unint64_t)a3 changedState:(BOOL *)a4
+- (BOOL)setState:(unint64_t)state changedState:(BOOL *)changedState
 {
   v8 = 0;
   v9 = &v8;
@@ -144,8 +144,8 @@
   v7[1] = 3221225472;
   v7[2] = __46__QLCacheThumbnailData_setState_changedState___block_invoke;
   v7[3] = &unk_279ADD488;
-  v7[6] = a4;
-  v7[7] = a3;
+  v7[6] = changedState;
+  v7[7] = state;
   v7[4] = self;
   v7[5] = &v8;
   dispatch_sync(queue, v7);

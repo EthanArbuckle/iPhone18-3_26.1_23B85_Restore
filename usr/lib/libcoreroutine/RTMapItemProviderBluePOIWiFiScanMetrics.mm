@@ -3,79 +3,79 @@
 + (id)binsForVisitDuration;
 + (id)binsForWiFiAPsCount;
 + (id)binsForWiFiInterval;
-+ (unint64_t)bucketForFingerprintsCount:(unint64_t)a3;
-+ (unint64_t)bucketForVisitInterval:(double)a3;
-+ (unint64_t)bucketForWiFiAPsCount:(unint64_t)a3;
-+ (unint64_t)bucketForWiFiInterval:(double)a3;
-+ (void)submitBluePOIWiFiScanMetricsWithFingerprintsCount:(unint64_t)a3 fingerprintsZeroAccessPointsCount:(unint64_t)a4 fingerprintsNonZeroAccessPointsCount:(unint64_t)a5 isFingerprintWindowFallback:(BOOL)a6 timeIntervalSinceEarliestFingerprint:(double)a7 timeIntervalSinceLatestFingerprint:(double)a8 totalAccessPointsCount:(unint64_t)a9 visitInterval:(double)a10 visitSource:(int64_t)a11;
-- (RTMapItemProviderBluePOIWiFiScanMetrics)initWithFingerprintsCount:(unint64_t)a3 fingerprintsZeroAccessPointsCount:(unint64_t)a4 fingerprintsNonZeroAccessPointsCount:(unint64_t)a5 isFingerprintWindowFallback:(BOOL)a6 timeIntervalSinceEarliestFingerprint:(double)a7 timeIntervalSinceLatestFingerprint:(double)a8 totalAccessPointsCount:(unint64_t)a9 visitInterval:(double)a10 visitSource:(int64_t)a11;
++ (unint64_t)bucketForFingerprintsCount:(unint64_t)count;
++ (unint64_t)bucketForVisitInterval:(double)interval;
++ (unint64_t)bucketForWiFiAPsCount:(unint64_t)count;
++ (unint64_t)bucketForWiFiInterval:(double)interval;
++ (void)submitBluePOIWiFiScanMetricsWithFingerprintsCount:(unint64_t)count fingerprintsZeroAccessPointsCount:(unint64_t)pointsCount fingerprintsNonZeroAccessPointsCount:(unint64_t)accessPointsCount isFingerprintWindowFallback:(BOOL)fallback timeIntervalSinceEarliestFingerprint:(double)fingerprint timeIntervalSinceLatestFingerprint:(double)latestFingerprint totalAccessPointsCount:(unint64_t)totalAccessPointsCount visitInterval:(double)self0 visitSource:(int64_t)self1;
+- (RTMapItemProviderBluePOIWiFiScanMetrics)initWithFingerprintsCount:(unint64_t)count fingerprintsZeroAccessPointsCount:(unint64_t)pointsCount fingerprintsNonZeroAccessPointsCount:(unint64_t)accessPointsCount isFingerprintWindowFallback:(BOOL)fallback timeIntervalSinceEarliestFingerprint:(double)fingerprint timeIntervalSinceLatestFingerprint:(double)latestFingerprint totalAccessPointsCount:(unint64_t)totalAccessPointsCount visitInterval:(double)self0 visitSource:(int64_t)self1;
 @end
 
 @implementation RTMapItemProviderBluePOIWiFiScanMetrics
 
-- (RTMapItemProviderBluePOIWiFiScanMetrics)initWithFingerprintsCount:(unint64_t)a3 fingerprintsZeroAccessPointsCount:(unint64_t)a4 fingerprintsNonZeroAccessPointsCount:(unint64_t)a5 isFingerprintWindowFallback:(BOOL)a6 timeIntervalSinceEarliestFingerprint:(double)a7 timeIntervalSinceLatestFingerprint:(double)a8 totalAccessPointsCount:(unint64_t)a9 visitInterval:(double)a10 visitSource:(int64_t)a11
+- (RTMapItemProviderBluePOIWiFiScanMetrics)initWithFingerprintsCount:(unint64_t)count fingerprintsZeroAccessPointsCount:(unint64_t)pointsCount fingerprintsNonZeroAccessPointsCount:(unint64_t)accessPointsCount isFingerprintWindowFallback:(BOOL)fallback timeIntervalSinceEarliestFingerprint:(double)fingerprint timeIntervalSinceLatestFingerprint:(double)latestFingerprint totalAccessPointsCount:(unint64_t)totalAccessPointsCount visitInterval:(double)self0 visitSource:(int64_t)self1
 {
-  v13 = a6;
+  fallbackCopy = fallback;
   v47.receiver = self;
   v47.super_class = RTMapItemProviderBluePOIWiFiScanMetrics;
   v20 = [(RTMetric *)&v47 init];
   if (v20)
   {
-    v46 = a11;
+    sourceCopy = source;
     v45 = +[RTMapItemProviderBluePOIWiFiScanMetrics binsForWiFiAPsCount];
     v21 = +[RTMapItemProviderBluePOIWiFiScanMetrics binsForFingerprintsCount];
-    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
     v23 = [RTMetric binForNumber:v22 bins:v21];
-    v24 = [(RTMetric *)v20 metrics];
-    [v24 setObject:v23 forKeyedSubscript:@"fingerprintsCount"];
+    metrics = [(RTMetric *)v20 metrics];
+    [metrics setObject:v23 forKeyedSubscript:@"fingerprintsCount"];
 
-    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:pointsCount];
     v26 = [RTMetric binForNumber:v25 bins:v21];
-    v27 = [(RTMetric *)v20 metrics];
-    [v27 setObject:v26 forKeyedSubscript:@"fingerprintsWithZeroAPsCount"];
+    metrics2 = [(RTMetric *)v20 metrics];
+    [metrics2 setObject:v26 forKeyedSubscript:@"fingerprintsWithZeroAPsCount"];
 
-    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:accessPointsCount];
     v29 = [RTMetric binForNumber:v28 bins:v21];
-    v30 = [(RTMetric *)v20 metrics];
-    [v30 setObject:v29 forKeyedSubscript:@"fingerprintsWithNonZeroAPsCount"];
+    metrics3 = [(RTMetric *)v20 metrics];
+    [metrics3 setObject:v29 forKeyedSubscript:@"fingerprintsWithNonZeroAPsCount"];
 
-    v31 = [MEMORY[0x277CCABB0] numberWithBool:v13];
-    v32 = [(RTMetric *)v20 metrics];
-    [v32 setObject:v31 forKeyedSubscript:@"isFingerprintWindowFallback"];
+    v31 = [MEMORY[0x277CCABB0] numberWithBool:fallbackCopy];
+    metrics4 = [(RTMetric *)v20 metrics];
+    [metrics4 setObject:v31 forKeyedSubscript:@"isFingerprintWindowFallback"];
 
-    v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "bucketForWiFiInterval:", a7)}];
-    v34 = [(RTMetric *)v20 metrics];
-    [v34 setObject:v33 forKeyedSubscript:@"timeIntervalEarliesttWiFiScan"];
+    v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "bucketForWiFiInterval:", fingerprint)}];
+    metrics5 = [(RTMetric *)v20 metrics];
+    [metrics5 setObject:v33 forKeyedSubscript:@"timeIntervalEarliesttWiFiScan"];
 
-    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "bucketForWiFiInterval:", a8)}];
-    v36 = [(RTMetric *)v20 metrics];
-    [v36 setObject:v35 forKeyedSubscript:@"timeIntervalLatestWiFiScan"];
+    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "bucketForWiFiInterval:", latestFingerprint)}];
+    metrics6 = [(RTMetric *)v20 metrics];
+    [metrics6 setObject:v35 forKeyedSubscript:@"timeIntervalLatestWiFiScan"];
 
-    v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a9];
+    v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:totalAccessPointsCount];
     v38 = [RTMetric binForNumber:v37 bins:v45];
-    v39 = [(RTMetric *)v20 metrics];
-    [v39 setObject:v38 forKeyedSubscript:@"totalAccessPointsCount"];
+    metrics7 = [(RTMetric *)v20 metrics];
+    [metrics7 setObject:v38 forKeyedSubscript:@"totalAccessPointsCount"];
 
-    v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "bucketForVisitInterval:", a10)}];
-    v41 = [(RTMetric *)v20 metrics];
-    [v41 setObject:v40 forKeyedSubscript:@"visitDuration"];
+    v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "bucketForVisitInterval:", interval)}];
+    metrics8 = [(RTMetric *)v20 metrics];
+    [metrics8 setObject:v40 forKeyedSubscript:@"visitDuration"];
 
-    v42 = [MEMORY[0x277CCABB0] numberWithInteger:v46];
-    v43 = [(RTMetric *)v20 metrics];
-    [v43 setObject:v42 forKeyedSubscript:@"visitSource"];
+    v42 = [MEMORY[0x277CCABB0] numberWithInteger:sourceCopy];
+    metrics9 = [(RTMetric *)v20 metrics];
+    [metrics9 setObject:v42 forKeyedSubscript:@"visitSource"];
   }
 
   return v20;
 }
 
-+ (unint64_t)bucketForVisitInterval:(double)a3
++ (unint64_t)bucketForVisitInterval:(double)interval
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v5 = [a1 binsForVisitDuration];
-  v6 = [a1 binForNumber:v4 bins:v5];
-  v7 = [v6 unsignedIntegerValue];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:interval];
+  binsForVisitDuration = [self binsForVisitDuration];
+  v6 = [self binForNumber:v4 bins:binsForVisitDuration];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 + (id)binsForVisitDuration
@@ -163,14 +163,14 @@
   return v2;
 }
 
-+ (unint64_t)bucketForWiFiInterval:(double)a3
++ (unint64_t)bucketForWiFiInterval:(double)interval
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v5 = [a1 binsForWiFiInterval];
-  v6 = [a1 binForNumber:v4 bins:v5];
-  v7 = [v6 unsignedIntegerValue];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:interval];
+  binsForWiFiInterval = [self binsForWiFiInterval];
+  v6 = [self binForNumber:v4 bins:binsForWiFiInterval];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 + (id)binsForWiFiInterval
@@ -206,29 +206,29 @@
   return v2;
 }
 
-+ (unint64_t)bucketForWiFiAPsCount:(unint64_t)a3
++ (unint64_t)bucketForWiFiAPsCount:(unint64_t)count
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v5 = [a1 binsForWiFiAPsCount];
-  v6 = [a1 binForNumber:v4 bins:v5];
-  v7 = [v6 unsignedIntegerValue];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
+  binsForWiFiAPsCount = [self binsForWiFiAPsCount];
+  v6 = [self binForNumber:v4 bins:binsForWiFiAPsCount];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)bucketForFingerprintsCount:(unint64_t)a3
++ (unint64_t)bucketForFingerprintsCount:(unint64_t)count
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v5 = [a1 binsForFingerprintsCount];
-  v6 = [a1 binForNumber:v4 bins:v5];
-  v7 = [v6 unsignedIntegerValue];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
+  binsForFingerprintsCount = [self binsForFingerprintsCount];
+  v6 = [self binForNumber:v4 bins:binsForFingerprintsCount];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-+ (void)submitBluePOIWiFiScanMetricsWithFingerprintsCount:(unint64_t)a3 fingerprintsZeroAccessPointsCount:(unint64_t)a4 fingerprintsNonZeroAccessPointsCount:(unint64_t)a5 isFingerprintWindowFallback:(BOOL)a6 timeIntervalSinceEarliestFingerprint:(double)a7 timeIntervalSinceLatestFingerprint:(double)a8 totalAccessPointsCount:(unint64_t)a9 visitInterval:(double)a10 visitSource:(int64_t)a11
++ (void)submitBluePOIWiFiScanMetricsWithFingerprintsCount:(unint64_t)count fingerprintsZeroAccessPointsCount:(unint64_t)pointsCount fingerprintsNonZeroAccessPointsCount:(unint64_t)accessPointsCount isFingerprintWindowFallback:(BOOL)fallback timeIntervalSinceEarliestFingerprint:(double)fingerprint timeIntervalSinceLatestFingerprint:(double)latestFingerprint totalAccessPointsCount:(unint64_t)totalAccessPointsCount visitInterval:(double)self0 visitSource:(int64_t)self1
 {
-  v11 = [[RTMapItemProviderBluePOIWiFiScanMetrics alloc] initWithFingerprintsCount:a3 fingerprintsZeroAccessPointsCount:a4 fingerprintsNonZeroAccessPointsCount:a5 isFingerprintWindowFallback:a6 timeIntervalSinceEarliestFingerprint:a9 timeIntervalSinceLatestFingerprint:a11 totalAccessPointsCount:a7 visitInterval:a8 visitSource:a10];
+  v11 = [[RTMapItemProviderBluePOIWiFiScanMetrics alloc] initWithFingerprintsCount:count fingerprintsZeroAccessPointsCount:pointsCount fingerprintsNonZeroAccessPointsCount:accessPointsCount isFingerprintWindowFallback:fallback timeIntervalSinceEarliestFingerprint:totalAccessPointsCount timeIntervalSinceLatestFingerprint:source totalAccessPointsCount:fingerprint visitInterval:latestFingerprint visitSource:interval];
   v12 = v11;
   if (v11)
   {

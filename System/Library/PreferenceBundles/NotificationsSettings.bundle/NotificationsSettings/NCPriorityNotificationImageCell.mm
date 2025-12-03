@@ -1,7 +1,7 @@
 @interface NCPriorityNotificationImageCell
 + (id)getMicaFileURL;
-- (CGSize)imgSizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)imgSizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)_layoutSubviews;
 - (void)_setupIfNecessary;
 - (void)layoutSubviews;
@@ -12,12 +12,12 @@
 + (id)getMicaFileURL
 {
   v2 = +[UIScreen mainScreen];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [v2 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     v7 = @"PriorityNotifications~iPad";
   }
@@ -43,15 +43,15 @@
   [(NCPriorityNotificationImageCell *)self setBackgroundColor:v3];
 }
 
-- (CGSize)imgSizeThatFits:(CGSize)a3
+- (CGSize)imgSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
+  height = fits.height;
   v5 = +[UIScreen mainScreen];
-  v6 = [v5 traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  traitCollection = [v5 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   [(NCPriorityNotificationImageCell *)self bounds];
-  v9 = v7 == &dword_0 + 1 || v7 == &dword_4 + 2;
+  v9 = userInterfaceIdiom == &dword_0 + 1 || userInterfaceIdiom == &dword_4 + 2;
   v10 = 0.25;
   if (v9)
   {
@@ -67,10 +67,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(NCPriorityNotificationImageCell *)self _setupIfNecessary];
   [(NCPriorityNotificationImageCell *)self imgSizeThatFits:width, height];
   v7 = v6;
@@ -103,13 +103,13 @@
 
     [(UILabel *)self->_captionLabel setNumberOfLines:0];
     v9 = +[UIScreen mainScreen];
-    v10 = [v9 traitCollection];
-    v11 = [v10 userInterfaceIdiom];
+    traitCollection = [v9 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
     v12 = self->_captionLabel;
     v13 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
     v14 = v13;
-    if (v11 == &dword_4 + 2)
+    if (userInterfaceIdiom == &dword_4 + 2)
     {
       v15 = @"PRIORITIZATION_EXPLANATION_VISION";
     }

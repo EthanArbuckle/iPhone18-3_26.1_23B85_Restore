@@ -1,27 +1,27 @@
 @interface FPFetchDefaultContainerOperation
-- (id)initForApplicationRecord:(id)a3 providerDomain:(id)a4;
+- (id)initForApplicationRecord:(id)record providerDomain:(id)domain;
 - (void)actionMain;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 @end
 
 @implementation FPFetchDefaultContainerOperation
 
-- (id)initForApplicationRecord:(id)a3 providerDomain:(id)a4
+- (id)initForApplicationRecord:(id)record providerDomain:(id)domain
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 identifier];
+  recordCopy = record;
+  domainCopy = domain;
+  identifier = [domainCopy identifier];
   v15.receiver = self;
   v15.super_class = FPFetchDefaultContainerOperation;
-  v10 = [(FPActionOperation *)&v15 initWithProvider:v9 action:0];
+  v10 = [(FPActionOperation *)&v15 initWithProvider:identifier action:0];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_requestedRecord, a3);
-    v11 = [v8 identifier];
-    v12 = [v11 fp_toDomainIdentifier];
+    objc_storeStrong(&v10->_requestedRecord, record);
+    identifier2 = [domainCopy identifier];
+    fp_toDomainIdentifier = [identifier2 fp_toDomainIdentifier];
     domainIdentifier = v10->_domainIdentifier;
-    v10->_domainIdentifier = v12;
+    v10->_domainIdentifier = fp_toDomainIdentifier;
 
     [(FPActionOperation *)v10 setSetupRemoteOperationService:1];
   }
@@ -53,21 +53,21 @@ void __46__FPFetchDefaultContainerOperation_actionMain__block_invoke(uint64_t a1
   [*(a1 + 32) completedWithResult:v5 error:v6];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FPFetchDefaultContainerOperation *)self fetchCompletionBlock];
-  v9 = v8;
-  if (v8)
+  resultCopy = result;
+  errorCopy = error;
+  fetchCompletionBlock = [(FPFetchDefaultContainerOperation *)self fetchCompletionBlock];
+  v9 = fetchCompletionBlock;
+  if (fetchCompletionBlock)
   {
-    (*(v8 + 16))(v8, v6, v7);
+    (*(fetchCompletionBlock + 16))(fetchCompletionBlock, resultCopy, errorCopy);
     [(FPFetchDefaultContainerOperation *)self setFetchCompletionBlock:0];
   }
 
   v10.receiver = self;
   v10.super_class = FPFetchDefaultContainerOperation;
-  [(FPActionOperation *)&v10 finishWithResult:v6 error:v7];
+  [(FPActionOperation *)&v10 finishWithResult:resultCopy error:errorCopy];
 }
 
 void __46__FPFetchDefaultContainerOperation_actionMain__block_invoke_cold_1(void *a1)

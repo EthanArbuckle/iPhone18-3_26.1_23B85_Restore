@@ -1,17 +1,17 @@
 @interface PUFilmstripTileTransitionCoordinator
-- (id)finalLayoutInfoForDisappearingTileController:(id)a3 fromLayoutInfo:(id)a4;
-- (id)optionsForAnimatingTileController:(id)a3 toLayoutInfo:(id)a4 withAnimationType:(int64_t)a5;
+- (id)finalLayoutInfoForDisappearingTileController:(id)controller fromLayoutInfo:(id)info;
+- (id)optionsForAnimatingTileController:(id)controller toLayoutInfo:(id)info withAnimationType:(int64_t)type;
 @end
 
 @implementation PUFilmstripTileTransitionCoordinator
 
-- (id)optionsForAnimatingTileController:(id)a3 toLayoutInfo:(id)a4 withAnimationType:(int64_t)a5
+- (id)optionsForAnimatingTileController:(id)controller toLayoutInfo:(id)info withAnimationType:(int64_t)type
 {
-  v6 = [a4 tileKind];
-  v7 = [v6 isEqualToString:@"PUTileKindItemContentFilmStripIndicator"];
+  tileKind = [info tileKind];
+  v7 = [tileKind isEqualToString:@"PUTileKindItemContentFilmStripIndicator"];
 
   v8 = 0;
-  if (a5 == 3 && v7)
+  if (type == 3 && v7)
   {
     v8 = objc_alloc_init(PUTileAnimationOptions);
     [(PUTileAnimationOptions *)v8 setDuration:0.5];
@@ -20,16 +20,16 @@
   return v8;
 }
 
-- (id)finalLayoutInfoForDisappearingTileController:(id)a3 fromLayoutInfo:(id)a4
+- (id)finalLayoutInfoForDisappearingTileController:(id)controller fromLayoutInfo:(id)info
 {
-  v4 = a4;
-  v5 = [v4 tileKind];
-  v6 = [v5 isEqualToString:@"PUTileKindItemContentFilmStripIndicator"];
+  infoCopy = info;
+  tileKind = [infoCopy tileKind];
+  v6 = [tileKind isEqualToString:@"PUTileKindItemContentFilmStripIndicator"];
 
-  v7 = v4;
+  v7 = infoCopy;
   if (v6)
   {
-    v8 = [v4 layoutInfoWithAlpha:0.0];
+    v8 = [infoCopy layoutInfoWithAlpha:0.0];
     v7 = [v8 layoutInfoWithZPosition:10.0];
   }
 

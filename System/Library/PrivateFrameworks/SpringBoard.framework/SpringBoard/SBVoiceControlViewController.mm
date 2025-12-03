@@ -1,71 +1,71 @@
 @interface SBVoiceControlViewController
 - (BOOL)_hasPickableBluetoothDevice;
-- (BOOL)recognitionSessionWillBeginAction:(id)a3;
+- (BOOL)recognitionSessionWillBeginAction:(id)action;
 - (CGRect)_flamesViewFrame;
-- (SBVoiceControlViewController)initWithSource:(id)a3;
+- (SBVoiceControlViewController)initWithSource:(id)source;
 - (SBVoiceControlViewControllerDelegate)voiceControlDelegate;
-- (float)audioLevelForFlamesView:(id)a3;
+- (float)audioLevelForFlamesView:(id)view;
 - (id)_availableRouteDictionaries;
 - (id)_currentPreferredRouteDictionary;
-- (id)_localizedStringForKey:(id)a3;
+- (id)_localizedStringForKey:(id)key;
 - (id)_newRecognitionSession;
 - (id)_popNextRecognitionAudioInputPath;
-- (id)_preferredRouteDictionaryWithAvailableRouteDictionaries:(id)a3 preferredAVAudioRouteName:(id)a4 preferredAVAudioRouteUID:(id)a5 shouldPreferBluetooth:(BOOL)a6;
-- (id)nextSuggestionsForSuggestionsView:(id)a3 maxSuggestions:(unint64_t)a4;
-- (void)_avSystemControllerHeadphoneJackIsConnectedDidChangeNotification:(id)a3;
-- (void)_avSystemControllerPickableRoutesDidChangeNotification:(id)a3;
+- (id)_preferredRouteDictionaryWithAvailableRouteDictionaries:(id)dictionaries preferredAVAudioRouteName:(id)name preferredAVAudioRouteUID:(id)d shouldPreferBluetooth:(BOOL)bluetooth;
+- (id)nextSuggestionsForSuggestionsView:(id)view maxSuggestions:(unint64_t)suggestions;
+- (void)_avSystemControllerHeadphoneJackIsConnectedDidChangeNotification:(id)notification;
+- (void)_avSystemControllerPickableRoutesDidChangeNotification:(id)notification;
 - (void)_configureRoutingIfNeeded;
 - (void)_continueRecognitionAction;
 - (void)_continueWithRecognitionAction;
-- (void)_deviceProximityStateDidChangeNotification:(id)a3;
+- (void)_deviceProximityStateDidChangeNotification:(id)notification;
 - (void)_handleButtonUpCancel;
 - (void)_performConfirmationAction;
 - (void)_performNoMatchFound;
-- (void)_recognitionSessionKeywordsDidChangeNotification:(id)a3;
+- (void)_recognitionSessionKeywordsDidChangeNotification:(id)notification;
 - (void)_requestDismissal;
 - (void)_resetSession;
-- (void)_setAVAudioRouteUID:(id)a3;
-- (void)_setFeedbackVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setPrefersProximityDetectionEnabled:(BOOL)a3;
-- (void)_setSession:(id)a3;
-- (void)_setStatusText:(id)a3;
-- (void)_setTitleText:(id)a3;
+- (void)_setAVAudioRouteUID:(id)d;
+- (void)_setFeedbackVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)_setPrefersProximityDetectionEnabled:(BOOL)enabled;
+- (void)_setSession:(id)session;
+- (void)_setStatusText:(id)text;
+- (void)_setTitleText:(id)text;
 - (void)_speakFeedbackText;
-- (void)_speakText:(id)a3;
+- (void)_speakText:(id)text;
 - (void)_startSession;
 - (void)dealloc;
-- (void)handleHeadsetButtonUpFromButtonDownSource:(BOOL)a3;
-- (void)performDismissalTransitionAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (void)performPresentationTransitionAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (void)recognitionSession:(id)a3 didCompleteActionWithError:(id)a4;
-- (void)recognitionSession:(id)a3 didFinishSpeakingFeedbackStringWithError:(id)a4;
-- (void)recognitionSession:(id)a3 openURL:(id)a4 completion:(id)a5;
-- (void)recognitionSessionDidBeginAction:(id)a3;
-- (void)resetSessionWithSource:(id)a3;
+- (void)handleHeadsetButtonUpFromButtonDownSource:(BOOL)source;
+- (void)performDismissalTransitionAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)performPresentationTransitionAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)recognitionSession:(id)session didCompleteActionWithError:(id)error;
+- (void)recognitionSession:(id)session didFinishSpeakingFeedbackStringWithError:(id)error;
+- (void)recognitionSession:(id)session openURL:(id)l completion:(id)completion;
+- (void)recognitionSessionDidBeginAction:(id)action;
+- (void)resetSessionWithSource:(id)source;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBVoiceControlViewController
 
-- (SBVoiceControlViewController)initWithSource:(id)a3
+- (SBVoiceControlViewController)initWithSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v22.receiver = self;
   v22.super_class = SBVoiceControlViewController;
   v6 = [(SBVoiceControlViewController *)&v22 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_source, a3);
-    v8 = [(SBVoiceControlPresentationSource *)v7->_source sourceType];
-    if (v8)
+    objc_storeStrong(&v6->_source, source);
+    sourceType = [(SBVoiceControlPresentationSource *)v7->_source sourceType];
+    if (sourceType)
     {
-      if (v8 != 1)
+      if (sourceType != 1)
       {
-        if (v8 == 2)
+        if (sourceType == 2)
         {
           avAudioRouteName = v7->_avAudioRouteName;
           v7->_avAudioRouteName = @"Headphone";
@@ -76,18 +76,18 @@
         goto LABEL_13;
       }
 
-      v10 = [(SBVoiceControlPresentationSource *)v7->_source bluetoothDevice];
-      v11 = [v10 address];
-      [(SBVoiceControlViewController *)v7 _setAVAudioRouteUID:v11];
+      bluetoothDevice = [(SBVoiceControlPresentationSource *)v7->_source bluetoothDevice];
+      address = [bluetoothDevice address];
+      [(SBVoiceControlViewController *)v7 _setAVAudioRouteUID:address];
     }
 
     else
     {
-      v10 = [MEMORY[0x277D26E58] sharedAVSystemController];
-      v12 = [v10 attributeForKey:*MEMORY[0x277D26C08]];
-      v13 = [v12 BOOLValue];
+      bluetoothDevice = [MEMORY[0x277D26E58] sharedAVSystemController];
+      v12 = [bluetoothDevice attributeForKey:*MEMORY[0x277D26C08]];
+      bOOLValue = [v12 BOOLValue];
 
-      if (v13)
+      if (bOOLValue)
       {
         v14 = @"Headphone";
       }
@@ -95,11 +95,11 @@
       else
       {
         [(SBVoiceControlViewController *)v7 _setPrefersProximityDetectionEnabled:1];
-        v15 = [MEMORY[0x277D75418] currentDevice];
-        v16 = [v15 proximityState];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        proximityState = [currentDevice proximityState];
 
         v14 = @"Speaker";
-        if (v16)
+        if (proximityState)
         {
           v14 = @"Receiver";
         }
@@ -110,10 +110,10 @@
     }
 
 LABEL_13:
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v19 = *MEMORY[0x277D76880];
-    v20 = [MEMORY[0x277D75418] currentDevice];
-    [v18 addObserver:v7 selector:sel__deviceProximityStateDidChangeNotification_ name:v19 object:v20];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    [defaultCenter addObserver:v7 selector:sel__deviceProximityStateDidChangeNotification_ name:v19 object:currentDevice2];
   }
 
   return v7;
@@ -121,20 +121,20 @@ LABEL_13:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = v3;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v4 = defaultCenter;
   if (self->_session)
   {
-    [v3 removeObserver:self name:*MEMORY[0x277D79A38] object:?];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D79A38] object:?];
     [(VSRecognitionSession *)self->_session setDelegate:0];
-    v5 = [(VSRecognitionSession *)self->_session cancel];
+    cancel = [(VSRecognitionSession *)self->_session cancel];
   }
 
   [v4 removeObserver:self name:*MEMORY[0x277D26C68] object:0];
   [v4 removeObserver:self name:*MEMORY[0x277D26C10] object:0];
   v6 = *MEMORY[0x277D76880];
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  [v4 removeObserver:self name:v6 object:v7];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  [v4 removeObserver:self name:v6 object:currentDevice];
 
   [(NSTimer *)self->_delayedConfirmationActionTimer invalidate];
   [(SUICFlamesView *)self->_flamesView setDelegate:0];
@@ -150,22 +150,22 @@ LABEL_13:
   v34.receiver = self;
   v34.super_class = SBVoiceControlViewController;
   [(SBVoiceControlViewController *)&v34 viewDidLayoutSubviews];
-  v3 = [(SBVoiceControlViewController *)self view];
-  [v3 bounds];
+  view = [(SBVoiceControlViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   [(UIView *)self->_contentView setFrame:v5, v7, v9, v11];
-  v12 = [(SBVoiceControlViewController *)self traitCollection];
-  [v12 displayScale];
+  traitCollection = [(SBVoiceControlViewController *)self traitCollection];
+  [traitCollection displayScale];
   v14 = v13;
 
   if (v14 <= 0.00000011920929)
   {
-    v15 = [MEMORY[0x277D759A0] mainScreen];
-    [v15 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
   }
 
   [(UIView *)self->_contentView bounds];
@@ -174,31 +174,31 @@ LABEL_13:
   v21 = v20;
   v23 = v22;
   v24 = *MEMORY[0x277CBF3A0];
-  v25 = [(UILabel *)self->_titleLabel font];
+  font = [(UILabel *)self->_titleLabel font];
   v35.origin.x = v17;
   v35.origin.y = v19;
   v35.size.width = v21;
   v35.size.height = v23;
   CGRectGetMinY(v35);
   [(SBVoiceControlViewController *)self _titleBaseline];
-  [v25 descender];
-  [v25 lineHeight];
+  [font descender];
+  [font lineHeight];
   UIRoundToScale();
   v27 = v26;
-  [v25 lineHeight];
+  [font lineHeight];
   [(UILabel *)self->_titleLabel setFrame:v24, v27, v21, v28];
-  v29 = [(UILabel *)self->_subtitleLabel font];
+  font2 = [(UILabel *)self->_subtitleLabel font];
   v36.origin.x = v17;
   v36.origin.y = v19;
   v36.size.width = v21;
   v36.size.height = v23;
   CGRectGetMinY(v36);
   [(SBVoiceControlViewController *)self _subtitleBaseline];
-  [v29 descender];
-  [v29 lineHeight];
+  [font2 descender];
+  [font2 lineHeight];
   UIRoundToScale();
   v31 = v30;
-  [v29 lineHeight];
+  [font2 lineHeight];
   [(UILabel *)self->_subtitleLabel setFrame:v24, v31, v21, v32];
   flamesView = self->_flamesView;
   [(SBVoiceControlViewController *)self _flamesViewFrame];
@@ -208,51 +208,51 @@ LABEL_13:
 - (void)viewDidLoad
 {
   OUTLINED_FUNCTION_3_0();
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:v3 object:v2 file:@"SBVoiceControlViewController.m" lineNumber:191 description:@"can't create Siri UI feedback view -- was the appropriate framework mastered onto this device?"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:v3 object:v2 file:@"SBVoiceControlViewController.m" lineNumber:191 description:@"can't create Siri UI feedback view -- was the appropriate framework mastered onto this device?"];
 
   *v0 = *v1;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBVoiceControlViewController;
-  [(SBVoiceControlViewController *)&v4 viewWillAppear:a3];
+  [(SBVoiceControlViewController *)&v4 viewWillAppear:appear];
   [(SBVoiceControlViewController *)self _startSession];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SBVoiceControlViewController;
-  [(SBVoiceControlViewController *)&v6 viewWillDisappear:a3];
+  [(SBVoiceControlViewController *)&v6 viewWillDisappear:disappear];
   [(NSTimer *)self->_delayedConfirmationActionTimer invalidate];
   delayedConfirmationActionTimer = self->_delayedConfirmationActionTimer;
   self->_delayedConfirmationActionTimer = 0;
 
-  v5 = [(VSRecognitionSession *)self->_session cancel];
+  cancel = [(VSRecognitionSession *)self->_session cancel];
 }
 
-- (id)nextSuggestionsForSuggestionsView:(id)a3 maxSuggestions:(unint64_t)a4
+- (id)nextSuggestionsForSuggestionsView:(id)view maxSuggestions:(unint64_t)suggestions
 {
-  v6 = [(VSRecognitionSession *)self->_session keywordCount];
-  if (v6 < 1)
+  keywordCount = [(VSRecognitionSession *)self->_session keywordCount];
+  if (keywordCount < 1)
   {
     v8 = MEMORY[0x277CBEBF8];
     goto LABEL_9;
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:a4];
-  if (v7 < a4)
+  v7 = keywordCount;
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:suggestions];
+  if (v7 < suggestions)
   {
     self->_startingKeywordIndex = 0;
-    a4 = v7;
+    suggestions = v7;
     goto LABEL_6;
   }
 
-  if (a4)
+  if (suggestions)
   {
 LABEL_6:
     v9 = 0;
@@ -264,16 +264,16 @@ LABEL_6:
       ++v9;
     }
 
-    while (a4 != v9);
+    while (suggestions != v9);
   }
 
-  self->_startingKeywordIndex = (self->_startingKeywordIndex + a4) % v7;
+  self->_startingKeywordIndex = (self->_startingKeywordIndex + suggestions) % v7;
 LABEL_9:
 
   return v8;
 }
 
-- (float)audioLevelForFlamesView:(id)a3
+- (float)audioLevelForFlamesView:(id)view
 {
   if (![(VSRecognitionSession *)self->_session isActivelyRecognizing])
   {
@@ -292,9 +292,9 @@ LABEL_9:
   return result;
 }
 
-- (void)recognitionSessionDidBeginAction:(id)a3
+- (void)recognitionSessionDidBeginAction:(id)action
 {
-  if ([a3 isRecognizing])
+  if ([action isRecognizing])
   {
     [(SBVoiceControlViewController *)self _setFeedbackVisible:1 animated:1];
     suggestionsView = self->_suggestionsView;
@@ -308,20 +308,20 @@ LABEL_9:
   }
 }
 
-- (void)recognitionSession:(id)a3 didCompleteActionWithError:(id)a4
+- (void)recognitionSession:(id)session didCompleteActionWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   [(SBVoiceControlViewController *)self _setFeedbackVisible:0 animated:1];
   [(SiriUISuggestionsView *)self->_suggestionsView stopSuggesting];
-  if (v7)
+  if (errorCopy)
   {
-    v8 = [v7 domain];
-    if ([v8 isEqualToString:*MEMORY[0x277D79A28]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277D79A28]])
     {
-      v9 = [v7 code];
+      code = [errorCopy code];
 
-      if (v9 == -4002)
+      if (code == -4002)
       {
 LABEL_14:
         [(SBVoiceControlViewController *)self _handleButtonUpCancel];
@@ -347,7 +347,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if ([v6 isFinished])
+  if ([sessionCopy isFinished])
   {
     if (![(VSRecognitionSession *)self->_session isValid])
     {
@@ -369,19 +369,19 @@ LABEL_13:
   else
   {
     [(SBVoiceControlViewController *)self _configureRoutingIfNeeded];
-    v11 = [v6 displayResultString];
-    if (v11)
+    displayResultString = [sessionCopy displayResultString];
+    if (displayResultString)
     {
-      [(SBVoiceControlViewController *)self _setTitleText:v11];
+      [(SBVoiceControlViewController *)self _setTitleText:displayResultString];
     }
 
-    v12 = [v6 displayStatusString];
-    [(SBVoiceControlViewController *)self _setStatusText:v12];
+    displayStatusString = [sessionCopy displayStatusString];
+    [(SBVoiceControlViewController *)self _setStatusText:displayStatusString];
 
     if (self->_wasRecognizing)
     {
       objc_initWeak(&location, self);
-      if ([v6 nextActionWillRecognize])
+      if ([sessionCopy nextActionWillRecognize])
       {
         v13 = 1115;
       }
@@ -427,14 +427,14 @@ void __78__SBVoiceControlViewController_recognitionSession_didCompleteActionWith
   [WeakRetained _speakFeedbackText];
 }
 
-- (void)recognitionSession:(id)a3 didFinishSpeakingFeedbackStringWithError:(id)a4
+- (void)recognitionSession:(id)session didFinishSpeakingFeedbackStringWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_session == v6)
+  sessionCopy = session;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (self->_session == sessionCopy)
   {
-    if (v7)
+    if (errorCopy)
     {
       v9 = SBLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -447,32 +447,32 @@ void __78__SBVoiceControlViewController_recognitionSession_didCompleteActionWith
   }
 }
 
-- (void)recognitionSession:(id)a3 openURL:(id)a4 completion:(id)a5
+- (void)recognitionSession:(id)session openURL:(id)l completion:(id)completion
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
-  v8 = [v6 absoluteString];
-  if (![v8 length])
+  lCopy = l;
+  completionCopy = completion;
+  absoluteString = [lCopy absoluteString];
+  if (![absoluteString length])
   {
 
     goto LABEL_5;
   }
 
-  v9 = [objc_alloc(MEMORY[0x277D6EED0]) initWithURL:v6];
-  v10 = [v9 isValid];
+  v9 = [objc_alloc(MEMORY[0x277D6EED0]) initWithURL:lCopy];
+  isValid = [v9 isValid];
 
-  if (!v10)
+  if (!isValid)
   {
 LABEL_5:
-    v16 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __70__SBVoiceControlViewController_recognitionSession_openURL_completion___block_invoke_62;
     v17[3] = &unk_2783A9C70;
-    v18 = v7;
-    v11 = v7;
-    [v16 openURL:v6 options:MEMORY[0x277CBEC10] completionHandler:v17];
+    v18 = completionCopy;
+    v11 = completionCopy;
+    [mEMORY[0x277D75128] openURL:lCopy options:MEMORY[0x277CBEC10] completionHandler:v17];
 
     v15 = v18;
     goto LABEL_6;
@@ -488,14 +488,14 @@ LABEL_5:
   [v11 setFrontBoardOptions:v13];
 
   [v11 setSensitive:1];
-  v14 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __70__SBVoiceControlViewController_recognitionSession_openURL_completion___block_invoke;
   v19[3] = &unk_2783C4498;
-  v20 = v7;
-  v15 = v7;
-  [v14 openURL:v6 configuration:v11 completionHandler:v19];
+  v20 = completionCopy;
+  v15 = completionCopy;
+  [defaultWorkspace openURL:lCopy configuration:v11 completionHandler:v19];
 
 LABEL_6:
 }
@@ -566,11 +566,11 @@ void __70__SBVoiceControlViewController_recognitionSession_openURL_completion___
   }
 }
 
-- (BOOL)recognitionSessionWillBeginAction:(id)a3
+- (BOOL)recognitionSessionWillBeginAction:(id)action
 {
-  v4 = a3;
-  v5 = [(VSRecognitionSession *)self->_session isRecognizing];
-  if (v5)
+  actionCopy = action;
+  isRecognizing = [(VSRecognitionSession *)self->_session isRecognizing];
+  if (isRecognizing)
   {
     [(SBVoiceControlViewController *)self _configureRoutingIfNeeded];
     self->_wasRecognizing = 1;
@@ -585,7 +585,7 @@ void __70__SBVoiceControlViewController_recognitionSession_openURL_completion___
     objc_destroyWeak(&location);
   }
 
-  return v5 ^ 1;
+  return isRecognizing ^ 1;
 }
 
 void __66__SBVoiceControlViewController_recognitionSessionWillBeginAction___block_invoke(uint64_t a1)
@@ -605,9 +605,9 @@ void __66__SBVoiceControlViewController_recognitionSessionWillBeginAction___bloc
   [WeakRetained _continueRecognitionAction];
 }
 
-- (void)handleHeadsetButtonUpFromButtonDownSource:(BOOL)a3
+- (void)handleHeadsetButtonUpFromButtonDownSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     if (self->_isHeadsetButtonPressedDown && [(VSRecognitionSession *)self->_session hasDeferredAction])
     {
@@ -623,12 +623,12 @@ void __66__SBVoiceControlViewController_recognitionSessionWillBeginAction___bloc
   self->_isHeadsetButtonPressedDown = 0;
 }
 
-- (void)performDismissalTransitionAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)performDismissalTransitionAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v4)
+  animatedCopy = animated;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (animatedCopy)
   {
     v8 = MEMORY[0x277D75D18];
     v11[0] = MEMORY[0x277D85DD0];
@@ -640,13 +640,13 @@ void __66__SBVoiceControlViewController_recognitionSessionWillBeginAction___bloc
     v9[1] = 3221225472;
     v9[2] = __85__SBVoiceControlViewController_performDismissalTransitionAnimated_completionHandler___block_invoke_2;
     v9[3] = &unk_2783A9C70;
-    v10 = v6;
+    v10 = handlerCopy;
     [v8 animateWithDuration:v11 animations:v9 completion:0.3];
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
@@ -661,11 +661,11 @@ uint64_t __85__SBVoiceControlViewController_performDismissalTransitionAnimated_c
   return result;
 }
 
-- (void)performPresentationTransitionAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)performPresentationTransitionAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  animatedCopy = animated;
+  handlerCopy = handler;
+  if (animatedCopy)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -683,16 +683,16 @@ uint64_t __85__SBVoiceControlViewController_performDismissalTransitionAnimated_c
     v8[1] = 3221225472;
     v8[2] = __88__SBVoiceControlViewController_performPresentationTransitionAnimated_completionHandler___block_invoke_3;
     v8[3] = &unk_2783A9C70;
-    v9 = v6;
+    v9 = handlerCopy;
     [v7 animateWithDuration:v10 animations:v8 completion:0.3];
   }
 
   else
   {
     [(UIView *)self->_contentView setAlpha:1.0];
-    if (v6)
+    if (handlerCopy)
     {
-      (*(v6 + 2))(v6, 1);
+      (*(handlerCopy + 2))(handlerCopy, 1);
     }
   }
 }
@@ -708,9 +708,9 @@ uint64_t __88__SBVoiceControlViewController_performPresentationTransitionAnimate
   return result;
 }
 
-- (void)resetSessionWithSource:(id)a3
+- (void)resetSessionWithSource:(id)source
 {
-  if ([a3 sourceType] == 2)
+  if ([source sourceType] == 2)
   {
     self->_isHeadsetButtonPressedDown = 1;
   }
@@ -718,34 +718,34 @@ uint64_t __88__SBVoiceControlViewController_performPresentationTransitionAnimate
   [(SBVoiceControlViewController *)self _resetSession];
 }
 
-- (void)_avSystemControllerPickableRoutesDidChangeNotification:(id)a3
+- (void)_avSystemControllerPickableRoutesDidChangeNotification:(id)notification
 {
-  v4 = [(SBVoiceControlViewController *)self _currentPreferredRouteDictionary];
+  _currentPreferredRouteDictionary = [(SBVoiceControlViewController *)self _currentPreferredRouteDictionary];
 
-  if (!v4)
+  if (!_currentPreferredRouteDictionary)
   {
 
     [(SBVoiceControlViewController *)self _requestDismissal];
   }
 }
 
-- (void)_avSystemControllerHeadphoneJackIsConnectedDidChangeNotification:(id)a3
+- (void)_avSystemControllerHeadphoneJackIsConnectedDidChangeNotification:(id)notification
 {
-  v4 = [(SBVoiceControlViewController *)self _currentPreferredRouteDictionary];
+  _currentPreferredRouteDictionary = [(SBVoiceControlViewController *)self _currentPreferredRouteDictionary];
 
-  if (!v4)
+  if (!_currentPreferredRouteDictionary)
   {
 
     [(SBVoiceControlViewController *)self _requestDismissal];
   }
 }
 
-- (void)_deviceProximityStateDidChangeNotification:(id)a3
+- (void)_deviceProximityStateDidChangeNotification:(id)notification
 {
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 proximityState];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  proximityState = [currentDevice proximityState];
   v6 = @"Speaker";
-  if (v5)
+  if (proximityState)
   {
     v6 = @"Receiver";
   }
@@ -770,7 +770,7 @@ uint64_t __88__SBVoiceControlViewController_performPresentationTransitionAnimate
   }
 }
 
-- (void)_recognitionSessionKeywordsDidChangeNotification:(id)a3
+- (void)_recognitionSessionKeywordsDidChangeNotification:(id)notification
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -791,8 +791,8 @@ uint64_t __81__SBVoiceControlViewController__recognitionSessionKeywordsDidChange
 
 - (id)_availableRouteDictionaries
 {
-  v2 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v3 = [v2 attributeForKey:*MEMORY[0x277D26C60]];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v3 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26C60]];
 
   return v3;
 }
@@ -802,28 +802,28 @@ uint64_t __81__SBVoiceControlViewController__recognitionSessionKeywordsDidChange
   if (!self->_hasConfiguredRouting)
   {
     self->_hasConfiguredRouting = 1;
-    v3 = [(SBVoiceControlViewController *)self _currentPreferredRouteDictionary];
-    if (v3)
+    _currentPreferredRouteDictionary = [(SBVoiceControlViewController *)self _currentPreferredRouteDictionary];
+    if (_currentPreferredRouteDictionary)
     {
-      v4 = [MEMORY[0x277D26E58] sharedAVSystemController];
+      mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
       v5 = *MEMORY[0x277D26C70];
       v15 = 0;
-      [v4 setAttribute:v3 forKey:v5 error:&v15];
+      [mEMORY[0x277D26E58] setAttribute:_currentPreferredRouteDictionary forKey:v5 error:&v15];
       v6 = v15;
-      v7 = [v3 objectForKey:*MEMORY[0x277D26D30]];
+      v7 = [_currentPreferredRouteDictionary objectForKey:*MEMORY[0x277D26D30]];
       if ([v7 length])
       {
         [(SBVoiceControlViewController *)self _setAVAudioRouteUID:v7];
       }
 
-      v8 = [v3 objectForKey:*MEMORY[0x277D26D28]];
+      v8 = [_currentPreferredRouteDictionary objectForKey:*MEMORY[0x277D26D28]];
       v9 = [v8 isEqualToString:*MEMORY[0x277D26C58]];
 
       [(SBVoiceControlViewController *)self _setPrefersProximityDetectionEnabled:v9 ^ 1u];
       if (v6)
       {
-        v10 = SBLogCommon();
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        defaultCenter = SBLogCommon();
+        if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
         {
           [SBVoiceControlViewController _configureRoutingIfNeeded];
         }
@@ -831,18 +831,18 @@ uint64_t __81__SBVoiceControlViewController__recognitionSessionKeywordsDidChange
 
       else
       {
-        v10 = [MEMORY[0x277CCAB98] defaultCenter];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
         v11 = MEMORY[0x277D26C68];
-        [v10 removeObserver:self name:*MEMORY[0x277D26C68] object:v4];
+        [defaultCenter removeObserver:self name:*MEMORY[0x277D26C68] object:mEMORY[0x277D26E58]];
         v12 = MEMORY[0x277D26C10];
-        [v10 removeObserver:self name:*MEMORY[0x277D26C10] object:v4];
-        [v10 addObserver:self selector:sel__avSystemControllerPickableRoutesDidChangeNotification_ name:*v11 object:v4];
-        v13 = [v3 objectForKey:*MEMORY[0x277D26CA8]];
+        [defaultCenter removeObserver:self name:*MEMORY[0x277D26C10] object:mEMORY[0x277D26E58]];
+        [defaultCenter addObserver:self selector:sel__avSystemControllerPickableRoutesDidChangeNotification_ name:*v11 object:mEMORY[0x277D26E58]];
+        v13 = [_currentPreferredRouteDictionary objectForKey:*MEMORY[0x277D26CA8]];
         v14 = [v13 isEqualToString:@"Headphone"];
 
         if (v14)
         {
-          [v10 addObserver:self selector:sel__avSystemControllerHeadphoneJackIsConnectedDidChangeNotification_ name:*v12 object:v4];
+          [defaultCenter addObserver:self selector:sel__avSystemControllerHeadphoneJackIsConnectedDidChangeNotification_ name:*v12 object:mEMORY[0x277D26E58]];
         }
       }
     }
@@ -853,8 +853,8 @@ uint64_t __81__SBVoiceControlViewController__recognitionSessionKeywordsDidChange
 {
   if (!self->_isHeadsetButtonPressedDown && [(VSRecognitionSession *)self->_session hasDeferredAction])
   {
-    v3 = [(VSRecognitionSession *)self->_session beginNextAction];
-    if (v3)
+    beginNextAction = [(VSRecognitionSession *)self->_session beginNextAction];
+    if (beginNextAction)
     {
       v4 = SBLogCommon();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -869,23 +869,23 @@ uint64_t __81__SBVoiceControlViewController__recognitionSessionKeywordsDidChange
 
 - (void)_continueWithRecognitionAction
 {
-  v3 = [(SBVoiceControlViewController *)self _popNextRecognitionAudioInputPath];
-  if (v3)
+  _popNextRecognitionAudioInputPath = [(SBVoiceControlViewController *)self _popNextRecognitionAudioInputPath];
+  if (_popNextRecognitionAudioInputPath)
   {
-    [(VSRecognitionSession *)self->_session setNextRecognitionAudioInputPath:v3];
+    [(VSRecognitionSession *)self->_session setNextRecognitionAudioInputPath:_popNextRecognitionAudioInputPath];
   }
 
-  v4 = [(VSRecognitionSession *)self->_session isFinished];
+  isFinished = [(VSRecognitionSession *)self->_session isFinished];
   session = self->_session;
-  if (v4)
+  if (isFinished)
   {
     if ([(VSRecognitionSession *)session isValid])
     {
-      v6 = [(VSRecognitionSession *)self->_session reset];
+      reset = [(VSRecognitionSession *)self->_session reset];
       [(SBVoiceControlViewController *)self _setStatusText:0];
       [(SBVoiceControlViewController *)self _setTitleText:0];
-      v7 = [(VSRecognitionSession *)self->_session beginNextAction];
-      if (v7)
+      beginNextAction = [(VSRecognitionSession *)self->_session beginNextAction];
+      if (beginNextAction)
       {
         v8 = SBLogCommon();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -909,8 +909,8 @@ LABEL_14:
   {
     if (([(VSRecognitionSession *)session nextActionWillTerminateSession]& 1) == 0)
     {
-      v7 = [(VSRecognitionSession *)self->_session beginNextAction];
-      if (v7)
+      beginNextAction = [(VSRecognitionSession *)self->_session beginNextAction];
+      if (beginNextAction)
       {
         v8 = SBLogCommon();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -953,10 +953,10 @@ void __62__SBVoiceControlViewController__continueWithRecognitionAction__block_in
 
 - (id)_currentPreferredRouteDictionary
 {
-  v3 = [(SBVoiceControlViewController *)self _availableRouteDictionaries];
-  v4 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v5 = [v4 attributeForKey:*MEMORY[0x277D26BF8]];
-  v6 = [v5 BOOLValue];
+  _availableRouteDictionaries = [(SBVoiceControlViewController *)self _availableRouteDictionaries];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v5 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26BF8]];
+  bOOLValue = [v5 BOOLValue];
 
   if ([(SBVoiceControlViewController *)self shouldDisableVoiceControlForBluetoothRequests])
   {
@@ -965,10 +965,10 @@ void __62__SBVoiceControlViewController__continueWithRecognitionAction__block_in
 
   else
   {
-    v7 = ([(SBVoiceControlPresentationSource *)self->_source sourceType]== 0) & (v6 ^ 1u);
+    v7 = ([(SBVoiceControlPresentationSource *)self->_source sourceType]== 0) & (bOOLValue ^ 1u);
   }
 
-  v8 = [(SBVoiceControlViewController *)self _preferredRouteDictionaryWithAvailableRouteDictionaries:v3 preferredAVAudioRouteName:self->_avAudioRouteName preferredAVAudioRouteUID:self->_avAudioRouteUID shouldPreferBluetooth:v7];
+  v8 = [(SBVoiceControlViewController *)self _preferredRouteDictionaryWithAvailableRouteDictionaries:_availableRouteDictionaries preferredAVAudioRouteName:self->_avAudioRouteName preferredAVAudioRouteUID:self->_avAudioRouteUID shouldPreferBluetooth:v7];
 
   return v8;
 }
@@ -1021,8 +1021,8 @@ void __53__SBVoiceControlViewController__handleButtonUpCancel__block_invoke_2(ui
 - (BOOL)_hasPickableBluetoothDevice
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v3 = [v2 pickableRoutesForCategory:@"VoiceCommand_WithBluetooth"];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v3 = [mEMORY[0x277D26E58] pickableRoutesForCategory:@"VoiceCommand_WithBluetooth"];
 
   v15 = 0u;
   v16 = 0u;
@@ -1069,13 +1069,13 @@ LABEL_11:
   return v5;
 }
 
-- (id)_localizedStringForKey:(id)a3
+- (id)_localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   localizationKeys = self->_localizationKeys;
   if (!localizationKeys)
   {
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
     v7 = VSRecognitionModelCopyResourceURL();
 
     if (v7)
@@ -1096,11 +1096,11 @@ LABEL_11:
     }
   }
 
-  v10 = [(NSDictionary *)localizationKeys objectForKey:v4];
+  v10 = [(NSDictionary *)localizationKeys objectForKey:keyCopy];
   if (!v10)
   {
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v11 localizedStringForKey:v4 value:&stru_283094718 table:@"Jibbler"];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v10 = [mainBundle2 localizedStringForKey:keyCopy value:&stru_283094718 table:@"Jibbler"];
   }
 
   return v10;
@@ -1118,16 +1118,16 @@ LABEL_11:
 
   [v3 setInputLevelUpdateInterval:0.1];
   [v3 setKeywordPhase:5];
-  v4 = [(SBVoiceControlViewController *)self _hasPickableBluetoothDevice];
-  if (v4 || [(SBVoiceControlPresentationSource *)self->_source sourceType]!= 1)
+  _hasPickableBluetoothDevice = [(SBVoiceControlViewController *)self _hasPickableBluetoothDevice];
+  if (_hasPickableBluetoothDevice || [(SBVoiceControlPresentationSource *)self->_source sourceType]!= 1)
   {
-    [v3 setBluetoothInputAllowed:v4];
+    [v3 setBluetoothInputAllowed:_hasPickableBluetoothDevice];
   }
 
   else
   {
-    v5 = [(SBVoiceControlPresentationSource *)self->_source bluetoothDevice];
-    [v3 setBluetoothInputAllowed:v5 != 0];
+    bluetoothDevice = [(SBVoiceControlPresentationSource *)self->_source bluetoothDevice];
+    [v3 setBluetoothInputAllowed:bluetoothDevice != 0];
   }
 
   return v3;
@@ -1135,8 +1135,8 @@ LABEL_11:
 
 - (void)_performConfirmationAction
 {
-  v3 = [(VSRecognitionSession *)self->_session beginNextAction];
-  if (v3)
+  beginNextAction = [(VSRecognitionSession *)self->_session beginNextAction];
+  if (beginNextAction)
   {
     v4 = SBLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1188,7 +1188,7 @@ void __52__SBVoiceControlViewController__performNoMatchFound__block_invoke_2(uin
 
 - (id)_popNextRecognitionAudioInputPath
 {
-  v3 = [(NSArray *)self->_nextRecognitionAudioInputPaths lastObject];
+  lastObject = [(NSArray *)self->_nextRecognitionAudioInputPaths lastObject];
   v4 = [(NSArray *)self->_nextRecognitionAudioInputPaths count];
   nextRecognitionAudioInputPaths = self->_nextRecognitionAudioInputPaths;
   if (v4 < 2)
@@ -1204,17 +1204,17 @@ void __52__SBVoiceControlViewController__performNoMatchFound__block_invoke_2(uin
 
   self->_nextRecognitionAudioInputPaths = v6;
 
-  return v3;
+  return lastObject;
 }
 
-- (id)_preferredRouteDictionaryWithAvailableRouteDictionaries:(id)a3 preferredAVAudioRouteName:(id)a4 preferredAVAudioRouteUID:(id)a5 shouldPreferBluetooth:(BOOL)a6
+- (id)_preferredRouteDictionaryWithAvailableRouteDictionaries:(id)dictionaries preferredAVAudioRouteName:(id)name preferredAVAudioRouteUID:(id)d shouldPreferBluetooth:(BOOL)bluetooth
 {
-  v6 = a6;
+  bluetoothCopy = bluetooth;
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!(v10 | v11))
+  dictionariesCopy = dictionaries;
+  nameCopy = name;
+  dCopy = d;
+  if (!(nameCopy | dCopy))
   {
     goto LABEL_30;
   }
@@ -1223,7 +1223,7 @@ void __52__SBVoiceControlViewController__performNoMatchFound__block_invoke_2(uin
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v12 = v9;
+  v12 = dictionariesCopy;
   v13 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (!v13)
   {
@@ -1235,7 +1235,7 @@ LABEL_30:
   }
 
   v14 = v13;
-  v29 = v9;
+  v29 = dictionariesCopy;
   v15 = 0;
   v16 = *v32;
   v30 = *v32;
@@ -1249,10 +1249,10 @@ LABEL_30:
       }
 
       v18 = *(*(&v31 + 1) + 8 * i);
-      if (v11)
+      if (dCopy)
       {
         v19 = [*(*(&v31 + 1) + 8 * i) objectForKey:*MEMORY[0x277D26D30]];
-        if ([v19 hasPrefix:v11])
+        if ([v19 hasPrefix:dCopy])
         {
           v27 = v18;
 
@@ -1264,34 +1264,34 @@ LABEL_30:
       {
         v20 = [v18 objectForKey:*MEMORY[0x277D26CA8]];
         v21 = v20;
-        if (v10 && v20 && ([v20 isEqualToString:v10] & 1) != 0)
+        if (nameCopy && v20 && ([v20 isEqualToString:nameCopy] & 1) != 0)
         {
           goto LABEL_18;
         }
 
-        if (!v6)
+        if (!bluetoothCopy)
         {
           goto LABEL_19;
         }
 
         v22 = v12;
-        v23 = v10;
-        v24 = v6;
+        v23 = nameCopy;
+        v24 = bluetoothCopy;
         v25 = [v18 objectForKey:*MEMORY[0x277D26D28]];
         v26 = [v25 isEqualToString:*MEMORY[0x277D26C58]];
 
         if (!v26)
         {
           v15 = 0;
-          v6 = v24;
-          v10 = v23;
+          bluetoothCopy = v24;
+          nameCopy = v23;
           v12 = v22;
           v16 = v30;
           goto LABEL_21;
         }
 
-        v6 = v24;
-        v10 = v23;
+        bluetoothCopy = v24;
+        nameCopy = v23;
         v12 = v22;
         v16 = v30;
         if (([v21 isEqualToString:@"HeadsetBT"] & 1) != 0 || objc_msgSend(v21, "isEqualToString:", @"HeadphonesBT"))
@@ -1324,7 +1324,7 @@ LABEL_21:
   v27 = 0;
 LABEL_26:
 
-  v9 = v29;
+  dictionariesCopy = v29;
   if (!v27 && v15)
   {
     v15 = v15;
@@ -1349,28 +1349,28 @@ LABEL_31:
 {
   [(SBVoiceControlViewController *)self _setFeedbackVisible:0 animated:1];
   [(SiriUISuggestionsView *)self->_suggestionsView stopSuggesting];
-  v3 = [(VSRecognitionSession *)self->_session cancel];
+  cancel = [(VSRecognitionSession *)self->_session cancel];
   [(SBVoiceControlViewController *)self _setTitleText:0];
   [(SBVoiceControlViewController *)self _setStatusText:0];
-  v4 = [(SBVoiceControlViewController *)self _newRecognitionSession];
-  [(SBVoiceControlViewController *)self _setSession:v4];
+  _newRecognitionSession = [(SBVoiceControlViewController *)self _newRecognitionSession];
+  [(SBVoiceControlViewController *)self _setSession:_newRecognitionSession];
   [(SBVoiceControlViewController *)self _startSession];
   [(SiriUISuggestionsView *)self->_suggestionsView startSuggesting];
 }
 
-- (void)_setAVAudioRouteUID:(id)a3
+- (void)_setAVAudioRouteUID:(id)d
 {
-  v8 = a3;
-  if ([v8 containsString:@"-"])
+  dCopy = d;
+  if ([dCopy containsString:@"-"])
   {
-    v4 = [v8 substringToIndex:{objc_msgSend(v8, "rangeOfString:", @"-"}];
+    v4 = [dCopy substringToIndex:{objc_msgSend(dCopy, "rangeOfString:", @"-"}];
 
     v5 = v4;
   }
 
   else
   {
-    v5 = v8;
+    v5 = dCopy;
   }
 
   v9 = v5;
@@ -1379,21 +1379,21 @@ LABEL_31:
   self->_avAudioRouteUID = v6;
 }
 
-- (void)_setFeedbackVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setFeedbackVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  visibleCopy = visible;
   [(SBVoiceControlViewController *)self loadViewIfNeeded];
-  if (v4)
+  if (animatedCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __61__SBVoiceControlViewController__setFeedbackVisible_animated___block_invoke;
     v8[3] = &unk_2783A9F58;
     v8[4] = self;
-    v9 = v5;
+    v9 = visibleCopy;
     [MEMORY[0x277D75D18] animateWithDuration:v8 animations:0.25];
-    if (v5)
+    if (visibleCopy)
     {
       return;
     }
@@ -1403,7 +1403,7 @@ LABEL_8:
     return;
   }
 
-  if (v5)
+  if (visibleCopy)
   {
     v7 = 1.0;
   }
@@ -1415,7 +1415,7 @@ LABEL_8:
 
   [(SUICFlamesView *)self->_flamesView setAlpha:v7];
   [(SiriUISuggestionsView *)self->_suggestionsView setAlpha:v7];
-  if (!v5)
+  if (!visibleCopy)
   {
     goto LABEL_8;
   }
@@ -1449,11 +1449,11 @@ uint64_t __61__SBVoiceControlViewController__setFeedbackVisible_animated___block
   return [v4 setAlpha:v5];
 }
 
-- (void)_setPrefersProximityDetectionEnabled:(BOOL)a3
+- (void)_setPrefersProximityDetectionEnabled:(BOOL)enabled
 {
-  if (self->_prefersProximityDetectionEnabled != a3)
+  if (self->_prefersProximityDetectionEnabled != enabled)
   {
-    self->_prefersProximityDetectionEnabled = a3;
+    self->_prefersProximityDetectionEnabled = enabled;
     WeakRetained = objc_loadWeakRetained(&self->_voiceControlDelegate);
     if (objc_opt_respondsToSelector())
     {
@@ -1462,38 +1462,38 @@ uint64_t __61__SBVoiceControlViewController__setFeedbackVisible_animated___block
   }
 }
 
-- (void)_setSession:(id)a3
+- (void)_setSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   session = self->_session;
-  v11 = v5;
-  if (session != v5)
+  v11 = sessionCopy;
+  if (session != sessionCopy)
   {
     v7 = MEMORY[0x277D79A38];
     if (session)
     {
       [(VSRecognitionSession *)session setDelegate:0];
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v8 removeObserver:self name:*v7 object:self->_session];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:*v7 object:self->_session];
     }
 
-    objc_storeStrong(&self->_session, a3);
+    objc_storeStrong(&self->_session, session);
     v9 = self->_session;
     if (v9)
     {
       [(VSRecognitionSession *)v9 setDelegate:self];
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v10 addObserver:self selector:sel__recognitionSessionKeywordsDidChangeNotification_ name:*v7 object:self->_session];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__recognitionSessionKeywordsDidChangeNotification_ name:*v7 object:self->_session];
     }
   }
 }
 
-- (void)_setStatusText:(id)a3
+- (void)_setStatusText:(id)text
 {
-  v4 = a3;
-  if (v4)
+  textCopy = text;
+  if (textCopy)
   {
-    [(UILabel *)self->_subtitleLabel setText:v4];
+    [(UILabel *)self->_subtitleLabel setText:textCopy];
     v5 = *(MEMORY[0x277CBF2C0] + 16);
     *&v15.a = *MEMORY[0x277CBF2C0];
     *&v15.c = v5;
@@ -1516,13 +1516,13 @@ uint64_t __61__SBVoiceControlViewController__setFeedbackVisible_animated___block
   v12[3] = &unk_2783AE868;
   v12[4] = self;
   v14 = v15;
-  v13 = v4;
+  v13 = textCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__SBVoiceControlViewController__setStatusText___block_invoke_2;
   v9[3] = &unk_2783A8BF0;
   v10 = v13;
-  v11 = self;
+  selfCopy = self;
   v8 = v13;
   [v7 animateWithDuration:327680 delay:v12 options:v9 animations:0.25 completion:0.0];
 }
@@ -1560,22 +1560,22 @@ uint64_t __47__SBVoiceControlViewController__setStatusText___block_invoke_2(uint
   return result;
 }
 
-- (void)_setTitleText:(id)a3
+- (void)_setTitleText:(id)text
 {
-  v4 = a3;
-  if (!v4)
+  textCopy = text;
+  if (!textCopy)
   {
-    v4 = [(SBVoiceControlViewController *)self _localizedStringForKey:@"JIBBLER"];
+    textCopy = [(SBVoiceControlViewController *)self _localizedStringForKey:@"JIBBLER"];
   }
 
-  v5 = v4;
-  [(UILabel *)self->_titleLabel setText:v4];
+  v5 = textCopy;
+  [(UILabel *)self->_titleLabel setText:textCopy];
 }
 
 - (void)_speakFeedbackText
 {
-  v3 = [(VSRecognitionSession *)self->_session beginSpeakingFeedbackString];
-  if (v3)
+  beginSpeakingFeedbackString = [(VSRecognitionSession *)self->_session beginSpeakingFeedbackString];
+  if (beginSpeakingFeedbackString)
   {
     v4 = SBLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1587,9 +1587,9 @@ uint64_t __47__SBVoiceControlViewController__setStatusText___block_invoke_2(uint
   }
 }
 
-- (void)_speakText:(id)a3
+- (void)_speakText:(id)text
 {
-  v4 = [(VSRecognitionSession *)self->_session beginSpeakingString:a3];
+  v4 = [(VSRecognitionSession *)self->_session beginSpeakingString:text];
   if (v4)
   {
     v5 = SBLogCommon();
@@ -1613,15 +1613,15 @@ uint64_t __47__SBVoiceControlViewController__setStatusText___block_invoke_2(uint
 
   else if (([(VSRecognitionSession *)self->_session isBusy]& 1) == 0)
   {
-    v4 = [(SBVoiceControlViewController *)self _popNextRecognitionAudioInputPath];
-    if (v4)
+    _popNextRecognitionAudioInputPath = [(SBVoiceControlViewController *)self _popNextRecognitionAudioInputPath];
+    if (_popNextRecognitionAudioInputPath)
     {
-      [(VSRecognitionSession *)self->_session setNextRecognitionAudioInputPath:v4];
+      [(VSRecognitionSession *)self->_session setNextRecognitionAudioInputPath:_popNextRecognitionAudioInputPath];
       [(VSRecognitionSession *)self->_session setNextRecognitionRequiresReset:1];
     }
 
-    v5 = [(VSRecognitionSession *)self->_session beginNextAction];
-    if (v5)
+    beginNextAction = [(VSRecognitionSession *)self->_session beginNextAction];
+    if (beginNextAction)
     {
       v6 = SBLogCommon();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))

@@ -1,9 +1,9 @@
 @interface ADLocationManager
 + (void)prepareForAssistantEnablementInBackground;
-- (ADLocationManager)initWithSerialQueue:(id)a3;
+- (ADLocationManager)initWithSerialQueue:(id)queue;
 - (ADLocationManagerDelegate)delegate;
 - (ADLocationManagerState)currentState;
-- (BOOL)shouldSendLocationToServer:(id)a3 forAceCommand:(id)a4;
+- (BOOL)shouldSendLocationToServer:(id)server forAceCommand:(id)command;
 - (CLLocation)knownLocation;
 - (CLLocation)lastLocation;
 - (CLLocation)lastShiftedLocation;
@@ -15,64 +15,64 @@
 - (id)createLocationInUseAssertion;
 - (id)createSetRequestOrigin;
 - (id)locationForSnapshot;
-- (id)shiftLocationUsingCachedShifterFunction:(id)a3;
+- (id)shiftLocationUsingCachedShifterFunction:(id)function;
 - (void)_cancelLocationSLATimer;
 - (void)_cancelLocationTimer;
 - (void)_clearCompletionState;
 - (void)_dismissTCCDialogIfNeeded;
-- (void)_generateResponseForGetRequestOriginCommand:(id)a3 withStatus:(id)a4 completion:(id)a5;
-- (void)_generateResponseForGetRequestOriginCommand:(id)a3 withUnshiftedLocation:(id)a4 completion:(id)a5;
-- (void)_processUpdatedLocation:(id)a3;
-- (void)_requestLocationForGetRequestOrigin:(id)a3 completion:(id)a4;
+- (void)_generateResponseForGetRequestOriginCommand:(id)command withStatus:(id)status completion:(id)completion;
+- (void)_generateResponseForGetRequestOriginCommand:(id)command withUnshiftedLocation:(id)location completion:(id)completion;
+- (void)_processUpdatedLocation:(id)location;
+- (void)_requestLocationForGetRequestOrigin:(id)origin completion:(id)completion;
 - (void)_requestLocationWithBestAccuracy;
 - (void)_scheduleLocationSLATimer;
-- (void)_scheduleLocationTimerWithTimeout:(double)a3;
-- (void)_startMonitoringLocationForGetRequestOrigin:(id)a3 completion:(id)a4;
-- (void)_startMonitoringLocationWithDesiredAccuracy:(double)a3;
-- (void)_triggerLocationABCForSubtype:(id)a3;
+- (void)_scheduleLocationTimerWithTimeout:(double)timeout;
+- (void)_startMonitoringLocationForGetRequestOrigin:(id)origin completion:(id)completion;
+- (void)_startMonitoringLocationWithDesiredAccuracy:(double)accuracy;
+- (void)_triggerLocationABCForSubtype:(id)subtype;
 - (void)cancelLocationUpdateSessionTeardown;
-- (void)currentAuthorizationStyle:(id)a3;
-- (void)currentLocationWithAccuracy:(double)a3 timeout:(double)a4 completion:(id)a5;
-- (void)currentLocationWithFetchRequest:(id)a3 completion:(id)a4;
+- (void)currentAuthorizationStyle:(id)style;
+- (void)currentLocationWithAccuracy:(double)accuracy timeout:(double)timeout completion:(id)completion;
+- (void)currentLocationWithFetchRequest:(id)request completion:(id)completion;
 - (void)dealloc;
-- (void)dismissTCCDialogIfNeeded:(id)a3;
-- (void)dismissedAllVisibleAssistantUIForReason:(id)a3;
-- (void)drainAuthorizationRequestCompletionsWithPossibleError:(id)a3;
-- (void)drainLocationFetchRequestsWithPossibleError:(id)a3;
-- (void)drainRequestsWithErrorCode:(int64_t)a3 clearLocationCache:(BOOL)a4 dismissDialog:(BOOL)a5;
+- (void)dismissTCCDialogIfNeeded:(id)needed;
+- (void)dismissedAllVisibleAssistantUIForReason:(id)reason;
+- (void)drainAuthorizationRequestCompletionsWithPossibleError:(id)error;
+- (void)drainLocationFetchRequestsWithPossibleError:(id)error;
+- (void)drainRequestsWithErrorCode:(int64_t)code clearLocationCache:(BOOL)cache dismissDialog:(BOOL)dialog;
 - (void)endLocationUpdateSessionIfNeeded;
-- (void)fetchLocationAuthorization:(id)a3;
+- (void)fetchLocationAuthorization:(id)authorization;
 - (void)forceLocationUpdateFromCoreLocation;
-- (void)getRedactedContextForContextSnapshot:(id)a3 metadata:(id)a4 privacyPolicy:(int64_t)a5 completion:(id)a6;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)navStatusChanged:(id)a3;
-- (void)peerLocationConnection:(id)a3 didReceiveUnsolicitedLocation:(id)a4;
-- (void)peerLocationConnectionSuggestsClearingCachedLocation:(id)a3;
+- (void)getRedactedContextForContextSnapshot:(id)snapshot metadata:(id)metadata privacyPolicy:(int64_t)policy completion:(id)completion;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)navStatusChanged:(id)changed;
+- (void)peerLocationConnection:(id)connection didReceiveUnsolicitedLocation:(id)location;
+- (void)peerLocationConnectionSuggestsClearingCachedLocation:(id)location;
 - (void)prefetchCurrentLocation;
-- (void)requestAuthorizationWithStyle:(unint64_t)a3 timeout:(double)a4 completion:(id)a5;
-- (void)requestTemporaryAccuracyAuthorizationWithStyle:(unint64_t)a3 timeout:(double)a4 completion:(id)a5;
-- (void)scheduleAuthorizationRequestTimeoutForCompletionBlock:(id)a3 timeout:(double)a4;
-- (void)scheduleLocationFetchRequestTimeoutForRequest:(id)a3 timeout:(double)a4;
+- (void)requestAuthorizationWithStyle:(unint64_t)style timeout:(double)timeout completion:(id)completion;
+- (void)requestTemporaryAccuracyAuthorizationWithStyle:(unint64_t)style timeout:(double)timeout completion:(id)completion;
+- (void)scheduleAuthorizationRequestTimeoutForCompletionBlock:(id)block timeout:(double)timeout;
+- (void)scheduleLocationFetchRequestTimeoutForRequest:(id)request timeout:(double)timeout;
 - (void)scheduleLocationUpdateSessionTeardown;
-- (void)sendTemporaryAccuracyAuthorizationRequestWithTimeout:(double)a3 completion:(id)a4;
-- (void)setLastLocation:(id)a3;
-- (void)setLastShiftedLocation:(id)a3;
-- (void)setLocationSentToServer:(id)a3;
-- (void)shiftLocation:(id)a3 completion:(id)a4;
-- (void)shiftLocationWithTimeout:(id)a3 timeoutHandler:(id)a4 completion:(id)a5;
-- (void)showingVisibleAssistantUIForReason:(id)a3 completion:(id)a4;
+- (void)sendTemporaryAccuracyAuthorizationRequestWithTimeout:(double)timeout completion:(id)completion;
+- (void)setLastLocation:(id)location;
+- (void)setLastShiftedLocation:(id)location;
+- (void)setLocationSentToServer:(id)server;
+- (void)shiftLocation:(id)location completion:(id)completion;
+- (void)shiftLocationWithTimeout:(id)timeout timeoutHandler:(id)handler completion:(id)completion;
+- (void)showingVisibleAssistantUIForReason:(id)reason completion:(id)completion;
 - (void)startLocationPrefetchRoutine;
 - (void)startLocationUpdateSession;
-- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)a3 completion:(id)a4;
-- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)a3 timeout:(double)a4 completion:(id)a5;
-- (void)updateLocationForCommand:(id)a3 completion:(id)a4;
+- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)selection completion:(id)completion;
+- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)selection timeout:(double)timeout completion:(id)completion;
+- (void)updateLocationForCommand:(id)command completion:(id)completion;
 - (void)updateLocationSnapshot;
-- (void)updateLocationSnapshotWithCompletion:(id)a3;
-- (void)updateTemporaryAuthorizationForAccurateLocation:(BOOL)a3 completion:(id)a4;
-- (void)updateTemporaryAuthorizationForAccurateLocation:(BOOL)a3 timeout:(double)a4 completion:(id)a5;
-- (void)upgradeAccuracyIfNeeded:(double)a3;
+- (void)updateLocationSnapshotWithCompletion:(id)completion;
+- (void)updateTemporaryAuthorizationForAccurateLocation:(BOOL)location completion:(id)completion;
+- (void)updateTemporaryAuthorizationForAccurateLocation:(BOOL)location timeout:(double)timeout completion:(id)completion;
+- (void)upgradeAccuracyIfNeeded:(double)needed;
 @end
 
 @implementation ADLocationManager
@@ -109,11 +109,11 @@
 
 - (id)createCurrentLocationSnapshot
 {
-  v3 = [(ADLocationManager *)self currentState];
+  currentState = [(ADLocationManager *)self currentState];
   v5 = v4;
   v6 = AFSiriLogContextLocation;
   v7 = os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO);
-  if ((v3 & 1) == 0)
+  if ((currentState & 1) == 0)
   {
     if (v7)
     {
@@ -131,13 +131,13 @@
     v14 = 136315650;
     v15 = "[ADLocationManager createCurrentLocationSnapshot]";
     v16 = 1024;
-    v17 = HIDWORD(v3);
+    v17 = HIDWORD(currentState);
     v18 = 2048;
     v19 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Generating location snapshot for authorization status: %d, accuracy authorization: %ld", &v14, 0x1Cu);
   }
 
-  if (HIDWORD(v3) < 3)
+  if (HIDWORD(currentState) < 3)
   {
     v8 = &stru_100514B18;
 LABEL_9:
@@ -145,15 +145,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ((HIDWORD(v3) - 3) >= 2)
+  if ((HIDWORD(currentState) - 3) >= 2)
   {
     goto LABEL_20;
   }
 
-  v11 = [(ADLocationManager *)self locationForSnapshot];
+  locationForSnapshot = [(ADLocationManager *)self locationForSnapshot];
   v12 = AFSiriLogContextLocation;
   v13 = os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO);
-  if (!v11)
+  if (!locationForSnapshot)
   {
     if (v13)
     {
@@ -174,7 +174,7 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s Creating location snapshot from cached location", &v14, 0xCu);
   }
 
-  v9 = [[AFLocationSnapshot alloc] initWithLocation:v11 locationManagerState:{v3, v5}];
+  v9 = [[AFLocationSnapshot alloc] initWithLocation:locationForSnapshot locationManagerState:{currentState, v5}];
 
 LABEL_10:
 
@@ -183,8 +183,8 @@ LABEL_10:
 
 - (void)updateLocationSnapshot
 {
-  v2 = [(ADLocationManager *)self createCurrentLocationSnapshot];
-  if (v2)
+  createCurrentLocationSnapshot = [(ADLocationManager *)self createCurrentLocationSnapshot];
+  if (createCurrentLocationSnapshot)
   {
     v3 = +[NSDate date];
     v4 = [AFDeviceContextMetadata alloc];
@@ -198,12 +198,12 @@ LABEL_10:
       v10 = 136315394;
       v11 = "[ADLocationManager updateLocationSnapshot]";
       v12 = 2112;
-      v13 = v2;
+      v13 = createCurrentLocationSnapshot;
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s #hal Updating location snapshot with %@", &v10, 0x16u);
     }
 
     v9 = +[AFContextDonationService defaultService];
-    [v9 donateContext:v2 withMetadata:v7 pushToRemote:0];
+    [v9 donateContext:createCurrentLocationSnapshot withMetadata:v7 pushToRemote:0];
   }
 }
 
@@ -228,9 +228,9 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s Location prefetching routine is started - grabbing assertion once", &v7, 0xCu);
     }
 
-    v5 = [(ADLocationManager *)self createLocationInUseAssertion];
+    createLocationInUseAssertion = [(ADLocationManager *)self createLocationInUseAssertion];
     locationInUseAssertion = self->_locationInUseAssertion;
-    self->_locationInUseAssertion = v5;
+    self->_locationInUseAssertion = createLocationInUseAssertion;
   }
 }
 
@@ -248,10 +248,10 @@ LABEL_10:
     [(CLLocationManager *)self->_locationManager registerAsLocationClient];
     v8 = self->_locationManager;
     LODWORD(v4) = +[CLLocationManager locationServicesEnabled];
-    v9 = [(CLLocationManager *)v8 authorizationStatus];
-    v10 = [(CLLocationManager *)v8 accuracyAuthorization];
+    authorizationStatus = [(CLLocationManager *)v8 authorizationStatus];
+    accuracyAuthorization = [(CLLocationManager *)v8 accuracyAuthorization];
 
-    [(ADLocationManager *)self setCurrentState:v4 | (v9 << 32), v10];
+    [(ADLocationManager *)self setCurrentState:v4 | (authorizationStatus << 32), accuracyAuthorization];
     locationManager = self->_locationManager;
   }
 
@@ -262,7 +262,7 @@ LABEL_10:
 {
   if (self->_locationUpdateSessionStatus == 1)
   {
-    v2 = [(ADLocationManager *)self _locationManager];
+    _locationManager = [(ADLocationManager *)self _locationManager];
     v3 = AFSiriLogContextLocation;
     if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
     {
@@ -271,7 +271,7 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s Stopping location updates from CoreLocation", &v6, 0xCu);
     }
 
-    [v2 stopUpdatingLocation];
+    [_locationManager stopUpdatingLocation];
     v4 = AFSiriLogContextLocation;
     if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
     {
@@ -280,7 +280,7 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s Starting location updates from CoreLocation", &v6, 0xCu);
     }
 
-    [v2 startUpdatingLocation];
+    [_locationManager startUpdatingLocation];
   }
 
   else
@@ -330,9 +330,9 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Starting location update session - grabbing assertion once", &v11, 0xCu);
       }
 
-      v7 = [(ADLocationManager *)self createLocationInUseAssertion];
+      createLocationInUseAssertion = [(ADLocationManager *)self createLocationInUseAssertion];
       locationInUseAssertion = self->_locationInUseAssertion;
-      self->_locationInUseAssertion = v7;
+      self->_locationInUseAssertion = createLocationInUseAssertion;
     }
 
     v9 = AFSiriLogContextLocation;
@@ -343,8 +343,8 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Starting updating location with CoreLocation", &v11, 0xCu);
     }
 
-    v10 = [(ADLocationManager *)self _locationManager];
-    [v10 startUpdatingLocation];
+    _locationManager = [(ADLocationManager *)self _locationManager];
+    [_locationManager startUpdatingLocation];
 
     self->_locationUpdateSessionStatus = 1;
   }
@@ -471,8 +471,8 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Stopping location updates from CoreLocation", &v17, 0xCu);
       }
 
-      v7 = [(ADLocationManager *)self _locationManager];
-      [v7 stopUpdatingLocation];
+      _locationManager = [(ADLocationManager *)self _locationManager];
+      [_locationManager stopUpdatingLocation];
 
       v8 = AFSiriLogContextLocation;
       if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
@@ -550,15 +550,15 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s Using lastShiftedLocation for location snapshot", &v9, 0xCu);
     }
 
-    v4 = [(ADLocationManager *)self lastShiftedLocation];
+    lastShiftedLocation = [(ADLocationManager *)self lastShiftedLocation];
   }
 
   else
   {
-    v5 = [(ADLocationManager *)self lastLocation];
+    lastLocation = [(ADLocationManager *)self lastLocation];
     v6 = AFSiriLogContextLocation;
     v7 = os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO);
-    if (v5)
+    if (lastLocation)
     {
       if (v7)
       {
@@ -567,7 +567,7 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Using lastLocation for location snapshot", &v9, 0xCu);
       }
 
-      v4 = [(ADLocationManager *)self shiftLocationUsingCachedShifterFunction:v5];
+      lastShiftedLocation = [(ADLocationManager *)self shiftLocationUsingCachedShifterFunction:lastLocation];
     }
 
     else
@@ -579,11 +579,11 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s No cached location available to shift for location snapshot", &v9, 0xCu);
       }
 
-      v4 = 0;
+      lastShiftedLocation = 0;
     }
   }
 
-  return v4;
+  return lastShiftedLocation;
 }
 
 - (CLLocation)lastShiftedLocation
@@ -621,14 +621,14 @@ LABEL_10:
 - (id)createSetRequestOrigin
 {
   v3 = objc_opt_new();
-  v4 = [(ADLocationManager *)self currentState];
-  if ((v4 & 1) == 0)
+  currentState = [(ADLocationManager *)self currentState];
+  if ((currentState & 1) == 0)
   {
     v5 = &SASetRequestOriginStatusDisabledValue;
     goto LABEL_5;
   }
 
-  if (HIDWORD(v4) < 3)
+  if (HIDWORD(currentState) < 3)
   {
     v5 = &SASetRequestOriginStatusDeniedValue;
 LABEL_5:
@@ -636,22 +636,22 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ((HIDWORD(v4) - 3) < 2)
+  if ((HIDWORD(currentState) - 3) < 2)
   {
-    v7 = [(ADLocationManager *)self locationForSnapshot];
-    [v7 coordinate];
+    locationForSnapshot = [(ADLocationManager *)self locationForSnapshot];
+    [locationForSnapshot coordinate];
     [v3 setLatitude:?];
-    [v7 coordinate];
+    [locationForSnapshot coordinate];
     [v3 setLongitude:v8];
-    [v7 horizontalAccuracy];
+    [locationForSnapshot horizontalAccuracy];
     [v3 setHorizontalAccuracy:?];
-    [v7 verticalAccuracy];
+    [locationForSnapshot verticalAccuracy];
     [v3 setVerticalAccuracy:?];
-    [v7 speed];
+    [locationForSnapshot speed];
     [v3 setSpeed:?];
-    [v7 altitude];
+    [locationForSnapshot altitude];
     [v3 setAltitude:?];
-    [v7 course];
+    [locationForSnapshot course];
     [v3 setDirection:?];
     [v3 setStatus:SASetRequestOriginStatusValidValue];
   }
@@ -700,12 +700,12 @@ LABEL_6:
   objc_destroyWeak(buf);
 }
 
-- (void)upgradeAccuracyIfNeeded:(double)a3
+- (void)upgradeAccuracyIfNeeded:(double)needed
 {
-  v5 = [(ADLocationManager *)self _locationManager];
-  [v5 desiredAccuracy];
+  _locationManager = [(ADLocationManager *)self _locationManager];
+  [_locationManager desiredAccuracy];
   locationUpdateSessionStatus = self->_locationUpdateSessionStatus;
-  v8 = v7 - a3;
+  v8 = v7 - needed;
   v9 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.assistant"];
   v10 = [v9 BOOLForKey:@"disableForceLocationUpdates"];
   v11 = AFSiriLogContextLocation;
@@ -717,11 +717,11 @@ LABEL_6:
     {
       v14 = self->_locationUpdateSessionStatus;
       v15 = v11;
-      [v5 desiredAccuracy];
+      [_locationManager desiredAccuracy];
       v17 = 136315906;
       v18 = "[ADLocationManager upgradeAccuracyIfNeeded:]";
       v19 = 2048;
-      v20 = a3;
+      neededCopy2 = needed;
       v21 = 2048;
       v22 = v14;
       v23 = 2048;
@@ -737,19 +737,19 @@ LABEL_6:
       v17 = 136315394;
       v18 = "[ADLocationManager upgradeAccuracyIfNeeded:]";
       v19 = 2048;
-      v20 = a3;
+      neededCopy2 = needed;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s Upgrading desired accuracy of location to %.5g", &v17, 0x16u);
     }
 
-    [v5 setDesiredAccuracy:a3];
+    [_locationManager setDesiredAccuracy:needed];
     [(ADLocationManager *)self forceLocationUpdateFromCoreLocation];
   }
 }
 
-- (void)dismissTCCDialogIfNeeded:(id)a3
+- (void)dismissTCCDialogIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
+  neededCopy = needed;
+  v5 = neededCopy;
   if (self->_isSiriLocationServicesPromptingEnabled)
   {
     internalQueue = self->_internalQueue;
@@ -758,13 +758,13 @@ LABEL_6:
     v7[2] = sub_1001A5484;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = neededCopy;
     dispatch_async(internalQueue, v7);
   }
 
-  else if (v4)
+  else if (neededCopy)
   {
-    dispatch_async(self->_internalQueue, v4);
+    dispatch_async(self->_internalQueue, neededCopy);
   }
 }
 
@@ -785,27 +785,27 @@ LABEL_6:
   }
 }
 
-- (void)drainRequestsWithErrorCode:(int64_t)a3 clearLocationCache:(BOOL)a4 dismissDialog:(BOOL)a5
+- (void)drainRequestsWithErrorCode:(int64_t)code clearLocationCache:(BOOL)cache dismissDialog:(BOOL)dialog
 {
   internalQueue = self->_internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A5634;
   block[3] = &unk_100514C00;
-  v7 = a4;
+  cacheCopy = cache;
   block[4] = self;
-  block[5] = a3;
-  v8 = a5;
+  block[5] = code;
+  dialogCopy = dialog;
   dispatch_async(internalQueue, block);
 }
 
-- (void)currentLocationWithFetchRequest:(id)a3 completion:(id)a4
+- (void)currentLocationWithFetchRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 desiredAccuracy];
+  requestCopy = request;
+  completionCopy = completion;
+  [requestCopy desiredAccuracy];
   v9 = v8;
-  [v6 timeout];
+  [requestCopy timeout];
   v11 = v10;
   v12 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
@@ -824,41 +824,41 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = sub_1001A58D4;
   block[3] = &unk_10051BA90;
-  v17 = v6;
-  v18 = v7;
+  v17 = requestCopy;
+  v18 = completionCopy;
   block[4] = self;
   v19 = v9;
   v20 = v11;
-  v14 = v6;
-  v15 = v7;
+  v14 = requestCopy;
+  v15 = completionCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)currentLocationWithAccuracy:(double)a3 timeout:(double)a4 completion:(id)a5
+- (void)currentLocationWithAccuracy:(double)accuracy timeout:(double)timeout completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = objc_opt_new();
-  [v9 setDesiredAccuracy:a3];
-  [v9 setTimeout:a4];
+  [v9 setDesiredAccuracy:accuracy];
+  [v9 setTimeout:timeout];
   [v9 setStyle:0];
-  [(ADLocationManager *)self currentLocationWithFetchRequest:v9 completion:v8];
+  [(ADLocationManager *)self currentLocationWithFetchRequest:v9 completion:completionCopy];
 }
 
-- (void)updateTemporaryAuthorizationForAccurateLocation:(BOOL)a3 timeout:(double)a4 completion:(id)a5
+- (void)updateTemporaryAuthorizationForAccurateLocation:(BOOL)location timeout:(double)timeout completion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
+  locationCopy = location;
+  completionCopy = completion;
   v9 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [NSNumber numberWithBool:v6];
+    v11 = [NSNumber numberWithBool:locationCopy];
     *buf = 136315650;
     v19 = "[ADLocationManager updateTemporaryAuthorizationForAccurateLocation:timeout:completion:]";
     v20 = 2112;
     v21 = v11;
     v22 = 2048;
-    v23 = a4;
+    timeoutCopy = timeout;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Received update temporary accuracy authorization, isAuthorized: %@, timeout: %.5g", buf, 0x20u);
   }
 
@@ -867,40 +867,40 @@ LABEL_6:
   v14[1] = 3221225472;
   v14[2] = sub_1001A6018;
   v14[3] = &unk_100514BD8;
-  v17 = v6;
+  v17 = locationCopy;
   v14[4] = self;
-  v15 = v8;
-  v16 = a4;
-  v13 = v8;
+  v15 = completionCopy;
+  timeoutCopy2 = timeout;
+  v13 = completionCopy;
   dispatch_async(internalQueue, v14);
 }
 
-- (void)updateTemporaryAuthorizationForAccurateLocation:(BOOL)a3 completion:(id)a4
+- (void)updateTemporaryAuthorizationForAccurateLocation:(BOOL)location completion:(id)completion
 {
-  v4 = a3;
+  locationCopy = location;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001A6334;
   v7[3] = &unk_100514BB0;
-  v8 = a4;
-  v6 = v8;
-  [(ADLocationManager *)self updateTemporaryAuthorizationForAccurateLocation:v4 timeout:v7 completion:2.0];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(ADLocationManager *)self updateTemporaryAuthorizationForAccurateLocation:locationCopy timeout:v7 completion:2.0];
 }
 
-- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)a3 timeout:(double)a4 completion:(id)a5
+- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)selection timeout:(double)timeout completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [NSNumber numberWithUnsignedInteger:a3];
+    v11 = [NSNumber numberWithUnsignedInteger:selection];
     *buf = 136315650;
     v19 = "[ADLocationManager updateAuthorizationStyleWithUserSelection:timeout:completion:]";
     v20 = 2112;
     v21 = v11;
     v22 = 2048;
-    v23 = a4;
+    timeoutCopy = timeout;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Received update authorization style: %@, timeout: %.5g", buf, 0x20u);
   }
 
@@ -909,39 +909,39 @@ LABEL_6:
   v14[1] = 3221225472;
   v14[2] = sub_1001A64D0;
   v14[3] = &unk_100517610;
-  v15 = v8;
-  v16 = a3;
+  v15 = completionCopy;
+  selectionCopy = selection;
   v14[4] = self;
-  v17 = a4;
-  v13 = v8;
+  timeoutCopy2 = timeout;
+  v13 = completionCopy;
   dispatch_async(internalQueue, v14);
 }
 
-- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)a3 completion:(id)a4
+- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)selection completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001A683C;
   v7[3] = &unk_100514BB0;
-  v8 = a4;
-  v6 = v8;
-  [(ADLocationManager *)self updateAuthorizationStyleWithUserSelection:a3 timeout:v7 completion:2.0];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(ADLocationManager *)self updateAuthorizationStyleWithUserSelection:selection timeout:v7 completion:2.0];
 }
 
-- (void)requestTemporaryAccuracyAuthorizationWithStyle:(unint64_t)a3 timeout:(double)a4 completion:(id)a5
+- (void)requestTemporaryAccuracyAuthorizationWithStyle:(unint64_t)style timeout:(double)timeout completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [NSNumber numberWithUnsignedInteger:a3];
+    v11 = [NSNumber numberWithUnsignedInteger:style];
     *buf = 136315650;
     v18 = "[ADLocationManager requestTemporaryAccuracyAuthorizationWithStyle:timeout:completion:]";
     v19 = 2112;
     v20 = v11;
     v21 = 2048;
-    v22 = a4;
+    timeoutCopy = timeout;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Received temporary accuracy authorization request with style: %@, timeout: %.5g", buf, 0x20u);
   }
 
@@ -951,20 +951,20 @@ LABEL_6:
   block[2] = sub_1001A69D4;
   block[3] = &unk_10051BFA8;
   block[4] = self;
-  v15 = v8;
-  v16 = a4;
-  v13 = v8;
+  v15 = completionCopy;
+  timeoutCopy2 = timeout;
+  v13 = completionCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)sendTemporaryAccuracyAuthorizationRequestWithTimeout:(double)a3 completion:(id)a4
+- (void)sendTemporaryAccuracyAuthorizationRequestWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   authorizationRequestCompletions = self->_authorizationRequestCompletions;
-  v8 = objc_retainBlock(v6);
+  v8 = objc_retainBlock(completionCopy);
   [(NSMutableSet *)authorizationRequestCompletions addObject:v8];
 
-  [(ADLocationManager *)self scheduleAuthorizationRequestTimeoutForCompletionBlock:v6 timeout:a3];
+  [(ADLocationManager *)self scheduleAuthorizationRequestTimeoutForCompletionBlock:completionCopy timeout:timeout];
   if (!self->_locationInUseAssertion)
   {
     v9 = AFSiriLogContextLocation;
@@ -975,9 +975,9 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Will request temporary full accuracy authorization - grabbing assertion once", buf, 0xCu);
     }
 
-    v10 = [(ADLocationManager *)self createLocationInUseAssertion];
+    createLocationInUseAssertion = [(ADLocationManager *)self createLocationInUseAssertion];
     locationInUseAssertion = self->_locationInUseAssertion;
-    self->_locationInUseAssertion = v10;
+    self->_locationInUseAssertion = createLocationInUseAssertion;
   }
 
   v12 = AFSiriLogContextLocation;
@@ -989,35 +989,35 @@ LABEL_6:
   }
 
   objc_initWeak(buf, self);
-  v13 = [(ADLocationManager *)self _locationManager];
+  _locationManager = [(ADLocationManager *)self _locationManager];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001A6E98;
   v15[3] = &unk_100514B88;
   objc_copyWeak(&v17, buf);
-  v14 = v6;
+  v14 = completionCopy;
   v15[4] = self;
   v16 = v14;
-  [v13 requestTemporaryFullAccuracyAuthorizationWithPurposeKey:@"generic" completion:v15];
+  [_locationManager requestTemporaryFullAccuracyAuthorizationWithPurposeKey:@"generic" completion:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
 }
 
-- (void)requestAuthorizationWithStyle:(unint64_t)a3 timeout:(double)a4 completion:(id)a5
+- (void)requestAuthorizationWithStyle:(unint64_t)style timeout:(double)timeout completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [NSNumber numberWithUnsignedInteger:a3];
+    v11 = [NSNumber numberWithUnsignedInteger:style];
     *buf = 136315650;
     v19 = "[ADLocationManager requestAuthorizationWithStyle:timeout:completion:]";
     v20 = 2112;
     v21 = v11;
     v22 = 2048;
-    v23 = a4;
+    timeoutCopy = timeout;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Received location authorization request with style: %@, timeout: %.5g", buf, 0x20u);
   }
 
@@ -1027,16 +1027,16 @@ LABEL_6:
   v14[2] = sub_1001A72B0;
   v14[3] = &unk_100517610;
   v14[4] = self;
-  v15 = v8;
-  v16 = a4;
-  v17 = a3;
-  v13 = v8;
+  v15 = completionCopy;
+  timeoutCopy2 = timeout;
+  styleCopy = style;
+  v13 = completionCopy;
   dispatch_async(internalQueue, v14);
 }
 
-- (void)currentAuthorizationStyle:(id)a3
+- (void)currentAuthorizationStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
   {
@@ -1051,15 +1051,15 @@ LABEL_6:
   v8[2] = sub_1001A76FC;
   v8[3] = &unk_10051E038;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = styleCopy;
+  v7 = styleCopy;
   dispatch_async(internalQueue, v8);
 }
 
-- (void)drainLocationFetchRequestsWithPossibleError:(id)a3
+- (void)drainLocationFetchRequestsWithPossibleError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v5 = AFSiriLogContextLocation;
     if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
@@ -1067,7 +1067,7 @@ LABEL_6:
       *buf = 136315394;
       v36 = "[ADLocationManager drainLocationFetchRequestsWithPossibleError:]";
       v37 = 2112;
-      v38 = v4;
+      v38 = errorCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Draining location fetch requests with error %@", buf, 0x16u);
     }
 
@@ -1090,8 +1090,8 @@ LABEL_6:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v29 + 1) + 8 * i) completion];
-          (v11)[2](v11, 0, v4);
+          completion = [*(*(&v29 + 1) + 8 * i) completion];
+          (completion)[2](completion, 0, errorCopy);
         }
 
         v8 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -1105,8 +1105,8 @@ LABEL_6:
 
   else
   {
-    v12 = [(ADLocationManager *)self lastShiftedLocation];
-    if (v12)
+    lastShiftedLocation = [(ADLocationManager *)self lastShiftedLocation];
+    if (lastShiftedLocation)
     {
       v13 = [(NSMutableSet *)self->_locationFetchRequests copy];
       v25 = 0u;
@@ -1131,17 +1131,17 @@ LABEL_6:
             v19 = *(*(&v25 + 1) + 8 * j);
             if (![v19 style])
             {
-              [v12 horizontalAccuracy];
+              [lastShiftedLocation horizontalAccuracy];
               [v19 desiredAccuracy];
             }
 
-            [v12 horizontalAccuracy];
+            [lastShiftedLocation horizontalAccuracy];
             v21 = v20;
             [v19 desiredAccuracy];
             if (v21 <= v22)
             {
-              v23 = [v19 completion];
-              (v23)[2](v23, v12, 0);
+              completion2 = [v19 completion];
+              (completion2)[2](completion2, lastShiftedLocation, 0);
 
               [(NSMutableSet *)self->_locationFetchRequests removeObject:v19];
             }
@@ -1167,10 +1167,10 @@ LABEL_6:
   }
 }
 
-- (void)drainAuthorizationRequestCompletionsWithPossibleError:(id)a3
+- (void)drainAuthorizationRequestCompletionsWithPossibleError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v5 = AFSiriLogContextLocation;
     if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
@@ -1178,7 +1178,7 @@ LABEL_6:
       *buf = 136315394;
       v26 = "[ADLocationManager drainAuthorizationRequestCompletionsWithPossibleError:]";
       v27 = 2112;
-      v28 = v4;
+      v28 = errorCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Draining authorization requests with error %@", buf, 0x16u);
     }
 
@@ -1246,100 +1246,100 @@ LABEL_6:
   [(NSMutableSet *)self->_authorizationRequestCompletions removeAllObjects];
 }
 
-- (void)scheduleLocationFetchRequestTimeoutForRequest:(id)a3 timeout:(double)a4
+- (void)scheduleLocationFetchRequestTimeoutForRequest:(id)request timeout:(double)timeout
 {
-  v6 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
-  v7 = dispatch_time(0, (a4 * 1000000000.0));
+  v7 = dispatch_time(0, (timeout * 1000000000.0));
   internalQueue = self->_internalQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001A7E78;
   v10[3] = &unk_1005177E8;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = self;
-  v9 = v6;
+  v11 = requestCopy;
+  selfCopy = self;
+  v9 = requestCopy;
   dispatch_after(v7, internalQueue, v10);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)scheduleAuthorizationRequestTimeoutForCompletionBlock:(id)a3 timeout:(double)a4
+- (void)scheduleAuthorizationRequestTimeoutForCompletionBlock:(id)block timeout:(double)timeout
 {
-  v6 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  v7 = dispatch_time(0, (a4 * 1000000000.0));
+  v7 = dispatch_time(0, (timeout * 1000000000.0));
   internalQueue = self->_internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A8060;
   block[3] = &unk_100515FF0;
   objc_copyWeak(&v12, &location);
-  v11 = v6;
-  v9 = v6;
+  v11 = blockCopy;
+  v9 = blockCopy;
   dispatch_after(v7, internalQueue, block);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)getRedactedContextForContextSnapshot:(id)a3 metadata:(id)a4 privacyPolicy:(int64_t)a5 completion:(id)a6
+- (void)getRedactedContextForContextSnapshot:(id)snapshot metadata:(id)metadata privacyPolicy:(int64_t)policy completion:(id)completion
 {
-  v6 = *(a6 + 2);
-  if (a5 == 10)
+  v6 = *(completion + 2);
+  if (policy == 10)
   {
-    v6(a6, a3, a4);
+    v6(completion, snapshot, metadata);
   }
 
   else
   {
-    (v6)(a6, 0, 0, a4);
+    (v6)(completion, 0, 0, metadata);
   }
 }
 
-- (void)dismissedAllVisibleAssistantUIForReason:(id)a3
+- (void)dismissedAllVisibleAssistantUIForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   internalQueue = self->_internalQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001A8280;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)showingVisibleAssistantUIForReason:(id)a3 completion:(id)a4
+- (void)showingVisibleAssistantUIForReason:(id)reason completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A8410;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = reasonCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = reasonCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)updateLocationForCommand:(id)a3 completion:(id)a4
+- (void)updateLocationForCommand:(id)command completion:(id)completion
 {
-  v6 = a3;
+  commandCopy = command;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001A86E4;
   v15[3] = &unk_100514B40;
   v15[4] = self;
-  v16 = a4;
-  v7 = v16;
+  completionCopy = completion;
+  v7 = completionCopy;
   v8 = objc_retainBlock(v15);
   internalQueue = self->_internalQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1347,22 +1347,22 @@ LABEL_6:
   block[2] = sub_1001A8884;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v13 = v6;
+  v13 = commandCopy;
   v14 = v8;
   v10 = v8;
-  v11 = v6;
+  v11 = commandCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (BOOL)shouldSendLocationToServer:(id)a3 forAceCommand:(id)a4
+- (BOOL)shouldSendLocationToServer:(id)server forAceCommand:(id)command
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  serverCopy = server;
+  commandCopy = command;
+  v8 = commandCopy;
+  if (commandCopy)
   {
-    v9 = [v7 maxAge];
-    v10 = [v6 _af_isOlderThanAge:v9];
+    maxAge = [commandCopy maxAge];
+    v10 = [serverCopy _af_isOlderThanAge:maxAge];
 
     v11 = AFSiriLogContextLocation;
     v12 = os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO);
@@ -1428,8 +1428,8 @@ LABEL_18:
       goto LABEL_10;
     }
 
-    v19 = [(ADLocationManager *)self locationSentToServer];
-    if (v19)
+    locationSentToServer = [(ADLocationManager *)self locationSentToServer];
+    if (locationSentToServer)
     {
       if ([(ADLocationManager *)self isNavigating])
       {
@@ -1441,9 +1441,9 @@ LABEL_18:
         v20 = 5.0;
       }
 
-      v21 = [v6 timestamp];
-      v22 = [v19 timestamp];
-      [v21 timeIntervalSinceDate:v22];
+      timestamp = [serverCopy timestamp];
+      timestamp2 = [locationSentToServer timestamp];
+      [timestamp timeIntervalSinceDate:timestamp2];
       v24 = v23;
 
       if (v24 - v20 <= 2.22044605e-16)
@@ -1463,9 +1463,9 @@ LABEL_18:
         goto LABEL_39;
       }
 
-      [v6 horizontalAccuracy];
+      [serverCopy horizontalAccuracy];
       v26 = v25;
-      [v19 horizontalAccuracy];
+      [locationSentToServer horizontalAccuracy];
       if (v26 - v27 < -2.22044605e-16)
       {
         v28 = AFSiriLogContextLocation;
@@ -1473,9 +1473,9 @@ LABEL_18:
         if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
         {
           v29 = v28;
-          [v6 horizontalAccuracy];
+          [serverCopy horizontalAccuracy];
           v31 = v30;
-          [v19 horizontalAccuracy];
+          [locationSentToServer horizontalAccuracy];
           v44 = 136315650;
           v45 = "[ADLocationManager shouldSendLocationToServer:forAceCommand:]";
           v46 = 2048;
@@ -1488,8 +1488,8 @@ LABEL_18:
         goto LABEL_40;
       }
 
-      [v6 horizontalAccuracy];
-      if (v36 - kCLLocationAccuracyHundredMeters <= 2.22044605e-16 && ([v19 horizontalAccuracy], v37 - kCLLocationAccuracyHundredMeters <= 2.22044605e-16) && (objc_msgSend(v19, "distanceFromLocation:", v6), v38 + -10.0 >= 2.22044605e-16))
+      [serverCopy horizontalAccuracy];
+      if (v36 - kCLLocationAccuracyHundredMeters <= 2.22044605e-16 && ([locationSentToServer horizontalAccuracy], v37 - kCLLocationAccuracyHundredMeters <= 2.22044605e-16) && (objc_msgSend(locationSentToServer, "distanceFromLocation:", serverCopy), v38 + -10.0 >= 2.22044605e-16))
       {
         v33 = AFSiriLogContextLocation;
         v15 = 1;
@@ -1505,8 +1505,8 @@ LABEL_18:
 
       else
       {
-        [v6 verticalAccuracy];
-        if (v39 + -30.0 > 2.22044605e-16 || ([v19 verticalAccuracy], v40 + -30.0 > 2.22044605e-16) || (objc_msgSend(v6, "altitude"), v42 = v41, objc_msgSend(v19, "altitude"), vabdd_f64(v42, v43) < 10.0))
+        [serverCopy verticalAccuracy];
+        if (v39 + -30.0 > 2.22044605e-16 || ([locationSentToServer verticalAccuracy], v40 + -30.0 > 2.22044605e-16) || (objc_msgSend(serverCopy, "altitude"), v42 = v41, objc_msgSend(locationSentToServer, "altitude"), vabdd_f64(v42, v43) < 10.0))
         {
 LABEL_39:
           v15 = 0;
@@ -1562,32 +1562,32 @@ LABEL_19:
   return v15;
 }
 
-- (void)updateLocationSnapshotWithCompletion:(id)a3
+- (void)updateLocationSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001A9314;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = [(ADLocationManager *)self currentState];
+  authorizationCopy = authorization;
+  currentState = [(ADLocationManager *)self currentState];
   v7 = v6;
-  v8 = v4;
+  v8 = authorizationCopy;
   v9 = +[CLLocationManager locationServicesEnabled];
-  v10 = [v8 authorizationStatus];
-  v11 = [v8 accuracyAuthorization];
+  authorizationStatus = [v8 authorizationStatus];
+  accuracyAuthorization = [v8 accuracyAuthorization];
 
-  v22 = v10;
-  [(ADLocationManager *)self setCurrentState:v9 | (v10 << 32), v11];
+  v22 = authorizationStatus;
+  [(ADLocationManager *)self setCurrentState:v9 | (authorizationStatus << 32), accuracyAuthorization];
   if (!self->_isLocationManagerReady)
   {
     self->_isLocationManagerReady = 1;
@@ -1607,25 +1607,25 @@ LABEL_19:
   v26[1] = 3221225472;
   v26[2] = sub_1001A9810;
   v26[3] = &unk_100514AB8;
-  v26[6] = v11;
-  v26[7] = v5;
+  v26[6] = accuracyAuthorization;
+  v26[7] = currentState;
   v26[8] = v7;
   v26[4] = self;
-  v26[5] = v9 | (v10 << 32);
+  v26[5] = v9 | (authorizationStatus << 32);
   [v13 logEventWithType:1929 contextProvider:v26 contextProvidingQueue:self->_internalQueue];
 
-  if ((v5 & 0xFFFFFFFF00000001) != (v9 | (v10 << 32)) || v11 != v7)
+  if ((currentState & 0xFFFFFFFF00000001) != (v9 | (authorizationStatus << 32)) || accuracyAuthorization != v7)
   {
     v14 = AFSiriLogContextLocation;
     if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
     {
       v15 = v14;
       v16 = [NSNumber numberWithBool:v9];
-      v17 = [NSNumber numberWithInt:v11 == 0];
+      v17 = [NSNumber numberWithInt:accuracyAuthorization == 0];
       *buf = 136315906;
       v28 = "[ADLocationManager locationManagerDidChangeAuthorization:]";
       v29 = 1024;
-      v30 = v10;
+      v30 = authorizationStatus;
       v31 = 2112;
       v32 = v16;
       v33 = 2112;
@@ -1633,32 +1633,32 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s Authorization status changed to %d, isEnabled: %@, preciseLocationEnabled: %@", buf, 0x26u);
     }
 
-    v18 = HIDWORD(v5);
-    if (v10 == 1 || v18 == 1)
+    v18 = HIDWORD(currentState);
+    if (authorizationStatus == 1 || v18 == 1)
     {
       v19 = +[NSNotificationCenter defaultCenter];
       [v19 postNotificationName:@"ADLocationRestrictionDidChangeNotification" object:0];
     }
 
     [(ADLocationManager *)self _cancelLocationSLATimer];
-    if (v10 >= 3)
+    if (authorizationStatus >= 3)
     {
-      if (v10 - 3 >= 2)
+      if (authorizationStatus - 3 >= 2)
       {
 LABEL_31:
         [(ADLocationManager *)self drainAuthorizationRequestCompletionsWithPossibleError:0];
         goto LABEL_32;
       }
 
-      v20 = [(ADLocationManager *)self locationForSnapshot];
-      if (v20)
+      locationForSnapshot = [(ADLocationManager *)self locationForSnapshot];
+      if (locationForSnapshot)
       {
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
         v24[2] = sub_1001A99F8;
         v24[3] = &unk_10051D4C8;
         v24[4] = self;
-        [(ADLocationManager *)self _generateResponseForGetRequestOriginCommand:0 withUnshiftedLocation:v20 completion:v24];
+        [(ADLocationManager *)self _generateResponseForGetRequestOriginCommand:0 withUnshiftedLocation:locationForSnapshot completion:v24];
       }
 
       else
@@ -1673,7 +1673,7 @@ LABEL_31:
 
       if (v18 == v22)
       {
-        if (v7 && !v11)
+        if (v7 && !accuracyAuthorization)
         {
           [(ADLocationManager *)self forceLocationUpdateFromCoreLocation];
         }
@@ -1688,7 +1688,7 @@ LABEL_31:
     else
     {
       [(ADLocationManager *)self setLastShiftedLocation:0];
-      v20 = self->_requestOriginCommand;
+      locationForSnapshot = self->_requestOriginCommand;
       v21 = objc_retainBlock(self->_updateCompletion);
       if (!v21)
       {
@@ -1702,12 +1702,12 @@ LABEL_31:
 
       if (v9)
       {
-        [(ADLocationManager *)self _generateLocationDeniedResponseForGetRequestOriginCommand:v20 completion:v21];
+        [(ADLocationManager *)self _generateLocationDeniedResponseForGetRequestOriginCommand:locationForSnapshot completion:v21];
       }
 
       else
       {
-        [(ADLocationManager *)self _generateLocationDisabledResponseForGetRequestOriginCommand:v20 completion:v21];
+        [(ADLocationManager *)self _generateLocationDisabledResponseForGetRequestOriginCommand:locationForSnapshot completion:v21];
       }
 
       if (self->_updateCompletion)
@@ -1722,17 +1722,17 @@ LABEL_31:
 LABEL_32:
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   v8 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
     *&buf[4] = "[ADLocationManager locationManager:didFailWithError:]";
     v32 = 2114;
-    v33 = v7;
+    v33 = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s %{public}@", buf, 0x16u);
   }
 
@@ -1741,13 +1741,13 @@ LABEL_32:
   v26 = 3221225472;
   v27 = sub_1001A9FC0;
   v28 = &unk_10051A1A0;
-  v10 = v7;
+  v10 = errorCopy;
   v29 = v10;
-  v30 = self;
+  selfCopy = self;
   [v9 logEventWithType:1929 contextProvider:&v25 contextProvidingQueue:self->_internalQueue];
 
-  v11 = [v10 domain];
-  v12 = [v11 isEqualToString:kCLErrorDomain];
+  domain = [v10 domain];
+  v12 = [domain isEqualToString:kCLErrorDomain];
 
   if (!v12)
   {
@@ -1756,8 +1756,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = [v10 code];
-  if (!v13)
+  code = [v10 code];
+  if (!code)
   {
     if (![objc_opt_class() _shouldUseOneshotLocationRequest])
     {
@@ -1767,10 +1767,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v14 = v13;
-  if (v13 == 1)
+  v14 = code;
+  if (code == 1)
   {
-    [v6 stopUpdatingLocation];
+    [managerCopy stopUpdatingLocation];
   }
 
 LABEL_9:
@@ -1839,18 +1839,18 @@ LABEL_19:
 LABEL_21:
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [v6 lastObject];
+  managerCopy = manager;
+  locationsCopy = locations;
+  lastObject = [locationsCopy lastObject];
   v8 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
   {
     *buf = 136315395;
     v28 = "[ADLocationManager locationManager:didUpdateLocations:]";
     v29 = 2113;
-    v30 = v6;
+    v30 = locationsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s %{private}@", buf, 0x16u);
   }
 
@@ -1859,28 +1859,28 @@ LABEL_21:
   [(ADLocationManager *)self _cancelLocationSLATimer];
   v10 = +[AFAnalytics sharedAnalytics];
   v25[0] = @"locationTimestamp";
-  v11 = [v7 timestamp];
-  [v11 timeIntervalSince1970];
+  timestamp = [lastObject timestamp];
+  [timestamp timeIntervalSince1970];
   v12 = [NSNumber numberWithDouble:?];
   v26[0] = v12;
   v25[1] = @"horizontalAccuracy";
-  [v7 horizontalAccuracy];
+  [lastObject horizontalAccuracy];
   v13 = [NSNumber numberWithDouble:?];
   v26[1] = v13;
   v25[2] = @"refID";
-  v14 = [(SAGetRequestOrigin *)self->_requestOriginCommand aceId];
-  v15 = v14;
+  aceId = [(SAGetRequestOrigin *)self->_requestOriginCommand aceId];
+  v15 = aceId;
   v16 = @"NULL";
-  if (v14)
+  if (aceId)
   {
-    v16 = v14;
+    v16 = aceId;
   }
 
   v26[2] = v16;
-  v17 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:3, v18];
-  [v10 logEventWithType:1929 machAbsoluteTime:v9 context:v17];
+  managerCopy = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:3, managerCopy];
+  [v10 logEventWithType:1929 machAbsoluteTime:v9 context:managerCopy];
 
-  [(ADLocationManager *)self _processUpdatedLocation:v7];
+  [(ADLocationManager *)self _processUpdatedLocation:lastObject];
   objc_initWeak(buf, self);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
@@ -1894,13 +1894,13 @@ LABEL_21:
   v21[3] = &unk_100514A90;
   objc_copyWeak(v22, buf);
   v22[1] = a2;
-  [(ADLocationManager *)self shiftLocationWithTimeout:v7 timeoutHandler:v23 completion:v21];
+  [(ADLocationManager *)self shiftLocationWithTimeout:lastObject timeoutHandler:v23 completion:v21];
   objc_destroyWeak(v22);
   objc_destroyWeak(v24);
   objc_destroyWeak(buf);
 }
 
-- (void)peerLocationConnectionSuggestsClearingCachedLocation:(id)a3
+- (void)peerLocationConnectionSuggestsClearingCachedLocation:(id)location
 {
   v4 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
@@ -1919,16 +1919,16 @@ LABEL_21:
   dispatch_async(internalQueue, block);
 }
 
-- (void)peerLocationConnection:(id)a3 didReceiveUnsolicitedLocation:(id)a4
+- (void)peerLocationConnection:(id)connection didReceiveUnsolicitedLocation:(id)location
 {
-  v5 = a4;
+  locationCopy = location;
   v6 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
   {
     *buf = 136315395;
     v12 = "[ADLocationManager peerLocationConnection:didReceiveUnsolicitedLocation:]";
     v13 = 2113;
-    v14 = v5;
+    v14 = locationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %{private}@", buf, 0x16u);
   }
 
@@ -1938,25 +1938,25 @@ LABEL_21:
   v9[2] = sub_1001AA988;
   v9[3] = &unk_10051E010;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = locationCopy;
+  v8 = locationCopy;
   dispatch_async(internalQueue, v9);
 }
 
-- (void)_processUpdatedLocation:(id)a3
+- (void)_processUpdatedLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(ADLocationManager *)self lastLocation];
+  locationCopy = location;
+  lastLocation = [(ADLocationManager *)self lastLocation];
   v6 = self->_requestOriginCommand;
-  if ([(ADLocationManager *)self shouldSendLocationToServer:v4 forAceCommand:v6])
+  if ([(ADLocationManager *)self shouldSendLocationToServer:locationCopy forAceCommand:v6])
   {
     [(ADLocationManager *)self _cancelLocationTimer];
-    [(ADLocationManager *)self _generateResponseForGetRequestOriginCommand:v6 withUnshiftedLocation:v4 completion:?];
+    [(ADLocationManager *)self _generateResponseForGetRequestOriginCommand:v6 withUnshiftedLocation:locationCopy completion:?];
     [(ADLocationManager *)self _clearCompletionState];
   }
 
-  v7 = v4;
-  v8 = v5;
+  v7 = locationCopy;
+  v8 = lastLocation;
   v9 = v8;
   v10 = v8;
   if (v7)
@@ -1982,10 +1982,10 @@ LABEL_21:
   [(ADLocationManager *)self updateLocationSnapshot];
 }
 
-- (void)_requestLocationForGetRequestOrigin:(id)a3 completion:(id)a4
+- (void)_requestLocationForGetRequestOrigin:(id)origin completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  originCopy = origin;
+  completionCopy = completion;
   v8 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
   {
@@ -1994,11 +1994,11 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Requesting best location", &v13, 0xCu);
   }
 
-  v9 = [v6 copy];
+  v9 = [originCopy copy];
   requestOriginCommand = self->_requestOriginCommand;
   self->_requestOriginCommand = v9;
 
-  v11 = objc_retainBlock(v7);
+  v11 = objc_retainBlock(completionCopy);
   updateCompletion = self->_updateCompletion;
   self->_updateCompletion = v11;
 
@@ -2009,8 +2009,8 @@ LABEL_21:
 {
   if (!self->_locationTimerSource)
   {
-    v3 = [(ADLocationManager *)self _locationManager];
-    [v3 requestLocation];
+    _locationManager = [(ADLocationManager *)self _locationManager];
+    [_locationManager requestLocation];
 
     if (AFIsNano())
     {
@@ -2022,23 +2022,23 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s Asking for location from peer", buf, 0xCu);
       }
 
-      v5 = [(ADLocationManager *)self _peerLocationConnection];
+      _peerLocationConnection = [(ADLocationManager *)self _peerLocationConnection];
       v6[0] = _NSConcreteStackBlock;
       v6[1] = 3221225472;
       v6[2] = sub_1001AAF1C;
       v6[3] = &unk_100514A68;
       v6[4] = self;
-      [v5 getBestLocationWithCompletion:v6];
+      [_peerLocationConnection getBestLocationWithCompletion:v6];
     }
   }
 
   [(ADLocationManager *)self _scheduleLocationTimerWithTimeout:10.0];
 }
 
-- (void)_startMonitoringLocationForGetRequestOrigin:(id)a3 completion:(id)a4
+- (void)_startMonitoringLocationForGetRequestOrigin:(id)origin completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  originCopy = origin;
+  completionCopy = completion;
   v8 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
   {
@@ -2047,18 +2047,18 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Starting location monitoring", &v16, 0xCu);
   }
 
-  v9 = [v6 copy];
+  v9 = [originCopy copy];
   requestOriginCommand = self->_requestOriginCommand;
   self->_requestOriginCommand = v9;
 
-  v11 = objc_retainBlock(v7);
+  v11 = objc_retainBlock(completionCopy);
   updateCompletion = self->_updateCompletion;
   self->_updateCompletion = v11;
 
-  [v6 desiredCLAccuracy];
+  [originCopy desiredCLAccuracy];
   [(ADLocationManager *)self _startMonitoringLocationWithDesiredAccuracy:?];
-  v13 = [v6 searchTimeout];
-  [v13 doubleValue];
+  searchTimeout = [originCopy searchTimeout];
+  [searchTimeout doubleValue];
   v15 = v14;
 
   if (v15 > 0.0)
@@ -2067,32 +2067,32 @@ LABEL_21:
   }
 }
 
-- (void)_startMonitoringLocationWithDesiredAccuracy:(double)a3
+- (void)_startMonitoringLocationWithDesiredAccuracy:(double)accuracy
 {
   v5 = +[AFAnalytics sharedAnalytics];
   v11[0] = @"desiredAccuracy";
-  v6 = [NSNumber numberWithDouble:a3];
+  v6 = [NSNumber numberWithDouble:accuracy];
   v11[1] = @"refID";
   v12[0] = v6;
-  v7 = [(SAGetRequestOrigin *)self->_requestOriginCommand aceId];
-  v8 = v7;
+  aceId = [(SAGetRequestOrigin *)self->_requestOriginCommand aceId];
+  v8 = aceId;
   v9 = @"NULL";
-  if (v7)
+  if (aceId)
   {
-    v9 = v7;
+    v9 = aceId;
   }
 
   v12[1] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
   [v5 logEventWithType:1928 context:v10];
 
-  [(ADLocationManager *)self upgradeAccuracyIfNeeded:a3];
+  [(ADLocationManager *)self upgradeAccuracyIfNeeded:accuracy];
   [(ADLocationManager *)self startLocationUpdateSession];
   [(ADLocationManager *)self setLastLocation:0];
   [(ADLocationManager *)self _scheduleLocationSLATimer];
 }
 
-- (void)_scheduleLocationTimerWithTimeout:(double)a3
+- (void)_scheduleLocationTimerWithTimeout:(double)timeout
 {
   [(ADLocationManager *)self _cancelLocationTimer];
   v5 = AFSiriLogContextLocation;
@@ -2101,7 +2101,7 @@ LABEL_21:
     *buf = 136315394;
     v13 = "[ADLocationManager _scheduleLocationTimerWithTimeout:]";
     v14 = 2048;
-    v15 = a3;
+    timeoutCopy = timeout;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Scheduling location timer for %lf", buf, 0x16u);
   }
 
@@ -2110,7 +2110,7 @@ LABEL_21:
   self->_locationTimerSource = v6;
 
   v8 = self->_locationTimerSource;
-  v9 = dispatch_time(0, (a3 * 1000000000.0));
+  v9 = dispatch_time(0, (timeout * 1000000000.0));
   dispatch_source_set_timer(v8, v9, 0xFFFFFFFFFFFFFFFFLL, 0);
   v10 = self->_locationTimerSource;
   v11[0] = _NSConcreteStackBlock;
@@ -2118,7 +2118,7 @@ LABEL_21:
   v11[2] = sub_1001AB4D8;
   v11[3] = &unk_10051D770;
   v11[4] = self;
-  *&v11[5] = a3;
+  *&v11[5] = timeout;
   dispatch_source_set_event_handler(v10, v11);
   dispatch_resume(self->_locationTimerSource);
 }
@@ -2143,15 +2143,15 @@ LABEL_21:
   }
 }
 
-- (void)_triggerLocationABCForSubtype:(id)a3
+- (void)_triggerLocationABCForSubtype:(id)subtype
 {
-  v4 = a3;
-  v5 = [(SAGetRequestOrigin *)self->_requestOriginCommand aceId];
-  v6 = v5;
-  if (v5)
+  subtypeCopy = subtype;
+  aceId = [(SAGetRequestOrigin *)self->_requestOriginCommand aceId];
+  v6 = aceId;
+  if (aceId)
   {
     v15 = @"refID";
-    v16 = v5;
+    v16 = aceId;
     v7 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
   }
 
@@ -2166,7 +2166,7 @@ LABEL_21:
     v9 = 136315650;
     v10 = "[ADLocationManager _triggerLocationABCForSubtype:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = subtypeCopy;
     v13 = 2112;
     v14 = v7;
     _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s SERIOUS PROBLEM FETCHING LOCATION %@ %@", &v9, 0x20u);
@@ -2182,36 +2182,36 @@ LABEL_21:
   self->_requestOriginCommand = 0;
 }
 
-- (void)_generateResponseForGetRequestOriginCommand:(id)a3 withStatus:(id)a4 completion:(id)a5
+- (void)_generateResponseForGetRequestOriginCommand:(id)command withStatus:(id)status completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
+    completionCopy = completion;
+    statusCopy = status;
+    commandCopy = command;
     v15 = objc_opt_new();
-    [v15 setStatus:v9];
+    [v15 setStatus:statusCopy];
 
     [(ADLocationManager *)self currentState];
     v12 = [NSNumber numberWithInt:v11 == 0];
     [v15 setPreciseLocationEnabled:v12];
 
-    v13 = [v10 aceId];
-    [v15 setRefId:v13];
+    aceId = [commandCopy aceId];
+    [v15 setRefId:aceId];
 
-    v14 = [v10 desiredAccuracy];
+    desiredAccuracy = [commandCopy desiredAccuracy];
 
-    [v15 setDesiredAccuracy:v14];
-    v8[2](v8, v15);
+    [v15 setDesiredAccuracy:desiredAccuracy];
+    completionCopy[2](completionCopy, v15);
   }
 }
 
-- (void)_generateResponseForGetRequestOriginCommand:(id)a3 withUnshiftedLocation:(id)a4 completion:(id)a5
+- (void)_generateResponseForGetRequestOriginCommand:(id)command withUnshiftedLocation:(id)location completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  commandCopy = command;
+  locationCopy = location;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v12 = AFSiriLogContextLocation;
     if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
@@ -2219,7 +2219,7 @@ LABEL_21:
       *buf = 136315395;
       v24 = "[ADLocationManager _generateResponseForGetRequestOriginCommand:withUnshiftedLocation:completion:]";
       v25 = 2113;
-      v26 = v10;
+      v26 = locationCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s Attempting to shift from location: %{private}@", buf, 0x16u);
     }
 
@@ -2230,9 +2230,9 @@ LABEL_21:
     v19[3] = &unk_100514A18;
     objc_copyWeak(v22, buf);
     v22[1] = a2;
-    v13 = v9;
+    v13 = commandCopy;
     v20 = v13;
-    v14 = v11;
+    v14 = completionCopy;
     v21 = v14;
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -2242,7 +2242,7 @@ LABEL_21:
     v18[1] = a2;
     v16 = v13;
     v17 = v14;
-    [(ADLocationManager *)self shiftLocationWithTimeout:v10 timeoutHandler:v19 completion:v15];
+    [(ADLocationManager *)self shiftLocationWithTimeout:locationCopy timeoutHandler:v19 completion:v15];
 
     objc_destroyWeak(v18);
     objc_destroyWeak(v22);
@@ -2250,11 +2250,11 @@ LABEL_21:
   }
 }
 
-- (void)shiftLocationWithTimeout:(id)a3 timeoutHandler:(id)a4 completion:(id)a5
+- (void)shiftLocationWithTimeout:(id)timeout timeoutHandler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  timeoutCopy = timeout;
+  handlerCopy = handler;
+  completionCopy = completion;
   v11 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
   {
@@ -2274,7 +2274,7 @@ LABEL_21:
   block[2] = sub_1001AC364;
   block[3] = &unk_10051C8E0;
   p_buf = &buf;
-  v14 = v9;
+  v14 = handlerCopy;
   v20 = v14;
   dispatch_after(v12, internalQueue, block);
   v16[0] = _NSConcreteStackBlock;
@@ -2282,18 +2282,18 @@ LABEL_21:
   v16[2] = sub_1001AC438;
   v16[3] = &unk_1005149F0;
   v18 = &buf;
-  v15 = v10;
+  v15 = completionCopy;
   v17 = v15;
-  [(ADLocationManager *)self shiftLocation:v8 completion:v16];
+  [(ADLocationManager *)self shiftLocation:timeoutCopy completion:v16];
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)shiftLocation:(id)a3 completion:(id)a4
+- (void)shiftLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 referenceFrame] == 2)
+  locationCopy = location;
+  completionCopy = completion;
+  if ([locationCopy referenceFrame] == 2)
   {
     v8 = AFSiriLogContextLocation;
     if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
@@ -2309,10 +2309,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [v6 coordinate];
+  [locationCopy coordinate];
   v11 = v10;
   v13 = v12;
-  [v6 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v15 = v14;
   if (([GEOLocationShifter isLocationShiftRequiredForCoordinate:v11, v13]& 1) == 0)
   {
@@ -2326,55 +2326,55 @@ LABEL_8:
     }
 
 LABEL_9:
-    v7[2](v7, v6, 0);
+    completionCopy[2](completionCopy, locationCopy, 0);
     goto LABEL_10;
   }
 
-  v16 = [(ADLocationManager *)self _locationShifter];
+  _locationShifter = [(ADLocationManager *)self _locationShifter];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1001AC6D8;
   v19[3] = &unk_1005149A8;
-  v20 = v6;
-  v21 = v7;
+  v20 = locationCopy;
+  v21 = completionCopy;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1001AC854;
   v17[3] = &unk_10051D2F0;
   v18 = v21;
-  [v16 shiftCoordinate:v19 accuracy:&stru_1005149C8 withCompletionHandler:v17 mustGoToNetworkCallback:self->_internalQueue errorHandler:v11 callbackQueue:{v13, v15}];
+  [_locationShifter shiftCoordinate:v19 accuracy:&stru_1005149C8 withCompletionHandler:v17 mustGoToNetworkCallback:self->_internalQueue errorHandler:v11 callbackQueue:{v13, v15}];
 
 LABEL_10:
 }
 
-- (id)shiftLocationUsingCachedShifterFunction:(id)a3
+- (id)shiftLocationUsingCachedShifterFunction:(id)function
 {
-  v4 = a3;
-  if ([v4 referenceFrame] == 2 || (objc_msgSend(v4, "coordinate"), v6 = v5, v8 = v7, v28 = v5, v29 = v7, objc_msgSend(v4, "horizontalAccuracy"), v10 = v9, v27 = v9, (+[GEOLocationShifter isLocationShiftRequiredForCoordinate:](GEOLocationShifter, "isLocationShiftRequiredForCoordinate:", v6, v8) & 1) == 0))
+  functionCopy = function;
+  if ([functionCopy referenceFrame] == 2 || (objc_msgSend(functionCopy, "coordinate"), v6 = v5, v8 = v7, v28 = v5, v29 = v7, objc_msgSend(functionCopy, "horizontalAccuracy"), v10 = v9, v27 = v9, (+[GEOLocationShifter isLocationShiftRequiredForCoordinate:](GEOLocationShifter, "isLocationShiftRequiredForCoordinate:", v6, v8) & 1) == 0))
   {
-    v24 = v4;
+    v24 = functionCopy;
   }
 
   else
   {
-    v11 = [(ADLocationManager *)self _locationShifter];
-    v12 = [v11 shiftCoordinate:&v28 accuracy:&v27 shiftedCoordinate:v6 shiftedAccuracy:{v8, v10}];
+    _locationShifter = [(ADLocationManager *)self _locationShifter];
+    v12 = [_locationShifter shiftCoordinate:&v28 accuracy:&v27 shiftedCoordinate:v6 shiftedAccuracy:{v8, v10}];
 
     if (v12)
     {
       v13 = v27;
       v14 = v28;
       v15 = v29;
-      v16 = v4;
+      v16 = functionCopy;
       v17 = CLLocationCoordinate2DMake(v14, v15);
       v18 = [CLLocation alloc];
       [v16 altitude];
       v20 = v19;
       [v16 verticalAccuracy];
       v22 = v21;
-      v23 = [v16 timestamp];
+      timestamp = [v16 timestamp];
 
-      v24 = [v18 initWithCoordinate:v23 altitude:2 horizontalAccuracy:v17.latitude verticalAccuracy:v17.longitude timestamp:v20 referenceFrame:{v13, v22}];
+      v24 = [v18 initWithCoordinate:timestamp altitude:2 horizontalAccuracy:v17.latitude verticalAccuracy:v17.longitude timestamp:v20 referenceFrame:{v13, v22}];
     }
 
     else
@@ -2394,7 +2394,7 @@ LABEL_10:
   return v24;
 }
 
-- (void)navStatusChanged:(id)a3
+- (void)navStatusChanged:(id)changed
 {
   externalQueue = self->_externalQueue;
   block[0] = _NSConcreteStackBlock;
@@ -2435,11 +2435,11 @@ LABEL_10:
   return peerLocationConnection;
 }
 
-- (void)setLocationSentToServer:(id)a3
+- (void)setLocationSentToServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   os_unfair_lock_lock(&self->_locationSentToServerLock);
-  v5 = [v4 copy];
+  v5 = [serverCopy copy];
 
   locationSentToServer = self->_locationSentToServer;
   self->_locationSentToServer = v5;
@@ -2456,11 +2456,11 @@ LABEL_10:
   return v3;
 }
 
-- (void)setLastShiftedLocation:(id)a3
+- (void)setLastShiftedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   os_unfair_lock_lock(&self->_lastShiftedLocationLock);
-  v5 = [v4 copy];
+  v5 = [locationCopy copy];
 
   lastShiftedLocation = self->_lastShiftedLocation;
   self->_lastShiftedLocation = v5;
@@ -2468,11 +2468,11 @@ LABEL_10:
   os_unfair_lock_unlock(&self->_lastShiftedLocationLock);
 }
 
-- (void)setLastLocation:(id)a3
+- (void)setLastLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   os_unfair_lock_lock(&self->_lastLocationLock);
-  v5 = [v4 copy];
+  v5 = [locationCopy copy];
 
   lastLocation = self->_lastLocation;
   self->_lastLocation = v5;
@@ -2488,7 +2488,7 @@ LABEL_10:
     *buf = 136315394;
     v9 = "[ADLocationManager dealloc]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
   }
 
@@ -2515,9 +2515,9 @@ LABEL_10:
   [(ADLocationManager *)&v7 dealloc];
 }
 
-- (ADLocationManager)initWithSerialQueue:(id)a3
+- (ADLocationManager)initWithSerialQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v32.receiver = self;
   v32.super_class = ADLocationManager;
   v6 = [(ADLocationManager *)&v32 init];
@@ -2546,7 +2546,7 @@ LABEL_10:
     *(v6 + 19) = 0;
     *(v6 + 40) = 0;
     *(v6 + 195) = 1;
-    objc_storeStrong(v6 + 6, a3);
+    objc_storeStrong(v6 + 6, queue);
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_attr_make_with_qos_class(v10, QOS_CLASS_USER_INITIATED, 0);
 
@@ -2607,10 +2607,10 @@ LABEL_10:
   return v6;
 }
 
-- (void)fetchLocationAuthorization:(id)a3
+- (void)fetchLocationAuthorization:(id)authorization
 {
-  v5 = a3;
-  v6 = v5;
+  authorizationCopy = authorization;
+  v6 = authorizationCopy;
   if (self->_isSiriLocationServicesPromptingEnabled)
   {
     v7 = AFSiriLogContextLocation;
@@ -2647,7 +2647,7 @@ LABEL_7:
     }
   }
 
-  else if (v5)
+  else if (authorizationCopy)
   {
     v10 = self->_internalQueue;
     v13[0] = _NSConcreteStackBlock;
@@ -2655,7 +2655,7 @@ LABEL_7:
     v13[2] = sub_1001AD730;
     v13[3] = &unk_10051E038;
     v13[4] = self;
-    v14 = v5;
+    v14 = authorizationCopy;
     dispatch_async(v10, v13);
     v9 = v14;
     goto LABEL_7;

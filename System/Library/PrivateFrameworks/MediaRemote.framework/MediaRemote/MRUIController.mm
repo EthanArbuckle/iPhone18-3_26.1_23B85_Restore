@@ -4,21 +4,21 @@
 - (MRUIServerXPCProtocol)server;
 - (NSXPCConnection)xpcConnection;
 - (id)acquireQuickControlsAssertion;
-- (id)contextForActivityIdentifier:(id)a3;
+- (id)contextForActivityIdentifier:(id)identifier;
 - (void)_restoreState;
 - (void)acquireLockScreenControlsAssertion;
-- (void)acquireNowPlayingActivityAssertionForRouteIdentifier:(id)a3 withDuration:(int64_t)a4 preferredState:(int64_t)a5;
-- (void)acquireRouteRecommendationAssertionForIdentifiers:(id)a3;
+- (void)acquireNowPlayingActivityAssertionForRouteIdentifier:(id)identifier withDuration:(int64_t)duration preferredState:(int64_t)state;
+- (void)acquireRouteRecommendationAssertionForIdentifiers:(id)identifiers;
 - (void)acquireScreenMirroringQuickControlsAssertion;
 - (void)dealloc;
-- (void)presentVolumeHUDWithRequest:(id)a3;
+- (void)presentVolumeHUDWithRequest:(id)request;
 - (void)releaseLockScreenControlsAssertion;
 - (void)releaseQuickControlsAssertion;
 - (void)releaseRouteRecommendationAssertion;
 - (void)releaseScreenMirroringQuickControlsAssertion;
-- (void)setPreferredState:(int64_t)a3;
-- (void)setPreferredState:(int64_t)a3 forBundleIdentifier:(id)a4;
-- (void)suppressPresentationOverBundleIdentifiers:(id)a3;
+- (void)setPreferredState:(int64_t)state;
+- (void)setPreferredState:(int64_t)state forBundleIdentifier:(id)identifier;
+- (void)suppressPresentationOverBundleIdentifiers:(id)identifiers;
 - (void)xpcConnection;
 @end
 
@@ -54,13 +54,13 @@
   v11 = *MEMORY[0x1E69E9840];
   if ([(MRUIController *)self hasUIAssertions])
   {
-    v3 = [(MRUIController *)self xpcConnection];
+    xpcConnection = [(MRUIController *)self xpcConnection];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __31__MRUIController__restoreState__block_invoke;
     v8[3] = &unk_1E769AFC0;
     v8[4] = self;
-    v4 = [v3 remoteObjectProxyWithErrorHandler:v8];
+    v4 = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
 
     if (v4)
     {
@@ -86,13 +86,13 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v10 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1A2860000, v5, OS_LOG_TYPE_DEFAULT, "[MRUIController][C] <%p> Failed to get server proxy to restore state. Giving up.", buf, 0xCu);
       }
 
       [(MRUIController *)self setShouldRestoreState:0];
-      v6 = [(MRUIController *)self xpcConnection];
-      [v6 invalidate];
+      xpcConnection2 = [(MRUIController *)self xpcConnection];
+      [xpcConnection2 invalidate];
     }
   }
 
@@ -142,10 +142,10 @@ void __31__MRUIController__restoreState__block_invoke(uint64_t a1, void *a2)
   if (!xpcConnection)
   {
     v4 = MRGetSharedService();
-    v5 = [v4 UIServerEndpoint];
-    if (v5)
+    uIServerEndpoint = [v4 UIServerEndpoint];
+    if (uIServerEndpoint)
     {
-      v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v5];
+      v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:uIServerEndpoint];
       v7 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F15C4110];
       v8 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F15C4170];
       v9 = [MEMORY[0x1E69B14E8] proxyWithObject:self protocol:&unk_1F15C4110];
@@ -244,13 +244,13 @@ void __31__MRUIController_xpcConnection__block_invoke_172(uint64_t a1)
 
 - (MRUIServerXPCProtocol)server
 {
-  v3 = [(MRUIController *)self xpcConnection];
+  xpcConnection = [(MRUIController *)self xpcConnection];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __24__MRUIController_server__block_invoke;
   v6[3] = &unk_1E769AFC0;
   v6[4] = self;
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v6];
+  v4 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
@@ -276,15 +276,15 @@ void __24__MRUIController_server__block_invoke(uint64_t a1, void *a2)
 - (void)acquireLockScreenControlsAssertion
 {
   [(MRUIController *)self setHasLockScreenControlsAssertion:1];
-  v3 = [(MRUIController *)self server];
-  [v3 acquireLockScreenControlsAssertionWithReply:&__block_literal_global_174];
+  server = [(MRUIController *)self server];
+  [server acquireLockScreenControlsAssertionWithReply:&__block_literal_global_174];
 }
 
 - (void)releaseLockScreenControlsAssertion
 {
   [(MRUIController *)self setHasLockScreenControlsAssertion:0];
-  v3 = [(MRUIController *)self server];
-  [v3 releaseLockScreenControlsAssertionWithReply:&__block_literal_global_176];
+  server = [(MRUIController *)self server];
+  [server releaseLockScreenControlsAssertionWithReply:&__block_literal_global_176];
 }
 
 - (id)acquireQuickControlsAssertion
@@ -296,13 +296,13 @@ void __24__MRUIController_server__block_invoke(uint64_t a1, void *a2)
   v11 = __Block_byref_object_dispose__39;
   v12 = 0;
   [(MRUIController *)self setHasQuickControlsAssertion:1];
-  v3 = [(MRUIController *)self server];
+  server = [(MRUIController *)self server];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__MRUIController_acquireQuickControlsAssertion__block_invoke;
   v6[3] = &unk_1E76A3470;
   v6[4] = &v7;
-  [v3 acquireQuickControlsAssertionWithReply:v6];
+  [server acquireQuickControlsAssertionWithReply:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -313,40 +313,40 @@ void __24__MRUIController_server__block_invoke(uint64_t a1, void *a2)
 - (void)releaseQuickControlsAssertion
 {
   [(MRUIController *)self setHasQuickControlsAssertion:0];
-  v3 = [(MRUIController *)self server];
-  [v3 releaseQuickControlsAssertionWithReply:&__block_literal_global_178_0];
+  server = [(MRUIController *)self server];
+  [server releaseQuickControlsAssertionWithReply:&__block_literal_global_178_0];
 }
 
 - (void)acquireScreenMirroringQuickControlsAssertion
 {
   [(MRUIController *)self setHasScreenMirroringQuickControlsAssertion:1];
-  v3 = [(MRUIController *)self server];
-  [v3 acquireScreenMirroringQuickControlsAssertionWithReply:&__block_literal_global_180];
+  server = [(MRUIController *)self server];
+  [server acquireScreenMirroringQuickControlsAssertionWithReply:&__block_literal_global_180];
 }
 
 - (void)releaseScreenMirroringQuickControlsAssertion
 {
   [(MRUIController *)self setHasScreenMirroringQuickControlsAssertion:0];
-  v3 = [(MRUIController *)self server];
-  [v3 releaseScreenMirroringQuickControlsAssertionWithReply:&__block_literal_global_182];
+  server = [(MRUIController *)self server];
+  [server releaseScreenMirroringQuickControlsAssertionWithReply:&__block_literal_global_182];
 }
 
-- (id)contextForActivityIdentifier:(id)a3
+- (id)contextForActivityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__39;
   v13 = __Block_byref_object_dispose__39;
   v14 = 0;
-  v5 = [(MRUIController *)self server];
+  server = [(MRUIController *)self server];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__MRUIController_contextForActivityIdentifier___block_invoke;
   v8[3] = &unk_1E76A3470;
   v8[4] = &v9;
-  [v5 contextForActivityIdentifier:v4 reply:v8];
+  [server contextForActivityIdentifier:identifierCopy reply:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -354,58 +354,58 @@ void __24__MRUIController_server__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (void)acquireRouteRecommendationAssertionForIdentifiers:(id)a3
+- (void)acquireRouteRecommendationAssertionForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(MRUIController *)self setHasRouteRecommendationAssertion:1];
-  v5 = [(MRUIController *)self server];
-  [v5 acquireRouteRecommendationAssertionForIdentifiers:v4 withReply:&__block_literal_global_184_0];
+  server = [(MRUIController *)self server];
+  [server acquireRouteRecommendationAssertionForIdentifiers:identifiersCopy withReply:&__block_literal_global_184_0];
 }
 
 - (void)releaseRouteRecommendationAssertion
 {
   [(MRUIController *)self setHasRouteRecommendationAssertion:0];
-  v3 = [(MRUIController *)self server];
-  [v3 releaseRouteRecommendationAssertionWithReply:&__block_literal_global_186];
+  server = [(MRUIController *)self server];
+  [server releaseRouteRecommendationAssertionWithReply:&__block_literal_global_186];
 }
 
-- (void)acquireNowPlayingActivityAssertionForRouteIdentifier:(id)a3 withDuration:(int64_t)a4 preferredState:(int64_t)a5
+- (void)acquireNowPlayingActivityAssertionForRouteIdentifier:(id)identifier withDuration:(int64_t)duration preferredState:(int64_t)state
 {
-  v9 = a3;
-  if (!a4)
+  identifierCopy = identifier;
+  if (!duration)
   {
     [(MRUIController *)self setHasNowPlayingActivityAssertion:1];
   }
 
-  v8 = [(MRUIController *)self server];
-  [v8 acquireNowPlayingActivityAssertionForRouteIdentifier:v9 withDuration:a4 preferredState:a5 withReply:&__block_literal_global_188];
+  server = [(MRUIController *)self server];
+  [server acquireNowPlayingActivityAssertionForRouteIdentifier:identifierCopy withDuration:duration preferredState:state withReply:&__block_literal_global_188];
 }
 
-- (void)setPreferredState:(int64_t)a3
+- (void)setPreferredState:(int64_t)state
 {
-  v4 = [(MRUIController *)self server];
-  [v4 setPreferredState:a3 reply:&__block_literal_global_190_0];
+  server = [(MRUIController *)self server];
+  [server setPreferredState:state reply:&__block_literal_global_190_0];
 }
 
-- (void)setPreferredState:(int64_t)a3 forBundleIdentifier:(id)a4
+- (void)setPreferredState:(int64_t)state forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(MRUIController *)self server];
-  [v7 setPreferredState:a3 forBundleIdentifier:v6 reply:&__block_literal_global_192];
+  identifierCopy = identifier;
+  server = [(MRUIController *)self server];
+  [server setPreferredState:state forBundleIdentifier:identifierCopy reply:&__block_literal_global_192];
 }
 
-- (void)suppressPresentationOverBundleIdentifiers:(id)a3
+- (void)suppressPresentationOverBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(MRUIController *)self server];
-  [v5 suppressPresentationOverBundleIdentifiers:v4 reply:&__block_literal_global_194_0];
+  identifiersCopy = identifiers;
+  server = [(MRUIController *)self server];
+  [server suppressPresentationOverBundleIdentifiers:identifiersCopy reply:&__block_literal_global_194_0];
 }
 
-- (void)presentVolumeHUDWithRequest:(id)a3
+- (void)presentVolumeHUDWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(MRUIController *)self server];
-  [v5 presentVolumeHUDWithRequest:v4];
+  requestCopy = request;
+  server = [(MRUIController *)self server];
+  [server presentVolumeHUDWithRequest:requestCopy];
 }
 
 - (void)xpcConnection

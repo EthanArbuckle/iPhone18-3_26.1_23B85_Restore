@@ -9,12 +9,12 @@
 - (void)_layoutForSlowNetwork;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackgroundImage:(id)a3;
-- (void)setBody:(id)a3;
-- (void)setGlowImage:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setLayoutPreset:(int64_t)a3;
-- (void)setTitle:(id)a3;
+- (void)setBackgroundImage:(id)image;
+- (void)setBody:(id)body;
+- (void)setGlowImage:(id)image;
+- (void)setImage:(id)image;
+- (void)setLayoutPreset:(int64_t)preset;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SULockoutView
@@ -28,22 +28,22 @@
 
 - (NSString)body
 {
-  v2 = [(SULockoutView *)self _bodyLabel];
+  _bodyLabel = [(SULockoutView *)self _bodyLabel];
 
-  return [v2 text];
+  return [_bodyLabel text];
 }
 
 - (UIImage)image
 {
-  v2 = [(SULockoutView *)self _imageView];
+  _imageView = [(SULockoutView *)self _imageView];
 
-  return [v2 image];
+  return [_imageView image];
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
   backgroundImageView = self->_backgroundImageView;
-  if (a3)
+  if (image)
   {
     if (!backgroundImageView)
     {
@@ -51,7 +51,7 @@
       self->_backgroundImageView = backgroundImageView;
     }
 
-    [(UIImageView *)backgroundImageView setImage:a3];
+    [(UIImageView *)backgroundImageView setImage:image];
     [(SULockoutView *)self insertSubview:self->_backgroundImageView atIndex:0];
 
     [(SULockoutView *)self setNeedsLayout];
@@ -65,17 +65,17 @@
   }
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
   [-[SULockoutView _bodyLabel](self "_bodyLabel")];
 
   [(SULockoutView *)self setNeedsLayout];
 }
 
-- (void)setGlowImage:(id)a3
+- (void)setGlowImage:(id)image
 {
   glowImageView = self->_glowImageView;
-  if (a3)
+  if (image)
   {
     if (!glowImageView)
     {
@@ -85,7 +85,7 @@
       glowImageView = self->_glowImageView;
     }
 
-    [(UIImageView *)glowImageView setImage:a3];
+    [(UIImageView *)glowImageView setImage:image];
     v7 = self->_glowImageView;
     if (self->_backgroundImageView)
     {
@@ -108,25 +108,25 @@
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = [(SULockoutView *)self _imageView];
-  [v5 setImage:a3];
-  [v5 sizeToFit];
+  _imageView = [(SULockoutView *)self _imageView];
+  [_imageView setImage:image];
+  [_imageView sizeToFit];
 
   [(SULockoutView *)self setNeedsLayout];
 }
 
-- (void)setLayoutPreset:(int64_t)a3
+- (void)setLayoutPreset:(int64_t)preset
 {
-  if (self->_layoutPreset != a3)
+  if (self->_layoutPreset != preset)
   {
-    self->_layoutPreset = a3;
+    self->_layoutPreset = preset;
     [(SULockoutView *)self setNeedsLayout];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   [-[SULockoutView _titleLabel](self "_titleLabel")];
 
@@ -135,9 +135,9 @@
 
 - (NSString)title
 {
-  v2 = [(SULockoutView *)self _titleLabel];
+  _titleLabel = [(SULockoutView *)self _titleLabel];
 
-  return [v2 text];
+  return [_titleLabel text];
 }
 
 - (void)layoutSubviews
@@ -156,9 +156,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SULockoutView *)self _imageView];
-  v12 = [(SULockoutView *)self _bodyLabel];
-  v13 = [(SULockoutView *)self _titleLabel];
+  _imageView = [(SULockoutView *)self _imageView];
+  _bodyLabel = [(SULockoutView *)self _bodyLabel];
+  _titleLabel = [(SULockoutView *)self _titleLabel];
   backgroundImageView = self->_backgroundImageView;
   if (backgroundImageView)
   {
@@ -191,24 +191,24 @@
   }
 
   v50 = v18;
-  [v12 frame];
-  [v11 frame];
+  [_bodyLabel frame];
+  [_imageView frame];
   v20 = v19;
   v22 = v21;
-  [v13 frame];
-  [v12 sizeThatFits:{v8 + -20.0, v10}];
+  [_titleLabel frame];
+  [_bodyLabel sizeThatFits:{v8 + -20.0, v10}];
   v49 = v23;
   v24 = v10;
   v26 = v25;
   v51 = v25;
-  [v13 sizeThatFits:{v8 + -20.0, v24}];
+  [_titleLabel sizeThatFits:{v8 + -20.0, v24}];
   v28 = v27;
   v30 = v29;
   *&v27 = (v24 - (v26 + v18 + v52 + v22 + v29)) * 0.5;
   v31 = v47 + floorf(*&v27);
   *&v27 = (v8 - v20) * 0.5;
   v32 = floorf(*&v27);
-  [v11 setFrame:{v32, v31, v20, v22}];
+  [_imageView setFrame:{v32, v31, v20, v22}];
   v33 = (v8 - v28) * 0.5;
   v34 = floorf(v33);
   v54.origin.x = v32;
@@ -218,14 +218,14 @@
   v54.size.width = v20;
   v54.size.height = v22;
   v35 = v52 + CGRectGetMaxY(v54);
-  [v13 setFrame:{v34, v35, v28, v30}];
+  [_titleLabel setFrame:{v34, v35, v28, v30}];
   v36 = (v8 - v49) * 0.5;
   v37 = floorf(v36);
   v55.origin.x = v34;
   v55.origin.y = v35;
   v55.size.width = v28;
   v55.size.height = v30;
-  [v12 setFrame:{v37, v50 + CGRectGetMaxY(v55), v49, v51}];
+  [_bodyLabel setFrame:{v37, v50 + CGRectGetMaxY(v55), v49, v51}];
   glowImageView = self->_glowImageView;
   if (glowImageView)
   {

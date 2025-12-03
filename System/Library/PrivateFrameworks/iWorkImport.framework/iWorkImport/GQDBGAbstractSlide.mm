@@ -1,5 +1,5 @@
 @interface GQDBGAbstractSlide
-- (int)readAttributesForSlide:(_xmlTextReader *)a3;
+- (int)readAttributesForSlide:(_xmlTextReader *)slide;
 - (void)dealloc;
 @end
 
@@ -18,10 +18,10 @@
   [(GQDBGAbstractSlide *)&v4 dealloc];
 }
 
-- (int)readAttributesForSlide:(_xmlTextReader *)a3
+- (int)readAttributesForSlide:(_xmlTextReader *)slide
 {
-  self->mHidden = sub_42340(a3, qword_A35F8, "hidden", 0);
-  self->mID = xmlTextReaderGetAttributeNs(a3, off_9D3D8, *(qword_A35E0 + 16));
+  self->mHidden = sub_42340(slide, qword_A35F8, "hidden", 0);
+  self->mID = xmlTextReaderGetAttributeNs(slide, off_9D3D8, *(qword_A35E0 + 16));
   return 1;
 }
 

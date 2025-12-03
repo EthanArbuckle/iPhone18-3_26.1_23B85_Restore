@@ -1,17 +1,17 @@
 @interface TUITransactionGroup
 - (BOOL)cancelSynchronousAndSuspendUpdatesUnlessFinalized;
-- (BOOL)containsTransaction:(id)a3;
-- (TUITransactionGroup)initWithFeedId:(id)a3 transactions:(id)a4 options:(id)a5 flags:(unint64_t)a6;
+- (BOOL)containsTransaction:(id)transaction;
+- (TUITransactionGroup)initWithFeedId:(id)id transactions:(id)transactions options:(id)options flags:(unint64_t)flags;
 - (id)description;
 - (void)_invokeCompletions;
 - (void)_invokeHandlersForUpdatesApplied;
-- (void)addCompletion:(id)a3;
-- (void)addHandlerForUpdatesApplied:(id)a3;
+- (void)addCompletion:(id)completion;
+- (void)addHandlerForUpdatesApplied:(id)applied;
 - (void)addNotifyWhenAppliedDeferral;
-- (void)appendUpdateBlock:(id)a3;
+- (void)appendUpdateBlock:(id)block;
 - (void)applyNonVisualUpdates;
 - (void)applyUpdates;
-- (void)computeFinalUpdatesWithBlock:(id)a3;
+- (void)computeFinalUpdatesWithBlock:(id)block;
 - (void)dealloc;
 - (void)removeNotifyWhenAppliedDeferral;
 - (void)waitForFinalizing;
@@ -19,27 +19,27 @@
 
 @implementation TUITransactionGroup
 
-- (TUITransactionGroup)initWithFeedId:(id)a3 transactions:(id)a4 options:(id)a5 flags:(unint64_t)a6
+- (TUITransactionGroup)initWithFeedId:(id)id transactions:(id)transactions options:(id)options flags:(unint64_t)flags
 {
-  v10 = a4;
-  v11 = a5;
+  transactionsCopy = transactions;
+  optionsCopy = options;
   v39.receiver = self;
   v39.super_class = TUITransactionGroup;
   v12 = [(TUITransactionGroup *)&v39 init];
   v13 = v12;
   if (v12)
   {
-    v12->_feedId.uniqueIdentifier = a3.var0;
+    v12->_feedId.uniqueIdentifier = id.var0;
     v14 = dispatch_queue_create("TUITransactionGroup", 0);
     computeUpdateQueue = v13->_computeUpdateQueue;
     v13->_computeUpdateQueue = v14;
 
-    v34 = v11;
-    v16 = [v11 copy];
+    v34 = optionsCopy;
+    v16 = [optionsCopy copy];
     options = v13->_options;
     v13->_options = v16;
 
-    v18 = [v10 copy];
+    v18 = [transactionsCopy copy];
     sortedTransactions = v13->_sortedTransactions;
     v13->_sortedTransactions = v18;
 
@@ -47,12 +47,12 @@
     transactions = v13->_transactions;
     v13->_transactions = v20;
 
-    v13->_flags = a6;
+    v13->_flags = flags;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v22 = v10;
+    v22 = transactionsCopy;
     v23 = [v22 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v23)
     {
@@ -72,8 +72,8 @@
           [(NSHashTable *)v13->_transactions addObject:v28];
           if (v25)
           {
-            v29 = [v28 creationDate];
-            v30 = [(NSDate *)v25 compare:v29];
+            creationDate = [v28 creationDate];
+            v30 = [(NSDate *)v25 compare:creationDate];
 
             if (v30 != &dword_0 + 1)
             {
@@ -81,9 +81,9 @@
             }
           }
 
-          v31 = [v28 creationDate];
+          creationDate2 = [v28 creationDate];
 
-          v25 = v31;
+          v25 = creationDate2;
         }
 
         v24 = [v22 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -103,7 +103,7 @@
     date = v13->_date;
     v13->_date = v25;
 
-    v11 = v34;
+    optionsCopy = v34;
   }
 
   return v13;
@@ -172,9 +172,9 @@
   return v15;
 }
 
-- (BOOL)containsTransaction:(id)a3
+- (BOOL)containsTransaction:(id)transaction
 {
-  if (a3)
+  if (transaction)
   {
     return [(NSHashTable *)self->_transactions containsObject:?];
   }
@@ -185,13 +185,13 @@
   }
 }
 
-- (void)appendUpdateBlock:(id)a3
+- (void)appendUpdateBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     updateBlocks = self->_updateBlocks;
-    v10 = v4;
+    v10 = blockCopy;
     if (!updateBlocks)
     {
       v6 = objc_opt_new();
@@ -205,17 +205,17 @@
     v9 = objc_retainBlock(v8);
     [(NSMutableArray *)updateBlocks addObject:v9];
 
-    v4 = v10;
+    blockCopy = v10;
   }
 }
 
-- (void)addHandlerForUpdatesApplied:(id)a3
+- (void)addHandlerForUpdatesApplied:(id)applied
 {
-  v4 = a3;
-  if (v4)
+  appliedCopy = applied;
+  if (appliedCopy)
   {
     handlersForUpdatesApplied = self->_handlersForUpdatesApplied;
-    v10 = v4;
+    v10 = appliedCopy;
     if (!handlersForUpdatesApplied)
     {
       v6 = objc_opt_new();
@@ -229,17 +229,17 @@
     v9 = objc_retainBlock(v8);
     [(NSMutableArray *)handlersForUpdatesApplied addObject:v9];
 
-    v4 = v10;
+    appliedCopy = v10;
   }
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     completionBlocks = self->_completionBlocks;
-    v10 = v4;
+    v10 = completionCopy;
     if (!completionBlocks)
     {
       v6 = objc_opt_new();
@@ -253,13 +253,13 @@
     v9 = objc_retainBlock(v8);
     [(NSMutableArray *)completionBlocks addObject:v9];
 
-    v4 = v10;
+    completionCopy = v10;
   }
 }
 
-- (void)computeFinalUpdatesWithBlock:(id)a3
+- (void)computeFinalUpdatesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -274,9 +274,9 @@
   v7[4] = self;
   v7[5] = &v8;
   dispatch_sync(computeUpdateQueue, v7);
-  if (v4)
+  if (blockCopy)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
   v6 = v9[5];
@@ -341,7 +341,7 @@
     *buf = 134218242;
     v16 = uniqueIdentifier;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "[fid:%lu] invokeHandlersForUpdatesApplied for %@", buf, 0x16u);
   }
 
@@ -388,7 +388,7 @@
     *buf = 134218242;
     v16 = uniqueIdentifier;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "[fid:%lu] invokeCompletions for %@", buf, 0x16u);
   }
 
@@ -460,16 +460,16 @@
   v10 = objc_retainBlock(v21);
   if ([(TUITransactionOptions *)self->_options animate])
   {
-    v11 = [(TUITransactionOptions *)self->_options timingProvider];
+    timingProvider = [(TUITransactionOptions *)self->_options timingProvider];
     v12 = [_TUIAnimationState alloc];
     [(TUITransactionOptions *)self->_options duration];
-    v13 = [(_TUIAnimationState *)v12 initWithDuration:v11 timingParameters:?];
+    v13 = [(_TUIAnimationState *)v12 initWithDuration:timingProvider timingParameters:?];
     [_TUIAnimationState pushState:v13];
     v14 = [UIViewPropertyAnimator alloc];
     [(TUITransactionOptions *)self->_options duration];
-    if (v11)
+    if (timingProvider)
     {
-      v15 = [v14 initWithDuration:v11 timingParameters:?];
+      v15 = [v14 initWithDuration:timingProvider timingParameters:?];
       [v15 addAnimations:v10];
     }
 

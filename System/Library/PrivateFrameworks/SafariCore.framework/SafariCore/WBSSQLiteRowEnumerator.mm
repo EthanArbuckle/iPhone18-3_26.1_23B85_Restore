@@ -1,5 +1,5 @@
 @interface WBSSQLiteRowEnumerator
-- (WBSSQLiteRowEnumerator)initWithResultsOfStatement:(id)a3;
+- (WBSSQLiteRowEnumerator)initWithResultsOfStatement:(id)statement;
 - (id)nextObject;
 @end
 
@@ -29,8 +29,8 @@
 
     else
     {
-      v8 = [(WBSSQLiteStatement *)self->_statement database];
-      [v8 reportErrorWithCode:self->_lastResultCode statement:-[WBSSQLiteStatement handle](self->_statement error:{"handle"), 0}];
+      database = [(WBSSQLiteStatement *)self->_statement database];
+      [database reportErrorWithCode:self->_lastResultCode statement:-[WBSSQLiteStatement handle](self->_statement error:{"handle"), 0}];
 
       v4 = 0;
     }
@@ -39,16 +39,16 @@
   return v4;
 }
 
-- (WBSSQLiteRowEnumerator)initWithResultsOfStatement:(id)a3
+- (WBSSQLiteRowEnumerator)initWithResultsOfStatement:(id)statement
 {
-  v5 = a3;
+  statementCopy = statement;
   v10.receiver = self;
   v10.super_class = WBSSQLiteRowEnumerator;
   v6 = [(WBSSQLiteRowEnumerator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_statement, a3);
+    objc_storeStrong(&v6->_statement, statement);
     v8 = v7;
   }
 

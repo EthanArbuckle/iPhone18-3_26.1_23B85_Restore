@@ -1,13 +1,13 @@
 @interface CNContactDataSourceLIFOScheduler
 - (CNContactDataSourceLIFOScheduler)init;
 - (double)timestamp;
-- (id)afterDelay:(double)a3 performBlock:(id)a4;
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5;
-- (id)performCancelableBlock:(id)a3;
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (id)afterDelay:(double)delay performBlock:(id)block;
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)performCancelableBlock:(id)block;
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service;
 - (void)dealloc;
-- (void)performBlock:(id)a3;
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (void)performBlock:(id)block;
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service;
 @end
 
 @implementation CNContactDataSourceLIFOScheduler
@@ -48,67 +48,67 @@
 
 - (double)timestamp
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNUnimplementedMethodException();
   objc_exception_throw(v3);
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a4;
-  v7 = self;
+  blockCopy = block;
+  selfCopy = self;
   v8 = CNUnimplementedMethodException();
   objc_exception_throw(v8);
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4
+- (id)afterDelay:(double)delay performBlock:(id)block
 {
-  v5 = a4;
-  v6 = self;
+  blockCopy = block;
+  selfCopy = self;
   v7 = CNUnimplementedMethodException();
   objc_exception_throw(v7);
 }
 
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v5 = a3;
-  v6 = self;
+  blockCopy = block;
+  selfCopy = self;
   v7 = CNUnimplementedMethodException();
   objc_exception_throw(v7);
 }
 
-- (id)performCancelableBlock:(id)a3
+- (id)performCancelableBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
+  blockCopy = block;
+  selfCopy = self;
   v6 = CNUnimplementedMethodException();
   objc_exception_throw(v6);
 }
 
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v5 = a3;
-  v6 = self;
+  blockCopy = block;
+  selfCopy = self;
   v7 = CNUnimplementedMethodException();
   objc_exception_throw(v7);
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CNContactDataSourceLIFOScheduler *)self stack];
-  objc_sync_enter(v5);
-  v6 = _Block_copy(v4);
-  [v5 addObject:v6];
+  blockCopy = block;
+  stack = [(CNContactDataSourceLIFOScheduler *)self stack];
+  objc_sync_enter(stack);
+  v6 = _Block_copy(blockCopy);
+  [stack addObject:v6];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(stack);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__CNContactDataSourceLIFOScheduler_performBlock___block_invoke;
   block[3] = &unk_1E74E6A88;
-  v10 = v5;
-  v8 = v5;
+  v10 = stack;
+  v8 = stack;
   dispatch_async(queue, block);
 }
 

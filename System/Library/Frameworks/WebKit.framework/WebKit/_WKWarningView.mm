@@ -1,13 +1,13 @@
 @interface _WKWarningView
 - (RefPtr<const)_protectedWarning;
 - (RefPtr<const)warning;
-- (_WKWarningView)initWithFrame:(CGRect)a3 browsingWarning:(const void *)a4 completionHandler:(void *)a5;
+- (_WKWarningView)initWithFrame:(CGRect)frame browsingWarning:(const void *)warning completionHandler:(void *)handler;
 - (id).cxx_construct;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
 - (uint64_t)dealloc;
-- (uint64_t)initWithFrame:(uint64_t)a1 browsingWarning:completionHandler:;
+- (uint64_t)initWithFrame:(uint64_t)frame browsingWarning:completionHandler:;
 - (void)addContent;
-- (void)clickedOnLink:(id)a3;
+- (void)clickedOnLink:(id)link;
 - (void)continueClicked;
 - (void)dealloc;
 - (void)goBackClicked;
@@ -19,17 +19,17 @@
 
 @implementation _WKWarningView
 
-- (_WKWarningView)initWithFrame:(CGRect)a3 browsingWarning:(const void *)a4 completionHandler:(void *)a5
+- (_WKWarningView)initWithFrame:(CGRect)frame browsingWarning:(const void *)warning completionHandler:(void *)handler
 {
   v20.receiver = self;
   v20.super_class = _WKWarningView;
-  v7 = [(_WKWarningView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(_WKWarningView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v7)
   {
     v17 = 0;
     objc_initWeak(&v17, v7);
-    v8 = *a5;
-    *a5 = 0;
+    v8 = *handler;
+    *handler = 0;
     v18 = v8;
     v9 = WTF::fastMalloc(0x18);
     *v9 = &unk_1F10E5FB8;
@@ -52,9 +52,9 @@
     }
 
     objc_destroyWeak(&v17);
-    ++*a4;
+    ++*warning;
     m_ptr = v7->_warning.m_ptr;
-    v7->_warning.m_ptr = a4;
+    v7->_warning.m_ptr = warning;
     if (m_ptr)
     {
       WTF::RefCounted<WebKit::BrowsingWarning>::deref(m_ptr, v13);
@@ -67,7 +67,7 @@
   {
     LOBYTE(v17) = 1;
     v19 = 0;
-    WTF::CompletionHandler<void ()(mpark::variant<WebKit::ContinueUnsafeLoad,WTF::URL> &&)>::operator()(a5);
+    WTF::CompletionHandler<void ()(mpark::variant<WebKit::ContinueUnsafeLoad,WTF::URL> &&)>::operator()(handler);
     mpark::detail::move_constructor<mpark::detail::traits<WebKit::ContinueUnsafeLoad,WTF::URL>,(mpark::detail::Trait)1>::~move_constructor(&v17, v15);
   }
 
@@ -470,8 +470,8 @@ LABEL_32:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(_WKWarningView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subviews = [(_WKWarningView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -483,14 +483,14 @@ LABEL_32:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v13 + 1) + 8 * i) frame];
         v7 = v7 + v9;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -522,11 +522,11 @@ LABEL_32:
   [(_WKWarningView *)self layoutText];
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
-  if (![a4 contentType])
+  if (![item contentType])
   {
-    -[_WKWarningView clickedOnLink:](self, "clickedOnLink:", [a4 link]);
+    -[_WKWarningView clickedOnLink:](self, "clickedOnLink:", [item link]);
   }
 
   return 0;
@@ -534,22 +534,22 @@ LABEL_32:
 
 - (void)dealloc
 {
-  *a1 = &unk_1F10E5FE0;
-  v3 = a1[2];
-  a1[2] = 0;
+  *self = &unk_1F10E5FE0;
+  v3 = self[2];
+  self[2] = 0;
   if (v3)
   {
     WTF::RefCounted<WebKit::BrowsingWarning>::deref(v3, a2);
   }
 
-  v4 = a1[1];
-  a1[1] = 0;
+  v4 = self[1];
+  self[1] = 0;
   if (v4)
   {
     (*(*v4 + 8))(v4);
   }
 
-  return a1;
+  return self;
 }
 
 - (void)goBackClicked
@@ -574,12 +574,12 @@ LABEL_32:
   }
 }
 
-- (void)clickedOnLink:(id)a3
+- (void)clickedOnLink:(id)link
 {
   if (self->_completionHandler.m_function.m_callableWrapper.__ptr_)
   {
-    v5 = [a3 isEqual:WebKit::BrowsingWarning::visitUnsafeWebsiteSentinel(self)];
-    if (v5 || [a3 isEqual:WebKit::BrowsingWarning::confirmMalwareSentinel(v5)])
+    v5 = [link isEqual:WebKit::BrowsingWarning::visitUnsafeWebsiteSentinel(self)];
+    if (v5 || [link isEqual:WebKit::BrowsingWarning::confirmMalwareSentinel(v5)])
     {
       v7[0] = 1;
       v8 = 0;
@@ -588,7 +588,7 @@ LABEL_32:
 
     else
     {
-      MEMORY[0x19EB01DE0](v7, a3);
+      MEMORY[0x19EB01DE0](v7, link);
       v8 = 1;
       WTF::CompletionHandler<void ()(mpark::variant<WebKit::ContinueUnsafeLoad,WTF::URL> &&)>::operator()(&self->_completionHandler);
     }
@@ -630,38 +630,24 @@ LABEL_32:
   return self;
 }
 
-- (uint64_t)initWithFrame:(uint64_t)a1 browsingWarning:completionHandler:
+- (uint64_t)initWithFrame:(uint64_t)frame browsingWarning:completionHandler:
 {
-  *a1 = &unk_1F10E5FB8;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *frame = &unk_1F10E5FB8;
+  v2 = *(frame + 16);
+  *(frame + 16) = 0;
   if (v2)
   {
     (*(*v2 + 8))(v2);
   }
 
-  objc_destroyWeak((a1 + 8));
-  return a1;
-}
-
-{
-  *a1 = &unk_1F10E5FB8;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
-  if (v2)
-  {
-    (*(*v2 + 8))(v2);
-  }
-
-  objc_destroyWeak((a1 + 8));
-
-  return WTF::fastFree(a1, v3);
+  objc_destroyWeak((frame + 8));
+  return frame;
 }
 
 - (uint64_t)dealloc
 {
-  v2 = *(a1 + 8);
-  result = (a1 + 8);
+  v2 = *(self + 8);
+  result = (self + 8);
   if (v2)
   {
     v4[0] = 0;

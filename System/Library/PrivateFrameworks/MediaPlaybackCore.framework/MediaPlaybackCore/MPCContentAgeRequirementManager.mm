@@ -1,16 +1,16 @@
 @interface MPCContentAgeRequirementManager
 + (MPCContentAgeRequirementManager)sharedManager;
-- (BOOL)_askPlaybackAuthorizationForItem:(id)a3 reason:(int64_t)a4;
-- (BOOL)_shouldAskPlaybackAuthorizationForItem:(id)a3 reason:(int64_t)a4;
-- (BOOL)isItemAuthorized:(id)a3 shouldAskForAuthorization:(BOOL)a4;
+- (BOOL)_askPlaybackAuthorizationForItem:(id)item reason:(int64_t)reason;
+- (BOOL)_shouldAskPlaybackAuthorizationForItem:(id)item reason:(int64_t)reason;
+- (BOOL)isItemAuthorized:(id)authorized shouldAskForAuthorization:(BOOL)authorization;
 - (MPCContentAgeRequirementDelegate)delegate;
-- (id)_explicitContentErrorWithUnderlyingError:(id)a3 message:(id)a4;
+- (id)_explicitContentErrorWithUnderlyingError:(id)error message:(id)message;
 - (id)_init;
-- (id)_retrieveAgeVerificationStateForUserIdentity:(id)a3;
+- (id)_retrieveAgeVerificationStateForUserIdentity:(id)identity;
 - (int64_t)authorizationReason;
-- (void)_setupWithAgeGateForItem:(id)a3;
-- (void)_setupWithAgeVerificationState:(id)a3;
-- (void)_updateAuthorizationStatusWithAuthorizationState:(id)a3 forItem:(id)a4;
+- (void)_setupWithAgeGateForItem:(id)item;
+- (void)_setupWithAgeVerificationState:(id)state;
+- (void)_updateAuthorizationStatusWithAuthorizationState:(id)state forItem:(id)item;
 @end
 
 @implementation MPCContentAgeRequirementManager
@@ -54,27 +54,27 @@ uint64_t __48__MPCContentAgeRequirementManager_sharedManager__block_invoke()
   return WeakRetained;
 }
 
-- (id)_explicitContentErrorWithUnderlyingError:(id)a3 message:(id)a4
+- (id)_explicitContentErrorWithUnderlyingError:(id)error message:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  errorCopy = error;
+  messageCopy = message;
   v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
   v8 = v7;
-  if (v5)
+  if (errorCopy)
   {
-    [v7 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    [v7 setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
   }
 
-  [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696A278]];
+  [v8 setObject:messageCopy forKeyedSubscript:*MEMORY[0x1E696A278]];
   v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCError" code:41 userInfo:v8];
 
   return v9;
 }
 
-- (BOOL)_askPlaybackAuthorizationForItem:(id)a3 reason:(int64_t)a4
+- (BOOL)_askPlaybackAuthorizationForItem:(id)item reason:(int64_t)reason
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  itemCopy = item;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -85,8 +85,8 @@ uint64_t __48__MPCContentAgeRequirementManager_sharedManager__block_invoke()
   v28 = __Block_byref_object_copy__34392;
   v29 = __Block_byref_object_dispose__34393;
   v30 = 0;
-  v8 = [(MPCContentAgeRequirementManager *)self delegate];
-  if (v8)
+  delegate = [(MPCContentAgeRequirementManager *)self delegate];
+  if (delegate)
   {
     v9 = objc_alloc(MEMORY[0x1E69B13F0]);
     v24[0] = MEMORY[0x1E69E9820];
@@ -107,36 +107,36 @@ uint64_t __48__MPCContentAgeRequirementManager_sharedManager__block_invoke()
     v23 = &v31;
     v13 = v11;
     v21 = v13;
-    [v8 requestAuthorizationForExplicitItem:v7 reason:a4 completion:v19];
+    [delegate requestAuthorizationForExplicitItem:itemCopy reason:reason completion:v19];
     dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
   }
 
   if (v32[3])
   {
-    v14 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    itemCopy = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (os_log_type_enabled(itemCopy, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2114;
-      v38 = v7;
-      _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_DEFAULT, "MPCContentAgeRequirementManager %p - Explicit content playback authorization has been granted by client for: %{public}@", buf, 0x16u);
+      v38 = itemCopy;
+      _os_log_impl(&dword_1C5C61000, itemCopy, OS_LOG_TYPE_DEFAULT, "MPCContentAgeRequirementManager %p - Explicit content playback authorization has been granted by client for: %{public}@", buf, 0x16u);
     }
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MPCContentAgeRequirementManager %p - Explicit content playback authorization has been denied by client for: %@", self, v7];
-    v15 = [(MPCContentAgeRequirementManager *)self _explicitContentErrorWithUnderlyingError:v26[5] message:v14];
-    [v7 setItemError:v15];
+    itemCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"MPCContentAgeRequirementManager %p - Explicit content playback authorization has been denied by client for: %@", self, itemCopy];
+    v15 = [(MPCContentAgeRequirementManager *)self _explicitContentErrorWithUnderlyingError:v26[5] message:itemCopy];
+    [itemCopy setItemError:v15];
 
     v16 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2114;
-      v38 = v7;
+      v38 = itemCopy;
       _os_log_impl(&dword_1C5C61000, v16, OS_LOG_TYPE_ERROR, "MPCContentAgeRequirementManager %p - Explicit content playback authorization has been denied by client for: %{public}@", buf, 0x16u);
     }
   }
@@ -180,15 +180,15 @@ void __75__MPCContentAgeRequirementManager__askPlaybackAuthorizationForItem_reas
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)_shouldAskPlaybackAuthorizationForItem:(id)a3 reason:(int64_t)a4
+- (BOOL)_shouldAskPlaybackAuthorizationForItem:(id)item reason:(int64_t)reason
 {
-  if (a4 == 1)
+  if (reason == 1)
   {
     return 1;
   }
 
-  result = [a3 isStartItem];
-  if (a4 != 2)
+  result = [item isStartItem];
+  if (reason != 2)
   {
     return 0;
   }
@@ -196,26 +196,26 @@ void __75__MPCContentAgeRequirementManager__askPlaybackAuthorizationForItem_reas
   return result;
 }
 
-- (void)_setupWithAgeVerificationState:(id)a3
+- (void)_setupWithAgeVerificationState:(id)state
 {
-  v9 = a3;
-  v5 = [v9 status];
-  if (v5 > 1)
+  stateCopy = state;
+  status = [stateCopy status];
+  if (status > 1)
   {
-    if (v5 == 2)
+    if (status == 2)
     {
-      v6 = self;
+      selfCopy3 = self;
       v7 = 0;
     }
 
     else
     {
-      if (v5 != 3)
+      if (status != 3)
       {
         goto LABEL_14;
       }
 
-      if ([v9 isExplicitContentAllowed])
+      if ([stateCopy isExplicitContentAllowed])
       {
         v7 = 2;
       }
@@ -225,63 +225,63 @@ void __75__MPCContentAgeRequirementManager__askPlaybackAuthorizationForItem_reas
         v7 = 3;
       }
 
-      v6 = self;
+      selfCopy3 = self;
     }
   }
 
   else
   {
-    if (!v5)
+    if (!status)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
       goto LABEL_14;
     }
 
-    if (v5 != 1)
+    if (status != 1)
     {
       goto LABEL_14;
     }
 
-    v6 = self;
+    selfCopy3 = self;
     v7 = 2;
   }
 
-  [(MPCContentAgeRequirementManager *)v6 setStatus:v7];
+  [(MPCContentAgeRequirementManager *)selfCopy3 setStatus:v7];
 LABEL_14:
 }
 
-- (void)_setupWithAgeGateForItem:(id)a3
+- (void)_setupWithAgeGateForItem:(id)item
 {
-  v4 = [a3 genericObject];
-  v13 = [v4 flattenedGenericObject];
+  genericObject = [item genericObject];
+  flattenedGenericObject = [genericObject flattenedGenericObject];
 
-  if ([v13 type] == 8 && (objc_msgSend(v13, "tvEpisode"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "explicitRating"), objc_msgSend(MEMORY[0x1E6970920], "sharedRestrictionsMonitor"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "maximumTVShowRatingForAgeGate"), v7, v5, v6 >= v8) || objc_msgSend(v13, "type") == 9 && (objc_msgSend(v13, "movie"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "explicitRating"), objc_msgSend(MEMORY[0x1E6970920], "sharedRestrictionsMonitor"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "maximumMovieRatingForAgeGate"), v11, v9, v10 >= v12))
+  if ([flattenedGenericObject type] == 8 && (objc_msgSend(flattenedGenericObject, "tvEpisode"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "explicitRating"), objc_msgSend(MEMORY[0x1E6970920], "sharedRestrictionsMonitor"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "maximumTVShowRatingForAgeGate"), v7, v5, v6 >= v8) || objc_msgSend(flattenedGenericObject, "type") == 9 && (objc_msgSend(flattenedGenericObject, "movie"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "explicitRating"), objc_msgSend(MEMORY[0x1E6970920], "sharedRestrictionsMonitor"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "maximumMovieRatingForAgeGate"), v11, v9, v10 >= v12))
   {
     [(MPCContentAgeRequirementManager *)self setStatus:1];
   }
 }
 
-- (void)_updateAuthorizationStatusWithAuthorizationState:(id)a3 forItem:(id)a4
+- (void)_updateAuthorizationStatusWithAuthorizationState:(id)state forItem:(id)item
 {
-  v6 = a4;
-  [(MPCContentAgeRequirementManager *)self _setupWithAgeVerificationState:a3];
+  itemCopy = item;
+  [(MPCContentAgeRequirementManager *)self _setupWithAgeVerificationState:state];
   if ([(MPCContentAgeRequirementManager *)self status]== 2)
   {
-    [(MPCContentAgeRequirementManager *)self _setupWithAgeGateForItem:v6];
+    [(MPCContentAgeRequirementManager *)self _setupWithAgeGateForItem:itemCopy];
   }
 }
 
-- (id)_retrieveAgeVerificationStateForUserIdentity:(id)a3
+- (id)_retrieveAgeVerificationStateForUserIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69E4398] defaultManager];
-  v5 = [v4 ageVerificationStateForUserIdentity:v3];
+  identityCopy = identity;
+  defaultManager = [MEMORY[0x1E69E4398] defaultManager];
+  v5 = [defaultManager ageVerificationStateForUserIdentity:identityCopy];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E69E4398] defaultManager];
-    v7 = [v6 ageVerificationStateForUserIdentity:v3];
+    defaultManager2 = [MEMORY[0x1E69E4398] defaultManager];
+    v7 = [defaultManager2 ageVerificationStateForUserIdentity:identityCopy];
   }
 
   else
@@ -293,7 +293,7 @@ LABEL_14:
     v19 = __Block_byref_object_dispose__34393;
     v20 = 0;
     v8 = dispatch_block_create(0, &__block_literal_global_6);
-    v9 = [MEMORY[0x1E69E4398] defaultManager];
+    defaultManager3 = [MEMORY[0x1E69E4398] defaultManager];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __80__MPCContentAgeRequirementManager__retrieveAgeVerificationStateForUserIdentity___block_invoke_2;
@@ -301,7 +301,7 @@ LABEL_14:
     v14 = &v15;
     v10 = v8;
     v13 = v10;
-    [v9 getAgeVerificationStateWithCompletion:v12];
+    [defaultManager3 getAgeVerificationStateWithCompletion:v12];
 
     dispatch_block_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
     v7 = v16[5];
@@ -321,10 +321,10 @@ void __80__MPCContentAgeRequirementManager__retrieveAgeVerificationStateForUserI
 
 - (int64_t)authorizationReason
 {
-  v2 = [(MPCContentAgeRequirementManager *)self status];
-  if (v2)
+  status = [(MPCContentAgeRequirementManager *)self status];
+  if (status)
   {
-    return v2 == 1;
+    return status == 1;
   }
 
   else
@@ -333,26 +333,26 @@ void __80__MPCContentAgeRequirementManager__retrieveAgeVerificationStateForUserI
   }
 }
 
-- (BOOL)isItemAuthorized:(id)a3 shouldAskForAuthorization:(BOOL)a4
+- (BOOL)isItemAuthorized:(id)authorized shouldAskForAuthorization:(BOOL)authorization
 {
-  v4 = a4;
+  authorizationCopy = authorization;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 mediaType] == 2048)
+  authorizedCopy = authorized;
+  if ([authorizedCopy mediaType] == 2048)
   {
-    v7 = [MEMORY[0x1E6970920] sharedRestrictionsMonitor];
-    v8 = [v7 allowsMusicVideos];
+    mEMORY[0x1E6970920] = [MEMORY[0x1E6970920] sharedRestrictionsMonitor];
+    allowsMusicVideos = [mEMORY[0x1E6970920] allowsMusicVideos];
 
-    if ((v8 & 1) == 0)
+    if ((allowsMusicVideos & 1) == 0)
     {
-      v10 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      userIdentity = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+      if (os_log_type_enabled(userIdentity, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v20 = self;
+        selfCopy4 = self;
         v21 = 2114;
-        v22 = v6;
-        _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_DEFAULT, "MPCContentAgeRequirementManager %p - Music Video playback is not allowed for item - %{public}@", buf, 0x16u);
+        v22 = authorizedCopy;
+        _os_log_impl(&dword_1C5C61000, userIdentity, OS_LOG_TYPE_DEFAULT, "MPCContentAgeRequirementManager %p - Music Video playback is not allowed for item - %{public}@", buf, 0x16u);
       }
 
       v13 = 0;
@@ -360,22 +360,22 @@ void __80__MPCContentAgeRequirementManager__retrieveAgeVerificationStateForUserI
     }
   }
 
-  if ([v6 isExplicitTrack])
+  if ([authorizedCopy isExplicitTrack])
   {
-    v9 = [v6 playbackRequestEnvironment];
-    v10 = [v9 userIdentity];
+    playbackRequestEnvironment = [authorizedCopy playbackRequestEnvironment];
+    userIdentity = [playbackRequestEnvironment userIdentity];
 
-    v11 = [(MPCContentAgeRequirementManager *)self _retrieveAgeVerificationStateForUserIdentity:v10];
-    [(MPCContentAgeRequirementManager *)self _updateAuthorizationStatusWithAuthorizationState:v11 forItem:v6];
+    v11 = [(MPCContentAgeRequirementManager *)self _retrieveAgeVerificationStateForUserIdentity:userIdentity];
+    [(MPCContentAgeRequirementManager *)self _updateAuthorizationStatusWithAuthorizationState:v11 forItem:authorizedCopy];
     if ([(MPCContentAgeRequirementManager *)self status]== 2)
     {
       v12 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v20 = self;
+        selfCopy4 = self;
         v21 = 2114;
-        v22 = v6;
+        v22 = authorizedCopy;
         _os_log_impl(&dword_1C5C61000, v12, OS_LOG_TYPE_DEFAULT, "MPCContentAgeRequirementManager %p - Age Requirements satisfied for item: %{public}@", buf, 0x16u);
       }
 
@@ -385,41 +385,41 @@ void __80__MPCContentAgeRequirementManager__retrieveAgeVerificationStateForUserI
 
     if ([(MPCContentAgeRequirementManager *)self status]== 3)
     {
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MPCContentAgeRequirementManager %p - Explicit content playback is not allowed for any item - %@", self, v6];
-      v15 = [(MPCContentAgeRequirementManager *)self authorizationError];
-      v16 = [(MPCContentAgeRequirementManager *)self _explicitContentErrorWithUnderlyingError:v15 message:v14];
-      [v6 setItemError:v16];
+      authorizedCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"MPCContentAgeRequirementManager %p - Explicit content playback is not allowed for any item - %@", self, authorizedCopy];
+      authorizationError = [(MPCContentAgeRequirementManager *)self authorizationError];
+      v16 = [(MPCContentAgeRequirementManager *)self _explicitContentErrorWithUnderlyingError:authorizationError message:authorizedCopy];
+      [authorizedCopy setItemError:v16];
 
       v17 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218242;
-        v20 = self;
+        selfCopy4 = self;
         v21 = 2114;
-        v22 = v6;
+        v22 = authorizedCopy;
         _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_ERROR, "MPCContentAgeRequirementManager %p - Age Requirements prohibit playback for item: %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
-      if (v4 && [(MPCContentAgeRequirementManager *)self _shouldAskPlaybackAuthorizationForItem:v6 reason:[(MPCContentAgeRequirementManager *)self authorizationReason]])
+      if (authorizationCopy && [(MPCContentAgeRequirementManager *)self _shouldAskPlaybackAuthorizationForItem:authorizedCopy reason:[(MPCContentAgeRequirementManager *)self authorizationReason]])
       {
-        v13 = [(MPCContentAgeRequirementManager *)self _askPlaybackAuthorizationForItem:v6 reason:[(MPCContentAgeRequirementManager *)self authorizationReason]];
+        v13 = [(MPCContentAgeRequirementManager *)self _askPlaybackAuthorizationForItem:authorizedCopy reason:[(MPCContentAgeRequirementManager *)self authorizationReason]];
 LABEL_22:
 
 LABEL_23:
         goto LABEL_24;
       }
 
-      v14 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      authorizedCopy = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+      if (os_log_type_enabled(authorizedCopy, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v20 = self;
+        selfCopy4 = self;
         v21 = 2114;
-        v22 = v6;
-        _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_DEFAULT, "MPCContentAgeRequirementManager %p - Age Requirements not satisfied and will not request authorization for item: %{public}@", buf, 0x16u);
+        v22 = authorizedCopy;
+        _os_log_impl(&dword_1C5C61000, authorizedCopy, OS_LOG_TYPE_DEFAULT, "MPCContentAgeRequirementManager %p - Age Requirements not satisfied and will not request authorization for item: %{public}@", buf, 0x16u);
       }
     }
 

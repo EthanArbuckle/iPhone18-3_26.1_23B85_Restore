@@ -20,10 +20,10 @@
 
 - (id)accessibilityDescription
 {
-  v1 = [a1 descriptionProperties];
-  v2 = [v1 accessibilityDescription];
+  descriptionProperties = [self descriptionProperties];
+  accessibilityDescription = [descriptionProperties accessibilityDescription];
 
-  return v2;
+  return accessibilityDescription;
 }
 
 - (double)videoKeyFrameSourceTime
@@ -31,13 +31,13 @@
   v4 = MEMORY[0x1E6960C70];
   *a2 = *MEMORY[0x1E6960C70];
   *(a2 + 16) = *(v4 + 16);
-  [a1 fetchPropertySetsIfNeeded];
+  [self fetchPropertySetsIfNeeded];
   v8 = 0uLL;
-  v5 = [a1 mediaAnalysisProperties];
-  v6 = v5;
-  if (v5)
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  v6 = mediaAnalysisProperties;
+  if (mediaAnalysisProperties)
   {
-    [v5 bestKeyFrameTime];
+    [mediaAnalysisProperties bestKeyFrameTime];
   }
 
   else
@@ -57,96 +57,96 @@
 
 - (id)pathForTrimmedVideoFile
 {
-  v1 = [a1 pl_managedAsset];
-  v2 = [v1 pathForTrimmedVideoFile];
-  v3 = [v2 copy];
+  pl_managedAsset = [self pl_managedAsset];
+  pathForTrimmedVideoFile = [pl_managedAsset pathForTrimmedVideoFile];
+  v3 = [pathForTrimmedVideoFile copy];
 
   return v3;
 }
 
 - (id)pathForOriginalVideoFile
 {
-  v1 = [a1 pl_managedAsset];
-  v2 = [v1 pathForVideoFile];
-  v3 = [v2 copy];
+  pl_managedAsset = [self pl_managedAsset];
+  pathForVideoFile = [pl_managedAsset pathForVideoFile];
+  v3 = [pathForVideoFile copy];
 
   return v3;
 }
 
 - (id)pathForOriginalImageFile
 {
-  v1 = [a1 pl_managedAsset];
-  v2 = [v1 pathForOriginalFile];
+  pl_managedAsset = [self pl_managedAsset];
+  pathForOriginalFile = [pl_managedAsset pathForOriginalFile];
 
-  return v2;
+  return pathForOriginalFile;
 }
 
 - (uint64_t)isCloudPhotoLibraryEnabled
 {
-  v1 = [a1 photoLibrary];
-  v2 = [v1 isCloudPhotoLibraryEnabled];
+  photoLibrary = [self photoLibrary];
+  isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-  return v2;
+  return isCloudPhotoLibraryEnabled;
 }
 
 - (uint64_t)originalEXIFOrientation
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 originalMetadataProperties];
-  v3 = [v2 originalExifOrientation];
+  [self fetchPropertySetsIfNeeded];
+  originalMetadataProperties = [self originalMetadataProperties];
+  originalExifOrientation = [originalMetadataProperties originalExifOrientation];
 
-  return v3;
+  return originalExifOrientation;
 }
 
 - (id)videoObjectBuilder
 {
-  v1 = [a1 pl_managedAsset];
-  v2 = [v1 isDefaultAdjustedSlomo];
-  v3 = [MEMORY[0x1E69BE7F0] videoAVObjectBuilderForManagedAsset:v1 applyVideoAdjustments:v2 ^ 1u];
+  pl_managedAsset = [self pl_managedAsset];
+  isDefaultAdjustedSlomo = [pl_managedAsset isDefaultAdjustedSlomo];
+  v3 = [MEMORY[0x1E69BE7F0] videoAVObjectBuilderForManagedAsset:pl_managedAsset applyVideoAdjustments:isDefaultAdjustedSlomo ^ 1u];
 
   return v3;
 }
 
 - (uint64_t)livePhotoVisibilityState
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 photoIrisProperties];
-  v3 = [v2 photoIrisVisibilityState];
+  [self fetchPropertySetsIfNeeded];
+  photoIrisProperties = [self photoIrisProperties];
+  photoIrisVisibilityState = [photoIrisProperties photoIrisVisibilityState];
 
-  return v3;
+  return photoIrisVisibilityState;
 }
 
 - (uint64_t)isTrimmableType
 {
-  if ([a1 isLivePhoto])
+  if ([self isLivePhoto])
   {
     return 1;
   }
 
-  return [a1 isVideo];
+  return [self isVideo];
 }
 
 - (uint64_t)originalFilesize
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 originalMetadataProperties];
-  v3 = [v2 originalFilesize];
+  [self fetchPropertySetsIfNeeded];
+  originalMetadataProperties = [self originalMetadataProperties];
+  originalFilesize = [originalMetadataProperties originalFilesize];
 
-  return v3;
+  return originalFilesize;
 }
 
 - (void)photoIrisVideoDuration
 {
-  [a1 fetchPropertySetsIfNeeded];
+  [self fetchPropertySetsIfNeeded];
   *a2 = 0;
   a2[1] = 0;
   a2[2] = 0;
-  v4 = [a1 photoIrisProperties];
-  if (v4)
+  photoIrisProperties = [self photoIrisProperties];
+  if (photoIrisProperties)
   {
-    v5 = v4;
-    [v4 photoIrisVideoDuration];
-    v4 = v5;
+    v5 = photoIrisProperties;
+    [photoIrisProperties photoIrisVideoDuration];
+    photoIrisProperties = v5;
   }
 
   else
@@ -159,16 +159,16 @@
 
 - (void)photoIrisStillDisplayTime
 {
-  [a1 fetchPropertySetsIfNeeded];
+  [self fetchPropertySetsIfNeeded];
   *a2 = 0;
   a2[1] = 0;
   a2[2] = 0;
-  v4 = [a1 photoIrisProperties];
-  if (v4)
+  photoIrisProperties = [self photoIrisProperties];
+  if (photoIrisProperties)
   {
-    v5 = v4;
-    [v4 photoIrisStillDisplayTime];
-    v4 = v5;
+    v5 = photoIrisProperties;
+    [photoIrisProperties photoIrisStillDisplayTime];
+    photoIrisProperties = v5;
   }
 
   else
@@ -185,7 +185,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 contentChangeFromAsset:v4];
+    v5 = [self contentChangeFromAsset:v4];
   }
 
   else
@@ -202,7 +202,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([a1 hasContentEqualTo:v4])
+    if ([self hasContentEqualTo:v4])
     {
       v5 = 2;
     }

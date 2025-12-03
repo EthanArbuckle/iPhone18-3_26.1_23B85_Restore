@@ -1,8 +1,8 @@
 @interface PXOneUpTipsHelper_Swift
 + (PXOneUpTipsHelper_Swift)shared;
-+ (void)setTip:(id)a3 isPresentable:(BOOL)a4;
-+ (void)setTipActionPerformed:(id)a3;
-+ (void)setTipsPresentationDelegate:(id)a3;
++ (void)setTip:(id)tip isPresentable:(BOOL)presentable;
++ (void)setTipActionPerformed:(id)performed;
++ (void)setTipsPresentationDelegate:(id)delegate;
 @end
 
 @implementation PXOneUpTipsHelper_Swift
@@ -19,20 +19,20 @@
   return v3;
 }
 
-+ (void)setTipsPresentationDelegate:(id)a3
++ (void)setTipsPresentationDelegate:(id)delegate
 {
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
   sub_1A40A6980();
 }
 
-+ (void)setTip:(id)a3 isPresentable:(BOOL)a4
++ (void)setTip:(id)tip isPresentable:(BOOL)presentable
 {
   v5 = sub_1A524C674();
-  _s12PhotosUICore17PXOneUpTipsHelperC6setTip_13isPresentableySS_SbtFZ_0(v5, v6, a4);
+  _s12PhotosUICore17PXOneUpTipsHelperC6setTip_13isPresentableySS_SbtFZ_0(v5, v6, presentable);
 }
 
-+ (void)setTipActionPerformed:(id)a3
++ (void)setTipActionPerformed:(id)performed
 {
   v3 = sub_1A524C674();
   _s12PhotosUICore17PXOneUpTipsHelperC21setTipActionPerformedyySSFZ_0(v3, v4);

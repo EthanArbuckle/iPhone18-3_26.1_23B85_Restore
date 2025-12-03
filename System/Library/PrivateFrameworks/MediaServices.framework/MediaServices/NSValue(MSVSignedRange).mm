@@ -9,7 +9,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2];
+  [self getValue:v2];
   return v2[0];
 }
 
@@ -17,7 +17,7 @@
 {
   v6[0] = a3;
   v6[1] = a4;
-  v4 = [a1 valueWithBytes:v6 objCType:"{_MSVSignedRange=qq}"];
+  v4 = [self valueWithBytes:v6 objCType:"{_MSVSignedRange=qq}"];
 
   return v4;
 }

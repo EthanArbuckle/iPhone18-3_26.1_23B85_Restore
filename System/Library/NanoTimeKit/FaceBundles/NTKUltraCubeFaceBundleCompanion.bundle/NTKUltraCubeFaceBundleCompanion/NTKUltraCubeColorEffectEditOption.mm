@@ -1,20 +1,20 @@
 @interface NTKUltraCubeColorEffectEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKUltraCubeColorEffectEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"none";
-  if (a3 == 1)
+  if (value == 1)
   {
     v4 = @"background";
   }
 
-  if (a3 == 2)
+  if (value == 2)
   {
     return @"duotone";
   }
@@ -40,14 +40,14 @@
 
 - (id)localizedName
 {
-  v2 = [(NTKUltraCubeColorEffectEditOption *)self colorEffect];
+  colorEffect = [(NTKUltraCubeColorEffectEditOption *)self colorEffect];
   v3 = @"EDIT_OPTION_LABEL_EFFECT_NONE";
-  if (v2 == 1)
+  if (colorEffect == 1)
   {
     v3 = @"EDIT_OPTION_LABEL_EFFECT_BACKGROUND";
   }
 
-  if (v2 == 2)
+  if (colorEffect == 2)
   {
     v4 = @"EDIT_OPTION_LABEL_EFFECT_DUOTONE";
   }

@@ -1,13 +1,13 @@
 @interface CLKComplicationTimelineEntry
 + (CLKComplicationTimelineEntry)entryWithDate:(NSDate *)date complicationTemplate:(CLKComplicationTemplate *)complicationTemplate timelineAnimationGroup:(NSString *)timelineAnimationGroup;
-- (BOOL)tl_validate:(id *)a3;
-- (BOOL)validateComplicationFamily:(int64_t)a3;
-- (BOOL)validateWithError:(id *)a3;
-- (CLKComplicationTimelineEntry)initWithCoder:(id)a3;
+- (BOOL)tl_validate:(id *)tl_validate;
+- (BOOL)validateComplicationFamily:(int64_t)family;
+- (BOOL)validateWithError:(id *)error;
+- (CLKComplicationTimelineEntry)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)finalizedCopy;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)finalize;
 @end
 
@@ -18,7 +18,7 @@
   v8 = timelineAnimationGroup;
   v9 = complicationTemplate;
   v10 = date;
-  v11 = objc_alloc_init(a1);
+  v11 = objc_alloc_init(self);
   [v11 setDate:v10];
 
   [v11 setComplicationTemplate:v9];
@@ -27,7 +27,7 @@
   return v11;
 }
 
-- (BOOL)validateComplicationFamily:(int64_t)a3
+- (BOOL)validateComplicationFamily:(int64_t)family
 {
   p_complicationTemplate = &self->_complicationTemplate;
   v5 = [(CLKComplicationTemplate *)self->_complicationTemplate isCompatibleWithFamily:?];
@@ -36,23 +36,23 @@
     v6 = CLKLoggingObjectForDomain(10);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      [(CLKComplicationTimelineEntry *)a3 validateComplicationFamily:v6];
+      [(CLKComplicationTimelineEntry *)family validateComplicationFamily:v6];
     }
   }
 
   return v5;
 }
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
-  v3 = a3;
+  errorCopy = error;
   v14[1] = *MEMORY[0x277D85DE8];
   if (self->_date)
   {
     complicationTemplate = self->_complicationTemplate;
     if (complicationTemplate)
     {
-      LOBYTE(v3) = [(CLKComplicationTemplate *)complicationTemplate validateWithError:a3];
+      LOBYTE(errorCopy) = [(CLKComplicationTemplate *)complicationTemplate validateWithError:error];
       v5 = 0;
       goto LABEL_13;
     }
@@ -71,7 +71,7 @@
   if (!v5)
   {
 LABEL_12:
-    LOBYTE(v3) = 0;
+    LOBYTE(errorCopy) = 0;
     goto LABEL_13;
   }
 
@@ -81,15 +81,15 @@ LABEL_12:
     [(CLKComplicationTimelineEntry *)v5 validateWithError:v9];
   }
 
-  if (v3)
+  if (errorCopy)
   {
-    if (!*v3)
+    if (!*errorCopy)
     {
       v10 = MEMORY[0x277CCA9B8];
       v13 = *MEMORY[0x277CCA450];
       v14[0] = v5;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-      *v3 = [v10 errorWithDomain:@"CLKComplicationTimelineErrorDomain" code:1 userInfo:v11];
+      *errorCopy = [v10 errorWithDomain:@"CLKComplicationTimelineErrorDomain" code:1 userInfo:v11];
     }
 
     goto LABEL_12;
@@ -97,20 +97,20 @@ LABEL_12:
 
 LABEL_13:
 
-  return v3;
+  return errorCopy;
 }
 
 - (void)finalize
 {
   if (!self->_finalized)
   {
-    v3 = [(CLKComplicationTemplate *)self->_complicationTemplate finalizedCopyClass];
+    finalizedCopyClass = [(CLKComplicationTemplate *)self->_complicationTemplate finalizedCopyClass];
     complicationTemplate = self->_complicationTemplate;
-    if (v3)
+    if (finalizedCopyClass)
     {
-      v5 = [(CLKComplicationTemplate *)complicationTemplate finalizedCopy];
+      finalizedCopy = [(CLKComplicationTemplate *)complicationTemplate finalizedCopy];
       v6 = self->_complicationTemplate;
-      self->_complicationTemplate = v5;
+      self->_complicationTemplate = finalizedCopy;
     }
 
     else
@@ -126,59 +126,59 @@ LABEL_13:
 {
   if (self->_finalized)
   {
-    v2 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [(CLKComplicationTimelineEntry *)self copy];
-    [(CLKComplicationTimelineEntry *)v2 finalize];
+    selfCopy = [(CLKComplicationTimelineEntry *)self copy];
+    [(CLKComplicationTimelineEntry *)selfCopy finalize];
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)tl_validate:(id *)a3
+- (BOOL)tl_validate:(id *)tl_validate
 {
   v4 = [(CLKComplicationTimelineEntry *)self validateWithError:?];
   v5 = v4;
-  if (a3 && !v4)
+  if (tl_validate && !v4)
   {
-    *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLKComplicationEntryError" code:400 userInfo:&unk_284A350C8];
+    *tl_validate = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLKComplicationEntryError" code:400 userInfo:&unk_284A350C8];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v5 = a3;
-  [v5 encodeObject:date forKey:@"date"];
-  [v5 encodeObject:self->_complicationTemplate forKey:@"tmpl"];
-  [v5 encodeObject:self->_timelineAnimationGroup forKey:@"anim"];
-  [v5 encodeBool:self->_finalized forKey:@"finalized"];
+  coderCopy = coder;
+  [coderCopy encodeObject:date forKey:@"date"];
+  [coderCopy encodeObject:self->_complicationTemplate forKey:@"tmpl"];
+  [coderCopy encodeObject:self->_timelineAnimationGroup forKey:@"anim"];
+  [coderCopy encodeBool:self->_finalized forKey:@"finalized"];
 }
 
-- (CLKComplicationTimelineEntry)initWithCoder:(id)a3
+- (CLKComplicationTimelineEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CLKComplicationTimelineEntry *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tmpl"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tmpl"];
     complicationTemplate = v5->_complicationTemplate;
     v5->_complicationTemplate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anim"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anim"];
     timelineAnimationGroup = v5->_timelineAnimationGroup;
     v5->_timelineAnimationGroup = v10;
 
-    v5->_finalized = [v4 decodeBoolForKey:@"finalized"];
+    v5->_finalized = [coderCopy decodeBoolForKey:@"finalized"];
   }
 
   return v5;
@@ -195,7 +195,7 @@ LABEL_13:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_finalized)
   {
@@ -205,7 +205,7 @@ LABEL_13:
 
   else
   {
-    v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+    v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
     [v5 setDate:self->_date];
     [v5 setComplicationTemplate:self->_complicationTemplate];
     [v5 setTimelineAnimationGroup:self->_timelineAnimationGroup];

@@ -7,15 +7,15 @@
 
 + (uint64_t)createWithCodable:()HDCodingSupport
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HKObject+HDCodingSupport.m" lineNumber:1684 description:{@"HKDeletedObjects don't use HDCodingSupport, deleted objects from codable is handled in HDDatatSyncEntity's _insertObjectsFromCodableObjectCollection:syncStore:profile:error:"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKObject+HDCodingSupport.m" lineNumber:1684 description:{@"HKDeletedObjects don't use HDCodingSupport, deleted objects from codable is handled in HDDatatSyncEntity's _insertObjectsFromCodableObjectCollection:syncStore:profile:error:"}];
 
   return 0;
 }
 
 - (uint64_t)codableRepresentationForSync
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
 
   return 0;
 }

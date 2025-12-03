@@ -10,7 +10,7 @@
 - (double)_volumeButtonsX;
 - (id)_volumeButtonsDictionaryForSpecificHardware;
 - (id)description;
-- (id)hardwareInfoForOrientation:(int64_t)a3;
+- (id)hardwareInfoForOrientation:(int64_t)orientation;
 - (void)_readPlistForParametersIfNeeded;
 @end
 
@@ -18,7 +18,7 @@
 
 + (TVRUIDeviceInfo)currentDeviceInfo
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -41,8 +41,8 @@
 
 - (BOOL)isPad
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }
@@ -64,7 +64,7 @@ uint64_t __32__TVRUIDeviceInfo_hasHomeButton__block_invoke()
   return result;
 }
 
-- (id)hardwareInfoForOrientation:(int64_t)a3
+- (id)hardwareInfoForOrientation:(int64_t)orientation
 {
   [(TVRUIDeviceInfo *)self _userIntentButtonRect];
   v28 = v5;
@@ -92,9 +92,9 @@ uint64_t __32__TVRUIDeviceInfo_hasHomeButton__block_invoke()
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendBool:-[TVRUIDeviceInfo isPad](self withName:{"isPad"), @"isPad"}];
   v5 = [v3 appendBool:-[TVRUIDeviceInfo hasHomeButton](self withName:{"hasHomeButton"), @"hasHomeButton"}];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (CGRect)_volumeUpButtonRect
@@ -282,8 +282,8 @@ void __40__TVRUIDeviceInfo__userIntentButtonRect__block_invoke(uint64_t a1)
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -302,7 +302,7 @@ void __40__TVRUIDeviceInfo__userIntentButtonRect__block_invoke(uint64_t a1)
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_26CFEB000, a2, OS_LOG_TYPE_FAULT, "Missing screen class (%{public}@) in plist", &v2, 0xCu);
 }
 

@@ -1,43 +1,43 @@
 @interface BEAccessibilityTextMarkerRange
-- (BEAccessibilityTextMarkerRange)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BEAccessibilityTextMarkerRange)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BEAccessibilityTextMarkerRange
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[BEAccessibilityTextMarkerRange allocWithZone:](BEAccessibilityTextMarkerRange init];
-  v6 = [(BEAccessibilityTextMarkerRange *)self startMarker];
-  v7 = [v6 copyWithZone:a3];
+  startMarker = [(BEAccessibilityTextMarkerRange *)self startMarker];
+  v7 = [startMarker copyWithZone:zone];
   [(BEAccessibilityTextMarkerRange *)v5 setStartMarker:v7];
 
-  v8 = [(BEAccessibilityTextMarkerRange *)self endMarker];
-  v9 = [v8 copyWithZone:a3];
+  endMarker = [(BEAccessibilityTextMarkerRange *)self endMarker];
+  v9 = [endMarker copyWithZone:zone];
   [(BEAccessibilityTextMarkerRange *)v5 setEndMarker:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BEAccessibilityTextMarkerRange *)self startMarker];
-  [v4 encodeObject:v5 forKey:@"startMarker"];
+  coderCopy = coder;
+  startMarker = [(BEAccessibilityTextMarkerRange *)self startMarker];
+  [coderCopy encodeObject:startMarker forKey:@"startMarker"];
 
-  v6 = [(BEAccessibilityTextMarkerRange *)self endMarker];
-  [v4 encodeObject:v6 forKey:@"endMarker"];
+  endMarker = [(BEAccessibilityTextMarkerRange *)self endMarker];
+  [coderCopy encodeObject:endMarker forKey:@"endMarker"];
 }
 
-- (BEAccessibilityTextMarkerRange)initWithCoder:(id)a3
+- (BEAccessibilityTextMarkerRange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(BEAccessibilityTextMarkerRange);
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startMarker"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startMarker"];
   [(BEAccessibilityTextMarkerRange *)v5 setStartMarker:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endMarker"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endMarker"];
 
   [(BEAccessibilityTextMarkerRange *)v5 setEndMarker:v7];
   return v5;

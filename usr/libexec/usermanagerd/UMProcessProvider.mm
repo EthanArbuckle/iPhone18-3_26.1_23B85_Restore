@@ -1,21 +1,21 @@
 @interface UMProcessProvider
-- (BOOL)terminatePID:(int)a3 withReasonNamespace:(unsigned int)a4 reasonCode:(unint64_t)a5 reasonString:(id)a6 error:(id *)a7;
-- (id)pathForPID:(int)a3 error:(id *)a4;
-- (id)pidsUsingVolumeAtPath:(id)a3 error:(id *)a4;
-- (unint64_t)uniquePIDForPID:(int)a3 error:(id *)a4;
+- (BOOL)terminatePID:(int)d withReasonNamespace:(unsigned int)namespace reasonCode:(unint64_t)code reasonString:(id)string error:(id *)error;
+- (id)pathForPID:(int)d error:(id *)error;
+- (id)pidsUsingVolumeAtPath:(id)path error:(id *)error;
+- (unint64_t)uniquePIDForPID:(int)d error:(id *)error;
 @end
 
 @implementation UMProcessProvider
 
-- (id)pathForPID:(int)a3 error:(id *)a4
+- (id)pathForPID:(int)d error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   bzero(buffer, 0x401uLL);
-  if (proc_pidpath(a3, buffer, 0x400u))
+  if (proc_pidpath(d, buffer, 0x400u))
   {
     v6 = [NSString stringWithUTF8String:buffer];
   }
@@ -23,9 +23,9 @@
   else
   {
     v7 = *__error();
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v7 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v7 userInfo:0];
     }
 
     if (qword_1000EB478 != -1)
@@ -71,24 +71,24 @@
   return v6;
 }
 
-- (unint64_t)uniquePIDForPID:(int)a3 error:(id *)a4
+- (unint64_t)uniquePIDForPID:(int)d error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v21 = 0;
   v19 = 0u;
   v20 = 0u;
   buffer = 0u;
-  v5 = proc_pidinfo(a3, 17, 0, &buffer, 56);
+  v5 = proc_pidinfo(d, 17, 0, &buffer, 56);
   if (v5 < 0)
   {
     v7 = *__error();
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v7 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v7 userInfo:0];
     }
 
     if (qword_1000EB478 != -1)
@@ -136,9 +136,9 @@
       return v19;
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:5 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:5 userInfo:0];
     }
 
     if (qword_1000EB478 != -1)
@@ -182,22 +182,22 @@
   return 0;
 }
 
-- (id)pidsUsingVolumeAtPath:(id)a3 error:(id *)a4
+- (id)pidsUsingVolumeAtPath:(id)path error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  pathCopy = path;
+  v6 = pathCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v7 = proc_listpidspath(1u, 0, [v5 UTF8String], 3u, 0, 0);
+  v7 = proc_listpidspath(1u, 0, [pathCopy UTF8String], 3u, 0, 0);
   if (v7 < 0)
   {
     v17 = *__error();
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v17 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v17 userInfo:0];
     }
 
     if (qword_1000EB478 != -1)
@@ -249,9 +249,9 @@
     if ((v10 & 0x80000000) != 0)
     {
       v23 = *__error();
-      if (a4)
+      if (error)
       {
-        *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v23 userInfo:0];
+        *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v23 userInfo:0];
       }
 
       if (qword_1000EB478 != -1)
@@ -320,21 +320,21 @@
   return v13;
 }
 
-- (BOOL)terminatePID:(int)a3 withReasonNamespace:(unsigned int)a4 reasonCode:(unint64_t)a5 reasonString:(id)a6 error:(id *)a7
+- (BOOL)terminatePID:(int)d withReasonNamespace:(unsigned int)namespace reasonCode:(unint64_t)code reasonString:(id)string error:(id *)error
 {
-  if (a7)
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
-  [a6 UTF8String];
+  [string UTF8String];
   v11 = terminate_with_reason();
   if (v11)
   {
     v12 = *__error();
-    if (a7)
+    if (error)
     {
-      *a7 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v12 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v12 userInfo:0];
     }
 
     if (qword_1000EB478 != -1)
@@ -359,11 +359,11 @@
       if (v15)
       {
         *buf = 67109888;
-        v21 = a3;
+        dCopy2 = d;
         v22 = 1024;
-        v23 = a4;
+        namespaceCopy = namespace;
         v24 = 2048;
-        v25 = a5;
+        codeCopy = code;
         v26 = 1024;
         v27 = v12;
         v16 = _os_log_send_and_compose_impl();
@@ -394,7 +394,7 @@
     if (os_log_type_enabled(qword_1000EB470, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v21 = a3;
+      dCopy2 = d;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Terminated process %d", buf, 8u);
     }
   }

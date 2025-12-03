@@ -1,30 +1,30 @@
 @interface ICRadioURLRequest
-- (ICRadioURLRequest)initWithURLRequest:(id)a3 requestContext:(id)a4;
-- (void)_decorateHeaderPropertiesForURLRequest:(id)a3 withBuilderProperties:(id)a4;
-- (void)buildStoreURLRequestWithURLRequest:(id)a3 builderProperties:(id)a4 completionHandler:(id)a5;
+- (ICRadioURLRequest)initWithURLRequest:(id)request requestContext:(id)context;
+- (void)_decorateHeaderPropertiesForURLRequest:(id)request withBuilderProperties:(id)properties;
+- (void)buildStoreURLRequestWithURLRequest:(id)request builderProperties:(id)properties completionHandler:(id)handler;
 @end
 
 @implementation ICRadioURLRequest
 
-- (void)_decorateHeaderPropertiesForURLRequest:(id)a3 withBuilderProperties:(id)a4
+- (void)_decorateHeaderPropertiesForURLRequest:(id)request withBuilderProperties:(id)properties
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = [(ICStoreURLRequest *)self storeRequestContext];
-  v8 = [v7 deviceInfo];
-  v9 = [(ICRadioURLRequest *)self protocolVersion];
+  requestCopy = request;
+  propertiesCopy = properties;
+  storeRequestContext = [(ICStoreURLRequest *)self storeRequestContext];
+  deviceInfo = [storeRequestContext deviceInfo];
+  protocolVersion = [(ICRadioURLRequest *)self protocolVersion];
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v8 buildVersion];
-  v12 = v11;
+  buildVersion = [deviceInfo buildVersion];
+  v12 = buildVersion;
   v13 = &stru_1F2C4A680;
-  if (v11)
+  if (buildVersion)
   {
-    v13 = v11;
+    v13 = buildVersion;
   }
 
-  v14 = [v10 stringWithFormat:@"%ld/%@", v9, v13];
+  v14 = [v10 stringWithFormat:@"%ld/%@", protocolVersion, v13];
 
-  [v23 setValue:v14 forHTTPHeaderField:@"X-Apple-Radio-Client-Version"];
+  [requestCopy setValue:v14 forHTTPHeaderField:@"X-Apple-Radio-Client-Version"];
   privateListeningEnabled = self->_privateListeningEnabled;
   if (privateListeningEnabled)
   {
@@ -38,7 +38,7 @@
       v16 = @"false";
     }
 
-    [v23 setValue:v16 forHTTPHeaderField:@"X-Apple-Private-Listening"];
+    [requestCopy setValue:v16 forHTTPHeaderField:@"X-Apple-Private-Listening"];
   }
 
   delegatedPrivateListeningEnabled = self->_delegatedPrivateListeningEnabled;
@@ -54,41 +54,41 @@
       v18 = @"false";
     }
 
-    [v23 setValue:v18 forHTTPHeaderField:@"X-Apple-Enqueuer-Private-Listening"];
+    [requestCopy setValue:v18 forHTTPHeaderField:@"X-Apple-Enqueuer-Private-Listening"];
   }
 
-  v19 = [v6 URLBag];
-  v20 = [v19 radioConfiguration];
-  v21 = [v23 URL];
-  if (v21 && [v20 shouldIncludeHTTPHeaderField:@"X-Guid" forRequestURL:v21])
+  uRLBag = [propertiesCopy URLBag];
+  radioConfiguration = [uRLBag radioConfiguration];
+  v21 = [requestCopy URL];
+  if (v21 && [radioConfiguration shouldIncludeHTTPHeaderField:@"X-Guid" forRequestURL:v21])
   {
-    v22 = [v8 deviceGUID];
-    if (v22)
+    deviceGUID = [deviceInfo deviceGUID];
+    if (deviceGUID)
     {
-      [v23 setValue:v22 forHTTPHeaderField:@"X-Guid"];
+      [requestCopy setValue:deviceGUID forHTTPHeaderField:@"X-Guid"];
     }
   }
 }
 
-- (void)buildStoreURLRequestWithURLRequest:(id)a3 builderProperties:(id)a4 completionHandler:(id)a5
+- (void)buildStoreURLRequestWithURLRequest:(id)request builderProperties:(id)properties completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  propertiesCopy = properties;
+  handlerCopy = handler;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __92__ICRadioURLRequest_buildStoreURLRequestWithURLRequest_builderProperties_completionHandler___block_invoke;
   v22[3] = &unk_1E7BF9560;
-  v11 = v8;
+  v11 = requestCopy;
   v23 = v11;
-  v24 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = propertiesCopy;
   v25 = v12;
-  v13 = v10;
+  v13 = handlerCopy;
   v26 = v13;
   v14 = MEMORY[0x1B8C781E0](v22);
-  v15 = [(ICRadioURLRequest *)self radioContentDictionaryCreationBlock];
-  if (v15)
+  radioContentDictionaryCreationBlock = [(ICRadioURLRequest *)self radioContentDictionaryCreationBlock];
+  if (radioContentDictionaryCreationBlock)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -96,7 +96,7 @@
     v18[3] = &unk_1E7BF9588;
     v18[4] = self;
     v19 = v12;
-    v20 = v15;
+    v20 = radioContentDictionaryCreationBlock;
     v21 = v14;
     v17.receiver = self;
     v17.super_class = ICRadioURLRequest;
@@ -196,11 +196,11 @@ void __92__ICRadioURLRequest_buildStoreURLRequestWithURLRequest_builderPropertie
   }
 }
 
-- (ICRadioURLRequest)initWithURLRequest:(id)a3 requestContext:(id)a4
+- (ICRadioURLRequest)initWithURLRequest:(id)request requestContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = ICRadioURLRequest;
-  result = [(ICStoreURLRequest *)&v5 initWithURLRequest:a3 requestContext:a4];
+  result = [(ICStoreURLRequest *)&v5 initWithURLRequest:request requestContext:context];
   if (result)
   {
     result->_protocolVersion = 5;

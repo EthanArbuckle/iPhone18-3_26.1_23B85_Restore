@@ -1,16 +1,16 @@
 @interface BMASRContextualReplayRecord
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMASRContextualReplayRecord)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMASRContextualReplayRecord)initWithMetadata:(id)a3 audio:(id)a4 preITNTranscript:(id)a5 postITNTranscript:(id)a6 profile:(id)a7 contextualEntities:(id)a8 userEditedText:(id)a9;
-- (BOOL)isEqual:(id)a3;
+- (BMASRContextualReplayRecord)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMASRContextualReplayRecord)initWithMetadata:(id)metadata audio:(id)audio preITNTranscript:(id)transcript postITNTranscript:(id)nTranscript profile:(id)profile contextualEntities:(id)entities userEditedText:(id)text;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_contextualEntitiesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMASRContextualReplayRecord
@@ -39,25 +39,25 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMASRContextualReplayRecord *)self metadata];
-    v7 = [v5 metadata];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    metadata = [(BMASRContextualReplayRecord *)self metadata];
+    metadata2 = [v5 metadata];
+    v8 = metadata2;
+    if (metadata == metadata2)
     {
     }
 
     else
     {
-      v9 = [(BMASRContextualReplayRecord *)self metadata];
-      v10 = [v5 metadata];
-      v11 = [v9 isEqual:v10];
+      metadata3 = [(BMASRContextualReplayRecord *)self metadata];
+      metadata4 = [v5 metadata];
+      v11 = [metadata3 isEqual:metadata4];
 
       if (!v11)
       {
@@ -65,18 +65,18 @@
       }
     }
 
-    v13 = [(BMASRContextualReplayRecord *)self audio];
-    v14 = [v5 audio];
-    v15 = v14;
-    if (v13 == v14)
+    audio = [(BMASRContextualReplayRecord *)self audio];
+    audio2 = [v5 audio];
+    v15 = audio2;
+    if (audio == audio2)
     {
     }
 
     else
     {
-      v16 = [(BMASRContextualReplayRecord *)self audio];
-      v17 = [v5 audio];
-      v18 = [v16 isEqual:v17];
+      audio3 = [(BMASRContextualReplayRecord *)self audio];
+      audio4 = [v5 audio];
+      v18 = [audio3 isEqual:audio4];
 
       if (!v18)
       {
@@ -84,18 +84,18 @@
       }
     }
 
-    v19 = [(BMASRContextualReplayRecord *)self preITNTranscript];
-    v20 = [v5 preITNTranscript];
-    v21 = v20;
-    if (v19 == v20)
+    preITNTranscript = [(BMASRContextualReplayRecord *)self preITNTranscript];
+    preITNTranscript2 = [v5 preITNTranscript];
+    v21 = preITNTranscript2;
+    if (preITNTranscript == preITNTranscript2)
     {
     }
 
     else
     {
-      v22 = [(BMASRContextualReplayRecord *)self preITNTranscript];
-      v23 = [v5 preITNTranscript];
-      v24 = [v22 isEqual:v23];
+      preITNTranscript3 = [(BMASRContextualReplayRecord *)self preITNTranscript];
+      preITNTranscript4 = [v5 preITNTranscript];
+      v24 = [preITNTranscript3 isEqual:preITNTranscript4];
 
       if (!v24)
       {
@@ -103,18 +103,18 @@
       }
     }
 
-    v25 = [(BMASRContextualReplayRecord *)self postITNTranscript];
-    v26 = [v5 postITNTranscript];
-    v27 = v26;
-    if (v25 == v26)
+    postITNTranscript = [(BMASRContextualReplayRecord *)self postITNTranscript];
+    postITNTranscript2 = [v5 postITNTranscript];
+    v27 = postITNTranscript2;
+    if (postITNTranscript == postITNTranscript2)
     {
     }
 
     else
     {
-      v28 = [(BMASRContextualReplayRecord *)self postITNTranscript];
-      v29 = [v5 postITNTranscript];
-      v30 = [v28 isEqual:v29];
+      postITNTranscript3 = [(BMASRContextualReplayRecord *)self postITNTranscript];
+      postITNTranscript4 = [v5 postITNTranscript];
+      v30 = [postITNTranscript3 isEqual:postITNTranscript4];
 
       if (!v30)
       {
@@ -122,18 +122,18 @@
       }
     }
 
-    v31 = [(BMASRContextualReplayRecord *)self profile];
-    v32 = [v5 profile];
-    v33 = v32;
-    if (v31 == v32)
+    profile = [(BMASRContextualReplayRecord *)self profile];
+    profile2 = [v5 profile];
+    v33 = profile2;
+    if (profile == profile2)
     {
     }
 
     else
     {
-      v34 = [(BMASRContextualReplayRecord *)self profile];
-      v35 = [v5 profile];
-      v36 = [v34 isEqual:v35];
+      profile3 = [(BMASRContextualReplayRecord *)self profile];
+      profile4 = [v5 profile];
+      v36 = [profile3 isEqual:profile4];
 
       if (!v36)
       {
@@ -141,18 +141,18 @@
       }
     }
 
-    v37 = [(BMASRContextualReplayRecord *)self contextualEntities];
-    v38 = [v5 contextualEntities];
-    v39 = v38;
-    if (v37 == v38)
+    contextualEntities = [(BMASRContextualReplayRecord *)self contextualEntities];
+    contextualEntities2 = [v5 contextualEntities];
+    v39 = contextualEntities2;
+    if (contextualEntities == contextualEntities2)
     {
     }
 
     else
     {
-      v40 = [(BMASRContextualReplayRecord *)self contextualEntities];
-      v41 = [v5 contextualEntities];
-      v42 = [v40 isEqual:v41];
+      contextualEntities3 = [(BMASRContextualReplayRecord *)self contextualEntities];
+      contextualEntities4 = [v5 contextualEntities];
+      v42 = [contextualEntities3 isEqual:contextualEntities4];
 
       if (!v42)
       {
@@ -164,18 +164,18 @@ LABEL_26:
       }
     }
 
-    v44 = [(BMASRContextualReplayRecord *)self userEditedText];
-    v45 = [v5 userEditedText];
-    if (v44 == v45)
+    userEditedText = [(BMASRContextualReplayRecord *)self userEditedText];
+    userEditedText2 = [v5 userEditedText];
+    if (userEditedText == userEditedText2)
     {
       v12 = 1;
     }
 
     else
     {
-      v46 = [(BMASRContextualReplayRecord *)self userEditedText];
-      v47 = [v5 userEditedText];
-      v12 = [v46 isEqual:v47];
+      userEditedText3 = [(BMASRContextualReplayRecord *)self userEditedText];
+      userEditedText4 = [v5 userEditedText];
+      v12 = [userEditedText3 isEqual:userEditedText4];
     }
 
     goto LABEL_26;
@@ -190,84 +190,84 @@ LABEL_27:
 - (id)jsonDictionary
 {
   v29[7] = *MEMORY[0x1E69E9840];
-  v3 = [(BMASRContextualReplayRecord *)self metadata];
-  v4 = [v3 jsonDictionary];
+  metadata = [(BMASRContextualReplayRecord *)self metadata];
+  jsonDictionary = [metadata jsonDictionary];
 
-  v5 = [(BMASRContextualReplayRecord *)self audio];
-  v6 = [v5 base64EncodedStringWithOptions:0];
+  audio = [(BMASRContextualReplayRecord *)self audio];
+  v6 = [audio base64EncodedStringWithOptions:0];
 
-  v7 = [(BMASRContextualReplayRecord *)self preITNTranscript];
-  v8 = [(BMASRContextualReplayRecord *)self postITNTranscript];
-  v9 = [(BMASRContextualReplayRecord *)self profile];
-  v10 = [v9 base64EncodedStringWithOptions:0];
+  preITNTranscript = [(BMASRContextualReplayRecord *)self preITNTranscript];
+  postITNTranscript = [(BMASRContextualReplayRecord *)self postITNTranscript];
+  profile = [(BMASRContextualReplayRecord *)self profile];
+  v10 = [profile base64EncodedStringWithOptions:0];
 
-  v11 = [(BMASRContextualReplayRecord *)self _contextualEntitiesJSONArray];
-  v12 = [(BMASRContextualReplayRecord *)self userEditedText];
+  _contextualEntitiesJSONArray = [(BMASRContextualReplayRecord *)self _contextualEntitiesJSONArray];
+  userEditedText = [(BMASRContextualReplayRecord *)self userEditedText];
   v28[0] = @"metadata";
-  v13 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v13;
-  v29[0] = v13;
+  v25 = null;
+  v29[0] = null;
   v28[1] = @"audio";
-  v14 = v6;
+  null2 = v6;
   if (!v6)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v14;
-  v29[1] = v14;
+  v24 = null2;
+  v29[1] = null2;
   v28[2] = @"preITNTranscript";
-  v15 = v7;
-  if (!v7)
+  null3 = preITNTranscript;
+  if (!preITNTranscript)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v4;
-  v23 = v15;
-  v29[2] = v15;
+  v27 = jsonDictionary;
+  v23 = null3;
+  v29[2] = null3;
   v28[3] = @"postITNTranscript";
-  v16 = v8;
-  if (!v8)
+  null4 = postITNTranscript;
+  if (!postITNTranscript)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v26 = v6;
-  v29[3] = v16;
+  v29[3] = null4;
   v28[4] = @"profile";
-  v17 = v10;
+  null5 = v10;
   if (!v10)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[4] = v17;
+  v29[4] = null5;
   v28[5] = @"contextualEntities";
-  v18 = v11;
-  if (!v11)
+  null6 = _contextualEntitiesJSONArray;
+  if (!_contextualEntitiesJSONArray)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[5] = v18;
+  v29[5] = null6;
   v28[6] = @"userEditedText";
-  v19 = v12;
-  if (!v12)
+  null7 = userEditedText;
+  if (!userEditedText)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[6] = v19;
+  v29[6] = null7;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:7];
-  if (v12)
+  if (userEditedText)
   {
-    if (v11)
+    if (_contextualEntitiesJSONArray)
     {
       goto LABEL_17;
     }
@@ -282,7 +282,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (!v11)
+  if (!_contextualEntitiesJSONArray)
   {
     goto LABEL_27;
   }
@@ -296,11 +296,11 @@ LABEL_17:
 LABEL_28:
 
 LABEL_18:
-  if (!v8)
+  if (!postITNTranscript)
   {
   }
 
-  if (v7)
+  if (preITNTranscript)
   {
     if (v26)
     {
@@ -344,8 +344,8 @@ LABEL_23:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMASRContextualReplayRecord *)self contextualEntities];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  contextualEntities = [(BMASRContextualReplayRecord *)self contextualEntities];
+  v5 = [contextualEntities countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -356,13 +356,13 @@ LABEL_23:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contextualEntities);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [contextualEntities countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -373,20 +373,20 @@ LABEL_23:
   return v3;
 }
 
-- (BMASRContextualReplayRecord)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMASRContextualReplayRecord)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v115[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"metadata"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v30 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v31 = a4;
+        errorCopy = error;
         v32 = *MEMORY[0x1E698F240];
         v114 = *MEMORY[0x1E696A578];
         v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"metadata"];
@@ -394,12 +394,12 @@ LABEL_23:
         v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v115 forKeys:&v114 count:1];
         v34 = v30;
         v10 = v33;
-        v20 = 0;
-        *v31 = [v34 initWithDomain:v32 code:2 userInfo:v33];
+        selfCopy4 = 0;
+        *errorCopy = [v34 initWithDomain:v32 code:2 userInfo:v33];
         goto LABEL_86;
       }
 
-      v20 = 0;
+      selfCopy4 = 0;
       goto LABEL_87;
     }
 
@@ -409,13 +409,13 @@ LABEL_23:
     v19 = v92;
     if (v19)
     {
-      if (a4)
+      if (error)
       {
         v19 = v19;
-        *a4 = v19;
+        *error = v19;
       }
 
-      v20 = 0;
+      selfCopy4 = 0;
       goto LABEL_86;
     }
   }
@@ -425,8 +425,8 @@ LABEL_23:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"audio"];
-  v86 = a4;
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"audio"];
+  errorCopy2 = error;
   if (v9)
   {
     objc_opt_class();
@@ -448,7 +448,7 @@ LABEL_23:
           goto LABEL_7;
         }
 
-        if (a4)
+        if (error)
         {
           v35 = objc_alloc(MEMORY[0x1E696ABC0]);
           v36 = *MEMORY[0x1E698F240];
@@ -462,13 +462,13 @@ LABEL_72:
           v11 = [v38 dictionaryWithObjects:v39 forKeys:v40 count:1];
           v63 = [v35 initWithDomain:v36 code:2 userInfo:v11];
           v10 = 0;
-          v20 = 0;
-          *v86 = v63;
+          selfCopy4 = 0;
+          *errorCopy2 = v63;
           goto LABEL_84;
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v35 = objc_alloc(MEMORY[0x1E696ABC0]);
         v36 = *MEMORY[0x1E698F240];
@@ -482,14 +482,14 @@ LABEL_72:
       }
 
       v10 = 0;
-      v20 = 0;
+      selfCopy4 = 0;
       goto LABEL_85;
     }
   }
 
   v10 = 0;
 LABEL_7:
-  v11 = [v6 objectForKeyedSubscript:@"preITNTranscript"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"preITNTranscript"];
   v87 = v8;
   v85 = v10;
   if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -497,7 +497,7 @@ LABEL_7:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v48 = objc_alloc(MEMORY[0x1E696ABC0]);
         v49 = *MEMORY[0x1E698F240];
@@ -510,13 +510,13 @@ LABEL_7:
         v52 = v49;
         v53 = v50;
         v37 = 0;
-        v20 = 0;
-        *v86 = [v51 initWithDomain:v52 code:2 userInfo:v50];
+        selfCopy4 = 0;
+        *errorCopy2 = [v51 initWithDomain:v52 code:2 userInfo:v50];
         goto LABEL_83;
       }
 
       v37 = 0;
-      v20 = 0;
+      selfCopy4 = 0;
       goto LABEL_84;
     }
 
@@ -530,13 +530,13 @@ LABEL_7:
     v84 = 0;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"postITNTranscript"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"postITNTranscript"];
   if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v54 = objc_alloc(MEMORY[0x1E696ABC0]);
         v55 = *MEMORY[0x1E698F240];
@@ -547,15 +547,15 @@ LABEL_7:
         v57 = v55;
         v53 = v13;
         v82 = v56;
-        v20 = 0;
-        *v86 = [v54 initWithDomain:v57 code:2 userInfo:?];
+        selfCopy4 = 0;
+        *errorCopy2 = [v54 initWithDomain:v57 code:2 userInfo:?];
         v37 = v84;
         v9 = v12;
         v28 = 0;
         goto LABEL_82;
       }
 
-      v20 = 0;
+      selfCopy4 = 0;
       v37 = v84;
       v53 = v13;
       v9 = v12;
@@ -571,7 +571,7 @@ LABEL_7:
     v80 = 0;
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"profile"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"profile"];
   v81 = v13;
   v82 = v14;
   if (v14)
@@ -597,7 +597,7 @@ LABEL_7:
           goto LABEL_16;
         }
 
-        if (v86)
+        if (errorCopy2)
         {
           v58 = objc_alloc(MEMORY[0x1E696ABC0]);
           v59 = *MEMORY[0x1E698F240];
@@ -607,22 +607,22 @@ LABEL_7:
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v105 forKeys:&v104 count:1];
           v60 = [v58 initWithDomain:v59 code:2 userInfo:v21];
           v83 = 0;
-          v20 = 0;
-          *v86 = v60;
+          selfCopy4 = 0;
+          *errorCopy2 = v60;
 LABEL_91:
           v28 = v80;
           goto LABEL_80;
         }
 
         v83 = 0;
-        v20 = 0;
+        selfCopy4 = 0;
       }
 
       else
       {
-        v67 = self;
+        selfCopy = self;
         v68 = v11;
-        if (v86)
+        if (errorCopy2)
         {
           v69 = objc_alloc(MEMORY[0x1E696ABC0]);
           v70 = *MEMORY[0x1E698F240];
@@ -632,16 +632,16 @@ LABEL_91:
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v103 forKeys:&v102 count:1];
           v71 = [v69 initWithDomain:v70 code:2 userInfo:v21];
           v83 = 0;
-          v20 = 0;
-          *v86 = v71;
+          selfCopy4 = 0;
+          *errorCopy2 = v71;
           v11 = v68;
-          self = v67;
+          self = selfCopy;
           goto LABEL_91;
         }
 
         v83 = 0;
-        v20 = 0;
-        self = v67;
+        selfCopy4 = 0;
+        self = selfCopy;
       }
 
       v37 = v84;
@@ -654,15 +654,15 @@ LABEL_91:
   v83 = 0;
   v9 = v12;
 LABEL_16:
-  v16 = [v6 objectForKeyedSubscript:@"contextualEntities"];
-  v17 = [MEMORY[0x1E695DFB0] null];
-  v18 = [v16 isEqual:v17];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"contextualEntities"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v18 = [v16 isEqual:null];
 
   v79 = v11;
   if (v18)
   {
     v76 = v9;
-    v77 = self;
+    selfCopy3 = self;
 
     v16 = 0;
   }
@@ -675,7 +675,7 @@ LABEL_16:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v28 = v80;
-        if (v86)
+        if (errorCopy2)
         {
           v78 = objc_alloc(MEMORY[0x1E696ABC0]);
           v61 = *MEMORY[0x1E698F240];
@@ -684,18 +684,18 @@ LABEL_16:
           v101 = v21;
           v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
           v62 = [v78 initWithDomain:v61 code:2 userInfo:v29];
-          v20 = 0;
-          *v86 = v62;
+          selfCopy4 = 0;
+          *errorCopy2 = v62;
           goto LABEL_79;
         }
 
-        v20 = 0;
+        selfCopy4 = 0;
         goto LABEL_81;
       }
     }
 
     v76 = v9;
-    v77 = self;
+    selfCopy3 = self;
   }
 
   v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v16, "count")}];
@@ -725,7 +725,7 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v86)
+        if (errorCopy2)
         {
           v41 = objc_alloc(MEMORY[0x1E696ABC0]);
           v42 = *MEMORY[0x1E698F240];
@@ -739,20 +739,20 @@ LABEL_56:
           v46 = [v43 dictionaryWithObjects:v44 forKeys:v45 count:1];
           v47 = [v41 initWithDomain:v42 code:2 userInfo:v46];
           v9 = v76;
-          self = v77;
+          self = selfCopy3;
           v28 = v80;
-          *v86 = v47;
+          *errorCopy2 = v47;
 
-          v20 = 0;
+          selfCopy4 = 0;
           v29 = v16;
           goto LABEL_78;
         }
 
 LABEL_61:
-        v20 = 0;
+        selfCopy4 = 0;
         v29 = v16;
         v9 = v76;
-        self = v77;
+        self = selfCopy3;
         v28 = v80;
         goto LABEL_79;
       }
@@ -760,7 +760,7 @@ LABEL_61:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v86)
+        if (errorCopy2)
         {
           v41 = objc_alloc(MEMORY[0x1E696ABC0]);
           v42 = *MEMORY[0x1E698F240];
@@ -790,12 +790,12 @@ LABEL_61:
 
 LABEL_37:
 
-  v27 = [v6 objectForKeyedSubscript:@"userEditedText"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"userEditedText"];
   if (!v27)
   {
     v29 = 0;
     v9 = v76;
-    self = v77;
+    self = selfCopy3;
     v64 = v87;
     v28 = v80;
     goto LABEL_77;
@@ -803,7 +803,7 @@ LABEL_37:
 
   objc_opt_class();
   v9 = v76;
-  self = v77;
+  self = selfCopy3;
   v28 = v80;
   if (objc_opt_isKindOfClass())
   {
@@ -819,12 +819,12 @@ LABEL_76:
     v64 = v87;
 LABEL_77:
     self = [(BMASRContextualReplayRecord *)self initWithMetadata:v64 audio:v85 preITNTranscript:v84 postITNTranscript:v28 profile:v83 contextualEntities:v21 userEditedText:v29];
-    v20 = self;
+    selfCopy4 = self;
   }
 
   else
   {
-    if (v86)
+    if (errorCopy2)
     {
       v75 = objc_alloc(MEMORY[0x1E696ABC0]);
       v74 = *MEMORY[0x1E698F240];
@@ -832,11 +832,11 @@ LABEL_77:
       v72 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"userEditedText"];
       v94 = v72;
       v73 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
-      *v86 = [v75 initWithDomain:v74 code:2 userInfo:v73];
+      *errorCopy2 = [v75 initWithDomain:v74 code:2 userInfo:v73];
     }
 
     v29 = 0;
-    v20 = 0;
+    selfCopy4 = 0;
   }
 
 LABEL_78:
@@ -862,27 +862,27 @@ LABEL_86:
 
 LABEL_87:
   v65 = *MEMORY[0x1E69E9840];
-  return v20;
+  return selfCopy4;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMASRContextualReplayRecord *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_metadata)
   {
     v16 = 0;
     PBDataWriterPlaceMark();
-    [(BMASRContextualReplayRecordRequestMetadata *)self->_metadata writeTo:v4];
+    [(BMASRContextualReplayRecordRequestMetadata *)self->_metadata writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -946,9 +946,9 @@ LABEL_87:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v30.receiver = self;
   v30.super_class = BMASRContextualReplayRecord;
   v5 = [(BMEventBase *)&v30 init];
@@ -958,12 +958,12 @@ LABEL_87:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -974,18 +974,18 @@ LABEL_87:
       while (1)
       {
         LOBYTE(v31[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v31 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v31 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v31[0] & 0x7F) << v8;
@@ -1002,9 +1002,9 @@ LABEL_87:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -1033,7 +1033,7 @@ LABEL_16:
 
         v31[0] = 0;
         v31[1] = 0;
-        if (!PBReaderPlaceMark() || (v19 = [[BMASRContextualReplayRecordRequestMetadata alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v19 = [[BMASRContextualReplayRecordRequestMetadata alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_45:
 
@@ -1100,18 +1100,18 @@ LABEL_33:
       }
 
 LABEL_40:
-      v24 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v24 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v25 = [v6 copy];
   contextualEntities = v5->_contextualEntities;
   v5->_contextualEntities = v25;
 
-  v27 = [v4 hasError];
-  if (v27)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_42:
     v28 = 0;
@@ -1129,40 +1129,40 @@ LABEL_43:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMASRContextualReplayRecord *)self metadata];
-  v5 = [(BMASRContextualReplayRecord *)self audio];
-  v6 = [(BMASRContextualReplayRecord *)self preITNTranscript];
-  v7 = [(BMASRContextualReplayRecord *)self postITNTranscript];
-  v8 = [(BMASRContextualReplayRecord *)self profile];
-  v9 = [(BMASRContextualReplayRecord *)self contextualEntities];
-  v10 = [(BMASRContextualReplayRecord *)self userEditedText];
-  v11 = [v3 initWithFormat:@"BMASRContextualReplayRecord with metadata: %@, audio: %@, preITNTranscript: %@, postITNTranscript: %@, profile: %@, contextualEntities: %@, userEditedText: %@", v4, v5, v6, v7, v8, v9, v10];
+  metadata = [(BMASRContextualReplayRecord *)self metadata];
+  audio = [(BMASRContextualReplayRecord *)self audio];
+  preITNTranscript = [(BMASRContextualReplayRecord *)self preITNTranscript];
+  postITNTranscript = [(BMASRContextualReplayRecord *)self postITNTranscript];
+  profile = [(BMASRContextualReplayRecord *)self profile];
+  contextualEntities = [(BMASRContextualReplayRecord *)self contextualEntities];
+  userEditedText = [(BMASRContextualReplayRecord *)self userEditedText];
+  v11 = [v3 initWithFormat:@"BMASRContextualReplayRecord with metadata: %@, audio: %@, preITNTranscript: %@, postITNTranscript: %@, profile: %@, contextualEntities: %@, userEditedText: %@", metadata, audio, preITNTranscript, postITNTranscript, profile, contextualEntities, userEditedText];
 
   return v11;
 }
 
-- (BMASRContextualReplayRecord)initWithMetadata:(id)a3 audio:(id)a4 preITNTranscript:(id)a5 postITNTranscript:(id)a6 profile:(id)a7 contextualEntities:(id)a8 userEditedText:(id)a9
+- (BMASRContextualReplayRecord)initWithMetadata:(id)metadata audio:(id)audio preITNTranscript:(id)transcript postITNTranscript:(id)nTranscript profile:(id)profile contextualEntities:(id)entities userEditedText:(id)text
 {
-  v24 = a3;
-  v23 = a4;
-  v22 = a5;
-  v21 = a6;
-  v20 = a7;
-  v16 = a8;
-  v17 = a9;
+  metadataCopy = metadata;
+  audioCopy = audio;
+  transcriptCopy = transcript;
+  nTranscriptCopy = nTranscript;
+  profileCopy = profile;
+  entitiesCopy = entities;
+  textCopy = text;
   v25.receiver = self;
   v25.super_class = BMASRContextualReplayRecord;
   v18 = [(BMEventBase *)&v25 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_metadata, a3);
-    objc_storeStrong(&v18->_audio, a4);
-    objc_storeStrong(&v18->_preITNTranscript, a5);
-    objc_storeStrong(&v18->_postITNTranscript, a6);
-    objc_storeStrong(&v18->_profile, a7);
-    objc_storeStrong(&v18->_contextualEntities, a8);
-    objc_storeStrong(&v18->_userEditedText, a9);
+    objc_storeStrong(&v18->_metadata, metadata);
+    objc_storeStrong(&v18->_audio, audio);
+    objc_storeStrong(&v18->_preITNTranscript, transcript);
+    objc_storeStrong(&v18->_postITNTranscript, nTranscript);
+    objc_storeStrong(&v18->_profile, profile);
+    objc_storeStrong(&v18->_contextualEntities, entities);
+    objc_storeStrong(&v18->_userEditedText, text);
   }
 
   return v18;
@@ -1210,9 +1210,9 @@ id __38__BMASRContextualReplayRecord_columns__block_invoke(uint64_t a1, void *a2
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1220,8 +1220,8 @@ id __38__BMASRContextualReplayRecord_columns__block_invoke(uint64_t a1, void *a2
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMASRContextualReplayRecord alloc] initByReadFrom:v7];
     v4 = v8;

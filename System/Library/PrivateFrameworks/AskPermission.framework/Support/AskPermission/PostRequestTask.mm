@@ -1,25 +1,25 @@
 @interface PostRequestTask
-- (PostRequestTask)initWithRequestURL:(id)a3 account:(id)a4;
-- (id)_requestIdentifierFromResult:(id)a3 withError:(id *)a4;
-- (id)_serverRequestWithError:(id *)a3;
-- (id)_storeRequestWithResult:(id)a3 error:(id *)a4;
+- (PostRequestTask)initWithRequestURL:(id)l account:(id)account;
+- (id)_requestIdentifierFromResult:(id)result withError:(id *)error;
+- (id)_serverRequestWithError:(id *)error;
+- (id)_storeRequestWithResult:(id)result error:(id *)error;
 - (id)perform;
 @end
 
 @implementation PostRequestTask
 
-- (PostRequestTask)initWithRequestURL:(id)a3 account:(id)a4
+- (PostRequestTask)initWithRequestURL:(id)l account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  accountCopy = account;
   v14.receiver = self;
   v14.super_class = PostRequestTask;
   v9 = [(PostRequestTask *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestURL, a3);
-    objc_storeStrong(&v10->_account, a4);
+    objc_storeStrong(&v9->_requestURL, l);
+    objc_storeStrong(&v10->_account, account);
     v10->_canSendViaMessages = 0;
     v11 = [AMSBag bagForProfile:@"AskPermission" profileVersion:@"1"];
     bag = v10->_bag;
@@ -41,14 +41,14 @@
   return v2;
 }
 
-- (id)_serverRequestWithError:(id *)a3
+- (id)_serverRequestWithError:(id *)error
 {
-  v3 = [(PostRequestTask *)self account];
-  v4 = [v3 accountStore];
-  v5 = v4;
-  if (v4)
+  account = [(PostRequestTask *)self account];
+  accountStore = [account accountStore];
+  v5 = accountStore;
+  if (accountStore)
   {
-    v6 = v4;
+    v6 = accountStore;
   }
 
   else
@@ -69,8 +69,8 @@
   {
     v8 = dispatch_group_create();
     dispatch_group_enter(v8);
-    v9 = [(PostRequestTask *)self peopleClient];
-    v10 = v9 == 0;
+    peopleClient = [(PostRequestTask *)self peopleClient];
+    v10 = peopleClient == 0;
 
     if (v10)
     {
@@ -80,14 +80,14 @@
         v11 = +[APLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v11 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v13 = objc_opt_class();
         LODWORD(buf) = 138543362;
         *(&buf + 4) = v13;
         v14 = v13;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Creating PeopleClient to check IDS", &buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Creating PeopleClient to check IDS", &buf, 0xCu);
       }
 
       location = 0;
@@ -113,7 +113,7 @@
     }
 
     objc_initWeak(&location, self);
-    v18 = [(PostRequestTask *)self peopleClient];
+    peopleClient2 = [(PostRequestTask *)self peopleClient];
     v63[0] = _NSConcreteStackBlock;
     v63[1] = 3221225472;
     v63[2] = sub_1000189C4;
@@ -123,7 +123,7 @@
     v65 = &v67;
     v19 = v8;
     v64 = v19;
-    [v18 canSendFamilyAskToBuyIMessageWithCompletion:v63];
+    [peopleClient2 canSendFamilyAskToBuyIMessageWithCompletion:v63];
 
     v20 = +[APLogConfig sharedDaemonConfig];
     if (!v20)
@@ -131,14 +131,14 @@
       v20 = +[APLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v22 = objc_opt_class();
       LODWORD(buf) = 138543362;
       *(&buf + 4) = v22;
       v23 = v22;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: Waiting on PeopleClient with timeout of 75 seconds", &buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: Waiting on PeopleClient with timeout of 75 seconds", &buf, 0xCu);
     }
 
     v24 = dispatch_time(0, 75000000000);
@@ -151,19 +151,19 @@
         v25 = +[APLogConfig sharedConfig];
       }
 
-      v26 = [v25 OSLogObject];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v25 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v27 = objc_opt_class();
         LODWORD(buf) = 138543362;
         *(&buf + 4) = v27;
         v28 = v27;
-        _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: PeopleClient timed out. Unable to send via iMessage. Falling back.", &buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: PeopleClient timed out. Unable to send via iMessage. Falling back.", &buf, 0xCu);
       }
 
-      v29 = [(PostRequestTask *)self requestURL];
+      requestURL = [(PostRequestTask *)self requestURL];
       v30 = v68[5];
-      v68[5] = v29;
+      v68[5] = requestURL;
     }
 
     objc_destroyWeak(&v66);
@@ -178,26 +178,26 @@
       v31 = +[APLogConfig sharedConfig];
     }
 
-    v32 = [v31 OSLogObject];
-    if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [v31 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
       v33 = objc_opt_class();
       LODWORD(buf) = 138543362;
       *(&buf + 4) = v33;
       v34 = v33;
-      _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: Split Account. Falling back to legacy notifications.", &buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: Split Account. Falling back to legacy notifications.", &buf, 0xCu);
     }
 
-    v35 = [(PostRequestTask *)self requestURL];
+    requestURL2 = [(PostRequestTask *)self requestURL];
     v19 = v68[5];
-    v68[5] = v35;
+    v68[5] = requestURL2;
   }
 
-  v36 = [v68[5] ap_secureURL];
-  v37 = [NSURLRequest requestWithURL:v36];
+  ap_secureURL = [v68[5] ap_secureURL];
+  v37 = [NSURLRequest requestWithURL:ap_secureURL];
   v38 = objc_alloc_init(URLRequestEncoder);
-  v39 = [(PostRequestTask *)self account];
-  [(URLRequestEncoder *)v38 setAccount:v39];
+  account2 = [(PostRequestTask *)self account];
+  [(URLRequestEncoder *)v38 setAccount:account2];
 
   v40 = [(URLRequestEncoder *)v38 requestByEncodingRequest:v37 parameters:0];
   v62 = 0;
@@ -211,14 +211,14 @@
       v43 = +[APLogConfig sharedConfig];
     }
 
-    v44 = [v43 OSLogObject];
-    if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
+    oSLogObject5 = [v43 OSLogObject];
+    if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
     {
       v45 = objc_opt_class();
       LODWORD(buf) = 138543362;
       *(&buf + 4) = v45;
       v46 = v45;
-      _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "%{public}@: Encoded request successfully", &buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject5, OS_LOG_TYPE_DEFAULT, "%{public}@: Encoded request successfully", &buf, 0xCu);
     }
 
     v47 = +[URLSession sharedSession];
@@ -236,17 +236,17 @@
         v51 = +[APLogConfig sharedConfig];
       }
 
-      v52 = [v51 OSLogObject];
-      if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
+      oSLogObject6 = [v51 OSLogObject];
+      if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
       {
-        v57 = v36;
+        v57 = ap_secureURL;
         v53 = objc_opt_class();
         LODWORD(buf) = 138543362;
         *(&buf + 4) = v53;
         v54 = v53;
-        _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "%{public}@: Received server result", &buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oSLogObject6, OS_LOG_TYPE_DEFAULT, "%{public}@: Received server result", &buf, 0xCu);
 
-        v36 = v57;
+        ap_secureURL = v57;
       }
     }
 
@@ -258,10 +258,10 @@
     v49 = 0;
   }
 
-  if (a3)
+  if (error)
   {
     v55 = v42;
-    *a3 = v42;
+    *error = v42;
   }
 
   _Block_object_dispose(&v67, 8);
@@ -269,13 +269,13 @@
   return v49;
 }
 
-- (id)_storeRequestWithResult:(id)a3 error:(id *)a4
+- (id)_storeRequestWithResult:(id)result error:(id *)error
 {
-  v5 = [a3 object];
+  object = [result object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -312,7 +312,7 @@
       v10 = APError();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -322,11 +322,11 @@
 
   v10 = APError();
   v11 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_15:
     v13 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_16:
@@ -334,13 +334,13 @@ LABEL_16:
   return v11;
 }
 
-- (id)_requestIdentifierFromResult:(id)a3 withError:(id *)a4
+- (id)_requestIdentifierFromResult:(id)result withError:(id *)error
 {
-  v5 = [a3 object];
+  object = [result object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -352,7 +352,7 @@ LABEL_16:
   {
     v9 = APError();
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -361,11 +361,11 @@ LABEL_16:
   }
 
   v9 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_13:
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_14:

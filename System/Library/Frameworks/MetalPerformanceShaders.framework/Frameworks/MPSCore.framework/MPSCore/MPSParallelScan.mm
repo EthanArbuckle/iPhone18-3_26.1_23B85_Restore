@@ -1,45 +1,45 @@
 @interface MPSParallelScan
-- (MPSParallelScan)initWithCoder:(id)a3 device:(id)a4;
-- (MPSParallelScan)initWithDevice:(id)a3;
-- (MPSParallelScan)initWithDevice:(id)a3 sourceDataType:(unsigned int)a4 destinationDataType:(unsigned int)a5;
-- (MPSParallelScan)initWithDevice:(id)a3 sourceDataType:(unsigned int)a4 destinationDataType:(unsigned int)a5 scanOp:(int)a6;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)initPrivateWithDevice:(id)a3;
-- (void)encodeToCommandBuffer:(id)a3 sourceBuffer:(id)a4 sourceOffset:(unint64_t)a5 destinationBuffer:(id)a6 destinationOffset:(unint64_t)a7 numEntries:(unint64_t)a8;
-- (void)encodeWithCoder:(id)a3;
-- (void)setScanImpl:(unint64_t)a3;
+- (MPSParallelScan)initWithCoder:(id)coder device:(id)device;
+- (MPSParallelScan)initWithDevice:(id)device;
+- (MPSParallelScan)initWithDevice:(id)device sourceDataType:(unsigned int)type destinationDataType:(unsigned int)dataType;
+- (MPSParallelScan)initWithDevice:(id)device sourceDataType:(unsigned int)type destinationDataType:(unsigned int)dataType scanOp:(int)op;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)initPrivateWithDevice:(id)device;
+- (void)encodeToCommandBuffer:(id)buffer sourceBuffer:(id)sourceBuffer sourceOffset:(unint64_t)offset destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)destinationOffset numEntries:(unint64_t)entries;
+- (void)encodeWithCoder:(id)coder;
+- (void)setScanImpl:(unint64_t)impl;
 @end
 
 @implementation MPSParallelScan
 
-- (void)setScanImpl:(unint64_t)a3
+- (void)setScanImpl:(unint64_t)impl
 {
-  if (a3)
+  if (impl)
   {
-    self->_scanImpl = a3;
+    self->_scanImpl = impl;
   }
 
   else
   {
     if ((*(self->super._device + 1477) & 0x40) == 0 && !self->_useSpinLockVersion)
     {
-      v4 = self;
+      selfCopy = self;
       v3 = MTLReportFailureTypeEnabled();
-      a3 = 0;
-      self = v4;
+      impl = 0;
+      self = selfCopy;
       if (v3)
       {
         MTLReportFailure();
-        a3 = 0;
-        self = v4;
+        impl = 0;
+        self = selfCopy;
       }
     }
 
-    self->_scanImpl = a3;
+    self->_scanImpl = impl;
   }
 }
 
-- (MPSParallelScan)initWithDevice:(id)a3
+- (MPSParallelScan)initWithDevice:(id)device
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -49,14 +49,14 @@
   return 0;
 }
 
-- (id)initPrivateWithDevice:(id)a3
+- (id)initPrivateWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSParallelScan;
-  return [(MPSKernel *)&v4 initWithDevice:a3];
+  return [(MPSKernel *)&v4 initWithDevice:device];
 }
 
-- (MPSParallelScan)initWithDevice:(id)a3 sourceDataType:(unsigned int)a4 destinationDataType:(unsigned int)a5
+- (MPSParallelScan)initWithDevice:(id)device sourceDataType:(unsigned int)type destinationDataType:(unsigned int)dataType
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -66,19 +66,19 @@
   return 0;
 }
 
-- (MPSParallelScan)initWithDevice:(id)a3 sourceDataType:(unsigned int)a4 destinationDataType:(unsigned int)a5 scanOp:(int)a6
+- (MPSParallelScan)initWithDevice:(id)device sourceDataType:(unsigned int)type destinationDataType:(unsigned int)dataType scanOp:(int)op
 {
-  result = objc_msgSend_initPrivateWithDevice_(self, a2, a3, *&a4, *&a5);
+  result = objc_msgSend_initPrivateWithDevice_(self, a2, device, *&type, *&dataType);
   if (!result)
   {
     return result;
   }
 
-  if (a4 > 0x20 || ((1 << a4) & 0x100010100) == 0)
+  if (type > 0x20 || ((1 << type) & 0x100010100) == 0)
   {
-    if (a4 - 536870920 <= 0x18 && ((1 << (a4 - 8)) & 0x1000101) != 0)
+    if (type - 536870920 <= 0x18 && ((1 << (type - 8)) & 0x1000101) != 0)
     {
-      if (a5 == 536870944)
+      if (dataType == 536870944)
       {
         goto LABEL_10;
       }
@@ -107,7 +107,7 @@ LABEL_32:
     return 0;
   }
 
-  if (a5 != 32)
+  if (dataType != 32)
   {
     v10 = result;
     if (!MTLReportFailureTypeEnabled())
@@ -119,12 +119,12 @@ LABEL_32:
   }
 
 LABEL_10:
-  result->_sourceDataType = a4;
-  if (a4 > 536870927)
+  result->_sourceDataType = type;
+  if (type > 536870927)
   {
-    if (a4 == 536870928)
+    if (type == 536870928)
     {
-      v12 = a6 == 0;
+      v12 = op == 0;
       v11 = 5;
       v13 = 2;
 LABEL_20:
@@ -136,26 +136,26 @@ LABEL_20:
       goto LABEL_22;
     }
 
-    if (a4 != 536870944)
+    if (type != 536870944)
     {
       goto LABEL_23;
     }
 
 LABEL_18:
-    v12 = a6 == 0;
+    v12 = op == 0;
     v11 = 6;
     v13 = 3;
     goto LABEL_20;
   }
 
-  if (a4 == 32)
+  if (type == 32)
   {
     goto LABEL_18;
   }
 
-  if (a4 == 536870920)
+  if (type == 536870920)
   {
-    if (a6)
+    if (op)
     {
       v11 = 4;
     }
@@ -170,8 +170,8 @@ LABEL_22:
   }
 
 LABEL_23:
-  result->_destinationDataType = a5;
-  result->_scanOp = a6;
+  result->_destinationDataType = dataType;
+  result->_scanOp = op;
   result->_scanImpl = 1;
   result->_useSpinLockVersion = 0;
   if ((*(result->super._device + 1477) & 0x40) != 0)
@@ -198,11 +198,11 @@ LABEL_23:
   return result;
 }
 
-- (MPSParallelScan)initWithCoder:(id)a3 device:(id)a4
+- (MPSParallelScan)initWithCoder:(id)coder device:(id)device
 {
   v27.receiver = self;
   v27.super_class = MPSParallelScan;
-  v5 = [(MPSKernel *)&v27 initWithCoder:a3 device:a4];
+  v5 = [(MPSKernel *)&v27 initWithCoder:coder device:device];
   v9 = v5;
   if (!v5)
   {
@@ -211,12 +211,12 @@ LABEL_23:
 
   if (*(&v5->super._fileVersion.var0 + 1) << 16 == 0x10000)
   {
-    v5->_sourceDataType = objc_msgSend_decodeInt32ForKey_(a3, v6, @"MPSParallelScan.sourceDataType", v7, v8);
-    v9->_destinationDataType = objc_msgSend_decodeInt32ForKey_(a3, v10, @"MPSParallelScan.destinationDataType", v11, v12);
-    v9->_scanOp = objc_msgSend_decodeInt32ForKey_(a3, v13, @"MPSParallelScan.op", v14, v15);
-    v9->_kernelID = objc_msgSend_decodeInt32ForKey_(a3, v16, @"MPSParallelScan.kernelID", v17, v18);
-    v9->_scanImpl = objc_msgSend_decodeInt32ForKey_(a3, v19, @"MPSParallelScan.scanImpl", v20, v21);
-    v9->_useSpinLockVersion = objc_msgSend_decodeInt32ForKey_(a3, v22, @"MPSParallelScan.useSpinLock", v23, v24) != 0;
+    v5->_sourceDataType = objc_msgSend_decodeInt32ForKey_(coder, v6, @"MPSParallelScan.sourceDataType", v7, v8);
+    v9->_destinationDataType = objc_msgSend_decodeInt32ForKey_(coder, v10, @"MPSParallelScan.destinationDataType", v11, v12);
+    v9->_scanOp = objc_msgSend_decodeInt32ForKey_(coder, v13, @"MPSParallelScan.op", v14, v15);
+    v9->_kernelID = objc_msgSend_decodeInt32ForKey_(coder, v16, @"MPSParallelScan.kernelID", v17, v18);
+    v9->_scanImpl = objc_msgSend_decodeInt32ForKey_(coder, v19, @"MPSParallelScan.scanImpl", v20, v21);
+    v9->_useSpinLockVersion = objc_msgSend_decodeInt32ForKey_(coder, v22, @"MPSParallelScan.useSpinLock", v23, v24) != 0;
     return v9;
   }
 
@@ -230,25 +230,25 @@ LABEL_23:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super._fileVersion.var0 + 1) = 1;
   v17.receiver = self;
   v17.super_class = MPSParallelScan;
   [(MPSKernel *)&v17 encodeWithCoder:?];
-  objc_msgSend_encodeInt32_forKey_(a3, v5, self->_sourceDataType, @"MPSParallelScan.sourceDataType", v6);
-  objc_msgSend_encodeInt32_forKey_(a3, v7, self->_destinationDataType, @"MPSParallelScan.destinationDataType", v8);
-  objc_msgSend_encodeInt32_forKey_(a3, v9, self->_scanOp, @"MPSParallelScan.op", v10);
-  objc_msgSend_encodeInt32_forKey_(a3, v11, self->_kernelID, @"MPSParallelScan.kernelID", v12);
-  objc_msgSend_encodeInt32_forKey_(a3, v13, LODWORD(self->_scanImpl), @"MPSParallelScan.scanImpl", v14);
-  objc_msgSend_encodeInt32_forKey_(a3, v15, self->_useSpinLockVersion, @"MPSParallelScan.useSpinLock", v16);
+  objc_msgSend_encodeInt32_forKey_(coder, v5, self->_sourceDataType, @"MPSParallelScan.sourceDataType", v6);
+  objc_msgSend_encodeInt32_forKey_(coder, v7, self->_destinationDataType, @"MPSParallelScan.destinationDataType", v8);
+  objc_msgSend_encodeInt32_forKey_(coder, v9, self->_scanOp, @"MPSParallelScan.op", v10);
+  objc_msgSend_encodeInt32_forKey_(coder, v11, self->_kernelID, @"MPSParallelScan.kernelID", v12);
+  objc_msgSend_encodeInt32_forKey_(coder, v13, LODWORD(self->_scanImpl), @"MPSParallelScan.scanImpl", v14);
+  objc_msgSend_encodeInt32_forKey_(coder, v15, self->_useSpinLockVersion, @"MPSParallelScan.useSpinLock", v16);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSParallelScan;
-  result = [(MPSKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 23) = self->_sourceDataType;
@@ -262,19 +262,19 @@ LABEL_23:
   return result;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 sourceBuffer:(id)a4 sourceOffset:(unint64_t)a5 destinationBuffer:(id)a6 destinationOffset:(unint64_t)a7 numEntries:(unint64_t)a8
+- (void)encodeToCommandBuffer:(id)buffer sourceBuffer:(id)sourceBuffer sourceOffset:(unint64_t)offset destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)destinationOffset numEntries:(unint64_t)entries
 {
-  v8 = a5;
+  offsetCopy = offset;
   if ((self->super._options & 1) == 0)
   {
-    if (!a4 && MTLReportFailureTypeEnabled())
+    if (!sourceBuffer && MTLReportFailureTypeEnabled())
     {
       v180 = objc_opt_class();
       v182 = NSStringFromClass(v180);
       MTLReportFailure();
     }
 
-    if (!a6 && MTLReportFailureTypeEnabled())
+    if (!destinationBuffer && MTLReportFailureTypeEnabled())
     {
       v181 = objc_opt_class();
       v182 = NSStringFromClass(v181);
@@ -288,10 +288,10 @@ LABEL_23:
     if (scanImpl == 1)
     {
 LABEL_6:
-      v202 = a8;
-      MPSAutoCache::MPSAutoCache(&v201, a3, 0, a4, a5);
+      entriesCopy = entries;
+      MPSAutoCache::MPSAutoCache(&v201, buffer, 0, sourceBuffer, offset);
       v13 = [MPSComputeEncoder alloc];
-      v19 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v13, v14, a3, 0, v15);
+      v19 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v13, v14, buffer, 0, v15);
       v192 = v19;
       v193.i64[0] = self;
       if ((self->super._options & 0x18) != 0)
@@ -306,7 +306,7 @@ LABEL_6:
       ComputeState = MPSLibrary::GetComputeState(self->super._library, 7u, xmmword_22E37B5E0, 1, 0, 0, 0);
       objc_msgSend_maxTotalThreadsPerThreadgroup(ComputeState, v26, v27, v28, v29);
       v30 = MPSLibrary::GetComputeState(self->super._library, 8u, xmmword_22E37B5E0, 1, 0, 0, 0);
-      v184 = a4;
+      sourceBufferCopy = sourceBuffer;
       objc_msgSend_maxTotalThreadsPerThreadgroup(v30, v31, v32, v33, v34);
       if ((*(self->super._device + 369) & 0x400) != 0)
       {
@@ -330,13 +330,13 @@ LABEL_6:
       }
 
       v38 = v36 - 1;
-      v39 = (v36 - 1 + a8) >> v37;
+      v39 = (v36 - 1 + entries) >> v37;
       TempBuffer = MPSAutoCache::GetTempBuffer(&v201, 4 * v39, 0);
-      v200[0] = a8;
+      v200[0] = entries;
       v41 = MPSLibrary::GetComputeState(self->super._library, 7u, xmmword_22E37B5E0, 1, 0, 0, 0);
       objc_msgSend_setComputePipelineState_(v19, v42, v41, v43, v44);
-      objc_msgSend_setBuffer_offset_atIndex_(v19, v45, a4, v8, 0);
-      objc_msgSend_setBuffer_offset_atIndex_(v19, v46, a6, a7, 1);
+      objc_msgSend_setBuffer_offset_atIndex_(v19, v45, sourceBuffer, offsetCopy, 0);
+      objc_msgSend_setBuffer_offset_atIndex_(v19, v46, destinationBuffer, destinationOffset, 1);
       objc_msgSend_setBuffer_offset_atIndex_(v19, v47, TempBuffer, 0, 3);
       objc_msgSend_setBytes_length_atIndex_(v19, v48, v200, 4, 4);
       objc_msgSend_setThreadgroupMemoryLength_atIndex_(v19, v49, v36 | 0x10, 0, v50);
@@ -347,10 +347,10 @@ LABEL_6:
       objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v19, v51, v195, &v203, v52);
       if (v39 >= 2)
       {
-        v186 = v8;
+        v186 = offsetCopy;
         v57 = (v39 + v38) >> v37;
         v58 = MPSAutoCache::GetTempBuffer(&v201, 4 * v57, 0);
-        v200[0] = (v36 - 1 + a8) >> v37;
+        v200[0] = (v36 - 1 + entries) >> v37;
         v59 = MPSLibrary::GetComputeState(self->super._library, 7u, xmmword_22E37B5E0, 1, 0, 0, 0);
         objc_msgSend_setComputePipelineState_(v19, v60, v59, v61, v62);
         objc_msgSend_setBuffer_offset_atIndex_(v19, v63, TempBuffer, 0, 0);
@@ -393,10 +393,10 @@ LABEL_6:
           objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v19, v92, v195, &v203, v93);
         }
 
-        v200[0] = a8;
+        v200[0] = entries;
         v94 = MPSLibrary::GetComputeState(self->super._library, 8u, xmmword_22E37B5E0, 1, 0, 0, 0);
         objc_msgSend_setComputePipelineState_(v19, v95, v94, v96, v97);
-        objc_msgSend_setBuffer_offset_atIndex_(v19, v98, a6, a7, 1);
+        objc_msgSend_setBuffer_offset_atIndex_(v19, v98, destinationBuffer, destinationOffset, 1);
         objc_msgSend_setBuffer_offset_atIndex_(v19, v99, TempBuffer, 0, 3);
         objc_msgSend_setBytes_length_atIndex_(v19, v100, v200, 4, 4);
         *v195 = v39;
@@ -404,16 +404,16 @@ LABEL_6:
         v203 = v35;
         v204 = *&v195[8];
         objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v19, v101, v195, &v203, v102);
-        v8 = v186;
+        offsetCopy = v186;
       }
 
       if (!self->_scanOp)
       {
         v103 = MPSLibrary::GetComputeState(self->super._library, 0xAu, xmmword_22E37B5E0, 1, 0, 0, 0);
         objc_msgSend_setComputePipelineState_(v19, v104, v103, v105, v106);
-        objc_msgSend_setBuffer_offset_atIndex_(v19, v107, v184, v8, 0);
-        objc_msgSend_setBuffer_offset_atIndex_(v19, v108, a6, a7, 1);
-        objc_msgSend_setBytes_length_atIndex_(v19, v109, &v202, 8, 2);
+        objc_msgSend_setBuffer_offset_atIndex_(v19, v107, sourceBufferCopy, offsetCopy, 0);
+        objc_msgSend_setBuffer_offset_atIndex_(v19, v108, destinationBuffer, destinationOffset, 1);
+        objc_msgSend_setBytes_length_atIndex_(v19, v109, &entriesCopy, 8, 2);
         *v195 = v39;
         *&v195[8] = vdupq_n_s64(1uLL);
         v203 = v35;
@@ -440,9 +440,9 @@ LABEL_6:
     }
   }
 
-  MPSAutoCache::MPSAutoCache(&v201, a3, 0, a4, a5);
+  MPSAutoCache::MPSAutoCache(&v201, buffer, 0, sourceBuffer, offset);
   v116 = [MPSComputeEncoder alloc];
-  v122 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v116, v117, a3, 0, v118);
+  v122 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v116, v117, buffer, 0, v118);
   v200[0] = v122;
   v200[1] = self;
   if ((self->super._options & 0x18) != 0)
@@ -479,13 +479,13 @@ LABEL_6:
   explicit = atomic_load_explicit(UberShaderKey, memory_order_acquire);
   if (explicit)
   {
-    if (!a3)
+    if (!buffer)
     {
       goto LABEL_40;
     }
 
 LABEL_37:
-    if (explicit && (objc_msgSend_retainedReferences(a3, v141, v142, v143, v144) & 1) == 0)
+    if (explicit && (objc_msgSend_retainedReferences(buffer, v141, v142, v143, v144) & 1) == 0)
     {
       v148 = explicit;
       v203 = MEMORY[0x277D85DD0];
@@ -493,20 +493,20 @@ LABEL_37:
       v204.i64[1] = sub_22E3717C4;
       v205 = &unk_2787BE7E8;
       v206 = explicit;
-      objc_msgSend_addCompletedHandler_(a3, v149, &v203, v150, v151);
+      objc_msgSend_addCompletedHandler_(buffer, v149, &v203, v150, v151);
     }
 
     goto LABEL_40;
   }
 
   explicit = MPSLibrary::MPSKey_Compile(v146, UberShaderKey);
-  if (a3)
+  if (buffer)
   {
     goto LABEL_37;
   }
 
 LABEL_40:
-  v187 = v8;
+  v187 = offsetCopy;
   objc_msgSend_maxTotalThreadsPerThreadgroup(explicit, v141, v142, v143, v144);
   v152 = 64;
   if ((*(self->super._device + 369) & 0x400) == 0)
@@ -516,7 +516,7 @@ LABEL_40:
 
   v183 = v152;
   v153 = 8 * v152;
-  v154 = a8 + 8 * v152;
+  v154 = entries + 8 * v152;
   v155 = 9;
   if ((*(self->super._device + 369) & 0x400) == 0)
   {
@@ -524,7 +524,7 @@ LABEL_40:
   }
 
   v156 = (v154 - 1) >> v155;
-  LODWORD(v202) = a8;
+  LODWORD(entriesCopy) = entries;
   v194 = v156;
   v158 = MPSAutoCache::GetTempBuffer(&v201, 12 * v156 + 4, 0);
   if (v139)
@@ -546,11 +546,11 @@ LABEL_40:
   v193 = v204;
   objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v122, v161, &v203, &v192, v162);
   objc_msgSend_setComputePipelineState_(v122, v163, explicit, v164, v165);
-  objc_msgSend_setBuffer_offset_atIndex_(v122, v166, a4, v187, 0);
-  objc_msgSend_setBuffer_offset_atIndex_(v122, v167, a6, a7, 1);
+  objc_msgSend_setBuffer_offset_atIndex_(v122, v166, sourceBuffer, v187, 0);
+  objc_msgSend_setBuffer_offset_atIndex_(v122, v167, destinationBuffer, destinationOffset, 1);
   objc_msgSend_setBuffer_offset_atIndex_(v122, v168, v158, 0, 2);
   objc_msgSend_setBuffer_offset_atIndex_(v122, v169, v158, 4 * v156, 3);
-  objc_msgSend_setBytes_length_atIndex_(v122, v170, &v202, 4, 4);
+  objc_msgSend_setBytes_length_atIndex_(v122, v170, &entriesCopy, 4, 4);
   if (v139)
   {
     objc_msgSend_setBuffer_offset_atIndex_(v122, v171, v191, 0, 5);

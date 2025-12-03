@@ -1,7 +1,7 @@
 @interface CHCWorkloop
 + (OS_dispatch_queue)sharedDaemonWorkloop;
-+ (id)serialQueueTargetingSharedWorkloop:(id)a3;
-+ (id)serialQueueTargetingSharedWorkloop:(id)a3 withQoS:(unsigned int)a4;
++ (id)serialQueueTargetingSharedWorkloop:(id)workloop;
++ (id)serialQueueTargetingSharedWorkloop:(id)workloop withQoS:(unsigned int)s;
 @end
 
 @implementation CHCWorkloop
@@ -31,23 +31,23 @@ void __35__CHCWorkloop_sharedDaemonWorkloop__block_invoke()
   dispatch_activate(v2);
 }
 
-+ (id)serialQueueTargetingSharedWorkloop:(id)a3
++ (id)serialQueueTargetingSharedWorkloop:(id)workloop
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [workloop UTF8String];
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v5 = +[CHCWorkloop sharedDaemonWorkloop];
-  v6 = dispatch_queue_create_with_target_V2(v3, v4, v5);
+  v6 = dispatch_queue_create_with_target_V2(uTF8String, v4, v5);
 
   return v6;
 }
 
-+ (id)serialQueueTargetingSharedWorkloop:(id)a3 withQoS:(unsigned int)a4
++ (id)serialQueueTargetingSharedWorkloop:(id)workloop withQoS:(unsigned int)s
 {
-  v5 = [a3 UTF8String];
+  uTF8String = [workloop UTF8String];
   v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v7 = dispatch_queue_attr_make_with_qos_class(v6, a4, 0);
+  v7 = dispatch_queue_attr_make_with_qos_class(v6, s, 0);
   v8 = +[CHCWorkloop sharedDaemonWorkloop];
-  v9 = dispatch_queue_create_with_target_V2(v5, v7, v8);
+  v9 = dispatch_queue_create_with_target_V2(uTF8String, v7, v8);
 
   return v9;
 }

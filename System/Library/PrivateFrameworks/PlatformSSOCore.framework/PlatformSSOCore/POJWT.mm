@@ -1,14 +1,14 @@
 @interface POJWT
-- (POJWT)initWithString:(id)a3;
+- (POJWT)initWithString:(id)string;
 - (__SecKey)decodeEphemeralPublicKey;
 - (id)stringRepresentation;
 @end
 
 @implementation POJWT
 
-- (POJWT)initWithString:(id)a3
+- (POJWT)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v34.receiver = self;
   v34.super_class = POJWT;
   v5 = [(POJWT *)&v34 init];
@@ -17,7 +17,7 @@
     goto LABEL_11;
   }
 
-  v6 = [v4 componentsSeparatedByString:@"."];
+  v6 = [stringCopy componentsSeparatedByString:@"."];
   if (![v6 count])
   {
     v23 = __24__POJWT_initWithString___block_invoke();
@@ -121,23 +121,23 @@ id __24__POJWT_initWithString___block_invoke_7(uint64_t a1)
 
 - (id)stringRepresentation
 {
-  v3 = [(POJWT *)self isJWE];
+  isJWE = [(POJWT *)self isJWE];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(POJWT *)self rawHeader];
-  if (v3)
+  rawHeader = [(POJWT *)self rawHeader];
+  if (isJWE)
   {
-    v6 = [(POJWT *)self rawEncryptedKey];
-    v7 = [(POJWT *)self rawIV];
-    v8 = [(POJWT *)self rawCipherText];
-    v9 = [(POJWT *)self rawAuthenticationTag];
-    v10 = [v4 stringWithFormat:@"%@.%@.%@.%@.%@", v5, v6, v7, v8, v9];
+    rawEncryptedKey = [(POJWT *)self rawEncryptedKey];
+    rawIV = [(POJWT *)self rawIV];
+    rawCipherText = [(POJWT *)self rawCipherText];
+    rawAuthenticationTag = [(POJWT *)self rawAuthenticationTag];
+    v10 = [v4 stringWithFormat:@"%@.%@.%@.%@.%@", rawHeader, rawEncryptedKey, rawIV, rawCipherText, rawAuthenticationTag];
   }
 
   else
   {
-    v6 = [(POJWT *)self rawBody];
-    v7 = [(POJWT *)self rawSignature];
-    v10 = [v4 stringWithFormat:@"%@.%@.%@", v5, v6, v7];
+    rawEncryptedKey = [(POJWT *)self rawBody];
+    rawIV = [(POJWT *)self rawSignature];
+    v10 = [v4 stringWithFormat:@"%@.%@.%@", rawHeader, rawEncryptedKey, rawIV];
   }
 
   return v10;
@@ -148,14 +148,14 @@ id __24__POJWT_initWithString___block_invoke_7(uint64_t a1)
   v28[2] = *MEMORY[0x277D85DE8];
   error = 0;
   v3 = objc_alloc(MEMORY[0x277CBEA90]);
-  v4 = [(POJWT *)self decodedHeader];
-  v5 = [v4 epk];
+  decodedHeader = [(POJWT *)self decodedHeader];
+  v5 = [decodedHeader epk];
   v6 = [v5 objectForKeyedSubscript:@"x"];
   v7 = [v3 psso_initWithBase64URLEncodedString:v6];
 
   v8 = objc_alloc(MEMORY[0x277CBEA90]);
-  v9 = [(POJWT *)self decodedHeader];
-  v10 = [v9 epk];
+  decodedHeader2 = [(POJWT *)self decodedHeader];
+  v10 = [decodedHeader2 epk];
   v11 = [v10 objectForKeyedSubscript:@"y"];
   v12 = [v8 psso_initWithBase64URLEncodedString:v11];
 

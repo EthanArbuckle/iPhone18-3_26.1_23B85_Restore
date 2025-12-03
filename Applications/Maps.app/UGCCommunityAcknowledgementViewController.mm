@@ -1,23 +1,23 @@
 @interface UGCCommunityAcknowledgementViewController
-- (UGCCommunityAcknowledgementViewController)initWithOptions:(id)a3 completion:(id)a4;
+- (UGCCommunityAcknowledgementViewController)initWithOptions:(id)options completion:(id)completion;
 - (void)_addFooterView;
 - (void)_cancelDismissTimer;
 - (void)_setupConstraints;
 - (void)_setupViews;
 - (void)_updateLayoutForCurrentContentSize;
 - (void)done;
-- (void)macFooterViewBackButtonTapped:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)macFooterViewBackButtonTapped:(id)tapped;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation UGCCommunityAcknowledgementViewController
 
-- (void)macFooterViewBackButtonTapped:(id)a3
+- (void)macFooterViewBackButtonTapped:(id)tapped
 {
-  v4 = [(UGCCommunityAcknowledgementViewController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(UGCCommunityAcknowledgementViewController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)done
@@ -37,20 +37,20 @@
       [v3 captureUserAction:10110 onTarget:-[UGCCommunityAcknowledgementViewController analyticTarget](self eventValue:{"analyticTarget"), 0}];
     }
 
-    v4 = [(UGCCommunityAcknowledgementViewController *)self completion];
+    completion = [(UGCCommunityAcknowledgementViewController *)self completion];
 
-    if (v4)
+    if (completion)
     {
-      v5 = [(UGCCommunityAcknowledgementViewController *)self completion];
-      v5[2]();
+      completion2 = [(UGCCommunityAcknowledgementViewController *)self completion];
+      completion2[2]();
     }
   }
 }
 
 - (void)_cancelDismissTimer
 {
-  v3 = [(UGCCommunityAcknowledgementViewController *)self dismissTimer];
-  [v3 invalidate];
+  dismissTimer = [(UGCCommunityAcknowledgementViewController *)self dismissTimer];
+  [dismissTimer invalidate];
 
   [(UGCCommunityAcknowledgementViewController *)self setDismissTimer:0];
 }
@@ -60,38 +60,38 @@
   v3 = [[MacFooterView alloc] initWithNoBlurRightSideButtonsOfType:8];
   [(UGCCommunityAcknowledgementViewController *)self setFooterView:v3];
 
-  v4 = [(UGCCommunityAcknowledgementViewController *)self footerView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  footerView = [(UGCCommunityAcknowledgementViewController *)self footerView];
+  [footerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(UGCCommunityAcknowledgementViewController *)self footerView];
-  [v5 setDelegate:self];
+  footerView2 = [(UGCCommunityAcknowledgementViewController *)self footerView];
+  [footerView2 setDelegate:self];
 
-  v6 = [(UGCCommunityAcknowledgementViewController *)self view];
-  v7 = [(UGCCommunityAcknowledgementViewController *)self footerView];
-  [v6 addSubview:v7];
+  view = [(UGCCommunityAcknowledgementViewController *)self view];
+  footerView3 = [(UGCCommunityAcknowledgementViewController *)self footerView];
+  [view addSubview:footerView3];
 
-  v27 = [(UGCCommunityAcknowledgementViewController *)self footerView];
-  v26 = [v27 topAnchor];
-  v25 = [(MUStackView *)self->_stackView bottomAnchor];
-  v24 = [v26 constraintGreaterThanOrEqualToAnchor:v25];
+  footerView4 = [(UGCCommunityAcknowledgementViewController *)self footerView];
+  topAnchor = [footerView4 topAnchor];
+  bottomAnchor = [(MUStackView *)self->_stackView bottomAnchor];
+  v24 = [topAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor];
   v28[0] = v24;
-  v23 = [(UGCCommunityAcknowledgementViewController *)self footerView];
-  v21 = [v23 leadingAnchor];
-  v22 = [(UGCCommunityAcknowledgementViewController *)self view];
-  v20 = [v22 leadingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  footerView5 = [(UGCCommunityAcknowledgementViewController *)self footerView];
+  leadingAnchor = [footerView5 leadingAnchor];
+  view2 = [(UGCCommunityAcknowledgementViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v28[1] = v19;
-  v18 = [(UGCCommunityAcknowledgementViewController *)self footerView];
-  v8 = [v18 trailingAnchor];
-  v9 = [(UGCCommunityAcknowledgementViewController *)self view];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  footerView6 = [(UGCCommunityAcknowledgementViewController *)self footerView];
+  trailingAnchor = [footerView6 trailingAnchor];
+  view3 = [(UGCCommunityAcknowledgementViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v28[2] = v11;
-  v12 = [(UGCCommunityAcknowledgementViewController *)self footerView];
-  v13 = [v12 bottomAnchor];
-  v14 = [(UGCCommunityAcknowledgementViewController *)self view];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  footerView7 = [(UGCCommunityAcknowledgementViewController *)self footerView];
+  bottomAnchor2 = [footerView7 bottomAnchor];
+  view4 = [(UGCCommunityAcknowledgementViewController *)self view];
+  bottomAnchor3 = [view4 bottomAnchor];
+  v16 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v28[3] = v16;
   v17 = [NSArray arrayWithObjects:v28 count:4];
   [NSLayoutConstraint activateConstraints:v17];
@@ -99,9 +99,9 @@
 
 - (void)_updateLayoutForCurrentContentSize
 {
-  v3 = [(UGCCommunityAcknowledgementViewController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(UGCCommunityAcknowledgementViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -122,65 +122,65 @@
 {
   v3 = [MUEdgeLayout alloc];
   blurView = self->_blurView;
-  v5 = [(UGCCommunityAcknowledgementViewController *)self view];
-  v6 = [v3 initWithItem:blurView container:v5];
+  view = [(UGCCommunityAcknowledgementViewController *)self view];
+  v6 = [v3 initWithItem:blurView container:view];
   v58 = v6;
   v7 = [NSArray arrayWithObjects:&v58 count:1];
   [NSLayoutConstraint _mapsui_activateLayouts:v7];
 
-  v55 = [(UIScrollView *)self->_scrollView topAnchor];
-  v56 = [(UGCCommunityAcknowledgementViewController *)self view];
-  v54 = [v56 safeAreaLayoutGuide];
-  v53 = [v54 topAnchor];
-  v52 = [v55 constraintEqualToAnchor:v53];
+  topAnchor = [(UIScrollView *)self->_scrollView topAnchor];
+  view2 = [(UGCCommunityAcknowledgementViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v52 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v57[0] = v52;
-  v50 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v51 = [(UGCCommunityAcknowledgementViewController *)self view];
-  v49 = [v51 leadingAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  leadingAnchor = [(UIScrollView *)self->_scrollView leadingAnchor];
+  view3 = [(UGCCommunityAcknowledgementViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v57[1] = v48;
-  v46 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v47 = [(UGCCommunityAcknowledgementViewController *)self view];
-  v45 = [v47 trailingAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  trailingAnchor = [(UIScrollView *)self->_scrollView trailingAnchor];
+  view4 = [(UGCCommunityAcknowledgementViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v57[2] = v44;
-  v42 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v43 = [(UGCCommunityAcknowledgementViewController *)self view];
-  v41 = [v43 bottomAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  bottomAnchor = [(UIScrollView *)self->_scrollView bottomAnchor];
+  view5 = [(UGCCommunityAcknowledgementViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v57[3] = v40;
-  v39 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v37 = [v39 heightAnchor];
-  v38 = [(UIScrollView *)self->_scrollView frameLayoutGuide];
-  v36 = [v38 heightAnchor];
-  v35 = [v37 constraintGreaterThanOrEqualToAnchor:v36];
+  contentLayoutGuide = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  heightAnchor = [contentLayoutGuide heightAnchor];
+  frameLayoutGuide = [(UIScrollView *)self->_scrollView frameLayoutGuide];
+  heightAnchor2 = [frameLayoutGuide heightAnchor];
+  v35 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
   v57[4] = v35;
-  v33 = [(MUStackView *)self->_stackView centerYAnchor];
-  v34 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v32 = [v34 centerYAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  centerYAnchor = [(MUStackView *)self->_stackView centerYAnchor];
+  contentLayoutGuide2 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  centerYAnchor2 = [contentLayoutGuide2 centerYAnchor];
+  v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v57[5] = v31;
-  v29 = [(MUStackView *)self->_stackView topAnchor];
-  v30 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v28 = [v30 topAnchor];
-  v27 = [v29 constraintGreaterThanOrEqualToAnchor:v28];
+  topAnchor3 = [(MUStackView *)self->_stackView topAnchor];
+  contentLayoutGuide3 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  topAnchor4 = [contentLayoutGuide3 topAnchor];
+  v27 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v57[6] = v27;
-  v25 = [(MUStackView *)self->_stackView bottomAnchor];
-  v26 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v24 = [v26 bottomAnchor];
-  v23 = [v25 constraintLessThanOrEqualToAnchor:v24];
+  bottomAnchor3 = [(MUStackView *)self->_stackView bottomAnchor];
+  contentLayoutGuide4 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  bottomAnchor4 = [contentLayoutGuide4 bottomAnchor];
+  v23 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
   v57[7] = v23;
-  v22 = [(MUStackView *)self->_stackView centerXAnchor];
-  v8 = [(UIScrollView *)self->_scrollView centerXAnchor];
-  v9 = [v22 constraintEqualToAnchor:v8];
+  centerXAnchor = [(MUStackView *)self->_stackView centerXAnchor];
+  centerXAnchor2 = [(UIScrollView *)self->_scrollView centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v57[8] = v9;
-  v10 = [(MUStackView *)self->_stackView leadingAnchor];
-  v11 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v12 = [v10 constraintGreaterThanOrEqualToAnchor:v11 constant:16.0];
+  leadingAnchor3 = [(MUStackView *)self->_stackView leadingAnchor];
+  leadingAnchor4 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  v12 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:16.0];
   v57[9] = v12;
-  v13 = [(MUStackView *)self->_stackView trailingAnchor];
-  v14 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v15 = [v13 constraintLessThanOrEqualToAnchor:v14 constant:-16.0];
+  trailingAnchor3 = [(MUStackView *)self->_stackView trailingAnchor];
+  trailingAnchor4 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  v15 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-16.0];
   v57[10] = v15;
   v16 = [NSArray arrayWithObjects:v57 count:11];
   [NSLayoutConstraint activateConstraints:v16];
@@ -201,8 +201,8 @@
   blurView = self->_blurView;
   self->_blurView = v3;
 
-  v5 = [(UGCCommunityAcknowledgementViewController *)self view];
-  [v5 addSubview:self->_blurView];
+  view = [(UGCCommunityAcknowledgementViewController *)self view];
+  [view addSubview:self->_blurView];
 
   v6 = [UIScrollView alloc];
   y = CGRectZero.origin.y;
@@ -213,8 +213,8 @@
   self->_scrollView = v10;
 
   [(UIScrollView *)self->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [(UGCCommunityAcknowledgementViewController *)self view];
-  [v12 addSubview:self->_scrollView];
+  view2 = [(UGCCommunityAcknowledgementViewController *)self view];
+  [view2 addSubview:self->_scrollView];
 
   v13 = [[MUStackView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   stackView = self->_stackView;
@@ -238,8 +238,8 @@
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_titleLabel setNumberOfLines:0];
   [(UILabel *)self->_titleLabel setTextAlignment:1];
-  v19 = [(UGCCommunityAcknowledgementOptions *)self->_options title];
-  [(UILabel *)self->_titleLabel setText:v19];
+  title = [(UGCCommunityAcknowledgementOptions *)self->_options title];
+  [(UILabel *)self->_titleLabel setText:title];
 
   v20 = +[UIColor labelColor];
   [(UILabel *)self->_titleLabel setTextColor:v20];
@@ -253,8 +253,8 @@
   [(UILabel *)self->_messageLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_messageLabel setNumberOfLines:0];
   [(UILabel *)self->_messageLabel setTextAlignment:1];
-  v23 = [(UGCCommunityAcknowledgementOptions *)self->_options message];
-  [(UILabel *)self->_messageLabel setText:v23];
+  message = [(UGCCommunityAcknowledgementOptions *)self->_options message];
+  [(UILabel *)self->_messageLabel setText:message];
 
   v24 = +[UIColor secondaryLabelColor];
   [(UILabel *)self->_messageLabel setTextColor:v24];
@@ -274,9 +274,9 @@
   v26 = +[GEOPlatform sharedPlatform];
   if ([v26 isInternalInstall] && GEOConfigGetBOOL() && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v27 = [(UGCCommunityAcknowledgementOptions *)self->_options showsInternalStatusLink];
+    showsInternalStatusLink = [(UGCCommunityAcknowledgementOptions *)self->_options showsInternalStatusLink];
 
-    if (!v27)
+    if (!showsInternalStatusLink)
     {
       goto LABEL_10;
     }
@@ -322,8 +322,8 @@
   }
 
 LABEL_10:
-  v37 = [(UGCCommunityAcknowledgementOptions *)self->_options primaryButtonTitle];
-  v38 = [v37 length];
+  primaryButtonTitle = [(UGCCommunityAcknowledgementOptions *)self->_options primaryButtonTitle];
+  v38 = [primaryButtonTitle length];
 
   if (v38)
   {
@@ -335,26 +335,26 @@ LABEL_10:
     [(MapsThemeButton *)self->_primaryButton setTitleColorProvider:&stru_101636C90];
     [(MapsThemeButton *)self->_primaryButton addTarget:self action:"done" forControlEvents:64];
     v41 = self->_primaryButton;
-    v42 = [(UGCCommunityAcknowledgementOptions *)self->_options primaryButtonTitle];
-    [(MapsThemeButton *)v41 setTitle:v42 forState:0];
+    primaryButtonTitle2 = [(UGCCommunityAcknowledgementOptions *)self->_options primaryButtonTitle];
+    [(MapsThemeButton *)v41 setTitle:primaryButtonTitle2 forState:0];
 
     [(MUStackView *)self->_stackView addArrangedSubview:self->_primaryButton];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = UGCCommunityAcknowledgementViewController;
-  v4 = a3;
-  [(UGCCommunityAcknowledgementViewController *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(UGCCommunityAcknowledgementViewController *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(UGCCommunityAcknowledgementViewController *)self traitCollection:v9.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
-  v8 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  LODWORD(v4) = UIContentSizeCategoryIsAccessibilityCategory(v8);
-  if (IsAccessibilityCategory != v4)
+  LODWORD(changeCopy) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
+  if (IsAccessibilityCategory != changeCopy)
   {
     [(UGCCommunityAcknowledgementViewController *)self _updateLayoutForCurrentContentSize];
   }
@@ -367,12 +367,12 @@ LABEL_10:
   [(UGCCommunityAcknowledgementViewController *)&v6 viewDidLoad];
   [(UGCCommunityAcknowledgementViewController *)self _setupViews];
   [(UGCCommunityAcknowledgementViewController *)self _setupConstraints];
-  v3 = [(UGCCommunityAcknowledgementViewController *)self navigationItem];
-  [v3 setHidesBackButton:1];
+  navigationItem = [(UGCCommunityAcknowledgementViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"done"];
-  v5 = [(UGCCommunityAcknowledgementViewController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem2 = [(UGCCommunityAcknowledgementViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v4];
 
   if ([(UGCCommunityAcknowledgementOptions *)self->_options acknowledgementOptionsType]== 1)
   {
@@ -380,11 +380,11 @@ LABEL_10:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = UGCCommunityAcknowledgementViewController;
-  [(UGCCommunityAcknowledgementViewController *)&v14 viewDidAppear:a3];
+  [(UGCCommunityAcknowledgementViewController *)&v14 viewDidAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"RAPAcknowledgementViewControllerDidAppearNotification" object:self];
 
@@ -410,18 +410,18 @@ LABEL_10:
   }
 }
 
-- (UGCCommunityAcknowledgementViewController)initWithOptions:(id)a3 completion:(id)a4
+- (UGCCommunityAcknowledgementViewController)initWithOptions:(id)options completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = UGCCommunityAcknowledgementViewController;
   v9 = [(UGCCommunityAcknowledgementViewController *)&v14 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_options, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_options, options);
+    v11 = [completionCopy copy];
     completion = v10->_completion;
     v10->_completion = v11;
   }

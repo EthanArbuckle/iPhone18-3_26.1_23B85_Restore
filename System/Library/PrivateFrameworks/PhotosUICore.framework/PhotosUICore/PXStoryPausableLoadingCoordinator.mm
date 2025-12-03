@@ -1,17 +1,17 @@
 @interface PXStoryPausableLoadingCoordinator
 - (PXStoryPausableLoadingCoordinator)init;
 - (void)dealloc;
-- (void)dispatchTimelineWorkAsyncOnQueue:(id)a3 block:(id)a4;
+- (void)dispatchTimelineWorkAsyncOnQueue:(id)queue block:(id)block;
 - (void)pauseTimelineWork;
 - (void)resumeTimelineWork;
 @end
 
 @implementation PXStoryPausableLoadingCoordinator
 
-- (void)dispatchTimelineWorkAsyncOnQueue:(id)a3 block:(id)a4
+- (void)dispatchTimelineWorkAsyncOnQueue:(id)queue block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   timelineWorkGroup = self->_timelineWorkGroup;
   block[0] = MEMORY[0x1E69E9820];
@@ -19,9 +19,9 @@
   block[2] = __76__PXStoryPausableLoadingCoordinator_dispatchTimelineWorkAsyncOnQueue_block___block_invoke;
   block[3] = &unk_1E774AA30;
   objc_copyWeak(&v12, &location);
-  v11 = v6;
-  v9 = v6;
-  dispatch_group_notify(timelineWorkGroup, v7, block);
+  v11 = blockCopy;
+  v9 = blockCopy;
+  dispatch_group_notify(timelineWorkGroup, queueCopy, block);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);

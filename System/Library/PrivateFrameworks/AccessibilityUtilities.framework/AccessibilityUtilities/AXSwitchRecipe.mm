@@ -1,40 +1,40 @@
 @interface AXSwitchRecipe
-+ (id)recipeWithDictionaryRepresentation:(id)a3;
++ (id)recipeWithDictionaryRepresentation:(id)representation;
 - (AXSwitchRecipe)init;
 - (BOOL)shouldContinueScanning;
 - (NSString)name;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation AXSwitchRecipe
 
-+ (id)recipeWithDictionaryRepresentation:(id)a3
++ (id)recipeWithDictionaryRepresentation:(id)representation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 objectForKeyedSubscript:@"Name"];
+  representationCopy = representation;
+  v5 = objc_alloc_init(self);
+  v6 = [representationCopy objectForKeyedSubscript:@"Name"];
   [v5 setName:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"UnlocalizedName"];
+  v7 = [representationCopy objectForKeyedSubscript:@"UnlocalizedName"];
   [v5 setUnlocalizedName:v7];
 
   v8 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v9 = [v4 objectForKeyedSubscript:@"UUID"];
+  v9 = [representationCopy objectForKeyedSubscript:@"UUID"];
   v10 = [v8 initWithUUIDString:v9];
 
   [v5 setUuid:v10];
   v11 = MEMORY[0x1E695DF70];
-  v12 = [v4 objectForKeyedSubscript:@"Mappings"];
+  v12 = [representationCopy objectForKeyedSubscript:@"Mappings"];
   v13 = [v11 arrayWithCapacity:{objc_msgSend(v12, "count")}];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [v4 objectForKeyedSubscript:{@"Mappings", 0}];
+  v14 = [representationCopy objectForKeyedSubscript:{@"Mappings", 0}];
   v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v15)
   {
@@ -60,11 +60,11 @@
   }
 
   [v5 setMappings:v13];
-  v20 = [v4 objectForKeyedSubscript:@"Timeout"];
+  v20 = [representationCopy objectForKeyedSubscript:@"Timeout"];
   [v20 doubleValue];
   [v5 setTimeout:?];
 
-  v21 = [v4 objectForKeyedSubscript:@"MenuIconIdentifier"];
+  v21 = [representationCopy objectForKeyedSubscript:@"MenuIconIdentifier"];
   [v5 setMenuIconIdentifier:v21];
 
   return v5;
@@ -74,56 +74,56 @@
 {
   v31 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
-  v4 = [(AXSwitchRecipe *)self unlocalizedName];
+  unlocalizedName = [(AXSwitchRecipe *)self unlocalizedName];
 
-  if (v4)
+  if (unlocalizedName)
   {
-    v5 = [(AXSwitchRecipe *)self unlocalizedName];
+    unlocalizedName2 = [(AXSwitchRecipe *)self unlocalizedName];
     v6 = @"UnlocalizedName";
   }
 
   else
   {
-    v7 = [(AXSwitchRecipe *)self name];
+    name = [(AXSwitchRecipe *)self name];
 
-    if (!v7)
+    if (!name)
     {
       goto LABEL_6;
     }
 
-    v5 = [(AXSwitchRecipe *)self name];
+    unlocalizedName2 = [(AXSwitchRecipe *)self name];
     v6 = @"Name";
   }
 
-  [v3 setObject:v5 forKeyedSubscript:v6];
+  [v3 setObject:unlocalizedName2 forKeyedSubscript:v6];
 
 LABEL_6:
-  v8 = [(AXSwitchRecipe *)self uuid];
+  uuid = [(AXSwitchRecipe *)self uuid];
 
-  if (!v8)
+  if (!uuid)
   {
     _AXAssert();
   }
 
-  v9 = [(AXSwitchRecipe *)self uuid];
+  uuid2 = [(AXSwitchRecipe *)self uuid];
 
-  if (v9)
+  if (uuid2)
   {
-    v10 = [(AXSwitchRecipe *)self uuid];
-    v11 = [v10 UUIDString];
-    [v3 setObject:v11 forKeyedSubscript:@"UUID"];
+    uuid3 = [(AXSwitchRecipe *)self uuid];
+    uUIDString = [uuid3 UUIDString];
+    [v3 setObject:uUIDString forKeyedSubscript:@"UUID"];
   }
 
   v12 = MEMORY[0x1E695DF70];
-  v13 = [(AXSwitchRecipe *)self mappings];
-  v14 = [v12 arrayWithCapacity:{objc_msgSend(v13, "count")}];
+  mappings = [(AXSwitchRecipe *)self mappings];
+  v14 = [v12 arrayWithCapacity:{objc_msgSend(mappings, "count")}];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = [(AXSwitchRecipe *)self mappings];
-  v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  mappings2 = [(AXSwitchRecipe *)self mappings];
+  v16 = [mappings2 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v16)
   {
     v17 = v16;
@@ -134,14 +134,14 @@ LABEL_6:
       {
         if (*v27 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(mappings2);
         }
 
-        v20 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-        [v14 addObject:v20];
+        dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+        [v14 addObject:dictionaryRepresentation];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v17 = [mappings2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v17);
@@ -153,12 +153,12 @@ LABEL_6:
   v22 = [v21 numberWithDouble:?];
   [v3 setObject:v22 forKeyedSubscript:@"Timeout"];
 
-  v23 = [(AXSwitchRecipe *)self menuIconIdentifier];
+  menuIconIdentifier = [(AXSwitchRecipe *)self menuIconIdentifier];
 
-  if (v23)
+  if (menuIconIdentifier)
   {
-    v24 = [(AXSwitchRecipe *)self menuIconIdentifier];
-    [v3 setObject:v24 forKeyedSubscript:@"MenuIconIdentifier"];
+    menuIconIdentifier2 = [(AXSwitchRecipe *)self menuIconIdentifier];
+    [v3 setObject:menuIconIdentifier2 forKeyedSubscript:@"MenuIconIdentifier"];
   }
 
   return v3;
@@ -171,8 +171,8 @@ LABEL_6:
   v2 = [(AXSwitchRecipe *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    [(AXSwitchRecipe *)v2 setUuid:v3];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [(AXSwitchRecipe *)v2 setUuid:uUID];
   }
 
   return v2;
@@ -185,8 +185,8 @@ LABEL_6:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(AXSwitchRecipe *)self mappings];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  mappings = [(AXSwitchRecipe *)self mappings];
+  v3 = [mappings countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -197,12 +197,12 @@ LABEL_6:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(mappings);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 action];
-        if ([v8 isEqualToString:@"Select"])
+        action = [v7 action];
+        if ([action isEqualToString:@"Select"])
         {
 
 LABEL_13:
@@ -210,8 +210,8 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v9 = [v7 longPressAction];
-        v10 = [v9 isEqualToString:@"Select"];
+        longPressAction = [v7 longPressAction];
+        v10 = [longPressAction isEqualToString:@"Select"];
 
         if (v10)
         {
@@ -219,7 +219,7 @@ LABEL_13:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [mappings countByEnumeratingWithState:&v13 objects:v17 count:16];
       v11 = 0;
       if (v4)
       {
@@ -248,9 +248,9 @@ LABEL_14:
     goto LABEL_2;
   }
 
-  v5 = [(AXSwitchRecipe *)self unlocalizedName];
+  unlocalizedName = [(AXSwitchRecipe *)self unlocalizedName];
 
-  if (!v5)
+  if (!unlocalizedName)
   {
     name = self->_name;
 LABEL_2:
@@ -258,27 +258,27 @@ LABEL_2:
     goto LABEL_5;
   }
 
-  v6 = [(AXSwitchRecipe *)self unlocalizedName];
-  v3 = AXLocalizedString(v6);
+  unlocalizedName2 = [(AXSwitchRecipe *)self unlocalizedName];
+  v3 = AXLocalizedString(unlocalizedName2);
 
 LABEL_5:
 
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   p_name = &self->_name;
-  if (self->_name != v5)
+  if (self->_name != nameCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_name, a3);
+    v7 = nameCopy;
+    objc_storeStrong(p_name, name);
     p_name = [(AXSwitchRecipe *)self setUnlocalizedName:0];
-    v5 = v7;
+    nameCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_name, v5);
+  MEMORY[0x1EEE66BB8](p_name, nameCopy);
 }
 
 - (id)description
@@ -286,13 +286,13 @@ LABEL_5:
   v11.receiver = self;
   v11.super_class = AXSwitchRecipe;
   v3 = [(AXSwitchRecipe *)&v11 description];
-  v4 = [(AXSwitchRecipe *)self name];
-  v5 = [(AXSwitchRecipe *)self uuid];
-  v6 = [(AXSwitchRecipe *)self mappings];
+  name = [(AXSwitchRecipe *)self name];
+  uuid = [(AXSwitchRecipe *)self uuid];
+  mappings = [(AXSwitchRecipe *)self mappings];
   v7 = MEMORY[0x1E696AD98];
   [(AXSwitchRecipe *)self timeout];
   v8 = [v7 numberWithDouble:?];
-  v9 = [v3 stringByAppendingFormat:@"\nName: %@\nUUID: %@\nMappings: %@\nTimeout: %@", v4, v5, v6, v8];
+  v9 = [v3 stringByAppendingFormat:@"\nName: %@\nUUID: %@\nMappings: %@\nTimeout: %@", name, uuid, mappings, v8];
 
   return v9;
 }

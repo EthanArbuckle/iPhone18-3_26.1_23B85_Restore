@@ -1,23 +1,23 @@
 @interface ATLegacyAssetLink
 - (ATAssetLinkDelegate)delegate;
-- (ATLegacyAssetLink)initWithMessageLink:(id)a3 hostVersion:(id)a4;
+- (ATLegacyAssetLink)initWithMessageLink:(id)link hostVersion:(id)version;
 - (ATLegacyAssetLinkProgressDelegate)progressDelegate;
-- (BOOL)canEnqueueAsset:(id)a3;
+- (BOOL)canEnqueueAsset:(id)asset;
 - (BOOL)open;
 - (NSArray)readyDataClasses;
-- (id)_assetManifestForDataclasses:(id)a3;
-- (id)_assetsForDataClass:(id)a3 identifier:(id)a4;
-- (id)_manifestEntryForATAsset:(id)a3;
-- (id)enqueueAssets:(id)a3 force:(BOOL)a4;
+- (id)_assetManifestForDataclasses:(id)dataclasses;
+- (id)_assetsForDataClass:(id)class identifier:(id)identifier;
+- (id)_manifestEntryForATAsset:(id)asset;
+- (id)enqueueAssets:(id)assets force:(BOOL)force;
 - (void)_enqueueAndRequestAssets;
-- (void)_finishAsset:(id)a3 withError:(id)a4;
-- (void)_handleFileCompleteMessage:(id)a3;
-- (void)_handleFileErrorMessage:(id)a3;
-- (void)_handleFileProgressMessage:(id)a3;
-- (void)cancelAssets:(id)a3;
+- (void)_finishAsset:(id)asset withError:(id)error;
+- (void)_handleFileCompleteMessage:(id)message;
+- (void)_handleFileErrorMessage:(id)message;
+- (void)_handleFileProgressMessage:(id)message;
+- (void)cancelAssets:(id)assets;
 - (void)close;
-- (void)prioritizeAsset:(id)a3;
-- (void)setReadyDataClasses:(id)a3;
+- (void)prioritizeAsset:(id)asset;
+- (void)setReadyDataClasses:(id)classes;
 @end
 
 @implementation ATLegacyAssetLink
@@ -36,96 +36,96 @@
   return WeakRetained;
 }
 
-- (id)_manifestEntryForATAsset:(id)a3
+- (id)_manifestEntryForATAsset:(id)asset
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [v4 storeInfo];
-  v7 = [v6 syncID];
-  v8 = [v7 longLongValue];
+  assetCopy = asset;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  storeInfo = [assetCopy storeInfo];
+  syncID = [storeInfo syncID];
+  longLongValue = [syncID longLongValue];
 
-  if (v8)
+  if (longLongValue)
   {
-    v9 = [v4 storeInfo];
-    v10 = [v9 syncID];
-    [v5 setObject:v10 forKey:@"AssetID"];
+    storeInfo2 = [assetCopy storeInfo];
+    syncID2 = [storeInfo2 syncID];
+    [dictionary setObject:syncID2 forKey:@"AssetID"];
   }
 
   else
   {
-    v9 = [v4 identifier];
-    [v5 setObject:v9 forKey:@"AssetID"];
+    storeInfo2 = [assetCopy identifier];
+    [dictionary setObject:storeInfo2 forKey:@"AssetID"];
   }
 
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isDownload")}];
-  [v5 setObject:v11 forKey:@"IsDownload"];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(assetCopy, "isDownload")}];
+  [dictionary setObject:v11 forKey:@"IsDownload"];
 
-  v12 = [v4 variantOptions];
+  variantOptions = [assetCopy variantOptions];
 
-  if (v12)
+  if (variantOptions)
   {
     v13 = objc_alloc(MEMORY[0x277CBEB38]);
-    v14 = [v4 variantOptions];
-    v15 = [v13 initWithDictionary:v14];
+    variantOptions2 = [assetCopy variantOptions];
+    v15 = [v13 initWithDictionary:variantOptions2];
 
     if ([(NSString *)self->_hostVersion compare:@"12.6.0.43" options:64]== NSOrderedAscending)
     {
-      [v4 setLyricsEmbeddedInAsset:1];
-      v16 = [v4 assetParts];
+      [assetCopy setLyricsEmbeddedInAsset:1];
+      assetParts = [assetCopy assetParts];
       [v15 removeObjectForKey:@"AssetParts"];
-      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v16 & 6 | 1];
+      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:assetParts & 6 | 1];
       [v15 setObject:v17 forKey:@"AssetParts"];
 
       v18 = _ATLogCategoryiTunesSync();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v26 = 134218498;
-        v27 = v16;
+        v27 = assetParts;
         v28 = 2048;
-        v29 = v16 & 6 | 1;
+        v29 = assetParts & 6 | 1;
         v30 = 2114;
-        v31 = v4;
+        v31 = assetCopy;
         _os_log_impl(&dword_223819000, v18, OS_LOG_TYPE_DEFAULT, "updating parts from %lu to %lu for asset %{public}@", &v26, 0x20u);
       }
     }
 
-    v19 = [v4 dataclass];
-    v20 = [v19 isEqualToString:@"Application"];
+    dataclass = [assetCopy dataclass];
+    v20 = [dataclass isEqualToString:@"Application"];
 
     if (v20)
     {
       [v15 removeObjectForKey:@"AssetParts"];
     }
 
-    [v5 setObject:v15 forKey:@"Variant"];
+    [dictionary setObject:v15 forKey:@"Variant"];
   }
 
-  v21 = [v4 path];
+  path = [assetCopy path];
 
-  if (v21)
+  if (path)
   {
-    v22 = [v4 path];
-    [v5 setObject:v22 forKey:@"AssetPath"];
+    path2 = [assetCopy path];
+    [dictionary setObject:path2 forKey:@"AssetPath"];
   }
 
-  v23 = [v4 assetType];
+  assetType = [assetCopy assetType];
 
-  if (v23)
+  if (assetType)
   {
-    v24 = [v4 assetType];
-    [v5 setObject:v24 forKey:@"AssetType"];
+    assetType2 = [assetCopy assetType];
+    [dictionary setObject:assetType2 forKey:@"AssetType"];
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (void)_enqueueAndRequestAssets
 {
   v46 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(NSMutableDictionary *)self->_enqueuedAssetsByDataClass allKeys];
-  v5 = [v3 setWithArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_enqueuedAssetsByDataClass allKeys];
+  v5 = [v3 setWithArray:allKeys];
 
   v37 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v36 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -133,7 +133,7 @@
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v6 = self;
+  selfCopy = self;
   v7 = self->_unqueuedAssets;
   v8 = [(NSMutableSet *)v7 countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v8)
@@ -151,12 +151,12 @@
         }
 
         v12 = *(*(&v39 + 1) + 8 * i);
-        v13 = [v12 dataclass];
-        if (([v5 containsObject:v13] & 1) == 0)
+        dataclass = [v12 dataclass];
+        if (([v5 containsObject:dataclass] & 1) == 0)
         {
-          readyDataClasses = v6->_readyDataClasses;
-          v15 = [v12 dataclass];
-          LODWORD(readyDataClasses) = [(NSMutableArray *)readyDataClasses containsObject:v15];
+          readyDataClasses = selfCopy->_readyDataClasses;
+          dataclass2 = [v12 dataclass];
+          LODWORD(readyDataClasses) = [(NSMutableArray *)readyDataClasses containsObject:dataclass2];
 
           if (!readyDataClasses)
           {
@@ -164,35 +164,35 @@
           }
 
           v16 = v7;
-          enqueuedAssetsByDataClass = v6->_enqueuedAssetsByDataClass;
-          v18 = [v12 dataclass];
-          v13 = [(NSMutableDictionary *)enqueuedAssetsByDataClass objectForKey:v18];
+          enqueuedAssetsByDataClass = selfCopy->_enqueuedAssetsByDataClass;
+          dataclass3 = [v12 dataclass];
+          dataclass = [(NSMutableDictionary *)enqueuedAssetsByDataClass objectForKey:dataclass3];
 
-          if (!v13)
+          if (!dataclass)
           {
-            v13 = objc_opt_new();
-            v19 = v6->_enqueuedAssetsByDataClass;
-            v20 = [v12 dataclass];
-            [(NSMutableDictionary *)v19 setObject:v13 forKey:v20];
+            dataclass = objc_opt_new();
+            v19 = selfCopy->_enqueuedAssetsByDataClass;
+            dataclass4 = [v12 dataclass];
+            [(NSMutableDictionary *)v19 setObject:dataclass forKey:dataclass4];
           }
 
           [v12 setAssetState:1];
-          [v13 addObject:v12];
+          [dataclass addObject:v12];
           [v37 addObject:v12];
-          v21 = [v12 dataclass];
-          [v36 addObject:v21];
+          dataclass5 = [v12 dataclass];
+          [v36 addObject:dataclass5];
 
-          v22 = [v12 storeInfo];
-          v23 = [v22 syncID];
-          v24 = [v23 longLongValue];
+          storeInfo = [v12 storeInfo];
+          syncID = [storeInfo syncID];
+          longLongValue = [syncID longLongValue];
 
-          if (v24)
+          if (longLongValue)
           {
-            syncIDToItemPidMap = v6->_syncIDToItemPidMap;
-            v26 = [v12 identifier];
-            v27 = [v12 storeInfo];
-            v28 = [v27 syncID];
-            [(NSMutableDictionary *)syncIDToItemPidMap setObject:v26 forKey:v28];
+            syncIDToItemPidMap = selfCopy->_syncIDToItemPidMap;
+            identifier = [v12 identifier];
+            storeInfo2 = [v12 storeInfo];
+            syncID2 = [storeInfo2 syncID];
+            [(NSMutableDictionary *)syncIDToItemPidMap setObject:identifier forKey:syncID2];
           }
 
           v7 = v16;
@@ -206,13 +206,13 @@
     while (v9);
   }
 
-  [(NSMutableSet *)v6->_unqueuedAssets minusSet:v37];
-  v29 = [v36 allObjects];
-  v30 = [(ATLegacyAssetLink *)v6 _assetManifestForDataclasses:v29];
+  [(NSMutableSet *)selfCopy->_unqueuedAssets minusSet:v37];
+  allObjects = [v36 allObjects];
+  v30 = [(ATLegacyAssetLink *)selfCopy _assetManifestForDataclasses:allObjects];
 
   if (v30 && [v30 count])
   {
-    messageLink = v6->_messageLink;
+    messageLink = selfCopy->_messageLink;
     v32 = MEMORY[0x277CEA448];
     v43 = @"AssetManifest";
     v44 = v30;
@@ -222,7 +222,7 @@
     v38[1] = 3221225472;
     v38[2] = __45__ATLegacyAssetLink__enqueueAndRequestAssets__block_invoke;
     v38[3] = &unk_2784E58E8;
-    v38[4] = v6;
+    v38[4] = selfCopy;
     [(ATLegacyMessageLink *)messageLink sendMessage:v34 withCompletion:v38];
   }
 }
@@ -237,11 +237,11 @@ uint64_t __45__ATLegacyAssetLink__enqueueAndRequestAssets__block_invoke(uint64_t
   return result;
 }
 
-- (id)_assetManifestForDataclasses:(id)a3
+- (id)_assetManifestForDataclasses:(id)dataclasses
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v23 = [MEMORY[0x277CBEB38] dictionary];
+  dataclassesCopy = dataclasses;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -265,9 +265,9 @@ uint64_t __45__ATLegacyAssetLink__enqueueAndRequestAssets__block_invoke(uint64_t
         }
 
         v9 = *(*(&v30 + 1) + 8 * v8);
-        if ([v4 containsObject:{v9, v22}])
+        if ([dataclassesCopy containsObject:{v9, v22}])
         {
-          v10 = v4;
+          v10 = dataclassesCopy;
           v11 = MEMORY[0x277CBEB18];
           v12 = [(NSMutableDictionary *)self->_enqueuedAssetsByDataClass objectForKey:v9];
           v13 = [v11 arrayWithCapacity:{objc_msgSend(v12, "count")}];
@@ -305,8 +305,8 @@ uint64_t __45__ATLegacyAssetLink__enqueueAndRequestAssets__block_invoke(uint64_t
             while (v16);
           }
 
-          [v23 setObject:v13 forKey:v9];
-          v4 = v10;
+          [dictionary setObject:v13 forKey:v9];
+          dataclassesCopy = v10;
           v7 = v22;
           v6 = v24;
         }
@@ -321,14 +321,14 @@ uint64_t __45__ATLegacyAssetLink__enqueueAndRequestAssets__block_invoke(uint64_t
     while (v6);
   }
 
-  return v23;
+  return dictionary;
 }
 
-- (id)_assetsForDataClass:(id)a3 identifier:(id)a4
+- (id)_assetsForDataClass:(id)class identifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_enqueuedAssetsByDataClass objectForKey:a3];
+  identifierCopy = identifier;
+  v7 = [(NSMutableDictionary *)self->_enqueuedAssetsByDataClass objectForKey:class];
   v8 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
@@ -350,8 +350,8 @@ uint64_t __45__ATLegacyAssetLink__enqueueAndRequestAssets__block_invoke(uint64_t
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        v16 = [v15 isEqualToString:v6];
+        identifier = [v14 identifier];
+        v16 = [identifier isEqualToString:identifierCopy];
 
         if (v16)
         {
@@ -380,31 +380,31 @@ uint64_t __45__ATLegacyAssetLink__enqueueAndRequestAssets__block_invoke(uint64_t
   return v17;
 }
 
-- (void)_finishAsset:(id)a3 withError:(id)a4
+- (void)_finishAsset:(id)asset withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  errorCopy = error;
   enqueuedAssetsByDataClass = self->_enqueuedAssetsByDataClass;
-  v9 = [v6 dataclass];
-  v10 = [(NSMutableDictionary *)enqueuedAssetsByDataClass objectForKey:v9];
+  dataclass = [assetCopy dataclass];
+  v10 = [(NSMutableDictionary *)enqueuedAssetsByDataClass objectForKey:dataclass];
 
-  [v10 removeObject:v6];
+  [v10 removeObject:assetCopy];
   if (![v10 count])
   {
     v11 = self->_enqueuedAssetsByDataClass;
-    v12 = [v6 dataclass];
-    [(NSMutableDictionary *)v11 removeObjectForKey:v12];
+    dataclass2 = [assetCopy dataclass];
+    [(NSMutableDictionary *)v11 removeObjectForKey:dataclass2];
   }
 
-  v13 = [v6 storeInfo];
-  v14 = [v13 syncID];
+  storeInfo = [assetCopy storeInfo];
+  syncID = [storeInfo syncID];
 
-  if (v14)
+  if (syncID)
   {
     syncIDToItemPidMap = self->_syncIDToItemPidMap;
-    v16 = [v6 storeInfo];
-    v17 = [v16 syncID];
-    [(NSMutableDictionary *)syncIDToItemPidMap removeObjectForKey:v17];
+    storeInfo2 = [assetCopy storeInfo];
+    syncID2 = [storeInfo2 syncID];
+    [(NSMutableDictionary *)syncIDToItemPidMap removeObjectForKey:syncID2];
   }
 
   callbackQueue = self->_callbackQueue;
@@ -413,10 +413,10 @@ uint64_t __45__ATLegacyAssetLink__enqueueAndRequestAssets__block_invoke(uint64_t
   block[2] = __44__ATLegacyAssetLink__finishAsset_withError___block_invoke;
   block[3] = &unk_2784E59B0;
   block[4] = self;
-  v22 = v6;
-  v23 = v7;
-  v19 = v7;
-  v20 = v6;
+  v22 = assetCopy;
+  v23 = errorCopy;
+  v19 = errorCopy;
+  v20 = assetCopy;
   dispatch_async(callbackQueue, block);
 }
 
@@ -430,17 +430,17 @@ void __44__ATLegacyAssetLink__finishAsset_withError___block_invoke(uint64_t a1)
   [v6 assetLink:v2 didFinishAsset:v3 error:v4 retryable:v5];
 }
 
-- (void)_handleFileProgressMessage:(id)a3
+- (void)_handleFileProgressMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__ATLegacyAssetLink__handleFileProgressMessage___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
   dispatch_async(queue, v7);
 }
 
@@ -545,17 +545,17 @@ void __48__ATLegacyAssetLink__handleFileProgressMessage___block_invoke_3(uint64_
   [v3 assetLink:v2 didUpdateOverallProgress:?];
 }
 
-- (void)_handleFileErrorMessage:(id)a3
+- (void)_handleFileErrorMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__ATLegacyAssetLink__handleFileErrorMessage___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
   dispatch_async(queue, v7);
 }
 
@@ -619,17 +619,17 @@ void __45__ATLegacyAssetLink__handleFileErrorMessage___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleFileCompleteMessage:(id)a3
+- (void)_handleFileCompleteMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__ATLegacyAssetLink__handleFileCompleteMessage___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
   dispatch_async(queue, v7);
 }
 
@@ -795,17 +795,17 @@ uint64_t __37__ATLegacyAssetLink_readyDataClasses__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setReadyDataClasses:(id)a3
+- (void)setReadyDataClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__ATLegacyAssetLink_setReadyDataClasses___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = classesCopy;
+  v6 = classesCopy;
   dispatch_async(queue, v7);
 }
 
@@ -821,24 +821,24 @@ uint64_t __41__ATLegacyAssetLink_setReadyDataClasses___block_invoke(uint64_t a1)
   return [v5 _enqueueAndRequestAssets];
 }
 
-- (void)prioritizeAsset:(id)a3
+- (void)prioritizeAsset:(id)asset
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v5 = _ATLogCategoryiTunesSync();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v4;
+    *&buf[14] = assetCopy;
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Prioritize %{public}@", buf, 0x16u);
   }
 
-  if ([(NSMutableSet *)self->_unqueuedAssets containsObject:v4])
+  if ([(NSMutableSet *)self->_unqueuedAssets containsObject:assetCopy])
   {
-    [(NSMutableSet *)self->_unqueuedAssets removeObject:v4];
-    [(NSMutableSet *)self->_unqueuedAssets addObject:v4];
+    [(NSMutableSet *)self->_unqueuedAssets removeObject:assetCopy];
+    [(NSMutableSet *)self->_unqueuedAssets addObject:assetCopy];
   }
 
   else
@@ -856,15 +856,15 @@ uint64_t __41__ATLegacyAssetLink_setReadyDataClasses___block_invoke(uint64_t a1)
     block[3] = &unk_2784E5988;
     v18 = buf;
     block[4] = self;
-    v7 = v4;
+    v7 = assetCopy;
     v17 = v7;
     dispatch_sync(queue, block);
     if ([*(*&buf[8] + 40) count])
     {
       [v7 setIsPrioritized:1];
       v22 = @"AssetManifest";
-      v8 = [v7 dataclass];
-      v20 = v8;
+      dataclass = [v7 dataclass];
+      v20 = dataclass;
       v9 = [(ATLegacyAssetLink *)self _manifestEntryForATAsset:v7];
       v19 = v9;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
@@ -938,17 +938,17 @@ void __37__ATLegacyAssetLink_prioritizeAsset___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)cancelAssets:(id)a3
+- (void)cancelAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__ATLegacyAssetLink_cancelAssets___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = assetsCopy;
+  selfCopy = self;
+  v6 = assetsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1068,29 +1068,29 @@ void __34__ATLegacyAssetLink_cancelAssets___block_invoke_3(void *a1)
   [v5 _finishAsset:v4 withError:v6];
 }
 
-- (BOOL)canEnqueueAsset:(id)a3
+- (BOOL)canEnqueueAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 installOnly])
+  assetCopy = asset;
+  if ([assetCopy installOnly])
   {
     goto LABEL_5;
   }
 
-  v5 = [(ATLegacyAssetLink *)self supportedDataClasses];
-  v6 = [v4 dataclass];
-  v7 = [v5 containsObject:v6];
+  supportedDataClasses = [(ATLegacyAssetLink *)self supportedDataClasses];
+  dataclass = [assetCopy dataclass];
+  v7 = [supportedDataClasses containsObject:dataclass];
 
   if (!v7)
   {
     goto LABEL_5;
   }
 
-  v8 = [v4 dataclass];
-  if ([v8 isEqualToString:@"Application"])
+  dataclass2 = [assetCopy dataclass];
+  if ([dataclass2 isEqualToString:@"Application"])
   {
-    v9 = [v4 isRestore];
+    isRestore = [assetCopy isRestore];
 
-    if (v9)
+    if (isRestore)
     {
 LABEL_5:
       v10 = 0;
@@ -1102,16 +1102,16 @@ LABEL_5:
   {
   }
 
-  if ([v4 isLegacy])
+  if ([assetCopy isLegacy])
   {
     v10 = 1;
   }
 
   else
   {
-    v12 = [v4 storeInfo];
-    v13 = [v12 syncID];
-    v10 = v13 != 0;
+    storeInfo = [assetCopy storeInfo];
+    syncID = [storeInfo syncID];
+    v10 = syncID != 0;
   }
 
 LABEL_6:
@@ -1119,9 +1119,9 @@ LABEL_6:
   return v10;
 }
 
-- (id)enqueueAssets:(id)a3 force:(BOOL)a4
+- (id)enqueueAssets:(id)assets force:(BOOL)force
 {
-  v5 = a3;
+  assetsCopy = assets;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1134,9 +1134,9 @@ LABEL_6:
   block[2] = __41__ATLegacyAssetLink_enqueueAssets_force___block_invoke;
   block[3] = &unk_2784E5988;
   block[4] = self;
-  v11 = v5;
+  v11 = assetsCopy;
   v12 = &v13;
-  v7 = v5;
+  v7 = assetsCopy;
   dispatch_sync(queue, block);
   v8 = v14[5];
 
@@ -1375,10 +1375,10 @@ void __25__ATLegacyAssetLink_open__block_invoke_5(uint64_t a1)
   }
 }
 
-- (ATLegacyAssetLink)initWithMessageLink:(id)a3 hostVersion:(id)a4
+- (ATLegacyAssetLink)initWithMessageLink:(id)link hostVersion:(id)version
 {
-  v7 = a3;
-  v8 = a4;
+  linkCopy = link;
+  versionCopy = version;
   v29.receiver = self;
   v29.super_class = ATLegacyAssetLink;
   v9 = [(ATLegacyAssetLink *)&v29 init];
@@ -1394,7 +1394,7 @@ void __25__ATLegacyAssetLink_open__block_invoke_5(uint64_t a1)
     callbackQueue = v9->_callbackQueue;
     v9->_callbackQueue = v14;
 
-    objc_storeStrong(&v9->_messageLink, a3);
+    objc_storeStrong(&v9->_messageLink, link);
     v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
     unqueuedAssets = v9->_unqueuedAssets;
     v9->_unqueuedAssets = v16;
@@ -1415,7 +1415,7 @@ void __25__ATLegacyAssetLink_open__block_invoke_5(uint64_t a1)
     readyDataClasses = v9->_readyDataClasses;
     v9->_readyDataClasses = v24;
 
-    v26 = [v8 copy];
+    v26 = [versionCopy copy];
     hostVersion = v9->_hostVersion;
     v9->_hostVersion = v26;
   }

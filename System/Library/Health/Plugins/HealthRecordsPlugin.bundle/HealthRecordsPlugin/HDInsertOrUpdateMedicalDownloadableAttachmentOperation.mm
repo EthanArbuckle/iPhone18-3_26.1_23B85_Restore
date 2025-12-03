@@ -1,63 +1,63 @@
 @interface HDInsertOrUpdateMedicalDownloadableAttachmentOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDInsertOrUpdateMedicalDownloadableAttachmentOperation)initWithAttachment:(id)a3 shouldReplace:(BOOL)a4;
-- (HDInsertOrUpdateMedicalDownloadableAttachmentOperation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDInsertOrUpdateMedicalDownloadableAttachmentOperation)initWithAttachment:(id)attachment shouldReplace:(BOOL)replace;
+- (HDInsertOrUpdateMedicalDownloadableAttachmentOperation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDInsertOrUpdateMedicalDownloadableAttachmentOperation
 
-- (HDInsertOrUpdateMedicalDownloadableAttachmentOperation)initWithAttachment:(id)a3 shouldReplace:(BOOL)a4
+- (HDInsertOrUpdateMedicalDownloadableAttachmentOperation)initWithAttachment:(id)attachment shouldReplace:(BOOL)replace
 {
-  v6 = a3;
+  attachmentCopy = attachment;
   v11.receiver = self;
   v11.super_class = HDInsertOrUpdateMedicalDownloadableAttachmentOperation;
   v7 = [(HDInsertOrUpdateMedicalDownloadableAttachmentOperation *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [attachmentCopy copy];
     attachment = v7->_attachment;
     v7->_attachment = v8;
 
-    v7->_shouldReplace = a4;
+    v7->_shouldReplace = replace;
   }
 
   return v7;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v5 = [HDMedicalDownloadableAttachmentEntity _insertOrUpdateAttachment:self->_attachment shouldReplace:self->_shouldReplace databaseTransaction:a4 error:a5];
+  v5 = [HDMedicalDownloadableAttachmentEntity _insertOrUpdateAttachment:self->_attachment shouldReplace:self->_shouldReplace databaseTransaction:transaction error:error];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (HDInsertOrUpdateMedicalDownloadableAttachmentOperation)initWithCoder:(id)a3
+- (HDInsertOrUpdateMedicalDownloadableAttachmentOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Attachment"];
-  if (v5 && ([v4 containsValueForKey:@"ShouldReplace"] & 1) != 0)
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Attachment"];
+  if (v5 && ([coderCopy containsValueForKey:@"ShouldReplace"] & 1) != 0)
   {
-    self = -[HDInsertOrUpdateMedicalDownloadableAttachmentOperation initWithAttachment:shouldReplace:](self, "initWithAttachment:shouldReplace:", v5, [v4 decodeBoolForKey:@"ShouldReplace"]);
-    v6 = self;
+    self = -[HDInsertOrUpdateMedicalDownloadableAttachmentOperation initWithAttachment:shouldReplace:](self, "initWithAttachment:shouldReplace:", v5, [coderCopy decodeBoolForKey:@"ShouldReplace"]);
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v6 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   attachment = self->_attachment;
-  v5 = a3;
-  [v5 encodeObject:attachment forKey:@"Attachment"];
-  [v5 encodeBool:self->_shouldReplace forKey:@"ShouldReplace"];
+  coderCopy = coder;
+  [coderCopy encodeObject:attachment forKey:@"Attachment"];
+  [coderCopy encodeBool:self->_shouldReplace forKey:@"ShouldReplace"];
 }
 
 @end

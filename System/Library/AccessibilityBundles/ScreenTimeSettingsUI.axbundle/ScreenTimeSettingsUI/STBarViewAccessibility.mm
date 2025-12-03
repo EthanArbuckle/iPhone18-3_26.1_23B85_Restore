@@ -1,5 +1,5 @@
 @interface STBarViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityParentForFindingScrollParent;
 - (id)accessibilityLabel;
@@ -7,20 +7,20 @@
 
 @implementation STBarViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STBarView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"STUsageGraphViewController"];
-  [v3 validateClass:@"STBarView" hasInstanceMethod:@"dataPoint" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STBarView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"STUsageGraphViewController"];
+  [validationsCopy validateClass:@"STBarView" hasInstanceMethod:@"dataPoint" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(STBarViewAccessibility *)self safeValueForKey:@"dataPoint"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (CGRect)accessibilityFrame
@@ -69,9 +69,9 @@ uint64_t __44__STBarViewAccessibility_accessibilityFrame__block_invoke(uint64_t 
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 superview];
+  superview = [v2 superview];
 
-  return v3;
+  return superview;
 }
 
 @end

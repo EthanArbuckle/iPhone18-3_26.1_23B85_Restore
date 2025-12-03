@@ -3,9 +3,9 @@
 - (CLLocationCoordinate2D)coordinate;
 - (WeatherLocationDataProvider)init;
 - (void)_notifyObserversWeatherLocationDidChange;
-- (void)_updateCoordinate:(CLLocationCoordinate2D)a3;
-- (void)_updateLocation:(id)a3;
-- (void)setCoordinate:(CLLocationCoordinate2D)a3;
+- (void)_updateCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)_updateLocation:(id)location;
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation WeatherLocationDataProvider
@@ -27,11 +27,11 @@
   return v3;
 }
 
-- (void)setCoordinate:(CLLocationCoordinate2D)a3
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  if (CLLocationCoordinate2DIsValid(a3))
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  if (CLLocationCoordinate2DIsValid(coordinate))
   {
     if ((self->_coordinate.latitude == latitude || self->_coordinate.longitude == longitude) && self->_location)
     {
@@ -80,21 +80,21 @@
   v2 = +[WeatherSettingsManager sharedManager];
   if ([v2 shouldShowAirQualityConditions])
   {
-    v3 = 1;
+    shouldShowWeatherConditions = 1;
   }
 
   else
   {
-    v3 = [v2 shouldShowWeatherConditions];
+    shouldShowWeatherConditions = [v2 shouldShowWeatherConditions];
   }
 
-  return v3;
+  return shouldShowWeatherConditions;
 }
 
-- (void)_updateCoordinate:(CLLocationCoordinate2D)a3
+- (void)_updateCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   if ([(WeatherLocationDataProvider *)self _shouldNotifyObservers])
   {
     v6 = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
@@ -108,9 +108,9 @@
   }
 }
 
-- (void)_updateLocation:(id)a3
+- (void)_updateLocation:(id)location
 {
-  v4 = [a3 copy];
+  v4 = [location copy];
   location = self->_location;
   self->_location = v4;
 

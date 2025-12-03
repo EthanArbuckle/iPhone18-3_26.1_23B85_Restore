@@ -2,40 +2,40 @@
 + (UISheetPresentationControllerDetent)customDetentWithIdentifier:(UISheetPresentationControllerDetentIdentifier)identifier resolver:(void *)resolver;
 + (UISheetPresentationControllerDetent)largeDetent;
 + (UISheetPresentationControllerDetent)mediumDetent;
-+ (id)_detentWithContainerViewBlock:(id)a3;
-+ (id)_detentWithIdentifier:(id)a3 constant:(double)a4;
-+ (id)_detentWithIdentifier:(id)a3 containerViewBlock:(id)a4;
-+ (id)_detentWithResolutionContextBlock:(id)a3;
++ (id)_detentWithContainerViewBlock:(id)block;
++ (id)_detentWithIdentifier:(id)identifier constant:(double)constant;
++ (id)_detentWithIdentifier:(id)identifier containerViewBlock:(id)block;
++ (id)_detentWithResolutionContextBlock:(id)block;
 + (id)_fullDetent;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGFloat)resolvedValueInContext:(id)context;
 - (NSString)description;
-- (UISheetPresentationControllerDetent)initWithBSXPCCoder:(id)a3;
-- (UISheetPresentationControllerDetent)initWithCoder:(id)a3;
-- (UISheetPresentationControllerDetent)initWithType:(int64_t)a3 identifier:(id)a4 internalBlock:(id)a5 constant:(double)a6;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UISheetPresentationControllerDetent)initWithBSXPCCoder:(id)coder;
+- (UISheetPresentationControllerDetent)initWithCoder:(id)coder;
+- (UISheetPresentationControllerDetent)initWithType:(int64_t)type identifier:(id)identifier internalBlock:(id)block constant:(double)constant;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UISheetPresentationControllerDetent
 
 + (UISheetPresentationControllerDetent)largeDetent
 {
-  v2 = [[a1 alloc] initWithType:1 identifier:@"com.apple.UIKit.large" internalBlock:&__block_literal_global_17_8 constant:0.0];
+  v2 = [[self alloc] initWithType:1 identifier:@"com.apple.UIKit.large" internalBlock:&__block_literal_global_17_8 constant:0.0];
 
   return v2;
 }
 
 + (UISheetPresentationControllerDetent)mediumDetent
 {
-  v2 = [[a1 alloc] initWithType:2 identifier:@"com.apple.UIKit.medium" internalBlock:&__block_literal_global_19_3 constant:0.0];
+  v2 = [[self alloc] initWithType:2 identifier:@"com.apple.UIKit.medium" internalBlock:&__block_literal_global_19_3 constant:0.0];
 
   return v2;
 }
 
 + (id)_fullDetent
 {
-  v2 = [[a1 alloc] initWithType:3 identifier:@"com.apple.UIKit.full" internalBlock:&__block_literal_global_22_3 constant:0.0];
+  v2 = [[self alloc] initWithType:3 identifier:@"com.apple.UIKit.full" internalBlock:&__block_literal_global_22_3 constant:0.0];
 
   return v2;
 }
@@ -44,7 +44,7 @@
 {
   v6 = resolver;
   v7 = identifier;
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __75__UISheetPresentationControllerDetent_customDetentWithIdentifier_resolver___block_invoke;
@@ -56,41 +56,41 @@
   return v10;
 }
 
-+ (id)_detentWithIdentifier:(id)a3 constant:(double)a4
++ (id)_detentWithIdentifier:(id)identifier constant:(double)constant
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v8 = _UISheetDetentInternalBlockForType(4, a4);
-  v9 = [v7 initWithType:4 identifier:v6 internalBlock:v8 constant:a4];
+  identifierCopy = identifier;
+  v7 = [self alloc];
+  v8 = _UISheetDetentInternalBlockForType(4, constant);
+  v9 = [v7 initWithType:4 identifier:identifierCopy internalBlock:v8 constant:constant];
 
   return v9;
 }
 
-+ (id)_detentWithResolutionContextBlock:(id)a3
++ (id)_detentWithResolutionContextBlock:(id)block
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [a1 _detentWithIdentifier:v7 resolutionContextBlock:v5];
+  blockCopy = block;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [self _detentWithIdentifier:uUIDString resolutionContextBlock:blockCopy];
 
   v8[8] = 1;
 
   return v8;
 }
 
-+ (id)_detentWithIdentifier:(id)a3 containerViewBlock:(id)a4
++ (id)_detentWithIdentifier:(id)identifier containerViewBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
+  blockCopy = block;
+  identifierCopy = identifier;
+  v8 = [self alloc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __80__UISheetPresentationControllerDetent__detentWithIdentifier_containerViewBlock___block_invoke;
   v12[3] = &unk_1E7124C38;
-  v13 = v6;
-  v9 = v6;
-  v10 = [v8 initWithType:0 identifier:v7 internalBlock:v12 constant:0.0];
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = [v8 initWithType:0 identifier:identifierCopy internalBlock:v12 constant:0.0];
 
   return v10;
 }
@@ -104,33 +104,33 @@ double __80__UISheetPresentationControllerDetent__detentWithIdentifier_container
   return v4;
 }
 
-+ (id)_detentWithContainerViewBlock:(id)a3
++ (id)_detentWithContainerViewBlock:(id)block
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [a1 _detentWithIdentifier:v7 containerViewBlock:v5];
+  blockCopy = block;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [self _detentWithIdentifier:uUIDString containerViewBlock:blockCopy];
 
   v8[8] = 1;
 
   return v8;
 }
 
-- (UISheetPresentationControllerDetent)initWithType:(int64_t)a3 identifier:(id)a4 internalBlock:(id)a5 constant:(double)a6
+- (UISheetPresentationControllerDetent)initWithType:(int64_t)type identifier:(id)identifier internalBlock:(id)block constant:(double)constant
 {
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  blockCopy = block;
   v23.receiver = self;
   v23.super_class = UISheetPresentationControllerDetent;
   v12 = [(UISheetPresentationControllerDetent *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    v12->__type = a3;
-    if (v10)
+    v12->__type = type;
+    if (identifierCopy)
     {
-      v14 = [v10 copy];
+      v14 = [identifierCopy copy];
       identifier = v13->_identifier;
       v13->_identifier = v14;
     }
@@ -139,17 +139,17 @@ double __80__UISheetPresentationControllerDetent__detentWithIdentifier_container
     {
       v16 = MEMORY[0x1E696AEC0];
       identifier = [MEMORY[0x1E696AFB0] UUID];
-      v17 = [identifier UUIDString];
-      v18 = [v16 stringWithFormat:@"com.apple.UIKit.dynamic.%@", v17];
+      uUIDString = [identifier UUIDString];
+      v18 = [v16 stringWithFormat:@"com.apple.UIKit.dynamic.%@", uUIDString];
       v19 = v13->_identifier;
       v13->_identifier = v18;
     }
 
-    v20 = _Block_copy(v11);
+    v20 = _Block_copy(blockCopy);
     internalBlock = v13->__internalBlock;
     v13->__internalBlock = v20;
 
-    v13->__constant = a6;
+    v13->__constant = constant;
   }
 
   return v13;
@@ -179,25 +179,25 @@ double __80__UISheetPresentationControllerDetent__detentWithIdentifier_container
     v10 = [v3 appendKey:v9];
   }
 
-  v11 = [v3 string];
+  string = [v3 string];
 
-  return v11;
+  return string;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(UISheetPresentationControllerDetent *)self _type];
-    if (v6 == [v5 _type])
+    v5 = equalCopy;
+    _type = [(UISheetPresentationControllerDetent *)self _type];
+    if (_type == [v5 _type])
     {
-      v7 = [(UISheetPresentationControllerDetent *)self identifier];
-      v8 = [v5 identifier];
-      v9 = v7;
-      v10 = v8;
+      identifier = [(UISheetPresentationControllerDetent *)self identifier];
+      identifier2 = [v5 identifier];
+      v9 = identifier;
+      v10 = identifier2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -225,9 +225,9 @@ LABEL_10:
 
         else
         {
-          v18 = [(UISheetPresentationControllerDetent *)self _internalBlock];
-          v19 = [v5 _internalBlock];
-          v13 = v18 == v19;
+          _internalBlock = [(UISheetPresentationControllerDetent *)self _internalBlock];
+          _internalBlock2 = [v5 _internalBlock];
+          v13 = _internalBlock == _internalBlock2;
         }
 
         goto LABEL_14;
@@ -250,18 +250,18 @@ LABEL_15:
 - (CGFloat)resolvedValueInContext:(id)context
 {
   v4 = context;
-  v5 = [(UISheetPresentationControllerDetent *)self _internalBlock];
-  v6 = (v5)[2](v5, v4);
+  _internalBlock = [(UISheetPresentationControllerDetent *)self _internalBlock];
+  v6 = (_internalBlock)[2](_internalBlock, v4);
 
   return v6;
 }
 
-- (UISheetPresentationControllerDetent)initWithCoder:(id)a3
+- (UISheetPresentationControllerDetent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"_type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
-  [v4 decodeDoubleForKey:@"_constant"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"_type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+  [coderCopy decodeDoubleForKey:@"_constant"];
   v8 = v7;
 
   v9 = _UISheetDetentInternalBlockForType(v5, v8);
@@ -283,23 +283,23 @@ LABEL_15:
     }
 
     self = v11;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (UISheetPresentationControllerDetent)initWithBSXPCCoder:(id)a3
+- (UISheetPresentationControllerDetent)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"_type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
-  [v4 decodeDoubleForKey:@"_constant"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"_type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+  [coderCopy decodeDoubleForKey:@"_constant"];
   v8 = v7;
 
   v9 = _UISheetDetentInternalBlockForType(v5, v8);
@@ -321,51 +321,51 @@ LABEL_15:
     }
 
     self = v11;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v5 = [(UISheetPresentationControllerDetent *)self _type];
-  if (!v5)
+  coderCopy = coder;
+  _type = [(UISheetPresentationControllerDetent *)self _type];
+  if (!_type)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISheetPresentationController.m" lineNumber:3846 description:{@"Custom detent %@ is not encodable. Custom detents are not supported for remote view controllers yet. rdar://65243005 (Custom sheet detents for remote view controllers)", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISheetPresentationController.m" lineNumber:3846 description:{@"Custom detent %@ is not encodable. Custom detents are not supported for remote view controllers yet. rdar://65243005 (Custom sheet detents for remote view controllers)", self}];
   }
 
-  [v8 encodeInteger:v5 forKey:@"_type"];
-  v6 = [(UISheetPresentationControllerDetent *)self identifier];
-  [v8 encodeObject:v6 forKey:@"_identifier"];
+  [coderCopy encodeInteger:_type forKey:@"_type"];
+  identifier = [(UISheetPresentationControllerDetent *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"_identifier"];
 
   [(UISheetPresentationControllerDetent *)self _constant];
-  [v8 encodeDouble:@"_constant" forKey:?];
+  [coderCopy encodeDouble:@"_constant" forKey:?];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v8 = a3;
-  v5 = [(UISheetPresentationControllerDetent *)self _type];
-  if (!v5)
+  coderCopy = coder;
+  _type = [(UISheetPresentationControllerDetent *)self _type];
+  if (!_type)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISheetPresentationController.m" lineNumber:3855 description:{@"Custom detent %@ is not encodable. Custom detents are not supported for remote view controllers yet. rdar://65243005 (Custom sheet detents for remote view controllers)", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISheetPresentationController.m" lineNumber:3855 description:{@"Custom detent %@ is not encodable. Custom detents are not supported for remote view controllers yet. rdar://65243005 (Custom sheet detents for remote view controllers)", self}];
   }
 
-  [v8 encodeInt64:v5 forKey:@"_type"];
-  v6 = [(UISheetPresentationControllerDetent *)self identifier];
-  [v8 encodeObject:v6 forKey:@"_identifier"];
+  [coderCopy encodeInt64:_type forKey:@"_type"];
+  identifier = [(UISheetPresentationControllerDetent *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"_identifier"];
 
   [(UISheetPresentationControllerDetent *)self _constant];
-  [v8 encodeDouble:@"_constant" forKey:?];
+  [coderCopy encodeDouble:@"_constant" forKey:?];
 }
 
 @end

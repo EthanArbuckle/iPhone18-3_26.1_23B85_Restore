@@ -1,11 +1,11 @@
 @interface CAMAbstractOverlayServiceControl
 + (id)_preferredLocale;
-- (BOOL)isContentEqual:(id)a3;
-- (CAMAbstractOverlayServiceControl)initWithCoder:(id)a3;
-- (id)_initWithIdentifier:(id)a3 title:(id)a4 imageName:(id)a5;
+- (BOOL)isContentEqual:(id)equal;
+- (CAMAbstractOverlayServiceControl)initWithCoder:(id)coder;
+- (id)_initWithIdentifier:(id)identifier title:(id)title imageName:(id)name;
 - (id)description;
-- (id)validateUpdate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)validateUpdate:(id)update;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAMAbstractOverlayServiceControl
@@ -33,43 +33,43 @@ void __52__CAMAbstractOverlayServiceControl__preferredLocale__block_invoke()
   _preferredLocale_preferredLocale = v2;
 }
 
-- (id)_initWithIdentifier:(id)a3 title:(id)a4 imageName:(id)a5
+- (id)_initWithIdentifier:(id)identifier title:(id)title imageName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  titleCopy = title;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = CAMAbstractOverlayServiceControl;
   v12 = [(CAMAbstractOverlayServiceControl *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    v14 = [objc_opt_class() _preferredLocale];
-    v15 = [v10 uppercaseStringWithLocale:v14];
+    objc_storeStrong(&v12->_identifier, identifier);
+    _preferredLocale = [objc_opt_class() _preferredLocale];
+    v15 = [titleCopy uppercaseStringWithLocale:_preferredLocale];
     title = v13->_title;
     v13->_title = v15;
 
-    objc_storeStrong(&v13->_imageName, a5);
+    objc_storeStrong(&v13->_imageName, name);
     v13->_enabled = 1;
   }
 
   return v13;
 }
 
-- (BOOL)isContentEqual:(id)a3
+- (BOOL)isContentEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   title = self->_title;
-  v6 = [v4 title];
-  if ([(NSString *)title isEqualToString:v6])
+  title = [equalCopy title];
+  if ([(NSString *)title isEqualToString:title])
   {
     imageName = self->_imageName;
-    v8 = [v4 imageName];
-    if ([(NSString *)imageName isEqualToString:v8])
+    imageName = [equalCopy imageName];
+    if ([(NSString *)imageName isEqualToString:imageName])
     {
       controlType = self->_controlType;
-      v10 = controlType == [v4 controlType];
+      v10 = controlType == [equalCopy controlType];
     }
 
     else
@@ -88,36 +88,36 @@ void __52__CAMAbstractOverlayServiceControl__preferredLocale__block_invoke()
 
 - (id)description
 {
-  v3 = [(CAMAbstractOverlayServiceControl *)self controlType];
-  if (v3 > 2)
+  controlType = [(CAMAbstractOverlayServiceControl *)self controlType];
+  if (controlType > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_278851C38[v3];
+    v4 = off_278851C38[controlType];
   }
 
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(CAMAbstractOverlayServiceControl *)self title];
-  v9 = [(CAMAbstractOverlayServiceControl *)self identifier];
-  v10 = [v5 stringWithFormat:@"<%@: %p %@ %@; ID: %@>", v7, self, v4, v8, v9];;
+  title = [(CAMAbstractOverlayServiceControl *)self title];
+  identifier = [(CAMAbstractOverlayServiceControl *)self identifier];
+  v10 = [v5 stringWithFormat:@"<%@: %p %@ %@; ID: %@>", v7, self, v4, title, identifier];;
 
   return v10;
 }
 
-- (CAMAbstractOverlayServiceControl)initWithCoder:(id)a3
+- (CAMAbstractOverlayServiceControl)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = [v6 stringWithFormat:@"%@.%@", v8, @"identifier"];
-  v10 = [v4 decodeObjectOfClass:v5 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v5 forKey:v9];
 
   if (v10)
   {
@@ -133,7 +133,7 @@ void __52__CAMAbstractOverlayServiceControl__preferredLocale__block_invoke()
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
       v17 = [v14 stringWithFormat:@"%@.%@", v16, @"imageName"];
-      v18 = [v4 decodeObjectOfClasses:v13 forKey:v17];
+      v18 = [coderCopy decodeObjectOfClasses:v13 forKey:v17];
       imageName = v12->_imageName;
       v12->_imageName = v18;
 
@@ -142,57 +142,57 @@ void __52__CAMAbstractOverlayServiceControl__preferredLocale__block_invoke()
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
       v24 = [v21 stringWithFormat:@"%@.%@", v23, @"title"];
-      v25 = [v4 decodeObjectOfClasses:v20 forKey:v24];
+      v25 = [coderCopy decodeObjectOfClasses:v20 forKey:v24];
       title = v12->_title;
       v12->_title = v25;
     }
 
     self = v12;
-    v27 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v27 = 0;
+    selfCopy = 0;
   }
 
-  return v27;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CAMAbstractOverlayServiceControl *)self identifier];
+  coderCopy = coder;
+  identifier = [(CAMAbstractOverlayServiceControl *)self identifier];
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = [v6 stringWithFormat:@"%@.%@", v8, @"identifier"];
-  [v4 encodeObject:v5 forKey:v9];
+  [coderCopy encodeObject:identifier forKey:v9];
 
-  v10 = [(CAMAbstractOverlayServiceControl *)self imageName];
+  imageName = [(CAMAbstractOverlayServiceControl *)self imageName];
   v11 = MEMORY[0x277CCACA8];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
   v14 = [v11 stringWithFormat:@"%@.%@", v13, @"imageName"];
-  [v4 encodeObject:v10 forKey:v14];
+  [coderCopy encodeObject:imageName forKey:v14];
 
-  v19 = [(CAMAbstractOverlayServiceControl *)self title];
+  title = [(CAMAbstractOverlayServiceControl *)self title];
   v15 = MEMORY[0x277CCACA8];
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
   v18 = [v15 stringWithFormat:@"%@.%@", v17, @"title"];
-  [v4 encodeObject:v19 forKey:v18];
+  [coderCopy encodeObject:title forKey:v18];
 }
 
-- (id)validateUpdate:(id)a3
+- (id)validateUpdate:(id)update
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 valueType];
-  v6 = [(CAMAbstractOverlayServiceControl *)self controlType];
-  v7 = [v4 controlIdentifier];
-  v8 = [(CAMAbstractOverlayServiceControl *)self identifier];
-  v9 = [v7 isEqualToString:v8];
+  updateCopy = update;
+  valueType = [updateCopy valueType];
+  controlType = [(CAMAbstractOverlayServiceControl *)self controlType];
+  controlIdentifier = [updateCopy controlIdentifier];
+  identifier = [(CAMAbstractOverlayServiceControl *)self identifier];
+  v9 = [controlIdentifier isEqualToString:identifier];
 
   if ((v9 & 1) == 0)
   {
@@ -203,35 +203,35 @@ void __52__CAMAbstractOverlayServiceControl__preferredLocale__block_invoke()
     v14 = v12;
     v15 = -100;
 LABEL_10:
-    v6 = [v14 errorWithDomain:@"CAMOverlayErrorDomain" code:v15 userInfo:v13];
+    controlType = [v14 errorWithDomain:@"CAMOverlayErrorDomain" code:v15 userInfo:v13];
 
     goto LABEL_33;
   }
 
-  if (v6 != 2)
+  if (controlType != 2)
   {
-    if (v6 != 1)
+    if (controlType != 1)
     {
-      if (v6)
+      if (controlType)
       {
-        v6 = 0;
+        controlType = 0;
         goto LABEL_33;
       }
 
-      v10 = self;
-      v11 = [(CAMAbstractOverlayServiceControl *)v10 sliderType];
-      if (v5 > 1)
+      selfCopy2 = self;
+      sliderType = [(CAMAbstractOverlayServiceControl *)selfCopy2 sliderType];
+      if (valueType > 1)
       {
-        if (v5 == 2)
+        if (valueType == 2)
         {
-          v6 = 0;
-          if (v11 > 7 || ((1 << v11) & 0xE3) == 0)
+          controlType = 0;
+          if (sliderType > 7 || ((1 << sliderType) & 0xE3) == 0)
           {
             goto LABEL_32;
           }
         }
 
-        else if (v5 != 3)
+        else if (valueType != 3)
         {
           goto LABEL_32;
         }
@@ -239,27 +239,27 @@ LABEL_10:
 
       else
       {
-        if (!v5)
+        if (!valueType)
         {
-          [v4 floatValue];
+          [updateCopy floatValue];
           v20 = v19;
-          v21 = [(CAMAbstractOverlayServiceControl *)v10 valueRange];
+          valueRange = [(CAMAbstractOverlayServiceControl *)selfCopy2 valueRange];
           v22 = v20;
-          [v21 minimum];
-          if (v23 + -0.0001 <= v22 && ([v21 maximum], v24 + 0.0001 >= v22))
+          [valueRange minimum];
+          if (v23 + -0.0001 <= v22 && ([valueRange maximum], v24 + 0.0001 >= v22))
           {
-            v6 = 0;
+            controlType = 0;
           }
 
           else
           {
-            v6 = CAMOverlayErrorForCode(-13);
+            controlType = CAMOverlayErrorForCode(-13);
           }
 
           goto LABEL_32;
         }
 
-        if (v5 != 1)
+        if (valueType != 1)
         {
 LABEL_32:
 
@@ -270,12 +270,12 @@ LABEL_32:
       goto LABEL_31;
     }
 
-    v10 = self;
-    v16 = [(CAMAbstractOverlayServiceControl *)v10 pickerType];
-    v6 = 0;
-    if (v5 > 2)
+    selfCopy2 = self;
+    pickerType = [(CAMAbstractOverlayServiceControl *)selfCopy2 pickerType];
+    controlType = 0;
+    if (valueType > 2)
     {
-      if ((v5 - 3) >= 2)
+      if ((valueType - 3) >= 2)
       {
         goto LABEL_32;
       }
@@ -283,7 +283,7 @@ LABEL_32:
       goto LABEL_31;
     }
 
-    switch(v5)
+    switch(valueType)
     {
       case 0:
 LABEL_31:
@@ -291,11 +291,11 @@ LABEL_31:
         v32 = *MEMORY[0x277CCA068];
         v33[0] = @"InvalidValueType";
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-        v6 = [v25 errorWithDomain:@"CAMOverlayErrorDomain" code:-12 userInfo:v26];
+        controlType = [v25 errorWithDomain:@"CAMOverlayErrorDomain" code:-12 userInfo:v26];
 
         goto LABEL_32;
       case 1:
-        if ([v4 indexValue] < 0 || (v29 = objc_msgSend(v4, "indexValue"), -[CAMAbstractOverlayServiceControl valueTitles](v10, "valueTitles"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "count"), v30, v29 >= v31))
+        if ([updateCopy indexValue] < 0 || (v29 = objc_msgSend(updateCopy, "indexValue"), -[CAMAbstractOverlayServiceControl valueTitles](selfCopy2, "valueTitles"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "count"), v30, v29 >= v31))
         {
           v17 = -13;
           goto LABEL_40;
@@ -303,11 +303,11 @@ LABEL_31:
 
         break;
       case 2:
-        if (!v16)
+        if (!pickerType)
         {
           v17 = -12;
 LABEL_40:
-          v6 = CAMOverlayErrorForCode(v17);
+          controlType = CAMOverlayErrorForCode(v17);
           goto LABEL_32;
         }
 
@@ -316,12 +316,12 @@ LABEL_40:
         goto LABEL_32;
     }
 
-    v6 = 0;
+    controlType = 0;
     goto LABEL_32;
   }
 
-  v6 = 0;
-  if (v5 <= 4 && v5 != 3)
+  controlType = 0;
+  if (valueType <= 4 && valueType != 3)
   {
     v18 = MEMORY[0x277CCA9B8];
     v32 = *MEMORY[0x277CCA068];
@@ -336,7 +336,7 @@ LABEL_33:
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return controlType;
 }
 
 @end

@@ -3,17 +3,17 @@
 - (uint64_t)firstExecutionHasCompleted;
 - (uint64_t)setFirstExecutionHasCompleted:(uint64_t)result;
 - (uint64_t)setFirstExecutionTime:(uint64_t)result;
-- (void)setBlock:(void *)a1;
-- (void)setKey:(void *)a1;
+- (void)setBlock:(void *)block;
+- (void)setKey:(void *)key;
 @end
 
 @implementation AVTAvatarDidUpdateAtTimeCallbackItem
 
 - (uint64_t)firstExecutionHasCompleted
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else
@@ -36,9 +36,9 @@
 
 - (double)firstExecutionTime
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 16);
+    return *(self + 16);
   }
 
   else
@@ -57,19 +57,19 @@
   return result;
 }
 
-- (void)setKey:(void *)a1
+- (void)setKey:(void *)key
 {
-  if (a1)
+  if (key)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 24);
+    objc_setProperty_nonatomic_copy(key, newValue, newValue, 24);
   }
 }
 
-- (void)setBlock:(void *)a1
+- (void)setBlock:(void *)block
 {
-  if (a1)
+  if (block)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 32);
+    objc_setProperty_nonatomic_copy(block, newValue, newValue, 32);
   }
 }
 

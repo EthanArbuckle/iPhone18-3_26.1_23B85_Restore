@@ -1,71 +1,71 @@
 @interface VUIFavoriteBannerView
-- (CGSize)_imageSizeForBannerStyle:(unint64_t)a3;
-- (CGSize)_layoutSubviewsWithSize:(CGSize)a3 computationOnly:(BOOL)a4;
-- (CGSize)imageSizeForBannerStyle:(unint64_t)a3 sizeClass:(int64_t)a4;
+- (CGSize)_imageSizeForBannerStyle:(unint64_t)style;
+- (CGSize)_layoutSubviewsWithSize:(CGSize)size computationOnly:(BOOL)only;
+- (CGSize)imageSizeForBannerStyle:(unint64_t)style sizeClass:(int64_t)class;
 - (CGSize)maxImageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)_generatePlainWeaveImagePointsForSize:(CGSize)a3;
-- (id)_generatePointsForPlainWeaveSide:(double)a3 containerRect:(CGRect)a4 imageSize:(CGSize)a5 direction:(unint64_t)a6;
-- (id)_generateSiderowImagePointsForSize:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)_generatePlainWeaveImagePointsForSize:(CGSize)size;
+- (id)_generatePointsForPlainWeaveSide:(double)side containerRect:(CGRect)rect imageSize:(CGSize)size direction:(unint64_t)direction;
+- (id)_generateSiderowImagePointsForSize:(CGSize)size;
 - (id)_generateSingleRowImagePoints;
 - (void)layoutSubviews;
 - (void)prepareForCellReuse;
-- (void)setBackgroundImageLogos:(id)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSubtitleLabel:(id)a3;
-- (void)setTitleLabel:(id)a3;
+- (void)setBackgroundImageLogos:(id)logos;
+- (void)setBackgroundView:(id)view;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSubtitleLabel:(id)label;
+- (void)setTitleLabel:(id)label;
 @end
 
 @implementation VUIFavoriteBannerView
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   titleLabel = self->_titleLabel;
-  if (titleLabel != v4)
+  if (titleLabel != labelCopy)
   {
     [(VUILabel *)titleLabel removeFromSuperview];
   }
 
-  if (v4 && ([(VUILabel *)v4 isDescendantOfView:self]& 1) == 0)
+  if (labelCopy && ([(VUILabel *)labelCopy isDescendantOfView:self]& 1) == 0)
   {
-    [(VUIFavoriteBannerView *)self addSubview:v4];
+    [(VUIFavoriteBannerView *)self addSubview:labelCopy];
   }
 
   v6 = self->_titleLabel;
-  self->_titleLabel = v4;
+  self->_titleLabel = labelCopy;
 
   [(VUIFavoriteBannerView *)self setNeedsLayout];
 }
 
-- (void)setSubtitleLabel:(id)a3
+- (void)setSubtitleLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   subtitleLabel = self->_subtitleLabel;
-  if (subtitleLabel != v4)
+  if (subtitleLabel != labelCopy)
   {
     [(VUILabel *)subtitleLabel removeFromSuperview];
   }
 
-  if (v4 && ([(VUILabel *)v4 isDescendantOfView:self]& 1) == 0)
+  if (labelCopy && ([(VUILabel *)labelCopy isDescendantOfView:self]& 1) == 0)
   {
-    [(VUIFavoriteBannerView *)self addSubview:v4];
+    [(VUIFavoriteBannerView *)self addSubview:labelCopy];
   }
 
   v6 = self->_subtitleLabel;
-  self->_subtitleLabel = v4;
+  self->_subtitleLabel = labelCopy;
 
   [(VUIFavoriteBannerView *)self setNeedsLayout];
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)backgroundView removeFromSuperview];
     if (v7 && ![(UIView *)v7 isDescendantOfView:self])
     {
@@ -73,17 +73,17 @@
       [(VUIFavoriteBannerView *)self sendSubviewToBack:v7];
     }
 
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     [(VUIFavoriteBannerView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setBackgroundImageLogos:(id)a3
+- (void)setBackgroundImageLogos:(id)logos
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count] || -[NSArray count](self->_backgroundImageLogos, "count"))
+  logosCopy = logos;
+  if ([logosCopy count] || -[NSArray count](self->_backgroundImageLogos, "count"))
   {
     v24 = 0u;
     v25 = 0u;
@@ -105,7 +105,7 @@
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
-          if (([v5 containsObject:v11] & 1) == 0)
+          if (([logosCopy containsObject:v11] & 1) == 0)
           {
             [v11 removeFromSuperview];
           }
@@ -117,7 +117,7 @@
       while (v8);
     }
 
-    objc_storeStrong(&self->_backgroundImageLogos, a3);
+    objc_storeStrong(&self->_backgroundImageLogos, logos);
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
@@ -155,10 +155,10 @@
   }
 }
 
-- (CGSize)_layoutSubviewsWithSize:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)_layoutSubviewsWithSize:(CGSize)size computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v113 = *MEMORY[0x1E69E9840];
   v8 = [(NSArray *)self->_backgroundImageLogos count];
   v107 = width;
@@ -219,7 +219,7 @@
     v118.size.height = v58;
     v41 = v40 + v97 + CGRectGetHeight(v118);
     v60 = v107;
-    if (a4)
+    if (only)
     {
       goto LABEL_40;
     }
@@ -233,7 +233,7 @@ LABEL_20:
     {
       if (v23 == 1)
       {
-        v61 = [(VUIFavoriteBannerView *)self _generatePlainWeaveImagePointsForSize:v107, v99];
+        _generateSingleRowImagePoints = [(VUIFavoriteBannerView *)self _generatePlainWeaveImagePointsForSize:v107, v99];
       }
 
       else
@@ -244,16 +244,16 @@ LABEL_20:
           goto LABEL_28;
         }
 
-        v61 = [(VUIFavoriteBannerView *)self _generateSiderowImagePointsForSize:v107, v99];
+        _generateSingleRowImagePoints = [(VUIFavoriteBannerView *)self _generateSiderowImagePointsForSize:v107, v99];
       }
     }
 
     else
     {
-      v61 = [(VUIFavoriteBannerView *)self _generateSingleRowImagePoints];
+      _generateSingleRowImagePoints = [(VUIFavoriteBannerView *)self _generateSingleRowImagePoints];
     }
 
-    v62 = v61;
+    v62 = _generateSingleRowImagePoints;
 LABEL_28:
     v110 = 0u;
     v111 = 0u;
@@ -317,7 +317,7 @@ LABEL_28:
     v105 = height;
     v106 = v53;
     v60 = v107;
-    if (a4)
+    if (only)
     {
       goto LABEL_40;
     }
@@ -397,7 +397,7 @@ LABEL_28:
   v56 = v94;
   v58 = v95;
   v53 = v93;
-  if (!a4)
+  if (!only)
   {
     goto LABEL_20;
   }
@@ -417,9 +417,9 @@ LABEL_40:
   [(VUIFavoriteBannerView *)self _layoutSubviewsWithSize:0 computationOnly:v3, v4];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIFavoriteBannerView *)self _layoutSubviewsWithSize:1 computationOnly:a3.width, a3.height];
+  [(VUIFavoriteBannerView *)self _layoutSubviewsWithSize:1 computationOnly:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   [(VUIFavoriteBannerLayout *)self->_layout bannerMinHeight];
@@ -441,10 +441,10 @@ LABEL_40:
 
 - (CGSize)maxImageSize
 {
-  v2 = [MEMORY[0x1E69DD2E8] vui_keyWindow];
-  v3 = [v2 traitCollection];
+  vui_keyWindow = [MEMORY[0x1E69DD2E8] vui_keyWindow];
+  traitCollection = [vui_keyWindow traitCollection];
 
-  [VUIUtilities scaleContentSizeValue:v3 forTraitCollection:180.0];
+  [VUIUtilities scaleContentSizeValue:traitCollection forTraitCollection:180.0];
   if (v4 <= 125.0)
   {
     v5 = v4;
@@ -462,40 +462,40 @@ LABEL_40:
   return result;
 }
 
-- (CGSize)imageSizeForBannerStyle:(unint64_t)a3 sizeClass:(int64_t)a4
+- (CGSize)imageSizeForBannerStyle:(unint64_t)style sizeClass:(int64_t)class
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     v11 = 0.0;
-    if (a4 <= 7)
+    if (class <= 7)
     {
-      v11 = dbl_1E4297960[a4];
+      v11 = dbl_1E4297960[class];
     }
 
-    v12 = [MEMORY[0x1E69DD2E8] vui_keyWindow];
-    v6 = [v12 traitCollection];
+    vui_keyWindow = [MEMORY[0x1E69DD2E8] vui_keyWindow];
+    traitCollection = [vui_keyWindow traitCollection];
 
-    [VUIUtilities scaleContentSizeValue:v6 forTraitCollection:v11];
+    [VUIUtilities scaleContentSizeValue:traitCollection forTraitCollection:v11];
     v8 = 125.0;
     goto LABEL_9;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
-    v9 = [MEMORY[0x1E69DC938] currentDevice];
-    v10 = [v9 userInterfaceIdiom] == 2;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v10 = [currentDevice userInterfaceIdiom] == 2;
 
     v4 = dbl_1E4297950[v10];
     goto LABEL_13;
   }
 
   v4 = 0.0;
-  if (!a3)
+  if (!style)
   {
-    v5 = [MEMORY[0x1E69DD2E8] vui_keyWindow];
-    v6 = [v5 traitCollection];
+    vui_keyWindow2 = [MEMORY[0x1E69DD2E8] vui_keyWindow];
+    traitCollection = [vui_keyWindow2 traitCollection];
 
-    [VUIUtilities scaleContentSizeValue:v6 forTraitCollection:50.0];
+    [VUIUtilities scaleContentSizeValue:traitCollection forTraitCollection:50.0];
     v8 = 84.0;
 LABEL_9:
     if (v7 <= v8)
@@ -517,10 +517,10 @@ LABEL_13:
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   layout = self->_layout;
-  if (a3)
+  if (highlighted)
   {
     [(VUIFavoriteBannerLayout *)layout highlightedBackgroundColor];
   }
@@ -533,13 +533,13 @@ LABEL_13:
   [(VUIFavoriteBannerView *)self setBackgroundColor:v5];
 }
 
-- (CGSize)_imageSizeForBannerStyle:(unint64_t)a3
+- (CGSize)_imageSizeForBannerStyle:(unint64_t)style
 {
   v5 = MEMORY[0x1E69DD2E8];
   [(VUIFavoriteBannerView *)self bounds];
   v6 = [v5 vui_currentSizeClassForWindowWidth:CGRectGetWidth(v11)];
 
-  [(VUIFavoriteBannerView *)self imageSizeForBannerStyle:a3 sizeClass:v6];
+  [(VUIFavoriteBannerView *)self imageSizeForBannerStyle:style sizeClass:v6];
   result.height = v8;
   result.width = v7;
   return result;
@@ -570,23 +570,23 @@ LABEL_13:
   return v3;
 }
 
-- (id)_generatePointsForPlainWeaveSide:(double)a3 containerRect:(CGRect)a4 imageSize:(CGSize)a5 direction:(unint64_t)a6
+- (id)_generatePointsForPlainWeaveSide:(double)side containerRect:(CGRect)rect imageSize:(CGSize)size direction:(unint64_t)direction
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = size.height;
+  width = size.width;
+  v9 = rect.size.height;
+  v10 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v13 = 0.0;
-  if (!a6)
+  if (!direction)
   {
-    v13 = -a5.width;
+    v13 = -size.width;
   }
 
-  if (a6 == 1)
+  if (direction == 1)
   {
-    v14 = a5.width;
+    v14 = size.width;
   }
 
   else
@@ -594,7 +594,7 @@ LABEL_13:
     v14 = v13;
   }
 
-  v15 = ceil(CGRectGetHeight(a4) / a5.height);
+  v15 = ceil(CGRectGetHeight(rect) / size.height);
   rect2 = x;
   v30.origin.x = x;
   v16 = y;
@@ -608,22 +608,22 @@ LABEL_13:
   {
     v20 = 0;
     v21 = 1;
-    v22 = a3;
+    sideCopy2 = side;
     do
     {
-      if (!a6)
+      if (!direction)
       {
-        v22 = v14 + v22;
+        sideCopy2 = v14 + sideCopy2;
       }
 
       if (v21 & v20)
       {
-        v23 = v14 + v22;
+        v23 = v14 + sideCopy2;
       }
 
       else
       {
-        v23 = v22;
+        v23 = sideCopy2;
       }
 
       v31.origin.x = v23;
@@ -640,10 +640,10 @@ LABEL_13:
         v25 = [MEMORY[0x1E696B098] valueWithCGRect:{v23, v18, width, height}];
         [v19 addObject:v25];
 
-        v22 = v14 + v23;
-        if (a6 == 1)
+        sideCopy2 = v14 + v23;
+        if (direction == 1)
         {
-          v22 = v14 + v14 + v23;
+          sideCopy2 = v14 + v14 + v23;
         }
       }
 
@@ -651,7 +651,7 @@ LABEL_13:
       {
         v18 = height + v18;
         v20 ^= 1u;
-        v22 = a3;
+        sideCopy2 = side;
       }
 
       v21 = !v24;
@@ -663,10 +663,10 @@ LABEL_13:
   return v19;
 }
 
-- (id)_generatePlainWeaveImagePointsForSize:(CGSize)a3
+- (id)_generatePlainWeaveImagePointsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(VUIFavoriteBannerLayout *)self->_layout maxTextWidth];
   v8 = v7 + 20.0;
@@ -691,10 +691,10 @@ LABEL_13:
   return v6;
 }
 
-- (id)_generateSiderowImagePointsForSize:(CGSize)a3
+- (id)_generateSiderowImagePointsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(VUIFavoriteBannerView *)self _imageSizeForBannerStyle:2];
   v8 = v7;
@@ -707,10 +707,10 @@ LABEL_13:
   v19 = v17 - v18;
   v20 = [(NSArray *)self->_backgroundImageLogos count];
   v21 = [MEMORY[0x1E69DD2E8] vui_currentSizeClassForWindowWidth:width];
-  v22 = [MEMORY[0x1E69DC938] currentDevice];
-  v23 = [v22 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v23 == 2)
+  if (userInterfaceIdiom == 2)
   {
     v24 = 0;
     if (v20 >= 8)

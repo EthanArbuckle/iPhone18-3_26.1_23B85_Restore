@@ -1,24 +1,24 @@
 @interface VideoAccessIndexNorm
-- (id)initFromFile:(id)a3 pixelFormat:(unsigned int)a4 normalizer:(void *)a5;
-- (int)getFrameAtIndex:(unsigned int)a3 pixBuf:(__CVBuffer *)a4;
+- (id)initFromFile:(id)file pixelFormat:(unsigned int)format normalizer:(void *)normalizer;
+- (int)getFrameAtIndex:(unsigned int)index pixBuf:(__CVBuffer *)buf;
 @end
 
 @implementation VideoAccessIndexNorm
 
-- (id)initFromFile:(id)a3 pixelFormat:(unsigned int)a4 normalizer:(void *)a5
+- (id)initFromFile:(id)file pixelFormat:(unsigned int)format normalizer:(void *)normalizer
 {
-  self->mNormalizer = a5;
+  self->mNormalizer = normalizer;
   v6.receiver = self;
   v6.super_class = VideoAccessIndexNorm;
-  return [(VideoAccessIndex *)&v6 initFromFile:a3 pixelFormat:*&a4 frameTimes:a5 + 8];
+  return [(VideoAccessIndex *)&v6 initFromFile:file pixelFormat:*&format frameTimes:normalizer + 8];
 }
 
-- (int)getFrameAtIndex:(unsigned int)a3 pixBuf:(__CVBuffer *)a4
+- (int)getFrameAtIndex:(unsigned int)index pixBuf:(__CVBuffer *)buf
 {
-  v6 = (*(*self->mNormalizer + 16))(self->mNormalizer, *&a3);
+  v6 = (*(*self->mNormalizer + 16))(self->mNormalizer, *&index);
   v8.receiver = self;
   v8.super_class = VideoAccessIndexNorm;
-  return [(VideoAccessIndex *)&v8 getFrameAtIndex:v6 pixBuf:a4];
+  return [(VideoAccessIndex *)&v8 getFrameAtIndex:v6 pixBuf:buf];
 }
 
 @end

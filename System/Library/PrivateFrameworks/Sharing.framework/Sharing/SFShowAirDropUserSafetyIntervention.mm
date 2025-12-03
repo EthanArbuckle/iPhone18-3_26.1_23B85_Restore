@@ -1,6 +1,6 @@
 @interface SFShowAirDropUserSafetyIntervention
 - (SFShowAirDropUserSafetyIntervention)init;
-- (SFShowAirDropUserSafetyIntervention)initWithCoder:(id)a3;
+- (SFShowAirDropUserSafetyIntervention)initWithCoder:(id)coder;
 @end
 
 @implementation SFShowAirDropUserSafetyIntervention
@@ -12,10 +12,10 @@
   return [(SFXPCInvocation *)&v3 init];
 }
 
-- (SFShowAirDropUserSafetyIntervention)initWithCoder:(id)a3
+- (SFShowAirDropUserSafetyIntervention)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_1A98548EC(v3);
+  coderCopy = coder;
+  v4 = sub_1A98548EC(coderCopy);
 
   return v4;
 }

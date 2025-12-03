@@ -1,36 +1,36 @@
 @interface PKPaymentRewardsRedemptionDetails
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentRewardsRedemptionDetails)initWithCoder:(id)a3;
-- (PKPaymentRewardsRedemptionDetails)initWithDictionary:(id)a3;
-- (PKPaymentRewardsRedemptionDetails)initWithIntended:(id)a3 redeemed:(id)a4 originalTransactionDetails:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentRewardsRedemptionDetails)initWithCoder:(id)coder;
+- (PKPaymentRewardsRedemptionDetails)initWithDictionary:(id)dictionary;
+- (PKPaymentRewardsRedemptionDetails)initWithIntended:(id)intended redeemed:(id)redeemed originalTransactionDetails:(id)details;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentRewardsRedemptionDetails
 
-- (PKPaymentRewardsRedemptionDetails)initWithIntended:(id)a3 redeemed:(id)a4 originalTransactionDetails:(id)a5
+- (PKPaymentRewardsRedemptionDetails)initWithIntended:(id)intended redeemed:(id)redeemed originalTransactionDetails:(id)details
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intendedCopy = intended;
+  redeemedCopy = redeemed;
+  detailsCopy = details;
   v19.receiver = self;
   v19.super_class = PKPaymentRewardsRedemptionDetails;
   v11 = [(PKPaymentRewardsRedemptionDetails *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [intendedCopy copy];
     intended = v11->_intended;
     v11->_intended = v12;
 
-    v14 = [v9 copy];
+    v14 = [redeemedCopy copy];
     redeemed = v11->_redeemed;
     v11->_redeemed = v14;
 
-    v16 = [v10 copy];
+    v16 = [detailsCopy copy];
     originalTransaction = v11->_originalTransaction;
     v11->_originalTransaction = v16;
   }
@@ -38,13 +38,13 @@
   return v11;
 }
 
-- (PKPaymentRewardsRedemptionDetails)initWithDictionary:(id)a3
+- (PKPaymentRewardsRedemptionDetails)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = PKPaymentRewardsRedemptionDetails;
   v5 = [(PKPaymentRewardsRedemptionDetails *)&v20 init];
-  if (!v5 || (v6 = [PKPaymentRewardsRedemptionUnit alloc], [v4 PKDictionaryForKey:@"redemptionRequest"], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[PKPaymentRewardsRedemptionUnit initWithDictionary:](v6, "initWithDictionary:", v7), intended = v5->_intended, v5->_intended = v8, intended, v7, v10 = [PKPaymentRewardsRedemptionUnit alloc], objc_msgSend(v4, "PKDictionaryForKey:", @"redemptionDetails"), v11 = objc_claimAutoreleasedReturnValue(), v12 = -[PKPaymentRewardsRedemptionUnit initWithDictionary:](v10, "initWithDictionary:", v11), redeemed = v5->_redeemed, v5->_redeemed = v12, redeemed, v11, v14 = [PKPaymentRewardsRedemptionTransactionDetails alloc], objc_msgSend(v4, "PKDictionaryForKey:", @"originalTransaction"), v15 = objc_claimAutoreleasedReturnValue(), v16 = -[PKPaymentRewardsRedemptionTransactionDetails initWithDictionary:](v14, "initWithDictionary:", v15), originalTransaction = v5->_originalTransaction, v5->_originalTransaction = v16, originalTransaction, v15, v5->_intended) || v5->_redeemed || v5->_originalTransaction)
+  if (!v5 || (v6 = [PKPaymentRewardsRedemptionUnit alloc], [dictionaryCopy PKDictionaryForKey:@"redemptionRequest"], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[PKPaymentRewardsRedemptionUnit initWithDictionary:](v6, "initWithDictionary:", v7), intended = v5->_intended, v5->_intended = v8, intended, v7, v10 = [PKPaymentRewardsRedemptionUnit alloc], objc_msgSend(dictionaryCopy, "PKDictionaryForKey:", @"redemptionDetails"), v11 = objc_claimAutoreleasedReturnValue(), v12 = -[PKPaymentRewardsRedemptionUnit initWithDictionary:](v10, "initWithDictionary:", v11), redeemed = v5->_redeemed, v5->_redeemed = v12, redeemed, v11, v14 = [PKPaymentRewardsRedemptionTransactionDetails alloc], objc_msgSend(dictionaryCopy, "PKDictionaryForKey:", @"originalTransaction"), v15 = objc_claimAutoreleasedReturnValue(), v16 = -[PKPaymentRewardsRedemptionTransactionDetails initWithDictionary:](v14, "initWithDictionary:", v15), originalTransaction = v5->_originalTransaction, v5->_originalTransaction = v16, originalTransaction, v15, v5->_intended) || v5->_redeemed || v5->_originalTransaction)
   {
     v18 = v5;
   }
@@ -60,32 +60,32 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKPaymentRewardsRedemptionUnit *)self->_intended dictionaryRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"redemptionRequest"];
+  dictionaryRepresentation = [(PKPaymentRewardsRedemptionUnit *)self->_intended dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"redemptionRequest"];
 
-  v5 = [(PKPaymentRewardsRedemptionUnit *)self->_redeemed dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"redemptionDetails"];
+  dictionaryRepresentation2 = [(PKPaymentRewardsRedemptionUnit *)self->_redeemed dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"redemptionDetails"];
 
-  v6 = [(PKPaymentRewardsRedemptionTransactionDetails *)self->_originalTransaction dictionaryRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"originalTransaction"];
+  dictionaryRepresentation3 = [(PKPaymentRewardsRedemptionTransactionDetails *)self->_originalTransaction dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation3 forKeyedSubscript:@"originalTransaction"];
 
   v7 = [v3 copy];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -176,23 +176,23 @@ LABEL_20:
   return v3;
 }
 
-- (PKPaymentRewardsRedemptionDetails)initWithCoder:(id)a3
+- (PKPaymentRewardsRedemptionDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPaymentRewardsRedemptionDetails;
   v5 = [(PKPaymentRewardsRedemptionDetails *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"redemptionRequest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"redemptionRequest"];
     intended = v5->_intended;
     v5->_intended = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"redemptionDetails"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"redemptionDetails"];
     redeemed = v5->_redeemed;
     v5->_redeemed = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalTransaction"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalTransaction"];
     originalTransaction = v5->_originalTransaction;
     v5->_originalTransaction = v10;
   }
@@ -200,27 +200,27 @@ LABEL_20:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   intended = self->_intended;
-  v5 = a3;
-  [v5 encodeObject:intended forKey:@"redemptionRequest"];
-  [v5 encodeObject:self->_redeemed forKey:@"redemptionDetails"];
-  [v5 encodeObject:self->_originalTransaction forKey:@"originalTransaction"];
+  coderCopy = coder;
+  [coderCopy encodeObject:intended forKey:@"redemptionRequest"];
+  [coderCopy encodeObject:self->_redeemed forKey:@"redemptionDetails"];
+  [coderCopy encodeObject:self->_originalTransaction forKey:@"originalTransaction"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PKPaymentRewardsRedemptionUnit *)self->_intended copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PKPaymentRewardsRedemptionUnit *)self->_intended copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(PKPaymentRewardsRedemptionUnit *)self->_redeemed copyWithZone:a3];
+  v8 = [(PKPaymentRewardsRedemptionUnit *)self->_redeemed copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(PKPaymentRewardsRedemptionTransactionDetails *)self->_originalTransaction copyWithZone:a3];
+  v10 = [(PKPaymentRewardsRedemptionTransactionDetails *)self->_originalTransaction copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 

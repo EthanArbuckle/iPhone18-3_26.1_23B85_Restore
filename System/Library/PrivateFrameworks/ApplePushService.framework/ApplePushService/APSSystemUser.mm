@@ -1,43 +1,43 @@
 @interface APSSystemUser
 + (id)allDaemonUserIDs;
-+ (id)systemUserWithUID:(unsigned int)a3;
-+ (id)systemUserWithUserID:(id)a3;
-- (APSSystemUser)initWithUserID:(id)a3;
++ (id)systemUserWithUID:(unsigned int)d;
++ (id)systemUserWithUserID:(id)d;
+- (APSSystemUser)initWithUserID:(id)d;
 - (id)debugDescription;
-- (void)setStatus:(id)a3;
+- (void)setStatus:(id)status;
 @end
 
 @implementation APSSystemUser
 
-+ (id)systemUserWithUserID:(id)a3
++ (id)systemUserWithUserID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (qword_1001BF850 != -1)
   {
     sub_10010C2B8();
   }
 
-  v4 = [qword_1001BF848 objectForKey:v3];
+  v4 = [qword_1001BF848 objectForKey:dCopy];
   if (!v4)
   {
-    v4 = [[APSSystemUser alloc] initWithUserID:v3];
-    [qword_1001BF848 setObject:v4 forKey:v3];
+    v4 = [[APSSystemUser alloc] initWithUserID:dCopy];
+    [qword_1001BF848 setObject:v4 forKey:dCopy];
   }
 
   return v4;
 }
 
-+ (id)systemUserWithUID:(unsigned int)a3
++ (id)systemUserWithUID:(unsigned int)d
 {
-  v4 = [NSString stringWithFormat:@"%lld", a3];
-  v5 = [a1 systemUserWithUserID:v4];
+  v4 = [NSString stringWithFormat:@"%lld", d];
+  v5 = [self systemUserWithUserID:v4];
 
   return v5;
 }
 
-- (APSSystemUser)initWithUserID:(id)a3
+- (APSSystemUser)initWithUserID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = APSSystemUser;
   v6 = [(APSSystemUser *)&v15 init];
@@ -47,8 +47,8 @@
     goto LABEL_23;
   }
 
-  objc_storeStrong(&v6->_userID, a3);
-  if ([v5 isEqualToString:APSDefaultUserID])
+  objc_storeStrong(&v6->_userID, d);
+  if ([dCopy isEqualToString:APSDefaultUserID])
   {
     v8 = 1;
     goto LABEL_21;
@@ -122,22 +122,22 @@ LABEL_23:
   return v7;
 }
 
-- (void)setStatus:(id)a3
+- (void)setStatus:(id)status
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_daemonUser && [v5 isEqualToString:@"logged out"])
+  statusCopy = status;
+  v6 = statusCopy;
+  if (self->_daemonUser && [statusCopy isEqualToString:@"logged out"])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       userID = self->_userID;
       status = self->_status;
       v17 = 138413058;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
       v20 = userID;
       v21 = 2112;
-      v22 = status;
+      statusCopy2 = status;
       v23 = 2112;
       v24 = v6;
       v9 = "%@: Not changing status for uid %@ from %@ to %@";
@@ -158,11 +158,11 @@ LABEL_8:
         v13 = self->_userID;
         v14 = self->_status;
         v17 = 138412802;
-        v18 = self;
+        selfCopy3 = self;
         v19 = 2112;
         v20 = v13;
         v21 = 2112;
-        v22 = v14;
+        statusCopy2 = v14;
         v9 = "%@: Not changing status for uid %@, status remains %@";
         v10 = 32;
         goto LABEL_8;
@@ -176,17 +176,17 @@ LABEL_8:
         v15 = self->_userID;
         v16 = self->_status;
         v17 = 138413058;
-        v18 = self;
+        selfCopy3 = self;
         v19 = 2112;
         v20 = v15;
         v21 = 2112;
-        v22 = v16;
+        statusCopy2 = v16;
         v23 = 2112;
         v24 = v6;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Changing status for uid %@ from %@ to %@", &v17, 0x2Au);
       }
 
-      objc_storeStrong(&self->_status, a3);
+      objc_storeStrong(&self->_status, status);
     }
   }
 }
@@ -198,8 +198,8 @@ LABEL_8:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [qword_1001BF848 allValues];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [qword_1001BF848 allValues];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -210,18 +210,18 @@ LABEL_8:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         if ([v8 isDaemonUser])
         {
-          v9 = [v8 userID];
-          [v2 addObject:v9];
+          userID = [v8 userID];
+          [v2 addObject:userID];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

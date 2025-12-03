@@ -3,17 +3,17 @@
 - (void)logPointIntervalTelephonyActivity;
 - (void)logPointIntervalTelephonyActivityAirplaneModeChange;
 - (void)refreshTelephonyActivity;
-- (void)sendAndLogPLEntry:(id)a3 withName:(id)a4 withType:(id)a5;
+- (void)sendAndLogPLEntry:(id)entry withName:(id)name withType:(id)type;
 @end
 
 @implementation PLBBTelephonyActivityMsg
 
-- (void)sendAndLogPLEntry:(id)a3 withName:(id)a4 withType:(id)a5
+- (void)sendAndLogPLEntry:(id)entry withName:(id)name withType:(id)type
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entryCopy = entry;
+  nameCopy = name;
+  typeCopy = type;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v11 = objc_opt_class();
@@ -29,13 +29,13 @@
 
     if (_MergedGlobals_1_33 == 1)
     {
-      v34 = v10;
+      v34 = typeCopy;
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBTelephonyActivityMsg sendAndLogPLEntry:withName:withType:]"];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBTelephonyActivityMsg.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBTelephonyActivityMsg sendAndLogPLEntry:withName:withType:]"];
-      [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:23];
+      [v13 logMessage:v12 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:23];
 
       v17 = PLLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -45,7 +45,7 @@
         _os_log_debug_impl(&dword_21A4C6000, v17, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v10 = v34;
+      typeCopy = v34;
     }
   }
 
@@ -64,43 +64,43 @@
 
     if (byte_2811F4C99 == 1)
     {
-      v19 = v10;
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sending PLEntry: name=%@ type=%@", v9, v10];
+      v19 = typeCopy;
+      typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Sending PLEntry: name=%@ type=%@", nameCopy, typeCopy];
       v21 = MEMORY[0x277D3F178];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBTelephonyActivityMsg.m"];
-      v23 = [v22 lastPathComponent];
+      lastPathComponent2 = [v22 lastPathComponent];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBTelephonyActivityMsg sendAndLogPLEntry:withName:withType:]"];
-      [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:24];
+      [v21 logMessage:typeCopy fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:24];
 
       v25 = PLLogCommon();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v38 = v20;
+        v38 = typeCopy;
         _os_log_debug_impl(&dword_21A4C6000, v25, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v10 = v19;
+      typeCopy = v19;
     }
   }
 
-  v26 = [(PLBBMsgRoot *)self agent];
-  [v26 logEntry:v8];
+  agent = [(PLBBMsgRoot *)self agent];
+  [agent logEntry:entryCopy];
 
   if ([MEMORY[0x277D3F208] isBasebandProto])
   {
-    v27 = [(PLBBMsgRoot *)self agent];
-    v28 = [v8 dictionary];
-    v29 = [v8 entryDate];
-    [v27 logForSubsystem:@"BasebandMetrics" category:@"TelephonyActivity" data:v28 date:v29];
+    agent2 = [(PLBBMsgRoot *)self agent];
+    dictionary = [entryCopy dictionary];
+    entryDate = [entryCopy entryDate];
+    [agent2 logForSubsystem:@"BasebandMetrics" category:@"TelephonyActivity" data:dictionary date:entryDate];
   }
 
   if ([MEMORY[0x277D3F208] isBasebandDale])
   {
-    v30 = [(PLBBMsgRoot *)self agent];
-    v31 = [v8 dictionary];
-    v32 = [v8 entryDate];
-    [v30 logForSubsystem:@"BasebandMetrics" category:@"TelephonyActivity" data:v31 date:v32];
+    agent3 = [(PLBBMsgRoot *)self agent];
+    dictionary2 = [entryCopy dictionary];
+    entryDate2 = [entryCopy entryDate];
+    [agent3 logForSubsystem:@"BasebandMetrics" category:@"TelephonyActivity" data:dictionary2 date:entryDate2];
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -135,49 +135,49 @@ uint64_t __64__PLBBTelephonyActivityMsg_sendAndLogPLEntry_withName_withType___bl
   v35[0] = v29;
   v34[1] = *MEMORY[0x277D3F540];
   v30[0] = @"activeBand";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_StringFormat];
-  v31[0] = v27;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v31[0] = commonTypeDict_StringFormat;
   v30[1] = @"dataStatus";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_StringFormat];
-  v31[1] = v25;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v31[1] = commonTypeDict_StringFormat2;
   v30[2] = @"currentRat";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_StringFormat];
-  v31[2] = v23;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v31[2] = commonTypeDict_StringFormat3;
   v30[3] = @"preferredRat";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_StringFormat];
-  v31[3] = v21;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v31[3] = commonTypeDict_StringFormat4;
   v30[4] = @"campedRat";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_StringFormat];
-  v31[4] = v19;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat];
+  v31[4] = commonTypeDict_StringFormat5;
   v30[5] = @"callStatus";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_StringFormat];
-  v31[5] = v17;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_StringFormat];
+  v31[5] = commonTypeDict_StringFormat6;
   v30[6] = @"airplaneMode";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_StringFormat];
-  v31[6] = v15;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v31[6] = commonTypeDict_StringFormat7;
   v30[7] = @"simStatus";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v31[7] = v4;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v31[7] = commonTypeDict_StringFormat8;
   v30[8] = @"subsId";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v31[8] = v6;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v31[8] = commonTypeDict_IntegerFormat;
   v30[9] = @"signalStrength";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v31[9] = v8;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v31[9] = commonTypeDict_IntegerFormat2;
   v30[10] = @"signalBars";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v31[10] = v10;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v31[10] = commonTypeDict_IntegerFormat3;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:11];
   v35[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
@@ -209,9 +209,9 @@ uint64_t __64__PLBBTelephonyActivityMsg_sendAndLogPLEntry_withName_withType___bl
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBTelephonyActivityMsg refreshTelephonyActivity]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBTelephonyActivityMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBTelephonyActivityMsg refreshTelephonyActivity]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:86];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:86];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -241,9 +241,9 @@ uint64_t __64__PLBBTelephonyActivityMsg_sendAndLogPLEntry_withName_withType___bl
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Refresh not implemented"];
       v12 = MEMORY[0x277D3F178];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBTelephonyActivityMsg.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent2 = [v13 lastPathComponent];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBTelephonyActivityMsg refreshTelephonyActivity]"];
-      [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:87];
+      [v12 logMessage:v11 fromFile:lastPathComponent2 fromFunction:v15 fromLineNumber:87];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -294,9 +294,9 @@ uint64_t __52__PLBBTelephonyActivityMsg_refreshTelephonyActivity__block_invoke_6
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBTelephonyActivityMsg logPointIntervalTelephonyActivityAirplaneModeChange]", block, v16, v17, v18, v19];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBTelephonyActivityMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBTelephonyActivityMsg logPointIntervalTelephonyActivityAirplaneModeChange]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:94];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:94];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -317,8 +317,8 @@ uint64_t __52__PLBBTelephonyActivityMsg_refreshTelephonyActivity__block_invoke_6
   [v12 setObject:0 forKeyedSubscript:@"preferredRat"];
   [v12 setObject:0 forKeyedSubscript:@"campedRat"];
   [v12 setObject:0 forKeyedSubscript:@"callStatus"];
-  v13 = [(PLBBTelephonyActivityMsg *)self airplaneMode];
-  [v12 setObject:v13 forKeyedSubscript:@"airplaneMode"];
+  airplaneMode = [(PLBBTelephonyActivityMsg *)self airplaneMode];
+  [v12 setObject:airplaneMode forKeyedSubscript:@"airplaneMode"];
 
   [v12 setObject:0 forKeyedSubscript:@"simStatus"];
   [v12 setObject:0 forKeyedSubscript:@"signalStrength"];
@@ -356,9 +356,9 @@ uint64_t __79__PLBBTelephonyActivityMsg_logPointIntervalTelephonyActivityAirplan
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBTelephonyActivityMsg logPointIntervalTelephonyActivity]", block, v25, v26, v27, v28];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBTelephonyActivityMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBTelephonyActivityMsg logPointIntervalTelephonyActivity]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:118];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:118];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -373,35 +373,35 @@ uint64_t __79__PLBBTelephonyActivityMsg_logPointIntervalTelephonyActivityAirplan
   v10 = *MEMORY[0x277D3F5E8];
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"TelephonyActivity"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
-  v13 = [(PLBBTelephonyActivityMsg *)self activeBand];
-  [v12 setObject:v13 forKeyedSubscript:@"activeBand"];
+  activeBand = [(PLBBTelephonyActivityMsg *)self activeBand];
+  [v12 setObject:activeBand forKeyedSubscript:@"activeBand"];
 
-  v14 = [(PLBBTelephonyActivityMsg *)self dataStatus];
-  [v12 setObject:v14 forKeyedSubscript:@"dataStatus"];
+  dataStatus = [(PLBBTelephonyActivityMsg *)self dataStatus];
+  [v12 setObject:dataStatus forKeyedSubscript:@"dataStatus"];
 
-  v15 = [(PLBBTelephonyActivityMsg *)self currentRat];
-  [v12 setObject:v15 forKeyedSubscript:@"currentRat"];
+  currentRat = [(PLBBTelephonyActivityMsg *)self currentRat];
+  [v12 setObject:currentRat forKeyedSubscript:@"currentRat"];
 
-  v16 = [(PLBBTelephonyActivityMsg *)self preferredRat];
-  [v12 setObject:v16 forKeyedSubscript:@"preferredRat"];
+  preferredRat = [(PLBBTelephonyActivityMsg *)self preferredRat];
+  [v12 setObject:preferredRat forKeyedSubscript:@"preferredRat"];
 
-  v17 = [(PLBBTelephonyActivityMsg *)self campedRat];
-  [v12 setObject:v17 forKeyedSubscript:@"campedRat"];
+  campedRat = [(PLBBTelephonyActivityMsg *)self campedRat];
+  [v12 setObject:campedRat forKeyedSubscript:@"campedRat"];
 
-  v18 = [(PLBBTelephonyActivityMsg *)self callStatus];
-  [v12 setObject:v18 forKeyedSubscript:@"callStatus"];
+  callStatus = [(PLBBTelephonyActivityMsg *)self callStatus];
+  [v12 setObject:callStatus forKeyedSubscript:@"callStatus"];
 
-  v19 = [(PLBBTelephonyActivityMsg *)self airplaneMode];
-  [v12 setObject:v19 forKeyedSubscript:@"airplaneMode"];
+  airplaneMode = [(PLBBTelephonyActivityMsg *)self airplaneMode];
+  [v12 setObject:airplaneMode forKeyedSubscript:@"airplaneMode"];
 
-  v20 = [(PLBBTelephonyActivityMsg *)self simStatus];
-  [v12 setObject:v20 forKeyedSubscript:@"simStatus"];
+  simStatus = [(PLBBTelephonyActivityMsg *)self simStatus];
+  [v12 setObject:simStatus forKeyedSubscript:@"simStatus"];
 
-  v21 = [(PLBBTelephonyActivityMsg *)self signalStrength];
-  [v12 setObject:v21 forKeyedSubscript:@"signalStrength"];
+  signalStrength = [(PLBBTelephonyActivityMsg *)self signalStrength];
+  [v12 setObject:signalStrength forKeyedSubscript:@"signalStrength"];
 
-  v22 = [(PLBBTelephonyActivityMsg *)self signalBars];
-  [v12 setObject:v22 forKeyedSubscript:@"signalBars"];
+  signalBars = [(PLBBTelephonyActivityMsg *)self signalBars];
+  [v12 setObject:signalBars forKeyedSubscript:@"signalBars"];
 
   [(PLBBTelephonyActivityMsg *)self sendAndLogPLEntry:v12 withName:@"TelephonyActivity" withType:v10];
   v23 = *MEMORY[0x277D85DE8];

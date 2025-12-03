@@ -1,28 +1,28 @@
 @interface PXStoryAsyncPlayerView
-- (_TtC12PhotosUICore22PXStoryAsyncPlayerView)initWithCoder:(id)a3;
-- (_TtC12PhotosUICore22PXStoryAsyncPlayerView)initWithFrame:(CGRect)a3;
+- (_TtC12PhotosUICore22PXStoryAsyncPlayerView)initWithCoder:(id)coder;
+- (_TtC12PhotosUICore22PXStoryAsyncPlayerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation PXStoryAsyncPlayerView
 
-- (_TtC12PhotosUICore22PXStoryAsyncPlayerView)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICore22PXStoryAsyncPlayerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore22PXStoryAsyncPlayerView_player) = 0;
-  v8 = [objc_allocWithZone(PXGHostingView) initWithFrame_];
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore22PXStoryAsyncPlayerView_hostingView) = v8;
+  initWithFrame_ = [objc_allocWithZone(PXGHostingView) initWithFrame_];
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore22PXStoryAsyncPlayerView_hostingView) = initWithFrame_;
   v11.receiver = self;
   v11.super_class = type metadata accessor for PXStoryAsyncPlayerView();
-  v9 = [(PXStoryAsyncPlayerView *)&v11 initWithFrame:x, y, width, height];
-  [(PXStoryAsyncPlayerView *)v9 addSubview:*(&v9->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore22PXStoryAsyncPlayerView_hostingView)];
-  return v9;
+  height = [(PXStoryAsyncPlayerView *)&v11 initWithFrame:x, y, width, height];
+  [(PXStoryAsyncPlayerView *)height addSubview:*(&height->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore22PXStoryAsyncPlayerView_hostingView)];
+  return height;
 }
 
-- (_TtC12PhotosUICore22PXStoryAsyncPlayerView)initWithCoder:(id)a3
+- (_TtC12PhotosUICore22PXStoryAsyncPlayerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore22PXStoryAsyncPlayerView_player) = 0;
   result = sub_1A524E6E4();
@@ -33,10 +33,10 @@
 - (void)layoutSubviews
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore22PXStoryAsyncPlayerView_hostingView);
-  v3 = self;
-  [(PXStoryAsyncPlayerView *)v3 bounds];
+  selfCopy = self;
+  [(PXStoryAsyncPlayerView *)selfCopy bounds];
   [v2 setFrame_];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for PXStoryAsyncPlayerView();
   [(PXStoryAsyncPlayerView *)&v4 layoutSubviews];
 }

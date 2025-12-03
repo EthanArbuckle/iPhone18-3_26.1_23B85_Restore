@@ -1,50 +1,50 @@
 @interface PPM2FeedbackPortraitRegistered
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDomain:(id)a3;
-- (int)StringAsFeedbackDomainStatus:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsDomain:(id)domain;
+- (int)StringAsFeedbackDomainStatus:(id)status;
+- (int)StringAsType:(id)type;
 - (int)domain;
 - (int)feedbackDomainStatus;
 - (int)type;
 - (unint64_t)hash;
-- (void)addRecords:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFeedbackDomainStatus:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecords:(id)records;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFeedbackDomainStatus:(BOOL)status;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPM2FeedbackPortraitRegistered
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(PPM2FeedbackPortraitRegistered *)self setClientId:?];
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if (v5)
   {
-    self->_domain = *(v4 + 6);
+    self->_domain = *(fromCopy + 6);
     *&self->_has |= 1u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_type = *(v4 + 12);
+    self->_type = *(fromCopy + 12);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PPM2FeedbackPortraitRegistered *)self setMappingId:?];
   }
@@ -53,7 +53,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -77,14 +77,14 @@
     while (v8);
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PPM2FeedbackPortraitRegistered *)self setActiveTreatments:?];
   }
 
-  if ((*(v4 + 52) & 2) != 0)
+  if ((*(fromCopy + 52) & 2) != 0)
   {
-    self->_feedbackDomainStatus = *(v4 + 7);
+    self->_feedbackDomainStatus = *(fromCopy + 7);
     *&self->_has |= 2u;
   }
 
@@ -132,16 +132,16 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   clientId = self->_clientId;
-  if (clientId | *(v4 + 2))
+  if (clientId | *(equalCopy + 2))
   {
     if (![(NSString *)clientId isEqual:?])
     {
@@ -149,16 +149,16 @@ LABEL_6:
     }
   }
 
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_domain != *(v4 + 6))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_domain != *(equalCopy + 6))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
 LABEL_24:
     v10 = 0;
@@ -167,25 +167,25 @@ LABEL_24:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_type != *(v4 + 12))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_type != *(equalCopy + 12))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_24;
   }
 
   mappingId = self->_mappingId;
-  if (mappingId | *(v4 + 4) && ![(NSString *)mappingId isEqual:?])
+  if (mappingId | *(equalCopy + 4) && ![(NSString *)mappingId isEqual:?])
   {
     goto LABEL_24;
   }
 
   records = self->_records;
-  if (records | *(v4 + 5))
+  if (records | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)records isEqual:?])
     {
@@ -194,7 +194,7 @@ LABEL_24:
   }
 
   activeTreatments = self->_activeTreatments;
-  if (activeTreatments | *(v4 + 1))
+  if (activeTreatments | *(equalCopy + 1))
   {
     if (![(NSString *)activeTreatments isEqual:?])
     {
@@ -202,10 +202,10 @@ LABEL_24:
     }
   }
 
-  v10 = (*(v4 + 52) & 2) == 0;
+  v10 = (*(equalCopy + 52) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_feedbackDomainStatus != *(v4 + 7))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_feedbackDomainStatus != *(equalCopy + 7))
     {
       goto LABEL_24;
     }
@@ -218,11 +218,11 @@ LABEL_25:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_clientId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_clientId copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -240,7 +240,7 @@ LABEL_25:
     *(v5 + 52) |= 4u;
   }
 
-  v9 = [(NSString *)self->_mappingId copyWithZone:a3];
+  v9 = [(NSString *)self->_mappingId copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
@@ -263,7 +263,7 @@ LABEL_25:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{a3, v21}];
+        v16 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{zone, v21}];
         [v5 addRecords:v16];
       }
 
@@ -273,7 +273,7 @@ LABEL_25:
     while (v13);
   }
 
-  v17 = [(NSString *)self->_activeTreatments copyWithZone:a3];
+  v17 = [(NSString *)self->_activeTreatments copyWithZone:zone];
   v18 = *(v5 + 8);
   *(v5 + 8) = v17;
 
@@ -287,28 +287,28 @@ LABEL_25:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_clientId)
   {
-    [v4 setClientId:?];
-    v4 = v10;
+    [toCopy setClientId:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 6) = self->_domain;
-    *(v4 + 52) |= 1u;
+    *(toCopy + 6) = self->_domain;
+    *(toCopy + 52) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 12) = self->_type;
-    *(v4 + 52) |= 4u;
+    *(toCopy + 12) = self->_type;
+    *(toCopy + 52) |= 4u;
   }
 
   if (self->_mappingId)
@@ -319,10 +319,10 @@ LABEL_25:
   if ([(PPM2FeedbackPortraitRegistered *)self recordsCount])
   {
     [v10 clearRecords];
-    v6 = [(PPM2FeedbackPortraitRegistered *)self recordsCount];
-    if (v6)
+    recordsCount = [(PPM2FeedbackPortraitRegistered *)self recordsCount];
+    if (recordsCount)
     {
-      v7 = v6;
+      v7 = recordsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PPM2FeedbackPortraitRegistered *)self recordsAtIndex:i];
@@ -343,10 +343,10 @@ LABEL_25:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_clientId)
   {
     PBDataWriterWriteStringField();
@@ -417,12 +417,12 @@ LABEL_25:
 - (id)dictionaryRepresentation
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   clientId = self->_clientId;
   if (clientId)
   {
-    [v3 setObject:clientId forKey:@"clientId"];
+    [dictionary setObject:clientId forKey:@"clientId"];
   }
 
   has = self->_has;
@@ -488,8 +488,8 @@ LABEL_25:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -534,41 +534,41 @@ LABEL_25:
   v8.receiver = self;
   v8.super_class = PPM2FeedbackPortraitRegistered;
   v4 = [(PPM2FeedbackPortraitRegistered *)&v8 description];
-  v5 = [(PPM2FeedbackPortraitRegistered *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPM2FeedbackPortraitRegistered *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsFeedbackDomainStatus:(id)a3
+- (int)StringAsFeedbackDomainStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NotInDomain"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"NotInDomain"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"InDomainOnly"])
+  else if ([statusCopy isEqualToString:@"InDomainOnly"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"InUserPortrait"])
+  else if ([statusCopy isEqualToString:@"InUserPortrait"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MappedIdentifierNotInDomain"])
+  else if ([statusCopy isEqualToString:@"MappedIdentifierNotInDomain"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MappedIdentifierInDomainOnly"])
+  else if ([statusCopy isEqualToString:@"MappedIdentifierInDomainOnly"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MappedIdentifierInUserPortrait"])
+  else if ([statusCopy isEqualToString:@"MappedIdentifierInUserPortrait"])
   {
     v4 = 5;
   }
@@ -581,9 +581,9 @@ LABEL_25:
   return v4;
 }
 
-- (void)setHasFeedbackDomainStatus:(BOOL)a3
+- (void)setHasFeedbackDomainStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -609,53 +609,53 @@ LABEL_25:
   }
 }
 
-- (void)addRecords:(id)a3
+- (void)addRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   records = self->_records;
-  v8 = v4;
+  v8 = recordsCopy;
   if (!records)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_records;
     self->_records = v6;
 
-    v4 = v8;
+    recordsCopy = v8;
     records = self->_records;
   }
 
-  [(NSMutableArray *)records addObject:v4];
+  [(NSMutableArray *)records addObject:recordsCopy];
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Invalid"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Invalid"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"EngagedExplicit"])
+  else if ([typeCopy isEqualToString:@"EngagedExplicit"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EngagedImplicit"])
+  else if ([typeCopy isEqualToString:@"EngagedImplicit"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RejectedExplicit"])
+  else if ([typeCopy isEqualToString:@"RejectedExplicit"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RejectedImplicit"])
+  else if ([typeCopy isEqualToString:@"RejectedImplicit"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Offered"])
+  else if ([typeCopy isEqualToString:@"Offered"])
   {
     v4 = 5;
   }
@@ -668,9 +668,9 @@ LABEL_25:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -696,45 +696,45 @@ LABEL_25:
   }
 }
 
-- (int)StringAsDomain:(id)a3
+- (int)StringAsDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Topics"])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:@"Topics"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NamedEntities"])
+  else if ([domainCopy isEqualToString:@"NamedEntities"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Locations"])
+  else if ([domainCopy isEqualToString:@"Locations"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Events"])
+  else if ([domainCopy isEqualToString:@"Events"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ContactsDomain"])
+  else if ([domainCopy isEqualToString:@"ContactsDomain"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Connections"])
+  else if ([domainCopy isEqualToString:@"Connections"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"QuickTypeBroker"])
+  else if ([domainCopy isEqualToString:@"QuickTypeBroker"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"UniversalSearchSpotlightTopics"])
+  else if ([domainCopy isEqualToString:@"UniversalSearchSpotlightTopics"])
   {
     v4 = 7;
   }

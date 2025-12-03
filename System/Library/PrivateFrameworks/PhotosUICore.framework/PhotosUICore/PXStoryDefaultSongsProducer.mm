@@ -1,32 +1,32 @@
 @interface PXStoryDefaultSongsProducer
 - (PXStoryDefaultSongsProducer)init;
-- (PXStoryDefaultSongsProducer)initWithAssetContainer:(id)a3 configuration:(id)a4 curationProvider:(id)a5;
-- (id)requestSongsWithOptions:(unint64_t)a3 resultHandler:(id)a4;
-- (void)_handleAppleMusicCapabilityStatus:(int64_t)a3 error:(id)a4 curationResult:(id)a5 resultHandler:(id)a6;
-- (void)_handleMusicCurationResult:(id)a3 signpostID:(unint64_t)a4 resultHandler:(id)a5;
+- (PXStoryDefaultSongsProducer)initWithAssetContainer:(id)container configuration:(id)configuration curationProvider:(id)provider;
+- (id)requestSongsWithOptions:(unint64_t)options resultHandler:(id)handler;
+- (void)_handleAppleMusicCapabilityStatus:(int64_t)status error:(id)error curationResult:(id)result resultHandler:(id)handler;
+- (void)_handleMusicCurationResult:(id)result signpostID:(unint64_t)d resultHandler:(id)handler;
 @end
 
 @implementation PXStoryDefaultSongsProducer
 
-- (void)_handleAppleMusicCapabilityStatus:(int64_t)a3 error:(id)a4 curationResult:(id)a5 resultHandler:(id)a6
+- (void)_handleAppleMusicCapabilityStatus:(int64_t)status error:(id)error curationResult:(id)result resultHandler:(id)handler
 {
   v58 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v53 = a6;
+  resultCopy = result;
+  handlerCopy = handler;
   v10 = PLStoryGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v57 = v9;
+    v57 = resultCopy;
     _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_INFO, "Received Music curation result: %@", buf, 0xCu);
   }
 
-  v11 = [v9 error];
-  v12 = [v9 songsByCategory];
-  v13 = [v12 objectForKeyedSubscript:@"AppleMusicBest"];
+  error = [resultCopy error];
+  songsByCategory = [resultCopy songsByCategory];
+  v13 = [songsByCategory objectForKeyedSubscript:@"AppleMusicBest"];
 
-  v14 = [v9 songsByCategory];
-  v15 = [v14 objectForKeyedSubscript:@"FlexMusicBest"];
+  songsByCategory2 = [resultCopy songsByCategory];
+  v15 = [songsByCategory2 objectForKeyedSubscript:@"FlexMusicBest"];
 
   v16 = v13;
   v17 = v16;
@@ -42,13 +42,13 @@
     v17 = v15;
   }
 
-  v19 = [v9 songsByCategory];
-  v20 = [v19 objectForKeyedSubscript:@"FlexMusicFallback"];
+  songsByCategory3 = [resultCopy songsByCategory];
+  v20 = [songsByCategory3 objectForKeyedSubscript:@"FlexMusicFallback"];
 
   v21 = [v17 count];
   v51 = v16;
   v52 = v15;
-  if (a3 == 1 && v21)
+  if (status == 1 && v21)
   {
     v22 = v15;
 
@@ -61,8 +61,8 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v31 = [v9 songsByCategory];
-    v20 = [v31 objectForKeyedSubscript:@"FlexMusicFallback"];
+    songsByCategory4 = [resultCopy songsByCategory];
+    v20 = [songsByCategory4 objectForKeyedSubscript:@"FlexMusicFallback"];
 
     v23 = @"com.apple.photos.memory.interactiveMemoryMusicUsedAppleMusic";
 LABEL_21:
@@ -70,7 +70,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a3 != 1)
+  if (status != 1)
   {
     v24 = PLStoryGetLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -89,21 +89,21 @@ LABEL_21:
 
   else
   {
-    v31 = PXStoryErrorCreateWithCodeUnderlyingErrorDebugFormat(5, v11, @"No usable curation results found for Apple Music or Flex Music. Falling back to best local Flex Music track.", v26, v27, v28, v29, v30, v49);
+    songsByCategory4 = PXStoryErrorCreateWithCodeUnderlyingErrorDebugFormat(5, error, @"No usable curation results found for Apple Music or Flex Music. Falling back to best local Flex Music track.", v26, v27, v28, v29, v30, v49);
 
-    v32 = [v9 songsByCategory];
-    v17 = [v32 objectForKeyedSubscript:@"FlexMusicFallback"];
+    songsByCategory5 = [resultCopy songsByCategory];
+    v17 = [songsByCategory5 objectForKeyedSubscript:@"FlexMusicFallback"];
 
     if (![v17 count])
     {
-      v11 = PXStoryErrorCreateWithCodeUnderlyingErrorDebugFormat(5, v31, @"Full music curation failed, and no fallback track could be found.", v33, v34, v35, v36, v37, v50);
+      error = PXStoryErrorCreateWithCodeUnderlyingErrorDebugFormat(5, songsByCategory4, @"Full music curation failed, and no fallback track could be found.", v33, v34, v35, v36, v37, v50);
       v23 = @"com.apple.photos.memory.interactiveMemoryMusicFellBackToLocalFlexSong";
       goto LABEL_21;
     }
 
     v23 = @"com.apple.photos.memory.interactiveMemoryMusicFellBackToLocalFlexSong";
     v25 = v17;
-    v11 = v31;
+    error = songsByCategory4;
   }
 
 LABEL_23:
@@ -115,12 +115,12 @@ LABEL_23:
   v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
   v42 = [v38 initWithDictionary:v41];
 
-  v43 = [(PXStoryDefaultSongsProducer *)self assetContainer];
-  v44 = [v43 container];
+  assetContainer = [(PXStoryDefaultSongsProducer *)self assetContainer];
+  container = [assetContainer container];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v45 = v44;
+    v45 = container;
   }
 
   else
@@ -129,31 +129,31 @@ LABEL_23:
   }
 
   [v42 setObject:v45 forKeyedSubscript:*MEMORY[0x1E6991E08]];
-  [v42 setObject:v11 forKeyedSubscript:*MEMORY[0x1E6991E28]];
+  [v42 setObject:error forKeyedSubscript:*MEMORY[0x1E6991E28]];
   [MEMORY[0x1E6991F28] sendEvent:v23 withPayload:v42];
   v46 = [[PXStorySongsConfiguration alloc] initWithCuratedAudioAssets:v25 fallbackCuratedAssets:v20 currentAsset:0];
   v47 = [[PXStoryProducerResult alloc] initWithObject:v46];
-  v48 = [(PXStoryProducerResult *)v47 error:v11];
-  v53[2](v53, v48);
+  v48 = [(PXStoryProducerResult *)v47 error:error];
+  handlerCopy[2](handlerCopy, v48);
 }
 
-- (void)_handleMusicCurationResult:(id)a3 signpostID:(unint64_t)a4 resultHandler:(id)a5
+- (void)_handleMusicCurationResult:(id)result signpostID:(unint64_t)d resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  resultCopy = result;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v10 = [(PXStoryConfiguration *)self->_configuration appleMusicStatusProvider];
+  appleMusicStatusProvider = [(PXStoryConfiguration *)self->_configuration appleMusicStatusProvider];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__PXStoryDefaultSongsProducer__handleMusicCurationResult_signpostID_resultHandler___block_invoke;
   v13[3] = &unk_1E77476C0;
   objc_copyWeak(v16, &location);
-  v16[1] = a4;
-  v11 = v8;
+  v16[1] = d;
+  v11 = resultCopy;
   v14 = v11;
-  v12 = v9;
+  v12 = handlerCopy;
   v15 = v12;
-  [v10 requestStatusForCapability:1 handler:v13];
+  [appleMusicStatusProvider requestStatusForCapability:1 handler:v13];
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -176,10 +176,10 @@ void __83__PXStoryDefaultSongsProducer__handleMusicCurationResult_signpostID_res
   [v9 _handleAppleMusicCapabilityStatus:a2 error:v5 curationResult:*(a1 + 32) resultHandler:*(a1 + 40)];
 }
 
-- (id)requestSongsWithOptions:(unint64_t)a3 resultHandler:(id)a4
+- (id)requestSongsWithOptions:(unint64_t)options resultHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [(PXStoryDefaultSongsProducer *)self log];
   v7 = os_signpost_id_make_with_pointer(v6, self);
   v8 = v6;
@@ -190,16 +190,16 @@ void __83__PXStoryDefaultSongsProducer__handleMusicCurationResult_signpostID_res
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "StoryDefaultSongsProducerResultDelivery", "", buf, 2u);
   }
 
-  v10 = [(PXStoryDefaultSongsProducer *)self assetContainer];
+  assetContainer = [(PXStoryDefaultSongsProducer *)self assetContainer];
   v11 = PLStoryGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v33 = v10;
+    v33 = assetContainer;
     _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEBUG, "[LemMusic] requestSongsWithOptions: assetContainer=%@", buf, 0xCu);
   }
 
-  v12 = [v10 container];
+  container = [assetContainer container];
   if (!objc_opt_class() || (objc_opt_isKindOfClass() & 1) == 0)
   {
     v13 = 0;
@@ -208,31 +208,31 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v13 = v12;
+  v13 = container;
 
   if (v13)
   {
-    v12 = PLStoryGetLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    container = PLStoryGetLog();
+    if (os_log_type_enabled(container, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v13 category];
-      v24 = [v13 subcategory];
-      v26 = [v13 moodKeywords];
-      v14 = [v13 suggestedMood];
-      v15 = [v13 meaningLabels];
+      category = [v13 category];
+      subcategory = [v13 subcategory];
+      moodKeywords = [v13 moodKeywords];
+      suggestedMood = [v13 suggestedMood];
+      meaningLabels = [v13 meaningLabels];
       *buf = 134219266;
-      v33 = v25;
+      v33 = category;
       v34 = 2048;
-      v35 = v24;
+      v35 = subcategory;
       v36 = 2112;
-      v37 = v26;
+      v37 = moodKeywords;
       v38 = 2048;
-      v39 = v14;
+      v39 = suggestedMood;
       v40 = 2112;
-      v41 = v15;
+      v41 = meaningLabels;
       v42 = 2112;
       v43 = v13;
-      _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_DEBUG, "[LemMusic] Is PHMemory | category=%ld, sub-cat=%ld, moodKeywords=%@, suggestedMood=%llu, meaningLabels=%@, memory=%@", buf, 0x3Eu);
+      _os_log_impl(&dword_1A3C1C000, container, OS_LOG_TYPE_DEBUG, "[LemMusic] Is PHMemory | category=%ld, sub-cat=%ld, moodKeywords=%@, suggestedMood=%llu, meaningLabels=%@, memory=%@", buf, 0x3Eu);
     }
 
     goto LABEL_12;
@@ -257,9 +257,9 @@ LABEL_13:
   v29 = v18;
   v31[1] = v7;
   objc_copyWeak(v31, buf);
-  v19 = v5;
+  v19 = handlerCopy;
   v30 = v19;
-  v20 = [(PXStoryMusicCurationProvider *)curationProvider requestMusicCurationForAssetContainer:v10 options:v16 resultHandler:v28];
+  v20 = [(PXStoryMusicCurationProvider *)curationProvider requestMusicCurationForAssetContainer:assetContainer options:v16 resultHandler:v28];
   v21 = v18;
   v22 = v21;
   if ((v7 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
@@ -290,20 +290,20 @@ void __69__PXStoryDefaultSongsProducer_requestSongsWithOptions_resultHandler___b
   [WeakRetained _handleMusicCurationResult:v3 signpostID:*(a1 + 56) resultHandler:*(a1 + 40)];
 }
 
-- (PXStoryDefaultSongsProducer)initWithAssetContainer:(id)a3 configuration:(id)a4 curationProvider:(id)a5
+- (PXStoryDefaultSongsProducer)initWithAssetContainer:(id)container configuration:(id)configuration curationProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  containerCopy = container;
+  configurationCopy = configuration;
+  providerCopy = provider;
   v20.receiver = self;
   v20.super_class = PXStoryDefaultSongsProducer;
   v12 = [(PXStoryDefaultSongsProducer *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_assetContainer, a3);
-    objc_storeStrong(&v13->_configuration, a4);
-    objc_storeStrong(&v13->_curationProvider, a5);
+    objc_storeStrong(&v12->_assetContainer, container);
+    objc_storeStrong(&v13->_configuration, configuration);
+    objc_storeStrong(&v13->_curationProvider, provider);
     v14 = *MEMORY[0x1E69BFF60];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
@@ -319,8 +319,8 @@ void __69__PXStoryDefaultSongsProducer_requestSongsWithOptions_resultHandler___b
 
 - (PXStoryDefaultSongsProducer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryDefaultSongsProducer.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXStoryDefaultSongsProducer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDefaultSongsProducer.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXStoryDefaultSongsProducer init]"}];
 
   abort();
 }

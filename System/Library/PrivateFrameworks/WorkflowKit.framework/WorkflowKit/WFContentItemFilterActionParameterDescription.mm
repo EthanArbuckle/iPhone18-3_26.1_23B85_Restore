@@ -1,25 +1,25 @@
 @interface WFContentItemFilterActionParameterDescription
-- (WFContentItemFilterActionParameterDescription)initWithContentItemClass:(Class)a3 field:(unint64_t)a4;
-- (id)localizedStringWithContext:(id)a3 pluralizationNumber:(id)a4;
+- (WFContentItemFilterActionParameterDescription)initWithContentItemClass:(Class)class field:(unint64_t)field;
+- (id)localizedStringWithContext:(id)context pluralizationNumber:(id)number;
 @end
 
 @implementation WFContentItemFilterActionParameterDescription
 
-- (id)localizedStringWithContext:(id)a3 pluralizationNumber:(id)a4
+- (id)localizedStringWithContext:(id)context pluralizationNumber:(id)number
 {
-  v5 = a3;
-  v6 = [(objc_class *)[(WFContentItemFilterActionParameterDescription *)self contentItemClass] localizedPluralFilterDescriptionWithContext:v5];
+  contextCopy = context;
+  v6 = [(objc_class *)[(WFContentItemFilterActionParameterDescription *)self contentItemClass] localizedPluralFilterDescriptionWithContext:contextCopy];
   if ([(objc_class *)[(WFContentItemFilterActionParameterDescription *)self contentItemClass] canLowercaseTypeDescription])
   {
-    v7 = [v6 localizedLowercaseString];
+    localizedLowercaseString = [v6 localizedLowercaseString];
 
-    v6 = v7;
+    v6 = localizedLowercaseString;
   }
 
-  v8 = [(WFContentItemFilterActionParameterDescription *)self field];
-  if (v8 <= 1)
+  field = [(WFContentItemFilterActionParameterDescription *)self field];
+  if (field <= 1)
   {
-    if (!v8)
+    if (!field)
     {
       if ([(objc_class *)[(WFContentItemFilterActionParameterDescription *)self contentItemClass] hasLibrary])
       {
@@ -32,13 +32,13 @@
       }
 
       v14 = WFLocalizedStringResourceWithKey(v13, v13);
-      v11 = [v5 localize:v14];
+      v11 = [contextCopy localize:v14];
 
       self = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v11, v6];
       goto LABEL_18;
     }
 
-    if (v8 != 1)
+    if (field != 1)
     {
       goto LABEL_19;
     }
@@ -47,14 +47,14 @@
     v10 = @"The maximum number of %@.";
 LABEL_13:
     v11 = WFLocalizedStringResourceWithKey(v10, v10);
-    v12 = [v5 localize:v11];
+    v12 = [contextCopy localize:v11];
     self = [v9 localizedStringWithFormat:v12, v6];
 
 LABEL_18:
     goto LABEL_19;
   }
 
-  switch(v8)
+  switch(field)
   {
     case 2:
       v9 = MEMORY[0x1E696AEC0];
@@ -74,7 +74,7 @@ LABEL_19:
   return self;
 }
 
-- (WFContentItemFilterActionParameterDescription)initWithContentItemClass:(Class)a3 field:(unint64_t)a4
+- (WFContentItemFilterActionParameterDescription)initWithContentItemClass:(Class)class field:(unint64_t)field
 {
   v10.receiver = self;
   v10.super_class = WFContentItemFilterActionParameterDescription;
@@ -82,8 +82,8 @@ LABEL_19:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentItemClass, a3);
-    v7->_field = a4;
+    objc_storeStrong(&v6->_contentItemClass, class);
+    v7->_field = field;
     v8 = v7;
   }
 

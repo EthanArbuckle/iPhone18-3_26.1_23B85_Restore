@@ -8,7 +8,7 @@
 + (id)interfaceForRemoteUIServer;
 + (id)interfaceForUIMechanism;
 + (id)interfaceForUserService;
-+ (id)interfaceForXPCProtocol:(id)a3;
++ (id)interfaceForXPCProtocol:(id)protocol;
 @end
 
 @implementation LACXPCInterface
@@ -30,73 +30,73 @@
   return v2;
 }
 
-+ (id)interfaceForXPCProtocol:(id)a3
++ (id)interfaceForXPCProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   if (interfaceForXPCProtocol__onceToken != -1)
   {
     +[LACXPCInterface interfaceForXPCProtocol:];
   }
 
-  v5 = [interfaceForXPCProtocol__protocolCache objectForKey:v4];
+  v5 = [interfaceForXPCProtocol__protocolCache objectForKey:protocolCopy];
   if (!v5)
   {
-    if (&unk_1F26AA378 == v4)
+    if (&unk_1F26AA378 == protocolCopy)
     {
-      v6 = [a1 interfaceForRemoteUIHost];
+      interfaceForRemoteUIHost = [self interfaceForRemoteUIHost];
     }
 
-    else if (&unk_1F26AA3D8 == v4)
+    else if (&unk_1F26AA3D8 == protocolCopy)
     {
-      v6 = [a1 interfaceForRemoteUI];
+      interfaceForRemoteUIHost = [self interfaceForRemoteUI];
     }
 
-    else if (&unk_1F269F8E0 == v4)
+    else if (&unk_1F269F8E0 == protocolCopy)
     {
-      v6 = [a1 interfaceForRemoteUIClient];
+      interfaceForRemoteUIHost = [self interfaceForRemoteUIClient];
     }
 
-    else if (&unk_1F26AA318 == v4)
+    else if (&unk_1F26AA318 == protocolCopy)
     {
-      v6 = [a1 interfaceForRemoteUIServer];
+      interfaceForRemoteUIHost = [self interfaceForRemoteUIServer];
     }
 
-    else if (&unk_1F26AA438 == v4)
+    else if (&unk_1F26AA438 == protocolCopy)
     {
-      v6 = [a1 interfaceForUIMechanism];
+      interfaceForRemoteUIHost = [self interfaceForUIMechanism];
     }
 
-    else if (&unk_1F26AA498 == v4)
+    else if (&unk_1F26AA498 == protocolCopy)
     {
-      v6 = [a1 interfaceForUserService];
+      interfaceForRemoteUIHost = [self interfaceForUserService];
     }
 
-    else if (&unk_1F269B9C8 == v4)
+    else if (&unk_1F269B9C8 == protocolCopy)
     {
-      v6 = [a1 interfaceForIdleUI];
+      interfaceForRemoteUIHost = [self interfaceForIdleUI];
     }
 
-    else if (&unk_1F269B908 == v4)
+    else if (&unk_1F269B908 == protocolCopy)
     {
-      v6 = [a1 interfaceForIdleUIHost];
+      interfaceForRemoteUIHost = [self interfaceForIdleUIHost];
     }
 
     else
     {
-      if (&unk_1F2699408 == v4)
+      if (&unk_1F2699408 == protocolCopy)
       {
-        [a1 interfaceForEnvironment];
+        [self interfaceForEnvironment];
       }
 
       else
       {
-        [MEMORY[0x1E696B0D0] interfaceWithProtocol:v4];
+        [MEMORY[0x1E696B0D0] interfaceWithProtocol:protocolCopy];
       }
-      v6 = ;
+      interfaceForRemoteUIHost = ;
     }
 
-    v5 = v6;
-    [interfaceForXPCProtocol__protocolCache setObject:v6 forKey:v4];
+    v5 = interfaceForRemoteUIHost;
+    [interfaceForXPCProtocol__protocolCache setObject:interfaceForRemoteUIHost forKey:protocolCopy];
   }
 
   v7 = v5;
@@ -152,16 +152,16 @@ uint64_t __43__LACXPCInterface_interfaceForXPCProtocol___block_invoke()
 + (id)interfaceForRemoteUIHost
 {
   v3 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F26AA378];
-  v4 = [a1 interfaceForXPCProtocol:&unk_1F26AA3D8];
+  v4 = [self interfaceForXPCProtocol:&unk_1F26AA3D8];
   [v3 setInterface:v4 forSelector:sel_connectRemoteUI_requestID_reply_ argumentIndex:0 ofReply:0];
 
-  v5 = [a1 interfaceForXPCProtocol:&unk_1F26AA438];
+  v5 = [self interfaceForXPCProtocol:&unk_1F26AA438];
   [v3 setInterface:v5 forSelector:sel_connectRemoteUI_requestID_reply_ argumentIndex:0 ofReply:1];
 
-  v6 = [a1 interfaceForXPCProtocol:&unk_1F269B488];
+  v6 = [self interfaceForXPCProtocol:&unk_1F269B488];
   [v3 setInterface:v6 forSelector:sel_connectRemoteUI_requestID_reply_ argumentIndex:1 ofReply:1];
 
-  v7 = [a1 interfaceForXPCProtocol:&unk_1F26AA3D8];
+  v7 = [self interfaceForXPCProtocol:&unk_1F26AA3D8];
   [v3 setInterface:v7 forSelector:sel_checkHasPendingUIRequestsForRemoteUI_completion_ argumentIndex:0 ofReply:0];
 
   return v3;
@@ -206,8 +206,8 @@ uint64_t __43__LACXPCInterface_interfaceForXPCProtocol___block_invoke()
 + (id)interfaceForIdleUI
 {
   v3 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F269B9C8];
-  v4 = [a1 interfaceForXPCProtocol:&unk_1F26AA4F8];
-  v5 = [a1 interfaceForXPCProtocol:&unk_1F269B908];
+  v4 = [self interfaceForXPCProtocol:&unk_1F26AA4F8];
+  v5 = [self interfaceForXPCProtocol:&unk_1F269B908];
   [v3 setInterface:v4 forSelector:sel_connectIdleUI_identifier_completion_ argumentIndex:0 ofReply:0];
   [v3 setInterface:v5 forSelector:sel_connectIdleUI_identifier_completion_ argumentIndex:0 ofReply:1];
 
@@ -217,7 +217,7 @@ uint64_t __43__LACXPCInterface_interfaceForXPCProtocol___block_invoke()
 + (id)interfaceForIdleUIHost
 {
   v3 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F269B908];
-  v4 = [a1 interfaceForXPCProtocol:&unk_1F26AA4F8];
+  v4 = [self interfaceForXPCProtocol:&unk_1F26AA4F8];
   [v3 setInterface:v4 forSelector:sel_idleUIGotFocus_identifier_completion_ argumentIndex:0 ofReply:0];
 
   return v3;

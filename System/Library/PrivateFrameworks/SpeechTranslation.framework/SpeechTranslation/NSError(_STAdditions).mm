@@ -10,7 +10,7 @@
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = *MEMORY[0x277CCA450];
-  v4 = [a1 _descriptionForCode:?];
+  v4 = [self _descriptionForCode:?];
   v11[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
@@ -28,7 +28,7 @@
 
 + (void)st_populateError:()_STAdditions forCode:
 {
-  v5 = [a1 st_errorForCode:a4];
+  v5 = [self st_errorForCode:a4];
   if (a3)
   {
     v5 = v5;
@@ -86,10 +86,10 @@ LABEL_22:
         goto LABEL_23;
       case 9:
         v4 = MEMORY[0x277CCACA8];
-        v5 = [MEMORY[0x277CCAC38] processInfo];
-        v6 = [v5 processName];
-        v7 = [MEMORY[0x277CCAC38] processInfo];
-        v3 = [v4 stringWithFormat:@"Process: %@ with pid: %d is NOT permitted to host the SpeechTranslation server.", v6, objc_msgSend(v7, "processIdentifier")];
+        processInfo = [MEMORY[0x277CCAC38] processInfo];
+        processName = [processInfo processName];
+        processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+        v3 = [v4 stringWithFormat:@"Process: %@ with pid: %d is NOT permitted to host the SpeechTranslation server.", processName, objc_msgSend(processInfo2, "processIdentifier")];
 
         goto LABEL_23;
       case 10:

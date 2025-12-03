@@ -1,10 +1,10 @@
 @interface CLSPublicEventCategory
-- (CLSPublicEventCategory)initWithCategory:(id)a3;
-- (CLSPublicEventCategory)initWithCategory:(id)a3 localizedName:(id)a4 localizedSubcategories:(id)a5;
-- (CLSPublicEventCategory)initWithCoder:(id)a3;
+- (CLSPublicEventCategory)initWithCategory:(id)category;
+- (CLSPublicEventCategory)initWithCategory:(id)category localizedName:(id)name localizedSubcategories:(id)subcategories;
+- (CLSPublicEventCategory)initWithCoder:(id)coder;
 - (id)description;
-- (unint64_t)levelForLocalizedSubcategory:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)levelForLocalizedSubcategory:(id)subcategory;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLSPublicEventCategory
@@ -20,30 +20,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   category = self->_category;
-  v5 = a3;
-  [v5 encodeObject:category forKey:@"category"];
-  [v5 encodeObject:self->_localizedName forKey:@"localizedName"];
-  [v5 encodeObject:self->_localizedSubcategories forKey:@"localizedSubcategories"];
+  coderCopy = coder;
+  [coderCopy encodeObject:category forKey:@"category"];
+  [coderCopy encodeObject:self->_localizedName forKey:@"localizedName"];
+  [coderCopy encodeObject:self->_localizedSubcategories forKey:@"localizedSubcategories"];
 }
 
-- (CLSPublicEventCategory)initWithCoder:(id)a3
+- (CLSPublicEventCategory)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
   v6 = [(CLSPublicEventCategory *)self initWithCategory:v5];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
     localizedName = v6->_localizedName;
     v6->_localizedName = v7;
 
     v9 = MEMORY[0x277CBEB98];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"localizedSubcategories"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"localizedSubcategories"];
     localizedSubcategories = v6->_localizedSubcategories;
     v6->_localizedSubcategories = v12;
   }
@@ -51,40 +51,40 @@
   return v6;
 }
 
-- (unint64_t)levelForLocalizedSubcategory:(id)a3
+- (unint64_t)levelForLocalizedSubcategory:(id)subcategory
 {
-  v4 = a3;
-  v5 = [(CLSPublicEventCategory *)self localizedSubcategories];
-  v6 = [v5 indexOfObject:v4];
+  subcategoryCopy = subcategory;
+  localizedSubcategories = [(CLSPublicEventCategory *)self localizedSubcategories];
+  v6 = [localizedSubcategories indexOfObject:subcategoryCopy];
 
   return v6;
 }
 
-- (CLSPublicEventCategory)initWithCategory:(id)a3 localizedName:(id)a4 localizedSubcategories:(id)a5
+- (CLSPublicEventCategory)initWithCategory:(id)category localizedName:(id)name localizedSubcategories:(id)subcategories
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CLSPublicEventCategory *)self initWithCategory:a3];
+  nameCopy = name;
+  subcategoriesCopy = subcategories;
+  v11 = [(CLSPublicEventCategory *)self initWithCategory:category];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_localizedName, a4);
-    objc_storeStrong(&v12->_localizedSubcategories, a5);
+    objc_storeStrong(&v11->_localizedName, name);
+    objc_storeStrong(&v12->_localizedSubcategories, subcategories);
   }
 
   return v12;
 }
 
-- (CLSPublicEventCategory)initWithCategory:(id)a3
+- (CLSPublicEventCategory)initWithCategory:(id)category
 {
-  v5 = a3;
+  categoryCopy = category;
   v9.receiver = self;
   v9.super_class = CLSPublicEventCategory;
   v6 = [(CLSPublicEventCategory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_category, a3);
+    objc_storeStrong(&v6->_category, category);
   }
 
   return v7;

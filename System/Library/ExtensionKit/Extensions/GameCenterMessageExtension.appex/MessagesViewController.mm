@@ -1,34 +1,34 @@
 @interface MessagesViewController
-- (BOOL)_handleTextInputPayload:(id)a3 withPayloadID:(id)a4;
-- (CGSize)contentSizeThatFits:(CGSize)a3;
-- (_TtC26GameCenterMessageExtension22MessagesViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC26GameCenterMessageExtension22MessagesViewController)initWithShouldBeSheetPresentationControllerDelegate:(BOOL)a3;
-- (void)_validateMessageForSending:(MSMessage *)a3 conversation:(MSConversation *)a4 associatedText:(NSString *)a5 completionHandler:(id)a6;
+- (BOOL)_handleTextInputPayload:(id)payload withPayloadID:(id)d;
+- (CGSize)contentSizeThatFits:(CGSize)fits;
+- (_TtC26GameCenterMessageExtension22MessagesViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC26GameCenterMessageExtension22MessagesViewController)initWithShouldBeSheetPresentationControllerDelegate:(BOOL)delegate;
+- (void)_validateMessageForSending:(MSMessage *)sending conversation:(MSConversation *)conversation associatedText:(NSString *)text completionHandler:(id)handler;
 - (void)dealloc;
-- (void)didCancelSendingMessage:(id)a3 conversation:(id)a4;
-- (void)didSelectMessage:(id)a3 conversation:(id)a4;
-- (void)didStartSendingMessage:(id)a3 conversation:(id)a4;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
-- (void)gameCenterViewControllerDidFinish:(id)a3;
-- (void)updateCard:(id)a3;
-- (void)updateSnapshotWithCompletionBlock:(id)a3;
-- (void)willBecomeActiveWithConversation:(id)a3;
-- (void)willResignActiveWithConversation:(id)a3;
-- (void)willTransitionToPresentationStyle:(unint64_t)a3;
+- (void)didCancelSendingMessage:(id)message conversation:(id)conversation;
+- (void)didSelectMessage:(id)message conversation:(id)conversation;
+- (void)didStartSendingMessage:(id)message conversation:(id)conversation;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
+- (void)gameCenterViewControllerDidFinish:(id)finish;
+- (void)updateCard:(id)card;
+- (void)updateSnapshotWithCompletionBlock:(id)block;
+- (void)willBecomeActiveWithConversation:(id)conversation;
+- (void)willResignActiveWithConversation:(id)conversation;
+- (void)willTransitionToPresentationStyle:(unint64_t)style;
 @end
 
 @implementation MessagesViewController
 
-- (void)gameCenterViewControllerDidFinish:(id)a3
+- (void)gameCenterViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = self;
+  finishCopy = finish;
+  selfCopy = self;
   sub_100031658();
 }
 
-- (_TtC26GameCenterMessageExtension22MessagesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26GameCenterMessageExtension22MessagesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100041B20();
     v7 = v6;
@@ -40,34 +40,34 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000299BC(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000299BC(v5, v7, bundle);
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
-  sub_100029C64(v4);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_100029C64(conversationCopy);
 }
 
-- (void)updateSnapshotWithCompletionBlock:(id)a3
+- (void)updateSnapshotWithCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_100031A30(v5, v4);
+  selfCopy = self;
+  sub_100031A30(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)updateCard:(id)a3
+- (void)updateCard:(id)card
 {
   v4 = objc_opt_self();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_100041AF0();
   v7 = swift_allocObject();
-  *(v7 + 16) = v5;
+  *(v7 + 16) = selfCopy;
   v10[4] = sub_100033744;
   v10[5] = v7;
   v10[0] = _NSConcreteStackBlock;
@@ -75,33 +75,33 @@
   v10[2] = sub_100012BD4;
   v10[3] = &unk_1000573A0;
   v8 = _Block_copy(v10);
-  v9 = v5;
+  v9 = selfCopy;
 
   [v4 named:v6 execute:v8];
 
   _Block_release(v8);
 }
 
-- (void)willTransitionToPresentationStyle:(unint64_t)a3
+- (void)willTransitionToPresentationStyle:(unint64_t)style
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(MessagesViewController *)&v5 willTransitionToPresentationStyle:a3];
+  [(MessagesViewController *)&v5 willTransitionToPresentationStyle:style];
   sub_10002B2C8();
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
-  v4 = self;
-  sub_10002B4A8(a3);
+  selfCopy = self;
+  sub_10002B4A8(style);
 }
 
-- (void)didSelectMessage:(id)a3 conversation:(id)a4
+- (void)didSelectMessage:(id)message conversation:(id)conversation
 {
-  v5 = self;
-  v4 = [(MessagesViewController *)v5 presentationStyle];
-  if (v4 >= 3)
+  selfCopy = self;
+  presentationStyle = [(MessagesViewController *)selfCopy presentationStyle];
+  if (presentationStyle >= 3)
   {
     type metadata accessor for MSMessagesAppPresentationStyle(0);
     sub_100041FD0();
@@ -110,22 +110,22 @@
 
   else
   {
-    [(MessagesViewController *)v5 requestPresentationStyle:qword_100046FB8[v4]];
+    [(MessagesViewController *)selfCopy requestPresentationStyle:qword_100046FB8[presentationStyle]];
   }
 }
 
-- (void)willResignActiveWithConversation:(id)a3
+- (void)willResignActiveWithConversation:(id)conversation
 {
   v4 = objc_opt_self();
-  v6 = self;
-  v5 = [v4 defaultCenter];
-  [v5 removeObserver:v6];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 }
 
-- (CGSize)contentSizeThatFits:(CGSize)a3
+- (CGSize)contentSizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_10002B810(width);
   v7 = v6;
 
@@ -136,33 +136,33 @@
   return result;
 }
 
-- (void)didCancelSendingMessage:(id)a3 conversation:(id)a4
+- (void)didCancelSendingMessage:(id)message conversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  messageCopy = message;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_100031C24();
 }
 
-- (void)didStartSendingMessage:(id)a3 conversation:(id)a4
+- (void)didStartSendingMessage:(id)message conversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100032178(v7);
+  messageCopy = message;
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_100032178(conversationCopy);
 }
 
-- (void)_validateMessageForSending:(MSMessage *)a3 conversation:(MSConversation *)a4 associatedText:(NSString *)a5 completionHandler:(id)a6
+- (void)_validateMessageForSending:(MSMessage *)sending conversation:(MSConversation *)conversation associatedText:(NSString *)text completionHandler:(id)handler
 {
   v11 = sub_100002D08(&qword_10005DAF0, &qword_100046EE8);
   v12 = *(*(v11 - 8) + 64);
   __chkstk_darwin(v11 - 8);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = sending;
+  v16[3] = conversation;
+  v16[4] = text;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_100041C90();
@@ -177,10 +177,10 @@
   v19[3] = 0;
   v19[4] = &unk_100046F08;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  sendingCopy = sending;
+  conversationCopy = conversation;
+  textCopy = text;
+  selfCopy = self;
   sub_10002FA10(0, 0, v14, &unk_100046F18, v19);
 }
 
@@ -188,27 +188,27 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:v5];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(MessagesViewController *)&v7 dealloc];
 }
 
-- (BOOL)_handleTextInputPayload:(id)a3 withPayloadID:(id)a4
+- (BOOL)_handleTextInputPayload:(id)payload withPayloadID:(id)d
 {
   v5 = sub_100041A80();
   v6 = sub_100041B20();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   LOBYTE(v6) = sub_10002EB90(v5, v6, v8);
 
   return v6 & 1;
 }
 
-- (_TtC26GameCenterMessageExtension22MessagesViewController)initWithShouldBeSheetPresentationControllerDelegate:(BOOL)a3
+- (_TtC26GameCenterMessageExtension22MessagesViewController)initWithShouldBeSheetPresentationControllerDelegate:(BOOL)delegate
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

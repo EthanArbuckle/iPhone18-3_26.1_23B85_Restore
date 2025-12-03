@@ -1,6 +1,6 @@
 @interface SKUIMetricsPageRenderEvent
 + (BOOL)shouldCollectPageRenderData;
-+ (BOOL)shouldCollectPageRenderDataForDocument:(id)a3;
++ (BOOL)shouldCollectPageRenderDataForDocument:(id)document;
 + (double)_randomDouble;
 + (id)_sampleWindowStartTime;
 + (void)shouldCollectPageRenderData;
@@ -25,30 +25,30 @@
 - (double)resourceRequestStartTime;
 - (double)xpSamplingPercentageUsers;
 - (double)xpSessionDuration;
-- (void)addDOMChange:(id)a3;
-- (void)addRequest:(id)a3;
-- (void)appendPropertiesToBody:(id)a3;
-- (void)appendSamplingPropertiesFromClientContext:(id)a3;
+- (void)addDOMChange:(id)change;
+- (void)addRequest:(id)request;
+- (void)appendPropertiesToBody:(id)body;
+- (void)appendSamplingPropertiesFromClientContext:(id)context;
 - (void)init;
-- (void)populateObjectInspector:(id)a3;
-- (void)setClientCorrelationKey:(id)a3;
-- (void)setLaunchCorrelationKey:(id)a3;
-- (void)setPageAppearTime:(double)a3;
-- (void)setPageDisappearTime:(double)a3;
-- (void)setPageRequestedTime:(double)a3;
-- (void)setPageUserReadyTime:(double)a3;
-- (void)setPlatformJsonParseEndTime:(double)a3;
-- (void)setPlatformJsonParseStartTime:(double)a3;
-- (void)setPlatformRequestStartTime:(double)a3;
-- (void)setPlatformResponseEndTime:(double)a3;
-- (void)setPlatformResponseStartTime:(double)a3;
-- (void)setPlatformResponseWasCached:(BOOL)a3;
-- (void)setResourceRequestEndTime:(double)a3;
-- (void)setResourceRequestOnScreenEndTime:(double)a3;
-- (void)setResourceRequestStartTime:(double)a3;
-- (void)setXPSamplingForced:(BOOL)a3;
-- (void)setXPSamplingPercentageUsers:(double)a3;
-- (void)setXPSessionDuration:(double)a3;
+- (void)populateObjectInspector:(id)inspector;
+- (void)setClientCorrelationKey:(id)key;
+- (void)setLaunchCorrelationKey:(id)key;
+- (void)setPageAppearTime:(double)time;
+- (void)setPageDisappearTime:(double)time;
+- (void)setPageRequestedTime:(double)time;
+- (void)setPageUserReadyTime:(double)time;
+- (void)setPlatformJsonParseEndTime:(double)time;
+- (void)setPlatformJsonParseStartTime:(double)time;
+- (void)setPlatformRequestStartTime:(double)time;
+- (void)setPlatformResponseEndTime:(double)time;
+- (void)setPlatformResponseStartTime:(double)time;
+- (void)setPlatformResponseWasCached:(BOOL)cached;
+- (void)setResourceRequestEndTime:(double)time;
+- (void)setResourceRequestOnScreenEndTime:(double)time;
+- (void)setResourceRequestStartTime:(double)time;
+- (void)setXPSamplingForced:(BOOL)forced;
+- (void)setXPSamplingPercentageUsers:(double)users;
+- (void)setXPSessionDuration:(double)duration;
 @end
 
 @implementation SKUIMetricsPageRenderEvent
@@ -92,21 +92,21 @@
     return 1;
   }
 
-  v4 = [MEMORY[0x277D69BC0] sharedInstance];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v4 sessionDurationPageRender];
+  mEMORY[0x277D69BC0] = [MEMORY[0x277D69BC0] sharedInstance];
+  date = [MEMORY[0x277CBEAA8] date];
+  [mEMORY[0x277D69BC0] sessionDurationPageRender];
   v7 = v6;
-  v8 = [a1 _sampleWindowStartTime];
-  v9 = [v8 dateByAddingTimeInterval:v7];
+  _sampleWindowStartTime = [self _sampleWindowStartTime];
+  v9 = [_sampleWindowStartTime dateByAddingTimeInterval:v7];
 
-  if ([v5 compare:v9] == -1)
+  if ([date compare:v9] == -1)
   {
     v3 = 1;
   }
 
   else
   {
-    [a1 _randomDouble];
+    [self _randomDouble];
     if (v10 == 0.0)
     {
       v3 = 0;
@@ -115,32 +115,32 @@
     else
     {
       v11 = v10;
-      [v4 samplingPercentageUsersPageRender];
+      [mEMORY[0x277D69BC0] samplingPercentageUsersPageRender];
       v3 = v11 <= v12;
       if (v11 <= v12)
       {
-        [a1 _setSampleWindowStartTime:v5];
+        [self _setSampleWindowStartTime:date];
       }
 
-      [v4 update];
+      [mEMORY[0x277D69BC0] update];
     }
   }
 
   return v3;
 }
 
-+ (BOOL)shouldCollectPageRenderDataForDocument:(id)a3
++ (BOOL)shouldCollectPageRenderDataForDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     +[SKUIMetricsPageRenderEvent shouldCollectPageRenderDataForDocument:];
   }
 
-  if ([a1 shouldCollectPageRenderData])
+  if ([self shouldCollectPageRenderData])
   {
-    v5 = [v4 templateElement];
-    v6 = [v5 elementType] != 148;
+    templateElement = [documentCopy templateElement];
+    v6 = [templateElement elementType] != 148;
   }
 
   else
@@ -179,9 +179,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v2;
 }
 
-- (void)setClientCorrelationKey:(id)a3
+- (void)setClientCorrelationKey:(id)key
 {
-  v4 = [a3 copy];
+  v4 = [key copy];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"clientCorrelationKey"];
 }
 
@@ -193,9 +193,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v3;
 }
 
-- (void)setLaunchCorrelationKey:(id)a3
+- (void)setLaunchCorrelationKey:(id)key
 {
-  v4 = [a3 copy];
+  v4 = [key copy];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"launchCorrelationKey"];
 }
 
@@ -207,9 +207,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v3;
 }
 
-- (void)setPageRequestedTime:(double)a3
+- (void)setPageRequestedTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"pageRequestedTime"];
 }
 
@@ -222,9 +222,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v5;
 }
 
-- (void)setPageAppearTime:(double)a3
+- (void)setPageAppearTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"pageAppearTime"];
 }
 
@@ -237,9 +237,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v5;
 }
 
-- (void)setPageDisappearTime:(double)a3
+- (void)setPageDisappearTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"pageDisappearTime"];
 }
 
@@ -252,9 +252,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v5;
 }
 
-- (void)setPlatformRequestStartTime:(double)a3
+- (void)setPlatformRequestStartTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"platformRequestStartTime"];
 }
 
@@ -267,9 +267,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v5;
 }
 
-- (void)setPlatformResponseStartTime:(double)a3
+- (void)setPlatformResponseStartTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"platformResponseStartTime"];
 }
 
@@ -282,9 +282,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v5;
 }
 
-- (void)setPlatformResponseEndTime:(double)a3
+- (void)setPlatformResponseEndTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"platformResponseEndTime"];
 }
 
@@ -297,23 +297,23 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v5;
 }
 
-- (void)setPlatformResponseWasCached:(BOOL)a3
+- (void)setPlatformResponseWasCached:(BOOL)cached
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:cached];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"platformResponseWasCached"];
 }
 
 - (BOOL)platformResponseWasCached
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"platformResponseWasCached"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setPlatformJsonParseStartTime:(double)a3
+- (void)setPlatformJsonParseStartTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"platformJsonParseStartTime"];
 }
 
@@ -326,9 +326,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v5;
 }
 
-- (void)setPlatformJsonParseEndTime:(double)a3
+- (void)setPlatformJsonParseEndTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"platformJsonParseEndTime"];
 }
 
@@ -341,23 +341,23 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v5;
 }
 
-- (void)addDOMChange:(id)a3
+- (void)addDOMChange:(id)change
 {
   domChanges = self->_domChanges;
-  v4 = [a3 copy];
+  v4 = [change copy];
   [(NSMutableArray *)domChanges addObject:v4];
 }
 
-- (void)addRequest:(id)a3
+- (void)addRequest:(id)request
 {
   requests = self->_requests;
-  v4 = [a3 copy];
+  v4 = [request copy];
   [(NSMutableArray *)requests addObject:v4];
 }
 
-- (void)setResourceRequestStartTime:(double)a3
+- (void)setResourceRequestStartTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"resourceRequestStartTime"];
 }
 
@@ -370,9 +370,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v5;
 }
 
-- (void)setResourceRequestOnScreenEndTime:(double)a3
+- (void)setResourceRequestOnScreenEndTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"resourceRequestOnScreenEndTime"];
 }
 
@@ -385,9 +385,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v5;
 }
 
-- (void)setResourceRequestEndTime:(double)a3
+- (void)setResourceRequestEndTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"resourceRequestEndTime"];
 }
 
@@ -400,9 +400,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v5;
 }
 
-- (void)setPageUserReadyTime:(double)a3
+- (void)setPageUserReadyTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"pageUserReadyTime"];
 }
 
@@ -415,9 +415,9 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v5;
 }
 
-- (void)setXPSessionDuration:(double)a3
+- (void)setXPSessionDuration:(double)duration
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"xpSessionDuration"];
 }
 
@@ -430,23 +430,23 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v4;
 }
 
-- (void)setXPSamplingForced:(BOOL)a3
+- (void)setXPSamplingForced:(BOOL)forced
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:forced];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"xpSamplingForced"];
 }
 
 - (BOOL)xpSamplingForced
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"xpSamplingForced"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setXPSamplingPercentageUsers:(double)a3
+- (void)setXPSamplingPercentageUsers:(double)users
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:users];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"xpSamplingPercentageUsers"];
 }
 
@@ -459,26 +459,26 @@ void __43__SKUIMetricsPageRenderEvent__randomDouble__block_invoke()
   return v4;
 }
 
-- (void)appendSamplingPropertiesFromClientContext:(id)a3
+- (void)appendSamplingPropertiesFromClientContext:(id)context
 {
-  v4 = [a3 existingBagValueForKey:*MEMORY[0x277D6A4F8]];
+  v4 = [context existingBagValueForKey:*MEMORY[0x277D6A4F8]];
   v5 = v4;
   if (!v4)
   {
-    v9 = [MEMORY[0x277D69B38] sharedConfig];
-    v10 = [v9 shouldLog];
-    if ([v9 shouldLogToDisk])
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v11;
     }
@@ -501,7 +501,7 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v12 = [MEMORY[0x277CCACA8] stringWithCString:v14 encoding:{4, v16, v15}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v14 encoding:{4, v16, v15}];
       free(v14);
       SSFileLog();
     }
@@ -559,16 +559,16 @@ LABEL_16:
     return 0;
   }
 
-  v8 = [(SKUIMetricsPageRenderEvent *)self domChanges];
-  v9 = [v8 count] != 0;
+  domChanges = [(SKUIMetricsPageRenderEvent *)self domChanges];
+  v9 = [domChanges count] != 0;
 
   return v9;
 }
 
-- (void)appendPropertiesToBody:(id)a3
+- (void)appendPropertiesToBody:(id)body
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bodyCopy = body;
   if ([(NSMutableArray *)self->_domChanges count])
   {
     v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_domChanges, "count")}];
@@ -592,8 +592,8 @@ LABEL_16:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v24 + 1) + 8 * v10) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v24 + 1) + 8 * v10) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
 
           ++v10;
         }
@@ -605,7 +605,7 @@ LABEL_16:
       while (v8);
     }
 
-    [v4 setObject:v5 forKeyedSubscript:@"domChanges"];
+    [bodyCopy setObject:v5 forKeyedSubscript:@"domChanges"];
   }
 
   if ([(NSMutableArray *)self->_requests count])
@@ -631,8 +631,8 @@ LABEL_16:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v20 + 1) + 8 * v17) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v20 + 1) + 8 * v17) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
 
           ++v17;
         }
@@ -644,17 +644,17 @@ LABEL_16:
       while (v15);
     }
 
-    [v4 setObject:v12 forKeyedSubscript:@"requests"];
+    [bodyCopy setObject:v12 forKeyedSubscript:@"requests"];
   }
 
   if ([(NSDictionary *)self->_metricsBase count])
   {
-    [v4 addEntriesFromDictionary:self->_metricsBase];
+    [bodyCopy addEntriesFromDictionary:self->_metricsBase];
   }
 
   v19.receiver = self;
   v19.super_class = SKUIMetricsPageRenderEvent;
-  [(SSMetricsMutableEvent *)&v19 appendPropertiesToBody:v4];
+  [(SSMetricsMutableEvent *)&v19 appendPropertiesToBody:bodyCopy];
 }
 
 - (NSString)description
@@ -666,11 +666,11 @@ LABEL_16:
   v4 = [(SSMetricsBaseEvent *)&v58 description];
   [v3 appendString:v4];
 
-  v5 = [(SKUIMetricsPageRenderEvent *)self clientCorrelationKey];
-  [v3 appendFormat:@"\nclientCorrelationKey = %@", v5];
+  clientCorrelationKey = [(SKUIMetricsPageRenderEvent *)self clientCorrelationKey];
+  [v3 appendFormat:@"\nclientCorrelationKey = %@", clientCorrelationKey];
 
-  v6 = [(SKUIMetricsPageRenderEvent *)self launchCorrelationKey];
-  [v3 appendFormat:@"\nlaunchCorrelationKey = %@", v6];
+  launchCorrelationKey = [(SKUIMetricsPageRenderEvent *)self launchCorrelationKey];
+  [v3 appendFormat:@"\nlaunchCorrelationKey = %@", launchCorrelationKey];
 
   [(SKUIMetricsPageRenderEvent *)self pageRequestedTime];
   [v3 appendFormat:@"\npageRequestedTime = %f", v7];
@@ -684,9 +684,9 @@ LABEL_16:
   [v3 appendFormat:@"\nplatformResponseStartTime = %f", v11];
   [(SKUIMetricsPageRenderEvent *)self platformResponseEndTime];
   [v3 appendFormat:@"\nplatformResponseEndTime = %f", v12];
-  v13 = [(SKUIMetricsPageRenderEvent *)self platformResponseWasCached];
+  platformResponseWasCached = [(SKUIMetricsPageRenderEvent *)self platformResponseWasCached];
   v14 = @"NO";
-  if (v13)
+  if (platformResponseWasCached)
   {
     v14 = @"YES";
   }
@@ -701,7 +701,7 @@ LABEL_16:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v47 = self;
+  selfCopy = self;
   obj = self->_domChanges;
   v17 = [(NSMutableArray *)obj countByEnumeratingWithState:&v54 objects:v60 count:16];
   if (v17)
@@ -742,7 +742,7 @@ LABEL_16:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obja = v47->_requests;
+  obja = selfCopy->_requests;
   v26 = [(NSMutableArray *)obja countByEnumeratingWithState:&v50 objects:v59 count:16];
   if (v26)
   {
@@ -765,9 +765,9 @@ LABEL_16:
         [v3 appendFormat:@"\n\t\tresponseStartTime = %f", v32];
         [v30 responseEndTime];
         [v3 appendFormat:@"\n\t\tresponseEndTime = %f", v33];
-        v34 = [v30 responseWasCached];
+        responseWasCached = [v30 responseWasCached];
         v35 = @"NO";
-        if (v34)
+        if (responseWasCached)
         {
           v35 = @"YES";
         }
@@ -783,39 +783,39 @@ LABEL_16:
   }
 
   [v3 appendString:@"\n"]);
-  [(SKUIMetricsPageRenderEvent *)v47 resourceRequestStartTime];
+  [(SKUIMetricsPageRenderEvent *)selfCopy resourceRequestStartTime];
   [v3 appendFormat:@"\nresourceRequestStartTime = %f", v36];
-  [(SKUIMetricsPageRenderEvent *)v47 resourceRequestOnScreenEndTime];
+  [(SKUIMetricsPageRenderEvent *)selfCopy resourceRequestOnScreenEndTime];
   [v3 appendFormat:@"\nresourceRequestOnScreenEndTime = %f", v37];
-  [(SKUIMetricsPageRenderEvent *)v47 resourceRequestEndTime];
+  [(SKUIMetricsPageRenderEvent *)selfCopy resourceRequestEndTime];
   [v3 appendFormat:@"\nresourceRequestEndTime = %f", v38];
-  [(SKUIMetricsPageRenderEvent *)v47 pageUserReadyTime];
+  [(SKUIMetricsPageRenderEvent *)selfCopy pageUserReadyTime];
   [v3 appendFormat:@"\npageUserReadyTime = %f", v39];
-  v40 = [(SKUIMetricsPageRenderEvent *)v47 xpSamplingForced];
+  xpSamplingForced = [(SKUIMetricsPageRenderEvent *)selfCopy xpSamplingForced];
   v41 = @"NO";
-  if (v40)
+  if (xpSamplingForced)
   {
     v41 = @"YES";
   }
 
   [v3 appendFormat:@"\nxpSamplingForced = %@", v41];
-  [(SKUIMetricsPageRenderEvent *)v47 xpSamplingPercentageUsers];
+  [(SKUIMetricsPageRenderEvent *)selfCopy xpSamplingPercentageUsers];
   [v3 appendFormat:@"\nxpSamplingPercentageUsers = %f", v42];
-  [(SKUIMetricsPageRenderEvent *)v47 xpSessionDuration];
+  [(SKUIMetricsPageRenderEvent *)selfCopy xpSessionDuration];
   [v3 appendFormat:@"\nxpSessionDuration = %f", v43];
-  v44 = [(SKUIMetricsPageRenderEvent *)v47 metricsBase];
-  [v3 appendFormat:@"\nmetricsBase = %@", v44];
+  metricsBase = [(SKUIMetricsPageRenderEvent *)selfCopy metricsBase];
+  [v3 appendFormat:@"\nmetricsBase = %@", metricsBase];
 
   v45 = [v3 copy];
 
   return v45;
 }
 
-- (void)populateObjectInspector:(id)a3
+- (void)populateObjectInspector:(id)inspector
 {
-  v4 = a3;
-  [v4 setFriendlyName:@"Page Render Times"];
-  [v4 setInformation:@"All times relative to earliest recorded operation time"];
+  inspectorCopy = inspector;
+  [inspectorCopy setFriendlyName:@"Page Render Times"];
+  [inspectorCopy setInformation:@"All times relative to earliest recorded operation time"];
   [(SKUIMetricsPageRenderEvent *)self pageAppearTime];
   v6 = v5;
   [(SKUIMetricsPageRenderEvent *)self pageRequestedTime];
@@ -830,44 +830,44 @@ LABEL_16:
   aBlock[3] = &__block_descriptor_40_e18___NSString_16__0d8l;
   *&aBlock[4] = v6;
   v8 = _Block_copy(aBlock);
-  [v4 beginSectionWithFriendlyName:@"Baseline"];
+  [inspectorCopy beginSectionWithFriendlyName:@"Baseline"];
   v9 = MEMORY[0x277CCA968];
   v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v6];
   v11 = [v9 localizedStringFromDate:v10 dateStyle:0 timeStyle:3];
 
-  [v4 exposePropertyWithFriendlyName:@"Start Time" value:v11];
-  [v4 endSection];
-  [v4 beginSectionWithFriendlyName:@"Page Times"];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Start Time" value:v11];
+  [inspectorCopy endSection];
+  [inspectorCopy beginSectionWithFriendlyName:@"Page Times"];
   [(SKUIMetricsPageRenderEvent *)self pageRequestedTime];
   v12 = v8 + 2;
   v13 = v8[2](v8);
-  [v4 exposePropertyWithFriendlyName:@"Page Requested Time" value:v13];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Page Requested Time" value:v13];
 
   [(SKUIMetricsPageRenderEvent *)self pageAppearTime];
   v14 = v8[2](v8);
-  [v4 exposePropertyWithFriendlyName:@"Page Appear Time" value:v14];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Page Appear Time" value:v14];
 
   [(SKUIMetricsPageRenderEvent *)self pageDisappearTime];
   v15 = v8[2](v8);
-  [v4 exposePropertyWithFriendlyName:@"Page Disappear Time" value:v15];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Page Disappear Time" value:v15];
 
   [(SKUIMetricsPageRenderEvent *)self pageUserReadyTime];
   v16 = v8[2](v8);
-  [v4 exposePropertyWithFriendlyName:@"Page User Ready Time" value:v16];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Page User Ready Time" value:v16];
 
-  [v4 endSection];
-  [v4 beginSectionWithFriendlyName:@"Platform Request Times"];
+  [inspectorCopy endSection];
+  [inspectorCopy beginSectionWithFriendlyName:@"Platform Request Times"];
   [(SKUIMetricsPageRenderEvent *)self platformRequestStartTime];
   v17 = v8[2](v8);
-  [v4 exposePropertyWithFriendlyName:@"Platform Request Start Time" value:v17];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Platform Request Start Time" value:v17];
 
   [(SKUIMetricsPageRenderEvent *)self platformResponseStartTime];
   v18 = v8[2](v8);
-  [v4 exposePropertyWithFriendlyName:@"Platform Response Start Time" value:v18];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Platform Response Start Time" value:v18];
 
   [(SKUIMetricsPageRenderEvent *)self platformResponseEndTime];
   v19 = v8[2](v8);
-  [v4 exposePropertyWithFriendlyName:@"Platform Response End Time" value:v19];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Platform Response End Time" value:v19];
 
   if ([(SKUIMetricsPageRenderEvent *)self platformResponseWasCached])
   {
@@ -879,31 +879,31 @@ LABEL_16:
     v20 = @"No";
   }
 
-  [v4 exposePropertyWithFriendlyName:@"Platform Response Was Cached" value:v20];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Platform Response Was Cached" value:v20];
   [(SKUIMetricsPageRenderEvent *)self platformJsonParseStartTime];
   v21 = (*v12)(v8);
-  [v4 exposePropertyWithFriendlyName:@"Platform JSON Parse Start Time" value:v21];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Platform JSON Parse Start Time" value:v21];
 
   [(SKUIMetricsPageRenderEvent *)self platformJsonParseEndTime];
   v22 = (*v12)(v8);
-  [v4 exposePropertyWithFriendlyName:@"Platform JSON Parse End Time" value:v22];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Platform JSON Parse End Time" value:v22];
 
-  [v4 endSection];
-  [v4 beginSectionWithFriendlyName:@"DOM Times"];
-  v23 = [(SKUIMetricsPageRenderEvent *)self domChanges];
+  [inspectorCopy endSection];
+  [inspectorCopy beginSectionWithFriendlyName:@"DOM Times"];
+  domChanges = [(SKUIMetricsPageRenderEvent *)self domChanges];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __54__SKUIMetricsPageRenderEvent_populateObjectInspector___block_invoke_3;
   v43[3] = &unk_2781FCB50;
-  v24 = v4;
+  v24 = inspectorCopy;
   v44 = v24;
   v25 = v8;
   v45 = v25;
-  [v23 enumerateObjectsUsingBlock:v43];
+  [domChanges enumerateObjectsUsingBlock:v43];
 
   [v24 endSection];
   [v24 beginSectionWithFriendlyName:@"Request Times"];
-  v26 = [(SKUIMetricsPageRenderEvent *)self requests];
+  requests = [(SKUIMetricsPageRenderEvent *)self requests];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __54__SKUIMetricsPageRenderEvent_populateObjectInspector___block_invoke_4;
@@ -913,7 +913,7 @@ LABEL_16:
   v42 = &__block_literal_global_209;
   v27 = v24;
   v28 = v25;
-  [v26 enumerateObjectsUsingBlock:v39];
+  [requests enumerateObjectsUsingBlock:v39];
 
   [v27 endSection];
   [v27 beginSectionWithFriendlyName:@"Resource Request Times"];

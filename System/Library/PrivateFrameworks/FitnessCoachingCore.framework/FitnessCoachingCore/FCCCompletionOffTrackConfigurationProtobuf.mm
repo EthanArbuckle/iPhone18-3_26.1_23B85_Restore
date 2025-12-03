@@ -1,15 +1,15 @@
 @interface FCCCompletionOffTrackConfigurationProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)allowedGoalTypesAtIndex:(unint64_t)a3;
+- (int)allowedGoalTypesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addCoalescingRules:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addCoalescingRules:(id)rules;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FCCCompletionOffTrackConfigurationProtobuf
@@ -22,38 +22,38 @@
   [(FCCCompletionOffTrackConfigurationProtobuf *)&v3 dealloc];
 }
 
-- (void)addCoalescingRules:(id)a3
+- (void)addCoalescingRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   coalescingRules = self->_coalescingRules;
-  v8 = v4;
+  v8 = rulesCopy;
   if (!coalescingRules)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_coalescingRules;
     self->_coalescingRules = v6;
 
-    v4 = v8;
+    rulesCopy = v8;
     coalescingRules = self->_coalescingRules;
   }
 
-  [(NSMutableArray *)coalescingRules addObject:v4];
+  [(NSMutableArray *)coalescingRules addObject:rulesCopy];
 }
 
-- (int)allowedGoalTypesAtIndex:(unint64_t)a3
+- (int)allowedGoalTypesAtIndex:(unint64_t)index
 {
   p_allowedGoalTypes = &self->_allowedGoalTypes;
   count = self->_allowedGoalTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_allowedGoalTypes->list[a3];
+  return p_allowedGoalTypes->list[index];
 }
 
 - (id)description
@@ -62,8 +62,8 @@
   v8.receiver = self;
   v8.super_class = FCCCompletionOffTrackConfigurationProtobuf;
   v4 = [(FCCCompletionOffTrackConfigurationProtobuf *)&v8 description];
-  v5 = [(FCCCompletionOffTrackConfigurationProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(FCCCompletionOffTrackConfigurationProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -71,12 +71,12 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   if (*&self->_has)
@@ -107,8 +107,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -123,8 +123,8 @@
   percentageOfDayRule = self->_percentageOfDayRule;
   if (percentageOfDayRule)
   {
-    v15 = [(FCCPercentageOfDayRuleProtobuf *)percentageOfDayRule dictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"percentageOfDayRule"];
+    dictionaryRepresentation2 = [(FCCPercentageOfDayRuleProtobuf *)percentageOfDayRule dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"percentageOfDayRule"];
   }
 
   v16 = PBRepeatedInt32NSArray();
@@ -135,10 +135,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -204,29 +204,29 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v12;
+    [toCopy setIdentifier:?];
+    toCopy = v12;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = *&self->_goalBufferPercentage;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 4) = *&self->_goalBufferPercentage;
+    *(toCopy + 64) |= 1u;
   }
 
   if ([(FCCCompletionOffTrackConfigurationProtobuf *)self coalescingRulesCount])
   {
     [v12 clearCoalescingRules];
-    v5 = [(FCCCompletionOffTrackConfigurationProtobuf *)self coalescingRulesCount];
-    if (v5)
+    coalescingRulesCount = [(FCCCompletionOffTrackConfigurationProtobuf *)self coalescingRulesCount];
+    if (coalescingRulesCount)
     {
-      v6 = v5;
+      v6 = coalescingRulesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(FCCCompletionOffTrackConfigurationProtobuf *)self coalescingRulesAtIndex:i];
@@ -243,10 +243,10 @@
   if ([(FCCCompletionOffTrackConfigurationProtobuf *)self allowedGoalTypesCount])
   {
     [v12 clearAllowedGoalTypes];
-    v9 = [(FCCCompletionOffTrackConfigurationProtobuf *)self allowedGoalTypesCount];
-    if (v9)
+    allowedGoalTypesCount = [(FCCCompletionOffTrackConfigurationProtobuf *)self allowedGoalTypesCount];
+    if (allowedGoalTypesCount)
     {
-      v10 = v9;
+      v10 = allowedGoalTypesCount;
       for (j = 0; j != v10; ++j)
       {
         [v12 addAllowedGoalTypes:{-[FCCCompletionOffTrackConfigurationProtobuf allowedGoalTypesAtIndex:](self, "allowedGoalTypesAtIndex:", j)}];
@@ -255,11 +255,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
@@ -289,7 +289,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{a3, v18}];
+        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{zone, v18}];
         [v5 addCoalescingRules:v13];
 
         ++v12;
@@ -302,7 +302,7 @@
     while (v10);
   }
 
-  v14 = [(FCCPercentageOfDayRuleProtobuf *)self->_percentageOfDayRule copyWithZone:a3];
+  v14 = [(FCCPercentageOfDayRuleProtobuf *)self->_percentageOfDayRule copyWithZone:zone];
   v15 = *(v5 + 56);
   *(v5 + 56) = v14;
 
@@ -311,16 +311,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 6))
+  if (identifier | *(equalCopy + 6))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -328,16 +328,16 @@
     }
   }
 
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_goalBufferPercentage != *(v4 + 4))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_goalBufferPercentage != *(equalCopy + 4))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_14:
     IsEqual = 0;
@@ -345,13 +345,13 @@ LABEL_14:
   }
 
   coalescingRules = self->_coalescingRules;
-  if (coalescingRules | *(v4 + 5) && ![(NSMutableArray *)coalescingRules isEqual:?])
+  if (coalescingRules | *(equalCopy + 5) && ![(NSMutableArray *)coalescingRules isEqual:?])
   {
     goto LABEL_14;
   }
 
   percentageOfDayRule = self->_percentageOfDayRule;
-  if (percentageOfDayRule | *(v4 + 7))
+  if (percentageOfDayRule | *(equalCopy + 7))
   {
     if (![(FCCPercentageOfDayRuleProtobuf *)percentageOfDayRule isEqual:?])
     {
@@ -407,18 +407,18 @@ LABEL_15:
   return v12 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 6))
+  fromCopy = from;
+  if (*(fromCopy + 6))
   {
     [(FCCCompletionOffTrackConfigurationProtobuf *)self setIdentifier:?];
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_goalBufferPercentage = *(v4 + 4);
+    self->_goalBufferPercentage = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -426,7 +426,7 @@ LABEL_15:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -451,7 +451,7 @@ LABEL_15:
   }
 
   percentageOfDayRule = self->_percentageOfDayRule;
-  v11 = *(v4 + 7);
+  v11 = *(fromCopy + 7);
   if (percentageOfDayRule)
   {
     if (v11)
@@ -465,13 +465,13 @@ LABEL_15:
     [(FCCCompletionOffTrackConfigurationProtobuf *)self setPercentageOfDayRule:?];
   }
 
-  v12 = [v4 allowedGoalTypesCount];
-  if (v12)
+  allowedGoalTypesCount = [fromCopy allowedGoalTypesCount];
+  if (allowedGoalTypesCount)
   {
-    v13 = v12;
+    v13 = allowedGoalTypesCount;
     for (j = 0; j != v13; ++j)
     {
-      -[FCCCompletionOffTrackConfigurationProtobuf addAllowedGoalTypes:](self, "addAllowedGoalTypes:", [v4 allowedGoalTypesAtIndex:j]);
+      -[FCCCompletionOffTrackConfigurationProtobuf addAllowedGoalTypes:](self, "addAllowedGoalTypes:", [fromCopy allowedGoalTypesAtIndex:j]);
     }
   }
 

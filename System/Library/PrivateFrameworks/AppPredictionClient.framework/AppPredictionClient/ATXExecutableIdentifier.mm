@@ -1,20 +1,20 @@
 @interface ATXExecutableIdentifier
-- (ATXExecutableIdentifier)initWithAction:(id)a3;
-- (ATXExecutableIdentifier)initWithCoder:(id)a3;
-- (ATXExecutableIdentifier)initWithHeroAppPrediction:(id)a3;
-- (ATXExecutableIdentifier)initWithInfoSuggestion:(id)a3;
-- (ATXExecutableIdentifier)initWithLinkAction:(id)a3;
-- (ATXExecutableIdentifier)initWithString:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXExecutableIdentifier)initWithAction:(id)action;
+- (ATXExecutableIdentifier)initWithCoder:(id)coder;
+- (ATXExecutableIdentifier)initWithHeroAppPrediction:(id)prediction;
+- (ATXExecutableIdentifier)initWithInfoSuggestion:(id)suggestion;
+- (ATXExecutableIdentifier)initWithLinkAction:(id)action;
+- (ATXExecutableIdentifier)initWithString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugTitle;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXExecutableIdentifier
 
-- (ATXExecutableIdentifier)initWithAction:(id)a3
+- (ATXExecutableIdentifier)initWithAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v10.receiver = self;
   v10.super_class = ATXExecutableIdentifier;
   v6 = [(ATXExecutableIdentifier *)&v10 init];
@@ -22,16 +22,16 @@
   if (v6)
   {
     v6->_type = 1;
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, action);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (ATXExecutableIdentifier)initWithString:(id)a3
+- (ATXExecutableIdentifier)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = ATXExecutableIdentifier;
   v5 = [(ATXExecutableIdentifier *)&v11 init];
@@ -39,7 +39,7 @@
   if (v5)
   {
     v5->_type = 0;
-    v7 = [v4 copy];
+    v7 = [stringCopy copy];
     object = v6->_object;
     v6->_object = v7;
 
@@ -49,9 +49,9 @@
   return v6;
 }
 
-- (ATXExecutableIdentifier)initWithHeroAppPrediction:(id)a3
+- (ATXExecutableIdentifier)initWithHeroAppPrediction:(id)prediction
 {
-  v5 = a3;
+  predictionCopy = prediction;
   v10.receiver = self;
   v10.super_class = ATXExecutableIdentifier;
   v6 = [(ATXExecutableIdentifier *)&v10 init];
@@ -59,16 +59,16 @@
   if (v6)
   {
     v6->_type = 2;
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, prediction);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (ATXExecutableIdentifier)initWithInfoSuggestion:(id)a3
+- (ATXExecutableIdentifier)initWithInfoSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v10.receiver = self;
   v10.super_class = ATXExecutableIdentifier;
   v6 = [(ATXExecutableIdentifier *)&v10 init];
@@ -76,16 +76,16 @@
   if (v6)
   {
     v6->_type = 3;
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, suggestion);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (ATXExecutableIdentifier)initWithLinkAction:(id)a3
+- (ATXExecutableIdentifier)initWithLinkAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v10.receiver = self;
   v10.super_class = ATXExecutableIdentifier;
   v6 = [(ATXExecutableIdentifier *)&v10 init];
@@ -93,17 +93,17 @@
   if (v6)
   {
     v6->_type = 4;
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, action);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (ATXExecutableIdentifier)initWithCoder:(id)a3
+- (ATXExecutableIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
   v6 = v5;
   if (v5 > 1)
   {
@@ -112,7 +112,7 @@
       v20 = MEMORY[0x1E69C5D78];
       v21 = objc_opt_class();
       v22 = __atxlog_handle_default();
-      v10 = [v20 robustDecodeObjectOfClass:v21 forKey:@"object" withCoder:v4 expectNonNull:1 errorDomain:@"ATXEngagementRecordManagerUtilitiesErrorDomain" errorCode:3 logHandle:v22];
+      v10 = [v20 robustDecodeObjectOfClass:v21 forKey:@"object" withCoder:coderCopy expectNonNull:1 errorDomain:@"ATXEngagementRecordManagerUtilitiesErrorDomain" errorCode:3 logHandle:v22];
 
       if (v10)
       {
@@ -128,7 +128,7 @@
       v12 = MEMORY[0x1E69C5D78];
       v13 = objc_opt_class();
       v14 = __atxlog_handle_default();
-      v10 = [v12 robustDecodeObjectOfClass:v13 forKey:@"object" withCoder:v4 expectNonNull:1 errorDomain:@"ATXEngagementRecordManagerUtilitiesErrorDomain" errorCode:3 logHandle:v14];
+      v10 = [v12 robustDecodeObjectOfClass:v13 forKey:@"object" withCoder:coderCopy expectNonNull:1 errorDomain:@"ATXEngagementRecordManagerUtilitiesErrorDomain" errorCode:3 logHandle:v14];
 
       if (v10)
       {
@@ -137,7 +137,7 @@
       }
 
 LABEL_18:
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_19;
     }
   }
@@ -149,7 +149,7 @@ LABEL_18:
       v17 = MEMORY[0x1E69C5D78];
       v18 = objc_opt_class();
       v19 = __atxlog_handle_default();
-      v10 = [v17 robustDecodeObjectOfClass:v18 forKey:@"object" withCoder:v4 expectNonNull:1 errorDomain:@"ATXEngagementRecordManagerUtilitiesErrorDomain" errorCode:2 logHandle:v19];
+      v10 = [v17 robustDecodeObjectOfClass:v18 forKey:@"object" withCoder:coderCopy expectNonNull:1 errorDomain:@"ATXEngagementRecordManagerUtilitiesErrorDomain" errorCode:2 logHandle:v19];
 
       if (v10)
       {
@@ -165,14 +165,14 @@ LABEL_18:
       v7 = MEMORY[0x1E69C5D78];
       v8 = objc_opt_class();
       v9 = __atxlog_handle_default();
-      v10 = [v7 robustDecodeObjectOfClass:v8 forKey:@"object" withCoder:v4 expectNonNull:1 errorDomain:@"ATXEngagementRecordManagerUtilitiesErrorDomain" errorCode:1 logHandle:v9];
+      v10 = [v7 robustDecodeObjectOfClass:v8 forKey:@"object" withCoder:coderCopy expectNonNull:1 errorDomain:@"ATXEngagementRecordManagerUtilitiesErrorDomain" errorCode:1 logHandle:v9];
 
       if (v10)
       {
         v11 = [(ATXExecutableIdentifier *)self initWithAction:v10];
 LABEL_17:
         self = v11;
-        v16 = self;
+        selfCopy = self;
 LABEL_19:
 
         goto LABEL_20;
@@ -188,24 +188,24 @@ LABEL_19:
     [(ATXExecutableIdentifier *)v6 initWithCoder:v15];
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_20:
 
-  return v16;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_object forKey:@"object"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_object forKey:@"object"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -215,7 +215,7 @@ LABEL_20:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (v5->_type == self->_type)
       {
         v6 = self->_object;
@@ -263,8 +263,8 @@ LABEL_20:
     }
 
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [(ATXSuggestionExecutableProtocol *)self->_object actionTitle];
-    [v9 stringWithFormat:@"Action: %@", v10];
+    actionTitle = [(ATXSuggestionExecutableProtocol *)self->_object actionTitle];
+    [v9 stringWithFormat:@"Action: %@", actionTitle];
     v2 = LABEL_11:;
 
     goto LABEL_13;
@@ -274,22 +274,22 @@ LABEL_20:
   {
     case 2:
       v11 = MEMORY[0x1E696AEC0];
-      v10 = [(ATXSuggestionExecutableProtocol *)self->_object bundleId];
-      [v11 stringWithFormat:@"Hero App: %@", v10];
+      actionTitle = [(ATXSuggestionExecutableProtocol *)self->_object bundleId];
+      [v11 stringWithFormat:@"Hero App: %@", actionTitle];
       goto LABEL_11;
     case 3:
       v12 = MEMORY[0x1E696AEC0];
-      v10 = [(ATXSuggestionExecutableProtocol *)self->_object widgetBundleIdentifier];
-      [v12 stringWithFormat:@"Information: %@", v10];
+      actionTitle = [(ATXSuggestionExecutableProtocol *)self->_object widgetBundleIdentifier];
+      [v12 stringWithFormat:@"Information: %@", actionTitle];
       goto LABEL_11;
     case 4:
       v4 = MEMORY[0x1E696AEC0];
       v5 = self->_object;
-      v6 = [(ATXSuggestionExecutableProtocol *)v5 bundleId];
-      v7 = [(ATXSuggestionExecutableProtocol *)v5 action];
+      bundleId = [(ATXSuggestionExecutableProtocol *)v5 bundleId];
+      action = [(ATXSuggestionExecutableProtocol *)v5 action];
 
-      v8 = [v7 identifier];
-      v2 = [v4 stringWithFormat:@"Link Action: %@:%@", v6, v8];
+      identifier = [action identifier];
+      v2 = [v4 stringWithFormat:@"Link Action: %@:%@", bundleId, identifier];
 
       break;
   }

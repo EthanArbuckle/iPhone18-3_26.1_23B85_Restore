@@ -1,7 +1,7 @@
 @interface PLLoggingServiceClient
 + (id)makeClient;
 - (PLLoggingServiceClient)init;
-- (void)storeInstrumentationWithEvents:(id)a3 completion:(id)a4;
+- (void)storeInstrumentationWithEvents:(id)events completion:(id)completion;
 @end
 
 @implementation PLLoggingServiceClient
@@ -20,9 +20,9 @@
   return v2;
 }
 
-- (void)storeInstrumentationWithEvents:(id)a3 completion:(id)a4
+- (void)storeInstrumentationWithEvents:(id)events completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   sub_268C3B6B8(0, &qword_2802D3140, 0x277D5A790);
   v6 = sub_268C42CA8();
   if (v5)
@@ -38,7 +38,7 @@
     v7 = 0;
   }
 
-  v9 = self;
+  selfCopy = self;
   PLLoggingServiceClient.storeInstrumentation(events:completion:)(v6, v8, v7);
   sub_268C39EE8(v8);
 }

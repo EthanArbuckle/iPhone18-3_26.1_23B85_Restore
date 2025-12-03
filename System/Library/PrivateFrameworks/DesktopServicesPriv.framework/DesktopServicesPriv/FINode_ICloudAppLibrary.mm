@@ -8,7 +8,7 @@
 - (id)parent;
 - (id)updateDocumentsFolder;
 - (void)dealloc;
-- (void)dispatchEvent:(id)a3 forObserver:(id)a4;
+- (void)dispatchEvent:(id)event forObserver:(id)observer;
 @end
 
 @implementation FINode_ICloudAppLibrary
@@ -32,10 +32,10 @@
     return 0;
   }
 
-  v3 = [(FIDSNode *)self asTNode];
-  v4 = TNode::ParentLock(v3);
+  asTNode = [(FIDSNode *)self asTNode];
+  v4 = TNode::ParentLock(asTNode);
   os_unfair_lock_lock(v4);
-  TNodePtr::TNodePtr(&v7, *(v3 + 6));
+  TNodePtr::TNodePtr(&v7, *(asTNode + 6));
   os_unfair_lock_unlock(v4);
   v5 = TNodeFromFINode(v7.fFINode) != 0;
 
@@ -46,14 +46,14 @@
 {
   if (!CFStringGetLength(self->_appIdentifier.fString.fRef))
   {
-    v3 = [(FIDSNode *)self fpItem];
-    v4 = v3;
-    if (v3)
+    fpItem = [(FIDSNode *)self fpItem];
+    v4 = fpItem;
+    if (fpItem)
     {
-      v5 = [v3 fp_appContainerBundleIdentifier];
-      if (self->_appIdentifier.fString.fRef != v5)
+      fp_appContainerBundleIdentifier = [fpItem fp_appContainerBundleIdentifier];
+      if (self->_appIdentifier.fString.fRef != fp_appContainerBundleIdentifier)
       {
-        TString::SetStringRefAsImmutable(&self->_appIdentifier, v5);
+        TString::SetStringRefAsImmutable(&self->_appIdentifier, fp_appContainerBundleIdentifier);
       }
     }
   }
@@ -67,13 +67,13 @@
 {
   if ([(FINode_ICloudAppLibrary *)self isValid])
   {
-    v3 = [(FIDSNode *)self fileURL];
-    v4 = [FINode fiNodeFromURL:v3];
+    fileURL = [(FIDSNode *)self fileURL];
+    v4 = [FINode fiNodeFromURL:fileURL];
 
-    v5 = self;
-    objc_sync_enter(v5);
-    objc_storeWeak(&v5->_documentsFolder, v4);
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeWeak(&selfCopy->_documentsFolder, v4);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -86,16 +86,16 @@
 
 - (FINode)documentsFolder
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  WeakRetained = objc_loadWeakRetained(&v2->_documentsFolder);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_documentsFolder);
+  objc_sync_exit(selfCopy);
 
   if (!WeakRetained || ([WeakRetained isValid] & 1) == 0)
   {
-    v4 = [(FINode_ICloudAppLibrary *)v2 updateDocumentsFolder];
+    updateDocumentsFolder = [(FINode_ICloudAppLibrary *)selfCopy updateDocumentsFolder];
 
-    WeakRetained = v4;
+    WeakRetained = updateDocumentsFolder;
   }
 
   return WeakRetained;
@@ -103,34 +103,34 @@
 
 - (id)parent
 {
-  v2 = [(FINode_ICloudAppLibrary *)self documentsFolder];
-  v3 = [v2 fileParent];
-  v4 = [v3 parent];
+  documentsFolder = [(FINode_ICloudAppLibrary *)self documentsFolder];
+  fileParent = [documentsFolder fileParent];
+  parent = [fileParent parent];
 
-  return v4;
+  return parent;
 }
 
 - (id)nodeToMoveOrDelete
 {
-  v2 = [(FINode_ICloudAppLibrary *)self documentsFolder];
-  v3 = [v2 fileParent];
+  documentsFolder = [(FINode_ICloudAppLibrary *)self documentsFolder];
+  fileParent = [documentsFolder fileParent];
 
-  return v3;
+  return fileParent;
 }
 
 - (id)nodesToObserve
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(FINode_ICloudAppLibrary *)self documentsFolder];
-  if (!v3)
+  documentsFolder = [(FINode_ICloudAppLibrary *)self documentsFolder];
+  if (!documentsFolder)
   {
     v4 = LogObj(5);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v5 = [(FINode *)self displayName];
+      displayName = [(FINode *)self displayName];
       v10.fString.fRef = &stru_1F5F42870;
       CFRetain(&stru_1F5F42870);
-      TString::SetStringRefAsImmutable(&v10, v5);
+      TString::SetStringRefAsImmutable(&v10, displayName);
 
       v6 = SanitizedStr(&v10);
       *buf = 138543362;
@@ -140,17 +140,17 @@
     }
   }
 
-  v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v3, 0, v10.fString.fRef}];
+  v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:{documentsFolder, 0, v10.fString.fRef}];
 
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-- (void)dispatchEvent:(id)a3 forObserver:(id)a4
+- (void)dispatchEvent:(id)event forObserver:(id)observer
 {
-  v6 = a4;
-  NodeEventFromNodeEventRef(a3, &v14);
+  observerCopy = observer;
+  NodeEventFromNodeEventRef(event, &v14);
   obj = self;
   v13 = v14;
   v7 = *TNodeEventPtr::operator->(&v14);

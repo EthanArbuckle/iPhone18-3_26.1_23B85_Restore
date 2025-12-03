@@ -1,61 +1,61 @@
 @interface DSSubSource
-- (id)init:(id)a3 withResourceName:(id)a4;
-- (void)fetchSharedResourcesWithCompletion:(id)a3;
-- (void)stopAllSharingWithCompletion:(id)a3;
-- (void)stopSharing:(id)a3 withCompletion:(id)a4;
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4;
+- (id)init:(id)init withResourceName:(id)name;
+- (void)fetchSharedResourcesWithCompletion:(id)completion;
+- (void)stopAllSharingWithCompletion:(id)completion;
+- (void)stopSharing:(id)sharing withCompletion:(id)completion;
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion;
 @end
 
 @implementation DSSubSource
 
-- (id)init:(id)a3 withResourceName:(id)a4
+- (id)init:(id)init withResourceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  initCopy = init;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = DSSubSource;
   v8 = [(DSSubSource *)&v11 init];
   v9 = v8;
   if (v8 == self)
   {
-    [(DSSubSource *)v8 setParentSource:v6];
-    [(DSSubSource *)v9 setResourceName:v7];
+    [(DSSubSource *)v8 setParentSource:initCopy];
+    [(DSSubSource *)v9 setResourceName:nameCopy];
   }
 
   return v9;
 }
 
-- (void)fetchSharedResourcesWithCompletion:(id)a3
+- (void)fetchSharedResourcesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(DSSubSource *)self parentSource];
-  v5 = [(DSSubSource *)self resourceName];
-  [v6 fetchSharedResourcesWithName:v5 completion:v4];
+  completionCopy = completion;
+  parentSource = [(DSSubSource *)self parentSource];
+  resourceName = [(DSSubSource *)self resourceName];
+  [parentSource fetchSharedResourcesWithName:resourceName completion:completionCopy];
 }
 
-- (void)stopAllSharingWithCompletion:(id)a3
+- (void)stopAllSharingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(DSSubSource *)self parentSource];
-  v5 = [(DSSubSource *)self resourceName];
-  [v6 stopSharingResourcesWithName:v5 completion:v4];
+  completionCopy = completion;
+  parentSource = [(DSSubSource *)self parentSource];
+  resourceName = [(DSSubSource *)self resourceName];
+  [parentSource stopSharingResourcesWithName:resourceName completion:completionCopy];
 }
 
-- (void)stopSharing:(id)a3 withCompletion:(id)a4
+- (void)stopSharing:(id)sharing withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DSSubSource *)self parentSource];
-  [v8 stopSharing:v7 withCompletion:v6];
+  completionCopy = completion;
+  sharingCopy = sharing;
+  parentSource = [(DSSubSource *)self parentSource];
+  [parentSource stopSharing:sharingCopy withCompletion:completionCopy];
 }
 
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(DSSubSource *)self parentSource];
-  v8 = [(DSSubSource *)self resourceName];
-  [v9 stopSharingWithParticipant:v7 forResourceName:v8 withCompletion:v6];
+  completionCopy = completion;
+  participantCopy = participant;
+  parentSource = [(DSSubSource *)self parentSource];
+  resourceName = [(DSSubSource *)self resourceName];
+  [parentSource stopSharingWithParticipant:participantCopy forResourceName:resourceName withCompletion:completionCopy];
 }
 
 @end

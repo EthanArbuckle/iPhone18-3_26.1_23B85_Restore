@@ -1,28 +1,28 @@
 @interface TVViewFactory
-+ (CGSize)decorateImageProxy:(id)a3 forLayout:(id)a4;
-+ (id)imageProxyWithURL:(id)a3;
-+ (id)imageStackViewWithDescription:(id)a3 layout:(id)a4 existingView:(id)a5;
-+ (id)imageURLWithDescription:(id)a3;
-+ (id)imageViewWithDescription:(id)a3 layout:(id)a4 existingView:(id)a5;
++ (CGSize)decorateImageProxy:(id)proxy forLayout:(id)layout;
++ (id)imageProxyWithURL:(id)l;
++ (id)imageStackViewWithDescription:(id)description layout:(id)layout existingView:(id)view;
++ (id)imageURLWithDescription:(id)description;
++ (id)imageViewWithDescription:(id)description layout:(id)layout existingView:(id)view;
 @end
 
 @implementation TVViewFactory
 
-+ (id)imageURLWithDescription:(id)a3
++ (id)imageURLWithDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   if (imageURLWithDescription__onceToken != -1)
   {
     +[TVViewFactory imageURLWithDescription:];
   }
 
-  [v3 imageSize];
+  [descriptionCopy imageSize];
   v5 = round(v4 * *&imageURLWithDescription__sPointMultiplier);
-  [v3 imageSize];
+  [descriptionCopy imageSize];
   v7 = round(v6 * *&imageURLWithDescription__sPointMultiplier);
-  if ([v3 centerGrowth])
+  if ([descriptionCopy centerGrowth])
   {
-    [v3 focusSizeIncrease];
+    [descriptionCopy focusSizeIncrease];
     v9 = v7 + v8 * *&imageURLWithDescription__sPointMultiplier;
   }
 
@@ -30,7 +30,7 @@
   {
     v10 = v7;
     v11 = v5 / v10;
-    [v3 focusSizeIncrease];
+    [descriptionCopy focusSizeIncrease];
     v12 = v5 <= v7;
     v14 = v7 + v13 * *&imageURLWithDescription__sPointMultiplier;
     v15 = ceil(v11 * v14);
@@ -57,9 +57,9 @@
     }
   }
 
-  v18 = [v3 url];
-  v19 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v20 = [v18 stringByTrimmingCharactersInSet:v19];
+  v18 = [descriptionCopy url];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v20 = [v18 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   LODWORD(v21) = vcvtpd_s64_f64(v5);
   v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", v21];
@@ -69,11 +69,11 @@
   v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", v24];
   v26 = [v23 stringByReplacingOccurrencesOfString:@"{h}" withString:v25];
 
-  v27 = [v3 cropCode];
-  v28 = v27;
-  if (v27)
+  cropCode = [descriptionCopy cropCode];
+  v28 = cropCode;
+  if (cropCode)
   {
-    v29 = v27;
+    v29 = cropCode;
   }
 
   else
@@ -83,11 +83,11 @@
 
   v30 = [v26 stringByReplacingOccurrencesOfString:@"{c}" withString:v29];
 
-  v31 = [v3 urlFormat];
-  v32 = v31;
-  if (v31)
+  urlFormat = [descriptionCopy urlFormat];
+  v32 = urlFormat;
+  if (urlFormat)
   {
-    v33 = v31;
+    v33 = urlFormat;
   }
 
   else
@@ -118,21 +118,21 @@ void __41__TVViewFactory_imageURLWithDescription___block_invoke()
   imageURLWithDescription__sPointMultiplier = *&v3;
 }
 
-+ (id)imageProxyWithURL:(id)a3
++ (id)imageProxyWithURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (!lCopy)
   {
     goto LABEL_5;
   }
 
-  if ([v3 tv_isAppIconURL])
+  if ([lCopy tv_isAppIconURL])
   {
-    v5 = [v4 host];
+    host = [v4 host];
     v6 = [TVImageProxy alloc];
     v7 = +[_TVAppIconImageLoader sharedInstance];
-    v8 = [(TVImageProxy *)v6 initWithObject:v5 imageLoader:v7 groupType:0];
+    v8 = [(TVImageProxy *)v6 initWithObject:host imageLoader:v7 groupType:0];
 
     [(TVImageProxy *)v8 setCacheOnLoad:+[TVMLUtilities canHandleDecodingOnRenderThread]^ 1];
     goto LABEL_7;
@@ -158,11 +158,11 @@ LABEL_7:
   return v8;
 }
 
-+ (CGSize)decorateImageProxy:(id)a3 forLayout:(id)a4
++ (CGSize)decorateImageProxy:(id)proxy forLayout:(id)layout
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 decoratorSize];
+  proxyCopy = proxy;
+  layoutCopy = layout;
+  [layoutCopy decoratorSize];
   v8 = v7;
   v10 = v9;
   objc_opt_class();
@@ -171,42 +171,42 @@ LABEL_7:
     goto LABEL_19;
   }
 
-  v11 = v5;
-  v12 = [v6 imageTreatment];
-  [v6 padding];
+  v11 = proxyCopy;
+  imageTreatment = [layoutCopy imageTreatment];
+  [layoutCopy padding];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v6 allowsNonOpaqueShadows];
-  [v6 focusSizeIncrease];
+  allowsNonOpaqueShadows = [layoutCopy allowsNonOpaqueShadows];
+  [layoutCopy focusSizeIncrease];
   v23 = v22;
-  [v6 borderRadii];
+  [layoutCopy borderRadii];
   [TVCornerUtilities radiusFromCornerRadii:?];
   v25 = v24;
-  v26 = [v6 scaleMode];
-  if (![v12 isEqualToString:@"postcard"])
+  scaleMode = [layoutCopy scaleMode];
+  if (![imageTreatment isEqualToString:@"postcard"])
   {
-    if ([v12 isEqualToString:@"16x9"])
+    if ([imageTreatment isEqualToString:@"16x9"])
     {
       v28 = _TVImage16x9Decorator;
     }
 
     else
     {
-      if (![v12 isEqualToString:@"keyframeArt"])
+      if (![imageTreatment isEqualToString:@"keyframeArt"])
       {
-        v38 = [v6 tintColor];
+        tintColor = [layoutCopy tintColor];
 
-        if (!v38)
+        if (!tintColor)
         {
           v27 = [[TVImageScaleDecorator alloc] initWithScaleToSize:v8, v10];
           goto LABEL_10;
         }
 
         v39 = [_TVTintedImageDecorator alloc];
-        v30 = [v6 ikTintColor];
-        v31 = [(_TVTintedImageDecorator *)v39 initWithTintColor:v30];
+        ikTintColor = [layoutCopy ikTintColor];
+        v31 = [(_TVTintedImageDecorator *)v39 initWithTintColor:ikTintColor];
         goto LABEL_9;
       }
 
@@ -214,8 +214,8 @@ LABEL_7:
     }
 
     v29 = [v28 alloc];
-    v30 = [v6 inlineTitle];
-    v31 = [v29 initWithInlineTitle:v30];
+    ikTintColor = [layoutCopy inlineTitle];
+    v31 = [v29 initWithInlineTitle:ikTintColor];
 LABEL_9:
     v27 = v31;
 
@@ -225,28 +225,28 @@ LABEL_9:
   v8 = v8 + v16 + v20;
   v10 = v10 + v14 + v18;
   v27 = [[TVImageScaleDecorator alloc] initWithScaleToSize:v8, v10];
-  v26 = 2;
+  scaleMode = 2;
 LABEL_10:
-  -[TVImageScaleDecorator setCenterGrowth:](v27, "setCenterGrowth:", [v6 centerGrowth]);
+  -[TVImageScaleDecorator setCenterGrowth:](v27, "setCenterGrowth:", [layoutCopy centerGrowth]);
   [(TVImageScaleDecorator *)v27 setScaleToSize:v8, v10];
   [(TVImageScaleDecorator *)v27 setPadding:v14, v16, v18, v20];
-  [(TVImageScaleDecorator *)v27 setScaleMode:v26];
+  [(TVImageScaleDecorator *)v27 setScaleMode:scaleMode];
   [(TVImageScaleDecorator *)v27 setFocusedSizeIncrease:v23];
-  if (((v21 & 1) != 0 || !+[TVMLUtilities canHandleDecodingOnRenderThread](TVMLUtilities, "canHandleDecodingOnRenderThread")) && ([v6 centerGrowth] & 1) == 0)
+  if (((allowsNonOpaqueShadows & 1) != 0 || !+[TVMLUtilities canHandleDecodingOnRenderThread](TVMLUtilities, "canHandleDecodingOnRenderThread")) && ([layoutCopy centerGrowth] & 1) == 0)
   {
     [TVCornerUtilities radiiFromRadius:v25];
     [(TVImageScaleDecorator *)v27 setCornerRadii:?];
   }
 
-  if (v26 == 2)
+  if (scaleMode == 2)
   {
-    v32 = [v6 backgroundColor];
-    [(TVImageScaleDecorator *)v27 setBgColor:v32];
+    backgroundColor = [layoutCopy backgroundColor];
+    [(TVImageScaleDecorator *)v27 setBgColor:backgroundColor];
   }
 
-  v33 = [v11 decorator];
+  decorator = [v11 decorator];
 
-  if (!v33)
+  if (!decorator)
   {
     [v11 setDecorator:v27];
   }
@@ -263,68 +263,68 @@ LABEL_19:
   return result;
 }
 
-+ (id)imageStackViewWithDescription:(id)a3 layout:(id)a4 existingView:(id)a5
++ (id)imageStackViewWithDescription:(id)description layout:(id)layout existingView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
-  [v7 configureForMetrics];
-  [v8 decoratorSize];
+  descriptionCopy = description;
+  layoutCopy = layout;
+  [descriptionCopy configureForMetrics];
+  [layoutCopy decoratorSize];
   if (v10 >= 0.00000011920929 && v9 >= 0.00000011920929)
   {
-    v12 = [v7 imageProxy];
-    [a1 decorateImageProxy:v12 forLayout:v8];
+    imageProxy = [descriptionCopy imageProxy];
+    [self decorateImageProxy:imageProxy forLayout:layoutCopy];
 
-    [0 tv_setLayout:v8];
+    [0 tv_setLayout:layoutCopy];
   }
 
   return 0;
 }
 
-+ (id)imageViewWithDescription:(id)a3 layout:(id)a4 existingView:(id)a5
++ (id)imageViewWithDescription:(id)description layout:(id)layout existingView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 imageProxy];
-  v11 = [v8 tintColor];
-  v79 = [v8 highlightColor];
-  [v8 decoratorSize];
+  descriptionCopy = description;
+  layoutCopy = layout;
+  viewCopy = view;
+  imageProxy = [descriptionCopy imageProxy];
+  tintColor = [layoutCopy tintColor];
+  highlightColor = [layoutCopy highlightColor];
+  [layoutCopy decoratorSize];
   v13 = v12;
   v15 = v14;
-  [v8 padding];
+  [layoutCopy padding];
   v17 = v16;
   v19 = v18;
   v77 = v21;
   v78 = v20;
-  [v8 focusSizeIncrease];
+  [layoutCopy focusSizeIncrease];
   v76 = v22;
-  [v8 borderRadii];
+  [layoutCopy borderRadii];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [v8 continuousBorder];
-  v32 = [v8 scaleMode];
+  continuousBorder = [layoutCopy continuousBorder];
+  scaleMode = [layoutCopy scaleMode];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_14;
   }
 
-  v75 = v11;
-  v33 = [v8 borderColor];
-  [v8 borderWidth];
+  v75 = tintColor;
+  borderColor = [layoutCopy borderColor];
+  [layoutCopy borderWidth];
   v73 = v34;
   v74 = v35;
   v71 = v36;
   v72 = v37;
-  v38 = [v8 imageTreatment];
-  if ([v7 isInBackgroundOrBanner])
+  imageTreatment = [layoutCopy imageTreatment];
+  if ([descriptionCopy isInBackgroundOrBanner])
   {
     goto LABEL_3;
   }
 
-  if (v33)
+  if (borderColor)
   {
     v40.f64[0] = v73;
     v40.f64[1] = v74;
@@ -332,36 +332,36 @@ LABEL_19:
     v41.f64[1] = v72;
     if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v40, *MEMORY[0x277D768C8]), vceqq_f64(v41, *(MEMORY[0x277D768C8] + 16))))) & 1) == 0)
     {
-      v39 = [TVImageOutlineDecorator decoratorWithOutlineColor:v33 outlineWidths:v73, v74, v71, v72];
+      v39 = [TVImageOutlineDecorator decoratorWithOutlineColor:borderColor outlineWidths:v73, v74, v71, v72];
       goto LABEL_7;
     }
   }
 
-  if ([v38 isEqualToString:{@"postcard", v73, v74, v71, v72}])
+  if ([imageTreatment isEqualToString:{@"postcard", v73, v74, v71, v72}])
   {
     v13 = v13 + v19 + v77;
     v15 = v15 + v17 + v78;
     v42 = [[TVImageScaleDecorator alloc] initWithScaleToSize:v13, v15];
-    v32 = 2;
+    scaleMode = 2;
     goto LABEL_8;
   }
 
-  if ([v7 hasGradient])
+  if ([descriptionCopy hasGradient])
   {
     v67 = [_TVTintedImageDecorator alloc];
-    v68 = [v8 ikTintColor];
-    v69 = [(_TVTintedImageDecorator *)v67 initWithTintColor:v68];
+    ikTintColor = [layoutCopy ikTintColor];
+    v69 = [(_TVTintedImageDecorator *)v67 initWithTintColor:ikTintColor];
 LABEL_42:
     v42 = v69;
 
     goto LABEL_8;
   }
 
-  if ([v38 isEqualToString:@"16x9"])
+  if ([imageTreatment isEqualToString:@"16x9"])
   {
     v70 = [_TVImage16x9Decorator alloc];
-    v68 = [v8 inlineTitle];
-    v69 = [(_TVImage16x9Decorator *)v70 initWithInlineTitle:v68];
+    ikTintColor = [layoutCopy inlineTitle];
+    v69 = [(_TVImage16x9Decorator *)v70 initWithInlineTitle:ikTintColor];
     goto LABEL_42;
   }
 
@@ -375,29 +375,29 @@ LABEL_8:
     [(TVImageScaleDecorator *)v42 setScaleToSize:v13, v15];
     [(TVImageScaleDecorator *)v42 setPadding:v17, v19, v78, v77];
     [(TVImageScaleDecorator *)v42 setFocusedSizeIncrease:v76];
-    [(TVImageScaleDecorator *)v42 setScaleMode:v32];
+    [(TVImageScaleDecorator *)v42 setScaleMode:scaleMode];
     [(TVImageScaleDecorator *)v42 setCornerRadii:v24, v26, v28, v30];
-    [(TVImageScaleDecorator *)v42 setCornerContinuous:v31];
-    if (v32 == 2)
+    [(TVImageScaleDecorator *)v42 setCornerContinuous:continuousBorder];
+    if (scaleMode == 2)
     {
-      v43 = [v8 backgroundColor];
-      [(TVImageScaleDecorator *)v42 setBgColor:v43];
+      backgroundColor = [layoutCopy backgroundColor];
+      [(TVImageScaleDecorator *)v42 setBgColor:backgroundColor];
     }
 
-    v44 = [v10 decorator];
+    decorator = [imageProxy decorator];
 
-    if (!v44)
+    if (!decorator)
     {
-      [v10 setDecorator:v42];
+      [imageProxy setDecorator:v42];
     }
   }
 
-  v11 = v75;
+  tintColor = v75;
 LABEL_14:
   if (v13 == *MEMORY[0x277CBF3A8] && v15 == *(MEMORY[0x277CBF3A8] + 8))
   {
     v47 = 0;
-    v48 = v79;
+    v48 = highlightColor;
   }
 
   else
@@ -405,7 +405,7 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v46 = v9;
+      v46 = viewCopy;
     }
 
     else
@@ -414,51 +414,51 @@ LABEL_14:
     }
 
     v47 = v46;
-    -[_TVImageView setSemanticContentAttribute:](v46, "setSemanticContentAttribute:", [v7 semanticContentAttribute]);
-    v49 = [v7 accessibilityText];
-    v50 = [v49 length];
+    -[_TVImageView setSemanticContentAttribute:](v46, "setSemanticContentAttribute:", [descriptionCopy semanticContentAttribute]);
+    accessibilityText = [descriptionCopy accessibilityText];
+    v50 = [accessibilityText length];
 
     if (v50)
     {
-      v51 = [v7 accessibilityText];
-      [(UIView *)v47 tv_setAccessibilityText:v51];
+      accessibilityText2 = [descriptionCopy accessibilityText];
+      [(UIView *)v47 tv_setAccessibilityText:accessibilityText2];
     }
 
-    v52 = [v7 siriData];
-    [(UIView *)v47 tv_setSiriData:v52];
+    siriData = [descriptionCopy siriData];
+    [(UIView *)v47 tv_setSiriData:siriData];
 
     [(_TVImageView *)v47 setBounds:0.0, 0.0, v13, v15];
-    if (([v7 configureForMetrics] & 1) == 0)
+    if (([descriptionCopy configureForMetrics] & 1) == 0)
     {
-      v53 = v11;
-      [(_TVImageView *)v47 setImageProxy:v10];
+      v53 = tintColor;
+      [(_TVImageView *)v47 setImageProxy:imageProxy];
       [TVCornerUtilities radiusFromCornerRadii:v24, v26, v28, v30];
       [(_TVImageView *)v47 setCornerRadius:?];
       [(_TVImageView *)v47 setImageContainsCornerRadius:1];
-      v54 = [v7 placeholderImage];
-      [(_TVImageView *)v47 setPlaceholderImage:v54];
+      placeholderImage = [descriptionCopy placeholderImage];
+      [(_TVImageView *)v47 setPlaceholderImage:placeholderImage];
 
-      v55 = [v8 shadow];
-      v56 = [(_TVImageView *)v47 layer];
-      v57 = v56;
-      if (v55)
+      shadow = [layoutCopy shadow];
+      layer = [(_TVImageView *)v47 layer];
+      v57 = layer;
+      if (shadow)
       {
-        [v56 setShadowPath:{+[TVMLUtilities shadowPathWithCornerRadii:andScaledSize:](TVMLUtilities, "shadowPathWithCornerRadii:andScaledSize:", v24, v26, v28, v30, v13, v15)}];
+        [layer setShadowPath:{+[TVMLUtilities shadowPathWithCornerRadii:andScaledSize:](TVMLUtilities, "shadowPathWithCornerRadii:andScaledSize:", v24, v26, v28, v30, v13, v15)}];
 
-        v58 = [(_TVImageView *)v47 layer];
-        [v55 shadowOffset];
-        [v58 setShadowOffset:?];
+        layer2 = [(_TVImageView *)v47 layer];
+        [shadow shadowOffset];
+        [layer2 setShadowOffset:?];
 
-        v59 = [(_TVImageView *)v47 layer];
-        [v55 shadowBlurRadius];
-        [v59 setShadowRadius:?];
+        layer3 = [(_TVImageView *)v47 layer];
+        [shadow shadowBlurRadius];
+        [layer3 setShadowRadius:?];
 
-        v60 = [(_TVImageView *)v47 layer];
-        v61 = [v55 shadowColor];
-        [v60 setShadowColor:{objc_msgSend(v61, "CGColor")}];
+        layer4 = [(_TVImageView *)v47 layer];
+        shadowColor = [shadow shadowColor];
+        [layer4 setShadowColor:{objc_msgSend(shadowColor, "CGColor")}];
 
-        v56 = [(_TVImageView *)v47 layer];
-        v57 = v56;
+        layer = [(_TVImageView *)v47 layer];
+        v57 = layer;
         LODWORD(v62) = 1.0;
       }
 
@@ -467,12 +467,12 @@ LABEL_14:
         v62 = 0.0;
       }
 
-      [v56 setShadowOpacity:v62];
+      [layer setShadowOpacity:v62];
 
-      v11 = v53;
+      tintColor = v53;
     }
 
-    if (v32 == 3)
+    if (scaleMode == 3)
     {
       v63 = 2;
     }
@@ -484,16 +484,16 @@ LABEL_14:
 
     [(_TVImageView *)v47 setContentMode:v63];
     [(_TVImageView *)v47 setContentsPosition:2];
-    [(_TVImageView *)v47 _setTintColor:v11];
-    v64 = [v8 darkTintColor];
-    [(_TVImageView *)v47 _setDarkTintColor:v64];
+    [(_TVImageView *)v47 _setTintColor:tintColor];
+    darkTintColor = [layoutCopy darkTintColor];
+    [(_TVImageView *)v47 _setDarkTintColor:darkTintColor];
 
-    v48 = v79;
-    [(_TVImageView *)v47 _setFocusedColor:v79];
-    v65 = [v8 imageSymbolConfiguration];
-    [(_TVImageView *)v47 _setPreferredSymbolConfiguration:v65];
+    v48 = highlightColor;
+    [(_TVImageView *)v47 _setFocusedColor:highlightColor];
+    imageSymbolConfiguration = [layoutCopy imageSymbolConfiguration];
+    [(_TVImageView *)v47 _setPreferredSymbolConfiguration:imageSymbolConfiguration];
 
-    [(UIView *)v47 tv_setLayout:v8];
+    [(UIView *)v47 tv_setLayout:layoutCopy];
   }
 
   return v47;

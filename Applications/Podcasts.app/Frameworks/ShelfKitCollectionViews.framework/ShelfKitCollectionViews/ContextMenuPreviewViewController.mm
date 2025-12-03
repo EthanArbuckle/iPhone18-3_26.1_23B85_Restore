@@ -1,7 +1,7 @@
 @interface ContextMenuPreviewViewController
-- (_TtC23ShelfKitCollectionViews32ContextMenuPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC23ShelfKitCollectionViews32ContextMenuPreviewViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -9,25 +9,25 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_22D31C();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v4.receiver = self;
   v4.super_class = type metadata accessor for ContextMenuPreviewViewController();
-  [(ContextMenuPreviewViewController *)&v4 viewWillDisappear:v3];
+  [(ContextMenuPreviewViewController *)&v4 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_22D9F4();
 }
 
-- (_TtC23ShelfKitCollectionViews32ContextMenuPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23ShelfKitCollectionViews32ContextMenuPreviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

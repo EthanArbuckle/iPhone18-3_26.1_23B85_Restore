@@ -8,14 +8,14 @@
 {
   v22.receiver = self;
   v22.super_class = AAProximityPairingStatusPayloadBeatsUntethered;
-  v21 = [(AAProximityPairingStatusPayloadUntethered *)&v22 describeProperties];
-  v17 = [(AAProximityPairingStatusPayloadBeatsUntethered *)self lidOpenCount];
+  describeProperties = [(AAProximityPairingStatusPayloadUntethered *)&v22 describeProperties];
+  lidOpenCount = [(AAProximityPairingStatusPayloadBeatsUntethered *)self lidOpenCount];
   NSAppendPrintF_safe();
-  v3 = v21;
+  v3 = describeProperties;
 
-  v4 = [(AAProximityPairingStatusPayloadBeatsUntethered *)self lidClosed];
+  lidClosed = [(AAProximityPairingStatusPayloadBeatsUntethered *)self lidClosed];
   v5 = "no";
-  if (v4)
+  if (lidClosed)
   {
     v5 = "yes";
   }
@@ -24,15 +24,15 @@
   NSAppendPrintF_safe();
   v6 = v3;
 
-  v7 = [(AAProximityPairingStatusPayloadBeatsUntethered *)self caseVersion];
+  caseVersion = [(AAProximityPairingStatusPayloadBeatsUntethered *)self caseVersion];
   v8 = "?";
   v9 = "B435";
-  if (v7 != 1)
+  if (caseVersion != 1)
   {
     v9 = "?";
   }
 
-  if (!v7)
+  if (!caseVersion)
   {
     v9 = "B235";
   }
@@ -41,20 +41,20 @@
   NSAppendPrintF_safe();
   v10 = v6;
 
-  v11 = [(AAProximityPairingStatusPayloadBeatsUntethered *)self caseLedColor];
-  if (v11 <= 3)
+  caseLedColor = [(AAProximityPairingStatusPayloadBeatsUntethered *)self caseLedColor];
+  if (caseLedColor <= 3)
   {
-    v8 = off_278CDE1B0[v11];
+    v8 = off_278CDE1B0[caseLedColor];
   }
 
   v20 = v8;
   NSAppendPrintF_safe();
   v12 = v10;
 
-  v13 = [(AAProximityPairingStatusPayloadBeatsUntethered *)self caseLedStatus];
-  if (v13 <= 3)
+  caseLedStatus = [(AAProximityPairingStatusPayloadBeatsUntethered *)self caseLedStatus];
+  if (caseLedStatus <= 3)
   {
-    v14 = off_278CDE1D0[v13];
+    v14 = off_278CDE1D0[caseLedStatus];
   }
 
   NSAppendPrintF_safe();

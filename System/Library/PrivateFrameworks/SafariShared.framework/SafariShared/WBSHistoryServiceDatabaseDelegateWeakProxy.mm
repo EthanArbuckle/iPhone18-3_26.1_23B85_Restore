@@ -1,95 +1,95 @@
 @interface WBSHistoryServiceDatabaseDelegateWeakProxy
-- (WBSHistoryServiceDatabaseDelegateWeakProxy)initWithDelegate:(id)a3;
-- (void)handleEvent:(id)a3 completionHandler:(id)a4;
-- (void)reportPermanentIDsForItems:(id)a3 completionHandler:(id)a4;
-- (void)reportPermanentIDsForVisits:(id)a3 completionHandler:(id)a4;
-- (void)reportSevereError:(id)a3 completionHandler:(id)a4;
+- (WBSHistoryServiceDatabaseDelegateWeakProxy)initWithDelegate:(id)delegate;
+- (void)handleEvent:(id)event completionHandler:(id)handler;
+- (void)reportPermanentIDsForItems:(id)items completionHandler:(id)handler;
+- (void)reportPermanentIDsForVisits:(id)visits completionHandler:(id)handler;
+- (void)reportSevereError:(id)error completionHandler:(id)handler;
 @end
 
 @implementation WBSHistoryServiceDatabaseDelegateWeakProxy
 
-- (WBSHistoryServiceDatabaseDelegateWeakProxy)initWithDelegate:(id)a3
+- (WBSHistoryServiceDatabaseDelegateWeakProxy)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = WBSHistoryServiceDatabaseDelegateWeakProxy;
   v5 = [(WBSHistoryServiceDatabaseDelegateWeakProxy *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)reportPermanentIDsForItems:(id)a3 completionHandler:(id)a4
+- (void)reportPermanentIDsForItems:(id)items completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained reportPermanentIDsForItems:v9 completionHandler:v6];
+    [WeakRetained reportPermanentIDsForItems:itemsCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)reportPermanentIDsForVisits:(id)a3 completionHandler:(id)a4
+- (void)reportPermanentIDsForVisits:(id)visits completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
+  visitsCopy = visits;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained reportPermanentIDsForVisits:v9 completionHandler:v6];
+    [WeakRetained reportPermanentIDsForVisits:visitsCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)reportSevereError:(id)a3 completionHandler:(id)a4
+- (void)reportSevereError:(id)error completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
+  errorCopy = error;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained reportSevereError:v9 completionHandler:v6];
+    [WeakRetained reportSevereError:errorCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)handleEvent:(id)a3 completionHandler:(id)a4
+- (void)handleEvent:(id)event completionHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
+  eventCopy = event;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained handleEvent:v10 completionHandler:v6];
+    [WeakRetained handleEvent:eventCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:14 userInfo:0];
-    v6[2](v6, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 }
 

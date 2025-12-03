@@ -1,15 +1,15 @@
 @interface AlphanumericPINTableViewCell
-- (AlphanumericPINTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AlphanumericPINTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation AlphanumericPINTableViewCell
 
-- (AlphanumericPINTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AlphanumericPINTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v29.receiver = self;
   v29.super_class = AlphanumericPINTableViewCell;
-  v4 = [(AlphanumericPINTableViewCell *)&v29 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AlphanumericPINTableViewCell *)&v29 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(AlphanumericPINTextField);
@@ -18,8 +18,8 @@
 
     v7 = v4->_pinTextField;
     v8 = +[PSListController appearance];
-    v9 = [v8 textColor];
-    [(AlphanumericPINTextField *)v7 setTextColor:v9];
+    textColor = [v8 textColor];
+    [(AlphanumericPINTextField *)v7 setTextColor:textColor];
 
     v10 = +[PSListController appearance];
     LODWORD(v8) = [v10 usesDarkTheme];
@@ -39,40 +39,40 @@
     [(AlphanumericPINTextField *)v4->_pinTextField setDevicePasscodeEntry:1];
     [(AlphanumericPINTableViewCell *)v4 setSelectionStyle:0];
     v11 = +[PSListController appearance];
-    v12 = [v11 editableInsertionPointColor];
+    editableInsertionPointColor = [v11 editableInsertionPointColor];
 
-    if (v12)
+    if (editableInsertionPointColor)
     {
       v13 = v4->_pinTextField;
       v14 = +[PSListController appearance];
-      v15 = [v14 editableInsertionPointColor];
-      [(AlphanumericPINTextField *)v13 setInsertionPointColor:v15];
+      editableInsertionPointColor2 = [v14 editableInsertionPointColor];
+      [(AlphanumericPINTextField *)v13 setInsertionPointColor:editableInsertionPointColor2];
     }
 
     v16 = +[PSListController appearance];
-    v17 = [v16 editableSelectionBarColor];
+    editableSelectionBarColor = [v16 editableSelectionBarColor];
 
-    if (v17)
+    if (editableSelectionBarColor)
     {
       v18 = v4->_pinTextField;
       v19 = +[PSListController appearance];
-      v20 = [v19 editableSelectionBarColor];
-      [(AlphanumericPINTextField *)v18 setSelectionBarColor:v20];
+      editableSelectionBarColor2 = [v19 editableSelectionBarColor];
+      [(AlphanumericPINTextField *)v18 setSelectionBarColor:editableSelectionBarColor2];
     }
 
     v21 = +[PSListController appearance];
-    v22 = [v21 editableSelectionHighlightColor];
+    editableSelectionHighlightColor = [v21 editableSelectionHighlightColor];
 
-    if (v22)
+    if (editableSelectionHighlightColor)
     {
       v23 = v4->_pinTextField;
       v24 = +[PSListController appearance];
-      v25 = [v24 editableSelectionHighlightColor];
-      [(AlphanumericPINTextField *)v23 setSelectionHighlightColor:v25];
+      editableSelectionHighlightColor2 = [v24 editableSelectionHighlightColor];
+      [(AlphanumericPINTextField *)v23 setSelectionHighlightColor:editableSelectionHighlightColor2];
     }
 
-    v26 = [(AlphanumericPINTableViewCell *)v4 contentView];
-    [v26 addSubview:v4->_pinTextField];
+    contentView = [(AlphanumericPINTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_pinTextField];
 
     [(AlphanumericPINTableViewCell *)v4 setAccessibilityIdentifier:@"ALPHANUMERIC_PIN_CELL"];
   }
@@ -85,11 +85,11 @@
   v17.receiver = self;
   v17.super_class = AlphanumericPINTableViewCell;
   [(AlphanumericPINTableViewCell *)&v17 layoutSubviews];
-  v3 = [(AlphanumericPINTableViewCell *)self editableTextField];
-  [v3 setHidden:1];
+  editableTextField = [(AlphanumericPINTableViewCell *)self editableTextField];
+  [editableTextField setHidden:1];
 
-  v4 = [(AlphanumericPINTableViewCell *)self contentView];
-  [v4 frame];
+  contentView = [(AlphanumericPINTableViewCell *)self contentView];
+  [contentView frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;

@@ -1,19 +1,19 @@
 @interface AXUISettingsTickMarkSlider
-- (AXUISettingsTickMarkSlider)initWithFrame:(CGRect)a3;
+- (AXUISettingsTickMarkSlider)initWithFrame:(CGRect)frame;
 - (void)_setUpSliderConfiguration;
-- (void)setPostTickColor:(id)a3;
-- (void)setSnappingDistance:(double)a3;
-- (void)setTicks:(id)a3;
-- (void)setTrackFillColor:(id)a3;
+- (void)setPostTickColor:(id)color;
+- (void)setSnappingDistance:(double)distance;
+- (void)setTicks:(id)ticks;
+- (void)setTrackFillColor:(id)color;
 @end
 
 @implementation AXUISettingsTickMarkSlider
 
-- (AXUISettingsTickMarkSlider)initWithFrame:(CGRect)a3
+- (AXUISettingsTickMarkSlider)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AXUISettingsTickMarkSlider;
-  v3 = [(PSSegmentableSlider *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PSSegmentableSlider *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -25,37 +25,37 @@
   return v4;
 }
 
-- (void)setTicks:(id)a3
+- (void)setTicks:(id)ticks
 {
-  objc_storeStrong(&self->_ticks, a3);
+  objc_storeStrong(&self->_ticks, ticks);
 
   [(AXUISettingsTickMarkSlider *)self _setUpSliderConfiguration];
 }
 
-- (void)setTrackFillColor:(id)a3
+- (void)setTrackFillColor:(id)color
 {
-  v5 = a3;
-  if (self->_trackFillColor != v5)
+  colorCopy = color;
+  if (self->_trackFillColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_trackFillColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_trackFillColor, color);
     [(AXUISettingsTickMarkSlider *)self setMaximumTrackTintColor:self->_trackFillColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setPostTickColor:(id)a3
+- (void)setPostTickColor:(id)color
 {
-  v7 = a3;
-  if (self->_postTickColor != v7)
+  colorCopy = color;
+  if (self->_postTickColor != colorCopy)
   {
-    objc_storeStrong(&self->_postTickColor, a3);
+    objc_storeStrong(&self->_postTickColor, color);
     if (self->_postTickColor)
     {
-      v5 = [(AXUISettingsTickMarkSlider *)self ticks];
-      v6 = [v5 firstObject];
+      ticks = [(AXUISettingsTickMarkSlider *)self ticks];
+      firstObject = [ticks firstObject];
 
-      if (v6)
+      if (firstObject)
       {
         [(AXUISettingsTickMarkSlider *)self _setUpSliderConfiguration];
       }
@@ -63,15 +63,15 @@
   }
 }
 
-- (void)setSnappingDistance:(double)a3
+- (void)setSnappingDistance:(double)distance
 {
-  if (self->_snappingDistance != a3)
+  if (self->_snappingDistance != distance)
   {
-    self->_snappingDistance = a3;
-    v4 = [(AXUISettingsTickMarkSlider *)self ticks];
-    v5 = [v4 firstObject];
+    self->_snappingDistance = distance;
+    ticks = [(AXUISettingsTickMarkSlider *)self ticks];
+    firstObject = [ticks firstObject];
 
-    if (v5)
+    if (firstObject)
     {
 
       [(AXUISettingsTickMarkSlider *)self _setUpSliderConfiguration];
@@ -82,9 +82,9 @@
 - (void)_setUpSliderConfiguration
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(NSArray *)self->_ticks firstObject];
+  firstObject = [(NSArray *)self->_ticks firstObject];
 
-  if (v3)
+  if (firstObject)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v18 = 0u;
@@ -126,16 +126,16 @@
     snappingDistance = self->_snappingDistance;
     *&snappingDistance = snappingDistance;
     [v12 setSnappingDistance:snappingDistance];
-    v14 = [(AXUISettingsTickMarkSlider *)self postTickColor];
+    postTickColor = [(AXUISettingsTickMarkSlider *)self postTickColor];
 
-    if (v14)
+    if (postTickColor)
     {
-      v15 = [(NSArray *)self->_ticks firstObject];
-      [v15 floatValue];
+      firstObject2 = [(NSArray *)self->_ticks firstObject];
+      [firstObject2 floatValue];
       [v12 setNeutralPosition:v16];
 
-      v17 = [(AXUISettingsTickMarkSlider *)self postTickColor];
-      [(AXUISettingsTickMarkSlider *)self setMinimumTrackTintColor:v17];
+      postTickColor2 = [(AXUISettingsTickMarkSlider *)self postTickColor];
+      [(AXUISettingsTickMarkSlider *)self setMinimumTrackTintColor:postTickColor2];
     }
   }
 

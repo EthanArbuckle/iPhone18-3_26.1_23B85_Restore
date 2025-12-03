@@ -1,14 +1,14 @@
 @interface SummaryTileGeneratorPipeline
-- (void)pregnancyModelDidUpdate:(id)a3;
+- (void)pregnancyModelDidUpdate:(id)update;
 @end
 
 @implementation SummaryTileGeneratorPipeline
 
-- (void)pregnancyModelDidUpdate:(id)a3
+- (void)pregnancyModelDidUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
 
-  sub_29DEEB34C(v3);
+  sub_29DEEB34C(updateCopy);
 }
 
 @end

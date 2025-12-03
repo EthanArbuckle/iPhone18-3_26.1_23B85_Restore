@@ -1,31 +1,31 @@
 @interface CNContactDiff
-+ (id)diffContact:(id)a3 to:(id)a4 error:(id *)a5;
-+ (id)diffContact:(id)a3 to:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)applyToABPerson:(void *)a3 isUnified:(BOOL)a4 logger:(id)a5 error:(id *)a6;
-- (BOOL)containsUpdatesToKeyDescriptors:(id)a3;
-- (CNContactDiff)initWithUpdates:(id)a3;
-- (id)contactByApplyingUpdatesToContact:(id)a3;
++ (id)diffContact:(id)contact to:(id)to error:(id *)error;
++ (id)diffContact:(id)contact to:(id)to options:(id)options error:(id *)error;
+- (BOOL)applyToABPerson:(void *)person isUnified:(BOOL)unified logger:(id)logger error:(id *)error;
+- (BOOL)containsUpdatesToKeyDescriptors:(id)descriptors;
+- (CNContactDiff)initWithUpdates:(id)updates;
+- (id)contactByApplyingUpdatesToContact:(id)contact;
 - (id)description;
-- (id)posterDataRequestsForContactWithIdentifier:(id)a3;
-- (void)applyToMutableContact:(id)a3 withIdentifierMap:(id)a4;
-- (void)applyToMutableContacts:(id)a3 withIdentifierMap:(id)a4;
+- (id)posterDataRequestsForContactWithIdentifier:(id)identifier;
+- (void)applyToMutableContact:(id)contact withIdentifierMap:(id)map;
+- (void)applyToMutableContacts:(id)contacts withIdentifierMap:(id)map;
 @end
 
 @implementation CNContactDiff
 
-- (BOOL)applyToABPerson:(void *)a3 isUnified:(BOOL)a4 logger:(id)a5 error:(id *)a6
+- (BOOL)applyToABPerson:(void *)person isUnified:(BOOL)unified logger:(id)logger error:(id *)error
 {
-  v7 = a4;
+  unifiedCopy = unified;
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a5;
+  loggerCopy = logger;
   v11 = objc_alloc_init(CNiOSABDependentPropertiesUpdateContext);
-  [(CNiOSABDependentPropertiesUpdateContext *)v11 setIsUnifiedContact:v7];
+  [(CNiOSABDependentPropertiesUpdateContext *)v11 setIsUnifiedContact:unifiedCopy];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [(CNContactDiff *)self updates];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  updates = [(CNContactDiff *)self updates];
+  v13 = [updates countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
     v14 = v13;
@@ -36,10 +36,10 @@
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(updates);
         }
 
-        if (![*(*(&v19 + 1) + 8 * i) applyToABPerson:a3 withPropertiesContext:v11 logger:v10 error:a6])
+        if (![*(*(&v19 + 1) + 8 * i) applyToABPerson:person withPropertiesContext:v11 logger:loggerCopy error:error])
         {
 
           v17 = 0;
@@ -47,7 +47,7 @@
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v14 = [updates countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v14)
       {
         continue;
@@ -57,15 +57,15 @@
     }
   }
 
-  v17 = [(CNiOSABDependentPropertiesUpdateContext *)v11 flushPendingImageChangesToPerson:a3 logger:v10 error:a6];
+  v17 = [(CNiOSABDependentPropertiesUpdateContext *)v11 flushPendingImageChangesToPerson:person logger:loggerCopy error:error];
 LABEL_11:
 
   return v17;
 }
 
-- (id)posterDataRequestsForContactWithIdentifier:(id)a3
+- (id)posterDataRequestsForContactWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -78,26 +78,26 @@ LABEL_11:
   v20 = __Block_byref_object_copy__28;
   v21 = __Block_byref_object_dispose__28;
   v22 = 0;
-  v5 = [(CNContactDiff *)self updatesAsPosterDataUpdates];
+  updatesAsPosterDataUpdates = [(CNContactDiff *)self updatesAsPosterDataUpdates];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__CNContactDiff_PosterData__posterDataRequestsForContactWithIdentifier___block_invoke;
   v13[3] = &unk_1E7416BA8;
-  v6 = v4;
+  v6 = identifierCopy;
   v14 = v6;
   v15 = &v23;
   v16 = &v17;
-  v7 = [v5 _cn_flatMap:v13];
+  v7 = [updatesAsPosterDataUpdates _cn_flatMap:v13];
 
-  v8 = [v24[5] watchWallpaperImages];
-  v9 = [v8 firstObject];
+  watchWallpaperImages = [v24[5] watchWallpaperImages];
+  firstObject = [watchWallpaperImages firstObject];
 
-  v10 = [v18[5] posters];
-  v11 = [v10 firstObject];
+  posters = [v18[5] posters];
+  firstObject2 = [posters firstObject];
 
-  if (v9)
+  if (firstObject)
   {
-    [v11 setWatchPosterImageData:v9];
+    [firstObject2 setWatchPosterImageData:firstObject];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -169,20 +169,20 @@ BOOL __72__CNContactDiff_PosterData__posterDataRequestsForContactWithIdentifier_
   return v6 == 0;
 }
 
-+ (id)diffContact:(id)a3 to:(id)a4 error:(id *)a5
++ (id)diffContact:(id)contact to:(id)to error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  toCopy = to;
+  contactCopy = contact;
   v10 = objc_alloc_init(CNContactDiffOptions);
-  v11 = [a1 diffContact:v9 to:v8 options:v10 error:a5];
+  v11 = [self diffContact:contactCopy to:toCopy options:v10 error:error];
 
   return v11;
 }
 
-+ (id)diffContact:(id)a3 to:(id)a4 options:(id)a5 error:(id *)a6
++ (id)diffContact:(id)contact to:(id)to options:(id)options error:(id *)error
 {
   v14 = 0;
-  v7 = [CNCalculatesContactDiff diffContact:a3 to:a4 options:a5 error:&v14];
+  v7 = [CNCalculatesContactDiff diffContact:contact to:to options:options error:&v14];
   v8 = v14;
   v9 = v8;
   if (v7)
@@ -200,11 +200,11 @@ BOOL __72__CNContactDiff_PosterData__posterDataRequestsForContactWithIdentifier_
     v11 = [[CNContactDiff alloc] initWithUpdates:v7];
   }
 
-  else if (a6)
+  else if (error)
   {
     v12 = v8;
     v11 = 0;
-    *a6 = v9;
+    *error = v9;
   }
 
   else
@@ -215,15 +215,15 @@ BOOL __72__CNContactDiff_PosterData__posterDataRequestsForContactWithIdentifier_
   return v11;
 }
 
-- (CNContactDiff)initWithUpdates:(id)a3
+- (CNContactDiff)initWithUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   v10.receiver = self;
   v10.super_class = CNContactDiff;
   v5 = [(CNContactDiff *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [updatesCopy copy];
     updates = v5->_updates;
     v5->_updates = v6;
 
@@ -233,22 +233,22 @@ BOOL __72__CNContactDiff_PosterData__posterDataRequestsForContactWithIdentifier_
   return v5;
 }
 
-- (id)contactByApplyingUpdatesToContact:(id)a3
+- (id)contactByApplyingUpdatesToContact:(id)contact
 {
-  v4 = [a3 mutableCopy];
-  v5 = [MEMORY[0x1E6996778] multiDictionary];
-  [(CNContactDiff *)self applyToMutableContact:v4 withIdentifierMap:v5];
+  v4 = [contact mutableCopy];
+  multiDictionary = [MEMORY[0x1E6996778] multiDictionary];
+  [(CNContactDiff *)self applyToMutableContact:v4 withIdentifierMap:multiDictionary];
 
-  v6 = [v4 freeze];
+  freeze = [v4 freeze];
 
-  return v6;
+  return freeze;
 }
 
-- (void)applyToMutableContact:(id)a3 withIdentifierMap:(id)a4
+- (void)applyToMutableContact:(id)contact withIdentifierMap:(id)map
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  mapCopy = map;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -269,7 +269,7 @@ BOOL __72__CNContactDiff_PosterData__posterDataRequestsForContactWithIdentifier_
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) applyToMutableContact:v6 withIdentifierMap:{v7, v13}];
+        [*(*(&v13 + 1) + 8 * v12++) applyToMutableContact:contactCopy withIdentifierMap:{mapCopy, v13}];
       }
 
       while (v10 != v12);
@@ -280,16 +280,16 @@ BOOL __72__CNContactDiff_PosterData__posterDataRequestsForContactWithIdentifier_
   }
 }
 
-- (void)applyToMutableContacts:(id)a3 withIdentifierMap:(id)a4
+- (void)applyToMutableContacts:(id)contacts withIdentifierMap:(id)map
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contactsCopy = contacts;
+  mapCopy = map;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [contactsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -301,24 +301,24 @@ BOOL __72__CNContactDiff_PosterData__posterDataRequestsForContactWithIdentifier_
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(contactsCopy);
         }
 
-        [(CNContactDiff *)self applyToMutableContact:*(*(&v12 + 1) + 8 * v11++) withIdentifierMap:v7];
+        [(CNContactDiff *)self applyToMutableContact:*(*(&v12 + 1) + 8 * v11++) withIdentifierMap:mapCopy];
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [contactsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (BOOL)containsUpdatesToKeyDescriptors:(id)a3
+- (BOOL)containsUpdatesToKeyDescriptors:(id)descriptors
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -329,7 +329,7 @@ BOOL __72__CNContactDiff_PosterData__posterDataRequestsForContactWithIdentifier_
   {
     v6 = *v32;
     v25 = v5;
-    v26 = v4;
+    v26 = descriptorsCopy;
     v22 = *v32;
     do
     {
@@ -347,7 +347,7 @@ BOOL __72__CNContactDiff_PosterData__posterDataRequestsForContactWithIdentifier_
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v9 = v4;
+        v9 = descriptorsCopy;
         v10 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v10)
         {
@@ -366,18 +366,18 @@ BOOL __72__CNContactDiff_PosterData__posterDataRequestsForContactWithIdentifier_
               if ([v14 conformsToProtocol:&unk_1F0998880])
               {
                 v15 = v14;
-                v16 = [v15 _cn_requiredKeys];
-                v17 = [v8 property];
+                _cn_requiredKeys = [v15 _cn_requiredKeys];
+                property = [v8 property];
 
-                v18 = [v17 key];
-                v19 = [v16 containsKey:v18];
+                v18 = [property key];
+                v19 = [_cn_requiredKeys containsKey:v18];
 
                 if (v19)
                 {
 
                   v20 = 1;
                   v5 = v25;
-                  v4 = v26;
+                  descriptorsCopy = v26;
                   goto LABEL_20;
                 }
               }
@@ -395,7 +395,7 @@ BOOL __72__CNContactDiff_PosterData__posterDataRequestsForContactWithIdentifier_
 
         v7 = v24 + 1;
         v5 = v25;
-        v4 = v26;
+        descriptorsCopy = v26;
         v6 = v22;
       }
 
@@ -421,9 +421,9 @@ LABEL_20:
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"contactUpdates" object:self->_updates];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

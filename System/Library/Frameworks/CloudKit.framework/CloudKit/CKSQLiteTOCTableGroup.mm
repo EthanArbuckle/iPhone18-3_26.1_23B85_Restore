@@ -1,20 +1,20 @@
 @interface CKSQLiteTOCTableGroup
-+ (id)TOCTableGroupInDatabase:(id)a3;
-+ (id)TOCTableGroupInDatabase:(id)a3 options:(unint64_t)a4;
-+ (id)createNewTOCInDatabase:(id)a3;
-+ (id)createTOCInDatabase:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-+ (id)genericTOCTableGroupInDatabase:(id)a3 error:(id *)a4;
-+ (id)migrationTOCInDatabase:(id)a3 error:(id *)a4;
-- (BOOL)needsMigration:(id *)a3;
-- (CKSQLiteTOCTableGroup)initWithName:(id)a3 options:(unint64_t)a4 database:(id)a5;
++ (id)TOCTableGroupInDatabase:(id)database;
++ (id)TOCTableGroupInDatabase:(id)database options:(unint64_t)options;
++ (id)createNewTOCInDatabase:(id)database;
++ (id)createTOCInDatabase:(id)database options:(unint64_t)options error:(id *)error;
++ (id)genericTOCTableGroupInDatabase:(id)database error:(id *)error;
++ (id)migrationTOCInDatabase:(id)database error:(id *)error;
+- (BOOL)needsMigration:(id *)migration;
+- (CKSQLiteTOCTableGroup)initWithName:(id)name options:(unint64_t)options database:(id)database;
 - (id)_tableClasses;
 - (id)_tablesByNameInitializer;
-- (id)addTOCEntriesForTOCTableGroup:(id)a3;
+- (id)addTOCEntriesForTOCTableGroup:(id)group;
 - (id)isUseable;
-- (id)migrateDataFromGroup:(id)a3;
+- (id)migrateDataFromGroup:(id)group;
 - (id)prepareNewlyOpenedDatabase;
 - (id)resetValidation;
-- (id)setLastUsedEpoch:(int64_t)a3;
+- (id)setLastUsedEpoch:(int64_t)epoch;
 - (id)tocImageInfoTable;
 - (id)tocTable;
 - (id)tocTableGroupTable;
@@ -40,15 +40,15 @@
   return v6;
 }
 
-- (id)addTOCEntriesForTOCTableGroup:(id)a3
+- (id)addTOCEntriesForTOCTableGroup:(id)group
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   v7 = objc_msgSend_tocTableGroupTable(self, v5, v6);
   v10 = objc_msgSend_date(MEMORY[0x1E695DF00], v8, v9);
-  objc_msgSend_setLastUsed_(v4, v11, v10);
-  objc_msgSend_setCreationDate_(v4, v12, v10);
-  v16 = objc_msgSend_insertObject_(v7, v13, v4);
+  objc_msgSend_setLastUsed_(groupCopy, v11, v10);
+  objc_msgSend_setCreationDate_(groupCopy, v12, v10);
+  v16 = objc_msgSend_insertObject_(v7, v13, groupCopy);
   if (!v16)
   {
     v17 = objc_msgSend_tocTable(self, v14, v15);
@@ -56,7 +56,7 @@
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v20 = objc_msgSend_allTables(v4, v18, v19, 0);
+    v20 = objc_msgSend_allTables(groupCopy, v18, v19, 0);
     v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(v20, v21, &v30, v34, 16);
     if (v22)
     {
@@ -98,17 +98,17 @@ LABEL_12:
   return v16;
 }
 
-+ (id)createTOCInDatabase:(id)a3 options:(unint64_t)a4 error:(id *)a5
++ (id)createTOCInDatabase:(id)database options:(unint64_t)options error:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v10 = objc_msgSend_TOCTableGroupInDatabase_options_(a1, v9, v8, a4);
+  databaseCopy = database;
+  v10 = objc_msgSend_TOCTableGroupInDatabase_options_(self, v9, databaseCopy, options);
   v13 = objc_msgSend_tocTableGroupTable(v10, v11, v12);
   isMigrationTOC = objc_msgSend_isMigrationTOC(v10, v14, v15);
   v19 = objc_msgSend_tocTable(v10, v17, v18);
   v22 = objc_msgSend_createTableSQL(v19, v20, v21);
-  v56 = v8;
-  v24 = objc_msgSend_executeSQL_(v8, v23, v22);
+  v56 = databaseCopy;
+  v24 = objc_msgSend_executeSQL_(databaseCopy, v23, v22);
   v27 = v24;
   if (isMigrationTOC)
   {
@@ -154,7 +154,7 @@ LABEL_3:
   {
     v30 = v29;
     v52 = v22;
-    v53 = a5;
+    errorCopy = error;
     v54 = v13;
     v31 = *v58;
     while (2)
@@ -214,7 +214,7 @@ LABEL_26:
 
     v27 = 0;
 LABEL_27:
-    a5 = v53;
+    error = errorCopy;
     v13 = v54;
     v22 = v52;
   }
@@ -247,10 +247,10 @@ LABEL_29:
   if (v27)
   {
 LABEL_32:
-    if (a5)
+    if (error)
     {
       v48 = v27;
-      *a5 = v27;
+      *error = v27;
     }
 
     v10 = 0;
@@ -263,14 +263,14 @@ LABEL_35:
   return v10;
 }
 
-+ (id)createNewTOCInDatabase:(id)a3
++ (id)createNewTOCInDatabase:(id)database
 {
-  v4 = a3;
-  v7 = objc_msgSend_isInMemoryDatabase(v4, v5, v6);
+  databaseCopy = database;
+  v7 = objc_msgSend_isInMemoryDatabase(databaseCopy, v5, v6);
   v21 = 0;
-  v9 = objc_msgSend_createTOCInDatabase_options_error_(a1, v8, v4, v7, &v21);
+  v9 = objc_msgSend_createTOCInDatabase_options_error_(self, v8, databaseCopy, v7, &v21);
   v10 = v21;
-  v13 = objc_msgSend_databaseWasCreated(v4, v11, v12);
+  v13 = objc_msgSend_databaseWasCreated(databaseCopy, v11, v12);
 
   if (v13)
   {
@@ -281,56 +281,56 @@ LABEL_35:
   return v10;
 }
 
-+ (id)migrationTOCInDatabase:(id)a3 error:(id *)a4
++ (id)migrationTOCInDatabase:(id)database error:(id *)error
 {
-  v5 = a3;
+  databaseCopy = database;
   v15 = 0;
-  v7 = objc_msgSend_createTOCInDatabase_options_error_(CKSQLiteMigrationTOCTableGroup, v6, v5, 0, &v15);
+  v7 = objc_msgSend_createTOCInDatabase_options_error_(CKSQLiteMigrationTOCTableGroup, v6, databaseCopy, 0, &v15);
   v9 = v15;
   if (!v9)
   {
-    v10 = objc_msgSend_TOCTableGroupInDatabase_(CKSQLiteTOCTableGroup, v8, v5);
+    v10 = objc_msgSend_TOCTableGroupInDatabase_(CKSQLiteTOCTableGroup, v8, databaseCopy);
     objc_msgSend_setGroupID_(v10, v11, 0);
     v9 = objc_msgSend_addTOCEntriesForTOCTableGroup_(v7, v12, v10);
   }
 
-  if (a4 && v9)
+  if (error && v9)
   {
     v13 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v7;
 }
 
-+ (id)TOCTableGroupInDatabase:(id)a3 options:(unint64_t)a4
++ (id)TOCTableGroupInDatabase:(id)database options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v10 = objc_msgSend_groupName(a1, v8, v9);
-  v12 = objc_msgSend_initWithName_options_database_(v7, v11, v10, a4 | 0xC0000, v6);
+  databaseCopy = database;
+  v7 = [self alloc];
+  v10 = objc_msgSend_groupName(self, v8, v9);
+  v12 = objc_msgSend_initWithName_options_database_(v7, v11, v10, options | 0xC0000, databaseCopy);
 
   objc_msgSend_setGroupID_(v12, v13, &unk_1EFA85620);
-  v14 = NSStringFromClass(a1);
+  v14 = NSStringFromClass(self);
   objc_msgSend_setCreatingClass_(v12, v15, v14);
 
   return v12;
 }
 
-+ (id)TOCTableGroupInDatabase:(id)a3
++ (id)TOCTableGroupInDatabase:(id)database
 {
-  v4 = a3;
-  v7 = objc_msgSend_isInMemoryDatabase(v4, v5, v6);
-  v9 = objc_msgSend_TOCTableGroupInDatabase_options_(a1, v8, v4, v7);
+  databaseCopy = database;
+  v7 = objc_msgSend_isInMemoryDatabase(databaseCopy, v5, v6);
+  v9 = objc_msgSend_TOCTableGroupInDatabase_options_(self, v8, databaseCopy, v7);
 
   return v9;
 }
 
-+ (id)genericTOCTableGroupInDatabase:(id)a3 error:(id *)a4
++ (id)genericTOCTableGroupInDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
-  v9 = objc_msgSend_groupName(a1, v7, v8);
-  v11 = objc_msgSend_tableGroupInDatabase_withName_error_(CKSQLiteGenericTableGroup, v10, v6, v9, a4);
+  databaseCopy = database;
+  v9 = objc_msgSend_groupName(self, v7, v8);
+  v11 = objc_msgSend_tableGroupInDatabase_withName_error_(CKSQLiteGenericTableGroup, v10, databaseCopy, v9, error);
 
   return v11;
 }
@@ -413,15 +413,15 @@ LABEL_35:
   return v26;
 }
 
-- (CKSQLiteTOCTableGroup)initWithName:(id)a3 options:(unint64_t)a4 database:(id)a5
+- (CKSQLiteTOCTableGroup)initWithName:(id)name options:(unint64_t)options database:(id)database
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  databaseCopy = database;
   v11 = objc_msgSend_setFlag_(self, v10, 1);
   v29.receiver = self;
   v29.super_class = CKSQLiteTOCTableGroup;
-  v12 = [(CKSQLiteTableGroup *)&v29 initWithName:v8 options:a4 database:v9];
+  v12 = [(CKSQLiteTableGroup *)&v29 initWithName:nameCopy options:options database:databaseCopy];
   v15 = v12;
   if (v12)
   {
@@ -474,7 +474,7 @@ LABEL_35:
 
 - (id)isUseable
 {
-  v3 = self;
+  selfCopy = self;
   v70[1] = *MEMORY[0x1E69E9840];
   v58 = 0u;
   v59 = 0u;
@@ -489,7 +489,7 @@ LABEL_35:
 
   v55 = *v59;
   v53 = v4;
-  v54 = v3;
+  v54 = selfCopy;
   do
   {
     v6 = 0;
@@ -503,9 +503,9 @@ LABEL_35:
       v7 = *(*(&v58 + 1) + 8 * v6);
       v57 = objc_autoreleasePoolPush();
       v10 = v7;
-      if (v3)
+      if (selfCopy)
       {
-        v11 = objc_msgSend_tocTable(v3, v8, v9);
+        v11 = objc_msgSend_tocTable(selfCopy, v8, v9);
         v14 = objc_msgSend_newEntryObject(v11, v12, v13);
         v17 = objc_msgSend_dbTableName(v10, v15, v16);
         objc_msgSend_setDbTableName_(v14, v18, v17);
@@ -517,7 +517,7 @@ LABEL_35:
 
         if (objc_msgSend_CKIsNoMatchingRowError_(MEMORY[0x1E696ABC0], v25, v24))
         {
-          if (objc_msgSend__canMigrateWithMissingTable_(v3, v26, v10))
+          if (objc_msgSend__canMigrateWithMissingTable_(selfCopy, v26, v10))
           {
 
             objc_opt_class();
@@ -527,7 +527,7 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v28 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v27, @"CKErrorDomain", 1, @"Missing TableGroup table in %@", v3);
+          v28 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v27, @"CKErrorDomain", 1, @"Missing TableGroup table in %@", selfCopy);
 
           v24 = v28;
         }
@@ -543,14 +543,14 @@ LABEL_19:
           if (v41 == v44)
           {
             v24 = 0;
-            v3 = v54;
+            selfCopy = v54;
             goto LABEL_19;
           }
 
           v45 = v44;
           v46 = NSStringFromClass(v37);
           v52 = v45;
-          v3 = v54;
+          selfCopy = v54;
           v4 = v53;
           v24 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v47, @"CKErrorDomain", 1, @"CKSQLiteDatabase<%p>: %@ version changed: database=%lu runtime=%lu", v54, v46, v41, v52);
 
@@ -578,7 +578,7 @@ LABEL_19:
           v68 = v24;
           _os_log_error_impl(&dword_1883EA000, v33, OS_LOG_TYPE_ERROR, "CKSQLiteDatabase<%p>: TOC table %{public}@ is unusable, error: %{public}@", buf, 0x20u);
 
-          v3 = v54;
+          selfCopy = v54;
         }
 
         goto LABEL_19;
@@ -611,14 +611,14 @@ LABEL_26:
   return v24;
 }
 
-- (BOOL)needsMigration:(id *)a3
+- (BOOL)needsMigration:(id *)migration
 {
   v62[3] = *MEMORY[0x1E69E9840];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = objc_msgSend_allTables(self, a2, a3);
+  obj = objc_msgSend_allTables(self, a2, migration);
   v47 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v48, v52, 16);
   if (v47)
   {
@@ -646,10 +646,10 @@ LABEL_20:
       if (v39 || (v37 & 1) != 0)
       {
 
-        if (a3 && v39)
+        if (migration && v39)
         {
           v41 = v39;
-          *a3 = v39;
+          *migration = v39;
         }
 
         goto LABEL_32;
@@ -730,7 +730,7 @@ LABEL_14:
     if (os_log_type_enabled(ck_log_facility_sql, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218754;
-      v54 = self;
+      selfCopy = self;
       v55 = 2114;
       v56 = @"YES";
       v57 = 2114;
@@ -755,11 +755,11 @@ LABEL_32:
   return v37;
 }
 
-- (id)setLastUsedEpoch:(int64_t)a3
+- (id)setLastUsedEpoch:(int64_t)epoch
 {
   v5 = CKProcessStartDate();
   v8 = CKBootDate();
-  switch(a3)
+  switch(epoch)
   {
     case 2:
       objc_msgSend_dateByAddingTimeInterval_(v5, v6, v7, 1.0);
@@ -786,10 +786,10 @@ LABEL_10:
   return v17;
 }
 
-- (id)migrateDataFromGroup:(id)a3
+- (id)migrateDataFromGroup:(id)group
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -811,7 +811,7 @@ LABEL_3:
 
       v14 = objc_msgSend_logicalTableName(*(*(&v30 + 1) + 8 * v13), v9, v10);
       v16 = objc_msgSend_tableWithName_(self, v15, v14);
-      v18 = objc_msgSend_tableWithName_(v4, v17, v14);
+      v18 = objc_msgSend_tableWithName_(groupCopy, v17, v14);
       v20 = v18;
       if (!v16 || v18 == 0)
       {
@@ -1055,7 +1055,7 @@ LABEL_18:
       *(&buf + 1) = 3221225472;
       v113 = sub_188695408;
       v114 = &unk_1E70BC1A0;
-      v115 = self;
+      selfCopy = self;
       v61 = objc_msgSend_performTransaction_(self, v59, &buf);
       if (v61)
       {
@@ -1078,7 +1078,7 @@ LABEL_18:
       *(&v104 + 1) = 3221225472;
       v105 = sub_1886954E4;
       v106 = &unk_1E70BC1A0;
-      v107 = self;
+      selfCopy2 = self;
       v66 = objc_msgSend_performTransaction_(self, v62, &v104);
       if (v66)
       {

@@ -9,37 +9,37 @@
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v5 type];
-  if (v7 == 1)
+  type = [v5 type];
+  if (type == 1)
   {
-    v10 = [v5 value];
-    v11 = [v10 _appearsToBePhoneNumber];
+    value = [v5 value];
+    _appearsToBePhoneNumber = [value _appearsToBePhoneNumber];
 
-    if ((v11 & 1) == 0)
+    if ((_appearsToBePhoneNumber & 1) == 0)
     {
-      v16 = [v5 value];
-      LODWORD(v8) = [v16 _appearsToBeEmail];
+      value2 = [v5 value];
+      LODWORD(v8) = [value2 _appearsToBeEmail];
 
       v8 = v8;
       goto LABEL_4;
     }
   }
 
-  else if (v7 != 2)
+  else if (type != 2)
   {
-    v8 = v7 == 3;
+    v8 = type == 3;
 LABEL_4:
-    v9 = [v5 value];
+    value3 = [v5 value];
     goto LABEL_7;
   }
 
-  v12 = [v5 value];
-  v13 = [v6 firstObject];
-  v9 = TUFormattedPhoneNumber();
+  value4 = [v5 value];
+  firstObject = [v6 firstObject];
+  value3 = TUFormattedPhoneNumber();
 
   v8 = 2;
 LABEL_7:
-  v14 = [objc_alloc(MEMORY[0x277CD3E98]) initWithValue:v9 type:v8 label:0];
+  v14 = [objc_alloc(MEMORY[0x277CD3E98]) initWithValue:value3 type:v8 label:0];
 
   return v14;
 }
@@ -47,23 +47,23 @@ LABEL_7:
 - (id)tu_normalizedHandleForISOCountryCode:()TelephonyUtilities
 {
   v4 = a3;
-  v5 = [a1 value];
-  v6 = [a1 type];
-  if (v6 == 2)
+  value = [self value];
+  type = [self type];
+  if (type == 2)
   {
-    v7 = [MEMORY[0x277D6EEE8] normalizedPhoneNumberHandleForValue:v5 isoCountryCode:v4];
+    v7 = [MEMORY[0x277D6EEE8] normalizedPhoneNumberHandleForValue:value isoCountryCode:v4];
   }
 
   else
   {
-    if (v6 == 1)
+    if (type == 1)
     {
-      [MEMORY[0x277D6EEE8] normalizedEmailAddressHandleForValue:v5];
+      [MEMORY[0x277D6EEE8] normalizedEmailAddressHandleForValue:value];
     }
 
     else
     {
-      [MEMORY[0x277D6EEE8] normalizedHandleWithDestinationID:v5];
+      [MEMORY[0x277D6EEE8] normalizedHandleWithDestinationID:value];
     }
     v7 = ;
   }

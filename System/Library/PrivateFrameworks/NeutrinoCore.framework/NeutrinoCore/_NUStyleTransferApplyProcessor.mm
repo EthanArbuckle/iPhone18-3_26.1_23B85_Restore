@@ -1,31 +1,31 @@
 @interface _NUStyleTransferApplyProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (id)applyStyle:(id)a3 toImage:(id)a4 thumbnail:(id)a5 target:(id)a6 deltaMap:(id)a7 colorSpace:(id)a8 configuration:(id)a9 tuningParameters:(id)a10 noiseModel:(id)a11 error:(id *)a12;
-+ (id)roiTileArrayForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (int)formatForInputAtIndex:(int)a3 arguments:(id)a4;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (id)applyStyle:(id)style toImage:(id)image thumbnail:(id)thumbnail target:(id)target deltaMap:(id)map colorSpace:(id)space configuration:(id)configuration tuningParameters:(id)self0 noiseModel:(id)self1 error:(id *)self2;
++ (id)roiTileArrayForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (int)formatForInputAtIndex:(int)index arguments:(id)arguments;
 @end
 
 @implementation _NUStyleTransferApplyProcessor
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
   v212 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 objectForKeyedSubscript:@"imageIndex"];
-  v13 = [v9 objectAtIndex:{objc_msgSend(v12, "unsignedIntegerValue")}];
+  inputsCopy = inputs;
+  argumentsCopy = arguments;
+  outputCopy = output;
+  v12 = [argumentsCopy objectForKeyedSubscript:@"imageIndex"];
+  v13 = [inputsCopy objectAtIndex:{objc_msgSend(v12, "unsignedIntegerValue")}];
 
-  v14 = [v10 objectForKeyedSubscript:@"styleIndex"];
-  v15 = [v9 objectAtIndex:{objc_msgSend(v14, "unsignedIntegerValue")}];
+  v14 = [argumentsCopy objectForKeyedSubscript:@"styleIndex"];
+  v15 = [inputsCopy objectAtIndex:{objc_msgSend(v14, "unsignedIntegerValue")}];
 
-  v16 = [v10 objectForKeyedSubscript:@"thumbIndex"];
+  v16 = [argumentsCopy objectForKeyedSubscript:@"thumbIndex"];
 
   if (v16)
   {
-    v17 = [v10 objectForKeyedSubscript:@"thumbIndex"];
-    v18 = [v9 objectAtIndex:{objc_msgSend(v17, "unsignedIntegerValue")}];
+    v17 = [argumentsCopy objectForKeyedSubscript:@"thumbIndex"];
+    v18 = [inputsCopy objectAtIndex:{objc_msgSend(v17, "unsignedIntegerValue")}];
   }
 
   else
@@ -33,13 +33,13 @@
     v18 = 0;
   }
 
-  v185 = a1;
-  v19 = [v10 objectForKeyedSubscript:@"deltaIndex"];
+  selfCopy = self;
+  v19 = [argumentsCopy objectForKeyedSubscript:@"deltaIndex"];
 
   if (v19)
   {
-    v20 = [v10 objectForKeyedSubscript:@"deltaIndex"];
-    v21 = [v9 objectAtIndex:{objc_msgSend(v20, "unsignedIntegerValue")}];
+    v20 = [argumentsCopy objectForKeyedSubscript:@"deltaIndex"];
+    v21 = [inputsCopy objectAtIndex:{objc_msgSend(v20, "unsignedIntegerValue")}];
   }
 
   else
@@ -47,12 +47,12 @@
     v21 = 0;
   }
 
-  v22 = [v10 objectForKeyedSubscript:@"targetIndex"];
+  v22 = [argumentsCopy objectForKeyedSubscript:@"targetIndex"];
 
   if (v22)
   {
-    v23 = [v10 objectForKeyedSubscript:@"targetIndex"];
-    v24 = [v9 objectAtIndex:{objc_msgSend(v23, "unsignedIntegerValue")}];
+    v23 = [argumentsCopy objectForKeyedSubscript:@"targetIndex"];
+    v24 = [inputsCopy objectAtIndex:{objc_msgSend(v23, "unsignedIntegerValue")}];
   }
 
   else
@@ -63,9 +63,9 @@
   v186 = v18;
   if (+[NUGlobalSettings debugDumpStyleEngineInputs])
   {
-    v183 = v9;
+    v183 = inputsCopy;
     v179 = v21;
-    v25 = [v10 objectForKeyedSubscript:@"config"];
+    v25 = [argumentsCopy objectForKeyedSubscript:@"config"];
     v26 = [v25 objectForKey:@"usage"];
     v27 = v26;
     v28 = @"default";
@@ -77,18 +77,18 @@
     v29 = v28;
 
     v30 = -[NUIOSurface initWithIOSurface:]([NUIOSurface alloc], "initWithIOSurface:", [v13 surface]);
-    v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-inputImage", v185, v29];
+    v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-inputImage", selfCopy, v29];
     [(NUIOSurface *)v30 debugDump:v31];
 
     v32 = -[NUIOSurface initWithIOSurface:]([NUIOSurface alloc], "initWithIOSurface:", [v15 surface]);
-    v172 = v185;
+    v172 = selfCopy;
     v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-inputStyle"];
     [(NUIOSurface *)v32 debugDump:v33];
 
     if (v18)
     {
       v34 = -[NUIOSurface initWithIOSurface:]([NUIOSurface alloc], "initWithIOSurface:", [v18 surface]);
-      v172 = v185;
+      v172 = selfCopy;
       v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-inputThumbnail"];
       [(NUIOSurface *)v34 debugDump:v35];
 
@@ -98,7 +98,7 @@
     if (v24)
     {
       v36 = -[NUIOSurface initWithIOSurface:]([NUIOSurface alloc], "initWithIOSurface:", [v24 surface]);
-      v172 = v185;
+      v172 = selfCopy;
       v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-targetThumbnail"];
       [(NUIOSurface *)v36 debugDump:v37];
 
@@ -106,10 +106,10 @@
     }
 
     v21 = v179;
-    v9 = v183;
+    inputsCopy = v183;
   }
 
-  v38 = [v10 objectForKeyedSubscript:@"imageExtent"];
+  v38 = [argumentsCopy objectForKeyedSubscript:@"imageExtent"];
   [v38 CGRectValue];
   v40 = v39;
   v42 = v41;
@@ -141,8 +141,8 @@
         v106 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v107 = MEMORY[0x1E696AF00];
         v108 = v106;
-        v109 = [v107 callStackSymbols];
-        v110 = [v109 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v107 callStackSymbols];
+        v110 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v209 = v106;
         v210 = 2114;
@@ -153,8 +153,8 @@
 
     else if (v96)
     {
-      v97 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v98 = [v97 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v98 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v209 = v98;
       _os_log_error_impl(&dword_1C0184000, v95, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -167,7 +167,7 @@
   v180 = v44;
   v181 = v42;
   v182 = v40;
-  v47 = [v10 objectForKeyedSubscript:@"styleExtent"];
+  v47 = [argumentsCopy objectForKeyedSubscript:@"styleExtent"];
   [v47 CGRectValue];
   v49 = v48;
   v51 = v50;
@@ -199,8 +199,8 @@
         v115 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v116 = MEMORY[0x1E696AF00];
         v117 = v115;
-        v118 = [v116 callStackSymbols];
-        v119 = [v118 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v116 callStackSymbols];
+        v119 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v209 = v115;
         v210 = 2114;
@@ -211,8 +211,8 @@
 
     else if (v103)
     {
-      v104 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v105 = [v104 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v105 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v209 = v105;
       _os_log_error_impl(&dword_1C0184000, v102, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -247,7 +247,7 @@
 
   if (v18)
   {
-    v56 = [v10 objectForKeyedSubscript:@"thumbExtent"];
+    v56 = [argumentsCopy objectForKeyedSubscript:@"thumbExtent"];
     [v56 CGRectValue];
     v58 = v57;
     v60 = v59;
@@ -279,8 +279,8 @@
           v145 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v146 = MEMORY[0x1E696AF00];
           v147 = v145;
-          v148 = [v146 callStackSymbols];
-          v149 = [v148 componentsJoinedByString:@"\n"];
+          callStackSymbols5 = [v146 callStackSymbols];
+          v149 = [callStackSymbols5 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v209 = v145;
           v210 = 2114;
@@ -291,8 +291,8 @@
 
       else if (v128)
       {
-        v129 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v130 = [v129 componentsJoinedByString:@"\n"];
+        callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v130 = [callStackSymbols6 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v209 = v130;
         _os_log_error_impl(&dword_1C0184000, v127, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -328,7 +328,7 @@
 
   if (v21)
   {
-    v65 = [v10 objectForKeyedSubscript:@"deltaExtent"];
+    v65 = [argumentsCopy objectForKeyedSubscript:@"deltaExtent"];
     [v65 CGRectValue];
     v67 = v66;
     v69 = v68;
@@ -360,8 +360,8 @@
           v154 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v155 = MEMORY[0x1E696AF00];
           v156 = v154;
-          v157 = [v155 callStackSymbols];
-          v158 = [v157 componentsJoinedByString:@"\n"];
+          callStackSymbols7 = [v155 callStackSymbols];
+          v158 = [callStackSymbols7 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v209 = v154;
           v210 = 2114;
@@ -372,8 +372,8 @@
 
       else if (v135)
       {
-        v136 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v137 = [v136 componentsJoinedByString:@"\n"];
+        callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v137 = [callStackSymbols8 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v209 = v137;
         _os_log_error_impl(&dword_1C0184000, v134, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -385,7 +385,7 @@
 
   if (v24)
   {
-    v74 = [v10 objectForKeyedSubscript:@"targetExtent"];
+    v74 = [argumentsCopy objectForKeyedSubscript:@"targetExtent"];
     [v74 CGRectValue];
     v76 = v75;
     v78 = v77;
@@ -417,8 +417,8 @@
           v163 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v164 = MEMORY[0x1E696AF00];
           v165 = v163;
-          v166 = [v164 callStackSymbols];
-          v167 = [v166 componentsJoinedByString:@"\n"];
+          callStackSymbols9 = [v164 callStackSymbols];
+          v167 = [callStackSymbols9 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v209 = v163;
           v210 = 2114;
@@ -429,8 +429,8 @@
 
       else if (v142)
       {
-        v143 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v144 = [v143 componentsJoinedByString:@"\n"];
+        callStackSymbols10 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v144 = [callStackSymbols10 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v209 = v144;
         _os_log_error_impl(&dword_1C0184000, v141, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -468,7 +468,7 @@ LABEL_43:
     }
   }
 
-  [v11 region];
+  [outputCopy region];
   v226.origin.x = v182;
   v226.origin.y = v181;
   v226.size.width = v180;
@@ -478,13 +478,13 @@ LABEL_43:
   x = v222.origin.x;
   height = v222.size.height;
   width = v222.size.width;
-  v177 = [v11 metalCommandBuffer];
-  v83 = [v177 commandQueue];
-  [v10 objectForKeyedSubscript:@"config"];
-  v184 = v9;
+  metalCommandBuffer = [outputCopy metalCommandBuffer];
+  commandQueue = [metalCommandBuffer commandQueue];
+  [argumentsCopy objectForKeyedSubscript:@"config"];
+  v184 = inputsCopy;
   v84 = v24;
   v86 = v85 = v21;
-  v87 = [v10 objectForKeyedSubscript:@"tuning"];
+  v87 = [argumentsCopy objectForKeyedSubscript:@"tuning"];
   v187[0] = MEMORY[0x1E69E9820];
   v187[1] = 3221225472;
   v187[2] = __75___NUStyleTransferApplyProcessor_processWithInputs_arguments_output_error___block_invoke;
@@ -506,23 +506,23 @@ LABEL_43:
   v190 = v18;
   v191 = v85;
   v192 = v84;
-  v193 = v10;
-  v194 = v11;
-  v207 = v185;
-  v88 = [_NUStyleEngine usingSharedStyleEngineForUsage:@"apply" withMetalCommandQueue:v83 configuration:v86 tuningParams:v87 perform:v187];
+  v193 = argumentsCopy;
+  v194 = outputCopy;
+  v207 = selfCopy;
+  v88 = [_NUStyleEngine usingSharedStyleEngineForUsage:@"apply" withMetalCommandQueue:commandQueue configuration:v86 tuningParams:v87 perform:v187];
 
   v21 = v85;
   v24 = v84;
-  v9 = v184;
+  inputsCopy = v184;
 
 LABEL_44:
   return v88;
 }
 
-+ (id)roiTileArrayForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (id)roiTileArrayForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  [a1 roiForInput:*&a3 arguments:a4 outputRect:{a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  [self roiForInput:*&input arguments:arguments outputRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   v5 = [MEMORY[0x1E695F688] vectorWithCGRect:?];
   v8[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
@@ -530,21 +530,21 @@ LABEL_44:
   return v6;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4;
-  v11 = [v10 objectForKeyedSubscript:@"styleIndex"];
-  v12 = [v11 intValue];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  argumentsCopy = arguments;
+  v11 = [argumentsCopy objectForKeyedSubscript:@"styleIndex"];
+  intValue = [v11 intValue];
 
-  if (v12 == a3)
+  if (intValue == input)
   {
     v13 = @"styleExtent";
 LABEL_9:
-    v22 = [v10 objectForKeyedSubscript:v13];
+    v22 = [argumentsCopy objectForKeyedSubscript:v13];
     [v22 CGRectValue];
     x = v23;
     y = v24;
@@ -554,28 +554,28 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v14 = [v10 objectForKeyedSubscript:@"thumbIndex"];
+  v14 = [argumentsCopy objectForKeyedSubscript:@"thumbIndex"];
   if (v14)
   {
     v15 = v14;
-    v16 = [v10 objectForKeyedSubscript:@"thumbIndex"];
-    v17 = [v16 intValue];
+    v16 = [argumentsCopy objectForKeyedSubscript:@"thumbIndex"];
+    intValue2 = [v16 intValue];
 
-    if (v17 == a3)
+    if (intValue2 == input)
     {
       v13 = @"thumbExtent";
       goto LABEL_9;
     }
   }
 
-  v18 = [v10 objectForKeyedSubscript:@"targetIndex"];
+  v18 = [argumentsCopy objectForKeyedSubscript:@"targetIndex"];
   if (v18)
   {
     v19 = v18;
-    v20 = [v10 objectForKeyedSubscript:@"targetIndex"];
-    v21 = [v20 intValue];
+    v20 = [argumentsCopy objectForKeyedSubscript:@"targetIndex"];
+    intValue3 = [v20 intValue];
 
-    if (v21 == a3)
+    if (intValue3 == input)
     {
       v13 = @"targetExtent";
       goto LABEL_9;
@@ -595,20 +595,20 @@ LABEL_10:
   return result;
 }
 
-+ (int)formatForInputAtIndex:(int)a3 arguments:(id)a4
++ (int)formatForInputAtIndex:(int)index arguments:(id)arguments
 {
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:@"styleIndex"];
-  v7 = [v6 intValue];
+  argumentsCopy = arguments;
+  v6 = [argumentsCopy objectForKeyedSubscript:@"styleIndex"];
+  intValue = [v6 intValue];
 
-  if (v7 == a3)
+  if (intValue == index)
   {
-    v8 = [v5 objectForKeyedSubscript:@"config"];
+    v8 = [argumentsCopy objectForKeyedSubscript:@"config"];
     v9 = [v8 objectForKeyedSubscript:@"useFloat16"];
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
     v11 = MEMORY[0x1E695F930];
-    if (!v10)
+    if (!bOOLValue)
     {
       v11 = MEMORY[0x1E695F928];
     }
@@ -618,8 +618,8 @@ LABEL_10:
 
   else
   {
-    v13 = [v5 objectForKeyedSubscript:@"deltaIndex"];
-    if (v13 && (v14 = v13, [v5 objectForKeyedSubscript:@"deltaIndex"], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "intValue"), v15, v14, v16 == a3))
+    v13 = [argumentsCopy objectForKeyedSubscript:@"deltaIndex"];
+    if (v13 && (v14 = v13, [argumentsCopy objectForKeyedSubscript:@"deltaIndex"], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "intValue"), v15, v14, v16 == index))
     {
       v17 = MEMORY[0x1E695F890];
     }
@@ -635,19 +635,19 @@ LABEL_10:
   return v12;
 }
 
-+ (id)applyStyle:(id)a3 toImage:(id)a4 thumbnail:(id)a5 target:(id)a6 deltaMap:(id)a7 colorSpace:(id)a8 configuration:(id)a9 tuningParameters:(id)a10 noiseModel:(id)a11 error:(id *)a12
++ (id)applyStyle:(id)style toImage:(id)image thumbnail:(id)thumbnail target:(id)target deltaMap:(id)map colorSpace:(id)space configuration:(id)configuration tuningParameters:(id)self0 noiseModel:(id)self1 error:(id *)self2
 {
   v157 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  if (!v17)
+  styleCopy = style;
+  imageCopy = image;
+  thumbnailCopy = thumbnail;
+  targetCopy = target;
+  mapCopy = map;
+  spaceCopy = space;
+  configurationCopy = configuration;
+  parametersCopy = parameters;
+  modelCopy = model;
+  if (!styleCopy)
   {
     v51 = NUAssertLogger_30110();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -668,8 +668,8 @@ LABEL_10:
         v93 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v94 = MEMORY[0x1E696AF00];
         v95 = v93;
-        v96 = [v94 callStackSymbols];
-        v97 = [v96 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v94 callStackSymbols];
+        v97 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v154 = v93;
         v155 = 2114;
@@ -680,8 +680,8 @@ LABEL_10:
 
     else if (v55)
     {
-      v56 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v57 = [v56 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v57 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v154 = v57;
       _os_log_error_impl(&dword_1C0184000, v54, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -690,7 +690,7 @@ LABEL_10:
     _NUAssertFailHandler("+[_NUStyleTransferApplyProcessor applyStyle:toImage:thumbnail:target:deltaMap:colorSpace:configuration:tuningParameters:noiseModel:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 1796, @"Invalid parameter not satisfying: %s", v98, v99, v100, v101, "styleImage != nil");
   }
 
-  if (!v18)
+  if (!imageCopy)
   {
     v58 = NUAssertLogger_30110();
     if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
@@ -711,8 +711,8 @@ LABEL_10:
         v102 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v103 = MEMORY[0x1E696AF00];
         v104 = v102;
-        v105 = [v103 callStackSymbols];
-        v106 = [v105 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v103 callStackSymbols];
+        v106 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v154 = v102;
         v155 = 2114;
@@ -723,8 +723,8 @@ LABEL_10:
 
     else if (v62)
     {
-      v63 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v64 = [v63 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v64 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v154 = v64;
       _os_log_error_impl(&dword_1C0184000, v61, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -733,7 +733,7 @@ LABEL_10:
     _NUAssertFailHandler("+[_NUStyleTransferApplyProcessor applyStyle:toImage:thumbnail:target:deltaMap:colorSpace:configuration:tuningParameters:noiseModel:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 1797, @"Invalid parameter not satisfying: %s", v107, v108, v109, v110, "inputImage != nil");
   }
 
-  if (!v19)
+  if (!thumbnailCopy)
   {
     v65 = NUAssertLogger_30110();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
@@ -754,8 +754,8 @@ LABEL_10:
         v111 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v112 = MEMORY[0x1E696AF00];
         v113 = v111;
-        v114 = [v112 callStackSymbols];
-        v115 = [v114 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v112 callStackSymbols];
+        v115 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v154 = v111;
         v155 = 2114;
@@ -766,8 +766,8 @@ LABEL_10:
 
     else if (v69)
     {
-      v70 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v71 = [v70 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v71 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v154 = v71;
       _os_log_error_impl(&dword_1C0184000, v68, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -776,7 +776,7 @@ LABEL_10:
     _NUAssertFailHandler("+[_NUStyleTransferApplyProcessor applyStyle:toImage:thumbnail:target:deltaMap:colorSpace:configuration:tuningParameters:noiseModel:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 1799, @"Invalid parameter not satisfying: %s", v116, v117, v118, v119, "inputThumbnail != nil");
   }
 
-  if (!v22)
+  if (!spaceCopy)
   {
     v72 = NUAssertLogger_30110();
     if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
@@ -797,8 +797,8 @@ LABEL_10:
         v120 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v121 = MEMORY[0x1E696AF00];
         v122 = v120;
-        v123 = [v121 callStackSymbols];
-        v124 = [v123 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v121 callStackSymbols];
+        v124 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v154 = v120;
         v155 = 2114;
@@ -809,8 +809,8 @@ LABEL_10:
 
     else if (v76)
     {
-      v77 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v78 = [v77 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v78 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v154 = v78;
       _os_log_error_impl(&dword_1C0184000, v75, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -819,7 +819,7 @@ LABEL_10:
     _NUAssertFailHandler("+[_NUStyleTransferApplyProcessor applyStyle:toImage:thumbnail:target:deltaMap:colorSpace:configuration:tuningParameters:noiseModel:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 1801, @"Invalid parameter not satisfying: %s", v125, v126, v127, v128, "colorSpace != nil");
   }
 
-  if (!v23)
+  if (!configurationCopy)
   {
     v79 = NUAssertLogger_30110();
     if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
@@ -840,8 +840,8 @@ LABEL_10:
         v129 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v130 = MEMORY[0x1E696AF00];
         v131 = v129;
-        v132 = [v130 callStackSymbols];
-        v133 = [v132 componentsJoinedByString:@"\n"];
+        callStackSymbols9 = [v130 callStackSymbols];
+        v133 = [callStackSymbols9 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v154 = v129;
         v155 = 2114;
@@ -852,8 +852,8 @@ LABEL_10:
 
     else if (v83)
     {
-      v84 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v85 = [v84 componentsJoinedByString:@"\n"];
+      callStackSymbols10 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v85 = [callStackSymbols10 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v154 = v85;
       _os_log_error_impl(&dword_1C0184000, v82, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -862,7 +862,7 @@ LABEL_10:
     _NUAssertFailHandler("+[_NUStyleTransferApplyProcessor applyStyle:toImage:thumbnail:target:deltaMap:colorSpace:configuration:tuningParameters:noiseModel:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 1802, @"Invalid parameter not satisfying: %s", v134, v135, v136, v137, "config != nil");
   }
 
-  if (!v24)
+  if (!parametersCopy)
   {
     v86 = NUAssertLogger_30110();
     if (os_log_type_enabled(v86, OS_LOG_TYPE_ERROR))
@@ -883,8 +883,8 @@ LABEL_10:
         v138 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v139 = MEMORY[0x1E696AF00];
         v140 = v138;
-        v141 = [v139 callStackSymbols];
-        v142 = [v141 componentsJoinedByString:@"\n"];
+        callStackSymbols11 = [v139 callStackSymbols];
+        v142 = [callStackSymbols11 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v154 = v138;
         v155 = 2114;
@@ -895,8 +895,8 @@ LABEL_10:
 
     else if (v90)
     {
-      v91 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v92 = [v91 componentsJoinedByString:@"\n"];
+      callStackSymbols12 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v92 = [callStackSymbols12 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v154 = v92;
       _os_log_error_impl(&dword_1C0184000, v89, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -905,58 +905,58 @@ LABEL_10:
     _NUAssertFailHandler("+[_NUStyleTransferApplyProcessor applyStyle:toImage:thumbnail:target:deltaMap:colorSpace:configuration:tuningParameters:noiseModel:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 1803, @"Invalid parameter not satisfying: %s", v143, v144, v145, v146, "tuningParams != nil");
   }
 
-  v26 = v25;
-  v151 = v20;
+  v26 = modelCopy;
+  v151 = targetCopy;
   v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v28 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v148 = v24;
-  [v28 setObject:v24 forKeyedSubscript:@"tuning"];
-  v149 = v23;
-  [v28 setObject:v23 forKeyedSubscript:@"config"];
+  v148 = parametersCopy;
+  [v28 setObject:parametersCopy forKeyedSubscript:@"tuning"];
+  v149 = configurationCopy;
+  [v28 setObject:configurationCopy forKeyedSubscript:@"config"];
   v147 = v26;
   [v28 setObject:v26 forKeyedSubscript:@"noiseModel"];
   v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v27, "count")}];
   [v28 setObject:v29 forKeyedSubscript:@"imageIndex"];
 
   v30 = MEMORY[0x1E695F688];
-  [v18 extent];
+  [imageCopy extent];
   v31 = [v30 vectorWithCGRect:?];
   [v28 setObject:v31 forKeyedSubscript:@"imageExtent"];
 
-  v32 = [v18 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v22, "CGColorSpace")}];
+  v32 = [imageCopy imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(spaceCopy, "CGColorSpace")}];
   [v27 addObject:v32];
 
   v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v27, "count")}];
   [v28 setObject:v33 forKeyedSubscript:@"styleIndex"];
 
   v34 = MEMORY[0x1E695F688];
-  [v17 extent];
+  [styleCopy extent];
   v35 = [v34 vectorWithCGRect:?];
   [v28 setObject:v35 forKeyedSubscript:@"styleExtent"];
 
-  [v27 addObject:v17];
+  [v27 addObject:styleCopy];
   v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v27, "count")}];
   [v28 setObject:v36 forKeyedSubscript:@"thumbIndex"];
 
   v37 = MEMORY[0x1E695F688];
-  [v19 extent];
+  [thumbnailCopy extent];
   v38 = [v37 vectorWithCGRect:?];
   [v28 setObject:v38 forKeyedSubscript:@"thumbExtent"];
 
-  v39 = [v19 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v22, "CGColorSpace")}];
+  v39 = [thumbnailCopy imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(spaceCopy, "CGColorSpace")}];
   [v27 addObject:v39];
 
-  if (v21)
+  if (mapCopy)
   {
     v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v27, "count")}];
     [v28 setObject:v40 forKeyedSubscript:@"deltaIndex"];
 
     v41 = MEMORY[0x1E695F688];
-    [v21 extent];
+    [mapCopy extent];
     v42 = [v41 vectorWithCGRect:?];
     [v28 setObject:v42 forKeyedSubscript:@"deltaExtent"];
 
-    [v27 addObject:v21];
+    [v27 addObject:mapCopy];
   }
 
   if (v151)
@@ -969,23 +969,23 @@ LABEL_10:
     v45 = [v44 vectorWithCGRect:?];
     [v28 setObject:v45 forKeyedSubscript:@"targetExtent"];
 
-    v46 = [v151 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v22, "CGColorSpace")}];
+    v46 = [v151 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(spaceCopy, "CGColorSpace")}];
     [v27 addObject:v46];
   }
 
-  [v18 extent];
+  [imageCopy extent];
   v152 = 0;
-  v47 = [a1 applyWithExtent:v27 inputs:v28 arguments:&v152 error:?];
+  v47 = [self applyWithExtent:v27 inputs:v28 arguments:&v152 error:?];
   v48 = v152;
   if (v47)
   {
-    v49 = [v47 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(v22, "CGColorSpace")}];
+    v49 = [v47 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(spaceCopy, "CGColorSpace")}];
   }
 
   else
   {
-    [NUError errorWithCode:1 reason:@"Failed to apply style" object:a1 underlyingError:v48];
-    *a12 = v49 = 0;
+    [NUError errorWithCode:1 reason:@"Failed to apply style" object:self underlyingError:v48];
+    *error = v49 = 0;
   }
 
   return v49;

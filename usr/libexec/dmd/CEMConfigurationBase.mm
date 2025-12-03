@@ -1,15 +1,15 @@
 @interface CEMConfigurationBase
-- (id)dmf_installSynthesizedProfileRequestWithAssetProviders:(id)a3 error:(id *)a4;
-- (id)dmf_removeSynthesizedProfileRequestWithError:(id *)a3;
+- (id)dmf_installSynthesizedProfileRequestWithAssetProviders:(id)providers error:(id *)error;
+- (id)dmf_removeSynthesizedProfileRequestWithError:(id *)error;
 @end
 
 @implementation CEMConfigurationBase
 
-- (id)dmf_installSynthesizedProfileRequestWithAssetProviders:(id)a3 error:(id *)a4
+- (id)dmf_installSynthesizedProfileRequestWithAssetProviders:(id)providers error:(id *)error
 {
-  v6 = a3;
+  providersCopy = providers;
   v7 = [NSMutableDictionary dictionaryWithCapacity:2];
-  v8 = [(CEMConfigurationBase *)self synthesizeProfileOutUUIDs:v7 withOldUUIDs:0 assetProviders:v6];
+  v8 = [(CEMConfigurationBase *)self synthesizeProfileOutUUIDs:v7 withOldUUIDs:0 assetProviders:providersCopy];
 
   v9 = DMFConfigurationEngineLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -64,11 +64,11 @@ LABEL_8:
 
 LABEL_11:
 
-  if (a4)
+  if (error)
   {
     v18 = v14;
     v17 = 0;
-    *a4 = v14;
+    *error = v14;
   }
 
   else
@@ -81,7 +81,7 @@ LABEL_14:
   return v17;
 }
 
-- (id)dmf_removeSynthesizedProfileRequestWithError:(id *)a3
+- (id)dmf_removeSynthesizedProfileRequestWithError:(id *)error
 {
   v5 = [NSMutableDictionary dictionaryWithCapacity:2];
   v6 = [(CEMConfigurationBase *)self synthesizeProfileOutUUIDs:v5 withOldUUIDs:0 assetProviders:&__NSDictionary0__struct];
@@ -110,11 +110,11 @@ LABEL_14:
       sub_10007BB5C(v10);
     }
 
-    if (a3)
+    if (error)
     {
       v13 = v10;
       v11 = 0;
-      *a3 = v10;
+      *error = v10;
     }
 
     else

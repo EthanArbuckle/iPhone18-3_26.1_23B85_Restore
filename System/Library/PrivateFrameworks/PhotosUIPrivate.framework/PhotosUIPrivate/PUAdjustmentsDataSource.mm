@@ -1,5 +1,5 @@
 @interface PUAdjustmentsDataSource
-- (BOOL)canModifyAdjustmentAtIndexPath:(id)a3;
+- (BOOL)canModifyAdjustmentAtIndexPath:(id)path;
 - (NSMutableArray)adjustmentInfoSections;
 - (PUAdjustmentsDataSourceDelegate)delegate;
 - (id)_autoEnhanceAdjustmentInfo;
@@ -8,27 +8,27 @@
 - (id)_detailAdjustmentInfos;
 - (id)_headroomAdjustmentInfos;
 - (id)_lightAdjustmentInfos;
-- (id)_newAdjustmentInfoWithIdentifier:(id)a3 adjustmentKey:(id)a4 settingKey:(id)a5 attributeKey:(id)a6;
+- (id)_newAdjustmentInfoWithIdentifier:(id)identifier adjustmentKey:(id)key settingKey:(id)settingKey attributeKey:(id)attributeKey;
 - (id)_smartBlackAndWhiteAdjustmentInfos;
 - (id)_vignetteAdjustmentInfos;
-- (id)infoForItemAtIndexPath:(id)a3;
+- (id)infoForItemAtIndexPath:(id)path;
 - (id)renderer;
 - (int64_t)numberOfItemsInAllSections;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
 - (void)_createAdjustmentInfos;
-- (void)_enableNonAutoAdjustments:(BOOL)a3;
-- (void)_modifyAdjustmentForInfo:(id)a3;
+- (void)_enableNonAutoAdjustments:(BOOL)adjustments;
+- (void)_modifyAdjustmentForInfo:(id)info;
 - (void)_resetEnabledStateForAutoEnhancedInfos;
-- (void)_setDefaultsForInfo:(id)a3;
+- (void)_setDefaultsForInfo:(id)info;
 - (void)_updateAdjustmentInfos;
 - (void)beginInteractiveChange;
 - (void)compositionControllerDidChange;
 - (void)endInteractiveChange;
-- (void)modifyValue:(double)a3 atIndexPath:(id)a4;
-- (void)resetInfoAtIndexPath:(id)a3;
-- (void)setAdjustmentEnabled:(BOOL)a3 atIndexPath:(id)a4 completionHandler:(id)a5;
-- (void)setupWithCompositionController:(id)a3 valuesCalculator:(id)a4 autoAdjustmentController:(id)a5 assetType:(unint64_t)a6;
+- (void)modifyValue:(double)value atIndexPath:(id)path;
+- (void)resetInfoAtIndexPath:(id)path;
+- (void)setAdjustmentEnabled:(BOOL)enabled atIndexPath:(id)path completionHandler:(id)handler;
+- (void)setupWithCompositionController:(id)controller valuesCalculator:(id)calculator autoAdjustmentController:(id)adjustmentController assetType:(unint64_t)type;
 @end
 
 @implementation PUAdjustmentsDataSource
@@ -43,16 +43,16 @@
 - (void)compositionControllerDidChange
 {
   [(PUAdjustmentsDataSource *)self _updateAdjustmentInfos];
-  v3 = [(PUAdjustmentsDataSource *)self delegate];
-  [v3 adjustmentsDataChanged:self];
+  delegate = [(PUAdjustmentsDataSource *)self delegate];
+  [delegate adjustmentsDataChanged:self];
 }
 
 - (void)_resetEnabledStateForAutoEnhancedInfos
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [(PUAdjustmentsDataSource *)self compositionController];
-  v4 = [v3 whiteBalanceAdjustmentController];
-  v5 = [v4 warmFace];
+  compositionController = [(PUAdjustmentsDataSource *)self compositionController];
+  whiteBalanceAdjustmentController = [compositionController whiteBalanceAdjustmentController];
+  warmFace = [whiteBalanceAdjustmentController warmFace];
 
   v38 = 0u;
   v39 = 0u;
@@ -100,15 +100,15 @@
               }
 
               v15 = *(*(&v32 + 1) + 8 * v14);
-              v16 = [v15 identifier];
-              if (v16 == v6)
+              identifier = [v15 identifier];
+              if (identifier == v6)
               {
                 goto LABEL_18;
               }
 
-              v17 = [v15 identifier];
-              v18 = v17;
-              if (v17 == v7)
+              identifier2 = [v15 identifier];
+              v18 = identifier2;
+              if (identifier2 == v7)
               {
 
 LABEL_18:
@@ -117,17 +117,17 @@ LABEL_19:
                 goto LABEL_21;
               }
 
-              if (v5)
+              if (warmFace)
               {
                 [v15 identifier];
                 v19 = v13;
                 v20 = v6;
                 v21 = v10;
                 v22 = v7;
-                v24 = v23 = v5;
+                v24 = v23 = warmFace;
 
                 v25 = v24 == v30;
-                v5 = v23;
+                warmFace = v23;
                 v7 = v22;
                 v10 = v21;
                 v6 = v20;
@@ -165,24 +165,24 @@ LABEL_21:
   }
 }
 
-- (void)resetInfoAtIndexPath:(id)a3
+- (void)resetInfoAtIndexPath:(id)path
 {
-  v4 = [(PUAdjustmentsDataSource *)self infoForItemAtIndexPath:a3];
+  v4 = [(PUAdjustmentsDataSource *)self infoForItemAtIndexPath:path];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 settingKey];
+    settingKey = [v4 settingKey];
 
-    if (v6)
+    if (settingKey)
     {
-      v7 = [(PUAdjustmentsDataSource *)self compositionController];
-      v8 = [v5 adjustmentKey];
+      compositionController = [(PUAdjustmentsDataSource *)self compositionController];
+      adjustmentKey = [v5 adjustmentKey];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __48__PUAdjustmentsDataSource_resetInfoAtIndexPath___block_invoke;
       v9[3] = &unk_1E7B80728;
       v10 = v5;
-      [v7 modifyAdjustmentWithKey:v8 modificationBlock:v9];
+      [compositionController modifyAdjustmentWithKey:adjustmentKey modificationBlock:v9];
     }
   }
 }
@@ -198,63 +198,63 @@ void __48__PUAdjustmentsDataSource_resetInfoAtIndexPath___block_invoke(uint64_t 
   [v3 setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)modifyValue:(double)a3 atIndexPath:(id)a4
+- (void)modifyValue:(double)value atIndexPath:(id)path
 {
-  v12 = a4;
+  pathCopy = path;
   v6 = [(PUAdjustmentsDataSource *)self infoForItemAtIndexPath:?];
   if (([v6 enabled] & 1) == 0)
   {
-    [(PUAdjustmentsDataSource *)self setAdjustmentEnabled:1 atIndexPath:v12 completionHandler:0];
+    [(PUAdjustmentsDataSource *)self setAdjustmentEnabled:1 atIndexPath:pathCopy completionHandler:0];
   }
 
-  v7 = [v6 settingKey];
+  settingKey = [v6 settingKey];
 
-  if (v7)
+  if (settingKey)
   {
-    v8 = [v6 customSettingDelegate];
+    customSettingDelegate = [v6 customSettingDelegate];
 
-    if (v8 && ([v6 customSettingDelegate], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
+    if (customSettingDelegate && ([v6 customSettingDelegate], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
     {
-      v11 = [v6 customSettingDelegate];
-      [v11 dataSource:self adjustmentInfo:v6 modifyValue:a3];
+      customSettingDelegate2 = [v6 customSettingDelegate];
+      [customSettingDelegate2 dataSource:self adjustmentInfo:v6 modifyValue:value];
     }
 
     else
     {
-      [v6 setCurrentLevel:a3];
+      [v6 setCurrentLevel:value];
       [(PUAdjustmentsDataSource *)self _modifyAdjustmentForInfo:v6];
     }
   }
 }
 
-- (void)_modifyAdjustmentForInfo:(id)a3
+- (void)_modifyAdjustmentForInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(PUAdjustmentsDataSource *)self compositionController];
-  v6 = [v4 adjustmentKey];
-  v7 = [v5 adjustmentControllerForKey:v6];
+  infoCopy = info;
+  compositionController = [(PUAdjustmentsDataSource *)self compositionController];
+  adjustmentKey = [infoCopy adjustmentKey];
+  v7 = [compositionController adjustmentControllerForKey:adjustmentKey];
   v8 = v7 != 0;
 
-  v9 = [(PUAdjustmentsDataSource *)self delegate];
-  [v9 willModifyAdjustment];
+  delegate = [(PUAdjustmentsDataSource *)self delegate];
+  [delegate willModifyAdjustment];
 
-  v10 = [(PUAdjustmentsDataSource *)self compositionController];
-  v11 = [v4 adjustmentKey];
+  compositionController2 = [(PUAdjustmentsDataSource *)self compositionController];
+  adjustmentKey2 = [infoCopy adjustmentKey];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__PUAdjustmentsDataSource__modifyAdjustmentForInfo___block_invoke;
   v15[3] = &unk_1E7B74B80;
   v18 = v8;
-  v16 = v4;
-  v17 = self;
-  v12 = v4;
-  [v10 modifyAdjustmentWithKey:v11 modificationBlock:v15];
+  v16 = infoCopy;
+  selfCopy = self;
+  v12 = infoCopy;
+  [compositionController2 modifyAdjustmentWithKey:adjustmentKey2 modificationBlock:v15];
 
-  v13 = [v12 localizedActionName];
-  v14 = [(PUAdjustmentsDataSource *)self delegate];
-  [v14 didModifyAdjustmentWithLocalizedName:v13];
+  localizedActionName = [v12 localizedActionName];
+  delegate2 = [(PUAdjustmentsDataSource *)self delegate];
+  [delegate2 didModifyAdjustmentWithLocalizedName:localizedActionName];
 
-  [(PUAdjustmentsDataSource *)self setLastAdjustmentLocalizedName:v13];
+  [(PUAdjustmentsDataSource *)self setLastAdjustmentLocalizedName:localizedActionName];
 }
 
 void __52__PUAdjustmentsDataSource__modifyAdjustmentForInfo___block_invoke(uint64_t a1, void *a2)
@@ -373,21 +373,21 @@ void __52__PUAdjustmentsDataSource__modifyAdjustmentForInfo___block_invoke(uint6
   [v39 setObject:v37 forKeyedSubscript:v38];
 }
 
-- (void)setAdjustmentEnabled:(BOOL)a3 atIndexPath:(id)a4 completionHandler:(id)a5
+- (void)setAdjustmentEnabled:(BOOL)enabled atIndexPath:(id)path completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = [(PUAdjustmentsDataSource *)self infoForItemAtIndexPath:a4];
-  if ([v9 enabled] == v6)
+  enabledCopy = enabled;
+  handlerCopy = handler;
+  v9 = [(PUAdjustmentsDataSource *)self infoForItemAtIndexPath:path];
+  if ([v9 enabled] == enabledCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHandler___block_invoke;
       v22[3] = &unk_1E7B80C88;
       v10 = &v23;
-      v23 = v8;
+      v23 = handlerCopy;
       v11 = MEMORY[0x1E69E96A0];
       v12 = v22;
 LABEL_11:
@@ -398,7 +398,7 @@ LABEL_11:
 
   else
   {
-    [v9 setEnabled:v6];
+    [v9 setEnabled:enabledCopy];
     if ([v9 enabled])
     {
       [v9 lastAdjustedLevel];
@@ -410,12 +410,12 @@ LABEL_11:
     }
 
     [v9 setCurrentLevel:?];
-    v13 = [v9 customSettingDelegate];
+    customSettingDelegate = [v9 customSettingDelegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [v9 customSettingDelegate];
+      customSettingDelegate2 = [v9 customSettingDelegate];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHandler___block_invoke_2;
@@ -424,22 +424,22 @@ LABEL_11:
       v16 = v9;
       v20[0] = v16;
       v20[1] = self;
-      v21 = v8;
-      [v15 dataSource:self adjustmentInfo:v16 setEnabled:v6 completionHandler:v19];
+      v21 = handlerCopy;
+      [customSettingDelegate2 dataSource:self adjustmentInfo:v16 setEnabled:enabledCopy completionHandler:v19];
 
 LABEL_12:
       goto LABEL_13;
     }
 
     [(PUAdjustmentsDataSource *)self _modifyAdjustmentForInfo:v9];
-    if (v8)
+    if (handlerCopy)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHandler___block_invoke_4;
       block[3] = &unk_1E7B80C88;
       v10 = &v18;
-      v18 = v8;
+      v18 = handlerCopy;
       v11 = MEMORY[0x1E69E96A0];
       v12 = block;
       goto LABEL_11;
@@ -477,40 +477,40 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 
 - (void)endInteractiveChange
 {
-  v4 = [(PUAdjustmentsDataSource *)self delegate];
-  v3 = [(PUAdjustmentsDataSource *)self lastAdjustmentLocalizedName];
-  [v4 didModifyAdjustmentWithLocalizedName:v3];
+  delegate = [(PUAdjustmentsDataSource *)self delegate];
+  lastAdjustmentLocalizedName = [(PUAdjustmentsDataSource *)self lastAdjustmentLocalizedName];
+  [delegate didModifyAdjustmentWithLocalizedName:lastAdjustmentLocalizedName];
 }
 
 - (void)beginInteractiveChange
 {
-  v2 = [(PUAdjustmentsDataSource *)self delegate];
-  [v2 willModifyAdjustment];
+  delegate = [(PUAdjustmentsDataSource *)self delegate];
+  [delegate willModifyAdjustment];
 }
 
-- (BOOL)canModifyAdjustmentAtIndexPath:(id)a3
+- (BOOL)canModifyAdjustmentAtIndexPath:(id)path
 {
-  v4 = [(PUAdjustmentsDataSource *)self compositionController];
+  compositionController = [(PUAdjustmentsDataSource *)self compositionController];
 
-  if (!v4)
+  if (!compositionController)
   {
     return 0;
   }
 
-  v5 = [(PUAdjustmentsDataSource *)self autoEnhanceController];
-  v6 = [v5 isBusy];
+  autoEnhanceController = [(PUAdjustmentsDataSource *)self autoEnhanceController];
+  isBusy = [autoEnhanceController isBusy];
 
-  return v6 ^ 1;
+  return isBusy ^ 1;
 }
 
-- (id)infoForItemAtIndexPath:(id)a3
+- (id)infoForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = [v4 section], -[PUAdjustmentsDataSource adjustmentInfoSections](self, "adjustmentInfoSections"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6 < v8) && (v9 = objc_msgSend(v5, "item"), -[PUAdjustmentsDataSource adjustmentInfoSections](self, "adjustmentInfoSections"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectAtIndexedSubscript:", objc_msgSend(v5, "section")), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10, v9 < v12))
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy && (v6 = [pathCopy section], -[PUAdjustmentsDataSource adjustmentInfoSections](self, "adjustmentInfoSections"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6 < v8) && (v9 = objc_msgSend(v5, "item"), -[PUAdjustmentsDataSource adjustmentInfoSections](self, "adjustmentInfoSections"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectAtIndexedSubscript:", objc_msgSend(v5, "section")), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10, v9 < v12))
   {
-    v13 = [(PUAdjustmentsDataSource *)self adjustmentInfoSections];
-    v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+    adjustmentInfoSections = [(PUAdjustmentsDataSource *)self adjustmentInfoSections];
+    v14 = [adjustmentInfoSections objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
     v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v5, "item")}];
   }
 
@@ -540,18 +540,18 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
   return v4;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(PUAdjustmentsDataSource *)self adjustmentInfoSections];
-  v6 = [v5 count];
+  adjustmentInfoSections = [(PUAdjustmentsDataSource *)self adjustmentInfoSections];
+  v6 = [adjustmentInfoSections count];
 
-  if (a3 < 0 || v6 <= a3)
+  if (section < 0 || v6 <= section)
   {
     return 0;
   }
 
-  v7 = [(PUAdjustmentsDataSource *)self adjustmentInfoSections];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  adjustmentInfoSections2 = [(PUAdjustmentsDataSource *)self adjustmentInfoSections];
+  v8 = [adjustmentInfoSections2 objectAtIndexedSubscript:section];
   v9 = [v8 count];
 
   return v9;
@@ -559,8 +559,8 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 
 - (int64_t)numberOfSections
 {
-  v2 = [(PUAdjustmentsDataSource *)self adjustmentInfoSections];
-  v3 = [v2 count];
+  adjustmentInfoSections = [(PUAdjustmentsDataSource *)self adjustmentInfoSections];
+  v3 = [adjustmentInfoSections count];
 
   return v3;
 }
@@ -570,9 +570,9 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
   adjustmentInfoSections = self->_adjustmentInfoSections;
   if (!adjustmentInfoSections)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = self->_adjustmentInfoSections;
-    self->_adjustmentInfoSections = v4;
+    self->_adjustmentInfoSections = array;
 
     [(PUAdjustmentsDataSource *)self _createAdjustmentInfos];
     adjustmentInfoSections = self->_adjustmentInfoSections;
@@ -584,12 +584,12 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 - (void)_updateAdjustmentInfos
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(PUAdjustmentsDataSource *)self compositionController];
+  compositionController = [(PUAdjustmentsDataSource *)self compositionController];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v27 = self;
+  selfCopy = self;
   obj = [(PUAdjustmentsDataSource *)self adjustmentInfoSections];
   v25 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v25)
@@ -628,36 +628,36 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
               }
 
               v11 = *(*(&v29 + 1) + 8 * i);
-              v12 = [v11 identifier];
+              identifier = [v11 identifier];
 
-              if (v12 == v4)
+              if (identifier == v4)
               {
-                [v11 setEnabled:{objc_msgSend(MEMORY[0x1E69C4260], "isAutoEnhanceEnabledForCompositionController:", v3)}];
-                v13 = [(PUAdjustmentsDataSource *)v27 autoEnhanceController];
-                [v13 defaultAutoEnhanceIntensityForCompositionController:v3];
+                [v11 setEnabled:{objc_msgSend(MEMORY[0x1E69C4260], "isAutoEnhanceEnabledForCompositionController:", compositionController)}];
+                autoEnhanceController = [(PUAdjustmentsDataSource *)selfCopy autoEnhanceController];
+                [autoEnhanceController defaultAutoEnhanceIntensityForCompositionController:compositionController];
                 [v11 setDefaultLevel:?];
               }
 
-              v14 = [v11 attributeKey];
-              if (!v14)
+              attributeKey = [v11 attributeKey];
+              if (!attributeKey)
               {
-                v14 = [v11 settingKey];
-                if (!v14)
+                attributeKey = [v11 settingKey];
+                if (!attributeKey)
                 {
                   continue;
                 }
               }
 
-              v15 = v14;
+              v15 = attributeKey;
               v16 = MEMORY[0x1E69BE360];
-              v17 = [v11 adjustmentKey];
-              v18 = [v16 valueForCompositionController:v3 adjustmentKey:v17 settingKey:v15];
+              adjustmentKey = [v11 adjustmentKey];
+              v18 = [v16 valueForCompositionController:compositionController adjustmentKey:adjustmentKey settingKey:v15];
 
               if (v18)
               {
                 [v18 floatValue];
                 [v11 setCurrentLevel:v19];
-                if (v12 != v4 && ([v11 enabled] & 1) == 0)
+                if (identifier != v4 && ([v11 enabled] & 1) == 0)
                 {
                   [v11 currentLevel];
                   v21 = v20;
@@ -690,9 +690,9 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
   }
 }
 
-- (void)_enableNonAutoAdjustments:(BOOL)a3
+- (void)_enableNonAutoAdjustments:(BOOL)adjustments
 {
-  v3 = a3;
+  adjustmentsCopy = adjustments;
   v28 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
@@ -735,11 +735,11 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
               }
 
               v14 = *(*(&v18 + 1) + 8 * j);
-              v15 = [v14 identifier];
+              identifier = [v14 identifier];
 
-              if (v15 != v6)
+              if (identifier != v6)
               {
-                [v14 setEnabled:v3];
+                [v14 setEnabled:adjustmentsCopy];
               }
             }
 
@@ -761,13 +761,13 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = +[PUPhotoEditProtoSettings sharedInstance];
-  v5 = [v4 showHDRHeadroomControl];
+  showHDRHeadroomControl = [v4 showHDRHeadroomControl];
 
-  if (v5)
+  if (showHDRHeadroomControl)
   {
     v6 = *MEMORY[0x1E69BDFC8];
-    v7 = [MEMORY[0x1E69BDE18] headroomAdjustmentKey];
-    v8 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v6 settingKey:v7 attributeKey:0];
+    headroomAdjustmentKey = [MEMORY[0x1E69BDE18] headroomAdjustmentKey];
+    v8 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v6 settingKey:headroomAdjustmentKey attributeKey:0];
 
     [v8 setIconName:@"PUExposureAdjustment"];
     [v8 setLocalizedName:@"HDR Highlight Brightness"];
@@ -781,29 +781,29 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = +[PUPhotoEditProtoSettings sharedInstance];
-  v5 = [v4 showHDRDebugAdjustments];
+  showHDRDebugAdjustments = [v4 showHDRDebugAdjustments];
 
-  if (v5)
+  if (showHDRDebugAdjustments)
   {
     v6 = *MEMORY[0x1E69BDFC8];
-    v7 = [MEMORY[0x1E69BDE18] inputExposureKey];
-    v8 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v6 settingKey:v7 attributeKey:0];
+    inputExposureKey = [MEMORY[0x1E69BDE18] inputExposureKey];
+    v8 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v6 settingKey:inputExposureKey attributeKey:0];
 
     [v8 setIconName:@"PUExposureAdjustment"];
     [v8 setLocalizedName:@"Input Exposure"];
-    v9 = [MEMORY[0x1E69BDE18] outputExposureKey];
-    v10 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v6 settingKey:v9 attributeKey:0];
+    outputExposureKey = [MEMORY[0x1E69BDE18] outputExposureKey];
+    v10 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v6 settingKey:outputExposureKey attributeKey:0];
 
     [v10 setIconName:@"PUExposureAdjustment"];
     [v10 setLocalizedName:@"Output Exposure"];
-    v11 = [MEMORY[0x1E69BDE18] falseColorHDRKey];
-    v12 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v6 settingKey:v11 attributeKey:0];
+    falseColorHDRKey = [MEMORY[0x1E69BDE18] falseColorHDRKey];
+    v12 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v6 settingKey:falseColorHDRKey attributeKey:0];
 
     [v12 setIconName:@"PUSaturationAdjustment"];
     [v12 setLocalizedName:@"False Color HDR"];
     [v12 setIconIsColor:1];
-    v13 = [MEMORY[0x1E69BDE18] inputRAWGamutMapMaxKey];
-    v14 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v6 settingKey:v13 attributeKey:0];
+    inputRAWGamutMapMaxKey = [MEMORY[0x1E69BDE18] inputRAWGamutMapMaxKey];
+    v14 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v6 settingKey:inputRAWGamutMapMaxKey attributeKey:0];
 
     [v14 setIconName:@"PUExposureAdjustment"];
     [v14 setLocalizedName:@"RAW HDR"];
@@ -823,28 +823,28 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = *MEMORY[0x1E69BE168];
-  v5 = [MEMORY[0x1E69BDF60] hueKey];
-  v6 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v5 attributeKey:0];
+  hueKey = [MEMORY[0x1E69BDF60] hueKey];
+  v6 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:hueKey attributeKey:0];
 
   [v6 setIconName:@"PUExposureAdjustment"];
   [v6 setLocalizedName:@"SmartBW Hue"];
-  v7 = [MEMORY[0x1E69BDF60] strengthKey];
-  v8 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v7 attributeKey:0];
+  strengthKey = [MEMORY[0x1E69BDF60] strengthKey];
+  v8 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:strengthKey attributeKey:0];
 
   [v8 setIconName:@"PUExposureAdjustment"];
   [v8 setLocalizedName:@"SmartBW Strength"];
-  v9 = [MEMORY[0x1E69BDF60] neutralKey];
-  v10 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v9 attributeKey:0];
+  neutralKey = [MEMORY[0x1E69BDF60] neutralKey];
+  v10 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:neutralKey attributeKey:0];
 
   [v10 setIconName:@"PUExposureAdjustment"];
   [v10 setLocalizedName:@"SmartBW Neutral"];
-  v11 = [MEMORY[0x1E69BDF60] toneKey];
-  v12 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v11 attributeKey:0];
+  toneKey = [MEMORY[0x1E69BDF60] toneKey];
+  v12 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:toneKey attributeKey:0];
 
   [v12 setIconName:@"PUExposureAdjustment"];
   [v12 setLocalizedName:@"SmartBW Tone"];
-  v13 = [MEMORY[0x1E69BDF60] grainKey];
-  v14 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v13 attributeKey:0];
+  grainKey = [MEMORY[0x1E69BDF60] grainKey];
+  v14 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:grainKey attributeKey:0];
 
   [v14 setIconName:@"PUExposureAdjustment"];
   [v14 setLocalizedName:@"SmartBW Grain"];
@@ -862,8 +862,8 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
   v4 = *MEMORY[0x1E69BE190];
-  v5 = [MEMORY[0x1E69BDF88] intensityKey];
-  v6 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v5 attributeKey:0];
+  intensityKey = [MEMORY[0x1E69BDF88] intensityKey];
+  v6 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:intensityKey attributeKey:0];
 
   [v6 setIconName:@"PUVignetteTransitionAdjustment"];
   v7 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_VIGNETTE");
@@ -881,8 +881,8 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
   v20[3] = *MEMORY[0x1E69E9840];
   v3 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_DETAIL");
   v4 = *MEMORY[0x1E69BE158];
-  v5 = [MEMORY[0x1E69BDF58] intensityKey];
-  v6 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v5 attributeKey:0];
+  intensityKey = [MEMORY[0x1E69BDF58] intensityKey];
+  v6 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:intensityKey attributeKey:0];
 
   [v6 setIconName:@"PUSharpenAdjustment"];
   v7 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_DETAIL_SHARPNESS");
@@ -890,8 +890,8 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 
   [v6 setLocalizedSectionName:v3];
   v8 = *MEMORY[0x1E69BDFD0];
-  v9 = [MEMORY[0x1E69BDE20] intensityKey];
-  v10 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v8 settingKey:v9 attributeKey:0];
+  intensityKey2 = [MEMORY[0x1E69BDE20] intensityKey];
+  v10 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v8 settingKey:intensityKey2 attributeKey:0];
 
   [v10 setIconName:@"PUDefinitionAdjustment"];
   v11 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_DETAIL_DEFINITION");
@@ -936,9 +936,9 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
   v22[4] = *MEMORY[0x1E69E9840];
   v3 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_COLOR");
   v4 = *MEMORY[0x1E69BE170];
-  v5 = [MEMORY[0x1E69BDF68] offsetSaturationKey];
-  v6 = [MEMORY[0x1E69BDF68] attributeSaturationKey];
-  v7 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v5 attributeKey:v6];
+  offsetSaturationKey = [MEMORY[0x1E69BDF68] offsetSaturationKey];
+  attributeSaturationKey = [MEMORY[0x1E69BDF68] attributeSaturationKey];
+  v7 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:offsetSaturationKey attributeKey:attributeSaturationKey];
 
   [v7 setIconName:@"PUSaturationAdjustment"];
   v8 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_COLOR_SATURATION");
@@ -946,9 +946,9 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 
   [v7 setLocalizedSectionName:v3];
   [v7 setIconIsColor:1];
-  v9 = [MEMORY[0x1E69BDF68] offsetContrastKey];
-  v10 = [MEMORY[0x1E69BDF68] attributeContrastKey];
-  v11 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v9 attributeKey:v10];
+  offsetContrastKey = [MEMORY[0x1E69BDF68] offsetContrastKey];
+  attributeContrastKey = [MEMORY[0x1E69BDF68] attributeContrastKey];
+  v11 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:offsetContrastKey attributeKey:attributeContrastKey];
 
   [v11 setIconName:@"PUVibranceAdjustment"];
   v12 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_COLOR_VIBRANCY");
@@ -957,16 +957,16 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
   [v11 setLocalizedSectionName:v3];
   [v11 setIconIsColor:1];
   v13 = *MEMORY[0x1E69BE198];
-  v14 = [MEMORY[0x1E69BDF90] warmTempKey];
-  v15 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v13 settingKey:v14 attributeKey:0];
+  warmTempKey = [MEMORY[0x1E69BDF90] warmTempKey];
+  v15 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v13 settingKey:warmTempKey attributeKey:0];
 
   [v15 setIconName:@"PUTemperatureAdjustment"];
   v16 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_WHITE_BALANCE_WARMTH");
   [v15 setLocalizedName:v16];
 
   [v15 setLocalizedSectionName:v3];
-  v17 = [MEMORY[0x1E69BDF90] warmTintKey];
-  v18 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v13 settingKey:v17 attributeKey:0];
+  warmTintKey = [MEMORY[0x1E69BDF90] warmTintKey];
+  v18 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v13 settingKey:warmTintKey attributeKey:0];
 
   [v18 setIconName:@"PUTintAdjustment"];
   v19 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_WHITE_BALANCE_TINT");
@@ -987,10 +987,10 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
   v44[6] = *MEMORY[0x1E69E9840];
   v3 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_LIGHT");
   v4 = *MEMORY[0x1E69BE178];
-  v5 = [MEMORY[0x1E69BDF70] offsetExposureKey];
-  v6 = [MEMORY[0x1E69BDF70] attributeExposureKey];
-  v7 = self;
-  v8 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v5 attributeKey:v6];
+  offsetExposureKey = [MEMORY[0x1E69BDF70] offsetExposureKey];
+  attributeExposureKey = [MEMORY[0x1E69BDF70] attributeExposureKey];
+  selfCopy = self;
+  v8 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:offsetExposureKey attributeKey:attributeExposureKey];
 
   [v8 setIconName:@"PUExposureAdjustment"];
   v9 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_EXPOSURE");
@@ -998,10 +998,10 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 
   v42 = v8;
   [v8 setLocalizedSectionName:v3];
-  v10 = [MEMORY[0x1E69BDF70] offsetHighlightsKey];
-  v11 = [MEMORY[0x1E69BDF70] attributeHighlightsKey];
-  v12 = v7;
-  v13 = [(PUAdjustmentsDataSource *)v7 _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v10 attributeKey:v11];
+  offsetHighlightsKey = [MEMORY[0x1E69BDF70] offsetHighlightsKey];
+  attributeHighlightsKey = [MEMORY[0x1E69BDF70] attributeHighlightsKey];
+  v12 = selfCopy;
+  v13 = [(PUAdjustmentsDataSource *)selfCopy _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:offsetHighlightsKey attributeKey:attributeHighlightsKey];
 
   [v13 setIconName:@"PUHighlightsAdjustment"];
   [v13 setAltIconName:@"PUShadowsAdjustment"];
@@ -1011,9 +1011,9 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 
   v41 = v13;
   [v13 setLocalizedSectionName:v3];
-  v15 = [MEMORY[0x1E69BDF70] offsetShadowsKey];
-  v16 = [MEMORY[0x1E69BDF70] attributeShadowsKey];
-  v17 = [(PUAdjustmentsDataSource *)v7 _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v15 attributeKey:v16];
+  offsetShadowsKey = [MEMORY[0x1E69BDF70] offsetShadowsKey];
+  attributeShadowsKey = [MEMORY[0x1E69BDF70] attributeShadowsKey];
+  v17 = [(PUAdjustmentsDataSource *)selfCopy _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:offsetShadowsKey attributeKey:attributeShadowsKey];
 
   [v17 setIconName:@"PUShadowsAdjustment"];
   [v17 setAltIconName:@"PUHighlightsAdjustment"];
@@ -1025,9 +1025,9 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
   v19 = objc_opt_new();
   [v17 setCustomSettingDelegate:v19];
 
-  v20 = [MEMORY[0x1E69BDF70] offsetContrastKey];
-  v21 = [MEMORY[0x1E69BDF70] attributeContrastKey];
-  v22 = [(PUAdjustmentsDataSource *)v12 _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v20 attributeKey:v21];
+  offsetContrastKey = [MEMORY[0x1E69BDF70] offsetContrastKey];
+  attributeContrastKey = [MEMORY[0x1E69BDF70] attributeContrastKey];
+  v22 = [(PUAdjustmentsDataSource *)v12 _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:offsetContrastKey attributeKey:attributeContrastKey];
 
   [v22 setIconName:@"PUContrastAdjustment"];
   v23 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_CONTRAST");
@@ -1035,18 +1035,18 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 
   [v22 setAltImageTransformBlock:&__block_literal_global_236];
   [v22 setLocalizedSectionName:v3];
-  v24 = [MEMORY[0x1E69BDF70] offsetBrightnessKey];
-  v25 = [MEMORY[0x1E69BDF70] attributeBrightnessKey];
-  v26 = [(PUAdjustmentsDataSource *)v12 _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v24 attributeKey:v25];
+  offsetBrightnessKey = [MEMORY[0x1E69BDF70] offsetBrightnessKey];
+  attributeBrightnessKey = [MEMORY[0x1E69BDF70] attributeBrightnessKey];
+  v26 = [(PUAdjustmentsDataSource *)v12 _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:offsetBrightnessKey attributeKey:attributeBrightnessKey];
 
   [v26 setIconName:@"PUBrightnessAdjustment"];
   v27 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_BRIGHTNESS");
   [v26 setLocalizedName:v27];
 
   [v26 setLocalizedSectionName:v3];
-  v28 = [MEMORY[0x1E69BDF70] offsetBlackKey];
-  v29 = [MEMORY[0x1E69BDF70] attributeBlackPointKey];
-  v30 = [(PUAdjustmentsDataSource *)v12 _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v28 attributeKey:v29];
+  offsetBlackKey = [MEMORY[0x1E69BDF70] offsetBlackKey];
+  attributeBlackPointKey = [MEMORY[0x1E69BDF70] attributeBlackPointKey];
+  v30 = [(PUAdjustmentsDataSource *)v12 _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:offsetBlackKey attributeKey:attributeBlackPointKey];
 
   [v30 setIconName:@"PUBlackPointAdjustment"];
   v31 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_BLACK_POINT");
@@ -1068,9 +1068,9 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 
   else
   {
-    v32 = [MEMORY[0x1E69BDF70] offsetLocalLightKey];
-    v33 = [MEMORY[0x1E69BDF70] attributeLocalLightKey];
-    v34 = [(PUAdjustmentsDataSource *)v12 _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:v32 attributeKey:v33];
+    offsetLocalLightKey = [MEMORY[0x1E69BDF70] offsetLocalLightKey];
+    attributeLocalLightKey = [MEMORY[0x1E69BDF70] attributeLocalLightKey];
+    v34 = [(PUAdjustmentsDataSource *)v12 _newAdjustmentInfoWithAdjustmentKey:v4 settingKey:offsetLocalLightKey attributeKey:attributeLocalLightKey];
 
     [v34 setIconName:@"PUBrillianceAdjustment"];
     v35 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_LOCAL_LIGHT");
@@ -1100,8 +1100,8 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69BDF98];
   v4 = *MEMORY[0x1E69BE178];
-  v5 = [MEMORY[0x1E69BDF70] inputLightKey];
-  v6 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithIdentifier:v3 adjustmentKey:v4 settingKey:v5 attributeKey:0];
+  inputLightKey = [MEMORY[0x1E69BDF70] inputLightKey];
+  v6 = [(PUAdjustmentsDataSource *)self _newAdjustmentInfoWithIdentifier:v3 adjustmentKey:v4 settingKey:inputLightKey attributeKey:0];
 
   v7 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_AUTO");
   [v6 setLocalizedName:v7];
@@ -1122,105 +1122,105 @@ void __78__PUAdjustmentsDataSource_setAdjustmentEnabled_atIndexPath_completionHa
 - (void)_createAdjustmentInfos
 {
   adjustmentInfoSections = self->_adjustmentInfoSections;
-  v4 = [(PUAdjustmentsDataSource *)self _autoEnhanceAdjustmentInfo];
-  [(NSMutableArray *)adjustmentInfoSections addObject:v4];
+  _autoEnhanceAdjustmentInfo = [(PUAdjustmentsDataSource *)self _autoEnhanceAdjustmentInfo];
+  [(NSMutableArray *)adjustmentInfoSections addObject:_autoEnhanceAdjustmentInfo];
 
   v5 = self->_adjustmentInfoSections;
-  v6 = [(PUAdjustmentsDataSource *)self _lightAdjustmentInfos];
-  [(NSMutableArray *)v5 addObject:v6];
+  _lightAdjustmentInfos = [(PUAdjustmentsDataSource *)self _lightAdjustmentInfos];
+  [(NSMutableArray *)v5 addObject:_lightAdjustmentInfos];
 
   v7 = self->_adjustmentInfoSections;
-  v8 = [(PUAdjustmentsDataSource *)self _colorAdjustmentInfos];
-  [(NSMutableArray *)v7 addObject:v8];
+  _colorAdjustmentInfos = [(PUAdjustmentsDataSource *)self _colorAdjustmentInfos];
+  [(NSMutableArray *)v7 addObject:_colorAdjustmentInfos];
 
   v9 = self->_adjustmentInfoSections;
-  v10 = [(PUAdjustmentsDataSource *)self _detailAdjustmentInfos];
-  [(NSMutableArray *)v9 addObject:v10];
+  _detailAdjustmentInfos = [(PUAdjustmentsDataSource *)self _detailAdjustmentInfos];
+  [(NSMutableArray *)v9 addObject:_detailAdjustmentInfos];
 
   v11 = self->_adjustmentInfoSections;
-  v12 = [(PUAdjustmentsDataSource *)self _vignetteAdjustmentInfos];
-  [(NSMutableArray *)v11 addObject:v12];
+  _vignetteAdjustmentInfos = [(PUAdjustmentsDataSource *)self _vignetteAdjustmentInfos];
+  [(NSMutableArray *)v11 addObject:_vignetteAdjustmentInfos];
 
   v13 = +[PUPhotoEditProtoSettings sharedInstance];
-  LODWORD(v12) = [v13 showSmartBlackAndWhiteAdjustment];
+  LODWORD(_vignetteAdjustmentInfos) = [v13 showSmartBlackAndWhiteAdjustment];
 
-  if (v12)
+  if (_vignetteAdjustmentInfos)
   {
     v14 = self->_adjustmentInfoSections;
-    v15 = [(PUAdjustmentsDataSource *)self _smartBlackAndWhiteAdjustmentInfos];
-    [(NSMutableArray *)v14 addObject:v15];
+    _smartBlackAndWhiteAdjustmentInfos = [(PUAdjustmentsDataSource *)self _smartBlackAndWhiteAdjustmentInfos];
+    [(NSMutableArray *)v14 addObject:_smartBlackAndWhiteAdjustmentInfos];
   }
 
   v16 = self->_adjustmentInfoSections;
-  v17 = [(PUAdjustmentsDataSource *)self _debugAdjustmentInfos];
-  [(NSMutableArray *)v16 addObject:v17];
+  _debugAdjustmentInfos = [(PUAdjustmentsDataSource *)self _debugAdjustmentInfos];
+  [(NSMutableArray *)v16 addObject:_debugAdjustmentInfos];
 
   v18 = self->_adjustmentInfoSections;
-  v19 = [(PUAdjustmentsDataSource *)self _headroomAdjustmentInfos];
-  [(NSMutableArray *)v18 addObject:v19];
+  _headroomAdjustmentInfos = [(PUAdjustmentsDataSource *)self _headroomAdjustmentInfos];
+  [(NSMutableArray *)v18 addObject:_headroomAdjustmentInfos];
 }
 
-- (id)_newAdjustmentInfoWithIdentifier:(id)a3 adjustmentKey:(id)a4 settingKey:(id)a5 attributeKey:(id)a6
+- (id)_newAdjustmentInfoWithIdentifier:(id)identifier adjustmentKey:(id)key settingKey:(id)settingKey attributeKey:(id)attributeKey
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  attributeKeyCopy = attributeKey;
+  settingKeyCopy = settingKey;
+  keyCopy = key;
+  identifierCopy = identifier;
   v14 = objc_alloc_init(PUAdjustmentInfo);
-  [(PUAdjustmentInfo *)v14 setIdentifier:v13];
+  [(PUAdjustmentInfo *)v14 setIdentifier:identifierCopy];
 
-  [(PUAdjustmentInfo *)v14 setAdjustmentKey:v12];
-  [(PUAdjustmentInfo *)v14 setSettingKey:v11];
+  [(PUAdjustmentInfo *)v14 setAdjustmentKey:keyCopy];
+  [(PUAdjustmentInfo *)v14 setSettingKey:settingKeyCopy];
 
-  [(PUAdjustmentInfo *)v14 setAttributeKey:v10];
+  [(PUAdjustmentInfo *)v14 setAttributeKey:attributeKeyCopy];
   [(PUAdjustmentsDataSource *)self _setDefaultsForInfo:v14];
   return v14;
 }
 
-- (void)_setDefaultsForInfo:(id)a3
+- (void)_setDefaultsForInfo:(id)info
 {
-  v19 = a3;
-  v3 = [v19 attributeKey];
-  if (v3)
+  infoCopy = info;
+  attributeKey = [infoCopy attributeKey];
+  if (attributeKey)
   {
-    v4 = v3;
+    settingKey = attributeKey;
   }
 
   else
   {
-    v4 = [v19 settingKey];
-    if (!v4)
+    settingKey = [infoCopy settingKey];
+    if (!settingKey)
     {
       goto LABEL_6;
     }
   }
 
-  v5 = [v19 adjustmentKey];
+  adjustmentKey = [infoCopy adjustmentKey];
 
-  if (v5)
+  if (adjustmentKey)
   {
     v6 = MEMORY[0x1E69BE360];
-    v7 = [v19 adjustmentKey];
-    v8 = [v6 valueForType:2 adjustmentKey:v7 settingKey:v4];
+    adjustmentKey2 = [infoCopy adjustmentKey];
+    v8 = [v6 valueForType:2 adjustmentKey:adjustmentKey2 settingKey:settingKey];
     [v8 floatValue];
-    [v19 setMinimumLevel:v9];
+    [infoCopy setMinimumLevel:v9];
 
     v10 = MEMORY[0x1E69BE360];
-    v11 = [v19 adjustmentKey];
-    v12 = [v10 valueForType:3 adjustmentKey:v11 settingKey:v4];
+    adjustmentKey3 = [infoCopy adjustmentKey];
+    v12 = [v10 valueForType:3 adjustmentKey:adjustmentKey3 settingKey:settingKey];
     [v12 floatValue];
-    [v19 setMaximumLevel:v13];
+    [infoCopy setMaximumLevel:v13];
 
     v14 = MEMORY[0x1E69BE360];
-    v15 = [v19 adjustmentKey];
-    v16 = [v14 valueForType:1 adjustmentKey:v15 settingKey:v4];
+    adjustmentKey4 = [infoCopy adjustmentKey];
+    v16 = [v14 valueForType:1 adjustmentKey:adjustmentKey4 settingKey:settingKey];
     [v16 floatValue];
     v18 = v17;
 
-    [v19 setIdentityLevel:v18];
-    [v19 setDefaultLevel:v18];
-    [v19 setCurrentLevel:v18];
-    [v19 setLastAdjustedLevel:v18];
+    [infoCopy setIdentityLevel:v18];
+    [infoCopy setDefaultLevel:v18];
+    [infoCopy setCurrentLevel:v18];
+    [infoCopy setLastAdjustedLevel:v18];
   }
 
 LABEL_6:
@@ -1228,38 +1228,38 @@ LABEL_6:
 
 - (id)renderer
 {
-  v3 = [(PUAdjustmentsDataSource *)self delegate];
-  v4 = [v3 adjustmentsRenderer:self];
+  delegate = [(PUAdjustmentsDataSource *)self delegate];
+  v4 = [delegate adjustmentsRenderer:self];
 
   return v4;
 }
 
-- (void)setupWithCompositionController:(id)a3 valuesCalculator:(id)a4 autoAdjustmentController:(id)a5 assetType:(unint64_t)a6
+- (void)setupWithCompositionController:(id)controller valuesCalculator:(id)calculator autoAdjustmentController:(id)adjustmentController assetType:(unint64_t)type
 {
-  v15 = a3;
-  v11 = a4;
-  v12 = a5;
+  controllerCopy = controller;
+  calculatorCopy = calculator;
+  adjustmentControllerCopy = adjustmentController;
   compositionController = self->_compositionController;
-  v14 = compositionController != v15;
-  if (compositionController != v15)
+  v14 = compositionController != controllerCopy;
+  if (compositionController != controllerCopy)
   {
-    objc_storeStrong(&self->_compositionController, a3);
+    objc_storeStrong(&self->_compositionController, controller);
   }
 
-  if (self->_valuesCalculator != v11)
+  if (self->_valuesCalculator != calculatorCopy)
   {
-    objc_storeStrong(&self->_valuesCalculator, a4);
+    objc_storeStrong(&self->_valuesCalculator, calculator);
     v14 = 1;
   }
 
-  if ([(PUAdjustmentsDataSource *)self assetType]!= a6)
+  if ([(PUAdjustmentsDataSource *)self assetType]!= type)
   {
-    [(PUAdjustmentsDataSource *)self setAssetType:a6];
-    objc_storeStrong(&self->_autoEnhanceController, a5);
+    [(PUAdjustmentsDataSource *)self setAssetType:type];
+    objc_storeStrong(&self->_autoEnhanceController, adjustmentController);
     goto LABEL_9;
   }
 
-  objc_storeStrong(&self->_autoEnhanceController, a5);
+  objc_storeStrong(&self->_autoEnhanceController, adjustmentController);
   if (v14)
   {
 LABEL_9:

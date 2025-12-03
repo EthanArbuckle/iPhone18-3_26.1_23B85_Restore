@@ -1,14 +1,14 @@
 @interface CAMExposureTargetBiasCommand
-- (CAMExposureTargetBiasCommand)initWithCoder:(id)a3;
-- (CAMExposureTargetBiasCommand)initWithExposureTargetBias:(float)a3 configureSecondaryDevice:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMExposureTargetBiasCommand)initWithCoder:(id)coder;
+- (CAMExposureTargetBiasCommand)initWithExposureTargetBias:(float)bias configureSecondaryDevice:(BOOL)device;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMExposureTargetBiasCommand
 
-- (CAMExposureTargetBiasCommand)initWithExposureTargetBias:(float)a3 configureSecondaryDevice:(BOOL)a4
+- (CAMExposureTargetBiasCommand)initWithExposureTargetBias:(float)bias configureSecondaryDevice:(BOOL)device
 {
   v10.receiver = self;
   v10.super_class = CAMExposureTargetBiasCommand;
@@ -16,57 +16,57 @@
   v7 = v6;
   if (v6)
   {
-    v6->__exposureTargetBias = a3;
-    v6->__configureSecondaryDevice = a4;
+    v6->__exposureTargetBias = bias;
+    v6->__configureSecondaryDevice = device;
     v8 = v6;
   }
 
   return v7;
 }
 
-- (CAMExposureTargetBiasCommand)initWithCoder:(id)a3
+- (CAMExposureTargetBiasCommand)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CAMExposureTargetBiasCommand;
-  [(CAMCaptureCommand *)&v3 encodeWithCoder:a3];
+  [(CAMCaptureCommand *)&v3 encodeWithCoder:coder];
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CAMExposureTargetBiasCommand;
-  v4 = [(CAMCaptureCommand *)&v7 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v7 copyWithZone:zone];
   [(CAMExposureTargetBiasCommand *)self _exposureTargetBias];
   v4[7] = v5;
   *(v4 + 24) = [(CAMExposureTargetBiasCommand *)self _configureSecondaryDevice];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentVideoDevice];
+  contextCopy = context;
+  currentVideoDevice = [contextCopy currentVideoDevice];
   if ([(CAMExposureTargetBiasCommand *)self _configureSecondaryDevice])
   {
-    v6 = [v4 currentSecondaryVideoDevice];
+    currentSecondaryVideoDevice = [contextCopy currentSecondaryVideoDevice];
 
-    v5 = v6;
+    currentVideoDevice = currentSecondaryVideoDevice;
   }
 
   [(CAMExposureTargetBiasCommand *)self _exposureTargetBias];
   v8 = v7;
-  [v5 minExposureTargetBias];
+  [currentVideoDevice minExposureTargetBias];
   v10 = v9;
-  [v5 maxExposureTargetBias];
+  [currentVideoDevice maxExposureTargetBias];
   v12 = v11;
   if (v8 < v10)
   {
@@ -105,7 +105,7 @@
   }
 
   *&v16 = v8;
-  [v5 setExposureTargetBias:0 completionHandler:v16];
+  [currentVideoDevice setExposureTargetBias:0 completionHandler:v16];
 }
 
 - (void)executeWithContext:(os_log_t)log .cold.1(os_log_t log, float a2)

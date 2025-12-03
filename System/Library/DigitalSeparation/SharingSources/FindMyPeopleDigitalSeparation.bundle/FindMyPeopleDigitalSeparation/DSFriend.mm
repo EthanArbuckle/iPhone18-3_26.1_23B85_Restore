@@ -31,7 +31,7 @@
   v4 = (self + OBJC_IVAR____TtC29FindMyPeopleDigitalSeparation8DSFriend_friendIdentifier);
   v5 = *(&self->super.isa + OBJC_IVAR____TtC29FindMyPeopleDigitalSeparation8DSFriend_friendIdentifier);
   v6 = *(&self->role + OBJC_IVAR____TtC29FindMyPeopleDigitalSeparation8DSFriend_friendIdentifier);
-  v7 = self;
+  selfCopy = self;
   v8 = sub_7F54();
   LOBYTE(v3) = [v3 isStringEmailAddress:v8];
 
@@ -60,7 +60,7 @@
   v4 = (self + OBJC_IVAR____TtC29FindMyPeopleDigitalSeparation8DSFriend_friendIdentifier);
   v5 = *(&self->super.isa + OBJC_IVAR____TtC29FindMyPeopleDigitalSeparation8DSFriend_friendIdentifier);
   v6 = *(&self->role + OBJC_IVAR____TtC29FindMyPeopleDigitalSeparation8DSFriend_friendIdentifier);
-  v7 = self;
+  selfCopy = self;
   v8 = sub_7F54();
   LODWORD(v3) = [v3 isStringEmailAddress:v8];
 

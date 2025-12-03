@@ -2,9 +2,9 @@
 + (id)megadomeKillSwitch;
 + (id)memberPhotoRequest404CacheDurationHours;
 + (id)registerDeviceWithPDS;
-- (BOOL)isEnabledWithForceRefresh:(BOOL)a3;
-- (FAServerBagFlag)initWithServerKey:(id)a3;
-- (int64_t)getCacheDurationforMemberPhoto404Response:(BOOL)a3;
+- (BOOL)isEnabledWithForceRefresh:(BOOL)refresh;
+- (FAServerBagFlag)initWithServerKey:(id)key;
+- (int64_t)getCacheDurationforMemberPhoto404Response:(BOOL)response;
 - (void)grabFromServer;
 @end
 
@@ -67,10 +67,10 @@ uint64_t __58__FAServerBagFlag_memberPhotoRequest404CacheDurationHours__block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (FAServerBagFlag)initWithServerKey:(id)a3
+- (FAServerBagFlag)initWithServerKey:(id)key
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = FAServerBagFlag;
   v5 = [(FAServerBagFlag *)&v9 init];
@@ -80,9 +80,9 @@ uint64_t __58__FAServerBagFlag_memberPhotoRequest404CacheDurationHours__block_in
     v10[1] = @"megadomeKillSwitch";
     v10[2] = @"memberPhotoRequest404CacheDurationHours";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:3];
-    if ([v6 containsObject:v4])
+    if ([v6 containsObject:keyCopy])
     {
-      [(FAServerBagFlag *)v5 setName:v4];
+      [(FAServerBagFlag *)v5 setName:keyCopy];
       [(FAServerBagFlag *)v5 grabFromServer];
     }
   }
@@ -91,9 +91,9 @@ uint64_t __58__FAServerBagFlag_memberPhotoRequest404CacheDurationHours__block_in
   return v5;
 }
 
-- (BOOL)isEnabledWithForceRefresh:(BOOL)a3
+- (BOOL)isEnabledWithForceRefresh:(BOOL)refresh
 {
-  if (a3)
+  if (refresh)
   {
     [(FAServerBagFlag *)self grabFromServer];
   }
@@ -101,9 +101,9 @@ uint64_t __58__FAServerBagFlag_memberPhotoRequest404CacheDurationHours__block_in
   return [(FAServerBagFlag *)self value];
 }
 
-- (int64_t)getCacheDurationforMemberPhoto404Response:(BOOL)a3
+- (int64_t)getCacheDurationforMemberPhoto404Response:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     [(FAServerBagFlag *)self grabFromServer];
   }
@@ -114,10 +114,10 @@ uint64_t __58__FAServerBagFlag_memberPhotoRequest404CacheDurationHours__block_in
 - (void)grabFromServer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6959A48] defaultStore];
-  v4 = [v3 aa_primaryAppleAccount];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  v5 = [v4 propertiesForDataclass:@"com.apple.Dataclass.Family"];
+  v5 = [aa_primaryAppleAccount propertiesForDataclass:@"com.apple.Dataclass.Family"];
   v6 = _FALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -126,14 +126,14 @@ uint64_t __58__FAServerBagFlag_memberPhotoRequest404CacheDurationHours__block_in
     _os_log_impl(&dword_1B70B0000, v6, OS_LOG_TYPE_DEFAULT, "Server results are %@", &v14, 0xCu);
   }
 
-  v7 = [(FAServerBagFlag *)self name];
-  v8 = [v5 objectForKey:v7];
+  name = [(FAServerBagFlag *)self name];
+  v8 = [v5 objectForKey:name];
 
-  v9 = [(FAServerBagFlag *)self name];
+  name2 = [(FAServerBagFlag *)self name];
 
   if (v8)
   {
-    if (v9 == @"memberPhotoRequest404CacheDurationHours")
+    if (name2 == @"memberPhotoRequest404CacheDurationHours")
     {
       -[FAServerBagFlag setIntValue:](self, "setIntValue:", [v8 intValue]);
     }
@@ -146,7 +146,7 @@ uint64_t __58__FAServerBagFlag_memberPhotoRequest404CacheDurationHours__block_in
 
   else
   {
-    if (v9 == @"memberPhotoRequest404CacheDurationHours")
+    if (name2 == @"memberPhotoRequest404CacheDurationHours")
     {
       v10 = _FALogSystem();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -161,9 +161,9 @@ uint64_t __58__FAServerBagFlag_memberPhotoRequest404CacheDurationHours__block_in
     v11 = _FALogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(FAServerBagFlag *)self name];
+      name3 = [(FAServerBagFlag *)self name];
       v14 = 138412290;
-      v15 = v12;
+      v15 = name3;
       _os_log_impl(&dword_1B70B0000, v11, OS_LOG_TYPE_DEFAULT, "No server value for %@", &v14, 0xCu);
     }
   }

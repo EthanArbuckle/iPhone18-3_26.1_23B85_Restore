@@ -1,39 +1,39 @@
 @interface CKSearchTokenQueryResult
 - (CKSearchTokenFilter)associatedStagedFilter;
-- (CKSearchTokenQueryResult)initWithContentType:(unint64_t)a3 filterOptions:(unint64_t)a4 conversation:(id)a5 itemIdentifier:(id)a6 tokenAddresses:(id)a7;
+- (CKSearchTokenQueryResult)initWithContentType:(unint64_t)type filterOptions:(unint64_t)options conversation:(id)conversation itemIdentifier:(id)identifier tokenAddresses:(id)addresses;
 - (UISearchToken)searchToken;
-- (id)attributedSuggestionTextForSearchText:(id)a3 font:(id)a4;
+- (id)attributedSuggestionTextForSearchText:(id)text font:(id)font;
 - (id)image;
 - (id)tokenText;
-- (void)addFilterOption:(unint64_t)a3;
+- (void)addFilterOption:(unint64_t)option;
 @end
 
 @implementation CKSearchTokenQueryResult
 
-- (CKSearchTokenQueryResult)initWithContentType:(unint64_t)a3 filterOptions:(unint64_t)a4 conversation:(id)a5 itemIdentifier:(id)a6 tokenAddresses:(id)a7
+- (CKSearchTokenQueryResult)initWithContentType:(unint64_t)type filterOptions:(unint64_t)options conversation:(id)conversation itemIdentifier:(id)identifier tokenAddresses:(id)addresses
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  conversationCopy = conversation;
+  identifierCopy = identifier;
+  addressesCopy = addresses;
   v22.receiver = self;
   v22.super_class = CKSearchTokenQueryResult;
   v15 = [(CKSearchTokenQueryResult *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    [(CKSearchTokenQueryResult *)v15 setContentType:a3];
-    [(CKSearchTokenQueryResult *)v16 setItemIdentifier:v13];
-    [(CKSearchTokenQueryResult *)v16 setTokenAddresses:v14];
-    [(CKSearchTokenQueryResult *)v16 setFilterOptions:a4];
-    if (v12)
+    [(CKSearchTokenQueryResult *)v15 setContentType:type];
+    [(CKSearchTokenQueryResult *)v16 setItemIdentifier:identifierCopy];
+    [(CKSearchTokenQueryResult *)v16 setTokenAddresses:addressesCopy];
+    [(CKSearchTokenQueryResult *)v16 setFilterOptions:options];
+    if (conversationCopy)
     {
-      [(CKSpotlightQueryResult *)v16 setConversation:v12];
+      [(CKSpotlightQueryResult *)v16 setConversation:conversationCopy];
     }
 
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [(CKSearchTokenQueryResult *)v16 tokenText];
-    v19 = [MEMORY[0x1E696AEC0] stringGUID];
-    v20 = [v17 stringWithFormat:@"%@-%@", v18, v19];
+    tokenText = [(CKSearchTokenQueryResult *)v16 tokenText];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    v20 = [v17 stringWithFormat:@"%@-%@", tokenText, stringGUID];
 
     [(CKSpotlightQueryResult *)v16 setIdentifier:v20];
   }
@@ -47,13 +47,13 @@
   if (!searchToken)
   {
     v4 = [[CKSearchTokenFilter alloc] initWithContentType:self->_contentType filterOptions:self->_filterOptions itemIdentifier:self->_itemIdentifier tokenAddresses:self->_tokenAddresses];
-    v5 = [(CKSpotlightQueryResult *)self conversation];
-    [(CKSearchTokenFilter *)v4 setConversation:v5];
+    conversation = [(CKSpotlightQueryResult *)self conversation];
+    [(CKSearchTokenFilter *)v4 setConversation:conversation];
 
     v6 = MEMORY[0x1E69DCF30];
-    v7 = [(CKSearchTokenQueryResult *)self image];
-    v8 = [(CKSearchTokenQueryResult *)self tokenText];
-    v9 = [v6 tokenWithIcon:v7 text:v8];
+    image = [(CKSearchTokenQueryResult *)self image];
+    tokenText = [(CKSearchTokenQueryResult *)self tokenText];
+    v9 = [v6 tokenWithIcon:image text:tokenText];
 
     [(UISearchToken *)v9 setRepresentedObject:v4];
     v10 = self->_searchToken;
@@ -73,8 +73,8 @@
     switch(contentType)
     {
       case 0:
-        v5 = [(CKSpotlightQueryResult *)self conversation];
-        if (v5 && (v6 = v5, -[CKSpotlightQueryResult conversation](self, "conversation"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isGroupConversation], v7, v6, (v8 & 1) != 0))
+        conversation = [(CKSpotlightQueryResult *)self conversation];
+        if (conversation && (v6 = conversation, -[CKSpotlightQueryResult conversation](self, "conversation"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isGroupConversation], v7, v6, (v8 & 1) != 0))
         {
           v3 = @"person.2.circle";
         }
@@ -133,29 +133,29 @@ LABEL_20:
 
 - (id)tokenText
 {
-  v3 = [(CKSpotlightQueryResult *)self conversation];
+  conversation = [(CKSpotlightQueryResult *)self conversation];
 
-  if (v3)
+  if (conversation)
   {
-    v4 = [(CKSpotlightQueryResult *)self conversation];
-    v5 = [v4 hasDisplayName];
-    v6 = [(CKSpotlightQueryResult *)self conversation];
-    v7 = v6;
-    if (v5)
+    conversation2 = [(CKSpotlightQueryResult *)self conversation];
+    hasDisplayName = [conversation2 hasDisplayName];
+    conversation3 = [(CKSpotlightQueryResult *)self conversation];
+    v7 = conversation3;
+    if (hasDisplayName)
     {
-      [v6 displayName];
+      [conversation3 displayName];
     }
 
     else
     {
-      [v6 name];
+      [conversation3 name];
     }
-    v8 = ;
+    itemIdentifier = ;
   }
 
   else
   {
-    v8 = [(CKSearchTokenQueryResult *)self itemIdentifier];
+    itemIdentifier = [(CKSearchTokenQueryResult *)self itemIdentifier];
   }
 
   if ([(CKSearchTokenQueryResult *)self hasFilterOption:2])
@@ -163,12 +163,12 @@ LABEL_20:
     v9 = MEMORY[0x1E696AEC0];
     v10 = CKFrameworkBundle();
     v11 = [v10 localizedStringForKey:@"FROM_%@" value:&stru_1F04268F8 table:@"ChatKit"];
-    v12 = [v9 stringWithFormat:v11, v8];
+    v12 = [v9 stringWithFormat:v11, itemIdentifier];
 
-    v13 = [MEMORY[0x1E69DC668] sharedApplication];
-    v14 = [v13 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v14 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v15 = @"\u200F";
     }
@@ -180,52 +180,52 @@ LABEL_20:
 
     v16 = [(__CFString *)v15 stringByAppendingString:v12];
 
-    v8 = v16;
+    itemIdentifier = v16;
   }
 
-  return v8;
+  return itemIdentifier;
 }
 
-- (id)attributedSuggestionTextForSearchText:(id)a3 font:(id)a4
+- (id)attributedSuggestionTextForSearchText:(id)text font:(id)font
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKSpotlightQueryResult *)self conversation];
+  textCopy = text;
+  fontCopy = font;
+  conversation = [(CKSpotlightQueryResult *)self conversation];
 
-  if (v8)
+  if (conversation)
   {
-    v9 = [(CKSpotlightQueryResult *)self conversation];
-    v10 = [v9 hasDisplayName];
-    v11 = [(CKSpotlightQueryResult *)self conversation];
-    v12 = v11;
-    if (v10)
+    conversation2 = [(CKSpotlightQueryResult *)self conversation];
+    hasDisplayName = [conversation2 hasDisplayName];
+    conversation3 = [(CKSpotlightQueryResult *)self conversation];
+    v12 = conversation3;
+    if (hasDisplayName)
     {
-      [v11 displayName];
+      [conversation3 displayName];
     }
 
     else
     {
-      [v11 searchDisplayName];
+      [conversation3 searchDisplayName];
     }
-    v13 = ;
+    itemIdentifier = ;
   }
 
   else
   {
-    v13 = [(CKSearchTokenQueryResult *)self itemIdentifier];
+    itemIdentifier = [(CKSearchTokenQueryResult *)self itemIdentifier];
   }
 
-  v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v15 = [MEMORY[0x1E69DC888] labelColor];
-  if (v7)
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  if (fontCopy)
   {
-    [CKSpotlightQueryUtilities annotatedResultStringWithSearchText:v6 resultText:v13 primaryTextColor:v14 primaryFont:v7 annotatedTextColor:v15 annotatedFont:v7];
+    [CKSpotlightQueryUtilities annotatedResultStringWithSearchText:textCopy resultText:itemIdentifier primaryTextColor:secondaryLabelColor primaryFont:fontCopy annotatedTextColor:labelColor annotatedFont:fontCopy];
   }
 
   else
   {
-    [CKSpotlightQueryUtilities annotatedResultStringWithSearchText:v6 resultText:v13 primaryTextColor:v14 annotatedTextColor:v15];
+    [CKSpotlightQueryUtilities annotatedResultStringWithSearchText:textCopy resultText:itemIdentifier primaryTextColor:secondaryLabelColor annotatedTextColor:labelColor];
   }
   v16 = ;
 
@@ -233,8 +233,8 @@ LABEL_20:
   {
     v26 = objc_alloc(MEMORY[0x1E696AAB0]);
     v30 = *MEMORY[0x1E69DB650];
-    v27 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v31[0] = v27;
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v31[0] = secondaryLabelColor2;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
     v29 = [v26 initWithString:v25 attributes:v28];
 
@@ -249,9 +249,9 @@ LABEL_20:
   return v17;
 }
 
-- (void)addFilterOption:(unint64_t)a3
+- (void)addFilterOption:(unint64_t)option
 {
-  v4 = [(CKSearchTokenQueryResult *)self filterOptions]| a3;
+  v4 = [(CKSearchTokenQueryResult *)self filterOptions]| option;
 
   [(CKSearchTokenQueryResult *)self setFilterOptions:v4];
 }

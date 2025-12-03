@@ -2,11 +2,11 @@
 + (id)defaultService;
 + (id)interface;
 - (ASDAppMetricsService)init;
-- (id)_initWithServiceBroker:(id)a3;
-- (void)getMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4;
-- (void)postMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4;
-- (void)recordMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4;
-- (void)resetMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4;
+- (id)_initWithServiceBroker:(id)broker;
+- (void)getMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler;
+- (void)postMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler;
+- (void)recordMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler;
+- (void)resetMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler;
 @end
 
 @implementation ASDAppMetricsService
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = __38__ASDAppMetricsService_defaultService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D458 != -1)
   {
     dispatch_once(&qword_1ED90D458, block);
@@ -54,33 +54,33 @@ uint64_t __38__ASDAppMetricsService_defaultService__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_initWithServiceBroker:(id)a3
+- (id)_initWithServiceBroker:(id)broker
 {
-  v4 = a3;
+  brokerCopy = broker;
   v8.receiver = self;
   v8.super_class = ASDAppMetricsService;
   v5 = [(ASDAppMetricsService *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_serviceBroker, v4);
+    objc_storeWeak(&v5->_serviceBroker, brokerCopy);
   }
 
   return v6;
 }
 
-- (void)getMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4
+- (void)getMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = +[ASDServiceBroker defaultBroker];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__ASDAppMetricsService_getMetricsEventsForType_withReplyHandler___block_invoke;
   v9[3] = &unk_1E7CDBB08;
   v9[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  typeCopy = type;
+  v8 = handlerCopy;
   [v7 getAppMetricsServiceWithCompletionHandler:v9];
 }
 
@@ -165,18 +165,18 @@ void __65__ASDAppMetricsService_getMetricsEventsForType_withReplyHandler___block
   dispatch_async(v7, block);
 }
 
-- (void)postMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4
+- (void)postMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = +[ASDServiceBroker defaultBroker];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__ASDAppMetricsService_postMetricsEventsForType_withReplyHandler___block_invoke;
   v9[3] = &unk_1E7CDBB08;
   v9[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  typeCopy = type;
+  v8 = handlerCopy;
   [v7 getAppMetricsServiceWithCompletionHandler:v9];
 }
 
@@ -259,18 +259,18 @@ void __66__ASDAppMetricsService_postMetricsEventsForType_withReplyHandler___bloc
   dispatch_async(v6, block);
 }
 
-- (void)recordMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4
+- (void)recordMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = +[ASDServiceBroker defaultBroker];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__ASDAppMetricsService_recordMetricsEventsForType_withReplyHandler___block_invoke;
   v9[3] = &unk_1E7CDBB08;
   v9[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  typeCopy = type;
+  v8 = handlerCopy;
   [v7 getAppMetricsServiceWithCompletionHandler:v9];
 }
 
@@ -353,18 +353,18 @@ void __68__ASDAppMetricsService_recordMetricsEventsForType_withReplyHandler___bl
   dispatch_async(v6, block);
 }
 
-- (void)resetMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4
+- (void)resetMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = +[ASDServiceBroker defaultBroker];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__ASDAppMetricsService_resetMetricsEventsForType_withReplyHandler___block_invoke;
   v9[3] = &unk_1E7CDBB08;
   v9[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  typeCopy = type;
+  v8 = handlerCopy;
   [v7 getAppMetricsServiceWithCompletionHandler:v9];
 }
 

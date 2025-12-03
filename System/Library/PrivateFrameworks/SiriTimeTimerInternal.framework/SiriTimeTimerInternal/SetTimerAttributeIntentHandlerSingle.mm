@@ -1,9 +1,9 @@
 @interface SetTimerAttributeIntentHandlerSingle
 - (_TtC21SiriTimeTimerInternal36SetTimerAttributeIntentHandlerSingle)init;
-- (void)confirmSetTimerAttribute:(SetTimerAttributeIntent *)a3 completion:(id)a4;
-- (void)resolveAllAvailableTargetsForSetTimerAttribute:(SetTimerAttributeIntent *)a3 withCompletion:(id)a4;
-- (void)resolveAssociatedDeviceTargetForSetTimerAttribute:(SetTimerAttributeIntent *)a3 withCompletion:(id)a4;
-- (void)resolveToDurationForSetTimerAttribute:(id)a3 withCompletion:(id)a4;
+- (void)confirmSetTimerAttribute:(SetTimerAttributeIntent *)attribute completion:(id)completion;
+- (void)resolveAllAvailableTargetsForSetTimerAttribute:(SetTimerAttributeIntent *)attribute withCompletion:(id)completion;
+- (void)resolveAssociatedDeviceTargetForSetTimerAttribute:(SetTimerAttributeIntent *)attribute withCompletion:(id)completion;
+- (void)resolveToDurationForSetTimerAttribute:(id)attribute withCompletion:(id)completion;
 @end
 
 @implementation SetTimerAttributeIntentHandlerSingle
@@ -25,15 +25,15 @@
   return v4;
 }
 
-- (void)confirmSetTimerAttribute:(SetTimerAttributeIntent *)a3 completion:(id)a4
+- (void)confirmSetTimerAttribute:(SetTimerAttributeIntent *)attribute completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_28030CE78, "\nY");
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = attribute;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2693B3920();
@@ -48,31 +48,31 @@
   v15[3] = 0;
   v15[4] = &unk_2693B6DB0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  attributeCopy = attribute;
+  selfCopy = self;
   sub_2693A6BC4(0, 0, v10, &unk_2693B6DB8, v15);
 }
 
-- (void)resolveToDurationForSetTimerAttribute:(id)a3 withCompletion:(id)a4
+- (void)resolveToDurationForSetTimerAttribute:(id)attribute withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_2693A58E4(v7, v6);
+  attributeCopy = attribute;
+  selfCopy = self;
+  sub_2693A58E4(attributeCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)resolveAssociatedDeviceTargetForSetTimerAttribute:(SetTimerAttributeIntent *)a3 withCompletion:(id)a4
+- (void)resolveAssociatedDeviceTargetForSetTimerAttribute:(SetTimerAttributeIntent *)attribute withCompletion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_28030CE78, "\nY");
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = attribute;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2693B3920();
@@ -87,20 +87,20 @@
   v15[3] = 0;
   v15[4] = &unk_2693B6D88;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  attributeCopy = attribute;
+  selfCopy = self;
   sub_2693A6BC4(0, 0, v10, &unk_2693B6D90, v15);
 }
 
-- (void)resolveAllAvailableTargetsForSetTimerAttribute:(SetTimerAttributeIntent *)a3 withCompletion:(id)a4
+- (void)resolveAllAvailableTargetsForSetTimerAttribute:(SetTimerAttributeIntent *)attribute withCompletion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_28030CE78, "\nY");
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = attribute;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2693B3920();
@@ -115,8 +115,8 @@
   v15[3] = 0;
   v15[4] = &unk_2693B5700;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  attributeCopy = attribute;
+  selfCopy = self;
   sub_2693A6BC4(0, 0, v10, &unk_2693B5530, v15);
 }
 

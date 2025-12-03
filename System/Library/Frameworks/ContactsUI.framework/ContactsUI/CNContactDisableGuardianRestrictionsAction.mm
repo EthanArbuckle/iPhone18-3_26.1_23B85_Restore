@@ -1,35 +1,35 @@
 @interface CNContactDisableGuardianRestrictionsAction
 - (BOOL)canPerformAction;
-- (CNContactDisableGuardianRestrictionsAction)initWithContact:(id)a3 inContainer:(id)a4 contactStore:(id)a5;
+- (CNContactDisableGuardianRestrictionsAction)initWithContact:(id)contact inContainer:(id)container contactStore:(id)store;
 - (id)title;
-- (void)performActionWithSender:(id)a3;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNContactDisableGuardianRestrictionsAction
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v4 = [(CNContactDisableGuardianRestrictionsAction *)self container];
-  v5 = [v4 mutableCopy];
+  container = [(CNContactDisableGuardianRestrictionsAction *)self container];
+  v5 = [container mutableCopy];
 
   [v5 setGuardianRestricted:0];
   v6 = objc_alloc_init(MEMORY[0x1E695CF88]);
   [v6 setIgnoresGuardianRestrictions:1];
   [v6 updateContainer:v5];
-  v7 = [(CNContactDisableGuardianRestrictionsAction *)self contactStore];
+  contactStore = [(CNContactDisableGuardianRestrictionsAction *)self contactStore];
   v9 = 0;
-  [v7 executeSaveRequest:v6 error:&v9];
+  [contactStore executeSaveRequest:v6 error:&v9];
 
-  v8 = [(CNContactAction *)self delegate];
-  [v8 actionDidFinish:self];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate actionDidFinish:self];
 }
 
 - (BOOL)canPerformAction
 {
-  v2 = [(CNContactDisableGuardianRestrictionsAction *)self container];
-  v3 = [v2 isGuardianRestricted];
+  container = [(CNContactDisableGuardianRestrictionsAction *)self container];
+  isGuardianRestricted = [container isGuardianRestricted];
 
-  return v3;
+  return isGuardianRestricted;
 }
 
 - (id)title
@@ -40,18 +40,18 @@
   return v3;
 }
 
-- (CNContactDisableGuardianRestrictionsAction)initWithContact:(id)a3 inContainer:(id)a4 contactStore:(id)a5
+- (CNContactDisableGuardianRestrictionsAction)initWithContact:(id)contact inContainer:(id)container contactStore:(id)store
 {
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = CNContactDisableGuardianRestrictionsAction;
-  v11 = [(CNContactAction *)&v15 initWithContact:a3];
+  v11 = [(CNContactAction *)&v15 initWithContact:contact];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_container, a4);
-    objc_storeStrong(&v12->_contactStore, a5);
+    objc_storeStrong(&v11->_container, container);
+    objc_storeStrong(&v12->_contactStore, store);
     v13 = v12;
   }
 

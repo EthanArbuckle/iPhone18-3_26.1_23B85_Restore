@@ -1,45 +1,45 @@
 @interface ABSDeleteObject
-- (ABSDeleteObject)initWithGuid:(id)a3;
+- (ABSDeleteObject)initWithGuid:(id)guid;
 - (NSString)description;
-- (id)createProtobufWithOptions:(id)a3;
+- (id)createProtobufWithOptions:(id)options;
 @end
 
 @implementation ABSDeleteObject
 
-- (ABSDeleteObject)initWithGuid:(id)a3
+- (ABSDeleteObject)initWithGuid:(id)guid
 {
-  v4 = a3;
+  guidCopy = guid;
   v8.receiver = self;
   v8.super_class = ABSDeleteObject;
   v5 = [(ABSDeleteObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ABSDeleteObject *)v5 setGuid:v4];
+    [(ABSDeleteObject *)v5 setGuid:guidCopy];
   }
 
   return v6;
 }
 
-- (id)createProtobufWithOptions:(id)a3
+- (id)createProtobufWithOptions:(id)options
 {
   v4 = [[ABSPBSyncObject alloc] initWithMemo:@"Delete"];
   v5 = objc_alloc_init(ABSPBDeleteWrapper);
   [(ABSPBSyncObject *)v4 setDeleteWrapper:v5];
 
-  v6 = [(ABSDeleteObject *)self guid];
-  v7 = [(ABSPBSyncObject *)v4 deleteWrapper];
-  [v7 setGuid:v6];
+  guid = [(ABSDeleteObject *)self guid];
+  deleteWrapper = [(ABSPBSyncObject *)v4 deleteWrapper];
+  [deleteWrapper setGuid:guid];
 
-  v8 = [(ABSPBSyncObject *)v4 data];
+  data = [(ABSPBSyncObject *)v4 data];
 
-  return v8;
+  return data;
 }
 
 - (NSString)description
 {
-  v2 = [(ABSDeleteObject *)self guid];
-  v3 = [NSString stringWithFormat:@"<ABSContactsDeleteObject:%@>", v2];
+  guid = [(ABSDeleteObject *)self guid];
+  v3 = [NSString stringWithFormat:@"<ABSContactsDeleteObject:%@>", guid];
 
   return v3;
 }

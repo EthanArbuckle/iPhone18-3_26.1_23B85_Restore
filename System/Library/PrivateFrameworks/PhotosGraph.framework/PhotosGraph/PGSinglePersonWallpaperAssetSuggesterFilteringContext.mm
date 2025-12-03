@@ -1,16 +1,16 @@
 @interface PGSinglePersonWallpaperAssetSuggesterFilteringContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)initForAmbient;
 - (id)initForCameraStyleable;
-- (id)initForPeopleInOrientation:(int64_t)a3;
-- (id)initForPeopleInOrientation:(int64_t)a3 deviceAspectRatio:(double)a4;
-- (id)initForTopPeople:(BOOL)a3 withDictionary:(id)a4 orientation:(int64_t)a5;
-- (id)initForTopPeopleInOrientation:(int64_t)a3;
-- (id)initForTopPeopleInOrientation:(int64_t)a3 deviceAspectRatio:(double)a4;
-- (void)_commonInitInOrientation:(int64_t)a3;
-- (void)updateFilteringContextWithDictionary:(id)a3;
+- (id)initForPeopleInOrientation:(int64_t)orientation;
+- (id)initForPeopleInOrientation:(int64_t)orientation deviceAspectRatio:(double)ratio;
+- (id)initForTopPeople:(BOOL)people withDictionary:(id)dictionary orientation:(int64_t)orientation;
+- (id)initForTopPeopleInOrientation:(int64_t)orientation;
+- (id)initForTopPeopleInOrientation:(int64_t)orientation deviceAspectRatio:(double)ratio;
+- (void)_commonInitInOrientation:(int64_t)orientation;
+- (void)updateFilteringContextWithDictionary:(id)dictionary;
 @end
 
 @implementation PGSinglePersonWallpaperAssetSuggesterFilteringContext
@@ -64,10 +64,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -77,7 +77,7 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
       v6 = v7->_timeIntervalForCandidateDeduping == self->_timeIntervalForCandidateDeduping && v7->_requiresSmile == self->_requiresSmile && v7->_requiresNoBlink == self->_requiresNoBlink && v7->_minimumFaceQuality == self->_minimumFaceQuality && v7->_faceQualityPenaltyCutOff == self->_faceQualityPenaltyCutOff && v7->_minimumFaceSize == self->_minimumFaceSize && v7->_maximumFaceSize == self->_maximumFaceSize && v7->_maximumFaceRoll == self->_maximumFaceRoll && v7->_minimumWallpaperScore == self->_minimumWallpaperScore && v7->_absoluteMinimumWallpaperScore == self->_absoluteMinimumWallpaperScore && v7->_minimumCropScore == self->_minimumCropScore && v7->_maximumLowLightScore == self->_maximumLowLightScore && v7->_maximumCropZoomRatio == self->_maximumCropZoomRatio;
     }
 
@@ -90,9 +90,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [PGSinglePersonWallpaperAssetSuggesterFilteringContext allocWithZone:a3];
+  result = [PGSinglePersonWallpaperAssetSuggesterFilteringContext allocWithZone:zone];
   *(result + 4) = *&self->_timeIntervalForCandidateDeduping;
   *(result + 8) = self->_requiresSmile;
   *(result + 9) = self->_requiresNoBlink;
@@ -109,139 +109,139 @@
   return result;
 }
 
-- (id)initForTopPeople:(BOOL)a3 withDictionary:(id)a4 orientation:(int64_t)a5
+- (id)initForTopPeople:(BOOL)people withDictionary:(id)dictionary orientation:(int64_t)orientation
 {
-  v6 = a3;
-  v8 = a4;
-  if (v6)
+  peopleCopy = people;
+  dictionaryCopy = dictionary;
+  if (peopleCopy)
   {
-    v9 = [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)self initForTopPeopleInOrientation:a5];
+    v9 = [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)self initForTopPeopleInOrientation:orientation];
   }
 
   else
   {
-    v9 = [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)self initForPeopleInOrientation:a5];
+    v9 = [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)self initForPeopleInOrientation:orientation];
   }
 
   v10 = v9;
   if (v9)
   {
-    [v9 updateFilteringContextWithDictionary:v8];
+    [v9 updateFilteringContextWithDictionary:dictionaryCopy];
   }
 
   return v10;
 }
 
-- (void)updateFilteringContextWithDictionary:(id)a3
+- (void)updateFilteringContextWithDictionary:(id)dictionary
 {
-  v41 = a3;
-  v4 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextTimeIntervalForCandidateDeduping"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextTimeIntervalForCandidateDeduping"];
   if (v4)
   {
-    v5 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextTimeIntervalForCandidateDeduping"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextTimeIntervalForCandidateDeduping"];
     [v5 doubleValue];
     self->_timeIntervalForCandidateDeduping = v6;
   }
 
-  v7 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextRequiresSmile"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextRequiresSmile"];
   if (v7)
   {
-    v8 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextRequiresSmile"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextRequiresSmile"];
     self->_requiresSmile = [v8 BOOLValue];
   }
 
-  v9 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextRequiresNoBlink"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextRequiresNoBlink"];
   if (v9)
   {
-    v10 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextRequiresNoBlink"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextRequiresNoBlink"];
     self->_requiresNoBlink = [v10 BOOLValue];
   }
 
-  v11 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumFaceQuality"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumFaceQuality"];
   if (v11)
   {
-    v12 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumFaceQuality"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumFaceQuality"];
     [v12 doubleValue];
     self->_minimumFaceQuality = v13;
   }
 
-  v14 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextFaceQualityPenaltyCutOff"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextFaceQualityPenaltyCutOff"];
   if (v14)
   {
-    v15 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextFaceQualityPenaltyCutOff"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextFaceQualityPenaltyCutOff"];
     [v15 doubleValue];
     self->_faceQualityPenaltyCutOff = v16;
   }
 
-  v17 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumFaceSize"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumFaceSize"];
   if (v17)
   {
-    v18 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumFaceSize"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumFaceSize"];
     [v18 doubleValue];
     self->_minimumFaceSize = v19;
   }
 
-  v20 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumFaceSize"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumFaceSize"];
   if (v20)
   {
-    v21 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumFaceSize"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumFaceSize"];
     [v21 doubleValue];
     self->_maximumFaceSize = v22;
   }
 
-  v23 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumFaceRoll"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumFaceRoll"];
   if (v23)
   {
-    v24 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumFaceRoll"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumFaceRoll"];
     [v24 doubleValue];
     self->_maximumFaceRoll = v25;
   }
 
-  v26 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumWallpaperScore"];
+  v26 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumWallpaperScore"];
   if (v26)
   {
-    v27 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumWallpaperScore"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumWallpaperScore"];
     [v27 doubleValue];
     self->_minimumWallpaperScore = v28;
   }
 
-  v29 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextAbsoluteMinimumWallpaperScore"];
+  v29 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextAbsoluteMinimumWallpaperScore"];
   if (v29)
   {
-    v30 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextAbsoluteMinimumWallpaperScore"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextAbsoluteMinimumWallpaperScore"];
     [v30 doubleValue];
     self->_absoluteMinimumWallpaperScore = v31;
   }
 
-  v32 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumCropScore"];
+  v32 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumCropScore"];
   if (v32)
   {
-    v33 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumCropScore"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMinimumCropScore"];
     [v33 doubleValue];
     self->_minimumCropScore = v34;
   }
 
-  v35 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumLowLightScore"];
+  v35 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumLowLightScore"];
   if (v35)
   {
-    v36 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumLowLightScore"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumLowLightScore"];
     [v36 doubleValue];
     self->_maximumLowLightScore = v37;
   }
 
-  v38 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumCropZoomRatio"];
+  v38 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumCropZoomRatio"];
   if (v38)
   {
-    v39 = [v41 objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumCropZoomRatio"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"PGSinglePersonWallpaperAssetSuggesterFilteringContextMaximumCropZoomRatio"];
     [v39 doubleValue];
     self->_maximumCropZoomRatio = v40;
   }
 }
 
-- (void)_commonInitInOrientation:(int64_t)a3
+- (void)_commonInitInOrientation:(int64_t)orientation
 {
   v21 = *MEMORY[0x277D85DE8];
-  self->_orientation = a3;
+  self->_orientation = orientation;
   PFDeviceScreenSize();
   v6 = v4;
   v7 = v5;
@@ -313,7 +313,7 @@
   return v3;
 }
 
-- (id)initForPeopleInOrientation:(int64_t)a3 deviceAspectRatio:(double)a4
+- (id)initForPeopleInOrientation:(int64_t)orientation deviceAspectRatio:(double)ratio
 {
   v9.receiver = self;
   v9.super_class = PGSinglePersonWallpaperAssetSuggesterFilteringContext;
@@ -321,14 +321,14 @@
   v7 = v6;
   if (v6)
   {
-    [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)v6 _commonInitInOrientation:a3];
-    v7[3] = a4;
+    [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)v6 _commonInitInOrientation:orientation];
+    v7[3] = ratio;
   }
 
   return v7;
 }
 
-- (id)initForPeopleInOrientation:(int64_t)a3
+- (id)initForPeopleInOrientation:(int64_t)orientation
 {
   v7.receiver = self;
   v7.super_class = PGSinglePersonWallpaperAssetSuggesterFilteringContext;
@@ -336,13 +336,13 @@
   v5 = v4;
   if (v4)
   {
-    [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)v4 _commonInitInOrientation:a3];
+    [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)v4 _commonInitInOrientation:orientation];
   }
 
   return v5;
 }
 
-- (id)initForTopPeopleInOrientation:(int64_t)a3 deviceAspectRatio:(double)a4
+- (id)initForTopPeopleInOrientation:(int64_t)orientation deviceAspectRatio:(double)ratio
 {
   v9.receiver = self;
   v9.super_class = PGSinglePersonWallpaperAssetSuggesterFilteringContext;
@@ -350,14 +350,14 @@
   v7 = v6;
   if (v6)
   {
-    [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)v6 _commonInitForTopPeopleInOrientation:a3];
-    v7[3] = a4;
+    [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)v6 _commonInitForTopPeopleInOrientation:orientation];
+    v7[3] = ratio;
   }
 
   return v7;
 }
 
-- (id)initForTopPeopleInOrientation:(int64_t)a3
+- (id)initForTopPeopleInOrientation:(int64_t)orientation
 {
   v7.receiver = self;
   v7.super_class = PGSinglePersonWallpaperAssetSuggesterFilteringContext;
@@ -365,7 +365,7 @@
   v5 = v4;
   if (v4)
   {
-    [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)v4 _commonInitForTopPeopleInOrientation:a3];
+    [(PGSinglePersonWallpaperAssetSuggesterFilteringContext *)v4 _commonInitForTopPeopleInOrientation:orientation];
   }
 
   return v5;

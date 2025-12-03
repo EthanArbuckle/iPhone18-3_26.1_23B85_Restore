@@ -1,10 +1,10 @@
 @interface TPSDialAssistBundleController
 - (BOOL)isHidden;
 - (TPSDialAssistController)dialAssistController;
-- (id)isMainSwitchOn:(id)a3;
+- (id)isMainSwitchOn:(id)on;
 - (id)specifiers;
 - (id)supportedSubscriptions;
-- (void)setMainSwitchOn:(id)a3 specifier:(id)a4;
+- (void)setMainSwitchOn:(id)on specifier:(id)specifier;
 @end
 
 @implementation TPSDialAssistBundleController
@@ -63,9 +63,9 @@
   if (![(TPSDialAssistBundleController *)&v7 isHidden]&& (+[UIApplication isRunningInStoreDemoMode]& 1) == 0)
   {
     v2 = +[UIDevice currentDevice];
-    v3 = [v2 userInterfaceIdiom];
+    userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-    if (v3 != &dword_0 + 1)
+    if (userInterfaceIdiom != &dword_0 + 1)
     {
       return 0;
     }
@@ -88,13 +88,13 @@
   {
     v21.receiver = self;
     v21.super_class = TPSDialAssistBundleController;
-    v4 = [(TPSDialAssistBundleController *)&v21 subscriptions];
-    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [v4 count]);
+    subscriptions = [(TPSDialAssistBundleController *)&v21 subscriptions];
+    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [subscriptions count]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v4;
+    v6 = subscriptions;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v7)
     {
@@ -112,8 +112,8 @@
           v11 = *(*(&v17 + 1) + 8 * i);
           if (([v11 isSimHidden] & 1) == 0)
           {
-            v12 = [(TPSDialAssistBundleController *)self dialAssistController];
-            v13 = [v12 supportsDialAssistForSubscriptionContext:v11];
+            dialAssistController = [(TPSDialAssistBundleController *)self dialAssistController];
+            v13 = [dialAssistController supportsDialAssistForSubscriptionContext:v11];
 
             if (v13)
             {
@@ -138,46 +138,46 @@
   return supportedSubscriptions;
 }
 
-- (id)isMainSwitchOn:(id)a3
+- (id)isMainSwitchOn:(id)on
 {
-  v4 = a3;
-  v5 = [(TPSDialAssistBundleController *)self parentListController];
-  v6 = [v5 readPreferenceValue:v4];
+  onCopy = on;
+  parentListController = [(TPSDialAssistBundleController *)self parentListController];
+  v6 = [parentListController readPreferenceValue:onCopy];
 
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = &dword_0 + 1;
+    bOOLValue = &dword_0 + 1;
   }
 
-  v8 = [NSNumber numberWithBool:v7];
+  v8 = [NSNumber numberWithBool:bOOLValue];
 
   return v8;
 }
 
-- (void)setMainSwitchOn:(id)a3 specifier:(id)a4
+- (void)setMainSwitchOn:(id)on specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  onCopy = on;
+  specifierCopy = specifier;
   v8 = TPSDialAssistLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 BOOLValue];
+    bOOLValue = [onCopy BOOLValue];
     v10 = @"Disabling";
-    if (v9)
+    if (bOOLValue)
     {
       v10 = @"Enabling";
     }
@@ -187,8 +187,8 @@
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%@ dial assist", &v12, 0xCu);
   }
 
-  v11 = [(TPSDialAssistBundleController *)self parentListController];
-  [v11 setPreferenceValue:v6 specifier:v7];
+  parentListController = [(TPSDialAssistBundleController *)self parentListController];
+  [parentListController setPreferenceValue:onCopy specifier:specifierCopy];
 }
 
 @end

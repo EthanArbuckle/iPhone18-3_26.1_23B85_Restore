@@ -1,20 +1,20 @@
 @interface RemoteExtensionHostViewController
-- (_TtC13iCloudQuotaUI33RemoteExtensionHostViewController)initWithCoder:(id)a3;
-- (_TtC13iCloudQuotaUI33RemoteExtensionHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC13iCloudQuotaUI33RemoteExtensionHostViewController)initWithCoder:(id)coder;
+- (_TtC13iCloudQuotaUI33RemoteExtensionHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (uint64_t)hostViewControllerDidActivate:;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation RemoteExtensionHostViewController
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -25,7 +25,7 @@
   }
 }
 
-- (_TtC13iCloudQuotaUI33RemoteExtensionHostViewController)initWithCoder:(id)a3
+- (_TtC13iCloudQuotaUI33RemoteExtensionHostViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13iCloudQuotaUI33RemoteExtensionHostViewController____lazy_storage___hostViewController) = 0;
@@ -37,23 +37,23 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x88);
-  v5 = self;
+  selfCopy = self;
   v4 = v3();
-  [(UIViewController *)v5 presentPreferredSizeWithViewController:v4 animated:1 completion:0];
+  [(UIViewController *)selfCopy presentPreferredSizeWithViewController:v4 animated:1 completion:0];
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_275758B9C(a4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  errorCopy = error;
+  sub_275758B9C(error);
 }
 
-- (_TtC13iCloudQuotaUI33RemoteExtensionHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13iCloudQuotaUI33RemoteExtensionHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

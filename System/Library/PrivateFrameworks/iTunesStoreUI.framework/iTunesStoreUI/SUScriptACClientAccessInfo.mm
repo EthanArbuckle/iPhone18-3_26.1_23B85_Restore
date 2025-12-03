@@ -1,15 +1,15 @@
 @interface SUScriptACClientAccessInfo
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSDictionary)accessInfoDictionary;
 - (SUScriptACClientAccessInfo)init;
 - (SUScriptAppleAccountType)accountType;
 - (id)scriptAttributeKeys;
-- (id)valueForAccessKey:(id)a3;
+- (id)valueForAccessKey:(id)key;
 - (void)dealloc;
-- (void)setAccountType:(id)a3;
-- (void)setValue:(id)a3 forAccessKey:(id)a4;
+- (void)setAccountType:(id)type;
+- (void)setValue:(id)value forAccessKey:(id)key;
 @end
 
 @implementation SUScriptACClientAccessInfo
@@ -50,35 +50,35 @@
   return v3;
 }
 
-- (void)setAccountType:(id)a3
+- (void)setAccountType:(id)type
 {
   [(SUScriptObject *)self lock];
   accountType = self->_accountType;
-  if (accountType != a3)
+  if (accountType != type)
   {
 
-    self->_accountType = a3;
+    self->_accountType = type;
   }
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setValue:(id)a3 forAccessKey:(id)a4
+- (void)setValue:(id)value forAccessKey:(id)key
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = a3;
+    valueCopy = value;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(WebFrame *)[(SUScriptObject *)self webFrame] globalContext];
+      globalContext = [(WebFrame *)[(SUScriptObject *)self webFrame] globalContext];
 
-      v9 = [a3 copyArrayOrDictionaryWithContext:v7];
+      valueCopy = [value copyArrayOrDictionaryWithContext:globalContext];
     }
 
     [(SUScriptObject *)self lock];
-    [(NSMutableDictionary *)self->_dictionary setObject:v9 forKey:a4];
+    [(NSMutableDictionary *)self->_dictionary setObject:valueCopy forKey:key];
     [(SUScriptObject *)self unlock];
   }
 
@@ -90,35 +90,35 @@
   }
 }
 
-- (id)valueForAccessKey:(id)a3
+- (id)valueForAccessKey:(id)key
 {
   [(SUScriptObject *)self lock];
-  v5 = [(NSMutableDictionary *)self->_dictionary objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_dictionary objectForKey:key];
   [(SUScriptObject *)self unlock];
   return v5;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_70 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptACClientAccessInfo;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_52, 2);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_52, 2);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptACClientAccessInfo;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -128,14 +128,14 @@
 {
   v4.receiver = self;
   v4.super_class = SUScriptACClientAccessInfo;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_70 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_70 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_52 = sel_valueForAccessKey_;
     unk_1EBF3B7A0 = @"getAccessValue";

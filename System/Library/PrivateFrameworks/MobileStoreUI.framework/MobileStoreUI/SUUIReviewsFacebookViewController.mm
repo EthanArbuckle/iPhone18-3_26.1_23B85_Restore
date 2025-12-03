@@ -1,30 +1,30 @@
 @interface SUUIReviewsFacebookViewController
 - (SUUIReviewsFacebookViewControllerDelegate)delegate;
-- (void)_changeStatusToUserLiked:(BOOL)a3;
+- (void)_changeStatusToUserLiked:(BOOL)liked;
 - (void)_reloadFacebookView;
-- (void)_toggleLike:(id)a3;
+- (void)_toggleLike:(id)like;
 - (void)dealloc;
 - (void)loadView;
-- (void)setFacebookLikeStatus:(id)a3;
+- (void)setFacebookLikeStatus:(id)status;
 @end
 
 @implementation SUUIReviewsFacebookViewController
 
 - (void)dealloc
 {
-  v3 = [(SUUIReviewsFacebookView *)self->_facebookView likeToggleButton];
-  [v3 removeTarget:self action:0 forControlEvents:4095];
+  likeToggleButton = [(SUUIReviewsFacebookView *)self->_facebookView likeToggleButton];
+  [likeToggleButton removeTarget:self action:0 forControlEvents:4095];
 
   v4.receiver = self;
   v4.super_class = SUUIReviewsFacebookViewController;
   [(SUUIReviewsFacebookViewController *)&v4 dealloc];
 }
 
-- (void)setFacebookLikeStatus:(id)a3
+- (void)setFacebookLikeStatus:(id)status
 {
-  if (self->_facebookLikeStatus != a3)
+  if (self->_facebookLikeStatus != status)
   {
-    v4 = [a3 copy];
+    v4 = [status copy];
     facebookLikeStatus = self->_facebookLikeStatus;
     self->_facebookLikeStatus = v4;
 
@@ -41,8 +41,8 @@
     v5 = self->_facebookView;
     self->_facebookView = v4;
 
-    v6 = [(SUUIReviewsFacebookView *)self->_facebookView likeToggleButton];
-    [v6 addTarget:self action:sel__toggleLike_ forControlEvents:64];
+    likeToggleButton = [(SUUIReviewsFacebookView *)self->_facebookView likeToggleButton];
+    [likeToggleButton addTarget:self action:sel__toggleLike_ forControlEvents:64];
 
     [(SUUIReviewsFacebookViewController *)self _reloadFacebookView];
     facebookView = self->_facebookView;
@@ -51,12 +51,12 @@
   [(SUUIReviewsFacebookViewController *)self setView:facebookView];
 }
 
-- (void)_toggleLike:(id)a3
+- (void)_toggleLike:(id)like
 {
-  v4 = a3;
-  v5 = [(SUUIFacebookLikeStatus *)self->_facebookLikeStatus isUserLiked];
-  v6 = v5;
-  v7 = !v5;
+  likeCopy = like;
+  isUserLiked = [(SUUIFacebookLikeStatus *)self->_facebookLikeStatus isUserLiked];
+  v6 = isUserLiked;
+  v7 = !isUserLiked;
   [(SUUIReviewsFacebookViewController *)self _changeStatusToUserLiked:v7];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -113,24 +113,24 @@ void __49__SUUIReviewsFacebookViewController__toggleLike___block_invoke_2(uint64
   [WeakRetained _changeStatusToUserLiked:(*(a1 + 40) & 1) == 0];
 }
 
-- (void)_changeStatusToUserLiked:(BOOL)a3
+- (void)_changeStatusToUserLiked:(BOOL)liked
 {
-  v3 = a3;
+  likedCopy = liked;
   v5 = [(SUUIFacebookLikeStatus *)self->_facebookLikeStatus copy];
-  [v5 setUserLiked:v3];
+  [v5 setUserLiked:likedCopy];
   [(SUUIReviewsFacebookViewController *)self setFacebookLikeStatus:v5];
 }
 
 - (void)_reloadFacebookView
 {
   facebookView = self->_facebookView;
-  v4 = [(SUUIFacebookLikeStatus *)self->_facebookLikeStatus friendNames];
-  [(SUUIReviewsFacebookView *)facebookView setFriendNames:v4];
+  friendNames = [(SUUIFacebookLikeStatus *)self->_facebookLikeStatus friendNames];
+  [(SUUIReviewsFacebookView *)facebookView setFriendNames:friendNames];
 
   v5 = self->_facebookView;
-  v6 = [(SUUIFacebookLikeStatus *)self->_facebookLikeStatus isUserLiked];
+  isUserLiked = [(SUUIFacebookLikeStatus *)self->_facebookLikeStatus isUserLiked];
 
-  [(SUUIReviewsFacebookView *)v5 setUserLiked:v6];
+  [(SUUIReviewsFacebookView *)v5 setUserLiked:isUserLiked];
 }
 
 - (SUUIReviewsFacebookViewControllerDelegate)delegate

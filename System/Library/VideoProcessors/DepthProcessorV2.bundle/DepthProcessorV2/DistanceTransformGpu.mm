@@ -1,8 +1,8 @@
 @interface DistanceTransformGpu
 - (DistanceTransformGpu)init;
-- (DistanceTransformGpu)initWithParameters:(id *)a3 metalContext:(id)a4;
+- (DistanceTransformGpu)initWithParameters:(id *)parameters metalContext:(id)context;
 - (int)allocateResources;
-- (int)computeDistanceWithTexture:(id)a3 distance:(id)a4 waitForScheduled:(BOOL)a5;
+- (int)computeDistanceWithTexture:(id)texture distance:(id)distance waitForScheduled:(BOOL)scheduled;
 - (int)createDTKernels;
 - (void)dealloc;
 - (void)releaseResources;
@@ -42,18 +42,18 @@
   return v11;
 }
 
-- (DistanceTransformGpu)initWithParameters:(id *)a3 metalContext:(id)a4
+- (DistanceTransformGpu)initWithParameters:(id *)parameters metalContext:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = DistanceTransformGpu;
   v8 = [(DistanceTransformGpu *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_metalCtx, a4);
-    v9->_width = a3->var0;
-    v9->_height = a3->var1;
+    objc_storeStrong(&v8->_metalCtx, context);
+    v9->_width = parameters->var0;
+    v9->_height = parameters->var1;
     if (objc_msgSend_createDTKernels(v9, v10, v11, v12, v13, v14))
     {
       v15 = 0;
@@ -167,12 +167,12 @@ LABEL_8:
   [(DistanceTransformGpu *)&v7 dealloc];
 }
 
-- (int)computeDistanceWithTexture:(id)a3 distance:(id)a4 waitForScheduled:(BOOL)a5
+- (int)computeDistanceWithTexture:(id)texture distance:(id)distance waitForScheduled:(BOOL)scheduled
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v15 = v9;
+  scheduledCopy = scheduled;
+  textureCopy = texture;
+  distanceCopy = distance;
+  v15 = distanceCopy;
   if (!self->_metalCtx)
   {
     sub_295732E8C(&v153);
@@ -180,23 +180,23 @@ LABEL_20:
     v45 = 0;
     v32 = 0;
 LABEL_26:
-    v5 = v153;
+    scheduledCopy = v153;
     goto LABEL_14;
   }
 
-  if (!v8)
+  if (!textureCopy)
   {
     sub_295732DE0(&v153);
     goto LABEL_20;
   }
 
-  if (!v9)
+  if (!distanceCopy)
   {
     sub_295732D34(&v153);
     goto LABEL_20;
   }
 
-  if (objc_msgSend_pixelFormat(v8, v10, v11, v12, v13, v14) != 25)
+  if (objc_msgSend_pixelFormat(textureCopy, v10, v11, v12, v13, v14) != 25)
   {
     sub_29573292C(&v153);
     goto LABEL_20;
@@ -230,7 +230,7 @@ LABEL_24:
   }
 
   objc_msgSend_setComputePipelineState_(v40, v41, self->_dtInitKernel, v42, v43, v44);
-  objc_msgSend_setTexture_atIndex_(v45, v46, v8, 0, v47, v48);
+  objc_msgSend_setTexture_atIndex_(v45, v46, textureCopy, 0, v47, v48);
   objc_msgSend_setTexture_atIndex_(v45, v49, self->_maskTexture, 1, v50, v51);
   v153 = (width + 31) >> 5;
   v154.i64[0] = (height + 31) >> 5;
@@ -292,15 +292,15 @@ LABEL_24:
   }
 
   objc_msgSend_commit(v32, v117, v118, v119, v120, v121);
-  if (v5)
+  if (scheduledCopy)
   {
     objc_msgSend_waitUntilScheduled(v32, v146, v147, v148, v149, v150);
-    v5 = 0;
+    scheduledCopy = 0;
   }
 
 LABEL_14:
 
-  return v5;
+  return scheduledCopy;
 }
 
 - (int)createDTKernels

@@ -1,6 +1,6 @@
 @interface TSULogHelper
 + (id)sharedInstance;
-- (BOOL)incrementThrottleCountAndCheckThottleMax:(unint64_t)a3;
+- (BOOL)incrementThrottleCountAndCheckThottleMax:(unint64_t)max;
 @end
 
 @implementation TSULogHelper
@@ -17,12 +17,12 @@
   return v3;
 }
 
-- (BOOL)incrementThrottleCountAndCheckThottleMax:(unint64_t)a3
+- (BOOL)incrementThrottleCountAndCheckThottleMax:(unint64_t)max
 {
-  v5 = [(TSULogHelper *)self throttleCount];
+  throttleCount = [(TSULogHelper *)self throttleCount];
   [(TSULogHelper *)self setThrottleCount:[(TSULogHelper *)self throttleCount]+ 1];
-  v6 = [(TSULogHelper *)self lastThrottleCheck];
-  if (v5 == a3)
+  lastThrottleCheck = [(TSULogHelper *)self lastThrottleCheck];
+  if (throttleCount == max)
   {
     if (TSUPerformanceCat_init_token != -1)
     {
@@ -37,14 +37,14 @@
     }
   }
 
-  if (v5 < a3 || !v6)
+  if (throttleCount < max || !lastThrottleCheck)
   {
     goto LABEL_16;
   }
 
-  [v6 timeIntervalSinceNow];
+  [lastThrottleCheck timeIntervalSinceNow];
   v9 = v8;
-  [v6 timeIntervalSinceNow];
+  [lastThrottleCheck timeIntervalSinceNow];
   if (v10 < -300.0)
   {
     if (TSUPerformanceCat_init_token != -1)

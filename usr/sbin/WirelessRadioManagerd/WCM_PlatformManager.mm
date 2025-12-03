@@ -6,11 +6,11 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)wcmCellularCoexB7DLRange;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)wcmCellularCoexB7ULRange;
 - (BOOL)fetchWRMdebugPlistForceTDD;
-- (BOOL)isBand40ACoexActiveForULFreq:(double)a3 ulBW:(double)a4 dlFreq:(double)a5 dlBW:(double)a6;
-- (BOOL)isBand40BCoexActiveForULFreq:(double)a3 ulBW:(double)a4 dlFreq:(double)a5 dlBW:(double)a6;
-- (BOOL)isBand41A1CoexActiveForULFreq:(double)a3 ulBW:(double)a4 dlFreq:(double)a5 dlBW:(double)a6;
-- (BOOL)isBand41A2CoexActiveForULFreq:(double)a3 ulBW:(double)a4 dlFreq:(double)a5 dlBW:(double)a6;
-- (BOOL)isBand7CoexActiveForULFreq:(double)a3 ulBW:(double)a4 dlFreq:(double)a5 dlBW:(double)a6;
+- (BOOL)isBand40ACoexActiveForULFreq:(double)freq ulBW:(double)w dlFreq:(double)dlFreq dlBW:(double)bW;
+- (BOOL)isBand40BCoexActiveForULFreq:(double)freq ulBW:(double)w dlFreq:(double)dlFreq dlBW:(double)bW;
+- (BOOL)isBand41A1CoexActiveForULFreq:(double)freq ulBW:(double)w dlFreq:(double)dlFreq dlBW:(double)bW;
+- (BOOL)isBand41A2CoexActiveForULFreq:(double)freq ulBW:(double)w dlFreq:(double)dlFreq dlBW:(double)bW;
+- (BOOL)isBand7CoexActiveForULFreq:(double)freq ulBW:(double)w dlFreq:(double)dlFreq dlBW:(double)bW;
 - (BOOL)isJapanSKU;
 - (BOOL)isRowSKUB;
 - (BOOL)isRowSKUS;
@@ -23,11 +23,11 @@
 - (void)configureSupportedPlatform;
 - (void)dealloc;
 - (void)initPlatformPolicies;
-- (void)loadBTConfigurablePolicy:(id)a3;
-- (void)loadCellularConfigurablePolicy:(id)a3;
+- (void)loadBTConfigurablePolicy:(id)policy;
+- (void)loadCellularConfigurablePolicy:(id)policy;
 - (void)loadCoexConfigurablePolicy;
-- (void)loadConfigurableActiveFeature:(id)a3;
-- (void)loadWiFiConfigurablePolicy:(id)a3;
+- (void)loadConfigurableActiveFeature:(id)feature;
+- (void)loadWiFiConfigurablePolicy:(id)policy;
 - (void)printPlatformConfig;
 - (void)setPlatform;
 - (void)setSKU;
@@ -216,95 +216,95 @@
   [WCM_Logging logLevel:4 message:@"    Antenna Blocking Duration  : %@", [(WCM_PlatformManager *)self wcmBTAntBlockDuration]];
 }
 
-- (void)loadConfigurableActiveFeature:(id)a3
+- (void)loadConfigurableActiveFeature:(id)feature
 {
   [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] removeAllObjects];
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"DisableiRAT", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"DisableiRAT", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"DisableiRAT"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"LTEScanProtection", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"LTEScanProtection", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"LTEScanProtection"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"LTECDRXWiFiTimeSharing", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"LTECDRXWiFiTimeSharing", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"LTECDRXWiFiTimeSharing"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"AntennaSelectionCoex", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"AntennaSelectionCoex", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"AntennaSelectionCoex"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"AntennaSelectionV2Coex", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"AntennaSelectionV2Coex", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"AntennaSelectionV2Coex"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"AntennaSelectionV1_1Coex", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"AntennaSelectionV1_1Coex", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"AntennaSelectionV1_1Coex"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"WiFiOCLSupport", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"WiFiOCLSupport", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"WiFiOCLSupport"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"WiFiAWDWCI2CoexBitmap", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"WiFiAWDWCI2CoexBitmap", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"WiFiAWDWCI2CoexBitmap"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"WCI2Type7ShortBit", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"WCI2Type7ShortBit", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"WCI2Type7ShortBit"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"AntennaTunningForGps", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"AntennaTunningForGps", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"AntennaTunningForGps"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"WiFiAWDWCI2CoexBitmap", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"WiFiAWDWCI2CoexBitmap", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"WiFiAWDWCI2CoexBitmap"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"WCI2Type7ShortBit", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"WCI2Type7ShortBit", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"WCI2Type7ShortBit"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"AntennaTunningForGps", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"AntennaTunningForGps", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"AntennaTunningForGps"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"ProtectWiFiRanging", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"ProtectWiFiRanging", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"ProtectWiFiRanging"];
   }
 
   v5 = @"WiFiBtProfile";
-  if (([objc_msgSend(a3 objectForKeyedSubscript:{@"WiFiBtProfile", "BOOLValue"}] & 1) != 0 || (v5 = @"WiFiBt5GProfile", objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"WiFiBt5GProfile"), "BOOLValue")))
+  if (([objc_msgSend(feature objectForKeyedSubscript:{@"WiFiBtProfile", "BOOLValue"}] & 1) != 0 || (v5 = @"WiFiBt5GProfile", objc_msgSend(objc_msgSend(feature, "objectForKeyedSubscript:", @"WiFiBt5GProfile"), "BOOLValue")))
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:v5];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"WiFiAntennaFallback", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"WiFiAntennaFallback", "BOOLValue"}])
   {
     [(NSMutableSet *)[(WCM_PlatformManager *)self wcmCoexFeatures] addObject:@"WiFiAntennaFallback"];
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"Wifi5gChannelMapping", "BOOLValue"}])
+  if ([objc_msgSend(feature objectForKeyedSubscript:{@"Wifi5gChannelMapping", "BOOLValue"}])
   {
-    v6 = [(WCM_PlatformManager *)self wcmCoexFeatures];
+    wcmCoexFeatures = [(WCM_PlatformManager *)self wcmCoexFeatures];
 
-    [(NSMutableSet *)v6 addObject:@"Wifi5gChannelMapping"];
+    [(NSMutableSet *)wcmCoexFeatures addObject:@"Wifi5gChannelMapping"];
   }
 }
 
@@ -357,60 +357,60 @@
   }
 }
 
-- (void)loadWiFiConfigurablePolicy:(id)a3
+- (void)loadWiFiConfigurablePolicy:(id)policy
 {
-  -[WCM_PlatformManager setWcmWiFiB7BlocklistChannels:](self, "setWcmWiFiB7BlocklistChannels:", [a3 objectForKeyedSubscript:@"WCM_WIFI_B7_BLOCKLIST_CHANNELS"]);
-  -[WCM_PlatformManager setWcmWiFiB7WCI2EnabledChannels:](self, "setWcmWiFiB7WCI2EnabledChannels:", [a3 objectForKeyedSubscript:@"WCM_WIFI_B7_WCI2_ENABLED_CHANNELS"]);
-  -[WCM_PlatformManager setWcmWiFiB40ABlocklistChannels:](self, "setWcmWiFiB40ABlocklistChannels:", [a3 objectForKeyedSubscript:@"WCM_WIFI_B40A_BLOCKLIST_CHANNELS"]);
-  -[WCM_PlatformManager setWcmWiFiB40AWCI2EnabledChannels:](self, "setWcmWiFiB40AWCI2EnabledChannels:", [a3 objectForKeyedSubscript:@"WCM_WIFI_B40A_WCI2_ENABLED_CHANNELS"]);
-  -[WCM_PlatformManager setWcmWiFiB40BBlocklistChannels:](self, "setWcmWiFiB40BBlocklistChannels:", [a3 objectForKeyedSubscript:@"WCM_WIFI_B40B_BLOCKLIST_CHANNELS"]);
-  -[WCM_PlatformManager setWcmWiFiB40BWCI2EnabledChannels:](self, "setWcmWiFiB40BWCI2EnabledChannels:", [a3 objectForKeyedSubscript:@"WCM_WIFI_B40B_WCI2_ENABLED_CHANNELS"]);
-  -[WCM_PlatformManager setWcmWiFiB41A1BlocklistChannels:](self, "setWcmWiFiB41A1BlocklistChannels:", [a3 objectForKeyedSubscript:@"WCM_WIFI_B41A1_BLOCKLIST_CHANNELS"]);
-  -[WCM_PlatformManager setWcmWiFiB41A1WCI2EnabledChannels:](self, "setWcmWiFiB41A1WCI2EnabledChannels:", [a3 objectForKeyedSubscript:@"WCM_WIFI_B41A1_WCI2_ENABLED_CHANNELS"]);
-  -[WCM_PlatformManager setWcmWiFiB41A2BlocklistChannels:](self, "setWcmWiFiB41A2BlocklistChannels:", [a3 objectForKeyedSubscript:@"WCM_WIFI_B41A2_BLOCKLIST_CHANNELS"]);
-  -[WCM_PlatformManager setWcmWiFiB41A2WCI2EnabledChannels:](self, "setWcmWiFiB41A2WCI2EnabledChannels:", [a3 objectForKeyedSubscript:@"WCM_WIFI_B41A2_WCI2_ENABLED_CHANNELS"]);
-  -[WCM_PlatformManager setWcmWiFiPriThresholdLow:](self, "setWcmWiFiPriThresholdLow:", [a3 objectForKeyedSubscript:@"WCM_WIFI_RX_PRI_THRESHOLD_LOW"]);
-  -[WCM_PlatformManager setWcmWiFiPriThresholdMed:](self, "setWcmWiFiPriThresholdMed:", [a3 objectForKeyedSubscript:@"WCM_WIFI_RX_PRI_THRESHOLD_MED"]);
-  v5 = [a3 objectForKeyedSubscript:@"WCM_WIFI_RX_PRI_THRESHOLD_HIGH"];
+  -[WCM_PlatformManager setWcmWiFiB7BlocklistChannels:](self, "setWcmWiFiB7BlocklistChannels:", [policy objectForKeyedSubscript:@"WCM_WIFI_B7_BLOCKLIST_CHANNELS"]);
+  -[WCM_PlatformManager setWcmWiFiB7WCI2EnabledChannels:](self, "setWcmWiFiB7WCI2EnabledChannels:", [policy objectForKeyedSubscript:@"WCM_WIFI_B7_WCI2_ENABLED_CHANNELS"]);
+  -[WCM_PlatformManager setWcmWiFiB40ABlocklistChannels:](self, "setWcmWiFiB40ABlocklistChannels:", [policy objectForKeyedSubscript:@"WCM_WIFI_B40A_BLOCKLIST_CHANNELS"]);
+  -[WCM_PlatformManager setWcmWiFiB40AWCI2EnabledChannels:](self, "setWcmWiFiB40AWCI2EnabledChannels:", [policy objectForKeyedSubscript:@"WCM_WIFI_B40A_WCI2_ENABLED_CHANNELS"]);
+  -[WCM_PlatformManager setWcmWiFiB40BBlocklistChannels:](self, "setWcmWiFiB40BBlocklistChannels:", [policy objectForKeyedSubscript:@"WCM_WIFI_B40B_BLOCKLIST_CHANNELS"]);
+  -[WCM_PlatformManager setWcmWiFiB40BWCI2EnabledChannels:](self, "setWcmWiFiB40BWCI2EnabledChannels:", [policy objectForKeyedSubscript:@"WCM_WIFI_B40B_WCI2_ENABLED_CHANNELS"]);
+  -[WCM_PlatformManager setWcmWiFiB41A1BlocklistChannels:](self, "setWcmWiFiB41A1BlocklistChannels:", [policy objectForKeyedSubscript:@"WCM_WIFI_B41A1_BLOCKLIST_CHANNELS"]);
+  -[WCM_PlatformManager setWcmWiFiB41A1WCI2EnabledChannels:](self, "setWcmWiFiB41A1WCI2EnabledChannels:", [policy objectForKeyedSubscript:@"WCM_WIFI_B41A1_WCI2_ENABLED_CHANNELS"]);
+  -[WCM_PlatformManager setWcmWiFiB41A2BlocklistChannels:](self, "setWcmWiFiB41A2BlocklistChannels:", [policy objectForKeyedSubscript:@"WCM_WIFI_B41A2_BLOCKLIST_CHANNELS"]);
+  -[WCM_PlatformManager setWcmWiFiB41A2WCI2EnabledChannels:](self, "setWcmWiFiB41A2WCI2EnabledChannels:", [policy objectForKeyedSubscript:@"WCM_WIFI_B41A2_WCI2_ENABLED_CHANNELS"]);
+  -[WCM_PlatformManager setWcmWiFiPriThresholdLow:](self, "setWcmWiFiPriThresholdLow:", [policy objectForKeyedSubscript:@"WCM_WIFI_RX_PRI_THRESHOLD_LOW"]);
+  -[WCM_PlatformManager setWcmWiFiPriThresholdMed:](self, "setWcmWiFiPriThresholdMed:", [policy objectForKeyedSubscript:@"WCM_WIFI_RX_PRI_THRESHOLD_MED"]);
+  v5 = [policy objectForKeyedSubscript:@"WCM_WIFI_RX_PRI_THRESHOLD_HIGH"];
 
   [(WCM_PlatformManager *)self setWcmWiFiPriThresholdHigh:v5];
 }
 
-- (void)loadBTConfigurablePolicy:(id)a3
+- (void)loadBTConfigurablePolicy:(id)policy
 {
-  -[WCM_PlatformManager setWcmBTAFHMapDefault:](self, "setWcmBTAFHMapDefault:", [a3 objectForKeyedSubscript:@"WCM_BT_AFHMAP_DEFAULT"]);
-  -[WCM_PlatformManager setWcmBTB7AFHMap:](self, "setWcmBTB7AFHMap:", [a3 objectForKeyedSubscript:@"WCM_BT_B7_AFHMAP"]);
-  -[WCM_PlatformManager setWcmBTB40AAFHMap:](self, "setWcmBTB40AAFHMap:", [a3 objectForKeyedSubscript:@"WCM_BT_B40A_AFHMAP"]);
-  -[WCM_PlatformManager setWcmBTB40BAFHMap:](self, "setWcmBTB40BAFHMap:", [a3 objectForKeyedSubscript:@"WCM_BT_B40B_AFHMAP"]);
-  -[WCM_PlatformManager setWcmBTB41A1AFHMap:](self, "setWcmBTB41A1AFHMap:", [a3 objectForKeyedSubscript:@"WCM_BT_B41A1_AFHMAP"]);
-  -[WCM_PlatformManager setWcmBTB41A2AFHMap:](self, "setWcmBTB41A2AFHMap:", [a3 objectForKeyedSubscript:@"WCM_BT_B41A2_AFHMAP"]);
-  v5 = [a3 objectForKeyedSubscript:@"WCM_BT_PREFERRED_ROLE"];
+  -[WCM_PlatformManager setWcmBTAFHMapDefault:](self, "setWcmBTAFHMapDefault:", [policy objectForKeyedSubscript:@"WCM_BT_AFHMAP_DEFAULT"]);
+  -[WCM_PlatformManager setWcmBTB7AFHMap:](self, "setWcmBTB7AFHMap:", [policy objectForKeyedSubscript:@"WCM_BT_B7_AFHMAP"]);
+  -[WCM_PlatformManager setWcmBTB40AAFHMap:](self, "setWcmBTB40AAFHMap:", [policy objectForKeyedSubscript:@"WCM_BT_B40A_AFHMAP"]);
+  -[WCM_PlatformManager setWcmBTB40BAFHMap:](self, "setWcmBTB40BAFHMap:", [policy objectForKeyedSubscript:@"WCM_BT_B40B_AFHMAP"]);
+  -[WCM_PlatformManager setWcmBTB41A1AFHMap:](self, "setWcmBTB41A1AFHMap:", [policy objectForKeyedSubscript:@"WCM_BT_B41A1_AFHMAP"]);
+  -[WCM_PlatformManager setWcmBTB41A2AFHMap:](self, "setWcmBTB41A2AFHMap:", [policy objectForKeyedSubscript:@"WCM_BT_B41A2_AFHMAP"]);
+  v5 = [policy objectForKeyedSubscript:@"WCM_BT_PREFERRED_ROLE"];
 
   [(WCM_PlatformManager *)self setWcmBTPreferredRole:v5];
 }
 
-- (void)loadCellularConfigurablePolicy:(id)a3
+- (void)loadCellularConfigurablePolicy:(id)policy
 {
-  -[WCM_PlatformManager setWcmCellularWCI2ModePolicy:](self, "setWcmCellularWCI2ModePolicy:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_POLICY"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModePowerThreshold:](self, "setWcmCellularWCI2ModePowerThreshold:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_POWERTHRESHOLD"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeRBThresholdHigh:](self, "setWcmCellularWCI2ModeRBThresholdHigh:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_RB_THRESHOLD_HIGH"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeRBThresholdLow:](self, "setWcmCellularWCI2ModeRBThresholdLow:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_RB_THRESHOLD_LOW"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeLTETxDenial:](self, "setWcmCellularWCI2ModeLTETxDenial:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_LTE_TXDENIAL"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeAPTTable:](self, "setWcmCellularWCI2ModeAPTTable:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_APTTABLE"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeControllerTxPowerLimit:](self, "setWcmCellularWCI2ModeControllerTxPowerLimit:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_CONTROLLER_TXPOWERLIMIT"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeWCI2PowerLimit:](self, "setWcmCellularWCI2ModeWCI2PowerLimit:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_WCI2_POWERLIMIT"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeLinkPathLossThreshold:](self, "setWcmCellularWCI2ModeLinkPathLossThreshold:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_LINK_PATHLOSSTHRESHOLD"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeRBFilerAlpha:](self, "setWcmCellularWCI2ModeRBFilerAlpha:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_RB_FILTERALPHA"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeFilterRBThresholdHigh:](self, "setWcmCellularWCI2ModeFilterRBThresholdHigh:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_FILTER_RBTHRESHOLD_HIGH"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeFilterRBThresholdLow:](self, "setWcmCellularWCI2ModeFilterRBThresholdLow:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_FILTER_RBTHRESHOLD_LOW"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeControllerTxPowerLimitTO:](self, "setWcmCellularWCI2ModeControllerTxPowerLimitTO:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_CONTROLLER_TXPOWERLIMIT_TO"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeWCI2PowerLimitTO:](self, "setWcmCellularWCI2ModeWCI2PowerLimitTO:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_WCI2_POWERLIMIT_TO"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeMaxAllowedFrameDenials:](self, "setWcmCellularWCI2ModeMaxAllowedFrameDenials:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_MAX_ALLOWED_FRAME_DENIALS"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeFrameDenialWindow:](self, "setWcmCellularWCI2ModeFrameDenialWindow:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_FRAME_DENIAL_WINDOW"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeTxPowerThresholdAdvTx:](self, "setWcmCellularWCI2ModeTxPowerThresholdAdvTx:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_TXPOWER_THRESHOLD_ADVANCE_TX"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeRBThresholdAdvTx:](self, "setWcmCellularWCI2ModeRBThresholdAdvTx:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_RB_THRESHOLD_ADVANCE_TX"]);
-  -[WCM_PlatformManager setWcmCellularWCI2ModeLTEMaxTxPowerHigh:](self, "setWcmCellularWCI2ModeLTEMaxTxPowerHigh:", [a3 objectForKeyedSubscript:@"WCM_CELLULAR_LTE_MAX_TX_POWER_HIGH"]);
-  v5 = [a3 objectForKeyedSubscript:@"WCM_CELLULAR_LTE_MAX_TX_POWER_LOW"];
+  -[WCM_PlatformManager setWcmCellularWCI2ModePolicy:](self, "setWcmCellularWCI2ModePolicy:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_POLICY"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModePowerThreshold:](self, "setWcmCellularWCI2ModePowerThreshold:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_POWERTHRESHOLD"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeRBThresholdHigh:](self, "setWcmCellularWCI2ModeRBThresholdHigh:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_RB_THRESHOLD_HIGH"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeRBThresholdLow:](self, "setWcmCellularWCI2ModeRBThresholdLow:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_RB_THRESHOLD_LOW"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeLTETxDenial:](self, "setWcmCellularWCI2ModeLTETxDenial:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_LTE_TXDENIAL"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeAPTTable:](self, "setWcmCellularWCI2ModeAPTTable:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_APTTABLE"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeControllerTxPowerLimit:](self, "setWcmCellularWCI2ModeControllerTxPowerLimit:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_CONTROLLER_TXPOWERLIMIT"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeWCI2PowerLimit:](self, "setWcmCellularWCI2ModeWCI2PowerLimit:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_WCI2_POWERLIMIT"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeLinkPathLossThreshold:](self, "setWcmCellularWCI2ModeLinkPathLossThreshold:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_LINK_PATHLOSSTHRESHOLD"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeRBFilerAlpha:](self, "setWcmCellularWCI2ModeRBFilerAlpha:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_RB_FILTERALPHA"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeFilterRBThresholdHigh:](self, "setWcmCellularWCI2ModeFilterRBThresholdHigh:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_FILTER_RBTHRESHOLD_HIGH"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeFilterRBThresholdLow:](self, "setWcmCellularWCI2ModeFilterRBThresholdLow:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_FILTER_RBTHRESHOLD_LOW"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeControllerTxPowerLimitTO:](self, "setWcmCellularWCI2ModeControllerTxPowerLimitTO:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_CONTROLLER_TXPOWERLIMIT_TO"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeWCI2PowerLimitTO:](self, "setWcmCellularWCI2ModeWCI2PowerLimitTO:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_WCI2_POWERLIMIT_TO"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeMaxAllowedFrameDenials:](self, "setWcmCellularWCI2ModeMaxAllowedFrameDenials:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_MAX_ALLOWED_FRAME_DENIALS"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeFrameDenialWindow:](self, "setWcmCellularWCI2ModeFrameDenialWindow:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_FRAME_DENIAL_WINDOW"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeTxPowerThresholdAdvTx:](self, "setWcmCellularWCI2ModeTxPowerThresholdAdvTx:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_TXPOWER_THRESHOLD_ADVANCE_TX"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeRBThresholdAdvTx:](self, "setWcmCellularWCI2ModeRBThresholdAdvTx:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_WCI2MODE_RB_THRESHOLD_ADVANCE_TX"]);
+  -[WCM_PlatformManager setWcmCellularWCI2ModeLTEMaxTxPowerHigh:](self, "setWcmCellularWCI2ModeLTEMaxTxPowerHigh:", [policy objectForKeyedSubscript:@"WCM_CELLULAR_LTE_MAX_TX_POWER_HIGH"]);
+  v5 = [policy objectForKeyedSubscript:@"WCM_CELLULAR_LTE_MAX_TX_POWER_LOW"];
 
   [(WCM_PlatformManager *)self setWcmCellularWCI2ModeLTEMaxTxPowerLow:v5];
 }
@@ -423,21 +423,21 @@
   [(WCM_PlatformManager *)self setIRATSupported:1];
 }
 
-- (BOOL)isBand40ACoexActiveForULFreq:(double)a3 ulBW:(double)a4 dlFreq:(double)a5 dlBW:(double)a6
+- (BOOL)isBand40ACoexActiveForULFreq:(double)freq ulBW:(double)w dlFreq:(double)dlFreq dlBW:(double)bW
 {
-  if (a3 == 0.0 || a4 == 0.0)
+  if (freq == 0.0 || w == 0.0)
   {
-    if (a5 == 0.0 || a6 == 0.0)
+    if (dlFreq == 0.0 || bW == 0.0)
     {
       return 0;
     }
 
-    v6 = a6 * 0.5 + a5;
+    v6 = bW * 0.5 + dlFreq;
   }
 
   else
   {
-    v6 = a4 * 0.5 + a3;
+    v6 = w * 0.5 + freq;
   }
 
   [(WCM_PlatformManager *)self wcmCellularCoexB40ARange];
@@ -445,21 +445,21 @@
   return v7 <= v6 && v9 >= v6;
 }
 
-- (BOOL)isBand40BCoexActiveForULFreq:(double)a3 ulBW:(double)a4 dlFreq:(double)a5 dlBW:(double)a6
+- (BOOL)isBand40BCoexActiveForULFreq:(double)freq ulBW:(double)w dlFreq:(double)dlFreq dlBW:(double)bW
 {
-  if (a3 == 0.0 || a4 == 0.0)
+  if (freq == 0.0 || w == 0.0)
   {
-    if (a5 == 0.0 || a6 == 0.0)
+    if (dlFreq == 0.0 || bW == 0.0)
     {
       return 0;
     }
 
-    v6 = a6 * 0.5 + a5;
+    v6 = bW * 0.5 + dlFreq;
   }
 
   else
   {
-    v6 = a4 * 0.5 + a3;
+    v6 = w * 0.5 + freq;
   }
 
   [(WCM_PlatformManager *)self wcmCellularCoexB40BRange];
@@ -467,21 +467,21 @@
   return v7 <= v6 && v9 >= v6;
 }
 
-- (BOOL)isBand41A1CoexActiveForULFreq:(double)a3 ulBW:(double)a4 dlFreq:(double)a5 dlBW:(double)a6
+- (BOOL)isBand41A1CoexActiveForULFreq:(double)freq ulBW:(double)w dlFreq:(double)dlFreq dlBW:(double)bW
 {
-  if (a3 == 0.0 || a4 == 0.0)
+  if (freq == 0.0 || w == 0.0)
   {
-    if (a5 == 0.0 || a6 == 0.0)
+    if (dlFreq == 0.0 || bW == 0.0)
     {
       return 0;
     }
 
-    v6 = a5 + a6 * -0.5;
+    v6 = dlFreq + bW * -0.5;
   }
 
   else
   {
-    v6 = a3 + a4 * -0.5;
+    v6 = freq + w * -0.5;
   }
 
   [(WCM_PlatformManager *)self wcmCellularCoexB41A1Range];
@@ -489,21 +489,21 @@
   return v7 <= v6 && v9 >= v6;
 }
 
-- (BOOL)isBand41A2CoexActiveForULFreq:(double)a3 ulBW:(double)a4 dlFreq:(double)a5 dlBW:(double)a6
+- (BOOL)isBand41A2CoexActiveForULFreq:(double)freq ulBW:(double)w dlFreq:(double)dlFreq dlBW:(double)bW
 {
-  if (a3 == 0.0 || a4 == 0.0)
+  if (freq == 0.0 || w == 0.0)
   {
-    if (a5 == 0.0 || a6 == 0.0)
+    if (dlFreq == 0.0 || bW == 0.0)
     {
       return 0;
     }
 
-    v6 = a5 + a6 * -0.5;
+    v6 = dlFreq + bW * -0.5;
   }
 
   else
   {
-    v6 = a3 + a4 * -0.5;
+    v6 = freq + w * -0.5;
   }
 
   [(WCM_PlatformManager *)self wcmCellularCoexB41A2Range];
@@ -511,22 +511,22 @@
   return v7 <= v6 && v9 >= v6;
 }
 
-- (BOOL)isBand7CoexActiveForULFreq:(double)a3 ulBW:(double)a4 dlFreq:(double)a5 dlBW:(double)a6
+- (BOOL)isBand7CoexActiveForULFreq:(double)freq ulBW:(double)w dlFreq:(double)dlFreq dlBW:(double)bW
 {
-  if (a3 == 0.0 || a4 == 0.0)
+  if (freq == 0.0 || w == 0.0)
   {
-    if (a5 == 0.0 || a6 == 0.0)
+    if (dlFreq == 0.0 || bW == 0.0)
     {
       return 0;
     }
 
-    v6 = a5 + a6 * -0.5;
+    v6 = dlFreq + bW * -0.5;
     [(WCM_PlatformManager *)self wcmCellularCoexB7DLRange];
   }
 
   else
   {
-    v6 = a3 + a4 * -0.5;
+    v6 = freq + w * -0.5;
     [(WCM_PlatformManager *)self wcmCellularCoexB7ULRange];
   }
 
@@ -656,16 +656,16 @@ LABEL_11:
 - (void)setSKU
 {
   [(WCM_PlatformManager *)self setWrmSku:8];
-  v3 = [MGCopyAnswer() UTF8String];
-  if (!v3)
+  uTF8String = [MGCopyAnswer() UTF8String];
+  if (!uTF8String)
   {
     return;
   }
 
-  v4 = *v3;
+  v4 = *uTF8String;
   if (v4 <= 0x41)
   {
-    if (!*v3)
+    if (!*uTF8String)
     {
       return;
     }
@@ -729,7 +729,7 @@ LABEL_14:
             {
               if (v3 == 3585085679)
               {
-                v4 = self;
+                selfCopy115 = self;
                 v5 = 14;
               }
 
@@ -740,14 +740,14 @@ LABEL_14:
                   goto LABEL_308;
                 }
 
-                v4 = self;
+                selfCopy115 = self;
                 v5 = 59;
               }
             }
 
             else if (v3 == 3564012492)
             {
-              v4 = self;
+              selfCopy115 = self;
               v5 = 267;
             }
 
@@ -758,7 +758,7 @@ LABEL_14:
                 goto LABEL_308;
               }
 
-              v4 = self;
+              selfCopy115 = self;
               v5 = 183;
             }
 
@@ -769,7 +769,7 @@ LABEL_14:
           {
             if (v3 == 3663011141)
             {
-              v4 = self;
+              selfCopy115 = self;
               v5 = 230;
             }
 
@@ -780,7 +780,7 @@ LABEL_14:
                 goto LABEL_308;
               }
 
-              v4 = self;
+              selfCopy115 = self;
               v5 = 175;
             }
 
@@ -789,7 +789,7 @@ LABEL_14:
 
           if (v3 == 3599094683)
           {
-            v4 = self;
+            selfCopy115 = self;
             v5 = 134;
             goto LABEL_307;
           }
@@ -810,7 +810,7 @@ LABEL_14:
             {
               if (v3 == 3455223061)
               {
-                v4 = self;
+                selfCopy115 = self;
                 v5 = 142;
               }
 
@@ -821,14 +821,14 @@ LABEL_14:
                   goto LABEL_308;
                 }
 
-                v4 = self;
+                selfCopy115 = self;
                 v5 = 146;
               }
             }
 
             else if (v3 == 3361025853)
             {
-              v4 = self;
+              selfCopy115 = self;
               v5 = 156;
             }
 
@@ -839,7 +839,7 @@ LABEL_14:
                 goto LABEL_308;
               }
 
-              v4 = self;
+              selfCopy115 = self;
               v5 = 124;
             }
 
@@ -850,7 +850,7 @@ LABEL_14:
           {
             if (v3 == 3228373941)
             {
-              v4 = self;
+              selfCopy115 = self;
               v5 = 153;
             }
 
@@ -861,7 +861,7 @@ LABEL_14:
                 goto LABEL_308;
               }
 
-              v4 = self;
+              selfCopy115 = self;
               v5 = 173;
             }
 
@@ -875,7 +875,7 @@ LABEL_14:
               goto LABEL_308;
             }
 
-            v4 = self;
+            selfCopy115 = self;
             v5 = 125;
             goto LABEL_307;
           }
@@ -892,7 +892,7 @@ LABEL_14:
           {
             if (v3 == 4201643249)
             {
-              v4 = self;
+              selfCopy115 = self;
               v5 = 12;
             }
 
@@ -903,14 +903,14 @@ LABEL_14:
                 goto LABEL_308;
               }
 
-              v4 = self;
+              selfCopy115 = self;
               v5 = 126;
             }
           }
 
           else if (v3 == 4068102502)
           {
-            v4 = self;
+            selfCopy115 = self;
             v5 = 265;
           }
 
@@ -921,7 +921,7 @@ LABEL_14:
               goto LABEL_308;
             }
 
-            v4 = self;
+            selfCopy115 = self;
             v5 = 176;
           }
         }
@@ -930,7 +930,7 @@ LABEL_14:
         {
           if (v3 == 3867318491)
           {
-            v4 = self;
+            selfCopy115 = self;
             v5 = 242;
           }
 
@@ -941,14 +941,14 @@ LABEL_14:
               goto LABEL_308;
             }
 
-            v4 = self;
+            selfCopy115 = self;
             v5 = 8;
           }
         }
 
         else if (v3 == 3839750255)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 262;
         }
 
@@ -959,7 +959,7 @@ LABEL_14:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 135;
         }
 
@@ -972,7 +972,7 @@ LABEL_14:
         {
           if (v3 == 3711192744)
           {
-            v4 = self;
+            selfCopy115 = self;
             v5 = 141;
           }
 
@@ -983,14 +983,14 @@ LABEL_14:
               goto LABEL_308;
             }
 
-            v4 = self;
+            selfCopy115 = self;
             v5 = 229;
           }
         }
 
         else if (v3 == 3677894691)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 163;
         }
 
@@ -1001,7 +1001,7 @@ LABEL_14:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 167;
         }
 
@@ -1012,7 +1012,7 @@ LABEL_14:
       {
         if (v3 == 3819635030)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 227;
         }
 
@@ -1023,7 +1023,7 @@ LABEL_14:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 51;
         }
 
@@ -1038,16 +1038,16 @@ LABEL_14:
         }
 
 LABEL_248:
-        v4 = self;
+        selfCopy115 = self;
         v5 = 131;
         goto LABEL_307;
       }
 
 LABEL_142:
-      v4 = self;
+      selfCopy115 = self;
       v5 = 223;
 LABEL_307:
-      [(WCM_PlatformManager *)v4 setWrmPlatformId:v5];
+      [(WCM_PlatformManager *)selfCopy115 setWrmPlatformId:v5];
       goto LABEL_308;
     }
 
@@ -1061,7 +1061,7 @@ LABEL_307:
           {
             if (v3 == 2516717268)
             {
-              v4 = self;
+              selfCopy115 = self;
               v5 = 123;
             }
 
@@ -1072,14 +1072,14 @@ LABEL_307:
                 goto LABEL_308;
               }
 
-              v4 = self;
+              selfCopy115 = self;
               v5 = 165;
             }
           }
 
           else if (v3 == 2458172802)
           {
-            v4 = self;
+            selfCopy115 = self;
             v5 = 128;
           }
 
@@ -1090,7 +1090,7 @@ LABEL_307:
               goto LABEL_308;
             }
 
-            v4 = self;
+            selfCopy115 = self;
             v5 = 174;
           }
 
@@ -1101,7 +1101,7 @@ LABEL_307:
         {
           if (v3 == 2309863438)
           {
-            v4 = self;
+            selfCopy115 = self;
             v5 = 16;
           }
 
@@ -1112,7 +1112,7 @@ LABEL_307:
               goto LABEL_308;
             }
 
-            v4 = self;
+            selfCopy115 = self;
             v5 = 235;
           }
 
@@ -1120,7 +1120,7 @@ LABEL_307:
         }
 
 LABEL_159:
-        v4 = self;
+        selfCopy115 = self;
         v5 = 129;
         goto LABEL_307;
       }
@@ -1131,7 +1131,7 @@ LABEL_159:
         {
           if (v3 == 2673319456)
           {
-            v4 = self;
+            selfCopy115 = self;
             v5 = 140;
           }
 
@@ -1142,14 +1142,14 @@ LABEL_159:
               goto LABEL_308;
             }
 
-            v4 = self;
+            selfCopy115 = self;
             v5 = 22;
           }
         }
 
         else if (v3 == 2634105757)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 164;
         }
 
@@ -1160,7 +1160,7 @@ LABEL_159:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 145;
         }
 
@@ -1171,7 +1171,7 @@ LABEL_159:
       {
         if (v3 == 2619317134)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 171;
         }
 
@@ -1182,7 +1182,7 @@ LABEL_159:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 162;
         }
 
@@ -1191,7 +1191,7 @@ LABEL_159:
 
       if (v3 == 2625074843)
       {
-        v4 = self;
+        selfCopy115 = self;
         v5 = 241;
         goto LABEL_307;
       }
@@ -1203,7 +1203,7 @@ LABEL_203:
         goto LABEL_308;
       }
 
-      v4 = self;
+      selfCopy115 = self;
       v5 = 151;
       goto LABEL_307;
     }
@@ -1216,7 +1216,7 @@ LABEL_203:
         {
           if (v3 == 2943112657)
           {
-            v4 = self;
+            selfCopy115 = self;
             v5 = 225;
           }
 
@@ -1227,14 +1227,14 @@ LABEL_203:
               goto LABEL_308;
             }
 
-            v4 = self;
+            selfCopy115 = self;
             v5 = 166;
           }
         }
 
         else if (v3 == 2940697645)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 21;
         }
 
@@ -1245,7 +1245,7 @@ LABEL_203:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 53;
         }
       }
@@ -1254,7 +1254,7 @@ LABEL_203:
       {
         if (v3 == 2795618603)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 56;
         }
 
@@ -1265,14 +1265,14 @@ LABEL_203:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 143;
         }
       }
 
       else if (v3 == 2722529672)
       {
-        v4 = self;
+        selfCopy115 = self;
         v5 = 4;
       }
 
@@ -1283,7 +1283,7 @@ LABEL_203:
           goto LABEL_308;
         }
 
-        v4 = self;
+        selfCopy115 = self;
         v5 = 50;
       }
 
@@ -1296,7 +1296,7 @@ LABEL_203:
       {
         if (v3 == 2979575960)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 221;
         }
 
@@ -1307,7 +1307,7 @@ LABEL_203:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 11;
         }
 
@@ -1316,7 +1316,7 @@ LABEL_203:
 
       if (v3 == 3048527336)
       {
-        v4 = self;
+        selfCopy115 = self;
         v5 = 58;
         goto LABEL_307;
       }
@@ -1329,7 +1329,7 @@ LABEL_203:
     {
       if (v3 == 3143587592)
       {
-        v4 = self;
+        selfCopy115 = self;
         v5 = 264;
       }
 
@@ -1340,7 +1340,7 @@ LABEL_203:
           goto LABEL_308;
         }
 
-        v4 = self;
+        selfCopy115 = self;
         v5 = 63;
       }
 
@@ -1354,13 +1354,13 @@ LABEL_203:
         goto LABEL_308;
       }
 
-      v4 = self;
+      selfCopy115 = self;
       v5 = 168;
       goto LABEL_307;
     }
 
 LABEL_241:
-    v4 = self;
+    selfCopy115 = self;
     v5 = 147;
     goto LABEL_307;
   }
@@ -1379,11 +1379,11 @@ LABEL_241:
               [WCM_Logging logLevel:3 message:@"Unknown Product\n"];
               goto LABEL_308;
             case 88647037:
-              v4 = self;
+              selfCopy115 = self;
               v5 = 120;
               break;
             case 133314240:
-              v4 = self;
+              selfCopy115 = self;
               v5 = 52;
               break;
             default:
@@ -1395,7 +1395,7 @@ LABEL_241:
         {
           if (v3 == 240711087)
           {
-            v4 = self;
+            selfCopy115 = self;
             v5 = 180;
           }
 
@@ -1406,14 +1406,14 @@ LABEL_241:
               goto LABEL_308;
             }
 
-            v4 = self;
+            selfCopy115 = self;
             v5 = 233;
           }
         }
 
         else if (v3 == 157833461)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 122;
         }
 
@@ -1424,7 +1424,7 @@ LABEL_241:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 178;
         }
 
@@ -1437,7 +1437,7 @@ LABEL_241:
         {
           if (v3 == 574536383)
           {
-            v4 = self;
+            selfCopy115 = self;
             v5 = 55;
           }
 
@@ -1448,14 +1448,14 @@ LABEL_241:
               goto LABEL_308;
             }
 
-            v4 = self;
+            selfCopy115 = self;
             v5 = 238;
           }
         }
 
         else if (v3 == 425046865)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 231;
         }
 
@@ -1466,7 +1466,7 @@ LABEL_241:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 172;
         }
 
@@ -1477,7 +1477,7 @@ LABEL_241:
       {
         if (v3 == 313020436)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 169;
         }
 
@@ -1488,7 +1488,7 @@ LABEL_241:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 57;
         }
 
@@ -1502,7 +1502,7 @@ LABEL_241:
           goto LABEL_308;
         }
 
-        v4 = self;
+        selfCopy115 = self;
         v5 = 177;
         goto LABEL_307;
       }
@@ -1518,7 +1518,7 @@ LABEL_241:
         {
           if (v3 == 1169082144)
           {
-            v4 = self;
+            selfCopy115 = self;
             v5 = 10;
           }
 
@@ -1529,14 +1529,14 @@ LABEL_241:
               goto LABEL_308;
             }
 
-            v4 = self;
+            selfCopy115 = self;
             v5 = 24;
           }
         }
 
         else if (v3 == 1036038801)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 181;
         }
 
@@ -1547,7 +1547,7 @@ LABEL_241:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 13;
         }
 
@@ -1558,7 +1558,7 @@ LABEL_241:
       {
         if (v3 == 1293446025)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 132;
         }
 
@@ -1569,7 +1569,7 @@ LABEL_241:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 237;
         }
 
@@ -1578,7 +1578,7 @@ LABEL_241:
 
       if (v3 == 1280441783)
       {
-        v4 = self;
+        selfCopy115 = self;
         v5 = 121;
         goto LABEL_307;
       }
@@ -1597,7 +1597,7 @@ LABEL_241:
       {
         if (v3 == 861924853)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 234;
         }
 
@@ -1608,14 +1608,14 @@ LABEL_241:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 61;
         }
       }
 
       else if (v3 == 810906663)
       {
-        v4 = self;
+        selfCopy115 = self;
         v5 = 161;
       }
 
@@ -1626,7 +1626,7 @@ LABEL_241:
           goto LABEL_308;
         }
 
-        v4 = self;
+        selfCopy115 = self;
         v5 = 54;
       }
 
@@ -1637,7 +1637,7 @@ LABEL_241:
     {
       if (v3 == 749116821)
       {
-        v4 = self;
+        selfCopy115 = self;
         v5 = 263;
       }
 
@@ -1648,7 +1648,7 @@ LABEL_241:
           goto LABEL_308;
         }
 
-        v4 = self;
+        selfCopy115 = self;
         v5 = 179;
       }
 
@@ -1657,7 +1657,7 @@ LABEL_241:
 
     if (v3 == 689804742)
     {
-      v4 = self;
+      selfCopy115 = self;
       v5 = 15;
       goto LABEL_307;
     }
@@ -1669,7 +1669,7 @@ LABEL_222:
       goto LABEL_308;
     }
 
-    v4 = self;
+    selfCopy115 = self;
     v5 = 150;
     goto LABEL_307;
   }
@@ -1684,7 +1684,7 @@ LABEL_222:
         {
           if (v3 == 1608945770)
           {
-            v4 = self;
+            selfCopy115 = self;
             v5 = 159;
           }
 
@@ -1695,14 +1695,14 @@ LABEL_222:
               goto LABEL_308;
             }
 
-            v4 = self;
+            selfCopy115 = self;
             v5 = 154;
           }
         }
 
         else if (v3 == 1554479185)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 266;
         }
 
@@ -1713,7 +1713,7 @@ LABEL_222:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 222;
         }
 
@@ -1724,7 +1724,7 @@ LABEL_222:
       {
         if (v3 == 1747059280)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 232;
         }
 
@@ -1735,7 +1735,7 @@ LABEL_222:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 260;
         }
 
@@ -1744,7 +1744,7 @@ LABEL_222:
 
       if (v3 == 1781728947)
       {
-        v4 = self;
+        selfCopy115 = self;
         v5 = 60;
         goto LABEL_307;
       }
@@ -1759,7 +1759,7 @@ LABEL_222:
       {
         if (v3 == 1434404433)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 20;
         }
 
@@ -1770,7 +1770,7 @@ LABEL_222:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 170;
         }
 
@@ -1784,20 +1784,20 @@ LABEL_222:
           goto LABEL_308;
         }
 
-        v4 = self;
+        selfCopy115 = self;
         v5 = 220;
         goto LABEL_307;
       }
 
 LABEL_250:
-      v4 = self;
+      selfCopy115 = self;
       v5 = 148;
       goto LABEL_307;
     }
 
     if (v3 == 1309571158)
     {
-      v4 = self;
+      selfCopy115 = self;
       v5 = 240;
       goto LABEL_307;
     }
@@ -1809,13 +1809,13 @@ LABEL_250:
         goto LABEL_308;
       }
 
-      v4 = self;
+      selfCopy115 = self;
       v5 = 2;
       goto LABEL_307;
     }
 
 LABEL_249:
-    v4 = self;
+    selfCopy115 = self;
     v5 = 130;
     goto LABEL_307;
   }
@@ -1828,7 +1828,7 @@ LABEL_249:
       {
         if (v3 == 2132302344)
         {
-          v4 = self;
+          selfCopy115 = self;
           v5 = 224;
         }
 
@@ -1839,14 +1839,14 @@ LABEL_249:
             goto LABEL_308;
           }
 
-          v4 = self;
+          selfCopy115 = self;
           v5 = 7;
         }
       }
 
       else if (v3 == 2089455188)
       {
-        v4 = self;
+        selfCopy115 = self;
         v5 = 157;
       }
 
@@ -1857,7 +1857,7 @@ LABEL_249:
           goto LABEL_308;
         }
 
-        v4 = self;
+        selfCopy115 = self;
         v5 = 133;
       }
     }
@@ -1866,7 +1866,7 @@ LABEL_249:
     {
       if (v3 == 2084894489)
       {
-        v4 = self;
+        selfCopy115 = self;
         v5 = 261;
       }
 
@@ -1877,14 +1877,14 @@ LABEL_249:
           goto LABEL_308;
         }
 
-        v4 = self;
+        selfCopy115 = self;
         v5 = 228;
       }
     }
 
     else if (v3 == 2078329141)
     {
-      v4 = self;
+      selfCopy115 = self;
       v5 = 18;
     }
 
@@ -1895,7 +1895,7 @@ LABEL_249:
         goto LABEL_308;
       }
 
-      v4 = self;
+      selfCopy115 = self;
       v5 = 0;
     }
 
@@ -1908,7 +1908,7 @@ LABEL_249:
     {
       if (v3 == 1878257790)
       {
-        v4 = self;
+        selfCopy115 = self;
         v5 = 127;
       }
 
@@ -1919,7 +1919,7 @@ LABEL_249:
           goto LABEL_308;
         }
 
-        v4 = self;
+        selfCopy115 = self;
         v5 = 144;
       }
 
@@ -1933,7 +1933,7 @@ LABEL_249:
         goto LABEL_308;
       }
 
-      v4 = self;
+      selfCopy115 = self;
       v5 = 62;
       goto LABEL_307;
     }
@@ -1945,7 +1945,7 @@ LABEL_249:
   {
     if (v3 == 2021146989)
     {
-      v4 = self;
+      selfCopy115 = self;
       v5 = 19;
       goto LABEL_307;
     }
@@ -1960,7 +1960,7 @@ LABEL_249:
 
   if (v3 == 1990293942)
   {
-    v4 = self;
+    selfCopy115 = self;
     v5 = 239;
     goto LABEL_307;
   }

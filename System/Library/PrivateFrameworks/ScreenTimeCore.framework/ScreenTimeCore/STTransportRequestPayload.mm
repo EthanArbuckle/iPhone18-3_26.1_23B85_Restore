@@ -1,36 +1,36 @@
 @interface STTransportRequestPayload
-+ (id)_mappedMessagesFromMessages:(id)a3 error:(id *)a4;
-+ (id)eventsPayloadWithMessages:(id)a3 error:(id *)a4;
-+ (id)statusPayloadWithMessages:(id)a3 error:(id *)a4;
++ (id)_mappedMessagesFromMessages:(id)messages error:(id *)error;
++ (id)eventsPayloadWithMessages:(id)messages error:(id *)error;
++ (id)statusPayloadWithMessages:(id)messages error:(id *)error;
 - (NSString)payloadType;
-- (STTransportRequestPayload)initWithCoder:(id)a3;
-- (STTransportRequestPayload)initWithRequest:(id)a3 UUID:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)deviceManagementRequestForOrganizationID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (STTransportRequestPayload)initWithCoder:(id)coder;
+- (STTransportRequestPayload)initWithRequest:(id)request UUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)deviceManagementRequestForOrganizationID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STTransportRequestPayload
 
-- (STTransportRequestPayload)initWithRequest:(id)a3 UUID:(id)a4
+- (STTransportRequestPayload)initWithRequest:(id)request UUID:(id)d
 {
-  v7 = a3;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = STTransportRequestPayload;
-  v8 = [(STTransportPayload *)&v11 initWithUUID:a4];
+  v8 = [(STTransportPayload *)&v11 initWithUUID:d];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_underlyingPayload, a3);
+    objc_storeStrong(&v8->_underlyingPayload, request);
   }
 
   return v9;
 }
 
-+ (id)statusPayloadWithMessages:(id)a3 error:(id *)a4
++ (id)statusPayloadWithMessages:(id)messages error:(id *)error
 {
   v13 = 0;
-  v5 = [a1 _mappedMessagesFromMessages:a3 error:&v13];
+  v5 = [self _mappedMessagesFromMessages:messages error:&v13];
   v6 = v13;
   if (v5)
   {
@@ -48,11 +48,11 @@
       sub_1001208F0(v6, v10);
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v6;
       v9 = 0;
-      *a4 = v6;
+      *error = v6;
     }
 
     else
@@ -64,10 +64,10 @@
   return v9;
 }
 
-+ (id)eventsPayloadWithMessages:(id)a3 error:(id *)a4
++ (id)eventsPayloadWithMessages:(id)messages error:(id *)error
 {
   v13 = 0;
-  v5 = [a1 _mappedMessagesFromMessages:a3 error:&v13];
+  v5 = [self _mappedMessagesFromMessages:messages error:&v13];
   v6 = v13;
   if (v5)
   {
@@ -85,11 +85,11 @@
       sub_1001208F0(v6, v10);
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v6;
       v9 = 0;
-      *a4 = v6;
+      *error = v6;
     }
 
     else
@@ -103,7 +103,7 @@
 
 - (NSString)payloadType
 {
-  v2 = [(STTransportRequestPayload *)self underlyingPayload];
+  underlyingPayload = [(STTransportRequestPayload *)self underlyingPayload];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -136,12 +136,12 @@
   return &v3->isa;
 }
 
-- (id)deviceManagementRequestForOrganizationID:(id)a3
+- (id)deviceManagementRequestForOrganizationID:(id)d
 {
-  v4 = a3;
-  v5 = [(STTransportRequestPayload *)self underlyingPayload];
+  dCopy = d;
+  underlyingPayload = [(STTransportRequestPayload *)self underlyingPayload];
 
-  if (!v5)
+  if (!underlyingPayload)
   {
     v6 = +[STLog payload];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -150,7 +150,7 @@
     }
   }
 
-  v7 = [(STTransportRequestPayload *)self underlyingPayload];
+  underlyingPayload2 = [(STTransportRequestPayload *)self underlyingPayload];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -159,17 +159,17 @@
     goto LABEL_12;
   }
 
-  v9 = [(STTransportRequestPayload *)self underlyingPayload];
+  underlyingPayload3 = [(STTransportRequestPayload *)self underlyingPayload];
   v10 = objc_opt_new();
-  v11 = [v9 declarations];
-  v12 = v11;
-  v13 = v11 ? v11 : &__NSArray0__struct;
+  declarations = [underlyingPayload3 declarations];
+  v12 = declarations;
+  v13 = declarations ? declarations : &__NSArray0__struct;
   [v10 setDeclarations:v13];
 
-  [v10 setOrganizationIdentifier:v4];
+  [v10 setOrganizationIdentifier:dCopy];
   v14 = objc_opt_new();
-  v15 = [v14 UUIDString];
-  [v10 setSyncToken:v15];
+  uUIDString = [v14 UUIDString];
+  [v10 setSyncToken:uUIDString];
 
   if (v10)
   {
@@ -198,15 +198,15 @@ LABEL_12:
   return v10;
 }
 
-+ (id)_mappedMessagesFromMessages:(id)a3 error:(id *)a4
++ (id)_mappedMessagesFromMessages:(id)messages error:(id *)error
 {
-  v5 = a3;
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  messagesCopy = messages;
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [messagesCopy count]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = messagesCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -221,7 +221,7 @@ LABEL_12:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [STStatusRequest_MessagesItem load:*(*(&v16 + 1) + 8 * i) error:a4, v16];
+        v12 = [STStatusRequest_MessagesItem load:*(*(&v16 + 1) + 8 * i) error:error, v16];
         if (!v12)
         {
 
@@ -249,15 +249,15 @@ LABEL_11:
   return v14;
 }
 
-- (STTransportRequestPayload)initWithCoder:(id)a3
+- (STTransportRequestPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = STTransportRequestPayload;
-  v5 = [(STTransportPayload *)&v9 initWithCoder:v4];
+  v5 = [(STTransportPayload *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"underlyingPayload"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"underlyingPayload"];
     underlyingPayload = v5->_underlyingPayload;
     v5->_underlyingPayload = v6;
   }
@@ -265,21 +265,21 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STTransportRequestPayload;
-  v4 = a3;
-  [(STTransportPayload *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_underlyingPayload forKey:{@"underlyingPayload", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(STTransportPayload *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_underlyingPayload forKey:{@"underlyingPayload", v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(STTransportRequestPayload *)self underlyingPayload];
-  v6 = [(STTransportPayload *)self UUID];
-  v7 = [v4 initWithRequest:v5 UUID:v6];
+  underlyingPayload = [(STTransportRequestPayload *)self underlyingPayload];
+  uUID = [(STTransportPayload *)self UUID];
+  v7 = [v4 initWithRequest:underlyingPayload UUID:uUID];
 
   return v7;
 }

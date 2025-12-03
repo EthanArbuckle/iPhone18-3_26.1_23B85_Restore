@@ -1,9 +1,9 @@
 @interface EKCalendarTitleEditItem
 - (BOOL)becomeFirstResponder;
-- (BOOL)saveStateToCalendar:(id)a3;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (BOOL)saveStateToCalendar:(id)calendar;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)headerTitle;
 - (void)reset;
 @end
@@ -16,7 +16,7 @@
   self->_cell = 0;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   if (!self->_cell)
   {
@@ -35,23 +35,23 @@
       v6 = [(EKCalendar *)self->super._calendar isSubscribedHolidayCalendar]^ 1;
     }
 
-    v7 = [(UITableViewCell *)self->_cell editableTextField];
-    [v7 setAccessibilityIdentifier:@"calendar-title-field"];
+    editableTextField = [(UITableViewCell *)self->_cell editableTextField];
+    [editableTextField setAccessibilityIdentifier:@"calendar-title-field"];
 
     v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    v9 = [(UITableViewCell *)self->_cell editableTextField];
-    [v9 setFont:v8];
+    editableTextField2 = [(UITableViewCell *)self->_cell editableTextField];
+    [editableTextField2 setFont:v8];
 
-    v10 = [(UITableViewCell *)self->_cell editableTextField];
-    [v10 setDelegate:self];
+    editableTextField3 = [(UITableViewCell *)self->_cell editableTextField];
+    [editableTextField3 setDelegate:self];
 
     v11 = EventKitUIBundle();
     v12 = [v11 localizedStringForKey:@"Calendar Name" value:&stru_1F4EF6790 table:0];
-    v13 = [(UITableViewCell *)self->_cell editableTextField];
-    [v13 setPlaceholder:v12];
+    editableTextField4 = [(UITableViewCell *)self->_cell editableTextField];
+    [editableTextField4 setPlaceholder:v12];
 
-    v14 = [(EKCalendar *)self->super._calendar title];
-    v15 = [v14 isEqualToString:&stru_1F4EF6790];
+    title = [(EKCalendar *)self->super._calendar title];
+    v15 = [title isEqualToString:&stru_1F4EF6790];
     if (v15)
     {
       v16 = 0;
@@ -62,39 +62,39 @@
       v16 = CUIKDisplayedTitleForCalendar();
     }
 
-    v17 = [(UITableViewCell *)self->_cell editableTextField];
-    [v17 setText:v16];
+    editableTextField5 = [(UITableViewCell *)self->_cell editableTextField];
+    [editableTextField5 setText:v16];
 
     if ((v15 & 1) == 0)
     {
     }
 
-    v18 = [(EKCalendarTitleEditItem *)self prefillTitle];
-    if (v18)
+    prefillTitle = [(EKCalendarTitleEditItem *)self prefillTitle];
+    if (prefillTitle)
     {
-      v19 = v18;
-      v20 = [(UITableViewCell *)self->_cell editableTextField];
-      v21 = [v20 text];
-      v22 = [v21 length];
+      v19 = prefillTitle;
+      editableTextField6 = [(UITableViewCell *)self->_cell editableTextField];
+      text = [editableTextField6 text];
+      v22 = [text length];
 
       if (!v22)
       {
-        v23 = [(EKCalendarTitleEditItem *)self prefillTitle];
-        v24 = [(UITableViewCell *)self->_cell editableTextField];
-        [v24 setText:v23];
+        prefillTitle2 = [(EKCalendarTitleEditItem *)self prefillTitle];
+        editableTextField7 = [(UITableViewCell *)self->_cell editableTextField];
+        [editableTextField7 setText:prefillTitle2];
       }
     }
 
-    v25 = [(UITableViewCell *)self->_cell editableTextField];
-    [v25 setAutocapitalizationType:2];
+    editableTextField8 = [(UITableViewCell *)self->_cell editableTextField];
+    [editableTextField8 setAutocapitalizationType:2];
 
     [(UITableViewCell *)self->_cell setTextFieldOffset:0.0];
-    v26 = [(UITableViewCell *)self->_cell editableTextField];
-    [v26 setClearButtonMode:1];
+    editableTextField9 = [(UITableViewCell *)self->_cell editableTextField];
+    [editableTextField9 setClearButtonMode:1];
 
     [(UITableViewCell *)self->_cell setSelectionStyle:0];
-    v27 = [(UITableViewCell *)self->_cell editableTextField];
-    [v27 setEnabled:v6];
+    editableTextField10 = [(UITableViewCell *)self->_cell editableTextField];
+    [editableTextField10 setEnabled:v6];
 
     if (v6)
     {
@@ -106,8 +106,8 @@
       [MEMORY[0x1E69DC888] tableCellGrayTextColor];
     }
     v28 = ;
-    v29 = [(UITableViewCell *)self->_cell editableTextField];
-    [v29 setTextColor:v28];
+    editableTextField11 = [(UITableViewCell *)self->_cell editableTextField];
+    [editableTextField11 setTextColor:v28];
   }
 
   v30 = self->_cell;
@@ -115,40 +115,40 @@
   return v30;
 }
 
-- (BOOL)saveStateToCalendar:(id)a3
+- (BOOL)saveStateToCalendar:(id)calendar
 {
-  v4 = a3;
-  v5 = [(UITableViewCell *)self->_cell editableTextField];
-  v6 = [v5 text];
-  v7 = v6 != 0;
-  if (!v6)
+  calendarCopy = calendar;
+  editableTextField = [(UITableViewCell *)self->_cell editableTextField];
+  text = [editableTextField text];
+  v7 = text != 0;
+  if (!text)
   {
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v8 = v6;
-  v9 = [(UITableViewCell *)self->_cell editableTextField];
-  v10 = [v9 isEnabled];
+  v8 = text;
+  editableTextField2 = [(UITableViewCell *)self->_cell editableTextField];
+  isEnabled = [editableTextField2 isEnabled];
 
-  if (v10)
+  if (isEnabled)
   {
-    v5 = [(UITableViewCell *)self->_cell editableTextField];
-    v11 = [v5 text];
-    if ([v11 isEqualToString:&stru_1F4EF6790])
+    editableTextField = [(UITableViewCell *)self->_cell editableTextField];
+    text2 = [editableTextField text];
+    if ([text2 isEqualToString:&stru_1F4EF6790])
     {
-      v12 = EventKitUIBundle();
-      [v12 localizedStringForKey:@"Untitled Calendar" value:&stru_1F4EF6790 table:0];
+      editableTextField3 = EventKitUIBundle();
+      [editableTextField3 localizedStringForKey:@"Untitled Calendar" value:&stru_1F4EF6790 table:0];
     }
 
     else
     {
-      v12 = [(UITableViewCell *)self->_cell editableTextField];
-      [v12 text];
+      editableTextField3 = [(UITableViewCell *)self->_cell editableTextField];
+      [editableTextField3 text];
     }
     v13 = ;
-    [v4 setTitle:v13];
+    [calendarCopy setTitle:v13];
 
     goto LABEL_8;
   }
@@ -161,13 +161,13 @@ LABEL_9:
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(UITableViewCell *)self->_cell editableTextField];
-  [v2 becomeFirstResponder];
+  editableTextField = [(UITableViewCell *)self->_cell editableTextField];
+  [editableTextField becomeFirstResponder];
 
   return 1;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
   if (EKUIUnscaledCatalyst())
   {
@@ -187,28 +187,28 @@ LABEL_9:
   if (self->_showHeader)
   {
     v2 = EventKitUIBundle();
-    v3 = [v2 localizedStringForKey:@"Title in calendar editor" value:@"Title" table:0];
+    headerTitle = [v2 localizedStringForKey:@"Title in calendar editor" value:@"Title" table:0];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = EKCalendarTitleEditItem;
-    v3 = [(EKCalendarEditItem *)&v5 headerTitle];
+    headerTitle = [(EKCalendarEditItem *)&v5 headerTitle];
   }
 
-  return v3;
+  return headerTitle;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  v6 = [(EKCalendarEditItem *)self delegate:a3];
+  v6 = [(EKCalendarEditItem *)self delegate:field];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(EKCalendarEditItem *)self delegate];
-    [v8 calendarItemStartedEditing:self];
+    delegate = [(EKCalendarEditItem *)self delegate];
+    [delegate calendarItemStartedEditing:self];
   }
 
   return 1;

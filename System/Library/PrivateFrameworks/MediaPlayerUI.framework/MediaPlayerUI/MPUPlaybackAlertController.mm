@@ -1,33 +1,33 @@
 @interface MPUPlaybackAlertController
-+ (id)contentRestrictedPlaybackAlertControllerForContentType:(int64_t)a3 dismissalBlock:(id)a4;
-+ (id)genericAlertControllerForItem:(id)a3 error:(id)a4 dismissalBlock:(id)a5;
-+ (id)playbackAlertControllerForItem:(id)a3 contentType:(int64_t)a4 error:(id)a5 dismissalBlock:(id)a6;
-+ (id)userRemovedAlertControllerForItem:(id)a3 dismissalBlock:(id)a4;
-+ (int64_t)playbackAlertTypeForError:(id)a3;
++ (id)contentRestrictedPlaybackAlertControllerForContentType:(int64_t)type dismissalBlock:(id)block;
++ (id)genericAlertControllerForItem:(id)item error:(id)error dismissalBlock:(id)block;
++ (id)playbackAlertControllerForItem:(id)item contentType:(int64_t)type error:(id)error dismissalBlock:(id)block;
++ (id)userRemovedAlertControllerForItem:(id)item dismissalBlock:(id)block;
++ (int64_t)playbackAlertTypeForError:(id)error;
 @end
 
 @implementation MPUPlaybackAlertController
 
-+ (id)contentRestrictedPlaybackAlertControllerForContentType:(int64_t)a3 dismissalBlock:(id)a4
++ (id)contentRestrictedPlaybackAlertControllerForContentType:(int64_t)type dismissalBlock:(id)block
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CD6040] sharedRestrictionsMonitor];
-  v7 = [v6 hasRestrictionsPasscode];
+  blockCopy = block;
+  mEMORY[0x277CD6040] = [MEMORY[0x277CD6040] sharedRestrictionsMonitor];
+  hasRestrictionsPasscode = [mEMORY[0x277CD6040] hasRestrictionsPasscode];
 
   v8 = MPULocalizedString();
   v9 = MPULocalizedString();
-  v10 = [a1 alertControllerWithTitle:v8 message:v9 preferredStyle:1];
+  v10 = [self alertControllerWithTitle:v8 message:v9 preferredStyle:1];
 
   v11 = MEMORY[0x277D750F8];
   v12 = MPULocalizedString();
-  if (v7)
+  if (hasRestrictionsPasscode)
   {
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __100__MPUPlaybackAlertController_contentRestrictedPlaybackAlertControllerForContentType_dismissalBlock___block_invoke;
     v25[3] = &unk_2798A3178;
     v13 = &v26;
-    v26 = v5;
+    v26 = blockCopy;
     v14 = v25;
   }
 
@@ -38,7 +38,7 @@
     v23[2] = __100__MPUPlaybackAlertController_contentRestrictedPlaybackAlertControllerForContentType_dismissalBlock___block_invoke_2;
     v23[3] = &unk_2798A3178;
     v13 = &v24;
-    v24 = v5;
+    v24 = blockCopy;
     v14 = v23;
   }
 
@@ -51,8 +51,8 @@
   v21[1] = 3221225472;
   v21[2] = __100__MPUPlaybackAlertController_contentRestrictedPlaybackAlertControllerForContentType_dismissalBlock___block_invoke_3;
   v21[3] = &unk_2798A3178;
-  v22 = v5;
-  v18 = v5;
+  v22 = blockCopy;
+  v18 = blockCopy;
   v19 = [v16 actionWithTitle:v17 style:0 handler:v21];
   [v10 addAction:v19];
 
@@ -145,17 +145,17 @@ uint64_t __100__MPUPlaybackAlertController_contentRestrictedPlaybackAlertControl
   return result;
 }
 
-+ (id)playbackAlertControllerForItem:(id)a3 contentType:(int64_t)a4 error:(id)a5 dismissalBlock:(id)a6
++ (id)playbackAlertControllerForItem:(id)item contentType:(int64_t)type error:(id)error dismissalBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a1 playbackAlertTypeForError:v11];
+  itemCopy = item;
+  errorCopy = error;
+  blockCopy = block;
+  v13 = [self playbackAlertTypeForError:errorCopy];
   v14 = v13;
   if (v13 == 1)
   {
 LABEL_4:
-    v15 = [a1 genericAlertControllerForItem:v10 error:v11 dismissalBlock:v12];
+    v15 = [self genericAlertControllerForItem:itemCopy error:errorCopy dismissalBlock:blockCopy];
     goto LABEL_6;
   }
 
@@ -170,14 +170,14 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v15 = [a1 userRemovedAlertControllerForItem:v10 dismissalBlock:v12];
+  v15 = [self userRemovedAlertControllerForItem:itemCopy dismissalBlock:blockCopy];
 LABEL_6:
   v16 = v15;
   if (v15)
   {
     *(v15 + 1328) = v14;
-    objc_storeStrong((v15 + 1336), a3);
-    objc_storeStrong(v16 + 168, a5);
+    objc_storeStrong((v15 + 1336), item);
+    objc_storeStrong(v16 + 168, error);
   }
 
 LABEL_9:
@@ -185,12 +185,12 @@ LABEL_9:
   return v16;
 }
 
-+ (int64_t)playbackAlertTypeForError:(id)a3
++ (int64_t)playbackAlertTypeForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  [v3 code];
-  v5 = v3;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  [errorCopy code];
+  v5 = errorCopy;
   v6 = v5;
   if (v5 && ([v5 domain], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CE5DC0]), v7, v8) && (objc_msgSend(v6, "userInfo"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKey:", *MEMORY[0x277CCA7E8]), v10 = objc_claimAutoreleasedReturnValue(), v9, v11 = objc_msgSend(v10, "code"), v10) && (v12 = v11, objc_msgSend(v10, "domain"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", *MEMORY[0x277CCA590]), v13, v10, v14) && (v12 + 42597) < 3)
   {
@@ -206,20 +206,20 @@ LABEL_9:
   return v15;
 }
 
-+ (id)genericAlertControllerForItem:(id)a3 error:(id)a4 dismissalBlock:(id)a5
++ (id)genericAlertControllerForItem:(id)item error:(id)error dismissalBlock:(id)block
 {
   v104[1] = *MEMORY[0x277D85DE8];
-  v79 = a3;
-  v7 = a4;
-  v80 = a5;
-  v84 = v7;
-  v8 = [v7 domain];
+  itemCopy = item;
+  errorCopy = error;
+  blockCopy = block;
+  v84 = errorCopy;
+  domain = [errorCopy domain];
   v82 = *MEMORY[0x277CE5DC0];
-  if ([v8 isEqualToString:?])
+  if ([domain isEqualToString:?])
   {
-    v9 = [v7 code];
+    code = [errorCopy code];
 
-    if (v9 == -11819)
+    if (code == -11819)
     {
       v10 = 0;
       goto LABEL_75;
@@ -245,8 +245,8 @@ LABEL_9:
   v16 = v11;
   while (![v13 count])
   {
-    v17 = [v16 userInfo];
-    v18 = [v17 objectForKey:v14];
+    userInfo = [v16 userInfo];
+    v18 = [userInfo objectForKey:v14];
 
     if ([v18 count])
     {
@@ -261,7 +261,7 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v19 = [v17 objectForKey:v15];
+    v19 = [userInfo objectForKey:v15];
 
     v16 = v19;
     v13 = v18;
@@ -318,22 +318,22 @@ LABEL_23:
 LABEL_68:
       if ([v31 length] || objc_msgSend(v28, "length"))
       {
-        v10 = [a1 alertControllerWithTitle:v28 message:v31 preferredStyle:1];
+        v10 = [self alertControllerWithTitle:v28 message:v31 preferredStyle:1];
         v60 = MEMORY[0x277D750F8];
         v61 = MPULocalizedString();
         v87[0] = MEMORY[0x277D85DD0];
         v87[1] = 3221225472;
         v87[2] = __81__MPUPlaybackAlertController_genericAlertControllerForItem_error_dismissalBlock___block_invoke_3;
         v87[3] = &unk_2798A3178;
-        v88 = v80;
+        v88 = blockCopy;
         v62 = [v60 actionWithTitle:v61 style:1 handler:v87];
         [v10 addAction:v62];
 
-        v63 = [v83 userInfo];
-        v64 = [v63 objectForKey:*MEMORY[0x277CD5620]];
+        userInfo2 = [v83 userInfo];
+        v64 = [userInfo2 objectForKey:*MEMORY[0x277CD5620]];
         if ([v64 length])
         {
-          v65 = [v63 objectForKey:*MEMORY[0x277CD5618]];
+          v65 = [userInfo2 objectForKey:*MEMORY[0x277CD5618]];
           v66 = MEMORY[0x277D750F8];
           v85[0] = MEMORY[0x277D85DD0];
           v85[1] = 3221225472;
@@ -372,9 +372,9 @@ LABEL_68:
         goto LABEL_68;
       }
 
-      v33 = [v16 userInfo];
-      v34 = [v16 domain];
-      if ([v34 isEqualToString:v81])
+      userInfo3 = [v16 userInfo];
+      domain2 = [v16 domain];
+      if ([domain2 isEqualToString:v81])
       {
         v35 = [v16 code] == -1;
 
@@ -388,26 +388,26 @@ LABEL_68:
       {
       }
 
-      v36 = [v33 objectForKey:v78];
+      mediaLibrary = [userInfo3 objectForKey:v78];
 
-      if (![v36 length])
+      if (![mediaLibrary length])
       {
-        v37 = [v33 objectForKey:v73];
+        v37 = [userInfo3 objectForKey:v73];
 
-        v36 = v37;
+        mediaLibrary = v37;
       }
 
-      v38 = [v33 objectForKey:v77];
+      v38 = [userInfo3 objectForKey:v77];
 
       if (![v38 length])
       {
-        v39 = [v33 objectForKey:v72];
+        v39 = [userInfo3 objectForKey:v72];
 
         v38 = v39;
       }
 
-      v40 = [v16 domain];
-      v41 = [v40 isEqualToString:v82];
+      domain3 = [v16 domain];
+      v41 = [domain3 isEqualToString:v82];
 
       if (v41)
       {
@@ -415,7 +415,7 @@ LABEL_68:
       }
 
       v31 = v38;
-      v28 = v36;
+      v28 = mediaLibrary;
 LABEL_50:
       if ([v31 length] || objc_msgSend(v28, "length"))
       {
@@ -426,7 +426,7 @@ LABEL_50:
       }
 
 LABEL_52:
-      v55 = [v33 objectForKey:v32];
+      v55 = [userInfo3 objectForKey:v32];
 
       v16 = v55;
       if ([v28 length])
@@ -437,40 +437,40 @@ LABEL_52:
       }
     }
 
-    v42 = [v33 objectForKey:v32];
-    v43 = [v42 domain];
-    v44 = [v43 isEqualToString:v74];
+    v42 = [userInfo3 objectForKey:v32];
+    domain4 = [v42 domain];
+    v44 = [domain4 isEqualToString:v74];
 
     if (v44)
     {
-      v45 = [v42 code];
-      if ((v45 + 42590) <= 6)
+      code2 = [v42 code];
+      if ((code2 + 42590) <= 6)
       {
-        if ([v79 usesSubscriptionLease])
+        if ([itemCopy usesSubscriptionLease])
         {
-          if (v45 == -42584)
+          if (code2 == -42584)
           {
             v28 = MPULocalizedString();
 
             v46 = MEMORY[0x277CCACA8];
             v47 = MPULocalizedString();
-            v48 = [v79 mainTitle];
-            v31 = [v46 localizedStringWithFormat:v47, v48, v70];
+            mainTitle = [itemCopy mainTitle];
+            v31 = [v46 localizedStringWithFormat:v47, mainTitle, v70];
 
-            v71 = [v79 mediaItem];
-            if (!v71)
+            mediaItem = [itemCopy mediaItem];
+            if (!mediaItem)
             {
 LABEL_61:
 
               goto LABEL_49;
             }
 
-            v49 = [v79 mediaItem];
-            v36 = [v49 mediaLibrary];
+            mediaItem2 = [itemCopy mediaItem];
+            mediaLibrary = [mediaItem2 mediaLibrary];
 
-            v104[0] = v71;
+            v104[0] = mediaItem;
             v50 = [MEMORY[0x277CBEA60] arrayWithObjects:v104 count:1];
-            [v36 removeItems:v50];
+            [mediaLibrary removeItems:v50];
 
 LABEL_43:
             goto LABEL_61;
@@ -494,54 +494,54 @@ LABEL_43:
 
           v52 = v51;
           _Block_object_dispose(&v100, 8);
-          v53 = [v51 sharedMonitor];
-          v54 = [v53 networkType] == 0;
+          sharedMonitor = [v51 sharedMonitor];
+          v54 = [sharedMonitor networkType] == 0;
 
           if (v54)
           {
-            if ([v79 isAssetLoaded])
+            if ([itemCopy isAssetLoaded])
             {
-              v71 = [v79 asset];
+              mediaItem = [itemCopy asset];
             }
 
             else
             {
-              v71 = 0;
+              mediaItem = 0;
             }
 
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || ([v71 URL], v56 = objc_claimAutoreleasedReturnValue(), v57 = objc_msgSend(v56, "isFileURL"), v56, !v57))
+            if ((objc_opt_isKindOfClass() & 1) == 0 || ([mediaItem URL], v56 = objc_claimAutoreleasedReturnValue(), v57 = objc_msgSend(v56, "isFileURL"), v56, !v57))
             {
               v31 = v38;
-              v28 = v36;
+              v28 = mediaLibrary;
               goto LABEL_61;
             }
 
             MGGetBoolAnswer();
             MGGetBoolAnswer();
-            [v79 type];
+            [itemCopy type];
             v31 = MPULocalizedString();
 
-            if (v45 == -42587)
+            if (code2 == -42587)
             {
               v28 = MPULocalizedString();
             }
 
             else
             {
-              [v79 type];
+              [itemCopy type];
               v28 = MPULocalizedString();
 
-              v58 = [MEMORY[0x277CD5D88] sharedController];
-              v59 = [v58 isCloudLibraryEnabled];
+              mEMORY[0x277CD5D88] = [MEMORY[0x277CD5D88] sharedController];
+              isCloudLibraryEnabled = [mEMORY[0x277CD5D88] isCloudLibraryEnabled];
 
-              if (!v59)
+              if (!isCloudLibraryEnabled)
               {
                 goto LABEL_61;
               }
 
               MPULocalizedString();
-              v31 = v36 = v31;
+              v31 = mediaLibrary = v31;
             }
 
             goto LABEL_43;
@@ -551,17 +551,17 @@ LABEL_43:
     }
 
     v31 = v38;
-    v28 = v36;
+    v28 = mediaLibrary;
 LABEL_49:
 
     goto LABEL_50;
   }
 
-  v23 = [v76 title];
-  v24 = [v76 message];
-  v25 = [a1 alertControllerWithTitle:v23 message:v24 preferredStyle:1];
+  title = [v76 title];
+  message = [v76 message];
+  v25 = [self alertControllerWithTitle:title message:message preferredStyle:1];
 
-  v26 = [v76 buttons];
+  buttons = [v76 buttons];
   v95 = 0;
   v96 = &v95;
   v97 = 0x2020000000;
@@ -573,10 +573,10 @@ LABEL_49:
   v94 = &v95;
   v76 = v76;
   v90 = v76;
-  v93 = v80;
+  v93 = blockCopy;
   v27 = v25;
   v91 = v27;
-  v28 = v26;
+  v28 = buttons;
   v92 = v28;
   [v28 enumerateObjectsUsingBlock:v89];
   v29 = v92;
@@ -671,67 +671,67 @@ void __81__MPUPlaybackAlertController_genericAlertControllerForItem_error_dismis
   }
 }
 
-+ (id)userRemovedAlertControllerForItem:(id)a3 dismissalBlock:(id)a4
++ (id)userRemovedAlertControllerForItem:(id)item dismissalBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mediaItem];
-  v9 = [v8 mediaLibrary];
-  v10 = [MEMORY[0x277CD5E10] deviceMediaLibrary];
+  itemCopy = item;
+  blockCopy = block;
+  mediaItem = [itemCopy mediaItem];
+  mediaLibrary = [mediaItem mediaLibrary];
+  deviceMediaLibrary = [MEMORY[0x277CD5E10] deviceMediaLibrary];
 
-  if (v9 == v10)
+  if (mediaLibrary == deviceMediaLibrary)
   {
-    if (v8)
+    if (mediaItem)
     {
-      v12 = [v8 mediaType];
+      mediaType = [mediaItem mediaType];
     }
 
-    else if ([v6 type] == 2)
+    else if ([itemCopy type] == 2)
     {
-      v12 = -256;
+      mediaType = -256;
     }
 
     else
     {
-      v12 = 255;
+      mediaType = 255;
     }
 
-    v13 = [v8 valueForProperty:*MEMORY[0x277CD5888]];
-    v14 = [v13 longLongValue];
+    v13 = [mediaItem valueForProperty:*MEMORY[0x277CD5888]];
+    longLongValue = [v13 longLongValue];
 
-    v57 = v7;
-    v54 = v12;
-    if ((v12 & 0x800) != 0)
+    v57 = blockCopy;
+    v54 = mediaType;
+    if ((mediaType & 0x800) != 0)
     {
       v15 = @"MUSIC_VIDEO";
     }
 
-    else if ((v12 & 0x402) != 0)
+    else if ((mediaType & 0x402) != 0)
     {
       v15 = @"PODCAST";
     }
 
-    else if ((v12 & 0x200) != 0)
+    else if ((mediaType & 0x200) != 0)
     {
       v15 = @"EPISODE";
     }
 
-    else if ((v12 & 0x100) != 0)
+    else if ((mediaType & 0x100) != 0)
     {
       v15 = @"MOVIE";
     }
 
-    else if ((v12 & 4) != 0)
+    else if ((mediaType & 4) != 0)
     {
       v15 = @"AUDIOBOOK";
     }
 
-    else if (v12)
+    else if (mediaType)
     {
       v15 = @"SONG";
     }
 
-    else if ((v12 & 0xF000) != 0)
+    else if ((mediaType & 0xF000) != 0)
     {
       v15 = @"VIDEO";
     }
@@ -742,7 +742,7 @@ void __81__MPUPlaybackAlertController_genericAlertControllerForItem_error_dismis
     }
 
     v16 = @"REBUY";
-    if (!v14)
+    if (!longLongValue)
     {
       v16 = @"NOT_AVAILABLE";
     }
@@ -761,17 +761,17 @@ void __81__MPUPlaybackAlertController_genericAlertControllerForItem_error_dismis
 
     v55 = v22;
     v56 = v20;
-    v11 = [a1 alertControllerWithTitle:v20 message:v22 preferredStyle:1];
+    v11 = [self alertControllerWithTitle:v20 message:v22 preferredStyle:1];
     v69[0] = MEMORY[0x277D85DD0];
     v69[1] = 3221225472;
     v69[2] = __79__MPUPlaybackAlertController_userRemovedAlertControllerForItem_dismissalBlock___block_invoke;
     v69[3] = &unk_2798A3218;
-    v70 = v8;
+    v70 = mediaItem;
     v25 = v57;
     v71 = v25;
     v26 = MEMORY[0x259C88CF0](v69);
     v27 = MEMORY[0x277D750F8];
-    if (v14)
+    if (longLongValue)
     {
       v28 = MPULocalizedString();
       v67[0] = MEMORY[0x277D85DD0];
@@ -793,8 +793,8 @@ void __81__MPUPlaybackAlertController_genericAlertControllerForItem_error_dismis
       v31 = [v30 actionWithTitle:v24 style:2 handler:v65];
       [v11 addAction:v31];
 
-      v32 = [v6 storeItemID];
-      if (!v32 || ([MEMORY[0x277CCACA8] stringWithFormat:@"itms://?action=lookup&ids=%@", v32, 0], (v33 = objc_claimAutoreleasedReturnValue()) == 0) || (v34 = v33, objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v33), v35 = objc_claimAutoreleasedReturnValue(), v34, !v35))
+      storeItemID = [itemCopy storeItemID];
+      if (!storeItemID || ([MEMORY[0x277CCACA8] stringWithFormat:@"itms://?action=lookup&ids=%@", storeItemID, 0], (v33 = objc_claimAutoreleasedReturnValue()) == 0) || (v34 = v33, objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v33), v35 = objc_claimAutoreleasedReturnValue(), v34, !v35))
       {
         if ((v54 & 4) != 0)
         {
@@ -844,9 +844,9 @@ void __81__MPUPlaybackAlertController_genericAlertControllerForItem_error_dismis
 
         v42 = MEMORY[0x277CBEBC0];
         v43 = MEMORY[0x277CCACA8];
-        v44 = [MEMORY[0x277CCA8D8] mainBundle];
-        v45 = [v44 bundleIdentifier];
-        v46 = [v43 stringWithFormat:@"itms://?action=%@&libraryid=%@", v36, v45];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
+        v46 = [v43 stringWithFormat:@"itms://?action=%@&libraryid=%@", v36, bundleIdentifier];
         v35 = [v42 URLWithString:v46];
       }
 
@@ -886,11 +886,11 @@ void __81__MPUPlaybackAlertController_genericAlertControllerForItem_error_dismis
       v58[3] = &unk_2798A3178;
       v41 = &v59;
       v59 = v26;
-      v32 = [v40 actionWithTitle:v24 style:2 handler:v58];
-      [v11 addAction:v32];
+      storeItemID = [v40 actionWithTitle:v24 style:2 handler:v58];
+      [v11 addAction:storeItemID];
     }
 
-    v7 = v57;
+    blockCopy = v57;
   }
 
   else

@@ -1,9 +1,9 @@
 @interface CAFDVehicleResourcesManager
 - (_TtC13caraccessoryd22CAFDAssetVariantsAgent)assetVariantsAgent;
 - (_TtC13caraccessoryd27CAFDVehicleResourcesManager)init;
-- (void)carDidUpdateAccessories:(id)a3;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
-- (void)setAssetVariantsAgent:(id)a3;
+- (void)carDidUpdateAccessories:(id)accessories;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
+- (void)setAssetVariantsAgent:(id)agent;
 @end
 
 @implementation CAFDVehicleResourcesManager
@@ -16,12 +16,12 @@
   return Strong;
 }
 
-- (void)setAssetVariantsAgent:(id)a3
+- (void)setAssetVariantsAgent:(id)agent
 {
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
-  v5 = a3;
-  v6 = self;
+  agentCopy = agent;
+  selfCopy = self;
   CAFDVehicleResourcesManager.assetVariantsAgent.didset();
 }
 
@@ -32,19 +32,19 @@
   return result;
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized CAFDVehicleResourcesManager.carManager(_:didUpdateCurrentCar:)(a4);
+  managerCopy = manager;
+  carCopy = car;
+  selfCopy = self;
+  specialized CAFDVehicleResourcesManager.carManager(_:didUpdateCurrentCar:)(car);
 }
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = self;
-  CAFDVehicleResourcesManager.carDidUpdateAccessories(_:)(v4);
+  accessoriesCopy = accessories;
+  selfCopy = self;
+  CAFDVehicleResourcesManager.carDidUpdateAccessories(_:)(accessoriesCopy);
 }
 
 @end

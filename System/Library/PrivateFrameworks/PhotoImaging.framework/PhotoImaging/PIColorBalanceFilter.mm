@@ -4,8 +4,8 @@
 + (id)colorBalanceKernels;
 + (id)customAttributes;
 + (id)gHDRtoPPKernel;
-- (id)applyInputConversion:(id)a3;
-- (id)applyOutputConversion:(id)a3;
+- (id)applyInputConversion:(id)conversion;
+- (id)applyOutputConversion:(id)conversion;
 - (id)outputImage;
 @end
 
@@ -13,24 +13,24 @@
 
 + (id)colorBalanceKernel
 {
-  v2 = [a1 colorBalanceKernels];
-  v3 = [v2 objectForKeyedSubscript:@"colorBalance"];
+  colorBalanceKernels = [self colorBalanceKernels];
+  v3 = [colorBalanceKernels objectForKeyedSubscript:@"colorBalance"];
 
   return v3;
 }
 
 + (id)PPtogHDRKernel
 {
-  v2 = [a1 colorBalanceKernels];
-  v3 = [v2 objectForKeyedSubscript:@"PPtogHDR"];
+  colorBalanceKernels = [self colorBalanceKernels];
+  v3 = [colorBalanceKernels objectForKeyedSubscript:@"PPtogHDR"];
 
   return v3;
 }
 
 + (id)gHDRtoPPKernel
 {
-  v2 = [a1 colorBalanceKernels];
-  v3 = [v2 objectForKeyedSubscript:@"gHDRtoPP"];
+  colorBalanceKernels = [self colorBalanceKernels];
+  v3 = [colorBalanceKernels objectForKeyedSubscript:@"gHDRtoPP"];
 
   return v3;
 }
@@ -154,8 +154,8 @@ uint64_t __43__PIColorBalanceFilter_colorBalanceKernels__block_invoke()
         v36 = dispatch_get_specific(*v30);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v43 = v36;
         v44 = 2114;
@@ -166,8 +166,8 @@ uint64_t __43__PIColorBalanceFilter_colorBalanceKernels__block_invoke()
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v43 = v35;
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -185,27 +185,27 @@ uint64_t __43__PIColorBalanceFilter_colorBalanceKernels__block_invoke()
   inputImage = self->_inputImage;
   if (fabs(v7) + fabs(v8) >= 0.00000001)
   {
-    v11 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
     if ([(NSNumber *)self->_inputHasFace BOOLValue])
     {
       if ([(NSNumber *)self->_inputIsRaw BOOLValue])
       {
-        v12 = [v11 imageByColorMatchingWorkingSpaceToColorSpace:{+[PIRAWFaceBalance linearWideGamutColorSpace](PIRAWFaceBalance, "linearWideGamutColorSpace")}];
+        v12 = [imageByUnpremultiplyingAlpha imageByColorMatchingWorkingSpaceToColorSpace:{+[PIRAWFaceBalance linearWideGamutColorSpace](PIRAWFaceBalance, "linearWideGamutColorSpace")}];
         v13 = [MEMORY[0x1E695F680] samplerWithImage:v12];
       }
 
       else
       {
-        v13 = [MEMORY[0x1E695F680] samplerWithImage:v11];
+        v13 = [MEMORY[0x1E695F680] samplerWithImage:imageByUnpremultiplyingAlpha];
       }
     }
 
     else
     {
-      v15 = [(PIColorBalanceFilter *)self applyInputConversion:v11];
+      v15 = [(PIColorBalanceFilter *)self applyInputConversion:imageByUnpremultiplyingAlpha];
 
       v13 = [MEMORY[0x1E695F680] samplerWithImage:v15];
-      v11 = v15;
+      imageByUnpremultiplyingAlpha = v15;
     }
 
     v41[0] = v13;
@@ -221,9 +221,9 @@ uint64_t __43__PIColorBalanceFilter_colorBalanceKernels__block_invoke()
     v41[4] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:5];
 
-    v22 = [objc_opt_class() colorBalanceKernel];
+    colorBalanceKernel = [objc_opt_class() colorBalanceKernel];
     [v13 extent];
-    v23 = [v22 applyWithExtent:&__block_literal_global_18868 roiCallback:v21 arguments:?];
+    v23 = [colorBalanceKernel applyWithExtent:&__block_literal_global_18868 roiCallback:v21 arguments:?];
 
     if ([(NSNumber *)self->_inputHasFace BOOLValue])
     {
@@ -246,39 +246,39 @@ uint64_t __43__PIColorBalanceFilter_colorBalanceKernels__block_invoke()
     v25 = v24;
     [(CIImage *)self->_inputImage extent];
     v26 = [v25 imageByCroppingToRect:?];
-    v10 = [v26 imageByPremultiplyingAlpha];
+    imageByPremultiplyingAlpha = [v26 imageByPremultiplyingAlpha];
   }
 
   else
   {
-    v10 = inputImage;
+    imageByPremultiplyingAlpha = inputImage;
   }
 
-  return v10;
+  return imageByPremultiplyingAlpha;
 }
 
-- (id)applyOutputConversion:(id)a3
+- (id)applyOutputConversion:(id)conversion
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695F680] samplerWithImage:a3];
+  v3 = [MEMORY[0x1E695F680] samplerWithImage:conversion];
   v8[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  v5 = [objc_opt_class() PPtogHDRKernel];
+  pPtogHDRKernel = [objc_opt_class() PPtogHDRKernel];
   [v3 extent];
-  v6 = [v5 applyWithExtent:&__block_literal_global_18868 roiCallback:v4 arguments:?];
+  v6 = [pPtogHDRKernel applyWithExtent:&__block_literal_global_18868 roiCallback:v4 arguments:?];
 
   return v6;
 }
 
-- (id)applyInputConversion:(id)a3
+- (id)applyInputConversion:(id)conversion
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695F680] samplerWithImage:a3];
+  v3 = [MEMORY[0x1E695F680] samplerWithImage:conversion];
   v8[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  v5 = [objc_opt_class() gHDRtoPPKernel];
+  gHDRtoPPKernel = [objc_opt_class() gHDRtoPPKernel];
   [v3 extent];
-  v6 = [v5 applyWithExtent:&__block_literal_global_18868 roiCallback:v4 arguments:?];
+  v6 = [gHDRtoPPKernel applyWithExtent:&__block_literal_global_18868 roiCallback:v4 arguments:?];
 
   return v6;
 }

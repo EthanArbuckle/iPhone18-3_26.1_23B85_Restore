@@ -1,13 +1,13 @@
 @interface _UILibArchiveItem
-+ (id)itemByReadingAttributesFromUnderlyingArchiveEntry:(ui_archive_entry *)a3 archive:(ui_archive *)a4;
++ (id)itemByReadingAttributesFromUnderlyingArchiveEntry:(ui_archive_entry *)entry archive:(ui_archive *)archive;
 @end
 
 @implementation _UILibArchiveItem
 
-+ (id)itemByReadingAttributesFromUnderlyingArchiveEntry:(ui_archive_entry *)a3 archive:(ui_archive *)a4
++ (id)itemByReadingAttributesFromUnderlyingArchiveEntry:(ui_archive_entry *)entry archive:(ui_archive *)archive
 {
   v6 = objc_alloc_init(objc_opt_class());
-  v7 = ui_archive_entry_pathname(a3);
+  v7 = ui_archive_entry_pathname(entry);
   if (![v7 length])
   {
     v13 = *(__UILogGetCategoryCachedImpl("DocumentInteraction", &_MergedGlobals_1_6) + 8);
@@ -25,7 +25,7 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  ui_archive_entry_filetype(a3);
+  ui_archive_entry_filetype(entry);
   if (!v8)
   {
     v13 = *(__UILogGetCategoryCachedImpl("DocumentInteraction", &qword_1ED499248) + 8);
@@ -41,11 +41,11 @@ LABEL_10:
   }
 
   v9 = v8;
-  ui_archive_entry_size_is_set(a3);
+  ui_archive_entry_size_is_set(entry);
   [v6 setFileSizeIsSet:v10 != 0];
   if ([v6 fileSizeIsSet])
   {
-    ui_archive_entry_size(a3);
+    ui_archive_entry_size(entry);
     v12 = v11;
   }
 
@@ -67,8 +67,8 @@ LABEL_10:
   [v6 setFileType:v17];
 
   [v6 setFileSize:v12];
-  v6[7] = a4;
-  v6[6] = a3;
+  v6[7] = archive;
+  v6[6] = entry;
   v16 = v6;
 LABEL_16:
 

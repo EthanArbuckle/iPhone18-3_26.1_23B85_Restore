@@ -1,16 +1,16 @@
 @interface PLCameraCaptureTaskConstraintCoordinator
 + (id)taskConstraintStatus;
 - (NSString)description;
-- (PLCameraCaptureTaskConstraintCoordinator)initWithTaskContstraintRole:(int64_t)a3 name:(id)a4;
+- (PLCameraCaptureTaskConstraintCoordinator)initWithTaskContstraintRole:(int64_t)role name:(id)name;
 - (id)sessionStatusDescription;
 - (void)_activateCameraSessionTaskConstraints;
 - (void)_cancelSessionFailsafeTimer;
-- (void)_deactivateCameraSessionTaskConstraintsAfterDelay:(double)a3;
-- (void)_invalidateTransactionAndStopConstrainingTasksWithDelayedDeactivation:(BOOL)a3;
+- (void)_deactivateCameraSessionTaskConstraintsAfterDelay:(double)delay;
+- (void)_invalidateTransactionAndStopConstrainingTasksWithDelayedDeactivation:(BOOL)deactivation;
 - (void)_startSessionFailsafeTimer;
 - (void)_startWatchingCameraActivity;
 - (void)activateCameraSessionTaskConstraints;
-- (void)cameraWatcherDidChangeState:(id)a3;
+- (void)cameraWatcherDidChangeState:(id)state;
 - (void)deactivateCameraSessionTaskConstraints;
 - (void)invalidate;
 @end
@@ -113,22 +113,22 @@ uint64_t __80__PLCameraCaptureTaskConstraintCoordinator_activateCameraSessionTas
   return v12;
 }
 
-- (void)cameraWatcherDidChangeState:(id)a3
+- (void)cameraWatcherDidChangeState:(id)state
 {
   v11 = *MEMORY[0x1E69E9840];
   cameraWatcherQueue = self->_cameraWatcherQueue;
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(cameraWatcherQueue);
-  v6 = [v5 isCameraRunning];
+  isCameraRunning = [stateCopy isCameraRunning];
 
   v7 = PLCameraTaskConstraintsGetLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (isCameraRunning)
   {
     if (v8)
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: activating camera session task constraints automatically", &v9, 0xCu);
     }
 
@@ -140,7 +140,7 @@ uint64_t __80__PLCameraCaptureTaskConstraintCoordinator_activateCameraSessionTas
     if (v8)
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: deactivating camera session task constraints automatically", &v9, 0xCu);
     }
 
@@ -155,7 +155,7 @@ uint64_t __80__PLCameraCaptureTaskConstraintCoordinator_activateCameraSessionTas
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138543362;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%{public}@: starting camera viewfinder monitor", &v10, 0xCu);
   }
 
@@ -177,16 +177,16 @@ uint64_t __80__PLCameraCaptureTaskConstraintCoordinator_activateCameraSessionTas
 {
   v11 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_activationQueue);
-  v3 = [(PLDelayedActionTimer *)self->_failsafeTimer isRunning];
+  isRunning = [(PLDelayedActionTimer *)self->_failsafeTimer isRunning];
   v4 = PLCameraTaskConstraintsGetLog();
   v5 = v4;
-  if (v3)
+  if (isRunning)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       failsafeTimer = self->_failsafeTimer;
       v7 = 138543618;
-      v8 = self;
+      selfCopy2 = self;
       v9 = 2114;
       v10 = failsafeTimer;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "%{public}@: PLCameraCaptureTaskConstraintCoordinator cancelling failsafe timer %{public}@", &v7, 0x16u);
@@ -200,7 +200,7 @@ uint64_t __80__PLCameraCaptureTaskConstraintCoordinator_activateCameraSessionTas
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: PLCameraCaptureTaskConstraintCoordinator ignoring request to cancel NULL failsafe timer", &v7, 0xCu);
     }
   }
@@ -217,7 +217,7 @@ uint64_t __80__PLCameraCaptureTaskConstraintCoordinator_activateCameraSessionTas
     {
       failsafeTimer = self->_failsafeTimer;
       *buf = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
       v14 = failsafeTimer;
       _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: ignoring request to start active task constraint failsafe timer %{public}@", buf, 0x16u);
@@ -240,7 +240,7 @@ uint64_t __80__PLCameraCaptureTaskConstraintCoordinator_activateCameraSessionTas
     {
       v7 = self->_failsafeTimer;
       *buf = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
       v14 = v7;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "%{public}@: started task constraint failsafe timer %{public}@", buf, 0x16u);
@@ -272,10 +272,10 @@ void __70__PLCameraCaptureTaskConstraintCoordinator__startSessionFailsafeTimer__
   }
 }
 
-- (void)_invalidateTransactionAndStopConstrainingTasksWithDelayedDeactivation:(BOOL)a3
+- (void)_invalidateTransactionAndStopConstrainingTasksWithDelayedDeactivation:(BOOL)deactivation
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (deactivation)
   {
     if (self->_delayedDeactivationInProgress)
     {
@@ -290,7 +290,7 @@ void __70__PLCameraCaptureTaskConstraintCoordinator__startSessionFailsafeTimer__
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
         v12 = 138543362;
-        v13 = self;
+        selfCopy3 = self;
         v7 = "%{public}@: task constraints deactivated after delay";
 LABEL_7:
         v10 = v6;
@@ -306,7 +306,7 @@ LABEL_10:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
-        v13 = self;
+        selfCopy3 = self;
         v7 = "%{public}@: delayed task constraint deactivation cancelled by re-activation";
         v10 = v6;
         v11 = OS_LOG_TYPE_DEFAULT;
@@ -327,14 +327,14 @@ LABEL_10:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138543362;
-      v13 = self;
+      selfCopy3 = self;
       v7 = "%{public}@: task constraints deactivated";
       goto LABEL_7;
     }
   }
 }
 
-- (void)_deactivateCameraSessionTaskConstraintsAfterDelay:(double)a3
+- (void)_deactivateCameraSessionTaskConstraintsAfterDelay:(double)delay
 {
   v12 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_activationQueue);
@@ -344,7 +344,7 @@ LABEL_10:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: task constraint deactivation already in progress", buf, 0xCu);
     }
   }
@@ -356,7 +356,7 @@ LABEL_10:
       [(PLCameraCaptureTaskConstraintCoordinator *)self _cancelSessionFailsafeTimer];
     }
 
-    if (a3 == 0.0)
+    if (delay == 0.0)
     {
 
       [(PLCameraCaptureTaskConstraintCoordinator *)self _invalidateTransactionAndStopConstrainingTasksWithDelayedDeactivation:0];
@@ -366,7 +366,7 @@ LABEL_10:
     {
       self->_delayedDeactivationInProgress = 1;
       objc_initWeak(buf, self);
-      v6 = dispatch_time(0, (a3 * 1000000000.0));
+      v6 = dispatch_time(0, (delay * 1000000000.0));
       activationQueue = self->_activationQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -400,7 +400,7 @@ void __94__PLCameraCaptureTaskConstraintCoordinator__deactivateCameraSessionTask
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "%{public}@: cancelling delayed deactivation", &v7, 0xCu);
     }
 
@@ -528,7 +528,7 @@ void __68__PLCameraCaptureTaskConstraintCoordinator_sessionStatusDescription__bl
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: invalidate", &v5, 0xCu);
   }
 
@@ -536,36 +536,36 @@ void __68__PLCameraCaptureTaskConstraintCoordinator_sessionStatusDescription__bl
   [v4 stopConstrainingTasksWithCoordinator:self];
 }
 
-- (PLCameraCaptureTaskConstraintCoordinator)initWithTaskContstraintRole:(int64_t)a3 name:(id)a4
+- (PLCameraCaptureTaskConstraintCoordinator)initWithTaskContstraintRole:(int64_t)role name:(id)name
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = PLCameraCaptureTaskConstraintCoordinator;
   v7 = [(PLCameraCaptureTaskConstraintCoordinator *)&v20 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     name = v7->_name;
     v7->_name = v8;
 
-    v10 = [MEMORY[0x1E695DF00] date];
-    v11 = PLDateToISO8160StringWithLocalTimeZone(v10);
+    date = [MEMORY[0x1E695DF00] date];
+    v11 = PLDateToISO8160StringWithLocalTimeZone(date);
     creationDateString = v7->_creationDateString;
     v7->_creationDateString = v11;
 
-    v7->_role = a3;
+    v7->_role = role;
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = pl_dispatch_queue_create_with_fallback_qos();
     activationQueue = v7->_activationQueue;
     v7->_activationQueue = v14;
 
-    if ([PLCameraCaptureTaskConstraintCoordinator _shouldWatchCameraViewfinderForRole:a3])
+    if ([PLCameraCaptureTaskConstraintCoordinator _shouldWatchCameraViewfinderForRole:role])
     {
       [(PLCameraCaptureTaskConstraintCoordinator *)v7 _startWatchingCameraActivity];
     }
 
-    if ([PLCameraCaptureTaskConstraintCoordinator _shouldUseFailsafeTimerForRole:a3])
+    if ([PLCameraCaptureTaskConstraintCoordinator _shouldUseFailsafeTimerForRole:role])
     {
       v7->_failsafeTimerEnabled = 1;
       v16 = [objc_alloc(MEMORY[0x1E69BF1F8]) initWithTargetQueue:v7->_activationQueue];
@@ -588,9 +588,9 @@ void __68__PLCameraCaptureTaskConstraintCoordinator_sessionStatusDescription__bl
 + (id)taskConstraintStatus
 {
   v2 = +[PLCameraCaptureTaskConstraints sharedTaskConstraints];
-  v3 = [v2 taskConstraintStatus];
+  taskConstraintStatus = [v2 taskConstraintStatus];
 
-  return v3;
+  return taskConstraintStatus;
 }
 
 @end

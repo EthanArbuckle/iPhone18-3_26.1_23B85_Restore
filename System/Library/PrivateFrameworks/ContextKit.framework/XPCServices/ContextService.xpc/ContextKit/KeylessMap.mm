@@ -1,31 +1,31 @@
 @interface KeylessMap
-+ (id)keylessMapForDirectory:(id)a3 fileName:(id)a4;
-- (KeylessMap)initWithImpl:(id)a3;
-- (id)objectsForKey:(id)a3 intoSet:(id)a4 keepWalkingOut:(BOOL *)a5;
++ (id)keylessMapForDirectory:(id)directory fileName:(id)name;
+- (KeylessMap)initWithImpl:(id)impl;
+- (id)objectsForKey:(id)key intoSet:(id)set keepWalkingOut:(BOOL *)out;
 - (void)dealloc;
 @end
 
 @implementation KeylessMap
 
-- (KeylessMap)initWithImpl:(id)a3
+- (KeylessMap)initWithImpl:(id)impl
 {
-  v5 = a3;
+  implCopy = impl;
   v9.receiver = self;
   v9.super_class = KeylessMap;
   v6 = [(KeylessMap *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, impl);
     pthread_mutex_init(&v7->_lock, 0);
   }
 
   return v7;
 }
 
-+ (id)keylessMapForDirectory:(id)a3 fileName:(id)a4
++ (id)keylessMapForDirectory:(id)directory fileName:(id)name
 {
-  v4 = [ComAppleContextkitUtilKeylessMapBase openWithOrgApacheLuceneStoreDirectory:a3 withNSString:a4];
+  v4 = [ComAppleContextkitUtilKeylessMapBase openWithOrgApacheLuceneStoreDirectory:directory withNSString:name];
   if (v4)
   {
     v5 = [[KeylessMap alloc] initWithImpl:v4];
@@ -39,37 +39,37 @@
   return v5;
 }
 
-- (id)objectsForKey:(id)a3 intoSet:(id)a4 keepWalkingOut:(BOOL *)a5
+- (id)objectsForKey:(id)key intoSet:(id)set keepWalkingOut:(BOOL *)out
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length])
+  keyCopy = key;
+  setCopy = set;
+  if ([keyCopy length])
   {
-    v10 = [[OrgApacheLuceneUtilBytesRef alloc] initWithJavaLangCharSequence:v8];
+    v10 = [[OrgApacheLuceneUtilBytesRef alloc] initWithJavaLangCharSequence:keyCopy];
     v11 = v10;
     if (v10 && v10->bytes_ && v10->length_ > 0)
     {
       pthread_mutex_lock(&self->_lock);
-      v12 = [(ComAppleContextkitUtilKeylessMapBase *)self->_impl newArray];
+      newArray = [(ComAppleContextkitUtilKeylessMapBase *)self->_impl newArray];
       pthread_mutex_unlock(&self->_lock);
-      v13 = v12[2];
+      v13 = newArray[2];
       v14 = (&v11->bytes_->super.size_ + 1);
       offset = v11->offset_;
       length = v11->length_;
       v17 = _PASMurmur3_x64_128();
       if (v13 >= 1)
       {
-        v12[3] = v17;
+        newArray[3] = v17;
         if (v13 != 1)
         {
           v20 = HIDWORD(v17);
-          v12[4] = HIDWORD(v17);
+          newArray[4] = HIDWORD(v17);
           if (v13 >= 3)
           {
-            v12[5] = v18;
+            newArray[5] = v18;
             if (v13 != 3)
             {
-              v12[6] = v19;
+              newArray[6] = v19;
               if (v13 >= 5)
               {
                 v21 = 0;
@@ -78,7 +78,7 @@
                 v24 = vdupq_n_s64(v23);
                 v25 = (v23 & 0x7FFFFFFFFFFFFFFCLL) + 4;
                 v26 = 8 * HIDWORD(v17);
-                v27 = v12 + 9;
+                v27 = newArray + 9;
                 do
                 {
                   v28 = vdupq_n_s64(v22);
@@ -117,7 +117,7 @@
                   v36 = (v13 - 6) >> 1;
                   v37 = vdupq_n_s64(v36);
                   v38 = (v36 & 0x7FFFFFFFFFFFFFFCLL) + 4;
-                  v39 = v12 + 10;
+                  v39 = newArray + 10;
                   do
                   {
                     v40 = vdupq_n_s64(v35);
@@ -157,21 +157,21 @@
       }
 
       pthread_mutex_lock(&self->_lock);
-      v46 = [(ComAppleContextkitUtilKeylessMapBase *)self->_impl getWithHashesWithIntArray:v12];
+      v46 = [(ComAppleContextkitUtilKeylessMapBase *)self->_impl getWithHashesWithIntArray:newArray];
       pthread_mutex_unlock(&self->_lock);
       v47 = [v46 size];
       if (v47)
       {
-        if (!v9)
+        if (!setCopy)
         {
-          v9 = [[NSMutableSet alloc] initWithCapacity:v47];
+          setCopy = [[NSMutableSet alloc] initWithCapacity:v47];
         }
 
-        v57 = v12;
+        v57 = newArray;
         v58 = v11;
-        if (a5)
+        if (out)
         {
-          *a5 = 0;
+          *out = 0;
         }
 
         v61 = 0u;
@@ -195,14 +195,14 @@
               }
 
               v53 = *(*(&v59 + 1) + 8 * i);
-              if (a5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v53 integerValue] == 16)
+              if (out && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v53 integerValue] == 16)
               {
-                *a5 = 1;
+                *out = 1;
               }
 
               else
               {
-                [v9 addObject:v53];
+                [setCopy addObject:v53];
               }
             }
 
@@ -212,23 +212,23 @@
           while (v50);
         }
 
-        v12 = v57;
+        newArray = v57;
         v11 = v58;
         v46 = v56;
       }
 
-      v54 = v9;
+      v54 = setCopy;
     }
 
     else
     {
-      v54 = v9;
+      v54 = setCopy;
     }
   }
 
   else
   {
-    v54 = v9;
+    v54 = setCopy;
   }
 
   return v54;

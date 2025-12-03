@@ -1,9 +1,9 @@
 @interface _DKCPUUsageMonitor
-- (BOOL)updateCPUUsagePercentage:(unint64_t *)a3;
-- (unint64_t)getCPUUsageLevelFromPercentage:(unint64_t)a3;
+- (BOOL)updateCPUUsagePercentage:(unint64_t *)percentage;
+- (unint64_t)getCPUUsageLevelFromPercentage:(unint64_t)percentage;
 - (unint64_t)getCurrentCPUUsageLevel;
-- (void)getCPUTicksForUser:(unint64_t *)a3 system:(unint64_t *)a4 idle:(unint64_t *)a5;
-- (void)setCurrentCPUUsageLevel:(unint64_t)a3;
+- (void)getCPUTicksForUser:(unint64_t *)user system:(unint64_t *)system idle:(unint64_t *)idle;
+- (void)setCurrentCPUUsageLevel:(unint64_t)level;
 - (void)start;
 - (void)stop;
 @end
@@ -22,16 +22,16 @@
   return lastCPUUsageLevel;
 }
 
-- (void)setCurrentCPUUsageLevel:(unint64_t)a3
+- (void)setCurrentCPUUsageLevel:(unint64_t)level
 {
-  if (self->_lastCPUUsageLevel != a3)
+  if (self->_lastCPUUsageLevel != level)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-    v6 = [MEMORY[0x277CFE318] userContext];
-    v7 = [MEMORY[0x277CFE338] keyPathForCPUUsageLevel];
-    [v6 setObject:v5 forKeyedSubscript:v7];
+    userContext = [MEMORY[0x277CFE318] userContext];
+    keyPathForCPUUsageLevel = [MEMORY[0x277CFE338] keyPathForCPUUsageLevel];
+    [userContext setObject:v5 forKeyedSubscript:keyPathForCPUUsageLevel];
 
-    self->_lastCPUUsageLevel = a3;
+    self->_lastCPUUsageLevel = level;
   }
 }
 
@@ -41,13 +41,13 @@
   v5.super_class = _DKCPUUsageMonitor;
   if ([(_DKMonitor *)&v5 instantMonitorNeedsActivation])
   {
-    v3 = [(_DKMonitor *)self queue];
+    queue = [(_DKMonitor *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __27___DKCPUUsageMonitor_start__block_invoke;
     block[3] = &unk_27856F060;
     block[4] = self;
-    dispatch_sync(v3, block);
+    dispatch_sync(queue, block);
   }
 }
 
@@ -65,7 +65,7 @@
   }
 }
 
-- (void)getCPUTicksForUser:(unint64_t *)a3 system:(unint64_t *)a4 idle:(unint64_t *)a5
+- (void)getCPUTicksForUser:(unint64_t *)user system:(unint64_t *)system idle:(unint64_t *)idle
 {
   *host_info_out = 0;
   v13 = 0;
@@ -75,13 +75,13 @@
   {
     v9 = host_info_out[1];
     v10 = v13;
-    *a3 = (HIDWORD(v13) + host_info_out[0]);
-    *a4 = v9;
-    *a5 = v10;
+    *user = (HIDWORD(v13) + host_info_out[0]);
+    *system = v9;
+    *idle = v10;
   }
 }
 
-- (BOOL)updateCPUUsagePercentage:(unint64_t *)a3
+- (BOOL)updateCPUUsagePercentage:(unint64_t *)percentage
 {
   lastUserTick = self->_lastUserTick;
   lastSysTick = self->_lastSysTick;
@@ -107,7 +107,7 @@
   {
     v12 = lastIdleTick - v7;
     v13 = lastSysTick - v6;
-    *a3 = ((v13 + v8) / (v12 + v13 + v8) * 100.0);
+    *percentage = ((v13 + v8) / (v12 + v13 + v8) * 100.0);
     self->_lastUserTick += v8;
     self->_lastSysTick += v13;
     self->_lastIdleTick += v12;
@@ -116,27 +116,27 @@
   return result;
 }
 
-- (unint64_t)getCPUUsageLevelFromPercentage:(unint64_t)a3
+- (unint64_t)getCPUUsageLevelFromPercentage:(unint64_t)percentage
 {
   v3 = 90;
   v4 = 75;
   v5 = 50;
-  if (a3 <= 0x32)
+  if (percentage <= 0x32)
   {
     v5 = 0;
   }
 
-  if (a3 <= 0x4B)
+  if (percentage <= 0x4B)
   {
     v4 = v5;
   }
 
-  if (a3 <= 0x5A)
+  if (percentage <= 0x5A)
   {
     v3 = v4;
   }
 
-  if (a3 <= 0x5F)
+  if (percentage <= 0x5F)
   {
     return v3;
   }

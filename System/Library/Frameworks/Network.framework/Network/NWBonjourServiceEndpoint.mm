@@ -3,7 +3,7 @@
 - (NSString)domain;
 - (NSString)name;
 - (NSString)type;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 @end
 
 @implementation NWBonjourServiceEndpoint
@@ -203,8 +203,8 @@ LABEL_40:
 - (NSString)domain
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  bonjour_service_domain = nw_endpoint_get_bonjour_service_domain(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  bonjour_service_domain = nw_endpoint_get_bonjour_service_domain(internalEndpoint);
 
   if (bonjour_service_domain)
   {
@@ -318,8 +318,8 @@ LABEL_15:
 - (NSString)type
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  bonjour_service_type = nw_endpoint_get_bonjour_service_type(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  bonjour_service_type = nw_endpoint_get_bonjour_service_type(internalEndpoint);
 
   if (bonjour_service_type)
   {
@@ -433,8 +433,8 @@ LABEL_15:
 - (NSString)name
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  bonjour_service_name = nw_endpoint_get_bonjour_service_name(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  bonjour_service_name = nw_endpoint_get_bonjour_service_name(internalEndpoint);
 
   if (bonjour_service_name)
   {
@@ -545,38 +545,38 @@ LABEL_15:
   return v4;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = *&a3;
-  v6 = [(NWEndpoint *)self parentEndpointDomain:*&a3];
+  v4 = *&indent;
+  v6 = [(NWEndpoint *)self parentEndpointDomain:*&indent];
 
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v8 = [(NWBonjourServiceEndpoint *)self name];
-    [v7 appendPrettyObject:v8 withName:@"name" indent:v4 showFullContent:1];
+    name = [(NWBonjourServiceEndpoint *)self name];
+    [v7 appendPrettyObject:name withName:@"name" indent:v4 showFullContent:1];
 
-    v9 = [(NWBonjourServiceEndpoint *)self type];
-    [v7 appendPrettyObject:v9 withName:@"type" indent:v4 showFullContent:1];
+    type = [(NWBonjourServiceEndpoint *)self type];
+    [v7 appendPrettyObject:type withName:@"type" indent:v4 showFullContent:1];
 
-    v10 = [(NWBonjourServiceEndpoint *)self domain];
-    [v7 appendPrettyObject:v10 withName:@"domain" indent:v4 showFullContent:1];
+    domain = [(NWBonjourServiceEndpoint *)self domain];
+    [v7 appendPrettyObject:domain withName:@"domain" indent:v4 showFullContent:1];
 
-    v11 = [(NWEndpoint *)self interface];
-    [v7 appendPrettyObject:v11 withName:@"interface" indent:v4 showFullContent:1];
+    interface = [(NWEndpoint *)self interface];
+    [v7 appendPrettyObject:interface withName:@"interface" indent:v4 showFullContent:1];
 
-    v12 = [(NWEndpoint *)self parentEndpointDomain];
-    [v7 appendPrettyObject:v12 withName:@"parentEndpointDomain" indent:v4 showFullContent:1];
+    parentEndpointDomain = [(NWEndpoint *)self parentEndpointDomain];
+    [v7 appendPrettyObject:parentEndpointDomain withName:@"parentEndpointDomain" indent:v4 showFullContent:1];
   }
 
   else
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [(NWEndpoint *)self internalEndpoint];
-    v12 = v14;
-    if (v14)
+    internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+    parentEndpointDomain = internalEndpoint;
+    if (internalEndpoint)
     {
-      description = _nw_endpoint_get_description(v14);
+      description = _nw_endpoint_get_description(internalEndpoint);
     }
 
     else

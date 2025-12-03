@@ -1,20 +1,20 @@
 @interface HLPHelpTableOfContentViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)updateWithHelpBookController:(id)a3;
+- (void)updateWithHelpBookController:(id)controller;
 @end
 
 @implementation HLPHelpTableOfContentViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HLPHelpTableOfContentViewController" hasInstanceVariable:@"_copyrightFooterLabel" withType:"UILabel"];
-  [v3 validateClass:@"HLPHelpTableOfContentViewController" hasInstanceVariable:@"_footerViewOverlayButton" withType:"UIButton"];
-  [v3 validateClass:@"HLPHelpTableOfContentViewController" hasInstanceMethod:@"helpBookController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HLPHelpBookController" hasInstanceMethod:@"copyrightTopicIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HLPHelpTableOfContentViewController" hasInstanceMethod:@"updateWithHelpBookController:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HLPHelpBookController" hasInstanceMethod:@"helpTopicItemForID:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HLPHelpTableOfContentViewController" hasInstanceVariable:@"_copyrightFooterLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"HLPHelpTableOfContentViewController" hasInstanceVariable:@"_footerViewOverlayButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"HLPHelpTableOfContentViewController" hasInstanceMethod:@"helpBookController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HLPHelpBookController" hasInstanceMethod:@"copyrightTopicIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HLPHelpTableOfContentViewController" hasInstanceMethod:@"updateWithHelpBookController:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HLPHelpBookController" hasInstanceMethod:@"helpTopicItemForID:" withFullSignature:{"@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -25,8 +25,8 @@
   v3 = [(HLPHelpTableOfContentViewControllerAccessibility *)self safeValueForKey:@"_copyrightFooterLabel"];
   v4 = [(HLPHelpTableOfContentViewControllerAccessibility *)self safeValueForKey:@"_footerViewOverlayButton"];
   [v3 setIsAccessibilityElement:0];
-  v5 = [v3 accessibilityLabel];
-  [v4 setAccessibilityLabel:v5];
+  accessibilityLabel = [v3 accessibilityLabel];
+  [v4 setAccessibilityLabel:accessibilityLabel];
 
   v6 = [(HLPHelpTableOfContentViewControllerAccessibility *)self safeValueForKey:@"helpBookController"];
   v10 = 0;
@@ -57,11 +57,11 @@ void __94__HLPHelpTableOfContentViewControllerAccessibility__accessibilityLoadAc
   *(v4 + 40) = v3;
 }
 
-- (void)updateWithHelpBookController:(id)a3
+- (void)updateWithHelpBookController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = HLPHelpTableOfContentViewControllerAccessibility;
-  [(HLPHelpTableOfContentViewControllerAccessibility *)&v4 updateWithHelpBookController:a3];
+  [(HLPHelpTableOfContentViewControllerAccessibility *)&v4 updateWithHelpBookController:controller];
   [(HLPHelpTableOfContentViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

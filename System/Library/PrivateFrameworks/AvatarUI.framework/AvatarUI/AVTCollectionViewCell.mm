@@ -1,37 +1,37 @@
 @interface AVTCollectionViewCell
-- (void)setSubview:(id)a3;
+- (void)setSubview:(id)subview;
 @end
 
 @implementation AVTCollectionViewCell
 
-- (void)setSubview:(id)a3
+- (void)setSubview:(id)subview
 {
-  v5 = a3;
+  subviewCopy = subview;
   subview = self->_subview;
-  if (subview != v5)
+  if (subview != subviewCopy)
   {
-    v11 = v5;
-    v7 = [(UIView *)subview superview];
-    v8 = [(AVTCollectionViewCell *)self contentView];
+    v11 = subviewCopy;
+    superview = [(UIView *)subview superview];
+    contentView = [(AVTCollectionViewCell *)self contentView];
 
-    if (v7 == v8)
+    if (superview == contentView)
     {
       [(UIView *)self->_subview removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_subview, a3);
-    v9 = [(AVTCollectionViewCell *)self contentView];
-    [v9 bounds];
+    objc_storeStrong(&self->_subview, subview);
+    contentView2 = [(AVTCollectionViewCell *)self contentView];
+    [contentView2 bounds];
     [(UIView *)v11 setFrame:?];
 
     [(UIView *)v11 setAutoresizingMask:18];
-    v10 = [(AVTCollectionViewCell *)self contentView];
-    [v10 addSubview:v11];
+    contentView3 = [(AVTCollectionViewCell *)self contentView];
+    [contentView3 addSubview:v11];
 
-    v5 = v11;
+    subviewCopy = v11;
   }
 
-  MEMORY[0x1EEE66BB8](subview, v5);
+  MEMORY[0x1EEE66BB8](subview, subviewCopy);
 }
 
 @end

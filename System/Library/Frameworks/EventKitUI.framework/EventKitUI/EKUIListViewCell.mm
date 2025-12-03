@@ -1,23 +1,23 @@
 @interface EKUIListViewCell
 + (UIEdgeInsets)adjustedSeparatorInsets;
-- (EKUIListViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKUIListViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)carplayBackgroundViewInsets;
 - (UIView)cellContentView;
-- (id)initForCarplayWithReuseIdentifier:(id)a3;
+- (id)initForCarplayWithReuseIdentifier:(id)identifier;
 - (id)initForDragPreview;
 - (void)_commonInit;
 - (void)_updateVisualEffectBackground;
 - (void)layoutSubviews;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation EKUIListViewCell
 
-- (id)initForCarplayWithReuseIdentifier:(id)a3
+- (id)initForCarplayWithReuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = EKUIListViewCell;
-  v3 = [(EKUITableViewCell *)&v6 initWithStyle:0 reuseIdentifier:a3];
+  v3 = [(EKUITableViewCell *)&v6 initWithStyle:0 reuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -45,11 +45,11 @@
   return v3;
 }
 
-- (EKUIListViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUIListViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = EKUIListViewCell;
-  v4 = [(EKUITableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(EKUITableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -67,8 +67,8 @@
   {
     v3 = objc_alloc_init(MEMORY[0x1E69DD298]);
     [(UIVisualEffectView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v4 = [(UIVisualEffectView *)v3 layer];
-    [v4 setMasksToBounds:1];
+    layer = [(UIVisualEffectView *)v3 layer];
+    [layer setMasksToBounds:1];
 
     v5 = objc_opt_self();
     v41[0] = v5;
@@ -80,15 +80,15 @@
     v39 = v3;
 
     [(EKUIListViewCell *)self _updateVisualEffectBackground];
-    v9 = [(EKUIListViewCell *)self contentView];
-    [v9 addSubview:self->_effectView];
+    contentView = [(EKUIListViewCell *)self contentView];
+    [contentView addSubview:self->_effectView];
 
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(EKUIListViewCell *)self setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(EKUIListViewCell *)self setBackgroundColor:clearColor];
 
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    v12 = [(EKUIListViewCell *)self contentView];
-    [v12 setBackgroundColor:v11];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    contentView2 = [(EKUIListViewCell *)self contentView];
+    [contentView2 setBackgroundColor:clearColor2];
 
     [(EKUIListViewCell *)self carplayBackgroundViewInsets];
     v14 = v13;
@@ -96,25 +96,25 @@
     v18 = v17;
     v20 = v19;
     v31 = MEMORY[0x1E696ACD8];
-    v37 = [(UIVisualEffectView *)self->_effectView leadingAnchor];
-    v38 = [(EKUIListViewCell *)self contentView];
-    v36 = [v38 leadingAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36 constant:v16];
+    leadingAnchor = [(UIVisualEffectView *)self->_effectView leadingAnchor];
+    contentView3 = [(EKUIListViewCell *)self contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v16];
     v40[0] = v35;
-    v33 = [(UIVisualEffectView *)self->_effectView trailingAnchor];
-    v34 = [(EKUIListViewCell *)self contentView];
-    v32 = [v34 trailingAnchor];
-    v21 = [v33 constraintEqualToAnchor:v32 constant:-v20];
+    trailingAnchor = [(UIVisualEffectView *)self->_effectView trailingAnchor];
+    contentView4 = [(EKUIListViewCell *)self contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v20];
     v40[1] = v21;
-    v22 = [(UIVisualEffectView *)self->_effectView topAnchor];
-    v23 = [(EKUIListViewCell *)self contentView];
-    v24 = [v23 topAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24 constant:v14];
+    topAnchor = [(UIVisualEffectView *)self->_effectView topAnchor];
+    contentView5 = [(EKUIListViewCell *)self contentView];
+    topAnchor2 = [contentView5 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v14];
     v40[2] = v25;
-    v26 = [(UIVisualEffectView *)self->_effectView bottomAnchor];
-    v27 = [(EKUIListViewCell *)self contentView];
-    v28 = [v27 bottomAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28 constant:-v18];
+    bottomAnchor = [(UIVisualEffectView *)self->_effectView bottomAnchor];
+    contentView6 = [(EKUIListViewCell *)self contentView];
+    bottomAnchor2 = [contentView6 bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v18];
     v40[3] = v29;
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:4];
     [v31 activateConstraints:v30];
@@ -134,17 +134,17 @@
   return result;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v23 = a3;
-  if ([v23 isSelected] && !-[EKUIListViewCell carplayMode](self, "carplayMode"))
+  stateCopy = state;
+  if ([stateCopy isSelected] && !-[EKUIListViewCell carplayMode](self, "carplayMode"))
   {
-    v6 = [(EKUIListViewCell *)self defaultBackgroundConfiguration];
-    v4 = [v6 updatedConfigurationForState:v23];
+    defaultBackgroundConfiguration = [(EKUIListViewCell *)self defaultBackgroundConfiguration];
+    clearConfiguration = [defaultBackgroundConfiguration updatedConfigurationForState:stateCopy];
 
-    LODWORD(v6) = CalInterfaceIsLeftToRight();
+    LODWORD(defaultBackgroundConfiguration) = CalInterfaceIsLeftToRight();
     [(EKUIListViewCell *)self safeAreaInsets];
-    if (v6)
+    if (defaultBackgroundConfiguration)
     {
       v9 = v7;
     }
@@ -191,16 +191,16 @@
     }
 
     v22 = v21 + -8.0;
-    [v4 setCornerRadius:6.0];
-    [v4 setBackgroundInsets:{4.0, v9 - (v17 + -8.0), 4.0, v13 - v22}];
-    [v4 setEdgesAddingLayoutMarginsToBackgroundInsets:10];
-    [(EKUIListViewCell *)self setBackgroundConfiguration:v4];
+    [clearConfiguration setCornerRadius:6.0];
+    [clearConfiguration setBackgroundInsets:{4.0, v9 - (v17 + -8.0), 4.0, v13 - v22}];
+    [clearConfiguration setEdgesAddingLayoutMarginsToBackgroundInsets:10];
+    [(EKUIListViewCell *)self setBackgroundConfiguration:clearConfiguration];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-    v5 = [v4 updatedConfigurationForState:v23];
+    clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+    v5 = [clearConfiguration updatedConfigurationForState:stateCopy];
     [(EKUIListViewCell *)self setBackgroundConfiguration:v5];
   }
 }
@@ -231,15 +231,15 @@
       [(EKUIListViewCell *)self carplayBackgroundViewInsets];
       v5 = v4;
       v7 = v6;
-      v8 = [(EKUIListViewCell *)self contentView];
-      [v8 bounds];
+      contentView = [(EKUIListViewCell *)self contentView];
+      [contentView bounds];
       v9 = CGRectGetHeight(v12) - v5 - v7;
 
       v3 = v9 * 0.5;
     }
 
-    v10 = [(UIVisualEffectView *)self->_effectView layer];
-    [v10 setCornerRadius:v3];
+    layer = [(UIVisualEffectView *)self->_effectView layer];
+    [layer setCornerRadius:v3];
   }
 }
 
@@ -247,24 +247,24 @@
 {
   if ([(EKUIListViewCell *)self _usesVisualEffectBackground])
   {
-    v3 = [(EKUIListViewCell *)self effectView];
-    v4 = [v3 contentView];
+    effectView = [(EKUIListViewCell *)self effectView];
+    contentView = [effectView contentView];
   }
 
   else
   {
-    v4 = [(EKUIListViewCell *)self contentView];
+    contentView = [(EKUIListViewCell *)self contentView];
   }
 
-  return v4;
+  return contentView;
 }
 
 - (void)_updateVisualEffectBackground
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69DC730];
-  v4 = [(EKUIListViewCell *)self traitCollection];
-  if ([v4 userInterfaceStyle] == 1)
+  traitCollection = [(EKUIListViewCell *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 1)
   {
     v5 = 12;
   }

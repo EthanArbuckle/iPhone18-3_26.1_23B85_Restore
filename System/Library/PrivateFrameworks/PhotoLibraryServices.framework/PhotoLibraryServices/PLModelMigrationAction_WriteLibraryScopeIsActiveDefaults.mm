@@ -1,16 +1,16 @@
 @interface PLModelMigrationAction_WriteLibraryScopeIsActiveDefaults
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_WriteLibraryScopeIsActiveDefaults
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
-  [PLLibraryScope updateLibraryScopeActiveDefaultsWithManagedObjectContext:a3];
+  [PLLibraryScope updateLibraryScopeActiveDefaultsWithManagedObjectContext:context];
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;

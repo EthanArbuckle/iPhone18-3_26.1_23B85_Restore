@@ -9,15 +9,15 @@
 
 - (uint64_t)ac_isUnrecoverableDatabaseError
 {
-  v2 = [a1 domain];
+  domain = [self domain];
   v3 = *MEMORY[0x1E695D488];
-  v4 = [v2 isEqualToString:*MEMORY[0x1E695D488]];
+  v4 = [domain isEqualToString:*MEMORY[0x1E695D488]];
 
   v5 = MEMORY[0x1E696A250];
   if (v4)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "code")}];
-    if (!v6)
+    domain2 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "code")}];
+    if (!domain2)
     {
 LABEL_8:
       v12 = 0;
@@ -27,15 +27,15 @@ LABEL_8:
 
   else
   {
-    v6 = [a1 domain];
-    if (![v6 isEqualToString:*v5])
+    domain2 = [self domain];
+    if (![domain2 isEqualToString:*v5])
     {
       v12 = 0;
       goto LABEL_10;
     }
 
-    v7 = [a1 userInfo];
-    v8 = [v7 objectForKeyedSubscript:v3];
+    userInfo = [self userInfo];
+    v8 = [userInfo objectForKeyedSubscript:v3];
 
     if (!v8)
     {
@@ -43,24 +43,24 @@ LABEL_8:
     }
 
     v9 = MEMORY[0x1E696AD98];
-    v10 = [a1 userInfo];
-    v11 = [v10 objectForKeyedSubscript:v3];
-    v6 = [v9 numberWithInteger:{objc_msgSend(v11, "integerValue")}];
+    userInfo2 = [self userInfo];
+    v11 = [userInfo2 objectForKeyedSubscript:v3];
+    domain2 = [v9 numberWithInteger:{objc_msgSend(v11, "integerValue")}];
 
-    if (!v6)
+    if (!domain2)
     {
       goto LABEL_8;
     }
   }
 
-  v12 = [&unk_1F21188F8 containsObject:v6];
+  v12 = [&unk_1F21188F8 containsObject:domain2];
 LABEL_10:
 
 LABEL_11:
-  v13 = [a1 domain];
-  if ([v13 isEqualToString:*v5])
+  domain3 = [self domain];
+  if ([domain3 isEqualToString:*v5])
   {
-    v14 = [a1 code] == 259;
+    v14 = [self code] == 259;
 
     v12 |= v14;
   }
@@ -74,21 +74,21 @@ LABEL_11:
 
 - (uint64_t)ac_isDiskFullSQLError
 {
-  v2 = [a1 domain];
+  domain = [self domain];
   v3 = *MEMORY[0x1E695D488];
-  v4 = [v2 isEqualToString:*MEMORY[0x1E695D488]];
+  v4 = [domain isEqualToString:*MEMORY[0x1E695D488]];
 
   if (!v4)
   {
-    v5 = [a1 domain];
-    if (![v5 isEqualToString:*MEMORY[0x1E696A250]])
+    domain2 = [self domain];
+    if (![domain2 isEqualToString:*MEMORY[0x1E696A250]])
     {
       v11 = 0;
       goto LABEL_10;
     }
 
-    v6 = [a1 userInfo];
-    v7 = [v6 objectForKeyedSubscript:v3];
+    userInfo = [self userInfo];
+    v7 = [userInfo objectForKeyedSubscript:v3];
 
     if (!v7)
     {
@@ -96,24 +96,24 @@ LABEL_11:
     }
 
     v8 = MEMORY[0x1E696AD98];
-    v9 = [a1 userInfo];
-    v10 = [v9 objectForKeyedSubscript:v3];
-    v5 = [v8 numberWithInteger:{objc_msgSend(v10, "integerValue")}];
+    userInfo2 = [self userInfo];
+    v10 = [userInfo2 objectForKeyedSubscript:v3];
+    domain2 = [v8 numberWithInteger:{objc_msgSend(v10, "integerValue")}];
 
-    if (!v5)
+    if (!domain2)
     {
       return 0;
     }
 
 LABEL_7:
-    v11 = [&unk_1F2118910 containsObject:v5];
+    v11 = [&unk_1F2118910 containsObject:domain2];
 LABEL_10:
 
     return v11;
   }
 
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "code")}];
-  if (v5)
+  domain2 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "code")}];
+  if (domain2)
   {
     goto LABEL_7;
   }
@@ -130,9 +130,9 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 ac_secureCodingError];
+      ac_secureCodingError = [v4 ac_secureCodingError];
 LABEL_4:
-      v6 = v5;
+      v6 = ac_secureCodingError;
       goto LABEL_41;
     }
 
@@ -159,7 +159,7 @@ LABEL_4:
               objc_enumerationMutation(v8);
             }
 
-            v13 = [a1 ac_sanitizeObject:*(*(&v36 + 1) + 8 * i)];
+            v13 = [self ac_sanitizeObject:*(*(&v36 + 1) + 8 * i)];
             if (v13)
             {
               [v6 addObject:v13];
@@ -198,7 +198,7 @@ LABEL_4:
                 objc_enumerationMutation(v8);
               }
 
-              v18 = [a1 ac_sanitizeObject:*(*(&v32 + 1) + 8 * j)];
+              v18 = [self ac_sanitizeObject:*(*(&v32 + 1) + 8 * j)];
               if (v18)
               {
                 [v6 addObject:v18];
@@ -217,7 +217,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v5 = v4;
+          ac_secureCodingError = v4;
           goto LABEL_4;
         }
 
@@ -243,7 +243,7 @@ LABEL_4:
 
               v23 = *(*(&v28 + 1) + 8 * k);
               v24 = [v8 objectForKeyedSubscript:{v23, v28}];
-              v25 = [a1 ac_sanitizeObject:v24];
+              v25 = [self ac_sanitizeObject:v24];
 
               if (v25)
               {
@@ -281,11 +281,11 @@ LABEL_41:
 - (id)ac_secureCodingError
 {
   v2 = MEMORY[0x1E696ABC0];
-  v3 = [a1 domain];
-  v4 = [a1 code];
-  v5 = [a1 userInfo];
-  v6 = [a1 ac_sanitizeObject:v5];
-  v7 = [v2 errorWithDomain:v3 code:v4 userInfo:v6];
+  domain = [self domain];
+  code = [self code];
+  userInfo = [self userInfo];
+  v6 = [self ac_sanitizeObject:userInfo];
+  v7 = [v2 errorWithDomain:domain code:code userInfo:v6];
 
   return v7;
 }

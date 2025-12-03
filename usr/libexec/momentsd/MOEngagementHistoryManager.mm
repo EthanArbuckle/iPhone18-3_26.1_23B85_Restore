@@ -1,72 +1,72 @@
 @interface MOEngagementHistoryManager
-+ (id)appEntryEventToString:(id)a3;
-+ (id)suggestionEventToLabel:(unint64_t)a3;
-+ (unint64_t)appEntryEventToEnum:(id)a3;
-+ (unint64_t)clientEventToEnum:(id)a3;
-+ (unint64_t)getEngagmentTypeForEvent:(id)a3;
-+ (unint64_t)suggestionEventToEnum:(id)a3;
-- (BOOL)streamEngagementEventsFromSource:(id)a3 storedBookmarks:(id)a4 error:(id *)a5 updatedBookmark:(id *)a6 processEvent:(id)a7;
-- (MOEngagementHistoryManager)initWithUniverse:(id)a3;
-- (id)_convertStringArrayIntoCombinedHashedString:(id)a3;
-- (id)convertBookmark:(id)a3;
-- (id)engagementLightFromEngagement:(id)a3 fromDevice:(id)a4;
-- (id)fetchAppEntryEngagementEventsFromAllDevicesWithTypes:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withError:(id *)a6;
-- (id)fetchAppEntryEngagementEventsFromStartDate:(id)a3 toEndDate:(id)a4 withError:(id *)a5;
-- (id)fetchAppEntryEngagementEventsWithTypes:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withError:(id *)a6;
-- (id)fetchAppEntryEngagementLightEventsWithTypes:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withError:(id *)a6;
-- (id)fetchSuggestionEngagementEventsFromAllDevicesWithTypes:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withError:(id *)a6;
-- (id)fetchSuggestionEngagementEventsFromStartDate:(id)a3 toEndDate:(id)a4 withError:(id *)a5;
-- (id)fetchSuggestionEngagementEventsWithTypes:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withError:(id *)a6;
-- (id)fetchSuggestionEngagementLightEventsWithTypes:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withError:(id *)a6;
-- (id)getBMBundleSumaryForBundle:(id)a3;
-- (id)getEngagementBundleSumarySetForBundles:(id)a3;
++ (id)appEntryEventToString:(id)string;
++ (id)suggestionEventToLabel:(unint64_t)label;
++ (unint64_t)appEntryEventToEnum:(id)enum;
++ (unint64_t)clientEventToEnum:(id)enum;
++ (unint64_t)getEngagmentTypeForEvent:(id)event;
++ (unint64_t)suggestionEventToEnum:(id)enum;
+- (BOOL)streamEngagementEventsFromSource:(id)source storedBookmarks:(id)bookmarks error:(id *)error updatedBookmark:(id *)bookmark processEvent:(id)event;
+- (MOEngagementHistoryManager)initWithUniverse:(id)universe;
+- (id)_convertStringArrayIntoCombinedHashedString:(id)string;
+- (id)convertBookmark:(id)bookmark;
+- (id)engagementLightFromEngagement:(id)engagement fromDevice:(id)device;
+- (id)fetchAppEntryEngagementEventsFromAllDevicesWithTypes:(id)types fromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error;
+- (id)fetchAppEntryEngagementEventsFromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error;
+- (id)fetchAppEntryEngagementEventsWithTypes:(id)types fromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error;
+- (id)fetchAppEntryEngagementLightEventsWithTypes:(id)types fromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error;
+- (id)fetchSuggestionEngagementEventsFromAllDevicesWithTypes:(id)types fromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error;
+- (id)fetchSuggestionEngagementEventsFromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error;
+- (id)fetchSuggestionEngagementEventsWithTypes:(id)types fromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error;
+- (id)fetchSuggestionEngagementLightEventsWithTypes:(id)types fromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error;
+- (id)getBMBundleSumaryForBundle:(id)bundle;
+- (id)getEngagementBundleSumarySetForBundles:(id)bundles;
 - (id)getEngagementStreamAsJson;
-- (id)getEvergreenCountForSuggestionsSelectedOnlyFromStartDate:(id)a3 toEndDate:(id)a4;
-- (id)getEvergreenTypeCountForAppEntryEvent:(id)a3 withMinAddedCharacterCount:(int64_t)a4 andMaxAddedCharacterCount:(int64_t)a5 fromStartDate:(id)a6 toEndDate:(id)a7 onceForEachBundle:(BOOL)a8 skipForEvents:(id)a9;
-- (id)getEvergreenTypeCountForAppEntryEvent:(id)a3 withMinimumAddedCharacters:(int64_t)a4;
-- (id)getEvergreenTypeCountForSuggestionEngagmentEvent:(id)a3;
-- (id)getEvergreenTypeCountForSuggestionEngagmentEvent:(id)a3 from:(id)a4 to:(id)a5 onceForEachBundle:(BOOL)a6 skipForEvents:(id)a7;
-- (id)getEvergreenTypeCountForSuggestionsQuickAddEntryFromStartDate:(id)a3 toEndDate:(id)a4;
-- (id)getEvergreenTypeCountForSuggestionsWithJournalCreatedButNoWritingFromStartDate:(id)a3 toEndDate:(id)a4;
-- (id)getEvergreenTypeCountForSuggestionsWithJournalCreatedFromStartDate:(id)a3 toEndDate:(id)a4 withMinimumAddedCharacters:(int64_t)a5;
-- (id)getInterfaceTypeCountForAppEntryEvent:(id)a3 withMinAddedCharacterCount:(int64_t)a4 andMaxAddedCharacterCount:(int64_t)a5 fromStartDate:(id)a6 toEndDate:(id)a7 onceForEachBundle:(BOOL)a8 skipForEvents:(id)a9;
-- (id)getInterfaceTypeCountForAppEntryEvent:(id)a3 withMinimumAddedCharacters:(int64_t)a4;
-- (id)getInterfaceTypeCountForSuggestionEngagmentEvent:(id)a3;
-- (id)getInterfaceTypeCountForSuggestionEngagmentEvent:(id)a3 from:(id)a4 to:(id)a5 onceForEachBundle:(BOOL)a6 skipForEvents:(id)a7;
-- (id)getInterfaceTypeCountForUniqueSuggestionsQuickAddEntryFromStartDate:(id)a3 toEndDate:(id)a4;
-- (id)getInterfaceTypeCountForUniqueSuggestionsSelectedOnlyFromStartDate:(id)a3 toEndDate:(id)a4;
-- (id)getInterfaceTypeCountForUniqueSuggestionsViewedButNotEngagedFromStartDate:(id)a3 toEndDate:(id)a4;
-- (id)getInterfaceTypeCountForUniqueSuggestionsWithJournalCreatedButNoWritingFromStartDate:(id)a3 toEndDate:(id)a4;
-- (id)getInterfaceTypeCountForUniqueSuggestionsWithJournalCreatedFromStartDate:(id)a3 toEndDate:(id)a4 withMinimumAddedCharacters:(int64_t)a5;
-- (id)getPriorBookmarkWithDeviceID:(id)a3 storedBookmarks:(id)a4;
-- (id)getStoreBookmarksForDeviceIDs:(id)a3;
-- (id)momentsEngagmentDataFromLocalDeviceWithError:(id *)a3;
-- (id)momentsEngagmentLightDataFromLocalDeviceWithError:(id *)a3;
-- (id)updatedBookmarkWithNewBookMark:(id)a3 deviceID:(id)a4;
-- (unint64_t)determineAddedCharacterBinRange:(int64_t)a3;
-- (void)didAppEntryEventPosted:(unint64_t)a3 withBundles:(id)a4 timestamp:(id)a5 duringInterval:(id)a6 withInfo:(id)a7 withTrialExperimentIDs:(id)a8 withOnboardingStatus:(id)a9;
-- (void)didEngagementEventPosted:(id)a3 withBundles:(id)a4 timestamp:(id)a5 withContext:(id)a6 withTrialExperimentIDs:(id)a7 withOnboardingStatus:(id)a8;
-- (void)eventBundleStore:(id)a3 needsEngagementInfoForBundles:(id)a4;
-- (void)submitAppEntryEngagementEventAnalyticsFor:(id)a3 appEntryEngagementType:(unint64_t)a4 timestamp:(id)a5 withEntryInfo:(id)a6 onboardingStatus:(id)a7 andTrialExperimentIDs:(id)a8;
-- (void)submitSuggestionEngagementEventAnalyticsFor:(id)a3 suggestionEngagementType:(unint64_t)a4 timestamp:(id)a5 withContext:(id)a6 onboardingStatus:(id)a7 AndTrialExperimentIDs:(id)a8;
-- (void)updateBundle:(id)a3 forAppEntryEvent:(id)a4;
-- (void)updateBundle:(id)a3 forSuggestionEvent:(id)a4 withSummary:(id)a5;
-- (void)updateEngagementLightStreamWithRefreshVariant:(unint64_t)a3 handler:(id)a4;
-- (void)writeEngagementLightDataBasedEngagementData:(id)a3 fromDevice:(id)a4;
-- (void)writeEngagementLightStreamForDevice:(id)a3 storedBookmarks:(id)a4 handler:(id)a5;
-- (void)writeEngagementLightStreamForDevices:(id)a3 storedBookmarks:(id)a4 completionHandler:(id)a5;
-- (void)writeEngagementLightStreamForLocalDevicesWithHandler:(id)a3;
-- (void)writeEngagementLightStreamForRemoteDevicesWithHandler:(id)a3;
+- (id)getEvergreenCountForSuggestionsSelectedOnlyFromStartDate:(id)date toEndDate:(id)endDate;
+- (id)getEvergreenTypeCountForAppEntryEvent:(id)event withMinAddedCharacterCount:(int64_t)count andMaxAddedCharacterCount:(int64_t)characterCount fromStartDate:(id)date toEndDate:(id)endDate onceForEachBundle:(BOOL)bundle skipForEvents:(id)events;
+- (id)getEvergreenTypeCountForAppEntryEvent:(id)event withMinimumAddedCharacters:(int64_t)characters;
+- (id)getEvergreenTypeCountForSuggestionEngagmentEvent:(id)event;
+- (id)getEvergreenTypeCountForSuggestionEngagmentEvent:(id)event from:(id)from to:(id)to onceForEachBundle:(BOOL)bundle skipForEvents:(id)events;
+- (id)getEvergreenTypeCountForSuggestionsQuickAddEntryFromStartDate:(id)date toEndDate:(id)endDate;
+- (id)getEvergreenTypeCountForSuggestionsWithJournalCreatedButNoWritingFromStartDate:(id)date toEndDate:(id)endDate;
+- (id)getEvergreenTypeCountForSuggestionsWithJournalCreatedFromStartDate:(id)date toEndDate:(id)endDate withMinimumAddedCharacters:(int64_t)characters;
+- (id)getInterfaceTypeCountForAppEntryEvent:(id)event withMinAddedCharacterCount:(int64_t)count andMaxAddedCharacterCount:(int64_t)characterCount fromStartDate:(id)date toEndDate:(id)endDate onceForEachBundle:(BOOL)bundle skipForEvents:(id)events;
+- (id)getInterfaceTypeCountForAppEntryEvent:(id)event withMinimumAddedCharacters:(int64_t)characters;
+- (id)getInterfaceTypeCountForSuggestionEngagmentEvent:(id)event;
+- (id)getInterfaceTypeCountForSuggestionEngagmentEvent:(id)event from:(id)from to:(id)to onceForEachBundle:(BOOL)bundle skipForEvents:(id)events;
+- (id)getInterfaceTypeCountForUniqueSuggestionsQuickAddEntryFromStartDate:(id)date toEndDate:(id)endDate;
+- (id)getInterfaceTypeCountForUniqueSuggestionsSelectedOnlyFromStartDate:(id)date toEndDate:(id)endDate;
+- (id)getInterfaceTypeCountForUniqueSuggestionsViewedButNotEngagedFromStartDate:(id)date toEndDate:(id)endDate;
+- (id)getInterfaceTypeCountForUniqueSuggestionsWithJournalCreatedButNoWritingFromStartDate:(id)date toEndDate:(id)endDate;
+- (id)getInterfaceTypeCountForUniqueSuggestionsWithJournalCreatedFromStartDate:(id)date toEndDate:(id)endDate withMinimumAddedCharacters:(int64_t)characters;
+- (id)getPriorBookmarkWithDeviceID:(id)d storedBookmarks:(id)bookmarks;
+- (id)getStoreBookmarksForDeviceIDs:(id)ds;
+- (id)momentsEngagmentDataFromLocalDeviceWithError:(id *)error;
+- (id)momentsEngagmentLightDataFromLocalDeviceWithError:(id *)error;
+- (id)updatedBookmarkWithNewBookMark:(id)mark deviceID:(id)d;
+- (unint64_t)determineAddedCharacterBinRange:(int64_t)range;
+- (void)didAppEntryEventPosted:(unint64_t)posted withBundles:(id)bundles timestamp:(id)timestamp duringInterval:(id)interval withInfo:(id)info withTrialExperimentIDs:(id)ds withOnboardingStatus:(id)status;
+- (void)didEngagementEventPosted:(id)posted withBundles:(id)bundles timestamp:(id)timestamp withContext:(id)context withTrialExperimentIDs:(id)ds withOnboardingStatus:(id)status;
+- (void)eventBundleStore:(id)store needsEngagementInfoForBundles:(id)bundles;
+- (void)submitAppEntryEngagementEventAnalyticsFor:(id)for appEntryEngagementType:(unint64_t)type timestamp:(id)timestamp withEntryInfo:(id)info onboardingStatus:(id)status andTrialExperimentIDs:(id)ds;
+- (void)submitSuggestionEngagementEventAnalyticsFor:(id)for suggestionEngagementType:(unint64_t)type timestamp:(id)timestamp withContext:(id)context onboardingStatus:(id)status AndTrialExperimentIDs:(id)ds;
+- (void)updateBundle:(id)bundle forAppEntryEvent:(id)event;
+- (void)updateBundle:(id)bundle forSuggestionEvent:(id)event withSummary:(id)summary;
+- (void)updateEngagementLightStreamWithRefreshVariant:(unint64_t)variant handler:(id)handler;
+- (void)writeEngagementLightDataBasedEngagementData:(id)data fromDevice:(id)device;
+- (void)writeEngagementLightStreamForDevice:(id)device storedBookmarks:(id)bookmarks handler:(id)handler;
+- (void)writeEngagementLightStreamForDevices:(id)devices storedBookmarks:(id)bookmarks completionHandler:(id)handler;
+- (void)writeEngagementLightStreamForLocalDevicesWithHandler:(id)handler;
+- (void)writeEngagementLightStreamForRemoteDevicesWithHandler:(id)handler;
 @end
 
 @implementation MOEngagementHistoryManager
 
-- (MOEngagementHistoryManager)initWithUniverse:(id)a3
+- (MOEngagementHistoryManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 getService:v7];
+  v8 = [universeCopy getService:v7];
 
   if (v8)
   {
@@ -76,12 +76,12 @@
     if (v9)
     {
       v10 = BiomeLibrary();
-      v11 = [v10 Moments];
-      v12 = [v11 Events];
-      v13 = [v12 Engagement];
+      moments = [v10 Moments];
+      events = [moments Events];
+      engagement = [events Engagement];
 
       v64 = 0;
-      v14 = [v13 remoteDevicesWithError:&v64];
+      v14 = [engagement remoteDevicesWithError:&v64];
       v15 = v64;
       v16 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
       v17 = v16;
@@ -108,11 +108,11 @@
 
         v23 = +[NSDate distantPast];
         [v23 timeIntervalSinceReferenceDate];
-        mergedStreamPublisher = [v13 publishersForDevices:v14 withUseCase:@"Moments" startTime:1 includeLocal:&__block_literal_global_47 pipeline:?];
+        mergedStreamPublisher = [engagement publishersForDevices:v14 withUseCase:@"Moments" startTime:1 includeLocal:&__block_literal_global_47 pipeline:?];
 
-        v24 = [mergedStreamPublisher merge];
+        merge = [mergedStreamPublisher merge];
         v25 = v9->_mergedStreamPublisher;
-        v9->_mergedStreamPublisher = v24;
+        v9->_mergedStreamPublisher = merge;
 
         v26 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -123,36 +123,36 @@
       }
 
       v27 = BiomeLibrary();
-      v28 = [v27 Moments];
-      v29 = [v28 Events];
-      v30 = [v29 Engagement];
-      v31 = [v30 source];
+      moments2 = [v27 Moments];
+      events2 = [moments2 Events];
+      engagement2 = [events2 Engagement];
+      source = [engagement2 source];
       stream_source = v9->_stream_source;
-      v9->_stream_source = v31;
+      v9->_stream_source = source;
 
       v33 = BiomeLibrary();
-      v34 = [v33 Moments];
-      v35 = [v34 Events];
-      v36 = [v35 EngagementLight];
-      v37 = [v36 source];
+      moments3 = [v33 Moments];
+      events3 = [moments3 Events];
+      engagementLight = [events3 EngagementLight];
+      source2 = [engagementLight source];
       stream_source_light = v9->_stream_source_light;
-      v9->_stream_source_light = v37;
+      v9->_stream_source_light = source2;
 
       v39 = BiomeLibrary();
-      v40 = [v39 Moments];
-      v41 = [v40 Events];
-      v42 = [v41 Engagement];
-      v43 = [v42 publisher];
+      moments4 = [v39 Moments];
+      events4 = [moments4 Events];
+      engagement3 = [events4 Engagement];
+      publisher = [engagement3 publisher];
       stream_publisher = v9->_stream_publisher;
-      v9->_stream_publisher = v43;
+      v9->_stream_publisher = publisher;
 
       v45 = BiomeLibrary();
-      v46 = [v45 Moments];
-      v47 = [v46 Events];
-      v48 = [v47 EngagementLight];
-      v49 = [v48 publisher];
+      moments5 = [v45 Moments];
+      events5 = [moments5 Events];
+      engagementLight2 = [events5 EngagementLight];
+      publisher2 = [engagementLight2 publisher];
       stream_publisher_light = v9->_stream_publisher_light;
-      v9->_stream_publisher_light = v49;
+      v9->_stream_publisher_light = publisher2;
 
       v9->_isInternalBuild = +[MOPlatformInfo isInternalBuild];
       suggestionEngagementTypesEligibleForRawExternalAnalytics = v9->_suggestionEngagementTypesEligibleForRawExternalAnalytics;
@@ -160,13 +160,13 @@
 
       v52 = objc_opt_class();
       v53 = NSStringFromClass(v52);
-      v54 = [v5 getService:v53];
+      v54 = [universeCopy getService:v53];
       bookmarkStore = v9->_bookmarkStore;
       v9->_bookmarkStore = v54;
 
       v56 = objc_opt_class();
       v57 = NSStringFromClass(v56);
-      v58 = [v5 getService:v57];
+      v58 = [universeCopy getService:v57];
       configurationManager = v9->_configurationManager;
       v9->_configurationManager = v58;
 
@@ -179,7 +179,7 @@
     }
 
     self = v9;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
@@ -193,33 +193,33 @@
     v20 = +[NSAssertionHandler currentHandler];
     [v20 handleFailureInMethod:a2 object:self file:@"MOEngagementHistoryManager.m" lineNumber:77 description:@"Invalid parameter not satisfying: bundleStore"];
 
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-+ (unint64_t)suggestionEventToEnum:(id)a3
++ (unint64_t)suggestionEventToEnum:(id)enum
 {
-  v3 = a3;
+  enumCopy = enum;
   if (suggestionEventToEnum__onceToken != -1)
   {
     +[MOEngagementHistoryManager suggestionEventToEnum:];
   }
 
-  v4 = [suggestionEventToEnum__eventMapping objectForKeyedSubscript:v3];
+  v4 = [suggestionEventToEnum__eventMapping objectForKeyedSubscript:enumCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntValue];
+    unsignedIntValue = [v4 unsignedIntValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v6;
+  return unsignedIntValue;
 }
 
 void __52__MOEngagementHistoryManager_suggestionEventToEnum___block_invoke(id a1)
@@ -301,7 +301,7 @@ void __52__MOEngagementHistoryManager_suggestionEventToEnum___block_invoke(id a1
   suggestionEventToEnum__eventMapping = v11;
 }
 
-+ (id)suggestionEventToLabel:(unint64_t)a3
++ (id)suggestionEventToLabel:(unint64_t)label
 {
   if (suggestionEventToLabel__onceToken != -1)
   {
@@ -309,7 +309,7 @@ void __52__MOEngagementHistoryManager_suggestionEventToEnum___block_invoke(id a1
   }
 
   v4 = suggestionEventToLabel__eventMapping;
-  v5 = [NSNumber numberWithUnsignedInt:a3];
+  v5 = [NSNumber numberWithUnsignedInt:label];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (!v6)
@@ -399,27 +399,27 @@ void __53__MOEngagementHistoryManager_suggestionEventToLabel___block_invoke(id a
   suggestionEventToLabel__eventMapping = v11;
 }
 
-+ (unint64_t)appEntryEventToEnum:(id)a3
++ (unint64_t)appEntryEventToEnum:(id)enum
 {
-  v3 = a3;
+  enumCopy = enum;
   if (appEntryEventToEnum__onceToken != -1)
   {
     +[MOEngagementHistoryManager appEntryEventToEnum:];
   }
 
-  v4 = [appEntryEventToEnum__eventMapping objectForKeyedSubscript:v3];
+  v4 = [appEntryEventToEnum__eventMapping objectForKeyedSubscript:enumCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntValue];
+    unsignedIntValue = [v4 unsignedIntValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v6;
+  return unsignedIntValue;
 }
 
 void __50__MOEngagementHistoryManager_appEntryEventToEnum___block_invoke(id a1)
@@ -444,30 +444,30 @@ void __50__MOEngagementHistoryManager_appEntryEventToEnum___block_invoke(id a1)
   appEntryEventToEnum__eventMapping = v6;
 }
 
-+ (id)appEntryEventToString:(id)a3
++ (id)appEntryEventToString:(id)string
 {
-  v3 = a3;
-  if (@"appUnknown" == v3)
+  stringCopy = string;
+  if (@"appUnknown" == stringCopy)
   {
     v4 = @"unknown";
   }
 
-  else if (@"appEntryCreated" == v3)
+  else if (@"appEntryCreated" == stringCopy)
   {
     v4 = @"entryCreated";
   }
 
-  else if (@"appEntryEdited" == v3)
+  else if (@"appEntryEdited" == stringCopy)
   {
     v4 = @"entryEdited";
   }
 
-  else if (@"appEntryDeleted" == v3)
+  else if (@"appEntryDeleted" == stringCopy)
   {
     v4 = @"entryDeleted";
   }
 
-  else if (@"appEntryCancelled" == v3)
+  else if (@"appEntryCancelled" == stringCopy)
   {
     v4 = @"entryCancelled";
   }
@@ -480,27 +480,27 @@ void __50__MOEngagementHistoryManager_appEntryEventToEnum___block_invoke(id a1)
   return v4;
 }
 
-+ (unint64_t)clientEventToEnum:(id)a3
++ (unint64_t)clientEventToEnum:(id)enum
 {
-  v3 = a3;
+  enumCopy = enum;
   if (clientEventToEnum__onceToken != -1)
   {
     +[MOEngagementHistoryManager clientEventToEnum:];
   }
 
-  v4 = [clientEventToEnum__eventMapping objectForKeyedSubscript:v3];
+  v4 = [clientEventToEnum__eventMapping objectForKeyedSubscript:enumCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntValue];
+    unsignedIntValue = [v4 unsignedIntValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v6;
+  return unsignedIntValue;
 }
 
 void __48__MOEngagementHistoryManager_clientEventToEnum___block_invoke(id a1)
@@ -525,20 +525,20 @@ void __48__MOEngagementHistoryManager_clientEventToEnum___block_invoke(id a1)
   clientEventToEnum__eventMapping = v6;
 }
 
-+ (unint64_t)getEngagmentTypeForEvent:(id)a3
++ (unint64_t)getEngagmentTypeForEvent:(id)event
 {
-  v3 = a3;
-  if ([MOEngagementHistoryManager suggestionEventToEnum:v3])
+  eventCopy = event;
+  if ([MOEngagementHistoryManager suggestionEventToEnum:eventCopy])
   {
     v4 = 1;
   }
 
-  else if ([MOEngagementHistoryManager appEntryEventToEnum:v3])
+  else if ([MOEngagementHistoryManager appEntryEventToEnum:eventCopy])
   {
     v4 = 2;
   }
 
-  else if ([MOEngagementHistoryManager clientEventToEnum:v3])
+  else if ([MOEngagementHistoryManager clientEventToEnum:eventCopy])
   {
     v4 = 3;
   }
@@ -551,21 +551,21 @@ void __48__MOEngagementHistoryManager_clientEventToEnum___block_invoke(id a1)
   return v4;
 }
 
-- (unint64_t)determineAddedCharacterBinRange:(int64_t)a3
+- (unint64_t)determineAddedCharacterBinRange:(int64_t)range
 {
   v3 = 1;
   v4 = 2;
-  if ((a3 - 201) >= 0x190)
+  if ((range - 201) >= 0x190)
   {
     v4 = 3;
   }
 
-  if (a3 >= 0xC9)
+  if (range >= 0xC9)
   {
     v3 = v4;
   }
 
-  if (a3)
+  if (range)
   {
     return v3;
   }
@@ -576,15 +576,15 @@ void __48__MOEngagementHistoryManager_clientEventToEnum___block_invoke(id a1)
   }
 }
 
-- (id)getEngagementBundleSumarySetForBundles:(id)a3
+- (id)getEngagementBundleSumarySetForBundles:(id)bundles
 {
-  v4 = a3;
+  bundlesCopy = bundles;
   v5 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = bundlesCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -615,35 +615,35 @@ void __48__MOEngagementHistoryManager_clientEventToEnum___block_invoke(id a1)
   return v5;
 }
 
-- (id)getBMBundleSumaryForBundle:(id)a3
+- (id)getBMBundleSumaryForBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  if (v5)
+  bundleCopy = bundle;
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v6 = v5;
-    v7 = [v4 suggestionID];
+    v6 = bundleIdentifier;
+    suggestionID = [bundleCopy suggestionID];
 
-    if (v7)
+    if (suggestionID)
     {
       v8 = [BMMomentsEngagementSuggestionIdentifier alloc];
-      v9 = [v4 bundleIdentifier];
-      v10 = [v9 UUIDString];
-      v11 = [v4 suggestionID];
-      v12 = [v11 UUIDString];
-      v51 = [v8 initWithBundleId:v10 suggestionId:v12];
+      bundleIdentifier2 = [bundleCopy bundleIdentifier];
+      uUIDString = [bundleIdentifier2 UUIDString];
+      suggestionID2 = [bundleCopy suggestionID];
+      uUIDString2 = [suggestionID2 UUIDString];
+      v51 = [v8 initWithBundleId:uUIDString suggestionId:uUIDString2];
 
-      v13 = [v4 rankingDictionary];
+      rankingDictionary = [bundleCopy rankingDictionary];
 
-      if (v13)
+      if (rankingDictionary)
       {
-        v14 = [v4 rankingDictionary];
-        v15 = [v14 objectForKeyedSubscript:@"rankingScore"];
+        rankingDictionary2 = [bundleCopy rankingDictionary];
+        v15 = [rankingDictionary2 objectForKeyedSubscript:@"rankingScore"];
 
         if (v15)
         {
-          v16 = [v4 rankingDictionary];
-          v49 = [v16 objectForKeyedSubscript:@"rankingScore"];
+          rankingDictionary3 = [bundleCopy rankingDictionary];
+          v49 = [rankingDictionary3 objectForKeyedSubscript:@"rankingScore"];
         }
 
         else
@@ -651,13 +651,13 @@ void __48__MOEngagementHistoryManager_clientEventToEnum___block_invoke(id a1)
           v49 = 0;
         }
 
-        v19 = [v4 rankingDictionary];
-        v20 = [v19 objectForKeyedSubscript:@"bundleGoodnessScore"];
+        rankingDictionary4 = [bundleCopy rankingDictionary];
+        v20 = [rankingDictionary4 objectForKeyedSubscript:@"bundleGoodnessScore"];
 
         if (v20)
         {
-          v21 = [v4 rankingDictionary];
-          v50 = [v21 objectForKeyedSubscript:@"bundleGoodnessScore"];
+          rankingDictionary5 = [bundleCopy rankingDictionary];
+          v50 = [rankingDictionary5 objectForKeyedSubscript:@"bundleGoodnessScore"];
         }
 
         else
@@ -665,13 +665,13 @@ void __48__MOEngagementHistoryManager_clientEventToEnum___block_invoke(id a1)
           v50 = 0;
         }
 
-        v22 = [v4 rankingDictionary];
-        v23 = [v22 objectForKeyedSubscript:@"ordinalRankInRecommendedTab"];
+        rankingDictionary6 = [bundleCopy rankingDictionary];
+        v23 = [rankingDictionary6 objectForKeyedSubscript:@"ordinalRankInRecommendedTab"];
 
         if (v23)
         {
-          v24 = [v4 rankingDictionary];
-          v48 = [v24 objectForKeyedSubscript:@"ordinalRankInRecommendedTab"];
+          rankingDictionary7 = [bundleCopy rankingDictionary];
+          v48 = [rankingDictionary7 objectForKeyedSubscript:@"ordinalRankInRecommendedTab"];
         }
 
         else
@@ -679,14 +679,14 @@ void __48__MOEngagementHistoryManager_clientEventToEnum___block_invoke(id a1)
           v48 = 0;
         }
 
-        v25 = [v4 rankingDictionary];
-        v26 = [v25 objectForKeyedSubscript:@"visibilityCategoryForUI"];
+        rankingDictionary8 = [bundleCopy rankingDictionary];
+        v26 = [rankingDictionary8 objectForKeyedSubscript:@"visibilityCategoryForUI"];
 
         if (v26)
         {
-          v27 = [v4 rankingDictionary];
-          v28 = [v27 objectForKeyedSubscript:@"visibilityCategoryForUI"];
-          v29 = [v28 intValue];
+          rankingDictionary9 = [bundleCopy rankingDictionary];
+          v28 = [rankingDictionary9 objectForKeyedSubscript:@"visibilityCategoryForUI"];
+          intValue = [v28 intValue];
 
           goto LABEL_20;
         }
@@ -699,35 +699,35 @@ void __48__MOEngagementHistoryManager_clientEventToEnum___block_invoke(id a1)
         v48 = 0;
       }
 
-      v29 = 0;
+      intValue = 0;
 LABEL_20:
-      v47 = [v4 getBundleType];
-      if ([v4 interfaceType] == 11 && (objc_msgSend(v4, "resources"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "count"), v30, v31))
+      getBundleType = [bundleCopy getBundleType];
+      if ([bundleCopy interfaceType] == 11 && (objc_msgSend(bundleCopy, "resources"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "count"), v30, v31))
       {
-        v32 = [v4 resources];
-        [v32 objectAtIndexedSubscript:0];
-        v34 = v33 = v29;
-        v46 = [v34 name];
+        resources = [bundleCopy resources];
+        [resources objectAtIndexedSubscript:0];
+        v34 = v33 = intValue;
+        name = [v34 name];
 
-        v29 = v33;
+        intValue = v33;
       }
 
       else
       {
-        v46 = 0;
+        name = 0;
       }
 
       v45 = [BMMomentsEngagementBundleSummary alloc];
-      v35 = [v4 startDate];
-      v36 = [v4 endDate];
-      v37 = [v4 interfaceType];
-      v38 = [(MOEngagementHistoryManager *)self getPhotoAssetsForBundle:v4];
-      v39 = self;
-      v40 = [v4 bundleSubType];
-      v41 = [v4 bundleSuperType];
-      v42 = [(MOEngagementHistoryManager *)v39 getSuggestionAssetsForBundle:v4];
-      LODWORD(v44) = v29;
-      v18 = [v45 initWithIdentifier:v51 startDate:v35 endDate:v36 interfaceType:v37 rankingScore:v49 attachedPhotoAssets:v38 bundleInterfaceType:v47 bundleEvergreenType:v46 bundleSubType:__PAIR64__(v41 bundleSuperType:v40) bundleGoodnessScore:v50 ordinalRankInRecommendedTab:v48 visibilityCategoryForUI:v44 assets:v42];
+      startDate = [bundleCopy startDate];
+      endDate = [bundleCopy endDate];
+      interfaceType = [bundleCopy interfaceType];
+      v38 = [(MOEngagementHistoryManager *)self getPhotoAssetsForBundle:bundleCopy];
+      selfCopy = self;
+      bundleSubType = [bundleCopy bundleSubType];
+      bundleSuperType = [bundleCopy bundleSuperType];
+      v42 = [(MOEngagementHistoryManager *)selfCopy getSuggestionAssetsForBundle:bundleCopy];
+      LODWORD(v44) = intValue;
+      v18 = [v45 initWithIdentifier:v51 startDate:startDate endDate:endDate interfaceType:interfaceType rankingScore:v49 attachedPhotoAssets:v38 bundleInterfaceType:getBundleType bundleEvergreenType:name bundleSubType:__PAIR64__(bundleSuperType bundleSuperType:bundleSubType) bundleGoodnessScore:v50 ordinalRankInRecommendedTab:v48 visibilityCategoryForUI:v44 assets:v42];
 
       goto LABEL_25;
     }
@@ -745,27 +745,27 @@ LABEL_25:
   return v18;
 }
 
-- (void)didEngagementEventPosted:(id)a3 withBundles:(id)a4 timestamp:(id)a5 withContext:(id)a6 withTrialExperimentIDs:(id)a7 withOnboardingStatus:(id)a8
+- (void)didEngagementEventPosted:(id)posted withBundles:(id)bundles timestamp:(id)timestamp withContext:(id)context withTrialExperimentIDs:(id)ds withOnboardingStatus:(id)status
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [v17 objectForKeyedSubscript:@"clientIdentifier"];
+  postedCopy = posted;
+  bundlesCopy = bundles;
+  timestampCopy = timestamp;
+  contextCopy = context;
+  dsCopy = ds;
+  statusCopy = status;
+  v20 = [contextCopy objectForKeyedSubscript:@"clientIdentifier"];
   if (v20)
   {
-    v21 = [(MOEngagementHistoryManager *)self getEngagementBundleSumarySetForBundles:v15];
-    v91 = v18;
-    v101 = v19;
+    v21 = [(MOEngagementHistoryManager *)self getEngagementBundleSumarySetForBundles:bundlesCopy];
+    v91 = dsCopy;
+    v101 = statusCopy;
     v87 = v20;
     if ([v20 isEqualToString:@"com.apple.momentsd.MOUserNotifications"])
     {
       v22 = [BMMomentsEngagementNotificationInfo alloc];
-      v23 = [v17 objectForKeyedSubscript:@"postingDate"];
-      v24 = [v17 objectForKeyedSubscript:@"numSuggestionInNotification"];
-      v89 = [v22 initWithNotificationEventTimestamp:v16 notificationPostingTimestamp:v23 notificationSuggestionCount:v24];
+      v23 = [contextCopy objectForKeyedSubscript:@"postingDate"];
+      v24 = [contextCopy objectForKeyedSubscript:@"numSuggestionInNotification"];
+      v89 = [v22 initWithNotificationEventTimestamp:timestampCopy notificationPostingTimestamp:v23 notificationSuggestionCount:v24];
     }
 
     else
@@ -773,20 +773,20 @@ LABEL_25:
       v89 = 0;
     }
 
-    v26 = [MOEngagementHistoryManager getEngagmentTypeForEvent:v14];
-    v93 = v14;
-    v94 = v17;
-    v90 = self;
-    v88 = v15;
-    v92 = v16;
+    v26 = [MOEngagementHistoryManager getEngagmentTypeForEvent:postedCopy];
+    v93 = postedCopy;
+    v94 = contextCopy;
+    selfCopy = self;
+    v88 = bundlesCopy;
+    v92 = timestampCopy;
     v86 = v21;
     switch(v26)
     {
       case 3uLL:
         v56 = [BMMomentsEngagementClientActivityEvent alloc];
-        v57 = [MOEngagementHistoryManager clientEventToEnum:v14];
-        v58 = [v17 objectForKeyedSubscript:@"clientIdentifier"];
-        v34 = [v56 initWithType:v57 clientIdentifier:v58 timestamp:v16];
+        v57 = [MOEngagementHistoryManager clientEventToEnum:postedCopy];
+        v58 = [contextCopy objectForKeyedSubscript:@"clientIdentifier"];
+        v34 = [v56 initWithType:v57 clientIdentifier:v58 timestamp:timestampCopy];
 
         break;
       case 2uLL:
@@ -813,28 +813,28 @@ LABEL_25:
               }
 
               v44 = *(*(&v102 + 1) + 8 * i);
-              v45 = [v44 identifier];
+              identifier = [v44 identifier];
 
-              if (v45)
+              if (identifier)
               {
-                v46 = [v44 identifier];
-                [v36 addObject:v46];
+                identifier2 = [v44 identifier];
+                [v36 addObject:identifier2];
               }
 
-              v47 = [v44 bundleInterfaceType];
+              bundleInterfaceType = [v44 bundleInterfaceType];
 
-              if (v47)
+              if (bundleInterfaceType)
               {
-                v48 = [v44 bundleInterfaceType];
-                [v37 addObject:v48];
+                bundleInterfaceType2 = [v44 bundleInterfaceType];
+                [v37 addObject:bundleInterfaceType2];
               }
 
-              v49 = [v44 bundleEvergreenType];
+              bundleEvergreenType = [v44 bundleEvergreenType];
 
-              if (v49)
+              if (bundleEvergreenType)
               {
-                v50 = [v44 bundleEvergreenType];
-                [v38 addObject:v50];
+                bundleEvergreenType2 = [v44 bundleEvergreenType];
+                [v38 addObject:bundleEvergreenType2];
               }
             }
 
@@ -884,16 +884,16 @@ LABEL_25:
         v34 = 0;
         goto LABEL_35;
       case 1uLL:
-        v27 = [MOEngagementHistoryManager suggestionEventToEnum:v14];
+        v27 = [MOEngagementHistoryManager suggestionEventToEnum:postedCopy];
         v28 = [BMMomentsEngagementSuggestionEvent alloc];
-        v29 = [v17 objectForKeyedSubscript:@"clientIdentifier"];
-        [v17 objectForKeyedSubscript:@"viewContainerName"];
+        v29 = [contextCopy objectForKeyedSubscript:@"clientIdentifier"];
+        [contextCopy objectForKeyedSubscript:@"viewContainerName"];
         v31 = v30 = v21;
-        v32 = [v17 objectForKeyedSubscript:@"viewVisibleTime"];
-        v97 = [v28 initWithType:v27 timestamp:v16 fullBundleOrderedSet:v30 clientIdentifier:v29 viewContainerName:v31 viewVisibleTime:v32 suggestionType:0 viewVisibleSuggestionsCount:0 viewTotalSuggestionsCount:0 notificationInfo:v89];
+        v32 = [contextCopy objectForKeyedSubscript:@"viewVisibleTime"];
+        v97 = [v28 initWithType:v27 timestamp:timestampCopy fullBundleOrderedSet:v30 clientIdentifier:v29 viewContainerName:v31 viewVisibleTime:v32 suggestionType:0 viewVisibleSuggestionsCount:0 viewTotalSuggestionsCount:0 notificationInfo:v89];
 
         v33 = v101;
-        [(MOEngagementHistoryManager *)v90 submitSuggestionEngagementEventAnalyticsFor:v15 suggestionEngagementType:v27 timestamp:v16 withContext:v17 onboardingStatus:v101 AndTrialExperimentIDs:v91];
+        [(MOEngagementHistoryManager *)selfCopy submitSuggestionEngagementEventAnalyticsFor:bundlesCopy suggestionEngagementType:v27 timestamp:timestampCopy withContext:contextCopy onboardingStatus:v101 AndTrialExperimentIDs:v91];
         v34 = 0;
         v35 = 0;
 LABEL_36:
@@ -927,22 +927,22 @@ LABEL_36:
         v72 = [v33 objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
         v85 = [v82 initWithSuggestionEvent:v97 entryEvent:v100 clientActivityEvent:v96 onboardingFlowCompletionState:v84 isJournalAppInstalled:v80 isJournalAppLocked:v78 isJournalSuggestionSkipped:v76 isActivitySettingsSwitchEnabled:v65 isCommunicationSettingsSwitchEnabled:v75 isSignificantLocationSettingsSwitchEnabled:v66 isMediaSettingsSwitchEnabled:v67 isNearbyPeopleSettingsSwitchEnabled:v68 isPhotoSettingsSwitchEnabled:v69 isStateOfMindSettingsSwitchEnabled:v70 isReflectionSettingsSwitchEnabled:v71 isBroadSystemLocationSettingsSwitchEnabled:v72];
 
-        v73 = [(MOEngagementHistoryManager *)v90 stream_source];
-        [v73 sendEvent:v85];
+        stream_source = [(MOEngagementHistoryManager *)selfCopy stream_source];
+        [stream_source sendEvent:v85];
 
         v74 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
-        v14 = v93;
+        postedCopy = v93;
         if (os_log_type_enabled(v74, OS_LOG_TYPE_DEBUG))
         {
           [MOEngagementHistoryManager didEngagementEventPosted:withBundles:timestamp:withContext:withTrialExperimentIDs:withOnboardingStatus:];
         }
 
         v20 = v87;
-        v15 = v88;
-        v18 = v91;
-        v16 = v92;
-        v17 = v94;
-        v19 = v101;
+        bundlesCopy = v88;
+        dsCopy = v91;
+        timestampCopy = v92;
+        contextCopy = v94;
+        statusCopy = v101;
         v25 = v97;
         goto LABEL_42;
       default:
@@ -972,14 +972,14 @@ LABEL_35:
 LABEL_42:
 }
 
-- (void)didAppEntryEventPosted:(unint64_t)a3 withBundles:(id)a4 timestamp:(id)a5 duringInterval:(id)a6 withInfo:(id)a7 withTrialExperimentIDs:(id)a8 withOnboardingStatus:(id)a9
+- (void)didAppEntryEventPosted:(unint64_t)posted withBundles:(id)bundles timestamp:(id)timestamp duringInterval:(id)interval withInfo:(id)info withTrialExperimentIDs:(id)ds withOnboardingStatus:(id)status
 {
-  v13 = a4;
-  v81 = a5;
-  v80 = a6;
-  v79 = a7;
-  v78 = a8;
-  v77 = a9;
+  bundlesCopy = bundles;
+  timestampCopy = timestamp;
+  intervalCopy = interval;
+  infoCopy = info;
+  dsCopy = ds;
+  statusCopy = status;
   v14 = objc_opt_new();
   v84 = objc_opt_new();
   v83 = objc_opt_new();
@@ -987,7 +987,7 @@ LABEL_42:
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
-  obj = v13;
+  obj = bundlesCopy;
   v15 = [obj countByEnumeratingWithState:&v91 objects:v95 count:16];
   v86 = v14;
   if (v15)
@@ -1005,38 +1005,38 @@ LABEL_42:
         }
 
         v19 = *(*(&v91 + 1) + 8 * i);
-        v20 = [v19 bundleIdentifier];
-        if (v20 && (v21 = v20, [v19 suggestionID], v22 = objc_claimAutoreleasedReturnValue(), v22, v21, v22))
+        bundleIdentifier = [v19 bundleIdentifier];
+        if (bundleIdentifier && (v21 = bundleIdentifier, [v19 suggestionID], v22 = objc_claimAutoreleasedReturnValue(), v22, v21, v22))
         {
           v23 = [BMMomentsEngagementSuggestionIdentifier alloc];
-          v24 = [v19 bundleIdentifier];
-          v25 = [v24 UUIDString];
-          v26 = [v19 suggestionID];
-          v27 = [v26 UUIDString];
-          v28 = [v23 initWithBundleId:v25 suggestionId:v27];
+          bundleIdentifier2 = [v19 bundleIdentifier];
+          uUIDString = [bundleIdentifier2 UUIDString];
+          suggestionID = [v19 suggestionID];
+          uUIDString2 = [suggestionID UUIDString];
+          v28 = [v23 initWithBundleId:uUIDString suggestionId:uUIDString2];
 
           if (v28)
           {
             [v86 addObject:v28];
             v29 = [(MOEngagementHistoryManager *)self getBMBundleSumaryForBundle:v19];
 
-            v30 = [v19 getBundleType];
+            getBundleType = [v19 getBundleType];
 
-            if (v30)
+            if (getBundleType)
             {
-              v31 = [v19 getBundleType];
-              [v84 addObject:v31];
+              getBundleType2 = [v19 getBundleType];
+              [v84 addObject:getBundleType2];
             }
 
             if ([v19 interfaceType] == 11)
             {
-              v32 = [v19 resources];
-              v33 = [v32 objectAtIndexedSubscript:0];
-              v34 = [v33 name];
+              resources = [v19 resources];
+              v33 = [resources objectAtIndexedSubscript:0];
+              name = [v33 name];
 
-              if (v34)
+              if (name)
               {
-                [v83 addObject:v34];
+                [v83 addObject:name];
               }
             }
 
@@ -1066,17 +1066,17 @@ LABEL_42:
   }
 
   v35 = [BMMomentsEngagementAppEntryEvent alloc];
-  v36 = [v80 startDate];
-  v37 = [v80 endDate];
-  v38 = [v79 objectForKeyedSubscript:@"entryTotalCharacters"];
-  v39 = [v79 objectForKeyedSubscript:?];
-  v76 = [v35 initWithType:a3 clientIdentifier:0 timestamp:v81 identifier:v86 startTime:v36 endTime:v37 totalCharacters:v38 addedCharacters:v39 usedPhotoAssets:&__NSArray0__struct appEntryEventType:0 bundleInterfaceTypes:v84 bundleEvergreenTypes:v83 bundleSummary:v87 assets:&__NSArray0__struct];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
+  v38 = [infoCopy objectForKeyedSubscript:@"entryTotalCharacters"];
+  v39 = [infoCopy objectForKeyedSubscript:?];
+  v76 = [v35 initWithType:posted clientIdentifier:0 timestamp:timestampCopy identifier:v86 startTime:startDate endTime:endDate totalCharacters:v38 addedCharacters:v39 usedPhotoAssets:&__NSArray0__struct appEntryEventType:0 bundleInterfaceTypes:v84 bundleEvergreenTypes:v83 bundleSummary:v87 assets:&__NSArray0__struct];
 
-  v40 = [v77 objectForKeyedSubscript:@"onboardingStatus"];
+  v40 = [statusCopy objectForKeyedSubscript:@"onboardingStatus"];
 
   if (v40)
   {
-    v41 = [v77 objectForKeyedSubscript:@"onboardingStatus"];
+    v41 = [statusCopy objectForKeyedSubscript:@"onboardingStatus"];
     v73 = +[MOBiomeDonationUtility mapOnboardingFlowCompletion:](MOBiomeDonationUtility, "mapOnboardingFlowCompletion:", [v41 intValue]);
   }
 
@@ -1086,22 +1086,22 @@ LABEL_42:
   }
 
   v72 = [BMMomentsEngagement alloc];
-  v75 = [v77 objectForKeyedSubscript:@"journalIsInstalled"];
-  v71 = [v77 objectForKeyedSubscript:@"journalConfigLockJournal"];
-  v74 = [v77 objectForKeyedSubscript:@"journalConfigSkipSuggestions"];
-  v70 = [v77 objectForKeyedSubscript:@"settingSwitchActivity"];
-  v42 = [v77 objectForKeyedSubscript:@"settingSwitchCommunication"];
-  v43 = [v77 objectForKeyedSubscript:@"settingSwitchLocation"];
-  v69 = [v77 objectForKeyedSubscript:@"settingSwitchMedia"];
-  v44 = [v77 objectForKeyedSubscript:@"settingSwitchPeople"];
-  v45 = [v77 objectForKeyedSubscript:@"settingSwitchPhoto"];
-  v46 = [v77 objectForKeyedSubscript:@"settingSwitchStateOfMind"];
-  v47 = [v77 objectForKeyedSubscript:@"settingSwitchReflection"];
-  v48 = [v77 objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
+  v75 = [statusCopy objectForKeyedSubscript:@"journalIsInstalled"];
+  v71 = [statusCopy objectForKeyedSubscript:@"journalConfigLockJournal"];
+  v74 = [statusCopy objectForKeyedSubscript:@"journalConfigSkipSuggestions"];
+  v70 = [statusCopy objectForKeyedSubscript:@"settingSwitchActivity"];
+  v42 = [statusCopy objectForKeyedSubscript:@"settingSwitchCommunication"];
+  v43 = [statusCopy objectForKeyedSubscript:@"settingSwitchLocation"];
+  v69 = [statusCopy objectForKeyedSubscript:@"settingSwitchMedia"];
+  v44 = [statusCopy objectForKeyedSubscript:@"settingSwitchPeople"];
+  v45 = [statusCopy objectForKeyedSubscript:@"settingSwitchPhoto"];
+  v46 = [statusCopy objectForKeyedSubscript:@"settingSwitchStateOfMind"];
+  v47 = [statusCopy objectForKeyedSubscript:@"settingSwitchReflection"];
+  v48 = [statusCopy objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
   v49 = [v72 initWithSuggestionEvent:0 entryEvent:v76 clientActivityEvent:0 onboardingFlowCompletionState:v73 isJournalAppInstalled:v75 isJournalAppLocked:v71 isJournalSuggestionSkipped:v74 isActivitySettingsSwitchEnabled:v70 isCommunicationSettingsSwitchEnabled:v42 isSignificantLocationSettingsSwitchEnabled:v43 isMediaSettingsSwitchEnabled:v69 isNearbyPeopleSettingsSwitchEnabled:v44 isPhotoSettingsSwitchEnabled:v45 isStateOfMindSettingsSwitchEnabled:v46 isReflectionSettingsSwitchEnabled:v47 isBroadSystemLocationSettingsSwitchEnabled:v48];
 
-  v50 = [(MOEngagementHistoryManager *)self stream_source];
-  [v50 sendEvent:v49];
+  stream_source = [(MOEngagementHistoryManager *)self stream_source];
+  [stream_source sendEvent:v49];
 
   v51 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
   if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
@@ -1109,16 +1109,16 @@ LABEL_42:
     [MOEngagementHistoryManager didAppEntryEventPosted:withBundles:timestamp:duringInterval:withInfo:withTrialExperimentIDs:withOnboardingStatus:];
   }
 
-  [(MOEngagementHistoryManager *)self submitAppEntryEngagementEventAnalyticsFor:obj appEntryEngagementType:a3 timestamp:v81 withEntryInfo:v79 onboardingStatus:v77 andTrialExperimentIDs:v78];
+  [(MOEngagementHistoryManager *)self submitAppEntryEngagementEventAnalyticsFor:obj appEntryEngagementType:posted timestamp:timestampCopy withEntryInfo:infoCopy onboardingStatus:statusCopy andTrialExperimentIDs:dsCopy];
   v52 = +[UIDevice currentDevice];
-  v53 = [v52 userInterfaceIdiom];
+  userInterfaceIdiom = [v52 userInterfaceIdiom];
 
-  if (v53)
+  if (userInterfaceIdiom)
   {
     v54 = +[UIDevice currentDevice];
-    v55 = [v54 userInterfaceIdiom];
+    userInterfaceIdiom2 = [v54 userInterfaceIdiom];
 
-    if (v55 == 1)
+    if (userInterfaceIdiom2 == 1)
     {
       v56 = 2;
     }
@@ -1126,9 +1126,9 @@ LABEL_42:
     else
     {
       v57 = +[UIDevice currentDevice];
-      v58 = [v57 userInterfaceIdiom];
+      userInterfaceIdiom3 = [v57 userInterfaceIdiom];
 
-      if (v58 == 5)
+      if (userInterfaceIdiom3 == 5)
       {
         v56 = 3;
       }
@@ -1150,13 +1150,13 @@ LABEL_42:
 
   v61 = [BMMomentsEngagementLightAppEntryEvent alloc];
   v62 = [v86 copy];
-  v63 = [v79 objectForKeyedSubscript:@"entryAddedCharacters"];
+  v63 = [infoCopy objectForKeyedSubscript:@"entryAddedCharacters"];
   v64 = [NSNumber numberWithInt:v63 != 0];
-  v65 = [v61 initWithType:a3 clientIdentifier:0 timestamp:v81 identifier:v62 deviceType:v56 hasText:v64];
+  v65 = [v61 initWithType:posted clientIdentifier:0 timestamp:timestampCopy identifier:v62 deviceType:v56 hasText:v64];
 
   v66 = [[BMMomentsEngagementLight alloc] initWithSuggestionEvent:0 entryEvent:v65];
-  v67 = [(MOEngagementHistoryManager *)self stream_source_light];
-  [v67 sendEvent:v66];
+  stream_source_light = [(MOEngagementHistoryManager *)self stream_source_light];
+  [stream_source_light sendEvent:v66];
 
   v68 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
   if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
@@ -1165,32 +1165,32 @@ LABEL_42:
   }
 }
 
-- (void)submitSuggestionEngagementEventAnalyticsFor:(id)a3 suggestionEngagementType:(unint64_t)a4 timestamp:(id)a5 withContext:(id)a6 onboardingStatus:(id)a7 AndTrialExperimentIDs:(id)a8
+- (void)submitSuggestionEngagementEventAnalyticsFor:(id)for suggestionEngagementType:(unint64_t)type timestamp:(id)timestamp withContext:(id)context onboardingStatus:(id)status AndTrialExperimentIDs:(id)ds
 {
-  v13 = a3;
-  v75 = a5;
-  v76 = a6;
-  v74 = a7;
-  v14 = a8;
-  if (self->_isInternalBuild || (suggestionEngagementTypesEligibleForRawExternalAnalytics = self->_suggestionEngagementTypesEligibleForRawExternalAnalytics, [NSNumber numberWithUnsignedInteger:a4], v16 = objc_claimAutoreleasedReturnValue(), LODWORD(suggestionEngagementTypesEligibleForRawExternalAnalytics) = [(NSArray *)suggestionEngagementTypesEligibleForRawExternalAnalytics containsObject:v16], v16, suggestionEngagementTypesEligibleForRawExternalAnalytics))
+  forCopy = for;
+  timestampCopy = timestamp;
+  contextCopy = context;
+  statusCopy = status;
+  dsCopy = ds;
+  if (self->_isInternalBuild || (suggestionEngagementTypesEligibleForRawExternalAnalytics = self->_suggestionEngagementTypesEligibleForRawExternalAnalytics, [NSNumber numberWithUnsignedInteger:type], v16 = objc_claimAutoreleasedReturnValue(), LODWORD(suggestionEngagementTypesEligibleForRawExternalAnalytics) = [(NSArray *)suggestionEngagementTypesEligibleForRawExternalAnalytics containsObject:v16], v16, suggestionEngagementTypesEligibleForRawExternalAnalytics))
   {
     v17 = +[NSDate now];
     v67 = +[NSCalendar currentCalendar];
     v80 = v17;
     v72 = [v67 components:764 fromDate:v17];
     v79 = [MOMetric binsFromStart:&off_10036B7D0 toEnd:&off_10036E730 gap:&off_10036E740];
-    v78 = [v76 objectForKeyedSubscript:@"rankingDictionaries"];
+    v78 = [contextCopy objectForKeyedSubscript:@"rankingDictionaries"];
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v68 = v13;
-    obj = v13;
+    v68 = forCopy;
+    obj = forCopy;
     v77 = [obj countByEnumeratingWithState:&v81 objects:v87 count:16];
     if (v77)
     {
       v70 = *v82;
-      v71 = v14;
+      v71 = dsCopy;
       do
       {
         v18 = 0;
@@ -1202,7 +1202,7 @@ LABEL_42:
           }
 
           v19 = *(*(&v81 + 1) + 8 * v18);
-          v20 = [MOEngagementAndSuggestionAnalyticsManager generateDefaultAnalyticsPayloadWithOnboardingStatus:v74];
+          v20 = [MOEngagementAndSuggestionAnalyticsManager generateDefaultAnalyticsPayloadWithOnboardingStatus:statusCopy];
           v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v72 year]);
           [v20 setObject:v21 forKeyedSubscript:@"submissionTimeYear"];
 
@@ -1219,48 +1219,48 @@ LABEL_42:
           [v20 setObject:v25 forKeyedSubscript:@"submissionTimeMinute"];
 
           [v20 setObject:&off_10036E8B0 forKeyedSubscript:@"scalingFactorForAnalytics"];
-          if (v14)
+          if (dsCopy)
           {
-            v26 = [v14 experimentId];
-            [v20 setObject:v26 forKeyedSubscript:@"trialExperimentId"];
+            experimentId = [dsCopy experimentId];
+            [v20 setObject:experimentId forKeyedSubscript:@"trialExperimentId"];
 
-            v27 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v14 deploymentId]);
-            v28 = [v27 stringValue];
-            [v20 setObject:v28 forKeyedSubscript:@"trialDeploymentId"];
+            v27 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [dsCopy deploymentId]);
+            stringValue = [v27 stringValue];
+            [v20 setObject:stringValue forKeyedSubscript:@"trialDeploymentId"];
 
-            v29 = [v14 treatmentId];
-            [v20 setObject:v29 forKeyedSubscript:@"trialTreatmentId"];
+            treatmentId = [dsCopy treatmentId];
+            [v20 setObject:treatmentId forKeyedSubscript:@"trialTreatmentId"];
           }
 
-          [v80 timeIntervalSinceDate:v75];
+          [v80 timeIntervalSinceDate:timestampCopy];
           v30 = [NSNumber numberWithDouble:?];
           v31 = [MOMetric binForNumber:v30 bins:v79];
           [v20 setObject:v31 forKeyedSubscript:@"engagementTimeBucketed"];
 
           [v20 setObject:&off_10036B788 forKeyedSubscript:@"engagementType"];
-          v32 = [NSNumber numberWithUnsignedInteger:a4];
+          v32 = [NSNumber numberWithUnsignedInteger:type];
           [v20 setObject:v32 forKeyedSubscript:@"suggestionEngagementSubType"];
 
-          v33 = [v19 bundleIdentifier];
-          v34 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v33 hash]);
+          bundleIdentifier = [v19 bundleIdentifier];
+          v34 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleIdentifier hash]);
           [v20 setObject:v34 forKeyedSubscript:@"bundleId"];
 
-          v35 = [v19 suggestionID];
-          v36 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v35 hash]);
+          suggestionID = [v19 suggestionID];
+          v36 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [suggestionID hash]);
           [v20 setObject:v36 forKeyedSubscript:@"suggestionId"];
 
-          if (a4 != 9)
+          if (type != 9)
           {
-            v37 = [v19 subSuggestionIDs];
-            v38 = [(MOEngagementHistoryManager *)self _convertStringArrayIntoCombinedHashedString:v37];
+            subSuggestionIDs = [v19 subSuggestionIDs];
+            v38 = [(MOEngagementHistoryManager *)self _convertStringArrayIntoCombinedHashedString:subSuggestionIDs];
 
             if (v38)
             {
               [v20 setObject:v38 forKeyedSubscript:@"subSuggestionIds"];
             }
 
-            v39 = [v19 subBundleIDs];
-            v40 = [(MOEngagementHistoryManager *)self _convertStringArrayIntoCombinedHashedString:v39];
+            subBundleIDs = [v19 subBundleIDs];
+            v40 = [(MOEngagementHistoryManager *)self _convertStringArrayIntoCombinedHashedString:subBundleIDs];
 
             if (v40)
             {
@@ -1277,14 +1277,14 @@ LABEL_42:
           v43 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v19 bundleSuperType]);
           [v20 setObject:v43 forKeyedSubscript:@"bundleSuperType"];
 
-          v44 = [v19 startDate];
-          [v80 timeIntervalSinceDate:v44];
+          startDate = [v19 startDate];
+          [v80 timeIntervalSinceDate:startDate];
           v45 = [NSNumber numberWithDouble:?];
           v46 = [MOMetric binForNumber:v45 bins:v79];
           [v20 setObject:v46 forKeyedSubscript:@"bundleStartTimeBucketed"];
 
-          v47 = [v19 endDate];
-          [v80 timeIntervalSinceDate:v47];
+          endDate = [v19 endDate];
+          [v80 timeIntervalSinceDate:endDate];
           v48 = [NSNumber numberWithDouble:?];
           v49 = [MOMetric binForNumber:v48 bins:v79];
           [v20 setObject:v49 forKeyedSubscript:@"bundleEndTimeBucketed"];
@@ -1302,8 +1302,8 @@ LABEL_42:
           [v20 setObject:v50 forKeyedSubscript:@"engagementEntryType"];
           if (v78)
           {
-            v51 = [v19 bundleIdentifier];
-            v52 = [v78 objectForKeyedSubscript:v51];
+            bundleIdentifier2 = [v19 bundleIdentifier];
+            v52 = [v78 objectForKeyedSubscript:bundleIdentifier2];
 
             if (v52)
             {
@@ -1328,10 +1328,10 @@ LABEL_42:
             }
           }
 
-          v64 = [v76 objectForKeyedSubscript:@"viewContainerName"];
+          v64 = [contextCopy objectForKeyedSubscript:@"viewContainerName"];
           [v20 setObject:v64 forKeyedSubscript:@"viewContainerName"];
 
-          v65 = [v76 objectForKeyedSubscript:@"viewVisibleTime"];
+          v65 = [contextCopy objectForKeyedSubscript:@"viewVisibleTime"];
           [v20 setObject:v65 forKeyedSubscript:@"viewVisibleTime"];
 
           AnalyticsSendEvent();
@@ -1344,7 +1344,7 @@ LABEL_42:
           }
 
           v18 = v18 + 1;
-          v14 = v71;
+          dsCopy = v71;
         }
 
         while (v77 != v18);
@@ -1354,7 +1354,7 @@ LABEL_42:
       while (v77);
     }
 
-    v13 = v68;
+    forCopy = v68;
   }
 
   else
@@ -1362,38 +1362,38 @@ LABEL_42:
     v80 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
     if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
     {
-      [MOEngagementHistoryManager submitSuggestionEngagementEventAnalyticsFor:a4 suggestionEngagementType:? timestamp:? withContext:? onboardingStatus:? AndTrialExperimentIDs:?];
+      [MOEngagementHistoryManager submitSuggestionEngagementEventAnalyticsFor:type suggestionEngagementType:? timestamp:? withContext:? onboardingStatus:? AndTrialExperimentIDs:?];
     }
   }
 }
 
-- (void)submitAppEntryEngagementEventAnalyticsFor:(id)a3 appEntryEngagementType:(unint64_t)a4 timestamp:(id)a5 withEntryInfo:(id)a6 onboardingStatus:(id)a7 andTrialExperimentIDs:(id)a8
+- (void)submitAppEntryEngagementEventAnalyticsFor:(id)for appEntryEngagementType:(unint64_t)type timestamp:(id)timestamp withEntryInfo:(id)info onboardingStatus:(id)status andTrialExperimentIDs:(id)ds
 {
-  v12 = a3;
-  v90 = a5;
-  v13 = a6;
-  v89 = a7;
-  v14 = a8;
+  forCopy = for;
+  timestampCopy = timestamp;
+  infoCopy = info;
+  statusCopy = status;
+  dsCopy = ds;
   v15 = +[NSDate now];
   v16 = +[NSCalendar currentCalendar];
   v94 = v15;
   v88 = [v16 components:764 fromDate:v15];
   v93 = [MOMetric binsFromStart:&off_10036B7D0 toEnd:&off_10036E730 gap:&off_10036E750];
-  if (v12 && [v12 count])
+  if (forCopy && [forCopy count])
   {
     v98 = 0u;
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v17 = v12;
+    v17 = forCopy;
     v91 = [v17 countByEnumeratingWithState:&v96 objects:v102 count:16];
     if (v91)
     {
       v81 = v16;
-      v82 = v12;
+      v82 = forCopy;
       v84 = *v97;
-      v85 = v13;
-      v86 = v14;
+      v85 = infoCopy;
+      v86 = dsCopy;
       obj = v17;
       do
       {
@@ -1405,7 +1405,7 @@ LABEL_42:
           }
 
           v19 = *(*(&v96 + 1) + 8 * i);
-          v20 = [MOEngagementAndSuggestionAnalyticsManager generateDefaultAnalyticsPayloadWithOnboardingStatus:v89, v81, v82];
+          v20 = [MOEngagementAndSuggestionAnalyticsManager generateDefaultAnalyticsPayloadWithOnboardingStatus:statusCopy, v81, v82];
           v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v88 year]);
           [v20 setObject:v21 forKeyedSubscript:@"submissionTimeYear"];
 
@@ -1422,38 +1422,38 @@ LABEL_42:
           [v20 setObject:v25 forKeyedSubscript:@"submissionTimeMinute"];
 
           [v20 setObject:&off_10036E8B0 forKeyedSubscript:@"scalingFactorForAnalytics"];
-          if (v14)
+          if (dsCopy)
           {
-            v26 = [v14 experimentId];
-            [v20 setObject:v26 forKeyedSubscript:@"trialExperimentId"];
+            experimentId = [dsCopy experimentId];
+            [v20 setObject:experimentId forKeyedSubscript:@"trialExperimentId"];
 
-            v27 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v14 deploymentId]);
-            v28 = [v27 stringValue];
-            [v20 setObject:v28 forKeyedSubscript:@"trialDeploymentId"];
+            v27 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [dsCopy deploymentId]);
+            stringValue = [v27 stringValue];
+            [v20 setObject:stringValue forKeyedSubscript:@"trialDeploymentId"];
 
-            v29 = [v14 treatmentId];
-            [v20 setObject:v29 forKeyedSubscript:@"trialTreatmentId"];
+            treatmentId = [dsCopy treatmentId];
+            [v20 setObject:treatmentId forKeyedSubscript:@"trialTreatmentId"];
           }
 
-          [v94 timeIntervalSinceDate:v90];
+          [v94 timeIntervalSinceDate:timestampCopy];
           v30 = [NSNumber numberWithDouble:?];
           v31 = [MOMetric binForNumber:v30 bins:v93];
           [v20 setObject:v31 forKeyedSubscript:@"engagementTimeBucketed"];
 
           [v20 setObject:&off_10036B7E8 forKeyedSubscript:@"engagementType"];
-          v32 = [NSNumber numberWithUnsignedInteger:a4];
+          v32 = [NSNumber numberWithUnsignedInteger:type];
           [v20 setObject:v32 forKeyedSubscript:@"appEntryEngagementSubType"];
 
-          v33 = [v19 bundleIdentifier];
-          v34 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v33 hash]);
+          bundleIdentifier = [v19 bundleIdentifier];
+          v34 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleIdentifier hash]);
           [v20 setObject:v34 forKeyedSubscript:@"bundleId"];
 
-          v35 = [v19 suggestionID];
-          v36 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v35 hash]);
+          suggestionID = [v19 suggestionID];
+          v36 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [suggestionID hash]);
           [v20 setObject:v36 forKeyedSubscript:@"suggestionId"];
 
-          v37 = [v19 subSuggestionIDs];
-          v38 = [(MOEngagementHistoryManager *)self _convertStringArrayIntoCombinedHashedString:v37];
+          subSuggestionIDs = [v19 subSuggestionIDs];
+          v38 = [(MOEngagementHistoryManager *)self _convertStringArrayIntoCombinedHashedString:subSuggestionIDs];
 
           if (v38)
           {
@@ -1461,8 +1461,8 @@ LABEL_42:
           }
 
           v92 = v38;
-          v39 = [v19 subBundleIDs];
-          v40 = [(MOEngagementHistoryManager *)self _convertStringArrayIntoCombinedHashedString:v39];
+          subBundleIDs = [v19 subBundleIDs];
+          v40 = [(MOEngagementHistoryManager *)self _convertStringArrayIntoCombinedHashedString:subBundleIDs];
 
           if (v40)
           {
@@ -1478,14 +1478,14 @@ LABEL_42:
           v43 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v19 bundleSuperType]);
           [v20 setObject:v43 forKeyedSubscript:@"bundleSuperType"];
 
-          v44 = [v19 startDate];
-          [v94 timeIntervalSinceDate:v44];
+          startDate = [v19 startDate];
+          [v94 timeIntervalSinceDate:startDate];
           v45 = [NSNumber numberWithDouble:?];
           v46 = [MOMetric binForNumber:v45 bins:v93];
           [v20 setObject:v46 forKeyedSubscript:@"bundleStartTimeBucketed"];
 
-          v47 = [v19 endDate];
-          [v94 timeIntervalSinceDate:v47];
+          endDate = [v19 endDate];
+          [v94 timeIntervalSinceDate:endDate];
           v48 = [NSNumber numberWithDouble:?];
           v49 = [MOMetric binForNumber:v48 bins:v93];
           [v20 setObject:v49 forKeyedSubscript:@"bundleEndTimeBucketed"];
@@ -1501,7 +1501,7 @@ LABEL_42:
           }
 
           [v20 setObject:v50 forKeyedSubscript:@"engagementEntryType"];
-          v13 = v85;
+          infoCopy = v85;
           v51 = [v85 objectForKeyedSubscript:@"entryTotalCharacters"];
 
           if (v51)
@@ -1512,7 +1512,7 @@ LABEL_42:
 
           v53 = [v85 objectForKeyedSubscript:@"entryAddedCharacters"];
 
-          v14 = v86;
+          dsCopy = v86;
           if (v53)
           {
             v54 = [v85 objectForKeyedSubscript:@"entryAddedCharacters"];
@@ -1524,9 +1524,9 @@ LABEL_42:
           if (v55)
           {
             v56 = [v85 objectForKeyedSubscript:@"entryAddedCharacters"];
-            v57 = [v56 intValue];
+            intValue = [v56 intValue];
 
-            v58 = [NSNumber numberWithUnsignedInteger:[(MOEngagementHistoryManager *)self determineAddedCharacterBinRange:v57]];
+            v58 = [NSNumber numberWithUnsignedInteger:[(MOEngagementHistoryManager *)self determineAddedCharacterBinRange:intValue]];
             [v20 setObject:v58 forKeyedSubscript:@"addedCharactersBinned"];
           }
 
@@ -1546,13 +1546,13 @@ LABEL_42:
 
       while (v91);
       v16 = v81;
-      v12 = v82;
+      forCopy = v82;
     }
   }
 
   else
   {
-    v17 = [MOEngagementAndSuggestionAnalyticsManager generateDefaultAnalyticsPayloadWithOnboardingStatus:v89];
+    v17 = [MOEngagementAndSuggestionAnalyticsManager generateDefaultAnalyticsPayloadWithOnboardingStatus:statusCopy];
     v60 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v88 year]);
     [v17 setObject:v60 forKeyedSubscript:@"submissionTimeYear"];
 
@@ -1569,52 +1569,52 @@ LABEL_42:
     [v17 setObject:v64 forKeyedSubscript:@"submissionTimeMinute"];
 
     [v17 setObject:&off_10036E8B0 forKeyedSubscript:@"scalingFactorForAnalytics"];
-    if (v14)
+    if (dsCopy)
     {
-      v65 = [v14 experimentId];
-      [v17 setObject:v65 forKeyedSubscript:@"trialExperimentId"];
+      experimentId2 = [dsCopy experimentId];
+      [v17 setObject:experimentId2 forKeyedSubscript:@"trialExperimentId"];
 
-      v66 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v14 deploymentId]);
-      v67 = [v66 stringValue];
-      [v17 setObject:v67 forKeyedSubscript:@"trialDeploymentId"];
+      v66 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [dsCopy deploymentId]);
+      stringValue2 = [v66 stringValue];
+      [v17 setObject:stringValue2 forKeyedSubscript:@"trialDeploymentId"];
 
-      v68 = [v14 treatmentId];
-      [v17 setObject:v68 forKeyedSubscript:@"trialTreatmentId"];
+      treatmentId2 = [dsCopy treatmentId];
+      [v17 setObject:treatmentId2 forKeyedSubscript:@"trialTreatmentId"];
     }
 
-    [v94 timeIntervalSinceDate:v90];
+    [v94 timeIntervalSinceDate:timestampCopy];
     v69 = [NSNumber numberWithDouble:?];
     v70 = [MOMetric binForNumber:v69 bins:v93];
     [v17 setObject:v70 forKeyedSubscript:@"engagementTimeBucketed"];
 
     [v17 setObject:&off_10036B7E8 forKeyedSubscript:@"engagementType"];
-    v71 = [NSNumber numberWithUnsignedInteger:a4];
+    v71 = [NSNumber numberWithUnsignedInteger:type];
     [v17 setObject:v71 forKeyedSubscript:@"appEntryEngagementSubType"];
 
-    v72 = [v13 objectForKeyedSubscript:@"entryTotalCharacters"];
+    v72 = [infoCopy objectForKeyedSubscript:@"entryTotalCharacters"];
 
     if (v72)
     {
-      v73 = [v13 objectForKeyedSubscript:@"entryTotalCharacters"];
+      v73 = [infoCopy objectForKeyedSubscript:@"entryTotalCharacters"];
       [v17 setObject:v73 forKeyedSubscript:@"totalCharacters"];
     }
 
-    v74 = [v13 objectForKeyedSubscript:@"entryAddedCharacters"];
+    v74 = [infoCopy objectForKeyedSubscript:@"entryAddedCharacters"];
 
     if (v74)
     {
-      v75 = [v13 objectForKeyedSubscript:@"entryAddedCharacters"];
+      v75 = [infoCopy objectForKeyedSubscript:@"entryAddedCharacters"];
       [v17 setObject:v75 forKeyedSubscript:@"addedCharacters"];
     }
 
-    v76 = [v13 objectForKeyedSubscript:@"entryAddedCharacters"];
+    v76 = [infoCopy objectForKeyedSubscript:@"entryAddedCharacters"];
 
     if (v76)
     {
-      v77 = [v13 objectForKeyedSubscript:@"entryAddedCharacters"];
-      v78 = [v77 intValue];
+      v77 = [infoCopy objectForKeyedSubscript:@"entryAddedCharacters"];
+      intValue2 = [v77 intValue];
 
-      v79 = [NSNumber numberWithUnsignedInteger:[(MOEngagementHistoryManager *)self determineAddedCharacterBinRange:v78]];
+      v79 = [NSNumber numberWithUnsignedInteger:[(MOEngagementHistoryManager *)self determineAddedCharacterBinRange:intValue2]];
       [v17 setObject:v79 forKeyedSubscript:@"addedCharactersBinned"];
     }
 
@@ -1628,21 +1628,21 @@ LABEL_42:
   }
 }
 
-- (void)updateBundle:(id)a3 forSuggestionEvent:(id)a4 withSummary:(id)a5
+- (void)updateBundle:(id)bundle forSuggestionEvent:(id)event withSummary:(id)summary
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 type] == 9)
+  bundleCopy = bundle;
+  eventCopy = event;
+  if ([eventCopy type] == 9)
   {
-    [v6 setSuggestionEngagementViewCount:{objc_msgSend(v6, "suggestionEngagementViewCount") + 1}];
+    [bundleCopy setSuggestionEngagementViewCount:{objc_msgSend(bundleCopy, "suggestionEngagementViewCount") + 1}];
   }
 
-  switch([v7 type])
+  switch([eventCopy type])
   {
     case 0u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsUnknown"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsUnknown"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsUnknown"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsUnknown"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1654,9 +1654,9 @@ LABEL_42:
 
       break;
     case 1u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsSelected"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsSelected"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsSelected"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsSelected"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1668,9 +1668,9 @@ LABEL_42:
 
       break;
     case 2u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsShared"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsShared"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsShared"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsShared"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1682,9 +1682,9 @@ LABEL_42:
 
       break;
     case 3u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsLiked"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsLiked"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsLiked"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsLiked"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1696,9 +1696,9 @@ LABEL_42:
 
       break;
     case 4u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsDisliked"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsDisliked"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsDisliked"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsDisliked"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1710,9 +1710,9 @@ LABEL_42:
 
       break;
     case 5u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsDismissed"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsDismissed"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsDismissed"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsDismissed"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1724,9 +1724,9 @@ LABEL_42:
 
       break;
     case 6u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsDeleted"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsDeleted"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsDeleted"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsDeleted"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1738,9 +1738,9 @@ LABEL_42:
 
       break;
     case 7u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsHidden"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsHidden"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsHidden"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsHidden"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1752,9 +1752,9 @@ LABEL_42:
 
       break;
     case 8u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsQuickAddEntry"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsQuickAddEntry"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsQuickAddEntry"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsQuickAddEntry"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1766,9 +1766,9 @@ LABEL_42:
 
       break;
     case 9u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsViewed"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsViewed"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsViewed"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsViewed"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1780,9 +1780,9 @@ LABEL_42:
 
       break;
     case 0xBu:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsFavorite"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsFavorite"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsFavorite"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsFavorite"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1794,9 +1794,9 @@ LABEL_42:
 
       break;
     case 0xCu:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsThumbsUp"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsThumbsUp"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsThumbsUp"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsThumbsUp"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1808,9 +1808,9 @@ LABEL_42:
 
       break;
     case 0xDu:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionEntryCreated"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionEntryCreated"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionEntryCreated"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionEntryCreated"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1822,9 +1822,9 @@ LABEL_42:
 
       break;
     case 0xEu:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionEntryEdited"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionEntryEdited"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionEntryEdited"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionEntryEdited"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1836,9 +1836,9 @@ LABEL_42:
 
       break;
     case 0xFu:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionEntryDeleted"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionEntryDeleted"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionEntryDeleted"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionEntryDeleted"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1850,9 +1850,9 @@ LABEL_42:
 
       break;
     case 0x10u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionEntryCancelled"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionEntryCancelled"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionEntryCancelled"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionEntryCancelled"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1864,9 +1864,9 @@ LABEL_42:
 
       break;
     case 0x11u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionsAnnotated"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsAnnotated"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionsAnnotated"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionsAnnotated"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1878,9 +1878,9 @@ LABEL_42:
 
       break;
     case 0x19u:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionEntryCreatedWithUpdates"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionEntryCreatedWithUpdates"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionEntryCreatedWithUpdates"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionEntryCreatedWithUpdates"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1892,9 +1892,9 @@ LABEL_42:
 
       break;
     case 0x1Au:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionNotificationQueued"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionNotificationQueued"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionNotificationQueued"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionNotificationQueued"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1906,9 +1906,9 @@ LABEL_42:
 
       break;
     case 0x1Bu:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionNotificationDequeued"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionNotificationDequeued"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionNotificationDequeued"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionNotificationDequeued"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1920,9 +1920,9 @@ LABEL_42:
 
       break;
     case 0x1Cu:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionNotificationTapped"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionNotificationTapped"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionNotificationTapped"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionNotificationTapped"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1934,9 +1934,9 @@ LABEL_42:
 
       break;
     case 0x1Du:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionNotificationDismissed"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionNotificationDismissed"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionNotificationDismissed"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionNotificationDismissed"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1948,9 +1948,9 @@ LABEL_42:
 
       break;
     case 0x1Eu:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionNotificationPosted"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionNotificationPosted"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionNotificationPosted"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionNotificationPosted"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1962,9 +1962,9 @@ LABEL_42:
 
       break;
     case 0x1Fu:
-      if (([v6 hasSuggestionEngagementEvent:@"suggestionNotificationOverriden"] & 1) == 0)
+      if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionNotificationOverriden"] & 1) == 0)
       {
-        [v6 setSuggestionEngagementEvent:@"suggestionNotificationOverriden"];
+        [bundleCopy setSuggestionEngagementEvent:@"suggestionNotificationOverriden"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1980,7 +1980,7 @@ LABEL_75:
       v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        [MOEngagementHistoryManager updateBundle:v7 forSuggestionEvent:? withSummary:?];
+        [MOEngagementHistoryManager updateBundle:eventCopy forSuggestionEvent:? withSummary:?];
       }
 
 LABEL_78:
@@ -1989,19 +1989,19 @@ LABEL_78:
   }
 }
 
-- (void)updateBundle:(id)a3 forAppEntryEvent:(id)a4
+- (void)updateBundle:(id)bundle forAppEntryEvent:(id)event
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 type];
-  if (v7 > 1)
+  bundleCopy = bundle;
+  eventCopy = event;
+  type = [eventCopy type];
+  if (type > 1)
   {
-    switch(v7)
+    switch(type)
     {
       case 2:
-        if (([v5 hasAppEntryEngagementEvent:@"appEntryEdited"] & 1) == 0)
+        if (([bundleCopy hasAppEntryEngagementEvent:@"appEntryEdited"] & 1) == 0)
         {
-          [v5 setAppEntryEngagementEvent:@"appEntryEdited"];
+          [bundleCopy setAppEntryEngagementEvent:@"appEntryEdited"];
           v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
           {
@@ -2013,9 +2013,9 @@ LABEL_78:
 
         goto LABEL_25;
       case 3:
-        if (([v5 hasAppEntryEngagementEvent:@"appEntryDeleted"] & 1) == 0)
+        if (([bundleCopy hasAppEntryEngagementEvent:@"appEntryDeleted"] & 1) == 0)
         {
-          [v5 setAppEntryEngagementEvent:@"appEntryDeleted"];
+          [bundleCopy setAppEntryEngagementEvent:@"appEntryDeleted"];
           v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
           {
@@ -2027,9 +2027,9 @@ LABEL_78:
 
         goto LABEL_25;
       case 4:
-        if (([v5 hasAppEntryEngagementEvent:@"appEntryCancelled"] & 1) == 0)
+        if (([bundleCopy hasAppEntryEngagementEvent:@"appEntryCancelled"] & 1) == 0)
         {
-          [v5 setAppEntryEngagementEvent:@"appEntryCancelled"];
+          [bundleCopy setAppEntryEngagementEvent:@"appEntryCancelled"];
           v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
           {
@@ -2046,19 +2046,19 @@ LABEL_22:
     v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [MOEngagementHistoryManager updateBundle:v6 forAppEntryEvent:?];
+      [MOEngagementHistoryManager updateBundle:eventCopy forAppEntryEvent:?];
     }
 
     goto LABEL_24;
   }
 
-  if (v7)
+  if (type)
   {
-    if (v7 == 1)
+    if (type == 1)
     {
-      if (([v5 hasAppEntryEngagementEvent:@"appEntryCreated"] & 1) == 0)
+      if (([bundleCopy hasAppEntryEngagementEvent:@"appEntryCreated"] & 1) == 0)
       {
-        [v5 setAppEntryEngagementEvent:@"appEntryCreated"];
+        [bundleCopy setAppEntryEngagementEvent:@"appEntryCreated"];
         v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -2074,9 +2074,9 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (([v5 hasAppEntryEngagementEvent:@"appUnknown"] & 1) == 0)
+  if (([bundleCopy hasAppEntryEngagementEvent:@"appUnknown"] & 1) == 0)
   {
-    [v5 setAppEntryEngagementEvent:@"appUnknown"];
+    [bundleCopy setAppEntryEngagementEvent:@"appUnknown"];
     v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -2090,15 +2090,15 @@ LABEL_24:
 LABEL_25:
 }
 
-- (id)getInterfaceTypeCountForSuggestionEngagmentEvent:(id)a3 from:(id)a4 to:(id)a5 onceForEachBundle:(BOOL)a6 skipForEvents:(id)a7
+- (id)getInterfaceTypeCountForSuggestionEngagmentEvent:(id)event from:(id)from to:(id)to onceForEachBundle:(BOOL)bundle skipForEvents:(id)events
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  bundleCopy = bundle;
+  eventCopy = event;
+  fromCopy = from;
+  toCopy = to;
+  eventsCopy = events;
   v46 = objc_opt_new();
-  if (v8)
+  if (bundleCopy)
   {
     v16 = objc_opt_new();
   }
@@ -2108,17 +2108,17 @@ LABEL_25:
     v16 = 0;
   }
 
-  v45 = [MOEngagementHistoryManager suggestionEventToEnum:v12];
-  if ([v15 count])
+  v45 = [MOEngagementHistoryManager suggestionEventToEnum:eventCopy];
+  if ([eventsCopy count])
   {
-    v42 = self;
+    selfCopy = self;
     v43 = v16;
-    v44 = v12;
+    v44 = eventCopy;
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v17 = v15;
+    v17 = eventsCopy;
     v18 = [v17 countByEnumeratingWithState:&v66 objects:v70 count:16];
     if (v18)
     {
@@ -2133,7 +2133,7 @@ LABEL_25:
             objc_enumerationMutation(v17);
           }
 
-          if ([MOEngagementHistoryManager suggestionEventToEnum:*(*(&v66 + 1) + 8 * i), v42, v43, v44])
+          if ([MOEngagementHistoryManager suggestionEventToEnum:*(*(&v66 + 1) + 8 * i), selfCopy, v43, v44])
           {
             v22 = [NSNumber numberWithInt:?];
             [0 addObject:v22];
@@ -2147,21 +2147,21 @@ LABEL_25:
     }
 
     v16 = v43;
-    v12 = v44;
-    self = v42;
+    eventCopy = v44;
+    self = selfCopy;
   }
 
   if ([0 count])
   {
-    v23 = [(MOEngagementHistoryManager *)self stream_publisher];
+    stream_publisher = [(MOEngagementHistoryManager *)self stream_publisher];
     v62[0] = _NSConcreteStackBlock;
     v62[1] = 3221225472;
     v62[2] = __119__MOEngagementHistoryManager_getInterfaceTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke;
     v62[3] = &unk_10033E0F8;
     v63 = 0;
-    v64 = v13;
-    v65 = v14;
-    v24 = [v23 filterWithIsIncluded:v62];
+    v64 = fromCopy;
+    v65 = toCopy;
+    v24 = [stream_publisher filterWithIsIncluded:v62];
 
     v25 = objc_opt_new();
     v26 = [v24 reduceWithInitial:v25 nextPartialResult:&__block_literal_global_435_0];
@@ -2170,7 +2170,7 @@ LABEL_25:
     v60[1] = 3221225472;
     v60[2] = __119__MOEngagementHistoryManager_getInterfaceTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke_3;
     v60[3] = &unk_10033E160;
-    v61 = v15;
+    v61 = eventsCopy;
     v58[0] = _NSConcreteStackBlock;
     v58[1] = 3221225472;
     v58[2] = __119__MOEngagementHistoryManager_getInterfaceTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke_437;
@@ -2179,17 +2179,17 @@ LABEL_25:
     v27 = [v26 sinkWithCompletion:v60 receiveInput:v58];
   }
 
-  v28 = [(MOEngagementHistoryManager *)self stream_publisher];
+  stream_publisher2 = [(MOEngagementHistoryManager *)self stream_publisher];
   v54[0] = _NSConcreteStackBlock;
   v54[1] = 3221225472;
   v54[2] = __119__MOEngagementHistoryManager_getInterfaceTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke_2_439;
   v54[3] = &unk_10033E1B0;
   v57 = v45;
-  v55 = v13;
-  v56 = v14;
-  v29 = v14;
-  v30 = v13;
-  v31 = [v28 filterWithIsIncluded:v54];
+  v55 = fromCopy;
+  v56 = toCopy;
+  v29 = toCopy;
+  v30 = fromCopy;
+  v31 = [stream_publisher2 filterWithIsIncluded:v54];
 
   v32 = objc_opt_new();
   v51[0] = _NSConcreteStackBlock;
@@ -2197,7 +2197,7 @@ LABEL_25:
   v51[2] = __119__MOEngagementHistoryManager_getInterfaceTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke_3_441;
   v51[3] = &unk_10033E1D8;
   v52 = v16;
-  v53 = v8;
+  v53 = bundleCopy;
   v33 = v16;
   v34 = [v31 reduceWithInitial:v32 nextPartialResult:v51];
 
@@ -2205,16 +2205,16 @@ LABEL_25:
   v49[1] = 3221225472;
   v49[2] = __119__MOEngagementHistoryManager_getInterfaceTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke_4;
   v49[3] = &unk_10033E160;
-  v50 = v12;
+  v50 = eventCopy;
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = __119__MOEngagementHistoryManager_getInterfaceTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke_443;
   v47[3] = &unk_10033E200;
   v35 = v46;
   v48 = v35;
-  v36 = v12;
+  v36 = eventCopy;
   v37 = [v34 sinkWithCompletion:v49 receiveInput:v47];
-  v38 = v15;
+  v38 = eventsCopy;
   v39 = v48;
   v40 = v35;
 
@@ -2453,48 +2453,48 @@ void __119__MOEngagementHistoryManager_getInterfaceTypeCountForSuggestionEngagme
   }
 }
 
-- (id)getInterfaceTypeCountForSuggestionEngagmentEvent:(id)a3
+- (id)getInterfaceTypeCountForSuggestionEngagmentEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[NSDate distantPast];
   v6 = +[NSDate distantFuture];
-  v7 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForSuggestionEngagmentEvent:v4 from:v5 to:v6 onceForEachBundle:1 skipForEvents:0];
+  v7 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForSuggestionEngagmentEvent:eventCopy from:v5 to:v6 onceForEachBundle:1 skipForEvents:0];
 
   return v7;
 }
 
-- (id)getInterfaceTypeCountForUniqueSuggestionsViewedButNotEngagedFromStartDate:(id)a3 toEndDate:(id)a4
+- (id)getInterfaceTypeCountForUniqueSuggestionsViewedButNotEngagedFromStartDate:(id)date toEndDate:(id)endDate
 {
   v11 = @"suggestionsSelected";
   v12 = @"suggestionsQuickAddEntry";
   v13 = @"suggestionsDeleted";
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = [NSArray arrayWithObjects:&v11 count:3];
-  v9 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForSuggestionEngagmentEvent:@"suggestionsViewed" from:v7 to:v6 onceForEachBundle:1 skipForEvents:v8, v11, v12, v13];
+  v9 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForSuggestionEngagmentEvent:@"suggestionsViewed" from:dateCopy to:endDateCopy onceForEachBundle:1 skipForEvents:v8, v11, v12, v13];
 
   return v9;
 }
 
-- (id)getInterfaceTypeCountForUniqueSuggestionsSelectedOnlyFromStartDate:(id)a3 toEndDate:(id)a4
+- (id)getInterfaceTypeCountForUniqueSuggestionsSelectedOnlyFromStartDate:(id)date toEndDate:(id)endDate
 {
   v11[0] = @"suggestionsQuickAddEntry";
   v11[1] = @"suggestionsDeleted";
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = [NSArray arrayWithObjects:v11 count:2];
-  v9 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForSuggestionEngagmentEvent:@"suggestionsSelected" from:v7 to:v6 onceForEachBundle:1 skipForEvents:v8];
+  v9 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForSuggestionEngagmentEvent:@"suggestionsSelected" from:dateCopy to:endDateCopy onceForEachBundle:1 skipForEvents:v8];
 
   return v9;
 }
 
-- (id)getInterfaceTypeCountForUniqueSuggestionsQuickAddEntryFromStartDate:(id)a3 toEndDate:(id)a4
+- (id)getInterfaceTypeCountForUniqueSuggestionsQuickAddEntryFromStartDate:(id)date toEndDate:(id)endDate
 {
   v11 = @"suggestionsDeleted";
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = [NSArray arrayWithObjects:&v11 count:1];
-  v9 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForSuggestionEngagmentEvent:@"suggestionsQuickAddEntry" from:v7 to:v6 onceForEachBundle:1 skipForEvents:v8, v11];
+  v9 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForSuggestionEngagmentEvent:@"suggestionsQuickAddEntry" from:dateCopy to:endDateCopy onceForEachBundle:1 skipForEvents:v8, v11];
 
   return v9;
 }
@@ -2502,14 +2502,14 @@ void __119__MOEngagementHistoryManager_getInterfaceTypeCountForSuggestionEngagme
 - (id)getEngagementStreamAsJson
 {
   v3 = objc_opt_new();
-  v4 = [(MOEngagementHistoryManager *)self stream_publisher];
+  stream_publisher = [(MOEngagementHistoryManager *)self stream_publisher];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __55__MOEngagementHistoryManager_getEngagementStreamAsJson__block_invoke_2;
   v9[3] = &unk_10033E268;
   v5 = v3;
   v10 = v5;
-  v6 = [v4 sinkWithCompletion:&__block_literal_global_446 receiveInput:v9];
+  v6 = [stream_publisher sinkWithCompletion:&__block_literal_global_446 receiveInput:v9];
 
   if ([NSJSONSerialization isValidJSONObject:v5])
   {
@@ -2537,16 +2537,16 @@ void __55__MOEngagementHistoryManager_getEngagementStreamAsJson__block_invoke_2(
   }
 }
 
-- (id)getEvergreenTypeCountForSuggestionEngagmentEvent:(id)a3 from:(id)a4 to:(id)a5 onceForEachBundle:(BOOL)a6 skipForEvents:(id)a7
+- (id)getEvergreenTypeCountForSuggestionEngagmentEvent:(id)event from:(id)from to:(id)to onceForEachBundle:(BOOL)bundle skipForEvents:(id)events
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  bundleCopy = bundle;
+  eventCopy = event;
+  fromCopy = from;
+  toCopy = to;
+  eventsCopy = events;
   v48 = objc_opt_new();
-  v47 = v8;
-  if (v8)
+  v47 = bundleCopy;
+  if (bundleCopy)
   {
     v16 = objc_opt_new();
   }
@@ -2556,18 +2556,18 @@ void __55__MOEngagementHistoryManager_getEngagementStreamAsJson__block_invoke_2(
     v16 = 0;
   }
 
-  v46 = [MOEngagementHistoryManager suggestionEventToEnum:v12];
-  if ([v15 count])
+  v46 = [MOEngagementHistoryManager suggestionEventToEnum:eventCopy];
+  if ([eventsCopy count])
   {
-    v43 = self;
-    v44 = v13;
+    selfCopy = self;
+    v44 = fromCopy;
     v45 = v16;
     v70 = 0u;
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v17 = v15;
-    v18 = v15;
+    v17 = eventsCopy;
+    v18 = eventsCopy;
     v19 = [v18 countByEnumeratingWithState:&v68 objects:v72 count:16];
     if (v19)
     {
@@ -2582,7 +2582,7 @@ void __55__MOEngagementHistoryManager_getEngagementStreamAsJson__block_invoke_2(
             objc_enumerationMutation(v18);
           }
 
-          if ([MOEngagementHistoryManager suggestionEventToEnum:*(*(&v68 + 1) + 8 * i), v43, v44, v45])
+          if ([MOEngagementHistoryManager suggestionEventToEnum:*(*(&v68 + 1) + 8 * i), selfCopy, v44, v45])
           {
             v23 = [NSNumber numberWithInt:?];
             [0 addObject:v23];
@@ -2595,24 +2595,24 @@ void __55__MOEngagementHistoryManager_getEngagementStreamAsJson__block_invoke_2(
       while (v20);
     }
 
-    v15 = v17;
-    v13 = v44;
+    eventsCopy = v17;
+    fromCopy = v44;
     v16 = v45;
-    self = v43;
+    self = selfCopy;
   }
 
   if ([0 count])
   {
-    v24 = [(MOEngagementHistoryManager *)self stream_publisher];
+    stream_publisher = [(MOEngagementHistoryManager *)self stream_publisher];
     v64[0] = _NSConcreteStackBlock;
     v64[1] = 3221225472;
     v64[2] = __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke;
     v64[3] = &unk_10033E0F8;
     v65 = 0;
-    v66 = v13;
-    v67 = v14;
-    [v24 filterWithIsIncluded:v64];
-    v26 = v25 = v15;
+    v66 = fromCopy;
+    v67 = toCopy;
+    [stream_publisher filterWithIsIncluded:v64];
+    v26 = v25 = eventsCopy;
 
     v27 = objc_opt_new();
     v28 = [v26 reduceWithInitial:v27 nextPartialResult:&__block_literal_global_450];
@@ -2621,7 +2621,7 @@ void __55__MOEngagementHistoryManager_getEngagementStreamAsJson__block_invoke_2(
     v62[1] = 3221225472;
     v62[2] = __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke_3;
     v62[3] = &unk_10033E160;
-    v63 = v12;
+    v63 = eventCopy;
     v60[0] = _NSConcreteStackBlock;
     v60[1] = 3221225472;
     v60[2] = __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke_451;
@@ -2629,20 +2629,20 @@ void __55__MOEngagementHistoryManager_getEngagementStreamAsJson__block_invoke_2(
     v61 = v16;
     v29 = [v28 sinkWithCompletion:v62 receiveInput:v60];
 
-    v15 = v25;
+    eventsCopy = v25;
   }
 
-  v30 = [(MOEngagementHistoryManager *)self stream_publisher];
+  stream_publisher2 = [(MOEngagementHistoryManager *)self stream_publisher];
   v56[0] = _NSConcreteStackBlock;
   v56[1] = 3221225472;
   v56[2] = __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke_2_452;
   v56[3] = &unk_10033E1B0;
   v59 = v46;
-  v57 = v13;
-  v58 = v14;
-  v31 = v14;
-  v32 = v13;
-  v33 = [v30 filterWithIsIncluded:v56];
+  v57 = fromCopy;
+  v58 = toCopy;
+  v31 = toCopy;
+  v32 = fromCopy;
+  v33 = [stream_publisher2 filterWithIsIncluded:v56];
 
   v34 = objc_opt_new();
   v53[0] = _NSConcreteStackBlock;
@@ -2658,14 +2658,14 @@ void __55__MOEngagementHistoryManager_getEngagementStreamAsJson__block_invoke_2(
   v51[1] = 3221225472;
   v51[2] = __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke_4;
   v51[3] = &unk_10033E160;
-  v52 = v12;
+  v52 = eventCopy;
   v49[0] = _NSConcreteStackBlock;
   v49[1] = 3221225472;
   v49[2] = __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagmentEvent_from_to_onceForEachBundle_skipForEvents___block_invoke_454;
   v49[3] = &unk_10033E200;
   v37 = v48;
   v50 = v37;
-  v38 = v12;
+  v38 = eventCopy;
   v39 = [v36 sinkWithCompletion:v51 receiveInput:v49];
   v40 = v50;
   v41 = v37;
@@ -2907,49 +2907,49 @@ void __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagme
   }
 }
 
-- (id)getEvergreenTypeCountForSuggestionEngagmentEvent:(id)a3
+- (id)getEvergreenTypeCountForSuggestionEngagmentEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[NSDate distantPast];
   v6 = +[NSDate distantFuture];
-  v7 = [(MOEngagementHistoryManager *)self getEvergreenTypeCountForSuggestionEngagmentEvent:v4 from:v5 to:v6 onceForEachBundle:1 skipForEvents:0];
+  v7 = [(MOEngagementHistoryManager *)self getEvergreenTypeCountForSuggestionEngagmentEvent:eventCopy from:v5 to:v6 onceForEachBundle:1 skipForEvents:0];
 
   return v7;
 }
 
-- (id)getEvergreenCountForSuggestionsSelectedOnlyFromStartDate:(id)a3 toEndDate:(id)a4
+- (id)getEvergreenCountForSuggestionsSelectedOnlyFromStartDate:(id)date toEndDate:(id)endDate
 {
   v11[0] = @"suggestionsQuickAddEntry";
   v11[1] = @"suggestionsDeleted";
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = [NSArray arrayWithObjects:v11 count:2];
-  v9 = [(MOEngagementHistoryManager *)self getEvergreenTypeCountForSuggestionEngagmentEvent:@"suggestionsSelected" from:v7 to:v6 onceForEachBundle:0 skipForEvents:v8];
+  v9 = [(MOEngagementHistoryManager *)self getEvergreenTypeCountForSuggestionEngagmentEvent:@"suggestionsSelected" from:dateCopy to:endDateCopy onceForEachBundle:0 skipForEvents:v8];
 
   return v9;
 }
 
-- (id)getEvergreenTypeCountForSuggestionsQuickAddEntryFromStartDate:(id)a3 toEndDate:(id)a4
+- (id)getEvergreenTypeCountForSuggestionsQuickAddEntryFromStartDate:(id)date toEndDate:(id)endDate
 {
   v11 = @"suggestionsDeleted";
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = [NSArray arrayWithObjects:&v11 count:1];
-  v9 = [(MOEngagementHistoryManager *)self getEvergreenTypeCountForSuggestionEngagmentEvent:@"suggestionsQuickAddEntry" from:v7 to:v6 onceForEachBundle:0 skipForEvents:v8, v11];
+  v9 = [(MOEngagementHistoryManager *)self getEvergreenTypeCountForSuggestionEngagmentEvent:@"suggestionsQuickAddEntry" from:dateCopy to:endDateCopy onceForEachBundle:0 skipForEvents:v8, v11];
 
   return v9;
 }
 
-- (id)getInterfaceTypeCountForAppEntryEvent:(id)a3 withMinAddedCharacterCount:(int64_t)a4 andMaxAddedCharacterCount:(int64_t)a5 fromStartDate:(id)a6 toEndDate:(id)a7 onceForEachBundle:(BOOL)a8 skipForEvents:(id)a9
+- (id)getInterfaceTypeCountForAppEntryEvent:(id)event withMinAddedCharacterCount:(int64_t)count andMaxAddedCharacterCount:(int64_t)characterCount fromStartDate:(id)date toEndDate:(id)endDate onceForEachBundle:(BOOL)bundle skipForEvents:(id)events
 {
-  v9 = a8;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a9;
+  bundleCopy = bundle;
+  eventCopy = event;
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
   v16 = objc_opt_new();
-  v52 = v9;
-  if (v9)
+  v52 = bundleCopy;
+  if (bundleCopy)
   {
     v17 = objc_opt_new();
   }
@@ -2959,8 +2959,8 @@ void __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagme
     v17 = 0;
   }
 
-  v48 = [MOEngagementHistoryManager appEntryEventToEnum:v12];
-  if ([v15 count])
+  v48 = [MOEngagementHistoryManager appEntryEventToEnum:eventCopy];
+  if ([eventsCopy count])
   {
     v46 = v17;
     v47 = v16;
@@ -2968,7 +2968,7 @@ void __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagme
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v18 = v15;
+    v18 = eventsCopy;
     v19 = [v18 countByEnumeratingWithState:&v75 objects:v79 count:16];
     if (v19)
     {
@@ -3002,15 +3002,15 @@ void __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagme
 
   if ([0 count])
   {
-    v24 = [(MOEngagementHistoryManager *)self stream_publisher];
+    stream_publisher = [(MOEngagementHistoryManager *)self stream_publisher];
     v71[0] = _NSConcreteStackBlock;
     v71[1] = 3221225472;
     v71[2] = __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_withMinAddedCharacterCount_andMaxAddedCharacterCount_fromStartDate_toEndDate_onceForEachBundle_skipForEvents___block_invoke;
     v71[3] = &unk_10033E0F8;
     v72 = 0;
-    v73 = v13;
-    v74 = v14;
-    v25 = [v24 filterWithIsIncluded:v71];
+    v73 = dateCopy;
+    v74 = endDateCopy;
+    v25 = [stream_publisher filterWithIsIncluded:v71];
 
     v26 = objc_opt_new();
     v27 = [v25 reduceWithInitial:v26 nextPartialResult:&__block_literal_global_456];
@@ -3019,7 +3019,7 @@ void __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagme
     v69[1] = 3221225472;
     v69[2] = __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_withMinAddedCharacterCount_andMaxAddedCharacterCount_fromStartDate_toEndDate_onceForEachBundle_skipForEvents___block_invoke_3;
     v69[3] = &unk_10033E160;
-    v70 = v12;
+    v70 = eventCopy;
     v67[0] = _NSConcreteStackBlock;
     v67[1] = 3221225472;
     v67[2] = __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_withMinAddedCharacterCount_andMaxAddedCharacterCount_fromStartDate_toEndDate_onceForEachBundle_skipForEvents___block_invoke_457;
@@ -3035,12 +3035,12 @@ void __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagme
   v61[2] = __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_withMinAddedCharacterCount_andMaxAddedCharacterCount_fromStartDate_toEndDate_onceForEachBundle_skipForEvents___block_invoke_2_458;
   v61[3] = &unk_10033E2D0;
   v66 = v48;
-  v62 = v13;
-  v63 = v14;
-  v64 = a4;
-  v65 = a5;
-  v31 = v14;
-  v32 = v13;
+  v62 = dateCopy;
+  v63 = endDateCopy;
+  countCopy = count;
+  characterCountCopy = characterCount;
+  v31 = endDateCopy;
+  v32 = dateCopy;
   v33 = [v30 filterWithIsIncluded:v61];
 
   v34 = objc_opt_new();
@@ -3057,17 +3057,17 @@ void __119__MOEngagementHistoryManager_getEvergreenTypeCountForSuggestionEngagme
   v55[1] = 3221225472;
   v55[2] = __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_withMinAddedCharacterCount_andMaxAddedCharacterCount_fromStartDate_toEndDate_onceForEachBundle_skipForEvents___block_invoke_4;
   v55[3] = &unk_10033E2F8;
-  v56 = v12;
-  v57 = v15;
+  v56 = eventCopy;
+  v57 = eventsCopy;
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
   v53[2] = __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_withMinAddedCharacterCount_andMaxAddedCharacterCount_fromStartDate_toEndDate_onceForEachBundle_skipForEvents___block_invoke_460;
   v53[3] = &unk_10033E200;
   v37 = v16;
-  v38 = v12;
+  v38 = eventCopy;
   v39 = v37;
   v54 = v37;
-  v40 = v15;
+  v40 = eventsCopy;
   v41 = v38;
   v42 = [v36 sinkWithCompletion:v55 receiveInput:v53];
   v43 = v54;
@@ -3355,49 +3355,49 @@ void __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_wit
   }
 }
 
-- (id)getInterfaceTypeCountForAppEntryEvent:(id)a3 withMinimumAddedCharacters:(int64_t)a4
+- (id)getInterfaceTypeCountForAppEntryEvent:(id)event withMinimumAddedCharacters:(int64_t)characters
 {
-  v6 = a3;
+  eventCopy = event;
   v7 = +[NSDate distantPast];
   v8 = +[NSDate distantFuture];
-  v9 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForAppEntryEvent:v6 withMinAddedCharacterCount:a4 andMaxAddedCharacterCount:0x7FFFFFFFFFFFFFFFLL fromStartDate:v7 toEndDate:v8 onceForEachBundle:1 skipForEvents:0];
+  v9 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForAppEntryEvent:eventCopy withMinAddedCharacterCount:characters andMaxAddedCharacterCount:0x7FFFFFFFFFFFFFFFLL fromStartDate:v7 toEndDate:v8 onceForEachBundle:1 skipForEvents:0];
 
   return v9;
 }
 
-- (id)getInterfaceTypeCountForUniqueSuggestionsWithJournalCreatedFromStartDate:(id)a3 toEndDate:(id)a4 withMinimumAddedCharacters:(int64_t)a5
+- (id)getInterfaceTypeCountForUniqueSuggestionsWithJournalCreatedFromStartDate:(id)date toEndDate:(id)endDate withMinimumAddedCharacters:(int64_t)characters
 {
   v13 = @"appEntryDeleted";
-  v8 = a4;
-  v9 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v10 = [NSArray arrayWithObjects:&v13 count:1];
-  v11 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForAppEntryEvent:@"appEntryCreated" withMinAddedCharacterCount:a5 andMaxAddedCharacterCount:0x7FFFFFFFFFFFFFFFLL fromStartDate:v9 toEndDate:v8 onceForEachBundle:1 skipForEvents:v10];
+  v11 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForAppEntryEvent:@"appEntryCreated" withMinAddedCharacterCount:characters andMaxAddedCharacterCount:0x7FFFFFFFFFFFFFFFLL fromStartDate:dateCopy toEndDate:endDateCopy onceForEachBundle:1 skipForEvents:v10];
 
   return v11;
 }
 
-- (id)getInterfaceTypeCountForUniqueSuggestionsWithJournalCreatedButNoWritingFromStartDate:(id)a3 toEndDate:(id)a4
+- (id)getInterfaceTypeCountForUniqueSuggestionsWithJournalCreatedButNoWritingFromStartDate:(id)date toEndDate:(id)endDate
 {
   v11 = @"appEntryDeleted";
   v12 = @"appEntryEdited";
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = [NSArray arrayWithObjects:&v11 count:2];
-  v9 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForAppEntryEvent:@"appEntryCreated" withMinAddedCharacterCount:0 andMaxAddedCharacterCount:0 fromStartDate:v7 toEndDate:v6 onceForEachBundle:1 skipForEvents:v8, v11, v12];
+  v9 = [(MOEngagementHistoryManager *)self getInterfaceTypeCountForAppEntryEvent:@"appEntryCreated" withMinAddedCharacterCount:0 andMaxAddedCharacterCount:0 fromStartDate:dateCopy toEndDate:endDateCopy onceForEachBundle:1 skipForEvents:v8, v11, v12];
 
   return v9;
 }
 
-- (id)getEvergreenTypeCountForAppEntryEvent:(id)a3 withMinAddedCharacterCount:(int64_t)a4 andMaxAddedCharacterCount:(int64_t)a5 fromStartDate:(id)a6 toEndDate:(id)a7 onceForEachBundle:(BOOL)a8 skipForEvents:(id)a9
+- (id)getEvergreenTypeCountForAppEntryEvent:(id)event withMinAddedCharacterCount:(int64_t)count andMaxAddedCharacterCount:(int64_t)characterCount fromStartDate:(id)date toEndDate:(id)endDate onceForEachBundle:(BOOL)bundle skipForEvents:(id)events
 {
-  v9 = a8;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a9;
+  bundleCopy = bundle;
+  eventCopy = event;
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
   v16 = objc_opt_new();
-  v52 = v9;
-  if (v9)
+  v52 = bundleCopy;
+  if (bundleCopy)
   {
     v17 = objc_opt_new();
   }
@@ -3407,8 +3407,8 @@ void __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_wit
     v17 = 0;
   }
 
-  v48 = [MOEngagementHistoryManager appEntryEventToEnum:v12];
-  if ([v15 count])
+  v48 = [MOEngagementHistoryManager appEntryEventToEnum:eventCopy];
+  if ([eventsCopy count])
   {
     v46 = v17;
     v47 = v16;
@@ -3416,7 +3416,7 @@ void __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_wit
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v18 = v15;
+    v18 = eventsCopy;
     v19 = [v18 countByEnumeratingWithState:&v75 objects:v79 count:16];
     if (v19)
     {
@@ -3450,15 +3450,15 @@ void __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_wit
 
   if ([0 count])
   {
-    v24 = [(MOEngagementHistoryManager *)self stream_publisher];
+    stream_publisher = [(MOEngagementHistoryManager *)self stream_publisher];
     v71[0] = _NSConcreteStackBlock;
     v71[1] = 3221225472;
     v71[2] = __177__MOEngagementHistoryManager_getEvergreenTypeCountForAppEntryEvent_withMinAddedCharacterCount_andMaxAddedCharacterCount_fromStartDate_toEndDate_onceForEachBundle_skipForEvents___block_invoke;
     v71[3] = &unk_10033E0F8;
     v72 = 0;
-    v73 = v13;
-    v74 = v14;
-    v25 = [v24 filterWithIsIncluded:v71];
+    v73 = dateCopy;
+    v74 = endDateCopy;
+    v25 = [stream_publisher filterWithIsIncluded:v71];
 
     v26 = objc_opt_new();
     v27 = [v25 reduceWithInitial:v26 nextPartialResult:&__block_literal_global_463];
@@ -3467,7 +3467,7 @@ void __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_wit
     v69[1] = 3221225472;
     v69[2] = __177__MOEngagementHistoryManager_getEvergreenTypeCountForAppEntryEvent_withMinAddedCharacterCount_andMaxAddedCharacterCount_fromStartDate_toEndDate_onceForEachBundle_skipForEvents___block_invoke_3;
     v69[3] = &unk_10033E160;
-    v70 = v12;
+    v70 = eventCopy;
     v67[0] = _NSConcreteStackBlock;
     v67[1] = 3221225472;
     v67[2] = __177__MOEngagementHistoryManager_getEvergreenTypeCountForAppEntryEvent_withMinAddedCharacterCount_andMaxAddedCharacterCount_fromStartDate_toEndDate_onceForEachBundle_skipForEvents___block_invoke_464;
@@ -3483,12 +3483,12 @@ void __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_wit
   v61[2] = __177__MOEngagementHistoryManager_getEvergreenTypeCountForAppEntryEvent_withMinAddedCharacterCount_andMaxAddedCharacterCount_fromStartDate_toEndDate_onceForEachBundle_skipForEvents___block_invoke_2_465;
   v61[3] = &unk_10033E2D0;
   v66 = v48;
-  v62 = v13;
-  v63 = v14;
-  v64 = a4;
-  v65 = a5;
-  v31 = v14;
-  v32 = v13;
+  v62 = dateCopy;
+  v63 = endDateCopy;
+  countCopy = count;
+  characterCountCopy = characterCount;
+  v31 = endDateCopy;
+  v32 = dateCopy;
   v33 = [v30 filterWithIsIncluded:v61];
 
   v34 = objc_opt_new();
@@ -3505,17 +3505,17 @@ void __177__MOEngagementHistoryManager_getInterfaceTypeCountForAppEntryEvent_wit
   v55[1] = 3221225472;
   v55[2] = __177__MOEngagementHistoryManager_getEvergreenTypeCountForAppEntryEvent_withMinAddedCharacterCount_andMaxAddedCharacterCount_fromStartDate_toEndDate_onceForEachBundle_skipForEvents___block_invoke_4;
   v55[3] = &unk_10033E2F8;
-  v56 = v12;
-  v57 = v15;
+  v56 = eventCopy;
+  v57 = eventsCopy;
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
   v53[2] = __177__MOEngagementHistoryManager_getEvergreenTypeCountForAppEntryEvent_withMinAddedCharacterCount_andMaxAddedCharacterCount_fromStartDate_toEndDate_onceForEachBundle_skipForEvents___block_invoke_467;
   v53[3] = &unk_10033E200;
   v37 = v16;
-  v38 = v12;
+  v38 = eventCopy;
   v39 = v37;
   v54 = v37;
-  v40 = v15;
+  v40 = eventsCopy;
   v41 = v38;
   v42 = [v36 sinkWithCompletion:v55 receiveInput:v53];
   v43 = v54;
@@ -3794,49 +3794,49 @@ void __177__MOEngagementHistoryManager_getEvergreenTypeCountForAppEntryEvent_wit
   }
 }
 
-- (id)getEvergreenTypeCountForAppEntryEvent:(id)a3 withMinimumAddedCharacters:(int64_t)a4
+- (id)getEvergreenTypeCountForAppEntryEvent:(id)event withMinimumAddedCharacters:(int64_t)characters
 {
-  v6 = a3;
+  eventCopy = event;
   v7 = +[NSDate distantPast];
   v8 = +[NSDate distantFuture];
-  v9 = [(MOEngagementHistoryManager *)self getEvergreenTypeCountForAppEntryEvent:v6 withMinAddedCharacterCount:a4 andMaxAddedCharacterCount:0x7FFFFFFFFFFFFFFFLL fromStartDate:v7 toEndDate:v8 onceForEachBundle:0 skipForEvents:0];
+  v9 = [(MOEngagementHistoryManager *)self getEvergreenTypeCountForAppEntryEvent:eventCopy withMinAddedCharacterCount:characters andMaxAddedCharacterCount:0x7FFFFFFFFFFFFFFFLL fromStartDate:v7 toEndDate:v8 onceForEachBundle:0 skipForEvents:0];
 
   return v9;
 }
 
-- (id)getEvergreenTypeCountForSuggestionsWithJournalCreatedFromStartDate:(id)a3 toEndDate:(id)a4 withMinimumAddedCharacters:(int64_t)a5
+- (id)getEvergreenTypeCountForSuggestionsWithJournalCreatedFromStartDate:(id)date toEndDate:(id)endDate withMinimumAddedCharacters:(int64_t)characters
 {
   v13 = @"appEntryDeleted";
-  v8 = a4;
-  v9 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v10 = [NSArray arrayWithObjects:&v13 count:1];
-  v11 = [(MOEngagementHistoryManager *)self getEvergreenTypeCountForAppEntryEvent:@"appEntryCreated" withMinAddedCharacterCount:a5 andMaxAddedCharacterCount:0x7FFFFFFFFFFFFFFFLL fromStartDate:v9 toEndDate:v8 onceForEachBundle:0 skipForEvents:v10];
+  v11 = [(MOEngagementHistoryManager *)self getEvergreenTypeCountForAppEntryEvent:@"appEntryCreated" withMinAddedCharacterCount:characters andMaxAddedCharacterCount:0x7FFFFFFFFFFFFFFFLL fromStartDate:dateCopy toEndDate:endDateCopy onceForEachBundle:0 skipForEvents:v10];
 
   return v11;
 }
 
-- (id)getEvergreenTypeCountForSuggestionsWithJournalCreatedButNoWritingFromStartDate:(id)a3 toEndDate:(id)a4
+- (id)getEvergreenTypeCountForSuggestionsWithJournalCreatedButNoWritingFromStartDate:(id)date toEndDate:(id)endDate
 {
   v11 = @"appEntryDeleted";
   v12 = @"appEntryEdited";
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = [NSArray arrayWithObjects:&v11 count:2];
-  v9 = [(MOEngagementHistoryManager *)self getEvergreenTypeCountForAppEntryEvent:@"appEntryCreated" withMinAddedCharacterCount:0 andMaxAddedCharacterCount:0 fromStartDate:v7 toEndDate:v6 onceForEachBundle:0 skipForEvents:v8, v11, v12];
+  v9 = [(MOEngagementHistoryManager *)self getEvergreenTypeCountForAppEntryEvent:@"appEntryCreated" withMinAddedCharacterCount:0 andMaxAddedCharacterCount:0 fromStartDate:dateCopy toEndDate:endDateCopy onceForEachBundle:0 skipForEvents:v8, v11, v12];
 
   return v9;
 }
 
-- (void)eventBundleStore:(id)a3 needsEngagementInfoForBundles:(id)a4
+- (void)eventBundleStore:(id)store needsEngagementInfoForBundles:(id)bundles
 {
-  v27 = self;
-  v4 = a4;
+  selfCopy = self;
+  bundlesCopy = bundles;
   v5 = objc_opt_new();
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = v4;
+  v6 = bundlesCopy;
   v7 = [v6 countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v7)
   {
@@ -3854,18 +3854,18 @@ void __177__MOEngagementHistoryManager_getEvergreenTypeCountForAppEntryEvent_wit
         }
 
         v11 = *(*(&v35 + 1) + 8 * v10);
-        v12 = [v11 suggestionID];
-        v13 = v12;
-        if (v12)
+        suggestionID = [v11 suggestionID];
+        v13 = suggestionID;
+        if (suggestionID)
         {
-          v14 = [v12 UUIDString];
-          if (v14)
+          uUIDString = [suggestionID UUIDString];
+          if (uUIDString)
           {
-            v15 = [v5 objectForKeyedSubscript:v14];
+            v15 = [v5 objectForKeyedSubscript:uUIDString];
 
             if (v15)
             {
-              v16 = [v5 objectForKeyedSubscript:v14];
+              v16 = [v5 objectForKeyedSubscript:uUIDString];
               [v16 addObject:v11];
             }
 
@@ -3875,7 +3875,7 @@ void __177__MOEngagementHistoryManager_getEvergreenTypeCountForAppEntryEvent_wit
               v16 = [NSArray arrayWithObjects:&v40 count:1];
               v8 = v28;
               v17 = [NSMutableArray arrayWithArray:v16];
-              [v5 setObject:v17 forKeyedSubscript:v14];
+              [v5 setObject:v17 forKeyedSubscript:uUIDString];
             }
           }
 
@@ -3891,8 +3891,8 @@ void __177__MOEngagementHistoryManager_getEvergreenTypeCountForAppEntryEvent_wit
 
         else
         {
-          v14 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+          uUIDString = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
+          if (os_log_type_enabled(uUIDString, OS_LOG_TYPE_ERROR))
           {
             [MOEngagementHistoryManager eventBundleStore:v41 needsEngagementInfoForBundles:v11];
           }
@@ -3908,29 +3908,29 @@ void __177__MOEngagementHistoryManager_getEvergreenTypeCountForAppEntryEvent_wit
     while (v8);
   }
 
-  v18 = [(MOEngagementHistoryManager *)v27 mergedStreamPublisher];
+  mergedStreamPublisher = [(MOEngagementHistoryManager *)selfCopy mergedStreamPublisher];
 
-  if (v18)
+  if (mergedStreamPublisher)
   {
-    v19 = [(MOEngagementHistoryManager *)v27 mergedStreamPublisher];
-    v20 = [v19 filterWithIsIncluded:&__block_literal_global_469];
+    mergedStreamPublisher2 = [(MOEngagementHistoryManager *)selfCopy mergedStreamPublisher];
+    v20 = [mergedStreamPublisher2 filterWithIsIncluded:&__block_literal_global_469];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = __77__MOEngagementHistoryManager_eventBundleStore_needsEngagementInfoForBundles___block_invoke_472;
     v32[3] = &unk_10033DF50;
     v21 = v5;
     v33 = v21;
-    v34 = v27;
+    v34 = selfCopy;
     v22 = [v20 sinkWithCompletion:&__block_literal_global_471 receiveInput:v32];
 
-    v23 = [(MOEngagementHistoryManager *)v27 mergedStreamPublisher];
-    v24 = [v23 filterWithIsIncluded:&__block_literal_global_475];
+    mergedStreamPublisher3 = [(MOEngagementHistoryManager *)selfCopy mergedStreamPublisher];
+    v24 = [mergedStreamPublisher3 filterWithIsIncluded:&__block_literal_global_475];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = __77__MOEngagementHistoryManager_eventBundleStore_needsEngagementInfoForBundles___block_invoke_478;
     v29[3] = &unk_10033DF50;
     v30 = v21;
-    v31 = v27;
+    v31 = selfCopy;
     v25 = [v24 sinkWithCompletion:&__block_literal_global_477 receiveInput:v29];
 
     v26 = v33;
@@ -4131,11 +4131,11 @@ void __77__MOEngagementHistoryManager_eventBundleStore_needsEngagementInfoForBun
   }
 }
 
-- (id)_convertStringArrayIntoCombinedHashedString:(id)a3
+- (id)_convertStringArrayIntoCombinedHashedString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy && [stringCopy count])
   {
     v21 = 0u;
     v22 = 0u;
@@ -4147,13 +4147,13 @@ void __77__MOEngagementHistoryManager_eventBundleStore_needsEngagementInfoForBun
     if (v6)
     {
       v7 = v6;
-      v8 = 0;
+      stringValue = 0;
       v9 = 0;
       v10 = *v20;
       do
       {
         v11 = 0;
-        v12 = v8;
+        v12 = stringValue;
         do
         {
           if (*v20 != v10)
@@ -4164,23 +4164,23 @@ void __77__MOEngagementHistoryManager_eventBundleStore_needsEngagementInfoForBun
           v13 = *(*(&v19 + 1) + 8 * v11);
           v14 = objc_autoreleasePoolPush();
           v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v13 hash]);
-          v8 = [v15 stringValue];
+          stringValue = [v15 stringValue];
 
           if (v9)
           {
-            v16 = [v9 stringByAppendingFormat:@"%@", v8];;
+            v16 = [v9 stringByAppendingFormat:@"%@", stringValue];;
 
             v9 = v16;
           }
 
           else
           {
-            v9 = v8;
+            v9 = stringValue;
           }
 
           objc_autoreleasePoolPop(v14);
           v11 = v11 + 1;
-          v12 = v8;
+          v12 = stringValue;
         }
 
         while (v7 != v11);
@@ -4192,7 +4192,7 @@ void __77__MOEngagementHistoryManager_eventBundleStore_needsEngagementInfoForBun
 
     else
     {
-      v8 = 0;
+      stringValue = 0;
       v9 = 0;
     }
 
@@ -4207,10 +4207,10 @@ void __77__MOEngagementHistoryManager_eventBundleStore_needsEngagementInfoForBun
   return v9;
 }
 
-- (id)fetchSuggestionEngagementEventsFromStartDate:(id)a3 toEndDate:(id)a4 withError:(id *)a5
+- (id)fetchSuggestionEngagementEventsFromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v10 = objc_opt_new();
   v26 = 0;
   v27 = &v26;
@@ -4218,16 +4218,16 @@ void __77__MOEngagementHistoryManager_eventBundleStore_needsEngagementInfoForBun
   v29 = __Block_byref_object_copy__33;
   v30 = __Block_byref_object_dispose__33;
   v31 = 0;
-  v11 = [(MOEngagementHistoryManager *)self stream_publisher];
+  stream_publisher = [(MOEngagementHistoryManager *)self stream_publisher];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __95__MOEngagementHistoryManager_fetchSuggestionEngagementEventsFromStartDate_toEndDate_withError___block_invoke;
   v23[3] = &unk_100338AB8;
-  v12 = v8;
+  v12 = dateCopy;
   v24 = v12;
-  v13 = v9;
+  v13 = endDateCopy;
   v25 = v13;
-  v14 = [v11 filterWithIsIncluded:v23];
+  v14 = [stream_publisher filterWithIsIncluded:v23];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
@@ -4241,9 +4241,9 @@ void __77__MOEngagementHistoryManager_eventBundleStore_needsEngagementInfoForBun
   v15 = v10;
   v21 = v15;
   v16 = [v14 sinkWithCompletion:v22 receiveInput:v20];
-  if (a5)
+  if (error)
   {
-    *a5 = v27[5];
+    *error = v27[5];
   }
 
   v17 = v21;
@@ -4315,10 +4315,10 @@ void __95__MOEngagementHistoryManager_fetchSuggestionEngagementEventsFromStartDa
   }
 }
 
-- (id)fetchAppEntryEngagementEventsFromStartDate:(id)a3 toEndDate:(id)a4 withError:(id *)a5
+- (id)fetchAppEntryEngagementEventsFromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v10 = objc_opt_new();
   v26 = 0;
   v27 = &v26;
@@ -4326,16 +4326,16 @@ void __95__MOEngagementHistoryManager_fetchSuggestionEngagementEventsFromStartDa
   v29 = __Block_byref_object_copy__33;
   v30 = __Block_byref_object_dispose__33;
   v31 = 0;
-  v11 = [(MOEngagementHistoryManager *)self stream_publisher];
+  stream_publisher = [(MOEngagementHistoryManager *)self stream_publisher];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __93__MOEngagementHistoryManager_fetchAppEntryEngagementEventsFromStartDate_toEndDate_withError___block_invoke;
   v23[3] = &unk_100338AB8;
-  v12 = v8;
+  v12 = dateCopy;
   v24 = v12;
-  v13 = v9;
+  v13 = endDateCopy;
   v25 = v13;
-  v14 = [v11 filterWithIsIncluded:v23];
+  v14 = [stream_publisher filterWithIsIncluded:v23];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
@@ -4349,9 +4349,9 @@ void __95__MOEngagementHistoryManager_fetchSuggestionEngagementEventsFromStartDa
   v15 = v10;
   v21 = v15;
   v16 = [v14 sinkWithCompletion:v22 receiveInput:v20];
-  if (a5)
+  if (error)
   {
-    *a5 = v27[5];
+    *error = v27[5];
   }
 
   v17 = v21;
@@ -4423,11 +4423,11 @@ void __93__MOEngagementHistoryManager_fetchAppEntryEngagementEventsFromStartDate
   }
 }
 
-- (id)fetchSuggestionEngagementEventsWithTypes:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withError:(id *)a6
+- (id)fetchSuggestionEngagementEventsWithTypes:(id)types fromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typesCopy = types;
+  dateCopy = date;
+  endDateCopy = endDate;
   v13 = objc_opt_new();
   v31 = 0;
   v32 = &v31;
@@ -4435,18 +4435,18 @@ void __93__MOEngagementHistoryManager_fetchAppEntryEngagementEventsFromStartDate
   v34 = __Block_byref_object_copy__33;
   v35 = __Block_byref_object_dispose__33;
   v36 = 0;
-  v14 = [(MOEngagementHistoryManager *)self stream_publisher];
+  stream_publisher = [(MOEngagementHistoryManager *)self stream_publisher];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = __105__MOEngagementHistoryManager_fetchSuggestionEngagementEventsWithTypes_fromStartDate_toEndDate_withError___block_invoke;
   v27[3] = &unk_10033E0F8;
-  v15 = v10;
+  v15 = typesCopy;
   v28 = v15;
-  v16 = v11;
+  v16 = dateCopy;
   v29 = v16;
-  v17 = v12;
+  v17 = endDateCopy;
   v30 = v17;
-  v18 = [v14 filterWithIsIncluded:v27];
+  v18 = [stream_publisher filterWithIsIncluded:v27];
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
@@ -4460,9 +4460,9 @@ void __93__MOEngagementHistoryManager_fetchAppEntryEngagementEventsFromStartDate
   v19 = v13;
   v25 = v19;
   v20 = [v18 sinkWithCompletion:v26 receiveInput:v24];
-  if (a6)
+  if (error)
   {
-    *a6 = v32[5];
+    *error = v32[5];
   }
 
   v21 = v25;
@@ -4544,11 +4544,11 @@ void __105__MOEngagementHistoryManager_fetchSuggestionEngagementEventsWithTypes_
   }
 }
 
-- (id)fetchSuggestionEngagementEventsFromAllDevicesWithTypes:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withError:(id *)a6
+- (id)fetchSuggestionEngagementEventsFromAllDevicesWithTypes:(id)types fromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typesCopy = types;
+  dateCopy = date;
+  endDateCopy = endDate;
   v13 = objc_opt_new();
   v35 = 0;
   v36 = &v35;
@@ -4556,19 +4556,19 @@ void __105__MOEngagementHistoryManager_fetchSuggestionEngagementEventsWithTypes_
   v38 = __Block_byref_object_copy__33;
   v39 = __Block_byref_object_dispose__33;
   v40 = 0;
-  v14 = [(MOEngagementHistoryManager *)self mergedStreamPublisher];
+  mergedStreamPublisher = [(MOEngagementHistoryManager *)self mergedStreamPublisher];
 
-  if (v14)
+  if (mergedStreamPublisher)
   {
-    v15 = [(MOEngagementHistoryManager *)self mergedStreamPublisher];
+    mergedStreamPublisher2 = [(MOEngagementHistoryManager *)self mergedStreamPublisher];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = __119__MOEngagementHistoryManager_fetchSuggestionEngagementEventsFromAllDevicesWithTypes_fromStartDate_toEndDate_withError___block_invoke;
     v31[3] = &unk_10033E0F8;
-    v32 = v10;
-    v33 = v11;
-    v34 = v12;
-    v16 = [v15 filterWithIsIncluded:v31];
+    v32 = typesCopy;
+    v33 = dateCopy;
+    v34 = endDateCopy;
+    v16 = [mergedStreamPublisher2 filterWithIsIncluded:v31];
 
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
@@ -4605,19 +4605,19 @@ void __105__MOEngagementHistoryManager_fetchSuggestionEngagementEventsWithTypes_
       [MOEngagementHistoryManager fetchSuggestionEngagementEventsFromAllDevicesWithTypes:fromStartDate:toEndDate:withError:];
     }
 
-    if (a6)
+    if (error)
     {
       v24 = v20;
-      *a6 = v20;
+      *error = v20;
     }
   }
 
-  if (a6)
+  if (error)
   {
     v25 = v36[5];
     if (v25)
     {
-      *a6 = v25;
+      *error = v25;
     }
   }
 
@@ -4698,11 +4698,11 @@ void __119__MOEngagementHistoryManager_fetchSuggestionEngagementEventsFromAllDev
   }
 }
 
-- (id)fetchAppEntryEngagementEventsWithTypes:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withError:(id *)a6
+- (id)fetchAppEntryEngagementEventsWithTypes:(id)types fromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typesCopy = types;
+  dateCopy = date;
+  endDateCopy = endDate;
   v13 = objc_opt_new();
   v31 = 0;
   v32 = &v31;
@@ -4710,18 +4710,18 @@ void __119__MOEngagementHistoryManager_fetchSuggestionEngagementEventsFromAllDev
   v34 = __Block_byref_object_copy__33;
   v35 = __Block_byref_object_dispose__33;
   v36 = 0;
-  v14 = [(MOEngagementHistoryManager *)self stream_publisher];
+  stream_publisher = [(MOEngagementHistoryManager *)self stream_publisher];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = __103__MOEngagementHistoryManager_fetchAppEntryEngagementEventsWithTypes_fromStartDate_toEndDate_withError___block_invoke;
   v27[3] = &unk_10033E0F8;
-  v15 = v10;
+  v15 = typesCopy;
   v28 = v15;
-  v16 = v11;
+  v16 = dateCopy;
   v29 = v16;
-  v17 = v12;
+  v17 = endDateCopy;
   v30 = v17;
-  v18 = [v14 filterWithIsIncluded:v27];
+  v18 = [stream_publisher filterWithIsIncluded:v27];
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
@@ -4735,9 +4735,9 @@ void __119__MOEngagementHistoryManager_fetchSuggestionEngagementEventsFromAllDev
   v19 = v13;
   v25 = v19;
   v20 = [v18 sinkWithCompletion:v26 receiveInput:v24];
-  if (a6)
+  if (error)
   {
-    *a6 = v32[5];
+    *error = v32[5];
   }
 
   v21 = v25;
@@ -4819,11 +4819,11 @@ void __103__MOEngagementHistoryManager_fetchAppEntryEngagementEventsWithTypes_fr
   }
 }
 
-- (id)fetchAppEntryEngagementEventsFromAllDevicesWithTypes:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withError:(id *)a6
+- (id)fetchAppEntryEngagementEventsFromAllDevicesWithTypes:(id)types fromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typesCopy = types;
+  dateCopy = date;
+  endDateCopy = endDate;
   v13 = objc_opt_new();
   v33 = 0;
   v34 = &v33;
@@ -4831,19 +4831,19 @@ void __103__MOEngagementHistoryManager_fetchAppEntryEngagementEventsWithTypes_fr
   v36 = __Block_byref_object_copy__33;
   v37 = __Block_byref_object_dispose__33;
   v38 = 0;
-  v14 = [(MOEngagementHistoryManager *)self mergedStreamPublisher];
+  mergedStreamPublisher = [(MOEngagementHistoryManager *)self mergedStreamPublisher];
 
-  if (v14)
+  if (mergedStreamPublisher)
   {
-    v15 = [(MOEngagementHistoryManager *)self mergedStreamPublisher];
+    mergedStreamPublisher2 = [(MOEngagementHistoryManager *)self mergedStreamPublisher];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = __117__MOEngagementHistoryManager_fetchAppEntryEngagementEventsFromAllDevicesWithTypes_fromStartDate_toEndDate_withError___block_invoke;
     v29[3] = &unk_10033E0F8;
-    v30 = v10;
-    v31 = v11;
-    v32 = v12;
-    v16 = [v15 filterWithIsIncluded:v29];
+    v30 = typesCopy;
+    v31 = dateCopy;
+    v32 = endDateCopy;
+    v16 = [mergedStreamPublisher2 filterWithIsIncluded:v29];
 
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
@@ -4874,19 +4874,19 @@ void __103__MOEngagementHistoryManager_fetchAppEntryEngagementEventsWithTypes_fr
       [MOEngagementHistoryManager fetchSuggestionEngagementEventsFromAllDevicesWithTypes:fromStartDate:toEndDate:withError:];
     }
 
-    if (a6)
+    if (error)
     {
       v22 = v18;
-      *a6 = v18;
+      *error = v18;
     }
   }
 
-  if (a6)
+  if (error)
   {
     v23 = v34[5];
     if (v23)
     {
-      *a6 = v23;
+      *error = v23;
     }
   }
 
@@ -4967,9 +4967,9 @@ void __117__MOEngagementHistoryManager_fetchAppEntryEngagementEventsFromAllDevic
   }
 }
 
-- (void)writeEngagementLightStreamForRemoteDevicesWithHandler:(id)a3
+- (void)writeEngagementLightStreamForRemoteDevicesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -4977,10 +4977,10 @@ void __117__MOEngagementHistoryManager_fetchAppEntryEngagementEventsFromAllDevic
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Start writing engagement light data for remote devices", buf, 2u);
   }
 
-  v6 = [(MOBookmarkStore *)self->_bookmarkStore persistenceManager];
-  v7 = [v6 availability];
+  persistenceManager = [(MOBookmarkStore *)self->_bookmarkStore persistenceManager];
+  availability = [persistenceManager availability];
 
-  if (v7 == 2)
+  if (availability == 2)
   {
     bookmarkStore = self->_bookmarkStore;
     v12[0] = _NSConcreteStackBlock;
@@ -4988,7 +4988,7 @@ void __117__MOEngagementHistoryManager_fetchAppEntryEngagementEventsFromAllDevic
     v12[2] = __84__MOEngagementHistoryManager_writeEngagementLightStreamForRemoteDevicesWithHandler___block_invoke;
     v12[3] = &unk_10033B210;
     v12[4] = self;
-    v13 = v4;
+    v13 = handlerCopy;
     [(MOBookmarkStore *)bookmarkStore removeExpiredBookmarkWithCompletionHandler:v12];
     v9 = v13;
 LABEL_9:
@@ -5002,14 +5002,14 @@ LABEL_9:
     [MOEngagementHistoryManager writeEngagementLightStreamForRemoteDevicesWithHandler:];
   }
 
-  if (v4)
+  if (handlerCopy)
   {
     v15 = NSLocalizedDescriptionKey;
     v16 = @"bookmark database is not available";
     v11 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v9 = [NSError errorWithDomain:@"MOErrorDomain" code:16 userInfo:v11];
 
-    (*(v4 + 2))(v4, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
     goto LABEL_9;
   }
 
@@ -5145,11 +5145,11 @@ void __84__MOEngagementHistoryManager_writeEngagementLightStreamForRemoteDevices
   }
 }
 
-- (void)writeEngagementLightStreamForDevices:(id)a3 storedBookmarks:(id)a4 completionHandler:(id)a5
+- (void)writeEngagementLightStreamForDevices:(id)devices storedBookmarks:(id)bookmarks completionHandler:(id)handler
 {
-  v7 = a3;
-  v20 = a4;
-  v17 = a5;
+  devicesCopy = devices;
+  bookmarksCopy = bookmarks;
+  handlerCopy = handler;
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x3032000000;
@@ -5170,7 +5170,7 @@ void __84__MOEngagementHistoryManager_writeEngagementLightStreamForRemoteDevices
   v33 = 0u;
   v31 = 0u;
   v30 = 0u;
-  obj = v7;
+  obj = devicesCopy;
   v11 = [obj countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v11)
   {
@@ -5195,7 +5195,7 @@ void __84__MOEngagementHistoryManager_writeEngagementLightStreamForRemoteDevices
         v28 = v36;
         v29 = v34;
         v27 = v8;
-        [(MOEngagementHistoryManager *)self writeEngagementLightStreamForDevice:v14 storedBookmarks:v20 handler:v25];
+        [(MOEngagementHistoryManager *)self writeEngagementLightStreamForDevice:v14 storedBookmarks:bookmarksCopy handler:v25];
 
         v13 = v13 + 1;
       }
@@ -5207,16 +5207,16 @@ void __84__MOEngagementHistoryManager_writeEngagementLightStreamForRemoteDevices
     while (v11);
   }
 
-  v15 = [(MOEngagementHistoryManager *)self queue];
+  queue = [(MOEngagementHistoryManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __101__MOEngagementHistoryManager_writeEngagementLightStreamForDevices_storedBookmarks_completionHandler___block_invoke_508;
   block[3] = &unk_10033E478;
-  v22 = v17;
+  v22 = handlerCopy;
   v23 = v36;
   v24 = v34;
-  v16 = v17;
-  dispatch_group_notify(v8, v15, block);
+  v16 = handlerCopy;
+  dispatch_group_notify(v8, queue, block);
 
   _Block_object_dispose(v34, 8);
   _Block_object_dispose(v36, 8);
@@ -5278,17 +5278,17 @@ uint64_t __101__MOEngagementHistoryManager_writeEngagementLightStreamForDevices_
   return (*(a1[4] + 16))();
 }
 
-- (void)writeEngagementLightStreamForDevice:(id)a3 storedBookmarks:(id)a4 handler:(id)a5
+- (void)writeEngagementLightStreamForDevice:(id)device storedBookmarks:(id)bookmarks handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  bookmarksCopy = bookmarks;
+  handlerCopy = handler;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 deviceIdentifier];
+    deviceIdentifier = [deviceCopy deviceIdentifier];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v12;
+    *(&buf + 4) = deviceIdentifier;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Write engagment light data for device: %@", &buf, 0xCu);
   }
 
@@ -5305,7 +5305,7 @@ uint64_t __101__MOEngagementHistoryManager_writeEngagementLightStreamForDevices_
   v26[2] = __90__MOEngagementHistoryManager_writeEngagementLightStreamForDevice_storedBookmarks_handler___block_invoke;
   v26[3] = &unk_10033E4A0;
   v26[4] = &buf;
-  v13 = [(MOEngagementHistoryManager *)self streamEngagementEventsFromSource:v8 storedBookmarks:v9 error:&v28 updatedBookmark:&v27 processEvent:v26];
+  v13 = [(MOEngagementHistoryManager *)self streamEngagementEventsFromSource:deviceCopy storedBookmarks:bookmarksCopy error:&v28 updatedBookmark:&v27 processEvent:v26];
   v14 = v28;
   v15 = v27;
   if (v13)
@@ -5331,7 +5331,7 @@ uint64_t __101__MOEngagementHistoryManager_writeEngagementLightStreamForDevices_
               objc_enumerationMutation(v16);
             }
 
-            [(MOEngagementHistoryManager *)self writeEngagementLightDataBasedEngagementData:*(*(&v22 + 1) + 8 * v19) fromDevice:v8, v22];
+            [(MOEngagementHistoryManager *)self writeEngagementLightDataBasedEngagementData:*(*(&v22 + 1) + 8 * v19) fromDevice:deviceCopy, v22];
             v19 = v19 + 1;
           }
 
@@ -5353,7 +5353,7 @@ uint64_t __101__MOEngagementHistoryManager_writeEngagementLightStreamForDevices_
     v20 = v14;
   }
 
-  v10[2](v10, v21, v20);
+  handlerCopy[2](handlerCopy, v21, v20);
 
   _Block_object_dispose(&buf, 8);
 }
@@ -5368,19 +5368,19 @@ void *__90__MOEngagementHistoryManager_writeEngagementLightStreamForDevice_store
   return result;
 }
 
-- (BOOL)streamEngagementEventsFromSource:(id)a3 storedBookmarks:(id)a4 error:(id *)a5 updatedBookmark:(id *)a6 processEvent:(id)a7
+- (BOOL)streamEngagementEventsFromSource:(id)source storedBookmarks:(id)bookmarks error:(id *)error updatedBookmark:(id *)bookmark processEvent:(id)event
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  sourceCopy = source;
+  bookmarksCopy = bookmarks;
+  eventCopy = event;
   v14 = BiomeLibrary();
-  v15 = [v14 Moments];
-  v16 = [v15 Events];
-  v17 = [v16 Engagement];
+  moments = [v14 Moments];
+  events = [moments Events];
+  engagement = [events Engagement];
 
-  v18 = [v17 publisherForDevice:v11 withUseCase:@"Moments"];
-  v19 = [v11 deviceIdentifier];
-  v20 = [(MOEngagementHistoryManager *)self getPriorBookmarkWithDeviceID:v19 storedBookmarks:v12];
+  v18 = [engagement publisherForDevice:sourceCopy withUseCase:@"Moments"];
+  deviceIdentifier = [sourceCopy deviceIdentifier];
+  v20 = [(MOEngagementHistoryManager *)self getPriorBookmarkWithDeviceID:deviceIdentifier storedBookmarks:bookmarksCopy];
 
   v46 = 0;
   v47 = &v46;
@@ -5410,25 +5410,25 @@ void *__90__MOEngagementHistoryManager_writeEngagementLightStreamForDevice_store
   v31[1] = 3221225472;
   v31[2] = __114__MOEngagementHistoryManager_streamEngagementEventsFromSource_storedBookmarks_error_updatedBookmark_processEvent___block_invoke_2;
   v31[3] = &unk_10033E4F0;
-  v22 = v13;
+  v22 = eventCopy;
   v32 = v22;
   v23 = [v18 sinkWithBookmark:v21 completion:v33 receiveInput:v31];
-  if (a5)
+  if (error)
   {
-    *a5 = v41[5];
+    *error = v41[5];
   }
 
   v24 = *(v47 + 24);
-  if (a6 && (v47[3] & 1) != 0)
+  if (bookmark && (v47[3] & 1) != 0)
   {
     v25 = v35[5];
-    v26 = [v11 deviceIdentifier];
-    v27 = [(MOEngagementHistoryManager *)self updatedBookmarkWithNewBookMark:v25 deviceID:v26];
+    deviceIdentifier2 = [sourceCopy deviceIdentifier];
+    v27 = [(MOEngagementHistoryManager *)self updatedBookmarkWithNewBookMark:v25 deviceID:deviceIdentifier2];
 
     if (v27)
     {
       v28 = v27;
-      *a6 = v27;
+      *bookmark = v27;
     }
 
     v24 = *(v47 + 24);
@@ -5485,15 +5485,15 @@ uint64_t __114__MOEngagementHistoryManager_streamEngagementEventsFromSource_stor
   return _objc_release_x1(v3, v4);
 }
 
-- (id)getPriorBookmarkWithDeviceID:(id)a3 storedBookmarks:(id)a4
+- (id)getPriorBookmarkWithDeviceID:(id)d storedBookmarks:(id)bookmarks
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  bookmarksCopy = bookmarks;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v8 = [bookmarksCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v8)
   {
     goto LABEL_12;
@@ -5508,12 +5508,12 @@ uint64_t __114__MOEngagementHistoryManager_streamEngagementEventsFromSource_stor
     {
       if (*v20 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(bookmarksCopy);
       }
 
       v13 = *(*(&v19 + 1) + 8 * i);
-      v14 = [v13 deviceIdentifier];
-      v15 = [v14 compare:v6];
+      deviceIdentifier = [v13 deviceIdentifier];
+      v15 = [deviceIdentifier compare:dCopy];
 
       if (!v15)
       {
@@ -5523,7 +5523,7 @@ uint64_t __114__MOEngagementHistoryManager_streamEngagementEventsFromSource_stor
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v9 = [bookmarksCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   }
 
   while (v9);
@@ -5541,9 +5541,9 @@ LABEL_12:
   return v17;
 }
 
-- (id)getStoreBookmarksForDeviceIDs:(id)a3
+- (id)getStoreBookmarksForDeviceIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -5557,7 +5557,7 @@ LABEL_12:
   v14[2] = __60__MOEngagementHistoryManager_getStoreBookmarksForDeviceIDs___block_invoke;
   v14[3] = &unk_100337E98;
   v14[4] = &v15;
-  [(MOBookmarkStore *)bookmarkStore fetchBookmarksWithDeviceIDs:v4 CompletionHandler:v14];
+  [(MOBookmarkStore *)bookmarkStore fetchBookmarksWithDeviceIDs:dsCopy CompletionHandler:v14];
   v7 = [NSString stringWithFormat:@"%@ - [%s] - %d - %s", @"MOSemaphoreWait", "/Library/Caches/com.apple.xbs/Sources/Moments/momentsd/EngagementMetrics/MOEngagementHistoryManager.m", 1858, "[MOEngagementHistoryManager getStoreBookmarksForDeviceIDs:]"];
   v13 = 0;
   v8 = MOSemaphoreWaitAndFaultIfTimeout_Internal(v5, &v13, v7, 30.0);
@@ -5596,11 +5596,11 @@ void __60__MOEngagementHistoryManager_getStoreBookmarksForDeviceIDs___block_invo
   }
 }
 
-- (id)updatedBookmarkWithNewBookMark:(id)a3 deviceID:(id)a4
+- (id)updatedBookmarkWithNewBookMark:(id)mark deviceID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v14 = 0;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:0 error:&v14];
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:mark requiringSecureCoding:0 error:&v14];
   v7 = v14;
   if (v7)
   {
@@ -5628,20 +5628,20 @@ void __60__MOEngagementHistoryManager_getStoreBookmarksForDeviceIDs___block_invo
     v9 = [MOBookmarkForBiomeStream alloc];
     v10 = +[NSUUID UUID];
     v11 = +[NSDate now];
-    v12 = [(MOBookmarkForBiomeStream *)v9 initWithIdentifier:v10 creationDate:v11 deviceIdentifier:v5 data:v6];
+    v12 = [(MOBookmarkForBiomeStream *)v9 initWithIdentifier:v10 creationDate:v11 deviceIdentifier:dCopy data:v6];
   }
 
   return v12;
 }
 
-- (id)convertBookmark:(id)a3
+- (id)convertBookmark:(id)bookmark
 {
-  v3 = a3;
+  bookmarkCopy = bookmark;
   v4 = +[NSCoder bm_allowedClassesForSecureCodingBMBookmark];
-  v5 = [v3 data];
+  data = [bookmarkCopy data];
 
   v12 = 0;
-  v6 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v4 fromData:v5 error:&v12];
+  v6 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v4 fromData:data error:&v12];
   v7 = v12;
 
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
@@ -5669,9 +5669,9 @@ void __60__MOEngagementHistoryManager_getStoreBookmarksForDeviceIDs___block_invo
   return v10;
 }
 
-- (void)writeEngagementLightDataBasedEngagementData:(id)a3 fromDevice:(id)a4
+- (void)writeEngagementLightDataBasedEngagementData:(id)data fromDevice:(id)device
 {
-  v5 = [(MOEngagementHistoryManager *)self engagementLightFromEngagement:a3 fromDevice:a4];
+  v5 = [(MOEngagementHistoryManager *)self engagementLightFromEngagement:data fromDevice:device];
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -5680,16 +5680,16 @@ void __60__MOEngagementHistoryManager_getStoreBookmarksForDeviceIDs___block_invo
 
   if (v5)
   {
-    v7 = [(MOEngagementHistoryManager *)self stream_source_light];
-    [v7 sendEvent:v5];
+    stream_source_light = [(MOEngagementHistoryManager *)self stream_source_light];
+    [stream_source_light sendEvent:v5];
   }
 }
 
-- (id)engagementLightFromEngagement:(id)a3 fromDevice:(id)a4
+- (id)engagementLightFromEngagement:(id)engagement fromDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  engagementCopy = engagement;
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v7 = 0;
   }
@@ -5706,27 +5706,27 @@ void __60__MOEngagementHistoryManager_getStoreBookmarksForDeviceIDs___block_invo
     v7 = 1;
   }
 
-  if ([v6 platform] == 2)
+  if ([deviceCopy platform] == 2)
   {
     v9 = 1;
   }
 
-  else if ([v6 platform] == 1)
+  else if ([deviceCopy platform] == 1)
   {
     v9 = 2;
   }
 
-  else if ([v6 platform] == 3 || objc_msgSend(v6, "platform") == 4)
+  else if ([deviceCopy platform] == 3 || objc_msgSend(deviceCopy, "platform") == 4)
   {
     v9 = 3;
   }
 
-  else if ([v6 platform] == 8)
+  else if ([deviceCopy platform] == 8)
   {
     v9 = 4;
   }
 
-  else if ([v6 platform] == 6)
+  else if ([deviceCopy platform] == 6)
   {
     v9 = 5;
   }
@@ -5739,46 +5739,46 @@ void __60__MOEngagementHistoryManager_getStoreBookmarksForDeviceIDs___block_invo
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v5 suggestionEvent];
+    suggestionEvent = [engagementCopy suggestionEvent];
 
-    if (v10)
+    if (suggestionEvent)
     {
-      v11 = [v5 suggestionEvent];
-      v12 = [v11 fullBundleOrderedSet];
-      v13 = [v12 firstObject];
+      suggestionEvent2 = [engagementCopy suggestionEvent];
+      fullBundleOrderedSet = [suggestionEvent2 fullBundleOrderedSet];
+      firstObject = [fullBundleOrderedSet firstObject];
 
-      if (v13)
+      if (firstObject)
       {
         v14 = [BMMomentsEngagementLightSuggestionIdentifier alloc];
-        v15 = [v13 identifier];
-        v16 = [v15 bundleId];
-        v17 = [v13 identifier];
-        [v17 suggestionId];
-        v18 = v56 = v5;
-        v19 = [v14 initWithBundleId:v16 suggestionId:v18];
+        identifier = [firstObject identifier];
+        bundleId = [identifier bundleId];
+        identifier2 = [firstObject identifier];
+        [identifier2 suggestionId];
+        v18 = v56 = engagementCopy;
+        v19 = [v14 initWithBundleId:bundleId suggestionId:v18];
 
         v20 = [BMMomentsEngagementLightBundleSummary alloc];
-        v21 = [v13 bundleInterfaceType];
-        v22 = [v13 bundleEvergreenType];
-        [v13 bundleGoodnessScore];
+        bundleInterfaceType = [firstObject bundleInterfaceType];
+        bundleEvergreenType = [firstObject bundleEvergreenType];
+        [firstObject bundleGoodnessScore];
         v23 = [NSNumber numberWithDouble:?];
-        v24 = [v20 initWithIdentifier:v19 bundleInterfaceType:v21 bundleEvergreenType:v22 bundleGoodnessScore:v23];
+        v24 = [v20 initWithIdentifier:v19 bundleInterfaceType:bundleInterfaceType bundleEvergreenType:bundleEvergreenType bundleGoodnessScore:v23];
 
-        v52 = [v11 type];
+        type = [suggestionEvent2 type];
         v25 = [BMMomentsEngagementLightSuggestionEvent alloc];
-        v26 = [v11 timestamp];
+        timestamp = [suggestionEvent2 timestamp];
         v64 = v24;
         [NSArray arrayWithObjects:&v64 count:1];
         v28 = v27 = v9;
-        [v11 clientIdentifier];
-        v29 = v54 = v13;
-        v30 = [v11 viewContainerName];
-        v31 = [v25 initWithType:v52 timestamp:v26 fullBundleOrderedSet:v28 clientIdentifier:v29 viewContainerName:v30 deviceType:v27];
+        [suggestionEvent2 clientIdentifier];
+        v29 = v54 = firstObject;
+        viewContainerName = [suggestionEvent2 viewContainerName];
+        v31 = [v25 initWithType:type timestamp:timestamp fullBundleOrderedSet:v28 clientIdentifier:v29 viewContainerName:viewContainerName deviceType:v27];
 
-        v5 = v56;
+        engagementCopy = v56;
         v32 = [[BMMomentsEngagementLight alloc] initWithSuggestionEvent:v31 entryEvent:0];
 
-        v33 = v54;
+        identifier3 = v54;
 LABEL_32:
 
         goto LABEL_34;
@@ -5789,25 +5789,25 @@ LABEL_32:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v34 = [v5 entryEvent];
+    entryEvent = [engagementCopy entryEvent];
 
-    if (v34)
+    if (entryEvent)
     {
       v53 = v9;
-      v11 = [v5 entryEvent];
-      v51 = [v11 type];
-      v33 = [v11 identifier];
+      suggestionEvent2 = [engagementCopy entryEvent];
+      type2 = [suggestionEvent2 type];
+      identifier3 = [suggestionEvent2 identifier];
       v19 = objc_opt_new();
-      if ([v33 count])
+      if ([identifier3 count])
       {
-        v50 = v11;
-        v55 = v33;
-        v57 = v5;
+        v50 = suggestionEvent2;
+        v55 = identifier3;
+        v57 = engagementCopy;
         v60 = 0u;
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v35 = v33;
+        v35 = identifier3;
         v36 = [v35 countByEnumeratingWithState:&v58 objects:v63 count:16];
         if (v36)
         {
@@ -5824,9 +5824,9 @@ LABEL_32:
 
               v40 = *(*(&v58 + 1) + 8 * i);
               v41 = [BMMomentsEngagementLightSuggestionIdentifier alloc];
-              v42 = [v40 bundleId];
-              v43 = [v40 suggestionId];
-              v44 = [v41 initWithBundleId:v42 suggestionId:v43];
+              bundleId2 = [v40 bundleId];
+              suggestionId = [v40 suggestionId];
+              v44 = [v41 initWithBundleId:bundleId2 suggestionId:suggestionId];
 
               if (v44)
               {
@@ -5840,16 +5840,16 @@ LABEL_32:
           while (v37);
         }
 
-        v33 = v55;
-        v5 = v57;
-        v11 = v50;
+        identifier3 = v55;
+        engagementCopy = v57;
+        suggestionEvent2 = v50;
       }
 
       v45 = [BMMomentsEngagementLightAppEntryEvent alloc];
-      v46 = [v11 clientIdentifier];
-      v47 = [v11 timestamp];
-      v48 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v11 addedCharacters] > 0);
-      v24 = [v45 initWithType:v51 clientIdentifier:v46 timestamp:v47 identifier:v19 deviceType:v53 hasText:v48];
+      clientIdentifier = [suggestionEvent2 clientIdentifier];
+      timestamp2 = [suggestionEvent2 timestamp];
+      v48 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [suggestionEvent2 addedCharacters] > 0);
+      v24 = [v45 initWithType:type2 clientIdentifier:clientIdentifier timestamp:timestamp2 identifier:v19 deviceType:v53 hasText:v48];
 
       v32 = [[BMMomentsEngagementLight alloc] initWithSuggestionEvent:0 entryEvent:v24];
       goto LABEL_32;
@@ -5862,9 +5862,9 @@ LABEL_34:
   return v32;
 }
 
-- (void)writeEngagementLightStreamForLocalDevicesWithHandler:(id)a3
+- (void)writeEngagementLightStreamForLocalDevicesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v50 = 0;
   v5 = [(MOEngagementHistoryManager *)self momentsEngagmentDataFromLocalDeviceWithError:&v50];
   v6 = v50;
@@ -5898,11 +5898,11 @@ LABEL_40:
   }
 
   v13 = objc_opt_new();
-  v14 = [v7 allKeys];
-  if (![v14 count])
+  allKeys = [v7 allKeys];
+  if (![allKeys count])
   {
-    v15 = [v5 allKeys];
-    v16 = [v15 count];
+    allKeys2 = [v5 allKeys];
+    v16 = [allKeys2 count];
 
     if (!v16)
     {
@@ -5916,16 +5916,16 @@ LABEL_40:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "There is no engagement light data", buf, 2u);
     }
 
-    v14 = [v5 allKeys];
-    [v13 addObjectsFromArray:v14];
+    allKeys = [v5 allKeys];
+    [v13 addObjectsFromArray:allKeys];
   }
 
 LABEL_14:
-  v18 = [v7 allKeys];
-  if ([v18 count])
+  allKeys3 = [v7 allKeys];
+  if ([allKeys3 count])
   {
-    v19 = [v5 allKeys];
-    v20 = [v19 count];
+    allKeys4 = [v5 allKeys];
+    v20 = [allKeys4 count];
 
     if (!v20)
     {
@@ -5939,16 +5939,16 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "There is some engagement light data", buf, 2u);
     }
 
-    v22 = [v7 allKeys];
-    v18 = [NSSet setWithArray:v22];
+    allKeys5 = [v7 allKeys];
+    allKeys3 = [NSSet setWithArray:allKeys5];
 
     v23 = objc_opt_new();
-    v24 = [v5 allKeys];
-    [v23 addObjectsFromArray:v24];
+    allKeys6 = [v5 allKeys];
+    [v23 addObjectsFromArray:allKeys6];
 
-    [v23 minusSet:v18];
-    v25 = [v23 allObjects];
-    [v13 addObjectsFromArray:v25];
+    [v23 minusSet:allKeys3];
+    allObjects = [v23 allObjects];
+    [v13 addObjectsFromArray:allObjects];
   }
 
 LABEL_20:
@@ -5973,7 +5973,7 @@ LABEL_20:
       v36 = v7;
       v37 = v9;
       v38 = v6;
-      v39 = v4;
+      v39 = handlerCopy;
       v29 = *v45;
       do
       {
@@ -6027,7 +6027,7 @@ LABEL_20:
       v11 = 0;
       v13 = v12;
       v6 = v38;
-      v4 = v39;
+      handlerCopy = v39;
       v7 = v36;
       v9 = v37;
     }
@@ -6043,10 +6043,10 @@ LABEL_20:
 
   v11 = 0;
 LABEL_41:
-  v4[2](v4, v11);
+  handlerCopy[2](handlerCopy, v11);
 }
 
-- (id)momentsEngagmentDataFromLocalDeviceWithError:(id *)a3
+- (id)momentsEngagmentDataFromLocalDeviceWithError:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -6078,7 +6078,7 @@ LABEL_41:
   v9 = *(v19[0] + 40);
   if (v9)
   {
-    *a3 = v9;
+    *error = v9;
     v10 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -6089,8 +6089,8 @@ LABEL_41:
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v22[5] allKeys];
-    v13 = [v12 count];
+    allKeys = [v22[5] allKeys];
+    v13 = [allKeys count];
     *buf = 134217984;
     v28 = v13;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "fetch engagement data from local device, data count %lu", buf, 0xCu);
@@ -6180,7 +6180,7 @@ uint64_t __75__MOEngagementHistoryManager_momentsEngagmentDataFromLocalDeviceWit
   return _objc_release_x1(v3, v5);
 }
 
-- (id)momentsEngagmentLightDataFromLocalDeviceWithError:(id *)a3
+- (id)momentsEngagmentLightDataFromLocalDeviceWithError:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -6212,7 +6212,7 @@ uint64_t __75__MOEngagementHistoryManager_momentsEngagmentDataFromLocalDeviceWit
   v9 = *(v19[0] + 40);
   if (v9)
   {
-    *a3 = v9;
+    *error = v9;
     v10 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -6223,8 +6223,8 @@ uint64_t __75__MOEngagementHistoryManager_momentsEngagmentDataFromLocalDeviceWit
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v22[5] allKeys];
-    v13 = [v12 count];
+    allKeys = [v22[5] allKeys];
+    v13 = [allKeys count];
     *buf = 134217984;
     v28 = v13;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "fetch engagement light data from local device, data count %lu", buf, 0xCu);
@@ -6314,13 +6314,13 @@ uint64_t __80__MOEngagementHistoryManager_momentsEngagmentLightDataFromLocalDevi
   return _objc_release_x1(v3, v5);
 }
 
-- (void)updateEngagementLightStreamWithRefreshVariant:(unint64_t)a3 handler:(id)a4
+- (void)updateEngagementLightStreamWithRefreshVariant:(unint64_t)variant handler:(id)handler
 {
-  v6 = a4;
-  v7 = [(MOEngagementHistoryManager *)self configurationManager];
-  v8 = [v7 getBoolSettingForKey:@"EngagementBiomeStreamMigrationComplete" withFallback:0];
+  handlerCopy = handler;
+  configurationManager = [(MOEngagementHistoryManager *)self configurationManager];
+  v8 = [configurationManager getBoolSettingForKey:@"EngagementBiomeStreamMigrationComplete" withFallback:0];
 
-  if (a3 == 512 || a3 == 1280 || a3 == 768)
+  if (variant == 512 || variant == 1280 || variant == 768)
   {
     if ((v8 & 1) == 0)
     {
@@ -6329,7 +6329,7 @@ uint64_t __80__MOEngagementHistoryManager_momentsEngagmentLightDataFromLocalDevi
       v15[2] = __84__MOEngagementHistoryManager_updateEngagementLightStreamWithRefreshVariant_handler___block_invoke;
       v15[3] = &unk_10033B560;
       v15[4] = self;
-      v16 = v6;
+      v16 = handlerCopy;
       [(MOEngagementHistoryManager *)self writeEngagementLightStreamForRemoteDevicesWithHandler:v15];
       v9 = v16;
 LABEL_11:
@@ -6343,7 +6343,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ((a3 | 0x100) == 0x300)
+  if ((variant | 0x100) == 0x300)
   {
     v10 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -6356,7 +6356,7 @@ LABEL_11:
     v12[1] = 3221225472;
     v12[2] = __84__MOEngagementHistoryManager_updateEngagementLightStreamWithRefreshVariant_handler___block_invoke_541;
     v12[3] = &unk_10033B2D8;
-    v13 = v6;
+    v13 = handlerCopy;
     [(MOEngagementHistoryManager *)self writeEngagementLightStreamForRemoteDevicesWithHandler:v12];
     v9 = v13;
     goto LABEL_11;
@@ -6370,7 +6370,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Skip Engagement data migration and update as conditions are not met", buf, 2u);
   }
 
-  (*(v6 + 2))(v6, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_15:
 }
 
@@ -6415,11 +6415,11 @@ void __84__MOEngagementHistoryManager_updateEngagementLightStreamWithRefreshVari
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)fetchSuggestionEngagementLightEventsWithTypes:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withError:(id *)a6
+- (id)fetchSuggestionEngagementLightEventsWithTypes:(id)types fromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typesCopy = types;
+  dateCopy = date;
+  endDateCopy = endDate;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -6432,18 +6432,18 @@ void __84__MOEngagementHistoryManager_updateEngagementLightStreamWithRefreshVari
   v32 = __Block_byref_object_copy__33;
   v33 = __Block_byref_object_dispose__33;
   v34 = 0;
-  v13 = [(MOEngagementHistoryManager *)self stream_publisher_light];
+  stream_publisher_light = [(MOEngagementHistoryManager *)self stream_publisher_light];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = __110__MOEngagementHistoryManager_fetchSuggestionEngagementLightEventsWithTypes_fromStartDate_toEndDate_withError___block_invoke;
   v25[3] = &unk_10033E0F8;
-  v14 = v10;
+  v14 = typesCopy;
   v26 = v14;
-  v15 = v11;
+  v15 = dateCopy;
   v27 = v15;
-  v16 = v12;
+  v16 = endDateCopy;
   v28 = v16;
-  v17 = [v13 filterWithIsIncluded:v25];
+  v17 = [stream_publisher_light filterWithIsIncluded:v25];
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
@@ -6456,9 +6456,9 @@ void __84__MOEngagementHistoryManager_updateEngagementLightStreamWithRefreshVari
   v23[3] = &unk_10033D548;
   v23[4] = &v35;
   v18 = [v17 sinkWithCompletion:v24 receiveInput:v23];
-  if (a6)
+  if (error)
   {
-    *a6 = v30[5];
+    *error = v30[5];
   }
 
   v19 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);
@@ -6541,11 +6541,11 @@ void __110__MOEngagementHistoryManager_fetchSuggestionEngagementLightEventsWithT
   }
 }
 
-- (id)fetchAppEntryEngagementLightEventsWithTypes:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withError:(id *)a6
+- (id)fetchAppEntryEngagementLightEventsWithTypes:(id)types fromStartDate:(id)date toEndDate:(id)endDate withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typesCopy = types;
+  dateCopy = date;
+  endDateCopy = endDate;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -6558,18 +6558,18 @@ void __110__MOEngagementHistoryManager_fetchSuggestionEngagementLightEventsWithT
   v32 = __Block_byref_object_copy__33;
   v33 = __Block_byref_object_dispose__33;
   v34 = 0;
-  v13 = [(MOEngagementHistoryManager *)self stream_publisher_light];
+  stream_publisher_light = [(MOEngagementHistoryManager *)self stream_publisher_light];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = __108__MOEngagementHistoryManager_fetchAppEntryEngagementLightEventsWithTypes_fromStartDate_toEndDate_withError___block_invoke;
   v25[3] = &unk_10033E0F8;
-  v14 = v10;
+  v14 = typesCopy;
   v26 = v14;
-  v15 = v11;
+  v15 = dateCopy;
   v27 = v15;
-  v16 = v12;
+  v16 = endDateCopy;
   v28 = v16;
-  v17 = [v13 filterWithIsIncluded:v25];
+  v17 = [stream_publisher_light filterWithIsIncluded:v25];
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
@@ -6582,9 +6582,9 @@ void __110__MOEngagementHistoryManager_fetchSuggestionEngagementLightEventsWithT
   v23[3] = &unk_10033D548;
   v23[4] = &v35;
   v18 = [v17 sinkWithCompletion:v24 receiveInput:v23];
-  if (a6)
+  if (error)
   {
-    *a6 = v30[5];
+    *error = v30[5];
   }
 
   v19 = _mo_log_facility_get_os_log(&MOLogFacilityEngagement);

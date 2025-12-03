@@ -1,15 +1,15 @@
 @interface AccelerometerData
-- (AccelerometerData)initWithData:(id)a3 timestamp:(double)a4;
+- (AccelerometerData)initWithData:(id)data timestamp:(double)timestamp;
 - (id)description;
 @end
 
 @implementation AccelerometerData
 
-- (AccelerometerData)initWithData:(id)a3 timestamp:(double)a4
+- (AccelerometerData)initWithData:(id)data timestamp:(double)timestamp
 {
-  v10 = a3;
+  dataCopy = data;
   v8 = a2;
-  v7 = a4;
+  timestampCopy = timestamp;
   v9 = 0;
   v6.receiver = self;
   v6.super_class = AccelerometerData;
@@ -17,10 +17,10 @@
   objc_storeStrong(&v9, v9);
   if (v9)
   {
-    v9->_timestamp = v7;
-    v9->_x = v10.var0;
-    v9->_y = v10.var1;
-    v9->_z = v10.var2;
+    v9->_timestamp = timestampCopy;
+    v9->_x = dataCopy.var0;
+    v9->_y = dataCopy.var1;
+    v9->_z = dataCopy.var2;
   }
 
   v5 = MEMORY[0x277D82BE0](v9);

@@ -1,18 +1,18 @@
 @interface SUMarkupCell
-- (SUMarkupCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SUMarkupCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)setBackgroundColor:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
+- (void)setBackgroundColor:(id)color;
+- (void)setConfiguration:(id)configuration;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 @end
 
 @implementation SUMarkupCell
 
-- (SUMarkupCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SUMarkupCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = SUMarkupCell;
-  v4 = [(SUTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SUTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -30,15 +30,15 @@
   [(SUTableCell *)&v3 dealloc];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = SUMarkupCell;
   [(SUMarkupCell *)&v5 setBackgroundColor:?];
-  [(SUWebDocumentView *)self->_webView setBackgroundColor:a3];
+  [(SUWebDocumentView *)self->_webView setBackgroundColor:color];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -48,8 +48,8 @@
 
   v8.receiver = self;
   v8.super_class = SUMarkupCell;
-  [(SUTableCell *)&v8 setConfiguration:a3];
-  v6 = [objc_msgSend(a3 "context")];
+  [(SUTableCell *)&v8 setConfiguration:configuration];
+  v6 = [objc_msgSend(configuration "context")];
   webView = self->_webView;
   if (v6 != webView)
   {
@@ -64,7 +64,7 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = SUMarkupCell;

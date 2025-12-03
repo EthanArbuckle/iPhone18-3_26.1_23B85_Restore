@@ -1,6 +1,6 @@
 @interface PKRemoteImagePreparer
 - (PKRemoteImagePreparer)init;
-- (void)fetchRemoteImage:(id)a3 scaleToSize:(CGSize)a4 preheatBitmap:(BOOL)a5 completion:(id)a6;
+- (void)fetchRemoteImage:(id)image scaleToSize:(CGSize)size preheatBitmap:(BOOL)bitmap completion:(id)completion;
 @end
 
 @implementation PKRemoteImagePreparer
@@ -30,13 +30,13 @@
   return v2;
 }
 
-- (void)fetchRemoteImage:(id)a3 scaleToSize:(CGSize)a4 preheatBitmap:(BOOL)a5 completion:(id)a6
+- (void)fetchRemoteImage:(id)image scaleToSize:(CGSize)size preheatBitmap:(BOOL)bitmap completion:(id)completion
 {
-  v7 = a5;
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a6;
+  bitmapCopy = bitmap;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  completionCopy = completion;
   v13 = width != *MEMORY[0x1E695F060];
   if (height != *(MEMORY[0x1E695F060] + 8))
   {
@@ -60,7 +60,7 @@
   }
 
   v15 = v13 && v14;
-  v16 = [v11 remoteURL];
+  remoteURL = [imageCopy remoteURL];
   if (v15 == 1)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f-%.2f", *&width, *&height];
@@ -72,20 +72,20 @@
   }
 
   v18 = @"RawData";
-  if (v7)
+  if (bitmapCopy)
   {
     v18 = @"Bitmap";
   }
 
   v19 = MEMORY[0x1E696AEC0];
   v20 = v18;
-  v21 = [v16 absoluteString];
-  v22 = [v19 stringWithFormat:@"%@_%@_%@", v21, v17, v20];
+  absoluteString = [remoteURL absoluteString];
+  v22 = [v19 stringWithFormat:@"%@_%@_%@", absoluteString, v17, v20];
 
   v23 = [(NSCache *)self->_preparedImageCache objectForKey:v22];
   if (v23)
   {
-    v12[2](v12, v23);
+    completionCopy[2](completionCopy, v23);
   }
 
   else
@@ -98,7 +98,7 @@
       [(NSMutableDictionary *)self->_completionHandlers setObject:v24 forKey:v22];
     }
 
-    v25 = [v12 copy];
+    v25 = [completionCopy copy];
     v26 = _Block_copy(v25);
     [v24 addObject:v26];
 
@@ -112,9 +112,9 @@
     v30 = v15;
     v29[1] = *&width;
     v29[2] = *&height;
-    v31 = v7;
+    v31 = bitmapCopy;
     v28 = v22;
-    [v11 fetchImageWithCompletion:v27];
+    [imageCopy fetchImageWithCompletion:v27];
 
     objc_destroyWeak(v29);
     objc_destroyWeak(&location);

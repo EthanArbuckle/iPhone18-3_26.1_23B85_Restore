@@ -1,60 +1,60 @@
 @interface CADSpotlightIndexer
 + (__CFSet)_entityTypesThatAffectSpotlightIndexing;
-+ (id)_personaID:(void *)a3;
-+ (id)_spotlightDomainIDForItem:(void *)a3 bundleID:(id)a4 personaID:(id)a5;
-+ (void)_executeWithNumRetriesOnFailure:(int64_t)a3 block:(id)a4;
-- (BOOL)_deleteAllSearchableItemsAndSetClientStateForBundleID:(id)a3 eventIndex:(id)a4;
-- (BOOL)_deleteFromIndex:(id)a3 eventsIndex:(id)a4;
-- (BOOL)_mostRecentFailureWithinADayOfNow:(id)a3;
-- (BOOL)_pushUpdatesForCalendarItemsWithUUIDs:(id)a3 database:(CalDatabase *)a4 personaID:(id)a5 deleteBeforeInserting:(BOOL)a6;
-- (BOOL)_pushUpdatesForCalendarItemsWithUUIDs:(id)a3 inBatchesOf:(unint64_t)a4 database:(CalDatabase *)a5 personaID:(id)a6 deleteBeforeInserting:(BOOL)a7;
-- (BOOL)_sendSpotlightUpdates:(id)a3 deletes:(id)a4 toIndex:(id)a5;
-- (BOOL)_upsertToIndex:(__CFArray *)a3 inDatabase:(CalDatabase *)a4 personaID:(id)a5 deleteBeforeInserting:(BOOL)a6 eventsIndex:(id)a7;
-- (CADSpotlightIndexer)initWithDatabaseConfiguration:(id)a3 spotlightIndexProvider:(id)a4 spotlightDefaults:(id)a5 spotlightEntityAnnotator:(id)a6;
-- (CADSpotlightIndexer)initWithSpotlightEntityAnnotator:(id)a3;
++ (id)_personaID:(void *)d;
++ (id)_spotlightDomainIDForItem:(void *)item bundleID:(id)d personaID:(id)iD;
++ (void)_executeWithNumRetriesOnFailure:(int64_t)failure block:(id)block;
+- (BOOL)_deleteAllSearchableItemsAndSetClientStateForBundleID:(id)d eventIndex:(id)index;
+- (BOOL)_deleteFromIndex:(id)index eventsIndex:(id)eventsIndex;
+- (BOOL)_mostRecentFailureWithinADayOfNow:(id)now;
+- (BOOL)_pushUpdatesForCalendarItemsWithUUIDs:(id)ds database:(CalDatabase *)database personaID:(id)d deleteBeforeInserting:(BOOL)inserting;
+- (BOOL)_pushUpdatesForCalendarItemsWithUUIDs:(id)ds inBatchesOf:(unint64_t)of database:(CalDatabase *)database personaID:(id)d deleteBeforeInserting:(BOOL)inserting;
+- (BOOL)_sendSpotlightUpdates:(id)updates deletes:(id)deletes toIndex:(id)index;
+- (BOOL)_upsertToIndex:(__CFArray *)index inDatabase:(CalDatabase *)database personaID:(id)d deleteBeforeInserting:(BOOL)inserting eventsIndex:(id)eventsIndex;
+- (CADSpotlightIndexer)initWithDatabaseConfiguration:(id)configuration spotlightIndexProvider:(id)provider spotlightDefaults:(id)defaults spotlightEntityAnnotator:(id)annotator;
+- (CADSpotlightIndexer)initWithSpotlightEntityAnnotator:(id)annotator;
 - (id)_expectedClientState;
 - (id)_mostRecentFailure;
-- (id)_spotlightItemAttributes:(void *)a3;
-- (id)_spotlightRecurrenceId:(void *)a3;
-- (id)_textRepresentationForEvent:(void *)a3;
-- (void)_enumerateDatabases:(id)a3;
-- (void)_fullReindexWithReason:(unint64_t)a3;
+- (id)_spotlightItemAttributes:(void *)attributes;
+- (id)_spotlightRecurrenceId:(void *)id;
+- (id)_textRepresentationForEvent:(void *)event;
+- (void)_enumerateDatabases:(id)databases;
+- (void)_fullReindexWithReason:(unint64_t)reason;
 - (void)_incrementalUpdate;
-- (void)_upsertsAndDeletesFromChanges:(id)a3 inDatabase:(CalDatabase *)a4 personaID:(id)a5 outUpserts:(id *)a6 outDeletes:(id *)a7;
+- (void)_upsertsAndDeletesFromChanges:(id)changes inDatabase:(CalDatabase *)database personaID:(id)d outUpserts:(id *)upserts outDeletes:(id *)deletes;
 - (void)cancelOngoingWorkAndShutdown;
 - (void)checkForAndReportPastSpotlightMigrationErrorsAndReindexIfNeeded;
 - (void)indexUnconsumedChanges;
-- (void)provideDataForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8;
-- (void)provideFileURLForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8;
-- (void)reindexAllItemsForBundleID:(id)a3 protectionClass:(id)a4 acknowledgementHandler:(id)a5;
-- (void)reindexItemsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 acknowledgementHandler:(id)a6;
+- (void)provideDataForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler;
+- (void)provideFileURLForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler;
+- (void)reindexAllItemsForBundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler;
+- (void)reindexItemsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler;
 - (void)waitUntilIdle;
 @end
 
 @implementation CADSpotlightIndexer
 
-- (CADSpotlightIndexer)initWithSpotlightEntityAnnotator:(id)a3
+- (CADSpotlightIndexer)initWithSpotlightEntityAnnotator:(id)annotator
 {
-  v4 = a3;
+  annotatorCopy = annotator;
   v5 = objc_alloc_init(CADCoreSpotlightIndexProvider);
-  v6 = [MEMORY[0x277CF77A8] shared];
-  v7 = [(CADSpotlightIndexer *)self initWithDatabaseConfiguration:0 spotlightIndexProvider:v5 spotlightDefaults:v6 spotlightEntityAnnotator:v4];
+  mEMORY[0x277CF77A8] = [MEMORY[0x277CF77A8] shared];
+  v7 = [(CADSpotlightIndexer *)self initWithDatabaseConfiguration:0 spotlightIndexProvider:v5 spotlightDefaults:mEMORY[0x277CF77A8] spotlightEntityAnnotator:annotatorCopy];
 
   return v7;
 }
 
-- (CADSpotlightIndexer)initWithDatabaseConfiguration:(id)a3 spotlightIndexProvider:(id)a4 spotlightDefaults:(id)a5 spotlightEntityAnnotator:(id)a6
+- (CADSpotlightIndexer)initWithDatabaseConfiguration:(id)configuration spotlightIndexProvider:(id)provider spotlightDefaults:(id)defaults spotlightEntityAnnotator:(id)annotator
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  configurationCopy = configuration;
+  providerCopy = provider;
+  defaultsCopy = defaults;
+  annotatorCopy = annotator;
   v30.receiver = self;
   v30.super_class = CADSpotlightIndexer;
   v15 = [(CADSpotlightIndexer *)&v30 init];
   if (v15)
   {
-    v26 = v11;
+    v26 = configurationCopy;
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v17 = dispatch_queue_create("spotlightIndexingQueue", v16);
     queue = v15->_queue;
@@ -72,17 +72,17 @@
     incrementalUpdateQueue = v15->_incrementalUpdateQueue;
     v15->_incrementalUpdateQueue = v21;
 
-    objc_storeStrong(&v15->_databaseConfiguration, a3);
-    objc_storeStrong(&v15->_spotlightIndexProvider, a4);
-    objc_storeStrong(&v15->_spotlightDefaults, a5);
-    objc_storeStrong(&v15->_spotlightEntityAnnotator, a6);
+    objc_storeStrong(&v15->_databaseConfiguration, configuration);
+    objc_storeStrong(&v15->_spotlightIndexProvider, provider);
+    objc_storeStrong(&v15->_spotlightDefaults, defaults);
+    objc_storeStrong(&v15->_spotlightEntityAnnotator, annotator);
     v23 = objc_alloc_init(MEMORY[0x277CF7778]);
     cancellationTokenSource = v15->_cancellationTokenSource;
     v15->_cancellationTokenSource = v23;
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&location);
-    v11 = v26;
+    configurationCopy = v26;
   }
 
   return v15;
@@ -142,12 +142,12 @@ void __62__CADSpotlightIndexer__entityTypesThatAffectSpotlightIndexing__block_in
   dispatch_sync(queue, block);
 }
 
-- (void)_enumerateDatabases:(id)a3
+- (void)_enumerateDatabases:(id)databases
 {
   databaseConfiguration = self->_databaseConfiguration;
   if (databaseConfiguration)
   {
-    MEMORY[0x282147D90](databaseConfiguration, a3);
+    MEMORY[0x282147D90](databaseConfiguration, databases);
   }
 
   else
@@ -366,10 +366,10 @@ LABEL_50:
 - (void)indexUnconsumedChanges
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
-  v4 = [v3 isCancelled];
+  token = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
+  isCancelled = [token isCancelled];
 
-  if (v4)
+  if (isCancelled)
   {
     if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_ERROR))
     {
@@ -394,10 +394,10 @@ LABEL_50:
 
 - (void)checkForAndReportPastSpotlightMigrationErrorsAndReindexIfNeeded
 {
-  v3 = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
-  v4 = [v3 isCancelled];
+  token = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
+  isCancelled = [token isCancelled];
 
-  if (v4)
+  if (isCancelled)
   {
     if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_ERROR))
     {
@@ -565,12 +565,12 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)_mostRecentFailureWithinADayOfNow:(id)a3
+- (BOOL)_mostRecentFailureWithinADayOfNow:(id)now
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 date];
-  [v5 timeIntervalSinceDate:v4];
+  nowCopy = now;
+  date = [v3 date];
+  [date timeIntervalSinceDate:nowCopy];
   v7 = v6;
 
   return v7 <= 86400.0;
@@ -584,10 +584,10 @@ LABEL_17:
   return v2;
 }
 
-- (BOOL)_deleteAllSearchableItemsAndSetClientStateForBundleID:(id)a3 eventIndex:(id)a4
+- (BOOL)_deleteAllSearchableItemsAndSetClientStateForBundleID:(id)d eventIndex:(id)index
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  indexCopy = index;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -600,10 +600,10 @@ LABEL_17:
   v14[3] = &unk_27851ABA0;
   v10 = v8;
   v15 = v10;
-  v11 = v7;
+  v11 = indexCopy;
   v16 = v11;
-  v12 = v6;
-  v18 = self;
+  v12 = dCopy;
+  selfCopy = self;
   v19 = &v20;
   v17 = v12;
   [v9 _executeWithNumRetriesOnFailure:1 block:v14];
@@ -707,13 +707,13 @@ void __88__CADSpotlightIndexer__deleteAllSearchableItemsAndSetClientStateForBund
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_fullReindexWithReason:(unint64_t)a3
+- (void)_fullReindexWithReason:(unint64_t)reason
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
-  v6 = [v5 isCancelled];
+  token = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
+  isCancelled = [token isCancelled];
 
-  if (v6)
+  if (isCancelled)
   {
     if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_ERROR))
     {
@@ -728,21 +728,21 @@ void __88__CADSpotlightIndexer__deleteAllSearchableItemsAndSetClientStateForBund
     dispatch_assert_queue_V2(self->_queue);
     [(CADSpotlightDefaults *)self->_spotlightDefaults setObject:0 forKey:@"CalDBSpotLightError"];
     spotlightDefaults = self->_spotlightDefaults;
-    v8 = [MEMORY[0x277CBEAA8] date];
-    [(CADSpotlightDefaults *)spotlightDefaults setObject:v8 forKey:@"LastUnfinishedSpotlightReindex"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(CADSpotlightDefaults *)spotlightDefaults setObject:date forKey:@"LastUnfinishedSpotlightReindex"];
 
     v9 = CADSpotlightHandle;
     if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_DEFAULT))
     {
       v10 = MEMORY[0x277CCABB0];
       v11 = v9;
-      v12 = [v10 numberWithUnsignedInteger:a3];
+      v12 = [v10 numberWithUnsignedInteger:reason];
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v12;
       _os_log_impl(&dword_22430B000, v11, OS_LOG_TYPE_DEFAULT, "Beginning spotlight re-index for all databases: %@", &buf, 0xCu);
     }
 
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
     [CADSpotlightLogger log:@"started _fullReindexWithReason: %@", v13];
 
     v14 = *MEMORY[0x277CF7AA8];
@@ -758,10 +758,10 @@ void __88__CADSpotlightIndexer__deleteAllSearchableItemsAndSetClientStateForBund
     *(&buf + 1) = &buf;
     v27 = 0x2020000000;
     v28 = [(CADSpotlightIndexer *)self _deleteAllSearchableItemsAndSetClientStateForBundleID:v14 eventIndex:v15];
-    v17 = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
-    v18 = [v17 isCancelled];
+    token2 = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
+    isCancelled2 = [token2 isCancelled];
 
-    if (v18)
+    if (isCancelled2)
     {
       if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_ERROR))
       {
@@ -777,8 +777,8 @@ void __88__CADSpotlightIndexer__deleteAllSearchableItemsAndSetClientStateForBund
       {
         [CADSpotlightLogger logError:@"error while attemping full reindex, writing error pref"];
         v19 = self->_spotlightDefaults;
-        v20 = [MEMORY[0x277CBEAA8] date];
-        [(CADSpotlightDefaults *)v19 setObject:v20 forKey:@"CalDBSpotLightError"];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [(CADSpotlightDefaults *)v19 setObject:date2 forKey:@"CalDBSpotLightError"];
       }
 
       [(CADSpotlightDefaults *)self->_spotlightDefaults setObject:0 forKey:@"LastUnfinishedSpotlightReindex"];
@@ -791,7 +791,7 @@ void __88__CADSpotlightIndexer__deleteAllSearchableItemsAndSetClientStateForBund
         _os_log_impl(&dword_22430B000, v21, OS_LOG_TYPE_DEFAULT, "Finished spotlight re-index for all databases", v24, 2u);
       }
 
-      v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
       [CADSpotlightLogger log:@"finished _fullReindexWithReason: %@", v22];
     }
 
@@ -885,22 +885,22 @@ uint64_t __46__CADSpotlightIndexer__fullReindexWithReason___block_invoke_2(uint6
   return v16;
 }
 
-+ (void)_executeWithNumRetriesOnFailure:(int64_t)a3 block:(id)a4
++ (void)_executeWithNumRetriesOnFailure:(int64_t)failure block:(id)block
 {
   do
   {
-    if ((*(a4 + 2))(a4, a3 > 0))
+    if ((*(block + 2))(block, failure > 0))
     {
       break;
     }
   }
 
-  while (a3-- > 0);
+  while (failure-- > 0);
 }
 
-+ (id)_personaID:(void *)a3
++ (id)_personaID:(void *)d
 {
-  if (!a3)
+  if (!d)
   {
     v3 = @"CalMainDatabasePersona";
     goto LABEL_7;
@@ -926,20 +926,20 @@ LABEL_8:
   return v4;
 }
 
-- (void)_upsertsAndDeletesFromChanges:(id)a3 inDatabase:(CalDatabase *)a4 personaID:(id)a5 outUpserts:(id *)a6 outDeletes:(id *)a7
+- (void)_upsertsAndDeletesFromChanges:(id)changes inDatabase:(CalDatabase *)database personaID:(id)d outUpserts:(id *)upserts outDeletes:(id *)deletes
 {
   v78 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  changesCopy = changes;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  v63 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-  v11 = [v9 count];
+  v63 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(changesCopy, "count")}];
+  v11 = [changesCopy count];
   theSet = CFSetCreateMutable(0, v11, MEMORY[0x277CBF158]);
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  obj = v9;
+  obj = changesCopy;
   v12 = [obj countByEnumeratingWithState:&v71 objects:v77 count:16];
   if (v12)
   {
@@ -961,36 +961,36 @@ LABEL_8:
         if (v17)
         {
           v18 = [v16 objectForKeyedSubscript:@"type"];
-          v19 = [v18 integerValue];
+          integerValue = [v18 integerValue];
 
-          v20 = [v17 entityType];
+          entityType = [v17 entityType];
           v21 = v68;
-          if (v20 > 4)
+          if (entityType > 4)
           {
-            if (v20 != 5)
+            if (entityType != 5)
             {
-              if (v20 == 6)
+              if (entityType == 6)
               {
-                if (v19 == 2)
+                if (integerValue == 2)
                 {
                   v32 = [v16 objectForKeyedSubscript:@"persistent_id"];
-                  v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@", v21, v10, v32];
+                  v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@", v21, dCopy, v32];
                   [v63 addObject:v33];
                 }
 
                 goto LABEL_55;
               }
 
-              if (v20 == 26)
+              if (entityType == 26)
               {
-                if (v19 == 2)
+                if (integerValue == 2)
                 {
                   v22 = [v16 objectForKeyedSubscript:@"persona_id"];
 
                   v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v21, v22];
                   [v63 addObject:v23];
 
-                  v10 = v22;
+                  dCopy = v22;
                 }
 
                 goto LABEL_55;
@@ -1001,19 +1001,19 @@ LABEL_33:
               if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_ERROR))
               {
                 *buf = 67109120;
-                v76 = v20;
+                v76 = entityType;
                 _os_log_error_impl(&dword_22430B000, v41, OS_LOG_TYPE_ERROR, "Got changes for unexpected entity type: %d", buf, 8u);
               }
 
               goto LABEL_55;
             }
 
-            if (v19 != 2)
+            if (integerValue != 2)
             {
               v27 = [v16 objectForKeyedSubscript:@"event_id_tomb"];
-              v28 = [v27 intValue];
+              intValue = [v27 intValue];
 
-              v29 = MEMORY[0x22AA4B950](a4, v28);
+              v29 = MEMORY[0x22AA4B950](database, intValue);
               if (v29)
               {
                 v30 = v29;
@@ -1026,9 +1026,9 @@ LABEL_33:
             goto LABEL_55;
           }
 
-          if (v20 == 1)
+          if (entityType == 1)
           {
-            if (v19 == 2)
+            if (integerValue == 2)
             {
               v34 = [v16 objectForKeyedSubscript:@"UUID"];
               v35 = [v16 objectForKeyedSubscript:@"store_id"];
@@ -1041,11 +1041,11 @@ LABEL_33:
                 v38 = CalStoreCopyUUID();
                 if (v38 && v34)
                 {
-                  [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@.%@", v21, v10, v38, v34];
-                  v40 = v39 = v10;
+                  [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@.%@", v21, dCopy, v38, v34];
+                  v40 = v39 = dCopy;
                   [v63 addObject:v40];
 
-                  v10 = v39;
+                  dCopy = v39;
                 }
 
                 CFRelease(v37);
@@ -1055,28 +1055,28 @@ LABEL_33:
             goto LABEL_55;
           }
 
-          if (v20 != 2)
+          if (entityType != 2)
           {
             goto LABEL_33;
           }
 
-          if (v19 != 2)
+          if (integerValue != 2)
           {
-            v42 = MEMORY[0x22AA4B950](a4, [v17 entityID]);
+            v42 = MEMORY[0x22AA4B950](database, [v17 entityID]);
             if (v42)
             {
               v43 = v42;
               CFSetAddValue(theSet, v42);
               v44 = [v16 objectForKeyedSubscript:@"has_recurrence_set_changed"];
-              v45 = [v44 BOOLValue];
+              bOOLValue = [v44 BOOLValue];
 
-              if (v45)
+              if (bOOLValue)
               {
                 v46 = CalEventCopyDetachedEvents();
                 if (v46)
                 {
                   v47 = v46;
-                  v65 = v10;
+                  v65 = dCopy;
                   Count = CFArrayGetCount(v46);
                   if (Count >= 1)
                   {
@@ -1089,7 +1089,7 @@ LABEL_33:
                   }
 
                   CFRelease(v47);
-                  v10 = v65;
+                  dCopy = v65;
                 }
               }
 
@@ -1103,7 +1103,7 @@ LABEL_55:
             goto LABEL_56;
           }
 
-          v64 = v10;
+          v64 = dCopy;
           v62 = [v16 objectForKeyedSubscript:@"UUID"];
           v24 = [v16 objectForKeyedSubscript:@"calendar_id"];
           [v24 intValue];
@@ -1153,7 +1153,7 @@ LABEL_51:
             CFRelease(v53);
           }
 
-          v10 = v64;
+          dCopy = v64;
           goto LABEL_55;
         }
 
@@ -1176,49 +1176,49 @@ LABEL_56:
     while (v56);
   }
 
-  *a6 = [(__CFSet *)theSet allObjects];
+  *upserts = [(__CFSet *)theSet allObjects];
 
   v57 = v63;
-  *a7 = v57;
+  *deletes = v57;
 
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_deleteFromIndex:(id)a3 eventsIndex:(id)a4
+- (BOOL)_deleteFromIndex:(id)index eventsIndex:(id)eventsIndex
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  eventsIndexCopy = eventsIndex;
   dispatch_assert_queue_V2(self->_queue);
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 1;
-  if ([v6 count])
+  if ([indexCopy count])
   {
     v8 = CADSpotlightHandle;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v6 count];
+      v9 = [indexCopy count];
       *buf = 134217984;
       v38 = v9;
       _os_log_impl(&dword_22430B000, v8, OS_LOG_TYPE_DEFAULT, "Beginning delete of %lu domain ids", buf, 0xCu);
     }
 
     v10 = dispatch_group_create();
-    [v7 beginIndexBatch];
+    [eventsIndexCopy beginIndexBatch];
     dispatch_group_enter(v10);
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __52__CADSpotlightIndexer__deleteFromIndex_eventsIndex___block_invoke;
     v29[3] = &unk_27851AC18;
-    v11 = v6;
+    v11 = indexCopy;
     v30 = v11;
     v32 = &v33;
     v12 = v10;
     v31 = v12;
-    [v7 deleteSearchableItemsWithDomainIdentifiers:v11 completionHandler:v29];
-    v13 = [(CADSpotlightIndexer *)self _expectedClientState];
+    [eventsIndexCopy deleteSearchableItemsWithDomainIdentifiers:v11 completionHandler:v29];
+    _expectedClientState = [(CADSpotlightIndexer *)self _expectedClientState];
     dispatch_group_enter(v12);
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
@@ -1229,7 +1229,7 @@ LABEL_56:
     v28 = &v33;
     v15 = v12;
     v27 = v15;
-    [v7 endIndexBatchWithExpectedClientState:v13 newClientState:v13 completionHandler:&v22];
+    [eventsIndexCopy endIndexBatchWithExpectedClientState:_expectedClientState newClientState:_expectedClientState completionHandler:&v22];
     v16 = CADSpotlightHandle;
     if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_DEFAULT))
     {
@@ -1295,15 +1295,15 @@ void __52__CADSpotlightIndexer__deleteFromIndex_eventsIndex___block_invoke_134(u
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (BOOL)_upsertToIndex:(__CFArray *)a3 inDatabase:(CalDatabase *)a4 personaID:(id)a5 deleteBeforeInserting:(BOOL)a6 eventsIndex:(id)a7
+- (BOOL)_upsertToIndex:(__CFArray *)index inDatabase:(CalDatabase *)database personaID:(id)d deleteBeforeInserting:(BOOL)inserting eventsIndex:(id)eventsIndex
 {
-  v107 = a6;
+  insertingCopy = inserting;
   v123 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v103 = a7;
+  dCopy = d;
+  eventsIndexCopy = eventsIndex;
   dispatch_assert_queue_V2(self->_queue);
-  theArray = a3;
-  Count = CFArrayGetCount(a3);
+  theArray = index;
+  Count = CFArrayGetCount(index);
   if (Count)
   {
     v13 = Count;
@@ -1321,7 +1321,7 @@ void __52__CADSpotlightIndexer__deleteFromIndex_eventsIndex___block_invoke_134(u
     v18 = CalDatabaseCopyNaturalLanguageSuggestionsCalendar();
     context = v15;
     v106 = v17;
-    v90 = a4;
+    databaseCopy = database;
     if (v18)
     {
       v19 = v18;
@@ -1334,23 +1334,23 @@ void __52__CADSpotlightIndexer__deleteFromIndex_eventsIndex___block_invoke_134(u
       UID = -1;
     }
 
-    v20 = [MEMORY[0x277CBEAA8] date];
-    v89 = [v20 dateByAddingTimeInterval:15811200.0];
-    v86 = v20;
-    v88 = [v20 dateByAddingTimeInterval:31536000.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v89 = [date dateByAddingTimeInterval:15811200.0];
+    v86 = date;
+    v88 = [date dateByAddingTimeInterval:31536000.0];
     if (v13 >= 1)
     {
       v21 = 0;
       v108 = *MEMORY[0x277CF7AA8];
       v97 = v16;
       v105 = v13;
-      v110 = self;
+      selfCopy = self;
       do
       {
         v22 = objc_autoreleasePoolPush();
         ValueAtIndex = CFArrayGetValueAtIndex(theArray, v21);
         v24 = [(CADSpotlightIndexer *)self _spotlightItemAttributes:ValueAtIndex];
-        v25 = [objc_opt_class() _spotlightDomainIDForItem:ValueAtIndex bundleID:v108 personaID:v11];
+        v25 = [objc_opt_class() _spotlightDomainIDForItem:ValueAtIndex bundleID:v108 personaID:dCopy];
         if (!v25)
         {
           v35 = CADSpotlightHandle;
@@ -1367,7 +1367,7 @@ void __52__CADSpotlightIndexer__deleteFromIndex_eventsIndex___block_invoke_134(u
 
         v26 = v25;
         v112 = CalCalendarItemCopyUUID();
-        if (v107)
+        if (insertingCopy)
         {
           [v106 addObject:v26];
         }
@@ -1375,7 +1375,7 @@ void __52__CADSpotlightIndexer__deleteFromIndex_eventsIndex___block_invoke_134(u
         if (CalEventGetJunkStatus() == 1)
         {
           v27 = v16;
-          v28 = v11;
+          v28 = dCopy;
           v29 = v24;
           v30 = v26;
           v31 = v22;
@@ -1399,7 +1399,7 @@ LABEL_21:
           }
 
           v27 = v16;
-          v28 = v11;
+          v28 = dCopy;
           v29 = v24;
           v30 = v26;
           v31 = v22;
@@ -1417,7 +1417,7 @@ LABEL_21:
         v22 = v31;
         v26 = v30;
         v24 = v29;
-        v11 = v28;
+        dCopy = v28;
         v16 = v27;
 LABEL_24:
         v38 = CalEventCopyContactName();
@@ -1518,7 +1518,7 @@ LABEL_51:
                 v48 = 0;
               }
 
-              var3 = v90->var3;
+              var3 = databaseCopy->var3;
               v84 = v48;
               v100 = _CalEventOccurrenceCacheCopySpotlightOccurrenceDates();
               CFRelease(v43);
@@ -1545,15 +1545,15 @@ LABEL_51:
               {
                 v53 = CalCalendarItemCopyCalendarScale();
                 v54 = [MEMORY[0x277CBEA80] CalCalendarWithUnsanitizedCalendarIdentifier:v53];
-                v94 = [v54 calendarIdentifier];
+                calendarIdentifier = [v54 calendarIdentifier];
               }
 
               else
               {
-                v94 = 0;
+                calendarIdentifier = 0;
               }
 
-              v85 = v11;
+              v85 = dCopy;
               if (![v100 count])
               {
                 v55 = MEMORY[0x277CCABB0];
@@ -1596,8 +1596,8 @@ LABEL_51:
                     if (v111)
                     {
                       v64 = MEMORY[0x277CF7790];
-                      v65 = [v24 startDate];
-                      v66 = [v64 birthdayStringForContactName:v38 eventDate:v65 birthDate:started lunarCalendar:v94];
+                      startDate = [v24 startDate];
+                      v66 = [v64 birthdayStringForContactName:v38 eventDate:startDate birthDate:started lunarCalendar:calendarIdentifier];
 
                       [v24 setTitle:v66];
                     }
@@ -1631,17 +1631,17 @@ LABEL_51:
                       v71 = 0;
                     }
 
-                    [(CalSpotlightEntityAnnotator *)v110->_spotlightEntityAnnotator associateEventEntityWithIdentifier:v112 occurrenceDate:v71 withSearchableItem:v70];
-                    v75 = [MEMORY[0x277CBEAA8] distantFuture];
-                    [v70 setExpirationDate:v75];
+                    [(CalSpotlightEntityAnnotator *)selfCopy->_spotlightEntityAnnotator associateEventEntityWithIdentifier:v112 occurrenceDate:v71 withSearchableItem:v70];
+                    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+                    [v70 setExpirationDate:distantFuture];
 
                     [v16 addObject:v70];
                     if ([v16 count] >= 0x64)
                     {
-                      v76 = [(CalCancellationTokenSource *)v110->_cancellationTokenSource token];
-                      v77 = [v76 isCancelled];
+                      token = [(CalCancellationTokenSource *)selfCopy->_cancellationTokenSource token];
+                      isCancelled = [token isCancelled];
 
-                      if (v77)
+                      if (isCancelled)
                       {
                         if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_ERROR))
                         {
@@ -1654,13 +1654,13 @@ LABEL_51:
 LABEL_91:
 
                         objc_autoreleasePoolPop(v22);
-                        v11 = v85;
+                        dCopy = v85;
                         goto LABEL_92;
                       }
 
                       v16 = v97;
                       v78 = v106;
-                      if (![(CADSpotlightIndexer *)v110 _sendSpotlightUpdates:v97 deletes:v106 toIndex:v103])
+                      if (![(CADSpotlightIndexer *)selfCopy _sendSpotlightUpdates:v97 deletes:v106 toIndex:eventsIndexCopy])
                       {
                         goto LABEL_91;
                       }
@@ -1683,14 +1683,14 @@ LABEL_91:
                 }
               }
 
-              v11 = v85;
+              dCopy = v85;
             }
           }
         }
 
 LABEL_38:
 
-        self = v110;
+        self = selfCopy;
         v13 = v105;
 LABEL_39:
 
@@ -1702,7 +1702,7 @@ LABEL_39:
     }
 
     v78 = v106;
-    if (([v16 count] || objc_msgSend(v106, "count")) && !-[CADSpotlightIndexer _sendSpotlightUpdates:deletes:toIndex:](self, "_sendSpotlightUpdates:deletes:toIndex:", v16, v106, v103))
+    if (([v16 count] || objc_msgSend(v106, "count")) && !-[CADSpotlightIndexer _sendSpotlightUpdates:deletes:toIndex:](self, "_sendSpotlightUpdates:deletes:toIndex:", v16, v106, eventsIndexCopy))
     {
 LABEL_92:
 
@@ -1728,28 +1728,28 @@ LABEL_93:
   return v80;
 }
 
-- (BOOL)_sendSpotlightUpdates:(id)a3 deletes:(id)a4 toIndex:(id)a5
+- (BOOL)_sendSpotlightUpdates:(id)updates deletes:(id)deletes toIndex:(id)index
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatesCopy = updates;
+  deletesCopy = deletes;
+  indexCopy = index;
   dispatch_assert_queue_V2(self->_queue);
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 1;
-  v11 = [v8 count];
+  v11 = [updatesCopy count];
   if (v11)
   {
     v12 = dispatch_group_create();
-    v25 = [v8 copy];
-    if ([v9 count])
+    v25 = [updatesCopy copy];
+    if ([deletesCopy count])
     {
       v13 = CADSpotlightHandle;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v9 count];
+        v14 = [deletesCopy count];
         *buf = 134218240;
         v44 = v14;
         v45 = 2048;
@@ -1762,11 +1762,11 @@ LABEL_93:
       v35[1] = 3221225472;
       v35[2] = __61__CADSpotlightIndexer__sendSpotlightUpdates_deletes_toIndex___block_invoke;
       v35[3] = &unk_27851AC18;
-      v36 = v9;
+      v36 = deletesCopy;
       v38 = &v39;
       v15 = v12;
       v37 = v15;
-      [v10 deleteSearchableItemsWithDomainIdentifiers:v36 completionHandler:v35];
+      [indexCopy deleteSearchableItemsWithDomainIdentifiers:v36 completionHandler:v35];
       v16 = CADSpotlightHandle;
       if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_DEFAULT))
       {
@@ -1779,7 +1779,7 @@ LABEL_93:
 
     if (*(v40 + 24) == 1)
     {
-      [v10 beginIndexBatch];
+      [indexCopy beginIndexBatch];
       dispatch_group_enter(v12);
       v17 = CADSpotlightHandle;
       if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_DEFAULT))
@@ -1797,19 +1797,19 @@ LABEL_93:
       v34 = v11;
       v18 = v12;
       v32 = v18;
-      [v10 indexSearchableItems:v25 completionHandler:v31];
+      [indexCopy indexSearchableItems:v25 completionHandler:v31];
       dispatch_group_enter(v18);
-      v19 = [(CADSpotlightIndexer *)self _expectedClientState];
+      _expectedClientState = [(CADSpotlightIndexer *)self _expectedClientState];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __61__CADSpotlightIndexer__sendSpotlightUpdates_deletes_toIndex___block_invoke_161;
       v26[3] = &unk_27851AC68;
       v29 = &v39;
-      v27 = v9;
+      v27 = deletesCopy;
       v30 = v11;
       v20 = v18;
       v28 = v20;
-      [v10 endIndexBatchWithExpectedClientState:v19 newClientState:v19 completionHandler:v26];
+      [indexCopy endIndexBatchWithExpectedClientState:_expectedClientState newClientState:_expectedClientState completionHandler:v26];
       v21 = CADSpotlightHandle;
       if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_DEFAULT))
       {
@@ -1921,19 +1921,19 @@ void __61__CADSpotlightIndexer__sendSpotlightUpdates_deletes_toIndex___block_inv
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_spotlightDomainIDForItem:(void *)a3 bundleID:(id)a4 personaID:(id)a5
++ (id)_spotlightDomainIDForItem:(void *)item bundleID:(id)d personaID:(id)iD
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  iDCopy = iD;
   RecordLock = CalGetRecordLock();
   os_unfair_lock_lock(RecordLock);
-  cf = MEMORY[0x22AA4B660](a3);
+  cf = MEMORY[0x22AA4B660](item);
   _CalDatabaseGetRecordStore();
   v10 = _CalEntityIsOfType();
   v11 = MEMORY[0x277CF7110];
   if (v10)
   {
-    StoreWithUID = CFRetain(a3);
+    StoreWithUID = CFRetain(item);
     CalendarWithUID = 0;
     v14 = 0;
     goto LABEL_22;
@@ -1941,7 +1941,7 @@ void __61__CADSpotlightIndexer__sendSpotlightUpdates_deletes_toIndex___block_inv
 
   if (_CalEntityIsOfType())
   {
-    CalendarWithUID = CFRetain(a3);
+    CalendarWithUID = CFRetain(item);
     if (!CalendarWithUID)
     {
 LABEL_5:
@@ -2029,13 +2029,13 @@ LABEL_25:
   if (_CalEntityIsOfType())
   {
     v20 = RecordLock;
-    v21 = v8;
-    v22 = v7;
+    v21 = iDCopy;
+    v22 = dCopy;
     v23 = _CalCalendarItemCopyUUID();
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@.%@.%@", v22, v21, v18, v14, v23];
     v25 = v23;
-    v7 = v22;
-    v8 = v21;
+    dCopy = v22;
+    iDCopy = v21;
     CFRelease(v25);
     goto LABEL_33;
   }
@@ -2043,7 +2043,7 @@ LABEL_25:
   if (v18 && v14)
   {
     v20 = RecordLock;
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@.%@", v7, v8, v18, v14];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@.%@", dCopy, iDCopy, v18, v14];
     v24 = LABEL_32:;
     goto LABEL_33;
   }
@@ -2051,7 +2051,7 @@ LABEL_25:
   if (v18)
   {
     v20 = RecordLock;
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@", v7, v8, v18, v28];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@", dCopy, iDCopy, v18, v28];
     goto LABEL_32;
   }
 
@@ -2112,7 +2112,7 @@ LABEL_39:
   return v24;
 }
 
-- (id)_spotlightRecurrenceId:(void *)a3
+- (id)_spotlightRecurrenceId:(void *)id
 {
   v3 = CalEventCopyRecurrenceSet();
   if (!v3)
@@ -2139,7 +2139,7 @@ LABEL_39:
   return v3;
 }
 
-- (id)_spotlightItemAttributes:(void *)a3
+- (id)_spotlightItemAttributes:(void *)attributes
 {
   v112[1] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc(MEMORY[0x277CC34B8]);
@@ -2227,11 +2227,11 @@ LABEL_39:
     if (v23)
     {
       v24 = v23;
-      v25 = [v23 resourceSpecifier];
-      v26 = v25;
-      if (v25)
+      resourceSpecifier = [v23 resourceSpecifier];
+      v26 = resourceSpecifier;
+      if (resourceSpecifier)
       {
-        v112[0] = v25;
+        v112[0] = resourceSpecifier;
         v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v112 count:1];
         [v101 setAccountHandles:v27];
 
@@ -2303,8 +2303,8 @@ LABEL_33:
   v111[0] = @"com.apple.calendar.spotlight.identifier";
   v111[1] = @"com.apple.calendar.ics";
   v111[2] = @"com.apple.ical.ics";
-  v39 = [*MEMORY[0x277CE1EB0] identifier];
-  v111[3] = v39;
+  identifier = [*MEMORY[0x277CE1EB0] identifier];
+  v111[3] = identifier;
   v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v111 count:4];
   [v6 setProviderDataTypes:v40];
 
@@ -2368,7 +2368,7 @@ LABEL_33:
   v54 = [MEMORY[0x277CCABB0] numberWithBool:CalCalendarItemGetStatus() == 3];
   [v6 setEventIsCancelled:v54];
 
-  v55 = [(CADSpotlightIndexer *)self _spotlightRecurrenceId:a3];
+  v55 = [(CADSpotlightIndexer *)self _spotlightRecurrenceId:attributes];
   [v6 setRelatedUniqueIdentifier:v55];
 
   v56 = CalCalendarItemCopyOrganizer();
@@ -2382,15 +2382,15 @@ LABEL_33:
     {
       v61 = v60;
       v91 = v57;
-      v98 = [MEMORY[0x277CBEB18] array];
-      v97 = [MEMORY[0x277CBEB18] array];
-      v96 = [MEMORY[0x277CBEB18] array];
-      v62 = [MEMORY[0x277CBEB18] array];
-      v100 = [MEMORY[0x277CBEB18] array];
-      v93 = [MEMORY[0x277CBEB18] array];
-      v63 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
+      array3 = [MEMORY[0x277CBEB18] array];
+      array4 = [MEMORY[0x277CBEB18] array];
+      array5 = [MEMORY[0x277CBEB18] array];
+      array6 = [MEMORY[0x277CBEB18] array];
+      array7 = [MEMORY[0x277CBEB18] array];
       Count = CFArrayGetCount(v61);
-      v106 = v62;
+      v106 = array4;
       if (Count >= 1)
       {
         v64 = 0;
@@ -2399,7 +2399,7 @@ LABEL_33:
         v99 = v59;
         v102 = v61;
         v103 = v58;
-        v105 = v63;
+        v105 = array7;
         while (1)
         {
           ValueAtIndex = CFArrayGetValueAtIndex(v61, v64);
@@ -2433,10 +2433,10 @@ LABEL_33:
             {
               v70 = v75;
 LABEL_81:
-              [v96 addObject:v70];
+              [array3 addObject:v70];
               if (cf)
               {
-                [v97 addObject:?];
+                [array2 addObject:?];
                 v73 = 0;
                 v76 = 0;
                 v77 = 0;
@@ -2455,7 +2455,7 @@ LABEL_81:
               {
                 v70 = 0;
 LABEL_89:
-                [v97 addObject:?];
+                [array2 addObject:?];
                 v73 = 0;
                 v76 = 0;
                 v77 = 0;
@@ -2471,12 +2471,12 @@ LABEL_90:
                   v67 = v107;
                   if (v73)
                   {
-                    v81 = v100;
+                    v81 = array5;
                   }
 
                   else
                   {
-                    v81 = v98;
+                    v81 = array;
                   }
 
                   [v81 addObject:v80];
@@ -2503,7 +2503,7 @@ LABEL_94:
                 v68 = v76;
                 v59 = v99;
 LABEL_104:
-                v62 = v106;
+                array4 = v106;
                 goto LABEL_109;
               }
 
@@ -2548,7 +2548,7 @@ LABEL_71:
               goto LABEL_89;
             }
 
-            [v93 addObject:?];
+            [array6 addObject:?];
             if (v68)
             {
               v73 = 1;
@@ -2573,7 +2573,7 @@ LABEL_96:
 
             if (v77)
             {
-              [v100 addObject:v85];
+              [array5 addObject:v85];
 
               CFRelease(cf);
               if (v68)
@@ -2584,13 +2584,13 @@ LABEL_96:
               v59 = v99;
               v58 = v103;
               v6 = v82;
-              v62 = v106;
+              array4 = v106;
 LABEL_116:
               CFRelease(v107);
               goto LABEL_117;
             }
 
-            [v98 addObject:v85];
+            [array addObject:v85];
 
             v71 = 1;
             LODWORD(v67) = 1;
@@ -2613,7 +2613,7 @@ LABEL_116:
 
 LABEL_109:
           v86 = [MEMORY[0x277CCABB0] numberWithInt:CalAttendeeGetStatus()];
-          [v62 addObject:v86];
+          [array4 addObject:v86];
 
           if (v71)
           {
@@ -2634,7 +2634,7 @@ LABEL_111:
           {
 LABEL_112:
             CFRelease(v66);
-            v62 = v106;
+            array4 = v106;
             if ((v67 & 1) == 0)
             {
               goto LABEL_117;
@@ -2644,7 +2644,7 @@ LABEL_112:
           }
 
 LABEL_115:
-          v62 = v106;
+          array4 = v106;
           if (v67)
           {
             goto LABEL_116;
@@ -2653,7 +2653,7 @@ LABEL_115:
 LABEL_117:
 
           ++v64;
-          v63 = v105;
+          array7 = v105;
           v61 = v102;
           if (Count == v64)
           {
@@ -2682,19 +2682,19 @@ LABEL_117:
       }
 
 LABEL_120:
-      if ([v98 count])
+      if ([array count])
       {
-        [v6 setPrimaryRecipients:v98];
+        [v6 setPrimaryRecipients:array];
       }
 
-      if ([v97 count])
+      if ([array2 count])
       {
-        [v6 setRecipientNames:v97];
+        [v6 setRecipientNames:array2];
       }
 
-      if ([v96 count])
+      if ([array3 count])
       {
-        [v6 setRecipientEmailAddresses:v96];
+        [v6 setRecipientEmailAddresses:array3];
       }
 
       if ([v106 count])
@@ -2703,20 +2703,20 @@ LABEL_120:
         [v6 setValue:v106 forCustomKey:v87];
       }
 
-      if ([v100 count])
+      if ([array5 count])
       {
-        [v6 setAuthors:v100];
+        [v6 setAuthors:array5];
       }
 
       v57 = v91;
-      if ([v93 count])
+      if ([array6 count])
       {
-        [v6 setAuthorNames:v93];
+        [v6 setAuthorNames:array6];
       }
 
-      if ([v63 count])
+      if ([array7 count])
       {
-        [v6 setAuthorEmailAddresses:v63];
+        [v6 setAuthorEmailAddresses:array7];
       }
 
       CFRelease(v61);
@@ -2740,15 +2740,15 @@ LABEL_120:
   return v6;
 }
 
-- (void)reindexAllItemsForBundleID:(id)a3 protectionClass:(id)a4 acknowledgementHandler:(id)a5
+- (void)reindexAllItemsForBundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
-  v10 = [v9 isCancelled];
+  dCopy = d;
+  handlerCopy = handler;
+  token = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
+  isCancelled = [token isCancelled];
 
-  if (v10)
+  if (isCancelled)
   {
     if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_ERROR))
     {
@@ -2757,11 +2757,11 @@ LABEL_120:
 
     [CADSpotlightLogger logError:@"calling ack handler and returning because indexer was shutdown"];
 LABEL_11:
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
     goto LABEL_12;
   }
 
-  v11 = [v7 isEqualToString:*MEMORY[0x277CF7AA8]];
+  v11 = [dCopy isEqualToString:*MEMORY[0x277CF7AA8]];
   v12 = CADSpotlightHandle;
   if ((v11 & 1) == 0)
   {
@@ -2776,7 +2776,7 @@ LABEL_11:
   if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v7;
+    v20 = dCopy;
     _os_log_impl(&dword_22430B000, v12, OS_LOG_TYPE_DEFAULT, "CADSpotlightDaemonClientHandler: Received request to reindex all searchable items for Core Spotlight for bundleID: %@", buf, 0xCu);
   }
 
@@ -2790,22 +2790,22 @@ LABEL_11:
   v18 = v13;
   v15 = v13;
   dispatch_async(queue, v17);
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 
 LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reindexItemsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 acknowledgementHandler:(id)a6
+- (void)reindexItemsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler
 {
   v47 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
-  v13 = [v12 isCancelled];
+  identifiersCopy = identifiers;
+  dCopy = d;
+  handlerCopy = handler;
+  token = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
+  isCancelled = [token isCancelled];
 
-  if (v13)
+  if (isCancelled)
   {
     if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_ERROR))
     {
@@ -2814,21 +2814,21 @@ LABEL_12:
 
     [CADSpotlightLogger logError:@"calling ack handler and returning because indexer was shutdown"];
 LABEL_20:
-    v11[2](v11);
+    handlerCopy[2](handlerCopy);
     goto LABEL_21;
   }
 
   v14 = *MEMORY[0x277CF7AA8];
-  v15 = [v10 isEqualToString:*MEMORY[0x277CF7AA8]];
+  v15 = [dCopy isEqualToString:*MEMORY[0x277CF7AA8]];
   v16 = CADSpotlightHandle;
   if ((v15 & 1) == 0)
   {
     if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v42 = v9;
+      v42 = identifiersCopy;
       v43 = 2112;
-      v44 = v10;
+      v44 = dCopy;
       v45 = 2112;
       v46 = v14;
       _os_log_error_impl(&dword_22430B000, v16, OS_LOG_TYPE_ERROR, "CADSpotlightDaemonClientHandler: Aborting unexpected request to reindex searchable items for Core Spotlight: %@ for bundleID: %@ for donation manager with bundleID: %@", buf, 0x20u);
@@ -2840,19 +2840,19 @@ LABEL_20:
   if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v42 = v9;
+    v42 = identifiersCopy;
     v43 = 2112;
-    v44 = v10;
+    v44 = dCopy;
     _os_log_impl(&dword_22430B000, v16, OS_LOG_TYPE_DEFAULT, "CADSpotlightDaemonClientHandler: Received request to reindex searchable items for Core Spotlight: %@ for bundleID: %@", buf, 0x16u);
   }
 
-  v17 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v31 = v9;
-  v18 = v9;
+  v31 = identifiersCopy;
+  v18 = identifiersCopy;
   v19 = [v18 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v19)
   {
@@ -2869,11 +2869,11 @@ LABEL_20:
         }
 
         v23 = [*(*(&v36 + 1) + 8 * v22) componentsSeparatedByString:@"."];
-        v24 = [v23 firstObject];
+        firstObject = [v23 firstObject];
 
-        if (v24)
+        if (firstObject)
         {
-          [v17 addObject:v24];
+          [array addObject:firstObject];
         }
 
         ++v22;
@@ -2894,15 +2894,15 @@ LABEL_20:
   block[3] = &unk_27851ACE0;
   block[4] = self;
   v33 = v18;
-  v34 = v17;
+  v34 = array;
   v35 = v25;
   v27 = v25;
-  v28 = v17;
+  v28 = array;
   dispatch_async(queue, block);
-  v11[2](v11);
+  handlerCopy[2](handlerCopy);
 
-  v10 = v30;
-  v9 = v31;
+  dCopy = v30;
+  identifiersCopy = v31;
 LABEL_21:
 
   v29 = *MEMORY[0x277D85DE8];
@@ -2992,7 +2992,7 @@ LABEL_7:
   return v4;
 }
 
-- (id)_textRepresentationForEvent:(void *)a3
+- (id)_textRepresentationForEvent:(void *)event
 {
   v28 = CalCalendarItemCopySummary();
   v3 = CalCalendarItemCopyLocation();
@@ -3053,53 +3053,53 @@ LABEL_7:
   return v7;
 }
 
-- (void)provideDataForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8
+- (void)provideDataForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
-  v19 = [v18 isCancelled];
+  dCopy = d;
+  classCopy = class;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  handlerCopy = handler;
+  token = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
+  isCancelled = [token isCancelled];
 
-  if (v19)
+  if (isCancelled)
   {
     v20 = MEMORY[0x277CCA9B8];
     v55 = *MEMORY[0x277CCA068];
     v56[0] = @"CADSpotlightIndexer is shutdown";
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:&v55 count:1];
     v22 = [v20 errorWithDomain:@"CADSpotlightDaemonClientHandlerErrorDomain" code:0 userInfo:v21];
-    v17[2](v17, 0, v22);
+    handlerCopy[2](handlerCopy, 0, v22);
 
     goto LABEL_18;
   }
 
-  v23 = [v13 isEqualToString:*MEMORY[0x277CF7AA8]];
+  v23 = [dCopy isEqualToString:*MEMORY[0x277CF7AA8]];
   v24 = CADSpotlightHandle;
   if (v23)
   {
     if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      *&buf[4] = v13;
+      *&buf[4] = dCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v15;
+      *&buf[14] = identifierCopy;
       *&buf[22] = 2112;
-      v50 = v16;
+      v50 = typeIdentifierCopy;
       _os_log_impl(&dword_22430B000, v24, OS_LOG_TYPE_DEFAULT, "CADSpotlightDaemonClientHandler: Received request to provide data for bundleID: %@, %@, %@", buf, 0x20u);
     }
 
-    if ([v16 isEqualToString:@"com.apple.calendar.spotlight.identifier"])
+    if ([typeIdentifierCopy isEqualToString:@"com.apple.calendar.spotlight.identifier"])
     {
-      v21 = [v15 dataUsingEncoding:4];
-      (v17)[2](v17, v21, 0);
+      v21 = [identifierCopy dataUsingEncoding:4];
+      (handlerCopy)[2](handlerCopy, v21, 0);
       goto LABEL_18;
     }
 
-    v21 = [v15 componentsSeparatedByString:@"."];
-    v27 = [v21 firstObject];
+    v21 = [identifierCopy componentsSeparatedByString:@"."];
+    firstObject = [v21 firstObject];
     v43 = 0;
     v44 = &v43;
     v45 = 0x2020000000;
@@ -3114,11 +3114,11 @@ LABEL_7:
     v36[1] = 3221225472;
     v36[2] = __118__CADSpotlightIndexer_provideDataForBundleID_protectionClass_itemIdentifier_typeIdentifier_options_completionHandler___block_invoke;
     v36[3] = &unk_27851AD08;
-    v35 = v27;
+    v35 = firstObject;
     v37 = v35;
-    v38 = v16;
-    v28 = v17;
-    v39 = self;
+    v38 = typeIdentifierCopy;
+    v28 = handlerCopy;
+    selfCopy = self;
     v40 = v28;
     v41 = buf;
     v42 = &v43;
@@ -3164,7 +3164,7 @@ LABEL_17:
   v54 = @"Incorrect Bundle ID";
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
   v26 = [v25 errorWithDomain:@"CADSpotlightDaemonClientHandlerErrorDomain" code:0 userInfo:v21];
-  v17[2](v17, 0, v26);
+  handlerCopy[2](handlerCopy, 0, v26);
 
 LABEL_18:
   v34 = *MEMORY[0x277D85DE8];
@@ -3237,36 +3237,36 @@ void __118__CADSpotlightIndexer_provideDataForBundleID_protectionClass_itemIdent
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provideFileURLForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8
+- (void)provideFileURLForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v9 = MEMORY[0x277CCA9B8];
   v15 = *MEMORY[0x277CCA068];
   v16[0] = @"FileURLs are not provided for events";
   v10 = MEMORY[0x277CBEAC0];
-  v11 = a8;
+  handlerCopy = handler;
   v12 = [v10 dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v13 = [v9 errorWithDomain:@"CADSpotlightDaemonClientHandlerErrorDomain" code:0 userInfo:v12];
-  (*(a8 + 2))(v11, 0, v13);
+  (*(handler + 2))(handlerCopy, 0, v13);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_pushUpdatesForCalendarItemsWithUUIDs:(id)a3 inBatchesOf:(unint64_t)a4 database:(CalDatabase *)a5 personaID:(id)a6 deleteBeforeInserting:(BOOL)a7
+- (BOOL)_pushUpdatesForCalendarItemsWithUUIDs:(id)ds inBatchesOf:(unint64_t)of database:(CalDatabase *)database personaID:(id)d deleteBeforeInserting:(BOOL)inserting
 {
-  v33 = a7;
+  insertingCopy = inserting;
   v44 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v34 = a6;
-  if (v11 && [v11 count])
+  dsCopy = ds;
+  dCopy = d;
+  if (dsCopy && [dsCopy count])
   {
     v12 = CADSpotlightHandle;
     if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_INFO))
     {
       v13 = MEMORY[0x277CCABB0];
       v14 = v12;
-      v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
-      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+      v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(dsCopy, "count")}];
+      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:of];
       *buf = 138412546;
       v41 = v15;
       v42 = 2112;
@@ -3274,24 +3274,24 @@ void __118__CADSpotlightIndexer_provideDataForBundleID_protectionClass_itemIdent
       _os_log_impl(&dword_22430B000, v14, OS_LOG_TYPE_INFO, "Pushing [%@] calendar items in batches of [%@]", buf, 0x16u);
     }
 
-    v17 = [v11 count];
-    if (v17 >= a4)
+    v17 = [dsCopy count];
+    if (v17 >= of)
     {
-      v18 = a4;
+      ofCopy = of;
     }
 
     else
     {
-      v18 = v17;
+      ofCopy = v17;
     }
 
-    v19 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v18];
+    v19 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:ofCopy];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v32 = v11;
-    v20 = v11;
+    v32 = dsCopy;
+    v20 = dsCopy;
     v21 = [v20 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v21)
     {
@@ -3307,10 +3307,10 @@ void __118__CADSpotlightIndexer_provideDataForBundleID_protectionClass_itemIdent
           }
 
           [v19 addObject:*(*(&v35 + 1) + 8 * i)];
-          if ([v19 count] >= a4)
+          if ([v19 count] >= of)
           {
-            v25 = [(CADSpotlightIndexer *)self _pushUpdatesForCalendarItemsWithUUIDs:v19 database:a5 personaID:v34 deleteBeforeInserting:v33];
-            [(CADSpotlightIndexer *)self _resetDatabase:a5];
+            v25 = [(CADSpotlightIndexer *)self _pushUpdatesForCalendarItemsWithUUIDs:v19 database:database personaID:dCopy deleteBeforeInserting:insertingCopy];
+            [(CADSpotlightIndexer *)self _resetDatabase:database];
             [v19 removeAllObjects];
             if (!v25)
             {
@@ -3318,10 +3318,10 @@ void __118__CADSpotlightIndexer_provideDataForBundleID_protectionClass_itemIdent
             }
           }
 
-          v26 = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
-          v27 = [v26 isCancelled];
+          token = [(CalCancellationTokenSource *)self->_cancellationTokenSource token];
+          isCancelled = [token isCancelled];
 
-          if (v27)
+          if (isCancelled)
           {
             if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_ERROR))
             {
@@ -3346,10 +3346,10 @@ LABEL_24:
       }
     }
 
-    v28 = [(CADSpotlightIndexer *)self _pushUpdatesForCalendarItemsWithUUIDs:v19 database:a5 personaID:v34 deleteBeforeInserting:v33];
+    v28 = [(CADSpotlightIndexer *)self _pushUpdatesForCalendarItemsWithUUIDs:v19 database:database personaID:dCopy deleteBeforeInserting:insertingCopy];
 LABEL_25:
 
-    v11 = v32;
+    dsCopy = v32;
   }
 
   else
@@ -3367,12 +3367,12 @@ LABEL_25:
   return v28;
 }
 
-- (BOOL)_pushUpdatesForCalendarItemsWithUUIDs:(id)a3 database:(CalDatabase *)a4 personaID:(id)a5 deleteBeforeInserting:(BOOL)a6
+- (BOOL)_pushUpdatesForCalendarItemsWithUUIDs:(id)ds database:(CalDatabase *)database personaID:(id)d deleteBeforeInserting:(BOOL)inserting
 {
-  v24 = a6;
+  insertingCopy = inserting;
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v23 = a5;
+  dsCopy = ds;
+  dCopy = d;
   if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_DEBUG))
   {
     [CADSpotlightIndexer _pushUpdatesForCalendarItemsWithUUIDs:database:personaID:deleteBeforeInserting:];
@@ -3383,7 +3383,7 @@ LABEL_25:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = v8;
+  v10 = dsCopy;
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v11)
   {
@@ -3431,7 +3431,7 @@ LABEL_25:
     while (v12);
   }
 
-  v19 = [(CADSpotlightIndexer *)self _upsertToIndex:Mutable inDatabase:a4 personaID:v23 deleteBeforeInserting:v24];
+  v19 = [(CADSpotlightIndexer *)self _upsertToIndex:Mutable inDatabase:database personaID:dCopy deleteBeforeInserting:insertingCopy];
   CFRelease(Mutable);
 
   v20 = *MEMORY[0x277D85DE8];

@@ -1,11 +1,11 @@
 @interface _UIDatePickerCalendarTimeLabel
-- (BOOL)_digits:(unint64_t *)a3 fromText:(id)a4 count:(int64_t *)a5;
-- (BOOL)_pointIsInsideHourSide:(CGPoint)a3;
+- (BOOL)_digits:(unint64_t *)_digits fromText:(id)text count:(int64_t *)count;
+- (BOOL)_pointIsInsideHourSide:(CGPoint)side;
 - (BOOL)_suppressSoftwareKeyboard;
-- (BOOL)_treatMinutesAsHoursForState:(unint64_t)a3;
+- (BOOL)_treatMinutesAsHoursForState:(unint64_t)state;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)processTapOutside;
 - (BOOL)resignFirstResponder;
 - (CGRect)hourRect;
@@ -15,53 +15,53 @@
 - (NSString)minuteText;
 - (NSString)text;
 - (NSString)timeOfDayText;
-- (_UIDatePickerCalendarTimeLabel)initWithFrame:(CGRect)a3;
-- (_UIDatePickerCalendarTimeLabel)initWithTimeFormat:(id)a3 minuteInterval:(int64_t)a4;
+- (_UIDatePickerCalendarTimeLabel)initWithFrame:(CGRect)frame;
+- (_UIDatePickerCalendarTimeLabel)initWithTimeFormat:(id)format minuteInterval:(int64_t)interval;
 - (_UIDatePickerCalendarTimeLabelDelegate)delegate;
-- (id)attributedTextWithRanges:(id *)a3;
+- (id)attributedTextWithRanges:(id *)ranges;
 - (id)inputView;
 - (id)keyCommands;
 - (int64_t)keyboardType;
 - (int64_t)minuteInterval;
 - (void)_roundInputToClosestIntervalIfNeeded;
-- (void)_stateMachineSendEvent:(unint64_t)a3;
-- (void)applyTextAttributesForState:(unint64_t)a3 inputScope:(int64_t)a4 updater:(id)a5;
+- (void)_stateMachineSendEvent:(unint64_t)event;
+- (void)applyTextAttributesForState:(unint64_t)state inputScope:(int64_t)scope updater:(id)updater;
 - (void)deleteBackward;
-- (void)didReceiveDownArrowKey:(id)a3;
-- (void)didReceiveLeftArrowKey:(id)a3;
-- (void)didReceiveRightArrowKey:(id)a3;
-- (void)didReceiveUpArrowKey:(id)a3;
-- (void)didTapInputLabelAtLocation:(CGPoint)a3;
-- (void)indirectScribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4;
-- (void)indirectScribbleInteraction:(id)a3 focusElementIfNeeded:(id)a4 referencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)indirectScribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5;
-- (void)indirectScribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4;
-- (void)insertText:(id)a3;
+- (void)didReceiveDownArrowKey:(id)key;
+- (void)didReceiveLeftArrowKey:(id)key;
+- (void)didReceiveRightArrowKey:(id)key;
+- (void)didReceiveUpArrowKey:(id)key;
+- (void)didTapInputLabelAtLocation:(CGPoint)location;
+- (void)indirectScribbleInteraction:(id)interaction didFinishWritingInElement:(id)element;
+- (void)indirectScribbleInteraction:(id)interaction focusElementIfNeeded:(id)needed referencePoint:(CGPoint)point completion:(id)completion;
+- (void)indirectScribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion;
+- (void)indirectScribbleInteraction:(id)interaction willBeginWritingInElement:(id)element;
+- (void)insertText:(id)text;
 - (void)layoutSubviews;
 - (void)pushCurrentStateIntoUIAndNotify;
-- (void)setAllowsTextInput:(BOOL)a3;
-- (void)setHourText:(id)a3;
-- (void)setInputScope:(int64_t)a3;
-- (void)setInsertedDigitCount:(unint64_t)a3;
-- (void)setMinuteInterval:(int64_t)a3;
-- (void)setMinuteText:(id)a3;
-- (void)setRoundsToMinuteInterval:(BOOL)a3;
-- (void)setTimeFormat:(id)a3;
-- (void)stateMachineUpdateFromState:(unint64_t)a3 toState:(unint64_t)a4;
+- (void)setAllowsTextInput:(BOOL)input;
+- (void)setHourText:(id)text;
+- (void)setInputScope:(int64_t)scope;
+- (void)setInsertedDigitCount:(unint64_t)count;
+- (void)setMinuteInterval:(int64_t)interval;
+- (void)setMinuteText:(id)text;
+- (void)setRoundsToMinuteInterval:(BOOL)interval;
+- (void)setTimeFormat:(id)format;
+- (void)stateMachineUpdateFromState:(unint64_t)state toState:(unint64_t)toState;
 - (void)tintColorDidChange;
 @end
 
 @implementation _UIDatePickerCalendarTimeLabel
 
-- (_UIDatePickerCalendarTimeLabel)initWithFrame:(CGRect)a3
+- (_UIDatePickerCalendarTimeLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = [MEMORY[0x1E695DF58] currentLocale];
-  v10 = [_UIDatePickerCalendarTimeFormat formatWithCalendar:v8 locale:v9 followsSystemHourCycle:1];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v10 = [_UIDatePickerCalendarTimeFormat formatWithCalendar:currentCalendar locale:currentLocale followsSystemHourCycle:1];
   v11 = [(_UIDatePickerCalendarTimeLabel *)self initWithTimeFormat:v10 minuteInterval:1];
 
   if (v11)
@@ -72,9 +72,9 @@
   return v11;
 }
 
-- (_UIDatePickerCalendarTimeLabel)initWithTimeFormat:(id)a3 minuteInterval:(int64_t)a4
+- (_UIDatePickerCalendarTimeLabel)initWithTimeFormat:(id)format minuteInterval:(int64_t)interval
 {
-  v7 = a3;
+  formatCopy = format;
   v26.receiver = self;
   v26.super_class = _UIDatePickerCalendarTimeLabel;
   v8 = [(UIView *)&v26 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -94,9 +94,9 @@
     stateContext = v9->_stateContext;
     v9->_stateContext = v11;
 
-    objc_storeStrong(&v9->_timeFormat, a3);
+    objc_storeStrong(&v9->_timeFormat, format);
     v13 = [_UIDatePickerCalendarTimeValueStore alloc];
-    v14 = [(_UIDatePickerCalendarTimeValueStore *)v13 initWithTimeFormat:v7 minuteInterval:a4 decrementBehaviour:[(_UIDatePickerCalendarTimeLabel *)v9 decrementBehaviour:v20]];
+    v14 = [(_UIDatePickerCalendarTimeValueStore *)v13 initWithTimeFormat:formatCopy minuteInterval:interval decrementBehaviour:[(_UIDatePickerCalendarTimeLabel *)v9 decrementBehaviour:v20]];
     inputValue = v9->_inputValue;
     v9->_inputValue = v14;
 
@@ -136,23 +136,23 @@
 
 - (BOOL)canBecomeFirstResponder
 {
-  v3 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
+  delegate = [(_UIDatePickerCalendarTimeLabel *)self delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     return 1;
   }
 
-  v4 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
-  v5 = [v4 timeLabelCanBecomeFirstResponder:self];
+  delegate2 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
+  v5 = [delegate2 timeLabelCanBecomeFirstResponder:self];
 
   return v5;
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
-  [v3 timeLabelWillBecomeFirstResponder:self];
+  delegate = [(_UIDatePickerCalendarTimeLabel *)self delegate];
+  [delegate timeLabelWillBecomeFirstResponder:self];
   v7.receiver = self;
   v7.super_class = _UIDatePickerCalendarTimeLabel;
   if ([(UIView *)&v7 becomeFirstResponder])
@@ -160,21 +160,21 @@
     [(_UIDatePickerCalendarTimeLabel *)self _stateMachineSendEvent:11];
   }
 
-  v4 = [(UIView *)self isFirstResponder];
-  if (v4)
+  isFirstResponder = [(UIView *)self isFirstResponder];
+  if (isFirstResponder)
   {
-    v5 = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
-    [v5 setIsFirstResponder:1];
+    stateContext = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
+    [stateContext setIsFirstResponder:1];
 
-    [v3 timeLabelDidBecomeFirstResponder:self];
+    [delegate timeLabelDidBecomeFirstResponder:self];
   }
 
   else
   {
-    [v3 timeLabelDidFailToBecomeFirstResponder:self];
+    [delegate timeLabelDidFailToBecomeFirstResponder:self];
   }
 
-  return v4;
+  return isFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
@@ -183,17 +183,17 @@
   v7.super_class = _UIDatePickerCalendarTimeLabel;
   [(UIResponder *)&v7 resignFirstResponder];
   [(_UIDatePickerCalendarTimeLabel *)self _stateMachineSendEvent:12];
-  v3 = [(UIView *)self isFirstResponder];
-  if (!v3)
+  isFirstResponder = [(UIView *)self isFirstResponder];
+  if (!isFirstResponder)
   {
-    v4 = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
-    [v4 setIsFirstResponder:0];
+    stateContext = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
+    [stateContext setIsFirstResponder:0];
 
-    v5 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
-    [v5 timeLabelDidResignFirstResponder:self];
+    delegate = [(_UIDatePickerCalendarTimeLabel *)self delegate];
+    [delegate timeLabelDidResignFirstResponder:self];
   }
 
-  return !v3;
+  return !isFirstResponder;
 }
 
 - (CGRect)hourRect
@@ -230,10 +230,10 @@
   [(_UIDatePickerCalendarTimeLabel *)self pushCurrentStateIntoUI];
 }
 
-- (BOOL)_pointIsInsideHourSide:(CGPoint)a3
+- (BOOL)_pointIsInsideHourSide:(CGPoint)side
 {
-  x = a3.x;
-  [(_UIDatePickerCalendarTimeLabel *)self hourRect:a3.x];
+  x = side.x;
+  [(_UIDatePickerCalendarTimeLabel *)self hourRect:side.x];
   v6 = v5;
   [(_UIDatePickerCalendarTimeLabel *)self minuteRect];
   if (v6 >= v7)
@@ -253,10 +253,10 @@
   }
 }
 
-- (void)didTapInputLabelAtLocation:(CGPoint)a3
+- (void)didTapInputLabelAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   if (![(UIView *)self isFirstResponder])
   {
     if (![(_UIDatePickerCalendarTimeLabel *)self _pointIsInsideHourSide:x, y])
@@ -265,7 +265,7 @@
     }
 
 LABEL_7:
-    v6 = self;
+    selfCopy3 = self;
     v7 = 2;
     goto LABEL_9;
   }
@@ -284,7 +284,7 @@ LABEL_7:
   if (CGRectContainsPoint(v13, v10))
   {
 LABEL_8:
-    v6 = self;
+    selfCopy3 = self;
     v7 = 3;
     goto LABEL_9;
   }
@@ -294,11 +294,11 @@ LABEL_8:
   v11.y = y;
   if (CGRectContainsPoint(v14, v11))
   {
-    v6 = self;
+    selfCopy3 = self;
     v7 = 4;
 LABEL_9:
 
-    [(_UIDatePickerCalendarTimeLabel *)v6 _stateMachineSendEvent:v7];
+    [(_UIDatePickerCalendarTimeLabel *)selfCopy3 _stateMachineSendEvent:v7];
     return;
   }
 
@@ -307,88 +307,88 @@ LABEL_9:
 
 - (NSString)text
 {
-  v3 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-  v4 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  v5 = [v4 hourValue];
-  v6 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  v7 = [v6 minuteValue];
-  v8 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  v9 = [v3 localizedTimeStringWithHours:v5 minutes:v7 isPM:{objc_msgSend(v8, "isPM")}];
+  timeFormat = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+  inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  hourValue = [inputValue hourValue];
+  inputValue2 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  minuteValue = [inputValue2 minuteValue];
+  inputValue3 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  v9 = [timeFormat localizedTimeStringWithHours:hourValue minutes:minuteValue isPM:{objc_msgSend(inputValue3, "isPM")}];
 
   return v9;
 }
 
-- (void)applyTextAttributesForState:(unint64_t)a3 inputScope:(int64_t)a4 updater:(id)a5
+- (void)applyTextAttributesForState:(unint64_t)state inputScope:(int64_t)scope updater:(id)updater
 {
-  v16 = a5;
-  v8 = [(UIView *)self traitCollection];
-  v9 = +[UIDatePicker _styleForIdiom:](UIDatePicker, "_styleForIdiom:", [v8 userInterfaceIdiom]);
+  updaterCopy = updater;
+  traitCollection = [(UIView *)self traitCollection];
+  v9 = +[UIDatePicker _styleForIdiom:](UIDatePicker, "_styleForIdiom:", [traitCollection userInterfaceIdiom]);
 
-  if (a3 == 9)
+  if (state == 9)
   {
-    v10 = [v9 compactLabelTextColorForEditingState:0];
-    v11 = [v10 colorWithAlphaComponent:0.25];
-    v12 = v16[2];
+    currentHandler = [v9 compactLabelTextColorForEditingState:0];
+    v11 = [currentHandler colorWithAlphaComponent:0.25];
+    v12 = updaterCopy[2];
 LABEL_3:
     v12();
 
     goto LABEL_14;
   }
 
-  v13 = [(_UIDatePickerCalendarTimeLabel *)self inputScope];
-  if (v13 > 1)
+  inputScope = [(_UIDatePickerCalendarTimeLabel *)self inputScope];
+  if (inputScope > 1)
   {
-    if (v13 == 2 || v13 == 3)
+    if (inputScope == 2 || inputScope == 3)
     {
-      v10 = [v9 compactLabelTextColorForEditingState:0];
+      currentHandler = [v9 compactLabelTextColorForEditingState:0];
       v11 = [v9 compactLabelTextColorForEditingState:1];
-      v12 = v16[2];
+      v12 = updaterCopy[2];
       goto LABEL_3;
     }
 
     goto LABEL_11;
   }
 
-  if (!v13)
+  if (!inputScope)
   {
     v14 = v9;
     v15 = 0;
     goto LABEL_13;
   }
 
-  if (v13 != 1)
+  if (inputScope != 1)
   {
 LABEL_11:
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarTimeLabel.m" lineNumber:290 description:@"Unknown case."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarTimeLabel.m" lineNumber:290 description:@"Unknown case."];
     goto LABEL_14;
   }
 
   v14 = v9;
   v15 = 1;
 LABEL_13:
-  v10 = [v14 compactLabelTextColorForEditingState:v15];
-  (v16[2])(v16, v10, 0, 0, 0, 0);
+  currentHandler = [v14 compactLabelTextColorForEditingState:v15];
+  (updaterCopy[2])(updaterCopy, currentHandler, 0, 0, 0, 0);
 LABEL_14:
 }
 
-- (id)attributedTextWithRanges:(id *)a3
+- (id)attributedTextWithRanges:(id *)ranges
 {
   v46 = 0;
   v47 = 0;
   v44 = 0;
   v45 = 0;
   v43 = 0;
-  v5 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-  v6 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  v7 = [v6 hourValue];
-  v8 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  v9 = [v8 minuteValue];
-  v10 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  v11 = [v5 localizedTimeStringWithHours:v7 minutes:v9 isPM:objc_msgSend(v10 ranges:{"isPM"), &v43}];
+  timeFormat = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+  inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  hourValue = [inputValue hourValue];
+  inputValue2 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  minuteValue = [inputValue2 minuteValue];
+  inputValue3 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  v11 = [timeFormat localizedTimeStringWithHours:hourValue minutes:minuteValue isPM:objc_msgSend(inputValue3 ranges:{"isPM"), &v43}];
 
   v12 = [v11 length];
-  v13 = [(_UIDatePickerCalendarTimeLabel *)self insertedDigitCount];
+  insertedDigitCount = [(_UIDatePickerCalendarTimeLabel *)self insertedDigitCount];
   v14 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v11];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -413,25 +413,25 @@ LABEL_14:
   v39 = v47;
   v35 = v43;
   v19 = _Block_copy(v31);
-  v20 = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
-  -[_UIDatePickerCalendarTimeLabel applyTextAttributesForState:inputScope:updater:](self, "applyTextAttributesForState:inputScope:updater:", [v20 currentState], -[_UIDatePickerCalendarTimeLabel inputScope](self, "inputScope"), v19);
+  stateContext = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
+  -[_UIDatePickerCalendarTimeLabel applyTextAttributesForState:inputScope:updater:](self, "applyTextAttributesForState:inputScope:updater:", [stateContext currentState], -[_UIDatePickerCalendarTimeLabel inputScope](self, "inputScope"), v19);
 
-  if (v13 >= 1)
+  if (insertedDigitCount >= 1)
   {
-    v21 = [(_UIDatePickerCalendarTimeLabel *)self inputScope];
-    switch(v21)
+    inputScope = [(_UIDatePickerCalendarTimeLabel *)self inputScope];
+    switch(inputScope)
     {
       case 3:
-        v17[2](v17, v13, v44.location, v44.length);
+        v17[2](v17, insertedDigitCount, v44.location, v44.length);
         break;
       case 2:
-        v17[2](v17, v13, v43.location, v43.length);
+        v17[2](v17, insertedDigitCount, v43.location, v43.length);
         break;
       case 1:
-        v17[2](v17, v13, v44.location, v44.length);
-        if (v13 >= 2)
+        v17[2](v17, insertedDigitCount, v44.location, v44.length);
+        if (insertedDigitCount >= 2)
         {
-          v22 = v13 - 2;
+          v22 = insertedDigitCount - 2;
         }
 
         else
@@ -444,38 +444,38 @@ LABEL_14:
     }
   }
 
-  v23 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-  if ([v23 wantsDoubleDigitHours])
+  timeFormat2 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+  if ([timeFormat2 wantsDoubleDigitHours])
   {
     goto LABEL_16;
   }
 
-  v24 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-  if (([v24 forceDoubleDigitHours] & 1) == 0)
+  timeFormat3 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+  if (([timeFormat3 forceDoubleDigitHours] & 1) == 0)
   {
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  v25 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  v26 = [v25 hourValue];
+  inputValue4 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  hourValue2 = [inputValue4 hourValue];
 
-  if (v26 <= 9)
+  if (hourValue2 <= 9)
   {
     v17[2](v17, 1, v43.location, v43.length);
   }
 
 LABEL_17:
-  if (a3)
+  if (ranges)
   {
     v27 = v46;
-    a3->var2 = v45;
-    a3->var3 = v27;
-    a3->var4 = v47;
+    ranges->var2 = v45;
+    ranges->var3 = v27;
+    ranges->var4 = v47;
     v28 = v44;
-    a3->var0 = v43;
-    a3->var1 = v28;
+    ranges->var0 = v43;
+    ranges->var1 = v28;
   }
 
   v29 = v18;
@@ -483,13 +483,13 @@ LABEL_17:
   return v29;
 }
 
-- (void)setTimeFormat:(id)a3
+- (void)setTimeFormat:(id)format
 {
-  v5 = a3;
-  if (self->_timeFormat != v5)
+  formatCopy = format;
+  if (self->_timeFormat != formatCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_timeFormat, a3);
+    v9 = formatCopy;
+    objc_storeStrong(&self->_timeFormat, format);
     v6 = [(_UIDatePickerCalendarTimeValueStore *)self->_inputValue digitsInScope:1];
     v7 = [[_UIDatePickerCalendarTimeValueStore alloc] initWithTimeFormat:v9 minuteInterval:[(_UIDatePickerCalendarTimeLabel *)self minuteInterval] decrementBehaviour:[(_UIDatePickerCalendarTimeLabel *)self decrementBehaviour]];
     [(_UIDatePickerCalendarTimeValueStore *)v7 setDigits:v6 count:0 inScope:1 append:0];
@@ -499,50 +499,50 @@ LABEL_17:
 
     [(_UIDatePickerCalendarTimeLabel *)self pushCurrentStateIntoUI];
     [(UIView *)self invalidateIntrinsicContentSize];
-    v5 = v9;
+    formatCopy = v9;
   }
 }
 
 - (int64_t)minuteInterval
 {
-  v2 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  v3 = [v2 minuteInterval];
+  inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  minuteInterval = [inputValue minuteInterval];
 
-  return v3;
+  return minuteInterval;
 }
 
-- (void)setMinuteInterval:(int64_t)a3
+- (void)setMinuteInterval:(int64_t)interval
 {
-  v5 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  [v5 setMinuteInterval:a3];
+  inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  [inputValue setMinuteInterval:interval];
 
   [(_UIDatePickerCalendarTimeLabel *)self _roundInputToClosestIntervalIfNeeded];
 }
 
-- (void)setInputScope:(int64_t)a3
+- (void)setInputScope:(int64_t)scope
 {
-  if (self->_inputScope != a3)
+  if (self->_inputScope != scope)
   {
-    self->_inputScope = a3;
+    self->_inputScope = scope;
     [(_UIDatePickerCalendarTimeLabel *)self _resetTextInput];
 
     [(_UIDatePickerCalendarTimeLabel *)self pushCurrentStateIntoUI];
   }
 }
 
-- (void)setAllowsTextInput:(BOOL)a3
+- (void)setAllowsTextInput:(BOOL)input
 {
-  if (self->_allowsTextInput != a3)
+  if (self->_allowsTextInput != input)
   {
-    self->_allowsTextInput = a3;
+    self->_allowsTextInput = input;
     [(_UIDatePickerCalendarTimeLabel *)self pushCurrentStateIntoUI];
   }
 }
 
-- (void)setInsertedDigitCount:(unint64_t)a3
+- (void)setInsertedDigitCount:(unint64_t)count
 {
-  v5 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  v6 = [v5 digitsInScope:{-[_UIDatePickerCalendarTimeLabel inputScope](self, "inputScope")}];
+  inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  v6 = [inputValue digitsInScope:{-[_UIDatePickerCalendarTimeLabel inputScope](self, "inputScope")}];
 
   v7 = 0;
   do
@@ -553,114 +553,114 @@ LABEL_17:
   }
 
   while (v8);
-  v9 = [(_UIDatePickerCalendarTimeLabel *)self inputScope];
-  if (v9 > 2)
+  inputScope = [(_UIDatePickerCalendarTimeLabel *)self inputScope];
+  if (inputScope > 2)
   {
-    v13 = 2;
-    if (v9 != 3)
+    countCopy = 2;
+    if (inputScope != 3)
     {
-      v13 = v9 == 4;
+      countCopy = inputScope == 4;
     }
   }
 
   else
   {
-    if (v9 >= 2)
+    if (inputScope >= 2)
     {
-      if (v9 != 2)
+      if (inputScope != 2)
       {
-        v13 = 0;
+        countCopy = 0;
         goto LABEL_13;
       }
 
-      v14 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-      v15 = [v14 wantsDoubleDigitHours];
+      timeFormat = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+      wantsDoubleDigitHours = [timeFormat wantsDoubleDigitHours];
 
-      v12 = v15 == 0;
-      v13 = 1;
+      v12 = wantsDoubleDigitHours == 0;
+      countCopy = 1;
     }
 
     else
     {
-      v10 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-      v11 = [v10 wantsDoubleDigitHours];
+      timeFormat2 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+      wantsDoubleDigitHours2 = [timeFormat2 wantsDoubleDigitHours];
 
-      v12 = v11 == 0;
-      v13 = 3;
+      v12 = wantsDoubleDigitHours2 == 0;
+      countCopy = 3;
     }
 
     if (!v12)
     {
-      ++v13;
+      ++countCopy;
     }
   }
 
 LABEL_13:
-  if (v7 > v13)
+  if (v7 > countCopy)
   {
-    v13 = v7;
+    countCopy = v7;
   }
 
-  if (v13 >= a3)
+  if (countCopy >= count)
   {
-    v13 = a3;
+    countCopy = count;
   }
 
-  self->_insertedDigitCount = v13;
+  self->_insertedDigitCount = countCopy;
 }
 
 - (BOOL)processTapOutside
 {
-  v3 = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
+  stateContext = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
   v4 = [MEMORY[0x1E696AC90] indexSetWithIndex:0];
-  v5 = [v3 currentSateCanTransitionWithEvents:v4];
+  v5 = [stateContext currentSateCanTransitionWithEvents:v4];
 
   [(_UIDatePickerCalendarTimeLabel *)self _stateMachineSendEvent:0];
   return v5;
 }
 
-- (void)_stateMachineSendEvent:(unint64_t)a3
+- (void)_stateMachineSendEvent:(unint64_t)event
 {
-  v6 = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
-  v5 = [v6 currentStateRef];
-  handleEvent(_UIDatePickerCalendarTimeLabelStateMachineSpec, *v5, a3, [(_UIDatePickerCalendarTimeLabel *)self stateContext], v5);
+  stateContext = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
+  currentStateRef = [stateContext currentStateRef];
+  handleEvent(_UIDatePickerCalendarTimeLabelStateMachineSpec, *currentStateRef, event, [(_UIDatePickerCalendarTimeLabel *)self stateContext], currentStateRef);
 }
 
-- (void)stateMachineUpdateFromState:(unint64_t)a3 toState:(unint64_t)a4
+- (void)stateMachineUpdateFromState:(unint64_t)state toState:(unint64_t)toState
 {
   v7 = [(_UIDatePickerCalendarTimeLabel *)self _treatMinutesAsHoursForState:?];
-  if (a4 <= 5)
+  if (toState <= 5)
   {
-    if (a4 > 2)
+    if (toState > 2)
     {
-      if (a4 == 3)
+      if (toState == 3)
       {
         goto LABEL_18;
       }
 
-      if (a4 == 4)
+      if (toState == 4)
       {
 LABEL_17:
-        v8 = self;
+        selfCopy5 = self;
         v9 = 3;
         goto LABEL_20;
       }
 
-      v8 = self;
+      selfCopy5 = self;
       v9 = 4;
 LABEL_20:
-      [(_UIDatePickerCalendarTimeLabel *)v8 setInputScope:v9];
+      [(_UIDatePickerCalendarTimeLabel *)selfCopy5 setInputScope:v9];
       goto LABEL_21;
     }
 
-    if (a4 == 1)
+    if (toState == 1)
     {
-      v8 = self;
+      selfCopy5 = self;
       v9 = 0;
       goto LABEL_20;
     }
 
-    if (a4 != 2)
+    if (toState != 2)
     {
       goto LABEL_21;
     }
@@ -668,17 +668,17 @@ LABEL_20:
     goto LABEL_16;
   }
 
-  if (a4 <= 8)
+  if (toState <= 8)
   {
-    if (a4 != 6)
+    if (toState != 6)
     {
-      if (a4 != 7)
+      if (toState != 7)
       {
         goto LABEL_17;
       }
 
 LABEL_18:
-      v8 = self;
+      selfCopy5 = self;
       v9 = 2;
       goto LABEL_20;
     }
@@ -686,41 +686,41 @@ LABEL_18:
     goto LABEL_16;
   }
 
-  if (a4 == 9 || a4 == 10)
+  if (toState == 9 || toState == 10)
   {
 LABEL_16:
-    v8 = self;
+    selfCopy5 = self;
     v9 = 1;
     goto LABEL_20;
   }
 
-  if (a4 == 11)
+  if (toState == 11)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"_UIDatePickerCalendarTimeLabelStateCount should never be reached. This is a UIKit bug."];
   }
 
 LABEL_21:
-  if (a3 != a4)
+  if (state != toState)
   {
     [(_UIDatePickerCalendarTimeLabel *)self _resetTextInput];
-    if (a4 == 1 && v7 && ![(_UIDatePickerCalendarTimeLabel *)self _treatMinutesAsHoursForState:1])
+    if (toState == 1 && v7 && ![(_UIDatePickerCalendarTimeLabel *)self _treatMinutesAsHoursForState:1])
     {
-      v10 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-      v11 = [v10 minuteValue];
-      v12 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-      [v12 setHourValue:v11];
+      inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+      minuteValue = [inputValue minuteValue];
+      inputValue2 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+      [inputValue2 setHourValue:minuteValue];
 
-      v13 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-      [v13 setMinuteValue:0];
+      inputValue3 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+      [inputValue3 setMinuteValue:0];
     }
 
-    v14 = a4 - 2;
-    if (a3 - 2 >= 8)
+    v14 = toState - 2;
+    if (state - 2 >= 8)
     {
       if (v14 <= 7)
       {
-        v15 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
-        [v15 timeLabelDidBeginEditing:self];
+        delegate = [(_UIDatePickerCalendarTimeLabel *)self delegate];
+        [delegate timeLabelDidBeginEditing:self];
         goto LABEL_30;
       }
     }
@@ -728,8 +728,8 @@ LABEL_21:
     else if (v14 >= 8)
     {
       [(_UIDatePickerCalendarTimeLabel *)self _roundInputToClosestIntervalIfNeeded];
-      v15 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
-      [v15 timeLabelDidEndEditing:self];
+      delegate = [(_UIDatePickerCalendarTimeLabel *)self delegate];
+      [delegate timeLabelDidEndEditing:self];
 LABEL_30:
     }
   }
@@ -737,8 +737,8 @@ LABEL_30:
   v18 = objc_opt_new();
   [v18 addIndex:8];
   [v18 addIndex:1];
-  v16 = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
-  v17 = [v16 currentSateCanTransitionWithEvents:v18];
+  stateContext = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
+  v17 = [stateContext currentSateCanTransitionWithEvents:v18];
 
   [(_UIDatePickerCalendarTimeLabel *)self setAllowsTextInput:v17];
   if (v17 && ![(UIView *)self isFirstResponder])
@@ -746,7 +746,7 @@ LABEL_30:
     [(_UIDatePickerCalendarTimeLabel *)self becomeFirstResponder];
   }
 
-  else if ((a4 == 10 || a4 == 1) && [(UIView *)self isFirstResponder])
+  else if ((toState == 10 || toState == 1) && [(UIView *)self isFirstResponder])
   {
     [(_UIDatePickerCalendarTimeLabel *)self resignFirstResponder];
   }
@@ -754,11 +754,11 @@ LABEL_30:
   [(_UIDatePickerCalendarTimeLabel *)self pushCurrentStateIntoUI];
 }
 
-- (void)setRoundsToMinuteInterval:(BOOL)a3
+- (void)setRoundsToMinuteInterval:(BOOL)interval
 {
-  if (self->_roundsToMinuteInterval != a3)
+  if (self->_roundsToMinuteInterval != interval)
   {
-    self->_roundsToMinuteInterval = a3;
+    self->_roundsToMinuteInterval = interval;
     [(_UIDatePickerCalendarTimeLabel *)self _roundInputToClosestIntervalIfNeeded];
   }
 }
@@ -767,14 +767,14 @@ LABEL_30:
 {
   if ([(_UIDatePickerCalendarTimeLabel *)self roundsToMinuteInterval])
   {
-    v3 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-    v4 = [v3 roundToMinuteInterval];
+    inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+    roundToMinuteInterval = [inputValue roundToMinuteInterval];
 
-    if (v4)
+    if (roundToMinuteInterval)
     {
-      v5 = [(UIView *)self window];
+      window = [(UIView *)self window];
 
-      if (v5)
+      if (window)
       {
 
         [(_UIDatePickerCalendarTimeLabel *)self pushCurrentStateIntoUIAndNotify];
@@ -789,13 +789,13 @@ LABEL_30:
   }
 }
 
-- (BOOL)_digits:(unint64_t *)a3 fromText:(id)a4 count:(int64_t *)a5
+- (BOOL)_digits:(unint64_t *)_digits fromText:(id)text count:(int64_t *)count
 {
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-  v10 = v8;
-  v11 = [v9 invertedSet];
-  v12 = [v10 rangeOfCharacterFromSet:v11];
+  textCopy = text;
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  v10 = textCopy;
+  invertedSet = [decimalDigitCharacterSet invertedSet];
+  v12 = [v10 rangeOfCharacterFromSet:invertedSet];
   v14 = v10;
   if (v12 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -805,14 +805,14 @@ LABEL_30:
     {
       v14 = [v16 stringByReplacingCharactersInRange:v15 withString:{v13, &stru_1EFB14550}];
 
-      v15 = [v14 rangeOfCharacterFromSet:v11];
+      v15 = [v14 rangeOfCharacterFromSet:invertedSet];
       v16 = v14;
     }
 
     while (v15 != 0x7FFFFFFFFFFFFFFFLL);
   }
 
-  if (a5)
+  if (count)
   {
     v17 = v14;
     v18 = 0;
@@ -829,44 +829,44 @@ LABEL_30:
       while (v20 + v21 < [v17 length]);
     }
 
-    *a5 = v18;
+    *count = v18;
   }
 
   v22 = [v14 length];
   if (v22)
   {
-    v23 = [(_UIDatePickerCalendarTimeLabel *)self inputFormatter];
-    v24 = [v23 numberFromString:v14];
-    *a3 = [v24 unsignedIntegerValue];
+    inputFormatter = [(_UIDatePickerCalendarTimeLabel *)self inputFormatter];
+    v24 = [inputFormatter numberFromString:v14];
+    *_digits = [v24 unsignedIntegerValue];
   }
 
   return v22 != 0;
 }
 
-- (BOOL)_treatMinutesAsHoursForState:(unint64_t)a3
+- (BOOL)_treatMinutesAsHoursForState:(unint64_t)state
 {
-  if ((a3 == 9 || a3 == 6) && [(_UIDatePickerCalendarTimeLabel *)self insertedDigitCount]<= 2 && [(_UIDatePickerCalendarTimeLabel *)self insertedDigitCount])
+  if ((state == 9 || state == 6) && [(_UIDatePickerCalendarTimeLabel *)self insertedDigitCount]<= 2 && [(_UIDatePickerCalendarTimeLabel *)self insertedDigitCount])
   {
-    v4 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-    v5 = [v4 minuteValue];
+    inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+    minuteValue = [inputValue minuteValue];
 
-    v6 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-    v7 = [v6 clock];
+    timeFormat = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+    clock = [timeFormat clock];
 
-    v8 = v5 < 0xD;
-    if (v7 > 1)
+    v8 = minuteValue < 0xD;
+    if (clock > 1)
     {
-      v8 = v7 - 2;
+      v8 = clock - 2;
     }
 
-    if (v7 - 2 >= 2)
+    if (clock - 2 >= 2)
     {
       return v8;
     }
 
     else
     {
-      return v5 < 0x19;
+      return minuteValue < 0x19;
     }
   }
 
@@ -876,9 +876,9 @@ LABEL_30:
   }
 }
 
-- (void)setHourText:(id)a3
+- (void)setHourText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if ([(UIView *)self isFirstResponder])
   {
     if (os_variant_has_internal_diagnostics())
@@ -903,11 +903,11 @@ LABEL_30:
   }
 
   v9 = 0;
-  if ([(_UIDatePickerCalendarTimeLabel *)self _digits:&v9 fromText:v4 count:0])
+  if ([(_UIDatePickerCalendarTimeLabel *)self _digits:&v9 fromText:textCopy count:0])
   {
     v5 = v9;
-    v6 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-    [v6 setHourValue:v5];
+    inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+    [inputValue setHourValue:v5];
 
     [(_UIDatePickerCalendarTimeLabel *)self pushCurrentStateIntoUI];
   }
@@ -915,33 +915,33 @@ LABEL_30:
 
 - (NSString)hourText
 {
-  v3 = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
-  v4 = -[_UIDatePickerCalendarTimeLabel _treatMinutesAsHoursForState:](self, "_treatMinutesAsHoursForState:", [v3 currentState]);
-  v5 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  v6 = v5;
+  stateContext = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
+  v4 = -[_UIDatePickerCalendarTimeLabel _treatMinutesAsHoursForState:](self, "_treatMinutesAsHoursForState:", [stateContext currentState]);
+  inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  v6 = inputValue;
   if (v4)
   {
-    v7 = [v5 minuteValue];
+    minuteValue = [inputValue minuteValue];
   }
 
   else
   {
-    v7 = [v5 hourValue];
+    minuteValue = [inputValue hourValue];
   }
 
-  v8 = v7;
+  v8 = minuteValue;
 
-  v9 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-  v10 = [v9 hourFormatter];
+  timeFormat = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+  hourFormatter = [timeFormat hourFormatter];
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
-  v12 = [v10 stringFromNumber:v11];
+  v12 = [hourFormatter stringFromNumber:v11];
 
   return v12;
 }
 
-- (void)setMinuteText:(id)a3
+- (void)setMinuteText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if ([(UIView *)self isFirstResponder])
   {
     if (os_variant_has_internal_diagnostics())
@@ -966,11 +966,11 @@ LABEL_30:
   }
 
   v9 = 0;
-  if ([(_UIDatePickerCalendarTimeLabel *)self _digits:&v9 fromText:v4 count:0])
+  if ([(_UIDatePickerCalendarTimeLabel *)self _digits:&v9 fromText:textCopy count:0])
   {
     v5 = v9;
-    v6 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-    [v6 setMinuteValue:v5];
+    inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+    [inputValue setMinuteValue:v5];
 
     [(_UIDatePickerCalendarTimeLabel *)self pushCurrentStateIntoUI];
   }
@@ -978,45 +978,45 @@ LABEL_30:
 
 - (NSString)minuteText
 {
-  v3 = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
-  if (-[_UIDatePickerCalendarTimeLabel _treatMinutesAsHoursForState:](self, "_treatMinutesAsHoursForState:", [v3 currentState]))
+  stateContext = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
+  if (-[_UIDatePickerCalendarTimeLabel _treatMinutesAsHoursForState:](self, "_treatMinutesAsHoursForState:", [stateContext currentState]))
   {
-    v4 = 0;
+    minuteValue = 0;
   }
 
   else
   {
-    v5 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-    v4 = [v5 minuteValue];
+    inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+    minuteValue = [inputValue minuteValue];
   }
 
-  v6 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-  v7 = [v6 minuteFormatter];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
-  v9 = [v7 stringFromNumber:v8];
+  timeFormat = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+  minuteFormatter = [timeFormat minuteFormatter];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:minuteValue];
+  v9 = [minuteFormatter stringFromNumber:v8];
 
   return v9;
 }
 
 - (NSString)timeOfDayText
 {
-  v3 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-  v4 = [v3 clockLayout];
+  timeFormat = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+  clockLayout = [timeFormat clockLayout];
 
-  if (v4)
+  if (clockLayout)
   {
-    v5 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-    v6 = [v5 isPM];
-    v7 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-    v8 = v7;
-    if (v6)
+    inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+    isPM = [inputValue isPM];
+    timeFormat2 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+    v8 = timeFormat2;
+    if (isPM)
     {
-      [v7 PMSymbol];
+      [timeFormat2 PMSymbol];
     }
 
     else
     {
-      [v7 AMSymbol];
+      [timeFormat2 AMSymbol];
     }
     v9 = ;
   }
@@ -1032,9 +1032,9 @@ LABEL_30:
 - (void)pushCurrentStateIntoUIAndNotify
 {
   [(_UIDatePickerCalendarTimeLabel *)self pushCurrentStateIntoUI];
-  v4 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
-  v3 = [(_UIDatePickerCalendarTimeLabel *)self text];
-  [v4 timeLabel:self didUpdateText:v3];
+  delegate = [(_UIDatePickerCalendarTimeLabel *)self delegate];
+  text = [(_UIDatePickerCalendarTimeLabel *)self text];
+  [delegate timeLabel:self didUpdateText:text];
 }
 
 - (id)keyCommands
@@ -1081,15 +1081,15 @@ LABEL_30:
   return v7;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel_didReceiveLeftArrowKey_ == a3 || sel_didReceiveRightArrowKey_ == a3)
+  senderCopy = sender;
+  if (sel_didReceiveLeftArrowKey_ == action || sel_didReceiveRightArrowKey_ == action)
   {
     v8 = 1;
   }
 
-  else if (sel_didReceiveUpArrowKey_ == a3 || sel_didReceiveDownArrowKey_ == a3)
+  else if (sel_didReceiveUpArrowKey_ == action || sel_didReceiveDownArrowKey_ == action)
   {
     v8 = [(_UIDatePickerCalendarTimeLabel *)self inputScope]> 1;
   }
@@ -1098,45 +1098,45 @@ LABEL_30:
   {
     v11.receiver = self;
     v11.super_class = _UIDatePickerCalendarTimeLabel;
-    v8 = [(UIView *)&v11 canPerformAction:a3 withSender:v6];
+    v8 = [(UIView *)&v11 canPerformAction:action withSender:senderCopy];
   }
 
   return v8;
 }
 
-- (void)didReceiveUpArrowKey:(id)a3
+- (void)didReceiveUpArrowKey:(id)key
 {
-  v4 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  [v4 incrementDigitForScope:{-[_UIDatePickerCalendarTimeLabel inputScope](self, "inputScope")}];
+  inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  [inputValue incrementDigitForScope:{-[_UIDatePickerCalendarTimeLabel inputScope](self, "inputScope")}];
 
   [(_UIDatePickerCalendarTimeLabel *)self _resetTextInput];
 
   [(_UIDatePickerCalendarTimeLabel *)self pushCurrentStateIntoUIAndNotify];
 }
 
-- (void)didReceiveDownArrowKey:(id)a3
+- (void)didReceiveDownArrowKey:(id)key
 {
-  v4 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-  [v4 decrementDigitForScope:{-[_UIDatePickerCalendarTimeLabel inputScope](self, "inputScope")}];
+  inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+  [inputValue decrementDigitForScope:{-[_UIDatePickerCalendarTimeLabel inputScope](self, "inputScope")}];
 
   [(_UIDatePickerCalendarTimeLabel *)self _resetTextInput];
 
   [(_UIDatePickerCalendarTimeLabel *)self pushCurrentStateIntoUIAndNotify];
 }
 
-- (void)didReceiveRightArrowKey:(id)a3
+- (void)didReceiveRightArrowKey:(id)key
 {
-  v4 = [(_UIDatePickerCalendarTimeLabel *)self inputScope];
-  if ((v4 - 1) >= 2)
+  inputScope = [(_UIDatePickerCalendarTimeLabel *)self inputScope];
+  if ((inputScope - 1) >= 2)
   {
-    if (v4 == 4)
+    if (inputScope == 4)
     {
       if ([(_UIDatePickerCalendarTimeLabel *)self displaysTimeOfDayLabel])
       {
-        v8 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-        v9 = [v8 clockLayout];
+        timeFormat = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+        clockLayout = [timeFormat clockLayout];
 
-        if (v9 == 2)
+        if (clockLayout == 2)
         {
           v7 = 2;
           goto LABEL_11;
@@ -1146,7 +1146,7 @@ LABEL_30:
 
     else
     {
-      if (v4 != 3)
+      if (inputScope != 3)
       {
         return;
       }
@@ -1156,10 +1156,10 @@ LABEL_30:
         goto LABEL_6;
       }
 
-      v5 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-      v6 = [v5 clockLayout];
+      timeFormat2 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+      clockLayout2 = [timeFormat2 clockLayout];
 
-      if (v6 != 1)
+      if (clockLayout2 != 1)
       {
         goto LABEL_6;
       }
@@ -1176,28 +1176,28 @@ LABEL_11:
   [(_UIDatePickerCalendarTimeLabel *)self _stateMachineSendEvent:v7];
 }
 
-- (void)didReceiveLeftArrowKey:(id)a3
+- (void)didReceiveLeftArrowKey:(id)key
 {
-  v4 = [(_UIDatePickerCalendarTimeLabel *)self inputScope];
+  inputScope = [(_UIDatePickerCalendarTimeLabel *)self inputScope];
   v5 = 2;
-  if (v4 > 2)
+  if (inputScope > 2)
   {
-    if (v4 == 3)
+    if (inputScope == 3)
     {
       goto LABEL_14;
     }
 
-    if (v4 != 4)
+    if (inputScope != 4)
     {
       return;
     }
 
     if ([(_UIDatePickerCalendarTimeLabel *)self displaysTimeOfDayLabel])
     {
-      v8 = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
-      v9 = [v8 clockLayout];
+      timeFormat = [(_UIDatePickerCalendarTimeLabel *)self timeFormat];
+      clockLayout = [timeFormat clockLayout];
 
-      if (v9 == 1)
+      if (clockLayout == 1)
       {
         v5 = 3;
         goto LABEL_14;
@@ -1207,9 +1207,9 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (v4 != 1)
+  if (inputScope != 1)
   {
-    if (v4 != 2)
+    if (inputScope != 2)
     {
       return;
     }
@@ -1231,28 +1231,28 @@ LABEL_14:
 
 - (int64_t)keyboardType
 {
-  v3 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
-  v4 = [v3 keyboardTypeForTimeLabel:self];
+  delegate = [(_UIDatePickerCalendarTimeLabel *)self delegate];
+  v4 = [delegate keyboardTypeForTimeLabel:self];
 
   return v4;
 }
 
 - (BOOL)_suppressSoftwareKeyboard
 {
-  v3 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
-  if ([v3 timeLabelShouldSuppressSoftwareKeyboard:self])
+  delegate = [(_UIDatePickerCalendarTimeLabel *)self delegate];
+  if ([delegate timeLabelShouldSuppressSoftwareKeyboard:self])
   {
-    v4 = 1;
+    _suppressSoftwareKeyboard = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = _UIDatePickerCalendarTimeLabel;
-    v4 = [(UIResponder *)&v6 _suppressSoftwareKeyboard];
+    _suppressSoftwareKeyboard = [(UIResponder *)&v6 _suppressSoftwareKeyboard];
   }
 
-  return v4;
+  return _suppressSoftwareKeyboard;
 }
 
 - (id)inputView
@@ -1270,32 +1270,32 @@ LABEL_14:
       inputView = self->_inputView;
     }
 
-    v6 = inputView;
+    inputView = inputView;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = _UIDatePickerCalendarTimeLabel;
-    v6 = [(UIResponder *)&v8 inputView];
+    inputView = [(UIResponder *)&v8 inputView];
   }
 
-  return v6;
+  return inputView;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
-  v5 = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
-  v6 = [v5 currentState];
+  textCopy = text;
+  stateContext = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
+  currentState = [stateContext currentState];
 
-  if ([(_UIDatePickerCalendarTimeLabel *)self allowsTextInput]|| v6 == 9)
+  if ([(_UIDatePickerCalendarTimeLabel *)self allowsTextInput]|| currentState == 9)
   {
-    v7 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
-    if (v7)
+    delegate = [(_UIDatePickerCalendarTimeLabel *)self delegate];
+    if (delegate)
     {
-      v8 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
-      v9 = [v8 timeLabel:self didReceiveText:v4];
+      delegate2 = [(_UIDatePickerCalendarTimeLabel *)self delegate];
+      v9 = [delegate2 timeLabel:self didReceiveText:textCopy];
 
       if (v9)
       {
@@ -1303,11 +1303,11 @@ LABEL_14:
       }
     }
 
-    if ([v4 length] == 1)
+    if ([textCopy length] == 1)
     {
-      v10 = [v4 characterAtIndex:0];
-      v11 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      if ([v11 characterIsMember:v10])
+      v10 = [textCopy characterAtIndex:0];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      if ([newlineCharacterSet characterIsMember:v10])
       {
         [(_UIDatePickerCalendarTimeLabel *)self _stateMachineSendEvent:1];
 
@@ -1318,9 +1318,9 @@ LABEL_16:
 
     v16 = 0;
     v17 = 0;
-    if ([(_UIDatePickerCalendarTimeLabel *)self _digits:&v17 fromText:v4 count:&v16])
+    if ([(_UIDatePickerCalendarTimeLabel *)self _digits:&v17 fromText:textCopy count:&v16])
     {
-      if (v6 == 9)
+      if (currentState == 9)
       {
         v12 = 9;
       }
@@ -1331,14 +1331,14 @@ LABEL_16:
       }
 
       [(_UIDatePickerCalendarTimeLabel *)self _stateMachineSendEvent:v12];
-      if ([(_UIDatePickerCalendarTimeLabel *)self allowsTextInput]|| v6 == 9)
+      if ([(_UIDatePickerCalendarTimeLabel *)self allowsTextInput]|| currentState == 9)
       {
         v13 = [(_UIDatePickerCalendarTimeLabel *)self insertedDigitCount]!= 0;
-        v14 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-        [v14 setDigits:v17 count:v16 inScope:-[_UIDatePickerCalendarTimeLabel inputScope](self append:{"inputScope"), v13}];
+        inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+        [inputValue setDigits:v17 count:v16 inScope:-[_UIDatePickerCalendarTimeLabel inputScope](self append:{"inputScope"), v13}];
 
-        v15 = [(_UIDatePickerCalendarTimeLabel *)self insertedDigitCount];
-        [(_UIDatePickerCalendarTimeLabel *)self setInsertedDigitCount:v16 + v15];
+        insertedDigitCount = [(_UIDatePickerCalendarTimeLabel *)self insertedDigitCount];
+        [(_UIDatePickerCalendarTimeLabel *)self setInsertedDigitCount:v16 + insertedDigitCount];
         [(_UIDatePickerCalendarTimeLabel *)self pushCurrentStateIntoUIAndNotify];
       }
     }
@@ -1354,11 +1354,11 @@ LABEL_17:
   [(_UIDatePickerCalendarTimeLabel *)self _stateMachineSendEvent:8];
   if ([(_UIDatePickerCalendarTimeLabel *)self allowsTextInput])
   {
-    v3 = [(_UIDatePickerCalendarTimeLabel *)self inputScope];
+    inputScope = [(_UIDatePickerCalendarTimeLabel *)self inputScope];
     if (![(_UIDatePickerCalendarTimeLabel *)self insertedDigitCount])
     {
-      v4 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-      v5 = [v4 digitsInScope:v3];
+      inputValue = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+      v5 = [inputValue digitsInScope:inputScope];
 
       v6 = 0;
       do
@@ -1372,8 +1372,8 @@ LABEL_17:
       [(_UIDatePickerCalendarTimeLabel *)self setInsertedDigitCount:v6];
     }
 
-    v8 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
-    [v8 removeLastDigitInScope:v3];
+    inputValue2 = [(_UIDatePickerCalendarTimeLabel *)self inputValue];
+    [inputValue2 removeLastDigitInScope:inputScope];
 
     if ([(_UIDatePickerCalendarTimeLabel *)self insertedDigitCount])
     {
@@ -1384,20 +1384,20 @@ LABEL_17:
   }
 }
 
-- (void)indirectScribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5
+- (void)indirectScribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion
 {
-  v7 = a5;
-  v6 = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
-  [v6 currentState];
+  completionCopy = completion;
+  stateContext = [(_UIDatePickerCalendarTimeLabel *)self stateContext];
+  [stateContext currentState];
 
-  v7[2]();
+  completionCopy[2]();
 }
 
-- (void)indirectScribbleInteraction:(id)a3 focusElementIfNeeded:(id)a4 referencePoint:(CGPoint)a5 completion:(id)a6
+- (void)indirectScribbleInteraction:(id)interaction focusElementIfNeeded:(id)needed referencePoint:(CGPoint)point completion:(id)completion
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = a6;
+  interactionCopy = interaction;
+  neededCopy = needed;
+  completionCopy = completion;
   hiddenField = self->_hiddenField;
   if (!hiddenField)
   {
@@ -1423,20 +1423,20 @@ LABEL_17:
     v15 = 0;
   }
 
-  v10[2](v10, v15);
+  completionCopy[2](completionCopy, v15);
 }
 
-- (void)indirectScribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4
+- (void)indirectScribbleInteraction:(id)interaction willBeginWritingInElement:(id)element
 {
-  [(UITextField *)self->_hiddenField setAttributedText:0, a4];
+  [(UITextField *)self->_hiddenField setAttributedText:0, element];
   [(_UIDatePickerCalendarTimeLabel *)self _stateMachineSendEvent:9];
 
   [(_UIDatePickerCalendarTimeLabel *)self willBeginWritingInScribbleInteraction];
 }
 
-- (void)indirectScribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4
+- (void)indirectScribbleInteraction:(id)interaction didFinishWritingInElement:(id)element
 {
-  v10 = [(UITextField *)self->_hiddenField text:a3];
+  v10 = [(UITextField *)self->_hiddenField text:interaction];
   if ([v10 length])
   {
     v5 = 0;

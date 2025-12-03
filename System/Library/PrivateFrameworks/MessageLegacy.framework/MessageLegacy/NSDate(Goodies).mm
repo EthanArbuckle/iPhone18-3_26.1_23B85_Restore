@@ -11,7 +11,7 @@
   [v2 setDateFormat:@"EEE, d MMM yyyy HH:mm:ss ZZ"];
   [v2 setLocale:{objc_msgSend(MEMORY[0x277CBEAF8], "localeWithLocaleIdentifier:", @"en_US_POSIX"}];
 
-  return [v2 stringFromDate:a1];
+  return [v2 stringFromDate:self];
 }
 
 - (uint64_t)mf_replyPrefixForSender:()Goodies
@@ -32,7 +32,7 @@
   if (v8)
   {
     v9 = v8;
-    StringWithDate = CFDateFormatterCreateStringWithDate(0, v8, a1);
+    StringWithDate = CFDateFormatterCreateStringWithDate(0, v8, self);
     CFRelease(v9);
   }
 
@@ -52,7 +52,7 @@
   if (v12)
   {
     v13 = v12;
-    v14 = CFDateFormatterCreateStringWithDate(0, v12, a1);
+    v14 = CFDateFormatterCreateStringWithDate(0, v12, self);
     CFRelease(v13);
   }
 
@@ -68,16 +68,16 @@
     v14 = 0;
   }
 
-  v16 = [a3 mf_addressComment];
-  v17 = [a3 mf_uncommentedAddress];
-  if (v16)
+  mf_addressComment = [a3 mf_addressComment];
+  mf_uncommentedAddress = [a3 mf_uncommentedAddress];
+  if (mf_addressComment)
   {
-    v18 = v17;
-    if (v17)
+    v18 = mf_uncommentedAddress;
+    if (mf_uncommentedAddress)
     {
-      if (([v16 isEqual:v17] & 1) == 0)
+      if (([mf_addressComment isEqual:mf_uncommentedAddress] & 1) == 0)
       {
-        a3 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"REPLY_ATTRIBUTION_SENDER", @"%@ <%@>", 0), v16, v18];
+        a3 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"REPLY_ATTRIBUTION_SENDER", @"%@ <%@>", 0), mf_addressComment, v18];
       }
     }
   }

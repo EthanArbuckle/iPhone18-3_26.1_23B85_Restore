@@ -1,27 +1,27 @@
 @interface PXStoryPHMemoryPersistableRecipeWriter
 - (PXStoryPHMemoryPersistableRecipeWriter)init;
-- (PXStoryPHMemoryPersistableRecipeWriter)initWithMemory:(id)a3;
-- (id)writePersistableRecipe:(id)a3 assetEdits:(id)a4 undoManager:(id)a5 resultHandler:(id)a6;
+- (PXStoryPHMemoryPersistableRecipeWriter)initWithMemory:(id)memory;
+- (id)writePersistableRecipe:(id)recipe assetEdits:(id)edits undoManager:(id)manager resultHandler:(id)handler;
 @end
 
 @implementation PXStoryPHMemoryPersistableRecipeWriter
 
-- (id)writePersistableRecipe:(id)a3 assetEdits:(id)a4 undoManager:(id)a5 resultHandler:(id)a6
+- (id)writePersistableRecipe:(id)recipe assetEdits:(id)edits undoManager:(id)manager resultHandler:(id)handler
 {
   buf[11] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(PXStoryPHMemoryPersistableRecipeWriter *)self memory];
-  if (v12)
+  recipeCopy = recipe;
+  editsCopy = edits;
+  managerCopy = manager;
+  handlerCopy = handler;
+  memory = [(PXStoryPHMemoryPersistableRecipeWriter *)self memory];
+  if (editsCopy)
   {
-    [v12 overallDurationInfo];
+    [editsCopy overallDurationInfo];
     if (buf[0])
     {
-      if (v11)
+      if (recipeCopy)
       {
-        [v11 overallDurationInfo];
+        [recipeCopy overallDurationInfo];
       }
 
       else
@@ -29,7 +29,7 @@
         memset(buf, 0, 80);
       }
 
-      [v12 overallDurationInfo];
+      [editsCopy overallDurationInfo];
       if (buf[0] != v36 || (v46 = *&buf[7], v43 = v40, time1 = *&buf[1], *&v45[16] = *&buf[5], v44 = *&buf[1], *v45 = *&buf[3], *&v42[16] = v39, v41 = v37, *v42 = v38, *&time2.value = v37, time2.epoch = v38, CMTimeCompare(&time1, &time2)) || (time1 = *&v45[8], time2 = *&v42[8], CMTimeCompare(&time1, &time2)) || (time1 = v46, time2 = v43, CMTimeCompare(&time1, &time2)))
       {
         PXAssertGetLog();
@@ -38,26 +38,26 @@
   }
 
   v16 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:3];
-  v17 = [(PXStoryPHMemoryPersistableRecipeWriter *)self workQueue];
+  workQueue = [(PXStoryPHMemoryPersistableRecipeWriter *)self workQueue];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __102__PXStoryPHMemoryPersistableRecipeWriter_writePersistableRecipe_assetEdits_undoManager_resultHandler___block_invoke;
   v27[3] = &unk_1E774BDD8;
   v18 = v16;
   v28 = v18;
-  v29 = v11;
-  v30 = v15;
-  v31 = v12;
-  v34 = v14;
+  v29 = recipeCopy;
+  v30 = memory;
+  v31 = editsCopy;
+  v34 = handlerCopy;
   v35 = a2;
-  v32 = self;
-  v33 = v13;
-  v19 = v13;
-  v20 = v14;
-  v21 = v12;
-  v22 = v15;
-  v23 = v11;
-  dispatch_async(v17, v27);
+  selfCopy = self;
+  v33 = managerCopy;
+  v19 = managerCopy;
+  v20 = handlerCopy;
+  v21 = editsCopy;
+  v22 = memory;
+  v23 = recipeCopy;
+  dispatch_async(workQueue, v27);
 
   v24 = v33;
   v25 = v18;
@@ -209,22 +209,22 @@ void __102__PXStoryPHMemoryPersistableRecipeWriter_writePersistableRecipe_assetE
   (*(*(a1 + 40) + 16))();
 }
 
-- (PXStoryPHMemoryPersistableRecipeWriter)initWithMemory:(id)a3
+- (PXStoryPHMemoryPersistableRecipeWriter)initWithMemory:(id)memory
 {
-  v5 = a3;
+  memoryCopy = memory;
   v16.receiver = self;
   v16.super_class = PXStoryPHMemoryPersistableRecipeWriter;
   v6 = [(PXStoryPHMemoryPersistableRecipeWriter *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_memory, a3);
+    objc_storeStrong(&v6->_memory, memory);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_attr_make_with_qos_class(v11, QOS_CLASS_USER_INITIATED, 0);
-    v13 = dispatch_queue_create(v10, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     workQueue = v7->_workQueue;
     v7->_workQueue = v13;
   }
@@ -234,8 +234,8 @@ void __102__PXStoryPHMemoryPersistableRecipeWriter_writePersistableRecipe_assetE
 
 - (PXStoryPHMemoryPersistableRecipeWriter)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryPHMemoryPersistableRecipeWriter.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXStoryPHMemoryPersistableRecipeWriter init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPHMemoryPersistableRecipeWriter.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXStoryPHMemoryPersistableRecipeWriter init]"}];
 
   abort();
 }

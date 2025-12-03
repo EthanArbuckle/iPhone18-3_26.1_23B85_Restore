@@ -1,19 +1,19 @@
 @interface CKDApplyZoneAttributeChangesOperationInfo
-- (CKDApplyZoneAttributeChangesOperationInfo)initWithZone:(id)a3;
+- (CKDApplyZoneAttributeChangesOperationInfo)initWithZone:(id)zone;
 @end
 
 @implementation CKDApplyZoneAttributeChangesOperationInfo
 
-- (CKDApplyZoneAttributeChangesOperationInfo)initWithZone:(id)a3
+- (CKDApplyZoneAttributeChangesOperationInfo)initWithZone:(id)zone
 {
-  v5 = a3;
+  zoneCopy = zone;
   v9.receiver = self;
   v9.super_class = CKDApplyZoneAttributeChangesOperationInfo;
   v6 = [(CKOperationInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_zone, a3);
+    objc_storeStrong(&v6->_zone, zone);
   }
 
   return v7;

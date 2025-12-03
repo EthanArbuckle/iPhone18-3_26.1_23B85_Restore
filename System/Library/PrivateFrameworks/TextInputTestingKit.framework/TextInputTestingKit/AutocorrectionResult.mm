@@ -1,47 +1,47 @@
 @interface AutocorrectionResult
-- (AutocorrectionResult)initWithCoder:(id)a3;
+- (AutocorrectionResult)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)extractDataFromTypingLog:(id)a3;
-- (void)setTagsFromClassifiers:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)extractDataFromTypingLog:(id)log;
+- (void)setTagsFromClassifiers:(id)classifiers;
 @end
 
 @implementation AutocorrectionResult
 
-- (void)extractDataFromTypingLog:(id)a3
+- (void)extractDataFromTypingLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
   v44 = 0;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
+  array6 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v29 = MEMORY[0x277D85DD0];
   v30 = 3221225472;
   v31 = __49__AutocorrectionResult_extractDataFromTypingLog___block_invoke;
   v32 = &unk_279DA0DB8;
   v40 = &v41;
-  v12 = v5;
+  v12 = array;
   v33 = v12;
-  v13 = v9;
+  v13 = array5;
   v34 = v13;
-  v14 = v7;
+  v14 = array3;
   v35 = v14;
-  v15 = v8;
+  v15 = array4;
   v36 = v15;
-  v16 = v10;
+  v16 = array6;
   v37 = v16;
-  v17 = v6;
+  v17 = array2;
   v38 = v17;
-  v18 = v11;
+  v18 = dictionary;
   v39 = v18;
-  [v4 enumerateKeystrokesAndPathsForTokensWithBlock:&v29];
+  [logCopy enumerateKeystrokesAndPathsForTokensWithBlock:&v29];
   v19 = [v12 copy];
   [(AutocorrectionResult *)self setTouched:v19];
 
@@ -60,8 +60,8 @@
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v42[3]];
   [(AutocorrectionResult *)self setNumberOfTouches:v24];
 
-  v25 = [v4 getDebugData];
-  [(AutocorrectionResult *)self setDebugData:v25];
+  getDebugData = [logCopy getDebugData];
+  [(AutocorrectionResult *)self setDebugData:getDebugData];
 
   v26 = [v17 copy];
   [(AutocorrectionResult *)self setTouchEvents:v26];
@@ -69,10 +69,10 @@
   v27 = [v18 copy];
   [(AutocorrectionResult *)self setPathsForWords:v27];
 
-  v28 = [v4 intendedTransliterationSequence];
-  if (v28)
+  intendedTransliterationSequence = [logCopy intendedTransliterationSequence];
+  if (intendedTransliterationSequence)
   {
-    [(AutocorrectionResult *)self setIntendedTransliteration:v28];
+    [(AutocorrectionResult *)self setIntendedTransliteration:intendedTransliterationSequence];
   }
 
   _Block_object_dispose(&v41, 8);
@@ -178,57 +178,57 @@ void __49__AutocorrectionResult_extractDataFromTypingLog___block_invoke(uint64_t
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AutocorrectionResult *)self context];
-  [v4 encodeObject:v5 forKey:@"ARContext"];
+  coderCopy = coder;
+  context = [(AutocorrectionResult *)self context];
+  [coderCopy encodeObject:context forKey:@"ARContext"];
 
-  v6 = [(AutocorrectionResult *)self touched];
-  [v4 encodeObject:v6 forKey:@"ARTouched"];
+  touched = [(AutocorrectionResult *)self touched];
+  [coderCopy encodeObject:touched forKey:@"ARTouched"];
 
-  v7 = [(AutocorrectionResult *)self predicted];
-  [v4 encodeObject:v7 forKey:@"ARPredicted"];
+  predicted = [(AutocorrectionResult *)self predicted];
+  [coderCopy encodeObject:predicted forKey:@"ARPredicted"];
 
-  v8 = [(AutocorrectionResult *)self inlineCompletions];
-  [v4 encodeObject:v8 forKey:@"ARInlineCompletions"];
+  inlineCompletions = [(AutocorrectionResult *)self inlineCompletions];
+  [coderCopy encodeObject:inlineCompletions forKey:@"ARInlineCompletions"];
 
-  v9 = [(AutocorrectionResult *)self documentStates];
-  [v4 encodeObject:v9 forKey:@"ARDocumentStates"];
+  documentStates = [(AutocorrectionResult *)self documentStates];
+  [coderCopy encodeObject:documentStates forKey:@"ARDocumentStates"];
 
-  v10 = [(AutocorrectionResult *)self inserted];
-  [v4 encodeObject:v10 forKey:@"ARInserted"];
+  inserted = [(AutocorrectionResult *)self inserted];
+  [coderCopy encodeObject:inserted forKey:@"ARInserted"];
 
-  v11 = [(AutocorrectionResult *)self corrected];
-  [v4 encodeObject:v11 forKey:@"ARCorrected"];
+  corrected = [(AutocorrectionResult *)self corrected];
+  [coderCopy encodeObject:corrected forKey:@"ARCorrected"];
 
-  v12 = [(AutocorrectionResult *)self intended];
-  [v4 encodeObject:v12 forKey:@"ARIntended"];
+  intended = [(AutocorrectionResult *)self intended];
+  [coderCopy encodeObject:intended forKey:@"ARIntended"];
 
-  v13 = [(AutocorrectionResult *)self intendedTransliteration];
-  [v4 encodeObject:v13 forKey:@"ARIntendedTransliteration"];
+  intendedTransliteration = [(AutocorrectionResult *)self intendedTransliteration];
+  [coderCopy encodeObject:intendedTransliteration forKey:@"ARIntendedTransliteration"];
 
-  v14 = [(AutocorrectionResult *)self input];
-  [v4 encodeObject:v14 forKey:@"ARInput"];
+  input = [(AutocorrectionResult *)self input];
+  [coderCopy encodeObject:input forKey:@"ARInput"];
 
-  v15 = [(AutocorrectionResult *)self numberOfTouches];
-  [v4 encodeObject:v15 forKey:@"ARNumberOfTouches"];
+  numberOfTouches = [(AutocorrectionResult *)self numberOfTouches];
+  [coderCopy encodeObject:numberOfTouches forKey:@"ARNumberOfTouches"];
 
-  v16 = [(AutocorrectionResult *)self seed];
-  [v4 encodeObject:v16 forKey:@"ARSeed"];
+  seed = [(AutocorrectionResult *)self seed];
+  [coderCopy encodeObject:seed forKey:@"ARSeed"];
 
-  v17 = [(AutocorrectionResult *)self tags];
-  [v4 encodeObject:v17 forKey:@"ARTags"];
+  tags = [(AutocorrectionResult *)self tags];
+  [coderCopy encodeObject:tags forKey:@"ARTags"];
 
-  v18 = [(AutocorrectionResult *)self rank];
-  [v4 encodeObject:v18 forKey:@"ARRank"];
+  rank = [(AutocorrectionResult *)self rank];
+  [coderCopy encodeObject:rank forKey:@"ARRank"];
 
   v19 = MEMORY[0x277CCAAA0];
-  v20 = [(AutocorrectionResult *)self debugData];
-  v21 = v20;
-  if (v20)
+  debugData = [(AutocorrectionResult *)self debugData];
+  v21 = debugData;
+  if (debugData)
   {
-    v22 = v20;
+    v22 = debugData;
   }
 
   else
@@ -239,12 +239,12 @@ void __49__AutocorrectionResult_extractDataFromTypingLog___block_invoke(uint64_t
   v24 = 0;
   v23 = [v19 dataWithJSONObject:v22 options:0 error:&v24];
 
-  [v4 encodeObject:v23 forKey:@"ARDebug"];
+  [coderCopy encodeObject:v23 forKey:@"ARDebug"];
 }
 
-- (AutocorrectionResult)initWithCoder:(id)a3
+- (AutocorrectionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = AutocorrectionResult;
   v5 = [(AutocorrectionResult *)&v27 init];
@@ -253,50 +253,50 @@ void __49__AutocorrectionResult_extractDataFromTypingLog___block_invoke(uint64_t
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ARContext"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ARContext"];
     [(AutocorrectionResult *)v5 setContext:v9];
 
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:@"ARTouched"];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ARTouched"];
     [(AutocorrectionResult *)v5 setTouched:v10];
 
-    v11 = [v4 decodeObjectOfClasses:v8 forKey:@"ARPredicted"];
+    v11 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ARPredicted"];
     [(AutocorrectionResult *)v5 setPredicted:v11];
 
-    v12 = [v4 decodeObjectOfClasses:v8 forKey:@"ARInlineCompletions"];
+    v12 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ARInlineCompletions"];
     [(AutocorrectionResult *)v5 setInlineCompletions:v12];
 
-    v13 = [v4 decodeObjectOfClasses:v8 forKey:@"ARDocumentStates"];
+    v13 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ARDocumentStates"];
     [(AutocorrectionResult *)v5 setDocumentStates:v13];
 
-    v14 = [v4 decodeObjectOfClasses:v8 forKey:@"ARInserted"];
+    v14 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ARInserted"];
     [(AutocorrectionResult *)v5 setInserted:v14];
 
-    v15 = [v4 decodeObjectOfClasses:v8 forKey:@"ARCorrected"];
+    v15 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ARCorrected"];
     [(AutocorrectionResult *)v5 setCorrected:v15];
 
-    v16 = [v4 decodeObjectOfClasses:v8 forKey:@"ARIntended"];
+    v16 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ARIntended"];
     [(AutocorrectionResult *)v5 setIntended:v16];
 
-    v17 = [v4 decodeObjectOfClasses:v8 forKey:@"ARIntendedTransliteration"];
+    v17 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ARIntendedTransliteration"];
     [(AutocorrectionResult *)v5 setIntendedTransliteration:v17];
 
-    v18 = [v4 decodeObjectOfClasses:v8 forKey:@"ARInput"];
+    v18 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ARInput"];
     [(AutocorrectionResult *)v5 setInput:v18];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ARNumberOfTouches"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ARNumberOfTouches"];
     [(AutocorrectionResult *)v5 setNumberOfTouches:v19];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ARSeed"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ARSeed"];
     [(AutocorrectionResult *)v5 setSeed:v20];
 
-    v21 = [v4 decodeObjectOfClasses:v8 forKey:@"ARTags"];
+    v21 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ARTags"];
     [(AutocorrectionResult *)v5 setTags:v21];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ARRank"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ARRank"];
     [(AutocorrectionResult *)v5 setRank:v22];
 
     [(AutocorrectionResult *)v5 setAggdStatistics:0];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ARDebug"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ARDebug"];
     v26 = 0;
     v24 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v23 options:0 error:&v26];
     if ([v24 count])
@@ -308,16 +308,16 @@ void __49__AutocorrectionResult_extractDataFromTypingLog___block_invoke(uint64_t
   return v5;
 }
 
-- (void)setTagsFromClassifiers:(id)a3
+- (void)setTagsFromClassifiers:(id)classifiers
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  classifiersCopy = classifiers;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(classifiersCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = classifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -356,57 +356,57 @@ void __49__AutocorrectionResult_extractDataFromTypingLog___block_invoke(uint64_t
 - (id)description
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(AutocorrectionResult *)self context];
-  [v3 appendFormat:@"context: [%@]\n", v4];
+  string = [MEMORY[0x277CCAB68] string];
+  context = [(AutocorrectionResult *)self context];
+  [string appendFormat:@"context: [%@]\n", context];
 
-  v5 = [(AutocorrectionResult *)self touched];
-  [v3 appendFormat:@"        touched: [%@]\n", v5];
+  touched = [(AutocorrectionResult *)self touched];
+  [string appendFormat:@"        touched: [%@]\n", touched];
 
-  v6 = [(AutocorrectionResult *)self inserted];
-  [v3 appendFormat:@"       inserted: [%@]\n", v6];
+  inserted = [(AutocorrectionResult *)self inserted];
+  [string appendFormat:@"       inserted: [%@]\n", inserted];
 
-  v7 = [(AutocorrectionResult *)self corrected];
-  [v3 appendFormat:@"      corrected: [%@]\n", v7];
+  corrected = [(AutocorrectionResult *)self corrected];
+  [string appendFormat:@"      corrected: [%@]\n", corrected];
 
-  v8 = [(AutocorrectionResult *)self intended];
-  [v3 appendFormat:@"       expected: [%@]\n", v8];
+  intended = [(AutocorrectionResult *)self intended];
+  [string appendFormat:@"       expected: [%@]\n", intended];
 
-  v9 = [(AutocorrectionResult *)self intendedTransliteration];
-  [v3 appendFormat:@" expected trans: [%@]\n", v9];
+  intendedTransliteration = [(AutocorrectionResult *)self intendedTransliteration];
+  [string appendFormat:@" expected trans: [%@]\n", intendedTransliteration];
 
-  v10 = [(AutocorrectionResult *)self input];
-  [v3 appendFormat:@"          input: [%@]\n", v10];
+  input = [(AutocorrectionResult *)self input];
+  [string appendFormat:@"          input: [%@]\n", input];
 
-  v11 = [(AutocorrectionResult *)self numberOfTouches];
-  [v3 appendFormat:@"     numTouches: [%@]\n", v11];
+  numberOfTouches = [(AutocorrectionResult *)self numberOfTouches];
+  [string appendFormat:@"     numTouches: [%@]\n", numberOfTouches];
 
-  v12 = [(AutocorrectionResult *)self seed];
-  [v3 appendFormat:@"           seed: %@\n", v12];
+  seed = [(AutocorrectionResult *)self seed];
+  [string appendFormat:@"           seed: %@\n", seed];
 
-  v13 = [(AutocorrectionResult *)self rank];
-  if ([v13 integerValue] == 0x7FFFFFFFFFFFFFFFLL)
+  rank = [(AutocorrectionResult *)self rank];
+  if ([rank integerValue] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v3 appendFormat:@"           rank: %@\n", @"NSNotFound"];
+    [string appendFormat:@"           rank: %@\n", @"NSNotFound"];
   }
 
   else
   {
-    v14 = [(AutocorrectionResult *)self rank];
-    v15 = [v14 description];
-    [v3 appendFormat:@"           rank: %@\n", v15];
+    rank2 = [(AutocorrectionResult *)self rank];
+    v15 = [rank2 description];
+    [string appendFormat:@"           rank: %@\n", v15];
   }
 
-  v16 = [(AutocorrectionResult *)self aggdStatistics];
-  [v3 appendFormat:@" aggdStatistics: %@\n", v16];
+  aggdStatistics = [(AutocorrectionResult *)self aggdStatistics];
+  [string appendFormat:@" aggdStatistics: %@\n", aggdStatistics];
 
-  [v3 appendString:@"       failures:"];
+  [string appendString:@"       failures:"];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = [(AutocorrectionResult *)self tags];
-  v18 = [v17 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  tags = [(AutocorrectionResult *)self tags];
+  v18 = [tags countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v18)
   {
     v19 = v18;
@@ -417,21 +417,21 @@ void __49__AutocorrectionResult_extractDataFromTypingLog___block_invoke(uint64_t
       {
         if (*v24 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(tags);
         }
 
-        [v3 appendFormat:@" %@", *(*(&v23 + 1) + 8 * i)];
+        [string appendFormat:@" %@", *(*(&v23 + 1) + 8 * i)];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v19 = [tags countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v19);
   }
 
-  [v3 appendString:@"\n"];
+  [string appendString:@"\n"];
 
-  return v3;
+  return string;
 }
 
 @end

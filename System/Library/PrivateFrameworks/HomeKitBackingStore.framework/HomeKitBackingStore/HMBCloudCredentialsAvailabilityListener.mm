@@ -1,23 +1,23 @@
 @interface HMBCloudCredentialsAvailabilityListener
 + (id)logCategory;
-- (HMBCloudCredentialsAvailabilityListener)initWithContainer:(id)a3;
-- (HMBCloudCredentialsAvailabilityListener)initWithContainer:(id)a3 notificationCenter:(id)a4;
-- (id)_waitForAccountAvailabilityAndRecheckIfAlreadyAvailable:(os_unfair_lock_s *)a1;
+- (HMBCloudCredentialsAvailabilityListener)initWithContainer:(id)container;
+- (HMBCloudCredentialsAvailabilityListener)initWithContainer:(id)container notificationCenter:(id)center;
+- (id)_waitForAccountAvailabilityAndRecheckIfAlreadyAvailable:(os_unfair_lock_s *)available;
 - (id)logIdentifier;
 - (id)waitForKeychainAvailability;
 - (void)_checkAccountAvailability;
 - (void)_handleKeychainAvailabilityChanged;
-- (void)handleAccountChangedNotification:(id)a3;
-- (void)handleIdentityUpdateNotification:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)handleAccountChangedNotification:(id)notification;
+- (void)handleIdentityUpdateNotification:(id)notification;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMBCloudCredentialsAvailabilityListener
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fireCopy = fire;
   if (self)
   {
     Property = objc_getProperty(self, v4, 48, 1);
@@ -28,10 +28,10 @@
     Property = 0;
   }
 
-  if (Property == v5)
+  if (Property == fireCopy)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -42,7 +42,7 @@
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMBCloudCredentialsAvailabilityListener *)v8 _handleKeychainAvailabilityChanged];
+    [(HMBCloudCredentialsAvailabilityListener *)selfCopy _handleKeychainAvailabilityChanged];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -50,16 +50,16 @@
 
 - (void)_handleKeychainAvailabilityChanged
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    v7 = objc_getProperty(a1, v2, 40, 1);
-    objc_setProperty_atomic(a1, v3, 0, 40);
-    objc_setProperty_atomic(a1, v4, 0, 48);
-    v6 = objc_getProperty(a1, v5, 24, 1);
-    [v6 removeObserver:a1 name:*MEMORY[0x277CBBF90] object:0];
+    v7 = objc_getProperty(self, v2, 40, 1);
+    objc_setProperty_atomic(self, v3, 0, 40);
+    objc_setProperty_atomic(self, v4, 0, 48);
+    v6 = objc_getProperty(self, v5, 24, 1);
+    [v6 removeObserver:self name:*MEMORY[0x277CBBF90] object:0];
 
-    os_unfair_lock_unlock(a1 + 2);
+    os_unfair_lock_unlock(self + 2);
     [v7 finishWithNoResult];
   }
 }
@@ -71,18 +71,18 @@
     self = objc_getProperty(self, a2, 16, 1);
   }
 
-  v2 = [(HMBCloudCredentialsAvailabilityListener *)self containerID];
-  v3 = [v2 containerIdentifier];
+  containerID = [(HMBCloudCredentialsAvailabilityListener *)self containerID];
+  containerIdentifier = [containerID containerIdentifier];
 
-  return v3;
+  return containerIdentifier;
 }
 
-- (void)handleIdentityUpdateNotification:(id)a3
+- (void)handleIdentityUpdateNotification:(id)notification
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -93,17 +93,17 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMBCloudCredentialsAvailabilityListener *)v6 _handleKeychainAvailabilityChanged];
+  [(HMBCloudCredentialsAvailabilityListener *)selfCopy _handleKeychainAvailabilityChanged];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccountChangedNotification:(id)a3
+- (void)handleAccountChangedNotification:(id)notification
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -114,7 +114,7 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMBCloudCredentialsAvailabilityListener *)v6 _checkAccountAvailability];
+  [(HMBCloudCredentialsAvailabilityListener *)selfCopy _checkAccountAvailability];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -122,31 +122,31 @@
 - (void)_checkAccountAvailability
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v13 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Check account availability"];
     v2 = objc_autoreleasePoolPush();
-    v3 = a1;
+    selfCopy = self;
     v4 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = HMFGetLogIdentifier();
-      v6 = [v13 identifier];
-      v7 = [v6 shortDescription];
+      identifier = [v13 identifier];
+      shortDescription = [identifier shortDescription];
       *buf = 138543618;
       v15 = v5;
       v16 = 2114;
-      v17 = v7;
+      v17 = shortDescription;
       _os_log_impl(&dword_22AD27000, v4, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching account info", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v2);
-    v9 = objc_getProperty(v3, v8, 16, 1);
+    v9 = objc_getProperty(selfCopy, v8, 16, 1);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __68__HMBCloudCredentialsAvailabilityListener__checkAccountAvailability__block_invoke;
     v11[3] = &unk_2786E03A0;
-    v11[4] = v3;
+    v11[4] = selfCopy;
     v12 = v13;
     [v9 accountInfoWithCompletionHandler:v11];
 
@@ -344,7 +344,7 @@ LABEL_10:
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -358,15 +358,15 @@ LABEL_10:
   v11 = objc_alloc_init(MEMORY[0x277D2C900]);
   if (self)
   {
-    objc_setProperty_atomic(v7, v10, v11, 40);
+    objc_setProperty_atomic(selfCopy, v10, v11, 40);
   }
 
-  v12 = [(HMBCloudCredentialsAvailabilityListener *)v7 keychainAvailabilityTimerFactory];
-  v13 = v12[2](v12, 0, 600.0);
+  keychainAvailabilityTimerFactory = [(HMBCloudCredentialsAvailabilityListener *)selfCopy keychainAvailabilityTimerFactory];
+  v13 = keychainAvailabilityTimerFactory[2](keychainAvailabilityTimerFactory, 0, 600.0);
   v15 = v13;
   if (self)
   {
-    objc_setProperty_atomic(v7, v14, v13, 48);
+    objc_setProperty_atomic(selfCopy, v14, v13, 48);
 
     v5 = 1;
     goto LABEL_10;
@@ -401,22 +401,22 @@ LABEL_11:
   return v17;
 }
 
-- (id)_waitForAccountAvailabilityAndRecheckIfAlreadyAvailable:(os_unfair_lock_s *)a1
+- (id)_waitForAccountAvailabilityAndRecheckIfAlreadyAvailable:(os_unfair_lock_s *)available
 {
   v33 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!available)
   {
     v23 = 0;
     goto LABEL_16;
   }
 
   os_unfair_lock_lock_with_options();
-  if (objc_getProperty(a1, v4, 32, 1))
+  if (objc_getProperty(available, v4, 32, 1))
   {
-    if (!a2 || (v6 = objc_getProperty(a1, v5, 32, 1), v7 = [v6 isFinished], v6, !v7))
+    if (!a2 || (v6 = objc_getProperty(available, v5, 32, 1), v7 = [v6 isFinished], v6, !v7))
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = a1;
+      availableCopy = available;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -427,7 +427,7 @@ LABEL_11:
         v29 = 2112;
         v30 = v16;
         v31 = 2112;
-        Property = objc_getProperty(v13, v17, 32, 1);
+        Property = objc_getProperty(availableCopy, v17, 32, 1);
         _os_log_impl(&dword_22AD27000, v14, OS_LOG_TYPE_INFO, "%{public}@Skipping re-check with should check: %@ account available future: %@", &v27, 0x20u);
       }
 
@@ -437,7 +437,7 @@ LABEL_11:
     }
 
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    availableCopy3 = available;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -451,7 +451,7 @@ LABEL_11:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    availableCopy3 = available;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -464,16 +464,16 @@ LABEL_11:
 
   objc_autoreleasePoolPop(v8);
   v21 = objc_alloc_init(MEMORY[0x277D2C900]);
-  objc_setProperty_atomic(v9, v22, v21, 32);
+  objc_setProperty_atomic(availableCopy3, v22, v21, 32);
 
   v19 = 0;
 LABEL_14:
-  v23 = objc_getProperty(a1, v18, 32, 1);
-  os_unfair_lock_unlock(a1 + 2);
+  v23 = objc_getProperty(available, v18, 32, 1);
+  os_unfair_lock_unlock(available + 2);
   if ((v19 & 1) == 0)
   {
-    [objc_getProperty(a1 v24];
-    [(HMBCloudCredentialsAvailabilityListener *)a1 _checkAccountAvailability];
+    [objc_getProperty(available v24];
+    [(HMBCloudCredentialsAvailabilityListener *)available _checkAccountAvailability];
   }
 
 LABEL_16:
@@ -482,18 +482,18 @@ LABEL_16:
   return v23;
 }
 
-- (HMBCloudCredentialsAvailabilityListener)initWithContainer:(id)a3 notificationCenter:(id)a4
+- (HMBCloudCredentialsAvailabilityListener)initWithContainer:(id)container notificationCenter:(id)center
 {
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  centerCopy = center;
   v13.receiver = self;
   v13.super_class = HMBCloudCredentialsAvailabilityListener;
   v9 = [(HMBCloudCredentialsAvailabilityListener *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_container, a3);
-    objc_storeStrong(&v10->_notificationCenter, a4);
+    objc_storeStrong(&v9->_container, container);
+    objc_storeStrong(&v10->_notificationCenter, center);
     keychainAvailabilityTimerFactory = v10->_keychainAvailabilityTimerFactory;
     v10->_keychainAvailabilityTimerFactory = &__block_literal_global_432;
   }
@@ -508,12 +508,12 @@ id __80__HMBCloudCredentialsAvailabilityListener_initWithContainer_notificationC
   return v3;
 }
 
-- (HMBCloudCredentialsAvailabilityListener)initWithContainer:(id)a3
+- (HMBCloudCredentialsAvailabilityListener)initWithContainer:(id)container
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  v7 = [(HMBCloudCredentialsAvailabilityListener *)self initWithContainer:v5 notificationCenter:v6];
+  containerCopy = container;
+  defaultCenter = [v4 defaultCenter];
+  v7 = [(HMBCloudCredentialsAvailabilityListener *)self initWithContainer:containerCopy notificationCenter:defaultCenter];
 
   return v7;
 }

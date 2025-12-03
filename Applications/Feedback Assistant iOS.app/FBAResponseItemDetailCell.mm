@@ -1,10 +1,10 @@
 @interface FBAResponseItemDetailCell
 - (UIStackView)questionGroupsStack;
-- (_TtC18Feedback_Assistant25FBAResponseItemDetailCell)initWithCoder:(id)a3;
-- (_TtC18Feedback_Assistant25FBAResponseItemDetailCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18Feedback_Assistant25FBAResponseItemDetailCell)initWithCoder:(id)coder;
+- (_TtC18Feedback_Assistant25FBAResponseItemDetailCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)awakeFromNib;
 - (void)layoutSubviews;
-- (void)setContentItem:(id)a3;
+- (void)setContentItem:(id)item;
 @end
 
 @implementation FBAResponseItemDetailCell
@@ -31,25 +31,25 @@
   }
 }
 
-- (void)setContentItem:(id)a3
+- (void)setContentItem:(id)item
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant25FBAResponseItemDetailCell_contentItem);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant25FBAResponseItemDetailCell_contentItem) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant25FBAResponseItemDetailCell_contentItem) = item;
+  itemCopy = item;
+  selfCopy = self;
 
   sub_100074B88();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000759B4();
 }
 
-- (_TtC18Feedback_Assistant25FBAResponseItemDetailCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18Feedback_Assistant25FBAResponseItemDetailCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     swift_unknownObjectWeakInit();
@@ -66,19 +66,19 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for FBAResponseItemDetailCell();
-  v7 = [(FBAResponseItemDetailCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(FBAResponseItemDetailCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (_TtC18Feedback_Assistant25FBAResponseItemDetailCell)initWithCoder:(id)a3
+- (_TtC18Feedback_Assistant25FBAResponseItemDetailCell)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR____TtC18Feedback_Assistant25FBAResponseItemDetailCell_contentItem) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for FBAResponseItemDetailCell();
-  v5 = a3;
-  v6 = [(FBAResponseItemDetailCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(FBAResponseItemDetailCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

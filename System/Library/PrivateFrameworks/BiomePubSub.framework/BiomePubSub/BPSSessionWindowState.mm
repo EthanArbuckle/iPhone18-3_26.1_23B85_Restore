@@ -1,7 +1,7 @@
 @interface BPSSessionWindowState
-- (BPSSessionWindowState)initWithCoder:(id)a3;
+- (BPSSessionWindowState)initWithCoder:(id)coder;
 - (id)metadata;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BPSSessionWindowState
@@ -13,33 +13,33 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BPSSessionWindowState;
-  v4 = a3;
-  [(BPSWindowState *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(BPSWindowState *)&v6 encodeWithCoder:coderCopy];
   v5 = [(BPSSessionWindowState *)self dateInterval:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"dateInterval"];
+  [coderCopy encodeObject:v5 forKey:@"dateInterval"];
 }
 
-- (BPSSessionWindowState)initWithCoder:(id)a3
+- (BPSSessionWindowState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-  if (v5 && (v9.receiver = self, v9.super_class = BPSSessionWindowState, v6 = [(BPSWindowState *)&v9 initWithCoder:v4], (self = v6) != 0))
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  if (v5 && (v9.receiver = self, v9.super_class = BPSSessionWindowState, v6 = [(BPSWindowState *)&v9 initWithCoder:coderCopy], (self = v6) != 0))
   {
     [(BPSSessionWindowState *)v6 setDateInterval:v5];
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

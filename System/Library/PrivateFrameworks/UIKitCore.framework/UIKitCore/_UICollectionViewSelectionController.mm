@@ -1,13 +1,13 @@
 @interface _UICollectionViewSelectionController
 - (_UICollectionViewSelectionController)init;
-- (id)_rebaseIndexPaths:(void *)a3 withTransaction:;
-- (id)_rebaseIndexPaths:(void *)a3 withTranslator:;
-- (id)_updateCollapsedSelectedIndexPaths:(void *)a3 withTransaction:;
-- (id)rebaseIndexPath:(void *)a3 withDiffableTransaction:;
+- (id)_rebaseIndexPaths:(void *)paths withTransaction:;
+- (id)_rebaseIndexPaths:(void *)paths withTranslator:;
+- (id)_updateCollapsedSelectedIndexPaths:(void *)paths withTransaction:;
+- (id)rebaseIndexPath:(void *)path withDiffableTransaction:;
 - (uint64_t)rebaseItemsWithDiffableTransaction:(uint64_t)result;
 - (uint64_t)setAllowsMultipleSelection:(uint64_t)result;
-- (void)addDeselectionTransitionIndexPaths:(uint64_t)a1;
-- (void)rebaseItemsWithTranslator:(uint64_t)a1;
+- (void)addDeselectionTransitionIndexPaths:(uint64_t)paths;
+- (void)rebaseItemsWithTranslator:(uint64_t)translator;
 - (void)reset;
 @end
 
@@ -38,20 +38,20 @@
 
 - (void)reset
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 8) removeAllObjects];
-    [*(a1 + 16) removeAllObjects];
-    v2 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    [*(self + 8) removeAllObjects];
+    [*(self + 16) removeAllObjects];
+    v2 = *(self + 24);
+    *(self + 24) = 0;
   }
 }
 
-- (void)addDeselectionTransitionIndexPaths:(uint64_t)a1
+- (void)addDeselectionTransitionIndexPaths:(uint64_t)paths
 {
-  if (a1)
+  if (paths)
   {
-    v3 = *(a1 + 24);
+    v3 = *(paths + 24);
     if (v3)
     {
 
@@ -61,41 +61,41 @@
     else
     {
       v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:a2];
-      v5 = *(a1 + 24);
-      *(a1 + 24) = v4;
+      v5 = *(paths + 24);
+      *(paths + 24) = v4;
     }
   }
 }
 
-- (void)rebaseItemsWithTranslator:(uint64_t)a1
+- (void)rebaseItemsWithTranslator:(uint64_t)translator
 {
-  if (a1)
+  if (translator)
   {
-    v4 = [(_UICollectionViewSelectionController *)a1 _rebaseIndexPaths:a2 withTranslator:?];
+    v4 = [(_UICollectionViewSelectionController *)translator _rebaseIndexPaths:a2 withTranslator:?];
     v5 = [v4 mutableCopy];
-    v6 = *(a1 + 8);
-    *(a1 + 8) = v5;
+    v6 = *(translator + 8);
+    *(translator + 8) = v5;
 
-    v7 = [(_UICollectionViewSelectionController *)a1 _rebaseIndexPaths:a2 withTranslator:?];
+    v7 = [(_UICollectionViewSelectionController *)translator _rebaseIndexPaths:a2 withTranslator:?];
     v8 = [v7 mutableCopy];
-    v9 = *(a1 + 16);
-    *(a1 + 16) = v8;
+    v9 = *(translator + 16);
+    *(translator + 16) = v8;
 
-    v10 = *(a1 + 24);
+    v10 = *(translator + 24);
     if (v10)
     {
-      v13 = [(_UICollectionViewSelectionController *)a1 _rebaseIndexPaths:v10 withTranslator:a2];
+      v13 = [(_UICollectionViewSelectionController *)translator _rebaseIndexPaths:v10 withTranslator:a2];
       v11 = [v13 mutableCopy];
-      v12 = *(a1 + 24);
-      *(a1 + 24) = v11;
+      v12 = *(translator + 24);
+      *(translator + 24) = v11;
     }
   }
 }
 
-- (id)_rebaseIndexPaths:(void *)a3 withTranslator:
+- (id)_rebaseIndexPaths:(void *)paths withTranslator:
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
@@ -117,7 +117,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [a3 finalIndexPathForInitialIndexPath:{*(*(&v14 + 1) + 8 * i), v14}];
+          v11 = [paths finalIndexPathForInitialIndexPath:{*(*(&v14 + 1) + 8 * i), v14}];
           if (v11)
           {
             [v5 addObject:v11];
@@ -160,8 +160,8 @@
       *(v3 + 8) = v6;
 
       v8 = *(v3 + 8);
-      v9 = [v4 allObjects];
-      [v8 addObjectsFromArray:v9];
+      allObjects = [v4 allObjects];
+      [v8 addObjectsFromArray:allObjects];
 
       v10 = [(_UICollectionViewSelectionController *)v3 _rebaseIndexPaths:a2 withTransaction:?];
       v11 = [v10 mutableCopy];
@@ -184,10 +184,10 @@
   return result;
 }
 
-- (id)_updateCollapsedSelectedIndexPaths:(void *)a3 withTransaction:
+- (id)_updateCollapsedSelectedIndexPaths:(void *)paths withTransaction:
 {
   v52 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v45 = 0u;
@@ -210,13 +210,13 @@
           }
 
           v11 = *(*(&v45 + 1) + 8 * i);
-          v12 = [a3 finalIndexPathForInitialIndexPath:v11];
+          v12 = [paths finalIndexPathForInitialIndexPath:v11];
           if (!v12)
           {
-            v13 = [a3 initialSnapshot];
-            v14 = [v13 identifierForIndexPath:v11];
+            initialSnapshot = [paths initialSnapshot];
+            v14 = [initialSnapshot identifierForIndexPath:v11];
 
-            if (v14 && [a3 _containsItemIdentifier:v14])
+            if (v14 && [paths _containsItemIdentifier:v14])
             {
               [v5 addObject:v14];
             }
@@ -231,14 +231,14 @@
 
     v35 = v5;
 
-    v15 = [a3 finalSnapshot];
+    finalSnapshot = [paths finalSnapshot];
     v16 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v17 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v18 = *(a1 + 32);
+    v18 = *(self + 32);
     v19 = [v18 countByEnumeratingWithState:&v41 objects:v50 count:16];
     if (v19)
     {
@@ -254,7 +254,7 @@
           }
 
           v23 = *(*(&v41 + 1) + 8 * j);
-          if ([v15 indexOfItemIdentifier:{v23, v35}] != 0x7FFFFFFFFFFFFFFFLL)
+          if ([finalSnapshot indexOfItemIdentifier:{v23, v35}] != 0x7FFFFFFFFFFFFFFFLL)
           {
             [v17 addObject:v23];
 LABEL_23:
@@ -262,7 +262,7 @@ LABEL_23:
             continue;
           }
 
-          if (([a3 _containsItemIdentifier:v23] & 1) == 0)
+          if (([paths _containsItemIdentifier:v23] & 1) == 0)
           {
             goto LABEL_23;
           }
@@ -274,10 +274,10 @@ LABEL_23:
       while (v20);
     }
 
-    [*(a1 + 32) minusSet:v16];
-    v24 = *(a1 + 32);
-    v25 = [v35 allObjects];
-    [v24 addObjectsFromArray:v25];
+    [*(self + 32) minusSet:v16];
+    v24 = *(self + 32);
+    allObjects = [v35 allObjects];
+    [v24 addObjectsFromArray:allObjects];
 
     v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v37 = 0u;
@@ -299,7 +299,7 @@ LABEL_23:
             objc_enumerationMutation(v27);
           }
 
-          v32 = [v15 indexPathForIdentifier:{*(*(&v37 + 1) + 8 * k), v35}];
+          v32 = [finalSnapshot indexPathForIdentifier:{*(*(&v37 + 1) + 8 * k), v35}];
           if (v32)
           {
             [v26 addObject:v32];
@@ -323,15 +323,15 @@ LABEL_23:
   return v33;
 }
 
-- (id)_rebaseIndexPaths:(void *)a3 withTransaction:
+- (id)_rebaseIndexPaths:(void *)paths withTransaction:
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v5 = [a3 initialSnapshot];
+    initialSnapshot = [paths initialSnapshot];
     v6 = [a2 count];
     v7 = MEMORY[0x1E695E0F0];
-    if (v5 && v6)
+    if (initialSnapshot && v6)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v28 = 0u;
@@ -353,7 +353,7 @@ LABEL_23:
               objc_enumerationMutation(v8);
             }
 
-            v13 = [v5 identifierForIndexPath:*(*(&v28 + 1) + 8 * i)];
+            v13 = [initialSnapshot identifierForIndexPath:*(*(&v28 + 1) + 8 * i)];
             if (v13)
             {
               [v7 addObject:v13];
@@ -369,7 +369,7 @@ LABEL_23:
 
     if ([v7 count])
     {
-      v14 = [a3 finalSnapshot];
+      finalSnapshot = [paths finalSnapshot];
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v24 = 0u;
       v25 = 0u;
@@ -390,7 +390,7 @@ LABEL_23:
               objc_enumerationMutation(v16);
             }
 
-            v21 = [v14 indexPathForIdentifier:{*(*(&v24 + 1) + 8 * j), v24}];
+            v21 = [finalSnapshot indexPathForIdentifier:{*(*(&v24 + 1) + 8 * j), v24}];
             if (v21)
             {
               [v15 addObject:v21];
@@ -420,26 +420,26 @@ LABEL_23:
   return v22;
 }
 
-- (id)rebaseIndexPath:(void *)a3 withDiffableTransaction:
+- (id)rebaseIndexPath:(void *)path withDiffableTransaction:
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v5 = MEMORY[0x1E695DFD8];
     v11[0] = a2;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     v7 = [v5 setWithArray:v6];
-    v8 = [(_UICollectionViewSelectionController *)a1 _rebaseIndexPaths:v7 withTransaction:a3];
+    v8 = [(_UICollectionViewSelectionController *)self _rebaseIndexPaths:v7 withTransaction:path];
 
-    v9 = [v8 anyObject];
+    anyObject = [v8 anyObject];
   }
 
   else
   {
-    v9 = 0;
+    anyObject = 0;
   }
 
-  return v9;
+  return anyObject;
 }
 
 - (uint64_t)setAllowsMultipleSelection:(uint64_t)result

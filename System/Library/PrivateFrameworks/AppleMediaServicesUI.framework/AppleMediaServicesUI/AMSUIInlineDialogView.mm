@@ -1,5 +1,5 @@
 @interface AMSUIInlineDialogView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)_contentView;
 - (void)layoutSubviews;
 @end
@@ -8,10 +8,10 @@
 
 - (id)_contentView
 {
-  v2 = [(AMSUIInlineDialogView *)self subviews];
-  v3 = [v2 firstObject];
+  subviews = [(AMSUIInlineDialogView *)self subviews];
+  firstObject = [subviews firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (void)layoutSubviews
@@ -19,23 +19,23 @@
   v4.receiver = self;
   v4.super_class = AMSUIInlineDialogView;
   [(AMSUIInlineDialogView *)&v4 layoutSubviews];
-  v3 = [(AMSUIInlineDialogView *)self _contentView];
-  if (v3)
+  _contentView = [(AMSUIInlineDialogView *)self _contentView];
+  if (_contentView)
   {
     [(AMSUIInlineDialogView *)self bounds];
-    [v3 setFrame:?];
+    [_contentView setFrame:?];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(AMSUIInlineDialogView *)self _contentView];
-  v6 = v5;
-  if (v5)
+  height = fits.height;
+  width = fits.width;
+  _contentView = [(AMSUIInlineDialogView *)self _contentView];
+  v6 = _contentView;
+  if (_contentView)
   {
-    [v5 sizeThatFits:{width, height}];
+    [_contentView sizeThatFits:{width, height}];
     width = v7;
     v9 = v8;
   }

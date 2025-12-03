@@ -1,37 +1,37 @@
 @interface UARPAnalyticsUpdateFirmwareManager
-- (UARPAnalyticsUpdateFirmwareManager)initWithController:(id)a3 queue:(id)a4;
+- (UARPAnalyticsUpdateFirmwareManager)initWithController:(id)controller queue:(id)queue;
 - (id)description;
-- (id)updateStateForAccessoryID:(id)a3 assetID:(id)a4;
-- (id)updateStatesForAccessoryID:(id)a3;
+- (id)updateStateForAccessoryID:(id)d assetID:(id)iD;
+- (id)updateStatesForAccessoryID:(id)d;
 - (void)configurePurgeTimer;
 - (void)dealloc;
 - (void)purgeStaleUpdateStateRecords;
-- (void)setAccessoryIDUnreachable:(id)a3;
-- (void)stagingCompleteForAccessoryID:(id)a3 assetID:(id)a4 status:(unint64_t)a5;
-- (void)updateComplete:(id)a3;
+- (void)setAccessoryIDUnreachable:(id)unreachable;
+- (void)stagingCompleteForAccessoryID:(id)d assetID:(id)iD status:(unint64_t)status;
+- (void)updateComplete:(id)complete;
 @end
 
 @implementation UARPAnalyticsUpdateFirmwareManager
 
-- (UARPAnalyticsUpdateFirmwareManager)initWithController:(id)a3 queue:(id)a4
+- (UARPAnalyticsUpdateFirmwareManager)initWithController:(id)controller queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = UARPAnalyticsUpdateFirmwareManager;
   v8 = [(UARPAnalyticsUpdateFirmwareManager *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_controller, v6);
+    objc_storeWeak(&v8->_controller, controllerCopy);
     v10 = os_log_create("com.apple.accessoryupdater.uarp", "analytics");
     log = v9->_log;
     v9->_log = v10;
 
-    objc_storeStrong(&v9->_queue, a4);
-    v12 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v9->_queue, queue);
+    array = [MEMORY[0x277CBEB18] array];
     stateArray = v9->_stateArray;
-    v9->_stateArray = v12;
+    v9->_stateArray = array;
 
     [(UARPAnalyticsUpdateFirmwareManager *)v9 configurePurgeTimer];
   }
@@ -80,11 +80,11 @@ void __57__UARPAnalyticsUpdateFirmwareManager_configurePurgeTimer__block_invoke(
   [WeakRetained purgeStaleUpdateStateRecords];
 }
 
-- (id)updateStateForAccessoryID:(id)a3 assetID:(id)a4
+- (id)updateStateForAccessoryID:(id)d assetID:(id)iD
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -104,11 +104,11 @@ void __57__UARPAnalyticsUpdateFirmwareManager_configurePurgeTimer__block_invoke(
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 accessoryID];
-        if ([v6 analyticsIsEqual:v13])
+        accessoryID = [v12 accessoryID];
+        if ([dCopy analyticsIsEqual:accessoryID])
         {
-          v14 = [v12 assetID];
-          v15 = [v7 analyticsIsEqual:v14];
+          assetID = [v12 assetID];
+          v15 = [iDCopy analyticsIsEqual:assetID];
 
           if (v15)
           {
@@ -135,11 +135,11 @@ LABEL_12:
   return v9;
 }
 
-- (id)updateStatesForAccessoryID:(id)a3
+- (id)updateStatesForAccessoryID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  dCopy = d;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -160,12 +160,12 @@ LABEL_12:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 accessoryID];
-        v13 = [v4 analyticsIsEqual:v12];
+        accessoryID = [v11 accessoryID];
+        v13 = [dCopy analyticsIsEqual:accessoryID];
 
         if (v13)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -175,18 +175,18 @@ LABEL_12:
     while (v8);
   }
 
-  v14 = [MEMORY[0x277CBEA60] arrayWithArray:v5];
+  v14 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-- (void)stagingCompleteForAccessoryID:(id)a3 assetID:(id)a4 status:(unint64_t)a5
+- (void)stagingCompleteForAccessoryID:(id)d assetID:(id)iD status:(unint64_t)status
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -194,22 +194,22 @@ LABEL_12:
     v18 = 136315906;
     v19 = "[UARPAnalyticsUpdateFirmwareManager stagingCompleteForAccessoryID:assetID:status:]";
     v20 = 2112;
-    v21 = v8;
+    v21 = dCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = iDCopy;
     v24 = 2080;
-    v25 = UARPFirmwareStagingCompletionStatusToString(a5);
+    v25 = UARPFirmwareStagingCompletionStatusToString(status);
     _os_log_impl(&dword_247AA7000, v11, OS_LOG_TYPE_INFO, "%s: %@ %@ status=%s", &v18, 0x2Au);
   }
 
-  v12 = [(UARPAnalyticsUpdateFirmwareManager *)self updateStateForAccessoryID:v8 assetID:v9];
+  v12 = [(UARPAnalyticsUpdateFirmwareManager *)self updateStateForAccessoryID:dCopy assetID:iDCopy];
   v13 = v12;
   if (v12)
   {
-    [v12 stagingCompleteWithStatus:a5];
-    v14 = [v9 isUrgentUpdate];
-    v15 = [v13 assetID];
-    [v15 setIsUrgentUpdate:v14];
+    [v12 stagingCompleteWithStatus:status];
+    isUrgentUpdate = [iDCopy isUrgentUpdate];
+    assetID = [v13 assetID];
+    [assetID setIsUrgentUpdate:isUrgentUpdate];
 
     [(UARPAnalyticsUpdateFirmwareManager *)self updateComplete:v13];
   }
@@ -219,17 +219,17 @@ LABEL_12:
     v16 = self->_log;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [UARPAnalyticsUpdateFirmwareManager stagingCompleteForAccessoryID:v8 assetID:v9 status:v16];
+      [UARPAnalyticsUpdateFirmwareManager stagingCompleteForAccessoryID:dCopy assetID:iDCopy status:v16];
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAccessoryIDUnreachable:(id)a3
+- (void)setAccessoryIDUnreachable:(id)unreachable
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [(UARPAnalyticsUpdateFirmwareManager *)self updateStatesForAccessoryID:a3];
+  v4 = [(UARPAnalyticsUpdateFirmwareManager *)self updateStatesForAccessoryID:unreachable];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -283,7 +283,7 @@ LABEL_12:
     _os_log_impl(&dword_247AA7000, log, OS_LOG_TYPE_INFO, "Purge timer fired", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -306,7 +306,7 @@ LABEL_12:
         v10 = *(*(&v29 + 1) + 8 * i);
         if ([v10 age] >> 7 >= 0x2A3)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -316,12 +316,12 @@ LABEL_12:
     while (v7);
   }
 
-  [(NSMutableArray *)self->_stateArray removeObjectsInArray:v4];
+  [(NSMutableArray *)self->_stateArray removeObjectsInArray:array];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v4;
+  v11 = array;
   v12 = [v11 countByEnumeratingWithState:&v25 objects:v35 count:16];
   if (v12)
   {
@@ -349,10 +349,10 @@ LABEL_12:
 
         [v17 accessoryUnreachable];
         WeakRetained = objc_loadWeakRetained(&self->_controller);
-        v20 = [v17 accessoryID];
-        v21 = [v17 assetID];
-        v22 = [v17 eventParams];
-        [WeakRetained sendUpdateFirmwareAnalyticsEventForAccessoryID:v20 assetID:v21 params:v22];
+        accessoryID = [v17 accessoryID];
+        assetID = [v17 assetID];
+        eventParams = [v17 eventParams];
+        [WeakRetained sendUpdateFirmwareAnalyticsEventForAccessoryID:accessoryID assetID:assetID params:eventParams];
       }
 
       v14 = [v11 countByEnumeratingWithState:&v25 objects:v35 count:16];
@@ -364,26 +364,26 @@ LABEL_12:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateComplete:(id)a3
+- (void)updateComplete:(id)complete
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completeCopy = complete;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v11 = 136315394;
     v12 = "[UARPAnalyticsUpdateFirmwareManager updateComplete:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = completeCopy;
     _os_log_impl(&dword_247AA7000, log, OS_LOG_TYPE_INFO, "%s: %@", &v11, 0x16u);
   }
 
-  [(NSMutableArray *)self->_stateArray removeObject:v4];
+  [(NSMutableArray *)self->_stateArray removeObject:completeCopy];
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v7 = [v4 accessoryID];
-  v8 = [v4 assetID];
-  v9 = [v4 eventParams];
-  [WeakRetained sendUpdateFirmwareAnalyticsEventForAccessoryID:v7 assetID:v8 params:v9];
+  accessoryID = [completeCopy accessoryID];
+  assetID = [completeCopy assetID];
+  eventParams = [completeCopy eventParams];
+  [WeakRetained sendUpdateFirmwareAnalyticsEventForAccessoryID:accessoryID assetID:assetID params:eventParams];
 
   v10 = *MEMORY[0x277D85DE8];
 }

@@ -2,15 +2,15 @@
 + (HKFHIRVersion)primaryDSTU2Version;
 + (HKFHIRVersion)primaryR4Version;
 + (HKFHIRVersion)versionFromVersionString:(NSString *)versionString error:(NSError *)errorOut;
-+ (id)versionFromVersionString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)versionFromVersionString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (HKFHIRRelease)FHIRRelease;
 - (HKFHIRVersion)init;
-- (HKFHIRVersion)initWithCoder:(id)a3;
-- (HKFHIRVersion)initWithInvalidVersionString:(id)a3;
-- (HKFHIRVersion)initWithSemanticVersion:(id *)a3;
+- (HKFHIRVersion)initWithCoder:(id)coder;
+- (HKFHIRVersion)initWithInvalidVersionString:(id)string;
+- (HKFHIRVersion)initWithSemanticVersion:(id *)version;
 - (NSString)stringRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFHIRVersion
@@ -25,30 +25,30 @@
   return 0;
 }
 
-- (HKFHIRVersion)initWithSemanticVersion:(id *)a3
+- (HKFHIRVersion)initWithSemanticVersion:(id *)version
 {
   v5.receiver = self;
   v5.super_class = HKFHIRVersion;
   result = [(HKFHIRVersion *)&v5 init];
   if (result)
   {
-    result->_majorVersion = a3->var0;
-    result->_minorVersion = a3->var1;
-    result->_patchVersion = a3->var2;
+    result->_majorVersion = version->var0;
+    result->_minorVersion = version->var1;
+    result->_patchVersion = version->var2;
   }
 
   return result;
 }
 
-- (HKFHIRVersion)initWithInvalidVersionString:(id)a3
+- (HKFHIRVersion)initWithInvalidVersionString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9 = xmmword_191DCDF98;
   v10 = 0;
   v5 = [(HKFHIRVersion *)self initWithSemanticVersion:&v9];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     invalidVersionString = v5->_invalidVersionString;
     v5->_invalidVersionString = v6;
   }
@@ -56,11 +56,11 @@
   return v5;
 }
 
-+ (id)versionFromVersionString:(id)a3
++ (id)versionFromVersionString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v10 = 0;
-  v4 = [HKFHIRVersion versionFromVersionString:v3 error:&v10];
+  v4 = [HKFHIRVersion versionFromVersionString:stringCopy error:&v10];
   v5 = v10;
   if (v4)
   {
@@ -76,7 +76,7 @@
       [(HKFHIRVersion *)v5 versionFromVersionString:v7];
     }
 
-    v6 = [[HKFHIRVersion alloc] initWithInvalidVersionString:v3];
+    v6 = [[HKFHIRVersion alloc] initWithInvalidVersionString:stringCopy];
   }
 
   v8 = v6;
@@ -153,7 +153,7 @@ LABEL_6:
 {
   v4 = xmmword_191DCDFB0;
   v5 = 2;
-  v2 = [[a1 alloc] initWithSemanticVersion:&v4];
+  v2 = [[self alloc] initWithSemanticVersion:&v4];
 
   return v2;
 }
@@ -162,29 +162,29 @@ LABEL_6:
 {
   v4 = xmmword_191DCDFC8;
   v5 = 1;
-  v2 = [[a1 alloc] initWithSemanticVersion:&v4];
+  v2 = [[self alloc] initWithSemanticVersion:&v4];
 
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 requiresSecureCoding])
+  coderCopy = coder;
+  if ([coderCopy requiresSecureCoding])
   {
-    [v4 encodeInteger:self->_majorVersion forKey:@"Major"];
-    [v4 encodeInteger:self->_minorVersion forKey:@"Minor"];
-    [v4 encodeInteger:self->_patchVersion forKey:@"Patch"];
-    [v4 encodeObject:self->_invalidVersionString forKey:@"InvalidVersionString"];
+    [coderCopy encodeInteger:self->_majorVersion forKey:@"Major"];
+    [coderCopy encodeInteger:self->_minorVersion forKey:@"Minor"];
+    [coderCopy encodeInteger:self->_patchVersion forKey:@"Patch"];
+    [coderCopy encodeObject:self->_invalidVersionString forKey:@"InvalidVersionString"];
   }
 }
 
-- (HKFHIRVersion)initWithCoder:(id)a3
+- (HKFHIRVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 requiresSecureCoding])
+  coderCopy = coder;
+  if ([coderCopy requiresSecureCoding])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"InvalidVersionString"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"InvalidVersionString"];
     if (v5)
     {
       v6 = [(HKFHIRVersion *)self initWithInvalidVersionString:v5];
@@ -192,36 +192,36 @@ LABEL_6:
 
     else
     {
-      v9[0] = [v4 decodeIntegerForKey:@"Major"];
-      v9[1] = [v4 decodeIntegerForKey:@"Minor"];
-      v9[2] = [v4 decodeIntegerForKey:@"Patch"];
+      v9[0] = [coderCopy decodeIntegerForKey:@"Major"];
+      v9[1] = [coderCopy decodeIntegerForKey:@"Minor"];
+      v9[2] = [coderCopy decodeIntegerForKey:@"Patch"];
       v6 = [(HKFHIRVersion *)self initWithSemanticVersion:v9];
     }
 
     self = v6;
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
     goto LABEL_12;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {

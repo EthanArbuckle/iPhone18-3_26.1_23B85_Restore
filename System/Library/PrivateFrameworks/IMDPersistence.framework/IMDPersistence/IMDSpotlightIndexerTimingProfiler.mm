@@ -1,22 +1,22 @@
 @interface IMDSpotlightIndexerTimingProfiler
 - (void)abortCurrentTimers;
-- (void)logResults:(BOOL)a3;
-- (void)startMainTimerWithExpectedTimeoutInterval:(double)a3;
-- (void)startTimingForKey:(id)a3;
-- (void)startTimingForKey:(id)a3 iteration:(int64_t)a4;
+- (void)logResults:(BOOL)results;
+- (void)startMainTimerWithExpectedTimeoutInterval:(double)interval;
+- (void)startTimingForKey:(id)key;
+- (void)startTimingForKey:(id)key iteration:(int64_t)iteration;
 - (void)stopMainTimerAndLogAfterFailure;
 - (void)stopMainTimerAndLogAfterSuccess;
 - (void)stopProfilingAfterIndexersBailed;
-- (void)stopTimingForKey:(id)a3;
-- (void)stopTimingForKey:(id)a3 iteration:(int64_t)a4;
+- (void)stopTimingForKey:(id)key;
+- (void)stopTimingForKey:(id)key iteration:(int64_t)iteration;
 @end
 
 @implementation IMDSpotlightIndexerTimingProfiler
 
-- (void)startMainTimerWithExpectedTimeoutInterval:(double)a3
+- (void)startMainTimerWithExpectedTimeoutInterval:(double)interval
 {
   v25 = *MEMORY[0x1E69E9840];
-  objc_msgSend_setTimeout_(self, a2, v3, a3);
+  objc_msgSend_setTimeout_(self, a2, v3, interval);
   if (self->_timingCollection)
   {
     v5 = IMLogHandleForCategory();
@@ -58,18 +58,18 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startTimingForKey:(id)a3
+- (void)startTimingForKey:(id)key
 {
-  v5 = a3;
-  if (v5)
+  keyCopy = key;
+  if (keyCopy)
   {
     if (self->_timingCollection)
     {
-      if (!objc_msgSend_containsObject_(self->_runningTimers, v4, v5))
+      if (!objc_msgSend_containsObject_(self->_runningTimers, v4, keyCopy))
       {
-        objc_msgSend_addObject_(self->_runningTimers, v6, v5);
-        objc_msgSend_addObject_(self->_runTimers, v8, v5);
-        objc_msgSend_startTimingForKey_(self->_timingCollection, v9, v5);
+        objc_msgSend_addObject_(self->_runningTimers, v6, keyCopy);
+        objc_msgSend_addObject_(self->_runTimers, v8, keyCopy);
+        objc_msgSend_startTimingForKey_(self->_timingCollection, v9, keyCopy);
         goto LABEL_11;
       }
 
@@ -102,11 +102,11 @@
 LABEL_11:
 }
 
-- (void)startTimingForKey:(id)a3 iteration:(int64_t)a4
+- (void)startTimingForKey:(id)key iteration:(int64_t)iteration
 {
-  if (a3)
+  if (key)
   {
-    v7 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"%@-%ld", a3, a4);
+    v7 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"%@-%ld", key, iteration);
     objc_msgSend_startTimingForKey_(self, v5, v7);
   }
 
@@ -120,10 +120,10 @@ LABEL_11:
   }
 }
 
-- (void)stopTimingForKey:(id)a3
+- (void)stopTimingForKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v8 = IMLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -145,7 +145,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!objc_msgSend_containsObject_(self->_runningTimers, v4, v5))
+  if (!objc_msgSend_containsObject_(self->_runningTimers, v4, keyCopy))
   {
     v8 = IMLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -158,16 +158,16 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  objc_msgSend_stopTimingForKey_(self->_timingCollection, v6, v5);
-  objc_msgSend_removeObject_(self->_runningTimers, v7, v5);
+  objc_msgSend_stopTimingForKey_(self->_timingCollection, v6, keyCopy);
+  objc_msgSend_removeObject_(self->_runningTimers, v7, keyCopy);
 LABEL_12:
 }
 
-- (void)stopTimingForKey:(id)a3 iteration:(int64_t)a4
+- (void)stopTimingForKey:(id)key iteration:(int64_t)iteration
 {
-  if (a3)
+  if (key)
   {
-    v7 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"%@-%ld", a3, a4);
+    v7 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"%@-%ld", key, iteration);
     objc_msgSend_stopTimingForKey_(self, v5, v7);
   }
 
@@ -181,9 +181,9 @@ LABEL_12:
   }
 }
 
-- (void)logResults:(BOOL)a3
+- (void)logResults:(BOOL)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v66 = *MEMORY[0x1E69E9840];
   v51 = 0u;
   v52 = 0u;
@@ -245,7 +245,7 @@ LABEL_25:
 
       else
       {
-        if (v17 == 0.0 && v3)
+        if (v17 == 0.0 && resultsCopy)
         {
           v20 = IMLogHandleForCategory();
           if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -261,7 +261,7 @@ LABEL_25:
           goto LABEL_25;
         }
 
-        if (!v3)
+        if (!resultsCopy)
         {
           goto LABEL_22;
         }

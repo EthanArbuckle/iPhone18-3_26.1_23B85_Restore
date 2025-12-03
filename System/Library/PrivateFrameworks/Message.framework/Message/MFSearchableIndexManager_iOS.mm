@@ -1,8 +1,8 @@
 @interface MFSearchableIndexManager_iOS
 + (BOOL)shouldCancelSearchQuery;
-+ (void)addSearchQueryCancelable:(id)a3;
-+ (void)removeSearchQueryCancelable:(id)a3;
-- (MFSearchableIndexManager_iOS)initWithDatabase:(id)a3 messagePersistence:(id)a4 richLinkPersistence:(id)a5 hookResponder:(id)a6;
++ (void)addSearchQueryCancelable:(id)cancelable;
++ (void)removeSearchQueryCancelable:(id)cancelable;
+- (MFSearchableIndexManager_iOS)initWithDatabase:(id)database messagePersistence:(id)persistence richLinkPersistence:(id)linkPersistence hookResponder:(id)responder;
 @end
 
 @implementation MFSearchableIndexManager_iOS
@@ -10,42 +10,42 @@
 + (BOOL)shouldCancelSearchQuery
 {
   v2 = +[MFActivityMonitor currentMonitor];
-  v3 = [v2 shouldCancel];
+  shouldCancel = [v2 shouldCancel];
 
-  return v3;
+  return shouldCancel;
 }
 
-+ (void)addSearchQueryCancelable:(id)a3
++ (void)addSearchQueryCancelable:(id)cancelable
 {
-  v4 = a3;
+  cancelableCopy = cancelable;
   v3 = +[MFActivityMonitor currentMonitor];
-  [v3 addCancelable:v4];
+  [v3 addCancelable:cancelableCopy];
 }
 
-+ (void)removeSearchQueryCancelable:(id)a3
++ (void)removeSearchQueryCancelable:(id)cancelable
 {
-  v4 = a3;
+  cancelableCopy = cancelable;
   v3 = +[MFActivityMonitor currentMonitor];
-  [v3 removeCancelable:v4];
+  [v3 removeCancelable:cancelableCopy];
 }
 
-- (MFSearchableIndexManager_iOS)initWithDatabase:(id)a3 messagePersistence:(id)a4 richLinkPersistence:(id)a5 hookResponder:(id)a6
+- (MFSearchableIndexManager_iOS)initWithDatabase:(id)database messagePersistence:(id)persistence richLinkPersistence:(id)linkPersistence hookResponder:(id)responder
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  databaseCopy = database;
+  persistenceCopy = persistence;
+  linkPersistenceCopy = linkPersistence;
+  responderCopy = responder;
   v22.receiver = self;
   v22.super_class = MFSearchableIndexManager_iOS;
-  v14 = [(EDSearchableIndexManager *)&v22 initWithDatabase:v10 messagePersistence:v11 richLinkPersistence:v12 hookResponder:v13];
+  v14 = [(EDSearchableIndexManager *)&v22 initWithDatabase:databaseCopy messagePersistence:persistenceCopy richLinkPersistence:linkPersistenceCopy hookResponder:responderCopy];
   if (v14)
   {
-    v15 = [(EDSearchableIndexPersistence *)[MFSearchableIndexPersistence_iOS alloc] initWithDatabase:v10 messagePersistence:v11 richLinkPersistence:v12 hookResponder:v13];
+    v15 = [(EDSearchableIndexPersistence *)[MFSearchableIndexPersistence_iOS alloc] initWithDatabase:databaseCopy messagePersistence:persistenceCopy richLinkPersistence:linkPersistenceCopy hookResponder:responderCopy];
     persistence = v14->_persistence;
     v14->_persistence = &v15->super;
 
-    v17 = [(EDSearchableIndexManager *)v14 analytics];
-    [(EDSearchableIndexPersistence *)v14->_persistence setAnalytics:v17];
+    analytics = [(EDSearchableIndexManager *)v14 analytics];
+    [(EDSearchableIndexPersistence *)v14->_persistence setAnalytics:analytics];
 
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v19 = dispatch_queue_create("com.apple.email.MFSearchableIndexManager_iOS.contentProtectionQueue", v18);

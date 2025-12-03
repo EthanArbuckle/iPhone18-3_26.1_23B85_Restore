@@ -1,18 +1,18 @@
 @interface PKDiscoveryCallToActionShelf
-- (BOOL)isEqual:(id)a3;
-- (PKDiscoveryCallToActionShelf)initWithCoder:(id)a3;
-- (PKDiscoveryCallToActionShelf)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKDiscoveryCallToActionShelf)initWithCoder:(id)coder;
+- (PKDiscoveryCallToActionShelf)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setItem:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setItem:(id)item;
 @end
 
 @implementation PKDiscoveryCallToActionShelf
 
-- (PKDiscoveryCallToActionShelf)initWithDictionary:(id)a3
+- (PKDiscoveryCallToActionShelf)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKDiscoveryCallToActionShelf;
   v5 = [(PKDiscoveryCallToActionShelf *)&v11 init];
@@ -20,8 +20,8 @@
   if (v5)
   {
     [(PKDiscoveryShelf *)v5 setType:4];
-    v6->_useImageAsTitle = [v4 PKBoolForKey:@"useImageAsTitle"];
-    v7 = [v4 PKDictionaryForKey:@"callToAction"];
+    v6->_useImageAsTitle = [dictionaryCopy PKBoolForKey:@"useImageAsTitle"];
+    v7 = [dictionaryCopy PKDictionaryForKey:@"callToAction"];
     if (v7)
     {
       v8 = [[PKDiscoveryCallToAction alloc] initWithDictionary:v7];
@@ -33,27 +33,27 @@
   return v6;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
   v5.receiver = self;
   v5.super_class = PKDiscoveryCallToActionShelf;
-  v4 = a3;
-  [(PKDiscoveryShelf *)&v5 setItem:v4];
-  [(PKDiscoveryCallToAction *)self->_callToAction setItem:v4, v5.receiver, v5.super_class];
+  itemCopy = item;
+  [(PKDiscoveryShelf *)&v5 setItem:itemCopy];
+  [(PKDiscoveryCallToAction *)self->_callToAction setItem:itemCopy, v5.receiver, v5.super_class];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = PKDiscoveryCallToActionShelf;
-  if ([(PKDiscoveryShelf *)&v10 isEqual:v4])
+  if ([(PKDiscoveryShelf *)&v10 isEqual:equalCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       callToAction = self->_callToAction;
-      v6 = v4[5];
+      v6 = equalCopy[5];
       if (callToAction)
       {
         v7 = v6 == 0;
@@ -69,7 +69,7 @@
         if (callToAction == v6)
         {
 LABEL_12:
-          v8 = self->_useImageAsTitle == *(v4 + 32);
+          v8 = self->_useImageAsTitle == *(equalCopy + 32);
           goto LABEL_10;
         }
       }
@@ -122,29 +122,29 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKDiscoveryCallToActionShelf;
-  v4 = a3;
-  [(PKDiscoveryShelf *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_callToAction forKey:{@"callToAction", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_useImageAsTitle forKey:@"useImageAsTitle"];
+  coderCopy = coder;
+  [(PKDiscoveryShelf *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_callToAction forKey:{@"callToAction", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_useImageAsTitle forKey:@"useImageAsTitle"];
 }
 
-- (PKDiscoveryCallToActionShelf)initWithCoder:(id)a3
+- (PKDiscoveryCallToActionShelf)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKDiscoveryCallToActionShelf;
-  v5 = [(PKDiscoveryShelf *)&v9 initWithCoder:v4];
+  v5 = [(PKDiscoveryShelf *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callToAction"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callToAction"];
     callToAction = v5->_callToAction;
     v5->_callToAction = v6;
 
-    v5->_useImageAsTitle = [v4 decodeBoolForKey:@"useImageAsTitle"];
+    v5->_useImageAsTitle = [coderCopy decodeBoolForKey:@"useImageAsTitle"];
   }
 
   return v5;

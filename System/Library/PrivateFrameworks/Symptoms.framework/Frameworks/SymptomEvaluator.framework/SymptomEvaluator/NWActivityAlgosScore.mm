@@ -1,10 +1,10 @@
 @interface NWActivityAlgosScore
 + (id)sharedInstance;
-+ (void)processNWActivitySuperMetric:(id)a3;
++ (void)processNWActivitySuperMetric:(id)metric;
 - (NWActivityAlgosScore)init;
-- (id)_processNWActivityTransactions:(id)a3;
-- (void)_postSymptomFor:(id)a3 withScore:(unint64_t)a4;
-- (void)_processNWActivitySuperMetric:(id)a3;
+- (id)_processNWActivityTransactions:(id)transactions;
+- (void)_postSymptomFor:(id)for withScore:(unint64_t)score;
+- (void)_processNWActivitySuperMetric:(id)metric;
 @end
 
 @implementation NWActivityAlgosScore
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __38__NWActivityAlgosScore_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_16 != -1)
   {
     dispatch_once(&sharedInstance_pred_16, block);
@@ -36,11 +36,11 @@ void __38__NWActivityAlgosScore_sharedInstance__block_invoke(uint64_t a1)
   internalBuild = [v3 internalBuild];
 }
 
-+ (void)processNWActivitySuperMetric:(id)a3
++ (void)processNWActivitySuperMetric:(id)metric
 {
-  v3 = a3;
+  metricCopy = metric;
   v4 = +[NWActivityAlgosScore sharedInstance];
-  [v4 _processNWActivitySuperMetric:v3];
+  [v4 _processNWActivitySuperMetric:metricCopy];
 }
 
 - (NWActivityAlgosScore)init
@@ -50,24 +50,24 @@ void __38__NWActivityAlgosScore_sharedInstance__block_invoke(uint64_t a1)
   v2 = [(NWActivityAlgosScore *)&v6 init];
   if (v2 && objc_opt_class())
   {
-    v3 = [MEMORY[0x277D2CA30] connectionScore];
+    connectionScore = [MEMORY[0x277D2CA30] connectionScore];
     activityScore = v2->_activityScore;
-    v2->_activityScore = v3;
+    v2->_activityScore = connectionScore;
   }
 
   return v2;
 }
 
-- (id)_processNWActivityTransactions:(id)a3
+- (id)_processNWActivityTransactions:(id)transactions
 {
   v88 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  transactionsCopy = transactions;
+  if (transactionsCopy)
   {
-    v4 = v3;
-    v5 = [v3 taskMetrics];
+    v4 = transactionsCopy;
+    taskMetrics = [transactionsCopy taskMetrics];
     v64 = v4;
-    if (v5 && (v6 = v5, [v4 taskMetrics], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8))
+    if (taskMetrics && (v6 = taskMetrics, [v4 taskMetrics], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8))
     {
       v80 = 0u;
       v81 = 0u;
@@ -93,9 +93,9 @@ LABEL_7:
         v13 = *(*(&v78 + 1) + 8 * v12);
         if (v10 <= [NWActivitySuperMetric limitForFragmentType:3, v63])
         {
-          v14 = [v13 dictionaryReport];
-          v15 = v14;
-          if (!v14)
+          dictionaryReport = [v13 dictionaryReport];
+          v15 = dictionaryReport;
+          if (!dictionaryReport)
           {
             v23 = algosLogHandle();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -110,7 +110,7 @@ LABEL_7:
 
           v69 = v12;
           v70 = v10;
-          v16 = [v14 objectForKeyedSubscript:@"didCompleteWithError"];
+          v16 = [dictionaryReport objectForKeyedSubscript:@"didCompleteWithError"];
           *&v17 = COERCE_DOUBLE([v16 unsignedLongLongValue]);
 
           v18 = algosLogHandle();
@@ -159,10 +159,10 @@ LABEL_17:
 
             v27 = *(*(&v74 + 1) + 8 * v26);
             v28 = [v27 objectForKeyedSubscript:v11];
-            v29 = [v28 unsignedLongLongValue];
+            unsignedLongLongValue = [v28 unsignedLongLongValue];
 
             v30 = [v27 objectForKeyedSubscript:@"requestStart"];
-            v31 = [v30 unsignedLongLongValue];
+            unsignedLongLongValue2 = [v30 unsignedLongLongValue];
 
             v32 = v25;
             if ([v23 count]< 2)
@@ -174,9 +174,9 @@ LABEL_17:
             v34 = v17;
             v35 = v11;
             v36 = [v27 objectForKeyedSubscript:@"responseEnd"];
-            v37 = [v36 unsignedLongLongValue];
+            unsignedLongLongValue3 = [v36 unsignedLongLongValue];
 
-            if (v31 && v37 > v31)
+            if (unsignedLongLongValue2 && unsignedLongLongValue3 > unsignedLongLongValue2)
             {
               break;
             }
@@ -223,18 +223,18 @@ LABEL_54:
             }
           }
 
-          v32 = v37 - v31;
+          v32 = unsignedLongLongValue3 - unsignedLongLongValue2;
           v11 = v35;
           v17 = v34;
           v24 = v33;
           v23 = v71;
 LABEL_29:
           v40 = [v27 objectForKeyedSubscript:@"responseStart"];
-          v41 = [v40 unsignedLongLongValue];
+          unsignedLongLongValue4 = [v40 unsignedLongLongValue];
 
-          if (v31 && v41 > v31)
+          if (unsignedLongLongValue2 && unsignedLongLongValue4 > unsignedLongLongValue2)
           {
-            v42 = (v41 - v31) / 1000.0;
+            v42 = (unsignedLongLongValue4 - unsignedLongLongValue2) / 1000.0;
           }
 
           else
@@ -254,7 +254,7 @@ LABEL_29:
           }
 
           v43 = v32 / 1000.0;
-          if (v29)
+          if (unsignedLongLongValue)
           {
             v44 = v20 != 0;
           }
@@ -264,7 +264,7 @@ LABEL_29:
             v44 = 0;
           }
 
-          if (v20 != 0 && v29 == 0)
+          if (v20 != 0 && unsignedLongLongValue == 0)
           {
             *&v45 = NAN;
           }
@@ -288,21 +288,21 @@ LABEL_29:
           if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
           {
             *buf = 134218240;
-            v83 = v29 / 1000000.0 + 0.02;
+            v83 = unsignedLongLongValue / 1000000.0 + 0.02;
             v84 = 2048;
             v85 = v43;
             _os_log_impl(&dword_23255B000, v46, OS_LOG_TYPE_DEBUG, "Score baseline %f  vs. actual %f secs", buf, 0x16u);
           }
 
-          [(NWSAlgosConnectionScore *)self->_activityScore addConnectionRow:v29 ttfb:v20 ttlb:v42 basettfb:v43 basettlb:0.0 weight:v29 / 1000000.0 + 0.02 failed:1.0];
+          [(NWSAlgosConnectionScore *)self->_activityScore addConnectionRow:unsignedLongLongValue ttfb:v20 ttlb:v42 basettfb:v43 basettlb:0.0 weight:unsignedLongLongValue / 1000000.0 + 0.02 failed:1.0];
           goto LABEL_45;
         }
 
         v50 = algosLogHandle();
         if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
         {
-          v51 = [v64 taskMetrics];
-          v52 = COERCE_DOUBLE([v51 count]);
+          taskMetrics2 = [v64 taskMetrics];
+          v52 = COERCE_DOUBLE([taskMetrics2 count]);
           *buf = 134217984;
           v83 = v52;
           _os_log_impl(&dword_23255B000, v50, OS_LOG_TYPE_INFO, "Reached max task fragments for scoring, dropping the rest (count %lu)", buf, 0xCu);
@@ -323,8 +323,8 @@ LABEL_64:
           v56 = [v48 objectForKeyedSubscript:@"score"];
           [v56 doubleValue];
           v58 = v57;
-          v59 = [v64 taskMetrics];
-          v60 = [v59 count];
+          taskMetrics3 = [v64 taskMetrics];
+          v60 = [taskMetrics3 count];
           *buf = 134218240;
           v83 = v58;
           v84 = 2048;
@@ -363,7 +363,7 @@ LABEL_64:
       v49 = 0;
     }
 
-    v3 = v64;
+    transactionsCopy = v64;
   }
 
   else
@@ -376,29 +376,29 @@ LABEL_64:
   return v49;
 }
 
-- (void)_processNWActivitySuperMetric:(id)a3
+- (void)_processNWActivitySuperMetric:(id)metric
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  metricCopy = metric;
+  if (metricCopy)
   {
     if (objc_opt_class())
     {
-      v5 = [v4 activity];
-      v6 = [v5 dictionaryReport];
-      v7 = [v6 objectForKeyedSubscript:@"bundleID"];
+      activity = [metricCopy activity];
+      dictionaryReport = [activity dictionaryReport];
+      v7 = [dictionaryReport objectForKeyedSubscript:@"bundleID"];
 
-      v8 = [v4 activity];
-      v9 = [v8 dictionaryReport];
-      v10 = [v9 objectForKeyedSubscript:@"activityDomain"];
+      activity2 = [metricCopy activity];
+      dictionaryReport2 = [activity2 dictionaryReport];
+      v10 = [dictionaryReport2 objectForKeyedSubscript:@"activityDomain"];
 
-      v11 = [v4 activity];
-      v12 = [v11 dictionaryReport];
-      v13 = [v12 objectForKeyedSubscript:@"activityLabel"];
+      activity3 = [metricCopy activity];
+      dictionaryReport3 = [activity3 dictionaryReport];
+      v13 = [dictionaryReport3 objectForKeyedSubscript:@"activityLabel"];
 
-      v14 = [v4 activity];
-      v15 = [v14 dictionaryReport];
-      v16 = [v15 objectForKeyedSubscript:@"activityUUID"];
+      activity4 = [metricCopy activity];
+      dictionaryReport4 = [activity4 dictionaryReport];
+      v16 = [dictionaryReport4 objectForKeyedSubscript:@"activityUUID"];
 
       v17 = algosLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -414,10 +414,10 @@ LABEL_64:
         _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEBUG, "Processing activity (domain: %@, label: %@, uuid: %@, bundle_id: %@)", &v21, 0x2Au);
       }
 
-      v18 = [(NWActivityAlgosScore *)self _processNWActivityTransactions:v4];
+      v18 = [(NWActivityAlgosScore *)self _processNWActivityTransactions:metricCopy];
       if (v18)
       {
-        [v4 setAlgosScore:v18];
+        [metricCopy setAlgosScore:v18];
       }
 
       v19 = algosLogHandle();
@@ -447,24 +447,24 @@ LABEL_64:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postSymptomFor:(id)a3 withScore:(unint64_t)a4
+- (void)_postSymptomFor:(id)for withScore:(unint64_t)score
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  forCopy = for;
   v6 = algosLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = forCopy;
     v10 = 2048;
-    v11 = AlgosUnpackScore(a4);
+    v11 = AlgosUnpackScore(score);
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEBUG, "Posting symptom for: %@, its Algos: %f", &v8, 0x16u);
   }
 
   internal_symptom_new(405521);
   internal_symptom_set_qualifier();
-  [v5 length];
-  [v5 UTF8String];
+  [forCopy length];
+  [forCopy UTF8String];
   internal_symptom_set_additional_qualifier();
   internal_symptom_send_immediate();
 

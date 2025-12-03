@@ -1,23 +1,23 @@
 @interface TypingFeedbackController
-- (double)maximumValueForSpecifier:(id)a3;
-- (double)minimumValueForSpecifier:(id)a3;
-- (double)valueForSpecifier:(id)a3;
+- (double)maximumValueForSpecifier:(id)specifier;
+- (double)minimumValueForSpecifier:(id)specifier;
+- (double)valueForSpecifier:(id)specifier;
 - (id)_characterFeedbackSpecifiers;
-- (id)_delayPickerSpecifiers:(id)a3;
-- (id)letterFeedbackEnabled:(id)a3;
-- (id)phoneticFeedbackEnabled:(id)a3;
-- (id)quickTypePredictionFeedbackEnabled:(id)a3;
-- (id)speakCorrectionsEnabled:(id)a3;
+- (id)_delayPickerSpecifiers:(id)specifiers;
+- (id)letterFeedbackEnabled:(id)enabled;
+- (id)phoneticFeedbackEnabled:(id)enabled;
+- (id)quickTypePredictionFeedbackEnabled:(id)enabled;
+- (id)speakCorrectionsEnabled:(id)enabled;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
-- (id)wordFeedbackEnabled:(id)a3;
-- (void)_updateDelayPickerSpecifiers:(id)a3 afterSpecifierWithIdentifier:(id)a4 enabled:(BOOL)a5;
-- (void)setLetterFeedbackEnabled:(id)a3 specifier:(id)a4;
-- (void)setPhoneticFeedbackEnabled:(id)a3 specifier:(id)a4;
-- (void)setQuickTypePredictionFeedbackEnabled:(id)a3 specifier:(id)a4;
-- (void)setSpeakCorrectionsEnabled:(id)a3 specifier:(id)a4;
-- (void)setWordFeedbackEnabled:(id)a3 specifier:(id)a4;
-- (void)specifier:(id)a3 setValue:(double)a4;
+- (id)stringValueForSpecifier:(id)specifier;
+- (id)wordFeedbackEnabled:(id)enabled;
+- (void)_updateDelayPickerSpecifiers:(id)specifiers afterSpecifierWithIdentifier:(id)identifier enabled:(BOOL)enabled;
+- (void)setLetterFeedbackEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPhoneticFeedbackEnabled:(id)enabled specifier:(id)specifier;
+- (void)setQuickTypePredictionFeedbackEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSpeakCorrectionsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setWordFeedbackEnabled:(id)enabled specifier:(id)specifier;
+- (void)specifier:(id)specifier setValue:(double)value;
 - (void)viewDidLoad;
 @end
 
@@ -28,10 +28,10 @@
   v6.receiver = self;
   v6.super_class = TypingFeedbackController;
   [(TypingFeedbackController *)&v6 viewDidLoad];
-  v3 = [(TypingFeedbackController *)self table];
+  table = [(TypingFeedbackController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXUISettingsEditableTableCellWithStepper cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (id)specifiers
@@ -48,28 +48,28 @@
     v8 = +[AXSettings sharedInstance];
     if ([v8 letterFeedbackEnabled])
     {
-      v9 = 1;
+      phoneticFeedbackEnabled = 1;
     }
 
     else
     {
       v10 = +[AXSettings sharedInstance];
-      v9 = [v10 phoneticFeedbackEnabled];
+      phoneticFeedbackEnabled = [v10 phoneticFeedbackEnabled];
     }
 
-    v11 = [(TypingFeedbackController *)self _characterFeedbackSpecifiers];
-    v12 = [v11 count];
+    _characterFeedbackSpecifiers = [(TypingFeedbackController *)self _characterFeedbackSpecifiers];
+    v12 = [_characterFeedbackSpecifiers count];
 
-    if (v12 && v9)
+    if (v12 && phoneticFeedbackEnabled)
     {
       v13 = [(TypingFeedbackController *)self specifierForKey:@"PhoneticFeedback"];
       v14 = [v7 indexOfObject:v13];
-      v15 = [(TypingFeedbackController *)self _characterFeedbackSpecifiers];
-      v16 = [v15 count];
+      _characterFeedbackSpecifiers2 = [(TypingFeedbackController *)self _characterFeedbackSpecifiers];
+      v16 = [_characterFeedbackSpecifiers2 count];
 
       v17 = [[NSIndexSet alloc] initWithIndexesInRange:{v14 + 1, v16}];
-      v18 = [(TypingFeedbackController *)self _characterFeedbackSpecifiers];
-      [v7 insertObjects:v18 atIndexes:v17];
+      _characterFeedbackSpecifiers3 = [(TypingFeedbackController *)self _characterFeedbackSpecifiers];
+      [v7 insertObjects:_characterFeedbackSpecifiers3 atIndexes:v17];
     }
 
     v19 = *&self->AXUISettingsBaseListController_opaque[v3];
@@ -81,12 +81,12 @@
   return v4;
 }
 
-- (double)minimumValueForSpecifier:(id)a3
+- (double)minimumValueForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
+  specifierCopy = specifier;
+  feedbackDelayPickerSpecifier = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
 
-  if (v5 == v4)
+  if (feedbackDelayPickerSpecifier == specifierCopy)
   {
     v6 = kAXSCharacterFeedbackDelayDurationMin;
   }
@@ -99,12 +99,12 @@
   return v6;
 }
 
-- (double)maximumValueForSpecifier:(id)a3
+- (double)maximumValueForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
+  specifierCopy = specifier;
+  feedbackDelayPickerSpecifier = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
 
-  if (v5 == v4)
+  if (feedbackDelayPickerSpecifier == specifierCopy)
   {
     v6 = kAXSCharacterFeedbackDelayDurationMax;
   }
@@ -117,13 +117,13 @@
   return v6;
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
+  specifierCopy = specifier;
+  feedbackDelayPickerSpecifier = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
 
   v6 = 0.0;
-  if (v5 == v4)
+  if (feedbackDelayPickerSpecifier == specifierCopy)
   {
     v7 = +[AXSettings sharedInstance];
     [v7 characterFeedbackDelayDuration];
@@ -133,49 +133,49 @@
   return v6;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
-  v6 = a3;
-  v7 = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
+  specifierCopy = specifier;
+  feedbackDelayPickerSpecifier = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
 
-  if (v7 == v6)
+  if (feedbackDelayPickerSpecifier == specifierCopy)
   {
     v8 = +[AXSettings sharedInstance];
-    [v8 setCharacterFeedbackDelayDuration:a4];
+    [v8 setCharacterFeedbackDelayDuration:value];
   }
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(TypingFeedbackController *)self valueForSpecifier:a3];
+  [(TypingFeedbackController *)self valueForSpecifier:specifier];
   v3 = [NSNumber numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 
   return v4;
 }
 
-- (void)setLetterFeedbackEnabled:(id)a3 specifier:(id)a4
+- (void)setLetterFeedbackEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  [v6 setLetterFeedbackEnabled:{objc_msgSend(v5, "BOOLValue")}];
+  [v6 setLetterFeedbackEnabled:{objc_msgSend(enabledCopy, "BOOLValue")}];
 
-  v8 = [(TypingFeedbackController *)self _characterFeedbackSpecifiers];
-  LODWORD(v6) = [v5 BOOLValue];
+  _characterFeedbackSpecifiers = [(TypingFeedbackController *)self _characterFeedbackSpecifiers];
+  LODWORD(v6) = [enabledCopy BOOLValue];
 
   if (v6)
   {
-    [(TypingFeedbackController *)self _updateDelayPickerSpecifiers:v8 afterSpecifierWithIdentifier:@"PhoneticFeedback" enabled:1];
+    [(TypingFeedbackController *)self _updateDelayPickerSpecifiers:_characterFeedbackSpecifiers afterSpecifierWithIdentifier:@"PhoneticFeedback" enabled:1];
   }
 
   else
   {
     v7 = +[AXSettings sharedInstance];
-    -[TypingFeedbackController _updateDelayPickerSpecifiers:afterSpecifierWithIdentifier:enabled:](self, "_updateDelayPickerSpecifiers:afterSpecifierWithIdentifier:enabled:", v8, @"PhoneticFeedback", [v7 phoneticFeedbackEnabled]);
+    -[TypingFeedbackController _updateDelayPickerSpecifiers:afterSpecifierWithIdentifier:enabled:](self, "_updateDelayPickerSpecifiers:afterSpecifierWithIdentifier:enabled:", _characterFeedbackSpecifiers, @"PhoneticFeedback", [v7 phoneticFeedbackEnabled]);
   }
 }
 
-- (id)letterFeedbackEnabled:(id)a3
+- (id)letterFeedbackEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 letterFeedbackEnabled]);
@@ -183,28 +183,28 @@
   return v4;
 }
 
-- (void)setPhoneticFeedbackEnabled:(id)a3 specifier:(id)a4
+- (void)setPhoneticFeedbackEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  [v6 setPhoneticFeedbackEnabled:{objc_msgSend(v5, "BOOLValue")}];
+  [v6 setPhoneticFeedbackEnabled:{objc_msgSend(enabledCopy, "BOOLValue")}];
 
-  v8 = [(TypingFeedbackController *)self _characterFeedbackSpecifiers];
-  LODWORD(v6) = [v5 BOOLValue];
+  _characterFeedbackSpecifiers = [(TypingFeedbackController *)self _characterFeedbackSpecifiers];
+  LODWORD(v6) = [enabledCopy BOOLValue];
 
   if (v6)
   {
-    [(TypingFeedbackController *)self _updateDelayPickerSpecifiers:v8 afterSpecifierWithIdentifier:@"PhoneticFeedback" enabled:1];
+    [(TypingFeedbackController *)self _updateDelayPickerSpecifiers:_characterFeedbackSpecifiers afterSpecifierWithIdentifier:@"PhoneticFeedback" enabled:1];
   }
 
   else
   {
     v7 = +[AXSettings sharedInstance];
-    -[TypingFeedbackController _updateDelayPickerSpecifiers:afterSpecifierWithIdentifier:enabled:](self, "_updateDelayPickerSpecifiers:afterSpecifierWithIdentifier:enabled:", v8, @"PhoneticFeedback", [v7 letterFeedbackEnabled]);
+    -[TypingFeedbackController _updateDelayPickerSpecifiers:afterSpecifierWithIdentifier:enabled:](self, "_updateDelayPickerSpecifiers:afterSpecifierWithIdentifier:enabled:", _characterFeedbackSpecifiers, @"PhoneticFeedback", [v7 letterFeedbackEnabled]);
   }
 }
 
-- (id)phoneticFeedbackEnabled:(id)a3
+- (id)phoneticFeedbackEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 phoneticFeedbackEnabled]);
@@ -214,21 +214,21 @@
 
 - (id)_characterFeedbackSpecifiers
 {
-  v3 = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
+  feedbackDelayPickerSpecifier = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
 
-  if (!v3)
+  if (!feedbackDelayPickerSpecifier)
   {
     v4 = [PSSpecifier ax_stepperSpecifierWithDelegate:self];
     [(TypingFeedbackController *)self setFeedbackDelayPickerSpecifier:v4];
   }
 
-  v5 = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
-  v6 = [(TypingFeedbackController *)self _delayPickerSpecifiers:v5];
+  feedbackDelayPickerSpecifier2 = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
+  v6 = [(TypingFeedbackController *)self _delayPickerSpecifiers:feedbackDelayPickerSpecifier2];
 
   return v6;
 }
 
-- (id)wordFeedbackEnabled:(id)a3
+- (id)wordFeedbackEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 wordFeedbackEnabled]);
@@ -236,16 +236,16 @@
   return v4;
 }
 
-- (void)setWordFeedbackEnabled:(id)a3 specifier:(id)a4
+- (void)setWordFeedbackEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setWordFeedbackEnabled:v5];
+  [v6 setWordFeedbackEnabled:bOOLValue];
 }
 
-- (id)quickTypePredictionFeedbackEnabled:(id)a3
+- (id)quickTypePredictionFeedbackEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 quickTypePredictionFeedbackEnabled]);
@@ -253,16 +253,16 @@
   return v4;
 }
 
-- (void)setQuickTypePredictionFeedbackEnabled:(id)a3 specifier:(id)a4
+- (void)setQuickTypePredictionFeedbackEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setQuickTypePredictionFeedbackEnabled:v5];
+  [v6 setQuickTypePredictionFeedbackEnabled:bOOLValue];
 }
 
-- (id)speakCorrectionsEnabled:(id)a3
+- (id)speakCorrectionsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 speakCorrectionsEnabled]);
@@ -270,75 +270,75 @@
   return v4;
 }
 
-- (void)setSpeakCorrectionsEnabled:(id)a3 specifier:(id)a4
+- (void)setSpeakCorrectionsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setSpeakCorrectionsEnabled:v5];
+  [v6 setSpeakCorrectionsEnabled:bOOLValue];
 }
 
-- (void)_updateDelayPickerSpecifiers:(id)a3 afterSpecifierWithIdentifier:(id)a4 enabled:(BOOL)a5
+- (void)_updateDelayPickerSpecifiers:(id)specifiers afterSpecifierWithIdentifier:(id)identifier enabled:(BOOL)enabled
 {
-  v5 = a5;
-  v17 = a3;
-  v8 = a4;
-  v9 = [(TypingFeedbackController *)self specifiers];
-  v10 = [v17 firstObject];
-  v11 = [v9 containsObject:v10];
+  enabledCopy = enabled;
+  specifiersCopy = specifiers;
+  identifierCopy = identifier;
+  specifiers = [(TypingFeedbackController *)self specifiers];
+  firstObject = [specifiersCopy firstObject];
+  v11 = [specifiers containsObject:firstObject];
 
-  if (v5)
+  if (enabledCopy)
   {
     if ((v11 & 1) == 0)
     {
-      [(TypingFeedbackController *)self insertContiguousSpecifiers:v17 afterSpecifierID:v8 animated:1];
+      [(TypingFeedbackController *)self insertContiguousSpecifiers:specifiersCopy afterSpecifierID:identifierCopy animated:1];
     }
   }
 
   else if (v11)
   {
-    v12 = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
-    v13 = [(TypingFeedbackController *)self indexPathForSpecifier:v12];
+    feedbackDelayPickerSpecifier = [(TypingFeedbackController *)self feedbackDelayPickerSpecifier];
+    v13 = [(TypingFeedbackController *)self indexPathForSpecifier:feedbackDelayPickerSpecifier];
 
-    v14 = [(TypingFeedbackController *)self table];
-    v15 = [v14 cellForRowAtIndexPath:v13];
+    table = [(TypingFeedbackController *)self table];
+    v15 = [table cellForRowAtIndexPath:v13];
 
-    v16 = [v15 nameTextField];
-    [v16 resignFirstResponder];
+    nameTextField = [v15 nameTextField];
+    [nameTextField resignFirstResponder];
 
-    [(TypingFeedbackController *)self removeContiguousSpecifiers:v17 animated:1];
+    [(TypingFeedbackController *)self removeContiguousSpecifiers:specifiersCopy animated:1];
   }
 }
 
-- (id)_delayPickerSpecifiers:(id)a3
+- (id)_delayPickerSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v5 = +[NSMutableArray array];
-  v6 = [(TypingFeedbackController *)self groupSpecifier];
+  groupSpecifier = [(TypingFeedbackController *)self groupSpecifier];
 
-  if (!v6)
+  if (!groupSpecifier)
   {
     v7 = settingsLocString(@"CHARACTER_FEEDBACK_DELAY", @"Accessibility");
     v8 = [PSSpecifier groupSpecifierWithName:v7];
     [(TypingFeedbackController *)self setGroupSpecifier:v8];
 
-    v9 = [(TypingFeedbackController *)self groupSpecifier];
+    groupSpecifier2 = [(TypingFeedbackController *)self groupSpecifier];
     v10 = settingsLocString(@"CHARACTER_FEEDBACK_DELAY_FOOTER", @"Accessibility");
-    [v9 setProperty:v10 forKey:PSFooterTextGroupKey];
+    [groupSpecifier2 setProperty:v10 forKey:PSFooterTextGroupKey];
   }
 
-  v11 = [(TypingFeedbackController *)self groupSpecifier];
+  groupSpecifier3 = [(TypingFeedbackController *)self groupSpecifier];
 
-  if (v11)
+  if (groupSpecifier3)
   {
-    v12 = [(TypingFeedbackController *)self groupSpecifier];
-    [v5 addObject:v12];
+    groupSpecifier4 = [(TypingFeedbackController *)self groupSpecifier];
+    [v5 addObject:groupSpecifier4];
   }
 
-  if (v4)
+  if (specifiersCopy)
   {
-    [v5 addObject:v4];
+    [v5 addObject:specifiersCopy];
   }
 
   return v5;

@@ -7,16 +7,16 @@
 
 - (id)timedStabilizationConfigWithCleanAperture:()PVStabilizationConfig cropRect:fillMode:
 {
-  v20 = a1;
-  v21 = [v20 objectForKeyedSubscript:@"rawTime"];
+  selfCopy = self;
+  v21 = [selfCopy objectForKeyedSubscript:@"rawTime"];
 
-  if (v21 && ([v20 objectForKeyedSubscript:@"homography"], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
+  if (v21 && ([selfCopy objectForKeyedSubscript:@"homography"], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
   {
     memset(&v35, 0, sizeof(v35));
-    v23 = [v20 objectForKeyedSubscript:@"rawTime"];
+    v23 = [selfCopy objectForKeyedSubscript:@"rawTime"];
     CMTimeMakeFromDictionary(&v35, v23);
 
-    v24 = [v20 objectForKeyedSubscript:@"homography"];
+    v24 = [selfCopy objectForKeyedSubscript:@"homography"];
     [v24 SIMDFloat3x3];
     v32 = v26;
     v33 = v25;
@@ -40,11 +40,11 @@
   v12 = *(MEMORY[0x277CBF3A0] + 16);
   rect.origin = *MEMORY[0x277CBF3A0];
   rect.size = v12;
-  v13 = a1;
-  v14 = [v13 objectForKeyedSubscript:@"stabCropRect"];
+  selfCopy = self;
+  v14 = [selfCopy objectForKeyedSubscript:@"stabCropRect"];
   CGRectMakeWithDictionaryRepresentation(v14, &rect);
 
-  v15 = [v13 objectForKeyedSubscript:@"frameInstructions"];
+  v15 = [selfCopy objectForKeyedSubscript:@"frameInstructions"];
 
   if ([v15 count])
   {

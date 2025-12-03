@@ -1,25 +1,25 @@
 @interface CALNGEORouteHypothesizer
-- (CALNGEORouteHypothesizer)initWithRouteHypothesizer:(id)a3;
+- (CALNGEORouteHypothesizer)initWithRouteHypothesizer:(id)hypothesizer;
 - (EKTravelEngineHypothesis)currentHypothesis;
 - (unint64_t)state;
-- (void)didPostUINotification:(unint64_t)a3;
+- (void)didPostUINotification:(unint64_t)notification;
 - (void)requestRefresh;
-- (void)startHypothesizingWithUpdateHandler:(id)a3;
+- (void)startHypothesizingWithUpdateHandler:(id)handler;
 - (void)stopHypothesizing;
 @end
 
 @implementation CALNGEORouteHypothesizer
 
-- (CALNGEORouteHypothesizer)initWithRouteHypothesizer:(id)a3
+- (CALNGEORouteHypothesizer)initWithRouteHypothesizer:(id)hypothesizer
 {
-  v5 = a3;
+  hypothesizerCopy = hypothesizer;
   v9.receiver = self;
   v9.super_class = CALNGEORouteHypothesizer;
   v6 = [(CALNGEORouteHypothesizer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_routeHypothesizer, a3);
+    objc_storeStrong(&v6->_routeHypothesizer, hypothesizer);
   }
 
   return v7;
@@ -27,45 +27,45 @@
 
 - (unint64_t)state
 {
-  v2 = [(CALNGEORouteHypothesizer *)self routeHypothesizer];
-  v3 = [v2 state];
+  routeHypothesizer = [(CALNGEORouteHypothesizer *)self routeHypothesizer];
+  state = [routeHypothesizer state];
 
-  return v3;
+  return state;
 }
 
 - (EKTravelEngineHypothesis)currentHypothesis
 {
-  v2 = [(CALNGEORouteHypothesizer *)self routeHypothesizer];
-  v3 = [v2 currentHypothesis];
+  routeHypothesizer = [(CALNGEORouteHypothesizer *)self routeHypothesizer];
+  currentHypothesis = [routeHypothesizer currentHypothesis];
 
-  v4 = [CALNRouteHypothesisMapper ekTravelEngineHypothesisFromGEORouteHypothesis:v3];
+  v4 = [CALNRouteHypothesisMapper ekTravelEngineHypothesisFromGEORouteHypothesis:currentHypothesis];
 
   return v4;
 }
 
-- (void)startHypothesizingWithUpdateHandler:(id)a3
+- (void)startHypothesizingWithUpdateHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CALNGEORouteHypothesizer *)self routeHypothesizer];
-  [v5 startHypothesizingWithUpdateHandler:v4];
+  handlerCopy = handler;
+  routeHypothesizer = [(CALNGEORouteHypothesizer *)self routeHypothesizer];
+  [routeHypothesizer startHypothesizingWithUpdateHandler:handlerCopy];
 }
 
 - (void)requestRefresh
 {
-  v2 = [(CALNGEORouteHypothesizer *)self routeHypothesizer];
-  [v2 requestRefresh];
+  routeHypothesizer = [(CALNGEORouteHypothesizer *)self routeHypothesizer];
+  [routeHypothesizer requestRefresh];
 }
 
 - (void)stopHypothesizing
 {
-  v2 = [(CALNGEORouteHypothesizer *)self routeHypothesizer];
-  [v2 stopHypothesizing];
+  routeHypothesizer = [(CALNGEORouteHypothesizer *)self routeHypothesizer];
+  [routeHypothesizer stopHypothesizing];
 }
 
-- (void)didPostUINotification:(unint64_t)a3
+- (void)didPostUINotification:(unint64_t)notification
 {
-  v4 = [(CALNGEORouteHypothesizer *)self routeHypothesizer];
-  [v4 didPostUINotification:a3];
+  routeHypothesizer = [(CALNGEORouteHypothesizer *)self routeHypothesizer];
+  [routeHypothesizer didPostUINotification:notification];
 }
 
 @end

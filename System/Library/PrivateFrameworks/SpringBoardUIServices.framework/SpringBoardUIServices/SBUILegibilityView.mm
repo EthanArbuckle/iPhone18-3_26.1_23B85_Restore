@@ -1,33 +1,33 @@
 @interface SBUILegibilityView
 - (BOOL)_hideImageView;
-- (BOOL)_hideShadowImageViewForStrength:(double *)a3;
-- (BOOL)_updateContentImageView:(id)a3;
-- (BOOL)_updateOptions:(int64_t)a3;
-- (BOOL)_updateSettings:(id)a3;
+- (BOOL)_hideShadowImageViewForStrength:(double *)strength;
+- (BOOL)_updateContentImageView:(id)view;
+- (BOOL)_updateOptions:(int64_t)options;
+- (BOOL)_updateSettings:(id)settings;
 - (BOOL)_updateShadow;
-- (BOOL)_updateStrength:(double)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)_updateStrength:(double)strength;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSMutableDictionary)userInfo;
 - (SBUILegibilityEngine)legibilityEngine;
-- (SBUILegibilityView)initWithFrame:(CGRect)a3;
-- (SBUILegibilityView)initWithSettings:(id)a3 strength:(double)a4 image:(id)a5;
+- (SBUILegibilityView)initWithFrame:(CGRect)frame;
+- (SBUILegibilityView)initWithSettings:(id)settings strength:(double)strength image:(id)image;
 - (UIEdgeInsets)hitTestEdgeInsets;
 - (id)drawingColor;
 - (void)_cancelOperations;
-- (void)_clearShadowAndMarkNeedsNew:(BOOL)a3;
+- (void)_clearShadowAndMarkNeedsNew:(BOOL)new;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutImageView;
 - (void)layoutSubviews;
-- (void)setAlpha:(double)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setLegibilityEngine:(id)a3;
-- (void)updateForChangedSettings:(id)a3 options:(int64_t)a4 image:(id)a5 strength:(double)a6;
-- (void)updateOrigImage:(id)a3 shadowImage:(id)a4 strengthenedShadowImage:(id)a5 settings:(id)a6 engine:(id)a7 isTemplate:(BOOL)a8 withStrength:(double *)a9 context:(id)a10;
-- (void)willMoveToSuperview:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setHidden:(BOOL)hidden;
+- (void)setLegibilityEngine:(id)engine;
+- (void)updateForChangedSettings:(id)settings options:(int64_t)options image:(id)image strength:(double)strength;
+- (void)updateOrigImage:(id)image shadowImage:(id)shadowImage strengthenedShadowImage:(id)strengthenedShadowImage settings:(id)settings engine:(id)engine isTemplate:(BOOL)template withStrength:(double *)strength context:(id)self0;
+- (void)willMoveToSuperview:(id)superview;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SBUILegibilityView
@@ -43,16 +43,16 @@
 - (BOOL)_updateShadow
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(SBUILegibilityView *)self superview];
-  if (!v3)
+  superview = [(SBUILegibilityView *)self superview];
+  if (!superview)
   {
     return 0;
   }
 
-  v4 = v3;
-  v5 = [(SBUILegibilityView *)self window];
+  v4 = superview;
+  window = [(SBUILegibilityView *)self window];
 
-  if (!v5 || !self->_needsUpdateShadow)
+  if (!window || !self->_needsUpdateShadow)
   {
     return 0;
   }
@@ -77,10 +77,10 @@
       }
 
       v25 = 0;
-      v10 = [(SBUILegibilityView *)self legibilityEngine];
-      [v10 executeLegibilityUpdateForContainer:self forImage:v6 settings:self->_legibilitySettings strength:&self->_strength engineResult:&v25];
-      v11 = [(SBUILegibilityView *)self _screen];
-      if (v11)
+      legibilityEngine = [(SBUILegibilityView *)self legibilityEngine];
+      [legibilityEngine executeLegibilityUpdateForContainer:self forImage:v6 settings:self->_legibilitySettings strength:&self->_strength engineResult:&v25];
+      _screen = [(SBUILegibilityView *)self _screen];
+      if (_screen)
       {
         [(SBUILegibilityView *)self _screen];
       }
@@ -95,7 +95,7 @@
 
       if (v25 == 1 && self->_backfillTemplateResults)
       {
-        v16 = [v10 executeAsyncLegibilityUpdateForContainer:self image:v6 settings:self->_legibilitySettings strength:&self->_strength completion:0];
+        v16 = [legibilityEngine executeAsyncLegibilityUpdateForContainer:self image:v6 settings:self->_legibilitySettings strength:&self->_strength completion:0];
         runningAsyncOperations = self->_runningAsyncOperations;
         if (!runningAsyncOperations)
         {
@@ -118,9 +118,9 @@
         v23 = SBLogLegibility();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          v24 = [(SBUILegibilityView *)self userInfo];
+          userInfo = [(SBUILegibilityView *)self userInfo];
           *buf = 138412546;
-          v27 = v24;
+          v27 = userInfo;
           v28 = 2048;
           v29 = v22 - Current;
           _os_log_debug_impl(&dword_1A9A79000, v23, OS_LOG_TYPE_DEBUG, "Legibility generation time (%@): %f", buf, 0x16u);
@@ -140,16 +140,16 @@
   return v12;
 }
 
-- (SBUILegibilityView)initWithFrame:(CGRect)a3
+- (SBUILegibilityView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SBUILegibilityView;
-  v3 = [(SBUILegibilityView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUILegibilityView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SBUILegibilityView *)v3 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(SBUILegibilityView *)v3 layer];
+    [layer setAllowsGroupBlending:0];
 
     v4->_options = 2;
     v6 = objc_opt_new();
@@ -169,16 +169,16 @@
   return v4;
 }
 
-- (SBUILegibilityView)initWithSettings:(id)a3 strength:(double)a4 image:(id)a5
+- (SBUILegibilityView)initWithSettings:(id)settings strength:(double)strength image:(id)image
 {
-  v8 = a3;
-  v9 = a5;
-  [v9 size];
+  settingsCopy = settings;
+  imageCopy = image;
+  [imageCopy size];
   v12 = [(SBUILegibilityView *)self initWithFrame:0.0, 0.0, v10, v11];
   v13 = v12;
   if (v12)
   {
-    [(SBUILegibilityView *)v12 updateForChangedSettings:v8 options:2 image:v9 strength:a4];
+    [(SBUILegibilityView *)v12 updateForChangedSettings:settingsCopy options:2 image:imageCopy strength:strength];
   }
 
   return v13;
@@ -192,19 +192,19 @@
   [(SBUILegibilityView *)&v3 dealloc];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = SBUILegibilityView;
-  [(SBUILegibilityView *)&v4 setHidden:a3];
+  [(SBUILegibilityView *)&v4 setHidden:hidden];
   [(SBUILegibilityView *)self setNeedsLayout];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v4.receiver = self;
   v4.super_class = SBUILegibilityView;
-  [(SBUILegibilityView *)&v4 setAlpha:a3];
+  [(SBUILegibilityView *)&v4 setAlpha:alpha];
   [(SBUILegibilityView *)self setNeedsLayout];
 }
 
@@ -213,19 +213,19 @@
   v27.receiver = self;
   v27.super_class = SBUILegibilityView;
   [(SBUILegibilityView *)&v27 layoutSubviews];
-  v3 = [(SBUILegibilityView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(SBUILegibilityView *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
   [(SBUILegibilityView *)self bounds];
-  v6 = [(SBUILegibilityView *)self image];
+  image = [(SBUILegibilityView *)self image];
   [(SBUILegibilityView *)self layoutImageView];
   if (([(SBUILegibilityShadowView *)self->_shadowImageView isHidden]& 1) == 0)
   {
-    v7 = [(SBUILegibilityContainerView *)self->_shadowImageView image];
-    if (v7)
+    image2 = [(SBUILegibilityContainerView *)self->_shadowImageView image];
+    if (image2)
     {
-      v8 = v6 == 0;
+      v8 = image == 0;
     }
 
     else
@@ -248,9 +248,9 @@
         v26 = v10;
         v13 = v12;
         rect2 = v14;
-        v15 = [(SBUILegibilityView *)self legibilityEngine];
-        v16 = [(SBUILegibilityContainerView *)self->_shadowImageView image];
-        [v15 calculateShadowImageViewSizeForOriginalImage:v6 shadowImage:v16 settings:self->_legibilitySettings];
+        legibilityEngine = [(SBUILegibilityView *)self legibilityEngine];
+        image3 = [(SBUILegibilityContainerView *)self->_shadowImageView image];
+        [legibilityEngine calculateShadowImageViewSizeForOriginalImage:image shadowImage:image3 settings:self->_legibilitySettings];
 
         v23 = v5;
         UIRectCenteredIntegralRectScale();
@@ -282,19 +282,19 @@
 
 - (void)layoutImageView
 {
-  v3 = [(SBUILegibilityView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(SBUILegibilityView *)self traitCollection];
+  [traitCollection displayScale];
 
   [(SBUILegibilityView *)self bounds];
-  v20 = [(SBUILegibilityView *)self image];
+  image = [(SBUILegibilityView *)self image];
   [(SBUILegibilityContainerView *)self->_imageView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  if (v20)
+  if (image)
   {
-    [v20 size];
+    [image size];
     BSRectWithSize();
     UIRectCenteredIntegralRectScale();
     v13 = v12;
@@ -325,11 +325,11 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   [(SBUILegibilityView *)self hitTestEdgeInsets];
   v9.f64[1] = v8;
   v11.f64[1] = v10;
@@ -337,7 +337,7 @@
   {
     v29.receiver = self;
     v29.super_class = SBUILegibilityView;
-    v26 = [(SBUILegibilityView *)&v29 pointInside:v7 withEvent:x, y];
+    v26 = [(SBUILegibilityView *)&v29 pointInside:eventCopy withEvent:x, y];
   }
 
   else
@@ -364,9 +364,9 @@
   return v27;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(SBUILegibilityView *)self image:a3.width];
+  v3 = [(SBUILegibilityView *)self image:fits.width];
   [v3 size];
   v5 = v4;
   v7 = v6;
@@ -378,17 +378,17 @@
   return result;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v4 = a3;
+  superviewCopy = superview;
   v10.receiver = self;
   v10.super_class = SBUILegibilityView;
-  [(SBUILegibilityView *)&v10 willMoveToSuperview:v4];
-  if (v4)
+  [(SBUILegibilityView *)&v10 willMoveToSuperview:superviewCopy];
+  if (superviewCopy)
   {
-    v5 = [v4 window];
-    v6 = [v5 screen];
-    [v6 scale];
+    window = [superviewCopy window];
+    screen = [window screen];
+    [screen scale];
     v8 = v7;
     appliedScale = self->_appliedScale;
 
@@ -407,16 +407,16 @@
   [(SBUILegibilityView *)self _redrawShadowForNewContainer];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v9.receiver = self;
   v9.super_class = SBUILegibilityView;
-  [(SBUILegibilityView *)&v9 willMoveToWindow:v4];
-  if (v4)
+  [(SBUILegibilityView *)&v9 willMoveToWindow:windowCopy];
+  if (windowCopy)
   {
-    v5 = [v4 screen];
-    [v5 scale];
+    screen = [windowCopy screen];
+    [screen scale];
     v7 = v6;
     appliedScale = self->_appliedScale;
 
@@ -437,8 +437,8 @@
     self->_userInfo = v4;
 
     v6 = self->_userInfo;
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    [(NSMutableDictionary *)v6 setObject:v7 forKey:@"UUID"];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [(NSMutableDictionary *)v6 setObject:uUID forKey:@"UUID"];
 
     userInfo = self->_userInfo;
   }
@@ -448,11 +448,11 @@
   return v8;
 }
 
-- (void)updateForChangedSettings:(id)a3 options:(int64_t)a4 image:(id)a5 strength:(double)a6
+- (void)updateForChangedSettings:(id)settings options:(int64_t)options image:(id)image strength:(double)strength
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  settingsCopy = settings;
+  imageCopy = image;
   v12 = BSEqualObjects();
   if (self->_needsUpdateShadow || !v12)
   {
@@ -461,13 +461,13 @@
 
   else
   {
-    v13 = [(SBUILegibilityContainerView *)self->_shadowImageView image];
-    if (v13)
+    image = [(SBUILegibilityContainerView *)self->_shadowImageView image];
+    if (image)
     {
-      v14 = [(SBUILegibilityContainerView *)self->_imageView image];
-      if (v14)
+      image2 = [(SBUILegibilityContainerView *)self->_imageView image];
+      if (image2)
       {
-        v15 = self->_legibilitySettings != v10;
+        v15 = self->_legibilitySettings != settingsCopy;
       }
 
       else
@@ -484,30 +484,30 @@
     }
   }
 
-  v16 = [(SBUILegibilityView *)self _updateSettings:v10];
-  v17 = [(SBUILegibilityView *)self _updateOptions:a4];
-  v18 = [(SBUILegibilityView *)self _updateContentImageView:v11];
+  v16 = [(SBUILegibilityView *)self _updateSettings:settingsCopy];
+  v17 = [(SBUILegibilityView *)self _updateOptions:options];
+  v18 = [(SBUILegibilityView *)self _updateContentImageView:imageCopy];
 
   if (v16 || v17 || v18 || self->_needsUpdateShadow)
   {
     [(SBUILegibilityView *)self _cancelOperations];
-    self->_strength = a6;
+    self->_strength = strength;
     self->_appliedScale = 0.0;
-    v19 = [(SBUILegibilityView *)self _updateShadow];
-    v20 = [(SBUILegibilityView *)self _updateStrength:a6];
-    v21 = [(SBUILegibilityView *)self _updateFilters];
+    _updateShadow = [(SBUILegibilityView *)self _updateShadow];
+    v20 = [(SBUILegibilityView *)self _updateStrength:strength];
+    _updateFilters = [(SBUILegibilityView *)self _updateFilters];
     v22 = SBLogLegibility();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      v24 = [(SBUILegibilityView *)self userInfo];
+      userInfo = [(SBUILegibilityView *)self userInfo];
       v25[0] = 67109890;
-      v25[1] = v19;
+      v25[1] = _updateShadow;
       v26 = 1024;
       v27 = v20;
       v28 = 1024;
-      v29 = v21;
+      v29 = _updateFilters;
       v30 = 2112;
-      v31 = v24;
+      v31 = userInfo;
       _os_log_debug_impl(&dword_1A9A79000, v22, OS_LOG_TYPE_DEBUG, "updateForChangedSettings committed! didUpdateShadow: %{BOOL}u -- didUpdateStrength: %{BOOL}u -- didUpdateFilters: %{BOOL}u -- userInfo: %@", v25, 0x1Eu);
     }
 
@@ -528,9 +528,9 @@
 
 - (id)drawingColor
 {
-  v3 = [(SBUILegibilityView *)self usesSecondaryColor];
+  usesSecondaryColor = [(SBUILegibilityView *)self usesSecondaryColor];
   legibilitySettings = self->_legibilitySettings;
-  if (v3)
+  if (usesSecondaryColor)
   {
     [(SBUILegibilitySettings *)legibilitySettings secondaryColor];
   }
@@ -544,43 +544,43 @@
   return v5;
 }
 
-- (BOOL)_updateOptions:(int64_t)a3
+- (BOOL)_updateOptions:(int64_t)options
 {
   options = self->_options;
-  if (options == a3)
+  if (options == options)
   {
     return 0;
   }
 
-  v4 = a3;
-  self->_options = a3;
-  v6 = [(SBUILegibilityView *)self usesColorFilters];
-  v7 = options ^ v4;
-  if (((options ^ v4) & 1) == 0 && ((options >> 1) & 1) == v6)
+  optionsCopy = options;
+  self->_options = options;
+  usesColorFilters = [(SBUILegibilityView *)self usesColorFilters];
+  v7 = options ^ optionsCopy;
+  if (((options ^ optionsCopy) & 1) == 0 && ((options >> 1) & 1) == usesColorFilters)
   {
     return 0;
   }
 
-  v8 = [(SBUILegibilityView *)self _updateFilters];
+  _updateFilters = [(SBUILegibilityView *)self _updateFilters];
   if (v7)
   {
     [(SBUILegibilityView *)self updateImage];
   }
 
-  return v8;
+  return _updateFilters;
 }
 
-- (BOOL)_updateSettings:(id)a3
+- (BOOL)_updateSettings:(id)settings
 {
-  v5 = a3;
-  v6 = SBUILegibilitySettingsAreEqual(v5, self->_legibilitySettings);
+  settingsCopy = settings;
+  v6 = SBUILegibilitySettingsAreEqual(settingsCopy, self->_legibilitySettings);
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
   }
 
-  v7 = [(SBUILegibilityContainerView *)self->_imageView legibilitySettings];
-  v8 = SBUILegibilitySettingsAreEqual(v5, v7);
+  legibilitySettings = [(SBUILegibilityContainerView *)self->_imageView legibilitySettings];
+  v8 = SBUILegibilitySettingsAreEqual(settingsCopy, legibilitySettings);
 
   if (v8)
   {
@@ -589,30 +589,30 @@
 
   else
   {
-    [(SBUILegibilityContainerView *)self->_imageView setLegibilitySettings:v5];
+    [(SBUILegibilityContainerView *)self->_imageView setLegibilitySettings:settingsCopy];
     v9 = 1;
   }
 
-  v10 = [(SBUILegibilityContainerView *)self->_shadowImageView legibilitySettings];
-  v11 = SBUILegibilitySettingsAreEqual(v5, v10);
+  legibilitySettings2 = [(SBUILegibilityContainerView *)self->_shadowImageView legibilitySettings];
+  v11 = SBUILegibilitySettingsAreEqual(settingsCopy, legibilitySettings2);
 
   if ((v11 & 1) == 0)
   {
-    [(SBUILegibilityContainerView *)self->_shadowImageView setLegibilitySettings:v5];
+    [(SBUILegibilityContainerView *)self->_shadowImageView setLegibilitySettings:settingsCopy];
     v9 = 1;
   }
 
   return v9;
 }
 
-- (BOOL)_updateContentImageView:(id)a3
+- (BOOL)_updateContentImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(SBUILegibilityContainerView *)self->_imageView setHidden:[(SBUILegibilityView *)self _hideImageView]];
   imageView = self->_imageView;
   [(SBUILegibilityView *)self _imageViewAlpha];
   [(SBUILegibilityContainerView *)imageView setAlpha:?];
-  if (!v5)
+  if (!viewCopy)
   {
     [(SBUILegibilityContainerView *)self->_imageView setImage:0];
     [(SBUILegibilityContainerView *)self->_shadowImageView setImage:0];
@@ -627,13 +627,13 @@ LABEL_11:
 
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, view);
     [(UIImage *)self->_image size];
     v10 = v9;
     v12 = v11;
     [(SBUILegibilityContainerView *)self->_imageView setImage:self->_image];
-    v13 = [(SBUILegibilityContainerView *)self->_imageView image];
-    [v13 size];
+    image = [(SBUILegibilityContainerView *)self->_imageView image];
+    [image size];
     v15 = v14;
     v17 = v16;
 
@@ -652,7 +652,7 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)_updateStrength:(double)a3
+- (BOOL)_updateStrength:(double)strength
 {
   v21 = *MEMORY[0x1E69E9840];
   [(SBUILegibilityContainerView *)self->_shadowImageView strength];
@@ -662,7 +662,7 @@ LABEL_12:
     return 0;
   }
 
-  self->_strength = a3;
+  self->_strength = strength;
   v8 = SBLogLegibility();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
 
@@ -686,30 +686,30 @@ LABEL_12:
     v15 = SBLogLegibility();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [(SBUILegibilityView *)self userInfo];
+      userInfo = [(SBUILegibilityView *)self userInfo];
       v17 = 138412546;
-      v18 = v16;
+      v18 = userInfo;
       v19 = 2048;
       v20 = v14 - Current;
       _os_log_debug_impl(&dword_1A9A79000, v15, OS_LOG_TYPE_DEBUG, "(%@) legibility strength application time: %f", &v17, 0x16u);
     }
   }
 
-  return v6 != a3;
+  return v6 != strength;
 }
 
-- (BOOL)_hideShadowImageViewForStrength:(double *)a3
+- (BOOL)_hideShadowImageViewForStrength:(double *)strength
 {
   p_strength = &self->_strength;
-  if (a3)
+  if (strength)
   {
-    p_strength = a3;
+    p_strength = strength;
   }
 
   v5 = *p_strength;
-  v6 = [(SBUILegibilityView *)self isHidden];
+  isHidden = [(SBUILegibilityView *)self isHidden];
   result = 1;
-  if ((v6 & 1) == 0 && v5 > 0.0)
+  if ((isHidden & 1) == 0 && v5 > 0.0)
   {
     [(SBUILegibilityView *)self alpha];
     return v8 <= 0.0;
@@ -729,19 +729,19 @@ LABEL_12:
   return v4 <= 0.0;
 }
 
-- (void)updateOrigImage:(id)a3 shadowImage:(id)a4 strengthenedShadowImage:(id)a5 settings:(id)a6 engine:(id)a7 isTemplate:(BOOL)a8 withStrength:(double *)a9 context:(id)a10
+- (void)updateOrigImage:(id)image shadowImage:(id)shadowImage strengthenedShadowImage:(id)strengthenedShadowImage settings:(id)settings engine:(id)engine isTemplate:(BOOL)template withStrength:(double *)strength context:(id)self0
 {
-  v27 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a10;
-  if (v19)
+  imageCopy = image;
+  shadowImageCopy = shadowImage;
+  strengthenedShadowImageCopy = strengthenedShadowImage;
+  settingsCopy = settings;
+  engineCopy = engine;
+  contextCopy = context;
+  if (contextCopy)
   {
-    if ([(NSMutableArray *)self->_runningAsyncOperations containsObject:v19])
+    if ([(NSMutableArray *)self->_runningAsyncOperations containsObject:contextCopy])
     {
-      [(NSMutableArray *)self->_runningAsyncOperations removeObject:v19];
+      [(NSMutableArray *)self->_runningAsyncOperations removeObject:contextCopy];
       if (![(NSMutableArray *)self->_runningAsyncOperations count])
       {
         runningAsyncOperations = self->_runningAsyncOperations;
@@ -752,21 +752,21 @@ LABEL_12:
 
   image = self->_image;
   legibilitySettings = self->_legibilitySettings;
-  v23 = [(SBUILegibilityView *)self legibilityEngine];
+  legibilityEngine = [(SBUILegibilityView *)self legibilityEngine];
 
-  if (image == v27 && legibilitySettings == v17 && v23 == v18)
+  if (image == imageCopy && legibilitySettings == settingsCopy && legibilityEngine == engineCopy)
   {
-    [(SBUILegibilityContainerView *)self->_shadowImageView setLegibilitySettings:v17];
-    [(SBUILegibilityContainerView *)self->_shadowImageView setLegibilityEngine:v18];
+    [(SBUILegibilityContainerView *)self->_shadowImageView setLegibilitySettings:settingsCopy];
+    [(SBUILegibilityContainerView *)self->_shadowImageView setLegibilityEngine:engineCopy];
     shadowImageView = self->_shadowImageView;
-    if (v16 && a9)
+    if (strengthenedShadowImageCopy && strength)
     {
-      [(SBUILegibilityShadowView *)shadowImageView setImage:v15 strengthenedImage:v16 strength:*a9];
+      [(SBUILegibilityShadowView *)shadowImageView setImage:shadowImageCopy strengthenedImage:strengthenedShadowImageCopy strength:*strength];
     }
 
     else
     {
-      [(SBUILegibilityContainerView *)shadowImageView setImage:v15];
+      [(SBUILegibilityContainerView *)shadowImageView setImage:shadowImageCopy];
       [(SBUILegibilityContainerView *)self->_shadowImageView setStrength:self->_strength];
     }
 
@@ -791,38 +791,38 @@ LABEL_12:
   return legibilityEngine;
 }
 
-- (void)setLegibilityEngine:(id)a3
+- (void)setLegibilityEngine:(id)engine
 {
-  v6 = a3;
+  engineCopy = engine;
   v5 = self->_legibilityEngine;
-  if (([(SBUILegibilityEngine *)v5 isEqual:v6]& 1) == 0)
+  if (([(SBUILegibilityEngine *)v5 isEqual:engineCopy]& 1) == 0)
   {
     if (v5)
     {
       [(SBUILegibilityView *)self _cancelOperations];
-      objc_storeStrong(&self->_legibilityEngine, a3);
+      objc_storeStrong(&self->_legibilityEngine, engine);
       [(SBUILegibilityView *)self _clearShadowAndMarkNeedsNew:0];
       [(SBUILegibilityView *)self _updateShadow];
     }
 
     else
     {
-      objc_storeStrong(&self->_legibilityEngine, a3);
+      objc_storeStrong(&self->_legibilityEngine, engine);
     }
   }
 }
 
-- (void)_clearShadowAndMarkNeedsNew:(BOOL)a3
+- (void)_clearShadowAndMarkNeedsNew:(BOOL)new
 {
-  v3 = a3;
-  v5 = [(SBUILegibilityContainerView *)self->_shadowImageView image];
+  newCopy = new;
+  image = [(SBUILegibilityContainerView *)self->_shadowImageView image];
 
-  if (v5)
+  if (image)
   {
     [(SBUILegibilityContainerView *)self->_shadowImageView setImage:0];
   }
 
-  else if (!v3)
+  else if (!newCopy)
   {
     return;
   }

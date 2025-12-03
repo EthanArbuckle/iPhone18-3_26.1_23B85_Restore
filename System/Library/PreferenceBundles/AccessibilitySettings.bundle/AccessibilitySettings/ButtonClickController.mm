@@ -4,43 +4,43 @@
 - (BOOL)isPasscodeSet;
 - (BOOL)usesTopButtonForMesa;
 - (__CFDictionary)_vibrationPattern;
-- (float)_buttonClickSpeedFromSpecifierKey:(id)a3;
-- (id)_footerTextForHomeButtonAssistantOption:(int)a3;
-- (id)passcodeForPurchases:(id)a3;
-- (id)restingUnlock:(id)a3;
+- (float)_buttonClickSpeedFromSpecifierKey:(id)key;
+- (id)_footerTextForHomeButtonAssistantOption:(int)option;
+- (id)passcodeForPurchases:(id)purchases;
+- (id)restingUnlock:(id)unlock;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)voiceControlLanguage:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)voiceControlLanguage:(id)language;
 - (id)voiceControlLanguageSpecifiers;
 - (void)_flashSelectedRow;
 - (void)_handleAXSettingChanged;
 - (void)_resetPinSpecifier;
 - (void)_vibrateSelectedRow;
 - (void)dealloc;
-- (void)didAcceptEnteredPIN:(id)a3;
-- (void)jumpToAssistiveTouchSettings:(id)a3;
-- (void)jumpToSwitchControlSettings:(id)a3;
-- (void)setPasscodeForPurchases:(id)a3 specifier:(id)a4;
-- (void)setRestingUnlock:(id)a3 specifier:(id)a4;
-- (void)setStoreState:(int64_t)a3;
-- (void)showPINSheet:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)didAcceptEnteredPIN:(id)n;
+- (void)jumpToAssistiveTouchSettings:(id)settings;
+- (void)jumpToSwitchControlSettings:(id)settings;
+- (void)setPasscodeForPurchases:(id)purchases specifier:(id)specifier;
+- (void)setRestingUnlock:(id)unlock specifier:(id)specifier;
+- (void)setStoreState:(int64_t)state;
+- (void)showPINSheet:(id)sheet;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateStoreState;
 - (void)updateVoiceControlLanguageSpecifiers;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ButtonClickController
 
 - (void)dealloc
 {
-  v3 = [(ButtonClickController *)self flashTimer];
-  [v3 invalidate];
+  flashTimer = [(ButtonClickController *)self flashTimer];
+  [flashTimer invalidate];
 
-  v4 = [(ButtonClickController *)self vibrationTimer];
-  [v4 invalidate];
+  vibrationTimer = [(ButtonClickController *)self vibrationTimer];
+  [vibrationTimer invalidate];
 
   v5.receiver = self;
   v5.super_class = ButtonClickController;
@@ -55,8 +55,8 @@
   if (AXDeviceHasTopTouchIDButton())
   {
     v3 = settingsLocStringTopTouchIDButton(@"LockButtonTitle_IPAD_TOUCHID");
-    v4 = [(ButtonClickController *)self navigationItem];
-    [v4 setTitle:v3];
+    navigationItem = [(ButtonClickController *)self navigationItem];
+    [navigationItem setTitle:v3];
   }
 
   else
@@ -67,19 +67,19 @@
     }
 
     v3 = AXLocStringKeyForExclusiveModel();
-    v4 = settingsLocString(v3, @"Accessibility");
-    v5 = [(ButtonClickController *)self navigationItem];
-    [v5 setTitle:v4];
+    navigationItem = settingsLocString(v3, @"Accessibility");
+    navigationItem2 = [(ButtonClickController *)self navigationItem];
+    [navigationItem2 setTitle:navigationItem];
   }
 
   [(ButtonClickController *)self updateStoreState];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = ButtonClickController;
-  [(ButtonClickController *)&v5 viewWillAppear:a3];
+  [(ButtonClickController *)&v5 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"_handleAXSettingChanged" name:UIAccessibilitySwitchControlStatusDidChangeNotification object:0];
   [v4 addObserver:self selector:"_handleAXSettingChanged" name:kAXSAssistiveTouchEnabledNotification object:0];
@@ -96,21 +96,21 @@
       return;
     }
 
-    v7 = [(ButtonClickController *)self voiceControlLanguageSpecifiers];
+    voiceControlLanguageSpecifiers = [(ButtonClickController *)self voiceControlLanguageSpecifiers];
     v6 = [(ButtonClickController *)self specifierForKey:@"assistantChoiceOff"];
-    [(ButtonClickController *)self insertContiguousSpecifiers:v7 afterSpecifier:v6 animated:1];
+    [(ButtonClickController *)self insertContiguousSpecifiers:voiceControlLanguageSpecifiers afterSpecifier:v6 animated:1];
   }
 
   else
   {
-    v7 = objc_alloc_init(NSMutableArray);
+    voiceControlLanguageSpecifiers = objc_alloc_init(NSMutableArray);
     v4 = [(ButtonClickController *)self specifierForKey:@"VCLanguageGroup"];
-    [v7 axSafelyAddObject:v4];
+    [voiceControlLanguageSpecifiers axSafelyAddObject:v4];
 
     v5 = [(ButtonClickController *)self specifierForKey:@"VCLanguageSetting"];
-    [v7 axSafelyAddObject:v5];
+    [voiceControlLanguageSpecifiers axSafelyAddObject:v5];
 
-    [(ButtonClickController *)self removeContiguousSpecifiers:v7 animated:1];
+    [(ButtonClickController *)self removeContiguousSpecifiers:voiceControlLanguageSpecifiers animated:1];
   }
 }
 
@@ -138,7 +138,7 @@
   return v3;
 }
 
-- (id)_footerTextForHomeButtonAssistantOption:(int)a3
+- (id)_footerTextForHomeButtonAssistantOption:(int)option
 {
   v4 = AXLocStringKeyForHomeButtonAndExclusiveModel();
   if (AXDeviceHasTopTouchIDButton())
@@ -170,15 +170,15 @@
 
 - (id)specifiers
 {
-  v3 = [(ButtonClickController *)self _hasSideButtonOnly];
+  _hasSideButtonOnly = [(ButtonClickController *)self _hasSideButtonOnly];
   v4 = OBJC_IVAR___PSListController__specifiers;
   v5 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v5)
   {
     v6 = [(ButtonClickController *)self loadSpecifiersFromPlistName:@"HomeClickSettings" target:self];
-    v59 = v3;
+    v59 = _hasSideButtonOnly;
     v57 = v4;
-    v58 = self;
+    selfCopy = self;
     if ((AXSettingsRestFingerToOpenIsAvailable() & 1) == 0)
     {
       v12 = PSFooterTextGroupKey;
@@ -216,7 +216,7 @@ LABEL_14:
           if (v23)
           {
             v24 = @"HOME_CLICK_INSTRUCTIONS";
-            if (v3)
+            if (_hasSideButtonOnly)
             {
               v24 = AXLocStringKeyForHomeButtonAndExclusiveModel();
               v25 = settingsLocString(v24, @"Accessibility");
@@ -264,7 +264,7 @@ LABEL_30:
 
           if (v33)
           {
-            if (!AXDeviceHasPearl() || ![(ButtonClickController *)v58 hasPasscodeOrBiometric])
+            if (!AXDeviceHasPearl() || ![(ButtonClickController *)selfCopy hasPasscodeOrBiometric])
             {
               [v60 addObject:v21];
 LABEL_24:
@@ -305,7 +305,7 @@ LABEL_24:
               if (!IsPad)
               {
 LABEL_58:
-                v3 = v59;
+                _hasSideButtonOnly = v59;
                 v12 = v63;
                 if (AXDeviceHasTopTouchIDButton())
                 {
@@ -352,13 +352,13 @@ LABEL_58:
                 [v40 isEqualToString:@"assistantChoiceGroup"];
               }
 
-              v3 = v59;
+              _hasSideButtonOnly = v59;
               goto LABEL_24;
             }
           }
 
-          v3 = v59;
-          if (!AXDeviceHasPearl() || ![(ButtonClickController *)v58 hasPasscodeOrBiometric])
+          _hasSideButtonOnly = v59;
+          if (!AXDeviceHasPearl() || ![(ButtonClickController *)selfCopy hasPasscodeOrBiometric])
           {
             goto LABEL_30;
           }
@@ -375,18 +375,18 @@ LABEL_31:
 LABEL_61:
 
           [obj removeObjectsInArray:v60];
-          v51 = [(ButtonClickController *)v58 voiceControlLanguageSpecifiers];
-          [obj addObjectsFromArray:v51];
+          voiceControlLanguageSpecifiers = [(ButtonClickController *)selfCopy voiceControlLanguageSpecifiers];
+          [obj addObjectsFromArray:voiceControlLanguageSpecifiers];
 
-          v52 = *&v58->AXUISettingsBaseListController_opaque[v4];
-          *&v58->AXUISettingsBaseListController_opaque[v57] = obj;
+          v52 = *&selfCopy->AXUISettingsBaseListController_opaque[v4];
+          *&selfCopy->AXUISettingsBaseListController_opaque[v57] = obj;
           v53 = obj;
 
-          v54 = [(ButtonClickController *)v58 _footerTextForHomeButtonAssistantOption:_AXSHomeButtonAssistant()];
-          v55 = [(ButtonClickController *)v58 specifierForKey:@"assistantChoiceGroup"];
+          v54 = [(ButtonClickController *)selfCopy _footerTextForHomeButtonAssistantOption:_AXSHomeButtonAssistant()];
+          v55 = [(ButtonClickController *)selfCopy specifierForKey:@"assistantChoiceGroup"];
           [v55 setProperty:v54 forKey:v12];
 
-          v5 = *&v58->AXUISettingsBaseListController_opaque[v57];
+          v5 = *&selfCopy->AXUISettingsBaseListController_opaque[v57];
           goto LABEL_62;
         }
       }
@@ -400,7 +400,7 @@ LABEL_61:
         v8 = [NSString stringWithFormat:@"RestingUnlockFooterText_IPAD_NHB_%@", @"TOUCHID"];
         v9 = settingsLocStringTopTouchIDButton(v8);
 
-        v3 = v59;
+        _hasSideButtonOnly = v59;
         if (v9)
         {
           goto LABEL_13;
@@ -419,9 +419,9 @@ LABEL_13:
           [v7 setProperty:v9 forKey:PSFooterTextGroupKey];
           [v6 addObject:v7];
           v14 = settingsLocString(@"RestingUnlockSetting", @"HomeClickSettings");
-          v15 = self;
+          selfCopy2 = self;
           v12 = v13;
-          v16 = [PSSpecifier preferenceSpecifierNamed:v14 target:v15 set:"setRestingUnlock:specifier:" get:"restingUnlock:" detail:0 cell:6 edit:0];
+          v16 = [PSSpecifier preferenceSpecifierNamed:v14 target:selfCopy2 set:"setRestingUnlock:specifier:" get:"restingUnlock:" detail:0 cell:6 edit:0];
 
           [v6 addObject:v16];
           goto LABEL_14;
@@ -445,21 +445,21 @@ LABEL_62:
   return v5;
 }
 
-- (void)setRestingUnlock:(id)a3 specifier:(id)a4
+- (void)setRestingUnlock:(id)unlock specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [unlock BOOLValue];
 
   _AXSHomeButtonSetRestingUnlock();
 }
 
-- (id)restingUnlock:(id)a3
+- (id)restingUnlock:(id)unlock
 {
   v3 = _AXSHomeButtonRestingUnlock();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (id)voiceControlLanguage:(id)a3
+- (id)voiceControlLanguage:(id)language
 {
   v3 = VSPreferencesCopySpokenLanguageIdentifier();
   v4 = +[NSLocale currentLocale];
@@ -473,23 +473,23 @@ LABEL_62:
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v32.receiver = self;
   v32.super_class = ButtonClickController;
-  v5 = [(ButtonClickController *)&v32 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 specifier];
-  v7 = [v6 propertyForKey:@"type"];
+  v5 = [(ButtonClickController *)&v32 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v5 specifier];
+  v7 = [specifier propertyForKey:@"type"];
 
-  v8 = [(ButtonClickController *)self _hasSideButtonOnly];
+  _hasSideButtonOnly = [(ButtonClickController *)self _hasSideButtonOnly];
   if ([v7 isEqualToString:@"HOME_CLICK_SPEED"])
   {
-    v9 = [v5 specifier];
-    v10 = [v9 propertyForKey:PSKeyNameKey];
+    specifier2 = [v5 specifier];
+    v10 = [specifier2 propertyForKey:PSKeyNameKey];
     [(ButtonClickController *)self _buttonClickSpeedFromSpecifierKey:v10];
     v12 = v11;
 
-    if (v8 && (_AXSSideButtonClickSpeed(), v12 == v13) || (_AXSHomeClickSpeed(), v12 == v14))
+    if (_hasSideButtonOnly && (_AXSSideButtonClickSpeed(), v12 == v13) || (_AXSHomeClickSpeed(), v12 == v14))
     {
       v15 = v5;
       v16 = 1;
@@ -523,16 +523,16 @@ LABEL_62:
       v19 = v18;
     }
 
-    v20 = [v5 specifier];
-    v21 = [v20 propertyForKey:PSKeyNameKey];
+    specifier3 = [v5 specifier];
+    v21 = [specifier3 propertyForKey:PSKeyNameKey];
     [v5 setChecked:{objc_msgSend(v21, "isEqualToString:", v19)}];
   }
 
   else
   {
-    v22 = [v5 specifier];
+    specifier4 = [v5 specifier];
     v23 = PSKeyNameKey;
-    v24 = [v22 propertyForKey:PSKeyNameKey];
+    v24 = [specifier4 propertyForKey:PSKeyNameKey];
     v25 = [v24 isEqualToString:@"applePayChoiceSC"];
 
     if (v25)
@@ -542,8 +542,8 @@ LABEL_62:
 
     else
     {
-      v27 = [v5 specifier];
-      v28 = [v27 propertyForKey:v23];
+      specifier5 = [v5 specifier];
+      v28 = [specifier5 propertyForKey:v23];
       v29 = [v28 isEqualToString:@"applePayChoiceAST"];
 
       if (!v29)
@@ -555,8 +555,8 @@ LABEL_62:
     }
 
     [v5 setCellEnabled:v26];
-    v30 = [v5 titleLabel];
-    [v30 setNumberOfLines:0];
+    titleLabel = [v5 titleLabel];
+    [titleLabel setNumberOfLines:0];
   }
 
 LABEL_20:
@@ -564,28 +564,28 @@ LABEL_20:
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v60.receiver = self;
   v60.super_class = ButtonClickController;
-  [(ButtonClickController *)&v60 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(ButtonClickController *)&v60 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v59.receiver = self;
   v59.super_class = ButtonClickController;
-  v8 = [(ButtonClickController *)&v59 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:@"type"];
+  v8 = [(ButtonClickController *)&v59 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:@"type"];
 
   if ([v10 isEqualToString:@"HOME_CLICK_SPEED"])
   {
-    v11 = [(ButtonClickController *)self _hasSideButtonOnly];
-    v12 = [v8 specifier];
-    v13 = [v12 propertyForKey:PSKeyNameKey];
+    _hasSideButtonOnly = [(ButtonClickController *)self _hasSideButtonOnly];
+    specifier2 = [v8 specifier];
+    v13 = [specifier2 propertyForKey:PSKeyNameKey];
     [(ButtonClickController *)self _buttonClickSpeedFromSpecifierKey:v13];
     v15 = v14;
 
-    if (v11)
+    if (_hasSideButtonOnly)
     {
       _AXSSideButtonClickSpeed();
       if (v15 == v16)
@@ -607,15 +607,15 @@ LABEL_20:
       {
 LABEL_15:
         AudioServicesStopSystemSound();
-        v28 = [(ButtonClickController *)self vibrationTimer];
-        [v28 invalidate];
+        vibrationTimer = [(ButtonClickController *)self vibrationTimer];
+        [vibrationTimer invalidate];
 
         v29 = [NSTimer scheduledTimerWithTimeInterval:self target:"_vibrateSelectedRow" selector:0 userInfo:0 repeats:0.649999976];
         [(ButtonClickController *)self setVibrationTimer:v29];
 
         [(ButtonClickController *)self setFlashCount:0];
-        v30 = [(ButtonClickController *)self flashTimer];
-        [v30 invalidate];
+        flashTimer = [(ButtonClickController *)self flashTimer];
+        [flashTimer invalidate];
 
         v31 = [NSTimer scheduledTimerWithTimeInterval:self target:"_flashSelectedRow" selector:0 userInfo:0 repeats:0.699999988];
         [(ButtonClickController *)self setFlashTimer:v31];
@@ -627,18 +627,18 @@ LABEL_34:
       _AXSHomeClickSetSpeed();
     }
 
-    [(ButtonClickController *)self updateTableCheckedSelection:v7];
-    [(ButtonClickController *)self setSelectedIndexPath:v7];
+    [(ButtonClickController *)self updateTableCheckedSelection:pathCopy];
+    [(ButtonClickController *)self setSelectedIndexPath:pathCopy];
     goto LABEL_15;
   }
 
   if ([v10 isEqualToString:@"HomeButtonAssistant"])
   {
-    v18 = [v8 specifier];
+    specifier3 = [v8 specifier];
     v53 = PSKeyNameKey;
-    v19 = [v18 propertyForKey:?];
+    v19 = [specifier3 propertyForKey:?];
 
-    v51 = v7;
+    v51 = pathCopy;
     v49 = v10;
     v54 = v19;
     if ([v19 isEqualToString:@"assistantChoiceSiri"])
@@ -651,9 +651,9 @@ LABEL_34:
       }
 
       v21 = +[AFPreferences sharedPreferences];
-      v22 = [v21 assistantIsEnabled];
+      assistantIsEnabled = [v21 assistantIsEnabled];
 
-      if (v22)
+      if (assistantIsEnabled)
       {
         goto LABEL_24;
       }
@@ -695,9 +695,9 @@ LABEL_34:
       }
 
       v35 = +[VTPreferences sharedPreferences];
-      v36 = [v35 voiceTriggerEnabled];
+      voiceTriggerEnabled = [v35 voiceTriggerEnabled];
 
-      if (v36)
+      if (voiceTriggerEnabled)
       {
         goto LABEL_24;
       }
@@ -716,16 +716,16 @@ LABEL_18:
 LABEL_24:
     v37 = [(ButtonClickController *)self specifierForKey:@"assistantChoiceGroup"];
     [v37 setProperty:v20 forKey:PSFooterTextGroupKey];
-    v50 = self;
+    selfCopy = self;
     v48 = v37;
     [(ButtonClickController *)self reloadSpecifier:v37];
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v52 = v6;
-    v38 = [v6 visibleCells];
-    v39 = [v38 countByEnumeratingWithState:&v55 objects:v61 count:16];
+    v52 = viewCopy;
+    visibleCells = [viewCopy visibleCells];
+    v39 = [visibleCells countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v39)
     {
       v40 = v39;
@@ -736,30 +736,30 @@ LABEL_24:
         {
           if (*v56 != v41)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(visibleCells);
           }
 
           v43 = *(*(&v55 + 1) + 8 * i);
-          v44 = [v43 specifier];
-          v45 = [v44 propertyForKey:@"type"];
+          specifier4 = [v43 specifier];
+          v45 = [specifier4 propertyForKey:@"type"];
           v46 = [v45 isEqualToString:@"HomeButtonAssistant"];
 
           if (v46)
           {
-            v47 = [v44 propertyForKey:v53];
+            v47 = [specifier4 propertyForKey:v53];
             [v43 setChecked:{objc_msgSend(v47, "isEqualToString:", v54)}];
           }
         }
 
-        v40 = [v38 countByEnumeratingWithState:&v55 objects:v61 count:16];
+        v40 = [visibleCells countByEnumeratingWithState:&v55 objects:v61 count:16];
       }
 
       while (v40);
     }
 
-    [(ButtonClickController *)v50 updateVoiceControlLanguageSpecifiers];
-    v7 = v51;
-    v6 = v52;
+    [(ButtonClickController *)selfCopy updateVoiceControlLanguageSpecifiers];
+    pathCopy = v51;
+    viewCopy = v52;
     v10 = v49;
     v31 = v54;
     goto LABEL_34;
@@ -768,29 +768,29 @@ LABEL_24:
 LABEL_35:
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = ButtonClickController;
-  [(ButtonClickController *)&v6 viewWillDisappear:a3];
-  v4 = [(ButtonClickController *)self flashTimer];
-  [v4 invalidate];
+  [(ButtonClickController *)&v6 viewWillDisappear:disappear];
+  flashTimer = [(ButtonClickController *)self flashTimer];
+  [flashTimer invalidate];
 
-  v5 = [(ButtonClickController *)self vibrationTimer];
-  [v5 invalidate];
+  vibrationTimer = [(ButtonClickController *)self vibrationTimer];
+  [vibrationTimer invalidate];
 
   AudioServicesStopSystemSound();
 }
 
 - (void)_flashSelectedRow
 {
-  v9 = [(ButtonClickController *)self table];
-  v3 = [(ButtonClickController *)self selectedIndexPath];
-  [v9 selectRowAtIndexPath:v3 animated:0 scrollPosition:0];
-  [v9 deselectRowAtIndexPath:v3 animated:0];
+  table = [(ButtonClickController *)self table];
+  selectedIndexPath = [(ButtonClickController *)self selectedIndexPath];
+  [table selectRowAtIndexPath:selectedIndexPath animated:0 scrollPosition:0];
+  [table deselectRowAtIndexPath:selectedIndexPath animated:0];
   [(ButtonClickController *)self setFlashCount:[(ButtonClickController *)self flashCount]+ 1];
-  v4 = [(ButtonClickController *)self flashTimer];
-  [v4 invalidate];
+  flashTimer = [(ButtonClickController *)self flashTimer];
+  [flashTimer invalidate];
 
   if ([(ButtonClickController *)self flashCount]> 2)
   {
@@ -815,18 +815,18 @@ LABEL_35:
 - (void)_vibrateSelectedRow
 {
   v2 = kAudioServicesPlaySystemSoundOptionVibrationPatternKey;
-  v3 = [(ButtonClickController *)self _vibrationPattern];
-  [NSDictionary dictionaryWithObjects:&v3 forKeys:&v2 count:1];
+  _vibrationPattern = [(ButtonClickController *)self _vibrationPattern];
+  [NSDictionary dictionaryWithObjects:&_vibrationPattern forKeys:&v2 count:1];
   AudioServicesPlaySystemSoundWithOptions();
 }
 
-- (float)_buttonClickSpeedFromSpecifierKey:(id)a3
+- (float)_buttonClickSpeedFromSpecifierKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ButtonClickController *)self _hasSideButtonOnly];
-  if ([v4 isEqualToString:@"homeClickSpeedSlowest"])
+  keyCopy = key;
+  _hasSideButtonOnly = [(ButtonClickController *)self _hasSideButtonOnly];
+  if ([keyCopy isEqualToString:@"homeClickSpeedSlowest"])
   {
-    v6 = v5 == 0;
+    v6 = _hasSideButtonOnly == 0;
     v7 = *"333?fff?";
     v8 = 1.2;
 LABEL_10:
@@ -843,20 +843,20 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (![v4 isEqualToString:@"homeClickSpeedSlow"])
+  if (![keyCopy isEqualToString:@"homeClickSpeedSlow"])
   {
-    if (![v4 isEqualToString:@"homeClickSpeedDefault"])
+    if (![keyCopy isEqualToString:@"homeClickSpeedDefault"])
     {
       _AXAssert();
     }
 
-    v6 = v5 == 0;
+    v6 = _hasSideButtonOnly == 0;
     v7 = 0.35;
     v8 = 0.4;
     goto LABEL_10;
   }
 
-  if (v5)
+  if (_hasSideButtonOnly)
   {
     v9 = *"333?fff?";
   }
@@ -908,43 +908,43 @@ LABEL_13:
   return v12;
 }
 
-- (void)showPINSheet:(id)a3
+- (void)showPINSheet:(id)sheet
 {
-  v4 = a3;
+  sheetCopy = sheet;
   [(ButtonClickController *)self setPinCode:0];
-  [(ButtonClickController *)self setCurrentPinSpecifier:v4];
-  [v4 setEditPaneClass:objc_opt_class()];
+  [(ButtonClickController *)self setCurrentPinSpecifier:sheetCopy];
+  [sheetCopy setEditPaneClass:objc_opt_class()];
   v5 = [NSNumber numberWithInt:3];
-  [v4 setProperty:v5 forKey:@"mode"];
+  [sheetCopy setProperty:v5 forKey:@"mode"];
 
-  [v4 setProperty:@"DevicePINController" forKey:PSSetupCustomClassKey];
+  [sheetCopy setProperty:@"DevicePINController" forKey:PSSetupCustomClassKey];
   v6.receiver = self;
   v6.super_class = ButtonClickController;
-  [(ButtonClickController *)&v6 showPINSheet:v4];
+  [(ButtonClickController *)&v6 showPINSheet:sheetCopy];
 }
 
-- (void)didAcceptEnteredPIN:(id)a3
+- (void)didAcceptEnteredPIN:(id)n
 {
-  v4 = a3;
-  [(ButtonClickController *)self setPinCode:v4];
-  v5 = [(ButtonClickController *)self currentPinSpecifier];
-  v6 = [v5 identifier];
+  nCopy = n;
+  [(ButtonClickController *)self setPinCode:nCopy];
+  currentPinSpecifier = [(ButtonClickController *)self currentPinSpecifier];
+  identifier = [currentPinSpecifier identifier];
 
-  if ([v6 isEqualToString:@"PASSCODE_PURCHASES"])
+  if ([identifier isEqualToString:@"PASSCODE_PURCHASES"])
   {
     objc_initWeak(&location, self);
     passcodeForPurchasesEnabled = self->_passcodeForPurchasesEnabled;
     v8 = objc_alloc_init(SSBiometrics);
     LOBYTE(from) = 0;
     objc_opt_class();
-    v9 = [(ButtonClickController *)self currentPinSpecifier];
-    v10 = [(ButtonClickController *)self cellForSpecifier:v9];
+    currentPinSpecifier2 = [(ButtonClickController *)self currentPinSpecifier];
+    v10 = [(ButtonClickController *)self cellForSpecifier:currentPinSpecifier2];
     v11 = __UIAccessibilityCastAsClass();
 
     v12 = objc_initWeak(&from, v11);
     [v11 setLoading:1];
 
-    v13 = [(ButtonClickController *)self pinCode];
+    pinCode = [(ButtonClickController *)self pinCode];
     v14 = PSAuthorizationTokenForPasscode();
     v15 = !passcodeForPurchasesEnabled;
     v16[0] = _NSConcreteStackBlock;
@@ -1012,10 +1012,10 @@ void __45__ButtonClickController_didAcceptEnteredPIN___block_invoke_2(uint64_t a
 
 - (void)_resetPinSpecifier
 {
-  v3 = [(ButtonClickController *)self currentPinSpecifier];
-  v4 = [v3 identifier];
+  currentPinSpecifier = [(ButtonClickController *)self currentPinSpecifier];
+  identifier = [currentPinSpecifier identifier];
 
-  if ([v4 isEqualToString:@"PASSCODE_PURCHASES"])
+  if ([identifier isEqualToString:@"PASSCODE_PURCHASES"])
   {
     [(ButtonClickController *)self reloadSpecifierID:@"PASSCODE_PURCHASES" animated:1];
   }
@@ -1045,11 +1045,11 @@ void __41__ButtonClickController_updateStoreState__block_invoke(uint64_t a1, uin
   dispatch_async(&_dispatch_main_q, v2);
 }
 
-- (void)setStoreState:(int64_t)a3
+- (void)setStoreState:(int64_t)state
 {
-  if (self->_storeState != a3)
+  if (self->_storeState != state)
   {
-    self->_storeState = a3;
+    self->_storeState = state;
   }
 
   [(ButtonClickController *)self reloadSpecifierID:@"PASSCODE_PURCHASES" animated:1];
@@ -1058,9 +1058,9 @@ void __41__ButtonClickController_updateStoreState__block_invoke(uint64_t a1, uin
 - (BOOL)isPasscodeSet
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isPasscodeSet];
+  isPasscodeSet = [v2 isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 - (BOOL)hasPasscodeAndBiometric
@@ -1091,14 +1091,14 @@ void __41__ButtonClickController_updateStoreState__block_invoke(uint64_t a1, uin
   return v2;
 }
 
-- (void)setPasscodeForPurchases:(id)a3 specifier:(id)a4
+- (void)setPasscodeForPurchases:(id)purchases specifier:(id)specifier
 {
-  v6 = a4;
-  self->_passcodeForPurchasesEnabled = [a3 BOOLValue];
-  [(ButtonClickController *)self showPINSheet:v6];
+  specifierCopy = specifier;
+  self->_passcodeForPurchasesEnabled = [purchases BOOLValue];
+  [(ButtonClickController *)self showPINSheet:specifierCopy];
 }
 
-- (id)passcodeForPurchases:(id)a3
+- (id)passcodeForPurchases:(id)purchases
 {
   v4 = +[MCProfileConnection sharedConnection];
   v5 = [v4 effectiveBoolValueForSetting:MCFeatureFingerprintForContactlessPaymentAllowed];
@@ -1108,14 +1108,14 @@ void __41__ButtonClickController_updateStoreState__block_invoke(uint64_t a1, uin
   return [NSNumber numberWithInt:v7];
 }
 
-- (void)jumpToSwitchControlSettings:(id)a3
+- (void)jumpToSwitchControlSettings:(id)settings
 {
   v4 = [NSURL URLWithString:@"prefs:root=ACCESSIBILITY&path=ScannerSwitchTitle#APPLE_PAY"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];
   [v3 openSensitiveURL:v4 withOptions:0];
 }
 
-- (void)jumpToAssistiveTouchSettings:(id)a3
+- (void)jumpToAssistiveTouchSettings:(id)settings
 {
   v4 = [NSURL URLWithString:@"prefs:root=ACCESSIBILITY&path=TOUCH_REACHABILITY_TITLE/AIR_TOUCH_TITLE#APPLE_PAY"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];

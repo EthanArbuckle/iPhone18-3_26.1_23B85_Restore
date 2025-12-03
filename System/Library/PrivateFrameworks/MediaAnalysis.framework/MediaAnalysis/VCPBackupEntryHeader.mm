@@ -1,7 +1,7 @@
 @interface VCPBackupEntryHeader
 + (id)header;
-- (int)readFromStream:(id)a3;
-- (int)writeToStream:(id)a3;
+- (int)readFromStream:(id)stream;
+- (int)writeToStream:(id)stream;
 @end
 
 @implementation VCPBackupEntryHeader
@@ -13,10 +13,10 @@
   return v2;
 }
 
-- (int)readFromStream:(id)a3
+- (int)readFromStream:(id)stream
 {
   v6 = 0;
-  result = [a3 vcp_readUint32:&v6];
+  result = [stream vcp_readUint32:&v6];
   if (!result)
   {
     v5 = HIBYTE(v6);
@@ -27,14 +27,14 @@
   return result;
 }
 
-- (int)writeToStream:(id)a3
+- (int)writeToStream:(id)stream
 {
-  v4 = a3;
-  v5 = v4;
+  streamCopy = stream;
+  v5 = streamCopy;
   dataLength = self->_dataLength;
   if (dataLength <= 0x200000)
   {
-    v7 = [v4 vcp_writeUint32:dataLength | (self->_isCompressed << 24)];
+    v7 = [streamCopy vcp_writeUint32:dataLength | (self->_isCompressed << 24)];
   }
 
   else

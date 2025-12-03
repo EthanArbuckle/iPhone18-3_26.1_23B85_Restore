@@ -1,46 +1,46 @@
 @interface PRComplicationGalleryDetailView
-- (PRComplicationGalleryDetailView)initWithFrame:(CGRect)a3;
+- (PRComplicationGalleryDetailView)initWithFrame:(CGRect)frame;
 - (PRComplicationGalleryDetailViewDelegate)delegate;
 - (id)_instructionsLabelFont;
-- (unint64_t)_pageIndexAtContentOffset:(CGPoint)a3;
+- (unint64_t)_pageIndexAtContentOffset:(CGPoint)offset;
 - (void)_addFooterConstraints;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)_createConstraints;
 - (void)_createPageControlIfNecessary;
 - (void)_createViews;
-- (void)_scrollToPageIndex:(unint64_t)a3 animated:(BOOL)a4;
+- (void)_scrollToPageIndex:(unint64_t)index animated:(BOOL)animated;
 - (void)_updateContent;
-- (void)_updatePageControlForContentOffset:(CGPoint)a3 animated:(BOOL)a4;
+- (void)_updatePageControlForContentOffset:(CGPoint)offset animated:(BOOL)animated;
 - (void)_updatePageViewControllerAppearanceForNormalScroll;
-- (void)_updatePageViewControllerAppearanceWithAppearedBlock:(id)a3;
-- (void)closeButtonTapped:(id)a3;
+- (void)_updatePageViewControllerAppearanceWithAppearedBlock:(id)block;
+- (void)closeButtonTapped:(id)tapped;
 - (void)dealloc;
-- (void)pageControlChanged:(id)a3;
+- (void)pageControlChanged:(id)changed;
 - (void)performInitialScrollIfNeeded;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setIconImage:(id)a3;
-- (void)setPages:(id)a3;
-- (void)setShowsBackgroundView:(BOOL)a3;
-- (void)setShowsCloseButton:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setIconImage:(id)image;
+- (void)setPages:(id)pages;
+- (void)setShowsBackgroundView:(BOOL)view;
+- (void)setShowsCloseButton:(BOOL)button;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PRComplicationGalleryDetailView
 
-- (PRComplicationGalleryDetailView)initWithFrame:(CGRect)a3
+- (PRComplicationGalleryDetailView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PRComplicationGalleryDetailView;
-  v3 = [(PRComplicationGalleryDetailView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PRComplicationGalleryDetailView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PRComplicationGalleryDetailView *)v3 _createViews];
     [(PRComplicationGalleryDetailView *)v4 _createConstraints];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v4;
@@ -48,8 +48,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = PRComplicationGalleryDetailView;
@@ -59,223 +59,223 @@
 - (void)_createViews
 {
   v2 = MEMORY[0x1E69DD250];
-  v3 = self;
+  selfCopy = self;
   v4 = objc_alloc_init(v2);
-  containerView = v3->_containerView;
-  v3->_containerView = v4;
+  containerView = selfCopy->_containerView;
+  selfCopy->_containerView = v4;
 
-  [(UIView *)v3->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3->_showsBackgroundView = 1;
+  [(UIView *)selfCopy->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
+  selfCopy->_showsBackgroundView = 1;
   v6 = objc_alloc(MEMORY[0x1E69DD298]);
   v7 = [MEMORY[0x1E69DC730] effectWithStyle:8];
   v8 = [v6 initWithEffect:v7];
-  backgroundView = v3->_backgroundView;
-  v3->_backgroundView = v8;
+  backgroundView = selfCopy->_backgroundView;
+  selfCopy->_backgroundView = v8;
 
-  v10 = v3->_backgroundView;
-  [(PRComplicationGalleryDetailView *)v3 bounds];
+  v10 = selfCopy->_backgroundView;
+  [(PRComplicationGalleryDetailView *)selfCopy bounds];
   [(UIView *)v10 setFrame:?];
-  [(UIView *)v3->_backgroundView setAutoresizingMask:18];
-  [(PRComplicationGalleryDetailView *)v3 addSubview:v3->_backgroundView];
+  [(UIView *)selfCopy->_backgroundView setAutoresizingMask:18];
+  [(PRComplicationGalleryDetailView *)selfCopy addSubview:selfCopy->_backgroundView];
   v11 = objc_alloc_init(MEMORY[0x1E698E808]);
-  contentScrollView = v3->_contentScrollView;
-  v3->_contentScrollView = v11;
+  contentScrollView = selfCopy->_contentScrollView;
+  selfCopy->_contentScrollView = v11;
 
-  [(BSUIScrollView *)v3->_contentScrollView setDelegate:v3];
-  [(BSUIScrollView *)v3->_contentScrollView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(BSUIScrollView *)v3->_contentScrollView setShowsVerticalScrollIndicator:0];
-  [(BSUIScrollView *)v3->_contentScrollView setShowsHorizontalScrollIndicator:0];
-  [(BSUIScrollView *)v3->_contentScrollView setContentInsetAdjustmentBehavior:2];
-  [(BSUIScrollView *)v3->_contentScrollView addSubview:v3->_containerView];
-  [(PRComplicationGalleryDetailView *)v3 addSubview:v3->_contentScrollView];
+  [(BSUIScrollView *)selfCopy->_contentScrollView setDelegate:selfCopy];
+  [(BSUIScrollView *)selfCopy->_contentScrollView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(BSUIScrollView *)selfCopy->_contentScrollView setShowsVerticalScrollIndicator:0];
+  [(BSUIScrollView *)selfCopy->_contentScrollView setShowsHorizontalScrollIndicator:0];
+  [(BSUIScrollView *)selfCopy->_contentScrollView setContentInsetAdjustmentBehavior:2];
+  [(BSUIScrollView *)selfCopy->_contentScrollView addSubview:selfCopy->_containerView];
+  [(PRComplicationGalleryDetailView *)selfCopy addSubview:selfCopy->_contentScrollView];
   v13 = objc_alloc_init(MEMORY[0x1E69DCF90]);
-  contentStackView = v3->_contentStackView;
-  v3->_contentStackView = v13;
+  contentStackView = selfCopy->_contentStackView;
+  selfCopy->_contentStackView = v13;
 
-  [(UIStackView *)v3->_contentStackView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIStackView *)v3->_contentStackView setAxis:1];
-  [(UIStackView *)v3->_contentStackView setAlignment:0];
-  [(UIView *)v3->_containerView addSubview:v3->_contentStackView];
+  [(UIStackView *)selfCopy->_contentStackView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UIStackView *)selfCopy->_contentStackView setAxis:1];
+  [(UIStackView *)selfCopy->_contentStackView setAlignment:0];
+  [(UIView *)selfCopy->_containerView addSubview:selfCopy->_contentStackView];
   v15 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  headerView = v3->_headerView;
-  v3->_headerView = v15;
+  headerView = selfCopy->_headerView;
+  selfCopy->_headerView = v15;
 
-  [(UIView *)v3->_headerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIStackView *)v3->_contentStackView addArrangedSubview:v3->_headerView];
+  [(UIView *)selfCopy->_headerView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UIStackView *)selfCopy->_contentStackView addArrangedSubview:selfCopy->_headerView];
   v17 = objc_alloc_init(PRComplicationGalleryApplicationTitleView);
-  titleView = v3->_titleView;
-  v3->_titleView = v17;
+  titleView = selfCopy->_titleView;
+  selfCopy->_titleView = v17;
 
-  [(PRComplicationGalleryApplicationTitleView *)v3->_titleView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(PRComplicationGalleryApplicationTitleView *)v3->_titleView setImageSize:32.0, 32.0];
-  [(PRComplicationGalleryApplicationTitleView *)v3->_titleView setContentInsets:25.0, 25.0, 25.0, 25.0];
-  [(UIView *)v3->_headerView addSubview:v3->_titleView];
-  v3->_showsCloseButton = 1;
+  [(PRComplicationGalleryApplicationTitleView *)selfCopy->_titleView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(PRComplicationGalleryApplicationTitleView *)selfCopy->_titleView setImageSize:32.0, 32.0];
+  [(PRComplicationGalleryApplicationTitleView *)selfCopy->_titleView setContentInsets:25.0, 25.0, 25.0, 25.0];
+  [(UIView *)selfCopy->_headerView addSubview:selfCopy->_titleView];
+  selfCopy->_showsCloseButton = 1;
   v19 = [MEMORY[0x1E69DC738] buttonWithType:7];
-  closeButton = v3->_closeButton;
-  v3->_closeButton = v19;
+  closeButton = selfCopy->_closeButton;
+  selfCopy->_closeButton = v19;
 
-  [(UIButton *)v3->_closeButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIButton *)v3->_closeButton addTarget:v3 action:sel_closeButtonTapped_ forControlEvents:64];
-  [(PRComplicationGalleryDetailView *)v3 addSubview:v3->_closeButton];
+  [(UIButton *)selfCopy->_closeButton setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UIButton *)selfCopy->_closeButton addTarget:selfCopy action:sel_closeButtonTapped_ forControlEvents:64];
+  [(PRComplicationGalleryDetailView *)selfCopy addSubview:selfCopy->_closeButton];
   v21 = objc_alloc_init(MEMORY[0x1E69DCF90]);
-  complicationGalleryStackView = v3->_complicationGalleryStackView;
-  v3->_complicationGalleryStackView = v21;
+  complicationGalleryStackView = selfCopy->_complicationGalleryStackView;
+  selfCopy->_complicationGalleryStackView = v21;
 
-  [(UIStackView *)v3->_complicationGalleryStackView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIStackView *)v3->_complicationGalleryStackView setAxis:0];
+  [(UIStackView *)selfCopy->_complicationGalleryStackView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UIStackView *)selfCopy->_complicationGalleryStackView setAxis:0];
   v23 = objc_alloc_init(MEMORY[0x1E698E808]);
-  complicationGalleryScrollView = v3->_complicationGalleryScrollView;
-  v3->_complicationGalleryScrollView = v23;
+  complicationGalleryScrollView = selfCopy->_complicationGalleryScrollView;
+  selfCopy->_complicationGalleryScrollView = v23;
 
-  [(BSUIScrollView *)v3->_complicationGalleryScrollView setDelegate:v3];
-  [(BSUIScrollView *)v3->_complicationGalleryScrollView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(BSUIScrollView *)v3->_complicationGalleryScrollView setDecelerationRate:*MEMORY[0x1E69DE3A0]];
-  [(BSUIScrollView *)v3->_complicationGalleryScrollView setClipsToBounds:0];
-  [(BSUIScrollView *)v3->_complicationGalleryScrollView setShowsHorizontalScrollIndicator:0];
-  [(BSUIScrollView *)v3->_complicationGalleryScrollView addSubview:v3->_complicationGalleryStackView];
-  [(BSUIScrollView *)v3->_complicationGalleryScrollView setAccessibilityIdentifier:@"complicationGalleryScrollView"];
-  [(UIStackView *)v3->_contentStackView addArrangedSubview:v3->_complicationGalleryScrollView];
+  [(BSUIScrollView *)selfCopy->_complicationGalleryScrollView setDelegate:selfCopy];
+  [(BSUIScrollView *)selfCopy->_complicationGalleryScrollView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(BSUIScrollView *)selfCopy->_complicationGalleryScrollView setDecelerationRate:*MEMORY[0x1E69DE3A0]];
+  [(BSUIScrollView *)selfCopy->_complicationGalleryScrollView setClipsToBounds:0];
+  [(BSUIScrollView *)selfCopy->_complicationGalleryScrollView setShowsHorizontalScrollIndicator:0];
+  [(BSUIScrollView *)selfCopy->_complicationGalleryScrollView addSubview:selfCopy->_complicationGalleryStackView];
+  [(BSUIScrollView *)selfCopy->_complicationGalleryScrollView setAccessibilityIdentifier:@"complicationGalleryScrollView"];
+  [(UIStackView *)selfCopy->_contentStackView addArrangedSubview:selfCopy->_complicationGalleryScrollView];
   v25 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  instructionsLabel = v3->_instructionsLabel;
-  v3->_instructionsLabel = v25;
+  instructionsLabel = selfCopy->_instructionsLabel;
+  selfCopy->_instructionsLabel = v25;
 
-  [(UILabel *)v3->_instructionsLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v27 = v3->_instructionsLabel;
-  v28 = [(PRComplicationGalleryDetailView *)v3 _instructionsLabelFont];
-  [(UILabel *)v27 setFont:v28];
+  [(UILabel *)selfCopy->_instructionsLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+  v27 = selfCopy->_instructionsLabel;
+  _instructionsLabelFont = [(PRComplicationGalleryDetailView *)selfCopy _instructionsLabelFont];
+  [(UILabel *)v27 setFont:_instructionsLabelFont];
 
-  v29 = v3->_instructionsLabel;
-  v30 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v29 setTextColor:v30];
+  v29 = selfCopy->_instructionsLabel;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v29 setTextColor:secondaryLabelColor];
 
-  [(UILabel *)v3->_instructionsLabel setTextAlignment:1];
-  v31 = v3->_instructionsLabel;
+  [(UILabel *)selfCopy->_instructionsLabel setTextAlignment:1];
+  v31 = selfCopy->_instructionsLabel;
   v32 = PRBundle();
   v33 = [v32 localizedStringForKey:@"COMPLICATION_GALLERY_DETAIL_FOOTER_TEXT" value:&stru_1F1C13D90 table:@"PosterKit"];
   [(UILabel *)v31 setText:v33];
 
-  [(UILabel *)v3->_instructionsLabel setNumberOfLines:0];
-  [(UIStackView *)v3->_contentStackView addArrangedSubview:v3->_instructionsLabel];
+  [(UILabel *)selfCopy->_instructionsLabel setNumberOfLines:0];
+  [(UIStackView *)selfCopy->_contentStackView addArrangedSubview:selfCopy->_instructionsLabel];
   v34 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  footerStackSpacerView = v3->_footerStackSpacerView;
-  v3->_footerStackSpacerView = v34;
+  footerStackSpacerView = selfCopy->_footerStackSpacerView;
+  selfCopy->_footerStackSpacerView = v34;
 
-  [(UIView *)v3->_footerStackSpacerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v36 = v3->_contentStackView;
-  v37 = v3->_footerStackSpacerView;
+  [(UIView *)selfCopy->_footerStackSpacerView setTranslatesAutoresizingMaskIntoConstraints:0];
+  v36 = selfCopy->_contentStackView;
+  v37 = selfCopy->_footerStackSpacerView;
 
   [(UIStackView *)v36 addArrangedSubview:v37];
 }
 
 - (void)_createPageControlIfNecessary
 {
-  v10 = self;
-  if ([(NSArray *)v10->_pages count]>= 2)
+  selfCopy = self;
+  if ([(NSArray *)selfCopy->_pages count]>= 2)
   {
     v2 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    footerContainerView = v10->_footerContainerView;
-    v10->_footerContainerView = v2;
+    footerContainerView = selfCopy->_footerContainerView;
+    selfCopy->_footerContainerView = v2;
 
-    [(UIView *)v10->_footerContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(PRComplicationGalleryDetailView *)v10 addSubview:v10->_footerContainerView];
+    [(UIView *)selfCopy->_footerContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(PRComplicationGalleryDetailView *)selfCopy addSubview:selfCopy->_footerContainerView];
     v4 = objc_alloc_init(MEMORY[0x1E69DCD10]);
-    pageControl = v10->_pageControl;
-    v10->_pageControl = v4;
+    pageControl = selfCopy->_pageControl;
+    selfCopy->_pageControl = v4;
 
-    [(UIPageControl *)v10->_pageControl setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIPageControl *)v10->_pageControl setNumberOfPages:[(NSArray *)v10->_pages count]];
-    [(UIPageControl *)v10->_pageControl setCurrentPage:0];
-    [(UIPageControl *)v10->_pageControl setHidesForSinglePage:1];
-    v6 = v10->_pageControl;
-    v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIPageControl *)v6 setPageIndicatorTintColor:v7];
+    [(UIPageControl *)selfCopy->_pageControl setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIPageControl *)selfCopy->_pageControl setNumberOfPages:[(NSArray *)selfCopy->_pages count]];
+    [(UIPageControl *)selfCopy->_pageControl setCurrentPage:0];
+    [(UIPageControl *)selfCopy->_pageControl setHidesForSinglePage:1];
+    v6 = selfCopy->_pageControl;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIPageControl *)v6 setPageIndicatorTintColor:secondaryLabelColor];
 
-    v8 = v10->_pageControl;
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIPageControl *)v8 setCurrentPageIndicatorTintColor:v9];
+    v8 = selfCopy->_pageControl;
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIPageControl *)v8 setCurrentPageIndicatorTintColor:labelColor];
 
-    [(UIPageControl *)v10->_pageControl addTarget:v10 action:sel_pageControlChanged_ forControlEvents:4096];
-    [(UIView *)v10->_footerContainerView addSubview:v10->_pageControl];
+    [(UIPageControl *)selfCopy->_pageControl addTarget:selfCopy action:sel_pageControlChanged_ forControlEvents:4096];
+    [(UIView *)selfCopy->_footerContainerView addSubview:selfCopy->_pageControl];
   }
 
-  [(PRComplicationGalleryDetailView *)v10 _addFooterConstraints];
+  [(PRComplicationGalleryDetailView *)selfCopy _addFooterConstraints];
 }
 
 - (void)_createConstraints
 {
   v54[4] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  contentScrollView = v2->_contentScrollView;
-  v4 = [(PRComplicationGalleryDetailView *)v2 safeAreaLayoutGuide];
-  v5 = PRPinViewWithinLayoutGuide(contentScrollView, v4);
+  selfCopy = self;
+  contentScrollView = selfCopy->_contentScrollView;
+  safeAreaLayoutGuide = [(PRComplicationGalleryDetailView *)selfCopy safeAreaLayoutGuide];
+  v5 = PRPinViewWithinLayoutGuide(contentScrollView, safeAreaLayoutGuide);
 
-  v6 = PRPinViewWithinView(v2->_containerView, v2->_contentScrollView);
-  v7 = PRPinViewWithinView(v2->_contentStackView, v2->_containerView);
-  v8 = PRPinViewWithinView(v2->_complicationGalleryScrollView, v2->_complicationGalleryStackView);
-  v9 = [(BSUIScrollView *)v2->_contentScrollView contentLayoutGuide];
-  v10 = [(BSUIScrollView *)v2->_contentScrollView frameLayoutGuide];
-  v11 = [(UIStackView *)v2->_complicationGalleryStackView heightAnchor];
-  v12 = [v11 constraintGreaterThanOrEqualToConstant:0.0];
-  widgetGalleryHeightConstraint = v2->_widgetGalleryHeightConstraint;
-  v2->_widgetGalleryHeightConstraint = v12;
+  v6 = PRPinViewWithinView(selfCopy->_containerView, selfCopy->_contentScrollView);
+  v7 = PRPinViewWithinView(selfCopy->_contentStackView, selfCopy->_containerView);
+  v8 = PRPinViewWithinView(selfCopy->_complicationGalleryScrollView, selfCopy->_complicationGalleryStackView);
+  contentLayoutGuide = [(BSUIScrollView *)selfCopy->_contentScrollView contentLayoutGuide];
+  frameLayoutGuide = [(BSUIScrollView *)selfCopy->_contentScrollView frameLayoutGuide];
+  heightAnchor = [(UIStackView *)selfCopy->_complicationGalleryStackView heightAnchor];
+  v12 = [heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
+  widgetGalleryHeightConstraint = selfCopy->_widgetGalleryHeightConstraint;
+  selfCopy->_widgetGalleryHeightConstraint = v12;
 
   v44 = MEMORY[0x1E696ACD8];
-  v48 = [v9 heightAnchor];
-  v46 = [v10 heightAnchor];
-  v14 = [v48 constraintGreaterThanOrEqualToAnchor:v46];
+  heightAnchor2 = [contentLayoutGuide heightAnchor];
+  heightAnchor3 = [frameLayoutGuide heightAnchor];
+  v14 = [heightAnchor2 constraintGreaterThanOrEqualToAnchor:heightAnchor3];
   v54[0] = v14;
-  v51 = v9;
-  v15 = [v9 widthAnchor];
-  v50 = v10;
-  v16 = [v10 widthAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  v51 = contentLayoutGuide;
+  widthAnchor = [contentLayoutGuide widthAnchor];
+  v50 = frameLayoutGuide;
+  widthAnchor2 = [frameLayoutGuide widthAnchor];
+  v17 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v54[1] = v17;
-  v18 = [(BSUIScrollView *)v2->_complicationGalleryScrollView heightAnchor];
-  v19 = [(UIStackView *)v2->_complicationGalleryStackView heightAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  heightAnchor4 = [(BSUIScrollView *)selfCopy->_complicationGalleryScrollView heightAnchor];
+  heightAnchor5 = [(UIStackView *)selfCopy->_complicationGalleryStackView heightAnchor];
+  v20 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
   v54[2] = v20;
-  v54[3] = v2->_widgetGalleryHeightConstraint;
+  v54[3] = selfCopy->_widgetGalleryHeightConstraint;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:4];
   [v44 activateConstraints:v21];
 
-  closeButton = v2->_closeButton;
+  closeButton = selfCopy->_closeButton;
   if (closeButton)
   {
     v24 = MEMORY[0x1E696ACD8];
-    v25 = [(UIButton *)closeButton trailingAnchor];
-    v26 = [(PRComplicationGalleryDetailView *)v2 trailingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:-21.0];
+    trailingAnchor = [(UIButton *)closeButton trailingAnchor];
+    trailingAnchor2 = [(PRComplicationGalleryDetailView *)selfCopy trailingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-21.0];
     v53[0] = v27;
-    v28 = [(UIButton *)v2->_closeButton topAnchor];
-    v29 = [(PRComplicationGalleryDetailView *)v2 topAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 constant:21.0];
+    topAnchor = [(UIButton *)selfCopy->_closeButton topAnchor];
+    topAnchor2 = [(PRComplicationGalleryDetailView *)selfCopy topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:21.0];
     v53[1] = v30;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:2];
     [v24 activateConstraints:v31];
   }
 
-  titleView = v2->_titleView;
+  titleView = selfCopy->_titleView;
   if (titleView)
   {
     LODWORD(v22) = 1148846080;
     [(PRComplicationGalleryApplicationTitleView *)titleView setContentHuggingPriority:1 forAxis:v22];
     v42 = MEMORY[0x1E696ACD8];
-    v49 = [(PRComplicationGalleryApplicationTitleView *)v2->_titleView leadingAnchor];
-    v47 = [(UIView *)v2->_headerView leadingAnchor];
-    v45 = [v49 constraintEqualToAnchor:v47];
+    leadingAnchor = [(PRComplicationGalleryApplicationTitleView *)selfCopy->_titleView leadingAnchor];
+    leadingAnchor2 = [(UIView *)selfCopy->_headerView leadingAnchor];
+    v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v52[0] = v45;
-    v43 = [(PRComplicationGalleryApplicationTitleView *)v2->_titleView trailingAnchor];
-    v33 = [(UIView *)v2->_headerView trailingAnchor];
-    v34 = [v43 constraintEqualToAnchor:v33];
+    trailingAnchor3 = [(PRComplicationGalleryApplicationTitleView *)selfCopy->_titleView trailingAnchor];
+    trailingAnchor4 = [(UIView *)selfCopy->_headerView trailingAnchor];
+    v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v52[1] = v34;
-    v35 = [(PRComplicationGalleryApplicationTitleView *)v2->_titleView topAnchor];
-    v36 = [(UIView *)v2->_headerView topAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    topAnchor3 = [(PRComplicationGalleryApplicationTitleView *)selfCopy->_titleView topAnchor];
+    topAnchor4 = [(UIView *)selfCopy->_headerView topAnchor];
+    v37 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v52[2] = v37;
-    v38 = [(PRComplicationGalleryApplicationTitleView *)v2->_titleView bottomAnchor];
-    v39 = [(UIView *)v2->_headerView bottomAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    bottomAnchor = [(PRComplicationGalleryApplicationTitleView *)selfCopy->_titleView bottomAnchor];
+    bottomAnchor2 = [(UIView *)selfCopy->_headerView bottomAnchor];
+    v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v52[3] = v40;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:4];
     [v42 activateConstraints:v41];
@@ -285,42 +285,42 @@
 - (void)_addFooterConstraints
 {
   v32[8] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  pageControl = v2->_pageControl;
+  selfCopy = self;
+  pageControl = selfCopy->_pageControl;
   if (pageControl)
   {
     v22 = MEMORY[0x1E696ACD8];
-    v31 = [(UIPageControl *)pageControl leadingAnchor];
-    v30 = [(UIView *)v2->_containerView leadingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30 constant:24.0];
+    leadingAnchor = [(UIPageControl *)pageControl leadingAnchor];
+    leadingAnchor2 = [(UIView *)selfCopy->_containerView leadingAnchor];
+    v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:24.0];
     v32[0] = v29;
-    v28 = [(UIPageControl *)v2->_pageControl trailingAnchor];
-    v27 = [(UIView *)v2->_containerView trailingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27 constant:-24.0];
+    trailingAnchor = [(UIPageControl *)selfCopy->_pageControl trailingAnchor];
+    trailingAnchor2 = [(UIView *)selfCopy->_containerView trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-24.0];
     v32[1] = v26;
-    v25 = [(UIPageControl *)v2->_pageControl topAnchor];
-    v24 = [(UIView *)v2->_footerContainerView topAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    topAnchor = [(UIPageControl *)selfCopy->_pageControl topAnchor];
+    topAnchor2 = [(UIView *)selfCopy->_footerContainerView topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v32[2] = v23;
-    v21 = [(UIPageControl *)v2->_pageControl bottomAnchor];
-    v20 = [(UIView *)v2->_footerContainerView bottomAnchor];
-    v19 = [v21 constraintEqualToAnchor:v20 constant:-50.0];
+    bottomAnchor = [(UIPageControl *)selfCopy->_pageControl bottomAnchor];
+    bottomAnchor2 = [(UIView *)selfCopy->_footerContainerView bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-50.0];
     v32[3] = v19;
-    v18 = [(UIView *)v2->_footerStackSpacerView heightAnchor];
-    v17 = [(UIView *)v2->_footerContainerView heightAnchor];
-    v16 = [v18 constraintEqualToAnchor:v17 constant:50.0];
+    heightAnchor = [(UIView *)selfCopy->_footerStackSpacerView heightAnchor];
+    heightAnchor2 = [(UIView *)selfCopy->_footerContainerView heightAnchor];
+    v16 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:50.0];
     v32[4] = v16;
-    v15 = [(UIView *)v2->_footerContainerView leadingAnchor];
-    v4 = [(PRComplicationGalleryDetailView *)v2 leadingAnchor];
-    v5 = [v15 constraintEqualToAnchor:v4];
+    leadingAnchor3 = [(UIView *)selfCopy->_footerContainerView leadingAnchor];
+    leadingAnchor4 = [(PRComplicationGalleryDetailView *)selfCopy leadingAnchor];
+    v5 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v32[5] = v5;
-    v6 = [(UIView *)v2->_footerContainerView trailingAnchor];
-    v7 = [(PRComplicationGalleryDetailView *)v2 trailingAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    trailingAnchor3 = [(UIView *)selfCopy->_footerContainerView trailingAnchor];
+    trailingAnchor4 = [(PRComplicationGalleryDetailView *)selfCopy trailingAnchor];
+    v8 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v32[6] = v8;
-    v9 = [(UIView *)v2->_footerContainerView bottomAnchor];
-    v10 = [(PRComplicationGalleryDetailView *)v2 bottomAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    bottomAnchor3 = [(UIView *)selfCopy->_footerContainerView bottomAnchor];
+    bottomAnchor4 = [(PRComplicationGalleryDetailView *)selfCopy bottomAnchor];
+    v11 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v32[7] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:8];
     [v22 activateConstraints:v12];
@@ -328,18 +328,18 @@
 
   else
   {
-    v13 = [(UIView *)v2->_footerStackSpacerView heightAnchor];
-    v14 = [v13 constraintEqualToConstant:50.0];
+    heightAnchor3 = [(UIView *)selfCopy->_footerStackSpacerView heightAnchor];
+    v14 = [heightAnchor3 constraintEqualToConstant:50.0];
     [v14 setActive:1];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [titleCopy copy];
     title = self->_title;
     self->_title = v4;
 
@@ -347,21 +347,21 @@
   }
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v5 = a3;
-  if (self->_iconImage != v5)
+  imageCopy = image;
+  if (self->_iconImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_iconImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_iconImage, image);
     [(PRComplicationGalleryDetailView *)self _updateContent];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setPages:(id)a3
+- (void)setPages:(id)pages
 {
-  v5 = a3;
+  pagesCopy = pages;
   if (self->_pages)
   {
     [(PRComplicationGalleryDetailView *)a2 setPages:&self->_pages, &v11];
@@ -373,9 +373,9 @@
     v6 = 0;
   }
 
-  if (([v6 isEqualToArray:v5] & 1) == 0)
+  if (([v6 isEqualToArray:pagesCopy] & 1) == 0)
   {
-    v7 = [v5 copy];
+    v7 = [pagesCopy copy];
     pages = self->_pages;
     self->_pages = v7;
 
@@ -403,21 +403,21 @@ void __44__PRComplicationGalleryDetailView_setPages___block_invoke(uint64_t a1, 
   [v8 setActive:1];
 }
 
-- (void)setShowsCloseButton:(BOOL)a3
+- (void)setShowsCloseButton:(BOOL)button
 {
-  if (self->_showsCloseButton != a3)
+  if (self->_showsCloseButton != button)
   {
-    self->_showsCloseButton = a3;
-    [(UIButton *)self->_closeButton setHidden:!a3];
+    self->_showsCloseButton = button;
+    [(UIButton *)self->_closeButton setHidden:!button];
   }
 }
 
-- (void)setShowsBackgroundView:(BOOL)a3
+- (void)setShowsBackgroundView:(BOOL)view
 {
-  if (self->_showsBackgroundView != a3)
+  if (self->_showsBackgroundView != view)
   {
-    self->_showsBackgroundView = a3;
-    [(UIView *)self->_backgroundView setHidden:!a3];
+    self->_showsBackgroundView = view;
+    [(UIView *)self->_backgroundView setHidden:!view];
   }
 }
 
@@ -444,44 +444,44 @@ void __44__PRComplicationGalleryDetailView_setPages___block_invoke(uint64_t a1, 
   [(PRComplicationGalleryApplicationTitleView *)titleView setIconImage:iconImage];
 }
 
-- (void)closeButtonTapped:(id)a3
+- (void)closeButtonTapped:(id)tapped
 {
-  v4 = [(PRComplicationGalleryDetailView *)self delegate];
-  [v4 complicationGalleryViewDidTapClose:self];
+  delegate = [(PRComplicationGalleryDetailView *)self delegate];
+  [delegate complicationGalleryViewDidTapClose:self];
 }
 
-- (void)pageControlChanged:(id)a3
+- (void)pageControlChanged:(id)changed
 {
-  v4 = [a3 currentPage];
+  currentPage = [changed currentPage];
 
-  [(PRComplicationGalleryDetailView *)self _scrollToPageIndex:v4 animated:1];
+  [(PRComplicationGalleryDetailView *)self _scrollToPageIndex:currentPage animated:1];
 }
 
-- (unint64_t)_pageIndexAtContentOffset:(CGPoint)a3
+- (unint64_t)_pageIndexAtContentOffset:(CGPoint)offset
 {
-  v4 = [(UIStackView *)self->_complicationGalleryStackView hitTest:0 withEvent:a3.x, a3.y];
+  v4 = [(UIStackView *)self->_complicationGalleryStackView hitTest:0 withEvent:offset.x, offset.y];
   if (v4)
   {
     do
     {
-      v5 = [v4 superview];
+      superview = [v4 superview];
       complicationGalleryStackView = self->_complicationGalleryStackView;
 
-      if (v5 == complicationGalleryStackView)
+      if (superview == complicationGalleryStackView)
       {
         break;
       }
 
-      v7 = [v4 superview];
+      superview2 = [v4 superview];
 
-      v4 = v7;
+      v4 = superview2;
     }
 
-    while (v7);
+    while (superview2);
   }
 
-  v8 = [(UIStackView *)self->_complicationGalleryStackView arrangedSubviews];
-  v9 = [v8 indexOfObject:v4];
+  arrangedSubviews = [(UIStackView *)self->_complicationGalleryStackView arrangedSubviews];
+  v9 = [arrangedSubviews indexOfObject:v4];
 
   return v9;
 }
@@ -515,31 +515,31 @@ BOOL __85__PRComplicationGalleryDetailView__updatePageViewControllerAppearanceFo
   return v2 < 3;
 }
 
-- (void)_updatePageViewControllerAppearanceWithAppearedBlock:(id)a3
+- (void)_updatePageViewControllerAppearanceWithAppearedBlock:(id)block
 {
-  v7 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 complicationGalleryView:self didUpdateVisiblePagesWithAppearedBlock:v7];
+    [v6 complicationGalleryView:self didUpdateVisiblePagesWithAppearedBlock:blockCopy];
   }
 }
 
-- (void)_scrollToPageIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)_scrollToPageIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(UIStackView *)self->_complicationGalleryStackView arrangedSubviews];
-  v8 = [v7 count];
+  animatedCopy = animated;
+  arrangedSubviews = [(UIStackView *)self->_complicationGalleryStackView arrangedSubviews];
+  v8 = [arrangedSubviews count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
     v11 = PRLogEditing();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(PRComplicationGalleryDetailView *)v8 _scrollToPageIndex:a3 animated:v11];
+      [(PRComplicationGalleryDetailView *)v8 _scrollToPageIndex:index animated:v11];
     }
   }
 
@@ -548,21 +548,21 @@ BOOL __85__PRComplicationGalleryDetailView__updatePageViewControllerAppearanceFo
     [(PRComplicationGalleryDetailView *)self layoutIfNeeded];
     if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
     {
-      a3 = [(NSArray *)self->_pages count]+ ~a3;
+      index = [(NSArray *)self->_pages count]+ ~index;
     }
 
     [(BSUIScrollView *)self->_complicationGalleryScrollView bounds];
-    v10 = v9 * a3;
-    [(BSUIScrollView *)self->_complicationGalleryScrollView setContentOffset:v4 animated:v10, 0.0];
+    v10 = v9 * index;
+    [(BSUIScrollView *)self->_complicationGalleryScrollView setContentOffset:animatedCopy animated:v10, 0.0];
 
-    [(PRComplicationGalleryDetailView *)self _updatePageControlForContentOffset:v4 animated:v10, 0.0];
+    [(PRComplicationGalleryDetailView *)self _updatePageControlForContentOffset:animatedCopy animated:v10, 0.0];
   }
 }
 
-- (void)_updatePageControlForContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)_updatePageControlForContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(PRComplicationGalleryDetailView *)self layoutIfNeeded];
   v7 = [(PRComplicationGalleryDetailView *)self _pageIndexAtContentOffset:x, y];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
@@ -576,62 +576,62 @@ BOOL __85__PRComplicationGalleryDetailView__updatePageViewControllerAppearanceFo
 
 - (id)_instructionsLabelFont
 {
-  v3 = [MEMORY[0x1E698E7E8] preferredFontProvider];
+  preferredFontProvider = [MEMORY[0x1E698E7E8] preferredFontProvider];
   v4 = *MEMORY[0x1E69DDD00];
-  v5 = [(PRComplicationGalleryDetailView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v3 preferredFontForTextStyle:v4 hiFontStyle:1 contentSizeCategory:v6];
+  traitCollection = [(PRComplicationGalleryDetailView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v7 = [preferredFontProvider preferredFontForTextStyle:v4 hiFontStyle:1 contentSizeCategory:preferredContentSizeCategory];
 
   return v7;
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
-  v4 = [(PRComplicationGalleryDetailView *)self instructionsLabel];
-  v5 = [(PRComplicationGalleryDetailView *)self _instructionsLabelFont];
-  [v4 setFont:v5];
+  instructionsLabel = [(PRComplicationGalleryDetailView *)self instructionsLabel];
+  _instructionsLabelFont = [(PRComplicationGalleryDetailView *)self _instructionsLabelFont];
+  [instructionsLabel setFont:_instructionsLabelFont];
 
   [(PRComplicationGalleryDetailView *)self setNeedsLayout];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PRComplicationGalleryDetailView;
-  v4 = a3;
-  [(PRComplicationGalleryDetailView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PRComplicationGalleryDetailView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(PRComplicationGalleryDetailView *)self traitCollection:v8.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7];
-  if ((v4 & 1) == 0)
+  LOBYTE(changeCopy) = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
+  if ((changeCopy & 1) == 0)
   {
     [(PRComplicationGalleryDetailView *)self _contentSizeCategoryDidChange:0];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(PRComplicationGalleryDetailView *)self delegate];
-  [v4 complicationGalleryViewShouldUpdateParallax:self];
+  delegate = [(PRComplicationGalleryDetailView *)self delegate];
+  [delegate complicationGalleryViewShouldUpdateParallax:self];
 
   [(PRComplicationGalleryDetailView *)self _updatePageViewControllerAppearanceForNormalScroll];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  v19 = a3;
+  x = velocity.x;
+  draggingCopy = dragging;
   [(BSUIScrollView *)self->_complicationGalleryScrollView bounds];
   v9 = v8;
   if (BSFloatIsZero())
   {
-    [v19 contentOffset];
+    [draggingCopy contentOffset];
     v11 = v10;
     [(BSUIScrollView *)self->_complicationGalleryScrollView frame];
     v13 = v11 + v12 * 0.5;
-    [v19 contentOffset];
+    [draggingCopy contentOffset];
     v14 = [(PRComplicationGalleryDetailView *)self _pageIndexAtContentOffset:v13];
     if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
     {
@@ -644,7 +644,7 @@ BOOL __85__PRComplicationGalleryDetailView__updatePageViewControllerAppearanceFo
 
   else
   {
-    v17 = a5->x / v9;
+    v17 = offset->x / v9;
     v18 = v9 * floor(v17);
     v16 = v9 * ceil(v17);
     if (x <= 0.0)
@@ -653,7 +653,7 @@ BOOL __85__PRComplicationGalleryDetailView__updatePageViewControllerAppearanceFo
     }
   }
 
-  a5->x = v16;
+  offset->x = v16;
   [(PRComplicationGalleryDetailView *)self _updatePageControlForContentOffset:1 animated:?];
 }
 

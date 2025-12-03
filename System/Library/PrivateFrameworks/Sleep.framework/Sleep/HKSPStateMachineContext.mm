@@ -1,42 +1,42 @@
 @interface HKSPStateMachineContext
 - (BOOL)hasStateTransition;
-- (HKSPStateMachineContext)initWithNextState:(id)a3 previousState:(id)a4 isInitializing:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (HKSPStateMachineContext)initWithNextState:(id)state previousState:(id)previousState isInitializing:(BOOL)initializing;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation HKSPStateMachineContext
 
-- (HKSPStateMachineContext)initWithNextState:(id)a3 previousState:(id)a4 isInitializing:(BOOL)a5
+- (HKSPStateMachineContext)initWithNextState:(id)state previousState:(id)previousState isInitializing:(BOOL)initializing
 {
-  v9 = a3;
-  v10 = a4;
+  stateCopy = state;
+  previousStateCopy = previousState;
   v15.receiver = self;
   v15.super_class = HKSPStateMachineContext;
   v11 = [(HKSPStateMachineContext *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_nextState, a3);
-    objc_storeStrong(&v12->_previousState, a4);
-    v12->_isInitializing = a5;
+    objc_storeStrong(&v11->_nextState, state);
+    objc_storeStrong(&v12->_previousState, previousState);
+    v12->_isInitializing = initializing;
     v13 = v12;
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setIsInitializing:{-[HKSPStateMachineContext isInitializing](self, "isInitializing")}];
-  v5 = [(HKSPStateMachineContext *)self nextState];
-  [v4 setNextState:v5];
+  nextState = [(HKSPStateMachineContext *)self nextState];
+  [v4 setNextState:nextState];
 
-  v6 = [(HKSPStateMachineContext *)self previousState];
-  [v4 setPreviousState:v6];
+  previousState = [(HKSPStateMachineContext *)self previousState];
+  [v4 setPreviousState:previousState];
 
   return v4;
 }
@@ -57,31 +57,31 @@
 
 - (id)succinctDescription
 {
-  v2 = [(HKSPStateMachineContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HKSPStateMachineContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendBool:-[HKSPStateMachineContext isInitializing](self withName:"isInitializing") ifEqualTo:{@"isInitializing", 1}];
-  v5 = [(HKSPStateMachineContext *)self nextState];
-  v6 = [v3 appendObject:v5 withName:@"nextState"];
+  nextState = [(HKSPStateMachineContext *)self nextState];
+  v6 = [v3 appendObject:nextState withName:@"nextState"];
 
-  v7 = [(HKSPStateMachineContext *)self previousState];
-  v8 = [v3 appendObject:v7 withName:@"previousState"];
+  previousState = [(HKSPStateMachineContext *)self previousState];
+  v8 = [v3 appendObject:previousState withName:@"previousState"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HKSPStateMachineContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HKSPStateMachineContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

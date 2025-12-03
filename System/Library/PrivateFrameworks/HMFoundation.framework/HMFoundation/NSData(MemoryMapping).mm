@@ -7,17 +7,17 @@
 - (id)hmf_copyAsMemoryMappedData
 {
   v30 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 temporaryDirectory];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
 
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [v4 UUIDString];
-  v6 = [v3 URLByAppendingPathComponent:v5];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = [temporaryDirectory URLByAppendingPathComponent:uUIDString];
 
   v25 = 0;
-  LOBYTE(v4) = [a1 writeToURL:v6 options:1 error:&v25];
+  LOBYTE(uUID) = [self writeToURL:v6 options:1 error:&v25];
   v7 = v25;
-  if ((v4 & 1) == 0)
+  if ((uUID & 1) == 0)
   {
     v8 = objc_autoreleasePoolPush();
     v9 = HMFGetOSLogHandle();
@@ -54,9 +54,9 @@
     objc_autoreleasePoolPop(v13);
   }
 
-  v16 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v23 = 0;
-  [v16 removeItemAtURL:v6 error:&v23];
+  [defaultManager2 removeItemAtURL:v6 error:&v23];
   v17 = v23;
 
   if (v17)

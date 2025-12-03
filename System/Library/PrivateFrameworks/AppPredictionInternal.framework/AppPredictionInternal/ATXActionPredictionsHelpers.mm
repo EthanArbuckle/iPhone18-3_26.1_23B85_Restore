@@ -1,23 +1,23 @@
 @interface ATXActionPredictionsHelpers
-+ (id)limitTheNumberOfPredictions:(id)a3 withLimit:(int)a4;
-+ (id)sortedPredictions:(id)a3;
-+ (void)applyJointLogProbabilityToActionPredictions:(id)a3 withAppActionTypePredictionScore:(double)a4;
-+ (void)applyLogOfLinearProbabilityTransformationToPredictions:(id)a3;
-+ (void)applyLogSoftmaxToPredictions:(id)a3;
-+ (void)applyNormalizationToPredictions:(id)a3;
-+ (void)keepRandomPredictionItems:(id)a3 limit:(unint64_t)a4 predictionItemsToKeep:(void *)a5;
++ (id)limitTheNumberOfPredictions:(id)predictions withLimit:(int)limit;
++ (id)sortedPredictions:(id)predictions;
++ (void)applyJointLogProbabilityToActionPredictions:(id)predictions withAppActionTypePredictionScore:(double)score;
++ (void)applyLogOfLinearProbabilityTransformationToPredictions:(id)predictions;
++ (void)applyLogSoftmaxToPredictions:(id)predictions;
++ (void)applyNormalizationToPredictions:(id)predictions;
++ (void)keepRandomPredictionItems:(id)items limit:(unint64_t)limit predictionItemsToKeep:(void *)keep;
 @end
 
 @implementation ATXActionPredictionsHelpers
 
-+ (void)keepRandomPredictionItems:(id)a3 limit:(unint64_t)a4 predictionItemsToKeep:(void *)a5
++ (void)keepRandomPredictionItems:(id)items limit:(unint64_t)limit predictionItemsToKeep:(void *)keep
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (a5)
+  itemsCopy = items;
+  v8 = itemsCopy;
+  if (keep)
   {
-    v23 = a4;
+    limitCopy = limit;
     v32 = 0;
     v31 = 0;
     v33 = 0;
@@ -25,9 +25,9 @@
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v9 = v7;
+    v9 = itemsCopy;
     v10 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
-    v24 = a5;
+    keepCopy = keep;
     if (v10)
     {
       v11 = *v28;
@@ -114,7 +114,7 @@
     }
 
     v21 = +[_ATXGlobals sharedInstance];
-    ATXKeepRandomPredictionItemsBelowLimit(&v31, v23, v24, [v21 numberOfRandomSlotsToKeepForLogging]);
+    ATXKeepRandomPredictionItemsBelowLimit(&v31, limitCopy, keepCopy, [v21 numberOfRandomSlotsToKeepForLogging]);
 
     v25 = &v31;
     std::vector<ATXPredictionItem>::__destroy_vector::operator()[abi:ne200100](&v25);
@@ -153,43 +153,43 @@ uint64_t __47__ATXActionPredictionsHelpers_sortPredictions___block_invoke(uint64
   return v10;
 }
 
-+ (id)sortedPredictions:(id)a3
++ (id)sortedPredictions:(id)predictions
 {
-  v4 = [a3 mutableCopy];
-  [a1 sortPredictions:v4];
+  v4 = [predictions mutableCopy];
+  [self sortPredictions:v4];
 
   return v4;
 }
 
-+ (id)limitTheNumberOfPredictions:(id)a3 withLimit:(int)a4
++ (id)limitTheNumberOfPredictions:(id)predictions withLimit:(int)limit
 {
-  v7 = a3;
-  if (a4 < 0)
+  predictionsCopy = predictions;
+  if (limit < 0)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"ATXActionPredictionsHelpers.mm" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"limit >= 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXActionPredictionsHelpers.mm" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"limit >= 0"}];
   }
 
-  if ([v7 count] > a4)
+  if ([predictionsCopy count] > limit)
   {
-    v8 = [v7 subarrayWithRange:{0, a4}];
+    v8 = [predictionsCopy subarrayWithRange:{0, limit}];
     v9 = [v8 copy];
 
-    v7 = v9;
+    predictionsCopy = v9;
   }
 
-  return v7;
+  return predictionsCopy;
 }
 
-+ (void)applyJointLogProbabilityToActionPredictions:(id)a3 withAppActionTypePredictionScore:(double)a4
++ (void)applyJointLogProbabilityToActionPredictions:(id)predictions withAppActionTypePredictionScore:(double)score
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  predictionsCopy = predictions;
+  v6 = [predictionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -200,20 +200,20 @@ uint64_t __47__ATXActionPredictionsHelpers_sortPredictions___block_invoke(uint64
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(predictionsCopy);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) scoredAction];
-        [v9 score];
-        v11 = v10 + a4;
+        scoredAction = [*(*(&v13 + 1) + 8 * v8) scoredAction];
+        [scoredAction score];
+        v11 = v10 + score;
         *&v11 = v11;
-        [v9 setScore:v11];
+        [scoredAction setScore:v11];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [predictionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -222,17 +222,17 @@ uint64_t __47__ATXActionPredictionsHelpers_sortPredictions___block_invoke(uint64
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)applyNormalizationToPredictions:(id)a3
++ (void)applyNormalizationToPredictions:(id)predictions
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  predictionsCopy = predictions;
+  if ([predictionsCopy count])
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v4 = v3;
+    v4 = predictionsCopy;
     v5 = [v4 countByEnumeratingWithState:&v40 objects:v46 count:16];
     if (v5)
     {
@@ -348,11 +348,11 @@ uint64_t __47__ATXActionPredictionsHelpers_sortPredictions___block_invoke(uint64
   v31 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)applyLogOfLinearProbabilityTransformationToPredictions:(id)a3
++ (void)applyLogOfLinearProbabilityTransformationToPredictions:(id)predictions
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![v5 count])
+  predictionsCopy = predictions;
+  if (![predictionsCopy count])
   {
     goto LABEL_25;
   }
@@ -361,7 +361,7 @@ uint64_t __47__ATXActionPredictionsHelpers_sortPredictions___block_invoke(uint64
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = v5;
+  v6 = predictionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v7)
   {
@@ -415,8 +415,8 @@ uint64_t __47__ATXActionPredictionsHelpers_sortPredictions___block_invoke(uint64
     v17 = 0.0;
   }
 
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:a1 file:@"ATXActionPredictionsHelpers.mm" lineNumber:126 description:@"Error: Shifting sum is not greater than zero"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXActionPredictionsHelpers.mm" lineNumber:126 description:@"Error: Shifting sum is not greater than zero"];
 
 LABEL_17:
   v29 = 0u;
@@ -454,15 +454,15 @@ LABEL_25:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)applyLogSoftmaxToPredictions:(id)a3
++ (void)applyLogSoftmaxToPredictions:(id)predictions
 {
   v41 = *MEMORY[0x277D85DE8];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  predictionsCopy = predictions;
+  v4 = [predictionsCopy countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v4)
   {
     v5 = *v35;
@@ -473,7 +473,7 @@ LABEL_25:
       {
         if (*v35 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(predictionsCopy);
         }
 
         v8 = *(*(&v34 + 1) + 8 * i);
@@ -485,7 +485,7 @@ LABEL_25:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v4 = [predictionsCopy countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v4);
@@ -500,7 +500,7 @@ LABEL_25:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v11 = v3;
+  v11 = predictionsCopy;
   v12 = [v11 countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v12)
   {

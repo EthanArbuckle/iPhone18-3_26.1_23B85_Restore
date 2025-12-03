@@ -1,19 +1,19 @@
 @interface PHAmbientAudioRoutesControlView
-- (PHAmbientAudioRoutesControlView)initWithFrame:(CGRect)a3;
+- (PHAmbientAudioRoutesControlView)initWithFrame:(CGRect)frame;
 - (PHAudioCallControlsViewDelegate)delegate;
-- (id)menuForAudioControlsButton:(id)a3;
-- (void)buttonTapped:(id)a3;
+- (id)menuForAudioControlsButton:(id)button;
+- (void)buttonTapped:(id)tapped;
 - (void)reload;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PHAmbientAudioRoutesControlView
 
-- (PHAmbientAudioRoutesControlView)initWithFrame:(CGRect)a3
+- (PHAmbientAudioRoutesControlView)initWithFrame:(CGRect)frame
 {
   v35.receiver = self;
   v35.super_class = PHAmbientAudioRoutesControlView;
-  v3 = [(PHAmbientAudioRoutesControlView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHAmbientAudioRoutesControlView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [PHAudioControlsButton alloc];
@@ -28,37 +28,37 @@
     [(PHAudioControlsButton *)v3->_button setMenuDataSource:v3];
     [(PHAudioControlsButton *)v3->_button setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PHAmbientAudioRoutesControlView *)v3 addSubview:v3->_button];
-    v10 = [(PHAudioControlsButton *)v3->_button imageView];
-    [v10 setContentMode:1];
+    imageView = [(PHAudioControlsButton *)v3->_button imageView];
+    [imageView setContentMode:1];
 
     v11 = v3->_button;
     +[PHUIConfiguration ambientAudioRoutesSymbolInset];
     v13 = v12;
     +[PHUIConfiguration ambientAudioRoutesSymbolInset];
     [(PHAudioControlsButton *)v11 setImageEdgeInsets:0.0, v13, 0.0, v14];
-    v34 = [(PHAmbientAudioRoutesControlView *)v3 topAnchor];
-    v33 = [(PHAudioControlsButton *)v3->_button topAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    topAnchor = [(PHAmbientAudioRoutesControlView *)v3 topAnchor];
+    topAnchor2 = [(PHAudioControlsButton *)v3->_button topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v36[0] = v32;
-    v31 = [(PHAmbientAudioRoutesControlView *)v3 bottomAnchor];
-    v30 = [(PHAudioControlsButton *)v3->_button bottomAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    bottomAnchor = [(PHAmbientAudioRoutesControlView *)v3 bottomAnchor];
+    bottomAnchor2 = [(PHAudioControlsButton *)v3->_button bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v36[1] = v29;
-    v28 = [(PHAmbientAudioRoutesControlView *)v3 leadingAnchor];
-    v27 = [(PHAudioControlsButton *)v3->_button leadingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    leadingAnchor = [(PHAmbientAudioRoutesControlView *)v3 leadingAnchor];
+    leadingAnchor2 = [(PHAudioControlsButton *)v3->_button leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v36[2] = v26;
-    v15 = [(PHAmbientAudioRoutesControlView *)v3 trailingAnchor];
-    v16 = [(PHAudioControlsButton *)v3->_button trailingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    trailingAnchor = [(PHAmbientAudioRoutesControlView *)v3 trailingAnchor];
+    trailingAnchor2 = [(PHAudioControlsButton *)v3->_button trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v36[3] = v17;
-    v18 = [(PHAmbientAudioRoutesControlView *)v3 widthAnchor];
+    widthAnchor = [(PHAmbientAudioRoutesControlView *)v3 widthAnchor];
     +[PHUIConfiguration ambientAudioRoutesButtonSize];
-    v19 = [v18 constraintEqualToConstant:?];
+    v19 = [widthAnchor constraintEqualToConstant:?];
     v36[4] = v19;
-    v20 = [(PHAmbientAudioRoutesControlView *)v3 heightAnchor];
+    heightAnchor = [(PHAmbientAudioRoutesControlView *)v3 heightAnchor];
     +[PHUIConfiguration ambientAudioRoutesButtonSize];
-    v21 = [v20 constraintEqualToConstant:?];
+    v21 = [heightAnchor constraintEqualToConstant:?];
     v36[5] = v21;
     v22 = [NSArray arrayWithObjects:v36 count:6];
     [NSLayoutConstraint activateConstraints:v22];
@@ -66,8 +66,8 @@
     [(PHAudioControlsButton *)v3->_button addTarget:v3 action:"buttonTapped:" forControlEvents:64];
     [(PHAmbientAudioRoutesControlView *)v3 reload];
     v23 = +[TUCallCenter sharedInstance];
-    v24 = [v23 routeController];
-    [v24 addDelegate:v3];
+    routeController = [v23 routeController];
+    [routeController addDelegate:v3];
   }
 
   return v3;
@@ -76,70 +76,70 @@
 - (void)reload
 {
   objc_initWeak(&location, self);
-  v3 = [(PHAmbientAudioRoutesControlView *)self delegate];
+  delegate = [(PHAmbientAudioRoutesControlView *)self delegate];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_100143B04;
   v16 = &unk_10035A1A0;
   objc_copyWeak(&v17, &location);
-  [v3 fetchAudioRoutesImageWithCompletion:&v13];
+  [delegate fetchAudioRoutesImageWithCompletion:&v13];
 
   v4 = [TUCallCenter sharedInstance:v13];
-  v5 = [v4 routeController];
-  v6 = [v5 areAuxiliaryRoutesAvailable];
+  routeController = [v4 routeController];
+  areAuxiliaryRoutesAvailable = [routeController areAuxiliaryRoutesAvailable];
 
-  v7 = [(PHAmbientAudioRoutesControlView *)self button];
-  if (v6)
+  button = [(PHAmbientAudioRoutesControlView *)self button];
+  if (areAuxiliaryRoutesAvailable)
   {
-    [v7 setControlType:3];
+    [button setControlType:3];
   }
 
   else
   {
-    [v7 setControlType:2];
+    [button setControlType:2];
   }
 
   v8 = +[TUCallCenter sharedInstance];
-  v9 = [v8 routeController];
-  v10 = [v9 pickedRoute];
+  routeController2 = [v8 routeController];
+  pickedRoute = [routeController2 pickedRoute];
 
-  if ([v10 isAuxiliary])
+  if ([pickedRoute isAuxiliary])
   {
-    v11 = 1;
+    isSpeaker = 1;
   }
 
   else
   {
-    v11 = [v10 isSpeaker];
+    isSpeaker = [pickedRoute isSpeaker];
   }
 
-  v12 = [(PHAmbientAudioRoutesControlView *)self button];
-  [v12 setSelected:v11];
+  button2 = [(PHAmbientAudioRoutesControlView *)self button];
+  [button2 setSelected:isSpeaker];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(PHAmbientAudioRoutesControlView *)self delegate];
-  [v5 controlTypeTapped:objc_msgSend(v4 forView:{"controlType"), v4}];
+  tappedCopy = tapped;
+  delegate = [(PHAmbientAudioRoutesControlView *)self delegate];
+  [delegate controlTypeTapped:objc_msgSend(tappedCopy forView:{"controlType"), tappedCopy}];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(PHAmbientAudioRoutesControlView *)self reload];
 }
 
-- (id)menuForAudioControlsButton:(id)a3
+- (id)menuForAudioControlsButton:(id)button
 {
-  v3 = [(PHAmbientAudioRoutesControlView *)self delegate];
-  v4 = [v3 audioRouteMenu];
+  delegate = [(PHAmbientAudioRoutesControlView *)self delegate];
+  audioRouteMenu = [delegate audioRouteMenu];
 
-  return v4;
+  return audioRouteMenu;
 }
 
 - (PHAudioCallControlsViewDelegate)delegate

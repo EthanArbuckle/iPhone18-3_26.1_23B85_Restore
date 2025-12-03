@@ -1,18 +1,18 @@
 @interface AVTRecordingButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityAttributedLabel;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
-- (void)setUIState:(unint64_t)a3;
+- (void)setUIState:(unint64_t)state;
 @end
 
 @implementation AVTRecordingButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTRecordingButton" hasInstanceMethod:@"uiState" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"AVTRecordingButton" hasInstanceMethod:@"setUIState:" withFullSignature:{"v", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTRecordingButton" hasInstanceMethod:@"uiState" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"AVTRecordingButton" hasInstanceMethod:@"setUIState:" withFullSignature:{"v", "Q", 0}];
 }
 
 - (id)accessibilityAttributedLabel
@@ -29,9 +29,9 @@
     v4 = accessibilityLocalizedString(@"animoji.record.button");
     v2 = [v3 initWithString:v4];
 
-    v5 = [MEMORY[0x29EDB8DE0] preferredLanguages];
-    v6 = [v5 firstObject];
-    v7 = [v6 hasPrefix:@"en"];
+    preferredLanguages = [MEMORY[0x29EDB8DE0] preferredLanguages];
+    firstObject = [preferredLanguages firstObject];
+    v7 = [firstObject hasPrefix:@"en"];
 
     if (v7)
     {
@@ -62,7 +62,7 @@
 {
   v7.receiver = self;
   v7.super_class = AVTRecordingButtonAccessibility;
-  v3 = [(AVTRecordingButtonAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(AVTRecordingButtonAccessibility *)&v7 accessibilityTraits];
   v4 = [(AVTRecordingButtonAccessibility *)self safeIntegerForKey:@"uiState"];
   v5 = *MEMORY[0x29EDC7FC8];
   if (v4 != 1)
@@ -70,14 +70,14 @@
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
-- (void)setUIState:(unint64_t)a3
+- (void)setUIState:(unint64_t)state
 {
   v4.receiver = self;
   v4.super_class = AVTRecordingButtonAccessibility;
-  [(AVTRecordingButtonAccessibility *)&v4 setUIState:a3];
+  [(AVTRecordingButtonAccessibility *)&v4 setUIState:state];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], self);
 }
 

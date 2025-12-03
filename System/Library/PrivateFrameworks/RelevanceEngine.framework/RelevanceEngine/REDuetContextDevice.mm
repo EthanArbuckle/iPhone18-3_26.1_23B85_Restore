@@ -1,23 +1,23 @@
 @interface REDuetContextDevice
 + (id)companionDevice;
 + (id)localDevice;
-- (BOOL)isEqual:(id)a3;
-- (REDuetContextDevice)initWithUUID:(id)a3 type:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (REDuetContextDevice)initWithUUID:(id)d type:(unint64_t)type;
 @end
 
 @implementation REDuetContextDevice
 
-- (REDuetContextDevice)initWithUUID:(id)a3 type:(unint64_t)a4
+- (REDuetContextDevice)initWithUUID:(id)d type:(unint64_t)type
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = REDuetContextDevice;
   v8 = [(REDuetContextDevice *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_deviceType = a4;
+    objc_storeStrong(&v8->_identifier, d);
+    v9->_deviceType = type;
   }
 
   return v9;
@@ -52,10 +52,10 @@ uint64_t __34__REDuetContextDevice_localDevice__block_invoke()
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -66,7 +66,7 @@ uint64_t __34__REDuetContextDevice_localDevice__block_invoke()
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = v4->_identifier;
+      v6 = equalCopy->_identifier;
       v7 = identifier;
       v8 = v7;
       if (v7 == v6)

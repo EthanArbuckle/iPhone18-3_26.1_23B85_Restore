@@ -1,15 +1,15 @@
 @interface EDAddDownloadStateToMessageGlobalDataUpgradeStep
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDAddDownloadStateToMessageGlobalDataUpgradeStep
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v3 = a3;
-  if (sqlite3_table_column_metadata([v3 sqlDB], 0, "message_global_data", "download_state", 0, 0, 0, 0, 0))
+  connectionCopy = connection;
+  if (sqlite3_table_column_metadata([connectionCopy sqlDB], 0, "message_global_data", "download_state", 0, 0, 0, 0, 0))
   {
-    v4 = sqlite3_exec([v3 sqlDB], "ALTER TABLE message_global_data ADD COLUMN download_state INTEGER NOT NULL DEFAULT 0;", 0, 0, 0);
+    v4 = sqlite3_exec([connectionCopy sqlDB], "ALTER TABLE message_global_data ADD COLUMN download_state INTEGER NOT NULL DEFAULT 0;", 0, 0, 0);
   }
 
   else

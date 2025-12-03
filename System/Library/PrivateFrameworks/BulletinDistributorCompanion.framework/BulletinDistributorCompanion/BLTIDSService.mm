@@ -1,19 +1,19 @@
 @interface BLTIDSService
 - (BLTAbstractIDSDevice)defaultPairedDevice;
-- (BLTIDSService)initWithService:(id)a3;
+- (BLTIDSService)initWithService:(id)service;
 @end
 
 @implementation BLTIDSService
 
-- (BLTIDSService)initWithService:(id)a3
+- (BLTIDSService)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = BLTIDSService;
   v5 = [(BLTIDSService *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277D18778]) initWithService:v4];
+    v6 = [objc_alloc(MEMORY[0x277D18778]) initWithService:serviceCopy];
     service = v5->_service;
     v5->_service = v6;
   }

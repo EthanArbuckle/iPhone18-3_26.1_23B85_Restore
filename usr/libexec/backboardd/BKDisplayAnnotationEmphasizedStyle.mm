@@ -1,46 +1,46 @@
 @interface BKDisplayAnnotationEmphasizedStyle
-- (void)applyAppearanceToShapeLayer:(id)a3;
-- (void)applyAppearanceToTextLayer:(id)a3;
-- (void)applyToLayer:(id)a3 forContent:(id)a4;
+- (void)applyAppearanceToShapeLayer:(id)layer;
+- (void)applyAppearanceToTextLayer:(id)layer;
+- (void)applyToLayer:(id)layer forContent:(id)content;
 @end
 
 @implementation BKDisplayAnnotationEmphasizedStyle
 
-- (void)applyAppearanceToTextLayer:(id)a3
+- (void)applyAppearanceToTextLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v3 = CTFontCreateWithName(@"Helvetica-Bold", 0.0, 0);
   if (v3)
   {
-    [v4 setFont:v3];
+    [layerCopy setFont:v3];
   }
 
   CFRelease(v3);
-  [v4 setFontSize:13.0];
-  [v4 bk_setForegroundColorRed:1.0 green:1.0 blue:1.0 alpha:1.0];
+  [layerCopy setFontSize:13.0];
+  [layerCopy bk_setForegroundColorRed:1.0 green:1.0 blue:1.0 alpha:1.0];
 }
 
-- (void)applyAppearanceToShapeLayer:(id)a3
+- (void)applyAppearanceToShapeLayer:(id)layer
 {
-  v3 = a3;
-  [v3 setLineWidth:3.0];
-  [v3 bk_setForegroundColorRed:0.3 green:0.3 blue:0.3 alpha:1.0];
-  [v3 bk_setBackgroundColorRed:1.0 green:1.0 blue:1.0 alpha:0.4];
+  layerCopy = layer;
+  [layerCopy setLineWidth:3.0];
+  [layerCopy bk_setForegroundColorRed:0.3 green:0.3 blue:0.3 alpha:1.0];
+  [layerCopy bk_setBackgroundColorRed:1.0 green:1.0 blue:1.0 alpha:0.4];
 }
 
-- (void)applyToLayer:(id)a3 forContent:(id)a4
+- (void)applyToLayer:(id)layer forContent:(id)content
 {
-  v5 = a3;
+  layerCopy = layer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(BKDisplayAnnotationEmphasizedStyle *)self applyAppearanceToShapeLayer:v5];
+    [(BKDisplayAnnotationEmphasizedStyle *)self applyAppearanceToShapeLayer:layerCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(BKDisplayAnnotationEmphasizedStyle *)self applyAppearanceToTextLayer:v5];
+    [(BKDisplayAnnotationEmphasizedStyle *)self applyAppearanceToTextLayer:layerCopy];
   }
 }
 

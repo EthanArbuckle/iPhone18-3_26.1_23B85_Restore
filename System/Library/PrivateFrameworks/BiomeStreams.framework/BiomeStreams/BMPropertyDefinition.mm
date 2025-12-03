@@ -1,26 +1,26 @@
 @interface BMPropertyDefinition
-- (BMPropertyDefinition)initWithName:(id)a3 type:(int)a4 enumValues:(id)a5 classPropertyDefinitions:(id)a6 comment:(id)a7;
+- (BMPropertyDefinition)initWithName:(id)name type:(int)type enumValues:(id)values classPropertyDefinitions:(id)definitions comment:(id)comment;
 @end
 
 @implementation BMPropertyDefinition
 
-- (BMPropertyDefinition)initWithName:(id)a3 type:(int)a4 enumValues:(id)a5 classPropertyDefinitions:(id)a6 comment:(id)a7
+- (BMPropertyDefinition)initWithName:(id)name type:(int)type enumValues:(id)values classPropertyDefinitions:(id)definitions comment:(id)comment
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  valuesCopy = values;
+  definitionsCopy = definitions;
+  commentCopy = comment;
   v20.receiver = self;
   v20.super_class = BMPropertyDefinition;
   v17 = [(BMPropertyDefinition *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_name, a3);
-    v18->_type = a4;
-    objc_storeStrong(&v18->_enumValues, a5);
-    objc_storeStrong(&v18->_classPropertyDefinitions, a6);
-    objc_storeStrong(&v18->_comment, a7);
+    objc_storeStrong(&v17->_name, name);
+    v18->_type = type;
+    objc_storeStrong(&v18->_enumValues, values);
+    objc_storeStrong(&v18->_classPropertyDefinitions, definitions);
+    objc_storeStrong(&v18->_comment, comment);
   }
 
   return v18;

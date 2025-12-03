@@ -1,12 +1,12 @@
 @interface TSTStrokeRunArray
-- (TSTStrokeRunArray)initWithCount:(unsigned int)a3;
+- (TSTStrokeRunArray)initWithCount:(unsigned int)count;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation TSTStrokeRunArray
 
-- (TSTStrokeRunArray)initWithCount:(unsigned int)a3
+- (TSTStrokeRunArray)initWithCount:(unsigned int)count
 {
   v8.receiver = self;
   v8.super_class = TSTStrokeRunArray;
@@ -14,19 +14,19 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 <= 1)
+    if (count <= 1)
     {
-      v6 = 1;
+      countCopy = 1;
     }
 
     else
     {
-      v6 = a3;
+      countCopy = count;
     }
 
-    v4->mCount = a3;
-    v4->mAllocCount = v6;
-    v4->mStrokes = malloc_type_calloc(0x20uLL, v6, 0x1080040D89E363BuLL);
+    v4->mCount = count;
+    v4->mAllocCount = countCopy;
+    v4->mStrokes = malloc_type_calloc(0x20uLL, countCopy, 0x1080040D89E363BuLL);
     v5->mLastLookup = 0;
     v5->mMaxWidth = 0.0;
     v5->mHasCustomStrokes = 0;

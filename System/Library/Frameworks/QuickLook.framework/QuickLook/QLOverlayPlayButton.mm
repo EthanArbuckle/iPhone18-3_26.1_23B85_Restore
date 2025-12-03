@@ -1,11 +1,11 @@
 @interface QLOverlayPlayButton
 - (QLOverlayPlayButton)init;
-- (QLOverlayPlayButton)initWithFrame:(CGRect)a3;
-- (void)_playButtonActivate:(id)a3;
-- (void)_playButtonDeactivate:(id)a3;
-- (void)_playButtonTapped:(id)a3;
+- (QLOverlayPlayButton)initWithFrame:(CGRect)frame;
+- (void)_playButtonActivate:(id)activate;
+- (void)_playButtonDeactivate:(id)deactivate;
+- (void)_playButtonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setTarget:(id)a3 action:(SEL)a4;
+- (void)setTarget:(id)target action:(SEL)action;
 @end
 
 @implementation QLOverlayPlayButton
@@ -24,7 +24,7 @@
   return v3;
 }
 
-- (QLOverlayPlayButton)initWithFrame:(CGRect)a3
+- (QLOverlayPlayButton)initWithFrame:(CGRect)frame
 {
   v4 = QLFrameworkBundle();
   v5 = [MEMORY[0x277D755B8] imageNamed:@"overlay-play-inside" inBundle:v4 compatibleWithTraitCollection:0];
@@ -57,8 +57,8 @@
   [(UIButton *)v10->_button setFrame:?];
   if (_UISolariumEnabled())
   {
-    v11 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UIButton *)v10->_button setTintColor:v11];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UIButton *)v10->_button setTintColor:secondaryLabelColor];
 
     [(UIButton *)v10->_button ql_setGlassBackground];
     [(UIButton *)v10->_button ql_setCapsuleCornerMaskingConfiguration];
@@ -98,28 +98,28 @@
   v5.receiver = self;
   v5.super_class = QLOverlayPlayButton;
   [(QLOverlayPlayButton *)&v5 layoutSubviews];
-  v3 = [(QLOverlayPlayButton *)self layer];
+  layer = [(QLOverlayPlayButton *)self layer];
   [(QLOverlayPlayButton *)self bounds];
-  [v3 setCornerRadius:v4 * 0.5];
+  [layer setCornerRadius:v4 * 0.5];
 }
 
-- (void)setTarget:(id)a3 action:(SEL)a4
+- (void)setTarget:(id)target action:(SEL)action
 {
-  objc_storeWeak(&self->_target, a3);
-  if (a4)
+  objc_storeWeak(&self->_target, target);
+  if (action)
   {
-    v6 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v6 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v6;
+  self->_action = actionCopy;
 }
 
-- (void)_playButtonActivate:(id)a3
+- (void)_playButtonActivate:(id)activate
 {
   v4 = _UISolariumEnabled();
   button = self->_button;
@@ -134,7 +134,7 @@
   [(UIButton *)v7 setAlpha:v6];
 }
 
-- (void)_playButtonDeactivate:(id)a3
+- (void)_playButtonDeactivate:(id)deactivate
 {
   v4 = _UISolariumEnabled();
   button = self->_button;
@@ -149,9 +149,9 @@
   [(UIButton *)v7 setAlpha:v6];
 }
 
-- (void)_playButtonTapped:(id)a3
+- (void)_playButtonTapped:(id)tapped
 {
-  v10 = a3;
+  tappedCopy = tapped;
   [(QLOverlayPlayButton *)self _playButtonDeactivate:?];
   WeakRetained = objc_loadWeakRetained(&self->_target);
   if (self->_action)

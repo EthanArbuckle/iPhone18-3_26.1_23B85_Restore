@@ -1,12 +1,12 @@
 @interface KGDatabaseNameCache
 - (KGDatabaseNameCache)init;
-- (id)attrIdentifierForPropertyName:(id)a3 database:(id)a4 updating:(BOOL)a5 error:(id *)a6;
-- (id)labelIdentifierForName:(id)a3 database:(id)a4 updating:(BOOL)a5 error:(id *)a6;
-- (id)labelNameForIdentifier:(id)a3 database:(id)a4;
-- (id)propertyNameForIdentifier:(id)a3 database:(id)a4;
-- (void)_addLabelName:(id)a3 identifier:(id)a4 database:(id)a5;
-- (void)_addPropertyName:(id)a3 identifier:(id)a4 database:(id)a5;
-- (void)_loadCacheIfNeeded:(id)a3;
+- (id)attrIdentifierForPropertyName:(id)name database:(id)database updating:(BOOL)updating error:(id *)error;
+- (id)labelIdentifierForName:(id)name database:(id)database updating:(BOOL)updating error:(id *)error;
+- (id)labelNameForIdentifier:(id)identifier database:(id)database;
+- (id)propertyNameForIdentifier:(id)identifier database:(id)database;
+- (void)_addLabelName:(id)name identifier:(id)identifier database:(id)database;
+- (void)_addPropertyName:(id)name identifier:(id)identifier database:(id)database;
+- (void)_loadCacheIfNeeded:(id)needed;
 - (void)internal_unloadCache;
 - (void)setInvalid;
 - (void)transactionBegin;
@@ -39,13 +39,13 @@
   }
 }
 
-- (void)_loadCacheIfNeeded:(id)a3
+- (void)_loadCacheIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   os_unfair_lock_assert_owner(&self->_lock);
   if (!self->_loaded)
   {
-    degas::LabelCursor::LabelCursor(v21, self->_highestLabelId, ([v4 database] + 80), 5);
+    degas::LabelCursor::LabelCursor(v21, self->_highestLabelId, ([neededCopy database] + 80), 5);
     while (degas::Statement::next(v21[0]) == 1)
     {
       v5 = sqlite3_column_int64(*v21[0], 0);
@@ -72,7 +72,7 @@
 
       v9 = [v7 initWithUTF8String:p_p];
       v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v6];
-      [(KGDatabaseNameCache *)self _addLabelName:v9 identifier:v10 database:v4];
+      [(KGDatabaseNameCache *)self _addLabelName:v9 identifier:v10 database:neededCopy];
 
       if (SHIBYTE(v20) < 0)
       {
@@ -80,7 +80,7 @@
       }
     }
 
-    degas::AttributeCursor::AttributeCursor(v17, self->_highestAttrId, ([v4 database] + 304), 5);
+    degas::AttributeCursor::AttributeCursor(v17, self->_highestAttrId, ([neededCopy database] + 304), 5);
     while (degas::Statement::next(v17[0]) == 1)
     {
       v11 = sqlite3_column_int64(*v17[0], 0);
@@ -107,7 +107,7 @@
 
       v15 = [v13 initWithUTF8String:v14];
       v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v12];
-      [(KGDatabaseNameCache *)self _addPropertyName:v15 identifier:v16 database:v4];
+      [(KGDatabaseNameCache *)self _addPropertyName:v15 identifier:v16 database:neededCopy];
 
       if (SHIBYTE(v20) < 0)
       {
@@ -122,67 +122,67 @@
   }
 }
 
-- (void)_addPropertyName:(id)a3 identifier:(id)a4 database:(id)a5
+- (void)_addPropertyName:(id)name identifier:(id)identifier database:(id)database
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
+  databaseCopy = database;
   os_unfair_lock_assert_owner(&self->_lock);
-  v11 = [(NSMutableDictionary *)self->_propertyNameByAttrId objectForKeyedSubscript:v9];
+  v11 = [(NSMutableDictionary *)self->_propertyNameByAttrId objectForKeyedSubscript:identifierCopy];
   v12 = v11;
   if (!v11)
   {
 LABEL_6:
-    [(NSMutableDictionary *)self->_propertyNameByAttrId setObject:v8 forKeyedSubscript:v9];
-    v14 = [(NSMutableDictionary *)self->_attrIdByPropertyName objectForKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_propertyNameByAttrId setObject:nameCopy forKeyedSubscript:identifierCopy];
+    v14 = [(NSMutableDictionary *)self->_attrIdByPropertyName objectForKeyedSubscript:nameCopy];
     v15 = v14;
-    if (v14 && ([v14 isEqualToNumber:v9]& 1) == 0)
+    if (v14 && ([v14 isEqualToNumber:identifierCopy]& 1) == 0)
     {
-      [v10 setFatalError:@"duplicate property"];
+      [databaseCopy setFatalError:@"duplicate property"];
       v16 = KGLoggingConnection();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
       {
-        v18 = [(NSMutableDictionary *)self->_attrIdByPropertyName objectForKeyedSubscript:v8];
+        v18 = [(NSMutableDictionary *)self->_attrIdByPropertyName objectForKeyedSubscript:nameCopy];
         v19 = 138543874;
-        v20 = v9;
+        v20 = identifierCopy;
         v21 = 2114;
         v22 = v18;
         v23 = 2114;
-        v24 = v8;
+        v24 = nameCopy;
         _os_log_fault_impl(&dword_255870000, v16, OS_LOG_TYPE_FAULT, "duplicate property by identifiers %{public}@ and %{public}@, name %{public}@", &v19, 0x20u);
       }
     }
 
-    [(NSMutableDictionary *)self->_attrIdByPropertyName setObject:v9 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_attrIdByPropertyName setObject:identifierCopy forKeyedSubscript:nameCopy];
     goto LABEL_14;
   }
 
-  if ([v11 isEqualToString:v8])
+  if ([v11 isEqualToString:nameCopy])
   {
     v13 = KGLoggingConnection();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v19 = 138543618;
-      v20 = v8;
+      v20 = nameCopy;
       v21 = 2114;
-      v22 = v9;
+      v22 = identifierCopy;
       _os_log_error_impl(&dword_255870000, v13, OS_LOG_TYPE_ERROR, "redundant insert of property in cache name=%{public}@, identifier=%{public}@", &v19, 0x16u);
     }
 
     goto LABEL_6;
   }
 
-  [v10 setFatalError:@"duplicate property"];
+  [databaseCopy setFatalError:@"duplicate property"];
   v15 = KGLoggingConnection();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
   {
     v19 = 138543874;
-    v20 = v8;
+    v20 = nameCopy;
     v21 = 2114;
     v22 = v12;
     v23 = 2114;
-    v24 = v9;
+    v24 = identifierCopy;
     _os_log_fault_impl(&dword_255870000, v15, OS_LOG_TYPE_FAULT, "duplicate property by name=%{public}@, other name=%{public}@, identifier %{public}@", &v19, 0x20u);
   }
 
@@ -191,66 +191,66 @@ LABEL_14:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addLabelName:(id)a3 identifier:(id)a4 database:(id)a5
+- (void)_addLabelName:(id)name identifier:(id)identifier database:(id)database
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
+  databaseCopy = database;
   os_unfair_lock_assert_owner(&self->_lock);
-  v11 = [(NSMutableDictionary *)self->_labelNameById objectForKeyedSubscript:v9];
+  v11 = [(NSMutableDictionary *)self->_labelNameById objectForKeyedSubscript:identifierCopy];
   v12 = v11;
   if (!v11)
   {
 LABEL_6:
-    [(NSMutableDictionary *)self->_labelNameById setObject:v8 forKeyedSubscript:v9];
-    v14 = [(NSMutableDictionary *)self->_labelIdByName objectForKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_labelNameById setObject:nameCopy forKeyedSubscript:identifierCopy];
+    v14 = [(NSMutableDictionary *)self->_labelIdByName objectForKeyedSubscript:nameCopy];
     v15 = v14;
-    if (v14 && ([v14 isEqualToNumber:v9]& 1) == 0)
+    if (v14 && ([v14 isEqualToNumber:identifierCopy]& 1) == 0)
     {
-      [v10 setFatalError:@"duplicate label"];
+      [databaseCopy setFatalError:@"duplicate label"];
       v16 = KGLoggingConnection();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
       {
         v18 = 138543874;
-        v19 = v9;
+        v19 = identifierCopy;
         v20 = 2114;
         v21 = v15;
         v22 = 2114;
-        v23 = v8;
+        v23 = nameCopy;
         _os_log_fault_impl(&dword_255870000, v16, OS_LOG_TYPE_FAULT, "duplicate label by identifiers %{public}@ and %{public}@, name %{public}@", &v18, 0x20u);
       }
     }
 
-    [(NSMutableDictionary *)self->_labelIdByName setObject:v9 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_labelIdByName setObject:identifierCopy forKeyedSubscript:nameCopy];
     goto LABEL_14;
   }
 
-  if (([v11 isEqualToString:v8]& 1) != 0)
+  if (([v11 isEqualToString:nameCopy]& 1) != 0)
   {
     v13 = KGLoggingConnection();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v18 = 138543618;
-      v19 = v8;
+      v19 = nameCopy;
       v20 = 2114;
-      v21 = v9;
+      v21 = identifierCopy;
       _os_log_error_impl(&dword_255870000, v13, OS_LOG_TYPE_ERROR, "redundant insert of label in cache name=%{public}@, identifier=%{public}@", &v18, 0x16u);
     }
 
     goto LABEL_6;
   }
 
-  [v10 setFatalError:@"duplicate label"];
+  [databaseCopy setFatalError:@"duplicate label"];
   v15 = KGLoggingConnection();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
   {
     v18 = 138543874;
-    v19 = v8;
+    v19 = nameCopy;
     v20 = 2114;
     v21 = v12;
     v22 = 2114;
-    v23 = v9;
+    v23 = identifierCopy;
     _os_log_fault_impl(&dword_255870000, v15, OS_LOG_TYPE_FAULT, "duplicate label by name=%{public}@, other name=%{public}@, identifier %{public}@", &v18, 0x20u);
   }
 
@@ -259,21 +259,21 @@ LABEL_14:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)propertyNameForIdentifier:(id)a3 database:(id)a4
+- (id)propertyNameForIdentifier:(id)identifier database:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  databaseCopy = database;
   os_unfair_lock_lock(&self->_lock);
-  [(KGDatabaseNameCache *)self _loadCacheIfNeeded:v7];
-  v8 = [(NSMutableDictionary *)self->_propertyNameByAttrId objectForKeyedSubscript:v6];
+  [(KGDatabaseNameCache *)self _loadCacheIfNeeded:databaseCopy];
+  v8 = [(NSMutableDictionary *)self->_propertyNameByAttrId objectForKeyedSubscript:identifierCopy];
   v9 = v8;
   if (self->_readOnly && !v8)
   {
     if (self->_isInTransaction && !self->_loadedInThisTransaction)
     {
       self->_loaded = 0;
-      [(KGDatabaseNameCache *)self _loadCacheIfNeeded:v7];
-      v9 = [(NSMutableDictionary *)self->_propertyNameByAttrId objectForKeyedSubscript:v6];
+      [(KGDatabaseNameCache *)self _loadCacheIfNeeded:databaseCopy];
+      v9 = [(NSMutableDictionary *)self->_propertyNameByAttrId objectForKeyedSubscript:identifierCopy];
     }
 
     else
@@ -287,23 +287,23 @@ LABEL_14:
   return v9;
 }
 
-- (id)attrIdentifierForPropertyName:(id)a3 database:(id)a4 updating:(BOOL)a5 error:(id *)a6
+- (id)attrIdentifierForPropertyName:(id)name database:(id)database updating:(BOOL)updating error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  updatingCopy = updating;
+  nameCopy = name;
+  databaseCopy = database;
   readOnly = self->_readOnly;
   os_unfair_lock_lock(&self->_lock);
-  [(KGDatabaseNameCache *)self _loadCacheIfNeeded:v11];
-  v13 = [(NSMutableDictionary *)self->_attrIdByPropertyName objectForKeyedSubscript:v10];
+  [(KGDatabaseNameCache *)self _loadCacheIfNeeded:databaseCopy];
+  v13 = [(NSMutableDictionary *)self->_attrIdByPropertyName objectForKeyedSubscript:nameCopy];
   v14 = v13;
   if (self->_readOnly && !v13)
   {
     if (self->_isInTransaction && !self->_loadedInThisTransaction)
     {
       self->_loaded = 0;
-      [(KGDatabaseNameCache *)self _loadCacheIfNeeded:v11];
-      v14 = [(NSMutableDictionary *)self->_attrIdByPropertyName objectForKeyedSubscript:v10];
+      [(KGDatabaseNameCache *)self _loadCacheIfNeeded:databaseCopy];
+      v14 = [(NSMutableDictionary *)self->_attrIdByPropertyName objectForKeyedSubscript:nameCopy];
       if (v14)
       {
         goto LABEL_10;
@@ -321,11 +321,11 @@ LABEL_14:
   }
 
 LABEL_7:
-  if (v7 && !readOnly)
+  if (updatingCopy && !readOnly)
   {
-    v15 = [v11 insertNewProperty:v10 error:a6];
+    v15 = [databaseCopy insertNewProperty:nameCopy error:error];
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15];
-    [(KGDatabaseNameCache *)self _addPropertyName:v10 identifier:v16 database:v11];
+    [(KGDatabaseNameCache *)self _addPropertyName:nameCopy identifier:v16 database:databaseCopy];
 
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15];
   }
@@ -336,21 +336,21 @@ LABEL_10:
   return v14;
 }
 
-- (id)labelNameForIdentifier:(id)a3 database:(id)a4
+- (id)labelNameForIdentifier:(id)identifier database:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  databaseCopy = database;
   os_unfair_lock_lock(&self->_lock);
-  [(KGDatabaseNameCache *)self _loadCacheIfNeeded:v7];
-  v8 = [(NSMutableDictionary *)self->_labelNameById objectForKeyedSubscript:v6];
+  [(KGDatabaseNameCache *)self _loadCacheIfNeeded:databaseCopy];
+  v8 = [(NSMutableDictionary *)self->_labelNameById objectForKeyedSubscript:identifierCopy];
   v9 = v8;
   if (self->_readOnly && !v8)
   {
     if (self->_isInTransaction && !self->_loadedInThisTransaction)
     {
       self->_loaded = 0;
-      [(KGDatabaseNameCache *)self _loadCacheIfNeeded:v7];
-      v9 = [(NSMutableDictionary *)self->_labelNameById objectForKeyedSubscript:v6];
+      [(KGDatabaseNameCache *)self _loadCacheIfNeeded:databaseCopy];
+      v9 = [(NSMutableDictionary *)self->_labelNameById objectForKeyedSubscript:identifierCopy];
     }
 
     else
@@ -364,23 +364,23 @@ LABEL_10:
   return v9;
 }
 
-- (id)labelIdentifierForName:(id)a3 database:(id)a4 updating:(BOOL)a5 error:(id *)a6
+- (id)labelIdentifierForName:(id)name database:(id)database updating:(BOOL)updating error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  updatingCopy = updating;
+  nameCopy = name;
+  databaseCopy = database;
   readOnly = self->_readOnly;
   os_unfair_lock_lock(&self->_lock);
-  [(KGDatabaseNameCache *)self _loadCacheIfNeeded:v11];
-  v13 = [(NSMutableDictionary *)self->_labelIdByName objectForKeyedSubscript:v10];
+  [(KGDatabaseNameCache *)self _loadCacheIfNeeded:databaseCopy];
+  v13 = [(NSMutableDictionary *)self->_labelIdByName objectForKeyedSubscript:nameCopy];
   v14 = v13;
   if (self->_readOnly && !v13)
   {
     if (self->_isInTransaction && !self->_loadedInThisTransaction)
     {
       self->_loaded = 0;
-      [(KGDatabaseNameCache *)self _loadCacheIfNeeded:v11];
-      v14 = [(NSMutableDictionary *)self->_labelIdByName objectForKeyedSubscript:v10];
+      [(KGDatabaseNameCache *)self _loadCacheIfNeeded:databaseCopy];
+      v14 = [(NSMutableDictionary *)self->_labelIdByName objectForKeyedSubscript:nameCopy];
       if (v14)
       {
         goto LABEL_12;
@@ -398,13 +398,13 @@ LABEL_10:
   }
 
 LABEL_7:
-  if (v7 && !readOnly)
+  if (updatingCopy && !readOnly)
   {
-    v15 = [v11 insertNewLabel:v10 error:a6];
+    v15 = [databaseCopy insertNewLabel:nameCopy error:error];
     if (v15)
     {
       v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15];
-      [(KGDatabaseNameCache *)self _addLabelName:v10 identifier:v16 database:v11];
+      [(KGDatabaseNameCache *)self _addLabelName:nameCopy identifier:v16 database:databaseCopy];
 
       v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15];
     }

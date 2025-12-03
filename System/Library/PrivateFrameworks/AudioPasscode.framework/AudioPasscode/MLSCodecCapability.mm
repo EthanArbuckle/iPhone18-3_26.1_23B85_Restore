@@ -1,6 +1,6 @@
 @interface MLSCodecCapability
 - (MLSCodecCapability)init;
-- (MLSCodecCapability)initWithCoder:(id)a3;
+- (MLSCodecCapability)initWithCoder:(id)coder;
 @end
 
 @implementation MLSCodecCapability
@@ -12,7 +12,7 @@
   return [(AUPasscodeCodecCapability *)&v3 initWithAlgorithmName:@"mls "];
 }
 
-- (MLSCodecCapability)initWithCoder:(id)a3
+- (MLSCodecCapability)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = MLSCodecCapability;

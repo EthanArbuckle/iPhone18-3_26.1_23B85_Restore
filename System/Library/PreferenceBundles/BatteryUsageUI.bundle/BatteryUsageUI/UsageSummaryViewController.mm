@@ -1,14 +1,14 @@
 @interface UsageSummaryViewController
-+ (id)createControllerWith:(id)a3;
++ (id)createControllerWith:(id)with;
 - (_TtC14BatteryUsageUI26UsageSummaryViewController)init;
 @end
 
 @implementation UsageSummaryViewController
 
-+ (id)createControllerWith:(id)a3
++ (id)createControllerWith:(id)with
 {
-  v3 = a3;
-  v4 = sub_46E7C(v3);
+  withCopy = with;
+  v4 = sub_46E7C(withCopy);
 
   return v4;
 }

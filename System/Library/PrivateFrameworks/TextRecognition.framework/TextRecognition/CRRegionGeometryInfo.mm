@@ -1,41 +1,41 @@
 @interface CRRegionGeometryInfo
 - (CGSize)cachedSize;
 - (CGVector)baselineVector;
-- (id)initFromRegion:(id)a3 layoutDirection:(unint64_t)a4;
-- (id)mutualGeometryInfoWith:(id)a3;
+- (id)initFromRegion:(id)region layoutDirection:(unint64_t)direction;
+- (id)mutualGeometryInfoWith:(id)with;
 @end
 
 @implementation CRRegionGeometryInfo
 
-- (id)initFromRegion:(id)a3 layoutDirection:(unint64_t)a4
+- (id)initFromRegion:(id)region layoutDirection:(unint64_t)direction
 {
-  v5 = a3;
-  v6 = [v5 boundingQuad];
-  v7 = [v6 denormalizedQuad];
-  [v7 topLeft];
+  regionCopy = region;
+  boundingQuad = [regionCopy boundingQuad];
+  denormalizedQuad = [boundingQuad denormalizedQuad];
+  [denormalizedQuad topLeft];
   v9 = v8;
   v11 = v10;
-  v12 = [v5 boundingQuad];
-  v13 = [v12 denormalizedQuad];
-  [v13 topRight];
+  boundingQuad2 = [regionCopy boundingQuad];
+  denormalizedQuad2 = [boundingQuad2 denormalizedQuad];
+  [denormalizedQuad2 topRight];
   v15 = v14;
   v17 = v16;
-  v18 = [v5 boundingQuad];
-  v19 = [v18 denormalizedQuad];
-  [v19 bottomRight];
+  boundingQuad3 = [regionCopy boundingQuad];
+  denormalizedQuad3 = [boundingQuad3 denormalizedQuad];
+  [denormalizedQuad3 bottomRight];
   v21 = v20;
   v23 = v22;
-  v24 = [v5 boundingQuad];
+  boundingQuad4 = [regionCopy boundingQuad];
 
-  v25 = [v24 denormalizedQuad];
-  [v25 bottomLeft];
+  denormalizedQuad4 = [boundingQuad4 denormalizedQuad];
+  [denormalizedQuad4 bottomLeft];
   v40.receiver = self;
   v40.super_class = CRRegionGeometryInfo;
   v28 = [(CRImageSpaceQuad *)&v40 initWithTopLeft:v9 topRight:v11 bottomRight:v15 bottomLeft:v17, v21, v23, v26, v27];
 
   if (v28)
   {
-    [(CRRegionGeometryInfo *)v28 setLayoutDirection:a4];
+    [(CRRegionGeometryInfo *)v28 setLayoutDirection:direction];
     v39.receiver = v28;
     v39.super_class = CRRegionGeometryInfo;
     [(CRImageSpaceQuad *)&v39 size];
@@ -56,10 +56,10 @@
   return v28;
 }
 
-- (id)mutualGeometryInfoWith:(id)a3
+- (id)mutualGeometryInfoWith:(id)with
 {
-  v4 = a3;
-  v5 = [[CRPairedRegionMutualGeometryInfo alloc] initFromGeometryInfo1:self geometryInfo2:v4];
+  withCopy = with;
+  v5 = [[CRPairedRegionMutualGeometryInfo alloc] initFromGeometryInfo1:self geometryInfo2:withCopy];
 
   return v5;
 }

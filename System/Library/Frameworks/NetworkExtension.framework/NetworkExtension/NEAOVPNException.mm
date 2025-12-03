@@ -1,9 +1,9 @@
 @interface NEAOVPNException
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (BOOL)isLimitedToUDP;
-- (NEAOVPNException)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NEAOVPNException)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEAOVPNException
@@ -15,8 +15,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NEAOVPNException *)self limitToProtocols];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  limitToProtocols = [(NEAOVPNException *)self limitToProtocols];
+  v3 = [limitToProtocols countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -27,7 +27,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(limitToProtocols);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) isEqualToString:@"UDP"])
@@ -37,7 +37,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [limitToProtocols countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -54,24 +54,24 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
-  v5 = [(NEAOVPNException *)self serviceName];
+  errorsCopy = errors;
+  serviceName = [(NEAOVPNException *)self serviceName];
 
-  if (!v5)
+  if (!serviceName)
   {
     goto LABEL_8;
   }
 
-  v6 = [(NEAOVPNException *)self serviceName];
-  if ([v6 isEqualToString:@"AirPrint"])
+  serviceName2 = [(NEAOVPNException *)self serviceName];
+  if ([serviceName2 isEqualToString:@"AirPrint"])
   {
     goto LABEL_7;
   }
 
-  v7 = [(NEAOVPNException *)self serviceName];
-  if ([v7 isEqualToString:@"VoiceMail"])
+  serviceName3 = [(NEAOVPNException *)self serviceName];
+  if ([serviceName3 isEqualToString:@"VoiceMail"])
   {
 LABEL_6:
 
@@ -79,19 +79,19 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [(NEAOVPNException *)self serviceName];
-  if ([v8 isEqualToString:@"CellularServices"])
+  serviceName4 = [(NEAOVPNException *)self serviceName];
+  if ([serviceName4 isEqualToString:@"CellularServices"])
   {
 
     goto LABEL_6;
   }
 
-  v11 = [(NEAOVPNException *)self serviceName];
-  v12 = [v11 isEqualToString:@"DeviceCommunication"];
+  serviceName5 = [(NEAOVPNException *)self serviceName];
+  v12 = [serviceName5 isEqualToString:@"DeviceCommunication"];
 
   if ((v12 & 1) == 0)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     v9 = 0;
     goto LABEL_9;
   }
@@ -101,68 +101,68 @@ LABEL_8:
 LABEL_9:
   if ([(NEAOVPNException *)self action]!= 1 && [(NEAOVPNException *)self action]!= 2)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     v9 = 0;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEAOVPNException allocWithZone:?]];
-  v5 = [(NEAOVPNException *)self serviceName];
-  [(NEAOVPNException *)v4 setServiceName:v5];
+  serviceName = [(NEAOVPNException *)self serviceName];
+  [(NEAOVPNException *)v4 setServiceName:serviceName];
 
-  v6 = [(NEAOVPNException *)self bundleIdentifier];
-  [(NEAOVPNException *)v4 setBundleIdentifier:v6];
+  bundleIdentifier = [(NEAOVPNException *)self bundleIdentifier];
+  [(NEAOVPNException *)v4 setBundleIdentifier:bundleIdentifier];
 
-  v7 = [(NEAOVPNException *)self limitToProtocols];
-  [(NEAOVPNException *)v4 setLimitToProtocols:v7];
+  limitToProtocols = [(NEAOVPNException *)self limitToProtocols];
+  [(NEAOVPNException *)v4 setLimitToProtocols:limitToProtocols];
 
   [(NEAOVPNException *)v4 setAction:[(NEAOVPNException *)self action]];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(NEAOVPNException *)self serviceName];
-  [v7 encodeObject:v4 forKey:@"ServiceName"];
+  coderCopy = coder;
+  serviceName = [(NEAOVPNException *)self serviceName];
+  [coderCopy encodeObject:serviceName forKey:@"ServiceName"];
 
-  v5 = [(NEAOVPNException *)self bundleIdentifier];
-  [v7 encodeObject:v5 forKey:@"BundleIdentifier"];
+  bundleIdentifier = [(NEAOVPNException *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"BundleIdentifier"];
 
-  v6 = [(NEAOVPNException *)self limitToProtocols];
-  [v7 encodeObject:v6 forKey:@"LimitToProtocols"];
+  limitToProtocols = [(NEAOVPNException *)self limitToProtocols];
+  [coderCopy encodeObject:limitToProtocols forKey:@"LimitToProtocols"];
 
-  [v7 encodeInt32:-[NEAOVPNException action](self forKey:{"action"), @"Action"}];
+  [coderCopy encodeInt32:-[NEAOVPNException action](self forKey:{"action"), @"Action"}];
 }
 
-- (NEAOVPNException)initWithCoder:(id)a3
+- (NEAOVPNException)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = NEAOVPNException;
   v5 = [(NEAOVPNException *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ServiceName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ServiceName"];
     serviceName = v5->_serviceName;
     v5->_serviceName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BundleIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"LimitToProtocols"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"LimitToProtocols"];
     limitToProtocols = v5->_limitToProtocols;
     v5->_limitToProtocols = v13;
 
-    v5->_action = [v4 decodeInt32ForKey:@"Action"];
+    v5->_action = [coderCopy decodeInt32ForKey:@"Action"];
   }
 
   return v5;

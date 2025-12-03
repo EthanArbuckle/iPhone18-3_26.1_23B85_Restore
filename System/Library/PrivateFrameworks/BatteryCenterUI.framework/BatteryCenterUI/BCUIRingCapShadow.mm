@@ -1,27 +1,27 @@
 @interface BCUIRingCapShadow
-+ (id)_ringCapShadowImageWithRingBounds:(CGRect)a3 lineWidth:(double)a4 scale:(double)a5;
-+ (id)ringCapShadowForRingWithBounds:(CGRect)a3 lineWidth:(double)a4;
++ (id)_ringCapShadowImageWithRingBounds:(CGRect)bounds lineWidth:(double)width scale:(double)scale;
++ (id)ringCapShadowForRingWithBounds:(CGRect)bounds lineWidth:(double)width;
 - (CGRect)_shadowCapFrame;
 - (CGRect)ringBounds;
-- (id)_initWithRingBounds:(CGRect)a3 lineWidth:(double)a4;
+- (id)_initWithRingBounds:(CGRect)bounds lineWidth:(double)width;
 - (void)layoutSubviews;
-- (void)setArcFraction:(double)a3;
+- (void)setArcFraction:(double)fraction;
 @end
 
 @implementation BCUIRingCapShadow
 
-+ (id)ringCapShadowForRingWithBounds:(CGRect)a3 lineWidth:(double)a4
++ (id)ringCapShadowForRingWithBounds:(CGRect)bounds lineWidth:(double)width
 {
-  v4 = [[BCUIRingCapShadow alloc] _initWithRingBounds:a3.origin.x lineWidth:a3.origin.y, a3.size.width, a3.size.height, a4];
+  width = [[BCUIRingCapShadow alloc] _initWithRingBounds:bounds.origin.x lineWidth:bounds.origin.y, bounds.size.width, bounds.size.height, width];
 
-  return v4;
+  return width;
 }
 
-- (void)setArcFraction:(double)a3
+- (void)setArcFraction:(double)fraction
 {
-  if (self->_arcFraction != a3)
+  if (self->_arcFraction != fraction)
   {
-    self->_arcFraction = a3;
+    self->_arcFraction = fraction;
     [(BCUIRingCapShadow *)self setNeedsLayout];
   }
 }
@@ -87,19 +87,19 @@ uint64_t __35__BCUIRingCapShadow_layoutSubviews__block_invoke_2(uint64_t a1)
   return [v1 setTransform:v4];
 }
 
-+ (id)_ringCapShadowImageWithRingBounds:(CGRect)a3 lineWidth:(double)a4 scale:(double)a5
++ (id)_ringCapShadowImageWithRingBounds:(CGRect)bounds lineWidth:(double)width scale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v11 = MEMORY[0x1E696AEC0];
-  v12 = CGRectGetWidth(a3);
+  v12 = CGRectGetWidth(bounds);
   v19.origin.x = x;
   v19.origin.y = y;
   v19.size.width = width;
   v19.size.height = height;
-  v13 = [v11 stringWithFormat:@"ringCapShadow-%fx%f%f@%f", *&v12, CGRectGetHeight(v19), *&a4, *&a5];
+  v13 = [v11 stringWithFormat:@"ringCapShadow-%fx%f%f@%f", *&v12, CGRectGetHeight(v19), *&width, *&scale];
   v14 = +[BCUIMappedImageCache sharedCache];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -109,8 +109,8 @@ uint64_t __35__BCUIRingCapShadow_layoutSubviews__block_invoke_2(uint64_t a1)
   *&v17[5] = y;
   *&v17[6] = width;
   *&v17[7] = height;
-  *&v17[8] = a4;
-  *&v17[9] = a5;
+  *&v17[8] = width;
+  *&v17[9] = scale;
   v15 = [v14 imageForKey:v13 generatingIfNecessaryWithBlock:v17];
 
   return v15;
@@ -185,12 +185,12 @@ id __71__BCUIRingCapShadow__ringCapShadowImageWithRingBounds_lineWidth_scale___b
   return v24;
 }
 
-- (id)_initWithRingBounds:(CGRect)a3 lineWidth:(double)a4
+- (id)_initWithRingBounds:(CGRect)bounds lineWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v21.receiver = self;
   v21.super_class = BCUIRingCapShadow;
   v9 = [(BCUIRingCapShadow *)&v21 init];
@@ -201,22 +201,22 @@ id __71__BCUIRingCapShadow__ringCapShadowImageWithRingBounds_lineWidth_scale___b
     v9->_ringBounds.origin.y = y;
     v9->_ringBounds.size.width = width;
     v9->_ringBounds.size.height = height;
-    v9->_lineWidth = a4;
+    v9->_lineWidth = width;
     v11 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v12 = objc_opt_class();
-    v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v13 scale];
-    v15 = [v12 _ringCapShadowImageWithRingBounds:x lineWidth:y scale:{width, height, a4, v14}];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v15 = [v12 _ringCapShadowImageWithRingBounds:x lineWidth:y scale:{width, height, width, v14}];
     v16 = [v11 initWithImage:v15];
     v17 = p_isa[51];
     p_isa[51] = v16;
 
     [p_isa addSubview:p_isa[51]];
-    v18 = [p_isa layer];
-    [v18 setAllowsGroupBlending:0];
+    layer = [p_isa layer];
+    [layer setAllowsGroupBlending:0];
 
-    v19 = [p_isa[51] layer];
-    [v19 setCompositingFilter:*MEMORY[0x1E6979CE8]];
+    layer2 = [p_isa[51] layer];
+    [layer2 setCompositingFilter:*MEMORY[0x1E6979CE8]];
   }
 
   return p_isa;
@@ -229,8 +229,8 @@ id __71__BCUIRingCapShadow__ringCapShadowImageWithRingBounds_lineWidth_scale___b
   UIPointRoundToScale();
   v4 = v3;
   v6 = v5;
-  v7 = [(UIImageView *)self->_shadowCapImageView image];
-  [v7 size];
+  image = [(UIImageView *)self->_shadowCapImageView image];
+  [image size];
   v9 = v8;
   v11 = v10;
 

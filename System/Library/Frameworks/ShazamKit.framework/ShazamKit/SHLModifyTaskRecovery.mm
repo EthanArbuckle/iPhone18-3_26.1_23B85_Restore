@@ -1,30 +1,30 @@
 @interface SHLModifyTaskRecovery
 - (NSArray)recoverableTasks;
-- (SHLModifyTaskRecovery)initWithOriginalTask:(id)a3 savedGroups:(id)a4 savedTracks:(id)a5 deletedIDs:(id)a6 error:(id)a7;
+- (SHLModifyTaskRecovery)initWithOriginalTask:(id)task savedGroups:(id)groups savedTracks:(id)tracks deletedIDs:(id)ds error:(id)error;
 - (id)recoverTaskFromLimitExceededError;
 - (id)recoverTaskFromPartialError;
 @end
 
 @implementation SHLModifyTaskRecovery
 
-- (SHLModifyTaskRecovery)initWithOriginalTask:(id)a3 savedGroups:(id)a4 savedTracks:(id)a5 deletedIDs:(id)a6 error:(id)a7
+- (SHLModifyTaskRecovery)initWithOriginalTask:(id)task savedGroups:(id)groups savedTracks:(id)tracks deletedIDs:(id)ds error:(id)error
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  taskCopy = task;
+  groupsCopy = groups;
+  tracksCopy = tracks;
+  dsCopy = ds;
+  errorCopy = error;
   v21.receiver = self;
   v21.super_class = SHLModifyTaskRecovery;
   v17 = [(SHLModifyTaskRecovery *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_originalTask, a3);
-    objc_storeStrong(&v18->_savedGroups, a4);
-    objc_storeStrong(&v18->_savedTracks, a5);
-    objc_storeStrong(&v18->_deletedIDs, a6);
-    objc_storeStrong(&v18->_error, a7);
+    objc_storeStrong(&v17->_originalTask, task);
+    objc_storeStrong(&v18->_savedGroups, groups);
+    objc_storeStrong(&v18->_savedTracks, tracks);
+    objc_storeStrong(&v18->_deletedIDs, ds);
+    objc_storeStrong(&v18->_error, error);
   }
 
   return v18;
@@ -32,38 +32,38 @@
 
 - (NSArray)recoverableTasks
 {
-  v3 = [(SHLModifyTaskRecovery *)self error];
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:CKErrorDomain];
+  error = [(SHLModifyTaskRecovery *)self error];
+  domain = [error domain];
+  v5 = [domain isEqualToString:CKErrorDomain];
 
   if (v5)
   {
-    v6 = [(SHLModifyTaskRecovery *)self error];
-    v7 = [v6 code];
+    error2 = [(SHLModifyTaskRecovery *)self error];
+    code = [error2 code];
 
-    if (v7 == 27)
+    if (code == 27)
     {
-      v8 = [(SHLModifyTaskRecovery *)self recoverTaskFromLimitExceededError];
+      recoverTaskFromLimitExceededError = [(SHLModifyTaskRecovery *)self recoverTaskFromLimitExceededError];
       goto LABEL_7;
     }
 
-    if (v7 == 2)
+    if (code == 2)
     {
-      v8 = [(SHLModifyTaskRecovery *)self recoverTaskFromPartialError];
+      recoverTaskFromLimitExceededError = [(SHLModifyTaskRecovery *)self recoverTaskFromPartialError];
 LABEL_7:
-      v11 = v8;
+      v11 = recoverTaskFromLimitExceededError;
       goto LABEL_10;
     }
 
-    v9 = [(SHLModifyTaskRecovery *)self originalTask];
-    v13 = v9;
+    originalTask = [(SHLModifyTaskRecovery *)self originalTask];
+    v13 = originalTask;
     v10 = &v13;
   }
 
   else
   {
-    v9 = [(SHLModifyTaskRecovery *)self originalTask];
-    v14 = v9;
+    originalTask = [(SHLModifyTaskRecovery *)self originalTask];
+    v14 = originalTask;
     v10 = &v14;
   }
 
@@ -76,37 +76,37 @@ LABEL_10:
 
 - (id)recoverTaskFromPartialError
 {
-  v3 = [(SHLModifyTaskRecovery *)self savedGroups];
-  v4 = [NSSet setWithArray:v3];
+  savedGroups = [(SHLModifyTaskRecovery *)self savedGroups];
+  v4 = [NSSet setWithArray:savedGroups];
 
-  v5 = [(SHLModifyTaskRecovery *)self deletedIDs];
-  v6 = [NSMutableSet setWithArray:v5];
+  deletedIDs = [(SHLModifyTaskRecovery *)self deletedIDs];
+  v6 = [NSMutableSet setWithArray:deletedIDs];
 
-  v7 = [(SHLModifyTaskRecovery *)self originalTask];
-  v8 = [v7 groupsToModify];
-  v9 = [v8 deletions];
-  [v6 intersectSet:v9];
+  originalTask = [(SHLModifyTaskRecovery *)self originalTask];
+  groupsToModify = [originalTask groupsToModify];
+  deletions = [groupsToModify deletions];
+  [v6 intersectSet:deletions];
 
   v10 = [[SHLLibraryBatch alloc] initWithInsertions:v4 deletions:v6];
-  v11 = [(SHLModifyTaskRecovery *)self savedTracks];
-  v12 = [NSSet setWithArray:v11];
+  savedTracks = [(SHLModifyTaskRecovery *)self savedTracks];
+  v12 = [NSSet setWithArray:savedTracks];
 
-  v13 = [(SHLModifyTaskRecovery *)self deletedIDs];
-  v14 = [NSMutableSet setWithArray:v13];
+  deletedIDs2 = [(SHLModifyTaskRecovery *)self deletedIDs];
+  v14 = [NSMutableSet setWithArray:deletedIDs2];
 
-  v15 = [(SHLModifyTaskRecovery *)self originalTask];
-  v16 = [v15 tracksToModify];
-  v17 = [v16 deletions];
-  [v14 intersectSet:v17];
+  originalTask2 = [(SHLModifyTaskRecovery *)self originalTask];
+  tracksToModify = [originalTask2 tracksToModify];
+  deletions2 = [tracksToModify deletions];
+  [v14 intersectSet:deletions2];
 
   v18 = [[SHLLibraryBatch alloc] initWithInsertions:v12 deletions:v14];
-  v19 = [(SHLModifyTaskRecovery *)self originalTask];
-  v20 = [v19 groupsToModify];
-  v21 = [v20 differenceOfBatch:v10];
+  originalTask3 = [(SHLModifyTaskRecovery *)self originalTask];
+  groupsToModify2 = [originalTask3 groupsToModify];
+  v21 = [groupsToModify2 differenceOfBatch:v10];
 
-  v22 = [(SHLModifyTaskRecovery *)self originalTask];
-  v23 = [v22 tracksToModify];
-  v24 = [v23 differenceOfBatch:v18];
+  originalTask4 = [(SHLModifyTaskRecovery *)self originalTask];
+  tracksToModify2 = [originalTask4 tracksToModify];
+  v24 = [tracksToModify2 differenceOfBatch:v18];
 
   v25 = [[SHLSyncSessionModifyTask alloc] initWithTracksToModify:v24 groupsToModify:v21];
   v28 = v25;
@@ -117,8 +117,8 @@ LABEL_10:
 
 - (id)recoverTaskFromLimitExceededError
 {
-  v2 = [(SHLModifyTaskRecovery *)self originalTask];
-  v3 = [v2 subdivideTaskIntoBatchesOfSize:200];
+  originalTask = [(SHLModifyTaskRecovery *)self originalTask];
+  v3 = [originalTask subdivideTaskIntoBatchesOfSize:200];
 
   return v3;
 }

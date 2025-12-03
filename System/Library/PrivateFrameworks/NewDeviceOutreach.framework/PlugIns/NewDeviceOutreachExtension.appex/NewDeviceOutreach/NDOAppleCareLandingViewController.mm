@@ -1,13 +1,13 @@
 @interface NDOAppleCareLandingViewController
-- (BOOL)isNewStackFollowUpItem:(id)a3;
+- (BOOL)isNewStackFollowUpItem:(id)item;
 - (id)manager;
-- (void)_clearNotificationForSerialNumber:(id)a3 completion:(id)a4;
-- (void)amsUIViewFinishedWithCompletion:(unint64_t)a3;
-- (void)amsUIViewFinishedWithCompletion:(unint64_t)a3 params:(id)a4;
-- (void)outreachFinishedForDeviceWithSerialNumber:(id)a3 withCompletion:(unint64_t)a4;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
-- (void)processNewStackFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
-- (void)webviewFinishedWithCompletion:(unint64_t)a3;
+- (void)_clearNotificationForSerialNumber:(id)number completion:(id)completion;
+- (void)amsUIViewFinishedWithCompletion:(unint64_t)completion;
+- (void)amsUIViewFinishedWithCompletion:(unint64_t)completion params:(id)params;
+- (void)outreachFinishedForDeviceWithSerialNumber:(id)number withCompletion:(unint64_t)completion;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
+- (void)processNewStackFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
+- (void)webviewFinishedWithCompletion:(unint64_t)completion;
 @end
 
 @implementation NDOAppleCareLandingViewController
@@ -19,32 +19,32 @@
   return v2;
 }
 
-- (BOOL)isNewStackFollowUpItem:(id)a3
+- (BOOL)isNewStackFollowUpItem:(id)item
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:@"ndo-follow-up-new-stack"];
-  v5 = [v4 BOOLValue];
+  userInfo = [item userInfo];
+  v4 = [userInfo objectForKey:@"ndo-follow-up-new-stack"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)processNewStackFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processNewStackFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v8 = a3;
-  v25 = a4;
-  v9 = a5;
+  itemCopy = item;
+  actionCopy = action;
+  completionCopy = completion;
   v10 = _NDOLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v36 = "[NDOAppleCareLandingViewController processNewStackFollowUpItem:selectedAction:completion:]";
     v37 = 2112;
-    v38 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Processing new stack follow up item, %@", buf, 0x16u);
   }
 
-  v11 = [v8 userInfo];
-  v12 = [v11 objectForKeyedSubscript:@"ndo-follow-up-url"];
+  userInfo = [itemCopy userInfo];
+  v12 = [userInfo objectForKeyedSubscript:@"ndo-follow-up-url"];
 
   v13 = [NSURL URLWithString:v12];
   v14 = _NDOLogSystem();
@@ -55,8 +55,8 @@
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "url:%@", buf, 0xCu);
   }
 
-  v15 = [v8 userInfo];
-  v16 = [v15 objectForKeyedSubscript:@"ndo-follow-up-accept-action-type"];
+  userInfo2 = [itemCopy userInfo];
+  v16 = [userInfo2 objectForKeyedSubscript:@"ndo-follow-up-accept-action-type"];
 
   objc_initWeak(buf, self);
   if ([v16 isEqualToString:@"OPEN_PATH"])
@@ -67,7 +67,7 @@
     WeakRetained = objc_loadWeakRetained(buf);
     [WeakRetained finishProcessing];
 
-    v9[2](v9, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -81,7 +81,7 @@
       v31[3] = &unk_100008208;
       v32 = v13;
       objc_copyWeak(&v34, buf);
-      v33 = v9;
+      v33 = completionCopy;
       [v19 openURL:v32 configuration:0 completionHandler:v31];
 
       objc_destroyWeak(&v34);
@@ -90,11 +90,11 @@
 
     else
     {
-      v21 = [v8 userInfo];
-      v20 = [v21 objectForKeyedSubscript:@"ndo-follow-up-additional-payload"];
+      userInfo3 = [itemCopy userInfo];
+      v20 = [userInfo3 objectForKeyedSubscript:@"ndo-follow-up-additional-payload"];
 
-      v22 = [v8 userInfo];
-      v24 = [v22 objectForKeyedSubscript:@"ndo-follow-up-additional-headers"];
+      userInfo4 = [itemCopy userInfo];
+      v24 = [userInfo4 objectForKeyedSubscript:@"ndo-follow-up-additional-headers"];
 
       v23 = objc_opt_new();
       v29[0] = _NSConcreteStackBlock;
@@ -107,7 +107,7 @@
       v26[2] = sub_100001938;
       v26[3] = &unk_100008258;
       objc_copyWeak(&v28, buf);
-      v27 = v9;
+      v27 = completionCopy;
       [NDOAMSUIComposition makeFollowUpAMSViewControllerWithAgent:v23 url:v13 presenter:self headers:v24 body:v20 onDismiss:v29 completion:v26];
 
       objc_destroyWeak(&v28);
@@ -118,36 +118,36 @@
   objc_destroyWeak(buf);
 }
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  actionCopy = action;
+  completionCopy = completion;
   v11 = _NDOLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 userInfo];
-    v13 = [v12 allKeys];
-    v14 = [v9 label];
-    v15 = [v9 identifier];
+    userInfo = [itemCopy userInfo];
+    allKeys = [userInfo allKeys];
+    label = [actionCopy label];
+    identifier = [actionCopy identifier];
     *buf = 138412802;
-    v28 = v13;
+    v28 = allKeys;
     v29 = 2112;
-    v30 = v14;
+    v30 = label;
     v31 = 2112;
-    v32 = v15;
+    v32 = identifier;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Proccess followup with user info keys: %@ :: %@ :: %@", buf, 0x20u);
   }
 
-  if ([(NDOAppleCareLandingViewController *)self isNewStackFollowUpItem:v8])
+  if ([(NDOAppleCareLandingViewController *)self isNewStackFollowUpItem:itemCopy])
   {
-    [(NDOAppleCareLandingViewController *)self processNewStackFollowUpItem:v8 selectedAction:v9 completion:v10];
+    [(NDOAppleCareLandingViewController *)self processNewStackFollowUpItem:itemCopy selectedAction:actionCopy completion:completionCopy];
   }
 
   else
   {
-    v16 = [v8 userInfo];
-    v17 = [v16 objectForKeyedSubscript:@"FollowupSerialNumber"];
+    userInfo2 = [itemCopy userInfo];
+    v17 = [userInfo2 objectForKeyedSubscript:@"FollowupSerialNumber"];
 
     [(NDOAppleCareLandingViewController *)self setPresentedSerialNumber:v17];
     v18 = _NDOLogSystem();
@@ -156,91 +156,91 @@
       sub_100003398();
     }
 
-    v19 = [(NDOAppleCareLandingViewController *)self manager];
+    manager = [(NDOAppleCareLandingViewController *)self manager];
     objc_initWeak(buf, self);
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100001D4C;
     v21[3] = &unk_1000082F8;
     objc_copyWeak(&v26, buf);
-    v25 = v10;
+    v25 = completionCopy;
     v21[4] = self;
-    v22 = v9;
+    v22 = actionCopy;
     v20 = v17;
     v23 = v20;
-    v24 = v8;
-    [v19 getDeviceInfoForSerialNumber:v20 usingPolicy:0 withReply:v21];
+    v24 = itemCopy;
+    [manager getDeviceInfoForSerialNumber:v20 usingPolicy:0 withReply:v21];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)_clearNotificationForSerialNumber:(id)a3 completion:(id)a4
+- (void)_clearNotificationForSerialNumber:(id)number completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NDOAppleCareLandingViewController *)self manager];
+  numberCopy = number;
+  completionCopy = completion;
+  manager = [(NDOAppleCareLandingViewController *)self manager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000276C;
   v11[3] = &unk_1000082A8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 dismissNotificationForSerialNumber:v10 completion:v11];
+  v12 = numberCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = numberCopy;
+  [manager dismissNotificationForSerialNumber:v10 completion:v11];
 }
 
-- (void)webviewFinishedWithCompletion:(unint64_t)a3
+- (void)webviewFinishedWithCompletion:(unint64_t)completion
 {
-  v5 = [(NDOAppleCareLandingViewController *)self presentedSerialNumber];
-  [(NDOAppleCareLandingViewController *)self outreachFinishedForDeviceWithSerialNumber:v5 withCompletion:a3];
+  presentedSerialNumber = [(NDOAppleCareLandingViewController *)self presentedSerialNumber];
+  [(NDOAppleCareLandingViewController *)self outreachFinishedForDeviceWithSerialNumber:presentedSerialNumber withCompletion:completion];
 }
 
-- (void)amsUIViewFinishedWithCompletion:(unint64_t)a3
+- (void)amsUIViewFinishedWithCompletion:(unint64_t)completion
 {
-  v5 = [(NDOAppleCareLandingViewController *)self presentedSerialNumber];
-  [(NDOAppleCareLandingViewController *)self outreachFinishedForDeviceWithSerialNumber:v5 withCompletion:a3];
+  presentedSerialNumber = [(NDOAppleCareLandingViewController *)self presentedSerialNumber];
+  [(NDOAppleCareLandingViewController *)self outreachFinishedForDeviceWithSerialNumber:presentedSerialNumber withCompletion:completion];
 }
 
-- (void)amsUIViewFinishedWithCompletion:(unint64_t)a3 params:(id)a4
+- (void)amsUIViewFinishedWithCompletion:(unint64_t)completion params:(id)params
 {
-  v6 = [(NDOAppleCareLandingViewController *)self presentedSerialNumber:a3];
-  [(NDOAppleCareLandingViewController *)self outreachFinishedForDeviceWithSerialNumber:v6 withCompletion:a3];
+  v6 = [(NDOAppleCareLandingViewController *)self presentedSerialNumber:completion];
+  [(NDOAppleCareLandingViewController *)self outreachFinishedForDeviceWithSerialNumber:v6 withCompletion:completion];
 }
 
-- (void)outreachFinishedForDeviceWithSerialNumber:(id)a3 withCompletion:(unint64_t)a4
+- (void)outreachFinishedForDeviceWithSerialNumber:(id)number withCompletion:(unint64_t)completion
 {
-  v6 = a3;
+  numberCopy = number;
   v7 = _NDOLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v13 = a4;
+    completionCopy = completion;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "outreachFinishedWithCompletion: %ld", buf, 0xCu);
   }
 
-  v8 = [(NDOAppleCareLandingViewController *)self manager];
-  if ((a4 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+  manager = [(NDOAppleCareLandingViewController *)self manager];
+  if ((completion & 0xFFFFFFFFFFFFFFFBLL) != 0)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100002CC4;
     v10[3] = &unk_100008360;
-    v11 = v6;
-    [v8 dismissFollowUpForSerialNumber:v11 completion:v10];
+    v11 = numberCopy;
+    [manager dismissFollowUpForSerialNumber:v11 completion:v10];
   }
 
-  if (a4 <= 5 && ((1 << a4) & 0x2C) != 0)
+  if (completion <= 5 && ((1 << completion) & 0x2C) != 0)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100002D9C;
     v9[3] = &unk_1000083B0;
     v9[4] = self;
-    v9[5] = a4;
-    [v8 getDeviceInfoForSerialNumber:v6 usingPolicy:2 withReply:v9];
+    v9[5] = completion;
+    [manager getDeviceInfoForSerialNumber:numberCopy usingPolicy:2 withReply:v9];
   }
 
   else

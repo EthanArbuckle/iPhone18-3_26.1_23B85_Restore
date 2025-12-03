@@ -1,55 +1,55 @@
 @interface TUIDropController
-- (BOOL)_embeddedCollectionView:(id)a3 canHandleDropSession:(id)a4;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
+- (BOOL)_embeddedCollectionView:(id)view canHandleDropSession:(id)session;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (TUIActionHandlerDelegate)actionHandlerDelegate;
 - (UIDropInteraction)dropInteraction;
-- (id)_embeddedCollectionViewForInteraction:(id)a3 session:(id)a4;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (void)_accessDropBehaviorForEmbeddedCollectionView:(id)a3 block:(id)a4;
-- (void)_embeddedCollectionView:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
+- (id)_embeddedCollectionViewForInteraction:(id)interaction session:(id)session;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (void)_accessDropBehaviorForEmbeddedCollectionView:(id)view block:(id)block;
+- (void)_embeddedCollectionView:(id)view performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
 @end
 
 @implementation TUIDropController
 
-- (void)_accessDropBehaviorForEmbeddedCollectionView:(id)a3 block:(id)a4
+- (void)_accessDropBehaviorForEmbeddedCollectionView:(id)view block:(id)block
 {
-  v12 = a3;
-  v5 = a4;
-  if ([v12 acceptsDrop])
+  viewCopy = view;
+  blockCopy = block;
+  if ([viewCopy acceptsDrop])
   {
-    v6 = [v12 dropHandler];
-    v7 = v6;
-    if (v6)
+    dropHandler = [viewCopy dropHandler];
+    v7 = dropHandler;
+    if (dropHandler)
     {
-      v8 = [v6 actionsData];
-      v9 = [v8 behaviorDataForTrigger:@"drop"];
+      actionsData = [dropHandler actionsData];
+      v9 = [actionsData behaviorDataForTrigger:@"drop"];
 
-      v10 = [v9 behavior];
-      if (v10)
+      behavior = [v9 behavior];
+      if (behavior)
       {
-        v11 = [v7 actionObject];
-        v5[2](v5, v10, v11);
+        actionObject = [v7 actionObject];
+        blockCopy[2](blockCopy, behavior, actionObject);
       }
     }
   }
 }
 
-- (void)_embeddedCollectionView:(id)a3 performDrop:(id)a4
+- (void)_embeddedCollectionView:(id)view performDrop:(id)drop
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_3AE68;
   v6[3] = &unk_25ED90;
-  v7 = self;
-  v8 = a4;
-  v5 = v8;
-  [(TUIDropController *)v7 _accessDropBehaviorForEmbeddedCollectionView:a3 block:v6];
+  selfCopy = self;
+  dropCopy = drop;
+  v5 = dropCopy;
+  [(TUIDropController *)selfCopy _accessDropBehaviorForEmbeddedCollectionView:view block:v6];
 }
 
-- (BOOL)_embeddedCollectionView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)_embeddedCollectionView:(id)view canHandleDropSession:(id)session
 {
-  v6 = a3;
+  viewCopy = view;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -60,9 +60,9 @@
   v9[3] = &unk_25EDB8;
   v11 = &v12;
   v9[4] = self;
-  v7 = a4;
-  v10 = v7;
-  [(TUIDropController *)self _accessDropBehaviorForEmbeddedCollectionView:v6 block:v9];
+  sessionCopy = session;
+  v10 = sessionCopy;
+  [(TUIDropController *)self _accessDropBehaviorForEmbeddedCollectionView:viewCopy block:v9];
   LOBYTE(self) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
@@ -84,18 +84,18 @@
   return dropInteraction;
 }
 
-- (id)_embeddedCollectionViewForInteraction:(id)a3 session:(id)a4
+- (id)_embeddedCollectionViewForInteraction:(id)interaction session:(id)session
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 view];
-  [v5 locationInView:v7];
+  sessionCopy = session;
+  interactionCopy = interaction;
+  view = [interactionCopy view];
+  [sessionCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  v12 = [v6 view];
+  view2 = [interactionCopy view];
 
-  v13 = [v12 hitTest:0 withEvent:{v9, v11}];
+  v13 = [view2 hitTest:0 withEvent:{v9, v11}];
 
   objc_opt_class();
   v14 = TUIPlatformAncestorOfClass(v13);
@@ -103,20 +103,20 @@
   return v14;
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v6 = a4;
-  v7 = [(TUIDropController *)self _embeddedCollectionViewForInteraction:a3 session:v6];
-  LOBYTE(self) = [(TUIDropController *)self _embeddedCollectionView:v7 canHandleDropSession:v6];
+  sessionCopy = session;
+  v7 = [(TUIDropController *)self _embeddedCollectionViewForInteraction:interaction session:sessionCopy];
+  LOBYTE(self) = [(TUIDropController *)self _embeddedCollectionView:v7 canHandleDropSession:sessionCopy];
 
   return self;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v6 = a4;
-  v7 = [(TUIDropController *)self _embeddedCollectionViewForInteraction:a3 session:v6];
-  LODWORD(self) = [(TUIDropController *)self _embeddedCollectionView:v7 canHandleDropSession:v6];
+  updateCopy = update;
+  v7 = [(TUIDropController *)self _embeddedCollectionViewForInteraction:interaction session:updateCopy];
+  LODWORD(self) = [(TUIDropController *)self _embeddedCollectionView:v7 canHandleDropSession:updateCopy];
 
   if (self)
   {
@@ -133,11 +133,11 @@
   return v9;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
-  v6 = a4;
-  v7 = [(TUIDropController *)self _embeddedCollectionViewForInteraction:a3 session:v6];
-  [(TUIDropController *)self _embeddedCollectionView:v7 performDrop:v6];
+  dropCopy = drop;
+  v7 = [(TUIDropController *)self _embeddedCollectionViewForInteraction:interaction session:dropCopy];
+  [(TUIDropController *)self _embeddedCollectionView:v7 performDrop:dropCopy];
 }
 
 - (TUIActionHandlerDelegate)actionHandlerDelegate

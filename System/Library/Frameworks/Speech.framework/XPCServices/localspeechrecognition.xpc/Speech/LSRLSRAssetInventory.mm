@@ -1,15 +1,15 @@
 @interface LSRLSRAssetInventory
-- (void)allocatedLocalesWithReply:(id)a3;
+- (void)allocatedLocalesWithReply:(id)reply;
 @end
 
 @implementation LSRLSRAssetInventory
 
-- (void)allocatedLocalesWithReply:(id)a3
+- (void)allocatedLocalesWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   _Block_copy(v4);
-  v5 = self;
-  sub_100017C00(v5, v4);
+  selfCopy = self;
+  sub_100017C00(selfCopy, v4);
   _Block_release(v4);
 }
 

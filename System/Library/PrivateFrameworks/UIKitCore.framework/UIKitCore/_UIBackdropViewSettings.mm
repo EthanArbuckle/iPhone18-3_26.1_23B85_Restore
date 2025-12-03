@@ -1,30 +1,30 @@
 @interface _UIBackdropViewSettings
 + (id)darkeningTintColor;
-+ (id)settingsForStyle:(int64_t)a3 graphicsQuality:(int64_t)a4;
-+ (id)settingsPreservingHintsFromSettings:(id)a3 graphicsQuality:(int64_t)a4;
++ (id)settingsForStyle:(int64_t)style graphicsQuality:(int64_t)quality;
++ (id)settingsPreservingHintsFromSettings:(id)settings graphicsQuality:(int64_t)quality;
 - (UIColor)combinedTintColor;
-- (_UIBackdropViewSettings)initWithDefaultValuesForGraphicsQuality:(int64_t)a3;
+- (_UIBackdropViewSettings)initWithDefaultValuesForGraphicsQuality:(int64_t)quality;
 - (id)description;
 - (void)clearRunLoopObserver;
-- (void)computeOutputSettingsUsingModel:(id)a3;
+- (void)computeOutputSettingsUsingModel:(id)model;
 - (void)dealloc;
 - (void)restoreDefaultValues;
 - (void)scheduleSettingsDidChangeIfNeeded;
-- (void)setBlurQuality:(id)a3;
-- (void)setBlursWithHardEdges:(BOOL)a3;
-- (void)setColorBurnTintMaskImage:(id)a3;
-- (void)setColorTint:(id)a3;
-- (void)setColorTintMaskImage:(id)a3;
-- (void)setDarkeningTintMaskImage:(id)a3;
+- (void)setBlurQuality:(id)quality;
+- (void)setBlursWithHardEdges:(BOOL)edges;
+- (void)setColorBurnTintMaskImage:(id)image;
+- (void)setColorTint:(id)tint;
+- (void)setColorTintMaskImage:(id)image;
+- (void)setDarkeningTintMaskImage:(id)image;
 - (void)setDefaultValues;
-- (void)setFilterMaskImage:(id)a3;
-- (void)setGrayscaleTintMaskImage:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLegibleColor:(id)a3;
-- (void)setRenderingHint:(int64_t)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setValuesFromModel:(id)a3;
-- (void)setZoomsBack:(BOOL)a3;
+- (void)setFilterMaskImage:(id)image;
+- (void)setGrayscaleTintMaskImage:(id)image;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLegibleColor:(id)color;
+- (void)setRenderingHint:(int64_t)hint;
+- (void)setSelected:(BOOL)selected;
+- (void)setValuesFromModel:(id)model;
+- (void)setZoomsBack:(BOOL)back;
 @end
 
 @implementation _UIBackdropViewSettings
@@ -44,8 +44,8 @@
 
   self->_suppressSettingsDidChange = v4;
   self->_version = 1;
-  v5 = [objc_opt_self() mainScreen];
-  [v5 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v7 = v6;
 
   v8 = ceil(v7 * 0.5);
@@ -67,15 +67,15 @@
 
   if (v13)
   {
-    v14 = [v13 intValue];
+    intValue = [v13 intValue];
   }
 
   else
   {
-    v14 = 0;
+    intValue = 0;
   }
 
-  self->_style = v14;
+  self->_style = intValue;
   *&self->_usesBackdropEffectView = 257;
   self->_usesColorTintView = 1;
   *&self->_usesContentView = 1;
@@ -191,24 +191,24 @@ LABEL_16:
   }
 }
 
-+ (id)settingsPreservingHintsFromSettings:(id)a3 graphicsQuality:(int64_t)a4
++ (id)settingsPreservingHintsFromSettings:(id)settings graphicsQuality:(int64_t)quality
 {
-  v5 = a3;
-  v6 = +[_UIBackdropViewSettings settingsForStyle:graphicsQuality:](_UIBackdropViewSettings, "settingsForStyle:graphicsQuality:", [v5 style], a4);
-  [v6 setRenderingHint:{objc_msgSend(v5, "renderingHint")}];
-  [v6 setStackingLevel:{objc_msgSend(v5, "stackingLevel")}];
-  [v6 copyAdditionalSettingsFromSettings:v5];
+  settingsCopy = settings;
+  v6 = +[_UIBackdropViewSettings settingsForStyle:graphicsQuality:](_UIBackdropViewSettings, "settingsForStyle:graphicsQuality:", [settingsCopy style], quality);
+  [v6 setRenderingHint:{objc_msgSend(settingsCopy, "renderingHint")}];
+  [v6 setStackingLevel:{objc_msgSend(settingsCopy, "stackingLevel")}];
+  [v6 copyAdditionalSettingsFromSettings:settingsCopy];
 
   return v6;
 }
 
-+ (id)settingsForStyle:(int64_t)a3 graphicsQuality:(int64_t)a4
++ (id)settingsForStyle:(int64_t)style graphicsQuality:(int64_t)quality
 {
-  if (a3 > 3999)
+  if (style > 3999)
   {
-    if (a3 <= 10049)
+    if (style <= 10049)
     {
-      switch(a3)
+      switch(style)
       {
         case 4000:
           v5 = _UIBackdropViewSettingsATVSemiLight;
@@ -266,15 +266,15 @@ LABEL_16:
       goto LABEL_106;
     }
 
-    if (a3 > 10091)
+    if (style > 10091)
     {
-      if (a3 > 10119)
+      if (style > 10119)
       {
-        if (a3 <= 11059)
+        if (style <= 11059)
         {
-          if (a3 != 10120)
+          if (style != 10120)
           {
-            if (a3 != 11050)
+            if (style != 11050)
             {
               goto LABEL_104;
             }
@@ -291,9 +291,9 @@ LABEL_94:
           goto LABEL_107;
         }
 
-        if (a3 != 11060)
+        if (style != 11060)
         {
-          if (a3 != 11070)
+          if (style != 11070)
           {
             goto LABEL_104;
           }
@@ -308,18 +308,18 @@ LABEL_65:
         goto LABEL_105;
       }
 
-      if (a3 == 10092)
+      if (style == 10092)
       {
         v8 = objc_alloc_init(_UIBackdropViewSettingsColored);
         v9 = _UIBackdropViewSettingsColorCancelRed();
         goto LABEL_94;
       }
 
-      if (a3 != 10100)
+      if (style != 10100)
       {
         v7 = 10110;
 LABEL_41:
-        if (a3 != v7)
+        if (style != v7)
         {
           goto LABEL_104;
         }
@@ -332,9 +332,9 @@ LABEL_68:
       goto LABEL_105;
     }
 
-    if (a3 <= 10079)
+    if (style <= 10079)
     {
-      if (a3 != 10050 && a3 != 10060)
+      if (style != 10050 && style != 10060)
       {
         v7 = 10070;
         goto LABEL_41;
@@ -345,7 +345,7 @@ LABEL_69:
       goto LABEL_105;
     }
 
-    switch(a3)
+    switch(style)
     {
       case 10080:
         goto LABEL_69;
@@ -358,30 +358,30 @@ LABEL_69:
     }
 
 LABEL_104:
-    NSLog(&cfstr_WarningUsingUi.isa, a2, a3);
+    NSLog(&cfstr_WarningUsingUi.isa, a2, style);
     v6 = +[_UIBackdropView defaultSettingsClass];
     goto LABEL_105;
   }
 
-  if (a3 <= 2028)
+  if (style <= 2028)
   {
-    if (a3 <= 999)
+    if (style <= 999)
     {
-      if (a3 < 0)
+      if (style < 0)
       {
-        if (a3 == -4)
+        if (style == -4)
         {
           v6 = _UIBackdropViewSettingsReplicator;
           goto LABEL_105;
         }
 
-        if (a3 == -3)
+        if (style == -3)
         {
           v6 = _UIBackdropViewSettingsCombiner;
           goto LABEL_105;
         }
 
-        if (a3 != -2)
+        if (style != -2)
         {
           goto LABEL_104;
         }
@@ -391,17 +391,17 @@ LABEL_104:
 
       else
       {
-        if (!a3)
+        if (!style)
         {
           goto LABEL_68;
         }
 
-        if (a3 == 1)
+        if (style == 1)
         {
           goto LABEL_65;
         }
 
-        if (a3 != 2)
+        if (style != 2)
         {
           goto LABEL_104;
         }
@@ -412,16 +412,16 @@ LABEL_104:
 
     else
     {
-      if (a3 <= 1099)
+      if (style <= 1099)
       {
-        if (a3 != 1000)
+        if (style != 1000)
         {
-          if (a3 == 1001)
+          if (style == 1001)
           {
             goto LABEL_65;
           }
 
-          if (a3 != 1003)
+          if (style != 1003)
           {
             goto LABEL_104;
           }
@@ -430,14 +430,14 @@ LABEL_104:
         goto LABEL_68;
       }
 
-      if (a3 > 2009)
+      if (style > 2009)
       {
-        if (a3 == 2010)
+        if (style == 2010)
         {
           goto LABEL_69;
         }
 
-        if (a3 == 2020)
+        if (style == 2020)
         {
           goto LABEL_68;
         }
@@ -445,12 +445,12 @@ LABEL_104:
         goto LABEL_104;
       }
 
-      if (a3 == 1100)
+      if (style == 1100)
       {
         goto LABEL_65;
       }
 
-      if (a3 != 2000)
+      if (style != 2000)
       {
         goto LABEL_104;
       }
@@ -459,23 +459,23 @@ LABEL_104:
     }
   }
 
-  else if (a3 > 2059)
+  else if (style > 2059)
   {
-    if (a3 <= 2079)
+    if (style <= 2079)
     {
-      if (a3 == 2060)
+      if (style == 2060)
       {
         v6 = _UIBackdropViewSettingsAdaptiveLight;
         goto LABEL_105;
       }
 
-      if (a3 == 2070)
+      if (style == 2070)
       {
         v6 = _UIBackdropViewSettingsSemiLight;
         goto LABEL_105;
       }
 
-      if (a3 != 2071)
+      if (style != 2071)
       {
         goto LABEL_104;
       }
@@ -485,15 +485,15 @@ LABEL_104:
 
     else
     {
-      if (a3 > 3900)
+      if (style > 3900)
       {
-        if (a3 == 3901)
+        if (style == 3901)
         {
           v6 = _UIBackdropViewSettingsLightKeyboard;
           goto LABEL_105;
         }
 
-        if (a3 == 3902)
+        if (style == 3902)
         {
           v6 = _UIBackdropViewSettingsLightEmojiKeyboard;
           goto LABEL_105;
@@ -502,13 +502,13 @@ LABEL_104:
         goto LABEL_104;
       }
 
-      if (a3 == 2080)
+      if (style == 2080)
       {
         v6 = _UIBackdropViewSettingsUltraColored;
         goto LABEL_105;
       }
 
-      if (a3 != 3900)
+      if (style != 3900)
       {
         goto LABEL_104;
       }
@@ -517,15 +517,15 @@ LABEL_104:
     }
   }
 
-  else if (a3 <= 2031)
+  else if (style <= 2031)
   {
-    if (a3 == 2029)
+    if (style == 2029)
     {
       v6 = _UIBackdropViewSettingsLightLow;
       goto LABEL_105;
     }
 
-    if (a3 == 2030)
+    if (style == 2030)
     {
       goto LABEL_65;
     }
@@ -535,15 +535,15 @@ LABEL_104:
 
   else
   {
-    if (a3 > 2039)
+    if (style > 2039)
     {
-      if (a3 == 2040)
+      if (style == 2040)
       {
         v6 = _UIBackdropViewSettingsColored;
         goto LABEL_105;
       }
 
-      if (a3 == 2050)
+      if (style == 2050)
       {
         goto LABEL_72;
       }
@@ -551,13 +551,13 @@ LABEL_104:
       goto LABEL_104;
     }
 
-    if (a3 == 2032)
+    if (style == 2032)
     {
       v6 = _UIBackdropViewSettingsUltraDarkWithZoom;
       goto LABEL_105;
     }
 
-    if (a3 != 2039)
+    if (style != 2039)
     {
       goto LABEL_104;
     }
@@ -566,7 +566,7 @@ LABEL_104:
   }
 
 LABEL_105:
-  v11 = [[v6 alloc] initWithDefaultValuesForGraphicsQuality:a4];
+  v11 = [[v6 alloc] initWithDefaultValuesForGraphicsQuality:quality];
 LABEL_106:
   v8 = v11;
 LABEL_107:
@@ -574,7 +574,7 @@ LABEL_107:
   return v8;
 }
 
-- (_UIBackdropViewSettings)initWithDefaultValuesForGraphicsQuality:(int64_t)a3
+- (_UIBackdropViewSettings)initWithDefaultValuesForGraphicsQuality:(int64_t)quality
 {
   v16.receiver = self;
   v16.super_class = _UIBackdropViewSettings;
@@ -594,23 +594,23 @@ LABEL_107:
     }
 
     v4->_suppressSettingsDidChange = v7;
-    if (a3)
+    if (quality)
     {
       v4->_explicitlySetGraphicsQuality = 1;
     }
 
     else if (_AXSEnhanceBackgroundContrastEnabled())
     {
-      a3 = 10;
+      quality = 10;
     }
 
     else
     {
       v8 = +[UIDevice currentDevice];
-      a3 = [v8 _graphicsQuality];
+      quality = [v8 _graphicsQuality];
     }
 
-    v5->_graphicsQuality = a3;
+    v5->_graphicsQuality = quality;
     [(_UIBackdropViewSettings *)v5 setDefaultValues];
     v9 = objc_alloc_init(_UIBackdropColorSettings);
     colorSettings = v5->_colorSettings;
@@ -639,15 +639,15 @@ LABEL_107:
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
 
-- (void)setValuesFromModel:(id)a3
+- (void)setValuesFromModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if (self->_style)
   {
-    v13 = v4;
+    v13 = modelCopy;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v4 = v13;
+    modelCopy = v13;
     if (isKindOfClass)
     {
       v6 = v13;
@@ -724,7 +724,7 @@ LABEL_107:
         [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
       }
 
-      v4 = v13;
+      modelCopy = v13;
     }
   }
 }
@@ -741,18 +741,18 @@ LABEL_107:
   return v3;
 }
 
-- (void)setBlurQuality:(id)a3
+- (void)setBlurQuality:(id)quality
 {
-  v4 = [a3 copy];
+  v4 = [quality copy];
   blurQuality = self->_blurQuality;
   self->_blurQuality = v4;
 
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
 
-- (void)setBlursWithHardEdges:(BOOL)a3
+- (void)setBlursWithHardEdges:(BOOL)edges
 {
-  if (a3)
+  if (edges)
   {
     v3 = 15;
   }
@@ -765,52 +765,52 @@ LABEL_107:
   [(_UIBackdropViewSettings *)self setBlurHardEdges:v3];
 }
 
-- (void)setColorTint:(id)a3
+- (void)setColorTint:(id)tint
 {
-  objc_storeStrong(&self->_colorTint, a3);
+  objc_storeStrong(&self->_colorTint, tint);
 
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
 
-- (void)setColorTintMaskImage:(id)a3
+- (void)setColorTintMaskImage:(id)image
 {
-  objc_storeStrong(&self->_colorTintMaskImage, a3);
+  objc_storeStrong(&self->_colorTintMaskImage, image);
 
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
 
-- (void)setColorBurnTintMaskImage:(id)a3
+- (void)setColorBurnTintMaskImage:(id)image
 {
-  objc_storeStrong(&self->_colorBurnTintMaskImage, a3);
+  objc_storeStrong(&self->_colorBurnTintMaskImage, image);
 
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
 
-- (void)setDarkeningTintMaskImage:(id)a3
+- (void)setDarkeningTintMaskImage:(id)image
 {
-  objc_storeStrong(&self->_darkeningTintMaskImage, a3);
+  objc_storeStrong(&self->_darkeningTintMaskImage, image);
 
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
 
-- (void)setFilterMaskImage:(id)a3
+- (void)setFilterMaskImage:(id)image
 {
-  objc_storeStrong(&self->_filterMaskImage, a3);
+  objc_storeStrong(&self->_filterMaskImage, image);
 
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
 
-- (void)setGrayscaleTintMaskImage:(id)a3
+- (void)setGrayscaleTintMaskImage:(id)image
 {
-  objc_storeStrong(&self->_grayscaleTintMaskImage, a3);
+  objc_storeStrong(&self->_grayscaleTintMaskImage, image);
 
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  self->_highlighted = a3;
-  if (a3)
+  self->_highlighted = highlighted;
+  if (highlighted)
   {
     [(_UIBackdropViewSettings *)self setUsesColorTintView:1];
   }
@@ -818,17 +818,17 @@ LABEL_107:
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
 
-- (void)setLegibleColor:(id)a3
+- (void)setLegibleColor:(id)color
 {
-  objc_storeStrong(&self->_legibleColor, a3);
+  objc_storeStrong(&self->_legibleColor, color);
 
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
 
-- (void)setRenderingHint:(int64_t)a3
+- (void)setRenderingHint:(int64_t)hint
 {
-  self->_renderingHint = a3;
-  if (a3 == 1)
+  self->_renderingHint = hint;
+  if (hint == 1)
   {
     [(_UIBackdropViewSettings *)self setUsesColorTintView:?];
   }
@@ -836,10 +836,10 @@ LABEL_107:
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  self->_selected = a3;
-  if (a3)
+  self->_selected = selected;
+  if (selected)
   {
     [(_UIBackdropViewSettings *)self setUsesColorTintView:1];
   }
@@ -847,10 +847,10 @@ LABEL_107:
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
 
-- (void)setZoomsBack:(BOOL)a3
+- (void)setZoomsBack:(BOOL)back
 {
   v3 = 0.05;
-  if (a3)
+  if (back)
   {
     v3 = 0.0;
   }
@@ -858,9 +858,9 @@ LABEL_107:
   [(_UIBackdropViewSettings *)self setZoom:v3];
 }
 
-- (void)computeOutputSettingsUsingModel:(id)a3
+- (void)computeOutputSettingsUsingModel:(id)model
 {
-  [(_UIBackdropViewSettings *)self setValuesFromModel:a3];
+  [(_UIBackdropViewSettings *)self setValuesFromModel:model];
 
   [(_UIBackdropViewSettings *)self scheduleSettingsDidChangeIfNeeded];
 }
@@ -903,49 +903,49 @@ LABEL_107:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"<%@ : %p>\n", objc_opt_class(), self];
-  [v3 appendFormat:@"    graphicsQuality:        %ld\n", -[_UIBackdropViewSettings graphicsQuality](self, "graphicsQuality")];
-  v4 = [(_UIBackdropViewSettings *)self isBackdropVisible];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"<%@ : %p>\n", objc_opt_class(), self];
+  [string appendFormat:@"    graphicsQuality:        %ld\n", -[_UIBackdropViewSettings graphicsQuality](self, "graphicsQuality")];
+  isBackdropVisible = [(_UIBackdropViewSettings *)self isBackdropVisible];
   v5 = @"NO";
-  if (v4)
+  if (isBackdropVisible)
   {
     v5 = @"YES";
   }
 
-  [v3 appendFormat:@"    backdrop visible:       %@\n", v5];
+  [string appendFormat:@"    backdrop visible:       %@\n", v5];
   [(_UIBackdropViewSettings *)self grayscaleTintLevel];
-  [v3 appendFormat:@"    grayscaleTintLevel:     %.2f\n", v6];
+  [string appendFormat:@"    grayscaleTintLevel:     %.2f\n", v6];
   [(_UIBackdropViewSettings *)self grayscaleTintAlpha];
-  [v3 appendFormat:@"    grayscaleTintAlpha:     %.2f\n", v7];
-  v8 = [(_UIBackdropViewSettings *)self grayscaleTintMaskImage];
-  [v3 appendFormat:@"    grayscaleTintMaskImage: %@\n", v8];
+  [string appendFormat:@"    grayscaleTintAlpha:     %.2f\n", v7];
+  grayscaleTintMaskImage = [(_UIBackdropViewSettings *)self grayscaleTintMaskImage];
+  [string appendFormat:@"    grayscaleTintMaskImage: %@\n", grayscaleTintMaskImage];
 
   [(_UIBackdropViewSettings *)self grayscaleTintMaskAlpha];
-  [v3 appendFormat:@"    grayscaleTintMaskAlpha: %.2f\n", v9];
-  v10 = [(_UIBackdropViewSettings *)self colorTint];
-  [v3 appendFormat:@"    colorTint:              %@\n", v10];
+  [string appendFormat:@"    grayscaleTintMaskAlpha: %.2f\n", v9];
+  colorTint = [(_UIBackdropViewSettings *)self colorTint];
+  [string appendFormat:@"    colorTint:              %@\n", colorTint];
 
   [(_UIBackdropViewSettings *)self colorTintAlpha];
-  [v3 appendFormat:@"    colorTintAlpha:         %.2f\n", v11];
-  v12 = [(_UIBackdropViewSettings *)self colorTintMaskImage];
-  [v3 appendFormat:@"    colorTintMaskImage:     %@\n", v12];
+  [string appendFormat:@"    colorTintAlpha:         %.2f\n", v11];
+  colorTintMaskImage = [(_UIBackdropViewSettings *)self colorTintMaskImage];
+  [string appendFormat:@"    colorTintMaskImage:     %@\n", colorTintMaskImage];
 
   [(_UIBackdropViewSettings *)self colorTintMaskAlpha];
-  [v3 appendFormat:@"    colorTintMaskAlpha:     %.2f\n", v13];
+  [string appendFormat:@"    colorTintMaskAlpha:     %.2f\n", v13];
   [(_UIBackdropViewSettings *)self blurRadius];
-  [v3 appendFormat:@"    blurRadius:             %.2f\n", v14];
+  [string appendFormat:@"    blurRadius:             %.2f\n", v14];
   [(_UIBackdropViewSettings *)self saturationDeltaFactor];
-  [v3 appendFormat:@"    saturationDeltaFactor:  %.2f\n", v15];
-  v16 = [(_UIBackdropViewSettings *)self filterMaskImage];
-  [v3 appendFormat:@"    filterMaskImage:        %@\n", v16];
+  [string appendFormat:@"    saturationDeltaFactor:  %.2f\n", v15];
+  filterMaskImage = [(_UIBackdropViewSettings *)self filterMaskImage];
+  [string appendFormat:@"    filterMaskImage:        %@\n", filterMaskImage];
 
   [(_UIBackdropViewSettings *)self filterMaskAlpha];
-  [v3 appendFormat:@"    filterMaskAlpha:        %.2f\n", v17];
-  v18 = [(_UIBackdropViewSettings *)self combinedTintColor];
-  [v3 appendFormat:@"    combinedTintColor:      %@\n", v18];
+  [string appendFormat:@"    filterMaskAlpha:        %.2f\n", v17];
+  combinedTintColor = [(_UIBackdropViewSettings *)self combinedTintColor];
+  [string appendFormat:@"    combinedTintColor:      %@\n", combinedTintColor];
 
-  return v3;
+  return string;
 }
 
 @end

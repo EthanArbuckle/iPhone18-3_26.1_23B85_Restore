@@ -1,15 +1,15 @@
 @interface PDDPClassMember
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRoles:(id)a3;
-- (int)rolesAtIndex:(unint64_t)a3;
+- (int)StringAsRoles:(id)roles;
+- (int)rolesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPClassMember
@@ -22,34 +22,34 @@
   [(PDDPClassMember *)&v3 dealloc];
 }
 
-- (int)rolesAtIndex:(unint64_t)a3
+- (int)rolesAtIndex:(unint64_t)index
 {
   p_roles = &self->_roles;
   count = self->_roles.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_roles->list[a3];
+  return p_roles->list[index];
 }
 
-- (int)StringAsRoles:(id)a3
+- (int)StringAsRoles:(id)roles
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_ROLE"])
+  rolesCopy = roles;
+  if ([rolesCopy isEqualToString:@"UNKNOWN_ROLE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"STUDENT"])
+  else if ([rolesCopy isEqualToString:@"STUDENT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"INSTRUCTOR"])
+  else if ([rolesCopy isEqualToString:@"INSTRUCTOR"])
   {
     v4 = 2;
   }
@@ -67,8 +67,8 @@
   v7.receiver = self;
   v7.super_class = PDDPClassMember;
   v3 = [(PDDPClassMember *)&v7 description];
-  v4 = [(PDDPClassMember *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPClassMember *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -129,47 +129,47 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v14 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v16 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   personIds = self->_personIds;
   if (personIds)
   {
-    v18 = [(PDDPTypedValue *)personIds dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"person_ids"];
+    dictionaryRepresentation3 = [(PDDPTypedValue *)personIds dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"person_ids"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_classMemberId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_classId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_personId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_roles.count)
@@ -179,7 +179,7 @@
     {
       v6 = self->_roles.list[v5];
       PBDataWriterWriteInt32Field();
-      v4 = v7;
+      toCopy = v7;
       ++v5;
     }
 
@@ -189,111 +189,111 @@
   if (self->_dateCreated)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_dateLastModified)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_personIds)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_classMemberId)
   {
-    [v8 setClassMemberId:?];
+    [toCopy setClassMemberId:?];
   }
 
   if (self->_classId)
   {
-    [v8 setClassId:?];
+    [toCopy setClassId:?];
   }
 
   if (self->_personId)
   {
-    [v8 setPersonId:?];
+    [toCopy setPersonId:?];
   }
 
   if ([(PDDPClassMember *)self rolesCount])
   {
-    [v8 clearRoles];
-    v4 = [(PDDPClassMember *)self rolesCount];
-    if (v4)
+    [toCopy clearRoles];
+    rolesCount = [(PDDPClassMember *)self rolesCount];
+    if (rolesCount)
     {
-      v5 = v4;
+      v5 = rolesCount;
       for (i = 0; i != v5; ++i)
       {
-        [v8 addRoles:{-[PDDPClassMember rolesAtIndex:](self, "rolesAtIndex:", i)}];
+        [toCopy addRoles:{-[PDDPClassMember rolesAtIndex:](self, "rolesAtIndex:", i)}];
       }
     }
   }
 
   if (self->_dateCreated)
   {
-    [v8 setDateCreated:?];
+    [toCopy setDateCreated:?];
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if (self->_dateLastModified)
   {
-    [v8 setDateLastModified:?];
-    v7 = v8;
+    [toCopy setDateLastModified:?];
+    v7 = toCopy;
   }
 
   if (self->_personIds)
   {
-    [v8 setPersonIds:?];
-    v7 = v8;
+    [toCopy setPersonIds:?];
+    v7 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_classMemberId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_classMemberId copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSString *)self->_classId copyWithZone:a3];
+  v8 = [(NSString *)self->_classId copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_personId copyWithZone:a3];
+  v10 = [(NSString *)self->_personId copyWithZone:zone];
   v11 = v5[8];
   v5[8] = v10;
 
   PBRepeatedInt32Copy();
-  v12 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v12 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v13 = v5[6];
   v5[6] = v12;
 
-  v14 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v14 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v15 = v5[7];
   v5[7] = v14;
 
-  v16 = [(PDDPTypedValue *)self->_personIds copyWithZone:a3];
+  v16 = [(PDDPTypedValue *)self->_personIds copyWithZone:zone];
   v17 = v5[9];
   v5[9] = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((classMemberId = self->_classMemberId, !(classMemberId | v4[5])) || -[NSString isEqual:](classMemberId, "isEqual:")) && ((classId = self->_classId, !(classId | v4[4])) || -[NSString isEqual:](classId, "isEqual:")) && ((personId = self->_personId, !(personId | v4[8])) || -[NSString isEqual:](personId, "isEqual:")) && PBRepeatedInt32IsEqual() && ((dateCreated = self->_dateCreated, !(dateCreated | v4[6])) || -[PDDPDate isEqual:](dateCreated, "isEqual:")) && ((dateLastModified = self->_dateLastModified, !(dateLastModified | v4[7])) || -[PDDPDate isEqual:](dateLastModified, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((classMemberId = self->_classMemberId, !(classMemberId | equalCopy[5])) || -[NSString isEqual:](classMemberId, "isEqual:")) && ((classId = self->_classId, !(classId | equalCopy[4])) || -[NSString isEqual:](classId, "isEqual:")) && ((personId = self->_personId, !(personId | equalCopy[8])) || -[NSString isEqual:](personId, "isEqual:")) && PBRepeatedInt32IsEqual() && ((dateCreated = self->_dateCreated, !(dateCreated | equalCopy[6])) || -[PDDPDate isEqual:](dateCreated, "isEqual:")) && ((dateLastModified = self->_dateLastModified, !(dateLastModified | equalCopy[7])) || -[PDDPDate isEqual:](dateLastModified, "isEqual:")))
   {
     personIds = self->_personIds;
-    if (personIds | v4[9])
+    if (personIds | equalCopy[9])
     {
       v11 = [(PDDPTypedValue *)personIds isEqual:?];
     }
@@ -323,32 +323,32 @@
   return v6 ^ v8 ^ [(PDDPTypedValue *)self->_personIds hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v15 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v15 = fromCopy;
+  if (fromCopy[5])
   {
     [(PDDPClassMember *)self setClassMemberId:?];
-    v4 = v15;
+    fromCopy = v15;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(PDDPClassMember *)self setClassId:?];
-    v4 = v15;
+    fromCopy = v15;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
     [(PDDPClassMember *)self setPersonId:?];
-    v4 = v15;
+    fromCopy = v15;
   }
 
-  v5 = [v4 rolesCount];
-  if (v5)
+  rolesCount = [fromCopy rolesCount];
+  if (rolesCount)
   {
-    v6 = v5;
+    v6 = rolesCount;
     for (i = 0; i != v6; ++i)
     {
       -[PDDPClassMember addRoles:](self, "addRoles:", [v15 rolesAtIndex:i]);

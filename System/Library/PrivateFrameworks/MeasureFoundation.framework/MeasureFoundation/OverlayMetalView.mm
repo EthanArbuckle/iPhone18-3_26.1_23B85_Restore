@@ -1,52 +1,52 @@
 @interface OverlayMetalView
-- (_TtC17MeasureFoundation16OverlayMetalView)initWithFrame:(CGRect)a3 device:(id)a4;
-- (void)didSwipeWithSender:(id)a3;
-- (void)drawInMTKView:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (_TtC17MeasureFoundation16OverlayMetalView)initWithFrame:(CGRect)frame device:(id)device;
+- (void)didSwipeWithSender:(id)sender;
+- (void)drawInMTKView:(id)view;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation OverlayMetalView
 
-- (_TtC17MeasureFoundation16OverlayMetalView)initWithFrame:(CGRect)a3 device:(id)a4
+- (_TtC17MeasureFoundation16OverlayMetalView)initWithFrame:(CGRect)frame device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectRetain();
-  return sub_2583A1A14(a4, x, y, width, height);
+  return sub_2583A1A14(device, x, y, width, height);
 }
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  OverlayMetalView.draw(in:)(v4);
+  viewCopy = view;
+  selfCopy = self;
+  OverlayMetalView.draw(in:)(viewCopy);
 }
 
-- (void)didSwipeWithSender:(id)a3
+- (void)didSwipeWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_2583A2A74(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_2583A2A74(senderCopy);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v9 = sub_258428660();
     v11 = v10;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v16, 0, sizeof(v16));
-    v14 = a5;
-    v15 = self;
-    if (!a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (!change)
     {
       goto LABEL_7;
     }
@@ -56,18 +56,18 @@ LABEL_6:
 
   v9 = 0;
   v11 = 0;
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v12 = a5;
-  v13 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   sub_258428E20();
   swift_unknownObjectRelease();
-  if (a5)
+  if (change)
   {
 LABEL_4:
     type metadata accessor for NSKeyValueChangeKey(0);

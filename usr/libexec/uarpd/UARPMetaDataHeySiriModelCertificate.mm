@@ -1,7 +1,7 @@
 @interface UARPMetaDataHeySiriModelCertificate
 - (UARPMetaDataHeySiriModelCertificate)init;
-- (UARPMetaDataHeySiriModelCertificate)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataHeySiriModelCertificate)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataHeySiriModelCertificate)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataHeySiriModelCertificate)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 @end
 
@@ -23,16 +23,16 @@
   return v3;
 }
 
-- (UARPMetaDataHeySiriModelCertificate)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataHeySiriModelCertificate)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataHeySiriModelCertificate *)self init];
   v7 = v6;
   if (v6)
   {
     v13.receiver = v6;
     v13.super_class = UARPMetaDataHeySiriModelCertificate;
-    v8 = [(UARPMetaData *)&v13 dataFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v13 dataFromPlistValue:valueCopy];
     modelCertificate = v7->_modelCertificate;
     v7->_modelCertificate = v8;
 
@@ -52,12 +52,12 @@ LABEL_6:
   return v11;
 }
 
-- (UARPMetaDataHeySiriModelCertificate)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataHeySiriModelCertificate)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataHeySiriModelCertificate *)self init];
   if (v6)
   {
-    v7 = [[NSData alloc] initWithBytes:a4 length:a3];
+    v7 = [[NSData alloc] initWithBytes:value length:length];
     modelCertificate = v6->_modelCertificate;
     v6->_modelCertificate = v7;
 
@@ -69,9 +69,9 @@ LABEL_6:
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataHeySiriModelCertificate *)self modelCertificate];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  modelCertificate = [(UARPMetaDataHeySiriModelCertificate *)self modelCertificate];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, modelCertificate];
 
   return v5;
 }

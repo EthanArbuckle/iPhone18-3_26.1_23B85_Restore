@@ -1,6 +1,6 @@
 @interface Gallery.ImageViewController
-- (_TtCV7ChatKit7Gallery19ImageViewController)initWithCoder:(id)a3;
-- (_TtCV7ChatKit7Gallery19ImageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtCV7ChatKit7Gallery19ImageViewController)initWithCoder:(id)coder;
+- (_TtCV7ChatKit7Gallery19ImageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,13 +8,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_190AA2E4C();
 }
 
-- (_TtCV7ChatKit7Gallery19ImageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCV7ChatKit7Gallery19ImageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_190D56F10();
     v7 = v6;
@@ -27,7 +27,7 @@
 
   v8 = OBJC_IVAR____TtCV7ChatKit7Gallery19ImageViewController_imageView;
   v9 = objc_allocWithZone(MEMORY[0x1E69DCAE0]);
-  v10 = a4;
+  bundleCopy = bundle;
   *(&self->super.super.super.isa + v8) = [v9 init];
   if (v7)
   {
@@ -41,20 +41,20 @@
 
   v14.receiver = self;
   v14.super_class = _s19ImageViewControllerCMa();
-  v12 = [(Gallery.ImageViewController *)&v14 initWithNibName:v11 bundle:v10];
+  v12 = [(Gallery.ImageViewController *)&v14 initWithNibName:v11 bundle:bundleCopy];
 
   return v12;
 }
 
-- (_TtCV7ChatKit7Gallery19ImageViewController)initWithCoder:(id)a3
+- (_TtCV7ChatKit7Gallery19ImageViewController)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtCV7ChatKit7Gallery19ImageViewController_imageView;
   v6 = objc_allocWithZone(MEMORY[0x1E69DCAE0]);
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.isa + v5) = [v6 init];
   v10.receiver = self;
   v10.super_class = _s19ImageViewControllerCMa();
-  v8 = [(Gallery.ImageViewController *)&v10 initWithCoder:v7];
+  v8 = [(Gallery.ImageViewController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

@@ -1,27 +1,27 @@
 @interface NLHeartRateAverageAccumulator
 - ($B42DDA7905377C1B85A751F444708923)heartRateData;
 - ($B42DDA7905377C1B85A751F444708923)lastAveragingSegmentHeartRateData;
-- (NLHeartRateAverageAccumulator)initWithBuilder:(id)a3 averageInterval:(double)a4;
-- (NLHeartRateAverageAccumulator)initWithBuilder:(id)a3 staleTimeout:(double)a4;
+- (NLHeartRateAverageAccumulator)initWithBuilder:(id)builder averageInterval:(double)interval;
+- (NLHeartRateAverageAccumulator)initWithBuilder:(id)builder staleTimeout:(double)timeout;
 - (void)markAveragingSegment;
-- (void)updateWithStatistics:(id)a3;
+- (void)updateWithStatistics:(id)statistics;
 @end
 
 @implementation NLHeartRateAverageAccumulator
 
-- (NLHeartRateAverageAccumulator)initWithBuilder:(id)a3 averageInterval:(double)a4
+- (NLHeartRateAverageAccumulator)initWithBuilder:(id)builder averageInterval:(double)interval
 {
-  v5 = a3;
-  v6 = specialized HeartRateAverageAccumulator.init(builder:averageInterval:)(v5, a4);
+  builderCopy = builder;
+  v6 = specialized HeartRateAverageAccumulator.init(builder:averageInterval:)(builderCopy, interval);
 
   return v6;
 }
 
-- (void)updateWithStatistics:(id)a3
+- (void)updateWithStatistics:(id)statistics
 {
-  v4 = a3;
-  v5 = self;
-  HeartRateAverageAccumulator.update(with:)(v4);
+  statisticsCopy = statistics;
+  selfCopy = self;
+  HeartRateAverageAccumulator.update(with:)(statisticsCopy);
 }
 
 - ($B42DDA7905377C1B85A751F444708923)heartRateData
@@ -46,7 +46,7 @@
 
 - ($B42DDA7905377C1B85A751F444708923)lastAveragingSegmentHeartRateData
 {
-  v4 = self;
+  selfCopy = self;
   HeartRateAverageAccumulator.lastAveragingSegmentHeartRateData.getter(v10);
   v5 = *v10;
   v6 = v10[1];
@@ -62,11 +62,11 @@
 
 - (void)markAveragingSegment
 {
-  v2 = self;
+  selfCopy = self;
   HeartRateAverageAccumulator.markAveragingSegment()();
 }
 
-- (NLHeartRateAverageAccumulator)initWithBuilder:(id)a3 staleTimeout:(double)a4
+- (NLHeartRateAverageAccumulator)initWithBuilder:(id)builder staleTimeout:(double)timeout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,21 +1,21 @@
 @interface DDFallbackController
-- (DDFallbackController)initWithWindow:(id)a3 interactionDelegate:(id)a4;
+- (DDFallbackController)initWithWindow:(id)window interactionDelegate:(id)delegate;
 - (void)loadView;
 @end
 
 @implementation DDFallbackController
 
-- (DDFallbackController)initWithWindow:(id)a3 interactionDelegate:(id)a4
+- (DDFallbackController)initWithWindow:(id)window interactionDelegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = DDFallbackController;
-  v7 = a3;
+  windowCopy = window;
   v8 = [(DDFallbackController *)&v11 init];
-  objc_storeWeak(&v8->_baseWindow, v7);
+  objc_storeWeak(&v8->_baseWindow, windowCopy);
 
   interactionDelegate = v8->_interactionDelegate;
-  v8->_interactionDelegate = v6;
+  v8->_interactionDelegate = delegateCopy;
 
   return v8;
 }

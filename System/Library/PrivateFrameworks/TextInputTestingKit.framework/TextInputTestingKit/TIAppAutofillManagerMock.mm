@@ -1,34 +1,34 @@
 @interface TIAppAutofillManagerMock
 - (TIAppAutofillManagerMock)init;
-- (void)generateAutofillFormCandidatesWithRenderTraits:(id)a3 withKeyboardState:(id)a4 completion:(id)a5;
-- (void)shouldAcceptAutofill:(id)a3 withPayload:(id)a4 completion:(id)a5;
-- (void)shouldAcceptOneTimeCode:(id)a3 completion:(id)a4;
+- (void)generateAutofillFormCandidatesWithRenderTraits:(id)traits withKeyboardState:(id)state completion:(id)completion;
+- (void)shouldAcceptAutofill:(id)autofill withPayload:(id)payload completion:(id)completion;
+- (void)shouldAcceptOneTimeCode:(id)code completion:(id)completion;
 @end
 
 @implementation TIAppAutofillManagerMock
 
-- (void)shouldAcceptOneTimeCode:(id)a3 completion:(id)a4
+- (void)shouldAcceptOneTimeCode:(id)code completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)shouldAcceptAutofill:(id)a3 withPayload:(id)a4 completion:(id)a5
+- (void)shouldAcceptAutofill:(id)autofill withPayload:(id)payload completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)generateAutofillFormCandidatesWithRenderTraits:(id)a3 withKeyboardState:(id)a4 completion:(id)a5
+- (void)generateAutofillFormCandidatesWithRenderTraits:(id)traits withKeyboardState:(id)state completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = dispatch_get_global_queue(33, 0);
-  v8 = v5;
-  v7 = v5;
+  v8 = completionCopy;
+  v7 = completionCopy;
   TIDispatchAsync();
 }
 

@@ -1,19 +1,19 @@
 @interface PGPOIFeatureExtractor
-+ (id)_labelForEmptyRelationForVersion:(int64_t)a3;
-+ (id)_labelProcessingForVersion:(int64_t)a3 label:(id)a4;
-+ (id)_labelsForVersion:(int64_t)a3;
-+ (id)_rawLabelsForVersion:(int64_t)a3;
-- (PGPOIFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4;
++ (id)_labelForEmptyRelationForVersion:(int64_t)version;
++ (id)_labelProcessingForVersion:(int64_t)version label:(id)label;
++ (id)_labelsForVersion:(int64_t)version;
++ (id)_rawLabelsForVersion:(int64_t)version;
+- (PGPOIFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error;
 @end
 
 @implementation PGPOIFeatureExtractor
 
-- (PGPOIFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4
+- (PGPOIFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error
 {
-  v6 = [objc_opt_class() _labelsForVersion:a3];
-  v7 = [objc_opt_class() _labelForEmptyRelationForVersion:a3];
+  v6 = [objc_opt_class() _labelsForVersion:version];
+  v7 = [objc_opt_class() _labelForEmptyRelationForVersion:version];
   v8 = MEMORY[0x277CBEB98];
-  v9 = [objc_opt_class() _rawLabelsForVersion:a3];
+  v9 = [objc_opt_class() _rawLabelsForVersion:version];
   v10 = [v8 setWithArray:v9];
 
   v11 = +[PGGraphMomentNode poiOfMoment];
@@ -22,7 +22,7 @@
   v16[2] = __47__PGPOIFeatureExtractor_initWithVersion_error___block_invoke;
   v16[3] = &unk_27887F4B0;
   v17 = v10;
-  v18 = a3;
+  versionCopy = version;
   v15.receiver = self;
   v15.super_class = PGPOIFeatureExtractor;
   v12 = v10;
@@ -46,13 +46,13 @@ id __47__PGPOIFeatureExtractor_initWithVersion_error___block_invoke(uint64_t a1,
   return v5;
 }
 
-+ (id)_labelForEmptyRelationForVersion:(int64_t)a3
++ (id)_labelForEmptyRelationForVersion:(int64_t)version
 {
-  if (a3 == 3)
+  if (version == 3)
   {
     v4 = @"None";
     v5 = @"None";
-    v6 = [a1 _labelProcessingForVersion:3 label:@"None"];
+    v6 = [self _labelProcessingForVersion:3 label:@"None"];
   }
 
   else
@@ -64,15 +64,15 @@ id __47__PGPOIFeatureExtractor_initWithVersion_error___block_invoke(uint64_t a1,
   return v6;
 }
 
-+ (id)_labelProcessingForVersion:(int64_t)a3 label:(id)a4
++ (id)_labelProcessingForVersion:(int64_t)version label:(id)label
 {
-  v6 = a4;
-  v7 = v6;
-  if ((a3 - 2) >= 2)
+  labelCopy = label;
+  v7 = labelCopy;
+  if ((version - 2) >= 2)
   {
-    if (a3 == 1)
+    if (version == 1)
     {
-      v10 = v6;
+      v10 = labelCopy;
     }
 
     else
@@ -84,17 +84,17 @@ id __47__PGPOIFeatureExtractor_initWithVersion_error___block_invoke(uint64_t a1,
   else
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [a1 prefix];
-    v10 = [v8 stringWithFormat:@"%@_%@", v9, v7];
+    prefix = [self prefix];
+    v10 = [v8 stringWithFormat:@"%@_%@", prefix, v7];
   }
 
   return v10;
 }
 
-+ (id)_labelsForVersion:(int64_t)a3
++ (id)_labelsForVersion:(int64_t)version
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [a1 _rawLabelsForVersion:?];
+  v5 = [self _rawLabelsForVersion:?];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
@@ -115,7 +115,7 @@ id __47__PGPOIFeatureExtractor_initWithVersion_error___block_invoke(uint64_t a1,
           objc_enumerationMutation(v7);
         }
 
-        v12 = [a1 _labelProcessingForVersion:a3 label:{*(*(&v15 + 1) + 8 * i), v15}];
+        v12 = [self _labelProcessingForVersion:version label:{*(*(&v15 + 1) + 8 * i), v15}];
         [v6 addObject:v12];
       }
 
@@ -130,10 +130,10 @@ id __47__PGPOIFeatureExtractor_initWithVersion_error___block_invoke(uint64_t a1,
   return v6;
 }
 
-+ (id)_rawLabelsForVersion:(int64_t)a3
++ (id)_rawLabelsForVersion:(int64_t)version
 {
   v23[16] = *MEMORY[0x277D85DE8];
-  if ((a3 - 1) < 2)
+  if ((version - 1) < 2)
   {
     v3 = *MEMORY[0x277D27540];
     v23[0] = *MEMORY[0x277D27558];
@@ -167,7 +167,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (a3 == 3)
+  if (version == 3)
   {
     v14 = *MEMORY[0x277D27540];
     v22[0] = *MEMORY[0x277D27558];

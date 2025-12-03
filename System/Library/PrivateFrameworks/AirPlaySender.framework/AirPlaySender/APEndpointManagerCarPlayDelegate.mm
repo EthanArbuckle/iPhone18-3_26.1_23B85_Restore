@@ -1,13 +1,13 @@
 @interface APEndpointManagerCarPlayDelegate
-- (APEndpointManagerCarPlayDelegate)initWithEndpointManager:(OpaqueFigEndpointManager *)a3;
+- (APEndpointManagerCarPlayDelegate)initWithEndpointManager:(OpaqueFigEndpointManager *)manager;
 - (void)dealloc;
-- (void)setCarPlayEnabled:(BOOL)a3;
-- (void)setEndpoint:(OpaqueFigEndpoint *)a3 isAllowed:(BOOL)a4;
+- (void)setCarPlayEnabled:(BOOL)enabled;
+- (void)setEndpoint:(OpaqueFigEndpoint *)endpoint isAllowed:(BOOL)allowed;
 @end
 
 @implementation APEndpointManagerCarPlayDelegate
 
-- (APEndpointManagerCarPlayDelegate)initWithEndpointManager:(OpaqueFigEndpointManager *)a3
+- (APEndpointManagerCarPlayDelegate)initWithEndpointManager:(OpaqueFigEndpointManager *)manager
 {
   v5.receiver = self;
   v5.super_class = APEndpointManagerCarPlayDelegate;
@@ -33,7 +33,7 @@
   [(APEndpointManagerCarPlayDelegate *)&v4 dealloc];
 }
 
-- (void)setEndpoint:(OpaqueFigEndpoint *)a3 isAllowed:(BOOL)a4
+- (void)setEndpoint:(OpaqueFigEndpoint *)endpoint isAllowed:(BOOL)allowed
 {
   v6 = FigCFWeakReferenceHolderCopyReferencedObject();
   if (v6)
@@ -45,8 +45,8 @@
     block[2] = __58__APEndpointManagerCarPlayDelegate_setEndpoint_isAllowed___block_invoke;
     block[3] = &__block_descriptor_49_e5_v8__0l;
     block[4] = v7;
-    block[5] = a3;
-    v10 = a4;
+    block[5] = endpoint;
+    allowedCopy = allowed;
     dispatch_sync(v8, block);
   }
 }
@@ -65,7 +65,7 @@ void __58__APEndpointManagerCarPlayDelegate_setEndpoint_isAllowed___block_invoke
   }
 }
 
-- (void)setCarPlayEnabled:(BOOL)a3
+- (void)setCarPlayEnabled:(BOOL)enabled
 {
   v4 = FigCFWeakReferenceHolderCopyReferencedObject();
   if (v4)
@@ -85,7 +85,7 @@ void __58__APEndpointManagerCarPlayDelegate_setEndpoint_isAllowed___block_invoke
     v8[3] = &unk_27849C528;
     v8[4] = v10;
     v8[5] = DerivedStorage;
-    v9 = a3;
+    enabledCopy = enabled;
     v8[6] = v5;
     dispatch_async(v7, v8);
     _Block_object_dispose(v10, 8);

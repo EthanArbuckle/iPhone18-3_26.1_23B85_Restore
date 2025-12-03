@@ -1,21 +1,21 @@
 @interface WBSHistoryTopicTag
 + (void)initialize;
-- (BOOL)containsHistoryItem:(id)a3;
+- (BOOL)containsHistoryItem:(id)item;
 - (NSArray)historyItems;
-- (WBSHistoryTopicTag)initWithTag:(id)a3 historyItems:(id)a4;
-- (WBSHistoryTopicTag)initWithTitle:(id)a3 identifier:(id)a4 databaseID:(int64_t)a5 modificationTimestamp:(double)a6 level:(int64_t)a7;
-- (void)_historyItemsWereRemoved:(id)a3;
+- (WBSHistoryTopicTag)initWithTag:(id)tag historyItems:(id)items;
+- (WBSHistoryTopicTag)initWithTitle:(id)title identifier:(id)identifier databaseID:(int64_t)d modificationTimestamp:(double)timestamp level:(int64_t)level;
+- (void)_historyItemsWereRemoved:(id)removed;
 - (void)dealloc;
-- (void)groupHistoryItemsBySessionWithCompletionHandler:(id)a3;
-- (void)removeHistoryItems:(id)a3;
-- (void)tagHistoryItem:(id)a3;
+- (void)groupHistoryItemsBySessionWithCompletionHandler:(id)handler;
+- (void)removeHistoryItems:(id)items;
+- (void)tagHistoryItem:(id)item;
 @end
 
 @implementation WBSHistoryTopicTag
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = dispatch_queue_create("com.apple.SafariShared.WBSHistoryTopicTag.Synchronization", 0);
     v3 = historyTopicSynchronizationQueue;
@@ -23,40 +23,40 @@
   }
 }
 
-- (WBSHistoryTopicTag)initWithTag:(id)a3 historyItems:(id)a4
+- (WBSHistoryTopicTag)initWithTag:(id)tag historyItems:(id)items
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 title];
-  v9 = [v7 identifier];
-  v10 = [v7 databaseID];
-  [v7 modificationTimestamp];
+  itemsCopy = items;
+  tagCopy = tag;
+  title = [tagCopy title];
+  identifier = [tagCopy identifier];
+  databaseID = [tagCopy databaseID];
+  [tagCopy modificationTimestamp];
   v12 = v11;
-  v13 = [v7 level];
+  level = [tagCopy level];
 
-  v14 = [(WBSHistoryTopicTag *)self initWithTitle:v8 identifier:v9 databaseID:v10 modificationTimestamp:v13 level:v12];
+  v14 = [(WBSHistoryTopicTag *)self initWithTitle:title identifier:identifier databaseID:databaseID modificationTimestamp:level level:v12];
   if (v14)
   {
-    [(NSMutableOrderedSet *)v14->_taggedItems addObjectsFromArray:v6];
+    [(NSMutableOrderedSet *)v14->_taggedItems addObjectsFromArray:itemsCopy];
     v15 = v14;
   }
 
   return v14;
 }
 
-- (WBSHistoryTopicTag)initWithTitle:(id)a3 identifier:(id)a4 databaseID:(int64_t)a5 modificationTimestamp:(double)a6 level:(int64_t)a7
+- (WBSHistoryTopicTag)initWithTitle:(id)title identifier:(id)identifier databaseID:(int64_t)d modificationTimestamp:(double)timestamp level:(int64_t)level
 {
   v13.receiver = self;
   v13.super_class = WBSHistoryTopicTag;
-  v7 = [(WBSHistoryTag *)&v13 initWithTitle:a3 identifier:a4 databaseID:a5 modificationTimestamp:a7 level:a6];
+  v7 = [(WBSHistoryTag *)&v13 initWithTitle:title identifier:identifier databaseID:d modificationTimestamp:level level:timestamp];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     taggedItems = v7->_taggedItems;
-    v7->_taggedItems = v8;
+    v7->_taggedItems = orderedSet;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__historyItemsWereRemoved_ name:@"WBSHistoryItemsWereRemovedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__historyItemsWereRemoved_ name:@"WBSHistoryItemsWereRemovedNotification" object:0];
 
     v11 = v7;
   }
@@ -66,25 +66,25 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = WBSHistoryTopicTag;
   [(WBSHistoryTopicTag *)&v4 dealloc];
 }
 
-- (void)tagHistoryItem:(id)a3
+- (void)tagHistoryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = historyTopicSynchronizationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__WBSHistoryTopicTag_tagHistoryItem___block_invoke;
   v7[3] = &unk_1E7FB6E30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemCopy;
+  v6 = itemCopy;
   dispatch_async(v5, v7);
 }
 
@@ -136,17 +136,17 @@ void __34__WBSHistoryTopicTag_historyItems__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)groupHistoryItemsBySessionWithCompletionHandler:(id)a3
+- (void)groupHistoryItemsBySessionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = historyTopicSynchronizationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__WBSHistoryTopicTag_groupHistoryItemsBySessionWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -254,9 +254,9 @@ uint64_t __70__WBSHistoryTopicTag_groupHistoryItemsBySessionWithCompletionHandle
   return v7;
 }
 
-- (BOOL)containsHistoryItem:(id)a3
+- (BOOL)containsHistoryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -266,10 +266,10 @@ uint64_t __70__WBSHistoryTopicTag_groupHistoryItemsBySessionWithCompletionHandle
   block[1] = 3221225472;
   block[2] = __42__WBSHistoryTopicTag_containsHistoryItem___block_invoke;
   block[3] = &unk_1E7FC83F0;
-  v9 = v4;
+  v9 = itemCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = itemCopy;
   dispatch_sync(v5, block);
   LOBYTE(v5) = *(v12 + 24);
 
@@ -284,10 +284,10 @@ uint64_t __42__WBSHistoryTopicTag_containsHistoryItem___block_invoke(void *a1)
   return result;
 }
 
-- (void)removeHistoryItems:(id)a3
+- (void)removeHistoryItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v5 = historyTopicSynchronizationQueue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -295,15 +295,15 @@ uint64_t __42__WBSHistoryTopicTag_containsHistoryItem___block_invoke(void *a1)
     v6[2] = __41__WBSHistoryTopicTag_removeHistoryItems___block_invoke;
     v6[3] = &unk_1E7FB6E30;
     v6[4] = self;
-    v7 = v4;
+    v7 = itemsCopy;
     dispatch_async(v5, v6);
   }
 }
 
-- (void)_historyItemsWereRemoved:(id)a3
+- (void)_historyItemsWereRemoved:(id)removed
 {
-  v5 = [a3 userInfo];
-  v4 = [v5 safari_arrayForKey:@"WBSHistoryItemsKey"];
+  userInfo = [removed userInfo];
+  v4 = [userInfo safari_arrayForKey:@"WBSHistoryItemsKey"];
   [(WBSHistoryTopicTag *)self removeHistoryItems:v4];
 }
 

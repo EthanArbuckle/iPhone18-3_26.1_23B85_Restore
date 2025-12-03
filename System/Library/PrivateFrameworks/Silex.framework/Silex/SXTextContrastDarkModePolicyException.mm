@@ -1,48 +1,48 @@
 @interface SXTextContrastDarkModePolicyException
-- (SXTextContrastDarkModePolicyException)initWithComponentStyleMerger:(id)a3 componentTextStyleMerger:(id)a4;
-- (id)componentStyleForComponent:(id)a3 DOM:(id)a4;
-- (id)componentTextStyleForButtonComponent:(id)a3 DOM:(id)a4;
-- (id)componentTextStyleForTextComponent:(id)a3 DOM:(id)a4;
-- (id)mergedComponentTextStyleWithIdentifiers:(id)a3 DOM:(id)a4;
-- (id)opaqueComponentStyleForComponent:(id)a3 DOM:(id)a4;
-- (int64_t)shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:(id)a3 DOM:(id)a4;
-- (int64_t)shouldApplyDarkModeToTextStyleForegroundColorsForComponent:(id)a3 DOM:(id)a4;
+- (SXTextContrastDarkModePolicyException)initWithComponentStyleMerger:(id)merger componentTextStyleMerger:(id)styleMerger;
+- (id)componentStyleForComponent:(id)component DOM:(id)m;
+- (id)componentTextStyleForButtonComponent:(id)component DOM:(id)m;
+- (id)componentTextStyleForTextComponent:(id)component DOM:(id)m;
+- (id)mergedComponentTextStyleWithIdentifiers:(id)identifiers DOM:(id)m;
+- (id)opaqueComponentStyleForComponent:(id)component DOM:(id)m;
+- (int64_t)shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:(id)component DOM:(id)m;
+- (int64_t)shouldApplyDarkModeToTextStyleForegroundColorsForComponent:(id)component DOM:(id)m;
 @end
 
 @implementation SXTextContrastDarkModePolicyException
 
-- (SXTextContrastDarkModePolicyException)initWithComponentStyleMerger:(id)a3 componentTextStyleMerger:(id)a4
+- (SXTextContrastDarkModePolicyException)initWithComponentStyleMerger:(id)merger componentTextStyleMerger:(id)styleMerger
 {
-  v7 = a3;
-  v8 = a4;
+  mergerCopy = merger;
+  styleMergerCopy = styleMerger;
   v12.receiver = self;
   v12.super_class = SXTextContrastDarkModePolicyException;
   v9 = [(SXTextContrastDarkModePolicyException *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_componentStyleMerger, a3);
-    objc_storeStrong(&v10->_componentTextStyleMerger, a4);
+    objc_storeStrong(&v9->_componentStyleMerger, merger);
+    objc_storeStrong(&v10->_componentTextStyleMerger, styleMerger);
   }
 
   return v10;
 }
 
-- (int64_t)shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:(id)a3 DOM:(id)a4
+- (int64_t)shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:(id)component DOM:(id)m
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 analysis];
-  v9 = [v6 identifier];
-  v10 = [v8 componentTextStylesForComponent:v9];
+  componentCopy = component;
+  mCopy = m;
+  analysis = [mCopy analysis];
+  identifier = [componentCopy identifier];
+  v10 = [analysis componentTextStylesForComponent:identifier];
   v11 = [v10 count];
 
   if (v11)
   {
-    v12 = [(SXTextContrastDarkModePolicyException *)self opaqueComponentStyleForComponent:v6 DOM:v7];
-    v13 = [v12 fill];
+    v12 = [(SXTextContrastDarkModePolicyException *)self opaqueComponentStyleForComponent:componentCopy DOM:mCopy];
+    fill = [v12 fill];
 
-    if (v13)
+    if (fill)
     {
       v14 = 0;
     }
@@ -61,22 +61,22 @@
   return v14;
 }
 
-- (int64_t)shouldApplyDarkModeToTextStyleForegroundColorsForComponent:(id)a3 DOM:(id)a4
+- (int64_t)shouldApplyDarkModeToTextStyleForegroundColorsForComponent:(id)component DOM:(id)m
 {
   v135 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 analysis];
-  v9 = [v6 identifier];
-  v10 = [v8 componentTextStylesForComponent:v9];
+  componentCopy = component;
+  mCopy = m;
+  analysis = [mCopy analysis];
+  identifier = [componentCopy identifier];
+  v10 = [analysis componentTextStylesForComponent:identifier];
   v11 = [v10 count];
 
   if (v11)
   {
-    v115 = [(SXTextContrastDarkModePolicyException *)self opaqueComponentStyleForComponent:v6 DOM:v7];
-    v12 = [v115 fill];
+    v115 = [(SXTextContrastDarkModePolicyException *)self opaqueComponentStyleForComponent:componentCopy DOM:mCopy];
+    fill = [v115 fill];
 
-    if (v12)
+    if (fill)
     {
       v13 = 0;
 LABEL_58:
@@ -87,10 +87,10 @@ LABEL_58:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v6 text];
-      v15 = [v14 length];
+      text = [componentCopy text];
+      v15 = [text length];
 
-      v16 = [(SXTextContrastDarkModePolicyException *)self componentTextStyleForTextComponent:v6 DOM:v7];
+      v16 = [(SXTextContrastDarkModePolicyException *)self componentTextStyleForTextComponent:componentCopy DOM:mCopy];
     }
 
     else
@@ -102,55 +102,55 @@ LABEL_58:
         goto LABEL_58;
       }
 
-      v17 = [v6 text];
-      v15 = [v17 length];
+      text2 = [componentCopy text];
+      v15 = [text2 length];
 
-      v16 = [(SXTextContrastDarkModePolicyException *)self componentTextStyleForButtonComponent:v6 DOM:v7];
+      v16 = [(SXTextContrastDarkModePolicyException *)self componentTextStyleForButtonComponent:componentCopy DOM:mCopy];
     }
 
     v114 = v16;
-    v18 = [MEMORY[0x1E695DF70] array];
-    v19 = [v7 documentStyle];
-    v20 = [v19 backgroundColor];
-    [v20 relativeLuminance];
+    array = [MEMORY[0x1E695DF70] array];
+    documentStyle = [mCopy documentStyle];
+    backgroundColor = [documentStyle backgroundColor];
+    [backgroundColor relativeLuminance];
     v22 = v21;
 
-    v23 = [v115 backgroundColor];
-    [v23 relativeLuminance];
+    backgroundColor2 = [v115 backgroundColor];
+    [backgroundColor2 relativeLuminance];
     v25 = v24;
 
-    v124 = v18;
+    v124 = array;
     if (v15)
     {
       for (i = 0; i != v15; ++i)
       {
-        [v18 addObject:&unk_1F538A238];
-        v27 = [v115 backgroundColor];
+        [array addObject:&unk_1F538A238];
+        backgroundColor3 = [v115 backgroundColor];
 
         v28 = v25;
-        if (v27 || ([v7 documentStyle], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "backgroundColor"), v30 = objc_claimAutoreleasedReturnValue(), v30, v29, v28 = v22, v30))
+        if (backgroundColor3 || ([mCopy documentStyle], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "backgroundColor"), v30 = objc_claimAutoreleasedReturnValue(), v30, v29, v28 = v22, v30))
         {
           v31 = [MEMORY[0x1E696AD98] numberWithDouble:v28];
           [v124 setObject:v31 atIndexedSubscript:i];
         }
 
-        v18 = v124;
+        array = v124;
       }
     }
 
-    v32 = [MEMORY[0x1E695DF70] array];
-    v33 = [MEMORY[0x1E695DF70] array];
-    v34 = [v114 textColor];
-    [v34 relativeLuminance];
+    array2 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
+    textColor = [v114 textColor];
+    [textColor relativeLuminance];
     v36 = v35;
 
-    v37 = [v114 backgroundColor];
-    [v37 relativeLuminance];
+    backgroundColor4 = [v114 backgroundColor];
+    [backgroundColor4 relativeLuminance];
     v39 = v38;
 
-    v40 = [v114 textColor];
-    v41 = [v40 invertedLightness];
-    [v41 relativeLuminance];
+    textColor2 = [v114 textColor];
+    invertedLightness = [textColor2 invertedLightness];
+    [invertedLightness relativeLuminance];
     v43 = v42;
 
     if (v15)
@@ -158,17 +158,17 @@ LABEL_58:
       for (j = 0; j != v15; ++j)
       {
         v45 = [MEMORY[0x1E696AD98] numberWithDouble:v36];
-        [v32 setObject:v45 atIndexedSubscript:j];
+        [array2 setObject:v45 atIndexedSubscript:j];
 
         v46 = [MEMORY[0x1E696AD98] numberWithDouble:v43];
-        [v33 setObject:v46 atIndexedSubscript:j];
+        [array3 setObject:v46 atIndexedSubscript:j];
 
-        v47 = [v114 backgroundColor];
+        backgroundColor5 = [v114 backgroundColor];
 
-        if (v47)
+        if (backgroundColor5)
         {
           v48 = [MEMORY[0x1E696AD98] numberWithDouble:v39];
-          [v18 setObject:v48 atIndexedSubscript:j];
+          [array setObject:v48 atIndexedSubscript:j];
         }
       }
     }
@@ -176,26 +176,26 @@ LABEL_58:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v120 = v7;
-      v113 = v6;
-      v49 = v6;
-      v50 = [v114 linkStyle];
+      v120 = mCopy;
+      v113 = componentCopy;
+      v49 = componentCopy;
+      linkStyle = [v114 linkStyle];
 
       v119 = v49;
-      if (v50)
+      if (linkStyle)
       {
-        v51 = [v114 linkStyle];
-        v52 = [v51 textColor];
-        [v52 relativeLuminance];
+        linkStyle2 = [v114 linkStyle];
+        textColor3 = [linkStyle2 textColor];
+        [textColor3 relativeLuminance];
         v54 = v53;
 
-        v55 = [v51 textColor];
-        v56 = [v55 invertedLightness];
-        [v56 relativeLuminance];
+        textColor4 = [linkStyle2 textColor];
+        invertedLightness2 = [textColor4 invertedLightness];
+        [invertedLightness2 relativeLuminance];
         v58 = v57;
 
-        v59 = [v51 backgroundColor];
-        [v59 relativeLuminance];
+        backgroundColor6 = [linkStyle2 backgroundColor];
+        [backgroundColor6 relativeLuminance];
         v61 = v60;
 
         v131 = 0u;
@@ -220,26 +220,26 @@ LABEL_58:
               v66 = *(*(&v129 + 1) + 8 * k);
               for (m = [v66 range]; ; ++m)
               {
-                v68 = [v66 range];
-                if (m >= v68 + v69)
+                range = [v66 range];
+                if (m >= range + v69)
                 {
                   break;
                 }
 
-                v70 = [v51 textColor];
+                textColor5 = [linkStyle2 textColor];
 
-                if (v70)
+                if (textColor5)
                 {
                   v71 = [MEMORY[0x1E696AD98] numberWithDouble:v54];
-                  [v32 setObject:v71 atIndexedSubscript:m];
+                  [array2 setObject:v71 atIndexedSubscript:m];
 
                   v72 = [MEMORY[0x1E696AD98] numberWithDouble:v58];
-                  [v33 setObject:v72 atIndexedSubscript:m];
+                  [array3 setObject:v72 atIndexedSubscript:m];
                 }
 
-                v73 = [v51 backgroundColor];
+                backgroundColor7 = [linkStyle2 backgroundColor];
 
-                if (v73)
+                if (backgroundColor7)
                 {
                   v74 = [MEMORY[0x1E696AD98] numberWithDouble:v61];
                   [v124 setObject:v74 atIndexedSubscript:m];
@@ -253,7 +253,7 @@ LABEL_58:
           while (v63);
         }
 
-        v18 = v124;
+        array = v124;
         v49 = v119;
       }
 
@@ -261,11 +261,11 @@ LABEL_58:
       v128 = 0u;
       v125 = 0u;
       v126 = 0u;
-      v116 = [v49 inlineTextStyles];
-      v121 = [v116 countByEnumeratingWithState:&v125 objects:v133 count:16];
+      inlineTextStyles = [v49 inlineTextStyles];
+      v121 = [inlineTextStyles countByEnumeratingWithState:&v125 objects:v133 count:16];
       if (v121)
       {
-        v117 = v32;
+        v117 = array2;
         v118 = *v126;
         do
         {
@@ -273,88 +273,88 @@ LABEL_58:
           {
             if (*v126 != v118)
             {
-              objc_enumerationMutation(v116);
+              objc_enumerationMutation(inlineTextStyles);
             }
 
             v76 = *(*(&v125 + 1) + 8 * n);
-            v77 = [v120 analysis];
-            v78 = [v77 namespacedObjectReferences];
-            v79 = [v76 textStyle];
-            v80 = [v49 identifier];
-            v81 = [v78 namespacedTextStyleIdentifierForIdentifier:v79 component:v80];
+            analysis2 = [v120 analysis];
+            namespacedObjectReferences = [analysis2 namespacedObjectReferences];
+            textStyle = [v76 textStyle];
+            identifier2 = [v49 identifier];
+            v81 = [namespacedObjectReferences namespacedTextStyleIdentifierForIdentifier:textStyle component:identifier2];
 
-            v82 = [v120 textStyles];
+            textStyles = [v120 textStyles];
             obja = v81;
-            v83 = [v82 objectForKey:v81];
+            v83 = [textStyles objectForKey:v81];
 
-            v84 = [v83 textColor];
-            [v84 relativeLuminance];
+            textColor6 = [v83 textColor];
+            [textColor6 relativeLuminance];
             v86 = v85;
 
-            v87 = [v83 textColor];
-            v88 = [v87 invertedLightness];
-            [v88 relativeLuminance];
+            textColor7 = [v83 textColor];
+            invertedLightness3 = [textColor7 invertedLightness];
+            [invertedLightness3 relativeLuminance];
             v90 = v89;
 
-            v91 = [v83 backgroundColor];
-            [v91 relativeLuminance];
+            backgroundColor8 = [v83 backgroundColor];
+            [backgroundColor8 relativeLuminance];
             v93 = v92;
 
-            v94 = [v76 range];
-            v95 = [v76 range];
-            v18 = v124;
-            v32 = v117;
-            if (v94 < v95 + v96)
+            range2 = [v76 range];
+            range3 = [v76 range];
+            array = v124;
+            array2 = v117;
+            if (range2 < range3 + v96)
             {
               do
               {
-                v97 = [v83 textColor];
+                textColor8 = [v83 textColor];
 
-                if (v97)
+                if (textColor8)
                 {
                   v98 = [MEMORY[0x1E696AD98] numberWithDouble:v86];
-                  [v117 setObject:v98 atIndexedSubscript:v94];
+                  [v117 setObject:v98 atIndexedSubscript:range2];
 
                   v99 = [MEMORY[0x1E696AD98] numberWithDouble:v90];
-                  [v33 setObject:v99 atIndexedSubscript:v94];
+                  [array3 setObject:v99 atIndexedSubscript:range2];
                 }
 
-                v100 = [v83 backgroundColor];
+                backgroundColor9 = [v83 backgroundColor];
 
-                if (v100)
+                if (backgroundColor9)
                 {
                   v101 = [MEMORY[0x1E696AD98] numberWithDouble:v93];
-                  [v124 setObject:v101 atIndexedSubscript:v94];
+                  [v124 setObject:v101 atIndexedSubscript:range2];
                 }
 
-                ++v94;
-                v102 = [v76 range];
+                ++range2;
+                range4 = [v76 range];
               }
 
-              while (v94 < v102 + v103);
+              while (range2 < range4 + v103);
             }
 
             v49 = v119;
           }
 
-          v121 = [v116 countByEnumeratingWithState:&v125 objects:v133 count:16];
+          v121 = [inlineTextStyles countByEnumeratingWithState:&v125 objects:v133 count:16];
         }
 
         while (v121);
       }
 
-      v6 = v113;
-      v7 = v120;
+      componentCopy = v113;
+      mCopy = v120;
     }
 
-    v104 = [v32 valueForKeyPath:@"@avg.self"];
+    v104 = [array2 valueForKeyPath:@"@avg.self"];
     [v104 floatValue];
 
-    v105 = [v33 valueForKeyPath:@"@avg.self"];
+    v105 = [array3 valueForKeyPath:@"@avg.self"];
     [v105 floatValue];
     v107 = v106;
 
-    v108 = [v18 valueForKeyPath:@"@avg.self"];
+    v108 = [array valueForKeyPath:@"@avg.self"];
     [v108 floatValue];
     v110 = v109;
 
@@ -383,26 +383,26 @@ LABEL_59:
   return v13;
 }
 
-- (id)opaqueComponentStyleForComponent:(id)a3 DOM:(id)a4
+- (id)opaqueComponentStyleForComponent:(id)component DOM:(id)m
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(SXTextContrastDarkModePolicyException *)self componentStyleForComponent:v7 DOM:v8];
-  v10 = [v9 backgroundColor];
-  if (v10)
+  componentCopy = component;
+  mCopy = m;
+  v9 = [(SXTextContrastDarkModePolicyException *)self componentStyleForComponent:componentCopy DOM:mCopy];
+  backgroundColor = [v9 backgroundColor];
+  if (backgroundColor)
   {
   }
 
   else
   {
-    v11 = [v9 fill];
+    fill = [v9 fill];
 
-    if (!v11)
+    if (!fill)
     {
-      v12 = [v8 analysis];
-      v13 = [v7 identifier];
-      v14 = [v12 containerPathForComponentWithIdentifier:v13];
+      analysis = [mCopy analysis];
+      identifier = [componentCopy identifier];
+      v14 = [analysis containerPathForComponentWithIdentifier:identifier];
       v15 = [v14 mutableCopy];
 
       v32 = 0u;
@@ -414,7 +414,7 @@ LABEL_59:
       if (v29)
       {
         v25 = v9;
-        v26 = v7;
+        v26 = componentCopy;
         v28 = *v31;
         while (2)
         {
@@ -427,16 +427,16 @@ LABEL_59:
 
             v17 = *(*(&v30 + 1) + 8 * i);
             [v15 removeObject:v17];
-            v18 = [v8 components];
-            v19 = [v18 componentsForContainerComponentWithPath:v15];
+            components = [mCopy components];
+            v19 = [components componentsForContainerComponentWithPath:v15];
 
             v20 = [v19 componentForIdentifier:v17];
-            v9 = [(SXTextContrastDarkModePolicyException *)self componentStyleForComponent:v20 DOM:v8];
-            v21 = [v9 backgroundColor];
-            if (v21)
+            v9 = [(SXTextContrastDarkModePolicyException *)self componentStyleForComponent:v20 DOM:mCopy];
+            backgroundColor2 = [v9 backgroundColor];
+            if (backgroundColor2)
             {
-              v4 = [v9 backgroundColor];
-              [v4 alphaComponent];
+              backgroundColor3 = [v9 backgroundColor];
+              [backgroundColor3 alphaComponent];
               if (v22 > 0.0)
               {
 
@@ -445,13 +445,13 @@ LABEL_18:
               }
             }
 
-            v23 = [v9 fill];
+            fill2 = [v9 fill];
 
-            if (v21)
+            if (backgroundColor2)
             {
             }
 
-            if (v23)
+            if (fill2)
             {
               goto LABEL_18;
             }
@@ -468,7 +468,7 @@ LABEL_18:
 
         v9 = v25;
 LABEL_19:
-        v7 = v26;
+        componentCopy = v26;
       }
     }
   }
@@ -476,31 +476,31 @@ LABEL_19:
   return v9;
 }
 
-- (id)componentStyleForComponent:(id)a3 DOM:(id)a4
+- (id)componentStyleForComponent:(id)component DOM:(id)m
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  mCopy = m;
   v8 = MEMORY[0x1E695DF70];
-  v9 = [v6 classification];
-  v10 = [v9 defaultComponentStyleIdentifiers];
-  v11 = [v8 arrayWithArray:v10];
+  classification = [componentCopy classification];
+  defaultComponentStyleIdentifiers = [classification defaultComponentStyleIdentifiers];
+  v11 = [v8 arrayWithArray:defaultComponentStyleIdentifiers];
 
-  v12 = [v6 style];
+  style = [componentCopy style];
 
-  if (v12)
+  if (style)
   {
-    v13 = [v6 style];
-    [v11 addObject:v13];
+    style2 = [componentCopy style];
+    [v11 addObject:style2];
   }
 
-  v14 = [v7 analysis];
-  v15 = [v14 namespacedObjectReferences];
-  v16 = [v6 identifier];
-  v17 = [v15 namespacedComponentStyleIdentifiersForIdentifiers:v11 component:v16];
+  analysis = [mCopy analysis];
+  namespacedObjectReferences = [analysis namespacedObjectReferences];
+  identifier = [componentCopy identifier];
+  v17 = [namespacedObjectReferences namespacedComponentStyleIdentifiersForIdentifiers:v11 component:identifier];
 
-  v18 = [MEMORY[0x1E695DF70] array];
-  v19 = [v7 componentStyles];
+  array = [MEMORY[0x1E695DF70] array];
+  componentStyles = [mCopy componentStyles];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -520,10 +520,10 @@ LABEL_19:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [v19 objectForKey:{*(*(&v28 + 1) + 8 * i), v28}];
+        v25 = [componentStyles objectForKey:{*(*(&v28 + 1) + 8 * i), v28}];
         if (v25)
         {
-          [v18 addObject:v25];
+          [array addObject:v25];
         }
       }
 
@@ -533,9 +533,9 @@ LABEL_19:
     while (v22);
   }
 
-  if ([v18 count])
+  if ([array count])
   {
-    v26 = [(SXJSONObjectMerger *)self->_componentStyleMerger mergeObjects:v18];
+    v26 = [(SXJSONObjectMerger *)self->_componentStyleMerger mergeObjects:array];
   }
 
   else
@@ -546,72 +546,72 @@ LABEL_19:
   return v26;
 }
 
-- (id)componentTextStyleForTextComponent:(id)a3 DOM:(id)a4
+- (id)componentTextStyleForTextComponent:(id)component DOM:(id)m
 {
-  v6 = a3;
+  componentCopy = component;
   v7 = MEMORY[0x1E695DF70];
-  v8 = a4;
-  v9 = [v6 classification];
-  v10 = [v9 defaultTextStyleIdentifiers];
-  v11 = [v7 arrayWithArray:v10];
+  mCopy = m;
+  classification = [componentCopy classification];
+  defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
+  v11 = [v7 arrayWithArray:defaultTextStyleIdentifiers];
 
-  v12 = [v6 textStyle];
+  textStyle = [componentCopy textStyle];
 
-  if (v12)
+  if (textStyle)
   {
-    v13 = [v6 textStyle];
-    [v11 addObject:v13];
+    textStyle2 = [componentCopy textStyle];
+    [v11 addObject:textStyle2];
   }
 
-  v14 = [v8 analysis];
-  v15 = [v14 namespacedObjectReferences];
-  v16 = [v6 identifier];
-  v17 = [v15 namespacedComponentTextStyleIdentifiersForIdentifiers:v11 component:v16];
+  analysis = [mCopy analysis];
+  namespacedObjectReferences = [analysis namespacedObjectReferences];
+  identifier = [componentCopy identifier];
+  v17 = [namespacedObjectReferences namespacedComponentTextStyleIdentifiersForIdentifiers:v11 component:identifier];
 
-  v18 = [(SXTextContrastDarkModePolicyException *)self mergedComponentTextStyleWithIdentifiers:v17 DOM:v8];
+  v18 = [(SXTextContrastDarkModePolicyException *)self mergedComponentTextStyleWithIdentifiers:v17 DOM:mCopy];
 
   return v18;
 }
 
-- (id)componentTextStyleForButtonComponent:(id)a3 DOM:(id)a4
+- (id)componentTextStyleForButtonComponent:(id)component DOM:(id)m
 {
-  v6 = a3;
+  componentCopy = component;
   v7 = MEMORY[0x1E695DF70];
-  v8 = a4;
-  v9 = [v6 classification];
-  v10 = [v9 defaultTextStyleIdentifiers];
-  v11 = [v7 arrayWithArray:v10];
+  mCopy = m;
+  classification = [componentCopy classification];
+  defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
+  v11 = [v7 arrayWithArray:defaultTextStyleIdentifiers];
 
-  v12 = [v6 textStyle];
+  textStyle = [componentCopy textStyle];
 
-  if (v12)
+  if (textStyle)
   {
-    v13 = [v6 textStyle];
-    [v11 addObject:v13];
+    textStyle2 = [componentCopy textStyle];
+    [v11 addObject:textStyle2];
   }
 
-  v14 = [v8 analysis];
-  v15 = [v14 namespacedObjectReferences];
-  v16 = [v6 identifier];
-  v17 = [v15 namespacedComponentTextStyleIdentifiersForIdentifiers:v11 component:v16];
+  analysis = [mCopy analysis];
+  namespacedObjectReferences = [analysis namespacedObjectReferences];
+  identifier = [componentCopy identifier];
+  v17 = [namespacedObjectReferences namespacedComponentTextStyleIdentifiersForIdentifiers:v11 component:identifier];
 
-  v18 = [(SXTextContrastDarkModePolicyException *)self mergedComponentTextStyleWithIdentifiers:v17 DOM:v8];
+  v18 = [(SXTextContrastDarkModePolicyException *)self mergedComponentTextStyleWithIdentifiers:v17 DOM:mCopy];
 
   return v18;
 }
 
-- (id)mergedComponentTextStyleWithIdentifiers:(id)a3 DOM:(id)a4
+- (id)mergedComponentTextStyleWithIdentifiers:(id)identifiers DOM:(id)m
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [v7 componentTextStyles];
+  identifiersCopy = identifiers;
+  mCopy = m;
+  array = [MEMORY[0x1E695DF70] array];
+  componentTextStyles = [mCopy componentTextStyles];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = v6;
+  v10 = identifiersCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -626,10 +626,10 @@ LABEL_19:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [v9 objectForKey:{*(*(&v18 + 1) + 8 * i), v18}];
+        v15 = [componentTextStyles objectForKey:{*(*(&v18 + 1) + 8 * i), v18}];
         if (v15)
         {
-          [v8 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -639,9 +639,9 @@ LABEL_19:
     while (v12);
   }
 
-  if ([v8 count])
+  if ([array count])
   {
-    v16 = [(SXJSONObjectMerger *)self->_componentTextStyleMerger mergeObjects:v8];
+    v16 = [(SXJSONObjectMerger *)self->_componentTextStyleMerger mergeObjects:array];
   }
 
   else

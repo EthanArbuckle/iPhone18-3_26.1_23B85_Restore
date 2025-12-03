@@ -1,14 +1,14 @@
 @interface PPContactServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PPContactServerDelegate)init;
 @end
 
 @implementation PPContactServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2847A1DE0];
   v8 = objc_autoreleasePoolPush();
   v9 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -42,7 +42,7 @@
   v18[3] = &unk_2789790A8;
   v19 = v21;
   v16 = v21;
-  LOBYTE(v10) = [PPXPCServerHelper shouldAcceptConnection:v6 serviceName:@"com.apple.proactive.PersonalizationPortrait.Contact" allowedServerInterface:v7 allowedClientInterface:v12 requestHandler:v16 validateConnection:v15 setupClientProxy:v22 interruptionHandler:v20 invalidationHandler:v18];
+  LOBYTE(v10) = [PPXPCServerHelper shouldAcceptConnection:connectionCopy serviceName:@"com.apple.proactive.PersonalizationPortrait.Contact" allowedServerInterface:v7 allowedClientInterface:v12 requestHandler:v16 validateConnection:v15 setupClientProxy:v22 interruptionHandler:v20 invalidationHandler:v18];
 
   return v10;
 }

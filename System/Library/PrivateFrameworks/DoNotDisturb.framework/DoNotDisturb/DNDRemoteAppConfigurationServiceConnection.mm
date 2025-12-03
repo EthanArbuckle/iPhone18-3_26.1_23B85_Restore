@@ -4,8 +4,8 @@
 - (id)_queue_remoteTarget;
 - (void)_queue_createConnection;
 - (void)_queue_invalidateConnection;
-- (void)getCurrentAppConfigurationForActionIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)invalidateAppContextForActionIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
+- (void)getCurrentAppConfigurationForActionIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)invalidateAppContextForActionIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler;
 @end
 
 @implementation DNDRemoteAppConfigurationServiceConnection
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __60__DNDRemoteAppConfigurationServiceConnection_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -43,12 +43,12 @@ uint64_t __60__DNDRemoteAppConfigurationServiceConnection_sharedInstance__block_
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CF32C8] userInitiated];
+    userInitiated = [MEMORY[0x277CF32C8] userInitiated];
     queuePriority = v3->_queuePriority;
-    v3->_queuePriority = v4;
+    v3->_queuePriority = userInitiated;
 
-    v6 = [MEMORY[0x277CF0C18] serial];
-    v7 = [v6 serviceClass:-[BSServiceQuality serviceClass](v3->_queuePriority relativePriority:{"serviceClass"), -[BSServiceQuality relativePriority](v3->_queuePriority, "relativePriority")}];
+    serial = [MEMORY[0x277CF0C18] serial];
+    v7 = [serial serviceClass:-[BSServiceQuality serviceClass](v3->_queuePriority relativePriority:{"serviceClass"), -[BSServiceQuality relativePriority](v3->_queuePriority, "relativePriority")}];
     v8 = BSDispatchQueueCreate();
     queue = v3->_queue;
     v3->_queue = v8;
@@ -61,15 +61,15 @@ uint64_t __60__DNDRemoteAppConfigurationServiceConnection_sharedInstance__block_
 {
   queue = self->_queue;
   BSDispatchQueueAssert();
-  v4 = [(BSServiceConnection *)self->_queue_connection remoteTarget];
-  if (!v4)
+  remoteTarget = [(BSServiceConnection *)self->_queue_connection remoteTarget];
+  if (!remoteTarget)
   {
     [(DNDRemoteAppConfigurationServiceConnection *)self _queue_invalidateConnection];
     [(DNDRemoteAppConfigurationServiceConnection *)self _queue_createConnection];
-    v4 = [(BSServiceConnection *)self->_queue_connection remoteTarget];
+    remoteTarget = [(BSServiceConnection *)self->_queue_connection remoteTarget];
   }
 
-  return v4;
+  return remoteTarget;
 }
 
 - (void)_queue_invalidateConnection
@@ -91,8 +91,8 @@ uint64_t __60__DNDRemoteAppConfigurationServiceConnection_sharedInstance__block_
   BSDispatchQueueAssert();
   v4 = DNDRemoteAppConfigurationServiceServerInterface();
   v5 = MEMORY[0x277CF3288];
-  v6 = [v4 identifier];
-  v7 = [v5 endpointForMachName:@"com.apple.donotdisturb.appconfiguration.service" service:v6 instance:0];
+  identifier = [v4 identifier];
+  v7 = [v5 endpointForMachName:@"com.apple.donotdisturb.appconfiguration.service" service:identifier instance:0];
 
   if (v7)
   {
@@ -105,7 +105,7 @@ uint64_t __60__DNDRemoteAppConfigurationServiceConnection_sharedInstance__block_
     v12 = 3221225472;
     v13 = __69__DNDRemoteAppConfigurationServiceConnection__queue_createConnection__block_invoke;
     v14 = &unk_27843A9E0;
-    v15 = self;
+    selfCopy = self;
     v16 = v4;
     [(BSServiceConnection *)v10 configureConnection:&v11];
     [(BSServiceConnection *)self->_queue_connection activate:v11];
@@ -170,23 +170,23 @@ void __69__DNDRemoteAppConfigurationServiceConnection__queue_createConnection__b
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getCurrentAppConfigurationForActionIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)getCurrentAppConfigurationForActionIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __129__DNDRemoteAppConfigurationServiceConnection_getCurrentAppConfigurationForActionIdentifier_withRequestDetails_completionHandler___block_invoke;
   v15[3] = &unk_27843A728;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = detailsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = detailsCopy;
+  v14 = identifierCopy;
   dispatch_sync(queue, v15);
 }
 
@@ -196,23 +196,23 @@ void __129__DNDRemoteAppConfigurationServiceConnection_getCurrentAppConfiguratio
   [v2 getCurrentAppConfigurationForActionIdentifier:*(a1 + 40) withRequestDetails:*(a1 + 48) completionHandler:*(a1 + 56)];
 }
 
-- (void)invalidateAppContextForActionIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)invalidateAppContextForActionIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __123__DNDRemoteAppConfigurationServiceConnection_invalidateAppContextForActionIdentifier_withRequestDetails_completionHandler___block_invoke;
   v15[3] = &unk_27843A728;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = detailsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = detailsCopy;
+  v14 = identifierCopy;
   dispatch_sync(queue, v15);
 }
 

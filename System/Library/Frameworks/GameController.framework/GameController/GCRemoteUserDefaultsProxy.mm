@@ -1,24 +1,24 @@
 @interface GCRemoteUserDefaultsProxy
-- (BOOL)BOOLForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
 - (BOOL)agentConnectionEstablished;
 - (GCRemoteUserDefaultsProxy)init;
-- (double)doubleForKey:(id)a3;
-- (float)floatForKey:(id)a3;
-- (id)arrayForKey:(id)a3;
-- (id)dataForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (int64_t)integerForKey:(id)a3;
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6;
-- (void)observeUserDefaultsValueForKeyPath:(id)a3 change:(id)a4;
-- (void)postInitialKVONotificationForObservation:(id)a3 keyPath:(id)a4;
+- (double)doubleForKey:(id)key;
+- (float)floatForKey:(id)key;
+- (id)arrayForKey:(id)key;
+- (id)dataForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)objectForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (int64_t)integerForKey:(id)key;
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context;
+- (void)observeUserDefaultsValueForKeyPath:(id)path change:(id)change;
+- (void)postInitialKVONotificationForObservation:(id)observation keyPath:(id)path;
 - (void)refreshActiveClient;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4 context:(void *)a5;
-- (void)setDouble:(double)a3 forKey:(id)a4;
-- (void)setFloat:(float)a3 forKey:(id)a4;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObserver:(id)observer forKeyPath:(id)path context:(void *)context;
+- (void)setDouble:(double)double forKey:(id)key;
+- (void)setFloat:(float)float forKey:(id)key;
+- (void)setInteger:(int64_t)integer forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation GCRemoteUserDefaultsProxy
@@ -42,8 +42,8 @@
     clients = v2->_clients;
     v2->_clients = v7;
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel_consoleUserDidChange_ name:*MEMORY[0x1E69A0330] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_consoleUserDidChange_ name:*MEMORY[0x1E69A0330] object:0];
   }
 
   return v2;
@@ -51,33 +51,33 @@
 
 - (BOOL)agentConnectionEstablished
 {
-  v2 = [(GCRemoteUserDefaultsProxy *)self activeClient];
-  v3 = v2 != 0;
+  activeClient = [(GCRemoteUserDefaultsProxy *)self activeClient];
+  v3 = activeClient != 0;
 
   return v3;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(GCRemoteUserDefaultsProxy *)v5 agentConnectionEstablished];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  agentConnectionEstablished = [(GCRemoteUserDefaultsProxy *)selfCopy agentConnectionEstablished];
+  objc_sync_exit(selfCopy);
 
-  if (v6)
+  if (agentConnectionEstablished)
   {
     if (gc_isInternalBuild())
     {
       [GCRemoteUserDefaultsProxy objectForKey:];
     }
 
-    v7 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
+    activeClient = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
 
-    if (v7)
+    if (activeClient)
     {
-      v8 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
-      v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_41];
+      activeClient2 = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
+      v9 = [activeClient2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_41];
 
       v13 = 0;
       v14 = &v13;
@@ -90,7 +90,7 @@
       v12[2] = __42__GCRemoteUserDefaultsProxy_objectForKey___block_invoke_77;
       v12[3] = &unk_1E841AFF8;
       v12[4] = &v13;
-      [v9 objectForKey:v4 withReply:v12];
+      [v9 objectForKey:keyCopy withReply:v12];
       if (gc_isInternalBuild())
       {
         getGCLogger();
@@ -133,27 +133,27 @@ void __42__GCRemoteUserDefaultsProxy_objectForKey___block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(GCRemoteUserDefaultsProxy *)v5 agentConnectionEstablished];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  agentConnectionEstablished = [(GCRemoteUserDefaultsProxy *)selfCopy agentConnectionEstablished];
+  objc_sync_exit(selfCopy);
 
-  if (v6)
+  if (agentConnectionEstablished)
   {
     if (gc_isInternalBuild())
     {
       [GCRemoteUserDefaultsProxy stringForKey:];
     }
 
-    v7 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
+    activeClient = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
 
-    if (v7)
+    if (activeClient)
     {
-      v8 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
-      v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_80];
+      activeClient2 = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
+      v9 = [activeClient2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_80];
 
       v13 = 0;
       v14 = &v13;
@@ -166,7 +166,7 @@ void __42__GCRemoteUserDefaultsProxy_objectForKey___block_invoke(uint64_t a1, vo
       v12[2] = __42__GCRemoteUserDefaultsProxy_stringForKey___block_invoke_81;
       v12[3] = &unk_1E841B020;
       v12[4] = &v13;
-      [v9 stringForKey:v4 withReply:v12];
+      [v9 stringForKey:keyCopy withReply:v12];
       if (gc_isInternalBuild())
       {
         getGCLogger();
@@ -209,27 +209,27 @@ void __42__GCRemoteUserDefaultsProxy_stringForKey___block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(GCRemoteUserDefaultsProxy *)v5 agentConnectionEstablished];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  agentConnectionEstablished = [(GCRemoteUserDefaultsProxy *)selfCopy agentConnectionEstablished];
+  objc_sync_exit(selfCopy);
 
-  if (v6)
+  if (agentConnectionEstablished)
   {
     if (gc_isInternalBuild())
     {
       [GCRemoteUserDefaultsProxy dataForKey:];
     }
 
-    v7 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
+    activeClient = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
 
-    if (v7)
+    if (activeClient)
     {
-      v8 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
-      v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_84];
+      activeClient2 = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
+      v9 = [activeClient2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_84];
 
       v13 = 0;
       v14 = &v13;
@@ -242,7 +242,7 @@ void __42__GCRemoteUserDefaultsProxy_stringForKey___block_invoke(uint64_t a1, vo
       v12[2] = __40__GCRemoteUserDefaultsProxy_dataForKey___block_invoke_85;
       v12[3] = &unk_1E841B048;
       v12[4] = &v13;
-      [v9 dataForKey:v4 withReply:v12];
+      [v9 dataForKey:keyCopy withReply:v12];
       if (gc_isInternalBuild())
       {
         getGCLogger();
@@ -285,27 +285,27 @@ void __40__GCRemoteUserDefaultsProxy_dataForKey___block_invoke(uint64_t a1, void
   }
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(GCRemoteUserDefaultsProxy *)v5 agentConnectionEstablished];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  agentConnectionEstablished = [(GCRemoteUserDefaultsProxy *)selfCopy agentConnectionEstablished];
+  objc_sync_exit(selfCopy);
 
-  if (v6)
+  if (agentConnectionEstablished)
   {
     if (gc_isInternalBuild())
     {
       [GCRemoteUserDefaultsProxy dictionaryForKey:];
     }
 
-    v7 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
+    activeClient = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
 
-    if (v7)
+    if (activeClient)
     {
-      v8 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
-      v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_88];
+      activeClient2 = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
+      v9 = [activeClient2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_88];
 
       v13 = 0;
       v14 = &v13;
@@ -318,7 +318,7 @@ void __40__GCRemoteUserDefaultsProxy_dataForKey___block_invoke(uint64_t a1, void
       v12[2] = __46__GCRemoteUserDefaultsProxy_dictionaryForKey___block_invoke_89;
       v12[3] = &unk_1E841B070;
       v12[4] = &v13;
-      [v9 dictionaryForKey:v4 withReply:v12];
+      [v9 dictionaryForKey:keyCopy withReply:v12];
       if (gc_isInternalBuild())
       {
         getGCLogger();
@@ -361,27 +361,27 @@ void __46__GCRemoteUserDefaultsProxy_dictionaryForKey___block_invoke(uint64_t a1
   }
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(GCRemoteUserDefaultsProxy *)v5 agentConnectionEstablished];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  agentConnectionEstablished = [(GCRemoteUserDefaultsProxy *)selfCopy agentConnectionEstablished];
+  objc_sync_exit(selfCopy);
 
-  if (v6)
+  if (agentConnectionEstablished)
   {
     if (gc_isInternalBuild())
     {
       [GCRemoteUserDefaultsProxy arrayForKey:];
     }
 
-    v7 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
+    activeClient = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
 
-    if (v7)
+    if (activeClient)
     {
-      v8 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
-      v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_92];
+      activeClient2 = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
+      v9 = [activeClient2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_92];
 
       v13 = 0;
       v14 = &v13;
@@ -394,7 +394,7 @@ void __46__GCRemoteUserDefaultsProxy_dictionaryForKey___block_invoke(uint64_t a1
       v12[2] = __41__GCRemoteUserDefaultsProxy_arrayForKey___block_invoke_93;
       v12[3] = &unk_1E841B098;
       v12[4] = &v13;
-      [v9 arrayForKey:v4 withReply:v12];
+      [v9 arrayForKey:keyCopy withReply:v12];
       if (gc_isInternalBuild())
       {
         getGCLogger();
@@ -437,35 +437,35 @@ void __41__GCRemoteUserDefaultsProxy_arrayForKey___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GCRemoteUserDefaultsProxy *)self activeClient];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  activeClient = [(GCRemoteUserDefaultsProxy *)self activeClient];
+  [activeClient setObject:objectCopy forKey:keyCopy];
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(GCRemoteUserDefaultsProxy *)v5 agentConnectionEstablished];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  agentConnectionEstablished = [(GCRemoteUserDefaultsProxy *)selfCopy agentConnectionEstablished];
+  objc_sync_exit(selfCopy);
 
-  if (v6)
+  if (agentConnectionEstablished)
   {
     if (gc_isInternalBuild())
     {
       [GCRemoteUserDefaultsProxy BOOLForKey:];
     }
 
-    v7 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
+    activeClient = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
 
-    if (v7)
+    if (activeClient)
     {
-      v8 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
-      v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_96];
+      activeClient2 = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
+      v9 = [activeClient2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_96];
 
       v12 = 0;
       v13 = &v12;
@@ -476,7 +476,7 @@ void __41__GCRemoteUserDefaultsProxy_arrayForKey___block_invoke(uint64_t a1, voi
       v11[2] = __40__GCRemoteUserDefaultsProxy_BOOLForKey___block_invoke_97;
       v11[3] = &unk_1E841B0C0;
       v11[4] = &v12;
-      [v9 BOOLForKey:v4 withReply:v11];
+      [v9 BOOLForKey:keyCopy withReply:v11];
       if (gc_isInternalBuild())
       {
         getGCLogger();
@@ -484,7 +484,7 @@ void __41__GCRemoteUserDefaultsProxy_arrayForKey___block_invoke(uint64_t a1, voi
         [GCRemoteUserDefaultsProxy BOOLForKey:];
       }
 
-      LOBYTE(v6) = *(v13 + 24);
+      LOBYTE(agentConnectionEstablished) = *(v13 + 24);
       _Block_object_dispose(&v12, 8);
     }
 
@@ -492,7 +492,7 @@ void __41__GCRemoteUserDefaultsProxy_arrayForKey___block_invoke(uint64_t a1, voi
     {
       if (!gc_isInternalBuild())
       {
-        LOBYTE(v6) = 0;
+        LOBYTE(agentConnectionEstablished) = 0;
         goto LABEL_11;
       }
 
@@ -502,13 +502,13 @@ void __41__GCRemoteUserDefaultsProxy_arrayForKey___block_invoke(uint64_t a1, voi
         [GCRemoteUserDefaultsProxy objectForKey:];
       }
 
-      LOBYTE(v6) = 0;
+      LOBYTE(agentConnectionEstablished) = 0;
     }
   }
 
 LABEL_11:
 
-  return v6 & 1;
+  return agentConnectionEstablished & 1;
 }
 
 void __40__GCRemoteUserDefaultsProxy_BOOLForKey___block_invoke(uint64_t a1, void *a2)
@@ -520,28 +520,28 @@ void __40__GCRemoteUserDefaultsProxy_BOOLForKey___block_invoke(uint64_t a1, void
   }
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(GCRemoteUserDefaultsProxy *)v5 agentConnectionEstablished];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  agentConnectionEstablished = [(GCRemoteUserDefaultsProxy *)selfCopy agentConnectionEstablished];
+  objc_sync_exit(selfCopy);
 
   v7 = 0.0;
-  if (v6)
+  if (agentConnectionEstablished)
   {
     if (gc_isInternalBuild())
     {
       [GCRemoteUserDefaultsProxy doubleForKey:];
     }
 
-    v8 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
+    activeClient = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
 
-    if (v8)
+    if (activeClient)
     {
-      v9 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
-      v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_100];
+      activeClient2 = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
+      v10 = [activeClient2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_100];
 
       v13 = 0;
       v14 = &v13;
@@ -552,7 +552,7 @@ void __40__GCRemoteUserDefaultsProxy_BOOLForKey___block_invoke(uint64_t a1, void
       v12[2] = __42__GCRemoteUserDefaultsProxy_doubleForKey___block_invoke_101;
       v12[3] = &unk_1E841B0E8;
       v12[4] = &v13;
-      [v10 doubleForKey:v4 withReply:v12];
+      [v10 doubleForKey:keyCopy withReply:v12];
       if (gc_isInternalBuild())
       {
         getGCLogger();
@@ -593,35 +593,35 @@ void __42__GCRemoteUserDefaultsProxy_doubleForKey___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)setDouble:(double)a3 forKey:(id)a4
+- (void)setDouble:(double)double forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(GCRemoteUserDefaultsProxy *)self activeClient];
-  [v7 setDouble:v6 forKey:a3];
+  keyCopy = key;
+  activeClient = [(GCRemoteUserDefaultsProxy *)self activeClient];
+  [activeClient setDouble:keyCopy forKey:double];
 }
 
-- (float)floatForKey:(id)a3
+- (float)floatForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(GCRemoteUserDefaultsProxy *)v5 agentConnectionEstablished];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  agentConnectionEstablished = [(GCRemoteUserDefaultsProxy *)selfCopy agentConnectionEstablished];
+  objc_sync_exit(selfCopy);
 
   v7 = 0.0;
-  if (v6)
+  if (agentConnectionEstablished)
   {
     if (gc_isInternalBuild())
     {
       [GCRemoteUserDefaultsProxy floatForKey:];
     }
 
-    v8 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
+    activeClient = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
 
-    if (v8)
+    if (activeClient)
     {
-      v9 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
-      v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_104_0];
+      activeClient2 = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
+      v10 = [activeClient2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_104_0];
 
       v13 = 0;
       v14 = &v13;
@@ -632,7 +632,7 @@ void __42__GCRemoteUserDefaultsProxy_doubleForKey___block_invoke(uint64_t a1, vo
       v12[2] = __41__GCRemoteUserDefaultsProxy_floatForKey___block_invoke_105;
       v12[3] = &unk_1E841B110;
       v12[4] = &v13;
-      [v10 floatForKey:v4 withReply:v12];
+      [v10 floatForKey:keyCopy withReply:v12];
       if (gc_isInternalBuild())
       {
         getGCLogger();
@@ -673,23 +673,23 @@ void __41__GCRemoteUserDefaultsProxy_floatForKey___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)setFloat:(float)a3 forKey:(id)a4
+- (void)setFloat:(float)float forKey:(id)key
 {
-  v6 = a4;
-  v8 = [(GCRemoteUserDefaultsProxy *)self activeClient];
-  *&v7 = a3;
-  [v8 setFloat:v6 forKey:v7];
+  keyCopy = key;
+  activeClient = [(GCRemoteUserDefaultsProxy *)self activeClient];
+  *&v7 = float;
+  [activeClient setFloat:keyCopy forKey:v7];
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(GCRemoteUserDefaultsProxy *)v5 agentConnectionEstablished];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  agentConnectionEstablished = [(GCRemoteUserDefaultsProxy *)selfCopy agentConnectionEstablished];
+  objc_sync_exit(selfCopy);
 
-  if (!v6)
+  if (!agentConnectionEstablished)
   {
     goto LABEL_10;
   }
@@ -699,9 +699,9 @@ void __41__GCRemoteUserDefaultsProxy_floatForKey___block_invoke(uint64_t a1, voi
     [GCRemoteUserDefaultsProxy integerForKey:];
   }
 
-  v7 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
+  activeClient = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
 
-  if (!v7)
+  if (!activeClient)
   {
     if (gc_isInternalBuild())
     {
@@ -720,8 +720,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = [(GCRemoteUserDefaultsProxy *)v5 activeClient];
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_108_0];
+  activeClient2 = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
+  v9 = [activeClient2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_108_0];
 
   v13 = 0;
   v14 = &v13;
@@ -732,7 +732,7 @@ LABEL_10:
   v12[2] = __43__GCRemoteUserDefaultsProxy_integerForKey___block_invoke_109;
   v12[3] = &unk_1E841B138;
   v12[4] = &v13;
-  [v9 integerForKey:v4 withReply:v12];
+  [v9 integerForKey:keyCopy withReply:v12];
   if (gc_isInternalBuild())
   {
     getGCLogger();
@@ -757,36 +757,36 @@ void __43__GCRemoteUserDefaultsProxy_integerForKey___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4
+- (void)setInteger:(int64_t)integer forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(GCRemoteUserDefaultsProxy *)self activeClient];
-  [v7 setInteger:a3 forKey:v6];
+  keyCopy = key;
+  activeClient = [(GCRemoteUserDefaultsProxy *)self activeClient];
+  [activeClient setInteger:integer forKey:keyCopy];
 }
 
-- (void)postInitialKVONotificationForObservation:(id)a3 keyPath:(id)a4
+- (void)postInitialKVONotificationForObservation:(id)observation keyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(GCRemoteUserDefaultsProxy *)v8 agentConnectionEstablished];
-  objc_sync_exit(v8);
+  observationCopy = observation;
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  agentConnectionEstablished = [(GCRemoteUserDefaultsProxy *)selfCopy agentConnectionEstablished];
+  objc_sync_exit(selfCopy);
 
-  if (!v9)
+  if (!agentConnectionEstablished)
   {
     goto LABEL_17;
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v10 setObject:&unk_1F4E8F1B8 forKeyedSubscript:*MEMORY[0x1E696A4E8]];
-  if (([v6 options] & 4) != 0)
+  if (([observationCopy options] & 4) != 0)
   {
-    v12 = [(GCRemoteUserDefaultsProxy *)v8 objectForKey:v7];
-    if (!v12)
+    null3 = [(GCRemoteUserDefaultsProxy *)selfCopy objectForKey:pathCopy];
+    if (!null3)
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v10 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696A4F0]];
+      null = [MEMORY[0x1E695DFB0] null];
+      [v10 setObject:null forKeyedSubscript:*MEMORY[0x1E696A4F0]];
 
 LABEL_13:
       goto LABEL_14;
@@ -794,13 +794,13 @@ LABEL_13:
 
     v13 = MEMORY[0x1E696A4F0];
 LABEL_12:
-    [v10 setObject:v12 forKeyedSubscript:*v13];
+    [v10 setObject:null3 forKeyedSubscript:*v13];
     goto LABEL_13;
   }
 
-  if ([v6 options])
+  if ([observationCopy options])
   {
-    v11 = [(GCRemoteUserDefaultsProxy *)v8 objectForKey:v7];
+    v11 = [(GCRemoteUserDefaultsProxy *)selfCopy objectForKey:pathCopy];
     if (v11)
     {
       [v10 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696A4F0]];
@@ -808,13 +808,13 @@ LABEL_12:
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v10 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696A4F0]];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [v10 setObject:null2 forKeyedSubscript:*MEMORY[0x1E696A4F0]];
     }
 
-    if (([v6 options] & 2) != 0)
+    if (([observationCopy options] & 2) != 0)
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
+      null3 = [MEMORY[0x1E695DFB0] null];
       v13 = MEMORY[0x1E696A500];
       goto LABEL_12;
     }
@@ -826,44 +826,44 @@ LABEL_14:
     [GCRemoteUserDefaultsProxy postInitialKVONotificationForObservation:keyPath:];
   }
 
-  v16 = [v6 observer];
-  [v16 observeValueForKeyPath:v7 ofObject:v8 change:v10 context:{objc_msgSend(v6, "context")}];
+  observer = [observationCopy observer];
+  [observer observeValueForKeyPath:pathCopy ofObject:selfCopy change:v10 context:{objc_msgSend(observationCopy, "context")}];
 
 LABEL_17:
 }
 
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  objc_sync_enter(v12);
+  observerCopy = observer;
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (gc_isInternalBuild())
   {
     v18 = getGCLogger();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = 138412802;
-      v20 = v10;
+      v20 = observerCopy;
       v21 = 2112;
-      v22 = v11;
+      v22 = pathCopy;
       v23 = 2048;
-      v24 = a6;
+      contextCopy = context;
       _os_log_impl(&dword_1D2CD5000, v18, OS_LOG_TYPE_INFO, "GCRemoteUserDefaultsProxy - addObserver:%@ forKeyPath:%@ context:%lu", &v19, 0x20u);
     }
   }
 
-  v13 = [(NSMutableDictionary *)v12->_observers objectForKeyedSubscript:v11];
+  v13 = [(NSMutableDictionary *)selfCopy->_observers objectForKeyedSubscript:pathCopy];
   v14 = [v13 mutableCopy];
 
   if (!v14)
   {
     v14 = objc_opt_new();
-    if ([(GCRemoteUserDefaultsProxy *)v12 agentConnectionEstablished])
+    if ([(GCRemoteUserDefaultsProxy *)selfCopy agentConnectionEstablished])
     {
-      v15 = [(GCRemoteUserDefaultsProxy *)v12 activeClient];
-      [v15 observeKeyPath:v11];
+      activeClient = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
+      [activeClient observeKeyPath:pathCopy];
     }
 
     if (gc_isInternalBuild())
@@ -874,12 +874,12 @@ LABEL_17:
     }
   }
 
-  v16 = [[GCObservation alloc] initWithObserver:v10 options:a5 context:a6];
+  v16 = [[GCObservation alloc] initWithObserver:observerCopy options:options context:context];
   [v14 addObject:v16];
-  [(NSMutableDictionary *)v12->_observers setObject:v14 forKeyedSubscript:v11];
+  [(NSMutableDictionary *)selfCopy->_observers setObject:v14 forKeyedSubscript:pathCopy];
   if (([(GCObservation *)v16 options]& 4) != 0)
   {
-    [(GCRemoteUserDefaultsProxy *)v12 postInitialKVONotificationForObservation:v16 keyPath:v11];
+    [(GCRemoteUserDefaultsProxy *)selfCopy postInitialKVONotificationForObservation:v16 keyPath:pathCopy];
   }
 
   if (gc_isInternalBuild())
@@ -889,18 +889,18 @@ LABEL_17:
     [GCRemoteUserDefaultsProxy addObserver:forKeyPath:options:context:];
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4 context:(void *)a5
+- (void)removeObserver:(id)observer forKeyPath:(id)path context:(void *)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(NSMutableDictionary *)v10->_observers objectForKeyedSubscript:v9];
+  observerCopy = observer;
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = [(NSMutableDictionary *)selfCopy->_observers objectForKeyedSubscript:pathCopy];
   v12 = [v11 mutableCopy];
 
   if (gc_isInternalBuild())
@@ -909,35 +909,35 @@ LABEL_17:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *v20 = 138412802;
-      *&v20[4] = v8;
+      *&v20[4] = observerCopy;
       v21 = 2112;
-      v22 = v9;
+      v22 = pathCopy;
       v23 = 2048;
-      v24 = a5;
+      contextCopy = context;
       _os_log_impl(&dword_1D2CD5000, v18, OS_LOG_TYPE_INFO, "GCRemoteUserDefaultsProxy - removeObserver %@ forKeyPath %@ context %lu", v20, 0x20u);
     }
   }
 
   if (v12)
   {
-    v13 = [[GCObservation alloc] initWithObserver:v8 options:0 context:0];
+    v13 = [[GCObservation alloc] initWithObserver:observerCopy options:0 context:0];
     if ([v12 containsObject:v13])
     {
       [v12 removeObject:v13];
       v14 = [v12 count];
-      observers = v10->_observers;
+      observers = selfCopy->_observers;
       if (v14)
       {
-        [(NSMutableDictionary *)observers setObject:v12 forKeyedSubscript:v9];
+        [(NSMutableDictionary *)observers setObject:v12 forKeyedSubscript:pathCopy];
       }
 
       else
       {
-        [(NSMutableDictionary *)observers removeObjectForKey:v9];
-        if ([(GCRemoteUserDefaultsProxy *)v10 agentConnectionEstablished])
+        [(NSMutableDictionary *)observers removeObjectForKey:pathCopy];
+        if ([(GCRemoteUserDefaultsProxy *)selfCopy agentConnectionEstablished])
         {
-          v16 = [(GCRemoteUserDefaultsProxy *)v10 activeClient];
-          [v16 stopObservingKeyPath:v9];
+          activeClient = [(GCRemoteUserDefaultsProxy *)selfCopy activeClient];
+          [activeClient stopObservingKeyPath:pathCopy];
         }
 
         if (gc_isInternalBuild())
@@ -954,7 +954,7 @@ LABEL_17:
       }
 
       v19 = getGCLogger();
-      [GCRemoteUserDefaultsProxy removeObserver:v19 forKeyPath:&v10->_observers context:v20];
+      [GCRemoteUserDefaultsProxy removeObserver:v19 forKeyPath:&selfCopy->_observers context:v20];
       goto LABEL_21;
     }
 
@@ -982,18 +982,18 @@ LABEL_15:
 
 LABEL_16:
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observeUserDefaultsValueForKeyPath:(id)a3 change:(id)a4
+- (void)observeUserDefaultsValueForKeyPath:(id)path change:(id)change
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NSMutableDictionary *)v8->_observers objectForKeyedSubscript:v6];
+  pathCopy = path;
+  changeCopy = change;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NSMutableDictionary *)selfCopy->_observers objectForKeyedSubscript:pathCopy];
   v10 = v9;
   if (v9 && [v9 count])
   {
@@ -1016,8 +1016,8 @@ LABEL_16:
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
-          v16 = [v15 observer];
-          [v16 observeValueForKeyPath:v6 ofObject:v8 change:v7 context:{objc_msgSend(v15, "context")}];
+          observer = [v15 observer];
+          [observer observeValueForKeyPath:pathCopy ofObject:selfCopy change:changeCopy context:{objc_msgSend(v15, "context")}];
         }
 
         v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -1033,7 +1033,7 @@ LABEL_16:
     [GCRemoteUserDefaultsProxy observeUserDefaultsValueForKeyPath:v18 change:?];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v17 = *MEMORY[0x1E69E9840];
 }
 

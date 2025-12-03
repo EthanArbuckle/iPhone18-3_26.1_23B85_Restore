@@ -1,25 +1,25 @@
 @interface CNUIContactCardCustomAction
-- (CNUIContactCardCustomAction)initWithTitle:(id)a3 contactIdentifier:(id)a4 isDestructive:(BOOL)a5 actionBlock:(id)a6;
-- (void)performActionForContactIdentifier:(id)a3 sourceView:(id)a4;
+- (CNUIContactCardCustomAction)initWithTitle:(id)title contactIdentifier:(id)identifier isDestructive:(BOOL)destructive actionBlock:(id)block;
+- (void)performActionForContactIdentifier:(id)identifier sourceView:(id)view;
 @end
 
 @implementation CNUIContactCardCustomAction
 
-- (CNUIContactCardCustomAction)initWithTitle:(id)a3 contactIdentifier:(id)a4 isDestructive:(BOOL)a5 actionBlock:(id)a6
+- (CNUIContactCardCustomAction)initWithTitle:(id)title contactIdentifier:(id)identifier isDestructive:(BOOL)destructive actionBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  titleCopy = title;
+  identifierCopy = identifier;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = CNUIContactCardCustomAction;
   v14 = [(CNUIContactCardCustomAction *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_title, a3);
-    objc_storeStrong(&v15->_contactIdentifier, a4);
-    v15->_destructive = a5;
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_title, title);
+    objc_storeStrong(&v15->_contactIdentifier, identifier);
+    v15->_destructive = destructive;
+    v16 = [blockCopy copy];
     actionBlock = v15->_actionBlock;
     v15->_actionBlock = v16;
 
@@ -29,16 +29,16 @@
   return v15;
 }
 
-- (void)performActionForContactIdentifier:(id)a3 sourceView:(id)a4
+- (void)performActionForContactIdentifier:(id)identifier sourceView:(id)view
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(CNUIContactCardCustomAction *)self contactIdentifier];
+  viewCopy = view;
+  identifierCopy = identifier;
+  contactIdentifier = [(CNUIContactCardCustomAction *)self contactIdentifier];
 
-  if (v7 == v6)
+  if (contactIdentifier == identifierCopy)
   {
-    v8 = [(CNUIContactCardCustomAction *)self actionBlock];
-    (v8)[2](v8, v9);
+    actionBlock = [(CNUIContactCardCustomAction *)self actionBlock];
+    (actionBlock)[2](actionBlock, viewCopy);
   }
 }
 

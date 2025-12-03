@@ -1,5 +1,5 @@
 @interface AudioMessageRecordingWaveformView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190832D04();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
+  height = fits.height;
   v5 = OBJC_IVAR____TtC7ChatKit33AudioMessageRecordingWaveformView_intensities;
   swift_beginAccess();
   v6 = (*(&self->super.super.super.isa + v5))[2] * 4.0;

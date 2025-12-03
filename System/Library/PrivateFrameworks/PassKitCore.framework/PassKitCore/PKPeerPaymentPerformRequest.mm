@@ -1,17 +1,17 @@
 @interface PKPeerPaymentPerformRequest
-+ (id)requestWithAuthorizedPeerPaymentQuote:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5 deviceScore:(id)a6 odiAssessment:(id)a7 deviceMetadata:(id)a8;
++ (id)requestWithAuthorizedPeerPaymentQuote:(id)quote;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier deviceScore:(id)score odiAssessment:(id)assessment deviceMetadata:(id)metadata;
 @end
 
 @implementation PKPeerPaymentPerformRequest
 
-+ (id)requestWithAuthorizedPeerPaymentQuote:(id)a3
++ (id)requestWithAuthorizedPeerPaymentQuote:(id)quote
 {
-  v3 = a3;
-  v4 = [v3 peerPaymentQuote];
-  v5 = [v4 validUntil];
+  quoteCopy = quote;
+  peerPaymentQuote = [quoteCopy peerPaymentQuote];
+  validUntil = [peerPaymentQuote validUntil];
 
-  if ((PKPeerPaymentDisableInvalidQuoteEnforcement() & 1) == 0 && v5 && ([MEMORY[0x1E695DF00] now], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "compare:", v5), v6, v7 == 1))
+  if ((PKPeerPaymentDisableInvalidQuoteEnforcement() & 1) == 0 && validUntil && ([MEMORY[0x1E695DF00] now], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "compare:", validUntil), v6, v7 == 1))
   {
     v8 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -26,34 +26,34 @@
   else
   {
     v9 = objc_alloc_init(PKPeerPaymentPerformRequest);
-    v10 = [v3 peerPaymentQuote];
-    v11 = [v10 identifier];
-    [(PKPeerPaymentPerformRequest *)v9 setQuoteIdentifier:v11];
+    peerPaymentQuote2 = [quoteCopy peerPaymentQuote];
+    identifier = [peerPaymentQuote2 identifier];
+    [(PKPeerPaymentPerformRequest *)v9 setQuoteIdentifier:identifier];
 
-    v12 = [v3 transactionData];
-    [(PKPeerPaymentPerformRequest *)v9 setPaymentData:v12];
+    transactionData = [quoteCopy transactionData];
+    [(PKPeerPaymentPerformRequest *)v9 setPaymentData:transactionData];
 
-    v13 = [v3 certificates];
-    [(PKPeerPaymentPerformRequest *)v9 setCertificates:v13];
+    certificates = [quoteCopy certificates];
+    [(PKPeerPaymentPerformRequest *)v9 setCertificates:certificates];
 
-    v14 = [v3 contact];
-    [(PKPeerPaymentPerformRequest *)v9 setContact:v14];
+    contact = [quoteCopy contact];
+    [(PKPeerPaymentPerformRequest *)v9 setContact:contact];
   }
 
   return v9;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5 deviceScore:(id)a6 odiAssessment:(id)a7 deviceMetadata:(id)a8
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier deviceScore:(id)score odiAssessment:(id)assessment deviceMetadata:(id)metadata
 {
   v81 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (!v14)
+  lCopy = l;
+  informationCopy = information;
+  identifierCopy = identifier;
+  scoreCopy = score;
+  assessmentCopy = assessment;
+  metadataCopy = metadata;
+  v20 = metadataCopy;
+  if (!lCopy)
   {
     v23 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -73,7 +73,7 @@ LABEL_64:
     goto LABEL_65;
   }
 
-  if (!v15)
+  if (!informationCopy)
   {
     v23 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -90,7 +90,7 @@ LABEL_64:
     goto LABEL_64;
   }
 
-  if (!v16)
+  if (!identifierCopy)
   {
     v23 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -107,7 +107,7 @@ LABEL_64:
     goto LABEL_64;
   }
 
-  if (!v19)
+  if (!metadataCopy)
   {
     v23 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -182,17 +182,17 @@ LABEL_65:
   v76[1] = quoteIdentifier;
   v76[2] = @"perform";
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:3];
-  v23 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v14 endpointComponents:v22 queryParameters:0 appleAccountInformation:v15];
+  v23 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v22 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v23 setHTTPMethod:@"POST"];
   [v23 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v24 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   paymentData = self->_paymentData;
-  v26 = v24;
+  v26 = dictionary;
   if (paymentData)
   {
-    v27 = [(NSData *)paymentData hexEncoding];
-    [v26 setObject:v27 forKey:@"paymentData"];
+    hexEncoding = [(NSData *)paymentData hexEncoding];
+    [v26 setObject:hexEncoding forKey:@"paymentData"];
   }
 
   if (!self->_certificates || ![MEMORY[0x1E696ACB0] isValidJSONObject:?])
@@ -209,19 +209,19 @@ LABEL_65:
   }
 
   [v26 setObject:self->_certificates forKey:@"certificates"];
-  if (v17)
+  if (scoreCopy)
   {
-    v28 = [v17 hexEncoding];
-    [v26 setObject:v28 forKey:@"deviceScore"];
+    hexEncoding2 = [scoreCopy hexEncoding];
+    [v26 setObject:hexEncoding2 forKey:@"deviceScore"];
   }
 
-  if (v18)
+  if (assessmentCopy)
   {
-    [v26 setObject:v18 forKey:@"odiAssessment"];
+    [v26 setObject:assessmentCopy forKey:@"odiAssessment"];
   }
 
-  v29 = [v20 dictionaryRepresentation];
-  [v26 setObject:v29 forKey:@"deviceMetadata"];
+  dictionaryRepresentation = [v20 dictionaryRepresentation];
+  [v26 setObject:dictionaryRepresentation forKey:@"deviceMetadata"];
 
   pushToken = self->_pushToken;
   if (pushToken)
@@ -232,15 +232,15 @@ LABEL_65:
   signedEnrollmentDataSignature = self->_signedEnrollmentDataSignature;
   if (signedEnrollmentDataSignature)
   {
-    v32 = [(NSData *)signedEnrollmentDataSignature hexEncoding];
-    [v26 setObject:v32 forKey:@"signedEnrollmentDataSignature"];
+    hexEncoding3 = [(NSData *)signedEnrollmentDataSignature hexEncoding];
+    [v26 setObject:hexEncoding3 forKey:@"signedEnrollmentDataSignature"];
   }
 
   contact = self->_contact;
   if (contact)
   {
-    v34 = [(PKContact *)contact dictionaryRepresentation];
-    [v26 setObject:v34 forKey:@"contact"];
+    dictionaryRepresentation2 = [(PKContact *)contact dictionaryRepresentation];
+    [v26 setObject:dictionaryRepresentation2 forKey:@"contact"];
   }
 
   passTypeIdentifier = self->_passTypeIdentifier;
@@ -266,18 +266,18 @@ LABEL_65:
     v74 = v26;
     v69 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     v38 = [v69 numberFromString:self->_accountNumber];
-    v72 = [v38 stringValue];
+    stringValue = [v38 stringValue];
 
     v39 = [MEMORY[0x1E696AD60] stringWithString:@"EE2C738F-01CE-4336-AB9C-CE8A72E3679E"];
     [v39 appendString:@"-"];
-    [v39 appendString:v72];
+    [v39 appendString:stringValue];
     [v39 appendString:@"-"];
     [v39 appendString:self->_routingNumber];
     v67 = v39;
     v40 = [v39 dataUsingEncoding:4];
-    v41 = [v40 SHA256Hash];
+    sHA256Hash = [v40 SHA256Hash];
 
-    v42 = [v41 base64EncodedStringWithOptions:0];
+    v42 = [sHA256Hash base64EncodedStringWithOptions:0];
     if (v42)
     {
       [v74 setObject:v42 forKey:@"achHash"];

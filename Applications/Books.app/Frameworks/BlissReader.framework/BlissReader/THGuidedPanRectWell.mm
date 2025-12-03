@@ -2,32 +2,32 @@
 - (CGPoint)focalPoint;
 - (CGPoint)maxCenterPoint;
 - (CGPoint)minCenterPoint;
-- (CGPoint)p_distanceFromWellRect:(CGPoint)a3;
-- (CGPoint)unconsumedMovementWithMovement:(CGPoint)a3 controller:(id)a4;
+- (CGPoint)p_distanceFromWellRect:(CGPoint)rect;
+- (CGPoint)unconsumedMovementWithMovement:(CGPoint)movement controller:(id)controller;
 - (CGRect)unscaledRect;
 - (CGRect)wellRect;
-- (THGuidedPanRectWell)initWithUnscaledRect:(CGRect)a3 wellRect:(CGRect)a4 target:(id)a5;
-- (double)weightWithMovement:(CGPoint)a3 proposedLocation:(id)a4 controller:(id)a5;
-- (id)contentAnimationToFocalPointFromLocation:(id)a3 withMovement:(CGPoint)a4 velocity:(CGPoint)a5 controller:(id)a6;
+- (THGuidedPanRectWell)initWithUnscaledRect:(CGRect)rect wellRect:(CGRect)wellRect target:(id)target;
+- (double)weightWithMovement:(CGPoint)movement proposedLocation:(id)location controller:(id)controller;
+- (id)contentAnimationToFocalPointFromLocation:(id)location withMovement:(CGPoint)movement velocity:(CGPoint)velocity controller:(id)controller;
 - (id)description;
-- (id)p_contentLocationWithMovement:(CGPoint)a3 snapToBounds:(BOOL)a4 overscrolled:(BOOL *)a5 controller:(id)a6;
-- (int)guidedPanWellRatingWithMovement:(CGPoint)a3 velocity:(CGPoint)a4 controller:(id)a5;
+- (id)p_contentLocationWithMovement:(CGPoint)movement snapToBounds:(BOOL)bounds overscrolled:(BOOL *)overscrolled controller:(id)controller;
+- (int)guidedPanWellRatingWithMovement:(CGPoint)movement velocity:(CGPoint)velocity controller:(id)controller;
 - (void)dealloc;
-- (void)guidedPanWillBeginAtPoint:(CGPoint)a3 controller:(id)a4;
+- (void)guidedPanWillBeginAtPoint:(CGPoint)point controller:(id)controller;
 @end
 
 @implementation THGuidedPanRectWell
 
-- (THGuidedPanRectWell)initWithUnscaledRect:(CGRect)a3 wellRect:(CGRect)a4 target:(id)a5
+- (THGuidedPanRectWell)initWithUnscaledRect:(CGRect)rect wellRect:(CGRect)wellRect target:(id)target
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
+  height = wellRect.size.height;
+  width = wellRect.size.width;
+  y = wellRect.origin.y;
+  x = wellRect.origin.x;
+  v10 = rect.size.height;
+  v11 = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
   v19.receiver = self;
   v19.super_class = THGuidedPanRectWell;
   v14 = [(THGuidedPanRectWell *)&v19 init];
@@ -42,7 +42,7 @@
     v14->_wellRect.origin.y = y;
     v14->_wellRect.size.width = width;
     v14->_wellRect.size.height = height;
-    v14->_target = a5;
+    v14->_target = target;
     TSDCenterOfRect();
     v15->_focalPoint.x = v16;
     v15->_focalPoint.y = v17;
@@ -58,22 +58,22 @@
   [(THGuidedPanRectWell *)&v3 dealloc];
 }
 
-- (void)guidedPanWillBeginAtPoint:(CGPoint)a3 controller:(id)a4
+- (void)guidedPanWillBeginAtPoint:(CGPoint)point controller:(id)controller
 {
-  [a4 viewScaleForUnscaledRect:-[THGuidedPanTarget guidedPanTargetKind](self->_target forPage:{"guidedPanTargetKind", a3.x, a3.y) == 0, self->_unscaledRect.origin.x, self->_unscaledRect.origin.y, self->_unscaledRect.size.width, self->_unscaledRect.size.height}];
+  [controller viewScaleForUnscaledRect:-[THGuidedPanTarget guidedPanTargetKind](self->_target forPage:{"guidedPanTargetKind", point.x, point.y) == 0, self->_unscaledRect.origin.x, self->_unscaledRect.origin.y, self->_unscaledRect.size.width, self->_unscaledRect.size.height}];
   self->_wellViewScale = v6;
   MidX = CGRectGetMidX(self->_unscaledRect);
   MinY = CGRectGetMinY(self->_unscaledRect);
-  v9 = [a4 interactiveCanvasController];
-  [objc_msgSend(a4 "interactiveCanvasController")];
-  [v9 clampedCenterPointForPoint:MidX withPlacement:MinY viewScale:{v10, v11, self->_wellViewScale}];
+  interactiveCanvasController = [controller interactiveCanvasController];
+  [objc_msgSend(controller "interactiveCanvasController")];
+  [interactiveCanvasController clampedCenterPointForPoint:MidX withPlacement:MinY viewScale:{v10, v11, self->_wellViewScale}];
   self->_minCenterPoint.x = v12;
   self->_minCenterPoint.y = v13;
   v14 = CGRectGetMidX(self->_unscaledRect);
   MaxY = CGRectGetMaxY(self->_unscaledRect);
-  v16 = [a4 interactiveCanvasController];
-  [objc_msgSend(a4 "interactiveCanvasController")];
-  [v16 clampedCenterPointForPoint:v14 withPlacement:MaxY viewScale:{v17, v18, self->_wellViewScale}];
+  interactiveCanvasController2 = [controller interactiveCanvasController];
+  [objc_msgSend(controller "interactiveCanvasController")];
+  [interactiveCanvasController2 clampedCenterPointForPoint:v14 withPlacement:MaxY viewScale:{v17, v18, self->_wellViewScale}];
   self->_maxCenterPoint.x = v19;
   self->_maxCenterPoint.y = v20;
   if (v20 < self->_minCenterPoint.y)
@@ -82,16 +82,16 @@
   }
 }
 
-- (CGPoint)unconsumedMovementWithMovement:(CGPoint)a3 controller:(id)a4
+- (CGPoint)unconsumedMovementWithMovement:(CGPoint)movement controller:(id)controller
 {
-  y = a3.y;
-  x = a3.x;
+  y = movement.y;
+  x = movement.x;
   if (self->_allowVerticalMovementInWell)
   {
-    [objc_msgSend(a4 "interactiveCanvasController")];
+    [objc_msgSend(controller "interactiveCanvasController")];
     v9 = v8;
     v11 = v10;
-    [a4 unscaledCenterPoint];
+    [controller unscaledCenterPoint];
     v13 = v12 - v11;
     v14 = self->_minCenterPoint.y;
     if (v13 < v14 || (v14 = self->_maxCenterPoint.y, v15 = 0.0, v13 > v14))
@@ -99,7 +99,7 @@
       v15 = v14 - v13;
     }
 
-    [objc_msgSend(a4 "interactiveCanvasController")];
+    [objc_msgSend(controller "interactiveCanvasController")];
     x = v16;
     y = v17;
   }
@@ -111,18 +111,18 @@
   return result;
 }
 
-- (id)p_contentLocationWithMovement:(CGPoint)a3 snapToBounds:(BOOL)a4 overscrolled:(BOOL *)a5 controller:(id)a6
+- (id)p_contentLocationWithMovement:(CGPoint)movement snapToBounds:(BOOL)bounds overscrolled:(BOOL *)overscrolled controller:(id)controller
 {
   if (self->_allowVerticalMovementInWell)
   {
-    v9 = a4;
-    [objc_msgSend(a6 "interactiveCanvasController")];
+    boundsCopy = bounds;
+    [objc_msgSend(controller "interactiveCanvasController")];
     v11 = v10;
-    [a6 unscaledCenterPoint];
+    [controller unscaledCenterPoint];
     x = v12;
     v15 = v14 - v11;
     y = self->_minCenterPoint.y;
-    if (v9)
+    if (boundsCopy)
     {
       TSUClamp();
       v15 = v17;
@@ -165,21 +165,21 @@ LABEL_5:
 
 LABEL_12:
   result = [TSDContentLocation contentLocationWithUnscaledPoint:x viewScale:v15, self->_wellViewScale];
-  if (a5)
+  if (overscrolled)
   {
-    *a5 = v19;
+    *overscrolled = v19;
   }
 
   return result;
 }
 
-- (CGPoint)p_distanceFromWellRect:(CGPoint)a3
+- (CGPoint)p_distanceFromWellRect:(CGPoint)rect
 {
-  y = a3.y;
-  x = a3.x;
+  y = rect.y;
+  x = rect.x;
   v6 = CGPointZero.x;
   v7 = CGPointZero.y;
-  if (CGRectContainsPoint(self->_wellRect, a3))
+  if (CGRectContainsPoint(self->_wellRect, rect))
   {
     goto LABEL_29;
   }
@@ -288,7 +288,7 @@ LABEL_29:
   return result;
 }
 
-- (double)weightWithMovement:(CGPoint)a3 proposedLocation:(id)a4 controller:(id)a5
+- (double)weightWithMovement:(CGPoint)movement proposedLocation:(id)location controller:(id)controller
 {
   weightBlock = self->_weightBlock;
   if (!weightBlock)
@@ -296,7 +296,7 @@ LABEL_29:
     return 0.0;
   }
 
-  [a4 unscaledPoint];
+  [location unscaledPoint];
   [(THGuidedPanRectWell *)self p_distanceFromWellRect:?];
   v7 = weightBlock[2];
 
@@ -304,23 +304,23 @@ LABEL_29:
   return result;
 }
 
-- (id)contentAnimationToFocalPointFromLocation:(id)a3 withMovement:(CGPoint)a4 velocity:(CGPoint)a5 controller:(id)a6
+- (id)contentAnimationToFocalPointFromLocation:(id)location withMovement:(CGPoint)movement velocity:(CGPoint)velocity controller:(id)controller
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  y = velocity.y;
+  x = velocity.x;
+  v9 = movement.y;
+  v10 = movement.x;
   v52 = 0;
-  [(THGuidedPanRectWell *)self p_contentLocationWithMovement:0 snapToBounds:&v52 overscrolled:a6 controller:?];
-  v13 = [(THGuidedPanRectWell *)self p_contentLocationWithMovement:1 snapToBounds:0 overscrolled:a6 controller:v10, v9];
+  [(THGuidedPanRectWell *)self p_contentLocationWithMovement:0 snapToBounds:&v52 overscrolled:controller controller:?];
+  v13 = [(THGuidedPanRectWell *)self p_contentLocationWithMovement:1 snapToBounds:0 overscrolled:controller controller:v10, v9];
   if (!self->_allowVerticalMovementInWell)
   {
     TSDPointLength();
     if (v15 <= 300.0)
     {
-      v33 = [TSDContentLocation contentLocationInterpolatingFromLocation:a3 toLocation:v13 fraction:1.04999995];
+      v33 = [TSDContentLocation contentLocationInterpolatingFromLocation:location toLocation:v13 fraction:1.04999995];
       v14 = +[TSDContentPathAnimation animation];
-      [v14 setContentLocations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", a3, v33, v13, 0)}];
+      [v14 setContentLocations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", location, v33, v13, 0)}];
       [v14 setTimingFunction:{+[CAMediaTimingFunction functionWithName:](CAMediaTimingFunction, "functionWithName:", kCAMediaTimingFunctionEaseOut)}];
       v34 = [NSNumber numberWithFloat:0.0];
       LODWORD(v35) = 1061997773;
@@ -336,32 +336,32 @@ LABEL_29:
       v18 = +[TSDContentLocation contentLocation];
       if (currentBlendedWeight <= 0.5 || currentBlendedWeight <= previousBlendedWeight)
       {
-        [objc_msgSend(a6 "delegate")];
+        [objc_msgSend(controller "delegate")];
         v21 = v20;
-        [objc_msgSend(a6 "delegate")];
+        [objc_msgSend(controller "delegate")];
         v23 = v22;
-        [a3 unscaledPoint];
+        [location unscaledPoint];
         [v13 unscaledPoint];
         TSDInterpolatePoints();
         [v18 setUnscaledPoint:?];
-        [a3 viewScale];
+        [location viewScale];
         TSDInterpolateFloats();
         v42 = v24;
-        [a3 viewScale];
+        [location viewScale];
         if (v25 < v21)
         {
           [v13 viewScale];
           if (v26 < v21)
           {
-            [a3 viewScale];
+            [location viewScale];
             v42 = v27;
           }
         }
 
-        [objc_msgSend(a6 "target")];
+        [objc_msgSend(controller "target")];
         if (vabdd_f64(v28, v23) >= 0.00999999978)
         {
-          [a3 viewScale];
+          [location viewScale];
           v30 = v29;
           [v13 viewScale];
           *&v31 = v31;
@@ -371,18 +371,18 @@ LABEL_29:
 
       else
       {
-        [a3 unscaledPoint];
+        [location unscaledPoint];
         [v13 unscaledPoint];
         TSDInterpolatePoints();
         [v18 setUnscaledPoint:?];
-        [a3 viewScale];
+        [location viewScale];
         v42 = v41;
       }
 
       [v18 setViewScale:v42];
       v43 = [TSDContentLocation contentLocationInterpolatingFromLocation:v18 toLocation:v13 fraction:1.04999995];
       v14 = +[TSDContentPathAnimation animation];
-      [v14 setContentLocations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", a3, v18, v43, v13, 0)}];
+      [v14 setContentLocations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", location, v18, v43, v13, 0)}];
       [v14 setTimingFunction:{+[CAMediaTimingFunction functionWithName:](CAMediaTimingFunction, "functionWithName:", kCAMediaTimingFunctionEaseOut)}];
       v44 = [NSNumber numberWithFloat:0.0];
       LODWORD(v45) = 1050253722;
@@ -401,7 +401,7 @@ LABEL_29:
   {
     if ((v52 & 1) == 0)
     {
-      [a3 viewScale];
+      [location viewScale];
       if (vabdd_f64(v32, self->_wellViewScale) < 0.00999999978)
       {
         return 0;
@@ -409,7 +409,7 @@ LABEL_29:
     }
 
     v14 = +[TSDContentPathAnimation animation];
-    [v14 setContentLocations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", a3, v13, 0)}];
+    [v14 setContentLocations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", location, v13, 0)}];
     v39 = [NSNumber numberWithFloat:0.0];
     LODWORD(v40) = 1.0;
     [v14 setKeyTimes:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v39, +[NSNumber numberWithFloat:](NSNumber, "numberWithFloat:", v40), 0)}];
@@ -419,15 +419,15 @@ LABEL_23:
     return v14;
   }
 
-  return [[[THGuidedPanColumnAnimator alloc] initWithLocation:a3 velocity:a6 min:x max:y targetViewScale:self->_minCenterPoint.x controller:self->_minCenterPoint.y animation:self->_maxCenterPoint.y];
+  return [[[THGuidedPanColumnAnimator alloc] initWithLocation:location velocity:controller min:x max:y targetViewScale:self->_minCenterPoint.x controller:self->_minCenterPoint.y animation:self->_maxCenterPoint.y];
 }
 
-- (int)guidedPanWellRatingWithMovement:(CGPoint)a3 velocity:(CGPoint)a4 controller:(id)a5
+- (int)guidedPanWellRatingWithMovement:(CGPoint)movement velocity:(CGPoint)velocity controller:(id)controller
 {
   ratingBlock = self->_ratingBlock;
   if (ratingBlock)
   {
-    LODWORD(ratingBlock) = ratingBlock[2](a3, *&a3.y, a4, *&a4.y);
+    LODWORD(ratingBlock) = ratingBlock[2](movement, *&movement.y, velocity, *&velocity.y);
   }
 
   return ratingBlock;

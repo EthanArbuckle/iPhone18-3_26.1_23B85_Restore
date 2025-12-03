@@ -1,67 +1,67 @@
 @interface CHWorkoutsListViewController
-- (CHWorkoutsListViewController)initWithDataProvider:(id)a3 healthStore:(id)a4 model:(id)a5 fitnessAppContext:(id)a6 workoutFormattingManager:(id)a7 workoutDataProvider:(id)a8 badgeImageFactory:(id)a9 friendListManager:(id)a10 achievementLocalizationProvider:(id)a11 pauseRingsCoordinator:(id)a12 achievementResourceProvider:(id)a13 formattingManager:(id)a14 awardsDataProvider:(id)a15;
+- (CHWorkoutsListViewController)initWithDataProvider:(id)provider healthStore:(id)store model:(id)model fitnessAppContext:(id)context workoutFormattingManager:(id)manager workoutDataProvider:(id)dataProvider badgeImageFactory:(id)factory friendListManager:(id)self0 achievementLocalizationProvider:(id)self1 pauseRingsCoordinator:(id)self2 achievementResourceProvider:(id)self3 formattingManager:(id)self4 awardsDataProvider:(id)self5;
 - (CHWorkoutsListViewControllerDelegate)delegate;
-- (id)_dateStringForComponents:(id)a3;
+- (id)_dateStringForComponents:(id)components;
 - (id)_filterMenu;
-- (id)detailViewControllerForWorkout:(id)a3;
+- (id)detailViewControllerForWorkout:(id)workout;
 - (void)_addDataProviderUpdateHandlers;
 - (void)_popViewControllerIfNeeded;
-- (void)_presentDetailViewForWorkout:(id)a3;
+- (void)_presentDetailViewForWorkout:(id)workout;
 - (void)_setupDataSource;
 - (void)_setupTableView;
-- (void)_updateFilterButtonTitleForWorkoutTypeKey:(id)a3;
+- (void)_updateFilterButtonTitleForWorkoutTypeKey:(id)key;
 - (void)_updateFiltersList;
 - (void)loadView;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)workoutsListDataSource:(id)a3 didEncounterReloadingException:(id)a4;
-- (void)workoutsListDataSource:(id)a3 didScrollToSectionWithDateComponents:(id)a4;
-- (void)workoutsListDataSource:(id)a3 requestsDeleteConfirmationForWorkout:(id)a4 completion:(id)a5;
+- (void)workoutsListDataSource:(id)source didEncounterReloadingException:(id)exception;
+- (void)workoutsListDataSource:(id)source didScrollToSectionWithDateComponents:(id)components;
+- (void)workoutsListDataSource:(id)source requestsDeleteConfirmationForWorkout:(id)workout completion:(id)completion;
 @end
 
 @implementation CHWorkoutsListViewController
 
-- (CHWorkoutsListViewController)initWithDataProvider:(id)a3 healthStore:(id)a4 model:(id)a5 fitnessAppContext:(id)a6 workoutFormattingManager:(id)a7 workoutDataProvider:(id)a8 badgeImageFactory:(id)a9 friendListManager:(id)a10 achievementLocalizationProvider:(id)a11 pauseRingsCoordinator:(id)a12 achievementResourceProvider:(id)a13 formattingManager:(id)a14 awardsDataProvider:(id)a15
+- (CHWorkoutsListViewController)initWithDataProvider:(id)provider healthStore:(id)store model:(id)model fitnessAppContext:(id)context workoutFormattingManager:(id)manager workoutDataProvider:(id)dataProvider badgeImageFactory:(id)factory friendListManager:(id)self0 achievementLocalizationProvider:(id)self1 pauseRingsCoordinator:(id)self2 achievementResourceProvider:(id)self3 formattingManager:(id)self4 awardsDataProvider:(id)self5
 {
-  v42 = a3;
-  v31 = a4;
-  v41 = a4;
-  v40 = a5;
-  v33 = a6;
-  v20 = a6;
-  v21 = a7;
-  v39 = v20;
-  v38 = a7;
-  v32 = a8;
-  v37 = a8;
-  v36 = a9;
-  v35 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
-  v26 = a15;
+  providerCopy = provider;
+  storeCopy = store;
+  storeCopy2 = store;
+  modelCopy = model;
+  contextCopy = context;
+  contextCopy2 = context;
+  managerCopy = manager;
+  v39 = contextCopy2;
+  managerCopy2 = manager;
+  dataProviderCopy = dataProvider;
+  dataProviderCopy2 = dataProvider;
+  factoryCopy = factory;
+  listManagerCopy = listManager;
+  localizationProviderCopy = localizationProvider;
+  coordinatorCopy = coordinator;
+  resourceProviderCopy = resourceProvider;
+  formattingManagerCopy = formattingManager;
+  awardsDataProviderCopy = awardsDataProvider;
   v43.receiver = self;
   v43.super_class = CHWorkoutsListViewController;
   v27 = [(CHWorkoutsListViewController *)&v43 init];
   v28 = v27;
   if (v27)
   {
-    objc_storeStrong(&v27->_dataProvider, a3);
-    objc_storeStrong(&v28->_healthStore, v31);
-    objc_storeStrong(&v28->_model, a5);
-    objc_storeStrong(&v28->_workoutDataProvider, v32);
-    objc_storeStrong(&v28->_workoutFormattingManager, v21);
-    objc_storeStrong(&v28->_fitnessAppContext, v33);
-    objc_storeStrong(&v28->_formattingManager, a14);
-    objc_storeStrong(&v28->_badgeImageFactory, a9);
-    objc_storeStrong(&v28->_friendListManager, a10);
-    objc_storeStrong(&v28->_achievementLocalizationProvider, a11);
-    objc_storeStrong(&v28->_pauseRingsCoordinator, a12);
-    objc_storeStrong(&v28->_achievementResourceProvider, a13);
-    objc_storeStrong(&v28->_awardsDataProvider, a15);
+    objc_storeStrong(&v27->_dataProvider, provider);
+    objc_storeStrong(&v28->_healthStore, storeCopy);
+    objc_storeStrong(&v28->_model, model);
+    objc_storeStrong(&v28->_workoutDataProvider, dataProviderCopy);
+    objc_storeStrong(&v28->_workoutFormattingManager, managerCopy);
+    objc_storeStrong(&v28->_fitnessAppContext, contextCopy);
+    objc_storeStrong(&v28->_formattingManager, formattingManager);
+    objc_storeStrong(&v28->_badgeImageFactory, factory);
+    objc_storeStrong(&v28->_friendListManager, listManager);
+    objc_storeStrong(&v28->_achievementLocalizationProvider, localizationProvider);
+    objc_storeStrong(&v28->_pauseRingsCoordinator, coordinator);
+    objc_storeStrong(&v28->_achievementResourceProvider, resourceProvider);
+    objc_storeStrong(&v28->_awardsDataProvider, awardsDataProvider);
   }
 
   return v28;
@@ -70,8 +70,8 @@
 - (void)_setupTableView
 {
   v3 = [UITableView alloc];
-  v4 = [(CHWorkoutsListViewController *)self view];
-  [v4 bounds];
+  view = [(CHWorkoutsListViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:0 style:?];
   tableView = self->_tableView;
   self->_tableView = v5;
@@ -86,8 +86,8 @@
   [(UITableView *)self->_tableView setSectionHeaderTopPadding:0.0];
   [(UITableView *)self->_tableView setTableHeaderViewShouldAutoHide:0];
   [(UITableView *)self->_tableView _setHeaderAndFooterViewsFloat:1];
-  v9 = [(CHWorkoutsListViewController *)self view];
-  [v9 addSubview:self->_tableView];
+  view2 = [(CHWorkoutsListViewController *)self view];
+  [view2 addSubview:self->_tableView];
 }
 
 - (id)_filterMenu
@@ -95,8 +95,8 @@
   objc_initWeak(&location, self);
   v3 = objc_alloc_init(NSMutableArray);
   workoutTypeIDs = self->_workoutTypeIDs;
-  v5 = [(CHWorkoutDataProvider *)self->_dataProvider currentFilteredTypeIdentifier];
-  v6 = [(NSArray *)workoutTypeIDs indexOfObject:v5];
+  currentFilteredTypeIdentifier = [(CHWorkoutDataProvider *)self->_dataProvider currentFilteredTypeIdentifier];
+  v6 = [(NSArray *)workoutTypeIDs indexOfObject:currentFilteredTypeIdentifier];
 
   workoutTypeNames = self->_workoutTypeNames;
   v12[0] = _NSConcreteStackBlock;
@@ -169,8 +169,8 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Data provider doesn't have any workouts; popping view controller", v6, 2u);
     }
 
-    v4 = [(CHWorkoutsListViewController *)self navigationController];
-    v5 = [v4 popViewControllerAnimated:1];
+    navigationController = [(CHWorkoutsListViewController *)self navigationController];
+    v5 = [navigationController popViewControllerAnimated:1];
   }
 }
 
@@ -180,10 +180,10 @@
   dataSource = self->_dataSource;
   self->_dataSource = v3;
 
-  v5 = [(CHWorkoutsListViewController *)self navigationController];
-  v6 = [v5 navigationBar];
-  v7 = [v6 _backdropViewLayerGroupName];
-  [(CHWorkoutsListDataSource *)self->_dataSource setNavBarBackdropGroupName:v7];
+  navigationController = [(CHWorkoutsListViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  _backdropViewLayerGroupName = [navigationBar _backdropViewLayerGroupName];
+  [(CHWorkoutsListDataSource *)self->_dataSource setNavBarBackdropGroupName:_backdropViewLayerGroupName];
 
   v8 = self->_dataSource;
 
@@ -195,8 +195,8 @@
   v3 = +[CHWorkoutTypeKey emptyKey];
   v39 = v3;
   v4 = [NSArray arrayWithObjects:&v39 count:1];
-  v5 = [(CHWorkoutDataProvider *)self->_dataProvider sortedTypeIdentifiers];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  sortedTypeIdentifiers = [(CHWorkoutDataProvider *)self->_dataProvider sortedTypeIdentifiers];
+  v6 = [v4 arrayByAddingObjectsFromArray:sortedTypeIdentifiers];
   workoutTypeIDs = self->_workoutTypeIDs;
   self->_workoutTypeIDs = v6;
 
@@ -238,54 +238,54 @@
   workoutTypeNames = self->_workoutTypeNames;
   self->_workoutTypeNames = v15;
 
-  v17 = [(CHWorkoutsListViewController *)self _filterMenu];
-  v18 = [(CHWorkoutsListViewController *)self navigationItem];
-  v19 = [v18 rightBarButtonItem];
-  [v19 setMenu:v17];
+  _filterMenu = [(CHWorkoutsListViewController *)self _filterMenu];
+  navigationItem = [(CHWorkoutsListViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setMenu:_filterMenu];
 
-  v20 = [(CHWorkoutDataProvider *)self->_dataProvider currentFilteredTypeIdentifier];
-  [(CHWorkoutsListViewController *)self _updateFilterButtonTitleForWorkoutTypeKey:v20];
+  currentFilteredTypeIdentifier = [(CHWorkoutDataProvider *)self->_dataProvider currentFilteredTypeIdentifier];
+  [(CHWorkoutsListViewController *)self _updateFilterButtonTitleForWorkoutTypeKey:currentFilteredTypeIdentifier];
 
-  v21 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
-  v22 = [v21 count];
+  sortedDateComponentKeys = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
+  v22 = [sortedDateComponentKeys count];
 
-  v23 = [(CHWorkoutsListViewController *)self navigationController];
-  v24 = [v23 navigationBar];
-  v25 = v24;
+  navigationController = [(CHWorkoutsListViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  v25 = navigationBar;
   if (v22)
   {
-    [v24 setUserInteractionEnabled:1];
+    [navigationBar setUserInteractionEnabled:1];
 
     v26 = +[UIApplication sharedApplication];
-    v27 = [v26 windows];
-    v28 = [v27 firstObject];
-    v29 = [v28 tintColor];
-    v30 = [(CHWorkoutsListViewController *)self navigationController];
-    v31 = [v30 navigationBar];
-    [v31 setTintColor:v29];
+    windows = [v26 windows];
+    firstObject = [windows firstObject];
+    tintColor = [firstObject tintColor];
+    navigationController2 = [(CHWorkoutsListViewController *)self navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
+    [navigationBar2 setTintColor:tintColor];
   }
 
   else
   {
-    [v24 setUserInteractionEnabled:0];
+    [navigationBar setUserInteractionEnabled:0];
 
     v26 = +[UIColor darkGrayColor];
-    v27 = [(CHWorkoutsListViewController *)self navigationController];
-    v28 = [v27 navigationBar];
-    [v28 setTintColor:v26];
+    windows = [(CHWorkoutsListViewController *)self navigationController];
+    firstObject = [windows navigationBar];
+    [firstObject setTintColor:v26];
   }
 
-  v32 = [(CHWorkoutsListViewController *)self navigationController];
-  v33 = [v32 interactivePopGestureRecognizer];
-  [v33 setEnabled:v22 != 0];
+  navigationController3 = [(CHWorkoutsListViewController *)self navigationController];
+  interactivePopGestureRecognizer = [navigationController3 interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:v22 != 0];
 }
 
-- (void)_updateFilterButtonTitleForWorkoutTypeKey:(id)a3
+- (void)_updateFilterButtonTitleForWorkoutTypeKey:(id)key
 {
-  v6 = [CHWorkoutDataProvider localizedShortNameForWorkoutTypeKey:a3];
-  v4 = [(CHWorkoutsListViewController *)self navigationItem];
-  v5 = [v4 rightBarButtonItem];
-  [v5 setTitle:v6];
+  v6 = [CHWorkoutDataProvider localizedShortNameForWorkoutTypeKey:key];
+  navigationItem = [(CHWorkoutsListViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setTitle:v6];
 }
 
 - (void)loadView
@@ -297,38 +297,38 @@
   v4 = [v3 localizedStringForKey:@"WORKOUTS" value:&stru_1008680E8 table:@"Localizable"];
   [(CHWorkoutsListViewController *)self setTitle:v4];
 
-  v5 = [(CHWorkoutsListViewController *)self _filterMenu];
-  v6 = [[UIBarButtonItem alloc] initWithTitle:0 menu:v5];
-  v7 = [(CHWorkoutsListViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v6];
+  _filterMenu = [(CHWorkoutsListViewController *)self _filterMenu];
+  v6 = [[UIBarButtonItem alloc] initWithTitle:0 menu:_filterMenu];
+  navigationItem = [(CHWorkoutsListViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 
   [(CHWorkoutsListViewController *)self _updateFiltersList];
   [(CHWorkoutsListViewController *)self _setupTableView];
-  v8 = [(CHWorkoutsListViewController *)self _filterMenu];
+  _filterMenu2 = [(CHWorkoutsListViewController *)self _filterMenu];
   [(CHWorkoutsListViewController *)self _addDataProviderUpdateHandlers];
   [(CHWorkoutsListViewController *)self _setupDataSource];
   v9 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   [(UIActivityIndicatorView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIActivityIndicatorView *)v9 setHidesWhenStopped:1];
-  v10 = [(CHWorkoutsListViewController *)self view];
-  [v10 addSubview:v9];
+  view = [(CHWorkoutsListViewController *)self view];
+  [view addSubview:v9];
 
   activityIndicator = self->_activityIndicator;
   self->_activityIndicator = v9;
   v12 = v9;
 
-  v13 = [(CHWorkoutsListViewController *)self view];
-  v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:9 relatedBy:0 toItem:v13 attribute:9 multiplier:1.0 constant:0.0];
+  view2 = [(CHWorkoutsListViewController *)self view];
+  v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:9 relatedBy:0 toItem:view2 attribute:9 multiplier:1.0 constant:0.0];
 
-  v15 = [(CHWorkoutsListViewController *)self view];
-  v16 = [NSLayoutConstraint constraintWithItem:v12 attribute:10 relatedBy:0 toItem:v15 attribute:10 multiplier:1.0 constant:0.0];
+  view3 = [(CHWorkoutsListViewController *)self view];
+  v16 = [NSLayoutConstraint constraintWithItem:v12 attribute:10 relatedBy:0 toItem:view3 attribute:10 multiplier:1.0 constant:0.0];
 
-  v17 = [(CHWorkoutsListViewController *)self view];
+  view4 = [(CHWorkoutsListViewController *)self view];
   v20[0] = v14;
   v20[1] = v16;
   v18 = [NSArray arrayWithObjects:v20 count:2];
 
-  [v17 addConstraints:v18];
+  [view4 addConstraints:v18];
 }
 
 - (void)viewDidLoad
@@ -342,22 +342,22 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CHWorkoutsListViewController;
-  [(CHWorkoutsListViewController *)&v4 viewWillAppear:a3];
+  [(CHWorkoutsListViewController *)&v4 viewWillAppear:appear];
   if ([(CHWorkoutDataProvider *)self->_dataProvider dataAvailable])
   {
     [(CHWorkoutsListViewController *)self _updateFiltersList];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CHWorkoutsListViewController;
-  [(CHWorkoutsListViewController *)&v4 viewWillDisappear:a3];
+  [(CHWorkoutsListViewController *)&v4 viewWillDisappear:disappear];
   [(UITableView *)self->_tableView setEditing:0 animated:1];
 }
 
@@ -366,61 +366,61 @@
   v4.receiver = self;
   v4.super_class = CHWorkoutsListViewController;
   [(CHWorkoutsListViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [(CHWorkoutsListViewController *)self view];
-  [v3 bounds];
+  view = [(CHWorkoutsListViewController *)self view];
+  [view bounds];
   [(UITableView *)self->_tableView setFrame:?];
 }
 
-- (void)_presentDetailViewForWorkout:(id)a3
+- (void)_presentDetailViewForWorkout:(id)workout
 {
-  v4 = a3;
-  v5 = [(CHWorkoutsListViewController *)self detailViewControllerForWorkout:v4];
+  workoutCopy = workout;
+  v5 = [(CHWorkoutsListViewController *)self detailViewControllerForWorkout:workoutCopy];
   _HKInitializeLogging();
   v6 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 startDate];
-    v9 = [v4 fiui_activityType];
-    v10 = [v9 localizedName];
-    v11 = [v4 UUID];
+    startDate = [workoutCopy startDate];
+    fiui_activityType = [workoutCopy fiui_activityType];
+    localizedName = [fiui_activityType localizedName];
+    uUID = [workoutCopy UUID];
     v13 = 138412802;
-    v14 = v8;
+    v14 = startDate;
     v15 = 2112;
-    v16 = v10;
+    v16 = localizedName;
     v17 = 2112;
-    v18 = v11;
+    v18 = uUID;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[WLVC] Selected workout: %@, %@ %@", &v13, 0x20u);
   }
 
-  v12 = [(CHWorkoutsListViewController *)self navigationController];
-  [v12 pushViewController:v5 animated:1];
+  navigationController = [(CHWorkoutsListViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
-- (id)_dateStringForComponents:(id)a3
+- (id)_dateStringForComponents:(id)components
 {
   v3 = qword_1008F9B78;
-  v4 = a3;
+  componentsCopy = components;
   if (v3 != -1)
   {
     sub_10069CEE8();
   }
 
   v5 = +[NSCalendar currentCalendar];
-  v6 = [v5 dateFromComponents:v4];
+  v6 = [v5 dateFromComponents:componentsCopy];
 
   v7 = [qword_1008F9B70 stringFromDate:v6];
 
   return v7;
 }
 
-- (void)workoutsListDataSource:(id)a3 requestsDeleteConfirmationForWorkout:(id)a4 completion:(id)a5
+- (void)workoutsListDataSource:(id)source requestsDeleteConfirmationForWorkout:(id)workout completion:(id)completion
 {
-  v6 = a5;
-  v7 = [a4 _activityMoveMode];
+  completionCopy = completion;
+  _activityMoveMode = [workout _activityMoveMode];
   v8 = +[NSBundle mainBundle];
   v9 = v8;
-  if (v7 == 2)
+  if (_activityMoveMode == 2)
   {
     v10 = @"Localizable-tinker";
     v11 = [v8 localizedStringForKey:@"DELETE_WORKOUT_ALERT_TITLE_TINKER" value:&stru_1008680E8 table:@"Localizable-tinker"];
@@ -449,14 +449,14 @@
   v36[1] = 3221225472;
   v36[2] = sub_100134944;
   v36[3] = &unk_10083C710;
-  v19 = v6;
+  v19 = completionCopy;
   v37 = v19;
   v20 = [UIAlertAction actionWithTitle:v18 style:1 handler:v36];
   [v16 addAction:v20];
 
   v21 = +[NSBundle mainBundle];
   v22 = v21;
-  if (v7 == 2)
+  if (_activityMoveMode == 2)
   {
     v23 = @"DELETE_WORKOUT_ALERT_YES_TINKER";
     v24 = @"Localizable-tinker";
@@ -479,7 +479,7 @@
   v27 = [UIAlertAction actionWithTitle:v25 style:0 handler:v34];
   [v16 addAction:v27];
 
-  if (v7 != 2)
+  if (_activityMoveMode != 2)
   {
     v28 = +[NSBundle mainBundle];
     v29 = [v28 localizedStringForKey:@"DELETE_WORKOUT_ALERT_WORKOUT_ONLY" value:&stru_1008680E8 table:@"Localizable"];
@@ -495,27 +495,27 @@
   [(CHWorkoutsListViewController *)self presentViewController:v16 animated:1 completion:0];
 }
 
-- (void)workoutsListDataSource:(id)a3 didScrollToSectionWithDateComponents:(id)a4
+- (void)workoutsListDataSource:(id)source didScrollToSectionWithDateComponents:(id)components
 {
-  v5 = a4;
-  v6 = [(CHWorkoutsListViewController *)self delegate];
-  [v6 workoutsListViewController:self didScrollToDateComponents:v5];
+  componentsCopy = components;
+  delegate = [(CHWorkoutsListViewController *)self delegate];
+  [delegate workoutsListViewController:self didScrollToDateComponents:componentsCopy];
 }
 
-- (void)workoutsListDataSource:(id)a3 didEncounterReloadingException:(id)a4
+- (void)workoutsListDataSource:(id)source didEncounterReloadingException:(id)exception
 {
-  [(UITableView *)self->_tableView removeFromSuperview:a3];
+  [(UITableView *)self->_tableView removeFromSuperview:source];
   [(CHWorkoutsListViewController *)self _setupTableView];
   [(CHWorkoutsListViewController *)self _setupDataSource];
-  v5 = [(CHWorkoutsListViewController *)self view];
-  [v5 layoutIfNeeded];
+  view = [(CHWorkoutsListViewController *)self view];
+  [view layoutIfNeeded];
 }
 
-- (id)detailViewControllerForWorkout:(id)a3
+- (id)detailViewControllerForWorkout:(id)workout
 {
-  v4 = a3;
+  workoutCopy = workout;
   LOBYTE(v7) = 1;
-  v5 = [[CHWorkoutDetailViewController alloc] initWithWorkout:v4 workoutActivity:0 healthStore:self->_healthStore model:self->_model fitnessAppContext:self->_fitnessAppContext workoutFormattingManager:self->_workoutFormattingManager workoutDataProvider:self->_workoutDataProvider badgeImageFactory:self->_badgeImageFactory friendListManager:self->_friendListManager achievementLocalizationProvider:self->_achievementLocalizationProvider pauseRingsCoordinator:self->_pauseRingsCoordinator achievementResourceProvider:self->_achievementResourceProvider formattingManager:self->_formattingManager awardsDataProvider:self->_awardsDataProvider shouldExposeDeepLinkToTrainingLoadFromEffort:v7];
+  v5 = [[CHWorkoutDetailViewController alloc] initWithWorkout:workoutCopy workoutActivity:0 healthStore:self->_healthStore model:self->_model fitnessAppContext:self->_fitnessAppContext workoutFormattingManager:self->_workoutFormattingManager workoutDataProvider:self->_workoutDataProvider badgeImageFactory:self->_badgeImageFactory friendListManager:self->_friendListManager achievementLocalizationProvider:self->_achievementLocalizationProvider pauseRingsCoordinator:self->_pauseRingsCoordinator achievementResourceProvider:self->_achievementResourceProvider formattingManager:self->_formattingManager awardsDataProvider:self->_awardsDataProvider shouldExposeDeepLinkToTrainingLoadFromEffort:v7];
 
   return v5;
 }

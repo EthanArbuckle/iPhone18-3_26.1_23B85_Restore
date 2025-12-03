@@ -1,6 +1,6 @@
 @interface HeartAppDelegate
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (Class)makeDataListDataProviderClassForDisplayType:(id)a3 hierarchical:(BOOL)a4;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (Class)makeDataListDataProviderClassForDisplayType:(id)type hierarchical:(BOOL)hierarchical;
 - (_TtC5Heart16HeartAppDelegate)init;
 @end
 
@@ -15,11 +15,11 @@
   return [(HeartAppDelegate *)&v5 init];
 }
 
-- (Class)makeDataListDataProviderClassForDisplayType:(id)a3 hierarchical:(BOOL)a4
+- (Class)makeDataListDataProviderClassForDisplayType:(id)type hierarchical:(BOOL)hierarchical
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_29D7E953C(v6, a4);
+  typeCopy = type;
+  selfCopy = self;
+  v8 = sub_29D7E953C(typeCopy, hierarchical);
 
   if (!v8)
   {
@@ -29,14 +29,14 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v5 = a5;
-  if (!a4)
+  optionsCopy = options;
+  if (!test)
   {
     v8 = 0;
     v10 = 0;
-    if (!a5)
+    if (!options)
     {
       goto LABEL_4;
     }
@@ -46,16 +46,16 @@
 
   v8 = sub_29D939D68();
   v10 = v9;
-  if (v5)
+  if (optionsCopy)
   {
 LABEL_3:
-    v5 = sub_29D939C68();
+    optionsCopy = sub_29D939C68();
   }
 
 LABEL_4:
-  v11 = a3;
-  v12 = self;
-  v13 = sub_29D8A7140(a3, v8, v10, v5);
+  applicationCopy = application;
+  selfCopy = self;
+  v13 = sub_29D8A7140(application, v8, v10, optionsCopy);
 
   return v13 & 1;
 }

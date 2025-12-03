@@ -8,7 +8,7 @@
 + (CIVector)vectorWithX:(CGFloat)x Y:(CGFloat)y;
 + (CIVector)vectorWithX:(CGFloat)x Y:(CGFloat)y Z:(CGFloat)z;
 + (CIVector)vectorWithX:(CGFloat)x Y:(CGFloat)y Z:(CGFloat)z W:(CGFloat)w;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)CGAffineTransformValue;
 - (CGFloat)W;
 - (CGFloat)X;
@@ -19,19 +19,19 @@
 - (CGRect)CGRectValue;
 - (CIVector)initWithCGPoint:(CGPoint)p;
 - (CIVector)initWithCGRect:(CGRect)r;
-- (CIVector)initWithCoder:(id)a3;
+- (CIVector)initWithCoder:(id)coder;
 - (CIVector)initWithString:(NSString *)representation;
 - (CIVector)initWithValues:(const CGFloat *)values count:(size_t)count;
 - (CIVector)initWithX:(CGFloat)x Y:(CGFloat)y;
 - (CIVector)initWithX:(CGFloat)x Y:(CGFloat)y Z:(CGFloat)z;
 - (CIVector)initWithX:(CGFloat)x Y:(CGFloat)y Z:(CGFloat)z W:(CGFloat)w;
-- (float)_dot:(id)a3;
+- (float)_dot:(id)_dot;
 - (float)_norm;
-- (id)_orthonormalizeTo:(id)a3;
+- (id)_orthonormalizeTo:(id)to;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CIVector
@@ -61,16 +61,16 @@
   return sqrtf(v6);
 }
 
-- (id)_orthonormalizeTo:(id)a3
+- (id)_orthonormalizeTo:(id)to
 {
-  [a3 _dot:?];
+  [to _dot:?];
   v6 = v5;
   if (v5 < 0.000001)
   {
     return self;
   }
 
-  [(CIVector *)self _dot:a3];
+  [(CIVector *)self _dot:to];
   v9 = v8 / v6;
   [(CIVector *)self X];
   v11 = v10;
@@ -84,70 +84,70 @@
   return [CIVector vectorWithX:v14 Y:v16 + v12 * v17];
 }
 
-- (float)_dot:(id)a3
+- (float)_dot:(id)_dot
 {
   [(CIVector *)self X];
   v6 = v5;
-  [a3 X];
+  [_dot X];
   v8 = v7;
   [(CIVector *)self Y];
   v10 = v9;
-  [a3 Y];
+  [_dot Y];
   return v10 * v11 + v6 * v8;
 }
 
 + (CIVector)vectorWithValues:(const CGFloat *)values count:(size_t)count
 {
-  v4 = [[a1 alloc] initWithValues:values count:count];
+  v4 = [[self alloc] initWithValues:values count:count];
 
   return v4;
 }
 
 + (CIVector)vectorWithX:(CGFloat)x
 {
-  v3 = [[a1 alloc] initWithX:x];
+  v3 = [[self alloc] initWithX:x];
 
   return v3;
 }
 
 + (CIVector)vectorWithX:(CGFloat)x Y:(CGFloat)y
 {
-  v4 = [[a1 alloc] initWithX:x Y:y];
+  v4 = [[self alloc] initWithX:x Y:y];
 
   return v4;
 }
 
 + (CIVector)vectorWithX:(CGFloat)x Y:(CGFloat)y Z:(CGFloat)z
 {
-  v5 = [[a1 alloc] initWithX:x Y:y Z:z];
+  v5 = [[self alloc] initWithX:x Y:y Z:z];
 
   return v5;
 }
 
 + (CIVector)vectorWithX:(CGFloat)x Y:(CGFloat)y Z:(CGFloat)z W:(CGFloat)w
 {
-  v6 = [[a1 alloc] initWithX:x Y:y Z:z W:w];
+  v6 = [[self alloc] initWithX:x Y:y Z:z W:w];
 
   return v6;
 }
 
 + (CIVector)vectorWithCGPoint:(CGPoint)p
 {
-  v3 = [[a1 alloc] initWithCGPoint:{p.x, p.y}];
+  v3 = [[self alloc] initWithCGPoint:{p.x, p.y}];
 
   return v3;
 }
 
 + (CIVector)vectorWithCGRect:(CGRect)r
 {
-  v3 = [[a1 alloc] initWithCGRect:{r.origin.x, r.origin.y, r.size.width, r.size.height}];
+  v3 = [[self alloc] initWithCGRect:{r.origin.x, r.origin.y, r.size.width, r.size.height}];
 
   return v3;
 }
 
 + (CIVector)vectorWithCGAffineTransform:(CGAffineTransform *)t
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v5 = *&t->c;
   v7[0] = *&t->a;
   v7[1] = v5;
@@ -157,7 +157,7 @@
 
 + (CIVector)vectorWithString:(NSString *)representation
 {
-  v3 = [[a1 alloc] initWithString:representation];
+  v3 = [[self alloc] initWithString:representation];
 
   return v3;
 }
@@ -261,22 +261,22 @@ LABEL_4:
 - (CIVector)initWithString:(NSString *)representation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [(NSString *)representation UTF8String];
-  if (!v4)
+  uTF8String = [(NSString *)representation UTF8String];
+  if (!uTF8String)
   {
 
     return [(CIVector *)self init];
   }
 
   v18 = 0;
-  if (*v4 == 91)
+  if (*uTF8String == 91)
   {
-    v5 = v4 + 1;
+    v5 = uTF8String + 1;
   }
 
   else
   {
-    v5 = v4;
+    v5 = uTF8String;
   }
 
   v6 = strtod(v5, &v18);
@@ -534,32 +534,32 @@ LABEL_21:
   return [v13 stringByAppendingString:@"]"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [a3 isMemberOfClass:objc_opt_class()];
+    v5 = [equal isMemberOfClass:objc_opt_class()];
     if (v5)
     {
-      v6 = [a3 count];
+      v6 = [equal count];
       if (v6 == self->_count)
       {
         if (v6 > 4)
         {
           ptr = self->_u.ptr;
           v7 = 8 * v6;
-          v8 = *(a3 + 2);
+          v8 = *(equal + 2);
         }
 
         else
         {
           v7 = 8 * v6;
-          v8 = a3 + 16;
+          v8 = equal + 16;
           ptr = &self->_u;
         }
 
@@ -603,15 +603,15 @@ LABEL_21:
   return v5;
 }
 
-- (CIVector)initWithCoder:(id)a3
+- (CIVector)initWithCoder:(id)coder
 {
   v19[64] = *MEMORY[0x1E69E9840];
-  if (![a3 containsValueForKey:@"CICount"])
+  if (![coder containsValueForKey:@"CICount"])
   {
     goto LABEL_4;
   }
 
-  v5 = [a3 decodeIntForKey:@"CICount"];
+  v5 = [coder decodeIntForKey:@"CICount"];
   if (v5)
   {
     v6 = v5;
@@ -622,9 +622,9 @@ LABEL_4:
       return 0;
     }
 
-    if ([a3 containsValueForKey:@"CIVector"])
+    if ([coder containsValueForKey:@"CIVector"])
     {
-      [a3 decodeRectForKey:@"CIVector"];
+      [coder decodeRectForKey:@"CIVector"];
       v19[0] = v8;
       v19[1] = v9;
       v19[2] = v10;
@@ -640,7 +640,7 @@ LABEL_4:
       }
 
       v13 = v19;
-      v14 = self;
+      selfCopy2 = self;
     }
 
     else
@@ -662,24 +662,24 @@ LABEL_4:
       for (i = 0; i != v6; ++i)
       {
         v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CI_%zu", i];
-        [a3 decodeFloatForKey:v17];
+        [coder decodeFloatForKey:v17];
         *&v15[i] = v18;
       }
 
-      v14 = self;
+      selfCopy2 = self;
       v13 = v15;
       v12 = v6;
     }
 
-    return [(CIVector *)v14 initWithValues:v13 count:v12];
+    return [(CIVector *)selfCopy2 initWithValues:v13 count:v12];
   }
 
   return [(CIVector *)self init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt:LODWORD(self->_count) forKey:@"CICount"];
+  [coder encodeInt:LODWORD(self->_count) forKey:@"CICount"];
   count = self->_count;
   if (count >= 5)
   {
@@ -689,7 +689,7 @@ LABEL_4:
       v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CI_%zu", v9];
       v11 = self->_u.ptr[v9];
       *&v11 = v11;
-      [a3 encodeFloat:v10 forKey:v11];
+      [coder encodeFloat:v10 forKey:v11];
 
       ++v9;
     }
@@ -705,7 +705,7 @@ LABEL_4:
       v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CI_%zu", v6];
       v8 = self->_u.vec[v6];
       *&v8 = v8;
-      [a3 encodeFloat:v7 forKey:v8];
+      [coder encodeFloat:v7 forKey:v8];
 
       ++v6;
     }

@@ -1,20 +1,20 @@
 @interface SPRObject
 - (NSString)proxyDescription;
-- (SPRObject)initWithConnector:(id)a3;
-- (id)asyncProxyWithErrorHandler:(id)a3;
-- (id)connectAndReturnError:(id *)a3;
-- (id)connectionWithErrorHandler:(id)a3;
-- (id)mapXPCConnectionError:(id)a3;
-- (id)syncProxyWithErrorHandler:(id)a3;
+- (SPRObject)initWithConnector:(id)connector;
+- (id)asyncProxyWithErrorHandler:(id)handler;
+- (id)connectAndReturnError:(id *)error;
+- (id)connectionWithErrorHandler:(id)handler;
+- (id)mapXPCConnectionError:(id)error;
+- (id)syncProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation SPRObject
 
-- (SPRObject)initWithConnector:(id)a3
+- (SPRObject)initWithConnector:(id)connector
 {
-  v4 = MEMORY[0x26D666F80](a3, a2);
+  v4 = MEMORY[0x26D666F80](connector, a2);
   connector = self->_connector;
   self->_connector = v4;
 
@@ -49,81 +49,81 @@
   return v10;
 }
 
-- (id)connectAndReturnError:(id *)a3
+- (id)connectAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   if (!self->_connection)
   {
     connector = self->_connector;
-    v5 = (*(v3->_connector + 2))();
-    connection = v3->_connection;
-    v3->_connection = v5;
+    v5 = (*(selfCopy->_connector + 2))();
+    connection = selfCopy->_connection;
+    selfCopy->_connection = v5;
 
-    if (!v3->_connection)
+    if (!selfCopy->_connection)
     {
-      v3 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)syncProxyWithErrorHandler:(id)a3
+- (id)syncProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v8 = objc_msgSend_connectionWithErrorHandler_(self, v5, v4, v6, v7);
+  handlerCopy = handler;
+  v8 = objc_msgSend_connectionWithErrorHandler_(self, v5, handlerCopy, v6, v7);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_26A94CD7C;
   v15[3] = &unk_279CA5F20;
   v15[4] = self;
-  v16 = v4;
-  v9 = v4;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
   v13 = objc_msgSend_synchronousRemoteObjectProxyWithErrorHandler_(v8, v10, v15, v11, v12);
 
   return v13;
 }
 
-- (id)asyncProxyWithErrorHandler:(id)a3
+- (id)asyncProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v8 = objc_msgSend_connectionWithErrorHandler_(self, v5, v4, v6, v7);
+  handlerCopy = handler;
+  v8 = objc_msgSend_connectionWithErrorHandler_(self, v5, handlerCopy, v6, v7);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_26A94CEB0;
   v15[3] = &unk_279CA5F20;
   v15[4] = self;
-  v16 = v4;
-  v9 = v4;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
   v13 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v8, v10, v15, v11, v12);
 
   return v13;
 }
 
-- (id)mapXPCConnectionError:(id)a3
+- (id)mapXPCConnectionError:(id)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v9 = objc_msgSend_domain(v4, v5, v6, v7, v8);
+  errorCopy = error;
+  v9 = objc_msgSend_domain(errorCopy, v5, v6, v7, v8);
   isEqualToString = objc_msgSend_isEqualToString_(v9, v10, *MEMORY[0x277CCA050], v11, v12);
 
-  if (isEqualToString && (objc_msgSend_code(v4, v14, v15, v16, v17) | 2) == 0x1003)
+  if (isEqualToString && (objc_msgSend_code(errorCopy, v14, v15, v16, v17) | 2) == 0x1003)
   {
-    v18 = self;
-    objc_sync_enter(v18);
-    if (v18->_connection)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_connection)
     {
       v23 = objc_msgSend_xpcClient(MEMORY[0x277D498B8], v19, v20, v21, v22);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v28 = objc_msgSend_proxyDescription(v18, v24, v25, v26, v27);
+        v28 = objc_msgSend_proxyDescription(selfCopy, v24, v25, v26, v27);
         sub_26AA7E5F4(v28, v45, v23);
       }
 
-      connection = v18->_connection;
-      v18->_connection = 0;
+      connection = selfCopy->_connection;
+      selfCopy->_connection = 0;
 
-      objc_msgSend_onDisconnect(v18, v30, v31, v32, v33);
+      objc_msgSend_onDisconnect(selfCopy, v30, v31, v32, v33);
       objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v34, @"SoftPosReader", 14001, 0);
     }
 
@@ -132,19 +132,19 @@
       v36 = objc_msgSend_xpcClient(MEMORY[0x277D498B8], v19, v20, v21, v22);
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        v41 = objc_msgSend_proxyDescription(v18, v37, v38, v39, v40);
+        v41 = objc_msgSend_proxyDescription(selfCopy, v37, v38, v39, v40);
         sub_26AA7E64C(v41, v45, v36);
       }
 
       objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v42, @"SoftPosReader", 14002, 0);
     }
     v35 = ;
-    objc_sync_exit(v18);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v35 = v4;
+    v35 = errorCopy;
   }
 
   v43 = *MEMORY[0x277D85DE8];
@@ -152,30 +152,30 @@
   return v35;
 }
 
-- (id)connectionWithErrorHandler:(id)a3
+- (id)connectionWithErrorHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  connection = v5->_connection;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connection = selfCopy->_connection;
   if (!connection)
   {
     for (i = 1; ; ++i)
     {
-      v8 = (*(v5->_connector + 2))();
+      v8 = (*(selfCopy->_connector + 2))();
       v9 = 0;
-      v10 = v5->_connection;
-      v5->_connection = v8;
+      v10 = selfCopy->_connection;
+      selfCopy->_connection = v8;
 
-      if (v5->_connection)
+      if (selfCopy->_connection)
       {
         break;
       }
 
       if (i == 3)
       {
-        v4[2](v4, v9);
+        handlerCopy[2](handlerCopy, v9);
         goto LABEL_10;
       }
 
@@ -185,18 +185,18 @@
     v15 = objc_msgSend_xpcClient(MEMORY[0x277D498B8], v11, v12, v13, v14);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v20 = objc_msgSend_proxyDescription(v5, v16, v17, v18, v19);
+      v20 = objc_msgSend_proxyDescription(selfCopy, v16, v17, v18, v19);
       *buf = 138412290;
       v25 = v20;
       _os_log_impl(&dword_26A93A000, v15, OS_LOG_TYPE_INFO, "%@ connected", buf, 0xCu);
     }
 
 LABEL_10:
-    connection = v5->_connection;
+    connection = selfCopy->_connection;
   }
 
   v21 = connection;
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v22 = *MEMORY[0x277D85DE8];
 

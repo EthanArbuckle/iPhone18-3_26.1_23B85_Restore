@@ -1,40 +1,40 @@
 @interface MOWeatherMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation MOWeatherMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOWeatherMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOWeatherMO alloc] initWithContext:contextCopy];
 
-  v8 = [v6 weatherIdentifier];
-  [(MOWeatherMO *)v7 setWeatherIdentifier:v8];
+  weatherIdentifier = [objectCopy weatherIdentifier];
+  [(MOWeatherMO *)v7 setWeatherIdentifier:weatherIdentifier];
 
-  v9 = [v6 startDate];
-  [(MOWeatherMO *)v7 setStartDate:v9];
+  startDate = [objectCopy startDate];
+  [(MOWeatherMO *)v7 setStartDate:startDate];
 
-  v10 = [v6 endDate];
-  [(MOWeatherMO *)v7 setEndDate:v10];
+  endDate = [objectCopy endDate];
+  [(MOWeatherMO *)v7 setEndDate:endDate];
 
-  v11 = [v6 weatherSummary];
-  [(MOWeatherMO *)v7 setWeatherSummary:v11];
+  weatherSummary = [objectCopy weatherSummary];
+  [(MOWeatherMO *)v7 setWeatherSummary:weatherSummary];
 
-  v12 = [v6 weatherSymbolName];
-  [(MOWeatherMO *)v7 setWeatherSymbolName:v12];
+  weatherSymbolName = [objectCopy weatherSymbolName];
+  [(MOWeatherMO *)v7 setWeatherSymbolName:weatherSymbolName];
 
-  v13 = [v6 temperature];
-  [(MOWeatherMO *)v7 setTemperature:v13];
+  temperature = [objectCopy temperature];
+  [(MOWeatherMO *)v7 setTemperature:temperature];
 
-  v14 = [v6 windSpeed];
-  [(MOWeatherMO *)v7 setWindSpeed:v14];
+  windSpeed = [objectCopy windSpeed];
+  [(MOWeatherMO *)v7 setWindSpeed:windSpeed];
 
-  -[MOWeatherMO setSourceEventAccessType:](v7, "setSourceEventAccessType:", [v6 sourceEventAccessType]);
-  v15 = [v6 sourceEventIdentifier];
+  -[MOWeatherMO setSourceEventAccessType:](v7, "setSourceEventAccessType:", [objectCopy sourceEventAccessType]);
+  sourceEventIdentifier = [objectCopy sourceEventIdentifier];
 
-  [(MOWeatherMO *)v7 setSourceEventIdentifier:v15];
+  [(MOWeatherMO *)v7 setSourceEventIdentifier:sourceEventIdentifier];
 
   return v7;
 }

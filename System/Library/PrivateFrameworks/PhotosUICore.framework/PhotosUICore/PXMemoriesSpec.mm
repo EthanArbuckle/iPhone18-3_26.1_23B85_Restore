@@ -4,17 +4,17 @@
 - (CGSize)favoriteBadgeSize;
 - (Class)feedDataSourceManagerClass;
 - (Class)feedLayoutMetricsClass;
-- (PXMemoriesSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 style:(unint64_t)a5;
+- (PXMemoriesSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options style:(unint64_t)style;
 - (UIEdgeInsets)favoriteBadgeInset;
 - (UIEdgeInsets)feedEntryEdgeInsets;
 - (UIEdgeInsets)layoutInsets;
-- (double)_feedInteritemSpacingForReferenceSize:(CGSize)a3;
+- (double)_feedInteritemSpacingForReferenceSize:(CGSize)size;
 - (double)feedHeroImagePaddingTop;
 - (double)feedSecondaryImagePaddingBottom;
-- (id)createViewSpecWithDescriptor:(PXViewSpecDescriptor *)a3;
-- (id)newLayoutGeneratorWithMetrics:(id)a3;
+- (id)createViewSpecWithDescriptor:(PXViewSpecDescriptor *)descriptor;
+- (id)newLayoutGeneratorWithMetrics:(id)metrics;
 - (int64_t)feedSectionLayoutAxis;
-- (void)_calculateSectionInsetWithExtendedTraitCollection:(id)a3;
+- (void)_calculateSectionInsetWithExtendedTraitCollection:(id)collection;
 @end
 
 @implementation PXMemoriesSpec
@@ -72,10 +72,10 @@
   return result;
 }
 
-- (double)_feedInteritemSpacingForReferenceSize:(CGSize)a3
+- (double)_feedInteritemSpacingForReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PXMemoriesSpec *)self feedInteritemSpacing];
   v8 = v7;
   if (self->_idiom != 4)
@@ -83,9 +83,9 @@
     return v8;
   }
 
-  v9 = [(PXMemoriesSpec *)self feedAxis];
-  [(PXMemoriesSpec *)self contentGuideInsetsForScrollAxis:v9];
-  switch(v9)
+  feedAxis = [(PXMemoriesSpec *)self feedAxis];
+  [(PXMemoriesSpec *)self contentGuideInsetsForScrollAxis:feedAxis];
+  switch(feedAxis)
   {
     case 1:
       v15 = width - v11 - v13;
@@ -94,8 +94,8 @@
       v15 = height - v10 - v12;
       return v15 * 0.05;
     case 0:
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXMemoriesSpec.m" lineNumber:465 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesSpec.m" lineNumber:465 description:@"Code which should be unreachable has been reached"];
 
       abort();
   }
@@ -103,9 +103,9 @@
   return v8;
 }
 
-- (void)_calculateSectionInsetWithExtendedTraitCollection:(id)a3
+- (void)_calculateSectionInsetWithExtendedTraitCollection:(id)collection
 {
-  v8 = a3;
+  collectionCopy = collection;
   v5 = *off_1E7721FA8;
   v4 = *(off_1E7721FA8 + 1);
   v6 = *(off_1E7721FA8 + 2);
@@ -118,7 +118,7 @@
     }
 
     [(PXMemoriesSpec *)self feedAxis];
-    [v8 layoutReferenceSize];
+    [collectionCopy layoutReferenceSize];
     PXSizeIsNull();
   }
 
@@ -195,13 +195,13 @@ LABEL_2:
   }
 }
 
-- (id)newLayoutGeneratorWithMetrics:(id)a3
+- (id)newLayoutGeneratorWithMetrics:(id)metrics
 {
-  v5 = a3;
-  v6 = [(PXMemoriesSpec *)self userInterfaceFeature];
+  metricsCopy = metrics;
+  userInterfaceFeature = [(PXMemoriesSpec *)self userInterfaceFeature];
   if ([(PXMemoriesSpec *)self _style]== 2)
   {
-    [v5 referenceSize];
+    [metricsCopy referenceSize];
     v8 = v7;
     v10 = v9;
     v11 = objc_alloc_init(off_1E7721748);
@@ -212,7 +212,7 @@ LABEL_2:
       PXEdgeInsetsMake();
     }
 
-    if (v6 == 1)
+    if (userInterfaceFeature == 1)
     {
       [off_1E7721798 memoriesFeedPortraitEdgeInsetsInterpolator];
     }
@@ -223,8 +223,8 @@ LABEL_2:
     }
     v13 = ;
     [(PXMemoriesSpec *)self sizeClass];
-    v14 = [v5 spec];
-    [v14 safeAreaInsets];
+    spec = [metricsCopy spec];
+    [spec safeAreaInsets];
     v16 = v15;
     v18 = v17;
 
@@ -232,21 +232,21 @@ LABEL_2:
     PXEdgeInsetsMake();
   }
 
-  if (v6 == 2)
+  if (userInterfaceFeature == 2)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"PXMemoriesSpec.m" lineNumber:326 description:{@"Invalid parameter not satisfying: %@", @"[metrics isKindOfClass:[PXMemoriesFeedWidgetLayoutMetrics class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesSpec.m" lineNumber:326 description:{@"Invalid parameter not satisfying: %@", @"[metrics isKindOfClass:[PXMemoriesFeedWidgetLayoutMetrics class]]"}];
     }
 
-    v12 = [[PXMemoriesFeedWidgetLayoutGenerator alloc] initWithMetrics:v5];
+    v12 = [[PXMemoriesFeedWidgetLayoutGenerator alloc] initWithMetrics:metricsCopy];
   }
 
   else
   {
-    v12 = [[PXMemoriesFeedEntryLayoutGenerator alloc] initWithMetrics:v5];
+    v12 = [[PXMemoriesFeedEntryLayoutGenerator alloc] initWithMetrics:metricsCopy];
     [(PXMemoriesFeedWidgetLayoutGenerator *)v12 setLayoutAxis:[(PXMemoriesSpec *)self feedSectionLayoutAxis]];
   }
 
@@ -276,9 +276,9 @@ LABEL_2:
   return v2;
 }
 
-- (id)createViewSpecWithDescriptor:(PXViewSpecDescriptor *)a3
+- (id)createViewSpecWithDescriptor:(PXViewSpecDescriptor *)descriptor
 {
-  var1 = a3->var1;
+  var1 = descriptor->var1;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __47__PXMemoriesSpec_createViewSpecWithDescriptor___block_invoke;
@@ -286,8 +286,8 @@ LABEL_2:
   aBlock[4] = self;
   v6 = _Block_copy(aBlock);
   v7 = v6;
-  var0 = a3->var0;
-  if (a3->var0 > 2002)
+  var0 = descriptor->var0;
+  if (descriptor->var0 > 2002)
   {
     if ((var0 - 2003) < 2)
     {
@@ -311,37 +311,37 @@ LABEL_2:
 
   if (var0 == 2000)
   {
-    v9 = objc_alloc_init(off_1E7721968);
-    [(PXMemoriesSpec *)self configureViewSpec:v9];
-    v11 = [(PXMemoriesSpec *)self selectionHighlightColor];
-    [v9 setSelectionHighlightColor:v11];
+    pXMemoriesSpec = objc_alloc_init(off_1E7721968);
+    [(PXMemoriesSpec *)self configureViewSpec:pXMemoriesSpec];
+    selectionHighlightColor = [(PXMemoriesSpec *)self selectionHighlightColor];
+    [pXMemoriesSpec setSelectionHighlightColor:selectionHighlightColor];
 
     goto LABEL_22;
   }
 
   if (var0 == 2001)
   {
-    v9 = objc_alloc_init(off_1E7721968);
-    [(PXMemoriesSpec *)self configureViewSpec:v9];
+    pXMemoriesSpec = objc_alloc_init(off_1E7721968);
+    [(PXMemoriesSpec *)self configureViewSpec:pXMemoriesSpec];
     if ((var1 & 2) != 0)
     {
-      v14 = [(PXMemoriesSpec *)self borderColor];
-      [v9 setBorderColor:v14];
+      borderColor = [(PXMemoriesSpec *)self borderColor];
+      [pXMemoriesSpec setBorderColor:borderColor];
 
       [(PXMemoriesSpec *)self borderWidth];
-      [v9 setBorderWidth:?];
+      [pXMemoriesSpec setBorderWidth:?];
       [(PXMemoriesSpec *)self collectionTileImageCornerRadius];
       v12 = v15 + v15;
     }
 
     else
     {
-      [v9 setBorderColor:0];
+      [pXMemoriesSpec setBorderColor:0];
       v12 = 0.0;
-      [v9 setBorderWidth:0.0];
+      [pXMemoriesSpec setBorderWidth:0.0];
     }
 
-    [v9 setCornerRadius:v12];
+    [pXMemoriesSpec setCornerRadius:v12];
     goto LABEL_22;
   }
 
@@ -350,15 +350,15 @@ LABEL_2:
 LABEL_17:
     v18.receiver = self;
     v18.super_class = PXMemoriesSpec;
-    var2 = a3->var2;
-    v19[0] = *&a3->var0;
+    var2 = descriptor->var2;
+    v19[0] = *&descriptor->var0;
     v19[1] = var2;
-    v9 = [(PXMemoriesSpec *)&v18 createViewSpecWithDescriptor:v19, self, PXMemoriesSpec];
+    pXMemoriesSpec = [(PXMemoriesSpec *)&v18 createViewSpecWithDescriptor:v19, self, PXMemoriesSpec];
     goto LABEL_22;
   }
 
-  v9 = objc_alloc_init(off_1E7721788);
-  [(PXMemoriesSpec *)self configureViewSpec:v9];
+  pXMemoriesSpec = objc_alloc_init(off_1E7721788);
+  [(PXMemoriesSpec *)self configureViewSpec:pXMemoriesSpec];
   idiom = self->_idiom;
   if (idiom != 4)
   {
@@ -371,16 +371,16 @@ LABEL_17:
   }
 
   v16 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0 weight:*MEMORY[0x1E69DB980]];
-  [v9 setFont:v16];
+  [pXMemoriesSpec setFont:v16];
 
-  [v9 setCapitalization:0];
-  [v9 setNumberOfLines:1];
-  [v9 setTextAlignment:{-[PXMemoriesSpec localizedLeadingTextAlignment](self, "localizedLeadingTextAlignment")}];
-  [v9 setVerticalAlignment:0];
-  [v9 setContentInsets:{*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)}];
+  [pXMemoriesSpec setCapitalization:0];
+  [pXMemoriesSpec setNumberOfLines:1];
+  [pXMemoriesSpec setTextAlignment:{-[PXMemoriesSpec localizedLeadingTextAlignment](self, "localizedLeadingTextAlignment")}];
+  [pXMemoriesSpec setVerticalAlignment:0];
+  [pXMemoriesSpec setContentInsets:{*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)}];
 LABEL_22:
 
-  return v9;
+  return pXMemoriesSpec;
 }
 
 uint64_t __47__PXMemoriesSpec_createViewSpecWithDescriptor___block_invoke(uint64_t a1, int a2)
@@ -402,16 +402,16 @@ uint64_t __47__PXMemoriesSpec_createViewSpecWithDescriptor___block_invoke(uint64
   }
 }
 
-- (PXMemoriesSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 style:(unint64_t)a5
+- (PXMemoriesSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options style:(unint64_t)style
 {
-  v7 = a3;
+  collectionCopy = collection;
   v10.receiver = self;
   v10.super_class = PXMemoriesSpec;
-  v8 = [(PXMemoriesSpec *)&v10 initWithExtendedTraitCollection:v7 options:a4];
+  v8 = [(PXMemoriesSpec *)&v10 initWithExtendedTraitCollection:collectionCopy options:options];
   if (v8)
   {
     v8->_feedShouldAllowHeaders = 1;
-    [v7 layoutMargins];
+    [collectionCopy layoutMargins];
     PXEdgeInsetsMake();
   }
 

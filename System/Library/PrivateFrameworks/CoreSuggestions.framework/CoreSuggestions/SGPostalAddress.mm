@@ -1,14 +1,14 @@
 @interface SGPostalAddress
-+ (id)postalAddress:(id)a3 components:(id)a4 label:(id)a5 extractionInfo:(id)a6 recordId:(id)a7;
-+ (id)postalAddress:(id)a3 components:(id)a4 label:(id)a5 extractionType:(unint64_t)a6 recordId:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPostalAddress:(id)a3;
++ (id)postalAddress:(id)address components:(id)components label:(id)label extractionInfo:(id)info recordId:(id)id;
++ (id)postalAddress:(id)address components:(id)components label:(id)label extractionType:(unint64_t)type recordId:(id)id;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPostalAddress:(id)address;
 - (NSString)address;
-- (SGPostalAddress)initWithAddress:(id)a3 components:(id)a4 label:(id)a5 extractionInfo:(id)a6 recordId:(id)a7;
-- (SGPostalAddress)initWithCoder:(id)a3;
+- (SGPostalAddress)initWithAddress:(id)address components:(id)components label:(id)label extractionInfo:(id)info recordId:(id)id;
+- (SGPostalAddress)initWithCoder:(id)coder;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGPostalAddress
@@ -16,11 +16,11 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SGLabeledObject *)self label];
-  if ([v4 length])
+  label = [(SGLabeledObject *)self label];
+  if ([label length])
   {
-    v5 = [(SGLabeledObject *)self label];
-    v6 = [v3 initWithFormat:@"%@/'%@'", v5, self->_rawAddress];
+    label2 = [(SGLabeledObject *)self label];
+    v6 = [v3 initWithFormat:@"%@/'%@'", label2, self->_rawAddress];
   }
 
   else
@@ -31,17 +31,17 @@
   return v6;
 }
 
-- (BOOL)isEqualToPostalAddress:(id)a3
+- (BOOL)isEqualToPostalAddress:(id)address
 {
-  v4 = a3;
-  if (![(SGLabeledObject *)self isEqualToLabeledObject:v4])
+  addressCopy = address;
+  if (![(SGLabeledObject *)self isEqualToLabeledObject:addressCopy])
   {
     goto LABEL_4;
   }
 
   v5 = self->_rawAddress;
   v6 = v5;
-  if (v5 == v4[14])
+  if (v5 == addressCopy[14])
   {
   }
 
@@ -59,7 +59,7 @@ LABEL_4:
 
   v9 = self->_components;
   v10 = v9;
-  if (v9 == v4[15])
+  if (v9 == addressCopy[15])
   {
     v8 = 1;
   }
@@ -73,18 +73,18 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGPostalAddress *)self isEqualToPostalAddress:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGPostalAddress *)self isEqualToPostalAddress:v5];
   }
 
   return v6;
@@ -106,14 +106,14 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SGPostalAddress;
-  v4 = a3;
-  [(SGLabeledObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_rawAddress forKey:{@"rawAddress", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_components forKey:@"components"];
+  coderCopy = coder;
+  [(SGLabeledObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_rawAddress forKey:{@"rawAddress", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_components forKey:@"components"];
 }
 
 - (void)dealloc
@@ -124,16 +124,16 @@ LABEL_10:
   [(SGPostalAddress *)&v3 dealloc];
 }
 
-- (SGPostalAddress)initWithCoder:(id)a3
+- (SGPostalAddress)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = SGPostalAddress;
-  v6 = [(SGLabeledObject *)&v16 initWithCoder:v5];
+  v6 = [(SGLabeledObject *)&v16 initWithCoder:coderCopy];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v8 = [v5 decodeObjectOfClasses:v7 forKey:@"rawAddress"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"rawAddress"];
 
     if (v8)
     {
@@ -149,7 +149,7 @@ LABEL_10:
     }
 
     v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v12 = [v5 decodeObjectOfClasses:v11 forKey:@"components"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"components"];
 
     if (v12)
     {
@@ -170,46 +170,46 @@ LABEL_10:
   return v6;
 }
 
-- (SGPostalAddress)initWithAddress:(id)a3 components:(id)a4 label:(id)a5 extractionInfo:(id)a6 recordId:(id)a7
+- (SGPostalAddress)initWithAddress:(id)address components:(id)components label:(id)label extractionInfo:(id)info recordId:(id)id
 {
-  v12 = a3;
-  v13 = a4;
+  addressCopy = address;
+  componentsCopy = components;
   v18.receiver = self;
   v18.super_class = SGPostalAddress;
-  v14 = [(SGLabeledObject *)&v18 initWithLabel:a5 extractionInfo:a6 recordId:a7];
+  v14 = [(SGLabeledObject *)&v18 initWithLabel:label extractionInfo:info recordId:id];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [addressCopy copy];
     rawAddress = v14->_rawAddress;
     v14->_rawAddress = v15;
 
     pthread_mutex_init(&v14->_cachedAddressLock, 0);
-    objc_storeStrong(&v14->_components, a4);
+    objc_storeStrong(&v14->_components, components);
   }
 
   return v14;
 }
 
-+ (id)postalAddress:(id)a3 components:(id)a4 label:(id)a5 extractionType:(unint64_t)a6 recordId:(id)a7
++ (id)postalAddress:(id)address components:(id)components label:(id)label extractionType:(unint64_t)type recordId:(id)id
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [SGExtractionInfo extractionInfoWithExtractionType:a6 modelVersion:0 confidence:0];
-  v16 = [SGPostalAddress postalAddress:v14 components:v13 label:v12 extractionInfo:v15 recordId:v11];
+  idCopy = id;
+  labelCopy = label;
+  componentsCopy = components;
+  addressCopy = address;
+  v15 = [SGExtractionInfo extractionInfoWithExtractionType:type modelVersion:0 confidence:0];
+  v16 = [SGPostalAddress postalAddress:addressCopy components:componentsCopy label:labelCopy extractionInfo:v15 recordId:idCopy];
 
   return v16;
 }
 
-+ (id)postalAddress:(id)a3 components:(id)a4 label:(id)a5 extractionInfo:(id)a6 recordId:(id)a7
++ (id)postalAddress:(id)address components:(id)components label:(id)label extractionInfo:(id)info recordId:(id)id
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[SGPostalAddress alloc] initWithAddress:v15 components:v14 label:v13 extractionInfo:v12 recordId:v11];
+  idCopy = id;
+  infoCopy = info;
+  labelCopy = label;
+  componentsCopy = components;
+  addressCopy = address;
+  v16 = [[SGPostalAddress alloc] initWithAddress:addressCopy components:componentsCopy label:labelCopy extractionInfo:infoCopy recordId:idCopy];
 
   return v16;
 }

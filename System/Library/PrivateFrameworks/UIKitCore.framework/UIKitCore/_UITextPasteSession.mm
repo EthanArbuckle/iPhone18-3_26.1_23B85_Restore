@@ -10,13 +10,13 @@
 
 - (id)positionedPasteResult
 {
-  v3 = [(_UITextPasteSession *)self pasteResult];
-  if (v3)
+  pasteResult = [(_UITextPasteSession *)self pasteResult];
+  if (pasteResult)
   {
-    v4 = [(_UITextPasteSession *)self pasteResult];
-    v5 = [(_UITextPasteSession *)self range];
-    v6 = [v5 start];
-    v7 = [_UIPositionedAttributedString attributedString:v4 atPosition:v6];
+    pasteResult2 = [(_UITextPasteSession *)self pasteResult];
+    range = [(_UITextPasteSession *)self range];
+    start = [range start];
+    v7 = [_UIPositionedAttributedString attributedString:pasteResult2 atPosition:start];
   }
 
   else
@@ -29,9 +29,9 @@
 
 - (void)animationStarted
 {
-  v3 = [(_UITextPasteSession *)self hiddenRange];
+  hiddenRange = [(_UITextPasteSession *)self hiddenRange];
 
-  if (!v3)
+  if (!hiddenRange)
   {
     self->_animating = 1;
   }

@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 + (void)releaseSharedInstance;
 - (PVDocumentCacheManager)init;
-- (id)generateKeyFromFilePathString:(id)a3;
-- (void)cacheOZXDocument:(void *)a3 forKey:(id)a4 timeElapsed:(double)a5 memoryInfo:(unint64_t)a6;
+- (id)generateKeyFromFilePathString:(id)string;
+- (void)cacheOZXDocument:(void *)document forKey:(id)key timeElapsed:(double)elapsed memoryInfo:(unint64_t)info;
 - (void)dealloc;
-- (void)getOZXDocumentForKey:(id)a3;
-- (void)newOZXDocumentForKey:(id)a3;
+- (void)getOZXDocumentForKey:(id)key;
+- (void)newOZXDocumentForKey:(id)key;
 @end
 
 @implementation PVDocumentCacheManager
@@ -23,13 +23,13 @@
 
     else
     {
-      objc_sync_enter(a1);
+      objc_sync_enter(self);
       if (!s_sharedInstance)
       {
         s_sharedInstance = objc_alloc_init(PVDocumentCacheManager);
       }
 
-      objc_sync_exit(a1);
+      objc_sync_exit(self);
       return s_sharedInstance;
     }
   }
@@ -69,36 +69,36 @@
   [(PVDocumentCacheManager *)&v3 dealloc];
 }
 
-- (id)generateKeyFromFilePathString:(id)a3
+- (id)generateKeyFromFilePathString:(id)string
 {
   v4 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
   if (!v4)
   {
-    return a3;
+    return string;
   }
 
   v5 = [objc_msgSend(v4 "fileModificationDate")];
 
-  return [a3 stringByAppendingString:v5];
+  return [string stringByAppendingString:v5];
 }
 
-- (void)cacheOZXDocument:(void *)a3 forKey:(id)a4 timeElapsed:(double)a5 memoryInfo:(unint64_t)a6
+- (void)cacheOZXDocument:(void *)document forKey:(id)key timeElapsed:(double)elapsed memoryInfo:(unint64_t)info
 {
   v12 = 0;
-  if (a3)
+  if (document)
   {
-    OZXCopyDocument(a3, &v12);
+    OZXCopyDocument(document, &v12);
     v9 = [PVDocumentWrapper alloc];
-    v10 = [(PVDocumentWrapper *)v9 initWithOZXDocument:v12 forKey:a4];
+    v10 = [(PVDocumentWrapper *)v9 initWithOZXDocument:v12 forKey:key];
     v11 = v10;
-    [(NSCache *)self->_cache setObject:v10 forKey:[(PVDocumentCacheManager *)self generateKeyFromFilePathString:a4] cost:a6];
+    [(NSCache *)self->_cache setObject:v10 forKey:[(PVDocumentCacheManager *)self generateKeyFromFilePathString:key] cost:info];
   }
 }
 
-- (void)newOZXDocumentForKey:(id)a3
+- (void)newOZXDocumentForKey:(id)key
 {
   v4 = 0;
-  result = [(NSCache *)self->_cache objectForKey:[(PVDocumentCacheManager *)self generateKeyFromFilePathString:a3]];
+  result = [(NSCache *)self->_cache objectForKey:[(PVDocumentCacheManager *)self generateKeyFromFilePathString:key]];
   if (result)
   {
     OZXCopyDocument([result ozxDocument], &v4);
@@ -108,9 +108,9 @@
   return result;
 }
 
-- (void)getOZXDocumentForKey:(id)a3
+- (void)getOZXDocumentForKey:(id)key
 {
-  result = [(NSCache *)self->_cache objectForKey:[(PVDocumentCacheManager *)self generateKeyFromFilePathString:a3]];
+  result = [(NSCache *)self->_cache objectForKey:[(PVDocumentCacheManager *)self generateKeyFromFilePathString:key]];
   if (result)
   {
 

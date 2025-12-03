@@ -1,17 +1,17 @@
 @interface JSStoreMetricsObject
 - (_TtC11AppStoreKit20JSStoreMetricsObject)init;
 - (id)flushUnrecordedEvents;
-- (id)recordEvent:(id)a3 :(id)a4;
+- (id)recordEvent:(id)event :(id)a4;
 @end
 
 @implementation JSStoreMetricsObject
 
-- (id)recordEvent:(id)a3 :(id)a4
+- (id)recordEvent:(id)event :(id)a4
 {
   sub_1E175AD10();
-  v7 = a3;
+  eventCopy = event;
   v8 = a4;
-  v9 = self;
+  selfCopy = self;
   v10 = sub_1E1AF6D4C();
   v11 = sub_1E1AF6D5C();
 
@@ -21,7 +21,7 @@
 - (id)flushUnrecordedEvents
 {
   sub_1E175AD10();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1E1AF6D4C();
   v5 = sub_1E1AF6D5C();
 

@@ -1,26 +1,26 @@
 @interface UIPrintImagePDFAnnotationsOption
 - (BOOL)shouldShow;
-- (UIPrintImagePDFAnnotationsOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIPrintImagePDFAnnotationsOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (id)createPrintOptionTableViewCell;
 - (id)summary;
-- (void)changeImagePDFAnnotations:(id)a3;
+- (void)changeImagePDFAnnotations:(id)annotations;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateFromPrintInfo;
 @end
 
 @implementation UIPrintImagePDFAnnotationsOption
 
-- (UIPrintImagePDFAnnotationsOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintImagePDFAnnotationsOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = UIPrintImagePDFAnnotationsOption;
-  v4 = [(UIPrintOption *)&v8 initWithPrintInfo:a3 printPanelViewController:a4];
+  v4 = [(UIPrintOption *)&v8 initWithPrintInfo:info printPanelViewController:controller];
   v5 = v4;
   if (v4)
   {
-    v6 = [(UIPrintOption *)v4 printInfo];
-    [v6 addObserver:v5 forKeyPath:0x2871AF130 options:0 context:0];
+    printInfo = [(UIPrintOption *)v4 printInfo];
+    [printInfo addObserver:v5 forKeyPath:0x2871AF130 options:0 context:0];
   }
 
   return v5;
@@ -28,8 +28,8 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  [v3 removeObserver:self forKeyPath:0x2871AF130];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF130];
 
   v4.receiver = self;
   v4.super_class = UIPrintImagePDFAnnotationsOption;
@@ -38,51 +38,51 @@
 
 - (BOOL)shouldShow
 {
-  v2 = [(UIPrintOption *)self printInfo];
-  v3 = [v2 pdfAnnotationsAvailable];
+  printInfo = [(UIPrintOption *)self printInfo];
+  pdfAnnotationsAvailable = [printInfo pdfAnnotationsAvailable];
 
-  return v3;
+  return pdfAnnotationsAvailable;
 }
 
 - (id)createPrintOptionTableViewCell
 {
-  v3 = [(UIPrintOption *)self printPanelViewController];
-  v4 = [v3 printOptionsTableView];
-  v5 = [v4 dequeueReusableCellWithIdentifier:@"UIPrintOptionCell"];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  printOptionsTableView = [printPanelViewController printOptionsTableView];
+  v5 = [printOptionsTableView dequeueReusableCellWithIdentifier:@"UIPrintOptionCell"];
 
-  v6 = [MEMORY[0x277D756E0] valueCellConfiguration];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"Print PDF Annotations" value:@"Print PDF Annotations" table:@"Localizable"];
-  [v6 setText:v8];
+  [valueCellConfiguration setText:v8];
 
-  [v5 setContentConfiguration:v6];
+  [v5 setContentConfiguration:valueCellConfiguration];
   [v5 setSelectionStyle:0];
   v9 = objc_alloc(MEMORY[0x277D75AE8]);
   v10 = [v9 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(UIPrintImagePDFAnnotationsOption *)self setImagePDFAnnotationsSwitch:v10];
 
-  v11 = [(UIPrintOption *)self printPanelViewController];
-  v12 = [v11 controlTintColor];
-  v13 = [(UIPrintImagePDFAnnotationsOption *)self imagePDFAnnotationsSwitch];
-  [v13 setOnTintColor:v12];
+  printPanelViewController2 = [(UIPrintOption *)self printPanelViewController];
+  controlTintColor = [printPanelViewController2 controlTintColor];
+  imagePDFAnnotationsSwitch = [(UIPrintImagePDFAnnotationsOption *)self imagePDFAnnotationsSwitch];
+  [imagePDFAnnotationsSwitch setOnTintColor:controlTintColor];
 
-  v14 = [(UIPrintOption *)self printInfo];
-  v15 = [v14 imagePDFAnnotations];
-  v16 = [(UIPrintImagePDFAnnotationsOption *)self imagePDFAnnotationsSwitch];
-  [v16 setOn:v15];
+  printInfo = [(UIPrintOption *)self printInfo];
+  imagePDFAnnotations = [printInfo imagePDFAnnotations];
+  imagePDFAnnotationsSwitch2 = [(UIPrintImagePDFAnnotationsOption *)self imagePDFAnnotationsSwitch];
+  [imagePDFAnnotationsSwitch2 setOn:imagePDFAnnotations];
 
-  v17 = [(UIPrintImagePDFAnnotationsOption *)self imagePDFAnnotationsSwitch];
-  [v17 addTarget:self action:sel_changeImagePDFAnnotations_ forControlEvents:4096];
+  imagePDFAnnotationsSwitch3 = [(UIPrintImagePDFAnnotationsOption *)self imagePDFAnnotationsSwitch];
+  [imagePDFAnnotationsSwitch3 addTarget:self action:sel_changeImagePDFAnnotations_ forControlEvents:4096];
 
-  v18 = [(UIPrintImagePDFAnnotationsOption *)self imagePDFAnnotationsSwitch];
-  [v5 setAccessoryView:v18];
+  imagePDFAnnotationsSwitch4 = [(UIPrintImagePDFAnnotationsOption *)self imagePDFAnnotationsSwitch];
+  [v5 setAccessoryView:imagePDFAnnotationsSwitch4];
 
   [(UIPrintOption *)self setTableViewCell:v5];
 
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -94,23 +94,23 @@
 
 - (void)updateFromPrintInfo
 {
-  v5 = [(UIPrintOption *)self printInfo];
-  v3 = [v5 imagePDFAnnotations];
-  v4 = [(UIPrintImagePDFAnnotationsOption *)self imagePDFAnnotationsSwitch];
-  [v4 setOn:v3];
+  printInfo = [(UIPrintOption *)self printInfo];
+  imagePDFAnnotations = [printInfo imagePDFAnnotations];
+  imagePDFAnnotationsSwitch = [(UIPrintImagePDFAnnotationsOption *)self imagePDFAnnotationsSwitch];
+  [imagePDFAnnotationsSwitch setOn:imagePDFAnnotations];
 }
 
-- (void)changeImagePDFAnnotations:(id)a3
+- (void)changeImagePDFAnnotations:(id)annotations
 {
-  v4 = [a3 isOn];
-  v5 = [(UIPrintOption *)self printInfo];
-  [v5 setImagePDFAnnotations:v4];
+  isOn = [annotations isOn];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo setImagePDFAnnotations:isOn];
 }
 
 - (id)summary
 {
-  v2 = [(UIPrintOption *)self printInfo];
-  if ([v2 imagePDFAnnotations])
+  printInfo = [(UIPrintOption *)self printInfo];
+  if ([printInfo imagePDFAnnotations])
   {
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v4 = [v3 localizedStringForKey:@"Print PDF Annotations" value:@"Print PDF Annotations" table:@"Localizable"];

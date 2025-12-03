@@ -8,8 +8,8 @@
 - (void)calculateAndSendAltitudeFromBaro
 {
   Current = CFAbsoluteTimeGetCurrent();
-  v4 = [(CLBarometerCalibrationContextClient *)self->super.super._delegate copyCurrentBias];
-  [v4 timestamp];
+  copyCurrentBias = [(CLBarometerCalibrationContextClient *)self->super.super._delegate copyCurrentBias];
+  [copyCurrentBias timestamp];
   if (vabdd_f64(Current, v5) > 1800.0)
   {
     if (qword_1025D4410 != -1)
@@ -20,7 +20,7 @@
     v6 = qword_1025D4418;
     if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEBUG))
     {
-      [v4 timestamp];
+      [copyCurrentBias timestamp];
       *buf = 134217984;
       v124 = vabdd_f64(Current, v7);
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEBUG, "bias age is %f", buf, 0xCu);
@@ -28,7 +28,7 @@
 
     if (sub_10000A100(121, 2))
     {
-      sub_101A73388(v4);
+      sub_101A73388(copyCurrentBias);
     }
 
     [(CLContextManagerAbsoluteAltimeter *)self turnOnLocationPowerAssertion:Current];
@@ -45,9 +45,9 @@
     v20 = v111;
     if (!self->_useAOPAltimeter)
     {
-      [v4 biasInMeters];
+      [copyCurrentBias biasInMeters];
       v22 = v21;
-      [v4 weatherEstimateInMeter];
+      [copyCurrentBias weatherEstimateInMeter];
       v19 = v22 - v23;
       v20 = v111;
     }
@@ -70,9 +70,9 @@
 
     v14 = v13[1] * 1000.0;
     v15 = sub_1000A6C00(v14, 101320.0);
-    [v4 biasInMeters];
+    [copyCurrentBias biasInMeters];
     v17 = v16;
-    [v4 weatherEstimateInMeter];
+    [copyCurrentBias weatherEstimateInMeter];
     v111 = v17 + v15 - v18;
     v109 = *v13;
     if (v12)
@@ -89,10 +89,10 @@ LABEL_18:
       [(CLContextManagerAbsoluteAltimeter *)self chooseUncertaintyDuringWorkout:&v108 withAltitude:v111 atTime:v109];
     }
 
-    v26 = [(CLBarometerCalibrationContextClient *)self->super.super._delegate isInVisit];
+    isInVisit = [(CLBarometerCalibrationContextClient *)self->super.super._delegate isInVisit];
     if (v108 > 25.0)
     {
-      v27 = v26;
+      v27 = isInVisit;
     }
 
     else
@@ -150,18 +150,18 @@ LABEL_18:
       [v24 setAltitude:v111];
       [v24 setAccuracy:v108];
       [v24 setPrecision:0.5];
-      [v4 timestamp];
+      [copyCurrentBias timestamp];
       if (v28 == 1.79769313e308)
       {
-        v29 = 1;
+        statusInfo = 1;
       }
 
       else
       {
-        v29 = [v4 statusInfo];
+        statusInfo = [copyCurrentBias statusInfo];
       }
 
-      [v24 setStatusInfo:v29];
+      [v24 setStatusInfo:statusInfo];
       lastAltitudeSentTimestamp = self->_lastAltitudeSentTimestamp;
       [v24 timestamp];
       if (lastAltitudeSentTimestamp != v42)
@@ -187,9 +187,9 @@ LABEL_18:
           v46 = v45;
           [v24 altitude];
           v48 = v47;
-          [v4 weatherEstimateInMeter];
+          [copyCurrentBias weatherEstimateInMeter];
           v50 = v49;
-          [v4 weatherEstimateInMeter];
+          [copyCurrentBias weatherEstimateInMeter];
           v51 = self->_lastAltitudeSentTimestamp;
           *buf = 134218752;
           v124 = v46;
@@ -214,9 +214,9 @@ LABEL_18:
           v75 = v74;
           [v24 altitude];
           v77 = v76;
-          [v4 weatherEstimateInMeter];
+          [copyCurrentBias weatherEstimateInMeter];
           v79 = v78;
-          [v4 weatherEstimateInMeter];
+          [copyCurrentBias weatherEstimateInMeter];
           v80 = self->_lastAltitudeSentTimestamp;
           v112 = 134218752;
           v113 = v75;
@@ -250,7 +250,7 @@ LABEL_18:
           v59 = v58;
           currentStatusInfo = self->_currentStatusInfo;
           v61 = self->_lastAltitudeSentTimestamp;
-          [v4 uncertaintyInMeters];
+          [copyCurrentBias uncertaintyInMeters];
           *buf = 134219520;
           v124 = v55;
           v125 = 2048;
@@ -284,7 +284,7 @@ LABEL_18:
           v88 = v87;
           v89 = self->_currentStatusInfo;
           v90 = self->_lastAltitudeSentTimestamp;
-          [v4 uncertaintyInMeters];
+          [copyCurrentBias uncertaintyInMeters];
           v112 = 134219520;
           v113 = v84;
           v114 = 2048;
@@ -325,7 +325,7 @@ LABEL_18:
             v69 = v68;
             v70 = self->_currentStatusInfo;
             v71 = self->_lastAltitudeSentTimestamp;
-            [v4 uncertaintyInMeters];
+            [copyCurrentBias uncertaintyInMeters];
             *buf = 134219520;
             v124 = v65;
             v125 = 2048;
@@ -359,7 +359,7 @@ LABEL_18:
             v103 = v102;
             v104 = self->_currentStatusInfo;
             v105 = self->_lastAltitudeSentTimestamp;
-            [v4 uncertaintyInMeters];
+            [copyCurrentBias uncertaintyInMeters];
             v112 = 134219520;
             v113 = v99;
             v114 = 2048;
@@ -500,9 +500,9 @@ LABEL_18:
   v153 = -1.0;
   v154 = 1.79769313e308;
   [CLBarometerCalibrationBiasEstimator getLocationSampleAltitudeAndUncertainty:&v155 andRefAltitude:&v154 andRefUncertainty:&v153];
-  v6 = [(CLBarometerCalibrationContextClient *)self->super.super._delegate inOutdoorWorkout];
+  inOutdoorWorkout = [(CLBarometerCalibrationContextClient *)self->super.super._delegate inOutdoorWorkout];
   v7 = *(v152 + 100);
-  if (!v6)
+  if (!inOutdoorWorkout)
   {
     if (v7 == 1)
     {

@@ -1,32 +1,32 @@
 @interface TUAnimationRectFunction
 - (CGRect)endValue;
-- (CGRect)solveForTime:(double)a3;
+- (CGRect)solveForTime:(double)time;
 - (CGRect)startValue;
-- (TUAnimationRectFunction)initWithTimingFunction:(id)a3 startRect:(CGRect)a4 endRect:(CGRect)a5 speed:(double)a6;
+- (TUAnimationRectFunction)initWithTimingFunction:(id)function startRect:(CGRect)rect endRect:(CGRect)endRect speed:(double)speed;
 - (void)_reloadFunctions;
 @end
 
 @implementation TUAnimationRectFunction
 
-- (TUAnimationRectFunction)initWithTimingFunction:(id)a3 startRect:(CGRect)a4 endRect:(CGRect)a5 speed:(double)a6
+- (TUAnimationRectFunction)initWithTimingFunction:(id)function startRect:(CGRect)rect endRect:(CGRect)endRect speed:(double)speed
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4.size.height;
-  v11 = a4.size.width;
-  v12 = a4.origin.y;
-  v13 = a4.origin.x;
-  v15 = a3;
+  height = endRect.size.height;
+  width = endRect.size.width;
+  y = endRect.origin.y;
+  x = endRect.origin.x;
+  v10 = rect.size.height;
+  v11 = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
+  functionCopy = function;
   v20.receiver = self;
   v20.super_class = TUAnimationRectFunction;
   v16 = [(TUAnimationRectFunction *)&v20 init];
   if (v16)
   {
-    if (v15)
+    if (functionCopy)
     {
-      v17 = v15;
+      v17 = functionCopy;
     }
 
     else
@@ -45,21 +45,21 @@
     v16->_endValue.origin.y = y;
     v16->_endValue.size.width = width;
     v16->_endValue.size.height = height;
-    v16->_speed = a6;
+    v16->_speed = speed;
     [(TUAnimationRectFunction *)v16 _reloadFunctions];
   }
 
   return v16;
 }
 
-- (CGRect)solveForTime:(double)a3
+- (CGRect)solveForTime:(double)time
 {
-  v5 = [(TUAnimationRectFunction *)self originFunction];
-  [v5 solveForTime:a3];
+  originFunction = [(TUAnimationRectFunction *)self originFunction];
+  [originFunction solveForTime:time];
   v7 = v6;
   v9 = v8;
-  v10 = [(TUAnimationRectFunction *)self sizeFunction];
-  [v10 solveForTime:a3];
+  sizeFunction = [(TUAnimationRectFunction *)self sizeFunction];
+  [sizeFunction solveForTime:time];
   v12 = v11;
   v14 = v13;
 

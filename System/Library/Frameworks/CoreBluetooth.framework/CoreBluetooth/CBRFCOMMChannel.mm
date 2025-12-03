@@ -1,15 +1,15 @@
 @interface CBRFCOMMChannel
-- (CBRFCOMMChannel)initWithPeer:(id)a3 info:(id)a4;
+- (CBRFCOMMChannel)initWithPeer:(id)peer info:(id)info;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation CBRFCOMMChannel
 
-- (CBRFCOMMChannel)initWithPeer:(id)a3 info:(id)a4
+- (CBRFCOMMChannel)initWithPeer:(id)peer info:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  peerCopy = peer;
+  infoCopy = info;
   v26.receiver = self;
   v26.super_class = CBRFCOMMChannel;
   v9 = [(CBRFCOMMChannel *)&v26 init];
@@ -18,18 +18,18 @@
     goto LABEL_10;
   }
 
-  v10 = [v8 objectForKey:@"kCBMsgArgRFCOMMChannelID"];
+  v10 = [infoCopy objectForKey:@"kCBMsgArgRFCOMMChannelID"];
   v9->_channelID = [v10 intValue];
 
-  objc_storeStrong(&v9->_peer, a3);
+  objc_storeStrong(&v9->_peer, peer);
   v9->_socketFD = -1;
-  v11 = [v8 objectForKey:@"kCBMsgArgMTU"];
+  v11 = [infoCopy objectForKey:@"kCBMsgArgMTU"];
   v9->_mtu = [v11 intValue];
 
-  v12 = [v8 objectForKey:@"kCBMsgArgIsIncoming"];
+  v12 = [infoCopy objectForKey:@"kCBMsgArgIsIncoming"];
   v9->_isIncoming = [v12 BOOLValue];
 
-  v13 = [v8 objectForKey:@"kCBMsgArgServiceUUID"];
+  v13 = [infoCopy objectForKey:@"kCBMsgArgServiceUUID"];
   if (v13)
   {
     v14 = [CBUUID UUIDWithData:v13];
@@ -48,7 +48,7 @@
     [(CBRFCOMMChannel *)&v9->_channelID initWithPeer:v9 info:v16];
   }
 
-  v17 = [v8 objectForKeyedSubscript:@"kCBMsgArgSocket"];
+  v17 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgSocket"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -78,7 +78,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v18 = [v8 objectForKeyedSubscript:@"kCBMsgArgSocket"];
+  v18 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgSocket"];
   v9->_socketFD = [v18 intValue];
 
   v24 = 0;

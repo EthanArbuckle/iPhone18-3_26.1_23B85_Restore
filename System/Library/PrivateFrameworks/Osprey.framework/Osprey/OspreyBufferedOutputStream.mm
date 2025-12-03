@@ -1,45 +1,45 @@
 @interface OspreyBufferedOutputStream
 - (BOOL)_flushBuffer;
-- (OspreyBufferedOutputStream)initWithBufferSize:(unint64_t)a3 underlyingOutputStream:(id)a4 queue:(id)a5;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
+- (OspreyBufferedOutputStream)initWithBufferSize:(unint64_t)size underlyingOutputStream:(id)stream queue:(id)queue;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
 - (void)_closeUnderlying;
 - (void)close;
 - (void)dealloc;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation OspreyBufferedOutputStream
 
-- (OspreyBufferedOutputStream)initWithBufferSize:(unint64_t)a3 underlyingOutputStream:(id)a4 queue:(id)a5
+- (OspreyBufferedOutputStream)initWithBufferSize:(unint64_t)size underlyingOutputStream:(id)stream queue:(id)queue
 {
-  v9 = a4;
-  v10 = a5;
+  streamCopy = stream;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = OspreyBufferedOutputStream;
   v11 = [(OspreyBufferedOutputStream *)&v15 init];
   if (v11)
   {
-    v12 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:a3];
+    v12 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:size];
     outputBuffer = v11->_outputBuffer;
     v11->_outputBuffer = v12;
 
-    objc_storeStrong(&v11->_outputStream, a4);
-    MEMORY[0x25F8A5610](v11->_outputStream, v10);
+    objc_storeStrong(&v11->_outputStream, stream);
+    MEMORY[0x25F8A5610](v11->_outputStream, queueCopy);
     [(NSOutputStream *)v11->_outputStream setDelegate:v11];
-    objc_storeStrong(&v11->_queue, a5);
+    objc_storeStrong(&v11->_queue, queue);
   }
 
   return v11;
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
   if (![(OspreyBufferedOutputStream *)self _flushBuffer]|| ![(NSOutputStream *)self->_outputStream hasSpaceAvailable])
   {
     goto LABEL_5;
   }
 
-  v7 = [(NSOutputStream *)self->_outputStream write:a3 maxLength:a4];
+  v7 = [(NSOutputStream *)self->_outputStream write:write maxLength:length];
   if (v7 > 0)
   {
     goto LABEL_6;
@@ -50,13 +50,13 @@
 LABEL_5:
     v7 = 0;
 LABEL_6:
-    if (a4 <= v7)
+    if (length <= v7)
     {
       return v7;
     }
 
-    [(NSMutableData *)self->_outputBuffer appendBytes:&a3[v7] length:a4 - v7];
-    return a4;
+    [(NSMutableData *)self->_outputBuffer appendBytes:&write[v7] length:length - v7];
+    return length;
   }
 
   OspreyLoggingInit();
@@ -176,15 +176,15 @@ void __42__OspreyBufferedOutputStream__flushBuffer__block_invoke(uint64_t a1, ui
   }
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  if (self->_outputStream != v6)
+  streamCopy = stream;
+  if (self->_outputStream != streamCopy)
   {
     goto LABEL_13;
   }
 
-  switch(a4)
+  switch(event)
   {
     case 0x10uLL:
       goto LABEL_12;

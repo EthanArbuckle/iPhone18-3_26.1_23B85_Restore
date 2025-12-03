@@ -3,19 +3,19 @@
 - (BOOL)isHeadingAvailable;
 - (MNLocationRecorder)locationRecorder;
 - (id)locationCorrector;
-- (void)locationProvider:(id)a3 didReceiveError:(id)a4;
-- (void)locationProviderDidChangeAuthorizationStatus:(id)a3;
-- (void)pushLocation:(id)a3;
-- (void)setLocationCorrector:(id)a3;
-- (void)setLocationRecorder:(id)a3;
-- (void)startMonitoringFor:(id)a3;
+- (void)locationProvider:(id)provider didReceiveError:(id)error;
+- (void)locationProviderDidChangeAuthorizationStatus:(id)status;
+- (void)pushLocation:(id)location;
+- (void)setLocationCorrector:(id)corrector;
+- (void)setLocationRecorder:(id)recorder;
+- (void)startMonitoringFor:(id)for;
 - (void)startUpdatingHeading;
 - (void)startUpdatingLocation;
 - (void)stopAllUpdates;
-- (void)stopMonitoringFor:(id)a3;
+- (void)stopMonitoringFor:(id)for;
 - (void)stopUpdatingHeading;
 - (void)stopUpdatingLocation;
-- (void)useGPSLocationProviderWithCLParameters:(id)a3;
+- (void)useGPSLocationProviderWithCLParameters:(id)parameters;
 - (void)useHybridLocationProvider;
 @end
 
@@ -33,34 +33,34 @@
   return v3;
 }
 
-- (void)useGPSLocationProviderWithCLParameters:(id)a3
+- (void)useGPSLocationProviderWithCLParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = self;
-  NavigationLocationManager.useGPSLocationProvider(with:)(v4);
+  parametersCopy = parameters;
+  selfCopy = self;
+  NavigationLocationManager.useGPSLocationProvider(with:)(parametersCopy);
 }
 
 - (void)useHybridLocationProvider
 {
-  v2 = self;
+  selfCopy = self;
   NavigationLocationManager.useHybridLocationProvider()();
 }
 
 - (void)stopAllUpdates
 {
-  v2 = self;
+  selfCopy = self;
   NavigationLocationManager.stopAllUpdates()();
 }
 
 - (void)startUpdatingLocation
 {
-  v2 = self;
+  selfCopy = self;
   NavigationLocationManager.startUpdatingLocation()();
 }
 
 - (void)stopUpdatingLocation
 {
-  v2 = self;
+  selfCopy = self;
   NavigationLocationManager.stopUpdatingLocation()();
 }
 
@@ -88,9 +88,9 @@
   return v4;
 }
 
-- (void)setLocationCorrector:(id)a3
+- (void)setLocationCorrector:(id)corrector
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(corrector);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -109,7 +109,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1D316EA24(v7);
 }
 
@@ -123,21 +123,21 @@
   return v5;
 }
 
-- (void)setLocationRecorder:(id)a3
+- (void)setLocationRecorder:(id)recorder
 {
   v5 = OBJC_IVAR___MNLocationManager_locationRecorder;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = recorder;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (void)pushLocation:(id)a3
+- (void)pushLocation:(id)location
 {
-  v4 = a3;
-  v5 = self;
-  NavigationLocationManager.push(_:)(v4);
+  locationCopy = location;
+  selfCopy = self;
+  NavigationLocationManager.push(_:)(locationCopy);
 }
 
 - (BOOL)isHeadingAvailable
@@ -149,55 +149,55 @@
 
 - (void)startUpdatingHeading
 {
-  v2 = self;
+  selfCopy = self;
   NavigationLocationManager.startUpdatingHeading()();
 }
 
 - (void)stopUpdatingHeading
 {
-  v2 = self;
+  selfCopy = self;
   NavigationLocationManager.stopUpdatingHeading()();
 }
 
-- (void)startMonitoringFor:(id)a3
+- (void)startMonitoringFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  NavigationLocationManager.startMonitoring(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  NavigationLocationManager.startMonitoring(for:)(forCopy);
 }
 
-- (void)stopMonitoringFor:(id)a3
+- (void)stopMonitoringFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  NavigationLocationManager.stopMonitoring(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  NavigationLocationManager.stopMonitoring(for:)(forCopy);
 }
 
-- (void)locationProvider:(id)a3 didReceiveError:(id)a4
+- (void)locationProvider:(id)provider didReceiveError:(id)error
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v6 = self;
-  sub_1D316F0B4(v7);
+  errorCopy = error;
+  selfCopy = self;
+  sub_1D316F0B4(errorCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)locationProviderDidChangeAuthorizationStatus:(id)a3
+- (void)locationProviderDidChangeAuthorizationStatus:(id)status
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  if ([a3 isAuthorized])
+  selfCopy = self;
+  if ([status isAuthorized])
   {
     swift_unknownObjectRelease();
-    v5 = v7;
+    v5 = selfCopy;
   }
 
   else
   {
     NavigationLocationManager.stopUpdatingLocation()();
     swift_unknownObjectRelease();
-    v6 = *(v7 + OBJC_IVAR___MNLocationManager__lastLocation);
-    *(v7 + OBJC_IVAR___MNLocationManager__lastLocation) = 0;
+    v6 = *(selfCopy + OBJC_IVAR___MNLocationManager__lastLocation);
+    *(selfCopy + OBJC_IVAR___MNLocationManager__lastLocation) = 0;
 
     v5 = v6;
   }

@@ -1,17 +1,17 @@
 @interface ASCodableCloudKitCompetition
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)preferredVictoryBadgeStylesAtIndex:(unint64_t)a3;
-- (int64_t)opponentScoresAtIndex:(unint64_t)a3;
-- (int64_t)scoresAtIndex:(unint64_t)a3;
+- (int)preferredVictoryBadgeStylesAtIndex:(unint64_t)index;
+- (int64_t)opponentScoresAtIndex:(unint64_t)index;
+- (int64_t)scoresAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMaximumNumberOfPointsPerDay:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasMaximumNumberOfPointsPerDay:(BOOL)day;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASCodableCloudKitCompetition
@@ -26,57 +26,57 @@
   [(ASCodableCloudKitCompetition *)&v3 dealloc];
 }
 
-- (int64_t)scoresAtIndex:(unint64_t)a3
+- (int64_t)scoresAtIndex:(unint64_t)index
 {
   p_scores = &self->_scores;
   count = self->_scores.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_scores->list[a3];
+  return p_scores->list[index];
 }
 
-- (int64_t)opponentScoresAtIndex:(unint64_t)a3
+- (int64_t)opponentScoresAtIndex:(unint64_t)index
 {
   p_opponentScores = &self->_opponentScores;
   count = self->_opponentScores.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_opponentScores->list[a3];
+  return p_opponentScores->list[index];
 }
 
-- (int)preferredVictoryBadgeStylesAtIndex:(unint64_t)a3
+- (int)preferredVictoryBadgeStylesAtIndex:(unint64_t)index
 {
   p_preferredVictoryBadgeStyles = &self->_preferredVictoryBadgeStyles;
   count = self->_preferredVictoryBadgeStyles.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_preferredVictoryBadgeStyles->list[a3];
+  return p_preferredVictoryBadgeStyles->list[index];
 }
 
-- (void)setHasMaximumNumberOfPointsPerDay:(BOOL)a3
+- (void)setHasMaximumNumberOfPointsPerDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 2;
   }
@@ -95,20 +95,20 @@
   v8.receiver = self;
   v8.super_class = ASCodableCloudKitCompetition;
   v4 = [(ASCodableCloudKitCompetition *)&v8 description];
-  v5 = [(ASCodableCloudKitCompetition *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ASCodableCloudKitCompetition *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   if (*&self->_has)
@@ -126,15 +126,15 @@
   startDateComponents = self->_startDateComponents;
   if (startDateComponents)
   {
-    v10 = [(ASCodableCloudKitDateComponents *)startDateComponents dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"startDateComponents"];
+    dictionaryRepresentation = [(ASCodableCloudKitDateComponents *)startDateComponents dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"startDateComponents"];
   }
 
   durationDateComponents = self->_durationDateComponents;
   if (durationDateComponents)
   {
-    v12 = [(ASCodableCloudKitDateComponents *)durationDateComponents dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"durationDateComponents"];
+    dictionaryRepresentation2 = [(ASCodableCloudKitDateComponents *)durationDateComponents dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"durationDateComponents"];
   }
 
   v13 = PBRepeatedInt32NSArray();
@@ -149,21 +149,21 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v13 = v4;
+  toCopy = to;
+  v13 = toCopy;
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (*&self->_has)
   {
     currentCacheIndex = self->_currentCacheIndex;
     PBDataWriterWriteInt64Field();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_scores.count)
@@ -173,7 +173,7 @@
     {
       v7 = self->_scores.list[v6];
       PBDataWriterWriteInt64Field();
-      v4 = v13;
+      toCopy = v13;
       ++v6;
     }
 
@@ -187,7 +187,7 @@
     {
       v9 = self->_opponentScores.list[v8];
       PBDataWriterWriteInt64Field();
-      v4 = v13;
+      toCopy = v13;
       ++v8;
     }
 
@@ -197,13 +197,13 @@
   if (self->_startDateComponents)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_durationDateComponents)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_preferredVictoryBadgeStyles.count)
@@ -213,7 +213,7 @@
     {
       v11 = self->_preferredVictoryBadgeStyles.list[v10];
       PBDataWriterWriteInt32Field();
-      v4 = v13;
+      toCopy = v13;
       ++v10;
     }
 
@@ -224,33 +224,33 @@
   {
     maximumNumberOfPointsPerDay = self->_maximumNumberOfPointsPerDay;
     PBDataWriterWriteInt64Field();
-    v4 = v13;
+    toCopy = v13;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v14 = v4;
+  toCopy = to;
+  v14 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v14;
+    [toCopy setUuid:?];
+    toCopy = v14;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 10) = self->_currentCacheIndex;
-    *(v4 + 120) |= 1u;
+    *(toCopy + 10) = self->_currentCacheIndex;
+    *(toCopy + 120) |= 1u;
   }
 
   if ([(ASCodableCloudKitCompetition *)self scoresCount])
   {
     [v14 clearScores];
-    v5 = [(ASCodableCloudKitCompetition *)self scoresCount];
-    if (v5)
+    scoresCount = [(ASCodableCloudKitCompetition *)self scoresCount];
+    if (scoresCount)
     {
-      v6 = v5;
+      v6 = scoresCount;
       for (i = 0; i != v6; ++i)
       {
         [v14 addScores:{-[ASCodableCloudKitCompetition scoresAtIndex:](self, "scoresAtIndex:", i)}];
@@ -261,10 +261,10 @@
   if ([(ASCodableCloudKitCompetition *)self opponentScoresCount])
   {
     [v14 clearOpponentScores];
-    v8 = [(ASCodableCloudKitCompetition *)self opponentScoresCount];
-    if (v8)
+    opponentScoresCount = [(ASCodableCloudKitCompetition *)self opponentScoresCount];
+    if (opponentScoresCount)
     {
-      v9 = v8;
+      v9 = opponentScoresCount;
       for (j = 0; j != v9; ++j)
       {
         [v14 addOpponentScores:{-[ASCodableCloudKitCompetition opponentScoresAtIndex:](self, "opponentScoresAtIndex:", j)}];
@@ -285,10 +285,10 @@
   if ([(ASCodableCloudKitCompetition *)self preferredVictoryBadgeStylesCount])
   {
     [v14 clearPreferredVictoryBadgeStyles];
-    v11 = [(ASCodableCloudKitCompetition *)self preferredVictoryBadgeStylesCount];
-    if (v11)
+    preferredVictoryBadgeStylesCount = [(ASCodableCloudKitCompetition *)self preferredVictoryBadgeStylesCount];
+    if (preferredVictoryBadgeStylesCount)
     {
-      v12 = v11;
+      v12 = preferredVictoryBadgeStylesCount;
       for (k = 0; k != v12; ++k)
       {
         [v14 addPreferredVictoryBadgeStyles:{-[ASCodableCloudKitCompetition preferredVictoryBadgeStylesAtIndex:](self, "preferredVictoryBadgeStylesAtIndex:", k)}];
@@ -303,10 +303,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 112);
   *(v5 + 112) = v6;
 
@@ -318,11 +318,11 @@
 
   PBRepeatedInt64Copy();
   PBRepeatedInt64Copy();
-  v8 = [(ASCodableCloudKitDateComponents *)self->_startDateComponents copyWithZone:a3];
+  v8 = [(ASCodableCloudKitDateComponents *)self->_startDateComponents copyWithZone:zone];
   v9 = *(v5 + 104);
   *(v5 + 104) = v8;
 
-  v10 = [(ASCodableCloudKitDateComponents *)self->_durationDateComponents copyWithZone:a3];
+  v10 = [(ASCodableCloudKitDateComponents *)self->_durationDateComponents copyWithZone:zone];
   v11 = *(v5 + 96);
   *(v5 + 96) = v10;
 
@@ -336,16 +336,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 14))
+  if (uuid | *(equalCopy + 14))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -353,16 +353,16 @@
     }
   }
 
-  v6 = *(v4 + 120);
+  v6 = *(equalCopy + 120);
   if (*&self->_has)
   {
-    if ((*(v4 + 120) & 1) == 0 || self->_currentCacheIndex != *(v4 + 10))
+    if ((*(equalCopy + 120) & 1) == 0 || self->_currentCacheIndex != *(equalCopy + 10))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 120))
+  else if (*(equalCopy + 120))
   {
 LABEL_20:
     v9 = 0;
@@ -380,7 +380,7 @@ LABEL_20:
   }
 
   startDateComponents = self->_startDateComponents;
-  if (startDateComponents | *(v4 + 13))
+  if (startDateComponents | *(equalCopy + 13))
   {
     if (![(ASCodableCloudKitDateComponents *)startDateComponents isEqual:?])
     {
@@ -389,7 +389,7 @@ LABEL_20:
   }
 
   durationDateComponents = self->_durationDateComponents;
-  if (durationDateComponents | *(v4 + 12))
+  if (durationDateComponents | *(equalCopy + 12))
   {
     if (![(ASCodableCloudKitDateComponents *)durationDateComponents isEqual:?])
     {
@@ -402,10 +402,10 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v9 = (*(v4 + 120) & 2) == 0;
+  v9 = (*(equalCopy + 120) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 120) & 2) == 0 || self->_maximumNumberOfPointsPerDay != *(v4 + 11))
+    if ((*(equalCopy + 120) & 2) == 0 || self->_maximumNumberOfPointsPerDay != *(equalCopy + 11))
     {
       goto LABEL_20;
     }
@@ -449,36 +449,36 @@ LABEL_21:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v19 = v4;
-  if (v4[14])
+  fromCopy = from;
+  v19 = fromCopy;
+  if (fromCopy[14])
   {
     [(ASCodableCloudKitCompetition *)self setUuid:?];
-    v4 = v19;
+    fromCopy = v19;
   }
 
-  if (v4[15])
+  if (fromCopy[15])
   {
-    self->_currentCacheIndex = v4[10];
+    self->_currentCacheIndex = fromCopy[10];
     *&self->_has |= 1u;
   }
 
-  v5 = [v4 scoresCount];
-  if (v5)
+  scoresCount = [fromCopy scoresCount];
+  if (scoresCount)
   {
-    v6 = v5;
+    v6 = scoresCount;
     for (i = 0; i != v6; ++i)
     {
       -[ASCodableCloudKitCompetition addScores:](self, "addScores:", [v19 scoresAtIndex:i]);
     }
   }
 
-  v8 = [v19 opponentScoresCount];
-  if (v8)
+  opponentScoresCount = [v19 opponentScoresCount];
+  if (opponentScoresCount)
   {
-    v9 = v8;
+    v9 = opponentScoresCount;
     for (j = 0; j != v9; ++j)
     {
       -[ASCodableCloudKitCompetition addOpponentScores:](self, "addOpponentScores:", [v19 opponentScoresAtIndex:j]);
@@ -534,10 +534,10 @@ LABEL_17:
 
   v12 = v19;
 LABEL_23:
-  v16 = [v12 preferredVictoryBadgeStylesCount];
-  if (v16)
+  preferredVictoryBadgeStylesCount = [v12 preferredVictoryBadgeStylesCount];
+  if (preferredVictoryBadgeStylesCount)
   {
-    v17 = v16;
+    v17 = preferredVictoryBadgeStylesCount;
     for (k = 0; k != v17; ++k)
     {
       -[ASCodableCloudKitCompetition addPreferredVictoryBadgeStyles:](self, "addPreferredVictoryBadgeStyles:", [v19 preferredVictoryBadgeStylesAtIndex:k]);

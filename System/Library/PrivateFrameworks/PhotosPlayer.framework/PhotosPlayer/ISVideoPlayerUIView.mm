@@ -1,14 +1,14 @@
 @interface ISVideoPlayerUIView
 - (CGRect)contentsRect;
-- (ISVideoPlayerUIView)initWithCoder:(id)a3;
-- (ISVideoPlayerUIView)initWithFrame:(CGRect)a3;
+- (ISVideoPlayerUIView)initWithCoder:(id)coder;
+- (ISVideoPlayerUIView)initWithFrame:(CGRect)frame;
 - (id)videoLayerReadyForDisplayChangeHandler;
 - (void)_ISVideoPlayerUIView_commonInitialization;
 - (void)_updateVideoGravity;
-- (void)setContentMode:(int64_t)a3;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setVideoLayerReadyForDisplayChangeHandler:(id)a3;
-- (void)setVideoPlayer:(id)a3;
+- (void)setContentMode:(int64_t)mode;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setVideoLayerReadyForDisplayChangeHandler:(id)handler;
+- (void)setVideoPlayer:(id)player;
 @end
 
 @implementation ISVideoPlayerUIView
@@ -28,87 +28,87 @@
 
 - (void)_updateVideoGravity
 {
-  v3 = [(ISVideoPlayerUIView *)self contentMode];
+  contentMode = [(ISVideoPlayerUIView *)self contentMode];
   v4 = MEMORY[0x277CE5DD0];
   v5 = MEMORY[0x277CE5DD8];
-  if (v3 != 2)
+  if (contentMode != 2)
   {
     v5 = MEMORY[0x277CE5DC8];
   }
 
-  if (v3 != 1)
+  if (contentMode != 1)
   {
     v4 = v5;
   }
 
   v7 = *v4;
-  v6 = [(ISAVPlayerUIView *)self->_playerView playerLayer];
-  [v6 setVideoGravity:v7];
+  playerLayer = [(ISAVPlayerUIView *)self->_playerView playerLayer];
+  [playerLayer setVideoGravity:v7];
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_contentsRect = &self->_contentsRect;
-  if (!CGRectEqualToRect(a3, self->_contentsRect))
+  if (!CGRectEqualToRect(rect, self->_contentsRect))
   {
     p_contentsRect->origin.x = x;
     p_contentsRect->origin.y = y;
     p_contentsRect->size.width = width;
     p_contentsRect->size.height = height;
-    v9 = [(ISAVPlayerUIView *)self->_playerView layer];
-    [v9 setContentsRect:{x, y, width, height}];
+    layer = [(ISAVPlayerUIView *)self->_playerView layer];
+    [layer setContentsRect:{x, y, width, height}];
   }
 }
 
-- (void)setVideoPlayer:(id)a3
+- (void)setVideoPlayer:(id)player
 {
-  v5 = a3;
-  if (self->_videoPlayer != v5)
+  playerCopy = player;
+  if (self->_videoPlayer != playerCopy)
   {
-    v7 = v5;
-    v6 = [(ISAVPlayerUIView *)self->_playerView playerLayer];
-    [v6 setPlayer:v7];
-    objc_storeStrong(&self->_videoPlayer, a3);
+    v7 = playerCopy;
+    playerLayer = [(ISAVPlayerUIView *)self->_playerView playerLayer];
+    [playerLayer setPlayer:v7];
+    objc_storeStrong(&self->_videoPlayer, player);
 
-    v5 = v7;
+    playerCopy = v7;
   }
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v4.receiver = self;
   v4.super_class = ISVideoPlayerUIView;
-  [(ISVideoPlayerUIView *)&v4 setContentMode:a3];
+  [(ISVideoPlayerUIView *)&v4 setContentMode:mode];
   [(ISVideoPlayerUIView *)self _updateVideoGravity];
 }
 
 - (id)videoLayerReadyForDisplayChangeHandler
 {
-  v2 = [(ISVideoPlayerUIView *)self playerLayer];
-  v3 = [v2 readyForDisplayChangeHandler];
+  playerLayer = [(ISVideoPlayerUIView *)self playerLayer];
+  readyForDisplayChangeHandler = [playerLayer readyForDisplayChangeHandler];
 
-  return v3;
+  return readyForDisplayChangeHandler;
 }
 
-- (void)setVideoLayerReadyForDisplayChangeHandler:(id)a3
+- (void)setVideoLayerReadyForDisplayChangeHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ISVideoPlayerUIView *)self playerLayer];
-  [v5 setReadyForDisplayChangeHandler:v4];
+  handlerCopy = handler;
+  playerLayer = [(ISVideoPlayerUIView *)self playerLayer];
+  [playerLayer setReadyForDisplayChangeHandler:handlerCopy];
 }
 
 - (void)_ISVideoPlayerUIView_commonInitialization
 {
-  v3 = [(ISVideoPlayerUIView *)self layer];
+  layer = [(ISVideoPlayerUIView *)self layer];
   v4 = [MEMORY[0x277D75348] colorWithWhite:0.1 alpha:0.01];
-  [v3 setBorderColor:{objc_msgSend(v4, "CGColor")}];
+  [layer setBorderColor:{objc_msgSend(v4, "CGColor")}];
 
-  v5 = [(ISVideoPlayerUIView *)self layer];
-  [v5 setBorderWidth:1.0];
+  layer2 = [(ISVideoPlayerUIView *)self layer];
+  [layer2 setBorderWidth:1.0];
 
   v6 = [ISAVPlayerUIView alloc];
   [(ISVideoPlayerUIView *)self bounds];
@@ -121,11 +121,11 @@
   self->_contentsRect = *ISRectUnit;
 }
 
-- (ISVideoPlayerUIView)initWithCoder:(id)a3
+- (ISVideoPlayerUIView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ISVideoPlayerUIView;
-  v3 = [(ISVideoPlayerUIView *)&v6 initWithCoder:a3];
+  v3 = [(ISVideoPlayerUIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -135,11 +135,11 @@
   return v4;
 }
 
-- (ISVideoPlayerUIView)initWithFrame:(CGRect)a3
+- (ISVideoPlayerUIView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ISVideoPlayerUIView;
-  v3 = [(ISVideoPlayerUIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ISVideoPlayerUIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

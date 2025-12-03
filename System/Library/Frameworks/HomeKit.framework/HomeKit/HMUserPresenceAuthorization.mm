@@ -1,15 +1,15 @@
 @interface HMUserPresenceAuthorization
-+ (id)authWithCoder:(id)a3;
-+ (id)authWithDict:(id)a3;
-+ (id)authWithMessage:(id)a3;
-+ (id)authWithNumber:(id)a3;
-+ (id)authWithValue:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMUserPresenceAuthorization)initWithNumber:(id)a3;
++ (id)authWithCoder:(id)coder;
++ (id)authWithDict:(id)dict;
++ (id)authWithMessage:(id)message;
++ (id)authWithNumber:(id)number;
++ (id)authWithValue:(unint64_t)value;
+- (BOOL)isEqual:(id)equal;
+- (HMUserPresenceAuthorization)initWithNumber:(id)number;
 - (NSNumber)number;
 - (id)description;
-- (void)addToCoder:(id)a3;
-- (void)addToPayload:(id)a3;
+- (void)addToCoder:(id)coder;
+- (void)addToPayload:(id)payload;
 @end
 
 @implementation HMUserPresenceAuthorization
@@ -23,10 +23,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -47,8 +47,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMUserPresenceAuthorization *)self value];
-      v8 = v7 == [(HMUserPresenceAuthorization *)v6 value];
+      value = [(HMUserPresenceAuthorization *)self value];
+      v8 = value == [(HMUserPresenceAuthorization *)v6 value];
     }
 
     else
@@ -63,88 +63,88 @@
 - (NSNumber)number
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(HMUserPresenceAuthorization *)self value];
+  value = [(HMUserPresenceAuthorization *)self value];
 
-  return [v2 numberWithUnsignedInteger:v3];
+  return [v2 numberWithUnsignedInteger:value];
 }
 
-- (void)addToPayload:(id)a3
+- (void)addToPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(HMUserPresenceAuthorization *)self number];
-  [v4 setObject:v5 forKeyedSubscript:@"kUserPresenceAuthorizationStatusKey"];
+  payloadCopy = payload;
+  number = [(HMUserPresenceAuthorization *)self number];
+  [payloadCopy setObject:number forKeyedSubscript:@"kUserPresenceAuthorizationStatusKey"];
 }
 
-- (void)addToCoder:(id)a3
+- (void)addToCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMUserPresenceAuthorization *)self number];
-  [v4 encodeObject:v5 forKey:@"kUserPresenceAuthorizationStatusKey"];
+  coderCopy = coder;
+  number = [(HMUserPresenceAuthorization *)self number];
+  [coderCopy encodeObject:number forKey:@"kUserPresenceAuthorizationStatusKey"];
 }
 
-- (HMUserPresenceAuthorization)initWithNumber:(id)a3
+- (HMUserPresenceAuthorization)initWithNumber:(id)number
 {
-  v4 = a3;
-  if (v4)
+  numberCopy = number;
+  if (numberCopy)
   {
     v8.receiver = self;
     v8.super_class = HMUserPresenceAuthorization;
     v5 = [(HMUserPresenceAuthorization *)&v8 init];
     if (v5)
     {
-      v5->_value = [v4 unsignedIntegerValue];
+      v5->_value = [numberCopy unsignedIntegerValue];
     }
 
     self = v5;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (id)authWithCoder:(id)a3
++ (id)authWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"kUserPresenceAuthorizationStatusKey"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kUserPresenceAuthorizationStatusKey"];
 
   v5 = [HMUserPresenceAuthorization authWithNumber:v4];
 
   return v5;
 }
 
-+ (id)authWithDict:(id)a3
++ (id)authWithDict:(id)dict
 {
-  v3 = [a3 hmf_numberForKey:@"kUserPresenceAuthorizationStatusKey"];
+  v3 = [dict hmf_numberForKey:@"kUserPresenceAuthorizationStatusKey"];
   v4 = [HMUserPresenceAuthorization authWithNumber:v3];
 
   return v4;
 }
 
-+ (id)authWithMessage:(id)a3
++ (id)authWithMessage:(id)message
 {
-  v3 = [a3 numberForKey:@"kUserPresenceAuthorizationStatusKey"];
+  v3 = [message numberForKey:@"kUserPresenceAuthorizationStatusKey"];
   v4 = [HMUserPresenceAuthorization authWithNumber:v3];
 
   return v4;
 }
 
-+ (id)authWithNumber:(id)a3
++ (id)authWithNumber:(id)number
 {
-  v3 = a3;
-  v4 = [[HMUserPresenceAuthorization alloc] initWithNumber:v3];
+  numberCopy = number;
+  v4 = [[HMUserPresenceAuthorization alloc] initWithNumber:numberCopy];
 
   return v4;
 }
 
-+ (id)authWithValue:(unint64_t)a3
++ (id)authWithValue:(unint64_t)value
 {
   v4 = [HMUserPresenceAuthorization alloc];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:value];
   v6 = [(HMUserPresenceAuthorization *)v4 initWithNumber:v5];
 
   return v6;

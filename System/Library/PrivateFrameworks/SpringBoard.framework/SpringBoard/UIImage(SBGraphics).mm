@@ -12,32 +12,32 @@
 
 - (double)pixelSize
 {
-  v1 = [a1 CGImage];
-  if (!v1)
+  cGImage = [self CGImage];
+  if (!cGImage)
   {
     return *MEMORY[0x277CBF3A8];
   }
 
-  v2 = v1;
-  Width = CGImageGetWidth(v1);
+  v2 = cGImage;
+  Width = CGImageGetWidth(cGImage);
   CGImageGetHeight(v2);
   return Width;
 }
 
 - (BOOL)isAnimated
 {
-  v1 = [a1 images];
-  v2 = [v1 count] != 0;
+  images = [self images];
+  v2 = [images count] != 0;
 
   return v2;
 }
 
 - (id)sbg_squareImage
 {
-  [a1 size];
+  [self size];
   if (v2 == v3)
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
@@ -52,44 +52,44 @@
       v5 = v3;
     }
 
-    [a1 scale];
+    [self scale];
     v7 = v6;
     v10.width = v5;
     v10.height = v5;
     UIGraphicsBeginImageContextWithOptions(v10, 0, v7);
-    [a1 drawAtPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
-    v4 = UIGraphicsGetImageFromCurrentImageContext();
+    [self drawAtPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+    selfCopy = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (CGImageSourceRef)_newSource
 {
-  v1 = [a1 CGImage];
-  if (!v1)
+  cGImage = [self CGImage];
+  if (!cGImage)
   {
     return 0;
   }
 
-  DataProvider = CGImageGetDataProvider(v1);
+  DataProvider = CGImageGetDataProvider(cGImage);
   if (!DataProvider)
   {
     return 0;
   }
 
   v3 = DataProvider;
-  v4 = [MEMORY[0x277CBEAC0] dictionary];
-  v5 = CGImageSourceCreateWithDataProvider(v3, v4);
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  v5 = CGImageSourceCreateWithDataProvider(v3, dictionary);
 
   return v5;
 }
 
 - (id)_thumbnailFitToSize:()SBGraphics
 {
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
   if (a2 >= a3)
@@ -103,25 +103,25 @@
   }
 
   v10 = v9 * v8;
-  v11 = UIImageJPEGRepresentation(a1, 1.0);
+  v11 = UIImageJPEGRepresentation(self, 1.0);
   if (v11)
   {
-    v12 = [(UIImage *)a1 _newThumbnailWithJPEG:v11 forMaxPixelDimension:v10];
+    v12 = [(UIImage *)self _newThumbnailWithJPEG:v11 forMaxPixelDimension:v10];
     if (v12)
     {
       v13 = v12;
 LABEL_9:
-      v16 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v13 scale:-[UIImage imageOrientation](a1 orientation:{"imageOrientation"), v8}];
+      v16 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v13 scale:-[UIImage imageOrientation](self orientation:{"imageOrientation"), v8}];
       CFRelease(v13);
       goto LABEL_11;
     }
   }
 
-  v14 = [(UIImage *)a1 _newSource];
-  if (v14)
+  _newSource = [(UIImage *)self _newSource];
+  if (_newSource)
   {
-    v15 = v14;
-    v13 = [(UIImage *)a1 _newThumbnailWithImageSource:v14 forMaxPixelDimension:v10];
+    v15 = _newSource;
+    v13 = [(UIImage *)self _newThumbnailWithImageSource:_newSource forMaxPixelDimension:v10];
     CFRelease(v15);
     if (v13)
     {
@@ -146,7 +146,7 @@ LABEL_11:
   v7 = [MEMORY[0x277CCABB0] numberWithBool:1];
   [v6 setObject:v7 forKey:*MEMORY[0x277CD3568]];
 
-  *&v8 = a1;
+  *&v8 = self;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:v8];
   [v6 setObject:v9 forKey:*MEMORY[0x277CD3660]];
 
@@ -165,7 +165,7 @@ LABEL_11:
   v5 = MEMORY[0x277CBEB38];
   v6 = a4;
   v7 = [[v5 alloc] initWithCapacity:1];
-  *&v8 = a1;
+  *&v8 = self;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:v8];
   [v7 setObject:v9 forKey:*MEMORY[0x277CD3660]];
 

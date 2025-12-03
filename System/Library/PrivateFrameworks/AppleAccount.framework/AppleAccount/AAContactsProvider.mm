@@ -1,20 +1,20 @@
 @interface AAContactsProvider
 - (AAContactsProvider)init;
-- (id)_localContactsForCustodianshipOwners:(id)a3;
-- (id)filterTrustedContactsWithValidStateForDisplay:(id)a3;
-- (void)fetchCustodiansAndBeneficiaries:(id)a3;
-- (void)fetchCustodianshipsAndBenefactors:(id)a3;
-- (void)fetchMyBenefactors:(id)a3;
-- (void)fetchMyBeneficiaries:(id)a3;
-- (void)fetchMyCachedCustodians:(id)a3;
-- (void)fetchMyCustodians:(id)a3;
-- (void)fetchMyCustodianshipOwners:(id)a3;
-- (void)fetchMyHealthyCustodians:(id)a3;
-- (void)fetchMyWalrusEligibleCustodians:(id)a3;
-- (void)fetchSuggestedBeneficiaries:(id)a3;
-- (void)fetchSuggestedCustodians:(id)a3;
-- (void)fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:(id)a3 completion:(id)a4;
-- (void)fetchWalrusEligibleCustodiansForExpansionCohortsWithCompletion:(id)a3;
+- (id)_localContactsForCustodianshipOwners:(id)owners;
+- (id)filterTrustedContactsWithValidStateForDisplay:(id)display;
+- (void)fetchCustodiansAndBeneficiaries:(id)beneficiaries;
+- (void)fetchCustodianshipsAndBenefactors:(id)benefactors;
+- (void)fetchMyBenefactors:(id)benefactors;
+- (void)fetchMyBeneficiaries:(id)beneficiaries;
+- (void)fetchMyCachedCustodians:(id)custodians;
+- (void)fetchMyCustodians:(id)custodians;
+- (void)fetchMyCustodianshipOwners:(id)owners;
+- (void)fetchMyHealthyCustodians:(id)custodians;
+- (void)fetchMyWalrusEligibleCustodians:(id)custodians;
+- (void)fetchSuggestedBeneficiaries:(id)beneficiaries;
+- (void)fetchSuggestedCustodians:(id)custodians;
+- (void)fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:(id)d completion:(id)completion;
+- (void)fetchWalrusEligibleCustodiansForExpansionCohortsWithCompletion:(id)completion;
 @end
 
 @implementation AAContactsProvider
@@ -34,9 +34,9 @@
   return v2;
 }
 
-- (void)fetchCustodiansAndBeneficiaries:(id)a3
+- (void)fetchCustodiansAndBeneficiaries:(id)beneficiaries
 {
-  v4 = a3;
+  beneficiariesCopy = beneficiaries;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
@@ -54,7 +54,7 @@
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__3;
   v22[4] = __Block_byref_object_dispose__3;
-  v23 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   v19[0] = MEMORY[0x1E69E9820];
@@ -82,9 +82,9 @@
   v11[3] = &unk_1E7C9B9B8;
   v14 = v24;
   v15 = v22;
-  v12 = v4;
+  v12 = beneficiariesCopy;
   v13 = v26;
-  v10 = v4;
+  v10 = beneficiariesCopy;
   dispatch_group_notify(v8, v9, v11);
 
   _Block_object_dispose(v22, 8);
@@ -156,9 +156,9 @@ void __54__AAContactsProvider_fetchCustodiansAndBeneficiaries___block_invoke_5(u
   }
 }
 
-- (void)fetchCustodianshipsAndBenefactors:(id)a3
+- (void)fetchCustodianshipsAndBenefactors:(id)benefactors
 {
-  v4 = a3;
+  benefactorsCopy = benefactors;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
@@ -176,7 +176,7 @@ void __54__AAContactsProvider_fetchCustodiansAndBeneficiaries___block_invoke_5(u
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__3;
   v22[4] = __Block_byref_object_dispose__3;
-  v23 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   v19[0] = MEMORY[0x1E69E9820];
@@ -204,9 +204,9 @@ void __54__AAContactsProvider_fetchCustodiansAndBeneficiaries___block_invoke_5(u
   v11[3] = &unk_1E7C9B9B8;
   v14 = v24;
   v15 = v22;
-  v12 = v4;
+  v12 = benefactorsCopy;
   v13 = v26;
-  v10 = v4;
+  v10 = benefactorsCopy;
   dispatch_group_notify(v8, v9, v11);
 
   _Block_object_dispose(v22, 8);
@@ -278,16 +278,16 @@ void __56__AAContactsProvider_fetchCustodianshipsAndBenefactors___block_invoke_5
   }
 }
 
-- (void)fetchSuggestedCustodians:(id)a3
+- (void)fetchSuggestedCustodians:(id)custodians
 {
-  v3 = a3;
+  custodiansCopy = custodians;
   v4 = objc_alloc_init(AACustodianController);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__AAContactsProvider_fetchSuggestedCustodians___block_invoke;
   v6[3] = &unk_1E7C9B290;
-  v7 = v3;
-  v5 = v3;
+  v7 = custodiansCopy;
+  v5 = custodiansCopy;
   [(AACustodianController *)v4 fetchSuggestedCustodiansWithCompletion:v6];
 }
 
@@ -298,20 +298,20 @@ void __47__AAContactsProvider_fetchSuggestedCustodians___block_invoke(uint64_t a
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:(id)a3 completion:(id)a4
+- (void)fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v7 = objc_alloc_init(AACustodianController);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __86__AAContactsProvider_fetchSuggestedCustodiansForUpsellWithTelemetryFlowID_completion___block_invoke;
   v10[3] = &unk_1E7C9B9E0;
   v11 = v7;
-  v12 = v5;
+  v12 = completionCopy;
   v8 = v7;
-  v9 = v5;
-  [(AACustodianController *)v8 fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:v6 completion:v10];
+  v9 = completionCopy;
+  [(AACustodianController *)v8 fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:dCopy completion:v10];
 }
 
 void __86__AAContactsProvider_fetchSuggestedCustodiansForUpsellWithTelemetryFlowID_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -331,9 +331,9 @@ void __86__AAContactsProvider_fetchSuggestedCustodiansForUpsellWithTelemetryFlow
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchMyCachedCustodians:(id)a3
+- (void)fetchMyCachedCustodians:(id)custodians
 {
-  v4 = a3;
+  custodiansCopy = custodians;
   v5 = [[AATrustedContactFetchRequest alloc] initWithContactType:0 cachePolicy:0];
   [(AATrustedContactFetchRequest *)v5 setShouldLookUpContactInAddressBook:1];
   [(AATrustedContactFetchRequest *)v5 includeContactsWithStatus:1];
@@ -344,8 +344,8 @@ void __86__AAContactsProvider_fetchSuggestedCustodiansForUpsellWithTelemetryFlow
   v8[2] = __46__AAContactsProvider_fetchMyCachedCustodians___block_invoke;
   v8[3] = &unk_1E7C9BA08;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = custodiansCopy;
+  v7 = custodiansCopy;
   [(AACustodianController *)v6 fetchTrustedContactsWithRequest:v5 completion:v8];
 }
 
@@ -393,9 +393,9 @@ void __46__AAContactsProvider_fetchMyCachedCustodians___block_invoke(uint64_t a1
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchMyCustodians:(id)a3
+- (void)fetchMyCustodians:(id)custodians
 {
-  v4 = a3;
+  custodiansCopy = custodians;
   v5 = [[AATrustedContactFetchRequest alloc] initWithContactType:0 cachePolicy:1];
   [(AATrustedContactFetchRequest *)v5 setShouldLookUpContactInAddressBook:1];
   [(AATrustedContactFetchRequest *)v5 includeContactsWithStatus:1];
@@ -406,8 +406,8 @@ void __46__AAContactsProvider_fetchMyCachedCustodians___block_invoke(uint64_t a1
   v8[2] = __40__AAContactsProvider_fetchMyCustodians___block_invoke;
   v8[3] = &unk_1E7C9BA08;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = custodiansCopy;
+  v7 = custodiansCopy;
   [(AACustodianController *)v6 fetchTrustedContactsWithRequest:v5 completion:v8];
 }
 
@@ -455,16 +455,16 @@ void __40__AAContactsProvider_fetchMyCustodians___block_invoke(uint64_t a1, uint
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)filterTrustedContactsWithValidStateForDisplay:(id)a3
+- (id)filterTrustedContactsWithValidStateForDisplay:(id)display
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  displayCopy = display;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = displayCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -497,9 +497,9 @@ void __40__AAContactsProvider_fetchMyCustodians___block_invoke(uint64_t a1, uint
   return v4;
 }
 
-- (void)fetchMyHealthyCustodians:(id)a3
+- (void)fetchMyHealthyCustodians:(id)custodians
 {
-  v3 = a3;
+  custodiansCopy = custodians;
   v4 = [[AATrustedContactFetchRequest alloc] initWithContactType:0 cachePolicy:1];
   [(AATrustedContactFetchRequest *)v4 setShouldLookUpContactInAddressBook:1];
   [(AATrustedContactFetchRequest *)v4 includeContactsWithStatus:2];
@@ -508,8 +508,8 @@ void __40__AAContactsProvider_fetchMyCustodians___block_invoke(uint64_t a1, uint
   v7[1] = 3221225472;
   v7[2] = __47__AAContactsProvider_fetchMyHealthyCustodians___block_invoke;
   v7[3] = &unk_1E7C9B290;
-  v8 = v3;
-  v6 = v3;
+  v8 = custodiansCopy;
+  v6 = custodiansCopy;
   [(AACustodianController *)v5 fetchTrustedContactsWithRequest:v4 completion:v7];
 }
 
@@ -557,9 +557,9 @@ void __47__AAContactsProvider_fetchMyHealthyCustodians___block_invoke(uint64_t a
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchMyWalrusEligibleCustodians:(id)a3
+- (void)fetchMyWalrusEligibleCustodians:(id)custodians
 {
-  v3 = a3;
+  custodiansCopy = custodians;
   v4 = [[AATrustedContactFetchRequest alloc] initWithContactType:0 cachePolicy:1];
   [(AATrustedContactFetchRequest *)v4 setShouldLookUpContactInAddressBook:1];
   [(AATrustedContactFetchRequest *)v4 includeContactsWithStatus:2];
@@ -568,8 +568,8 @@ void __47__AAContactsProvider_fetchMyHealthyCustodians___block_invoke(uint64_t a
   v7[1] = 3221225472;
   v7[2] = __54__AAContactsProvider_fetchMyWalrusEligibleCustodians___block_invoke;
   v7[3] = &unk_1E7C9B290;
-  v8 = v3;
-  v6 = v3;
+  v8 = custodiansCopy;
+  v6 = custodiansCopy;
   [(AACustodianController *)v5 fetchTrustedContactsWithRequest:v4 completion:v7];
 }
 
@@ -638,9 +638,9 @@ void __54__AAContactsProvider_fetchMyWalrusEligibleCustodians___block_invoke(uin
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchWalrusEligibleCustodiansForExpansionCohortsWithCompletion:(id)a3
+- (void)fetchWalrusEligibleCustodiansForExpansionCohortsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = [[AATrustedContactFetchRequest alloc] initWithContactType:0 cachePolicy:1];
   [(AATrustedContactFetchRequest *)v4 setShouldLookUpContactInAddressBook:1];
   [(AATrustedContactFetchRequest *)v4 includeContactsWithStatus:1];
@@ -650,8 +650,8 @@ void __54__AAContactsProvider_fetchMyWalrusEligibleCustodians___block_invoke(uin
   v7[1] = 3221225472;
   v7[2] = __85__AAContactsProvider_fetchWalrusEligibleCustodiansForExpansionCohortsWithCompletion___block_invoke;
   v7[3] = &unk_1E7C9B290;
-  v8 = v3;
-  v6 = v3;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(AACustodianController *)v5 fetchTrustedContactsWithRequest:v4 completion:v7];
 }
 
@@ -711,9 +711,9 @@ void __85__AAContactsProvider_fetchWalrusEligibleCustodiansForExpansionCohortsWi
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchMyCustodianshipOwners:(id)a3
+- (void)fetchMyCustodianshipOwners:(id)owners
 {
-  v3 = a3;
+  ownersCopy = owners;
   v4 = [[AATrustedContactFetchRequest alloc] initWithContactType:1 cachePolicy:0];
   [(AATrustedContactFetchRequest *)v4 setShouldLookUpContactInAddressBook:1];
   [(AATrustedContactFetchRequest *)v4 includeContactsWithStatus:2];
@@ -722,8 +722,8 @@ void __85__AAContactsProvider_fetchWalrusEligibleCustodiansForExpansionCohortsWi
   v7[1] = 3221225472;
   v7[2] = __49__AAContactsProvider_fetchMyCustodianshipOwners___block_invoke;
   v7[3] = &unk_1E7C9B290;
-  v8 = v3;
-  v6 = v3;
+  v8 = ownersCopy;
+  v6 = ownersCopy;
   [(AACustodianController *)v5 fetchTrustedContactsWithRequest:v4 completion:v7];
 }
 
@@ -771,37 +771,37 @@ void __49__AAContactsProvider_fetchMyCustodianshipOwners___block_invoke(uint64_t
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchSuggestedBeneficiaries:(id)a3
+- (void)fetchSuggestedBeneficiaries:(id)beneficiaries
 {
-  v3 = a3;
+  beneficiariesCopy = beneficiaries;
   v4 = objc_alloc_init(AAInheritanceContactsViewModel);
-  [(AAInheritanceContactsViewModel *)v4 fetchSuggestedBeneficiaries:v3];
+  [(AAInheritanceContactsViewModel *)v4 fetchSuggestedBeneficiaries:beneficiariesCopy];
 }
 
-- (void)fetchMyBeneficiaries:(id)a3
+- (void)fetchMyBeneficiaries:(id)beneficiaries
 {
-  v3 = a3;
+  beneficiariesCopy = beneficiaries;
   v4 = objc_alloc_init(AAInheritanceContactsViewModel);
-  [(AAInheritanceContactsViewModel *)v4 fetchBeneficiaries:v3];
+  [(AAInheritanceContactsViewModel *)v4 fetchBeneficiaries:beneficiariesCopy];
 }
 
-- (void)fetchMyBenefactors:(id)a3
+- (void)fetchMyBenefactors:(id)benefactors
 {
-  v3 = a3;
+  benefactorsCopy = benefactors;
   v4 = objc_alloc_init(AAInheritanceContactsViewModel);
-  [(AAInheritanceContactsViewModel *)v4 fetchBenefactors:v3];
+  [(AAInheritanceContactsViewModel *)v4 fetchBenefactors:benefactorsCopy];
 }
 
-- (id)_localContactsForCustodianshipOwners:(id)a3
+- (id)_localContactsForCustodianshipOwners:(id)owners
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  ownersCopy = owners;
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = ownersCopy;
   v6 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
@@ -818,19 +818,19 @@ void __49__AAContactsProvider_fetchMyCustodianshipOwners___block_invoke(uint64_t
 
         v10 = *(*(&v22 + 1) + 8 * i);
         contactsManager = self->_contactsManager;
-        v12 = [v10 ownerHandle];
-        v13 = [(AAContactsManager *)contactsManager contactForHandle:v12];
+        ownerHandle = [v10 ownerHandle];
+        v13 = [(AAContactsManager *)contactsManager contactForHandle:ownerHandle];
 
         v14 = [AALocalContactInfo alloc];
-        v15 = [v10 ownerHandle];
-        v16 = [(AALocalContactInfo *)v14 initWithHandle:v15 contact:v13];
+        ownerHandle2 = [v10 ownerHandle];
+        v16 = [(AALocalContactInfo *)v14 initWithHandle:ownerHandle2 contact:v13];
 
-        v17 = [v10 custodianID];
-        [(AALocalContactInfo *)v16 setCustodianID:v17];
+        custodianID = [v10 custodianID];
+        [(AALocalContactInfo *)v16 setCustodianID:custodianID];
 
         -[AALocalContactInfo setTrustedContactStatus:](v16, "setTrustedContactStatus:", [v10 status]);
         [(AALocalContactInfo *)v16 setContactType:2];
-        [v5 addObject:v16];
+        [array addObject:v16];
       }
 
       v7 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -839,7 +839,7 @@ void __49__AAContactsProvider_fetchMyCustodianshipOwners___block_invoke(uint64_t
     while (v7);
   }
 
-  v18 = [v5 copy];
+  v18 = [array copy];
   v19 = *MEMORY[0x1E69E9840];
 
   return v18;

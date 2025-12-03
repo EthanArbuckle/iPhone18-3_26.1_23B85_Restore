@@ -2,12 +2,12 @@
 + (MARelation)highlightOfHighlightGroup;
 + (MARelation)typeOfHighlightGroup;
 + (id)filter;
-+ (id)filterWithUUIDs:(id)a3;
-+ (id)inclusivePathFromTargetNodeDomain:(unsigned __int16)a3 withName:(id)a4;
-+ (id)inclusivePathToTargetNodeDomain:(unsigned __int16)a3 withName:(id)a4;
++ (id)filterWithUUIDs:(id)ds;
++ (id)inclusivePathFromTargetNodeDomain:(unsigned __int16)domain withName:(id)name;
++ (id)inclusivePathToTargetNodeDomain:(unsigned __int16)domain withName:(id)name;
 + (id)momentInHighlight;
-+ (id)pathFromTargetNodeDomain:(unsigned __int16)a3;
-+ (id)pathToTargetNodeDomain:(unsigned __int16)a3;
++ (id)pathFromTargetNodeDomain:(unsigned __int16)domain;
++ (id)pathToTargetNodeDomain:(unsigned __int16)domain;
 - (BOOL)isAggregation;
 - (BOOL)isLongTrip;
 - (BOOL)isShortTrip;
@@ -15,20 +15,20 @@
 - (NSArray)highlightNodes;
 - (NSArray)sortedHighlightNodes;
 - (PGGraphHighlightGroupNodeCollection)collection;
-- (void)enumerateMomentEdgesAndNodesUsingBlock:(id)a3;
+- (void)enumerateMomentEdgesAndNodesUsingBlock:(id)block;
 @end
 
 @implementation PGGraphHighlightGroupNode
 
-- (void)enumerateMomentEdgesAndNodesUsingBlock:(id)a3
+- (void)enumerateMomentEdgesAndNodesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__PGGraphHighlightGroupNode_enumerateMomentEdgesAndNodesUsingBlock___block_invoke;
   v6[3] = &unk_278883DE8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(PGGraphHighlightGroupNode *)self enumerateHighlightNodesUsingBlock:v6];
 }
 
@@ -53,7 +53,7 @@ uint64_t __68__PGGraphHighlightGroupNode_enumerateMomentEdgesAndNodesUsingBlock_
 - (NSArray)sortedHighlightNodes
 {
   v10[3] = *MEMORY[0x277D85DE8];
-  v2 = [(PGGraphHighlightGroupNode *)self highlightNodes];
+  highlightNodes = [(PGGraphHighlightGroupNode *)self highlightNodes];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"universalStartDate" ascending:1];
   v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"universalEndDate" ascending:{1, v3}];
   v10[1] = v4;
@@ -61,7 +61,7 @@ uint64_t __68__PGGraphHighlightGroupNode_enumerateMomentEdgesAndNodesUsingBlock_
   v10[2] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:3];
 
-  v7 = [v2 sortedArrayUsingDescriptors:v6];
+  v7 = [highlightNodes sortedArrayUsingDescriptors:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
@@ -70,12 +70,12 @@ uint64_t __68__PGGraphHighlightGroupNode_enumerateMomentEdgesAndNodesUsingBlock_
 
 - (NSArray)highlightNodes
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__PGGraphHighlightGroupNode_highlightNodes__block_invoke;
   v6[3] = &unk_278885850;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(PGGraphHighlightGroupNode *)self enumerateHighlightNodesUsingBlock:v6];
 
@@ -84,55 +84,55 @@ uint64_t __68__PGGraphHighlightGroupNode_enumerateMomentEdgesAndNodesUsingBlock_
 
 - (BOOL)isAggregation
 {
-  v2 = [(PGGraphHighlightGroupNode *)self collection];
-  v3 = [v2 typeNodes];
-  v4 = [v3 anyNode];
+  collection = [(PGGraphHighlightGroupNode *)self collection];
+  typeNodes = [collection typeNodes];
+  anyNode = [typeNodes anyNode];
 
-  v5 = [v4 label];
-  LOBYTE(v3) = [v5 isEqualToString:@"Aggregation"];
+  label = [anyNode label];
+  LOBYTE(typeNodes) = [label isEqualToString:@"Aggregation"];
 
-  return v3;
+  return typeNodes;
 }
 
 - (BOOL)isShortTrip
 {
-  v2 = [(PGGraphHighlightGroupNode *)self collection];
-  v3 = [v2 typeNodes];
-  v4 = [v3 anyNode];
+  collection = [(PGGraphHighlightGroupNode *)self collection];
+  typeNodes = [collection typeNodes];
+  anyNode = [typeNodes anyNode];
 
-  v5 = [v4 label];
-  LOBYTE(v3) = [v5 isEqualToString:@"ShortTrip"];
+  label = [anyNode label];
+  LOBYTE(typeNodes) = [label isEqualToString:@"ShortTrip"];
 
-  return v3;
+  return typeNodes;
 }
 
 - (BOOL)isLongTrip
 {
-  v2 = [(PGGraphHighlightGroupNode *)self collection];
-  v3 = [v2 typeNodes];
-  v4 = [v3 anyNode];
+  collection = [(PGGraphHighlightGroupNode *)self collection];
+  typeNodes = [collection typeNodes];
+  anyNode = [typeNodes anyNode];
 
-  v5 = [v4 label];
-  LOBYTE(v3) = [v5 isEqualToString:@"LongTrip"];
+  label = [anyNode label];
+  LOBYTE(typeNodes) = [label isEqualToString:@"LongTrip"];
 
-  return v3;
+  return typeNodes;
 }
 
 - (BOOL)isTrip
 {
-  v2 = [(PGGraphHighlightGroupNode *)self collection];
-  v3 = [v2 typeNodes];
-  v4 = [v3 anyNode];
+  collection = [(PGGraphHighlightGroupNode *)self collection];
+  typeNodes = [collection typeNodes];
+  anyNode = [typeNodes anyNode];
 
-  v5 = [v4 label];
-  if ([v5 isEqualToString:@"LongTrip"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"ShortTrip"))
+  label = [anyNode label];
+  if ([label isEqualToString:@"LongTrip"] & 1) != 0 || (objc_msgSend(label, "isEqualToString:", @"ShortTrip"))
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 isEqualToString:@"OngoingTrip"];
+    v6 = [label isEqualToString:@"OngoingTrip"];
   }
 
   return v6;
@@ -164,27 +164,27 @@ uint64_t __68__PGGraphHighlightGroupNode_enumerateMomentEdgesAndNodesUsingBlock_
 + (MARelation)typeOfHighlightGroup
 {
   v2 = +[PGGraphHasTypeEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)highlightOfHighlightGroup
 {
   v2 = +[PGGraphGroupContainsEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
-+ (id)filterWithUUIDs:(id)a3
++ (id)filterWithUUIDs:(id)ds
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D22C78];
-  v4 = a3;
+  dsCopy = ds;
   v5 = [v3 alloc];
   v10 = @"id";
-  v11[0] = v4;
+  v11[0] = dsCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   v7 = [v5 initWithLabel:@"HighlightGroup" domain:102 properties:v6];
@@ -193,18 +193,18 @@ uint64_t __68__PGGraphHighlightGroupNode_enumerateMomentEdgesAndNodesUsingBlock_
   return v7;
 }
 
-+ (id)inclusivePathToTargetNodeDomain:(unsigned __int16)a3 withName:(id)a4
++ (id)inclusivePathToTargetNodeDomain:(unsigned __int16)domain withName:(id)name
 {
-  v4 = a3;
-  v5 = a4;
-  if (v4 == 100)
+  domainCopy = domain;
+  nameCopy = name;
+  if (domainCopy == 100)
   {
     v6 = @"(:HighlightGroup)-[:GROUP_CONTAINS]->(:Highlight)-[:CONTAINS]->(%@:Moment)";
   }
 
   else
   {
-    if (v4 != 102)
+    if (domainCopy != 102)
     {
       v8 = 0;
       goto LABEL_9;
@@ -214,9 +214,9 @@ uint64_t __68__PGGraphHighlightGroupNode_enumerateMomentEdgesAndNodesUsingBlock_
   }
 
   v7 = &stru_2843F5C58;
-  if (v5)
+  if (nameCopy)
   {
-    v7 = v5;
+    v7 = nameCopy;
   }
 
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:v6, v7];
@@ -225,18 +225,18 @@ LABEL_9:
   return v8;
 }
 
-+ (id)inclusivePathFromTargetNodeDomain:(unsigned __int16)a3 withName:(id)a4
++ (id)inclusivePathFromTargetNodeDomain:(unsigned __int16)domain withName:(id)name
 {
-  v4 = a3;
-  v5 = a4;
-  if (v4 == 100)
+  domainCopy = domain;
+  nameCopy = name;
+  if (domainCopy == 100)
   {
     v6 = @"(%@:Moment)<-[:CONTAINS]-(:Highlight)<-[:GROUP_CONTAINS]-(:HighlightGroup)";
   }
 
   else
   {
-    if (v4 != 102)
+    if (domainCopy != 102)
     {
       v8 = 0;
       goto LABEL_9;
@@ -246,9 +246,9 @@ LABEL_9:
   }
 
   v7 = &stru_2843F5C58;
-  if (v5)
+  if (nameCopy)
   {
-    v7 = v5;
+    v7 = nameCopy;
   }
 
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:v6, v7];
@@ -257,50 +257,50 @@ LABEL_9:
   return v8;
 }
 
-+ (id)pathToTargetNodeDomain:(unsigned __int16)a3
++ (id)pathToTargetNodeDomain:(unsigned __int16)domain
 {
-  if (a3 == 100)
+  if (domain == 100)
   {
-    v5 = [objc_opt_class() pathToMoment];
+    pathToMoment = [objc_opt_class() pathToMoment];
   }
 
   else
   {
-    if (a3 == 102)
+    if (domain == 102)
     {
-      v5 = &stru_2843F5C58;
+      pathToMoment = &stru_2843F5C58;
     }
 
     else
     {
-      v5 = 0;
+      pathToMoment = 0;
     }
   }
 
-  return v5;
+  return pathToMoment;
 }
 
-+ (id)pathFromTargetNodeDomain:(unsigned __int16)a3
++ (id)pathFromTargetNodeDomain:(unsigned __int16)domain
 {
-  if (a3 == 100)
+  if (domain == 100)
   {
-    v5 = [objc_opt_class() pathFromMoment];
+    pathFromMoment = [objc_opt_class() pathFromMoment];
   }
 
   else
   {
-    if (a3 == 102)
+    if (domain == 102)
     {
-      v5 = &stru_2843F5C58;
+      pathFromMoment = &stru_2843F5C58;
     }
 
     else
     {
-      v5 = 0;
+      pathFromMoment = 0;
     }
   }
 
-  return v5;
+  return pathFromMoment;
 }
 
 + (id)filter

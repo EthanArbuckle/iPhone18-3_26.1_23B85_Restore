@@ -1,95 +1,95 @@
 @interface TCSCall
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCall:(id)a3;
-- (TCSCall)initWithCall:(id)a3;
-- (TCSCall)initWithCoder:(id)a3;
-- (TCSCall)initWithURL:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCall:(id)call;
+- (TCSCall)initWithCall:(id)call;
+- (TCSCall)initWithCoder:(id)coder;
+- (TCSCall)initWithURL:(id)l;
 - (id)URL;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TCSCall
 
-- (TCSCall)initWithCall:(id)a3
+- (TCSCall)initWithCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v21.receiver = self;
   v21.super_class = TCSCall;
   v5 = [(TCSCall *)&v21 init];
   v6 = v5;
   if (v5)
   {
-    v5->_isNilCall = v4 == 0;
-    v5->_isConnected = [v4 isConnected];
-    v6->_isOutgoing = [v4 isOutgoing];
-    if ([v4 tc_useUnderlyingRemoteUplinkMuted])
+    v5->_isNilCall = callCopy == 0;
+    v5->_isConnected = [callCopy isConnected];
+    v6->_isOutgoing = [callCopy isOutgoing];
+    if ([callCopy tc_useUnderlyingRemoteUplinkMuted])
     {
-      v7 = [v4 isRemoteUplinkMuted];
+      isRemoteUplinkMuted = [callCopy isRemoteUplinkMuted];
     }
 
     else
     {
-      v7 = 1;
+      isRemoteUplinkMuted = 1;
     }
 
-    v6->_isRemoteUplinkMuted = v7;
-    v8 = [v4 contactIdentifiers];
-    v9 = [v8 firstObject];
+    v6->_isRemoteUplinkMuted = isRemoteUplinkMuted;
+    contactIdentifiers = [callCopy contactIdentifiers];
+    firstObject = [contactIdentifiers firstObject];
     contactIdentifier = v6->_contactIdentifier;
-    v6->_contactIdentifier = v9;
+    v6->_contactIdentifier = firstObject;
 
-    v11 = [v4 handle];
-    v12 = [v11 value];
+    handle = [callCopy handle];
+    value = [handle value];
     handleValue = v6->_handleValue;
-    v6->_handleValue = v12;
+    v6->_handleValue = value;
 
-    v6->_status = [v4 status];
-    v14 = [v4 uniqueProxyIdentifier];
+    v6->_status = [callCopy status];
+    uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
     uniqueProxyIdentifier = v6->_uniqueProxyIdentifier;
-    v6->_uniqueProxyIdentifier = v14;
+    v6->_uniqueProxyIdentifier = uniqueProxyIdentifier;
 
-    v6->_disconnectedReason = [v4 disconnectedReason];
-    v16 = [v4 dateAnsweredOrDialed];
+    v6->_disconnectedReason = [callCopy disconnectedReason];
+    dateAnsweredOrDialed = [callCopy dateAnsweredOrDialed];
     dateAnsweredOrDialed = v6->_dateAnsweredOrDialed;
-    v6->_dateAnsweredOrDialed = v16;
+    v6->_dateAnsweredOrDialed = dateAnsweredOrDialed;
 
-    v18 = [v4 dateConnected];
+    dateConnected = [callCopy dateConnected];
     dateConnected = v6->_dateConnected;
-    v6->_dateConnected = v18;
+    v6->_dateConnected = dateConnected;
   }
 
   return v6;
 }
 
-- (TCSCall)initWithURL:(id)a3
+- (TCSCall)initWithURL:(id)l
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v56.receiver = self;
   v56.super_class = TCSCall;
   v5 = [(TCSCall *)&v56 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v4 resolvingAgainstBaseURL:0];
-    v7 = [v6 scheme];
-    if ([v7 isEqualToString:@"tincan"])
+    v6 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:0];
+    scheme = [v6 scheme];
+    if ([scheme isEqualToString:@"tincan"])
     {
-      v8 = [v6 host];
-      v9 = [v8 isEqualToString:@"tcsCall"];
+      host = [v6 host];
+      v9 = [host isEqualToString:@"tcsCall"];
 
       if (v9)
       {
-        v51 = v4;
+        v51 = lCopy;
         v10 = objc_opt_new();
         [v10 setNumberStyle:1];
         v54 = 0u;
         v55 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v11 = [v6 queryItems];
-        v12 = [v11 countByEnumeratingWithState:&v52 objects:v57 count:16];
+        queryItems = [v6 queryItems];
+        v12 = [queryItems countByEnumeratingWithState:&v52 objects:v57 count:16];
         if (!v12)
         {
           goto LABEL_51;
@@ -103,182 +103,182 @@
           {
             if (*v53 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(queryItems);
             }
 
             v16 = *(*(&v52 + 1) + 8 * i);
-            v17 = [v16 name];
-            v18 = [@"conn" isEqualToString:v17];
+            name = [v16 name];
+            v18 = [@"conn" isEqualToString:name];
 
             if (v18)
             {
-              v19 = [v16 value];
-              v20 = [v10 numberFromString:v19];
+              value = [v16 value];
+              value6 = [v10 numberFromString:value];
 
-              if (v20)
+              if (value6)
               {
-                v21 = [v20 BOOLValue];
+                bOOLValue = [value6 BOOLValue];
               }
 
               else
               {
-                v21 = 0;
+                bOOLValue = 0;
               }
 
-              v5->_isConnected = v21;
+              v5->_isConnected = bOOLValue;
             }
 
             else
             {
-              v22 = [v16 name];
-              v23 = [@"out" isEqualToString:v22];
+              name2 = [v16 name];
+              v23 = [@"out" isEqualToString:name2];
 
               if (v23)
               {
-                v24 = [v16 value];
-                v20 = [v10 numberFromString:v24];
+                value2 = [v16 value];
+                value6 = [v10 numberFromString:value2];
 
-                if (v20)
+                if (value6)
                 {
-                  v25 = [v20 BOOLValue];
+                  bOOLValue2 = [value6 BOOLValue];
                 }
 
                 else
                 {
-                  v25 = 0;
+                  bOOLValue2 = 0;
                 }
 
-                v5->_isOutgoing = v25;
+                v5->_isOutgoing = bOOLValue2;
               }
 
               else
               {
-                v26 = [v16 name];
-                v27 = [@"rUM" isEqualToString:v26];
+                name3 = [v16 name];
+                v27 = [@"rUM" isEqualToString:name3];
 
                 if (v27)
                 {
-                  v28 = [v16 value];
-                  v20 = [v10 numberFromString:v28];
+                  value3 = [v16 value];
+                  value6 = [v10 numberFromString:value3];
 
-                  if (v20)
+                  if (value6)
                   {
-                    v29 = [v20 BOOLValue];
+                    bOOLValue3 = [value6 BOOLValue];
                   }
 
                   else
                   {
-                    v29 = 0;
+                    bOOLValue3 = 0;
                   }
 
-                  v5->_isRemoteUplinkMuted = v29;
+                  v5->_isRemoteUplinkMuted = bOOLValue3;
                 }
 
                 else
                 {
-                  v30 = [v16 name];
-                  v31 = [@"stat" isEqualToString:v30];
+                  name4 = [v16 name];
+                  v31 = [@"stat" isEqualToString:name4];
 
                   if (v31)
                   {
-                    v32 = [v16 value];
-                    v20 = [v10 numberFromString:v32];
+                    value4 = [v16 value];
+                    value6 = [v10 numberFromString:value4];
 
-                    if (v20)
+                    if (value6)
                     {
-                      v33 = [v20 intValue];
+                      intValue = [value6 intValue];
                     }
 
                     else
                     {
-                      v33 = 0;
+                      intValue = 0;
                     }
 
-                    v5->_status = v33;
+                    v5->_status = intValue;
                   }
 
                   else
                   {
-                    v34 = [v16 name];
-                    v35 = [@"dR" isEqualToString:v34];
+                    name5 = [v16 name];
+                    v35 = [@"dR" isEqualToString:name5];
 
                     if (v35)
                     {
-                      v36 = [v16 value];
-                      v20 = [v10 numberFromString:v36];
+                      value5 = [v16 value];
+                      value6 = [v10 numberFromString:value5];
 
-                      if (v20)
+                      if (value6)
                       {
-                        v37 = [v20 intValue];
+                        intValue2 = [value6 intValue];
                       }
 
                       else
                       {
-                        v37 = 0;
+                        intValue2 = 0;
                       }
 
-                      v5->_disconnectedReason = v37;
+                      v5->_disconnectedReason = intValue2;
                     }
 
                     else
                     {
-                      v38 = [v16 name];
-                      v39 = [@"cID" isEqualToString:v38];
+                      name6 = [v16 name];
+                      v39 = [@"cID" isEqualToString:name6];
 
                       if (v39)
                       {
-                        v20 = [v16 value];
-                        v40 = [v20 length];
-                        if (v40)
+                        value6 = [v16 value];
+                        value7 = [value6 length];
+                        if (value7)
                         {
-                          v40 = [v16 value];
+                          value7 = [v16 value];
                         }
 
                         contactIdentifier = v5->_contactIdentifier;
-                        v5->_contactIdentifier = v40;
+                        v5->_contactIdentifier = value7;
                       }
 
                       else
                       {
-                        v42 = [v16 name];
-                        v43 = [@"hdl" isEqualToString:v42];
+                        name7 = [v16 name];
+                        v43 = [@"hdl" isEqualToString:name7];
 
                         if (v43)
                         {
-                          v20 = [v16 value];
-                          v44 = [v20 length];
-                          if (v44)
+                          value6 = [v16 value];
+                          value8 = [value6 length];
+                          if (value8)
                           {
-                            v44 = [v16 value];
+                            value8 = [v16 value];
                           }
 
                           contactIdentifier = v5->_handleValue;
-                          v5->_handleValue = v44;
+                          v5->_handleValue = value8;
                         }
 
                         else
                         {
-                          v45 = [v16 name];
-                          v46 = [@"uPI" isEqualToString:v45];
+                          name8 = [v16 name];
+                          v46 = [@"uPI" isEqualToString:name8];
 
                           if (!v46)
                           {
                             continue;
                           }
 
-                          v20 = [v16 value];
-                          if ([v20 length])
+                          value6 = [v16 value];
+                          if ([value6 length])
                           {
-                            v47 = [v16 value];
+                            value9 = [v16 value];
                           }
 
                           else
                           {
-                            v47 = &stru_287F22AC0;
+                            value9 = &stru_287F22AC0;
                           }
 
                           contactIdentifier = v5->_uniqueProxyIdentifier;
-                          v5->_uniqueProxyIdentifier = &v47->isa;
+                          v5->_uniqueProxyIdentifier = &value9->isa;
                         }
                       }
                     }
@@ -288,12 +288,12 @@
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v52 objects:v57 count:16];
+          v13 = [queryItems countByEnumeratingWithState:&v52 objects:v57 count:16];
           if (!v13)
           {
 LABEL_51:
 
-            v4 = v51;
+            lCopy = v51;
             goto LABEL_56;
           }
         }
@@ -308,7 +308,7 @@ LABEL_51:
     v48 = TCSLogDefault;
     if (os_log_type_enabled(TCSLogDefault, OS_LOG_TYPE_ERROR))
     {
-      [(TCSCall *)v4 initWithURL:v48];
+      [(TCSCall *)lCopy initWithURL:v48];
     }
 
     v5->_isNilCall = 1;
@@ -319,26 +319,26 @@ LABEL_56:
   return v5;
 }
 
-- (BOOL)isEqualToCall:(id)a3
+- (BOOL)isEqualToCall:(id)call
 {
-  v7 = a3;
-  if (!v7)
+  callCopy = call;
+  if (!callCopy)
   {
     v11 = 0;
     goto LABEL_36;
   }
 
-  v39 = [(TCSCall *)self isConnected];
-  v38 = [v7 isConnected];
-  v37 = [(TCSCall *)self isOutgoing];
-  v36 = [v7 isOutgoing];
-  v35 = [(TCSCall *)self isRemoteUplinkMuted];
-  v34 = [v7 isRemoteUplinkMuted];
-  v8 = [(TCSCall *)self contactIdentifier];
-  if (!v8)
+  isConnected = [(TCSCall *)self isConnected];
+  isConnected2 = [callCopy isConnected];
+  isOutgoing = [(TCSCall *)self isOutgoing];
+  isOutgoing2 = [callCopy isOutgoing];
+  isRemoteUplinkMuted = [(TCSCall *)self isRemoteUplinkMuted];
+  isRemoteUplinkMuted2 = [callCopy isRemoteUplinkMuted];
+  contactIdentifier = [(TCSCall *)self contactIdentifier];
+  if (!contactIdentifier)
   {
-    v3 = [v7 contactIdentifier];
-    if (!v3)
+    contactIdentifier2 = [callCopy contactIdentifier];
+    if (!contactIdentifier2)
     {
       v40 = 1;
 LABEL_8:
@@ -347,22 +347,22 @@ LABEL_8:
     }
   }
 
-  v9 = [(TCSCall *)self contactIdentifier];
-  v10 = [v7 contactIdentifier];
-  v40 = [v9 isEqualToString:v10];
+  contactIdentifier3 = [(TCSCall *)self contactIdentifier];
+  contactIdentifier4 = [callCopy contactIdentifier];
+  v40 = [contactIdentifier3 isEqualToString:contactIdentifier4];
 
-  if (!v8)
+  if (!contactIdentifier)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
 
-  v12 = [(TCSCall *)self handleValue];
-  if (!v12)
+  handleValue = [(TCSCall *)self handleValue];
+  if (!handleValue)
   {
-    v3 = [v7 handleValue];
-    if (!v3)
+    contactIdentifier2 = [callCopy handleValue];
+    if (!contactIdentifier2)
     {
       v33 = 1;
 LABEL_14:
@@ -371,24 +371,24 @@ LABEL_14:
     }
   }
 
-  v13 = [(TCSCall *)self handleValue];
-  v14 = [v7 handleValue];
-  v33 = [v13 isEqualToString:v14];
+  handleValue2 = [(TCSCall *)self handleValue];
+  handleValue3 = [callCopy handleValue];
+  v33 = [handleValue2 isEqualToString:handleValue3];
 
-  if (!v12)
+  if (!handleValue)
   {
     goto LABEL_14;
   }
 
 LABEL_15:
 
-  v32 = [(TCSCall *)self status];
-  v31 = [v7 status];
-  v15 = [(TCSCall *)self uniqueProxyIdentifier];
-  if (!v15)
+  status = [(TCSCall *)self status];
+  status2 = [callCopy status];
+  uniqueProxyIdentifier = [(TCSCall *)self uniqueProxyIdentifier];
+  if (!uniqueProxyIdentifier)
   {
-    v4 = [v7 uniqueProxyIdentifier];
-    if (!v4)
+    uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+    if (!uniqueProxyIdentifier2)
     {
       v30 = 1;
 LABEL_20:
@@ -397,24 +397,24 @@ LABEL_20:
     }
   }
 
-  v16 = [(TCSCall *)self uniqueProxyIdentifier];
-  v17 = [v7 uniqueProxyIdentifier];
-  v30 = [v16 isEqualToString:v17];
+  uniqueProxyIdentifier3 = [(TCSCall *)self uniqueProxyIdentifier];
+  uniqueProxyIdentifier4 = [callCopy uniqueProxyIdentifier];
+  v30 = [uniqueProxyIdentifier3 isEqualToString:uniqueProxyIdentifier4];
 
-  if (!v15)
+  if (!uniqueProxyIdentifier)
   {
     goto LABEL_20;
   }
 
 LABEL_21:
 
-  v29 = [(TCSCall *)self disconnectedReason];
-  v28 = [v7 disconnectedReason];
-  v18 = [(TCSCall *)self dateAnsweredOrDialed];
-  if (!v18)
+  disconnectedReason = [(TCSCall *)self disconnectedReason];
+  disconnectedReason2 = [callCopy disconnectedReason];
+  dateAnsweredOrDialed = [(TCSCall *)self dateAnsweredOrDialed];
+  if (!dateAnsweredOrDialed)
   {
-    v5 = [v7 dateAnsweredOrDialed];
-    if (!v5)
+    dateAnsweredOrDialed2 = [callCopy dateAnsweredOrDialed];
+    if (!dateAnsweredOrDialed2)
     {
       v21 = 1;
 LABEL_26:
@@ -423,22 +423,22 @@ LABEL_26:
     }
   }
 
-  v19 = [(TCSCall *)self dateAnsweredOrDialed];
-  v20 = [v7 dateAnsweredOrDialed];
-  v21 = [v19 isEqualToDate:v20];
+  dateAnsweredOrDialed3 = [(TCSCall *)self dateAnsweredOrDialed];
+  dateAnsweredOrDialed4 = [callCopy dateAnsweredOrDialed];
+  v21 = [dateAnsweredOrDialed3 isEqualToDate:dateAnsweredOrDialed4];
 
-  if (!v18)
+  if (!dateAnsweredOrDialed)
   {
     goto LABEL_26;
   }
 
 LABEL_27:
 
-  v22 = [(TCSCall *)self dateConnected];
-  if (!v22)
+  dateConnected = [(TCSCall *)self dateConnected];
+  if (!dateConnected)
   {
-    v5 = [v7 dateConnected];
-    if (!v5)
+    dateAnsweredOrDialed2 = [callCopy dateConnected];
+    if (!dateAnsweredOrDialed2)
     {
       v25 = 1;
 LABEL_32:
@@ -447,19 +447,19 @@ LABEL_32:
     }
   }
 
-  v23 = [(TCSCall *)self dateConnected];
-  v24 = [v7 dateConnected];
-  v25 = [v23 isEqualToDate:v24];
+  dateConnected2 = [(TCSCall *)self dateConnected];
+  dateConnected3 = [callCopy dateConnected];
+  v25 = [dateConnected2 isEqualToDate:dateConnected3];
 
-  if (!v22)
+  if (!dateConnected)
   {
     goto LABEL_32;
   }
 
 LABEL_33:
 
-  v26 = v40 & ~(v39 ^ v38 | v37 ^ v36 | v35 ^ v34) & v33 & (v32 == v31) & v30;
-  if (v29 != v28)
+  v26 = v40 & ~(isConnected ^ isConnected2 | isOutgoing ^ isOutgoing2 | isRemoteUplinkMuted ^ isRemoteUplinkMuted2) & v33 & (status == status2) & v30;
+  if (disconnectedReason != disconnectedReason2)
   {
     v26 = 0;
   }
@@ -504,11 +504,11 @@ LABEL_36:
   v10 = [v9 queryItemWithName:@"dR" value:v30];
   v44[4] = v10;
   v11 = MEMORY[0x277CCAD18];
-  v12 = [(TCSCall *)self contactIdentifier];
-  v13 = v12;
-  if (v12)
+  contactIdentifier = [(TCSCall *)self contactIdentifier];
+  v13 = contactIdentifier;
+  if (contactIdentifier)
   {
-    v14 = v12;
+    v14 = contactIdentifier;
   }
 
   else
@@ -519,11 +519,11 @@ LABEL_36:
   v15 = [v11 queryItemWithName:@"cID" value:v14];
   v44[5] = v15;
   v16 = MEMORY[0x277CCAD18];
-  v17 = [(TCSCall *)self handleValue];
-  v18 = v17;
-  if (v17)
+  handleValue = [(TCSCall *)self handleValue];
+  v18 = handleValue;
+  if (handleValue)
   {
-    v19 = v17;
+    v19 = handleValue;
   }
 
   else
@@ -534,11 +534,11 @@ LABEL_36:
   v20 = [v16 queryItemWithName:@"hdl" value:v19];
   v44[6] = v20;
   v21 = MEMORY[0x277CCAD18];
-  v22 = [(TCSCall *)self uniqueProxyIdentifier];
-  v23 = v22;
-  if (v22)
+  uniqueProxyIdentifier = [(TCSCall *)self uniqueProxyIdentifier];
+  v23 = uniqueProxyIdentifier;
+  if (uniqueProxyIdentifier)
   {
-    v24 = v22;
+    v24 = uniqueProxyIdentifier;
   }
 
   else
@@ -568,8 +568,8 @@ LABEL_36:
 
   else
   {
-    v5 = [(TCSCall *)self handleValue];
-    [v3 appendFormat:@" hdl=%@", v5];
+    handleValue = [(TCSCall *)self handleValue];
+    [v3 appendFormat:@" hdl=%@", handleValue];
 
     [(TCSCall *)self status];
     v6 = TUStringForCallStatus();
@@ -582,23 +582,23 @@ LABEL_36:
       [v3 appendFormat:@":'%@'", v7];
     }
 
-    v8 = [(TCSCall *)self uniqueProxyIdentifier];
-    [v3 appendFormat:@" uPI=%@", v8];
+    uniqueProxyIdentifier = [(TCSCall *)self uniqueProxyIdentifier];
+    [v3 appendFormat:@" uPI=%@", uniqueProxyIdentifier];
 
     [(TCSCall *)self isConnected];
     v9 = NSStringFromBOOL();
     [v3 appendFormat:@" conn=%@", v9];
 
-    v10 = [(TCSCall *)self isOutgoing];
+    isOutgoing = [(TCSCall *)self isOutgoing];
     v11 = @"in";
-    if (v10)
+    if (isOutgoing)
     {
       v11 = @"out";
     }
 
     [v3 appendFormat:@" dir=%@", v11];
-    v12 = [(TCSCall *)self contactIdentifier];
-    [v3 appendFormat:@" cID=%@", v12];
+    contactIdentifier = [(TCSCall *)self contactIdentifier];
+    [v3 appendFormat:@" cID=%@", contactIdentifier];
 
     [v3 appendFormat:@" rUM=%d", -[TCSCall isRemoteUplinkMuted](self, "isRemoteUplinkMuted")];
     v4 = @">";
@@ -610,10 +610,10 @@ LABEL_36:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -621,7 +621,7 @@ LABEL_36:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TCSCall *)self isEqualToCall:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TCSCall *)self isEqualToCall:equalCopy];
   }
 
   return v5;
@@ -629,73 +629,73 @@ LABEL_36:
 
 - (unint64_t)hash
 {
-  v3 = [(TCSCall *)self isConnected];
-  v4 = v3 ^ [(TCSCall *)self isOutgoing];
+  isConnected = [(TCSCall *)self isConnected];
+  v4 = isConnected ^ [(TCSCall *)self isOutgoing];
   v5 = v4 ^ [(TCSCall *)self isRemoteUplinkMuted];
-  v6 = [(TCSCall *)self contactIdentifier];
-  v7 = [v6 hash];
-  v8 = [(TCSCall *)self handleValue];
-  v9 = v7 ^ [v8 hash];
+  contactIdentifier = [(TCSCall *)self contactIdentifier];
+  v7 = [contactIdentifier hash];
+  handleValue = [(TCSCall *)self handleValue];
+  v9 = v7 ^ [handleValue hash];
   v10 = v9 ^ [(TCSCall *)self status];
-  v11 = [(TCSCall *)self uniqueProxyIdentifier];
-  v12 = v10 ^ [v11 hash] ^ v5;
-  v13 = [(TCSCall *)self disconnectedReason];
-  v14 = [(TCSCall *)self dateAnsweredOrDialed];
-  v15 = v13 ^ [v14 hash];
-  v16 = [(TCSCall *)self dateConnected];
-  v17 = v15 ^ [v16 hash];
+  uniqueProxyIdentifier = [(TCSCall *)self uniqueProxyIdentifier];
+  v12 = v10 ^ [uniqueProxyIdentifier hash] ^ v5;
+  disconnectedReason = [(TCSCall *)self disconnectedReason];
+  dateAnsweredOrDialed = [(TCSCall *)self dateAnsweredOrDialed];
+  v15 = disconnectedReason ^ [dateAnsweredOrDialed hash];
+  dateConnected = [(TCSCall *)self dateConnected];
+  v17 = v15 ^ [dateConnected hash];
 
   return v12 ^ v17;
 }
 
-- (TCSCall)initWithCoder:(id)a3
+- (TCSCall)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TCSCall *)self init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_isConnected);
-    v5->_isConnected = [v4 decodeBoolForKey:v6];
+    v5->_isConnected = [coderCopy decodeBoolForKey:v6];
 
     v7 = NSStringFromSelector(sel_isOutgoing);
-    v5->_isOutgoing = [v4 decodeBoolForKey:v7];
+    v5->_isOutgoing = [coderCopy decodeBoolForKey:v7];
 
     v8 = NSStringFromSelector(sel_isRemoteUplinkMuted);
-    v5->_isRemoteUplinkMuted = [v4 decodeBoolForKey:v8];
+    v5->_isRemoteUplinkMuted = [coderCopy decodeBoolForKey:v8];
 
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_contactIdentifier);
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v11;
 
     v13 = objc_opt_class();
     v14 = NSStringFromSelector(sel_handleValue);
-    v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
     handleValue = v5->_handleValue;
     v5->_handleValue = v15;
 
     v17 = NSStringFromSelector(sel_status);
-    v5->_status = [v4 decodeIntForKey:v17];
+    v5->_status = [coderCopy decodeIntForKey:v17];
 
     v18 = objc_opt_class();
     v19 = NSStringFromSelector(sel_uniqueProxyIdentifier);
-    v20 = [v4 decodeObjectOfClass:v18 forKey:v19];
+    v20 = [coderCopy decodeObjectOfClass:v18 forKey:v19];
     uniqueProxyIdentifier = v5->_uniqueProxyIdentifier;
     v5->_uniqueProxyIdentifier = v20;
 
     v22 = NSStringFromSelector(sel_disconnectedReason);
-    v5->_disconnectedReason = [v4 decodeIntForKey:v22];
+    v5->_disconnectedReason = [coderCopy decodeIntForKey:v22];
 
     v23 = objc_opt_class();
     v24 = NSStringFromSelector(sel_dateAnsweredOrDialed);
-    v25 = [v4 decodeObjectOfClass:v23 forKey:v24];
+    v25 = [coderCopy decodeObjectOfClass:v23 forKey:v24];
     dateAnsweredOrDialed = v5->_dateAnsweredOrDialed;
     v5->_dateAnsweredOrDialed = v25;
 
     v27 = objc_opt_class();
     v28 = NSStringFromSelector(sel_dateConnected);
-    v29 = [v4 decodeObjectOfClass:v27 forKey:v28];
+    v29 = [coderCopy decodeObjectOfClass:v27 forKey:v28];
     dateConnected = v5->_dateConnected;
     v5->_dateConnected = v29;
   }
@@ -703,48 +703,48 @@ LABEL_36:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isConnected = self->_isConnected;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_isConnected);
-  [v5 encodeBool:isConnected forKey:v6];
+  [coderCopy encodeBool:isConnected forKey:v6];
 
   isOutgoing = self->_isOutgoing;
   v8 = NSStringFromSelector(sel_isOutgoing);
-  [v5 encodeBool:isOutgoing forKey:v8];
+  [coderCopy encodeBool:isOutgoing forKey:v8];
 
   isRemoteUplinkMuted = self->_isRemoteUplinkMuted;
   v10 = NSStringFromSelector(sel_isRemoteUplinkMuted);
-  [v5 encodeBool:isRemoteUplinkMuted forKey:v10];
+  [coderCopy encodeBool:isRemoteUplinkMuted forKey:v10];
 
   contactIdentifier = self->_contactIdentifier;
   v12 = NSStringFromSelector(sel_contactIdentifier);
-  [v5 encodeObject:contactIdentifier forKey:v12];
+  [coderCopy encodeObject:contactIdentifier forKey:v12];
 
   handleValue = self->_handleValue;
   v14 = NSStringFromSelector(sel_handleValue);
-  [v5 encodeObject:handleValue forKey:v14];
+  [coderCopy encodeObject:handleValue forKey:v14];
 
   status = self->_status;
   v16 = NSStringFromSelector(sel_status);
-  [v5 encodeInt:status forKey:v16];
+  [coderCopy encodeInt:status forKey:v16];
 
   uniqueProxyIdentifier = self->_uniqueProxyIdentifier;
   v18 = NSStringFromSelector(sel_uniqueProxyIdentifier);
-  [v5 encodeObject:uniqueProxyIdentifier forKey:v18];
+  [coderCopy encodeObject:uniqueProxyIdentifier forKey:v18];
 
   disconnectedReason = self->_disconnectedReason;
   v20 = NSStringFromSelector(sel_disconnectedReason);
-  [v5 encodeInt:disconnectedReason forKey:v20];
+  [coderCopy encodeInt:disconnectedReason forKey:v20];
 
   dateAnsweredOrDialed = self->_dateAnsweredOrDialed;
   v22 = NSStringFromSelector(sel_dateAnsweredOrDialed);
-  [v5 encodeObject:dateAnsweredOrDialed forKey:v22];
+  [coderCopy encodeObject:dateAnsweredOrDialed forKey:v22];
 
   dateConnected = self->_dateConnected;
   v24 = NSStringFromSelector(sel_dateConnected);
-  [v5 encodeObject:dateConnected forKey:v24];
+  [coderCopy encodeObject:dateConnected forKey:v24];
 }
 
 - (void)initWithURL:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

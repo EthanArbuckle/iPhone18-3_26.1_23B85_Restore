@@ -1,11 +1,11 @@
 @interface IPAAdjustment
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAdjustment:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAdjustment:(id)adjustment;
 - (IPAAdjustment)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)setIdentifier:(id)a3;
-- (void)setSettings:(id)a3;
+- (void)setIdentifier:(id)identifier;
+- (void)setSettings:(id)settings;
 @end
 
 @implementation IPAAdjustment
@@ -13,14 +13,14 @@
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(IPAAdjustment *)self identifier];
-  v5 = [(IPAAdjustment *)self version];
-  v6 = [v3 stringWithFormat:@"<%@:%p:v%@ ", v4, self, v5];
+  identifier = [(IPAAdjustment *)self identifier];
+  version = [(IPAAdjustment *)self version];
+  v6 = [v3 stringWithFormat:@"<%@:%p:v%@ ", identifier, self, version];
 
-  v7 = [(IPAAdjustment *)self settings];
-  if (v7)
+  settings = [(IPAAdjustment *)self settings];
+  if (settings)
   {
-    [v6 appendFormat:@"settings=<%@:%p count:%lu>", objc_opt_class(), v7, objc_msgSend(v7, "count")];
+    [v6 appendFormat:@"settings=<%@:%p count:%lu>", objc_opt_class(), settings, objc_msgSend(settings, "count")];
   }
 
   else
@@ -28,11 +28,11 @@
     [v6 appendString:@"settings=nil"];
   }
 
-  v8 = [(IPAAdjustment *)self _debugDescriptionSuffix];
-  if (v8)
+  _debugDescriptionSuffix = [(IPAAdjustment *)self _debugDescriptionSuffix];
+  if (_debugDescriptionSuffix)
   {
     [v6 appendString:@" "];
-    [v6 appendString:v8];
+    [v6 appendString:_debugDescriptionSuffix];
   }
 
   [v6 appendString:@">"];
@@ -40,19 +40,19 @@
   return v6;
 }
 
-- (BOOL)isEqualToAdjustment:(id)a3
+- (BOOL)isEqualToAdjustment:(id)adjustment
 {
-  v4 = a3;
+  adjustmentCopy = adjustment;
   identifier = self->_identifier;
-  v6 = [v4 identifier];
-  LODWORD(identifier) = [(NSString *)identifier isEqualToString:v6];
+  identifier = [adjustmentCopy identifier];
+  LODWORD(identifier) = [(NSString *)identifier isEqualToString:identifier];
 
-  if (identifier && (version = self->_version, [v4 version], v8 = objc_claimAutoreleasedReturnValue(), LODWORD(version) = -[IPAAdjustmentVersion isEqualToAdjustmentVersion:](version, "isEqualToAdjustmentVersion:", v8), v8, version))
+  if (identifier && (version = self->_version, [adjustmentCopy version], v8 = objc_claimAutoreleasedReturnValue(), LODWORD(version) = -[IPAAdjustmentVersion isEqualToAdjustmentVersion:](version, "isEqualToAdjustmentVersion:", v8), v8, version))
   {
     v9 = self->_settings;
-    v10 = [v4 settings];
+    settings = [adjustmentCopy settings];
     v11 = [(NSDictionary *)v9 count];
-    v12 = v11 == [v10 count] && -[NSDictionary isEqualToDictionary:](v9, "isEqualToDictionary:", v10);
+    v12 = v11 == [settings count] && -[NSDictionary isEqualToDictionary:](v9, "isEqualToDictionary:", settings);
   }
 
   else
@@ -63,22 +63,22 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAAdjustment *)self isEqualToAdjustment:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAAdjustment *)self isEqualToAdjustment:equalCopy];
 
   return v5;
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
-  v4 = a3;
-  if (v4)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
-    v10 = v4;
-    v5 = [v4 copy];
+    v10 = settingsCopy;
+    v5 = [settingsCopy copy];
     settings = self->_settings;
     self->_settings = v5;
   }
@@ -90,17 +90,17 @@
   }
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     _PFAssertFailHandler();
     goto LABEL_7;
   }
 
-  v10 = v4;
-  if (![v4 length])
+  v10 = identifierCopy;
+  if (![identifierCopy length])
   {
 LABEL_7:
     v7 = _PFAssertFailHandler();
@@ -113,9 +113,9 @@ LABEL_7:
   self->_identifier = v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 1, self->_identifier);
   objc_storeStrong(v4 + 2, self->_version);
   objc_storeStrong(v4 + 3, self->_settings);

@@ -1,14 +1,14 @@
 @interface CUTReporting
-+ (id)RTCSessionPromiseWithBatchingInterval:(double)a3;
++ (id)RTCSessionPromiseWithBatchingInterval:(double)interval;
 + (id)_rtcReportingSession;
 + (id)reportingSession;
-+ (void)startRTCReportingSessionWithCompletion:(id)a3;
++ (void)startRTCReportingSessionWithCompletion:(id)completion;
 - (CUTReporting)init;
-- (id)_RTCSessionPromiseWithBatchingInterval:(double)a3;
-- (void)_beginPromiseTimeoutWithInterval:(int64_t)a3;
-- (void)_failSeal:(id)a3 withError:(id)a4;
-- (void)_fullfillSeal:(id)a3 withSession:(id)a4;
-- (void)_startConfigurationOfSession:(id)a3 withPromiseSeal:(id)a4;
+- (id)_RTCSessionPromiseWithBatchingInterval:(double)interval;
+- (void)_beginPromiseTimeoutWithInterval:(int64_t)interval;
+- (void)_failSeal:(id)seal withError:(id)error;
+- (void)_fullfillSeal:(id)seal withSession:(id)session;
+- (void)_startConfigurationOfSession:(id)session withPromiseSeal:(id)seal;
 @end
 
 @implementation CUTReporting
@@ -147,9 +147,9 @@
   return v3;
 }
 
-+ (void)startRTCReportingSessionWithCompletion:(id)a3
++ (void)startRTCReportingSessionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if (CUTIsInternalInstall())
   {
     v4 = sub_1B2323460();
@@ -157,32 +157,32 @@
     block[1] = 3221225472;
     block[2] = sub_1B2329474;
     block[3] = &unk_1E7B20D98;
-    v6 = v3;
+    v6 = completionCopy;
     dispatch_async(v4, block);
   }
 
   else
   {
-    (*(v3 + 2))(v3, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-+ (id)RTCSessionPromiseWithBatchingInterval:(double)a3
++ (id)RTCSessionPromiseWithBatchingInterval:(double)interval
 {
   v4 = +[CUTReporting reportingSession];
-  v5 = [v4 _RTCSessionPromiseWithBatchingInterval:a3];
+  v5 = [v4 _RTCSessionPromiseWithBatchingInterval:interval];
 
   return v5;
 }
 
-- (id)_RTCSessionPromiseWithBatchingInterval:(double)a3
+- (id)_RTCSessionPromiseWithBatchingInterval:(double)interval
 {
   v18[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_promiseLock);
   promise = self->_promise;
   if (promise)
   {
-    v6 = promise;
+    promise = promise;
     os_unfair_lock_unlock(&self->_promiseLock);
   }
 
@@ -192,12 +192,12 @@
     v8 = sub_1B2323460();
     v9 = [(CUTPromiseSeal *)v7 initWithQueue:v8];
 
-    v6 = [(CUTPromiseSeal *)v9 promise];
-    objc_storeStrong(&self->_promise, v6);
+    promise = [(CUTPromiseSeal *)v9 promise];
+    objc_storeStrong(&self->_promise, promise);
     os_unfair_lock_unlock(&self->_promiseLock);
     if (v9)
     {
-      [(CUTReporting *)self _beginPromiseTimeoutWithInterval:a3];
+      [(CUTReporting *)self _beginPromiseTimeoutWithInterval:interval];
       if (CUTIsInternalInstall())
       {
         v10 = +[CUTReporting _rtcReportingSession];
@@ -227,12 +227,12 @@
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return promise;
 }
 
-- (void)_beginPromiseTimeoutWithInterval:(int64_t)a3
+- (void)_beginPromiseTimeoutWithInterval:(int64_t)interval
 {
-  v4 = dispatch_time(0, 1000000000 * a3);
+  v4 = dispatch_time(0, 1000000000 * interval);
   v5 = sub_1B2323460();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -242,51 +242,51 @@
   dispatch_after(v4, v5, block);
 }
 
-- (void)_startConfigurationOfSession:(id)a3 withPromiseSeal:(id)a4
+- (void)_startConfigurationOfSession:(id)session withPromiseSeal:(id)seal
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  sealCopy = seal;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1B23299A0;
   v10[3] = &unk_1E7B20ED8;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = sealCopy;
+  v12 = sessionCopy;
+  v8 = sessionCopy;
+  v9 = sealCopy;
   [v8 startConfigurationWithCompletionHandler:v10];
 }
 
-- (void)_fullfillSeal:(id)a3 withSession:(id)a4
+- (void)_fullfillSeal:(id)seal withSession:(id)session
 {
-  v5 = a3;
-  v6 = a4;
+  sealCopy = seal;
+  sessionCopy = session;
   v7 = sub_1B2323460();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1B2329B0C;
   v10[3] = &unk_1E7B20D70;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = sealCopy;
+  v12 = sessionCopy;
+  v8 = sessionCopy;
+  v9 = sealCopy;
   dispatch_async(v7, v10);
 }
 
-- (void)_failSeal:(id)a3 withError:(id)a4
+- (void)_failSeal:(id)seal withError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  sealCopy = seal;
+  errorCopy = error;
   v7 = sub_1B2323460();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1B2329BE4;
   v10[3] = &unk_1E7B20D70;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = sealCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = sealCopy;
   dispatch_async(v7, v10);
 }
 

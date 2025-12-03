@@ -1,32 +1,32 @@
 @interface LACDTOLostModeProviderAKAdapter
-- (LACDTOLostModeProviderAKAdapter)initWithWorkQueue:(id)a3 deviceInfo:(id)a4;
-- (void)_lostModeStateWithCompletion:(id)a3;
-- (void)lostModeStateWithCompletion:(id)a3;
+- (LACDTOLostModeProviderAKAdapter)initWithWorkQueue:(id)queue deviceInfo:(id)info;
+- (void)_lostModeStateWithCompletion:(id)completion;
+- (void)lostModeStateWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOLostModeProviderAKAdapter
 
-- (LACDTOLostModeProviderAKAdapter)initWithWorkQueue:(id)a3 deviceInfo:(id)a4
+- (LACDTOLostModeProviderAKAdapter)initWithWorkQueue:(id)queue deviceInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = LACDTOLostModeProviderAKAdapter;
   v9 = [(LACDTOLostModeProviderAKAdapter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_workQueue, a3);
-    objc_storeStrong(&v10->_deviceInfo, a4);
+    objc_storeStrong(&v9->_workQueue, queue);
+    objc_storeStrong(&v10->_deviceInfo, info);
   }
 
   return v10;
 }
 
-- (void)lostModeStateWithCompletion:(id)a3
+- (void)lostModeStateWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   lostModeState = self->_lostModeState;
   if (lostModeState)
   {
@@ -40,13 +40,13 @@
       {
         v9 = self->_lostModeState;
         *buf = 138543618;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 2112;
         v19 = v9;
         _os_log_impl(&dword_1B0233000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ will use cached value %@", buf, 0x16u);
       }
 
-      v4[2](v4, self->_lostModeState);
+      completionCopy[2](completionCopy, self->_lostModeState);
       goto LABEL_11;
     }
 
@@ -64,7 +64,7 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B0233000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ will start query", buf, 0xCu);
   }
 
@@ -74,7 +74,7 @@
   v13[2] = __63__LACDTOLostModeProviderAKAdapter_lostModeStateWithCompletion___block_invoke;
   v13[3] = &unk_1E7A96880;
   objc_copyWeak(&v15, buf);
-  v14 = v4;
+  v14 = completionCopy;
   [(LACDTOLostModeProviderAKAdapter *)self _lostModeStateWithCompletion:v13];
 
   objc_destroyWeak(&v15);
@@ -145,20 +145,20 @@ void __63__LACDTOLostModeProviderAKAdapter_lostModeStateWithCompletion___block_i
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lostModeStateWithCompletion:(id)a3
+- (void)_lostModeStateWithCompletion:(id)completion
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (getAKDeviceListRequestContextClass() && getAKAccountManagerClass() && getAKAppleIDAuthenticationControllerClass())
   {
-    v5 = [(LACDTODeviceInfoProvider *)self->_deviceInfo serialNumber];
-    v6 = v5;
-    if (v5 && [v5 length])
+    serialNumber = [(LACDTODeviceInfoProvider *)self->_deviceInfo serialNumber];
+    v6 = serialNumber;
+    if (serialNumber && [serialNumber length])
     {
-      v7 = [getAKAccountManagerClass() sharedInstance];
-      v8 = [getAKAccountManagerClass() sharedInstance];
-      v9 = [v8 primaryAuthKitAccount];
-      v10 = [v7 altDSIDForAccount:v9];
+      sharedInstance = [getAKAccountManagerClass() sharedInstance];
+      sharedInstance2 = [getAKAccountManagerClass() sharedInstance];
+      primaryAuthKitAccount = [sharedInstance2 primaryAuthKitAccount];
+      v10 = [sharedInstance altDSIDForAccount:primaryAuthKitAccount];
 
       if (v10 && [v10 length])
       {
@@ -174,7 +174,7 @@ void __63__LACDTOLostModeProviderAKAdapter_lostModeStateWithCompletion___block_i
         v16[1] = 3221225472;
         v16[2] = __64__LACDTOLostModeProviderAKAdapter__lostModeStateWithCompletion___block_invoke;
         v16[3] = &unk_1E7A968D0;
-        v19 = v4;
+        v19 = completionCopy;
         v17 = v6;
         v18 = v13;
         v14 = v13;
@@ -184,21 +184,21 @@ void __63__LACDTOLostModeProviderAKAdapter_lostModeStateWithCompletion___block_i
       else
       {
         v11 = [LACError errorWithCode:-1000 debugDescription:@"Could not determine altDISD for account"];
-        (*(v4 + 2))(v4, 0, v11);
+        (*(completionCopy + 2))(completionCopy, 0, v11);
       }
     }
 
     else
     {
       v10 = [LACError errorWithCode:-1000 debugDescription:@"Could not determine device SN"];
-      (*(v4 + 2))(v4, 0, v10);
+      (*(completionCopy + 2))(completionCopy, 0, v10);
     }
   }
 
   else
   {
     v6 = [LACError errorWithCode:-1020 debugDescription:@"Missing AuthKit dependencies"];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 
   v15 = *MEMORY[0x1E69E9840];

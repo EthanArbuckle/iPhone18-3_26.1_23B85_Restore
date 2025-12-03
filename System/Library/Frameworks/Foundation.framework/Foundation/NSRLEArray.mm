@@ -1,11 +1,11 @@
 @interface NSRLEArray
-- (NSRLEArray)initWithRefCountedRunArray:(_NSRefCountedRunArray *)a3;
+- (NSRLEArray)initWithRefCountedRunArray:(_NSRefCountedRunArray *)array;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)objectAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4 runIndex:(unint64_t *)a5;
-- (id)objectAtRunIndex:(unint64_t)a3 length:(unint64_t *)a4;
-- (void)_makeNewListFrom:(_NSRefCountedRunArray *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)objectAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range runIndex:(unint64_t *)runIndex;
+- (id)objectAtRunIndex:(unint64_t)index length:(unint64_t *)length;
+- (void)_makeNewListFrom:(_NSRefCountedRunArray *)from;
 - (void)dealloc;
 @end
 
@@ -52,17 +52,17 @@
   [(NSRLEArray *)&v10 dealloc];
 }
 
-- (NSRLEArray)initWithRefCountedRunArray:(_NSRefCountedRunArray *)a3
+- (NSRLEArray)initWithRefCountedRunArray:(_NSRefCountedRunArray *)array
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = NSRLEArray;
   v4 = [(NSRLEArray *)&v8 init];
   v5 = v4;
-  if (a3)
+  if (array)
   {
-    v4->theList = a3;
-    os_unfair_lock_lock(&a3->var0);
+    v4->theList = array;
+    os_unfair_lock_lock(&array->var0);
     p_var0 = &v5->theList->var0;
     ++p_var0[6]._os_unfair_lock_opaque;
     os_unfair_lock_unlock(p_var0);
@@ -76,19 +76,19 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [NSMutableRLEArray allocWithZone:a3];
+  v4 = [NSMutableRLEArray allocWithZone:zone];
   theList = self->theList;
 
   return [(NSRLEArray *)v4 initWithRefCountedRunArray:theList];
 }
 
-- (void)_makeNewListFrom:(_NSRefCountedRunArray *)a3
+- (void)_makeNewListFrom:(_NSRefCountedRunArray *)from
 {
-  if (a3)
+  if (from)
   {
-    var4 = a3->var4;
+    var4 = from->var4;
   }
 
   else
@@ -100,22 +100,22 @@
   self->theList = theList;
   theList->var0._os_unfair_lock_opaque = 0;
   theList->var5 = var4;
-  if (a3)
+  if (from)
   {
-    LODWORD(v7) = a3->var4;
+    LODWORD(v7) = from->var4;
     if (v7)
     {
       v8 = 0;
       v9 = 0;
       do
       {
-        var1 = a3->var7[v8].var1;
-        theList->var7[v8].var0 = a3->var7[v8].var0;
+        var1 = from->var7[v8].var1;
+        theList->var7[v8].var0 = from->var7[v8].var0;
         v11 = var1;
         theList = self->theList;
         theList->var7[v8].var1 = v11;
         ++v9;
-        v7 = a3->var4;
+        v7 = from->var4;
         ++v8;
       }
 
@@ -125,12 +125,12 @@
     theList->var4 = v7;
     os_unfair_lock_lock(&__NSRLEArrayLock);
     v12 = self->theList;
-    v12->var6 = a3->var6;
-    v12->var2 = a3->var2;
+    v12->var6 = from->var6;
+    v12->var2 = from->var2;
     os_unfair_lock_unlock(&__NSRLEArrayLock);
     theList = self->theList;
-    theList->var1 = a3->var1;
-    --a3->var3;
+    theList->var1 = from->var1;
+    --from->var3;
   }
 
   else
@@ -144,10 +144,10 @@
   theList->var3 = 1;
 }
 
-- (id)objectAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)objectAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   theList = self->theList;
-  if (theList->var1 <= a3)
+  if (theList->var1 <= index)
   {
     v7 = objc_opt_class();
     v8 = _NSNameOfClass(v7);
@@ -155,13 +155,13 @@
     objc_exception_throw(v9);
   }
 
-  return theList->var7[blockForLocation(self->theList, a3, &a4->location)].var1;
+  return theList->var7[blockForLocation(self->theList, index, &range->location)].var1;
 }
 
-- (id)objectAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4 runIndex:(unint64_t *)a5
+- (id)objectAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range runIndex:(unint64_t *)runIndex
 {
   theList = self->theList;
-  if (theList->var1 <= a3)
+  if (theList->var1 <= index)
   {
     v11 = objc_opt_class();
     v12 = _NSNameOfClass(v11);
@@ -169,27 +169,27 @@
     objc_exception_throw(v13);
   }
 
-  v8 = blockForLocation(theList, a3, &a4->location);
-  if (a5)
+  v8 = blockForLocation(theList, index, &range->location);
+  if (runIndex)
   {
-    *a5 = v8;
+    *runIndex = v8;
   }
 
   return self->theList->var7[v8].var1;
 }
 
-- (id)objectAtRunIndex:(unint64_t)a3 length:(unint64_t *)a4
+- (id)objectAtRunIndex:(unint64_t)index length:(unint64_t *)length
 {
   theList = self->theList;
-  if (theList->var4 <= a3)
+  if (theList->var4 <= index)
   {
     return 0;
   }
 
-  v5 = theList + 16 * a3;
-  if (a4)
+  v5 = theList + 16 * index;
+  if (length)
   {
-    *a4 = *(v5 + 5);
+    *length = *(v5 + 5);
   }
 
   return *(v5 + 6);

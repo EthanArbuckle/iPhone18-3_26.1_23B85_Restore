@@ -1,9 +1,9 @@
 @interface GeographicCoordinate
-+ (id)fromECEFCoordinate:(id)a3;
++ (id)fromECEFCoordinate:(id)coordinate;
 - (GeographicCoordinate)init;
-- (id)initFromECEFCoordinate:(id)a3;
-- (void)setFromECEFCoordinate:(id)a3;
-- (void)setFromLatitude:(double)a3 longitude:(double)a4 andAltitude:(double)a5;
+- (id)initFromECEFCoordinate:(id)coordinate;
+- (void)setFromECEFCoordinate:(id)coordinate;
+- (void)setFromLatitude:(double)latitude longitude:(double)longitude andAltitude:(double)altitude;
 @end
 
 @implementation GeographicCoordinate
@@ -16,43 +16,43 @@
   return objc_msgSend_initWithLatitude_longitude_andAltitude_(v2, v3, NAN, NAN, NAN);
 }
 
-- (void)setFromLatitude:(double)a3 longitude:(double)a4 andAltitude:(double)a5
+- (void)setFromLatitude:(double)latitude longitude:(double)longitude andAltitude:(double)altitude
 {
-  self->_latitude = a3;
-  self->_longitude = a4;
-  self->_altitude = a5;
+  self->_latitude = latitude;
+  self->_longitude = longitude;
+  self->_altitude = altitude;
 }
 
-+ (id)fromECEFCoordinate:(id)a3
++ (id)fromECEFCoordinate:(id)coordinate
 {
-  v3 = a3;
+  coordinateCopy = coordinate;
   v4 = objc_alloc_init(GeographicCoordinate);
-  objc_msgSend_setFromECEFCoordinate_(v4, v5, v6, v7, v8, v3);
+  objc_msgSend_setFromECEFCoordinate_(v4, v5, v6, v7, v8, coordinateCopy);
 
   return v4;
 }
 
-- (id)initFromECEFCoordinate:(id)a3
+- (id)initFromECEFCoordinate:(id)coordinate
 {
-  v7 = objc_msgSend_fromECEFCoordinate_(GeographicCoordinate, a2, v3, v4, v5, a3);
+  v7 = objc_msgSend_fromECEFCoordinate_(GeographicCoordinate, a2, v3, v4, v5, coordinate);
 
   return v7;
 }
 
-- (void)setFromECEFCoordinate:(id)a3
+- (void)setFromECEFCoordinate:(id)coordinate
 {
-  v51 = a3;
-  objc_msgSend_x(v51, v4, v5, v6, v7);
+  coordinateCopy = coordinate;
+  objc_msgSend_x(coordinateCopy, v4, v5, v6, v7);
   v9 = v8;
-  objc_msgSend_x(v51, v10, v8, v11, v12);
+  objc_msgSend_x(coordinateCopy, v10, v8, v11, v12);
   v14 = v13;
-  objc_msgSend_y(v51, v15, v13, v16, v17);
+  objc_msgSend_y(coordinateCopy, v15, v13, v16, v17);
   v19 = v18;
-  objc_msgSend_y(v51, v20, v18, v21, v22);
+  objc_msgSend_y(coordinateCopy, v20, v18, v21, v22);
   v24 = v23;
-  objc_msgSend_y(v51, v25, v23, v26, v27);
+  objc_msgSend_y(coordinateCopy, v25, v23, v26, v27);
   v29 = v28;
-  objc_msgSend_x(v51, v30, v28, v31, v32);
+  objc_msgSend_x(coordinateCopy, v30, v28, v31, v32);
   v33 = sqrt(v19 * v24 + v9 * v14);
   self->_longitude = atan2(v29, v34) / 0.0174532925;
   v37 = v33 * 0.99330562;
@@ -60,7 +60,7 @@
   v39 = 1.57079633;
   if (v33 * 0.99330562 == 0.0)
   {
-    v40 = v51;
+    v40 = coordinateCopy;
   }
 
   else
@@ -68,7 +68,7 @@
     v41 = 0;
     v42 = 0.0;
     v43 = 0.0;
-    objc_msgSend_z(v51, v35, 0.001, 0.0174532925, v36, 0x3FF921FB54442D18);
+    objc_msgSend_z(coordinateCopy, v35, 0.001, 0.0174532925, v36, 0x3FF921FB54442D18);
     while (1)
     {
       v39 = atan2(v44, v37);
@@ -77,7 +77,7 @@
       v38 = v33 / v47.__cosval - v48;
       if (vabdd_f64(v43, v39) >= 0.000001)
       {
-        v40 = v51;
+        v40 = coordinateCopy;
         if (v41 > 8)
         {
           goto LABEL_15;
@@ -87,7 +87,7 @@
       else
       {
         v49 = vabdd_f64(v42, v38) < 0.001 || v41 >= 9;
-        v40 = v51;
+        v40 = coordinateCopy;
         if (v49)
         {
           goto LABEL_15;

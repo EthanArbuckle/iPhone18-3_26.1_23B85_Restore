@@ -1,10 +1,10 @@
 @interface JavaUtilLoggingLevel
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)getLocalizedName;
 - (id)readResolve;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
 @end
 
 @implementation JavaUtilLoggingLevel
@@ -37,13 +37,13 @@ LABEL_16:
           objc_enumerationMutation(v4);
         }
 
-        v8 = *(*(&v11 + 1) + 8 * i);
-        if (!v8)
+        selfCopy = *(*(&v11 + 1) + 8 * i);
+        if (!selfCopy)
         {
           goto LABEL_16;
         }
 
-        if (self->value_ == v8->value_)
+        if (self->value_ == selfCopy->value_)
         {
           name = self->name_;
           if (!name)
@@ -51,7 +51,7 @@ LABEL_16:
             goto LABEL_16;
           }
 
-          if ([(NSString *)name isEqual:v8->name_, v11]&& (LibcoreUtilObjects_equalWithId_withId_(self->resourceBundleName_, v8->resourceBundleName_) & 1) != 0)
+          if ([(NSString *)name isEqual:selfCopy->name_, v11]&& (LibcoreUtilObjects_equalWithId_withId_(self->resourceBundleName_, selfCopy->resourceBundleName_) & 1) != 0)
           {
             goto LABEL_15;
           }
@@ -65,20 +65,20 @@ LABEL_16:
   }
 
   [qword_100554F98 addWithId:{self, v11}];
-  v8 = self;
+  selfCopy = self;
 LABEL_15:
   objc_sync_exit(v3);
-  return v8;
+  return selfCopy;
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
+  [stream defaultReadObject];
   resourceBundleName = self->resourceBundleName_;
   if (resourceBundleName)
   {
@@ -99,9 +99,9 @@ LABEL_15:
   return name;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -113,7 +113,7 @@ LABEL_15:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -123,7 +123,7 @@ LABEL_15:
     JreThrowClassCastException();
   }
 
-  return *(a3 + 4) == self->value_;
+  return *(equal + 4) == self->value_;
 }
 
 - (void)dealloc
@@ -135,7 +135,7 @@ LABEL_15:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilArrayList_initWithInt_(9);
     JreStrongAssignAndConsume(&qword_100554F98, v2);

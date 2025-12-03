@@ -1,19 +1,19 @@
 @interface SBInCallTransientOverlayViewController
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3;
+- (BOOL)handleHeadsetButtonPress:(BOOL)press;
 - (BOOL)handleHomeButtonPress;
 - (BOOL)handleVolumeDownButtonPress;
 - (BOOL)handleVolumeUpButtonPress;
-- (BOOL)isPresentedFromSceneWithIdentityTokenString:(id)a3;
+- (BOOL)isPresentedFromSceneWithIdentityTokenString:(id)string;
 - (BOOL)prefersHomeIndicatorAutoHidden;
 - (BOOL)prefersStatusBarHidden;
 - (BOOL)shouldDisableBanners;
 - (BOOL)supportsAlwaysOnDisplay;
-- (SBInCallTransientOverlayViewController)initWithSceneHandle:(id)a3 shouldPreferContinuityDisplay:(BOOL)a4;
+- (SBInCallTransientOverlayViewController)initWithSceneHandle:(id)handle shouldPreferContinuityDisplay:(BOOL)display;
 - (SBInCallTransientOverlayViewControllerDelegate)delegate;
 - (id)_inCallSceneClientSettingsDiffInspector;
 - (id)associatedBundleIdentifiersToSuppressInSystemAperture;
 - (id)associatedSceneIdentifiersToSuppressInSystemAperture;
-- (id)coordinatorRequestedIdleTimerBehavior:(id)a3;
+- (id)coordinatorRequestedIdleTimerBehavior:(id)behavior;
 - (id)hostedSceneIdentityTokens;
 - (id)keyboardFocusTarget;
 - (id)newTransientOverlayDismissalTransitionCoordinator;
@@ -31,35 +31,35 @@
 - (void)dealloc;
 - (void)handleGestureDismissal;
 - (void)invalidate;
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)setContainerOrientation:(int64_t)a3;
-- (void)setIdleTimerCoordinator:(id)a3;
-- (void)setShouldIgnoreHomeIndicatorAutoHiddenClientSettings:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings;
+- (void)setContainerOrientation:(int64_t)orientation;
+- (void)setIdleTimerCoordinator:(id)coordinator;
+- (void)setShouldIgnoreHomeIndicatorAutoHiddenClientSettings:(BOOL)settings;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBInCallTransientOverlayViewController
 
-- (SBInCallTransientOverlayViewController)initWithSceneHandle:(id)a3 shouldPreferContinuityDisplay:(BOOL)a4
+- (SBInCallTransientOverlayViewController)initWithSceneHandle:(id)handle shouldPreferContinuityDisplay:(BOOL)display
 {
-  v7 = a3;
+  handleCopy = handle;
   v17.receiver = self;
   v17.super_class = SBInCallTransientOverlayViewController;
   v8 = [(SBTransientOverlayViewController *)&v17 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sceneHandle, a3);
-    v9->_preferContinuityDisplay = a4;
+    objc_storeStrong(&v8->_sceneHandle, handle);
+    v9->_preferContinuityDisplay = display;
     [(SBDeviceApplicationSceneHandle *)v9->_sceneHandle addObserver:v9];
-    v10 = [(SBDeviceApplicationSceneHandle *)v9->_sceneHandle statusBarStateProvider];
-    [v10 addStatusBarObserver:v9];
+    statusBarStateProvider = [(SBDeviceApplicationSceneHandle *)v9->_sceneHandle statusBarStateProvider];
+    [statusBarStateProvider addStatusBarObserver:v9];
 
     v11 = +[SBInCallDomain rootSettings];
     settings = v9->_settings;
@@ -69,8 +69,8 @@
     idleTimerCoordinatorHelper = v9->_idleTimerCoordinatorHelper;
     v9->_idleTimerCoordinatorHelper = v13;
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v9 selector:sel_setNeedsGestureDismissalStyleUpdate name:*MEMORY[0x277D6F018] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel_setNeedsGestureDismissalStyleUpdate name:*MEMORY[0x277D6F018] object:0];
   }
 
   return v9;
@@ -83,8 +83,8 @@
     [(SBInCallTransientOverlayViewController *)self bs_removeChildViewController:self->_sceneViewController];
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D6F018] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D6F018] object:0];
 
   v4.receiver = self;
   v4.super_class = SBInCallTransientOverlayViewController;
@@ -94,12 +94,12 @@
 - (id)hostedSceneIdentityTokens
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v3 = v2;
-  if (v2)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  v3 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v4 = [v2 identityToken];
-    v7[0] = v4;
+    identityToken = [sceneIfExists identityToken];
+    v7[0] = identityToken;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   }
 
@@ -113,32 +113,32 @@
 
 - (int)serviceProcessIdentifier
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v3 = [v2 clientProcess];
-  v4 = [v3 pid];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  clientProcess = [sceneIfExists clientProcess];
+  v4 = [clientProcess pid];
 
   return v4;
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
-  v3 = _SBStatusBarLegacyStyleFromStyle([v2 statusBarStyle]);
+  statusBarStateProvider = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
+  v3 = _SBStatusBarLegacyStyleFromStyle([statusBarStateProvider statusBarStyle]);
 
   return v3;
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
-  if ([v2 statusBarHidden])
+  statusBarStateProvider = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
+  if ([statusBarStateProvider statusBarHidden])
   {
     v3 = 1;
   }
 
   else
   {
-    [v2 statusBarAlpha];
+    [statusBarStateProvider statusBarAlpha];
     v3 = BSFloatLessThanOrEqualToFloat();
   }
 
@@ -148,26 +148,26 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v3 = objc_opt_class();
-  v4 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v5 = [v4 clientSettings];
-  v6 = SBSafeCast(v3, v5);
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  clientSettings = [sceneIfExists clientSettings];
+  v6 = SBSafeCast(v3, clientSettings);
 
   if (v6)
   {
-    v7 = [v6 supportedInterfaceOrientations];
-    if (!v7)
+    supportedInterfaceOrientations = [v6 supportedInterfaceOrientations];
+    if (!supportedInterfaceOrientations)
     {
-      v8 = [MEMORY[0x277D75418] currentDevice];
-      v9 = [v8 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
-        v7 = 30;
+        supportedInterfaceOrientations = 30;
       }
 
       else
       {
-        v7 = 1 << [v6 interfaceOrientation];
+        supportedInterfaceOrientations = 1 << [v6 interfaceOrientation];
       }
     }
   }
@@ -176,10 +176,10 @@
   {
     v11.receiver = self;
     v11.super_class = SBInCallTransientOverlayViewController;
-    v7 = [(SBTransientOverlayViewController *)&v11 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [(SBTransientOverlayViewController *)&v11 supportedInterfaceOrientations];
   }
 
-  return v7;
+  return supportedInterfaceOrientations;
 }
 
 - (void)viewDidLayoutSubviews
@@ -187,20 +187,20 @@
   v16.receiver = self;
   v16.super_class = SBInCallTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v16 viewDidLayoutSubviews];
-  v3 = [(SBTransientOverlayViewController *)self contentView];
-  [v3 bounds];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
+  [view setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(SBTransientOverlayViewController *)self containerOrientation];
-  [(SBSceneViewController *)self->_sceneViewController setContentReferenceSize:v13 withContentOrientation:v13 andContainerOrientation:v9, v11];
-  v14 = [(SBTransientOverlayViewController *)self backgroundView];
+  containerOrientation = [(SBTransientOverlayViewController *)self containerOrientation];
+  [(SBSceneViewController *)self->_sceneViewController setContentReferenceSize:containerOrientation withContentOrientation:containerOrientation andContainerOrientation:v9, v11];
+  backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
   existingSceneBackgroundView = self->_existingSceneBackgroundView;
-  [v14 bounds];
+  [backgroundView bounds];
   [(SBApplicationSceneBackgroundView *)existingSceneBackgroundView setFrame:?];
 }
 
@@ -209,26 +209,26 @@
   v20.receiver = self;
   v20.super_class = SBInCallTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v20 viewDidLoad];
-  v3 = [(SBTransientOverlayViewController *)self contentView];
-  v4 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle newSceneViewController];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  newSceneViewController = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle newSceneViewController];
   sceneViewController = self->_sceneViewController;
-  self->_sceneViewController = v4;
+  self->_sceneViewController = newSceneViewController;
 
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController setRendersWhileLocked:1];
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController setHomeGrabberDisplayMode:1];
   [(SBInCallTransientOverlayViewController *)self addChildViewController:self->_sceneViewController];
-  [v3 bounds];
+  [contentView bounds];
   v7 = v6;
   v9 = v8;
-  v10 = [(SBTransientOverlayViewController *)self containerOrientation];
-  [(SBSceneViewController *)self->_sceneViewController setContentReferenceSize:v10 withContentOrientation:v10 andContainerOrientation:v7, v9];
-  v11 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
-  [v3 addSubview:v11];
+  containerOrientation = [(SBTransientOverlayViewController *)self containerOrientation];
+  [(SBSceneViewController *)self->_sceneViewController setContentReferenceSize:containerOrientation withContentOrientation:containerOrientation andContainerOrientation:v7, v9];
+  view = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
+  [contentView addSubview:view];
 
-  v12 = [(SBTransientOverlayViewController *)self backgroundView];
-  v13 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController backgroundView];
+  backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
+  backgroundView2 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController backgroundView];
   existingSceneBackgroundView = self->_existingSceneBackgroundView;
-  self->_existingSceneBackgroundView = v13;
+  self->_existingSceneBackgroundView = backgroundView2;
 
   v15 = [_SBInCallProxySceneBackgroundView alloc];
   [(SBApplicationSceneBackgroundView *)self->_existingSceneBackgroundView frame];
@@ -237,74 +237,74 @@
   self->_proxySceneBackgroundView = v16;
 
   v18 = self->_proxySceneBackgroundView;
-  v19 = [MEMORY[0x277D75348] clearColor];
-  [(_SBInCallProxySceneBackgroundView *)v18 setBackgroundColor:v19];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(_SBInCallProxySceneBackgroundView *)v18 setBackgroundColor:clearColor];
 
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController setBackgroundView:self->_proxySceneBackgroundView];
-  [v12 addSubview:self->_existingSceneBackgroundView];
+  [backgroundView addSubview:self->_existingSceneBackgroundView];
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController didMoveToParentViewController:self];
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController setDisplayMode:4 animationFactory:0 completion:0];
   [(SBInCallTransientOverlayViewController *)self _registerForAmbientPresentationTraitChange];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = SBInCallTransientOverlayViewController;
   [(SBInCallTransientOverlayViewController *)&v6 viewWillAppear:?];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained inCallTransientOverlayViewController:self willAppearAnimated:v3];
+  [WeakRetained inCallTransientOverlayViewController:self willAppearAnimated:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = SBInCallTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v8 viewDidAppear:?];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained inCallTransientOverlayViewController:self didAppearAnimated:v3];
+  [WeakRetained inCallTransientOverlayViewController:self didAppearAnimated:appearCopy];
 
-  v6 = [(SBInCallTransientOverlayViewController *)self view];
+  view = [(SBInCallTransientOverlayViewController *)self view];
   v7 = [MEMORY[0x277D75348] colorWithWhite:0.025 alpha:1.0];
-  [v6 setBackgroundColor:v7];
+  [view setBackgroundColor:v7];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = SBInCallTransientOverlayViewController;
   [(SBInCallTransientOverlayViewController *)&v6 viewWillDisappear:?];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained inCallTransientOverlayViewController:self willDisappearAnimated:v3];
+  [WeakRetained inCallTransientOverlayViewController:self willDisappearAnimated:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = SBInCallTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v6 viewDidDisappear:?];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained inCallTransientOverlayViewController:self didDisappearAnimated:v3];
+  [WeakRetained inCallTransientOverlayViewController:self didDisappearAnimated:disappearCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = SBInCallTransientOverlayViewController;
-  v7 = a4;
-  [(SBTransientOverlayViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SBTransientOverlayViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __93__SBInCallTransientOverlayViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_2783A9488;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __93__SBInCallTransientOverlayViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -317,15 +317,15 @@ void __93__SBInCallTransientOverlayViewController_viewWillTransitionToSize_withT
 
 - (id)sceneDeactivationPredicate
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIdentifier];
-  v3 = v2;
-  if (v2)
+  sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIdentifier];
+  v3 = sceneIdentifier;
+  if (sceneIdentifier)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __68__SBInCallTransientOverlayViewController_sceneDeactivationPredicate__block_invoke;
     v6[3] = &unk_2783ADD00;
-    v7 = v2;
+    v7 = sceneIdentifier;
     v4 = MEMORY[0x223D6F7F0](v6);
   }
 
@@ -377,11 +377,11 @@ uint64_t __68__SBInCallTransientOverlayViewController_sceneDeactivationPredicate
   }
 }
 
-- (void)setShouldIgnoreHomeIndicatorAutoHiddenClientSettings:(BOOL)a3
+- (void)setShouldIgnoreHomeIndicatorAutoHiddenClientSettings:(BOOL)settings
 {
-  if (self->_shouldIgnoreHomeIndicatorAutoHiddenClientSettings != a3)
+  if (self->_shouldIgnoreHomeIndicatorAutoHiddenClientSettings != settings)
   {
-    self->_shouldIgnoreHomeIndicatorAutoHiddenClientSettings = a3;
+    self->_shouldIgnoreHomeIndicatorAutoHiddenClientSettings = settings;
     [(SBTransientOverlayViewController *)self setNeedsGestureDismissalStyleUpdate];
   }
 }
@@ -389,8 +389,8 @@ uint64_t __68__SBInCallTransientOverlayViewController_sceneDeactivationPredicate
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D6EDF8] sharedInstance];
-  [v3 currentCalls];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  [mEMORY[0x277D6EDF8] currentCalls];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -428,7 +428,7 @@ uint64_t __68__SBInCallTransientOverlayViewController_sceneDeactivationPredicate
 
   if (self->_shouldAlwaysPreventHomeGestureDismissal)
   {
-    v9 = 1;
+    transientOverlayHomeIndicatorAutoHidden = 1;
   }
 
   else
@@ -436,26 +436,26 @@ uint64_t __68__SBInCallTransientOverlayViewController_sceneDeactivationPredicate
 LABEL_12:
     if (self->_shouldIgnoreHomeIndicatorAutoHiddenClientSettings)
     {
-      v9 = 0;
+      transientOverlayHomeIndicatorAutoHidden = 0;
     }
 
     else
     {
-      v10 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-      v11 = [v10 clientSettings];
-      v9 = [v11 transientOverlayHomeIndicatorAutoHidden];
+      sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+      clientSettings = [sceneIfExists clientSettings];
+      transientOverlayHomeIndicatorAutoHidden = [clientSettings transientOverlayHomeIndicatorAutoHidden];
     }
   }
 
-  return v9;
+  return transientOverlayHomeIndicatorAutoHidden;
 }
 
 - (BOOL)handleHomeButtonPress
 {
-  v3 = [(SBInCallTransientOverlayViewController *)self preferredLockedGestureDismissalStyle];
+  preferredLockedGestureDismissalStyle = [(SBInCallTransientOverlayViewController *)self preferredLockedGestureDismissalStyle];
   WeakRetained = SBLogInCallPresentation();
   v5 = os_log_type_enabled(WeakRetained, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (preferredLockedGestureDismissalStyle)
   {
     if (v5)
     {
@@ -510,13 +510,13 @@ LABEL_12:
   }
 }
 
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3
+- (BOOL)handleHeadsetButtonPress:(BOOL)press
 {
-  v3 = a3;
-  v5 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle preferredHardwareButtonEventTypes];
-  if (!v3)
+  pressCopy = press;
+  preferredHardwareButtonEventTypes = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle preferredHardwareButtonEventTypes];
+  if (!pressCopy)
   {
-    if ((v5 & 8) != 0)
+    if ((preferredHardwareButtonEventTypes & 8) != 0)
     {
       sceneHandle = self->_sceneHandle;
       v7 = 3;
@@ -526,10 +526,10 @@ LABEL_12:
 LABEL_5:
     v9.receiver = self;
     v9.super_class = SBInCallTransientOverlayViewController;
-    return [(SBTransientOverlayViewController *)&v9 handleHeadsetButtonPress:v3];
+    return [(SBTransientOverlayViewController *)&v9 handleHeadsetButtonPress:pressCopy];
   }
 
-  if ((v5 & 0x10) == 0)
+  if ((preferredHardwareButtonEventTypes & 0x10) == 0)
   {
     goto LABEL_5;
   }
@@ -701,90 +701,90 @@ uint64_t __94__SBInCallTransientOverlayViewController_newTransientOverlayPresent
 
 - (id)preferredDisplayLayoutElementIdentifier
 {
-  v2 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-  v3 = [v2 bundleIdentifier];
+  application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)preferredBackgroundActivitiesToSuppress
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
-  v3 = [v2 backgroundActivitiesToSuppress];
+  statusBarStateProvider = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
+  backgroundActivitiesToSuppress = [statusBarStateProvider backgroundActivitiesToSuppress];
 
-  return v3;
+  return backgroundActivitiesToSuppress;
 }
 
-- (void)setContainerOrientation:(int64_t)a3
+- (void)setContainerOrientation:(int64_t)orientation
 {
-  v5 = [(SBTransientOverlayViewController *)self containerOrientation];
+  containerOrientation = [(SBTransientOverlayViewController *)self containerOrientation];
   v10.receiver = self;
   v10.super_class = SBInCallTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v10 setContainerOrientation:a3];
-  if (v5 != [(SBTransientOverlayViewController *)self containerOrientation])
+  [(SBTransientOverlayViewController *)&v10 setContainerOrientation:orientation];
+  if (containerOrientation != [(SBTransientOverlayViewController *)self containerOrientation])
   {
     sceneViewController = self->_sceneViewController;
-    v7 = [(SBTransientOverlayViewController *)self contentView];
-    [v7 bounds];
-    [(SBSceneViewController *)sceneViewController setContentReferenceSize:a3 withContentOrientation:a3 andContainerOrientation:v8, v9];
+    contentView = [(SBTransientOverlayViewController *)self contentView];
+    [contentView bounds];
+    [(SBSceneViewController *)sceneViewController setContentReferenceSize:orientation withContentOrientation:orientation andContainerOrientation:v8, v9];
   }
 }
 
-- (void)setIdleTimerCoordinator:(id)a3
+- (void)setIdleTimerCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = SBInCallTransientOverlayViewController;
-  v4 = a3;
-  [(SBTransientOverlayViewController *)&v5 setIdleTimerCoordinator:v4];
-  [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper setTargetCoordinator:v4, v5.receiver, v5.super_class];
+  coordinatorCopy = coordinator;
+  [(SBTransientOverlayViewController *)&v5 setIdleTimerCoordinator:coordinatorCopy];
+  [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper setTargetCoordinator:coordinatorCopy, v5.receiver, v5.super_class];
 }
 
-- (BOOL)isPresentedFromSceneWithIdentityTokenString:(id)a3
+- (BOOL)isPresentedFromSceneWithIdentityTokenString:(id)string
 {
   sceneHandle = self->_sceneHandle;
-  v4 = a3;
-  v5 = [(SBDeviceApplicationSceneHandle *)sceneHandle sceneIfExists];
-  v6 = [v5 identityToken];
-  v7 = [v6 stringRepresentation];
-  v8 = [v7 isEqualToString:v4];
+  stringCopy = string;
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)sceneHandle sceneIfExists];
+  identityToken = [sceneIfExists identityToken];
+  stringRepresentation = [identityToken stringRepresentation];
+  v8 = [stringRepresentation isEqualToString:stringCopy];
 
   return v8;
 }
 
 - (id)keyboardFocusTarget
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v3 = [SBKeyboardFocusTarget targetForFBScene:v2];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  v3 = [SBKeyboardFocusTarget targetForFBScene:sceneIfExists];
 
   return v3;
 }
 
 - (BOOL)shouldDisableBanners
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v2) = [WeakRetained inCallTransientOverlayViewControllerShouldPreventBannerPresentations:v2];
+  LOBYTE(selfCopy) = [WeakRetained inCallTransientOverlayViewControllerShouldPreventBannerPresentations:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)supportsAlwaysOnDisplay
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v2) = [WeakRetained inCallTransientOverlayViewControllerShouldSupportAlwaysOnDisplay:v2];
+  LOBYTE(selfCopy) = [WeakRetained inCallTransientOverlayViewControllerShouldSupportAlwaysOnDisplay:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)associatedBundleIdentifiersToSuppressInSystemAperture
 {
-  v2 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-  v3 = [v2 bundleIdentifier];
+  application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  if (v3)
+  if (bundleIdentifier)
   {
-    v4 = [MEMORY[0x277CBEB98] setWithObject:v3];
+    v4 = [MEMORY[0x277CBEB98] setWithObject:bundleIdentifier];
   }
 
   else
@@ -797,10 +797,10 @@ uint64_t __94__SBInCallTransientOverlayViewController_newTransientOverlayPresent
 
 - (id)associatedSceneIdentifiersToSuppressInSystemAperture
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIdentifier];
-  if (v2)
+  sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIdentifier];
+  if (sceneIdentifier)
   {
-    v3 = [MEMORY[0x277CBEB98] setWithObject:v2];
+    v3 = [MEMORY[0x277CBEB98] setWithObject:sceneIdentifier];
   }
 
   else
@@ -815,10 +815,10 @@ uint64_t __94__SBInCallTransientOverlayViewController_newTransientOverlayPresent
 {
   v6.receiver = self;
   v6.super_class = SBInCallTransientOverlayViewController;
-  v3 = [(SBTransientOverlayViewController *)&v6 succinctDescriptionBuilder];
-  v4 = [v3 appendObject:self->_sceneViewController withName:@"sceneViewController" skipIfNil:1];
+  succinctDescriptionBuilder = [(SBTransientOverlayViewController *)&v6 succinctDescriptionBuilder];
+  v4 = [succinctDescriptionBuilder appendObject:self->_sceneViewController withName:@"sceneViewController" skipIfNil:1];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 - (void)invalidate
@@ -826,20 +826,20 @@ uint64_t __94__SBInCallTransientOverlayViewController_newTransientOverlayPresent
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController invalidate];
   [(_SBInCallProxySceneBackgroundView *)self->_proxySceneBackgroundView setProxyTarget:0];
   [(SBSUIInCallSceneClientSettingsDiffInspector *)self->_inCallSceneClientSettingsDiffInspector removeAllObservers];
-  v3 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
-  [v3 removeStatusBarObserver:self];
+  statusBarStateProvider = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle statusBarStateProvider];
+  [statusBarStateProvider removeStatusBarObserver:self];
 
   sceneHandle = self->_sceneHandle;
 
   [(SBDeviceApplicationSceneHandle *)sceneHandle removeObserver:self];
 }
 
-- (id)coordinatorRequestedIdleTimerBehavior:(id)a3
+- (id)coordinatorRequestedIdleTimerBehavior:(id)behavior
 {
   v4 = objc_opt_class();
-  v5 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v6 = [v5 clientSettings];
-  v7 = SBSafeCast(v4, v6);
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  clientSettings = [sceneIfExists clientSettings];
+  v7 = SBSafeCast(v4, clientSettings);
 
   if ([v7 idleTimerDisabled])
   {
@@ -849,9 +849,9 @@ uint64_t __94__SBInCallTransientOverlayViewController_newTransientOverlayPresent
   else
   {
     v9 = objc_opt_class();
-    v10 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-    v11 = [v10 settings];
-    v12 = SBSafeCast(v9, v11);
+    sceneIfExists2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+    settings = [sceneIfExists2 settings];
+    v12 = SBSafeCast(v9, settings);
 
     if ([v7 prefersLockedIdleDurationOnCoversheet])
     {
@@ -877,11 +877,11 @@ uint64_t __94__SBInCallTransientOverlayViewController_newTransientOverlayPresent
   return v8;
 }
 
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings
 {
-  v6 = [a4 settingsDiff];
-  v5 = [(SBInCallTransientOverlayViewController *)self _inCallSceneClientSettingsDiffInspector];
-  [v5 inspectDiff:v6 withContext:0];
+  settingsDiff = [settings settingsDiff];
+  _inCallSceneClientSettingsDiffInspector = [(SBInCallTransientOverlayViewController *)self _inCallSceneClientSettingsDiffInspector];
+  [_inCallSceneClientSettingsDiffInspector inspectDiff:settingsDiff withContext:0];
 }
 
 - (id)_inCallSceneClientSettingsDiffInspector
@@ -932,14 +932,14 @@ void __81__SBInCallTransientOverlayViewController__inCallSceneClientSettingsDiff
 - (void)_registerForAmbientPresentationTraitChange
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v3 = [(SBInCallTransientOverlayViewController *)self delegate];
-  objc_initWeak(&location, v3);
+  delegate = [(SBInCallTransientOverlayViewController *)self delegate];
+  objc_initWeak(&location, delegate);
 
   v4 = objc_loadWeakRetained(&location);
-  v5 = [(SBInCallTransientOverlayViewController *)self traitCollection];
-  v6 = [v5 isAmbientPresented];
-  v7 = [(SBInCallTransientOverlayViewController *)self traitCollection];
-  [v4 inCallTransientOverlayViewControllerDidUpdateAmbientPresentationIsAmbientPresented:v6 ambientDisplayStyle:{objc_msgSend(v7, "ambientDisplayStyle")}];
+  traitCollection = [(SBInCallTransientOverlayViewController *)self traitCollection];
+  isAmbientPresented = [traitCollection isAmbientPresented];
+  traitCollection2 = [(SBInCallTransientOverlayViewController *)self traitCollection];
+  [v4 inCallTransientOverlayViewControllerDidUpdateAmbientPresentationIsAmbientPresented:isAmbientPresented ambientDisplayStyle:{objc_msgSend(traitCollection2, "ambientDisplayStyle")}];
 
   v8 = objc_opt_self();
   v15[0] = v8;

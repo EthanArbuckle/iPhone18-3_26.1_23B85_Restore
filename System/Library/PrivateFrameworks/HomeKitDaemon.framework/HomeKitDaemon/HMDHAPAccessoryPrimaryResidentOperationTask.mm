@@ -1,16 +1,16 @@
 @interface HMDHAPAccessoryPrimaryResidentOperationTask
-- (HMDHAPAccessoryPrimaryResidentOperationTask)initWithContext:(id)a3 requests:(id)a4 completion:(id)a5;
-- (id)_makeLocalTaskWithRequests:(id)a3 completion:(id)a4;
-- (void)_processLocalRequests:(id)a3 responseWaitGroup:(id)a4;
+- (HMDHAPAccessoryPrimaryResidentOperationTask)initWithContext:(id)context requests:(id)requests completion:(id)completion;
+- (id)_makeLocalTaskWithRequests:(id)requests completion:(id)completion;
+- (void)_processLocalRequests:(id)requests responseWaitGroup:(id)group;
 - (void)execute;
 @end
 
 @implementation HMDHAPAccessoryPrimaryResidentOperationTask
 
-- (id)_makeLocalTaskWithRequests:(id)a3 completion:(id)a4
+- (id)_makeLocalTaskWithRequests:(id)requests completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  completionCopy = completion;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -22,19 +22,19 @@
   objc_exception_throw(v13);
 }
 
-- (void)_processLocalRequests:(id)a3 responseWaitGroup:(id)a4
+- (void)_processLocalRequests:(id)requests responseWaitGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mutableCopy];
-  v10 = [MEMORY[0x277CBEB18] array];
+  requestsCopy = requests;
+  groupCopy = group;
+  v9 = [requestsCopy mutableCopy];
+  array = [MEMORY[0x277CBEB18] array];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __87__HMDHAPAccessoryPrimaryResidentOperationTask__processLocalRequests_responseWaitGroup___block_invoke;
   v28[3] = &unk_278689280;
   v28[4] = self;
   v11 = v9;
-  v12 = v10;
+  v12 = array;
   v13 = v28;
   if (v11 == v12)
   {
@@ -59,25 +59,25 @@
     v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:4];
     v17 = [HMDCharacteristicResponse responsesWithRequests:v12 error:v16];
 
-    v18 = [(HMDHAPAccessoryTask *)self completion];
-    (v18)[2](v18, v17);
+    completion = [(HMDHAPAccessoryTask *)self completion];
+    (completion)[2](completion, v17);
   }
 
   if (([v11 hmf_isEmpty] & 1) == 0)
   {
-    dispatch_group_enter(v8);
+    dispatch_group_enter(groupCopy);
     objc_initWeak(location, self);
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __87__HMDHAPAccessoryPrimaryResidentOperationTask__processLocalRequests_responseWaitGroup___block_invoke_427;
     v25 = &unk_278689618;
     objc_copyWeak(&v27, location);
-    v26 = v8;
+    v26 = groupCopy;
     v19 = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self _makeLocalTaskWithRequests:v11 completion:&v22];
     [(HMDHAPAccessoryPrimaryResidentOperationTask *)self setLocalTask:v19, v22, v23, v24, v25];
 
-    v20 = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self localTask];
-    [v20 execute];
+    localTask = [(HMDHAPAccessoryPrimaryResidentOperationTask *)self localTask];
+    [localTask execute];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(location);
@@ -237,19 +237,19 @@ void __87__HMDHAPAccessoryPrimaryResidentOperationTask__processLocalRequests_res
 
 - (void)execute
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(HMDHAPAccessoryTask *)self setExecutionTime:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(HMDHAPAccessoryTask *)self setExecutionTime:date];
 
   v4 = dispatch_group_create();
-  v5 = [(HMDHAPAccessoryTask *)self requests];
-  [(HMDHAPAccessoryPrimaryResidentOperationTask *)self _processLocalRequests:v5 responseWaitGroup:v4];
-  v6 = [(HMDHAPAccessoryTask *)self workQueue];
+  requests = [(HMDHAPAccessoryTask *)self requests];
+  [(HMDHAPAccessoryPrimaryResidentOperationTask *)self _processLocalRequests:requests responseWaitGroup:v4];
+  workQueue = [(HMDHAPAccessoryTask *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__HMDHAPAccessoryPrimaryResidentOperationTask_execute__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_group_notify(v4, v6, block);
+  dispatch_group_notify(v4, workQueue, block);
 }
 
 void __54__HMDHAPAccessoryPrimaryResidentOperationTask_execute__block_invoke(uint64_t a1)
@@ -259,11 +259,11 @@ void __54__HMDHAPAccessoryPrimaryResidentOperationTask_execute__block_invoke(uin
   v3[2](v3, v2);
 }
 
-- (HMDHAPAccessoryPrimaryResidentOperationTask)initWithContext:(id)a3 requests:(id)a4 completion:(id)a5
+- (HMDHAPAccessoryPrimaryResidentOperationTask)initWithContext:(id)context requests:(id)requests completion:(id)completion
 {
   v6.receiver = self;
   v6.super_class = HMDHAPAccessoryPrimaryResidentOperationTask;
-  return [(HMDHAPAccessoryTask *)&v6 initWithContext:a3 requests:a4 completion:a5];
+  return [(HMDHAPAccessoryTask *)&v6 initWithContext:context requests:requests completion:completion];
 }
 
 @end

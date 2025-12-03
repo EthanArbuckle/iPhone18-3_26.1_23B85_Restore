@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (NSArray)viewControllers;
 - (_CHUISWidgetHostViewControllerCollection)init;
-- (void)noteCreated:(id)a3;
-- (void)noteDestroyed:(id)a3;
+- (void)noteCreated:(id)created;
+- (void)noteDestroyed:(id)destroyed;
 @end
 
 @implementation _CHUISWidgetHostViewControllerCollection
@@ -29,9 +29,9 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     lock_viewControllers = v3->_lock_viewControllers;
-    v3->_lock_viewControllers = v4;
+    v3->_lock_viewControllers = weakObjectsHashTable;
   }
 
   return v3;
@@ -40,7 +40,7 @@
 - (NSArray)viewControllers
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   os_unfair_lock_lock(&self->_lock);
   v13 = 0u;
   v14 = 0u;
@@ -60,7 +60,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [v3 addObject:{*(*(&v11 + 1) + 8 * i), v11}];
+        [array addObject:{*(*(&v11 + 1) + 8 * i), v11}];
       }
 
       v5 = [(NSHashTable *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -70,27 +70,27 @@
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v8 = [v3 copy];
+  v8 = [array copy];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (void)noteCreated:(id)a3
+- (void)noteCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_viewControllers addObject:v4];
+  [(NSHashTable *)self->_lock_viewControllers addObject:createdCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)noteDestroyed:(id)a3
+- (void)noteDestroyed:(id)destroyed
 {
-  v4 = a3;
+  destroyedCopy = destroyed;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_viewControllers removeObject:v4];
+  [(NSHashTable *)self->_lock_viewControllers removeObject:destroyedCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

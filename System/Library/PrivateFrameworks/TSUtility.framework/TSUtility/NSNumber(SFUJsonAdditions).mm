@@ -6,25 +6,25 @@
 
 - (uint64_t)appendJsonStringToString:()SFUJsonAdditions
 {
-  if (*[a1 objCType] == 99)
+  if (*[self objCType] == 99)
   {
-    if ([a1 BOOLValue])
+    if ([self BOOLValue])
     {
-      v5 = @"true";
+      stringValue = @"true";
     }
 
     else
     {
-      v5 = @"false";
+      stringValue = @"false";
     }
   }
 
   else
   {
-    v5 = [a1 stringValue];
+    stringValue = [self stringValue];
   }
 
-  return [a3 appendString:v5];
+  return [a3 appendString:stringValue];
 }
 
 @end

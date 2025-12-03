@@ -1,32 +1,32 @@
 @interface PKPaymentSetupAssistantProvisioningContext
-- (PKPaymentSetupAssistantProvisioningContext)initWithProvisioningController:(id)a3 snapshotCoordinator:(id)a4 setupAssistantCredentials:(id)a5 maximumSelectable:(unint64_t)a6;
-- (id)_setupAssistantCredentialForPaymentCredential:(id)a3;
-- (id)passSnapshotForCredential:(id)a3;
-- (void)paymentPassUpdatedOnCredential:(id)a3;
+- (PKPaymentSetupAssistantProvisioningContext)initWithProvisioningController:(id)controller snapshotCoordinator:(id)coordinator setupAssistantCredentials:(id)credentials maximumSelectable:(unint64_t)selectable;
+- (id)_setupAssistantCredentialForPaymentCredential:(id)credential;
+- (id)passSnapshotForCredential:(id)credential;
+- (void)paymentPassUpdatedOnCredential:(id)credential;
 @end
 
 @implementation PKPaymentSetupAssistantProvisioningContext
 
-- (PKPaymentSetupAssistantProvisioningContext)initWithProvisioningController:(id)a3 snapshotCoordinator:(id)a4 setupAssistantCredentials:(id)a5 maximumSelectable:(unint64_t)a6
+- (PKPaymentSetupAssistantProvisioningContext)initWithProvisioningController:(id)controller snapshotCoordinator:(id)coordinator setupAssistantCredentials:(id)credentials maximumSelectable:(unint64_t)selectable
 {
-  v11 = a4;
+  coordinatorCopy = coordinator;
   v15.receiver = self;
   v15.super_class = PKPaymentSetupAssistantProvisioningContext;
-  v12 = [(PKPaymentSetupAssistantCoreProvisioningContext *)&v15 initWithProvisioningController:a3 setupAssistantCredentials:a5 maximumSelectable:a6];
+  v12 = [(PKPaymentSetupAssistantCoreProvisioningContext *)&v15 initWithProvisioningController:controller setupAssistantCredentials:credentials maximumSelectable:selectable];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_snapshotCoordinator, a4);
+    objc_storeStrong(&v12->_snapshotCoordinator, coordinator);
   }
 
   return v13;
 }
 
-- (id)passSnapshotForCredential:(id)a3
+- (id)passSnapshotForCredential:(id)credential
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  credentialCopy = credential;
+  if (credentialCopy)
   {
     delegate = self->_delegate;
     if (delegate)
@@ -38,7 +38,7 @@
       v12[2] = __72__PKPaymentSetupAssistantProvisioningContext_passSnapshotForCredential___block_invoke;
       v12[3] = &unk_2799FFCB0;
       v12[4] = self;
-      v7 = [(PKPassSnapshotCoordinatorProtocol *)snapshotCoordinator cardSnapshotForSource:v4 withSize:v12 completion:?];
+      v7 = [(PKPassSnapshotCoordinatorProtocol *)snapshotCoordinator cardSnapshotForSource:credentialCopy withSize:v12 completion:?];
       goto LABEL_10;
     }
 
@@ -73,11 +73,11 @@ LABEL_10:
   return v7;
 }
 
-- (void)paymentPassUpdatedOnCredential:(id)a3
+- (void)paymentPassUpdatedOnCredential:(id)credential
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  credentialCopy = credential;
+  v5 = credentialCopy;
   if (self->_delegate)
   {
     v8[0] = MEMORY[0x277D85DD0];
@@ -85,7 +85,7 @@ LABEL_10:
     v8[2] = __77__PKPaymentSetupAssistantProvisioningContext_paymentPassUpdatedOnCredential___block_invoke;
     v8[3] = &unk_2799FFCD8;
     v8[4] = self;
-    v9 = v4;
+    v9 = credentialCopy;
     dispatch_async(MEMORY[0x277D85CD0], v8);
   }
 
@@ -113,17 +113,17 @@ void __77__PKPaymentSetupAssistantProvisioningContext_paymentPassUpdatedOnCreden
   }
 }
 
-- (id)_setupAssistantCredentialForPaymentCredential:(id)a3
+- (id)_setupAssistantCredentialForPaymentCredential:(id)credential
 {
-  v4 = a3;
-  v5 = [(PKPaymentSetupAssistantProvisioningContext *)self setupAssistantCredentials];
+  credentialCopy = credential;
+  setupAssistantCredentials = [(PKPaymentSetupAssistantProvisioningContext *)self setupAssistantCredentials];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __92__PKPaymentSetupAssistantProvisioningContext__setupAssistantCredentialForPaymentCredential___block_invoke;
   v9[3] = &unk_2799FFD00;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 pk_firstObjectPassingTest:v9];
+  v10 = credentialCopy;
+  v6 = credentialCopy;
+  v7 = [setupAssistantCredentials pk_firstObjectPassingTest:v9];
 
   return v7;
 }

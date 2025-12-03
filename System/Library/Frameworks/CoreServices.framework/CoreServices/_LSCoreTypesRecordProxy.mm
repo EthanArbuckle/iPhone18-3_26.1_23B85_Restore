@@ -1,7 +1,7 @@
 @interface _LSCoreTypesRecordProxy
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKindOfClass:(Class)class;
 - (LSBundleRecord)_realRecord;
 - (id)URL;
 - (id)_loadRealRecord;
@@ -10,7 +10,7 @@
 - (id)serviceRecords;
 - (unint64_t)hash;
 - (void)detach;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation _LSCoreTypesRecordProxy
@@ -87,8 +87,8 @@
         {
           v7 = [[FSNode alloc] initWithPath:@"/System/Library/CoreServices/MobileCoreTypes.bundle" flags:8 error:0];
           v8 = [LSBundleRecord alloc];
-          v9 = [(_LSDatabase *)*v5 schema];
-          v10 = [(LSBundleRecord *)v8 _initWithNode:v7 bundleIdentifier:@"com.apple.mobilecoretypes" context:v5 tableID:*(v9 + 4) unitID:*(v23 + 6) bundleBaseData:v19[3] error:0];
+          schema = [(_LSDatabase *)*v5 schema];
+          v10 = [(LSBundleRecord *)v8 _initWithNode:v7 bundleIdentifier:@"com.apple.mobilecoretypes" context:v5 tableID:*(schema + 4) unitID:*(v23 + 6) bundleBaseData:v19[3] error:0];
           v11 = v31[5];
           v31[5] = v10;
         }
@@ -137,9 +137,9 @@
   realRecord = self->_realRecord;
   if (!realRecord)
   {
-    v4 = [(_LSCoreTypesRecordProxy *)self _loadRealRecord];
+    _loadRealRecord = [(_LSCoreTypesRecordProxy *)self _loadRealRecord];
     v5 = self->_realRecord;
-    self->_realRecord = v4;
+    self->_realRecord = _loadRealRecord;
 
     realRecord = self->_realRecord;
   }
@@ -157,11 +157,11 @@
   return v2;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = -[_LSCoreTypesRecordProxy forwardingTargetForSelector:](self, "forwardingTargetForSelector:", [a3 selector]);
-  [a3 setTarget:?];
-  [a3 invoke];
+  v4 = -[_LSCoreTypesRecordProxy forwardingTargetForSelector:](self, "forwardingTargetForSelector:", [invocation selector]);
+  [invocation setTarget:?];
+  [invocation invoke];
 }
 
 - (unint64_t)hash
@@ -172,20 +172,20 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self || ([a3 isMemberOfClass:objc_opt_class()] & 1) != 0)
+  if (equal == self || ([equal isMemberOfClass:objc_opt_class()] & 1) != 0)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [a3 isMemberOfClass:objc_opt_class()];
+    v5 = [equal isMemberOfClass:objc_opt_class()];
     if (v5)
     {
 
-      LOBYTE(v5) = [a3 isEqual:self];
+      LOBYTE(v5) = [equal isEqual:self];
     }
   }
 
@@ -220,12 +220,12 @@
   return v6;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   Class = object_getClass(self);
   if (Class)
   {
-    while (Class != a3)
+    while (Class != class)
     {
       Class = class_getSuperclass(Class);
       if (!Class)
@@ -241,21 +241,21 @@
   {
 LABEL_4:
 
-    return [LSBundleRecord isSubclassOfClass:a3];
+    return [LSBundleRecord isSubclassOfClass:class];
   }
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v4 = objc_opt_class();
-  if (class_conformsToProtocol(v4, a3))
+  if (class_conformsToProtocol(v4, protocol))
   {
     return 1;
   }
 
   v6 = objc_opt_class();
 
-  return class_conformsToProtocol(v6, a3);
+  return class_conformsToProtocol(v6, protocol);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface PXZoomableInlineHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,22 +7,22 @@
 
 @implementation PXZoomableInlineHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXZoomableInlineHeaderView" hasInstanceMethod:@"userData" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXZoomableInlineHeaderViewConfiguration" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXZoomableInlineHeaderViewConfiguration" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXZoomableInlineHeaderView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXZoomableInlineHeaderView" hasInstanceMethod:@"userData" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXZoomableInlineHeaderViewConfiguration" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXZoomableInlineHeaderViewConfiguration" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXZoomableInlineHeaderView" isKindOfClass:@"UIView"];
 }
 
 - (BOOL)isAccessibilityElement
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v2 _accessibilityViewIsVisible];
 
-  return v3;
+  return _accessibilityViewIsVisible;
 }
 
 - (id)accessibilityLabel

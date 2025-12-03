@@ -1,12 +1,12 @@
 @interface SUUIDownloadsCellView
 - (SUUIDownloadsCellView)init;
 - (void)layoutSubviews;
-- (void)setAttributedTitle:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setButtonType:(int64_t)a3;
-- (void)setImage:(id)a3;
-- (void)setIsPad:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
+- (void)setAttributedTitle:(id)title;
+- (void)setBackgroundColor:(id)color;
+- (void)setButtonType:(int64_t)type;
+- (void)setImage:(id)image;
+- (void)setIsPad:(BOOL)pad;
+- (void)setSubtitle:(id)subtitle;
 @end
 
 @implementation SUUIDownloadsCellView
@@ -33,8 +33,8 @@
     [(UILabel *)v7 setFont:v8];
 
     v9 = v2->_subtitleLabel;
-    v10 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v9 setTextColor:v10];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v9 setTextColor:secondaryLabelColor];
 
     [(SUUIDownloadsCellView *)v2 addSubview:v2->_subtitleLabel];
     [(SUUIDownloadsCellView *)v2 setSubtitle:0];
@@ -43,14 +43,14 @@
     v2->_imageView = v11;
 
     [(UIImageView *)v2->_imageView setContentMode:1];
-    v13 = [(UIImageView *)v2->_imageView layer];
+    layer = [(UIImageView *)v2->_imageView layer];
     v14 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
-    [v13 setBorderColor:{objc_msgSend(v14, "CGColor")}];
+    [layer setBorderColor:{objc_msgSend(v14, "CGColor")}];
 
-    v15 = [(UIImageView *)v2->_imageView layer];
-    v16 = [MEMORY[0x277D759A0] mainScreen];
-    [v16 scale];
-    [v15 setBorderWidth:1.0 / v17];
+    layer2 = [(UIImageView *)v2->_imageView layer];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    [layer2 setBorderWidth:1.0 / v17];
 
     v18 = v2->_imageView;
     v19 = [MEMORY[0x277D75348] colorWithWhite:0.8 alpha:1.0];
@@ -73,24 +73,24 @@
     [(UISlider *)v24 setThumbImage:v25 forState:0];
 
     [(SUUIDownloadsCellView *)v2 addSubview:v2->_progressSlider];
-    v26 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(SUUIDownloadsCellView *)v2 setBackgroundColor:v26];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(SUUIDownloadsCellView *)v2 setBackgroundColor:systemBackgroundColor];
   }
 
   return v2;
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_attributedTitle != v5)
+  titleCopy = title;
+  if (self->_attributedTitle != titleCopy)
   {
-    objc_storeStrong(&self->_attributedTitle, a3);
+    objc_storeStrong(&self->_attributedTitle, title);
     titleLabel = self->_titleLabel;
-    if (v5)
+    if (titleCopy)
     {
-      [(UILabel *)titleLabel setAttributedText:v5];
+      [(UILabel *)titleLabel setAttributedText:titleCopy];
     }
 
     else
@@ -106,13 +106,13 @@
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  p_isa = a3;
+  p_isa = subtitle;
   if (self->_subtitle != p_isa)
   {
     v7 = p_isa;
-    objc_storeStrong(&self->_subtitle, a3);
+    objc_storeStrong(&self->_subtitle, subtitle);
     if (v7)
     {
       v6 = v7;
@@ -128,45 +128,45 @@
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v6 = a3;
-  v4 = [(UIImageView *)self->_imageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_imageView image];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = imageCopy;
+  if (image != imageCopy)
   {
-    [(UIImageView *)self->_imageView setImage:v6];
+    [(UIImageView *)self->_imageView setImage:imageCopy];
     [(SUUIDownloadsCellView *)self setNeedsLayout];
-    v5 = v6;
+    v5 = imageCopy;
   }
 }
 
-- (void)setIsPad:(BOOL)a3
+- (void)setIsPad:(BOOL)pad
 {
-  if (self->_isPad != a3)
+  if (self->_isPad != pad)
   {
-    self->_isPad = a3;
+    self->_isPad = pad;
     [(SUUIDownloadsCellView *)self setNeedsLayout];
   }
 }
 
-- (void)setButtonType:(int64_t)a3
+- (void)setButtonType:(int64_t)type
 {
-  if (self->_buttonType == a3)
+  if (self->_buttonType == type)
   {
     return;
   }
 
-  self->_buttonType = a3;
-  if (a3 == 1)
+  self->_buttonType = type;
+  if (type == 1)
   {
     v4 = @"DownloadsPauseIcon";
   }
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       v7 = 0;
       goto LABEL_8;
@@ -181,23 +181,23 @@
 
 LABEL_8:
   [(UIButton *)self->_button setHidden:self->_buttonType == 0];
-  v8 = [(SUUIDownloadsCellView *)self tintColor];
-  v9 = [v7 _flatImageWithColor:v8];
+  tintColor = [(SUUIDownloadsCellView *)self tintColor];
+  v9 = [v7 _flatImageWithColor:tintColor];
 
   [(UIButton *)self->_button setImage:v9 forState:0];
   [(SUUIDownloadsCellView *)self setNeedsLayout];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = SUUIDownloadsCellView;
-  v4 = a3;
-  [(SUUIDownloadsCellView *)&v5 setBackgroundColor:v4];
-  [(UISlider *)self->_progressSlider setBackgroundColor:v4, v5.receiver, v5.super_class];
-  [(UIButton *)self->_button setBackgroundColor:v4];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v4];
-  [(UILabel *)self->_subtitleLabel setBackgroundColor:v4];
+  colorCopy = color;
+  [(SUUIDownloadsCellView *)&v5 setBackgroundColor:colorCopy];
+  [(UISlider *)self->_progressSlider setBackgroundColor:colorCopy, v5.receiver, v5.super_class];
+  [(UIButton *)self->_button setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_subtitleLabel setBackgroundColor:colorCopy];
 }
 
 - (void)layoutSubviews
@@ -231,12 +231,12 @@ LABEL_8:
     v12 = 10.0;
   }
 
-  v13 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
 
-  if (v13)
+  if (image)
   {
-    v14 = [(UIImageView *)self->_imageView image];
-    [v14 size];
+    image2 = [(UIImageView *)self->_imageView image];
+    [image2 size];
     v16 = v15;
     v18 = v17;
 

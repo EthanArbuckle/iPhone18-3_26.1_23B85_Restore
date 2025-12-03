@@ -1,21 +1,21 @@
 @interface _INPBCallRecordFilter
-- (BOOL)isEqual:(id)a3;
-- (_INPBCallRecordFilter)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCallRecordFilter)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsCallCapability:(id)a3;
-- (int)StringAsCallTypes:(id)a3;
-- (int)StringAsPreferredCallProvider:(id)a3;
+- (int)StringAsCallCapability:(id)capability;
+- (int)StringAsCallTypes:(id)types;
+- (int)StringAsPreferredCallProvider:(id)provider;
 - (unint64_t)hash;
-- (void)addCallTypes:(int)a3;
-- (void)addParticipants:(id)a3;
+- (void)addCallTypes:(int)types;
+- (void)addParticipants:(id)participants;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCallCapability:(int)a3;
-- (void)setHasPreferredCallProvider:(BOOL)a3;
-- (void)setParticipants:(id)a3;
-- (void)setPreferredCallProvider:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCallCapability:(int)capability;
+- (void)setHasPreferredCallProvider:(BOOL)provider;
+- (void)setParticipants:(id)participants;
+- (void)setPreferredCallProvider:(int)provider;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCallRecordFilter
@@ -23,26 +23,26 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBCallRecordFilter *)self hasCallCapability])
   {
-    v4 = [(_INPBCallRecordFilter *)self callCapability];
-    if (v4 == 1)
+    callCapability = [(_INPBCallRecordFilter *)self callCapability];
+    if (callCapability == 1)
     {
       v5 = @"AUDIO_CALL";
     }
 
-    else if (v4 == 2)
+    else if (callCapability == 2)
     {
       v5 = @"VIDEO_CALL";
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", callCapability];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"callCapability"];
+    [dictionary setObject:v5 forKeyedSubscript:@"callCapability"];
   }
 
   if (self->_callTypes.count)
@@ -72,12 +72,12 @@
       while (v7 < [(_INPBCallRecordFilter *)self callTypesCount]);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"callTypes"];
+    [dictionary setObject:v6 forKeyedSubscript:@"callTypes"];
   }
 
   if ([(NSArray *)self->_participants count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -97,8 +97,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSArray *)v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -107,28 +107,28 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"participants"];
+    [dictionary setObject:array forKeyedSubscript:@"participants"];
   }
 
   if ([(_INPBCallRecordFilter *)self hasPreferredCallProvider])
   {
-    v17 = [(_INPBCallRecordFilter *)self preferredCallProvider];
-    if ((v17 - 2) >= 3)
+    preferredCallProvider = [(_INPBCallRecordFilter *)self preferredCallProvider];
+    if ((preferredCallProvider - 2) >= 3)
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v17];
+      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", preferredCallProvider];
     }
 
     else
     {
-      v18 = off_1E72884C8[(v17 - 2)];
+      v18 = off_1E72884C8[(preferredCallProvider - 2)];
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"preferredCallProvider"];
+    [dictionary setObject:v18 forKeyedSubscript:@"preferredCallProvider"];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -158,26 +158,26 @@
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = [(_INPBCallRecordFilter *)self hasCallCapability];
-  if (v5 != [v4 hasCallCapability])
+  hasCallCapability = [(_INPBCallRecordFilter *)self hasCallCapability];
+  if (hasCallCapability != [equalCopy hasCallCapability])
   {
     goto LABEL_14;
   }
 
   if ([(_INPBCallRecordFilter *)self hasCallCapability])
   {
-    if ([v4 hasCallCapability])
+    if ([equalCopy hasCallCapability])
     {
       callCapability = self->_callCapability;
-      if (callCapability != [v4 callCapability])
+      if (callCapability != [equalCopy callCapability])
       {
         goto LABEL_14;
       }
@@ -189,18 +189,18 @@
     goto LABEL_14;
   }
 
-  v7 = [(_INPBCallRecordFilter *)self participants];
-  v8 = [v4 participants];
-  v9 = v8;
-  if ((v7 != 0) != (v8 == 0))
+  participants = [(_INPBCallRecordFilter *)self participants];
+  participants2 = [equalCopy participants];
+  v9 = participants2;
+  if ((participants != 0) != (participants2 == 0))
   {
-    v10 = [(_INPBCallRecordFilter *)self participants];
-    if (v10)
+    participants3 = [(_INPBCallRecordFilter *)self participants];
+    if (participants3)
     {
-      v11 = v10;
-      v12 = [(_INPBCallRecordFilter *)self participants];
-      v13 = [v4 participants];
-      v14 = [v12 isEqual:v13];
+      v11 = participants3;
+      participants4 = [(_INPBCallRecordFilter *)self participants];
+      participants5 = [equalCopy participants];
+      v14 = [participants4 isEqual:participants5];
 
       if (!v14)
       {
@@ -212,10 +212,10 @@
     {
     }
 
-    v15 = [(_INPBCallRecordFilter *)self hasPreferredCallProvider];
-    if (v15 == [v4 hasPreferredCallProvider])
+    hasPreferredCallProvider = [(_INPBCallRecordFilter *)self hasPreferredCallProvider];
+    if (hasPreferredCallProvider == [equalCopy hasPreferredCallProvider])
     {
-      if (!-[_INPBCallRecordFilter hasPreferredCallProvider](self, "hasPreferredCallProvider") || ![v4 hasPreferredCallProvider] || (preferredCallProvider = self->_preferredCallProvider, preferredCallProvider == objc_msgSend(v4, "preferredCallProvider")))
+      if (!-[_INPBCallRecordFilter hasPreferredCallProvider](self, "hasPreferredCallProvider") || ![equalCopy hasPreferredCallProvider] || (preferredCallProvider = self->_preferredCallProvider, preferredCallProvider == objc_msgSend(equalCopy, "preferredCallProvider")))
       {
         v16 = 1;
         goto LABEL_15;
@@ -234,7 +234,7 @@ LABEL_15:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCallRecordFilter allocWithZone:](_INPBCallRecordFilter init];
   if ([(_INPBCallRecordFilter *)self hasCallCapability])
@@ -243,7 +243,7 @@ LABEL_15:
   }
 
   PBRepeatedInt32Copy();
-  v6 = [(NSArray *)self->_participants copyWithZone:a3];
+  v6 = [(NSArray *)self->_participants copyWithZone:zone];
   [(_INPBCallRecordFilter *)v5 setParticipants:v6];
 
   if ([(_INPBCallRecordFilter *)self hasPreferredCallProvider])
@@ -254,28 +254,28 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCallRecordFilter *)self data];
+  coderCopy = coder;
+  data = [(_INPBCallRecordFilter *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCallRecordFilter)initWithCoder:(id)a3
+- (_INPBCallRecordFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCallRecordFilter *)self initWithData:v6];
+    self = [(_INPBCallRecordFilter *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -286,10 +286,10 @@ LABEL_15:
   [(_INPBCallRecordFilter *)&v3 dealloc];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBCallRecordFilter *)self hasCallCapability])
   {
     callCapability = self->_callCapability;
@@ -347,20 +347,20 @@ LABEL_15:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (int)StringAsPreferredCallProvider:(id)a3
+- (int)StringAsPreferredCallProvider:(id)provider
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TELEPHONY_PROVIDER"])
+  providerCopy = provider;
+  if ([providerCopy isEqualToString:@"TELEPHONY_PROVIDER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FACETIME_PROVIDER"])
+  else if ([providerCopy isEqualToString:@"FACETIME_PROVIDER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_PARTY_PROVIDER"])
+  else if ([providerCopy isEqualToString:@"THIRD_PARTY_PROVIDER"])
   {
     v4 = 4;
   }
@@ -373,9 +373,9 @@ LABEL_15:
   return v4;
 }
 
-- (void)setHasPreferredCallProvider:(BOOL)a3
+- (void)setHasPreferredCallProvider:(BOOL)provider
 {
-  if (a3)
+  if (provider)
   {
     v3 = 2;
   }
@@ -388,10 +388,10 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setPreferredCallProvider:(int)a3
+- (void)setPreferredCallProvider:(int)provider
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (provider == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -399,76 +399,76 @@ LABEL_15:
   else
   {
     *&self->_has = has | 2;
-    self->_preferredCallProvider = a3;
+    self->_preferredCallProvider = provider;
   }
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   participants = self->_participants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!participants)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_participants;
-    self->_participants = v6;
+    self->_participants = array;
 
-    v4 = v8;
+    participantsCopy = v8;
     participants = self->_participants;
   }
 
-  [(NSArray *)participants addObject:v4];
+  [(NSArray *)participants addObject:participantsCopy];
 }
 
-- (void)setParticipants:(id)a3
+- (void)setParticipants:(id)participants
 {
-  v4 = [a3 mutableCopy];
+  v4 = [participants mutableCopy];
   participants = self->_participants;
   self->_participants = v4;
 
   MEMORY[0x1EEE66BB8](v4, participants);
 }
 
-- (int)StringAsCallTypes:(id)a3
+- (int)StringAsCallTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OUTGOING"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"OUTGOING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MISSED"])
+  else if ([typesCopy isEqualToString:@"MISSED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RECEIVED"])
+  else if ([typesCopy isEqualToString:@"RECEIVED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LATEST"])
+  else if ([typesCopy isEqualToString:@"LATEST"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"VOICEMAIL"])
+  else if ([typesCopy isEqualToString:@"VOICEMAIL"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RINGING"])
+  else if ([typesCopy isEqualToString:@"RINGING"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"IN_PROGRESS"])
+  else if ([typesCopy isEqualToString:@"IN_PROGRESS"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ON_HOLD"])
+  else if ([typesCopy isEqualToString:@"ON_HOLD"])
   {
     v4 = 10;
   }
@@ -481,21 +481,21 @@ LABEL_15:
   return v4;
 }
 
-- (void)addCallTypes:(int)a3
+- (void)addCallTypes:(int)types
 {
-  if (a3 != 0x7FFFFFFF)
+  if (types != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsCallCapability:(id)a3
+- (int)StringAsCallCapability:(id)capability
 {
-  v3 = a3;
+  capabilityCopy = capability;
   v4 = 1;
-  if (([v3 isEqualToString:@"AUDIO_CALL"] & 1) == 0)
+  if (([capabilityCopy isEqualToString:@"AUDIO_CALL"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"VIDEO_CALL"])
+    if ([capabilityCopy isEqualToString:@"VIDEO_CALL"])
     {
       v4 = 2;
     }
@@ -509,10 +509,10 @@ LABEL_15:
   return v4;
 }
 
-- (void)setCallCapability:(int)a3
+- (void)setCallCapability:(int)capability
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (capability == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -520,7 +520,7 @@ LABEL_15:
   else
   {
     *&self->_has = has | 1;
-    self->_callCapability = a3;
+    self->_callCapability = capability;
   }
 }
 

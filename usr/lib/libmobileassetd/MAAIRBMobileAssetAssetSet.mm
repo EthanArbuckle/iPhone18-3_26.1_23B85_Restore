@@ -1,13 +1,13 @@
 @interface MAAIRBMobileAssetAssetSet
 - (MAAIRBMobileAssetAssetSet)init;
-- (MAAIRBMobileAssetAssetSet)initWithAssetSetIdentifier:(id)a3;
+- (MAAIRBMobileAssetAssetSet)initWithAssetSetIdentifier:(id)identifier;
 @end
 
 @implementation MAAIRBMobileAssetAssetSet
 
-- (MAAIRBMobileAssetAssetSet)initWithAssetSetIdentifier:(id)a3
+- (MAAIRBMobileAssetAssetSet)initWithAssetSetIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     sub_303948();
   }

@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = JavaNioCharsetCharset_forNameWithNSString_(@"ISO-8859-1");
     JreStrongAssign(&JavaNioCharsetCharsets_ISO_8859_1_, v2);

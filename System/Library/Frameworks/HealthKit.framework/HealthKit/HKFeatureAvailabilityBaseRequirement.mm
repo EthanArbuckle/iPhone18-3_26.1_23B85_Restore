@@ -1,8 +1,8 @@
 @interface HKFeatureAvailabilityBaseRequirement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)requirementDescription;
 - (id)_hk_featureAvailabilityRequirements;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 - (unint64_t)hash;
 @end
 
@@ -18,9 +18,9 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -43,7 +43,7 @@
   return @"unimplemented";
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

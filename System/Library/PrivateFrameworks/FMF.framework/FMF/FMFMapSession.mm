@@ -1,11 +1,11 @@
 @interface FMFMapSession
 + (id)newConnection;
 + (id)sharedInstance;
-- (void)gridImageForScreenRatio:(double)a3 andCompletion:(id)a4;
-- (void)gridImageForWidth:(double)a3 height:(double)a4 cache:(BOOL)a5 andCompletion:(id)a6;
-- (void)mapImageForRequest:(id)a3 andCompletion:(id)a4;
-- (void)noLocationImageForScreenRatio:(double)a3 andCompletion:(id)a4;
-- (void)noLocationImageForWidth:(double)a3 height:(double)a4 cache:(BOOL)a5 andCompletion:(id)a6;
+- (void)gridImageForScreenRatio:(double)ratio andCompletion:(id)completion;
+- (void)gridImageForWidth:(double)width height:(double)height cache:(BOOL)cache andCompletion:(id)completion;
+- (void)mapImageForRequest:(id)request andCompletion:(id)completion;
+- (void)noLocationImageForScreenRatio:(double)ratio andCompletion:(id)completion;
+- (void)noLocationImageForWidth:(double)width height:(double)height cache:(BOOL)cache andCompletion:(id)completion;
 @end
 
 @implementation FMFMapSession
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __31__FMFMapSession_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_dispatch_predicate != -1)
   {
     dispatch_once(&sharedInstance_dispatch_predicate, block);
@@ -48,15 +48,15 @@ void __31__FMFMapSession_sharedInstance__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)gridImageForWidth:(double)a3 height:(double)a4 cache:(BOOL)a5 andCompletion:(id)a6
+- (void)gridImageForWidth:(double)width height:(double)height cache:(BOOL)cache andCompletion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = self;
-  v12 = v11;
-  if (v6 && (-[FMFMapSession mapCache](v11, "mapCache"), v13 = objc_claimAutoreleasedReturnValue(), [v13 cachedGridImageForWidth:a3 andHeight:a4], v14 = objc_claimAutoreleasedReturnValue(), v13, v14))
+  cacheCopy = cache;
+  completionCopy = completion;
+  selfCopy = self;
+  v12 = selfCopy;
+  if (cacheCopy && (-[FMFMapSession mapCache](selfCopy, "mapCache"), v13 = objc_claimAutoreleasedReturnValue(), [v13 cachedGridImageForWidth:width andHeight:height], v14 = objc_claimAutoreleasedReturnValue(), v13, v14))
   {
-    v10[2](v10, v14, 0);
+    completionCopy[2](completionCopy, v14, 0);
   }
 
   else
@@ -74,9 +74,9 @@ void __31__FMFMapSession_sharedInstance__block_invoke(uint64_t a1)
     v23[3] = &unk_278FDE180;
     v23[4] = &v24;
     v16 = [v15 remoteObjectProxyWithErrorHandler:v23];
-    if (v10 && v25[5])
+    if (completionCopy && v25[5])
     {
-      (v10[2])(v10, 0);
+      (completionCopy[2])(completionCopy, 0);
     }
 
     else
@@ -85,12 +85,12 @@ void __31__FMFMapSession_sharedInstance__block_invoke(uint64_t a1)
       v17[1] = 3221225472;
       v17[2] = __62__FMFMapSession_gridImageForWidth_height_cache_andCompletion___block_invoke_2;
       v17[3] = &unk_278FDE1A8;
-      v22 = v6;
+      v22 = cacheCopy;
       v18 = v12;
-      v20 = a3;
-      v21 = a4;
-      v19 = v10;
-      [v16 gridImageForWidth:v17 height:a3 andCompletion:a4];
+      widthCopy = width;
+      heightCopy = height;
+      v19 = completionCopy;
+      [v16 gridImageForWidth:v17 height:width andCompletion:height];
     }
 
     _Block_object_dispose(&v24, 8);
@@ -121,15 +121,15 @@ void __62__FMFMapSession_gridImageForWidth_height_cache_andCompletion___block_in
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)noLocationImageForWidth:(double)a3 height:(double)a4 cache:(BOOL)a5 andCompletion:(id)a6
+- (void)noLocationImageForWidth:(double)width height:(double)height cache:(BOOL)cache andCompletion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = self;
-  v12 = v11;
-  if (v6 && (-[FMFMapSession mapCache](v11, "mapCache"), v13 = objc_claimAutoreleasedReturnValue(), [v13 cachedNoLocationImageForWidth:a3 andHeight:a4], v14 = objc_claimAutoreleasedReturnValue(), v13, v14))
+  cacheCopy = cache;
+  completionCopy = completion;
+  selfCopy = self;
+  v12 = selfCopy;
+  if (cacheCopy && (-[FMFMapSession mapCache](selfCopy, "mapCache"), v13 = objc_claimAutoreleasedReturnValue(), [v13 cachedNoLocationImageForWidth:width andHeight:height], v14 = objc_claimAutoreleasedReturnValue(), v13, v14))
   {
-    v10[2](v10, v14, 0);
+    completionCopy[2](completionCopy, v14, 0);
   }
 
   else
@@ -147,9 +147,9 @@ void __62__FMFMapSession_gridImageForWidth_height_cache_andCompletion___block_in
     v23[3] = &unk_278FDE180;
     v23[4] = &v24;
     v16 = [v15 remoteObjectProxyWithErrorHandler:v23];
-    if (v10 && v25[5])
+    if (completionCopy && v25[5])
     {
-      (v10[2])(v10, 0);
+      (completionCopy[2])(completionCopy, 0);
     }
 
     else
@@ -158,12 +158,12 @@ void __62__FMFMapSession_gridImageForWidth_height_cache_andCompletion___block_in
       v17[1] = 3221225472;
       v17[2] = __68__FMFMapSession_noLocationImageForWidth_height_cache_andCompletion___block_invoke_2;
       v17[3] = &unk_278FDE1A8;
-      v22 = v6;
+      v22 = cacheCopy;
       v18 = v12;
-      v20 = a3;
-      v21 = a4;
-      v19 = v10;
-      [v16 noLocationImageForWidth:v17 height:a3 andCompletion:a4];
+      widthCopy = width;
+      heightCopy = height;
+      v19 = completionCopy;
+      [v16 noLocationImageForWidth:v17 height:width andCompletion:height];
     }
 
     _Block_object_dispose(&v24, 8);
@@ -194,18 +194,18 @@ void __68__FMFMapSession_noLocationImageForWidth_height_cache_andCompletion___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)mapImageForRequest:(id)a3 andCompletion:(id)a4
+- (void)mapImageForRequest:(id)request andCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = LogCategory_FMFMapXPC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [FMFMapSession mapImageForRequest:andCompletion:];
   }
 
-  v9 = self;
-  if (![v6 cachingEnabled] || (-[FMFMapSession mapCache](v9, "mapCache"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "cachedMapImageForRequest:", v6), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
+  selfCopy = self;
+  if (![requestCopy cachingEnabled] || (-[FMFMapSession mapCache](selfCopy, "mapCache"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "cachedMapImageForRequest:", requestCopy), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
   {
     v24 = 0;
     v25 = &v24;
@@ -220,15 +220,15 @@ void __68__FMFMapSession_noLocationImageForWidth_height_cache_andCompletion___bl
     v23[3] = &unk_278FDE180;
     v23[4] = &v24;
     v14 = [v13 remoteObjectProxyWithErrorHandler:v23];
-    if (v7 && v25[5])
+    if (completionCopy && v25[5])
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
-      v15 = [(FMFMapSession *)v9 mapCache];
-      v16 = [v15 pendingMapImageForRequest:v6];
+      mapCache = [(FMFMapSession *)selfCopy mapCache];
+      v16 = [mapCache pendingMapImageForRequest:requestCopy];
 
       v17 = LogCategory_FMFMapXPC();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -236,15 +236,15 @@ void __68__FMFMapSession_noLocationImageForWidth_height_cache_andCompletion___bl
         [FMFMapSession mapImageForRequest:andCompletion:];
       }
 
-      if (v16 && [v6 priority] < 1)
+      if (v16 && [requestCopy priority] < 1)
       {
-        if (!v7)
+        if (!completionCopy)
         {
           goto LABEL_17;
         }
 
         v18 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"FMFMapXPCService" code:206 userInfo:0];
-        (v7[2])(v7, 0, v18);
+        (completionCopy[2])(completionCopy, 0, v18);
       }
 
       else
@@ -253,9 +253,9 @@ void __68__FMFMapSession_noLocationImageForWidth_height_cache_andCompletion___bl
         v19[1] = 3221225472;
         v19[2] = __50__FMFMapSession_mapImageForRequest_andCompletion___block_invoke_66;
         v19[3] = &unk_278FDE1D0;
-        v20 = v6;
-        v21 = v9;
-        v22 = v7;
+        v20 = requestCopy;
+        v21 = selfCopy;
+        v22 = completionCopy;
         [v14 mapImageForRequest:v20 andCompletion:v19];
 
         v18 = v20;
@@ -274,7 +274,7 @@ LABEL_17:
     [FMFMapSession mapImageForRequest:andCompletion:];
   }
 
-  (v7[2])(v7, v11, 0);
+  (completionCopy[2])(completionCopy, v11, 0);
 LABEL_18:
 }
 
@@ -317,9 +317,9 @@ void __50__FMFMapSession_mapImageForRequest_andCompletion___block_invoke_66(uint
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)gridImageForScreenRatio:(double)a3 andCompletion:(id)a4
+- (void)gridImageForScreenRatio:(double)ratio andCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -333,9 +333,9 @@ void __50__FMFMapSession_mapImageForRequest_andCompletion___block_invoke_66(uint
   v10[3] = &unk_278FDE180;
   v10[4] = &v11;
   v7 = [v6 remoteObjectProxyWithErrorHandler:v10];
-  if (v5 && v12[5])
+  if (completionCopy && v12[5])
   {
-    v5[2](v5, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -344,8 +344,8 @@ void __50__FMFMapSession_mapImageForRequest_andCompletion___block_invoke_66(uint
     v8[1] = 3221225472;
     v8[2] = __55__FMFMapSession_gridImageForScreenRatio_andCompletion___block_invoke_2;
     v8[3] = &unk_278FDE1F8;
-    v9 = v5;
-    [v7 gridImageForScreenRatio:v8 andCompletion:a3];
+    v9 = completionCopy;
+    [v7 gridImageForScreenRatio:v8 andCompletion:ratio];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -362,9 +362,9 @@ void __55__FMFMapSession_gridImageForScreenRatio_andCompletion___block_invoke(ui
   }
 }
 
-- (void)noLocationImageForScreenRatio:(double)a3 andCompletion:(id)a4
+- (void)noLocationImageForScreenRatio:(double)ratio andCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -378,9 +378,9 @@ void __55__FMFMapSession_gridImageForScreenRatio_andCompletion___block_invoke(ui
   v10[3] = &unk_278FDE180;
   v10[4] = &v11;
   v7 = [v6 remoteObjectProxyWithErrorHandler:v10];
-  if (v5 && v12[5])
+  if (completionCopy && v12[5])
   {
-    v5[2](v5, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -389,8 +389,8 @@ void __55__FMFMapSession_gridImageForScreenRatio_andCompletion___block_invoke(ui
     v8[1] = 3221225472;
     v8[2] = __61__FMFMapSession_noLocationImageForScreenRatio_andCompletion___block_invoke_2;
     v8[3] = &unk_278FDE1F8;
-    v9 = v5;
-    [v7 noLocationImageForScreenRatio:v8 andCompletion:a3];
+    v9 = completionCopy;
+    [v7 noLocationImageForScreenRatio:v8 andCompletion:ratio];
   }
 
   _Block_object_dispose(&v11, 8);

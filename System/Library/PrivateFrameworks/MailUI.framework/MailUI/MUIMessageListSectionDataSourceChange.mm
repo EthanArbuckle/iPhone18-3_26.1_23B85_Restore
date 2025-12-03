@@ -1,12 +1,12 @@
 @interface MUIMessageListSectionDataSourceChange
-+ (id)added:(int64_t)a3 isFirstChange:(BOOL)a4;
++ (id)added:(int64_t)added isFirstChange:(BOOL)change;
 + (id)cleanSnapshot;
 + (id)failed;
-+ (id)moved:(int64_t)a3;
-+ (id)removed:(int64_t)a3;
-+ (id)sectionRemoved:(id)a3;
++ (id)moved:(int64_t)moved;
++ (id)removed:(int64_t)removed;
++ (id)sectionRemoved:(id)removed;
 + (id)skipped;
-+ (id)updated:(int64_t)a3;
++ (id)updated:(int64_t)updated;
 - (BOOL)failed;
 - (BOOL)hasChanges;
 - (BOOL)isAddition;
@@ -72,12 +72,12 @@
   return v5;
 }
 
-+ (id)added:(int64_t)a3 isFirstChange:(BOOL)a4
++ (id)added:(int64_t)added isFirstChange:(BOOL)change
 {
   swift_getObjCClassMetadata();
   v6 = sub_214CCD394();
   swift_getObjCClassMetadata();
-  v4 = static MUIMessageListSectionDataSourceChange.added(_:isFirstChange:)(a3, v6 & 1);
+  v4 = static MUIMessageListSectionDataSourceChange.added(_:isFirstChange:)(added, v6 & 1);
 
   return v4;
 }
@@ -156,29 +156,29 @@
   return v5;
 }
 
-+ (id)removed:(int64_t)a3
++ (id)removed:(int64_t)removed
 {
   swift_getObjCClassMetadata();
   swift_getObjCClassMetadata();
-  v3 = static MUIMessageListSectionDataSourceChange.removed(_:)(a3);
+  v3 = static MUIMessageListSectionDataSourceChange.removed(_:)(removed);
 
   return v3;
 }
 
-+ (id)moved:(int64_t)a3
++ (id)moved:(int64_t)moved
 {
   swift_getObjCClassMetadata();
   swift_getObjCClassMetadata();
-  v3 = static MUIMessageListSectionDataSourceChange.moved(_:)(a3);
+  v3 = static MUIMessageListSectionDataSourceChange.moved(_:)(moved);
 
   return v3;
 }
 
-+ (id)updated:(int64_t)a3
++ (id)updated:(int64_t)updated
 {
   swift_getObjCClassMetadata();
   swift_getObjCClassMetadata();
-  v3 = static MUIMessageListSectionDataSourceChange.updated(_:)(a3);
+  v3 = static MUIMessageListSectionDataSourceChange.updated(_:)(updated);
 
   return v3;
 }
@@ -201,13 +201,13 @@
   return v2;
 }
 
-+ (id)sectionRemoved:(id)a3
++ (id)sectionRemoved:(id)removed
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](removed);
   swift_getObjCClassMetadata();
-  v5 = static MUIMessageListSectionDataSourceChange.sectionRemoved(_:)(a3);
-  MEMORY[0x277D82BD8](a3);
+  v5 = static MUIMessageListSectionDataSourceChange.sectionRemoved(_:)(removed);
+  MEMORY[0x277D82BD8](removed);
 
   return v5;
 }

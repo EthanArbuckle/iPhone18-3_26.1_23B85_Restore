@@ -1,11 +1,11 @@
 @interface COSPasscodeCreateViewController
 - (id)detailText;
 - (id)titleText;
-- (void)back:(id)a3;
+- (void)back:(id)back;
 - (void)dealloc;
 - (void)passcodeCreationComplete;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation COSPasscodeCreateViewController
@@ -20,25 +20,25 @@
   [(COSPasscodeCreateViewController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = COSPasscodeCreateViewController;
-  [(COSPasscodeCreateViewController *)&v5 viewWillAppear:a3];
+  [(COSPasscodeCreateViewController *)&v5 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"passcodeCreationComplete" name:PBBridgeDidCompletePasscodeCreationNotification object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = COSPasscodeCreateViewController;
-  [(COSSetupPageViewController *)&v5 viewWillDisappear:a3];
+  [(COSSetupPageViewController *)&v5 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:PBBridgeDidCompletePasscodeCreationNotification object:0];
 }
 
-- (void)back:(id)a3
+- (void)back:(id)back
 {
   v3 = pbb_bridge_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -79,15 +79,15 @@
 
 - (id)detailText
 {
-  v3 = [UIApp bridgeController];
-  v4 = [v3 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
-  v5 = [(COSPasscodeCreateViewController *)self isComplex];
+  isComplex = [(COSPasscodeCreateViewController *)self isComplex];
   v6 = +[NSBundle mainBundle];
   v7 = v6;
-  if (v4)
+  if (isTinkerPairing)
   {
-    if (v5)
+    if (isComplex)
     {
       v8 = @"PASSCODE_CREATING_TEXT_COMPLEX_TINKER";
     }
@@ -102,7 +102,7 @@
 
   else
   {
-    if (v5)
+    if (isComplex)
     {
       v8 = @"PASSCODE_CREATING_TEXT_COMPLEX";
     }

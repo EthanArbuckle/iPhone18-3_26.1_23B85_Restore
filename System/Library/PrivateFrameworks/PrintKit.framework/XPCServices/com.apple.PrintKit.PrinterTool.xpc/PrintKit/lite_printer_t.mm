@@ -1,40 +1,40 @@
 @interface lite_printer_t
-+ (id)existingPrinterWithEndpoint:(id)a3;
++ (id)existingPrinterWithEndpoint:(id)endpoint;
 + (id)gatherLogInfo;
-+ (void)_startPrinterResolution:(id)a3 session:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-+ (void)realizePrinterWithResolvedEndpoint:(id)a3 session:(id)a4 completionHandler:(id)a5;
-+ (void)withLitePrinterForSessionEndpoint:(id)a3 completionHandler:(id)a4;
++ (void)_startPrinterResolution:(id)resolution session:(id)session queue:(id)queue completionHandler:(id)handler;
++ (void)realizePrinterWithResolvedEndpoint:(id)endpoint session:(id)session completionHandler:(id)handler;
++ (void)withLitePrinterForSessionEndpoint:(id)endpoint completionHandler:(id)handler;
 - (NSString)displayName;
 - (id)description;
 - (id)logInfo;
-- (id)sendSingleIPPRequest:(const Real_IPP_Message *)a3 session:(id)a4;
-- (lite_printer_t)initWithBrowseInfo:(id)a3 description:(id)a4;
+- (id)sendSingleIPPRequest:(const Real_IPP_Message *)request session:(id)session;
+- (lite_printer_t)initWithBrowseInfo:(id)info description:(id)description;
 - (void)_logInitialization;
-- (void)_updateDescPrinterDescription:(id)a3;
-- (void)checkAccessWithSession:(id)a3 completionHandler:(id)a4;
+- (void)_updateDescPrinterDescription:(id)description;
+- (void)checkAccessWithSession:(id)session completionHandler:(id)handler;
 - (void)clearCredential;
-- (void)forceRefreshCurrentDescriptionForSession:(id)a3 completionHandler:(id)a4;
-- (void)identifyPrinterWithSession:(id)a3 message:(id)a4 actions:(id)a5;
-- (void)refreshCurrentDescriptionForSession:(id)a3 completionHandler:(id)a4;
-- (void)sendSingleIPPRequest:(const Real_IPP_Message *)a3 session:(id)a4 completionHandler:(id)a5;
-- (void)setReasonsBits:(unsigned int)a3;
-- (void)updatePrinterState:(id)a3 message:(id)a4;
+- (void)forceRefreshCurrentDescriptionForSession:(id)session completionHandler:(id)handler;
+- (void)identifyPrinterWithSession:(id)session message:(id)message actions:(id)actions;
+- (void)refreshCurrentDescriptionForSession:(id)session completionHandler:(id)handler;
+- (void)sendSingleIPPRequest:(const Real_IPP_Message *)request session:(id)session completionHandler:(id)handler;
+- (void)setReasonsBits:(unsigned int)bits;
+- (void)updatePrinterState:(id)state message:(id)message;
 @end
 
 @implementation lite_printer_t
 
-- (lite_printer_t)initWithBrowseInfo:(id)a3 description:(id)a4
+- (lite_printer_t)initWithBrowseInfo:(id)info description:(id)description
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  descriptionCopy = description;
   v16.receiver = self;
   v16.super_class = lite_printer_t;
   v9 = [(lite_printer_t *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_browseInfo, a3);
-    objc_storeStrong(&v10->_printerDescription, a4);
+    objc_storeStrong(&v9->_browseInfo, info);
+    objc_storeStrong(&v10->_printerDescription, description);
     v11 = +[NSDate date];
     printerDescriptionTime = v10->_printerDescriptionTime;
     v10->_printerDescriptionTime = v11;
@@ -56,28 +56,28 @@
   return v10;
 }
 
-- (void)setReasonsBits:(unsigned int)a3
+- (void)setReasonsBits:(unsigned int)bits
 {
-  if (self->_reasons != a3)
+  if (self->_reasons != bits)
   {
-    self->_reasons = a3;
+    self->_reasons = bits;
     self->_reasons_changed = time(0);
   }
 }
 
-- (void)updatePrinterState:(id)a3 message:(id)a4
+- (void)updatePrinterState:(id)state message:(id)message
 {
-  v6 = a3;
-  objc_storeStrong(&self->_printerStateMessage, a4);
-  v8 = a4;
+  stateCopy = state;
+  objc_storeStrong(&self->_printerStateMessage, message);
+  messageCopy = message;
   printerStateReasons = self->_printerStateReasons;
-  self->_printerStateReasons = v6;
+  self->_printerStateReasons = stateCopy;
 }
 
 - (void)_logInitialization
 {
-  v3 = [(PKPrinterBrowseInfo *)self->_browseInfo txtRecord];
-  if (v3)
+  txtRecord = [(PKPrinterBrowseInfo *)self->_browseInfo txtRecord];
+  if (txtRecord)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -85,18 +85,18 @@
     v17[3] = &unk_100095730;
     v4 = objc_opt_new();
     v18 = v4;
-    [v3 enumerateKeysAndObjectsUsingBlock:v17];
+    [txtRecord enumerateKeysAndObjectsUsingBlock:v17];
     v5 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(lite_printer_t *)self displayName];
-      v7 = v6;
-      v8 = [v6 UTF8String];
+      displayName = [(lite_printer_t *)self displayName];
+      v7 = displayName;
+      uTF8String = [displayName UTF8String];
       v9 = [v4 componentsJoinedByString:@", "];
       *buf = 134218498;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2082;
-      v22 = v8;
+      v22 = uTF8String;
       v23 = 2112;
       v24 = v9;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Printer<%p> %{public}s] init from txt {%@}", buf, 0x20u);
@@ -108,15 +108,15 @@
     v4 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(lite_printer_t *)self displayName];
-      v11 = [v10 UTF8String];
-      v12 = [(PKPrinterDescription *)self->_printerDescription deviceID];
+      displayName2 = [(lite_printer_t *)self displayName];
+      uTF8String2 = [displayName2 UTF8String];
+      deviceID = [(PKPrinterDescription *)self->_printerDescription deviceID];
       *buf = 134218498;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2082;
-      v22 = v11;
+      v22 = uTF8String2;
       v23 = 2112;
-      v24 = v12;
+      v24 = deviceID;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[Printer<%p> %{public}s] init from desc device id {%@}", buf, 0x20u);
     }
   }
@@ -126,14 +126,14 @@
     v4 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(lite_printer_t *)self displayName];
-      v14 = [v13 UTF8String];
+      displayName3 = [(lite_printer_t *)self displayName];
+      uTF8String3 = [displayName3 UTF8String];
       browseInfo = self->_browseInfo;
       printerDescription = self->_printerDescription;
       *buf = 134218754;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2082;
-      v22 = v14;
+      v22 = uTF8String3;
       v23 = 2112;
       v24 = browseInfo;
       v25 = 2112;
@@ -172,11 +172,11 @@
 
 - (id)description
 {
-  v3 = [(lite_printer_t *)self currentJob];
-  if (v3)
+  currentJob = [(lite_printer_t *)self currentJob];
+  if (currentJob)
   {
-    v4 = [(lite_printer_t *)self currentJob];
-    v5 = [v4 description];
+    currentJob2 = [(lite_printer_t *)self currentJob];
+    v5 = [currentJob2 description];
   }
 
   else
@@ -187,21 +187,21 @@
   v10.receiver = self;
   v10.super_class = lite_printer_t;
   v6 = [(lite_printer_t *)&v10 description];
-  v7 = [(lite_printer_t *)self displayName];
-  v8 = [NSString stringWithFormat:@"%@ { '%@', %@ }", v6, v7, v5];
+  displayName = [(lite_printer_t *)self displayName];
+  v8 = [NSString stringWithFormat:@"%@ { '%@', %@ }", v6, displayName, v5];
 
   return v8;
 }
 
-- (void)sendSingleIPPRequest:(const Real_IPP_Message *)a3 session:(id)a4 completionHandler:(id)a5
+- (void)sendSingleIPPRequest:(const Real_IPP_Message *)request session:(id)session completionHandler:(id)handler
 {
-  v17 = a4;
-  v8 = a5;
-  v9 = [a3->var1 op_or_status];
-  v10 = 0;
-  if (v9 > 78)
+  sessionCopy = session;
+  handlerCopy = handler;
+  op_or_status = [request->var1 op_or_status];
+  displayName = 0;
+  if (op_or_status > 78)
   {
-    if (v9 == 79 || v9 == 16386)
+    if (op_or_status == 79 || op_or_status == 16386)
     {
       goto LABEL_10;
     }
@@ -209,32 +209,32 @@
     goto LABEL_9;
   }
 
-  if (v9 != 11 && v9 != 60)
+  if (op_or_status != 11 && op_or_status != 60)
   {
 LABEL_9:
-    v10 = [(lite_printer_t *)self displayName];
+    displayName = [(lite_printer_t *)self displayName];
   }
 
 LABEL_10:
   v12 = [device_http_t alloc];
-  v13 = [(lite_printer_t *)self device_uri];
-  v14 = [v17 ippURL:v13];
-  v15 = [(device_http_t *)v12 initWithSessionURL:v14 displayNameForCertTrust:v10];
+  device_uri = [(lite_printer_t *)self device_uri];
+  v14 = [sessionCopy ippURL:device_uri];
+  v15 = [(device_http_t *)v12 initWithSessionURL:v14 displayNameForCertTrust:displayName];
 
-  v16 = [(lite_printer_t *)self bonjourName];
-  sub_10000DC44(v16, v15);
+  bonjourName = [(lite_printer_t *)self bonjourName];
+  sub_10000DC44(bonjourName, v15);
 
-  [(device_http_t *)v15 sendSingleIPPRequest:a3 completionHandler:v8];
+  [(device_http_t *)v15 sendSingleIPPRequest:request completionHandler:handlerCopy];
 }
 
-- (id)sendSingleIPPRequest:(const Real_IPP_Message *)a3 session:(id)a4
+- (id)sendSingleIPPRequest:(const Real_IPP_Message *)request session:(id)session
 {
-  v6 = a4;
-  v7 = [a3->var1 op_or_status];
-  v8 = 0;
-  if (v7 > 78)
+  sessionCopy = session;
+  op_or_status = [request->var1 op_or_status];
+  displayName = 0;
+  if (op_or_status > 78)
   {
-    if (v7 == 79 || v7 == 16386)
+    if (op_or_status == 79 || op_or_status == 16386)
     {
       goto LABEL_10;
     }
@@ -242,22 +242,22 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if (v7 != 11 && v7 != 60)
+  if (op_or_status != 11 && op_or_status != 60)
   {
 LABEL_9:
-    v8 = [(lite_printer_t *)self displayName];
+    displayName = [(lite_printer_t *)self displayName];
   }
 
 LABEL_10:
   v10 = [device_http_t alloc];
-  v11 = [(lite_printer_t *)self device_uri];
-  v12 = [v6 ippURL:v11];
-  v13 = [(device_http_t *)v10 initWithSessionURL:v12 displayNameForCertTrust:v8];
+  device_uri = [(lite_printer_t *)self device_uri];
+  v12 = [sessionCopy ippURL:device_uri];
+  v13 = [(device_http_t *)v10 initWithSessionURL:v12 displayNameForCertTrust:displayName];
 
-  v14 = [(lite_printer_t *)self bonjourName];
-  sub_10000DC44(v14, v13);
+  bonjourName = [(lite_printer_t *)self bonjourName];
+  sub_10000DC44(bonjourName, v13);
 
-  v15 = [(device_http_t *)v13 sendSingleIPPRequest:a3];
+  v15 = [(device_http_t *)v13 sendSingleIPPRequest:request];
 
   return v15;
 }
@@ -268,21 +268,21 @@ LABEL_10:
   self->_defaultCredentialForPrinter = 0;
 }
 
-+ (id)existingPrinterWithEndpoint:(id)a3
++ (id)existingPrinterWithEndpoint:(id)endpoint
 {
-  v3 = a3;
+  endpointCopy = endpoint;
   liteLockPrinters();
-  v4 = [qword_1000C7B90 objectForKeyedSubscript:v3];
+  v4 = [qword_1000C7B90 objectForKeyedSubscript:endpointCopy];
   pthread_mutex_unlock(&stru_1000C4B60);
 
   return v4;
 }
 
-+ (void)realizePrinterWithResolvedEndpoint:(id)a3 session:(id)a4 completionHandler:(id)a5
++ (void)realizePrinterWithResolvedEndpoint:(id)endpoint session:(id)session completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  endpointCopy = endpoint;
+  sessionCopy = session;
+  handlerCopy = handler;
   if (qword_1000C7B98 != -1)
   {
     sub_100060364();
@@ -293,89 +293,89 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_10000E0C4;
   block[3] = &unk_100095818;
-  v16 = v8;
-  v17 = v9;
-  v15 = v7;
-  v11 = v8;
-  v12 = v9;
-  v13 = v7;
+  v16 = sessionCopy;
+  v17 = handlerCopy;
+  v15 = endpointCopy;
+  v11 = sessionCopy;
+  v12 = handlerCopy;
+  v13 = endpointCopy;
   dispatch_async(v10, block);
 }
 
-+ (void)_startPrinterResolution:(id)a3 session:(id)a4 queue:(id)a5 completionHandler:(id)a6
++ (void)_startPrinterResolution:(id)resolution session:(id)session queue:(id)queue completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 resolvedURL];
-  v14 = [v10 ippURL:v13];
+  resolutionCopy = resolution;
+  sessionCopy = session;
+  queueCopy = queue;
+  handlerCopy = handler;
+  resolvedURL = [resolutionCopy resolvedURL];
+  v14 = [sessionCopy ippURL:resolvedURL];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10000E720;
   v20[3] = &unk_100095908;
-  v15 = v9;
+  v15 = resolutionCopy;
   v21 = v15;
-  v16 = v11;
+  v16 = queueCopy;
   v22 = v16;
-  v17 = v12;
+  v17 = handlerCopy;
   v25 = v17;
-  v18 = v10;
+  v18 = sessionCopy;
   v23 = v18;
   v24 = v14;
   v19 = v14;
   [device_http_t deviceHTTPForSessionURL:v19 completionHandler:v20];
 }
 
-+ (void)withLitePrinterForSessionEndpoint:(id)a3 completionHandler:(id)a4
++ (void)withLitePrinterForSessionEndpoint:(id)endpoint completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 endpoint];
+  endpointCopy = endpoint;
+  handlerCopy = handler;
+  endpoint = [endpointCopy endpoint];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000F450;
   v11[3] = &unk_100095930;
-  v9 = v7;
+  v9 = handlerCopy;
   v13 = v9;
-  v14 = a1;
-  v10 = v6;
+  selfCopy = self;
+  v10 = endpointCopy;
   v12 = v10;
-  [v8 resolveWithinPrinterToolWithTimeout:v11 completionHandler:30.0];
+  [endpoint resolveWithinPrinterToolWithTimeout:v11 completionHandler:30.0];
 }
 
 - (NSString)displayName
 {
-  v2 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
-  v3 = [v2 displayNameForPrintKitUI];
+  bonjourName = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+  displayNameForPrintKitUI = [bonjourName displayNameForPrintKitUI];
 
-  return v3;
+  return displayNameForPrintKitUI;
 }
 
-- (void)identifyPrinterWithSession:(id)a3 message:(id)a4 actions:(id)a5
+- (void)identifyPrinterWithSession:(id)session message:(id)message actions:(id)actions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(lite_printer_t *)self device_uri];
-  v12 = [v8 ippURL:v11];
+  sessionCopy = session;
+  messageCopy = message;
+  actionsCopy = actions;
+  device_uri = [(lite_printer_t *)self device_uri];
+  v12 = [sessionCopy ippURL:device_uri];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000F7D8;
   v15[3] = &unk_100095958;
   v15[4] = self;
-  v13 = v9;
+  v13 = messageCopy;
   v16 = v13;
-  v14 = v10;
+  v14 = actionsCopy;
   v17 = v14;
   [device_http_t deviceHTTPForSessionURL:v12 completionHandler:v15];
 }
 
-- (void)checkAccessWithSession:(id)a3 completionHandler:(id)a4
+- (void)checkAccessWithSession:(id)session completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   printerOperationQueue = self->_printerOperationQueue;
   v11[0] = _NSConcreteStackBlock;
@@ -383,26 +383,26 @@ LABEL_10:
   v11[2] = sub_10000FA24;
   v11[3] = &unk_100095980;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
+  v12 = sessionCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = sessionCopy;
+  v10 = handlerCopy;
   [(NSOperationQueue *)printerOperationQueue addOperationWithBlock:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)refreshCurrentDescriptionForSession:(id)a3 completionHandler:(id)a4
+- (void)refreshCurrentDescriptionForSession:(id)session completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  sessionCopy = session;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   printerDescription = self->_printerDescription;
   if (printerDescription)
   {
-    (*(v7 + 2))(v7, printerDescription, self->_browseInfo);
+    (*(handlerCopy + 2))(handlerCopy, printerDescription, self->_browseInfo);
     v10 = +[NSDate date];
     [v10 timeIntervalSinceDate:self->_printerDescriptionTime];
     if (v11 > 5.0)
@@ -410,11 +410,11 @@ LABEL_10:
       v12 = _PKLogCategory(PKLogCategoryProgress[0]);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(lite_printer_t *)self displayName];
+        displayName = [(lite_printer_t *)self displayName];
         v16 = 134218242;
-        v17 = self;
+        selfCopy = self;
         v18 = 2082;
-        v19 = [v13 UTF8String];
+        uTF8String = [displayName UTF8String];
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[Printer<%p> %{public}s] refreshing printer description after timeout", &v16, 0x16u);
       }
 
@@ -422,29 +422,29 @@ LABEL_10:
       printerDescriptionTime = self->_printerDescriptionTime;
       self->_printerDescriptionTime = v14;
 
-      [(lite_printer_t *)self forceRefreshCurrentDescriptionForSession:v6 completionHandler:0];
+      [(lite_printer_t *)self forceRefreshCurrentDescriptionForSession:sessionCopy completionHandler:0];
     }
   }
 
   else
   {
-    [(lite_printer_t *)self forceRefreshCurrentDescriptionForSession:v6 completionHandler:v7];
+    [(lite_printer_t *)self forceRefreshCurrentDescriptionForSession:sessionCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)forceRefreshCurrentDescriptionForSession:(id)a3 completionHandler:(id)a4
+- (void)forceRefreshCurrentDescriptionForSession:(id)session completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   sub_100010D5C(v7, 0xBu, @"forceRefreshCurrentDescriptionForSession");
 }
 
-- (void)_updateDescPrinterDescription:(id)a3
+- (void)_updateDescPrinterDescription:(id)description
 {
-  v7 = a3;
-  if (v7)
+  descriptionCopy = description;
+  if (descriptionCopy)
   {
-    objc_storeStrong(&self->_printerDescription, a3);
+    objc_storeStrong(&self->_printerDescription, description);
   }
 
   v5 = +[NSDate date];

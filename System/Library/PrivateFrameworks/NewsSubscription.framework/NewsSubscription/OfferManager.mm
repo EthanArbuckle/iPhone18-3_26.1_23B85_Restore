@@ -1,8 +1,8 @@
 @interface OfferManager
 - (_TtC16NewsSubscription12OfferManager)init;
-- (void)bundleSubscriptionDidExpire:(id)a3;
-- (void)bundleSubscriptionDidSubscribe:(id)a3;
-- (void)networkReachabilityDidChange:(id)a3;
+- (void)bundleSubscriptionDidExpire:(id)expire;
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe;
+- (void)networkReachabilityDidChange:(id)change;
 @end
 
 @implementation OfferManager
@@ -14,25 +14,25 @@
   return result;
 }
 
-- (void)networkReachabilityDidChange:(id)a3
+- (void)networkReachabilityDidChange:(id)change
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1D77E4ECC(a3);
+  selfCopy = self;
+  sub_1D77E4ECC(change);
   swift_unknownObjectRelease();
 }
 
-- (void)bundleSubscriptionDidSubscribe:(id)a3
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe
 {
-  v4 = a3;
-  v5 = self;
+  subscribeCopy = subscribe;
+  selfCopy = self;
   sub_1D77E5B28();
 }
 
-- (void)bundleSubscriptionDidExpire:(id)a3
+- (void)bundleSubscriptionDidExpire:(id)expire
 {
-  v4 = a3;
-  v5 = self;
+  expireCopy = expire;
+  selfCopy = self;
   sub_1D77E5CB0();
 }
 

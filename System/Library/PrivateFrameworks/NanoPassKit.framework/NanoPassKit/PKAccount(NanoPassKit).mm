@@ -7,13 +7,13 @@
 - (uint64_t)npkShouldShowSavingsAccountInfo
 {
   v26 = *MEMORY[0x277D85DE8];
-  v2 = [a1 state];
-  if (v2 > 5)
+  state = [self state];
+  if (state > 5)
   {
     goto LABEL_8;
   }
 
-  if (((1 << v2) & 0x31) != 0)
+  if (((1 << state) & 0x31) != 0)
   {
     v3 = pk_General_log();
     v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT);
@@ -30,7 +30,7 @@ LABEL_7:
 
       v6 = objc_opt_class();
       v7 = v6;
-      [a1 state];
+      [self state];
       v8 = PKAccountStateToString();
       v9 = NSStringFromBOOL();
       v18 = 138412802;
@@ -48,7 +48,7 @@ LABEL_6:
 
   else
   {
-    if ((1 << v2) & 6) != 0 || ([a1 supportsOneTimeDeposit] & 1) != 0 || (objc_msgSend(a1, "supportsOneTimeWithdrawal"))
+    if ((1 << state) & 6) != 0 || ([self supportsOneTimeDeposit] & 1) != 0 || (objc_msgSend(self, "supportsOneTimeWithdrawal"))
     {
       result = 1;
       goto LABEL_11;
@@ -67,11 +67,11 @@ LABEL_6:
 
       v14 = objc_opt_class();
       v7 = v14;
-      [a1 state];
+      [self state];
       v15 = PKAccountStateToString();
-      [a1 supportsOneTimeDeposit];
+      [self supportsOneTimeDeposit];
       v16 = NSStringFromBOOL();
-      [a1 supportsOneTimeWithdrawal];
+      [self supportsOneTimeWithdrawal];
       v17 = NSStringFromBOOL();
       v18 = 138413058;
       v19 = v14;

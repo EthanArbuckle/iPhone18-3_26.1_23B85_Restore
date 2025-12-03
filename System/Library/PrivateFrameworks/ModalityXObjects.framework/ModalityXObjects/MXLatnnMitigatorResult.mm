@@ -1,21 +1,21 @@
 @interface MXLatnnMitigatorResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasProcessed:(BOOL)a3;
-- (void)setHasThreshold:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasProcessed:(BOOL)processed;
+- (void)setHasThreshold:(BOOL)threshold;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXLatnnMitigatorResult
 
-- (void)setHasProcessed:(BOOL)a3
+- (void)setHasProcessed:(BOOL)processed
 {
-  if (a3)
+  if (processed)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasThreshold:(BOOL)a3
+- (void)setHasThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 2;
   }
@@ -49,32 +49,32 @@
   v8.receiver = self;
   v8.super_class = MXLatnnMitigatorResult;
   v4 = [(MXLatnnMitigatorResult *)&v8 description];
-  v5 = [(MXLatnnMitigatorResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXLatnnMitigatorResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_processed];
-    [v3 setObject:v4 forKey:@"processed"];
+    [dictionary setObject:v4 forKey:@"processed"];
   }
 
   version = self->_version;
   if (version)
   {
-    [v3 setObject:version forKey:@"version"];
+    [dictionary setObject:version forKey:@"version"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_threshold];
-    [v3 setObject:v7 forKey:@"threshold"];
+    [dictionary setObject:v7 forKey:@"threshold"];
 
     has = self->_has;
   }
@@ -82,15 +82,15 @@
   if (has)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_score];
-    [v3 setObject:v8 forKey:@"score"];
+    [dictionary setObject:v8 forKey:@"score"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     processed = self->_processed;
@@ -117,40 +117,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[32] = self->_processed;
-    v4[36] |= 4u;
+    toCopy[32] = self->_processed;
+    toCopy[36] |= 4u;
   }
 
   if (self->_version)
   {
-    v6 = v4;
-    [v4 setVersion:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setVersion:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_threshold;
-    v4[36] |= 2u;
+    *(toCopy + 2) = *&self->_threshold;
+    toCopy[36] |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_score;
-    v4[36] |= 1u;
+    *(toCopy + 1) = *&self->_score;
+    toCopy[36] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -158,7 +158,7 @@
     *(v5 + 36) |= 4u;
   }
 
-  v7 = [(NSString *)self->_version copyWithZone:a3];
+  v7 = [(NSString *)self->_version copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
@@ -179,45 +179,45 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0)
+    if ((*(equalCopy + 36) & 4) == 0)
     {
       goto LABEL_21;
     }
 
-    v8 = *(v4 + 32);
+    v8 = *(equalCopy + 32);
     if (self->_processed)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   version = self->_version;
-  if (!(version | *(v4 + 3)))
+  if (!(version | *(equalCopy + 3)))
   {
     goto LABEL_7;
   }
@@ -233,21 +233,21 @@ LABEL_21:
 LABEL_7:
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_threshold != *(v4 + 2))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_threshold != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_21;
   }
 
-  v9 = (*(v4 + 36) & 1) == 0;
+  v9 = (*(equalCopy + 36) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_score != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_score != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
@@ -343,33 +343,33 @@ LABEL_22:
   return v4 ^ v3 ^ v7 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 36) & 4) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 36) & 4) != 0)
   {
-    self->_processed = *(v4 + 32);
+    self->_processed = *(fromCopy + 32);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(MXLatnnMitigatorResult *)self setVersion:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_threshold = *(v4 + 2);
+    self->_threshold = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if (v5)
   {
-    self->_score = *(v4 + 1);
+    self->_score = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

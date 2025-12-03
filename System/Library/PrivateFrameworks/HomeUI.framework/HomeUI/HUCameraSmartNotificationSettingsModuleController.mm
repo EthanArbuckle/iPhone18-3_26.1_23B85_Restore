@@ -1,26 +1,26 @@
 @interface HUCameraSmartNotificationSettingsModuleController
-+ (BOOL)shouldDisplayAlertForItem:(id)a3 withSmartDetectionModule:(id)a4 forProfile:(id)a5;
-- (BOOL)canEnableNotificationForItem:(id)a3;
-- (Class)cellClassForItem:(id)a3;
-- (HUCameraSmartNotificationSettingsModuleController)initWithModule:(id)a3;
++ (BOOL)shouldDisplayAlertForItem:(id)item withSmartDetectionModule:(id)module forProfile:(id)profile;
+- (BOOL)canEnableNotificationForItem:(id)item;
+- (Class)cellClassForItem:(id)item;
+- (HUCameraSmartNotificationSettingsModuleController)initWithModule:(id)module;
 - (HUCameraSmartNotificationSettingsModuleControllerDelegate)delegate;
-- (id)alertMessageForEventType:(unint64_t)a3;
-- (id)alertTitleForEventType:(unint64_t)a3;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)displayAlertForItemCell:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
-- (void)updateNotificationSettingForItem:(id)a3;
+- (id)alertMessageForEventType:(unint64_t)type;
+- (id)alertTitleForEventType:(unint64_t)type;
+- (unint64_t)didSelectItem:(id)item;
+- (void)displayAlertForItemCell:(id)cell;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
+- (void)updateNotificationSettingForItem:(id)item;
 @end
 
 @implementation HUCameraSmartNotificationSettingsModuleController
 
-- (HUCameraSmartNotificationSettingsModuleController)initWithModule:(id)a3
+- (HUCameraSmartNotificationSettingsModuleController)initWithModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = moduleCopy;
   if (!v6)
   {
     goto LABEL_7;
@@ -39,9 +39,9 @@
   v8 = v6;
   if (!v7)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
 
 LABEL_7:
     v8 = 0;
@@ -65,10 +65,10 @@ LABEL_7:
     v6 = v13;
     if (!v14)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
       v19 = NSStringFromProtocol(v11);
-      [v17 handleFailureInFunction:v18 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v19}];
+      [currentHandler2 handleFailureInFunction:v18 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v19}];
 
       v6 = 0;
     }
@@ -81,11 +81,11 @@ LABEL_7:
   return v15;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 isItemHeader:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v6 = [module isItemHeader:itemCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -98,26 +98,26 @@ LABEL_7:
   return v7;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v22.receiver = self;
   v22.super_class = HUCameraSmartNotificationSettingsModuleController;
-  [(HUItemModuleController *)&v22 setupCell:v6 forItem:v7];
+  [(HUItemModuleController *)&v22 setupCell:cellCopy forItem:itemCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setValueColorFollowsTintColor:1];
+    [cellCopy setValueColorFollowsTintColor:1];
   }
 
-  v8 = [v7 latestResults];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13E88]];
+  latestResults = [itemCopy latestResults];
+  v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E88]];
 
   if (v9)
   {
     objc_opt_class();
-    v10 = v6;
+    v10 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -130,19 +130,19 @@ LABEL_7:
 
     v12 = v11;
 
-    v13 = [v12 imageView];
-    [v13 setContentMode:5];
+    imageView = [v12 imageView];
+    [imageView setContentMode:5];
 
     [v12 setImageViewRecommendedSize:{50.0, 50.0}];
   }
 
-  v14 = [(HUItemModuleController *)self module];
-  v15 = [v14 isItemHeader:v7];
+  module = [(HUItemModuleController *)self module];
+  v15 = [module isItemHeader:itemCopy];
 
   if ((v15 & 1) == 0)
   {
     objc_opt_class();
-    v16 = v6;
+    v16 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v17 = v16;
@@ -159,7 +159,7 @@ LABEL_7:
   }
 
   objc_opt_class();
-  v19 = v6;
+  v19 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v20 = v19;
@@ -178,17 +178,17 @@ LABEL_7:
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v12.receiver = self;
   v12.super_class = HUCameraSmartNotificationSettingsModuleController;
-  v7 = a4;
-  v8 = a3;
-  [(HUItemModuleController *)&v12 updateCell:v8 forItem:v7 animated:v5];
-  v9 = [v7 latestResults];
+  itemCopy = item;
+  cellCopy = cell;
+  [(HUItemModuleController *)&v12 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
+  latestResults = [itemCopy latestResults];
 
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
   if ([v10 BOOLValue])
   {
     v11 = 3;
@@ -199,32 +199,32 @@ LABEL_7:
     v11 = 0;
   }
 
-  [v8 setAccessoryType:v11];
+  [cellCopy setAccessoryType:v11];
 }
 
-+ (BOOL)shouldDisplayAlertForItem:(id)a3 withSmartDetectionModule:(id)a4 forProfile:(id)a5
++ (BOOL)shouldDisplayAlertForItem:(id)item withSmartDetectionModule:(id)module forProfile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 hf_cameraIsNotSetToRecord];
-  v10 = [v8 specificMotionDetectedItem];
-  if (([v7 isEqual:v10] & 1) == 0)
+  itemCopy = item;
+  moduleCopy = module;
+  hf_cameraIsNotSetToRecord = [profile hf_cameraIsNotSetToRecord];
+  specificMotionDetectedItem = [moduleCopy specificMotionDetectedItem];
+  if (([itemCopy isEqual:specificMotionDetectedItem] & 1) == 0)
   {
-    v11 = [v8 aClipIsRecordedItem];
-    v9 &= [v7 isEqual:v11];
+    aClipIsRecordedItem = [moduleCopy aClipIsRecordedItem];
+    hf_cameraIsNotSetToRecord &= [itemCopy isEqual:aClipIsRecordedItem];
   }
 
-  return v9;
+  return hf_cameraIsNotSetToRecord;
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -234,24 +234,24 @@ LABEL_7:
 
   v7 = v6;
 
-  v8 = [(HUItemModuleController *)self module];
+  module2 = [(HUItemModuleController *)self module];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
     if (_os_feature_enabled_impl())
     {
-      v10 = [(HUItemModuleController *)self module];
-      v11 = [v10 didSelectItem:v4];
+      module3 = [(HUItemModuleController *)self module];
+      v11 = [module3 didSelectItem:itemCopy];
 
-      v12 = [(HUCameraSmartNotificationSettingsModuleController *)self delegate];
+      delegate = [(HUCameraSmartNotificationSettingsModuleController *)self delegate];
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
       {
-        v14 = [(HUCameraSmartNotificationSettingsModuleController *)self delegate];
-        v15 = [v7 conditionCollection];
-        [v14 smartNotificationSettingsModuleController:self didUpdateConditionCollection:v15];
+        delegate2 = [(HUCameraSmartNotificationSettingsModuleController *)self delegate];
+        conditionCollection = [v7 conditionCollection];
+        [delegate2 smartNotificationSettingsModuleController:self didUpdateConditionCollection:conditionCollection];
       }
     }
 
@@ -264,15 +264,15 @@ LABEL_7:
       aBlock[3] = &unk_277DBBF90;
       objc_copyWeak(&v41, &location);
       v16 = _Block_copy(aBlock);
-      v17 = [v7 cameraProfiles];
-      v18 = [v17 anyObject];
-      v19 = [HUCameraSmartNotificationSettingsModuleController shouldDisplayAlertForItem:v4 withSmartDetectionModule:v7 forProfile:v18];
+      cameraProfiles = [v7 cameraProfiles];
+      anyObject = [cameraProfiles anyObject];
+      v19 = [HUCameraSmartNotificationSettingsModuleController shouldDisplayAlertForItem:itemCopy withSmartDetectionModule:v7 forProfile:anyObject];
 
       if (v19)
       {
-        v20 = [MEMORY[0x277D146E8] sharedDispatcher];
-        v21 = [v20 home];
-        if ([v21 hf_currentUserIsOwner])
+        mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+        home = [mEMORY[0x277D146E8] home];
+        if ([home hf_currentUserIsOwner])
         {
           v22 = @"HUCameraStatusAndNotificationsSmartAlertDescription_Owner";
         }
@@ -295,19 +295,19 @@ LABEL_7:
         v36 = __67__HUCameraSmartNotificationSettingsModuleController_didSelectItem___block_invoke_2;
         v37 = &unk_277DBBA48;
         v39 = v16;
-        v38 = v4;
+        v38 = itemCopy;
         v29 = [v27 actionWithTitle:v28 style:0 handler:&v34];
         [v26 addAction:{v29, v34, v35, v36, v37}];
 
         v30 = [HUViewControllerPresentationRequest requestWithViewController:v26];
         [v30 setPreferredPresentationType:0];
-        v31 = [(HUItemModuleController *)self host];
-        v32 = [v31 moduleController:self presentViewControllerForRequest:v30];
+        host = [(HUItemModuleController *)self host];
+        v32 = [host moduleController:self presentViewControllerForRequest:v30];
       }
 
       else
       {
-        (*(v16 + 2))(v16, v4);
+        (*(v16 + 2))(v16, itemCopy);
       }
 
       objc_destroyWeak(&v41);
@@ -352,12 +352,12 @@ void __67__HUCameraSmartNotificationSettingsModuleController_didSelectItem___blo
   }
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
-  v10 = v6;
-  if (v4 && ([v6 item], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[HUCameraSmartNotificationSettingsModuleController canEnableNotificationForItem:](self, "canEnableNotificationForItem:", v7), v7, v6 = v10, !v8))
+  onCopy = on;
+  cellCopy = cell;
+  v10 = cellCopy;
+  if (onCopy && ([cellCopy item], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[HUCameraSmartNotificationSettingsModuleController canEnableNotificationForItem:](self, "canEnableNotificationForItem:", v7), v7, cellCopy = v10, !v8))
   {
     [v10 setOn:0 animated:1];
     [(HUCameraSmartNotificationSettingsModuleController *)self displayAlertForItemCell:v10];
@@ -365,19 +365,19 @@ void __67__HUCameraSmartNotificationSettingsModuleController_didSelectItem___blo
 
   else
   {
-    v9 = [v6 item];
-    [(HUCameraSmartNotificationSettingsModuleController *)self updateNotificationSettingForItem:v9];
+    item = [cellCopy item];
+    [(HUCameraSmartNotificationSettingsModuleController *)self updateNotificationSettingForItem:item];
   }
 }
 
-- (void)updateNotificationSettingForItem:(id)a3
+- (void)updateNotificationSettingForItem:(id)item
 {
-  v18 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -387,32 +387,32 @@ void __67__HUCameraSmartNotificationSettingsModuleController_didSelectItem___blo
 
   v7 = v6;
 
-  v8 = [v7 updateMotionDetectionSettingForItem:v18];
-  v9 = [(HUCameraSmartNotificationSettingsModuleController *)self delegate];
+  v8 = [v7 updateMotionDetectionSettingForItem:itemCopy];
+  delegate = [(HUCameraSmartNotificationSettingsModuleController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(HUCameraSmartNotificationSettingsModuleController *)self delegate];
-    v12 = [v7 conditionCollection];
-    [v11 smartNotificationSettingsModuleController:self didUpdateConditionCollection:v12];
+    delegate2 = [(HUCameraSmartNotificationSettingsModuleController *)self delegate];
+    conditionCollection = [v7 conditionCollection];
+    [delegate2 smartNotificationSettingsModuleController:self didUpdateConditionCollection:conditionCollection];
   }
 
-  v13 = [v7 itemUpdater];
+  itemUpdater = [v7 itemUpdater];
   v14 = MEMORY[0x277D14788];
-  v15 = [v7 itemProviders];
-  v16 = [v14 requestToReloadItemProviders:v15 senderSelector:a2];
-  v17 = [v13 performItemUpdateRequest:v16];
+  itemProviders = [v7 itemProviders];
+  v16 = [v14 requestToReloadItemProviders:itemProviders senderSelector:a2];
+  v17 = [itemUpdater performItemUpdateRequest:v16];
 }
 
-- (BOOL)canEnableNotificationForItem:(id)a3
+- (BOOL)canEnableNotificationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -423,9 +423,9 @@ void __67__HUCameraSmartNotificationSettingsModuleController_didSelectItem___blo
   v7 = v6;
 
   objc_opt_class();
-  v8 = [v4 latestResults];
+  latestResults = [itemCopy latestResults];
 
-  v9 = [v8 objectForKeyedSubscript:@"HUCameraSettingResultKey"];
+  v9 = [latestResults objectForKeyedSubscript:@"HUCameraSettingResultKey"];
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -438,22 +438,22 @@ void __67__HUCameraSmartNotificationSettingsModuleController_didSelectItem___blo
 
   v11 = v10;
 
-  v12 = [v7 cameraProfiles];
-  v13 = [v12 anyObject];
-  v14 = [v13 userSettings];
-  v15 = [v14 recordingEventTriggers];
-  LOBYTE(v15) = ([v11 eventTypes] & v15) != 0;
+  cameraProfiles = [v7 cameraProfiles];
+  anyObject = [cameraProfiles anyObject];
+  userSettings = [anyObject userSettings];
+  recordingEventTriggers = [userSettings recordingEventTriggers];
+  LOBYTE(recordingEventTriggers) = ([v11 eventTypes] & recordingEventTriggers) != 0;
 
-  return v15;
+  return recordingEventTriggers;
 }
 
-- (void)displayAlertForItemCell:(id)a3
+- (void)displayAlertForItemCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 item];
+  cellCopy = cell;
+  item = [cellCopy item];
   objc_opt_class();
-  v6 = [v5 latestResults];
-  v7 = [v6 objectForKeyedSubscript:@"HUCameraSettingResultKey"];
+  latestResults = [item latestResults];
+  v7 = [latestResults objectForKeyedSubscript:@"HUCameraSettingResultKey"];
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -466,9 +466,9 @@ void __67__HUCameraSmartNotificationSettingsModuleController_didSelectItem___blo
 
   v9 = v8;
 
-  v10 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v11 = [v10 home];
-  if ([v11 hf_currentUserIsOwner])
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  home = [mEMORY[0x277D146E8] home];
+  if ([home hf_currentUserIsOwner])
   {
     -[HUCameraSmartNotificationSettingsModuleController alertMessageForEventType:](self, "alertMessageForEventType:", [v9 eventTypes]);
   }
@@ -493,9 +493,9 @@ void __67__HUCameraSmartNotificationSettingsModuleController_didSelectItem___blo
   objc_copyWeak(&v32, &location);
   v18 = v9;
   v29 = v18;
-  v19 = v4;
+  v19 = cellCopy;
   v30 = v19;
-  v20 = v5;
+  v20 = item;
   v31 = v20;
   v21 = [v16 actionWithTitle:v17 style:0 handler:v28];
   [v15 addAction:v21];
@@ -507,8 +507,8 @@ void __67__HUCameraSmartNotificationSettingsModuleController_didSelectItem___blo
 
   v25 = [HUViewControllerPresentationRequest requestWithViewController:v15];
   [v25 setPreferredPresentationType:0];
-  v26 = [(HUItemModuleController *)self host];
-  v27 = [v26 moduleController:self presentViewControllerForRequest:v25];
+  host = [(HUItemModuleController *)self host];
+  v27 = [host moduleController:self presentViewControllerForRequest:v25];
 
   objc_destroyWeak(&v32);
   objc_destroyWeak(&location);
@@ -588,9 +588,9 @@ void __77__HUCameraSmartNotificationSettingsModuleController_displayAlertForItem
   }
 }
 
-- (id)alertTitleForEventType:(unint64_t)a3
+- (id)alertTitleForEventType:(unint64_t)type
 {
-  v4 = __ROR8__(a3 - 2, 1);
+  v4 = __ROR8__(type - 2, 1);
   if (v4 <= 7 && ((0x8Bu >> v4) & 1) != 0)
   {
     v5 = _HULocalizedStringWithDefaultValue(off_277DBC000[v4], off_277DBC000[v4], 1);
@@ -604,9 +604,9 @@ void __77__HUCameraSmartNotificationSettingsModuleController_displayAlertForItem
   return v5;
 }
 
-- (id)alertMessageForEventType:(unint64_t)a3
+- (id)alertMessageForEventType:(unint64_t)type
 {
-  v4 = __ROR8__(a3 - 2, 1);
+  v4 = __ROR8__(type - 2, 1);
   if (v4 <= 7 && ((0x8Bu >> v4) & 1) != 0)
   {
     v5 = _HULocalizedStringWithDefaultValue(off_277DBC040[v4], off_277DBC040[v4], 1);

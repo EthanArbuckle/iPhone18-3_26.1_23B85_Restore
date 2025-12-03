@@ -1,9 +1,9 @@
 @interface PXRelaxedScreenEdgePanGestureRecognizer
-- (PXRelaxedScreenEdgePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (PXRelaxedScreenEdgePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (UIEdgeInsets)edgeAllowances;
-- (double)translationDistanceInView:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (double)translationDistanceInView:(id)view;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation PXRelaxedScreenEdgePanGestureRecognizer
@@ -21,26 +21,26 @@
   return result;
 }
 
-- (double)translationDistanceInView:(id)a3
+- (double)translationDistanceInView:(id)view
 {
-  [(PXRelaxedScreenEdgePanGestureRecognizer *)self translationInView:a3];
+  [(PXRelaxedScreenEdgePanGestureRecognizer *)self translationInView:view];
 
   return hypot(v3, v4);
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   if (![(PXRelaxedScreenEdgePanGestureRecognizer *)self state])
   {
-    v21 = v7;
+    v21 = eventCopy;
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v6;
+    v8 = movedCopy;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
@@ -56,8 +56,8 @@
           }
 
           v13 = *(*(&v23 + 1) + 8 * i);
-          v14 = [(PXRelaxedScreenEdgePanGestureRecognizer *)self view];
-          [v13 locationInView:v14];
+          view = [(PXRelaxedScreenEdgePanGestureRecognizer *)self view];
+          [v13 locationInView:view];
           v16 = v15;
           v18 = v17;
 
@@ -76,22 +76,22 @@
       while (v10);
     }
 
-    v7 = v21;
+    eventCopy = v21;
   }
 
   v22.receiver = self;
   v22.super_class = PXRelaxedScreenEdgePanGestureRecognizer;
-  [(PXRelaxedScreenEdgePanGestureRecognizer *)&v22 touchesMoved:v6 withEvent:v7];
+  [(PXRelaxedScreenEdgePanGestureRecognizer *)&v22 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXRelaxedScreenEdgePanGestureRecognizer *)self view];
-  v9 = [v8 window];
-  [v9 screen];
+  beganCopy = began;
+  eventCopy = event;
+  view = [(PXRelaxedScreenEdgePanGestureRecognizer *)self view];
+  window = [view window];
+  [window screen];
   objc_claimAutoreleasedReturnValue();
 
   [(PXRelaxedScreenEdgePanGestureRecognizer *)self edgeAllowances];
@@ -99,11 +99,11 @@
   sub_1A524D1D4();
 }
 
-- (PXRelaxedScreenEdgePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (PXRelaxedScreenEdgePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = PXRelaxedScreenEdgePanGestureRecognizer;
-  if ([(PXRelaxedScreenEdgePanGestureRecognizer *)&v5 initWithTarget:a3 action:a4])
+  if ([(PXRelaxedScreenEdgePanGestureRecognizer *)&v5 initWithTarget:target action:action])
   {
     PXEdgeInsetsMake();
   }

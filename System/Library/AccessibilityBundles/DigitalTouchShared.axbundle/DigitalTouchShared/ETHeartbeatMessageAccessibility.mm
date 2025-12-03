@@ -1,17 +1,17 @@
 @interface ETHeartbeatMessageAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)stopPlaying;
 @end
 
 @implementation ETHeartbeatMessageAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ETHeartbeatMessage"];
-  [v3 validateClass:@"ETHeartbeatMessage" isKindOfClass:@"ETMessage"];
-  [v3 validateClass:@"ETHeartbeatMessage" hasInstanceMethod:@"_displayInScene: useDuration: fastStart:" withFullSignature:{"v", "@", "B", "B", 0}];
-  [v3 validateClass:@"ETHeartbeatMessage" hasInstanceMethod:@"stopPlaying" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ETHeartbeatMessage"];
+  [validationsCopy validateClass:@"ETHeartbeatMessage" isKindOfClass:@"ETMessage"];
+  [validationsCopy validateClass:@"ETHeartbeatMessage" hasInstanceMethod:@"_displayInScene: useDuration: fastStart:" withFullSignature:{"v", "@", "B", "B", 0}];
+  [validationsCopy validateClass:@"ETHeartbeatMessage" hasInstanceMethod:@"stopPlaying" withFullSignature:{"v", 0}];
 }
 
 uint64_t __73__ETHeartbeatMessageAccessibility__displayInScene_useDuration_fastStart___block_invoke(uint64_t a1)

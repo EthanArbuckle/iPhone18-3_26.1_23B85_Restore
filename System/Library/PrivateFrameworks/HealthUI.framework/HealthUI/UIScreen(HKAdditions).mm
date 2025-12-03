@@ -7,11 +7,11 @@
 
 + (BOOL)hk_currentDeviceHasDisplayZoomedEnabled
 {
-  v2 = [a1 mainScreen];
-  [v2 scale];
+  mainScreen = [self mainScreen];
+  [mainScreen scale];
   v4 = v3;
-  v5 = [a1 mainScreen];
-  [v5 nativeScale];
+  mainScreen2 = [self mainScreen];
+  [mainScreen2 nativeScale];
   v7 = v4 < v6;
 
   return v7;
@@ -19,11 +19,11 @@
 
 + (int64_t)_screenHeightSizeClassForCurrentDevice
 {
-  v2 = [a1 mainScreen];
-  [v2 nativeBounds];
+  mainScreen = [self mainScreen];
+  [mainScreen nativeBounds];
   v4 = v3;
-  v5 = [a1 mainScreen];
-  [v5 scale];
+  mainScreen2 = [self mainScreen];
+  [mainScreen2 scale];
   v7 = [HKScreenHeightSizeClassUtilities screenHeightSizeClassForHeight:v4 scale:v6];
 
   return v7;

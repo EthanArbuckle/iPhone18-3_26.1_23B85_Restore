@@ -1,15 +1,15 @@
 @interface PKPaymentOfferWebServiceRewardsBalancesRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKPaymentOfferWebServiceRewardsBalancesRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaymentOfferWebServiceRewardsBalancesRequest *)self baseURL];
-  if (!v5)
+  informationCopy = information;
+  baseURL = [(PKPaymentOfferWebServiceRewardsBalancesRequest *)self baseURL];
+  if (!baseURL)
   {
     v7 = PKLogFacilityTypeGetObject(7uLL);
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -63,20 +63,20 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (v4)
+  if (informationCopy)
   {
     v18[0] = @"rewards";
     v18[1] = @"balances";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-    v7 = [(PKPaymentOfferWebServiceRequest *)self _murlRequestWithServiceURL:v5 endpointComponents:v6 queryParameters:0 appleAccountInformation:v4];
+    v7 = [(PKPaymentOfferWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v6 queryParameters:0 appleAccountInformation:informationCopy];
 
     [v7 setHTTPMethod:@"POST"];
     [v7 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v8 setObject:self->_fpanIdentifier forKeyedSubscript:@"fpanIdentifier"];
     [v8 setObject:self->_criteriaIdentifier forKeyedSubscript:@"criteriaIdentifier"];
-    v9 = [(PKPaymentOffersSessionDetails *)self->_sessionDetails httpDictionaryRepresentation];
-    [v8 setObject:v9 forKeyedSubscript:@"sessionDetails"];
+    httpDictionaryRepresentation = [(PKPaymentOffersSessionDetails *)self->_sessionDetails httpDictionaryRepresentation];
+    [v8 setObject:httpDictionaryRepresentation forKeyedSubscript:@"sessionDetails"];
 
     v10 = [objc_opt_class() _HTTPBodyWithDictionary:v8];
     [v7 setHTTPBody:v10];

@@ -1,48 +1,48 @@
 @interface EMBordersProperty
-- (BOOL)hasSameColorsAs:(id)a3;
-- (BOOL)hasSameStylesAs:(id)a3;
-- (BOOL)hasSameWidthsAs:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (EMBordersProperty)initWithEDBorders:(id)a3;
-- (EMBordersProperty)initWithOADStroke:(id)a3;
+- (BOOL)hasSameColorsAs:(id)as;
+- (BOOL)hasSameStylesAs:(id)as;
+- (BOOL)hasSameWidthsAs:(id)as;
+- (BOOL)isEqual:(id)equal;
+- (EMBordersProperty)initWithEDBorders:(id)borders;
+- (EMBordersProperty)initWithOADStroke:(id)stroke;
 - (id)colorString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)cssString;
-- (id)cssStringForName:(id)a3;
-- (id)stringFromColor:(id)a3;
-- (id)stringFromStyleEnum:(int)a3;
-- (id)stringFromWidthEnum:(int)a3;
+- (id)cssStringForName:(id)name;
+- (id)stringFromColor:(id)color;
+- (id)stringFromStyleEnum:(int)enum;
+- (id)stringFromWidthEnum:(int)enum;
 - (id)styleHashNumber;
 - (id)styleString;
 - (id)widthHashNumber;
 - (id)widthString;
-- (void)setBorderStyleAndWidth:(int)a3 location:(unsigned int)a4;
-- (void)setNoneAtLocation:(int)a3;
+- (void)setBorderStyleAndWidth:(int)width location:(unsigned int)location;
+- (void)setNoneAtLocation:(int)location;
 @end
 
 @implementation EMBordersProperty
 
 - (id)cssString
 {
-  v3 = [(EMBordersProperty *)self styleString];
-  v4 = [(EMBordersProperty *)self widthString];
-  v5 = [(EMBordersProperty *)self colorString];
-  if ([v3 length] || objc_msgSend(v4, "length") || objc_msgSend(v5, "length"))
+  styleString = [(EMBordersProperty *)self styleString];
+  widthString = [(EMBordersProperty *)self widthString];
+  colorString = [(EMBordersProperty *)self colorString];
+  if ([styleString length] || objc_msgSend(widthString, "length") || objc_msgSend(colorString, "length"))
   {
     v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
-    if ([v3 length])
+    if ([styleString length])
     {
-      [v6 appendString:v3];
+      [v6 appendString:styleString];
     }
 
-    if ([v4 length])
+    if ([widthString length])
     {
-      [v6 appendString:v4];
+      [v6 appendString:widthString];
     }
 
-    if ([v5 length])
+    if ([colorString length])
     {
-      [v6 appendString:v5];
+      [v6 appendString:colorString];
     }
   }
 
@@ -57,10 +57,10 @@
 - (id)styleString
 {
   v14[4] = *MEMORY[0x277D85DE8];
-  v3 = [(EMBordersProperty *)self styleHashNumber];
+  styleHashNumber = [(EMBordersProperty *)self styleHashNumber];
   p_superclass = OISpotlightImporter.superclass;
   v5 = +[EMWorkbookMapper borderStyleCache];
-  v6 = [v5 objectForKey:v3];
+  v6 = [v5 objectForKey:styleHashNumber];
 
   if (v6)
   {
@@ -124,8 +124,8 @@
   if (v7)
   {
 LABEL_18:
-    v12 = [p_superclass + 219 borderStyleCache];
-    [v12 setObject:v7 forKey:v3];
+    borderStyleCache = [p_superclass + 219 borderStyleCache];
+    [borderStyleCache setObject:v7 forKey:styleHashNumber];
   }
 
 LABEL_19:
@@ -147,10 +147,10 @@ LABEL_19:
 - (id)widthString
 {
   v14[4] = *MEMORY[0x277D85DE8];
-  v3 = [(EMBordersProperty *)self widthHashNumber];
+  widthHashNumber = [(EMBordersProperty *)self widthHashNumber];
   p_superclass = OISpotlightImporter.superclass;
   v5 = +[EMWorkbookMapper borderWidthCache];
-  v6 = [v5 objectForKey:v3];
+  v6 = [v5 objectForKey:widthHashNumber];
 
   if (v6)
   {
@@ -214,8 +214,8 @@ LABEL_19:
   if (v7)
   {
 LABEL_18:
-    v12 = [p_superclass + 219 borderWidthCache];
-    [v12 setObject:v7 forKey:v3];
+    borderWidthCache = [p_superclass + 219 borderWidthCache];
+    [borderWidthCache setObject:v7 forKey:widthHashNumber];
   }
 
 LABEL_19:
@@ -265,13 +265,13 @@ LABEL_19:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[EMBordersProperty isNoneAtLocation:](self, "isNoneAtLocation:", 0) && ([v5 isNoneAtLocation:0] & 1) != 0)
     {
       v6 = 1;
@@ -291,7 +291,7 @@ LABEL_19:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[EMBordersProperty allocWithZone:?]];
   p_isa = &v4->super.super.isa;
@@ -318,9 +318,9 @@ LABEL_19:
   return p_isa;
 }
 
-- (EMBordersProperty)initWithOADStroke:(id)a3
+- (EMBordersProperty)initWithOADStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   v26.receiver = self;
   v26.super_class = EMBordersProperty;
   v5 = [(EMBordersProperty *)&v26 init];
@@ -329,24 +329,24 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (![v4 isFillOverridden] || (objc_msgSend(v4, "fill"), v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) == 0))
+  if (![strokeCopy isFillOverridden] || (objc_msgSend(strokeCopy, "fill"), v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) == 0))
   {
     v5->mBorderStyle[0] = 0;
     goto LABEL_19;
   }
 
-  v8 = [v4 fill];
+  fill = [strokeCopy fill];
   v5->mBorderWidth[0] = 1;
-  if ([v4 isDashOverridden])
+  if ([strokeCopy isDashOverridden])
   {
-    v9 = [v4 dash];
+    dash = [strokeCopy dash];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v4 dash];
-      v11 = [v10 type];
+      dash2 = [strokeCopy dash];
+      type = [dash2 type];
 
-      if (v11)
+      if (type)
       {
         v12 = 3;
         goto LABEL_14;
@@ -358,7 +358,7 @@ LABEL_19:
     }
   }
 
-  if ([v4 isCompoundTypeOverridden] && objc_msgSend(v4, "compoundType"))
+  if ([strokeCopy isCompoundTypeOverridden] && objc_msgSend(strokeCopy, "compoundType"))
   {
     v5->mBorderStyle[0] = 2;
     v5->mBorderWidth[0] = 2;
@@ -373,20 +373,20 @@ LABEL_15:
   mBorderColor = v5->mBorderColor;
   v5->mBorderColor = v13;
 
-  if ([v8 isColorOverridden])
+  if ([fill isColorOverridden])
   {
-    v15 = [v8 color];
+    color = [fill color];
     objc_opt_class();
     v16 = objc_opt_isKindOfClass();
 
     if (v16)
     {
-      v17 = [v8 color];
-      [v17 red];
+      color2 = [fill color];
+      [color2 red];
       v19 = v18;
-      [v17 green];
+      [color2 green];
       v21 = v20;
-      [v17 blue];
+      [color2 blue];
       v23 = [OITSUColor colorWithCalibratedRed:v19 green:v21 blue:v22 alpha:1.0];
       v24 = v5->mBorderColor;
       v5->mBorderColor = v23;
@@ -397,31 +397,31 @@ LABEL_19:
   return v5;
 }
 
-- (EMBordersProperty)initWithEDBorders:(id)a3
+- (EMBordersProperty)initWithEDBorders:(id)borders
 {
-  v4 = a3;
+  bordersCopy = borders;
   v29.receiver = self;
   v29.super_class = EMBordersProperty;
   v5 = [(EMBordersProperty *)&v29 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (bordersCopy)
     {
-      v7 = [v4 topBorder];
-      -[EMBordersProperty setBorderStyleAndWidth:location:](v6, "setBorderStyleAndWidth:location:", [v7 type], 0);
-      -[EMBordersProperty setBorderStyleAndWidth:location:](v6, "setBorderStyleAndWidth:location:", [v7 type], 1);
-      v8 = [v7 color];
+      topBorder = [bordersCopy topBorder];
+      -[EMBordersProperty setBorderStyleAndWidth:location:](v6, "setBorderStyleAndWidth:location:", [topBorder type], 0);
+      -[EMBordersProperty setBorderStyleAndWidth:location:](v6, "setBorderStyleAndWidth:location:", [topBorder type], 1);
+      color = [topBorder color];
       mBorderColor = v6->mBorderColor;
-      v6->mBorderColor = v8;
+      v6->mBorderColor = color;
 
       objc_storeStrong(&v6->mBorderTopColor, v6->mBorderColor);
-      v10 = [v4 leftBorder];
+      leftBorder = [bordersCopy leftBorder];
 
-      -[EMBordersProperty setBorderStyleAndWidth:location:](v6, "setBorderStyleAndWidth:location:", [v10 type], 2);
-      v11 = [v10 color];
+      -[EMBordersProperty setBorderStyleAndWidth:location:](v6, "setBorderStyleAndWidth:location:", [leftBorder type], 2);
+      color2 = [leftBorder color];
       mBorderLeftColor = v6->mBorderLeftColor;
-      v6->mBorderLeftColor = v11;
+      v6->mBorderLeftColor = color2;
 
       mBorderStyle = v6->mBorderStyle;
       if (v6->mBorderStyle[2] != v6->mBorderStyle[0])
@@ -442,12 +442,12 @@ LABEL_19:
         v6->mBorderColor = 0;
       }
 
-      v17 = [v4 bottomBorder];
+      bottomBorder = [bordersCopy bottomBorder];
 
-      -[EMBordersProperty setBorderStyleAndWidth:location:](v6, "setBorderStyleAndWidth:location:", [v17 type], 3);
-      v18 = [v17 color];
+      -[EMBordersProperty setBorderStyleAndWidth:location:](v6, "setBorderStyleAndWidth:location:", [bottomBorder type], 3);
+      color3 = [bottomBorder color];
       mBorderBottomColor = v6->mBorderBottomColor;
-      v6->mBorderBottomColor = v18;
+      v6->mBorderBottomColor = color3;
 
       if (v6->mBorderStyle[3] != v6->mBorderStyle[0])
       {
@@ -466,12 +466,12 @@ LABEL_19:
         v6->mBorderColor = 0;
       }
 
-      v22 = [v4 rightBorder];
+      rightBorder = [bordersCopy rightBorder];
 
-      -[EMBordersProperty setBorderStyleAndWidth:location:](v6, "setBorderStyleAndWidth:location:", [v22 type], 4);
-      v23 = [v22 color];
+      -[EMBordersProperty setBorderStyleAndWidth:location:](v6, "setBorderStyleAndWidth:location:", [rightBorder type], 4);
+      color4 = [rightBorder color];
       mBorderRightColor = v6->mBorderRightColor;
-      v6->mBorderRightColor = v23;
+      v6->mBorderRightColor = color4;
 
       if (v6->mBorderStyle[4] != v6->mBorderStyle[0])
       {
@@ -500,7 +500,7 @@ LABEL_19:
       v6->mBorderStyle[0] = -1;
       v6->mBorderWidth[0] = -1;
       v27 = +[OITSUColor blackColor];
-      v22 = v6->mBorderColor;
+      rightBorder = v6->mBorderColor;
       v6->mBorderColor = v27;
     }
   }
@@ -508,11 +508,11 @@ LABEL_19:
   return v6;
 }
 
-- (void)setNoneAtLocation:(int)a3
+- (void)setNoneAtLocation:(int)location
 {
   mBorderStyle = self->mBorderStyle;
-  self->mBorderStyle[a3] = 0;
-  if (a3)
+  self->mBorderStyle[location] = 0;
+  if (location)
   {
     if (*mBorderStyle)
     {
@@ -521,25 +521,25 @@ LABEL_19:
   }
 }
 
-- (id)cssStringForName:(id)a3
+- (id)cssStringForName:(id)name
 {
   if (self->mBorderStyle[0])
   {
-    v4 = [(EMBordersProperty *)self cssString];
+    cssString = [(EMBordersProperty *)self cssString];
   }
 
   else
   {
-    v4 = &stru_286EE1130;
+    cssString = &stru_286EE1130;
   }
 
-  return v4;
+  return cssString;
 }
 
-- (void)setBorderStyleAndWidth:(int)a3 location:(unsigned int)a4
+- (void)setBorderStyleAndWidth:(int)width location:(unsigned int)location
 {
-  v4 = a3 - 3;
-  if ((a3 - 3) > 0xA)
+  v4 = width - 3;
+  if ((width - 3) > 0xA)
   {
     v5 = 0;
     v6 = 0;
@@ -551,88 +551,88 @@ LABEL_19:
     v6 = dword_25D710BCC[v4];
   }
 
-  self->mBorderStyle[a4] = v5;
-  self->mBorderWidth[a4] = v6;
+  self->mBorderStyle[location] = v5;
+  self->mBorderWidth[location] = v6;
 }
 
-- (id)stringFromStyleEnum:(int)a3
+- (id)stringFromStyleEnum:(int)enum
 {
-  if (a3 > 4)
+  if (enum > 4)
   {
     return @":solid;";
   }
 
   else
   {
-    return qword_2799CE0C0[a3];
+    return qword_2799CE0C0[enum];
   }
 }
 
-- (id)stringFromWidthEnum:(int)a3
+- (id)stringFromWidthEnum:(int)enum
 {
-  if (a3 > 3)
+  if (enum > 3)
   {
     return @":solid;";
   }
 
   else
   {
-    return qword_2799CE0E8[a3];
+    return qword_2799CE0E8[enum];
   }
 }
 
-- (id)stringFromColor:(id)a3
+- (id)stringFromColor:(id)color
 {
-  v3 = a3;
-  if ([v3 isBlack])
+  colorCopy = color;
+  if ([colorCopy isBlack])
   {
     v4 = @":black;";
   }
 
   else
   {
-    v5 = [[CMColorProperty alloc] initWithColor:v3];
+    v5 = [[CMColorProperty alloc] initWithColor:colorCopy];
     v4 = [(CMColorProperty *)v5 cssStringForName:&stru_286EE1130];
   }
 
   return v4;
 }
 
-- (BOOL)hasSameStylesAs:(id)a3
+- (BOOL)hasSameStylesAs:(id)as
 {
-  v4 = [a3 borderStyles];
+  borderStyles = [as borderStyles];
   v5 = self->mBorderStyle[0];
-  v6 = *v4;
+  v6 = *borderStyles;
   if (v5 != -1)
   {
     return v6 == v5;
   }
 
-  return v6 == -1 && v4[1] == self->mBorderStyle[1] && v4[2] == self->mBorderStyle[2] && v4[3] == self->mBorderStyle[3] && v4[4] == self->mBorderStyle[4];
+  return v6 == -1 && borderStyles[1] == self->mBorderStyle[1] && borderStyles[2] == self->mBorderStyle[2] && borderStyles[3] == self->mBorderStyle[3] && borderStyles[4] == self->mBorderStyle[4];
 }
 
-- (BOOL)hasSameWidthsAs:(id)a3
+- (BOOL)hasSameWidthsAs:(id)as
 {
-  v4 = [a3 borderWidths];
+  borderWidths = [as borderWidths];
   v5 = self->mBorderWidth[0];
-  v6 = *v4;
+  v6 = *borderWidths;
   if (v5 != -1)
   {
     return v6 == v5;
   }
 
-  return v6 == -1 && v4[1] == self->mBorderWidth[1] && v4[2] == self->mBorderWidth[2] && v4[3] == self->mBorderWidth[3] && v4[4] == self->mBorderWidth[4];
+  return v6 == -1 && borderWidths[1] == self->mBorderWidth[1] && borderWidths[2] == self->mBorderWidth[2] && borderWidths[3] == self->mBorderWidth[3] && borderWidths[4] == self->mBorderWidth[4];
 }
 
-- (BOOL)hasSameColorsAs:(id)a3
+- (BOOL)hasSameColorsAs:(id)as
 {
-  v4 = a3;
-  v5 = v4;
+  asCopy = as;
+  v5 = asCopy;
   mBorderColor = self->mBorderColor;
   if (mBorderColor)
   {
-    v7 = [v4 borderColor];
-    LOBYTE(mBorderColor) = [(OITSUColor *)mBorderColor isEqual:v7];
+    borderColor = [asCopy borderColor];
+    LOBYTE(mBorderColor) = [(OITSUColor *)mBorderColor isEqual:borderColor];
   }
 
   return mBorderColor;

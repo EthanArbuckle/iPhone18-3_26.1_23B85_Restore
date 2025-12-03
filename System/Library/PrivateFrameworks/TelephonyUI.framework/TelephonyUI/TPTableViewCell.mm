@@ -1,23 +1,23 @@
 @interface TPTableViewCell
-+ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3;
-- (TPTableViewCell)initWithCoder:(id)a3;
-- (TPTableViewCell)initWithFrame:(CGRect)a3;
-- (TPTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category;
+- (TPTableViewCell)initWithCoder:(id)coder;
+- (TPTableViewCell)initWithFrame:(CGRect)frame;
+- (TPTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIColor)foregroundColor;
 - (UIEdgeInsets)intrinsicSeparatorInset;
 - (void)commonInit;
 - (void)layoutSubviews;
-- (void)setAccessiblityConstraintsEnabled:(BOOL)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setForegroundView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessiblityConstraintsEnabled:(BOOL)enabled;
+- (void)setForegroundColor:(id)color;
+- (void)setForegroundView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 - (void)unloadConstraints;
 - (void)updateConstraints;
 @end
 
 @implementation TPTableViewCell
 
-+ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3
++ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category
 {
   v3 = *MEMORY[0x1E69DDCE0];
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -30,11 +30,11 @@
   return result;
 }
 
-- (TPTableViewCell)initWithCoder:(id)a3
+- (TPTableViewCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TPTableViewCell;
-  v3 = [(TPTableViewCell *)&v6 initWithCoder:a3];
+  v3 = [(TPTableViewCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -44,11 +44,11 @@
   return v4;
 }
 
-- (TPTableViewCell)initWithFrame:(CGRect)a3
+- (TPTableViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TPTableViewCell;
-  v3 = [(TPTableViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TPTableViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -58,11 +58,11 @@
   return v4;
 }
 
-- (TPTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TPTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = TPTableViewCell;
-  v4 = [(TPTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TPTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -74,16 +74,16 @@
 
 - (void)commonInit
 {
-  v3 = [(TPTableViewCell *)self traitCollection];
-  self->_accessiblityConstraintsEnabled = [v3 isPreferredContentSizeCategoryAccessible];
+  traitCollection = [(TPTableViewCell *)self traitCollection];
+  self->_accessiblityConstraintsEnabled = [traitCollection isPreferredContentSizeCategoryAccessible];
 
   [(TPTableViewCell *)self loadContentView];
 }
 
 - (void)unloadConstraints
 {
-  v3 = [(TPTableViewCell *)self constraints];
-  [(TPTableViewCell *)self removeConstraints:v3];
+  constraints = [(TPTableViewCell *)self constraints];
+  [(TPTableViewCell *)self removeConstraints:constraints];
 
   [(TPTableViewCell *)self setConstraintsLoaded:0];
 }
@@ -108,37 +108,37 @@
 {
   if ([(TPTableViewCell *)self isForegroundViewLoaded])
   {
-    v3 = [(TPTableViewCell *)self foregroundView];
-    v4 = [v3 backgroundColor];
+    foregroundView = [(TPTableViewCell *)self foregroundView];
+    backgroundColor = [foregroundView backgroundColor];
   }
 
   else
   {
-    v4 = 0;
+    backgroundColor = 0;
   }
 
-  return v4;
+  return backgroundColor;
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v10 = a3;
-  if (v10 && ([MEMORY[0x1E69DC888] clearColor], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v10, "isEqual:", v4), v4, (v5 & 1) == 0))
+  colorCopy = color;
+  if (colorCopy && ([MEMORY[0x1E69DC888] clearColor], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(colorCopy, "isEqual:", v4), v4, (v5 & 1) == 0))
   {
     v7 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [(TPTableViewCell *)self setForegroundView:v7];
 
-    v8 = [(TPTableViewCell *)self foregroundView];
-    [v8 setBackgroundColor:v10];
+    foregroundView = [(TPTableViewCell *)self foregroundView];
+    [foregroundView setBackgroundColor:colorCopy];
 
-    v9 = [(TPTableViewCell *)self foregroundView];
-    [(TPTableViewCell *)self addSubview:v9];
+    foregroundView2 = [(TPTableViewCell *)self foregroundView];
+    [(TPTableViewCell *)self addSubview:foregroundView2];
   }
 
   else
   {
-    v6 = [(TPTableViewCell *)self foregroundView];
-    [v6 removeFromSuperview];
+    foregroundView3 = [(TPTableViewCell *)self foregroundView];
+    [foregroundView3 removeFromSuperview];
 
     [(TPTableViewCell *)self setForegroundView:0];
   }
@@ -147,9 +147,9 @@
 - (UIEdgeInsets)intrinsicSeparatorInset
 {
   v3 = objc_opt_class();
-  v4 = [(TPTableViewCell *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  [v3 separatorInsetForContentSizeCategory:v5];
+  traitCollection = [(TPTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [v3 separatorInsetForContentSizeCategory:preferredContentSizeCategory];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -178,35 +178,35 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(TPTableViewCell *)self foregroundView];
-    [v11 setFrame:{v4, v6, v8, v10}];
+    foregroundView = [(TPTableViewCell *)self foregroundView];
+    [foregroundView setFrame:{v4, v6, v8, v10}];
 
-    v12 = [(TPTableViewCell *)self foregroundView];
-    [(TPTableViewCell *)self bringSubviewToFront:v12];
+    foregroundView2 = [(TPTableViewCell *)self foregroundView];
+    [(TPTableViewCell *)self bringSubviewToFront:foregroundView2];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = TPTableViewCell;
-  v4 = a3;
-  [(TPTableViewCell *)&v11 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(TPTableViewCell *)&v11 traitCollectionDidChange:changeCopy];
   v5 = [(TPTableViewCell *)self traitCollection:v11.receiver];
-  v6 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v7 = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [v5 preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v8 = [v5 isPreferredContentSizeCategoryAccessible];
+    isPreferredContentSizeCategoryAccessible = [v5 isPreferredContentSizeCategoryAccessible];
     v9 = *MEMORY[0x1E69DDC90];
-    v10 = v8 ^ [(TPTableViewCell *)self isAccessiblityConstraintsEnabled];
-    if (v6 == v9)
+    v10 = isPreferredContentSizeCategoryAccessible ^ [(TPTableViewCell *)self isAccessiblityConstraintsEnabled];
+    if (preferredContentSizeCategory == v9)
     {
       if (v10)
       {
-        self->_accessiblityConstraintsEnabled = v8;
+        self->_accessiblityConstraintsEnabled = isPreferredContentSizeCategoryAccessible;
       }
     }
 
@@ -214,7 +214,7 @@
     {
       if (v10)
       {
-        [(TPTableViewCell *)self setAccessiblityConstraintsEnabled:v8];
+        [(TPTableViewCell *)self setAccessiblityConstraintsEnabled:isPreferredContentSizeCategoryAccessible];
       }
 
       [(TPTableViewCell *)self updateFonts];
@@ -225,11 +225,11 @@
   }
 }
 
-- (void)setAccessiblityConstraintsEnabled:(BOOL)a3
+- (void)setAccessiblityConstraintsEnabled:(BOOL)enabled
 {
-  if (self->_accessiblityConstraintsEnabled != a3)
+  if (self->_accessiblityConstraintsEnabled != enabled)
   {
-    self->_accessiblityConstraintsEnabled = a3;
+    self->_accessiblityConstraintsEnabled = enabled;
     [(TPTableViewCell *)self unloadConstraints];
     [(TPTableViewCell *)self setNeedsUpdateConstraints];
 
@@ -237,15 +237,15 @@
   }
 }
 
-- (void)setForegroundView:(id)a3
+- (void)setForegroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   foregroundView = self->_foregroundView;
-  v7 = v5;
-  if (foregroundView != v5)
+  v7 = viewCopy;
+  if (foregroundView != viewCopy)
   {
     [(UIView *)foregroundView removeFromSuperview];
-    objc_storeStrong(&self->_foregroundView, a3);
+    objc_storeStrong(&self->_foregroundView, view);
     if (self->_foregroundView)
     {
       [(TPTableViewCell *)self addSubview:?];

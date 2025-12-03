@@ -1,12 +1,12 @@
 @interface BRCPQLInjectionPCSChainShareAliasesWhereClause
-+ (id)_createInjectionWithCondition:(BOOL)a3;
++ (id)_createInjectionWithCondition:(BOOL)condition;
 @end
 
 @implementation BRCPQLInjectionPCSChainShareAliasesWhereClause
 
-+ (id)_createInjectionWithCondition:(BOOL)a3
++ (id)_createInjectionWithCondition:(BOOL)condition
 {
-  if (a3)
+  if (condition)
   {
     [MEMORY[0x277D82C18] rawInjection:"" length:0];
   }

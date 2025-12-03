@@ -1,33 +1,33 @@
 @interface TSKCenterTilingButton
-- (TSKCenterTilingButton)initWithFrame:(CGRect)a3 andTilingType:(int)a4;
-- (id)centerTileImageForState:(unint64_t)a3;
-- (id)leftCapImageForState:(unint64_t)a3;
-- (id)leftCenterTileImageForState:(unint64_t)a3;
-- (id)rightCapImageForState:(unint64_t)a3;
-- (id)rightCenterTileImageForState:(unint64_t)a3;
+- (TSKCenterTilingButton)initWithFrame:(CGRect)frame andTilingType:(int)type;
+- (id)centerTileImageForState:(unint64_t)state;
+- (id)leftCapImageForState:(unint64_t)state;
+- (id)leftCenterTileImageForState:(unint64_t)state;
+- (id)rightCapImageForState:(unint64_t)state;
+- (id)rightCenterTileImageForState:(unint64_t)state;
 - (void)dealloc;
-- (void)p_resetBackgroundImageForState:(unint64_t)a3;
-- (void)p_tileButtedToCapLtoR:(id)a3 inRect:(CGRect)a4;
-- (void)p_tileButtedToCapRtoL:(id)a3 inRect:(CGRect)a4;
-- (void)p_tileHorizCenterOutwardwithLeft:(id)a3 andRight:(id)a4 inRect:(CGRect)a5;
-- (void)p_tileSimple:(id)a3 inRect:(CGRect)a4;
-- (void)setCenterTileImage:(id)a3 forState:(unint64_t)a4;
-- (void)setLeftCapImage:(id)a3 forState:(unint64_t)a4;
-- (void)setLeftCenterTileImage:(id)a3 forState:(unint64_t)a4;
-- (void)setRightCapImage:(id)a3 forState:(unint64_t)a4;
-- (void)setRightCenterTileImage:(id)a3 forState:(unint64_t)a4;
+- (void)p_resetBackgroundImageForState:(unint64_t)state;
+- (void)p_tileButtedToCapLtoR:(id)r inRect:(CGRect)rect;
+- (void)p_tileButtedToCapRtoL:(id)l inRect:(CGRect)rect;
+- (void)p_tileHorizCenterOutwardwithLeft:(id)left andRight:(id)right inRect:(CGRect)rect;
+- (void)p_tileSimple:(id)simple inRect:(CGRect)rect;
+- (void)setCenterTileImage:(id)image forState:(unint64_t)state;
+- (void)setLeftCapImage:(id)image forState:(unint64_t)state;
+- (void)setLeftCenterTileImage:(id)image forState:(unint64_t)state;
+- (void)setRightCapImage:(id)image forState:(unint64_t)state;
+- (void)setRightCenterTileImage:(id)image forState:(unint64_t)state;
 @end
 
 @implementation TSKCenterTilingButton
 
-- (TSKCenterTilingButton)initWithFrame:(CGRect)a3 andTilingType:(int)a4
+- (TSKCenterTilingButton)initWithFrame:(CGRect)frame andTilingType:(int)type
 {
   v6.receiver = self;
   v6.super_class = TSKCenterTilingButton;
-  result = [(TSKCenterTilingButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(TSKCenterTilingButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
-    result->mTilingType = a4;
+    result->mTilingType = type;
   }
 
   return result;
@@ -77,13 +77,13 @@
   [(TSKCenterTilingButton *)&v3 dealloc];
 }
 
-- (id)leftCapImageForState:(unint64_t)a3
+- (id)leftCapImageForState:(unint64_t)state
 {
-  if ((a3 & 2) == 0 || (mLeftCapImage_ActiveSelected = self->mLeftCapImage_Disabled) == 0)
+  if ((state & 2) == 0 || (mLeftCapImage_ActiveSelected = self->mLeftCapImage_Disabled) == 0)
   {
-    if ((a3 & 5) > 3)
+    if ((state & 5) > 3)
     {
-      if ((a3 & 5) != 4)
+      if ((state & 5) != 4)
       {
         mLeftCapImage_ActiveSelected = self->mLeftCapImage_ActiveSelected;
         if (mLeftCapImage_ActiveSelected)
@@ -103,7 +103,7 @@
 
     else
     {
-      if ((a3 & 5) == 0)
+      if ((state & 5) == 0)
       {
         return self->mLeftCapImage_Normal;
       }
@@ -121,13 +121,13 @@
   return mLeftCapImage_ActiveSelected;
 }
 
-- (id)rightCapImageForState:(unint64_t)a3
+- (id)rightCapImageForState:(unint64_t)state
 {
-  if ((a3 & 2) == 0 || (mRightCapImage_ActiveSelected = self->mRightCapImage_Disabled) == 0)
+  if ((state & 2) == 0 || (mRightCapImage_ActiveSelected = self->mRightCapImage_Disabled) == 0)
   {
-    if ((a3 & 5) > 3)
+    if ((state & 5) > 3)
     {
-      if ((a3 & 5) != 4)
+      if ((state & 5) != 4)
       {
         mRightCapImage_ActiveSelected = self->mRightCapImage_ActiveSelected;
         if (mRightCapImage_ActiveSelected)
@@ -147,7 +147,7 @@
 
     else
     {
-      if ((a3 & 5) == 0)
+      if ((state & 5) == 0)
       {
         return self->mRightCapImage_Normal;
       }
@@ -165,13 +165,13 @@
   return mRightCapImage_ActiveSelected;
 }
 
-- (id)centerTileImageForState:(unint64_t)a3
+- (id)centerTileImageForState:(unint64_t)state
 {
-  if ((a3 & 2) == 0 || (mCenterTileImage_ActiveSelected = self->mCenterTileImage_Disabled) == 0)
+  if ((state & 2) == 0 || (mCenterTileImage_ActiveSelected = self->mCenterTileImage_Disabled) == 0)
   {
-    if ((a3 & 5) > 3)
+    if ((state & 5) > 3)
     {
-      if ((a3 & 5) != 4)
+      if ((state & 5) != 4)
       {
         mCenterTileImage_ActiveSelected = self->mCenterTileImage_ActiveSelected;
         if (mCenterTileImage_ActiveSelected)
@@ -191,7 +191,7 @@
 
     else
     {
-      if ((a3 & 5) == 0)
+      if ((state & 5) == 0)
       {
         return self->mCenterTileImage_Normal;
       }
@@ -209,18 +209,18 @@
   return mCenterTileImage_ActiveSelected;
 }
 
-- (id)leftCenterTileImageForState:(unint64_t)a3
+- (id)leftCenterTileImageForState:(unint64_t)state
 {
   if (self->mTilingType != 3)
   {
     return 0;
   }
 
-  if ((a3 & 2) == 0 || (mLeftCenterTileImage_ActiveSelected = self->mLeftCenterTileImage_Disabled) == 0)
+  if ((state & 2) == 0 || (mLeftCenterTileImage_ActiveSelected = self->mLeftCenterTileImage_Disabled) == 0)
   {
-    if ((a3 & 5) > 3)
+    if ((state & 5) > 3)
     {
-      if ((a3 & 5) != 4)
+      if ((state & 5) != 4)
       {
         mLeftCenterTileImage_ActiveSelected = self->mLeftCenterTileImage_ActiveSelected;
         if (mLeftCenterTileImage_ActiveSelected)
@@ -240,7 +240,7 @@
 
     else
     {
-      if ((a3 & 5) == 0)
+      if ((state & 5) == 0)
       {
         return self->mLeftCenterTileImage_Normal;
       }
@@ -258,18 +258,18 @@
   return mLeftCenterTileImage_ActiveSelected;
 }
 
-- (id)rightCenterTileImageForState:(unint64_t)a3
+- (id)rightCenterTileImageForState:(unint64_t)state
 {
   if (self->mTilingType != 3)
   {
     return 0;
   }
 
-  if ((a3 & 2) == 0 || (mRightCenterTileImage_ActiveSelected = self->mRightCenterTileImage_Disabled) == 0)
+  if ((state & 2) == 0 || (mRightCenterTileImage_ActiveSelected = self->mRightCenterTileImage_Disabled) == 0)
   {
-    if ((a3 & 5) > 3)
+    if ((state & 5) > 3)
     {
-      if ((a3 & 5) != 4)
+      if ((state & 5) != 4)
       {
         mRightCenterTileImage_ActiveSelected = self->mRightCenterTileImage_ActiveSelected;
         if (mRightCenterTileImage_ActiveSelected)
@@ -289,7 +289,7 @@
 
     else
     {
-      if ((a3 & 5) == 0)
+      if ((state & 5) == 0)
       {
         return self->mRightCenterTileImage_Normal;
       }
@@ -307,118 +307,118 @@
   return mRightCenterTileImage_ActiveSelected;
 }
 
-- (void)setLeftCapImage:(id)a3 forState:(unint64_t)a4
+- (void)setLeftCapImage:(id)image forState:(unint64_t)state
 {
-  if ((a4 & 2) != 0)
+  if ((state & 2) != 0)
   {
-    v9 = a3;
+    imageCopy = image;
     v8 = &OBJC_IVAR___TSKCenterTilingButton_mLeftCapImage_Disabled;
   }
 
   else
   {
-    v7 = a3;
-    v8 = off_279D47AF8[a4 & 5];
+    imageCopy2 = image;
+    v8 = off_279D47AF8[state & 5];
   }
 
   v10 = *v8;
 
-  *(&self->super.super.super.super.super.isa + v10) = a3;
+  *(&self->super.super.super.super.super.isa + v10) = image;
 
-  [(TSKCenterTilingButton *)self p_resetBackgroundImageForState:a4];
+  [(TSKCenterTilingButton *)self p_resetBackgroundImageForState:state];
 }
 
-- (void)setRightCapImage:(id)a3 forState:(unint64_t)a4
+- (void)setRightCapImage:(id)image forState:(unint64_t)state
 {
-  if ((a4 & 2) != 0)
+  if ((state & 2) != 0)
   {
-    v9 = a3;
+    imageCopy = image;
     v8 = &OBJC_IVAR___TSKCenterTilingButton_mRightCapImage_Disabled;
   }
 
   else
   {
-    v7 = a3;
-    v8 = off_279D47B28[a4 & 5];
+    imageCopy2 = image;
+    v8 = off_279D47B28[state & 5];
   }
 
   v10 = *v8;
 
-  *(&self->super.super.super.super.super.isa + v10) = a3;
+  *(&self->super.super.super.super.super.isa + v10) = image;
 
-  [(TSKCenterTilingButton *)self p_resetBackgroundImageForState:a4];
+  [(TSKCenterTilingButton *)self p_resetBackgroundImageForState:state];
 }
 
-- (void)setCenterTileImage:(id)a3 forState:(unint64_t)a4
+- (void)setCenterTileImage:(id)image forState:(unint64_t)state
 {
-  if ((a4 & 2) != 0)
+  if ((state & 2) != 0)
   {
-    v9 = a3;
+    imageCopy = image;
     v8 = &OBJC_IVAR___TSKCenterTilingButton_mCenterTileImage_Disabled;
   }
 
   else
   {
-    v7 = a3;
-    v8 = off_279D47B58[a4 & 5];
+    imageCopy2 = image;
+    v8 = off_279D47B58[state & 5];
   }
 
   v10 = *v8;
 
-  *(&self->super.super.super.super.super.isa + v10) = a3;
+  *(&self->super.super.super.super.super.isa + v10) = image;
 
-  [(TSKCenterTilingButton *)self p_resetBackgroundImageForState:a4];
+  [(TSKCenterTilingButton *)self p_resetBackgroundImageForState:state];
 }
 
-- (void)setLeftCenterTileImage:(id)a3 forState:(unint64_t)a4
+- (void)setLeftCenterTileImage:(id)image forState:(unint64_t)state
 {
-  if ((a4 & 2) != 0)
+  if ((state & 2) != 0)
   {
-    v9 = a3;
+    imageCopy = image;
     v8 = &OBJC_IVAR___TSKCenterTilingButton_mLeftCenterTileImage_Disabled;
   }
 
   else
   {
-    v7 = a3;
-    v8 = off_279D47B88[a4 & 5];
+    imageCopy2 = image;
+    v8 = off_279D47B88[state & 5];
   }
 
   v10 = *v8;
 
-  *(&self->super.super.super.super.super.isa + v10) = a3;
+  *(&self->super.super.super.super.super.isa + v10) = image;
 
-  [(TSKCenterTilingButton *)self p_resetBackgroundImageForState:a4];
+  [(TSKCenterTilingButton *)self p_resetBackgroundImageForState:state];
 }
 
-- (void)setRightCenterTileImage:(id)a3 forState:(unint64_t)a4
+- (void)setRightCenterTileImage:(id)image forState:(unint64_t)state
 {
-  if ((a4 & 2) != 0)
+  if ((state & 2) != 0)
   {
-    v9 = a3;
+    imageCopy = image;
     v8 = &OBJC_IVAR___TSKCenterTilingButton_mRightCenterTileImage_Disabled;
   }
 
   else
   {
-    v7 = a3;
-    v8 = off_279D47BB8[a4 & 5];
+    imageCopy2 = image;
+    v8 = off_279D47BB8[state & 5];
   }
 
   v10 = *v8;
 
-  *(&self->super.super.super.super.super.isa + v10) = a3;
+  *(&self->super.super.super.super.super.isa + v10) = image;
 
-  [(TSKCenterTilingButton *)self p_resetBackgroundImageForState:a4];
+  [(TSKCenterTilingButton *)self p_resetBackgroundImageForState:state];
 }
 
-- (void)p_resetBackgroundImageForState:(unint64_t)a3
+- (void)p_resetBackgroundImageForState:(unint64_t)state
 {
   v5 = [(TSKCenterTilingButton *)self leftCapImageForState:?];
-  v6 = [(TSKCenterTilingButton *)self rightCapImageForState:a3];
-  v7 = [(TSKCenterTilingButton *)self centerTileImageForState:a3];
-  v8 = [(TSKCenterTilingButton *)self leftCenterTileImageForState:a3];
-  v9 = [(TSKCenterTilingButton *)self rightCenterTileImageForState:a3];
+  v6 = [(TSKCenterTilingButton *)self rightCapImageForState:state];
+  v7 = [(TSKCenterTilingButton *)self centerTileImageForState:state];
+  v8 = [(TSKCenterTilingButton *)self leftCenterTileImageForState:state];
+  v9 = [(TSKCenterTilingButton *)self rightCenterTileImageForState:state];
   v10 = 1.0;
   v11 = 1.0;
   if (v5)
@@ -1122,15 +1122,15 @@ LABEL_168:
       goto LABEL_169;
     }
 
-    v105 = self;
+    selfCopy2 = self;
     v106 = v8;
     v107 = v9;
 LABEL_167:
-    [(TSKCenterTilingButton *)v105 p_tileHorizCenterOutwardwithLeft:v106 andRight:v107 inRect:v62, 0.0, v103, v99];
+    [(TSKCenterTilingButton *)selfCopy2 p_tileHorizCenterOutwardwithLeft:v106 andRight:v107 inRect:v62, 0.0, v103, v99];
     goto LABEL_168;
   }
 
-  v105 = self;
+  selfCopy2 = self;
   switch(mTilingType)
   {
     case 3:
@@ -1172,27 +1172,27 @@ LABEL_170:
   ImageFromCurrentImageContext = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
-  [(TSKCenterTilingButton *)self setBackgroundImage:ImageFromCurrentImageContext forState:a3];
+  [(TSKCenterTilingButton *)self setBackgroundImage:ImageFromCurrentImageContext forState:state];
 }
 
-- (void)p_tileSimple:(id)a3 inRect:(CGRect)a4
+- (void)p_tileSimple:(id)simple inRect:(CGRect)rect
 {
-  if (a3)
+  if (simple)
   {
-    [a3 drawAsPatternInRect:{a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+    [simple drawAsPatternInRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   }
 }
 
-- (void)p_tileButtedToCapLtoR:(id)a3 inRect:(CGRect)a4
+- (void)p_tileButtedToCapLtoR:(id)r inRect:(CGRect)rect
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (r)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    [a3 size];
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    [r size];
     v10 = v9;
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSaveGState(CurrentContext);
@@ -1204,7 +1204,7 @@ LABEL_170:
     v12 = x + width;
     while (x < v12)
     {
-      [a3 drawAtPoint:{x, y}];
+      [r drawAtPoint:{x, y}];
       x = v10 + x;
     }
 
@@ -1212,18 +1212,18 @@ LABEL_170:
   }
 }
 
-- (void)p_tileButtedToCapRtoL:(id)a3 inRect:(CGRect)a4
+- (void)p_tileButtedToCapRtoL:(id)l inRect:(CGRect)rect
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (l)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    [a3 size];
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    [l size];
     v10 = v9;
-    [a3 size];
+    [l size];
     v12 = x + width - v11;
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSaveGState(CurrentContext);
@@ -1234,13 +1234,13 @@ LABEL_170:
     CGContextClipToRects(CurrentContext, &rects, 1uLL);
     while (1)
     {
-      [a3 size];
+      [l size];
       if (v12 <= x - v14)
       {
         break;
       }
 
-      [a3 drawAtPoint:{v12, y}];
+      [l drawAtPoint:{v12, y}];
       v12 = v12 - v10;
     }
 
@@ -1248,18 +1248,18 @@ LABEL_170:
   }
 }
 
-- (void)p_tileHorizCenterOutwardwithLeft:(id)a3 andRight:(id)a4 inRect:(CGRect)a5
+- (void)p_tileHorizCenterOutwardwithLeft:(id)left andRight:(id)right inRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TSKCenterTilingButton *)self bounds];
   v13 = round(v12 * 0.5);
   v14 = v13 - x;
-  [(TSKCenterTilingButton *)self p_tileButtedToCapLtoR:a4 inRect:v13, y, x + width - v13, height];
+  [(TSKCenterTilingButton *)self p_tileButtedToCapLtoR:right inRect:v13, y, x + width - v13, height];
 
-  [(TSKCenterTilingButton *)self p_tileButtedToCapRtoL:a3 inRect:x, y, v14, height];
+  [(TSKCenterTilingButton *)self p_tileButtedToCapRtoL:left inRect:x, y, v14, height];
 }
 
 @end

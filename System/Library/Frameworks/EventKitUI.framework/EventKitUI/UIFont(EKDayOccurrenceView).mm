@@ -10,15 +10,15 @@
 {
   if (dyld_program_sdk_at_least())
   {
-    v0 = 0;
+    defaultOccurrenceSecondaryTextFont = 0;
   }
 
   else
   {
-    v0 = [MEMORY[0x1E6993418] defaultOccurrenceSecondaryTextFont];
+    defaultOccurrenceSecondaryTextFont = [MEMORY[0x1E6993418] defaultOccurrenceSecondaryTextFont];
   }
 
-  return v0;
+  return defaultOccurrenceSecondaryTextFont;
 }
 
 + (id)ek_defaultOccurrencePrimaryTextFontForSizeClass:()EKDayOccurrenceView

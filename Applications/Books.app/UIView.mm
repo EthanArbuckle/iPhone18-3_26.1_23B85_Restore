@@ -1,25 +1,25 @@
 @interface UIView
-+ (void)animateWithDuration:(double)a3 delay:(double)a4 timingFunction:(id)a5 options:(unint64_t)a6 animations:(id)a7 completion:(id)a8;
-- (BOOL)bk_shouldAnimatePropertyWithKey:(id)a3;
-- (BOOL)bkaxAccessibilityShowContextMenuAtPoint:(CGPoint)a3;
++ (void)animateWithDuration:(double)duration delay:(double)delay timingFunction:(id)function options:(unint64_t)options animations:(id)animations completion:(id)completion;
+- (BOOL)bk_shouldAnimatePropertyWithKey:(id)key;
+- (BOOL)bkaxAccessibilityShowContextMenuAtPoint:(CGPoint)point;
 - (CGRect)untransformedFrame;
-- (void)addAnimatablePropertyWithKey:(id)a3;
-- (void)setUntransformedFrame:(CGRect)a3;
+- (void)addAnimatablePropertyWithKey:(id)key;
+- (void)setUntransformedFrame:(CGRect)frame;
 @end
 
 @implementation UIView
 
-- (BOOL)bkaxAccessibilityShowContextMenuAtPoint:(CGPoint)a3
+- (BOOL)bkaxAccessibilityShowContextMenuAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  if (!v5)
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  if (!selfCopy)
   {
     return 0;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
   v7 = 0;
   do
   {
@@ -27,8 +27,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v6 interactions];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    interactions = [v6 interactions];
+    v9 = [interactions countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -39,7 +39,7 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(interactions);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
@@ -60,7 +60,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [interactions countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v10)
         {
           continue;
@@ -72,19 +72,19 @@
 
 LABEL_16:
 
-    v15 = [v6 superview];
+    superview = [v6 superview];
 
-    v6 = v15;
+    v6 = superview;
   }
 
-  while (v15);
+  while (superview);
   return v7;
 }
 
-- (void)addAnimatablePropertyWithKey:(id)a3
+- (void)addAnimatablePropertyWithKey:(id)key
 {
-  v6 = a3;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
     if (qword_100AF76D8 != -1)
     {
@@ -92,18 +92,18 @@ LABEL_16:
     }
 
     v4 = objc_getAssociatedObject(self, &off_100A07F48);
-    if (([v4 containsObject:v6] & 1) == 0)
+    if (([v4 containsObject:keyCopy] & 1) == 0)
     {
       if (v4)
       {
-        v5 = [v4 setByAddingObject:v6];
+        v5 = [v4 setByAddingObject:keyCopy];
 
         v4 = v5;
       }
 
       else
       {
-        v4 = [NSSet setWithObject:v6];
+        v4 = [NSSet setWithObject:keyCopy];
       }
 
       objc_setAssociatedObject(self, &off_100A07F48, v4, 0x301);
@@ -111,42 +111,42 @@ LABEL_16:
   }
 }
 
-- (BOOL)bk_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)bk_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_getAssociatedObject(self, &off_100A07F48);
-  if ([(UIView *)self bk_shouldAnimatePropertyWithKey:v4])
+  if ([(UIView *)self bk_shouldAnimatePropertyWithKey:keyCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 containsObject:v4];
+    v6 = [v5 containsObject:keyCopy];
   }
 
   return v6;
 }
 
-+ (void)animateWithDuration:(double)a3 delay:(double)a4 timingFunction:(id)a5 options:(unint64_t)a6 animations:(id)a7 completion:(id)a8
++ (void)animateWithDuration:(double)duration delay:(double)delay timingFunction:(id)function options:(unint64_t)options animations:(id)animations completion:(id)completion
 {
-  v15 = a7;
-  v13 = a8;
-  if (a5)
+  animationsCopy = animations;
+  completionCopy = completion;
+  if (function)
   {
-    v14 = a5;
-    a5 = objc_alloc_init(BKCustomAnimationCurveFactory);
-    [a5 setTimingFunction:v14];
+    functionCopy = function;
+    function = objc_alloc_init(BKCustomAnimationCurveFactory);
+    [function setTimingFunction:functionCopy];
 
-    a6 |= 0x60000uLL;
+    options |= 0x60000uLL;
   }
 
-  [UIView _animateWithDuration:a6 delay:a5 options:v15 factory:v13 animations:a3 completion:a4];
+  [UIView _animateWithDuration:options delay:function options:animationsCopy factory:completionCopy animations:duration completion:delay];
 }
 
 - (CGRect)untransformedFrame
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10047A8AC();
   v5 = v4;
   v7 = v6;
@@ -163,13 +163,13 @@ LABEL_16:
   return result;
 }
 
-- (void)setUntransformedFrame:(CGRect)a3
+- (void)setUntransformedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_10047AA74(x, y, width, height);
 }
 

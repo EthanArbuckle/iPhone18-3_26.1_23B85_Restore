@@ -1,24 +1,24 @@
 @interface CoreMLPerfRunnerService
-+ (void)registerCapabilities:(id)a3;
++ (void)registerCapabilities:(id)capabilities;
 - (_TtC24DVTInstrumentsFoundation23CoreMLPerfRunnerService)init;
-- (_TtC24DVTInstrumentsFoundation23CoreMLPerfRunnerService)initWithChannel:(id)a3;
-- (void)messageReceived:(id)a3;
+- (_TtC24DVTInstrumentsFoundation23CoreMLPerfRunnerService)initWithChannel:(id)channel;
+- (void)messageReceived:(id)received;
 @end
 
 @implementation CoreMLPerfRunnerService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
   swift_getObjCClassMetadata();
-  v5 = a3;
+  capabilitiesCopy = capabilities;
   v4 = sub_248030B28();
-  [v5 publishCapability:v4 withVersion:4 forClass:swift_getObjCClassFromMetadata()];
+  [capabilitiesCopy publishCapability:v4 withVersion:4 forClass:swift_getObjCClassFromMetadata()];
 }
 
-- (_TtC24DVTInstrumentsFoundation23CoreMLPerfRunnerService)initWithChannel:(id)a3
+- (_TtC24DVTInstrumentsFoundation23CoreMLPerfRunnerService)initWithChannel:(id)channel
 {
   v4 = qword_27EE839E8;
-  v5 = a3;
+  channelCopy = channel;
   if (v4 != -1)
   {
     swift_once();
@@ -30,23 +30,23 @@
   *(v7 + 5) = type metadata accessor for CoreMLPerfCoordinator();
   *(v7 + 6) = &protocol witness table for CoreMLPerfCoordinator;
   *(v7 + 2) = v6;
-  *(v7 + 7) = v5;
+  *(v7 + 7) = channelCopy;
   *(&self->super.super.isa + OBJC_IVAR____TtC24DVTInstrumentsFoundation23CoreMLPerfRunnerService_messageHandler) = v7;
   v9.receiver = self;
   v9.super_class = type metadata accessor for CoreMLPerfRunnerService();
 
-  return [(DTXService *)&v9 initWithChannel:v5];
+  return [(DTXService *)&v9 initWithChannel:channelCopy];
 }
 
-- (void)messageReceived:(id)a3
+- (void)messageReceived:(id)received
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CoreMLPerfRunnerService();
-  v4 = a3;
+  receivedCopy = received;
   v5 = v7.receiver;
-  [(DTXService *)&v7 messageReceived:v4];
+  [(DTXService *)&v7 messageReceived:receivedCopy];
   v6 = *&v5[OBJC_IVAR____TtC24DVTInstrumentsFoundation23CoreMLPerfRunnerService_messageHandler];
-  sub_2480236A4(v4);
+  sub_2480236A4(receivedCopy);
 }
 
 - (_TtC24DVTInstrumentsFoundation23CoreMLPerfRunnerService)init

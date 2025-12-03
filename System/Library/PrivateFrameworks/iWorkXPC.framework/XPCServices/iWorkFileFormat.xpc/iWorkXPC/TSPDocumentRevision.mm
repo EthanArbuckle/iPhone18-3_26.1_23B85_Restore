@@ -1,17 +1,17 @@
 @interface TSPDocumentRevision
-+ (id)documentRevisionAtURL:(id)a3 passphrase:(id)a4 error:(id *)a5;
-+ (id)revisionWithRevisionString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)documentRevisionAtURL:(id)l passphrase:(id)passphrase error:(id *)error;
++ (id)revisionWithRevisionString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (NSString)revisionString;
 - (TSPDocumentRevision)init;
-- (TSPDocumentRevision)initWithCoder:(id)a3;
-- (TSPDocumentRevision)initWithRevisionString:(id)a3;
-- (TSPDocumentRevision)initWithSequence:(int)a3 identifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSPDocumentRevision)initWithCoder:(id)coder;
+- (TSPDocumentRevision)initWithRevisionString:(id)string;
+- (TSPDocumentRevision)initWithSequence:(int)sequence identifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)nextRevisionWithIdentifier:(id)a3;
-- (int64_t)compareSequenceFromRevision:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)nextRevisionWithIdentifier:(id)identifier;
+- (int64_t)compareSequenceFromRevision:(id)revision;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TSPDocumentRevision
@@ -50,10 +50,10 @@
   objc_exception_throw(v7);
 }
 
-- (TSPDocumentRevision)initWithSequence:(int)a3 identifier:(id)a4
+- (TSPDocumentRevision)initWithSequence:(int)sequence identifier:(id)identifier
 {
-  v6 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v15.receiver = self;
     v15.super_class = TSPDocumentRevision;
@@ -61,14 +61,14 @@
     v8 = v7;
     if (v7)
     {
-      v7->_sequence = a3;
-      v9 = [v6 copy];
+      v7->_sequence = sequence;
+      v9 = [identifierCopy copy];
       identifier = v8->_identifier;
       v8->_identifier = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -89,22 +89,22 @@
     [TSUAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:31 isFatal:0 description:"Document revision identifier should not be nil."];
 
     +[TSUAssertionHandler logBacktraceThrottled];
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (TSPDocumentRevision)initWithRevisionString:(id)a3
+- (TSPDocumentRevision)initWithRevisionString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@"::"];
+  stringCopy = string;
+  v5 = [stringCopy componentsSeparatedByString:@"::"];
   if ([v5 count] == 2)
   {
     v6 = [v5 objectAtIndexedSubscript:0];
-    v7 = [v6 longLongValue];
+    longLongValue = [v6 longLongValue];
 
-    if (v7 != v7)
+    if (longLongValue != longLongValue)
     {
       +[TSUAssertionHandler _atomicIncrementAssertCount];
       if (TSUAssertCat_init_token != -1)
@@ -119,7 +119,7 @@
 
       v8 = [NSString stringWithUTF8String:"[TSPDocumentRevision initWithRevisionString:]"];
       v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkXPC/shared/persistence/src/TSPDocumentRevision.mm"];
-      [TSUAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:53 isFatal:0 description:"Revision string has invalid sequence: %{public}@", v4];
+      [TSUAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:53 isFatal:0 description:"Revision string has invalid sequence: %{public}@", stringCopy];
 
       +[TSUAssertionHandler logBacktraceThrottled];
     }
@@ -143,7 +143,7 @@
 
         v12 = [NSString stringWithUTF8String:"[TSPDocumentRevision initWithRevisionString:]"];
         v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkXPC/shared/persistence/src/TSPDocumentRevision.mm"];
-        [TSUAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:66 isFatal:0 description:"Revision string has invalid identifier: %{public}@", v4];
+        [TSUAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:66 isFatal:0 description:"Revision string has invalid identifier: %{public}@", stringCopy];
 
         +[TSUAssertionHandler logBacktraceThrottled];
         v14 = [[NSUUID alloc] initWithUUIDString:@"0d4664c7-0c82-4301-8c01-e2d4a551216e"];
@@ -182,14 +182,14 @@
       v11 = [[NSUUID alloc] initWithUUIDBytes:v29];
     }
 
-    self = [(TSPDocumentRevision *)self initWithSequence:v7 identifier:v11];
+    self = [(TSPDocumentRevision *)self initWithSequence:longLongValue identifier:v11];
 
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    if ([v4 length])
+    if ([stringCopy length])
     {
       +[TSUAssertionHandler _atomicIncrementAssertCount];
       if (TSUAssertCat_init_token != -1)
@@ -204,29 +204,29 @@
 
       v16 = [NSString stringWithUTF8String:"[TSPDocumentRevision initWithRevisionString:]"];
       v17 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkXPC/shared/persistence/src/TSPDocumentRevision.mm"];
-      [TSUAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:77 isFatal:0 description:"Revision string is in invalid format: %{public}@", v4];
+      [TSUAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:77 isFatal:0 description:"Revision string is in invalid format: %{public}@", stringCopy];
 
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-+ (id)revisionWithRevisionString:(id)a3
++ (id)revisionWithRevisionString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRevisionString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithRevisionString:stringCopy];
 
   return v5;
 }
 
-+ (id)documentRevisionAtURL:(id)a3 passphrase:(id)a4 error:(id *)a5
++ (id)documentRevisionAtURL:(id)l passphrase:(id)passphrase error:(id *)error
 {
-  v5 = [TSPDocumentProperties documentRevisionAtURL:a3, a4, a5];
-  if (!v5)
+  error = [TSPDocumentProperties documentRevisionAtURL:l, passphrase, error];
+  if (!error)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -246,21 +246,21 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  return v5;
+  return error;
 }
 
 - (NSString)revisionString
 {
   sequence = self->_sequence;
-  v3 = [(NSUUID *)self->_identifier UUIDString];
-  v4 = [NSString stringWithFormat:@"%d%@%@", sequence, @"::", v3];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
+  v4 = [NSString stringWithFormat:@"%d%@%@", sequence, @"::", uUIDString];
 
   return v4;
 }
 
-- (id)nextRevisionWithIdentifier:(id)a3
+- (id)nextRevisionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (self->_sequence == 0x7FFFFFFF)
   {
     v5 = +[TSUAssertionHandler _atomicIncrementAssertCount];
@@ -272,14 +272,14 @@
     v6 = TSUAssertCat_log_t;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(TSPDocumentRevision *)self revisionString];
-      sub_1001527C0(v7, buf, v5, v6);
+      revisionString = [(TSPDocumentRevision *)self revisionString];
+      sub_1001527C0(revisionString, buf, v5, v6);
     }
 
     v8 = [NSString stringWithUTF8String:"[TSPDocumentRevision nextRevisionWithIdentifier:]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkXPC/shared/persistence/src/TSPDocumentRevision.mm"];
-    v10 = [(TSPDocumentRevision *)self revisionString];
-    [TSUAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:109 isFatal:0 description:"Revision will overflow: %{public}@", v10];
+    revisionString2 = [(TSPDocumentRevision *)self revisionString];
+    [TSUAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:109 isFatal:0 description:"Revision will overflow: %{public}@", revisionString2];
 
     +[TSUAssertionHandler logBacktraceThrottled];
     v11 = objc_opt_class();
@@ -292,19 +292,19 @@
     v12 = (self->_sequence + 1);
   }
 
-  v13 = [v11 revisionWithSequence:v12 identifier:v4];
+  v13 = [v11 revisionWithSequence:v12 identifier:identifierCopy];
 
   return v13;
 }
 
-- (int64_t)compareSequenceFromRevision:(id)a3
+- (int64_t)compareSequenceFromRevision:(id)revision
 {
-  v4 = a3;
+  revisionCopy = revision;
   sequence = self->_sequence;
-  if (sequence <= [v4 sequence])
+  if (sequence <= [revisionCopy sequence])
   {
     v7 = self->_sequence;
-    if (v7 >= [v4 sequence])
+    if (v7 >= [revisionCopy sequence])
     {
       v6 = 0;
     }
@@ -327,25 +327,25 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(TSPDocumentRevision *)self revisionString];
-  v6 = [NSString stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  revisionString = [(TSPDocumentRevision *)self revisionString];
+  v6 = [NSString stringWithFormat:@"<%@: %p %@>", v4, self, revisionString];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     sequence = self->_sequence;
     if (sequence == [v5 sequence])
     {
       identifier = self->_identifier;
-      v8 = [v5 identifier];
-      v9 = [(NSUUID *)identifier isEqual:v8];
+      identifier = [v5 identifier];
+      v9 = [(NSUUID *)identifier isEqual:identifier];
     }
 
     else
@@ -362,31 +362,31 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   sequence = self->_sequence;
   identifier = self->_identifier;
 
   return [v4 initWithSequence:sequence identifier:identifier];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:self->_sequence forKey:@"sequence"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_sequence forKey:@"sequence"];
   identifier = self->_identifier;
   if (identifier)
   {
-    [v4 encodeObject:identifier forKey:@"identifier"];
+    [coderCopy encodeObject:identifier forKey:@"identifier"];
   }
 }
 
-- (TSPDocumentRevision)initWithCoder:(id)a3
+- (TSPDocumentRevision)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"sequence"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"sequence"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v7 = [(TSPDocumentRevision *)self initWithSequence:v5 identifier:v6];
 
   return v7;

@@ -1,84 +1,84 @@
 @interface HUUserCamerasAccessLevelItemManager
 - (BOOL)_isAllowedToEditTargetUser;
-- (BOOL)_isEditingAllowedForUser:(id)a3;
+- (BOOL)_isEditingAllowedForUser:(id)user;
 - (BOOL)_isUserBeingEditedTheDeviceUser;
-- (BOOL)_isUserOwner:(id)a3;
+- (BOOL)_isUserOwner:(id)owner;
 - (HMUser)user;
-- (HUUserCamerasAccessLevelItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HUUserCamerasAccessLevelItemManager)initWithHome:(id)a3 userItem:(id)a4 delegate:(id)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUUserCamerasAccessLevelItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HUUserCamerasAccessLevelItemManager)initWithHome:(id)home userItem:(id)item delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
-- (unint64_t)_accessLevelForUser:(id)a3;
+- (unint64_t)_accessLevelForUser:(id)user;
 @end
 
 @implementation HUUserCamerasAccessLevelItemManager
 
-- (HUUserCamerasAccessLevelItemManager)initWithHome:(id)a3 userItem:(id)a4 delegate:(id)a5
+- (HUUserCamerasAccessLevelItemManager)initWithHome:(id)home userItem:(id)item delegate:(id)delegate
 {
-  v8 = a3;
+  homeCopy = home;
   v12.receiver = self;
   v12.super_class = HUUserCamerasAccessLevelItemManager;
-  v9 = [(HFItemManager *)&v12 initWithDelegate:a5 sourceItem:a4];
+  v9 = [(HFItemManager *)&v12 initWithDelegate:delegate sourceItem:item];
   v10 = v9;
   if (v9)
   {
-    [(HUUserCamerasAccessLevelItemManager *)v9 setHomeForUser:v8];
+    [(HUUserCamerasAccessLevelItemManager *)v9 setHomeForUser:homeCopy];
   }
 
   return v10;
 }
 
-- (HUUserCamerasAccessLevelItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUUserCamerasAccessLevelItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithHome_userItem_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUUserCamerasAccessLevelItemManager.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HUUserCamerasAccessLevelItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUUserCamerasAccessLevelItemManager.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HUUserCamerasAccessLevelItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
 - (HMUser)user
 {
-  v2 = [(HFItemManager *)self sourceItem];
-  v3 = [v2 user];
+  sourceItem = [(HFItemManager *)self sourceItem];
+  user = [sourceItem user];
 
-  return v3;
+  return user;
 }
 
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUUserCamerasAccessLevelItemManager *)self homeForUser];
-  v4 = [v2 futureWithResult:v3];
+  homeForUser = [(HUUserCamerasAccessLevelItemManager *)self homeForUser];
+  v4 = [v2 futureWithResult:homeForUser];
 
   return v4;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v4 = ![(HUUserCamerasAccessLevelItemManager *)self _isAllowedToEditTargetUser];
-  v5 = [(HUUserCamerasAccessLevelItemManager *)self _cameraAccessLevels];
+  _cameraAccessLevels = [(HUUserCamerasAccessLevelItemManager *)self _cameraAccessLevels];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__HUUserCamerasAccessLevelItemManager__buildItemProvidersForHome___block_invoke;
   v15[3] = &unk_277DBC980;
   v15[4] = self;
   v16 = v4;
-  v6 = [v5 na_map:v15];
+  v6 = [_cameraAccessLevels na_map:v15];
   [(HUUserCamerasAccessLevelItemManager *)self setAccessLevelItems:v6];
 
   v7 = objc_alloc(MEMORY[0x277CBEB98]);
-  v8 = [(HUUserCamerasAccessLevelItemManager *)self accessLevelItems];
-  v9 = [v7 initWithArray:v8];
+  accessLevelItems = [(HUUserCamerasAccessLevelItemManager *)self accessLevelItems];
+  v9 = [v7 initWithArray:accessLevelItems];
 
   v10 = MEMORY[0x277CBEB58];
   v11 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v9];
   v12 = [v10 setWithObject:v11];
 
-  v13 = [v12 allObjects];
+  allObjects = [v12 allObjects];
 
-  return v13;
+  return allObjects;
 }
 
 id __66__HUUserCamerasAccessLevelItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1, void *a2)
@@ -128,15 +128,15 @@ id __66__HUUserCamerasAccessLevelItemManager__buildItemProvidersForHome___block_
   return v15;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc(MEMORY[0x277CBEB98]);
-  v7 = [(HUUserCamerasAccessLevelItemManager *)self accessLevelItems];
-  v8 = [v6 initWithArray:v7];
-  v9 = [v4 intersectsSet:v8];
+  accessLevelItems = [(HUUserCamerasAccessLevelItemManager *)self accessLevelItems];
+  v8 = [v6 initWithArray:accessLevelItems];
+  v9 = [itemsCopy intersectsSet:v8];
 
   if (v9)
   {
@@ -145,8 +145,8 @@ id __66__HUUserCamerasAccessLevelItemManager__buildItemProvidersForHome___block_
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v11 = [(HUUserCamerasAccessLevelItemManager *)self accessLevelItems];
-    v12 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    accessLevelItems2 = [(HUUserCamerasAccessLevelItemManager *)self accessLevelItems];
+    v12 = [accessLevelItems2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v12)
     {
       v13 = v12;
@@ -157,17 +157,17 @@ id __66__HUUserCamerasAccessLevelItemManager__buildItemProvidersForHome___block_
         {
           if (*v34 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(accessLevelItems2);
           }
 
           v16 = *(*(&v33 + 1) + 8 * i);
-          if ([v4 containsObject:v16])
+          if ([itemsCopy containsObject:v16])
           {
             [v10 addObject:v16];
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v13 = [accessLevelItems2 countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v13);
@@ -178,13 +178,13 @@ id __66__HUUserCamerasAccessLevelItemManager__buildItemProvidersForHome___block_
     if ([(HUUserCamerasAccessLevelItemManager *)self _isAllowedToEditTargetUser])
     {
       v18 = objc_alloc(MEMORY[0x277D14CA8]);
-      v19 = [(HFItemManager *)self home];
-      v20 = [v18 initWithHome:v19];
+      home = [(HFItemManager *)self home];
+      v20 = [v18 initWithHome:home];
 
       [v20 setStyle:1];
-      v21 = [(HFItemManager *)self home];
-      v22 = [(HUUserCamerasAccessLevelItemManager *)self user];
-      v23 = [v21 hf_handleForUser:v22];
+      home2 = [(HFItemManager *)self home];
+      user = [(HUUserCamerasAccessLevelItemManager *)self user];
+      v23 = [home2 hf_handleForUser:user];
       v24 = [v20 stringForObjectValue:v23];
 
       v31 = HULocalizedStringWithFormat(@"HUUsersCamerasAccessLevelFooter", @"%@", v25, v26, v27, v28, v29, v30, v24);
@@ -197,55 +197,55 @@ id __66__HUUserCamerasAccessLevelItemManager__buildItemProvidersForHome___block_
   return v5;
 }
 
-- (unint64_t)_accessLevelForUser:(id)a3
+- (unint64_t)_accessLevelForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HFItemManager *)self home];
-  v6 = [v5 homeAccessControlForUser:v4];
+  userCopy = user;
+  home = [(HFItemManager *)self home];
+  v6 = [home homeAccessControlForUser:userCopy];
 
-  v7 = [v6 camerasAccessLevel];
-  return v7;
+  camerasAccessLevel = [v6 camerasAccessLevel];
+  return camerasAccessLevel;
 }
 
-- (BOOL)_isEditingAllowedForUser:(id)a3
+- (BOOL)_isEditingAllowedForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HFItemManager *)self home];
-  v6 = [v5 homeAccessControlForUser:v4];
+  userCopy = user;
+  home = [(HFItemManager *)self home];
+  v6 = [home homeAccessControlForUser:userCopy];
 
-  LOBYTE(v4) = [v6 isAdministrator];
-  return v4;
+  LOBYTE(userCopy) = [v6 isAdministrator];
+  return userCopy;
 }
 
-- (BOOL)_isUserOwner:(id)a3
+- (BOOL)_isUserOwner:(id)owner
 {
-  v4 = a3;
-  v5 = [(HFItemManager *)self home];
-  v6 = [v5 homeAccessControlForUser:v4];
+  ownerCopy = owner;
+  home = [(HFItemManager *)self home];
+  v6 = [home homeAccessControlForUser:ownerCopy];
 
-  LOBYTE(v4) = [v6 isOwner];
-  return v4;
+  LOBYTE(ownerCopy) = [v6 isOwner];
+  return ownerCopy;
 }
 
 - (BOOL)_isUserBeingEditedTheDeviceUser
 {
-  v3 = [(HUUserCamerasAccessLevelItemManager *)self user];
-  v4 = [(HFItemManager *)self home];
-  v5 = [v4 currentUser];
-  v6 = [v3 isEqual:v5];
+  user = [(HUUserCamerasAccessLevelItemManager *)self user];
+  home = [(HFItemManager *)self home];
+  currentUser = [home currentUser];
+  v6 = [user isEqual:currentUser];
 
   return v6;
 }
 
 - (BOOL)_isAllowedToEditTargetUser
 {
-  v3 = [(HFItemManager *)self home];
-  v4 = [v3 currentUser];
-  if ([(HUUserCamerasAccessLevelItemManager *)self _isUserOwner:v4])
+  home = [(HFItemManager *)self home];
+  currentUser = [home currentUser];
+  if ([(HUUserCamerasAccessLevelItemManager *)self _isUserOwner:currentUser])
   {
-    v5 = [(HUUserCamerasAccessLevelItemManager *)self _isUserBeingEditedTheDeviceUser];
+    _isUserBeingEditedTheDeviceUser = [(HUUserCamerasAccessLevelItemManager *)self _isUserBeingEditedTheDeviceUser];
 
-    if (!v5)
+    if (!_isUserBeingEditedTheDeviceUser)
     {
       LOBYTE(v6) = 1;
       return v6;
@@ -256,12 +256,12 @@ id __66__HUUserCamerasAccessLevelItemManager__buildItemProvidersForHome___block_
   {
   }
 
-  v7 = [(HFItemManager *)self home];
-  v8 = [v7 currentUser];
-  if ([(HUUserCamerasAccessLevelItemManager *)self _isEditingAllowedForUser:v8])
+  home2 = [(HFItemManager *)self home];
+  currentUser2 = [home2 currentUser];
+  if ([(HUUserCamerasAccessLevelItemManager *)self _isEditingAllowedForUser:currentUser2])
   {
-    v9 = [(HUUserCamerasAccessLevelItemManager *)self user];
-    v6 = ![(HUUserCamerasAccessLevelItemManager *)self _isEditingAllowedForUser:v9];
+    user = [(HUUserCamerasAccessLevelItemManager *)self user];
+    v6 = ![(HUUserCamerasAccessLevelItemManager *)self _isEditingAllowedForUser:user];
   }
 
   else

@@ -1,30 +1,30 @@
 @interface _DASRuntimeLimiter
-+ (BOOL)activityRequiresLeniencyCaps:(id)a3;
-+ (BOOL)activityRequiresStrictCaps:(id)a3;
++ (BOOL)activityRequiresLeniencyCaps:(id)caps;
++ (BOOL)activityRequiresStrictCaps:(id)caps;
 + (id)sharedLimiter;
-- (BOOL)containsFullRuntimeOverridesForActivity:(id)a3;
-- (BOOL)deleteLimitForActivity:(id)a3;
-- (BOOL)featureDurationLimitAppliesToActivity:(id)a3;
-- (BOOL)featureHasNoRemainingRuntimeForActivity:(id)a3;
-- (BOOL)hasDynamicOverrides:(id)a3;
-- (BOOL)hasStaticOverrides:(id)a3;
-- (BOOL)limitedActivity:(id)a3 withLimitsResponses:(id)a4;
-- (BOOL)limitsApplyToActivity:(id)a3;
-- (BOOL)setLimit:(double)a3 forActivity:(id)a4;
+- (BOOL)containsFullRuntimeOverridesForActivity:(id)activity;
+- (BOOL)deleteLimitForActivity:(id)activity;
+- (BOOL)featureDurationLimitAppliesToActivity:(id)activity;
+- (BOOL)featureHasNoRemainingRuntimeForActivity:(id)activity;
+- (BOOL)hasDynamicOverrides:(id)overrides;
+- (BOOL)hasStaticOverrides:(id)overrides;
+- (BOOL)limitedActivity:(id)activity withLimitsResponses:(id)responses;
+- (BOOL)limitsApplyToActivity:(id)activity;
+- (BOOL)setLimit:(double)limit forActivity:(id)activity;
 - (_DASRuntimeLimiter)init;
-- (double)defaultRuntimeForActivity:(id)a3;
-- (double)durationWithActivityType:(unint64_t)a3;
-- (double)dynamicDurationForActivity:(id)a3;
-- (double)immediateDurationForActivity:(id)a3;
-- (double)maximumRemainingFeatureDurationForActivity:(id)a3;
-- (double)maximumRuntimeForActivity:(id)a3;
-- (double)remainingAggregatedRuntimeForActivity:(id)a3;
-- (double)remainingDurationForFeature:(id)a3;
-- (double)staticDurationForActivity:(id)a3;
-- (double)uninterruptibleDurationForActivity:(id)a3;
-- (id)exhaustedRuntimeFeatureCodesAssociatedWithActivity:(id)a3;
-- (id)shouldLimitActivityAtRuntime:(id)a3 whileBlockingOtherTasks:(BOOL)a4 withStartDate:(id)a5 atDate:(id)a6 withContext:(id)a7;
-- (void)dasTrialManager:(id)a3 hasUpdatedParametersForNamespace:(id)a4;
+- (double)defaultRuntimeForActivity:(id)activity;
+- (double)durationWithActivityType:(unint64_t)type;
+- (double)dynamicDurationForActivity:(id)activity;
+- (double)immediateDurationForActivity:(id)activity;
+- (double)maximumRemainingFeatureDurationForActivity:(id)activity;
+- (double)maximumRuntimeForActivity:(id)activity;
+- (double)remainingAggregatedRuntimeForActivity:(id)activity;
+- (double)remainingDurationForFeature:(id)feature;
+- (double)staticDurationForActivity:(id)activity;
+- (double)uninterruptibleDurationForActivity:(id)activity;
+- (id)exhaustedRuntimeFeatureCodesAssociatedWithActivity:(id)activity;
+- (id)shouldLimitActivityAtRuntime:(id)runtime whileBlockingOtherTasks:(BOOL)tasks withStartDate:(id)date atDate:(id)atDate withContext:(id)context;
+- (void)dasTrialManager:(id)manager hasUpdatedParametersForNamespace:(id)namespace;
 - (void)loadCustomDurations;
 - (void)loadTrialParameters;
 - (void)resetOnlyPreemptiveSuspend;
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000D0B4;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020ADE0 != -1)
   {
     dispatch_once(&qword_10020ADE0, block);
@@ -103,14 +103,14 @@
   return v3;
 }
 
-+ (BOOL)activityRequiresStrictCaps:(id)a3
++ (BOOL)activityRequiresStrictCaps:(id)caps
 {
-  v3 = a3;
+  capsCopy = caps;
   v6 = 1;
-  if (([v3 preventDeviceSleep] & 1) == 0)
+  if (([capsCopy preventDeviceSleep] & 1) == 0)
   {
-    [v3 interval];
-    if (v4 == 0.0 || ([v3 interval], v5 > 10800.0))
+    [capsCopy interval];
+    if (v4 == 0.0 || ([capsCopy interval], v5 > 10800.0))
     {
       v6 = 0;
     }
@@ -119,31 +119,31 @@
   return v6;
 }
 
-+ (BOOL)activityRequiresLeniencyCaps:(id)a3
++ (BOOL)activityRequiresLeniencyCaps:(id)caps
 {
-  v3 = a3;
-  if ([v3 isIntensive] & 1) != 0 || (objc_msgSend(v3, "requiresDeviceInactivity") & 1) != 0 || (objc_msgSend(v3, "requiresPlugin"))
+  capsCopy = caps;
+  if ([capsCopy isIntensive] & 1) != 0 || (objc_msgSend(capsCopy, "requiresDeviceInactivity") & 1) != 0 || (objc_msgSend(capsCopy, "requiresPlugin"))
   {
     v4 = 1;
   }
 
   else
   {
-    v6 = [v3 fastPass];
+    fastPass = [capsCopy fastPass];
 
-    v4 = v6 != 0;
+    v4 = fastPass != 0;
   }
 
   return v4;
 }
 
-- (BOOL)hasDynamicOverrides:(id)a3
+- (BOOL)hasDynamicOverrides:(id)overrides
 {
-  v3 = a3;
-  if ([v3 noTransferSizeSpecified])
+  overridesCopy = overrides;
+  if ([overridesCopy noTransferSizeSpecified])
   {
     v4 = +[_DASPlistParser sharedInstance];
-    v5 = [v4 containsOverrideForActivity:v3 withLimitation:kDASDynamicRuntimeLimitationName];
+    v5 = [v4 containsOverrideForActivity:overridesCopy withLimitation:kDASDynamicRuntimeLimitationName];
   }
 
   else
@@ -154,17 +154,17 @@
   return v5;
 }
 
-- (double)durationWithActivityType:(unint64_t)a3
+- (double)durationWithActivityType:(unint64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0.0;
   }
 
-  if (a3 >= 0xB)
+  if (type >= 0xB)
   {
     result = -1.0;
-    if (a3 > 0x1D)
+    if (type > 0x1D)
     {
       return result;
     }
@@ -180,13 +180,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (BOOL)hasStaticOverrides:(id)a3
+- (BOOL)hasStaticOverrides:(id)overrides
 {
-  v4 = [a3 identifier];
+  identifier = [overrides identifier];
   customDurations = self->_customDurations;
   if (customDurations)
   {
-    v6 = [(NSDictionary *)customDurations objectForKeyedSubscript:v4];
+    v6 = [(NSDictionary *)customDurations objectForKeyedSubscript:identifier];
     v7 = v6 != 0;
   }
 
@@ -198,12 +198,12 @@
   return v7;
 }
 
-- (double)dynamicDurationForActivity:(id)a3
+- (double)dynamicDurationForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  activityCopy = activity;
+  identifier = [activityCopy identifier];
   v6 = 0.0;
-  if (![(_DASRuntimeLimiter *)self hasDynamicOverrides:v4])
+  if (![(_DASRuntimeLimiter *)self hasDynamicOverrides:activityCopy])
   {
 LABEL_10:
     v11 = [_DASDaemonLogger logForCategory:@"runtimeLimits"];
@@ -216,27 +216,27 @@ LABEL_10:
   }
 
   v7 = +[_DASPlistParser sharedInstance];
-  v8 = [v7 containsOverrideForActivity:v4 withLimitation:kDASDynamicRuntimeLimitationName];
+  v8 = [v7 containsOverrideForActivity:activityCopy withLimitation:kDASDynamicRuntimeLimitationName];
 
-  v9 = 0.0;
+  duration = 0.0;
   if (v8)
   {
-    v9 = [v4 duration];
+    duration = [activityCopy duration];
   }
 
-  if ([v4 noTransferSizeSpecified])
+  if ([activityCopy noTransferSizeSpecified])
   {
-    v6 = v9;
+    v6 = duration;
     goto LABEL_10;
   }
 
-  -[_DASRuntimeLimiter durationWithActivityType:](self, "durationWithActivityType:", [v4 transferSizeType]);
+  -[_DASRuntimeLimiter durationWithActivityType:](self, "durationWithActivityType:", [activityCopy transferSizeType]);
   v6 = -1.0;
   if (v10 != -1.0)
   {
-    if (v9 >= v10)
+    if (duration >= v10)
     {
-      v6 = v9;
+      v6 = duration;
     }
 
     else
@@ -258,31 +258,31 @@ LABEL_12:
   return v6;
 }
 
-- (double)staticDurationForActivity:(id)a3
+- (double)staticDurationForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  activityCopy = activity;
+  identifier = [activityCopy identifier];
   v6 = 0.0;
-  if (![(_DASRuntimeLimiter *)self hasStaticOverrides:v4])
+  if (![(_DASRuntimeLimiter *)self hasStaticOverrides:activityCopy])
   {
     goto LABEL_6;
   }
 
-  v7 = [v4 name];
-  if ([v7 containsString:@"com.apple.softwareupdate.autoinstall.startInstall"])
+  name = [activityCopy name];
+  if ([name containsString:@"com.apple.softwareupdate.autoinstall.startInstall"])
   {
 
     v8 = -1.0;
     goto LABEL_9;
   }
 
-  v9 = [v4 name];
-  v10 = [v9 containsString:@"com.apple.SUOSUScheduler.tonight.install"];
+  name2 = [activityCopy name];
+  v10 = [name2 containsString:@"com.apple.SUOSUScheduler.tonight.install"];
 
   v8 = -1.0;
   if ((v10 & 1) == 0)
   {
-    v11 = [(NSDictionary *)self->_customDurations objectForKeyedSubscript:v5];
+    v11 = [(NSDictionary *)self->_customDurations objectForKeyedSubscript:identifier];
     [v11 doubleValue];
     v6 = v12;
 
@@ -304,42 +304,42 @@ LABEL_9:
   return v8;
 }
 
-- (double)uninterruptibleDurationForActivity:(id)a3
+- (double)uninterruptibleDurationForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  activityCopy = activity;
+  identifier = [activityCopy identifier];
   v6 = +[_DASPlistParser sharedInstance];
-  v7 = [v6 containsOverrideForActivity:v4 withLimitation:kDASUninterruptibleRuntimeLimitationName];
+  v7 = [v6 containsOverrideForActivity:activityCopy withLimitation:kDASUninterruptibleRuntimeLimitationName];
 
-  if (!v7 || (-[NSDictionary objectForKeyedSubscript:](self->_customUninterruptibleDurations, "objectForKeyedSubscript:", v5), v8 = objc_claimAutoreleasedReturnValue(), [v8 doubleValue], v10 = v9, v8, v10 <= 0.0))
+  if (!v7 || (-[NSDictionary objectForKeyedSubscript:](self->_customUninterruptibleDurations, "objectForKeyedSubscript:", identifier), v8 = objc_claimAutoreleasedReturnValue(), [v8 doubleValue], duration = v9, v8, duration <= 0.0))
   {
-    if ([(_DASRuntimeLimiter *)self hasStaticOverrides:v4])
+    if ([(_DASRuntimeLimiter *)self hasStaticOverrides:activityCopy])
     {
-      [(_DASRuntimeLimiter *)self staticDurationForActivity:v4];
-      v10 = v11;
+      [(_DASRuntimeLimiter *)self staticDurationForActivity:activityCopy];
+      duration = v11;
     }
 
     else
     {
       v12 = +[_DASPlistParser sharedInstance];
-      v13 = [v12 containsOverrideForActivity:v4 withLimitation:kDASDynamicRuntimeLimitationName];
+      v13 = [v12 containsOverrideForActivity:activityCopy withLimitation:kDASDynamicRuntimeLimitationName];
 
-      v10 = 0.0;
+      duration = 0.0;
       if (v13)
       {
-        v10 = [v4 duration];
+        duration = [activityCopy duration];
       }
     }
   }
 
-  return v10;
+  return duration;
 }
 
-- (double)immediateDurationForActivity:(id)a3
+- (double)immediateDurationForActivity:(id)activity
 {
-  v4 = [a3 identifier];
+  identifier = [activity identifier];
   customImmediateDurations = self->_customImmediateDurations;
-  if (!customImmediateDurations || ([(NSDictionary *)customImmediateDurations objectForKey:v4], v6 = objc_claimAutoreleasedReturnValue(), v6, customImmediateDurations = self->_customImmediateDurations, !v6))
+  if (!customImmediateDurations || ([(NSDictionary *)customImmediateDurations objectForKey:identifier], v6 = objc_claimAutoreleasedReturnValue(), v6, customImmediateDurations = self->_customImmediateDurations, !v6))
   {
     v25 = 0u;
     v26 = 0u;
@@ -363,7 +363,7 @@ LABEL_9:
           }
 
           v17 = *(*(&v23 + 1) + 8 * i);
-          if ([v4 containsString:{v17, v22, v23}])
+          if ([identifier containsString:{v17, v22, v23}])
           {
             v18 = [(NSDictionary *)self->_customImmediateDurations objectForKeyedSubscript:v17];
             [v18 doubleValue];
@@ -373,7 +373,7 @@ LABEL_9:
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
             {
               *buf = v22;
-              v28 = v4;
+              v28 = identifier;
               _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Prefix of activity name %@ found in BPG allowlist", buf, 0xCu);
             }
 
@@ -398,7 +398,7 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  v7 = [(NSDictionary *)customImmediateDurations objectForKeyedSubscript:v4];
+  v7 = [(NSDictionary *)customImmediateDurations objectForKeyedSubscript:identifier];
   [v7 doubleValue];
   v9 = v8;
 
@@ -422,14 +422,14 @@ LABEL_21:
 - (void)loadCustomDurations
 {
   v3 = +[_DASPlistParser sharedInstance];
-  v4 = [v3 loadOverrides];
+  loadOverrides = [v3 loadOverrides];
 
-  if (v4)
+  if (loadOverrides)
   {
-    v43 = self;
+    selfCopy = self;
     v5 = kDASRuntimeLimitationName;
-    v44 = v4;
-    v6 = [v4 objectForKeyedSubscript:kDASRuntimeLimitationName];
+    v44 = loadOverrides;
+    v6 = [loadOverrides objectForKeyedSubscript:kDASRuntimeLimitationName];
     v7 = +[_DASPlistParser sharedInstance];
     v8 = [v7 dictionaryForPlist:1];
 
@@ -578,14 +578,14 @@ LABEL_21:
       v33 = 0;
     }
 
-    objc_storeStrong(&v43->_customDurations, v42);
-    objc_storeStrong(&v43->_customUninterruptibleDurations, v23);
-    objc_storeStrong(&v43->_customImmediateDurations, v33);
+    objc_storeStrong(&selfCopy->_customDurations, v42);
+    objc_storeStrong(&selfCopy->_customUninterruptibleDurations, v23);
+    objc_storeStrong(&selfCopy->_customImmediateDurations, v33);
     v39 = [_DASDaemonLogger logForCategory:@"runtimeLimits"];
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
-      customDurations = v43->_customDurations;
-      customUninterruptibleDurations = v43->_customUninterruptibleDurations;
+      customDurations = selfCopy->_customDurations;
+      customUninterruptibleDurations = selfCopy->_customUninterruptibleDurations;
       *buf = 138412546;
       v59 = customUninterruptibleDurations;
       v60 = 2112;
@@ -593,22 +593,22 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Loaded Exceptions for uninterruptible duration %@, static duration %@", buf, 0x16u);
     }
 
-    v4 = v44;
+    loadOverrides = v44;
   }
 }
 
-- (double)defaultRuntimeForActivity:(id)a3
+- (double)defaultRuntimeForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   immediateRuntime = -1.0;
-  if ([(_DASRuntimeLimiter *)self limitsApplyToActivity:v4])
+  if ([(_DASRuntimeLimiter *)self limitsApplyToActivity:activityCopy])
   {
-    v6 = [v4 identifier];
-    v7 = [(NSMutableDictionary *)self->_testingOverride objectForKeyedSubscript:v6];
+    identifier = [activityCopy identifier];
+    v7 = [(NSMutableDictionary *)self->_testingOverride objectForKeyedSubscript:identifier];
 
     if (v7)
     {
-      v8 = [(NSMutableDictionary *)self->_testingOverride objectForKeyedSubscript:v6];
+      v8 = [(NSMutableDictionary *)self->_testingOverride objectForKeyedSubscript:identifier];
       [v8 doubleValue];
       immediateRuntime = v9;
 
@@ -617,24 +617,24 @@ LABEL_21:
       {
         v11 = [NSNumber numberWithDouble:immediateRuntime];
         v13 = 138543618;
-        v14 = v4;
+        v14 = activityCopy;
         v15 = 2112;
         v16 = v11;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Activity %{public}@ has testing overrides to %@ seconds", &v13, 0x16u);
       }
     }
 
-    else if ([_DASRuntimeLimiter activityRequiresImmediateRuntimeCaps:v4])
+    else if ([_DASRuntimeLimiter activityRequiresImmediateRuntimeCaps:activityCopy])
     {
       immediateRuntime = self->_immediateRuntime;
     }
 
-    else if ([_DASRuntimeLimiter activityRequiresLeniencyCaps:v4])
+    else if ([_DASRuntimeLimiter activityRequiresLeniencyCaps:activityCopy])
     {
       immediateRuntime = self->_leniencyRuntime;
     }
 
-    else if ([_DASRuntimeLimiter activityRequiresStrictCaps:v4])
+    else if ([_DASRuntimeLimiter activityRequiresStrictCaps:activityCopy])
     {
       immediateRuntime = self->_limitedRuntime;
     }
@@ -648,10 +648,10 @@ LABEL_21:
   return immediateRuntime;
 }
 
-- (double)remainingAggregatedRuntimeForActivity:(id)a3
+- (double)remainingAggregatedRuntimeForActivity:(id)activity
 {
-  v4 = a3;
-  if (![(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isEnabled]|| ![(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isRuntimeAllocatedForActivity:v4]|| ([(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator remainingAllocatedRuntimeForActivity:v4], v6 = v5, v5 < 0.0))
+  activityCopy = activity;
+  if (![(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isEnabled]|| ![(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isRuntimeAllocatedForActivity:activityCopy]|| ([(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator remainingAllocatedRuntimeForActivity:activityCopy], v6 = v5, v5 < 0.0))
   {
     v6 = 9.22337204e18;
   }
@@ -659,18 +659,18 @@ LABEL_21:
   return v6;
 }
 
-- (double)maximumRuntimeForActivity:(id)a3
+- (double)maximumRuntimeForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   immediateRuntime = -1.0;
-  if ([(_DASRuntimeLimiter *)self limitsApplyToActivity:v4])
+  if ([(_DASRuntimeLimiter *)self limitsApplyToActivity:activityCopy])
   {
-    v6 = [v4 identifier];
-    v7 = [(NSMutableDictionary *)self->_testingOverride objectForKeyedSubscript:v6];
+    identifier = [activityCopy identifier];
+    v7 = [(NSMutableDictionary *)self->_testingOverride objectForKeyedSubscript:identifier];
 
     if (v7)
     {
-      v8 = [(NSMutableDictionary *)self->_testingOverride objectForKeyedSubscript:v6];
+      v8 = [(NSMutableDictionary *)self->_testingOverride objectForKeyedSubscript:identifier];
       [v8 doubleValue];
       immediateRuntime = v9;
 
@@ -679,7 +679,7 @@ LABEL_21:
       {
         v11 = [NSNumber numberWithDouble:immediateRuntime];
         v18 = 138543618;
-        v19 = v4;
+        v19 = activityCopy;
         v20 = 2112;
         v21 = v11;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Activity %{public}@ has testing overrides to %@ seconds", &v18, 0x16u);
@@ -688,21 +688,21 @@ LABEL_21:
       goto LABEL_25;
     }
 
-    if ([v4 maximumRuntime] < 1)
+    if ([activityCopy maximumRuntime] < 1)
     {
-      if ([v4 requestsImmediateRuntime])
+      if ([activityCopy requestsImmediateRuntime])
       {
         immediateRuntime = self->_immediateRuntime;
       }
 
       else
       {
-        if (![(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isEnabled]|| ![(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isRuntimeAllocatedForActivity:v4])
+        if (![(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isEnabled]|| ![(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isRuntimeAllocatedForActivity:activityCopy])
         {
           goto LABEL_16;
         }
 
-        [(_DASRuntimeLimiter *)self remainingAggregatedRuntimeForActivity:v4];
+        [(_DASRuntimeLimiter *)self remainingAggregatedRuntimeForActivity:activityCopy];
         immediateRuntime = v12;
         if (v12 != 9.22337204e18 && v12 != 0.0)
         {
@@ -713,11 +713,11 @@ LABEL_21:
         {
 LABEL_16:
           v13 = 0.0;
-          if (![(_DASRuntimeLimiter *)self hasDynamicOverrides:v4]|| ([(_DASRuntimeLimiter *)self dynamicDurationForActivity:v4], v13 = v14, immediateRuntime = -1.0, v14 != -1.0))
+          if (![(_DASRuntimeLimiter *)self hasDynamicOverrides:activityCopy]|| ([(_DASRuntimeLimiter *)self dynamicDurationForActivity:activityCopy], v13 = v14, immediateRuntime = -1.0, v14 != -1.0))
           {
-            if ([(_DASRuntimeLimiter *)self hasStaticOverrides:v4])
+            if ([(_DASRuntimeLimiter *)self hasStaticOverrides:activityCopy])
             {
-              [(_DASRuntimeLimiter *)self staticDurationForActivity:v4];
+              [(_DASRuntimeLimiter *)self staticDurationForActivity:activityCopy];
               if (v13 < v15)
               {
                 v13 = v15;
@@ -727,7 +727,7 @@ LABEL_16:
             immediateRuntime = -1.0;
             if (v13 != -1.0)
             {
-              [(_DASRuntimeLimiter *)self defaultRuntimeForActivity:v4];
+              [(_DASRuntimeLimiter *)self defaultRuntimeForActivity:activityCopy];
               if (v13 >= v16)
               {
                 immediateRuntime = v13;
@@ -749,7 +749,7 @@ LABEL_16:
 
     else
     {
-      immediateRuntime = [v4 maximumRuntime];
+      immediateRuntime = [activityCopy maximumRuntime];
     }
 
 LABEL_25:
@@ -758,21 +758,21 @@ LABEL_25:
   return immediateRuntime;
 }
 
-- (BOOL)containsFullRuntimeOverridesForActivity:(id)a3
+- (BOOL)containsFullRuntimeOverridesForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 name];
-  if (![v5 containsString:@"com.apple.softwareupdate.autoinstall.startInstall"])
+  activityCopy = activity;
+  name = [activityCopy name];
+  if (![name containsString:@"com.apple.softwareupdate.autoinstall.startInstall"])
   {
-    v6 = [v4 name];
-    v7 = [v6 containsString:@"com.apple.SUOSUScheduler.tonight.install"];
+    name2 = [activityCopy name];
+    v7 = [name2 containsString:@"com.apple.SUOSUScheduler.tonight.install"];
 
     if (v7)
     {
       goto LABEL_14;
     }
 
-    if ([(_DASRuntimeLimiter *)self hasStaticOverrides:v4]&& ([(_DASRuntimeLimiter *)self staticDurationForActivity:v4], v8 == -1.0))
+    if ([(_DASRuntimeLimiter *)self hasStaticOverrides:activityCopy]&& ([(_DASRuntimeLimiter *)self staticDurationForActivity:activityCopy], v8 == -1.0))
     {
       v9 = [_DASDaemonLogger logForCategory:@"runtimeLimits"];
       if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -783,13 +783,13 @@ LABEL_13:
       }
 
       v14 = 138412290;
-      v15 = v4;
+      v15 = activityCopy;
       v10 = "Unlimited runtime due to static overrides: %@";
     }
 
     else
     {
-      if (![(_DASRuntimeLimiter *)self hasDynamicOverrides:v4]|| ([(_DASRuntimeLimiter *)self dynamicDurationForActivity:v4], v11 != -1.0))
+      if (![(_DASRuntimeLimiter *)self hasDynamicOverrides:activityCopy]|| ([(_DASRuntimeLimiter *)self dynamicDurationForActivity:activityCopy], v11 != -1.0))
       {
         v12 = 0;
         goto LABEL_15;
@@ -802,7 +802,7 @@ LABEL_13:
       }
 
       v14 = 138412290;
-      v15 = v4;
+      v15 = activityCopy;
       v10 = "Unlimited runtime due to dynamic overrides: %@";
     }
 
@@ -817,26 +817,26 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)limitsApplyToActivity:(id)a3
+- (BOOL)limitsApplyToActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 schedulingPriority];
-  if (v5 > _DASSchedulingPriorityDefault)
+  activityCopy = activity;
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority > _DASSchedulingPriorityDefault)
   {
     goto LABEL_7;
   }
 
-  if ([v4 userRequestedBackupTask])
+  if ([activityCopy userRequestedBackupTask])
   {
     goto LABEL_7;
   }
 
-  v6 = [v4 groupName];
-  if (v6)
+  groupName = [activityCopy groupName];
+  if (groupName)
   {
-    v7 = v6;
-    v8 = [v4 groupName];
-    v9 = [v8 isEqualToString:@"NSURLSessionBackgroundPoolName"];
+    v7 = groupName;
+    groupName2 = [activityCopy groupName];
+    v9 = [groupName2 isEqualToString:@"NSURLSessionBackgroundPoolName"];
 
     if (v9)
     {
@@ -844,9 +844,9 @@ LABEL_15:
     }
   }
 
-  v10 = [v4 name];
+  name = [activityCopy name];
 
-  if (!v10 || [(_DASRuntimeLimiter *)self containsFullRuntimeOverridesForActivity:v4])
+  if (!name || [(_DASRuntimeLimiter *)self containsFullRuntimeOverridesForActivity:activityCopy])
   {
 LABEL_7:
     LOBYTE(v11) = 0;
@@ -854,23 +854,23 @@ LABEL_7:
 
   else
   {
-    v11 = [v4 isBackgroundTaskActivity] ^ 1;
+    v11 = [activityCopy isBackgroundTaskActivity] ^ 1;
   }
 
   return v11;
 }
 
-- (BOOL)featureDurationLimitAppliesToActivity:(id)a3
+- (BOOL)featureDurationLimitAppliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 fastPass];
-  if (v4)
+  activityCopy = activity;
+  fastPass = [activityCopy fastPass];
+  if (fastPass)
   {
-    v5 = [v3 featureCodes];
-    if (v5)
+    featureCodes = [activityCopy featureCodes];
+    if (featureCodes)
     {
-      v6 = [v3 featureCodes];
-      v7 = [v6 count] != 0;
+      featureCodes2 = [activityCopy featureCodes];
+      v7 = [featureCodes2 count] != 0;
     }
 
     else
@@ -887,15 +887,15 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)featureHasNoRemainingRuntimeForActivity:(id)a3
+- (BOOL)featureHasNoRemainingRuntimeForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 featureCodes];
-  if (v5)
+  activityCopy = activity;
+  featureCodes = [activityCopy featureCodes];
+  if (featureCodes)
   {
-    v6 = v5;
-    v7 = [v4 featureCodes];
-    v8 = [v7 count];
+    v6 = featureCodes;
+    featureCodes2 = [activityCopy featureCodes];
+    v8 = [featureCodes2 count];
 
     if (v8)
     {
@@ -903,8 +903,8 @@ LABEL_7:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v25 = v4;
-      obj = [v4 featureCodes];
+      v25 = activityCopy;
+      obj = [activityCopy featureCodes];
       v9 = [obj countByEnumeratingWithState:&v29 objects:v39 count:16];
       if (v9)
       {
@@ -929,16 +929,16 @@ LABEL_7:
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
               v16 = p_info;
-              v17 = self;
-              v18 = [v13 intValue];
+              selfCopy = self;
+              intValue = [v13 intValue];
               v19 = +[_DASFeatureDurationTracker sharedInstance];
               [v19 durationForFeature:v13];
               v21 = v20;
               v22 = +[_DASFeatureDurationTracker sharedInstance];
               [v22 maximumDurationForFeature:v13];
               *buf = 67109632;
-              v34 = v18;
-              self = v17;
+              v34 = intValue;
+              self = selfCopy;
               p_info = v16;
               v35 = 2048;
               v36 = v21;
@@ -966,7 +966,7 @@ LABEL_7:
         LOBYTE(v8) = 1;
       }
 
-      v4 = v25;
+      activityCopy = v25;
     }
   }
 
@@ -978,19 +978,19 @@ LABEL_7:
   return v8;
 }
 
-- (id)exhaustedRuntimeFeatureCodesAssociatedWithActivity:(id)a3
+- (id)exhaustedRuntimeFeatureCodesAssociatedWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 featureCodes];
-  if (v5 && (v6 = v5, [v4 featureCodes], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8))
+  activityCopy = activity;
+  featureCodes = [activityCopy featureCodes];
+  if (featureCodes && (v6 = featureCodes, [activityCopy featureCodes], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8))
   {
     v9 = +[NSMutableSet set];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [v4 featureCodes];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    featureCodes2 = [activityCopy featureCodes];
+    v11 = [featureCodes2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1001,7 +1001,7 @@ LABEL_7:
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(featureCodes2);
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
@@ -1011,7 +1011,7 @@ LABEL_7:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [featureCodes2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v12);
@@ -1036,15 +1036,15 @@ LABEL_7:
   return v16;
 }
 
-- (double)remainingDurationForFeature:(id)a3
+- (double)remainingDurationForFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   v4 = +[_DASFeatureDurationTracker sharedInstance];
-  [v4 maximumDurationForFeature:v3];
+  [v4 maximumDurationForFeature:featureCopy];
   v6 = v5;
 
   v7 = +[_DASFeatureDurationTracker sharedInstance];
-  [v7 durationForFeature:v3];
+  [v7 durationForFeature:featureCopy];
   v9 = v8;
 
   v10 = v6 - v9;
@@ -1052,7 +1052,7 @@ LABEL_7:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412802;
-    v14 = v3;
+    v14 = featureCopy;
     v15 = 2048;
     v16 = v9;
     v17 = 2048;
@@ -1063,14 +1063,14 @@ LABEL_7:
   return v10;
 }
 
-- (double)maximumRemainingFeatureDurationForActivity:(id)a3
+- (double)maximumRemainingFeatureDurationForActivity:(id)activity
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a3 featureCodes];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  featureCodes = [activity featureCodes];
+  v5 = [featureCodes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1082,7 +1082,7 @@ LABEL_7:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(featureCodes);
         }
 
         [(_DASRuntimeLimiter *)self remainingDurationForFeature:*(*(&v12 + 1) + 8 * i)];
@@ -1092,7 +1092,7 @@ LABEL_7:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [featureCodes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1106,30 +1106,30 @@ LABEL_7:
   return v8;
 }
 
-- (id)shouldLimitActivityAtRuntime:(id)a3 whileBlockingOtherTasks:(BOOL)a4 withStartDate:(id)a5 atDate:(id)a6 withContext:(id)a7
+- (id)shouldLimitActivityAtRuntime:(id)runtime whileBlockingOtherTasks:(BOOL)tasks withStartDate:(id)date atDate:(id)atDate withContext:(id)context
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v12 suspendRequestDate];
+  tasksCopy = tasks;
+  runtimeCopy = runtime;
+  dateCopy = date;
+  atDateCopy = atDate;
+  contextCopy = context;
+  suspendRequestDate = [runtimeCopy suspendRequestDate];
 
   v17 = 0;
-  if (v13 && !v16)
+  if (dateCopy && !suspendRequestDate)
   {
-    if (!-[_DASRuntimeLimiter limitsApplyToActivity:](self, "limitsApplyToActivity:", v12) || [v12 maximumRuntime] == -1)
+    if (!-[_DASRuntimeLimiter limitsApplyToActivity:](self, "limitsApplyToActivity:", runtimeCopy) || [runtimeCopy maximumRuntime] == -1)
     {
       goto LABEL_11;
     }
 
-    if ([_DASPhotosPolicy isiCPLActivity:v12]&& [_DASPhotosPolicy isPhotosSyncOverriddenWithContext:v15])
+    if ([_DASPhotosPolicy isiCPLActivity:runtimeCopy]&& [_DASPhotosPolicy isPhotosSyncOverriddenWithContext:contextCopy])
     {
       v18 = [_DASDaemonLogger logForCategory:@"runtimeLimiter"];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v44 = v12;
+        v44 = runtimeCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Runtime limit doesn't apply because User initiated Sync Now %{public}@", buf, 0xCu);
       }
 
@@ -1137,9 +1137,9 @@ LABEL_7:
       goto LABEL_34;
     }
 
-    [v14 timeIntervalSinceDate:v13];
+    [atDateCopy timeIntervalSinceDate:dateCopy];
     v20 = v19;
-    if (v19 < [v12 maximumRuntime])
+    if (v19 < [runtimeCopy maximumRuntime])
     {
 LABEL_11:
       v17 = 0;
@@ -1151,21 +1151,21 @@ LABEL_11:
       goto LABEL_24;
     }
 
-    if ([v12 uninterruptibleDuration] && !v10 && v20 < objc_msgSend(v12, "uninterruptibleDuration"))
+    if ([runtimeCopy uninterruptibleDuration] && !tasksCopy && v20 < objc_msgSend(runtimeCopy, "uninterruptibleDuration"))
     {
       goto LABEL_11;
     }
 
-    if ([(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isRuntimeAllocatedForActivity:v12]&& ([(_DASRuntimeLimiter *)self remainingAggregatedRuntimeForActivity:v12], v10) && v22 != 9.22337204e18 && (v22 <= 0.0 || v20 >= v22))
+    if ([(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isRuntimeAllocatedForActivity:runtimeCopy]&& ([(_DASRuntimeLimiter *)self remainingAggregatedRuntimeForActivity:runtimeCopy], tasksCopy) && v22 != 9.22337204e18 && (v22 <= 0.0 || v20 >= v22))
     {
       v37 = [_DASDaemonLogger logForCategory:@"runtimeLimiter"];
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [v12 maximumRuntime] / 60.0);
+        v38 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [runtimeCopy maximumRuntime] / 60.0);
         v39 = [NSNumber numberWithDouble:v20 / 60.0];
-        v40 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 uninterruptibleDuration]);
+        v40 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [runtimeCopy uninterruptibleDuration]);
         *buf = 138544130;
-        v44 = v12;
+        v44 = runtimeCopy;
         v45 = 2112;
         v46 = v38;
         v47 = 2114;
@@ -1182,14 +1182,14 @@ LABEL_11:
     else
     {
 LABEL_24:
-      if (v20 < [v12 maximumRuntime])
+      if (v20 < [runtimeCopy maximumRuntime])
       {
-        if (![(_DASRuntimeLimiter *)self featureDurationLimitAppliesToActivity:v12])
+        if (![(_DASRuntimeLimiter *)self featureDurationLimitAppliesToActivity:runtimeCopy])
         {
           goto LABEL_11;
         }
 
-        [(_DASRuntimeLimiter *)self maximumRemainingFeatureDurationForActivity:v12];
+        [(_DASRuntimeLimiter *)self maximumRemainingFeatureDurationForActivity:runtimeCopy];
         if (v20 < v23)
         {
           goto LABEL_11;
@@ -1204,7 +1204,7 @@ LABEL_24:
           v28 = v24 / 60.0;
           v29 = [NSNumber numberWithDouble:v28];
           *buf = 138543874;
-          v44 = v12;
+          v44 = runtimeCopy;
           v45 = 2114;
           v46 = v27;
           v47 = 2112;
@@ -1231,10 +1231,10 @@ LABEL_34:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
         v32 = [NSNumber numberWithDouble:v31];
-        v33 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [v12 maximumRuntime] / 60.0);
-        v34 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v12 isIntensive]);
+        v33 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [runtimeCopy maximumRuntime] / 60.0);
+        v34 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [runtimeCopy isIntensive]);
         *buf = 138544130;
-        v44 = v12;
+        v44 = runtimeCopy;
         v45 = 2114;
         v46 = v32;
         v47 = 2112;
@@ -1246,7 +1246,7 @@ LABEL_34:
 
       v35 = kDASRuntimeLimitationName;
       v41 = v31;
-      v42 = [v12 maximumRuntime] / 60.0;
+      v42 = [runtimeCopy maximumRuntime] / 60.0;
       v36 = @"Exceed Activity Runtime %f mins > %f mins";
     }
 
@@ -1332,9 +1332,9 @@ LABEL_12:
   }
 }
 
-- (void)dasTrialManager:(id)a3 hasUpdatedParametersForNamespace:(id)a4
+- (void)dasTrialManager:(id)manager hasUpdatedParametersForNamespace:(id)namespace
 {
-  if ([a4 isEqualToString:@"COREOS_DAS"])
+  if ([namespace isEqualToString:@"COREOS_DAS"])
   {
 
     [(_DASRuntimeLimiter *)self loadTrialParameters];
@@ -1344,31 +1344,31 @@ LABEL_12:
 - (void)resetOnlyPreemptiveSuspend
 {
   v3 = [(_DASTrialManager *)self->_trialManager factorWithName:@"isPreemptiveSuspendOnly"];
-  v4 = [v3 BOOLeanValue];
+  bOOLeanValue = [v3 BOOLeanValue];
 
-  self->_onlyPreemptiveSuspend = v4;
+  self->_onlyPreemptiveSuspend = bOOLeanValue;
   v5 = [_DASDaemonLogger logForCategory:@"runtimeLimiter"];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v4;
+    v6[1] = bOOLeanValue;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Trial: isPreemptiveSuspendOnly %d", v6, 8u);
   }
 }
 
-- (BOOL)deleteLimitForActivity:(id)a3
+- (BOOL)deleteLimitForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_testingOverride objectForKeyedSubscript:v4];
+  activityCopy = activity;
+  v5 = [(NSMutableDictionary *)self->_testingOverride objectForKeyedSubscript:activityCopy];
 
   if (v5)
   {
-    [(NSMutableDictionary *)self->_testingOverride removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_testingOverride removeObjectForKey:activityCopy];
     v6 = [_DASDaemonLogger logForCategory:@"runtimeLimiter"];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = activityCopy;
       v7 = "Removing override for %@";
 LABEL_6:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, v7, &v9, 0xCu);
@@ -1381,7 +1381,7 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = activityCopy;
       v7 = "Failed to remove override for %@";
       goto LABEL_6;
     }
@@ -1390,9 +1390,9 @@ LABEL_6:
   return v5 != 0;
 }
 
-- (BOOL)setLimit:(double)a3 forActivity:(id)a4
+- (BOOL)setLimit:(double)limit forActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   if (!self->_testingOverride)
   {
     v7 = +[NSMutableDictionary dictionary];
@@ -1400,35 +1400,35 @@ LABEL_6:
     self->_testingOverride = v7;
   }
 
-  v9 = [NSNumber numberWithDouble:a3];
-  [(NSMutableDictionary *)self->_testingOverride setObject:v9 forKeyedSubscript:v6];
+  v9 = [NSNumber numberWithDouble:limit];
+  [(NSMutableDictionary *)self->_testingOverride setObject:v9 forKeyedSubscript:activityCopy];
 
   v10 = [_DASDaemonLogger logForCategory:@"runtimeLimiter"];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [NSNumber numberWithDouble:a3];
+    v11 = [NSNumber numberWithDouble:limit];
     v13 = 138412546;
     v14 = v11;
     v15 = 2112;
-    v16 = v6;
+    v16 = activityCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set limit %@ seconds for %@", &v13, 0x16u);
   }
 
   return 1;
 }
 
-- (BOOL)limitedActivity:(id)a3 withLimitsResponses:(id)a4
+- (BOOL)limitedActivity:(id)activity withLimitsResponses:(id)responses
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(_DASRuntimeLimiter *)self limitsApplyToActivity:v6])
+  activityCopy = activity;
+  responsesCopy = responses;
+  if (![(_DASRuntimeLimiter *)self limitsApplyToActivity:activityCopy])
   {
     goto LABEL_9;
   }
 
-  v8 = [v6 startDate];
+  startDate = [activityCopy startDate];
 
-  if (!v8)
+  if (!startDate)
   {
     v10 = [_DASDaemonLogger logForCategory:@"runtimeLimiter"];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1439,9 +1439,9 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v9 = [v6 suspendRequestDate];
+  suspendRequestDate = [activityCopy suspendRequestDate];
 
-  if (v9)
+  if (suspendRequestDate)
   {
     v10 = [_DASDaemonLogger logForCategory:@"runtimeLimiter"];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1456,20 +1456,20 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v13 = [v6 identifier];
-  if (!v13)
+  identifier = [activityCopy identifier];
+  if (!identifier)
   {
     goto LABEL_20;
   }
 
-  v14 = [(NSMutableDictionary *)self->_testingOverride objectForKeyedSubscript:v13];
+  v14 = [(NSMutableDictionary *)self->_testingOverride objectForKeyedSubscript:identifier];
 
-  if (!v14 || (-[_DASRuntimeLimiter testingOverride](self, "testingOverride"), v15 = objc_claimAutoreleasedReturnValue(), [v15 objectForKeyedSubscript:v13], v16 = objc_claimAutoreleasedReturnValue(), v15, v11 = objc_msgSend(v16, "intValue"), v16, v11))
+  if (!v14 || (-[_DASRuntimeLimiter testingOverride](self, "testingOverride"), v15 = objc_claimAutoreleasedReturnValue(), [v15 objectForKeyedSubscript:identifier], v16 = objc_claimAutoreleasedReturnValue(), v15, v11 = objc_msgSend(v16, "intValue"), v16, v11))
   {
 LABEL_20:
-    if ([_DASLimiterResponse queryActivityDecision:3 fromResponses:v7])
+    if ([_DASLimiterResponse queryActivityDecision:3 fromResponses:responsesCopy])
     {
-      [_DASLimiterResponse updateActivity:v6 withLimitResponse:v7];
+      [_DASLimiterResponse updateActivity:activityCopy withLimitResponse:responsesCopy];
       LOBYTE(v11) = 1;
     }
 

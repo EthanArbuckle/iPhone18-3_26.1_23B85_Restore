@@ -1,15 +1,15 @@
 @interface PurpleFlowManagedPageLoadTestRunner
-- (PurpleFlowManagedPageLoadTestRunner)initWithTestName:(id)a3 browserController:(id)a4;
+- (PurpleFlowManagedPageLoadTestRunner)initWithTestName:(id)name browserController:(id)controller;
 - (void)dealloc;
 @end
 
 @implementation PurpleFlowManagedPageLoadTestRunner
 
-- (PurpleFlowManagedPageLoadTestRunner)initWithTestName:(id)a3 browserController:(id)a4
+- (PurpleFlowManagedPageLoadTestRunner)initWithTestName:(id)name browserController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = PurpleFlowManagedPageLoadTestRunner;
-  v4 = [(PurplePageLoadTestRunner *)&v9 initWithTestName:a3 browserController:a4];
+  v4 = [(PurplePageLoadTestRunner *)&v9 initWithTestName:name browserController:controller];
   v5 = v4;
   if (v4)
   {

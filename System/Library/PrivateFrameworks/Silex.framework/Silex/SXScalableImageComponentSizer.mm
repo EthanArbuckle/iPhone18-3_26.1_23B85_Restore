@@ -1,17 +1,17 @@
 @interface SXScalableImageComponentSizer
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
 @end
 
 @implementation SXScalableImageComponentSizer
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  v6 = [(SXComponentSizer *)self DOMObjectProvider];
-  v7 = [(SXComponentSizer *)self component];
-  v8 = [v7 imageIdentifier];
-  v9 = [v6 imageResourceForIdentifier:v8];
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
+  component = [(SXComponentSizer *)self component];
+  imageIdentifier = [component imageIdentifier];
+  v9 = [dOMObjectProvider imageResourceForIdentifier:imageIdentifier];
 
-  [v9 heightForImageWidth:a3];
+  [v9 heightForImageWidth:width];
   v11 = v10;
 
   return v11;

@@ -1,52 +1,52 @@
 @interface PTPassiveTraceConfig
-+ (id)sharedConfig:(id *)a3;
-- (BOOL)resetPassiveCollectionSettings:(id *)a3;
-- (id)applySetting:(unint64_t)a3;
++ (id)sharedConfig:(id *)config;
+- (BOOL)resetPassiveCollectionSettings:(id *)settings;
+- (id)applySetting:(unint64_t)setting;
 - (id)cancelCurrentSettingWithoutCollecting;
-- (id)collectLookbackIntervalWithTraceNamePrefix:(id)a3 triggerUserNotification:(BOOL)a4 errorOut:(id *)a5;
-- (id)collectThenClearCurrentSettingWithTraceNamePrefix:(id)a3 triggerUserNotification:(BOOL)a4 errorOut:(id *)a5;
-- (id)collectWithStartDate:(id)a3 endDate:(id)a4 traceNamePrefix:(id)a5 triggerUserNotification:(BOOL)a6 errorOut:(id *)a7;
-- (id)fetchCollectAppInFocus:(id *)a3;
-- (id)fetchCollectLoggingAppLaunch:(id *)a3;
-- (id)fetchCollectLoggingHangs:(id *)a3;
-- (id)fetchCollectLoggingMetalFramePacing:(id *)a3;
-- (id)fetchCollectLoggingPerfPowerMetrics:(id *)a3;
-- (id)fetchCollectLoggingScrolling:(id *)a3;
-- (id)fetchCollectLoggingUserInteraction:(id *)a3;
-- (id)fetchCollectLookbackInterval:(id *)a3;
-- (id)fetchCollectMSS:(id *)a3;
-- (id)fetchCurrentSetting:(id *)a3;
-- (id)fetchMSSPMICycleInterval:(id *)a3;
-- (id)fetchMetalPerDrawableSignpostsEnabled:(id *)a3;
-- (id)fetchPerfPowerMetricMonitorEnabled:(id *)a3;
-- (id)fetchPerfPowerMetricMonitoredProcesses:(id *)a3;
-- (id)fetchRecordingStartDate:(id *)a3;
-- (id)init:(id *)a3;
-- (id)instrumentationConfigLocked:(id *)a3;
-- (id)pingService:(id)a3 errorOut:(id *)a4;
-- (id)updateCollectAppInFocus:(id)a3;
-- (id)updateCollectLoggingAppLaunch:(id)a3;
-- (id)updateCollectLoggingHangs:(id)a3;
-- (id)updateCollectLoggingMetalFramePacing:(id)a3;
-- (id)updateCollectLoggingPerfPowerMetrics:(id)a3;
-- (id)updateCollectLoggingScrolling:(id)a3;
-- (id)updateCollectLoggingUserInteraction:(id)a3;
-- (id)updateCollectLookbackInterval:(id)a3;
-- (id)updateCollectMSS:(id)a3;
-- (id)updateMSSPMICycleInterval:(id)a3;
-- (id)updateMetalPerDrawableSignpostsEnabled:(id)a3;
-- (id)updatePerfPowerMetricMonitorEnabled:(id)a3;
-- (id)updatePerfPowerMetricMonitoredProcesses:(id)a3;
-- (id)updateRecordingStartDate:(id)a3;
+- (id)collectLookbackIntervalWithTraceNamePrefix:(id)prefix triggerUserNotification:(BOOL)notification errorOut:(id *)out;
+- (id)collectThenClearCurrentSettingWithTraceNamePrefix:(id)prefix triggerUserNotification:(BOOL)notification errorOut:(id *)out;
+- (id)collectWithStartDate:(id)date endDate:(id)endDate traceNamePrefix:(id)prefix triggerUserNotification:(BOOL)notification errorOut:(id *)out;
+- (id)fetchCollectAppInFocus:(id *)focus;
+- (id)fetchCollectLoggingAppLaunch:(id *)launch;
+- (id)fetchCollectLoggingHangs:(id *)hangs;
+- (id)fetchCollectLoggingMetalFramePacing:(id *)pacing;
+- (id)fetchCollectLoggingPerfPowerMetrics:(id *)metrics;
+- (id)fetchCollectLoggingScrolling:(id *)scrolling;
+- (id)fetchCollectLoggingUserInteraction:(id *)interaction;
+- (id)fetchCollectLookbackInterval:(id *)interval;
+- (id)fetchCollectMSS:(id *)s;
+- (id)fetchCurrentSetting:(id *)setting;
+- (id)fetchMSSPMICycleInterval:(id *)interval;
+- (id)fetchMetalPerDrawableSignpostsEnabled:(id *)enabled;
+- (id)fetchPerfPowerMetricMonitorEnabled:(id *)enabled;
+- (id)fetchPerfPowerMetricMonitoredProcesses:(id *)processes;
+- (id)fetchRecordingStartDate:(id *)date;
+- (id)init:(id *)init;
+- (id)instrumentationConfigLocked:(id *)locked;
+- (id)pingService:(id)service errorOut:(id *)out;
+- (id)updateCollectAppInFocus:(id)focus;
+- (id)updateCollectLoggingAppLaunch:(id)launch;
+- (id)updateCollectLoggingHangs:(id)hangs;
+- (id)updateCollectLoggingMetalFramePacing:(id)pacing;
+- (id)updateCollectLoggingPerfPowerMetrics:(id)metrics;
+- (id)updateCollectLoggingScrolling:(id)scrolling;
+- (id)updateCollectLoggingUserInteraction:(id)interaction;
+- (id)updateCollectLookbackInterval:(id)interval;
+- (id)updateCollectMSS:(id)s;
+- (id)updateMSSPMICycleInterval:(id)interval;
+- (id)updateMetalPerDrawableSignpostsEnabled:(id)enabled;
+- (id)updatePerfPowerMetricMonitorEnabled:(id)enabled;
+- (id)updatePerfPowerMetricMonitoredProcesses:(id)processes;
+- (id)updateRecordingStartDate:(id)date;
 @end
 
 @implementation PTPassiveTraceConfig
 
-+ (id)sharedConfig:(id *)a3
++ (id)sharedConfig:(id *)config
 {
   if (sharedConfig__onceToken == -1)
   {
-    if (!a3)
+    if (!config)
     {
       goto LABEL_4;
     }
@@ -55,10 +55,10 @@
   }
 
   +[PTPassiveTraceConfig sharedConfig:];
-  if (a3)
+  if (config)
   {
 LABEL_3:
-    *a3 = sharedConfig__allocError;
+    *config = sharedConfig__allocError;
   }
 
 LABEL_4:
@@ -101,7 +101,7 @@ void __37__PTPassiveTraceConfig_sharedConfig___block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)init:(id *)a3
+- (id)init:(id *)init
 {
   v29.receiver = self;
   v29.super_class = PTPassiveTraceConfig;
@@ -117,14 +117,14 @@ void __37__PTPassiveTraceConfig_sharedConfig___block_invoke()
   connection = v5->_connection;
   v5->_connection = v6;
 
-  v8 = [(PTPassiveTraceConfig *)v5 connection];
+  connection = [(PTPassiveTraceConfig *)v5 connection];
 
-  if (!v8)
+  if (!connection)
   {
-    if (a3)
+    if (init)
     {
       [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-      *a3 = v20 = 0;
+      *init = v20 = 0;
       goto LABEL_14;
     }
 
@@ -134,14 +134,14 @@ LABEL_13:
   }
 
   v9 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2870200F8];
-  v10 = [(PTPassiveTraceConfig *)v5 connection];
-  [v10 setRemoteObjectInterface:v9];
+  connection2 = [(PTPassiveTraceConfig *)v5 connection];
+  [connection2 setRemoteObjectInterface:v9];
 
-  v11 = [(PTPassiveTraceConfig *)v5 connection];
-  [v11 setExportedObject:v5];
+  connection3 = [(PTPassiveTraceConfig *)v5 connection];
+  [connection3 setExportedObject:v5];
 
-  v12 = [(PTPassiveTraceConfig *)v5 connection];
-  [v12 setInterruptionHandler:&__block_literal_global_96];
+  connection4 = [(PTPassiveTraceConfig *)v5 connection];
+  [connection4 setInterruptionHandler:&__block_literal_global_96];
 
   objc_initWeak(&location, v5);
   v26[0] = MEMORY[0x277D85DD0];
@@ -149,26 +149,26 @@ LABEL_13:
   v26[2] = __29__PTPassiveTraceConfig_init___block_invoke_97;
   v26[3] = &unk_279A18D20;
   objc_copyWeak(&v27, &location);
-  v13 = [(PTPassiveTraceConfig *)v5 connection];
-  [v13 setInvalidationHandler:v26];
+  connection5 = [(PTPassiveTraceConfig *)v5 connection];
+  [connection5 setInvalidationHandler:v26];
 
-  v14 = [(PTPassiveTraceConfig *)v5 connection];
+  connection6 = [(PTPassiveTraceConfig *)v5 connection];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __29__PTPassiveTraceConfig_init___block_invoke_98;
   v24[3] = &unk_279A18D48;
   v15 = v5;
   v25 = v15;
-  v16 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v16 = [connection6 synchronousRemoteObjectProxyWithErrorHandler:v24];
   syncRemoteProxy = v15->_syncRemoteProxy;
   v15->_syncRemoteProxy = v16;
 
-  v18 = [(PTPassiveTraceConfig *)v15 connection];
-  [v18 resume];
+  connection7 = [(PTPassiveTraceConfig *)v15 connection];
+  [connection7 resume];
 
-  v19 = [(PTPassiveTraceConfig *)v15 syncRemoteProxy];
+  syncRemoteProxy = [(PTPassiveTraceConfig *)v15 syncRemoteProxy];
 
-  if (!v19)
+  if (!syncRemoteProxy)
   {
     v21 = _clientPassiveErrorHandle();
     if (os_signpost_enabled(v21))
@@ -177,9 +177,9 @@ LABEL_13:
       _os_signpost_emit_with_name_impl(&dword_25E3D3000, v21, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CouldNotGetRemoteObjectProxy", "", &v23, 2u);
     }
 
-    if (a3)
+    if (init)
     {
-      *a3 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
+      *init = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
     }
 
     objc_destroyWeak(&v27);
@@ -241,12 +241,12 @@ void __29__PTPassiveTraceConfig_init___block_invoke_98(uint64_t a1, void *a2)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)resetPassiveCollectionSettings:(id *)a3
+- (BOOL)resetPassiveCollectionSettings:(id *)settings
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *settings = v5 = 0;
   }
 
   else
@@ -261,16 +261,16 @@ void __29__PTPassiveTraceConfig_init___block_invoke_98(uint64_t a1, void *a2)
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (settings)
     {
-      *a3 = 0;
+      *settings = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __55__PTPassiveTraceConfig_resetPassiveCollectionSettings___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -278,9 +278,9 @@ void __29__PTPassiveTraceConfig_init___block_invoke_98(uint64_t a1, void *a2)
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (settings)
     {
-      *a3 = v15[5];
+      *settings = v15[5];
     }
 
     v5 = *(v21 + 24);
@@ -376,12 +376,12 @@ void __55__PTPassiveTraceConfig_resetPassiveCollectionSettings___block_invoke_2(
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchCollectMSS:(id *)a3
+- (id)fetchCollectMSS:(id *)s
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *s = v5 = 0;
   }
 
   else
@@ -398,16 +398,16 @@ void __55__PTPassiveTraceConfig_resetPassiveCollectionSettings___block_invoke_2(
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (s)
     {
-      *a3 = 0;
+      *s = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __40__PTPassiveTraceConfig_fetchCollectMSS___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -415,9 +415,9 @@ void __55__PTPassiveTraceConfig_resetPassiveCollectionSettings___block_invoke_2(
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (s)
     {
-      *a3 = v15[5];
+      *s = v15[5];
     }
 
     v5 = v21[5];
@@ -501,9 +501,9 @@ void __40__PTPassiveTraceConfig_fetchCollectMSS___block_invoke_2(void *a1, char 
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updateCollectMSS:(id)a3
+- (id)updateCollectMSS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -521,8 +521,8 @@ void __40__PTPassiveTraceConfig_fetchCollectMSS___block_invoke_2(void *a1, char 
     v8[1] = 3221225472;
     v9 = __41__PTPassiveTraceConfig_updateCollectMSS___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = v4;
-    v12 = self;
+    v11 = sCopy;
+    selfCopy = self;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -620,12 +620,12 @@ void __41__PTPassiveTraceConfig_updateCollectMSS___block_invoke_3(uint64_t a1, v
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchCollectAppInFocus:(id *)a3
+- (id)fetchCollectAppInFocus:(id *)focus
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *focus = v5 = 0;
   }
 
   else
@@ -642,16 +642,16 @@ void __41__PTPassiveTraceConfig_updateCollectMSS___block_invoke_3(uint64_t a1, v
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (focus)
     {
-      *a3 = 0;
+      *focus = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __47__PTPassiveTraceConfig_fetchCollectAppInFocus___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -659,9 +659,9 @@ void __41__PTPassiveTraceConfig_updateCollectMSS___block_invoke_3(uint64_t a1, v
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (focus)
     {
-      *a3 = v15[5];
+      *focus = v15[5];
     }
 
     v5 = v21[5];
@@ -745,9 +745,9 @@ void __47__PTPassiveTraceConfig_fetchCollectAppInFocus___block_invoke_2(void *a1
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updateCollectAppInFocus:(id)a3
+- (id)updateCollectAppInFocus:(id)focus
 {
-  v4 = a3;
+  focusCopy = focus;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -765,8 +765,8 @@ void __47__PTPassiveTraceConfig_fetchCollectAppInFocus___block_invoke_2(void *a1
     v8[1] = 3221225472;
     v9 = __48__PTPassiveTraceConfig_updateCollectAppInFocus___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = v4;
-    v12 = self;
+    v11 = focusCopy;
+    selfCopy = self;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -864,12 +864,12 @@ void __48__PTPassiveTraceConfig_updateCollectAppInFocus___block_invoke_3(uint64_
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchCollectLoggingPerfPowerMetrics:(id *)a3
+- (id)fetchCollectLoggingPerfPowerMetrics:(id *)metrics
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *metrics = v5 = 0;
   }
 
   else
@@ -886,16 +886,16 @@ void __48__PTPassiveTraceConfig_updateCollectAppInFocus___block_invoke_3(uint64_
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (metrics)
     {
-      *a3 = 0;
+      *metrics = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __60__PTPassiveTraceConfig_fetchCollectLoggingPerfPowerMetrics___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -903,9 +903,9 @@ void __48__PTPassiveTraceConfig_updateCollectAppInFocus___block_invoke_3(uint64_
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (metrics)
     {
-      *a3 = v15[5];
+      *metrics = v15[5];
     }
 
     v5 = v21[5];
@@ -989,9 +989,9 @@ void __60__PTPassiveTraceConfig_fetchCollectLoggingPerfPowerMetrics___block_invo
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updateCollectLoggingPerfPowerMetrics:(id)a3
+- (id)updateCollectLoggingPerfPowerMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -1009,8 +1009,8 @@ void __60__PTPassiveTraceConfig_fetchCollectLoggingPerfPowerMetrics___block_invo
     v8[1] = 3221225472;
     v9 = __61__PTPassiveTraceConfig_updateCollectLoggingPerfPowerMetrics___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = v4;
-    v12 = self;
+    v11 = metricsCopy;
+    selfCopy = self;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -1108,12 +1108,12 @@ void __61__PTPassiveTraceConfig_updateCollectLoggingPerfPowerMetrics___block_inv
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchCollectLoggingHangs:(id *)a3
+- (id)fetchCollectLoggingHangs:(id *)hangs
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *hangs = v5 = 0;
   }
 
   else
@@ -1130,16 +1130,16 @@ void __61__PTPassiveTraceConfig_updateCollectLoggingPerfPowerMetrics___block_inv
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (hangs)
     {
-      *a3 = 0;
+      *hangs = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __49__PTPassiveTraceConfig_fetchCollectLoggingHangs___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -1147,9 +1147,9 @@ void __61__PTPassiveTraceConfig_updateCollectLoggingPerfPowerMetrics___block_inv
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (hangs)
     {
-      *a3 = v15[5];
+      *hangs = v15[5];
     }
 
     v5 = v21[5];
@@ -1233,9 +1233,9 @@ void __49__PTPassiveTraceConfig_fetchCollectLoggingHangs___block_invoke_2(void *
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updateCollectLoggingHangs:(id)a3
+- (id)updateCollectLoggingHangs:(id)hangs
 {
-  v4 = a3;
+  hangsCopy = hangs;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -1253,8 +1253,8 @@ void __49__PTPassiveTraceConfig_fetchCollectLoggingHangs___block_invoke_2(void *
     v8[1] = 3221225472;
     v9 = __50__PTPassiveTraceConfig_updateCollectLoggingHangs___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = v4;
-    v12 = self;
+    v11 = hangsCopy;
+    selfCopy = self;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -1352,12 +1352,12 @@ void __50__PTPassiveTraceConfig_updateCollectLoggingHangs___block_invoke_3(uint6
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchCollectLoggingUserInteraction:(id *)a3
+- (id)fetchCollectLoggingUserInteraction:(id *)interaction
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *interaction = v5 = 0;
   }
 
   else
@@ -1374,16 +1374,16 @@ void __50__PTPassiveTraceConfig_updateCollectLoggingHangs___block_invoke_3(uint6
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (interaction)
     {
-      *a3 = 0;
+      *interaction = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __59__PTPassiveTraceConfig_fetchCollectLoggingUserInteraction___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -1391,9 +1391,9 @@ void __50__PTPassiveTraceConfig_updateCollectLoggingHangs___block_invoke_3(uint6
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (interaction)
     {
-      *a3 = v15[5];
+      *interaction = v15[5];
     }
 
     v5 = v21[5];
@@ -1477,9 +1477,9 @@ void __59__PTPassiveTraceConfig_fetchCollectLoggingUserInteraction___block_invok
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updateCollectLoggingUserInteraction:(id)a3
+- (id)updateCollectLoggingUserInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -1497,8 +1497,8 @@ void __59__PTPassiveTraceConfig_fetchCollectLoggingUserInteraction___block_invok
     v8[1] = 3221225472;
     v9 = __60__PTPassiveTraceConfig_updateCollectLoggingUserInteraction___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = v4;
-    v12 = self;
+    v11 = interactionCopy;
+    selfCopy = self;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -1596,12 +1596,12 @@ void __60__PTPassiveTraceConfig_updateCollectLoggingUserInteraction___block_invo
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchCollectLoggingMetalFramePacing:(id *)a3
+- (id)fetchCollectLoggingMetalFramePacing:(id *)pacing
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *pacing = v5 = 0;
   }
 
   else
@@ -1618,16 +1618,16 @@ void __60__PTPassiveTraceConfig_updateCollectLoggingUserInteraction___block_invo
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (pacing)
     {
-      *a3 = 0;
+      *pacing = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __60__PTPassiveTraceConfig_fetchCollectLoggingMetalFramePacing___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -1635,9 +1635,9 @@ void __60__PTPassiveTraceConfig_updateCollectLoggingUserInteraction___block_invo
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (pacing)
     {
-      *a3 = v15[5];
+      *pacing = v15[5];
     }
 
     v5 = v21[5];
@@ -1721,9 +1721,9 @@ void __60__PTPassiveTraceConfig_fetchCollectLoggingMetalFramePacing___block_invo
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updateCollectLoggingMetalFramePacing:(id)a3
+- (id)updateCollectLoggingMetalFramePacing:(id)pacing
 {
-  v4 = a3;
+  pacingCopy = pacing;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -1741,8 +1741,8 @@ void __60__PTPassiveTraceConfig_fetchCollectLoggingMetalFramePacing___block_invo
     v8[1] = 3221225472;
     v9 = __61__PTPassiveTraceConfig_updateCollectLoggingMetalFramePacing___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = v4;
-    v12 = self;
+    v11 = pacingCopy;
+    selfCopy = self;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -1840,12 +1840,12 @@ void __61__PTPassiveTraceConfig_updateCollectLoggingMetalFramePacing___block_inv
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchCollectLoggingScrolling:(id *)a3
+- (id)fetchCollectLoggingScrolling:(id *)scrolling
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *scrolling = v5 = 0;
   }
 
   else
@@ -1862,16 +1862,16 @@ void __61__PTPassiveTraceConfig_updateCollectLoggingMetalFramePacing___block_inv
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (scrolling)
     {
-      *a3 = 0;
+      *scrolling = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __53__PTPassiveTraceConfig_fetchCollectLoggingScrolling___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -1879,9 +1879,9 @@ void __61__PTPassiveTraceConfig_updateCollectLoggingMetalFramePacing___block_inv
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (scrolling)
     {
-      *a3 = v15[5];
+      *scrolling = v15[5];
     }
 
     v5 = v21[5];
@@ -1965,9 +1965,9 @@ void __53__PTPassiveTraceConfig_fetchCollectLoggingScrolling___block_invoke_2(vo
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updateCollectLoggingScrolling:(id)a3
+- (id)updateCollectLoggingScrolling:(id)scrolling
 {
-  v4 = a3;
+  scrollingCopy = scrolling;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -1985,8 +1985,8 @@ void __53__PTPassiveTraceConfig_fetchCollectLoggingScrolling___block_invoke_2(vo
     v8[1] = 3221225472;
     v9 = __54__PTPassiveTraceConfig_updateCollectLoggingScrolling___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = v4;
-    v12 = self;
+    v11 = scrollingCopy;
+    selfCopy = self;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -2084,12 +2084,12 @@ void __54__PTPassiveTraceConfig_updateCollectLoggingScrolling___block_invoke_3(u
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchCollectLoggingAppLaunch:(id *)a3
+- (id)fetchCollectLoggingAppLaunch:(id *)launch
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *launch = v5 = 0;
   }
 
   else
@@ -2106,16 +2106,16 @@ void __54__PTPassiveTraceConfig_updateCollectLoggingScrolling___block_invoke_3(u
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (launch)
     {
-      *a3 = 0;
+      *launch = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __53__PTPassiveTraceConfig_fetchCollectLoggingAppLaunch___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -2123,9 +2123,9 @@ void __54__PTPassiveTraceConfig_updateCollectLoggingScrolling___block_invoke_3(u
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (launch)
     {
-      *a3 = v15[5];
+      *launch = v15[5];
     }
 
     v5 = v21[5];
@@ -2209,9 +2209,9 @@ void __53__PTPassiveTraceConfig_fetchCollectLoggingAppLaunch___block_invoke_2(vo
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updateCollectLoggingAppLaunch:(id)a3
+- (id)updateCollectLoggingAppLaunch:(id)launch
 {
-  v4 = a3;
+  launchCopy = launch;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -2229,8 +2229,8 @@ void __53__PTPassiveTraceConfig_fetchCollectLoggingAppLaunch___block_invoke_2(vo
     v8[1] = 3221225472;
     v9 = __54__PTPassiveTraceConfig_updateCollectLoggingAppLaunch___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = v4;
-    v12 = self;
+    v11 = launchCopy;
+    selfCopy = self;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -2328,12 +2328,12 @@ void __54__PTPassiveTraceConfig_updateCollectLoggingAppLaunch___block_invoke_3(u
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchCollectLookbackInterval:(id *)a3
+- (id)fetchCollectLookbackInterval:(id *)interval
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *interval = v5 = 0;
   }
 
   else
@@ -2350,16 +2350,16 @@ void __54__PTPassiveTraceConfig_updateCollectLoggingAppLaunch___block_invoke_3(u
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (interval)
     {
-      *a3 = 0;
+      *interval = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __53__PTPassiveTraceConfig_fetchCollectLookbackInterval___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -2367,9 +2367,9 @@ void __54__PTPassiveTraceConfig_updateCollectLoggingAppLaunch___block_invoke_3(u
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (interval)
     {
-      *a3 = v15[5];
+      *interval = v15[5];
     }
 
     v5 = v21[5];
@@ -2453,9 +2453,9 @@ void __53__PTPassiveTraceConfig_fetchCollectLookbackInterval___block_invoke_2(vo
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updateCollectLookbackInterval:(id)a3
+- (id)updateCollectLookbackInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -2473,8 +2473,8 @@ void __53__PTPassiveTraceConfig_fetchCollectLookbackInterval___block_invoke_2(vo
     v8[1] = 3221225472;
     v9 = __54__PTPassiveTraceConfig_updateCollectLookbackInterval___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = v4;
-    v12 = self;
+    v11 = intervalCopy;
+    selfCopy = self;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -2572,15 +2572,15 @@ void __54__PTPassiveTraceConfig_updateCollectLookbackInterval___block_invoke_3(u
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)collectWithStartDate:(id)a3 endDate:(id)a4 traceNamePrefix:(id)a5 triggerUserNotification:(BOOL)a6 errorOut:(id *)a7
+- (id)collectWithStartDate:(id)date endDate:(id)endDate traceNamePrefix:(id)prefix triggerUserNotification:(BOOL)notification errorOut:(id *)out
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  prefixCopy = prefix;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a7 = v15 = 0;
+    *out = v15 = 0;
   }
 
   else
@@ -2597,20 +2597,20 @@ void __54__PTPassiveTraceConfig_updateCollectLookbackInterval___block_invoke_3(u
     v31 = __Block_byref_object_copy__0;
     v32 = __Block_byref_object_dispose__0;
     v33 = 0;
-    if (a7)
+    if (out)
     {
-      *a7 = 0;
+      *out = 0;
     }
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v19 = __102__PTPassiveTraceConfig_collectWithStartDate_endDate_traceNamePrefix_triggerUserNotification_errorOut___block_invoke;
     v20 = &unk_279A18E60;
-    v21 = self;
-    v22 = v12;
-    v23 = v13;
-    v27 = a6;
-    v24 = v14;
+    selfCopy = self;
+    v22 = dateCopy;
+    v23 = endDateCopy;
+    notificationCopy = notification;
+    v24 = prefixCopy;
     v25 = &v28;
     v26 = &v34;
     v16 = v18;
@@ -2618,9 +2618,9 @@ void __54__PTPassiveTraceConfig_updateCollectLookbackInterval___block_invoke_3(u
     v19(v16);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a7)
+    if (out)
     {
-      *a7 = v29[5];
+      *out = v29[5];
     }
 
     v15 = v35[5];
@@ -2726,13 +2726,13 @@ void __102__PTPassiveTraceConfig_collectWithStartDate_endDate_traceNamePrefix_tr
   *(*(a1[7] + 8) + 24) = 1;
 }
 
-- (id)pingService:(id)a3 errorOut:(id *)a4
+- (id)pingService:(id)service errorOut:(id *)out
 {
-  v6 = a3;
+  serviceCopy = service;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a4 = v7 = 0;
+    *out = v7 = 0;
   }
 
   else
@@ -2749,17 +2749,17 @@ void __102__PTPassiveTraceConfig_collectWithStartDate_endDate_traceNamePrefix_tr
     v20 = __Block_byref_object_copy__0;
     v21 = __Block_byref_object_dispose__0;
     v22 = 0;
-    if (a4)
+    if (out)
     {
-      *a4 = 0;
+      *out = 0;
     }
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v11 = __45__PTPassiveTraceConfig_pingService_errorOut___block_invoke;
     v12 = &unk_279A18EB0;
-    v13 = self;
-    v14 = v6;
+    selfCopy = self;
+    v14 = serviceCopy;
     v15 = &v17;
     v16 = &v23;
     v8 = v10;
@@ -2767,9 +2767,9 @@ void __102__PTPassiveTraceConfig_collectWithStartDate_endDate_traceNamePrefix_tr
     v11(v8);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a4)
+    if (out)
     {
-      *a4 = v18[5];
+      *out = v18[5];
     }
 
     v7 = v24[5];
@@ -2852,12 +2852,12 @@ void __45__PTPassiveTraceConfig_pingService_errorOut___block_invoke_2(void *a1, 
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)fetchRecordingStartDate:(id *)a3
+- (id)fetchRecordingStartDate:(id *)date
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *date = v5 = 0;
   }
 
   else
@@ -2874,16 +2874,16 @@ void __45__PTPassiveTraceConfig_pingService_errorOut___block_invoke_2(void *a1, 
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (date)
     {
-      *a3 = 0;
+      *date = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __48__PTPassiveTraceConfig_fetchRecordingStartDate___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -2891,9 +2891,9 @@ void __45__PTPassiveTraceConfig_pingService_errorOut___block_invoke_2(void *a1, 
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (date)
     {
-      *a3 = v15[5];
+      *date = v15[5];
     }
 
     v5 = v21[5];
@@ -2955,9 +2955,9 @@ void __48__PTPassiveTraceConfig_fetchRecordingStartDate___block_invoke_2(uint64_
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)updateRecordingStartDate:(id)a3
+- (id)updateRecordingStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -2975,8 +2975,8 @@ void __48__PTPassiveTraceConfig_fetchRecordingStartDate___block_invoke_2(uint64_
     v8[1] = 3221225472;
     v9 = __49__PTPassiveTraceConfig_updateRecordingStartDate___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = dateCopy;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -3040,13 +3040,13 @@ void __49__PTPassiveTraceConfig_updateRecordingStartDate___block_invoke_2(uint64
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)collectLookbackIntervalWithTraceNamePrefix:(id)a3 triggerUserNotification:(BOOL)a4 errorOut:(id *)a5
+- (id)collectLookbackIntervalWithTraceNamePrefix:(id)prefix triggerUserNotification:(BOOL)notification errorOut:(id *)out
 {
-  v8 = a3;
+  prefixCopy = prefix;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a5 = v9 = 0;
+    *out = v9 = 0;
   }
 
   else
@@ -3063,18 +3063,18 @@ void __49__PTPassiveTraceConfig_updateRecordingStartDate___block_invoke_2(uint64
     v23 = __Block_byref_object_copy__0;
     v24 = __Block_byref_object_dispose__0;
     v25 = 0;
-    if (a5)
+    if (out)
     {
-      *a5 = 0;
+      *out = 0;
     }
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v13 = __100__PTPassiveTraceConfig_collectLookbackIntervalWithTraceNamePrefix_triggerUserNotification_errorOut___block_invoke;
     v14 = &unk_279A18F00;
-    v15 = self;
-    v19 = a4;
-    v16 = v8;
+    selfCopy = self;
+    notificationCopy = notification;
+    v16 = prefixCopy;
     v17 = &v20;
     v18 = &v26;
     v10 = v12;
@@ -3082,9 +3082,9 @@ void __49__PTPassiveTraceConfig_updateRecordingStartDate___block_invoke_2(uint64
     v13(v10);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a5)
+    if (out)
     {
-      *a5 = v21[5];
+      *out = v21[5];
     }
 
     v9 = v27[5];
@@ -3188,12 +3188,12 @@ void __100__PTPassiveTraceConfig_collectLookbackIntervalWithTraceNamePrefix_trig
   *(*(a1[7] + 8) + 24) = 1;
 }
 
-- (id)instrumentationConfigLocked:(id *)a3
+- (id)instrumentationConfigLocked:(id *)locked
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *locked = v5 = 0;
   }
 
   else
@@ -3210,16 +3210,16 @@ void __100__PTPassiveTraceConfig_collectLookbackIntervalWithTraceNamePrefix_trig
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (locked)
     {
-      *a3 = 0;
+      *locked = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __52__PTPassiveTraceConfig_instrumentationConfigLocked___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -3227,9 +3227,9 @@ void __100__PTPassiveTraceConfig_collectLookbackIntervalWithTraceNamePrefix_trig
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (locked)
     {
-      *a3 = v15[5];
+      *locked = v15[5];
     }
 
     v5 = v21[5];
@@ -3308,7 +3308,7 @@ void __52__PTPassiveTraceConfig_instrumentationConfigLocked___block_invoke_2(voi
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)applySetting:(unint64_t)a3
+- (id)applySetting:(unint64_t)setting
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
@@ -3328,8 +3328,8 @@ void __52__PTPassiveTraceConfig_instrumentationConfigLocked___block_invoke_2(voi
     v9 = __37__PTPassiveTraceConfig_applySetting___block_invoke;
     v10 = &unk_279A18F50;
     v12 = &v14;
-    v13 = a3;
-    v11 = self;
+    settingCopy = setting;
+    selfCopy = self;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
     v9(v6);
@@ -3391,12 +3391,12 @@ void __37__PTPassiveTraceConfig_applySetting___block_invoke_2(uint64_t a1, void 
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchCurrentSetting:(id *)a3
+- (id)fetchCurrentSetting:(id *)setting
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *setting = v5 = 0;
   }
 
   else
@@ -3413,16 +3413,16 @@ void __37__PTPassiveTraceConfig_applySetting___block_invoke_2(uint64_t a1, void 
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (setting)
     {
-      *a3 = 0;
+      *setting = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __44__PTPassiveTraceConfig_fetchCurrentSetting___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -3430,9 +3430,9 @@ void __37__PTPassiveTraceConfig_applySetting___block_invoke_2(uint64_t a1, void 
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (setting)
     {
-      *a3 = v15[5];
+      *setting = v15[5];
     }
 
     v5 = v21[5];
@@ -3530,7 +3530,7 @@ void __44__PTPassiveTraceConfig_fetchCurrentSetting___block_invoke_2(void *a1, v
     v6[1] = 3221225472;
     v7 = __61__PTPassiveTraceConfig_cancelCurrentSettingWithoutCollecting__block_invoke;
     v8 = &unk_279A18F78;
-    v9 = self;
+    selfCopy = self;
     v10 = &v11;
     v4 = v6;
     os_unfair_lock_lock(&self->_syncLock);
@@ -3592,13 +3592,13 @@ void __61__PTPassiveTraceConfig_cancelCurrentSettingWithoutCollecting__block_inv
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)collectThenClearCurrentSettingWithTraceNamePrefix:(id)a3 triggerUserNotification:(BOOL)a4 errorOut:(id *)a5
+- (id)collectThenClearCurrentSettingWithTraceNamePrefix:(id)prefix triggerUserNotification:(BOOL)notification errorOut:(id *)out
 {
-  v8 = a3;
+  prefixCopy = prefix;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a5 = v9 = 0;
+    *out = v9 = 0;
   }
 
   else
@@ -3615,18 +3615,18 @@ void __61__PTPassiveTraceConfig_cancelCurrentSettingWithoutCollecting__block_inv
     v23 = __Block_byref_object_copy__0;
     v24 = __Block_byref_object_dispose__0;
     v25 = 0;
-    if (a5)
+    if (out)
     {
-      *a5 = 0;
+      *out = 0;
     }
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v13 = __107__PTPassiveTraceConfig_collectThenClearCurrentSettingWithTraceNamePrefix_triggerUserNotification_errorOut___block_invoke;
     v14 = &unk_279A18F00;
-    v15 = self;
-    v19 = a4;
-    v16 = v8;
+    selfCopy = self;
+    notificationCopy = notification;
+    v16 = prefixCopy;
     v17 = &v20;
     v18 = &v26;
     v10 = v12;
@@ -3634,9 +3634,9 @@ void __61__PTPassiveTraceConfig_cancelCurrentSettingWithoutCollecting__block_inv
     v13(v10);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a5)
+    if (out)
     {
-      *a5 = v21[5];
+      *out = v21[5];
     }
 
     v9 = v27[5];
@@ -3740,12 +3740,12 @@ void __107__PTPassiveTraceConfig_collectThenClearCurrentSettingWithTraceNamePref
   *(*(a1[7] + 8) + 24) = 1;
 }
 
-- (id)fetchMSSPMICycleInterval:(id *)a3
+- (id)fetchMSSPMICycleInterval:(id *)interval
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *interval = v5 = 0;
   }
 
   else
@@ -3762,16 +3762,16 @@ void __107__PTPassiveTraceConfig_collectThenClearCurrentSettingWithTraceNamePref
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (interval)
     {
-      *a3 = 0;
+      *interval = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __49__PTPassiveTraceConfig_fetchMSSPMICycleInterval___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -3779,9 +3779,9 @@ void __107__PTPassiveTraceConfig_collectThenClearCurrentSettingWithTraceNamePref
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (interval)
     {
-      *a3 = v15[5];
+      *interval = v15[5];
     }
 
     v5 = v21[5];
@@ -3860,9 +3860,9 @@ void __49__PTPassiveTraceConfig_fetchMSSPMICycleInterval___block_invoke_2(void *
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updateMSSPMICycleInterval:(id)a3
+- (id)updateMSSPMICycleInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -3880,8 +3880,8 @@ void __49__PTPassiveTraceConfig_fetchMSSPMICycleInterval___block_invoke_2(void *
     v8[1] = 3221225472;
     v9 = __50__PTPassiveTraceConfig_updateMSSPMICycleInterval___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = intervalCopy;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -3945,12 +3945,12 @@ void __50__PTPassiveTraceConfig_updateMSSPMICycleInterval___block_invoke_2(uint6
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchMetalPerDrawableSignpostsEnabled:(id *)a3
+- (id)fetchMetalPerDrawableSignpostsEnabled:(id *)enabled
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *enabled = v5 = 0;
   }
 
   else
@@ -3967,16 +3967,16 @@ void __50__PTPassiveTraceConfig_updateMSSPMICycleInterval___block_invoke_2(uint6
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (enabled)
     {
-      *a3 = 0;
+      *enabled = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __62__PTPassiveTraceConfig_fetchMetalPerDrawableSignpostsEnabled___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -3984,9 +3984,9 @@ void __50__PTPassiveTraceConfig_updateMSSPMICycleInterval___block_invoke_2(uint6
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (enabled)
     {
-      *a3 = v15[5];
+      *enabled = v15[5];
     }
 
     v5 = v21[5];
@@ -4065,9 +4065,9 @@ void __62__PTPassiveTraceConfig_fetchMetalPerDrawableSignpostsEnabled___block_in
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updateMetalPerDrawableSignpostsEnabled:(id)a3
+- (id)updateMetalPerDrawableSignpostsEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -4085,8 +4085,8 @@ void __62__PTPassiveTraceConfig_fetchMetalPerDrawableSignpostsEnabled___block_in
     v8[1] = 3221225472;
     v9 = __63__PTPassiveTraceConfig_updateMetalPerDrawableSignpostsEnabled___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = enabledCopy;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -4150,12 +4150,12 @@ void __63__PTPassiveTraceConfig_updateMetalPerDrawableSignpostsEnabled___block_i
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchPerfPowerMetricMonitoredProcesses:(id *)a3
+- (id)fetchPerfPowerMetricMonitoredProcesses:(id *)processes
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *processes = v5 = 0;
   }
 
   else
@@ -4172,16 +4172,16 @@ void __63__PTPassiveTraceConfig_updateMetalPerDrawableSignpostsEnabled___block_i
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (processes)
     {
-      *a3 = 0;
+      *processes = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __63__PTPassiveTraceConfig_fetchPerfPowerMetricMonitoredProcesses___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -4189,9 +4189,9 @@ void __63__PTPassiveTraceConfig_updateMetalPerDrawableSignpostsEnabled___block_i
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (processes)
     {
-      *a3 = v15[5];
+      *processes = v15[5];
     }
 
     v5 = v21[5];
@@ -4270,9 +4270,9 @@ void __63__PTPassiveTraceConfig_fetchPerfPowerMetricMonitoredProcesses___block_i
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updatePerfPowerMetricMonitoredProcesses:(id)a3
+- (id)updatePerfPowerMetricMonitoredProcesses:(id)processes
 {
-  v4 = a3;
+  processesCopy = processes;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -4290,8 +4290,8 @@ void __63__PTPassiveTraceConfig_fetchPerfPowerMetricMonitoredProcesses___block_i
     v8[1] = 3221225472;
     v9 = __64__PTPassiveTraceConfig_updatePerfPowerMetricMonitoredProcesses___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = processesCopy;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);
@@ -4355,12 +4355,12 @@ void __64__PTPassiveTraceConfig_updatePerfPowerMetricMonitoredProcesses___block_
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)fetchPerfPowerMetricMonitorEnabled:(id *)a3
+- (id)fetchPerfPowerMetricMonitorEnabled:(id *)enabled
 {
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
-    *a3 = v5 = 0;
+    *enabled = v5 = 0;
   }
 
   else
@@ -4377,16 +4377,16 @@ void __64__PTPassiveTraceConfig_updatePerfPowerMetricMonitoredProcesses___block_
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    if (a3)
+    if (enabled)
     {
-      *a3 = 0;
+      *enabled = 0;
     }
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v9 = __59__PTPassiveTraceConfig_fetchPerfPowerMetricMonitorEnabled___block_invoke;
     v10 = &unk_279A18D98;
-    v11 = self;
+    selfCopy = self;
     v12 = &v14;
     v13 = &v20;
     v6 = v8;
@@ -4394,9 +4394,9 @@ void __64__PTPassiveTraceConfig_updatePerfPowerMetricMonitoredProcesses___block_
     v9(v6);
 
     os_unfair_lock_unlock(&self->_syncLock);
-    if (a3)
+    if (enabled)
     {
-      *a3 = v15[5];
+      *enabled = v15[5];
     }
 
     v5 = v21[5];
@@ -4475,9 +4475,9 @@ void __59__PTPassiveTraceConfig_fetchPerfPowerMetricMonitorEnabled___block_invok
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)updatePerfPowerMetricMonitorEnabled:(id)a3
+- (id)updatePerfPowerMetricMonitorEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   if ([(PTPassiveTraceConfig *)self connectionInvalidated])
   {
     v5 = [MEMORY[0x277CCA9B8] passiveTraceError:4 description:@"Client process could not establish connection to the backing mach service"];
@@ -4495,8 +4495,8 @@ void __59__PTPassiveTraceConfig_fetchPerfPowerMetricMonitorEnabled___block_invok
     v8[1] = 3221225472;
     v9 = __60__PTPassiveTraceConfig_updatePerfPowerMetricMonitorEnabled___block_invoke;
     v10 = &unk_279A18DE8;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = enabledCopy;
     v13 = &v14;
     v6 = v8;
     os_unfair_lock_lock(&self->_syncLock);

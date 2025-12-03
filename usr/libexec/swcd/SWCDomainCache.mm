@@ -1,20 +1,20 @@
 @interface SWCDomainCache
-- (id)_entriesForDomain:(id)a3;
-- (id)_entriesFromDomain:(id)a3;
-- (id)entriesForDomain:(id)a3;
+- (id)_entriesForDomain:(id)domain;
+- (id)_entriesFromDomain:(id)domain;
+- (id)entriesForDomain:(id)domain;
 - (void)clear;
-- (void)updateCachedDomainsForEntries:(id)a3;
+- (void)updateCachedDomainsForEntries:(id)entries;
 @end
 
 @implementation SWCDomainCache
 
-- (void)updateCachedDomainsForEntries:(id)a3
+- (void)updateCachedDomainsForEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v5 = +[_SWCPrefs sharedPrefs];
-  v6 = [v5 isFastCheckEnabled];
+  isFastCheckEnabled = [v5 isFastCheckEnabled];
 
-  if (v6)
+  if (isFastCheckEnabled)
   {
     if (!self->_cachedEntries)
     {
@@ -27,8 +27,8 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v22 = v4;
-    obj = v4;
+    v22 = entriesCopy;
+    obj = entriesCopy;
     v9 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v9)
     {
@@ -44,46 +44,46 @@
           }
 
           v13 = *(*(&v24 + 1) + 8 * i);
-          v14 = [v13 domain];
-          if ([v14 modeOfOperation])
+          domain = [v13 domain];
+          if ([domain modeOfOperation])
           {
             self->_hasDeveloperModeDomains = 1;
           }
 
-          if (([v14 modeOfOperation] & 2) != 0)
+          if (([domain modeOfOperation] & 2) != 0)
           {
             self->_hasManagedModeDomains = 1;
           }
 
-          v15 = [(SWCDomainCache *)self _entriesFromDomain:v14];
+          v15 = [(SWCDomainCache *)self _entriesFromDomain:domain];
           v16 = v15;
           if (v15)
           {
             v17 = [v15 mutableCopy];
             [v17 addObject:v13];
-            [(NSMutableDictionary *)self->_cachedEntries setObject:v17 forKeyedSubscript:v14];
+            [(NSMutableDictionary *)self->_cachedEntries setObject:v17 forKeyedSubscript:domain];
           }
 
           else
           {
-            [(NSMutableDictionary *)self->_cachedEntries setObject:v13 forKeyedSubscript:v14];
+            [(NSMutableDictionary *)self->_cachedEntries setObject:v13 forKeyedSubscript:domain];
           }
 
-          if ([v14 isWildcard])
+          if ([domain isWildcard])
           {
-            v18 = [v14 nonWildcardDomain];
-            v19 = [(SWCDomainCache *)self _entriesFromDomain:v18];
+            nonWildcardDomain = [domain nonWildcardDomain];
+            v19 = [(SWCDomainCache *)self _entriesFromDomain:nonWildcardDomain];
             v20 = v19;
             if (v19)
             {
               v21 = [v19 mutableCopy];
               [v21 addObject:v13];
-              [(NSMutableDictionary *)self->_cachedEntries setObject:v21 forKeyedSubscript:v18];
+              [(NSMutableDictionary *)self->_cachedEntries setObject:v21 forKeyedSubscript:nonWildcardDomain];
             }
 
             else
             {
-              [(NSMutableDictionary *)self->_cachedEntries setObject:v13 forKeyedSubscript:v18];
+              [(NSMutableDictionary *)self->_cachedEntries setObject:v13 forKeyedSubscript:nonWildcardDomain];
             }
           }
         }
@@ -94,14 +94,14 @@
       while (v10);
     }
 
-    v4 = v22;
+    entriesCopy = v22;
   }
 }
 
-- (id)entriesForDomain:(id)a3
+- (id)entriesForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(SWCDomainCache *)self _entriesForDomain:v4 operationMode:0];
+  domainCopy = domain;
+  v5 = [(SWCDomainCache *)self _entriesForDomain:domainCopy operationMode:0];
   v6 = v5;
   if (self->_hasDeveloperModeDomains || self->_hasManagedModeDomains)
   {
@@ -118,18 +118,18 @@
     v8 = v7;
     if (self->_hasDeveloperModeDomains)
     {
-      v9 = [(SWCDomainCache *)self _entriesForDomain:v4 operationMode:1];
+      v9 = [(SWCDomainCache *)self _entriesForDomain:domainCopy operationMode:1];
       [v8 unionOrderedSet:v9];
       if (self->_hasManagedModeDomains)
       {
-        v10 = [(SWCDomainCache *)self _entriesForDomain:v4 operationMode:3];
+        v10 = [(SWCDomainCache *)self _entriesForDomain:domainCopy operationMode:3];
         [v8 unionOrderedSet:v10];
       }
     }
 
     if (self->_hasManagedModeDomains)
     {
-      v11 = [(SWCDomainCache *)self _entriesForDomain:v4 operationMode:2];
+      v11 = [(SWCDomainCache *)self _entriesForDomain:domainCopy operationMode:2];
       [v8 unionOrderedSet:v11];
     }
   }
@@ -142,22 +142,22 @@
   return v8;
 }
 
-- (id)_entriesForDomain:(id)a3
+- (id)_entriesForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(SWCDomainCache *)self _entriesFromDomain:v4];
-  if (v5 || ![v4 isWildcard])
+  domainCopy = domain;
+  v5 = [(SWCDomainCache *)self _entriesFromDomain:domainCopy];
+  if (v5 || ![domainCopy isWildcard])
   {
-    v6 = [v4 host];
-    v8 = [v6 componentsSeparatedByString:@"."];
+    host = [domainCopy host];
+    v8 = [host componentsSeparatedByString:@"."];
     if ([v8 count] >= 3)
     {
-      v22 = v6;
+      v22 = host;
       if ([v8 count] == 2)
       {
 LABEL_13:
         v7 = v5;
-        v6 = v22;
+        host = v22;
       }
 
       else
@@ -187,8 +187,8 @@ LABEL_13:
           v15 = [(__CFString *)v10 stringByAppendingFormat:@"%@", v14];
 
           v16 = [_SWCDomain alloc];
-          v17 = [v4 port];
-          v18 = [v16 initWithHost:v15 port:v17 wildcard:1 modeOfOperation:{objc_msgSend(v4, "modeOfOperation")}];
+          port = [domainCopy port];
+          v18 = [v16 initWithHost:v15 port:port wildcard:1 modeOfOperation:{objc_msgSend(domainCopy, "modeOfOperation")}];
 
           v19 = [(SWCDomainCache *)self _entriesFromDomain:v18];
           if (v19)
@@ -214,7 +214,7 @@ LABEL_13:
           v7 = v19;
         }
 
-        v6 = v22;
+        host = v22;
       }
     }
 
@@ -226,8 +226,8 @@ LABEL_13:
 
   else
   {
-    v6 = [v4 nonWildcardDomain];
-    v7 = [(SWCDomainCache *)self _entriesFromDomain:v6];
+    host = [domainCopy nonWildcardDomain];
+    v7 = [(SWCDomainCache *)self _entriesFromDomain:host];
   }
 
   return v7;
@@ -240,9 +240,9 @@ LABEL_13:
   _objc_release_x1();
 }
 
-- (id)_entriesFromDomain:(id)a3
+- (id)_entriesFromDomain:(id)domain
 {
-  v3 = [(NSMutableDictionary *)self->_cachedEntries objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_cachedEntries objectForKeyedSubscript:domain];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

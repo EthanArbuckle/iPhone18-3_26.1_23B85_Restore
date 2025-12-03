@@ -1,26 +1,26 @@
 @interface CLSIconicScoreModel
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-- (CLSIconicScoreModel)initWithSceneAnalysisVersion:(unint64_t)a3;
-- (unint64_t)bucketForIconicScore:(double)a3;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
+- (CLSIconicScoreModel)initWithSceneAnalysisVersion:(unint64_t)version;
+- (unint64_t)bucketForIconicScore:(double)score;
 - (void)setupVersion100;
 - (void)setupVersion96;
 @end
 
 @implementation CLSIconicScoreModel
 
-- (unint64_t)bucketForIconicScore:(double)a3
+- (unint64_t)bucketForIconicScore:(double)score
 {
-  if (self->_minimumMeaningfulIconicScore > a3)
+  if (self->_minimumMeaningfulIconicScore > score)
   {
     return 0;
   }
 
-  if (self->_mediumIconicScore > a3)
+  if (self->_mediumIconicScore > score)
   {
     return 1;
   }
 
-  if (self->_highIconicScore <= a3)
+  if (self->_highIconicScore <= score)
   {
     return 3;
   }
@@ -44,7 +44,7 @@
   self->_similarIconicScoreThreshold = 0.5;
 }
 
-- (CLSIconicScoreModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSIconicScoreModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -53,15 +53,15 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x64)
+    if (version < 0x64)
     {
-      if (a3 < 0x60)
+      if (version < 0x60)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
           v6 = objc_opt_class();
           *buf = 67109378;
-          v11 = a3;
+          versionCopy = version;
           v12 = 2112;
           v13 = v6;
           _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -86,15 +86,15 @@
   return v5;
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
   v3 = 96;
-  if (a3 < 0x60)
+  if (version < 0x60)
   {
     v3 = 0;
   }
 
-  if (a3 >= 0x64)
+  if (version >= 0x64)
   {
     return 100;
   }

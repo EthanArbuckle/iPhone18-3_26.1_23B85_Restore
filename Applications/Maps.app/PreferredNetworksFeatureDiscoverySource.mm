@@ -1,17 +1,17 @@
 @interface PreferredNetworksFeatureDiscoverySource
-- (BOOL)_shouldShowForVehicle:(id)a3;
+- (BOOL)_shouldShowForVehicle:(id)vehicle;
 - (BOOL)showFeature;
 - (FeatureDiscoveryModel)model;
 - (PreferredNetworksFeatureDiscoverySource)init;
 - (id)_candidateVehicle;
-- (void)_consumeUpdatedGarage:(id)a3;
-- (void)_didSelectModelWithVehicle:(id)a3;
-- (void)_didViewModelWithVehicle:(id)a3;
+- (void)_consumeUpdatedGarage:(id)garage;
+- (void)_didSelectModelWithVehicle:(id)vehicle;
+- (void)_didViewModelWithVehicle:(id)vehicle;
 - (void)_dismiss;
-- (void)_markVehicleAsViewed:(id)a3;
+- (void)_markVehicleAsViewed:(id)viewed;
 - (void)_reloadAvailability;
-- (void)setShowFeature:(BOOL)a3;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)setShowFeature:(BOOL)feature;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation PreferredNetworksFeatureDiscoverySource
@@ -24,9 +24,9 @@
   if (v2)
   {
     v3 = [NSString stringWithFormat:@"com.apple.maps.featurediscovery.evrouting.isolation.%p", v2];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     isolationQueue = v2->_isolationQueue;
     v2->_isolationQueue = v6;
 
@@ -176,15 +176,15 @@
   }
 }
 
-- (void)_consumeUpdatedGarage:(id)a3
+- (void)_consumeUpdatedGarage:(id)garage
 {
-  v4 = [a3 vehicles];
+  vehicles = [garage vehicles];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100864374;
   v13[3] = &unk_1016588C0;
   v13[4] = self;
-  v5 = sub_100030774(v4, v13);
+  v5 = sub_100030774(vehicles, v13);
 
   v6 = self->_candidateVehicle;
   v7 = v5;
@@ -193,12 +193,12 @@
     v10 = sub_100063F04();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(VGVehicle *)self->_candidateVehicle displayName];
-      v12 = [v7 displayName];
+      displayName = [(VGVehicle *)self->_candidateVehicle displayName];
+      displayName2 = [v7 displayName];
       *buf = 138412546;
-      v15 = v11;
+      v15 = displayName;
       v16 = 2112;
-      v17 = v12;
+      v17 = displayName2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "vehicle candidate changed from: %@ to: %@.", buf, 0x16u);
     }
 
@@ -217,29 +217,29 @@
   }
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   isolationQueue = self->_isolationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100864520;
   v7[3] = &unk_101661A90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updateCopy;
+  v6 = updateCopy;
   dispatch_async(isolationQueue, v7);
 }
 
-- (void)_markVehicleAsViewed:(id)a3
+- (void)_markVehicleAsViewed:(id)viewed
 {
-  v3 = a3;
+  viewedCopy = viewed;
   v4 = [NSMutableString stringWithString:@"_preferredNetworksOnboarding_"];
-  v5 = [v3 pairedAppIdentifier];
-  v6 = v5;
-  if (v5)
+  pairedAppIdentifier = [viewedCopy pairedAppIdentifier];
+  v6 = pairedAppIdentifier;
+  if (pairedAppIdentifier)
   {
-    v7 = v5;
+    v7 = pairedAppIdentifier;
   }
 
   else
@@ -249,11 +249,11 @@
 
   [v4 appendString:v7];
 
-  v8 = [v3 year];
-  v9 = v8;
-  if (v8)
+  year = [viewedCopy year];
+  v9 = year;
+  if (year)
   {
-    v10 = v8;
+    v10 = year;
   }
 
   else
@@ -263,11 +263,11 @@
 
   [v4 appendString:v10];
 
-  v11 = [v3 model];
-  v12 = v11;
-  if (v11)
+  model = [viewedCopy model];
+  v12 = model;
+  if (model)
   {
-    v13 = v11;
+    v13 = model;
   }
 
   else
@@ -277,11 +277,11 @@
 
   [v4 appendString:v13];
 
-  v14 = [v3 manufacturer];
+  manufacturer = [viewedCopy manufacturer];
 
-  if (v14)
+  if (manufacturer)
   {
-    v15 = v14;
+    v15 = manufacturer;
   }
 
   else
@@ -295,15 +295,15 @@
   sub_100F359AC(v16);
 }
 
-- (BOOL)_shouldShowForVehicle:(id)a3
+- (BOOL)_shouldShowForVehicle:(id)vehicle
 {
-  v3 = a3;
+  vehicleCopy = vehicle;
   v4 = [NSMutableString stringWithString:@"_preferredNetworksOnboarding_"];
-  v5 = [v3 pairedAppIdentifier];
-  v6 = v5;
-  if (v5)
+  pairedAppIdentifier = [vehicleCopy pairedAppIdentifier];
+  v6 = pairedAppIdentifier;
+  if (pairedAppIdentifier)
   {
-    v7 = v5;
+    v7 = pairedAppIdentifier;
   }
 
   else
@@ -313,11 +313,11 @@
 
   [v4 appendString:v7];
 
-  v8 = [v3 year];
-  v9 = v8;
-  if (v8)
+  year = [vehicleCopy year];
+  v9 = year;
+  if (year)
   {
-    v10 = v8;
+    v10 = year;
   }
 
   else
@@ -327,11 +327,11 @@
 
   [v4 appendString:v10];
 
-  v11 = [v3 model];
-  v12 = v11;
-  if (v11)
+  model = [vehicleCopy model];
+  v12 = model;
+  if (model)
   {
-    v13 = v11;
+    v13 = model;
   }
 
   else
@@ -341,11 +341,11 @@
 
   [v4 appendString:v13];
 
-  v14 = [v3 manufacturer];
+  manufacturer = [vehicleCopy manufacturer];
 
-  if (v14)
+  if (manufacturer)
   {
-    v15 = v14;
+    v15 = manufacturer;
   }
 
   else
@@ -361,9 +361,9 @@
   return v17;
 }
 
-- (void)_didSelectModelWithVehicle:(id)a3
+- (void)_didSelectModelWithVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = +[MKMapService sharedService];
   [v5 captureUserAction:451 onTarget:8 eventValue:0];
 
@@ -373,17 +373,17 @@
   block[2] = sub_100864848;
   block[3] = &unk_101661340;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = vehicleCopy;
+  v6 = vehicleCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_didViewModelWithVehicle:(id)a3
+- (void)_didViewModelWithVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = +[MKMapService sharedService];
   [v5 captureUserAction:449 onTarget:8 eventValue:0];
 
@@ -394,8 +394,8 @@
   block[2] = sub_100864B48;
   block[3] = &unk_101661340;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v7 = v4;
+  v9 = vehicleCopy;
+  v7 = vehicleCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v10);
@@ -440,19 +440,19 @@
 
 - (FeatureDiscoveryModel)model
 {
-  v3 = [(PreferredNetworksFeatureDiscoverySource *)self showFeature];
-  v4 = sub_100063F04();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
-  if (v3)
+  showFeature = [(PreferredNetworksFeatureDiscoverySource *)self showFeature];
+  _candidateVehicle = sub_100063F04();
+  v5 = os_log_type_enabled(_candidateVehicle, OS_LOG_TYPE_DEBUG);
+  if (showFeature)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Will suggest preferred networks onboarding.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, _candidateVehicle, OS_LOG_TYPE_DEBUG, "Will suggest preferred networks onboarding.", buf, 2u);
     }
 
-    v4 = [(PreferredNetworksFeatureDiscoverySource *)self _candidateVehicle];
-    if (v4)
+    _candidateVehicle = [(PreferredNetworksFeatureDiscoverySource *)self _candidateVehicle];
+    if (_candidateVehicle)
     {
       v6 = +[NSBundle mainBundle];
       v21 = [v6 localizedStringForKey:@"[Title value:Feature Discovery table:{EV preferred networks]", @"localized string not found", 0}];
@@ -470,7 +470,7 @@
       v27[2] = sub_100865588;
       v27[3] = &unk_101661340;
       objc_copyWeak(&v29, buf);
-      v13 = v4;
+      v13 = _candidateVehicle;
       v28 = v13;
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
@@ -538,7 +538,7 @@
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Will not suggest preferred networks: it is not available.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, _candidateVehicle, OS_LOG_TYPE_DEBUG, "Will not suggest preferred networks: it is not available.", buf, 2u);
     }
 
     v14 = 0;
@@ -547,11 +547,11 @@
   return v14;
 }
 
-- (void)setShowFeature:(BOOL)a3
+- (void)setShowFeature:(BOOL)feature
 {
-  if (self->_showFeature != a3)
+  if (self->_showFeature != feature)
   {
-    self->_showFeature = a3;
+    self->_showFeature = feature;
     v4 = sub_100063F04();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {

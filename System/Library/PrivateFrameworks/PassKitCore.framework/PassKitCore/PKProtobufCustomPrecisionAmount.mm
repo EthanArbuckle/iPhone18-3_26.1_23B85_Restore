@@ -1,9 +1,9 @@
 @interface PKProtobufCustomPrecisionAmount
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufCustomPrecisionAmount
@@ -14,43 +14,43 @@
   v8.receiver = self;
   v8.super_class = PKProtobufCustomPrecisionAmount;
   v4 = [(PKProtobufCustomPrecisionAmount *)&v8 description];
-  v5 = [(PKProtobufCustomPrecisionAmount *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufCustomPrecisionAmount *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_amount];
-  [v3 setObject:v4 forKey:@"amount"];
+  [dictionary setObject:v4 forKey:@"amount"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_decimalDigitsMultiplier];
-  [v3 setObject:v5 forKey:@"decimal_digits_multiplier"];
+  [dictionary setObject:v5 forKey:@"decimal_digits_multiplier"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteSint64Field();
   PBDataWriterWriteUint32Field();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = self->_amount;
   *(result + 4) = self->_decimalDigitsMultiplier;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_amount == *(v4 + 1) && self->_decimalDigitsMultiplier == *(v4 + 4);
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_amount == *(equalCopy + 1) && self->_decimalDigitsMultiplier == *(equalCopy + 4);
 
   return v5;
 }

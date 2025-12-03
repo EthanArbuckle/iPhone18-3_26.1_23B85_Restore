@@ -1,38 +1,38 @@
 @interface MCMContainerCache
-- (BOOL)_concurrent_setSandboxContainerMappingForUserIdentity:(id)a3 identifier:(id)a4 containerClass:(unint64_t)a5 url:(id)a6;
-- (BOOL)_concurrent_shouldRegisterSandboxMappingWithUserIdentity:(id)a3 identifier:(id)a4 childParentMapCache:(id)a5 containerClass:(unint64_t)a6;
-- (BOOL)_sandboxSentinelExistsForContainerClass:(unint64_t)a3;
-- (BOOL)isWellKnownIdentifier:(id)a3;
-- (BOOL)removeContainerForUserIdentity:(id)a3 contentClass:(unint64_t)a4 identifier:(id)a5 transient:(BOOL)a6 error:(id *)a7;
+- (BOOL)_concurrent_setSandboxContainerMappingForUserIdentity:(id)identity identifier:(id)identifier containerClass:(unint64_t)class url:(id)url;
+- (BOOL)_concurrent_shouldRegisterSandboxMappingWithUserIdentity:(id)identity identifier:(id)identifier childParentMapCache:(id)cache containerClass:(unint64_t)class;
+- (BOOL)_sandboxSentinelExistsForContainerClass:(unint64_t)class;
+- (BOOL)isWellKnownIdentifier:(id)identifier;
+- (BOOL)removeContainerForUserIdentity:(id)identity contentClass:(unint64_t)class identifier:(id)identifier transient:(BOOL)transient error:(id *)error;
 - (Class)cacheEntryClass;
 - (Class)classCacheClass;
 - (MCMChildParentMapCache)childParentMapCache;
-- (MCMContainerCache)initWithUserIdentityCache:(id)a3 childParentMapCache:(id)a4 classCacheClass:(Class)a5 cacheEntryClass:(Class)a6 error:(id *)a7;
-- (MCMContainerCache)initWithUserIdentityCache:(id)a3 childParentMapCache:(id)a4 classCacheClass:(Class)a5 cacheEntryClass:(Class)a6 queue:(id)a7;
+- (MCMContainerCache)initWithUserIdentityCache:(id)cache childParentMapCache:(id)mapCache classCacheClass:(Class)class cacheEntryClass:(Class)entryClass error:(id *)error;
+- (MCMContainerCache)initWithUserIdentityCache:(id)cache childParentMapCache:(id)mapCache classCacheClass:(Class)class cacheEntryClass:(Class)entryClass queue:(id)queue;
 - (MCMUserIdentityCache)userIdentityCache;
 - (OS_dispatch_queue)queue;
-- (id)_containerClassPathForUserIdentity:(id)a3 containerClass:(unint64_t)a4 transient:(BOOL)a5;
-- (id)_queue_containerClassCacheForContainerClassPath:(id)a3;
-- (id)_sandboxSentinelForContainerClass:(unint64_t)a3;
-- (id)addContainerMetadata:(id)a3 error:(id *)a4;
-- (id)classCacheForContainerIdentity:(id)a3;
-- (id)classCacheForUserIdentity:(id)a3 containerClass:(unint64_t)a4 transient:(BOOL)a5;
-- (id)entriesForUserIdentities:(id)a3 contentClass:(unint64_t)a4 transient:(BOOL)a5 error:(id *)a6;
-- (id)entryForContainerIdentity:(id)a3 classCache:(id)a4 error:(id *)a5;
-- (id)entryForContainerIdentity:(id)a3 error:(id *)a4;
-- (int64_t)countContainersForOtherUserIdentitiesWithIdentity:(id)a3 error:(id *)a4;
-- (void)_queue_attachSandboxWriteThroughHandlerToContainerClassCache:(id)a3;
+- (id)_containerClassPathForUserIdentity:(id)identity containerClass:(unint64_t)class transient:(BOOL)transient;
+- (id)_queue_containerClassCacheForContainerClassPath:(id)path;
+- (id)_sandboxSentinelForContainerClass:(unint64_t)class;
+- (id)addContainerMetadata:(id)metadata error:(id *)error;
+- (id)classCacheForContainerIdentity:(id)identity;
+- (id)classCacheForUserIdentity:(id)identity containerClass:(unint64_t)class transient:(BOOL)transient;
+- (id)entriesForUserIdentities:(id)identities contentClass:(unint64_t)class transient:(BOOL)transient error:(id *)error;
+- (id)entryForContainerIdentity:(id)identity classCache:(id)cache error:(id *)error;
+- (id)entryForContainerIdentity:(id)identity error:(id *)error;
+- (int64_t)countContainersForOtherUserIdentitiesWithIdentity:(id)identity error:(id *)error;
+- (void)_queue_attachSandboxWriteThroughHandlerToContainerClassCache:(id)cache;
 - (void)_queue_flush;
-- (void)_queue_flushCacheForContainerClassPath:(id)a3;
-- (void)_queue_invalidateUserIdentity:(id)a3;
-- (void)_queue_setContainerClassCache:(id)a3;
-- (void)_sandboxSetSentinelForContainerClass:(unint64_t)a3;
-- (void)didInvalidateUserIdentity:(id)a3;
+- (void)_queue_flushCacheForContainerClassPath:(id)path;
+- (void)_queue_invalidateUserIdentity:(id)identity;
+- (void)_queue_setContainerClassCache:(id)cache;
+- (void)_sandboxSetSentinelForContainerClass:(unint64_t)class;
+- (void)didInvalidateUserIdentity:(id)identity;
 - (void)flush;
-- (void)flushCacheForUserIdentity:(id)a3 containerClass:(unint64_t)a4 transient:(BOOL)a5;
-- (void)invalidateUserIdentity:(id)a3;
-- (void)notifyWithClassCache:(id)a3 existingEntry:(id)a4 newEntry:(id)a5;
-- (void)setContainerClassCache:(id)a3;
+- (void)flushCacheForUserIdentity:(id)identity containerClass:(unint64_t)class transient:(BOOL)transient;
+- (void)invalidateUserIdentity:(id)identity;
+- (void)notifyWithClassCache:(id)cache existingEntry:(id)entry newEntry:(id)newEntry;
+- (void)setContainerClassCache:(id)cache;
 @end
 
 @implementation MCMContainerCache
@@ -77,13 +77,13 @@
   return result;
 }
 
-- (BOOL)_concurrent_shouldRegisterSandboxMappingWithUserIdentity:(id)a3 identifier:(id)a4 childParentMapCache:(id)a5 containerClass:(unint64_t)a6
+- (BOOL)_concurrent_shouldRegisterSandboxMappingWithUserIdentity:(id)identity identifier:(id)identifier childParentMapCache:(id)cache containerClass:(unint64_t)class
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!_os_feature_enabled_impl() || [(MCMContainerCache *)self isWellKnownIdentifier:v11])
+  identityCopy = identity;
+  identifierCopy = identifier;
+  cacheCopy = cache;
+  if (!_os_feature_enabled_impl() || [(MCMContainerCache *)self isWellKnownIdentifier:identifierCopy])
   {
     if (MCMPersonasAreSupported_onceToken != -1)
     {
@@ -95,21 +95,21 @@
       goto LABEL_21;
     }
 
-    if (a6 <= 0xB)
+    if (class <= 0xB)
     {
-      if (((1 << a6) & 0xE54) != 0)
+      if (((1 << class) & 0xE54) != 0)
       {
         v13 = containermanager_copy_global_configuration();
-        v14 = [v13 staticConfig];
-        v15 = [v14 requireDataBackedPersona];
+        staticConfig = [v13 staticConfig];
+        requireDataBackedPersona = [staticConfig requireDataBackedPersona];
 
-        if (v15)
+        if (requireDataBackedPersona)
         {
-          v16 = [v10 personaType];
+          personaType = [identityCopy personaType];
           goto LABEL_24;
         }
 
-        v18 = [v12 parentIdentifierForChildIdentifier:v11];
+        v18 = [cacheCopy parentIdentifierForChildIdentifier:identifierCopy];
         v19 = v18;
         if (v18)
         {
@@ -118,39 +118,39 @@
 
         else
         {
-          v20 = v11;
+          v20 = identifierCopy;
         }
 
         v21 = v20;
-        v22 = [(MCMContainerCache *)self userIdentityCache];
-        v23 = [v22 userIdentitiesForBundleIdentifier:v21];
+        userIdentityCache = [(MCMContainerCache *)self userIdentityCache];
+        v23 = [userIdentityCache userIdentitiesForBundleIdentifier:v21];
 
         if ([v23 count] >= 2)
         {
-          v24 = [(MCMContainerCache *)self userIdentityCache];
-          v25 = [v24 userIdentityForPersonalPersona];
-          v26 = [v23 containsObject:v25];
+          userIdentityCache2 = [(MCMContainerCache *)self userIdentityCache];
+          userIdentityForPersonalPersona = [userIdentityCache2 userIdentityForPersonalPersona];
+          v26 = [v23 containsObject:userIdentityForPersonalPersona];
 
           if (v26)
           {
-            v27 = [v10 isDataSeparated];
+            isDataSeparated = [identityCopy isDataSeparated];
 
             v17 = 1;
-            if (v27)
+            if (isDataSeparated)
             {
 LABEL_26:
               v29 = container_log_handle_for_category();
               if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
               {
-                v32 = [v10 shortDescription];
+                shortDescription = [identityCopy shortDescription];
                 v33 = 138413314;
-                v34 = v32;
+                v34 = shortDescription;
                 v35 = 2112;
-                v36 = v11;
+                v36 = identifierCopy;
                 v37 = 2112;
                 v38 = v21;
                 v39 = 2048;
-                v40 = a6;
+                classCopy = class;
                 v41 = 1024;
                 v42 = v17;
                 _os_log_debug_impl(&dword_1DF2C3000, v29, OS_LOG_TYPE_DEBUG, "Deciding not to register userIdentity: %@, identifier: %@ (parent %@), containerClass: %llu with sandbox; isMultiPersona: %d", &v33, 0x30u);
@@ -165,7 +165,7 @@ LABEL_29:
           }
         }
 
-        v28 = [v23 containsObject:v10];
+        v28 = [v23 containsObject:identityCopy];
 
         if ((v28 & 1) == 0)
         {
@@ -177,7 +177,7 @@ LABEL_22:
         goto LABEL_29;
       }
 
-      if (a6 == 7)
+      if (class == 7)
       {
 LABEL_21:
         v21 = 0;
@@ -185,10 +185,10 @@ LABEL_21:
       }
     }
 
-    v16 = [v10 isDataSeparated];
+    personaType = [identityCopy isDataSeparated];
 LABEL_24:
     v21 = 0;
-    if (v16)
+    if (personaType)
     {
 LABEL_25:
       v17 = 0;
@@ -205,37 +205,37 @@ LABEL_30:
   return v17;
 }
 
-- (BOOL)isWellKnownIdentifier:(id)a3
+- (BOOL)isWellKnownIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[MCMEntitlementBypassList sharedBypassList];
-  v5 = [v4 wellKnownContainerIdentifiersForSandboxPushDownCompatibilitySet];
-  v6 = [v5 containsObject:v3];
+  wellKnownContainerIdentifiersForSandboxPushDownCompatibilitySet = [v4 wellKnownContainerIdentifiersForSandboxPushDownCompatibilitySet];
+  v6 = [wellKnownContainerIdentifiersForSandboxPushDownCompatibilitySet containsObject:identifierCopy];
 
   v7 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-- (void)_queue_attachSandboxWriteThroughHandlerToContainerClassCache:(id)a3
+- (void)_queue_attachSandboxWriteThroughHandlerToContainerClassCache:(id)cache
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 containerClassPath];
+  cacheCopy = cache;
+  containerClassPath = [cacheCopy containerClassPath];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 && [v5 containerClass] != 10)
+  if ((objc_opt_isKindOfClass() & 1) == 0 && [containerClassPath containerClass] != 10)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __82__MCMContainerCache__queue_attachSandboxWriteThroughHandlerToContainerClassCache___block_invoke;
     v8[3] = &unk_1E86B0EF0;
-    v6 = v5;
+    v6 = containerClassPath;
     v9 = v6;
-    v10 = self;
-    [v4 setConcurrentWriteThroughHandler:v8];
+    selfCopy = self;
+    [cacheCopy setConcurrentWriteThroughHandler:v8];
     if (!-[MCMContainerCache _sandboxSentinelExistsForContainerClass:](self, "_sandboxSentinelExistsForContainerClass:", [v6 containerClass]))
     {
-      [v4 forceWriteThrough];
+      [cacheCopy forceWriteThrough];
       -[MCMContainerCache _sandboxSetSentinelForContainerClass:](self, "_sandboxSetSentinelForContainerClass:", [v6 containerClass]);
     }
   }
@@ -320,26 +320,26 @@ void __82__MCMContainerCache__queue_attachSandboxWriteThroughHandlerToContainerC
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_concurrent_setSandboxContainerMappingForUserIdentity:(id)a3 identifier:(id)a4 containerClass:(unint64_t)a5 url:(id)a6
+- (BOOL)_concurrent_setSandboxContainerMappingForUserIdentity:(id)identity identifier:(id)identifier containerClass:(unint64_t)class url:(id)url
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a6;
-  v11 = a3;
-  v12 = [v11 kernelPersonaID];
-  v13 = [v11 posixUser];
+  identifierCopy = identifier;
+  urlCopy = url;
+  identityCopy = identity;
+  kernelPersonaID = [identityCopy kernelPersonaID];
+  posixUser = [identityCopy posixUser];
 
-  v14 = [MCMContainerClassPath posixOwnerForContainerClass:a5 user:v13];
+  v14 = [MCMContainerClassPath posixOwnerForContainerClass:class user:posixUser];
 
   v15 = [v14 UID];
   v16 = 1;
-  if (a5 > 7)
+  if (class > 7)
   {
-    if (a5 > 11)
+    if (class > 11)
     {
-      if (a5 != 14)
+      if (class != 14)
       {
-        if (a5 == 13)
+        if (class == 13)
         {
           v15 = 0;
           v17 = 8;
@@ -353,7 +353,7 @@ LABEL_34:
           goto LABEL_21;
         }
 
-        if (a5 == 12)
+        if (class == 12)
         {
           v15 = 0;
           v17 = 4;
@@ -366,12 +366,12 @@ LABEL_34:
 
     else
     {
-      if (a5 - 9 < 3)
+      if (class - 9 < 3)
       {
         goto LABEL_20;
       }
 
-      if (a5 != 8)
+      if (class != 8)
       {
         goto LABEL_36;
       }
@@ -380,11 +380,11 @@ LABEL_34:
 
   else
   {
-    if (a5 > 3)
+    if (class > 3)
     {
-      if (a5 <= 5)
+      if (class <= 5)
       {
-        if (a5 != 4)
+        if (class != 4)
         {
           goto LABEL_32;
         }
@@ -392,7 +392,7 @@ LABEL_34:
         goto LABEL_20;
       }
 
-      if (a5 != 6)
+      if (class != 6)
       {
         v17 = 2;
         goto LABEL_34;
@@ -402,7 +402,7 @@ LABEL_20:
       _os_feature_enabled_impl();
       v17 = 1;
 LABEL_21:
-      v28 = [v9 UTF8String];
+      uTF8String = [identifierCopy UTF8String];
       v29 = 0;
       v18 = sandbox_set_user_state_item_with_persona();
       if (v18)
@@ -419,9 +419,9 @@ LABEL_21:
         *&v31[4] = 2048;
         *&v31[6] = v17;
         v32 = 2080;
-        v33 = v28;
+        v33 = uTF8String;
         v34 = 2048;
-        v35 = a5;
+        classCopy3 = class;
         v36 = 2080;
         *v37 = 0;
         *&v37[8] = 1024;
@@ -431,7 +431,7 @@ LABEL_21:
 
       else
       {
-        if (!v10 || (v28 = [v9 UTF8String], v29 = objc_msgSend(v10, "fileSystemRepresentation"), (v21 = sandbox_set_user_state_item_with_persona()) == 0))
+        if (!urlCopy || (uTF8String = [identifierCopy UTF8String], v29 = objc_msgSend(urlCopy, "fileSystemRepresentation"), (v21 = sandbox_set_user_state_item_with_persona()) == 0))
         {
           v20 = container_log_handle_for_category();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -441,11 +441,11 @@ LABEL_21:
             *&v31[4] = 2048;
             *&v31[6] = v17;
             v32 = 2080;
-            v33 = v28;
+            v33 = uTF8String;
             v34 = 2048;
-            v35 = a5;
+            classCopy3 = class;
             v36 = 1024;
-            *v37 = v12;
+            *v37 = kernelPersonaID;
             *&v37[4] = 2080;
             *&v37[6] = v29;
             _os_log_debug_impl(&dword_1DF2C3000, v20, OS_LOG_TYPE_DEBUG, "Pushed user: %u, itemType: %llu, identifier %s, class: %llu, persona id: %u, path: %s", buf, 0x36u);
@@ -471,9 +471,9 @@ LABEL_31:
         *&v31[4] = 2048;
         *&v31[6] = v17;
         v32 = 2080;
-        v33 = v28;
+        v33 = uTF8String;
         v34 = 2048;
-        v35 = a5;
+        classCopy3 = class;
         v36 = 2080;
         *v37 = v29;
         *&v37[8] = 1024;
@@ -488,14 +488,14 @@ LABEL_40:
       goto LABEL_23;
     }
 
-    if (a5 != 1)
+    if (class != 1)
     {
-      if (a5 == 2)
+      if (class == 2)
       {
         goto LABEL_20;
       }
 
-      if (a5 != 3)
+      if (class != 3)
       {
 LABEL_36:
         v20 = container_log_handle_for_category();
@@ -505,7 +505,7 @@ LABEL_36:
         }
 
         *buf = 134217984;
-        *v31 = a5;
+        *v31 = class;
         v23 = "Unsupported class for setting sandbox container mapping: %llu";
         v26 = v20;
         v27 = 12;
@@ -520,14 +520,14 @@ LABEL_32:
   return v16;
 }
 
-- (void)_sandboxSetSentinelForContainerClass:(unint64_t)a3
+- (void)_sandboxSetSentinelForContainerClass:(unint64_t)class
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = [(MCMContainerCache *)self _sandboxSentinelForContainerClass:?];
   [v4 UTF8String];
   v5 = containermanager_copy_global_configuration();
-  v6 = [v5 defaultUser];
-  [v6 UID];
+  defaultUser = [v5 defaultUser];
+  [defaultUser UID];
   v7 = sandbox_set_user_state_item_with_persona();
 
   if (v7)
@@ -536,7 +536,7 @@ LABEL_32:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v11 = a3;
+      classCopy = class;
       v12 = 1024;
       v13 = v7;
       _os_log_error_impl(&dword_1DF2C3000, v8, OS_LOG_TYPE_ERROR, "Failed to set sandbox sentinel; class = %llu, result = %d", buf, 0x12u);
@@ -546,7 +546,7 @@ LABEL_32:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_sandboxSentinelExistsForContainerClass:(unint64_t)a3
+- (BOOL)_sandboxSentinelExistsForContainerClass:(unint64_t)class
 {
   v21 = *MEMORY[0x1E69E9840];
   v13 = 0;
@@ -555,8 +555,8 @@ LABEL_32:
   v16 = 0;
   v4 = [(MCMContainerCache *)self _sandboxSentinelForContainerClass:?];
   v5 = containermanager_copy_global_configuration();
-  v6 = [v5 defaultUser];
-  [v6 UID];
+  defaultUser = [v5 defaultUser];
+  [defaultUser UID];
   v7 = v4;
   v8 = sandbox_user_state_iterate_items();
 
@@ -566,7 +566,7 @@ LABEL_32:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v18 = a3;
+      classCopy = class;
       v19 = 1024;
       v20 = v8;
       _os_log_error_impl(&dword_1DF2C3000, v9, OS_LOG_TYPE_ERROR, "Failed to read back sandbox cache; class = %llu, result = %d", buf, 0x12u);
@@ -634,69 +634,69 @@ LABEL_12:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_sandboxSentinelForContainerClass:(unint64_t)a3
+- (id)_sandboxSentinelForContainerClass:(unint64_t)class
 {
   v5 = *MEMORY[0x1E69E9840];
-  result = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.containermanagerd.%llu", a3];
+  result = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.containermanagerd.%llu", class];
   v4 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)_queue_setContainerClassCache:(id)a3
+- (void)_queue_setContainerClassCache:(id)cache
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(MCMContainerCache *)self _queue_attachSandboxWriteThroughHandlerToContainerClassCache:v4];
+  cacheCopy = cache;
+  [(MCMContainerCache *)self _queue_attachSandboxWriteThroughHandlerToContainerClassCache:cacheCopy];
   queue_cache = self->_queue_cache;
-  v7 = [v4 containerClassPath];
-  [(NSMutableDictionary *)queue_cache setObject:v4 forKeyedSubscript:?];
+  containerClassPath = [cacheCopy containerClassPath];
+  [(NSMutableDictionary *)queue_cache setObject:cacheCopy forKeyedSubscript:?];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_containerClassPathForUserIdentity:(id)a3 containerClass:(unint64_t)a4 transient:(BOOL)a5
+- (id)_containerClassPathForUserIdentity:(id)identity containerClass:(unint64_t)class transient:(BOOL)transient
 {
-  v5 = a5;
+  transientCopy = transient;
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  identityCopy = identity;
   v8 = containermanager_copy_global_configuration();
-  v9 = [v8 staticConfig];
-  v10 = [v9 configForContainerClass:a4];
+  staticConfig = [v8 staticConfig];
+  v10 = [staticConfig configForContainerClass:class];
 
   v11 = containermanager_copy_global_configuration();
-  v12 = [v11 classPathCache];
+  classPathCache = [v11 classPathCache];
   v13 = off_1E86AF4D8;
-  if (!v5)
+  if (!transientCopy)
   {
     v13 = off_1E86AF4D0;
   }
 
   v14 = *v13;
-  v15 = [v12 containerClassPathForUserIdentity:v7 containerConfig:v10 typeClass:objc_opt_class()];
+  v15 = [classPathCache containerClassPathForUserIdentity:identityCopy containerConfig:v10 typeClass:objc_opt_class()];
 
   v16 = *MEMORY[0x1E69E9840];
 
   return v15;
 }
 
-- (id)_queue_containerClassCacheForContainerClassPath:(id)a3
+- (id)_queue_containerClassCacheForContainerClassPath:(id)path
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_queue_cache objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_queue_cache objectForKeyedSubscript:pathCopy];
   if (!v5)
   {
     v6 = [(objc_class *)[(MCMContainerCache *)self classCacheClass] alloc];
-    v7 = [(MCMContainerCache *)self cacheEntryClass];
-    v8 = [(MCMContainerCache *)self userIdentityCache];
-    v5 = [(objc_class *)v6 initWithContainerClassPath:v4 cacheEntryClass:v7 targetQueue:0 userIdentityCache:v8];
+    cacheEntryClass = [(MCMContainerCache *)self cacheEntryClass];
+    userIdentityCache = [(MCMContainerCache *)self userIdentityCache];
+    v5 = [(objc_class *)v6 initWithContainerClassPath:pathCopy cacheEntryClass:cacheEntryClass targetQueue:0 userIdentityCache:userIdentityCache];
 
     v9 = container_log_handle_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v13 = 138412546;
-      v14 = v4;
+      v14 = pathCopy;
       v15 = 2112;
       v16 = v5;
       _os_log_debug_impl(&dword_1DF2C3000, v9, OS_LOG_TYPE_DEBUG, "Create cache for %@: %@", &v13, 0x16u);
@@ -713,7 +713,7 @@ LABEL_12:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
         v13 = 138412290;
-        v14 = v4;
+        v14 = pathCopy;
         _os_log_fault_impl(&dword_1DF2C3000, v10, OS_LOG_TYPE_FAULT, "Could not create cache for %@", &v13, 0xCu);
       }
 
@@ -733,8 +733,8 @@ LABEL_12:
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v3 = containermanager_copy_global_configuration();
-    v4 = [v3 defaultUser];
-    [v4 UID];
+    defaultUser = [v3 defaultUser];
+    [defaultUser UID];
 
     v5 = sandbox_user_state_iterate_items();
     if (v5)
@@ -816,15 +816,15 @@ void __33__MCMContainerCache__queue_flush__block_invoke(uint64_t a1, int a2, uni
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_flushCacheForContainerClassPath:(id)a3
+- (void)_queue_flushCacheForContainerClassPath:(id)path
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_queue);
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v5 = [v4 containerClass];
-    v6 = [v4 userIdentity];
+    containerClass = [pathCopy containerClass];
+    userIdentity = [pathCopy userIdentity];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -833,29 +833,29 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v7 = [v6 posixUser];
-    v8 = [MCMContainerClassPath posixOwnerForContainerClass:v5 user:v7];
+    posixUser = [userIdentity posixUser];
+    v8 = [MCMContainerClassPath posixOwnerForContainerClass:containerClass user:posixUser];
 
     v9 = [MEMORY[0x1E695DFA8] set];
     v10 = [v8 UID];
     v11 = 1;
-    if (v5 <= 8)
+    if (containerClass <= 8)
     {
-      if (v5 > 5)
+      if (containerClass > 5)
       {
-        if (v5 == 6)
+        if (containerClass == 6)
         {
           goto LABEL_19;
         }
 
-        if (v5 == 7 && (_os_feature_enabled_impl() & 1) == 0)
+        if (containerClass == 7 && (_os_feature_enabled_impl() & 1) == 0)
         {
           v11 = 2;
           goto LABEL_19;
         }
       }
 
-      else if (v5 == 2 || v5 == 4)
+      else if (containerClass == 2 || containerClass == 4)
       {
         goto LABEL_19;
       }
@@ -863,13 +863,13 @@ LABEL_37:
 
     else
     {
-      if ((v5 - 9) < 3)
+      if ((containerClass - 9) < 3)
       {
 LABEL_19:
-        v31 = self;
-        v32 = v5;
-        v30 = v6;
-        v12 = v6;
+        selfCopy = self;
+        v32 = containerClass;
+        v30 = userIdentity;
+        v12 = userIdentity;
         v34 = v12;
         v13 = v9;
         v35 = v13;
@@ -888,7 +888,7 @@ LABEL_19:
 
         v28 = v9;
         v29 = v8;
-        v17 = [v12 kernelPersonaID];
+        kernelPersonaID = [v12 kernelPersonaID];
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
@@ -909,7 +909,7 @@ LABEL_19:
                 objc_enumerationMutation(v18);
               }
 
-              v33 = [*(*(&v45 + 1) + 8 * v22) UTF8String];
+              uTF8String = [*(*(&v45 + 1) + 8 * v22) UTF8String];
               v23 = sandbox_set_user_state_item_with_persona();
               if (v23)
               {
@@ -922,7 +922,7 @@ LABEL_19:
                   *&v37[4] = 2048;
                   *&v37[6] = v11;
                   v38 = 2080;
-                  v39 = v33;
+                  v39 = uTF8String;
                   v40 = 2048;
                   v41 = v32;
                   v42 = 2080;
@@ -943,11 +943,11 @@ LABEL_19:
                   *&v37[4] = 2048;
                   *&v37[6] = v11;
                   v38 = 2080;
-                  v39 = v33;
+                  v39 = uTF8String;
                   v40 = 2048;
                   v41 = v32;
                   v42 = 1024;
-                  *v43 = v17;
+                  *v43 = kernelPersonaID;
                   *&v43[4] = 2080;
                   *&v43[6] = 0;
                   _os_log_debug_impl(&dword_1DF2C3000, v25, OS_LOG_TYPE_DEBUG, "Pushed user: %u, itemType: %llu, identifier %s, class: %llu, persona id: %u, path: %s", buf, 0x36u);
@@ -964,14 +964,14 @@ LABEL_19:
           while (v20);
         }
 
-        self = v31;
+        self = selfCopy;
         v8 = v29;
-        v6 = v30;
+        userIdentity = v30;
         v9 = v28;
         goto LABEL_36;
       }
 
-      if (v5 == 13)
+      if (containerClass == 13)
       {
         if ((_os_feature_enabled_impl() & 1) == 0)
         {
@@ -981,7 +981,7 @@ LABEL_19:
         }
       }
 
-      else if (v5 == 12 && (_os_feature_enabled_impl() & 1) == 0)
+      else if (containerClass == 12 && (_os_feature_enabled_impl() & 1) == 0)
       {
         v10 = 0;
         v11 = 4;
@@ -995,12 +995,12 @@ LABEL_36:
   }
 
 LABEL_38:
-  [(NSMutableDictionary *)self->_queue_cache removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_queue_cache removeObjectForKey:pathCopy];
   v26 = container_log_handle_for_category();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    *v37 = v4;
+    *v37 = pathCopy;
     _os_log_debug_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_DEBUG, "Cache: %@: Flushed", buf, 0xCu);
   }
 
@@ -1046,29 +1046,29 @@ LABEL_7:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_invalidateUserIdentity:(id)a3
+- (void)_queue_invalidateUserIdentity:(id)identity
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   dispatch_assert_queue_V2(self->_queue);
   v5 = container_log_handle_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = identityCopy;
     _os_log_debug_impl(&dword_1DF2C3000, v5, OS_LOG_TYPE_DEBUG, "Clearing container cache entries corresponding to invalidated user identity; identity = %@", buf, 0xCu);
   }
 
   v6 = containermanager_copy_global_configuration();
-  v7 = [v6 classIterator];
+  classIterator = [v6 classIterator];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__MCMContainerCache__queue_invalidateUserIdentity___block_invoke;
   v13[3] = &unk_1E86B0E58;
   v13[4] = self;
-  v14 = v4;
-  v8 = v4;
-  [v7 selectUserWithIterator:v13];
+  v14 = identityCopy;
+  v8 = identityCopy;
+  [classIterator selectUserWithIterator:v13];
 
   v9 = notify_post(*MEMORY[0x1E69E9970]);
   if (v9)
@@ -1181,26 +1181,26 @@ uint64_t __51__MCMContainerCache__queue_invalidateUserIdentity___block_invoke_14
   return 1;
 }
 
-- (void)didInvalidateUserIdentity:(id)a3
+- (void)didInvalidateUserIdentity:(id)identity
 {
   v4 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  [(MCMContainerCache *)self invalidateUserIdentity:a3];
+  [(MCMContainerCache *)self invalidateUserIdentity:identity];
 }
 
-- (void)invalidateUserIdentity:(id)a3
+- (void)invalidateUserIdentity:(id)identity
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__MCMContainerCache_invalidateUserIdentity___block_invoke;
   block[3] = &unk_1E86B0CC8;
   block[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = identityCopy;
+  v6 = identityCopy;
   dispatch_sync(queue, block);
 
   v7 = *MEMORY[0x1E69E9840];
@@ -1237,10 +1237,10 @@ uint64_t __26__MCMContainerCache_flush__block_invoke(uint64_t a1)
   return [v1 _queue_flush];
 }
 
-- (void)flushCacheForUserIdentity:(id)a3 containerClass:(unint64_t)a4 transient:(BOOL)a5
+- (void)flushCacheForUserIdentity:(id)identity containerClass:(unint64_t)class transient:(BOOL)transient
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  identityCopy = identity;
   v8 = container_class_normalized();
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1248,10 +1248,10 @@ uint64_t __26__MCMContainerCache_flush__block_invoke(uint64_t a1)
   block[2] = __72__MCMContainerCache_flushCacheForUserIdentity_containerClass_transient___block_invoke;
   block[3] = &unk_1E86B0DE0;
   block[4] = self;
-  v13 = v7;
+  v13 = identityCopy;
   v14 = v8;
-  v15 = a5;
-  v10 = v7;
+  transientCopy = transient;
+  v10 = identityCopy;
   dispatch_sync(queue, block);
 
   v11 = *MEMORY[0x1E69E9840];
@@ -1265,29 +1265,29 @@ void __72__MCMContainerCache_flushCacheForUserIdentity_containerClass_transient_
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)removeContainerForUserIdentity:(id)a3 contentClass:(unint64_t)a4 identifier:(id)a5 transient:(BOOL)a6 error:(id *)a7
+- (BOOL)removeContainerForUserIdentity:(id)identity contentClass:(unint64_t)class identifier:(id)identifier transient:(BOOL)transient error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
+  identityCopy = identity;
+  identifierCopy = identifier;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__13434;
   v33 = __Block_byref_object_dispose__13435;
   v34 = 0;
-  if (a4 - 1 >= 0xE)
+  if (class - 1 >= 0xE)
   {
     v18 = [[MCMError alloc] initWithErrorType:47 category:3];
     v20 = container_log_handle_for_category();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v36 = a4;
+      classCopy = class;
       _os_log_error_impl(&dword_1DF2C3000, v20, OS_LOG_TYPE_ERROR, "Invalid Content Class: %ld", buf, 0xCu);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -1302,16 +1302,16 @@ void __72__MCMContainerCache_flushCacheForUserIdentity_containerClass_transient_
   block[3] = &unk_1E86B0CF0;
   v26 = &v29;
   block[4] = self;
-  v25 = v12;
-  v27 = a4;
-  v28 = a6;
+  v25 = identityCopy;
+  classCopy2 = class;
+  transientCopy = transient;
   dispatch_sync(queue, block);
 
   v15 = v30[5];
   if (!v15)
   {
     v18 = [[MCMError alloc] initWithErrorType:43 category:4];
-    if (!a7)
+    if (!error)
     {
 LABEL_9:
       v19 = 0;
@@ -1321,12 +1321,12 @@ LABEL_9:
 LABEL_7:
     v21 = v18;
     v19 = 0;
-    *a7 = v18;
+    *error = v18;
     goto LABEL_10;
   }
 
-  v16 = [v15 cacheEntryForIdentifier:v13];
-  v17 = [v30[5] setCacheEntry:0 forIdentifier:v13];
+  v16 = [v15 cacheEntryForIdentifier:identifierCopy];
+  v17 = [v30[5] setCacheEntry:0 forIdentifier:identifierCopy];
   [(MCMContainerCache *)self notifyWithClassCache:v30[5] existingEntry:v16 newEntry:0];
 
   v18 = 0;
@@ -1350,12 +1350,12 @@ uint64_t __92__MCMContainerCache_removeContainerForUserIdentity_contentClass_ide
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)addContainerMetadata:(id)a3 error:(id *)a4
+- (id)addContainerMetadata:(id)metadata error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 containerPath];
-  v8 = [v7 containerClassPath];
+  metadataCopy = metadata;
+  containerPath = [metadataCopy containerPath];
+  containerClassPath = [containerPath containerClassPath];
 
   v33 = 0;
   v34 = &v33;
@@ -1370,7 +1370,7 @@ uint64_t __92__MCMContainerCache_removeContainerForUserIdentity_contentClass_ide
   block[3] = &unk_1E86B0DB8;
   v32 = &v33;
   block[4] = self;
-  v10 = v8;
+  v10 = containerClassPath;
   v31 = v10;
   dispatch_sync(queue, block);
   if (!v34[5])
@@ -1378,7 +1378,7 @@ uint64_t __92__MCMContainerCache_removeContainerForUserIdentity_contentClass_ide
     v21 = [[MCMError alloc] initWithErrorType:43 category:4];
     v16 = 0;
     v19 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -1387,39 +1387,39 @@ uint64_t __92__MCMContainerCache_removeContainerForUserIdentity_contentClass_ide
   }
 
   v11 = [MCMContainerCacheEntry alloc];
-  v12 = [(MCMContainerCache *)self userIdentityCache];
-  v13 = [(MCMContainerCacheEntry *)v11 initWithMetadata:v6 userIdentityCache:v12];
+  userIdentityCache = [(MCMContainerCache *)self userIdentityCache];
+  v13 = [(MCMContainerCacheEntry *)v11 initWithMetadata:metadataCopy userIdentityCache:userIdentityCache];
 
   v14 = v34[5];
-  v15 = [v6 identifier];
-  v16 = [v14 cacheEntryForIdentifier:v15];
+  identifier = [metadataCopy identifier];
+  v16 = [v14 cacheEntryForIdentifier:identifier];
 
   v17 = v34[5];
-  v18 = [v6 identifier];
-  v19 = [v17 setCacheEntry:v13 forIdentifier:v18];
+  identifier2 = [metadataCopy identifier];
+  v19 = [v17 setCacheEntry:v13 forIdentifier:identifier2];
 
   [(MCMContainerCache *)self notifyWithClassCache:v34[5] existingEntry:v16 newEntry:v19];
   v20 = container_log_handle_for_category();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v27 = [v6 containerPath];
-    v28 = [v27 containerClassPath];
-    v29 = [v6 identifier];
+    containerPath2 = [metadataCopy containerPath];
+    containerClassPath2 = [containerPath2 containerClassPath];
+    identifier3 = [metadataCopy identifier];
     *buf = 138412546;
-    v40 = v28;
+    v40 = containerClassPath2;
     v41 = 2112;
-    v42 = v29;
+    v42 = identifier3;
     _os_log_debug_impl(&dword_1DF2C3000, v20, OS_LOG_TYPE_DEBUG, "Cache: %@: Added Identifier: %@", buf, 0x16u);
   }
 
   v21 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_7:
     if (!v19)
     {
       v22 = v21;
-      *a4 = v21;
+      *error = v21;
     }
   }
 
@@ -1445,13 +1445,13 @@ uint64_t __48__MCMContainerCache_addContainerMetadata_error___block_invoke(uint6
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)notifyWithClassCache:(id)a3 existingEntry:(id)a4 newEntry:(id)a5
+- (void)notifyWithClassCache:(id)cache existingEntry:(id)entry newEntry:(id)newEntry
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v7 = a5;
-  [a3 notify];
-  if (!v12 && v7 || v12 && !v7 || v12 && v7 && ([v7 containerPath], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "containerPath"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isEqual:", v10), v10, v9, (v11 & 1) == 0))
+  entryCopy = entry;
+  newEntryCopy = newEntry;
+  [cache notify];
+  if (!entryCopy && newEntryCopy || entryCopy && !newEntryCopy || entryCopy && newEntryCopy && ([newEntryCopy containerPath], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(entryCopy, "containerPath"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isEqual:", v10), v10, v9, (v11 & 1) == 0))
   {
     container_notify_post();
   }
@@ -1459,38 +1459,38 @@ uint64_t __48__MCMContainerCache_addContainerMetadata_error___block_invoke(uint6
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)entriesForUserIdentities:(id)a3 contentClass:(unint64_t)a4 transient:(BOOL)a5 error:(id *)a6
+- (id)entriesForUserIdentities:(id)identities contentClass:(unint64_t)class transient:(BOOL)transient error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v35 = a3;
+  identitiesCopy = identities;
   v8 = objc_alloc_init(MCMMutableContainerArray);
   v33 = [MEMORY[0x1E695DFA8] set];
   v9 = container_class_normalized();
   context = objc_autoreleasePoolPush();
   if (![MCMUserIdentity isUserIdentityRequiredForContainerClass:v9])
   {
-    v10 = [(MCMContainerCache *)self userIdentityCache];
-    v11 = [v10 defaultUserIdentity];
+    userIdentityCache = [(MCMContainerCache *)self userIdentityCache];
+    defaultUserIdentity = [userIdentityCache defaultUserIdentity];
 
     if ((v9 & 0xFFFFFFFFFFFFFFFELL) == 0xC)
     {
-      v12 = [(MCMContainerCache *)self userIdentityCache];
-      v13 = [v12 globalSystemUserIdentity];
+      userIdentityCache2 = [(MCMContainerCache *)self userIdentityCache];
+      globalSystemUserIdentity = [userIdentityCache2 globalSystemUserIdentity];
 
-      v11 = v13;
+      defaultUserIdentity = globalSystemUserIdentity;
     }
 
     if (v9 <= 8 && ((1 << v9) & 0x12A) != 0)
     {
-      v14 = [(MCMContainerCache *)self userIdentityCache];
-      v15 = [v14 globalBundleUserIdentity];
+      userIdentityCache3 = [(MCMContainerCache *)self userIdentityCache];
+      globalBundleUserIdentity = [userIdentityCache3 globalBundleUserIdentity];
 
-      v11 = v15;
+      defaultUserIdentity = globalBundleUserIdentity;
     }
 
-    v16 = [MEMORY[0x1E695DFD8] setWithObject:v11];
+    v16 = [MEMORY[0x1E695DFD8] setWithObject:defaultUserIdentity];
 
-    v35 = v16;
+    identitiesCopy = v16;
   }
 
   if (v9 - 1 >= 0xE)
@@ -1516,10 +1516,10 @@ uint64_t __48__MCMContainerCache_addContainerMetadata_error___block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __75__MCMContainerCache_entriesForUserIdentities_contentClass_transient_error___block_invoke;
   block[3] = &unk_1E86B0D68;
-  v40 = v35;
-  v41 = self;
+  v40 = identitiesCopy;
+  selfCopy = self;
   v44 = v9;
-  v45 = a5;
+  transientCopy = transient;
   v18 = v33;
   v42 = v18;
   p_buf = &buf;
@@ -1554,15 +1554,15 @@ uint64_t __48__MCMContainerCache_addContainerMetadata_error___block_invoke(uint6
           }
 
           v24 = *(*(&v47 + 1) + 8 * i);
-          v25 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           [v24 resyncRequired];
           [v24 waitForSynchronizationToComplete];
           v37[0] = v22;
           v37[1] = 3221225472;
           v37[2] = __75__MCMContainerCache_entriesForUserIdentities_contentClass_transient_error___block_invoke_3;
           v37[3] = &unk_1E86B0D90;
-          v38 = v25;
-          v26 = v25;
+          v38 = array;
+          v26 = array;
           [v24 enumerateCacheEntriesWithEnumerator:v37];
           -[MCMMutableContainerArray setGeneration:](v8, "setGeneration:", [v24 generation]);
           [(MCMMutableContainerArray *)v8 addObjectsFromArray:v26];
@@ -1578,10 +1578,10 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(context);
-  if (a6 && !v8)
+  if (error && !v8)
   {
     v27 = v34;
-    *a6 = v34;
+    *error = v34;
   }
 
   v28 = [(MCMMutableContainerArray *)v8 copy];
@@ -1685,10 +1685,10 @@ void __75__MCMContainerCache_entriesForUserIdentities_contentClass_transient_err
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)countContainersForOtherUserIdentitiesWithIdentity:(id)a3 error:(id *)a4
+- (int64_t)countContainersForOtherUserIdentitiesWithIdentity:(id)identity error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identityCopy = identity;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -1699,22 +1699,22 @@ void __75__MCMContainerCache_entriesForUserIdentities_contentClass_transient_err
   v20 = __Block_byref_object_copy__13434;
   v21 = __Block_byref_object_dispose__13435;
   v22 = 0;
-  v7 = [(MCMContainerCache *)self userIdentityCache];
+  userIdentityCache = [(MCMContainerCache *)self userIdentityCache];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__MCMContainerCache_countContainersForOtherUserIdentitiesWithIdentity_error___block_invoke;
   v12[3] = &unk_1E86B0D18;
   v15 = &v17;
-  v8 = v6;
+  v8 = identityCopy;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v16 = &v23;
-  [v7 forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v12];
+  [userIdentityCache forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v12];
 
   v9 = v24[3];
-  if (a4 && v9 < 0)
+  if (error && v9 < 0)
   {
-    *a4 = v18[5];
+    *error = v18[5];
     v9 = v24[3];
   }
 
@@ -1771,17 +1771,17 @@ void __77__MCMContainerCache_countContainersForOtherUserIdentitiesWithIdentity_e
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)entryForContainerIdentity:(id)a3 error:(id *)a4
+- (id)entryForContainerIdentity:(id)identity error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MCMContainerCache *)self classCacheForContainerIdentity:v6];
+  identityCopy = identity;
+  v7 = [(MCMContainerCache *)self classCacheForContainerIdentity:identityCopy];
   if (v7)
   {
     v13[0] = 0;
-    v8 = [(MCMContainerCache *)self entryForContainerIdentity:v6 classCache:v7 error:v13];
+    v8 = [(MCMContainerCache *)self entryForContainerIdentity:identityCopy classCache:v7 error:v13];
     v9 = v13[0];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -1791,7 +1791,7 @@ void __77__MCMContainerCache_countContainersForOtherUserIdentitiesWithIdentity_e
   {
     v9 = [[MCMError alloc] initWithErrorType:43];
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -1800,7 +1800,7 @@ void __77__MCMContainerCache_countContainersForOtherUserIdentitiesWithIdentity_e
   if (!v8)
   {
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_7:
@@ -1810,24 +1810,24 @@ LABEL_7:
   return v8;
 }
 
-- (id)entryForContainerIdentity:(id)a3 classCache:(id)a4 error:(id *)a5
+- (id)entryForContainerIdentity:(id)identity classCache:(id)cache error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 identifier];
+  identityCopy = identity;
+  cacheCopy = cache;
+  identifier = [identityCopy identifier];
   v10 = 0;
   while (1)
   {
     v11 = v10;
-    v12 = [v8 cacheEntryForIdentifier:v9];
+    v12 = [cacheCopy cacheEntryForIdentifier:identifier];
     if (!v12)
     {
 LABEL_8:
       v16 = [[MCMError alloc] initWithErrorType:21 category:3];
       v13 = 0;
-      v18 = a5;
-      if (!a5)
+      errorCopy4 = error;
+      if (!error)
       {
         goto LABEL_25;
       }
@@ -1849,26 +1849,26 @@ LABEL_8:
     {
       if ([(MCMError *)v15 type]== 162)
       {
-        v23 = [(MCMContainerCache *)self userIdentityCache];
-        [v23 flush];
+        userIdentityCache = [(MCMContainerCache *)self userIdentityCache];
+        [userIdentityCache flush];
 
-        v24 = [v7 userIdentity];
-        [(MCMContainerCache *)self invalidateUserIdentity:v24];
+        userIdentity = [identityCopy userIdentity];
+        [(MCMContainerCache *)self invalidateUserIdentity:userIdentity];
       }
 
       v25 = container_log_handle_for_category();
-      v18 = a5;
+      errorCopy4 = error;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v38 = v9;
+        v38 = identifier;
         v39 = 2112;
         v40 = v16;
         _os_log_error_impl(&dword_1DF2C3000, v25, OS_LOG_TYPE_ERROR, "Failed to verify container while looking up [%@]. FATAL; error = %@", buf, 0x16u);
       }
 
       v13 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_25;
       }
@@ -1877,7 +1877,7 @@ LABEL_23:
       if (!v13)
       {
         v28 = v16;
-        *v18 = v16;
+        *errorCopy4 = v16;
       }
 
       goto LABEL_25;
@@ -1887,11 +1887,11 @@ LABEL_23:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v38 = v9;
+      v38 = identifier;
       _os_log_error_impl(&dword_1DF2C3000, v17, OS_LOG_TYPE_ERROR, "Incoherent cache detected (stale cache entry) while looking up [%@]. Recovering by forcing cache resync.", buf, 0xCu);
     }
 
-    [v8 resyncRequired];
+    [cacheCopy resyncRequired];
     v10 = 1;
     if (v11)
     {
@@ -1902,30 +1902,30 @@ LABEL_23:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = v7;
-    v20 = [v19 uuid];
-    v21 = [v13 uuid];
-    v22 = [v20 isEqual:v21];
+    v19 = identityCopy;
+    uuid = [v19 uuid];
+    uuid2 = [v13 uuid];
+    v22 = [uuid isEqual:uuid2];
 
     if (v22)
     {
-      v18 = a5;
+      errorCopy4 = error;
     }
 
     else
     {
       v26 = container_log_handle_for_category();
-      v18 = a5;
+      errorCopy4 = error;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v34 = [v19 uuid];
-        v31 = [v34 UUIDString];
-        v33 = [v13 uuid];
-        v32 = [v33 UUIDString];
+        uuid3 = [v19 uuid];
+        uUIDString = [uuid3 UUIDString];
+        uuid4 = [v13 uuid];
+        uUIDString2 = [uuid4 UUIDString];
         *buf = 138412546;
-        v38 = v31;
+        v38 = uUIDString;
         v39 = 2112;
-        v40 = v32;
+        v40 = uUIDString2;
         _os_log_error_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_ERROR, "Matching cache entry found, but UUIDs mismatch: requested = [%@] vs. cache entry = [%@]", buf, 0x16u);
       }
 
@@ -1934,7 +1934,7 @@ LABEL_23:
       v16 = v27;
     }
 
-    if (v18)
+    if (errorCopy4)
     {
       goto LABEL_23;
     }
@@ -1947,25 +1947,25 @@ LABEL_25:
   return v13;
 }
 
-- (id)classCacheForContainerIdentity:(id)a3
+- (id)classCacheForContainerIdentity:(id)identity
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 transient];
-  v6 = [v4 containerClass];
-  v7 = [v4 userIdentity];
+  identityCopy = identity;
+  transient = [identityCopy transient];
+  containerClass = [identityCopy containerClass];
+  userIdentity = [identityCopy userIdentity];
 
-  v8 = [(MCMContainerCache *)self classCacheForUserIdentity:v7 containerClass:v6 transient:v5];
+  v8 = [(MCMContainerCache *)self classCacheForUserIdentity:userIdentity containerClass:containerClass transient:transient];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (id)classCacheForUserIdentity:(id)a3 containerClass:(unint64_t)a4 transient:(BOOL)a5
+- (id)classCacheForUserIdentity:(id)identity containerClass:(unint64_t)class transient:(BOOL)transient
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  identityCopy = identity;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1978,11 +1978,11 @@ LABEL_25:
   v14[2] = __72__MCMContainerCache_classCacheForUserIdentity_containerClass_transient___block_invoke;
   v14[3] = &unk_1E86B0CF0;
   v14[4] = self;
-  v15 = v8;
+  v15 = identityCopy;
   v16 = &v19;
-  v17 = a4;
-  v18 = a5;
-  v10 = v8;
+  classCopy = class;
+  transientCopy = transient;
+  v10 = identityCopy;
   dispatch_sync(queue, v14);
   v11 = v20[5];
 
@@ -2004,18 +2004,18 @@ uint64_t __72__MCMContainerCache_classCacheForUserIdentity_containerClass_transi
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setContainerClassCache:(id)a3
+- (void)setContainerClassCache:(id)cache
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cacheCopy = cache;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__MCMContainerCache_setContainerClassCache___block_invoke;
   block[3] = &unk_1E86B0CC8;
   block[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = cacheCopy;
+  v6 = cacheCopy;
   dispatch_sync(queue, block);
 
   v7 = *MEMORY[0x1E69E9840];
@@ -2030,40 +2030,40 @@ uint64_t __44__MCMContainerCache_setContainerClassCache___block_invoke(uint64_t 
   return [v2 _queue_setContainerClassCache:v3];
 }
 
-- (MCMContainerCache)initWithUserIdentityCache:(id)a3 childParentMapCache:(id)a4 classCacheClass:(Class)a5 cacheEntryClass:(Class)a6 error:(id *)a7
+- (MCMContainerCache)initWithUserIdentityCache:(id)cache childParentMapCache:(id)mapCache classCacheClass:(Class)class cacheEntryClass:(Class)entryClass error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a3;
+  mapCacheCopy = mapCache;
+  cacheCopy = cache;
   v13 = dispatch_queue_create("com.apple.containermanagerd.cache", 0);
-  v14 = [(MCMContainerCache *)self initWithUserIdentityCache:v12 childParentMapCache:v11 classCacheClass:a5 cacheEntryClass:a6 queue:v13];
+  v14 = [(MCMContainerCache *)self initWithUserIdentityCache:cacheCopy childParentMapCache:mapCacheCopy classCacheClass:class cacheEntryClass:entryClass queue:v13];
 
   v15 = v14;
   v16 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-- (MCMContainerCache)initWithUserIdentityCache:(id)a3 childParentMapCache:(id)a4 classCacheClass:(Class)a5 cacheEntryClass:(Class)a6 queue:(id)a7
+- (MCMContainerCache)initWithUserIdentityCache:(id)cache childParentMapCache:(id)mapCache classCacheClass:(Class)class cacheEntryClass:(Class)entryClass queue:(id)queue
 {
   v23 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  cacheCopy = cache;
+  mapCacheCopy = mapCache;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = MCMContainerCache;
   v16 = [(MCMContainerCache *)&v22 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_classCacheClass, a5);
-    objc_storeStrong(&v17->_cacheEntryClass, a6);
-    objc_storeStrong(&v17->_childParentMapCache, a4);
+    objc_storeStrong(&v16->_classCacheClass, class);
+    objc_storeStrong(&v17->_cacheEntryClass, entryClass);
+    objc_storeStrong(&v17->_childParentMapCache, mapCache);
     v18 = objc_opt_new();
     queue_cache = v17->_queue_cache;
     v17->_queue_cache = v18;
 
-    objc_storeStrong(&v17->_userIdentityCache, a3);
-    objc_storeStrong(&v17->_queue, a7);
+    objc_storeStrong(&v17->_userIdentityCache, cache);
+    objc_storeStrong(&v17->_queue, queue);
   }
 
   v20 = *MEMORY[0x1E69E9840];

@@ -1,19 +1,19 @@
 @interface TSUUUIDSetStore
 - (TSUUUIDSetStore)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)indexesUsingAnyOfUuids:(const void *)a3;
-- (id)indexesUsingUuid:(const void *)a3;
-- (id)setForIndex:(unsigned int)a3;
-- (id)subsetStoreForIndexes:(id)a3;
-- (unsigned)addSet:(id)a3;
-- (unsigned)addSetForSingleUuid:(const void *)a3;
-- (unsigned)addSetForUuids:(const void *)a3;
-- (unsigned)indexOfSet:(id)a3;
-- (void)_foreachUuidSet:(id)a3;
-- (void)foreachUuidSet:(id)a3;
-- (void)p_addSet:(id)a3 atIndex:(unsigned int)a4;
-- (void)removeSetAtIndex:(unsigned int)a3;
+- (id)indexesUsingAnyOfUuids:(const void *)uuids;
+- (id)indexesUsingUuid:(const void *)uuid;
+- (id)setForIndex:(unsigned int)index;
+- (id)subsetStoreForIndexes:(id)indexes;
+- (unsigned)addSet:(id)set;
+- (unsigned)addSetForSingleUuid:(const void *)uuid;
+- (unsigned)addSetForUuids:(const void *)uuids;
+- (unsigned)indexOfSet:(id)set;
+- (void)_foreachUuidSet:(id)set;
+- (void)foreachUuidSet:(id)set;
+- (void)p_addSet:(id)set atIndex:(unsigned int)index;
+- (void)removeSetAtIndex:(unsigned int)index;
 @end
 
 @implementation TSUUUIDSetStore
@@ -61,12 +61,12 @@
   return v3;
 }
 
-- (unsigned)addSet:(id)a3
+- (unsigned)addSet:(id)set
 {
-  v4 = a3;
-  if ([v4 count])
+  setCopy = set;
+  if ([setCopy count])
   {
-    LODWORD(v5) = [(TSUUUIDSetStore *)self indexOfSet:v4];
+    LODWORD(v5) = [(TSUUUIDSetStore *)self indexOfSet:setCopy];
     if (!v5)
     {
       highestIndex = self->_highestIndex;
@@ -91,7 +91,7 @@
         }
       }
 
-      [(TSUUUIDSetStore *)self p_addSet:v4 atIndex:v5];
+      [(TSUUUIDSetStore *)self p_addSet:setCopy atIndex:v5];
     }
   }
 
@@ -103,27 +103,27 @@
   return v5;
 }
 
-- (unsigned)addSetForUuids:(const void *)a3
+- (unsigned)addSetForUuids:(const void *)uuids
 {
-  if (*(a3 + 1) == *a3)
+  if (*(uuids + 1) == *uuids)
   {
     return 0;
   }
 
-  v4 = [[TSUUUIDSet alloc] initWithUUIDVector:a3];
+  v4 = [[TSUUUIDSet alloc] initWithUUIDVector:uuids];
   v5 = [(TSUUUIDSetStore *)self addSet:v4];
 
   return v5;
 }
 
-- (void)p_addSet:(id)a3 atIndex:(unsigned int)a4
+- (void)p_addSet:(id)set atIndex:(unsigned int)index
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6 && v4)
+  v4 = *&index;
+  setCopy = set;
+  v7 = setCopy;
+  if (setCopy && v4)
   {
-    if ([v6 index] && objc_msgSend(v7, "index") != v4)
+    if ([setCopy index] && objc_msgSend(v7, "index") != v4)
     {
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUUUIDSetStore p_addSet:atIndex:]"];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUUUIDSetStore.mm"];
@@ -165,23 +165,23 @@ void __36__TSUUUIDSetStore_p_addSet_atIndex___block_invoke(uint64_t a1, uint64_t
   [v3 addIndex:*(a1 + 40)];
 }
 
-- (void)removeSetAtIndex:(unsigned int)a3
+- (void)removeSetAtIndex:(unsigned int)index
 {
   TSULocker::TSULocker(&v5, self->_lock);
-  if (a3)
+  if (index)
   {
-    [(TSUSparseArray *)self->_uuidSetForIndex setObject:0 forKey:a3];
+    [(TSUSparseArray *)self->_uuidSetForIndex setObject:0 forKey:index];
   }
 
   TSULocker::~TSULocker(&v5);
 }
 
-- (id)setForIndex:(unsigned int)a3
+- (id)setForIndex:(unsigned int)index
 {
   TSULocker::TSULocker(&v7, self->_lock);
-  if (a3)
+  if (index)
   {
-    v5 = [(TSUSparseArray *)self->_uuidSetForIndex objectForKey:a3];
+    v5 = [(TSUSparseArray *)self->_uuidSetForIndex objectForKey:index];
   }
 
   else
@@ -194,11 +194,11 @@ void __36__TSUUUIDSetStore_p_addSet_atIndex___block_invoke(uint64_t a1, uint64_t
   return v5;
 }
 
-- (unsigned)indexOfSet:(id)a3
+- (unsigned)indexOfSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  setCopy = set;
+  v5 = setCopy;
+  if (setCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -212,7 +212,7 @@ void __36__TSUUUIDSetStore_p_addSet_atIndex___block_invoke(uint64_t a1, uint64_t
     v10[3] = &unk_2799C6C68;
     v10[4] = self;
     v10[5] = &v11;
-    [v4 foreachUuid:v10];
+    [setCopy foreachUuid:v10];
     if ([v12[5] count] && (v6 = objc_msgSend(v12[5], "firstIndex"), v6 != 0x7FFFFFFFFFFFFFFFLL))
     {
       do
@@ -288,9 +288,9 @@ LABEL_12:
   }
 }
 
-- (id)indexesUsingUuid:(const void *)a3
+- (id)indexesUsingUuid:(const void *)uuid
 {
-  v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:uuid];
   TSULocker::TSULocker(&v7, self->_lock);
   v5 = [(NSMutableDictionary *)self->_indexesUsingUuid objectForKey:v4];
   TSULocker::~TSULocker(&v7);
@@ -298,19 +298,19 @@ LABEL_12:
   return v5;
 }
 
-- (id)indexesUsingAnyOfUuids:(const void *)a3
+- (id)indexesUsingAnyOfUuids:(const void *)uuids
 {
-  v5 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   TSULocker::TSULocker(&v11, self->_lock);
-  v6 = *a3;
-  v7 = *(a3 + 1);
-  if (*a3 != v7)
+  v6 = *uuids;
+  v7 = *(uuids + 1);
+  if (*uuids != v7)
   {
     do
     {
       v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:v6];
       v9 = [(NSMutableDictionary *)self->_indexesUsingUuid objectForKey:v8];
-      [v5 addIndexes:v9];
+      [indexSet addIndexes:v9];
 
       v6 += 16;
     }
@@ -320,32 +320,32 @@ LABEL_12:
 
   TSULocker::~TSULocker(&v11);
 
-  return v5;
+  return indexSet;
 }
 
-- (void)_foreachUuidSet:(id)a3
+- (void)_foreachUuidSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   uuidSetForIndex = self->_uuidSetForIndex;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__TSUUUIDSetStore__foreachUuidSet___block_invoke;
   v7[3] = &unk_2799C7570;
-  v8 = v4;
-  v6 = v4;
+  v8 = setCopy;
+  v6 = setCopy;
   [(TSUSparseArray *)uuidSetForIndex foreach:v7];
 }
 
-- (id)subsetStoreForIndexes:(id)a3
+- (id)subsetStoreForIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v5 = objc_opt_new();
   TSULocker::TSULocker(&v14, self->_lock);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __41__TSUUUIDSetStore_subsetStoreForIndexes___block_invoke;
   v11[3] = &unk_2799C7598;
-  v6 = v4;
+  v6 = indexesCopy;
   v12 = v6;
   v7 = v5;
   v13 = v7;
@@ -367,15 +367,15 @@ void __41__TSUUUIDSetStore_subsetStoreForIndexes___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)foreachUuidSet:(id)a3
+- (void)foreachUuidSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   TSULocker::TSULocker(&v5, self->_lock);
-  [(TSUUUIDSetStore *)self _foreachUuidSet:v4];
+  [(TSUUUIDSetStore *)self _foreachUuidSet:setCopy];
   TSULocker::~TSULocker(&v5);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   TSULocker::TSULocker(&v9, self->_lock);
@@ -391,7 +391,7 @@ void __41__TSUUUIDSetStore_subsetStoreForIndexes___block_invoke(uint64_t a1, voi
   return v5;
 }
 
-- (unsigned)addSetForSingleUuid:(const void *)a3
+- (unsigned)addSetForSingleUuid:(const void *)uuid
 {
   v11 = 0;
   v12 = &v11;
@@ -406,14 +406,14 @@ void __41__TSUUUIDSetStore_subsetStoreForIndexes___block_invoke(uint64_t a1, voi
     v10[3] = &unk_2799C75E8;
     v10[4] = self;
     v10[5] = &v11;
-    v10[6] = a3;
+    v10[6] = uuid;
     [v5 enumerateIndexesUsingBlock:v10];
   }
 
   v6 = *(v12 + 6);
   if (!v6)
   {
-    v7 = [[TSUUUIDSet alloc] initWithUUID:a3];
+    v7 = [[TSUUUIDSet alloc] initWithUUID:uuid];
     v8 = [(TSUUUIDSetStore *)self addSet:v7];
     *(v12 + 6) = v8;
 

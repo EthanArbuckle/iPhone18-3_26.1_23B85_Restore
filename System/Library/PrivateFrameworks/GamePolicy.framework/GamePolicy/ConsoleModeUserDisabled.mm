@@ -1,12 +1,12 @@
 @interface ConsoleModeUserDisabled
 - (NSString)description;
 - (_TtC10GamePolicy23ConsoleModeUserDisabled)init;
-- (_TtC10GamePolicy23ConsoleModeUserDisabled)initWithCoder:(id)a3;
+- (_TtC10GamePolicy23ConsoleModeUserDisabled)initWithCoder:(id)coder;
 @end
 
 @implementation ConsoleModeUserDisabled
 
-- (_TtC10GamePolicy23ConsoleModeUserDisabled)initWithCoder:(id)a3
+- (_TtC10GamePolicy23ConsoleModeUserDisabled)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for GamePolicyAssertion.Attribute();

@@ -1,60 +1,60 @@
 @interface HUServiceDetailsCameraSettingsReaderWriter
-- (HUServiceDetailsCameraSettingsReaderWriter)initWithConfigurator:(id)a3;
+- (HUServiceDetailsCameraSettingsReaderWriter)initWithConfigurator:(id)configurator;
 - (HUServiceDetailsCameraSettingsReaderWriterConfigurator)configurator;
-- (id)_fastUpdateResultsForCharacteristic:(id)a3 withTitle:(id)a4;
-- (id)readWithOptions:(id)a3;
-- (id)updateUserSettingsWithValue:(BOOL)a3;
+- (id)_fastUpdateResultsForCharacteristic:(id)characteristic withTitle:(id)title;
+- (id)readWithOptions:(id)options;
+- (id)updateUserSettingsWithValue:(BOOL)value;
 @end
 
 @implementation HUServiceDetailsCameraSettingsReaderWriter
 
-- (HUServiceDetailsCameraSettingsReaderWriter)initWithConfigurator:(id)a3
+- (HUServiceDetailsCameraSettingsReaderWriter)initWithConfigurator:(id)configurator
 {
-  v4 = a3;
+  configuratorCopy = configurator;
   v8.receiver = self;
   v8.super_class = HUServiceDetailsCameraSettingsReaderWriter;
   v5 = [(HUServiceDetailsCameraSettingsReaderWriter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_configurator, v4);
+    objc_storeWeak(&v5->_configurator, configuratorCopy);
   }
 
   return v6;
 }
 
-- (id)readWithOptions:(id)a3
+- (id)readWithOptions:(id)options
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
+  optionsCopy = options;
+  configurator = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
 
-  if (!v5)
+  if (!configurator)
   {
     v19 = MEMORY[0x277D2C900];
     v20 = MEMORY[0x277D14780];
     v40 = *MEMORY[0x277D13FB8];
     v41[0] = MEMORY[0x277CBEC38];
-    v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
-    v9 = [v20 outcomeWithResults:v7];
+    cameraSettings = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
+    v9 = [v20 outcomeWithResults:cameraSettings];
     v18 = [v19 futureWithResult:v9];
     goto LABEL_12;
   }
 
-  v6 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
-  v7 = [v6 cameraSettings];
+  configurator2 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
+  cameraSettings = [configurator2 cameraSettings];
 
-  v8 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
-  v9 = [v8 characteristicForSettings:v7];
+  configurator3 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
+  v9 = [configurator3 characteristicForSettings:cameraSettings];
 
   if (!v9)
   {
     v21 = HFLogForCategory();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
+      configurator4 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
       *buf = 138412290;
-      v39 = v22;
+      v39 = configurator4;
       _os_log_impl(&dword_20CEB6000, v21, OS_LOG_TYPE_DEFAULT, "Failed to get characteristic for configurator:%@", buf, 0xCu);
     }
 
@@ -62,33 +62,33 @@
     v24 = MEMORY[0x277D14780];
     v36 = *MEMORY[0x277D13FB8];
     v37 = MEMORY[0x277CBEC38];
-    v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-    v25 = [v24 outcomeWithResults:v11];
-    v18 = [v23 futureWithResult:v25];
+    itemTitle = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
+    characteristicValueManager = [v24 outcomeWithResults:itemTitle];
+    v18 = [v23 futureWithResult:characteristicValueManager];
     goto LABEL_10;
   }
 
-  v10 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
-  v11 = [v10 itemTitle];
+  configurator5 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
+  itemTitle = [configurator5 itemTitle];
 
-  v12 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
-  v13 = [v12 BOOLValue];
+  v12 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
+  bOOLValue = [v12 BOOLValue];
 
-  if (!v13)
+  if (!bOOLValue)
   {
     v26 = [MEMORY[0x277CBEB98] setWithObject:v9];
-    v27 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
-    v25 = [v27 characteristicValueManager];
+    configurator6 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
+    characteristicValueManager = [configurator6 characteristicValueManager];
 
-    v28 = [v25 readValuesForCharacteristics:v26];
+    v28 = [characteristicValueManager readValuesForCharacteristics:v26];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __62__HUServiceDetailsCameraSettingsReaderWriter_readWithOptions___block_invoke;
     v31[3] = &unk_277DB97A8;
-    v11 = v11;
-    v32 = v11;
+    itemTitle = itemTitle;
+    v32 = itemTitle;
     v33 = v9;
-    v34 = self;
+    selfCopy = self;
     v35 = v26;
     v29 = v26;
     v18 = [v28 flatMap:v31];
@@ -99,7 +99,7 @@ LABEL_10:
 
   v14 = MEMORY[0x277D2C900];
   v15 = MEMORY[0x277D14780];
-  v16 = [(HUServiceDetailsCameraSettingsReaderWriter *)self _fastUpdateResultsForCharacteristic:v9 withTitle:v11];
+  v16 = [(HUServiceDetailsCameraSettingsReaderWriter *)self _fastUpdateResultsForCharacteristic:v9 withTitle:itemTitle];
   v17 = [v15 outcomeWithResults:v16];
   v18 = [v14 futureWithResult:v17];
 
@@ -190,28 +190,28 @@ id __62__HUServiceDetailsCameraSettingsReaderWriter_readWithOptions___block_invo
   return v31;
 }
 
-- (id)_fastUpdateResultsForCharacteristic:(id)a3 withTitle:(id)a4
+- (id)_fastUpdateResultsForCharacteristic:(id)characteristic withTitle:(id)title
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 dictionary];
-  [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x277D13F60]];
+  titleCopy = title;
+  characteristicCopy = characteristic;
+  dictionary = [v5 dictionary];
+  [dictionary setObject:titleCopy forKeyedSubscript:*MEMORY[0x277D13F60]];
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"AccessoryDetails.%@", v7];
-  v10 = [v9 componentsSeparatedByString:@"::"];
-  v11 = [v10 lastObject];
-  v12 = [v11 componentsSeparatedByString:@":"];
-  v13 = [v12 firstObject];
-  v14 = [v13 stringByReplacingOccurrencesOfString:@" " withString:&stru_2823E0EE8];
+  characteristicCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"AccessoryDetails.%@", characteristicCopy];
+  v10 = [characteristicCopy componentsSeparatedByString:@"::"];
+  lastObject = [v10 lastObject];
+  v12 = [lastObject componentsSeparatedByString:@":"];
+  firstObject = [v12 firstObject];
+  v14 = [firstObject stringByReplacingOccurrencesOfString:@" " withString:&stru_2823E0EE8];
   v15 = [@"AccessoryDetails." stringByAppendingString:v14];
-  [v8 setObject:v15 forKeyedSubscript:*MEMORY[0x277D13DC8]];
+  [dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x277D13DC8]];
 
   objc_opt_class();
-  v16 = [v7 value];
+  value = [characteristicCopy value];
   if (objc_opt_isKindOfClass())
   {
-    v17 = v16;
+    v17 = value;
   }
 
   else
@@ -224,68 +224,68 @@ id __62__HUServiceDetailsCameraSettingsReaderWriter_readWithOptions___block_invo
   v19 = MEMORY[0x277CCABB0];
   [v18 BOOLValue];
   v20 = [v19 numberWithInteger:HFPrimaryStateFromBOOL()];
-  [v8 setObject:v20 forKeyedSubscript:*MEMORY[0x277D14068]];
+  [dictionary setObject:v20 forKeyedSubscript:*MEMORY[0x277D14068]];
 
-  v21 = [MEMORY[0x277CBEB98] setWithObjects:{v7, 0}];
+  v21 = [MEMORY[0x277CBEB98] setWithObjects:{characteristicCopy, 0}];
 
-  [v8 setObject:v21 forKeyedSubscript:*MEMORY[0x277D13DA8]];
+  [dictionary setObject:v21 forKeyedSubscript:*MEMORY[0x277D13DA8]];
 
-  return v8;
+  return dictionary;
 }
 
-- (id)updateUserSettingsWithValue:(BOOL)a3
+- (id)updateUserSettingsWithValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v28 = *MEMORY[0x277D85DE8];
-  v5 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
+  configurator = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
 
-  if (v5)
+  if (configurator)
   {
     v6 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v7 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
-    v8 = [v7 cameraSettings];
+    configurator2 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
+    cameraSettings = [configurator2 cameraSettings];
 
-    v9 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
-    v10 = [v9 characteristicForSettings:v8];
+    configurator3 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
+    v10 = [configurator3 characteristicForSettings:cameraSettings];
 
-    v11 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
-    v12 = [v11 transactionReason];
+    configurator4 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
+    transactionReason = [configurator4 transactionReason];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v13 = [MEMORY[0x277CCABB0] numberWithBool:valueCopy];
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109378;
-      v25 = [v13 BOOLValue];
+      bOOLValue = [v13 BOOLValue];
       v26 = 2112;
       v27 = v10;
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "Attempt to update value allowed %{BOOL}d for characteristic:%@", buf, 0x12u);
     }
 
-    v15 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
-    v16 = [v15 characteristicValueManager];
+    configurator5 = [(HUServiceDetailsCameraSettingsReaderWriter *)self configurator];
+    characteristicValueManager = [configurator5 characteristicValueManager];
 
-    [v16 beginTransactionWithReason:v12];
+    [characteristicValueManager beginTransactionWithReason:transactionReason];
     v17 = objc_alloc_init(MEMORY[0x277D14560]);
     [v17 setValue:v13 forCharacteristic:v10];
-    v18 = [v16 writeValuesForCharacteristics:v17];
+    v18 = [characteristicValueManager writeValuesForCharacteristics:v17];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __74__HUServiceDetailsCameraSettingsReaderWriter_updateUserSettingsWithValue___block_invoke;
     v22[3] = &unk_277DB7B30;
-    v19 = v6;
-    v23 = v19;
+    futureWithNoResult = v6;
+    v23 = futureWithNoResult;
     v20 = [v18 addCompletionBlock:v22];
 
-    [v16 commitTransactionWithReason:v12];
+    [characteristicValueManager commitTransactionWithReason:transactionReason];
   }
 
   else
   {
-    v19 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v19;
+  return futureWithNoResult;
 }
 
 - (HUServiceDetailsCameraSettingsReaderWriterConfigurator)configurator

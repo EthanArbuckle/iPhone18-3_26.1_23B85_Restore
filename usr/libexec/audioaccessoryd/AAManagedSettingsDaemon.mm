@@ -9,13 +9,13 @@
 - (void)_fetchManagedSettings;
 - (void)_handleAlarmEvent;
 - (void)_invalidate;
-- (void)_managedSettingsChangedWithEvent:(id)a3 settingsGroup:(id)a4;
+- (void)_managedSettingsChangedWithEvent:(id)event settingsGroup:(id)group;
 - (void)_managedSettingsListenerEnsureStarted;
 - (void)_scheduleCleanupAlarm;
 - (void)activate;
 - (void)invalidate;
-- (void)setAllowTemporaryPairingConnection:(BOOL)a3;
-- (void)setHourOfDeletion:(int)a3;
+- (void)setAllowTemporaryPairingConnection:(BOOL)connection;
+- (void)setHourOfDeletion:(int)deletion;
 @end
 
 @implementation AAManagedSettingsDaemon
@@ -104,9 +104,9 @@
 {
   if ([(AAManagedSettingsDaemon *)self allowTemporaryPairingConnection])
   {
-    v3 = [(AAManagedSettingsDaemon *)self _nextCleanupAlarmTime];
+    _nextCleanupAlarmTime = [(AAManagedSettingsDaemon *)self _nextCleanupAlarmTime];
     v4 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_date(v4, "Date", v3);
+    xpc_dictionary_set_date(v4, "Date", _nextCleanupAlarmTime);
     xpc_set_event();
     if (dword_1002F68B8 <= 30 && (dword_1002F68B8 != -1 || _LogCategory_Initialize()))
     {
@@ -178,14 +178,14 @@
   }
 }
 
-- (void)_managedSettingsChangedWithEvent:(id)a3 settingsGroup:(id)a4
+- (void)_managedSettingsChangedWithEvent:(id)event settingsGroup:(id)group
 {
-  v5 = a4;
+  groupCopy = group;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [groupCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -198,7 +198,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(groupCopy);
         }
 
         if ([*(*(&v12 + 1) + 8 * v10) isEqualToString:v9])
@@ -215,7 +215,7 @@
       }
 
       while (v7 != v10);
-      v11 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v11 = [groupCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       v7 = v11;
     }
 
@@ -226,15 +226,15 @@
 - (void)_fetchManagedSettings
 {
   v7 = objc_opt_new();
-  v3 = [v7 audioAccessory];
-  v4 = [v3 temporaryPairingConfiguration];
-  v5 = [v4 unpairingTime];
-  v6 = [v5 hour];
+  audioAccessory = [v7 audioAccessory];
+  temporaryPairingConfiguration = [audioAccessory temporaryPairingConfiguration];
+  unpairingTime = [temporaryPairingConfiguration unpairingTime];
+  hour = [unpairingTime hour];
 
-  if (v6)
+  if (hour)
   {
     [(AAManagedSettingsDaemon *)self setAllowTemporaryPairingConnection:1];
-    -[AAManagedSettingsDaemon setHourOfDeletion:](self, "setHourOfDeletion:", [v6 intValue]);
+    -[AAManagedSettingsDaemon setHourOfDeletion:](self, "setHourOfDeletion:", [hour intValue]);
     if (dword_1002F68B8 <= 30 && (dword_1002F68B8 != -1 || _LogCategory_Initialize()))
     {
       sub_1001EC9B4(self);
@@ -257,10 +257,10 @@
 
 - (void)_cleanUp
 {
-  v3 = [(AAPairedDeviceDaemon *)self->_aaPairedDeviceDaemon pairedDevices];
+  pairedDevices = [(AAPairedDeviceDaemon *)self->_aaPairedDeviceDaemon pairedDevices];
   if (dword_1002F68B8 <= 30 && (dword_1002F68B8 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001ECA14(v3);
+    sub_1001ECA14(pairedDevices);
   }
 
   v4[0] = _NSConcreteStackBlock;
@@ -268,27 +268,27 @@
   v4[2] = sub_100075368;
   v4[3] = &unk_1002B7520;
   v4[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [pairedDevices enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 - (BOOL)allowTemporaryPairingConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  allowTemporaryPairingConnection = v2->_allowTemporaryPairingConnection;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allowTemporaryPairingConnection = selfCopy->_allowTemporaryPairingConnection;
+  objc_sync_exit(selfCopy);
 
   return allowTemporaryPairingConnection;
 }
 
-- (void)setAllowTemporaryPairingConnection:(BOOL)a3
+- (void)setAllowTemporaryPairingConnection:(BOOL)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_allowTemporaryPairingConnection != v3)
+  if (obj->_allowTemporaryPairingConnection != connectionCopy)
   {
-    obj->_allowTemporaryPairingConnection = v3;
+    obj->_allowTemporaryPairingConnection = connectionCopy;
   }
 
   objc_sync_exit(obj);
@@ -296,21 +296,21 @@
 
 - (int)hourOfDeletion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  hourOfDeletion = v2->_hourOfDeletion;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hourOfDeletion = selfCopy->_hourOfDeletion;
+  objc_sync_exit(selfCopy);
 
   return hourOfDeletion;
 }
 
-- (void)setHourOfDeletion:(int)a3
+- (void)setHourOfDeletion:(int)deletion
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_hourOfDeletion != a3)
+  if (obj->_hourOfDeletion != deletion)
   {
-    obj->_hourOfDeletion = a3;
+    obj->_hourOfDeletion = deletion;
   }
 
   objc_sync_exit(obj);

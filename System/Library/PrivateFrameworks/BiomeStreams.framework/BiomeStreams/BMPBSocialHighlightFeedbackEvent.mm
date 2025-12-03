@@ -1,15 +1,15 @@
 @interface BMPBSocialHighlightFeedbackEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsFeedbackType:(id)a3;
+- (int)StringAsFeedbackType:(id)type;
 - (int)feedbackType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFeedbackType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFeedbackType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBSocialHighlightFeedbackEvent
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasFeedbackType:(BOOL)a3
+- (void)setHasFeedbackType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -42,60 +42,60 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsFeedbackType:(id)a3
+- (int)StringAsFeedbackType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Displayed"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Displayed"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"UserInteracted"])
+  else if ([typeCopy isEqualToString:@"UserInteracted"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Hide"])
+  else if ([typeCopy isEqualToString:@"Hide"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AppButton"])
+  else if ([typeCopy isEqualToString:@"AppButton"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ActivityButton"])
+  else if ([typeCopy isEqualToString:@"ActivityButton"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ConsumptionStarted"])
+  else if ([typeCopy isEqualToString:@"ConsumptionStarted"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ConsumptionFinished"])
+  else if ([typeCopy isEqualToString:@"ConsumptionFinished"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ItemDetailViewed"])
+  else if ([typeCopy isEqualToString:@"ItemDetailViewed"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ParentDetailViewed"])
+  else if ([typeCopy isEqualToString:@"ParentDetailViewed"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"AppReply"])
+  else if ([typeCopy isEqualToString:@"AppReply"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ConsumedExternally"])
+  else if ([typeCopy isEqualToString:@"ConsumedExternally"])
   {
     v4 = 10;
   }
@@ -114,20 +114,20 @@
   v8.receiver = self;
   v8.super_class = BMPBSocialHighlightFeedbackEvent;
   v4 = [(BMPBSocialHighlightFeedbackEvent *)&v8 description];
-  v5 = [(BMPBSocialHighlightFeedbackEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBSocialHighlightFeedbackEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   clientIdentifier = self->_clientIdentifier;
   if (clientIdentifier)
   {
-    [v3 setObject:clientIdentifier forKey:@"clientIdentifier"];
+    [dictionary setObject:clientIdentifier forKey:@"clientIdentifier"];
   }
 
   has = self->_has;
@@ -158,8 +158,8 @@
   highlight = self->_highlight;
   if (highlight)
   {
-    v11 = [(BMPBRankableSocialHighlight *)highlight dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"highlight"];
+    dictionaryRepresentation = [(BMPBRankableSocialHighlight *)highlight dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"highlight"];
   }
 
   clientVariant = self->_clientVariant;
@@ -171,14 +171,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_clientIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -186,7 +186,7 @@
   {
     feedbackType = self->_feedbackType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -194,63 +194,63 @@
   {
     feedbackCreationSecondsSinceReferenceDate = self->_feedbackCreationSecondsSinceReferenceDate;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_highlight)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_clientVariant)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_clientIdentifier)
   {
-    [v4 setClientIdentifier:?];
-    v4 = v6;
+    [toCopy setClientIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 8) = self->_feedbackType;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 8) = self->_feedbackType;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_feedbackCreationSecondsSinceReferenceDate;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 1) = *&self->_feedbackCreationSecondsSinceReferenceDate;
+    *(toCopy + 48) |= 1u;
   }
 
   if (self->_highlight)
   {
     [v6 setHighlight:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_clientVariant)
   {
     [v6 setClientVariant:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_clientIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_clientIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -268,27 +268,27 @@
     *(v5 + 48) |= 1u;
   }
 
-  v9 = [(BMPBRankableSocialHighlight *)self->_highlight copyWithZone:a3];
+  v9 = [(BMPBRankableSocialHighlight *)self->_highlight copyWithZone:zone];
   v10 = *(v5 + 40);
   *(v5 + 40) = v9;
 
-  v11 = [(NSString *)self->_clientVariant copyWithZone:a3];
+  v11 = [(NSString *)self->_clientVariant copyWithZone:zone];
   v12 = *(v5 + 24);
   *(v5 + 24) = v11;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   clientIdentifier = self->_clientIdentifier;
-  if (clientIdentifier | *(v4 + 2))
+  if (clientIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)clientIdentifier isEqual:?])
     {
@@ -296,16 +296,16 @@
     }
   }
 
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_feedbackType != *(v4 + 8))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_feedbackType != *(equalCopy + 8))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
 LABEL_18:
     v9 = 0;
@@ -314,25 +314,25 @@ LABEL_18:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_feedbackCreationSecondsSinceReferenceDate != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_feedbackCreationSecondsSinceReferenceDate != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_18;
   }
 
   highlight = self->_highlight;
-  if (highlight | *(v4 + 5) && ![(BMPBRankableSocialHighlight *)highlight isEqual:?])
+  if (highlight | *(equalCopy + 5) && ![(BMPBRankableSocialHighlight *)highlight isEqual:?])
   {
     goto LABEL_18;
   }
 
   clientVariant = self->_clientVariant;
-  if (clientVariant | *(v4 + 3))
+  if (clientVariant | *(equalCopy + 3))
   {
     v9 = [(NSString *)clientVariant isEqual:?];
   }
@@ -400,32 +400,32 @@ LABEL_9:
   return v11 ^ [(NSString *)self->_clientVariant hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(BMPBSocialHighlightFeedbackEvent *)self setClientIdentifier:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) != 0)
   {
-    self->_feedbackType = *(v4 + 8);
+    self->_feedbackType = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
   }
 
   if (v5)
   {
-    self->_feedbackCreationSecondsSinceReferenceDate = *(v4 + 1);
+    self->_feedbackCreationSecondsSinceReferenceDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   highlight = self->_highlight;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   if (highlight)
   {
     if (!v7)
@@ -446,9 +446,9 @@ LABEL_9:
     [(BMPBSocialHighlightFeedbackEvent *)self setHighlight:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_13:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBSocialHighlightFeedbackEvent *)self setClientVariant:?];
   }

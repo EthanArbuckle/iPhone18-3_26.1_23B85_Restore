@@ -1,19 +1,19 @@
 @interface EKSideTableContext
 + (id)sideTableContext;
 - (BOOL)_removeSqliteFiles;
-- (EKSideTableContext)initWithConcurrencyType:(unint64_t)a3;
-- (id)_alarmsMatchingPredicate:(id)a3;
+- (EKSideTableContext)initWithConcurrencyType:(unint64_t)type;
+- (id)_alarmsMatchingPredicate:(id)predicate;
 - (id)_managedObjectModel;
 - (id)_pathForPersistentStore;
 - (id)_persistentStoreCoordinator;
-- (id)_settingForKey:(id)a3;
+- (id)_settingForKey:(id)key;
 - (id)_urlForPersistentStore;
-- (id)alarmsBetweenStartDate:(id)a3 endDate:(id)a4;
+- (id)alarmsBetweenStartDate:(id)date endDate:(id)endDate;
 - (id)nextAlarmFireTime;
 - (id)rootDirectory;
-- (id)settingForKey:(id)a3;
+- (id)settingForKey:(id)key;
 - (void)deleteAllAlarms;
-- (void)setSetting:(id)a3 forKey:(id)a4;
+- (void)setSetting:(id)setting forKey:(id)key;
 @end
 
 @implementation EKSideTableContext
@@ -21,16 +21,16 @@
 + (id)sideTableContext
 {
   v2 = [[EKSideTableContext alloc] initWithConcurrencyType:1];
-  v3 = [(EKSideTableContext *)v2 persistentStoreCoordinator];
-  if (!v3)
+  persistentStoreCoordinator = [(EKSideTableContext *)v2 persistentStoreCoordinator];
+  if (!persistentStoreCoordinator)
   {
     goto LABEL_4;
   }
 
-  v4 = v3;
-  v5 = [(EKSideTableContext *)v2 persistentStoreCoordinator];
-  v6 = [v5 persistentStores];
-  v7 = [v6 count];
+  v4 = persistentStoreCoordinator;
+  persistentStoreCoordinator2 = [(EKSideTableContext *)v2 persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator2 persistentStores];
+  v7 = [persistentStores count];
 
   if (v7)
   {
@@ -49,18 +49,18 @@ LABEL_4:
   return v8;
 }
 
-- (EKSideTableContext)initWithConcurrencyType:(unint64_t)a3
+- (EKSideTableContext)initWithConcurrencyType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = EKSideTableContext;
-  v3 = [(EKSideTableContext *)&v7 initWithConcurrencyType:a3];
+  v3 = [(EKSideTableContext *)&v7 initWithConcurrencyType:type];
   v4 = v3;
   if (v3)
   {
-    v5 = [(EKSideTableContext *)v3 _persistentStoreCoordinator];
-    if (v5)
+    _persistentStoreCoordinator = [(EKSideTableContext *)v3 _persistentStoreCoordinator];
+    if (_persistentStoreCoordinator)
     {
-      [(EKSideTableContext *)v4 setPersistentStoreCoordinator:v5];
+      [(EKSideTableContext *)v4 setPersistentStoreCoordinator:_persistentStoreCoordinator];
     }
 
     [(EKSideTableContext *)v4 setUndoManager:0];
@@ -70,14 +70,14 @@ LABEL_4:
   return v4;
 }
 
-- (id)_alarmsMatchingPredicate:(id)a3
+- (id)_alarmsMatchingPredicate:(id)predicate
 {
   v4 = MEMORY[0x277CBE408];
-  v5 = a3;
+  predicateCopy = predicate;
   v6 = [v4 entityForName:@"Alarm" inManagedObjectContext:self];
   v7 = objc_alloc_init(MEMORY[0x277CBE428]);
   [v7 setEntity:v6];
-  [v7 setPredicate:v5];
+  [v7 setPredicate:predicateCopy];
 
   [v7 setIncludesPendingChanges:0];
   v10 = 0;
@@ -129,8 +129,8 @@ LABEL_4:
   [v3 setEntity:v4];
 
   v5 = MEMORY[0x277CCAC30];
-  v6 = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
-  v7 = [v5 predicateWithFormat:@"fireTime > %@", v6];
+  calSimulatedDateForNow = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
+  v7 = [v5 predicateWithFormat:@"fireTime > %@", calSimulatedDateForNow];
   [v3 setPredicate:v7];
 
   [v3 setIncludesPendingChanges:0];
@@ -145,29 +145,29 @@ LABEL_4:
   if ([v11 count])
   {
     v12 = [v11 objectAtIndex:0];
-    v13 = [v12 fireTime];
+    fireTime = [v12 fireTime];
   }
 
   else
   {
-    v13 = 0;
+    fireTime = 0;
   }
 
-  return v13;
+  return fireTime;
 }
 
-- (id)alarmsBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)alarmsBetweenStartDate:(id)date endDate:(id)endDate
 {
   v6 = MEMORY[0x277CBE428];
-  v7 = a4;
-  v8 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v9 = objc_alloc_init(v6);
   v10 = [MEMORY[0x277CBE408] entityForName:@"Alarm" inManagedObjectContext:self];
   [v9 setEntity:v10];
 
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"fireTime >= %@ and fireTime <= %@", v8, v7];
+  endDateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"fireTime >= %@ and fireTime <= %@", dateCopy, endDateCopy];
 
-  [v9 setPredicate:v11];
+  [v9 setPredicate:endDateCopy];
   [v9 setIncludesPendingChanges:0];
   v12 = MEMORY[0x277CBEA60];
   v13 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"fireTime" ascending:1];
@@ -180,17 +180,17 @@ LABEL_4:
   return v15;
 }
 
-- (id)_settingForKey:(id)a3
+- (id)_settingForKey:(id)key
 {
   v4 = MEMORY[0x277CBE428];
-  v5 = a3;
+  keyCopy = key;
   v6 = objc_alloc_init(v4);
   v7 = [MEMORY[0x277CBE408] entityForName:@"Setting" inManagedObjectContext:self];
   [v6 setEntity:v7];
 
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"key = %@", v5];
+  keyCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"key = %@", keyCopy];
 
-  [v6 setPredicate:v8];
+  [v6 setPredicate:keyCopy];
   [v6 setIncludesPendingChanges:1];
   [v6 setFetchLimit:1];
   v12 = 0;
@@ -208,26 +208,26 @@ LABEL_4:
   return v10;
 }
 
-- (id)settingForKey:(id)a3
+- (id)settingForKey:(id)key
 {
-  v3 = [(EKSideTableContext *)self _settingForKey:a3];
+  v3 = [(EKSideTableContext *)self _settingForKey:key];
   v4 = [v3 valueForKey:@"value"];
 
   return v4;
 }
 
-- (void)setSetting:(id)a3 forKey:(id)a4
+- (void)setSetting:(id)setting forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(EKSideTableContext *)self _settingForKey:v6];
+  settingCopy = setting;
+  keyCopy = key;
+  v7 = [(EKSideTableContext *)self _settingForKey:keyCopy];
   if (!v7)
   {
     v7 = [MEMORY[0x277CBE408] insertNewObjectForEntityForName:@"Setting" inManagedObjectContext:self];
-    [v7 setValue:v6 forKey:@"key"];
+    [v7 setValue:keyCopy forKey:@"key"];
   }
 
-  [v7 setValue:v8 forKey:@"value"];
+  [v7 setValue:settingCopy forKey:@"value"];
 }
 
 - (id)rootDirectory
@@ -248,8 +248,8 @@ LABEL_4:
 
 - (id)_pathForPersistentStore
 {
-  v2 = [(EKSideTableContext *)self rootDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"Extras.db"];
+  rootDirectory = [(EKSideTableContext *)self rootDirectory];
+  v3 = [rootDirectory stringByAppendingPathComponent:@"Extras.db"];
 
   return v3;
 }
@@ -257,32 +257,32 @@ LABEL_4:
 - (id)_urlForPersistentStore
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(EKSideTableContext *)self _pathForPersistentStore];
-  v4 = [v2 fileURLWithPath:v3];
+  _pathForPersistentStore = [(EKSideTableContext *)self _pathForPersistentStore];
+  v4 = [v2 fileURLWithPath:_pathForPersistentStore];
 
   return v4;
 }
 
 - (BOOL)_removeSqliteFiles
 {
-  v3 = [(EKSideTableContext *)self persistentStoreCoordinator];
-  if (!v3)
+  persistentStoreCoordinator = [(EKSideTableContext *)self persistentStoreCoordinator];
+  if (!persistentStoreCoordinator)
   {
     v4 = objc_alloc(MEMORY[0x277CBE4D8]);
-    v5 = [(EKSideTableContext *)self _managedObjectModel];
-    v3 = [v4 initWithManagedObjectModel:v5];
+    _managedObjectModel = [(EKSideTableContext *)self _managedObjectModel];
+    persistentStoreCoordinator = [v4 initWithManagedObjectModel:_managedObjectModel];
   }
 
-  v6 = [(EKSideTableContext *)self _urlForPersistentStore];
+  _urlForPersistentStore = [(EKSideTableContext *)self _urlForPersistentStore];
   v7 = *MEMORY[0x277CBE2E8];
   v12 = 0;
-  v8 = [v3 _destroyPersistentStoreAtURL:v6 withType:v7 options:0 error:&v12];
+  v8 = [persistentStoreCoordinator _destroyPersistentStoreAtURL:_urlForPersistentStore withType:v7 options:0 error:&v12];
   v9 = v12;
 
   if ((v8 & 1) == 0)
   {
-    v10 = [v9 userInfo];
-    NSLog(&cfstr_UnableToRecove.isa, v9, v10);
+    userInfo = [v9 userInfo];
+    NSLog(&cfstr_UnableToRecove.isa, v9, userInfo);
   }
 
   return v8;
@@ -314,10 +314,10 @@ LABEL_4:
 
 - (id)_persistentStoreCoordinator
 {
-  v3 = [(EKSideTableContext *)self _urlForPersistentStore];
+  _urlForPersistentStore = [(EKSideTableContext *)self _urlForPersistentStore];
   v4 = objc_alloc(MEMORY[0x277CBE4D8]);
-  v5 = [(EKSideTableContext *)self _managedObjectModel];
-  v6 = [v4 initWithManagedObjectModel:v5];
+  _managedObjectModel = [(EKSideTableContext *)self _managedObjectModel];
+  v6 = [v4 initWithManagedObjectModel:_managedObjectModel];
 
   v7 = MEMORY[0x277CBEAC0];
   v8 = [MEMORY[0x277CCABB0] numberWithBool:1];
@@ -328,7 +328,7 @@ LABEL_4:
 
   v13 = *MEMORY[0x277CBE2E8];
   v22 = 0;
-  v14 = [v6 addPersistentStoreWithType:v13 configuration:0 URL:v3 options:v12 error:&v22];
+  v14 = [v6 addPersistentStoreWithType:v13 configuration:0 URL:_urlForPersistentStore options:v12 error:&v22];
   v15 = v22;
 
   if (v14)
@@ -336,13 +336,13 @@ LABEL_4:
     goto LABEL_2;
   }
 
-  v17 = [v15 userInfo];
-  NSLog(&cfstr_ErrorWhileImpo.isa, v15, v17);
+  userInfo = [v15 userInfo];
+  NSLog(&cfstr_ErrorWhileImpo.isa, v15, userInfo);
 
   if ([(EKSideTableContext *)self _removeSqliteFiles])
   {
     v21 = 0;
-    v18 = [v6 addPersistentStoreWithType:v13 configuration:0 URL:v3 options:v12 error:&v21];
+    v18 = [v6 addPersistentStoreWithType:v13 configuration:0 URL:_urlForPersistentStore options:v12 error:&v21];
     v15 = v21;
 
     if (v18)
@@ -353,8 +353,8 @@ LABEL_2:
       goto LABEL_9;
     }
 
-    v19 = [v15 userInfo];
-    NSLog(&cfstr_SecondErrorWhi.isa, v15, v19);
+    userInfo2 = [v15 userInfo];
+    NSLog(&cfstr_SecondErrorWhi.isa, v15, userInfo2);
   }
 
   else

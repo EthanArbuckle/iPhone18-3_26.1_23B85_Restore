@@ -1,32 +1,32 @@
 @interface LCSExtensionAppProtectionAssistant
-- (LCSExtensionAppProtectionAssistant)initWithExtension:(id)a3;
+- (LCSExtensionAppProtectionAssistant)initWithExtension:(id)extension;
 - (id)applicationIconImage;
 - (id)createShieldUIViewController;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)addObserver:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)requestUnshielding;
 @end
 
 @implementation LCSExtensionAppProtectionAssistant
 
-- (LCSExtensionAppProtectionAssistant)initWithExtension:(id)a3
+- (LCSExtensionAppProtectionAssistant)initWithExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   v18.receiver = self;
   v18.super_class = LCSExtensionAppProtectionAssistant;
   v6 = [(LCSExtensionAppProtectionAssistant *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_extension, a3);
+    objc_storeStrong(&v6->_extension, extension);
     v8 = objc_alloc(MEMORY[0x277CEBE88]);
-    v9 = [v5 applicationExtensionRecord];
-    v10 = [v8 initWithApplicationExtensionRecord:v9];
+    applicationExtensionRecord = [extensionCopy applicationExtensionRecord];
+    v10 = [v8 initWithApplicationExtensionRecord:applicationExtensionRecord];
 
     appProtectionExtension = v7->_appProtectionExtension;
     v7->_appProtectionExtension = v10;
@@ -57,30 +57,30 @@
   [(LCSExtensionAppProtectionAssistant *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     if (![(NSHashTable *)self->_observers count])
     {
       observers = self->_observers;
@@ -101,16 +101,16 @@
 - (id)applicationIconImage
 {
   v3 = objc_alloc(MEMORY[0x277D1B1A8]);
-  v4 = [(LCSExtension *)self->_extension containerBundleIdentifier];
-  v5 = [v3 initWithBundleIdentifier:v4];
+  containerBundleIdentifier = [(LCSExtension *)self->_extension containerBundleIdentifier];
+  v5 = [v3 initWithBundleIdentifier:containerBundleIdentifier];
 
   v6 = [objc_alloc(MEMORY[0x277D1B1C8]) initWithSize:64.0 scale:{64.0, 2.0}];
   [v6 setDrawBorder:1];
   v7 = [v5 prepareImageForDescriptor:v6];
   v8 = MEMORY[0x277D755B8];
-  v9 = [v7 CGImage];
+  cGImage = [v7 CGImage];
   [v7 scale];
-  v10 = [v8 imageWithCGImage:v9 scale:0 orientation:?];
+  v10 = [v8 imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v10;
 }
@@ -121,9 +121,9 @@
   v3 = LCSLogExtension();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(LCSExtensionAppProtectionAssistant *)self succinctDescription];
+    succinctDescription = [(LCSExtensionAppProtectionAssistant *)self succinctDescription];
     *buf = 138543362;
-    v16 = v4;
+    v16 = succinctDescription;
     _os_log_impl(&dword_256175000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ will request unshielding", buf, 0xCu);
   }
 
@@ -131,11 +131,11 @@
   v6 = [v5 localizedStringForKey:@"AppProtectionLocalizedDescription" value:0 table:0];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(LCSExtension *)self->_extension localizedDisplayName];
-  v9 = [v7 stringWithFormat:v6, v8];
+  localizedDisplayName = [(LCSExtension *)self->_extension localizedDisplayName];
+  v9 = [v7 stringWithFormat:v6, localizedDisplayName];
 
   objc_initWeak(buf, self);
-  v10 = [MEMORY[0x277CEBE98] sharedGuard];
+  mEMORY[0x277CEBE98] = [MEMORY[0x277CEBE98] sharedGuard];
   appProtectionExtension = self->_appProtectionExtension;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -143,7 +143,7 @@
   v13[3] = &unk_279824C70;
   v13[4] = self;
   objc_copyWeak(&v14, buf);
-  [v10 authenticateForExtension:appProtectionExtension reasonDescription:v9 completion:v13];
+  [mEMORY[0x277CEBE98] authenticateForExtension:appProtectionExtension reasonDescription:v9 completion:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
@@ -228,43 +228,43 @@ void __56__LCSExtensionAppProtectionAssistant_requestUnshielding__block_invoke_1
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  changedCopy = changed;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  v6 = [changedCopy countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v26;
     v19 = *v26;
-    v20 = v5;
+    v20 = changedCopy;
     do
     {
       for (i = 0; i != v7; ++i)
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(changedCopy);
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
         if ([v10 isEqual:{self->_appProtectionExtension, v19, v20}])
         {
-          v11 = [v10 isEffectivelyLocked];
-          if (self->_shouldShield != v11)
+          isEffectivelyLocked = [v10 isEffectivelyLocked];
+          if (self->_shouldShield != isEffectivelyLocked)
           {
-            self->_shouldShield = v11;
+            self->_shouldShield = isEffectivelyLocked;
             v21 = 0u;
             v22 = 0u;
             v23 = 0u;
             v24 = 0u;
-            v12 = [(NSHashTable *)self->_observers allObjects];
-            v13 = [v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            allObjects = [(NSHashTable *)self->_observers allObjects];
+            v13 = [allObjects countByEnumeratingWithState:&v21 objects:v29 count:16];
             if (v13)
             {
               v14 = v13;
@@ -275,7 +275,7 @@ void __56__LCSExtensionAppProtectionAssistant_requestUnshielding__block_invoke_1
                 {
                   if (*v22 != v15)
                   {
-                    objc_enumerationMutation(v12);
+                    objc_enumerationMutation(allObjects);
                   }
 
                   v17 = *(*(&v21 + 1) + 8 * j);
@@ -285,19 +285,19 @@ void __56__LCSExtensionAppProtectionAssistant_requestUnshielding__block_invoke_1
                   }
                 }
 
-                v14 = [v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
+                v14 = [allObjects countByEnumeratingWithState:&v21 objects:v29 count:16];
               }
 
               while (v14);
             }
 
             v8 = v19;
-            v5 = v20;
+            changedCopy = v20;
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v7 = [changedCopy countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v7);
@@ -308,35 +308,35 @@ void __56__LCSExtensionAppProtectionAssistant_requestUnshielding__block_invoke_1
 
 - (id)succinctDescription
 {
-  v3 = [(LCSExtensionAppProtectionAssistant *)self succinctDescriptionBuilder];
-  v4 = [(LCSExtension *)self->_extension bundleIdentifier];
-  [v3 appendString:v4 withName:@"extension"];
+  succinctDescriptionBuilder = [(LCSExtensionAppProtectionAssistant *)self succinctDescriptionBuilder];
+  bundleIdentifier = [(LCSExtension *)self->_extension bundleIdentifier];
+  [succinctDescriptionBuilder appendString:bundleIdentifier withName:@"extension"];
 
-  v5 = [v3 build];
+  build = [succinctDescriptionBuilder build];
 
-  return v5;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(LCSExtensionAppProtectionAssistant *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(LCSExtensionAppProtectionAssistant *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(LCSExtensionAppProtectionAssistant *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(LCSExtensionAppProtectionAssistant *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__LCSExtensionAppProtectionAssistant_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_279824C98;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

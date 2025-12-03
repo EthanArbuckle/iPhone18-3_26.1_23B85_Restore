@@ -1,40 +1,40 @@
 @interface CPLCloudKitGetStreamingURLTask
 - ($9AC8AD2FEA0B9A5F24CD76D172BBF93B)timeRange;
 - (BOOL)shouldRequestEncryptedStream;
-- (CPLCloudKitGetStreamingURLTask)initWithController:(id)a3 resource:(id)a4 hints:(id)a5 timeRange:(id *)a6 target:(id)a7 transportScopeMapping:(id)a8 cache:(id)a9 completionHandler:(id)a10;
-- (id)_streamOperationForKey:(id)a3 operationType:(int64_t)a4 completionHandler:(id)a5;
+- (CPLCloudKitGetStreamingURLTask)initWithController:(id)controller resource:(id)resource hints:(id)hints timeRange:(id *)range target:(id)target transportScopeMapping:(id)mapping cache:(id)cache completionHandler:(id)self0;
+- (id)_streamOperationForKey:(id)key operationType:(int64_t)type completionHandler:(id)handler;
 - (void)_fetchStreamingURL;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitGetStreamingURLTask
 
-- (CPLCloudKitGetStreamingURLTask)initWithController:(id)a3 resource:(id)a4 hints:(id)a5 timeRange:(id *)a6 target:(id)a7 transportScopeMapping:(id)a8 cache:(id)a9 completionHandler:(id)a10
+- (CPLCloudKitGetStreamingURLTask)initWithController:(id)controller resource:(id)resource hints:(id)hints timeRange:(id *)range target:(id)target transportScopeMapping:(id)mapping cache:(id)cache completionHandler:(id)self0
 {
-  v34 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  resourceCopy = resource;
+  hintsCopy = hints;
+  targetCopy = target;
+  mappingCopy = mapping;
+  cacheCopy = cache;
+  handlerCopy = handler;
   v35.receiver = self;
   v35.super_class = CPLCloudKitGetStreamingURLTask;
-  v22 = [(CPLCloudKitTransportTask *)&v35 initWithController:a3];
+  v22 = [(CPLCloudKitTransportTask *)&v35 initWithController:controller];
   if (v22)
   {
-    v23 = [v21 copy];
+    v23 = [handlerCopy copy];
     v24 = *(v22 + 38);
     *(v22 + 38) = v23;
 
-    objc_storeStrong(v22 + 37, a9);
-    objc_storeStrong(v22 + 35, a4);
-    v25 = [v17 copy];
+    objc_storeStrong(v22 + 37, cache);
+    objc_storeStrong(v22 + 35, resource);
+    v25 = [hintsCopy copy];
     v26 = *(v22 + 36);
     *(v22 + 36) = v25;
 
-    v28 = *&a6->var0.var3;
-    v27 = *&a6->var1.var1;
-    *(v22 + 312) = *&a6->var0.var0;
+    v28 = *&range->var0.var3;
+    v27 = *&range->var1.var1;
+    *(v22 + 312) = *&range->var0.var0;
     *(v22 + 328) = v28;
     *(v22 + 344) = v27;
     v29 = objc_alloc_init(CPLRecordTargetMapping);
@@ -42,24 +42,24 @@
     *(v22 + 34) = v29;
 
     v31 = *(v22 + 34);
-    v32 = [v18 scopedIdentifier];
-    [v31 setTarget:v18 forRecordWithScopedIdentifier:v32];
+    scopedIdentifier = [targetCopy scopedIdentifier];
+    [v31 setTarget:targetCopy forRecordWithScopedIdentifier:scopedIdentifier];
 
-    [v22 setTransportScopeMapping:v19];
+    [v22 setTransportScopeMapping:mappingCopy];
   }
 
   return v22;
 }
 
-- (id)_streamOperationForKey:(id)a3 operationType:(int64_t)a4 completionHandler:(id)a5
+- (id)_streamOperationForKey:(id)key operationType:(int64_t)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  keyCopy = key;
+  handlerCopy = handler;
   if ([(CPLCloudKitGetStreamingURLTask *)self shouldRequestEncryptedStream])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
-      sub_1001AAD70(v8);
+      sub_1001AAD70(keyCopy);
     }
 
     v10 = 2;
@@ -67,24 +67,24 @@
 
   else
   {
-    if (CPLCloudKitUseGateKeeperForOperationType(a4))
+    if (CPLCloudKitUseGateKeeperForOperationType(type))
     {
-      v11 = [v8 recordID];
-      v12 = [v8 resourceKey];
+      recordID = [keyCopy recordID];
+      resourceKey = [keyCopy resourceKey];
       v13 = CPLCloudKitGateKeeperDefaultDownloadType;
-      v14 = [v8 filename];
+      filename = [keyCopy filename];
       p_timeRange = &self->_timeRange;
       hints = self->_hints;
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
       v38[2] = sub_100097E1C;
       v38[3] = &unk_100276738;
-      v39 = v9;
+      v39 = handlerCopy;
       v17 = *&p_timeRange->start.epoch;
       v35 = *&p_timeRange->start.value;
       v36 = v17;
       v37 = *&p_timeRange->duration.timescale;
-      v18 = [CPLCKResourceDownloadOperation streamOperationForRecordID:v11 key:v12 downloadType:v13 filename:v14 timeRange:&v35 mediaRequestHints:hints completionBlock:v38];
+      v18 = [CPLCKResourceDownloadOperation streamOperationForRecordID:recordID key:resourceKey downloadType:v13 filename:filename timeRange:&v35 mediaRequestHints:hints completionBlock:v38];
 
       goto LABEL_9;
     }
@@ -93,8 +93,8 @@
   }
 
   v19 = [CKPublishAssetsOperation alloc];
-  v20 = [v8 recordID];
-  v42 = v20;
+  recordID2 = [keyCopy recordID];
+  v42 = recordID2;
   v21 = [NSArray arrayWithObjects:&v42 count:1];
   v18 = [v19 initWithRecordIDs:v21];
 
@@ -108,9 +108,9 @@
   v31[2] = sub_100097EBC;
   v31[3] = &unk_100276760;
   v34 = &v35;
-  v22 = v9;
+  v22 = handlerCopy;
   v33 = v22;
-  v23 = v8;
+  v23 = keyCopy;
   v32 = v23;
   [v18 setAssetPublishedBlock:v31];
   v28[0] = _NSConcreteStackBlock;
@@ -120,10 +120,10 @@
   v30 = &v35;
   v29 = v22;
   [v18 setPublishAssetCompletionBlock:v28];
-  v24 = [v23 resourceKey];
-  v40 = v24;
-  v25 = [v23 filename];
-  v41 = v25;
+  resourceKey2 = [v23 resourceKey];
+  v40 = resourceKey2;
+  filename2 = [v23 filename];
+  v41 = filename2;
   v26 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
 
   [v18 setFileNamesByAssetFieldNames:v26];
@@ -136,9 +136,9 @@ LABEL_9:
 - (BOOL)shouldRequestEncryptedStream
 {
   v2 = [(NSDictionary *)self->_hints objectForKeyedSubscript:CPLLibraryManagerStreamingHintShouldRequestEncryptedStream];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)runOperations
@@ -168,51 +168,51 @@ LABEL_9:
 
     else
     {
-      v52 = [(CPLResource *)self->_resource itemScopedIdentifier];
-      if (v52)
+      itemScopedIdentifier = [(CPLResource *)self->_resource itemScopedIdentifier];
+      if (itemScopedIdentifier)
       {
         v7 = sub_100084A0C(CPLCloudKitResourceKeys, [(CPLResource *)self->_resource resourceType]);
         v8 = sub_1001A8CE0(v7);
 
         if (v8)
         {
-          v51 = [(CPLRecordTargetMapping *)self->_targetMapping targetForRecordWithScopedIdentifier:v52];
-          v9 = [v51 resourceScopedIdentifier];
-          v10 = [v9 scopeIdentifier];
-          v11 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:v10];
+          v51 = [(CPLRecordTargetMapping *)self->_targetMapping targetForRecordWithScopedIdentifier:itemScopedIdentifier];
+          resourceScopedIdentifier = [v51 resourceScopedIdentifier];
+          scopeIdentifier = [resourceScopedIdentifier scopeIdentifier];
+          v11 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:scopeIdentifier];
 
           if (v11)
           {
-            v49 = v9;
-            v12 = [v9 identifier];
+            v49 = resourceScopedIdentifier;
+            identifier = [resourceScopedIdentifier identifier];
             v50 = v11;
-            v13 = [v11 recordIDWithRecordName:v12];
+            v13 = [v11 recordIDWithRecordName:identifier];
 
             -[CPLCloudKitTransportTask setAllowsCellular:](self, "setAllowsCellular:", [objc_opt_class() allowsCellularForDownloadOperationOfResource:self->_resource isForeground:-[CPLCloudKitTransportTask foreground](self isHighPriority:{"foreground"), 1}]);
-            v14 = [(CPLResource *)self->_resource identity];
-            v15 = [v14 fileURL];
-            v16 = [v15 lastPathComponent];
+            identity = [(CPLResource *)self->_resource identity];
+            fileURL = [identity fileURL];
+            lastPathComponent = [fileURL lastPathComponent];
 
-            if (!v16)
+            if (!lastPathComponent)
             {
-              v17 = [(CPLResource *)self->_resource itemScopedIdentifier];
-              v18 = [v17 safeFilename];
-              v16 = [NSString stringWithFormat:@"%@_%@", v18, v8];
+              itemScopedIdentifier2 = [(CPLResource *)self->_resource itemScopedIdentifier];
+              safeFilename = [itemScopedIdentifier2 safeFilename];
+              lastPathComponent = [NSString stringWithFormat:@"%@_%@", safeFilename, v8];
             }
 
             v19 = [CPLCloudKitStreamingKey alloc];
-            v47 = v14;
-            v20 = [v14 fingerPrint];
-            v21 = [(CPLCloudKitTransportTask *)self operationGroup];
-            v22 = [v21 name];
-            v23 = [(CPLCloudKitGetStreamingURLTask *)self shouldRequestEncryptedStream];
+            v47 = identity;
+            fingerPrint = [identity fingerPrint];
+            operationGroup = [(CPLCloudKitTransportTask *)self operationGroup];
+            name = [operationGroup name];
+            shouldRequestEncryptedStream = [(CPLCloudKitGetStreamingURLTask *)self shouldRequestEncryptedStream];
             v24 = *&self->_timeRange.start.epoch;
             v57[0] = *&self->_timeRange.start.value;
             v57[1] = v24;
             v57[2] = *&self->_timeRange.duration.timescale;
-            LOBYTE(v45) = v23;
+            LOBYTE(v45) = shouldRequestEncryptedStream;
             v48 = v13;
-            v25 = [(CPLCloudKitStreamingKey *)v19 initWithRecordID:v13 resourceKey:v8 fingerPrint:v20 filename:v16 groupName:v22 timeRange:v57 useEncryptedStream:v45];
+            v25 = [(CPLCloudKitStreamingKey *)v19 initWithRecordID:v13 resourceKey:v8 fingerPrint:fingerPrint filename:lastPathComponent groupName:name timeRange:v57 useEncryptedStream:v45];
 
             cache = self->_cache;
             v27 = +[NSDate date];
@@ -220,23 +220,23 @@ LABEL_9:
             v28 = [(CPLCloudKitSimpleCache *)cache objectForKey:v25 date:v27 expirationDate:&v56];
             v29 = v56;
 
-            v30 = v16;
+            v30 = lastPathComponent;
             v46 = v4;
             if (v28)
             {
               v31 = self->_completionHandler;
-              v32 = [v28 streamingURL];
+              streamingURL = [v28 streamingURL];
               [v28 mediaItemMakerData];
               v33 = v28;
               v35 = v34 = v8;
-              (*(v31 + 2))(v31, v32, v35, v29, 0, 0);
+              (*(v31 + 2))(v31, streamingURL, v35, v29, 0, 0);
 
               v8 = v34;
-              v30 = v16;
+              v30 = lastPathComponent;
 
               v36 = self->_completionHandler;
               self->_completionHandler = 0;
-              v9 = v49;
+              resourceScopedIdentifier = v49;
             }
 
             else
@@ -270,7 +270,7 @@ LABEL_9:
                 self->_completionHandler = 0;
               }
 
-              v9 = v49;
+              resourceScopedIdentifier = v49;
               v33 = 0;
             }
 

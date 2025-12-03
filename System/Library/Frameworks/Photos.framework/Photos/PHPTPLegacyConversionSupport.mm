@@ -15,9 +15,9 @@
     mediaFormatConversionManager = v2->_mediaFormatConversionManager;
     v2->_mediaFormatConversionManager = v3;
 
-    v5 = [MEMORY[0x1E69C0700] legacyCapabilities];
+    legacyCapabilities = [MEMORY[0x1E69C0700] legacyCapabilities];
     peerMediaCapabilities = v2->_peerMediaCapabilities;
-    v2->_peerMediaCapabilities = v5;
+    v2->_peerMediaCapabilities = legacyCapabilities;
   }
 
   return v2;

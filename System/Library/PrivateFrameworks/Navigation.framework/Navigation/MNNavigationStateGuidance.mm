@@ -1,6 +1,6 @@
 @interface MNNavigationStateGuidance
-+ (id)guidanceStateForStartDetails:(id)a3 stateManager:(id)a4 navigationSessionManager:(id)a5;
-- (MNNavigationStateGuidance)initWithStateManager:(id)a3 navigationSessionManager:(id)a4 startDetails:(id)a5;
++ (id)guidanceStateForStartDetails:(id)details stateManager:(id)manager navigationSessionManager:(id)sessionManager;
+- (MNNavigationStateGuidance)initWithStateManager:(id)manager navigationSessionManager:(id)sessionManager startDetails:(id)details;
 - (id)clParameters;
 - (id)currentDestination;
 - (int64_t)desiredLocationProviderType;
@@ -8,54 +8,54 @@
 - (void)leaveState;
 - (void)postEnterState;
 - (void)preEnterState;
-- (void)repeatCurrentGuidanceWithReply:(id)a3;
-- (void)repeatCurrentTrafficAlertWithReply:(id)a3;
-- (void)vibrateForPrompt:(unint64_t)a3 withReply:(id)a4;
+- (void)repeatCurrentGuidanceWithReply:(id)reply;
+- (void)repeatCurrentTrafficAlertWithReply:(id)reply;
+- (void)vibrateForPrompt:(unint64_t)prompt withReply:(id)reply;
 @end
 
 @implementation MNNavigationStateGuidance
 
-- (void)vibrateForPrompt:(unint64_t)a3 withReply:(id)a4
+- (void)vibrateForPrompt:(unint64_t)prompt withReply:(id)reply
 {
-  v8 = a4;
-  v6 = [(MNNavigationSessionManager *)self->_navigationSessionManager vibrateForPrompt:a3];
-  v7 = v8;
-  if (v8)
+  replyCopy = reply;
+  v6 = [(MNNavigationSessionManager *)self->_navigationSessionManager vibrateForPrompt:prompt];
+  v7 = replyCopy;
+  if (replyCopy)
   {
-    (*(v8 + 2))(v8, v6);
-    v7 = v8;
+    (*(replyCopy + 2))(replyCopy, v6);
+    v7 = replyCopy;
   }
 }
 
-- (void)repeatCurrentTrafficAlertWithReply:(id)a3
+- (void)repeatCurrentTrafficAlertWithReply:(id)reply
 {
-  v6 = a3;
-  v4 = [(MNNavigationSessionManager *)self->_navigationSessionManager repeatCurrentTrafficAlert];
-  v5 = v6;
-  if (v6)
+  replyCopy = reply;
+  repeatCurrentTrafficAlert = [(MNNavigationSessionManager *)self->_navigationSessionManager repeatCurrentTrafficAlert];
+  v5 = replyCopy;
+  if (replyCopy)
   {
-    (*(v6 + 2))(v6, v4);
-    v5 = v6;
+    (*(replyCopy + 2))(replyCopy, repeatCurrentTrafficAlert);
+    v5 = replyCopy;
   }
 }
 
-- (void)repeatCurrentGuidanceWithReply:(id)a3
+- (void)repeatCurrentGuidanceWithReply:(id)reply
 {
-  v6 = a3;
-  v4 = [(MNNavigationSessionManager *)self->_navigationSessionManager repeatCurrentGuidance];
-  v5 = v6;
-  if (v6)
+  replyCopy = reply;
+  repeatCurrentGuidance = [(MNNavigationSessionManager *)self->_navigationSessionManager repeatCurrentGuidance];
+  v5 = replyCopy;
+  if (replyCopy)
   {
-    (*(v6 + 2))(v6, v4);
-    v5 = v6;
+    (*(replyCopy + 2))(replyCopy, repeatCurrentGuidance);
+    v5 = replyCopy;
   }
 }
 
 - (void)postEnterState
 {
   navigationSessionManager = self->_navigationSessionManager;
-  v3 = [(MNStartNavigationDetails *)self->_startDetails initialUserLocation];
-  [(MNNavigationSessionManager *)navigationSessionManager updateWithInitialLocation:v3];
+  initialUserLocation = [(MNStartNavigationDetails *)self->_startDetails initialUserLocation];
+  [(MNNavigationSessionManager *)navigationSessionManager updateWithInitialLocation:initialUserLocation];
 }
 
 - (void)preEnterState
@@ -63,19 +63,19 @@
   if (!self->_navigationSessionManager)
   {
     v3 = [MNNavigationSessionManager alloc];
-    v4 = [(MNNavigationState *)self stateManager];
-    v5 = [v4 auditToken];
-    v6 = [(MNNavigationSessionManager *)v3 initWithAuditToken:v5];
+    stateManager = [(MNNavigationState *)self stateManager];
+    auditToken = [stateManager auditToken];
+    v6 = [(MNNavigationSessionManager *)v3 initWithAuditToken:auditToken];
     navigationSessionManager = self->_navigationSessionManager;
     self->_navigationSessionManager = v6;
   }
 
-  v8 = [(MNNavigationState *)self stateManager];
-  v9 = [v8 navigationDelegate];
-  [(MNNavigationSessionManager *)self->_navigationSessionManager setDelegate:v9];
+  stateManager2 = [(MNNavigationState *)self stateManager];
+  navigationDelegate = [stateManager2 navigationDelegate];
+  [(MNNavigationSessionManager *)self->_navigationSessionManager setDelegate:navigationDelegate];
 
-  v10 = [(MNNavigationState *)self stateManager];
-  objc_initWeak(&location, v10);
+  stateManager3 = [(MNNavigationState *)self stateManager];
+  objc_initWeak(&location, stateManager3);
 
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
@@ -135,9 +135,9 @@ void __42__MNNavigationStateGuidance_preEnterState__block_invoke_2(uint64_t a1)
   v5.receiver = self;
   v5.super_class = MNNavigationStateGuidance;
   [(MNNavigationState *)&v5 enterState];
-  v3 = [(MNNavigationState *)self stateManager];
-  v4 = [v3 navigationDelegate];
-  [(MNNavigationSessionManager *)self->_navigationSessionManager setDelegate:v4];
+  stateManager = [(MNNavigationState *)self stateManager];
+  navigationDelegate = [stateManager navigationDelegate];
+  [(MNNavigationSessionManager *)self->_navigationSessionManager setDelegate:navigationDelegate];
 
   if (self->_startDetails)
   {
@@ -145,18 +145,18 @@ void __42__MNNavigationStateGuidance_preEnterState__block_invoke_2(uint64_t a1)
   }
 }
 
-- (MNNavigationStateGuidance)initWithStateManager:(id)a3 navigationSessionManager:(id)a4 startDetails:(id)a5
+- (MNNavigationStateGuidance)initWithStateManager:(id)manager navigationSessionManager:(id)sessionManager startDetails:(id)details
 {
-  v9 = a4;
-  v10 = a5;
+  sessionManagerCopy = sessionManager;
+  detailsCopy = details;
   v14.receiver = self;
   v14.super_class = MNNavigationStateGuidance;
-  v11 = [(MNNavigationState *)&v14 initWithStateManager:a3];
+  v11 = [(MNNavigationState *)&v14 initWithStateManager:manager];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_navigationSessionManager, a4);
-    objc_storeStrong(&v12->_startDetails, a5);
+    objc_storeStrong(&v11->_navigationSessionManager, sessionManager);
+    objc_storeStrong(&v12->_startDetails, details);
   }
 
   return v12;
@@ -169,8 +169,8 @@ void __42__MNNavigationStateGuidance_preEnterState__block_invoke_2(uint64_t a1)
   [(MNLocationProviderCLParameters *)v3 setDistanceFilter:*MEMORY[0x1E6985C70]];
   [(MNLocationProviderCLParameters *)v3 setDesiredAccuracy:*MEMORY[0x1E6985C80]];
   [(MNLocationProviderCLParameters *)v3 setMatchInfoEnabled:1];
-  v4 = [(MNStartNavigationDetails *)self->_startDetails requestingAppIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.Maps"];
+  requestingAppIdentifier = [(MNStartNavigationDetails *)self->_startDetails requestingAppIdentifier];
+  v5 = [requestingAppIdentifier isEqualToString:@"com.apple.Maps"];
 
   if (v5)
   {
@@ -182,15 +182,15 @@ void __42__MNNavigationStateGuidance_preEnterState__block_invoke_2(uint64_t a1)
     goto LABEL_6;
   }
 
-  v6 = [(MNStartNavigationDetails *)self->_startDetails routeAttributes];
-  v7 = [v6 mainTransportType];
+  routeAttributes = [(MNStartNavigationDetails *)self->_startDetails routeAttributes];
+  mainTransportType = [routeAttributes mainTransportType];
 
-  if (v7 > 6)
+  if (mainTransportType > 6)
   {
     goto LABEL_8;
   }
 
-  if (((1 << v7) & 0x6E) != 0)
+  if (((1 << mainTransportType) & 0x6E) != 0)
   {
 LABEL_6:
     v8 = v3;
@@ -200,7 +200,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v7)
+  if (!mainTransportType)
   {
     v8 = v3;
     v9 = 2;
@@ -227,17 +227,17 @@ LABEL_8:
 
 - (int64_t)desiredLocationProviderType
 {
-  v3 = [(MNNavigationStateGuidance *)self traceManager];
-  v4 = [v3 tracePlayer];
+  traceManager = [(MNNavigationStateGuidance *)self traceManager];
+  tracePlayer = [traceManager tracePlayer];
 
-  if (v4)
+  if (tracePlayer)
   {
     return 3;
   }
 
-  v6 = [(MNNavigationSessionManager *)self->_navigationSessionManager simulationLocationProvider];
+  simulationLocationProvider = [(MNNavigationSessionManager *)self->_navigationSessionManager simulationLocationProvider];
 
-  if (v6)
+  if (simulationLocationProvider)
   {
     return 4;
   }
@@ -250,30 +250,30 @@ LABEL_8:
 
 - (id)currentDestination
 {
-  v2 = [(MNNavigationSessionManager *)self->_navigationSessionManager navigationSession];
-  v3 = [v2 destination];
+  navigationSession = [(MNNavigationSessionManager *)self->_navigationSessionManager navigationSession];
+  destination = [navigationSession destination];
 
-  return v3;
+  return destination;
 }
 
-+ (id)guidanceStateForStartDetails:(id)a3 stateManager:(id)a4 navigationSessionManager:(id)a5
++ (id)guidanceStateForStartDetails:(id)details stateManager:(id)manager navigationSessionManager:(id)sessionManager
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 navigationType];
-  switch(v10)
+  detailsCopy = details;
+  managerCopy = manager;
+  sessionManagerCopy = sessionManager;
+  navigationType = [detailsCopy navigationType];
+  switch(navigationType)
   {
     case 4:
       goto LABEL_4;
     case 3:
-      if ([v7 guidanceType] == 2)
+      if ([detailsCopy guidanceType] == 2)
       {
         v11 = MNNavigationStateRoutePreviewGuidance;
       }
 
-      else if ([v7 guidanceType] == 1)
+      else if ([detailsCopy guidanceType] == 1)
       {
         v11 = MNNavigationStateLowGuidance;
       }
@@ -288,11 +288,11 @@ LABEL_8:
 LABEL_4:
       v11 = MNNavigationStateGuidanceStepping;
 LABEL_5:
-      v12 = [[v11 alloc] initWithStateManager:v8 navigationSessionManager:v9 startDetails:v7];
+      v12 = [[v11 alloc] initWithStateManager:managerCopy navigationSessionManager:sessionManagerCopy startDetails:detailsCopy];
       goto LABEL_11;
   }
 
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid navigationType: %d", v10];
+  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid navigationType: %d", navigationType];
   v14 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {

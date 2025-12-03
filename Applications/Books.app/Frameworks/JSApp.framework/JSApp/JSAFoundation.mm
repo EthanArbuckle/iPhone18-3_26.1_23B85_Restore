@@ -1,6 +1,6 @@
 @interface JSAFoundation
 - (JSAFoundation)init;
-- (void)_jsTimerFired:(id)a3;
+- (void)_jsTimerFired:(id)fired;
 @end
 
 @implementation JSAFoundation
@@ -26,17 +26,17 @@
   return v2;
 }
 
-- (void)_jsTimerFired:(id)a3
+- (void)_jsTimerFired:(id)fired
 {
-  v4 = a3;
-  v5 = [NSString stringWithFormat:@"%p", v4];
+  firedCopy = fired;
+  firedCopy = [NSString stringWithFormat:@"%p", firedCopy];
   v6 = self->_jsTimers;
   objc_sync_enter(v6);
-  v7 = [(NSMutableDictionary *)self->_jsTimers objectForKey:v5];
+  v7 = [(NSMutableDictionary *)self->_jsTimers objectForKey:firedCopy];
   v8 = v7;
   if (v7 && ([v7 isRepeating] & 1) == 0)
   {
-    [(NSMutableDictionary *)self->_jsTimers removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_jsTimers removeObjectForKey:firedCopy];
   }
 
   objc_sync_exit(v6);
@@ -45,7 +45,7 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = v5;
+    v14 = firedCopy;
     v15 = 2112;
     v16 = v8;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Timer fired: %@: %@", buf, 0x16u);

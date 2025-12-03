@@ -1,25 +1,25 @@
 @interface DRServer
-- (DRServer)initWithIdentifier:(id)a3;
-- (void)_removeRequestedDataTypes:(unint64_t)a3 completion:(id)a4;
-- (void)addAvailableDataTypes:(unint64_t)a3 fromServer:(BOOL)a4 completion:(id)a5;
-- (void)addRequestedDataTypes:(unint64_t)a3 completion:(id)a4;
+- (DRServer)initWithIdentifier:(id)identifier;
+- (void)_removeRequestedDataTypes:(unint64_t)types completion:(id)completion;
+- (void)addAvailableDataTypes:(unint64_t)types fromServer:(BOOL)server completion:(id)completion;
+- (void)addRequestedDataTypes:(unint64_t)types completion:(id)completion;
 - (void)dealloc;
-- (void)eventsHandler:(id)a3;
-- (void)removeAvailableDataTypes:(unint64_t)a3 fromServer:(BOOL)a4 completion:(id)a5;
-- (void)removeRequestedDataTypes:(unint64_t)a3 completion:(id)a4;
+- (void)eventsHandler:(id)handler;
+- (void)removeAvailableDataTypes:(unint64_t)types fromServer:(BOOL)server completion:(id)completion;
+- (void)removeRequestedDataTypes:(unint64_t)types completion:(id)completion;
 - (void)reset;
-- (void)serviceAddedHandler:(id)a3;
-- (void)serviceRemovedHandler:(id)a3;
-- (void)setWxAddress:(id)a3;
+- (void)serviceAddedHandler:(id)handler;
+- (void)serviceRemovedHandler:(id)handler;
+- (void)setWxAddress:(id)address;
 @end
 
 @implementation DRServer
 
-- (DRServer)initWithIdentifier:(id)a3
+- (DRServer)initWithIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = DRServer;
-  v3 = [(DRPeer *)&v8 initWithIdentifier:a3];
+  v3 = [(DRPeer *)&v8 initWithIdentifier:identifier];
   if (v3)
   {
     v4 = dispatch_semaphore_create(0);
@@ -35,20 +35,20 @@
   return v3;
 }
 
-- (void)serviceAddedHandler:(id)a3
+- (void)serviceAddedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(DRPeer *)self dispatchQueue];
+  dispatchQueue = [(DRPeer *)self dispatchQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__DRServer_serviceAddedHandler___block_invoke;
   v7[3] = &unk_278F4E9C0;
   objc_copyWeak(&v10, &location);
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  selfCopy = self;
+  v6 = handlerCopy;
+  dispatch_async(dispatchQueue, v7);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -151,20 +151,20 @@ void __32__DRServer_serviceAddedHandler___block_invoke_2(uint64_t a1, uint64_t a
   [v10 sendEventID:@"com.apple.datarelay.request" event:v11 options:0 completion:0];
 }
 
-- (void)serviceRemovedHandler:(id)a3
+- (void)serviceRemovedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(DRPeer *)self dispatchQueue];
+  dispatchQueue = [(DRPeer *)self dispatchQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__DRServer_serviceRemovedHandler___block_invoke;
   v7[3] = &unk_278F4E9C0;
   objc_copyWeak(&v10, &location);
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  selfCopy = self;
+  v6 = handlerCopy;
+  dispatch_async(dispatchQueue, v7);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -194,20 +194,20 @@ void __34__DRServer_serviceRemovedHandler___block_invoke(uint64_t a1)
   }
 }
 
-- (void)eventsHandler:(id)a3
+- (void)eventsHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(DRPeer *)self dispatchQueue];
+  dispatchQueue = [(DRPeer *)self dispatchQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26__DRServer_eventsHandler___block_invoke;
   v7[3] = &unk_278F4E9C0;
   objc_copyWeak(&v10, &location);
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  selfCopy = self;
+  v6 = handlerCopy;
+  dispatch_async(dispatchQueue, v7);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -302,19 +302,19 @@ void __26__DRServer_eventsHandler___block_invoke(id *a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRequestedDataTypes:(unint64_t)a3 completion:(id)a4
+- (void)addRequestedDataTypes:(unint64_t)types completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(DRPeer *)self dispatchQueue];
+  completionCopy = completion;
+  dispatchQueue = [(DRPeer *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__DRServer_addRequestedDataTypes_completion___block_invoke;
   block[3] = &unk_278F4E848;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  typesCopy = types;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = completionCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
 id __45__DRServer_addRequestedDataTypes_completion___block_invoke(uint64_t a1)
@@ -473,35 +473,35 @@ intptr_t __45__DRServer_addRequestedDataTypes_completion___block_invoke_4(uint64
   return dispatch_semaphore_signal(v6);
 }
 
-- (void)_removeRequestedDataTypes:(unint64_t)a3 completion:(id)a4
+- (void)_removeRequestedDataTypes:(unint64_t)types completion:(id)completion
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   if (gLogCategory_DRServer <= 50 && (gLogCategory_DRServer != -1 || _LogCategory_Initialize()))
   {
-    [DRServer _removeRequestedDataTypes:a3 completion:?];
+    [DRServer _removeRequestedDataTypes:types completion:?];
   }
 
-  if (a3 && (a3 & ~[(DRPeer *)self requestedDataTypes]) == 0)
+  if (types && (types & ~[(DRPeer *)self requestedDataTypes]) == 0)
   {
     v20.receiver = self;
     v20.super_class = DRServer;
-    [(DRPeer *)&v20 removeRequestedDataTypes:a3];
+    [(DRPeer *)&v20 removeRequestedDataTypes:types];
     v21 = @"dataTypes";
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:types];
     v22[0] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
 
     objc_initWeak(&location, self);
-    v12 = [(DRPeer *)self rapportClient];
+    rapportClient = [(DRPeer *)self rapportClient];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __49__DRServer__removeRequestedDataTypes_completion___block_invoke;
     v16[3] = &unk_278F4EA10;
-    v17 = v6;
+    v17 = completionCopy;
     objc_copyWeak(&v18, &location);
     v16[4] = self;
-    [v12 sendRequestID:@"com.apple.datarelay.removerequesteddatatypes" request:v11 options:0 responseHandler:v16];
+    [rapportClient sendRequestID:@"com.apple.datarelay.removerequesteddatatypes" request:v11 options:0 responseHandler:v16];
 
     rapportSemaphore = self->_rapportSemaphore;
     v14 = dispatch_time(0, 12000000000);
@@ -516,9 +516,9 @@ intptr_t __45__DRServer_addRequestedDataTypes_completion___block_invoke_4(uint64
     v7 = *MEMORY[0x277D44250];
     v8 = NSErrorV();
     v9 = v8;
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, v8);
+      (*(completionCopy + 2))(completionCopy, v8);
     }
   }
 
@@ -551,35 +551,35 @@ void __49__DRServer__removeRequestedDataTypes_completion___block_invoke(uint64_t
   dispatch_semaphore_signal(*(*(a1 + 32) + 152));
 }
 
-- (void)removeRequestedDataTypes:(unint64_t)a3 completion:(id)a4
+- (void)removeRequestedDataTypes:(unint64_t)types completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(DRPeer *)self dispatchQueue];
+  completionCopy = completion;
+  dispatchQueue = [(DRPeer *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__DRServer_removeRequestedDataTypes_completion___block_invoke;
   block[3] = &unk_278F4E848;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  typesCopy = types;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = completionCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)addAvailableDataTypes:(unint64_t)a3 fromServer:(BOOL)a4 completion:(id)a5
+- (void)addAvailableDataTypes:(unint64_t)types fromServer:(BOOL)server completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(DRPeer *)self dispatchQueue];
+  completionCopy = completion;
+  dispatchQueue = [(DRPeer *)self dispatchQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__DRServer_addAvailableDataTypes_fromServer_completion___block_invoke;
   v11[3] = &unk_278F4EA38;
-  v12 = v8;
-  v13 = a3;
-  v14 = a4;
+  v12 = completionCopy;
+  typesCopy = types;
+  serverCopy = server;
   v11[4] = self;
-  v10 = v8;
-  dispatch_async(v9, v11);
+  v10 = completionCopy;
+  dispatch_async(dispatchQueue, v11);
 }
 
 uint64_t __56__DRServer_addAvailableDataTypes_fromServer_completion___block_invoke(uint64_t a1)
@@ -611,20 +611,20 @@ uint64_t __56__DRServer_addAvailableDataTypes_fromServer_completion___block_invo
   return result;
 }
 
-- (void)removeAvailableDataTypes:(unint64_t)a3 fromServer:(BOOL)a4 completion:(id)a5
+- (void)removeAvailableDataTypes:(unint64_t)types fromServer:(BOOL)server completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(DRPeer *)self dispatchQueue];
+  completionCopy = completion;
+  dispatchQueue = [(DRPeer *)self dispatchQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__DRServer_removeAvailableDataTypes_fromServer_completion___block_invoke;
   v11[3] = &unk_278F4EA38;
-  v12 = v8;
-  v13 = a3;
-  v14 = a4;
+  v12 = completionCopy;
+  typesCopy = types;
+  serverCopy = server;
   v11[4] = self;
-  v10 = v8;
-  dispatch_async(v9, v11);
+  v10 = completionCopy;
+  dispatch_async(dispatchQueue, v11);
 }
 
 void __59__DRServer_removeAvailableDataTypes_fromServer_completion___block_invoke(uint64_t a1)
@@ -693,29 +693,29 @@ uint64_t __59__DRServer_removeAvailableDataTypes_fromServer_completion___block_i
   }
 
   objc_initWeak(&location, self);
-  v3 = [(DRPeer *)self rapportClient];
+  rapportClient = [(DRPeer *)self rapportClient];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __17__DRServer_reset__block_invoke;
   v12[3] = &unk_278F4E908;
   objc_copyWeak(&v13, &location);
-  [v3 registerEventID:@"com.apple.datarelay.serviceadded" options:0 handler:v12];
+  [rapportClient registerEventID:@"com.apple.datarelay.serviceadded" options:0 handler:v12];
 
-  v4 = [(DRPeer *)self rapportClient];
+  rapportClient2 = [(DRPeer *)self rapportClient];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __17__DRServer_reset__block_invoke_2;
   v10[3] = &unk_278F4E908;
   objc_copyWeak(&v11, &location);
-  [v4 registerEventID:@"com.apple.datarelay.serviceremoved" options:0 handler:v10];
+  [rapportClient2 registerEventID:@"com.apple.datarelay.serviceremoved" options:0 handler:v10];
 
-  v5 = [(DRPeer *)self rapportClient];
+  rapportClient3 = [(DRPeer *)self rapportClient];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __17__DRServer_reset__block_invoke_3;
   v8[3] = &unk_278F4E908;
   objc_copyWeak(&v9, &location);
-  [v5 registerEventID:@"com.apple.datarelay.events" options:0 handler:v8];
+  [rapportClient3 registerEventID:@"com.apple.datarelay.events" options:0 handler:v8];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   hidDevices = self->_hidDevices;
@@ -750,16 +750,16 @@ void __17__DRServer_reset__block_invoke_3(uint64_t a1, void *a2)
   [WeakRetained eventsHandler:v4];
 }
 
-- (void)setWxAddress:(id)a3
+- (void)setWxAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   if (gLogCategory_DRServer <= 50 && (gLogCategory_DRServer != -1 || _LogCategory_Initialize()))
   {
     [DRServer setWxAddress:];
   }
 
   wxAddress = self->_wxAddress;
-  self->_wxAddress = v4;
+  self->_wxAddress = addressCopy;
 }
 
 - (void)dealloc

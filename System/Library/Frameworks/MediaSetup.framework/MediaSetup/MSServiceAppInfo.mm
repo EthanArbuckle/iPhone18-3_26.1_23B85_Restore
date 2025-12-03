@@ -1,37 +1,37 @@
 @interface MSServiceAppInfo
-- (MSServiceAppInfo)initWithCoder:(id)a3;
-- (MSServiceAppInfo)initWithServiceName:(id)a3 serviceBundleID:(id)a4;
-- (MSServiceAppInfo)initWithServiceName:(id)a3 serviceBundleID:(id)a4 useInHome:(BOOL)a5 subscriptionStatus:(int64_t)a6;
+- (MSServiceAppInfo)initWithCoder:(id)coder;
+- (MSServiceAppInfo)initWithServiceName:(id)name serviceBundleID:(id)d;
+- (MSServiceAppInfo)initWithServiceName:(id)name serviceBundleID:(id)d useInHome:(BOOL)home subscriptionStatus:(int64_t)status;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSServiceAppInfo
 
-- (MSServiceAppInfo)initWithServiceName:(id)a3 serviceBundleID:(id)a4
+- (MSServiceAppInfo)initWithServiceName:(id)name serviceBundleID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = MSServiceAppInfo;
   v9 = [(MSServiceAppInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceName, a3);
-    objc_storeStrong(&v10->_serviceBundleID, a4);
+    objc_storeStrong(&v9->_serviceName, name);
+    objc_storeStrong(&v10->_serviceBundleID, d);
   }
 
   return v10;
 }
 
-- (MSServiceAppInfo)initWithServiceName:(id)a3 serviceBundleID:(id)a4 useInHome:(BOOL)a5 subscriptionStatus:(int64_t)a6
+- (MSServiceAppInfo)initWithServiceName:(id)name serviceBundleID:(id)d useInHome:(BOOL)home subscriptionStatus:(int64_t)status
 {
-  result = [(MSServiceAppInfo *)self initWithServiceName:a3 serviceBundleID:a4];
+  result = [(MSServiceAppInfo *)self initWithServiceName:name serviceBundleID:d];
   if (result)
   {
-    result->_useInHome = a5;
-    result->_subscriptionStatus = a6;
+    result->_useInHome = home;
+    result->_subscriptionStatus = status;
   }
 
   return result;
@@ -48,23 +48,23 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   serviceName = self->_serviceName;
-  v5 = a3;
-  [v5 encodeObject:serviceName forKey:@"MSSServiceNameEncodedKey"];
-  [v5 encodeObject:self->_serviceBundleID forKey:@"MSSServiceBundleIDEncodedKey"];
-  [v5 encodeObject:self->_alternateBundleIDS forKey:@"MSSAlternateBundleIDSEncodedKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:serviceName forKey:@"MSSServiceNameEncodedKey"];
+  [coderCopy encodeObject:self->_serviceBundleID forKey:@"MSSServiceBundleIDEncodedKey"];
+  [coderCopy encodeObject:self->_alternateBundleIDS forKey:@"MSSAlternateBundleIDSEncodedKey"];
 }
 
-- (MSServiceAppInfo)initWithCoder:(id)a3
+- (MSServiceAppInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSSServiceNameEncodedKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSSServiceNameEncodedKey"];
   serviceName = self->_serviceName;
   self->_serviceName = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSSServiceBundleIDEncodedKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSSServiceBundleIDEncodedKey"];
   serviceBundleID = self->_serviceBundleID;
   self->_serviceBundleID = v7;
 
@@ -74,7 +74,7 @@
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"MSSAlternateBundleIDSEncodedKey"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"MSSAlternateBundleIDSEncodedKey"];
     alternateBundleIDS = v9->_alternateBundleIDS;
     v9->_alternateBundleIDS = v13;
   }

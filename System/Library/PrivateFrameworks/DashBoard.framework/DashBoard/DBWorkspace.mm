@@ -1,12 +1,12 @@
 @interface DBWorkspace
-- (DBWorkspace)initWithOwner:(id)a3;
+- (DBWorkspace)initWithOwner:(id)owner;
 - (id)_createStateChangeSession;
-- (void)_invalidateSession:(id)a3;
-- (void)_setState:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_invalidateSession:(id)session;
+- (void)_setState:(id)state;
+- (void)addObserver:(id)observer;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
-- (void)requestStateChange:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)requestStateChange:(id)change;
 @end
 
 @implementation DBWorkspace
@@ -29,16 +29,16 @@
   return v4;
 }
 
-- (DBWorkspace)initWithOwner:(id)a3
+- (DBWorkspace)initWithOwner:(id)owner
 {
-  v5 = a3;
+  ownerCopy = owner;
   v14.receiver = self;
   v14.super_class = DBWorkspace;
   v6 = [(DBWorkspace *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_owner, a3);
+    objc_storeStrong(&v6->_owner, owner);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     pendingRequests = v7->_pendingRequests;
     v7->_pendingRequests = v8;
@@ -66,20 +66,20 @@
   self->_pendingRequestsStateCaptureBlock = 0;
 }
 
-- (void)_setState:(id)a3
+- (void)_setState:(id)state
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stateCopy = state;
   state = self->_state;
-  if (state != v5)
+  if (state != stateCopy)
   {
-    v7 = state;
-    objc_storeStrong(&self->_state, a3);
+    stateCopy2 = state;
+    objc_storeStrong(&self->_state, state);
     v8 = DBLogForCategory(8uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v5;
+      v20 = stateCopy;
       _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "State changed: %@", buf, 0xCu);
     }
 
@@ -103,7 +103,7 @@
             objc_enumerationMutation(v9);
           }
 
-          [*(*(&v14 + 1) + 8 * v13++) workspace:self stateDidChangeFromState:v7 toState:self->_state];
+          [*(*(&v14 + 1) + 8 * v13++) workspace:self stateDidChangeFromState:stateCopy2 toState:self->_state];
         }
 
         while (v11 != v13);
@@ -115,14 +115,14 @@
   }
 }
 
-- (void)requestStateChange:(id)a3
+- (void)requestStateChange:(id)change
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   currentSession = self->_currentSession;
   if (currentSession)
   {
-    v6 = [(DBWorkspaceOwner *)self->_owner session:currentSession policyForRequest:v4];
+    v6 = [(DBWorkspaceOwner *)self->_owner session:currentSession policyForRequest:changeCopy];
     if (v6 != 1)
     {
       if (!v6)
@@ -131,11 +131,11 @@
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138412290;
-          v13 = v4;
+          v13 = changeCopy;
           _os_log_impl(&dword_248146000, v7, OS_LOG_TYPE_DEFAULT, "Pending request: %@", &v12, 0xCu);
         }
 
-        [(NSMutableArray *)self->_pendingRequests addObject:v4];
+        [(NSMutableArray *)self->_pendingRequests addObject:changeCopy];
       }
 
       goto LABEL_11;
@@ -144,9 +144,9 @@
 
   else
   {
-    v8 = [(DBWorkspace *)self _createStateChangeSession];
+    _createStateChangeSession = [(DBWorkspace *)self _createStateChangeSession];
     v9 = self->_currentSession;
-    self->_currentSession = v8;
+    self->_currentSession = _createStateChangeSession;
 
     [(_DBWorkspaceStateChangeSession *)self->_currentSession setOwner:self->_owner];
     [(DBWorkspaceOwner *)self->_owner workspace:self didBeginStateChangeSession:self->_currentSession];
@@ -159,27 +159,27 @@
     v12 = 134218242;
     v13 = v11;
     v14 = 2112;
-    v15 = v4;
+    v15 = changeCopy;
     _os_log_impl(&dword_248146000, v10, OS_LOG_TYPE_DEFAULT, "Handling request in current session (%p): %@", &v12, 0x16u);
   }
 
   [(_DBWorkspaceStateChangeSession *)self->_currentSession _startWatchdogTimer];
-  [(DBWorkspaceOwner *)self->_owner session:self->_currentSession handleStateChangeRequest:v4];
+  [(DBWorkspaceOwner *)self->_owner session:self->_currentSession handleStateChangeRequest:changeCopy];
 LABEL_11:
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4 && !self->_invalidated)
+  observerCopy = observer;
+  if (observerCopy && !self->_invalidated)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
-      v6 = [MEMORY[0x277CCAA50] hashTableWithWeakObjects];
+      hashTableWithWeakObjects = [MEMORY[0x277CCAA50] hashTableWithWeakObjects];
       v7 = self->_observers;
-      self->_observers = v6;
+      self->_observers = hashTableWithWeakObjects;
 
       observers = self->_observers;
     }
@@ -190,26 +190,26 @@ LABEL_11:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-- (void)_invalidateSession:(id)a3
+- (void)_invalidateSession:(id)session
 {
   currentSession = self->_currentSession;
   self->_currentSession = 0;
-  v5 = a3;
+  sessionCopy = session;
 
-  [(DBWorkspaceOwner *)self->_owner workspace:self didEndStateChangeSession:v5];
+  [(DBWorkspaceOwner *)self->_owner workspace:self didEndStateChangeSession:sessionCopy];
   if ([(NSMutableArray *)self->_pendingRequests count])
   {
-    v6 = [(NSMutableArray *)self->_pendingRequests firstObject];
+    firstObject = [(NSMutableArray *)self->_pendingRequests firstObject];
     [(NSMutableArray *)self->_pendingRequests removeObjectAtIndex:0];
-    [(DBWorkspace *)self requestStateChange:v6];
+    [(DBWorkspace *)self requestStateChange:firstObject];
   }
 }
 

@@ -1,24 +1,24 @@
 @interface SGGeoListSnippet
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addPois:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPois:(id)pois;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGGeoListSnippet
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -47,13 +47,13 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     pois = self->_pois;
-    if (pois | v4[1])
+    if (pois | equalCopy[1])
     {
       v6 = [(NSMutableArray *)pois isEqual:?];
     }
@@ -72,10 +72,10 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -96,7 +96,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addPois:v11];
 
         ++v10;
@@ -113,29 +113,29 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(SGGeoListSnippet *)self poisCount])
   {
-    [v8 clearPois];
-    v4 = [(SGGeoListSnippet *)self poisCount];
-    if (v4)
+    [toCopy clearPois];
+    poisCount = [(SGGeoListSnippet *)self poisCount];
+    if (poisCount)
     {
-      v5 = v4;
+      v5 = poisCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SGGeoListSnippet *)self poisAtIndex:i];
-        [v8 addPois:v7];
+        [toCopy addPois:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -174,7 +174,7 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_pois count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_pois, "count")}];
@@ -197,8 +197,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -207,12 +207,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"pois"];
+    [dictionary setObject:v4 forKey:@"pois"];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -221,28 +221,28 @@
   v8.receiver = self;
   v8.super_class = SGGeoListSnippet;
   v4 = [(SGGeoListSnippet *)&v8 description];
-  v5 = [(SGGeoListSnippet *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGGeoListSnippet *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addPois:(id)a3
+- (void)addPois:(id)pois
 {
-  v4 = a3;
+  poisCopy = pois;
   pois = self->_pois;
-  v8 = v4;
+  v8 = poisCopy;
   if (!pois)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_pois;
     self->_pois = v6;
 
-    v4 = v8;
+    poisCopy = v8;
     pois = self->_pois;
   }
 
-  [(NSMutableArray *)pois addObject:v4];
+  [(NSMutableArray *)pois addObject:poisCopy];
 }
 
 @end

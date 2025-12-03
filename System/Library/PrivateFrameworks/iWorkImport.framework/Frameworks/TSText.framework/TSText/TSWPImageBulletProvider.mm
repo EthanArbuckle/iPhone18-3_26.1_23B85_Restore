@@ -1,10 +1,10 @@
 @interface TSWPImageBulletProvider
 + (id)sharedInstance;
-- (id)dataForImageBullet:(id)a3 withContext:(id)a4;
+- (id)dataForImageBullet:(id)bullet withContext:(id)context;
 - (id)p_pathToPredefinedImages;
 - (id)p_predefinedImageNames;
-- (id)predefinedImageFilenamesWithContext:(id)a3;
-- (id)predefinedImagesWithContext:(id)a3;
+- (id)predefinedImageFilenamesWithContext:(id)context;
+- (id)predefinedImagesWithContext:(id)context;
 @end
 
 @implementation TSWPImageBulletProvider
@@ -21,15 +21,15 @@
   return v3;
 }
 
-- (id)predefinedImageFilenamesWithContext:(id)a3
+- (id)predefinedImageFilenamesWithContext:(id)context
 {
-  v4 = objc_msgSend_predefinedImagesWithContext_(self, a2, a3);
+  v4 = objc_msgSend_predefinedImagesWithContext_(self, a2, context);
   filenames = self->_filenames;
 
   return filenames;
 }
 
-- (id)predefinedImagesWithContext:(id)a3
+- (id)predefinedImagesWithContext:(id)context
 {
   v72 = *MEMORY[0x277D85DE8];
   images = self->_images;
@@ -40,7 +40,7 @@
 
   else
   {
-    v6 = objc_msgSend_p_predefinedImageNames(self, a2, a3);
+    v6 = objc_msgSend_p_predefinedImageNames(self, a2, context);
     v9 = objc_msgSend_count(v6, v7, v8);
     if (v9)
     {
@@ -131,10 +131,10 @@
   return v4;
 }
 
-- (id)dataForImageBullet:(id)a3 withContext:(id)a4
+- (id)dataForImageBullet:(id)bullet withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  bulletCopy = bullet;
+  contextCopy = context;
   objc_opt_class();
   v9 = TSUDynamicCast();
   if (v9)
@@ -159,12 +159,12 @@
     goto LABEL_11;
   }
 
-  if (!v6)
+  if (!bulletCopy)
   {
     goto LABEL_8;
   }
 
-  v18 = objc_msgSend_indexOfObject_(self->_images, v17, v6);
+  v18 = objc_msgSend_indexOfObject_(self->_images, v17, bulletCopy);
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = MEMORY[0x277D81150];
@@ -189,7 +189,7 @@ LABEL_12:
   if (v9)
   {
 LABEL_13:
-    v32 = objc_msgSend_dataFromURL_context_(MEMORY[0x277D80828], v8, v9, v7);
+    v32 = objc_msgSend_dataFromURL_context_(MEMORY[0x277D80828], v8, v9, contextCopy);
     goto LABEL_14;
   }
 

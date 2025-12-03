@@ -1,21 +1,21 @@
 @interface GKServiceProxy
 - (BOOL)needsBuildUpServiceLookup;
 - (GKPlayerInternal)localPlayer;
-- (GKServiceProxy)initWithPlayer:(id)a3;
-- (id)methodSignatureForProtocol:(id)a3 selector:(SEL)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)addService:(id)a3 forProtocol:(id)a4 toLookup:(id)a5;
+- (GKServiceProxy)initWithPlayer:(id)player;
+- (id)methodSignatureForProtocol:(id)protocol selector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)addService:(id)service forProtocol:(id)protocol toLookup:(id)lookup;
 - (void)buildServiceLookupIfNecessary;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)needsBuildUpServiceLookup;
-- (void)replyToDuplicatesForRequest:(id)a3 withInvocation:(id)a4 queue:(id)a5;
+- (void)replyToDuplicatesForRequest:(id)request withInvocation:(id)invocation queue:(id)queue;
 @end
 
 @implementation GKServiceProxy
 
-- (GKServiceProxy)initWithPlayer:(id)a3
+- (GKServiceProxy)initWithPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   v14.receiver = self;
   v14.super_class = GKServiceProxy;
   v5 = [(GKServiceProxy *)&v14 init];
@@ -41,37 +41,37 @@
   }
 
   v8 = [GKThreadsafeDictionary alloc];
-  if (v4)
+  if (playerCopy)
   {
-    v9 = [v4 playerID];
+    playerID = [playerCopy playerID];
   }
 
   else
   {
-    v9 = @"global";
+    playerID = @"global";
   }
 
-  v10 = [@"com.apple.gamecenter.pendingRequests-" stringByAppendingString:v9];
+  v10 = [@"com.apple.gamecenter.pendingRequests-" stringByAppendingString:playerID];
   v11 = [(GKThreadsafeDictionary *)v8 initWithName:v10];
   pendingRequests = v5->_pendingRequests;
   v5->_pendingRequests = v11;
 
-  if (v4)
+  if (playerCopy)
   {
   }
 
-  objc_storeWeak(&v5->_localPlayer, v4);
+  objc_storeWeak(&v5->_localPlayer, playerCopy);
 LABEL_11:
 
   return v5;
 }
 
-- (id)methodSignatureForProtocol:(id)a3 selector:(SEL)a4
+- (id)methodSignatureForProtocol:(id)protocol selector:(SEL)selector
 {
-  v5 = a3;
-  MethodDescription = protocol_getMethodDescription(v5, a4, 1, 1);
+  protocolCopy = protocol;
+  MethodDescription = protocol_getMethodDescription(protocolCopy, selector, 1, 1);
   types = MethodDescription.types;
-  if (MethodDescription.name || (v8 = protocol_getMethodDescription(v5, a4, 0, 1), types = v8.types, v8.name))
+  if (MethodDescription.name || (v8 = protocol_getMethodDescription(protocolCopy, selector, 0, 1), types = v8.types, v8.name))
   {
     v9 = [MEMORY[0x277CBEB08] signatureWithObjCTypes:types];
   }
@@ -84,7 +84,7 @@ LABEL_11:
   return v9;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v18.receiver = self;
@@ -92,13 +92,13 @@ LABEL_11:
   v5 = [(GKServiceProxy *)&v18 methodSignatureForSelector:?];
   if (!v5)
   {
-    v6 = NSStringFromSelector(a3);
-    v7 = [(GKServiceProxy *)self baseProxy];
-    v8 = [v7 interfaceLookup];
-    v9 = [v8 objectForKeyedSubscript:v6];
+    v6 = NSStringFromSelector(selector);
+    baseProxy = [(GKServiceProxy *)self baseProxy];
+    interfaceLookup = [baseProxy interfaceLookup];
+    v9 = [interfaceLookup objectForKeyedSubscript:v6];
 
-    v10 = [v9 protocol];
-    if (!v10)
+    protocol = [v9 protocol];
+    if (!protocol)
     {
       v14 = MEMORY[0x277CBEAD8];
       v19 = @"selector";
@@ -110,8 +110,8 @@ LABEL_11:
       objc_exception_throw(v16);
     }
 
-    v11 = v10;
-    v5 = [(GKServiceProxy *)self methodSignatureForProtocol:v10 selector:a3];
+    v11 = protocol;
+    v5 = [(GKServiceProxy *)self methodSignatureForProtocol:protocol selector:selector];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -119,24 +119,24 @@ LABEL_11:
   return v5;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   [(GKServiceProxy *)self buildServiceLookupIfNecessary];
-  [v4 _gkCopyArguments];
-  v5 = [(GKServiceProxy *)self baseProxy];
+  [invocationCopy _gkCopyArguments];
+  baseProxy = [(GKServiceProxy *)self baseProxy];
   v6 = MEMORY[0x277CCACA8];
-  v7 = NSStringFromSelector([v4 selector]);
+  v7 = NSStringFromSelector([invocationCopy selector]);
   v8 = [v6 stringWithFormat:@"forwarding %@", v7];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __36__GKServiceProxy_forwardInvocation___block_invoke;
   v11[3] = &unk_2785DDB40;
-  v12 = v5;
-  v13 = v4;
-  v14 = self;
-  v9 = v4;
-  v10 = v5;
+  v12 = baseProxy;
+  v13 = invocationCopy;
+  selfCopy = self;
+  v9 = invocationCopy;
+  v10 = baseProxy;
   [GKActivity named:v8 execute:v11];
 }
 
@@ -339,21 +339,21 @@ void __36__GKServiceProxy_forwardInvocation___block_invoke_480(uint64_t a1, void
   dispatch_semaphore_signal(*(a1 + 56));
 }
 
-- (void)replyToDuplicatesForRequest:(id)a3 withInvocation:(id)a4 queue:(id)a5
+- (void)replyToDuplicatesForRequest:(id)request withInvocation:(id)invocation queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  requestCopy = request;
+  invocationCopy = invocation;
+  queueCopy = queue;
+  if (requestCopy)
   {
     pendingRequests = self->_pendingRequests;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __67__GKServiceProxy_replyToDuplicatesForRequest_withInvocation_queue___block_invoke;
     v12[3] = &unk_2785E0600;
-    v13 = v8;
-    v14 = v10;
-    v15 = v9;
+    v13 = requestCopy;
+    v14 = queueCopy;
+    v15 = invocationCopy;
     [(GKThreadsafeDictionary *)pendingRequests asyncWriteToDictionary:v12];
   }
 }
@@ -401,15 +401,15 @@ void __67__GKServiceProxy_replyToDuplicatesForRequest_withInvocation_queue___blo
   dispatch_async(v5, v7);
 }
 
-- (void)addService:(id)a3 forProtocol:(id)a4 toLookup:(id)a5
+- (void)addService:(id)service forProtocol:(id)protocol toLookup:(id)lookup
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  serviceCopy = service;
+  protocolCopy = protocol;
+  lookupCopy = lookup;
+  if (serviceCopy)
   {
     outCount = 0;
-    v10 = protocol_copyMethodDescriptionList(v8, 1, 1, &outCount);
+    v10 = protocol_copyMethodDescriptionList(protocolCopy, 1, 1, &outCount);
     v11 = v10;
     if (outCount)
     {
@@ -418,11 +418,11 @@ void __67__GKServiceProxy_replyToDuplicatesForRequest_withInvocation_queue___blo
       do
       {
         v14 = NSStringFromSelector(*p_name);
-        v15 = [v9 objectForKey:v14];
+        v15 = [lookupCopy objectForKey:v14];
 
         if (!v15)
         {
-          [v9 setObject:v7 forKey:v14];
+          [lookupCopy setObject:serviceCopy forKey:v14];
         }
 
         ++v12;
@@ -433,7 +433,7 @@ void __67__GKServiceProxy_replyToDuplicatesForRequest_withInvocation_queue___blo
     }
 
     free(v11);
-    v16 = protocol_copyMethodDescriptionList(v8, 0, 1, &outCount);
+    v16 = protocol_copyMethodDescriptionList(protocolCopy, 0, 1, &outCount);
     v17 = v16;
     if (outCount)
     {
@@ -442,11 +442,11 @@ void __67__GKServiceProxy_replyToDuplicatesForRequest_withInvocation_queue___blo
       do
       {
         v20 = NSStringFromSelector(*v19);
-        v21 = [v9 objectForKey:v20];
+        v21 = [lookupCopy objectForKey:v20];
 
         if (!v21)
         {
-          [v9 setObject:v7 forKey:v20];
+          [lookupCopy setObject:serviceCopy forKey:v20];
         }
 
         ++v18;
@@ -462,13 +462,13 @@ void __67__GKServiceProxy_replyToDuplicatesForRequest_withInvocation_queue___blo
 
 - (BOOL)needsBuildUpServiceLookup
 {
-  v3 = [(GKServiceProxy *)self serviceGeneration];
-  v4 = [(GKServiceProxy *)self baseProxy];
-  if (v3 == [v4 serviceGeneration])
+  serviceGeneration = [(GKServiceProxy *)self serviceGeneration];
+  baseProxy = [(GKServiceProxy *)self baseProxy];
+  if (serviceGeneration == [baseProxy serviceGeneration])
   {
-    v5 = [(GKServiceProxy *)self serviceLookup];
+    serviceLookup = [(GKServiceProxy *)self serviceLookup];
 
-    if (v5)
+    if (serviceLookup)
     {
       return 0;
     }
@@ -497,17 +497,17 @@ void __67__GKServiceProxy_replyToDuplicatesForRequest_withInvocation_queue___blo
 {
   if ([(GKServiceProxy *)self needsBuildUpServiceLookup])
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [(GKServiceProxy *)self baseProxy];
-    v5 = [v4 invocationQueue];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    baseProxy = [(GKServiceProxy *)self baseProxy];
+    invocationQueue = [baseProxy invocationQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __47__GKServiceProxy_buildServiceLookupIfNecessary__block_invoke;
     v7[3] = &unk_2785DEBA8;
     v7[4] = self;
-    v8 = v3;
-    v6 = v3;
-    dispatch_async(v5, v7);
+    v8 = uUID;
+    v6 = uUID;
+    dispatch_async(invocationQueue, v7);
   }
 }
 
@@ -875,8 +875,8 @@ void __67__GKServiceProxy_replyToDuplicatesForRequest_withInvocation_queue___blo
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  [a1 serviceGeneration];
-  v10 = [a1 serviceLookup];
+  [self serviceGeneration];
+  serviceLookup = [self serviceLookup];
   OUTLINED_FUNCTION_3();
   _os_log_debug_impl(v4, v5, v6, v7, v8, 0x1Cu);
 

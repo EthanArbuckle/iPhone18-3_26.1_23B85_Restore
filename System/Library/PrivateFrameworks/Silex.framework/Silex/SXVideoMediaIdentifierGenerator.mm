@@ -1,26 +1,26 @@
 @interface SXVideoMediaIdentifierGenerator
-- (id)identifierForURL:(id)a3;
+- (id)identifierForURL:(id)l;
 @end
 
 @implementation SXVideoMediaIdentifierGenerator
 
-- (id)identifierForURL:(id)a3
+- (id)identifierForURL:(id)l
 {
-  v3 = [a3 absoluteString];
-  v4 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-  v5 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:v4];
+  absoluteString = [l absoluteString];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  v5 = [absoluteString stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
   if ([v5 length])
   {
-    v6 = [v5 nf_sha1];
+    nf_sha1 = [v5 nf_sha1];
   }
 
   else
   {
-    v6 = 0;
+    nf_sha1 = 0;
   }
 
-  return v6;
+  return nf_sha1;
 }
 
 @end

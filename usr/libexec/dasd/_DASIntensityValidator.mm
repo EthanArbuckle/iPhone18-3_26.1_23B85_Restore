@@ -1,30 +1,30 @@
 @interface _DASIntensityValidator
 + (id)sharedInstance;
-- (BOOL)isActivityIndeedIntensive:(id)a3;
-- (BOOL)isActivityProfileSufficient:(id)a3;
-- (BOOL)isRunTimeAlwaysVeryShortForActivity:(id)a3;
-- (BOOL)mayCauseThermalPressureWithActivity:(id)a3;
+- (BOOL)isActivityIndeedIntensive:(id)intensive;
+- (BOOL)isActivityProfileSufficient:(id)sufficient;
+- (BOOL)isRunTimeAlwaysVeryShortForActivity:(id)activity;
+- (BOOL)mayCauseThermalPressureWithActivity:(id)activity;
 - (_DASIntensityValidator)init;
-- (id)loadDeviceConditionState:(id)a3;
+- (id)loadDeviceConditionState:(id)state;
 - (void)printProfilerStats;
-- (void)validateIntensityForActivity:(id)a3;
+- (void)validateIntensityForActivity:(id)activity;
 @end
 
 @implementation _DASIntensityValidator
 
 - (void)printProfilerStats
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v19 = v2;
-  [(NSMutableDictionary *)v2->_activityToProfile count];
-  ++v2->_numTotalProfiledRuns;
-  if (os_log_type_enabled(v2->_log, OS_LOG_TYPE_DEBUG))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v19 = selfCopy;
+  [(NSMutableDictionary *)selfCopy->_activityToProfile count];
+  ++selfCopy->_numTotalProfiledRuns;
+  if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
   {
-    sub_100124AB8(&v2->_numTotalProfiledRuns);
+    sub_100124AB8(&selfCopy->_numTotalProfiledRuns);
   }
 
-  if (os_log_type_enabled(v2->_log, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_100124B30();
   }
@@ -33,7 +33,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v2->_activityToProfile;
+  obj = selfCopy->_activityToProfile;
   v3 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v3)
   {
@@ -163,7 +163,7 @@
   block[1] = 3221225472;
   block[2] = sub_100094748;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B618 != -1)
   {
     dispatch_once(&qword_10020B618, block);
@@ -174,13 +174,13 @@
   return v2;
 }
 
-- (id)loadDeviceConditionState:(id)a3
+- (id)loadDeviceConditionState:(id)state
 {
   resourceIntensityTimelines = self->_resourceIntensityTimelines;
-  v5 = a3;
+  stateCopy = state;
   [(NSMutableDictionary *)resourceIntensityTimelines removeAllObjects];
   v6 = +[NSDate date];
-  v7 = [(_DASLatencyProjector *)self->_latencyProjector getDeviceConditionTimelines:v5 filepath:0];
+  v7 = [(_DASLatencyProjector *)self->_latencyProjector getDeviceConditionTimelines:stateCopy filepath:0];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -198,35 +198,35 @@
   return v7;
 }
 
-- (void)validateIntensityForActivity:(id)a3
+- (void)validateIntensityForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 startDate];
-  v7 = [v4 endTime];
-  [v4 dataConsumed];
+  activityCopy = activity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  startDate = [activityCopy startDate];
+  endTime = [activityCopy endTime];
+  [activityCopy dataConsumed];
   v9 = v8;
-  v70 = v4;
-  v75 = [v4 identifier];
-  [v7 timeIntervalSinceDate:v6];
+  v70 = activityCopy;
+  identifier = [activityCopy identifier];
+  [endTime timeIntervalSinceDate:startDate];
   v11 = v10;
-  if (os_log_type_enabled(v5->_log, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_1001247B0();
   }
 
   v12 = +[NSMutableDictionary dictionary];
-  p_activityToProfile = &v5->_activityToProfile;
-  v13 = [(NSMutableDictionary *)v5->_activityToProfile objectForKey:v75];
+  p_activityToProfile = &selfCopy->_activityToProfile;
+  v13 = [(NSMutableDictionary *)selfCopy->_activityToProfile objectForKey:identifier];
 
   if (v13)
   {
-    v14 = [*p_activityToProfile objectForKey:v75];
+    v14 = [*p_activityToProfile objectForKey:identifier];
     v15 = [v14 objectForKeyedSubscript:@"numProfiles"];
-    v16 = [v15 intValue];
+    intValue = [v15 intValue];
 
-    v17 = [NSNumber numberWithInteger:(v16 + 1)];
+    v17 = [NSNumber numberWithInteger:(intValue + 1)];
     [v12 setObject:v17 forKeyedSubscript:@"numProfiles"];
 
     v18 = [v14 objectForKeyedSubscript:@"indeedCPUIntensive"];
@@ -241,7 +241,7 @@
 
     if (v22)
     {
-      if (os_log_type_enabled(v5->_log, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
       {
         sub_100124820();
       }
@@ -262,7 +262,7 @@
 
     if (v27)
     {
-      if (os_log_type_enabled(v5->_log, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
       {
         sub_100124898();
       }
@@ -309,17 +309,17 @@
 
   [v12 setObject:v31 forKeyedSubscript:@"isVeryShort"];
   v72 = +[NSMutableSet set];
-  v33 = [v75 copy];
-  if ([v75 hasPrefix:@"com.apple."])
+  v33 = [identifier copy];
+  if ([identifier hasPrefix:@"com.apple."])
   {
     v34 = v33;
   }
 
   else
   {
-    v35 = [v75 substringFromIndex:{objc_msgSend(@"com.apple.", "length")}];
+    v35 = [identifier substringFromIndex:{objc_msgSend(@"com.apple.", "length")}];
 
-    if (os_log_type_enabled(v5->_log, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
     {
       sub_100124910();
     }
@@ -329,9 +329,9 @@
 
   v69 = v34;
   [v72 addObject:?];
-  v73 = v7;
-  v74 = v6;
-  if (os_log_type_enabled(v5->_log, OS_LOG_TYPE_DEBUG))
+  v73 = endTime;
+  v74 = startDate;
+  if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_100124950();
   }
@@ -339,7 +339,7 @@
   if (v11 > 5.0)
   {
     v65 = [[NSDateInterval alloc] initWithStartDate:v74 endDate:v73];
-    v36 = [(_DASIntensityValidator *)v5 loadDeviceConditionState:?];
+    v36 = [(_DASIntensityValidator *)selfCopy loadDeviceConditionState:?];
     v68 = [v36 objectForKeyedSubscript:@"CPUPressure"];
     v67 = [v36 objectForKeyedSubscript:@"MemoryPressure"];
     v64 = v36;
@@ -367,17 +367,17 @@
             }
 
             v42 = [*(*(&v84 + 1) + 8 * i) objectForKeyedSubscript:{@"CPUPressure", v61}];
-            v43 = [v42 intValue];
+            intValue2 = [v42 intValue];
 
-            log = v5->_log;
+            log = selfCopy->_log;
             if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
             {
               *buf = v61;
-              v91 = v43;
+              v91 = intValue2;
               _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "Current CPUPressureValue: %lu", buf, 0xCu);
             }
 
-            if (qword_100209E78 < v43)
+            if (qword_100209E78 < intValue2)
             {
               [v12 setObject:&off_1001CA120 forKeyedSubscript:@"indeedCPUIntensive"];
               [v70 setIndeedCPUIntensive:1];
@@ -421,17 +421,17 @@ LABEL_40:
             }
 
             v50 = [*(*(&v80 + 1) + 8 * j) objectForKeyedSubscript:{@"MemoryPressure", v62}];
-            v51 = [v50 intValue];
+            intValue3 = [v50 intValue];
 
-            v52 = v5->_log;
+            v52 = selfCopy->_log;
             if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
             {
               *buf = v62;
-              v91 = v51;
+              v91 = intValue3;
               _os_log_debug_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEBUG, "Current MemoryPressureValue: %lu", buf, 0xCu);
             }
 
-            if (v51 >= 4)
+            if (intValue3 >= 4)
             {
               [v12 setObject:&off_1001CA120 forKeyedSubscript:@"indeedMemoryIntensive"];
               [v70 setIndeedMemoryIntensive:1];
@@ -475,17 +475,17 @@ LABEL_54:
             }
 
             v58 = [*(*(&v76 + 1) + 8 * k) objectForKeyedSubscript:{@"ThermalPressure", v63}];
-            v59 = [v58 intValue];
+            intValue4 = [v58 intValue];
 
-            v60 = v5->_log;
+            v60 = selfCopy->_log;
             if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
             {
               *buf = v63;
-              v91 = v59;
+              v91 = intValue4;
               _os_log_debug_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEBUG, "Current ThermalPressure: %lu", buf, 0xCu);
             }
 
-            if (v59 >= 0x14)
+            if (intValue4 >= 0x14)
             {
               [v12 setObject:&off_1001CA120 forKeyedSubscript:@"mayImpactThermal"];
               [v70 setThermalLevelElevated:1];
@@ -507,33 +507,33 @@ LABEL_68:
     }
   }
 
-  [*p_activityToProfile setObject:v12 forKeyedSubscript:v75];
-  if (os_log_type_enabled(v5->_log, OS_LOG_TYPE_DEBUG))
+  [*p_activityToProfile setObject:v12 forKeyedSubscript:identifier];
+  if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_1001249D0();
   }
 
-  if (v11 > 5.0 && os_log_type_enabled(v5->_log, OS_LOG_TYPE_DEBUG))
+  if (v11 > 5.0 && os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_100124A40(p_activityToProfile);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)isActivityProfileSufficient:(id)a3
+- (BOOL)isActivityProfileSufficient:(id)sufficient
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_activityToProfile objectForKey:v4];
+  sufficientCopy = sufficient;
+  v5 = [(NSMutableDictionary *)self->_activityToProfile objectForKey:sufficientCopy];
 
   v9 = 0;
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_activityToProfile objectForKey:v4];
+    v6 = [(NSMutableDictionary *)self->_activityToProfile objectForKey:sufficientCopy];
     v7 = [v6 objectForKeyedSubscript:@"numProfiles"];
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
 
-    if (v8 > 4)
+    if (intValue > 4)
     {
       v9 = 1;
     }
@@ -542,23 +542,23 @@ LABEL_68:
   return v9;
 }
 
-- (BOOL)isActivityIndeedIntensive:(id)a3
+- (BOOL)isActivityIndeedIntensive:(id)intensive
 {
-  v4 = a3;
+  intensiveCopy = intensive;
   activityToProfile = self->_activityToProfile;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)activityToProfile objectForKey:v6];
+  identifier = [intensiveCopy identifier];
+  v7 = [(NSMutableDictionary *)activityToProfile objectForKey:identifier];
 
   if (v7)
   {
     v8 = self->_activityToProfile;
-    v9 = [v4 identifier];
-    v10 = [(NSMutableDictionary *)v8 objectForKey:v9];
+    identifier2 = [intensiveCopy identifier];
+    v10 = [(NSMutableDictionary *)v8 objectForKey:identifier2];
 
     v11 = [v10 objectForKeyedSubscript:@"numProfiles"];
     if ([v11 intValue] < 5)
     {
-      v13 = 0;
+      bOOLValue = 0;
     }
 
     else
@@ -566,7 +566,7 @@ LABEL_68:
       v12 = [v10 objectForKeyedSubscript:@"indeedCPUIntensive"];
       if ([v12 BOOLValue])
       {
-        v13 = 1;
+        bOOLValue = 1;
       }
 
       else
@@ -574,13 +574,13 @@ LABEL_68:
         v15 = [v10 objectForKeyedSubscript:@"indeedMemoryIntensive"];
         if ([v15 BOOLValue])
         {
-          v13 = 1;
+          bOOLValue = 1;
         }
 
         else
         {
           v16 = [v10 objectForKeyedSubscript:@"mayImpactThermal"];
-          v13 = [v16 BOOLValue];
+          bOOLValue = [v16 BOOLValue];
         }
       }
     }
@@ -594,24 +594,24 @@ LABEL_68:
       sub_100124DD0(log);
     }
 
-    v13 = 0;
+    bOOLValue = 0;
   }
 
-  return v13;
+  return bOOLValue;
 }
 
-- (BOOL)isRunTimeAlwaysVeryShortForActivity:(id)a3
+- (BOOL)isRunTimeAlwaysVeryShortForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   activityToProfile = self->_activityToProfile;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)activityToProfile objectForKey:v6];
+  identifier = [activityCopy identifier];
+  v7 = [(NSMutableDictionary *)activityToProfile objectForKey:identifier];
 
   if (v7)
   {
     v8 = self->_activityToProfile;
-    v9 = [v4 identifier];
-    v10 = [(NSMutableDictionary *)v8 objectForKey:v9];
+    identifier2 = [activityCopy identifier];
+    v10 = [(NSMutableDictionary *)v8 objectForKey:identifier2];
 
     v11 = [v10 objectForKeyedSubscript:@"numProfiles"];
     if ([v11 intValue] < 5)
@@ -640,29 +640,29 @@ LABEL_68:
   return v13;
 }
 
-- (BOOL)mayCauseThermalPressureWithActivity:(id)a3
+- (BOOL)mayCauseThermalPressureWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   activityToProfile = self->_activityToProfile;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)activityToProfile objectForKey:v6];
+  identifier = [activityCopy identifier];
+  v7 = [(NSMutableDictionary *)activityToProfile objectForKey:identifier];
 
   if (v7)
   {
     v8 = self->_activityToProfile;
-    v9 = [v4 identifier];
-    v10 = [(NSMutableDictionary *)v8 objectForKey:v9];
+    identifier2 = [activityCopy identifier];
+    v10 = [(NSMutableDictionary *)v8 objectForKey:identifier2];
 
     v11 = [v10 objectForKeyedSubscript:@"numProfiles"];
     if ([v11 intValue] < 5)
     {
-      v13 = 0;
+      bOOLValue = 0;
     }
 
     else
     {
       v12 = [v10 objectForKeyedSubscript:@"mayImpactThermal"];
-      v13 = [v12 BOOLValue];
+      bOOLValue = [v12 BOOLValue];
     }
   }
 
@@ -674,10 +674,10 @@ LABEL_68:
       sub_100124EF0(log);
     }
 
-    v13 = 1;
+    bOOLValue = 1;
   }
 
-  return v13;
+  return bOOLValue;
 }
 
 @end

@@ -1,65 +1,65 @@
 @interface SBRoutingSwitcherModifier
-- (BOOL)canFocusableAppLayoutBeEffectivelyObscured:(id)a3;
-- (BOOL)canLayoutRoleParticipateInSwitcherDragAndDrop:(int64_t)a3 appLayout:(id)a4;
-- (BOOL)canPerformKeyboardShortcutAction:(int64_t)a3 forBundleIdentifier:(id)a4;
-- (BOOL)canSelectLeafWithModifierKeysInAppLayout:(id)a3;
-- (BOOL)clipsToBoundsAtIndex:(unint64_t)a3;
-- (BOOL)clipsToUnobscuredMarginAtIndex:(unint64_t)a3;
+- (BOOL)canFocusableAppLayoutBeEffectivelyObscured:(id)obscured;
+- (BOOL)canLayoutRoleParticipateInSwitcherDragAndDrop:(int64_t)drop appLayout:(id)layout;
+- (BOOL)canPerformKeyboardShortcutAction:(int64_t)action forBundleIdentifier:(id)identifier;
+- (BOOL)canSelectLeafWithModifierKeysInAppLayout:(id)layout;
+- (BOOL)clipsToBoundsAtIndex:(unint64_t)index;
+- (BOOL)clipsToUnobscuredMarginAtIndex:(unint64_t)index;
 - (BOOL)hasContentIntersectingMenuBarRegion;
-- (BOOL)isContainerStatusBarPart:(unint64_t)a3 hiddenByLeafAppLayout:(id)a4;
+- (BOOL)isContainerStatusBarPart:(unint64_t)part hiddenByLeafAppLayout:(id)layout;
 - (BOOL)isContainerStatusBarVisible;
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3;
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index;
 - (BOOL)isContinuousExposeStripVisible;
-- (BOOL)isDropletEffectRequiredBehindAppLayout:(id)a3;
-- (BOOL)isFocusEnabledForAppLayout:(id)a3;
-- (BOOL)isHintingResizeGrabberForDisplayItem:(id)a3 corner:(unint64_t)a4 inAppLayout:(id)a5;
+- (BOOL)isDropletEffectRequiredBehindAppLayout:(id)layout;
+- (BOOL)isFocusEnabledForAppLayout:(id)layout;
+- (BOOL)isHintingResizeGrabberForDisplayItem:(id)item corner:(unint64_t)corner inAppLayout:(id)layout;
 - (BOOL)isHitTestBlockingViewVisible;
-- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)a3;
+- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)layout;
 - (BOOL)isHomeScreenContentRequired;
-- (BOOL)isIndexRubberbandableForSwipeToKill:(unint64_t)a3;
+- (BOOL)isIndexRubberbandableForSwipeToKill:(unint64_t)kill;
 - (BOOL)isItemContainerPointerInteractionEnabled;
-- (BOOL)isItemResizingAllowedForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleDraggable:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleEligibleForContentDragSpringLoading:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleKillable:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleSelectable:(int64_t)a3 inAppLayout:(id)a4;
+- (BOOL)isItemResizingAllowedForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleDraggable:(int64_t)draggable inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleEligibleForContentDragSpringLoading:(int64_t)loading inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleKillable:(int64_t)killable inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleSelectable:(int64_t)selectable inAppLayout:(id)layout;
 - (BOOL)isPendingInvalidatablesForAcceleratedHomeGesture;
 - (BOOL)isPendingViewsForAcceleratedHomeGesture;
-- (BOOL)isResizeGrabberVisibleForAppLayout:(id)a3;
+- (BOOL)isResizeGrabberVisibleForAppLayout:(id)layout;
 - (BOOL)isScrollEnabled;
 - (BOOL)isSwitcherWindowUserInteractionEnabled;
 - (BOOL)isSwitcherWindowVisible;
 - (BOOL)isWallpaperRequiredForSwitcher;
 - (BOOL)shouldAcceleratedHomeButtonPressBegin;
-- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)a3;
-- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)a3;
-- (BOOL)shouldAnimateInsertionOrRemovalOfAppLayout:(id)a3 atIndex:(unint64_t)a4;
+- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)layout;
+- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)layout;
+- (BOOL)shouldAnimateInsertionOrRemovalOfAppLayout:(id)layout atIndex:(unint64_t)index;
 - (BOOL)shouldBringCardToFrontDuringInsertionOrRemoval;
 - (BOOL)shouldConfigureInAppDockHiddenAssertion;
 - (BOOL)shouldFireTransitionCompletionInDefaultRunLoopMode;
 - (BOOL)shouldPerformCrossfadeForReduceMotion;
 - (BOOL)shouldPerformRotationAnimationForOrientationChange;
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3;
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space;
 - (BOOL)shouldRemoveProlongedCursorGestureFloatingDockBehaviorAssertion;
 - (BOOL)shouldRubberbandFullScreenHomeGrabberView;
-- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)a3;
-- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)a3;
+- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)index;
+- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)index;
 - (BOOL)shouldScrollViewBlockTouches;
-- (BOOL)shouldShowBackdropViewAtIndex:(unint64_t)a3;
-- (BOOL)shouldSuppressHighlightEffectForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)shouldTetherItemsAndAccessoriesInAppLayout:(id)a3;
-- (BOOL)shouldUpdateAnimatableProperty:(id)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (BOOL)shouldUseBackgroundWallpaperTreatmentForIndex:(unint64_t)a3;
-- (BOOL)shouldUseBrightMaterialForIndex:(unint64_t)a3;
-- (BOOL)shouldUseNonuniformSnapshotScalingForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (BOOL)shouldShowBackdropViewAtIndex:(unint64_t)index;
+- (BOOL)shouldSuppressHighlightEffectForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (BOOL)shouldTetherItemsAndAccessoriesInAppLayout:(id)layout;
+- (BOOL)shouldUpdateAnimatableProperty:(id)property;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (BOOL)shouldUseBackgroundWallpaperTreatmentForIndex:(unint64_t)index;
+- (BOOL)shouldUseBrightMaterialForIndex:(unint64_t)index;
+- (BOOL)shouldUseNonuniformSnapshotScalingForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (BOOL)shouldUseWallpaperGradientTreatment;
 - (BOOL)switcherDimmingViewBlocksTouches;
 - (BOOL)switcherHitTestsAsOpaque;
-- (BOOL)useItemContainerFooterViewsForAppLayout:(id)a3;
+- (BOOL)useItemContainerFooterViewsForAppLayout:(id)layout;
 - (BOOL)wantsAsynchronousSurfaceRetentionAssertion;
 - (BOOL)wantsBezelEffectsLayoutElement;
 - (BOOL)wantsContinuousExposeHoverGesture;
@@ -68,62 +68,62 @@
 - (BOOL)wantsDockWindowLevelAssertion;
 - (BOOL)wantsHomeScreenPointerInteractions;
 - (BOOL)wantsMenuBar;
-- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)a3;
+- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)layout;
 - (BOOL)wantsSlideOverTongue;
-- (BOOL)wantsSpaceAccessoryViewGenieForAppLayout:(id)a3;
-- (BOOL)wantsSpaceAccessoryViewPointerInteractionsForAppLayout:(id)a3;
+- (BOOL)wantsSpaceAccessoryViewGenieForAppLayout:(id)layout;
+- (BOOL)wantsSpaceAccessoryViewPointerInteractionsForAppLayout:(id)layout;
 - (BOOL)wantsSwitcherBackdropBlur;
 - (BOOL)wantsSwitcherDimmingView;
-- (CGPoint)adjustedOffsetForOffset:(CGPoint)a3 translation:(CGPoint)a4 startPoint:(CGPoint)a5 locationInView:(CGPoint)a6 horizontalVelocity:(double *)a7 verticalVelocity:(double *)a8;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4;
-- (CGPoint)contentViewOffsetForAccessoriesOfAppLayout:(id)a3;
-- (CGPoint)contentViewOffsetForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (CGPoint)adjustedOffsetForOffset:(CGPoint)offset translation:(CGPoint)translation startPoint:(CGPoint)point locationInView:(CGPoint)view horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)angle forAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment;
+- (CGPoint)contentViewOffsetForAccessoriesOfAppLayout:(id)layout;
+- (CGPoint)contentViewOffsetForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (CGPoint)expandedSourcePositionForSystemApertureTransition;
-- (CGPoint)frameForIndexOffsetToCounteractSwitcherWindowMatchMoveForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withPerspectiveAngle:(CGPoint)a5;
-- (CGPoint)restingOffsetForScrollOffset:(CGPoint)a3 velocity:(CGPoint)a4;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
+- (CGPoint)frameForIndexOffsetToCounteractSwitcherWindowMatchMoveForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)role inAppLayout:(id)layout withPerspectiveAngle:(CGPoint)angle;
+- (CGPoint)restingOffsetForScrollOffset:(CGPoint)offset velocity:(CGPoint)velocity;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
 - (CGRect)bounceIconInitialFrame;
-- (CGRect)clippingFrameForIndex:(unint64_t)a3 withBounds:(CGRect)a4;
-- (CGRect)clippingFrameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5 withBounds:(CGRect)a6;
+- (CGRect)clippingFrameForIndex:(unint64_t)index withBounds:(CGRect)bounds;
+- (CGRect)clippingFrameForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index withBounds:(CGRect)bounds;
 - (CGRect)containerViewBounds;
-- (CGRect)frameForIconOverlayInAppLayout:(id)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (CGRect)frameForShelf:(id)a3;
+- (CGRect)frameForIconOverlayInAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (CGRect)frameForShelf:(id)shelf;
 - (CGRect)frameForSlideOverTongueAppLayout;
-- (CGRect)frameForSplitViewHandleDimmingView:(id)a3;
-- (CGRect)frameForSplitViewHandleNubView:(id)a3;
-- (CGRect)fullyPresentedFrameForIndex:(unint64_t)a3 frame:(CGRect)a4;
+- (CGRect)frameForSplitViewHandleDimmingView:(id)view;
+- (CGRect)frameForSplitViewHandleNubView:(id)view;
+- (CGRect)fullyPresentedFrameForIndex:(unint64_t)index frame:(CGRect)frame;
 - (CGRect)rootContentViewMaskRect;
 - (CGRect)shelfBackgroundBlurFrame;
 - (CGRect)switcherViewBounds;
-- (SBRoutingSwitcherModifier)initWithModifiers:(id)a3 delegate:(id)a4;
+- (SBRoutingSwitcherModifier)initWithModifiers:(id)modifiers delegate:(id)delegate;
 - (SBRoutingSwitcherModifierDelegate)routingDelegate;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
 - (SBSwitcherContinuousExposeStripTongueAttributes)continuousExposeStripTongueAttributes;
-- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)a3;
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (SBWindowControlsLayout)windowControlsLayoutForLeafAppLayout:(SEL)a3;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5;
-- (char)activityModeForAppLayout:(id)a3;
-- (char)jetsamModeForAppLayout:(id)a3;
-- (double)adjustedSpaceAccessoryViewScale:(double)a3 forAppLayout:(id)a4;
-- (double)backgroundOpacityForIndex:(unint64_t)a3;
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)blurViewIconScaleForIndex:(unint64_t)a3;
+- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)shelf;
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (SBWindowControlsLayout)windowControlsLayoutForLeafAppLayout:(SEL)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii;
+- (char)activityModeForAppLayout:(id)layout;
+- (char)jetsamModeForAppLayout:(id)layout;
+- (double)adjustedSpaceAccessoryViewScale:(double)scale forAppLayout:(id)layout;
+- (double)backgroundOpacityForIndex:(unint64_t)index;
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)blurViewIconScaleForIndex:(unint64_t)index;
 - (double)containerStatusBarAnimationDuration;
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4;
-- (double)contentPageViewScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withContentPageViewScale:(double)a5;
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale;
+- (double)contentPageViewScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout withContentPageViewScale:(double)scale;
 - (double)contentViewScale;
 - (double)cornerRadiusForSlideOverTongueAppLayout;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)a3;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)search;
 - (double)dockProgress;
 - (double)dockWindowLevel;
 - (double)fadeInDelayForSplitViewHandles;
@@ -131,41 +131,41 @@
 - (double)homeScreenBackdropBlurProgress;
 - (double)homeScreenDimmingAlpha;
 - (double)homeScreenScale;
-- (double)iconOpacityForIndex:(unint64_t)a3;
-- (double)lighteningAlphaForIndex:(unint64_t)a3;
-- (double)minimumTranslationToKillIndex:(unint64_t)a3;
-- (double)modelValueForAnimatableProperty:(id)a3 currentValue:(double)a4 creating:(BOOL)a5;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
+- (double)iconOpacityForIndex:(unint64_t)index;
+- (double)lighteningAlphaForIndex:(unint64_t)index;
+- (double)minimumTranslationToKillIndex:(unint64_t)index;
+- (double)modelValueForAnimatableProperty:(id)property currentValue:(double)value creating:(BOOL)creating;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
 - (double)plusButtonAlpha;
 - (double)reopenClosedWindowsButtonAlpha;
 - (double)reopenClosedWindowsButtonScale;
-- (double)rotationAngleForIndex:(unint64_t)a3;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)shadowOffsetForIndex:(unint64_t)a3;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
+- (double)rotationAngleForIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)shadowOffsetForIndex:(unint64_t)index;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
 - (double)shelfBackgroundBlurOpacity;
-- (double)slideOverMarginForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)snapshotScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)spaceAccessoryViewIconHitTestOutsetForAppLayout:(id)a3;
+- (double)slideOverMarginForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)snapshotScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)spaceAccessoryViewIconHitTestOutsetForAppLayout:(id)layout;
 - (double)switcherBackdropBlurProgress;
 - (double)switcherDimmingAlpha;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
-- (double)titleOpacityForIndex:(unint64_t)a3;
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3;
-- (double)wallpaperOverlayAlphaForIndex:(unint64_t)a3;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
+- (double)titleOpacityForIndex:(unint64_t)index;
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index;
+- (double)wallpaperOverlayAlphaForIndex:(unint64_t)index;
 - (double)wallpaperScale;
-- (id)_adjustedShelfForShelf:(id)a3 forModifier:(id)a4;
-- (id)_adjustedShelfForShelf:(id)a3 fromModifier:(id)a4;
+- (id)_adjustedShelfForShelf:(id)shelf forModifier:(id)modifier;
+- (id)_adjustedShelfForShelf:(id)shelf fromModifier:(id)modifier;
 - (id)_currentModifierOrFallback;
 - (id)_forwardingTargetForUpdate;
 - (id)activeLeafAppLayoutsReachableByKeyboardShortcut;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:(id)a3;
-- (id)adjustedContinuousExposeIdentifiersInSwitcherFromPreviousIdentifiersInSwitcher:(id)a3 identifiersInStrip:(id)a4;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:(id)strip;
+- (id)adjustedContinuousExposeIdentifiersInSwitcherFromPreviousIdentifiersInSwitcher:(id)switcher identifiersInStrip:(id)strip;
 - (id)animatablePropertyIdentifiers;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)animationAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withAnimationAttributes:(id)a5;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)animationAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout withAnimationAttributes:(id)attributes;
 - (id)appExposeAccessoryButtonsBundleIdentifier;
 - (id)appLayoutForReceivingHardwareButtonEvents;
 - (id)appLayoutToAttachSlideOverTongue;
@@ -176,34 +176,34 @@
 - (id)appLayoutsToCacheSnapshots;
 - (id)appLayoutsToResignActive;
 - (id)bounceIconBundleIdentifier;
-- (id)containerLeafAppLayoutForShelf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)containerLeafAppLayoutForShelf:(id)shelf;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (id)destinationAppLayoutForDismissingCurrentMode;
-- (id)focusedAppLayoutForShelf:(id)a3;
+- (id)focusedAppLayoutForShelf:(id)shelf;
 - (id)foregroundAppLayouts;
-- (id)genieAttributesForAppLayout:(id)a3;
-- (id)handleEvent:(id)a3;
-- (id)hiddenAppLayoutsInShelf:(id)a3;
-- (id)homeAffordanceLayoutElementToPortalIntoShelf:(id)a3;
-- (id)identityMeshTransformForIndex:(unint64_t)a3;
-- (id)ignoredDisplayItemsForShelf:(id)a3;
+- (id)genieAttributesForAppLayout:(id)layout;
+- (id)handleEvent:(id)event;
+- (id)hiddenAppLayoutsInShelf:(id)shelf;
+- (id)homeAffordanceLayoutElementToPortalIntoShelf:(id)shelf;
+- (id)identityMeshTransformForIndex:(unint64_t)index;
+- (id)ignoredDisplayItemsForShelf:(id)shelf;
 - (id)inactiveAppLayoutsReachableByKeyboardShortcut;
 - (id)keyboardSuppressionMode;
-- (id)meshTransformForIndex:(unint64_t)a3;
-- (id)multipleWindowsIndicatorLayoutRolesForAppLayout:(id)a3;
-- (id)neighboringAppLayoutsForFocusedAppLayout:(id)a3;
-- (id)preferredAppLayoutToReuseAccessoryForAppLayout:(id)a3 fromAppLayouts:(id)a4;
+- (id)meshTransformForIndex:(unint64_t)index;
+- (id)multipleWindowsIndicatorLayoutRolesForAppLayout:(id)layout;
+- (id)neighboringAppLayoutsForFocusedAppLayout:(id)layout;
+- (id)preferredAppLayoutToReuseAccessoryForAppLayout:(id)layout fromAppLayouts:(id)layouts;
 - (id)proposedAppLayoutForWindowDrag;
-- (id)repositionProgressNotificationsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)resizeGrabberLayoutAttributesForAppLayout:(id)a3;
-- (id)resizeProgressNotificationsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (id)repositionProgressNotificationsForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)resizeGrabberLayoutAttributesForAppLayout:(id)layout;
+- (id)resizeProgressNotificationsForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (id)scrollViewAttributes;
-- (id)settingsForAnimatableProperty:(id)a3;
-- (id)stackDescriptionWithPrefix:(id)a3;
-- (id)switcherDropRegionContextForDraggingLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atLocation:(CGPoint)a5;
+- (id)settingsForAnimatableProperty:(id)property;
+- (id)stackDescriptionWithPrefix:(id)prefix;
+- (id)switcherDropRegionContextForDraggingLayoutRole:(int64_t)role inAppLayout:(id)layout atLocation:(CGPoint)location;
 - (id)topMostLayoutElements;
-- (id)topMostLayoutRolesForAppLayout:(id)a3;
+- (id)topMostLayoutRolesForAppLayout:(id)layout;
 - (id)visibleAppLayouts;
 - (id)visibleHomeAffordanceLayoutElements;
 - (id)visibleShelves;
@@ -211,68 +211,68 @@
 - (id)visibleSplitViewHandleNubViews;
 - (int64_t)appExposeAccessoryButtonsOverrideUserInterfaceStyle;
 - (int64_t)dockUpdateMode;
-- (int64_t)headerStyleForIndex:(unint64_t)a3;
+- (int64_t)headerStyleForIndex:(unint64_t)index;
 - (int64_t)homeScreenBackdropBlurType;
-- (int64_t)occlusionStateForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (int64_t)occlusionStateForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (int64_t)plusButtonStyle;
-- (int64_t)preferredSnapshotOrientationForAppLayout:(id)a3;
-- (int64_t)selectedActionTypeForLeafAppLayout:(id)a3;
-- (int64_t)shadowStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (int64_t)preferredSnapshotOrientationForAppLayout:(id)layout;
+- (int64_t)selectedActionTypeForLeafAppLayout:(id)layout;
+- (int64_t)shadowStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (int64_t)switcherBackdropBlurType;
-- (int64_t)tintStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (int64_t)topAffordanceOptionsMaskForLeafAppLayout:(id)a3;
-- (int64_t)touchBehaviorForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (int64_t)updateModeForAnimatableProperty:(id)a3;
+- (int64_t)tintStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (int64_t)topAffordanceOptionsMaskForLeafAppLayout:(id)layout;
+- (int64_t)touchBehaviorForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (int64_t)updateModeForAnimatableProperty:(id)property;
 - (int64_t)wallpaperStyle;
-- (unint64_t)_lastIndexForModifier:(id)a3;
-- (unint64_t)activeCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (unint64_t)blurTargetPreferenceForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (unint64_t)bounceIconGenerationCountForCurrentCount:(unint64_t)a3;
+- (unint64_t)_lastIndexForModifier:(id)modifier;
+- (unint64_t)activeCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (unint64_t)blurTargetPreferenceForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (unint64_t)bounceIconGenerationCountForCurrentCount:(unint64_t)count;
 - (unint64_t)dockWindowLevelPriority;
-- (unint64_t)footerViewIconAlignmentForAppLayout:(id)a3;
+- (unint64_t)footerViewIconAlignmentForAppLayout:(id)layout;
 - (unint64_t)hiddenContainerStatusBarParts;
-- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)a3;
-- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)a3;
-- (unint64_t)maskedCornersForIndex:(unint64_t)a3;
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5;
-- (unint64_t)personalityDebugColorStyleForAppLayout:(id)a3;
+- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)index;
+- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)index;
+- (unint64_t)maskedCornersForIndex:(unint64_t)index;
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners;
+- (unint64_t)personalityDebugColorStyleForAppLayout:(id)layout;
 - (unint64_t)slideOverTongueDirection;
 - (unint64_t)slideOverTongueState;
 - (unint64_t)transactionCompletionOptions;
-- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (void)didMoveToParentModifier:(id)a3;
+- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (void)didMoveToParentModifier:(id)modifier;
 - (void)resetAdjustedScrollingState;
 @end
 
 @implementation SBRoutingSwitcherModifier
 
-- (SBRoutingSwitcherModifier)initWithModifiers:(id)a3 delegate:(id)a4
+- (SBRoutingSwitcherModifier)initWithModifiers:(id)modifiers delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  modifiersCopy = modifiers;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = SBRoutingSwitcherModifier;
   v8 = [(SBSwitcherModifier *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [modifiersCopy copy];
     modifiers = v8->_modifiers;
     v8->_modifiers = v9;
 
-    objc_storeWeak(&v8->_routingDelegate, v7);
+    objc_storeWeak(&v8->_routingDelegate, delegateCopy);
   }
 
   return v8;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v16 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = SBRoutingSwitcherModifier;
   [(SBChainableModifier *)&v14 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     v12 = 0u;
     v13 = 0u;
@@ -306,13 +306,13 @@
   }
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  if (v4)
+  if (prefixCopy)
   {
-    v6 = [v4 stringByAppendingString:@"\t"];
+    v6 = [prefixCopy stringByAppendingString:@"\t"];
   }
 
   else
@@ -329,7 +329,7 @@
   v13 = v7;
   v14 = v6;
   v8 = v6;
-  [v7 appendBodySectionWithName:@"modifiers" multilinePrefix:v4 block:v12];
+  [v7 appendBodySectionWithName:@"modifiers" multilinePrefix:prefixCopy block:v12];
   v9 = v14;
   v10 = v7;
 
@@ -377,17 +377,17 @@ void __67__SBRoutingSwitcherModifier_descriptionBuilderWithMultilinePrefix___blo
   }
 }
 
-- (id)stackDescriptionWithPrefix:(id)a3
+- (id)stackDescriptionWithPrefix:(id)prefix
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = objc_opt_new();
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(SBSwitcherModifier *)self displayName];
-  v8 = [v6 stringWithFormat:@"%@%@", v4, v7];
+  displayName = [(SBSwitcherModifier *)self displayName];
+  v8 = [v6 stringWithFormat:@"%@%@", prefixCopy, displayName];
   [v5 addObject:v8];
 
-  v9 = [v4 stringByAppendingString:@"    "];
+  v9 = [prefixCopy stringByAppendingString:@"    "];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -408,9 +408,9 @@ void __67__SBRoutingSwitcherModifier_descriptionBuilderWithMultilinePrefix___blo
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 delegate];
+        delegate = [v15 delegate];
 
-        if (v16 == self)
+        if (delegate == self)
         {
           v17 = [v15 stackDescriptionWithPrefix:v9];
           [v5 addObject:v17];
@@ -428,7 +428,7 @@ void __67__SBRoutingSwitcherModifier_descriptionBuilderWithMultilinePrefix___blo
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   modifiers = self->_modifiers;
@@ -438,10 +438,10 @@ void __67__SBRoutingSwitcherModifier_descriptionBuilderWithMultilinePrefix___blo
   return v7;
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -459,7 +459,7 @@ void __67__SBRoutingSwitcherModifier_descriptionBuilderWithMultilinePrefix___blo
   {
     v17 = 0;
     v7 = *v23;
-    v8 = v4;
+    v8 = eventCopy;
     do
     {
       for (i = 0; i != v6; ++i)
@@ -470,15 +470,15 @@ void __67__SBRoutingSwitcherModifier_descriptionBuilderWithMultilinePrefix___blo
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [WeakRetained routingModifier:self event:v4 forModifier:v10];
+        v11 = [WeakRetained routingModifier:self event:eventCopy forModifier:v10];
 
         if (v11)
         {
           if ([v11 isHandled])
           {
-            v12 = [v11 unhandledCopy];
+            unhandledCopy = [v11 unhandledCopy];
 
-            v11 = v12;
+            v11 = unhandledCopy;
           }
 
           v18[0] = MEMORY[0x277D85DD0];
@@ -488,14 +488,14 @@ void __67__SBRoutingSwitcherModifier_descriptionBuilderWithMultilinePrefix___blo
           v18[4] = v10;
           v8 = v11;
           v19 = v8;
-          v20 = self;
+          selfCopy = self;
           v21 = &v26;
           _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v18);
           if ([v8 isHandled])
           {
-            v13 = [v8 handledReason];
+            handledReason = [v8 handledReason];
 
-            v17 = v13;
+            v17 = handledReason;
           }
         }
 
@@ -512,9 +512,9 @@ void __67__SBRoutingSwitcherModifier_descriptionBuilderWithMultilinePrefix___blo
 
     if (v17)
     {
-      if (([v4 isHandled] & 1) == 0)
+      if (([eventCopy isHandled] & 1) == 0)
       {
-        [v4 handleWithReason:v17];
+        [eventCopy handleWithReason:v17];
       }
     }
 
@@ -528,7 +528,7 @@ void __67__SBRoutingSwitcherModifier_descriptionBuilderWithMultilinePrefix___blo
   {
 
     v17 = 0;
-    v8 = v4;
+    v8 = eventCopy;
   }
 
   v14 = v27[5];
@@ -555,14 +555,14 @@ void __41__SBRoutingSwitcherModifier_handleEvent___block_invoke(uint64_t a1)
   WeakRetained = objc_loadWeakRetained(&self->_routingDelegate);
   v25.receiver = self;
   v25.super_class = SBRoutingSwitcherModifier;
-  v4 = [(SBRoutingSwitcherModifier *)&v25 appLayoutsGenerationCount];
-  if (self->_appLayouts_lastAppLayoutsGenCount != v4)
+  appLayoutsGenerationCount = [(SBRoutingSwitcherModifier *)&v25 appLayoutsGenerationCount];
+  if (self->_appLayouts_lastAppLayoutsGenCount != appLayoutsGenerationCount)
   {
-    v19 = v4;
+    v19 = appLayoutsGenerationCount;
     v24.receiver = self;
     v24.super_class = SBRoutingSwitcherModifier;
-    v5 = [(SBRoutingSwitcherModifier *)&v24 appLayouts];
-    v6 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    appLayouts = [(SBRoutingSwitcherModifier *)&v24 appLayouts];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -583,8 +583,8 @@ void __41__SBRoutingSwitcherModifier_handleEvent___block_invoke(uint64_t a1)
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [WeakRetained routingModifier:self filteredAppLayouts:v5 forModifier:v12];
-          [(NSMapTable *)v6 setObject:v13 forKey:v12];
+          v13 = [WeakRetained routingModifier:self filteredAppLayouts:appLayouts forModifier:v12];
+          [(NSMapTable *)weakToStrongObjectsMapTable setObject:v13 forKey:v12];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
@@ -594,14 +594,14 @@ void __41__SBRoutingSwitcherModifier_handleEvent___block_invoke(uint64_t a1)
     }
 
     appLayouts_appLayoutsForModifiers = self->_appLayouts_appLayoutsForModifiers;
-    self->_appLayouts_appLayoutsForModifiers = v6;
+    self->_appLayouts_appLayoutsForModifiers = weakToStrongObjectsMapTable;
 
     self->_appLayouts_lastAppLayoutsGenCount = v19;
   }
 
   v15 = self->_appLayouts_appLayoutsForModifiers;
-  v16 = [(SBRoutingSwitcherModifier *)self _currentModifierOrFallback];
-  v17 = [(NSMapTable *)v15 objectForKey:v16];
+  _currentModifierOrFallback = [(SBRoutingSwitcherModifier *)self _currentModifierOrFallback];
+  v17 = [(NSMapTable *)v15 objectForKey:_currentModifierOrFallback];
 
   return v17;
 }
@@ -609,8 +609,8 @@ void __41__SBRoutingSwitcherModifier_handleEvent___block_invoke(uint64_t a1)
 - (CGRect)containerViewBounds
 {
   WeakRetained = objc_loadWeakRetained(&self->_routingDelegate);
-  v4 = [(SBRoutingSwitcherModifier *)self _currentModifierOrFallback];
-  [WeakRetained routingModifier:self containerViewBoundsForModifier:v4];
+  _currentModifierOrFallback = [(SBRoutingSwitcherModifier *)self _currentModifierOrFallback];
+  [WeakRetained routingModifier:self containerViewBoundsForModifier:_currentModifierOrFallback];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -630,8 +630,8 @@ void __41__SBRoutingSwitcherModifier_handleEvent___block_invoke(uint64_t a1)
 - (CGRect)switcherViewBounds
 {
   WeakRetained = objc_loadWeakRetained(&self->_routingDelegate);
-  v4 = [(SBRoutingSwitcherModifier *)self _currentModifierOrFallback];
-  [WeakRetained routingModifier:self switcherViewBoundsForModifier:v4];
+  _currentModifierOrFallback = [(SBRoutingSwitcherModifier *)self _currentModifierOrFallback];
+  [WeakRetained routingModifier:self switcherViewBoundsForModifier:_currentModifierOrFallback];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -665,13 +665,13 @@ void __41__SBRoutingSwitcherModifier_handleEvent___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   v29 = 0;
   v30 = &v29;
   v31 = 0x4010000000;
@@ -683,8 +683,8 @@ void __41__SBRoutingSwitcherModifier_handleEvent___block_invoke(uint64_t a1)
   v21[2] = __71__SBRoutingSwitcherModifier_frameForLayoutRole_inAppLayout_withBounds___block_invoke;
   v21[3] = &unk_2783B2220;
   v23 = &v29;
-  v24 = a3;
-  v12 = v11;
+  roleCopy = role;
+  v12 = layoutCopy;
   v22 = v12;
   v25 = x;
   v26 = y;
@@ -719,9 +719,9 @@ uint64_t __71__SBRoutingSwitcherModifier_frameForLayoutRole_inAppLayout_withBoun
   return result;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -731,8 +731,8 @@ uint64_t __71__SBRoutingSwitcherModifier_frameForLayoutRole_inAppLayout_withBoun
   v10[2] = __60__SBRoutingSwitcherModifier_scaleForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -748,13 +748,13 @@ uint64_t __60__SBRoutingSwitcherModifier_scaleForLayoutRole_inAppLayout___block_
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii
 {
-  topRight = a5.topRight;
-  bottomRight = a5.bottomRight;
-  bottomLeft = a5.bottomLeft;
-  topLeft = a5.topLeft;
-  v11 = a4;
+  topRight = radii.topRight;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topLeft = radii.topLeft;
+  layoutCopy = layout;
   v29 = 0;
   v30 = &v29;
   v31 = 0x4010000000;
@@ -766,8 +766,8 @@ uint64_t __60__SBRoutingSwitcherModifier_scaleForLayoutRole_inAppLayout___block_
   v21[2] = __82__SBRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLayout_withCornerRadii___block_invoke;
   v21[3] = &unk_2783B2220;
   v23 = &v29;
-  v24 = a3;
-  v12 = v11;
+  roleCopy = role;
+  v12 = layoutCopy;
   v22 = v12;
   v25 = topLeft;
   v26 = bottomLeft;
@@ -802,9 +802,9 @@ uint64_t __82__SBRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLayout_wi
   return result;
 }
 
-- (int64_t)tintStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)tintStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -814,8 +814,8 @@ uint64_t __82__SBRoutingSwitcherModifier_cornerRadiiForLayoutRole_inAppLayout_wi
   v10[2] = __64__SBRoutingSwitcherModifier_tintStyleForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -831,9 +831,9 @@ uint64_t __64__SBRoutingSwitcherModifier_tintStyleForLayoutRole_inAppLayout___bl
   return result;
 }
 
-- (int64_t)shadowStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)shadowStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -843,8 +843,8 @@ uint64_t __64__SBRoutingSwitcherModifier_tintStyleForLayoutRole_inAppLayout___bl
   v10[2] = __66__SBRoutingSwitcherModifier_shadowStyleForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -860,9 +860,9 @@ uint64_t __66__SBRoutingSwitcherModifier_shadowStyleForLayoutRole_inAppLayout___
   return result;
 }
 
-- (id)topMostLayoutRolesForAppLayout:(id)a3
+- (id)topMostLayoutRolesForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -874,7 +874,7 @@ uint64_t __66__SBRoutingSwitcherModifier_shadowStyleForLayoutRole_inAppLayout___
   v8[2] = __60__SBRoutingSwitcherModifier_topMostLayoutRolesForAppLayout___block_invoke;
   v8[3] = &unk_2783B2270;
   v10 = &v11;
-  v5 = v4;
+  v5 = layoutCopy;
   v9 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v8);
   v6 = v12[5];
@@ -892,9 +892,9 @@ void __60__SBRoutingSwitcherModifier_topMostLayoutRolesForAppLayout___block_invo
   *(v4 + 40) = v3;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -904,8 +904,8 @@ void __60__SBRoutingSwitcherModifier_topMostLayoutRolesForAppLayout___block_invo
   v9[2] = __71__SBRoutingSwitcherModifier_isLayoutRoleMatchMovedToScene_inAppLayout___block_invoke;
   v9[3] = &unk_2783B2248;
   v11 = &v13;
-  v12 = a3;
-  v7 = v6;
+  sceneCopy = scene;
+  v7 = layoutCopy;
   v10 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v9);
   LOBYTE(self) = *(v14 + 24);
@@ -921,10 +921,10 @@ uint64_t __71__SBRoutingSwitcherModifier_isLayoutRoleMatchMovedToScene_inAppLayo
   return result;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutsCopy = layouts;
   v5 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
@@ -946,7 +946,7 @@ uint64_t __71__SBRoutingSwitcherModifier_isLayoutRoleMatchMovedToScene_inAppLayo
 
         v9 = *(*(&v24 + 1) + 8 * i);
         WeakRetained = objc_loadWeakRetained(&self->_routingDelegate);
-        v11 = [WeakRetained routingModifier:self filteredAppLayouts:v4 forModifier:v9];
+        v11 = [WeakRetained routingModifier:self filteredAppLayouts:layoutsCopy forModifier:v9];
 
         v18 = 0;
         v19 = &v18;
@@ -985,11 +985,11 @@ void __61__SBRoutingSwitcherModifier_adjustedAppLayoutsForAppLayouts___block_inv
   *(v3 + 40) = v2;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_routingDelegate);
-  v6 = [WeakRetained routingModifier:self animationAttributesModifierForLayoutElement:v4];
+  v6 = [WeakRetained routingModifier:self animationAttributesModifierForLayoutElement:elementCopy];
 
   v15 = 0;
   v16 = &v15;
@@ -1004,7 +1004,7 @@ void __61__SBRoutingSwitcherModifier_adjustedAppLayoutsForAppLayouts___block_inv
   v14 = &v15;
   v7 = v6;
   v12 = v7;
-  v8 = v4;
+  v8 = elementCopy;
   v13 = v8;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v7, v11);
   v9 = v16[5];
@@ -1022,11 +1022,11 @@ void __65__SBRoutingSwitcherModifier_animationAttributesForLayoutElement___block
   *(v3 + 40) = v2;
 }
 
-- (id)switcherDropRegionContextForDraggingLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atLocation:(CGPoint)a5
+- (id)switcherDropRegionContextForDraggingLayoutRole:(int64_t)role inAppLayout:(id)layout atLocation:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
+  y = location.y;
+  x = location.x;
+  layoutCopy = layout;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1038,8 +1038,8 @@ void __65__SBRoutingSwitcherModifier_animationAttributesForLayoutElement___block
   v13[2] = __99__SBRoutingSwitcherModifier_switcherDropRegionContextForDraggingLayoutRole_inAppLayout_atLocation___block_invoke;
   v13[3] = &unk_2783B2298;
   v15 = &v19;
-  v16 = a3;
-  v10 = v9;
+  roleCopy = role;
+  v10 = layoutCopy;
   v14 = v10;
   v17 = x;
   v18 = y;
@@ -1059,9 +1059,9 @@ void __99__SBRoutingSwitcherModifier_switcherDropRegionContextForDraggingLayoutR
   *(v4 + 40) = v3;
 }
 
-- (BOOL)isLayoutRoleDraggable:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleDraggable:(int64_t)draggable inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1071,8 +1071,8 @@ void __99__SBRoutingSwitcherModifier_switcherDropRegionContextForDraggingLayoutR
   v9[2] = __63__SBRoutingSwitcherModifier_isLayoutRoleDraggable_inAppLayout___block_invoke;
   v9[3] = &unk_2783B2248;
   v11 = &v13;
-  v12 = a3;
-  v7 = v6;
+  draggableCopy = draggable;
+  v7 = layoutCopy;
   v10 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v9);
   LOBYTE(self) = *(v14 + 24);
@@ -1088,9 +1088,9 @@ uint64_t __63__SBRoutingSwitcherModifier_isLayoutRoleDraggable_inAppLayout___blo
   return result;
 }
 
-- (BOOL)isLayoutRoleEligibleForContentDragSpringLoading:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleEligibleForContentDragSpringLoading:(int64_t)loading inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1100,8 +1100,8 @@ uint64_t __63__SBRoutingSwitcherModifier_isLayoutRoleDraggable_inAppLayout___blo
   v9[2] = __89__SBRoutingSwitcherModifier_isLayoutRoleEligibleForContentDragSpringLoading_inAppLayout___block_invoke;
   v9[3] = &unk_2783B2248;
   v11 = &v13;
-  v12 = a3;
-  v7 = v6;
+  loadingCopy = loading;
+  v7 = layoutCopy;
   v10 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v9);
   LOBYTE(self) = *(v14 + 24);
@@ -1117,9 +1117,9 @@ uint64_t __89__SBRoutingSwitcherModifier_isLayoutRoleEligibleForContentDragSprin
   return result;
 }
 
-- (BOOL)canLayoutRoleParticipateInSwitcherDragAndDrop:(int64_t)a3 appLayout:(id)a4
+- (BOOL)canLayoutRoleParticipateInSwitcherDragAndDrop:(int64_t)drop appLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1129,8 +1129,8 @@ uint64_t __89__SBRoutingSwitcherModifier_isLayoutRoleEligibleForContentDragSprin
   v9[2] = __85__SBRoutingSwitcherModifier_canLayoutRoleParticipateInSwitcherDragAndDrop_appLayout___block_invoke;
   v9[3] = &unk_2783B2248;
   v11 = &v13;
-  v12 = a3;
-  v7 = v6;
+  dropCopy = drop;
+  v7 = layoutCopy;
   v10 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v9);
   LOBYTE(self) = *(v14 + 24);
@@ -1146,9 +1146,9 @@ uint64_t __85__SBRoutingSwitcherModifier_canLayoutRoleParticipateInSwitcherDragA
   return result;
 }
 
-- (int64_t)topAffordanceOptionsMaskForLeafAppLayout:(id)a3
+- (int64_t)topAffordanceOptionsMaskForLeafAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1158,7 +1158,7 @@ uint64_t __85__SBRoutingSwitcherModifier_canLayoutRoleParticipateInSwitcherDragA
   v8[2] = __70__SBRoutingSwitcherModifier_topAffordanceOptionsMaskForLeafAppLayout___block_invoke;
   v8[3] = &unk_2783B2270;
   v10 = &v11;
-  v5 = v4;
+  v5 = layoutCopy;
   v9 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v8);
   v6 = v12[3];
@@ -1174,9 +1174,9 @@ uint64_t __70__SBRoutingSwitcherModifier_topAffordanceOptionsMaskForLeafAppLayou
   return result;
 }
 
-- (int64_t)selectedActionTypeForLeafAppLayout:(id)a3
+- (int64_t)selectedActionTypeForLeafAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1186,7 +1186,7 @@ uint64_t __70__SBRoutingSwitcherModifier_topAffordanceOptionsMaskForLeafAppLayou
   v8[2] = __64__SBRoutingSwitcherModifier_selectedActionTypeForLeafAppLayout___block_invoke;
   v8[3] = &unk_2783B2270;
   v10 = &v11;
-  v5 = v4;
+  v5 = layoutCopy;
   v9 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v8);
   v6 = v12[3];
@@ -1202,7 +1202,7 @@ uint64_t __64__SBRoutingSwitcherModifier_selectedActionTypeForLeafAppLayout___bl
   return result;
 }
 
-- (SBWindowControlsLayout)windowControlsLayoutForLeafAppLayout:(SEL)a3
+- (SBWindowControlsLayout)windowControlsLayoutForLeafAppLayout:(SEL)layout
 {
   v6 = a4;
   v13 = 0;
@@ -1237,7 +1237,7 @@ double __66__SBRoutingSwitcherModifier_windowControlsLayoutForLeafAppLayout___bl
   return result;
 }
 
-- (double)backgroundOpacityForIndex:(unint64_t)a3
+- (double)backgroundOpacityForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -1248,7 +1248,7 @@ double __66__SBRoutingSwitcherModifier_windowControlsLayoutForLeafAppLayout___bl
   v5[2] = __55__SBRoutingSwitcherModifier_backgroundOpacityForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -1261,7 +1261,7 @@ uint64_t __55__SBRoutingSwitcherModifier_backgroundOpacityForIndex___block_invok
   return result;
 }
 
-- (unint64_t)maskedCornersForIndex:(unint64_t)a3
+- (unint64_t)maskedCornersForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -1272,7 +1272,7 @@ uint64_t __55__SBRoutingSwitcherModifier_backgroundOpacityForIndex___block_invok
   v5[2] = __51__SBRoutingSwitcherModifier_maskedCornersForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -1285,9 +1285,9 @@ uint64_t __51__SBRoutingSwitcherModifier_maskedCornersForIndex___block_invoke(ui
   return result;
 }
 
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners
 {
-  v8 = a4;
+  layoutCopy = layout;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -1297,10 +1297,10 @@ uint64_t __51__SBRoutingSwitcherModifier_maskedCornersForIndex___block_invoke(ui
   v12[2] = __86__SBRoutingSwitcherModifier_maskedCornersForLayoutRole_inAppLayout_withMaskedCorners___block_invoke;
   v12[3] = &unk_2783B22E8;
   v14 = &v17;
-  v15 = a3;
-  v9 = v8;
+  roleCopy = role;
+  v9 = layoutCopy;
   v13 = v9;
-  v16 = a5;
+  cornersCopy = corners;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v9, v12);
   v10 = v18[3];
 
@@ -1315,10 +1315,10 @@ uint64_t __86__SBRoutingSwitcherModifier_maskedCornersForLayoutRole_inAppLayout_
   return result;
 }
 
-- (id)animationAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withAnimationAttributes:(id)a5
+- (id)animationAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout withAnimationAttributes:(id)attributes
 {
-  v8 = a4;
-  v9 = a5;
+  layoutCopy = layout;
+  attributesCopy = attributes;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1330,10 +1330,10 @@ uint64_t __86__SBRoutingSwitcherModifier_maskedCornersForLayoutRole_inAppLayout_
   v14[2] = __98__SBRoutingSwitcherModifier_animationAttributesForLayoutRole_inAppLayout_withAnimationAttributes___block_invoke;
   v14[3] = &unk_2783B2310;
   v17 = &v19;
-  v18 = a3;
-  v10 = v8;
+  roleCopy = role;
+  v10 = layoutCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = attributesCopy;
   v16 = v11;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v10, v14);
   v12 = v20[5];
@@ -1351,9 +1351,9 @@ void __98__SBRoutingSwitcherModifier_animationAttributesForLayoutRole_inAppLayou
   *(v4 + 40) = v3;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1363,8 +1363,8 @@ void __98__SBRoutingSwitcherModifier_animationAttributesForLayoutRole_inAppLayou
   v9[2] = __61__SBRoutingSwitcherModifier_isLayoutRoleBlurred_inAppLayout___block_invoke;
   v9[3] = &unk_2783B2248;
   v11 = &v13;
-  v12 = a3;
-  v7 = v6;
+  blurredCopy = blurred;
+  v7 = layoutCopy;
   v10 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v9);
   LOBYTE(self) = *(v14 + 24);
@@ -1380,9 +1380,9 @@ uint64_t __61__SBRoutingSwitcherModifier_isLayoutRoleBlurred_inAppLayout___block
   return result;
 }
 
-- (unint64_t)blurTargetPreferenceForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (unint64_t)blurTargetPreferenceForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1392,8 +1392,8 @@ uint64_t __61__SBRoutingSwitcherModifier_isLayoutRoleBlurred_inAppLayout___block
   v10[2] = __75__SBRoutingSwitcherModifier_blurTargetPreferenceForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -1409,9 +1409,9 @@ uint64_t __75__SBRoutingSwitcherModifier_blurTargetPreferenceForLayoutRole_inApp
   return result;
 }
 
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1421,8 +1421,8 @@ uint64_t __75__SBRoutingSwitcherModifier_blurTargetPreferenceForLayoutRole_inApp
   v10[2] = __64__SBRoutingSwitcherModifier_blurDelayForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -1438,9 +1438,9 @@ uint64_t __64__SBRoutingSwitcherModifier_blurDelayForLayoutRole_inAppLayout___bl
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
+  layoutCopy = layout;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1450,10 +1450,10 @@ uint64_t __64__SBRoutingSwitcherModifier_blurDelayForLayoutRole_inAppLayout___bl
   v12[2] = __70__SBRoutingSwitcherModifier_opacityForLayoutRole_inAppLayout_atIndex___block_invoke;
   v12[3] = &unk_2783B2338;
   v14 = &v16;
-  v15 = a3;
-  v9 = v8;
+  roleCopy = role;
+  v9 = layoutCopy;
   v13 = v9;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a5, v12);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v12);
   v10 = v17[3];
 
   _Block_object_dispose(&v16, 8);
@@ -1467,7 +1467,7 @@ uint64_t __70__SBRoutingSwitcherModifier_opacityForLayoutRole_inAppLayout_atInde
   return result;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
   v7 = 0;
   v8 = &v7;
@@ -1478,8 +1478,8 @@ uint64_t __70__SBRoutingSwitcherModifier_opacityForLayoutRole_inAppLayout_atInde
   v6[2] = __64__SBRoutingSwitcherModifier_shadowOpacityForLayoutRole_atIndex___block_invoke;
   v6[3] = &unk_2783B2360;
   v6[4] = &v7;
-  v6[5] = a3;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a4, v6);
+  v6[5] = role;
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v6);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
@@ -1492,9 +1492,9 @@ uint64_t __64__SBRoutingSwitcherModifier_shadowOpacityForLayoutRole_atIndex___bl
   return result;
 }
 
-- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1504,8 +1504,8 @@ uint64_t __64__SBRoutingSwitcherModifier_shadowOpacityForLayoutRole_atIndex___bl
   v9[2] = __84__SBRoutingSwitcherModifier_shouldAllowContentViewTouchesForLayoutRole_inAppLayout___block_invoke;
   v9[3] = &unk_2783B2248;
   v11 = &v13;
-  v12 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v10 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v9);
   LOBYTE(self) = *(v14 + 24);
@@ -1521,9 +1521,9 @@ uint64_t __84__SBRoutingSwitcherModifier_shouldAllowContentViewTouchesForLayoutR
   return result;
 }
 
-- (BOOL)isLayoutRoleSelectable:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleSelectable:(int64_t)selectable inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1533,8 +1533,8 @@ uint64_t __84__SBRoutingSwitcherModifier_shouldAllowContentViewTouchesForLayoutR
   v9[2] = __64__SBRoutingSwitcherModifier_isLayoutRoleSelectable_inAppLayout___block_invoke;
   v9[3] = &unk_2783B2248;
   v11 = &v13;
-  v12 = a3;
-  v7 = v6;
+  selectableCopy = selectable;
+  v7 = layoutCopy;
   v10 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v9);
   LOBYTE(self) = *(v14 + 24);
@@ -1550,9 +1550,9 @@ uint64_t __64__SBRoutingSwitcherModifier_isLayoutRoleSelectable_inAppLayout___bl
   return result;
 }
 
-- (BOOL)shouldSuppressHighlightEffectForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)shouldSuppressHighlightEffectForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1562,8 +1562,8 @@ uint64_t __64__SBRoutingSwitcherModifier_isLayoutRoleSelectable_inAppLayout___bl
   v9[2] = __84__SBRoutingSwitcherModifier_shouldSuppressHighlightEffectForLayoutRole_inAppLayout___block_invoke;
   v9[3] = &unk_2783B2248;
   v11 = &v13;
-  v12 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v10 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v9);
   LOBYTE(self) = *(v14 + 24);
@@ -1579,9 +1579,9 @@ uint64_t __84__SBRoutingSwitcherModifier_shouldSuppressHighlightEffectForLayoutR
   return result;
 }
 
-- (BOOL)shouldUseNonuniformSnapshotScalingForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)shouldUseNonuniformSnapshotScalingForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1591,8 +1591,8 @@ uint64_t __84__SBRoutingSwitcherModifier_shouldSuppressHighlightEffectForLayoutR
   v9[2] = __89__SBRoutingSwitcherModifier_shouldUseNonuniformSnapshotScalingForLayoutRole_inAppLayout___block_invoke;
   v9[3] = &unk_2783B2248;
   v11 = &v13;
-  v12 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v10 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v9);
   LOBYTE(self) = *(v14 + 24);
@@ -1608,9 +1608,9 @@ uint64_t __89__SBRoutingSwitcherModifier_shouldUseNonuniformSnapshotScalingForLa
   return result;
 }
 
-- (int64_t)touchBehaviorForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)touchBehaviorForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1620,8 +1620,8 @@ uint64_t __89__SBRoutingSwitcherModifier_shouldUseNonuniformSnapshotScalingForLa
   v10[2] = __68__SBRoutingSwitcherModifier_touchBehaviorForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -1637,7 +1637,7 @@ uint64_t __68__SBRoutingSwitcherModifier_touchBehaviorForLayoutRole_inAppLayout_
   return result;
 }
 
-- (double)blurViewIconScaleForIndex:(unint64_t)a3
+- (double)blurViewIconScaleForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -1648,7 +1648,7 @@ uint64_t __68__SBRoutingSwitcherModifier_touchBehaviorForLayoutRole_inAppLayout_
   v5[2] = __55__SBRoutingSwitcherModifier_blurViewIconScaleForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -1661,9 +1661,9 @@ uint64_t __55__SBRoutingSwitcherModifier_blurViewIconScaleForIndex___block_invok
   return result;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1673,8 +1673,8 @@ uint64_t __55__SBRoutingSwitcherModifier_blurViewIconScaleForIndex___block_invok
   v10[2] = __67__SBRoutingSwitcherModifier_dimmingAlphaForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -1841,9 +1841,9 @@ uint64_t __53__SBRoutingSwitcherModifier_switcherHitTestsAsOpaque__block_invoke(
   return result;
 }
 
-- (id)resizeProgressNotificationsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (id)resizeProgressNotificationsForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1855,8 +1855,8 @@ uint64_t __53__SBRoutingSwitcherModifier_switcherHitTestsAsOpaque__block_invoke(
   v10[2] = __82__SBRoutingSwitcherModifier_resizeProgressNotificationsForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[5];
@@ -1874,9 +1874,9 @@ void __82__SBRoutingSwitcherModifier_resizeProgressNotificationsForLayoutRole_in
   *(v4 + 40) = v3;
 }
 
-- (id)repositionProgressNotificationsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (id)repositionProgressNotificationsForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1888,8 +1888,8 @@ void __82__SBRoutingSwitcherModifier_resizeProgressNotificationsForLayoutRole_in
   v10[2] = __86__SBRoutingSwitcherModifier_repositionProgressNotificationsForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[5];
@@ -1907,7 +1907,7 @@ void __86__SBRoutingSwitcherModifier_repositionProgressNotificationsForLayoutRol
   *(v4 + 40) = v3;
 }
 
-- (CGRect)fullyPresentedFrameForIndex:(unint64_t)a3 frame:(CGRect)a4
+- (CGRect)fullyPresentedFrameForIndex:(unint64_t)index frame:(CGRect)frame
 {
   v14 = 0;
   v15 = &v14;
@@ -1920,8 +1920,8 @@ void __86__SBRoutingSwitcherModifier_repositionProgressNotificationsForLayoutRol
   v12[2] = __63__SBRoutingSwitcherModifier_fullyPresentedFrameForIndex_frame___block_invoke;
   v12[3] = &unk_2783B2388;
   v12[4] = &v14;
-  v13 = a4;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v12);
+  frameCopy = frame;
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v12);
   v4 = v15[4];
   v5 = v15[5];
   v6 = v15[6];
@@ -2026,10 +2026,10 @@ void __58__SBRoutingSwitcherModifier_animatablePropertyIdentifiers__block_invoke
   *(v3 + 40) = v2;
 }
 
-- (double)modelValueForAnimatableProperty:(id)a3 currentValue:(double)a4 creating:(BOOL)a5
+- (double)modelValueForAnimatableProperty:(id)property currentValue:(double)value creating:(BOOL)creating
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  propertyCopy = property;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -2062,7 +2062,7 @@ LABEL_3:
       v15[4] = v11;
       v15[5] = &v16;
       _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v11, v15);
-      v12 = [v17[5] containsObject:v7];
+      v12 = [v17[5] containsObject:propertyCopy];
       _Block_object_dispose(&v16, 8);
 
       if (v12)
@@ -2083,7 +2083,7 @@ LABEL_3:
     }
   }
 
-  return a4;
+  return value;
 }
 
 void __83__SBRoutingSwitcherModifier_modelValueForAnimatableProperty_currentValue_creating___block_invoke(uint64_t a1)
@@ -2094,10 +2094,10 @@ void __83__SBRoutingSwitcherModifier_modelValueForAnimatableProperty_currentValu
   *(v3 + 40) = v2;
 }
 
-- (int64_t)updateModeForAnimatableProperty:(id)a3
+- (int64_t)updateModeForAnimatableProperty:(id)property
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertyCopy = property;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -2130,7 +2130,7 @@ LABEL_3:
       v12[4] = v8;
       v12[5] = &v13;
       _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v8, v12);
-      v9 = [v14[5] containsObject:v4];
+      v9 = [v14[5] containsObject:propertyCopy];
       _Block_object_dispose(&v13, 8);
 
       if (v9)
@@ -2162,10 +2162,10 @@ void __61__SBRoutingSwitcherModifier_updateModeForAnimatableProperty___block_inv
   *(v3 + 40) = v2;
 }
 
-- (id)settingsForAnimatableProperty:(id)a3
+- (id)settingsForAnimatableProperty:(id)property
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertyCopy = property;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -2198,7 +2198,7 @@ LABEL_3:
       v13[4] = v8;
       v13[5] = &v14;
       _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v8, v13);
-      v9 = [v15[5] containsObject:v4];
+      v9 = [v15[5] containsObject:propertyCopy];
       _Block_object_dispose(&v14, 8);
 
       if (v9)
@@ -2219,9 +2219,9 @@ LABEL_3:
     }
   }
 
-  v10 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
 
-  return v10;
+  return initWithDefaultValues;
 }
 
 void __59__SBRoutingSwitcherModifier_settingsForAnimatableProperty___block_invoke(uint64_t a1)
@@ -2232,10 +2232,10 @@ void __59__SBRoutingSwitcherModifier_settingsForAnimatableProperty___block_invok
   *(v3 + 40) = v2;
 }
 
-- (BOOL)shouldUpdateAnimatableProperty:(id)a3
+- (BOOL)shouldUpdateAnimatableProperty:(id)property
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertyCopy = property;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -2268,7 +2268,7 @@ LABEL_3:
       v12[4] = v8;
       v12[5] = &v13;
       _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v8, v12);
-      v9 = [v14[5] containsObject:v4];
+      v9 = [v14[5] containsObject:propertyCopy];
       _Block_object_dispose(&v13, 8);
 
       if (v9)
@@ -2300,9 +2300,9 @@ void __60__SBRoutingSwitcherModifier_shouldUpdateAnimatableProperty___block_invo
   *(v3 + 40) = v2;
 }
 
-- (CGRect)frameForIconOverlayInAppLayout:(id)a3
+- (CGRect)frameForIconOverlayInAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v17 = 0;
   v18 = &v17;
   v19 = 0x4010000000;
@@ -2314,7 +2314,7 @@ void __60__SBRoutingSwitcherModifier_shouldUpdateAnimatableProperty___block_invo
   v14[2] = __60__SBRoutingSwitcherModifier_frameForIconOverlayInAppLayout___block_invoke;
   v14[3] = &unk_2783B2270;
   v16 = &v17;
-  v5 = v4;
+  v5 = layoutCopy;
   v15 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v14);
   v6 = v18[4];
@@ -2345,9 +2345,9 @@ uint64_t __60__SBRoutingSwitcherModifier_frameForIconOverlayInAppLayout___block_
   return result;
 }
 
-- (BOOL)canFocusableAppLayoutBeEffectivelyObscured:(id)a3
+- (BOOL)canFocusableAppLayoutBeEffectivelyObscured:(id)obscured
 {
-  v4 = a3;
+  obscuredCopy = obscured;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2357,7 +2357,7 @@ uint64_t __60__SBRoutingSwitcherModifier_frameForIconOverlayInAppLayout___block_
   v7[2] = __72__SBRoutingSwitcherModifier_canFocusableAppLayoutBeEffectivelyObscured___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = obscuredCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -2373,7 +2373,7 @@ uint64_t __72__SBRoutingSwitcherModifier_canFocusableAppLayoutBeEffectivelyObscu
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
   v8 = 0;
   v9 = &v8;
@@ -2386,7 +2386,7 @@ uint64_t __72__SBRoutingSwitcherModifier_canFocusableAppLayoutBeEffectivelyObscu
   v7[2] = __49__SBRoutingSwitcherModifier_anchorPointForIndex___block_invoke;
   v7[3] = &unk_2783B22C0;
   v7[4] = &v8;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v7);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v7);
   v3 = v9[4];
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -2406,7 +2406,7 @@ uint64_t __49__SBRoutingSwitcherModifier_anchorPointForIndex___block_invoke(uint
   return result;
 }
 
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space
 {
   v6 = 0;
   v7 = &v6;
@@ -2417,7 +2417,7 @@ uint64_t __49__SBRoutingSwitcherModifier_anchorPointForIndex___block_invoke(uint
   v5[2] = __57__SBRoutingSwitcherModifier_shouldPinLayoutRolesToSpace___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, space, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -2430,7 +2430,7 @@ uint64_t __57__SBRoutingSwitcherModifier_shouldPinLayoutRolesToSpace___block_inv
   return result;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
   v6 = 0;
   v7 = &v6;
@@ -2441,7 +2441,7 @@ uint64_t __57__SBRoutingSwitcherModifier_shouldPinLayoutRolesToSpace___block_inv
   v5[2] = __73__SBRoutingSwitcherModifier_shouldUseAnchorPointToPinLayoutRolesToSpace___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, space, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -2530,7 +2530,7 @@ uint64_t __57__SBRoutingSwitcherModifier_isHitTestBlockingViewVisible__block_inv
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v12 = 0;
   v13 = &v12;
@@ -2543,7 +2543,7 @@ uint64_t __57__SBRoutingSwitcherModifier_isHitTestBlockingViewVisible__block_inv
   v11[2] = __43__SBRoutingSwitcherModifier_frameForIndex___block_invoke;
   v11[3] = &unk_2783B22C0;
   v11[4] = &v12;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v11);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v11);
   v3 = v13[4];
   v4 = v13[5];
   v5 = v13[6];
@@ -2571,7 +2571,7 @@ uint64_t __43__SBRoutingSwitcherModifier_frameForIndex___block_invoke(uint64_t a
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -2582,7 +2582,7 @@ uint64_t __43__SBRoutingSwitcherModifier_frameForIndex___block_invoke(uint64_t a
   v5[2] = __43__SBRoutingSwitcherModifier_scaleForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -2595,7 +2595,7 @@ uint64_t __43__SBRoutingSwitcherModifier_scaleForIndex___block_invoke(uint64_t a
   return result;
 }
 
-- (double)rotationAngleForIndex:(unint64_t)a3
+- (double)rotationAngleForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -2606,7 +2606,7 @@ uint64_t __43__SBRoutingSwitcherModifier_scaleForIndex___block_invoke(uint64_t a
   v5[2] = __51__SBRoutingSwitcherModifier_rotationAngleForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -2619,10 +2619,10 @@ uint64_t __51__SBRoutingSwitcherModifier_rotationAngleForIndex___block_invoke(ui
   return result;
 }
 
-- (int64_t)occlusionStateForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)occlusionStateForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v30 = *MEMORY[0x277D85DE8];
-  v16 = a4;
+  layoutCopy = layout;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -2654,9 +2654,9 @@ uint64_t __51__SBRoutingSwitcherModifier_rotationAngleForIndex___block_invoke(ui
         v17[2] = __69__SBRoutingSwitcherModifier_occlusionStateForLayoutRole_inAppLayout___block_invoke;
         v17[3] = &unk_2783AA668;
         v19 = &v21;
-        v20 = a3;
+        roleCopy = role;
         v17[4] = v11;
-        v18 = v16;
+        v18 = layoutCopy;
         _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v11, v17);
         v12 = v22[3];
 
@@ -2702,7 +2702,7 @@ uint64_t __69__SBRoutingSwitcherModifier_occlusionStateForLayoutRole_inAppLayout
   return result;
 }
 
-- (CGRect)clippingFrameForIndex:(unint64_t)a3 withBounds:(CGRect)a4
+- (CGRect)clippingFrameForIndex:(unint64_t)index withBounds:(CGRect)bounds
 {
   v15 = 0;
   v16 = &v15;
@@ -2716,8 +2716,8 @@ uint64_t __69__SBRoutingSwitcherModifier_occlusionStateForLayoutRole_inAppLayout
   v13[2] = __62__SBRoutingSwitcherModifier_clippingFrameForIndex_withBounds___block_invoke;
   v13[3] = &unk_2783B2388;
   v13[4] = &v15;
-  v14 = a4;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v13);
+  boundsCopy = bounds;
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v13);
   v5 = v16[4];
   v6 = v16[5];
   v7 = v16[6];
@@ -2745,13 +2745,13 @@ uint64_t __62__SBRoutingSwitcherModifier_clippingFrameForIndex_withBounds___bloc
   return result;
 }
 
-- (CGRect)clippingFrameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5 withBounds:(CGRect)a6
+- (CGRect)clippingFrameForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index withBounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   v32 = 0;
   v33 = &v32;
   v34 = 0x4010000000;
@@ -2764,14 +2764,14 @@ uint64_t __62__SBRoutingSwitcherModifier_clippingFrameForIndex_withBounds___bloc
   v24[2] = __87__SBRoutingSwitcherModifier_clippingFrameForLayoutRole_inAppLayout_atIndex_withBounds___block_invoke;
   v24[3] = &unk_2783B23B0;
   v26 = &v32;
-  v27 = a3;
-  v15 = v13;
+  roleCopy = role;
+  v15 = layoutCopy;
   v25 = v15;
   v28 = x;
   v29 = y;
   v30 = width;
   v31 = height;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a5, v24);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v24);
   v16 = v33[4];
   v17 = v33[5];
   v18 = v33[6];
@@ -2800,7 +2800,7 @@ uint64_t __87__SBRoutingSwitcherModifier_clippingFrameForLayoutRole_inAppLayout_
   return result;
 }
 
-- (BOOL)clipsToBoundsAtIndex:(unint64_t)a3
+- (BOOL)clipsToBoundsAtIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -2811,7 +2811,7 @@ uint64_t __87__SBRoutingSwitcherModifier_clippingFrameForLayoutRole_inAppLayout_
   v5[2] = __50__SBRoutingSwitcherModifier_clipsToBoundsAtIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -2824,10 +2824,10 @@ uint64_t __50__SBRoutingSwitcherModifier_clipsToBoundsAtIndex___block_invoke(uin
   return result;
 }
 
-- (id)preferredAppLayoutToReuseAccessoryForAppLayout:(id)a3 fromAppLayouts:(id)a4
+- (id)preferredAppLayoutToReuseAccessoryForAppLayout:(id)layout fromAppLayouts:(id)layouts
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  layoutsCopy = layouts;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -2839,9 +2839,9 @@ uint64_t __50__SBRoutingSwitcherModifier_clipsToBoundsAtIndex___block_invoke(uin
   v12[2] = __91__SBRoutingSwitcherModifier_preferredAppLayoutToReuseAccessoryForAppLayout_fromAppLayouts___block_invoke;
   v12[3] = &unk_2783B23D8;
   v15 = &v16;
-  v8 = v6;
+  v8 = layoutCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = layoutsCopy;
   v14 = v9;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v8, v12);
   v10 = v17[5];
@@ -2881,7 +2881,7 @@ void __91__SBRoutingSwitcherModifier_preferredAppLayoutToReuseAccessoryForAppLay
   return result;
 }
 
-- (id)meshTransformForIndex:(unint64_t)a3
+- (id)meshTransformForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -2894,7 +2894,7 @@ void __91__SBRoutingSwitcherModifier_preferredAppLayoutToReuseAccessoryForAppLay
   v5[2] = __51__SBRoutingSwitcherModifier_meshTransformForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -2909,7 +2909,7 @@ void __51__SBRoutingSwitcherModifier_meshTransformForIndex___block_invoke(uint64
   *(v4 + 40) = v3;
 }
 
-- (id)identityMeshTransformForIndex:(unint64_t)a3
+- (id)identityMeshTransformForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -2922,7 +2922,7 @@ void __51__SBRoutingSwitcherModifier_meshTransformForIndex___block_invoke(uint64
   v5[2] = __59__SBRoutingSwitcherModifier_identityMeshTransformForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -2937,9 +2937,9 @@ void __59__SBRoutingSwitcherModifier_identityMeshTransformForIndex___block_invok
   *(v4 + 40) = v3;
 }
 
-- (id)genieAttributesForAppLayout:(id)a3
+- (id)genieAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -2951,7 +2951,7 @@ void __59__SBRoutingSwitcherModifier_identityMeshTransformForIndex___block_invok
   v8[2] = __57__SBRoutingSwitcherModifier_genieAttributesForAppLayout___block_invoke;
   v8[3] = &unk_2783B2270;
   v10 = &v11;
-  v5 = v4;
+  v5 = layoutCopy;
   v9 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v8);
   v6 = v12[5];
@@ -2969,9 +2969,9 @@ void __57__SBRoutingSwitcherModifier_genieAttributesForAppLayout___block_invoke(
   *(v4 + 40) = v3;
 }
 
-- (BOOL)isDropletEffectRequiredBehindAppLayout:(id)a3
+- (BOOL)isDropletEffectRequiredBehindAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2981,7 +2981,7 @@ void __57__SBRoutingSwitcherModifier_genieAttributesForAppLayout___block_invoke(
   v7[2] = __68__SBRoutingSwitcherModifier_isDropletEffectRequiredBehindAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -2997,9 +2997,9 @@ uint64_t __68__SBRoutingSwitcherModifier_isDropletEffectRequiredBehindAppLayout_
   return result;
 }
 
-- (id)resizeGrabberLayoutAttributesForAppLayout:(id)a3
+- (id)resizeGrabberLayoutAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -3011,7 +3011,7 @@ uint64_t __68__SBRoutingSwitcherModifier_isDropletEffectRequiredBehindAppLayout_
   v8[2] = __71__SBRoutingSwitcherModifier_resizeGrabberLayoutAttributesForAppLayout___block_invoke;
   v8[3] = &unk_2783B2270;
   v10 = &v11;
-  v5 = v4;
+  v5 = layoutCopy;
   v9 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v8);
   v6 = v12[5];
@@ -3029,13 +3029,13 @@ void __71__SBRoutingSwitcherModifier_resizeGrabberLayoutAttributesForAppLayout__
   *(v4 + 40) = v3;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
   v26 = 0;
   v27 = &v26;
   v28 = 0x4010000000;
@@ -3051,7 +3051,7 @@ void __71__SBRoutingSwitcherModifier_resizeGrabberLayoutAttributesForAppLayout__
   v23 = y;
   v24 = width;
   v25 = height;
-  v10 = v9;
+  v10 = layoutCopy;
   v20 = v10;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v10, v19);
   v11 = v27[4];
@@ -3082,11 +3082,11 @@ uint64_t __74__SBRoutingSwitcherModifier_adjustedSpaceAccessoryViewFrame_forAppL
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3010000000;
@@ -3100,7 +3100,7 @@ uint64_t __74__SBRoutingSwitcherModifier_adjustedSpaceAccessoryViewFrame_forAppL
   v15 = &v18;
   v16 = x;
   v17 = y;
-  v8 = v7;
+  v8 = layoutCopy;
   v14 = v8;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v8, v13);
   v9 = v19[4];
@@ -3123,9 +3123,9 @@ uint64_t __80__SBRoutingSwitcherModifier_adjustedSpaceAccessoryViewAnchorPoint_f
   return result;
 }
 
-- (double)adjustedSpaceAccessoryViewScale:(double)a3 forAppLayout:(id)a4
+- (double)adjustedSpaceAccessoryViewScale:(double)scale forAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -3135,8 +3135,8 @@ uint64_t __80__SBRoutingSwitcherModifier_adjustedSpaceAccessoryViewAnchorPoint_f
   v10[2] = __74__SBRoutingSwitcherModifier_adjustedSpaceAccessoryViewScale_forAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  scaleCopy = scale;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -3152,11 +3152,11 @@ uint64_t __74__SBRoutingSwitcherModifier_adjustedSpaceAccessoryViewScale_forAppL
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)angle forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = angle.y;
+  x = angle.x;
+  layoutCopy = layout;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3010000000;
@@ -3170,7 +3170,7 @@ uint64_t __74__SBRoutingSwitcherModifier_adjustedSpaceAccessoryViewScale_forAppL
   v15 = &v18;
   v16 = x;
   v17 = y;
-  v8 = v7;
+  v8 = layoutCopy;
   v14 = v8;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v8, v13);
   v9 = v19[4];
@@ -3270,9 +3270,9 @@ void __46__SBRoutingSwitcherModifier_visibleAppLayouts__block_invoke(uint64_t a1
   *(v3 + 40) = v2;
 }
 
-- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)a3
+- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -3282,7 +3282,7 @@ void __46__SBRoutingSwitcherModifier_visibleAppLayouts__block_invoke(uint64_t a1
   v7[2] = __67__SBRoutingSwitcherModifier_isHomeAffordanceSupportedForAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -3375,9 +3375,9 @@ void __64__SBRoutingSwitcherModifier_visibleHomeAffordanceLayoutElements__block_
   *(v3 + 40) = v2;
 }
 
-- (BOOL)isResizeGrabberVisibleForAppLayout:(id)a3
+- (BOOL)isResizeGrabberVisibleForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -3387,7 +3387,7 @@ void __64__SBRoutingSwitcherModifier_visibleHomeAffordanceLayoutElements__block_
   v7[2] = __64__SBRoutingSwitcherModifier_isResizeGrabberVisibleForAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -3403,9 +3403,9 @@ uint64_t __64__SBRoutingSwitcherModifier_isResizeGrabberVisibleForAppLayout___bl
   return result;
 }
 
-- (unint64_t)activeCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (unint64_t)activeCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -3415,8 +3415,8 @@ uint64_t __64__SBRoutingSwitcherModifier_isResizeGrabberVisibleForAppLayout___bl
   v10[2] = __82__SBRoutingSwitcherModifier_activeCornersForTouchResizeForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -3432,9 +3432,9 @@ uint64_t __82__SBRoutingSwitcherModifier_activeCornersForTouchResizeForLayoutRol
   return result;
 }
 
-- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -3444,8 +3444,8 @@ uint64_t __82__SBRoutingSwitcherModifier_activeCornersForTouchResizeForLayoutRol
   v10[2] = __83__SBRoutingSwitcherModifier_visibleCornersForTouchResizeForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -3461,9 +3461,9 @@ uint64_t __83__SBRoutingSwitcherModifier_visibleCornersForTouchResizeForLayoutRo
   return result;
 }
 
-- (BOOL)isItemResizingAllowedForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isItemResizingAllowedForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -3473,8 +3473,8 @@ uint64_t __83__SBRoutingSwitcherModifier_visibleCornersForTouchResizeForLayoutRo
   v9[2] = __76__SBRoutingSwitcherModifier_isItemResizingAllowedForLayoutRole_inAppLayout___block_invoke;
   v9[3] = &unk_2783B2248;
   v11 = &v13;
-  v12 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v10 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v9);
   LOBYTE(self) = *(v14 + 24);
@@ -3490,10 +3490,10 @@ uint64_t __76__SBRoutingSwitcherModifier_isItemResizingAllowedForLayoutRole_inAp
   return result;
 }
 
-- (BOOL)isHintingResizeGrabberForDisplayItem:(id)a3 corner:(unint64_t)a4 inAppLayout:(id)a5
+- (BOOL)isHintingResizeGrabberForDisplayItem:(id)item corner:(unint64_t)corner inAppLayout:(id)layout
 {
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  layoutCopy = layout;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -3503,10 +3503,10 @@ uint64_t __76__SBRoutingSwitcherModifier_isItemResizingAllowedForLayoutRole_inAp
   v13[2] = __85__SBRoutingSwitcherModifier_isHintingResizeGrabberForDisplayItem_corner_inAppLayout___block_invoke;
   v13[3] = &unk_2783B2310;
   v16 = &v18;
-  v10 = v8;
+  v10 = itemCopy;
   v14 = v10;
-  v17 = a4;
-  v11 = v9;
+  cornerCopy = corner;
+  v11 = layoutCopy;
   v15 = v11;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v11, v13);
   LOBYTE(self) = *(v19 + 24);
@@ -3607,7 +3607,7 @@ void __43__SBRoutingSwitcherModifier_visibleShelves__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)a3
+- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)shelf
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = a4;
@@ -3695,10 +3695,10 @@ void __60__SBRoutingSwitcherModifier_presentationAttributesForShelf___block_invo
   }
 }
 
-- (CGRect)frameForShelf:(id)a3
+- (CGRect)frameForShelf:(id)shelf
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  shelfCopy = shelf;
   v26 = 0;
   v27 = &v26;
   v28 = 0x4010000000;
@@ -3732,7 +3732,7 @@ void __60__SBRoutingSwitcherModifier_presentationAttributesForShelf___block_invo
         v19[3] = &unk_2783AED90;
         v19[4] = v9;
         v19[5] = self;
-        v20 = v4;
+        v20 = shelfCopy;
         v21 = &v26;
         _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v9, v19);
 
@@ -3786,10 +3786,10 @@ void __43__SBRoutingSwitcherModifier_frameForShelf___block_invoke(uint64_t a1)
   }
 }
 
-- (id)focusedAppLayoutForShelf:(id)a3
+- (id)focusedAppLayoutForShelf:(id)shelf
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  shelfCopy = shelf;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -3821,7 +3821,7 @@ void __43__SBRoutingSwitcherModifier_frameForShelf___block_invoke(uint64_t a1)
         v12[3] = &unk_2783AED90;
         v12[4] = v8;
         v12[5] = self;
-        v13 = v4;
+        v13 = shelfCopy;
         v14 = &v19;
         _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v8, v12);
       }
@@ -3859,10 +3859,10 @@ void __54__SBRoutingSwitcherModifier_focusedAppLayoutForShelf___block_invoke(uin
   }
 }
 
-- (id)ignoredDisplayItemsForShelf:(id)a3
+- (id)ignoredDisplayItemsForShelf:(id)shelf
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  shelfCopy = shelf;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -3894,7 +3894,7 @@ void __54__SBRoutingSwitcherModifier_focusedAppLayoutForShelf___block_invoke(uin
         v12[3] = &unk_2783AED90;
         v12[4] = v8;
         v12[5] = self;
-        v13 = v4;
+        v13 = shelfCopy;
         v14 = &v19;
         _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v8, v12);
       }
@@ -3932,10 +3932,10 @@ void __57__SBRoutingSwitcherModifier_ignoredDisplayItemsForShelf___block_invoke(
   }
 }
 
-- (id)containerLeafAppLayoutForShelf:(id)a3
+- (id)containerLeafAppLayoutForShelf:(id)shelf
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  shelfCopy = shelf;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -3967,7 +3967,7 @@ void __57__SBRoutingSwitcherModifier_ignoredDisplayItemsForShelf___block_invoke(
         v12[3] = &unk_2783AED90;
         v12[4] = v8;
         v12[5] = self;
-        v13 = v4;
+        v13 = shelfCopy;
         v14 = &v19;
         _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v8, v12);
       }
@@ -4005,10 +4005,10 @@ void __60__SBRoutingSwitcherModifier_containerLeafAppLayoutForShelf___block_invo
   }
 }
 
-- (id)hiddenAppLayoutsInShelf:(id)a3
+- (id)hiddenAppLayoutsInShelf:(id)shelf
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  shelfCopy = shelf;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -4040,7 +4040,7 @@ void __60__SBRoutingSwitcherModifier_containerLeafAppLayoutForShelf___block_invo
         v12[3] = &unk_2783AED90;
         v12[4] = v8;
         v12[5] = self;
-        v13 = v4;
+        v13 = shelfCopy;
         v14 = &v19;
         _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v8, v12);
       }
@@ -4078,10 +4078,10 @@ void __53__SBRoutingSwitcherModifier_hiddenAppLayoutsInShelf___block_invoke(uint
   }
 }
 
-- (id)homeAffordanceLayoutElementToPortalIntoShelf:(id)a3
+- (id)homeAffordanceLayoutElementToPortalIntoShelf:(id)shelf
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  shelfCopy = shelf;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -4113,7 +4113,7 @@ void __53__SBRoutingSwitcherModifier_hiddenAppLayoutsInShelf___block_invoke(uint
         v12[3] = &unk_2783AED90;
         v12[4] = v8;
         v12[5] = self;
-        v13 = v4;
+        v13 = shelfCopy;
         v14 = &v19;
         _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v8, v12);
       }
@@ -4151,10 +4151,10 @@ void __74__SBRoutingSwitcherModifier_homeAffordanceLayoutElementToPortalIntoShel
   }
 }
 
-- (CGRect)frameForSplitViewHandleNubView:(id)a3
+- (CGRect)frameForSplitViewHandleNubView:(id)view
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v31 = 0;
   v32 = &v31;
   v33 = 0x4010000000;
@@ -4191,7 +4191,7 @@ LABEL_3:
       v24[2] = __60__SBRoutingSwitcherModifier_frameForSplitViewHandleNubView___block_invoke;
       v24[3] = &unk_2783AEA70;
       v24[4] = v15;
-      v25 = v4;
+      v25 = viewCopy;
       v26 = &v31;
       _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v15, v24);
       v40.origin.x = v10;
@@ -4249,10 +4249,10 @@ void __60__SBRoutingSwitcherModifier_frameForSplitViewHandleNubView___block_invo
   }
 }
 
-- (CGRect)frameForSplitViewHandleDimmingView:(id)a3
+- (CGRect)frameForSplitViewHandleDimmingView:(id)view
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v31 = 0;
   v32 = &v31;
   v33 = 0x4010000000;
@@ -4289,7 +4289,7 @@ LABEL_3:
       v24[2] = __64__SBRoutingSwitcherModifier_frameForSplitViewHandleDimmingView___block_invoke;
       v24[3] = &unk_2783AEA70;
       v24[4] = v15;
-      v25 = v4;
+      v25 = viewCopy;
       v26 = &v31;
       _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v15, v24);
       v40.origin.x = v10;
@@ -4403,9 +4403,9 @@ uint64_t __58__SBRoutingSwitcherModifier_hiddenContainerStatusBarParts__block_in
   return result;
 }
 
-- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -4415,8 +4415,8 @@ uint64_t __58__SBRoutingSwitcherModifier_hiddenContainerStatusBarParts__block_in
   v10[2] = __82__SBRoutingSwitcherModifier_hiddenContentStatusBarPartsForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -4432,9 +4432,9 @@ uint64_t __82__SBRoutingSwitcherModifier_hiddenContentStatusBarPartsForLayoutRol
   return result;
 }
 
-- (BOOL)isContainerStatusBarPart:(unint64_t)a3 hiddenByLeafAppLayout:(id)a4
+- (BOOL)isContainerStatusBarPart:(unint64_t)part hiddenByLeafAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -4444,8 +4444,8 @@ uint64_t __82__SBRoutingSwitcherModifier_hiddenContentStatusBarPartsForLayoutRol
   v9[2] = __76__SBRoutingSwitcherModifier_isContainerStatusBarPart_hiddenByLeafAppLayout___block_invoke;
   v9[3] = &unk_2783B2248;
   v11 = &v13;
-  v12 = a3;
-  v7 = v6;
+  partCopy = part;
+  v7 = layoutCopy;
   v10 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v9);
   LOBYTE(self) = *(v14 + 24);
@@ -4461,11 +4461,11 @@ uint64_t __76__SBRoutingSwitcherModifier_isContainerStatusBarPart_hiddenByLeafAp
   return result;
 }
 
-- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withPerspectiveAngle:(CGPoint)a5
+- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)role inAppLayout:(id)layout withPerspectiveAngle:(CGPoint)angle
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
+  y = angle.y;
+  x = angle.x;
+  layoutCopy = layout;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3010000000;
@@ -4477,8 +4477,8 @@ uint64_t __76__SBRoutingSwitcherModifier_isContainerStatusBarPart_hiddenByLeafAp
   v15[2] = __92__SBRoutingSwitcherModifier_perspectiveAngleForLayoutRole_inAppLayout_withPerspectiveAngle___block_invoke;
   v15[3] = &unk_2783B2298;
   v17 = &v21;
-  v18 = a3;
-  v10 = v9;
+  roleCopy = role;
+  v10 = layoutCopy;
   v16 = v10;
   v19 = x;
   v20 = y;
@@ -4503,31 +4503,31 @@ uint64_t __92__SBRoutingSwitcherModifier_perspectiveAngleForLayoutRole_inAppLayo
   return result;
 }
 
-- (id)_adjustedShelfForShelf:(id)a3 forModifier:(id)a4
+- (id)_adjustedShelfForShelf:(id)shelf forModifier:(id)modifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  shelfCopy = shelf;
+  modifierCopy = modifier;
+  v8 = shelfCopy;
   WeakRetained = objc_loadWeakRetained(&self->_routingDelegate);
   v10 = v8;
   if (objc_opt_respondsToSelector())
   {
-    v10 = [WeakRetained adjustedShelfForShelf:v8 forModifier:v7];
+    v10 = [WeakRetained adjustedShelfForShelf:v8 forModifier:modifierCopy];
   }
 
   return v10;
 }
 
-- (id)_adjustedShelfForShelf:(id)a3 fromModifier:(id)a4
+- (id)_adjustedShelfForShelf:(id)shelf fromModifier:(id)modifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  shelfCopy = shelf;
+  modifierCopy = modifier;
+  v8 = shelfCopy;
   WeakRetained = objc_loadWeakRetained(&self->_routingDelegate);
   v10 = v8;
   if (objc_opt_respondsToSelector())
   {
-    v10 = [WeakRetained adjustedShelfForShelf:v8 fromModifier:v7];
+    v10 = [WeakRetained adjustedShelfForShelf:v8 fromModifier:modifierCopy];
   }
 
   return v10;
@@ -4562,7 +4562,7 @@ void __45__SBRoutingSwitcherModifier_contentViewScale__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-- (BOOL)clipsToUnobscuredMarginAtIndex:(unint64_t)a3
+- (BOOL)clipsToUnobscuredMarginAtIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4573,7 +4573,7 @@ void __45__SBRoutingSwitcherModifier_contentViewScale__block_invoke(uint64_t a1)
   v5[2] = __60__SBRoutingSwitcherModifier_clipsToUnobscuredMarginAtIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4586,7 +4586,7 @@ uint64_t __60__SBRoutingSwitcherModifier_clipsToUnobscuredMarginAtIndex___block_
   return result;
 }
 
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4597,7 +4597,7 @@ uint64_t __60__SBRoutingSwitcherModifier_clipsToUnobscuredMarginAtIndex___block_
   v5[2] = __66__SBRoutingSwitcherModifier_visibleMarginForItemContainerAtIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4610,7 +4610,7 @@ uint64_t __66__SBRoutingSwitcherModifier_visibleMarginForItemContainerAtIndex___
   return result;
 }
 
-- (double)wallpaperOverlayAlphaForIndex:(unint64_t)a3
+- (double)wallpaperOverlayAlphaForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4621,7 +4621,7 @@ uint64_t __66__SBRoutingSwitcherModifier_visibleMarginForItemContainerAtIndex___
   v5[2] = __59__SBRoutingSwitcherModifier_wallpaperOverlayAlphaForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4634,7 +4634,7 @@ uint64_t __59__SBRoutingSwitcherModifier_wallpaperOverlayAlphaForIndex___block_i
   return result;
 }
 
-- (double)lighteningAlphaForIndex:(unint64_t)a3
+- (double)lighteningAlphaForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4645,7 +4645,7 @@ uint64_t __59__SBRoutingSwitcherModifier_wallpaperOverlayAlphaForIndex___block_i
   v5[2] = __53__SBRoutingSwitcherModifier_lighteningAlphaForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4658,7 +4658,7 @@ uint64_t __53__SBRoutingSwitcherModifier_lighteningAlphaForIndex___block_invoke(
   return result;
 }
 
-- (int64_t)headerStyleForIndex:(unint64_t)a3
+- (int64_t)headerStyleForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4669,7 +4669,7 @@ uint64_t __53__SBRoutingSwitcherModifier_lighteningAlphaForIndex___block_invoke(
   v5[2] = __49__SBRoutingSwitcherModifier_headerStyleForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4682,7 +4682,7 @@ uint64_t __49__SBRoutingSwitcherModifier_headerStyleForIndex___block_invoke(uint
   return result;
 }
 
-- (double)iconOpacityForIndex:(unint64_t)a3
+- (double)iconOpacityForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4693,7 +4693,7 @@ uint64_t __49__SBRoutingSwitcherModifier_headerStyleForIndex___block_invoke(uint
   v5[2] = __49__SBRoutingSwitcherModifier_iconOpacityForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4706,7 +4706,7 @@ uint64_t __49__SBRoutingSwitcherModifier_iconOpacityForIndex___block_invoke(uint
   return result;
 }
 
-- (double)titleOpacityForIndex:(unint64_t)a3
+- (double)titleOpacityForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4717,7 +4717,7 @@ uint64_t __49__SBRoutingSwitcherModifier_iconOpacityForIndex___block_invoke(uint
   v5[2] = __50__SBRoutingSwitcherModifier_titleOpacityForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4730,7 +4730,7 @@ uint64_t __50__SBRoutingSwitcherModifier_titleOpacityForIndex___block_invoke(uin
   return result;
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4741,7 +4741,7 @@ uint64_t __50__SBRoutingSwitcherModifier_titleOpacityForIndex___block_invoke(uin
   v5[2] = __57__SBRoutingSwitcherModifier_titleAndIconOpacityForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4754,7 +4754,7 @@ uint64_t __57__SBRoutingSwitcherModifier_titleAndIconOpacityForIndex___block_inv
   return result;
 }
 
-- (double)shadowOffsetForIndex:(unint64_t)a3
+- (double)shadowOffsetForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4765,7 +4765,7 @@ uint64_t __57__SBRoutingSwitcherModifier_titleAndIconOpacityForIndex___block_inv
   v5[2] = __50__SBRoutingSwitcherModifier_shadowOffsetForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4778,7 +4778,7 @@ uint64_t __50__SBRoutingSwitcherModifier_shadowOffsetForIndex___block_invoke(uin
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   v12 = 0;
   v13 = &v12;
@@ -4791,7 +4791,7 @@ uint64_t __50__SBRoutingSwitcherModifier_shadowOffsetForIndex___block_invoke(uin
   v11[2] = __49__SBRoutingSwitcherModifier_cornerRadiiForIndex___block_invoke;
   v11[3] = &unk_2783B22C0;
   v11[4] = &v12;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v11);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v11);
   v3 = v13[4];
   v4 = v13[5];
   v5 = v13[6];
@@ -4819,7 +4819,7 @@ uint64_t __49__SBRoutingSwitcherModifier_cornerRadiiForIndex___block_invoke(uint
   return result;
 }
 
-- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)a3
+- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4830,7 +4830,7 @@ uint64_t __49__SBRoutingSwitcherModifier_cornerRadiiForIndex___block_invoke(uint
   v5[2] = __67__SBRoutingSwitcherModifier_shouldScaleOverlayToFillBoundsAtIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4843,7 +4843,7 @@ uint64_t __67__SBRoutingSwitcherModifier_shouldScaleOverlayToFillBoundsAtIndex__
   return result;
 }
 
-- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)a3
+- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4854,7 +4854,7 @@ uint64_t __67__SBRoutingSwitcherModifier_shouldScaleOverlayToFillBoundsAtIndex__
   v5[2] = __67__SBRoutingSwitcherModifier_shouldScaleContentToFillBoundsAtIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4867,7 +4867,7 @@ uint64_t __67__SBRoutingSwitcherModifier_shouldScaleContentToFillBoundsAtIndex__
   return result;
 }
 
-- (BOOL)shouldUseBrightMaterialForIndex:(unint64_t)a3
+- (BOOL)shouldUseBrightMaterialForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4878,7 +4878,7 @@ uint64_t __67__SBRoutingSwitcherModifier_shouldScaleContentToFillBoundsAtIndex__
   v5[2] = __61__SBRoutingSwitcherModifier_shouldUseBrightMaterialForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4891,7 +4891,7 @@ uint64_t __61__SBRoutingSwitcherModifier_shouldUseBrightMaterialForIndex___block
   return result;
 }
 
-- (BOOL)shouldUseBackgroundWallpaperTreatmentForIndex:(unint64_t)a3
+- (BOOL)shouldUseBackgroundWallpaperTreatmentForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4902,7 +4902,7 @@ uint64_t __61__SBRoutingSwitcherModifier_shouldUseBrightMaterialForIndex___block
   v5[2] = __75__SBRoutingSwitcherModifier_shouldUseBackgroundWallpaperTreatmentForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4915,7 +4915,7 @@ uint64_t __75__SBRoutingSwitcherModifier_shouldUseBackgroundWallpaperTreatmentFo
   return result;
 }
 
-- (BOOL)shouldShowBackdropViewAtIndex:(unint64_t)a3
+- (BOOL)shouldShowBackdropViewAtIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4926,7 +4926,7 @@ uint64_t __75__SBRoutingSwitcherModifier_shouldUseBackgroundWallpaperTreatmentFo
   v5[2] = __59__SBRoutingSwitcherModifier_shouldShowBackdropViewAtIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -4939,7 +4939,7 @@ uint64_t __59__SBRoutingSwitcherModifier_shouldShowBackdropViewAtIndex___block_i
   return result;
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
   v8 = 0;
   v9 = &v8;
@@ -4952,7 +4952,7 @@ uint64_t __59__SBRoutingSwitcherModifier_shouldShowBackdropViewAtIndex___block_i
   v7[2] = __54__SBRoutingSwitcherModifier_perspectiveAngleForIndex___block_invoke;
   v7[3] = &unk_2783B22C0;
   v7[4] = &v8;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v7);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v7);
   v3 = v9[4];
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -5234,11 +5234,11 @@ void __59__SBRoutingSwitcherModifier_homeScreenBackdropBlurProgress__block_invok
   {
 
 LABEL_13:
-    v4 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v4 = 0;
+  lastObject = 0;
   v5 = *v23;
   do
   {
@@ -5267,7 +5267,7 @@ LABEL_13:
       {
         v9 = v7;
 
-        v4 = v9;
+        lastObject = v9;
       }
     }
 
@@ -5276,7 +5276,7 @@ LABEL_13:
 
   while (v3);
 
-  if (!v4)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -5291,7 +5291,7 @@ LABEL_14:
   v14[2] = __53__SBRoutingSwitcherModifier_wantsSwitcherDimmingView__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v10 = v4;
+  v10 = lastObject;
   v15 = v10;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v14);
   v11 = *(v19 + 24);
@@ -5327,11 +5327,11 @@ uint64_t __53__SBRoutingSwitcherModifier_wantsSwitcherDimmingView__block_invoke_
   {
 
 LABEL_13:
-    v5 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v5 = 0;
+  lastObject = 0;
   v6 = *v23;
   do
   {
@@ -5360,7 +5360,7 @@ LABEL_13:
       {
         v10 = v8;
 
-        v5 = v10;
+        lastObject = v10;
       }
     }
 
@@ -5369,7 +5369,7 @@ LABEL_13:
 
   while (v4);
 
-  if (!v5)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -5384,7 +5384,7 @@ LABEL_14:
   v14[2] = __49__SBRoutingSwitcherModifier_switcherDimmingAlpha__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v11 = v5;
+  v11 = lastObject;
   v15 = v11;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v11, v14);
   v12 = v19[3];
@@ -5420,11 +5420,11 @@ uint64_t __49__SBRoutingSwitcherModifier_switcherDimmingAlpha__block_invoke_2(ui
   {
 
 LABEL_13:
-    v4 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v4 = 0;
+  lastObject = 0;
   v5 = *v23;
   do
   {
@@ -5453,7 +5453,7 @@ LABEL_13:
       {
         v9 = v7;
 
-        v4 = v9;
+        lastObject = v9;
       }
     }
 
@@ -5462,7 +5462,7 @@ LABEL_13:
 
   while (v3);
 
-  if (!v4)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -5477,7 +5477,7 @@ LABEL_14:
   v14[2] = __61__SBRoutingSwitcherModifier_switcherDimmingViewBlocksTouches__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v10 = v4;
+  v10 = lastObject;
   v15 = v10;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v14);
   v11 = *(v19 + 24);
@@ -5513,11 +5513,11 @@ uint64_t __61__SBRoutingSwitcherModifier_switcherDimmingViewBlocksTouches__block
   {
 
 LABEL_13:
-    v4 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v4 = 0;
+  lastObject = 0;
   v5 = *v23;
   do
   {
@@ -5546,7 +5546,7 @@ LABEL_13:
       {
         v9 = v7;
 
-        v4 = v9;
+        lastObject = v9;
       }
     }
 
@@ -5555,7 +5555,7 @@ LABEL_13:
 
   while (v3);
 
-  if (!v4)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -5570,7 +5570,7 @@ LABEL_14:
   v14[2] = __54__SBRoutingSwitcherModifier_wantsSwitcherBackdropBlur__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v10 = v4;
+  v10 = lastObject;
   v15 = v10;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v14);
   v11 = *(v19 + 24);
@@ -5606,11 +5606,11 @@ uint64_t __54__SBRoutingSwitcherModifier_wantsSwitcherBackdropBlur__block_invoke
   {
 
 LABEL_13:
-    v4 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v4 = 0;
+  lastObject = 0;
   v5 = *v23;
   do
   {
@@ -5639,7 +5639,7 @@ LABEL_13:
       {
         v9 = v7;
 
-        v4 = v9;
+        lastObject = v9;
       }
     }
 
@@ -5648,7 +5648,7 @@ LABEL_13:
 
   while (v3);
 
-  if (!v4)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -5663,7 +5663,7 @@ LABEL_14:
   v14[2] = __53__SBRoutingSwitcherModifier_switcherBackdropBlurType__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v10 = v4;
+  v10 = lastObject;
   v15 = v10;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v14);
   v11 = v19[3];
@@ -5699,11 +5699,11 @@ uint64_t __53__SBRoutingSwitcherModifier_switcherBackdropBlurType__block_invoke_
   {
 
 LABEL_13:
-    v5 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v5 = 0;
+  lastObject = 0;
   v6 = *v23;
   do
   {
@@ -5732,7 +5732,7 @@ LABEL_13:
       {
         v10 = v8;
 
-        v5 = v10;
+        lastObject = v10;
       }
     }
 
@@ -5741,7 +5741,7 @@ LABEL_13:
 
   while (v4);
 
-  if (!v5)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -5756,7 +5756,7 @@ LABEL_14:
   v14[2] = __57__SBRoutingSwitcherModifier_switcherBackdropBlurProgress__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v11 = v5;
+  v11 = lastObject;
   v15 = v11;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v11, v14);
   v12 = v19[3];
@@ -5779,9 +5779,9 @@ uint64_t __57__SBRoutingSwitcherModifier_switcherBackdropBlurProgress__block_inv
   return result;
 }
 
-- (id)multipleWindowsIndicatorLayoutRolesForAppLayout:(id)a3
+- (id)multipleWindowsIndicatorLayoutRolesForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -5793,7 +5793,7 @@ uint64_t __57__SBRoutingSwitcherModifier_switcherBackdropBlurProgress__block_inv
   v8[2] = __77__SBRoutingSwitcherModifier_multipleWindowsIndicatorLayoutRolesForAppLayout___block_invoke;
   v8[3] = &unk_2783B2270;
   v10 = &v11;
-  v5 = v4;
+  v5 = layoutCopy;
   v9 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v8);
   v6 = v12[5];
@@ -5811,9 +5811,9 @@ void __77__SBRoutingSwitcherModifier_multipleWindowsIndicatorLayoutRolesForAppLa
   *(v4 + 40) = v3;
 }
 
-- (BOOL)wantsSpaceAccessoryViewPointerInteractionsForAppLayout:(id)a3
+- (BOOL)wantsSpaceAccessoryViewPointerInteractionsForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -5823,7 +5823,7 @@ void __77__SBRoutingSwitcherModifier_multipleWindowsIndicatorLayoutRolesForAppLa
   v7[2] = __84__SBRoutingSwitcherModifier_wantsSpaceAccessoryViewPointerInteractionsForAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -5839,9 +5839,9 @@ uint64_t __84__SBRoutingSwitcherModifier_wantsSpaceAccessoryViewPointerInteracti
   return result;
 }
 
-- (double)spaceAccessoryViewIconHitTestOutsetForAppLayout:(id)a3
+- (double)spaceAccessoryViewIconHitTestOutsetForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -5851,7 +5851,7 @@ uint64_t __84__SBRoutingSwitcherModifier_wantsSpaceAccessoryViewPointerInteracti
   v8[2] = __77__SBRoutingSwitcherModifier_spaceAccessoryViewIconHitTestOutsetForAppLayout___block_invoke;
   v8[3] = &unk_2783B2270;
   v10 = &v11;
-  v5 = v4;
+  v5 = layoutCopy;
   v9 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v8);
   v6 = v12[3];
@@ -5867,9 +5867,9 @@ uint64_t __77__SBRoutingSwitcherModifier_spaceAccessoryViewIconHitTestOutsetForA
   return result;
 }
 
-- (BOOL)wantsSpaceAccessoryViewGenieForAppLayout:(id)a3
+- (BOOL)wantsSpaceAccessoryViewGenieForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -5879,7 +5879,7 @@ uint64_t __77__SBRoutingSwitcherModifier_spaceAccessoryViewIconHitTestOutsetForA
   v7[2] = __70__SBRoutingSwitcherModifier_wantsSpaceAccessoryViewGenieForAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -5895,9 +5895,9 @@ uint64_t __70__SBRoutingSwitcherModifier_wantsSpaceAccessoryViewGenieForAppLayou
   return result;
 }
 
-- (BOOL)useItemContainerFooterViewsForAppLayout:(id)a3
+- (BOOL)useItemContainerFooterViewsForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -5907,7 +5907,7 @@ uint64_t __70__SBRoutingSwitcherModifier_wantsSpaceAccessoryViewGenieForAppLayou
   v7[2] = __69__SBRoutingSwitcherModifier_useItemContainerFooterViewsForAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -5923,9 +5923,9 @@ uint64_t __69__SBRoutingSwitcherModifier_useItemContainerFooterViewsForAppLayout
   return result;
 }
 
-- (BOOL)canSelectLeafWithModifierKeysInAppLayout:(id)a3
+- (BOOL)canSelectLeafWithModifierKeysInAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -5935,7 +5935,7 @@ uint64_t __69__SBRoutingSwitcherModifier_useItemContainerFooterViewsForAppLayout
   v7[2] = __70__SBRoutingSwitcherModifier_canSelectLeafWithModifierKeysInAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -5951,9 +5951,9 @@ uint64_t __70__SBRoutingSwitcherModifier_canSelectLeafWithModifierKeysInAppLayou
   return result;
 }
 
-- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)a3
+- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -5963,7 +5963,7 @@ uint64_t __70__SBRoutingSwitcherModifier_canSelectLeafWithModifierKeysInAppLayou
   v7[2] = __65__SBRoutingSwitcherModifier_shouldAllowGroupOpacityForAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -5979,9 +5979,9 @@ uint64_t __65__SBRoutingSwitcherModifier_shouldAllowGroupOpacityForAppLayout___b
   return result;
 }
 
-- (unint64_t)footerViewIconAlignmentForAppLayout:(id)a3
+- (unint64_t)footerViewIconAlignmentForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -5991,7 +5991,7 @@ uint64_t __65__SBRoutingSwitcherModifier_shouldAllowGroupOpacityForAppLayout___b
   v8[2] = __65__SBRoutingSwitcherModifier_footerViewIconAlignmentForAppLayout___block_invoke;
   v8[3] = &unk_2783B2270;
   v10 = &v11;
-  v5 = v4;
+  v5 = layoutCopy;
   v9 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v8);
   v6 = v12[3];
@@ -6009,24 +6009,24 @@ uint64_t __65__SBRoutingSwitcherModifier_footerViewIconAlignmentForAppLayout___b
 
 - (BOOL)isScrollEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_routingDelegate);
-  v4 = [WeakRetained scrollModifierForRoutingModifier:v2];
+  v4 = [WeakRetained scrollModifierForRoutingModifier:selfCopy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__SBRoutingSwitcherModifier_isScrollEnabled__block_invoke;
   v6[3] = &unk_2783A8CE0;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
-  _SBRoutingSwitcherModifierRouteToModifier(&v2->super.super.super.super.isa, v4, v6);
+  _SBRoutingSwitcherModifierRouteToModifier(&selfCopy->super.super.super.super.isa, v4, v6);
 
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __44__SBRoutingSwitcherModifier_isScrollEnabled__block_invoke(uint64_t a1)
@@ -6038,24 +6038,24 @@ void __44__SBRoutingSwitcherModifier_isScrollEnabled__block_invoke(uint64_t a1)
 
 - (BOOL)shouldScrollViewBlockTouches
 {
-  v2 = self;
+  selfCopy = self;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_routingDelegate);
-  v4 = [WeakRetained scrollModifierForRoutingModifier:v2];
+  v4 = [WeakRetained scrollModifierForRoutingModifier:selfCopy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__SBRoutingSwitcherModifier_shouldScrollViewBlockTouches__block_invoke;
   v6[3] = &unk_2783A8CE0;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
-  _SBRoutingSwitcherModifierRouteToModifier(&v2->super.super.super.super.isa, v4, v6);
+  _SBRoutingSwitcherModifierRouteToModifier(&selfCopy->super.super.super.super.isa, v4, v6);
 
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __57__SBRoutingSwitcherModifier_shouldScrollViewBlockTouches__block_invoke(uint64_t a1)
@@ -6154,11 +6154,11 @@ uint64_t __70__SBRoutingSwitcherModifier_shouldRubberbandFullScreenHomeGrabberVi
   {
 
 LABEL_13:
-    v4 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v4 = 0;
+  lastObject = 0;
   v5 = *v23;
   do
   {
@@ -6187,7 +6187,7 @@ LABEL_13:
       {
         v9 = v7;
 
-        v4 = v9;
+        lastObject = v9;
       }
     }
 
@@ -6196,7 +6196,7 @@ LABEL_13:
 
   while (v3);
 
-  if (!v4)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -6211,7 +6211,7 @@ LABEL_14:
   v14[2] = __56__SBRoutingSwitcherModifier_isContainerStatusBarVisible__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v10 = v4;
+  v10 = lastObject;
   v15 = v10;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v14);
   v11 = *(v19 + 24);
@@ -6247,11 +6247,11 @@ uint64_t __56__SBRoutingSwitcherModifier_isContainerStatusBarVisible__block_invo
   {
 
 LABEL_13:
-    v5 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v5 = 0;
+  lastObject = 0;
   v6 = *v23;
   do
   {
@@ -6280,7 +6280,7 @@ LABEL_13:
       {
         v10 = v8;
 
-        v5 = v10;
+        lastObject = v10;
       }
     }
 
@@ -6289,7 +6289,7 @@ LABEL_13:
 
   while (v4);
 
-  if (!v5)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -6304,7 +6304,7 @@ LABEL_14:
   v14[2] = __64__SBRoutingSwitcherModifier_containerStatusBarAnimationDuration__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v11 = v5;
+  v11 = lastObject;
   v15 = v11;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v11, v14);
   v12 = v19[3];
@@ -6327,7 +6327,7 @@ uint64_t __64__SBRoutingSwitcherModifier_containerStatusBarAnimationDuration__bl
   return result;
 }
 
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -6338,7 +6338,7 @@ uint64_t __64__SBRoutingSwitcherModifier_containerStatusBarAnimationDuration__bl
   v5[2] = __63__SBRoutingSwitcherModifier_isContentStatusBarVisibleForIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -6516,11 +6516,11 @@ uint64_t __64__SBRoutingSwitcherModifier_hasContentIntersectingMenuBarRegion__bl
   {
 
 LABEL_13:
-    v4 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v4 = 0;
+  lastObject = 0;
   v5 = *v23;
   do
   {
@@ -6549,7 +6549,7 @@ LABEL_13:
       {
         v9 = v7;
 
-        v4 = v9;
+        lastObject = v9;
       }
     }
 
@@ -6558,7 +6558,7 @@ LABEL_13:
 
   while (v3);
 
-  if (!v4)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -6573,7 +6573,7 @@ LABEL_14:
   v14[2] = __59__SBRoutingSwitcherModifier_isWallpaperRequiredForSwitcher__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v10 = v4;
+  v10 = lastObject;
   v15 = v10;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v14);
   v11 = *(v19 + 24);
@@ -6609,11 +6609,11 @@ uint64_t __59__SBRoutingSwitcherModifier_isWallpaperRequiredForSwitcher__block_i
   {
 
 LABEL_13:
-    v4 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v4 = 0;
+  lastObject = 0;
   v5 = *v23;
   do
   {
@@ -6642,7 +6642,7 @@ LABEL_13:
       {
         v9 = v7;
 
-        v4 = v9;
+        lastObject = v9;
       }
     }
 
@@ -6651,7 +6651,7 @@ LABEL_13:
 
   while (v3);
 
-  if (!v4)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -6666,7 +6666,7 @@ LABEL_14:
   v14[2] = __43__SBRoutingSwitcherModifier_wallpaperStyle__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v10 = v4;
+  v10 = lastObject;
   v15 = v10;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v14);
   v11 = v19[3];
@@ -7400,9 +7400,9 @@ void __63__SBRoutingSwitcherModifier_appLayoutsToCacheFullsizeSnapshots__block_i
   *(v3 + 40) = v2;
 }
 
-- (int64_t)preferredSnapshotOrientationForAppLayout:(id)a3
+- (int64_t)preferredSnapshotOrientationForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -7412,7 +7412,7 @@ void __63__SBRoutingSwitcherModifier_appLayoutsToCacheFullsizeSnapshots__block_i
   v8[2] = __70__SBRoutingSwitcherModifier_preferredSnapshotOrientationForAppLayout___block_invoke;
   v8[3] = &unk_2783B2270;
   v10 = &v11;
-  v5 = v4;
+  v5 = layoutCopy;
   v9 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v8);
   v6 = v12[3];
@@ -8046,9 +8046,9 @@ uint64_t __66__SBRoutingSwitcherModifier_shouldPerformCrossfadeForReduceMotion__
   return result;
 }
 
-- (BOOL)isLayoutRoleKillable:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (BOOL)isLayoutRoleKillable:(int64_t)killable inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
+  layoutCopy = layout;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -8058,14 +8058,14 @@ uint64_t __66__SBRoutingSwitcherModifier_shouldPerformCrossfadeForReduceMotion__
   v11[2] = __70__SBRoutingSwitcherModifier_isLayoutRoleKillable_inAppLayout_atIndex___block_invoke;
   v11[3] = &unk_2783B2338;
   v13 = &v15;
-  v14 = a3;
-  v9 = v8;
+  killableCopy = killable;
+  v9 = layoutCopy;
   v12 = v9;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a5, v11);
-  LOBYTE(a5) = *(v16 + 24);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v11);
+  LOBYTE(index) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return a5;
+  return index;
 }
 
 uint64_t __70__SBRoutingSwitcherModifier_isLayoutRoleKillable_inAppLayout_atIndex___block_invoke(void *a1, void *a2, uint64_t a3)
@@ -8075,7 +8075,7 @@ uint64_t __70__SBRoutingSwitcherModifier_isLayoutRoleKillable_inAppLayout_atInde
   return result;
 }
 
-- (BOOL)isIndexRubberbandableForSwipeToKill:(unint64_t)a3
+- (BOOL)isIndexRubberbandableForSwipeToKill:(unint64_t)kill
 {
   v6 = 0;
   v7 = &v6;
@@ -8086,7 +8086,7 @@ uint64_t __70__SBRoutingSwitcherModifier_isLayoutRoleKillable_inAppLayout_atInde
   v5[2] = __65__SBRoutingSwitcherModifier_isIndexRubberbandableForSwipeToKill___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, kill, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -8099,9 +8099,9 @@ uint64_t __65__SBRoutingSwitcherModifier_isIndexRubberbandableForSwipeToKill___b
   return result;
 }
 
-- (BOOL)shouldAnimateInsertionOrRemovalOfAppLayout:(id)a3 atIndex:(unint64_t)a4
+- (BOOL)shouldAnimateInsertionOrRemovalOfAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v6 = a3;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -8111,9 +8111,9 @@ uint64_t __65__SBRoutingSwitcherModifier_isIndexRubberbandableForSwipeToKill___b
   v9[2] = __80__SBRoutingSwitcherModifier_shouldAnimateInsertionOrRemovalOfAppLayout_atIndex___block_invoke;
   v9[3] = &unk_2783B2478;
   v11 = &v13;
-  v12 = a4;
+  indexCopy = index;
   v9[4] = self;
-  v7 = v6;
+  v7 = layoutCopy;
   v10 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v9);
   LOBYTE(self) = *(v14 + 24);
@@ -8132,7 +8132,7 @@ void __80__SBRoutingSwitcherModifier_shouldAnimateInsertionOrRemovalOfAppLayout_
   *(*(a1[6] + 8) + 24) = v3;
 }
 
-- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)a3
+- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -8143,7 +8143,7 @@ void __80__SBRoutingSwitcherModifier_shouldAnimateInsertionOrRemovalOfAppLayout_
   v5[2] = __63__SBRoutingSwitcherModifier_indexToScrollToAfterRemovingIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -8156,7 +8156,7 @@ uint64_t __63__SBRoutingSwitcherModifier_indexToScrollToAfterRemovingIndex___blo
   return result;
 }
 
-- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)a3
+- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -8167,7 +8167,7 @@ uint64_t __63__SBRoutingSwitcherModifier_indexToScrollToAfterRemovingIndex___blo
   v5[2] = __66__SBRoutingSwitcherModifier_indexToScrollToAfterInsertingAtIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -8345,11 +8345,11 @@ uint64_t __68__SBRoutingSwitcherModifier_shouldConfigureInAppDockHiddenAssertion
   {
 
 LABEL_13:
-    v4 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v4 = 0;
+  lastObject = 0;
   v5 = *v23;
   do
   {
@@ -8378,7 +8378,7 @@ LABEL_13:
       {
         v9 = v7;
 
-        v4 = v9;
+        lastObject = v9;
       }
     }
 
@@ -8387,7 +8387,7 @@ LABEL_13:
 
   while (v3);
 
-  if (!v4)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -8402,7 +8402,7 @@ LABEL_14:
   v14[2] = __55__SBRoutingSwitcherModifier_wantsDockBehaviorAssertion__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v10 = v4;
+  v10 = lastObject;
   v15 = v10;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v14);
   v11 = *(v19 + 24);
@@ -8438,11 +8438,11 @@ uint64_t __55__SBRoutingSwitcherModifier_wantsDockBehaviorAssertion__block_invok
   {
 
 LABEL_13:
-    v5 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v5 = 0;
+  lastObject = 0;
   v6 = *v23;
   do
   {
@@ -8471,7 +8471,7 @@ LABEL_13:
       {
         v10 = v8;
 
-        v5 = v10;
+        lastObject = v10;
       }
     }
 
@@ -8480,7 +8480,7 @@ LABEL_13:
 
   while (v4);
 
-  if (!v5)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -8495,7 +8495,7 @@ LABEL_14:
   v14[2] = __41__SBRoutingSwitcherModifier_dockProgress__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v11 = v5;
+  v11 = lastObject;
   v15 = v11;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v11, v14);
   v12 = v19[3];
@@ -8531,11 +8531,11 @@ uint64_t __41__SBRoutingSwitcherModifier_dockProgress__block_invoke_2(uint64_t a
   {
 
 LABEL_13:
-    v4 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v4 = 0;
+  lastObject = 0;
   v5 = *v23;
   do
   {
@@ -8564,7 +8564,7 @@ LABEL_13:
       {
         v9 = v7;
 
-        v4 = v9;
+        lastObject = v9;
       }
     }
 
@@ -8573,7 +8573,7 @@ LABEL_13:
 
   while (v3);
 
-  if (!v4)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -8588,7 +8588,7 @@ LABEL_14:
   v14[2] = __43__SBRoutingSwitcherModifier_dockUpdateMode__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v10 = v4;
+  v10 = lastObject;
   v15 = v10;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v14);
   v11 = v19[3];
@@ -8624,11 +8624,11 @@ uint64_t __43__SBRoutingSwitcherModifier_dockUpdateMode__block_invoke_2(uint64_t
   {
 
 LABEL_13:
-    v4 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v4 = 0;
+  lastObject = 0;
   v5 = *v23;
   do
   {
@@ -8657,7 +8657,7 @@ LABEL_13:
       {
         v9 = v7;
 
-        v4 = v9;
+        lastObject = v9;
       }
     }
 
@@ -8666,7 +8666,7 @@ LABEL_13:
 
   while (v3);
 
-  if (!v4)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -8681,7 +8681,7 @@ LABEL_14:
   v14[2] = __58__SBRoutingSwitcherModifier_wantsDockWindowLevelAssertion__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v10 = v4;
+  v10 = lastObject;
   v15 = v10;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v14);
   v11 = *(v19 + 24);
@@ -8717,11 +8717,11 @@ uint64_t __58__SBRoutingSwitcherModifier_wantsDockWindowLevelAssertion__block_in
   {
 
 LABEL_13:
-    v4 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v4 = 0;
+  lastObject = 0;
   v5 = *v23;
   do
   {
@@ -8750,7 +8750,7 @@ LABEL_13:
       {
         v9 = v7;
 
-        v4 = v9;
+        lastObject = v9;
       }
     }
 
@@ -8759,7 +8759,7 @@ LABEL_13:
 
   while (v3);
 
-  if (!v4)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -8774,7 +8774,7 @@ LABEL_14:
   v14[2] = __52__SBRoutingSwitcherModifier_dockWindowLevelPriority__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v10 = v4;
+  v10 = lastObject;
   v15 = v10;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v14);
   v11 = v19[3];
@@ -8810,11 +8810,11 @@ uint64_t __52__SBRoutingSwitcherModifier_dockWindowLevelPriority__block_invoke_2
   {
 
 LABEL_13:
-    v5 = [(NSArray *)self->_modifiers lastObject];
+    lastObject = [(NSArray *)self->_modifiers lastObject];
     goto LABEL_14;
   }
 
-  v5 = 0;
+  lastObject = 0;
   v6 = *v23;
   do
   {
@@ -8843,7 +8843,7 @@ LABEL_13:
       {
         v10 = v8;
 
-        v5 = v10;
+        lastObject = v10;
       }
     }
 
@@ -8852,7 +8852,7 @@ LABEL_13:
 
   while (v4);
 
-  if (!v5)
+  if (!lastObject)
   {
     goto LABEL_13;
   }
@@ -8867,7 +8867,7 @@ LABEL_14:
   v14[2] = __44__SBRoutingSwitcherModifier_dockWindowLevel__block_invoke_2;
   v14[3] = &unk_2783A8CE0;
   v16 = &v18;
-  v11 = v5;
+  v11 = lastObject;
   v15 = v11;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v11, v14);
   v12 = v19[3];
@@ -9044,9 +9044,9 @@ void __52__SBRoutingSwitcherModifier_keyboardSuppressionMode__block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2810000000;
@@ -9057,7 +9057,7 @@ void __52__SBRoutingSwitcherModifier_keyboardSuppressionMode__block_invoke(uint6
   v7[2] = __66__SBRoutingSwitcherModifier_asyncRenderingAttributesForAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOWORD(self) = *(v11 + 16);
@@ -9149,9 +9149,9 @@ uint64_t __71__SBRoutingSwitcherModifier_wantsAsynchronousSurfaceRetentionAssert
   return result;
 }
 
-- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)a3
+- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -9161,7 +9161,7 @@ uint64_t __71__SBRoutingSwitcherModifier_wantsAsynchronousSurfaceRetentionAssert
   v7[2] = __72__SBRoutingSwitcherModifier_wantsSceneResizesHostedContextForAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -9259,10 +9259,10 @@ void __70__SBRoutingSwitcherModifier_appLayoutForReceivingHardwareButtonEvents__
   *(v3 + 40) = v2;
 }
 
-- (BOOL)canPerformKeyboardShortcutAction:(int64_t)a3 forBundleIdentifier:(id)a4
+- (BOOL)canPerformKeyboardShortcutAction:(int64_t)action forBundleIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x277D85DE8];
-  v15 = a4;
+  identifierCopy = identifier;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -9293,9 +9293,9 @@ void __70__SBRoutingSwitcherModifier_appLayoutForReceivingHardwareButtonEvents__
         v16[2] = __82__SBRoutingSwitcherModifier_canPerformKeyboardShortcutAction_forBundleIdentifier___block_invoke;
         v16[3] = &unk_2783AA668;
         v18 = &v20;
-        v19 = a3;
+        actionCopy = action;
         v16[4] = v11;
-        v17 = v15;
+        v17 = identifierCopy;
         _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v11, v16);
         v12 = *(v21 + 24);
 
@@ -9565,10 +9565,10 @@ void __73__SBRoutingSwitcherModifier_destinationAppLayoutForDismissingCurrentMod
   *(v3 + 40) = v2;
 }
 
-- (id)adjustedContinuousExposeIdentifiersInSwitcherFromPreviousIdentifiersInSwitcher:(id)a3 identifiersInStrip:(id)a4
+- (id)adjustedContinuousExposeIdentifiersInSwitcherFromPreviousIdentifiersInSwitcher:(id)switcher identifiersInStrip:(id)strip
 {
-  v6 = a3;
-  v7 = a4;
+  switcherCopy = switcher;
+  stripCopy = strip;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -9585,9 +9585,9 @@ void __73__SBRoutingSwitcherModifier_destinationAppLayoutForDismissingCurrentMod
   v19 = &v20;
   v10 = v9;
   v16 = v10;
-  v11 = v6;
+  v11 = switcherCopy;
   v17 = v11;
-  v12 = v7;
+  v12 = stripCopy;
   v18 = v12;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v10, v15);
   v13 = v21[5];
@@ -9605,9 +9605,9 @@ void __127__SBRoutingSwitcherModifier_adjustedContinuousExposeIdentifiersInSwitc
   *(v3 + 40) = v2;
 }
 
-- (id)adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:(id)a3
+- (id)adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:(id)strip
 {
-  v4 = a3;
+  stripCopy = strip;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -9624,7 +9624,7 @@ void __127__SBRoutingSwitcherModifier_adjustedContinuousExposeIdentifiersInSwitc
   v14 = &v15;
   v7 = v6;
   v12 = v7;
-  v8 = v4;
+  v8 = stripCopy;
   v13 = v8;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v7, v11);
   v9 = v16[5];
@@ -9642,9 +9642,9 @@ void __102__SBRoutingSwitcherModifier_adjustedContinuousExposeIdentifiersInStrip
   *(v3 + 40) = v2;
 }
 
-- (double)snapshotScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)snapshotScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -9654,8 +9654,8 @@ void __102__SBRoutingSwitcherModifier_adjustedContinuousExposeIdentifiersInStrip
   v10[2] = __68__SBRoutingSwitcherModifier_snapshotScaleForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -9671,9 +9671,9 @@ uint64_t __68__SBRoutingSwitcherModifier_snapshotScaleForLayoutRole_inAppLayout_
   return result;
 }
 
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale
 {
-  v6 = a3;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -9683,9 +9683,9 @@ uint64_t __68__SBRoutingSwitcherModifier_snapshotScaleForLayoutRole_inAppLayout_
   v10[2] = __72__SBRoutingSwitcherModifier_contentPageViewScaleForAppLayout_withScale___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v7 = v6;
+  v7 = layoutCopy;
   v11 = v7;
-  v13 = a4;
+  scaleCopy = scale;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
 
@@ -9700,9 +9700,9 @@ uint64_t __72__SBRoutingSwitcherModifier_contentPageViewScaleForAppLayout_withSc
   return result;
 }
 
-- (double)contentPageViewScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withContentPageViewScale:(double)a5
+- (double)contentPageViewScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout withContentPageViewScale:(double)scale
 {
-  v8 = a4;
+  layoutCopy = layout;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -9712,10 +9712,10 @@ uint64_t __72__SBRoutingSwitcherModifier_contentPageViewScaleForAppLayout_withSc
   v12[2] = __100__SBRoutingSwitcherModifier_contentPageViewScaleForLayoutRole_inAppLayout_withContentPageViewScale___block_invoke;
   v12[3] = &unk_2783B22E8;
   v14 = &v17;
-  v15 = a3;
-  v9 = v8;
+  roleCopy = role;
+  v9 = layoutCopy;
   v13 = v9;
-  v16 = a5;
+  scaleCopy = scale;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v9, v12);
   v10 = v18[3];
 
@@ -9764,7 +9764,7 @@ void __49__SBRoutingSwitcherModifier_scrollViewAttributes__block_invoke(uint64_t
   *(v4 + 40) = v3;
 }
 
-- (double)minimumTranslationToKillIndex:(unint64_t)a3
+- (double)minimumTranslationToKillIndex:(unint64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -9775,7 +9775,7 @@ void __49__SBRoutingSwitcherModifier_scrollViewAttributes__block_invoke(uint64_t
   v5[2] = __59__SBRoutingSwitcherModifier_minimumTranslationToKillIndex___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -9788,9 +9788,9 @@ uint64_t __59__SBRoutingSwitcherModifier_minimumTranslationToKillIndex___block_i
   return result;
 }
 
-- (BOOL)isFocusEnabledForAppLayout:(id)a3
+- (BOOL)isFocusEnabledForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -9800,7 +9800,7 @@ uint64_t __59__SBRoutingSwitcherModifier_minimumTranslationToKillIndex___block_i
   v7[2] = __56__SBRoutingSwitcherModifier_isFocusEnabledForAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -9816,9 +9816,9 @@ uint64_t __56__SBRoutingSwitcherModifier_isFocusEnabledForAppLayout___block_invo
   return result;
 }
 
-- (id)neighboringAppLayoutsForFocusedAppLayout:(id)a3
+- (id)neighboringAppLayoutsForFocusedAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -9830,7 +9830,7 @@ uint64_t __56__SBRoutingSwitcherModifier_isFocusEnabledForAppLayout___block_invo
   v8[2] = __70__SBRoutingSwitcherModifier_neighboringAppLayoutsForFocusedAppLayout___block_invoke;
   v8[3] = &unk_2783B2270;
   v10 = &v11;
-  v5 = v4;
+  v5 = layoutCopy;
   v9 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v8);
   v6 = v12[5];
@@ -9848,7 +9848,7 @@ void __70__SBRoutingSwitcherModifier_neighboringAppLayoutsForFocusedAppLayout___
   *(v4 + 40) = v3;
 }
 
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment
 {
   v9 = 0;
   v10 = &v9;
@@ -9861,8 +9861,8 @@ void __70__SBRoutingSwitcherModifier_neighboringAppLayoutsForFocusedAppLayout___
   v8[2] = __61__SBRoutingSwitcherModifier_contentOffsetForIndex_alignment___block_invoke;
   v8[3] = &unk_2783B2360;
   v8[4] = &v9;
-  v8[5] = a4;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v8);
+  v8[5] = alignment;
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, index, v8);
   v4 = v10[4];
   v5 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -9882,12 +9882,12 @@ uint64_t __61__SBRoutingSwitcherModifier_contentOffsetForIndex_alignment___block
   return result;
 }
 
-- (CGPoint)restingOffsetForScrollOffset:(CGPoint)a3 velocity:(CGPoint)a4
+- (CGPoint)restingOffsetForScrollOffset:(CGPoint)offset velocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v6 = offset.y;
+  v7 = offset.x;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3010000000;
@@ -9929,7 +9929,7 @@ uint64_t __67__SBRoutingSwitcherModifier_restingOffsetForScrollOffset_velocity__
   return result;
 }
 
-- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)a3
+- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)search
 {
   v6 = 0;
   v7 = &v6;
@@ -9940,7 +9940,7 @@ uint64_t __67__SBRoutingSwitcherModifier_restingOffsetForScrollOffset_velocity__
   v5[2] = __117__SBRoutingSwitcherModifier_distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch___block_invoke;
   v5[3] = &unk_2783B22C0;
   v5[4] = &v6;
-  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, a3, v5);
+  _SBRoutingSwitcherModifierRouteToModifierContainingIndex(self, search, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -9953,16 +9953,16 @@ uint64_t __117__SBRoutingSwitcherModifier_distanceToLeadingEdgeOfLeadingCardFrom
   return result;
 }
 
-- (CGPoint)adjustedOffsetForOffset:(CGPoint)a3 translation:(CGPoint)a4 startPoint:(CGPoint)a5 locationInView:(CGPoint)a6 horizontalVelocity:(double *)a7 verticalVelocity:(double *)a8
+- (CGPoint)adjustedOffsetForOffset:(CGPoint)offset translation:(CGPoint)translation startPoint:(CGPoint)point locationInView:(CGPoint)view horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity
 {
-  y = a6.y;
-  x = a6.x;
-  v12 = a5.y;
-  v13 = a5.x;
-  v14 = a4.y;
-  v15 = a4.x;
-  v16 = a3.y;
-  v17 = a3.x;
+  y = view.y;
+  x = view.x;
+  v12 = point.y;
+  v13 = point.x;
+  v14 = translation.y;
+  v15 = translation.x;
+  v16 = offset.y;
+  v17 = offset.x;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3010000000;
@@ -9987,8 +9987,8 @@ uint64_t __117__SBRoutingSwitcherModifier_distanceToLeadingEdgeOfLeadingCardFrom
   v34 = v12;
   v35 = x;
   v36 = y;
-  v37 = a7;
-  v38 = a8;
+  velocityCopy = velocity;
+  verticalVelocityCopy = verticalVelocity;
   _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v21, v26);
   v22 = v40[4];
   v23 = v40[5];
@@ -10639,7 +10639,7 @@ uint64_t __68__SBRoutingSwitcherModifier_cornerRadiusForSlideOverTongueAppLayout
   return result;
 }
 
-- (CGPoint)frameForIndexOffsetToCounteractSwitcherWindowMatchMoveForIndex:(unint64_t)a3
+- (CGPoint)frameForIndexOffsetToCounteractSwitcherWindowMatchMoveForIndex:(unint64_t)index
 {
   v29 = *MEMORY[0x277D85DE8];
   v23 = 0;
@@ -10675,7 +10675,7 @@ LABEL_3:
       v18[3] = &unk_2783AA618;
       v18[4] = v12;
       v18[5] = &v23;
-      v18[6] = a3;
+      v18[6] = index;
       _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v12, v18);
       if (v24[4] != v9 || v24[5] != v10)
       {
@@ -10714,9 +10714,9 @@ uint64_t __92__SBRoutingSwitcherModifier_frameForIndexOffsetToCounteractSwitcher
   return result;
 }
 
-- (double)slideOverMarginForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)slideOverMarginForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -10726,8 +10726,8 @@ uint64_t __92__SBRoutingSwitcherModifier_frameForIndexOffsetToCounteractSwitcher
   v10[2] = __70__SBRoutingSwitcherModifier_slideOverMarginForLayoutRole_inAppLayout___block_invoke;
   v10[3] = &unk_2783B2248;
   v12 = &v14;
-  v13 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v11 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v10);
   v8 = v15[3];
@@ -11283,9 +11283,9 @@ uint64_t __59__SBRoutingSwitcherModifier_fadeInDelayForSplitViewHandles__block_i
   return result;
 }
 
-- (char)jetsamModeForAppLayout:(id)a3
+- (char)jetsamModeForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -11295,7 +11295,7 @@ uint64_t __59__SBRoutingSwitcherModifier_fadeInDelayForSplitViewHandles__block_i
   v7[2] = __52__SBRoutingSwitcherModifier_jetsamModeForAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -11311,9 +11311,9 @@ uint64_t __52__SBRoutingSwitcherModifier_jetsamModeForAppLayout___block_invoke(u
   return result;
 }
 
-- (char)activityModeForAppLayout:(id)a3
+- (char)activityModeForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -11323,7 +11323,7 @@ uint64_t __52__SBRoutingSwitcherModifier_jetsamModeForAppLayout___block_invoke(u
   v7[2] = __54__SBRoutingSwitcherModifier_activityModeForAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -11339,13 +11339,13 @@ uint64_t __54__SBRoutingSwitcherModifier_activityModeForAppLayout___block_invoke
   return result;
 }
 
-- (unint64_t)bounceIconGenerationCountForCurrentCount:(unint64_t)a3
+- (unint64_t)bounceIconGenerationCountForCurrentCount:(unint64_t)count
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
-  v20 = a3;
+  countCopy = count;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -11372,7 +11372,7 @@ uint64_t __54__SBRoutingSwitcherModifier_activityModeForAppLayout___block_invoke
         v12[3] = &unk_2783AA618;
         v12[4] = v9;
         v12[5] = &v17;
-        v12[6] = a3;
+        v12[6] = count;
         _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v9, v12);
         ++v8;
       }
@@ -11407,9 +11407,9 @@ unint64_t __70__SBRoutingSwitcherModifier_bounceIconGenerationCountForCurrentCou
   return result;
 }
 
-- (unint64_t)personalityDebugColorStyleForAppLayout:(id)a3
+- (unint64_t)personalityDebugColorStyleForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -11419,7 +11419,7 @@ unint64_t __70__SBRoutingSwitcherModifier_bounceIconGenerationCountForCurrentCou
   v8[2] = __68__SBRoutingSwitcherModifier_personalityDebugColorStyleForAppLayout___block_invoke;
   v8[3] = &unk_2783B2270;
   v10 = &v11;
-  v5 = v4;
+  v5 = layoutCopy;
   v9 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v8);
   v6 = v12[3];
@@ -11606,9 +11606,9 @@ uint64_t __51__SBRoutingSwitcherModifier_bounceIconInitialFrame__block_invoke(ui
   return result;
 }
 
-- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)a3
+- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -11618,7 +11618,7 @@ uint64_t __51__SBRoutingSwitcherModifier_bounceIconInitialFrame__block_invoke(ui
   v7[2] = __67__SBRoutingSwitcherModifier_shouldAccessoryDrawShadowForAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -11634,9 +11634,9 @@ uint64_t __67__SBRoutingSwitcherModifier_shouldAccessoryDrawShadowForAppLayout__
   return result;
 }
 
-- (BOOL)shouldTetherItemsAndAccessoriesInAppLayout:(id)a3
+- (BOOL)shouldTetherItemsAndAccessoriesInAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -11646,7 +11646,7 @@ uint64_t __67__SBRoutingSwitcherModifier_shouldAccessoryDrawShadowForAppLayout__
   v7[2] = __72__SBRoutingSwitcherModifier_shouldTetherItemsAndAccessoriesInAppLayout___block_invoke;
   v7[3] = &unk_2783B2270;
   v9 = &v10;
-  v5 = v4;
+  v5 = layoutCopy;
   v8 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v7);
   LOBYTE(self) = *(v11 + 24);
@@ -11662,9 +11662,9 @@ uint64_t __72__SBRoutingSwitcherModifier_shouldTetherItemsAndAccessoriesInAppLay
   return result;
 }
 
-- (CGPoint)contentViewOffsetForAccessoriesOfAppLayout:(id)a3
+- (CGPoint)contentViewOffsetForAccessoriesOfAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3010000000;
@@ -11676,7 +11676,7 @@ uint64_t __72__SBRoutingSwitcherModifier_shouldTetherItemsAndAccessoriesInAppLay
   v10[2] = __72__SBRoutingSwitcherModifier_contentViewOffsetForAccessoriesOfAppLayout___block_invoke;
   v10[3] = &unk_2783B2270;
   v12 = &v13;
-  v5 = v4;
+  v5 = layoutCopy;
   v11 = v5;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v5, v10);
   v6 = v14[4];
@@ -11699,9 +11699,9 @@ uint64_t __72__SBRoutingSwitcherModifier_contentViewOffsetForAccessoriesOfAppLay
   return result;
 }
 
-- (CGPoint)contentViewOffsetForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (CGPoint)contentViewOffsetForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3010000000;
@@ -11713,8 +11713,8 @@ uint64_t __72__SBRoutingSwitcherModifier_contentViewOffsetForAccessoriesOfAppLay
   v12[2] = __72__SBRoutingSwitcherModifier_contentViewOffsetForLayoutRole_inAppLayout___block_invoke;
   v12[3] = &unk_2783B2248;
   v14 = &v16;
-  v15 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v13 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v12);
   v8 = v17[4];
@@ -11737,9 +11737,9 @@ uint64_t __72__SBRoutingSwitcherModifier_contentViewOffsetForLayoutRole_inAppLay
   return result;
 }
 
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3010000000;
@@ -11751,8 +11751,8 @@ uint64_t __72__SBRoutingSwitcherModifier_contentViewOffsetForLayoutRole_inAppLay
   v12[2] = __82__SBRoutingSwitcherModifier_wallpaperGradientAttributesForLayoutRole_inAppLayout___block_invoke;
   v12[3] = &unk_2783B2248;
   v14 = &v16;
-  v15 = a3;
-  v7 = v6;
+  roleCopy = role;
+  v7 = layoutCopy;
   v13 = v7;
   _SBRoutingSwitcherModifierRouteToModifierContainingAppLayout(&self->super.super.super.super.isa, v7, v12);
   v8 = v17[4];
@@ -12199,19 +12199,19 @@ uint64_t __77__SBRoutingSwitcherModifier_isPendingInvalidatablesForAcceleratedHo
   return result;
 }
 
-- (unint64_t)_lastIndexForModifier:(id)a3
+- (unint64_t)_lastIndexForModifier:(id)modifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  modifierCopy = modifier;
   v32.receiver = self;
   v32.super_class = SBRoutingSwitcherModifier;
-  v15 = [(SBRoutingSwitcherModifier *)&v32 appLayoutsGenerationCount];
-  if (v15 != self->_lastIndexForModifier_GenCount)
+  appLayoutsGenerationCount = [(SBRoutingSwitcherModifier *)&v32 appLayoutsGenerationCount];
+  if (appLayoutsGenerationCount != self->_lastIndexForModifier_GenCount)
   {
-    v19 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v31.receiver = self;
     v31.super_class = SBRoutingSwitcherModifier;
-    v18 = [(SBRoutingSwitcherModifier *)&v31 appLayouts];
+    appLayouts = [(SBRoutingSwitcherModifier *)&v31 appLayouts];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
@@ -12244,10 +12244,10 @@ uint64_t __77__SBRoutingSwitcherModifier_isPendingInvalidatablesForAcceleratedHo
           v20[4] = v7;
           v20[5] = &v21;
           _SBRoutingSwitcherModifierRouteToModifier(&self->super.super.super.super.isa, v7, v20);
-          v8 = [v22[5] lastObject];
-          if (v8)
+          lastObject = [v22[5] lastObject];
+          if (lastObject)
           {
-            v9 = [v18 indexOfObject:v8];
+            v9 = [appLayouts indexOfObject:lastObject];
           }
 
           else
@@ -12256,7 +12256,7 @@ uint64_t __77__SBRoutingSwitcherModifier_isPendingInvalidatablesForAcceleratedHo
           }
 
           v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
-          [(NSMapTable *)v19 setObject:v10 forKey:v7];
+          [(NSMapTable *)weakToStrongObjectsMapTable setObject:v10 forKey:v7];
 
           _Block_object_dispose(&v21, 8);
         }
@@ -12268,15 +12268,15 @@ uint64_t __77__SBRoutingSwitcherModifier_isPendingInvalidatablesForAcceleratedHo
     }
 
     lastIndexForModifier_indexCapsForModifiers = self->_lastIndexForModifier_indexCapsForModifiers;
-    self->_lastIndexForModifier_indexCapsForModifiers = v19;
+    self->_lastIndexForModifier_indexCapsForModifiers = weakToStrongObjectsMapTable;
 
-    self->_lastIndexForModifier_GenCount = v15;
+    self->_lastIndexForModifier_GenCount = appLayoutsGenerationCount;
   }
 
-  v12 = [(NSMapTable *)self->_lastIndexForModifier_indexCapsForModifiers objectForKey:v16];
-  v13 = [v12 unsignedIntegerValue];
+  v12 = [(NSMapTable *)self->_lastIndexForModifier_indexCapsForModifiers objectForKey:modifierCopy];
+  unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-  return v13;
+  return unsignedIntegerValue;
 }
 
 void __51__SBRoutingSwitcherModifier__lastIndexForModifier___block_invoke(uint64_t a1)

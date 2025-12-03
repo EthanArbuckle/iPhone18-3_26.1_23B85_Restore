@@ -1,18 +1,18 @@
 @interface _CHSWidgetRelevancePropertiesBuf
 - (BOOL)isDeletion;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)supportsBackgroundRefresh;
 - (BOOL)verifyUTF8Fields;
 - (NSArray)relevances;
 - (NSData)kindAsData;
 - (NSString)kind;
 - (_CHSExtensionIdentityBuf)extensionIdentity;
-- (_CHSWidgetRelevancePropertiesBuf)initWithBufRef:(id)a3 cppPointer:(const WidgetRelevancePropertiesBuf *)a4;
+- (_CHSWidgetRelevancePropertiesBuf)initWithBufRef:(id)ref cppPointer:(const WidgetRelevancePropertiesBuf *)pointer;
 - (const)kindAsCString;
 - (double)lastRelevanceUpdate;
-- (id)deepCopyUsingBufferBuilder:(id)a3;
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4;
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6;
+- (id)deepCopyUsingBufferBuilder:(id)builder;
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes;
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables;
 - (unint64_t)hash;
 @end
 
@@ -78,12 +78,12 @@
     v6 = &ptr[v4];
     v7 = *ptr[v4].var0;
     v8 = objc_autoreleasePoolPush();
-    v9 = [(AFBBufRef *)self->_br data];
+    data = [(AFBBufRef *)self->_br data];
     var0 = v6[v7].var0;
-    v11 = var0 - [v9 bytes];
+    v11 = var0 - [data bytes];
 
-    v12 = [(AFBBufRef *)self->_br data];
-    v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+    data2 = [(AFBBufRef *)self->_br data];
+    v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
     objc_autoreleasePoolPop(v8);
   }
@@ -152,32 +152,32 @@
   return v8;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3
+- (id)deepCopyUsingBufferBuilder:(id)builder
 {
-  v3 = [(_CHSWidgetRelevancePropertiesBuf *)self deepCopyUsingBufferBuilder:a3 changes:0];
+  v3 = [(_CHSWidgetRelevancePropertiesBuf *)self deepCopyUsingBufferBuilder:builder changes:0];
 
   return v3;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  builderCopy = builder;
+  changesCopy = changes;
+  if (!builderCopy)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1186 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1186 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
   }
 
   v9 = objc_autoreleasePoolPush();
-  if (!v8)
+  if (!changesCopy)
   {
 LABEL_6:
-    v10 = [(_CHSWidgetRelevancePropertiesBuf *)self extensionIdentity];
-    v11 = v10;
-    if (v10)
+    extensionIdentity = [(_CHSWidgetRelevancePropertiesBuf *)self extensionIdentity];
+    v11 = extensionIdentity;
+    if (extensionIdentity)
     {
-      v12 = [v10 deepCopyUsingBufferBuilder:v7];
+      v12 = [extensionIdentity deepCopyUsingBufferBuilder:builderCopy];
     }
 
     else
@@ -185,7 +185,7 @@ LABEL_6:
       v12 = 0;
     }
 
-    if (!v8)
+    if (!changesCopy)
     {
       goto LABEL_15;
     }
@@ -193,14 +193,14 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  if (v8[8] == 1)
+  if (changesCopy[8] == 1)
   {
-    v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(v8 + 3)];
+    v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(changesCopy + 3)];
   }
 
   else
   {
-    if (!v8[8])
+    if (!changesCopy[8])
     {
       goto LABEL_6;
     }
@@ -209,13 +209,13 @@ LABEL_6:
   }
 
 LABEL_13:
-  if (v8[16] == 1)
+  if (changesCopy[16] == 1)
   {
-    v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(v8 + 5)];
+    v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(changesCopy + 5)];
     goto LABEL_21;
   }
 
-  if (v8[16])
+  if (changesCopy[16])
   {
     v15 = 0;
     goto LABEL_21;
@@ -223,10 +223,10 @@ LABEL_13:
 
 LABEL_15:
   v13 = objc_autoreleasePoolPush();
-  v14 = [(_CHSWidgetRelevancePropertiesBuf *)self kindAsCString];
-  if (v14)
+  kindAsCString = [(_CHSWidgetRelevancePropertiesBuf *)self kindAsCString];
+  if (kindAsCString)
   {
-    v15 = [v7 createStringWithCString:v14];
+    v15 = [builderCopy createStringWithCString:kindAsCString];
   }
 
   else
@@ -235,35 +235,35 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v13);
-  if (!v8)
+  if (!changesCopy)
   {
     goto LABEL_23;
   }
 
 LABEL_21:
-  if (v8[40] == 1)
+  if (changesCopy[40] == 1)
   {
-    v20 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(v8 + 11)];
+    v20 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(changesCopy + 11)];
   }
 
   else
   {
-    if (!v8[40])
+    if (!changesCopy[40])
     {
 LABEL_23:
-      v16 = [(_CHSWidgetRelevancePropertiesBuf *)self relevances];
-      if (v16)
+      relevances = [(_CHSWidgetRelevancePropertiesBuf *)self relevances];
+      if (relevances)
       {
-        v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v16, "count")}];
+        v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(relevances, "count")}];
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
         v34[2] = __71___CHSWidgetRelevancePropertiesBuf_deepCopyUsingBufferBuilder_changes___block_invoke;
         v34[3] = &unk_1E7453FF8;
         v18 = v17;
         v35 = v18;
-        v19 = v7;
+        v19 = builderCopy;
         v36 = v19;
-        [v16 enumerateObjectsUsingBlock:v34];
+        [relevances enumerateObjectsUsingBlock:v34];
         v20 = [v19 _chsCreateVectorOfWidgetRelevanceBufWithOffsets:v18];
       }
 
@@ -287,42 +287,42 @@ LABEL_29:
   v29 = v21;
   v22 = v15;
   v30 = v22;
-  v23 = v8;
+  v23 = changesCopy;
   v31 = v23;
-  v32 = self;
+  selfCopy = self;
   v33 = v20;
   v24 = v20;
-  v25 = [v7 _chsCreateWidgetRelevancePropertiesBufUsingBlock:v28];
+  v25 = [builderCopy _chsCreateWidgetRelevancePropertiesBufUsingBlock:v28];
 
   objc_autoreleasePoolPop(v9);
 
   return v25;
 }
 
-- (_CHSWidgetRelevancePropertiesBuf)initWithBufRef:(id)a3 cppPointer:(const WidgetRelevancePropertiesBuf *)a4
+- (_CHSWidgetRelevancePropertiesBuf)initWithBufRef:(id)ref cppPointer:(const WidgetRelevancePropertiesBuf *)pointer
 {
-  v7 = a3;
+  refCopy = ref;
   v11.receiver = self;
   v11.super_class = _CHSWidgetRelevancePropertiesBuf;
   v8 = [(_CHSWidgetRelevancePropertiesBuf *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_br, a3);
-    v9->_ptr = a4;
+    objc_storeStrong(&v8->_br, ref);
+    v9->_ptr = pointer;
   }
 
   return v9;
 }
 
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables
 {
-  v10 = a3;
+  dataCopy = data;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v10 bytes];
-  if (v12)
+  bytes = [dataCopy bytes];
+  if (bytes)
   {
-    v13 = v12;
+    v13 = bytes;
   }
 
   else
@@ -331,11 +331,11 @@ LABEL_29:
   }
 
   v20 = v13;
-  v21 = [v10 length];
+  v21 = [dataCopy length];
   LODWORD(v22) = 0;
-  HIDWORD(v22) = a5;
+  HIDWORD(v22) = depth;
   LODWORD(v23) = 0;
-  HIDWORD(v23) = a6;
+  HIDWORD(v23) = tables;
   v24 = 0;
   LOBYTE(v25) = 1;
   if (v21 >= 0x7FFFFFFF)
@@ -347,24 +347,24 @@ LABEL_29:
   {
     v14 = *v13;
     v15 = objc_alloc(MEMORY[0x1E698C1D8]);
-    v16 = [v15 initWithData:{v10, v20, v21, v22, v23, v24, v25}];
+    v16 = [v15 initWithData:{dataCopy, v20, v21, v22, v23, v24, v25}];
     self = [(_CHSWidgetRelevancePropertiesBuf *)self initWithBufRef:v16 cppPointer:v13 + v14];
 
-    v17 = self;
-    if (a4)
+    selfCopy2 = self;
+    if (f8)
     {
       if ([(_CHSWidgetRelevancePropertiesBuf *)self verifyUTF8Fields])
       {
-        v17 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v17 = 0;
+        selfCopy2 = 0;
       }
     }
 
-    v18 = v17;
+    v18 = selfCopy2;
   }
 
   else
@@ -379,9 +379,9 @@ LABEL_29:
 
 - (BOOL)verifyUTF8Fields
 {
-  v3 = [(_CHSWidgetRelevancePropertiesBuf *)self relevances];
-  v4 = v3;
-  if (v3)
+  relevances = [(_CHSWidgetRelevancePropertiesBuf *)self relevances];
+  v4 = relevances;
+  if (relevances)
   {
     v15 = 0;
     v16 = &v15;
@@ -392,7 +392,7 @@ LABEL_29:
     v14[2] = __52___CHSWidgetRelevancePropertiesBuf_verifyUTF8Fields__block_invoke;
     v14[3] = &unk_1E7454048;
     v14[4] = &v15;
-    [v3 enumerateObjectsUsingBlock:v14];
+    [relevances enumerateObjectsUsingBlock:v14];
     v5 = *(v16 + 24);
     _Block_object_dispose(&v15, 8);
     if ((v5 & 1) == 0)
@@ -402,13 +402,13 @@ LABEL_29:
     }
   }
 
-  v6 = [(_CHSWidgetRelevancePropertiesBuf *)self extensionIdentity];
-  if (v6)
+  extensionIdentity = [(_CHSWidgetRelevancePropertiesBuf *)self extensionIdentity];
+  if (extensionIdentity)
   {
-    v7 = v6;
-    v8 = [v6 verifyUTF8Fields];
+    v7 = extensionIdentity;
+    verifyUTF8Fields = [extensionIdentity verifyUTF8Fields];
 
-    if (!v8)
+    if (!verifyUTF8Fields)
     {
       return 0;
     }
@@ -434,39 +434,39 @@ LABEL_29:
 - (unint64_t)hash
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(_CHSWidgetRelevancePropertiesBuf *)self extensionIdentity];
-  v5 = [v4 hash];
+  extensionIdentity = [(_CHSWidgetRelevancePropertiesBuf *)self extensionIdentity];
+  v5 = [extensionIdentity hash];
 
-  v6 = [(_CHSWidgetRelevancePropertiesBuf *)self kind];
-  v7 = [v6 hash];
+  kind = [(_CHSWidgetRelevancePropertiesBuf *)self kind];
+  v7 = [kind hash];
 
-  v8 = [(_CHSWidgetRelevancePropertiesBuf *)self supportsBackgroundRefresh];
-  v9 = [(_CHSWidgetRelevancePropertiesBuf *)self isDeletion];
+  supportsBackgroundRefresh = [(_CHSWidgetRelevancePropertiesBuf *)self supportsBackgroundRefresh];
+  isDeletion = [(_CHSWidgetRelevancePropertiesBuf *)self isDeletion];
   [(_CHSWidgetRelevancePropertiesBuf *)self lastRelevanceUpdate];
   v11 = v10;
-  v12 = [(_CHSWidgetRelevancePropertiesBuf *)self relevances];
-  v13 = [v12 hash] + 37 * (v11 + 37 * (37 * (37 * (v7 + 37 * v5) + v8) + v9));
+  relevances = [(_CHSWidgetRelevancePropertiesBuf *)self relevances];
+  v13 = [relevances hash] + 37 * (v11 + 37 * (37 * (37 * (v7 + 37 * v5) + supportsBackgroundRefresh) + isDeletion));
 
   objc_autoreleasePoolPop(v3);
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = [(_CHSWidgetRelevancePropertiesBuf *)self extensionIdentity];
-      v9 = [v6 extensionIdentity];
-      if (v8 | v9)
+      extensionIdentity = [(_CHSWidgetRelevancePropertiesBuf *)self extensionIdentity];
+      extensionIdentity2 = [v6 extensionIdentity];
+      if (extensionIdentity | extensionIdentity2)
       {
-        v10 = [v8 isEqual:v9];
+        v10 = [extensionIdentity isEqual:extensionIdentity2];
 
         if (!v10)
         {
@@ -474,11 +474,11 @@ LABEL_29:
         }
       }
 
-      v11 = [(_CHSWidgetRelevancePropertiesBuf *)self kind];
-      v12 = [v6 kind];
-      if (v11 | v12)
+      kind = [(_CHSWidgetRelevancePropertiesBuf *)self kind];
+      kind2 = [v6 kind];
+      if (kind | kind2)
       {
-        v13 = [v11 isEqual:v12];
+        v13 = [kind isEqual:kind2];
 
         if (!v13)
         {
@@ -486,14 +486,14 @@ LABEL_29:
         }
       }
 
-      v14 = [(_CHSWidgetRelevancePropertiesBuf *)self supportsBackgroundRefresh];
-      if (v14 == [v6 supportsBackgroundRefresh] && (v15 = -[_CHSWidgetRelevancePropertiesBuf isDeletion](self, "isDeletion"), v15 == objc_msgSend(v6, "isDeletion")) && (-[_CHSWidgetRelevancePropertiesBuf lastRelevanceUpdate](self, "lastRelevanceUpdate"), v17 = v16, objc_msgSend(v6, "lastRelevanceUpdate"), v17 == v18))
+      supportsBackgroundRefresh = [(_CHSWidgetRelevancePropertiesBuf *)self supportsBackgroundRefresh];
+      if (supportsBackgroundRefresh == [v6 supportsBackgroundRefresh] && (v15 = -[_CHSWidgetRelevancePropertiesBuf isDeletion](self, "isDeletion"), v15 == objc_msgSend(v6, "isDeletion")) && (-[_CHSWidgetRelevancePropertiesBuf lastRelevanceUpdate](self, "lastRelevanceUpdate"), v17 = v16, objc_msgSend(v6, "lastRelevanceUpdate"), v17 == v18))
       {
-        v19 = [(_CHSWidgetRelevancePropertiesBuf *)self relevances];
-        v20 = [v6 relevances];
-        if (v19 | v20)
+        relevances = [(_CHSWidgetRelevancePropertiesBuf *)self relevances];
+        relevances2 = [v6 relevances];
+        if (relevances | relevances2)
         {
-          v21 = [v19 isEqual:v20];
+          v21 = [relevances isEqual:relevances2];
         }
 
         else

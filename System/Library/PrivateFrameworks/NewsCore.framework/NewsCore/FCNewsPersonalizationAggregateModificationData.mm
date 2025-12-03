@@ -1,13 +1,13 @@
 @interface FCNewsPersonalizationAggregateModificationData
-- (FCNewsPersonalizationAggregateModificationData)initWithDictionary:(id)a3;
+- (FCNewsPersonalizationAggregateModificationData)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsPersonalizationAggregateModificationData
 
-- (FCNewsPersonalizationAggregateModificationData)initWithDictionary:(id)a3
+- (FCNewsPersonalizationAggregateModificationData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FCNewsPersonalizationAggregateModificationData;
   v5 = [(FCNewsPersonalizationAggregateModificationData *)&v12 init];
@@ -18,10 +18,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = FCAppConfigurationNumberValue(v4, @"clicks", 0);
+  v6 = FCAppConfigurationNumberValue(dictionaryCopy, @"clicks", 0);
   if (v6)
   {
-    v7 = FCAppConfigurationNumberValue(v4, @"impressions", 0);
+    v7 = FCAppConfigurationNumberValue(dictionaryCopy, @"impressions", 0);
     if (!v7)
     {
 

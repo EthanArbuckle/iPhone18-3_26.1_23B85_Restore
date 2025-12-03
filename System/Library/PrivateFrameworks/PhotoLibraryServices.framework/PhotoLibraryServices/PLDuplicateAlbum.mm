@@ -1,19 +1,19 @@
 @interface PLDuplicateAlbum
-+ (id)duplicateAlbumsInCurrentManagedObjectContext:(id)a3 predicate:(id)a4;
-+ (id)duplicateAlbumsInCurrentManagedObjectContext:(id)a3 type:(signed __int16)a4;
-+ (id)insertIntoPhotoLibrary:(id)a3;
-- (BOOL)hasDuplicateAssetVisibilityStateVisibleAssets:(id)a3;
++ (id)duplicateAlbumsInCurrentManagedObjectContext:(id)context predicate:(id)predicate;
++ (id)duplicateAlbumsInCurrentManagedObjectContext:(id)context type:(signed __int16)type;
++ (id)insertIntoPhotoLibrary:(id)library;
+- (BOOL)hasDuplicateAssetVisibilityStateVisibleAssets:(id)assets;
 - (id)albumAssetsFetchRequestForDuplicateSort;
 - (id)duplicateAssetsFromCollection;
-- (void)addAssets:(id)a3 type:(signed __int16)a4;
+- (void)addAssets:(id)assets type:(signed __int16)type;
 - (void)awakeFromInsert;
 - (void)cleanupAlbumForDeletedDuplicateAsset;
-- (void)removeAssetsAtIndexes:(id)a3;
-- (void)removeInternalAssets:(id)a3;
+- (void)removeAssetsAtIndexes:(id)indexes;
+- (void)removeInternalAssets:(id)assets;
 - (void)sortAssets;
 - (void)updateAlbumType;
-- (void)updateDuplicateAssetVisibilityStatePropertyForAsset:(id)a3 duplicateAssetVisibilityState:(signed __int16)a4;
-- (void)updateDuplicateAssetVisibilityStateWithDuplicateAssets:(id)a3;
+- (void)updateDuplicateAssetVisibilityStatePropertyForAsset:(id)asset duplicateAssetVisibilityState:(signed __int16)state;
+- (void)updateDuplicateAssetVisibilityStateWithDuplicateAssets:(id)assets;
 @end
 
 @implementation PLDuplicateAlbum
@@ -27,8 +27,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(PLDuplicateAlbum *)self assets];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    assets = [(PLDuplicateAlbum *)self assets];
+    v4 = [assets countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -39,7 +39,7 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(assets);
           }
 
           v8 = *(*(&v9 + 1) + 8 * i);
@@ -49,7 +49,7 @@
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [assets countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -59,15 +59,15 @@
   }
 }
 
-- (void)removeAssetsAtIndexes:(id)a3
+- (void)removeAssetsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(PLDuplicateAlbum *)self assets];
-  v6 = [v5 objectsAtIndexes:v4];
+  indexesCopy = indexes;
+  assets = [(PLDuplicateAlbum *)self assets];
+  v6 = [assets objectsAtIndexes:indexesCopy];
 
   v7.receiver = self;
   v7.super_class = PLDuplicateAlbum;
-  [(PLManagedAlbum *)&v7 removeAssetsAtIndexes:v4];
+  [(PLManagedAlbum *)&v7 removeAssetsAtIndexes:indexesCopy];
 
   [(PLDuplicateAlbum *)self cleanupAlbumForDeletedDuplicateAsset];
   if (([(PLDuplicateAlbum *)self isDeleted]& 1) == 0)
@@ -93,22 +93,22 @@
   return v5;
 }
 
-- (void)updateDuplicateAssetVisibilityStateWithDuplicateAssets:(id)a3
+- (void)updateDuplicateAssetVisibilityStateWithDuplicateAssets:(id)assets
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
-    v20 = [(PLDuplicateAlbum *)self hasDuplicateAssetVisibilityStateVisibleAssets:v4];
-    v5 = [(PLDuplicateAlbum *)self assets];
-    v6 = [v5 firstObject];
+    v20 = [(PLDuplicateAlbum *)self hasDuplicateAssetVisibilityStateVisibleAssets:assetsCopy];
+    assets = [(PLDuplicateAlbum *)self assets];
+    firstObject = [assets firstObject];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = v4;
-    obj = v4;
+    v18 = assetsCopy;
+    obj = assetsCopy;
     v7 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v7)
     {
@@ -124,17 +124,17 @@
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [v11 asset];
-          v13 = [v11 duplicateAssetVisibilityState];
-          v14 = [v12 objectID];
-          v15 = [v6 objectID];
-          v16 = [v14 isEqual:v15];
+          asset = [v11 asset];
+          duplicateAssetVisibilityState = [v11 duplicateAssetVisibilityState];
+          objectID = [asset objectID];
+          objectID2 = [firstObject objectID];
+          v16 = [objectID isEqual:objectID2];
 
           if (v16)
           {
             if (v20)
             {
-              if (v13 == 100)
+              if (duplicateAssetVisibilityState == 100)
               {
                 v17 = 100;
               }
@@ -153,7 +153,7 @@
 
           else if (v20)
           {
-            v17 = v13;
+            v17 = duplicateAssetVisibilityState;
           }
 
           else
@@ -161,7 +161,7 @@
             v17 = 1;
           }
 
-          [(PLDuplicateAlbum *)self updateDuplicateAssetVisibilityStatePropertyForAsset:v12 duplicateAssetVisibilityState:v17];
+          [(PLDuplicateAlbum *)self updateDuplicateAssetVisibilityStatePropertyForAsset:asset duplicateAssetVisibilityState:v17];
         }
 
         v8 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -170,27 +170,27 @@
       while (v8);
     }
 
-    v4 = v18;
+    assetsCopy = v18;
   }
 }
 
-- (void)updateDuplicateAssetVisibilityStatePropertyForAsset:(id)a3 duplicateAssetVisibilityState:(signed __int16)a4
+- (void)updateDuplicateAssetVisibilityStatePropertyForAsset:(id)asset duplicateAssetVisibilityState:(signed __int16)state
 {
-  v4 = a4;
-  v7 = a3;
-  if ([v7 duplicateAssetVisibilityState] != v4)
+  stateCopy = state;
+  assetCopy = asset;
+  if ([assetCopy duplicateAssetVisibilityState] != stateCopy)
   {
-    v5 = v7;
-    if (v4 != 100 && v4 != 1)
+    v5 = assetCopy;
+    if (stateCopy != 100 && stateCopy != 1)
     {
       goto LABEL_11;
     }
 
-    v6 = [v7 libraryScopeShareState];
-    if (v6 > 65537)
+    libraryScopeShareState = [assetCopy libraryScopeShareState];
+    if (libraryScopeShareState > 65537)
     {
-      v5 = v7;
-      if (v6 != 65552 && v6 != 65538)
+      v5 = assetCopy;
+      if (libraryScopeShareState != 65552 && libraryScopeShareState != 65538)
       {
         goto LABEL_11;
       }
@@ -198,35 +198,35 @@
 
     else
     {
-      v5 = v7;
-      if (v6 != 2 && v6 != 16)
+      v5 = assetCopy;
+      if (libraryScopeShareState != 2 && libraryScopeShareState != 16)
       {
         goto LABEL_11;
       }
     }
 
     PLLibraryScopeAssetRemoveSuggestedByClientType(v5);
-    v5 = v7;
+    v5 = assetCopy;
 LABEL_11:
-    [v5 setDuplicateAssetVisibilityState:v4];
+    [v5 setDuplicateAssetVisibilityState:stateCopy];
   }
 }
 
-- (BOOL)hasDuplicateAssetVisibilityStateVisibleAssets:(id)a3
+- (BOOL)hasDuplicateAssetVisibilityStateVisibleAssets:(id)assets
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![v5 count])
+  assetsCopy = assets;
+  if (![assetsCopy count])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLDuplicateAlbum.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"duplicateAssets.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateAlbum.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"duplicateAssets.count > 0"}];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = assetsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -265,39 +265,39 @@ LABEL_13:
 - (void)sortAssets
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PLDuplicateAlbum *)self assets];
-  v4 = [v3 count];
+  assets = [(PLDuplicateAlbum *)self assets];
+  v4 = [assets count];
 
   if (v4 >= 2)
   {
-    v5 = [(PLDuplicateAlbum *)self duplicateAssetsFromCollection];
-    if ([v5 count] < 2)
+    duplicateAssetsFromCollection = [(PLDuplicateAlbum *)self duplicateAssetsFromCollection];
+    if ([duplicateAssetsFromCollection count] < 2)
     {
       v12 = PLBackendGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v13 = 134217984;
-        v14 = [v5 count];
+        v14 = [duplicateAssetsFromCollection count];
         _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Duplicate asset count unexpected. Asset count: %td", &v13, 0xCu);
       }
     }
 
     else
     {
-      v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_95556];
+      v6 = [duplicateAssetsFromCollection sortedArrayUsingComparator:&__block_literal_global_95556];
       v7 = objc_alloc(MEMORY[0x1E695DFB8]);
       v8 = [v6 valueForKey:@"asset"];
       v9 = [v7 initWithArray:v8];
 
-      v10 = [(PLDuplicateAlbum *)self assets];
-      v11 = [v10 isEqualToOrderedSet:v9];
+      assets2 = [(PLDuplicateAlbum *)self assets];
+      v11 = [assets2 isEqualToOrderedSet:v9];
 
       if ((v11 & 1) == 0)
       {
         [(PLDuplicateAlbum *)self setAssets:v9];
       }
 
-      [(PLDuplicateAlbum *)self updateDuplicateAssetVisibilityStateWithDuplicateAssets:v5];
+      [(PLDuplicateAlbum *)self updateDuplicateAssetVisibilityStateWithDuplicateAssets:duplicateAssetsFromCollection];
     }
   }
 }
@@ -305,15 +305,15 @@ LABEL_13:
 - (id)duplicateAssetsFromCollection
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(PLDuplicateAlbum *)self albumAssetsFetchRequestForDuplicateSort];
+  albumAssetsFetchRequestForDuplicateSort = [(PLDuplicateAlbum *)self albumAssetsFetchRequestForDuplicateSort];
   v4 = MEMORY[0x1E69BF2C8];
-  v5 = [(PLGenericAlbum *)self photoLibrary];
-  v6 = [v5 managedObjectContext];
-  v7 = [v4 startedQueryStatsWithContext:v6];
+  photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+  managedObjectContext = [photoLibrary managedObjectContext];
+  v7 = [v4 startedQueryStatsWithContext:managedObjectContext];
 
-  v8 = [(PLDuplicateAlbum *)self managedObjectContext];
+  managedObjectContext2 = [(PLDuplicateAlbum *)self managedObjectContext];
   v28 = 0;
-  v9 = [v8 executeFetchRequest:v3 error:&v28];
+  v9 = [managedObjectContext2 executeFetchRequest:albumAssetsFetchRequestForDuplicateSort error:&v28];
   v10 = v28;
 
   v11 = [v7 stopRecordingDescriptionWithFetchCount:{objc_msgSend(v9, "count")}];
@@ -387,24 +387,24 @@ LABEL_13:
 
 - (void)updateAlbumType
 {
-  v3 = [(PLDuplicateAlbum *)self metadataMatchingAssets];
-  v4 = [v3 count];
+  metadataMatchingAssets = [(PLDuplicateAlbum *)self metadataMatchingAssets];
+  v4 = [metadataMatchingAssets count];
 
-  v5 = [(PLDuplicateAlbum *)self perceptualMatchingAssets];
-  v6 = [v5 count];
+  perceptualMatchingAssets = [(PLDuplicateAlbum *)self perceptualMatchingAssets];
+  v6 = [perceptualMatchingAssets count];
 
   if (v4)
   {
     if (v6)
     {
-      v7 = [(PLDuplicateAlbum *)self assets];
-      v8 = [v7 count];
+      assets = [(PLDuplicateAlbum *)self assets];
+      v8 = [assets count];
 
-      v9 = [(PLDuplicateAlbum *)self assets];
+      assets2 = [(PLDuplicateAlbum *)self assets];
       v10 = MEMORY[0x1E696AE18];
-      v11 = [(PLDuplicateAlbum *)self metadataMatchingAssets];
-      v12 = [v10 predicateWithFormat:@"self in %@", v11];
-      v13 = [v9 filteredOrderedSetUsingPredicate:v12];
+      metadataMatchingAssets2 = [(PLDuplicateAlbum *)self metadataMatchingAssets];
+      v12 = [v10 predicateWithFormat:@"self in %@", metadataMatchingAssets2];
+      v13 = [assets2 filteredOrderedSetUsingPredicate:v12];
       v14 = [v13 count];
 
       if (v8 == v14)
@@ -441,19 +441,19 @@ LABEL_13:
   }
 }
 
-- (void)removeInternalAssets:(id)a3
+- (void)removeInternalAssets:(id)assets
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v4];
-    v6 = [(PLDuplicateAlbum *)self mutableMetadataMatchingAssets];
-    [v6 minusSet:v5];
+    v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:assetsCopy];
+    mutableMetadataMatchingAssets = [(PLDuplicateAlbum *)self mutableMetadataMatchingAssets];
+    [mutableMetadataMatchingAssets minusSet:v5];
 
-    v7 = [(PLDuplicateAlbum *)self mutablePerceptualMatchingAssets];
+    mutablePerceptualMatchingAssets = [(PLDuplicateAlbum *)self mutablePerceptualMatchingAssets];
     v15 = v5;
-    [v7 minusSet:v5];
+    [mutablePerceptualMatchingAssets minusSet:v5];
 
     [(PLDuplicateAlbum *)self updateAlbumType];
     [(PLDuplicateAlbum *)self setProcessingVersion:[(PLDuplicateAlbum *)self processingVersion]+ 1];
@@ -461,7 +461,7 @@ LABEL_13:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v4;
+    v8 = assetsCopy;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -477,9 +477,9 @@ LABEL_13:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * v12) uuid];
-          v14 = [(PLGenericAlbum *)self photoLibrary];
-          [PLDuplicateProcessor signalDuplicateBackgroundJobItemForAssetUUID:v13 requiresMetadataProcessing:1 library:v14];
+          uuid = [*(*(&v16 + 1) + 8 * v12) uuid];
+          photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+          [PLDuplicateProcessor signalDuplicateBackgroundJobItemForAssetUUID:uuid requiresMetadataProcessing:1 library:photoLibrary];
 
           ++v12;
         }
@@ -493,23 +493,23 @@ LABEL_13:
   }
 }
 
-- (void)addAssets:(id)a3 type:(signed __int16)a4
+- (void)addAssets:(id)assets type:(signed __int16)type
 {
-  v4 = a4;
-  v18 = a3;
-  if ([v18 count])
+  typeCopy = type;
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
-    v6 = [(PLManagedAlbum *)self mutableAssets];
-    [v6 addObjectsFromArray:v18];
+    mutableAssets = [(PLManagedAlbum *)self mutableAssets];
+    [mutableAssets addObjectsFromArray:assetsCopy];
 
-    if (v4 <= 1)
+    if (typeCopy <= 1)
     {
-      if (v4 != 1)
+      if (typeCopy != 1)
       {
-        if (!v4)
+        if (!typeCopy)
         {
 LABEL_20:
-          PLStringFromPLDuplicateType(v4);
+          PLStringFromPLDuplicateType(typeCopy);
           objc_claimAutoreleasedReturnValue();
           v17 = _PFAssertFailHandler();
           PLStringFromPLDuplicateType(v17);
@@ -519,27 +519,27 @@ LABEL_20:
         goto LABEL_12;
       }
 
-      v7 = [v18 count];
-      v8 = [(PLDuplicateAlbum *)self assets];
-      v9 = [v8 count];
+      v7 = [assetsCopy count];
+      assets = [(PLDuplicateAlbum *)self assets];
+      v9 = [assets count];
 
       if (v7 == v9)
       {
-        v10 = [(PLDuplicateAlbum *)self mutableMetadataMatchingAssets];
+        mutableMetadataMatchingAssets = [(PLDuplicateAlbum *)self mutableMetadataMatchingAssets];
 LABEL_11:
-        v11 = v10;
-        [v10 addObjectsFromArray:v18];
+        v11 = mutableMetadataMatchingAssets;
+        [mutableMetadataMatchingAssets addObjectsFromArray:assetsCopy];
 
 LABEL_12:
-        v12 = [(PLDuplicateAlbum *)self metadataMatchingAssets];
-        v13 = [v12 count];
-        v14 = [(PLDuplicateAlbum *)self assets];
-        v15 = [v14 count];
+        metadataMatchingAssets = [(PLDuplicateAlbum *)self metadataMatchingAssets];
+        v13 = [metadataMatchingAssets count];
+        assets2 = [(PLDuplicateAlbum *)self assets];
+        v15 = [assets2 count];
 
         if (v13 == v15)
         {
-          v16 = [(PLDuplicateAlbum *)self mutablePerceptualMatchingAssets];
-          [v16 removeAllObjects];
+          mutablePerceptualMatchingAssets = [(PLDuplicateAlbum *)self mutablePerceptualMatchingAssets];
+          [mutablePerceptualMatchingAssets removeAllObjects];
         }
 
         [(PLDuplicateAlbum *)self updateAlbumType];
@@ -552,9 +552,9 @@ LABEL_12:
       }
     }
 
-    else if (v4 != 2)
+    else if (typeCopy != 2)
     {
-      if (v4 == 256 || v4 == 3)
+      if (typeCopy == 256 || typeCopy == 3)
       {
         goto LABEL_20;
       }
@@ -562,7 +562,7 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v10 = [(PLDuplicateAlbum *)self mutablePerceptualMatchingAssets];
+    mutableMetadataMatchingAssets = [(PLDuplicateAlbum *)self mutablePerceptualMatchingAssets];
     goto LABEL_11;
   }
 
@@ -577,18 +577,18 @@ LABEL_16:
   [(PLGenericAlbum *)self setKindValue:1510];
 }
 
-+ (id)duplicateAlbumsInCurrentManagedObjectContext:(id)a3 predicate:(id)a4
++ (id)duplicateAlbumsInCurrentManagedObjectContext:(id)context predicate:(id)predicate
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D5E0];
-  v6 = a4;
-  v7 = a3;
+  predicateCopy = predicate;
+  contextCopy = context;
   v8 = +[PLDuplicateAlbum entityName];
   v9 = [v5 fetchRequestWithEntityName:v8];
 
-  [v9 setPredicate:v6];
+  [v9 setPredicate:predicateCopy];
   v14 = 0;
-  v10 = [v7 executeFetchRequest:v9 error:&v14];
+  v10 = [contextCopy executeFetchRequest:v9 error:&v14];
 
   v11 = v14;
   if (!v10)
@@ -605,21 +605,21 @@ LABEL_16:
   return v10;
 }
 
-+ (id)duplicateAlbumsInCurrentManagedObjectContext:(id)a3 type:(signed __int16)a4
++ (id)duplicateAlbumsInCurrentManagedObjectContext:(id)context type:(signed __int16)type
 {
-  v4 = a4;
+  typeCopy = type;
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
-  v8 = [v6 predicateWithFormat:@"%K = %d", @"duplicateType", v4];
-  v9 = [a1 duplicateAlbumsInCurrentManagedObjectContext:v7 predicate:v8];
+  contextCopy = context;
+  typeCopy = [v6 predicateWithFormat:@"%K = %d", @"duplicateType", typeCopy];
+  v9 = [self duplicateAlbumsInCurrentManagedObjectContext:contextCopy predicate:typeCopy];
 
   return v9;
 }
 
-+ (id)insertIntoPhotoLibrary:(id)a3
++ (id)insertIntoPhotoLibrary:(id)library
 {
-  v3 = [a3 managedObjectContext];
-  v4 = [(PLManagedObject *)PLDuplicateAlbum insertInManagedObjectContext:v3];
+  managedObjectContext = [library managedObjectContext];
+  v4 = [(PLManagedObject *)PLDuplicateAlbum insertInManagedObjectContext:managedObjectContext];
 
   if (v4)
   {

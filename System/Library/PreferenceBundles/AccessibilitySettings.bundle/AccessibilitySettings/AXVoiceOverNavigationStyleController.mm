@@ -1,8 +1,8 @@
 @interface AXVoiceOverNavigationStyleController
 - (id)specifiers;
 - (void)_updateFooterText;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AXVoiceOverNavigationStyleController
@@ -45,31 +45,31 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v10 = a4;
+  cellCopy = cell;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 voiceOverNavigationStyle];
+  voiceOverNavigationStyle = [v5 voiceOverNavigationStyle];
 
-  v7 = [v10 specifier];
-  v8 = [v7 propertyForKey:@"AXSVoiceOverNavigationStyle"];
-  v9 = [v8 integerValue];
+  specifier = [cellCopy specifier];
+  v8 = [specifier propertyForKey:@"AXSVoiceOverNavigationStyle"];
+  integerValue = [v8 integerValue];
 
-  [v10 setChecked:v6 == v9];
+  [cellCopy setChecked:voiceOverNavigationStyle == integerValue];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = AXVoiceOverNavigationStyleController;
-  v6 = a4;
-  [(AXVoiceOverNavigationStyleController *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXVoiceOverNavigationStyleController *)self specifierForIndexPath:v6, v11.receiver, v11.super_class];
+  pathCopy = path;
+  [(AXVoiceOverNavigationStyleController *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AXVoiceOverNavigationStyleController *)self specifierForIndexPath:pathCopy, v11.receiver, v11.super_class];
 
   v8 = [v7 propertyForKey:@"AXSVoiceOverNavigationStyle"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
   v10 = +[AXSettings sharedInstance];
-  [v10 setVoiceOverNavigationStyle:v9];
+  [v10 setVoiceOverNavigationStyle:integerValue];
 
   [(AXVoiceOverNavigationStyleController *)self beginUpdates];
   [(AXVoiceOverNavigationStyleController *)self reloadSpecifiers];
@@ -79,19 +79,19 @@
 - (void)_updateFooterText
 {
   v24 = +[VOSCommandResolver resolverForCurrentHost];
-  v3 = [[VOSCommandManager alloc] initPreferringUserProfile];
+  initPreferringUserProfile = [[VOSCommandManager alloc] initPreferringUserProfile];
   v4 = +[VOSCommand MoveIn];
-  v5 = [v3 gestureBindingsForCommand:v4 withResolver:v24];
+  v5 = [initPreferringUserProfile gestureBindingsForCommand:v4 withResolver:v24];
 
   v6 = +[VOSCommand MoveOut];
-  v7 = [v3 gestureBindingsForCommand:v6 withResolver:v24];
+  v7 = [initPreferringUserProfile gestureBindingsForCommand:v6 withResolver:v24];
 
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 voiceOverNavigationStyle];
+  voiceOverNavigationStyle = [v8 voiceOverNavigationStyle];
 
-  if ((v9 + 1) >= 2)
+  if ((voiceOverNavigationStyle + 1) >= 2)
   {
-    if (v9 != &dword_0 + 1)
+    if (voiceOverNavigationStyle != &dword_0 + 1)
     {
       goto LABEL_10;
     }
@@ -100,9 +100,9 @@
     if ([v5 count])
     {
       v14 = settingsLocString(@"NAVIGATION_STYLE_FOOTER_GROUPS_WITH_COMMANDS_ENTER", @"VoiceOverSettings");
-      v15 = [v5 anyObject];
-      v16 = [v15 localizedName];
-      v17 = [NSString stringWithFormat:v14, v16];
+      anyObject = [v5 anyObject];
+      localizedName = [anyObject localizedName];
+      v17 = [NSString stringWithFormat:v14, localizedName];
       v18 = [NSString stringWithFormat:@"%@ %@", v11, v17];
 
       v11 = v18;
@@ -111,9 +111,9 @@
     if ([v7 count])
     {
       v19 = settingsLocString(@"NAVIGATION_STYLE_FOOTER_GROUPS_WITH_COMMANDS_EXIT", @"VoiceOverSettings");
-      v20 = [v7 anyObject];
-      v21 = [v20 localizedName];
-      v22 = [NSString stringWithFormat:v19, v21];
+      anyObject2 = [v7 anyObject];
+      localizedName2 = [anyObject2 localizedName];
+      v22 = [NSString stringWithFormat:v19, localizedName2];
       v23 = [NSString stringWithFormat:@"%@ %@", v11, v22];
 
       v11 = v23;

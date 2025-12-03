@@ -1,12 +1,12 @@
 @interface MCMPlistReadOnly
-- (BOOL)_initPropertiesWithPlist:(id)a3 conformingToProtocol:(id)a4 error:(id *)a5;
-- (BOOL)_isNonatomicReadonlyBoolPropertyTypeWithAttributes:(const char *)a3;
+- (BOOL)_initPropertiesWithPlist:(id)plist conformingToProtocol:(id)protocol error:(id *)error;
+- (BOOL)_isNonatomicReadonlyBoolPropertyTypeWithAttributes:(const char *)attributes;
 - (BOOL)keepArtifacts;
-- (BOOL)loadWithError:(id *)a3;
-- (BOOL)override_initNonBoolPropertiesWithPlist:(id)a3 error:(id *)a4;
+- (BOOL)loadWithError:(id *)error;
+- (BOOL)override_initNonBoolPropertiesWithPlist:(id)plist error:(id *)error;
 - (MCMFileManagerReadsData)fileManager;
-- (MCMPlistReadOnly)initWithPreprocessedPlist:(id)a3 conformingToProtocol:(id)a4;
-- (MCMPlistReadOnly)initWithRawPlist:(id)a3 preprocessedPlist:(id)a4 pathOrName:(id)a5 protocol:(id)a6 defaultPlistDirectoryURL:(id)a7;
+- (MCMPlistReadOnly)initWithPreprocessedPlist:(id)plist conformingToProtocol:(id)protocol;
+- (MCMPlistReadOnly)initWithRawPlist:(id)plist preprocessedPlist:(id)preprocessedPlist pathOrName:(id)name protocol:(id)protocol defaultPlistDirectoryURL:(id)l;
 - (NSCountedSet)numIncludes;
 - (NSDictionary)preprocessedPlist;
 - (NSDictionary)rawPlist;
@@ -14,29 +14,29 @@
 - (NSURL)defaultPlistDirectoryURL;
 - (NSURL)sourceFileURL;
 - (Protocol)protocol;
-- (id)_plistByPreprocessingPlist:(id)a3 conformingToProtocol:(id)a4 error:(id *)a5;
-- (id)_plistByResolvingFeatureFlagsInMutablePlist:(id)a3 error:(id *)a4;
-- (id)_plistByResolvingIncludeInMutablePlist:(id)a3 conformingToProtocol:(id)a4 error:(id *)a5;
-- (id)_urlByResolvingConfigName:(id)a3 defaultPlistDirectoryURL:(id)a4 error:(id *)a5;
-- (id)descriptionOfBoolPropertiesWithIndentString:(id)a3;
+- (id)_plistByPreprocessingPlist:(id)plist conformingToProtocol:(id)protocol error:(id *)error;
+- (id)_plistByResolvingFeatureFlagsInMutablePlist:(id)plist error:(id *)error;
+- (id)_plistByResolvingIncludeInMutablePlist:(id)plist conformingToProtocol:(id)protocol error:(id *)error;
+- (id)_urlByResolvingConfigName:(id)name defaultPlistDirectoryURL:(id)l error:(id *)error;
+- (id)descriptionOfBoolPropertiesWithIndentString:(id)string;
 - (id)featureFlagProvider;
-- (id)initFromPlist:(id)a3 defaultPlistDirectoryURL:(id)a4 conformingToProtocol:(id)a5;
-- (id)initFromPlistAtPathOrName:(id)a3 defaultPlistDirectoryURL:(id)a4 conformingToProtocol:(id)a5;
-- (void)_forEachBoolPropertyUsingObjCMagicInProtocol:(id)a3 runBlock:(id)a4;
-- (void)_initBoolPropertiesUsingObjCMagicWithPlist:(id)a3 conformingToProtocol:(id)a4;
-- (void)_initBoolPropertyWithName:(id)a3 entry:(id)a4;
-- (void)setFeatureFlagProvider:(id)a3;
-- (void)setFileManager:(id)a3;
-- (void)setKeepArtifacts:(BOOL)a3;
-- (void)setNumIncludes:(id)a3;
+- (id)initFromPlist:(id)plist defaultPlistDirectoryURL:(id)l conformingToProtocol:(id)protocol;
+- (id)initFromPlistAtPathOrName:(id)name defaultPlistDirectoryURL:(id)l conformingToProtocol:(id)protocol;
+- (void)_forEachBoolPropertyUsingObjCMagicInProtocol:(id)protocol runBlock:(id)block;
+- (void)_initBoolPropertiesUsingObjCMagicWithPlist:(id)plist conformingToProtocol:(id)protocol;
+- (void)_initBoolPropertyWithName:(id)name entry:(id)entry;
+- (void)setFeatureFlagProvider:(id)provider;
+- (void)setFileManager:(id)manager;
+- (void)setKeepArtifacts:(BOOL)artifacts;
+- (void)setNumIncludes:(id)includes;
 @end
 
 @implementation MCMPlistReadOnly
 
-- (void)setKeepArtifacts:(BOOL)a3
+- (void)setKeepArtifacts:(BOOL)artifacts
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_keepArtifacts = a3;
+  self->_keepArtifacts = artifacts;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -48,12 +48,12 @@
   return result;
 }
 
-- (void)setFeatureFlagProvider:(id)a3
+- (void)setFeatureFlagProvider:(id)provider
 {
   v4 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 80);
+  objc_setProperty_nonatomic_copy(self, a2, provider, 80);
 }
 
 - (id)featureFlagProvider
@@ -64,13 +64,13 @@
   return result;
 }
 
-- (void)setFileManager:(id)a3
+- (void)setFileManager:(id)manager
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_fileManager = &self->_fileManager;
 
-  objc_storeStrong(p_fileManager, a3);
+  objc_storeStrong(p_fileManager, manager);
 }
 
 - (MCMFileManagerReadsData)fileManager
@@ -129,13 +129,13 @@
   return result;
 }
 
-- (void)setNumIncludes:(id)a3
+- (void)setNumIncludes:(id)includes
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_numIncludes = &self->_numIncludes;
 
-  objc_storeStrong(p_numIncludes, a3);
+  objc_storeStrong(p_numIncludes, includes);
 }
 
 - (NSCountedSet)numIncludes
@@ -146,7 +146,7 @@
   return result;
 }
 
-- (BOOL)_isNonatomicReadonlyBoolPropertyTypeWithAttributes:(const char *)a3
+- (BOOL)_isNonatomicReadonlyBoolPropertyTypeWithAttributes:(const char *)attributes
 {
   v8 = *MEMORY[0x1E69E9840];
   if (_isNonatomicReadonlyBoolPropertyTypeWithAttributes__onceToken != -1)
@@ -154,13 +154,13 @@
     dispatch_once(&_isNonatomicReadonlyBoolPropertyTypeWithAttributes__onceToken, &__block_literal_global_5072);
   }
 
-  if (!strncmp(_isNonatomicReadonlyBoolPropertyTypeWithAttributes__BOOLType, a3, _isNonatomicReadonlyBoolPropertyTypeWithAttributes__BOOLTypeLen))
+  if (!strncmp(_isNonatomicReadonlyBoolPropertyTypeWithAttributes__BOOLType, attributes, _isNonatomicReadonlyBoolPropertyTypeWithAttributes__BOOLTypeLen))
   {
-    v5 = strnlen(a3, 0x64uLL);
-    v4 = strnstr(a3, ",N", v5);
+    v5 = strnlen(attributes, 0x64uLL);
+    v4 = strnstr(attributes, ",N", v5);
     if (v4)
     {
-      LOBYTE(v4) = strnstr(a3, ",R", v5) != 0;
+      LOBYTE(v4) = strnstr(attributes, ",R", v5) != 0;
     }
   }
 
@@ -183,12 +183,12 @@ size_t __71__MCMPlistReadOnly__isNonatomicReadonlyBoolPropertyTypeWithAttributes
   return result;
 }
 
-- (void)_forEachBoolPropertyUsingObjCMagicInProtocol:(id)a3 runBlock:(id)a4
+- (void)_forEachBoolPropertyUsingObjCMagicInProtocol:(id)protocol runBlock:(id)block
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   outCount = 0;
-  v7 = protocol_copyPropertyList2(a3, &outCount, 1, 1);
+  v7 = protocol_copyPropertyList2(protocol, &outCount, 1, 1);
   if (outCount)
   {
     for (i = 0; i < outCount; ++i)
@@ -199,7 +199,7 @@ size_t __71__MCMPlistReadOnly__isNonatomicReadonlyBoolPropertyTypeWithAttributes
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:Name];
       if ([(MCMPlistReadOnly *)self _isNonatomicReadonlyBoolPropertyTypeWithAttributes:Attributes])
       {
-        v6[2](v6, v12);
+        blockCopy[2](blockCopy, v12);
       }
     }
   }
@@ -209,35 +209,35 @@ size_t __71__MCMPlistReadOnly__isNonatomicReadonlyBoolPropertyTypeWithAttributes
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_urlByResolvingConfigName:(id)a3 defaultPlistDirectoryURL:(id)a4 error:(id *)a5
+- (id)_urlByResolvingConfigName:(id)name defaultPlistDirectoryURL:(id)l error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 hasPrefix:@"/"])
+  nameCopy = name;
+  lCopy = l;
+  if ([nameCopy hasPrefix:@"/"])
   {
-    v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8 isDirectory:0];
+    v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:nameCopy isDirectory:0];
   }
 
   else
   {
-    if ([v8 hasPrefix:@"./"])
+    if ([nameCopy hasPrefix:@"./"])
     {
-      v11 = [(NSURL *)self->_sourceFileURL URLByDeletingLastPathComponent];
-      [v11 URLByAppendingPathComponent:v8 isDirectory:0];
+      uRLByDeletingLastPathComponent = [(NSURL *)self->_sourceFileURL URLByDeletingLastPathComponent];
+      [uRLByDeletingLastPathComponent URLByAppendingPathComponent:nameCopy isDirectory:0];
     }
 
     else
     {
-      v11 = [v9 URLByAppendingPathComponent:v8 isDirectory:0];
-      [v11 URLByAppendingPathExtension:@"plist"];
+      uRLByDeletingLastPathComponent = [lCopy URLByAppendingPathComponent:nameCopy isDirectory:0];
+      [uRLByDeletingLastPathComponent URLByAppendingPathExtension:@"plist"];
     }
     v10 = ;
   }
 
-  v12 = [(MCMPlistReadOnly *)self fileManager];
+  fileManager = [(MCMPlistReadOnly *)self fileManager];
   v20[0] = 0;
-  v13 = [v12 realPathForURL:v10 isDirectory:0 error:v20];
+  v13 = [fileManager realPathForURL:v10 isDirectory:0 error:v20];
   v14 = v20[0];
 
   v15 = 0;
@@ -245,10 +245,10 @@ size_t __71__MCMPlistReadOnly__isNonatomicReadonlyBoolPropertyTypeWithAttributes
   {
     v16 = [[MCMError alloc] initWithNSError:v14 url:v10 defaultErrorType:149];
     v15 = v16;
-    if (a5)
+    if (error)
     {
       v17 = v16;
-      *a5 = v15;
+      *error = v15;
     }
   }
 
@@ -257,12 +257,12 @@ size_t __71__MCMPlistReadOnly__isNonatomicReadonlyBoolPropertyTypeWithAttributes
   return v13;
 }
 
-- (id)_plistByResolvingIncludeInMutablePlist:(id)a3 conformingToProtocol:(id)a4 error:(id *)a5
+- (id)_plistByResolvingIncludeInMutablePlist:(id)plist conformingToProtocol:(id)protocol error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v37 = a4;
-  v8 = v7;
+  plistCopy = plist;
+  protocolCopy = protocol;
+  v8 = plistCopy;
   v9 = 0;
   v10 = 0;
   v36 = v8;
@@ -283,14 +283,14 @@ size_t __71__MCMPlistReadOnly__isNonatomicReadonlyBoolPropertyTypeWithAttributes
 
     if (!v13)
     {
-      v25 = a5;
+      errorCopy4 = error;
       goto LABEL_25;
     }
 
     [v8 removeObjectForKey:@"#Include"];
-    v14 = [(MCMPlistReadOnly *)self defaultPlistDirectoryURL];
+    defaultPlistDirectoryURL = [(MCMPlistReadOnly *)self defaultPlistDirectoryURL];
     v41 = v10;
-    v15 = [(MCMPlistReadOnly *)self _urlByResolvingConfigName:v13 defaultPlistDirectoryURL:v14 error:&v41];
+    v15 = [(MCMPlistReadOnly *)self _urlByResolvingConfigName:v13 defaultPlistDirectoryURL:defaultPlistDirectoryURL error:&v41];
     v16 = v41;
 
     if (!v15)
@@ -298,12 +298,12 @@ size_t __71__MCMPlistReadOnly__isNonatomicReadonlyBoolPropertyTypeWithAttributes
       p_super = container_log_handle_for_category();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
-        v32 = [(MCMPlistReadOnly *)self defaultPlistDirectoryURL];
-        v33 = [v32 path];
+        defaultPlistDirectoryURL2 = [(MCMPlistReadOnly *)self defaultPlistDirectoryURL];
+        path = [defaultPlistDirectoryURL2 path];
         *buf = 138412802;
         v43 = v13;
         v44 = 2112;
-        v45 = v33;
+        v45 = path;
         v46 = 2112;
         v47 = v16;
         _os_log_error_impl(&dword_1DF2C3000, p_super, OS_LOG_TYPE_ERROR, "Could not resolve config file name [%@] using default directory [%@]; error = %@", buf, 0x20u);
@@ -313,20 +313,20 @@ size_t __71__MCMPlistReadOnly__isNonatomicReadonlyBoolPropertyTypeWithAttributes
       goto LABEL_18;
     }
 
-    v17 = [(MCMPlistReadOnly *)self numIncludes];
-    [v17 addObject:v15];
+    numIncludes = [(MCMPlistReadOnly *)self numIncludes];
+    [numIncludes addObject:v15];
 
-    v18 = [(MCMPlistReadOnly *)self numIncludes];
-    v19 = [v18 countForObject:v15];
+    numIncludes2 = [(MCMPlistReadOnly *)self numIncludes];
+    v19 = [numIncludes2 countForObject:v15];
 
     if (v19 >= 0x1F)
     {
       v27 = container_log_handle_for_category();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        v34 = [v15 path];
+        path2 = [v15 path];
         *buf = 138412546;
-        v43 = v34;
+        v43 = path2;
         v44 = 2048;
         v45 = 30;
         _os_log_error_impl(&dword_1DF2C3000, v27, OS_LOG_TYPE_ERROR, "[%@] exceeded maximum inclusions (%lu), possible recursion", buf, 0x16u);
@@ -335,25 +335,25 @@ size_t __71__MCMPlistReadOnly__isNonatomicReadonlyBoolPropertyTypeWithAttributes
       p_super = &v16->super;
       v16 = [[MCMError alloc] initWithErrorType:150];
 LABEL_18:
-      v25 = a5;
+      errorCopy4 = error;
       goto LABEL_24;
     }
 
     v20 = MEMORY[0x1E695DF20];
-    v21 = [(MCMPlistReadOnly *)self fileManager];
+    fileManager = [(MCMPlistReadOnly *)self fileManager];
     v40 = 0;
-    v22 = [v20 MCM_dictionaryWithContentsOfURL:v15 options:0 fileManager:v21 fsNode:0 error:&v40];
+    v22 = [v20 MCM_dictionaryWithContentsOfURL:v15 options:0 fileManager:fileManager fsNode:0 error:&v40];
     v23 = v40;
 
     if (!v22)
     {
       v28 = container_log_handle_for_category();
-      v25 = a5;
+      errorCopy4 = error;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v35 = [v15 path];
+        path3 = [v15 path];
         *buf = 138412546;
-        v43 = v35;
+        v43 = path3;
         v44 = 2112;
         v45 = v23;
         _os_log_error_impl(&dword_1DF2C3000, v28, OS_LOG_TYPE_ERROR, "Could not read config file [%@]; error = %@", buf, 0x16u);
@@ -379,7 +379,7 @@ LABEL_18:
   }
 
   v8 = 0;
-  v25 = a5;
+  errorCopy4 = error;
 LABEL_23:
 
   p_super = v15;
@@ -395,10 +395,10 @@ LABEL_25:
     v8 = 0;
   }
 
-  if (v25 && !v8)
+  if (errorCopy4 && !v8)
   {
     v29 = v10;
-    *v25 = v10;
+    *errorCopy4 = v10;
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -406,11 +406,11 @@ LABEL_25:
   return v8;
 }
 
-- (id)_plistByResolvingFeatureFlagsInMutablePlist:(id)a3 error:(id *)a4
+- (id)_plistByResolvingFeatureFlagsInMutablePlist:(id)plist error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MCMPlistReadOnly *)self featureFlagProvider];
+  plistCopy = plist;
+  featureFlagProvider = [(MCMPlistReadOnly *)self featureFlagProvider];
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -421,14 +421,14 @@ LABEL_25:
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v8 = v6;
+  v8 = plistCopy;
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __70__MCMPlistReadOnly__plistByResolvingFeatureFlagsInMutablePlist_error___block_invoke;
   v22 = &unk_1E86B0470;
   v25 = &v27;
-  v9 = v7;
-  v23 = self;
+  v9 = featureFlagProvider;
+  selfCopy = self;
   v24 = v9;
   v26 = &v31;
   [v8 MCM_replaceDeepDictionariesWithReplaceHandler:&v19];
@@ -450,8 +450,8 @@ LABEL_25:
     }
 
     v12 = [MCMError alloc];
-    v13 = [(NSURL *)self->_sourceFileURL path];
-    v14 = [(MCMError *)v12 initWithErrorType:149 category:5 path:v13 POSIXerrno:100];
+    path = [(NSURL *)self->_sourceFileURL path];
+    v14 = [(MCMError *)v12 initWithErrorType:149 category:5 path:path POSIXerrno:100];
     v15 = v32[5];
     v32[5] = v14;
 
@@ -459,9 +459,9 @@ LABEL_25:
     if (v28[3])
     {
 LABEL_6:
-      if (a4)
+      if (error)
       {
-        *a4 = v32[5];
+        *error = v32[5];
       }
 
       v10 = 0;
@@ -672,11 +672,11 @@ LABEL_18:
   return v7;
 }
 
-- (id)_plistByPreprocessingPlist:(id)a3 conformingToProtocol:(id)a4 error:(id *)a5
+- (id)_plistByPreprocessingPlist:(id)plist conformingToProtocol:(id)protocol error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [a3 mutableCopy];
+  protocolCopy = protocol;
+  v9 = [plist mutableCopy];
   v19[0] = 0;
   v10 = [(MCMPlistReadOnly *)self _plistByResolvingFeatureFlagsInMutablePlist:v9 error:v19];
   v11 = v19[0];
@@ -684,11 +684,11 @@ LABEL_18:
   if (v10)
   {
     v18 = v11;
-    v12 = [(MCMPlistReadOnly *)self _plistByResolvingIncludeInMutablePlist:v10 conformingToProtocol:v8 error:&v18];
+    v12 = [(MCMPlistReadOnly *)self _plistByResolvingIncludeInMutablePlist:v10 conformingToProtocol:protocolCopy error:&v18];
     v13 = v18;
 
     v11 = v13;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -697,7 +697,7 @@ LABEL_18:
   else
   {
     v12 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -706,58 +706,58 @@ LABEL_18:
   if (!v12)
   {
     v14 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
 LABEL_7:
-  v15 = [v12 MCM_deepCopy];
+  mCM_deepCopy = [v12 MCM_deepCopy];
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return mCM_deepCopy;
 }
 
-- (void)_initBoolPropertyWithName:(id)a3 entry:(id)a4
+- (void)_initBoolPropertyWithName:(id)name entry:(id)entry
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  entryCopy = entry;
+  nameCopy = name;
   objc_opt_class();
-  v11 = v6;
+  v11 = entryCopy;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = 0;
+    bOOLValue = 0;
     goto LABEL_5;
   }
 
   if (v11)
   {
-    v8 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v8 = 0;
+  bOOLValue = 0;
 LABEL_6:
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:{v8, v11}];
-  [(MCMPlistReadOnly *)self setValue:v9 forKey:v7];
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:{bOOLValue, v11}];
+  [(MCMPlistReadOnly *)self setValue:v9 forKey:nameCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_initBoolPropertiesUsingObjCMagicWithPlist:(id)a3 conformingToProtocol:(id)a4
+- (void)_initBoolPropertiesUsingObjCMagicWithPlist:(id)plist conformingToProtocol:(id)protocol
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  plistCopy = plist;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __84__MCMPlistReadOnly__initBoolPropertiesUsingObjCMagicWithPlist_conformingToProtocol___block_invoke;
   v9[3] = &unk_1E86B0448;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
-  [(MCMPlistReadOnly *)self _forEachBoolPropertyUsingObjCMagicInProtocol:a4 runBlock:v9];
+  v10 = plistCopy;
+  v7 = plistCopy;
+  [(MCMPlistReadOnly *)self _forEachBoolPropertyUsingObjCMagicInProtocol:protocol runBlock:v9];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -774,36 +774,36 @@ void __84__MCMPlistReadOnly__initBoolPropertiesUsingObjCMagicWithPlist_conformin
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_initPropertiesWithPlist:(id)a3 conformingToProtocol:(id)a4 error:(id *)a5
+- (BOOL)_initPropertiesWithPlist:(id)plist conformingToProtocol:(id)protocol error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  [(MCMPlistReadOnly *)self _initBoolPropertiesUsingObjCMagicWithPlist:v8 conformingToProtocol:a4];
+  plistCopy = plist;
+  [(MCMPlistReadOnly *)self _initBoolPropertiesUsingObjCMagicWithPlist:plistCopy conformingToProtocol:protocol];
   v13[0] = 0;
-  v9 = [(MCMPlistReadOnly *)self override_initNonBoolPropertiesWithPlist:v8 error:v13];
+  v9 = [(MCMPlistReadOnly *)self override_initNonBoolPropertiesWithPlist:plistCopy error:v13];
 
   v10 = v13[0];
-  if (a5 && !v9)
+  if (error && !v9)
   {
     v10 = v10;
-    *a5 = v10;
+    *error = v10;
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (BOOL)override_initNonBoolPropertiesWithPlist:(id)a3 error:(id *)a4
+- (BOOL)override_initNonBoolPropertiesWithPlist:(id)plist error:(id *)error
 {
   v4 = *MEMORY[0x1E69E9840];
   *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (id)descriptionOfBoolPropertiesWithIndentString:(id)a3
+- (id)descriptionOfBoolPropertiesWithIndentString:(id)string
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -817,7 +817,7 @@ void __84__MCMPlistReadOnly__initBoolPropertiesUsingObjCMagicWithPlist_conformin
   v10[3] = &unk_1E86B0420;
   v10[4] = self;
   v12 = &v13;
-  v6 = v4;
+  v6 = stringCopy;
   v11 = v6;
   [(MCMPlistReadOnly *)self _forEachBoolPropertyUsingObjCMagicInProtocol:protocol runBlock:v10];
   v7 = v14[5];
@@ -856,16 +856,16 @@ void __64__MCMPlistReadOnly_descriptionOfBoolPropertiesWithIndentString___block_
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)loadWithError:(id *)a3
+- (BOOL)loadWithError:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
   if (self->_pathOrName)
   {
-    v6 = [(MCMPlistReadOnly *)self pathOrName];
-    v7 = [(MCMPlistReadOnly *)self defaultPlistDirectoryURL];
+    pathOrName = [(MCMPlistReadOnly *)self pathOrName];
+    defaultPlistDirectoryURL = [(MCMPlistReadOnly *)self defaultPlistDirectoryURL];
     v37 = 0;
-    v8 = [(MCMPlistReadOnly *)self _urlByResolvingConfigName:v6 defaultPlistDirectoryURL:v7 error:&v37];
+    v8 = [(MCMPlistReadOnly *)self _urlByResolvingConfigName:pathOrName defaultPlistDirectoryURL:defaultPlistDirectoryURL error:&v37];
     v9 = v37;
     sourceFileURL = self->_sourceFileURL;
     self->_sourceFileURL = v8;
@@ -877,9 +877,9 @@ void __64__MCMPlistReadOnly_descriptionOfBoolPropertiesWithIndentString___block_
     }
 
     v12 = MEMORY[0x1E695DF20];
-    v13 = [(MCMPlistReadOnly *)self fileManager];
+    fileManager = [(MCMPlistReadOnly *)self fileManager];
     v36 = 0;
-    v14 = [v12 MCM_dictionaryWithContentsOfURL:v11 options:0 fileManager:v13 fsNode:0 error:&v36];
+    v14 = [v12 MCM_dictionaryWithContentsOfURL:v11 options:0 fileManager:fileManager fsNode:0 error:&v36];
     v15 = v36;
     rawPlist = self->_rawPlist;
     self->_rawPlist = v14;
@@ -889,9 +889,9 @@ void __64__MCMPlistReadOnly_descriptionOfBoolPropertiesWithIndentString___block_
       v28 = container_log_handle_for_category();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v33 = [(NSURL *)self->_sourceFileURL path];
+        path = [(NSURL *)self->_sourceFileURL path];
         *buf = 138412546;
-        v39 = v33;
+        v39 = path;
         v40 = 2112;
         v41 = v15;
         _os_log_error_impl(&dword_1DF2C3000, v28, OS_LOG_TYPE_ERROR, "Failed to read config file [%@]; error = %@", buf, 0x16u);
@@ -960,11 +960,11 @@ void __64__MCMPlistReadOnly_descriptionOfBoolPropertiesWithIndentString___block_
 
 LABEL_20:
     objc_autoreleasePoolPop(v5);
-    if (a3)
+    if (error)
     {
       v30 = v9;
       v27 = 0;
-      *a3 = v9;
+      *error = v9;
     }
 
     else
@@ -983,14 +983,14 @@ LABEL_23:
   return result;
 }
 
-- (MCMPlistReadOnly)initWithRawPlist:(id)a3 preprocessedPlist:(id)a4 pathOrName:(id)a5 protocol:(id)a6 defaultPlistDirectoryURL:(id)a7
+- (MCMPlistReadOnly)initWithRawPlist:(id)plist preprocessedPlist:(id)preprocessedPlist pathOrName:(id)name protocol:(id)protocol defaultPlistDirectoryURL:(id)l
 {
   v39 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  plistCopy = plist;
+  preprocessedPlistCopy = preprocessedPlist;
+  nameCopy = name;
+  protocolCopy = protocol;
+  lCopy = l;
   v31.receiver = self;
   v31.super_class = MCMPlistReadOnly;
   v17 = [(MCMPlistReadOnly *)&v31 init];
@@ -1003,11 +1003,11 @@ LABEL_23:
   numIncludes = v17->_numIncludes;
   v17->_numIncludes = v18;
 
-  objc_storeStrong(&v17->_rawPlist, a3);
-  objc_storeStrong(&v17->_preprocessedPlist, a4);
-  objc_storeStrong(&v17->_pathOrName, a5);
-  objc_storeStrong(&v17->_protocol, a6);
-  objc_storeStrong(&v17->_defaultPlistDirectoryURL, a7);
+  objc_storeStrong(&v17->_rawPlist, plist);
+  objc_storeStrong(&v17->_preprocessedPlist, preprocessedPlist);
+  objc_storeStrong(&v17->_pathOrName, name);
+  objc_storeStrong(&v17->_protocol, protocol);
+  objc_storeStrong(&v17->_defaultPlistDirectoryURL, l);
   v20 = +[MCMFileManager defaultManager];
   fileManager = v17->_fileManager;
   v17->_fileManager = v20;
@@ -1016,7 +1016,7 @@ LABEL_23:
   v17->_featureFlagProvider = 0;
 
   v17->_keepArtifacts = 0;
-  if (([(MCMPlistReadOnly *)v17 conformsToProtocol:v15]& 1) == 0)
+  if (([(MCMPlistReadOnly *)v17 conformsToProtocol:protocolCopy]& 1) == 0)
   {
     v37 = 0u;
     v38 = 0u;
@@ -1026,9 +1026,9 @@ LABEL_23:
     os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
-    v29 = [v28 UTF8String];
+    uTF8String = [v28 UTF8String];
     v32 = 136315138;
-    v33 = v29;
+    v33 = uTF8String;
     _os_log_send_and_compose_impl();
 
     _os_crash_msg();
@@ -1068,28 +1068,28 @@ LABEL_13:
   return result;
 }
 
-- (MCMPlistReadOnly)initWithPreprocessedPlist:(id)a3 conformingToProtocol:(id)a4
+- (MCMPlistReadOnly)initWithPreprocessedPlist:(id)plist conformingToProtocol:(id)protocol
 {
   v6 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69E9840];
 
-  return [(MCMPlistReadOnly *)self initWithRawPlist:0 preprocessedPlist:a3 pathOrName:0 protocol:a4 defaultPlistDirectoryURL:0];
+  return [(MCMPlistReadOnly *)self initWithRawPlist:0 preprocessedPlist:plist pathOrName:0 protocol:protocol defaultPlistDirectoryURL:0];
 }
 
-- (id)initFromPlist:(id)a3 defaultPlistDirectoryURL:(id)a4 conformingToProtocol:(id)a5
+- (id)initFromPlist:(id)plist defaultPlistDirectoryURL:(id)l conformingToProtocol:(id)protocol
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(MCMPlistReadOnly *)self initWithRawPlist:a3 preprocessedPlist:0 pathOrName:0 protocol:a5 defaultPlistDirectoryURL:a4];
+  return [(MCMPlistReadOnly *)self initWithRawPlist:plist preprocessedPlist:0 pathOrName:0 protocol:protocol defaultPlistDirectoryURL:l];
 }
 
-- (id)initFromPlistAtPathOrName:(id)a3 defaultPlistDirectoryURL:(id)a4 conformingToProtocol:(id)a5
+- (id)initFromPlistAtPathOrName:(id)name defaultPlistDirectoryURL:(id)l conformingToProtocol:(id)protocol
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(MCMPlistReadOnly *)self initWithRawPlist:0 preprocessedPlist:0 pathOrName:a3 protocol:a5 defaultPlistDirectoryURL:a4];
+  return [(MCMPlistReadOnly *)self initWithRawPlist:0 preprocessedPlist:0 pathOrName:name protocol:protocol defaultPlistDirectoryURL:l];
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface NMSMutableMediaDownloadInfo
 - (NMSMutableMediaDownloadInfo)init;
-- (void)addItem:(id)a3;
+- (void)addItem:(id)item;
 @end
 
 @implementation NMSMutableMediaDownloadInfo
 
 - (NMSMutableMediaDownloadInfo)init
 {
-  v3 = [MEMORY[0x277CBEB70] orderedSet];
-  v4 = [(NMSMediaDownloadInfo *)self initWithItems:v3];
+  orderedSet = [MEMORY[0x277CBEB70] orderedSet];
+  v4 = [(NMSMediaDownloadInfo *)self initWithItems:orderedSet];
 
   return v4;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v7 = a3;
-  v4 = [(NMSMediaDownloadInfo *)self items];
-  v5 = [v4 containsObject:v7];
+  itemCopy = item;
+  items = [(NMSMediaDownloadInfo *)self items];
+  v5 = [items containsObject:itemCopy];
 
   if ((v5 & 1) == 0)
   {
-    -[NMSMediaDownloadInfo setTotalItemSize:](self, "setTotalItemSize:", [v7 size] + -[NMSMediaDownloadInfo totalItemSize](self, "totalItemSize"));
+    -[NMSMediaDownloadInfo setTotalItemSize:](self, "setTotalItemSize:", [itemCopy size] + -[NMSMediaDownloadInfo totalItemSize](self, "totalItemSize"));
   }
 
-  v6 = [(NMSMediaDownloadInfo *)self items];
-  [v6 addObject:v7];
+  items2 = [(NMSMediaDownloadInfo *)self items];
+  [items2 addObject:itemCopy];
 }
 
 @end

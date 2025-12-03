@@ -1,14 +1,14 @@
 @interface ML3DatabaseStatementRenderer
 + (id)defaultRenderer;
-- (id)beginTransactionStatementWithBehaviorType:(unint64_t)a3;
-- (id)insertStatementForTableName:(id)a3 columnNames:(id)a4;
-- (id)insertStatementUsingDefaultValuesForTableName:(id)a3;
-- (id)insertStatementWithOptions:(id)a3;
-- (id)rollbackTransactionStatementToSavepointName:(id)a3;
-- (id)savepointReleaseStatementWithName:(id)a3;
-- (id)savepointStatementWithName:(id)a3;
-- (id)statementWithPrefix:(id)a3 inParameterCount:(unint64_t)a4;
-- (id)statementWithPrefix:(id)a3 inParameterCount:(unint64_t)a4 valueCount:(unint64_t)a5;
+- (id)beginTransactionStatementWithBehaviorType:(unint64_t)type;
+- (id)insertStatementForTableName:(id)name columnNames:(id)names;
+- (id)insertStatementUsingDefaultValuesForTableName:(id)name;
+- (id)insertStatementWithOptions:(id)options;
+- (id)rollbackTransactionStatementToSavepointName:(id)name;
+- (id)savepointReleaseStatementWithName:(id)name;
+- (id)savepointStatementWithName:(id)name;
+- (id)statementWithPrefix:(id)prefix inParameterCount:(unint64_t)count;
+- (id)statementWithPrefix:(id)prefix inParameterCount:(unint64_t)count valueCount:(unint64_t)valueCount;
 @end
 
 @implementation ML3DatabaseStatementRenderer
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __47__ML3DatabaseStatementRenderer_defaultRenderer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultRenderer___once != -1)
   {
     dispatch_once(&defaultRenderer___once, block);
@@ -37,58 +37,58 @@ uint64_t __47__ML3DatabaseStatementRenderer_defaultRenderer__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)statementWithPrefix:(id)a3 inParameterCount:(unint64_t)a4 valueCount:(unint64_t)a5
+- (id)statementWithPrefix:(id)prefix inParameterCount:(unint64_t)count valueCount:(unint64_t)valueCount
 {
-  v6 = 2 * a4 - 1;
-  v7 = a3;
+  v6 = 2 * count - 1;
+  prefixCopy = prefix;
   v8 = [&stru_28408B690 stringByPaddingToLength:v6 withString:@" startingAtIndex:{?", 1}];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@", (%@)", v8];
 
-  v10 = [v9 length] * a5 - 2;
+  v10 = [v9 length] * valueCount - 2;
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v9];
   v12 = [&stru_28408B690 stringByPaddingToLength:v10 withString:v11 startingAtIndex:2];
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v7, v12];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", prefixCopy, v12];
 
   return v13;
 }
 
-- (id)statementWithPrefix:(id)a3 inParameterCount:(unint64_t)a4
+- (id)statementWithPrefix:(id)prefix inParameterCount:(unint64_t)count
 {
-  v4 = 2 * a4 - 1;
-  v5 = a3;
+  v4 = 2 * count - 1;
+  prefixCopy = prefix;
   v6 = [&stru_28408B690 stringByPaddingToLength:v4 withString:@" startingAtIndex:{?", 1}];
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ IN (%@)", v5, v6];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ IN (%@)", prefixCopy, v6];
 
   return v7;
 }
 
-- (id)insertStatementWithOptions:(id)a3
+- (id)insertStatementWithOptions:(id)options
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionTableNameKey"];
+  optionsCopy = options;
+  v6 = [optionsCopy objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionTableNameKey"];
   if (!v6)
   {
-    v38 = [MEMORY[0x277CCA890] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"ML3DatabaseStatementRenderer+Insertions.m" lineNumber:46 description:@"Must specify a table name to render insertion statement."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseStatementRenderer+Insertions.m" lineNumber:46 description:@"Must specify a table name to render insertion statement."];
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionFailureOptionKey"];
+  v7 = [optionsCopy objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionFailureOptionKey"];
 
   if (v7)
   {
-    v8 = [v5 objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionFailureOptionKey"];
-    v9 = [v8 unsignedIntegerValue];
+    v8 = [optionsCopy objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionFailureOptionKey"];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-    if ((v9 - 1) > 4)
+    if ((unsignedIntegerValue - 1) > 4)
     {
       v10 = @"FAIL";
     }
 
     else
     {
-      v10 = off_2787654E0[v9 - 1];
+      v10 = off_2787654E0[unsignedIntegerValue - 1];
     }
 
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"INSERT OR %@", v10];
@@ -99,12 +99,12 @@ uint64_t __47__ML3DatabaseStatementRenderer_defaultRenderer__block_invoke()
     v11 = @"INSERT";
   }
 
-  v12 = [v5 objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionDatabaseNameKey"];
+  v12 = [optionsCopy objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionDatabaseNameKey"];
 
   v13 = MEMORY[0x277CCACA8];
   if (v12)
   {
-    v14 = [v5 objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionDatabaseNameKey"];
+    v14 = [optionsCopy objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionDatabaseNameKey"];
     v15 = [v13 stringWithFormat:@"INTO %@.%@", v14, v6];
   }
 
@@ -113,8 +113,8 @@ uint64_t __47__ML3DatabaseStatementRenderer_defaultRenderer__block_invoke()
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"INTO %@", v6];
   }
 
-  v16 = [v5 objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionColumnNamesKey"];
-  v17 = [v5 objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionValuesKey"];
+  v16 = [optionsCopy objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionColumnNamesKey"];
+  v17 = [optionsCopy objectForKeyedSubscript:@"ML3DatabaseInsertStatementOptionValuesKey"];
   v44 = v17;
   if (v16 | v17)
   {
@@ -129,8 +129,8 @@ uint64_t __47__ML3DatabaseStatementRenderer_defaultRenderer__block_invoke()
         v20 = [v16 count];
         if (v20 != [v18 count])
         {
-          v21 = [MEMORY[0x277CCA890] currentHandler];
-          [v21 handleFailureInMethod:a2 object:self file:@"ML3DatabaseStatementRenderer+Insertions.m" lineNumber:108 description:@"Number of column names provided doesn't match the number of values provided."];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"ML3DatabaseStatementRenderer+Insertions.m" lineNumber:108 description:@"Number of column names provided doesn't match the number of values provided."];
         }
 
         goto LABEL_19;
@@ -173,7 +173,7 @@ LABEL_19:
             v29 = *(*(&v45 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              v30 = [v29 stringValue];
+              stringValue = [v29 stringValue];
             }
 
             else
@@ -185,10 +185,10 @@ LABEL_19:
                 goto LABEL_29;
               }
 
-              v30 = v29;
+              stringValue = v29;
             }
 
-            v31 = v30;
+            v31 = stringValue;
 LABEL_29:
             [v23 addObject:v31];
           }
@@ -237,13 +237,13 @@ LABEL_33:
   return v36;
 }
 
-- (id)insertStatementUsingDefaultValuesForTableName:(id)a3
+- (id)insertStatementUsingDefaultValuesForTableName:(id)name
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"ML3DatabaseInsertStatementOptionTableNameKey";
-  v10[0] = a3;
+  v10[0] = name;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = [(ML3DatabaseStatementRenderer *)self insertStatementWithOptions:v6];
@@ -251,17 +251,17 @@ LABEL_33:
   return v7;
 }
 
-- (id)insertStatementForTableName:(id)a3 columnNames:(id)a4
+- (id)insertStatementForTableName:(id)name columnNames:(id)names
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  nameCopy = name;
+  namesCopy = names;
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(namesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v7;
+  v9 = namesCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v10)
   {
@@ -288,7 +288,7 @@ LABEL_33:
 
   v22[0] = @"ML3DatabaseInsertStatementOptionTableNameKey";
   v22[1] = @"ML3DatabaseInsertStatementOptionColumnNamesKey";
-  v23[0] = v6;
+  v23[0] = nameCopy;
   v23[1] = v9;
   v22[2] = @"ML3DatabaseInsertStatementOptionValuesKey";
   v23[2] = v8;
@@ -298,59 +298,59 @@ LABEL_33:
   return v16;
 }
 
-- (id)savepointReleaseStatementWithName:(id)a3
+- (id)savepointReleaseStatementWithName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ML3DatabaseStatementRenderer+Transactions.m" lineNumber:71 description:@"Must specify a savepoint name."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseStatementRenderer+Transactions.m" lineNumber:71 description:@"Must specify a savepoint name."];
   }
 
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"RELEASE SAVEPOINT %@", v5];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"RELEASE SAVEPOINT %@", nameCopy];
 
-  return v6;
+  return nameCopy;
 }
 
-- (id)savepointStatementWithName:(id)a3
+- (id)savepointStatementWithName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ML3DatabaseStatementRenderer+Transactions.m" lineNumber:64 description:@"Must specify a savepoint name."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseStatementRenderer+Transactions.m" lineNumber:64 description:@"Must specify a savepoint name."];
   }
 
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"SAVEPOINT %@", v5];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"SAVEPOINT %@", nameCopy];
 
-  return v6;
+  return nameCopy;
 }
 
-- (id)rollbackTransactionStatementToSavepointName:(id)a3
+- (id)rollbackTransactionStatementToSavepointName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"ROLLBACK TRANSACTION TO SAVEPOINT %@", a3];
+    name = [MEMORY[0x277CCACA8] stringWithFormat:@"ROLLBACK TRANSACTION TO SAVEPOINT %@", name];
   }
 
   else
   {
-    v4 = @"ROLLBACK TRANSACTION";
+    name = @"ROLLBACK TRANSACTION";
   }
 
-  return v4;
+  return name;
 }
 
-- (id)beginTransactionStatementWithBehaviorType:(unint64_t)a3
+- (id)beginTransactionStatementWithBehaviorType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v4 = @"BEGIN TRANSACTION";
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"BEGIN %@ TRANSACTION", off_278765508[a3]];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"BEGIN %@ TRANSACTION", off_278765508[type]];
   }
 
   return v4;

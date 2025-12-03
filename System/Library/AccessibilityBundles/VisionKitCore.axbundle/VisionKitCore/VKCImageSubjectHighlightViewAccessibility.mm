@@ -8,9 +8,9 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(VKCImageSubjectHighlightViewAccessibility *)self _axDraggableView];
+  _axDraggableView = [(VKCImageSubjectHighlightViewAccessibility *)self _axDraggableView];
 
-  if (v2)
+  if (_axDraggableView)
   {
     v3 = accessibilityLocalizedString(@"detected.subject.element");
   }
@@ -33,28 +33,28 @@
 - (id)accessibilityDragSourceDescriptors
 {
   v11[1] = *MEMORY[0x29EDCA608];
-  v3 = [(VKCImageSubjectHighlightViewAccessibility *)self _axDraggableView];
-  if (v3)
+  _axDraggableView = [(VKCImageSubjectHighlightViewAccessibility *)self _axDraggableView];
+  if (_axDraggableView)
   {
     v4 = objc_alloc(MEMORY[0x29EDC7900]);
     v5 = accessibilityLocalizedString(@"lift.subject.from.background");
     [(VKCImageSubjectHighlightViewAccessibility *)self accessibilityActivationPoint];
     UIAccessibilityPointToPoint();
-    v6 = [v4 initWithName:v5 point:v3 inView:?];
+    v6 = [v4 initWithName:v5 point:_axDraggableView inView:?];
     v11[0] = v6;
-    v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:v11 count:1];
+    accessibilityDragSourceDescriptors = [MEMORY[0x29EDB8D80] arrayWithObjects:v11 count:1];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = VKCImageSubjectHighlightViewAccessibility;
-    v7 = [(VKCImageSubjectHighlightViewAccessibility *)&v10 accessibilityDragSourceDescriptors];
+    accessibilityDragSourceDescriptors = [(VKCImageSubjectHighlightViewAccessibility *)&v10 accessibilityDragSourceDescriptors];
   }
 
   v8 = *MEMORY[0x29EDCA608];
 
-  return v7;
+  return accessibilityDragSourceDescriptors;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface GuidesHomeAPIController
 - (BOOL)isCuratedGuidesHome;
 - (BOOL)isFilteredGuidesHome;
-- (GuidesHomeAPIController)initWithGuideLocation:(id)a3 onStateChangeHandler:(id)a4 traits:(id)a5;
+- (GuidesHomeAPIController)initWithGuideLocation:(id)location onStateChangeHandler:(id)handler traits:(id)traits;
 - (id)guideHomeSingleCollectionIdentifier;
 - (id)guideLocationName;
 - (void)cancelFetchingGuideHome;
 - (void)clearFilteredData;
-- (void)fetchGuidesHomeViewFilteredBy:(id)a3 onCompletion:(id)a4;
-- (void)fetchGuidesWithIdentifiers:(id)a3 completion:(id)a4;
+- (void)fetchGuidesHomeViewFilteredBy:(id)by onCompletion:(id)completion;
+- (void)fetchGuidesWithIdentifiers:(id)identifiers completion:(id)completion;
 - (void)initializeSingleCollectionFromResponseIfApplicable;
-- (void)refreshWithGuideLocation:(id)a3;
+- (void)refreshWithGuideLocation:(id)location;
 @end
 
 @implementation GuidesHomeAPIController
 
 - (id)guideHomeSingleCollectionIdentifier
 {
-  v3 = [(GuidesHomeAPIController *)self singlePlaceCollection];
+  singlePlaceCollection = [(GuidesHomeAPIController *)self singlePlaceCollection];
 
-  if (v3)
+  if (singlePlaceCollection)
   {
     v4 = [MKMapItemIdentifier alloc];
-    v5 = [(GuidesHomeAPIController *)self singlePlaceCollection];
-    v6 = [v5 collectionIdentifier];
-    v7 = [v4 initWithGEOMapItemIdentifier:v6];
+    singlePlaceCollection2 = [(GuidesHomeAPIController *)self singlePlaceCollection];
+    collectionIdentifier = [singlePlaceCollection2 collectionIdentifier];
+    v7 = [v4 initWithGEOMapItemIdentifier:collectionIdentifier];
   }
 
   else
@@ -36,38 +36,38 @@
 
 - (BOOL)isFilteredGuidesHome
 {
-  v2 = [(GuidesHomeAPIController *)self filter];
-  v3 = v2 != 0;
+  filter = [(GuidesHomeAPIController *)self filter];
+  v3 = filter != 0;
 
   return v3;
 }
 
 - (BOOL)isCuratedGuidesHome
 {
-  v2 = [(GuidesHomeAPIController *)self guideHomeResult];
-  v3 = [v2 featuredGuidesSection];
-  v4 = [v3 featuredGuides];
-  v5 = [v4 firstObject];
-  v6 = v5 != 0;
+  guideHomeResult = [(GuidesHomeAPIController *)self guideHomeResult];
+  featuredGuidesSection = [guideHomeResult featuredGuidesSection];
+  featuredGuides = [featuredGuidesSection featuredGuides];
+  firstObject = [featuredGuides firstObject];
+  v6 = firstObject != 0;
 
   return v6;
 }
 
 - (id)guideLocationName
 {
-  v3 = [(GuidesHomeAPIController *)self guideLocation];
-  v4 = [v3 title];
+  guideLocation = [(GuidesHomeAPIController *)self guideLocation];
+  title = [guideLocation title];
 
-  if (v4)
+  if (title)
   {
-    v5 = v4;
+    v5 = title;
   }
 
   else
   {
-    v6 = [(GuidesHomeAPIController *)self guideHomeViewResult];
-    v7 = [(GuidesHomeAPIController *)self guideLocation];
-    v5 = [v6 guideLocationName:v7];
+    guideHomeViewResult = [(GuidesHomeAPIController *)self guideHomeViewResult];
+    guideLocation2 = [(GuidesHomeAPIController *)self guideLocation];
+    v5 = [guideHomeViewResult guideLocationName:guideLocation2];
   }
 
   return v5;
@@ -75,33 +75,33 @@
 
 - (void)initializeSingleCollectionFromResponseIfApplicable
 {
-  v3 = [(GuidesHomeAPIController *)self guideHomeResult];
-  v4 = [v3 repeatableSections];
-  v5 = [v4 count];
+  guideHomeResult = [(GuidesHomeAPIController *)self guideHomeResult];
+  repeatableSections = [guideHomeResult repeatableSections];
+  v5 = [repeatableSections count];
 
   if (v5 <= 1)
   {
     v6 = objc_alloc_init(NSMutableArray);
-    v7 = [(GuidesHomeAPIController *)self guideHomeResult];
-    v8 = [v7 repeatableSections];
+    guideHomeResult2 = [(GuidesHomeAPIController *)self guideHomeResult];
+    repeatableSections2 = [guideHomeResult2 repeatableSections];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1005B44A0;
     v14[3] = &unk_101622CC0;
     v9 = v6;
     v15 = v9;
-    [v8 enumerateObjectsUsingBlock:v14];
+    [repeatableSections2 enumerateObjectsUsingBlock:v14];
 
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     if ([v9 count] == 1)
     {
-      v11 = [v10 collection];
+      collection = [firstObject collection];
 
-      if (v11)
+      if (collection)
       {
-        v12 = [v10 collection];
+        collection2 = [firstObject collection];
         singlePlaceCollection = self->_singlePlaceCollection;
-        self->_singlePlaceCollection = v12;
+        self->_singlePlaceCollection = collection2;
       }
     }
   }
@@ -114,13 +114,13 @@
   [(GuidesHomeAPIController *)self setFilteredCollectionsIds:0];
 }
 
-- (void)fetchGuidesWithIdentifiers:(id)a3 completion:(id)a4
+- (void)fetchGuidesWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = +[MKMapService sharedService];
-  v9 = [(GuidesHomeAPIController *)self traits];
-  v10 = [v8 ticketForCuratedCollections:v6 isBatchLookup:1 traits:v9];
+  traits = [(GuidesHomeAPIController *)self traits];
+  v10 = [v8 ticketForCuratedCollections:identifiersCopy isBatchLookup:1 traits:traits];
   [(GuidesHomeAPIController *)self setBatchTicket:v10];
 
   objc_initWeak(&location, self);
@@ -135,36 +135,36 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "FetchingGuidesHomeViewBatch", "", buf, 2u);
   }
 
-  v15 = [(GuidesHomeAPIController *)self batchTicket];
+  batchTicket = [(GuidesHomeAPIController *)self batchTicket];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1005B47B0;
   v17[3] = &unk_10163C080;
   v19[1] = v12;
   objc_copyWeak(v19, &location);
-  v16 = v7;
+  v16 = completionCopy;
   v18 = v16;
-  [v15 submitWithHandler:v17 networkActivity:&stru_101622C98];
+  [batchTicket submitWithHandler:v17 networkActivity:&stru_101622C98];
 
   objc_destroyWeak(v19);
   objc_destroyWeak(&location);
 }
 
-- (void)fetchGuidesHomeViewFilteredBy:(id)a3 onCompletion:(id)a4
+- (void)fetchGuidesHomeViewFilteredBy:(id)by onCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [(GuidesHomeAPIController *)self setFilter:v6];
-  if (v6 || ([(GuidesHomeAPIController *)self guideHomeResult], v18 = objc_claimAutoreleasedReturnValue(), v18, !v18))
+  byCopy = by;
+  completionCopy = completion;
+  [(GuidesHomeAPIController *)self setFilter:byCopy];
+  if (byCopy || ([(GuidesHomeAPIController *)self guideHomeResult], v18 = objc_claimAutoreleasedReturnValue(), v18, !v18))
   {
-    v8 = [(GuidesHomeAPIController *)self stateHandler];
-    v8[2](v8, [(GuidesHomeAPIController *)self state], 1);
+    stateHandler = [(GuidesHomeAPIController *)self stateHandler];
+    stateHandler[2](stateHandler, [(GuidesHomeAPIController *)self state], 1);
 
     [(GuidesHomeAPIController *)self setState:1];
     v9 = +[MKMapService sharedService];
-    v10 = [(GuidesHomeAPIController *)self guideLocation];
-    v11 = [(GuidesHomeAPIController *)self traits];
-    v12 = [v9 ticketForGuideHomeWithFilter:v6 guideLocation:v10 withTraits:v11];
+    guideLocation = [(GuidesHomeAPIController *)self guideLocation];
+    traits = [(GuidesHomeAPIController *)self traits];
+    v12 = [v9 ticketForGuideHomeWithFilter:byCopy guideLocation:guideLocation withTraits:traits];
     [(GuidesHomeAPIController *)self setTicket:v12];
 
     objc_initWeak(&location, self);
@@ -179,16 +179,16 @@
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "FetchingGuidesHomeView", "", buf, 2u);
     }
 
-    v17 = [(GuidesHomeAPIController *)self ticket];
+    ticket = [(GuidesHomeAPIController *)self ticket];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1005B4BE8;
     v20[3] = &unk_101622C78;
     v23[1] = v14;
     objc_copyWeak(v23, &location);
-    v21 = v6;
-    v22 = v7;
-    [v17 submitWithHandler:v20 networkActivity:0];
+    v21 = byCopy;
+    v22 = completionCopy;
+    [ticket submitWithHandler:v20 networkActivity:0];
 
     objc_destroyWeak(v23);
     objc_destroyWeak(&location);
@@ -197,18 +197,18 @@
   else
   {
     [(GuidesHomeAPIController *)self clearFilteredData];
-    v19 = [(GuidesHomeAPIController *)self stateHandler];
-    v19[2](v19, [(GuidesHomeAPIController *)self state], 2);
+    stateHandler2 = [(GuidesHomeAPIController *)self stateHandler];
+    stateHandler2[2](stateHandler2, [(GuidesHomeAPIController *)self state], 2);
 
     [(GuidesHomeAPIController *)self setState:2];
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)refreshWithGuideLocation:(id)a3
+- (void)refreshWithGuideLocation:(id)location
 {
-  objc_storeStrong(&self->_guideLocation, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_guideLocation, location);
+  locationCopy = location;
   guideHomeResult = self->_guideHomeResult;
   self->_guideHomeResult = 0;
 
@@ -218,30 +218,30 @@
 - (void)cancelFetchingGuideHome
 {
   [(GuidesHomeAPIController *)self clearFilteredData];
-  v3 = [(GuidesHomeAPIController *)self batchTicket];
-  [v3 cancel];
+  batchTicket = [(GuidesHomeAPIController *)self batchTicket];
+  [batchTicket cancel];
 
-  v4 = [(GuidesHomeAPIController *)self ticket];
-  [v4 cancel];
+  ticket = [(GuidesHomeAPIController *)self ticket];
+  [ticket cancel];
 }
 
-- (GuidesHomeAPIController)initWithGuideLocation:(id)a3 onStateChangeHandler:(id)a4 traits:(id)a5
+- (GuidesHomeAPIController)initWithGuideLocation:(id)location onStateChangeHandler:(id)handler traits:(id)traits
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  locationCopy = location;
+  handlerCopy = handler;
+  traitsCopy = traits;
   v17.receiver = self;
   v17.super_class = GuidesHomeAPIController;
   v12 = [(GuidesHomeAPIController *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_guideLocation, a3);
-    v14 = objc_retainBlock(v10);
+    objc_storeStrong(&v12->_guideLocation, location);
+    v14 = objc_retainBlock(handlerCopy);
     stateHandler = v13->_stateHandler;
     v13->_stateHandler = v14;
 
-    objc_storeStrong(&v13->_traits, a5);
+    objc_storeStrong(&v13->_traits, traits);
     v13->_state = 0;
   }
 

@@ -1,17 +1,17 @@
 @interface NTKRichComplicationRectangularFullView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (NTKRichComplicationRectangularFullView)init;
 - (int64_t)tritiumUpdateMode;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)setPaused:(BOOL)a3;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation NTKRichComplicationRectangularFullView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -26,8 +26,8 @@
   if (v2)
   {
     v3 = [off_27877BEB0 alloc];
-    v4 = [(CDRichComplicationView *)v2 device];
-    v5 = [v3 initWithDevice:v4 useAccentColor:0];
+    device = [(CDRichComplicationView *)v2 device];
+    v5 = [v3 initWithDevice:device useAccentColor:0];
     imageView = v2->_imageView;
     v2->_imageView = v5;
 
@@ -63,45 +63,45 @@
   [(CDRichComplicationImageView *)imageView setCenter:MidX, CGRectGetMidY(v15)];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v6 = a3;
+  templateCopy = template;
   v9.receiver = self;
   v9.super_class = NTKRichComplicationRectangularFullView;
-  [(CDRichComplicationTemplateView *)&v9 _handleTemplate:v6 reason:a4];
+  [(CDRichComplicationTemplateView *)&v9 _handleTemplate:templateCopy reason:reason];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     imageView = self->_imageView;
-    v8 = [v6 imageProvider];
-    [(CDRichComplicationImageView *)imageView setImageProvider:v8 reason:a4];
+    imageProvider = [templateCopy imageProvider];
+    [(CDRichComplicationImageView *)imageView setImageProvider:imageProvider reason:reason];
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5.receiver = self;
   v5.super_class = NTKRichComplicationRectangularFullView;
   [(CDRichComplicationView *)&v5 setPaused:?];
-  [(CDRichComplicationImageView *)self->_imageView setPaused:v3];
+  [(CDRichComplicationImageView *)self->_imageView setPaused:pausedCopy];
 }
 
 - (int64_t)tritiumUpdateMode
 {
-  v3 = [(CDRichComplicationImageView *)self->_imageView tritiumUpdateMode];
-  v4 = v3;
-  if (v3)
+  tritiumUpdateMode = [(CDRichComplicationImageView *)self->_imageView tritiumUpdateMode];
+  v4 = tritiumUpdateMode;
+  if (tritiumUpdateMode)
   {
-    v5 = [v3 integerValue];
-    if (v5 >= 2)
+    integerValue = [tritiumUpdateMode integerValue];
+    if (integerValue >= 2)
     {
-      v6 = 2;
+      tritiumUpdateMode2 = 2;
     }
 
     else
     {
-      v6 = v5;
+      tritiumUpdateMode2 = integerValue;
     }
   }
 
@@ -109,10 +109,10 @@
   {
     v8.receiver = self;
     v8.super_class = NTKRichComplicationRectangularFullView;
-    v6 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
+    tritiumUpdateMode2 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
   }
 
-  return v6;
+  return tritiumUpdateMode2;
 }
 
 @end

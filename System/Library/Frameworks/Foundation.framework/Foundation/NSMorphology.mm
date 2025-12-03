@@ -1,39 +1,39 @@
 @interface NSMorphology
 + (NSMorphology)userMorphology;
-+ (id)_heuristicMorphologyForLocale:(id)a3 prefix:(id)a4 suffix:(id)a5 featureName:(id *)a6 matchedPrefixLength:(unint64_t *)a7 matchedSuffixLength:(unint64_t *)a8;
++ (id)_heuristicMorphologyForLocale:(id)locale prefix:(id)prefix suffix:(id)suffix featureName:(id *)name matchedPrefixLength:(unint64_t *)length matchedSuffixLength:(unint64_t *)suffixLength;
 + (id)_userInflection;
 + (id)_userMorphologyWithOverrides;
 + (void)_clearCachedUserMorphology;
-+ (void)_getUserMorphology:(id *)a3 userInflection:(id *)a4;
-- (BOOL)addConstraintsTo:(MDInflectableStringConcept *)a3;
-- (BOOL)isEqual:(id)a3;
++ (void)_getUserMorphology:(id *)morphology userInflection:(id *)inflection;
+- (BOOL)addConstraintsTo:(MDInflectableStringConcept *)to;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUnspecified;
 - (BOOL)setCustomPronoun:(NSMorphologyCustomPronoun *)features forLanguage:(NSString *)language error:(NSError *)error;
 - (NSData)_externalRepresentation;
 - (NSDictionary)_customPronouns;
 - (NSDictionary)_externalRepresentationDictionary;
-- (NSMorphology)initWithCoder:(id)a3;
-- (NSMorphology)initWithInflection:(id)a3;
-- (NSMorphology)initWithMorphunAttributeValues:(id)a3;
+- (NSMorphology)initWithCoder:(id)coder;
+- (NSMorphology)initWithInflection:(id)inflection;
+- (NSMorphology)initWithMorphunAttributeValues:(id)values;
 - (NSMorphologyCustomPronoun)customPronounForLanguage:(NSString *)language;
-- (id)_initWithExternalRepresentation:(id)a3 error:(id *)a4;
-- (id)_initWithExternalRepresentationDictionary:(id)a3;
+- (id)_initWithExternalRepresentation:(id)representation error:(id *)error;
+- (id)_initWithExternalRepresentationDictionary:(id)dictionary;
 - (id)_morphunConstraints;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (uint64_t)mergeMorphology:(char)a3 override:;
+- (uint64_t)mergeMorphology:(char)morphology override:;
 - (unint64_t)hash;
-- (void)_overrideUserInflectionInBlock:(void *)a1;
-- (void)_setCustomPronouns:(id)a3;
-- (void)applyPluralityRulesForNumbers:(id)a3 inLanguages:(id)a4;
+- (void)_overrideUserInflectionInBlock:(void *)block;
+- (void)_setCustomPronouns:(id)pronouns;
+- (void)applyPluralityRulesForNumbers:(id)numbers inLanguages:(id)languages;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)isIdentity;
 @end
 
 @implementation NSMorphology
 
-+ (id)_heuristicMorphologyForLocale:(id)a3 prefix:(id)a4 suffix:(id)a5 featureName:(id *)a6 matchedPrefixLength:(unint64_t *)a7 matchedSuffixLength:(unint64_t *)a8
++ (id)_heuristicMorphologyForLocale:(id)locale prefix:(id)prefix suffix:(id)suffix featureName:(id *)name matchedPrefixLength:(unint64_t *)length matchedSuffixLength:(unint64_t *)suffixLength
 {
   type metadata accessor for _NSSwiftLocale();
   v14 = swift_dynamicCastClass();
@@ -48,17 +48,17 @@
   {
     type metadata accessor for _LocaleBridged();
     v15 = swift_allocObject();
-    *(v15 + 16) = a3;
+    *(v15 + 16) = locale;
     v16 = lazy protocol witness table accessor for type _LocaleBridged and conformance _LocaleBridged();
-    v17 = a3;
+    localeCopy = locale;
   }
 
   v25[0] = v15;
   v25[1] = v16;
-  v18 = static String._unconditionallyBridgeFromObjectiveC(_:)(a4);
+  v18 = static String._unconditionallyBridgeFromObjectiveC(_:)(prefix);
   v20 = v19;
-  v21 = static String._unconditionallyBridgeFromObjectiveC(_:)(a5);
-  v23 = specialized static NSMorphology._heuristicMorphology(locale:prefix:suffix:featureNamePointer:matchedPrefixPointer:matchedSuffixPointer:)(v25, v18, v20, v21, v22, a6, a7, a8);
+  v21 = static String._unconditionallyBridgeFromObjectiveC(_:)(suffix);
+  v23 = specialized static NSMorphology._heuristicMorphology(locale:prefix:suffix:featureNamePointer:matchedPrefixPointer:matchedSuffixPointer:)(v25, v18, v20, v21, v22, name, length, suffixLength);
 
   swift_unknownObjectRelease();
 
@@ -67,7 +67,7 @@
 
 - (id)_morphunConstraints
 {
-  v2 = self;
+  selfCopy = self;
   NSMorphology.morphunConstraints()();
 
   v3 = _NativeDictionary.bridged()();
@@ -75,7 +75,7 @@
   return v3;
 }
 
-- (uint64_t)mergeMorphology:(char)a3 override:
+- (uint64_t)mergeMorphology:(char)morphology override:
 {
   if (!result)
   {
@@ -91,7 +91,7 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    if (a3)
+    if (morphology)
     {
 LABEL_11:
       [v5 setPartOfSpeech:{objc_msgSend(a2, "partOfSpeech")}];
@@ -107,7 +107,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ((a3 & 1) != 0 || ![v5 grammaticalGender])
+  if ((morphology & 1) != 0 || ![v5 grammaticalGender])
   {
     [v5 setGrammaticalGender:{objc_msgSend(a2, "grammaticalGender")}];
     goto LABEL_8;
@@ -124,7 +124,7 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  if ((a3 & 1) != 0 || ![v5 number])
+  if ((morphology & 1) != 0 || ![v5 number])
   {
     [v5 setNumber:{objc_msgSend(a2, "number")}];
 LABEL_18:
@@ -133,7 +133,7 @@ LABEL_18:
       goto LABEL_22;
     }
 
-    if (a3)
+    if (morphology)
     {
 LABEL_21:
       [v5 setGrammaticalCase:{objc_msgSend(a2, "grammaticalCase")}];
@@ -160,7 +160,7 @@ LABEL_22:
     goto LABEL_28;
   }
 
-  if ((a3 & 1) != 0 || ![v5 determination])
+  if ((morphology & 1) != 0 || ![v5 determination])
   {
     [v5 setDetermination:{objc_msgSend(a2, "determination")}];
 LABEL_28:
@@ -169,7 +169,7 @@ LABEL_28:
       goto LABEL_32;
     }
 
-    if (a3)
+    if (morphology)
     {
 LABEL_31:
       [v5 setGrammaticalPerson:{objc_msgSend(a2, "grammaticalPerson")}];
@@ -196,7 +196,7 @@ LABEL_32:
     goto LABEL_38;
   }
 
-  if ((a3 & 1) != 0 || ![v5 pronounType])
+  if ((morphology & 1) != 0 || ![v5 pronounType])
   {
     [v5 setPronounType:{objc_msgSend(a2, "pronounType")}];
 LABEL_38:
@@ -205,7 +205,7 @@ LABEL_38:
       goto LABEL_42;
     }
 
-    if (a3)
+    if (morphology)
     {
 LABEL_41:
       [v5 setDefiniteness:{objc_msgSend(a2, "definiteness")}];
@@ -229,7 +229,7 @@ LABEL_40:
 LABEL_42:
   if ([a2 _adjectival])
   {
-    if ((a3 & 1) == 0 && [v5 _adjectival])
+    if ((morphology & 1) == 0 && [v5 _adjectival])
     {
       result = [a2 _clusivity];
       if (!result)
@@ -249,7 +249,7 @@ LABEL_42:
     return result;
   }
 
-  if ((a3 & 1) == 0)
+  if ((morphology & 1) == 0)
   {
 LABEL_50:
     result = [v5 _clusivity];
@@ -259,9 +259,9 @@ LABEL_50:
     }
   }
 
-  v6 = [a2 _clusivity];
+  _clusivity = [a2 _clusivity];
 
-  return [v5 set_clusivity:v6];
+  return [v5 set_clusivity:_clusivity];
 }
 
 - (void)isIdentity
@@ -299,17 +299,17 @@ LABEL_50:
   return v2;
 }
 
-- (void)_setCustomPronouns:(id)a3
+- (void)_setCustomPronouns:(id)pronouns
 {
   customPronouns = self->_customPronouns;
-  if (customPronouns != a3)
+  if (customPronouns != pronouns)
   {
 
-    self->_customPronouns = [a3 copy];
+    self->_customPronouns = [pronouns copy];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v4[4] = [(NSMorphology *)self grammaticalGender];
@@ -328,20 +328,20 @@ LABEL_50:
 
 - (unint64_t)hash
 {
-  v3 = [(NSMorphology *)self grammaticalGender];
-  v4 = [(NSMorphology *)self grammaticalCase]^ v3;
-  v5 = [(NSMorphology *)self partOfSpeech];
-  v6 = v4 ^ v5 ^ [(NSMorphology *)self definiteness];
-  v7 = [(NSMorphology *)self number];
-  v8 = v7 ^ [(NSMorphology *)self determination];
+  grammaticalGender = [(NSMorphology *)self grammaticalGender];
+  v4 = [(NSMorphology *)self grammaticalCase]^ grammaticalGender;
+  partOfSpeech = [(NSMorphology *)self partOfSpeech];
+  v6 = v4 ^ partOfSpeech ^ [(NSMorphology *)self definiteness];
+  number = [(NSMorphology *)self number];
+  v8 = number ^ [(NSMorphology *)self determination];
   v9 = v6 ^ v8 ^ [(NSMorphology *)self grammaticalPerson];
-  v10 = [(NSMorphology *)self pronounType];
-  v11 = v10 ^ [(NSMorphology *)self _adjectival];
+  pronounType = [(NSMorphology *)self pronounType];
+  v11 = pronounType ^ [(NSMorphology *)self _adjectival];
   v12 = v9 ^ v11 ^ [(NSMorphology *)self _clusivity];
   return v12 ^ [(NSMutableDictionary *)self->_customPronouns hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -349,97 +349,97 @@ LABEL_50:
     return 0;
   }
 
-  v5 = [(NSMorphology *)self grammaticalGender];
-  if (v5 != [a3 grammaticalGender])
+  grammaticalGender = [(NSMorphology *)self grammaticalGender];
+  if (grammaticalGender != [equal grammaticalGender])
   {
     return 0;
   }
 
-  v6 = [(NSMorphology *)self grammaticalCase];
-  if (v6 != [a3 grammaticalCase])
+  grammaticalCase = [(NSMorphology *)self grammaticalCase];
+  if (grammaticalCase != [equal grammaticalCase])
   {
     return 0;
   }
 
-  v7 = [(NSMorphology *)self partOfSpeech];
-  if (v7 != [a3 partOfSpeech])
+  partOfSpeech = [(NSMorphology *)self partOfSpeech];
+  if (partOfSpeech != [equal partOfSpeech])
   {
     return 0;
   }
 
-  v8 = [(NSMorphology *)self definiteness];
-  if (v8 != [a3 definiteness])
+  definiteness = [(NSMorphology *)self definiteness];
+  if (definiteness != [equal definiteness])
   {
     return 0;
   }
 
-  v9 = [(NSMorphology *)self number];
-  if (v9 != [a3 number])
+  number = [(NSMorphology *)self number];
+  if (number != [equal number])
   {
     return 0;
   }
 
-  v10 = [(NSMorphology *)self determination];
-  if (v10 != [a3 determination])
+  determination = [(NSMorphology *)self determination];
+  if (determination != [equal determination])
   {
     return 0;
   }
 
-  v11 = [(NSMorphology *)self grammaticalPerson];
-  if (v11 != [a3 grammaticalPerson])
+  grammaticalPerson = [(NSMorphology *)self grammaticalPerson];
+  if (grammaticalPerson != [equal grammaticalPerson])
   {
     return 0;
   }
 
-  v12 = [(NSMorphology *)self pronounType];
-  if (v12 != [a3 pronounType])
+  pronounType = [(NSMorphology *)self pronounType];
+  if (pronounType != [equal pronounType])
   {
     return 0;
   }
 
-  v13 = [(NSMorphology *)self _adjectival];
-  if (v13 != [a3 _adjectival])
+  _adjectival = [(NSMorphology *)self _adjectival];
+  if (_adjectival != [equal _adjectival])
   {
     return 0;
   }
 
-  v14 = [(NSMorphology *)self _clusivity];
-  if (v14 != [a3 _clusivity])
+  _clusivity = [(NSMorphology *)self _clusivity];
+  if (_clusivity != [equal _clusivity])
   {
     return 0;
   }
 
-  if (!-[NSMutableDictionary count](self->_customPronouns, "count") && ![*(a3 + 1) count])
+  if (!-[NSMutableDictionary count](self->_customPronouns, "count") && ![*(equal + 1) count])
   {
     return 1;
   }
 
   customPronouns = self->_customPronouns;
-  v16 = *(a3 + 1);
+  v16 = *(equal + 1);
 
   return [(NSMutableDictionary *)customPronouns isEqual:v16];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:-[NSMorphology grammaticalGender](self forKey:{"grammaticalGender"), @"grammaticalGender"}];
-  [a3 encodeInteger:-[NSMorphology grammaticalCase](self forKey:{"grammaticalCase"), @"grammaticalCase"}];
-  [a3 encodeInteger:-[NSMorphology partOfSpeech](self forKey:{"partOfSpeech"), @"partOfSpeech"}];
-  [a3 encodeInteger:-[NSMorphology definiteness](self forKey:{"definiteness"), @"definiteness"}];
-  [a3 encodeInteger:-[NSMorphology number](self forKey:{"number"), @"number"}];
-  [a3 encodeInteger:-[NSMorphology determination](self forKey:{"determination"), @"determination"}];
-  [a3 encodeInteger:-[NSMorphology grammaticalPerson](self forKey:{"grammaticalPerson"), @"grammaticalPerson"}];
-  [a3 encodeInteger:-[NSMorphology pronounType](self forKey:{"pronounType"), @"pronounType"}];
+  [coder encodeInteger:-[NSMorphology grammaticalGender](self forKey:{"grammaticalGender"), @"grammaticalGender"}];
+  [coder encodeInteger:-[NSMorphology grammaticalCase](self forKey:{"grammaticalCase"), @"grammaticalCase"}];
+  [coder encodeInteger:-[NSMorphology partOfSpeech](self forKey:{"partOfSpeech"), @"partOfSpeech"}];
+  [coder encodeInteger:-[NSMorphology definiteness](self forKey:{"definiteness"), @"definiteness"}];
+  [coder encodeInteger:-[NSMorphology number](self forKey:{"number"), @"number"}];
+  [coder encodeInteger:-[NSMorphology determination](self forKey:{"determination"), @"determination"}];
+  [coder encodeInteger:-[NSMorphology grammaticalPerson](self forKey:{"grammaticalPerson"), @"grammaticalPerson"}];
+  [coder encodeInteger:-[NSMorphology pronounType](self forKey:{"pronounType"), @"pronounType"}];
   customPronouns = self->_customPronouns;
   if (customPronouns && [(NSMutableDictionary *)customPronouns count])
   {
     v6 = self->_customPronouns;
 
-    [a3 encodeObject:v6 forKey:@"customPronouns"];
+    [coder encodeObject:v6 forKey:@"customPronouns"];
   }
 }
 
-- (NSMorphology)initWithCoder:(id)a3
+- (NSMorphology)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -447,24 +447,24 @@ LABEL_50:
   v4 = [(NSMorphology *)&v15 init];
   if (v4)
   {
-    v4->_grammaticalGender = [a3 decodeIntegerForKey:@"grammaticalGender"];
-    v4->_grammaticalCase = [a3 decodeIntegerForKey:@"grammaticalCase"];
-    v4->_partOfSpeech = [a3 decodeIntegerForKey:@"partOfSpeech"];
-    v4->_definiteness = [a3 decodeIntegerForKey:@"definiteness"];
-    v4->_number = [a3 decodeIntegerForKey:@"number"];
-    v4->_determination = [a3 decodeIntegerForKey:@"determination"];
-    v4->_grammaticalPerson = [a3 decodeIntegerForKey:@"grammaticalPerson"];
-    v4->_pronounType = [a3 decodeIntegerForKey:@"pronounType"];
+    v4->_grammaticalGender = [coder decodeIntegerForKey:@"grammaticalGender"];
+    v4->_grammaticalCase = [coder decodeIntegerForKey:@"grammaticalCase"];
+    v4->_partOfSpeech = [coder decodeIntegerForKey:@"partOfSpeech"];
+    v4->_definiteness = [coder decodeIntegerForKey:@"definiteness"];
+    v4->_number = [coder decodeIntegerForKey:@"number"];
+    v4->_determination = [coder decodeIntegerForKey:@"determination"];
+    v4->_grammaticalPerson = [coder decodeIntegerForKey:@"grammaticalPerson"];
+    v4->_pronounType = [coder decodeIntegerForKey:@"pronounType"];
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
     v7 = objc_opt_class();
-    v8 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, objc_opt_class(), 0), @"customPronouns"}];
+    v8 = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, objc_opt_class(), 0), @"customPronouns"}];
     if (v8)
     {
       if (!_NSIsNSDictionary())
       {
 LABEL_14:
-        [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, 0)}];
+        [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, 0)}];
 
         return 0;
       }
@@ -526,92 +526,92 @@ LABEL_6:
   v21.receiver = self;
   v21.super_class = NSMorphology;
   v3 = [(NSMorphology *)&v21 description];
-  v4 = [(NSMorphology *)self grammaticalGender];
-  if (v4 >= 4)
+  grammaticalGender = [(NSMorphology *)self grammaticalGender];
+  if (grammaticalGender >= 4)
   {
-    v5 = [NSString stringWithFormat:@"(NSGrammaticalGender)(%lld)", v4];
+    v5 = [NSString stringWithFormat:@"(NSGrammaticalGender)(%lld)", grammaticalGender];
   }
 
   else
   {
-    v5 = off_1E69F23B0[v4];
+    v5 = off_1E69F23B0[grammaticalGender];
   }
 
-  v6 = [(NSMorphology *)self number];
-  if (v6 >= (NSGrammaticalNumberPluralMany|NSGrammaticalNumberSingular))
+  number = [(NSMorphology *)self number];
+  if (number >= (NSGrammaticalNumberPluralMany|NSGrammaticalNumberSingular))
   {
-    v7 = [NSString stringWithFormat:@"(NSGrammaticalNumber)(%lld)", v6];
-  }
-
-  else
-  {
-    v7 = off_1E69F23D0[v6];
-  }
-
-  v8 = [(NSMorphology *)self partOfSpeech];
-  if (v8 >= (NSGrammaticalPartOfSpeechAbbreviation|NSGrammaticalPartOfSpeechDeterminer))
-  {
-    v9 = [NSString stringWithFormat:@"(NSGrammaticalPartOfSpeech)(%lld)", v8];
+    v7 = [NSString stringWithFormat:@"(NSGrammaticalNumber)(%lld)", number];
   }
 
   else
   {
-    v9 = off_1E69F2408[v8];
+    v7 = off_1E69F23D0[number];
   }
 
-  v10 = [(NSMorphology *)self grammaticalCase];
-  if (v10 >= (NSGrammaticalCaseTranslative|NSGrammaticalCaseNominative))
+  partOfSpeech = [(NSMorphology *)self partOfSpeech];
+  if (partOfSpeech >= (NSGrammaticalPartOfSpeechAbbreviation|NSGrammaticalPartOfSpeechDeterminer))
   {
-    v11 = [NSString stringWithFormat:@"(NSGrammaticalCase)(%lld)", v10];
-  }
-
-  else
-  {
-    v11 = off_1E69F2480[v10];
-  }
-
-  v12 = [(NSMorphology *)self definiteness];
-  if (v12 >= (NSGrammaticalDefinitenessDefinite|NSGrammaticalDefinitenessIndefinite))
-  {
-    v13 = [NSString stringWithFormat:@"(NSGrammaticalDefiniteness)(%lld)", v12];
+    v9 = [NSString stringWithFormat:@"(NSGrammaticalPartOfSpeech)(%lld)", partOfSpeech];
   }
 
   else
   {
-    v13 = off_1E69F24F8[v12];
+    v9 = off_1E69F2408[partOfSpeech];
   }
 
-  v14 = [(NSMorphology *)self determination];
-  if (v14 >= (NSGrammaticalDeterminationDependent|NSGrammaticalDeterminationIndependent))
+  grammaticalCase = [(NSMorphology *)self grammaticalCase];
+  if (grammaticalCase >= (NSGrammaticalCaseTranslative|NSGrammaticalCaseNominative))
   {
-    v15 = [NSString stringWithFormat:@"(NSGrammaticalDetermination)(%lld)", v14];
-  }
-
-  else
-  {
-    v15 = off_1E69F2510[v14];
-  }
-
-  v16 = [(NSMorphology *)self grammaticalPerson];
-  if (v16 >= 4)
-  {
-    v17 = [NSString stringWithFormat:@"(NSGrammaticalPerson)(%lld)", v16];
+    v11 = [NSString stringWithFormat:@"(NSGrammaticalCase)(%lld)", grammaticalCase];
   }
 
   else
   {
-    v17 = off_1E69F2528[v16];
+    v11 = off_1E69F2480[grammaticalCase];
   }
 
-  v18 = [(NSMorphology *)self pronounType];
-  if (v18 >= 4)
+  definiteness = [(NSMorphology *)self definiteness];
+  if (definiteness >= (NSGrammaticalDefinitenessDefinite|NSGrammaticalDefinitenessIndefinite))
   {
-    v19 = [NSString stringWithFormat:@"(NSGrammaticalPronounType)(%lld)", v18];
+    v13 = [NSString stringWithFormat:@"(NSGrammaticalDefiniteness)(%lld)", definiteness];
   }
 
   else
   {
-    v19 = off_1E69F2548[v18];
+    v13 = off_1E69F24F8[definiteness];
+  }
+
+  determination = [(NSMorphology *)self determination];
+  if (determination >= (NSGrammaticalDeterminationDependent|NSGrammaticalDeterminationIndependent))
+  {
+    v15 = [NSString stringWithFormat:@"(NSGrammaticalDetermination)(%lld)", determination];
+  }
+
+  else
+  {
+    v15 = off_1E69F2510[determination];
+  }
+
+  grammaticalPerson = [(NSMorphology *)self grammaticalPerson];
+  if (grammaticalPerson >= 4)
+  {
+    v17 = [NSString stringWithFormat:@"(NSGrammaticalPerson)(%lld)", grammaticalPerson];
+  }
+
+  else
+  {
+    v17 = off_1E69F2528[grammaticalPerson];
+  }
+
+  pronounType = [(NSMorphology *)self pronounType];
+  if (pronounType >= 4)
+  {
+    v19 = [NSString stringWithFormat:@"(NSGrammaticalPronounType)(%lld)", pronounType];
+  }
+
+  else
+  {
+    v19 = off_1E69F2548[pronounType];
   }
 
   return [NSString stringWithFormat:@"%@ { grammaticalGender = %@, number = %@, partOfSpeech = %@, case = %@, definiteness = %@, determination = %@, grammaticalPerson = %@, pronounType = %@, customPronouns = %@ }", v3, v5, v7, v9, v11, v13, v15, v17, v19, self->_customPronouns];
@@ -664,7 +664,7 @@ LABEL_6:
   }
 }
 
-+ (void)_getUserMorphology:(id *)a3 userInflection:(id *)a4
++ (void)_getUserMorphology:(id *)morphology userInflection:(id *)inflection
 {
   v23 = *MEMORY[0x1E69E9840];
   if (qword_1ED43F570 != -1)
@@ -714,7 +714,7 @@ LABEL_30:
     }
 
     getpid();
-    v18 = [(NSString *)+[_NSAttributedStringGrammarInflection _protectedPreferencesDomain](_NSAttributedStringGrammarInflection UTF8String];
+    uTF8String = [(NSString *)+[_NSAttributedStringGrammarInflection _protectedPreferencesDomain](_NSAttributedStringGrammarInflection UTF8String];
     v8 = sandbox_check();
     v9 = +[_NSAttributedStringGrammarInflection _isSimulatingThirdPartyProcess];
     if (v6 || v9)
@@ -804,14 +804,14 @@ LABEL_20:
   }
 
 LABEL_34:
-  if (a3)
+  if (morphology)
   {
-    *a3 = [qword_1ED43F560 copy];
+    *morphology = [qword_1ED43F560 copy];
   }
 
-  if (a4)
+  if (inflection)
   {
-    *a4 = [qword_1ED43F568 copy];
+    *inflection = [qword_1ED43F568 copy];
   }
 
   os_unfair_lock_unlock(&_MergedGlobals_92);
@@ -828,7 +828,7 @@ uint64_t __84__NSMorphology_NSMorphologyUserSettingsInternal___getUserMorphology
 {
   v3[1] = *MEMORY[0x1E69E9840];
   v3[0] = 0;
-  [a1 _getUserMorphology:0 userInflection:v3];
+  [self _getUserMorphology:0 userInflection:v3];
   result = v3[0];
   if (!v3[0])
   {
@@ -857,13 +857,13 @@ uint64_t __84__NSMorphology_NSMorphologyUserSettingsInternal___getUserMorphology
   }
 }
 
-- (void)_overrideUserInflectionInBlock:(void *)a1
+- (void)_overrideUserInflectionInBlock:(void *)block
 {
-  if (a1)
+  if (block)
   {
     v5 = _NSMorphologyUserInflectionTemporaryOverride;
-    v4 = a1;
-    _NSMorphologyUserInflectionTemporaryOverride = v4;
+    blockCopy = block;
+    _NSMorphologyUserInflectionTemporaryOverride = blockCopy;
     (*(a2 + 16))(a2);
     _NSMorphologyUserInflectionTemporaryOverride = v5;
   }
@@ -884,7 +884,7 @@ uint64_t __84__NSMorphology_NSMorphologyUserSettingsInternal___getUserMorphology
 {
   v3[1] = *MEMORY[0x1E69E9840];
   v3[0] = 0;
-  [a1 _getUserMorphology:v3 userInflection:0];
+  [self _getUserMorphology:v3 userInflection:0];
   result = v3[0];
   if (!v3[0])
   {
@@ -894,7 +894,7 @@ uint64_t __84__NSMorphology_NSMorphologyUserSettingsInternal___getUserMorphology
   return result;
 }
 
-- (id)_initWithExternalRepresentation:(id)a3 error:(id *)a4
+- (id)_initWithExternalRepresentation:(id)representation error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
@@ -905,7 +905,7 @@ uint64_t __84__NSMorphology_NSMorphologyUserSettingsInternal___getUserMorphology
     return v6;
   }
 
-  v7 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:a4];
+  v7 = [NSJSONSerialization JSONObjectWithData:representation options:0 error:error];
   if (!v7)
   {
 LABEL_40:
@@ -981,9 +981,9 @@ LABEL_40:
   if ((_NSIsNSDictionary() & 1) == 0)
   {
 LABEL_38:
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3840 userInfo:0];
+      *error = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3840 userInfo:0];
     }
 
     goto LABEL_40;
@@ -1049,7 +1049,7 @@ LABEL_25:
   return v6;
 }
 
-- (id)_initWithExternalRepresentationDictionary:(id)a3
+- (id)_initWithExternalRepresentationDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
@@ -1060,12 +1060,12 @@ LABEL_25:
     return v4;
   }
 
-  if (!_NSGrammaticalGenderGetFromExternalRepresentation([a3 objectForKeyedSubscript:@"grammaticalGender"], &v4->_grammaticalGender) || !_NSGrammaticalNumberGetFromExternalRepresentation(objc_msgSend(a3, "objectForKeyedSubscript:", @"number"), &v4->_number) || !_NSGrammaticalPartOfSpeechGetFromExternalRepresentation(objc_msgSend(a3, "objectForKeyedSubscript:", @"partOfSpeech"), &v4->_partOfSpeech) || !_NSGrammaticalCaseGetFromExternalRepresentation(objc_msgSend(a3, "objectForKeyedSubscript:", @"grammaticalCase"), &v4->_grammaticalCase) || !_NSGrammaticalPronounTypeGetFromExternalRepresentation(objc_msgSend(a3, "objectForKeyedSubscript:", @"pronounType"), &v4->_pronounType))
+  if (!_NSGrammaticalGenderGetFromExternalRepresentation([dictionary objectForKeyedSubscript:@"grammaticalGender"], &v4->_grammaticalGender) || !_NSGrammaticalNumberGetFromExternalRepresentation(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"number"), &v4->_number) || !_NSGrammaticalPartOfSpeechGetFromExternalRepresentation(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"partOfSpeech"), &v4->_partOfSpeech) || !_NSGrammaticalCaseGetFromExternalRepresentation(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"grammaticalCase"), &v4->_grammaticalCase) || !_NSGrammaticalPronounTypeGetFromExternalRepresentation(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"pronounType"), &v4->_pronounType))
   {
     goto LABEL_36;
   }
 
-  v5 = [a3 objectForKeyedSubscript:@"determination"];
+  v5 = [dictionary objectForKeyedSubscript:@"determination"];
   if (v5)
   {
     v6 = v5;
@@ -1091,7 +1091,7 @@ LABEL_25:
   }
 
   v4->_determination = v7;
-  v8 = [a3 objectForKeyedSubscript:@"definiteness"];
+  v8 = [dictionary objectForKeyedSubscript:@"definiteness"];
   if (v8)
   {
     v9 = v8;
@@ -1117,7 +1117,7 @@ LABEL_25:
   }
 
   v4->_definiteness = v10;
-  v11 = [a3 objectForKeyedSubscript:@"customPronouns"];
+  v11 = [dictionary objectForKeyedSubscript:@"customPronouns"];
   if (!v11)
   {
     return v4;
@@ -1247,39 +1247,39 @@ LABEL_23:
 
 - (NSData)_externalRepresentation
 {
-  v2 = [(NSMorphology *)self _externalRepresentationDictionary];
+  _externalRepresentationDictionary = [(NSMorphology *)self _externalRepresentationDictionary];
 
-  return [NSJSONSerialization dataWithJSONObject:v2 options:0 error:0];
+  return [NSJSONSerialization dataWithJSONObject:_externalRepresentationDictionary options:0 error:0];
 }
 
-- (NSMorphology)initWithInflection:(id)a3
+- (NSMorphology)initWithInflection:(id)inflection
 {
   v4 = [(NSMorphology *)self init];
   if (v4)
   {
-    v5 = [a3 gender];
-    if (v5 <= 3)
+    gender = [inflection gender];
+    if (gender <= 3)
     {
-      [(NSMorphology *)v4 setGrammaticalGender:qword_1813059D8[v5]];
+      [(NSMorphology *)v4 setGrammaticalGender:qword_1813059D8[gender]];
     }
 
-    v6 = [a3 number];
-    if (v6 <= 6)
+    number = [inflection number];
+    if (number <= 6)
     {
-      [(NSMorphology *)v4 setNumber:qword_1813059F8[v6]];
+      [(NSMorphology *)v4 setNumber:qword_1813059F8[number]];
     }
 
-    v7 = [a3 englishCustomPronoun];
-    if (v7)
+    englishCustomPronoun = [inflection englishCustomPronoun];
+    if (englishCustomPronoun)
     {
-      [(NSMorphology *)v4 setCustomPronoun:v7 forLanguage:@"en" error:0];
+      [(NSMorphology *)v4 setCustomPronoun:englishCustomPronoun forLanguage:@"en" error:0];
     }
   }
 
   return v4;
 }
 
-- (void)applyPluralityRulesForNumbers:(id)a3 inLanguages:(id)a4
+- (void)applyPluralityRulesForNumbers:(id)numbers inLanguages:(id)languages
 {
   v19 = *MEMORY[0x1E69E9840];
   if ([(NSMorphology *)self number]== NSGrammaticalNumberPlural)
@@ -1287,7 +1287,7 @@ LABEL_23:
     return;
   }
 
-  v7 = [a3 count];
+  v7 = [numbers count];
   if (v7 < 1)
   {
     goto LABEL_23;
@@ -1297,8 +1297,8 @@ LABEL_23:
   v9 = 0;
   for (i = 0; i != v8; ++i)
   {
-    v11 = [a3 objectAtIndexedSubscript:i];
-    v12 = [a4 objectAtIndexedSubscript:i];
+    v11 = [numbers objectAtIndexedSubscript:i];
+    v12 = [languages objectAtIndexedSubscript:i];
     valuePtr = -1;
     if (CFNumberGetValue(v11, kCFNumberCFIndexType, &valuePtr))
     {
@@ -1382,7 +1382,7 @@ LABEL_27:
   }
 }
 
-- (NSMorphology)initWithMorphunAttributeValues:(id)a3
+- (NSMorphology)initWithMorphunAttributeValues:(id)values
 {
   v25[24] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -1451,7 +1451,7 @@ LABEL_27:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+    v6 = [values countByEnumeratingWithState:&v16 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1463,7 +1463,7 @@ LABEL_27:
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(values);
           }
 
           v10 = [v5 objectForKeyedSubscript:*(*(&v16 + 1) + 8 * v9)];
@@ -1502,7 +1502,7 @@ LABEL_27:
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+        v7 = [values countByEnumeratingWithState:&v16 objects:v15 count:16];
       }
 
       while (v7);
@@ -1512,15 +1512,15 @@ LABEL_27:
   return v4;
 }
 
-- (BOOL)addConstraintsTo:(MDInflectableStringConcept *)a3
+- (BOOL)addConstraintsTo:(MDInflectableStringConcept *)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = [(NSMorphology *)self _morphunConstraints];
+  _morphunConstraints = [(NSMorphology *)self _morphunConstraints];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v23 count:16];
+  v5 = [_morphunConstraints countByEnumeratingWithState:&v24 objects:v23 count:16];
   if (v5)
   {
     v7 = v5;
@@ -1535,13 +1535,13 @@ LABEL_27:
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_morphunConstraints);
         }
 
         v11 = *(*(&v24 + 1) + 8 * v10);
-        v12 = [v4 objectForKeyedSubscript:{v11, v15}];
+        v12 = [_morphunConstraints objectForKeyedSubscript:{v11, v15}];
         cf = 0;
-        _MergedGlobals_109(a3, v11, v12, &cf);
+        _MergedGlobals_109(to, v11, v12, &cf);
         if (cf)
         {
           if (_NSInflectionLog_onceToken != -1)
@@ -1569,7 +1569,7 @@ LABEL_27:
       }
 
       while (v7 != v10);
-      v7 = [v4 countByEnumeratingWithState:&v24 objects:v23 count:16];
+      v7 = [_morphunConstraints countByEnumeratingWithState:&v24 objects:v23 count:16];
     }
 
     while (v7);

@@ -1,35 +1,35 @@
 @interface REMListShareeContext
 - (NSArray)sharees;
-- (REMListShareeContext)initWithList:(id)a3;
+- (REMListShareeContext)initWithList:(id)list;
 - (id)shareesExcludingOwner;
 @end
 
 @implementation REMListShareeContext
 
-- (REMListShareeContext)initWithList:(id)a3
+- (REMListShareeContext)initWithList:(id)list
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  listCopy = list;
   v25.receiver = self;
   v25.super_class = REMListShareeContext;
   v6 = [(REMListShareeContext *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_list, a3);
+    objc_storeStrong(&v6->_list, list);
     sharedOwner = v7->_sharedOwner;
     v7->_sharedOwner = 0;
 
-    v9 = [v5 sharedOwnerID];
+    sharedOwnerID = [listCopy sharedOwnerID];
 
-    if (v9)
+    if (sharedOwnerID)
     {
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v10 = [v5 sharees];
-      v11 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      sharees = [listCopy sharees];
+      v11 = [sharees countByEnumeratingWithState:&v21 objects:v26 count:16];
       if (v11)
       {
         v12 = v11;
@@ -40,13 +40,13 @@
           {
             if (*v22 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(sharees);
             }
 
             v15 = *(*(&v21 + 1) + 8 * i);
-            v16 = [v15 objectID];
-            v17 = [v5 sharedOwnerID];
-            v18 = [v16 isEqual:v17];
+            objectID = [v15 objectID];
+            sharedOwnerID2 = [listCopy sharedOwnerID];
+            v18 = [objectID isEqual:sharedOwnerID2];
 
             if (v18)
             {
@@ -55,7 +55,7 @@
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
+          v12 = [sharees countByEnumeratingWithState:&v21 objects:v26 count:16];
           if (v12)
           {
             continue;
@@ -75,12 +75,12 @@ LABEL_13:
 
 - (NSArray)sharees
 {
-  v2 = [(REMListShareeContext *)self list];
-  v3 = [v2 sharees];
-  v4 = v3;
-  if (v3)
+  list = [(REMListShareeContext *)self list];
+  sharees = [list sharees];
+  v4 = sharees;
+  if (sharees)
   {
-    v5 = v3;
+    v5 = sharees;
   }
 
   else
@@ -96,19 +96,19 @@ LABEL_13:
 - (id)shareesExcludingOwner
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = [(REMListShareeContext *)self sharedOwner];
-  v4 = [v3 objectID];
+  sharedOwner = [(REMListShareeContext *)self sharedOwner];
+  objectID = [sharedOwner objectID];
 
-  v5 = [(REMListShareeContext *)self sharees];
+  sharees = [(REMListShareeContext *)self sharees];
   v6 = MEMORY[0x1E696AE18];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __45__REMListShareeContext_shareesExcludingOwner__block_invoke;
   v15[3] = &unk_1E7507A78;
-  v16 = v4;
-  v7 = v4;
+  v16 = objectID;
+  v7 = objectID;
   v8 = [v6 predicateWithBlock:v15];
-  v9 = [v5 filteredArrayUsingPredicate:v8];
+  v9 = [sharees filteredArrayUsingPredicate:v8];
 
   v10 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"hash" ascending:1];
   v17[0] = v10;

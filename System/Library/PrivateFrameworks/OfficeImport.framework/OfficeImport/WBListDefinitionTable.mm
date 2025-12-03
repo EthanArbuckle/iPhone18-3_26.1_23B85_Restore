@@ -1,13 +1,13 @@
 @interface WBListDefinitionTable
-+ (void)readFrom:(id)a3 listDefinitionTable:(id)a4;
++ (void)readFrom:(id)from listDefinitionTable:(id)table;
 @end
 
 @implementation WBListDefinitionTable
 
-+ (void)readFrom:(id)a3 listDefinitionTable:(id)a4
++ (void)readFrom:(id)from listDefinitionTable:(id)table
 {
-  v20 = a3;
-  v5 = a4;
+  fromCopy = from;
+  tableCopy = table;
   v6 = [WBObjectFactory create:34];
   if (v6)
   {
@@ -18,8 +18,8 @@
     v7 = 0;
   }
 
-  v8 = [v20 wrdReader];
-  (*(*v8 + 280))(v8, v7);
+  wrdReader = [fromCopy wrdReader];
+  (*(*wrdReader + 280))(wrdReader, v7);
   v9 = v7[2] - v7[1];
   if ((v9 >> 3) >= 1)
   {
@@ -43,13 +43,13 @@
 
       else
       {
-        v17 = [v20 styleAtIndex:v15 expectedType:4];
+        v17 = [fromCopy styleAtIndex:v15 expectedType:4];
         v16 = [v17 id];
       }
 
-      v18 = [v5 addDefinitionWithDefinitionId:v14 styleId:v16];
-      v19 = [v20 targetDocument];
-      [WBListDefinition readFrom:v20 listDefinition:v18 listFormat:v13 document:v19];
+      v18 = [tableCopy addDefinitionWithDefinitionId:v14 styleId:v16];
+      targetDocument = [fromCopy targetDocument];
+      [WBListDefinition readFrom:fromCopy listDefinition:v18 listFormat:v13 document:targetDocument];
 
       ++v10;
     }

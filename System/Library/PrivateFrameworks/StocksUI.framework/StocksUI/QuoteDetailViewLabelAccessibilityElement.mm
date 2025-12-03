@@ -1,17 +1,17 @@
 @interface QuoteDetailViewLabelAccessibilityElement
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (CGRect)accessibilityFrame;
 - (_TtC8StocksUI40QuoteDetailViewLabelAccessibilityElement)init;
-- (_TtC8StocksUI40QuoteDetailViewLabelAccessibilityElement)initWithAccessibilityContainer:(id)a3;
+- (_TtC8StocksUI40QuoteDetailViewLabelAccessibilityElement)initWithAccessibilityContainer:(id)container;
 - (void)accessibilityElementDidBecomeFocused;
-- (void)setAccessibilityFrame:(CGRect)a3;
+- (void)setAccessibilityFrame:(CGRect)frame;
 @end
 
 @implementation QuoteDetailViewLabelAccessibilityElement
 
 - (CGRect)accessibilityFrame
 {
-  v2 = self;
+  selfCopy = self;
   sub_220737950();
   v4 = v3;
   v6 = v5;
@@ -29,12 +29,12 @@
   return result;
 }
 
-- (void)setAccessibilityFrame:(CGRect)a3
+- (void)setAccessibilityFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   [(QuoteDetailViewLabelAccessibilityElement *)&v7 setAccessibilityFrame:x, y, width, height];
@@ -53,15 +53,15 @@
   }
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v4 = self;
-  LOBYTE(a3) = sub_220737BA4(a3);
+  selfCopy = self;
+  LOBYTE(scroll) = sub_220737BA4(scroll);
 
-  return a3 & 1;
+  return scroll & 1;
 }
 
-- (_TtC8StocksUI40QuoteDetailViewLabelAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (_TtC8StocksUI40QuoteDetailViewLabelAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();

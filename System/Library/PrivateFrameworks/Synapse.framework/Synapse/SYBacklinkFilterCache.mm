@@ -1,25 +1,25 @@
 @interface SYBacklinkFilterCache
-- (BOOL)containsMatchingEntriesForItem:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SYBacklinkFilterCache)initWithActivityTypes:(id)a3;
-- (SYBacklinkFilterCache)initWithCoder:(id)a3;
+- (BOOL)containsMatchingEntriesForItem:(id)item;
+- (BOOL)isEqual:(id)equal;
+- (SYBacklinkFilterCache)initWithActivityTypes:(id)types;
+- (SYBacklinkFilterCache)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)addEntriesForItem:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addEntriesForItem:(id)item;
+- (void)encodeWithCoder:(id)coder;
 - (void)finalize;
 @end
 
 @implementation SYBacklinkFilterCache
 
-- (SYBacklinkFilterCache)initWithActivityTypes:(id)a3
+- (SYBacklinkFilterCache)initWithActivityTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v9.receiver = self;
   v9.super_class = SYBacklinkFilterCache;
   v5 = [(SYBacklinkFilterCache *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typesCopy copy];
     activityTypes = v5->_activityTypes;
     v5->_activityTypes = v6;
   }
@@ -27,13 +27,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSMutableArray *)self->_entries isEqualToArray:v4[2]];
+    v5 = [(NSMutableArray *)self->_entries isEqualToArray:equalCopy[2]];
   }
 
   else
@@ -55,9 +55,9 @@
   return [data hash];
 }
 
-- (SYBacklinkFilterCache)initWithCoder:(id)a3
+- (SYBacklinkFilterCache)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SYBacklinkFilterCache;
   v5 = [(SYBacklinkFilterCache *)&v14 init];
@@ -66,11 +66,11 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"types"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"types"];
     activityTypes = v5->_activityTypes;
     v5->_activityTypes = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     data = v5->_data;
     v5->_data = v11;
   }
@@ -78,70 +78,70 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activityTypes = self->_activityTypes;
-  v5 = a3;
-  [v5 encodeObject:activityTypes forKey:@"types"];
-  [v5 encodeObject:self->_data forKey:@"data"];
+  coderCopy = coder;
+  [coderCopy encodeObject:activityTypes forKey:@"types"];
+  [coderCopy encodeObject:self->_data forKey:@"data"];
 }
 
-- (void)addEntriesForItem:(id)a3
+- (void)addEntriesForItem:(id)item
 {
-  v4 = a3;
-  v29 = v4;
+  itemCopy = item;
+  v29 = itemCopy;
   if (!self->_entries)
   {
     v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:150];
     entries = self->_entries;
     self->_entries = v5;
 
-    v4 = v29;
+    itemCopy = v29;
   }
 
-  v7 = [v4 persistentIdentifier];
+  persistentIdentifier = [itemCopy persistentIdentifier];
 
-  if (v7)
+  if (persistentIdentifier)
   {
     v8 = self->_entries;
     v9 = MEMORY[0x277CCABB0];
-    v10 = [v29 persistentIdentifier];
-    v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "hash")}];
+    persistentIdentifier2 = [v29 persistentIdentifier];
+    v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(persistentIdentifier2, "hash")}];
     [(NSMutableArray *)v8 addObject:v11];
   }
 
-  v12 = [v29 targetContentIdentifier];
+  targetContentIdentifier = [v29 targetContentIdentifier];
 
-  if (v12)
+  if (targetContentIdentifier)
   {
     v13 = self->_entries;
     v14 = MEMORY[0x277CCABB0];
-    v15 = [v29 targetContentIdentifier];
-    v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "hash")}];
+    targetContentIdentifier2 = [v29 targetContentIdentifier];
+    v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(targetContentIdentifier2, "hash")}];
     [(NSMutableArray *)v13 addObject:v16];
   }
 
-  v17 = [v29 canonicalURL];
+  canonicalURL = [v29 canonicalURL];
 
-  if (v17)
+  if (canonicalURL)
   {
     v18 = self->_entries;
     v19 = MEMORY[0x277CCABB0];
-    v20 = [v29 canonicalURL];
-    v21 = [v20 _lp_simplifiedURLStringForFuzzyMatching];
-    v22 = [v19 numberWithUnsignedInteger:{objc_msgSend(v21, "hash")}];
+    canonicalURL2 = [v29 canonicalURL];
+    _lp_simplifiedURLStringForFuzzyMatching = [canonicalURL2 _lp_simplifiedURLStringForFuzzyMatching];
+    v22 = [v19 numberWithUnsignedInteger:{objc_msgSend(_lp_simplifiedURLStringForFuzzyMatching, "hash")}];
     [(NSMutableArray *)v18 addObject:v22];
   }
 
-  v23 = [v29 webpageURL];
+  webpageURL = [v29 webpageURL];
 
-  if (v23)
+  if (webpageURL)
   {
     v24 = self->_entries;
     v25 = MEMORY[0x277CCABB0];
-    v26 = [v29 webpageURL];
-    v27 = [v26 _lp_simplifiedURLStringForFuzzyMatching];
-    v28 = [v25 numberWithUnsignedInteger:{objc_msgSend(v27, "hash")}];
+    webpageURL2 = [v29 webpageURL];
+    _lp_simplifiedURLStringForFuzzyMatching2 = [webpageURL2 _lp_simplifiedURLStringForFuzzyMatching];
+    v28 = [v25 numberWithUnsignedInteger:{objc_msgSend(_lp_simplifiedURLStringForFuzzyMatching2, "hash")}];
     [(NSMutableArray *)v24 addObject:v28];
   }
 }
@@ -166,9 +166,9 @@
 
   else
   {
-    v7 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     v8 = self->_data;
-    self->_data = v7;
+    self->_data = data;
 
     MEMORY[0x2821F96F8]();
   }
@@ -198,18 +198,18 @@ uint64_t __33__SYBacklinkFilterCache_finalize__block_invoke_2(uint64_t a1, void 
   return result;
 }
 
-- (BOOL)containsMatchingEntriesForItem:(id)a3
+- (BOOL)containsMatchingEntriesForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = os_log_create("com.apple.synapse", "SYBacklinkFilterCache");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SYBacklinkFilterCache *)v4 containsMatchingEntriesForItem:v5];
+    [(SYBacklinkFilterCache *)itemCopy containsMatchingEntriesForItem:v5];
   }
 
-  v6 = [(SYBacklinkFilterCache *)self activityTypes];
-  v7 = [v4 activityType];
-  v8 = [v6 containsObject:v7];
+  activityTypes = [(SYBacklinkFilterCache *)self activityTypes];
+  activityType = [itemCopy activityType];
+  v8 = [activityTypes containsObject:activityType];
 
   if (!v8)
   {
@@ -217,12 +217,12 @@ uint64_t __33__SYBacklinkFilterCache_finalize__block_invoke_2(uint64_t a1, void 
   }
 
   v9 = [(NSData *)self->_data length]>> 1;
-  v10 = [v4 persistentIdentifier];
+  persistentIdentifier = [itemCopy persistentIdentifier];
 
-  if (v10)
+  if (persistentIdentifier)
   {
-    v11 = [v4 persistentIdentifier];
-    v12 = [v11 hash];
+    persistentIdentifier2 = [itemCopy persistentIdentifier];
+    v12 = [persistentIdentifier2 hash];
 
     if ([(NSData *)self->_data _sy_containsUnsignedShort:v12 inRange:0, v9])
     {
@@ -230,12 +230,12 @@ uint64_t __33__SYBacklinkFilterCache_finalize__block_invoke_2(uint64_t a1, void 
     }
   }
 
-  v13 = [v4 targetContentIdentifier];
+  targetContentIdentifier = [itemCopy targetContentIdentifier];
 
-  if (v13)
+  if (targetContentIdentifier)
   {
-    v14 = [v4 targetContentIdentifier];
-    v15 = [v14 hash];
+    targetContentIdentifier2 = [itemCopy targetContentIdentifier];
+    v15 = [targetContentIdentifier2 hash];
 
     if ([(NSData *)self->_data _sy_containsUnsignedShort:v15 inRange:0, v9])
     {
@@ -243,13 +243,13 @@ uint64_t __33__SYBacklinkFilterCache_finalize__block_invoke_2(uint64_t a1, void 
     }
   }
 
-  v16 = [v4 canonicalURL];
+  canonicalURL = [itemCopy canonicalURL];
 
-  if (v16)
+  if (canonicalURL)
   {
-    v17 = [v4 canonicalURL];
-    v18 = [v17 _lp_simplifiedURLStringForFuzzyMatching];
-    v19 = [v18 hash];
+    canonicalURL2 = [itemCopy canonicalURL];
+    _lp_simplifiedURLStringForFuzzyMatching = [canonicalURL2 _lp_simplifiedURLStringForFuzzyMatching];
+    v19 = [_lp_simplifiedURLStringForFuzzyMatching hash];
 
     if ([(NSData *)self->_data _sy_containsUnsignedShort:v19 inRange:0, v9])
     {
@@ -257,16 +257,16 @@ uint64_t __33__SYBacklinkFilterCache_finalize__block_invoke_2(uint64_t a1, void 
     }
   }
 
-  v20 = [v4 webpageURL];
+  webpageURL = [itemCopy webpageURL];
 
-  if (!v20)
+  if (!webpageURL)
   {
     goto LABEL_13;
   }
 
-  v21 = [v4 webpageURL];
-  v22 = [v21 _lp_simplifiedURLStringForFuzzyMatching];
-  v23 = [v22 hash];
+  webpageURL2 = [itemCopy webpageURL];
+  _lp_simplifiedURLStringForFuzzyMatching2 = [webpageURL2 _lp_simplifiedURLStringForFuzzyMatching];
+  v23 = [_lp_simplifiedURLStringForFuzzyMatching2 hash];
 
   if ([(NSData *)self->_data _sy_containsUnsignedShort:v23 inRange:0, v9])
   {

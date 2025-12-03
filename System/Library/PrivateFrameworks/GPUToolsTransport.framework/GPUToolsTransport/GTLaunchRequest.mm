@@ -1,7 +1,7 @@
 @interface GTLaunchRequest
 - (GTLaunchRequest)init;
-- (GTLaunchRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTLaunchRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTLaunchRequest
@@ -24,17 +24,17 @@
     deviceUDID = v3->_deviceUDID;
     v3->_deviceUDID = v6;
 
-    v8 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     sessionUUID = v3->_sessionUUID;
-    v3->_sessionUUID = v8;
+    v3->_sessionUUID = uUID;
 
-    v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v11 = [v10 objectForKey:@"GPUToolsReplayerPreferXPCService"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v11 = [standardUserDefaults objectForKey:@"GPUToolsReplayerPreferXPCService"];
 
     if (v11)
     {
-      v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v13 = [v12 BOOLForKey:@"GPUToolsReplayerPreferXPCService"];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v13 = [standardUserDefaults2 BOOLForKey:@"GPUToolsReplayerPreferXPCService"];
     }
 
     else
@@ -50,10 +50,10 @@
   return v3;
 }
 
-- (GTLaunchRequest)initWithCoder:(id)a3
+- (GTLaunchRequest)initWithCoder:(id)coder
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v47.receiver = self;
   v47.super_class = GTLaunchRequest;
   v5 = [(GTLaunchRequest *)&v47 init];
@@ -63,7 +63,7 @@
   }
 
   v6 = objc_opt_class();
-  v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"environment"];
+  v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"environment"];
   environment = v5->_environment;
   v5->_environment = v7;
 
@@ -136,7 +136,7 @@ LABEL_17:
 
 LABEL_18:
 
-  v19 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"arguments"];
+  v19 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"arguments"];
   arguments = v5->_arguments;
   v5->_arguments = v19;
 
@@ -195,7 +195,7 @@ LABEL_18:
   v5->_arguments = MEMORY[0x277CBEBF8];
 LABEL_32:
 
-  v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceUDID"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceUDID"];
   deviceUDID = v5->_deviceUDID;
   v5->_deviceUDID = v28;
 
@@ -206,19 +206,19 @@ LABEL_32:
     v5->_deviceUDID = v30;
   }
 
-  v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionUUID"];
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionUUID"];
   sessionUUID = v5->_sessionUUID;
   v5->_sessionUUID = v32;
 
   if (!v5->_sessionUUID || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v34 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v35 = v5->_sessionUUID;
-    v5->_sessionUUID = v34;
+    v5->_sessionUUID = uUID;
   }
 
-  v5->_preferXPCService = [v4 decodeInt64ForKey:{@"preferXPCService", v39}] != 0;
-  v5->_disableDisplay = [v4 decodeInt64ForKey:@"disableDisplay"] != 0;
+  v5->_preferXPCService = [coderCopy decodeInt64ForKey:{@"preferXPCService", v39}] != 0;
+  v5->_disableDisplay = [coderCopy decodeInt64ForKey:@"disableDisplay"] != 0;
   v36 = v5;
 LABEL_39:
 
@@ -226,16 +226,16 @@ LABEL_39:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   environment = self->_environment;
-  v5 = a3;
-  [v5 encodeObject:environment forKey:@"environment"];
-  [v5 encodeObject:self->_arguments forKey:@"arguments"];
-  [v5 encodeObject:self->_deviceUDID forKey:@"deviceUDID"];
-  [v5 encodeObject:self->_sessionUUID forKey:@"sessionUUID"];
-  [v5 encodeInt64:self->_preferXPCService forKey:@"preferXPCService"];
-  [v5 encodeInt64:self->_disableDisplay forKey:@"disableDisplay"];
+  coderCopy = coder;
+  [coderCopy encodeObject:environment forKey:@"environment"];
+  [coderCopy encodeObject:self->_arguments forKey:@"arguments"];
+  [coderCopy encodeObject:self->_deviceUDID forKey:@"deviceUDID"];
+  [coderCopy encodeObject:self->_sessionUUID forKey:@"sessionUUID"];
+  [coderCopy encodeInt64:self->_preferXPCService forKey:@"preferXPCService"];
+  [coderCopy encodeInt64:self->_disableDisplay forKey:@"disableDisplay"];
 }
 
 @end

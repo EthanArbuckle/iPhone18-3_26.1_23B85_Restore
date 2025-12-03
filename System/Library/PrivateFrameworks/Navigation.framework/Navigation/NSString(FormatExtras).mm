@@ -66,7 +66,7 @@
 {
   v31 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = [v4 length];
   v27 = &v26;
   v26 = v6 + 1;
@@ -120,7 +120,7 @@
         v16 = v13;
         do
         {
-          v17 = [a1 characterAtIndex:{v14, v26, v27}];
+          v17 = [self characterAtIndex:{v14, v26, v27}];
           v18 = [v4 characterAtIndex:v15];
           v19 = *(v16 - 1);
           if (v17 != v18)
@@ -166,7 +166,7 @@
 - (BOOL)_navigation_containsVariables
 {
   v2 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\{\\w+\\}" options:0 error:0];
-  v3 = [v2 numberOfMatchesInString:a1 options:0 range:{0, objc_msgSend(a1, "length")}] != 0;
+  v3 = [v2 numberOfMatchesInString:self options:0 range:{0, objc_msgSend(self, "length")}] != 0;
 
   return v3;
 }
@@ -174,38 +174,38 @@
 - (id)_navigation_stripVariablesFromString
 {
   v2 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\{\\w+\\}" options:0 error:0];
-  v3 = [v2 stringByReplacingMatchesInString:a1 options:0 range:0 withTemplate:{objc_msgSend(a1, "length"), &stru_1F4EB6B70}];
+  v3 = [v2 stringByReplacingMatchesInString:self options:0 range:0 withTemplate:{objc_msgSend(self, "length"), &stru_1F4EB6B70}];
 
   return v3;
 }
 
 - (id)_navigation_stringByStrippingPrivateTag
 {
-  if ([a1 _navigation_isPrivate])
+  if ([self _navigation_isPrivate])
   {
-    v2 = [a1 stringByReplacingOccurrencesOfString:@"[private] " withString:&stru_1F4EB6B70];
+    selfCopy = [self stringByReplacingOccurrencesOfString:@"[private] " withString:&stru_1F4EB6B70];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_navigation_stripTagsFromSpokenString
 {
   v5 = 0;
   v2 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@".\\\\\\w+=[^\\\\]+\\\\"" options:0 error:&v5];
-  v3 = [v2 stringByReplacingMatchesInString:a1 options:0 range:0 withTemplate:{objc_msgSend(a1, "length"), &stru_1F4EB6B70}];
+  v3 = [v2 stringByReplacingMatchesInString:self options:0 range:0 withTemplate:{objc_msgSend(self, "length"), &stru_1F4EB6B70}];
 
   return v3;
 }
 
 - (uint64_t)_navigation_isCJK
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
     if (_navigation_isCJK_onceToken != -1)
@@ -213,7 +213,7 @@
       dispatch_once(&_navigation_isCJK_onceToken, &__block_literal_global_772);
     }
 
-    return [a1 rangeOfCharacterFromSet:_navigation_isCJK_CJKSet] != 0x7FFFFFFFFFFFFFFFLL;
+    return [self rangeOfCharacterFromSet:_navigation_isCJK_CJKSet] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return result;
@@ -221,9 +221,9 @@
 
 - (__CFString)_navigation_stringByMarkingAsNormalText
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"\x1B\\tn=normal\, a1, @"\x1B\\tn=nav\];
+    v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"\x1B\\tn=normal\, self, @"\x1B\\tn=nav\];
   }
 
   else
@@ -237,14 +237,14 @@
 - (__CFString)_navigation_stringByMarkingAsNavigationText
 {
   v2 = &stru_1F4EB6B70;
-  if ([a1 length])
+  if ([self length])
   {
-    v3 = [a1 _navigation_isPrivate];
-    v4 = a1;
-    v5 = v4;
-    if (v3)
+    _navigation_isPrivate = [self _navigation_isPrivate];
+    selfCopy = self;
+    v5 = selfCopy;
+    if (_navigation_isPrivate)
     {
-      v5 = [v4 substringFromIndex:{objc_msgSend(@"[private] ", "length")}];
+      v5 = [selfCopy substringFromIndex:{objc_msgSend(@"[private] ", "length")}];
     }
 
     v6 = [v5 length];
@@ -259,7 +259,7 @@
 
         if (v10)
         {
-          v11 = v4;
+          v11 = selfCopy;
 LABEL_12:
           v2 = v11;
 
@@ -273,7 +273,7 @@ LABEL_12:
     }
 
     v12 = @"[private] ";
-    if (!v3)
+    if (!_navigation_isPrivate)
     {
       v12 = &stru_1F4EB6B70;
     }
@@ -289,9 +289,9 @@ LABEL_13:
 
 - (__CFString)_navigation_stringByMarkingAsAddress
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"\x1B\\tn=address\, a1, @"\x1B\\tn=nav\];
+    v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"\x1B\\tn=address\, self, @"\x1B\\tn=nav\];
   }
 
   else
@@ -304,9 +304,9 @@ LABEL_13:
 
 - (__CFString)_navigation_stringByMakingPhonetic
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"\x1B\\toi=lhp\, a1, @"\x1B\\toi=orth\];
+    v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"\x1B\\toi=lhp\, self, @"\x1B\\toi=orth\];
   }
 
   else
@@ -326,7 +326,7 @@ LABEL_13:
     dispatch_once(&_navigation_stringForPower_unit__onceToken, &__block_literal_global_790);
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E696AD28]) initWithDoubleValue:v6 unit:a1];
+  v7 = [objc_alloc(MEMORY[0x1E696AD28]) initWithDoubleValue:v6 unit:self];
 
   v8 = [_navigation_stringForPower_unit__formatter stringFromMeasurement:v7];
 
@@ -335,8 +335,8 @@ LABEL_13:
 
 + (uint64_t)_navigation_abbreviatedFromatterUnitsStyleForLocale:()FormatExtras
 {
-  v3 = [a3 languageCode];
-  v4 = [v3 isEqualToString:@"ja"];
+  languageCode = [a3 languageCode];
+  v4 = [languageCode isEqualToString:@"ja"];
 
   if (v4)
   {
@@ -474,8 +474,8 @@ LABEL_13:
   v8 = a3;
   v9 = [v7 isEqualToString:@"CNY"];
   v10 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-  v11 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [v10 setLocale:v11];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [v10 setLocale:autoupdatingCurrentLocale];
 
   [v10 setNumberStyle:2];
   if (v9)
@@ -537,7 +537,7 @@ LABEL_13:
   v6 = MEMORY[0x1E696AD98];
   v7 = a4;
   v8 = [v6 numberWithDouble:a2];
-  v9 = [a1 _navigation_formattedStringForPriceValueWithAmount:v8 currencyCode:v7];
+  v9 = [self _navigation_formattedStringForPriceValueWithAmount:v8 currencyCode:v7];
 
   return v9;
 }
@@ -548,8 +548,8 @@ LABEL_13:
   v8 = a3;
   v9 = a4;
   v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-  v11 = [v8 timestamps];
-  v50 = a1;
+  timestamps = [v8 timestamps];
+  selfCopy = self;
   v51 = a5;
   if (*(a5 + 24) <= 0.0)
   {
@@ -566,7 +566,7 @@ LABEL_13:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v13 = v11;
+  v13 = timestamps;
   v14 = [v13 countByEnumeratingWithState:&v54 objects:v62 count:16];
   v53 = v13;
   if (v14)
@@ -635,9 +635,9 @@ LABEL_23:
   if (*(v51 + 18) == 1)
   {
     v27 = MEMORY[0x1E695DF70];
-    v28 = [v10 reverseObjectEnumerator];
-    v29 = [v28 allObjects];
-    v30 = [v27 arrayWithArray:v29];
+    reverseObjectEnumerator = [v10 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    v30 = [v27 arrayWithArray:allObjects];
 
     v13 = v53;
     v10 = v30;
@@ -664,26 +664,26 @@ LABEL_23:
     if (!((v32 != 0) | v16 & 1))
     {
       v35 = objc_alloc_init(_TempTokenTimestampValue);
-      v37 = [v13 lastObject];
-      [v37 doubleValue];
+      lastObject = [v13 lastObject];
+      [lastObject doubleValue];
       [(_TempTokenTimestampValue *)v35 setTimeStamp:?];
 
       [(_TempTokenTimestampValue *)v35 setFormatPattern:@"jjmm"];
       v61 = v35;
-      v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:1];
+      token = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:1];
       v39 = *(v51 + 16);
       *buf = *v51;
       *&buf[16] = v39;
-      v40 = [v50 _navigation_stringWithTimeStampValues:v38 options:buf];
+      v40 = [selfCopy _navigation_stringWithTimeStampValues:token options:buf];
 LABEL_40:
 
       goto LABEL_41;
     }
   }
 
-  v33 = [v8 alternativeFormatStringsByType];
+  alternativeFormatStringsByType = [v8 alternativeFormatStringsByType];
   v34 = [MEMORY[0x1E696AD98] numberWithInteger:v31];
-  v35 = [v33 objectForKeyedSubscript:v34];
+  v35 = [alternativeFormatStringsByType objectForKeyedSubscript:v34];
 
   if (!v35 && [v8 countdownType] != v31)
   {
@@ -705,15 +705,15 @@ LABEL_40:
     }
   }
 
-  v36 = [v8 separator];
-  if ([v36 length])
+  separator = [v8 separator];
+  if ([separator length])
   {
     [v8 separator];
   }
 
   else
   {
-    [v50 _navigation_commaListDelimiter];
+    [selfCopy _navigation_commaListDelimiter];
   }
   v41 = ;
   v13 = v53;
@@ -725,8 +725,8 @@ LABEL_40:
 
   if (v35)
   {
-    v38 = [v52 token];
-    v45 = [(_TempTokenTimestampValue *)v35 stringByReplacingOccurrencesOfString:v38 withString:v40];
+    token = [v52 token];
+    v45 = [(_TempTokenTimestampValue *)v35 stringByReplacingOccurrencesOfString:token withString:v40];
 
     v40 = v45;
     goto LABEL_40;
@@ -757,20 +757,20 @@ LABEL_41:
 
   v59 = [v6 arrayWithCapacity:v8];
   v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
-  v10 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [v9 setLocale:v10];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [v9 setLocale:autoupdatingCurrentLocale];
 
   *&v56 = [v9 AMSymbol];
   *(&v56 + 1) = [v9 PMSymbol];
   v11 = v56 != 0 && ((*(a4 + 17) & 1) != 0 || [v5 count] > 1);
   if (*(a4 + 17) == 1)
   {
-    v54 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
   }
 
   else
   {
-    v54 = 0;
+    whitespaceCharacterSet = 0;
   }
 
   v55 = a4;
@@ -802,19 +802,19 @@ LABEL_41:
       }
 
       v16 = *(*(&v62 + 1) + 8 * v15);
-      v17 = [v16 formatPattern];
-      v18 = [v17 length];
+      formatPattern = [v16 formatPattern];
+      v18 = [formatPattern length];
 
       if (!v18)
       {
         goto LABEL_43;
       }
 
-      v19 = [v16 timeZone];
-      v20 = [v16 formatPattern];
-      [v9 setLocalizedDateFormatFromTemplate:v20];
+      timeZone = [v16 timeZone];
+      formatPattern2 = [v16 formatPattern];
+      [v9 setLocalizedDateFormatFromTemplate:formatPattern2];
 
-      [v9 setTimeZone:v19];
+      [v9 setTimeZone:timeZone];
       v21 = MEMORY[0x1E695DF00];
       [v16 timeStamp];
       v22 = [v21 dateWithTimeIntervalSinceReferenceDate:?];
@@ -838,7 +838,7 @@ LABEL_22:
       if (*(v55 + 17) == 1)
       {
         v34 = [v23 stringByReplacingCharactersInRange:v24 withString:{v25, &stru_1F4EB6B70}];
-        v35 = [v34 stringByTrimmingCharactersInSet:v54];
+        v35 = [v34 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
         v26 = 0;
         v23 = v35;
@@ -869,7 +869,7 @@ LABEL_25:
       if (*(v55 + 17) == 1)
       {
         v37 = [v23 stringByReplacingCharactersInRange:v28 withString:{v29, &stru_1F4EB6B70}];
-        v32 = [v37 stringByTrimmingCharactersInSet:v54];
+        v32 = [v37 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
         v26 = 0;
         if ((v60 & 1) == 0)
@@ -943,7 +943,7 @@ LABEL_49:
 
   if ([v59 count] <= 1)
   {
-    v40 = [v59 firstObject];
+    firstObject = [v59 firstObject];
     goto LABEL_69;
   }
 
@@ -988,18 +988,18 @@ LABEL_63:
       }
     }
 
-    v40 = v42;
+    firstObject = v42;
 
     goto LABEL_68;
   }
 
-  v40 = v42;
+  firstObject = v42;
 LABEL_68:
 
 LABEL_69:
   v48 = *MEMORY[0x1E69E9840];
 
-  return v40;
+  return firstObject;
 }
 
 + (id)_navigation_spokenStringWithMinutes:()FormatExtras andAbbreviationType:
@@ -1008,12 +1008,12 @@ LABEL_69:
   [v7 setZeroFormattingBehavior:14];
   [v7 setAllowedUnits:112];
   [v7 setMaximumUnitCount:2];
-  v8 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-  v9 = [MEMORY[0x1E696AE30] processInfo];
-  v10 = [v9 _navigation_isNavd];
+  autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  _navigation_isNavd = [processInfo _navigation_isNavd];
 
   v11 = MEMORY[0x1E695DF58];
-  if (v10)
+  if (_navigation_isNavd)
   {
     +[MNUserOptionsEngine sharedInstance];
   }
@@ -1023,16 +1023,16 @@ LABEL_69:
     +[MNNavigationService sharedService];
   }
   v12 = ;
-  v13 = [v12 currentVoiceLanguage];
-  v14 = [v11 localeWithLocaleIdentifier:v13];
-  [v8 setLocale:v14];
+  currentVoiceLanguage = [v12 currentVoiceLanguage];
+  v14 = [v11 localeWithLocaleIdentifier:currentVoiceLanguage];
+  [autoupdatingCurrentCalendar setLocale:v14];
 
-  [v7 setCalendar:v8];
+  [v7 setCalendar:autoupdatingCurrentCalendar];
   if (a4 == 2)
   {
-    v17 = [v7 calendar];
-    v18 = [v17 locale];
-    [v7 setUnitsStyle:{objc_msgSend(a1, "_navigation_abbreviatedFromatterUnitsStyleForLocale:", v18)}];
+    calendar = [v7 calendar];
+    locale = [calendar locale];
+    [v7 setUnitsStyle:{objc_msgSend(self, "_navigation_abbreviatedFromatterUnitsStyleForLocale:", locale)}];
   }
 
   else
@@ -1082,7 +1082,7 @@ LABEL_11:
     v5 = a3;
   }
 
-  return [a1 _navigation_spokenStringWithMinutes:v5 / 0x3C andAbbreviationType:?];
+  return [self _navigation_spokenStringWithMinutes:v5 / 0x3C andAbbreviationType:?];
 }
 
 + (id)_navigation_stringWithMinutes:()FormatExtras andAbbreviationType:
@@ -1093,9 +1093,9 @@ LABEL_11:
   [v7 setMaximumUnitCount:2];
   if (a4 == 2)
   {
-    v10 = [v7 calendar];
-    v11 = [v10 locale];
-    [v7 setUnitsStyle:{objc_msgSend(a1, "_navigation_abbreviatedFromatterUnitsStyleForLocale:", v11)}];
+    calendar = [v7 calendar];
+    locale = [calendar locale];
+    [v7 setUnitsStyle:{objc_msgSend(self, "_navigation_abbreviatedFromatterUnitsStyleForLocale:", locale)}];
   }
 
   else
@@ -1145,7 +1145,7 @@ LABEL_8:
     v5 = a3;
   }
 
-  return [a1 _navigation_stringWithMinutes:v5 / 0x3C andAbbreviationType:?];
+  return [self _navigation_stringWithMinutes:v5 / 0x3C andAbbreviationType:?];
 }
 
 + (id)_navigation_stringForDistance:()FormatExtras formatter:locale:shouldScale:
@@ -1153,18 +1153,18 @@ LABEL_8:
   v55 = *MEMORY[0x1E69E9840];
   v9 = a4;
   [v9 setLocale:a5];
-  v10 = [v9 spoken];
-  v11 = MNInstructionsCalculateScaledDistanceUnits([v9 metric], objc_msgSend(v9, "yards"), objc_msgSend(v9, "rounding"), a6, a1);
+  spoken = [v9 spoken];
+  v11 = MNInstructionsCalculateScaledDistanceUnits([v9 metric], objc_msgSend(v9, "yards"), objc_msgSend(v9, "rounding"), a6, self);
   v13 = v12;
   v14 = *&v12;
-  v15 = [v9 rounding];
+  rounding = [v9 rounding];
   v16 = HIDWORD(v13) & 1;
-  if (v15 != 1)
+  if (rounding != 1)
   {
     LODWORD(v16) = 0;
   }
 
-  if (!v10)
+  if (!spoken)
   {
     if (v16)
     {
@@ -1183,9 +1183,9 @@ LABEL_8:
       }
     }
 
-    v20 = [v9 rounding];
+    rounding2 = [v9 rounding];
     v21 = floorf(v14);
-    if (v20 == 1)
+    if (rounding2 == 1)
     {
       v19 = v21;
     }
@@ -1197,26 +1197,26 @@ LABEL_8:
 
     if ((v13 & 0x100000000) != 0)
     {
-      v22 = [v9 minimumFractionDigits];
+      minimumFractionDigits = [v9 minimumFractionDigits];
       v23 = __exp10([v9 maximumFractionDigits]);
-      v24 = [v9 minimumFractionDigits];
-      if (v24 < [v9 maximumFractionDigits])
+      minimumFractionDigits2 = [v9 minimumFractionDigits];
+      if (minimumFractionDigits2 < [v9 maximumFractionDigits])
       {
         v25 = round(v23 * v19) / v23;
-        v26 = __exp10(v24);
+        v26 = __exp10(minimumFractionDigits2);
         if (round(v26 * v19) / v26 != v25)
         {
-          v27 = v24 + 1;
+          v27 = minimumFractionDigits2 + 1;
           do
           {
-            v22 = v27;
+            minimumFractionDigits = v27;
             if (v27 >= [v9 maximumFractionDigits])
             {
               break;
             }
 
-            v28 = __exp10(v22);
-            v27 = v22 + 1;
+            v28 = __exp10(minimumFractionDigits);
+            v27 = minimumFractionDigits + 1;
           }
 
           while (round(v28 * v19) / v28 != v25);
@@ -1226,7 +1226,7 @@ LABEL_8:
 
     else
     {
-      v22 = 0;
+      minimumFractionDigits = 0;
     }
 
     if (v11 > 2)
@@ -1236,8 +1236,8 @@ LABEL_8:
         case 3:
           goto LABEL_45;
         case 4:
-          [v9 setMinimumFractionDigits:v22];
-          [v9 setMaximumFractionDigits:v22];
+          [v9 setMinimumFractionDigits:minimumFractionDigits];
+          [v9 setMaximumFractionDigits:minimumFractionDigits];
           goto LABEL_51;
         case 5:
           v32 = v19;
@@ -1285,17 +1285,17 @@ LABEL_8:
         case 0:
           goto LABEL_44;
         case 1:
-          [v9 setMinimumFractionDigits:v22];
-          [v9 setMaximumFractionDigits:v22];
+          [v9 setMinimumFractionDigits:minimumFractionDigits];
+          [v9 setMaximumFractionDigits:minimumFractionDigits];
           goto LABEL_49;
         case 2:
 LABEL_36:
           [v9 setMinimumFractionDigits:0];
           [v9 setMaximumFractionDigits:0];
-          v31 = [MEMORY[0x1E696B058] yards];
+          yards = [MEMORY[0x1E696B058] yards];
 LABEL_52:
-          v34 = v31;
-          [v9 setUnitLength:v31];
+          v34 = yards;
+          [v9 setUnitLength:yards];
 LABEL_53:
 
           break;
@@ -1305,8 +1305,8 @@ LABEL_53:
 LABEL_54:
     v35 = [objc_opt_class() _navigation_formatterForOptions:v9];
     v36 = objc_alloc(MEMORY[0x1E696AD28]);
-    v37 = [v9 unitLength];
-    v38 = [v36 initWithDoubleValue:v37 unit:v19];
+    unitLength = [v9 unitLength];
+    v38 = [v36 initWithDoubleValue:unitLength unit:v19];
     v39 = [v35 stringFromMeasurement:v38];
 
     goto LABEL_55;
@@ -1329,9 +1329,9 @@ LABEL_54:
     }
   }
 
-  v17 = [v9 rounding];
+  rounding3 = [v9 rounding];
   v18 = floorf(v14);
-  if (v17 == 1)
+  if (rounding3 == 1)
   {
     v19 = v18;
   }
@@ -1369,14 +1369,14 @@ LABEL_46:
       }
 
 LABEL_49:
-      v31 = [MEMORY[0x1E696B058] kilometers];
+      yards = [MEMORY[0x1E696B058] kilometers];
       goto LABEL_52;
     }
 
 LABEL_44:
     [v9 setMinimumFractionDigits:0];
     [v9 setMaximumFractionDigits:0];
-    v31 = [MEMORY[0x1E696B058] meters];
+    yards = [MEMORY[0x1E696B058] meters];
     goto LABEL_52;
   }
 
@@ -1385,14 +1385,14 @@ LABEL_44:
 LABEL_45:
     [v9 setMinimumFractionDigits:0];
     [v9 setMaximumFractionDigits:0];
-    v31 = [MEMORY[0x1E696B058] feet];
+    yards = [MEMORY[0x1E696B058] feet];
     goto LABEL_52;
   }
 
   if (v11 == 4)
   {
 LABEL_51:
-    v31 = [MEMORY[0x1E696B058] miles];
+    yards = [MEMORY[0x1E696B058] miles];
     goto LABEL_52;
   }
 
@@ -1466,38 +1466,38 @@ LABEL_55:
   }
 
   [v5 setUnitStyle:v6];
-  v7 = [v4 minimumFractionDigits];
-  v8 = [v5 numberFormatter];
-  [v8 setMinimumFractionDigits:v7];
+  minimumFractionDigits = [v4 minimumFractionDigits];
+  numberFormatter = [v5 numberFormatter];
+  [numberFormatter setMinimumFractionDigits:minimumFractionDigits];
 
-  v9 = [v4 maximumFractionDigits];
-  v10 = [v5 numberFormatter];
-  [v10 setMaximumFractionDigits:v9];
+  maximumFractionDigits = [v4 maximumFractionDigits];
+  numberFormatter2 = [v5 numberFormatter];
+  [numberFormatter2 setMaximumFractionDigits:maximumFractionDigits];
 
-  v11 = [v4 locale];
+  locale = [v4 locale];
 
-  [v5 setLocale:v11];
+  [v5 setLocale:locale];
 
   return v5;
 }
 
 + (id)_navigation_localizedStringForDistance:()FormatExtras detail:unitFormat:locale:useMetric:useYards:shouldScale:
 {
-  v15 = a6;
-  if (!v15)
+  currentLocale = a6;
+  if (!currentLocale)
   {
-    v15 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   }
 
   v16 = objc_alloc_init(_MNDistanceFormatOptions);
   if (a7 == 2)
   {
-    v17 = 1;
+    _navigation_distanceUsesMetricSystem = 1;
   }
 
   else if (a7 == 1)
   {
-    v17 = 0;
+    _navigation_distanceUsesMetricSystem = 0;
   }
 
   else
@@ -1507,19 +1507,19 @@ LABEL_55:
       goto LABEL_10;
     }
 
-    v17 = [v15 _navigation_distanceUsesMetricSystem];
+    _navigation_distanceUsesMetricSystem = [currentLocale _navigation_distanceUsesMetricSystem];
   }
 
-  [(_MNDistanceFormatOptions *)v16 setMetric:v17];
+  [(_MNDistanceFormatOptions *)v16 setMetric:_navigation_distanceUsesMetricSystem];
 LABEL_10:
   if (a8 == 2)
   {
-    v18 = 1;
+    _navigation_useYardsForShortDistances = 1;
   }
 
   else if (a8 == 1)
   {
-    v18 = 0;
+    _navigation_useYardsForShortDistances = 0;
   }
 
   else
@@ -1529,10 +1529,10 @@ LABEL_10:
       goto LABEL_17;
     }
 
-    v18 = [v15 _navigation_useYardsForShortDistances];
+    _navigation_useYardsForShortDistances = [currentLocale _navigation_useYardsForShortDistances];
   }
 
-  [(_MNDistanceFormatOptions *)v16 setYards:v18];
+  [(_MNDistanceFormatOptions *)v16 setYards:_navigation_useYardsForShortDistances];
 LABEL_17:
   [(_MNDistanceFormatOptions *)v16 setMinimumFractionDigits:1];
   [(_MNDistanceFormatOptions *)v16 setAbbreviateUnits:a5 == 1];
@@ -1547,11 +1547,11 @@ LABEL_17:
   {
     [(_MNDistanceFormatOptions *)v16 setAbbreviateUnits:0];
     [(_MNDistanceFormatOptions *)v16 setMaximumFractionDigits:[(_MNDistanceFormatOptions *)v16 maximumFractionDigits]!= 0];
-    v19 = [MEMORY[0x1E696AE30] processInfo];
-    v20 = [v19 _navigation_isNavd];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    _navigation_isNavd = [processInfo _navigation_isNavd];
 
     v21 = MEMORY[0x1E695DF58];
-    if (v20)
+    if (_navigation_isNavd)
     {
       +[MNUserOptionsEngine sharedInstance];
     }
@@ -1561,24 +1561,24 @@ LABEL_17:
       +[MNNavigationService sharedService];
     }
     v22 = ;
-    v23 = [v22 currentVoiceLanguage];
-    v24 = [v21 localeWithLocaleIdentifier:v23];
+    currentVoiceLanguage = [v22 currentVoiceLanguage];
+    v24 = [v21 localeWithLocaleIdentifier:currentVoiceLanguage];
 
-    v15 = v24;
+    currentLocale = v24;
   }
 
-  v25 = [MEMORY[0x1E696AEC0] _navigation_stringForDistance:v16 formatter:v15 locale:a9 shouldScale:a1];
+  v25 = [MEMORY[0x1E696AEC0] _navigation_stringForDistance:v16 formatter:currentLocale locale:a9 shouldScale:self];
 
   return v25;
 }
 
 + (uint64_t)_navigation_localizedStringForDistance:()FormatExtras context:extraDetail:
 {
-  v8 = [MEMORY[0x1E695DF58] currentLocale];
-  v9 = [v8 _navigation_distanceUsesMetricSystem];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  _navigation_distanceUsesMetricSystem = [currentLocale _navigation_distanceUsesMetricSystem];
 
-  v10 = [MEMORY[0x1E695DF58] currentLocale];
-  v11 = [v10 _navigation_useYardsForShortDistances];
+  currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+  _navigation_useYardsForShortDistances = [currentLocale2 _navigation_useYardsForShortDistances];
 
   if (a5)
   {
@@ -1606,7 +1606,7 @@ LABEL_17:
 
   else
   {
-    v16 = MNInstructionsCalculateScaledDistanceUnits(v9, v11, 0, 1, a1);
+    v16 = MNInstructionsCalculateScaledDistanceUnits(_navigation_distanceUsesMetricSystem, _navigation_useYardsForShortDistances, 0, 1, self);
     v21 = v16 != 4 && v16 != 1 || *&v17 <= 1.0 || *&v17 >= 10.0 || (v17 & 0x100000000) == 0;
     v22 = floor(*&v17);
     v23 = v21 || v22 == *&v17;
@@ -1619,7 +1619,7 @@ LABEL_17:
 
   v14 = MEMORY[0x1E696AEC0];
 
-  return [v14 _navigation_localizedStringForDistance:v12 detail:v13 unitFormat:0 locale:0 useMetric:0 useYards:a1];
+  return [v14 _navigation_localizedStringForDistance:v12 detail:v13 unitFormat:0 locale:0 useMetric:0 useYards:self];
 }
 
 + (id)_navigation_stringForServerFormattedString:()FormatExtras abbreviatedUnits:detail:spoken:wrappedOverrideVariables:allTokensExpanded:
@@ -1629,7 +1629,7 @@ LABEL_17:
   v11 = a5;
   v12 = a6;
   memset(v13, 0, sizeof(v13));
-  v8 = [a1 _navigation_stringForServerFormattedString:a3 options:v10 wrappedOverrideVariables:a7 allTokensExpanded:a8];
+  v8 = [self _navigation_stringForServerFormattedString:a3 options:v10 wrappedOverrideVariables:a7 allTokensExpanded:a8];
 
   return v8;
 }
@@ -1640,8 +1640,8 @@ LABEL_17:
   v7 = a3;
   v91 = a5;
   v8 = objc_alloc(MEMORY[0x1E695DF70]);
-  v9 = [v7 formatStrings];
-  v85 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+  formatStrings = [v7 formatStrings];
+  v85 = [v8 initWithCapacity:{objc_msgSend(formatStrings, "count")}];
 
   v121 = 0u;
   v122 = 0u;
@@ -1673,8 +1673,8 @@ LABEL_17:
           v116 = 0u;
           v117 = 0u;
           v118 = 0u;
-          v86 = [v87 formatTokens];
-          v89 = [v86 countByEnumeratingWithState:&v115 objects:v126 count:16];
+          formatTokens = [v87 formatTokens];
+          v89 = [formatTokens countByEnumeratingWithState:&v115 objects:v126 count:16];
           if (!v89)
           {
             goto LABEL_62;
@@ -1689,14 +1689,14 @@ LABEL_17:
             {
               if (*v116 != v88)
               {
-                objc_enumerationMutation(v86);
+                objc_enumerationMutation(formatTokens);
               }
 
               v93 = v14;
               v15 = *(*(&v115 + 1) + 8 * v14);
-              v101 = [v15 genericCombinations];
+              genericCombinations = [v15 genericCombinations];
               v98 = v15;
-              if (!v101)
+              if (!genericCombinations)
               {
                 v20 = *(v10 + 3776);
                 v21 = [v91 objectForKeyedSubscript:@"{currentDestination}"];
@@ -1715,9 +1715,9 @@ LABEL_54:
                 v60 = MNGetMNStringExtrasLog();
                 if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
                 {
-                  v61 = [v98 token];
+                  token = [v98 token];
                   *buf = 138412802;
-                  *&buf[4] = v61;
+                  *&buf[4] = token;
                   *&buf[12] = 2112;
                   *&buf[14] = v87;
                   *&buf[22] = 2112;
@@ -1725,27 +1725,27 @@ LABEL_54:
                   _os_log_impl(&dword_1D311E000, v60, OS_LOG_TYPE_ERROR, "Error replacing token %@ for string: %@. Overrides: %@", buf, 0x20u);
                 }
 
-                v62 = [v87 alternativeString];
-                v63 = v62;
-                if (!v62)
+                alternativeString = [v87 alternativeString];
+                v63 = alternativeString;
+                if (!alternativeString)
                 {
                   goto LABEL_59;
                 }
 
-                v64 = [v62 condition];
-                v65 = [v64 conditionType];
+                condition = [alternativeString condition];
+                conditionType = [condition conditionType];
 
-                if (v65 != 5)
+                if (conditionType != 5)
                 {
                   goto LABEL_59;
                 }
 
                 v66 = *(v10 + 3776);
-                v67 = [v63 formattedString];
+                formattedString = [v63 formattedString];
                 v68 = a4[1];
                 *buf = *a4;
                 *&buf[16] = v68;
-                v69 = [v66 _navigation_stringForServerFormattedString:v67 options:buf wrappedOverrideVariables:v91];
+                v69 = [v66 _navigation_stringForServerFormattedString:formattedString options:buf wrappedOverrideVariables:v91];
 
                 if (!v69)
                 {
@@ -1772,19 +1772,19 @@ LABEL_73:
                 goto LABEL_74;
               }
 
-              v16 = [v15 token];
-              v17 = [v91 objectForKeyedSubscript:v16];
+              token2 = [v15 token];
+              v17 = [v91 objectForKeyedSubscript:token2];
 
               v90 = [v17 objectForKeyedSubscript:@"{WaypointCategory}"];
-              v18 = [v90 intValue];
-              if (v18 > 0xB)
+              intValue = [v90 intValue];
+              if (intValue > 0xB)
               {
                 v19 = 0;
               }
 
               else
               {
-                v19 = [MEMORY[0x1E695DFD8] setWithArray:*(&off_1E842A4E0 + v18)];
+                v19 = [MEMORY[0x1E695DFD8] setWithArray:*(&off_1E842A4E0 + intValue)];
               }
 
               v113 = 0u;
@@ -1817,8 +1817,8 @@ LABEL_21:
                 v110 = 0u;
                 v107 = 0u;
                 v108 = 0u;
-                v105 = [v101 substitutes];
-                v28 = [v105 countByEnumeratingWithState:&v107 objects:v124 count:16];
+                substitutes = [genericCombinations substitutes];
+                v28 = [substitutes countByEnumeratingWithState:&v107 objects:v124 count:16];
                 if (!v28)
                 {
                   v25 = 0;
@@ -1834,30 +1834,30 @@ LABEL_26:
                 {
                   if (*v108 != v30)
                   {
-                    objc_enumerationMutation(v105);
+                    objc_enumerationMutation(substitutes);
                   }
 
                   v32 = *(*(&v107 + 1) + 8 * v31);
-                  v33 = [v32 waypointCategory];
-                  if (v33 == [v27 intValue])
+                  waypointCategory = [v32 waypointCategory];
+                  if (waypointCategory == [v27 intValue])
                   {
-                    v34 = [v32 substitute];
-                    v35 = [v34 formatArguments];
-                    v36 = [v35 firstObject];
+                    substitute = [v32 substitute];
+                    formatArguments = [substitute formatArguments];
+                    firstObject = [formatArguments firstObject];
 
-                    if (!v36)
+                    if (!firstObject)
                     {
                       v47 = objc_alloc(MEMORY[0x1E696AD60]);
-                      v48 = [v32 substitute];
-                      v49 = [v48 formatStrings];
-                      v50 = [v49 firstObject];
-                      v51 = [v47 initWithString:v50];
+                      substitute2 = [v32 substitute];
+                      formatStrings2 = [substitute2 formatStrings];
+                      firstObject2 = [formatStrings2 firstObject];
+                      v51 = [v47 initWithString:firstObject2];
                       v10 = 0x1E696A000;
                       goto LABEL_45;
                     }
 
-                    v37 = [v36 stringSubstituteData];
-                    v106 = [v37 stringSubstituteType];
+                    stringSubstituteData = [firstObject stringSubstituteData];
+                    stringSubstituteType = [stringSubstituteData stringSubstituteType];
                     if (v17)
                     {
                       v104 = v32;
@@ -1867,46 +1867,46 @@ LABEL_26:
                       v41 = [v39 objectForKeyedSubscript:@"{Address}_source"];
                       v103 = v39;
 
-                      if ([v40 intValue] == v106)
+                      if ([v40 intValue] == stringSubstituteType)
                       {
 
                         v17 = v38;
 LABEL_44:
                         v52 = objc_alloc(MEMORY[0x1E696AD60]);
-                        v53 = [v104 substitute];
-                        v54 = [v53 formatStrings];
-                        v55 = [v54 firstObject];
-                        v51 = [v52 initWithString:v55];
+                        substitute3 = [v104 substitute];
+                        formatStrings3 = [substitute3 formatStrings];
+                        firstObject3 = [formatStrings3 firstObject];
+                        v51 = [v52 initWithString:firstObject3];
 
                         v10 = 0x1E696A000uLL;
                         v56 = MEMORY[0x1E696AEC0];
-                        v48 = [v104 substitute];
-                        v49 = [v48 formatArguments];
-                        v50 = [v49 firstObject];
+                        substitute2 = [v104 substitute];
+                        formatStrings2 = [substitute2 formatArguments];
+                        firstObject2 = [formatStrings2 firstObject];
                         v57 = a4[1];
                         *buf = *a4;
                         *&buf[16] = v57;
-                        [v56 _replaceToken:v50 composedString:v51 options:buf overrideVariables:v103];
+                        [v56 _replaceToken:firstObject2 composedString:v51 options:buf overrideVariables:v103];
 LABEL_45:
 
                         v58 = *(v10 + 3776);
-                        v59 = [v98 token];
+                        token3 = [v98 token];
                         v13 = v95;
-                        v97 = [v58 _replaceToken:v59 composedString:v95 replacement:v51];
+                        v97 = [v58 _replaceToken:token3 composedString:v95 replacement:v51];
 
                         v25 = 1;
                         goto LABEL_46;
                       }
 
-                      v42 = v36;
+                      v42 = firstObject;
                       v43 = v30;
                       v44 = v27;
-                      v45 = [v41 intValue];
+                      intValue2 = [v41 intValue];
 
-                      v46 = v45 == v106;
+                      v46 = intValue2 == stringSubstituteType;
                       v27 = v44;
                       v30 = v43;
-                      v36 = v42;
+                      firstObject = v42;
                       v17 = v38;
                       if (v46)
                       {
@@ -1921,7 +1921,7 @@ LABEL_45:
 
                   if (v29 == ++v31)
                   {
-                    v29 = [v105 countByEnumeratingWithState:&v107 objects:v124 count:16];
+                    v29 = [substitutes countByEnumeratingWithState:&v107 objects:v124 count:16];
                     if (v29)
                     {
                       goto LABEL_26;
@@ -1966,7 +1966,7 @@ LABEL_60:
             }
 
             while (v93 + 1 != v89);
-            v89 = [v86 countByEnumeratingWithState:&v115 objects:v126 count:16];
+            v89 = [formatTokens countByEnumeratingWithState:&v115 objects:v126 count:16];
             if (!v89)
             {
 LABEL_62:
@@ -2005,12 +2005,12 @@ LABEL_62:
       [v69 appendString:v75];
       if (v74 < [v73 count] - 1)
       {
-        v76 = [v87 separators];
+        separators = [v87 separators];
         v77 = &stru_1F4EB6B70;
-        if (v74 < [v76 count])
+        if (v74 < [separators count])
         {
-          v78 = [v87 separators];
-          v77 = [v78 objectAtIndexedSubscript:v74];
+          separators2 = [v87 separators];
+          v77 = [separators2 objectAtIndexedSubscript:v74];
         }
 
         [v69 appendString:v77];
@@ -2063,15 +2063,15 @@ LABEL_74:
 {
   v10 = a6;
   v11 = a4;
-  v12 = [a1 _navigation_overridenTokenForToken:a3 overrideVariables:v10];
+  v12 = [self _navigation_overridenTokenForToken:a3 overrideVariables:v10];
   v13 = a5[1];
   v19[0] = *a5;
   v19[1] = v13;
   v14 = [MEMORY[0x1E696AEC0] _navigation_replacementForFormatToken:v12 options:v19 overrideVariables:v10];
 
   v15 = MEMORY[0x1E696AEC0];
-  v16 = [v12 token];
-  v17 = [v15 _replaceToken:v16 composedString:v11 replacement:v14];
+  token = [v12 token];
+  v17 = [v15 _replaceToken:token composedString:v11 replacement:v14];
 
   return v17;
 }
@@ -2140,7 +2140,7 @@ LABEL_74:
   v10 = a6;
   v11 = a7;
   memset(v12, 0, sizeof(v12));
-  v7 = [a1 _navigation_replacementForFormatToken:a3 options:v9 overrideVariables:?];
+  v7 = [self _navigation_replacementForFormatToken:a3 options:v9 overrideVariables:?];
 
   return v7;
 }
@@ -2149,8 +2149,8 @@ LABEL_74:
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v5 token];
-  v8 = [v6 valueForKey:v7];
+  token = [v5 token];
+  v8 = [v6 valueForKey:token];
 
   if (v8)
   {
@@ -2233,49 +2233,49 @@ LABEL_74:
 
 + (__CFString)_navigation_replacementForFormatToken:()FormatExtras options:overrideVariables:useMetric:
 {
-  v9 = [a1 _navigation_overridenTokenForToken:a3 overrideVariables:a5];
-  v10 = 0;
+  v9 = [self _navigation_overridenTokenForToken:a3 overrideVariables:a5];
+  stringValue2 = 0;
   switch([v9 type])
   {
     case 0:
-      v11 = [MEMORY[0x1E696AEC0] _navigation_formattedStringForInteger:{objc_msgSend(v9, "value1")}];
+      stringValue4 = [MEMORY[0x1E696AEC0] _navigation_formattedStringForInteger:{objc_msgSend(v9, "value1")}];
       goto LABEL_48;
     case 2:
-      v29 = [v9 value1];
+      value1 = [v9 value1];
       if (a4[16] == 1)
       {
-        [MEMORY[0x1E696AEC0] _navigation_localizedStringForDistance:0 context:0 extraDetail:v29];
+        [MEMORY[0x1E696AEC0] _navigation_localizedStringForDistance:0 context:0 extraDetail:value1];
       }
 
       else
       {
-        [MEMORY[0x1E696AEC0] _navigation_localizedStringForDistance:*(a4 + 1) detail:*a4 unitFormat:0 locale:a6 useMetric:0 useYards:objc_msgSend(v9 shouldScale:"shouldScaleUnits"), v29];
+        [MEMORY[0x1E696AEC0] _navigation_localizedStringForDistance:*(a4 + 1) detail:*a4 unitFormat:0 locale:a6 useMetric:0 useYards:objc_msgSend(v9 shouldScale:"shouldScaleUnits"), value1];
       }
-      v11 = ;
+      stringValue4 = ;
       goto LABEL_48;
     case 3:
     case 9:
-      v12 = [v9 timeStampValues];
-      if ([v12 count])
+      timeStampValues = [v9 timeStampValues];
+      if ([timeStampValues count])
       {
         v13 = *(a4 + 1);
         v50 = *a4;
         v51 = v13;
-        v14 = [a1 _navigation_stringWithTimeStampValues:v12 options:&v50];
+        v14 = [self _navigation_stringWithTimeStampValues:timeStampValues options:&v50];
 LABEL_6:
-        v10 = v14;
+        stringValue2 = v14;
       }
 
       else
       {
-        v10 = 0;
+        stringValue2 = 0;
       }
 
       goto LABEL_49;
     case 4:
       v16 = a4[16];
       v17 = MEMORY[0x1E696AEC0];
-      v18 = [v9 value1];
+      value12 = [v9 value1];
       v19 = v17;
       v20 = 1;
       if (v16 != 1)
@@ -2287,20 +2287,20 @@ LABEL_6:
     case 5:
       v23 = a4[16];
       v24 = MEMORY[0x1E696AEC0];
-      v18 = [v9 value1];
+      value12 = [v9 value1];
       v19 = v24;
       if (v23 == 1)
       {
         v20 = 0;
 LABEL_12:
-        v11 = [v19 _navigation_spokenStringWithSeconds:v18 abbreviated:v20];
+        stringValue4 = [v19 _navigation_spokenStringWithSeconds:value12 abbreviated:v20];
       }
 
       else
       {
         v20 = 0;
 LABEL_46:
-        v11 = [v19 _navigation_stringWithSeconds:v18 abbreviated:v20];
+        stringValue4 = [v19 _navigation_stringWithSeconds:value12 abbreviated:v20];
       }
 
       goto LABEL_48;
@@ -2316,7 +2316,7 @@ LABEL_46:
         v31 = v30;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] _navigation_descriptionForFrequencyMinuteValue:v31];
+      stringValue4 = [MEMORY[0x1E696AEC0] _navigation_descriptionForFrequencyMinuteValue:v31];
       goto LABEL_48;
     case 7:
       v32 = llroundf([v9 value1] * 0.016667);
@@ -2341,66 +2341,66 @@ LABEL_46:
         v35 = v33;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] _navigation_descriptionForFrequencyRangeWithMinFrequency:v34 maxFrequency:v35 estimate:0 recurring:0];
+      stringValue4 = [MEMORY[0x1E696AEC0] _navigation_descriptionForFrequencyRangeWithMinFrequency:v34 maxFrequency:v35 estimate:0 recurring:0];
       goto LABEL_48;
     case 8:
-      v38 = [v9 priceValue];
-      v39 = v38;
-      if (v38)
+      priceValue = [v9 priceValue];
+      numberData = priceValue;
+      if (priceValue)
       {
-        [v38 value];
+        [priceValue value];
         v41 = v40;
-        v42 = [v39 currencyCode];
-        v43 = [a1 _navigation_formattedStringForPriceValue:v42 currencyCode:v41];
+        currencyCode = [numberData currencyCode];
+        v43 = [self _navigation_formattedStringForPriceValue:currencyCode currencyCode:v41];
 LABEL_39:
-        v10 = v43;
+        stringValue2 = v43;
       }
 
       else
       {
-        v10 = 0;
+        stringValue2 = 0;
       }
 
 LABEL_49:
 
-      return v10;
+      return stringValue2;
     case 10:
     case 17:
     case 18:
       goto LABEL_2;
     case 11:
-      v36 = [v9 artworkValue];
-      v37 = [v36 shieldDataSource];
-      v21 = [v37 shieldText];
+      artworkValue = [v9 artworkValue];
+      shieldDataSource = [artworkValue shieldDataSource];
+      shieldText = [shieldDataSource shieldText];
 
-      if ([v21 length])
+      if ([shieldText length])
       {
-        v22 = v21;
+        displayTitle = shieldText;
 LABEL_33:
-        v10 = v22;
+        stringValue2 = displayTitle;
       }
 
       else
       {
-        v49 = [v9 stringValue];
-        if ([v49 length])
+        stringValue = [v9 stringValue];
+        if ([stringValue length])
         {
-          v10 = [v9 stringValue];
+          stringValue2 = [v9 stringValue];
         }
 
         else
         {
-          v10 = 0;
+          stringValue2 = 0;
         }
       }
 
       goto LABEL_34;
     case 12:
-      v12 = [v9 countdownValue];
+      timeStampValues = [v9 countdownValue];
       v15 = *(a4 + 1);
       v50 = *a4;
       v51 = v15;
-      v14 = [a1 _navigation_stringWithCountdownValue:v12 inToken:v9 options:&v50];
+      v14 = [self _navigation_stringWithCountdownValue:timeStampValues inToken:v9 options:&v50];
       goto LABEL_6;
     case 13:
       if (_navigation_replacementForFormatToken_options_overrideVariables_useMetric___numberFormatterToken != -1)
@@ -2412,221 +2412,221 @@ LABEL_33:
       v26 = MEMORY[0x1E696AD98];
       [v9 percentageValue];
       *&v28 = v27 * 0.01;
-      v21 = [v26 numberWithFloat:v28];
-      v22 = [v25 stringFromNumber:v21];
+      shieldText = [v26 numberWithFloat:v28];
+      displayTitle = [v25 stringFromNumber:shieldText];
       goto LABEL_33;
     case 14:
-      v21 = [v9 urlValue];
-      v22 = [v21 displayTitle];
+      shieldText = [v9 urlValue];
+      displayTitle = [shieldText displayTitle];
       goto LABEL_33;
     case 15:
-      v46 = [v9 stringValue];
+      stringValue3 = [v9 stringValue];
 
-      if (v46)
+      if (stringValue3)
       {
 LABEL_2:
-        v11 = [v9 stringValue];
+        stringValue4 = [v9 stringValue];
 LABEL_48:
-        v10 = v11;
+        stringValue2 = stringValue4;
       }
 
       else
       {
-        v21 = [v9 maneuverValue];
-        v47 = [v21 maneuverType];
-        v10 = @"NO_TURN";
-        switch(v47)
+        shieldText = [v9 maneuverValue];
+        maneuverType = [shieldText maneuverType];
+        stringValue2 = @"NO_TURN";
+        switch(maneuverType)
         {
           case 0:
             break;
           case 1:
-            v10 = @"LEFT_TURN";
+            stringValue2 = @"LEFT_TURN";
             break;
           case 2:
-            v10 = @"RIGHT_TURN";
+            stringValue2 = @"RIGHT_TURN";
             break;
           case 3:
-            v10 = @"STRAIGHT_AHEAD";
+            stringValue2 = @"STRAIGHT_AHEAD";
             break;
           case 4:
-            v10 = @"U_TURN";
+            stringValue2 = @"U_TURN";
             break;
           case 5:
-            v10 = @"FOLLOW_ROAD";
+            stringValue2 = @"FOLLOW_ROAD";
             break;
           case 6:
-            v10 = @"ENTER_ROUNDABOUT";
+            stringValue2 = @"ENTER_ROUNDABOUT";
             break;
           case 7:
-            v10 = @"EXIT_ROUNDABOUT";
+            stringValue2 = @"EXIT_ROUNDABOUT";
             break;
           case 11:
-            v10 = @"OFF_RAMP";
+            stringValue2 = @"OFF_RAMP";
             break;
           case 12:
-            v10 = @"ON_RAMP";
+            stringValue2 = @"ON_RAMP";
             break;
           case 16:
-            v10 = @"ARRIVE_END_OF_NAVIGATION";
+            stringValue2 = @"ARRIVE_END_OF_NAVIGATION";
             break;
           case 17:
-            v10 = @"START_ROUTE";
+            stringValue2 = @"START_ROUTE";
             break;
           case 18:
-            v10 = @"ARRIVE_AT_DESTINATION";
+            stringValue2 = @"ARRIVE_AT_DESTINATION";
             break;
           case 20:
-            v10 = @"KEEP_LEFT";
+            stringValue2 = @"KEEP_LEFT";
             break;
           case 21:
-            v10 = @"KEEP_RIGHT";
+            stringValue2 = @"KEEP_RIGHT";
             break;
           case 22:
-            v10 = @"ENTER_FERRY";
+            stringValue2 = @"ENTER_FERRY";
             break;
           case 23:
-            v10 = @"EXIT_FERRY";
+            stringValue2 = @"EXIT_FERRY";
             break;
           case 24:
-            v10 = @"CHANGE_FERRY";
+            stringValue2 = @"CHANGE_FERRY";
             break;
           case 25:
-            v10 = @"START_ROUTE_WITH_U_TURN";
+            stringValue2 = @"START_ROUTE_WITH_U_TURN";
             break;
           case 26:
-            v10 = @"U_TURN_AT_ROUNDABOUT";
+            stringValue2 = @"U_TURN_AT_ROUNDABOUT";
             break;
           case 27:
-            v10 = @"LEFT_TURN_AT_END";
+            stringValue2 = @"LEFT_TURN_AT_END";
             break;
           case 28:
-            v10 = @"RIGHT_TURN_AT_END";
+            stringValue2 = @"RIGHT_TURN_AT_END";
             break;
           case 29:
-            v10 = @"HIGHWAY_OFF_RAMP_LEFT";
+            stringValue2 = @"HIGHWAY_OFF_RAMP_LEFT";
             break;
           case 30:
-            v10 = @"HIGHWAY_OFF_RAMP_RIGHT";
+            stringValue2 = @"HIGHWAY_OFF_RAMP_RIGHT";
             break;
           case 33:
-            v10 = @"ARRIVE_AT_DESTINATION_LEFT";
+            stringValue2 = @"ARRIVE_AT_DESTINATION_LEFT";
             break;
           case 34:
-            v10 = @"ARRIVE_AT_DESTINATION_RIGHT";
+            stringValue2 = @"ARRIVE_AT_DESTINATION_RIGHT";
             break;
           case 35:
-            v10 = @"U_TURN_WHEN_POSSIBLE";
+            stringValue2 = @"U_TURN_WHEN_POSSIBLE";
             break;
           case 39:
-            v10 = @"ARRIVE_END_OF_DIRECTIONS";
+            stringValue2 = @"ARRIVE_END_OF_DIRECTIONS";
             break;
           case 41:
-            v10 = @"ROUNDABOUT_EXIT_1";
+            stringValue2 = @"ROUNDABOUT_EXIT_1";
             break;
           case 42:
-            v10 = @"ROUNDABOUT_EXIT_2";
+            stringValue2 = @"ROUNDABOUT_EXIT_2";
             break;
           case 43:
-            v10 = @"ROUNDABOUT_EXIT_3";
+            stringValue2 = @"ROUNDABOUT_EXIT_3";
             break;
           case 44:
-            v10 = @"ROUNDABOUT_EXIT_4";
+            stringValue2 = @"ROUNDABOUT_EXIT_4";
             break;
           case 45:
-            v10 = @"ROUNDABOUT_EXIT_5";
+            stringValue2 = @"ROUNDABOUT_EXIT_5";
             break;
           case 46:
-            v10 = @"ROUNDABOUT_EXIT_6";
+            stringValue2 = @"ROUNDABOUT_EXIT_6";
             break;
           case 47:
-            v10 = @"ROUNDABOUT_EXIT_7";
+            stringValue2 = @"ROUNDABOUT_EXIT_7";
             break;
           case 48:
-            v10 = @"ROUNDABOUT_EXIT_8";
+            stringValue2 = @"ROUNDABOUT_EXIT_8";
             break;
           case 49:
-            v10 = @"ROUNDABOUT_EXIT_9";
+            stringValue2 = @"ROUNDABOUT_EXIT_9";
             break;
           case 50:
-            v10 = @"ROUNDABOUT_EXIT_10";
+            stringValue2 = @"ROUNDABOUT_EXIT_10";
             break;
           case 51:
-            v10 = @"ROUNDABOUT_EXIT_11";
+            stringValue2 = @"ROUNDABOUT_EXIT_11";
             break;
           case 52:
-            v10 = @"ROUNDABOUT_EXIT_12";
+            stringValue2 = @"ROUNDABOUT_EXIT_12";
             break;
           case 53:
-            v10 = @"ROUNDABOUT_EXIT_13";
+            stringValue2 = @"ROUNDABOUT_EXIT_13";
             break;
           case 54:
-            v10 = @"ROUNDABOUT_EXIT_14";
+            stringValue2 = @"ROUNDABOUT_EXIT_14";
             break;
           case 55:
-            v10 = @"ROUNDABOUT_EXIT_15";
+            stringValue2 = @"ROUNDABOUT_EXIT_15";
             break;
           case 56:
-            v10 = @"ROUNDABOUT_EXIT_16";
+            stringValue2 = @"ROUNDABOUT_EXIT_16";
             break;
           case 57:
-            v10 = @"ROUNDABOUT_EXIT_17";
+            stringValue2 = @"ROUNDABOUT_EXIT_17";
             break;
           case 58:
-            v10 = @"ROUNDABOUT_EXIT_18";
+            stringValue2 = @"ROUNDABOUT_EXIT_18";
             break;
           case 59:
-            v10 = @"ROUNDABOUT_EXIT_19";
+            stringValue2 = @"ROUNDABOUT_EXIT_19";
             break;
           case 60:
-            v10 = @"SHARP_LEFT_TURN";
+            stringValue2 = @"SHARP_LEFT_TURN";
             break;
           case 61:
-            v10 = @"SHARP_RIGHT_TURN";
+            stringValue2 = @"SHARP_RIGHT_TURN";
             break;
           case 62:
-            v10 = @"SLIGHT_LEFT_TURN";
+            stringValue2 = @"SLIGHT_LEFT_TURN";
             break;
           case 63:
-            v10 = @"SLIGHT_RIGHT_TURN";
+            stringValue2 = @"SLIGHT_RIGHT_TURN";
             break;
           case 64:
-            v10 = @"CHANGE_HIGHWAY";
+            stringValue2 = @"CHANGE_HIGHWAY";
             break;
           case 65:
-            v10 = @"CHANGE_HIGHWAY_LEFT";
+            stringValue2 = @"CHANGE_HIGHWAY_LEFT";
             break;
           case 66:
-            v10 = @"CHANGE_HIGHWAY_RIGHT";
+            stringValue2 = @"CHANGE_HIGHWAY_RIGHT";
             break;
           case 80:
-            v10 = @"TOLL_STATION";
+            stringValue2 = @"TOLL_STATION";
             break;
           case 81:
-            v10 = @"ENTER_TUNNEL";
+            stringValue2 = @"ENTER_TUNNEL";
             break;
           case 82:
-            v10 = @"WAYPOINT_STOP";
+            stringValue2 = @"WAYPOINT_STOP";
             break;
           case 83:
-            v10 = @"WAYPOINT_STOP_LEFT";
+            stringValue2 = @"WAYPOINT_STOP_LEFT";
             break;
           case 84:
-            v10 = @"WAYPOINT_STOP_RIGHT";
+            stringValue2 = @"WAYPOINT_STOP_RIGHT";
             break;
           case 85:
-            v10 = @"RESUME_ROUTE";
+            stringValue2 = @"RESUME_ROUTE";
             break;
           case 86:
-            v10 = @"RESUME_ROUTE_WITH_U_TURN";
+            stringValue2 = @"RESUME_ROUTE_WITH_U_TURN";
             break;
           case 87:
-            v10 = @"CUSTOM";
+            stringValue2 = @"CUSTOM";
             break;
           case 88:
-            v10 = @"TURN_AROUND";
+            stringValue2 = @"TURN_AROUND";
             break;
           default:
-            v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v47];
+            displayTitle = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", maneuverType];
             goto LABEL_33;
         }
 
@@ -2635,18 +2635,18 @@ LABEL_34:
 
       goto LABEL_49;
     case 16:
-      v10 = [v9 numberData];
+      stringValue2 = [v9 numberData];
 
-      if (!v10)
+      if (!stringValue2)
       {
         goto LABEL_49;
       }
 
-      v39 = [v9 numberData];
-      [v39 value];
+      numberData = [v9 numberData];
+      [numberData value];
       v45 = v44;
-      v42 = [MEMORY[0x1E696B068] kilowatts];
-      v43 = [a1 _navigation_stringForPower:v42 unit:v45];
+      currencyCode = [MEMORY[0x1E696B068] kilowatts];
+      v43 = [self _navigation_stringForPower:currencyCode unit:v45];
       goto LABEL_39;
     default:
       goto LABEL_49;
@@ -2658,7 +2658,7 @@ LABEL_34:
   v5 = a4[1];
   v8[0] = *a4;
   v8[1] = v5;
-  v6 = [a1 _navigation_replacementForFormatToken:a3 options:v8 overrideVariables:a5 useMetric:0];
+  v6 = [self _navigation_replacementForFormatToken:a3 options:v8 overrideVariables:a5 useMetric:0];
 
   return v6;
 }
@@ -2891,7 +2891,7 @@ LABEL_34:
   v14 = a4 - 60 * v11;
   if (v12 >= 1 && v11 >= 1 && (v13 | v14) == 0)
   {
-    v20 = [a1 _navigation_frequencyRangeLocalizedInHoursWithMinHours:v12 maxHours:v11 estimate:a5 recurring:a6];
+    v20 = [self _navigation_frequencyRangeLocalizedInHoursWithMinHours:v12 maxHours:v11 estimate:a5 recurring:a6];
   }
 
   else
@@ -2904,24 +2904,24 @@ LABEL_34:
       v18 = objc_alloc_init(MEMORY[0x1E695DF10]);
       [v18 setMinute:v14];
       [v18 setHour:v11];
-      if ([a1 _componentsWillUseShortFormat:v17])
+      if ([self _componentsWillUseShortFormat:v17])
       {
         v19 = 1;
       }
 
       else
       {
-        v19 = [a1 _componentsWillUseShortFormat:v18];
+        v19 = [self _componentsWillUseShortFormat:v18];
       }
 
-      v22 = [a1 _frequencyStringForComponents:v18 forRange:1 forceShort:v19];
-      v23 = [a1 _frequencyStringForComponents:v17 forRange:1 forceShort:v19];
-      v21 = [a1 _navigation_frequencyRangeLocalizedInMixedUnitsWithMinString:v23 maxString:v22 estimate:a5 recurring:a6];
+      v22 = [self _frequencyStringForComponents:v18 forRange:1 forceShort:v19];
+      v23 = [self _frequencyStringForComponents:v17 forRange:1 forceShort:v19];
+      v21 = [self _navigation_frequencyRangeLocalizedInMixedUnitsWithMinString:v23 maxString:v22 estimate:a5 recurring:a6];
 
       goto LABEL_22;
     }
 
-    v20 = [a1 _navigation_frequencyRangeLocalizedInMinutesWithMinMinutes:a3 - 60 * v12 maxMinutes:a4 - 60 * v11 estimate:a5 recurring:a6];
+    v20 = [self _navigation_frequencyRangeLocalizedInMinutesWithMinMinutes:a3 - 60 * v12 maxMinutes:a4 - 60 * v11 estimate:a5 recurring:a6];
   }
 
   v21 = v20;
@@ -2932,8 +2932,8 @@ LABEL_22:
 
 + (id)_navigation_descriptionForFrequencyMinuteValue:()FormatExtras
 {
-  v2 = [a1 _frequencyDateComponents:?];
-  v3 = [a1 _frequencyStringForComponents:v2 forRange:0 forceShort:0];
+  v2 = [self _frequencyDateComponents:?];
+  v3 = [self _frequencyStringForComponents:v2 forRange:0 forceShort:0];
 
   return v3;
 }
@@ -3023,19 +3023,19 @@ LABEL_18:
 + (id)_navigation_formattedDescriptionForFrequency:()FormatExtras
 {
   v4 = a3;
-  v5 = [v4 frequencyType];
-  if (v5 == 2)
+  frequencyType = [v4 frequencyType];
+  if (frequencyType == 2)
   {
-    v7 = [a1 _frequencyDateComponents:{objc_msgSend(v4, "displayFrequency")}];
+    v7 = [self _frequencyDateComponents:{objc_msgSend(v4, "displayFrequency")}];
     if ([v7 minute] || objc_msgSend(v7, "hour") != 1)
     {
       if ([v7 minute] != 1 || objc_msgSend(v7, "hour"))
       {
-        v9 = [v7 hour];
-        v10 = [v4 isEstimate];
-        if (v9)
+        hour = [v7 hour];
+        isEstimate = [v4 isEstimate];
+        if (hour)
         {
-          if (v10)
+          if (isEstimate)
           {
             v11 = @"TransitDepartureFrequency_estimated_hours_format";
           }
@@ -3046,14 +3046,14 @@ LABEL_18:
           }
 
           v12 = _MNLocalizedStringFromThisBundle(v11);
-          v13 = [a1 _frequencyStringForComponents:v7 forRange:0 forceShort:0];
+          v13 = [self _frequencyStringForComponents:v7 forRange:0 forceShort:0];
           v17 = 0;
           [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v12 validFormatSpecifiers:@"%d %@" error:&v17, objc_msgSend(v7, "hour"), v13];
         }
 
         else
         {
-          if (v10)
+          if (isEstimate)
           {
             v14 = @"TransitDepartureFrequency_estimated_minutes_format";
           }
@@ -3064,7 +3064,7 @@ LABEL_18:
           }
 
           v12 = _MNLocalizedStringFromThisBundle(v14);
-          v13 = [a1 _frequencyStringForComponents:v7 forRange:0 forceShort:0];
+          v13 = [self _frequencyStringForComponents:v7 forRange:0 forceShort:0];
           v16 = 0;
           [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v12 validFormatSpecifiers:@"%d %@" error:&v16, objc_msgSend(v7, "minute"), v13];
         }
@@ -3087,9 +3087,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (v5 == 1)
+  if (frequencyType == 1)
   {
-    v6 = [a1 _navigation_descriptionForFrequencyRangeWithMinFrequency:objc_msgSend(v4 maxFrequency:"minFrequency") estimate:objc_msgSend(v4 recurring:{"maxFrequency"), objc_msgSend(v4, "isEstimate"), 1}];
+    v6 = [self _navigation_descriptionForFrequencyRangeWithMinFrequency:objc_msgSend(v4 maxFrequency:"minFrequency") estimate:objc_msgSend(v4 recurring:{"maxFrequency"), objc_msgSend(v4, "isEstimate"), 1}];
   }
 
   else
@@ -3108,11 +3108,11 @@ LABEL_23:
   v8 = a3;
   v9 = objc_opt_new();
   [v9 setFormattingContext:2];
-  v10 = [v8 hour];
-  v11 = [v8 minute];
-  if (v10 >= 1)
+  hour = [v8 hour];
+  minute = [v8 minute];
+  if (hour >= 1)
   {
-    if (v11 >= 1)
+    if (minute >= 1)
     {
       if ([v8 minute] >= 60)
       {
@@ -3131,14 +3131,14 @@ LABEL_23:
         }
       }
 
-      v12 = [v9 calendar];
-      v13 = [v12 locale];
-      [v9 setUnitsStyle:{objc_msgSend(a1, "_navigation_abbreviatedFromatterUnitsStyleForLocale:", v13)}];
+      calendar = [v9 calendar];
+      locale = [calendar locale];
+      [v9 setUnitsStyle:{objc_msgSend(self, "_navigation_abbreviatedFromatterUnitsStyleForLocale:", locale)}];
 
       [v9 setAllowedUnits:96];
       [v9 setMaximumUnitCount:2];
-      v14 = [v8 hour];
-      v15 = 60 * ([v8 minute] + 60 * v14);
+      hour2 = [v8 hour];
+      v15 = 60 * ([v8 minute] + 60 * hour2);
       goto LABEL_22;
     }
 
@@ -3152,9 +3152,9 @@ LABEL_23:
     [v9 setMaximumUnitCount:1];
     if (a5)
     {
-      v20 = [v9 calendar];
-      v21 = [v20 locale];
-      [v9 setUnitsStyle:{objc_msgSend(a1, "_navigation_abbreviatedFromatterUnitsStyleForLocale:", v21)}];
+      calendar2 = [v9 calendar];
+      locale2 = [calendar2 locale];
+      [v9 setUnitsStyle:{objc_msgSend(self, "_navigation_abbreviatedFromatterUnitsStyleForLocale:", locale2)}];
     }
 
     else
@@ -3168,7 +3168,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (v11 < 1)
+  if (minute < 1)
   {
     v22 = &stru_1F4EB6B70;
     goto LABEL_24;
@@ -3180,9 +3180,9 @@ LABEL_22:
     [v9 setMaximumUnitCount:1];
     if (a5)
     {
-      v18 = [v9 calendar];
-      v19 = [v18 locale];
-      [v9 setUnitsStyle:{objc_msgSend(a1, "_navigation_abbreviatedFromatterUnitsStyleForLocale:", v19)}];
+      calendar3 = [v9 calendar];
+      locale3 = [calendar3 locale];
+      [v9 setUnitsStyle:{objc_msgSend(self, "_navigation_abbreviatedFromatterUnitsStyleForLocale:", locale3)}];
     }
 
     else
@@ -3233,9 +3233,9 @@ LABEL_24:
   [v9 setMinute:v8];
   if (a4 == 1)
   {
-    v10 = [v9 calendar];
-    v11 = [v10 locale];
-    a4 = [a1 _navigation_abbreviatedFromatterUnitsStyleForLocale:v11];
+    calendar = [v9 calendar];
+    locale = [calendar locale];
+    a4 = [self _navigation_abbreviatedFromatterUnitsStyleForLocale:locale];
   }
 
   v12 = [MEMORY[0x1E696AB70] localizedStringFromDateComponents:v9 unitsStyle:a4];
@@ -3247,7 +3247,7 @@ LABEL_24:
 {
   v74 = *MEMORY[0x1E69E9840];
   v7 = a3;
-  v8 = a4;
+  timeZone = a4;
   v9 = a5;
   if ([v7 count])
   {
@@ -3265,7 +3265,7 @@ LABEL_24:
       _os_log_impl(&dword_1D311E000, v55, OS_LOG_TYPE_ERROR, "*** Assertion failure in %s, %s:%d: (%s)", buf, 0x26u);
     }
 
-    if (v8)
+    if (timeZone)
     {
 LABEL_3:
       if (v9)
@@ -3277,7 +3277,7 @@ LABEL_3:
     }
   }
 
-  else if (v8)
+  else if (timeZone)
   {
     goto LABEL_3;
   }
@@ -3316,10 +3316,10 @@ LABEL_49:
 
 LABEL_4:
   v58 = v9;
-  if (!v8)
+  if (!timeZone)
   {
-    v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v8 = [v10 timeZone];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    timeZone = [currentCalendar timeZone];
   }
 
   v11 = objc_alloc_init(MEMORY[0x1E696AB78]);
@@ -3335,8 +3335,8 @@ LABEL_4:
     goto LABEL_11;
   }
 
-  v13 = [MEMORY[0x1E695DF58] currentLocale];
-  v14 = [v12 isEqual:v13];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v14 = [v12 isEqual:currentLocale];
 
   if (v14 & 1) != 0 || (v15 = _navigation_formattedStringForHourRanges_timeZone_delimeter__locale) != 0 && ([MEMORY[0x1E695DF58] currentLocale], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "isEqual:", v16), v16, (v17))
   {
@@ -3347,9 +3347,9 @@ LABEL_4:
   else
   {
 LABEL_11:
-    v19 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
     v20 = _navigation_formattedStringForHourRanges_timeZone_delimeter__locale;
-    _navigation_formattedStringForHourRanges_timeZone_delimeter__locale = v19;
+    _navigation_formattedStringForHourRanges_timeZone_delimeter__locale = currentLocale2;
 
     v21 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:@"j" options:0 locale:_navigation_formattedStringForHourRanges_timeZone_delimeter__locale];
     v64 = [v21 isEqualToString:@"h a"];
@@ -3358,15 +3358,15 @@ LABEL_11:
       [v62 setDateFormat:v21];
       [v59 setDateFormat:@"h"];
       v18 = v65;
-      v22 = [v65 dateFormat];
-      if ([v22 containsString:@"a"])
+      dateFormat = [v65 dateFormat];
+      if ([dateFormat containsString:@"a"])
       {
-        v23 = [v22 stringByReplacingOccurrencesOfString:@"a" withString:&stru_1F4EB6B70];
-        v24 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-        v25 = [v23 stringByTrimmingCharactersInSet:v24];
+        v23 = [dateFormat stringByReplacingOccurrencesOfString:@"a" withString:&stru_1F4EB6B70];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+        v25 = [v23 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         [v60 setDateFormat:v25];
-        v22 = v25;
+        dateFormat = v25;
       }
 
       else
@@ -3383,11 +3383,11 @@ LABEL_11:
     }
   }
 
-  [v62 setTimeZone:v8];
-  [v59 setTimeZone:v8];
-  [v18 setTimeZone:v8];
-  v61 = v8;
-  [v60 setTimeZone:v8];
+  [v62 setTimeZone:timeZone];
+  [v59 setTimeZone:timeZone];
+  [v18 setTimeZone:timeZone];
+  v61 = timeZone;
+  [v60 setTimeZone:timeZone];
   v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count") >> 1}];
   if ([v7 count] >= 2)
   {
@@ -3400,8 +3400,8 @@ LABEL_11:
       v31 = [v7 objectAtIndex:v30];
       if (v64)
       {
-        v32 = [MEMORY[0x1E695DEE8] currentCalendar];
-        v33 = [v32 copy];
+        currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+        v33 = [currentCalendar2 copy];
 
         [v33 setTimeZone:v61];
         v34 = [v33 component:32 fromDate:v29];
@@ -3409,9 +3409,9 @@ LABEL_11:
         v36 = v34 <= 11 && v35 < 12;
         if (!v36 && (v34 >= 12 ? (v37 = v35 < 12) : (v37 = 1), v37))
         {
-          v38 = [v29 isWholeHour];
+          isWholeHour = [v29 isWholeHour];
           v39 = v62;
-          if (!v38)
+          if (!isWholeHour)
           {
             v39 = v18;
           }
@@ -3419,18 +3419,18 @@ LABEL_11:
 
         else
         {
-          v42 = [v29 isWholeHour];
+          isWholeHour2 = [v29 isWholeHour];
           v39 = v59;
-          if (!v42)
+          if (!isWholeHour2)
           {
             v39 = v60;
           }
         }
 
         v40 = v39;
-        v43 = [v31 isWholeHour];
+        isWholeHour3 = [v31 isWholeHour];
         v44 = v62;
-        if (!v43)
+        if (!isWholeHour3)
         {
           v44 = v18;
         }
@@ -3473,7 +3473,7 @@ LABEL_11:
   v6 = a4;
   v7 = a3;
   v8 = _MNLocalizedStringFromThisBundle(@"Operating Hours Separator");
-  v9 = [a1 _navigation_formattedStringForHourRanges:v7 timeZone:v6 delimeter:v8];
+  v9 = [self _navigation_formattedStringForHourRanges:v7 timeZone:v6 delimeter:v8];
 
   return v9;
 }
@@ -3523,7 +3523,7 @@ LABEL_11:
     while (v11);
   }
 
-  v21 = [a1 _navigation_formattedStringForHourRanges:v8 timeZone:v7];
+  v21 = [self _navigation_formattedStringForHourRanges:v8 timeZone:v7];
 
   v22 = *MEMORY[0x1E69E9840];
 
@@ -3532,15 +3532,15 @@ LABEL_11:
 
 + (id)_navigation_formatFloatForPrintedDistance:()FormatExtras
 {
-  v2 = a1 < 10.0;
+  v2 = self < 10.0;
   v3 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-  v4 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [v3 setLocale:v4];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [v3 setLocale:autoupdatingCurrentLocale];
 
   [v3 setNumberStyle:1];
   [v3 setRoundingMode:6];
   [v3 setMaximumFractionDigits:2 * v2];
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a1];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:self];
   v6 = [v3 stringFromNumber:v5];
 
   return v6;
@@ -3549,12 +3549,12 @@ LABEL_11:
 + (id)_navigation_formattedStringForFloat:()FormatExtras useIncreasedPrecision:
 {
   v6 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-  v7 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [v6 setLocale:v7];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [v6 setLocale:autoupdatingCurrentLocale];
 
   [v6 setNumberStyle:1];
   [v6 setRoundingMode:6];
-  if (a1 >= 100.0)
+  if (self >= 100.0)
   {
     [v6 setUsesSignificantDigits:1];
     [v6 setMaximumSignificantDigits:3];
@@ -3577,7 +3577,7 @@ LABEL_11:
   }
 
   [v6 setMaximumFractionDigits:v8];
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a1];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:self];
   v10 = [v6 stringFromNumber:v9];
 
   return v10;

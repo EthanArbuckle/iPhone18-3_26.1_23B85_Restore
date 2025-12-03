@@ -1,12 +1,12 @@
 @interface NTKCrownAssertionHandler
-- (BOOL)relinquishCrownAssertionForToken:(id)a3;
+- (BOOL)relinquishCrownAssertionForToken:(id)token;
 - (NTKCrownAssertionHandler)init;
-- (id)takeCrownAssertionForToken:(id)a3;
+- (id)takeCrownAssertionForToken:(id)token;
 @end
 
 @implementation NTKCrownAssertionHandler
 
-- (id)takeCrownAssertionForToken:(id)a3
+- (id)takeCrownAssertionForToken:(id)token
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DA2CEC0);
   MEMORY[0x28223BE20](v5 - 8, v6, v7);
@@ -15,7 +15,7 @@
   v11 = *(v10 - 8);
   MEMORY[0x28223BE20](v10, v12, v13);
   v15 = &v19 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (token)
   {
     sub_22DCB5B1C();
     (*(v11 + 56))(v9, 0, 1, v10);
@@ -26,7 +26,7 @@
     (*(v11 + 56))(v9, 1, 1, v10);
   }
 
-  v16 = self;
+  selfCopy = self;
   sub_22DC9759C(v9, v15);
 
   sub_22DC97890(v9);
@@ -36,7 +36,7 @@
   return v17;
 }
 
-- (BOOL)relinquishCrownAssertionForToken:(id)a3
+- (BOOL)relinquishCrownAssertionForToken:(id)token
 {
   v3 = sub_22DCB5B3C();
   v4 = *(v3 - 8);

@@ -1,10 +1,10 @@
 @interface VCStatsRecorder
 - ($2A5123FA66906022607F2B5D76B2AC99)getMostRecentLocalStats;
 - (VCStatsRecorder)init;
-- (int)serverStatsSizeInByteForUplink:(BOOL)a3 connection:(id)a4;
+- (int)serverStatsSizeInByteForUplink:(BOOL)uplink connection:(id)connection;
 - (void)dealloc;
-- (void)getLocalStats:(unsigned __int16)a3 localSessionStats:(id *)a4;
-- (void)updateSessionStats:(unsigned __int16)a3 connection:(id)a4 totalPacketSent:(unsigned int)a5 totalPacketReceived:(unsigned int)a6;
+- (void)getLocalStats:(unsigned __int16)stats localSessionStats:(id *)sessionStats;
+- (void)updateSessionStats:(unsigned __int16)stats connection:(id)connection totalPacketSent:(unsigned int)sent totalPacketReceived:(unsigned int)received;
 @end
 
 @implementation VCStatsRecorder
@@ -34,23 +34,23 @@
   [(VCStatsRecorder *)&v3 dealloc];
 }
 
-- (void)updateSessionStats:(unsigned __int16)a3 connection:(id)a4 totalPacketSent:(unsigned int)a5 totalPacketReceived:(unsigned int)a6
+- (void)updateSessionStats:(unsigned __int16)stats connection:(id)connection totalPacketSent:(unsigned int)sent totalPacketReceived:(unsigned int)received
 {
-  if (a4)
+  if (connection)
   {
-    v7 = *&a5;
-    v9 = a3;
+    v7 = *&sent;
+    statsCopy = stats;
     pthread_rwlock_wrlock(&self->_stateRWLock);
     v11 = micro();
-    v12 = VCConnectionIDS_LinkID(a4);
-    v13 = self->_uplinkServerStatsByteUsed + [(VCStatsRecorder *)self serverStatsSizeInByteForUplink:1 connection:a4];
+    v12 = VCConnectionIDS_LinkID(connection);
+    v13 = self->_uplinkServerStatsByteUsed + [(VCStatsRecorder *)self serverStatsSizeInByteForUplink:1 connection:connection];
     self->_uplinkServerStatsByteUsed = v13;
-    v14 = (self + 24 * (v9 & 0x7F));
+    v14 = (self + 24 * (statsCopy & 0x7F));
     v14[26] = v11;
-    *(v14 + 27) = (v9 << 16) | (v7 << 32) | v12;
-    *(v14 + 56) = a6;
+    *(v14 + 27) = (statsCopy << 16) | (v7 << 32) | v12;
+    *(v14 + 56) = received;
     *(v14 + 57) = v13;
-    self->_currentLocalStatsIndex = v9 & 0x7F;
+    self->_currentLocalStatsIndex = statsCopy & 0x7F;
 
     pthread_rwlock_unlock(&self->_stateRWLock);
   }
@@ -65,17 +65,17 @@
   }
 }
 
-- (void)getLocalStats:(unsigned __int16)a3 localSessionStats:(id *)a4
+- (void)getLocalStats:(unsigned __int16)stats localSessionStats:(id *)sessionStats
 {
-  if (a4)
+  if (sessionStats)
   {
-    v5 = a3;
+    statsCopy = stats;
     pthread_rwlock_rdlock(&self->_stateRWLock);
-    v7 = self + 24 * v5;
-    a4->var1 = v7[216];
-    a4->var0 = *(v7 + 26);
-    a4->var3 = *(v7 + 55);
-    a4->var5 = *(v7 + 57);
+    v7 = self + 24 * statsCopy;
+    sessionStats->var1 = v7[216];
+    sessionStats->var0 = *(v7 + 26);
+    sessionStats->var3 = *(v7 + 55);
+    sessionStats->var5 = *(v7 + 57);
 
     pthread_rwlock_unlock(&self->_stateRWLock);
   }
@@ -104,13 +104,13 @@
   return pthread_rwlock_unlock(&self->_stateRWLock);
 }
 
-- (int)serverStatsSizeInByteForUplink:(BOOL)a3 connection:(id)a4
+- (int)serverStatsSizeInByteForUplink:(BOOL)uplink connection:(id)connection
 {
-  if (a4)
+  if (connection)
   {
-    v4 = a3;
-    v5 = VCConnectionIDS_NetworkOverheadInBytes(a4, 0, 0);
-    if (v4)
+    uplinkCopy = uplink;
+    v5 = VCConnectionIDS_NetworkOverheadInBytes(connection, 0, 0);
+    if (uplinkCopy)
     {
       v6 = -18;
     }

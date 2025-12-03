@@ -1,23 +1,23 @@
 @interface MNAudioPathwayResourceAccess
 - (BOOL)_otherAudioIsPlaying;
-- (BOOL)_routeIsAirTunes:(id)a3;
-- (BOOL)_routeIsBluetooth:(id)a3;
-- (BOOL)_routeIsForVehicle:(id)a3;
-- (BOOL)_routeIsHFP:(id)a3;
-- (BOOL)_routeIsOverride:(id)a3;
-- (BOOL)_routeIsUsable:(id)a3;
-- (BOOL)_routeIsWireless:(id)a3;
-- (MNAudioPathwayResourceAccess)initWithHFPEnabled:(BOOL)a3;
-- (id)_pickableRoutesDescription:(id)a3;
+- (BOOL)_routeIsAirTunes:(id)tunes;
+- (BOOL)_routeIsBluetooth:(id)bluetooth;
+- (BOOL)_routeIsForVehicle:(id)vehicle;
+- (BOOL)_routeIsHFP:(id)p;
+- (BOOL)_routeIsOverride:(id)override;
+- (BOOL)_routeIsUsable:(id)usable;
+- (BOOL)_routeIsWireless:(id)wireless;
+- (MNAudioPathwayResourceAccess)initWithHFPEnabled:(BOOL)enabled;
+- (id)_pickableRoutesDescription:(id)description;
 - (id)_usableHFPRoute;
 - (void)_mediaServerConnectionDied;
 - (void)_registerForObservation;
-- (void)_setHfpRoute:(id)a3;
+- (void)_setHfpRoute:(id)route;
 - (void)_unregisterForObservation;
 - (void)_updateHFPRoute;
 - (void)dealloc;
-- (void)setEnableHFPUse:(BOOL)a3;
-- (void)setWantsVolumeControl:(BOOL)a3;
+- (void)setEnableHFPUse:(BOOL)use;
+- (void)setWantsVolumeControl:(BOOL)control;
 @end
 
 @implementation MNAudioPathwayResourceAccess
@@ -49,19 +49,19 @@ void __47__MNAudioPathwayResourceAccess__updateHFPRoute__block_invoke(uint64_t a
   dispatch_async(pickableRoutesQueue, block);
 }
 
-- (id)_pickableRoutesDescription:(id)a3
+- (id)_pickableRoutesDescription:(id)description
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count") + 1}];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found %d pickable audio routes:", objc_msgSend(v3, "count")];
+  descriptionCopy = description;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(descriptionCopy, "count") + 1}];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found %d pickable audio routes:", objc_msgSend(descriptionCopy, "count")];
   [v4 addObject:v5];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v3;
+  v6 = descriptionCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -93,49 +93,49 @@ void __47__MNAudioPathwayResourceAccess__updateHFPRoute__block_invoke(uint64_t a
   return v12;
 }
 
-- (BOOL)_routeIsWireless:(id)a3
+- (BOOL)_routeIsWireless:(id)wireless
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E69AEC98]];
+  v3 = [wireless objectForKey:*MEMORY[0x1E69AEC98]];
   v4 = [v3 isEqualToString:*MEMORY[0x1E69AEAD0]];
 
   return v4;
 }
 
-- (BOOL)_routeIsBluetooth:(id)a3
+- (BOOL)_routeIsBluetooth:(id)bluetooth
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E69AEC28]];
-  v4 = [v3 BOOLValue];
+  v3 = [bluetooth objectForKey:*MEMORY[0x1E69AEC28]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)_routeIsForVehicle:(id)a3
+- (BOOL)_routeIsForVehicle:(id)vehicle
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E69AEBA8]];
+  v3 = [vehicle objectForKey:*MEMORY[0x1E69AEBA8]];
   v4 = [v3 isEqualToString:*MEMORY[0x1E69AEBD8]];
 
   return v4;
 }
 
-- (BOOL)_routeIsHFP:(id)a3
+- (BOOL)_routeIsHFP:(id)p
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E69AEBF8]];
-  v4 = [v3 BOOLValue];
+  v3 = [p objectForKey:*MEMORY[0x1E69AEBF8]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)_routeIsOverride:(id)a3
+- (BOOL)_routeIsOverride:(id)override
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E69AEC98]];
+  v3 = [override objectForKey:*MEMORY[0x1E69AEC98]];
   v4 = [v3 isEqualToString:*MEMORY[0x1E69AEAC8]];
 
   return v4;
 }
 
-- (BOOL)_routeIsAirTunes:(id)a3
+- (BOOL)_routeIsAirTunes:(id)tunes
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E69AEB90]];
+  v3 = [tunes objectForKey:*MEMORY[0x1E69AEB90]];
   v4 = [v3 isEqualToString:@"AirTunes"];
 
   return v4;
@@ -143,17 +143,17 @@ void __47__MNAudioPathwayResourceAccess__updateHFPRoute__block_invoke(uint64_t a
 
 - (BOOL)_otherAudioIsPlaying
 {
-  v2 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  v3 = [v2 attributeForKey:*MEMORY[0x1E69AEAA8]];
-  v4 = [v3 BOOLValue];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  v3 = [mEMORY[0x1E69AED10] attributeForKey:*MEMORY[0x1E69AEAA8]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)_routeIsUsable:(id)a3
+- (BOOL)_routeIsUsable:(id)usable
 {
-  v4 = a3;
-  v5 = [v4 count] && !-[MNAudioPathwayResourceAccess _otherAudioIsPlaying](self, "_otherAudioIsPlaying") && !-[MNAudioPathwayResourceAccess _routeIsAirTunes:](self, "_routeIsAirTunes:", v4) && !-[MNAudioPathwayResourceAccess _routeIsOverride:](self, "_routeIsOverride:", v4) && -[MNAudioPathwayResourceAccess _routeIsHFP:](self, "_routeIsHFP:", v4) && -[MNAudioPathwayResourceAccess _routeIsForVehicle:](self, "_routeIsForVehicle:", v4) && -[MNAudioPathwayResourceAccess _routeIsBluetooth:](self, "_routeIsBluetooth:", v4) && -[MNAudioPathwayResourceAccess _routeIsWireless:](self, "_routeIsWireless:", v4);
+  usableCopy = usable;
+  v5 = [usableCopy count] && !-[MNAudioPathwayResourceAccess _otherAudioIsPlaying](self, "_otherAudioIsPlaying") && !-[MNAudioPathwayResourceAccess _routeIsAirTunes:](self, "_routeIsAirTunes:", usableCopy) && !-[MNAudioPathwayResourceAccess _routeIsOverride:](self, "_routeIsOverride:", usableCopy) && -[MNAudioPathwayResourceAccess _routeIsHFP:](self, "_routeIsHFP:", usableCopy) && -[MNAudioPathwayResourceAccess _routeIsForVehicle:](self, "_routeIsForVehicle:", usableCopy) && -[MNAudioPathwayResourceAccess _routeIsBluetooth:](self, "_routeIsBluetooth:", usableCopy) && -[MNAudioPathwayResourceAccess _routeIsWireless:](self, "_routeIsWireless:", usableCopy);
 
   return v5;
 }
@@ -164,8 +164,8 @@ void __47__MNAudioPathwayResourceAccess__updateHFPRoute__block_invoke(uint64_t a
   dispatch_assert_queue_V2(self->_pickableRoutesQueue);
   if (self->_enableHFPUse)
   {
-    v3 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-    v4 = [v3 pickableRoutesForCategory:@"MediaPlayback" andMode:@"VoicePrompt"];
+    mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    v4 = [mEMORY[0x1E69AED10] pickableRoutesForCategory:@"MediaPlayback" andMode:@"VoicePrompt"];
 
     v5 = [v4 count];
     forLoggingOnly_pickableRoutesCount = self->_forLoggingOnly_pickableRoutesCount;
@@ -255,15 +255,15 @@ LABEL_18:
   return v15;
 }
 
-- (void)_setHfpRoute:(id)a3
+- (void)_setHfpRoute:(id)route
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  routeCopy = route;
   dispatch_assert_queue_V2(self->_pickableRoutesQueue);
   hfpRoute = self->_hfpRoute;
   p_hfpRoute = &self->_hfpRoute;
   v8 = hfpRoute;
-  v9 = v5;
+  v9 = routeCopy;
   if (v9 | v8)
   {
     v10 = [v8 isEqual:v9];
@@ -275,8 +275,8 @@ LABEL_18:
         goto LABEL_11;
       }
 
-      v11 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-      v12 = [v11 setBTHFPRoute:*p_hfpRoute availableForVoicePrompts:0];
+      mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+      v12 = [mEMORY[0x1E69AED10] setBTHFPRoute:*p_hfpRoute availableForVoicePrompts:0];
 
       v13 = GetAudioLogForMNAudioPathwayResourceAccessCategory();
       v14 = v13;
@@ -310,12 +310,12 @@ LABEL_11:
       if (!v9)
       {
 LABEL_19:
-        objc_storeStrong(p_hfpRoute, a3);
+        objc_storeStrong(p_hfpRoute, route);
         goto LABEL_20;
       }
 
-      v20 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-      v21 = [v20 setBTHFPRoute:v9 availableForVoicePrompts:1];
+      mEMORY[0x1E69AED10]2 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+      v21 = [mEMORY[0x1E69AED10]2 setBTHFPRoute:v9 availableForVoicePrompts:1];
 
       v22 = GetAudioLogForMNAudioPathwayResourceAccessCategory();
       v23 = v22;
@@ -379,16 +379,16 @@ void __58__MNAudioPathwayResourceAccess__mediaServerConnectionDied__block_invoke
   *(v1 + 16) = 0;
 }
 
-- (void)setWantsVolumeControl:(BOOL)a3
+- (void)setWantsVolumeControl:(BOOL)control
 {
   v27 = *MEMORY[0x1E69E9840];
-  self->_wantsVolumeControl = a3;
-  v4 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  self->_wantsVolumeControl = control;
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_wantsVolumeControl];
   v6 = MEMORY[0x1E69AE9F0];
   v7 = *MEMORY[0x1E69AE9F0];
   v20 = 0;
-  [v4 setAttribute:v5 forKey:v7 error:&v20];
+  [mEMORY[0x1E69AED10] setAttribute:v5 forKey:v7 error:&v20];
   v8 = v20;
 
   v9 = GetAudioLogForMNAudioPathwayResourceAccessCategory();
@@ -446,15 +446,15 @@ LABEL_11:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setEnableHFPUse:(BOOL)a3
+- (void)setEnableHFPUse:(BOOL)use
 {
-  v3 = a3;
+  useCopy = use;
   v13 = *MEMORY[0x1E69E9840];
   v5 = GetAudioLogForMNAudioPathwayResourceAccessCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (useCopy)
     {
       v6 = @"YES";
     }
@@ -470,7 +470,7 @@ LABEL_11:
   v9[2] = __48__MNAudioPathwayResourceAccess_setEnableHFPUse___block_invoke;
   v9[3] = &unk_1E8430928;
   v9[4] = self;
-  v10 = v3;
+  v10 = useCopy;
   dispatch_async(pickableRoutesQueue, v9);
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -497,11 +497,11 @@ uint64_t __48__MNAudioPathwayResourceAccess_setEnableHFPUse___block_invoke(uint6
     _os_log_impl(&dword_1D311E000, v3, OS_LOG_TYPE_DEBUG, "Unregistering from observation", v6, 2u);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v5 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  [v5 setAttribute:0 forKey:*MEMORY[0x1E69AECD8] error:0];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  [mEMORY[0x1E69AED10] setAttribute:0 forKey:*MEMORY[0x1E69AECD8] error:0];
 }
 
 - (void)_registerForObservation
@@ -514,14 +514,14 @@ uint64_t __48__MNAudioPathwayResourceAccess_setEnableHFPUse___block_invoke(uint6
     _os_log_impl(&dword_1D311E000, v3, OS_LOG_TYPE_DEBUG, "Registering for observation", buf, 2u);
   }
 
-  v4 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
   v5 = MEMORY[0x1E69AEAF0];
   v27[0] = *MEMORY[0x1E69AEAF0];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
   v7 = MEMORY[0x1E69AECD8];
   v8 = *MEMORY[0x1E69AECD8];
   v20 = 0;
-  [v4 setAttribute:v6 forKey:v8 error:&v20];
+  [mEMORY[0x1E69AED10] setAttribute:v6 forKey:v8 error:&v20];
   v9 = v20;
   v10 = GetAudioLogForMNAudioPathwayResourceAccessCategory();
   v11 = v10;
@@ -559,9 +559,9 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v18 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v18 addObserver:self selector:sel__mediaServerConnectionDied name:*MEMORY[0x1E69AECB8] object:v4];
-  [v18 addObserver:self selector:sel__pickableRoutesChanged name:*v5 object:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__mediaServerConnectionDied name:*MEMORY[0x1E69AECB8] object:mEMORY[0x1E69AED10]];
+  [defaultCenter addObserver:self selector:sel__pickableRoutesChanged name:*v5 object:mEMORY[0x1E69AED10]];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -572,8 +572,8 @@ LABEL_8:
   [(MNAudioPathwayResourceAccess *)self setWantsVolumeControl:0];
   if (self->_hfpRoute)
   {
-    v3 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-    [v3 setBTHFPRoute:0 availableForVoicePrompts:0];
+    mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    [mEMORY[0x1E69AED10] setBTHFPRoute:0 availableForVoicePrompts:0];
   }
 
   v4.receiver = self;
@@ -581,9 +581,9 @@ LABEL_8:
   [(MNAudioPathwayResourceAccess *)&v4 dealloc];
 }
 
-- (MNAudioPathwayResourceAccess)initWithHFPEnabled:(BOOL)a3
+- (MNAudioPathwayResourceAccess)initWithHFPEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v24 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = MNAudioPathwayResourceAccess;
@@ -596,7 +596,7 @@ LABEL_8:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = @"NO";
-      if (v3)
+      if (enabledCopy)
       {
         v7 = @"YES";
       }
@@ -617,7 +617,7 @@ LABEL_8:
     v18 = &unk_1E8430928;
     v11 = v5;
     v19 = v11;
-    v20 = v3;
+    v20 = enabledCopy;
     dispatch_async(v10, &v15);
     [(MNAudioPathwayResourceAccess *)v11 _registerForObservation:v15];
     v12 = v11;

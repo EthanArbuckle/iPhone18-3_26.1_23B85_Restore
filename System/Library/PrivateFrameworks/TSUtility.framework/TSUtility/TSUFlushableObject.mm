@@ -1,5 +1,5 @@
 @interface TSUFlushableObject
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 - (TSUFlushableObject)init;
 - (id)ownerAutoreleasedAccess;
 - (void)dealloc;
@@ -11,11 +11,11 @@
 
 @implementation TSUFlushableObject
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___TSUFlushableObject;
-  result = objc_msgSendSuper2(&v4, sel_allocWithZone_, a3);
+  result = objc_msgSendSuper2(&v4, sel_allocWithZone_, zone);
   if (result)
   {
     *(result + 2) = 1;
@@ -84,7 +84,7 @@
     [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUFlushableObject.m"), 92, @"Bad retain count"}];
   }
 
-  v5 = self;
+  selfCopy = self;
   [(NSLocking *)self->_flushingManagerIvarLock lock];
   flushingManager = self->_flushingManager;
   if (flushingManager)
@@ -105,7 +105,7 @@
     [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUFlushableObject.m"), 112, @"Bad retain count"}];
   }
 
-  v5 = self;
+  selfCopy = self;
   [(NSLocking *)self->_flushingManagerIvarLock lock];
   flushingManager = self->_flushingManager;
   if (flushingManager)
@@ -133,9 +133,9 @@
     objc_sync_enter(self);
     if (v4 == self->_ownerCount)
     {
-      v5 = [(TSUFlushableObject *)self hasFlushableContent];
+      hasFlushableContent = [(TSUFlushableObject *)self hasFlushableContent];
       objc_sync_exit(self);
-      if (v5)
+      if (hasFlushableContent)
       {
         [(NSLocking *)self->_flushingManagerIvarLock lock];
         flushingManager = self->_flushingManager;

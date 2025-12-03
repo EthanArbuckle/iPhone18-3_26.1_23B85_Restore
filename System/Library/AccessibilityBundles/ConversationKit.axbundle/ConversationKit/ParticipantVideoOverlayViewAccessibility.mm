@@ -8,18 +8,18 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(ParticipantVideoOverlayViewAccessibility *)self _accessibilityMonogramView];
-  if (([v3 isHidden] & 1) == 0)
+  _accessibilityMonogramView = [(ParticipantVideoOverlayViewAccessibility *)self _accessibilityMonogramView];
+  if (([_accessibilityMonogramView isHidden] & 1) == 0)
   {
-    v9 = [v3 accessibilityLabel];
+    accessibilityLabel = [_accessibilityMonogramView accessibilityLabel];
     goto LABEL_10;
   }
 
-  v4 = [(ParticipantVideoOverlayViewAccessibility *)self _accessibilityImageOverlayView];
-  v5 = [v4 image];
+  _accessibilityImageOverlayView = [(ParticipantVideoOverlayViewAccessibility *)self _accessibilityImageOverlayView];
+  image = [_accessibilityImageOverlayView image];
 
-  v6 = [v5 accessibilityIdentification];
-  v7 = [v6 containsString:@"paused"];
+  accessibilityIdentification = [image accessibilityIdentification];
+  v7 = [accessibilityIdentification containsString:@"paused"];
 
   if (v7)
   {
@@ -28,25 +28,25 @@
 
   else
   {
-    v10 = [v5 accessibilityIdentification];
-    v11 = [v10 containsString:@"bad-connection"];
+    accessibilityIdentification2 = [image accessibilityIdentification];
+    v11 = [accessibilityIdentification2 containsString:@"bad-connection"];
 
     if (!v11)
     {
       _AXAssert();
-      v9 = 0;
+      accessibilityLabel = 0;
       goto LABEL_9;
     }
 
     v8 = @"roster.bad.connection";
   }
 
-  v9 = accessibilityLocalizedString(v8);
+  accessibilityLabel = accessibilityLocalizedString(v8);
 LABEL_9:
 
 LABEL_10:
 
-  return v9;
+  return accessibilityLabel;
 }
 
 - (id)_accessibilityMonogramView
@@ -69,10 +69,10 @@ LABEL_10:
   v3 = [(ParticipantVideoOverlayViewAccessibility *)self _accessibilityDescendantOfType:objc_opt_class()];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 contentView];
-  v6 = [v5 subviews];
+  contentView = [v4 contentView];
+  subviews = [contentView subviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -82,7 +82,7 @@ LABEL_10:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -94,7 +94,7 @@ LABEL_10:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;

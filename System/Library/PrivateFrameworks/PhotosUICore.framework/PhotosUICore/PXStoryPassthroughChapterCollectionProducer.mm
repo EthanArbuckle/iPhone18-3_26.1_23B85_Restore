@@ -1,31 +1,31 @@
 @interface PXStoryPassthroughChapterCollectionProducer
-- (PXStoryPassthroughChapterCollectionProducer)initWithChapterCollectionManager:(id)a3;
-- (id)requestChapterCollectionForKeyAsset:(id)a3 curatedAssets:(id)a4 options:(unint64_t)a5 resultHandler:(id)a6;
+- (PXStoryPassthroughChapterCollectionProducer)initWithChapterCollectionManager:(id)manager;
+- (id)requestChapterCollectionForKeyAsset:(id)asset curatedAssets:(id)assets options:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryPassthroughChapterCollectionProducer
 
-- (id)requestChapterCollectionForKeyAsset:(id)a3 curatedAssets:(id)a4 options:(unint64_t)a5 resultHandler:(id)a6
+- (id)requestChapterCollectionForKeyAsset:(id)asset curatedAssets:(id)assets options:(unint64_t)options resultHandler:(id)handler
 {
-  v8 = a6;
+  handlerCopy = handler;
   v9 = [PXStoryProducerResult alloc];
-  v10 = [(PXStoryPassthroughChapterCollectionProducer *)self chapterCollectionManager];
-  v11 = [(PXStoryProducerResult *)v9 initWithObject:v10];
-  (*(a6 + 2))(v8, v11);
+  chapterCollectionManager = [(PXStoryPassthroughChapterCollectionProducer *)self chapterCollectionManager];
+  v11 = [(PXStoryProducerResult *)v9 initWithObject:chapterCollectionManager];
+  (*(handler + 2))(handlerCopy, v11);
 
   return 0;
 }
 
-- (PXStoryPassthroughChapterCollectionProducer)initWithChapterCollectionManager:(id)a3
+- (PXStoryPassthroughChapterCollectionProducer)initWithChapterCollectionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = PXStoryPassthroughChapterCollectionProducer;
   v6 = [(PXStoryPassthroughChapterCollectionProducer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_chapterCollectionManager, a3);
+    objc_storeStrong(&v6->_chapterCollectionManager, manager);
   }
 
   return v7;

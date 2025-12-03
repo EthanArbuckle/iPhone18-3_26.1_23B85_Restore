@@ -1,11 +1,11 @@
 @interface WarlockDebugView
-- (_TtC20NTKWarlockFaceBundle16WarlockDebugView)initWithCoder:(id)a3;
-- (_TtC20NTKWarlockFaceBundle16WarlockDebugView)initWithFrame:(CGRect)a3;
+- (_TtC20NTKWarlockFaceBundle16WarlockDebugView)initWithCoder:(id)coder;
+- (_TtC20NTKWarlockFaceBundle16WarlockDebugView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation WarlockDebugView
 
-- (_TtC20NTKWarlockFaceBundle16WarlockDebugView)initWithCoder:(id)a3
+- (_TtC20NTKWarlockFaceBundle16WarlockDebugView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20NTKWarlockFaceBundle16WarlockDebugView_radius) = 0x4024000000000000;
   v4 = OBJC_IVAR____TtC20NTKWarlockFaceBundle16WarlockDebugView_headShapeLayer;
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (_TtC20NTKWarlockFaceBundle16WarlockDebugView)initWithFrame:(CGRect)a3
+- (_TtC20NTKWarlockFaceBundle16WarlockDebugView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

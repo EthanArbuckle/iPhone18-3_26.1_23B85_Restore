@@ -1,20 +1,20 @@
 @interface MPSGraphDeviceDescriptor
 - (BOOL)hasANE;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualTo:(id)to;
 - (BOOL)supportsMXU;
-- (MPSGraphDeviceDescriptor)initWithMPSGraphDevice:(id)a3;
-- (MPSGraphDeviceDescriptor)initWithSerializedProperties:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initMetalDeviceWithGPUCoreCount:(int64_t)a3 architecture:(id)a4;
+- (MPSGraphDeviceDescriptor)initWithMPSGraphDevice:(id)device;
+- (MPSGraphDeviceDescriptor)initWithSerializedProperties:(id)properties;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initMetalDeviceWithGPUCoreCount:(int64_t)count architecture:(id)architecture;
 @end
 
 @implementation MPSGraphDeviceDescriptor
 
-- (MPSGraphDeviceDescriptor)initWithMPSGraphDevice:(id)a3
+- (MPSGraphDeviceDescriptor)initWithMPSGraphDevice:(id)device
 {
-  v4 = a3;
-  self->_type = [v4 type];
+  deviceCopy = device;
+  self->_type = [deviceCopy type];
   v5 = objc_opt_new();
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_type];
   [v5 addObject:v6];
@@ -22,19 +22,19 @@
   if (!self->_type)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [MEMORY[0x1E698CD58] aneSubType];
-    v9 = [MEMORY[0x1E698CD58] aneSubTypeVariant];
-    v10 = [MEMORY[0x1E698CD58] aneSubTypeProductVariant];
-    v11 = [v7 stringWithFormat:@"%@%@%@", v8, v9, v10];
+    aneSubType = [MEMORY[0x1E698CD58] aneSubType];
+    aneSubTypeVariant = [MEMORY[0x1E698CD58] aneSubTypeVariant];
+    aneSubTypeProductVariant = [MEMORY[0x1E698CD58] aneSubTypeProductVariant];
+    v11 = [v7 stringWithFormat:@"%@%@%@", aneSubType, aneSubTypeVariant, aneSubTypeProductVariant];
     architecture = self->_architecture;
     self->_architecture = v11;
 
-    v13 = [(NSString *)self->_architecture lowercaseString];
+    lowercaseString = [(NSString *)self->_architecture lowercaseString];
     v14 = self->_architecture;
-    self->_architecture = v13;
+    self->_architecture = lowercaseString;
 
     self->_gpuCoreCount = -1;
-    v15 = [v4 metalDevice];
+    metalDevice = [deviceCopy metalDevice];
     MPSDevice = MPSDevice::GetMPSDevice();
 
     self->_gpuCoreCount = *(MPSDevice + 1480);
@@ -49,33 +49,33 @@
   return v18;
 }
 
-- (id)initMetalDeviceWithGPUCoreCount:(int64_t)a3 architecture:(id)a4
+- (id)initMetalDeviceWithGPUCoreCount:(int64_t)count architecture:(id)architecture
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  architectureCopy = architecture;
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:0];
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{a3, v7}];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{count, v7}];
   v12[1] = v8;
-  v12[2] = v6;
+  v12[2] = architectureCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:3];
 
   v10 = [(MPSGraphDeviceDescriptor *)self initWithSerializedProperties:v9];
   return v10;
 }
 
-- (MPSGraphDeviceDescriptor)initWithSerializedProperties:(id)a3
+- (MPSGraphDeviceDescriptor)initWithSerializedProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v18.receiver = self;
   v18.super_class = MPSGraphDeviceDescriptor;
   v5 = [(MPSGraphDeviceDescriptor *)&v18 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [propertiesCopy copy];
     serializedProperties = v5->_serializedProperties;
     v5->_serializedProperties = v6;
 
-    v8 = [v4 objectAtIndexedSubscript:0];
+    v8 = [propertiesCopy objectAtIndexedSubscript:0];
     v5->_preComputedHash = [v8 unsignedIntValue];
 
     v9 = [(NSArray *)v5->_serializedProperties objectAtIndexedSubscript:0];
@@ -84,16 +84,16 @@
     if (!v5->_type)
     {
       v10 = [(NSArray *)v5->_serializedProperties objectAtIndexedSubscript:2];
-      v11 = [v10 lowercaseString];
-      v5->_preComputedHash ^= [v11 hash];
+      lowercaseString = [v10 lowercaseString];
+      v5->_preComputedHash ^= [lowercaseString hash];
 
       v12 = [(NSArray *)v5->_serializedProperties objectAtIndexedSubscript:1];
       v5->_gpuCoreCount = [v12 longLongValue];
 
       v13 = [(NSArray *)v5->_serializedProperties objectAtIndexedSubscript:2];
-      v14 = [v13 lowercaseString];
+      lowercaseString2 = [v13 lowercaseString];
       architecture = v5->_architecture;
-      v5->_architecture = v14;
+      v5->_architecture = lowercaseString2;
     }
 
     v16 = v5;
@@ -104,8 +104,8 @@
 
 - (BOOL)hasANE
 {
-  v2 = [(MPSGraphDeviceDescriptor *)self architecture];
-  v3 = v2 != 0;
+  architecture = [(MPSGraphDeviceDescriptor *)self architecture];
+  v3 = architecture != 0;
 
   return v3;
 }
@@ -149,14 +149,14 @@
 
     if ([(NSString *)architecture length]!= v5)
     {
-      v11 = [v4 integerValue];
-      if (v11 > 17)
+      integerValue = [v4 integerValue];
+      if (integerValue > 17)
       {
         v10 = 1;
         goto LABEL_20;
       }
 
-      if (v11 == 17)
+      if (integerValue == 17)
       {
         v10 = [(NSString *)self->_architecture characterAtIndex:v5]!= 112;
         goto LABEL_20;
@@ -174,12 +174,12 @@ LABEL_20:
   return v2;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
-  v4 = a3;
-  if (v4)
+  toCopy = to;
+  if (toCopy)
   {
-    v5 = [(MPSGraphDeviceDescriptor *)self isEqual:v4];
+    v5 = [(MPSGraphDeviceDescriptor *)self isEqual:toCopy];
 
     return v5;
   }
@@ -191,21 +191,21 @@ LABEL_20:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
 
     return 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     serializedProperties = self->_serializedProperties;
-    v7 = [(MPSGraphDeviceDescriptor *)v5 serializedProperties];
-    LOBYTE(serializedProperties) = [(NSArray *)serializedProperties isEqualToArray:v7];
+    serializedProperties = [(MPSGraphDeviceDescriptor *)v5 serializedProperties];
+    LOBYTE(serializedProperties) = [(NSArray *)serializedProperties isEqualToArray:serializedProperties];
 
     return serializedProperties;
   }
@@ -217,7 +217,7 @@ LABEL_20:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPSGraphDeviceDescriptor alloc];
   serializedProperties = self->_serializedProperties;

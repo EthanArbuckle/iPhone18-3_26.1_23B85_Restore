@@ -9,13 +9,13 @@
 - (id)crk_validateAndRemoveNonZeroLengthStringWithKey:()CRKEDUAdditions isRequired:outError:
 {
   v8 = a3;
-  v9 = [a1 objectForKey:v8];
+  v9 = [self objectForKey:v8];
   if (!v9)
   {
     goto LABEL_5;
   }
 
-  [a1 removeObjectForKey:v8];
+  [self removeObjectForKey:v8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -54,10 +54,10 @@ LABEL_12:
 - (id)crk_validateAndRemoveObjectOfClass:()CRKEDUAdditions withKey:isRequired:outError:
 {
   v9 = a4;
-  v10 = [a1 objectForKey:v9];
+  v10 = [self objectForKey:v9];
   if (v10)
   {
-    [a1 removeObjectForKey:v9];
+    [self removeObjectForKey:v9];
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -94,7 +94,7 @@ LABEL_11:
 {
   v28 = *MEMORY[0x277D85DE8];
   v11 = a4;
-  v12 = [a1 objectForKey:v11];
+  v12 = [self objectForKey:v11];
   if (!v12)
   {
     v19 = 0;
@@ -110,7 +110,7 @@ LABEL_20:
     goto LABEL_25;
   }
 
-  [a1 removeObjectForKey:v11];
+  [self removeObjectForKey:v11];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {

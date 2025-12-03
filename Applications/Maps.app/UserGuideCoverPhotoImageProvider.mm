@@ -1,6 +1,6 @@
 @interface UserGuideCoverPhotoImageProvider
 - (_TtC4Maps32UserGuideCoverPhotoImageProvider)init;
-- (void)collectionHandlerInfoUpdated:(id)a3;
+- (void)collectionHandlerInfoUpdated:(id)updated;
 - (void)dealloc;
 @end
 
@@ -10,9 +10,9 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps32UserGuideCoverPhotoImageProvider_collectionHandler);
-  v5 = self;
-  [v4 removeObserver:v5];
-  v6.receiver = v5;
+  selfCopy = self;
+  [v4 removeObserver:selfCopy];
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(UserGuideCoverPhotoImageProvider *)&v6 dealloc];
 }
@@ -24,11 +24,11 @@
   return result;
 }
 
-- (void)collectionHandlerInfoUpdated:(id)a3
+- (void)collectionHandlerInfoUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = self;
-  sub_100532DD8([v4 image]);
+  updatedCopy = updated;
+  selfCopy = self;
+  sub_100532DD8([updatedCopy image]);
 }
 
 @end

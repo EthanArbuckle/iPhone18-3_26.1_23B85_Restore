@@ -18,22 +18,22 @@
 
 - (BOOL)physicalDeviceSupportsMotion:()DeviceDelegate
 {
-  v1 = [a1 driver];
-  v2 = [v1 motion];
-  v3 = v2 != 0;
+  driver = [self driver];
+  motion = [driver motion];
+  v3 = motion != 0;
 
   return v3;
 }
 
 - (id)physicalDeviceGetHapticCapabilities:()DeviceDelegate
 {
-  v1 = [a1 driver];
-  v2 = [v1 rumble];
+  driver = [self driver];
+  rumble = [driver rumble];
 
-  if (v2)
+  if (rumble)
   {
-    v3 = [v2 actuators];
-    v4 = [v3 gc_arrayByTransformingElementsWithOptions:0 usingBlock:&__block_literal_global_45];
+    actuators = [rumble actuators];
+    v4 = [actuators gc_arrayByTransformingElementsWithOptions:0 usingBlock:&__block_literal_global_45];
   }
 
   else
@@ -47,32 +47,32 @@
 - (GCHapticCapabilityGraph)physicalDeviceGetHapticCapabilityGraph:()DeviceDelegate
 {
   v4 = a3;
-  v5 = [a1 physicalDeviceGetHapticCapabilities:v4];
+  v5 = [self physicalDeviceGetHapticCapabilities:v4];
   v6 = [GCHapticCapabilityGraph alloc];
-  v7 = [a1 driver];
-  v8 = [v7 rumble];
-  v9 = [v8 nodes];
-  v10 = [(GCHapticCapabilityGraph *)v6 initWithActuators:v5 nodes:v9];
+  driver = [self driver];
+  rumble = [driver rumble];
+  nodes = [rumble nodes];
+  v10 = [(GCHapticCapabilityGraph *)v6 initWithActuators:v5 nodes:nodes];
 
   return v10;
 }
 
 - (uint64_t)logicalDeviceControllerIsAttachedToHost:()DeviceDelegate
 {
-  v1 = [a1 isFormFitting];
-  v2 = [v1 BOOLValue];
+  isFormFitting = [self isFormFitting];
+  bOOLValue = [isFormFitting BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)logicalDevice:()DeviceDelegate getSystemButtonName:sfSymbolName:needsMFiCompatibility:
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = [a1 physicalInput];
-  v8 = v7;
-  if (v7)
+  physicalInput = [self physicalInput];
+  v8 = physicalInput;
+  if (physicalInput)
   {
-    [v7 elements];
+    [physicalInput elements];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -98,37 +98,37 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [v13 names];
-            v15 = [v14 firstObject];
-            v16 = [v13 localizedNameKey];
-            v17 = v16;
-            if (v16)
+            names = [v13 names];
+            firstObject = [names firstObject];
+            localizedNameKey = [v13 localizedNameKey];
+            v17 = localizedNameKey;
+            if (localizedNameKey)
             {
-              v18 = v16;
+              v18 = localizedNameKey;
             }
 
             else
             {
-              v18 = [objc_opt_class() defaultLocalizedNameForElement:v15];
+              v18 = [objc_opt_class() defaultLocalizedNameForElement:firstObject];
             }
 
             v19 = v18;
 
-            v20 = [v13 symbolName];
-            v21 = v20;
-            if (v20)
+            symbolName = [v13 symbolName];
+            v21 = symbolName;
+            if (symbolName)
             {
-              v22 = v20;
+              v22 = symbolName;
             }
 
             else
             {
-              v22 = [objc_opt_class() defaultSymbolNameForElement:v15];
+              v22 = [objc_opt_class() defaultSymbolNameForElement:firstObject];
             }
 
             v23 = v22;
 
-            if ([v15 isEqualToString:@"Button Home"])
+            if ([firstObject isEqualToString:@"Button Home"])
             {
               *v28 = [objc_alloc(MEMORY[0x1E69A06C8]) initWithKey:v19 sourceBundle:0];
               v25 = v23;
@@ -174,9 +174,9 @@ LABEL_21:
   v54 = *MEMORY[0x1E69E9840];
   v7 = a4;
   v8 = a5;
-  v9 = [a1 physicalInput];
-  v10 = v9;
-  if (!v9)
+  physicalInput = [self physicalInput];
+  v10 = physicalInput;
+  if (!physicalInput)
   {
     v35 = 0;
     goto LABEL_35;
@@ -184,14 +184,14 @@ LABEL_21:
 
   v43 = v8;
   v44 = v7;
-  v42 = v9;
-  v11 = [v9 elements];
+  v42 = physicalInput;
+  elements = [physicalInput elements];
   v46 = objc_opt_new();
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v11;
+  obj = elements;
   v48 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (!v48)
   {
@@ -210,35 +210,35 @@ LABEL_21:
       }
 
       v13 = *(*(&v49 + 1) + 8 * v12);
-      v14 = [v13 names];
-      v15 = [v14 firstObject];
-      v16 = [MEMORY[0x1E695DFD8] setWithArray:v14];
-      v17 = [v16 gc_setByRemovingObject:v15];
+      names = [v13 names];
+      firstObject = [names firstObject];
+      v16 = [MEMORY[0x1E695DFD8] setWithArray:names];
+      v17 = [v16 gc_setByRemovingObject:firstObject];
 
-      v18 = [v13 localizedNameKey];
-      v19 = v18;
-      if (v18)
+      localizedNameKey = [v13 localizedNameKey];
+      v19 = localizedNameKey;
+      if (localizedNameKey)
       {
-        v20 = v18;
+        v20 = localizedNameKey;
       }
 
       else
       {
-        v20 = [objc_opt_class() defaultLocalizedNameForElement:v15];
+        v20 = [objc_opt_class() defaultLocalizedNameForElement:firstObject];
       }
 
       v21 = v20;
 
-      v22 = [v13 symbolName];
-      v23 = v22;
-      if (v22)
+      symbolName = [v13 symbolName];
+      v23 = symbolName;
+      if (symbolName)
       {
-        v24 = v22;
+        v24 = symbolName;
       }
 
       else
       {
-        v24 = [objc_opt_class() defaultSymbolNameForElement:v15];
+        v24 = [objc_opt_class() defaultSymbolNameForElement:firstObject];
       }
 
       v25 = v24;
@@ -246,17 +246,17 @@ LABEL_21:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([v15 isEqualToString:@"Button Home"] & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"Button Options"))
+        if ([firstObject isEqualToString:@"Button Home"] & 1) != 0 || (objc_msgSend(firstObject, "isEqualToString:", @"Button Options"))
         {
           v26 = 49152;
         }
 
-        else if ([v15 isEqualToString:@"Button Menu"])
+        else if ([firstObject isEqualToString:@"Button Menu"])
         {
           v26 = 0x4000;
         }
 
-        else if ([v15 isEqualToString:@"Button Share"])
+        else if ([firstObject isEqualToString:@"Button Share"])
         {
           v26 = 0x4000;
         }
@@ -266,10 +266,10 @@ LABEL_21:
           v26 = 2;
         }
 
-        v27 = [v13 isAnalog];
-        v28 = [v27 BOOLValue];
+        isAnalog = [v13 isAnalog];
+        bOOLValue = [isAnalog BOOLValue];
 
-        v29 = -[GCDeviceButtonInputDescription initWithName:additionalAliases:attributes:nameLocalizationKey:symbolName:sourceAttributes:sourceExtendedEventField:]([GCDeviceButtonInputDescription alloc], "initWithName:additionalAliases:attributes:nameLocalizationKey:symbolName:sourceAttributes:sourceExtendedEventField:", v15, v17, v26, v21, v25, v28 ^ 1u, [v13 sourcePressedValueExtendedEventFieldIndex]);
+        v29 = -[GCDeviceButtonInputDescription initWithName:additionalAliases:attributes:nameLocalizationKey:symbolName:sourceAttributes:sourceExtendedEventField:]([GCDeviceButtonInputDescription alloc], "initWithName:additionalAliases:attributes:nameLocalizationKey:symbolName:sourceAttributes:sourceExtendedEventField:", firstObject, v17, v26, v21, v25, bOOLValue ^ 1u, [v13 sourcePressedValueExtendedEventFieldIndex]);
       }
 
       else
@@ -280,10 +280,10 @@ LABEL_21:
           goto LABEL_21;
         }
 
-        v30 = [v13 isAnalog];
-        v31 = [v30 BOOLValue];
+        isAnalog2 = [v13 isAnalog];
+        bOOLValue2 = [isAnalog2 BOOLValue];
 
-        v29 = -[GCDeviceDirectionPadDescription initWithName:additionalAliases:attributes:nameLocalizationKey:symbolName:sourceAttributes:sourceUpExtendedEventField:sourceDownExtendedEventField:sourceLeftExtendedEventField:sourceRightExtendedEventField:]([GCDeviceDirectionPadDescription alloc], "initWithName:additionalAliases:attributes:nameLocalizationKey:symbolName:sourceAttributes:sourceUpExtendedEventField:sourceDownExtendedEventField:sourceLeftExtendedEventField:sourceRightExtendedEventField:", v15, v17, 2, v21, v25, v31 ^ 1u, [v13 sourceUpExtendedEventFieldIndex], objc_msgSend(v13, "sourceDownExtendedEventFieldIndex"), objc_msgSend(v13, "sourceLeftExtendedEventFieldIndex"), objc_msgSend(v13, "sourceRightExtendedEventFieldIndex"));
+        v29 = -[GCDeviceDirectionPadDescription initWithName:additionalAliases:attributes:nameLocalizationKey:symbolName:sourceAttributes:sourceUpExtendedEventField:sourceDownExtendedEventField:sourceLeftExtendedEventField:sourceRightExtendedEventField:]([GCDeviceDirectionPadDescription alloc], "initWithName:additionalAliases:attributes:nameLocalizationKey:symbolName:sourceAttributes:sourceUpExtendedEventField:sourceDownExtendedEventField:sourceLeftExtendedEventField:sourceRightExtendedEventField:", firstObject, v17, 2, v21, v25, bOOLValue2 ^ 1u, [v13 sourceUpExtendedEventFieldIndex], objc_msgSend(v13, "sourceDownExtendedEventFieldIndex"), objc_msgSend(v13, "sourceLeftExtendedEventFieldIndex"), objc_msgSend(v13, "sourceRightExtendedEventFieldIndex"));
       }
 
       v32 = v29;
@@ -321,8 +321,8 @@ LABEL_29:
   v10 = v42;
   v37 = *v34;
   v38 = objc_alloc(objc_opt_class());
-  v39 = [v46 allObjects];
-  v35 = [v38 initWithIdentifier:v44 elements:v39 bindings:v43];
+  allObjects = [v46 allObjects];
+  v35 = [v38 initWithIdentifier:v44 elements:allObjects bindings:v43];
 
 LABEL_35:
   v40 = *MEMORY[0x1E69E9840];
@@ -335,19 +335,19 @@ LABEL_35:
   v60 = *MEMORY[0x1E69E9840];
   v7 = a4;
   v8 = a5;
-  v9 = [a1 physicalInput];
-  if (v9)
+  physicalInput = [self physicalInput];
+  if (physicalInput)
   {
     v50 = v8;
     v51 = v7;
-    v49 = v9;
-    v10 = [v9 elements];
+    v49 = physicalInput;
+    elements = [physicalInput elements];
     v54 = objc_opt_new();
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    obj = v10;
+    obj = elements;
     v11 = [obj countByEnumeratingWithState:&v55 objects:v59 count:16];
     if (!v11)
     {
@@ -375,25 +375,25 @@ LABEL_35:
         {
           v18 = v13;
           v19 = v16;
-          v20 = [v19 sourceTouchedValueExtendedEventFieldIndex];
+          sourceTouchedValueExtendedEventFieldIndex = [v19 sourceTouchedValueExtendedEventFieldIndex];
           v21 = objc_opt_new();
-          v22 = [v19 identifier];
-          [v21 setIdentifier:v22];
+          identifier = [v19 identifier];
+          [v21 setIdentifier:identifier];
 
           v23 = MEMORY[0x1E695DFD8];
-          v24 = [v19 names];
-          v25 = [v23 setWithArray:v24];
+          names = [v19 names];
+          v25 = [v23 setWithArray:names];
           [v21 setAliases:v25];
 
-          v26 = [v19 localizedNameKey];
-          [v21 setLocalizedName:v26];
+          localizedNameKey = [v19 localizedNameKey];
+          [v21 setLocalizedName:localizedNameKey];
 
-          v27 = [v19 symbolName];
-          if (v27)
+          symbolName = [v19 symbolName];
+          if (symbolName)
           {
             v28 = MEMORY[0x1E69A06C0];
-            v29 = [v19 symbolName];
-            v30 = [v28 symbolWithSFSymbolsName:v29];
+            symbolName2 = [v19 symbolName];
+            v30 = [v28 symbolWithSFSymbolsName:symbolName2];
             [v21 setSymbol:v30];
 
             v12 = v52;
@@ -404,14 +404,14 @@ LABEL_35:
             [v21 setSymbol:0];
           }
 
-          v41 = [v19 isAnalog];
-          [v21 setAnalog:{objc_msgSend(v41, "BOOLValue")}];
+          isAnalog = [v19 isAnalog];
+          [v21 setAnalog:{objc_msgSend(isAnalog, "BOOLValue")}];
 
           [v19 pressedThreshold];
           *&v42 = v42;
           [v21 setPressedThreshold:v42];
           [v21 setEventPressedValueField:{objc_msgSend(v19, "sourcePressedValueExtendedEventFieldIndex")}];
-          if ((v20 & 0x8000000000000000) == 0)
+          if ((sourceTouchedValueExtendedEventFieldIndex & 0x8000000000000000) == 0)
           {
             [v21 setSupportsTouch:1];
             [v19 touchedThreshold];
@@ -433,23 +433,23 @@ LABEL_35:
 
           v31 = v16;
           v21 = objc_opt_new();
-          v32 = [v31 identifier];
-          [v21 setIdentifier:v32];
+          identifier2 = [v31 identifier];
+          [v21 setIdentifier:identifier2];
 
           v33 = MEMORY[0x1E695DFD8];
-          v34 = [v31 names];
-          v35 = [v33 setWithArray:v34];
+          names2 = [v31 names];
+          v35 = [v33 setWithArray:names2];
           [v21 setAliases:v35];
 
-          v36 = [v31 localizedNameKey];
-          [v21 setLocalizedName:v36];
+          localizedNameKey2 = [v31 localizedNameKey];
+          [v21 setLocalizedName:localizedNameKey2];
 
-          v37 = [v31 symbolName];
-          if (v37)
+          symbolName3 = [v31 symbolName];
+          if (symbolName3)
           {
             v38 = MEMORY[0x1E69A06C0];
-            v39 = [v31 symbolName];
-            v40 = [v38 symbolWithSFSymbolsName:v39];
+            symbolName4 = [v31 symbolName];
+            v40 = [v38 symbolWithSFSymbolsName:symbolName4];
             [v21 setSymbol:v40];
 
             v12 = v52;
@@ -460,8 +460,8 @@ LABEL_35:
             [v21 setSymbol:0];
           }
 
-          v44 = [v31 isAnalog];
-          [v21 setAnalog:{objc_msgSend(v44, "BOOLValue")}];
+          isAnalog2 = [v31 isAnalog];
+          [v21 setAnalog:{objc_msgSend(isAnalog2, "BOOLValue")}];
 
           [v21 setEventUpValueField:{objc_msgSend(v31, "sourceUpExtendedEventFieldIndex")}];
           [v21 setEventRightValueField:{objc_msgSend(v31, "sourceRightExtendedEventFieldIndex")}];
@@ -487,7 +487,7 @@ LABEL_22:
         v7 = v51;
         v46 = [[_GCControllerInputComponentDescription alloc] initWithIdentifier:v51 controllerInputs:v45 bindings:v50];
 
-        v9 = v49;
+        physicalInput = v49;
         goto LABEL_24;
       }
     }
@@ -506,20 +506,20 @@ LABEL_24:
   v5 = a4;
   v6 = [[GCMotion alloc] initWithIdentifier:v5];
 
-  v7 = [a1 driver];
-  v8 = [v7 motion];
-  v9 = [v8 gyroXExpression];
-  if (v9)
+  driver = [self driver];
+  motion = [driver motion];
+  gyroXExpression = [motion gyroXExpression];
+  if (gyroXExpression)
   {
-    v10 = [a1 driver];
-    v11 = [v10 motion];
-    v12 = [v11 gyroYExpression];
-    if (v12)
+    driver2 = [self driver];
+    motion2 = [driver2 motion];
+    gyroYExpression = [motion2 gyroYExpression];
+    if (gyroYExpression)
     {
-      v13 = [a1 driver];
-      v14 = [v13 motion];
-      v15 = [v14 gyroZExpression];
-      [(GCMotion *)v6 _setHasRotationRate:v15 != 0];
+      driver3 = [self driver];
+      motion3 = [driver3 motion];
+      gyroZExpression = [motion3 gyroZExpression];
+      [(GCMotion *)v6 _setHasRotationRate:gyroZExpression != 0];
     }
 
     else
@@ -542,13 +542,13 @@ LABEL_24:
 {
   if (sel_logicalDeviceControllerIsAttachedToHost_ == a3)
   {
-    v4 = [a1 isFormFitting];
-    v3 = v4 != 0;
+    isFormFitting = [self isFormFitting];
+    v3 = isFormFitting != 0;
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &off_1F4EAE190;
     return objc_msgSendSuper2(&v6, sel_respondsToSelector_);
   }

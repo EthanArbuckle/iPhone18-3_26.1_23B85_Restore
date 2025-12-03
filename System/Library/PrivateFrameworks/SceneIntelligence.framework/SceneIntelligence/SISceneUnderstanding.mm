@@ -1,23 +1,23 @@
 @interface SISceneUnderstanding
 + (CGSize)inputResolution;
-- (BOOL)initMLNetworkWithComputeEngine:(int64_t)a3;
-- (SISceneUnderstanding)initWithComputeEngine:(int64_t)a3;
+- (BOOL)initMLNetworkWithComputeEngine:(int64_t)engine;
+- (SISceneUnderstanding)initWithComputeEngine:(int64_t)engine;
 - (_SITensorDim)labelTensorDimensions;
 - (_SITensorDim)normalTensorDimensions;
 - (_SITensorDim)probabilitiesTensorDimensions;
-- (int64_t)evaluateImage:(__CVBuffer *)a3 results:(id)a4;
+- (int64_t)evaluateImage:(__CVBuffer *)image results:(id)results;
 - (void)dealloc;
 @end
 
 @implementation SISceneUnderstanding
 
-- (SISceneUnderstanding)initWithComputeEngine:(int64_t)a3
+- (SISceneUnderstanding)initWithComputeEngine:(int64_t)engine
 {
   v8.receiver = self;
   v8.super_class = SISceneUnderstanding;
   v4 = [(SISceneUnderstanding *)&v8 init];
   v5 = v4;
-  if (v4 && [(SISceneUnderstanding *)v4 initMLNetworkWithComputeEngine:a3])
+  if (v4 && [(SISceneUnderstanding *)v4 initMLNetworkWithComputeEngine:engine])
   {
     v5->_parameters.input.resolution = kSISceneUnderstandingNetworkResolution;
     v5->_parameters.output = kSISceneUnderstandingNetworkResolution;
@@ -67,7 +67,7 @@
   return self;
 }
 
-- (BOOL)initMLNetworkWithComputeEngine:(int64_t)a3
+- (BOOL)initMLNetworkWithComputeEngine:(int64_t)engine
 {
   v60 = *MEMORY[0x277D85DE8];
   context = espresso_create_context();
@@ -89,13 +89,13 @@
     v9 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v16 = [0 UTF8String];
+      uTF8String = [0 UTF8String];
       *buf = 136381187;
       *&buf[4] = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
       *&buf[12] = 1025;
       *&buf[14] = 349;
       *&buf[18] = 2081;
-      *&buf[20] = v16;
+      *&buf[20] = uTF8String;
       _os_log_impl(&dword_21DE0D000, v9, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Could not load network %{private}s ***", buf, 0x1Cu);
     }
 
@@ -112,13 +112,13 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = v8;
-      v14 = [v8 UTF8String];
+      uTF8String2 = [v8 UTF8String];
       *buf = 136381187;
       *&buf[4] = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
       *&buf[12] = 1025;
       *&buf[14] = 358;
       *&buf[18] = 2081;
-      *&buf[20] = v14;
+      *&buf[20] = uTF8String2;
       _os_log_impl(&dword_21DE0D000, v12, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Could not add espresso network %{private}s ***", buf, 0x1Cu);
     }
 
@@ -132,13 +132,13 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v18 = v8;
-      v19 = [v8 UTF8String];
+      uTF8String3 = [v8 UTF8String];
       *buf = 136381187;
       *&buf[4] = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
       *&buf[12] = 1025;
       *&buf[14] = 364;
       *&buf[18] = 2081;
-      *&buf[20] = v19;
+      *&buf[20] = uTF8String3;
       _os_log_impl(&dword_21DE0D000, v12, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Could not build espresso plan %{private}s ***", buf, 0x1Cu);
     }
 
@@ -155,13 +155,13 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v22 = v8;
-      v23 = [v8 UTF8String];
+      uTF8String4 = [v8 UTF8String];
       *v53 = 136381187;
       v54 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
       v55 = 1025;
       v56 = 371;
       v57 = 2081;
-      v58 = v23;
+      v58 = uTF8String4;
       v24 = " %{private}s:%{private}d *** Failure to bind input tensor for scene understanding %{private}s ***";
 LABEL_45:
       _os_log_impl(&dword_21DE0D000, v12, OS_LOG_TYPE_ERROR, v24, v53, 0x1Cu);
@@ -179,13 +179,13 @@ LABEL_45:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v27 = v8;
-        v28 = [v8 UTF8String];
+        uTF8String5 = [v8 UTF8String];
         *v53 = 136381187;
         v54 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
         v55 = 1025;
         v56 = 377;
         v57 = 2081;
-        v58 = v28;
+        v58 = uTF8String5;
         v24 = " %{private}s:%{private}d *** Failure to determine output tensor shape for scene understanding %{private}s ***";
         goto LABEL_45;
       }
@@ -202,13 +202,13 @@ LABEL_45:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           v31 = v8;
-          v32 = [v8 UTF8String];
+          uTF8String6 = [v8 UTF8String];
           *v53 = 136381187;
           v54 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
           v55 = 1025;
           v56 = 383;
           v57 = 2081;
-          v58 = v32;
+          v58 = uTF8String6;
           v24 = " %{private}s:%{private}d *** Failure to determine output tensor shape for scene understanding %{private}s ***";
           goto LABEL_45;
         }
@@ -225,13 +225,13 @@ LABEL_45:
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
             v35 = v8;
-            v36 = [v8 UTF8String];
+            uTF8String7 = [v8 UTF8String];
             *v53 = 136381187;
             v54 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
             v55 = 1025;
             v56 = 389;
             v57 = 2081;
-            v58 = v36;
+            v58 = uTF8String7;
             v24 = " %{private}s:%{private}d *** Failure to determine output tensor shape for scene understanding %{private}s ***";
             goto LABEL_45;
           }
@@ -260,13 +260,13 @@ LABEL_45:
                   }
 
                   v47 = v8;
-                  v48 = [v8 UTF8String];
+                  uTF8String8 = [v8 UTF8String];
                   *v53 = 136381187;
                   v54 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
                   v55 = 1025;
                   v56 = 424;
                   v57 = 2081;
-                  v58 = v48;
+                  v58 = uTF8String8;
                   v24 = " %{private}s:%{private}d *** Input-Output channel [1] not expected size %{private}s ***";
                   goto LABEL_45;
                 }
@@ -275,13 +275,13 @@ LABEL_45:
                 if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
                 {
                   v45 = v8;
-                  v46 = [v8 UTF8String];
+                  uTF8String9 = [v8 UTF8String];
                   *v53 = 136381187;
                   v54 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
                   v55 = 1025;
                   v56 = 414;
                   v57 = 2081;
-                  v58 = v46;
+                  v58 = uTF8String9;
                   v24 = " %{private}s:%{private}d *** Input-Output channel [3] size mismatch %{private}s ***";
                   goto LABEL_45;
                 }
@@ -293,13 +293,13 @@ LABEL_45:
                 if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
                 {
                   v43 = v8;
-                  v44 = [v8 UTF8String];
+                  uTF8String10 = [v8 UTF8String];
                   *v53 = 136381187;
                   v54 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
                   v55 = 1025;
                   v56 = 409;
                   v57 = 2081;
-                  v58 = v44;
+                  v58 = uTF8String10;
                   v24 = " %{private}s:%{private}d *** Output channel [2] size mismatch %{private}s ***";
                   goto LABEL_45;
                 }
@@ -312,13 +312,13 @@ LABEL_45:
               if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
               {
                 v41 = v8;
-                v42 = [v8 UTF8String];
+                uTF8String11 = [v8 UTF8String];
                 *v53 = 136381187;
                 v54 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
                 v55 = 1025;
                 v56 = 404;
                 v57 = 2081;
-                v58 = v42;
+                v58 = uTF8String11;
                 v24 = " %{private}s:%{private}d *** Input channel [2] size mismatch %{private}s ***";
                 goto LABEL_45;
               }
@@ -331,13 +331,13 @@ LABEL_45:
             if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
             {
               v39 = v8;
-              v40 = [v8 UTF8String];
+              uTF8String12 = [v8 UTF8String];
               *v53 = 136381187;
               v54 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
               v55 = 1025;
               v56 = 399;
               v57 = 2081;
-              v58 = v40;
+              v58 = uTF8String12;
               v24 = " %{private}s:%{private}d *** Input-Output channel [1] size mismatch %{private}s ***";
               goto LABEL_45;
             }
@@ -350,13 +350,13 @@ LABEL_45:
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
             v37 = v8;
-            v38 = [v8 UTF8String];
+            uTF8String13 = [v8 UTF8String];
             *v53 = 136381187;
             v54 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Features/SceneUnderstanding/SISceneUnderstanding.mm";
             v55 = 1025;
             v56 = 394;
             v57 = 2081;
-            v58 = v38;
+            v58 = uTF8String13;
             v24 = " %{private}s:%{private}d *** Input-Output channel [0] size mismatch %{private}s ***";
             goto LABEL_45;
           }
@@ -381,12 +381,12 @@ LABEL_50:
   return v15;
 }
 
-- (int64_t)evaluateImage:(__CVBuffer *)a3 results:(id)a4
+- (int64_t)evaluateImage:(__CVBuffer *)image results:(id)results
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  resultsCopy = results;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
   kdebug_trace();
   if (Width != 256 || Height != 192)
   {
@@ -403,7 +403,7 @@ LABEL_50:
     goto LABEL_10;
   }
 
-  if (CVPixelBufferGetPixelFormatType(a3) == 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) == 1111970369)
   {
     plan = self->_network.plan;
     v10 = *&self->_network.network_index;
@@ -430,7 +430,7 @@ LABEL_10:
     v14 = self->_network.plan;
     v15 = *&self->_network.network_index;
     [kSIMSceneUnderstandingOutputLabelsTensorName UTF8String];
-    [v6 labelsTensor];
+    [resultsCopy labelsTensor];
     if (espresso_network_bind_buffer())
     {
       v16 = __SceneIntelligenceLogSharedInstance();
@@ -452,7 +452,7 @@ LABEL_23:
     v18 = self->_network.plan;
     v19 = *&self->_network.network_index;
     [kSIMSceneUnderstandingOutputProbabilitiesTensorName UTF8String];
-    [v6 probabilitiesTensor];
+    [resultsCopy probabilitiesTensor];
     if (espresso_network_bind_buffer())
     {
       v16 = __SceneIntelligenceLogSharedInstance();
@@ -476,7 +476,7 @@ LABEL_24:
     v20 = self->_network.plan;
     v21 = *&self->_network.network_index;
     [kSIMSceneUnderstandingOutputNormalsTensorName UTF8String];
-    [v6 normalsTensor];
+    [resultsCopy normalsTensor];
     if (espresso_network_bind_buffer())
     {
       v16 = __SceneIntelligenceLogSharedInstance();

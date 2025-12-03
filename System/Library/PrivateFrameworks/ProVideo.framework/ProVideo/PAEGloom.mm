@@ -1,19 +1,19 @@
 @interface PAEGloom
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEGloom)initWithAPIManager:(id)a3;
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEGloom)initWithAPIManager:(id)manager;
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error;
 - (id)properties;
 @end
 
 @implementation PAEGloom
 
-- (PAEGloom)initWithAPIManager:(id)a3
+- (PAEGloom)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEGloom;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -38,12 +38,12 @@ uint64_t __22__PAEGloom_properties__block_invoke()
   return result;
 }
 
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error
 {
-  v7 = [(PAEFilterDefaultBase *)self getParamAPIWithError:a4];
+  v7 = [(PAEFilterDefaultBase *)self getParamAPIWithError:error];
   v16 = 0.0;
   v15 = 0;
-  if ([v7 getFloatValue:&v16 fromParm:1 atFxTime:a3.var1] & 1) != 0 || (objc_msgSend(v7, "getBoolValue:fromParm:atFxTime:", &v15, 4, a3.var1))
+  if ([v7 getFloatValue:&v16 fromParm:1 atFxTime:time.var1] & 1) != 0 || (objc_msgSend(v7, "getBoolValue:fromParm:atFxTime:", &v15, 4, time.var1))
   {
     if (v16 == 0.0)
     {
@@ -61,12 +61,12 @@ uint64_t __22__PAEGloom_properties__block_invoke()
     return [v9 dictionaryWithObjectsAndKeys:{v10, @"PixelTransformSupport", v11, @"SupportsStableAnimation", objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", v15), @"SupportsLargeRenderScale", 0}];
   }
 
-  else if (a4)
+  else if (error)
   {
     v13 = objc_opt_class();
     v14 = [(PAEFilterDefaultBase *)self getParamErrorFor:NSStringFromClass(v13)];
     result = 0;
-    *a4 = v14;
+    *error = v14;
   }
 
   else
@@ -95,7 +95,7 @@ uint64_t __22__PAEGloom_properties__block_invoke()
   return v3 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
@@ -115,34 +115,34 @@ uint64_t __22__PAEGloom_properties__block_invoke()
   }
 
   v12 = v10;
-  if ([a4 imageType] != 3)
+  if ([input imageType] != 3)
   {
     return 0;
   }
 
-  v13 = [v12 versionAtCreation];
+  versionAtCreation = [v12 versionAtCreation];
   v49 = 0x4000000000000000;
   v50 = 10.0;
-  [v9 getFloatValue:&v50 fromParm:1 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v50 fromParm:1 atFxTime:info->var0.var1];
   v14 = v50;
   if (v50 != 0.0)
   {
-    if (!v13)
+    if (!versionAtCreation)
     {
       v14 = pow(v50 / 100.0, 1.425) * 253.0;
       v50 = v14;
     }
 
     v48 = 0;
-    [v9 getBoolValue:&v48 fromParm:3 atFxTime:{a5->var0.var1, v14}];
-    [v9 getFloatValue:&v49 fromParm:2 atFxTime:a5->var0.var1];
+    [v9 getBoolValue:&v48 fromParm:3 atFxTime:{info->var0.var1, v14}];
+    [v9 getFloatValue:&v49 fromParm:2 atFxTime:info->var0.var1];
     v47 = 0;
-    [v9 getBoolValue:&v47 fromParm:4 atFxTime:a5->var0.var1];
+    [v9 getBoolValue:&v47 fromParm:4 atFxTime:info->var0.var1];
     v48 &= v47 ^ 1;
-    [(PAESharedDefaultBase *)self getScaleForImage:a4];
-    if (a4)
+    [(PAESharedDefaultBase *)self getScaleForImage:input];
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
       v44 = v45;
       if (v45 != 0.0)
       {
@@ -156,7 +156,7 @@ uint64_t __22__PAEGloom_properties__block_invoke()
       v45 = 0.0;
     }
 
-    [(PAESharedDefaultBase *)self smear:&v44 fromImage:a4 toImage:a4, v46];
+    [(PAESharedDefaultBase *)self smear:&v44 fromImage:input toImage:input, v46];
     v17 = v40[0].f64[0];
     if (*&v45 == *&v40[0].f64[0])
     {
@@ -211,8 +211,8 @@ uint64_t __22__PAEGloom_properties__block_invoke()
 
     else if (v47 == 1)
     {
-      [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a3];
-      [(PAESharedDefaultBase *)self getPixelTransformForImage:a3];
+      [(PAESharedDefaultBase *)self getInversePixelTransformForImage:output];
+      [(PAESharedDefaultBase *)self getPixelTransformForImage:output];
       v20 = HGObject::operator new(0x1C0uLL);
       HGNode::HGNode(v20);
       *v20 = &unk_2871D9F38;
@@ -223,9 +223,9 @@ uint64_t __22__PAEGloom_properties__block_invoke()
       *(v20 + 55) = 0;
       v21 = v50;
       v22 = v46;
-      v23 = [a4 width];
+      width = [input width];
       v24 = v40[0].f64[0];
-      v25 = [a4 height];
+      height = [input height];
       v26 = v21;
       v27 = *&v22;
       v28 = *(&v22 + 1);
@@ -233,7 +233,7 @@ uint64_t __22__PAEGloom_properties__block_invoke()
       v37 = vcvt_hight_f32_f64(vcvt_f32_f64(v41), v42);
       v36 = vcvt_hight_f32_f64(vcvt_f32_f64(v39[0]), v39[1]);
       v35 = vcvt_hight_f32_f64(vcvt_f32_f64(v39[2]), v39[3]);
-      HEquirectGaussianBlur::init(v20, vcvtpd_s64_f64(fabs(v24) * v23), vcvtpd_s64_f64(fabs(v41.f64[1]) * v25), &v38, &v37, &v36, &v35, v26, v27, v28);
+      HEquirectGaussianBlur::init(v20, vcvtpd_s64_f64(fabs(v24) * width), vcvtpd_s64_f64(fabs(v41.f64[1]) * height), &v38, &v37, &v36, &v35, v26, v27, v28);
       (*(*v20 + 120))(v20, 0, COERCE_FLOAT64_T(*&v45));
       (*(*v20 + 16))(v20);
       (*(*v20 + 24))(v20);
@@ -246,7 +246,7 @@ uint64_t __22__PAEGloom_properties__block_invoke()
       v30 = v50;
       v31 = v34.f64[0];
       v32 = v34.f64[1];
-      HGaussianBlur::init(v29, v30, v31, v32, v13 == 0, 0, 0);
+      HGaussianBlur::init(v29, v30, v31, v32, versionAtCreation == 0, 0, 0);
       (*(*v29 + 120))(v29, 0, COERCE_FLOAT64_T(*&v45));
       (*(*v29 + 16))(v29);
       (*(*v29 + 24))(v29);
@@ -256,9 +256,9 @@ uint64_t __22__PAEGloom_properties__block_invoke()
     HgcGloom::HgcGloom(v33);
   }
 
-  if (a4)
+  if (input)
   {
-    [a4 heliumRef];
+    [input heliumRef];
   }
 
   else
@@ -266,7 +266,7 @@ uint64_t __22__PAEGloom_properties__block_invoke()
     v40[0].f64[0] = 0.0;
   }
 
-  [a3 setHeliumRef:v40];
+  [output setHeliumRef:v40];
   if (*&v40[0].f64[0])
   {
     (*(**&v40[0].f64[0] + 24))(*&v40[0].f64[0]);
@@ -275,15 +275,15 @@ uint64_t __22__PAEGloom_properties__block_invoke()
   return 1;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

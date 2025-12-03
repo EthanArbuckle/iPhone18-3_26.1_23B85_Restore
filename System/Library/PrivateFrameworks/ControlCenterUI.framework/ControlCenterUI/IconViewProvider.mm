@@ -1,23 +1,23 @@
 @interface IconViewProvider
-- (id)dequeueReusableIconViewOfClass:(Class)a3;
-- (void)configureIconView:(id)a3 forIcon:(id)a4;
+- (id)dequeueReusableIconViewOfClass:(Class)class;
+- (void)configureIconView:(id)view forIcon:(id)icon;
 @end
 
 @implementation IconViewProvider
 
-- (id)dequeueReusableIconViewOfClass:(Class)a3
+- (id)dequeueReusableIconViewOfClass:(Class)class
 {
-  v3 = [*self->iconViewMap dequeueReusableViewOfClass_];
+  dequeueReusableViewOfClass_ = [*self->iconViewMap dequeueReusableViewOfClass_];
 
-  return v3;
+  return dequeueReusableViewOfClass_;
 }
 
-- (void)configureIconView:(id)a3 forIcon:(id)a4
+- (void)configureIconView:(id)view forIcon:(id)icon
 {
-  v5 = a3;
-  v6 = a4;
+  viewCopy = view;
+  iconCopy = icon;
 
-  sub_21EA5BE14(v5);
+  sub_21EA5BE14(viewCopy);
 }
 
 @end

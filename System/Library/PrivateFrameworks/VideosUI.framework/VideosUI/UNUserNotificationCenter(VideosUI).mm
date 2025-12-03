@@ -8,15 +8,15 @@
 {
   if (+[VUITVExtension isRunningInTVExtension])
   {
-    v2 = 0;
+    currentNotificationCenter = 0;
   }
 
   else
   {
-    v2 = [a1 currentNotificationCenter];
+    currentNotificationCenter = [self currentNotificationCenter];
   }
 
-  return v2;
+  return currentNotificationCenter;
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface PHANotificationController
-- (BOOL)shouldFireNotificationForMemoriesWithScores:(id)a3 withCreationReason:(unint64_t)a4;
-- (BOOL)userFeedbackScoreIsAcceptableForAssetCollection:(id)a3 memoryFeatures:(id)a4 userFeedbackCalculator:(id)a5;
+- (BOOL)shouldFireNotificationForMemoriesWithScores:(id)scores withCreationReason:(unint64_t)reason;
+- (BOOL)userFeedbackScoreIsAcceptableForAssetCollection:(id)collection memoryFeatures:(id)features userFeedbackCalculator:(id)calculator;
 - (BOOL)userIsActivelyUsingPhotos;
-- (PHANotificationController)initWithGraphManager:(id)a3;
-- (PHANotificationController)initWithGraphManager:(id)a3 userFeedbackCalculator:(id)a4;
-- (id)_userFeedbackCalculatorWithPhotoLibrary:(id)a3;
-- (void)fireNotificationForMemoryIdentifiers:(id)a3 withCreationReason:(unint64_t)a4;
-- (void)fireNotificationForSuggestionIdentifiers:(id)a3;
-- (void)postNotificationForMemory:(id)a3 withCreationReason:(unint64_t)a4 forceImmediateDelivery:(BOOL)a5;
-- (void)postNotificationForSuggestion:(id)a3 deliveryDate:(id)a4;
+- (PHANotificationController)initWithGraphManager:(id)manager;
+- (PHANotificationController)initWithGraphManager:(id)manager userFeedbackCalculator:(id)calculator;
+- (id)_userFeedbackCalculatorWithPhotoLibrary:(id)library;
+- (void)fireNotificationForMemoryIdentifiers:(id)identifiers withCreationReason:(unint64_t)reason;
+- (void)fireNotificationForSuggestionIdentifiers:(id)identifiers;
+- (void)postNotificationForMemory:(id)memory withCreationReason:(unint64_t)reason forceImmediateDelivery:(BOOL)delivery;
+- (void)postNotificationForSuggestion:(id)suggestion deliveryDate:(id)date;
 @end
 
 @implementation PHANotificationController
 
-- (BOOL)userFeedbackScoreIsAcceptableForAssetCollection:(id)a3 memoryFeatures:(id)a4 userFeedbackCalculator:(id)a5
+- (BOOL)userFeedbackScoreIsAcceptableForAssetCollection:(id)collection memoryFeatures:(id)features userFeedbackCalculator:(id)calculator
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v42 = a4;
-  v9 = a5;
-  v10 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  collectionCopy = collection;
+  featuresCopy = features;
+  calculatorCopy = calculator;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v53[0] = *MEMORY[0x277CD9AA8];
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:1];
-  [v10 setFetchPropertySets:v11];
+  [librarySpecificFetchOptions setFetchPropertySets:v11];
 
-  v40 = v10;
-  v41 = v8;
-  v12 = [MEMORY[0x277CD97A8] fetchKeyAssetsInAssetCollection:v8 options:v10];
+  v40 = librarySpecificFetchOptions;
+  v41 = collectionCopy;
+  v12 = [MEMORY[0x277CD97A8] fetchKeyAssetsInAssetCollection:collectionCopy options:librarySpecificFetchOptions];
   v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v12, "count")}];
   v47 = 0u;
   v48 = 0u;
@@ -47,8 +47,8 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v47 + 1) + 8 * i) uuid];
-        [v13 addObject:v19];
+        uuid = [*(*(&v47 + 1) + 8 * i) uuid];
+        [v13 addObject:uuid];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v47 objects:v52 count:16];
@@ -59,10 +59,10 @@
 
   v39 = v14;
 
-  v20 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v20 setIncludedDetectionTypes:&unk_2844CCB70];
-  v38 = v20;
-  v21 = [MEMORY[0x277CD9938] fetchPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v13 options:v20];
+  librarySpecificFetchOptions2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions2 setIncludedDetectionTypes:&unk_2844CCB70];
+  v38 = librarySpecificFetchOptions2;
+  v21 = [MEMORY[0x277CD9938] fetchPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v13 options:librarySpecificFetchOptions2];
   v22 = *MEMORY[0x277CD9CC8];
   v43 = 0u;
   v44 = 0u;
@@ -99,7 +99,7 @@
 
         v33 = v32;
 
-        [v9 scoreForKeyAssetUUID:v29 personsUUIDsInKeyAsset:v33 memoryFeatures:v42];
+        [calculatorCopy scoreForKeyAssetUUID:v29 personsUUIDsInKeyAsset:v33 memoryFeatures:featuresCopy];
         v35 = v34;
 
         if (v35 < v22)
@@ -118,23 +118,23 @@
   return v36;
 }
 
-- (void)postNotificationForSuggestion:(id)a3 deliveryDate:(id)a4
+- (void)postNotificationForSuggestion:(id)suggestion deliveryDate:(id)date
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v6 = +[PHALocalNotificationInterface localNotificationInterface];
   v7 = [[PHANotificationOptions alloc] initWithType:1];
   v8 = MEMORY[0x277CD99E0];
-  v9 = [v5 localIdentifier];
-  v10 = [v8 uuidFromLocalIdentifier:v9];
+  localIdentifier = [suggestionCopy localIdentifier];
+  v10 = [v8 uuidFromLocalIdentifier:localIdentifier];
 
   [(PHANotificationOptions *)v7 setCollectionUUID:v10];
-  v11 = [(PHANotificationController *)self bestDateForDeliveringNotification];
-  [(PHANotificationOptions *)v7 setDeliveryDate:v11];
+  bestDateForDeliveringNotification = [(PHANotificationController *)self bestDateForDeliveringNotification];
+  [(PHANotificationOptions *)v7 setDeliveryDate:bestDateForDeliveringNotification];
 
-  v12 = [MEMORY[0x277CD97A8] fetchKeyAssetsInAssetCollection:v5 options:0];
+  v12 = [MEMORY[0x277CD97A8] fetchKeyAssetsInAssetCollection:suggestionCopy options:0];
 
-  v13 = [v12 firstObject];
-  [(PHANotificationOptions *)v7 setKeyAsset:v13];
+  firstObject = [v12 firstObject];
+  [(PHANotificationOptions *)v7 setKeyAsset:firstObject];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -154,25 +154,25 @@ uint64_t __72__PHANotificationController_postNotificationForSuggestion_deliveryD
   return result;
 }
 
-- (void)fireNotificationForSuggestionIdentifiers:(id)a3
+- (void)fireNotificationForSuggestionIdentifiers:(id)identifiers
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     v5 = [(PHANotificationController *)self _userFeedbackCalculatorWithPhotoLibrary:self->_photoLibrary];
-    v6 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
     v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:0];
     v40[0] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-    [v6 setSortDescriptors:v8];
+    [librarySpecificFetchOptions setSortDescriptors:v8];
 
-    v28 = v4;
-    v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"localIdentifier in %@", v4];
-    [v6 setPredicate:v9];
+    v28 = identifiersCopy;
+    identifiersCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"localIdentifier in %@", identifiersCopy];
+    [librarySpecificFetchOptions setPredicate:identifiersCopy];
 
-    v27 = v6;
-    [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v6];
+    v27 = librarySpecificFetchOptions;
+    [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -207,9 +207,9 @@ LABEL_4:
         if (os_log_type_enabled(__PXLoggraph_workerOSLog, OS_LOG_TYPE_DEFAULT))
         {
           v18 = v17;
-          v19 = [v16 localIdentifier];
+          localIdentifier = [v16 localIdentifier];
           *buf = 138412290;
-          v38 = v19;
+          v38 = localIdentifier;
           _os_log_impl(&dword_22FA28000, v18, OS_LOG_TYPE_DEFAULT, "[Suggestions Notification] Skipping notification for suggestion %@: user feedback score is lower than acceptable.", buf, 0xCu);
         }
 
@@ -247,7 +247,7 @@ LABEL_4:
       {
         [(PHANotificationController *)self postNotificationForSuggestion:v22 deliveryDate:0];
         v24 = v27;
-        v4 = v28;
+        identifiersCopy = v28;
       }
 
       else
@@ -258,7 +258,7 @@ LABEL_4:
         }
 
         v24 = v27;
-        v4 = v28;
+        identifiersCopy = v28;
         v26 = __PXLoggraph_workerOSLog;
         if (os_log_type_enabled(__PXLoggraph_workerOSLog, OS_LOG_TYPE_ERROR))
         {
@@ -280,7 +280,7 @@ LABEL_18:
       }
 
       v24 = v27;
-      v4 = v28;
+      identifiersCopy = v28;
       v25 = __PXLoggraph_workerOSLog;
       if (os_log_type_enabled(__PXLoggraph_workerOSLog, OS_LOG_TYPE_DEFAULT))
       {
@@ -351,42 +351,42 @@ uint64_t __70__PHANotificationController_fireNotificationForSuggestionIdentifier
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)postNotificationForMemory:(id)a3 withCreationReason:(unint64_t)a4 forceImmediateDelivery:(BOOL)a5
+- (void)postNotificationForMemory:(id)memory withCreationReason:(unint64_t)reason forceImmediateDelivery:(BOOL)delivery
 {
-  v8 = a3;
+  memoryCopy = memory;
   v9 = +[PHALocalNotificationInterface localNotificationInterface];
   v10 = [[PHANotificationOptions alloc] initWithType:0];
   v11 = MEMORY[0x277CD98D8];
-  v12 = [v8 localIdentifier];
-  v13 = [v11 uuidFromLocalIdentifier:v12];
+  localIdentifier = [memoryCopy localIdentifier];
+  v13 = [v11 uuidFromLocalIdentifier:localIdentifier];
 
   [(PHANotificationOptions *)v10 setCollectionUUID:v13];
-  v14 = [MEMORY[0x277CBEAA8] date];
-  [(PHANotificationOptions *)v10 setDeliveryDate:v14];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(PHANotificationOptions *)v10 setDeliveryDate:date];
 
-  v15 = 0;
-  if (a4 == 1)
+  isMemoriesLivingOnFeedbackEnabled = 0;
+  if (reason == 1)
   {
-    v15 = [MEMORY[0x277D3BC38] isMemoriesLivingOnFeedbackEnabled];
+    isMemoriesLivingOnFeedbackEnabled = [MEMORY[0x277D3BC38] isMemoriesLivingOnFeedbackEnabled];
   }
 
-  if (a4 != 3 && (v15 & 1) == 0 && !a5)
+  if (reason != 3 && (isMemoriesLivingOnFeedbackEnabled & 1) == 0 && !delivery)
   {
-    v16 = [(PHANotificationController *)self bestDateForDeliveringNotification];
-    [(PHANotificationOptions *)v10 setDeliveryDate:v16];
+    bestDateForDeliveringNotification = [(PHANotificationController *)self bestDateForDeliveringNotification];
+    [(PHANotificationOptions *)v10 setDeliveryDate:bestDateForDeliveringNotification];
   }
 
-  v17 = [MEMORY[0x277CD97A8] fetchKeyCuratedAssetInAssetCollection:v8 referenceAsset:0];
-  v18 = [v17 firstObject];
-  [(PHANotificationOptions *)v10 setKeyAsset:v18];
+  v17 = [MEMORY[0x277CD97A8] fetchKeyCuratedAssetInAssetCollection:memoryCopy referenceAsset:0];
+  firstObject = [v17 firstObject];
+  [(PHANotificationOptions *)v10 setKeyAsset:firstObject];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __97__PHANotificationController_postNotificationForMemory_withCreationReason_forceImmediateDelivery___block_invoke;
   v20[3] = &unk_2788B2C30;
   v20[4] = self;
-  v21 = v8;
-  v19 = v8;
+  v21 = memoryCopy;
+  v19 = memoryCopy;
   [v9 fireLocalNotificationWithOptions:v10 completionHandler:v20];
 }
 
@@ -403,25 +403,25 @@ void __97__PHANotificationController_postNotificationForMemory_withCreationReaso
   }
 }
 
-- (void)fireNotificationForMemoryIdentifiers:(id)a3 withCreationReason:(unint64_t)a4
+- (void)fireNotificationForMemoryIdentifiers:(id)identifiers withCreationReason:(unint64_t)reason
 {
   v47[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v33 = a4;
+    reasonCopy = reason;
     v7 = [(PHANotificationController *)self _userFeedbackCalculatorWithPhotoLibrary:self->_photoLibrary];
-    v8 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-    [v8 setIncludePendingMemories:1];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludePendingMemories:1];
     v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
     v47[0] = v9;
     v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:0];
     v47[1] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:2];
-    [v8 setSortDescriptors:v11];
+    [librarySpecificFetchOptions setSortDescriptors:v11];
 
-    v35 = v8;
-    v12 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithLocalIdentifiers:v6 options:v8];
+    v35 = librarySpecificFetchOptions;
+    v12 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithLocalIdentifiers:identifiersCopy options:librarySpecificFetchOptions];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -433,7 +433,7 @@ void __97__PHANotificationController_postNotificationForMemory_withCreationReaso
     }
 
     v14 = v13;
-    v34 = v6;
+    v34 = identifiersCopy;
     v15 = 0;
     v16 = *v41;
     v17 = 0.0;
@@ -452,8 +452,8 @@ void __97__PHANotificationController_postNotificationForMemory_withCreationReaso
         v21 = v20;
         if (!v15 || v20 > v17)
         {
-          v22 = [v19 blockableFeatures];
-          v23 = [(PHANotificationController *)self userFeedbackScoreIsAcceptableForAssetCollection:v19 memoryFeatures:v22 userFeedbackCalculator:v7];
+          blockableFeatures = [v19 blockableFeatures];
+          v23 = [(PHANotificationController *)self userFeedbackScoreIsAcceptableForAssetCollection:v19 memoryFeatures:blockableFeatures userFeedbackCalculator:v7];
 
           if (v23)
           {
@@ -474,9 +474,9 @@ void __97__PHANotificationController_postNotificationForMemory_withCreationReaso
             if (os_log_type_enabled(__PXLoggraph_workerOSLog, OS_LOG_TYPE_DEFAULT))
             {
               v26 = v25;
-              v27 = [v19 localIdentifier];
+              localIdentifier = [v19 localIdentifier];
               *buf = 138412290;
-              v45 = v27;
+              v45 = localIdentifier;
               _os_log_impl(&dword_22FA28000, v26, OS_LOG_TYPE_DEFAULT, "[Memories Notification] Skipping notification for memory %@: user feedback score is lower than acceptable.", buf, 0xCu);
             }
           }
@@ -490,7 +490,7 @@ void __97__PHANotificationController_postNotificationForMemory_withCreationReaso
     }
 
     while (v14);
-    v6 = v34;
+    identifiersCopy = v34;
     if (v15)
     {
       photoLibrary = self->_photoLibrary;
@@ -506,7 +506,7 @@ void __97__PHANotificationController_postNotificationForMemory_withCreationReaso
       v30 = v36;
       if (photoLibrary)
       {
-        [(PHANotificationController *)self postNotificationForMemory:v29 withCreationReason:v33 forceImmediateDelivery:0];
+        [(PHANotificationController *)self postNotificationForMemory:v29 withCreationReason:reasonCopy forceImmediateDelivery:0];
       }
 
       else
@@ -538,7 +538,7 @@ LABEL_20:
       if (os_log_type_enabled(__PXLoggraph_workerOSLog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v45 = v6;
+        v45 = identifiersCopy;
         _os_log_impl(&dword_22FA28000, v31, OS_LOG_TYPE_DEFAULT, "[Memories Notification] Failed to fire, bestMemoryToPersist is nil. %@", buf, 0xCu);
       }
     }
@@ -604,14 +604,14 @@ uint64_t __85__PHANotificationController_fireNotificationForMemoryIdentifiers_wi
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_userFeedbackCalculatorWithPhotoLibrary:(id)a3
+- (id)_userFeedbackCalculatorWithPhotoLibrary:(id)library
 {
   userFeedbackCalculator = self->_userFeedbackCalculator;
   if (!userFeedbackCalculator)
   {
     v5 = MEMORY[0x277CD99F8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithPhotoLibrary:v6];
+    libraryCopy = library;
+    v7 = [[v5 alloc] initWithPhotoLibrary:libraryCopy];
 
     v8 = self->_userFeedbackCalculator;
     self->_userFeedbackCalculator = v7;
@@ -622,11 +622,11 @@ uint64_t __85__PHANotificationController_fireNotificationForMemoryIdentifiers_wi
   return userFeedbackCalculator;
 }
 
-- (BOOL)shouldFireNotificationForMemoriesWithScores:(id)a3 withCreationReason:(unint64_t)a4
+- (BOOL)shouldFireNotificationForMemoriesWithScores:(id)scores withCreationReason:(unint64_t)reason
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (![v6 count])
+  scoresCopy = scores;
+  if (![scoresCopy count])
   {
     if (__PXLoggraph_workerOnceToken != -1)
     {
@@ -644,7 +644,7 @@ uint64_t __85__PHANotificationController_fireNotificationForMemoryIdentifiers_wi
     goto LABEL_18;
   }
 
-  if (a4 == 1 && [MEMORY[0x277D3BC38] isMemoriesLivingOnFeedbackEnabled])
+  if (reason == 1 && [MEMORY[0x277D3BC38] isMemoriesLivingOnFeedbackEnabled])
   {
     if (__PXLoggraph_workerOnceToken != -1)
     {
@@ -667,8 +667,8 @@ LABEL_13:
     goto LABEL_52;
   }
 
-  v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v13 = [v12 BOOLForKey:@"PhotoAnalysisShouldForceTriggerNotification"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v13 = [standardUserDefaults BOOLForKey:@"PhotoAnalysisShouldForceTriggerNotification"];
 
   if (!v13)
   {
@@ -676,7 +676,7 @@ LABEL_13:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v17 = v6;
+    v17 = scoresCopy;
     v18 = [v17 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v18)
     {
@@ -719,8 +719,8 @@ LABEL_13:
       v20 = 0;
     }
 
-    v26 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v27 = [v26 BOOLForKey:@"PhotoAnalysisShouldTriggerNotificationEveryDay"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v27 = [standardUserDefaults2 BOOLForKey:@"PhotoAnalysisShouldTriggerNotificationEveryDay"];
 
     if (v27)
     {
@@ -741,8 +741,8 @@ LABEL_13:
     else
     {
       v29 = [MEMORY[0x277D3BA78] nextPossibleNotificationDateWithPhotoLibrary:self->_photoLibrary];
-      v30 = [MEMORY[0x277CBEAA8] date];
-      if ([v30 compare:v29] == -1)
+      date = [MEMORY[0x277CBEAA8] date];
+      if ([date compare:v29] == -1)
       {
         if (__PXLoggraph_workerOnceToken != -1)
         {
@@ -774,12 +774,12 @@ LABEL_13:
       }
     }
 
-    if ((a4 == 3) | v20 & 1)
+    if ((reason == 3) | v20 & 1)
     {
 LABEL_43:
-      v32 = [MEMORY[0x277CBEA80] currentCalendar];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
       v33 = [MEMORY[0x277D3BA78] lastTriggeredNotificationDateWithPhotoLibrary:self->_photoLibrary];
-      if (v33 && [v32 isDateInToday:v33])
+      if (v33 && [currentCalendar isDateInToday:v33])
       {
         if (__PXLoggraph_workerOnceToken != -1)
         {
@@ -912,23 +912,23 @@ uint64_t __92__PHANotificationController_shouldFireNotificationForMemoriesWithSc
   return [PHANotificationCoreDuetHelper userIsActivelyUsingAppWithName:@"com.apple.camera" error:0];
 }
 
-- (PHANotificationController)initWithGraphManager:(id)a3
+- (PHANotificationController)initWithGraphManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = PHANotificationController;
   v6 = [(PHANotificationController *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphManager, a3);
-    v8 = [v5 photoLibrary];
+    objc_storeStrong(&v6->_graphManager, manager);
+    photoLibrary = [managerCopy photoLibrary];
     photoLibrary = v7->_photoLibrary;
-    v7->_photoLibrary = v8;
+    v7->_photoLibrary = photoLibrary;
 
-    v10 = [v5 analytics];
+    analytics = [managerCopy analytics];
     analytics = v7->_analytics;
-    v7->_analytics = v10;
+    v7->_analytics = analytics;
 
     v12 = os_log_create("com.apple.photoanalysisd", "notifications");
     loggingConnection = v7->_loggingConnection;
@@ -938,14 +938,14 @@ uint64_t __92__PHANotificationController_shouldFireNotificationForMemoriesWithSc
   return v7;
 }
 
-- (PHANotificationController)initWithGraphManager:(id)a3 userFeedbackCalculator:(id)a4
+- (PHANotificationController)initWithGraphManager:(id)manager userFeedbackCalculator:(id)calculator
 {
-  v7 = a4;
-  v8 = [(PHANotificationController *)self initWithGraphManager:a3];
+  calculatorCopy = calculator;
+  v8 = [(PHANotificationController *)self initWithGraphManager:manager];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_userFeedbackCalculator, a4);
+    objc_storeStrong(&v8->_userFeedbackCalculator, calculator);
   }
 
   return v9;

@@ -1,62 +1,62 @@
 @interface SharingMessage
-+ (BOOL)hasSharingMessage:(id)a3 transportIdentifier:(id)a4 inDatabase:(id)a5;
-+ (id)_predicateForCreatedAtNewerThanDate:(id)a3;
-+ (id)_predicateForCreatedAtOlderThanDate:(id)a3;
-+ (id)_propertyValuesForSharingMessage:(id)a3 storePayload:(BOOL)a4;
-+ (id)_sharingMessageForProperties:(id)a3 values:(const void *)a4;
-+ (id)_sharingMessagesWithQuery:(id)a3 inDatabase:(id)a4;
-+ (id)allOutstandingSharingMessagesInDatabase:(id)a3;
++ (BOOL)hasSharingMessage:(id)message transportIdentifier:(id)identifier inDatabase:(id)database;
++ (id)_predicateForCreatedAtNewerThanDate:(id)date;
++ (id)_predicateForCreatedAtOlderThanDate:(id)date;
++ (id)_propertyValuesForSharingMessage:(id)message storePayload:(BOOL)payload;
++ (id)_sharingMessageForProperties:(id)properties values:(const void *)values;
++ (id)_sharingMessagesWithQuery:(id)query inDatabase:(id)database;
++ (id)allOutstandingSharingMessagesInDatabase:(id)database;
 + (id)properties;
-+ (id)sharingMessageForMessageIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)sharingMessagesForTransportIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)sharingMessagesForTransportIdentifier:(id)a3 newerThanDate:(id)a4 inDatabase:(id)a5;
-+ (id)transportIdentifierForSharingMessage:(id)a3 inDatabase:(id)a4;
-+ (void)deleteSharingMessageForIdentifier:(id)a3 inDatabase:(id)a4;
-+ (void)deleteSharingMessagesForTransportIdentifier:(id)a3 inDatabase:(id)a4;
-+ (void)deleteSharingMessagesOlderThan:(id)a3 inDatabase:(id)a4;
-+ (void)insertOrUpdateSharingMessages:(id)a3 storePayloads:(BOOL)a4 transportIdentifier:(id)a5 inDatabase:(id)a6;
-- (SharingMessage)initWithSharingMessage:(id)a3 storePayload:(BOOL)a4 forTransportIdentifier:(id)a5 inDatabase:(id)a6;
++ (id)sharingMessageForMessageIdentifier:(id)identifier inDatabase:(id)database;
++ (id)sharingMessagesForTransportIdentifier:(id)identifier inDatabase:(id)database;
++ (id)sharingMessagesForTransportIdentifier:(id)identifier newerThanDate:(id)date inDatabase:(id)database;
++ (id)transportIdentifierForSharingMessage:(id)message inDatabase:(id)database;
++ (void)deleteSharingMessageForIdentifier:(id)identifier inDatabase:(id)database;
++ (void)deleteSharingMessagesForTransportIdentifier:(id)identifier inDatabase:(id)database;
++ (void)deleteSharingMessagesOlderThan:(id)than inDatabase:(id)database;
++ (void)insertOrUpdateSharingMessages:(id)messages storePayloads:(BOOL)payloads transportIdentifier:(id)identifier inDatabase:(id)database;
+- (SharingMessage)initWithSharingMessage:(id)message storePayload:(BOOL)payload forTransportIdentifier:(id)identifier inDatabase:(id)database;
 - (id)sharingMessage;
-- (void)updateWithSharingMessage:(id)a3 storePayload:(BOOL)a4;
+- (void)updateWithSharingMessage:(id)message storePayload:(BOOL)payload;
 @end
 
 @implementation SharingMessage
 
-- (SharingMessage)initWithSharingMessage:(id)a3 storePayload:(BOOL)a4 forTransportIdentifier:(id)a5 inDatabase:(id)a6
+- (SharingMessage)initWithSharingMessage:(id)message storePayload:(BOOL)payload forTransportIdentifier:(id)identifier inDatabase:(id)database
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [objc_opt_class() _propertyValuesForSharingMessage:v12 storePayload:v7];
+  payloadCopy = payload;
+  databaseCopy = database;
+  identifierCopy = identifier;
+  messageCopy = message;
+  v13 = [objc_opt_class() _propertyValuesForSharingMessage:messageCopy storePayload:payloadCopy];
 
-  [v13 setObjectOrNull:v11 forKey:@"a"];
-  v14 = [(SQLiteEntity *)self initWithPropertyValues:v13 inDatabase:v10];
+  [v13 setObjectOrNull:identifierCopy forKey:@"a"];
+  v14 = [(SQLiteEntity *)self initWithPropertyValues:v13 inDatabase:databaseCopy];
 
   return v14;
 }
 
-- (void)updateWithSharingMessage:(id)a3 storePayload:(BOOL)a4
+- (void)updateWithSharingMessage:(id)message storePayload:(BOOL)payload
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() _propertyValuesForSharingMessage:v6 storePayload:v4];
+  payloadCopy = payload;
+  messageCopy = message;
+  v7 = [objc_opt_class() _propertyValuesForSharingMessage:messageCopy storePayload:payloadCopy];
 
   [(SQLiteEntity *)self setValuesWithDictionary:v7];
 }
 
-+ (void)insertOrUpdateSharingMessages:(id)a3 storePayloads:(BOOL)a4 transportIdentifier:(id)a5 inDatabase:(id)a6
++ (void)insertOrUpdateSharingMessages:(id)messages storePayloads:(BOOL)payloads transportIdentifier:(id)identifier inDatabase:(id)database
 {
-  v23 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  payloadsCopy = payloads;
+  messagesCopy = messages;
+  identifierCopy = identifier;
+  databaseCopy = database;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v8;
-  v24 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  obj = messagesCopy;
+  v24 = [messagesCopy countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v24)
   {
     v21 = *v27;
@@ -70,28 +70,28 @@
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v12 identifier];
-        v14 = [a1 _predicateForTransportIdentifier:v9];
+        identifier = [v12 identifier];
+        v14 = [self _predicateForTransportIdentifier:identifierCopy];
         v30[0] = v14;
-        v25 = v13;
-        v15 = [a1 _predicateForMessageIdentifier:v13];
+        v25 = identifier;
+        v15 = [self _predicateForMessageIdentifier:identifier];
         v30[1] = v15;
         [NSArray arrayWithObjects:v30 count:2];
-        v17 = v16 = v9;
+        v17 = v16 = identifierCopy;
         v18 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v17];
-        v19 = [a1 anyInDatabase:v10 predicate:v18];
+        v19 = [self anyInDatabase:databaseCopy predicate:v18];
 
         if (v19)
         {
-          [(SharingMessage *)v19 updateWithSharingMessage:v12 storePayload:v23];
+          [(SharingMessage *)v19 updateWithSharingMessage:v12 storePayload:payloadsCopy];
         }
 
         else
         {
-          v19 = [[SharingMessage alloc] initWithSharingMessage:v12 storePayload:v23 forTransportIdentifier:v16 inDatabase:v10];
+          v19 = [[SharingMessage alloc] initWithSharingMessage:v12 storePayload:payloadsCopy forTransportIdentifier:v16 inDatabase:databaseCopy];
         }
 
-        v9 = v16;
+        identifierCopy = v16;
       }
 
       v24 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -101,20 +101,20 @@
   }
 }
 
-+ (BOOL)hasSharingMessage:(id)a3 transportIdentifier:(id)a4 inDatabase:(id)a5
++ (BOOL)hasSharingMessage:(id)message transportIdentifier:(id)identifier inDatabase:(id)database
 {
-  v22 = a5;
-  v8 = a3;
-  v21 = [a1 _predicateForTransportIdentifier:a4];
+  databaseCopy = database;
+  messageCopy = message;
+  v21 = [self _predicateForTransportIdentifier:identifier];
   v24[0] = v21;
-  v20 = [v8 identifier];
-  v9 = [a1 _predicateForMessageIdentifier:v20];
+  identifier = [messageCopy identifier];
+  v9 = [self _predicateForMessageIdentifier:identifier];
   v23[0] = v9;
-  v10 = [v8 payload];
+  payload = [messageCopy payload];
 
-  v11 = [v10 SHA256Hash];
-  v12 = [v11 hexEncoding];
-  v13 = [a1 _predicateForPayloadHash:v12];
+  sHA256Hash = [payload SHA256Hash];
+  hexEncoding = [sHA256Hash hexEncoding];
+  v13 = [self _predicateForPayloadHash:hexEncoding];
   v23[1] = v13;
   v14 = [NSArray arrayWithObjects:v23 count:2];
   v15 = [SQLiteCompoundPredicate predicateMatchingAnyPredicates:v14];
@@ -122,114 +122,114 @@
   v16 = [NSArray arrayWithObjects:v24 count:2];
   v17 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v16];
 
-  v18 = [a1 anyInDatabase:v22 predicate:v17];
+  v18 = [self anyInDatabase:databaseCopy predicate:v17];
 
   return v18 != 0;
 }
 
-+ (id)transportIdentifierForSharingMessage:(id)a3 inDatabase:(id)a4
++ (id)transportIdentifierForSharingMessage:(id)message inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a3 identifier];
-  v8 = [a1 _predicateForMessageIdentifier:v7];
-  v9 = [a1 anyInDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  identifier = [message identifier];
+  v8 = [self _predicateForMessageIdentifier:identifier];
+  v9 = [self anyInDatabase:databaseCopy predicate:v8];
 
   v10 = [v9 valueForProperty:@"a"];
 
   return v10;
 }
 
-+ (id)sharingMessagesForTransportIdentifier:(id)a3 inDatabase:(id)a4
++ (id)sharingMessagesForTransportIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForTransportIdentifier:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
-  v9 = [a1 _sharingMessagesWithQuery:v8 inDatabase:v6];
+  databaseCopy = database;
+  v7 = [self _predicateForTransportIdentifier:identifier];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
+  v9 = [self _sharingMessagesWithQuery:v8 inDatabase:databaseCopy];
 
   return v9;
 }
 
-+ (id)sharingMessagesForTransportIdentifier:(id)a3 newerThanDate:(id)a4 inDatabase:(id)a5
++ (id)sharingMessagesForTransportIdentifier:(id)identifier newerThanDate:(id)date inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 _predicateForTransportIdentifier:a3];
+  databaseCopy = database;
+  dateCopy = date;
+  v10 = [self _predicateForTransportIdentifier:identifier];
   v17[0] = v10;
-  v11 = [a1 _predicateForCreatedAtNewerThanDate:v9];
+  v11 = [self _predicateForCreatedAtNewerThanDate:dateCopy];
 
   v17[1] = v11;
   v12 = [NSArray arrayWithObjects:v17 count:2];
   v13 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v12];
 
-  v14 = [a1 queryWithDatabase:v8 predicate:v13];
-  v15 = [a1 _sharingMessagesWithQuery:v14 inDatabase:v8];
+  v14 = [self queryWithDatabase:databaseCopy predicate:v13];
+  v15 = [self _sharingMessagesWithQuery:v14 inDatabase:databaseCopy];
 
   return v15;
 }
 
-+ (id)sharingMessageForMessageIdentifier:(id)a3 inDatabase:(id)a4
++ (id)sharingMessageForMessageIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForMessageIdentifier:a3];
+  databaseCopy = database;
+  v7 = [self _predicateForMessageIdentifier:identifier];
   v13 = v7;
   v8 = [NSArray arrayWithObjects:&v13 count:1];
   v9 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v8];
-  v10 = [a1 anyInDatabase:v6 predicate:v9];
+  v10 = [self anyInDatabase:databaseCopy predicate:v9];
 
-  v11 = [v10 sharingMessage];
+  sharingMessage = [v10 sharingMessage];
 
-  return v11;
+  return sharingMessage;
 }
 
-+ (void)deleteSharingMessageForIdentifier:(id)a3 inDatabase:(id)a4
++ (void)deleteSharingMessageForIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForMessageIdentifier:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForMessageIdentifier:identifier];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (void)deleteSharingMessagesForTransportIdentifier:(id)a3 inDatabase:(id)a4
++ (void)deleteSharingMessagesForTransportIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForTransportIdentifier:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForTransportIdentifier:identifier];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (void)deleteSharingMessagesOlderThan:(id)a3 inDatabase:(id)a4
++ (void)deleteSharingMessagesOlderThan:(id)than inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForCreatedAtOlderThanDate:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForCreatedAtOlderThanDate:than];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)allOutstandingSharingMessagesInDatabase:(id)a3
++ (id)allOutstandingSharingMessagesInDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [a1 _predicateForNonNullPayload];
-  v18[0] = v5;
-  v6 = [a1 _predicateForValidTransportIdentifier];
-  v18[1] = v6;
+  databaseCopy = database;
+  _predicateForNonNullPayload = [self _predicateForNonNullPayload];
+  v18[0] = _predicateForNonNullPayload;
+  _predicateForValidTransportIdentifier = [self _predicateForValidTransportIdentifier];
+  v18[1] = _predicateForValidTransportIdentifier;
   v7 = [NSArray arrayWithObjects:v18 count:2];
   v8 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v7];
 
-  v9 = [a1 queryWithDatabase:v4 predicate:v8];
+  v9 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   v10 = objc_alloc_init(NSMutableDictionary);
-  v11 = [a1 properties];
+  properties = [self properties];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001A13EC;
   v15[3] = &unk_10084B280;
-  v17 = a1;
+  selfCopy = self;
   v12 = v10;
   v16 = v12;
-  [v9 enumeratePersistentIDsAndProperties:v11 usingBlock:v15];
+  [v9 enumeratePersistentIDsAndProperties:properties usingBlock:v15];
 
   if ([v12 count])
   {
@@ -244,19 +244,19 @@
   return v13;
 }
 
-+ (id)_sharingMessagesWithQuery:(id)a3 inDatabase:(id)a4
++ (id)_sharingMessagesWithQuery:(id)query inDatabase:(id)database
 {
-  v5 = a3;
+  queryCopy = query;
   v6 = objc_alloc_init(NSMutableArray);
-  v7 = [a1 properties];
+  properties = [self properties];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1001A15E4;
   v14 = &unk_10084B280;
-  v16 = a1;
+  selfCopy = self;
   v8 = v6;
   v15 = v8;
-  [v5 enumeratePersistentIDsAndProperties:v7 usingBlock:&v11];
+  [queryCopy enumeratePersistentIDsAndProperties:properties usingBlock:&v11];
 
   if ([v8 count])
   {
@@ -279,14 +279,14 @@
   v10 = sub_100005BB0;
   v11 = sub_10000B1E4;
   v12 = 0;
-  v3 = [objc_opt_class() properties];
+  properties = [objc_opt_class() properties];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001A1760;
   v6[3] = &unk_100843040;
   v6[4] = self;
   v6[5] = &v7;
-  [(SQLiteEntity *)self getValuesForProperties:v3 withApplier:v6];
+  [(SQLiteEntity *)self getValuesForProperties:properties withApplier:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -294,7 +294,7 @@
   return v4;
 }
 
-+ (id)_predicateForCreatedAtOlderThanDate:(id)a3
++ (id)_predicateForCreatedAtOlderThanDate:(id)date
 {
   v3 = _SQLValueForDate();
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"e" lessThanValue:v3];
@@ -302,7 +302,7 @@
   return v4;
 }
 
-+ (id)_predicateForCreatedAtNewerThanDate:(id)a3
++ (id)_predicateForCreatedAtNewerThanDate:(id)date
 {
   v3 = _SQLValueForDate();
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"e" greaterThanValue:v3];
@@ -310,15 +310,15 @@
   return v4;
 }
 
-+ (id)_sharingMessageForProperties:(id)a3 values:(const void *)a4
++ (id)_sharingMessageForProperties:(id)properties values:(const void *)values
 {
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1001A1B5C;
   v24[3] = &unk_10084B2A8;
-  v5 = a3;
-  v25 = v5;
-  v26 = a4;
+  propertiesCopy = properties;
+  v25 = propertiesCopy;
+  valuesCopy = values;
   v6 = objc_retainBlock(v24);
   v7 = (v6[2])(v6, @"b");
   v8 = (v6[2])(v6, @"c");
@@ -387,50 +387,50 @@
   return v10;
 }
 
-+ (id)_propertyValuesForSharingMessage:(id)a3 storePayload:(BOOL)a4
++ (id)_propertyValuesForSharingMessage:(id)message storePayload:(BOOL)payload
 {
-  v4 = a4;
-  v5 = a3;
+  payloadCopy = payload;
+  messageCopy = message;
   v6 = objc_alloc_init(NSMutableDictionary);
-  v7 = [v5 identifier];
-  [v6 setObjectOrNull:v7 forKey:@"b"];
+  identifier = [messageCopy identifier];
+  [v6 setObjectOrNull:identifier forKey:@"b"];
 
-  if (v4)
+  if (payloadCopy)
   {
-    v8 = [v5 payload];
-    [v6 setObjectOrNull:v8 forKey:@"c"];
+    payload = [messageCopy payload];
+    [v6 setObjectOrNull:payload forKey:@"c"];
   }
 
   else
   {
-    v8 = +[NSNull null];
-    [v6 setObject:v8 forKeyedSubscript:@"c"];
+    payload = +[NSNull null];
+    [v6 setObject:payload forKeyedSubscript:@"c"];
   }
 
-  v9 = [v5 payload];
-  v10 = [v9 SHA256Hash];
-  v11 = [v10 hexEncoding];
-  [v6 setObjectOrNull:v11 forKey:@"d"];
+  payload2 = [messageCopy payload];
+  sHA256Hash = [payload2 SHA256Hash];
+  hexEncoding = [sHA256Hash hexEncoding];
+  [v6 setObjectOrNull:hexEncoding forKey:@"d"];
 
   v12 = +[NSDate now];
   v13 = _SQLValueForDate();
   [v6 setObjectOrNull:v13 forKey:@"e"];
 
-  v14 = [v5 displayInformation];
-  v15 = v14;
-  if (v14)
+  displayInformation = [messageCopy displayInformation];
+  v15 = displayInformation;
+  if (displayInformation)
   {
-    v16 = [v14 title];
-    [v6 setObjectOrNull:v16 forKey:@"f"];
+    title = [displayInformation title];
+    [v6 setObjectOrNull:title forKey:@"f"];
 
-    v17 = [v15 subtitle];
-    [v6 setObjectOrNull:v17 forKey:@"g"];
+    subtitle = [v15 subtitle];
+    [v6 setObjectOrNull:subtitle forKey:@"g"];
 
-    v18 = [v15 imageURL];
+    imageURL = [v15 imageURL];
     v19 = _SQLValueForURL();
     [v6 setObjectOrNull:v19 forKey:@"h"];
 
-    v20 = [v15 openGraphURL];
+    openGraphURL = [v15 openGraphURL];
     v21 = _SQLValueForURL();
     [v6 setObjectOrNull:v21 forKey:@"i"];
   }

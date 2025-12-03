@@ -1,25 +1,25 @@
 @interface AXRTTSettingsListenerHelper
-- (AXRTTSettingsListenerHelper)initWithListenerAddress:(void *)a3;
-- (void)addSelectorKey:(SEL)a3;
+- (AXRTTSettingsListenerHelper)initWithListenerAddress:(void *)address;
+- (void)addSelectorKey:(SEL)key;
 - (void)dealloc;
 @end
 
 @implementation AXRTTSettingsListenerHelper
 
-- (AXRTTSettingsListenerHelper)initWithListenerAddress:(void *)a3
+- (AXRTTSettingsListenerHelper)initWithListenerAddress:(void *)address
 {
   v5.receiver = self;
   v5.super_class = AXRTTSettingsListenerHelper;
   result = [(AXRTTSettingsListenerHelper *)&v5 init];
   if (result)
   {
-    result->_listenerAddress = a3;
+    result->_listenerAddress = address;
   }
 
   return result;
 }
 
-- (void)addSelectorKey:(SEL)a3
+- (void)addSelectorKey:(SEL)key
 {
   selectorKeys = self->_selectorKeys;
   if (!selectorKeys)
@@ -31,7 +31,7 @@
     selectorKeys = self->_selectorKeys;
   }
 
-  v8 = NSStringFromSelector(a3);
+  v8 = NSStringFromSelector(key);
   [(NSMutableArray *)selectorKeys addObject:v8];
 }
 

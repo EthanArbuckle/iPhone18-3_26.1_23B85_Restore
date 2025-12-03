@@ -12,42 +12,42 @@
 + (id)entryEventPointDefinitionTest;
 + (id)entryEventPointDefinitions;
 + (void)load;
-- (BOOL)rawWrite:(id)a3;
+- (BOOL)rawWrite:(id)write;
 - (PLDebugService)init;
 - (id)filledTestArrayEntry;
-- (id)getValueForPropertyName:(id)a3 forEnergyMonitor:(id)a4;
-- (id)handleEnergyMonitorDebugQuery:(id)a3;
-- (id)testPLAPIAccounting_AddPowerMeasurementEventInterval:(id)a3;
-- (id)testPLAPIAccounting_CreateDistributionEventForwardAdd:(id)a3;
-- (id)testPLAPIAccounting_CreateDistributionEventForwardChild:(id)a3;
-- (id)testPLAPIAccounting_CreateDistributionEventForwardRem:(id)a3;
-- (id)testPLAPIAccounting_CreateDistributionEventInterval:(id)a3;
-- (id)testPLAPIAccounting_CreateDistributionEventPoint:(id)a3;
-- (id)testPLAPIAccounting_CreatePowerEventBackward:(id)a3;
-- (id)testPLAPIAccounting_CreatePowerEventForward:(id)a3;
-- (id)testPLAPIAccounting_CreatePowerEventInterval:(id)a3;
-- (id)testPLAPIAccounting_CreateQualificationEventBackward:(id)a3;
-- (id)testPLAPIAccounting_CreateQualificationEventForwardAdd:(id)a3;
-- (id)testPLAPIAccounting_CreateQualificationEventForwardChild:(id)a3;
-- (id)testPLAPIAccounting_CreateQualificationEventForwardRem:(id)a3;
-- (id)testPLAPIAccounting_CreateQualificationEventInterval:(id)a3;
-- (id)testPLAPIAccounting_CreateQualificationEventPoint:(id)a3;
-- (id)testPLAPIAccounting_ExistingTest:(id)a3;
-- (id)testPLAPICore_DeleteAllEntriesForKey:(id)a3;
-- (id)testPLAPICore_DeleteAllEntriesForKeyBTWF:(id)a3;
-- (id)testPLAPICore_DeleteAllEntriesForKeyWF:(id)a3;
-- (id)testPLAPICore_DeleteEntry:(id)a3;
-- (id)testPLAPICore_DeleteEntryForKey:(id)a3;
-- (id)testPLAPICore_EntriesForKeyBeforeTICWF:(id)a3;
-- (id)testPLAPICore_EntriesForKeyInTimeRange:(id)a3;
-- (id)testPLAPICore_EntriesForKeyWithProperties:(id)a3;
-- (id)testPLAPICore_LastEntryForKeyWC:(id)a3;
-- (id)testPLAPICore_LastEntryForKeyWSEK:(id)a3;
-- (id)testPLAPICore_UpdateEntry:(id)a3;
-- (id)testPLAPICore_WriteEntries:(id)a3;
-- (id)testPLAPICore_WriteEntry:(id)a3;
-- (id)test_LogErr:(id)a3 str:(id)a4;
-- (id)test_LogPass:(id)a3 str:(id)a4;
+- (id)getValueForPropertyName:(id)name forEnergyMonitor:(id)monitor;
+- (id)handleEnergyMonitorDebugQuery:(id)query;
+- (id)testPLAPIAccounting_AddPowerMeasurementEventInterval:(id)interval;
+- (id)testPLAPIAccounting_CreateDistributionEventForwardAdd:(id)add;
+- (id)testPLAPIAccounting_CreateDistributionEventForwardChild:(id)child;
+- (id)testPLAPIAccounting_CreateDistributionEventForwardRem:(id)rem;
+- (id)testPLAPIAccounting_CreateDistributionEventInterval:(id)interval;
+- (id)testPLAPIAccounting_CreateDistributionEventPoint:(id)point;
+- (id)testPLAPIAccounting_CreatePowerEventBackward:(id)backward;
+- (id)testPLAPIAccounting_CreatePowerEventForward:(id)forward;
+- (id)testPLAPIAccounting_CreatePowerEventInterval:(id)interval;
+- (id)testPLAPIAccounting_CreateQualificationEventBackward:(id)backward;
+- (id)testPLAPIAccounting_CreateQualificationEventForwardAdd:(id)add;
+- (id)testPLAPIAccounting_CreateQualificationEventForwardChild:(id)child;
+- (id)testPLAPIAccounting_CreateQualificationEventForwardRem:(id)rem;
+- (id)testPLAPIAccounting_CreateQualificationEventInterval:(id)interval;
+- (id)testPLAPIAccounting_CreateQualificationEventPoint:(id)point;
+- (id)testPLAPIAccounting_ExistingTest:(id)test;
+- (id)testPLAPICore_DeleteAllEntriesForKey:(id)key;
+- (id)testPLAPICore_DeleteAllEntriesForKeyBTWF:(id)f;
+- (id)testPLAPICore_DeleteAllEntriesForKeyWF:(id)f;
+- (id)testPLAPICore_DeleteEntry:(id)entry;
+- (id)testPLAPICore_DeleteEntryForKey:(id)key;
+- (id)testPLAPICore_EntriesForKeyBeforeTICWF:(id)f;
+- (id)testPLAPICore_EntriesForKeyInTimeRange:(id)range;
+- (id)testPLAPICore_EntriesForKeyWithProperties:(id)properties;
+- (id)testPLAPICore_LastEntryForKeyWC:(id)c;
+- (id)testPLAPICore_LastEntryForKeyWSEK:(id)k;
+- (id)testPLAPICore_UpdateEntry:(id)entry;
+- (id)testPLAPICore_WriteEntries:(id)entries;
+- (id)testPLAPICore_WriteEntry:(id)entry;
+- (id)test_LogErr:(id)err str:(id)str;
+- (id)test_LogPass:(id)pass str:(id)str;
 - (void)aggregateDataFromSignpost;
 - (void)constructAppIdentifierColumns;
 - (void)constructAppIdentifierTables;
@@ -58,8 +58,8 @@
 - (void)initOperatorDependancies;
 - (void)iterateAgents;
 - (void)iterateServices;
-- (void)populateIdentifiers:(id)a3;
-- (void)printNullTestResultsForEntry:(id)a3 withDescription:(id)a4;
+- (void)populateIdentifiers:(id)identifiers;
+- (void)printNullTestResultsForEntry:(id)entry withDescription:(id)description;
 - (void)stressActivityScheduler;
 - (void)stressAggregateSmall;
 - (void)stressAggregateVerySmall;
@@ -83,7 +83,7 @@
 - (void)testDailyTasks;
 - (void)testEntryApplicationAgent;
 - (void)testEntryDelete;
-- (void)testEntryLogRequestedForEntryKey:(id)a3;
+- (void)testEntryLogRequestedForEntryKey:(id)key;
 - (void)testEntryQueries;
 - (void)testEntrySleep;
 - (void)testEntryWake;
@@ -108,7 +108,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLDebugService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -117,8 +117,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"Test";
-  v2 = [a1 entryEventPointDefinitionTest];
-  v7[0] = v2;
+  entryEventPointDefinitionTest = [self entryEventPointDefinitionTest];
+  v7[0] = entryEventPointDefinitionTest;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -139,13 +139,13 @@
   v20[0] = v3;
   v19[1] = *MEMORY[0x277D3F540];
   v15[0] = @"StringKey1";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v16[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v16[0] = commonTypeDict_StringFormat;
   v15[1] = @"StringKey2";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v16[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v16[1] = commonTypeDict_StringFormat2;
   v15[2] = @"DefaultKey1";
   v13 = *MEMORY[0x277D3F5A8];
   v14 = &unk_282C12EE8;
@@ -164,17 +164,17 @@
 {
   v11[4] = *MEMORY[0x277D85DE8];
   v10[0] = @"AggregateTest";
-  v3 = [a1 entryAggregateDefinitionAggregateTest];
-  v11[0] = v3;
+  entryAggregateDefinitionAggregateTest = [self entryAggregateDefinitionAggregateTest];
+  v11[0] = entryAggregateDefinitionAggregateTest;
   v10[1] = @"AggregateTestSmall";
-  v4 = [a1 entryAggregateDefinitionAggregateTestSmall];
-  v11[1] = v4;
+  entryAggregateDefinitionAggregateTestSmall = [self entryAggregateDefinitionAggregateTestSmall];
+  v11[1] = entryAggregateDefinitionAggregateTestSmall;
   v10[2] = @"AggregateTestVerySmall";
-  v5 = [a1 entryAggregateDefinitionAggregateTestVerySmall];
-  v11[2] = v5;
+  entryAggregateDefinitionAggregateTestVerySmall = [self entryAggregateDefinitionAggregateTestVerySmall];
+  v11[2] = entryAggregateDefinitionAggregateTestVerySmall;
   v10[3] = @"AggregateTestSplitAndBucket";
-  v6 = [a1 entryAggregateDefinitionAggregateTestSplitAndBucket];
-  v11[3] = v6;
+  entryAggregateDefinitionAggregateTestSplitAndBucket = [self entryAggregateDefinitionAggregateTestSplitAndBucket];
+  v11[3] = entryAggregateDefinitionAggregateTestSplitAndBucket;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:4];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -195,21 +195,21 @@
   v50[0] = v29;
   v49[1] = *MEMORY[0x277D3F540];
   v45[0] = @"PrimaryKey1";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_StringFormat];
-  v46[0] = v27;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v46[0] = commonTypeDict_StringFormat;
   v45[1] = @"PrimaryKey2";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_StringFormat];
-  v46[1] = v25;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v46[1] = commonTypeDict_StringFormat2;
   v45[2] = @"SumField";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v46[2] = v23;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v46[2] = commonTypeDict_RealFormat_aggregateFunction_sum;
   v45[3] = @"SumField2";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v46[3] = v21;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum2 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v46[3] = commonTypeDict_RealFormat_aggregateFunction_sum2;
   v45[4] = @"MinField";
   v4 = *MEMORY[0x277D3F530];
   v42[0] = *MEMORY[0x277D3F5A8];
@@ -242,9 +242,9 @@
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:3];
   v46[6] = v8;
   v45[7] = @"NumericalField";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_RealFormat];
-  v46[7] = v10;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+  v46[7] = commonTypeDict_RealFormat;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:8];
   v50[1] = v11;
   v49[2] = *MEMORY[0x277D3F478];
@@ -288,21 +288,21 @@
   v27[0] = v17;
   v26[1] = *MEMORY[0x277D3F540];
   v22[0] = @"PrimaryKey1";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v23[0] = v15;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v23[0] = commonTypeDict_IntegerFormat;
   v22[1] = @"PrimaryKey2";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v23[1] = v4;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v23[1] = commonTypeDict_StringFormat;
   v22[2] = @"SumField";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v23[2] = v6;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v23[2] = commonTypeDict_RealFormat_aggregateFunction_sum;
   v22[3] = @"SumField2";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v23[3] = v8;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum2 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v23[3] = commonTypeDict_RealFormat_aggregateFunction_sum2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:4];
   v27[1] = v9;
   v26[2] = *MEMORY[0x277D3F478];
@@ -335,13 +335,13 @@
   v23[0] = v3;
   v22[1] = *MEMORY[0x277D3F540];
   v18[0] = @"PrimaryKey1";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v18[1] = @"SumField";
-  v19[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v19[1] = v7;
+  v19[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v19[1] = commonTypeDict_RealFormat_aggregateFunction_sum;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
   v23[1] = v8;
   v22[2] = *MEMORY[0x277D3F478];
@@ -376,17 +376,17 @@
   v32[0] = v18;
   v31[1] = *MEMORY[0x277D3F540];
   v27[0] = @"PrimaryKey1";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v28[0] = v16;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v28[0] = commonTypeDict_IntegerFormat;
   v27[1] = @"SumField";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v28[1] = v4;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v28[1] = commonTypeDict_RealFormat_aggregateFunction_sum;
   v27[2] = @"SumField2";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v28[2] = v6;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum2 = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v28[2] = commonTypeDict_RealFormat_aggregateFunction_sum2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:3];
   v32[1] = v7;
   v31[2] = *MEMORY[0x277D3F478];
@@ -421,11 +421,11 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"PLAPITest";
-  v3 = [a1 entryEventNoneDefinitionPLAPITest];
+  entryEventNoneDefinitionPLAPITest = [self entryEventNoneDefinitionPLAPITest];
   v8[1] = @"ArrayTest";
-  v9[0] = v3;
-  v4 = [a1 entryEventNoneDefinitionArrayTest];
-  v9[1] = v4;
+  v9[0] = entryEventNoneDefinitionPLAPITest;
+  entryEventNoneDefinitionArrayTest = [self entryEventNoneDefinitionArrayTest];
+  v9[1] = entryEventNoneDefinitionArrayTest;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -443,13 +443,13 @@
   v16[0] = v2;
   v15[1] = *MEMORY[0x277D3F540];
   v11[0] = @"entry1";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v11[1] = @"entry2";
-  v12[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v12[1] = v6;
+  v12[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v12[1] = commonTypeDict_StringFormat;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -469,13 +469,13 @@
   v26[0] = v15;
   v25[1] = *MEMORY[0x277D3F540];
   v21[0] = @"RandomString";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_StringFormat];
-  v22[0] = v3;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v22[0] = commonTypeDict_StringFormat;
   v21[1] = @"RandomNumber";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_RealFormat];
-  v22[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+  v22[1] = commonTypeDict_RealFormat;
   v21[2] = @"StaticArrayType";
   v7 = *MEMORY[0x277D3F598];
   v18[0] = *MEMORY[0x277D3F5A8];
@@ -516,17 +516,17 @@
   v18[0] = v2;
   v17[1] = *MEMORY[0x277D3F540];
   v13[0] = @"NotificationType";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v14[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v14[0] = commonTypeDict_IntegerFormat;
   v13[1] = @"Listener";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v14[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v14[1] = commonTypeDict_StringFormat;
   v13[2] = @"FiredTimestamp";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_DateFormat];
-  v14[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v14[2] = commonTypeDict_DateFormat;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -546,9 +546,9 @@
   v14[0] = v2;
   v13[1] = *MEMORY[0x277D3F540];
   v9 = @"iteration";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v10 = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v10 = commonTypeDict_IntegerFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -667,13 +667,13 @@
       CFNotificationCenterAddObserver(v52, v4, TestEntryQueriesRequested, @"com.apple.powerlogd.DMATables", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
       v53 = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterAddObserver(v53, v4, TestEntryQueriesRequested, @"com.apple.powerlogd.trimQueries", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-      v54 = [MEMORY[0x277D3F168] registeredOperators];
-      v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"allAgentClasses=%@", v54];
+      registeredOperators = [MEMORY[0x277D3F168] registeredOperators];
+      v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"allAgentClasses=%@", registeredOperators];
       v56 = MEMORY[0x277D3F178];
       v57 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-      v58 = [v57 lastPathComponent];
+      lastPathComponent = [v57 lastPathComponent];
       v59 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService init]"];
-      [v56 logMessage:v55 fromFile:v58 fromFunction:v59 fromLineNumber:386];
+      [v56 logMessage:v55 fromFile:lastPathComponent fromFunction:v59 fromLineNumber:386];
 
       v60 = PLLogCommon();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
@@ -687,7 +687,7 @@
       v95 = 0u;
       v92 = 0u;
       v93 = 0u;
-      obj = v54;
+      obj = registeredOperators;
       v61 = 0x277CCA000uLL;
       v83 = [obj countByEnumeratingWithState:&v92 objects:v98 count:16];
       if (v83)
@@ -709,8 +709,8 @@
             v89 = 0u;
             v90 = 0u;
             v91 = 0u;
-            v85 = [v63 entryKeys];
-            v64 = [v85 countByEnumeratingWithState:&v88 objects:v97 count:16];
+            entryKeys = [v63 entryKeys];
+            v64 = [entryKeys countByEnumeratingWithState:&v88 objects:v97 count:16];
             if (v64)
             {
               v65 = v64;
@@ -722,7 +722,7 @@
                 {
                   if (*v89 != v86)
                   {
-                    objc_enumerationMutation(v85);
+                    objc_enumerationMutation(entryKeys);
                   }
 
                   v67 = [*(v61 + 3240) stringWithFormat:@"com.apple.powerlogd.testEntryLog.%@", *(*(&v88 + 1) + 8 * v66)];
@@ -746,9 +746,9 @@
                       v71 = [*(v61 + 3240) stringWithFormat:@"signing up for notification %@", v67];
                       v72 = MEMORY[0x277D3F178];
                       v73 = [*(v61 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-                      v74 = [v73 lastPathComponent];
+                      lastPathComponent2 = [v73 lastPathComponent];
                       v75 = [*(v61 + 3240) stringWithUTF8String:"-[PLDebugService init]"];
-                      [v72 logMessage:v71 fromFile:v74 fromFunction:v75 fromLineNumber:390];
+                      [v72 logMessage:v71 fromFile:lastPathComponent2 fromFunction:v75 fromLineNumber:390];
 
                       v76 = PLLogCommon();
                       if (os_log_type_enabled(v76, OS_LOG_TYPE_DEBUG))
@@ -771,7 +771,7 @@
                 }
 
                 while (v65 != v66);
-                v65 = [v85 countByEnumeratingWithState:&v88 objects:v97 count:16];
+                v65 = [entryKeys countByEnumeratingWithState:&v88 objects:v97 count:16];
               }
 
               while (v65);
@@ -789,16 +789,16 @@
     }
 
     self = v4;
-    v78 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v78 = 0;
+    selfCopy = 0;
   }
 
   v79 = *MEMORY[0x277D85DE8];
-  return v78;
+  return selfCopy;
 }
 
 uint64_t __22__PLDebugService_init__block_invoke(uint64_t a1)
@@ -808,29 +808,29 @@ uint64_t __22__PLDebugService_init__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)printNullTestResultsForEntry:(id)a3 withDescription:(id)a4
+- (void)printNullTestResultsForEntry:(id)entry withDescription:(id)description
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCAB68];
-  v6 = a3;
-  v7 = [v5 stringWithFormat:@"%@:\n***\n", a4];
-  v8 = [v6 objectForKeyedSubscript:@"RandomString"];
+  entryCopy = entry;
+  v7 = [v5 stringWithFormat:@"%@:\n***\n", description];
+  v8 = [entryCopy objectForKeyedSubscript:@"RandomString"];
   [v7 appendFormat:@"RandomString=%@\n", v8];
 
-  v9 = [v6 objectForKeyedSubscript:@"RandomString"];
+  v9 = [entryCopy objectForKeyedSubscript:@"RandomString"];
   [v7 appendFormat:@"RandomString.class=%@\n", objc_opt_class()];
 
-  v10 = [v6 keys];
-  [v7 appendFormat:@"allKeys=%@\n", v10];
+  keys = [entryCopy keys];
+  [v7 appendFormat:@"allKeys=%@\n", keys];
 
-  v11 = [v6 allValues];
-  [v7 appendFormat:@"allValues=%@\n", v11];
+  allValues = [entryCopy allValues];
+  [v7 appendFormat:@"allValues=%@\n", allValues];
 
-  v12 = [v6 dictionary];
-  [v7 appendFormat:@"dictionary=%@\n", v12];
+  dictionary = [entryCopy dictionary];
+  [v7 appendFormat:@"dictionary=%@\n", dictionary];
 
-  [v7 appendFormat:@"entry=%@\n", v6];
-  v13 = [v6 objectForKeyedSubscript:@"RandomString"];
+  [v7 appendFormat:@"entry=%@\n", entryCopy];
+  v13 = [entryCopy objectForKeyedSubscript:@"RandomString"];
 
   if (v13)
   {
@@ -841,9 +841,9 @@ uint64_t __22__PLDebugService_init__block_invoke(uint64_t a1)
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v7];
   v15 = MEMORY[0x277D3F178];
   v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v17 = [v16 lastPathComponent];
+  lastPathComponent = [v16 lastPathComponent];
   v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService printNullTestResultsForEntry:withDescription:]"];
-  [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:413];
+  [v15 logMessage:v14 fromFile:lastPathComponent fromFunction:v18 fromLineNumber:413];
 
   v19 = PLLogCommon();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -867,8 +867,8 @@ uint64_t __22__PLDebugService_init__block_invoke(uint64_t a1)
     [(PLDebugService *)self printNullTestResultsForEntry:v4 withDescription:@"nilSetEntry"];
     [(PLOperator *)self logEntry:v4];
     v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v3];
-    v6 = [MEMORY[0x277CBEB68] null];
-    [v5 setObject:v6 forKeyedSubscript:@"RandomString"];
+    null = [MEMORY[0x277CBEB68] null];
+    [v5 setObject:null forKeyedSubscript:@"RandomString"];
 
     [(PLDebugService *)self printNullTestResultsForEntry:v5 withDescription:@"nsnullSetEntry"];
     [(PLOperator *)self logEntry:v5];
@@ -878,15 +878,15 @@ uint64_t __22__PLDebugService_init__block_invoke(uint64_t a1)
     [(PLOperator *)self logEntry:v7];
     v8 = MEMORY[0x277CCACA8];
     v9 = objc_opt_class();
-    v10 = [MEMORY[0x277CBEB68] null];
-    v11 = [MEMORY[0x277CBEB68] null];
-    v12 = [v8 stringWithFormat:@"nil=%@ nil.class=%@ NSNull=%@ NSNull.class=%@", 0, v9, v10, objc_opt_class()];
+    null2 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
+    v12 = [v8 stringWithFormat:@"nil=%@ nil.class=%@ NSNull=%@ NSNull.class=%@", 0, v9, null2, objc_opt_class()];
 
     v13 = MEMORY[0x277D3F178];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-    v15 = [v14 lastPathComponent];
+    lastPathComponent = [v14 lastPathComponent];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService initOperatorDependancies]"];
-    [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:435];
+    [v13 logMessage:v12 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:435];
 
     v17 = PLLogCommon();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -899,9 +899,9 @@ uint64_t __22__PLDebugService_init__block_invoke(uint64_t a1)
     v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Null test done"];
     v19 = MEMORY[0x277D3F178];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-    v21 = [v20 lastPathComponent];
+    lastPathComponent2 = [v20 lastPathComponent];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService initOperatorDependancies]"];
-    [v19 logMessage:v18 fromFile:v21 fromFunction:v22 fromLineNumber:436];
+    [v19 logMessage:v18 fromFile:lastPathComponent2 fromFunction:v22 fromLineNumber:436];
 
     v23 = PLLogCommon();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -955,9 +955,9 @@ uint64_t __22__PLDebugService_init__block_invoke(uint64_t a1)
     v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"Setup SleepNotification test!"];
     v34 = MEMORY[0x277D3F178];
     v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-    v36 = [v35 lastPathComponent];
+    lastPathComponent3 = [v35 lastPathComponent];
     v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService initOperatorDependancies]"];
-    [v34 logMessage:v33 fromFile:v36 fromFunction:v37 fromLineNumber:532];
+    [v34 logMessage:v33 fromFile:lastPathComponent3 fromFunction:v37 fromLineNumber:532];
 
     v38 = PLLogCommon();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -977,8 +977,8 @@ uint64_t __22__PLDebugService_init__block_invoke(uint64_t a1)
     v40 = [MEMORY[0x277D3F218] sharedSemaphoreForKey:*MEMORY[0x277D3F468]];
     [(PLDebugService *)self setCanSleepSemaphore:v40];
 
-    v41 = [(PLDebugService *)self canSleepSemaphore];
-    [v41 signalInterestByObject:self];
+    canSleepSemaphore = [(PLDebugService *)self canSleepSemaphore];
+    [canSleepSemaphore signalInterestByObject:self];
 
     v80[0] = MEMORY[0x277D85DD0];
     v80[1] = 3221225472;
@@ -1045,8 +1045,8 @@ uint64_t __22__PLDebugService_init__block_invoke(uint64_t a1)
   v54 = [v53 initWithOperator:self withRegistration:&unk_282C19958 withBlock:v74];
   [(PLDebugService *)self setClientFrameworkTestResponderNonAllowlisted:v54];
 
-  v55 = [MEMORY[0x277CBEB18] array];
-  [(PLDebugService *)self setClientFrameworkTestDataBatch:v55];
+  array = [MEMORY[0x277CBEB18] array];
+  [(PLDebugService *)self setClientFrameworkTestDataBatch:array];
 
   v56 = objc_alloc(MEMORY[0x277D3F270]);
   v73[0] = MEMORY[0x277D85DD0];
@@ -1869,66 +1869,66 @@ void __42__PLDebugService_initOperatorDependancies__block_invoke_660(uint64_t a1
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)test_LogErr:(id)a3 str:(id)a4
+- (id)test_LogErr:(id)err str:(id)str
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"error"];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"--> ERROR: %@", v6];
+  errCopy = err;
+  strCopy = str;
+  v7 = [errCopy objectForKeyedSubscript:@"error"];
+  strCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"--> ERROR: %@", strCopy];
 
-  [v7 addObject:v8];
-  v9 = [v5 objectForKeyedSubscript:@"error"];
-  v10 = [v9 lastObject];
-  NSLog(&stru_282B642A0.isa, v10);
+  [v7 addObject:strCopy];
+  v9 = [errCopy objectForKeyedSubscript:@"error"];
+  lastObject = [v9 lastObject];
+  NSLog(&stru_282B642A0.isa, lastObject);
 
-  return v5;
+  return errCopy;
 }
 
-- (id)test_LogPass:(id)a3 str:(id)a4
+- (id)test_LogPass:(id)pass str:(id)str
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"pass"];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"--> PASS: %@", v6];
+  passCopy = pass;
+  strCopy = str;
+  v7 = [passCopy objectForKeyedSubscript:@"pass"];
+  strCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"--> PASS: %@", strCopy];
 
-  [v7 addObject:v8];
-  v9 = [v5 objectForKeyedSubscript:@"pass"];
-  v10 = [v9 lastObject];
-  NSLog(&stru_282B642A0.isa, v10);
+  [v7 addObject:strCopy];
+  v9 = [passCopy objectForKeyedSubscript:@"pass"];
+  lastObject = [v9 lastObject];
+  NSLog(&stru_282B642A0.isa, lastObject);
 
-  return v5;
+  return passCopy;
 }
 
-- (BOOL)rawWrite:(id)a3
+- (BOOL)rawWrite:(id)write
 {
-  v3 = a3;
+  writeCopy = write;
   v55 = dispatch_semaphore_create(0);
   v4 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PLAPITest"];
-  v5 = [v3 objectForKeyedSubscript:@"objT"];
+  v5 = [writeCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v3 objectForKeyedSubscript:@"objT"];
+  v8 = [writeCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v52 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v10 = [v3 objectForKeyedSubscript:@"objT"];
+  v10 = [writeCopy objectForKeyedSubscript:@"objT"];
   v11 = [v10 objectForKeyedSubscript:@"validity"];
-  v12 = [v11 intValue];
-  v56 = v12 != -1;
+  intValue = [v11 intValue];
+  v56 = intValue != -1;
 
-  v13 = [MEMORY[0x277D3F2A0] sharedCore];
-  v14 = [v13 storage];
-  v15 = [v14 countOfEntriesForKey:v4];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v15 = [storage countOfEntriesForKey:v4];
 
-  v16 = [v3 objectForKeyedSubscript:@"testName"];
+  v16 = [writeCopy objectForKeyedSubscript:@"testName"];
   if (([v16 isEqualToString:@"WriteEntry"] & 1) == 0)
   {
-    v17 = [v3 objectForKeyedSubscript:@"testName"];
+    v17 = [writeCopy objectForKeyedSubscript:@"testName"];
     v18 = [v17 isEqualToString:@"WriteEntries"];
 
     v19 = v18 ^ 1;
-    if (v12 != -1)
+    if (intValue != -1)
     {
       v19 = 1;
     }
@@ -1936,14 +1936,14 @@ void __42__PLDebugService_initOperatorDependancies__block_invoke_660(uint64_t a1
     v56 = v19;
   }
 
-  v54 = v3;
-  v20 = [v3 objectForKeyedSubscript:@"testName"];
+  v54 = writeCopy;
+  v20 = [writeCopy objectForKeyedSubscript:@"testName"];
   v21 = [v20 isEqualToString:@"WriteEntries"];
 
   if (v21)
   {
-    v22 = [MEMORY[0x277CBEB18] array];
-    if (v7 >= 1)
+    array = [MEMORY[0x277CBEB18] array];
+    if (longValue >= 1)
     {
       v23 = 0;
       if (v56)
@@ -1961,23 +1961,23 @@ void __42__PLDebugService_initOperatorDependancies__block_invoke_660(uint64_t a1
         v25 = objc_alloc(MEMORY[0x277D3F190]);
         v26 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v23];
         v27 = [v25 initWithEntryKey:v24 withDate:v26];
-        [v22 addObject:v27];
+        [array addObject:v27];
 
         ++v23;
       }
 
-      while (v7 != v23);
+      while (longValue != v23);
     }
 
-    v28 = [MEMORY[0x277D3F2A0] sharedCore];
-    v29 = [v28 storage];
+    mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+    storage2 = [mEMORY[0x277D3F2A0]2 storage];
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __27__PLDebugService_rawWrite___block_invoke;
     v59[3] = &unk_2782591D0;
     v30 = v55;
     v60 = v30;
-    [v29 writeEntries:v22 withCompletionBlock:v59];
+    [storage2 writeEntries:array withCompletionBlock:v59];
 
     if (v56)
     {
@@ -1985,7 +1985,7 @@ void __42__PLDebugService_initOperatorDependancies__block_invoke_660(uint64_t a1
     }
   }
 
-  else if (v7 >= 1)
+  else if (longValue >= 1)
   {
     v31 = 0;
     if (v56)
@@ -2004,15 +2004,15 @@ void __42__PLDebugService_initOperatorDependancies__block_invoke_660(uint64_t a1
       v34 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v31];
       v35 = [v33 initWithEntryKey:v32 withDate:v34];
 
-      v36 = [MEMORY[0x277D3F2A0] sharedCore];
-      v37 = [v36 storage];
+      mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+      storage3 = [mEMORY[0x277D3F2A0]3 storage];
       v57[0] = MEMORY[0x277D85DD0];
       v57[1] = 3221225472;
       v57[2] = __27__PLDebugService_rawWrite___block_invoke_2;
       v57[3] = &unk_2782591D0;
       v38 = v55;
       v58 = v38;
-      [v37 writeEntry:v35 withCompletionBlock:v57];
+      [storage3 writeEntry:v35 withCompletionBlock:v57];
 
       if (v56)
       {
@@ -2022,19 +2022,19 @@ void __42__PLDebugService_initOperatorDependancies__block_invoke_660(uint64_t a1
       ++v31;
     }
 
-    while (v7 != v31);
+    while (longValue != v31);
   }
 
-  if (v52)
+  if (bOOLValue)
   {
-    v39 = [MEMORY[0x277D3F2A0] sharedCore];
-    v40 = [v39 storage];
-    [v40 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0]4 = [MEMORY[0x277D3F2A0] sharedCore];
+    storage4 = [mEMORY[0x277D3F2A0]4 storage];
+    [storage4 blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v41 = [MEMORY[0x277D3F2A0] sharedCore];
-  v42 = [v41 storage];
-  v43 = [v42 countOfEntriesForKey:v4];
+  mEMORY[0x277D3F2A0]5 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage5 = [mEMORY[0x277D3F2A0]5 storage];
+  v43 = [storage5 countOfEntriesForKey:v4];
 
   v44 = MEMORY[0x277CCACA8];
   v45 = [v54 objectForKeyedSubscript:@"testName"];
@@ -2045,71 +2045,71 @@ void __42__PLDebugService_initOperatorDependancies__block_invoke_660(uint64_t a1
     v47 = @"ies";
   }
 
-  if (v15 + v7 != v43 && v56)
+  if (v15 + longValue != v43 && v56)
   {
-    v48 = [v44 stringWithFormat:@"WriteEntr%@ (%ld times) failed.  Before:%ld, After:%ld", v47, v7, v15, v43];
+    v48 = [v44 stringWithFormat:@"WriteEntr%@ (%ld times) failed.  Before:%ld, After:%ld", v47, longValue, v15, v43];
     v49 = [(PLDebugService *)self test_LogErr:v54 str:v48];
   }
 
   else
   {
-    v48 = [v44 stringWithFormat:@"WriteEntr%@ (%ld times) passed.  Before:%ld, After:%ld", v47, v7, v15, v43];
+    v48 = [v44 stringWithFormat:@"WriteEntr%@ (%ld times) passed.  Before:%ld, After:%ld", v47, longValue, v15, v43];
     v50 = [(PLDebugService *)self test_LogPass:v54 str:v48];
   }
 
   return 1;
 }
 
-- (id)testPLAPICore_WriteEntry:(id)a3
+- (id)testPLAPICore_WriteEntry:(id)entry
 {
-  v4 = a3;
-  [(PLDebugService *)self rawWrite:v4];
+  entryCopy = entry;
+  [(PLDebugService *)self rawWrite:entryCopy];
 
-  return v4;
+  return entryCopy;
 }
 
-- (id)testPLAPICore_WriteEntries:(id)a3
+- (id)testPLAPICore_WriteEntries:(id)entries
 {
-  v4 = a3;
-  [(PLDebugService *)self rawWrite:v4];
+  entriesCopy = entries;
+  [(PLDebugService *)self rawWrite:entriesCopy];
 
-  return v4;
+  return entriesCopy;
 }
 
-- (id)testPLAPICore_UpdateEntry:(id)a3
+- (id)testPLAPICore_UpdateEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v45 = dispatch_semaphore_create(0);
   v5 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PLAPITest"];
-  v6 = [v4 objectForKeyedSubscript:@"objT"];
+  v6 = [entryCopy objectForKeyedSubscript:@"objT"];
   v7 = [v6 objectForKeyedSubscript:@"iterations"];
-  v8 = [v7 longValue];
+  longValue = [v7 longValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"objT"];
+  v9 = [entryCopy objectForKeyedSubscript:@"objT"];
   v10 = [v9 objectForKeyedSubscript:@"flush"];
-  v40 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [entryCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
-  v13 = [v12 intValue];
+  intValue = [v12 intValue];
 
-  v41 = self;
-  v42 = v4;
-  [(PLDebugService *)self rawWrite:v4];
-  v14 = [MEMORY[0x277D3F2A0] sharedCore];
-  v15 = [v14 storage];
+  selfCopy = self;
+  v42 = entryCopy;
+  [(PLDebugService *)self rawWrite:entryCopy];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
   v43 = v5;
-  v44 = [v15 entriesForKey:v5];
+  v44 = [storage entriesForKey:v5];
 
-  if (v8 >= 1)
+  if (longValue >= 1)
   {
-    for (i = 0; i != v8; ++i)
+    for (i = 0; i != longValue; ++i)
     {
-      v17 = [MEMORY[0x277D3F2A0] sharedCore];
-      v18 = [v17 storage];
-      if (v13 == -1)
+      mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+      storage2 = [mEMORY[0x277D3F2A0]2 storage];
+      if (intValue == -1)
       {
-        v20 = 0;
+        selfCopy2 = 0;
         v19 = v44;
       }
 
@@ -2117,7 +2117,7 @@ void __42__PLDebugService_initOperatorDependancies__block_invoke_660(uint64_t a1
       {
         v19 = v44;
         self = [v44 objectAtIndexedSubscript:i];
-        v20 = self;
+        selfCopy2 = self;
       }
 
       v46[0] = MEMORY[0x277D85DD0];
@@ -2128,8 +2128,8 @@ void __42__PLDebugService_initOperatorDependancies__block_invoke_660(uint64_t a1
       v49 = i;
       v21 = v45;
       v48 = v21;
-      [v18 updateEntry:v20 withBlock:v46];
-      if (v13 == -1)
+      [storage2 updateEntry:selfCopy2 withBlock:v46];
+      if (intValue == -1)
       {
       }
 
@@ -2141,19 +2141,19 @@ void __42__PLDebugService_initOperatorDependancies__block_invoke_660(uint64_t a1
     }
   }
 
-  if (v40)
+  if (bOOLValue)
   {
-    v22 = [MEMORY[0x277D3F2A0] sharedCore];
-    v23 = [v22 storage];
-    [v23 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+    storage3 = [mEMORY[0x277D3F2A0]3 storage];
+    [storage3 blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v24 = [MEMORY[0x277D3F2A0] sharedCore];
-  v25 = [v24 storage];
-  v26 = [v25 entriesForKey:v5];
+  mEMORY[0x277D3F2A0]4 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage4 = [mEMORY[0x277D3F2A0]4 storage];
+  v26 = [storage4 entriesForKey:v5];
 
-  v27 = v4;
-  if (v8 < 1)
+  v27 = entryCopy;
+  if (longValue < 1)
   {
     goto LABEL_22;
   }
@@ -2165,8 +2165,8 @@ void __42__PLDebugService_initOperatorDependancies__block_invoke_660(uint64_t a1
     v30 = v28 + 1;
     v31 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(v28 + 1)];
     v32 = [v26 objectAtIndexedSubscript:v28];
-    v33 = [v32 entryDate];
-    v34 = [v33 compare:v31];
+    entryDate = [v32 entryDate];
+    v34 = [entryDate compare:v31];
 
     if (v34)
     {
@@ -2176,20 +2176,20 @@ void __42__PLDebugService_initOperatorDependancies__block_invoke_660(uint64_t a1
     v28 = v30;
   }
 
-  while (v8 != v30);
-  v35 = !v29 || v13 == -1;
+  while (longValue != v30);
+  v35 = !v29 || intValue == -1;
   v27 = v42;
   if (v35)
   {
 LABEL_22:
-    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"UpdateEntry (%ld times) passed.", v8];
-    v36 = [(PLDebugService *)v41 test_LogPass:v27 str:v37];
+    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"UpdateEntry (%ld times) passed.", longValue];
+    v36 = [(PLDebugService *)selfCopy test_LogPass:v27 str:v37];
   }
 
   else
   {
-    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"UpdateEntry (%ld times) failed - times .  Failures: %ld, array:%@", v8, v29, v26];
-    v38 = [(PLDebugService *)v41 test_LogErr:v42 str:v37];
+    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"UpdateEntry (%ld times) failed - times .  Failures: %ld, array:%@", longValue, v29, v26];
+    v38 = [(PLDebugService *)selfCopy test_LogErr:v42 str:v37];
   }
 
   return v27;
@@ -2206,42 +2206,42 @@ intptr_t __44__PLDebugService_testPLAPICore_UpdateEntry___block_invoke(uint64_t 
   return dispatch_semaphore_signal(v4);
 }
 
-- (id)testPLAPICore_DeleteEntry:(id)a3
+- (id)testPLAPICore_DeleteEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PLAPITest"];
-  v6 = [v4 objectForKeyedSubscript:@"objT"];
+  v6 = [entryCopy objectForKeyedSubscript:@"objT"];
   v7 = [v6 objectForKeyedSubscript:@"iterations"];
-  v8 = [v7 longValue];
+  longValue = [v7 longValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"objT"];
+  v9 = [entryCopy objectForKeyedSubscript:@"objT"];
   v10 = [v9 objectForKeyedSubscript:@"flush"];
-  v34 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [entryCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
-  v13 = [v12 intValue];
+  intValue = [v12 intValue];
 
-  [(PLDebugService *)self rawWrite:v4];
-  v14 = [MEMORY[0x277D3F2A0] sharedCore];
-  v15 = [v14 storage];
-  v16 = [v15 countOfEntriesForKey:v5];
+  [(PLDebugService *)self rawWrite:entryCopy];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v16 = [storage countOfEntriesForKey:v5];
 
-  v17 = [MEMORY[0x277D3F2A0] sharedCore];
-  v18 = [v17 storage];
+  mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage2 = [mEMORY[0x277D3F2A0]2 storage];
   v35 = v5;
-  v19 = [v18 entriesForKey:v5];
+  v19 = [storage2 entriesForKey:v5];
 
-  if (v8 >= 1)
+  if (longValue >= 1)
   {
-    for (i = 0; i != v8; ++i)
+    for (i = 0; i != longValue; ++i)
     {
-      v21 = [MEMORY[0x277D3F2A0] sharedCore];
-      v22 = [v21 storage];
-      v23 = v22;
-      if (v13 == -1)
+      mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+      storage3 = [mEMORY[0x277D3F2A0]3 storage];
+      v23 = storage3;
+      if (intValue == -1)
       {
-        [v22 deleteEntry:0];
+        [storage3 deleteEntry:0];
       }
 
       else
@@ -2252,70 +2252,70 @@ intptr_t __44__PLDebugService_testPLAPICore_UpdateEntry___block_invoke(uint64_t 
     }
   }
 
-  if (v34)
+  if (bOOLValue)
   {
-    v25 = [MEMORY[0x277D3F2A0] sharedCore];
-    v26 = [v25 storage];
-    [v26 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0]4 = [MEMORY[0x277D3F2A0] sharedCore];
+    storage4 = [mEMORY[0x277D3F2A0]4 storage];
+    [storage4 blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v27 = [MEMORY[0x277D3F2A0] sharedCore];
-  v28 = [v27 storage];
-  v29 = [v28 countOfEntriesForKey:v35];
+  mEMORY[0x277D3F2A0]5 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage5 = [mEMORY[0x277D3F2A0]5 storage];
+  v29 = [storage5 countOfEntriesForKey:v35];
 
-  if (v29 == ((v16 - v8) & ~((v16 - v8) >> 63)))
+  if (v29 == ((v16 - longValue) & ~((v16 - longValue) >> 63)))
   {
-    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteEntry (%ld times) passed.  Before:%ld, After:%ld", v8, v16, v29];
-    v31 = [(PLDebugService *)self test_LogPass:v4 str:v30];
+    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteEntry (%ld times) passed.  Before:%ld, After:%ld", longValue, v16, v29];
+    v31 = [(PLDebugService *)self test_LogPass:entryCopy str:v30];
   }
 
   else
   {
-    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteEntry (%ld times) failed.  Before:%ld, After:%ld", v8, v16, v29];
-    v32 = [(PLDebugService *)self test_LogErr:v4 str:v30];
+    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteEntry (%ld times) failed.  Before:%ld, After:%ld", longValue, v16, v29];
+    v32 = [(PLDebugService *)self test_LogErr:entryCopy str:v30];
   }
 
-  return v4;
+  return entryCopy;
 }
 
-- (id)testPLAPICore_DeleteEntryForKey:(id)a3
+- (id)testPLAPICore_DeleteEntryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PLAPITest"];
-  v6 = [v4 objectForKeyedSubscript:@"objT"];
+  v6 = [keyCopy objectForKeyedSubscript:@"objT"];
   v7 = [v6 objectForKeyedSubscript:@"iterations"];
-  v8 = [v7 longValue];
+  longValue = [v7 longValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"objT"];
+  v9 = [keyCopy objectForKeyedSubscript:@"objT"];
   v10 = [v9 objectForKeyedSubscript:@"flush"];
-  v50 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [keyCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
-  v13 = [v12 intValue];
+  intValue = [v12 intValue];
 
-  v52 = self;
-  v53 = v4;
-  [(PLDebugService *)self rawWrite:v4];
+  selfCopy = self;
+  v53 = keyCopy;
+  [(PLDebugService *)self rawWrite:keyCopy];
   v14 = 0x277D3F000uLL;
-  v15 = [MEMORY[0x277D3F2A0] sharedCore];
-  v16 = [v15 storage];
-  v17 = [v16 entriesForKey:v5];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v17 = [storage entriesForKey:v5];
   NSLog(&cfstr_Before.isa, v17);
 
-  v18 = [MEMORY[0x277D3F2A0] sharedCore];
-  v19 = [v18 storage];
-  v51 = [v19 countOfEntriesForKey:v5];
+  mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage2 = [mEMORY[0x277D3F2A0]2 storage];
+  v51 = [storage2 countOfEntriesForKey:v5];
 
-  v20 = [MEMORY[0x277D3F2A0] sharedCore];
-  v21 = [v20 storage];
+  mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage3 = [mEMORY[0x277D3F2A0]3 storage];
   v22 = v5;
-  v23 = [v21 entriesForKey:v5];
+  v23 = [storage3 entriesForKey:v5];
 
-  if (v8 >= 1)
+  if (longValue >= 1)
   {
     v24 = 0;
-    if (v13 == -1)
+    if (intValue == -1)
     {
       v25 = 0;
     }
@@ -2328,21 +2328,21 @@ intptr_t __44__PLDebugService_testPLAPICore_UpdateEntry___block_invoke(uint64_t 
     do
     {
       v26 = [v23 objectAtIndexedSubscript:v24];
-      v27 = [v26 entryID];
+      entryID = [v26 entryID];
 
-      v28 = [*(v14 + 672) sharedCore];
-      v29 = [v28 storage];
-      [v29 deleteEntryForKey:v25 WithRowID:v27];
+      sharedCore = [*(v14 + 672) sharedCore];
+      storage4 = [sharedCore storage];
+      [storage4 deleteEntryForKey:v25 WithRowID:entryID];
 
       v30 = [v23 objectAtIndexedSubscript:v24];
-      v31 = [*(v14 + 672) sharedCore];
-      [v31 storage];
-      v32 = v8;
+      sharedCore2 = [*(v14 + 672) sharedCore];
+      [sharedCore2 storage];
+      v32 = longValue;
       v34 = v33 = v14;
-      NSLog(&cfstr_DeletingWithRo.isa, v30, v27, [v34 countOfEntriesForKey:v22]);
+      NSLog(&cfstr_DeletingWithRo.isa, v30, entryID, [v34 countOfEntriesForKey:v22]);
 
       v14 = v33;
-      v8 = v32;
+      longValue = v32;
 
       ++v24;
     }
@@ -2350,64 +2350,64 @@ intptr_t __44__PLDebugService_testPLAPICore_UpdateEntry___block_invoke(uint64_t 
     while (v32 != v24);
   }
 
-  if (v50)
+  if (bOOLValue)
   {
     [*(v14 + 672) sharedCore];
     v36 = v35 = v14;
-    v37 = [v36 storage];
-    [v37 blockingFlushCachesWithReason:@"testAPI"];
+    storage5 = [v36 storage];
+    [storage5 blockingFlushCachesWithReason:@"testAPI"];
 
     v14 = v35;
   }
 
   [*(v14 + 672) sharedCore];
   v39 = v38 = v14;
-  v40 = [v39 storage];
-  v41 = [v40 entriesForKey:v22];
+  storage6 = [v39 storage];
+  v41 = [storage6 entriesForKey:v22];
   NSLog(&cfstr_After.isa, v41);
 
-  v42 = [*(v38 + 672) sharedCore];
-  v43 = [v42 storage];
-  v44 = [v43 countOfEntriesForKey:v22];
+  sharedCore3 = [*(v38 + 672) sharedCore];
+  storage7 = [sharedCore3 storage];
+  v44 = [storage7 countOfEntriesForKey:v22];
 
-  if (v44 == ((v51 - v8) & ~((v51 - v8) >> 63)))
+  if (v44 == ((v51 - longValue) & ~((v51 - longValue) >> 63)))
   {
-    v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteEntryForKey (%ld times) passed.  Before:%ld, After:%ld", v8, v51, v44];
+    v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteEntryForKey (%ld times) passed.  Before:%ld, After:%ld", longValue, v51, v44];
     v46 = v53;
-    v47 = [(PLDebugService *)v52 test_LogPass:v53 str:v45];
+    v47 = [(PLDebugService *)selfCopy test_LogPass:v53 str:v45];
   }
 
   else
   {
-    v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteEntryForKey (%ld times) failed.  Before:%ld, After:%ld", v8, v51, v44];
+    v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteEntryForKey (%ld times) failed.  Before:%ld, After:%ld", longValue, v51, v44];
     v46 = v53;
-    v48 = [(PLDebugService *)v52 test_LogErr:v53 str:v45];
+    v48 = [(PLDebugService *)selfCopy test_LogErr:v53 str:v45];
   }
 
   return v46;
 }
 
-- (id)testPLAPICore_DeleteAllEntriesForKey:(id)a3
+- (id)testPLAPICore_DeleteAllEntriesForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PLAPITest"];
-  v6 = [v4 objectForKeyedSubscript:@"objT"];
+  v6 = [keyCopy objectForKeyedSubscript:@"objT"];
   v7 = [v6 objectForKeyedSubscript:@"flush"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"objT"];
+  v9 = [keyCopy objectForKeyedSubscript:@"objT"];
   v10 = [v9 objectForKeyedSubscript:@"validity"];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
-  [(PLDebugService *)self rawWrite:v4];
-  v12 = [MEMORY[0x277D3F2A0] sharedCore];
-  v13 = [v12 storage];
-  v14 = [v13 countOfEntriesForKey:v5];
+  [(PLDebugService *)self rawWrite:keyCopy];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v14 = [storage countOfEntriesForKey:v5];
 
-  v15 = [MEMORY[0x277D3F2A0] sharedCore];
-  v16 = [v15 storage];
-  v17 = v16;
-  if (v11 == -1)
+  mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage2 = [mEMORY[0x277D3F2A0]2 storage];
+  v17 = storage2;
+  if (intValue == -1)
   {
     v18 = 0;
   }
@@ -2417,55 +2417,55 @@ intptr_t __44__PLDebugService_testPLAPICore_UpdateEntry___block_invoke(uint64_t 
     v18 = v5;
   }
 
-  [v16 deleteAllEntriesForKey:v18];
+  [storage2 deleteAllEntriesForKey:v18];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v19 = [MEMORY[0x277D3F2A0] sharedCore];
-    v20 = [v19 storage];
-    [v20 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+    storage3 = [mEMORY[0x277D3F2A0]3 storage];
+    [storage3 blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v21 = [MEMORY[0x277D3F2A0] sharedCore];
-  v22 = [v21 storage];
-  v23 = [v22 countOfEntriesForKey:v5];
+  mEMORY[0x277D3F2A0]4 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage4 = [mEMORY[0x277D3F2A0]4 storage];
+  v23 = [storage4 countOfEntriesForKey:v5];
 
-  if (!v23 || v11 == -1)
+  if (!v23 || intValue == -1)
   {
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteAllEntriesForKey passed.  Before:%ld, After:%ld", v14, v23];
-    v26 = [(PLDebugService *)self test_LogPass:v4 str:v24];
+    v26 = [(PLDebugService *)self test_LogPass:keyCopy str:v24];
   }
 
   else
   {
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteAllEntriesForKey failed.  Before:%ld, After:%ld", v14, v23];
-    v25 = [(PLDebugService *)self test_LogErr:v4 str:v24];
+    v25 = [(PLDebugService *)self test_LogErr:keyCopy str:v24];
   }
 
-  return v4;
+  return keyCopy;
 }
 
-- (id)testPLAPICore_DeleteAllEntriesForKeyWF:(id)a3
+- (id)testPLAPICore_DeleteAllEntriesForKeyWF:(id)f
 {
-  v4 = a3;
+  fCopy = f;
   v5 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PLAPITest"];
-  v6 = [v4 objectForKeyedSubscript:@"objT"];
+  v6 = [fCopy objectForKeyedSubscript:@"objT"];
   v7 = [v6 objectForKeyedSubscript:@"flush"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"objT"];
+  v9 = [fCopy objectForKeyedSubscript:@"objT"];
   v10 = [v9 objectForKeyedSubscript:@"validity"];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
-  [(PLDebugService *)self rawWrite:v4];
-  v12 = [MEMORY[0x277D3F2A0] sharedCore];
-  v13 = [v12 storage];
-  v14 = [v13 countOfEntriesForKey:v5];
+  [(PLDebugService *)self rawWrite:fCopy];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v14 = [storage countOfEntriesForKey:v5];
 
-  v15 = [MEMORY[0x277D3F2A0] sharedCore];
-  v16 = [v15 storage];
-  v17 = v16;
-  if (v11 == -1)
+  mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage2 = [mEMORY[0x277D3F2A0]2 storage];
+  v17 = storage2;
+  if (intValue == -1)
   {
     v18 = 0;
   }
@@ -2475,54 +2475,54 @@ intptr_t __44__PLDebugService_testPLAPICore_UpdateEntry___block_invoke(uint64_t 
     v18 = v5;
   }
 
-  [v16 deleteAllEntriesForKey:v18 withFilters:0];
+  [storage2 deleteAllEntriesForKey:v18 withFilters:0];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v19 = [MEMORY[0x277D3F2A0] sharedCore];
-    v20 = [v19 storage];
-    [v20 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+    storage3 = [mEMORY[0x277D3F2A0]3 storage];
+    [storage3 blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v21 = [MEMORY[0x277D3F2A0] sharedCore];
-  v22 = [v21 storage];
-  v23 = [v22 countOfEntriesForKey:v5];
+  mEMORY[0x277D3F2A0]4 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage4 = [mEMORY[0x277D3F2A0]4 storage];
+  v23 = [storage4 countOfEntriesForKey:v5];
 
-  if (!v23 || v11 == -1)
+  if (!v23 || intValue == -1)
   {
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteAllEntriesForKeyWF passed.  Before:%ld, After:%ld", v14, v23];
-    v26 = [(PLDebugService *)self test_LogPass:v4 str:v24];
+    v26 = [(PLDebugService *)self test_LogPass:fCopy str:v24];
   }
 
   else
   {
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteAllEntriesForKeyWF failed.  Before:%ld, After:%ld", v14, v23];
-    v25 = [(PLDebugService *)self test_LogErr:v4 str:v24];
+    v25 = [(PLDebugService *)self test_LogErr:fCopy str:v24];
   }
 
-  return v4;
+  return fCopy;
 }
 
-- (id)testPLAPICore_DeleteAllEntriesForKeyBTWF:(id)a3
+- (id)testPLAPICore_DeleteAllEntriesForKeyBTWF:(id)f
 {
-  v4 = a3;
+  fCopy = f;
   v5 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PLAPITest"];
-  v6 = [v4 objectForKeyedSubscript:@"objT"];
+  v6 = [fCopy objectForKeyedSubscript:@"objT"];
   v7 = [v6 objectForKeyedSubscript:@"flush"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"objT"];
+  v9 = [fCopy objectForKeyedSubscript:@"objT"];
   v10 = [v9 objectForKeyedSubscript:@"validity"];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
-  [(PLDebugService *)self rawWrite:v4];
-  v12 = [MEMORY[0x277D3F2A0] sharedCore];
-  v13 = [v12 storage];
-  v14 = [v13 countOfEntriesForKey:v5];
+  [(PLDebugService *)self rawWrite:fCopy];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v14 = [storage countOfEntriesForKey:v5];
 
-  v15 = [MEMORY[0x277D3F2A0] sharedCore];
-  v16 = [v15 storage];
-  if (v11 == -1)
+  mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage2 = [mEMORY[0x277D3F2A0]2 storage];
+  if (intValue == -1)
   {
     v17 = 0;
   }
@@ -2532,63 +2532,63 @@ intptr_t __44__PLDebugService_testPLAPICore_UpdateEntry___block_invoke(uint64_t 
     v17 = v5;
   }
 
-  v18 = [MEMORY[0x277CBEAA8] date];
-  [v16 deleteAllEntriesForKey:v17 beforeTimestamp:v18 withFilters:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  [storage2 deleteAllEntriesForKey:v17 beforeTimestamp:date withFilters:0];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v19 = [MEMORY[0x277D3F2A0] sharedCore];
-    v20 = [v19 storage];
-    [v20 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+    storage3 = [mEMORY[0x277D3F2A0]3 storage];
+    [storage3 blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v21 = [MEMORY[0x277D3F2A0] sharedCore];
-  v22 = [v21 storage];
-  v23 = [v22 countOfEntriesForKey:v5];
+  mEMORY[0x277D3F2A0]4 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage4 = [mEMORY[0x277D3F2A0]4 storage];
+  v23 = [storage4 countOfEntriesForKey:v5];
 
-  if (!v23 || v11 == -1)
+  if (!v23 || intValue == -1)
   {
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteAllEntriesForKeyBTWF passed.  Before:%ld, After:%ld", v14, v23];
-    v26 = [(PLDebugService *)self test_LogPass:v4 str:v24];
+    v26 = [(PLDebugService *)self test_LogPass:fCopy str:v24];
   }
 
   else
   {
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"deleteAllEntriesForKeyBTWF failed.  Before:%ld, After:%ld", v14, v23];
-    v25 = [(PLDebugService *)self test_LogErr:v4 str:v24];
+    v25 = [(PLDebugService *)self test_LogErr:fCopy str:v24];
   }
 
-  return v4;
+  return fCopy;
 }
 
-- (id)testPLAPICore_EntriesForKeyWithProperties:(id)a3
+- (id)testPLAPICore_EntriesForKeyWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PLAPITest"];
-  [(PLDebugService *)self rawWrite:v4];
-  v6 = [v4 objectForKeyedSubscript:@"objT"];
+  [(PLDebugService *)self rawWrite:propertiesCopy];
+  v6 = [propertiesCopy objectForKeyedSubscript:@"objT"];
   v7 = [v6 objectForKeyedSubscript:@"flush"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"objT"];
+  v9 = [propertiesCopy objectForKeyedSubscript:@"objT"];
   v10 = [v9 objectForKeyedSubscript:@"validity"];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
-  v12 = [MEMORY[0x277D3F2A0] sharedCore];
-  v13 = [v12 storage];
-  v14 = [v13 countOfEntriesForKey:v5];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v14 = [storage countOfEntriesForKey:v5];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v15 = [MEMORY[0x277D3F2A0] sharedCore];
-    v16 = [v15 storage];
-    [v16 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+    storage2 = [mEMORY[0x277D3F2A0]2 storage];
+    [storage2 blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v17 = [MEMORY[0x277D3F2A0] sharedCore];
-  v18 = [v17 storage];
-  v19 = v18;
-  if (v11 == -1)
+  mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage3 = [mEMORY[0x277D3F2A0]3 storage];
+  v19 = storage3;
+  if (intValue == -1)
   {
     v20 = 0;
   }
@@ -2598,59 +2598,59 @@ intptr_t __44__PLDebugService_testPLAPICore_UpdateEntry___block_invoke(uint64_t 
     v20 = v5;
   }
 
-  v21 = [v18 entriesForKey:v20 withProperties:0];
+  v21 = [storage3 entriesForKey:v20 withProperties:0];
   v22 = [v21 count];
 
-  if (v14 == v22 || v11 == -1)
+  if (v14 == v22 || intValue == -1)
   {
     v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyWithProperties passed.  Before:%ld, After:%ld", v14, v22];
-    v25 = [(PLDebugService *)self test_LogPass:v4 str:v23];
+    v25 = [(PLDebugService *)self test_LogPass:propertiesCopy str:v23];
   }
 
   else
   {
     v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyWithProperties failed.  Before:%ld, After:%ld", v14, v22];
-    v24 = [(PLDebugService *)self test_LogErr:v4 str:v23];
+    v24 = [(PLDebugService *)self test_LogErr:propertiesCopy str:v23];
   }
 
-  return v4;
+  return propertiesCopy;
 }
 
-- (id)testPLAPICore_EntriesForKeyInTimeRange:(id)a3
+- (id)testPLAPICore_EntriesForKeyInTimeRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v5 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PLAPITest"];
-  v6 = [v4 objectForKeyedSubscript:@"objT"];
+  v6 = [rangeCopy objectForKeyedSubscript:@"objT"];
   v7 = [v6 objectForKeyedSubscript:@"flush"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"objT"];
+  v9 = [rangeCopy objectForKeyedSubscript:@"objT"];
   v10 = [v9 objectForKeyedSubscript:@"validity"];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
   v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:0.0];
-  v13 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [v12 timeIntervalSince1970];
   v15 = v14;
-  [v13 timeIntervalSince1970];
+  [date timeIntervalSince1970];
   v17 = v16 - v15;
 
-  [(PLDebugService *)self rawWrite:v4];
-  v18 = [MEMORY[0x277D3F2A0] sharedCore];
-  v19 = [v18 storage];
-  v20 = [v19 countOfEntriesForKey:v5];
+  [(PLDebugService *)self rawWrite:rangeCopy];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v20 = [storage countOfEntriesForKey:v5];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v21 = [MEMORY[0x277D3F2A0] sharedCore];
-    v22 = [v21 storage];
-    [v22 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+    storage2 = [mEMORY[0x277D3F2A0]2 storage];
+    [storage2 blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v23 = [MEMORY[0x277D3F2A0] sharedCore];
-  v24 = [v23 storage];
-  v25 = v24;
-  if (v11 == -1)
+  mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage3 = [mEMORY[0x277D3F2A0]3 storage];
+  v25 = storage3;
+  if (intValue == -1)
   {
     v26 = 0;
   }
@@ -2660,52 +2660,52 @@ intptr_t __44__PLDebugService_testPLAPICore_UpdateEntry___block_invoke(uint64_t 
     v26 = v5;
   }
 
-  v27 = [v24 entriesForKey:v26 inTimeRange:0 withFilters:{v15, v17}];
+  v27 = [storage3 entriesForKey:v26 inTimeRange:0 withFilters:{v15, v17}];
   v28 = [v27 count];
 
-  if (v20 == v28 || v11 == -1)
+  if (v20 == v28 || intValue == -1)
   {
     v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyInTimeRange passed.  Before:%ld, After:%ld", v20, v28];
-    v31 = [(PLDebugService *)self test_LogPass:v4 str:v29];
+    v31 = [(PLDebugService *)self test_LogPass:rangeCopy str:v29];
   }
 
   else
   {
     v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyInTimeRange failed.  Before:%ld, After:%ld", v20, v28];
-    v30 = [(PLDebugService *)self test_LogErr:v4 str:v29];
+    v30 = [(PLDebugService *)self test_LogErr:rangeCopy str:v29];
   }
 
-  return v4;
+  return rangeCopy;
 }
 
-- (id)testPLAPICore_EntriesForKeyBeforeTICWF:(id)a3
+- (id)testPLAPICore_EntriesForKeyBeforeTICWF:(id)f
 {
-  v4 = a3;
+  fCopy = f;
   v5 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PLAPITest"];
-  v6 = [v4 objectForKeyedSubscript:@"objT"];
+  v6 = [fCopy objectForKeyedSubscript:@"objT"];
   v7 = [v6 objectForKeyedSubscript:@"flush"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"objT"];
+  v9 = [fCopy objectForKeyedSubscript:@"objT"];
   v10 = [v9 objectForKeyedSubscript:@"validity"];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
-  [(PLDebugService *)self rawWrite:v4];
-  v12 = [MEMORY[0x277D3F2A0] sharedCore];
-  v13 = [v12 storage];
-  v14 = [v13 countOfEntriesForKey:v5];
+  [(PLDebugService *)self rawWrite:fCopy];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v14 = [storage countOfEntriesForKey:v5];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v15 = [MEMORY[0x277D3F2A0] sharedCore];
-    v16 = [v15 storage];
-    [v16 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+    storage2 = [mEMORY[0x277D3F2A0]2 storage];
+    [storage2 blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v17 = [MEMORY[0x277D3F2A0] sharedCore];
-  v18 = [v17 storage];
-  v19 = v18;
-  if (v11 == -1)
+  mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage3 = [mEMORY[0x277D3F2A0]3 storage];
+  v19 = storage3;
+  if (intValue == -1)
   {
     v20 = 0;
   }
@@ -2715,53 +2715,53 @@ intptr_t __44__PLDebugService_testPLAPICore_UpdateEntry___block_invoke(uint64_t 
     v20 = v5;
   }
 
-  v21 = [v18 entriesForKey:v20 before:1 timeInterval:v14 count:0 withFilters:1.79769313e308];
+  v21 = [storage3 entriesForKey:v20 before:1 timeInterval:v14 count:0 withFilters:1.79769313e308];
   v22 = [v21 count];
 
-  if (v14 == v22 || v11 == -1)
+  if (v14 == v22 || intValue == -1)
   {
     v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyBeforeTICWF passed.  Before:%ld, After:%ld", v14, v22];
-    v25 = [(PLDebugService *)self test_LogPass:v4 str:v23];
+    v25 = [(PLDebugService *)self test_LogPass:fCopy str:v23];
   }
 
   else
   {
     v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyBeforeTICWF failed.  Before:%ld, After:%ld", v14, v22];
-    v24 = [(PLDebugService *)self test_LogErr:v4 str:v23];
+    v24 = [(PLDebugService *)self test_LogErr:fCopy str:v23];
   }
 
-  return v4;
+  return fCopy;
 }
 
-- (id)testPLAPICore_LastEntryForKeyWSEK:(id)a3
+- (id)testPLAPICore_LastEntryForKeyWSEK:(id)k
 {
-  v4 = a3;
+  kCopy = k;
   v5 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PLAPITest"];
-  v6 = [v4 objectForKeyedSubscript:@"objT"];
+  v6 = [kCopy objectForKeyedSubscript:@"objT"];
   v7 = [v6 objectForKeyedSubscript:@"flush"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"objT"];
+  v9 = [kCopy objectForKeyedSubscript:@"objT"];
   v10 = [v9 objectForKeyedSubscript:@"validity"];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
-  [(PLDebugService *)self rawWrite:v4];
-  v12 = [MEMORY[0x277D3F2A0] sharedCore];
-  v13 = [v12 storage];
-  v14 = [v13 entriesForKey:v5];
-  v15 = [v14 lastObject];
+  [(PLDebugService *)self rawWrite:kCopy];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v14 = [storage entriesForKey:v5];
+  lastObject = [v14 lastObject];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v16 = [MEMORY[0x277D3F2A0] sharedCore];
-    v17 = [v16 storage];
-    [v17 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+    storage2 = [mEMORY[0x277D3F2A0]2 storage];
+    [storage2 blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v18 = [MEMORY[0x277D3F2A0] sharedCore];
-  v19 = [v18 storage];
-  v20 = v19;
-  if (v11 == -1)
+  mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage3 = [mEMORY[0x277D3F2A0]3 storage];
+  v20 = storage3;
+  if (intValue == -1)
   {
     v21 = 0;
   }
@@ -2771,53 +2771,53 @@ intptr_t __44__PLDebugService_testPLAPICore_UpdateEntry___block_invoke(uint64_t 
     v21 = v5;
   }
 
-  v22 = [v19 lastEntryForKey:v21 withSubEntryKey:0];
+  v22 = [storage3 lastEntryForKey:v21 withSubEntryKey:0];
 
-  if ([v15 compare:v22])
+  if ([lastObject compare:v22])
   {
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyInTimeRange failed.  Array:%@, LEFK:%@", v15, v22];
-    v24 = [(PLDebugService *)self test_LogErr:v4 str:v23];
+    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyInTimeRange failed.  Array:%@, LEFK:%@", lastObject, v22];
+    v24 = [(PLDebugService *)self test_LogErr:kCopy str:v23];
   }
 
   else
   {
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyInTimeRange passed.  Array:%@, LEFK:%@", v15, v22];
-    v25 = [(PLDebugService *)self test_LogPass:v4 str:v23];
+    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyInTimeRange passed.  Array:%@, LEFK:%@", lastObject, v22];
+    v25 = [(PLDebugService *)self test_LogPass:kCopy str:v23];
   }
 
-  return v4;
+  return kCopy;
 }
 
-- (id)testPLAPICore_LastEntryForKeyWC:(id)a3
+- (id)testPLAPICore_LastEntryForKeyWC:(id)c
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cCopy = c;
   v5 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PLAPITest"];
-  v6 = [v4 objectForKeyedSubscript:@"objT"];
+  v6 = [cCopy objectForKeyedSubscript:@"objT"];
   v7 = [v6 objectForKeyedSubscript:@"flush"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"objT"];
+  v9 = [cCopy objectForKeyedSubscript:@"objT"];
   v10 = [v9 objectForKeyedSubscript:@"validity"];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
-  [(PLDebugService *)self rawWrite:v4];
-  v12 = [MEMORY[0x277D3F2A0] sharedCore];
-  v13 = [v12 storage];
-  v14 = [v13 entriesForKey:v5];
-  v15 = [v14 lastObject];
+  [(PLDebugService *)self rawWrite:cCopy];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v14 = [storage entriesForKey:v5];
+  lastObject = [v14 lastObject];
 
   v16 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:v5 withValue:v5 withComparisonOperation:0];
-  if (v8)
+  if (bOOLValue)
   {
-    v17 = [MEMORY[0x277D3F2A0] sharedCore];
-    v18 = [v17 storage];
-    [v18 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+    storage2 = [mEMORY[0x277D3F2A0]2 storage];
+    [storage2 blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v19 = [MEMORY[0x277D3F2A0] sharedCore];
-  v20 = [v19 storage];
-  if (v11 == -1)
+  mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+  storage3 = [mEMORY[0x277D3F2A0]3 storage];
+  if (intValue == -1)
   {
     v21 = 0;
   }
@@ -2829,291 +2829,291 @@ intptr_t __44__PLDebugService_testPLAPICore_UpdateEntry___block_invoke(uint64_t 
 
   v29[0] = v16;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
-  v23 = [v20 lastEntryForKey:v21 withComparisons:v22 isSingleton:1];
+  v23 = [storage3 lastEntryForKey:v21 withComparisons:v22 isSingleton:1];
 
-  if ([v15 compare:v23])
+  if ([lastObject compare:v23])
   {
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyInTimeRange failed.  Array:%@, LEFK:%@", v15, v23];
-    v25 = [(PLDebugService *)self test_LogErr:v4 str:v24];
+    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyInTimeRange failed.  Array:%@, LEFK:%@", lastObject, v23];
+    v25 = [(PLDebugService *)self test_LogErr:cCopy str:v24];
   }
 
   else
   {
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyInTimeRange passed.  Array:%@, LEFK:%@", v15, v23];
-    v26 = [(PLDebugService *)self test_LogPass:v4 str:v24];
+    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"EntriesForKeyInTimeRange passed.  Array:%@, LEFK:%@", lastObject, v23];
+    v26 = [(PLDebugService *)self test_LogPass:cCopy str:v24];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return cCopy;
 }
 
-- (id)testPLAPIAccounting_CreatePowerEventForward:(id)a3
+- (id)testPLAPIAccounting_CreatePowerEventForward:(id)forward
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  forwardCopy = forward;
+  v5 = [forwardCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [forwardCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [forwardCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
       do
       {
-        v20 = [MEMORY[0x277D3F0C0] debugInstance];
-        v21 = [MEMORY[0x277CBEAA8] date];
-        [v20 createPowerEventForwardWithRootNodeID:0 withPower:v21 withStartDate:1.0];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
+        date = [MEMORY[0x277CBEAA8] date];
+        [debugInstance createPowerEventForwardWithRootNodeID:0 withPower:date withStartDate:1.0];
 
-        v22 = [MEMORY[0x277D3F0C0] debugInstance];
-        v23 = [MEMORY[0x277CBEAA8] date];
-        [v22 createPowerEventForwardWithRootNodeID:10 withPower:v23 withStartDate:-1.0];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance2 createPowerEventForwardWithRootNodeID:10 withPower:date2 withStartDate:-1.0];
 
-        v24 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v24 createPowerEventForwardWithRootNodeID:10 withPower:0 withStartDate:1.0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createPowerEventForwardWithRootNodeID:10 withPower:0 withStartDate:1.0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
     v19 = @"CreatePowerEventForward (negative) passed.";
     goto LABEL_11;
   }
 
-  if (v7 >= 1)
+  if (longValue >= 1)
   {
     do
     {
-      v13 = [MEMORY[0x277D3F0C0] debugInstance];
-      v14 = [MEMORY[0x277CBEAA8] date];
-      [v13 createPowerEventForwardWithRootNodeID:10 withPower:v14 withStartDate:1.0];
+      debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
+      date3 = [MEMORY[0x277CBEAA8] date];
+      [debugInstance4 createPowerEventForwardWithRootNodeID:10 withPower:date3 withStartDate:1.0];
 
-      --v7;
+      --longValue;
     }
 
-    while (v7);
+    while (longValue);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
-    v15 = [MEMORY[0x277D3F2A0] sharedCore];
-    v16 = [v15 storage];
-    [v16 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v17 = [(PLDebugService *)self accDS];
-  v18 = [v17 verifyLastPowerEventWithRootNodeID:10 withPower:1.0];
+  accDS = [(PLDebugService *)self accDS];
+  v18 = [accDS verifyLastPowerEventWithRootNodeID:10 withPower:1.0];
 
   if (v18)
   {
     v19 = @"CreatePowerEventForward passed.";
 LABEL_11:
-    v25 = [(PLDebugService *)self test_LogPass:v4 str:v19];
+    v25 = [(PLDebugService *)self test_LogPass:forwardCopy str:v19];
     goto LABEL_13;
   }
 
-  v26 = [(PLDebugService *)self test_LogErr:v4 str:@"CreatePowerEventForward failed."];
+  v26 = [(PLDebugService *)self test_LogErr:forwardCopy str:@"CreatePowerEventForward failed."];
 LABEL_13:
 
-  return v4;
+  return forwardCopy;
 }
 
-- (id)testPLAPIAccounting_CreatePowerEventBackward:(id)a3
+- (id)testPLAPIAccounting_CreatePowerEventBackward:(id)backward
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  backwardCopy = backward;
+  v5 = [backwardCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [backwardCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [backwardCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
       do
       {
-        v20 = [MEMORY[0x277D3F0C0] debugInstance];
-        v21 = [MEMORY[0x277CBEAA8] date];
-        [v20 createPowerEventBackwardWithRootNodeID:0 withPower:v21 withEndDate:2.0];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
+        date = [MEMORY[0x277CBEAA8] date];
+        [debugInstance createPowerEventBackwardWithRootNodeID:0 withPower:date withEndDate:2.0];
 
-        v22 = [MEMORY[0x277D3F0C0] debugInstance];
-        v23 = [MEMORY[0x277CBEAA8] date];
-        [v22 createPowerEventBackwardWithRootNodeID:11 withPower:v23 withEndDate:-1.0];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance2 createPowerEventBackwardWithRootNodeID:11 withPower:date2 withEndDate:-1.0];
 
-        v24 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v24 createPowerEventBackwardWithRootNodeID:11 withPower:0 withEndDate:2.0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createPowerEventBackwardWithRootNodeID:11 withPower:0 withEndDate:2.0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
     v19 = @"CreatePowerEventBackward (negative) passed.";
     goto LABEL_11;
   }
 
-  if (v7 >= 1)
+  if (longValue >= 1)
   {
     do
     {
-      v13 = [MEMORY[0x277D3F0C0] debugInstance];
-      v14 = [MEMORY[0x277CBEAA8] date];
-      [v13 createPowerEventBackwardWithRootNodeID:11 withPower:v14 withEndDate:2.0];
+      debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
+      date3 = [MEMORY[0x277CBEAA8] date];
+      [debugInstance4 createPowerEventBackwardWithRootNodeID:11 withPower:date3 withEndDate:2.0];
 
-      --v7;
+      --longValue;
     }
 
-    while (v7);
+    while (longValue);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
-    v15 = [MEMORY[0x277D3F2A0] sharedCore];
-    v16 = [v15 storage];
-    [v16 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v17 = [(PLDebugService *)self accDS];
-  v18 = [v17 verifyLastPowerEventWithRootNodeID:11 withPower:2.0];
+  accDS = [(PLDebugService *)self accDS];
+  v18 = [accDS verifyLastPowerEventWithRootNodeID:11 withPower:2.0];
 
   if (v18)
   {
     v19 = @"CreatePowerEventBackward passed.";
 LABEL_11:
-    v25 = [(PLDebugService *)self test_LogPass:v4 str:v19];
+    v25 = [(PLDebugService *)self test_LogPass:backwardCopy str:v19];
     goto LABEL_13;
   }
 
-  v26 = [(PLDebugService *)self test_LogErr:v4 str:@"CreatePowerEventBackward failed."];
+  v26 = [(PLDebugService *)self test_LogErr:backwardCopy str:@"CreatePowerEventBackward failed."];
 LABEL_13:
 
-  return v4;
+  return backwardCopy;
 }
 
-- (id)testPLAPIAccounting_CreatePowerEventInterval:(id)a3
+- (id)testPLAPIAccounting_CreatePowerEventInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  intervalCopy = interval;
+  v5 = [intervalCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [intervalCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [intervalCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
       do
       {
-        v21 = [MEMORY[0x277D3F0C0] debugInstance];
-        v22 = [MEMORY[0x277CBEAA8] date];
-        v23 = [MEMORY[0x277CBEAA8] date];
-        [v21 createPowerEventIntervalWithRootNodeID:0 withPower:v22 withStartDate:v23 withEndDate:3.0];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
+        date = [MEMORY[0x277CBEAA8] date];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance createPowerEventIntervalWithRootNodeID:0 withPower:date withStartDate:date2 withEndDate:3.0];
 
-        v24 = [MEMORY[0x277D3F0C0] debugInstance];
-        v25 = [MEMORY[0x277CBEAA8] date];
-        v26 = [MEMORY[0x277CBEAA8] date];
-        [v24 createPowerEventIntervalWithRootNodeID:2 withPower:v25 withStartDate:v26 withEndDate:-1.0];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
+        date3 = [MEMORY[0x277CBEAA8] date];
+        date4 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance2 createPowerEventIntervalWithRootNodeID:2 withPower:date3 withStartDate:date4 withEndDate:-1.0];
 
-        v27 = [MEMORY[0x277D3F0C0] debugInstance];
-        v28 = [MEMORY[0x277CBEAA8] date];
-        [v27 createPowerEventIntervalWithRootNodeID:2 withPower:0 withStartDate:v28 withEndDate:3.0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        date5 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance3 createPowerEventIntervalWithRootNodeID:2 withPower:0 withStartDate:date5 withEndDate:3.0];
 
-        v29 = [MEMORY[0x277D3F0C0] debugInstance];
-        v30 = [MEMORY[0x277CBEAA8] date];
-        [v29 createPowerEventIntervalWithRootNodeID:2 withPower:v30 withStartDate:0 withEndDate:3.0];
+        debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
+        date6 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance4 createPowerEventIntervalWithRootNodeID:2 withPower:date6 withStartDate:0 withEndDate:3.0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
     v20 = @"CreatePowerEventInterval (negative) passed.";
     goto LABEL_11;
   }
 
-  if (v7 >= 1)
+  if (longValue >= 1)
   {
     do
     {
-      v13 = [MEMORY[0x277D3F0C0] debugInstance];
-      v14 = [MEMORY[0x277CBEAA8] date];
-      v15 = [MEMORY[0x277CBEAA8] date];
-      [v13 createPowerEventIntervalWithRootNodeID:2 withPower:v14 withStartDate:v15 withEndDate:3.0];
+      debugInstance5 = [MEMORY[0x277D3F0C0] debugInstance];
+      date7 = [MEMORY[0x277CBEAA8] date];
+      date8 = [MEMORY[0x277CBEAA8] date];
+      [debugInstance5 createPowerEventIntervalWithRootNodeID:2 withPower:date7 withStartDate:date8 withEndDate:3.0];
 
-      --v7;
+      --longValue;
     }
 
-    while (v7);
+    while (longValue);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
-    v16 = [MEMORY[0x277D3F2A0] sharedCore];
-    v17 = [v16 storage];
-    [v17 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v18 = [(PLDebugService *)self accDS];
-  v19 = [v18 verifyLastPowerEventWithRootNodeID:2 withPower:3.0];
+  accDS = [(PLDebugService *)self accDS];
+  v19 = [accDS verifyLastPowerEventWithRootNodeID:2 withPower:3.0];
 
   if (v19)
   {
     v20 = @"CreatePowerEventInterval passed.";
 LABEL_11:
-    v31 = [(PLDebugService *)self test_LogPass:v4 str:v20];
+    v31 = [(PLDebugService *)self test_LogPass:intervalCopy str:v20];
     goto LABEL_13;
   }
 
-  v32 = [(PLDebugService *)self test_LogErr:v4 str:@"CreatePowerEventInterval failed."];
+  v32 = [(PLDebugService *)self test_LogErr:intervalCopy str:@"CreatePowerEventInterval failed."];
 LABEL_13:
 
-  return v4;
+  return intervalCopy;
 }
 
-- (id)testPLAPIAccounting_AddPowerMeasurementEventInterval:(id)a3
+- (id)testPLAPIAccounting_AddPowerMeasurementEventInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  intervalCopy = interval;
+  v5 = [intervalCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [intervalCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [intervalCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    if (v7 < 1)
+    if (longValue < 1)
     {
       v18 = @"AddPowerMeasurementEventInterval (negative) passed.";
     }
@@ -3123,971 +3123,971 @@ LABEL_13:
       v18 = @"AddPowerMeasurementEventInterval (negative) passed.";
       do
       {
-        v19 = [MEMORY[0x277D3F0C0] debugInstance];
-        v20 = [MEMORY[0x277CBEAA8] date];
-        v21 = [MEMORY[0x277CBEAA8] date];
-        [v19 addPowerMeasurementEventIntervalWithPower:v20 withStartDate:v21 withEndDate:-1.0];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
+        date = [MEMORY[0x277CBEAA8] date];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance addPowerMeasurementEventIntervalWithPower:date withStartDate:date2 withEndDate:-1.0];
 
-        v22 = [MEMORY[0x277D3F0C0] debugInstance];
-        v23 = [MEMORY[0x277CBEAA8] date];
-        [v22 addPowerMeasurementEventIntervalWithPower:0 withStartDate:v23 withEndDate:4.0];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
+        date3 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance2 addPowerMeasurementEventIntervalWithPower:0 withStartDate:date3 withEndDate:4.0];
 
-        v24 = [MEMORY[0x277D3F0C0] debugInstance];
-        v25 = [MEMORY[0x277CBEAA8] date];
-        [v24 addPowerMeasurementEventIntervalWithPower:v25 withStartDate:0 withEndDate:4.0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        date4 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance3 addPowerMeasurementEventIntervalWithPower:date4 withStartDate:0 withEndDate:4.0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
   }
 
   else
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
       do
       {
-        v13 = [MEMORY[0x277D3F0C0] debugInstance];
+        debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
         v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:0.0];
-        v15 = [MEMORY[0x277CBEAA8] date];
-        [v13 addPowerMeasurementEventIntervalWithPower:v14 withStartDate:v15 withEndDate:4.0];
+        date5 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance4 addPowerMeasurementEventIntervalWithPower:v14 withStartDate:date5 withEndDate:4.0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
-    if (v10)
+    if (bOOLValue)
     {
-      v16 = [MEMORY[0x277D3F2A0] sharedCore];
-      v17 = [v16 storage];
-      [v17 blockingFlushCachesWithReason:@"testAPI"];
+      mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+      storage = [mEMORY[0x277D3F2A0] storage];
+      [storage blockingFlushCachesWithReason:@"testAPI"];
     }
 
     v18 = @"AddPowerMeasurementEventInterval passed.";
   }
 
-  v26 = [(PLDebugService *)self test_LogPass:v4 str:v18];
+  v26 = [(PLDebugService *)self test_LogPass:intervalCopy str:v18];
 
-  return v4;
+  return intervalCopy;
 }
 
-- (id)testPLAPIAccounting_CreateDistributionEventForwardAdd:(id)a3
+- (id)testPLAPIAccounting_CreateDistributionEventForwardAdd:(id)add
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  addCopy = add;
+  v5 = [addCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [addCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [addCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
       do
       {
-        v21 = [MEMORY[0x277D3F0C0] debugInstance];
-        v22 = [MEMORY[0x277CBEAA8] date];
-        [v21 createDistributionEventForwardWithDistributionID:1 withAddingChildNodeName:&stru_282B650A0 withStartDate:v22];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
+        date = [MEMORY[0x277CBEAA8] date];
+        [debugInstance createDistributionEventForwardWithDistributionID:1 withAddingChildNodeName:&stru_282B650A0 withStartDate:date];
 
-        v23 = [MEMORY[0x277D3F0C0] debugInstance];
-        v24 = [MEMORY[0x277CBEAA8] date];
-        [v23 createDistributionEventForwardWithDistributionID:1 withAddingChildNodeName:0 withStartDate:v24];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance2 createDistributionEventForwardWithDistributionID:1 withAddingChildNodeName:0 withStartDate:date2];
 
-        v25 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v25 createDistributionEventForwardWithDistributionID:1 withAddingChildNodeName:@"App1" withStartDate:0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createDistributionEventForwardWithDistributionID:1 withAddingChildNodeName:@"App1" withStartDate:0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
     v20 = @"CreateDistributionEventForwardAdd (negative) passed.";
     goto LABEL_11;
   }
 
-  if (v7 >= 1)
+  if (longValue >= 1)
   {
     do
     {
-      v13 = [MEMORY[0x277D3F0C0] debugInstance];
-      v14 = [MEMORY[0x277CBEAA8] date];
-      v15 = [v14 dateByAddingTimeInterval:-5.0];
-      [v13 createDistributionEventForwardWithDistributionID:1 withAddingChildNodeName:@"App1" withStartDate:v15];
+      debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
+      date3 = [MEMORY[0x277CBEAA8] date];
+      v15 = [date3 dateByAddingTimeInterval:-5.0];
+      [debugInstance4 createDistributionEventForwardWithDistributionID:1 withAddingChildNodeName:@"App1" withStartDate:v15];
 
-      --v7;
+      --longValue;
     }
 
-    while (v7);
+    while (longValue);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
-    v16 = [MEMORY[0x277D3F2A0] sharedCore];
-    v17 = [v16 storage];
-    [v17 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v18 = [(PLDebugService *)self accDS];
-  v19 = [v18 verifyLastDistributionEventWithDistributionID:1 withNodeName:@"App1" withWeight:1.0];
+  accDS = [(PLDebugService *)self accDS];
+  v19 = [accDS verifyLastDistributionEventWithDistributionID:1 withNodeName:@"App1" withWeight:1.0];
 
   if (v19)
   {
     v20 = @"CreateDistributionEventForwardAdd passed.";
 LABEL_11:
-    v26 = [(PLDebugService *)self test_LogPass:v4 str:v20];
+    v26 = [(PLDebugService *)self test_LogPass:addCopy str:v20];
     goto LABEL_13;
   }
 
-  v27 = [(PLDebugService *)self test_LogErr:v4 str:@"CreateDistributionEventForwardAdd failed."];
+  v27 = [(PLDebugService *)self test_LogErr:addCopy str:@"CreateDistributionEventForwardAdd failed."];
 LABEL_13:
 
-  return v4;
+  return addCopy;
 }
 
-- (id)testPLAPIAccounting_CreateDistributionEventForwardRem:(id)a3
+- (id)testPLAPIAccounting_CreateDistributionEventForwardRem:(id)rem
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  remCopy = rem;
+  v5 = [remCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [remCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [remCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
       do
       {
-        v22 = [MEMORY[0x277D3F0C0] debugInstance];
-        v23 = [MEMORY[0x277CBEAA8] date];
-        [v22 createDistributionEventForwardWithDistributionID:1 withRemovingChildNodeName:&stru_282B650A0 withStartDate:v23];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
+        date = [MEMORY[0x277CBEAA8] date];
+        [debugInstance createDistributionEventForwardWithDistributionID:1 withRemovingChildNodeName:&stru_282B650A0 withStartDate:date];
 
-        v24 = [MEMORY[0x277D3F0C0] debugInstance];
-        v25 = [MEMORY[0x277CBEAA8] date];
-        [v24 createDistributionEventForwardWithDistributionID:1 withRemovingChildNodeName:0 withStartDate:v25];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance2 createDistributionEventForwardWithDistributionID:1 withRemovingChildNodeName:0 withStartDate:date2];
 
-        v26 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v26 createDistributionEventForwardWithDistributionID:1 withRemovingChildNodeName:@"App1" withStartDate:0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createDistributionEventForwardWithDistributionID:1 withRemovingChildNodeName:@"App1" withStartDate:0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
     v21 = @"CreateDistributionEventForwardRem (negative) passed.";
     goto LABEL_11;
   }
 
-  if (v7 >= 1)
+  if (longValue >= 1)
   {
     do
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
-      v14 = [v13 dateByAddingTimeInterval:-5.0];
+      date3 = [MEMORY[0x277CBEAA8] date];
+      v14 = [date3 dateByAddingTimeInterval:-5.0];
 
-      v15 = [MEMORY[0x277D3F0C0] debugInstance];
-      [v15 createDistributionEventForwardWithDistributionID:1 withAddingChildNodeName:@"App1" withStartDate:v14];
+      debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
+      [debugInstance4 createDistributionEventForwardWithDistributionID:1 withAddingChildNodeName:@"App1" withStartDate:v14];
 
-      v16 = [MEMORY[0x277D3F0C0] debugInstance];
-      [v16 createDistributionEventForwardWithDistributionID:1 withRemovingChildNodeName:@"App1" withStartDate:v14];
+      debugInstance5 = [MEMORY[0x277D3F0C0] debugInstance];
+      [debugInstance5 createDistributionEventForwardWithDistributionID:1 withRemovingChildNodeName:@"App1" withStartDate:v14];
 
-      --v7;
+      --longValue;
     }
 
-    while (v7);
+    while (longValue);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
-    v17 = [MEMORY[0x277D3F2A0] sharedCore];
-    v18 = [v17 storage];
-    [v18 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v19 = [(PLDebugService *)self accDS];
-  v20 = [v19 verifyLastDistributionEventWithDistributionID:1 withNodeName:@"App1" withWeight:1.0];
+  accDS = [(PLDebugService *)self accDS];
+  v20 = [accDS verifyLastDistributionEventWithDistributionID:1 withNodeName:@"App1" withWeight:1.0];
 
   if (v20)
   {
     v21 = @"CreateDistributionEventForwardRem passed.";
 LABEL_11:
-    v27 = [(PLDebugService *)self test_LogPass:v4 str:v21];
+    v27 = [(PLDebugService *)self test_LogPass:remCopy str:v21];
     goto LABEL_13;
   }
 
-  v28 = [(PLDebugService *)self test_LogErr:v4 str:@"CreateDistributionEventForwardRem failed."];
+  v28 = [(PLDebugService *)self test_LogErr:remCopy str:@"CreateDistributionEventForwardRem failed."];
 LABEL_13:
 
-  return v4;
+  return remCopy;
 }
 
-- (id)testPLAPIAccounting_CreateDistributionEventForwardChild:(id)a3
+- (id)testPLAPIAccounting_CreateDistributionEventForwardChild:(id)child
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  childCopy = child;
+  v5 = [childCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [childCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [childCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
       v21 = MEMORY[0x277CBEC10];
       do
       {
-        v22 = [MEMORY[0x277D3F0C0] debugInstance];
-        v23 = [MEMORY[0x277CBEAA8] date];
-        [v22 createDistributionEventForwardWithDistributionID:1 withChildNodeNameToWeight:&unk_282C19A20 withStartDate:v23];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
+        date = [MEMORY[0x277CBEAA8] date];
+        [debugInstance createDistributionEventForwardWithDistributionID:1 withChildNodeNameToWeight:&unk_282C19A20 withStartDate:date];
 
-        v24 = [MEMORY[0x277D3F0C0] debugInstance];
-        v25 = [MEMORY[0x277CBEAA8] date];
-        [v24 createDistributionEventForwardWithDistributionID:1 withChildNodeNameToWeight:v21 withStartDate:v25];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [debugInstance2 createDistributionEventForwardWithDistributionID:1 withChildNodeNameToWeight:v21 withStartDate:date2];
 
-        v26 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v26 createDistributionEventForwardWithDistributionID:1 withChildNodeNameToWeight:&unk_282C19A48 withStartDate:0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createDistributionEventForwardWithDistributionID:1 withChildNodeNameToWeight:&unk_282C19A48 withStartDate:0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
     v20 = @"CreateDistributionEventForwardChild (negative) passed.";
     goto LABEL_12;
   }
 
-  if (v7 >= 1)
+  if (longValue >= 1)
   {
     do
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
-      v14 = [v13 dateByAddingTimeInterval:-5.0];
+      date3 = [MEMORY[0x277CBEAA8] date];
+      v14 = [date3 dateByAddingTimeInterval:-5.0];
 
-      v15 = [MEMORY[0x277D3F0C0] debugInstance];
-      [v15 createDistributionEventForwardWithDistributionID:1 withChildNodeNameToWeight:&unk_282C199F8 withStartDate:v14];
+      debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
+      [debugInstance4 createDistributionEventForwardWithDistributionID:1 withChildNodeNameToWeight:&unk_282C199F8 withStartDate:v14];
 
-      --v7;
+      --longValue;
     }
 
-    while (v7);
+    while (longValue);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
-    v16 = [MEMORY[0x277D3F2A0] sharedCore];
-    v17 = [v16 storage];
-    [v17 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v18 = [(PLDebugService *)self accDS];
-  v19 = [v18 verifyLastDistributionEventWithDistributionID:1 withNodeName:@"App1" withWeight:1.0];
+  accDS = [(PLDebugService *)self accDS];
+  v19 = [accDS verifyLastDistributionEventWithDistributionID:1 withNodeName:@"App1" withWeight:1.0];
 
   if (v19)
   {
     v20 = @"CreateDistributionEventForwardChild passed.";
 LABEL_12:
-    v27 = [(PLDebugService *)self test_LogPass:v4 str:v20];
+    v27 = [(PLDebugService *)self test_LogPass:childCopy str:v20];
     goto LABEL_14;
   }
 
-  v28 = [(PLDebugService *)self test_LogErr:v4 str:@"CreateDistributionEventForwardChild failed."];
+  v28 = [(PLDebugService *)self test_LogErr:childCopy str:@"CreateDistributionEventForwardChild failed."];
 LABEL_14:
 
-  return v4;
+  return childCopy;
 }
 
-- (id)testPLAPIAccounting_CreateDistributionEventInterval:(id)a3
+- (id)testPLAPIAccounting_CreateDistributionEventInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  intervalCopy = interval;
+  v5 = [intervalCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [intervalCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [intervalCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    v36 = self;
-    v37 = v4;
-    if (v7 >= 1)
+    selfCopy = self;
+    v37 = intervalCopy;
+    if (longValue >= 1)
     {
       v23 = MEMORY[0x277CBEC10];
       do
       {
-        v24 = [MEMORY[0x277CBEAA8] date];
-        v25 = [v24 dateByAddingTimeInterval:-5.0];
+        date = [MEMORY[0x277CBEAA8] date];
+        v25 = [date dateByAddingTimeInterval:-5.0];
 
-        v26 = [MEMORY[0x277D3F0C0] debugInstance];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
         v27 = [v25 dateByAddingTimeInterval:-10.0];
-        [v26 createDistributionEventIntervalWithDistributionID:20 withChildNodeNameToWeight:&unk_282C19A98 withStartDate:v27 withEndDate:v25];
+        [debugInstance createDistributionEventIntervalWithDistributionID:20 withChildNodeNameToWeight:&unk_282C19A98 withStartDate:v27 withEndDate:v25];
 
-        v28 = [MEMORY[0x277D3F0C0] debugInstance];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
         v29 = [v25 dateByAddingTimeInterval:-10.0];
-        [v28 createDistributionEventIntervalWithDistributionID:20 withChildNodeNameToWeight:v23 withStartDate:v29 withEndDate:v25];
+        [debugInstance2 createDistributionEventIntervalWithDistributionID:20 withChildNodeNameToWeight:v23 withStartDate:v29 withEndDate:v25];
 
-        v30 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v30 createDistributionEventIntervalWithDistributionID:20 withChildNodeNameToWeight:&unk_282C19AC0 withStartDate:0 withEndDate:v25];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createDistributionEventIntervalWithDistributionID:20 withChildNodeNameToWeight:&unk_282C19AC0 withStartDate:0 withEndDate:v25];
 
-        v31 = [MEMORY[0x277D3F0C0] debugInstance];
+        debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
         v32 = [v25 dateByAddingTimeInterval:-10.0];
-        [v31 createDistributionEventIntervalWithDistributionID:20 withChildNodeNameToWeight:&unk_282C19AE8 withStartDate:v32 withEndDate:0];
+        [debugInstance4 createDistributionEventIntervalWithDistributionID:20 withChildNodeNameToWeight:&unk_282C19AE8 withStartDate:v32 withEndDate:0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
     v21 = @"CreateDistributionEventInterval (negative) passed.";
-    v22 = v36;
-    v4 = v37;
+    selfCopy2 = selfCopy;
+    intervalCopy = v37;
     goto LABEL_12;
   }
 
-  if (v7 >= 1)
+  if (longValue >= 1)
   {
     do
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
-      v14 = [v13 dateByAddingTimeInterval:-5.0];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v14 = [date2 dateByAddingTimeInterval:-5.0];
 
-      v15 = [MEMORY[0x277D3F0C0] debugInstance];
+      debugInstance5 = [MEMORY[0x277D3F0C0] debugInstance];
       v16 = [v14 dateByAddingTimeInterval:-10.0];
-      [v15 createDistributionEventIntervalWithDistributionID:20 withChildNodeNameToWeight:&unk_282C19A70 withStartDate:v16 withEndDate:v14];
+      [debugInstance5 createDistributionEventIntervalWithDistributionID:20 withChildNodeNameToWeight:&unk_282C19A70 withStartDate:v16 withEndDate:v14];
 
-      --v7;
+      --longValue;
     }
 
-    while (v7);
+    while (longValue);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
-    v17 = [MEMORY[0x277D3F2A0] sharedCore];
-    v18 = [v17 storage];
-    [v18 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v19 = [(PLDebugService *)self accDS];
-  v20 = [v19 verifyLastDistributionEventWithDistributionID:20 withNodeName:@"App1" withWeight:1.0];
+  accDS = [(PLDebugService *)self accDS];
+  v20 = [accDS verifyLastDistributionEventWithDistributionID:20 withNodeName:@"App1" withWeight:1.0];
 
   if (v20)
   {
     v21 = @"CreateDistributionEventInterval passed.";
-    v22 = self;
+    selfCopy2 = self;
 LABEL_12:
-    v33 = [(PLDebugService *)v22 test_LogPass:v4 str:v21, v36, v37];
+    v33 = [(PLDebugService *)selfCopy2 test_LogPass:intervalCopy str:v21, selfCopy, v37];
     goto LABEL_14;
   }
 
-  v34 = [(PLDebugService *)self test_LogErr:v4 str:@"CreateDistributionEventInterval failed."];
+  v34 = [(PLDebugService *)self test_LogErr:intervalCopy str:@"CreateDistributionEventInterval failed."];
 LABEL_14:
 
-  return v4;
+  return intervalCopy;
 }
 
-- (id)testPLAPIAccounting_CreateDistributionEventPoint:(id)a3
+- (id)testPLAPIAccounting_CreateDistributionEventPoint:(id)point
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  pointCopy = point;
+  v5 = [pointCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [pointCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [pointCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
       v21 = MEMORY[0x277CBEC10];
       do
       {
-        v22 = [MEMORY[0x277CBEAA8] date];
-        v23 = [v22 dateByAddingTimeInterval:-5.0];
+        date = [MEMORY[0x277CBEAA8] date];
+        v23 = [date dateByAddingTimeInterval:-5.0];
 
-        v24 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v24 createDistributionEventPointWithDistributionID:4 withChildNodeNameToWeight:&unk_282C19B38 withStartDate:v23];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance createDistributionEventPointWithDistributionID:4 withChildNodeNameToWeight:&unk_282C19B38 withStartDate:v23];
 
-        v25 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v25 createDistributionEventPointWithDistributionID:4 withChildNodeNameToWeight:v21 withStartDate:v23];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance2 createDistributionEventPointWithDistributionID:4 withChildNodeNameToWeight:v21 withStartDate:v23];
 
-        v26 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v26 createDistributionEventPointWithDistributionID:4 withChildNodeNameToWeight:&unk_282C19B60 withStartDate:0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createDistributionEventPointWithDistributionID:4 withChildNodeNameToWeight:&unk_282C19B60 withStartDate:0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
     v20 = @"CreateDistributionEventPoint (negative) passed.";
     goto LABEL_12;
   }
 
-  if (v7 >= 1)
+  if (longValue >= 1)
   {
     do
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
-      v14 = [v13 dateByAddingTimeInterval:-5.0];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v14 = [date2 dateByAddingTimeInterval:-5.0];
 
-      v15 = [MEMORY[0x277D3F0C0] debugInstance];
-      [v15 createDistributionEventPointWithDistributionID:4 withChildNodeNameToWeight:&unk_282C19B10 withStartDate:v14];
+      debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
+      [debugInstance4 createDistributionEventPointWithDistributionID:4 withChildNodeNameToWeight:&unk_282C19B10 withStartDate:v14];
 
-      --v7;
+      --longValue;
     }
 
-    while (v7);
+    while (longValue);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
-    v16 = [MEMORY[0x277D3F2A0] sharedCore];
-    v17 = [v16 storage];
-    [v17 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v18 = [(PLDebugService *)self accDS];
-  v19 = [v18 verifyLastDistributionEventWithDistributionID:4 withNodeName:@"App1" withWeight:1.0];
+  accDS = [(PLDebugService *)self accDS];
+  v19 = [accDS verifyLastDistributionEventWithDistributionID:4 withNodeName:@"App1" withWeight:1.0];
 
   if (v19)
   {
     v20 = @"CreateDistributionEventPoint passed.";
 LABEL_12:
-    v27 = [(PLDebugService *)self test_LogPass:v4 str:v20];
+    v27 = [(PLDebugService *)self test_LogPass:pointCopy str:v20];
     goto LABEL_14;
   }
 
-  v28 = [(PLDebugService *)self test_LogErr:v4 str:@"CreateDistributionEventPoint failed."];
+  v28 = [(PLDebugService *)self test_LogErr:pointCopy str:@"CreateDistributionEventPoint failed."];
 LABEL_14:
 
-  return v4;
+  return pointCopy;
 }
 
-- (id)testPLAPIAccounting_CreateQualificationEventForwardAdd:(id)a3
+- (id)testPLAPIAccounting_CreateQualificationEventForwardAdd:(id)add
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  addCopy = add;
+  v5 = [addCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [addCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [addCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    v30 = v4;
-    if (v7 >= 1)
+    v30 = addCopy;
+    if (longValue >= 1)
     {
       do
       {
-        v22 = [MEMORY[0x277CBEAA8] date];
-        v23 = [v22 dateByAddingTimeInterval:-5.0];
+        date = [MEMORY[0x277CBEAA8] date];
+        v23 = [date dateByAddingTimeInterval:-5.0];
 
         NSLog(&cfstr_HereLineD.isa, 1555);
-        v24 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v24 createQualificationEventForwardWithQualificationID:2 withAddingChildNodeName:0 withStartDate:v23];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance createQualificationEventForwardWithQualificationID:2 withAddingChildNodeName:0 withStartDate:v23];
 
         NSLog(&cfstr_HereLineD.isa, 1559);
-        v25 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v25 createQualificationEventForwardWithQualificationID:2 withAddingChildNodeName:&stru_282B650A0 withStartDate:v23];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance2 createQualificationEventForwardWithQualificationID:2 withAddingChildNodeName:&stru_282B650A0 withStartDate:v23];
 
         NSLog(&cfstr_HereLineD.isa, 1563);
-        v26 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v26 createQualificationEventForwardWithQualificationID:2 withAddingChildNodeName:@"App2" withStartDate:0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createQualificationEventForwardWithQualificationID:2 withAddingChildNodeName:@"App2" withStartDate:0];
 
         NSLog(&cfstr_HereLineD.isa, 1567);
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
     v20 = @"CreateQualificationEventForwardAdd (negative) passed.";
-    v21 = self;
-    v4 = v30;
+    selfCopy2 = self;
+    addCopy = v30;
     goto LABEL_11;
   }
 
-  if (v7 >= 1)
+  if (longValue >= 1)
   {
     do
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
-      v14 = [v13 dateByAddingTimeInterval:-5.0];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v14 = [date2 dateByAddingTimeInterval:-5.0];
 
-      v15 = [MEMORY[0x277D3F0C0] debugInstance];
-      [v15 createQualificationEventForwardWithQualificationID:2 withAddingChildNodeName:@"App2" withStartDate:v14];
+      debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
+      [debugInstance4 createQualificationEventForwardWithQualificationID:2 withAddingChildNodeName:@"App2" withStartDate:v14];
 
-      --v7;
+      --longValue;
     }
 
-    while (v7);
+    while (longValue);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
-    v16 = [MEMORY[0x277D3F2A0] sharedCore];
-    v17 = [v16 storage];
-    [v17 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v18 = [(PLDebugService *)self accDS];
-  v19 = [v18 verifyLastQualificationEventWithQualificationID:2 withNodeName:@"App2"];
+  accDS = [(PLDebugService *)self accDS];
+  v19 = [accDS verifyLastQualificationEventWithQualificationID:2 withNodeName:@"App2"];
 
   if (v19)
   {
     v20 = @"CreateQualificationEventForwardAdd passed.";
-    v21 = self;
+    selfCopy2 = self;
 LABEL_11:
-    v27 = [(PLDebugService *)v21 test_LogPass:v4 str:v20];
+    v27 = [(PLDebugService *)selfCopy2 test_LogPass:addCopy str:v20];
     goto LABEL_13;
   }
 
-  v28 = [(PLDebugService *)self test_LogErr:v4 str:@"CreateQualificationEventForwardAdd failed."];
+  v28 = [(PLDebugService *)self test_LogErr:addCopy str:@"CreateQualificationEventForwardAdd failed."];
 LABEL_13:
 
-  return v4;
+  return addCopy;
 }
 
-- (id)testPLAPIAccounting_CreateQualificationEventForwardRem:(id)a3
+- (id)testPLAPIAccounting_CreateQualificationEventForwardRem:(id)rem
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  remCopy = rem;
+  v5 = [remCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [remCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [remCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
       do
       {
-        v23 = [MEMORY[0x277CBEAA8] date];
-        v24 = [v23 dateByAddingTimeInterval:-5.0];
+        date = [MEMORY[0x277CBEAA8] date];
+        v24 = [date dateByAddingTimeInterval:-5.0];
 
-        v25 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v25 createQualificationEventForwardWithQualificationID:2 withRemovingChildNodeName:0 withStartDate:v24];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance createQualificationEventForwardWithQualificationID:2 withRemovingChildNodeName:0 withStartDate:v24];
 
-        v26 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v26 createQualificationEventForwardWithQualificationID:2 withRemovingChildNodeName:&stru_282B650A0 withStartDate:v24];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance2 createQualificationEventForwardWithQualificationID:2 withRemovingChildNodeName:&stru_282B650A0 withStartDate:v24];
 
-        v27 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v27 createQualificationEventForwardWithQualificationID:2 withRemovingChildNodeName:@"App2" withStartDate:0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createQualificationEventForwardWithQualificationID:2 withRemovingChildNodeName:@"App2" withStartDate:0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
     v22 = @"CreateQualificationEventForwardRem (negative) passed.";
     goto LABEL_11;
   }
 
-  if (v7 >= 1)
+  if (longValue >= 1)
   {
     do
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
-      v14 = [v13 dateByAddingTimeInterval:-5.0];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v14 = [date2 dateByAddingTimeInterval:-5.0];
 
-      v15 = [MEMORY[0x277D3F0C0] debugInstance];
-      [v15 createQualificationEventForwardWithQualificationID:2 withAddingChildNodeName:@"App3" withStartDate:v14];
+      debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
+      [debugInstance4 createQualificationEventForwardWithQualificationID:2 withAddingChildNodeName:@"App3" withStartDate:v14];
 
-      v16 = [MEMORY[0x277D3F0C0] debugInstance];
-      [v16 createQualificationEventForwardWithQualificationID:2 withAddingChildNodeName:@"App2" withStartDate:v14];
+      debugInstance5 = [MEMORY[0x277D3F0C0] debugInstance];
+      [debugInstance5 createQualificationEventForwardWithQualificationID:2 withAddingChildNodeName:@"App2" withStartDate:v14];
 
-      v17 = [MEMORY[0x277D3F0C0] debugInstance];
-      [v17 createQualificationEventForwardWithQualificationID:2 withRemovingChildNodeName:@"App2" withStartDate:v14];
+      debugInstance6 = [MEMORY[0x277D3F0C0] debugInstance];
+      [debugInstance6 createQualificationEventForwardWithQualificationID:2 withRemovingChildNodeName:@"App2" withStartDate:v14];
 
-      --v7;
+      --longValue;
     }
 
-    while (v7);
+    while (longValue);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
-    v18 = [MEMORY[0x277D3F2A0] sharedCore];
-    v19 = [v18 storage];
-    [v19 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v20 = [(PLDebugService *)self accDS];
-  v21 = [v20 verifyLastQualificationEventWithQualificationID:2 withNodeName:@"App3"];
+  accDS = [(PLDebugService *)self accDS];
+  v21 = [accDS verifyLastQualificationEventWithQualificationID:2 withNodeName:@"App3"];
 
   if (v21)
   {
     v22 = @"CreateQualificationEventForwardRem passed.";
 LABEL_11:
-    v28 = [(PLDebugService *)self test_LogPass:v4 str:v22];
+    v28 = [(PLDebugService *)self test_LogPass:remCopy str:v22];
     goto LABEL_13;
   }
 
-  v29 = [(PLDebugService *)self test_LogErr:v4 str:@"CreateQualificationEventForwardRem failed."];
+  v29 = [(PLDebugService *)self test_LogErr:remCopy str:@"CreateQualificationEventForwardRem failed."];
 LABEL_13:
 
-  return v4;
+  return remCopy;
 }
 
-- (id)testPLAPIAccounting_CreateQualificationEventForwardChild:(id)a3
+- (id)testPLAPIAccounting_CreateQualificationEventForwardChild:(id)child
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  childCopy = child;
+  v5 = [childCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [childCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [childCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
       v21 = MEMORY[0x277CBEBF8];
       do
       {
-        v22 = [MEMORY[0x277CBEAA8] date];
-        v23 = [v22 dateByAddingTimeInterval:-5.0];
+        date = [MEMORY[0x277CBEAA8] date];
+        v23 = [date dateByAddingTimeInterval:-5.0];
 
-        v24 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v24 createQualificationEventForwardWithQualificationID:2 withChildNodeNames:&unk_282C16968 withStartDate:v23];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance createQualificationEventForwardWithQualificationID:2 withChildNodeNames:&unk_282C16968 withStartDate:v23];
 
-        v25 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v25 createQualificationEventForwardWithQualificationID:2 withChildNodeNames:v21 withStartDate:v23];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance2 createQualificationEventForwardWithQualificationID:2 withChildNodeNames:v21 withStartDate:v23];
 
-        v26 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v26 createQualificationEventForwardWithQualificationID:2 withChildNodeNames:&unk_282C16980 withStartDate:0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createQualificationEventForwardWithQualificationID:2 withChildNodeNames:&unk_282C16980 withStartDate:0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
     v20 = @"CreateQualificationEventForwardChild (negative) passed.";
     goto LABEL_12;
   }
 
-  if (v7 >= 1)
+  if (longValue >= 1)
   {
     do
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
-      v14 = [v13 dateByAddingTimeInterval:-5.0];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v14 = [date2 dateByAddingTimeInterval:-5.0];
 
-      v15 = [MEMORY[0x277D3F0C0] debugInstance];
-      [v15 createQualificationEventForwardWithQualificationID:2 withChildNodeNames:&unk_282C16950 withStartDate:v14];
+      debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
+      [debugInstance4 createQualificationEventForwardWithQualificationID:2 withChildNodeNames:&unk_282C16950 withStartDate:v14];
 
-      --v7;
+      --longValue;
     }
 
-    while (v7);
+    while (longValue);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
-    v16 = [MEMORY[0x277D3F2A0] sharedCore];
-    v17 = [v16 storage];
-    [v17 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v18 = [(PLDebugService *)self accDS];
-  v19 = [v18 verifyLastQualificationEventWithQualificationID:2 withNodeName:@"App2"];
+  accDS = [(PLDebugService *)self accDS];
+  v19 = [accDS verifyLastQualificationEventWithQualificationID:2 withNodeName:@"App2"];
 
   if (v19)
   {
     v20 = @"CreateQualificationEventForwardChild passed.";
 LABEL_12:
-    v27 = [(PLDebugService *)self test_LogPass:v4 str:v20];
+    v27 = [(PLDebugService *)self test_LogPass:childCopy str:v20];
     goto LABEL_14;
   }
 
-  v28 = [(PLDebugService *)self test_LogErr:v4 str:@"CreateQualificationEventForwardChild failed."];
+  v28 = [(PLDebugService *)self test_LogErr:childCopy str:@"CreateQualificationEventForwardChild failed."];
 LABEL_14:
 
-  return v4;
+  return childCopy;
 }
 
-- (id)testPLAPIAccounting_CreateQualificationEventBackward:(id)a3
+- (id)testPLAPIAccounting_CreateQualificationEventBackward:(id)backward
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  backwardCopy = backward;
+  v5 = [backwardCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [backwardCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [backwardCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    if (v7 < 1)
+    if (longValue < 1)
     {
       v18 = @"CreateQualificationEventBackward (negative) passed.";
     }
 
     else
     {
-      v27 = self;
+      selfCopy = self;
       v19 = MEMORY[0x277CBEBF8];
       v18 = @"CreateQualificationEventBackward (negative) passed.";
       do
       {
-        v20 = [MEMORY[0x277CBEAA8] date];
-        v21 = [v20 dateByAddingTimeInterval:-5.0];
+        date = [MEMORY[0x277CBEAA8] date];
+        v21 = [date dateByAddingTimeInterval:-5.0];
 
-        v22 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v22 createQualificationEventBackwardWithQualificationID:1 withChildNodeNames:&unk_282C169B0 withEndDate:v21];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance createQualificationEventBackwardWithQualificationID:1 withChildNodeNames:&unk_282C169B0 withEndDate:v21];
 
-        v23 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v23 createQualificationEventBackwardWithQualificationID:1 withChildNodeNames:v19 withEndDate:v21];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance2 createQualificationEventBackwardWithQualificationID:1 withChildNodeNames:v19 withEndDate:v21];
 
-        v24 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v24 createQualificationEventBackwardWithQualificationID:1 withChildNodeNames:&unk_282C169C8 withEndDate:0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createQualificationEventBackwardWithQualificationID:1 withChildNodeNames:&unk_282C169C8 withEndDate:0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
-      self = v27;
+      while (longValue);
+      self = selfCopy;
     }
   }
 
   else
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
       do
       {
-        v13 = [MEMORY[0x277CBEAA8] date];
-        v14 = [v13 dateByAddingTimeInterval:-5.0];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        v14 = [date2 dateByAddingTimeInterval:-5.0];
 
-        v15 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v15 createQualificationEventBackwardWithQualificationID:0 withChildNodeNames:&unk_282C16998 withEndDate:v14];
+        debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance4 createQualificationEventBackwardWithQualificationID:0 withChildNodeNames:&unk_282C16998 withEndDate:v14];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
-    if (v10)
+    if (bOOLValue)
     {
-      v16 = [MEMORY[0x277D3F2A0] sharedCore];
-      v17 = [v16 storage];
-      [v17 blockingFlushCachesWithReason:@"testAPI"];
+      mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+      storage = [mEMORY[0x277D3F2A0] storage];
+      [storage blockingFlushCachesWithReason:@"testAPI"];
     }
 
     v18 = @"CreateQualificationEventBackward passed.";
   }
 
-  v25 = [(PLDebugService *)self test_LogPass:v4 str:v18];
+  v25 = [(PLDebugService *)self test_LogPass:backwardCopy str:v18];
 
-  return v4;
+  return backwardCopy;
 }
 
-- (id)testPLAPIAccounting_CreateQualificationEventInterval:(id)a3
+- (id)testPLAPIAccounting_CreateQualificationEventInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  intervalCopy = interval;
+  v5 = [intervalCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [intervalCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [intervalCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    v36 = self;
-    v37 = v4;
-    if (v7 >= 1)
+    selfCopy = self;
+    v37 = intervalCopy;
+    if (longValue >= 1)
     {
       v23 = MEMORY[0x277CBEBF8];
       do
       {
-        v24 = [MEMORY[0x277CBEAA8] date];
-        v25 = [v24 dateByAddingTimeInterval:-5.0];
+        date = [MEMORY[0x277CBEAA8] date];
+        v25 = [date dateByAddingTimeInterval:-5.0];
 
-        v26 = [MEMORY[0x277D3F0C0] debugInstance];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
         v27 = [v25 dateByAddingTimeInterval:-10.0];
-        [v26 createQualificationEventIntervalWithQualificationID:12 withChildNodeNames:&unk_282C169F8 withStartDate:v27 withEndDate:v25];
+        [debugInstance createQualificationEventIntervalWithQualificationID:12 withChildNodeNames:&unk_282C169F8 withStartDate:v27 withEndDate:v25];
 
-        v28 = [MEMORY[0x277D3F0C0] debugInstance];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
         v29 = [v25 dateByAddingTimeInterval:-10.0];
-        [v28 createQualificationEventIntervalWithQualificationID:12 withChildNodeNames:v23 withStartDate:v29 withEndDate:v25];
+        [debugInstance2 createQualificationEventIntervalWithQualificationID:12 withChildNodeNames:v23 withStartDate:v29 withEndDate:v25];
 
-        v30 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v30 createQualificationEventIntervalWithQualificationID:12 withChildNodeNames:&unk_282C16A10 withStartDate:0 withEndDate:v25];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createQualificationEventIntervalWithQualificationID:12 withChildNodeNames:&unk_282C16A10 withStartDate:0 withEndDate:v25];
 
-        v31 = [MEMORY[0x277D3F0C0] debugInstance];
+        debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
         v32 = [v25 dateByAddingTimeInterval:-10.0];
-        [v31 createQualificationEventIntervalWithQualificationID:12 withChildNodeNames:&unk_282C16A28 withStartDate:v32 withEndDate:0];
+        [debugInstance4 createQualificationEventIntervalWithQualificationID:12 withChildNodeNames:&unk_282C16A28 withStartDate:v32 withEndDate:0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
     v21 = @"CreateQualificationEventInterval (negative) passed.";
-    v22 = v36;
-    v4 = v37;
+    selfCopy2 = selfCopy;
+    intervalCopy = v37;
     goto LABEL_12;
   }
 
-  if (v7 >= 1)
+  if (longValue >= 1)
   {
     do
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
-      v14 = [v13 dateByAddingTimeInterval:-5.0];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v14 = [date2 dateByAddingTimeInterval:-5.0];
 
-      v15 = [MEMORY[0x277D3F0C0] debugInstance];
+      debugInstance5 = [MEMORY[0x277D3F0C0] debugInstance];
       v16 = [v14 dateByAddingTimeInterval:-10.0];
-      [v15 createQualificationEventIntervalWithQualificationID:12 withChildNodeNames:&unk_282C169E0 withStartDate:v16 withEndDate:v14];
+      [debugInstance5 createQualificationEventIntervalWithQualificationID:12 withChildNodeNames:&unk_282C169E0 withStartDate:v16 withEndDate:v14];
 
-      --v7;
+      --longValue;
     }
 
-    while (v7);
+    while (longValue);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
-    v17 = [MEMORY[0x277D3F2A0] sharedCore];
-    v18 = [v17 storage];
-    [v18 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v19 = [(PLDebugService *)self accDS];
-  v20 = [v19 verifyLastQualificationEventWithQualificationID:12 withNodeName:@"App2"];
+  accDS = [(PLDebugService *)self accDS];
+  v20 = [accDS verifyLastQualificationEventWithQualificationID:12 withNodeName:@"App2"];
 
   if (v20)
   {
     v21 = @"CreateQualificationEventInterval passed.";
-    v22 = self;
+    selfCopy2 = self;
 LABEL_12:
-    v33 = [(PLDebugService *)v22 test_LogPass:v4 str:v21, v36, v37];
+    v33 = [(PLDebugService *)selfCopy2 test_LogPass:intervalCopy str:v21, selfCopy, v37];
     goto LABEL_14;
   }
 
-  v34 = [(PLDebugService *)self test_LogErr:v4 str:@"CreateQualificationEventInterval failed."];
+  v34 = [(PLDebugService *)self test_LogErr:intervalCopy str:@"CreateQualificationEventInterval failed."];
 LABEL_14:
 
-  return v4;
+  return intervalCopy;
 }
 
-- (id)testPLAPIAccounting_CreateQualificationEventPoint:(id)a3
+- (id)testPLAPIAccounting_CreateQualificationEventPoint:(id)point
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  pointCopy = point;
+  v5 = [pointCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"objT"];
+  v8 = [pointCopy objectForKeyedSubscript:@"objT"];
   v9 = [v8 objectForKeyedSubscript:@"flush"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"objT"];
+  v11 = [pointCopy objectForKeyedSubscript:@"objT"];
   v12 = [v11 objectForKeyedSubscript:@"validity"];
   LODWORD(v9) = [v12 intValue];
 
   if (v9 == -1)
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
-      v30 = self;
+      selfCopy = self;
       v20 = MEMORY[0x277CBEBF8];
       do
       {
-        v21 = [MEMORY[0x277CBEAA8] date];
-        v22 = [v21 dateByAddingTimeInterval:-5.0];
+        date = [MEMORY[0x277CBEAA8] date];
+        v22 = [date dateByAddingTimeInterval:-5.0];
 
-        v23 = [MEMORY[0x277D3F0C0] debugInstance];
+        debugInstance = [MEMORY[0x277D3F0C0] debugInstance];
         v24 = [v22 dateByAddingTimeInterval:-10.0];
-        [v23 createQualificationEventPointWithQualificationID:0 withChildNodeNames:&unk_282C16A58 withStartDate:v24];
+        [debugInstance createQualificationEventPointWithQualificationID:0 withChildNodeNames:&unk_282C16A58 withStartDate:v24];
 
-        v25 = [MEMORY[0x277D3F0C0] debugInstance];
+        debugInstance2 = [MEMORY[0x277D3F0C0] debugInstance];
         v26 = [v22 dateByAddingTimeInterval:-10.0];
-        [v25 createQualificationEventPointWithQualificationID:0 withChildNodeNames:v20 withStartDate:v26];
+        [debugInstance2 createQualificationEventPointWithQualificationID:0 withChildNodeNames:v20 withStartDate:v26];
 
-        v27 = [MEMORY[0x277D3F0C0] debugInstance];
-        [v27 createQualificationEventPointWithQualificationID:0 withChildNodeNames:&unk_282C16A70 withStartDate:0];
+        debugInstance3 = [MEMORY[0x277D3F0C0] debugInstance];
+        [debugInstance3 createQualificationEventPointWithQualificationID:0 withChildNodeNames:&unk_282C16A70 withStartDate:0];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
-      self = v30;
+      while (longValue);
+      self = selfCopy;
     }
 
     v19 = @"CreateQualificationEventPoint (negative) passed.";
@@ -4095,72 +4095,72 @@ LABEL_14:
 
   else
   {
-    if (v7 >= 1)
+    if (longValue >= 1)
     {
       do
       {
-        v13 = [MEMORY[0x277CBEAA8] date];
-        v14 = [v13 dateByAddingTimeInterval:-5.0];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        v14 = [date2 dateByAddingTimeInterval:-5.0];
 
-        v15 = [MEMORY[0x277D3F0C0] debugInstance];
+        debugInstance4 = [MEMORY[0x277D3F0C0] debugInstance];
         v16 = [v14 dateByAddingTimeInterval:-10.0];
-        [v15 createQualificationEventPointWithQualificationID:0 withChildNodeNames:&unk_282C16A40 withStartDate:v16];
+        [debugInstance4 createQualificationEventPointWithQualificationID:0 withChildNodeNames:&unk_282C16A40 withStartDate:v16];
 
-        --v7;
+        --longValue;
       }
 
-      while (v7);
+      while (longValue);
     }
 
-    if (v10)
+    if (bOOLValue)
     {
-      v17 = [MEMORY[0x277D3F2A0] sharedCore];
-      v18 = [v17 storage];
-      [v18 blockingFlushCachesWithReason:@"testAPI"];
+      mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+      storage = [mEMORY[0x277D3F2A0] storage];
+      [storage blockingFlushCachesWithReason:@"testAPI"];
     }
 
     v19 = @"CreateQualificationEventPoint passed.";
   }
 
-  v28 = [(PLDebugService *)self test_LogPass:v4 str:v19];
+  v28 = [(PLDebugService *)self test_LogPass:pointCopy str:v19];
 
-  return v4;
+  return pointCopy;
 }
 
-- (id)testPLAPIAccounting_ExistingTest:(id)a3
+- (id)testPLAPIAccounting_ExistingTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objT"];
+  testCopy = test;
+  v5 = [testCopy objectForKeyedSubscript:@"objT"];
   v6 = [v5 objectForKeyedSubscript:@"iterations"];
   [v6 longValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"objT"];
+  v7 = [testCopy objectForKeyedSubscript:@"objT"];
   v8 = [v7 objectForKeyedSubscript:@"flush"];
   LODWORD(v6) = [v8 BOOLValue];
 
   if (v6)
   {
-    v9 = [MEMORY[0x277D3F2A0] sharedCore];
-    v10 = [v9 storage];
-    [v10 blockingFlushCachesWithReason:@"testAPI"];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    [storage blockingFlushCachesWithReason:@"testAPI"];
   }
 
-  v11 = [(PLDebugService *)self test_LogPass:v4 str:@"CreateQualificationEventPoint passed."];
+  v11 = [(PLDebugService *)self test_LogPass:testCopy str:@"CreateQualificationEventPoint passed."];
 
-  return v4;
+  return testCopy;
 }
 
 - (void)constructTrimQueries
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v3 = [MEMORY[0x277D3F178] allOperatorTablesToTrimConditionsForTrimDate:v2];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  v3 = [MEMORY[0x277D3F178] allOperatorTablesToTrimConditionsForTrimDate:monotonicDate];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Trim Queries %@", v3];
   v5 = MEMORY[0x277D3F178];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v7 = [v6 lastPathComponent];
+  lastPathComponent = [v6 lastPathComponent];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService constructTrimQueries]"];
-  [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1977];
+  [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1977];
 
   v9 = PLLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -4181,13 +4181,13 @@ LABEL_14:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v3 = [MEMORY[0x277D3F2A0] sharedCore];
-  v4 = [v3 agents];
-  v5 = [v4 operators];
-  v6 = [v5 allValues];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  agents = [mEMORY[0x277D3F2A0] agents];
+  operators = [agents operators];
+  allValues = [operators allValues];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v37 count:16];
+  obj = allValues;
+  v7 = [allValues countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4201,12 +4201,12 @@ LABEL_14:
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v30 + 1) + 8 * i) entryKeys];
+        entryKeys = [*(*(&v30 + 1) + 8 * i) entryKeys];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v11 = [v10 countByEnumeratingWithState:&v26 objects:v36 count:16];
+        v11 = [entryKeys countByEnumeratingWithState:&v26 objects:v36 count:16];
         if (v11)
         {
           v12 = v11;
@@ -4217,7 +4217,7 @@ LABEL_14:
             {
               if (*v27 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(entryKeys);
               }
 
               v15 = *(*(&v26 + 1) + 8 * j);
@@ -4228,7 +4228,7 @@ LABEL_14:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v26 objects:v36 count:16];
+            v12 = [entryKeys countByEnumeratingWithState:&v26 objects:v36 count:16];
           }
 
           while (v12);
@@ -4244,9 +4244,9 @@ LABEL_14:
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"App identifier tables are %@", v2];
   v18 = MEMORY[0x277D3F178];
   v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v20 = [v19 lastPathComponent];
+  lastPathComponent = [v19 lastPathComponent];
   v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService constructAppIdentifierTables]"];
-  [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:1997];
+  [v18 logMessage:v17 fromFile:lastPathComponent fromFunction:v21 fromLineNumber:1997];
 
   v22 = PLLogCommon();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -4267,13 +4267,13 @@ LABEL_14:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v3 = [MEMORY[0x277D3F2A0] sharedCore];
-  v4 = [v3 agents];
-  v5 = [v4 operators];
-  v6 = [v5 allValues];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  agents = [mEMORY[0x277D3F2A0] agents];
+  operators = [agents operators];
+  allValues = [operators allValues];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v32 count:16];
+  obj = allValues;
+  v7 = [allValues countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4287,12 +4287,12 @@ LABEL_14:
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v25 + 1) + 8 * i) entryKeys];
+        entryKeys = [*(*(&v25 + 1) + 8 * i) entryKeys];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v11 = [v10 countByEnumeratingWithState:&v21 objects:v31 count:16];
+        v11 = [entryKeys countByEnumeratingWithState:&v21 objects:v31 count:16];
         if (v11)
         {
           v12 = v11;
@@ -4303,7 +4303,7 @@ LABEL_14:
             {
               if (*v22 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(entryKeys);
               }
 
               v15 = *(*(&v21 + 1) + 8 * j);
@@ -4314,7 +4314,7 @@ LABEL_14:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v21 objects:v31 count:16];
+            v12 = [entryKeys countByEnumeratingWithState:&v21 objects:v31 count:16];
           }
 
           while (v12);
@@ -4338,21 +4338,21 @@ LABEL_14:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)populateIdentifiers:(id)a3
+- (void)populateIdentifiers:(id)identifiers
 {
   v32 = *MEMORY[0x277D85DE8];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  identifiersCopy = identifiers;
+  v4 = [identifiersCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v28;
     v7 = 0x277D3F000uLL;
-    v22 = v3;
+    v22 = identifiersCopy;
     do
     {
       v8 = 0;
@@ -4360,13 +4360,13 @@ LABEL_14:
       {
         if (*v28 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v9 = *(*(&v27 + 1) + 8 * v8);
         v10 = objc_autoreleasePoolPush();
-        v11 = [*(v7 + 528) sharedSQLiteConnection];
-        v12 = [v11 tableExistsForTableName:v9];
+        sharedSQLiteConnection = [*(v7 + 528) sharedSQLiteConnection];
+        v12 = [sharedSQLiteConnection tableExistsForTableName:v9];
 
         if (v12)
         {
@@ -4403,7 +4403,7 @@ LABEL_14:
               [qword_2811F6948 setObject:v20 forKeyedSubscript:v9];
             }
 
-            v3 = v22;
+            identifiersCopy = v22;
             v7 = 0x277D3F000;
           }
         }
@@ -4413,7 +4413,7 @@ LABEL_14:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v5 = [identifiersCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v5);
@@ -4458,12 +4458,12 @@ void __38__PLDebugService_populateIdentifiers___block_invoke(id *a1, void *a2, v
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [MEMORY[0x277D3F2A0] sharedCore];
-  v4 = [v3 agents];
-  v5 = [v4 operators];
-  v6 = [v5 allValues];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  agents = [mEMORY[0x277D3F2A0] agents];
+  operators = [agents operators];
+  allValues = [operators allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4475,17 +4475,17 @@ void __38__PLDebugService_populateIdentifiers___block_invoke(id *a1, void *a2, v
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) entryKeys];
-        [(PLDebugService *)self populateIdentifiers:v11];
+        entryKeys = [*(*(&v13 + 1) + 8 * v10) entryKeys];
+        [(PLDebugService *)self populateIdentifiers:entryKeys];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -4501,12 +4501,12 @@ void __38__PLDebugService_populateIdentifiers___block_invoke(id *a1, void *a2, v
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [MEMORY[0x277D3F2A0] sharedCore];
-  v4 = [v3 services];
-  v5 = [v4 operators];
-  v6 = [v5 allValues];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  services = [mEMORY[0x277D3F2A0] services];
+  operators = [services operators];
+  allValues = [operators allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4518,17 +4518,17 @@ void __38__PLDebugService_populateIdentifiers___block_invoke(id *a1, void *a2, v
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) entryKeys];
-        [(PLDebugService *)self populateIdentifiers:v11];
+        entryKeys = [*(*(&v13 + 1) + 8 * v10) entryKeys];
+        [(PLDebugService *)self populateIdentifiers:entryKeys];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -4540,63 +4540,63 @@ void __38__PLDebugService_populateIdentifiers___block_invoke(id *a1, void *a2, v
 - (void)constructAppIdentifierColumns
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = qword_2811F6938;
-  qword_2811F6938 = v3;
+  qword_2811F6938 = dictionary;
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v6 = qword_2811F6940;
-  qword_2811F6940 = v5;
+  qword_2811F6940 = dictionary2;
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   v8 = qword_2811F6948;
-  qword_2811F6948 = v7;
+  qword_2811F6948 = dictionary3;
 
   [(PLDebugService *)self iterateAgents];
   [(PLDebugService *)self iterateServices];
   [qword_2811F6938 setObject:&unk_282C16A88 forKeyedSubscript:@"PLAccountingOperator_EventNone_Nodes"];
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"tableNameToBundleIdentifier is %@", qword_2811F6938];
+  qword_2811F6938 = [MEMORY[0x277CCACA8] stringWithFormat:@"tableNameToBundleIdentifier is %@", qword_2811F6938];
   v10 = MEMORY[0x277D3F178];
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v12 = [v11 lastPathComponent];
+  lastPathComponent = [v11 lastPathComponent];
   v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService constructAppIdentifierColumns]"];
-  [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:2086];
+  [v10 logMessage:qword_2811F6938 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:2086];
 
   v14 = PLLogCommon();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v9;
+    v29 = qword_2811F6938;
     _os_log_impl(&dword_21A4C6000, v14, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"tableNameToAppIdentifier is %@", qword_2811F6940];
+  qword_2811F6940 = [MEMORY[0x277CCACA8] stringWithFormat:@"tableNameToAppIdentifier is %@", qword_2811F6940];
   v16 = MEMORY[0x277D3F178];
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v18 = [v17 lastPathComponent];
+  lastPathComponent2 = [v17 lastPathComponent];
   v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService constructAppIdentifierColumns]"];
-  [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:2087];
+  [v16 logMessage:qword_2811F6940 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:2087];
 
   v20 = PLLogCommon();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v15;
+    v29 = qword_2811F6940;
     _os_log_impl(&dword_21A4C6000, v20, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"tableNameToProcessIdentifier is %@", qword_2811F6948];
+  qword_2811F6948 = [MEMORY[0x277CCACA8] stringWithFormat:@"tableNameToProcessIdentifier is %@", qword_2811F6948];
   v22 = MEMORY[0x277D3F178];
   v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v24 = [v23 lastPathComponent];
+  lastPathComponent3 = [v23 lastPathComponent];
   v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService constructAppIdentifierColumns]"];
-  [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:2088];
+  [v22 logMessage:qword_2811F6948 fromFile:lastPathComponent3 fromFunction:v25 fromLineNumber:2088];
 
   v26 = PLLogCommon();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v21;
+    v29 = qword_2811F6948;
     _os_log_impl(&dword_21A4C6000, v26, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
@@ -4630,8 +4630,8 @@ void __38__PLDebugService_populateIdentifiers___block_invoke(id *a1, void *a2, v
 
 - (void)testCompression
 {
-  v2 = [(PLOperator *)self workQueue];
-  dispatch_async(v2, &__block_literal_global_1026);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_async(workQueue, &__block_literal_global_1026);
 }
 
 void __33__PLDebugService_testCompression__block_invoke()
@@ -4658,13 +4658,13 @@ void __33__PLDebugService_testCompression__block_invoke()
 
 - (void)testUTF8
 {
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __26__PLDebugService_testUTF8__block_invoke;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __26__PLDebugService_testUTF8__block_invoke(uint64_t a1)
@@ -4713,8 +4713,8 @@ void __26__PLDebugService_testUTF8__block_invoke(uint64_t a1)
 
 - (void)stressAggregateSmall
 {
-  v2 = [(PLOperator *)self workQueue];
-  dispatch_async(v2, &__block_literal_global_1064);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_async(workQueue, &__block_literal_global_1064);
 }
 
 void __38__PLDebugService_stressAggregateSmall__block_invoke()
@@ -4794,8 +4794,8 @@ void __38__PLDebugService_stressAggregateSmall__block_invoke()
 
 - (void)stressAggregateVerySmall
 {
-  v2 = [(PLOperator *)self workQueue];
-  dispatch_async(v2, &__block_literal_global_1075);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_async(workQueue, &__block_literal_global_1075);
 }
 
 void __42__PLDebugService_stressAggregateVerySmall__block_invoke()
@@ -4871,25 +4871,25 @@ void __42__PLDebugService_stressAggregateVerySmall__block_invoke()
 
 - (void)testExit
 {
-  v2 = [(PLOperator *)self workQueue];
-  dispatch_async(v2, &__block_literal_global_1077);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_async(workQueue, &__block_literal_global_1077);
 }
 
 - (void)testQuarantineExit
 {
-  v2 = [(PLOperator *)self workQueue];
-  dispatch_async(v2, &__block_literal_global_1079);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_async(workQueue, &__block_literal_global_1079);
 }
 
 - (void)testBlockingFlushCaches
 {
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__PLDebugService_testBlockingFlushCaches__block_invoke;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __41__PLDebugService_testBlockingFlushCaches__block_invoke(uint64_t a1)
@@ -4903,13 +4903,13 @@ void __41__PLDebugService_testBlockingFlushCaches__block_invoke(uint64_t a1)
   v39 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
   v3 = 0x277CBE000uLL;
-  v30 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::stressMonotonicTimer: begin"];
   v5 = MEMORY[0x277D3F178];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v7 = [v6 lastPathComponent];
+  lastPathComponent = [v6 lastPathComponent];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService stressMonotonicTimer]"];
-  [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:2218];
+  [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:2218];
 
   v9 = PLLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -4919,25 +4919,25 @@ void __41__PLDebugService_testBlockingFlushCaches__block_invoke(uint64_t a1)
     _os_log_debug_impl(&dword_21A4C6000, v9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 10;
   do
   {
     v12 = MEMORY[0x277D3F1E0];
     v13 = [*(v3 + 2728) monotonicDateWithTimeIntervalSinceNow:5.0];
-    v14 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __38__PLDebugService_stressMonotonicTimer__block_invoke;
     v35[3] = &unk_27825B230;
-    v15 = v30;
+    v15 = monotonicDate;
     v36 = v15;
-    [v12 debugScheduledTimerWithMonotonicFireDate:v13 withInterval:v14 withQueue:v35 withBlock:0.0];
+    [v12 debugScheduledTimerWithMonotonicFireDate:v13 withInterval:workQueue withQueue:v35 withBlock:0.0];
     v17 = v16 = v3;
 
-    [v10 addObject:v17];
+    [array addObject:v17];
     v18 = dispatch_time(0, 2000000000);
-    v19 = [(PLOperator *)self workQueue];
+    workQueue2 = [(PLOperator *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __38__PLDebugService_stressMonotonicTimer__block_invoke_1091;
@@ -4948,7 +4948,7 @@ void __41__PLDebugService_testBlockingFlushCaches__block_invoke(uint64_t a1)
     v21 = v17;
     v3 = v16;
     v22 = v21;
-    dispatch_after(v18, v19, block);
+    dispatch_after(v18, workQueue2, block);
 
     sleep(3u);
     --v11;
@@ -4958,9 +4958,9 @@ void __41__PLDebugService_testBlockingFlushCaches__block_invoke(uint64_t a1)
   v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::stressMonotonicTimer: end"];
   v24 = MEMORY[0x277D3F178];
   v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v26 = [v25 lastPathComponent];
+  lastPathComponent2 = [v25 lastPathComponent];
   v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService stressMonotonicTimer]"];
-  [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:2241];
+  [v24 logMessage:v23 fromFile:lastPathComponent2 fromFunction:v27 fromLineNumber:2241];
 
   v28 = PLLogCommon();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -5029,13 +5029,13 @@ void __38__PLDebugService_stressMonotonicTimer__block_invoke_1091(uint64_t a1)
 {
   v29 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
-  v22 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::stressMonotonicTimer2: begin"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService stressMonotonicTimer2]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2248];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2248];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -5052,14 +5052,14 @@ void __38__PLDebugService_stressMonotonicTimer__block_invoke_1091(uint64_t a1)
     v10 = v8;
     v11 = MEMORY[0x277D3F1E0];
     v12 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:5.0];
-    v13 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __39__PLDebugService_stressMonotonicTimer2__block_invoke;
     v25[3] = &unk_27825B230;
-    v14 = v22;
+    v14 = monotonicDate;
     v26 = v14;
-    v8 = [v11 debugScheduledTimerWithMonotonicFireDate:v12 withInterval:v13 withQueue:v25 withBlock:0.0];
+    v8 = [v11 debugScheduledTimerWithMonotonicFireDate:v12 withInterval:workQueue withQueue:v25 withBlock:0.0];
 
     sleep(1u);
     --v9;
@@ -5069,9 +5069,9 @@ void __38__PLDebugService_stressMonotonicTimer__block_invoke_1091(uint64_t a1)
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::stressMonotonicTimer2: end"];
   v16 = MEMORY[0x277D3F178];
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v18 = [v17 lastPathComponent];
+  lastPathComponent2 = [v17 lastPathComponent];
   v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService stressMonotonicTimer2]"];
-  [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:2263];
+  [v16 logMessage:v15 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:2263];
 
   v20 = PLLogCommon();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -5112,13 +5112,13 @@ void __39__PLDebugService_stressMonotonicTimer2__block_invoke(uint64_t a1, void 
 {
   v28 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
-  v21 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::stressMonotonicTimer3: begin"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService stressMonotonicTimer3]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2270];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2270];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -5133,14 +5133,14 @@ void __39__PLDebugService_stressMonotonicTimer2__block_invoke(uint64_t a1, void 
   {
     v9 = MEMORY[0x277D3F1E0];
     v10 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:3.0];
-    v11 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __39__PLDebugService_stressMonotonicTimer3__block_invoke;
     v24[3] = &unk_27825B230;
-    v12 = v21;
+    v12 = monotonicDate;
     v25 = v12;
-    v13 = [v9 debugScheduledTimerWithMonotonicFireDate:v10 withInterval:v11 withQueue:v24 withBlock:3.0];
+    v13 = [v9 debugScheduledTimerWithMonotonicFireDate:v10 withInterval:workQueue withQueue:v24 withBlock:3.0];
 
     sleep(1u);
     sleep(1u);
@@ -5152,9 +5152,9 @@ void __39__PLDebugService_stressMonotonicTimer2__block_invoke(uint64_t a1, void 
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::stressMonotonicTimer3: end"];
   v15 = MEMORY[0x277D3F178];
   v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v17 = [v16 lastPathComponent];
+  lastPathComponent2 = [v16 lastPathComponent];
   v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService stressMonotonicTimer3]"];
-  [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:2287];
+  [v15 logMessage:v14 fromFile:lastPathComponent2 fromFunction:v18 fromLineNumber:2287];
 
   v19 = PLLogCommon();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -5195,15 +5195,15 @@ void __39__PLDebugService_stressMonotonicTimer3__block_invoke(uint64_t a1, void 
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v4 timeIntervalSince1970];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [monotonicDate timeIntervalSince1970];
   v6 = [v3 stringWithFormat:@"PLDebugService::testMonotonicTimerThroughSleep: begin at now=%f", v5];
 
   v7 = MEMORY[0x277D3F178];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v9 = [v8 lastPathComponent];
+  lastPathComponent = [v8 lastPathComponent];
   v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testMonotonicTimerThroughSleep]"];
-  [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:2293];
+  [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:2293];
 
   v11 = PLLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -5215,17 +5215,17 @@ void __39__PLDebugService_stressMonotonicTimer3__block_invoke(uint64_t a1, void 
 
   v12 = MEMORY[0x277D3F1E0];
   v13 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:60.0];
-  v14 = [(PLOperator *)self workQueue];
-  v15 = [v12 debugScheduledTimerWithMonotonicFireDate:v13 withInterval:v14 withQueue:&__block_literal_global_1120 withBlock:300.0];
+  workQueue = [(PLOperator *)self workQueue];
+  v15 = [v12 debugScheduledTimerWithMonotonicFireDate:v13 withInterval:workQueue withQueue:&__block_literal_global_1120 withBlock:300.0];
   v16 = monotonicTimer;
   monotonicTimer = v15;
 
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::testMonotonicTimerThroughSleep: end"];
   v18 = MEMORY[0x277D3F178];
   v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v20 = [v19 lastPathComponent];
+  lastPathComponent2 = [v19 lastPathComponent];
   v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testMonotonicTimerThroughSleep]"];
-  [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:2300];
+  [v18 logMessage:v17 fromFile:lastPathComponent2 fromFunction:v21 fromLineNumber:2300];
 
   v22 = PLLogCommon();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -5267,9 +5267,9 @@ void __48__PLDebugService_testMonotonicTimerThroughSleep__block_invoke(uint64_t 
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::stressActivityScheduler: begin"];
   v4 = MEMORY[0x277D3F178];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v6 = [v5 lastPathComponent];
+  lastPathComponent = [v5 lastPathComponent];
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService stressActivityScheduler]"];
-  [v4 logMessage:v3 fromFile:v6 fromFunction:v7 fromLineNumber:2304];
+  [v4 logMessage:v3 fromFile:lastPathComponent fromFunction:v7 fromLineNumber:2304];
 
   v8 = PLLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -5281,10 +5281,10 @@ void __48__PLDebugService_testMonotonicTimerThroughSleep__block_invoke(uint64_t 
 
   v9 = [MEMORY[0x277D3F138] timeCriterionWithInterval:60.0];
   v34[0] = v9;
-  v10 = [MEMORY[0x277D3F130] pluggedInCriterion];
-  v34[1] = v10;
-  v11 = [MEMORY[0x277D3F130] displayOffCriterion];
-  v34[2] = v11;
+  pluggedInCriterion = [MEMORY[0x277D3F130] pluggedInCriterion];
+  v34[1] = pluggedInCriterion;
+  displayOffCriterion = [MEMORY[0x277D3F130] displayOffCriterion];
+  v34[2] = displayOffCriterion;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:3];
 
   *&buf = 0;
@@ -5293,11 +5293,11 @@ void __48__PLDebugService_testMonotonicTimerThroughSleep__block_invoke(uint64_t 
   v31 = __Block_byref_object_copy__18;
   v32 = __Block_byref_object_dispose__18;
   v33 = @"PLDebugService::scheduler";
-  v13 = [MEMORY[0x277D3F140] sharedInstance];
+  mEMORY[0x277D3F140] = [MEMORY[0x277D3F140] sharedInstance];
   v14 = *(*(&buf + 1) + 40);
   v15 = [MEMORY[0x277D3F138] timeCriterionWithInterval:3600.0];
-  v16 = [(PLOperator *)self workQueue];
-  [v13 scheduleActivityWithIdentifier:v14 withCriteria:v12 withMustRunCriterion:v15 withQueue:v16 withInterruptBlock:&__block_literal_global_1133 withActivityBlock:&__block_literal_global_1144];
+  workQueue = [(PLOperator *)self workQueue];
+  [mEMORY[0x277D3F140] scheduleActivityWithIdentifier:v14 withCriteria:v12 withMustRunCriterion:v15 withQueue:workQueue withInterruptBlock:&__block_literal_global_1133 withActivityBlock:&__block_literal_global_1144];
 
   v17 = dispatch_time(0, 120000000000);
   v18 = dispatch_get_global_queue(-2, 0);
@@ -5311,9 +5311,9 @@ void __48__PLDebugService_testMonotonicTimerThroughSleep__block_invoke(uint64_t 
   v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::stressActivityScheduler: end"];
   v20 = MEMORY[0x277D3F178];
   v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v22 = [v21 lastPathComponent];
+  lastPathComponent2 = [v21 lastPathComponent];
   v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService stressActivityScheduler]"];
-  [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:2340];
+  [v20 logMessage:v19 fromFile:lastPathComponent2 fromFunction:v23 fromLineNumber:2340];
 
   v24 = PLLogCommon();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -5404,8 +5404,8 @@ void __41__PLDebugService_stressActivityScheduler__block_invoke_1152(uint64_t a1
 
 - (void)currentBasebandTime
 {
-  v2 = [(PLOperator *)self workQueue];
-  dispatch_async(v2, &__block_literal_global_1157);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_async(workQueue, &__block_literal_global_1157);
 }
 
 void __37__PLDebugService_currentBasebandTime__block_invoke()
@@ -5416,8 +5416,8 @@ void __37__PLDebugService_currentBasebandTime__block_invoke()
 
 - (void)stressMidnightCalculation
 {
-  v2 = [(PLOperator *)self workQueue];
-  dispatch_async(v2, &__block_literal_global_1160);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_async(workQueue, &__block_literal_global_1160);
 }
 
 void __43__PLDebugService_stressMidnightCalculation__block_invoke()
@@ -5509,13 +5509,13 @@ void __43__PLDebugService_stressMidnightCalculation__block_invoke()
 
 - (void)stressCacheSmall
 {
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__PLDebugService_stressCacheSmall__block_invoke;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __34__PLDebugService_stressCacheSmall__block_invoke(uint64_t a1)
@@ -5579,13 +5579,13 @@ void __34__PLDebugService_stressCacheSmall__block_invoke(uint64_t a1)
 
 - (void)stressCache
 {
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__PLDebugService_stressCache__block_invoke;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __29__PLDebugService_stressCache__block_invoke(uint64_t a1)
@@ -5621,8 +5621,8 @@ void __29__PLDebugService_stressCache__block_invoke(uint64_t a1)
 
 - (void)stressSetObjectForKey
 {
-  v2 = [(PLOperator *)self workQueue];
-  dispatch_async(v2, &__block_literal_global_1183);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_async(workQueue, &__block_literal_global_1183);
 }
 
 void __39__PLDebugService_stressSetObjectForKey__block_invoke()
@@ -5643,8 +5643,8 @@ void __39__PLDebugService_stressSetObjectForKey__block_invoke()
 
 - (void)stressObjectForKey
 {
-  v2 = [(PLOperator *)self workQueue];
-  dispatch_async(v2, &__block_literal_global_1188);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_async(workQueue, &__block_literal_global_1188);
 }
 
 void __36__PLDebugService_stressObjectForKey__block_invoke()
@@ -5668,13 +5668,13 @@ void __36__PLDebugService_stressObjectForKey__block_invoke()
 
 - (void)stressPLEntry
 {
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__PLDebugService_stressPLEntry__block_invoke;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __31__PLDebugService_stressPLEntry__block_invoke(uint64_t a1)
@@ -5833,9 +5833,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"fire Daily Tasks"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testDailyTasks]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2493];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2493];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -5845,9 +5845,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "%@", &v11, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D3F2A0] sharedCore];
-  v9 = [v8 storage];
-  [v9 dailyTasks];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  [storage dailyTasks];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -5858,9 +5858,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::testArchive"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testArchive]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2498];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2498];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -5870,9 +5870,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "%@", &v11, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D3F158] sharedInstance];
-  v9 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v8 runActivityWithLastCompletedDate:v9];
+  mEMORY[0x277D3F158] = [MEMORY[0x277D3F158] sharedInstance];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [mEMORY[0x277D3F158] runActivityWithLastCompletedDate:monotonicDate];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -5883,9 +5883,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::testTrimEPSQL"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testTrimEPSQL]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2503];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2503];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -5895,8 +5895,8 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "%@", &v10, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D3F158] sharedInstance];
-  [v8 trimExtendedPersistenceLog];
+  mEMORY[0x277D3F158] = [MEMORY[0x277D3F158] sharedInstance];
+  [mEMORY[0x277D3F158] trimExtendedPersistenceLog];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -5907,9 +5907,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::testTrimCESQL"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testTrimCESQL]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2508];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2508];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -5919,8 +5919,8 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "%@", &v10, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D3F158] sharedInstance];
-  [v8 trimCleanEnergyLog];
+  mEMORY[0x277D3F158] = [MEMORY[0x277D3F158] sharedInstance];
+  [mEMORY[0x277D3F158] trimCleanEnergyLog];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -5931,9 +5931,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::testTrimXCSQL"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testTrimXCSQL]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2513];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2513];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -5943,8 +5943,8 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "%@", &v10, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D3F158] sharedInstance];
-  [v8 trimXcodeOrganizerLog];
+  mEMORY[0x277D3F158] = [MEMORY[0x277D3F158] sharedInstance];
+  [mEMORY[0x277D3F158] trimXcodeOrganizerLog];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -5955,9 +5955,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLDebugService::testTrimBGSQL"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testTrimBGSQL]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2518];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2518];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -5967,8 +5967,8 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "%@", &v10, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D3F158] sharedInstance];
-  [v8 trimBackgroundProcessingLog];
+  mEMORY[0x277D3F158] = [MEMORY[0x277D3F158] sharedInstance];
+  [mEMORY[0x277D3F158] trimBackgroundProcessingLog];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -5977,9 +5977,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
 {
   v2 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"ArrayTest"];
   v3 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v2];
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKeyedSubscript:@"RandomString"];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v3 setObject:uUIDString forKeyedSubscript:@"RandomString"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInt:rand()];
   [v3 setObject:v6 forKeyedSubscript:@"RandomNumber"];
@@ -6007,9 +6007,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"firing ABM tests"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testABM]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2539];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2539];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -6020,15 +6020,15 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   }
 
   v8 = MEMORY[0x277CCACA8];
-  v9 = [MEMORY[0x277D3F120] sharedABMClient];
-  v10 = [v9 getLTESleepManagerStats];
-  v11 = [v8 stringWithFormat:@"ABM LTE Sleep MGR stats = %@", v10];
+  mEMORY[0x277D3F120] = [MEMORY[0x277D3F120] sharedABMClient];
+  getLTESleepManagerStats = [mEMORY[0x277D3F120] getLTESleepManagerStats];
+  v11 = [v8 stringWithFormat:@"ABM LTE Sleep MGR stats = %@", getLTESleepManagerStats];
 
   v12 = MEMORY[0x277D3F178];
   v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v14 = [v13 lastPathComponent];
+  lastPathComponent2 = [v13 lastPathComponent];
   v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testABM]"];
-  [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:2540];
+  [v12 logMessage:v11 fromFile:lastPathComponent2 fromFunction:v15 fromLineNumber:2540];
 
   v16 = PLLogCommon();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -6038,19 +6038,19 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
     _os_log_debug_impl(&dword_21A4C6000, v16, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  v17 = [MEMORY[0x277D3F120] sharedABMClient];
-  v18 = [v17 getBasebandTimeAndLatency];
+  mEMORY[0x277D3F120]2 = [MEMORY[0x277D3F120] sharedABMClient];
+  getBasebandTimeAndLatency = [mEMORY[0x277D3F120]2 getBasebandTimeAndLatency];
 
   v19 = MEMORY[0x277CCACA8];
-  v20 = [v18 time];
-  [v18 latency];
-  v22 = [v19 stringWithFormat:@"ABM BB time = %@, latency = %f", v20, v21];
+  time = [getBasebandTimeAndLatency time];
+  [getBasebandTimeAndLatency latency];
+  v22 = [v19 stringWithFormat:@"ABM BB time = %@, latency = %f", time, v21];
 
   v23 = MEMORY[0x277D3F178];
   v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v25 = [v24 lastPathComponent];
+  lastPathComponent3 = [v24 lastPathComponent];
   v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testABM]"];
-  [v23 logMessage:v22 fromFile:v25 fromFunction:v26 fromLineNumber:2543];
+  [v23 logMessage:v22 fromFile:lastPathComponent3 fromFunction:v26 fromLineNumber:2543];
 
   v27 = PLLogCommon();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -6066,13 +6066,13 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
 - (void)testArray
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(PLDebugService *)self filledTestArrayEntry];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Test array!! entry=%@", v3];
+  filledTestArrayEntry = [(PLDebugService *)self filledTestArrayEntry];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Test array!! entry=%@", filledTestArrayEntry];
   v5 = MEMORY[0x277D3F178];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v7 = [v6 lastPathComponent];
+  lastPathComponent = [v6 lastPathComponent];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testArray]"];
-  [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:2549];
+  [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:2549];
 
   v9 = PLLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -6082,17 +6082,17 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
     _os_log_debug_impl(&dword_21A4C6000, v9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  [(PLOperator *)self logEntry:v3];
+  [(PLOperator *)self logEntry:filledTestArrayEntry];
   v10 = [(PLOperator *)PLDebugService entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"ArrayTest"];
-  v11 = [(PLOperator *)self storage];
-  v12 = [v11 lastEntryForKey:v10];
+  storage = [(PLOperator *)self storage];
+  v12 = [storage lastEntryForKey:v10];
 
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Test array!! dbRead=%@", v12];
   v14 = MEMORY[0x277D3F178];
   v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v16 = [v15 lastPathComponent];
+  lastPathComponent2 = [v15 lastPathComponent];
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testArray]"];
-  [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:2554];
+  [v14 logMessage:v13 fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:2554];
 
   v18 = PLLogCommon();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -6111,9 +6111,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Starting generateOTASubmission"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testGenerateOTASubmission]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2558];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2558];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -6123,8 +6123,8 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "%@", &v10, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D3F238] sharedInstance];
-  [v8 generateOTASubmissionAndSendTaskingEndSubmission:1];
+  mEMORY[0x277D3F238] = [MEMORY[0x277D3F238] sharedInstance];
+  [mEMORY[0x277D3F238] generateOTASubmissionAndSendTaskingEndSubmission:1];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -6135,9 +6135,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Starting generateSafeguardSubmission"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testGenerateSafeguardSubmission]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2564];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2564];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -6147,8 +6147,8 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "%@", &v10, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D3F298] sharedInstance];
-  [v8 performSubmission];
+  mEMORY[0x277D3F298] = [MEMORY[0x277D3F298] sharedInstance];
+  [mEMORY[0x277D3F298] performSubmission];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -6159,9 +6159,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Starting generateSafeguardSubmission"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testScheduleSafeguardSubmission]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2571];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2571];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -6171,8 +6171,8 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "%@", &v10, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D3F298] sharedInstance];
-  [v8 scheduleSubmission];
+  mEMORY[0x277D3F298] = [MEMORY[0x277D3F298] sharedInstance];
+  [mEMORY[0x277D3F298] scheduleSubmission];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -6183,9 +6183,9 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Starting stressTaskingSubmission"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService stressTaskingSubmission]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2577];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2577];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -6198,8 +6198,8 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
   v8 = 100;
   do
   {
-    v9 = [MEMORY[0x277D3F238] sharedInstance];
-    [v9 generateOTASubmissionAndSendTaskingEndSubmission:1];
+    mEMORY[0x277D3F238] = [MEMORY[0x277D3F238] sharedInstance];
+    [mEMORY[0x277D3F238] generateOTASubmissionAndSendTaskingEndSubmission:1];
 
     --v8;
   }
@@ -6256,17 +6256,17 @@ void __29__PLDebugService_stressTimer__block_invoke_2()
 
         v65 = v7;
         v8 = *(*(&v74 + 1) + 8 * v7);
-        v9 = [v8 className];
-        v10 = [v9 hasPrefix:@"PLBBAgent"];
+        className = [v8 className];
+        v10 = [className hasPrefix:@"PLBBAgent"];
 
         if (v10)
         {
           v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"<rdar://problem/16693449> BBAgent: selector for entryDefinition has to be available on the Operator"];
           v12 = MEMORY[0x277D3F178];
           v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-          v14 = [v13 lastPathComponent];
+          lastPathComponent = [v13 lastPathComponent];
           v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testAllEntryKeyRequests]"];
-          [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:2613];
+          [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:2613];
 
           v16 = PLLogCommon();
           if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -6281,17 +6281,17 @@ LABEL_14:
           goto LABEL_33;
         }
 
-        v17 = [v8 className];
-        v18 = [v17 hasPrefix:@"PLIOReport"];
+        className2 = [v8 className];
+        v18 = [className2 hasPrefix:@"PLIOReport"];
 
         if (v18)
         {
           v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"<rdar://problem/16694077> PLIOReport should use kPLEDLogSelector in the definitions to setup trigger for requests"];
           v19 = MEMORY[0x277D3F178];
           v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-          v21 = [v20 lastPathComponent];
+          lastPathComponent2 = [v20 lastPathComponent];
           v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testAllEntryKeyRequests]"];
-          [v19 logMessage:v11 fromFile:v21 fromFunction:v22 fromLineNumber:2615];
+          [v19 logMessage:v11 fromFile:lastPathComponent2 fromFunction:v22 fromLineNumber:2615];
 
           v16 = PLLogCommon();
           if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -6302,17 +6302,17 @@ LABEL_14:
           goto LABEL_14;
         }
 
-        v23 = [v8 className];
-        v24 = [v23 hasPrefix:@"PLVideoAgent"];
+        className3 = [v8 className];
+        v24 = [className3 hasPrefix:@"PLVideoAgent"];
 
         if (v24)
         {
           v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"<rdar://problem/16694177> PLVideoAgent_EventForward_VRPStatus needs to either be kPLEDOnDemandQuery: @(NO) or have method for requesting"];
           v25 = MEMORY[0x277D3F178];
           v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-          v27 = [v26 lastPathComponent];
+          lastPathComponent3 = [v26 lastPathComponent];
           v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testAllEntryKeyRequests]"];
-          [v25 logMessage:v11 fromFile:v27 fromFunction:v28 fromLineNumber:2617];
+          [v25 logMessage:v11 fromFile:lastPathComponent3 fromFunction:v28 fromLineNumber:2617];
 
           v16 = PLLogCommon();
           if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -6323,8 +6323,8 @@ LABEL_14:
           goto LABEL_14;
         }
 
-        v29 = [v8 entryKeys];
-        v30 = [v29 sortedArrayUsingSelector:sel_compare_];
+        entryKeys = [v8 entryKeys];
+        v30 = [entryKeys sortedArrayUsingSelector:sel_compare_];
 
         v72 = 0u;
         v73 = 0u;
@@ -6349,9 +6349,9 @@ LABEL_14:
               v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"!!! entryKey=%@, entryKeys=%@", v34, v16];
               v36 = MEMORY[0x277D3F178];
               v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-              v38 = [v37 lastPathComponent];
+              lastPathComponent4 = [v37 lastPathComponent];
               v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testAllEntryKeyRequests]"];
-              [v36 logMessage:v35 fromFile:v38 fromFunction:v39 fromLineNumber:2622];
+              [v36 logMessage:v35 fromFile:lastPathComponent4 fromFunction:v39 fromLineNumber:2622];
 
               v40 = PLLogCommon();
               if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
@@ -6366,9 +6366,9 @@ LABEL_14:
                 v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"** Requesting %@", v34];
                 v42 = MEMORY[0x277D3F178];
                 v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-                v44 = [v43 lastPathComponent];
+                lastPathComponent5 = [v43 lastPathComponent];
                 v45 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testAllEntryKeyRequests]"];
-                [v42 logMessage:v41 fromFile:v44 fromFunction:v45 fromLineNumber:2624];
+                [v42 logMessage:v41 fromFile:lastPathComponent5 fromFunction:v45 fromLineNumber:2624];
 
                 v46 = PLLogCommon();
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -6393,9 +6393,9 @@ LABEL_14:
                 v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"** Skipping %@", v34];
                 v49 = MEMORY[0x277D3F178];
                 v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-                v51 = [v50 lastPathComponent];
+                lastPathComponent6 = [v50 lastPathComponent];
                 v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testAllEntryKeyRequests]"];
-                [v49 logMessage:v48 fromFile:v51 fromFunction:v52 fromLineNumber:2635];
+                [v49 logMessage:v48 fromFile:lastPathComponent6 fromFunction:v52 fromLineNumber:2635];
 
                 v53 = PLLogCommon();
                 if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
@@ -6437,9 +6437,9 @@ LABEL_33:
   v54 = [MEMORY[0x277CCACA8] stringWithFormat:@"all requests sent... wait time."];
   v55 = MEMORY[0x277D3F178];
   v56 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v57 = [v56 lastPathComponent];
+  lastPathComponent7 = [v56 lastPathComponent];
   v58 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testAllEntryKeyRequests]"];
-  [v55 logMessage:v54 fromFile:v57 fromFunction:v58 fromLineNumber:2642];
+  [v55 logMessage:v54 fromFile:lastPathComponent7 fromFunction:v58 fromLineNumber:2642];
 
   v59 = PLLogCommon();
   if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
@@ -6518,9 +6518,9 @@ LABEL_7:
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"faking a sleep"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testEntrySleep]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2647];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2647];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -6530,8 +6530,8 @@ LABEL_7:
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "%@", &v10, 0xCu);
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:@"DEBUG_FakeSleep" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"DEBUG_FakeSleep" object:0];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -6542,9 +6542,9 @@ LABEL_7:
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"faking a wake"];
   v3 = MEMORY[0x277D3F178];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v5 = [v4 lastPathComponent];
+  lastPathComponent = [v4 lastPathComponent];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testEntryWake]"];
-  [v3 logMessage:v2 fromFile:v5 fromFunction:v6 fromLineNumber:2652];
+  [v3 logMessage:v2 fromFile:lastPathComponent fromFunction:v6 fromLineNumber:2652];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -6554,39 +6554,39 @@ LABEL_7:
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "%@", &v10, 0xCu);
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:@"DEBUG_FakeWake" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"DEBUG_FakeWake" object:0];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)testEntryLogRequestedForEntryKey:(id)a3
+- (void)testEntryLogRequestedForEntryKey:(id)key
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"posting %@", v4];
+  keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"posting %@", keyCopy];
   v7 = MEMORY[0x277D3F178];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v9 = [v8 lastPathComponent];
+  lastPathComponent = [v8 lastPathComponent];
   v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testEntryLogRequestedForEntryKey:]"];
-  [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:2658];
+  [v7 logMessage:keyCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:2658];
 
   v11 = PLLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v21 = v6;
+    v21 = keyCopy;
     _os_log_debug_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  v12 = [MEMORY[0x277D3F1A8] requestEntryForEntryKey:v4 forOperator:self withTimeout:0 error:60.0];
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"DONE! %@=%@", v4, v12];
+  v12 = [MEMORY[0x277D3F1A8] requestEntryForEntryKey:keyCopy forOperator:self withTimeout:0 error:60.0];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"DONE! %@=%@", keyCopy, v12];
   v14 = MEMORY[0x277D3F178];
   v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDebugService.m"];
-  v16 = [v15 lastPathComponent];
+  lastPathComponent2 = [v15 lastPathComponent];
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDebugService testEntryLogRequestedForEntryKey:]"];
-  [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:2660];
+  [v14 logMessage:v13 fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:2660];
 
   v18 = PLLogCommon();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -6602,13 +6602,13 @@ LABEL_7:
 
 - (void)testEntryApplicationAgent
 {
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__PLDebugService_testEntryApplicationAgent__block_invoke;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __43__PLDebugService_testEntryApplicationAgent__block_invoke(uint64_t a1)
@@ -6657,13 +6657,13 @@ void __43__PLDebugService_testEntryApplicationAgent__block_invoke(uint64_t a1)
 
 - (void)testEntryDelete
 {
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__PLDebugService_testEntryDelete__block_invoke;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __33__PLDebugService_testEntryDelete__block_invoke(uint64_t a1)
@@ -6846,13 +6846,13 @@ uint64_t __33__PLDebugService_testEntryDelete__block_invoke_1342(uint64_t a1)
 
 - (void)testEntryQueries
 {
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__PLDebugService_testEntryQueries__block_invoke;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __34__PLDebugService_testEntryQueries__block_invoke(uint64_t a1)
@@ -7009,8 +7009,8 @@ void __34__PLDebugService_testEntryQueries__block_invoke(uint64_t a1)
 
 - (void)testMonotonicAggregateEntries
 {
-  v2 = [(PLOperator *)self workQueue];
-  dispatch_async(v2, &__block_literal_global_1382);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_async(workQueue, &__block_literal_global_1382);
 }
 
 void __47__PLDebugService_testMonotonicAggregateEntries__block_invoke()
@@ -7074,8 +7074,8 @@ void __47__PLDebugService_testMonotonicAggregateEntries__block_invoke()
 
 - (void)testMonotonicAggregateEntriesExtendedTime
 {
-  v2 = [(PLOperator *)self workQueue];
-  dispatch_async(v2, &__block_literal_global_1390);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_async(workQueue, &__block_literal_global_1390);
 }
 
 void __59__PLDebugService_testMonotonicAggregateEntriesExtendedTime__block_invoke()
@@ -7146,8 +7146,8 @@ void __59__PLDebugService_testMonotonicAggregateEntriesExtendedTime__block_invok
 
 - (void)testProportionateAggregateEntries
 {
-  v2 = [(PLOperator *)self workQueue];
-  dispatch_async(v2, &__block_literal_global_1398);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_async(workQueue, &__block_literal_global_1398);
 }
 
 void __51__PLDebugService_testProportionateAggregateEntries__block_invoke()
@@ -7251,27 +7251,27 @@ void __51__PLDebugService_testProportionateAggregateEntries__block_invoke()
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (id)handleEnergyMonitorDebugQuery:(id)a3
+- (id)handleEnergyMonitorDebugQuery:(id)query
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLDebugService *)self energyMonitorDebugInstance];
+  queryCopy = query;
+  energyMonitorDebugInstance = [(PLDebugService *)self energyMonitorDebugInstance];
 
-  if (!v5)
+  if (!energyMonitorDebugInstance)
   {
     v17 = &unk_282C19BB0;
     goto LABEL_12;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"queryType"];
+  v6 = [queryCopy objectForKeyedSubscript:@"queryType"];
   if (([v6 isEqualToString:@"reportStartEvent"] & 1) == 0 && !objc_msgSend(v6, "isEqualToString:", @"reportStopEvent"))
   {
     if ([v6 isEqualToString:@"getValueForPropertyName"])
     {
       v21 = v6;
-      v22 = [v4 objectForKeyedSubscript:@"propertyName"];
-      v23 = [(PLDebugService *)self energyMonitorDebugInstance];
-      v24 = [(PLDebugService *)self getValueForPropertyName:v22 forEnergyMonitor:v23];
+      v22 = [queryCopy objectForKeyedSubscript:@"propertyName"];
+      energyMonitorDebugInstance2 = [(PLDebugService *)self energyMonitorDebugInstance];
+      v24 = [(PLDebugService *)self getValueForPropertyName:v22 forEnergyMonitor:energyMonitorDebugInstance2];
 
       if ([v22 isEqualToString:@"discretionaryIntervals"])
       {
@@ -7333,8 +7333,8 @@ LABEL_29:
           _os_log_impl(&dword_21A4C6000, v30, OS_LOG_TYPE_INFO, "Updating mockData with newMockData=%@", buf, 0xCu);
         }
 
-        v31 = [(PLDebugService *)self energyMonitorDebugInstance];
-        [v31 updateMockData:v29];
+        energyMonitorDebugInstance3 = [(PLDebugService *)self energyMonitorDebugInstance];
+        [energyMonitorDebugInstance3 updateMockData:v29];
 
         v18 = &unk_282C19BD8;
       }
@@ -7349,11 +7349,11 @@ LABEL_29:
 
     if ([v6 isEqualToString:@"reportChargingStatus"])
     {
-      v33 = [v4 objectForKeyedSubscript:@"chargingStatus"];
-      v34 = [v33 BOOLValue];
+      v33 = [queryCopy objectForKeyedSubscript:@"chargingStatus"];
+      bOOLValue = [v33 BOOLValue];
 
-      v35 = [(PLDebugService *)self energyMonitorDebugInstance];
-      [v35 reportChargingStatus:v34];
+      energyMonitorDebugInstance4 = [(PLDebugService *)self energyMonitorDebugInstance];
+      [energyMonitorDebugInstance4 reportChargingStatus:bOOLValue];
 
       v18 = &unk_282C19C00;
       goto LABEL_11;
@@ -7365,12 +7365,12 @@ LABEL_29:
       goto LABEL_11;
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"methodName"];
+    v36 = [queryCopy objectForKeyedSubscript:@"methodName"];
     if ([v36 isEqualToString:@"generateEnergyReport"])
     {
       v37 = v6;
-      v38 = [(PLDebugService *)self energyMonitorDebugInstance];
-      [v38 generateEnergyReport];
+      energyMonitorDebugInstance5 = [(PLDebugService *)self energyMonitorDebugInstance];
+      [energyMonitorDebugInstance5 generateEnergyReport];
     }
 
     else
@@ -7384,24 +7384,24 @@ LABEL_39:
       }
 
       v37 = v6;
-      v38 = [(PLDebugService *)self energyMonitorDebugInstance];
-      [v38 queryPowerlogForDiscretionaryEnergy];
+      energyMonitorDebugInstance5 = [(PLDebugService *)self energyMonitorDebugInstance];
+      [energyMonitorDebugInstance5 queryPowerlogForDiscretionaryEnergy];
     }
 
     v6 = v37;
     goto LABEL_39;
   }
 
-  v40 = [v4 objectForKeyedSubscript:{@"activityName", self}];
-  v7 = [v4 objectForKeyedSubscript:@"involvedIdentifiers"];
+  v40 = [queryCopy objectForKeyedSubscript:{@"activityName", self}];
+  v7 = [queryCopy objectForKeyedSubscript:@"involvedIdentifiers"];
   v8 = MEMORY[0x277CCABB0];
-  v9 = [v4 objectForKeyedSubscript:@"requiresNetwork"];
+  v9 = [queryCopy objectForKeyedSubscript:@"requiresNetwork"];
   v10 = [v8 numberWithBool:{objc_msgSend(v9, "BOOLValue")}];
 
-  v11 = [v4 objectForKeyedSubscript:@"quality"];
-  v12 = [v4 objectForKeyedSubscript:@"cell"];
-  v41 = v4;
-  v13 = [v4 objectForKeyedSubscript:@"wifi"];
+  v11 = [queryCopy objectForKeyedSubscript:@"quality"];
+  v12 = [queryCopy objectForKeyedSubscript:@"cell"];
+  v41 = queryCopy;
+  v13 = [queryCopy objectForKeyedSubscript:@"wifi"];
   v14 = objc_opt_new();
   [v14 setObject:v7 forKeyedSubscript:@"involvedIdentifiers"];
   [v14 setObject:v10 forKeyedSubscript:@"requiresNetwork"];
@@ -7410,9 +7410,9 @@ LABEL_39:
   [v14 setObject:v13 forKeyedSubscript:@"wifi"];
   if ([v6 isEqualToString:@"reportStartEvent"])
   {
-    v15 = [v39 energyMonitorDebugInstance];
+    energyMonitorDebugInstance6 = [v39 energyMonitorDebugInstance];
     v16 = v40;
-    [v15 reportStartEvent:v40 withInfo:v14];
+    [energyMonitorDebugInstance6 reportStartEvent:v40 withInfo:v14];
 LABEL_9:
 
     goto LABEL_10;
@@ -7421,15 +7421,15 @@ LABEL_9:
   v16 = v40;
   if ([v6 isEqualToString:@"reportStopEvent"])
   {
-    v15 = [v39 energyMonitorDebugInstance];
-    [v15 reportStopEvent:v40 withInfo:v14];
+    energyMonitorDebugInstance6 = [v39 energyMonitorDebugInstance];
+    [energyMonitorDebugInstance6 reportStopEvent:v40 withInfo:v14];
     goto LABEL_9;
   }
 
 LABEL_10:
 
   v18 = 0;
-  v4 = v41;
+  queryCopy = v41;
 LABEL_11:
   v17 = v18;
 
@@ -7469,65 +7469,65 @@ void __48__PLDebugService_handleEnergyMonitorDebugQuery___block_invoke_3(uint64_
   [v2 addObject:v3];
 }
 
-- (id)getValueForPropertyName:(id)a3 forEnergyMonitor:(id)a4
+- (id)getValueForPropertyName:(id)name forEnergyMonitor:(id)monitor
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  monitorCopy = monitor;
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v51 = v5;
+    v51 = nameCopy;
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "Getting value for propertyName=%@", buf, 0xCu);
   }
 
-  if ([v5 isEqualToString:@"discretionaryIntervals"])
+  if ([nameCopy isEqualToString:@"discretionaryIntervals"])
   {
     v8 = PLLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v19 = [v6 intervalManager];
-      v20 = [v19 identifierToDiscretionaryIntervals];
+      intervalManager = [monitorCopy intervalManager];
+      identifierToDiscretionaryIntervals = [intervalManager identifierToDiscretionaryIntervals];
       *buf = 138412290;
-      v51 = v20;
+      v51 = identifierToDiscretionaryIntervals;
       _os_log_debug_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_DEBUG, "value=%@", buf, 0xCu);
     }
 
-    v48 = v5;
-    v9 = [v6 intervalManager];
-    v10 = [v9 identifierToDiscretionaryIntervals];
-    v49 = v10;
+    v48 = nameCopy;
+    intervalManager2 = [monitorCopy intervalManager];
+    identifierToDiscretionaryIntervals2 = [intervalManager2 identifierToDiscretionaryIntervals];
+    v49 = identifierToDiscretionaryIntervals2;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
 
     goto LABEL_30;
   }
 
-  if ([v5 isEqualToString:@"quickEnergySnapshots"])
+  if ([nameCopy isEqualToString:@"quickEnergySnapshots"])
   {
     v12 = PLLogCommon();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [v6 quickEnergySnapshots];
+      quickEnergySnapshots = [monitorCopy quickEnergySnapshots];
       *buf = 138412290;
-      v51 = v22;
+      v51 = quickEnergySnapshots;
       _os_log_debug_impl(&dword_21A4C6000, v12, OS_LOG_TYPE_DEBUG, "value=%@", buf, 0xCu);
     }
 
-    v46 = v5;
-    v9 = [v6 quickEnergySnapshots];
-    v47 = v9;
+    v46 = nameCopy;
+    intervalManager2 = [monitorCopy quickEnergySnapshots];
+    v47 = intervalManager2;
     v13 = MEMORY[0x277CBEAC0];
     v14 = &v47;
     v15 = &v46;
     goto LABEL_29;
   }
 
-  if ([v5 isEqualToString:@"lastPowerlogResponse"])
+  if ([nameCopy isEqualToString:@"lastPowerlogResponse"])
   {
-    v44 = v5;
-    v9 = [v6 lastPowerlogResponse];
-    v45 = v9;
+    v44 = nameCopy;
+    intervalManager2 = [monitorCopy lastPowerlogResponse];
+    v45 = intervalManager2;
     v13 = MEMORY[0x277CBEAC0];
     v14 = &v45;
     v15 = &v44;
@@ -7538,103 +7538,103 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if ([v5 isEqualToString:@"lastReportedTotalEnergy"])
+  if ([nameCopy isEqualToString:@"lastReportedTotalEnergy"])
   {
-    v42 = v5;
+    v42 = nameCopy;
     v16 = MEMORY[0x277CCABB0];
-    [v6 lastReportedTotalEnergy];
-    v9 = [v16 numberWithDouble:?];
-    v43 = v9;
+    [monitorCopy lastReportedTotalEnergy];
+    intervalManager2 = [v16 numberWithDouble:?];
+    v43 = intervalManager2;
     v13 = MEMORY[0x277CBEAC0];
     v14 = &v43;
     v15 = &v42;
     goto LABEL_29;
   }
 
-  if ([v5 isEqualToString:@"lastReportedCPUEnergy"])
+  if ([nameCopy isEqualToString:@"lastReportedCPUEnergy"])
   {
-    v40 = v5;
+    v40 = nameCopy;
     v17 = MEMORY[0x277CCABB0];
-    [v6 lastReportedCPUEnergy];
-    v9 = [v17 numberWithDouble:?];
-    v41 = v9;
+    [monitorCopy lastReportedCPUEnergy];
+    intervalManager2 = [v17 numberWithDouble:?];
+    v41 = intervalManager2;
     v13 = MEMORY[0x277CBEAC0];
     v14 = &v41;
     v15 = &v40;
     goto LABEL_29;
   }
 
-  if ([v5 isEqualToString:@"lastReportedNetworkEnergy"])
+  if ([nameCopy isEqualToString:@"lastReportedNetworkEnergy"])
   {
-    v38 = v5;
+    v38 = nameCopy;
     v18 = MEMORY[0x277CCABB0];
-    [v6 lastReportedNetworkEnergy];
-    v9 = [v18 numberWithDouble:?];
-    v39 = v9;
+    [monitorCopy lastReportedNetworkEnergy];
+    intervalManager2 = [v18 numberWithDouble:?];
+    v39 = intervalManager2;
     v13 = MEMORY[0x277CBEAC0];
     v14 = &v39;
     v15 = &v38;
     goto LABEL_29;
   }
 
-  if ([v5 isEqualToString:@"accumulatedCPUEnergy"])
+  if ([nameCopy isEqualToString:@"accumulatedCPUEnergy"])
   {
-    v36 = v5;
+    v36 = nameCopy;
     v21 = MEMORY[0x277CCABB0];
-    [v6 accumulatedCPUEnergy];
-    v9 = [v21 numberWithDouble:?];
-    v37 = v9;
+    [monitorCopy accumulatedCPUEnergy];
+    intervalManager2 = [v21 numberWithDouble:?];
+    v37 = intervalManager2;
     v13 = MEMORY[0x277CBEAC0];
     v14 = &v37;
     v15 = &v36;
     goto LABEL_29;
   }
 
-  if ([v5 isEqualToString:@"accumulatedNetworkEnergy"])
+  if ([nameCopy isEqualToString:@"accumulatedNetworkEnergy"])
   {
-    v34 = v5;
+    v34 = nameCopy;
     v23 = MEMORY[0x277CCABB0];
-    [v6 accumulatedNetworkEnergy];
-    v9 = [v23 numberWithDouble:?];
-    v35 = v9;
+    [monitorCopy accumulatedNetworkEnergy];
+    intervalManager2 = [v23 numberWithDouble:?];
+    v35 = intervalManager2;
     v13 = MEMORY[0x277CBEAC0];
     v14 = &v35;
     v15 = &v34;
     goto LABEL_29;
   }
 
-  if ([v5 isEqualToString:@"isCharging"])
+  if ([nameCopy isEqualToString:@"isCharging"])
   {
-    v32 = v5;
-    v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "isCharging")}];
-    v33 = v9;
+    v32 = nameCopy;
+    intervalManager2 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(monitorCopy, "isCharging")}];
+    v33 = intervalManager2;
     v13 = MEMORY[0x277CBEAC0];
     v14 = &v33;
     v15 = &v32;
     goto LABEL_29;
   }
 
-  if ([v5 isEqualToString:@"mockData"])
+  if ([nameCopy isEqualToString:@"mockData"])
   {
     v24 = PLLogCommon();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v27 = [v6 mockData];
+      mockData = [monitorCopy mockData];
       *buf = 138412290;
-      v51 = v27;
+      v51 = mockData;
       _os_log_debug_impl(&dword_21A4C6000, v24, OS_LOG_TYPE_DEBUG, "value=%@", buf, 0xCu);
     }
 
-    v30 = v5;
-    v9 = [v6 mockData];
-    v31 = v9;
+    v30 = nameCopy;
+    intervalManager2 = [monitorCopy mockData];
+    v31 = intervalManager2;
     v13 = MEMORY[0x277CBEAC0];
     v14 = &v31;
     v15 = &v30;
     goto LABEL_29;
   }
 
-  v28 = v5;
+  v28 = nameCopy;
   v29 = @"No value found for propertyName";
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
 LABEL_31:

@@ -1,24 +1,24 @@
 @interface TSUCGImage
 - (CGSize)size;
-- (TSUCGImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5;
+- (TSUCGImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation;
 - (double)scale;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation TSUCGImage
 
-- (TSUCGImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5
+- (TSUCGImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation
 {
   v11.receiver = self;
   v11.super_class = TSUCGImage;
   v8 = [(TSUImage *)&v11 init];
   if (v8)
   {
-    v9 = CGImageRetain(a3);
+    v9 = CGImageRetain(image);
     v8->mCGImage = v9;
-    v8->mOrientation = a5;
-    v8->mScale = a4;
+    v8->mOrientation = orientation;
+    v8->mScale = scale;
     if (!v9)
     {
 
@@ -29,7 +29,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   mCGImage = self->mCGImage;

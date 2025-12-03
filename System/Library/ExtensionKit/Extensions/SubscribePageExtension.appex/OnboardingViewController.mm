@@ -1,13 +1,13 @@
 @interface OnboardingViewController
-- (_TtC22SubscribePageExtension24OnboardingViewController)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension24OnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC22SubscribePageExtension24OnboardingViewController)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension24OnboardingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation OnboardingViewController
 
-- (_TtC22SubscribePageExtension24OnboardingViewController)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension24OnboardingViewController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC22SubscribePageExtension24OnboardingViewController_navController;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UINavigationController) init];
@@ -18,17 +18,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006E3E34();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1006E458C(a3);
+  selfCopy = self;
+  sub_1006E458C(appear);
 }
 
-- (_TtC22SubscribePageExtension24OnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22SubscribePageExtension24OnboardingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

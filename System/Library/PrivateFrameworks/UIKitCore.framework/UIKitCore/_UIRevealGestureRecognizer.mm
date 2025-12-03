@@ -1,18 +1,18 @@
 @interface _UIRevealGestureRecognizer
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _UIRevealGestureRecognizer
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5.receiver = self;
     v5.super_class = _UIRevealGestureRecognizer;
-    [(UIGestureRecognizer *)&v5 setDelegate:v4];
+    [(UIGestureRecognizer *)&v5 setDelegate:delegateCopy];
   }
 
   else if (dyld_program_sdk_at_least())

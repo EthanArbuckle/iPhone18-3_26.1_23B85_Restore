@@ -2,7 +2,7 @@
 - (ARConfiguration)configuration;
 - (ARSession)session;
 - (PlatformController)platformController;
-- (VIOSessionMonitor)initWithStateManager:(id)a3 platformController:(id)a4;
+- (VIOSessionMonitor)initWithStateManager:(id)manager platformController:(id)controller;
 @end
 
 @implementation VIOSessionMonitor
@@ -16,25 +16,25 @@
 
 - (ARConfiguration)configuration
 {
-  v2 = [(VIOSessionMonitor *)self stateManager];
-  v3 = [v2 configuration];
+  stateManager = [(VIOSessionMonitor *)self stateManager];
+  configuration = [stateManager configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (ARSession)session
 {
-  v2 = [(VIOSessionMonitor *)self stateManager];
-  v3 = [v2 session];
+  stateManager = [(VIOSessionMonitor *)self stateManager];
+  session = [stateManager session];
 
-  return v3;
+  return session;
 }
 
-- (VIOSessionMonitor)initWithStateManager:(id)a3 platformController:(id)a4
+- (VIOSessionMonitor)initWithStateManager:(id)manager platformController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  managerCopy = manager;
+  controllerCopy = controller;
+  if (!managerCopy)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -63,7 +63,7 @@
     }
   }
 
-  if (!v8)
+  if (!controllerCopy)
   {
     v15 = sub_10006D178();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -98,8 +98,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_stateManager, a3);
-    objc_storeWeak(&v10->_platformController, v8);
+    objc_storeStrong(&v9->_stateManager, manager);
+    objc_storeWeak(&v10->_platformController, controllerCopy);
     v10->_enabled = 1;
   }
 

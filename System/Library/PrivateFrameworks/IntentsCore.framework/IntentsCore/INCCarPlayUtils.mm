@@ -1,13 +1,13 @@
 @interface INCCarPlayUtils
-+ (BOOL)appIsSupportedInCarPlayWithBundleId:(id)a3 hasPayload:(BOOL)a4;
++ (BOOL)appIsSupportedInCarPlayWithBundleId:(id)id hasPayload:(BOOL)payload;
 @end
 
 @implementation INCCarPlayUtils
 
-+ (BOOL)appIsSupportedInCarPlayWithBundleId:(id)a3 hasPayload:(BOOL)a4
++ (BOOL)appIsSupportedInCarPlayWithBundleId:(id)id hasPayload:(BOOL)payload
 {
-  v4 = a4;
-  v5 = a3;
+  payloadCopy = payload;
+  idCopy = id;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2050000000;
@@ -26,14 +26,14 @@
 
   v7 = v6;
   _Block_object_dispose(&v26, 8);
-  v8 = [v6 sharedConfiguration];
-  if (v8)
+  sharedConfiguration = [v6 sharedConfiguration];
+  if (sharedConfiguration)
   {
-    v9 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v5];
-    v10 = [v9 appState];
-    v11 = [v10 isInstalled];
+    v9 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:idCopy];
+    appState = [v9 appState];
+    isInstalled = [appState isInstalled];
 
-    if (v11)
+    if (isInstalled)
     {
       v26 = 0;
       v27 = &v26;
@@ -54,7 +54,7 @@
       v13 = v12;
       _Block_object_dispose(&v26, 8);
       v14 = objc_alloc_init(v12);
-      [v14 setGeoSupported:{objc_msgSend(v8, "currentCountrySupportsCarIntegration")}];
+      [v14 setGeoSupported:{objc_msgSend(sharedConfiguration, "currentCountrySupportsCarIntegration")}];
       v26 = 0;
       v27 = &v26;
       v28 = 0x2050000000;
@@ -75,22 +75,22 @@
       _Block_object_dispose(&v26, 8);
       v17 = [v15 declarationForAppProxy:v9];
       v18 = [v14 effectivePolicyForAppDeclaration:v17];
-      v19 = [v18 isCarPlaySupported];
-      if (v4)
+      isCarPlaySupported = [v18 isCarPlaySupported];
+      if (payloadCopy)
       {
-        v19 = [v18 canDisplayOnCarScreen];
+        isCarPlaySupported = [v18 canDisplayOnCarScreen];
       }
 
-      LOBYTE(v11) = v19;
+      LOBYTE(isInstalled) = isCarPlaySupported;
     }
   }
 
   else
   {
-    LOBYTE(v11) = 0;
+    LOBYTE(isInstalled) = 0;
   }
 
-  return v11;
+  return isInstalled;
 }
 
 @end

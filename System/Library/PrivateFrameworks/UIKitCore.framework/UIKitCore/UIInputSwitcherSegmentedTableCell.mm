@@ -1,19 +1,19 @@
 @interface UIInputSwitcherSegmentedTableCell
-+ (CGSize)preferredSizeWithSegmentCount:(unint64_t)a3;
-- (UIInputSwitcherSegmentedTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (CGSize)preferredSizeWithSegmentCount:(unint64_t)count;
+- (UIInputSwitcherSegmentedTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setUsesDarkTheme:(BOOL)a3;
-- (void)updateSelectionWithPoint:(CGPoint)a3;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setUsesDarkTheme:(BOOL)theme;
+- (void)updateSelectionWithPoint:(CGPoint)point;
 @end
 
 @implementation UIInputSwitcherSegmentedTableCell
 
-- (UIInputSwitcherSegmentedTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (UIInputSwitcherSegmentedTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = UIInputSwitcherSegmentedTableCell;
-  v4 = [(UIInputSwitcherTableCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(UIInputSwitcherTableCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UIInputSwitcherSegmentControl alloc];
@@ -29,29 +29,29 @@
   return v4;
 }
 
-+ (CGSize)preferredSizeWithSegmentCount:(unint64_t)a3
++ (CGSize)preferredSizeWithSegmentCount:(unint64_t)count
 {
-  v3 = a3 * 64.0 + (a3 + 1) * 9.0;
+  v3 = count * 64.0 + (count + 1) * 9.0;
   v4 = 51.0;
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = UIInputSwitcherSegmentedTableCell;
-  [(UIInputSwitcherTableCell *)&v4 setSelected:0 animated:a4];
+  [(UIInputSwitcherTableCell *)&v4 setSelected:0 animated:animated];
 }
 
-- (void)updateSelectionWithPoint:(CGPoint)a3
+- (void)updateSelectionWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(UIInputSwitcherSegmentedTableCell *)self setSelected:1 animated:0];
-  v6 = [(UIInputSwitcherSegmentedTableCell *)self segmentControl];
-  [v6 updateSelectionWithPoint:{x, y}];
+  segmentControl = [(UIInputSwitcherSegmentedTableCell *)self segmentControl];
+  [segmentControl updateSelectionWithPoint:{x, y}];
 }
 
 - (void)layoutSubviews
@@ -61,18 +61,18 @@
   v6 = v5 + 9.0;
   v8 = v7 + -18.0;
   v10 = v9 + 0.0;
-  v11 = [(UIInputSwitcherSegmentedTableCell *)self segmentControl];
-  [v11 setFrame:{v6, v10, v8, v4}];
+  segmentControl = [(UIInputSwitcherSegmentedTableCell *)self segmentControl];
+  [segmentControl setFrame:{v6, v10, v8, v4}];
 }
 
-- (void)setUsesDarkTheme:(BOOL)a3
+- (void)setUsesDarkTheme:(BOOL)theme
 {
-  v3 = a3;
+  themeCopy = theme;
   v6.receiver = self;
   v6.super_class = UIInputSwitcherSegmentedTableCell;
   [(UIInputSwitcherTableCell *)&v6 setUsesDarkTheme:?];
-  v5 = [(UIInputSwitcherSegmentedTableCell *)self segmentControl];
-  [v5 setUsesDarkTheme:v3];
+  segmentControl = [(UIInputSwitcherSegmentedTableCell *)self segmentControl];
+  [segmentControl setUsesDarkTheme:themeCopy];
 }
 
 @end

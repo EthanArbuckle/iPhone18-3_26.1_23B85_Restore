@@ -1,29 +1,29 @@
 @interface HMINotifydObserver
 - (BOOL)start;
-- (HMINotifydObserver)initWithNotificationName:(const char *)a3 andQueue:(id)a4 andCallback:(id)a5;
+- (HMINotifydObserver)initWithNotificationName:(const char *)name andQueue:(id)queue andCallback:(id)callback;
 - (void)dealloc;
 - (void)publishInitialValue;
-- (void)publishValueForToken:(int)a3;
+- (void)publishValueForToken:(int)token;
 @end
 
 @implementation HMINotifydObserver
 
-- (HMINotifydObserver)initWithNotificationName:(const char *)a3 andQueue:(id)a4 andCallback:(id)a5
+- (HMINotifydObserver)initWithNotificationName:(const char *)name andQueue:(id)queue andCallback:(id)callback
 {
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  callbackCopy = callback;
   v16.receiver = self;
   v16.super_class = HMINotifydObserver;
   v11 = [(HMINotifydObserver *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_queue, a4);
-    v13 = MEMORY[0x2318CB8E0](v10);
+    objc_storeStrong(&v11->_queue, queue);
+    v13 = MEMORY[0x2318CB8E0](callbackCopy);
     callback = v12->_callback;
     v12->_callback = v13;
 
-    v12->_notificationName = a3;
+    v12->_notificationName = name;
     v12->_token = -1;
   }
 
@@ -33,20 +33,20 @@
 - (BOOL)start
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMINotifydObserver *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMINotifydObserver *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMINotifydObserver *)self token]== -1)
   {
     *buf = -1;
-    v9 = [(HMINotifydObserver *)self notificationName];
-    v10 = [(HMINotifydObserver *)self queue];
+    notificationName = [(HMINotifydObserver *)self notificationName];
+    queue2 = [(HMINotifydObserver *)self queue];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __27__HMINotifydObserver_start__block_invoke;
     handler[3] = &unk_278755440;
     handler[4] = self;
-    v11 = notify_register_dispatch(v9, buf, v10, handler);
+    v11 = notify_register_dispatch(notificationName, buf, queue2, handler);
 
     v8 = v11 == 0;
     if (!v11)
@@ -59,7 +59,7 @@
   else
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -76,23 +76,23 @@
   return v8;
 }
 
-- (void)publishValueForToken:(int)a3
+- (void)publishValueForToken:(int)token
 {
-  v5 = [(HMINotifydObserver *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(HMINotifydObserver *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   state64 = 0;
-  if (!notify_get_state(a3, &state64))
+  if (!notify_get_state(token, &state64))
   {
-    v6 = [(HMINotifydObserver *)self callback];
-    (v6)[2](v6, self, state64);
+    callback = [(HMINotifydObserver *)self callback];
+    (callback)[2](callback, self, state64);
   }
 }
 
 - (void)publishInitialValue
 {
-  v3 = [(HMINotifydObserver *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMINotifydObserver *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   out_token = -1;
   if (!notify_register_check([(HMINotifydObserver *)self notificationName], &out_token))

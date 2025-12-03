@@ -1,14 +1,14 @@
 @interface DebugFormatSwitchCell
-- (_TtC8NewsFeed21DebugFormatSwitchCell)initWithCoder:(id)a3;
-- (_TtC8NewsFeed21DebugFormatSwitchCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8NewsFeed21DebugFormatSwitchCell)initWithCoder:(id)coder;
+- (_TtC8NewsFeed21DebugFormatSwitchCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)valueChanged;
 @end
 
 @implementation DebugFormatSwitchCell
 
-- (_TtC8NewsFeed21DebugFormatSwitchCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8NewsFeed21DebugFormatSwitchCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_1D726207C();
   }
@@ -22,7 +22,7 @@
   return sub_1D67A5304(v4, v5);
 }
 
-- (_TtC8NewsFeed21DebugFormatSwitchCell)initWithCoder:(id)a3
+- (_TtC8NewsFeed21DebugFormatSwitchCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed21DebugFormatSwitchCell_switchControl;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DCFD0]) initWithFrame_];
@@ -40,7 +40,7 @@
   if (v2)
   {
     v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8NewsFeed21DebugFormatSwitchCell_switchControl);
-    v4 = self;
+    selfCopy = self;
     sub_1D5DEA510(v2);
     v2([v3 isOn]);
 

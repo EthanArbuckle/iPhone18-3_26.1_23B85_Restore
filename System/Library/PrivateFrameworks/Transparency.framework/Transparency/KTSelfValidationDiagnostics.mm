@@ -1,10 +1,10 @@
 @interface KTSelfValidationDiagnostics
 + (id)jsonClasses;
-- (BOOL)isEqual:(id)a3;
-- (KTSelfValidationDiagnostics)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (KTSelfValidationDiagnostics)initWithCoder:(id)coder;
 - (NSDictionary)diagnosticsJsonDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTSelfValidationDiagnostics
@@ -19,52 +19,52 @@
   return [v2 setWithObjects:{v3, v4, v5, v6, objc_opt_class(), 0}];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(KTSelfValidationDiagnostics *)self rawAccountKey];
+  coderCopy = coder;
+  rawAccountKey = [(KTSelfValidationDiagnostics *)self rawAccountKey];
 
-  if (v4)
+  if (rawAccountKey)
   {
-    v5 = [(KTSelfValidationDiagnostics *)self rawAccountKey];
-    [v11 encodeObject:v5 forKey:@"rawAccountKey"];
+    rawAccountKey2 = [(KTSelfValidationDiagnostics *)self rawAccountKey];
+    [coderCopy encodeObject:rawAccountKey2 forKey:@"rawAccountKey"];
   }
 
-  v6 = [(KTSelfValidationDiagnostics *)self accountKey];
+  accountKey = [(KTSelfValidationDiagnostics *)self accountKey];
 
-  if (v6)
+  if (accountKey)
   {
-    v7 = [(KTSelfValidationDiagnostics *)self accountKey];
-    [v11 encodeObject:v7 forKey:@"accountKey"];
+    accountKey2 = [(KTSelfValidationDiagnostics *)self accountKey];
+    [coderCopy encodeObject:accountKey2 forKey:@"accountKey"];
   }
 
-  v8 = [(KTSelfValidationDiagnostics *)self ktSelfVerificationInfoDiagnosticsJson];
-  [v11 encodeObject:v8 forKey:@"KTSelfVerificationInfo"];
+  ktSelfVerificationInfoDiagnosticsJson = [(KTSelfValidationDiagnostics *)self ktSelfVerificationInfoDiagnosticsJson];
+  [coderCopy encodeObject:ktSelfVerificationInfoDiagnosticsJson forKey:@"KTSelfVerificationInfo"];
 
-  v9 = [(KTSelfValidationDiagnostics *)self uriToDiagnostics];
-  [v11 encodeObject:v9 forKey:@"uriData"];
+  uriToDiagnostics = [(KTSelfValidationDiagnostics *)self uriToDiagnostics];
+  [coderCopy encodeObject:uriToDiagnostics forKey:@"uriData"];
 
-  v10 = [(KTSelfValidationDiagnostics *)self pushToken];
-  [v11 encodeObject:v10 forKey:@"pushToken"];
+  pushToken = [(KTSelfValidationDiagnostics *)self pushToken];
+  [coderCopy encodeObject:pushToken forKey:@"pushToken"];
 }
 
-- (KTSelfValidationDiagnostics)initWithCoder:(id)a3
+- (KTSelfValidationDiagnostics)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawAccountKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawAccountKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountKey"];
   v7 = +[KTSelfValidationDiagnostics jsonClasses];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"KTSelfVerificationInfo"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"KTSelfVerificationInfo"];
 
   v9 = MEMORY[0x1E695DFA8];
   v10 = +[KTSelfValidationDiagnostics jsonClasses];
   v11 = [v9 setWithSet:v10];
 
   [v11 addObject:objc_opt_class()];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"uriData"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pushToken"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"uriData"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pushToken"];
 
-  v14 = 0;
+  selfCopy = 0;
   if (v12 && v8)
   {
     if (v5)
@@ -80,16 +80,16 @@
     [(KTSelfValidationDiagnostics *)self setUriToDiagnostics:v12];
     [(KTSelfValidationDiagnostics *)self setKtSelfVerificationInfoDiagnosticsJson:v8];
     [(KTSelfValidationDiagnostics *)self setPushToken:v13];
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -99,52 +99,52 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(KTSelfValidationDiagnostics *)self rawAccountKey];
-      if (v8)
+      v7 = equalCopy;
+      rawAccountKey = [(KTSelfValidationDiagnostics *)self rawAccountKey];
+      if (rawAccountKey)
       {
-        v3 = [(KTSelfValidationDiagnostics *)self rawAccountKey];
-        v4 = [(KTSelfValidationDiagnostics *)v7 rawAccountKey];
-        if (![v3 isEqual:v4])
+        rawAccountKey2 = [(KTSelfValidationDiagnostics *)self rawAccountKey];
+        rawAccountKey3 = [(KTSelfValidationDiagnostics *)v7 rawAccountKey];
+        if (![rawAccountKey2 isEqual:rawAccountKey3])
         {
           goto LABEL_13;
         }
       }
 
-      v10 = [(KTSelfValidationDiagnostics *)self rawAccountKey];
-      if (v10)
+      rawAccountKey4 = [(KTSelfValidationDiagnostics *)self rawAccountKey];
+      if (rawAccountKey4)
       {
 
-        if (v8)
+        if (rawAccountKey)
         {
         }
       }
 
       else
       {
-        v11 = [(KTSelfValidationDiagnostics *)v7 rawAccountKey];
+        rawAccountKey5 = [(KTSelfValidationDiagnostics *)v7 rawAccountKey];
 
-        if (v8)
+        if (rawAccountKey)
         {
 
-          if (v11)
+          if (rawAccountKey5)
           {
             goto LABEL_32;
           }
         }
 
-        else if (v11)
+        else if (rawAccountKey5)
         {
           goto LABEL_32;
         }
       }
 
-      v8 = [(KTSelfValidationDiagnostics *)self accountKey];
-      if (v8)
+      rawAccountKey = [(KTSelfValidationDiagnostics *)self accountKey];
+      if (rawAccountKey)
       {
-        v3 = [(KTSelfValidationDiagnostics *)self accountKey];
-        v4 = [(KTSelfValidationDiagnostics *)v7 accountKey];
-        if (![v3 isEqual:v4])
+        rawAccountKey2 = [(KTSelfValidationDiagnostics *)self accountKey];
+        rawAccountKey3 = [(KTSelfValidationDiagnostics *)v7 accountKey];
+        if (![rawAccountKey2 isEqual:rawAccountKey3])
         {
 LABEL_13:
 
@@ -153,49 +153,49 @@ LABEL_13:
         }
       }
 
-      v12 = [(KTSelfValidationDiagnostics *)self accountKey];
-      if (v12)
+      accountKey = [(KTSelfValidationDiagnostics *)self accountKey];
+      if (accountKey)
       {
 
-        if (v8)
+        if (rawAccountKey)
         {
         }
       }
 
       else
       {
-        v13 = [(KTSelfValidationDiagnostics *)v7 accountKey];
+        accountKey2 = [(KTSelfValidationDiagnostics *)v7 accountKey];
 
-        if (v8)
+        if (rawAccountKey)
         {
         }
 
-        if (v13)
+        if (accountKey2)
         {
           goto LABEL_32;
         }
       }
 
-      v14 = [(KTSelfValidationDiagnostics *)self ktSelfVerificationInfoDiagnosticsJson];
-      v15 = [(KTSelfValidationDiagnostics *)v7 ktSelfVerificationInfoDiagnosticsJson];
-      v16 = [v14 isEqual:v15];
+      ktSelfVerificationInfoDiagnosticsJson = [(KTSelfValidationDiagnostics *)self ktSelfVerificationInfoDiagnosticsJson];
+      ktSelfVerificationInfoDiagnosticsJson2 = [(KTSelfValidationDiagnostics *)v7 ktSelfVerificationInfoDiagnosticsJson];
+      v16 = [ktSelfVerificationInfoDiagnosticsJson isEqual:ktSelfVerificationInfoDiagnosticsJson2];
 
       if (v16)
       {
-        v17 = [(KTSelfValidationDiagnostics *)self uriToDiagnostics];
-        v3 = [(KTSelfValidationDiagnostics *)v7 uriToDiagnostics];
-        v18 = [v17 isEqual:v3];
+        uriToDiagnostics = [(KTSelfValidationDiagnostics *)self uriToDiagnostics];
+        rawAccountKey2 = [(KTSelfValidationDiagnostics *)v7 uriToDiagnostics];
+        v18 = [uriToDiagnostics isEqual:rawAccountKey2];
 
         if (v18)
         {
-          v8 = [(KTSelfValidationDiagnostics *)self pushToken];
-          if (v8 || ([(KTSelfValidationDiagnostics *)v7 pushToken], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+          rawAccountKey = [(KTSelfValidationDiagnostics *)self pushToken];
+          if (rawAccountKey || ([(KTSelfValidationDiagnostics *)v7 pushToken], (rawAccountKey2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v19 = [(KTSelfValidationDiagnostics *)self pushToken];
-            v20 = [(KTSelfValidationDiagnostics *)v7 pushToken];
-            v9 = [v19 isEqual:v20];
+            pushToken = [(KTSelfValidationDiagnostics *)self pushToken];
+            pushToken2 = [(KTSelfValidationDiagnostics *)v7 pushToken];
+            v9 = [pushToken isEqual:pushToken2];
 
-            if (v8)
+            if (rawAccountKey)
             {
               goto LABEL_15;
             }
@@ -232,15 +232,15 @@ LABEL_34:
 {
   v32 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF90];
-  v4 = [(KTSelfValidationDiagnostics *)self uriToDiagnostics];
-  v26 = [v3 dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  uriToDiagnostics = [(KTSelfValidationDiagnostics *)self uriToDiagnostics];
+  v26 = [v3 dictionaryWithCapacity:{objc_msgSend(uriToDiagnostics, "count")}];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [(KTSelfValidationDiagnostics *)self uriToDiagnostics];
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  uriToDiagnostics2 = [(KTSelfValidationDiagnostics *)self uriToDiagnostics];
+  v6 = [uriToDiagnostics2 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -251,55 +251,55 @@ LABEL_34:
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(uriToDiagnostics2);
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
         v11 = [TransparencyAnalytics privacyURI:v10];
-        v12 = [(KTSelfValidationDiagnostics *)self uriToDiagnostics];
-        v13 = [v12 objectForKeyedSubscript:v10];
-        v14 = [v13 diagnosticsJsonDictionary];
-        [v26 setObject:v14 forKeyedSubscript:v11];
+        uriToDiagnostics3 = [(KTSelfValidationDiagnostics *)self uriToDiagnostics];
+        v13 = [uriToDiagnostics3 objectForKeyedSubscript:v10];
+        diagnosticsJsonDictionary = [v13 diagnosticsJsonDictionary];
+        [v26 setObject:diagnosticsJsonDictionary forKeyedSubscript:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v7 = [uriToDiagnostics2 countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v7);
   }
 
-  v15 = [MEMORY[0x1E695DF90] dictionary];
-  v16 = [(KTSelfValidationDiagnostics *)self accountKey];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  accountKey = [(KTSelfValidationDiagnostics *)self accountKey];
 
-  if (v16)
+  if (accountKey)
   {
-    v17 = [(KTSelfValidationDiagnostics *)self accountKey];
-    [v15 setObject:v17 forKeyedSubscript:@"accountKey"];
+    accountKey2 = [(KTSelfValidationDiagnostics *)self accountKey];
+    [dictionary setObject:accountKey2 forKeyedSubscript:@"accountKey"];
   }
 
-  v18 = [(KTSelfValidationDiagnostics *)self rawAccountKey];
+  rawAccountKey = [(KTSelfValidationDiagnostics *)self rawAccountKey];
 
-  if (v18)
+  if (rawAccountKey)
   {
-    v19 = [(KTSelfValidationDiagnostics *)self rawAccountKey];
-    [v15 setObject:v19 forKeyedSubscript:@"rawAccountKey"];
+    rawAccountKey2 = [(KTSelfValidationDiagnostics *)self rawAccountKey];
+    [dictionary setObject:rawAccountKey2 forKeyedSubscript:@"rawAccountKey"];
   }
 
-  v20 = [(KTSelfValidationDiagnostics *)self ktSelfVerificationInfoDiagnosticsJson];
+  ktSelfVerificationInfoDiagnosticsJson = [(KTSelfValidationDiagnostics *)self ktSelfVerificationInfoDiagnosticsJson];
 
-  if (v20)
+  if (ktSelfVerificationInfoDiagnosticsJson)
   {
-    v21 = [(KTSelfValidationDiagnostics *)self ktSelfVerificationInfoDiagnosticsJson];
-    [v15 setObject:v21 forKeyedSubscript:@"KTSelfVerificationInfo"];
+    ktSelfVerificationInfoDiagnosticsJson2 = [(KTSelfValidationDiagnostics *)self ktSelfVerificationInfoDiagnosticsJson];
+    [dictionary setObject:ktSelfVerificationInfoDiagnosticsJson2 forKeyedSubscript:@"KTSelfVerificationInfo"];
   }
 
-  v22 = [(KTSelfValidationDiagnostics *)self pushToken];
-  [v15 setObject:v22 forKeyedSubscript:@"pushToken"];
+  pushToken = [(KTSelfValidationDiagnostics *)self pushToken];
+  [dictionary setObject:pushToken forKeyedSubscript:@"pushToken"];
 
-  [v15 setObject:v26 forKeyedSubscript:@"uriData"];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v15])
+  [dictionary setObject:v26 forKeyedSubscript:@"uriData"];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionary])
   {
-    v23 = v15;
+    v23 = dictionary;
   }
 
   else
@@ -314,8 +314,8 @@ LABEL_34:
 
 - (id)description
 {
-  v2 = [(KTSelfValidationDiagnostics *)self diagnosticsJsonDictionary];
-  v3 = [v2 description];
+  diagnosticsJsonDictionary = [(KTSelfValidationDiagnostics *)self diagnosticsJsonDictionary];
+  v3 = [diagnosticsJsonDictionary description];
 
   return v3;
 }

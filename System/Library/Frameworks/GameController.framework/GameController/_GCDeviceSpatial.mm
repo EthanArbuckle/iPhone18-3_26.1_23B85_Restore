@@ -1,20 +1,20 @@
 @interface _GCDeviceSpatial
-- (_GCDeviceSpatial)initWithParameters:(id)a3;
+- (_GCDeviceSpatial)initWithParameters:(id)parameters;
 @end
 
 @implementation _GCDeviceSpatial
 
-- (_GCDeviceSpatial)initWithParameters:(id)a3
+- (_GCDeviceSpatial)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v10.receiver = self;
   v10.super_class = _GCDeviceSpatial;
   v5 = [(_GCDeviceSpatial *)&v10 init];
   v6 = v5;
-  if (v4)
+  if (parametersCopy)
   {
-    objc_storeStrong(&v5->_serviceRegistryID, v4[1]);
-    v7 = v4[2];
+    objc_storeStrong(&v5->_serviceRegistryID, parametersCopy[1]);
+    v7 = parametersCopy[2];
   }
 
   else

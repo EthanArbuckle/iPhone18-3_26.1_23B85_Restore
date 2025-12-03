@@ -1,8 +1,8 @@
 @interface CSAlwaysOnProcessorStateMonitor
 + (id)sharedInstance;
 - (CSAlwaysOnProcessorStateMonitor)init;
-- (void)_didReceiveAOPListeningStateChange:(BOOL)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveAOPListeningStateChange:(BOOL)change;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -20,9 +20,9 @@
   return v3;
 }
 
-- (void)_didReceiveAOPListeningStateChange:(BOOL)a3
+- (void)_didReceiveAOPListeningStateChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v13 = *MEMORY[0x1E69E9840];
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -30,7 +30,7 @@
     *buf = 136315394;
     v10 = "[CSAlwaysOnProcessorStateMonitor _didReceiveAOPListeningStateChange:]";
     v11 = 1026;
-    v12 = v3;
+    v12 = changeCopy;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s Received AOP Listening state change notification : %{public}d", buf, 0x12u);
   }
 
@@ -39,7 +39,7 @@
   v7[2] = __70__CSAlwaysOnProcessorStateMonitor__didReceiveAOPListeningStateChange___block_invoke;
   v7[3] = &unk_1E865CA18;
   v7[4] = self;
-  v8 = v3;
+  v8 = changeCopy;
   [(CSEventMonitor *)self enumerateObserversInQueue:v7];
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -66,10 +66,10 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -85,7 +85,7 @@
     handler[2] = __61__CSAlwaysOnProcessorStateMonitor__startMonitoringWithQueue___block_invoke;
     handler[3] = &unk_1E865C9F0;
     handler[4] = self;
-    notify_register_dispatch("com.apple.audio.AOP.enable", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.audio.AOP.enable", &self->_notifyToken, queueCopy, handler);
   }
 
   v6 = +[CSAVVoiceTriggerClientManager sharedVoiceTriggerClient];

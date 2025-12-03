@@ -1,21 +1,21 @@
 @interface NUExtensionAppActivityMonitor
-- (NUExtensionAppActivityMonitor)initWithNotificationCenter:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)applicationDidEnterBackgroundNotification:(id)a3;
-- (void)applicationWillEnterForegroundNotification:(id)a3;
+- (NUExtensionAppActivityMonitor)initWithNotificationCenter:(id)center;
+- (void)addObserver:(id)observer;
+- (void)applicationDidEnterBackgroundNotification:(id)notification;
+- (void)applicationWillEnterForegroundNotification:(id)notification;
 - (void)dealloc;
-- (void)performOnApplicationDidEnterBackground:(id)a3;
-- (void)performOnApplicationWillEnterForeground:(id)a3;
-- (void)performOnApplicationWindowDidBecomeBackground:(id)a3;
-- (void)performOnApplicationWindowDidBecomeForeground:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)performOnApplicationDidEnterBackground:(id)background;
+- (void)performOnApplicationWillEnterForeground:(id)foreground;
+- (void)performOnApplicationWindowDidBecomeBackground:(id)background;
+- (void)performOnApplicationWindowDidBecomeForeground:(id)foreground;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NUExtensionAppActivityMonitor
 
-- (NUExtensionAppActivityMonitor)initWithNotificationCenter:(id)a3
+- (NUExtensionAppActivityMonitor)initWithNotificationCenter:(id)center
 {
-  v5 = a3;
+  centerCopy = center;
   v18.receiver = self;
   v18.super_class = NUExtensionAppActivityMonitor;
   v6 = [(NUExtensionAppActivityMonitor *)&v18 init];
@@ -41,7 +41,7 @@
     windowForegroundObserverBlocks = v6->_windowForegroundObserverBlocks;
     v6->_windowForegroundObserverBlocks = v15;
 
-    objc_storeStrong(&v6->_notificationCenter, a3);
+    objc_storeStrong(&v6->_notificationCenter, center);
     [(NSNotificationCenter *)v6->_notificationCenter addObserver:v6 selector:sel_applicationWillEnterForegroundNotification_ name:*MEMORY[0x277CCA0D0] object:0];
     [(NSNotificationCenter *)v6->_notificationCenter addObserver:v6 selector:sel_applicationDidEnterBackgroundNotification_ name:*MEMORY[0x277CCA0C8] object:0];
   }
@@ -51,85 +51,85 @@
 
 - (void)dealloc
 {
-  v3 = [(NUExtensionAppActivityMonitor *)self notificationCenter];
-  [v3 removeObserver:self];
+  notificationCenter = [(NUExtensionAppActivityMonitor *)self notificationCenter];
+  [notificationCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NUExtensionAppActivityMonitor;
   [(NUExtensionAppActivityMonitor *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(NUExtensionAppActivityMonitor *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(NUExtensionAppActivityMonitor *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(NUExtensionAppActivityMonitor *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(NUExtensionAppActivityMonitor *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (void)performOnApplicationWillEnterForeground:(id)a3
+- (void)performOnApplicationWillEnterForeground:(id)foreground
 {
-  if (a3)
+  if (foreground)
   {
-    v4 = a3;
-    v6 = [(NUExtensionAppActivityMonitor *)self foregroundObserverBlocks];
-    v5 = [v4 copy];
+    foregroundCopy = foreground;
+    foregroundObserverBlocks = [(NUExtensionAppActivityMonitor *)self foregroundObserverBlocks];
+    v5 = [foregroundCopy copy];
 
-    [v6 addObject:v5];
+    [foregroundObserverBlocks addObject:v5];
   }
 }
 
-- (void)performOnApplicationDidEnterBackground:(id)a3
+- (void)performOnApplicationDidEnterBackground:(id)background
 {
-  if (a3)
+  if (background)
   {
-    v4 = a3;
-    v6 = [(NUExtensionAppActivityMonitor *)self backgroundObserverBlocks];
-    v5 = [v4 copy];
+    backgroundCopy = background;
+    backgroundObserverBlocks = [(NUExtensionAppActivityMonitor *)self backgroundObserverBlocks];
+    v5 = [backgroundCopy copy];
 
-    [v6 addObject:v5];
+    [backgroundObserverBlocks addObject:v5];
   }
 }
 
-- (void)performOnApplicationWindowDidBecomeBackground:(id)a3
+- (void)performOnApplicationWindowDidBecomeBackground:(id)background
 {
-  if (a3)
+  if (background)
   {
-    v4 = a3;
-    v6 = [(NUExtensionAppActivityMonitor *)self windowBackgroundObserverBlocks];
-    v5 = MEMORY[0x25F883F30](v4);
+    backgroundCopy = background;
+    windowBackgroundObserverBlocks = [(NUExtensionAppActivityMonitor *)self windowBackgroundObserverBlocks];
+    v5 = MEMORY[0x25F883F30](backgroundCopy);
 
-    [v6 addObject:v5];
+    [windowBackgroundObserverBlocks addObject:v5];
   }
 }
 
-- (void)performOnApplicationWindowDidBecomeForeground:(id)a3
+- (void)performOnApplicationWindowDidBecomeForeground:(id)foreground
 {
-  if (a3)
+  if (foreground)
   {
-    v4 = a3;
-    v6 = [(NUExtensionAppActivityMonitor *)self windowForegroundObserverBlocks];
-    v5 = MEMORY[0x25F883F30](v4);
+    foregroundCopy = foreground;
+    windowForegroundObserverBlocks = [(NUExtensionAppActivityMonitor *)self windowForegroundObserverBlocks];
+    v5 = MEMORY[0x25F883F30](foregroundCopy);
 
-    [v6 addObject:v5];
+    [windowForegroundObserverBlocks addObject:v5];
   }
 }
 
-- (void)applicationWillEnterForegroundNotification:(id)a3
+- (void)applicationWillEnterForegroundNotification:(id)notification
 {
   v52 = *MEMORY[0x277D85DE8];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v4 = [(NUExtensionAppActivityMonitor *)self observers];
-  v5 = [v4 copy];
+  observers = [(NUExtensionAppActivityMonitor *)self observers];
+  v5 = [observers copy];
 
   v6 = [v5 countByEnumeratingWithState:&v44 objects:v51 count:16];
   if (v6)
@@ -166,8 +166,8 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v11 = [(NUExtensionAppActivityMonitor *)self observers];
-  v12 = [v11 copy];
+  observers2 = [(NUExtensionAppActivityMonitor *)self observers];
+  v12 = [observers2 copy];
 
   v13 = [v12 countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v13)
@@ -204,8 +204,8 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v18 = [(NUExtensionAppActivityMonitor *)self observers];
-  v19 = [v18 copy];
+  observers3 = [(NUExtensionAppActivityMonitor *)self observers];
+  v19 = [observers3 copy];
 
   v20 = [v19 countByEnumeratingWithState:&v36 objects:v49 count:16];
   if (v20)
@@ -242,8 +242,8 @@
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v25 = [(NUExtensionAppActivityMonitor *)self windowForegroundObserverBlocks];
-  v26 = [v25 copy];
+  windowForegroundObserverBlocks = [(NUExtensionAppActivityMonitor *)self windowForegroundObserverBlocks];
+  v26 = [windowForegroundObserverBlocks copy];
 
   v27 = [v26 countByEnumeratingWithState:&v32 objects:v48 count:16];
   if (v27)
@@ -273,15 +273,15 @@
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationDidEnterBackgroundNotification:(id)a3
+- (void)applicationDidEnterBackgroundNotification:(id)notification
 {
   v28 = *MEMORY[0x277D85DE8];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(NUExtensionAppActivityMonitor *)self observers];
-  v5 = [v4 copy];
+  observers = [(NUExtensionAppActivityMonitor *)self observers];
+  v5 = [observers copy];
 
   v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
@@ -323,8 +323,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(NUExtensionAppActivityMonitor *)self windowBackgroundObserverBlocks];
-  v12 = [v11 copy];
+  windowBackgroundObserverBlocks = [(NUExtensionAppActivityMonitor *)self windowBackgroundObserverBlocks];
+  v12 = [windowBackgroundObserverBlocks copy];
 
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)

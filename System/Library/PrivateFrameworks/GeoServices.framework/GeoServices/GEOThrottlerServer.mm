@@ -1,24 +1,24 @@
 @interface GEOThrottlerServer
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6;
-- (void)isSafeWithRequest:(id)a3;
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id;
+- (void)isSafeWithRequest:(id)request;
 @end
 
 @implementation GEOThrottlerServer
 
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (sub_100001334(v10) == 603)
+  messageCopy = message;
+  objectCopy = object;
+  peerCopy = peer;
+  if (sub_100001334(messageCopy) == 603)
   {
     v13 = objc_opt_class();
-    v14 = sub_100001388(@"throttler", v10, v11, v13, v12);
+    v14 = sub_100001388(@"throttler", messageCopy, objectCopy, v13, peerCopy);
     v15 = v14;
     v16 = v14 != 0;
     if (v14)
     {
-      [v14 setSignpostId:a6];
+      [v14 setSignpostId:id];
       [(GEOThrottlerServer *)self isSafeWithRequest:v15];
     }
   }
@@ -31,20 +31,20 @@
   return v16;
 }
 
-- (void)isSafeWithRequest:(id)a3
+- (void)isSafeWithRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 requestKindType];
-  v5 = [v3 requestKindSubtype];
-  v6 = [[GEOThrottlerIsSafeReply alloc] initWithRequest:v3];
-  if ([v3 includeToken])
+  requestCopy = request;
+  requestKindType = [requestCopy requestKindType];
+  requestKindSubtype = [requestCopy requestKindSubtype];
+  v6 = [[GEOThrottlerIsSafeReply alloc] initWithRequest:requestCopy];
+  if ([requestCopy includeToken])
   {
-    v7 = [v3 throttlerToken];
+    throttlerToken = [requestCopy throttlerToken];
     v8 = +[GEODataRequestThrottler sharedThrottler];
-    v9 = [v3 preferredAuditToken];
+    preferredAuditToken = [requestCopy preferredAuditToken];
     v19 = 0;
-    v20 = v7;
-    [v8 allowRequest:v4 | (v5 << 32) forClient:v9 throttlerToken:&v20 error:&v19];
+    v20 = throttlerToken;
+    [v8 allowRequest:requestKindType | (requestKindSubtype << 32) forClient:preferredAuditToken throttlerToken:&v20 error:&v19];
     v10 = v20;
 
     v11 = v19;
@@ -52,19 +52,19 @@
     [v6 setError:v11];
   }
 
-  if (([v3 availableRequestCount] & 1) != 0 || objc_msgSend(v3, "nextSafeRequestTime"))
+  if (([requestCopy availableRequestCount] & 1) != 0 || objc_msgSend(requestCopy, "nextSafeRequestTime"))
   {
     Current = CFAbsoluteTimeGetCurrent();
     v18 = 0.0;
     v17 = 0;
     v13 = +[GEODataRequestThrottler sharedThrottler];
-    v14 = [v3 preferredAuditToken];
-    [v13 getInfoForRequest:v4 | (v5 << 32) client:v14 timeUntilNextReset:&v18 availableRequestCount:&v17];
+    preferredAuditToken2 = [requestCopy preferredAuditToken];
+    [v13 getInfoForRequest:requestKindType | (requestKindSubtype << 32) client:preferredAuditToken2 timeUntilNextReset:&v18 availableRequestCount:&v17];
 
     [v6 setAvailableRequestCount:v17];
-    v15 = [v6 availableRequestCount];
+    availableRequestCount = [v6 availableRequestCount];
     v16 = Current + v18;
-    if (v15)
+    if (availableRequestCount)
     {
       v16 = Current;
     }

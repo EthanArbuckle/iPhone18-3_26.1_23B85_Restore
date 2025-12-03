@@ -5,11 +5,11 @@
 + (unint64_t)currentAccountType;
 + (void)prewarm;
 - (AFFamilyCircleStatusManager)init;
-- (void)_fetchChildAccountStatusWithCompletion:(id)a3;
+- (void)_fetchChildAccountStatusWithCompletion:(id)completion;
 - (void)_observeAccountChanges;
 - (void)_observeFamilyChanges;
 - (void)dealloc;
-- (void)fetchChildAccountStatusWithCompletion:(id)a3;
+- (void)fetchChildAccountStatusWithCompletion:(id)completion;
 @end
 
 @implementation AFFamilyCircleStatusManager
@@ -34,10 +34,10 @@
   return v3;
 }
 
-- (void)_fetchChildAccountStatusWithCompletion:(id)a3
+- (void)_fetchChildAccountStatusWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
   {
@@ -66,7 +66,7 @@
     v10[3] = &unk_1E7344870;
     objc_copyWeak(&v13, &location);
     p_buf = &buf;
-    v11 = v4;
+    v11 = completionCopy;
     [v7 startRequestWithCompletionHandler:v10];
 
     objc_destroyWeak(&v13);
@@ -85,9 +85,9 @@
     }
 
     [(AFFamilyCircleStatusManager *)self setCurrentAccountType:4];
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -352,10 +352,10 @@ LABEL_38:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchChildAccountStatusWithCompletion:(id)a3
+- (void)fetchChildAccountStatusWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
   {
@@ -370,8 +370,8 @@ LABEL_38:
   v9[2] = __69__AFFamilyCircleStatusManager_fetchChildAccountStatusWithCompletion___block_invoke;
   v9[3] = &unk_1E7349838;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(v6, v9);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -466,11 +466,11 @@ LABEL_38:
   {
     v12 = MEMORY[0x1E696AF00];
     v13 = v3;
-    v14 = [v12 currentThread];
+    currentThread = [v12 currentThread];
     *buf = 136315394;
     v21 = "[AFFamilyCircleStatusManager init]";
     v22 = 2112;
-    v23 = v14;
+    v23 = currentThread;
     _os_log_debug_impl(&dword_1912FE000, v13, OS_LOG_TYPE_DEBUG, "%s #Montara #FamilyCircle init starting on thread: %@", buf, 0x16u);
   }
 
@@ -516,11 +516,11 @@ LABEL_38:
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
   {
     v15 = v9;
-    v16 = [(AFFamilyCircleStatusManager *)v5 currentAccountType];
+    currentAccountType = [(AFFamilyCircleStatusManager *)v5 currentAccountType];
     *buf = 136315394;
     v21 = "[AFFamilyCircleStatusManager init]";
     v22 = 2048;
-    v23 = v16;
+    v23 = currentAccountType;
     _os_log_debug_impl(&dword_1912FE000, v15, OS_LOG_TYPE_DEBUG, "%s #Montara #FamilyCircle init complete with accountType: %lu", buf, 0x16u);
   }
 
@@ -532,14 +532,14 @@ LABEL_38:
 {
   v14 = *MEMORY[0x1E69E9840];
   v2 = +[AFFamilyCircleStatusManager sharedManager];
-  v3 = [v2 currentAccountType];
+  currentAccountType = [v2 currentAccountType];
 
-  if (v3 <= 3)
+  if (currentAccountType <= 3)
   {
-    v4 = v3 - 1;
-    if ((v3 - 1) >= 2)
+    v4 = currentAccountType - 1;
+    if ((currentAccountType - 1) >= 2)
     {
-      if (!v3)
+      if (!currentAccountType)
       {
         v5 = AFSiriLogContextUtility;
         if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
@@ -555,7 +555,7 @@ LABEL_14:
         goto LABEL_19;
       }
 
-      if (v3 != 3)
+      if (currentAccountType != 3)
       {
         goto LABEL_19;
       }
@@ -589,8 +589,8 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  v4 = v3 - 5;
-  if ((v3 - 5) < 2)
+  v4 = currentAccountType - 5;
+  if ((currentAccountType - 5) < 2)
   {
 LABEL_17:
     v7 = AFSiriLogContextUtility;
@@ -607,7 +607,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (v3 == 4)
+  if (currentAccountType == 4)
   {
     v9 = AFSiriLogContextUtility;
     if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
@@ -620,7 +620,7 @@ LABEL_18:
     goto LABEL_17;
   }
 
-  if (v3 == 7)
+  if (currentAccountType == 7)
   {
     goto LABEL_9;
   }
@@ -633,9 +633,9 @@ LABEL_19:
 + (unint64_t)currentAccountType
 {
   v2 = +[AFFamilyCircleStatusManager sharedManager];
-  v3 = [v2 currentAccountType];
+  currentAccountType = [v2 currentAccountType];
 
-  return v3;
+  return currentAccountType;
 }
 
 void __44__AFFamilyCircleStatusManager_sharedManager__block_invoke()

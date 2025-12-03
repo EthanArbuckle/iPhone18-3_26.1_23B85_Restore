@@ -1,5 +1,5 @@
 @interface _PXMessagesStackPlayButton
-- (_PXMessagesStackPlayButton)initWithFrame:(CGRect)a3;
+- (_PXMessagesStackPlayButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -14,11 +14,11 @@
   PXRectGetCenter();
 }
 
-- (_PXMessagesStackPlayButton)initWithFrame:(CGRect)a3
+- (_PXMessagesStackPlayButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _PXMessagesStackPlayButton;
-  v3 = [(_PXMessagesStackPlayButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PXMessagesStackPlayButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DD250] px_videoOverlayButtonWithStyle:1];

@@ -1,19 +1,19 @@
 @interface AVSpecifiedLoggingIdentifier
-- (AVSpecifiedLoggingIdentifier)initWithSpecifiedName:(id)a3;
+- (AVSpecifiedLoggingIdentifier)initWithSpecifiedName:(id)name;
 - (id)makeDerivedIdentifier;
 - (void)dealloc;
 @end
 
 @implementation AVSpecifiedLoggingIdentifier
 
-- (AVSpecifiedLoggingIdentifier)initWithSpecifiedName:(id)a3
+- (AVSpecifiedLoggingIdentifier)initWithSpecifiedName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  v6 = [a3 componentsSeparatedByString:@"."];
+  v6 = [name componentsSeparatedByString:@"."];
   if ([v6 count])
   {
     if ([objc_msgSend(v6 objectAtIndex:{0), "length"}] >= 7)
@@ -67,7 +67,7 @@ LABEL_10:
     if (v15)
     {
       v15->derivedIdentifierCounter = 0;
-      v14->_specifiedLoggingIdentifier->identifierName = [a3 copyWithZone:0];
+      v14->_specifiedLoggingIdentifier->identifierName = [name copyWithZone:0];
       CFRetain(v14->_specifiedLoggingIdentifier);
       return v14;
     }

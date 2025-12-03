@@ -1,13 +1,13 @@
 @interface AASleepDetectionManager
 + (id)sharedSleepDetectionManager;
 - (AASleepDetectionManager)init;
-- (BOOL)_isDeviceIsMoving:(id)a3;
+- (BOOL)_isDeviceIsMoving:(id)moving;
 - (BOOL)_shouldRunPauseMediaOnSleep;
-- (id)_formattedTimestamp:(id)a3;
-- (id)_getNumberFromString:(id)a3;
+- (id)_formattedTimestamp:(id)timestamp;
+- (id)_getNumberFromString:(id)string;
 - (id)_getSleepDetectionTimestamp;
-- (id)_notificationContentForSleepDetectionNotificationForDevice:(id)a3;
-- (int64_t)_minutesSinceTimestamp:(id)a3;
+- (id)_notificationContentForSleepDetectionNotificationForDevice:(id)device;
+- (int64_t)_minutesSinceTimestamp:(id)timestamp;
 - (void)_aaControllerEnsureStarted;
 - (void)_aaControllerEnsureStopped;
 - (void)_activate;
@@ -17,39 +17,39 @@
 - (void)_cleanMonitoringSourceMotion;
 - (void)_connectedDeviceDiscoveryEnsureStarted;
 - (void)_connectedDeviceDiscoveryEnsureStopped;
-- (void)_connectedDeviceFound:(id)a3;
-- (void)_connectedDeviceLost:(id)a3;
+- (void)_connectedDeviceFound:(id)found;
+- (void)_connectedDeviceLost:(id)lost;
 - (void)_deregisterFromWirelessSplitterStateChanges;
 - (void)_deregisterMediaPlaybackStateChangedNotifications;
-- (void)_deviceMotionFrom:(id)a3;
-- (void)_fileRadar:(id)a3;
-- (void)_fileRadarForSleepDetection:(BOOL)a3;
-- (void)_monitorSleepDetectionToggleStateFrom:(id)a3 to:(id)a4;
+- (void)_deviceMotionFrom:(id)from;
+- (void)_fileRadar:(id)radar;
+- (void)_fileRadarForSleepDetection:(BOOL)detection;
+- (void)_monitorSleepDetectionToggleStateFrom:(id)from to:(id)to;
 - (void)_processUserActivity;
-- (void)_receivedSleepDetectionNotificationAction:(id)a3 forRequest:(id)a4;
+- (void)_receivedSleepDetectionNotificationAction:(id)action forRequest:(id)request;
 - (void)_registerForWirelessSplitterStateChanges;
 - (void)_registerMediaPlaybackStateChangedNotifications;
 - (void)_sendSDConfidenceThresholdIfNeeded;
-- (void)_sendSleepDetectionConfidenceThreshold:(id)a3;
-- (void)_sendSleepDetectionReset:(id)a3 withResetReason:(unsigned __int8)a4;
+- (void)_sendSleepDetectionConfidenceThreshold:(id)threshold;
+- (void)_sendSleepDetectionReset:(id)reset withResetReason:(unsigned __int8)reason;
 - (void)_sendSleepDuration;
-- (void)_setSleepDetectedConfidenceLevel:(id)a3;
-- (void)_setSleepDetectionState:(BOOL)a3;
+- (void)_setSleepDetectedConfidenceLevel:(id)level;
+- (void)_setSleepDetectionState:(BOOL)state;
 - (void)_setSleepDetectionTimestamp;
 - (void)_showSleepDetectionInternalDataCollectionNotification;
-- (void)_sleepDetectionMessageReceived:(id)a3;
+- (void)_sleepDetectionMessageReceived:(id)received;
 - (void)_startCoolOffTimer;
 - (void)_startMonitoringSourceMotion;
 - (void)_startRewindMediaTimer;
 - (void)_stopCoolOffTimer;
 - (void)_stopMonitoringSourceMotion;
 - (void)_stopRewindMediaTimer;
-- (void)_updateSleepStatus:(unsigned __int8)a3 deviceLost:(BOOL)a4;
+- (void)_updateSleepStatus:(unsigned __int8)status deviceLost:(BOOL)lost;
 - (void)_userNotificationCenterEnsureStarted;
 - (void)_userNotificationCenterEnsureStopped;
 - (void)activate;
 - (void)invalidate;
-- (void)receivedNotificationResponse:(id)a3 forRequest:(id)a4;
+- (void)receivedNotificationResponse:(id)response forRequest:(id)request;
 @end
 
 @implementation AASleepDetectionManager
@@ -127,9 +127,9 @@
     sleepDetectedConfidenceLevel = v3->_sleepDetectedConfidenceLevel;
     v3->_sleepDetectedConfidenceLevel = v10;
 
-    v12 = [(AASleepDetectionManager *)v3 _getSleepDetectionTimestamp];
+    _getSleepDetectionTimestamp = [(AASleepDetectionManager *)v3 _getSleepDetectionTimestamp];
     sleepEventTimeStamp = v3->_sleepEventTimeStamp;
-    v3->_sleepEventTimeStamp = v12;
+    v3->_sleepEventTimeStamp = _getSleepDetectionTimestamp;
 
     v3->_splitterStateOnToken = -1;
     v14 = +[NSMutableDictionary dictionary];
@@ -169,7 +169,7 @@
     v10[3] = &unk_1002B6E38;
     v6 = v5;
     v11 = v6;
-    v12 = self;
+    selfCopy = self;
     [(AAController *)v6 setSleepDetectionMessageHandler:v10];
     if (dword_1002F6550 <= 30 && (dword_1002F6550 != -1 || _LogCategory_Initialize()))
     {
@@ -182,7 +182,7 @@
     v7[3] = &unk_1002B68A8;
     v4 = v6;
     v8 = v4;
-    v9 = self;
+    selfCopy2 = self;
     [(AAController *)v4 activateWithCompletion:v7];
   }
 }
@@ -240,17 +240,17 @@
   }
 }
 
-- (void)_connectedDeviceLost:(id)a3
+- (void)_connectedDeviceLost:(id)lost
 {
-  v8 = a3;
+  lostCopy = lost;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_1002F6550 <= 30 && (dword_1002F6550 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001D87A0(v8, self);
+    sub_1001D87A0(lostCopy, self);
   }
 
-  v4 = [v8 identifier];
-  if ([v4 isEqualToString:self->_sleepDetectionDeviceIdentifier])
+  identifier = [lostCopy identifier];
+  if ([identifier isEqualToString:self->_sleepDetectionDeviceIdentifier])
   {
     sleepDetected = self->_sleepDetected;
 
@@ -265,8 +265,8 @@
   }
 
   devicesMap = self->_devicesMap;
-  v7 = [v8 identifier];
-  [(NSMutableDictionary *)devicesMap removeObjectForKey:v7];
+  identifier2 = [lostCopy identifier];
+  [(NSMutableDictionary *)devicesMap removeObjectForKey:identifier2];
 }
 
 - (void)_connectedDeviceDiscoveryEnsureStopped
@@ -312,9 +312,9 @@ LABEL_6:
   self->_isWirelessSplitterOn = 0;
 }
 
-- (void)_fileRadarForSleepDetection:(BOOL)a3
+- (void)_fileRadarForSleepDetection:(BOOL)detection
 {
-  v3 = a3;
+  detectionCopy = detection;
   if (dword_1002F6550 <= 30 && (dword_1002F6550 != -1 || _LogCategory_Initialize()))
   {
     sub_1001D885C();
@@ -324,20 +324,20 @@ LABEL_6:
   rewindMediaInSeconds = self->_rewindMediaInSeconds;
   if (rewindMediaInSeconds)
   {
-    v7 = [(NSNumber *)rewindMediaInSeconds integerValue];
+    integerValue = [(NSNumber *)rewindMediaInSeconds integerValue];
   }
 
   else
   {
-    v7 = 5;
+    integerValue = 5;
   }
 
-  v8 = [(NSDate *)sleepEventTimeStamp dateByAddingTimeInterval:-v7];
+  v8 = [(NSDate *)sleepEventTimeStamp dateByAddingTimeInterval:-integerValue];
   v9 = [(AASleepDetectionManager *)self _formattedTimestamp:v8];
 
   v10 = [NSString alloc];
   v11 = @"Wrong";
-  if (v3)
+  if (detectionCopy)
   {
     v11 = @"Correct";
   }
@@ -363,15 +363,15 @@ LABEL_6:
   [(AASleepDetectionManager *)self _fileRadar:v13];
 }
 
-- (void)_fileRadar:(id)a3
+- (void)_fileRadar:(id)radar
 {
-  v3 = a3;
+  radarCopy = radar;
   v4 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = radarCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -405,22 +405,22 @@ LABEL_6:
   [v14 openURL:v15 configuration:0 completionHandler:0];
 }
 
-- (id)_formattedTimestamp:(id)a3
+- (id)_formattedTimestamp:(id)timestamp
 {
-  v3 = a3;
+  timestampCopy = timestamp;
   v4 = objc_alloc_init(NSDateFormatter);
   [v4 setDateFormat:@"HH:mm"];
-  v5 = [v4 stringFromDate:v3];
+  v5 = [v4 stringFromDate:timestampCopy];
 
   return v5;
 }
 
-- (id)_getNumberFromString:(id)a3
+- (id)_getNumberFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(NSNumberFormatter);
   [v4 setNumberStyle:1];
-  v5 = [v4 numberFromString:v3];
+  v5 = [v4 numberFromString:stringCopy];
 
   return v5;
 }
@@ -433,16 +433,16 @@ LABEL_6:
   return v2;
 }
 
-- (int64_t)_minutesSinceTimestamp:(id)a3
+- (int64_t)_minutesSinceTimestamp:(id)timestamp
 {
-  if (!a3)
+  if (!timestamp)
   {
     return 0;
   }
 
-  v3 = a3;
+  timestampCopy = timestamp;
   v4 = +[NSDate now];
-  [v4 timeIntervalSinceDate:v3];
+  [v4 timeIntervalSinceDate:timestampCopy];
   v6 = v5;
 
   return (v6 / 60.0);
@@ -473,16 +473,16 @@ LABEL_6:
   aaDeviceManagerDaemon = self->_aaDeviceManagerDaemon;
   if (aaDeviceManagerDaemon)
   {
-    v4 = [(AADeviceManagerDaemon *)aaDeviceManagerDaemon availableDevices];
-    v5 = [v4 allValues];
+    availableDevices = [(AADeviceManagerDaemon *)aaDeviceManagerDaemon availableDevices];
+    allValues = [availableDevices allValues];
 
-    if (v5)
+    if (allValues)
     {
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v6 = v5;
+      v6 = allValues;
       v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
@@ -501,8 +501,8 @@ LABEL_6:
             v11 = *(*(&v13 + 1) + 8 * v10);
             if (v11 && [*(*(&v13 + 1) + 8 * v10) routed] && objc_msgSend(v11, "sleepDetectionCapability") == 2 && objc_msgSend(v11, "sleepDetectionEnabled") == 1)
             {
-              v12 = [v11 identifier];
-              [(AASleepDetectionManager *)self _sendSleepDetectionConfidenceThreshold:v12];
+              identifier = [v11 identifier];
+              [(AASleepDetectionManager *)self _sendSleepDetectionConfidenceThreshold:identifier];
             }
 
             v10 = v10 + 1;
@@ -528,18 +528,18 @@ LABEL_6:
   }
 }
 
-- (void)_setSleepDetectedConfidenceLevel:(id)a3
+- (void)_setSleepDetectedConfidenceLevel:(id)level
 {
-  objc_storeStrong(&self->_sleepDetectedConfidenceLevel, a3);
-  v4 = a3;
+  objc_storeStrong(&self->_sleepDetectedConfidenceLevel, level);
+  levelCopy = level;
   CFPrefs_SetValue();
 }
 
-- (void)_setSleepDetectionState:(BOOL)a3
+- (void)_setSleepDetectionState:(BOOL)state
 {
-  self->_sleepDetected = a3;
+  self->_sleepDetected = state;
   v3 = &kCFBooleanTrue;
-  if (!a3)
+  if (!state)
   {
     v3 = &kCFBooleanFalse;
   }
@@ -595,9 +595,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)_sendSleepDetectionConfidenceThreshold:(id)a3
+- (void)_sendSleepDetectionConfidenceThreshold:(id)threshold
 {
-  v4 = a3;
+  thresholdCopy = threshold;
   v13 = 16643;
   v5 = [NSData dataWithBytes:&v13 length:2];
   [(AASleepDetectionManager *)self _aaControllerEnsureStarted];
@@ -607,18 +607,18 @@ LABEL_11:
   v9[2] = sub_10002FFBC;
   v9[3] = &unk_1002B7898;
   v10 = v5;
-  v11 = v4;
+  v11 = thresholdCopy;
   v12 = v13;
-  v7 = v4;
+  v7 = thresholdCopy;
   v8 = v5;
   [(AAController *)aaController sendSleepDetectionMessage:v8 destinationIdentifier:v7 completionHandler:v9];
 }
 
-- (void)_sendSleepDetectionReset:(id)a3 withResetReason:(unsigned __int8)a4
+- (void)_sendSleepDetectionReset:(id)reset withResetReason:(unsigned __int8)reason
 {
-  v6 = a3;
+  resetCopy = reset;
   LOBYTE(v15) = 4;
-  HIBYTE(v15) = a4;
+  HIBYTE(v15) = reason;
   v7 = [NSData dataWithBytes:&v15 length:2];
   [(AASleepDetectionManager *)self _aaControllerEnsureStarted];
   aaController = self->_aaController;
@@ -627,18 +627,18 @@ LABEL_11:
   v11[2] = sub_1000301A4;
   v11[3] = &unk_1002B7898;
   v12 = v7;
-  v13 = v6;
+  v13 = resetCopy;
   v14 = v15;
-  v9 = v6;
+  v9 = resetCopy;
   v10 = v7;
   [(AAController *)aaController sendSleepDetectionMessage:v10 destinationIdentifier:v9 completionHandler:v11];
   [(AASleepDetectionManager *)self _sendSleepDetectionConfidenceThreshold:v9];
 }
 
-- (void)_sleepDetectionMessageReceived:(id)a3
+- (void)_sleepDetectionMessageReceived:(id)received
 {
-  v4 = a3;
-  if ([v4 length] <= 6)
+  receivedCopy = received;
+  if ([receivedCopy length] <= 6)
   {
     sub_1001D8DFC();
     goto LABEL_16;
@@ -646,7 +646,7 @@ LABEL_11:
 
   *&v10[3] = 0;
   *v10 = 0;
-  [v4 getBytes:v10 length:7];
+  [receivedCopy getBytes:v10 length:7];
   if (dword_1002F6550 <= 30 && (dword_1002F6550 != -1 || _LogCategory_Initialize()))
   {
     sub_1001D8CF4(v10);
@@ -782,16 +782,16 @@ LABEL_16:
   }
 }
 
-- (void)_updateSleepStatus:(unsigned __int8)a3 deviceLost:(BOOL)a4
+- (void)_updateSleepStatus:(unsigned __int8)status deviceLost:(BOOL)lost
 {
-  v4 = a4;
-  v5 = a3;
+  lostCopy = lost;
+  statusCopy = status;
   if (dword_1002F6550 <= 30 && (dword_1002F6550 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001D8F4C(v5);
+    sub_1001D8F4C(statusCopy);
   }
 
-  if (v5 != 1)
+  if (statusCopy != 1)
   {
     if (self->_sleepDetected)
     {
@@ -800,7 +800,7 @@ LABEL_16:
         sub_1001D8FB8();
       }
 
-      if (_os_feature_enabled_impl() && MGGetBoolAnswer() && !self->_disableSleepDetectionNotification && (self->_sleepDetectedConfidenceLevel || v4))
+      if (_os_feature_enabled_impl() && MGGetBoolAnswer() && !self->_disableSleepDetectionNotification && (self->_sleepDetectedConfidenceLevel || lostCopy))
       {
         [(AASleepDetectionManager *)self _showSleepDetectionInternalDataCollectionNotification];
       }
@@ -840,15 +840,15 @@ LABEL_24:
   rewindMediaInSeconds = self->_rewindMediaInSeconds;
   if (rewindMediaInSeconds)
   {
-    v9 = [(NSNumber *)rewindMediaInSeconds integerValue];
+    integerValue = [(NSNumber *)rewindMediaInSeconds integerValue];
   }
 
   else
   {
-    v9 = 5;
+    integerValue = 5;
   }
 
-  v10 = [v7 dateByAddingTimeInterval:-v9];
+  v10 = [v7 dateByAddingTimeInterval:-integerValue];
   v11 = [(AASleepDetectionManager *)self _formattedTimestamp:v10];
 
   if (dword_1002F6550 <= 30 && (dword_1002F6550 != -1 || _LogCategory_Initialize()))
@@ -876,15 +876,15 @@ LABEL_31:
   self->_motionActivityUpdateQueue = 0;
 }
 
-- (void)_deviceMotionFrom:(id)a3
+- (void)_deviceMotionFrom:(id)from
 {
-  v4 = a3;
-  v5 = ([(CMMotionActivity *)v4 walking]|| [(CMMotionActivity *)v4 running]|| [(CMMotionActivity *)v4 cycling]) && [(CMMotionActivity *)v4 confidence]== 2 || [(AASleepDetectionManager *)self _isDeviceIsMoving:v4];
+  fromCopy = from;
+  v5 = ([(CMMotionActivity *)fromCopy walking]|| [(CMMotionActivity *)fromCopy running]|| [(CMMotionActivity *)fromCopy cycling]) && [(CMMotionActivity *)fromCopy confidence]== 2 || [(AASleepDetectionManager *)self _isDeviceIsMoving:fromCopy];
   if (dword_1002F6550 <= 30 && (dword_1002F6550 != -1 || _LogCategory_Initialize()))
   {
     v8 = v5;
     stateChangedFromStationaryToMoving = self->_stateChangedFromStationaryToMoving;
-    v7 = v4;
+    v7 = fromCopy;
     LogPrintF();
   }
 
@@ -901,13 +901,13 @@ LABEL_31:
   }
 
   previousMotionActivity = self->_previousMotionActivity;
-  self->_previousMotionActivity = v4;
+  self->_previousMotionActivity = fromCopy;
 }
 
-- (BOOL)_isDeviceIsMoving:(id)a3
+- (BOOL)_isDeviceIsMoving:(id)moving
 {
-  v4 = a3;
-  v5 = v4;
+  movingCopy = moving;
+  v5 = movingCopy;
   if (self->_previousMotionActivity)
   {
     LOBYTE(v6) = 0;
@@ -915,7 +915,7 @@ LABEL_31:
 
   else
   {
-    v6 = ([v4 automotive] & 1) == 0 && (objc_msgSend(v5, "cycling") & 1) == 0 && (objc_msgSend(v5, "running") & 1) == 0 && (objc_msgSend(v5, "stationary") & 1) == 0 && (objc_msgSend(v5, "unknown") & 1) == 0 && (objc_msgSend(v5, "walking") & 1) == 0 && objc_msgSend(v5, "confidence") == 2;
+    v6 = ([movingCopy automotive] & 1) == 0 && (objc_msgSend(v5, "cycling") & 1) == 0 && (objc_msgSend(v5, "running") & 1) == 0 && (objc_msgSend(v5, "stationary") & 1) == 0 && (objc_msgSend(v5, "unknown") & 1) == 0 && (objc_msgSend(v5, "walking") & 1) == 0 && objc_msgSend(v5, "confidence") == 2;
     if (!self->_previousMotionActivity)
     {
       sub_1001D911C(v6, &v11);
@@ -929,9 +929,9 @@ LABEL_31:
     LOBYTE(v6) = ([v5 confidence] == 2) | v6;
   }
 
-  v7 = [(CMMotionActivity *)self->_previousMotionActivity stationary];
+  stationary = [(CMMotionActivity *)self->_previousMotionActivity stationary];
   stateChangedFromStationaryToMoving = self->_stateChangedFromStationaryToMoving;
-  if (v7 && (v6 & 1) != 0)
+  if (stationary && (v6 & 1) != 0)
   {
     self->_stateChangedFromStationaryToMoving = ++stateChangedFromStationaryToMoving;
   }
@@ -1058,8 +1058,8 @@ LABEL_8:
   if (currentAudioDevice)
   {
     v9[0] = @"accessoryFW";
-    v4 = [(AudioAccessoryDevice *)currentAudioDevice firmwareVersion];
-    v10[0] = v4;
+    firmwareVersion = [(AudioAccessoryDevice *)currentAudioDevice firmwareVersion];
+    v10[0] = firmwareVersion;
     v9[1] = @"accessoryProductID";
     v5 = self->_currentAudioDevice;
     if (v5)
@@ -1133,8 +1133,8 @@ LABEL_8:
   }
 
   unCategories = self->_unCategories;
-  v13 = [v11 identifier];
-  [(NSMutableDictionary *)unCategories setObject:v11 forKeyedSubscript:v13];
+  identifier = [v11 identifier];
+  [(NSMutableDictionary *)unCategories setObject:v11 forKeyedSubscript:identifier];
 }
 
 - (void)_showSleepDetectionInternalDataCollectionNotification
@@ -1148,7 +1148,7 @@ LABEL_8:
   dispatch_async(dispatchQueue, block);
 }
 
-- (id)_notificationContentForSleepDetectionNotificationForDevice:(id)a3
+- (id)_notificationContentForSleepDetectionNotificationForDevice:(id)device
 {
   v4 = [NSBundle bundleWithPath:@"/System/Library/UserNotifications/Bundles/com.apple.AudioAccessoryUserNotifications.bundle"];
   v5 = objc_alloc_init(UNMutableNotificationContent);
@@ -1162,15 +1162,15 @@ LABEL_8:
     rewindMediaInSeconds = self->_rewindMediaInSeconds;
     if (rewindMediaInSeconds)
     {
-      v9 = [(NSNumber *)rewindMediaInSeconds integerValue];
+      integerValue = [(NSNumber *)rewindMediaInSeconds integerValue];
     }
 
     else
     {
-      v9 = 5;
+      integerValue = 5;
     }
 
-    v10 = [(NSDate *)sleepEventTimeStamp dateByAddingTimeInterval:-v9];
+    v10 = [(NSDate *)sleepEventTimeStamp dateByAddingTimeInterval:-integerValue];
     v11 = [(AASleepDetectionManager *)self _formattedTimestamp:v10];
 
     if (dword_1002F6550 <= 30 && (dword_1002F6550 != -1 || _LogCategory_Initialize()))
@@ -1197,8 +1197,8 @@ LABEL_8:
     currentAudioDevice = self->_currentAudioDevice;
     if (currentAudioDevice)
     {
-      v18 = [(AudioAccessoryDevice *)currentAudioDevice firmwareVersion];
-      [v16 setObject:v18 forKeyedSubscript:@"accessoryFW"];
+      firmwareVersion = [(AudioAccessoryDevice *)currentAudioDevice firmwareVersion];
+      [v16 setObject:firmwareVersion forKeyedSubscript:@"accessoryFW"];
     }
 
     else
@@ -1246,30 +1246,30 @@ LABEL_8:
   return v23;
 }
 
-- (void)receivedNotificationResponse:(id)a3 forRequest:(id)a4
+- (void)receivedNotificationResponse:(id)response forRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000329D0;
   block[3] = &unk_1002B6CF0;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = responseCopy;
+  v13 = requestCopy;
+  selfCopy = self;
+  v9 = requestCopy;
+  v10 = responseCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_receivedSleepDetectionNotificationAction:(id)a3 forRequest:(id)a4
+- (void)_receivedSleepDetectionNotificationAction:(id)action forRequest:(id)request
 {
-  v6 = a3;
-  v7 = [a4 content];
-  v8 = [v7 userInfo];
+  actionCopy = action;
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v9 = v6;
+  v9 = actionCopy;
   v23 = v9;
   if (UNNotificationDismissActionIdentifier == v9)
   {
@@ -1346,7 +1346,7 @@ LABEL_24:
       sub_1001D99FC();
     }
 
-    [(AASleepDetectionManager *)self _sendSleepDetectionMetricsForYesNo:1 withUserInfo:v8];
+    [(AASleepDetectionManager *)self _sendSleepDetectionMetricsForYesNo:1 withUserInfo:userInfo];
     goto LABEL_28;
   }
 
@@ -1358,7 +1358,7 @@ LABEL_24:
       sub_1001D99A0();
     }
 
-    [(AASleepDetectionManager *)self _sendSleepDetectionMetricsForYesNo:0 withUserInfo:v8];
+    [(AASleepDetectionManager *)self _sendSleepDetectionMetricsForYesNo:0 withUserInfo:userInfo];
     [(AASleepDetectionManager *)self _fileRadarForSleepDetection:0];
     goto LABEL_28;
   }
@@ -1398,26 +1398,26 @@ LABEL_28:
     self->_unCenter = v5;
 
     v7 = self->_unCenter;
-    v8 = [(NSMutableDictionary *)self->_unCategories allValues];
-    [(AAUserNotificationCenter *)v7 registerNotificationCategories:v8 responseDelegate:self];
+    allValues = [(NSMutableDictionary *)self->_unCategories allValues];
+    [(AAUserNotificationCenter *)v7 registerNotificationCategories:allValues responseDelegate:self];
   }
 }
 
 - (void)_userNotificationCenterEnsureStopped
 {
   unCenter = self->_unCenter;
-  v4 = [(NSMutableDictionary *)self->_unCategories allKeys];
-  [(AAUserNotificationCenter *)unCenter deregisterNotificationCategoryWithIdentifiers:v4];
+  allKeys = [(NSMutableDictionary *)self->_unCategories allKeys];
+  [(AAUserNotificationCenter *)unCenter deregisterNotificationCategoryWithIdentifiers:allKeys];
 
   v5 = self->_unCenter;
   self->_unCenter = 0;
 }
 
-- (void)_connectedDeviceFound:(id)a3
+- (void)_connectedDeviceFound:(id)found
 {
-  v12 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v12 identifier];
+  identifier = [foundCopy identifier];
   devicesMap = self->_devicesMap;
   if (!devicesMap)
   {
@@ -1428,8 +1428,8 @@ LABEL_28:
     devicesMap = self->_devicesMap;
   }
 
-  v8 = [(NSMutableDictionary *)devicesMap objectForKeyedSubscript:v4];
-  [(NSMutableDictionary *)self->_devicesMap setObject:v12 forKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)devicesMap objectForKeyedSubscript:identifier];
+  [(NSMutableDictionary *)self->_devicesMap setObject:foundCopy forKeyedSubscript:identifier];
   if (v8)
   {
     v9 = [v8 routed] ^ 1;
@@ -1440,27 +1440,27 @@ LABEL_28:
     v9 = 1;
   }
 
-  v10 = [v12 routed];
-  [(AASleepDetectionManager *)self _monitorSleepDetectionToggleStateFrom:v8 to:v12];
-  if (v9 && v10 && [v12 sleepDetectionCapability] == 2 && objc_msgSend(v12, "sleepDetectionEnabled") == 1)
+  routed = [foundCopy routed];
+  [(AASleepDetectionManager *)self _monitorSleepDetectionToggleStateFrom:v8 to:foundCopy];
+  if (v9 && routed && [foundCopy sleepDetectionCapability] == 2 && objc_msgSend(foundCopy, "sleepDetectionEnabled") == 1)
   {
-    v11 = [v12 identifier];
-    [(AASleepDetectionManager *)self _sendSleepDetectionConfidenceThreshold:v11];
+    identifier2 = [foundCopy identifier];
+    [(AASleepDetectionManager *)self _sendSleepDetectionConfidenceThreshold:identifier2];
   }
 }
 
-- (void)_monitorSleepDetectionToggleStateFrom:(id)a3 to:(id)a4
+- (void)_monitorSleepDetectionToggleStateFrom:(id)from to:(id)to
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v6 sleepDetectionCapability] == 2)
+  fromCopy = from;
+  toCopy = to;
+  if ([toCopy sleepDetectionCapability] == 2)
   {
-    v7 = v11 && [v11 sleepDetectionEnabled] == 1;
-    v8 = [v6 sleepDetectionEnabled];
-    if (v8 == 1 && !v7)
+    v7 = fromCopy && [fromCopy sleepDetectionEnabled] == 1;
+    sleepDetectionEnabled = [toCopy sleepDetectionEnabled];
+    if (sleepDetectionEnabled == 1 && !v7)
     {
-      v10 = [v6 identifier];
-      [(AASleepDetectionManager *)self _sendSleepDetectionConfidenceThreshold:v10];
+      identifier = [toCopy identifier];
+      [(AASleepDetectionManager *)self _sendSleepDetectionConfidenceThreshold:identifier];
     }
   }
 }

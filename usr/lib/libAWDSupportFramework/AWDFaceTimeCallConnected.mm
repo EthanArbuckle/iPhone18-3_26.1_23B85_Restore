@@ -1,23 +1,23 @@
 @interface AWDFaceTimeCallConnected
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConnectDuration:(BOOL)a3;
-- (void)setHasConnectionType:(BOOL)a3;
-- (void)setHasCurrentNatType:(BOOL)a3;
-- (void)setHasIsVideo:(BOOL)a3;
-- (void)setHasLocalNetworkConnection:(BOOL)a3;
-- (void)setHasOnLockScreen:(BOOL)a3;
-- (void)setHasRelayConnectDuration:(BOOL)a3;
-- (void)setHasRemoteNatType:(BOOL)a3;
-- (void)setHasRemoteNetworkConnection:(BOOL)a3;
-- (void)setHasUsesRelay:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasConnectDuration:(BOOL)duration;
+- (void)setHasConnectionType:(BOOL)type;
+- (void)setHasCurrentNatType:(BOOL)type;
+- (void)setHasIsVideo:(BOOL)video;
+- (void)setHasLocalNetworkConnection:(BOOL)connection;
+- (void)setHasOnLockScreen:(BOOL)screen;
+- (void)setHasRelayConnectDuration:(BOOL)duration;
+- (void)setHasRemoteNatType:(BOOL)type;
+- (void)setHasRemoteNetworkConnection:(BOOL)connection;
+- (void)setHasUsesRelay:(BOOL)relay;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDFaceTimeCallConnected
@@ -30,9 +30,9 @@
   [(AWDFaceTimeCallConnected *)&v3 dealloc];
 }
 
-- (void)setHasConnectDuration:(BOOL)a3
+- (void)setHasConnectDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasRemoteNetworkConnection:(BOOL)a3
+- (void)setHasRemoteNetworkConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 512;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasLocalNetworkConnection:(BOOL)a3
+- (void)setHasLocalNetworkConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 32;
   }
@@ -75,9 +75,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasConnectionType:(BOOL)a3
+- (void)setHasConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -90,9 +90,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasUsesRelay:(BOOL)a3
+- (void)setHasUsesRelay:(BOOL)relay
 {
-  if (a3)
+  if (relay)
   {
     v3 = 1024;
   }
@@ -105,9 +105,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasCurrentNatType:(BOOL)a3
+- (void)setHasCurrentNatType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -120,9 +120,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRemoteNatType:(BOOL)a3
+- (void)setHasRemoteNatType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 256;
   }
@@ -135,9 +135,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRelayConnectDuration:(BOOL)a3
+- (void)setHasRelayConnectDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 128;
   }
@@ -150,9 +150,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsVideo:(BOOL)a3
+- (void)setHasIsVideo:(BOOL)video
 {
-  if (a3)
+  if (video)
   {
     v3 = 16;
   }
@@ -165,9 +165,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasOnLockScreen:(BOOL)a3
+- (void)setHasOnLockScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 64;
   }
@@ -189,12 +189,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   has = self->_has;
@@ -341,7 +341,7 @@ LABEL_14:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_guid)
   {
@@ -504,18 +504,18 @@ LABEL_25:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 34) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 34) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -534,8 +534,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(a3 + 4) = self->_connectDuration;
-  *(a3 + 34) |= 2u;
+  *(to + 4) = self->_connectDuration;
+  *(to + 34) |= 2u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -549,8 +549,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  *(a3 + 15) = self->_remoteNetworkConnection;
-  *(a3 + 34) |= 0x200u;
+  *(to + 15) = self->_remoteNetworkConnection;
+  *(to + 34) |= 0x200u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -564,8 +564,8 @@ LABEL_7:
   }
 
 LABEL_19:
-  *(a3 + 11) = self->_localNetworkConnection;
-  *(a3 + 34) |= 0x20u;
+  *(to + 11) = self->_localNetworkConnection;
+  *(to + 34) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -579,8 +579,8 @@ LABEL_8:
   }
 
 LABEL_20:
-  *(a3 + 5) = self->_connectionType;
-  *(a3 + 34) |= 4u;
+  *(to + 5) = self->_connectionType;
+  *(to + 34) |= 4u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -594,8 +594,8 @@ LABEL_9:
   }
 
 LABEL_21:
-  *(a3 + 16) = self->_usesRelay;
-  *(a3 + 34) |= 0x400u;
+  *(to + 16) = self->_usesRelay;
+  *(to + 34) |= 0x400u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -609,8 +609,8 @@ LABEL_10:
   }
 
 LABEL_22:
-  *(a3 + 6) = self->_currentNatType;
-  *(a3 + 34) |= 8u;
+  *(to + 6) = self->_currentNatType;
+  *(to + 34) |= 8u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -624,8 +624,8 @@ LABEL_11:
   }
 
 LABEL_23:
-  *(a3 + 14) = self->_remoteNatType;
-  *(a3 + 34) |= 0x100u;
+  *(to + 14) = self->_remoteNatType;
+  *(to + 34) |= 0x100u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -639,8 +639,8 @@ LABEL_12:
   }
 
 LABEL_24:
-  *(a3 + 13) = self->_relayConnectDuration;
-  *(a3 + 34) |= 0x80u;
+  *(to + 13) = self->_relayConnectDuration;
+  *(to + 34) |= 0x80u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -654,23 +654,23 @@ LABEL_13:
   }
 
 LABEL_25:
-  *(a3 + 10) = self->_isVideo;
-  *(a3 + 34) |= 0x10u;
+  *(to + 10) = self->_isVideo;
+  *(to + 34) |= 0x10u;
   if ((*&self->_has & 0x40) == 0)
   {
     return;
   }
 
 LABEL_14:
-  *(a3 + 12) = self->_onLockScreen;
-  *(a3 + 34) |= 0x40u;
+  *(to + 12) = self->_onLockScreen;
+  *(to + 34) |= 0x40u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 32) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v5 + 32) = [(NSString *)self->_guid copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -826,19 +826,19 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     guid = self->_guid;
-    if (!(guid | *(a3 + 4)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
+    if (!(guid | *(equal + 4)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
     {
       has = self->_has;
-      v8 = *(a3 + 34);
+      v8 = *(equal + 34);
       if (has)
       {
-        if ((v8 & 1) == 0 || self->_timestamp != *(a3 + 1))
+        if ((v8 & 1) == 0 || self->_timestamp != *(equal + 1))
         {
           goto LABEL_58;
         }
@@ -853,7 +853,7 @@ LABEL_58:
 
       if ((has & 2) != 0)
       {
-        if ((v8 & 2) == 0 || self->_connectDuration != *(a3 + 4))
+        if ((v8 & 2) == 0 || self->_connectDuration != *(equal + 4))
         {
           goto LABEL_58;
         }
@@ -866,20 +866,20 @@ LABEL_58:
 
       if ((*&self->_has & 0x200) != 0)
       {
-        if ((*(a3 + 34) & 0x200) == 0 || self->_remoteNetworkConnection != *(a3 + 15))
+        if ((*(equal + 34) & 0x200) == 0 || self->_remoteNetworkConnection != *(equal + 15))
         {
           goto LABEL_58;
         }
       }
 
-      else if ((*(a3 + 34) & 0x200) != 0)
+      else if ((*(equal + 34) & 0x200) != 0)
       {
         goto LABEL_58;
       }
 
       if ((has & 0x20) != 0)
       {
-        if ((v8 & 0x20) == 0 || self->_localNetworkConnection != *(a3 + 11))
+        if ((v8 & 0x20) == 0 || self->_localNetworkConnection != *(equal + 11))
         {
           goto LABEL_58;
         }
@@ -892,7 +892,7 @@ LABEL_58:
 
       if ((has & 4) != 0)
       {
-        if ((v8 & 4) == 0 || self->_connectionType != *(a3 + 5))
+        if ((v8 & 4) == 0 || self->_connectionType != *(equal + 5))
         {
           goto LABEL_58;
         }
@@ -905,20 +905,20 @@ LABEL_58:
 
       if ((*&self->_has & 0x400) != 0)
       {
-        if ((*(a3 + 34) & 0x400) == 0 || self->_usesRelay != *(a3 + 16))
+        if ((*(equal + 34) & 0x400) == 0 || self->_usesRelay != *(equal + 16))
         {
           goto LABEL_58;
         }
       }
 
-      else if ((*(a3 + 34) & 0x400) != 0)
+      else if ((*(equal + 34) & 0x400) != 0)
       {
         goto LABEL_58;
       }
 
       if ((has & 8) != 0)
       {
-        if ((v8 & 8) == 0 || self->_currentNatType != *(a3 + 6))
+        if ((v8 & 8) == 0 || self->_currentNatType != *(equal + 6))
         {
           goto LABEL_58;
         }
@@ -931,20 +931,20 @@ LABEL_58:
 
       if ((*&self->_has & 0x100) != 0)
       {
-        if ((*(a3 + 34) & 0x100) == 0 || self->_remoteNatType != *(a3 + 14))
+        if ((*(equal + 34) & 0x100) == 0 || self->_remoteNatType != *(equal + 14))
         {
           goto LABEL_58;
         }
       }
 
-      else if ((*(a3 + 34) & 0x100) != 0)
+      else if ((*(equal + 34) & 0x100) != 0)
       {
         goto LABEL_58;
       }
 
       if ((has & 0x80) != 0)
       {
-        if ((v8 & 0x80) == 0 || self->_relayConnectDuration != *(a3 + 13))
+        if ((v8 & 0x80) == 0 || self->_relayConnectDuration != *(equal + 13))
         {
           goto LABEL_58;
         }
@@ -957,7 +957,7 @@ LABEL_58:
 
       if ((has & 0x10) != 0)
       {
-        if ((v8 & 0x10) == 0 || self->_isVideo != *(a3 + 10))
+        if ((v8 & 0x10) == 0 || self->_isVideo != *(equal + 10))
         {
           goto LABEL_58;
         }
@@ -971,7 +971,7 @@ LABEL_58:
       LOBYTE(v5) = (v8 & 0x40) == 0;
       if ((has & 0x40) != 0)
       {
-        if ((v8 & 0x40) == 0 || self->_onLockScreen != *(a3 + 12))
+        if ((v8 & 0x40) == 0 || self->_onLockScreen != *(equal + 12))
         {
           goto LABEL_58;
         }
@@ -1138,19 +1138,19 @@ LABEL_12:
   return v5 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDFaceTimeCallConnected *)self setGuid:?];
   }
 
-  v5 = *(a3 + 34);
+  v5 = *(from + 34);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 34);
+    v5 = *(from + 34);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -1168,9 +1168,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_connectDuration = *(a3 + 4);
+  self->_connectDuration = *(from + 4);
   *&self->_has |= 2u;
-  v5 = *(a3 + 34);
+  v5 = *(from + 34);
   if ((v5 & 0x200) == 0)
   {
 LABEL_6:
@@ -1183,9 +1183,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  self->_remoteNetworkConnection = *(a3 + 15);
+  self->_remoteNetworkConnection = *(from + 15);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 34);
+  v5 = *(from + 34);
   if ((v5 & 0x20) == 0)
   {
 LABEL_7:
@@ -1198,9 +1198,9 @@ LABEL_7:
   }
 
 LABEL_19:
-  self->_localNetworkConnection = *(a3 + 11);
+  self->_localNetworkConnection = *(from + 11);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 34);
+  v5 = *(from + 34);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -1213,9 +1213,9 @@ LABEL_8:
   }
 
 LABEL_20:
-  self->_connectionType = *(a3 + 5);
+  self->_connectionType = *(from + 5);
   *&self->_has |= 4u;
-  v5 = *(a3 + 34);
+  v5 = *(from + 34);
   if ((v5 & 0x400) == 0)
   {
 LABEL_9:
@@ -1228,9 +1228,9 @@ LABEL_9:
   }
 
 LABEL_21:
-  self->_usesRelay = *(a3 + 16);
+  self->_usesRelay = *(from + 16);
   *&self->_has |= 0x400u;
-  v5 = *(a3 + 34);
+  v5 = *(from + 34);
   if ((v5 & 8) == 0)
   {
 LABEL_10:
@@ -1243,9 +1243,9 @@ LABEL_10:
   }
 
 LABEL_22:
-  self->_currentNatType = *(a3 + 6);
+  self->_currentNatType = *(from + 6);
   *&self->_has |= 8u;
-  v5 = *(a3 + 34);
+  v5 = *(from + 34);
   if ((v5 & 0x100) == 0)
   {
 LABEL_11:
@@ -1258,9 +1258,9 @@ LABEL_11:
   }
 
 LABEL_23:
-  self->_remoteNatType = *(a3 + 14);
+  self->_remoteNatType = *(from + 14);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 34);
+  v5 = *(from + 34);
   if ((v5 & 0x80) == 0)
   {
 LABEL_12:
@@ -1273,9 +1273,9 @@ LABEL_12:
   }
 
 LABEL_24:
-  self->_relayConnectDuration = *(a3 + 13);
+  self->_relayConnectDuration = *(from + 13);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 34);
+  v5 = *(from + 34);
   if ((v5 & 0x10) == 0)
   {
 LABEL_13:
@@ -1288,15 +1288,15 @@ LABEL_13:
   }
 
 LABEL_25:
-  self->_isVideo = *(a3 + 10);
+  self->_isVideo = *(from + 10);
   *&self->_has |= 0x10u;
-  if ((*(a3 + 34) & 0x40) == 0)
+  if ((*(from + 34) & 0x40) == 0)
   {
     return;
   }
 
 LABEL_14:
-  self->_onLockScreen = *(a3 + 12);
+  self->_onLockScreen = *(from + 12);
   *&self->_has |= 0x40u;
 }
 

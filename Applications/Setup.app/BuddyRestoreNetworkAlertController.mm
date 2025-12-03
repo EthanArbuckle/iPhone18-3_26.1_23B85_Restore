@@ -1,24 +1,24 @@
 @interface BuddyRestoreNetworkAlertController
-+ (id)_alertControllerForCellular:(int64_t)a3;
-+ (id)alertControllerForNetworkConnectionWithProvider:(id)a3 estimatedRestoreSize:(int64_t)a4;
-+ (id)alertControllerForUnsupportedNetworkWithCellularRestoreSupport:(BOOL)a3;
++ (id)_alertControllerForCellular:(int64_t)cellular;
++ (id)alertControllerForNetworkConnectionWithProvider:(id)provider estimatedRestoreSize:(int64_t)size;
++ (id)alertControllerForUnsupportedNetworkWithCellularRestoreSupport:(BOOL)support;
 @end
 
 @implementation BuddyRestoreNetworkAlertController
 
-+ (id)alertControllerForNetworkConnectionWithProvider:(id)a3 estimatedRestoreSize:(int64_t)a4
++ (id)alertControllerForNetworkConnectionWithProvider:(id)provider estimatedRestoreSize:(int64_t)size
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, provider);
   if ([location[0] currentNetworkSupportsRestore] & 1) == 0 || (objc_msgSend(location[0], "currentNetworkRequiresDataUsageWarningForRestore"))
   {
     if ([location[0] currentNetworkSupportsRestore])
     {
       if ([location[0] currentNetworkRequiresDataUsageWarningForRestore])
       {
-        v8 = [objc_opt_class() _alertControllerForCellular:a4];
+        v8 = [objc_opt_class() _alertControllerForCellular:size];
       }
 
       else
@@ -44,11 +44,11 @@
   return v5;
 }
 
-+ (id)alertControllerForUnsupportedNetworkWithCellularRestoreSupport:(BOOL)a3
++ (id)alertControllerForUnsupportedNetworkWithCellularRestoreSupport:(BOOL)support
 {
-  v30 = a1;
+  selfCopy = self;
   v29 = a2;
-  v28 = a3;
+  supportCopy = support;
   v3 = +[NSBundle mainBundle];
   v4 = SFLocalizableWAPIStringKeyForKey();
   v27 = [(NSBundle *)v3 localizedStringForKey:v4 value:&stru_10032F900 table:@"RestoreFromBackup"];
@@ -87,25 +87,25 @@
   return v16;
 }
 
-+ (id)_alertControllerForCellular:(int64_t)a3
++ (id)_alertControllerForCellular:(int64_t)cellular
 {
-  v45 = a1;
+  selfCopy = self;
   v44 = a2;
-  v43 = a3;
+  cellularCopy = cellular;
   v3 = +[NSBundle mainBundle];
   v4 = SFLocalizableWAPIStringKeyForKey();
   v42 = [(NSBundle *)v3 localizedStringForKey:v4 value:&stru_10032F900 table:@"RestoreFromBackup"];
 
   v41 = 0;
-  if (v43 > 0)
+  if (cellularCopy > 0)
   {
-    location = [NSByteCountFormatter stringFromByteCount:v43 countStyle:2];
+    location = [NSByteCountFormatter stringFromByteCount:cellularCopy countStyle:2];
     v5 = +[NSBundle mainBundle];
     v6 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"RESTORE_OVER_CELLULAR_PROMPT_MESSAGE_ESTIMATE"];
     v7 = [(NSBundle *)v5 localizedStringForKey:v6 value:&stru_10032F900 table:@"RestoreFromBackup"];
-    v8 = [NSString localizedStringWithFormat:v7, location];
+    location = [NSString localizedStringWithFormat:v7, location];
     v9 = v41;
-    v41 = v8;
+    v41 = location;
 
     objc_storeStrong(&location, 0);
   }

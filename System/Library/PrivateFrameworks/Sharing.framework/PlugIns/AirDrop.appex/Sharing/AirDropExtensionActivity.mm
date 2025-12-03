@@ -2,11 +2,11 @@
 - (AirDropExtensionActivity)init;
 - (CGSize)_thumbnailSize;
 - (id)itemDataRequest;
-- (void)_activateSecurityScopedResourcesForExtensionItems:(id)a3;
+- (void)_activateSecurityScopedResourcesForExtensionItems:(id)items;
 - (void)dealloc;
 - (void)performActivity;
-- (void)prepareWithActivityExtensionItemData:(id)a3;
-- (void)startAccessingSecurityScopedResourcesInContext:(id)a3;
+- (void)prepareWithActivityExtensionItemData:(id)data;
+- (void)startAccessingSecurityScopedResourcesInContext:(id)context;
 - (void)stopAccessingSecurityScopedResources;
 @end
 
@@ -35,19 +35,19 @@
   [(AirDropExtensionActivity *)&v3 dealloc];
 }
 
-- (void)startAccessingSecurityScopedResourcesInContext:(id)a3
+- (void)startAccessingSecurityScopedResourcesInContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v6 = v4;
-    [v4 activate];
+    v6 = contextCopy;
+    [contextCopy activate];
     v5 = self->_activeSecurityContexts;
     objc_sync_enter(v5);
     [(NSMutableArray *)self->_activeSecurityContexts addObject:v6];
     objc_sync_exit(v5);
 
-    v4 = v6;
+    contextCopy = v6;
   }
 }
 
@@ -92,19 +92,19 @@
 
 - (id)itemDataRequest
 {
-  v3 = [(AirDropExtensionActivity *)self ss_activityTypeToReportToHost];
-  v4 = [(AirDropExtensionActivity *)self ss_activitySpecificExtensionItemDataRequestInfo];
-  v5 = [UISUIActivityExtensionItemDataRequest requestForActivity:self activityType:v3 activitySpecificMetadata:v4];
+  ss_activityTypeToReportToHost = [(AirDropExtensionActivity *)self ss_activityTypeToReportToHost];
+  ss_activitySpecificExtensionItemDataRequestInfo = [(AirDropExtensionActivity *)self ss_activitySpecificExtensionItemDataRequestInfo];
+  v5 = [UISUIActivityExtensionItemDataRequest requestForActivity:self activityType:ss_activityTypeToReportToHost activitySpecificMetadata:ss_activitySpecificExtensionItemDataRequestInfo];
 
   return v5;
 }
 
-- (void)prepareWithActivityExtensionItemData:(id)a3
+- (void)prepareWithActivityExtensionItemData:(id)data
 {
-  v4 = a3;
-  v5 = [(AirDropExtensionActivity *)self airDropViewController];
-  v6 = [v4 extensionItems];
-  [(AirDropExtensionActivity *)self _activateSecurityScopedResourcesForExtensionItems:v6];
+  dataCopy = data;
+  airDropViewController = [(AirDropExtensionActivity *)self airDropViewController];
+  extensionItems = [dataCopy extensionItems];
+  [(AirDropExtensionActivity *)self _activateSecurityScopedResourcesForExtensionItems:extensionItems];
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
@@ -113,20 +113,20 @@
   v9[1] = 3221225472;
   v9[2] = sub_10000B6DC;
   v9[3] = &unk_10002D340;
-  v7 = v4;
+  v7 = dataCopy;
   v10 = v7;
-  v11 = self;
+  selfCopy = self;
   v13 = v14;
-  v8 = v5;
+  v8 = airDropViewController;
   v12 = v8;
-  sub_10000B53C(v6, v9);
+  sub_10000B53C(extensionItems, v9);
 
   _Block_object_dispose(v14, 8);
 }
 
-- (void)_activateSecurityScopedResourcesForExtensionItems:(id)a3
+- (void)_activateSecurityScopedResourcesForExtensionItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   objc_initWeak(&location, self);
   v13 = NSItemProviderOptionsDispatchModeKey;
   v14 = NSItemProviderOptionsDispatchModeAsynchronous;
@@ -140,7 +140,7 @@
   v7 = v5;
   v10 = v7;
   objc_copyWeak(&v11, &location);
-  sub_10000B53C(v4, v8);
+  sub_10000B53C(itemsCopy, v8);
   dispatch_group_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   objc_destroyWeak(&v11);
 
@@ -149,12 +149,12 @@
 
 - (void)performActivity
 {
-  v3 = [(AirDropExtensionActivity *)self airdropCompletion];
+  airdropCompletion = [(AirDropExtensionActivity *)self airdropCompletion];
 
-  if (v3)
+  if (airdropCompletion)
   {
-    v4 = [(AirDropExtensionActivity *)self airdropCompletion];
-    v4[2]();
+    airdropCompletion2 = [(AirDropExtensionActivity *)self airdropCompletion];
+    airdropCompletion2[2]();
 
     [(AirDropExtensionActivity *)self setAirdropCompletion:0];
   }

@@ -1,31 +1,31 @@
 @interface HDWatchSettingValues
-- (BOOL)isEqual:(id)a3;
-- (HDWatchSettingValues)initWithFeatureSettingEnabledValue:(id)a3 defaultsEnabledValue:(id)a4 lastReconciledEnabledValue:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HDWatchSettingValues)initWithFeatureSettingEnabledValue:(id)value defaultsEnabledValue:(id)enabledValue lastReconciledEnabledValue:(id)reconciledEnabledValue;
 - (id)reconciledEnabledValue;
 - (unint64_t)hash;
 @end
 
 @implementation HDWatchSettingValues
 
-- (HDWatchSettingValues)initWithFeatureSettingEnabledValue:(id)a3 defaultsEnabledValue:(id)a4 lastReconciledEnabledValue:(id)a5
+- (HDWatchSettingValues)initWithFeatureSettingEnabledValue:(id)value defaultsEnabledValue:(id)enabledValue lastReconciledEnabledValue:(id)reconciledEnabledValue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  enabledValueCopy = enabledValue;
+  reconciledEnabledValueCopy = reconciledEnabledValue;
   v19.receiver = self;
   v19.super_class = HDWatchSettingValues;
   v11 = [(HDWatchSettingValues *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [valueCopy copy];
     featureSettingEnabledValue = v11->_featureSettingEnabledValue;
     v11->_featureSettingEnabledValue = v12;
 
-    v14 = [v9 copy];
+    v14 = [enabledValueCopy copy];
     defaultsEnabledValue = v11->_defaultsEnabledValue;
     v11->_defaultsEnabledValue = v14;
 
-    v16 = [v10 copy];
+    v16 = [reconciledEnabledValueCopy copy];
     lastReconciledEnabledValue = v11->_lastReconciledEnabledValue;
     v11->_lastReconciledEnabledValue = v16;
   }
@@ -33,10 +33,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -46,7 +46,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       featureSettingEnabledValue = self->_featureSettingEnabledValue;
       v7 = v5->_featureSettingEnabledValue;
       if (featureSettingEnabledValue != v7 && (!v7 || ![(NSNumber *)featureSettingEnabledValue isEqual:?]))
@@ -142,7 +142,7 @@ LABEL_10:
       v13 = 138543618;
       v14 = objc_opt_class();
       v15 = 2114;
-      v16 = self;
+      selfCopy = self;
       v12 = v14;
       _os_log_fault_impl(&dword_228986000, v11, OS_LOG_TYPE_FAULT, "[%{public}@] Unexpected settings evaluation: %{public}@", &v13, 0x16u);
     }

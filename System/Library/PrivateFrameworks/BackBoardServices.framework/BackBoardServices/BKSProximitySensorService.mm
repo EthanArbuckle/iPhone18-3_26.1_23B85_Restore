@@ -1,34 +1,34 @@
 @interface BKSProximitySensorService
 + (id)sharedInstance;
 - (id)_init;
-- (id)addObserver:(id)a3 forReason:(id)a4;
+- (id)addObserver:(id)observer forReason:(id)reason;
 - (void)_connectToRemoteServiceIfNeeded;
-- (void)proximityDetectionMaskDidChange:(id)a3;
+- (void)proximityDetectionMaskDidChange:(id)change;
 @end
 
 @implementation BKSProximitySensorService
 
-- (id)addObserver:(id)a3 forReason:(id)a4
+- (id)addObserver:(id)observer forReason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
+  reasonCopy = reason;
+  observerCopy = observer;
   [(BKSProximitySensorService *)self _connectToRemoteServiceIfNeeded];
-  v8 = [(BSCompoundAssertion *)self->_observers acquireForReason:v6 withContext:v7];
+  v8 = [(BSCompoundAssertion *)self->_observers acquireForReason:reasonCopy withContext:observerCopy];
 
   return v8;
 }
 
-- (void)proximityDetectionMaskDidChange:(id)a3
+- (void)proximityDetectionMaskDidChange:(id)change
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_calloutQueue);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(BSCompoundAssertion *)self->_observers orderedContext];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  orderedContext = [(BSCompoundAssertion *)self->_observers orderedContext];
+  v6 = [orderedContext countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -40,14 +40,14 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(orderedContext);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) proximitySensorDetectionMaskDidChange:v4];
+        [*(*(&v11 + 1) + 8 * v9++) proximitySensorDetectionMaskDidChange:changeCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [orderedContext countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -86,15 +86,15 @@
       v9 = BKLogUISensor();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v17 = [v6 remoteTarget];
+        remoteTarget = [v6 remoteTarget];
         *buf = 138543362;
-        v20 = v17;
+        v20 = remoteTarget;
         _os_log_debug_impl(&dword_186345000, v9, OS_LOG_TYPE_DEBUG, "server remote target %{public}@", buf, 0xCu);
       }
 
-      v10 = [v6 remoteTarget];
+      remoteTarget2 = [v6 remoteTarget];
 
-      if (!v10)
+      if (!remoteTarget2)
       {
         v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"we must have a remote target"];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -107,7 +107,7 @@
           v21 = 2114;
           v22 = v14;
           v23 = 2048;
-          v24 = self;
+          selfCopy = self;
           v25 = 2114;
           v26 = @"BKSProximitySensorService.m";
           v27 = 1024;
@@ -194,9 +194,9 @@ void __60__BKSProximitySensorService__connectToRemoteServiceIfNeeded__block_invo
     bsServiceDispatchQueue = v2->_bsServiceDispatchQueue;
     v2->_bsServiceDispatchQueue = v3;
 
-    v5 = [(BSServiceDispatchQueue *)v2->_bsServiceDispatchQueue queue];
+    queue = [(BSServiceDispatchQueue *)v2->_bsServiceDispatchQueue queue];
     calloutQueue = v2->_calloutQueue;
-    v2->_calloutQueue = v5;
+    v2->_calloutQueue = queue;
 
     v7 = MEMORY[0x1E698E658];
     v12[0] = MEMORY[0x1E69E9820];
@@ -240,9 +240,9 @@ void __34__BKSProximitySensorService__init__block_invoke(uint64_t a1, void *a2)
 
 + (id)sharedInstance
 {
-  v2 = [[BKSProximitySensorService alloc] _init];
+  _init = [[BKSProximitySensorService alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 @end

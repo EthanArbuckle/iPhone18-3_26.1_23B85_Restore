@@ -12,7 +12,7 @@
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"com.apple.mobileslideshow.asset.localidentifier";
   v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
-  v3 = [a1 containsPasteboardTypes:v2];
+  v3 = [self containsPasteboardTypes:v2];
 
   return v3;
 }
@@ -21,7 +21,7 @@
 {
   v44 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 valuesForPasteboardType:@"com.apple.mobileslideshow.asset.localidentifier" inItemSet:0];
+  v3 = [self valuesForPasteboardType:@"com.apple.mobileslideshow.asset.localidentifier" inItemSet:0];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -58,7 +58,7 @@
     while (v5);
   }
 
-  v28 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
   v10 = [MEMORY[0x1E6978830] fetchOptionsWithInclusiveDefaultsForPhotoLibrary:?];
   v11 = [MEMORY[0x1E6978630] fetchAssetsWithLocalIdentifiers:v2 options:v10];
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -82,8 +82,8 @@
         }
 
         v18 = *(*(&v33 + 1) + 8 * j);
-        v19 = [v18 localIdentifier];
-        [v12 setObject:v18 forKeyedSubscript:v19];
+        localIdentifier = [v18 localIdentifier];
+        [v12 setObject:v18 forKeyedSubscript:localIdentifier];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v33 objects:v42 count:16];
@@ -143,21 +143,21 @@
   v25 = v12;
   [v11 registerFileRepresentationForTypeIdentifier:v9 fileOptions:0 visibility:0 loadHandler:v24];
 
-  v13 = [v10 localIdentifier];
+  localIdentifier = [v10 localIdentifier];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __83__UIPasteboard_PhotosUICore__px_newPasteboardItemProviderForAsset_fileURL_utiType___block_invoke_2;
   v22 = &unk_1E7746378;
-  v23 = v13;
-  v14 = v13;
+  v23 = localIdentifier;
+  v14 = localIdentifier;
   [v11 registerDataRepresentationForTypeIdentifier:@"com.apple.mobileslideshow.asset.localidentifier" visibility:3 loadHandler:&v19];
   [v10 fetchPropertySetsIfNeeded];
-  v15 = [v10 originalMetadataProperties];
+  originalMetadataProperties = [v10 originalMetadataProperties];
 
-  v16 = [v15 originalFilename];
-  v17 = [v16 stringByDeletingPathExtension];
+  originalFilename = [originalMetadataProperties originalFilename];
+  stringByDeletingPathExtension = [originalFilename stringByDeletingPathExtension];
 
-  [v11 setSuggestedName:v17];
+  [v11 setSuggestedName:stringByDeletingPathExtension];
 
   return v11;
 }
@@ -166,12 +166,12 @@
 {
   v7 = a4;
   v8 = a5;
-  v9 = [a3 localIdentifier];
+  localIdentifier = [a3 localIdentifier];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = v10;
-  if (v9)
+  if (localIdentifier)
   {
-    [v10 setObject:v9 forKeyedSubscript:@"com.apple.mobileslideshow.asset.localidentifier"];
+    [v10 setObject:localIdentifier forKeyedSubscript:@"com.apple.mobileslideshow.asset.localidentifier"];
   }
 
   if (v7 && v8)

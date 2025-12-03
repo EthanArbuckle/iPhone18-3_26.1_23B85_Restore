@@ -1,51 +1,51 @@
 @interface MRAVOutputContextModification
 + (id)modifyOutputContextImplementation;
-+ (void)setModifyOutputContextImplementation:(id)a3;
-- (MRAVOutputContextModification)initWithRequest:(id)a3;
-- (void)modifyWithOutputContext:(id)a3 queue:(id)a4 completion:(id)a5;
++ (void)setModifyOutputContextImplementation:(id)implementation;
+- (MRAVOutputContextModification)initWithRequest:(id)request;
+- (void)modifyWithOutputContext:(id)context queue:(id)queue completion:(id)completion;
 @end
 
 @implementation MRAVOutputContextModification
 
-- (MRAVOutputContextModification)initWithRequest:(id)a3
+- (MRAVOutputContextModification)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = MRAVOutputContextModification;
   v6 = [(MRAVOutputContextModification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
   }
 
   return v7;
 }
 
-- (void)modifyWithOutputContext:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)modifyWithOutputContext:(id)context queue:(id)queue completion:(id)completion
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [objc_opt_class() modifyOutputContextImplementation];
+  contextCopy = context;
+  completionCopy = completion;
+  queueCopy = queue;
+  modifyOutputContextImplementation = [objc_opt_class() modifyOutputContextImplementation];
 
-  if (v11)
+  if (modifyOutputContextImplementation)
   {
-    v12 = [objc_opt_class() modifyOutputContextImplementation];
-    v13 = [(MRAVOutputContextModification *)self request];
-    (v12)[2](v12, v13, v8, v10, v9);
+    modifyOutputContextImplementation2 = [objc_opt_class() modifyOutputContextImplementation];
+    request = [(MRAVOutputContextModification *)self request];
+    (modifyOutputContextImplementation2)[2](modifyOutputContextImplementation2, request, contextCopy, queueCopy, completionCopy);
 
     goto LABEL_24;
   }
 
-  v14 = [MEMORY[0x1E695DF00] date];
-  v15 = [(MRGroupTopologyModificationRequest *)self->_request requestDetails];
-  v16 = [v15 requestID];
+  date = [MEMORY[0x1E695DF00] date];
+  requestDetails = [(MRGroupTopologyModificationRequest *)self->_request requestDetails];
+  requestID = [requestDetails requestID];
 
-  v17 = [(MRGroupTopologyModificationRequest *)self->_request shouldModifyPredictedRoutes];
+  shouldModifyPredictedRoutes = [(MRGroupTopologyModificationRequest *)self->_request shouldModifyPredictedRoutes];
   v18 = @"modifyOutputContext";
-  if (v17)
+  if (shouldModifyPredictedRoutes)
   {
     v18 = @"modifyPredictedOutputDevices";
   }
@@ -53,17 +53,17 @@
   v19 = v18;
   v47 = qos_class_self();
   v20 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v21 = [v8 contextID];
-  v22 = [v20 initWithFormat:@"contextID=%@", v21];
+  contextID = [contextCopy contextID];
+  v22 = [v20 initWithFormat:@"contextID=%@", contextID];
 
-  v23 = [(MRGroupTopologyModificationRequest *)self->_request type];
-  v24 = v23;
+  type = [(MRGroupTopologyModificationRequest *)self->_request type];
+  v24 = type;
   v49 = v22;
-  switch(v23)
+  switch(type)
   {
     case 3uLL:
       v25 = _MRLogForCategory(2uLL);
-      v30 = [v16 hash];
+      v30 = [requestID hash];
       if ((v30 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_18;
@@ -80,7 +80,7 @@
       goto LABEL_17;
     case 2uLL:
       v25 = _MRLogForCategory(2uLL);
-      v29 = [v16 hash];
+      v29 = [requestID hash];
       if ((v29 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_18;
@@ -97,7 +97,7 @@
       goto LABEL_17;
     case 1uLL:
       v25 = _MRLogForCategory(2uLL);
-      v26 = [v16 hash];
+      v26 = [requestID hash];
       if ((v26 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_18;
@@ -119,7 +119,7 @@ LABEL_18:
       break;
   }
 
-  v31 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v19, v16];
+  v31 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v19, requestID];
   v32 = v31;
   if (v22)
   {
@@ -140,35 +140,35 @@ LABEL_18:
   v52[3] = &unk_1E769C8C0;
   v59 = v47;
   v53 = v19;
-  v54 = v16;
+  v54 = requestID;
   v58 = v24;
-  v34 = v8;
+  v34 = contextCopy;
   v55 = v34;
-  v56 = v14;
-  v57 = v9;
-  v48 = v14;
-  v35 = v16;
+  v56 = date;
+  v57 = completionCopy;
+  v48 = date;
+  v35 = requestID;
   v36 = v19;
   v37 = MEMORY[0x1A58E3570](v52);
   v38 = MRCreateXPCMessage(0x300000000000028uLL);
-  v39 = [(MRAVOutputContextModification *)self request];
-  v40 = [v39 data];
-  MRAddDataToXPCMessage(v38, v40, "MRXPC_CONTEXT_MODIFICATION_DATA_KEY");
+  request2 = [(MRAVOutputContextModification *)self request];
+  data = [request2 data];
+  MRAddDataToXPCMessage(v38, data, "MRXPC_CONTEXT_MODIFICATION_DATA_KEY");
 
-  v41 = [v34 uniqueIdentifier];
-  MRAddStringToXPCMessage(v38, v41, "MRXPC_ROUTING_CONTEXT_UID_KEY");
+  uniqueIdentifier = [v34 uniqueIdentifier];
+  MRAddStringToXPCMessage(v38, uniqueIdentifier, "MRXPC_ROUTING_CONTEXT_UID_KEY");
 
   MRAddStringToXPCMessage(v38, v35, "MRXPC_MESSAGE_CUSTOM_ID_KEY");
   v42 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v43 = [v42 service];
-  v44 = [v43 mrXPCConnection];
+  service = [v42 service];
+  mrXPCConnection = [service mrXPCConnection];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __74__MRAVOutputContextModification_modifyWithOutputContext_queue_completion___block_invoke_32;
   v50[3] = &unk_1E769B338;
   v51 = v37;
   v45 = v37;
-  [v44 sendMessage:v38 queue:v10 reply:v50];
+  [mrXPCConnection sendMessage:v38 queue:queueCopy reply:v50];
 
 LABEL_24:
   v46 = *MEMORY[0x1E69E9840];
@@ -363,9 +363,9 @@ void __74__MRAVOutputContextModification_modifyWithOutputContext_queue_completio
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)setModifyOutputContextImplementation:(id)a3
++ (void)setModifyOutputContextImplementation:(id)implementation
 {
-  v3 = MEMORY[0x1A58E3570](a3, a2);
+  v3 = MEMORY[0x1A58E3570](implementation, a2);
   v4 = __modifyOutputContextImplementation;
   __modifyOutputContextImplementation = v3;
 }

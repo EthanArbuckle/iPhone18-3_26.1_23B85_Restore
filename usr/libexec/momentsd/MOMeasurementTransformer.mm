@@ -1,14 +1,14 @@
 @interface MOMeasurementTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation MOMeasurementTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v5 = a3;
-  if (!v5)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_8;
   }
@@ -29,7 +29,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
+    v8 = [NSKeyedArchiver archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:0];
     v9 = [NSData dataWithData:v8];
   }
 
@@ -42,10 +42,10 @@ LABEL_8:
   return v9;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v5 = a3;
-  if (!v5)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_8;
   }
@@ -66,7 +66,7 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:0];
+    v8 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:valueCopy error:0];
   }
 
   else

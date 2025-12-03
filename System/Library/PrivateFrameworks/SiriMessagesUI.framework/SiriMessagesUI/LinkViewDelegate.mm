@@ -1,14 +1,14 @@
 @interface LinkViewDelegate
-- (void)_linkViewMetadataDidBecomeComplete:(id)a3;
+- (void)_linkViewMetadataDidBecomeComplete:(id)complete;
 @end
 
 @implementation LinkViewDelegate
 
-- (void)_linkViewMetadataDidBecomeComplete:(id)a3
+- (void)_linkViewMetadataDidBecomeComplete:(id)complete
 {
-  v4 = a3;
-  v5 = self;
-  sub_267FF3E3C(v4);
+  completeCopy = complete;
+  selfCopy = self;
+  sub_267FF3E3C(completeCopy);
 }
 
 @end

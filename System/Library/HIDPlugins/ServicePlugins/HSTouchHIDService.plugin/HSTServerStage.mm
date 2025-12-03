@@ -1,22 +1,22 @@
 @interface HSTServerStage
-- (BOOL)handleHSEncode:(void *)a3;
-- (HSTServerStage)initWithName:(id)a3 description:(id)a4 queue:(id)a5;
-- (id)preferenceValueForKey:(id)a3;
+- (BOOL)handleHSEncode:(void *)encode;
+- (HSTServerStage)initWithName:(id)name description:(id)description queue:(id)queue;
+- (id)preferenceValueForKey:(id)key;
 - (id)preferences;
 - (void)dealloc;
-- (void)setPreferenceValue:(id)a3 forKey:(id)a4;
+- (void)setPreferenceValue:(id)value forKey:(id)key;
 @end
 
 @implementation HSTServerStage
 
-- (HSTServerStage)initWithName:(id)a3 description:(id)a4 queue:(id)a5
+- (HSTServerStage)initWithName:(id)name description:(id)description queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  nameCopy = name;
+  descriptionCopy = description;
+  queueCopy = queue;
+  if (nameCopy)
   {
-    if (v10)
+    if (descriptionCopy)
     {
       goto LABEL_3;
     }
@@ -25,7 +25,7 @@ LABEL_19:
     v19 = +[NSAssertionHandler currentHandler];
     [v19 handleFailureInMethod:a2 object:self file:@"HSTServerStage.mm" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"description"}];
 
-    if (v11)
+    if (queueCopy)
     {
       goto LABEL_4;
     }
@@ -36,13 +36,13 @@ LABEL_19:
   v18 = +[NSAssertionHandler currentHandler];
   [v18 handleFailureInMethod:a2 object:self file:@"HSTServerStage.mm" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-  if (!v10)
+  if (!descriptionCopy)
   {
     goto LABEL_19;
   }
 
 LABEL_3:
-  if (v11)
+  if (queueCopy)
   {
     goto LABEL_4;
   }
@@ -54,7 +54,7 @@ LABEL_20:
 LABEL_4:
   v25.receiver = self;
   v25.super_class = HSTServerStage;
-  v12 = [(HSServerStage *)&v25 initWithName:v9 description:v10 queue:v11];
+  v12 = [(HSServerStage *)&v25 initWithName:nameCopy description:descriptionCopy queue:queueCopy];
   if (v12)
   {
     v23 = 0xAAAAAAAAAAAAAAAALL;
@@ -181,13 +181,13 @@ LABEL_14:
   return v2;
 }
 
-- (id)preferenceValueForKey:(id)a3
+- (id)preferenceValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7[0] = 0xAAAAAAAAAAAAAAAALL;
   v7[1] = 0xAAAAAAAAAAAAAAAALL;
   HSUtil::ObjectLock::ObjectLock(v7, self);
-  if ([v4 isEqualToString:@"remoteAccessEnabled"])
+  if ([keyCopy isEqualToString:@"remoteAccessEnabled"])
   {
     v5 = [NSNumber numberWithBool:self->_state.remoteAccessEnabled];
   }
@@ -202,27 +202,27 @@ LABEL_14:
   return v5;
 }
 
-- (void)setPreferenceValue:(id)a3 forKey:(id)a4
+- (void)setPreferenceValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v17 = 0xAAAAAAAAAAAAAAAALL;
   v18 = 0xAAAAAAAAAAAAAAAALL;
   HSUtil::ObjectLock::ObjectLock(&v17, self);
-  if (![v7 isEqualToString:@"remoteAccessEnabled"])
+  if (![keyCopy isEqualToString:@"remoteAccessEnabled"])
   {
     goto LABEL_9;
   }
 
-  v8 = v6;
+  v8 = valueCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if (v8)
     {
-      v9 = [v8 BOOLValue];
-      self->_state.remoteAccessEnabled = v9;
-      if (v9)
+      bOOLValue = [v8 BOOLValue];
+      self->_state.remoteAccessEnabled = bOOLValue;
+      if (bOOLValue)
       {
         v14 = &off_1093A0;
         v15 = &off_1093D0;
@@ -276,20 +276,20 @@ LABEL_14:
   HSUtil::ObjectLock::~ObjectLock(&v17);
 }
 
-- (BOOL)handleHSEncode:(void *)a3
+- (BOOL)handleHSEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v5 = *(a3 + 17);
+    *&v5 = *(encode + 17);
     DWORD2(v5) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v5);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xEBu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v5);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xEBu, 0);
   }
 
-  HSUtil::Encoder::encodeString(a3, HSUtil::CoderKey::Literal<(char)112,(char)114,(char)111,(char)106,(char)101,(char)99,(char)116,(char)86,(char)101,(char)114,(char)115,(char)105,(char)111,(char)110>::Key, "9110.1");
-  if (!*a3)
+  HSUtil::Encoder::encodeString(encode, HSUtil::CoderKey::Literal<(char)112,(char)114,(char)111,(char)106,(char)101,(char)99,(char)116,(char)86,(char)101,(char)114,(char)115,(char)105,(char)111,(char)110>::Key, "9110.1");
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;

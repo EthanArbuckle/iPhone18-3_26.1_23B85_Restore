@@ -1,56 +1,56 @@
 @interface UGCSuggestionView
-- (UGCSuggestionView)initWithFrame:(CGRect)a3;
+- (UGCSuggestionView)initWithFrame:(CGRect)frame;
 - (id)_contentLayoutGroup;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_suggestionTapped;
 - (void)_updateConstraints;
 - (void)_updateFromViewModel;
-- (void)likeDislikeViewDidSelectDislike:(id)a3;
-- (void)likeDislikeViewDidSelectLike:(id)a3;
-- (void)setViewModel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)likeDislikeViewDidSelectDislike:(id)dislike;
+- (void)likeDislikeViewDidSelectLike:(id)like;
+- (void)setViewModel:(id)model;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UGCSuggestionView
 
-- (void)likeDislikeViewDidSelectDislike:(id)a3
+- (void)likeDislikeViewDidSelectDislike:(id)dislike
 {
-  v4 = [(UGCSuggestionView *)self delegate];
-  [v4 suggestionViewDidTapDislike:self];
+  delegate = [(UGCSuggestionView *)self delegate];
+  [delegate suggestionViewDidTapDislike:self];
 }
 
-- (void)likeDislikeViewDidSelectLike:(id)a3
+- (void)likeDislikeViewDidSelectLike:(id)like
 {
-  v4 = [(UGCSuggestionView *)self delegate];
-  [v4 suggestionViewDidTapLike:self];
+  delegate = [(UGCSuggestionView *)self delegate];
+  [delegate suggestionViewDidTapLike:self];
 }
 
 - (void)_suggestionTapped
 {
-  v3 = [(UGCSuggestionView *)self delegate];
-  [v3 didTapSuggestionView:self];
+  delegate = [(UGCSuggestionView *)self delegate];
+  [delegate didTapSuggestionView:self];
 }
 
 - (void)_updateFromViewModel
 {
-  v3 = [(UGCSuggestionViewModel *)self->_viewModel contentType];
-  v4 = [(UGCSuggestionViewModel *)self->_viewModel visitDate];
-  v5 = [TwoLinesContentViewModelComposer cellModelForUGCSuggestionContentType:v3 visitDate:v4];
+  contentType = [(UGCSuggestionViewModel *)self->_viewModel contentType];
+  visitDate = [(UGCSuggestionViewModel *)self->_viewModel visitDate];
+  v5 = [TwoLinesContentViewModelComposer cellModelForUGCSuggestionContentType:contentType visitDate:visitDate];
 
   if (sub_10000FA08(self) == 5)
   {
-    v6 = [v5 titleText];
-    [(UILabel *)self->_titleLabel setText:v6];
+    titleText = [v5 titleText];
+    [(UILabel *)self->_titleLabel setText:titleText];
 
-    v7 = [v5 subtitleText];
-    [(UILabel *)self->_subtitleLabel setText:v7];
+    subtitleText = [v5 subtitleText];
+    [(UILabel *)self->_subtitleLabel setText:subtitleText];
 
     v8 = (self->_imageFetchCount + 1);
     self->_imageFetchCount = v8;
     objc_initWeak(&location, self);
-    v9 = [(UGCSuggestionView *)self traitCollection];
-    [v9 _maps_displayScaleOrMainScreenScale];
+    traitCollection = [(UGCSuggestionView *)self traitCollection];
+    [traitCollection _maps_displayScaleOrMainScreenScale];
     v11 = v10;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -94,36 +94,36 @@
   [(UGCSuggestionView *)self _updateConstraints];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  v6 = modelCopy;
+  if (self->_viewModel != modelCopy)
   {
-    v8 = v5;
-    v7 = [(UGCSuggestionViewModel *)v5 isEqual:?];
+    v8 = modelCopy;
+    v7 = [(UGCSuggestionViewModel *)modelCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_viewModel, a3);
+      objc_storeStrong(&self->_viewModel, model);
       [(UGCSuggestionView *)self _updateFromViewModel];
       v6 = v8;
     }
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = UGCSuggestionView;
-  [(UGCSuggestionView *)&v10 traitCollectionDidChange:v4];
+  [(UGCSuggestionView *)&v10 traitCollectionDidChange:changeCopy];
   if (sub_10000FA08(self) == 5)
   {
-    v5 = [(UGCSuggestionView *)self traitCollection];
-    [v5 _maps_displayScaleOrMainScreenScale];
+    traitCollection = [(UGCSuggestionView *)self traitCollection];
+    [traitCollection _maps_displayScaleOrMainScreenScale];
     v7 = v6;
-    [v4 _maps_displayScaleOrMainScreenScale];
+    [changeCopy _maps_displayScaleOrMainScreenScale];
     v9 = v8;
 
     if (v7 != v9)
@@ -170,8 +170,8 @@
 
 - (void)_updateConstraints
 {
-  v3 = [(UGCSuggestionView *)self _contentLayoutGroup];
-  [(MUCompositionalStackLayout *)self->_compositionalStackLayout setGroup:v3];
+  _contentLayoutGroup = [(UGCSuggestionView *)self _contentLayoutGroup];
+  [(MUCompositionalStackLayout *)self->_compositionalStackLayout setGroup:_contentLayoutGroup];
 }
 
 - (void)_setupConstraints
@@ -187,9 +187,9 @@
   }
 
   v5 = [MUCompositionalStackLayout alloc];
-  v6 = [(UGCSuggestionView *)self layoutMarginsGuide];
-  v7 = [(UGCSuggestionView *)self _contentLayoutGroup];
-  v8 = [v5 initWithContainer:v6 group:v7];
+  layoutMarginsGuide = [(UGCSuggestionView *)self layoutMarginsGuide];
+  _contentLayoutGroup = [(UGCSuggestionView *)self _contentLayoutGroup];
+  v8 = [v5 initWithContainer:layoutMarginsGuide group:_contentLayoutGroup];
   compositionalStackLayout = self->_compositionalStackLayout;
   self->_compositionalStackLayout = v8;
 
@@ -209,8 +209,8 @@
     imageView = self->_imageView;
     self->_imageView = v7;
 
-    v9 = [(UIImageView *)self->_imageView layer];
-    [v9 setCornerRadius:16.0];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setCornerRadius:16.0];
 
     [(UGCSuggestionView *)self addSubview:self->_imageView];
     v10 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
@@ -251,11 +251,11 @@
   [(UGCSuggestionView *)self addSubview:v21];
 }
 
-- (UGCSuggestionView)initWithFrame:(CGRect)a3
+- (UGCSuggestionView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UGCSuggestionView;
-  v3 = [(UGCSuggestionView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UGCSuggestionView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

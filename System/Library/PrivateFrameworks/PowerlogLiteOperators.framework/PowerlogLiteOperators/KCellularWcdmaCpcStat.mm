@@ -1,24 +1,24 @@
 @interface KCellularWcdmaCpcStat
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEnergy:(BOOL)a3;
-- (void)setHasRxOnDurationMs:(BOOL)a3;
-- (void)setHasRxTxOffDurationMs:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasTotalDurationMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEnergy:(BOOL)energy;
+- (void)setHasRxOnDurationMs:(BOOL)ms;
+- (void)setHasRxTxOffDurationMs:(BOOL)ms;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasTotalDurationMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularWcdmaCpcStat
 
-- (void)setHasTotalDurationMs:(BOOL)a3
+- (void)setHasTotalDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 32;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasRxTxOffDurationMs:(BOOL)a3
+- (void)setHasRxTxOffDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasRxOnDurationMs:(BOOL)a3
+- (void)setHasRxOnDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasEnergy:(BOOL)a3
+- (void)setHasEnergy:(BOOL)energy
 {
-  if (a3)
+  if (energy)
   {
     v3 = 2;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 16;
   }
@@ -97,20 +97,20 @@
   v8.receiver = self;
   v8.super_class = KCellularWcdmaCpcStat;
   v4 = [(KCellularWcdmaCpcStat *)&v8 description];
-  v5 = [(KCellularWcdmaCpcStat *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularWcdmaCpcStat *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -131,7 +131,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_totalDurationMs];
-  [v3 setObject:v8 forKey:@"total_duration_ms"];
+  [dictionary setObject:v8 forKey:@"total_duration_ms"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -147,7 +147,7 @@ LABEL_4:
 
 LABEL_13:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_rxTxOffDurationMs];
-  [v3 setObject:v9 forKey:@"rx_tx_off_duration_ms"];
+  [dictionary setObject:v9 forKey:@"rx_tx_off_duration_ms"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -163,7 +163,7 @@ LABEL_5:
 
 LABEL_14:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_rxOnDurationMs];
-  [v3 setObject:v10 forKey:@"rx_on_duration_ms"];
+  [dictionary setObject:v10 forKey:@"rx_on_duration_ms"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -179,23 +179,23 @@ LABEL_6:
 
 LABEL_15:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_energy];
-  [v3 setObject:v11 forKey:@"energy"];
+  [dictionary setObject:v11 forKey:@"energy"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_7:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v5 forKey:@"subs_id"];
+    [dictionary setObject:v5 forKey:@"subs_id"];
   }
 
 LABEL_8:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -276,14 +276,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -302,8 +302,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 8) = self->_totalDurationMs;
-  *(v4 + 36) |= 0x20u;
+  *(toCopy + 8) = self->_totalDurationMs;
+  *(toCopy + 36) |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -317,8 +317,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  *(v4 + 6) = self->_rxTxOffDurationMs;
-  *(v4 + 36) |= 8u;
+  *(toCopy + 6) = self->_rxTxOffDurationMs;
+  *(toCopy + 36) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -332,8 +332,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  *(v4 + 5) = self->_rxOnDurationMs;
-  *(v4 + 36) |= 4u;
+  *(toCopy + 5) = self->_rxOnDurationMs;
+  *(toCopy + 36) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -347,21 +347,21 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 4) = self->_energy;
-  *(v4 + 36) |= 2u;
+  *(toCopy + 4) = self->_energy;
+  *(toCopy + 36) |= 2u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_7:
-    *(v4 + 7) = self->_subsId;
-    *(v4 + 36) |= 0x10u;
+    *(toCopy + 7) = self->_subsId;
+    *(toCopy + 36) |= 0x10u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -443,23 +443,23 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_31:
     v5 = 0;
@@ -468,60 +468,60 @@ LABEL_31:
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 36) & 0x20) == 0 || self->_totalDurationMs != *(v4 + 8))
+    if ((*(equalCopy + 36) & 0x20) == 0 || self->_totalDurationMs != *(equalCopy + 8))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 0x20) != 0)
+  else if ((*(equalCopy + 36) & 0x20) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_rxTxOffDurationMs != *(v4 + 6))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_rxTxOffDurationMs != *(equalCopy + 6))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_rxOnDurationMs != *(v4 + 5))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_rxOnDurationMs != *(equalCopy + 5))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_energy != *(v4 + 4))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_energy != *(equalCopy + 4))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_31;
   }
 
-  v5 = (*(v4 + 36) & 0x10) == 0;
+  v5 = (*(equalCopy + 36) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0 || self->_subsId != *(v4 + 7))
+    if ((*(equalCopy + 36) & 0x10) == 0 || self->_subsId != *(equalCopy + 7))
     {
       goto LABEL_31;
     }
@@ -616,15 +616,15 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 0x20) == 0)
     {
 LABEL_3:
@@ -637,14 +637,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 0x20) == 0)
+  else if ((*(fromCopy + 36) & 0x20) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_totalDurationMs = *(v4 + 8);
+  self->_totalDurationMs = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -657,9 +657,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_rxTxOffDurationMs = *(v4 + 6);
+  self->_rxTxOffDurationMs = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -672,9 +672,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_rxOnDurationMs = *(v4 + 5);
+  self->_rxOnDurationMs = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -687,12 +687,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_energy = *(v4 + 4);
+  self->_energy = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if ((*(v4 + 36) & 0x10) != 0)
+  if ((*(fromCopy + 36) & 0x10) != 0)
   {
 LABEL_7:
-    self->_subsId = *(v4 + 7);
+    self->_subsId = *(fromCopy + 7);
     *&self->_has |= 0x10u;
   }
 

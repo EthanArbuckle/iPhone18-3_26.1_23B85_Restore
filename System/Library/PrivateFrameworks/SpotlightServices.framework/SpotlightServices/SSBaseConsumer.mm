@@ -1,7 +1,7 @@
 @interface SSBaseConsumer
 - (SSBaseConsumer)init;
-- (id)queryWithString:(id)a3 bundleIDs:(id)a4 fetchAttributes:(id)a5;
-- (void)indexItems:(id)a3 protectionClass:(id)a4 bundleID:(id)a5;
+- (id)queryWithString:(id)string bundleIDs:(id)ds fetchAttributes:(id)attributes;
+- (void)indexItems:(id)items protectionClass:(id)class bundleID:(id)d;
 - (void)start;
 - (void)stop;
 @end
@@ -27,8 +27,8 @@
     }
 
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(SSBaseConsumer *)v2 consumerLabel];
-    v5 = [v3 stringWithFormat:@"%@.BiomeConsumer.%@", @"com.apple.searchd", v4];
+    consumerLabel = [(SSBaseConsumer *)v2 consumerLabel];
+    v5 = [v3 stringWithFormat:@"%@.BiomeConsumer.%@", @"com.apple.searchd", consumerLabel];
     identifier = v2->_identifier;
     v2->_identifier = v5;
   }
@@ -45,12 +45,12 @@ LABEL_8:
   objc_initWeak(&location, self);
   if (!self->_queue)
   {
-    v3 = [(SSBaseConsumer *)self identifier];
-    v4 = v3;
-    v5 = [v3 UTF8String];
+    identifier = [(SSBaseConsumer *)self identifier];
+    v4 = identifier;
+    uTF8String = [identifier UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_attr_make_with_qos_class(v6, QOS_CLASS_BACKGROUND, 0);
-    v8 = dispatch_queue_create(v5, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     queue = self->_queue;
     self->_queue = v8;
   }
@@ -58,25 +58,25 @@ LABEL_8:
   if (!self->_indexQueue)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [(SSBaseConsumer *)self identifier];
-    v12 = [v10 stringWithFormat:@"%@.indexQueue", v11];
+    identifier2 = [(SSBaseConsumer *)self identifier];
+    v12 = [v10 stringWithFormat:@"%@.indexQueue", identifier2];
     v13 = v12;
-    v14 = [v12 UTF8String];
+    uTF8String2 = [v12 UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_attr_make_with_qos_class(v15, QOS_CLASS_BACKGROUND, 0);
-    v17 = dispatch_queue_create(v14, v16);
+    v17 = dispatch_queue_create(uTF8String2, v16);
     indexQueue = self->_indexQueue;
     self->_indexQueue = v17;
   }
 
   v19 = objc_alloc(MEMORY[0x1E698F258]);
-  v20 = [(SSBaseConsumer *)self identifier];
-  v21 = [v19 initWithIdentifier:v20 targetQueue:self->_queue waking:0];
+  identifier3 = [(SSBaseConsumer *)self identifier];
+  v21 = [v19 initWithIdentifier:identifier3 targetQueue:self->_queue waking:0];
   scheduler = self->_scheduler;
   self->_scheduler = v21;
 
-  v23 = [(SSBaseConsumer *)self stream];
-  v24 = [v23 DSLPublisherWithUseCase:@"SpotlightEngagementData"];
+  stream = [(SSBaseConsumer *)self stream];
+  v24 = [stream DSLPublisherWithUseCase:@"SpotlightEngagementData"];
 
   v25 = [v24 subscribeOn:self->_scheduler];
   v33[0] = MEMORY[0x1E69E9820];
@@ -96,9 +96,9 @@ LABEL_8:
   v28 = SSGeneralLog();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = [(SSBaseConsumer *)self identifier];
+    identifier4 = [(SSBaseConsumer *)self identifier];
     *buf = 138412290;
-    v36 = v29;
+    v36 = identifier4;
     _os_log_impl(&dword_1D9F69000, v28, OS_LOG_TYPE_DEFAULT, "%@: start listening.", buf, 0xCu);
   }
 
@@ -163,42 +163,42 @@ void __23__SSBaseConsumer_start__block_invoke_99(uint64_t a1, void *a2)
   v5 = SSGeneralLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SSBaseConsumer *)self identifier];
+    identifier = [(SSBaseConsumer *)self identifier];
     v8 = 138412290;
-    v9 = v6;
+    v9 = identifier;
     _os_log_impl(&dword_1D9F69000, v5, OS_LOG_TYPE_DEFAULT, "%@: finished listening.", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)indexItems:(id)a3 protectionClass:(id)a4 bundleID:(id)a5
+- (void)indexItems:(id)items protectionClass:(id)class bundleID:(id)d
 {
   v7 = MEMORY[0x1E69D3DC0];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 sharedInstance];
-  [v11 indexSearchableItems:v10 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:v9 forBundleID:v8 options:0 completionHandler:0];
+  dCopy = d;
+  classCopy = class;
+  itemsCopy = items;
+  sharedInstance = [v7 sharedInstance];
+  [sharedInstance indexSearchableItems:itemsCopy deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:classCopy forBundleID:dCopy options:0 completionHandler:0];
 }
 
-- (id)queryWithString:(id)a3 bundleIDs:(id)a4 fetchAttributes:(id)a5
+- (id)queryWithString:(id)string bundleIDs:(id)ds fetchAttributes:(id)attributes
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  stringCopy = string;
+  dsCopy = ds;
+  attributesCopy = attributes;
   v10 = objc_alloc_init(MEMORY[0x1E6964E70]);
-  [v10 setBundleIDs:v8];
+  [v10 setBundleIDs:dsCopy];
   [v10 setInternal:1];
-  [v10 setFetchAttributes:v9];
+  [v10 setFetchAttributes:attributesCopy];
   v11 = dispatch_group_create();
-  v12 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:v7 queryContext:v10];
+  v12 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:stringCopy queryContext:v10];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__2;
   v28 = __Block_byref_object_dispose__2;
-  v29 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __60__SSBaseConsumer_queryWithString_bundleIDs_fetchAttributes___block_invoke;

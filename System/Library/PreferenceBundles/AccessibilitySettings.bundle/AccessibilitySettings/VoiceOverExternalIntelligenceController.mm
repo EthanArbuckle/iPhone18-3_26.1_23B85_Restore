@@ -7,7 +7,7 @@
 
 - (id)makeOnboardingViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1664FC();
 
   return v3;

@@ -1,33 +1,33 @@
 @interface FMInternalOwnerAccount
-- (FMInternalOwnerAccount)initWithAccount:(id)a3;
+- (FMInternalOwnerAccount)initWithAccount:(id)account;
 - (id)description;
 @end
 
 @implementation FMInternalOwnerAccount
 
-- (FMInternalOwnerAccount)initWithAccount:(id)a3
+- (FMInternalOwnerAccount)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v15.receiver = self;
   v15.super_class = FMInternalOwnerAccount;
   v5 = [(FMInternalOwnerAccount *)&v15 init];
   if (v5)
   {
-    v6 = [v4 aa_personID];
+    aa_personID = [accountCopy aa_personID];
     personId = v5->_personId;
-    v5->_personId = v6;
+    v5->_personId = aa_personID;
 
-    v8 = [v4 aa_firstName];
+    aa_firstName = [accountCopy aa_firstName];
     firstName = v5->_firstName;
-    v5->_firstName = v8;
+    v5->_firstName = aa_firstName;
 
-    v10 = [v4 aa_lastName];
+    aa_lastName = [accountCopy aa_lastName];
     lastName = v5->_lastName;
-    v5->_lastName = v10;
+    v5->_lastName = aa_lastName;
 
-    v12 = [v4 username];
+    username = [accountCopy username];
     username = v5->_username;
-    v5->_username = v12;
+    v5->_username = username;
   }
 
   return v5;
@@ -37,9 +37,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(FMInternalOwnerAccount *)self username];
-  v6 = [(FMInternalOwnerAccount *)self personId];
-  v7 = [v3 stringWithFormat:@"<%@: %p %@[%@]>", v4, self, v5, v6];
+  username = [(FMInternalOwnerAccount *)self username];
+  personId = [(FMInternalOwnerAccount *)self personId];
+  v7 = [v3 stringWithFormat:@"<%@: %p %@[%@]>", v4, self, username, personId];
 
   return v7;
 }

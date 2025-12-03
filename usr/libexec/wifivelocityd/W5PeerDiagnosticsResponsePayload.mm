@@ -1,26 +1,26 @@
 @interface W5PeerDiagnosticsResponsePayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerDiagnosticsResponsePayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerDiagnosticsResponsePayload)initWithRequest:(id)request;
 - (id)encode;
 @end
 
 @implementation W5PeerDiagnosticsResponsePayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerDiagnosticsResponsePayload)initWithRequest:(id)a3
+- (W5PeerDiagnosticsResponsePayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v19.receiver = self;
   v19.super_class = W5PeerDiagnosticsResponsePayload;
   v5 = [(W5PeerDiagnosticsResponsePayload *)&v19 init];
-  if (!v5 || (v6 = [v4 objectForKey:@"version"], (v5->_version = v6) == 0))
+  if (!v5 || (v6 = [requestCopy objectForKey:@"version"], (v5->_version = v6) == 0))
   {
 
     v15 = sub_100098A04();
@@ -44,14 +44,14 @@
     goto LABEL_8;
   }
 
-  v7 = [v4 objectForKey:@"status"];
+  v7 = [requestCopy objectForKey:@"status"];
   v8 = v7;
   if (v7)
   {
     v5->_status = [v7 integerValue];
   }
 
-  v9 = [v4 objectForKey:@"testResults"];
+  v9 = [requestCopy objectForKey:@"testResults"];
   v10 = objc_opt_class();
   v11 = [NSSet setWithObjects:v10, objc_opt_class(), 0];
   v18 = 0;
@@ -62,7 +62,7 @@
 
   if (!v5->_results)
   {
-    v15 = [v4 objectForKey:@"testError"];
+    v15 = [requestCopy objectForKey:@"testError"];
     if (v15)
     {
       objc_storeStrong(&v5->_error, v15);
@@ -82,10 +82,10 @@ LABEL_8:
   v4 = sub_100098A04();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(W5PeerDiagnosticsResponsePayload *)self version];
-    v6 = [(W5PeerDiagnosticsResponsePayload *)self status];
-    v7 = [(W5PeerDiagnosticsResponsePayload *)self results];
-    v8 = [(W5PeerDiagnosticsResponsePayload *)self error];
+    version = [(W5PeerDiagnosticsResponsePayload *)self version];
+    status = [(W5PeerDiagnosticsResponsePayload *)self status];
+    results = [(W5PeerDiagnosticsResponsePayload *)self results];
+    error = [(W5PeerDiagnosticsResponsePayload *)self error];
     v23 = 136316674;
     v24 = "[W5PeerDiagnosticsResponsePayload encode]";
     v25 = 2080;
@@ -93,55 +93,55 @@ LABEL_8:
     v27 = 1024;
     v28 = 66;
     v29 = 2114;
-    v30 = v5;
+    v30 = version;
     v31 = 2048;
-    v32 = v6;
+    v32 = status;
     v33 = 2114;
-    v34 = v7;
+    v34 = results;
     v35 = 2114;
-    v36 = v8;
+    v36 = error;
     LODWORD(v21) = 68;
     v20 = &v23;
     _os_log_send_and_compose_impl();
   }
 
-  v9 = [(W5PeerDiagnosticsResponsePayload *)self version];
+  version2 = [(W5PeerDiagnosticsResponsePayload *)self version];
 
-  if (v9)
+  if (version2)
   {
-    v10 = [(W5PeerDiagnosticsResponsePayload *)self version];
-    [v3 setObject:v10 forKey:@"version"];
+    version3 = [(W5PeerDiagnosticsResponsePayload *)self version];
+    [v3 setObject:version3 forKey:@"version"];
 
     if (![(W5PeerDiagnosticsResponsePayload *)self status])
     {
 LABEL_9:
       v14 = 0;
-      v9 = 0;
+      version2 = 0;
       goto LABEL_11;
     }
 
     v11 = [NSNumber numberWithInteger:[(W5PeerDiagnosticsResponsePayload *)self status]];
     [v3 setObject:v11 forKey:@"status"];
 
-    v12 = [(W5PeerDiagnosticsResponsePayload *)self results];
+    results2 = [(W5PeerDiagnosticsResponsePayload *)self results];
 
-    if (v12)
+    if (results2)
     {
-      v13 = [(W5PeerDiagnosticsResponsePayload *)self results];
+      results3 = [(W5PeerDiagnosticsResponsePayload *)self results];
       v22 = 0;
-      v14 = [NSKeyedArchiver archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v22];
-      v9 = v22;
+      v14 = [NSKeyedArchiver archivedDataWithRootObject:results3 requiringSecureCoding:1 error:&v22];
+      version2 = v22;
 
       [v3 setObject:v14 forKey:@"testResults"];
       goto LABEL_11;
     }
 
-    v9 = [(W5PeerDiagnosticsResponsePayload *)self error];
+    version2 = [(W5PeerDiagnosticsResponsePayload *)self error];
 
-    if (v9)
+    if (version2)
     {
-      v15 = [(W5PeerDiagnosticsResponsePayload *)self error];
-      [v3 setObject:v15 forKey:@"testError"];
+      error2 = [(W5PeerDiagnosticsResponsePayload *)self error];
+      [v3 setObject:error2 forKey:@"testError"];
 
       goto LABEL_9;
     }

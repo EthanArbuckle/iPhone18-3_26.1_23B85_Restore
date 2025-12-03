@@ -1,8 +1,8 @@
 @interface MUPlaceInfoSectionView
-- (MUPlaceInfoSectionView)initWithFrame:(CGRect)a3;
+- (MUPlaceInfoSectionView)initWithFrame:(CGRect)frame;
 - (id)draggableContent;
 - (void)_updateAppearance;
-- (void)setViewModels:(id)a3;
+- (void)setViewModels:(id)models;
 @end
 
 @implementation MUPlaceInfoSectionView
@@ -15,8 +15,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(MUStackView *)self arrangedSubviews];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  arrangedSubviews = [(MUStackView *)self arrangedSubviews];
+  v5 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -27,21 +27,21 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = objc_alloc_init(MUInfoCardDraggableContent);
         [(MUInfoCardDraggableContent *)v10 setView:v9];
-        v11 = [v9 viewModel];
-        v12 = [v11 valueString];
-        [(MUInfoCardDraggableContent *)v10 setDraggableContent:v12];
+        viewModel = [v9 viewModel];
+        valueString = [viewModel valueString];
+        [(MUInfoCardDraggableContent *)v10 setDraggableContent:valueString];
 
-        -[MUInfoCardDraggableContent setAnalyticsTarget:](v10, "setAnalyticsTarget:", [v11 analyticsTarget]);
+        -[MUInfoCardDraggableContent setAnalyticsTarget:](v10, "setAnalyticsTarget:", [viewModel analyticsTarget]);
         [v3 addObject:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -82,20 +82,20 @@
         }
 
         v13 = *(*(&v20 + 1) + 8 * v12);
-        v14 = [(MUPlaceVerticalCardContainerView *)self isDeveloperPlaceCard];
+        isDeveloperPlaceCard = [(MUPlaceVerticalCardContainerView *)self isDeveloperPlaceCard];
         v15 = [MULabeledValueActionRowView alloc];
-        if (v14)
+        if (isDeveloperPlaceCard)
         {
-          v16 = [(MULabeledValueActionRowView *)v15 initForDeveloperPlaceCard];
+          initForDeveloperPlaceCard = [(MULabeledValueActionRowView *)v15 initForDeveloperPlaceCard];
         }
 
         else
         {
-          v16 = [(MULabeledValueActionRowView *)v15 initWithFrame:v8, v9, v10, v11];
+          initForDeveloperPlaceCard = [(MULabeledValueActionRowView *)v15 initWithFrame:v8, v9, v10, v11];
         }
 
-        v17 = v16;
-        [(MULabeledValueActionRowView *)v16 setViewModel:v13];
+        v17 = initForDeveloperPlaceCard;
+        [(MULabeledValueActionRowView *)initForDeveloperPlaceCard setViewModel:v13];
         [v3 addObject:v17];
 
         ++v12;
@@ -114,12 +114,12 @@
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setViewModels:(id)a3
+- (void)setViewModels:(id)models
 {
-  v6 = a3;
+  modelsCopy = models;
   if (([(NSArray *)self->_viewModels isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [modelsCopy copy];
     viewModels = self->_viewModels;
     self->_viewModels = v4;
 
@@ -127,11 +127,11 @@
   }
 }
 
-- (MUPlaceInfoSectionView)initWithFrame:(CGRect)a3
+- (MUPlaceInfoSectionView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = MUPlaceInfoSectionView;
-  return [(MUPlaceVerticalCardContainerView *)&v4 initWithShowsSeparators:1, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(MUPlaceVerticalCardContainerView *)&v4 initWithShowsSeparators:1, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 @end

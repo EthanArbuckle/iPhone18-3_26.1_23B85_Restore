@@ -1,16 +1,16 @@
 @interface _UIDatePickerContainerViewController
-- (BOOL)passthroughScrollInteraction:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5;
-- (BOOL)passthroughScrollInteractionDidRecognize:(id)a3;
-- (_UIDatePickerContainerViewController)initWithPresentation:(id)a3;
+- (BOOL)passthroughScrollInteraction:(id)interaction shouldInteractAtLocation:(CGPoint)location withEvent:(id)event;
+- (BOOL)passthroughScrollInteractionDidRecognize:(id)recognize;
+- (_UIDatePickerContainerViewController)initWithPresentation:(id)presentation;
 - (_UIDatePickerOverlayPresentation)presentation;
 - (id)keyCommands;
-- (void)_didReceiveEscapeKey:(id)a3;
+- (void)_didReceiveEscapeKey:(id)key;
 - (void)dealloc;
 - (void)didChangeKeyboardAvoidanceAdjustmentDeferral;
-- (void)keyboardFrameWillChange:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)keyboardFrameWillChange:(id)change;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _UIDatePickerContainerViewController
@@ -27,29 +27,29 @@
 
 - (_UIDatePickerOverlayPresentation)presentation
 {
-  v2 = [(UIViewController *)self view];
-  v3 = [v2 presentation];
+  view = [(UIViewController *)self view];
+  presentation = [view presentation];
 
-  return v3;
+  return presentation;
 }
 
-- (_UIDatePickerContainerViewController)initWithPresentation:(id)a3
+- (_UIDatePickerContainerViewController)initWithPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   v10.receiver = self;
   v10.super_class = _UIDatePickerContainerViewController;
   v5 = [(UIViewController *)&v10 init];
   if (v5)
   {
     v6 = objc_opt_new();
-    [v6 setPresentation:v4];
-    v7 = [v6 passthroughInteraction];
-    [v7 setDelegate:v5];
+    [v6 setPresentation:presentationCopy];
+    passthroughInteraction = [v6 passthroughInteraction];
+    [passthroughInteraction setDelegate:v5];
 
     [(UIViewController *)v5 setView:v6];
     [(UIViewController *)v5 setModalPresentationStyle:5];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v5 selector:sel_keyboardFrameWillChange_ name:@"UIKeyboardWillChangeFrameNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_keyboardFrameWillChange_ name:@"UIKeyboardWillChangeFrameNotification" object:0];
   }
 
   return v5;
@@ -57,25 +57,25 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIKeyboardWillChangeFrameNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIKeyboardWillChangeFrameNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIDatePickerContainerViewController;
   [(UIViewController *)&v4 dealloc];
 }
 
-- (void)_didReceiveEscapeKey:(id)a3
+- (void)_didReceiveEscapeKey:(id)key
 {
-  v3 = [(_UIDatePickerContainerViewController *)self presentation];
-  [v3 dismissPresentationAnimated:1];
+  presentation = [(_UIDatePickerContainerViewController *)self presentation];
+  [presentation dismissPresentationAnimated:1];
 }
 
-- (void)keyboardFrameWillChange:(id)a3
+- (void)keyboardFrameWillChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"UIKeyboardAnimationDurationUserInfoKey"];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"UIKeyboardAnimationDurationUserInfoKey"];
   [v6 doubleValue];
   v8 = v7;
 
@@ -85,8 +85,8 @@
   v23[3] = "";
   v24 = 0u;
   v25 = 0u;
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"UIKeyboardFrameEndUserInfoKey"];
+  userInfo2 = [changeCopy userInfo];
+  v10 = [userInfo2 objectForKeyedSubscript:@"UIKeyboardFrameEndUserInfoKey"];
   [v10 CGRectValue];
   *&v24 = v11;
   *(&v24 + 1) = v12;
@@ -96,11 +96,11 @@
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
-  v15 = [v4 userInfo];
-  v16 = [v15 objectForKeyedSubscript:@"UIKeyboardAnimationCurveUserInfoKey"];
-  v17 = [v16 integerValue];
+  userInfo3 = [changeCopy userInfo];
+  v16 = [userInfo3 objectForKeyedSubscript:@"UIKeyboardAnimationCurveUserInfoKey"];
+  integerValue = [v16 integerValue];
 
-  v22[3] = v17;
+  v22[3] = integerValue;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
@@ -114,8 +114,8 @@
   v20[6] = v21;
   v20[7] = v22;
   v18 = _Block_copy(v20);
-  v19 = [(_UIDatePickerContainerViewController *)self presentation];
-  LODWORD(v16) = [v19 defersAutomaticKeyboardAvoidanceAdjustments];
+  presentation = [(_UIDatePickerContainerViewController *)self presentation];
+  LODWORD(v16) = [presentation defersAutomaticKeyboardAvoidanceAdjustments];
 
   if (v16)
   {
@@ -134,102 +134,102 @@
 
 - (void)didChangeKeyboardAvoidanceAdjustmentDeferral
 {
-  v3 = [(_UIDatePickerContainerViewController *)self pendingKeyboardAdjustment];
+  pendingKeyboardAdjustment = [(_UIDatePickerContainerViewController *)self pendingKeyboardAdjustment];
 
-  if (v3)
+  if (pendingKeyboardAdjustment)
   {
-    v4 = [(_UIDatePickerContainerViewController *)self pendingKeyboardAdjustment];
-    v4[2]();
+    pendingKeyboardAdjustment2 = [(_UIDatePickerContainerViewController *)self pendingKeyboardAdjustment];
+    pendingKeyboardAdjustment2[2]();
 
     [(_UIDatePickerContainerViewController *)self setPendingKeyboardAdjustment:0];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = _UIDatePickerContainerViewController;
-  [(UIViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(_UIDatePickerContainerViewController *)self presentation];
-  [v5 dismissPresentationAnimated:0];
+  [(UIViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  presentation = [(_UIDatePickerContainerViewController *)self presentation];
+  [presentation dismissPresentationAnimated:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = _UIDatePickerContainerViewController;
   [(UIViewController *)&v8 viewDidDisappear:?];
   if ([(UIViewController *)self isBeingDismissed])
   {
-    v5 = [(_UIDatePickerContainerViewController *)self presentation];
-    v6 = [v5 containerViewController];
+    presentation = [(_UIDatePickerContainerViewController *)self presentation];
+    containerViewController = [presentation containerViewController];
 
-    if (v6 == self)
+    if (containerViewController == self)
     {
-      v7 = [(_UIDatePickerContainerViewController *)self presentation];
-      [v7 dismissPresentationAnimated:v3];
+      presentation2 = [(_UIDatePickerContainerViewController *)self presentation];
+      [presentation2 dismissPresentationAnimated:disappearCopy];
     }
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v14.receiver = self;
   v14.super_class = _UIDatePickerContainerViewController;
-  v6 = a3;
-  [(UIViewController *)&v14 willTransitionToTraitCollection:v6 withTransitionCoordinator:a4];
-  v7 = [v6 horizontalSizeClass];
-  v8 = [(UIViewController *)self traitCollection];
-  v9 = [v8 horizontalSizeClass];
+  collectionCopy = collection;
+  [(UIViewController *)&v14 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinator];
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
+  traitCollection = [(UIViewController *)self traitCollection];
+  horizontalSizeClass2 = [traitCollection horizontalSizeClass];
 
-  v10 = [v6 verticalSizeClass];
-  v11 = [(UIViewController *)self traitCollection];
-  v12 = [v11 verticalSizeClass];
+  verticalSizeClass = [collectionCopy verticalSizeClass];
+  traitCollection2 = [(UIViewController *)self traitCollection];
+  verticalSizeClass2 = [traitCollection2 verticalSizeClass];
 
-  if (![(UIViewController *)self isBeingPresented]&& (v7 != v9 || v10 != v12))
+  if (![(UIViewController *)self isBeingPresented]&& (horizontalSizeClass != horizontalSizeClass2 || verticalSizeClass != verticalSizeClass2))
   {
-    v13 = [(_UIDatePickerContainerViewController *)self presentation];
-    [v13 dismissPresentationAnimated:0];
+    presentation = [(_UIDatePickerContainerViewController *)self presentation];
+    [presentation dismissPresentationAnimated:0];
   }
 }
 
-- (BOOL)passthroughScrollInteractionDidRecognize:(id)a3
+- (BOOL)passthroughScrollInteractionDidRecognize:(id)recognize
 {
-  v3 = [(_UIDatePickerContainerViewController *)self presentation];
-  [v3 dismissPresentationAnimated:1];
+  presentation = [(_UIDatePickerContainerViewController *)self presentation];
+  [presentation dismissPresentationAnimated:1];
 
   return 1;
 }
 
-- (BOOL)passthroughScrollInteraction:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5
+- (BOOL)passthroughScrollInteraction:(id)interaction shouldInteractAtLocation:(CGPoint)location withEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = [(UIViewController *)self presentedViewController];
+  y = location.y;
+  x = location.x;
+  eventCopy = event;
+  presentedViewController = [(UIViewController *)self presentedViewController];
 
-  if (v9)
+  if (presentedViewController)
   {
-    v10 = 0;
+    lastHitTestWasPassedThrough = 0;
   }
 
   else
   {
-    v11 = [(UIViewController *)self view];
-    v12 = [(UIViewController *)self _window];
-    [v12 convertPoint:v11 fromView:{x, y}];
+    view = [(UIViewController *)self view];
+    _window = [(UIViewController *)self _window];
+    [_window convertPoint:view fromView:{x, y}];
     v14 = v13;
     v16 = v15;
 
-    [v11 setLastHitTestWasPassedThrough:0];
-    v17 = [(UIViewController *)self _window];
-    v18 = [v17 hitTest:v8 withEvent:{v14, v16}];
+    [view setLastHitTestWasPassedThrough:0];
+    _window2 = [(UIViewController *)self _window];
+    v18 = [_window2 hitTest:eventCopy withEvent:{v14, v16}];
 
-    v10 = [v11 lastHitTestWasPassedThrough];
+    lastHitTestWasPassedThrough = [view lastHitTestWasPassedThrough];
   }
 
-  return v10;
+  return lastHitTestWasPassedThrough;
 }
 
 @end

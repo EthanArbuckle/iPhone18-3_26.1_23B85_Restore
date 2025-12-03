@@ -1,27 +1,27 @@
 @interface NTKAppleEncryptedArchiveVerificationHandle
-- (AAArchiveStream_impl)openReturningError:(id *)a3;
-- (BOOL)closeReturningError:(id *)a3;
-- (NTKAppleEncryptedArchiveVerificationHandle)initWithArchiveURL:(id)a3 symmetricKey:(id)a4 outputDirectoryURL:(id)a5 excludeFields:(id)a6;
+- (AAArchiveStream_impl)openReturningError:(id *)error;
+- (BOOL)closeReturningError:(id *)error;
+- (NTKAppleEncryptedArchiveVerificationHandle)initWithArchiveURL:(id)l symmetricKey:(id)key outputDirectoryURL:(id)rL excludeFields:(id)fields;
 - (void)dealloc;
 @end
 
 @implementation NTKAppleEncryptedArchiveVerificationHandle
 
-- (NTKAppleEncryptedArchiveVerificationHandle)initWithArchiveURL:(id)a3 symmetricKey:(id)a4 outputDirectoryURL:(id)a5 excludeFields:(id)a6
+- (NTKAppleEncryptedArchiveVerificationHandle)initWithArchiveURL:(id)l symmetricKey:(id)key outputDirectoryURL:(id)rL excludeFields:(id)fields
 {
-  v10 = a5;
-  v11 = a6;
+  rLCopy = rL;
+  fieldsCopy = fields;
   v18.receiver = self;
   v18.super_class = NTKAppleEncryptedArchiveVerificationHandle;
-  v12 = [(NTKAppleEncryptedArchiveHandle *)&v18 initWithArchiveURL:a3 symmetricKey:a4];
+  v12 = [(NTKAppleEncryptedArchiveHandle *)&v18 initWithArchiveURL:l symmetricKey:key];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [rLCopy copy];
     outputDirectoryURL = v12->_outputDirectoryURL;
     v12->_outputDirectoryURL = v13;
 
-    v15 = [v11 allObjects];
-    v16 = [v15 componentsJoinedByString:{@", "}];
+    allObjects = [fieldsCopy allObjects];
+    v16 = [allObjects componentsJoinedByString:{@", "}];
 
     v12->_excludeFields = AAFieldKeySetCreateWithString([v16 fileSystemRepresentation]);
   }
@@ -38,7 +38,7 @@
   [(NTKAppleEncryptedArchiveHandle *)&v3 dealloc];
 }
 
-- (AAArchiveStream_impl)openReturningError:(id *)a3
+- (AAArchiveStream_impl)openReturningError:(id *)error
 {
   v12.receiver = self;
   v12.super_class = NTKAppleEncryptedArchiveVerificationHandle;
@@ -46,10 +46,10 @@
   self->_archiveStream = result;
   if (result)
   {
-    v6 = [(NSURL *)self->_outputDirectoryURL absoluteURL];
-    v7 = [v6 path];
-    [v7 fileSystemRepresentation];
-    v8 = [(NTKAppleEncryptedArchiveHandle *)self archiveEntryEvent];
+    absoluteURL = [(NSURL *)self->_outputDirectoryURL absoluteURL];
+    path = [absoluteURL path];
+    [path fileSystemRepresentation];
+    archiveEntryEvent = [(NTKAppleEncryptedArchiveHandle *)self archiveEntryEvent];
     self->_verificationStream = AAVerifyDirectoryArchiveOutputStreamOpen();
 
     result = self->_verificationStream;
@@ -58,18 +58,18 @@
       v11.receiver = self;
       v11.super_class = NTKAppleEncryptedArchiveVerificationHandle;
       [(NTKAppleEncryptedArchiveHandle *)&v11 closeReturningError:0];
-      if (a3)
+      if (error)
       {
-        v9 = *a3;
-        if (*a3)
+        v9 = *error;
+        if (*error)
         {
           v10 = v9;
           result = 0;
-          *a3 = v9;
+          *error = v9;
           return result;
         }
 
-        [(NTKAppleEncryptedArchiveVerificationHandle *)self openReturningError:a3];
+        [(NTKAppleEncryptedArchiveVerificationHandle *)self openReturningError:error];
       }
 
       return 0;
@@ -79,7 +79,7 @@
   return result;
 }
 
-- (BOOL)closeReturningError:(id *)a3
+- (BOOL)closeReturningError:(id *)error
 {
   v5 = AAArchiveStreamClose(self->_verificationStream);
   v6 = v5 == 0;
@@ -120,10 +120,10 @@
     v7 = v12;
   }
 
-  if (a3)
+  if (error)
   {
     v13 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   return v6;

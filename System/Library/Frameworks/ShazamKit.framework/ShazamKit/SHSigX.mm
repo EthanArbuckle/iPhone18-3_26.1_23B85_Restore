@@ -1,38 +1,38 @@
 @interface SHSigX
 + (id)version;
-- (BOOL)ConvertSigXErrorCode:(id *)a3 code:(int)a4;
-- (BOOL)flowBuffer:(id)a3 error:(id *)a4;
-- (BOOL)resetWithError:(id *)a3;
-- (BOOL)setRollingBufferSeconds:(float)a3 error:(id *)a4;
+- (BOOL)ConvertSigXErrorCode:(id *)code code:(int)a4;
+- (BOOL)flowBuffer:(id)buffer error:(id *)error;
+- (BOOL)resetWithError:(id *)error;
+- (BOOL)setRollingBufferSeconds:(float)seconds error:(id *)error;
 - (id)enableSpectralOutputForNumberOfFrequencyBins:callbackFrequency:completionHandler:;
-- (id)signatureWithError:(id *)a3;
+- (id)signatureWithError:(id *)error;
 - (uint64_t)enableSpectralOutputForNumberOfFrequencyBins:callbackFrequency:completionHandler:;
 - (void)dealloc;
 - (void)disableSpectralOutput;
-- (void)enableSpectralOutputForNumberOfFrequencyBins:(int)a3 callbackFrequency:(int)a4 completionHandler:(id)a5;
+- (void)enableSpectralOutputForNumberOfFrequencyBins:(int)bins callbackFrequency:(int)frequency completionHandler:(id)handler;
 - (void)enableSpectralOutputForNumberOfFrequencyBins:callbackFrequency:completionHandler:;
 @end
 
 @implementation SHSigX
 
-- (BOOL)flowBuffer:(id)a3 error:(id *)a4
+- (BOOL)flowBuffer:(id)buffer error:(id *)error
 {
-  v6 = a3;
-  if (![v6 int16ChannelData])
+  bufferCopy = buffer;
+  if (![bufferCopy int16ChannelData])
   {
-    if ([v6 int32ChannelData] || !objc_msgSend(v6, "floatChannelData"))
+    if ([bufferCopy int32ChannelData] || !objc_msgSend(bufferCopy, "floatChannelData"))
     {
-      [SHError annotateClientError:a4 code:100 underlyingError:0];
+      [SHError annotateClientError:error code:100 underlyingError:0];
       v11 = 0;
       goto LABEL_11;
     }
 
-    if (*[v6 floatChannelData])
+    if (*[bufferCopy floatChannelData])
     {
-      v12 = *[v6 floatChannelData];
-      v13 = [v6 frameLength];
-      v9 = [v6 format];
-      v10 = -[SHSigX flowFloatSamples:sampleCount:channels:error:](self, "flowFloatSamples:sampleCount:channels:error:", v12, v13, [v9 channelCount], a4);
+      v12 = *[bufferCopy floatChannelData];
+      frameLength = [bufferCopy frameLength];
+      format = [bufferCopy format];
+      v10 = -[SHSigX flowFloatSamples:sampleCount:channels:error:](self, "flowFloatSamples:sampleCount:channels:error:", v12, frameLength, [format channelCount], error);
       goto LABEL_4;
     }
 
@@ -41,15 +41,15 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!*[v6 int16ChannelData])
+  if (!*[bufferCopy int16ChannelData])
   {
     goto LABEL_10;
   }
 
-  v7 = *[v6 int16ChannelData];
-  v8 = [v6 frameLength];
-  v9 = [v6 format];
-  v10 = -[SHSigX flowIntSamples:sampleCount:channels:error:](self, "flowIntSamples:sampleCount:channels:error:", v7, v8, [v9 channelCount], a4);
+  v7 = *[bufferCopy int16ChannelData];
+  frameLength2 = [bufferCopy frameLength];
+  format = [bufferCopy format];
+  v10 = -[SHSigX flowIntSamples:sampleCount:channels:error:](self, "flowIntSamples:sampleCount:channels:error:", v7, frameLength2, [format channelCount], error);
 LABEL_4:
   v11 = v10;
 
@@ -57,16 +57,16 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)ConvertSigXErrorCode:(id *)a3 code:(int)a4
+- (BOOL)ConvertSigXErrorCode:(id *)code code:(int)a4
 {
-  if (a3)
+  if (code)
   {
     v6 = shazam::sigx_category(self);
     v7 = MEMORY[0x277CCACA8];
     (*v6)[6](__p);
     v8 = v17;
     v9 = __p[0];
-    v10 = [MEMORY[0x277CCACA8] defaultCStringEncoding];
+    defaultCStringEncoding = [MEMORY[0x277CCACA8] defaultCStringEncoding];
     if (v8 >= 0)
     {
       v11 = __p;
@@ -77,7 +77,7 @@ LABEL_11:
       v11 = v9;
     }
 
-    v12 = [v7 stringWithCString:v11 encoding:v10];
+    v12 = [v7 stringWithCString:v11 encoding:defaultCStringEncoding];
     if (v17 < 0)
     {
       operator delete(__p[0]);
@@ -85,25 +85,25 @@ LABEL_11:
 
     v13 = MEMORY[0x277CCA9B8];
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v12 forKey:*MEMORY[0x277CCA450]];
-    *a3 = [v13 errorWithDomain:@"com.shazam.sigx" code:a4 userInfo:v14];
+    *code = [v13 errorWithDomain:@"com.shazam.sigx" code:a4 userInfo:v14];
   }
 
-  return a3 != 0;
+  return code != 0;
 }
 
-- (BOOL)resetWithError:(id *)a3
+- (BOOL)resetWithError:(id *)error
 {
   (*(self->_pipeline->var0 + 7))(self->_pipeline, a2);
   v5 = (*(self->_pipeline->var0 + 8))(self->_pipeline);
   if (v5)
   {
-    [(SHSigX *)self ConvertSigXErrorCode:a3 code:v5];
+    [(SHSigX *)self ConvertSigXErrorCode:error code:v5];
   }
 
   return v5 == 0;
 }
 
-- (id)signatureWithError:(id *)a3
+- (id)signatureWithError:(id *)error
 {
   __p = 0;
   v9 = 0;
@@ -112,7 +112,7 @@ LABEL_11:
   v5 = (*(self->_pipeline->var0 + 8))(self->_pipeline);
   if (v5)
   {
-    [(SHSigX *)self ConvertSigXErrorCode:a3 code:v5];
+    [(SHSigX *)self ConvertSigXErrorCode:error code:v5];
     v6 = 0;
   }
 
@@ -133,9 +133,9 @@ LABEL_11:
 + (id)version
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCACA8] defaultCStringEncoding];
+  defaultCStringEncoding = [MEMORY[0x277CCACA8] defaultCStringEncoding];
 
-  return [v2 stringWithCString:"25.5.4 (compilation mode 'release' encoding:{built on 'OS X')", v3}];
+  return [v2 stringWithCString:"25.5.4 (compilation mode 'release' encoding:{built on 'OS X')", defaultCStringEncoding}];
 }
 
 - (void)dealloc
@@ -151,30 +151,30 @@ LABEL_11:
   [(SHSigX *)&v4 dealloc];
 }
 
-- (BOOL)setRollingBufferSeconds:(float)a3 error:(id *)a4
+- (BOOL)setRollingBufferSeconds:(float)seconds error:(id *)error
 {
-  (*(self->_pipeline->var0 + 9))(self->_pipeline, a2, a3);
+  (*(self->_pipeline->var0 + 9))(self->_pipeline, a2, seconds);
   v6 = (*(self->_pipeline->var0 + 8))(self->_pipeline);
   if (v6)
   {
-    [(SHSigX *)self ConvertSigXErrorCode:a4 code:v6];
+    [(SHSigX *)self ConvertSigXErrorCode:error code:v6];
   }
 
   return v6 == 0;
 }
 
-- (void)enableSpectralOutputForNumberOfFrequencyBins:(int)a3 callbackFrequency:(int)a4 completionHandler:(id)a5
+- (void)enableSpectralOutputForNumberOfFrequencyBins:(int)bins callbackFrequency:(int)frequency completionHandler:(id)handler
 {
   v14[4] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  [(SHSigX *)self setSpectralOutputHandler:v8];
-  v9 = self;
-  v10 = (*(v9->_pipeline->var0 + 10))(v9->_pipeline);
-  v11 = v9;
+  handlerCopy = handler;
+  [(SHSigX *)self setSpectralOutputHandler:handlerCopy];
+  selfCopy = self;
+  v10 = (*(selfCopy->_pipeline->var0 + 10))(selfCopy->_pipeline);
+  v11 = selfCopy;
   v14[0] = &unk_2845C6008;
   v14[1] = v11;
   v14[3] = v14;
-  shazam::SpectralOutput::enable(v10, a3, a4, v14, v12);
+  shazam::SpectralOutput::enable(v10, bins, frequency, v14, v12);
   std::__function::__value_func<void ()(float const*,unsigned long)>::~__value_func[abi:ne200100](v14);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -202,9 +202,9 @@ LABEL_11:
     ++v4;
   }
 
-  v10 = [*(a1 + 8) spectralOutputHandler];
+  spectralOutputHandler = [*(self + 8) spectralOutputHandler];
   v11 = [i copy];
-  (v10)[2](v10, v11);
+  (spectralOutputHandler)[2](spectralOutputHandler, v11);
 
   objc_autoreleasePoolPop(v6);
 }
@@ -212,7 +212,7 @@ LABEL_11:
 - (id)enableSpectralOutputForNumberOfFrequencyBins:callbackFrequency:completionHandler:
 {
   *a2 = &unk_2845C6008;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
@@ -220,7 +220,7 @@ LABEL_11:
 - (uint64_t)enableSpectralOutputForNumberOfFrequencyBins:callbackFrequency:completionHandler:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

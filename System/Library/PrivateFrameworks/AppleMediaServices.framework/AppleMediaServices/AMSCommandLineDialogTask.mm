@@ -1,21 +1,21 @@
 @interface AMSCommandLineDialogTask
-- (AMSCommandLineDialogTask)initWithRequest:(id)a3;
-- (id)_createHorizontolLineWithWidth:(int64_t)a3;
-- (id)_createLinesFromText:(id)a3 width:(int64_t)a4;
-- (id)_createText:(id)a3 width:(int64_t)a4 centered:(BOOL)a5 omitLeftPipe:(BOOL)a6;
-- (id)_createTextfieldWithTextfield:(id)a3 width:(int64_t)a4;
+- (AMSCommandLineDialogTask)initWithRequest:(id)request;
+- (id)_createHorizontolLineWithWidth:(int64_t)width;
+- (id)_createLinesFromText:(id)text width:(int64_t)width;
+- (id)_createText:(id)text width:(int64_t)width centered:(BOOL)centered omitLeftPipe:(BOOL)pipe;
+- (id)_createTextfieldWithTextfield:(id)textfield width:(int64_t)width;
 - (id)_gatherTextfieldInput;
 - (id)_getUserInput;
 - (id)present;
 - (int64_t)_gatherButtonInput;
-- (void)_printMessage:(id)a3;
+- (void)_printMessage:(id)message;
 @end
 
 @implementation AMSCommandLineDialogTask
 
-- (AMSCommandLineDialogTask)initWithRequest:(id)a3
+- (AMSCommandLineDialogTask)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = AMSCommandLineDialogTask;
   v6 = [(AMSTask *)&v9 init];
@@ -26,7 +26,7 @@
     v6->_dialogPadding = 2.0;
     v6->_maximumDialogWidth = 70.0;
     v6->_minimumDialogWidth = 40.0;
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
   }
 
   return v7;
@@ -493,25 +493,25 @@ AMSDialogResult *__35__AMSCommandLineDialogTask_present__block_invoke(uint64_t a
   return v128;
 }
 
-- (id)_createHorizontolLineWithWidth:(int64_t)a3
+- (id)_createHorizontolLineWithWidth:(int64_t)width
 {
-  v3 = [&stru_1F071BA78 stringByPaddingToLength:a3 - 2 withString:@"-" startingAtIndex:0];
+  v3 = [&stru_1F071BA78 stringByPaddingToLength:width - 2 withString:@"-" startingAtIndex:0];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@" %@ \n", v3];
 
   return v4;
 }
 
-- (id)_createLinesFromText:(id)a3 width:(int64_t)a4
+- (id)_createLinesFromText:(id)text width:(int64_t)width
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v31 = v4;
-  obj = [v4 componentsSeparatedByString:@" "];
+  v31 = textCopy;
+  obj = [textCopy componentsSeparatedByString:@" "];
   v6 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v6)
   {
@@ -577,7 +577,7 @@ AMSDialogResult *__35__AMSCommandLineDialogTask_present__block_invoke(uint64_t a
   if ([v5 count])
   {
     v20 = 0;
-    v21 = a4 - (v18 * 2.0 + 2.0);
+    v21 = width - (v18 * 2.0 + 2.0);
     while (1)
     {
       v22 = [v5 objectAtIndexedSubscript:v20];
@@ -636,17 +636,17 @@ LABEL_30:
   return v16;
 }
 
-- (id)_createText:(id)a3 width:(int64_t)a4 centered:(BOOL)a5 omitLeftPipe:(BOOL)a6
+- (id)_createText:(id)text width:(int64_t)width centered:(BOOL)centered omitLeftPipe:(BOOL)pipe
 {
-  v6 = a6;
-  v34 = a5;
+  pipeCopy = pipe;
+  centeredCopy = centered;
   v41 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  textCopy = text;
   [(AMSCommandLineDialogTask *)self dialogPadding];
   v11 = v10;
   v35 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v33 = self;
-  [(AMSCommandLineDialogTask *)self _createLinesFromText:v9 width:a4];
+  selfCopy = self;
+  [(AMSCommandLineDialogTask *)self _createLinesFromText:textCopy width:width];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -656,7 +656,7 @@ LABEL_30:
   {
     v13 = v12;
     v14 = @"|";
-    if (v6)
+    if (pipeCopy)
     {
       v15 = &stru_1F071BA78;
     }
@@ -668,8 +668,8 @@ LABEL_30:
 
     v31 = v15;
     v32 = *v37;
-    v28 = a4 - (v11 * 2.0 + 2.0);
-    if (v6)
+    v28 = width - (v11 * 2.0 + 2.0);
+    if (pipeCopy)
     {
       v14 = @" |";
     }
@@ -685,12 +685,12 @@ LABEL_30:
         }
 
         v17 = *(*(&v36 + 1) + 8 * i);
-        [(AMSCommandLineDialogTask *)v33 dialogPadding];
+        [(AMSCommandLineDialogTask *)selfCopy dialogPadding];
         v19 = [&stru_1F071BA78 stringByPaddingToLength:v18 withString:@" " startingAtIndex:0];
         v20 = v30;
         v21 = v31;
         v22 = [v17 length];
-        if (v34)
+        if (centeredCopy)
         {
           v23 = (v28 - v22) * 0.5;
           v24 = vcvtpd_s64_f64(v23);
@@ -716,40 +716,40 @@ LABEL_30:
   return v35;
 }
 
-- (id)_createTextfieldWithTextfield:(id)a3 width:(int64_t)a4
+- (id)_createTextfieldWithTextfield:(id)textfield width:(int64_t)width
 {
-  v6 = a3;
+  textfieldCopy = textfield;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [(AMSCommandLineDialogTask *)self dialogPadding];
-  v9 = a4 - (v8 * 2.0 + 2.0);
+  v9 = width - (v8 * 2.0 + 2.0);
   v10 = [&stru_1F071BA78 stringByPaddingToLength:v9 - 2 withString:@"-" startingAtIndex:0];
-  v11 = [(AMSCommandLineDialogTask *)self _createText:v10 width:a4 centered:1 omitLeftPipe:0];
+  v11 = [(AMSCommandLineDialogTask *)self _createText:v10 width:width centered:1 omitLeftPipe:0];
   [v7 appendString:v11];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v6 text];
-  v14 = v13;
-  v23 = v6;
-  if (v13)
+  text = [textfieldCopy text];
+  v14 = text;
+  v23 = textfieldCopy;
+  if (text)
   {
-    v15 = [v12 stringWithFormat:@"| %@", v13, v6];
+    textfieldCopy = [v12 stringWithFormat:@"| %@", text, textfieldCopy];
   }
 
   else
   {
-    v16 = [v6 placeholder];
-    v15 = [v12 stringWithFormat:@"| %@", v16, v23];
+    placeholder = [textfieldCopy placeholder];
+    textfieldCopy = [v12 stringWithFormat:@"| %@", placeholder, v23];
   }
 
-  v17 = [v15 stringByPaddingToLength:v9 - 1 withString:@" " startingAtIndex:0];
+  v17 = [textfieldCopy stringByPaddingToLength:v9 - 1 withString:@" " startingAtIndex:0];
 
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@|", v17];
 
-  v19 = [(AMSCommandLineDialogTask *)self _createText:v18 width:a4 centered:0 omitLeftPipe:0];
+  v19 = [(AMSCommandLineDialogTask *)self _createText:v18 width:width centered:0 omitLeftPipe:0];
   [v7 appendString:v19];
 
   v20 = [&stru_1F071BA78 stringByPaddingToLength:v9 - 2 withString:@"-" startingAtIndex:0];
-  v21 = [(AMSCommandLineDialogTask *)self _createText:v20 width:a4 centered:1 omitLeftPipe:0];
+  v21 = [(AMSCommandLineDialogTask *)self _createText:v20 width:width centered:1 omitLeftPipe:0];
   [v7 appendString:v21];
 
   return v7;
@@ -763,28 +763,28 @@ LABEL_30:
     return 0;
   }
 
-  v3 = [(AMSCommandLineDialogTask *)self request];
-  v4 = [v3 buttonActions];
-  v5 = [v4 count];
+  request = [(AMSCommandLineDialogTask *)self request];
+  buttonActions = [request buttonActions];
+  v5 = [buttonActions count];
 
   if (!v5)
   {
     [(AMSCommandLineDialogTask *)self _printMessage:@"Press <return> to continue..."];
-    v12 = [(AMSCommandLineDialogTask *)self _getUserInput];
+    _getUserInput = [(AMSCommandLineDialogTask *)self _getUserInput];
     return 0;
   }
 
   while (1)
   {
     [(AMSCommandLineDialogTask *)self _printMessage:@"Select a button: "];
-    v6 = [(AMSCommandLineDialogTask *)self _getUserInput];
-    v7 = [v6 integerValue];
-    v8 = v7 - 1;
-    if (v7 >= 1)
+    _getUserInput2 = [(AMSCommandLineDialogTask *)self _getUserInput];
+    integerValue = [_getUserInput2 integerValue];
+    v8 = integerValue - 1;
+    if (integerValue >= 1)
     {
-      v9 = [(AMSCommandLineDialogTask *)self request];
-      v10 = [v9 buttonActions];
-      v11 = [v10 count];
+      request2 = [(AMSCommandLineDialogTask *)self request];
+      buttonActions2 = [request2 buttonActions];
+      v11 = [buttonActions2 count];
 
       if (v8 < v11)
       {
@@ -813,11 +813,11 @@ LABEL_30:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = [(AMSCommandLineDialogTask *)self request];
-  v5 = [v4 textFields];
+  request = [(AMSCommandLineDialogTask *)self request];
+  textFields = [request textFields];
 
-  obj = v5;
-  v29 = [v5 countByEnumeratingWithState:&v30 objects:v37 count:16];
+  obj = textFields;
+  v29 = [textFields countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (!v29)
   {
     goto LABEL_23;
@@ -826,7 +826,7 @@ LABEL_30:
   v6 = 0x1E696A000uLL;
   v7 = *v31;
   v26 = *v31;
-  v27 = self;
+  selfCopy = self;
   do
   {
     v8 = 0;
@@ -838,21 +838,21 @@ LABEL_30:
       }
 
       v9 = *(*(&v30 + 1) + 8 * v8);
-      v10 = [v9 text];
-      v11 = [v10 length];
+      text = [v9 text];
+      v11 = [text length];
 
       v12 = *(v6 + 3776);
-      v13 = [v9 placeholder];
-      v14 = v13;
+      placeholder = [v9 placeholder];
+      v14 = placeholder;
       if (v11)
       {
-        v15 = [v9 text];
-        v16 = [v12 stringWithFormat:@"Enter response for '%@' textfield [%@]: ", v14, v15];
+        text2 = [v9 text];
+        v16 = [v12 stringWithFormat:@"Enter response for '%@' textfield [%@]: ", v14, text2];
       }
 
       else
       {
-        v16 = [v12 stringWithFormat:@"Enter response for '%@' textfield: ", v13];
+        v16 = [v12 stringWithFormat:@"Enter response for '%@' textfield: ", placeholder];
       }
 
       [(AMSCommandLineDialogTask *)self _printMessage:v16];
@@ -865,18 +865,18 @@ LABEL_30:
         v36.c_lflag &= ~8uLL;
         tcsetattr(0, 0, &v36);
         scanf("%s", v34);
-        v17 = [*(v6 + 3776) stringWithUTF8String:v34];
+        _getUserInput = [*(v6 + 3776) stringWithUTF8String:v34];
         tcsetattr(0, 0, &v35);
         [(AMSCommandLineDialogTask *)self _printMessage:@"\n"];
       }
 
       else
       {
-        v17 = [(AMSCommandLineDialogTask *)self _getUserInput];
+        _getUserInput = [(AMSCommandLineDialogTask *)self _getUserInput];
       }
 
-      v18 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v19 = [v17 stringByTrimmingCharactersInSet:v18];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      v19 = [_getUserInput stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
       if ([v19 length])
       {
 
@@ -886,26 +886,26 @@ LABEL_18:
 
       v20 = v6;
       v21 = v3;
-      v22 = [v9 text];
-      v23 = [v22 length];
+      text3 = [v9 text];
+      v23 = [text3 length];
 
       if (v23)
       {
         [v9 text];
-        v17 = v18 = v17;
+        _getUserInput = whitespaceAndNewlineCharacterSet = _getUserInput;
         v3 = v21;
         v6 = v20;
         v7 = v26;
-        self = v27;
+        self = selfCopy;
         goto LABEL_18;
       }
 
       v3 = v21;
       v6 = v20;
       v7 = v26;
-      self = v27;
+      self = selfCopy;
 LABEL_19:
-      [v3 addObject:v17];
+      [v3 addObject:_getUserInput];
 
       ++v8;
     }
@@ -925,20 +925,20 @@ LABEL_24:
 
 - (id)_getUserInput
 {
-  v2 = [MEMORY[0x1E696AC00] fileHandleWithStandardInput];
-  v3 = [v2 availableData];
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
-  v5 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  fileHandleWithStandardInput = [MEMORY[0x1E696AC00] fileHandleWithStandardInput];
+  availableData = [fileHandleWithStandardInput availableData];
+  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:availableData encoding:4];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v6 = [v4 stringByTrimmingCharactersInSet:newlineCharacterSet];
 
   return v6;
 }
 
-- (void)_printMessage:(id)a3
+- (void)_printMessage:(id)message
 {
-  v4 = [a3 dataUsingEncoding:4];
-  v3 = [MEMORY[0x1E696AC00] fileHandleWithStandardOutput];
-  [v3 writeData:v4];
+  v4 = [message dataUsingEncoding:4];
+  fileHandleWithStandardOutput = [MEMORY[0x1E696AC00] fileHandleWithStandardOutput];
+  [fileHandleWithStandardOutput writeData:v4];
 }
 
 @end

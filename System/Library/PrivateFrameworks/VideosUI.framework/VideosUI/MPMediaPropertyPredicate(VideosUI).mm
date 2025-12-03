@@ -9,7 +9,7 @@
 {
   v8 = a5;
   v9 = a3;
-  v10 = [a1 vui_mediaPropertyPredicateComparisonWithPredicateOperatorType:a4];
+  v10 = [self vui_mediaPropertyPredicateComparisonWithPredicateOperatorType:a4];
   v11 = [MEMORY[0x1E6970610] predicateWithValue:v8 forProperty:v9 comparisonType:v10];
 
   return v11;

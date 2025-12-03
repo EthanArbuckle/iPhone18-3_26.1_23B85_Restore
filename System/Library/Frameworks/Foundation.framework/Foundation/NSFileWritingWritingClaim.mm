@@ -1,34 +1,34 @@
 @interface NSFileWritingWritingClaim
-- (BOOL)blocksClaim:(id)a3;
-- (BOOL)evaluateSelfWithRootNode:(id)a3 checkSubarbitrability:(BOOL)a4;
-- (BOOL)isBlockedByReadingItemAtLocation:(id)a3 options:(unint64_t)a4;
-- (BOOL)isBlockedByWritingItemAtLocation:(id)a3 options:(unint64_t)a4;
-- (NSFileWritingWritingClaim)initWithCoder:(id)a3;
-- (NSFileWritingWritingClaim)initWithPurposeID:(id)a3 url:(id)a4 options:(unint64_t)a5 url:(id)a6 options:(unint64_t)a7 claimer:(id)a8;
+- (BOOL)blocksClaim:(id)claim;
+- (BOOL)evaluateSelfWithRootNode:(id)node checkSubarbitrability:(BOOL)subarbitrability;
+- (BOOL)isBlockedByReadingItemAtLocation:(id)location options:(unint64_t)options;
+- (BOOL)isBlockedByWritingItemAtLocation:(id)location options:(unint64_t)options;
+- (NSFileWritingWritingClaim)initWithCoder:(id)coder;
+- (NSFileWritingWritingClaim)initWithPurposeID:(id)d url:(id)url options:(unint64_t)options url:(id)a6 options:(unint64_t)a7 claimer:(id)claimer;
 - (id)allURLs;
 - (void)dealloc;
 - (void)devalueSelf;
-- (void)encodeWithCoder:(id)a3;
-- (void)forwardUsingConnection:(id)a3 crashHandler:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)forwardUsingConnection:(id)connection crashHandler:(id)handler;
 - (void)granted;
 - (void)invokeClaimer;
-- (void)itemAtLocation:(id)a3 wasReplacedByItemAtLocation:(id)a4;
+- (void)itemAtLocation:(id)location wasReplacedByItemAtLocation:(id)atLocation;
 - (void)protectFilesAgainstEviction;
-- (void)resolveURLsThenContinueInvokingClaimer:(id)a3;
+- (void)resolveURLsThenContinueInvokingClaimer:(id)claimer;
 @end
 
 @implementation NSFileWritingWritingClaim
 
-- (NSFileWritingWritingClaim)initWithPurposeID:(id)a3 url:(id)a4 options:(unint64_t)a5 url:(id)a6 options:(unint64_t)a7 claimer:(id)a8
+- (NSFileWritingWritingClaim)initWithPurposeID:(id)d url:(id)url options:(unint64_t)options url:(id)a6 options:(unint64_t)a7 claimer:(id)claimer
 {
-  v13 = [(NSFileAccessClaim *)self initWithClient:0 claimID:0 purposeID:a3];
+  v13 = [(NSFileAccessClaim *)self initWithClient:0 claimID:0 purposeID:d];
   if (v13)
   {
-    v13->_url1 = [a4 copy];
-    v13->_options1 = a5;
+    v13->_url1 = [url copy];
+    v13->_options1 = options;
     v13->_url2 = [a6 copy];
     v13->_options2 = a7;
-    v13->super._claimerOrNil = [a8 copy];
+    v13->super._claimerOrNil = [claimer copy];
   }
 
   return v13;
@@ -43,7 +43,7 @@
   [(NSFileAccessClaim *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -51,16 +51,16 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileAccessClaims should only ever be encoded by XPC" userInfo:0]);
   }
 
-  [a3 encodeObject:+[NSURLPromisePair pairWithURL:](NSURLPromisePair forKey:{"pairWithURL:", self->_url1), @"NSURLPair1Key"}];
-  [a3 encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_options1), @"NSOptions1Key"}];
-  [a3 encodeObject:+[NSURLPromisePair pairWithURL:](NSURLPromisePair forKey:{"pairWithURL:", self->_url2), @"NSURLPair2Key"}];
-  [a3 encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_options2), @"NSOptions2Key"}];
+  [coder encodeObject:+[NSURLPromisePair pairWithURL:](NSURLPromisePair forKey:{"pairWithURL:", self->_url1), @"NSURLPair1Key"}];
+  [coder encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_options1), @"NSOptions1Key"}];
+  [coder encodeObject:+[NSURLPromisePair pairWithURL:](NSURLPromisePair forKey:{"pairWithURL:", self->_url2), @"NSURLPair2Key"}];
+  [coder encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_options2), @"NSOptions2Key"}];
   v5.receiver = self;
   v5.super_class = NSFileWritingWritingClaim;
-  [(NSFileAccessClaim *)&v5 encodeWithCoder:a3];
+  [(NSFileAccessClaim *)&v5 encodeWithCoder:coder];
 }
 
-- (NSFileWritingWritingClaim)initWithCoder:(id)a3
+- (NSFileWritingWritingClaim)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -74,23 +74,23 @@
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileAccessClaims should only ever be decoded by XPC" userInfo:0]);
     }
 
-    v4->_url1 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSURLPair1Key", "URL"}];
-    v4->_options1 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSOptions1Key", "unsignedIntegerValue"}];
-    v4->_url2 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSURLPair2Key", "URL"}];
-    v4->_options2 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSOptions2Key", "unsignedIntegerValue"}];
+    v4->_url1 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSURLPair1Key", "URL"}];
+    v4->_options1 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSOptions1Key", "unsignedIntegerValue"}];
+    v4->_url2 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSURLPair2Key", "URL"}];
+    v4->_options2 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSOptions2Key", "unsignedIntegerValue"}];
   }
 
   return v4;
 }
 
-- (void)forwardUsingConnection:(id)a3 crashHandler:(id)a4
+- (void)forwardUsingConnection:(id)connection crashHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = _NSFCClaimsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v12 = [(NSFileAccessClaim *)self claimID];
+    claimID = [(NSFileAccessClaim *)self claimID];
     _os_log_debug_impl(&dword_18075C000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ blocked pending grantAccessClaim", buf, 0xCu);
   }
 
@@ -100,8 +100,8 @@
   v10[2] = __65__NSFileWritingWritingClaim_forwardUsingConnection_crashHandler___block_invoke;
   v10[3] = &unk_1E69F61A0;
   v10[4] = self;
-  v10[5] = a4;
-  v8 = [a3 remoteObjectProxyWithErrorHandler:v10];
+  v10[5] = handler;
+  v8 = [connection remoteObjectProxyWithErrorHandler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__NSFileWritingWritingClaim_forwardUsingConnection_crashHandler___block_invoke_438;
@@ -211,12 +211,12 @@ LABEL_3:
   return [*(a1 + 32) unblock];
 }
 
-- (BOOL)evaluateSelfWithRootNode:(id)a3 checkSubarbitrability:(BOOL)a4
+- (BOOL)evaluateSelfWithRootNode:(id)node checkSubarbitrability:(BOOL)subarbitrability
 {
-  v4 = a4;
+  subarbitrabilityCopy = subarbitrability;
   v18[2] = *MEMORY[0x1E69E9840];
-  v7 = [a3 descendantForFileURL:self->_url1];
-  v8 = [a3 descendantForFileURL:self->_url2];
+  v7 = [node descendantForFileURL:self->_url1];
+  v8 = [node descendantForFileURL:self->_url2];
   if (v7)
   {
     v9 = v8 == 0;
@@ -234,7 +234,7 @@ LABEL_3:
 
   v11 = v8;
   v17 = 0;
-  if (!v4 || [(NSFileAccessNode *)v7 itemIsSubarbitrable]&& [(NSFileAccessNode *)v11 itemIsSubarbitrable])
+  if (!subarbitrabilityCopy || [(NSFileAccessNode *)v7 itemIsSubarbitrable]&& [(NSFileAccessNode *)v11 itemIsSubarbitrable])
   {
     v18[0] = v7;
     v18[1] = v11;
@@ -278,24 +278,24 @@ LABEL_3:
   return v10;
 }
 
-- (BOOL)isBlockedByReadingItemAtLocation:(id)a3 options:(unint64_t)a4
+- (BOOL)isBlockedByReadingItemAtLocation:(id)location options:(unint64_t)options
 {
   v7 = objc_opt_class();
   LOBYTE(v8) = 1;
-  if ([v7 canReadingItemAtLocation:a3 options:a4 safelyOverlapNewWriting:1 ofItemAtLocation:self->_location1 options:self->_options1])
+  if ([v7 canReadingItemAtLocation:location options:options safelyOverlapNewWriting:1 ofItemAtLocation:self->_location1 options:self->_options1])
   {
-    return [v7 canReadingItemAtLocation:a3 options:a4 safelyOverlapNewWriting:1 ofItemAtLocation:self->_location2 options:self->_options2] ^ 1;
+    return [v7 canReadingItemAtLocation:location options:options safelyOverlapNewWriting:1 ofItemAtLocation:self->_location2 options:self->_options2] ^ 1;
   }
 
   return v8;
 }
 
-- (BOOL)isBlockedByWritingItemAtLocation:(id)a3 options:(unint64_t)a4
+- (BOOL)isBlockedByWritingItemAtLocation:(id)location options:(unint64_t)options
 {
   v7 = objc_opt_class();
-  if ([v7 canNewWriteOfItemAtLocation:self->_location1 options:self->_options1 safelyOverlapExistingWriteOfItemAtLocation:a3 options:a4])
+  if ([v7 canNewWriteOfItemAtLocation:self->_location1 options:self->_options1 safelyOverlapExistingWriteOfItemAtLocation:location options:options])
   {
-    return [v7 canNewWriteOfItemAtLocation:self->_location2 options:self->_options2 safelyOverlapExistingWriteOfItemAtLocation:a3 options:a4] ^ 1;
+    return [v7 canNewWriteOfItemAtLocation:self->_location2 options:self->_options2 safelyOverlapExistingWriteOfItemAtLocation:location options:options] ^ 1;
   }
 
   else
@@ -514,24 +514,24 @@ uint64_t __36__NSFileWritingWritingClaim_granted__block_invoke_6(uint64_t a1)
   return result;
 }
 
-- (void)resolveURLsThenContinueInvokingClaimer:(id)a3
+- (void)resolveURLsThenContinueInvokingClaimer:(id)claimer
 {
   v13[7] = *MEMORY[0x1E69E9840];
   if ([(NSFileAccessClaim *)self didWait])
   {
-    v5 = [(NSFileAccessNode *)self->_location1 standardizedURL];
-    if (v5)
+    standardizedURL = [(NSFileAccessNode *)self->_location1 standardizedURL];
+    if (standardizedURL)
     {
-      v6 = v5;
+      v6 = standardizedURL;
 
       self->_url1 = [v6 copy];
       self->_url1DidChange = 1;
     }
 
-    v7 = [(NSFileAccessNode *)self->_location2 standardizedURL];
-    if (v7)
+    standardizedURL2 = [(NSFileAccessNode *)self->_location2 standardizedURL];
+    if (standardizedURL2)
     {
-      v8 = v7;
+      v8 = standardizedURL2;
 
       self->_url2 = [v8 copy];
       self->_url2DidChange = 1;
@@ -540,14 +540,14 @@ uint64_t __36__NSFileWritingWritingClaim_granted__block_invoke_6(uint64_t a1)
 
   if ([(NSFileAccessClaim *)self claimerError])
   {
-    v9 = *(a3 + 2);
+    v9 = *(claimer + 2);
 
-    v9(a3, 0, 0);
+    v9(claimer, 0, 0);
   }
 
   else
   {
-    v10 = [(NSFileAccessClaim *)self purposeID];
+    purposeID = [(NSFileAccessClaim *)self purposeID];
     location1 = self->_location1;
     options1 = self->_options1;
     v13[0] = MEMORY[0x1E69E9820];
@@ -555,9 +555,9 @@ uint64_t __36__NSFileWritingWritingClaim_granted__block_invoke_6(uint64_t a1)
     v13[2] = __68__NSFileWritingWritingClaim_resolveURLsThenContinueInvokingClaimer___block_invoke;
     v13[3] = &unk_1E69F85A0;
     v13[4] = self;
-    v13[5] = v10;
-    v13[6] = a3;
-    [(NSFileAccessClaim *)self makeProviderOfItemAtLocation:location1 provideOrAttachPhysicalURLIfNecessaryForPurposeID:v10 writingOptions:options1 thenContinue:v13];
+    v13[5] = purposeID;
+    v13[6] = claimer;
+    [(NSFileAccessClaim *)self makeProviderOfItemAtLocation:location1 provideOrAttachPhysicalURLIfNecessaryForPurposeID:purposeID writingOptions:options1 thenContinue:v13];
   }
 }
 
@@ -734,26 +734,26 @@ id __42__NSFileWritingWritingClaim_invokeClaimer__block_invoke(uint64_t a1, uint
   [(NSFileAccessClaim *)&v5 devalueSelf];
 }
 
-- (void)itemAtLocation:(id)a3 wasReplacedByItemAtLocation:(id)a4
+- (void)itemAtLocation:(id)location wasReplacedByItemAtLocation:(id)atLocation
 {
-  if (self->_location1 == a3)
+  if (self->_location1 == location)
   {
-    [a4 addAccessClaim:self];
-    [a3 removeAccessClaim:self];
-    self->_location1 = a4;
+    [atLocation addAccessClaim:self];
+    [location removeAccessClaim:self];
+    self->_location1 = atLocation;
   }
 
-  if (self->_location2 == a3)
+  if (self->_location2 == location)
   {
-    [a4 addAccessClaim:self];
-    [a3 removeAccessClaim:self];
-    self->_location2 = a4;
+    [atLocation addAccessClaim:self];
+    [location removeAccessClaim:self];
+    self->_location2 = atLocation;
   }
 }
 
-- (BOOL)blocksClaim:(id)a3
+- (BOOL)blocksClaim:(id)claim
 {
-  if ([a3 isBlockedByWritingItemAtLocation:self->_location1 options:self->_options1])
+  if ([claim isBlockedByWritingItemAtLocation:self->_location1 options:self->_options1])
   {
     return 1;
   }
@@ -761,16 +761,16 @@ id __42__NSFileWritingWritingClaim_invokeClaimer__block_invoke(uint64_t a1, uint
   location2 = self->_location2;
   options2 = self->_options2;
 
-  return [a3 isBlockedByWritingItemAtLocation:location2 options:options2];
+  return [claim isBlockedByWritingItemAtLocation:location2 options:options2];
 }
 
 - (id)allURLs
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_url1)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_url2)

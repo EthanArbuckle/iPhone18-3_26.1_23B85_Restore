@@ -1,15 +1,15 @@
 @interface FPXPCAutomaticErrorProxy
-- (FPXPCAutomaticErrorProxy)initWithRemoteObjectProxy:(id)a3 protocol:(id)a4 orError:(id)a5 name:(id)a6 requestPid:(int)a7 requestWillBegin:(id)a8 requestDidBegin:(id)a9;
-- (id)_requestWillBegin:(SEL)a3 requestID:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (FPXPCAutomaticErrorProxy)initWithRemoteObjectProxy:(id)proxy protocol:(id)protocol orError:(id)error name:(id)name requestPid:(int)pid requestWillBegin:(id)begin requestDidBegin:(id)didBegin;
+- (id)_requestWillBegin:(SEL)begin requestID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 - (id)synchronousRemoteObjectProxy;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_requestDidBegin:(SEL)a3 progress:(id)a4 requestID:(id)a5;
-- (void)_requestDidFinish:(id)a3 requestDidFinishBlock:(id)a4;
-- (void)forwardInvocation:(id)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_requestDidBegin:(SEL)begin progress:(id)progress requestID:(id)d;
+- (void)_requestDidFinish:(id)finish requestDidFinishBlock:(id)block;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation FPXPCAutomaticErrorProxy
@@ -18,38 +18,38 @@
 {
   if (self->_isSynchronous)
   {
-    v2 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [(FPXPCAutomaticErrorProxy *)self copy];
-    v2->_isSynchronous = 1;
+    selfCopy = [(FPXPCAutomaticErrorProxy *)self copy];
+    selfCopy->_isSynchronous = 1;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (FPXPCAutomaticErrorProxy)initWithRemoteObjectProxy:(id)a3 protocol:(id)a4 orError:(id)a5 name:(id)a6 requestPid:(int)a7 requestWillBegin:(id)a8 requestDidBegin:(id)a9
+- (FPXPCAutomaticErrorProxy)initWithRemoteObjectProxy:(id)proxy protocol:(id)protocol orError:(id)error name:(id)name requestPid:(int)pid requestWillBegin:(id)begin requestDidBegin:(id)didBegin
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
+  proxyCopy = proxy;
+  protocolCopy = protocol;
+  errorCopy = error;
+  nameCopy = name;
+  beginCopy = begin;
+  didBeginCopy = didBegin;
   v36.receiver = self;
   v36.super_class = FPXPCAutomaticErrorProxy;
   v20 = [(FPXPCAutomaticErrorProxy *)&v36 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_target, a3);
-    objc_storeStrong(&v21->_protocol, a4);
-    if (v16)
+    objc_storeStrong(&v20->_target, proxy);
+    objc_storeStrong(&v21->_protocol, protocol);
+    if (errorCopy)
     {
-      v22 = v16;
+      v22 = errorCopy;
       error = v21->_error;
       v21->_error = v22;
     }
@@ -66,13 +66,13 @@
       v21->_error = v26;
     }
 
-    objc_storeStrong(&v21->_name, a6);
-    v21->_pid = a7;
-    v28 = [v18 copy];
+    objc_storeStrong(&v21->_name, name);
+    v21->_pid = pid;
+    v28 = [beginCopy copy];
     requestWillBeginBlock = v21->_requestWillBeginBlock;
     v21->_requestWillBeginBlock = v28;
 
-    v30 = [v19 copy];
+    v30 = [didBeginCopy copy];
     requestDidBeginBlock = v21->_requestDidBeginBlock;
     v21->_requestDidBeginBlock = v30;
 
@@ -83,9 +83,9 @@
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v4 + 8), self->_target);
   objc_storeStrong((v4 + 16), self->_protocol);
   objc_storeStrong((v4 + 24), self->_error);
@@ -105,13 +105,13 @@
   return v4;
 }
 
-- (id)_requestWillBegin:(SEL)a3 requestID:(id)a4
+- (id)_requestWillBegin:(SEL)begin requestID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   requestWillBeginBlock = self->_requestWillBeginBlock;
   if (requestWillBeginBlock)
   {
-    v8 = requestWillBeginBlock[2](requestWillBeginBlock, self, a3, v6);
+    v8 = requestWillBeginBlock[2](requestWillBeginBlock, self, begin, dCopy);
     v9 = [v8 copy];
   }
 
@@ -130,23 +130,23 @@
   return v10;
 }
 
-- (void)_requestDidBegin:(SEL)a3 progress:(id)a4 requestID:(id)a5
+- (void)_requestDidBegin:(SEL)begin progress:(id)progress requestID:(id)d
 {
   requestDidBeginBlock = self->_requestDidBeginBlock;
   if (requestDidBeginBlock)
   {
-    requestDidBeginBlock[2](requestDidBeginBlock, self, a3, a5, a4);
+    requestDidBeginBlock[2](requestDidBeginBlock, self, begin, d, progress);
   }
 }
 
-- (void)_requestDidFinish:(id)a3 requestDidFinishBlock:(id)a4
+- (void)_requestDidFinish:(id)finish requestDidFinishBlock:(id)block
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  finishCopy = finish;
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
-    (*(v6 + 2))(v6, self, v9);
+    (*(blockCopy + 2))(blockCopy, self, finishCopy);
   }
 
   if (atomic_fetch_add(&self->_retainCounter, 0xFFFFFFFFFFFFFFFFLL) == 1)
@@ -156,18 +156,18 @@
   }
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"FPXPCAutomaticErrorProxy.m" lineNumber:178 description:@"Use the methods from FPXPCAutomaticErrorProxy"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FPXPCAutomaticErrorProxy.m" lineNumber:178 description:@"Use the methods from FPXPCAutomaticErrorProxy"];
 
   return 0;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"FPXPCAutomaticErrorProxy.m" lineNumber:184 description:@"Use the methods from FPXPCAutomaticErrorProxy"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FPXPCAutomaticErrorProxy.m" lineNumber:184 description:@"Use the methods from FPXPCAutomaticErrorProxy"];
 
   return 0;
 }
@@ -176,24 +176,24 @@
 {
   if (self->_isSynchronous)
   {
-    v2 = [(FPXPCAutomaticErrorProxy *)self copy];
-    v2->_isSynchronous = 0;
+    selfCopy = [(FPXPCAutomaticErrorProxy *)self copy];
+    selfCopy->_isSynchronous = 0;
   }
 
   else
   {
-    v2 = self;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v88 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v47 = [v4 methodSignature];
-  v5 = [v47 fp_indexOfLastArgumentWithType:"@?"];
+  invocationCopy = invocation;
+  methodSignature = [invocationCopy methodSignature];
+  v5 = [methodSignature fp_indexOfLastArgumentWithType:"@?"];
   v6 = MEMORY[0x1E696AD98];
   atomic_fetch_add_explicit(&_requestIDCounter, 1uLL, memory_order_relaxed);
   v50 = [v6 numberWithUnsignedLongLong:?];
@@ -202,7 +202,7 @@
   v7 = telemetry_default_log();
   spid = os_signpost_id_generate(v7);
 
-  v8 = NSStringFromSelector([v4 selector]);
+  v8 = NSStringFromSelector([invocationCopy selector]);
   if (forwardInvocation__once_token != -1)
   {
     [FPXPCAutomaticErrorProxy forwardInvocation:];
@@ -271,7 +271,7 @@
   *&buf[16] = 0x3032000000;
   v86 = __Block_byref_object_copy__25;
   *&v87 = __Block_byref_object_dispose__25;
-  *(&v87 + 1) = -[FPXPCAutomaticErrorProxy _requestWillBegin:requestID:](self, "_requestWillBegin:requestID:", [v4 selector], v50);
+  *(&v87 + 1) = -[FPXPCAutomaticErrorProxy _requestWillBegin:requestID:](self, "_requestWillBegin:requestID:", [invocationCopy selector], v50);
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v17 = 0;
@@ -280,7 +280,7 @@
   else
   {
     *v84 = 0;
-    [v4 getArgument:v84 atIndex:v5];
+    [invocationCopy getArgument:v84 atIndex:v5];
     v16 = _Block_copy(*v84);
     v17 = _Block_signature(v16);
     v18 = self->_name;
@@ -305,9 +305,9 @@
     v20 = v83;
     v83 = v19;
 
-    [v4 _addAttachedObject:v83];
-    [v4 _addAttachedObject:self];
-    [v4 setArgument:&v83 atIndex:v5];
+    [invocationCopy _addAttachedObject:v83];
+    [invocationCopy _addAttachedObject:self];
+    [invocationCopy setArgument:&v83 atIndex:v5];
 
     objc_destroyWeak(v75);
     objc_destroyWeak(&location);
@@ -324,8 +324,8 @@
   v59 = spid;
   v22 = v9;
   v53 = v22;
-  v54 = self;
-  v23 = v4;
+  selfCopy = self;
+  v23 = invocationCopy;
   v63 = v46;
   v55 = v23;
   v60 = v17;
@@ -354,11 +354,11 @@
   }
   v28 = ;
   [v28 forwardInvocation:v23];
-  v29 = [v23 methodSignature];
-  v30 = v29;
-  v31 = [v29 methodReturnType];
+  methodSignature2 = [v23 methodSignature];
+  v30 = methodSignature2;
+  methodReturnType = [methodSignature2 methodReturnType];
 
-  if (*v31 == 64 && !v31[1])
+  if (*methodReturnType == 64 && !methodReturnType[1])
   {
     v51 = 0;
     [v23 getReturnValue:&v51];
@@ -403,9 +403,9 @@ LABEL_28:
     if ((spid - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v38))
     {
       v40 = v24;
-      v41 = [v24 UTF8String];
+      uTF8String = [v24 UTF8String];
       *v84 = 136446210;
-      *&v84[4] = v41;
+      *&v84[4] = uTF8String;
       _os_signpost_emit_with_name_impl(&dword_1AAAE1000, v39, OS_SIGNPOST_INTERVAL_BEGIN, spid, "ClientXPC", "selector=%{public,signpost.telemetry:string1,name=selector}s", v84, 0xCu);
     }
   }
@@ -559,17 +559,17 @@ LABEL_13:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   target = self->_target;
   if (target)
   {
-    [(NSXPCProxyCreating *)target methodSignatureForSelector:a3];
+    [(NSXPCProxyCreating *)target methodSignatureForSelector:selector];
   }
 
   else
   {
-    [MEMORY[0x1E695DF68] signatureWithObjCTypes:{protocol_getMethodDescription(self[16], a3, 1, 1).types}];
+    [MEMORY[0x1E695DF68] signatureWithObjCTypes:{protocol_getMethodDescription(self[16], selector, 1, 1).types}];
   }
   v5 = ;
 

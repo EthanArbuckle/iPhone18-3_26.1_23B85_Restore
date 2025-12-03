@@ -8,35 +8,35 @@
 
 - (id)_musicKit_self_insertAfterLastSectionCommand
 {
-  if ([a1 conformsToProtocol:&unk_1F50DD758])
+  if ([self conformsToProtocol:&unk_1F50DD758])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)musicKit_sectionMetadataObject
 {
-  v1 = [a1 _musicKit_self_insertAfterLastSectionCommand];
-  v2 = [v1 section];
-  v3 = [v2 metadataObject];
+  _musicKit_self_insertAfterLastSectionCommand = [self _musicKit_self_insertAfterLastSectionCommand];
+  section = [_musicKit_self_insertAfterLastSectionCommand section];
+  metadataObject = [section metadataObject];
 
-  return v3;
+  return metadataObject;
 }
 
 - (id)musicKit_insertWithPlaybackIntent:()MusicKit_SoftLinking_MPCPlayerInsertAfterLastSectionCommand
 {
   v4 = a3;
-  v5 = [a1 _musicKit_self_insertAfterLastSectionCommand];
-  v6 = [v4 _underlyingPlaybackIntent];
+  _musicKit_self_insertAfterLastSectionCommand = [self _musicKit_self_insertAfterLastSectionCommand];
+  _underlyingPlaybackIntent = [v4 _underlyingPlaybackIntent];
 
-  v7 = [v5 insertWithPlaybackIntent:v6];
+  v7 = [_musicKit_self_insertAfterLastSectionCommand insertWithPlaybackIntent:_underlyingPlaybackIntent];
 
   return v7;
 }

@@ -19,23 +19,23 @@
 
     [(MKDeveloperPlaceCardLoadingActivityIndicatorView *)v2->_activityIndicatorView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MKCompactDeveloperPlaceCardLoadingView *)v2 addSubview:v2->_activityIndicatorView];
-    v5 = [(MKCompactDeveloperPlaceCardLoadingView *)v2 widthAnchor];
-    v6 = [v5 constraintGreaterThanOrEqualToConstant:240.0];
+    widthAnchor = [(MKCompactDeveloperPlaceCardLoadingView *)v2 widthAnchor];
+    v6 = [widthAnchor constraintGreaterThanOrEqualToConstant:240.0];
 
     LODWORD(v7) = 1144750080;
     [v6 setPriority:v7];
     v17 = MEMORY[0x1E696ACD8];
-    v18 = [(MKDeveloperPlaceCardLoadingActivityIndicatorView *)v2->_activityIndicatorView centerXAnchor];
-    v8 = [(MKCompactDeveloperPlaceCardLoadingView *)v2 centerXAnchor];
-    v9 = [v18 constraintEqualToAnchor:v8];
+    centerXAnchor = [(MKDeveloperPlaceCardLoadingActivityIndicatorView *)v2->_activityIndicatorView centerXAnchor];
+    centerXAnchor2 = [(MKCompactDeveloperPlaceCardLoadingView *)v2 centerXAnchor];
+    v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v20[0] = v9;
-    v10 = [(MKDeveloperPlaceCardLoadingActivityIndicatorView *)v2->_activityIndicatorView centerYAnchor];
-    v11 = [(MKCompactDeveloperPlaceCardLoadingView *)v2 centerYAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    centerYAnchor = [(MKDeveloperPlaceCardLoadingActivityIndicatorView *)v2->_activityIndicatorView centerYAnchor];
+    centerYAnchor2 = [(MKCompactDeveloperPlaceCardLoadingView *)v2 centerYAnchor];
+    v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v20[1] = v12;
     v20[2] = v6;
-    v13 = [(MKCompactDeveloperPlaceCardLoadingView *)v2 heightAnchor];
-    v14 = [v13 constraintGreaterThanOrEqualToConstant:100.0];
+    heightAnchor = [(MKCompactDeveloperPlaceCardLoadingView *)v2 heightAnchor];
+    v14 = [heightAnchor constraintGreaterThanOrEqualToConstant:100.0];
     v20[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:4];
     [v17 activateConstraints:v15];

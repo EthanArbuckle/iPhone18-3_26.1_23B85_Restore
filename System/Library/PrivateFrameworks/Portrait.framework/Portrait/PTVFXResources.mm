@@ -1,13 +1,13 @@
 @interface PTVFXResources
-- (void)asyncVFXInit:(id)a3 metalContext:(id)a4;
+- (void)asyncVFXInit:(id)init metalContext:(id)context;
 @end
 
 @implementation PTVFXResources
 
-- (void)asyncVFXInit:(id)a3 metalContext:(id)a4
+- (void)asyncVFXInit:(id)init metalContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  initCopy = init;
+  contextCopy = context;
   objc_initWeak(&location, self);
   [(PTVFXResources *)self setReactionTemplates:MEMORY[0x277CBEBF8]];
   block[0] = MEMORY[0x277D85DD0];
@@ -15,9 +15,9 @@
   block[2] = __44__PTVFXResources_asyncVFXInit_metalContext___block_invoke;
   block[3] = &unk_2785233B0;
   objc_copyWeak(&v11, &location);
-  v10 = v7;
-  v8 = v7;
-  dispatch_async(v6, block);
+  v10 = contextCopy;
+  v8 = contextCopy;
+  dispatch_async(initCopy, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

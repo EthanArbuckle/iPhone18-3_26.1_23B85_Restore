@@ -1,31 +1,31 @@
 @interface MTATimerCellView
-+ (double)estimatedHeightForTimerWithTitle:(id)a3;
-- (MTATimerCellView)initWithDelegate:(id)a3;
-- (MTATimerCellView)initWithFrame:(CGRect)a3;
++ (double)estimatedHeightForTimerWithTitle:(id)title;
+- (MTATimerCellView)initWithDelegate:(id)delegate;
+- (MTATimerCellView)initWithFrame:(CGRect)frame;
 - (MTATimerCellViewDelegate)delegate;
-- (void)didTapPauseResumeButton:(id)a3;
+- (void)didTapPauseResumeButton:(id)button;
 - (void)localSetup;
-- (void)processCountdownState:(unint64_t)a3 previousState:(unint64_t)a4 remainingTime:(double)a5 duration:(double)a6 forceRefresh:(BOOL)a7;
-- (void)setDurationWithInterval:(double)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setRemainingTime:(double)a3 duration:(double)a4 state:(unint64_t)a5 title:(id)a6 forceRefresh:(BOOL)a7;
-- (void)setState:(unint64_t)a3 animate:(BOOL)a4;
+- (void)processCountdownState:(unint64_t)state previousState:(unint64_t)previousState remainingTime:(double)time duration:(double)duration forceRefresh:(BOOL)refresh;
+- (void)setDurationWithInterval:(double)interval;
+- (void)setEditing:(BOOL)editing;
+- (void)setRemainingTime:(double)time duration:(double)duration state:(unint64_t)state title:(id)title forceRefresh:(BOOL)refresh;
+- (void)setState:(unint64_t)state animate:(BOOL)animate;
 - (void)setupControlButton;
 - (void)setupCountdownLabel;
 - (void)setupCountdownView;
 - (void)setupDurationLabel;
 - (void)setupLayoutConstraints;
-- (void)tickWithTimer:(id)a3;
-- (void)updateControlButtonWithState:(unint64_t)a3;
-- (void)updateLabelColorForState:(unint64_t)a3;
+- (void)tickWithTimer:(id)timer;
+- (void)updateControlButtonWithState:(unint64_t)state;
+- (void)updateLabelColorForState:(unint64_t)state;
 @end
 
 @implementation MTATimerCellView
 
-+ (double)estimatedHeightForTimerWithTitle:(id)a3
++ (double)estimatedHeightForTimerWithTitle:(id)title
 {
   v20 = NSFontAttributeName;
-  v3 = a3;
+  titleCopy = title;
   v4 = +[UIFont mtui_thinTimeFont];
   v21 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
@@ -41,33 +41,33 @@
   v19 = v11;
   v12 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v13 = objc_opt_new();
-  [v3 boundingRectWithSize:1 options:v12 attributes:v13 context:{v10, 1.79769313e308}];
+  [titleCopy boundingRectWithSize:1 options:v12 attributes:v13 context:{v10, 1.79769313e308}];
   v15 = v14;
 
   v16 = v7 + v15 + 8.0 * 2.0;
   return ceilf(v16);
 }
 
-- (MTATimerCellView)initWithDelegate:(id)a3
+- (MTATimerCellView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = MTATimerCellView;
   v5 = [(MTATimerCellView *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MTATimerCellView *)v5 setDelegate:v4];
+    [(MTATimerCellView *)v5 setDelegate:delegateCopy];
   }
 
   return v6;
 }
 
-- (MTATimerCellView)initWithFrame:(CGRect)a3
+- (MTATimerCellView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MTATimerCellView;
-  v3 = [(MTATimerCellView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTATimerCellView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -84,11 +84,11 @@
   [(MTATimerCellView *)self setupCountdownView];
   [(MTATimerCellView *)self setupControlButton];
   [(MTATimerCellView *)self setupLayoutConstraints];
-  v3 = [(MTATimerCellView *)self countDownLabel];
-  [v3 setText:@"5:00"];
+  countDownLabel = [(MTATimerCellView *)self countDownLabel];
+  [countDownLabel setText:@"5:00"];
 
-  v4 = [(MTATimerCellView *)self durationLabel];
-  [v4 setText:@"15:00"];
+  durationLabel = [(MTATimerCellView *)self durationLabel];
+  [durationLabel setText:@"15:00"];
 }
 
 - (void)setupCountdownLabel
@@ -96,22 +96,22 @@
   v3 = objc_opt_new();
   [(MTATimerCellView *)self setCountDownLabel:v3];
 
-  v4 = [(MTATimerCellView *)self countDownLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  countDownLabel = [(MTATimerCellView *)self countDownLabel];
+  [countDownLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = +[UIColor whiteColor];
-  v6 = [(MTATimerCellView *)self countDownLabel];
-  [v6 setTextColor:v5];
+  countDownLabel2 = [(MTATimerCellView *)self countDownLabel];
+  [countDownLabel2 setTextColor:v5];
 
   v7 = +[UIFont mtui_thinTimeFont];
-  v8 = [(MTATimerCellView *)self countDownLabel];
-  [v8 setFont:v7];
+  countDownLabel3 = [(MTATimerCellView *)self countDownLabel];
+  [countDownLabel3 setFont:v7];
 
-  v9 = [(MTATimerCellView *)self countDownLabel];
-  [v9 setAdjustsFontSizeToFitWidth:1];
+  countDownLabel4 = [(MTATimerCellView *)self countDownLabel];
+  [countDownLabel4 setAdjustsFontSizeToFitWidth:1];
 
-  v10 = [(MTATimerCellView *)self countDownLabel];
-  [(MTATimerCellView *)self addSubview:v10];
+  countDownLabel5 = [(MTATimerCellView *)self countDownLabel];
+  [(MTATimerCellView *)self addSubview:countDownLabel5];
 }
 
 - (void)setupDurationLabel
@@ -119,24 +119,24 @@
   v3 = objc_opt_new();
   [(MTATimerCellView *)self setDurationLabel:v3];
 
-  v4 = [(MTATimerCellView *)self durationLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  durationLabel = [(MTATimerCellView *)self durationLabel];
+  [durationLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = +[UIColor secondaryLabelColor];
-  v6 = [(MTATimerCellView *)self durationLabel];
-  [v6 setTextColor:v5];
+  durationLabel2 = [(MTATimerCellView *)self durationLabel];
+  [durationLabel2 setTextColor:v5];
 
-  v7 = [(MTATimerCellView *)self durationLabel];
-  [v7 setNumberOfLines:0];
+  durationLabel3 = [(MTATimerCellView *)self durationLabel];
+  [durationLabel3 setNumberOfLines:0];
 
-  v8 = [(MTATimerCellView *)self durationLabel];
-  [v8 setLineBreakMode:0];
+  durationLabel4 = [(MTATimerCellView *)self durationLabel];
+  [durationLabel4 setLineBreakMode:0];
 
-  v9 = [(MTATimerCellView *)self durationLabel];
-  [v9 setAdjustsFontSizeToFitWidth:0];
+  durationLabel5 = [(MTATimerCellView *)self durationLabel];
+  [durationLabel5 setAdjustsFontSizeToFitWidth:0];
 
-  v10 = [(MTATimerCellView *)self durationLabel];
-  [(MTATimerCellView *)self addSubview:v10];
+  durationLabel6 = [(MTATimerCellView *)self durationLabel];
+  [(MTATimerCellView *)self addSubview:durationLabel6];
 }
 
 - (void)setupCountdownView
@@ -147,11 +147,11 @@
   v5 = [v3 initWithBarColor:v4 backgroundBarColor:v8 barWidth:4.0];
   [(MTATimerCellView *)self setCountDownView:v5];
 
-  v6 = [(MTATimerCellView *)self countDownView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  countDownView = [(MTATimerCellView *)self countDownView];
+  [countDownView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(MTATimerCellView *)self countDownView];
-  [(MTATimerCellView *)self addSubview:v7];
+  countDownView2 = [(MTATimerCellView *)self countDownView];
+  [(MTATimerCellView *)self addSubview:countDownView2];
 }
 
 - (void)setupControlButton
@@ -159,18 +159,18 @@
   v3 = [UIButton buttonWithType:0];
   [(MTATimerCellView *)self setControlButton:v3];
 
-  v4 = [(MTATimerCellView *)self controlButton];
-  [v4 _setTouchInsets:{-30.0, -30.0, -30.0, -30.0}];
+  controlButton = [(MTATimerCellView *)self controlButton];
+  [controlButton _setTouchInsets:{-30.0, -30.0, -30.0, -30.0}];
 
-  v5 = [(MTATimerCellView *)self controlButton];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  controlButton2 = [(MTATimerCellView *)self controlButton];
+  [controlButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(MTATimerCellView *)self updateControlButtonWithState:3];
-  v6 = [(MTATimerCellView *)self controlButton];
-  [v6 addTarget:self action:"didTapPauseResumeButton:" forControlEvents:64];
+  controlButton3 = [(MTATimerCellView *)self controlButton];
+  [controlButton3 addTarget:self action:"didTapPauseResumeButton:" forControlEvents:64];
 
-  v7 = [(MTATimerCellView *)self controlButton];
-  [(MTATimerCellView *)self addSubview:v7];
+  controlButton4 = [(MTATimerCellView *)self controlButton];
+  [(MTATimerCellView *)self addSubview:controlButton4];
 }
 
 - (void)setupLayoutConstraints
@@ -186,168 +186,168 @@
   v6 = objc_opt_new();
   [v6 setIdentifier:@"cellContentLayoutGuide"];
   [(MTATimerCellView *)self addLayoutGuide:v6];
-  v7 = [v6 leadingAnchor];
-  v8 = [(MTATimerCellView *)self leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 constant:16.0];
+  leadingAnchor = [v6 leadingAnchor];
+  leadingAnchor2 = [(MTATimerCellView *)self leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v111 addObject:v9];
 
-  v10 = [v6 trailingAnchor];
-  v11 = [(MTATimerCellView *)self trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:-((84.0 - 64.0) * 0.5 + 16.0)];
+  trailingAnchor = [v6 trailingAnchor];
+  trailingAnchor2 = [(MTATimerCellView *)self trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-((84.0 - 64.0) * 0.5 + 16.0)];
   [v111 addObject:v12];
 
-  v13 = [v6 topAnchor];
-  v14 = [(MTATimerCellView *)self topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:8.0];
+  topAnchor = [v6 topAnchor];
+  topAnchor2 = [(MTATimerCellView *)self topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
   [v111 addObject:v15];
 
-  v16 = [v6 bottomAnchor];
-  v17 = [(MTATimerCellView *)self bottomAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:-8.0];
+  bottomAnchor = [v6 bottomAnchor];
+  bottomAnchor2 = [(MTATimerCellView *)self bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
   [v111 addObject:v18];
 
-  v19 = [v3 leadingAnchor];
-  v20 = [v6 leadingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  leadingAnchor3 = [v3 leadingAnchor];
+  leadingAnchor4 = [v6 leadingAnchor];
+  v21 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v111 addObject:v21];
 
-  v22 = [v3 centerYAnchor];
-  v23 = [v6 centerYAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  centerYAnchor = [v3 centerYAnchor];
+  centerYAnchor2 = [v6 centerYAnchor];
+  v24 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v111 addObject:v24];
 
-  v25 = [v3 trailingAnchor];
+  trailingAnchor3 = [v3 trailingAnchor];
   v26 = v5;
-  v27 = [v5 leadingAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27 constant:16.0 * -0.5];
+  leadingAnchor5 = [v5 leadingAnchor];
+  v28 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5 constant:16.0 * -0.5];
   [v111 addObject:v28];
 
-  v29 = [v5 centerYAnchor];
-  v30 = [v6 centerYAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  centerYAnchor3 = [v5 centerYAnchor];
+  centerYAnchor4 = [v6 centerYAnchor];
+  v31 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v111 addObject:v31];
 
-  v32 = [v5 trailingAnchor];
-  v33 = [v6 trailingAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  trailingAnchor4 = [v5 trailingAnchor];
+  trailingAnchor5 = [v6 trailingAnchor];
+  v34 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   [v111 addObject:v34];
 
-  v35 = [(MTATimerCellView *)self countDownLabel];
-  v36 = [v35 leadingAnchor];
-  v37 = [v3 leadingAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  countDownLabel = [(MTATimerCellView *)self countDownLabel];
+  leadingAnchor6 = [countDownLabel leadingAnchor];
+  leadingAnchor7 = [v3 leadingAnchor];
+  v38 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   [v111 addObject:v38];
 
-  v39 = [(MTATimerCellView *)self countDownLabel];
-  v40 = [v39 trailingAnchor];
-  v41 = [(MTATimerCellView *)self controlButton];
-  v42 = [v41 leadingAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42 constant:-30.0];
+  countDownLabel2 = [(MTATimerCellView *)self countDownLabel];
+  trailingAnchor6 = [countDownLabel2 trailingAnchor];
+  controlButton = [(MTATimerCellView *)self controlButton];
+  leadingAnchor8 = [controlButton leadingAnchor];
+  v43 = [trailingAnchor6 constraintEqualToAnchor:leadingAnchor8 constant:-30.0];
   [v111 addObject:v43];
 
-  v44 = [(MTATimerCellView *)self countDownLabel];
-  v45 = [v44 topAnchor];
-  v46 = [v3 topAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  countDownLabel3 = [(MTATimerCellView *)self countDownLabel];
+  topAnchor3 = [countDownLabel3 topAnchor];
+  topAnchor4 = [v3 topAnchor];
+  v47 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v111 addObject:v47];
 
-  v48 = [(MTATimerCellView *)self countDownLabel];
-  v49 = [v48 bottomAnchor];
-  v50 = [(MTATimerCellView *)self durationLabel];
-  v51 = [v50 topAnchor];
-  v52 = [v49 constraintEqualToAnchor:v51];
+  countDownLabel4 = [(MTATimerCellView *)self countDownLabel];
+  bottomAnchor3 = [countDownLabel4 bottomAnchor];
+  durationLabel = [(MTATimerCellView *)self durationLabel];
+  topAnchor5 = [durationLabel topAnchor];
+  v52 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5];
   [v111 addObject:v52];
 
-  v53 = [(MTATimerCellView *)self durationLabel];
-  v54 = [v53 leadingAnchor];
-  v55 = [v3 leadingAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55];
+  durationLabel2 = [(MTATimerCellView *)self durationLabel];
+  leadingAnchor9 = [durationLabel2 leadingAnchor];
+  leadingAnchor10 = [v3 leadingAnchor];
+  v56 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   [v111 addObject:v56];
 
-  v57 = [(MTATimerCellView *)self durationLabel];
-  v58 = [v57 trailingAnchor];
+  durationLabel3 = [(MTATimerCellView *)self durationLabel];
+  trailingAnchor7 = [durationLabel3 trailingAnchor];
   v110 = v3;
-  v59 = [v3 trailingAnchor];
-  v60 = [v58 constraintEqualToAnchor:v59];
+  trailingAnchor8 = [v3 trailingAnchor];
+  v60 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   [v111 addObject:v60];
 
-  v61 = [(MTATimerCellView *)self durationLabel];
-  v62 = [v61 bottomAnchor];
-  v63 = [v3 bottomAnchor];
-  v64 = [v62 constraintEqualToAnchor:v63];
+  durationLabel4 = [(MTATimerCellView *)self durationLabel];
+  bottomAnchor4 = [durationLabel4 bottomAnchor];
+  bottomAnchor5 = [v3 bottomAnchor];
+  v64 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   [v111 addObject:v64];
 
-  v65 = [(MTATimerCellView *)self countDownView];
-  v66 = [v65 heightAnchor];
-  v67 = [v66 constraintEqualToConstant:64.0];
+  countDownView = [(MTATimerCellView *)self countDownView];
+  heightAnchor = [countDownView heightAnchor];
+  v67 = [heightAnchor constraintEqualToConstant:64.0];
   [v111 addObject:v67];
 
-  v68 = [(MTATimerCellView *)self countDownView];
-  v69 = [v68 widthAnchor];
-  v70 = [(MTATimerCellView *)self countDownView];
-  v71 = [v70 heightAnchor];
-  v72 = [v69 constraintEqualToAnchor:v71];
+  countDownView2 = [(MTATimerCellView *)self countDownView];
+  widthAnchor = [countDownView2 widthAnchor];
+  countDownView3 = [(MTATimerCellView *)self countDownView];
+  heightAnchor2 = [countDownView3 heightAnchor];
+  v72 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
   [v111 addObject:v72];
 
-  v73 = [(MTATimerCellView *)self countDownView];
-  v74 = [v73 leadingAnchor];
+  countDownView4 = [(MTATimerCellView *)self countDownView];
+  leadingAnchor11 = [countDownView4 leadingAnchor];
   v75 = v26;
-  v76 = [v26 leadingAnchor];
-  v77 = [v74 constraintEqualToAnchor:v76];
+  leadingAnchor12 = [v26 leadingAnchor];
+  v77 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
   [v111 addObject:v77];
 
-  v78 = [(MTATimerCellView *)self countDownView];
-  v79 = [v78 trailingAnchor];
-  v80 = [v26 trailingAnchor];
-  v81 = [v79 constraintEqualToAnchor:v80];
+  countDownView5 = [(MTATimerCellView *)self countDownView];
+  trailingAnchor9 = [countDownView5 trailingAnchor];
+  trailingAnchor10 = [v26 trailingAnchor];
+  v81 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   [v111 addObject:v81];
 
-  v82 = [(MTATimerCellView *)self countDownView];
-  v83 = [v82 topAnchor];
-  v84 = [(MTATimerCellView *)self countDownLabel];
-  v85 = [v84 firstBaselineAnchor];
-  v86 = [(MTATimerCellView *)self countDownLabel];
-  v87 = [v86 font];
-  [v87 capHeight];
-  v89 = [v83 constraintEqualToAnchor:v85 constant:-(v88 + 2.0)];
+  countDownView6 = [(MTATimerCellView *)self countDownView];
+  topAnchor6 = [countDownView6 topAnchor];
+  countDownLabel5 = [(MTATimerCellView *)self countDownLabel];
+  firstBaselineAnchor = [countDownLabel5 firstBaselineAnchor];
+  countDownLabel6 = [(MTATimerCellView *)self countDownLabel];
+  font = [countDownLabel6 font];
+  [font capHeight];
+  v89 = [topAnchor6 constraintEqualToAnchor:firstBaselineAnchor constant:-(v88 + 2.0)];
   [v111 addObject:v89];
 
-  v90 = [(MTATimerCellView *)self countDownView];
-  v91 = [v90 bottomAnchor];
-  v92 = [v75 bottomAnchor];
-  v93 = [v91 constraintEqualToAnchor:v92];
+  countDownView7 = [(MTATimerCellView *)self countDownView];
+  bottomAnchor6 = [countDownView7 bottomAnchor];
+  bottomAnchor7 = [v75 bottomAnchor];
+  v93 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   [v111 addObject:v93];
 
-  v94 = [(MTATimerCellView *)self controlButton];
-  v95 = [v94 heightAnchor];
-  v96 = [v95 constraintEqualToConstant:30.0];
+  controlButton2 = [(MTATimerCellView *)self controlButton];
+  heightAnchor3 = [controlButton2 heightAnchor];
+  v96 = [heightAnchor3 constraintEqualToConstant:30.0];
   [v111 addObject:v96];
 
-  v97 = [(MTATimerCellView *)self controlButton];
-  v98 = [v97 widthAnchor];
-  v99 = [v98 constraintEqualToConstant:30.0];
+  controlButton3 = [(MTATimerCellView *)self controlButton];
+  widthAnchor2 = [controlButton3 widthAnchor];
+  v99 = [widthAnchor2 constraintEqualToConstant:30.0];
   [v111 addObject:v99];
 
-  v100 = [(MTATimerCellView *)self controlButton];
-  v101 = [v100 centerXAnchor];
-  v102 = [(MTATimerCellView *)self countDownView];
-  v103 = [v102 centerXAnchor];
-  v104 = [v101 constraintEqualToAnchor:v103];
+  controlButton4 = [(MTATimerCellView *)self controlButton];
+  centerXAnchor = [controlButton4 centerXAnchor];
+  countDownView8 = [(MTATimerCellView *)self countDownView];
+  centerXAnchor2 = [countDownView8 centerXAnchor];
+  v104 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v111 addObject:v104];
 
-  v105 = [(MTATimerCellView *)self controlButton];
-  v106 = [v105 centerYAnchor];
-  v107 = [(MTATimerCellView *)self countDownView];
-  v108 = [v107 centerYAnchor];
-  v109 = [v106 constraintEqualToAnchor:v108];
+  controlButton5 = [(MTATimerCellView *)self controlButton];
+  centerYAnchor5 = [controlButton5 centerYAnchor];
+  countDownView9 = [(MTATimerCellView *)self countDownView];
+  centerYAnchor6 = [countDownView9 centerYAnchor];
+  v109 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   [v111 addObject:v109];
 
   [NSLayoutConstraint activateConstraints:v111];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (a3)
+  if (editing)
   {
     v4 = 0.0;
   }
@@ -357,97 +357,97 @@
     v4 = 1.0;
   }
 
-  v5 = [(MTATimerCellView *)self countDownView];
-  [v5 setAlpha:v4];
+  countDownView = [(MTATimerCellView *)self countDownView];
+  [countDownView setAlpha:v4];
 
-  v6 = [(MTATimerCellView *)self controlButton];
-  [v6 setAlpha:v4];
+  controlButton = [(MTATimerCellView *)self controlButton];
+  [controlButton setAlpha:v4];
 }
 
-- (void)tickWithTimer:(id)a3
+- (void)tickWithTimer:(id)timer
 {
-  v4 = a3;
-  [v4 remainingTime];
-  [v4 state];
+  timerCopy = timer;
+  [timerCopy remainingTime];
+  [timerCopy state];
 
   v6 = FormatTime();
-  v5 = [(MTATimerCellView *)self countDownLabel];
-  [v5 setText:v6];
+  countDownLabel = [(MTATimerCellView *)self countDownLabel];
+  [countDownLabel setText:v6];
 }
 
-- (void)setRemainingTime:(double)a3 duration:(double)a4 state:(unint64_t)a5 title:(id)a6 forceRefresh:(BOOL)a7
+- (void)setRemainingTime:(double)time duration:(double)duration state:(unint64_t)state title:(id)title forceRefresh:(BOOL)refresh
 {
-  v7 = a7;
-  v12 = a6;
+  refreshCopy = refresh;
+  titleCopy = title;
   v13 = MTLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138544898;
-    v19 = self;
+    selfCopy = self;
     v20 = 2048;
-    v21 = a3;
+    timeCopy = time;
     v22 = 2048;
-    v23 = a4;
+    durationCopy = duration;
     v24 = 2048;
-    v25 = a5;
+    stateCopy = state;
     v26 = 2048;
-    v27 = [(MTATimerCellView *)self state];
+    state = [(MTATimerCellView *)self state];
     v28 = 2114;
-    v29 = v12;
+    v29 = titleCopy;
     v30 = 1024;
-    v31 = v7;
+    v31 = refreshCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ setRemainingTime: %f, duration: %f, new state: %li, currentState: %li, title: %{public}@, forceRefresh: %i", &v18, 0x44u);
   }
 
-  [(MTATimerCellView *)self processCountdownState:a5 previousState:[(MTATimerCellView *)self state] remainingTime:v7 duration:a3 forceRefresh:a4];
-  v14 = [(MTATimerCellView *)self countDownView];
-  [v14 setNeedsLayout];
+  [(MTATimerCellView *)self processCountdownState:state previousState:[(MTATimerCellView *)self state] remainingTime:refreshCopy duration:time forceRefresh:duration];
+  countDownView = [(MTATimerCellView *)self countDownView];
+  [countDownView setNeedsLayout];
 
-  [(MTATimerCellView *)self setState:a5];
-  [(MTATimerCellView *)self updateControlButtonWithState:a5];
-  [(MTATimerCellView *)self updateLabelColorForState:a5];
-  if ([v12 length])
+  [(MTATimerCellView *)self setState:state];
+  [(MTATimerCellView *)self updateControlButtonWithState:state];
+  [(MTATimerCellView *)self updateLabelColorForState:state];
+  if ([titleCopy length])
   {
-    v15 = [(MTATimerCellView *)self durationLabel];
-    [v15 setText:v12];
+    durationLabel = [(MTATimerCellView *)self durationLabel];
+    [durationLabel setText:titleCopy];
   }
 
   else
   {
-    [(MTATimerCellView *)self setDurationWithInterval:a4];
+    [(MTATimerCellView *)self setDurationWithInterval:duration];
   }
 
   v16 = FormatTime();
-  v17 = [(MTATimerCellView *)self countDownLabel];
-  [v17 setText:v16];
+  countDownLabel = [(MTATimerCellView *)self countDownLabel];
+  [countDownLabel setText:v16];
 }
 
-- (void)setDurationWithInterval:(double)a3
+- (void)setDurationWithInterval:(double)interval
 {
-  v5 = [MTAUtilities durationStringFromInterval:a3];
-  v4 = [(MTATimerCellView *)self durationLabel];
-  [v4 setText:v5];
+  v5 = [MTAUtilities durationStringFromInterval:interval];
+  durationLabel = [(MTATimerCellView *)self durationLabel];
+  [durationLabel setText:v5];
 }
 
-- (void)processCountdownState:(unint64_t)a3 previousState:(unint64_t)a4 remainingTime:(double)a5 duration:(double)a6 forceRefresh:(BOOL)a7
+- (void)processCountdownState:(unint64_t)state previousState:(unint64_t)previousState remainingTime:(double)time duration:(double)duration forceRefresh:(BOOL)refresh
 {
-  v7 = a7;
-  v13 = [(MTATimerCellView *)self countDownView];
-  [v13 duration];
+  refreshCopy = refresh;
+  countDownView = [(MTATimerCellView *)self countDownView];
+  [countDownView duration];
   v15 = v14;
 
-  if (a3 != a4 || (v15 == a6 ? (v16 = !v7) : (v16 = 0), !v16))
+  if (state != previousState || (v15 == duration ? (v16 = !refreshCopy) : (v16 = 0), !v16))
   {
-    switch(a3)
+    switch(state)
     {
       case 1uLL:
-        v23 = [(MTATimerCellView *)self countDownView];
-        [v23 stop];
+        countDownView2 = [(MTATimerCellView *)self countDownView];
+        [countDownView2 stop];
         break;
       case 3uLL:
-        if (a4 == 3 && !v7)
+        if (previousState == 3 && !refreshCopy)
         {
-          if (v15 == a6)
+          if (v15 == duration)
           {
             return;
           }
@@ -455,58 +455,58 @@
           goto LABEL_23;
         }
 
-        if (a4 < 2 || a4 == 3)
+        if (previousState < 2 || previousState == 3)
         {
 LABEL_23:
-          v21 = [(MTATimerCellView *)self countDownView];
-          [v21 setAnimationRemainingTime:a5 totalTime:a6];
+          countDownView3 = [(MTATimerCellView *)self countDownView];
+          [countDownView3 setAnimationRemainingTime:time totalTime:duration];
 
-          v20 = [(MTATimerCellView *)self countDownView];
-          v23 = v20;
+          countDownView4 = [(MTATimerCellView *)self countDownView];
+          countDownView2 = countDownView4;
 LABEL_24:
-          [v20 start];
+          [countDownView4 start];
           break;
         }
 
-        if (a4 != 2)
+        if (previousState != 2)
         {
           return;
         }
 
-        v17 = [(MTATimerCellView *)self countDownView];
-        [v17 setAnimationRemainingTime:a5 totalTime:a6];
+        countDownView5 = [(MTATimerCellView *)self countDownView];
+        [countDownView5 setAnimationRemainingTime:time totalTime:duration];
 
-        v18 = [(MTATimerCellView *)self countDownView];
-        v19 = [v18 isStarted];
+        countDownView6 = [(MTATimerCellView *)self countDownView];
+        isStarted = [countDownView6 isStarted];
 
-        v20 = [(MTATimerCellView *)self countDownView];
-        v23 = v20;
-        if (!v19)
+        countDownView4 = [(MTATimerCellView *)self countDownView];
+        countDownView2 = countDownView4;
+        if (!isStarted)
         {
           goto LABEL_24;
         }
 
-        [v20 resume];
+        [countDownView4 resume];
         break;
       case 2uLL:
-        if (a4 >= 3)
+        if (previousState >= 3)
         {
-          if (a4 != 3)
+          if (previousState != 3)
           {
             return;
           }
 
-          v22 = [(MTATimerCellView *)self countDownView];
-          [v22 setAnimationRemainingTime:a5 totalTime:a6];
+          countDownView7 = [(MTATimerCellView *)self countDownView];
+          [countDownView7 setAnimationRemainingTime:time totalTime:duration];
 
-          v23 = [(MTATimerCellView *)self countDownView];
-          [v23 pause];
+          countDownView2 = [(MTATimerCellView *)self countDownView];
+          [countDownView2 pause];
         }
 
         else
         {
-          v23 = [(MTATimerCellView *)self countDownView];
-          [v23 setAnimationRemainingTime:a5 totalTime:a6];
+          countDownView2 = [(MTATimerCellView *)self countDownView];
+          [countDownView2 setAnimationRemainingTime:time totalTime:duration];
         }
 
         break;
@@ -516,9 +516,9 @@ LABEL_24:
   }
 }
 
-- (void)updateControlButtonWithState:(unint64_t)a3
+- (void)updateControlButtonWithState:(unint64_t)state
 {
-  if (a3 == 3)
+  if (state == 3)
   {
     v3 = @"pause.fill";
   }
@@ -528,46 +528,46 @@ LABEL_24:
     v3 = @"play.fill";
   }
 
-  v6 = [(MTATimerCellView *)self controlButton];
+  controlButton = [(MTATimerCellView *)self controlButton];
   v4 = +[UIColor systemOrangeColor];
   v5 = [UIImage mtui_imageWithSymbolName:v3 pointSize:v4 color:24.0];
-  [v6 setImage:v5 forState:0];
+  [controlButton setImage:v5 forState:0];
 }
 
-- (void)setState:(unint64_t)a3 animate:(BOOL)a4
+- (void)setState:(unint64_t)state animate:(BOOL)animate
 {
-  self->_state = a3;
-  if (a4)
+  self->_state = state;
+  if (animate)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100022CDC;
     v9[3] = &unk_1000AE068;
-    v10 = a3 == 1;
+    v10 = state == 1;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = state;
     [UIView animateWithDuration:v9 animations:0.2];
   }
 
   else
   {
-    v6 = [(MTATimerCellView *)self countDownView];
-    v7 = v6;
+    countDownView = [(MTATimerCellView *)self countDownView];
+    v7 = countDownView;
     v8 = 1.0;
-    if (a3 == 1)
+    if (state == 1)
     {
       v8 = 0.0;
     }
 
-    [v6 setAlpha:v8];
+    [countDownView setAlpha:v8];
 
-    [(MTATimerCellView *)self updateLabelColorForState:a3];
+    [(MTATimerCellView *)self updateLabelColorForState:state];
   }
 }
 
-- (void)updateLabelColorForState:(unint64_t)a3
+- (void)updateLabelColorForState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     +[UIColor mtui_disabledTextColor];
   }
@@ -577,10 +577,10 @@ LABEL_24:
     +[UIColor mtui_primaryTextColor];
   }
   v5 = ;
-  v6 = [(MTATimerCellView *)self countDownLabel];
-  [v6 setTextColor:v5];
+  countDownLabel = [(MTATimerCellView *)self countDownLabel];
+  [countDownLabel setTextColor:v5];
 
-  if (a3 == 2)
+  if (state == 2)
   {
     +[UIColor mtui_disabledTextColor];
   }
@@ -590,23 +590,23 @@ LABEL_24:
     +[UIColor mtui_primaryTextColor];
   }
   v8 = ;
-  v7 = [(MTATimerCellView *)self durationLabel];
-  [v7 setTextColor:v8];
+  durationLabel = [(MTATimerCellView *)self durationLabel];
+  [durationLabel setTextColor:v8];
 }
 
-- (void)didTapPauseResumeButton:(id)a3
+- (void)didTapPauseResumeButton:(id)button
 {
   state = self->_state;
-  v4 = [(MTATimerCellView *)self delegate];
-  v5 = v4;
+  delegate = [(MTATimerCellView *)self delegate];
+  v5 = delegate;
   if (state == 3)
   {
-    [v4 didSendPauseAction];
+    [delegate didSendPauseAction];
   }
 
   else
   {
-    [v4 didSendResumeAction];
+    [delegate didSendResumeAction];
   }
 }
 

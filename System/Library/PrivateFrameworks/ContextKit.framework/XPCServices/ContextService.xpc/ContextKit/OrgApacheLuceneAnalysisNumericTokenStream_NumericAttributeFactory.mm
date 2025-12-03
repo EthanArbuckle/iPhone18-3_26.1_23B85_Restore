@@ -1,21 +1,21 @@
 @interface OrgApacheLuceneAnalysisNumericTokenStream_NumericAttributeFactory
-- (OrgApacheLuceneAnalysisNumericTokenStream_NumericAttributeFactory)initWithOrgApacheLuceneUtilAttributeFactory:(id)a3;
-- (id)createAttributeInstanceWithIOSClass:(id)a3;
+- (OrgApacheLuceneAnalysisNumericTokenStream_NumericAttributeFactory)initWithOrgApacheLuceneUtilAttributeFactory:(id)factory;
+- (id)createAttributeInstanceWithIOSClass:(id)class;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneAnalysisNumericTokenStream_NumericAttributeFactory
 
-- (OrgApacheLuceneAnalysisNumericTokenStream_NumericAttributeFactory)initWithOrgApacheLuceneUtilAttributeFactory:(id)a3
+- (OrgApacheLuceneAnalysisNumericTokenStream_NumericAttributeFactory)initWithOrgApacheLuceneUtilAttributeFactory:(id)factory
 {
   OrgApacheLuceneUtilAttributeFactory_init(self, a2);
-  JreStrongAssign(&self->delegate_, a3);
+  JreStrongAssign(&self->delegate_, factory);
   return self;
 }
 
-- (id)createAttributeInstanceWithIOSClass:(id)a3
+- (id)createAttributeInstanceWithIOSClass:(id)class
 {
-  if ([OrgApacheLuceneAnalysisTokenattributesCharTermAttribute_class_() isAssignableFrom:a3])
+  if ([OrgApacheLuceneAnalysisTokenattributesCharTermAttribute_class_() isAssignableFrom:class])
   {
     v7 = new_JavaLangIllegalArgumentException_initWithNSString_(@"NumericTokenStream does not support CharTermAttribute.");
     objc_exception_throw(v7);
@@ -27,7 +27,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneUtilAttributeFactory *)delegate createAttributeInstanceWithIOSClass:a3];
+  return [(OrgApacheLuceneUtilAttributeFactory *)delegate createAttributeInstanceWithIOSClass:class];
 }
 
 - (void)dealloc

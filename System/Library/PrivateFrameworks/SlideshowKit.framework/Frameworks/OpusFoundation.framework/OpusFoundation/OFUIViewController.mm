@@ -1,23 +1,23 @@
 @interface OFUIViewController
-- (OFUIViewController)initWithCoder:(id)a3;
-- (OFUIViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (OFUIViewController)initWithCoder:(id)coder;
+- (OFUIViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation OFUIViewController
 
-- (OFUIViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (OFUIViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = OFUIViewController;
-  v4 = [(OFUIViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(OFUIViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -27,11 +27,11 @@
   return v5;
 }
 
-- (OFUIViewController)initWithCoder:(id)a3
+- (OFUIViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OFUIViewController;
-  v3 = [(OFUIViewController *)&v6 initWithCoder:a3];
+  v3 = [(OFUIViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -62,32 +62,32 @@
   [(OFUIViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OFUIViewController;
-  [(OFUIViewController *)&v3 viewWillAppear:a3];
+  [(OFUIViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OFUIViewController;
-  [(OFUIViewController *)&v3 viewDidAppear:a3];
+  [(OFUIViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OFUIViewController;
-  [(OFUIViewController *)&v3 viewWillDisappear:a3];
+  [(OFUIViewController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OFUIViewController;
-  [(OFUIViewController *)&v3 viewDidDisappear:a3];
+  [(OFUIViewController *)&v3 viewDidDisappear:disappear];
 }
 
 - (void)loadView
@@ -97,11 +97,11 @@
     v10.receiver = self;
     v10.super_class = OFUIViewController;
     [(OFUIViewController *)&v10 loadView];
-    v4 = [(OFUIViewController *)self view];
+    view = [(OFUIViewController *)self view];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 setViewControllerProxy:self];
+      [view setViewControllerProxy:self];
     }
 
     else

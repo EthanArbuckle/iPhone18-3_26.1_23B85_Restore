@@ -1,44 +1,44 @@
 @interface HMDeviceDiagnosticRecord
-+ (int)getHMDiagnosticMeasurementStatusForValue:(unsigned __int8)a3;
-+ (int)getHMDiagnosticStatusForValue:(unsigned __int8)a3;
-- (BOOL)_hasValidMeasurementForSide:(id)a3;
-- (BOOL)_isDate:(id)a3 lesserThanOrEqualToMonths:(unsigned __int8)a4;
-- (BOOL)hasMeasurementChangedForSide:(id)a3 withRecord:(id)a4;
++ (int)getHMDiagnosticMeasurementStatusForValue:(unsigned __int8)value;
++ (int)getHMDiagnosticStatusForValue:(unsigned __int8)value;
+- (BOOL)_hasValidMeasurementForSide:(id)side;
+- (BOOL)_isDate:(id)date lesserThanOrEqualToMonths:(unsigned __int8)months;
+- (BOOL)hasMeasurementChangedForSide:(id)side withRecord:(id)record;
 - (BOOL)isDeviceUsedFor3MonthsOrLess;
-- (BOOL)updateFaultCountsFromCloudRecord:(id)a3;
-- (HMDeviceDiagnosticRecord)initWithCoder:(id)a3;
-- (HMDeviceDiagnosticRecord)initWithHMDeviceRecord:(id)a3 isNewPairing:(BOOL)a4;
-- (id)descriptionWithLevel:(int)a3;
+- (BOOL)updateFaultCountsFromCloudRecord:(id)record;
+- (HMDeviceDiagnosticRecord)initWithCoder:(id)coder;
+- (HMDeviceDiagnosticRecord)initWithHMDeviceRecord:(id)record isNewPairing:(BOOL)pairing;
+- (id)descriptionWithLevel:(int)level;
 - (id)getCloudRecordForCurrentFaultCount;
 - (id)getOnDemandRetestReason;
 - (id)measurementInvalidReason;
 - (int)computeOcclusionResultForHearingProtection;
 - (int)computeOcclusionResultForHearingTest;
-- (int64_t)_minutesSinceTimestamp:(id)a3;
+- (int64_t)_minutesSinceTimestamp:(id)timestamp;
 - (unsigned)_getMinimumRequiredPayloadLength;
 - (void)_prefsLoadOcclusionStats;
 - (void)_prefsSaveOcclusionStats;
 - (void)_resetAllOcclusionStats;
-- (void)_updateLeftSideFaultCountWithCloudRecord:(id)a3;
-- (void)_updateRightSideFaultCountWithCloudRecord:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_updateLeftSideFaultCountWithCloudRecord:(id)record;
+- (void)_updateRightSideFaultCountWithCloudRecord:(id)record;
+- (void)encodeWithCoder:(id)coder;
 - (void)resetFaultCounts;
-- (void)setIsNewPairing:(BOOL)a3;
-- (void)updateWithANCLossScores:(id)a3;
-- (void)updateWithDiagnosticData:(id)a3;
-- (void)updateWithMeasurementData:(id)a3;
-- (void)updateWithMeasurementDataLegacyVersion:(id)a3;
+- (void)setIsNewPairing:(BOOL)pairing;
+- (void)updateWithANCLossScores:(id)scores;
+- (void)updateWithDiagnosticData:(id)data;
+- (void)updateWithMeasurementData:(id)data;
+- (void)updateWithMeasurementDataLegacyVersion:(id)version;
 @end
 
 @implementation HMDeviceDiagnosticRecord
 
-- (HMDeviceDiagnosticRecord)initWithCoder:(id)a3
+- (HMDeviceDiagnosticRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMDeviceDiagnosticRecord *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -188,277 +188,277 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   bluetoothUUID = self->_bluetoothUUID;
-  v42 = v4;
+  v42 = coderCopy;
   if (bluetoothUUID)
   {
-    [v4 encodeObject:bluetoothUUID forKey:@"btUUID"];
-    v4 = v42;
+    [coderCopy encodeObject:bluetoothUUID forKey:@"btUUID"];
+    coderCopy = v42;
   }
 
   bluetoothAddress = self->_bluetoothAddress;
   if (bluetoothAddress)
   {
     [v42 encodeObject:bluetoothAddress forKey:@"btAdS"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   ancLossTypeLeft = self->_ancLossTypeLeft;
   if (ancLossTypeLeft)
   {
     [v42 encodeInteger:ancLossTypeLeft forKey:@"ancL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   ancLossTypeRight = self->_ancLossTypeRight;
   if (ancLossTypeRight)
   {
     [v42 encodeInteger:ancLossTypeRight forKey:@"ancR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   ancCleanLossScoreLeft = self->_ancCleanLossScoreLeft;
   if (ancCleanLossScoreLeft)
   {
     [v42 encodeObject:ancCleanLossScoreLeft forKey:@"cLSL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   ancCleanLossScoreRight = self->_ancCleanLossScoreRight;
   if (ancCleanLossScoreRight)
   {
     [v42 encodeObject:ancCleanLossScoreRight forKey:@"cLSR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   ancFullLossScoreLeft = self->_ancFullLossScoreLeft;
   if (ancFullLossScoreLeft)
   {
     [v42 encodeObject:ancFullLossScoreLeft forKey:@"fLSL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   ancFullLossScoreRight = self->_ancFullLossScoreRight;
   if (ancFullLossScoreRight)
   {
     [v42 encodeObject:ancFullLossScoreRight forKey:@"fLSR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   ancSevereLossScoreLeft = self->_ancSevereLossScoreLeft;
   if (ancSevereLossScoreLeft)
   {
     [v42 encodeObject:ancSevereLossScoreLeft forKey:@"sLSL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   ancSevereLossScoreRight = self->_ancSevereLossScoreRight;
   if (ancSevereLossScoreRight)
   {
     [v42 encodeObject:ancSevereLossScoreRight forKey:@"sLSR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   daysSinceLastMeasurementLeft = self->_daysSinceLastMeasurementLeft;
   if (daysSinceLastMeasurementLeft)
   {
     [v42 encodeObject:daysSinceLastMeasurementLeft forKey:@"dslml"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   daysSinceLastMeasurementRight = self->_daysSinceLastMeasurementRight;
   if (daysSinceLastMeasurementRight)
   {
     [v42 encodeObject:daysSinceLastMeasurementRight forKey:@"dslmr"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   daysSinceLastHarmonicMeasurementLeft = self->_daysSinceLastHarmonicMeasurementLeft;
   if (daysSinceLastHarmonicMeasurementLeft)
   {
     [v42 encodeObject:daysSinceLastHarmonicMeasurementLeft forKey:@"dsHml"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   daysSinceLastHarmonicMeasurementRight = self->_daysSinceLastHarmonicMeasurementRight;
   if (daysSinceLastHarmonicMeasurementRight)
   {
     [v42 encodeObject:daysSinceLastHarmonicMeasurementRight forKey:@"dsHmr"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   errMicStatusLeft = self->_errMicStatusLeft;
   if (errMicStatusLeft)
   {
     [v42 encodeInteger:errMicStatusLeft forKey:@"errFL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   errMicStatusRight = self->_errMicStatusRight;
   if (errMicStatusRight)
   {
     [v42 encodeInteger:errMicStatusRight forKey:@"errFR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   frequencyAccuracyLeft = self->_frequencyAccuracyLeft;
   if (frequencyAccuracyLeft)
   {
     [v42 encodeInteger:frequencyAccuracyLeft forKey:@"fqAcL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   frequencyAccuracyRight = self->_frequencyAccuracyRight;
   if (frequencyAccuracyRight)
   {
     [v42 encodeInteger:frequencyAccuracyRight forKey:@"fqAcR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   frontVentStatusLeft = self->_frontVentStatusLeft;
   if (frontVentStatusLeft)
   {
     [v42 encodeInteger:frontVentStatusLeft forKey:@"fvnFL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   frontVentStatusRight = self->_frontVentStatusRight;
   if (frontVentStatusRight)
   {
     [v42 encodeInteger:frontVentStatusRight forKey:@"fvnFR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   generalSystemStatusLeft = self->_generalSystemStatusLeft;
   if (generalSystemStatusLeft)
   {
     [v42 encodeInteger:generalSystemStatusLeft forKey:@"gnrFL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   generalSystemStatusRight = self->_generalSystemStatusRight;
   if (generalSystemStatusRight)
   {
     [v42 encodeInteger:generalSystemStatusRight forKey:@"gnrFR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   lastMeasurementTimestampLeft = self->_lastMeasurementTimestampLeft;
   if (lastMeasurementTimestampLeft)
   {
     [v42 encodeObject:lastMeasurementTimestampLeft forKey:@"lmTsL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   lastMeasurementTimestampRight = self->_lastMeasurementTimestampRight;
   if (lastMeasurementTimestampRight)
   {
     [v42 encodeObject:lastMeasurementTimestampRight forKey:@"lmTsR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   latestMeasurementResultLeft = self->_latestMeasurementResultLeft;
   if (latestMeasurementResultLeft)
   {
     [v42 encodeInteger:latestMeasurementResultLeft forKey:@"lmRsL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   latestMeasurementResultRight = self->_latestMeasurementResultRight;
   if (latestMeasurementResultRight)
   {
     [v42 encodeInteger:latestMeasurementResultRight forKey:@"lmRsR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   rearVentStatusLeft = self->_rearVentStatusLeft;
   if (rearVentStatusLeft)
   {
     [v42 encodeInteger:rearVentStatusLeft forKey:@"rvnFL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   rearVentStatusRight = self->_rearVentStatusRight;
   if (rearVentStatusRight)
   {
     [v42 encodeInteger:rearVentStatusRight forKey:@"rvnFR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   refMicStatusLeft = self->_refMicStatusLeft;
   if (refMicStatusLeft)
   {
     [v42 encodeInteger:refMicStatusLeft forKey:@"refFL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   refMicStatusRight = self->_refMicStatusRight;
   if (refMicStatusRight)
   {
     [v42 encodeInteger:refMicStatusRight forKey:@"refFR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   speakerStatusLeft = self->_speakerStatusLeft;
   if (speakerStatusLeft)
   {
     [v42 encodeInteger:speakerStatusLeft forKey:@"sprFL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   speakerStatusRight = self->_speakerStatusRight;
   if (speakerStatusRight)
   {
     [v42 encodeInteger:speakerStatusRight forKey:@"sprFR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   totalHarmonicDistortionLeft = self->_totalHarmonicDistortionLeft;
   if (totalHarmonicDistortionLeft)
   {
     [v42 encodeInteger:totalHarmonicDistortionLeft forKey:@"thdL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   totalHarmonicDistortionRight = self->_totalHarmonicDistortionRight;
   if (totalHarmonicDistortionRight)
   {
     [v42 encodeInteger:totalHarmonicDistortionRight forKey:@"thdR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   vceMicStatusLeft = self->_vceMicStatusLeft;
   if (vceMicStatusLeft)
   {
     [v42 encodeInteger:vceMicStatusLeft forKey:@"vceFL"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   vceMicStatusRight = self->_vceMicStatusRight;
   if (vceMicStatusRight)
   {
     [v42 encodeInteger:vceMicStatusRight forKey:@"vceFR"];
-    v4 = v42;
+    coderCopy = v42;
   }
 
   version = self->_version;
   if (version)
   {
     [v42 encodeObject:version forKey:@"versn"];
-    v4 = v42;
+    coderCopy = v42;
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v120 = [objc_opt_class() description];
   NSAppendPrintF_safe();
   v5 = 0;
 
-  if (a3 <= 20)
+  if (level <= 20)
   {
     NSAppendPrintF_safe();
     v6 = v5;
@@ -613,7 +613,7 @@ LABEL_64:
 
 LABEL_195:
         v16 = [MEMORY[0x277CBE070] productInfoWithProductID:v120];
-        v18 = [v16 productName];
+        productName = [v16 productName];
         goto LABEL_73;
       }
 
@@ -644,9 +644,9 @@ LABEL_69:
           v16 = v15;
           v17 = @"apple_wireless_mouse";
 LABEL_72:
-          v18 = [v15 localizedStringForKey:v17 value:&stru_2864344A8 table:@"CBLocalizable"];
+          productName = [v15 localizedStringForKey:v17 value:&stru_2864344A8 table:@"CBLocalizable"];
 LABEL_73:
-          v19 = v18;
+          v19 = productName;
 
           NSAppendPrintF_safe();
           v20 = v5;
@@ -1166,7 +1166,7 @@ LABEL_74:
     v5 = v116;
   }
 
-  if (a3 < 21)
+  if (level < 21)
   {
     NSAppendPrintF_safe();
     v117 = v5;
@@ -1179,31 +1179,31 @@ LABEL_74:
   return v5;
 }
 
-- (HMDeviceDiagnosticRecord)initWithHMDeviceRecord:(id)a3 isNewPairing:(BOOL)a4
+- (HMDeviceDiagnosticRecord)initWithHMDeviceRecord:(id)record isNewPairing:(BOOL)pairing
 {
-  v4 = a4;
-  v6 = a3;
+  pairingCopy = pairing;
+  recordCopy = record;
   v17.receiver = self;
   v17.super_class = HMDeviceDiagnosticRecord;
   v7 = [(HMDeviceDiagnosticRecord *)&v17 init];
   if (v7)
   {
-    v8 = [v6 bluetoothAddress];
-    objc_storeStrong(&v7->_bluetoothAddress, v8);
-    v9 = [v6 bluetoothUUID];
-    objc_storeStrong(&v7->_bluetoothUUID, v9);
-    v10 = [v6 aaDevice];
-    v11 = [v10 coreBluetoothDevice];
-    v12 = [v11 productID];
+    bluetoothAddress = [recordCopy bluetoothAddress];
+    objc_storeStrong(&v7->_bluetoothAddress, bluetoothAddress);
+    bluetoothUUID = [recordCopy bluetoothUUID];
+    objc_storeStrong(&v7->_bluetoothUUID, bluetoothUUID);
+    aaDevice = [recordCopy aaDevice];
+    coreBluetoothDevice = [aaDevice coreBluetoothDevice];
+    productID = [coreBluetoothDevice productID];
 
-    v7->_productID = v12;
-    v13 = [v6 aaDevice];
-    v14 = [v13 firmwareVersion];
+    v7->_productID = productID;
+    aaDevice2 = [recordCopy aaDevice];
+    firmwareVersion = [aaDevice2 firmwareVersion];
     firmwareVersion = v7->_firmwareVersion;
-    v7->_firmwareVersion = v14;
+    v7->_firmwareVersion = firmwareVersion;
 
     [(HMDeviceDiagnosticRecord *)v7 _prefsLoadOcclusionStats];
-    if (v4)
+    if (pairingCopy)
     {
       [(HMDeviceDiagnosticRecord *)v7 _resetAllOcclusionStats];
     }
@@ -1212,19 +1212,19 @@ LABEL_74:
   return v7;
 }
 
-- (void)setIsNewPairing:(BOOL)a3
+- (void)setIsNewPairing:(BOOL)pairing
 {
-  if (a3)
+  if (pairing)
   {
     [(HMDeviceDiagnosticRecord *)self _resetAllOcclusionStats];
   }
 }
 
-+ (int)getHMDiagnosticMeasurementStatusForValue:(unsigned __int8)a3
++ (int)getHMDiagnosticMeasurementStatusForValue:(unsigned __int8)value
 {
-  if (a3 < 8u)
+  if (value < 8u)
   {
-    return a3 + 1;
+    return value + 1;
   }
 
   else
@@ -1233,11 +1233,11 @@ LABEL_74:
   }
 }
 
-+ (int)getHMDiagnosticStatusForValue:(unsigned __int8)a3
++ (int)getHMDiagnosticStatusForValue:(unsigned __int8)value
 {
-  if (a3 < 5u)
+  if (value < 5u)
   {
-    return a3 + 1;
+    return value + 1;
   }
 
   else
@@ -1246,23 +1246,23 @@ LABEL_74:
   }
 }
 
-- (BOOL)_hasValidMeasurementForSide:(id)a3
+- (BOOL)_hasValidMeasurementForSide:(id)side
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == @"left")
+  sideCopy = side;
+  v5 = sideCopy;
+  if (sideCopy == @"left")
   {
     goto LABEL_4;
   }
 
-  if (!v4)
+  if (!sideCopy)
   {
 LABEL_9:
     v8 = 0;
     goto LABEL_10;
   }
 
-  v6 = [(__CFString *)v4 isEqual:@"left"];
+  v6 = [(__CFString *)sideCopy isEqual:@"left"];
 
   if ((v6 & 1) == 0)
   {
@@ -1285,21 +1285,21 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)_isDate:(id)a3 lesserThanOrEqualToMonths:(unsigned __int8)a4
+- (BOOL)_isDate:(id)date lesserThanOrEqualToMonths:(unsigned __int8)months
 {
-  v4 = a4;
-  v5 = a3;
-  if (v5)
+  monthsCopy = months;
+  dateCopy = date;
+  if (dateCopy)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [MEMORY[0x277CBEA80] currentCalendar];
-    v8 = [v7 components:28 fromDate:v5 toDate:v6 options:0];
+    date = [MEMORY[0x277CBEAA8] date];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v8 = [currentCalendar components:28 fromDate:dateCopy toDate:date options:0];
     if (gLogCategory_HMDeviceDiagnosticRecord <= 10 && (gLogCategory_HMDeviceDiagnosticRecord != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceDiagnosticRecord _isDate:v8 lesserThanOrEqualToMonths:?];
     }
 
-    v9 = [v8 year] <= 0 && objc_msgSend(v8, "month") <= v4;
+    v9 = [v8 year] <= 0 && objc_msgSend(v8, "month") <= monthsCopy;
   }
 
   else
@@ -1325,21 +1325,21 @@ LABEL_10:
   return 57;
 }
 
-- (int64_t)_minutesSinceTimestamp:(id)a3
+- (int64_t)_minutesSinceTimestamp:(id)timestamp
 {
-  if (!a3)
+  if (!timestamp)
   {
     return 0;
   }
 
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
+  timestampCopy = timestamp;
   v5 = [v3 now];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [v6 components:224 fromDate:v4 toDate:v5 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v7 = [currentCalendar components:224 fromDate:timestampCopy toDate:v5 options:0];
 
-  v8 = [v7 minute];
-  return v8;
+  minute = [v7 minute];
+  return minute;
 }
 
 - (id)getCloudRecordForCurrentFaultCount
@@ -1410,10 +1410,10 @@ LABEL_10:
   *&self->_bottomMicFaultCountLeft = 0u;
 }
 
-- (void)_updateLeftSideFaultCountWithCloudRecord:(id)a3
+- (void)_updateLeftSideFaultCountWithCloudRecord:(id)record
 {
-  v4 = a3;
-  v38 = v4;
+  recordCopy = record;
+  v38 = recordCopy;
   if (self->_vceMicStatusLeft == 1)
   {
     v5 = 0;
@@ -1421,17 +1421,17 @@ LABEL_10:
 
   else
   {
-    v6 = [v4 bottomMicFaultCountLeft];
-    v7 = [v6 unsignedIntValue];
+    bottomMicFaultCountLeft = [recordCopy bottomMicFaultCountLeft];
+    unsignedIntValue = [bottomMicFaultCountLeft unsignedIntValue];
 
-    if (v7 >= 2)
+    if (unsignedIntValue >= 2)
     {
       v8 = 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = unsignedIntValue;
     }
 
     if (self->_vceMicStatusLeft == 2)
@@ -1441,7 +1441,7 @@ LABEL_10:
 
     else
     {
-      v5 = v7;
+      v5 = unsignedIntValue;
     }
   }
 
@@ -1453,17 +1453,17 @@ LABEL_10:
 
   else
   {
-    v10 = [v38 topMicFaultCountLeft];
-    v11 = [v10 unsignedIntValue];
+    topMicFaultCountLeft = [v38 topMicFaultCountLeft];
+    unsignedIntValue2 = [topMicFaultCountLeft unsignedIntValue];
 
-    if (v11 >= 2)
+    if (unsignedIntValue2 >= 2)
     {
       v12 = 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = unsignedIntValue2;
     }
 
     if (self->_refMicStatusLeft == 2)
@@ -1473,7 +1473,7 @@ LABEL_10:
 
     else
     {
-      v9 = v11;
+      v9 = unsignedIntValue2;
     }
   }
 
@@ -1485,17 +1485,17 @@ LABEL_10:
 
   else
   {
-    v14 = [v38 innerMicFaultCountLeft];
-    v15 = [v14 unsignedIntValue];
+    innerMicFaultCountLeft = [v38 innerMicFaultCountLeft];
+    unsignedIntValue3 = [innerMicFaultCountLeft unsignedIntValue];
 
-    if (v15 >= 2)
+    if (unsignedIntValue3 >= 2)
     {
       v16 = 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = unsignedIntValue3;
     }
 
     if (self->_errMicStatusLeft == 2)
@@ -1505,7 +1505,7 @@ LABEL_10:
 
     else
     {
-      v13 = v15;
+      v13 = unsignedIntValue3;
     }
   }
 
@@ -1517,17 +1517,17 @@ LABEL_10:
 
   else
   {
-    v18 = [v38 speakerFaultCountLeft];
-    v19 = [v18 unsignedIntValue];
+    speakerFaultCountLeft = [v38 speakerFaultCountLeft];
+    unsignedIntValue4 = [speakerFaultCountLeft unsignedIntValue];
 
-    if (v19 >= 2)
+    if (unsignedIntValue4 >= 2)
     {
       v20 = 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = unsignedIntValue4;
     }
 
     if (self->_speakerStatusLeft == 2)
@@ -1537,7 +1537,7 @@ LABEL_10:
 
     else
     {
-      v17 = v19;
+      v17 = unsignedIntValue4;
     }
   }
 
@@ -1549,17 +1549,17 @@ LABEL_10:
 
   else
   {
-    v22 = [v38 frontVentFaultCountLeft];
-    v23 = [v22 unsignedIntValue];
+    frontVentFaultCountLeft = [v38 frontVentFaultCountLeft];
+    unsignedIntValue5 = [frontVentFaultCountLeft unsignedIntValue];
 
-    if (v23 >= 2)
+    if (unsignedIntValue5 >= 2)
     {
       v24 = 2;
     }
 
     else
     {
-      v24 = v23;
+      v24 = unsignedIntValue5;
     }
 
     if (self->_frontVentStatusLeft == 2)
@@ -1569,7 +1569,7 @@ LABEL_10:
 
     else
     {
-      v21 = v23;
+      v21 = unsignedIntValue5;
     }
   }
 
@@ -1581,17 +1581,17 @@ LABEL_10:
 
   else
   {
-    v26 = [v38 rearVentFaultCountLeft];
-    v27 = [v26 unsignedIntValue];
+    rearVentFaultCountLeft = [v38 rearVentFaultCountLeft];
+    unsignedIntValue6 = [rearVentFaultCountLeft unsignedIntValue];
 
-    if (v27 >= 2)
+    if (unsignedIntValue6 >= 2)
     {
       v28 = 2;
     }
 
     else
     {
-      v28 = v27;
+      v28 = unsignedIntValue6;
     }
 
     if (self->_rearVentStatusLeft == 2)
@@ -1601,7 +1601,7 @@ LABEL_10:
 
     else
     {
-      v25 = v27;
+      v25 = unsignedIntValue6;
     }
   }
 
@@ -1613,17 +1613,17 @@ LABEL_10:
 
   else
   {
-    v30 = [v38 totalHarmonicDistortionFaultCountLeft];
-    v31 = [v30 unsignedIntValue];
+    totalHarmonicDistortionFaultCountLeft = [v38 totalHarmonicDistortionFaultCountLeft];
+    unsignedIntValue7 = [totalHarmonicDistortionFaultCountLeft unsignedIntValue];
 
-    if (v31 >= 2)
+    if (unsignedIntValue7 >= 2)
     {
       v32 = 2;
     }
 
     else
     {
-      v32 = v31;
+      v32 = unsignedIntValue7;
     }
 
     if (self->_totalHarmonicDistortionLeft == 2)
@@ -1633,7 +1633,7 @@ LABEL_10:
 
     else
     {
-      v29 = v31;
+      v29 = unsignedIntValue7;
     }
   }
 
@@ -1646,18 +1646,18 @@ LABEL_10:
 
   else
   {
-    v35 = [v38 freqAccuracyFaultCountLeft];
-    v36 = [v35 unsignedIntValue];
+    freqAccuracyFaultCountLeft = [v38 freqAccuracyFaultCountLeft];
+    unsignedIntValue8 = [freqAccuracyFaultCountLeft unsignedIntValue];
 
     v34 = v38;
-    if (v36 >= 2)
+    if (unsignedIntValue8 >= 2)
     {
       v37 = 2;
     }
 
     else
     {
-      v37 = v36;
+      v37 = unsignedIntValue8;
     }
 
     if (self->_frequencyAccuracyLeft == 2)
@@ -1667,17 +1667,17 @@ LABEL_10:
 
     else
     {
-      v33 = v36;
+      v33 = unsignedIntValue8;
     }
   }
 
   self->_freqAccuracyFaultCountLeft = v33;
 }
 
-- (void)_updateRightSideFaultCountWithCloudRecord:(id)a3
+- (void)_updateRightSideFaultCountWithCloudRecord:(id)record
 {
-  v4 = a3;
-  v38 = v4;
+  recordCopy = record;
+  v38 = recordCopy;
   if (self->_vceMicStatusRight == 1)
   {
     v5 = 0;
@@ -1685,17 +1685,17 @@ LABEL_10:
 
   else
   {
-    v6 = [v4 bottomMicFaultCountRight];
-    v7 = [v6 unsignedIntValue];
+    bottomMicFaultCountRight = [recordCopy bottomMicFaultCountRight];
+    unsignedIntValue = [bottomMicFaultCountRight unsignedIntValue];
 
-    if (v7 >= 2)
+    if (unsignedIntValue >= 2)
     {
       v8 = 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = unsignedIntValue;
     }
 
     if (self->_vceMicStatusRight == 2)
@@ -1705,7 +1705,7 @@ LABEL_10:
 
     else
     {
-      v5 = v7;
+      v5 = unsignedIntValue;
     }
   }
 
@@ -1717,17 +1717,17 @@ LABEL_10:
 
   else
   {
-    v10 = [v38 topMicFaultCountRight];
-    v11 = [v10 unsignedIntValue];
+    topMicFaultCountRight = [v38 topMicFaultCountRight];
+    unsignedIntValue2 = [topMicFaultCountRight unsignedIntValue];
 
-    if (v11 >= 2)
+    if (unsignedIntValue2 >= 2)
     {
       v12 = 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = unsignedIntValue2;
     }
 
     if (self->_refMicStatusRight == 2)
@@ -1737,7 +1737,7 @@ LABEL_10:
 
     else
     {
-      v9 = v11;
+      v9 = unsignedIntValue2;
     }
   }
 
@@ -1749,17 +1749,17 @@ LABEL_10:
 
   else
   {
-    v14 = [v38 innerMicFaultCountRight];
-    v15 = [v14 unsignedIntValue];
+    innerMicFaultCountRight = [v38 innerMicFaultCountRight];
+    unsignedIntValue3 = [innerMicFaultCountRight unsignedIntValue];
 
-    if (v15 >= 2)
+    if (unsignedIntValue3 >= 2)
     {
       v16 = 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = unsignedIntValue3;
     }
 
     if (self->_errMicStatusRight == 2)
@@ -1769,7 +1769,7 @@ LABEL_10:
 
     else
     {
-      v13 = v15;
+      v13 = unsignedIntValue3;
     }
   }
 
@@ -1781,17 +1781,17 @@ LABEL_10:
 
   else
   {
-    v18 = [v38 speakerFaultCountRight];
-    v19 = [v18 unsignedIntValue];
+    speakerFaultCountRight = [v38 speakerFaultCountRight];
+    unsignedIntValue4 = [speakerFaultCountRight unsignedIntValue];
 
-    if (v19 >= 2)
+    if (unsignedIntValue4 >= 2)
     {
       v20 = 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = unsignedIntValue4;
     }
 
     if (self->_speakerStatusRight == 2)
@@ -1801,7 +1801,7 @@ LABEL_10:
 
     else
     {
-      v17 = v19;
+      v17 = unsignedIntValue4;
     }
   }
 
@@ -1813,17 +1813,17 @@ LABEL_10:
 
   else
   {
-    v22 = [v38 frontVentFaultCountRight];
-    v23 = [v22 unsignedIntValue];
+    frontVentFaultCountRight = [v38 frontVentFaultCountRight];
+    unsignedIntValue5 = [frontVentFaultCountRight unsignedIntValue];
 
-    if (v23 >= 2)
+    if (unsignedIntValue5 >= 2)
     {
       v24 = 2;
     }
 
     else
     {
-      v24 = v23;
+      v24 = unsignedIntValue5;
     }
 
     if (self->_frontVentStatusRight == 2)
@@ -1833,7 +1833,7 @@ LABEL_10:
 
     else
     {
-      v21 = v23;
+      v21 = unsignedIntValue5;
     }
   }
 
@@ -1845,17 +1845,17 @@ LABEL_10:
 
   else
   {
-    v26 = [v38 rearVentFaultCountRight];
-    v27 = [v26 unsignedIntValue];
+    rearVentFaultCountRight = [v38 rearVentFaultCountRight];
+    unsignedIntValue6 = [rearVentFaultCountRight unsignedIntValue];
 
-    if (v27 >= 2)
+    if (unsignedIntValue6 >= 2)
     {
       v28 = 2;
     }
 
     else
     {
-      v28 = v27;
+      v28 = unsignedIntValue6;
     }
 
     if (self->_rearVentStatusRight == 2)
@@ -1865,7 +1865,7 @@ LABEL_10:
 
     else
     {
-      v25 = v27;
+      v25 = unsignedIntValue6;
     }
   }
 
@@ -1877,17 +1877,17 @@ LABEL_10:
 
   else
   {
-    v30 = [v38 totalHarmonicDistortionFaultCountRight];
-    v31 = [v30 unsignedIntValue];
+    totalHarmonicDistortionFaultCountRight = [v38 totalHarmonicDistortionFaultCountRight];
+    unsignedIntValue7 = [totalHarmonicDistortionFaultCountRight unsignedIntValue];
 
-    if (v31 >= 2)
+    if (unsignedIntValue7 >= 2)
     {
       v32 = 2;
     }
 
     else
     {
-      v32 = v31;
+      v32 = unsignedIntValue7;
     }
 
     if (self->_totalHarmonicDistortionRight == 2)
@@ -1897,7 +1897,7 @@ LABEL_10:
 
     else
     {
-      v29 = v31;
+      v29 = unsignedIntValue7;
     }
   }
 
@@ -1910,18 +1910,18 @@ LABEL_10:
 
   else
   {
-    v35 = [v38 freqAccuracyFaultCountRight];
-    v36 = [v35 unsignedIntValue];
+    freqAccuracyFaultCountRight = [v38 freqAccuracyFaultCountRight];
+    unsignedIntValue8 = [freqAccuracyFaultCountRight unsignedIntValue];
 
     v34 = v38;
-    if (v36 >= 2)
+    if (unsignedIntValue8 >= 2)
     {
       v37 = 2;
     }
 
     else
     {
-      v37 = v36;
+      v37 = unsignedIntValue8;
     }
 
     if (self->_frequencyAccuracyRight == 2)
@@ -1931,18 +1931,18 @@ LABEL_10:
 
     else
     {
-      v33 = v36;
+      v33 = unsignedIntValue8;
     }
   }
 
   self->_freqAccuracyFaultCountRight = v33;
 }
 
-- (void)updateWithDiagnosticData:(id)a3
+- (void)updateWithDiagnosticData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy && [dataCopy length])
   {
     v8 = 0;
     [v5 getBytes:&v8 length:1];
@@ -1967,14 +1967,14 @@ LABEL_10:
   }
 }
 
-- (void)updateWithMeasurementDataLegacyVersion:(id)a3
+- (void)updateWithMeasurementDataLegacyVersion:(id)version
 {
-  v4 = a3;
-  if ([v4 length] > 0x18)
+  versionCopy = version;
+  if ([versionCopy length] > 0x18)
   {
     memset(v14, 0, sizeof(v14));
     v15 = 0;
-    [v4 getBytes:v14 length:25];
+    [versionCopy getBytes:v14 length:25];
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(v14 + 1)];
     daysSinceLastMeasurementLeft = self->_daysSinceLastMeasurementLeft;
     self->_daysSinceLastMeasurementLeft = v5;
@@ -2002,14 +2002,14 @@ LABEL_10:
   }
 }
 
-- (void)updateWithMeasurementData:(id)a3
+- (void)updateWithMeasurementData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   if (v5 >= [(HMDeviceDiagnosticRecord *)self _getMinimumRequiredPayloadLength])
   {
     memset(v16, 0, 57);
-    [v4 getBytes:v16 length:57];
+    [dataCopy getBytes:v16 length:57];
     if (*(v16 + 1))
     {
       v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:*(v16 + 1)];
@@ -2185,14 +2185,14 @@ LABEL_36:
   return v19;
 }
 
-- (BOOL)hasMeasurementChangedForSide:(id)a3 withRecord:(id)a4
+- (BOOL)hasMeasurementChangedForSide:(id)side withRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
+  sideCopy = side;
+  recordCopy = record;
   version = self->_version;
   if (!version || [(NSNumber *)version intValue]> 2)
   {
-    v10 = v6;
+    v10 = sideCopy;
     v11 = v10;
     if (v10 == @"left")
     {
@@ -2210,9 +2210,9 @@ LABEL_36:
     {
 LABEL_8:
       lastMeasurementTimestampLeft = self->_lastMeasurementTimestampLeft;
-      v14 = [v7 latestDiagnosticTimestampLeft];
+      latestDiagnosticTimestampLeft = [recordCopy latestDiagnosticTimestampLeft];
       v15 = lastMeasurementTimestampLeft;
-      v16 = v14;
+      v16 = latestDiagnosticTimestampLeft;
       v17 = v16;
       if (v15 == v16)
       {
@@ -2253,9 +2253,9 @@ LABEL_8:
     }
 
     lastMeasurementTimestampRight = self->_lastMeasurementTimestampRight;
-    v22 = [v7 latestDiagnosticTimestampRight];
+    latestDiagnosticTimestampRight = [recordCopy latestDiagnosticTimestampRight];
     v23 = lastMeasurementTimestampRight;
-    v24 = v22;
+    v24 = latestDiagnosticTimestampRight;
     v11 = v24;
     if (v23 != v24)
     {
@@ -2280,9 +2280,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v9 = [v7 diagnosticMeasurementsCount];
+  diagnosticMeasurementsCount = [recordCopy diagnosticMeasurementsCount];
 
-  if (!v9)
+  if (!diagnosticMeasurementsCount)
   {
     goto LABEL_25;
   }
@@ -2655,9 +2655,9 @@ LABEL_27:
   [(HMDeviceDiagnosticRecord *)self _prefsResetOcclusionStatsForFeatureID:3 type:3];
 }
 
-- (BOOL)updateFaultCountsFromCloudRecord:(id)a3
+- (BOOL)updateFaultCountsFromCloudRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   if (![(HMDeviceDiagnosticRecord *)self isOcclusionDetectionSupported])
   {
 LABEL_15:
@@ -2665,28 +2665,28 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v5 = [(HMDeviceDiagnosticRecord *)self hasMeasurementChangedForSide:@"left" withRecord:v4];
+  v5 = [(HMDeviceDiagnosticRecord *)self hasMeasurementChangedForSide:@"left" withRecord:recordCopy];
   if (v5)
   {
-    [(HMDeviceDiagnosticRecord *)self _updateLeftSideFaultCountWithCloudRecord:v4];
+    [(HMDeviceDiagnosticRecord *)self _updateLeftSideFaultCountWithCloudRecord:recordCopy];
   }
 
-  if ([(HMDeviceDiagnosticRecord *)self hasMeasurementChangedForSide:@"right" withRecord:v4])
+  if ([(HMDeviceDiagnosticRecord *)self hasMeasurementChangedForSide:@"right" withRecord:recordCopy])
   {
-    [(HMDeviceDiagnosticRecord *)self _updateRightSideFaultCountWithCloudRecord:v4];
+    [(HMDeviceDiagnosticRecord *)self _updateRightSideFaultCountWithCloudRecord:recordCopy];
     v5 = 1;
   }
 
-  v6 = [v4 diagnosticMeasurementsCount];
-  self->_diagnosticMeasurementsCount = [v6 unsignedIntValue];
+  diagnosticMeasurementsCount = [recordCopy diagnosticMeasurementsCount];
+  self->_diagnosticMeasurementsCount = [diagnosticMeasurementsCount unsignedIntValue];
 
   if (!v5)
   {
     if (gLogCategory_HMDeviceDiagnosticRecord <= 30 && (gLogCategory_HMDeviceDiagnosticRecord != -1 || _LogCategory_Initialize()))
     {
       bluetoothUUID = self->_bluetoothUUID;
-      v11 = [v4 latestDiagnosticTimestampLeft];
-      v13 = [v4 latestDiagnosticTimestampRight];
+      latestDiagnosticTimestampLeft = [recordCopy latestDiagnosticTimestampLeft];
+      latestDiagnosticTimestampRight = [recordCopy latestDiagnosticTimestampRight];
       LogPrintF();
     }
 
@@ -2711,36 +2711,36 @@ LABEL_16:
   return v9;
 }
 
-- (void)updateWithANCLossScores:(id)a3
+- (void)updateWithANCLossScores:(id)scores
 {
   if ([(HMDeviceDiagnosticRecord *)self _isANCScoreSupported])
   {
     if ([(HMDeviceDiagnosticRecord *)self _hasValidMeasurementForSide:@"left"])
     {
-      v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3.var4];
+      v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:scores.var4];
       ancCleanLossScoreLeft = self->_ancCleanLossScoreLeft;
       self->_ancCleanLossScoreLeft = v5;
 
-      v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3.var2];
+      v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:scores.var2];
       ancFullLossScoreLeft = self->_ancFullLossScoreLeft;
       self->_ancFullLossScoreLeft = v7;
 
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3.var6];
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:scores.var6];
       ancSevereLossScoreLeft = self->_ancSevereLossScoreLeft;
       self->_ancSevereLossScoreLeft = v9;
     }
 
     if ([(HMDeviceDiagnosticRecord *)self _hasValidMeasurementForSide:@"right"])
     {
-      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3.var5];
+      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:scores.var5];
       ancCleanLossScoreRight = self->_ancCleanLossScoreRight;
       self->_ancCleanLossScoreRight = v11;
 
-      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3.var3];
+      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:scores.var3];
       ancFullLossScoreRight = self->_ancFullLossScoreRight;
       self->_ancFullLossScoreRight = v13;
 
-      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:HIBYTE(*&a3)];
+      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:HIBYTE(*&scores)];
       ancSevereLossScoreRight = self->_ancSevereLossScoreRight;
       self->_ancSevereLossScoreRight = v15;
 

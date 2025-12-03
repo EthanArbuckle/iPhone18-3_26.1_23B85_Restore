@@ -1,59 +1,59 @@
 @interface DDContextMenuAction
-+ (BOOL)validateContext:(id)a3 silent:(BOOL)a4;
-+ (id)buttonActionsForURL:(id)a3 result:(__DDResult *)a4 contact:(id)a5 icsString:(id)a6 context:(id)a7 view:(id)a8 identifier:(id)a9 suggestedActions:(id)a10 defaultAction:(id *)a11;
-+ (id)contextMenuConfigurationAtIndex:(unint64_t)a3 inTextStorage:(id)a4 inView:(id)a5 context:(id)a6 menuIdentifier:(id)a7;
-+ (id)contextMenuConfigurationForURL:(id)a3 identifier:(id)a4 selectedText:(id)a5 results:(id)a6 inView:(id)a7 context:(id)a8 menuIdentifier:(id)a9;
-+ (id)contextMenuConfigurationWithRVItem:(id)a3 inView:(id)a4 context:(id)a5 menuIdentifier:(id)a6;
-+ (id)contextMenuConfigurationWithResult:(__DDResult *)a3 inView:(id)a4 context:(id)a5 menuIdentifier:(id)a6;
-+ (id)contextMenuConfigurationWithURL:(id)a3 inView:(id)a4 context:(id)a5 menuIdentifier:(id)a6;
-+ (id)defaultActionWithResult:(__DDResult *)a3 context:(id)a4;
-+ (id)defaultActionWithURL:(id)a3 context:(id)a4;
-+ (id)filterResultsForQuickActions:(id)a3;
-+ (id)identificationStringsForMenuElement:(id)a3 useDefault:(BOOL)a4;
-+ (id)previewActionForResult:(__DDResult *)a3 URL:(id)a4 context:(id)a5;
-+ (id)previewViewProviderForPreviewAction:(id)a3 context:(id)a4;
-+ (id)previewViewProviderForResult:(__DDResult *)a3 context:(id)a4;
-+ (id)previewViewProviderForURL:(id)a3 context:(id)a4;
-+ (id)updateContext:(id)a3 withSourceRect:(CGRect)a4;
-+ (void)performAction:(id)a3 fromView:(id)a4 alertController:(id)a5 interactionDelegate:(id)a6;
-+ (void)performDefaultActionWithResult:(__DDResult *)a3 inView:(id)a4 atLocation:(CGPoint)a5 withMenuInteraction:(id)a6 context:(id)a7;
-+ (void)performDefaultActionWithURL:(id)a3 inView:(id)a4 atLocation:(CGPoint)a5 withMenuInteraction:(id)a6 context:(id)a7;
-- (DDContextMenuAction)initWithRVItem:(id)a3;
-- (DDContextMenuAction)initWithResult:(__DDResult *)a3 URL:(id)a4;
-- (id)_rawContextMenuContentForView:(id)a3 interactionDelegate:(id)a4 context:(id)a5 elements:(id)a6 defaultAction:(id *)a7 overriddenMenuActionProvider:(id *)a8 options:(int64_t)a9;
-- (id)_updateMenuElementItems:(id)a3 withActions:(id)a4 view:(id)a5 interactionDelegate:(id)a6 options:(int64_t)a7 level:(unint64_t)a8 parent:(id)a9;
-- (id)contextMenuConfigurationWithIdentifier:(id)a3 inView:(id)a4 context:(id)a5;
-- (id)contextMenuConfigurationWithIdentifier:(id)a3 inView:(id)a4 context:(id)a5 defaultAction:(id *)a6 menuProvider:(id *)a7 options:(int64_t)a8;
-- (id)initAtIndex:(unint64_t)a3 inTextStorage:(id)a4;
-- (void)commonInitWithResult:(__DDResult *)a3 URL:(id)a4;
++ (BOOL)validateContext:(id)context silent:(BOOL)silent;
++ (id)buttonActionsForURL:(id)l result:(__DDResult *)result contact:(id)contact icsString:(id)string context:(id)context view:(id)view identifier:(id)identifier suggestedActions:(id)self0 defaultAction:(id *)self1;
++ (id)contextMenuConfigurationAtIndex:(unint64_t)index inTextStorage:(id)storage inView:(id)view context:(id)context menuIdentifier:(id)identifier;
++ (id)contextMenuConfigurationForURL:(id)l identifier:(id)identifier selectedText:(id)text results:(id)results inView:(id)view context:(id)context menuIdentifier:(id)menuIdentifier;
++ (id)contextMenuConfigurationWithRVItem:(id)item inView:(id)view context:(id)context menuIdentifier:(id)identifier;
++ (id)contextMenuConfigurationWithResult:(__DDResult *)result inView:(id)view context:(id)context menuIdentifier:(id)identifier;
++ (id)contextMenuConfigurationWithURL:(id)l inView:(id)view context:(id)context menuIdentifier:(id)identifier;
++ (id)defaultActionWithResult:(__DDResult *)result context:(id)context;
++ (id)defaultActionWithURL:(id)l context:(id)context;
++ (id)filterResultsForQuickActions:(id)actions;
++ (id)identificationStringsForMenuElement:(id)element useDefault:(BOOL)default;
++ (id)previewActionForResult:(__DDResult *)result URL:(id)l context:(id)context;
++ (id)previewViewProviderForPreviewAction:(id)action context:(id)context;
++ (id)previewViewProviderForResult:(__DDResult *)result context:(id)context;
++ (id)previewViewProviderForURL:(id)l context:(id)context;
++ (id)updateContext:(id)context withSourceRect:(CGRect)rect;
++ (void)performAction:(id)action fromView:(id)view alertController:(id)controller interactionDelegate:(id)delegate;
++ (void)performDefaultActionWithResult:(__DDResult *)result inView:(id)view atLocation:(CGPoint)location withMenuInteraction:(id)interaction context:(id)context;
++ (void)performDefaultActionWithURL:(id)l inView:(id)view atLocation:(CGPoint)location withMenuInteraction:(id)interaction context:(id)context;
+- (DDContextMenuAction)initWithRVItem:(id)item;
+- (DDContextMenuAction)initWithResult:(__DDResult *)result URL:(id)l;
+- (id)_rawContextMenuContentForView:(id)view interactionDelegate:(id)delegate context:(id)context elements:(id)elements defaultAction:(id *)action overriddenMenuActionProvider:(id *)provider options:(int64_t)options;
+- (id)_updateMenuElementItems:(id)items withActions:(id)actions view:(id)view interactionDelegate:(id)delegate options:(int64_t)options level:(unint64_t)level parent:(id)parent;
+- (id)contextMenuConfigurationWithIdentifier:(id)identifier inView:(id)view context:(id)context;
+- (id)contextMenuConfigurationWithIdentifier:(id)identifier inView:(id)view context:(id)context defaultAction:(id *)action menuProvider:(id *)provider options:(int64_t)options;
+- (id)initAtIndex:(unint64_t)index inTextStorage:(id)storage;
+- (void)commonInitWithResult:(__DDResult *)result URL:(id)l;
 - (void)dealloc;
 @end
 
 @implementation DDContextMenuAction
 
-+ (void)performAction:(id)a3 fromView:(id)a4 alertController:(id)a5 interactionDelegate:(id)a6
++ (void)performAction:(id)action fromView:(id)view alertController:(id)controller interactionDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 interactionType])
+  actionCopy = action;
+  viewCopy = view;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  if ([actionCopy interactionType])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __82__DDContextMenuAction_performAction_fromView_alertController_interactionDelegate___block_invoke;
     v14[3] = &unk_278290DF0;
-    v15 = v9;
-    v16 = v10;
-    v17 = v11;
-    v18 = v12;
+    v15 = actionCopy;
+    v16 = viewCopy;
+    v17 = controllerCopy;
+    v18 = delegateCopy;
     dispatch_async(MEMORY[0x277D85CD0], v14);
   }
 
   else
   {
     v13 = +[DDDetectionController sharedController];
-    [v13 performAction:v9 fromView:v10 alertController:v11 interactionDelegate:v12];
+    [v13 performAction:actionCopy fromView:viewCopy alertController:controllerCopy interactionDelegate:delegateCopy];
   }
 }
 
@@ -63,11 +63,11 @@ void __82__DDContextMenuAction_performAction_fromView_alertController_interactio
   [v2 performAction:a1[4] fromView:a1[5] alertController:a1[6] interactionDelegate:a1[7]];
 }
 
-+ (BOOL)validateContext:(id)a3 silent:(BOOL)a4
++ (BOOL)validateContext:(id)context silent:(BOOL)silent
 {
-  v5 = [a3 objectForKeyedSubscript:@"SourceRect"];
+  v5 = [context objectForKeyedSubscript:@"SourceRect"];
 
-  if (v5 || a4 || !os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (v5 || silent || !os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     return v5 != 0;
   }
@@ -76,23 +76,23 @@ void __82__DDContextMenuAction_performAction_fromView_alertController_interactio
   return 0;
 }
 
-+ (id)updateContext:(id)a3 withSourceRect:(CGRect)a4
++ (id)updateContext:(id)context withSourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (a3)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (context)
   {
-    v8 = [a3 mutableCopy];
+    dictionary = [context mutableCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v9 = v8;
+  v9 = dictionary;
   v10 = [MEMORY[0x277CCAE60] valueWithCGRect:{x, y, width, height}];
   [v9 setObject:v10 forKey:@"SourceRect"];
 
@@ -101,16 +101,16 @@ void __82__DDContextMenuAction_performAction_fromView_alertController_interactio
   return v9;
 }
 
-+ (id)contextMenuConfigurationAtIndex:(unint64_t)a3 inTextStorage:(id)a4 inView:(id)a5 context:(id)a6 menuIdentifier:(id)a7
++ (id)contextMenuConfigurationAtIndex:(unint64_t)index inTextStorage:(id)storage inView:(id)view context:(id)context menuIdentifier:(id)identifier
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
-  v14 = a6;
-  v15 = [[DDContextMenuAction alloc] initAtIndex:a3 inTextStorage:v11];
+  storageCopy = storage;
+  viewCopy = view;
+  identifierCopy = identifier;
+  contextCopy = context;
+  v15 = [[DDContextMenuAction alloc] initAtIndex:index inTextStorage:storageCopy];
   v16 = v15[1];
   v17 = v15[2];
-  v18 = [DDDetectionController updateContext:v14 forResult:v17 atIndex:a3 ofStorage:v11];
+  v18 = [DDDetectionController updateContext:contextCopy forResult:v17 atIndex:index ofStorage:storageCopy];
 
   if (!+[DDDetectionController largeScreenIdiom])
   {
@@ -121,24 +121,24 @@ void __82__DDContextMenuAction_performAction_fromView_alertController_interactio
 
   if (!v19)
   {
-    v21 = [v11 layoutManagers];
-    v22 = [v21 firstObject];
+    layoutManagers = [storageCopy layoutManagers];
+    firstObject = [layoutManagers firstObject];
 
-    if (!v22)
+    if (!firstObject)
     {
       if (objc_opt_respondsToSelector())
       {
-        v22 = [v12 layoutManager];
+        firstObject = [viewCopy layoutManager];
       }
 
       else
       {
-        v22 = 0;
+        firstObject = 0;
       }
     }
 
-    v23 = [v22 textContainers];
-    v50 = [v23 firstObject];
+    textContainers = [firstObject textContainers];
+    firstObject2 = [textContainers firstObject];
 
     if (v17)
     {
@@ -146,25 +146,25 @@ void __82__DDContextMenuAction_performAction_fromView_alertController_interactio
       if (RangeForURLification == -1)
       {
 LABEL_24:
-        v35 = v50;
+        v35 = firstObject2;
         goto LABEL_25;
       }
     }
 
     else
     {
-      v26 = [v16 scheme];
-      if ([v26 isEqualToString:@"x-apple-data-detectors-clientdefined"])
+      scheme = [v16 scheme];
+      if ([scheme isEqualToString:@"x-apple-data-detectors-clientdefined"])
       {
         v27 = [v18 objectForKeyedSubscript:?];
 
         if (v27)
         {
-          v28 = [v16 path];
-          v29 = [v28 integerValue];
+          path = [v16 path];
+          integerValue = [path integerValue];
 
           v30 = [v18 objectForKeyedSubscript:@"CustomActionRanges"];
-          if ([v30 count] <= v29)
+          if ([v30 count] <= integerValue)
           {
             v49 = 0;
             RangeForURLification = -1;
@@ -172,7 +172,7 @@ LABEL_24:
 
           else
           {
-            v31 = [v30 objectAtIndexedSubscript:v29];
+            v31 = [v30 objectAtIndexedSubscript:integerValue];
             RangeForURLification = [v31 rangeValue];
             v49 = v32;
           }
@@ -193,7 +193,7 @@ LABEL_24:
 
       v52 = 0;
       v53 = 0;
-      v33 = [v11 attribute:*MEMORY[0x277D740E8] atIndex:a3 effectiveRange:&v52];
+      v33 = [storageCopy attribute:*MEMORY[0x277D740E8] atIndex:index effectiveRange:&v52];
 
       if (!v33)
       {
@@ -209,9 +209,9 @@ LABEL_24:
     }
 
 LABEL_19:
-    v34 = [v22 glyphRangeForCharacterRange:RangeForURLification actualCharacterRange:{v24, 0}];
-    v35 = v50;
-    [v22 boundingRectForGlyphRange:v34 inTextContainer:{v36, v50}];
+    v34 = [firstObject glyphRangeForCharacterRange:RangeForURLification actualCharacterRange:{v24, 0}];
+    v35 = firstObject2;
+    [firstObject boundingRectForGlyphRange:v34 inTextContainer:{v36, firstObject2}];
     v38 = v37;
     v40 = v39;
     v42 = v41;
@@ -219,7 +219,7 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v12 textContainerInset];
+      [viewCopy textContainerInset];
       v38 = v45 + v38;
       v40 = v46 + v40;
     }
@@ -229,7 +229,7 @@ LABEL_19:
     v18 = v47;
 LABEL_25:
 
-    if ([a1 validateContext:v18 silent:0])
+    if ([self validateContext:v18 silent:0])
     {
       goto LABEL_4;
     }
@@ -237,10 +237,10 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if ([a1 validateContext:v18 silent:0])
+  if ([self validateContext:v18 silent:0])
   {
 LABEL_4:
-    v20 = [v15 contextMenuConfigurationWithIdentifier:v13 inView:v12 context:v18];
+    v20 = [v15 contextMenuConfigurationWithIdentifier:identifierCopy inView:viewCopy context:v18];
     goto LABEL_27;
   }
 
@@ -251,24 +251,24 @@ LABEL_27:
   return v20;
 }
 
-+ (id)contextMenuConfigurationForURL:(id)a3 identifier:(id)a4 selectedText:(id)a5 results:(id)a6 inView:(id)a7 context:(id)a8 menuIdentifier:(id)a9
++ (id)contextMenuConfigurationForURL:(id)l identifier:(id)identifier selectedText:(id)text results:(id)results inView:(id)view context:(id)context menuIdentifier:(id)menuIdentifier
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if ([a1 validateContext:v20 silent:0] && (dd_urlLooksSuspicious(v15) & 1) == 0)
+  lCopy = l;
+  identifierCopy = identifier;
+  textCopy = text;
+  resultsCopy = results;
+  viewCopy = view;
+  contextCopy = context;
+  menuIdentifierCopy = menuIdentifier;
+  if ([self validateContext:contextCopy silent:0] && (dd_urlLooksSuspicious(lCopy) & 1) == 0)
   {
     v23 = +[DDDetectionController sharedController];
     v28 = 0;
-    v24 = [v23 resultForURL:v15 identifier:v16 selectedText:v17 results:v18 context:v20 extendedContext:&v28];
+    v24 = [v23 resultForURL:lCopy identifier:identifierCopy selectedText:textCopy results:resultsCopy context:contextCopy extendedContext:&v28];
     v25 = v28;
 
-    v26 = [[DDContextMenuAction alloc] initWithResult:v24 URL:v15];
-    v22 = [(DDContextMenuAction *)v26 contextMenuConfigurationWithIdentifier:v21 inView:v19 context:v25];
+    v26 = [[DDContextMenuAction alloc] initWithResult:v24 URL:lCopy];
+    v22 = [(DDContextMenuAction *)v26 contextMenuConfigurationWithIdentifier:menuIdentifierCopy inView:viewCopy context:v25];
   }
 
   else
@@ -279,15 +279,15 @@ LABEL_27:
   return v22;
 }
 
-+ (id)contextMenuConfigurationWithResult:(__DDResult *)a3 inView:(id)a4 context:(id)a5 menuIdentifier:(id)a6
++ (id)contextMenuConfigurationWithResult:(__DDResult *)result inView:(id)view context:(id)context menuIdentifier:(id)identifier
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([a1 validateContext:v11 silent:0])
+  viewCopy = view;
+  contextCopy = context;
+  identifierCopy = identifier;
+  if ([self validateContext:contextCopy silent:0])
   {
-    v13 = [[DDContextMenuAction alloc] initWithResult:a3 URL:0];
-    v14 = [(DDContextMenuAction *)v13 contextMenuConfigurationWithIdentifier:v12 inView:v10 context:v11];
+    v13 = [[DDContextMenuAction alloc] initWithResult:result URL:0];
+    v14 = [(DDContextMenuAction *)v13 contextMenuConfigurationWithIdentifier:identifierCopy inView:viewCopy context:contextCopy];
   }
 
   else
@@ -298,16 +298,16 @@ LABEL_27:
   return v14;
 }
 
-+ (id)contextMenuConfigurationWithURL:(id)a3 inView:(id)a4 context:(id)a5 menuIdentifier:(id)a6
++ (id)contextMenuConfigurationWithURL:(id)l inView:(id)view context:(id)context menuIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([a1 validateContext:v12 silent:0] && (dd_urlLooksSuspicious(v10) & 1) == 0)
+  lCopy = l;
+  viewCopy = view;
+  contextCopy = context;
+  identifierCopy = identifier;
+  if ([self validateContext:contextCopy silent:0] && (dd_urlLooksSuspicious(lCopy) & 1) == 0)
   {
-    v15 = [[DDContextMenuAction alloc] initWithResult:0 URL:v10];
-    v14 = [(DDContextMenuAction *)v15 contextMenuConfigurationWithIdentifier:v13 inView:v11 context:v12];
+    v15 = [[DDContextMenuAction alloc] initWithResult:0 URL:lCopy];
+    v14 = [(DDContextMenuAction *)v15 contextMenuConfigurationWithIdentifier:identifierCopy inView:viewCopy context:contextCopy];
   }
 
   else
@@ -318,16 +318,16 @@ LABEL_27:
   return v14;
 }
 
-+ (id)contextMenuConfigurationWithRVItem:(id)a3 inView:(id)a4 context:(id)a5 menuIdentifier:(id)a6
++ (id)contextMenuConfigurationWithRVItem:(id)item inView:(id)view context:(id)context menuIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([a1 validateContext:v12 silent:0])
+  itemCopy = item;
+  viewCopy = view;
+  contextCopy = context;
+  identifierCopy = identifier;
+  if ([self validateContext:contextCopy silent:0])
   {
-    v14 = [[DDContextMenuAction alloc] initWithRVItem:v10];
-    v15 = [(DDContextMenuAction *)v14 contextMenuConfigurationWithIdentifier:v13 inView:v11 context:v12];
+    v14 = [[DDContextMenuAction alloc] initWithRVItem:itemCopy];
+    v15 = [(DDContextMenuAction *)v14 contextMenuConfigurationWithIdentifier:identifierCopy inView:viewCopy context:contextCopy];
   }
 
   else
@@ -338,23 +338,23 @@ LABEL_27:
   return v15;
 }
 
-+ (id)defaultActionWithResult:(__DDResult *)a3 context:(id)a4
++ (id)defaultActionWithResult:(__DDResult *)result context:(id)context
 {
-  v6 = a4;
-  if ([a1 validateContext:v6 silent:0])
+  contextCopy = context;
+  if ([self validateContext:contextCopy silent:0])
   {
     v7 = +[DDDetectionController sharedController];
-    if ([v7 _shouldImmediatelyShowActionSheetForCoreResult:a3])
+    if ([v7 _shouldImmediatelyShowActionSheetForCoreResult:result])
     {
       v8 = 0;
     }
 
     else
     {
-      v9 = [MEMORY[0x277D04218] resultFromCoreResult:a3];
+      v9 = [MEMORY[0x277D04218] resultFromCoreResult:result];
       v10 = v7[7];
       v11 = [v9 url];
-      v8 = [v10 defaultActionForURL:v11 result:a3 context:v6];
+      v8 = [v10 defaultActionForURL:v11 result:result context:contextCopy];
     }
   }
 
@@ -366,21 +366,21 @@ LABEL_27:
   return v8;
 }
 
-+ (id)defaultActionWithURL:(id)a3 context:(id)a4
++ (id)defaultActionWithURL:(id)l context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 validateContext:v7 silent:0])
+  lCopy = l;
+  contextCopy = context;
+  if ([self validateContext:contextCopy silent:0])
   {
     v8 = +[DDDetectionController sharedController];
-    if ([v8 _shouldImmediatelyShowActionSheetForURL:v6])
+    if ([v8 _shouldImmediatelyShowActionSheetForURL:lCopy])
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = [v8[7] defaultActionForURL:v6 result:0 context:v7];
+      v9 = [v8[7] defaultActionForURL:lCopy result:0 context:contextCopy];
     }
   }
 
@@ -392,20 +392,20 @@ LABEL_27:
   return v9;
 }
 
-+ (id)previewViewProviderForPreviewAction:(id)a3 context:(id)a4
++ (id)previewViewProviderForPreviewAction:(id)action context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 allKeys];
-  v8 = [v7 containsObject:@"kDDContextMenuWantsPreviewKey"];
+  actionCopy = action;
+  contextCopy = context;
+  allKeys = [contextCopy allKeys];
+  v8 = [allKeys containsObject:@"kDDContextMenuWantsPreviewKey"];
 
   if (v8)
   {
-    v9 = [v6 objectForKey:@"kDDContextMenuWantsPreviewKey"];
-    v10 = [v9 BOOLValue];
+    v9 = [contextCopy objectForKey:@"kDDContextMenuWantsPreviewKey"];
+    bOOLValue = [v9 BOOLValue];
 
     v11 = 0;
-    if (!v5)
+    if (!actionCopy)
     {
       goto LABEL_7;
     }
@@ -413,21 +413,21 @@ LABEL_27:
 
   else
   {
-    v10 = 1;
+    bOOLValue = 1;
     v11 = 0;
-    if (!v5)
+    if (!actionCopy)
     {
       goto LABEL_7;
     }
   }
 
-  if (v10)
+  if (bOOLValue)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __67__DDContextMenuAction_previewViewProviderForPreviewAction_context___block_invoke;
     aBlock[3] = &unk_2782914B0;
-    v15 = v5;
+    v15 = actionCopy;
     v11 = _Block_copy(aBlock);
   }
 
@@ -464,26 +464,26 @@ id __67__DDContextMenuAction_previewViewProviderForPreviewAction_context___block
   return v3;
 }
 
-+ (id)buttonActionsForURL:(id)a3 result:(__DDResult *)a4 contact:(id)a5 icsString:(id)a6 context:(id)a7 view:(id)a8 identifier:(id)a9 suggestedActions:(id)a10 defaultAction:(id *)a11
++ (id)buttonActionsForURL:(id)l result:(__DDResult *)result contact:(id)contact icsString:(id)string context:(id)context view:(id)view identifier:(id)identifier suggestedActions:(id)self0 defaultAction:(id *)self1
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  if (v16 || a4 || v17 || v18)
+  lCopy = l;
+  contactCopy = contact;
+  stringCopy = string;
+  contextCopy = context;
+  viewCopy = view;
+  identifierCopy = identifier;
+  actionsCopy = actions;
+  if (lCopy || result || contactCopy || stringCopy)
   {
-    if (dd_urlLooksSuspicious(v16))
+    if (dd_urlLooksSuspicious(lCopy))
     {
       v23 = 0;
       goto LABEL_21;
     }
 
-    if (_DDResultIsURL(a4))
+    if (_DDResultIsURL(result))
     {
-      v24 = _DDURLFromResult(a4);
+      v24 = _DDURLFromResult(result);
       v25 = v24;
       if (!v24 || (dd_urlLooksSuspicious(v24) & 1) != 0)
       {
@@ -493,9 +493,9 @@ id __67__DDContextMenuAction_previewViewProviderForPreviewAction_context___block
       }
     }
 
-    v26 = [DDDetectionController barcodeContext:v19 preview:1 contact:v17 ics:v18];
+    v26 = [DDDetectionController barcodeContext:contextCopy preview:1 contact:contactCopy ics:stringCopy];
 
-    v27 = [[DDContextMenuAction alloc] initWithResult:a4 URL:v16];
+    v27 = [[DDContextMenuAction alloc] initWithResult:result URL:lCopy];
     v33 = 0;
     v28 = [v26 objectForKeyedSubscript:@"kDDContextUsePlaceholderDefaultActionKey"];
     if ([v28 BOOLValue])
@@ -508,12 +508,12 @@ id __67__DDContextMenuAction_previewViewProviderForPreviewAction_context___block
       v29 = 0;
     }
 
-    v30 = [(DDContextMenuAction *)v27 contextMenuConfigurationWithIdentifier:v21 inView:v20 context:v26 defaultAction:a11 menuProvider:&v33 options:v29];
+    v30 = [(DDContextMenuAction *)v27 contextMenuConfigurationWithIdentifier:identifierCopy inView:viewCopy context:v26 defaultAction:action menuProvider:&v33 options:v29];
     v31 = v33;
 
     if (v31)
     {
-      v23 = v31[2](v31, v22);
+      v23 = v31[2](v31, actionsCopy);
     }
 
     else
@@ -521,14 +521,14 @@ id __67__DDContextMenuAction_previewViewProviderForPreviewAction_context___block
       v23 = 0;
     }
 
-    v19 = v26;
+    contextCopy = v26;
     goto LABEL_21;
   }
 
   v23 = 0;
-  if (a11)
+  if (action)
   {
-    *a11 = 0;
+    *action = 0;
   }
 
 LABEL_21:
@@ -536,24 +536,24 @@ LABEL_21:
   return v23;
 }
 
-- (id)_rawContextMenuContentForView:(id)a3 interactionDelegate:(id)a4 context:(id)a5 elements:(id)a6 defaultAction:(id *)a7 overriddenMenuActionProvider:(id *)a8 options:(int64_t)a9
+- (id)_rawContextMenuContentForView:(id)view interactionDelegate:(id)delegate context:(id)context elements:(id)elements defaultAction:(id *)action overriddenMenuActionProvider:(id *)provider options:(int64_t)options
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  viewCopy = view;
+  delegateCopy = delegate;
+  contextCopy = context;
+  elementsCopy = elements;
   item = self->_item;
   if (!item)
   {
-    v23 = [DDContextMenuAction previewActionForResult:self->_result URL:self->_url context:v17];
+    v23 = [DDContextMenuAction previewActionForResult:self->_result URL:self->_url context:contextCopy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (a8)
+    if (provider)
     {
       if (isKindOfClass)
       {
-        v30 = [DDClientPreviewAction clientMenuActionProviderForUrl:self->_url context:v17];
-        *a8 = v30;
+        v30 = [DDClientPreviewAction clientMenuActionProviderForUrl:self->_url context:contextCopy];
+        *provider = v30;
         if (v30)
         {
           v31 = 0;
@@ -570,24 +570,24 @@ LABEL_21:
 
 LABEL_20:
     v48 = v24;
-    v37 = v16;
-    v38 = v15;
+    v37 = delegateCopy;
+    v38 = viewCopy;
     v39 = +[DDDetectionController sharedController];
-    v40 = [v39 actionsForResult:self->_result context:v17];
+    v40 = [v39 actionsForResult:self->_result context:contextCopy];
     v27 = [DDActionGroup groupWithActions:v40];
 
     if (![(DDActionGroup *)v27 count])
     {
-      v15 = v38;
-      v16 = v37;
+      viewCopy = v38;
+      delegateCopy = v37;
       v24 = v48;
       goto LABEL_25;
     }
 
-    v15 = v38;
+    viewCopy = v38;
     v41 = v38;
-    v16 = v37;
-    v28 = [(DDContextMenuAction *)self _updateMenuElementItems:v18 withActions:v27 view:v41 interactionDelegate:v37 options:a9 level:0 parent:0];
+    delegateCopy = v37;
+    v28 = [(DDContextMenuAction *)self _updateMenuElementItems:elementsCopy withActions:v27 view:v41 interactionDelegate:v37 options:options level:0 parent:0];
     v24 = v48;
     goto LABEL_24;
   }
@@ -595,14 +595,14 @@ LABEL_20:
   if ([(RVItem *)item normalizedType]== 6)
   {
     v20 = [DDLookupAction alloc];
-    v21 = [(RVItem *)self->_item query];
-    v22 = [(DDLookupAction *)v20 initWithRVQuery:v21 context:v17];
+    query = [(RVItem *)self->_item query];
+    contextCopy = [(DDLookupAction *)v20 initWithRVQuery:query context:contextCopy];
   }
 
   else
   {
-    v32 = [(RVItem *)self->_item highlightRange];
-    if (v32 == 0x7FFFFFFFFFFFFFFFLL || (v34 = v32 + v33, -[RVItem text](self->_item, "text"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 length], v35, v34 > v36))
+    highlightRange = [(RVItem *)self->_item highlightRange];
+    if (highlightRange == 0x7FFFFFFFFFFFFFFFLL || (v34 = highlightRange + v33, -[RVItem text](self->_item, "text"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 length], v35, v34 > v36))
     {
       v23 = 0;
       v31 = 0;
@@ -610,12 +610,12 @@ LABEL_20:
     }
 
     v45 = [DDLookupAction alloc];
-    v21 = [(RVItem *)self->_item text];
-    v46 = [(RVItem *)self->_item highlightRange];
-    v22 = [(DDLookupAction *)v45 initWithQueryString:v21 range:v46 context:v47, v17];
+    query = [(RVItem *)self->_item text];
+    highlightRange2 = [(RVItem *)self->_item highlightRange];
+    contextCopy = [(DDLookupAction *)v45 initWithQueryString:query range:highlightRange2 context:v47, contextCopy];
   }
 
-  v23 = v22;
+  v23 = contextCopy;
 
   if (+[(DDParsecAction *)DDLookupAction])
   {
@@ -639,25 +639,25 @@ LABEL_8:
     self->_menuTitle = 0;
   }
 
-  v26 = [v23 menuActions];
-  if (v26)
+  menuActions = [v23 menuActions];
+  if (menuActions)
   {
-    v27 = v26;
-    v28 = [(DDContextMenuAction *)self _updateMenuElementItems:v18 withActions:v26 view:v15 interactionDelegate:v16 options:a9 level:0 parent:0];
+    v27 = menuActions;
+    v28 = [(DDContextMenuAction *)self _updateMenuElementItems:elementsCopy withActions:menuActions view:viewCopy interactionDelegate:delegateCopy options:options level:0 parent:0];
 LABEL_24:
-    *a7 = v28;
+    *action = v28;
     goto LABEL_25;
   }
 
-  v49 = a7;
+  actionCopy = action;
   v42 = +[DDDetectionController sharedController];
-  v43 = [v42 actionsForResult:self->_result context:v17];
+  v43 = [v42 actionsForResult:self->_result context:contextCopy];
   v27 = [DDActionGroup groupWithActions:v43];
 
   if ([(DDActionGroup *)v27 count])
   {
-    v28 = [(DDContextMenuAction *)self _updateMenuElementItems:v18 withActions:v27 view:v15 interactionDelegate:v16 options:a9 level:0 parent:0];
-    a7 = v49;
+    v28 = [(DDContextMenuAction *)self _updateMenuElementItems:elementsCopy withActions:v27 view:viewCopy interactionDelegate:delegateCopy options:options level:0 parent:0];
+    action = actionCopy;
     goto LABEL_24;
   }
 
@@ -669,16 +669,16 @@ LABEL_26:
   return v31;
 }
 
-+ (id)filterResultsForQuickActions:(id)a3
++ (id)filterResultsForQuickActions:(id)actions
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  actionsCopy = actions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v3;
+  obj = actionsCopy;
   v5 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v5)
   {
@@ -771,50 +771,50 @@ LABEL_26:
   return v4;
 }
 
-+ (id)identificationStringsForMenuElement:(id)a3 useDefault:(BOOL)a4
++ (id)identificationStringsForMenuElement:(id)element useDefault:(BOOL)default
 {
-  v4 = a4;
-  v5 = a3;
+  defaultCopy = default;
+  elementCopy = element;
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 identifier];
-    if (!v7 && !v4)
+    identifier = [elementCopy identifier];
+    if (!identifier && !defaultCopy)
     {
       goto LABEL_14;
     }
 
-    if (v7 == 0 && v4)
+    if (identifier == 0 && defaultCopy)
     {
       v8 = @"none";
     }
 
     else
     {
-      v8 = v7;
+      v8 = identifier;
     }
 
     goto LABEL_13;
   }
 
-  if (v4)
+  if (defaultCopy)
   {
     v9 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v11 = [v5 action];
-      if (v11)
+      action = [elementCopy action];
+      if (action)
       {
-        v12 = NSStringFromSelector(v11);
+        v12 = NSStringFromSelector(action);
         [v6 addObject:v12];
       }
 
-      v13 = [v5 fallbackAction];
-      if (v13)
+      fallbackAction = [elementCopy fallbackAction];
+      if (fallbackAction)
       {
-        v8 = NSStringFromSelector(v13);
+        v8 = NSStringFromSelector(fallbackAction);
 LABEL_13:
         [v6 addObject:v8];
       }
@@ -837,12 +837,12 @@ LABEL_14:
   return v14;
 }
 
-- (id)contextMenuConfigurationWithIdentifier:(id)a3 inView:(id)a4 context:(id)a5
+- (id)contextMenuConfigurationWithIdentifier:(id)identifier inView:(id)view context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 objectForKeyedSubscript:@"kDDContextUsePlaceholderDefaultActionKey"];
+  contextCopy = context;
+  viewCopy = view;
+  identifierCopy = identifier;
+  v11 = [contextCopy objectForKeyedSubscript:@"kDDContextUsePlaceholderDefaultActionKey"];
   if ([v11 BOOLValue])
   {
     v12 = 2;
@@ -853,20 +853,20 @@ LABEL_14:
     v12 = 0;
   }
 
-  v13 = [(DDContextMenuAction *)self contextMenuConfigurationWithIdentifier:v10 inView:v9 context:v8 defaultAction:0 menuProvider:0 options:v12];
+  v13 = [(DDContextMenuAction *)self contextMenuConfigurationWithIdentifier:identifierCopy inView:viewCopy context:contextCopy defaultAction:0 menuProvider:0 options:v12];
 
   return v13;
 }
 
-- (id)contextMenuConfigurationWithIdentifier:(id)a3 inView:(id)a4 context:(id)a5 defaultAction:(id *)a6 menuProvider:(id *)a7 options:(int64_t)a8
+- (id)contextMenuConfigurationWithIdentifier:(id)identifier inView:(id)view context:(id)context defaultAction:(id *)action menuProvider:(id *)provider options:(int64_t)options
 {
-  v60 = a3;
-  v13 = a4;
-  v14 = a5;
+  identifierCopy = identifier;
+  viewCopy = view;
+  contextCopy = context;
   v15 = self->_result;
   if (v15)
   {
-    v16 = DDCreateUpdatedResultWithContext(v15, v14);
+    v16 = DDCreateUpdatedResultWithContext(v15, contextCopy);
     if (v16)
     {
       v17 = self->_result;
@@ -875,19 +875,19 @@ LABEL_14:
     }
   }
 
-  v18 = [v14 objectForKeyedSubscript:@"ICS"];
+  v18 = [contextCopy objectForKeyedSubscript:@"ICS"];
   if ([v18 length])
   {
     v19 = [DDAddEventAction cachedEventForICSString:v18];
     if (v19)
     {
-      v20 = [DDAction contextByAddingValue:v19 toKey:0x282C1E0C8 inContext:v14];
+      v20 = [DDAction contextByAddingValue:v19 toKey:0x282C1E0C8 inContext:contextCopy];
 
-      v14 = v20;
+      contextCopy = v20;
     }
   }
 
-  v21 = [v14 copy];
+  v21 = [contextCopy copy];
 
   v56 = v18;
   if (self->_originalItem)
@@ -900,20 +900,20 @@ LABEL_14:
     v22 = 0;
   }
 
-  objc_initWeak(location, v13);
-  v23 = [MEMORY[0x277CBEB18] array];
+  objc_initWeak(location, viewCopy);
+  array = [MEMORY[0x277CBEB18] array];
   v78 = 0;
   v79 = 0;
   v57 = v22;
   v58 = v21;
-  v24 = [(DDContextMenuAction *)self _rawContextMenuContentForView:v13 interactionDelegate:v22 context:v21 elements:v23 defaultAction:&v79 overriddenMenuActionProvider:&v78 options:a8];
+  v24 = [(DDContextMenuAction *)self _rawContextMenuContentForView:viewCopy interactionDelegate:v22 context:v21 elements:array defaultAction:&v79 overriddenMenuActionProvider:&v78 options:options];
   v59 = v79;
   v25 = v78;
   if (v25)
   {
-    v26 = [v24 previewViewController];
-    v27 = v26;
-    if (v26)
+    previewViewController = [v24 previewViewController];
+    v27 = previewViewController;
+    if (previewViewController)
     {
       v28 = v76;
       v76[0] = MEMORY[0x277D85DD0];
@@ -921,7 +921,7 @@ LABEL_14:
       v76[2] = __112__DDContextMenuAction_contextMenuConfigurationWithIdentifier_inView_context_defaultAction_menuProvider_options___block_invoke;
       v76[3] = &unk_2782914B0;
       v21 = &v77;
-      v77 = v26;
+      v77 = previewViewController;
     }
 
     else
@@ -929,7 +929,7 @@ LABEL_14:
       v28 = 0;
     }
 
-    v37 = [(UIContextMenuConfiguration *)DDContextMenuConfiguration configurationWithIdentifier:v60 previewProvider:v28 actionProvider:v25];
+    v37 = [(UIContextMenuConfiguration *)DDContextMenuConfiguration configurationWithIdentifier:identifierCopy previewProvider:v28 actionProvider:v25];
     if (!v27)
     {
       goto LABEL_47;
@@ -938,7 +938,7 @@ LABEL_14:
     goto LABEL_46;
   }
 
-  if (![v23 count])
+  if (![array count])
   {
     v37 = 0;
     goto LABEL_48;
@@ -946,18 +946,18 @@ LABEL_14:
 
   if (self->_additionalLookupItem && +[(DDParsecAction *)DDLookupAction])
   {
-    v29 = [(RVItem *)self->_additionalLookupItem ddResult];
-    v53 = [v29 value];
+    ddResult = [(RVItem *)self->_additionalLookupItem ddResult];
+    value = [ddResult value];
 
-    if ([v53 length])
+    if ([value length])
     {
-      v30 = -[DDLookupAction initWithQueryString:range:context:]([DDLookupAction alloc], "initWithQueryString:range:context:", v53, 0, [v53 length], v58);
+      v30 = -[DDLookupAction initWithQueryString:range:context:]([DDLookupAction alloc], "initWithQueryString:range:context:", value, 0, [value length], v58);
       v31 = [DDActionGroup groupWithAction:v30];
-      v32 = [(DDContextMenuAction *)self _updateMenuElementItems:v23 withActions:v31 view:v13 interactionDelegate:v22 options:a8 level:0 parent:0];
+      v32 = [(DDContextMenuAction *)self _updateMenuElementItems:array withActions:v31 view:viewCopy interactionDelegate:v22 options:options level:0 parent:0];
     }
   }
 
-  v33 = a8 & 1;
+  v33 = options & 1;
   if ([v24 menuHasHeaderView])
   {
     v74[0] = MEMORY[0x277D85DD0];
@@ -966,28 +966,28 @@ LABEL_14:
     v74[3] = &unk_2782914D8;
     v75 = v24;
     v34 = [DDUICustomViewMenuElement elementWithViewProvider:v74];
-    [v23 insertObject:v34 atIndex:0];
+    [array insertObject:v34 atIndex:0];
 
-    v35 = 0;
+    string = 0;
     v36 = v75;
 LABEL_22:
 
     goto LABEL_31;
   }
 
-  if (a8)
+  if (options)
   {
-    v35 = 0;
+    string = 0;
     goto LABEL_31;
   }
 
-  v35 = [(NSAttributedString *)self->_menuTitle string];
-  if ([v35 length] >= 0x100)
+  string = [(NSAttributedString *)self->_menuTitle string];
+  if ([string length] >= 0x100)
   {
-    v36 = [v35 substringToIndex:255];
+    v36 = [string substringToIndex:255];
     v38 = [v36 stringByAppendingString:@"…"];
 
-    v35 = v38;
+    string = v38;
     goto LABEL_22;
   }
 
@@ -996,18 +996,18 @@ LABEL_31:
   aBlock[1] = 3221225472;
   aBlock[2] = __112__DDContextMenuAction_contextMenuConfigurationWithIdentifier_inView_context_defaultAction_menuProvider_options___block_invoke_3;
   aBlock[3] = &unk_278291500;
-  v69 = v23;
+  v69 = array;
   v73 = v33;
   v39 = v58;
   v70 = v39;
-  v27 = v35;
+  v27 = string;
   v71 = v27;
-  v40 = v60;
+  v40 = identifierCopy;
   v72 = v40;
   v54 = _Block_copy(aBlock);
-  if (a7)
+  if (provider)
   {
-    *a7 = [v54 copy];
+    *provider = [v54 copy];
   }
 
   v41 = [objc_opt_class() previewViewProviderForPreviewAction:v24 context:v39];
@@ -1015,8 +1015,8 @@ LABEL_31:
 
   if (v24)
   {
-    v42 = [v24 commitURL];
-    [v37 setInteractionURL:v42];
+    commitURL = [v24 commitURL];
+    [v37 setInteractionURL:commitURL];
 
     if (([v24 wantsSeamlessCommit] & 1) != 0 || objc_msgSend(v24, "wantsCustomViewControllerCommit"))
     {
@@ -1045,31 +1045,31 @@ LABEL_31:
     [v37 setPrefersActionMenuStyle:{objc_msgSend(v24, "prefersActionMenuStyle")}];
   }
 
-  if (a6)
+  if (action)
   {
-    v44 = [v59 defaultAction];
+    defaultAction = [v59 defaultAction];
 
-    if (v44)
+    if (defaultAction)
     {
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
       v61[2] = __112__DDContextMenuAction_contextMenuConfigurationWithIdentifier_inView_context_defaultAction_menuProvider_options___block_invoke_5;
       v61[3] = &unk_278291550;
       objc_copyWeak(&v64, location);
-      v45 = v44;
+      v45 = defaultAction;
       v62 = v45;
       v63 = v57;
       v52 = _Block_copy(v61);
       v59 = v45;
-      v46 = [v45 compactTitle];
-      v47 = [v45 compactIcon];
-      v48 = [v45 generateIdentifier];
-      v49 = [DDUIAction actionWithTitle:v46 image:v47 identifier:v48 handler:v52];
+      compactTitle = [v45 compactTitle];
+      compactIcon = [v45 compactIcon];
+      generateIdentifier = [v45 generateIdentifier];
+      v49 = [DDUIAction actionWithTitle:compactTitle image:compactIcon identifier:generateIdentifier handler:v52];
 
       [v49 setDd_action:v59];
       [v49 setDd_handler:v52];
       v50 = v49;
-      *a6 = v49;
+      *action = v49;
 
       objc_destroyWeak(&v64);
     }
@@ -1077,7 +1077,7 @@ LABEL_31:
     else
     {
       v59 = 0;
-      *a6 = 0;
+      *action = 0;
     }
   }
 
@@ -1290,16 +1290,16 @@ uint64_t __112__DDContextMenuAction_contextMenuConfigurationWithIdentifier_inVie
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)initAtIndex:(unint64_t)a3 inTextStorage:(id)a4
+- (id)initAtIndex:(unint64_t)index inTextStorage:(id)storage
 {
-  v6 = a4;
+  storageCopy = storage;
   v16.receiver = self;
   v16.super_class = DDContextMenuAction;
   v7 = [(DDContextMenuAction *)&v16 init];
   if (v7)
   {
     v8 = +[DDDetectionController sharedController];
-    v9 = [v8 resultForLinkAtIndex:a3 inTextStorage:v6];
+    v9 = [v8 resultForLinkAtIndex:index inTextStorage:storageCopy];
 
     if (v9)
     {
@@ -1309,12 +1309,12 @@ uint64_t __112__DDContextMenuAction_contextMenuConfigurationWithIdentifier_inVie
     else
     {
       v11 = +[DDDetectionController sharedController];
-      v10 = [v11 linkAtIndex:a3 inTextStorage:v6];
+      v10 = [v11 linkAtIndex:index inTextStorage:storageCopy];
     }
 
     [(DDContextMenuAction *)v7 commonInitWithResult:v9 URL:v10];
     v12 = +[DDDetectionController sharedController];
-    v13 = [v12 attributedTitleForResultAtIndex:a3 ofStorage:v6 updaterBlock:0];
+    v13 = [v12 attributedTitleForResultAtIndex:index ofStorage:storageCopy updaterBlock:0];
     menuTitle = v7->_menuTitle;
     v7->_menuTitle = v13;
   }
@@ -1322,20 +1322,20 @@ uint64_t __112__DDContextMenuAction_contextMenuConfigurationWithIdentifier_inVie
   return v7;
 }
 
-- (DDContextMenuAction)initWithResult:(__DDResult *)a3 URL:(id)a4
+- (DDContextMenuAction)initWithResult:(__DDResult *)result URL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = DDContextMenuAction;
   v7 = [(DDContextMenuAction *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    [(DDContextMenuAction *)v7 commonInitWithResult:a3 URL:v6];
-    if (a3)
+    [(DDContextMenuAction *)v7 commonInitWithResult:result URL:lCopy];
+    if (result)
     {
       v9 = +[DDDetectionController sharedController];
-      v10 = [v9 attributedTitleForResult:a3 updaterBlock:0];
+      v10 = [v9 attributedTitleForResult:result updaterBlock:0];
 LABEL_6:
       menuTitle = v8->_menuTitle;
       v8->_menuTitle = v10;
@@ -1343,10 +1343,10 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    if (v6)
+    if (lCopy)
     {
       v9 = +[DDDetectionController sharedController];
-      v10 = [v9 attributedTitleForURL:v6 updaterBlock:0];
+      v10 = [v9 attributedTitleForURL:lCopy updaterBlock:0];
       goto LABEL_6;
     }
   }
@@ -1356,53 +1356,53 @@ LABEL_7:
   return v8;
 }
 
-- (DDContextMenuAction)initWithRVItem:(id)a3
+- (DDContextMenuAction)initWithRVItem:(id)item
 {
-  v5 = a3;
-  objc_storeStrong(&self->_originalItem, a3);
-  v6 = [v5 normalizedType];
-  if (v6 > 2)
+  itemCopy = item;
+  objc_storeStrong(&self->_originalItem, item);
+  normalizedType = [itemCopy normalizedType];
+  if (normalizedType > 2)
   {
-    if (v6 == 6)
+    if (normalizedType == 6)
     {
       goto LABEL_12;
     }
 
-    if (v6 != 3)
+    if (normalizedType != 3)
     {
       goto LABEL_30;
     }
 
-    v7 = [v5 ddResult];
-    v8 = [v7 category];
+    ddResult = [itemCopy ddResult];
+    category = [ddResult category];
 
-    if (v8 == 1)
+    if (category == 1)
     {
       goto LABEL_18;
     }
 
-    v9 = [v5 ddResult];
-    v10 = [v9 type];
-    if ([v10 isEqualToString:*MEMORY[0x277D04158]])
+    ddResult2 = [itemCopy ddResult];
+    type = [ddResult2 type];
+    if ([type isEqualToString:*MEMORY[0x277D04158]])
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v5;
+      v11 = itemCopy;
     }
 
     objc_storeStrong(&self->_additionalLookupItem, v11);
 
-    v12 = [v5 ddResult];
-    v13 = -[DDContextMenuAction initWithResult:URL:](self, "initWithResult:URL:", [v12 coreResult], 0);
+    ddResult3 = [itemCopy ddResult];
+    v13 = -[DDContextMenuAction initWithResult:URL:](self, "initWithResult:URL:", [ddResult3 coreResult], 0);
     goto LABEL_24;
   }
 
-  if (v6 != 1)
+  if (normalizedType != 1)
   {
-    if (v6 != 2)
+    if (normalizedType != 2)
     {
       goto LABEL_30;
     }
@@ -1413,51 +1413,51 @@ LABEL_12:
     self = [(DDContextMenuAction *)&v30 init];
     if (self)
     {
-      v14 = [v5 query];
-      v15 = [v14 title];
+      query = [itemCopy query];
+      title = [query title];
 
-      if ([(__CFString *)v15 length])
+      if ([(__CFString *)title length])
       {
-        if (![(__CFString *)v15 length])
+        if (![(__CFString *)title length])
         {
 LABEL_20:
-          v21 = [v5 text];
+          text = [itemCopy text];
 
-          v22 = [v5 highlightRange];
+          highlightRange = [itemCopy highlightRange];
           v24 = v23;
-          if ([v21 length] && v22 + v24 <= objc_msgSend(v21, "length"))
+          if ([text length] && highlightRange + v24 <= objc_msgSend(text, "length"))
           {
-            v15 = [v21 substringWithRange:{v22, v24}];
+            title = [text substringWithRange:{highlightRange, v24}];
           }
 
           else
           {
-            v15 = 0;
+            title = 0;
           }
         }
       }
 
       else
       {
-        v19 = [v5 ddResult];
-        v20 = [v19 matchedString];
+        ddResult4 = [itemCopy ddResult];
+        matchedString = [ddResult4 matchedString];
 
-        v15 = v20;
-        if (![(__CFString *)v20 length])
+        title = matchedString;
+        if (![(__CFString *)matchedString length])
         {
           goto LABEL_20;
         }
       }
 
       v25 = &stru_282C1E0A8;
-      if (v15)
+      if (title)
       {
-        v25 = v15;
+        v25 = title;
       }
 
       v26 = v25;
 
-      objc_storeStrong(&self->_item, a3);
+      objc_storeStrong(&self->_item, item);
       v27 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v26];
 
       menuTitle = self->_menuTitle;
@@ -1466,61 +1466,61 @@ LABEL_20:
 
 LABEL_30:
     self = self;
-    v16 = self;
+    selfCopy2 = self;
     goto LABEL_31;
   }
 
-  v16 = [v5 normalizedURL];
-  if (v16)
+  selfCopy2 = [itemCopy normalizedURL];
+  if (selfCopy2)
   {
-    v17 = [v5 normalizedURL];
-    v18 = dd_urlLooksSuspicious(v17);
+    normalizedURL = [itemCopy normalizedURL];
+    v18 = dd_urlLooksSuspicious(normalizedURL);
 
     if (v18)
     {
 LABEL_18:
-      v16 = 0;
+      selfCopy2 = 0;
       goto LABEL_31;
     }
 
-    v12 = [v5 normalizedURL];
-    v13 = [(DDContextMenuAction *)self initWithResult:0 URL:v12];
+    ddResult3 = [itemCopy normalizedURL];
+    v13 = [(DDContextMenuAction *)self initWithResult:0 URL:ddResult3];
 LABEL_24:
     self = v13;
 
-    v16 = self;
+    selfCopy2 = self;
   }
 
 LABEL_31:
 
-  return v16;
+  return selfCopy2;
 }
 
-- (void)commonInitWithResult:(__DDResult *)a3 URL:(id)a4
+- (void)commonInitWithResult:(__DDResult *)result URL:(id)l
 {
-  v7 = a4;
-  if (a3)
+  lCopy = l;
+  if (result)
   {
-    v9 = v7;
-    self->_result = CFRetain(a3);
+    v9 = lCopy;
+    self->_result = CFRetain(result);
     v8 = +[DDDetectionController sharedController];
-    [v8 interactionDidStartForResult:a3];
+    [v8 interactionDidStartForResult:result];
   }
 
   else
   {
-    if (!v7)
+    if (!lCopy)
     {
       goto LABEL_6;
     }
 
-    v9 = v7;
-    objc_storeStrong(&self->_url, a4);
+    v9 = lCopy;
+    objc_storeStrong(&self->_url, l);
     v8 = +[DDDetectionController sharedController];
     [v8 interactionDidStartForURL:v9];
   }
 
-  v7 = v9;
+  lCopy = v9;
 LABEL_6:
 }
 
@@ -1537,18 +1537,18 @@ LABEL_6:
   [(DDContextMenuAction *)&v4 dealloc];
 }
 
-- (id)_updateMenuElementItems:(id)a3 withActions:(id)a4 view:(id)a5 interactionDelegate:(id)a6 options:(int64_t)a7 level:(unint64_t)a8 parent:(id)a9
+- (id)_updateMenuElementItems:(id)items withActions:(id)actions view:(id)view interactionDelegate:(id)delegate options:(int64_t)options level:(unint64_t)level parent:(id)parent
 {
   v87 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v68 = a6;
-  v61 = a9;
-  v62 = v12;
-  v69 = v13;
-  v60 = v14;
-  if (!v12)
+  itemsCopy = items;
+  actionsCopy = actions;
+  viewCopy = view;
+  delegateCopy = delegate;
+  parentCopy = parent;
+  v62 = itemsCopy;
+  v69 = actionsCopy;
+  v60 = viewCopy;
+  if (!itemsCopy)
   {
     v17 = 0;
     goto LABEL_74;
@@ -1558,42 +1558,42 @@ LABEL_6:
   v83[1] = 3221225472;
   v83[2] = __105__DDContextMenuAction__updateMenuElementItems_withActions_view_interactionDelegate_options_level_parent___block_invoke;
   v83[3] = &unk_278291578;
-  v15 = v14;
+  v15 = viewCopy;
   v84 = v15;
-  [(DDActionGroup *)v13 finalizeWithFilter:v83];
-  if ([(DDActionGroup *)v13 count])
+  [(DDActionGroup *)actionsCopy finalizeWithFilter:v83];
+  if ([(DDActionGroup *)actionsCopy count])
   {
     objc_initWeak(&location, v15);
-    v16 = [(DDActionGroup *)v13 children];
+    children = [(DDActionGroup *)actionsCopy children];
 
-    v58 = a7 & 5;
-    if (v16)
+    v58 = options & 5;
+    if (children)
     {
-      v64 = [MEMORY[0x277CBEB18] array];
-      if (a8)
+      array = [MEMORY[0x277CBEB18] array];
+      if (level)
       {
-        v59 = [(DDActionGroup *)v13 inlinedGroup];
+        inlinedGroup = [(DDActionGroup *)actionsCopy inlinedGroup];
       }
 
       else
       {
-        v59 = 0;
+        inlinedGroup = 0;
       }
 
       v80 = 0u;
       v81 = 0u;
       v79 = 0u;
       v78 = 0u;
-      v22 = [(DDActionGroup *)v13 children];
+      children2 = [(DDActionGroup *)actionsCopy children];
       v23 = 0;
       v19 = 0;
-      v24 = [v22 countByEnumeratingWithState:&v78 objects:v86 count:16];
+      v24 = [children2 countByEnumeratingWithState:&v78 objects:v86 count:16];
       if (v24)
       {
         v25 = *v79;
         do
         {
-          v26 = v22;
+          v26 = children2;
           v27 = 0;
           v28 = v23;
           v29 = v19;
@@ -1604,7 +1604,7 @@ LABEL_6:
               objc_enumerationMutation(v26);
             }
 
-            v23 = [(DDContextMenuAction *)self _updateMenuElementItems:v64 withActions:*(*(&v78 + 1) + 8 * v27) view:v15 interactionDelegate:v68 options:a7 level:(v59 ^ 1) + a8 parent:v69];
+            v23 = [(DDContextMenuAction *)self _updateMenuElementItems:array withActions:*(*(&v78 + 1) + 8 * v27) view:v15 interactionDelegate:delegateCopy options:options level:(inlinedGroup ^ 1) + level parent:v69];
 
             v19 = selectDefaultAction(v29, v23);
 
@@ -1614,16 +1614,16 @@ LABEL_6:
           }
 
           while (v24 != v27);
-          v22 = v26;
+          children2 = v26;
           v24 = [v26 countByEnumeratingWithState:&v78 objects:v86 count:16];
         }
 
         while (v24);
       }
 
-      if (!a8)
+      if (!level)
       {
-        if (v64)
+        if (array)
         {
           [v62 addObjectsFromArray:?];
         }
@@ -1631,54 +1631,54 @@ LABEL_6:
         goto LABEL_67;
       }
 
-      v21 = [(DDActionGroup *)v69 mainAction];
+      mainAction = [(DDActionGroup *)v69 mainAction];
 
-      [v21 setTreatAsMenu:1];
-      if (v59)
+      [mainAction setTreatAsMenu:1];
+      if (inlinedGroup)
       {
         v30 = 0;
       }
 
       else
       {
-        if (a8 == 1)
+        if (level == 1)
         {
-          v31 = [v21 menuName];
+          menuName = [mainAction menuName];
         }
 
         else
         {
           if (v58 == 5)
           {
-            [v21 serviceCompactName];
+            [mainAction serviceCompactName];
           }
 
           else
           {
-            [v21 serviceName];
+            [mainAction serviceName];
           }
-          v31 = ;
+          menuName = ;
         }
 
-        v30 = v31;
+        v30 = menuName;
       }
 
       v32 = MEMORY[0x277D75710];
-      v33 = [v21 menuIcon];
-      v34 = [v21 generateIdentifier];
-      v35 = [v32 menuWithTitle:v30 image:v33 identifier:v34 options:v59 children:v64];
+      menuIcon = [mainAction menuIcon];
+      generateIdentifier = [mainAction generateIdentifier];
+      v35 = [v32 menuWithTitle:v30 image:menuIcon identifier:generateIdentifier options:inlinedGroup children:array];
       [v62 addObject:v35];
 
-      [v21 setTreatAsMenu:0];
+      [mainAction setTreatAsMenu:0];
 LABEL_66:
 
-      v23 = v21;
+      v23 = mainAction;
 LABEL_67:
 
-      v18 = v64;
+      ddAction = array;
 LABEL_68:
 
-      if ((a7 & 2) != 0 && [v19 isMemberOfClass:objc_opt_class()])
+      if ((options & 2) != 0 && [v19 isMemberOfClass:objc_opt_class()])
       {
         v55 = objc_alloc_init(DDPlaceholderAction);
       }
@@ -1694,42 +1694,42 @@ LABEL_68:
       goto LABEL_73;
     }
 
-    v18 = [(DDActionGroup *)v13 ddAction];
-    if (!v18)
+    ddAction = [(DDActionGroup *)actionsCopy ddAction];
+    if (!ddAction)
     {
       v19 = 0;
       goto LABEL_68;
     }
 
-    v19 = selectDefaultAction(0, v18);
-    v65 = [v18 menuItemattributes];
-    if ([v18 menuItemNameCanFallbackToServiceName])
+    v19 = selectDefaultAction(0, ddAction);
+    menuItemattributes = [ddAction menuItemattributes];
+    if ([ddAction menuItemNameCanFallbackToServiceName])
     {
-      if (a8 == 2)
+      if (level == 2)
       {
-        v36 = [(DDActionGroup *)v61 children];
-        v37 = v18;
-        v38 = [v36 count] > 1;
+        children3 = [(DDActionGroup *)parentCopy children];
+        v37 = ddAction;
+        v38 = [children3 count] > 1;
 
         if (v38)
         {
-          v39 = [v18 _serviceIdentifier];
-          if (!v39)
+          _serviceIdentifier = [ddAction _serviceIdentifier];
+          if (!_serviceIdentifier)
           {
 LABEL_78:
             if (v58 == 5)
             {
-              [v18 serviceCompactName];
+              [ddAction serviceCompactName];
             }
 
             else
             {
-              [v18 serviceName];
+              [ddAction serviceName];
             }
-            v20 = ;
+            menuName2 = ;
 LABEL_13:
-            v21 = v20;
-            if (v20)
+            mainAction = menuName2;
+            if (menuName2)
             {
               goto LABEL_52;
             }
@@ -1741,8 +1741,8 @@ LABEL_13:
           v77 = 0u;
           v74 = 0u;
           v75 = 0u;
-          v40 = [(DDActionGroup *)v61 children];
-          v41 = [v40 countByEnumeratingWithState:&v74 objects:v85 count:16];
+          children4 = [(DDActionGroup *)parentCopy children];
+          v41 = [children4 countByEnumeratingWithState:&v74 objects:v85 count:16];
           if (v41)
           {
             v42 = *v75;
@@ -1752,22 +1752,22 @@ LABEL_13:
               {
                 if (*v75 != v42)
                 {
-                  objc_enumerationMutation(v40);
+                  objc_enumerationMutation(children4);
                 }
 
-                v44 = [(DDActionGroup *)*(*(&v74 + 1) + 8 * i) ddAction];
-                v45 = [v44 _serviceIdentifier];
-                v46 = [v45 isEqualToString:v39];
+                ddAction2 = [(DDActionGroup *)*(*(&v74 + 1) + 8 * i) ddAction];
+                _serviceIdentifier2 = [ddAction2 _serviceIdentifier];
+                v46 = [_serviceIdentifier2 isEqualToString:_serviceIdentifier];
 
                 if ((v46 & 1) == 0)
                 {
 
-                  v18 = v37;
+                  ddAction = v37;
                   goto LABEL_78;
                 }
               }
 
-              v41 = [v40 countByEnumeratingWithState:&v74 objects:v85 count:16];
+              v41 = [children4 countByEnumeratingWithState:&v74 objects:v85 count:16];
               if (v41)
               {
                 continue;
@@ -1777,13 +1777,13 @@ LABEL_13:
             }
           }
 
-          v18 = v37;
+          ddAction = v37;
         }
       }
 
-      else if (a8 == 1)
+      else if (level == 1)
       {
-        v20 = [v18 menuName];
+        menuName2 = [ddAction menuName];
         goto LABEL_13;
       }
     }
@@ -1791,28 +1791,28 @@ LABEL_13:
 LABEL_48:
     if (v58 == 5)
     {
-      [v18 oneLinerLocalizedSubItemName];
+      [ddAction oneLinerLocalizedSubItemName];
     }
 
     else
     {
-      [v18 localizedSubItemName];
+      [ddAction localizedSubItemName];
     }
-    v21 = ;
+    mainAction = ;
 LABEL_52:
-    v47 = v18;
+    v47 = ddAction;
     v48 = MEMORY[0x277D750C8];
-    if (v65)
+    if (menuItemattributes)
     {
-      v49 = 0;
+      extractedActions = 0;
       v50 = 0;
       v51 = 0;
     }
 
     else
     {
-      v49 = [(DDActionGroup *)v61 extractedActions];
-      if (v49)
+      extractedActions = [(DDActionGroup *)parentCopy extractedActions];
+      if (extractedActions)
       {
         [v47 menuIcon];
       }
@@ -1822,41 +1822,41 @@ LABEL_52:
         [v47 icon];
       }
       v51 = ;
-      v50 = v49 ^ 1;
+      v50 = extractedActions ^ 1;
     }
 
-    v52 = [v47 generateIdentifier];
+    generateIdentifier2 = [v47 generateIdentifier];
     v70[0] = MEMORY[0x277D85DD0];
     v70[1] = 3221225472;
     v70[2] = __105__DDContextMenuAction__updateMenuElementItems_withActions_view_interactionDelegate_options_level_parent___block_invoke_2;
     v70[3] = &unk_2782915A0;
-    v64 = v47;
-    v71 = v64;
+    array = v47;
+    v71 = array;
     objc_copyWeak(&v73, &location);
-    v72 = v68;
-    v53 = [v48 actionWithTitle:v21 image:v51 identifier:v52 handler:v70];
+    v72 = delegateCopy;
+    v53 = [v48 actionWithTitle:mainAction image:v51 identifier:generateIdentifier2 handler:v70];
 
     if (v50)
     {
     }
 
-    if (v49)
+    if (extractedActions)
     {
     }
 
-    if ([(DDActionGroup *)v61 extractedActions])
+    if ([(DDActionGroup *)parentCopy extractedActions])
     {
-      [v64 extractedActionSubtitle];
+      [array extractedActionSubtitle];
     }
 
     else
     {
-      [v64 subtitle];
+      [array subtitle];
     }
     v54 = ;
     [v53 setSubtitle:v54];
 
-    [v53 setAttributes:{objc_msgSend(v64, "menuItemattributes")}];
+    [v53 setAttributes:{objc_msgSend(array, "menuItemattributes")}];
     [v62 addObject:v53];
 
     objc_destroyWeak(&v73);
@@ -1880,13 +1880,13 @@ void __105__DDContextMenuAction__updateMenuElementItems_withActions_view_interac
   [DDContextMenuAction performAction:v2 fromView:WeakRetained alertController:0 interactionDelegate:*(a1 + 40)];
 }
 
-+ (id)previewActionForResult:(__DDResult *)a3 URL:(id)a4 context:(id)a5
++ (id)previewActionForResult:(__DDResult *)result URL:(id)l context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
-  if (a3 | v7)
+  lCopy = l;
+  contextCopy = context;
+  if (result | lCopy)
   {
-    if (a3)
+    if (result)
     {
       Category = DDResultGetCategory();
       if (Category > 2)
@@ -1918,7 +1918,7 @@ LABEL_31:
           v15 = Category;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
-            [DDContextMenuAction previewActionForResult:a3 URL:v15 context:?];
+            [DDContextMenuAction previewActionForResult:result URL:v15 context:?];
             v14 = 0;
             goto LABEL_68;
           }
@@ -1978,96 +1978,96 @@ LABEL_18:
 LABEL_65:
           v16 = [v10 alloc];
           v17 = 0;
-          v18 = a3;
+          resultCopy = result;
           goto LABEL_66;
         }
 
         goto LABEL_31;
       }
 
-      if ([DDNewsPreviewAction handlesUrl:0 result:a3])
+      if ([DDNewsPreviewAction handlesUrl:0 result:result])
       {
         v10 = DDNewsPreviewAction;
         goto LABEL_65;
       }
 
-      if ([DDLinkPresentationAction handlesUrl:0 result:a3])
+      if ([DDLinkPresentationAction handlesUrl:0 result:result])
       {
         v10 = DDLinkPresentationAction;
         goto LABEL_65;
       }
 
-      if ([DDMapAction handlesUrl:0 result:a3])
+      if ([DDMapAction handlesUrl:0 result:result])
       {
         v10 = DDMapAction;
         goto LABEL_65;
       }
 
-      if ([DDURLPreviewAction handlesUrl:0 result:a3])
+      if ([DDURLPreviewAction handlesUrl:0 result:result])
       {
         v10 = DDURLPreviewAction;
         goto LABEL_65;
       }
 
-      if ([DDChatBotAction handlesUrl:0 result:a3])
+      if ([DDChatBotAction handlesUrl:0 result:result])
       {
         v10 = DDChatBotAction;
         goto LABEL_65;
       }
 
-      if ([DDPersonAction handlesUrl:0 result:a3])
+      if ([DDPersonAction handlesUrl:0 result:result])
       {
         v10 = DDPersonAction;
         goto LABEL_65;
       }
 
-      if ([DDGenericURLPreviewAction handlesUrl:0 result:a3])
+      if ([DDGenericURLPreviewAction handlesUrl:0 result:result])
       {
         v10 = DDGenericURLPreviewAction;
         goto LABEL_65;
       }
     }
 
-    else if (v7)
+    else if (lCopy)
     {
-      if ([DDClientPreviewAction clientCanPerformActionWithUrl:v7])
+      if ([DDClientPreviewAction clientCanPerformActionWithUrl:lCopy])
       {
         v12 = DDClientPreviewAction;
       }
 
-      else if ([DDNewsPreviewAction handlesUrl:v7 result:0])
+      else if ([DDNewsPreviewAction handlesUrl:lCopy result:0])
       {
         v12 = DDNewsPreviewAction;
       }
 
-      else if ([DDLinkPresentationAction handlesUrl:v7 result:0])
+      else if ([DDLinkPresentationAction handlesUrl:lCopy result:0])
       {
         v12 = DDLinkPresentationAction;
       }
 
-      else if ([DDMapAction handlesUrl:v7 result:0])
+      else if ([DDMapAction handlesUrl:lCopy result:0])
       {
         v12 = DDMapAction;
       }
 
-      else if ([DDURLPreviewAction handlesUrl:v7 result:0])
+      else if ([DDURLPreviewAction handlesUrl:lCopy result:0])
       {
         v12 = DDURLPreviewAction;
       }
 
-      else if ([DDChatBotAction handlesUrl:v7 result:0])
+      else if ([DDChatBotAction handlesUrl:lCopy result:0])
       {
         v12 = DDChatBotAction;
       }
 
-      else if ([DDPersonAction handlesUrl:v7 result:0])
+      else if ([DDPersonAction handlesUrl:lCopy result:0])
       {
         v12 = DDPersonAction;
       }
 
       else
       {
-        if (![DDGenericURLPreviewAction handlesUrl:v7 result:0])
+        if (![DDGenericURLPreviewAction handlesUrl:lCopy result:0])
         {
           goto LABEL_32;
         }
@@ -2076,10 +2076,10 @@ LABEL_65:
       }
 
       v16 = [v12 alloc];
-      v17 = v7;
-      v18 = 0;
+      v17 = lCopy;
+      resultCopy = 0;
 LABEL_66:
-      v11 = [v16 initWithURL:v17 result:v18 context:v8];
+      v11 = [v16 initWithURL:v17 result:resultCopy context:contextCopy];
       goto LABEL_67;
     }
 
@@ -2088,7 +2088,7 @@ LABEL_32:
     goto LABEL_68;
   }
 
-  v11 = [DDPreviewAction previewActionForURL:0 result:0 context:v8];
+  v11 = [DDPreviewAction previewActionForURL:0 result:0 context:contextCopy];
 LABEL_67:
   v14 = v11;
 LABEL_68:
@@ -2096,51 +2096,51 @@ LABEL_68:
   return v14;
 }
 
-+ (void)performDefaultActionWithResult:(__DDResult *)a3 inView:(id)a4 atLocation:(CGPoint)a5 withMenuInteraction:(id)a6 context:(id)a7
++ (void)performDefaultActionWithResult:(__DDResult *)result inView:(id)view atLocation:(CGPoint)location withMenuInteraction:(id)interaction context:(id)context
 {
-  y = a5.y;
-  x = a5.x;
+  y = location.y;
+  x = location.x;
   v12 = MEMORY[0x277D46C40];
-  v13 = a7;
-  v14 = a6;
-  v15 = a4;
+  contextCopy = context;
+  interactionCopy = interaction;
+  viewCopy = view;
   v16 = [v12 alloc];
-  v17 = [objc_alloc(MEMORY[0x277D04218]) initWithCoreResult:a3];
+  v17 = [objc_alloc(MEMORY[0x277D04218]) initWithCoreResult:result];
   v18 = [v16 initWithDDResult:v17];
 
-  [DDRevealBridge _revealItem:v18 view:v15 location:v14 menuInteraction:v13 context:x, y];
+  [DDRevealBridge _revealItem:v18 view:viewCopy location:interactionCopy menuInteraction:contextCopy context:x, y];
 }
 
-+ (void)performDefaultActionWithURL:(id)a3 inView:(id)a4 atLocation:(CGPoint)a5 withMenuInteraction:(id)a6 context:(id)a7
++ (void)performDefaultActionWithURL:(id)l inView:(id)view atLocation:(CGPoint)location withMenuInteraction:(id)interaction context:(id)context
 {
-  y = a5.y;
-  x = a5.x;
+  y = location.y;
+  x = location.x;
   v12 = MEMORY[0x277D46C40];
-  v13 = a7;
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
+  contextCopy = context;
+  interactionCopy = interaction;
+  viewCopy = view;
+  lCopy = l;
   v17 = [v12 alloc];
-  v18 = [v16 absoluteString];
-  v19 = [v17 initWithURL:v16 rangeInContext:{0, objc_msgSend(v18, "length")}];
+  absoluteString = [lCopy absoluteString];
+  v19 = [v17 initWithURL:lCopy rangeInContext:{0, objc_msgSend(absoluteString, "length")}];
 
-  [DDRevealBridge _revealItem:v19 view:v15 location:v14 menuInteraction:v13 context:x, y];
+  [DDRevealBridge _revealItem:v19 view:viewCopy location:interactionCopy menuInteraction:contextCopy context:x, y];
 }
 
-+ (id)previewViewProviderForURL:(id)a3 context:(id)a4
++ (id)previewViewProviderForURL:(id)l context:(id)context
 {
-  v6 = a4;
-  v7 = [a1 previewActionForResult:0 URL:a3 context:v6];
-  v8 = [a1 previewViewProviderForPreviewAction:v7 context:v6];
+  contextCopy = context;
+  v7 = [self previewActionForResult:0 URL:l context:contextCopy];
+  v8 = [self previewViewProviderForPreviewAction:v7 context:contextCopy];
 
   return v8;
 }
 
-+ (id)previewViewProviderForResult:(__DDResult *)a3 context:(id)a4
++ (id)previewViewProviderForResult:(__DDResult *)result context:(id)context
 {
-  v6 = a4;
-  v7 = [a1 previewActionForResult:a3 URL:0 context:v6];
-  v8 = [a1 previewViewProviderForPreviewAction:v7 context:v6];
+  contextCopy = context;
+  v7 = [self previewActionForResult:result URL:0 context:contextCopy];
+  v8 = [self previewViewProviderForPreviewAction:v7 context:contextCopy];
 
   return v8;
 }

@@ -1,31 +1,31 @@
 @interface WGWidgetHostingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_requestInsertionOfRemoteViewAfterViewWillAppearForSequence:(id)a3 completionHandler:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_requestInsertionOfRemoteViewAfterViewWillAppearForSequence:(id)sequence completionHandler:(id)handler;
 @end
 
 @implementation WGWidgetHostingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WGWidgetHostingViewController" hasInstanceMethod:@"_requestInsertionOfRemoteViewAfterViewWillAppearForSequence:completionHandler:" withFullSignature:{"v", "@", "@?", 0}];
-  [v3 validateClass:@"WGWidgetLifeCycleSequence" hasInstanceMethod:@"currentState" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WGWidgetHostingViewController" hasInstanceMethod:@"_requestInsertionOfRemoteViewAfterViewWillAppearForSequence:completionHandler:" withFullSignature:{"v", "@", "@?", 0}];
+  [validationsCopy validateClass:@"WGWidgetLifeCycleSequence" hasInstanceMethod:@"currentState" withFullSignature:{"q", 0}];
 }
 
-- (void)_requestInsertionOfRemoteViewAfterViewWillAppearForSequence:(id)a3 completionHandler:(id)a4
+- (void)_requestInsertionOfRemoteViewAfterViewWillAppearForSequence:(id)sequence completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x29EDCA5F8];
   v11[1] = 3221225472;
   v11[2] = __124__WGWidgetHostingViewControllerAccessibility__requestInsertionOfRemoteViewAfterViewWillAppearForSequence_completionHandler___block_invoke;
   v11[3] = &unk_29F322938;
-  v12 = v6;
-  v7 = v6;
-  v8 = a3;
+  v12 = handlerCopy;
+  v7 = handlerCopy;
+  sequenceCopy = sequence;
   v9 = MEMORY[0x29ED42C50](v11);
   v10.receiver = self;
   v10.super_class = WGWidgetHostingViewControllerAccessibility;
-  [(WGWidgetHostingViewControllerAccessibility *)&v10 _requestInsertionOfRemoteViewAfterViewWillAppearForSequence:v8 completionHandler:v9];
+  [(WGWidgetHostingViewControllerAccessibility *)&v10 _requestInsertionOfRemoteViewAfterViewWillAppearForSequence:sequenceCopy completionHandler:v9];
 }
 
 void __124__WGWidgetHostingViewControllerAccessibility__requestInsertionOfRemoteViewAfterViewWillAppearForSequence_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)

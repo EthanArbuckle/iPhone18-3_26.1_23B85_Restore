@@ -1,13 +1,13 @@
 @interface PKTransactionDataOverlayCardFaceView
-- (PKTransactionDataOverlayCardFaceView)initWithFrame:(CGRect)a3 pass:(id)a4 rendererState:(id)a5 fetchInitialContentSynchronously:(BOOL)a6;
+- (PKTransactionDataOverlayCardFaceView)initWithFrame:(CGRect)frame pass:(id)pass rendererState:(id)state fetchInitialContentSynchronously:(BOOL)synchronously;
 - (void)_updateContentIfPossible;
-- (void)_updateMagnitudesWithStyle:(int64_t)a3 completion:(id)a4;
+- (void)_updateMagnitudesWithStyle:(int64_t)style completion:(id)completion;
 - (void)dealloc;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
 - (void)invalidate;
 - (void)layoutSubviews;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateCategoryVisualizationWithStyle:(int64_t)a4;
-- (void)setContentSuppressed:(BOOL)a3;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateCategoryVisualizationWithStyle:(int64_t)style;
+- (void)setContentSuppressed:(BOOL)suppressed;
 @end
 
 @implementation PKTransactionDataOverlayCardFaceView
@@ -22,37 +22,37 @@
   [(PKCategoryVisualizationCardView *)overlayView setFrame:?];
 }
 
-- (PKTransactionDataOverlayCardFaceView)initWithFrame:(CGRect)a3 pass:(id)a4 rendererState:(id)a5 fetchInitialContentSynchronously:(BOOL)a6
+- (PKTransactionDataOverlayCardFaceView)initWithFrame:(CGRect)frame pass:(id)pass rendererState:(id)state fetchInitialContentSynchronously:(BOOL)synchronously
 {
-  v47 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  synchronouslyCopy = synchronously;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v58[8] = *MEMORY[0x1E69E9840];
-  v50 = a4;
-  v51 = a5;
+  passCopy = pass;
+  stateCopy = state;
   v55.receiver = self;
   v55.super_class = PKTransactionDataOverlayCardFaceView;
-  v13 = [(PKTransactionDataOverlayCardFaceView *)&v55 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(PKTransactionDataOverlayCardFaceView *)&v55 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_pass, a4);
-    v15 = [MEMORY[0x1E69B8DB8] paymentService];
+    objc_storeStrong(&height->_pass, pass);
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v14->_paymentService;
-    v14->_paymentService = v15;
+    v14->_paymentService = paymentService;
 
     [(PKPaymentService *)v14->_paymentService registerObserver:v14];
-    v17 = [MEMORY[0x1E69DC888] whiteColor];
-    [(PKTransactionDataOverlayCardFaceView *)v14 setBackgroundColor:v17];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(PKTransactionDataOverlayCardFaceView *)v14 setBackgroundColor:whiteColor];
 
-    v18 = [(PKTransactionDataOverlayCardFaceView *)v14 layer];
+    layer = [(PKTransactionDataOverlayCardFaceView *)v14 layer];
     PKPassFrontFaceContentSize();
     [objc_opt_class() borderWidth];
-    v19 = [objc_opt_class() borderColor];
-    v20 = v19;
-    [v19 CGColor];
+    borderColor = [objc_opt_class() borderColor];
+    v20 = borderColor;
+    [borderColor CGColor];
     PKPaymentStyleApplyCorners();
 
     v14->_contentSuppressed = PKDeviceLocked();
@@ -84,7 +84,7 @@
     [(PKCategoryVisualizationCardView *)v48 setBucketColors:v31];
 
     [(PKTransactionDataOverlayCardFaceView *)v14 addSubview:v14->_overlayView];
-    v32 = [(PKPass *)v14->_pass liveRenderedImageSet];
+    liveRenderedImageSet = [(PKPass *)v14->_pass liveRenderedImageSet];
     if (v14->_contentSuppressed)
     {
 
@@ -93,14 +93,14 @@
 
     else
     {
-      v33 = v51;
+      v33 = stateCopy;
     }
 
-    v51 = v33;
-    [(PKCategoryVisualizationCardView *)v14->_overlayView renderWithTextures:v32 rendererState:?];
+    stateCopy = v33;
+    [(PKCategoryVisualizationCardView *)v14->_overlayView renderWithTextures:liveRenderedImageSet rendererState:?];
     if (!v14->_contentSuppressed)
     {
-      if (v51 || !v47)
+      if (stateCopy || !synchronouslyCopy)
       {
         [(PKTransactionDataOverlayCardFaceView *)v14 _updateMagnitudesWithStyle:0 completion:0];
       }
@@ -109,8 +109,8 @@
       {
         v34 = v14->_overlayView;
         v35 = v14->_paymentService;
-        v36 = [(PKPass *)v14->_pass uniqueID];
-        v37 = [(PKPaymentService *)v35 categoryVisualizationMagnitudesForPassUniqueID:v36];
+        uniqueID = [(PKPass *)v14->_pass uniqueID];
+        v37 = [(PKPaymentService *)v35 categoryVisualizationMagnitudesForPassUniqueID:uniqueID];
         [(PKCategoryVisualizationCardView *)v34 setMagnitudes:v37 withStyle:0];
       }
     }
@@ -208,12 +208,12 @@ void __106__PKTransactionDataOverlayCardFaceView_initWithFrame_pass_rendererStat
   }
 }
 
-- (void)setContentSuppressed:(BOOL)a3
+- (void)setContentSuppressed:(BOOL)suppressed
 {
-  if (self->_contentSuppressed == !a3)
+  if (self->_contentSuppressed == !suppressed)
   {
-    self->_contentSuppressed = a3;
-    if (a3)
+    self->_contentSuppressed = suppressed;
+    if (suppressed)
     {
       [(PKCategoryVisualizationCardView *)self->_overlayView setMagnitudes:0 withStyle:2];
     }
@@ -225,12 +225,12 @@ void __106__PKTransactionDataOverlayCardFaceView_initWithFrame_pass_rendererStat
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateCategoryVisualizationWithStyle:(int64_t)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateCategoryVisualizationWithStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = [(PKPass *)self->_pass uniqueID];
-  v10 = v6;
-  v8 = v7;
+  identifierCopy = identifier;
+  uniqueID = [(PKPass *)self->_pass uniqueID];
+  v10 = identifierCopy;
+  v8 = uniqueID;
   if (v8 == v10)
   {
 
@@ -248,15 +248,15 @@ void __106__PKTransactionDataOverlayCardFaceView_initWithFrame_pass_rendererStat
   if (v9)
   {
 LABEL_7:
-    [(PKTransactionDataOverlayCardFaceView *)self _updateMagnitudesWithStyle:a4 completion:0];
+    [(PKTransactionDataOverlayCardFaceView *)self _updateMagnitudesWithStyle:style completion:0];
   }
 
 LABEL_9:
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
-  v4 = (*&a4.var0 >> 8) & 1;
+  v4 = (*&state.var0 >> 8) & 1;
   if (v4 != self->_foregroundActive)
   {
     self->_foregroundActive = v4;
@@ -282,40 +282,40 @@ LABEL_9:
   }
 }
 
-- (void)_updateMagnitudesWithStyle:(int64_t)a3 completion:(id)a4
+- (void)_updateMagnitudesWithStyle:(int64_t)style completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_paymentService && !self->_contentSuppressed)
   {
     v8 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "PKTransactionDataOverlayCardFaceView (%p): fetching magnitudes.", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
     paymentService = self->_paymentService;
-    v10 = [(PKPass *)self->_pass uniqueID];
+    uniqueID = [(PKPass *)self->_pass uniqueID];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __78__PKTransactionDataOverlayCardFaceView__updateMagnitudesWithStyle_completion___block_invoke;
     v11[3] = &unk_1E8012060;
     objc_copyWeak(v13, buf);
-    v13[1] = a3;
+    v13[1] = style;
     v12 = v7;
-    [(PKPaymentService *)paymentService categoryVisualizationMagnitudesForPassUniqueID:v10 completion:v11];
+    [(PKPaymentService *)paymentService categoryVisualizationMagnitudesForPassUniqueID:uniqueID completion:v11];
 
     objc_destroyWeak(v13);
     objc_destroyWeak(buf);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 

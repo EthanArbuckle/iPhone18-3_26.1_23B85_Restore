@@ -1,17 +1,17 @@
 @interface PMCoreSmartPowerNapLocationMonitor
 - (BOOL)areAllRemoteDevicesAway;
-- (PMCoreSmartPowerNapLocationMonitor)initWithQueue:(id)a3;
-- (id)placeToString:(int)a3;
+- (PMCoreSmartPowerNapLocationMonitor)initWithQueue:(id)queue;
+- (id)placeToString:(int)string;
 - (void)registerForLocalLOISignals;
 - (void)registerForRemoteLOISignals;
-- (void)updateRemoteLOISyncState:(unint64_t)a3;
+- (void)updateRemoteLOISyncState:(unint64_t)state;
 @end
 
 @implementation PMCoreSmartPowerNapLocationMonitor
 
-- (PMCoreSmartPowerNapLocationMonitor)initWithQueue:(id)a3
+- (PMCoreSmartPowerNapLocationMonitor)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   if (qword_1000ACA90 != -1)
   {
     sub_100064088();
@@ -19,7 +19,7 @@
 
   if ((byte_1000ACA88 & 1) != 0 || (v6 = MGGetStringAnswer(), v7 = [v6 isEqualToString:@"iPad"], v6, !v7))
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -51,7 +51,7 @@
       contextSyncClient = v8->_contextSyncClient;
       v8->_contextSyncClient = v11;
 
-      objc_storeStrong(&v8->_queue, a3);
+      objc_storeStrong(&v8->_queue, queue);
       v13 = +[NSMutableDictionary dictionary];
       remoteLOIs = v8->_remoteLOIs;
       v8->_remoteLOIs = v13;
@@ -69,22 +69,22 @@
     }
 
     self = v8;
-    v16 = self;
+    selfCopy = self;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (id)placeToString:(int)a3
+- (id)placeToString:(int)string
 {
-  if (a3 > 4)
+  if (string > 4)
   {
     return @"Error";
   }
 
   else
   {
-    return off_1000996D0[a3];
+    return off_1000996D0[string];
   }
 }
 
@@ -94,11 +94,11 @@
   if (objc_opt_class())
   {
     v4 = [BMBiomeScheduler alloc];
-    v5 = [(PMCoreSmartPowerNapLocationMonitor *)self queue];
-    v6 = [v4 initWithIdentifier:@"com.apple.powerd.biomeLocalLOI" targetQueue:v5];
+    queue = [(PMCoreSmartPowerNapLocationMonitor *)self queue];
+    v6 = [v4 initWithIdentifier:@"com.apple.powerd.biomeLocalLOI" targetQueue:queue];
 
-    v7 = [v3 publisher];
-    v8 = [(PMCoreSmartPowerNapLocationMonitor *)self addCSPNFiltersToBMDSL:v7];
+    publisher = [v3 publisher];
+    v8 = [(PMCoreSmartPowerNapLocationMonitor *)self addCSPNFiltersToBMDSL:publisher];
 
     v9 = [v8 subscribeOn:v6];
     v11[0] = _NSConcreteStackBlock;
@@ -115,15 +115,15 @@
 - (void)registerForRemoteLOISignals
 {
   v3 = BiomeLibrary();
-  v4 = [v3 ContextSync];
-  v5 = [v4 LOI];
+  contextSync = [v3 ContextSync];
+  v5 = [contextSync LOI];
 
   v6 = [BMBiomeScheduler alloc];
-  v7 = [(PMCoreSmartPowerNapLocationMonitor *)self queue];
-  v8 = [v6 initWithIdentifier:@"com.apple.powerd.biomeRemoteLOI" targetQueue:v7];
+  queue = [(PMCoreSmartPowerNapLocationMonitor *)self queue];
+  v8 = [v6 initWithIdentifier:@"com.apple.powerd.biomeRemoteLOI" targetQueue:queue];
 
-  v9 = [v5 DSLPublisher];
-  v10 = [(PMCoreSmartPowerNapLocationMonitor *)self addCSPNFiltersToBMDSL:v9];
+  dSLPublisher = [v5 DSLPublisher];
+  v10 = [(PMCoreSmartPowerNapLocationMonitor *)self addCSPNFiltersToBMDSL:dSLPublisher];
 
   v11 = [v10 subscribeOn:v8];
   v13[0] = _NSConcreteStackBlock;
@@ -134,16 +134,16 @@
   v12 = [v11 sinkWithCompletion:&stru_100099650 receiveInput:v13];
 }
 
-- (void)updateRemoteLOISyncState:(unint64_t)a3
+- (void)updateRemoteLOISyncState:(unint64_t)state
 {
-  v5 = [(PMCoreSmartPowerNapLocationMonitor *)self queue];
+  queue = [(PMCoreSmartPowerNapLocationMonitor *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10002BE58;
   v6[3] = &unk_100099678;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = state;
+  dispatch_async(queue, v6);
 }
 
 - (BOOL)areAllRemoteDevicesAway
@@ -152,8 +152,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(PMCoreSmartPowerNapLocationMonitor *)self remoteLOIs];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  remoteLOIs = [(PMCoreSmartPowerNapLocationMonitor *)self remoteLOIs];
+  v4 = [remoteLOIs countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = 0;
@@ -164,29 +164,29 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(remoteLOIs);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [(PMCoreSmartPowerNapLocationMonitor *)self remoteLOIs];
-        v10 = [v9 objectForKeyedSubscript:v8];
-        v11 = [(PMCoreSmartPowerNapLocationMonitor *)self localLOI];
+        remoteLOIs2 = [(PMCoreSmartPowerNapLocationMonitor *)self remoteLOIs];
+        v10 = [remoteLOIs2 objectForKeyedSubscript:v8];
+        localLOI = [(PMCoreSmartPowerNapLocationMonitor *)self localLOI];
 
-        if (v10 != v11)
+        if (v10 != localLOI)
         {
           ++v5;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v4 = [remoteLOIs countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v4);
     v4 = v5;
   }
 
-  v12 = [(PMCoreSmartPowerNapLocationMonitor *)self remoteLOIs];
-  v13 = [v12 count] == v4;
+  remoteLOIs3 = [(PMCoreSmartPowerNapLocationMonitor *)self remoteLOIs];
+  v13 = [remoteLOIs3 count] == v4;
 
   return v13;
 }

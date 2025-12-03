@@ -16,16 +16,16 @@
   v1 = SRUIFGetLanguageCode();
   if ([v0 characterDirectionForLanguage:v1] == 2)
   {
-    v2 = 1;
+    assistantLanguageForceRTL = 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CEF368] sharedPreferences];
-    v2 = [v3 assistantLanguageForceRTL];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    assistantLanguageForceRTL = [mEMORY[0x277CEF368] assistantLanguageForceRTL];
   }
 
-  return v2;
+  return assistantLanguageForceRTL;
 }
 
 - (id)assistantUILocalizedStringFromSiriLanguageForKey:()AFUIUtilities table:
@@ -33,9 +33,9 @@
   v6 = MEMORY[0x277CEF368];
   v7 = a4;
   v8 = a3;
-  v9 = [v6 sharedPreferences];
-  v10 = [v9 languageCode];
-  v11 = [a1 _assistantUILocalizedStringForKey:v8 value:0 table:v7 language:v10];
+  sharedPreferences = [v6 sharedPreferences];
+  languageCode = [sharedPreferences languageCode];
+  v11 = [self _assistantUILocalizedStringForKey:v8 value:0 table:v7 language:languageCode];
 
   return v11;
 }
@@ -45,9 +45,9 @@
   v6 = MEMORY[0x277CBEAF8];
   v7 = a4;
   v8 = a3;
-  v9 = [v6 preferredLanguages];
-  v10 = [v9 objectAtIndex:0];
-  v11 = [a1 _assistantUILocalizedStringForKey:v8 value:0 table:v7 language:v10];
+  preferredLanguages = [v6 preferredLanguages];
+  v10 = [preferredLanguages objectAtIndex:0];
+  v11 = [self _assistantUILocalizedStringForKey:v8 value:0 table:v7 language:v10];
 
   return v11;
 }
@@ -58,7 +58,7 @@
   v9 = a4;
   v10 = a3;
   v11 = SRUIFGetLanguageCode();
-  v12 = [a1 _assistantUILocalizedStringForKey:v10 value:v9 table:v8 language:v11];
+  v12 = [self _assistantUILocalizedStringForKey:v10 value:v9 table:v8 language:v11];
 
   return v12;
 }
@@ -75,7 +75,7 @@
     goto LABEL_19;
   }
 
-  [a1 _assistantUIlocalizationArrayForLanguageCode:v13];
+  [self _assistantUIlocalizationArrayForLanguageCode:v13];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -121,7 +121,7 @@ LABEL_20:
         objc_enumerationMutation(v14);
       }
 
-      v17 = [a1 _assistantUIStringForKey:v10 value:v11 table:v12 localizationLanguageCode:*(*(&v25 + 1) + 8 * i)];
+      v17 = [self _assistantUIStringForKey:v10 value:v11 table:v12 localizationLanguageCode:*(*(&v25 + 1) + 8 * i)];
 
       if (v17 && ([v17 isEqualToString:v10] & 1) == 0 && (!v11 || !objc_msgSend(v17, "isEqualToString:", v11)))
       {
@@ -160,10 +160,10 @@ LABEL_25:
 - (CFArrayRef)_assistantUIlocalizationArrayForLanguageCode:()AFUIUtilities
 {
   v4 = a3;
-  v5 = [a1 localizations];
+  localizations = [self localizations];
   v6 = [MEMORY[0x277CBEA60] arrayWithObject:v4];
 
-  v7 = CFBundleCopyLocalizationsForPreferences(v5, v6);
+  v7 = CFBundleCopyLocalizationsForPreferences(localizations, v6);
 
   return v7;
 }
@@ -174,7 +174,7 @@ LABEL_25:
   v11 = a5;
   v12 = a4;
   v13 = a3;
-  CFBundleGetBundleWithIdentifier([a1 bundleIdentifier]);
+  CFBundleGetBundleWithIdentifier([self bundleIdentifier]);
   v14 = CFBundleCopyLocalizedStringForLocalization();
 
   return v14;

@@ -7,7 +7,7 @@
 - (id)initWithClientNetworkTransactionMetrics:()ClientMetrics
 {
   v4 = a3;
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &off_1F2073820;
   v5 = objc_msgSendSuper2(&v7, sel_init);
   if (v5)

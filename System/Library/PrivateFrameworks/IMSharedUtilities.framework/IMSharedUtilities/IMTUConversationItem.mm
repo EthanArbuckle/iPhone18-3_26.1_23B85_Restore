@@ -1,23 +1,23 @@
 @interface IMTUConversationItem
-- (IMTUConversationItem)initWithCoder:(id)a3;
-- (IMTUConversationItem)initWithDictionary:(id)a3;
-- (IMTUConversationItem)initWithSender:(id)a3 time:(id)a4 guid:(id)a5 messageSummaryInfo:(id)a6;
+- (IMTUConversationItem)initWithCoder:(id)coder;
+- (IMTUConversationItem)initWithDictionary:(id)dictionary;
+- (IMTUConversationItem)initWithSender:(id)sender time:(id)time guid:(id)guid messageSummaryInfo:(id)info;
 - (NSDictionary)messageSummaryInfo;
 - (id)copyDictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMTUConversationItem
 
-- (IMTUConversationItem)initWithSender:(id)a3 time:(id)a4 guid:(id)a5 messageSummaryInfo:(id)a6
+- (IMTUConversationItem)initWithSender:(id)sender time:(id)time guid:(id)guid messageSummaryInfo:(id)info
 {
-  v10 = a6;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = IMTUConversationItem;
-  v11 = [(IMItem *)&v15 initWithSender:a3 time:a4 guid:a5 type:6];
+  v11 = [(IMItem *)&v15 initWithSender:sender time:time guid:guid type:6];
   if (v11)
   {
-    v12 = [v10 objectForKey:@"conversationAVMode"];
+    v12 = [infoCopy objectForKey:@"conversationAVMode"];
     if (v12)
     {
       v13 = v12;
@@ -34,33 +34,33 @@
   return v11;
 }
 
-- (IMTUConversationItem)initWithCoder:(id)a3
+- (IMTUConversationItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = IMTUConversationItem;
-  v5 = [(IMItem *)&v7 initWithCoder:v4];
+  v5 = [(IMItem *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_flags = [v4 decodeInt64ForKey:@"flags"];
-    v5->_avMode = [v4 decodeIntegerForKey:@"conversationAVMode"];
+    v5->_flags = [coderCopy decodeInt64ForKey:@"flags"];
+    v5->_avMode = [coderCopy decodeIntegerForKey:@"conversationAVMode"];
   }
 
   return v5;
 }
 
-- (IMTUConversationItem)initWithDictionary:(id)a3
+- (IMTUConversationItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = IMTUConversationItem;
-  v5 = [(IMItem *)&v10 initWithDictionary:v4];
+  v5 = [(IMItem *)&v10 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"flags"];
+    v6 = [dictionaryCopy objectForKey:@"flags"];
     v5->_flags = [v6 unsignedLongLongValue];
 
-    v7 = [v4 objectForKey:@"conversationAVMode"];
+    v7 = [dictionaryCopy objectForKey:@"conversationAVMode"];
     if (v7)
     {
       v8 = v7;
@@ -77,36 +77,36 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = IMTUConversationItem;
-  v4 = a3;
-  [(IMItem *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_flags forKey:{@"flags", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_avMode forKey:@"conversationAVMode"];
+  coderCopy = coder;
+  [(IMItem *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_flags forKey:{@"flags", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_avMode forKey:@"conversationAVMode"];
 }
 
 - (id)copyDictionaryRepresentation
 {
   v8.receiver = self;
   v8.super_class = IMTUConversationItem;
-  v3 = [(IMItem *)&v8 copyDictionaryRepresentation];
+  copyDictionaryRepresentation = [(IMItem *)&v8 copyDictionaryRepresentation];
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_flags];
   if (v5)
   {
-    CFDictionarySetValue(v3, @"flags", v5);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"flags", v5);
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_avMode];
   if (v6)
   {
-    CFDictionarySetValue(v3, @"conversationAVMode", v6);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"conversationAVMode", v6);
   }
 
   objc_autoreleasePoolPop(v4);
-  return v3;
+  return copyDictionaryRepresentation;
 }
 
 - (NSDictionary)messageSummaryInfo

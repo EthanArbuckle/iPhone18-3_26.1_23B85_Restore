@@ -1,18 +1,18 @@
 @interface _REPerformedActionKey
-+ (id)keyForBundleIdentifier:(id)a3 identifier:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)keyForBundleIdentifier:(id)identifier identifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation _REPerformedActionKey
 
-+ (id)keyForBundleIdentifier:(id)a3 identifier:(id)a4
++ (id)keyForBundleIdentifier:(id)identifier identifier:(id)a4
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = a4;
   v7 = objc_opt_new();
   v8 = v7[2];
-  v7[2] = v5;
-  v9 = v5;
+  v7[2] = identifierCopy;
+  v9 = identifierCopy;
 
   v10 = v7[1];
   v7[1] = v6;
@@ -20,10 +20,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -33,7 +33,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       bundleIdentifier = v5->_bundleIdentifier;
       v7 = self->_bundleIdentifier;
       v8 = v7;

@@ -1,41 +1,41 @@
 @interface AKRatchetState
-- (AKRatchetState)initWithRawState:(unint64_t)a3 data:(id)a4;
-- (id)toString:(unint64_t)a3;
+- (AKRatchetState)initWithRawState:(unint64_t)state data:(id)data;
+- (id)toString:(unint64_t)string;
 @end
 
 @implementation AKRatchetState
 
-- (AKRatchetState)initWithRawState:(unint64_t)a3 data:(id)a4
+- (AKRatchetState)initWithRawState:(unint64_t)state data:(id)data
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  stateCopy = state;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&location, data);
+  v4 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v4;
   v8.super_class = AKRatchetState;
   v7 = [(AKRatchetState *)&v8 init];
-  v12 = v7;
-  objc_storeStrong(&v12, v7);
+  selfCopy = v7;
+  objc_storeStrong(&selfCopy, v7);
   if (v7)
   {
-    v12->_rawState = v10;
-    objc_storeStrong(&v12->_data, location);
+    selfCopy->_rawState = stateCopy;
+    objc_storeStrong(&selfCopy->_data, location);
   }
 
-  v6 = MEMORY[0x1E69E5928](v12);
+  v6 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (id)toString:(unint64_t)a3
+- (id)toString:(unint64_t)string
 {
-  if (a3)
+  if (string)
   {
-    switch(a3)
+    switch(string)
     {
       case 1uLL:
         v4 = MEMORY[0x1E69E5928](@"waitingCoolOff");

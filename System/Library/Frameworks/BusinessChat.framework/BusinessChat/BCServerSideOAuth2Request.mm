@@ -1,22 +1,22 @@
 @interface BCServerSideOAuth2Request
-- (id)_initWithDictionary:(id)a3;
+- (id)_initWithDictionary:(id)dictionary;
 @end
 
 @implementation BCServerSideOAuth2Request
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"oauth2"];
-  v6 = [MEMORY[0x277CBEB68] null];
-  v7 = v6;
-  if (v5 == v6)
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"oauth2"];
+  null = [MEMORY[0x277CBEB68] null];
+  v7 = null;
+  if (v5 == null)
   {
   }
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:@"oauth2"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"oauth2"];
 
     if (v8)
     {
@@ -25,8 +25,8 @@
       {
         v13.receiver = self;
         v13.super_class = BCServerSideOAuth2Request;
-        self = [(BCOAuth2Request *)&v13 _initWithDictionary:v4 URLProvider:v9];
-        v10 = self;
+        self = [(BCOAuth2Request *)&v13 _initWithDictionary:dictionaryCopy URLProvider:v9];
+        selfCopy = self;
       }
 
       else
@@ -38,7 +38,7 @@
           _os_log_error_impl(&dword_236EA0000, v11, OS_LOG_TYPE_ERROR, "Unable to create  BCOAuth2Parameters: missing 'oauth2' payload is invalid", buf, 2u);
         }
 
-        v10 = 0;
+        selfCopy = 0;
       }
 
       goto LABEL_13;
@@ -52,10 +52,10 @@
     _os_log_error_impl(&dword_236EA0000, v8, OS_LOG_TYPE_ERROR, "Unable to create  BCOAuth2Parameters: missing 'oauth2' in payload", buf, 2u);
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_13:
 
-  return v10;
+  return selfCopy;
 }
 
 @end

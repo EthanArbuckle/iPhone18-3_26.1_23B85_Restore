@@ -1,18 +1,18 @@
 @interface _INPBRideStatus
-- (BOOL)isEqual:(id)a3;
-- (_INPBRideStatus)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRideStatus)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsPhase:(id)a3;
+- (int)StringAsPhase:(id)phase;
 - (unint64_t)hash;
-- (void)addAdditionalActionItems:(id)a3;
-- (void)addWaypoints:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAdditionalActionItems:(id)a3;
-- (void)setPhase:(int)a3;
-- (void)setRideIdentifier:(id)a3;
-- (void)setWaypoints:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAdditionalActionItems:(id)items;
+- (void)addWaypoints:(id)waypoints;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAdditionalActionItems:(id)items;
+- (void)setPhase:(int)phase;
+- (void)setRideIdentifier:(id)identifier;
+- (void)setWaypoints:(id)waypoints;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRideStatus
@@ -20,10 +20,10 @@
 - (id)dictionaryRepresentation
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_additionalActionItems count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
@@ -43,8 +43,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v51 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v51 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v51 objects:v56 count:16];
@@ -53,80 +53,80 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"additionalActionItems"];
+    [dictionary setObject:array forKeyedSubscript:@"additionalActionItems"];
   }
 
-  v11 = [(_INPBRideStatus *)self completionStatus];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"completionStatus"];
+  completionStatus = [(_INPBRideStatus *)self completionStatus];
+  dictionaryRepresentation2 = [completionStatus dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"completionStatus"];
 
-  v13 = [(_INPBRideStatus *)self driver];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"driver"];
+  driver = [(_INPBRideStatus *)self driver];
+  dictionaryRepresentation3 = [driver dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"driver"];
 
-  v15 = [(_INPBRideStatus *)self dropOffLocation];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"dropOffLocation"];
+  dropOffLocation = [(_INPBRideStatus *)self dropOffLocation];
+  dictionaryRepresentation4 = [dropOffLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"dropOffLocation"];
 
-  v17 = [(_INPBRideStatus *)self estimatedDropOffDate];
-  v18 = [v17 dictionaryRepresentation];
-  [v3 setObject:v18 forKeyedSubscript:@"estimatedDropOffDate"];
+  estimatedDropOffDate = [(_INPBRideStatus *)self estimatedDropOffDate];
+  dictionaryRepresentation5 = [estimatedDropOffDate dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"estimatedDropOffDate"];
 
-  v19 = [(_INPBRideStatus *)self estimatedPickupDate];
-  v20 = [v19 dictionaryRepresentation];
-  [v3 setObject:v20 forKeyedSubscript:@"estimatedPickupDate"];
+  estimatedPickupDate = [(_INPBRideStatus *)self estimatedPickupDate];
+  dictionaryRepresentation6 = [estimatedPickupDate dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"estimatedPickupDate"];
 
-  v21 = [(_INPBRideStatus *)self estimatedPickupEndDate];
-  v22 = [v21 dictionaryRepresentation];
-  [v3 setObject:v22 forKeyedSubscript:@"estimatedPickupEndDate"];
+  estimatedPickupEndDate = [(_INPBRideStatus *)self estimatedPickupEndDate];
+  dictionaryRepresentation7 = [estimatedPickupEndDate dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"estimatedPickupEndDate"];
 
   if ([(_INPBRideStatus *)self hasPhase])
   {
-    v23 = [(_INPBRideStatus *)self phase];
-    v24 = v23 - 1;
-    if (v23 - 1) < 7 && ((0x6Fu >> v24))
+    phase = [(_INPBRideStatus *)self phase];
+    v24 = phase - 1;
+    if (phase - 1) < 7 && ((0x6Fu >> v24))
     {
       v25 = off_1E7281E88[v24];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v23];
+      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", phase];
     }
 
-    [v3 setObject:v25 forKeyedSubscript:@"phase"];
+    [dictionary setObject:v25 forKeyedSubscript:@"phase"];
   }
 
-  v26 = [(_INPBRideStatus *)self pickupLocation];
-  v27 = [v26 dictionaryRepresentation];
-  [v3 setObject:v27 forKeyedSubscript:@"pickupLocation"];
+  pickupLocation = [(_INPBRideStatus *)self pickupLocation];
+  dictionaryRepresentation8 = [pickupLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"pickupLocation"];
 
   if (self->_rideIdentifier)
   {
-    v28 = [(_INPBRideStatus *)self rideIdentifier];
-    v29 = [v28 copy];
-    [v3 setObject:v29 forKeyedSubscript:@"rideIdentifier"];
+    rideIdentifier = [(_INPBRideStatus *)self rideIdentifier];
+    v29 = [rideIdentifier copy];
+    [dictionary setObject:v29 forKeyedSubscript:@"rideIdentifier"];
   }
 
-  v30 = [(_INPBRideStatus *)self rideOption];
-  v31 = [v30 dictionaryRepresentation];
-  [v3 setObject:v31 forKeyedSubscript:@"rideOption"];
+  rideOption = [(_INPBRideStatus *)self rideOption];
+  dictionaryRepresentation9 = [rideOption dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"rideOption"];
 
-  v32 = [(_INPBRideStatus *)self scheduledPickupTime];
-  v33 = [v32 dictionaryRepresentation];
-  [v3 setObject:v33 forKeyedSubscript:@"scheduledPickupTime"];
+  scheduledPickupTime = [(_INPBRideStatus *)self scheduledPickupTime];
+  dictionaryRepresentation10 = [scheduledPickupTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"scheduledPickupTime"];
 
-  v34 = [(_INPBRideStatus *)self userActivityForCancelingInApplication];
-  v35 = [v34 dictionaryRepresentation];
-  [v3 setObject:v35 forKeyedSubscript:@"userActivityForCancelingInApplication"];
+  userActivityForCancelingInApplication = [(_INPBRideStatus *)self userActivityForCancelingInApplication];
+  dictionaryRepresentation11 = [userActivityForCancelingInApplication dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"userActivityForCancelingInApplication"];
 
-  v36 = [(_INPBRideStatus *)self vehicle];
-  v37 = [v36 dictionaryRepresentation];
-  [v3 setObject:v37 forKeyedSubscript:@"vehicle"];
+  vehicle = [(_INPBRideStatus *)self vehicle];
+  dictionaryRepresentation12 = [vehicle dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"vehicle"];
 
   if ([(NSArray *)self->_waypoints count])
   {
-    v38 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
@@ -146,8 +146,8 @@
             objc_enumerationMutation(v39);
           }
 
-          v44 = [*(*(&v47 + 1) + 8 * j) dictionaryRepresentation];
-          [v38 addObject:v44];
+          dictionaryRepresentation13 = [*(*(&v47 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation13];
         }
 
         v41 = [(NSArray *)v39 countByEnumeratingWithState:&v47 objects:v55 count:16];
@@ -156,12 +156,12 @@
       while (v41);
     }
 
-    [v3 setObject:v38 forKeyedSubscript:@"waypoints"];
+    [dictionary setObject:array2 forKeyedSubscript:@"waypoints"];
   }
 
   v45 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -193,28 +193,28 @@
   return v14 ^ v17 ^ [(NSArray *)self->_waypoints hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_76;
   }
 
-  v5 = [(_INPBRideStatus *)self additionalActionItems];
-  v6 = [v4 additionalActionItems];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self additionalActionItems];
+  additionalActionItems2 = [equalCopy additionalActionItems];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v7 = [(_INPBRideStatus *)self additionalActionItems];
-  if (v7)
+  additionalActionItems3 = [(_INPBRideStatus *)self additionalActionItems];
+  if (additionalActionItems3)
   {
-    v8 = v7;
-    v9 = [(_INPBRideStatus *)self additionalActionItems];
-    v10 = [v4 additionalActionItems];
-    v11 = [v9 isEqual:v10];
+    v8 = additionalActionItems3;
+    additionalActionItems4 = [(_INPBRideStatus *)self additionalActionItems];
+    additionalActionItems5 = [equalCopy additionalActionItems];
+    v11 = [additionalActionItems4 isEqual:additionalActionItems5];
 
     if (!v11)
     {
@@ -226,20 +226,20 @@
   {
   }
 
-  v5 = [(_INPBRideStatus *)self completionStatus];
-  v6 = [v4 completionStatus];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self completionStatus];
+  additionalActionItems2 = [equalCopy completionStatus];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v12 = [(_INPBRideStatus *)self completionStatus];
-  if (v12)
+  completionStatus = [(_INPBRideStatus *)self completionStatus];
+  if (completionStatus)
   {
-    v13 = v12;
-    v14 = [(_INPBRideStatus *)self completionStatus];
-    v15 = [v4 completionStatus];
-    v16 = [v14 isEqual:v15];
+    v13 = completionStatus;
+    completionStatus2 = [(_INPBRideStatus *)self completionStatus];
+    completionStatus3 = [equalCopy completionStatus];
+    v16 = [completionStatus2 isEqual:completionStatus3];
 
     if (!v16)
     {
@@ -251,20 +251,20 @@
   {
   }
 
-  v5 = [(_INPBRideStatus *)self driver];
-  v6 = [v4 driver];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self driver];
+  additionalActionItems2 = [equalCopy driver];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v17 = [(_INPBRideStatus *)self driver];
-  if (v17)
+  driver = [(_INPBRideStatus *)self driver];
+  if (driver)
   {
-    v18 = v17;
-    v19 = [(_INPBRideStatus *)self driver];
-    v20 = [v4 driver];
-    v21 = [v19 isEqual:v20];
+    v18 = driver;
+    driver2 = [(_INPBRideStatus *)self driver];
+    driver3 = [equalCopy driver];
+    v21 = [driver2 isEqual:driver3];
 
     if (!v21)
     {
@@ -276,20 +276,20 @@
   {
   }
 
-  v5 = [(_INPBRideStatus *)self dropOffLocation];
-  v6 = [v4 dropOffLocation];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self dropOffLocation];
+  additionalActionItems2 = [equalCopy dropOffLocation];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v22 = [(_INPBRideStatus *)self dropOffLocation];
-  if (v22)
+  dropOffLocation = [(_INPBRideStatus *)self dropOffLocation];
+  if (dropOffLocation)
   {
-    v23 = v22;
-    v24 = [(_INPBRideStatus *)self dropOffLocation];
-    v25 = [v4 dropOffLocation];
-    v26 = [v24 isEqual:v25];
+    v23 = dropOffLocation;
+    dropOffLocation2 = [(_INPBRideStatus *)self dropOffLocation];
+    dropOffLocation3 = [equalCopy dropOffLocation];
+    v26 = [dropOffLocation2 isEqual:dropOffLocation3];
 
     if (!v26)
     {
@@ -301,20 +301,20 @@
   {
   }
 
-  v5 = [(_INPBRideStatus *)self estimatedDropOffDate];
-  v6 = [v4 estimatedDropOffDate];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self estimatedDropOffDate];
+  additionalActionItems2 = [equalCopy estimatedDropOffDate];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v27 = [(_INPBRideStatus *)self estimatedDropOffDate];
-  if (v27)
+  estimatedDropOffDate = [(_INPBRideStatus *)self estimatedDropOffDate];
+  if (estimatedDropOffDate)
   {
-    v28 = v27;
-    v29 = [(_INPBRideStatus *)self estimatedDropOffDate];
-    v30 = [v4 estimatedDropOffDate];
-    v31 = [v29 isEqual:v30];
+    v28 = estimatedDropOffDate;
+    estimatedDropOffDate2 = [(_INPBRideStatus *)self estimatedDropOffDate];
+    estimatedDropOffDate3 = [equalCopy estimatedDropOffDate];
+    v31 = [estimatedDropOffDate2 isEqual:estimatedDropOffDate3];
 
     if (!v31)
     {
@@ -326,20 +326,20 @@
   {
   }
 
-  v5 = [(_INPBRideStatus *)self estimatedPickupDate];
-  v6 = [v4 estimatedPickupDate];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self estimatedPickupDate];
+  additionalActionItems2 = [equalCopy estimatedPickupDate];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v32 = [(_INPBRideStatus *)self estimatedPickupDate];
-  if (v32)
+  estimatedPickupDate = [(_INPBRideStatus *)self estimatedPickupDate];
+  if (estimatedPickupDate)
   {
-    v33 = v32;
-    v34 = [(_INPBRideStatus *)self estimatedPickupDate];
-    v35 = [v4 estimatedPickupDate];
-    v36 = [v34 isEqual:v35];
+    v33 = estimatedPickupDate;
+    estimatedPickupDate2 = [(_INPBRideStatus *)self estimatedPickupDate];
+    estimatedPickupDate3 = [equalCopy estimatedPickupDate];
+    v36 = [estimatedPickupDate2 isEqual:estimatedPickupDate3];
 
     if (!v36)
     {
@@ -351,20 +351,20 @@
   {
   }
 
-  v5 = [(_INPBRideStatus *)self estimatedPickupEndDate];
-  v6 = [v4 estimatedPickupEndDate];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self estimatedPickupEndDate];
+  additionalActionItems2 = [equalCopy estimatedPickupEndDate];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v37 = [(_INPBRideStatus *)self estimatedPickupEndDate];
-  if (v37)
+  estimatedPickupEndDate = [(_INPBRideStatus *)self estimatedPickupEndDate];
+  if (estimatedPickupEndDate)
   {
-    v38 = v37;
-    v39 = [(_INPBRideStatus *)self estimatedPickupEndDate];
-    v40 = [v4 estimatedPickupEndDate];
-    v41 = [v39 isEqual:v40];
+    v38 = estimatedPickupEndDate;
+    estimatedPickupEndDate2 = [(_INPBRideStatus *)self estimatedPickupEndDate];
+    estimatedPickupEndDate3 = [equalCopy estimatedPickupEndDate];
+    v41 = [estimatedPickupEndDate2 isEqual:estimatedPickupEndDate3];
 
     if (!v41)
     {
@@ -376,38 +376,38 @@
   {
   }
 
-  v42 = [(_INPBRideStatus *)self hasPhase];
-  if (v42 != [v4 hasPhase])
+  hasPhase = [(_INPBRideStatus *)self hasPhase];
+  if (hasPhase != [equalCopy hasPhase])
   {
     goto LABEL_76;
   }
 
   if ([(_INPBRideStatus *)self hasPhase])
   {
-    if ([v4 hasPhase])
+    if ([equalCopy hasPhase])
     {
       phase = self->_phase;
-      if (phase != [v4 phase])
+      if (phase != [equalCopy phase])
       {
         goto LABEL_76;
       }
     }
   }
 
-  v5 = [(_INPBRideStatus *)self pickupLocation];
-  v6 = [v4 pickupLocation];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self pickupLocation];
+  additionalActionItems2 = [equalCopy pickupLocation];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v44 = [(_INPBRideStatus *)self pickupLocation];
-  if (v44)
+  pickupLocation = [(_INPBRideStatus *)self pickupLocation];
+  if (pickupLocation)
   {
-    v45 = v44;
-    v46 = [(_INPBRideStatus *)self pickupLocation];
-    v47 = [v4 pickupLocation];
-    v48 = [v46 isEqual:v47];
+    v45 = pickupLocation;
+    pickupLocation2 = [(_INPBRideStatus *)self pickupLocation];
+    pickupLocation3 = [equalCopy pickupLocation];
+    v48 = [pickupLocation2 isEqual:pickupLocation3];
 
     if (!v48)
     {
@@ -419,20 +419,20 @@
   {
   }
 
-  v5 = [(_INPBRideStatus *)self rideIdentifier];
-  v6 = [v4 rideIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self rideIdentifier];
+  additionalActionItems2 = [equalCopy rideIdentifier];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v49 = [(_INPBRideStatus *)self rideIdentifier];
-  if (v49)
+  rideIdentifier = [(_INPBRideStatus *)self rideIdentifier];
+  if (rideIdentifier)
   {
-    v50 = v49;
-    v51 = [(_INPBRideStatus *)self rideIdentifier];
-    v52 = [v4 rideIdentifier];
-    v53 = [v51 isEqual:v52];
+    v50 = rideIdentifier;
+    rideIdentifier2 = [(_INPBRideStatus *)self rideIdentifier];
+    rideIdentifier3 = [equalCopy rideIdentifier];
+    v53 = [rideIdentifier2 isEqual:rideIdentifier3];
 
     if (!v53)
     {
@@ -444,20 +444,20 @@
   {
   }
 
-  v5 = [(_INPBRideStatus *)self rideOption];
-  v6 = [v4 rideOption];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self rideOption];
+  additionalActionItems2 = [equalCopy rideOption];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v54 = [(_INPBRideStatus *)self rideOption];
-  if (v54)
+  rideOption = [(_INPBRideStatus *)self rideOption];
+  if (rideOption)
   {
-    v55 = v54;
-    v56 = [(_INPBRideStatus *)self rideOption];
-    v57 = [v4 rideOption];
-    v58 = [v56 isEqual:v57];
+    v55 = rideOption;
+    rideOption2 = [(_INPBRideStatus *)self rideOption];
+    rideOption3 = [equalCopy rideOption];
+    v58 = [rideOption2 isEqual:rideOption3];
 
     if (!v58)
     {
@@ -469,20 +469,20 @@
   {
   }
 
-  v5 = [(_INPBRideStatus *)self scheduledPickupTime];
-  v6 = [v4 scheduledPickupTime];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self scheduledPickupTime];
+  additionalActionItems2 = [equalCopy scheduledPickupTime];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v59 = [(_INPBRideStatus *)self scheduledPickupTime];
-  if (v59)
+  scheduledPickupTime = [(_INPBRideStatus *)self scheduledPickupTime];
+  if (scheduledPickupTime)
   {
-    v60 = v59;
-    v61 = [(_INPBRideStatus *)self scheduledPickupTime];
-    v62 = [v4 scheduledPickupTime];
-    v63 = [v61 isEqual:v62];
+    v60 = scheduledPickupTime;
+    scheduledPickupTime2 = [(_INPBRideStatus *)self scheduledPickupTime];
+    scheduledPickupTime3 = [equalCopy scheduledPickupTime];
+    v63 = [scheduledPickupTime2 isEqual:scheduledPickupTime3];
 
     if (!v63)
     {
@@ -494,20 +494,20 @@
   {
   }
 
-  v5 = [(_INPBRideStatus *)self userActivityForCancelingInApplication];
-  v6 = [v4 userActivityForCancelingInApplication];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self userActivityForCancelingInApplication];
+  additionalActionItems2 = [equalCopy userActivityForCancelingInApplication];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v64 = [(_INPBRideStatus *)self userActivityForCancelingInApplication];
-  if (v64)
+  userActivityForCancelingInApplication = [(_INPBRideStatus *)self userActivityForCancelingInApplication];
+  if (userActivityForCancelingInApplication)
   {
-    v65 = v64;
-    v66 = [(_INPBRideStatus *)self userActivityForCancelingInApplication];
-    v67 = [v4 userActivityForCancelingInApplication];
-    v68 = [v66 isEqual:v67];
+    v65 = userActivityForCancelingInApplication;
+    userActivityForCancelingInApplication2 = [(_INPBRideStatus *)self userActivityForCancelingInApplication];
+    userActivityForCancelingInApplication3 = [equalCopy userActivityForCancelingInApplication];
+    v68 = [userActivityForCancelingInApplication2 isEqual:userActivityForCancelingInApplication3];
 
     if (!v68)
     {
@@ -519,20 +519,20 @@
   {
   }
 
-  v5 = [(_INPBRideStatus *)self vehicle];
-  v6 = [v4 vehicle];
-  if ((v5 != 0) == (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self vehicle];
+  additionalActionItems2 = [equalCopy vehicle];
+  if ((additionalActionItems != 0) == (additionalActionItems2 == 0))
   {
     goto LABEL_75;
   }
 
-  v69 = [(_INPBRideStatus *)self vehicle];
-  if (v69)
+  vehicle = [(_INPBRideStatus *)self vehicle];
+  if (vehicle)
   {
-    v70 = v69;
-    v71 = [(_INPBRideStatus *)self vehicle];
-    v72 = [v4 vehicle];
-    v73 = [v71 isEqual:v72];
+    v70 = vehicle;
+    vehicle2 = [(_INPBRideStatus *)self vehicle];
+    vehicle3 = [equalCopy vehicle];
+    v73 = [vehicle2 isEqual:vehicle3];
 
     if (!v73)
     {
@@ -544,12 +544,12 @@
   {
   }
 
-  v5 = [(_INPBRideStatus *)self waypoints];
-  v6 = [v4 waypoints];
-  if ((v5 != 0) != (v6 == 0))
+  additionalActionItems = [(_INPBRideStatus *)self waypoints];
+  additionalActionItems2 = [equalCopy waypoints];
+  if ((additionalActionItems != 0) != (additionalActionItems2 == 0))
   {
-    v74 = [(_INPBRideStatus *)self waypoints];
-    if (!v74)
+    waypoints = [(_INPBRideStatus *)self waypoints];
+    if (!waypoints)
     {
 
 LABEL_79:
@@ -557,10 +557,10 @@ LABEL_79:
       goto LABEL_77;
     }
 
-    v75 = v74;
-    v76 = [(_INPBRideStatus *)self waypoints];
-    v77 = [v4 waypoints];
-    v78 = [v76 isEqual:v77];
+    v75 = waypoints;
+    waypoints2 = [(_INPBRideStatus *)self waypoints];
+    waypoints3 = [equalCopy waypoints];
+    v78 = [waypoints2 isEqual:waypoints3];
 
     if (v78)
     {
@@ -580,28 +580,28 @@ LABEL_77:
   return v79;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRideStatus allocWithZone:](_INPBRideStatus init];
-  v6 = [(NSArray *)self->_additionalActionItems copyWithZone:a3];
+  v6 = [(NSArray *)self->_additionalActionItems copyWithZone:zone];
   [(_INPBRideStatus *)v5 setAdditionalActionItems:v6];
 
-  v7 = [(_INPBRideCompletionStatus *)self->_completionStatus copyWithZone:a3];
+  v7 = [(_INPBRideCompletionStatus *)self->_completionStatus copyWithZone:zone];
   [(_INPBRideStatus *)v5 setCompletionStatus:v7];
 
-  v8 = [(_INPBRideDriver *)self->_driver copyWithZone:a3];
+  v8 = [(_INPBRideDriver *)self->_driver copyWithZone:zone];
   [(_INPBRideStatus *)v5 setDriver:v8];
 
-  v9 = [(_INPBLocationValue *)self->_dropOffLocation copyWithZone:a3];
+  v9 = [(_INPBLocationValue *)self->_dropOffLocation copyWithZone:zone];
   [(_INPBRideStatus *)v5 setDropOffLocation:v9];
 
-  v10 = [(_INPBTimestamp *)self->_estimatedDropOffDate copyWithZone:a3];
+  v10 = [(_INPBTimestamp *)self->_estimatedDropOffDate copyWithZone:zone];
   [(_INPBRideStatus *)v5 setEstimatedDropOffDate:v10];
 
-  v11 = [(_INPBTimestamp *)self->_estimatedPickupDate copyWithZone:a3];
+  v11 = [(_INPBTimestamp *)self->_estimatedPickupDate copyWithZone:zone];
   [(_INPBRideStatus *)v5 setEstimatedPickupDate:v11];
 
-  v12 = [(_INPBTimestamp *)self->_estimatedPickupEndDate copyWithZone:a3];
+  v12 = [(_INPBTimestamp *)self->_estimatedPickupEndDate copyWithZone:zone];
   [(_INPBRideStatus *)v5 setEstimatedPickupEndDate:v12];
 
   if ([(_INPBRideStatus *)self hasPhase])
@@ -609,58 +609,58 @@ LABEL_77:
     [(_INPBRideStatus *)v5 setPhase:[(_INPBRideStatus *)self phase]];
   }
 
-  v13 = [(_INPBLocationValue *)self->_pickupLocation copyWithZone:a3];
+  v13 = [(_INPBLocationValue *)self->_pickupLocation copyWithZone:zone];
   [(_INPBRideStatus *)v5 setPickupLocation:v13];
 
-  v14 = [(NSString *)self->_rideIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_rideIdentifier copyWithZone:zone];
   [(_INPBRideStatus *)v5 setRideIdentifier:v14];
 
-  v15 = [(_INPBRideOption *)self->_rideOption copyWithZone:a3];
+  v15 = [(_INPBRideOption *)self->_rideOption copyWithZone:zone];
   [(_INPBRideStatus *)v5 setRideOption:v15];
 
-  v16 = [(_INPBDateTimeRangeValue *)self->_scheduledPickupTime copyWithZone:a3];
+  v16 = [(_INPBDateTimeRangeValue *)self->_scheduledPickupTime copyWithZone:zone];
   [(_INPBRideStatus *)v5 setScheduledPickupTime:v16];
 
-  v17 = [(_INPBUserActivity *)self->_userActivityForCancelingInApplication copyWithZone:a3];
+  v17 = [(_INPBUserActivity *)self->_userActivityForCancelingInApplication copyWithZone:zone];
   [(_INPBRideStatus *)v5 setUserActivityForCancelingInApplication:v17];
 
-  v18 = [(_INPBRideVehicle *)self->_vehicle copyWithZone:a3];
+  v18 = [(_INPBRideVehicle *)self->_vehicle copyWithZone:zone];
   [(_INPBRideStatus *)v5 setVehicle:v18];
 
-  v19 = [(NSArray *)self->_waypoints copyWithZone:a3];
+  v19 = [(NSArray *)self->_waypoints copyWithZone:zone];
   [(_INPBRideStatus *)v5 setWaypoints:v19];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRideStatus *)self data];
+  coderCopy = coder;
+  data = [(_INPBRideStatus *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRideStatus)initWithCoder:(id)a3
+- (_INPBRideStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRideStatus *)self initWithData:v6];
+    self = [(_INPBRideStatus *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -693,51 +693,51 @@ LABEL_77:
     while (v7);
   }
 
-  v11 = [(_INPBRideStatus *)self completionStatus];
+  completionStatus = [(_INPBRideStatus *)self completionStatus];
 
-  if (v11)
+  if (completionStatus)
   {
-    v12 = [(_INPBRideStatus *)self completionStatus];
+    completionStatus2 = [(_INPBRideStatus *)self completionStatus];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_INPBRideStatus *)self driver];
+  driver = [(_INPBRideStatus *)self driver];
 
-  if (v13)
+  if (driver)
   {
-    v14 = [(_INPBRideStatus *)self driver];
+    driver2 = [(_INPBRideStatus *)self driver];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_INPBRideStatus *)self dropOffLocation];
+  dropOffLocation = [(_INPBRideStatus *)self dropOffLocation];
 
-  if (v15)
+  if (dropOffLocation)
   {
-    v16 = [(_INPBRideStatus *)self dropOffLocation];
+    dropOffLocation2 = [(_INPBRideStatus *)self dropOffLocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_INPBRideStatus *)self estimatedDropOffDate];
+  estimatedDropOffDate = [(_INPBRideStatus *)self estimatedDropOffDate];
 
-  if (v17)
+  if (estimatedDropOffDate)
   {
-    v18 = [(_INPBRideStatus *)self estimatedDropOffDate];
+    estimatedDropOffDate2 = [(_INPBRideStatus *)self estimatedDropOffDate];
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(_INPBRideStatus *)self estimatedPickupDate];
+  estimatedPickupDate = [(_INPBRideStatus *)self estimatedPickupDate];
 
-  if (v19)
+  if (estimatedPickupDate)
   {
-    v20 = [(_INPBRideStatus *)self estimatedPickupDate];
+    estimatedPickupDate2 = [(_INPBRideStatus *)self estimatedPickupDate];
     PBDataWriterWriteSubmessage();
   }
 
-  v21 = [(_INPBRideStatus *)self estimatedPickupEndDate];
+  estimatedPickupEndDate = [(_INPBRideStatus *)self estimatedPickupEndDate];
 
-  if (v21)
+  if (estimatedPickupEndDate)
   {
-    v22 = [(_INPBRideStatus *)self estimatedPickupEndDate];
+    estimatedPickupEndDate2 = [(_INPBRideStatus *)self estimatedPickupEndDate];
     PBDataWriterWriteSubmessage();
   }
 
@@ -747,51 +747,51 @@ LABEL_77:
     PBDataWriterWriteInt32Field();
   }
 
-  v24 = [(_INPBRideStatus *)self pickupLocation];
+  pickupLocation = [(_INPBRideStatus *)self pickupLocation];
 
-  if (v24)
+  if (pickupLocation)
   {
-    v25 = [(_INPBRideStatus *)self pickupLocation];
+    pickupLocation2 = [(_INPBRideStatus *)self pickupLocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(_INPBRideStatus *)self rideIdentifier];
+  rideIdentifier = [(_INPBRideStatus *)self rideIdentifier];
 
-  if (v26)
+  if (rideIdentifier)
   {
     rideIdentifier = self->_rideIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v28 = [(_INPBRideStatus *)self rideOption];
+  rideOption = [(_INPBRideStatus *)self rideOption];
 
-  if (v28)
+  if (rideOption)
   {
-    v29 = [(_INPBRideStatus *)self rideOption];
+    rideOption2 = [(_INPBRideStatus *)self rideOption];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(_INPBRideStatus *)self scheduledPickupTime];
+  scheduledPickupTime = [(_INPBRideStatus *)self scheduledPickupTime];
 
-  if (v30)
+  if (scheduledPickupTime)
   {
-    v31 = [(_INPBRideStatus *)self scheduledPickupTime];
+    scheduledPickupTime2 = [(_INPBRideStatus *)self scheduledPickupTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(_INPBRideStatus *)self userActivityForCancelingInApplication];
+  userActivityForCancelingInApplication = [(_INPBRideStatus *)self userActivityForCancelingInApplication];
 
-  if (v32)
+  if (userActivityForCancelingInApplication)
   {
-    v33 = [(_INPBRideStatus *)self userActivityForCancelingInApplication];
+    userActivityForCancelingInApplication2 = [(_INPBRideStatus *)self userActivityForCancelingInApplication];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(_INPBRideStatus *)self vehicle];
+  vehicle = [(_INPBRideStatus *)self vehicle];
 
-  if (v34)
+  if (vehicle)
   {
-    v35 = [(_INPBRideStatus *)self vehicle];
+    vehicle2 = [(_INPBRideStatus *)self vehicle];
     PBDataWriterWriteSubmessage();
   }
 
@@ -830,71 +830,71 @@ LABEL_77:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addWaypoints:(id)a3
+- (void)addWaypoints:(id)waypoints
 {
-  v4 = a3;
+  waypointsCopy = waypoints;
   waypoints = self->_waypoints;
-  v8 = v4;
+  v8 = waypointsCopy;
   if (!waypoints)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_waypoints;
-    self->_waypoints = v6;
+    self->_waypoints = array;
 
-    v4 = v8;
+    waypointsCopy = v8;
     waypoints = self->_waypoints;
   }
 
-  [(NSArray *)waypoints addObject:v4];
+  [(NSArray *)waypoints addObject:waypointsCopy];
 }
 
-- (void)setWaypoints:(id)a3
+- (void)setWaypoints:(id)waypoints
 {
-  v4 = [a3 mutableCopy];
+  v4 = [waypoints mutableCopy];
   waypoints = self->_waypoints;
   self->_waypoints = v4;
 
   MEMORY[0x1EEE66BB8](v4, waypoints);
 }
 
-- (void)setRideIdentifier:(id)a3
+- (void)setRideIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   rideIdentifier = self->_rideIdentifier;
   self->_rideIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, rideIdentifier);
 }
 
-- (int)StringAsPhase:(id)a3
+- (int)StringAsPhase:(id)phase
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RECEIVED"])
+  phaseCopy = phase;
+  if ([phaseCopy isEqualToString:@"RECEIVED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CONFIRMED"])
+  else if ([phaseCopy isEqualToString:@"CONFIRMED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ONGOING"])
+  else if ([phaseCopy isEqualToString:@"ONGOING"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETED"])
+  else if ([phaseCopy isEqualToString:@"COMPLETED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"APPROACHING_PICKUP"])
+  else if ([phaseCopy isEqualToString:@"APPROACHING_PICKUP"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"PICKUP"])
+  else if ([phaseCopy isEqualToString:@"PICKUP"])
   {
     v4 = 7;
   }
@@ -907,10 +907,10 @@ LABEL_77:
   return v4;
 }
 
-- (void)setPhase:(int)a3
+- (void)setPhase:(int)phase
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (phase == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -918,31 +918,31 @@ LABEL_77:
   else
   {
     *&self->_has = has | 1;
-    self->_phase = a3;
+    self->_phase = phase;
   }
 }
 
-- (void)addAdditionalActionItems:(id)a3
+- (void)addAdditionalActionItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   additionalActionItems = self->_additionalActionItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!additionalActionItems)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_additionalActionItems;
-    self->_additionalActionItems = v6;
+    self->_additionalActionItems = array;
 
-    v4 = v8;
+    itemsCopy = v8;
     additionalActionItems = self->_additionalActionItems;
   }
 
-  [(NSArray *)additionalActionItems addObject:v4];
+  [(NSArray *)additionalActionItems addObject:itemsCopy];
 }
 
-- (void)setAdditionalActionItems:(id)a3
+- (void)setAdditionalActionItems:(id)items
 {
-  v4 = [a3 mutableCopy];
+  v4 = [items mutableCopy];
   additionalActionItems = self->_additionalActionItems;
   self->_additionalActionItems = v4;
 

@@ -1,6 +1,6 @@
 @interface ProfileCharacteristicsWithAutoAvatarImageViewController
 - (_TtC18HealthExperienceUI55ProfileCharacteristicsWithAutoAvatarImageViewController)init;
-- (_TtC18HealthExperienceUI55ProfileCharacteristicsWithAutoAvatarImageViewController)initWithHealthStore:(id)a3;
+- (_TtC18HealthExperienceUI55ProfileCharacteristicsWithAutoAvatarImageViewController)initWithHealthStore:(id)store;
 - (void)didUpdateName;
 - (void)setUpNavigationBar;
 @end
@@ -23,17 +23,17 @@
 
 - (void)setUpNavigationBar
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA06F1C8();
 }
 
 - (void)didUpdateName
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA06F524();
 }
 
-- (_TtC18HealthExperienceUI55ProfileCharacteristicsWithAutoAvatarImageViewController)initWithHealthStore:(id)a3
+- (_TtC18HealthExperienceUI55ProfileCharacteristicsWithAutoAvatarImageViewController)initWithHealthStore:(id)store
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

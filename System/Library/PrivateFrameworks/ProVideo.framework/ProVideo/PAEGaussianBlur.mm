@@ -1,21 +1,21 @@
 @interface PAEGaussianBlur
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (PAEGaussianBlur)initWithAPIManager:(id)a3;
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (PAEGaussianBlur)initWithAPIManager:(id)manager;
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error;
 - (id)properties;
-- (void)filteredEdges:(BOOL *)a3 withInfo:(id *)a4;
+- (void)filteredEdges:(BOOL *)edges withInfo:(id *)info;
 @end
 
 @implementation PAEGaussianBlur
 
-- (PAEGaussianBlur)initWithAPIManager:(id)a3
+- (PAEGaussianBlur)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEGaussianBlur;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -40,13 +40,13 @@ uint64_t __29__PAEGaussianBlur_properties__block_invoke()
   return result;
 }
 
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error
 {
   v6 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (!v6)
   {
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{@"Unable to retrieve FxParameterRetrievalAPI object", *MEMORY[0x277CCA450], 0}];
-    if (a4)
+    if (error)
     {
       v13 = v12;
       v14 = MEMORY[0x277CCA9B8];
@@ -55,7 +55,7 @@ uint64_t __29__PAEGaussianBlur_properties__block_invoke()
 LABEL_12:
       v18 = [v14 errorWithDomain:v15 code:v16 userInfo:v13];
       result = 0;
-      *a4 = v18;
+      *error = v18;
       return result;
     }
 
@@ -65,20 +65,20 @@ LABEL_12:
   v7 = v6;
   v26 = 0;
   v25 = 0;
-  if (![v6 getBoolValue:&v26 fromParm:4 atFxTime:a3.var1])
+  if (![v6 getBoolValue:&v26 fromParm:4 atFxTime:time.var1])
   {
     v24 = 0.0;
     goto LABEL_10;
   }
 
-  v8 = [v7 getBoolValue:&v25 fromParm:6 atFxTime:a3.var1];
+  v8 = [v7 getBoolValue:&v25 fromParm:6 atFxTime:time.var1];
   v26 &= v25 ^ 1;
   v24 = 0.0;
-  if (!v8 || ([v7 getFloatValue:&v24 fromParm:1 atFxTime:a3.var1] & 1) == 0)
+  if (!v8 || ([v7 getFloatValue:&v24 fromParm:1 atFxTime:time.var1] & 1) == 0)
   {
 LABEL_10:
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{@"Unable to retrieve a parameter in [-PAEGaussianBlur dynamicPropertiesAtTime:withError:]", *MEMORY[0x277CCA450], 0}];
-    if (a4)
+    if (error)
     {
       v13 = v17;
       v14 = MEMORY[0x277CCA9B8];
@@ -152,49 +152,49 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v11 = v10;
   if (v10)
   {
     v22 = 0;
-    [v10 getBoolValue:&v22 fromParm:6 atFxTime:a6->var0.var1];
+    [v10 getBoolValue:&v22 fromParm:6 atFxTime:info->var0.var1];
     if (v22 == 1)
     {
-      if (a3)
+      if (width)
       {
-        *a3 = a5->var0;
+        *width = input->var0;
       }
 
-      if (a4)
+      if (height)
       {
-        var1 = a5->var1;
+        var1 = input->var1;
 LABEL_14:
-        *a4 = var1;
+        *height = var1;
       }
     }
 
     else
     {
       v21 = 0.0;
-      [v11 getFloatValue:&v21 fromParm:1 atFxTime:a6->var0.var1];
+      [v11 getFloatValue:&v21 fromParm:1 atFxTime:info->var0.var1];
       v21 = v21 * 0.5;
       v20 = 0.0;
-      [v11 getFloatValue:&v20 fromParm:2 atFxTime:a6->var0.var1];
+      [v11 getFloatValue:&v20 fromParm:2 atFxTime:info->var0.var1];
       v20 = v20 * 0.01;
       v19 = 0.0;
-      [v11 getFloatValue:&v19 fromParm:3 atFxTime:a6->var0.var1];
+      [v11 getFloatValue:&v19 fromParm:3 atFxTime:info->var0.var1];
       v19 = v19 * 0.01;
       v18 = 0;
-      [v11 getBoolValue:&v18 fromParm:4 atFxTime:a6->var0.var1];
-      var0 = a5->var0;
-      var1 = a5->var1;
+      [v11 getBoolValue:&v18 fromParm:4 atFxTime:info->var0.var1];
+      var0 = input->var0;
+      var1 = input->var1;
       if (v18 == 1)
       {
-        if (a3)
+        if (width)
         {
-          *a3 = var0;
+          *width = var0;
         }
       }
 
@@ -203,15 +203,15 @@ LABEL_14:
         v14 = v21 + v21;
         v15 = v14;
         v16 = vcvtpd_s64_f64(v19 * v15);
-        if (a3)
+        if (width)
         {
-          *a3 = var0 + (2 * vcvtpd_s64_f64(v20 * v15));
+          *width = var0 + (2 * vcvtpd_s64_f64(v20 * v15));
         }
 
         var1 += (2 * v16);
       }
 
-      if (a4)
+      if (height)
       {
         goto LABEL_14;
       }
@@ -221,7 +221,7 @@ LABEL_14:
   return v11 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
@@ -240,21 +240,21 @@ LABEL_14:
     return 0;
   }
 
-  v13 = [v10 versionAtCreation];
-  v14 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
-  v15 = [a4 imageType];
-  [(PAESharedDefaultBase *)self getScaleForImage:a4];
+  versionAtCreation = [v10 versionAtCreation];
+  v14 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
+  imageType = [input imageType];
+  [(PAESharedDefaultBase *)self getScaleForImage:input];
   v17 = v41[1];
   v16 = v41[2];
   v41[0] = 0.0;
-  [v9 getFloatValue:v41 fromParm:1 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:v41 fromParm:1 atFxTime:info->var0.var1];
   v40 = 0;
-  [v9 getBoolValue:&v40 fromParm:5 atFxTime:a5->var0.var1];
+  [v9 getBoolValue:&v40 fromParm:5 atFxTime:info->var0.var1];
   if (v41[0] <= 0.0)
   {
-    if (a4)
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -262,7 +262,7 @@ LABEL_14:
       v39 = 0.0;
     }
 
-    [a3 setHeliumRef:&v39];
+    [output setHeliumRef:&v39];
     if (v39 != 0.0)
     {
       (*(**&v39 + 24))(*&v39);
@@ -275,14 +275,14 @@ LABEL_14:
   {
     v41[0] = v41[0] * 0.5;
     v39 = 0.0;
-    [v9 getFloatValue:&v39 fromParm:2 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v39 fromParm:2 atFxTime:info->var0.var1];
     v39 = v17 * (v39 * 0.01);
     v38 = 0.0;
-    [v9 getFloatValue:&v38 fromParm:3 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v38 fromParm:3 atFxTime:info->var0.var1];
     v38 = v16 * (v38 * 0.01);
     if (v14)
     {
-      v18 = v15 == 3;
+      v18 = imageType == 3;
     }
 
     else
@@ -293,9 +293,9 @@ LABEL_14:
     v12 = v18;
     if (v18)
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       else
@@ -304,7 +304,7 @@ LABEL_14:
       }
 
       v36 = 0;
-      [v9 getBoolValue:&v36 fromParm:4 atFxTime:a5->var0.var1];
+      [v9 getBoolValue:&v36 fromParm:4 atFxTime:info->var0.var1];
       if (v36 == 1)
       {
         v34 = v37;
@@ -313,7 +313,7 @@ LABEL_14:
           (*(*v37 + 16))(v37);
         }
 
-        [(PAESharedDefaultBase *)self smear:&v34 fromImage:a4 toImage:a4];
+        [(PAESharedDefaultBase *)self smear:&v34 fromImage:input toImage:input];
         v19 = v35;
         if (v37 == v35)
         {
@@ -380,7 +380,7 @@ LABEL_14:
         v26 = v41[0];
         v27 = v39;
         v28 = v38;
-        HGaussianBlur::init(v25, v26, v27, v28, v13 == 0, a5->var1 == 2, 0);
+        HGaussianBlur::init(v25, v26, v27, v28, versionAtCreation == 0, info->var1 == 2, 0);
         (*(*v25 + 120))(v25, 0, v37);
         v29 = *v25;
         v35 = v25;
@@ -390,10 +390,10 @@ LABEL_14:
 
       if (v36 == 1)
       {
-        [(PAESharedDefaultBase *)self crop:&v35 fromImage:a4 toImage:a3];
+        [(PAESharedDefaultBase *)self crop:&v35 fromImage:input toImage:output];
       }
 
-      [a3 setHeliumRef:&v35];
+      [output setHeliumRef:&v35];
       if (v35)
       {
         (*(*v35 + 24))(v35);
@@ -409,26 +409,26 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 
-- (void)filteredEdges:(BOOL *)a3 withInfo:(id *)a4
+- (void)filteredEdges:(BOOL *)edges withInfo:(id *)info
 {
-  v5 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258, a4];
+  info = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258, info];
   v8 = 0;
   v6 = *MEMORY[0x277CC08F0];
   v7 = *(MEMORY[0x277CC08F0] + 16);
-  [v5 getBoolValue:&v8 fromParm:6 atFxTime:&v6];
-  *a3 = v8 ^ 1;
+  [info getBoolValue:&v8 fromParm:6 atFxTime:&v6];
+  *edges = v8 ^ 1;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface CNPRUISPosterTitleStyleAttributes
-+ (id)attributesForCNConfiguration:(id)a3;
-+ (id)attributesFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (CNPRUISPosterTitleStyleAttributes)initWithPosterTitleStyleAttributes:(id)a3;
++ (id)attributesForCNConfiguration:(id)configuration;
++ (id)attributesFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (CNPRUISPosterTitleStyleAttributes)initWithPosterTitleStyleAttributes:(id)attributes;
 - (id)titleColor;
 - (id)titleFont;
 @end
@@ -11,11 +11,11 @@
 
 - (id)titleFont
 {
-  v2 = [(PRUISPosterTitleStyleAttributes *)self->_wrappedPosterTitleStyleAttributes titleFont];
-  v3 = v2;
-  if (v2)
+  titleFont = [(PRUISPosterTitleStyleAttributes *)self->_wrappedPosterTitleStyleAttributes titleFont];
+  v3 = titleFont;
+  if (titleFont)
   {
-    v4 = v2;
+    v4 = titleFont;
   }
 
   else
@@ -30,47 +30,47 @@
 
 - (id)titleColor
 {
-  v2 = [(PRUISPosterTitleStyleAttributes *)self->_wrappedPosterTitleStyleAttributes titleColor];
-  v3 = v2;
-  if (v2)
+  titleColor = [(PRUISPosterTitleStyleAttributes *)self->_wrappedPosterTitleStyleAttributes titleColor];
+  v3 = titleColor;
+  if (titleColor)
   {
-    v4 = v2;
+    blackColor = titleColor;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  v5 = v4;
+  v5 = blackColor;
 
   return v5;
 }
 
-- (CNPRUISPosterTitleStyleAttributes)initWithPosterTitleStyleAttributes:(id)a3
+- (CNPRUISPosterTitleStyleAttributes)initWithPosterTitleStyleAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v10.receiver = self;
   v10.super_class = CNPRUISPosterTitleStyleAttributes;
   v6 = [(CNPRUISPosterTitleStyleAttributes *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedPosterTitleStyleAttributes, a3);
+    objc_storeStrong(&v6->_wrappedPosterTitleStyleAttributes, attributes);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -110,11 +110,11 @@
     v18 = 3221225472;
     v19 = __45__CNPRUISPosterTitleStyleAttributes_isEqual___block_invoke_4;
     v20 = &unk_1E74E7460;
-    v21 = self;
+    selfCopy = self;
     v22 = v11;
     v13 = v11;
     v14 = _Block_copy(&v17);
-    v15 = [v8 isObject:self equalToOther:v13 withBlocks:{v27, v10, v12, v14, 0, v17, v18, v19, v20, v21}];
+    v15 = [v8 isObject:self equalToOther:v13 withBlocks:{v27, v10, v12, v14, 0, v17, v18, v19, v20, selfCopy}];
   }
 
   else
@@ -143,20 +143,20 @@ uint64_t __45__CNPRUISPosterTitleStyleAttributes_isEqual___block_invoke_2(uint64
   return v4;
 }
 
-+ (id)attributesForCNConfiguration:(id)a3
++ (id)attributesForCNConfiguration:(id)configuration
 {
   v11 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v3 = [CNPRUISPosterConfigurationUtilities titleStyleAttributesForCNConfiguration:a3 error:&v8];
+  v3 = [CNPRUISPosterConfigurationUtilities titleStyleAttributesForCNConfiguration:configuration error:&v8];
   v4 = v8;
   if (!v3)
   {
     v5 = CNUILogPosters();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v4 localizedDescription];
+      localizedDescription = [v4 localizedDescription];
       *buf = 138412290;
-      v10 = v7;
+      v10 = localizedDescription;
       _os_log_error_impl(&dword_199A75000, v5, OS_LOG_TYPE_ERROR, "Failed to fetch attributes for configuration: %@", buf, 0xCu);
     }
   }
@@ -164,12 +164,12 @@ uint64_t __45__CNPRUISPosterTitleStyleAttributes_isEqual___block_invoke_2(uint64
   return v3;
 }
 
-+ (id)attributesFromData:(id)a3 error:(id *)a4
++ (id)attributesFromData:(id)data error:(id *)error
 {
-  v5 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:a3 error:?];
+  v5 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:data error:?];
   if (v5)
   {
-    v6 = [CNPRUISPosterConfigurationUtilities titleStyleAttributesForCNConfiguration:v5 error:a4];
+    v6 = [CNPRUISPosterConfigurationUtilities titleStyleAttributesForCNConfiguration:v5 error:error];
   }
 
   else

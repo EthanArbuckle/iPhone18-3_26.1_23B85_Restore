@@ -1,21 +1,21 @@
 @interface PXChangePeopleTypeAction
-- (PXChangePeopleTypeAction)initWithPeople:(id)a3 type:(int64_t)a4;
+- (PXChangePeopleTypeAction)initWithPeople:(id)people type:(int64_t)type;
 - (id)localizedActionName;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
-- (void)setFirstManualOrder:(unint64_t)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
+- (void)setFirstManualOrder:(unint64_t)order;
 @end
 
 @implementation PXChangePeopleTypeAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __40__PXChangePeopleTypeAction_performUndo___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXPhotosAction *)self performChanges:v3 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v3 completionHandler:undo];
 }
 
 void __40__PXChangePeopleTypeAction_performUndo___block_invoke(uint64_t a1)
@@ -53,14 +53,14 @@ void __40__PXChangePeopleTypeAction_performUndo___block_invoke(uint64_t a1)
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __42__PXChangePeopleTypeAction_performAction___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXPhotosAction *)self performChanges:v3 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v3 completionHandler:action];
 }
 
 void __42__PXChangePeopleTypeAction_performAction___block_invoke(uint64_t a1)
@@ -108,24 +108,24 @@ void __42__PXChangePeopleTypeAction_performAction___block_invoke(uint64_t a1)
 
 - (id)localizedActionName
 {
-  v2 = self;
-  v3 = [(PXChangePeopleTypeAction *)self collections];
-  v4 = [v2 type];
-  if (v4 == -1)
+  selfCopy = self;
+  collections = [(PXChangePeopleTypeAction *)self collections];
+  type = [selfCopy type];
+  if (type == -1)
   {
-    v6 = [v2 photoLibrary];
-    v7 = [v6 px_peoplePetsHomeVisibility];
+    photoLibrary = [selfCopy photoLibrary];
+    px_peoplePetsHomeVisibility = [photoLibrary px_peoplePetsHomeVisibility];
 
-    PXLocalizedStringForPeople(v3, @"PXPeopleHomeRemovePeopleButton");
+    PXLocalizedStringForPeople(collections, @"PXPeopleHomeRemovePeopleButton");
     objc_claimAutoreleasedReturnValue();
-    PXLocalizedStringForPeoplePetsHomeTitle(v7);
+    PXLocalizedStringForPeoplePetsHomeTitle(px_peoplePetsHomeVisibility);
     objc_claimAutoreleasedReturnValue();
     PXStringWithValidatedFormat();
   }
 
-  if (v4)
+  if (type)
   {
-    if (v4 != 1)
+    if (type != 1)
     {
       goto LABEL_8;
     }
@@ -138,55 +138,55 @@ void __42__PXChangePeopleTypeAction_performAction___block_invoke(uint64_t a1)
     v5 = @"PXPeopleUnfavoriteThisPerson";
   }
 
-  v2 = PXLocalizedStringForPeople(v3, v5);
+  selfCopy = PXLocalizedStringForPeople(collections, v5);
 LABEL_8:
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setFirstManualOrder:(unint64_t)a3
+- (void)setFirstManualOrder:(unint64_t)order
 {
   if ([(PXAction *)self executionStarted])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXChangePeopleTypeAction.m" lineNumber:46 description:{@"%s cannot be called after the receiver has started executing.", "-[PXChangePeopleTypeAction setFirstManualOrder:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXChangePeopleTypeAction.m" lineNumber:46 description:{@"%s cannot be called after the receiver has started executing.", "-[PXChangePeopleTypeAction setFirstManualOrder:]"}];
   }
 
-  self->_firstManualOrder = a3;
+  self->_firstManualOrder = order;
 }
 
-- (PXChangePeopleTypeAction)initWithPeople:(id)a3 type:(int64_t)a4
+- (PXChangePeopleTypeAction)initWithPeople:(id)people type:(int64_t)type
 {
-  v6 = a3;
-  v7 = [v6 firstObject];
-  v8 = v7;
-  if (v7)
+  peopleCopy = people;
+  firstObject = [peopleCopy firstObject];
+  v8 = firstObject;
+  if (firstObject)
   {
-    v9 = [v7 photoLibrary];
+    photoLibrary = [firstObject photoLibrary];
     v15.receiver = self;
     v15.super_class = PXChangePeopleTypeAction;
-    v10 = [(PXPhotosAction *)&v15 initWithPhotoLibrary:v9];
+    v10 = [(PXPhotosAction *)&v15 initWithPhotoLibrary:photoLibrary];
 
     if (v10)
     {
-      v11 = [v6 copy];
+      v11 = [peopleCopy copy];
       collections = v10->_collections;
       v10->_collections = v11;
 
-      v10->_type = a4;
+      v10->_type = type;
       v10->_firstManualOrder = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     self = v10;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

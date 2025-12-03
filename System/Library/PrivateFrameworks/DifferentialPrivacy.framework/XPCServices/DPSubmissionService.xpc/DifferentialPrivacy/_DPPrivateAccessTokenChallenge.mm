@@ -1,23 +1,23 @@
 @interface _DPPrivateAccessTokenChallenge
-- (_DPPrivateAccessTokenChallenge)initWithIssuer:(id)a3 redemptionContext:(id)a4;
+- (_DPPrivateAccessTokenChallenge)initWithIssuer:(id)issuer redemptionContext:(id)context;
 @end
 
 @implementation _DPPrivateAccessTokenChallenge
 
-- (_DPPrivateAccessTokenChallenge)initWithIssuer:(id)a3 redemptionContext:(id)a4
+- (_DPPrivateAccessTokenChallenge)initWithIssuer:(id)issuer redemptionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  issuerCopy = issuer;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = _DPPrivateAccessTokenChallenge;
   v8 = [(_DPPrivateAccessTokenChallenge *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [issuerCopy copy];
     issuer = v8->_issuer;
     v8->_issuer = v9;
 
-    objc_storeStrong(&v8->_redemptionContext, a4);
+    objc_storeStrong(&v8->_redemptionContext, context);
   }
 
   return v8;

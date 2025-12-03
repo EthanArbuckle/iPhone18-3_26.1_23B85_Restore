@@ -1,8 +1,8 @@
 @interface MOSuggestionAssetContactProfilePictureProviderAvatar
 - (MOSuggestionAssetContactProfilePictureProviderAvatar)init;
-- (id)avatarForContact:(id)a3 size:(CGSize)a4;
-- (void)avatarForContact:(id)a3 size:(CGSize)a4 completion:(id)a5;
-- (void)genericAvatarFor:(id)a3 pointSize:(CGSize)a4 completion:(id)a5;
+- (id)avatarForContact:(id)contact size:(CGSize)size;
+- (void)avatarForContact:(id)contact size:(CGSize)size completion:(id)completion;
+- (void)genericAvatarFor:(id)for pointSize:(CGSize)size completion:(id)completion;
 @end
 
 @implementation MOSuggestionAssetContactProfilePictureProviderAvatar
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (void)genericAvatarFor:(id)a3 pointSize:(CGSize)a4 completion:(id)a5
+- (void)genericAvatarFor:(id)for pointSize:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  forCopy = for;
+  completionCopy = completion;
   v10 = +[NSCharacterSet whitespaceCharacterSet];
-  v11 = [v8 componentsSeparatedByCharactersInSet:v10];
+  v11 = [forCopy componentsSeparatedByCharactersInSet:v10];
 
   if ([v11 count])
   {
@@ -77,22 +77,22 @@
     v23[1] = 3221225472;
     v23[2] = __94__MOSuggestionAssetContactProfilePictureProviderAvatar_genericAvatarFor_pointSize_completion___block_invoke;
     v23[3] = &unk_100309678;
-    v24 = v9;
+    v24 = completionCopy;
     v22 = [v21 renderMonogramForString:v13 scope:v20 imageHandler:v23];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)avatarForContact:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)avatarForContact:(id)contact size:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a5;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  contactCopy = contact;
   v11 = +[UIApplication sharedApplication];
   v12 = [v11 userInterfaceLayoutDirection] == 1;
 
@@ -101,22 +101,22 @@
   v15 = [CNAvatarImageRenderingScope scopeWithPointSize:v12 scale:0 rightToLeft:width style:height, v14];
 
   renderer = self->_renderer;
-  v22 = v10;
+  v22 = contactCopy;
   v17 = [NSArray arrayWithObjects:&v22 count:1];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = __89__MOSuggestionAssetContactProfilePictureProviderAvatar_avatarForContact_size_completion___block_invoke;
   v20[3] = &unk_100309678;
-  v21 = v9;
-  v18 = v9;
+  v21 = completionCopy;
+  v18 = completionCopy;
   v19 = [(CNAvatarImageRenderer *)renderer renderAvatarsForContacts:v17 scope:v15 imageHandler:v20];
 }
 
-- (id)avatarForContact:(id)a3 size:(CGSize)a4
+- (id)avatarForContact:(id)contact size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  contactCopy = contact;
   v8 = +[UIApplication sharedApplication];
   v9 = [v8 userInterfaceLayoutDirection] == 1;
 
@@ -125,7 +125,7 @@
   v12 = [CNAvatarImageRenderingScope scopeWithPointSize:v9 scale:0 rightToLeft:width style:height, v11];
 
   renderer = self->_renderer;
-  v17 = v7;
+  v17 = contactCopy;
   v14 = [NSArray arrayWithObjects:&v17 count:1];
   v15 = [(CNAvatarImageRenderer *)renderer avatarImageForContacts:v14 scope:v12];
 

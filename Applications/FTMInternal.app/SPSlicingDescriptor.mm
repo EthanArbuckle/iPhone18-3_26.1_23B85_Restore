@@ -1,7 +1,7 @@
 @interface SPSlicingDescriptor
-+ (id)_coreTelephonyContainer:(id)a3;
-+ (id)_coreTelephonyDescriptor:(id)a3;
-+ (id)_coreTelephonyDescritorList:(id)a3;
++ (id)_coreTelephonyContainer:(id)container;
++ (id)_coreTelephonyDescriptor:(id)descriptor;
++ (id)_coreTelephonyDescritorList:(id)list;
 - (SPSlicingDescriptor)init;
 - (id)description;
 @end
@@ -15,55 +15,55 @@
   return [(SPSlicingDescriptor *)&v3 init];
 }
 
-+ (id)_coreTelephonyDescriptor:(id)a3
++ (id)_coreTelephonyDescriptor:(id)descriptor
 {
-  v3 = a3;
+  descriptorCopy = descriptor;
   v4 = objc_alloc_init(SPSlicingDescriptor);
-  v5 = [v3 address];
-  [(SPSlicingDescriptor *)v4 setAddress:v5];
+  address = [descriptorCopy address];
+  [(SPSlicingDescriptor *)v4 setAddress:address];
 
-  v6 = [v3 host];
-  [(SPSlicingDescriptor *)v4 setHost:v6];
+  host = [descriptorCopy host];
+  [(SPSlicingDescriptor *)v4 setHost:host];
 
-  v7 = [v3 port];
-  [(SPSlicingDescriptor *)v4 setPort:v7];
+  port = [descriptorCopy port];
+  [(SPSlicingDescriptor *)v4 setPort:port];
 
-  v8 = [v3 appCategory];
-  [(SPSlicingDescriptor *)v4 setAppCategory:v8];
+  appCategory = [descriptorCopy appCategory];
+  [(SPSlicingDescriptor *)v4 setAppCategory:appCategory];
 
-  v9 = [v3 bundleId];
-  [(SPSlicingDescriptor *)v4 setBundleId:v9];
+  bundleId = [descriptorCopy bundleId];
+  [(SPSlicingDescriptor *)v4 setBundleId:bundleId];
 
-  v10 = [v3 dnn];
+  v10 = [descriptorCopy dnn];
   [(SPSlicingDescriptor *)v4 setDnn:v10];
 
-  v11 = [v3 ipProtocol];
-  [(SPSlicingDescriptor *)v4 setIpProtocol:v11];
+  ipProtocol = [descriptorCopy ipProtocol];
+  [(SPSlicingDescriptor *)v4 setIpProtocol:ipProtocol];
 
-  v12 = [v3 portRangeLow];
-  [(SPSlicingDescriptor *)v4 setPortRangeLow:v12];
+  portRangeLow = [descriptorCopy portRangeLow];
+  [(SPSlicingDescriptor *)v4 setPortRangeLow:portRangeLow];
 
-  v13 = [v3 portRangeUpper];
-  [(SPSlicingDescriptor *)v4 setPortRangeUpper:v13];
+  portRangeUpper = [descriptorCopy portRangeUpper];
+  [(SPSlicingDescriptor *)v4 setPortRangeUpper:portRangeUpper];
 
-  v14 = [v3 trafficClass];
+  trafficClass = [descriptorCopy trafficClass];
 
-  [(SPSlicingDescriptor *)v4 setTrafficClass:v14];
+  [(SPSlicingDescriptor *)v4 setTrafficClass:trafficClass];
 
   return v4;
 }
 
-+ (id)_coreTelephonyDescritorList:(id)a3
++ (id)_coreTelephonyDescritorList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = objc_opt_new();
-  if (v3 && [v3 count])
+  if (listCopy && [listCopy count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = listCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v6)
     {
@@ -102,13 +102,13 @@
   return v12;
 }
 
-+ (id)_coreTelephonyContainer:(id)a3
++ (id)_coreTelephonyContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v4 = objc_opt_new();
-  v5 = [v3 trafficDescriptors];
+  trafficDescriptors = [containerCopy trafficDescriptors];
 
-  v6 = [SPSlicingDescriptor _coreTelephonyDescritorList:v5];
+  v6 = [SPSlicingDescriptor _coreTelephonyDescritorList:trafficDescriptors];
 
   return v6;
 }
@@ -116,17 +116,17 @@
 - (id)description
 {
   v15 = [objc_opt_class() description];
-  v3 = [(SPSlicingDescriptor *)self address];
-  v4 = [(SPSlicingDescriptor *)self host];
-  v5 = [(SPSlicingDescriptor *)self port];
-  v6 = [(SPSlicingDescriptor *)self appCategory];
-  v7 = [(SPSlicingDescriptor *)self bundleId];
+  address = [(SPSlicingDescriptor *)self address];
+  host = [(SPSlicingDescriptor *)self host];
+  port = [(SPSlicingDescriptor *)self port];
+  appCategory = [(SPSlicingDescriptor *)self appCategory];
+  bundleId = [(SPSlicingDescriptor *)self bundleId];
   v8 = [(SPSlicingDescriptor *)self dnn];
-  v9 = [(SPSlicingDescriptor *)self ipProtocol];
-  v10 = [(SPSlicingDescriptor *)self portRangeLow];
-  v11 = [(SPSlicingDescriptor *)self portRangeUpper];
-  v12 = [(SPSlicingDescriptor *)self trafficClass];
-  v14 = [NSString stringWithFormat:@"<%@: address=%@ %@:%@ category=%@ bundleId=%@ dnn=%@ ip=%@ prl=%@ pru=%@ tclass=%@>", v15, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  ipProtocol = [(SPSlicingDescriptor *)self ipProtocol];
+  portRangeLow = [(SPSlicingDescriptor *)self portRangeLow];
+  portRangeUpper = [(SPSlicingDescriptor *)self portRangeUpper];
+  trafficClass = [(SPSlicingDescriptor *)self trafficClass];
+  v14 = [NSString stringWithFormat:@"<%@: address=%@ %@:%@ category=%@ bundleId=%@ dnn=%@ ip=%@ prl=%@ pru=%@ tclass=%@>", v15, address, host, port, appCategory, bundleId, v8, ipProtocol, portRangeLow, portRangeUpper, trafficClass];
 
   return v14;
 }

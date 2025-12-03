@@ -1,11 +1,11 @@
 @interface Reporter
-- (void)failWithReason:(id)a3;
-- (void)warnWithMessage:(id)a3;
+- (void)failWithReason:(id)reason;
+- (void)warnWithMessage:(id)message;
 @end
 
 @implementation Reporter
 
-- (void)failWithReason:(id)a3
+- (void)failWithReason:(id)reason
 {
   v4 = sub_22EE3C124();
   v6 = v5;
@@ -14,7 +14,7 @@
   v7(v4, v6);
 }
 
-- (void)warnWithMessage:(id)a3
+- (void)warnWithMessage:(id)message
 {
   v4 = sub_22EE3C124();
   v6 = v5;

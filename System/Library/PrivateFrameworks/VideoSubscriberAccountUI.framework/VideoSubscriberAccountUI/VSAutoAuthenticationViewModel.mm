@@ -1,7 +1,7 @@
 @interface VSAutoAuthenticationViewModel
 - (VSAutoAuthenticationViewModel)init;
 - (VSAutoAuthenticationViewModelDelegate)delegate;
-- (void)configureWithRequest:(id)a3;
+- (void)configureWithRequest:(id)request;
 - (void)didSelectManualSignInButton;
 @end
 
@@ -16,8 +16,8 @@
   if (v2)
   {
     [(VSCuratedViewModel *)v2 setBeginValidationButtonEnabled:1];
-    v4 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v5 = [v4 localizedStringForKey:@"CONTINUE" value:0 table:0];
+    vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v5 = [vs_frameworkBundle localizedStringForKey:@"CONTINUE" value:0 table:0];
     [(VSCuratedViewModel *)v3 setBeginValidationButtonTitle:v5];
   }
 
@@ -26,21 +26,21 @@
 
 - (void)didSelectManualSignInButton
 {
-  v3 = [(VSAutoAuthenticationViewModel *)self delegate];
-  [v3 autoAuthenticationViewModelDidManualSignInButton:self];
+  delegate = [(VSAutoAuthenticationViewModel *)self delegate];
+  [delegate autoAuthenticationViewModelDidManualSignInButton:self];
 }
 
-- (void)configureWithRequest:(id)a3
+- (void)configureWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VSViewModel *)self identityProvider];
-  v6 = [v5 displayName];
-  v7 = [v6 forceUnwrapObject];
-  [(VSViewModel *)self setTitle:v7];
+  requestCopy = request;
+  identityProvider = [(VSViewModel *)self identityProvider];
+  displayName = [identityProvider displayName];
+  forceUnwrapObject = [displayName forceUnwrapObject];
+  [(VSViewModel *)self setTitle:forceUnwrapObject];
 
   v8.receiver = self;
   v8.super_class = VSAutoAuthenticationViewModel;
-  [(VSCuratedViewModel *)&v8 configureWithRequest:v4];
+  [(VSCuratedViewModel *)&v8 configureWithRequest:requestCopy];
 }
 
 - (VSAutoAuthenticationViewModelDelegate)delegate

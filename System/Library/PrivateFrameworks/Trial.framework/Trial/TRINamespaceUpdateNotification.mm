@@ -1,25 +1,25 @@
 @interface TRINamespaceUpdateNotification
-+ (BOOL)notifyUpdateForNamespaceName:(id)a3;
-+ (id)registerUpdateForNamespaceName:(id)a3 queue:(id)a4 usingBlock:(id)a5;
-+ (void)deregisterUpdateWithToken:(id)a3;
-- (TRINamespaceUpdateNotification)initWithNamespaceName:(id)a3 token:(id)a4;
++ (BOOL)notifyUpdateForNamespaceName:(id)name;
++ (id)registerUpdateForNamespaceName:(id)name queue:(id)queue usingBlock:(id)block;
++ (void)deregisterUpdateWithToken:(id)token;
+- (TRINamespaceUpdateNotification)initWithNamespaceName:(id)name token:(id)token;
 - (unsigned)namespaceId;
 @end
 
 @implementation TRINamespaceUpdateNotification
 
-- (TRINamespaceUpdateNotification)initWithNamespaceName:(id)a3 token:(id)a4
+- (TRINamespaceUpdateNotification)initWithNamespaceName:(id)name token:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  tokenCopy = token;
   v12.receiver = self;
   v12.super_class = TRINamespaceUpdateNotification;
   v9 = [(TRINamespaceUpdateNotification *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_namespaceName, a3);
-    objc_storeStrong(&v10->_token, a4);
+    objc_storeStrong(&v9->_namespaceName, name);
+    objc_storeStrong(&v10->_token, token);
   }
 
   return v10;
@@ -28,30 +28,30 @@
 - (unsigned)namespaceId
 {
   v2 = MEMORY[0x277D73B50];
-  v3 = [(TRINamespaceUpdateNotification *)self namespaceName];
-  LODWORD(v2) = [v2 namespaceIdFromName:v3];
+  namespaceName = [(TRINamespaceUpdateNotification *)self namespaceName];
+  LODWORD(v2) = [v2 namespaceIdFromName:namespaceName];
 
   return v2;
 }
 
-+ (id)registerUpdateForNamespaceName:(id)a3 queue:(id)a4 usingBlock:(id)a5
++ (id)registerUpdateForNamespaceName:(id)name queue:(id)queue usingBlock:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  nameCopy = name;
+  blockCopy = block;
   out_token = -1;
-  v9 = a4;
-  v10 = [TRINamespaceUpdateNotification notificationNameForNamespaceName:v7];
-  v11 = [v10 UTF8String];
+  queueCopy = queue;
+  v10 = [TRINamespaceUpdateNotification notificationNameForNamespaceName:nameCopy];
+  uTF8String = [v10 UTF8String];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __82__TRINamespaceUpdateNotification_registerUpdateForNamespaceName_queue_usingBlock___block_invoke;
   handler[3] = &unk_27885E2A0;
-  v12 = v7;
+  v12 = nameCopy;
   v21 = v12;
-  v13 = v8;
+  v13 = blockCopy;
   v22 = v13;
-  v14 = notify_register_dispatch(v11, &out_token, v9, handler);
+  v14 = notify_register_dispatch(uTF8String, &out_token, queueCopy, handler);
 
   if (v14)
   {
@@ -97,20 +97,20 @@ void __82__TRINamespaceUpdateNotification_registerUpdateForNamespaceName_queue_u
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)deregisterUpdateWithToken:(id)a3
++ (void)deregisterUpdateWithToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    notify_cancel([v3 token]);
+    notify_cancel([tokenCopy token]);
   }
 }
 
-+ (BOOL)notifyUpdateForNamespaceName:(id)a3
++ (BOOL)notifyUpdateForNamespaceName:(id)name
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [TRINamespaceUpdateNotification notificationNameForNamespaceName:a3];
+  v3 = [TRINamespaceUpdateNotification notificationNameForNamespaceName:name];
   v4 = TRILogCategory_ClientFramework();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {

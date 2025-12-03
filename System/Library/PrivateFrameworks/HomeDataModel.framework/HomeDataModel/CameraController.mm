@@ -1,8 +1,8 @@
 @interface CameraController
 - (NSString)description;
 - (_TtC13HomeDataModel16CameraController)init;
-- (void)cameraSnapshotControl:(id)a3 didTakeSnapshot:(id)a4 error:(id)a5;
-- (void)cameraStreamControl:(id)a3 didStopStreamWithError:(id)a4;
+- (void)cameraSnapshotControl:(id)control didTakeSnapshot:(id)snapshot error:(id)error;
+- (void)cameraStreamControl:(id)control didStopStreamWithError:(id)error;
 @end
 
 @implementation CameraController
@@ -25,21 +25,21 @@
   return v2;
 }
 
-- (void)cameraStreamControl:(id)a3 didStopStreamWithError:(id)a4
+- (void)cameraStreamControl:(id)control didStopStreamWithError:(id)error
 {
-  v5 = a3;
+  controlCopy = control;
 
-  v6 = a4;
-  CameraController.cameraStreamControl(_:didStopStreamWithError:)(v5, a4);
+  errorCopy = error;
+  CameraController.cameraStreamControl(_:didStopStreamWithError:)(controlCopy, error);
 }
 
-- (void)cameraSnapshotControl:(id)a3 didTakeSnapshot:(id)a4 error:(id)a5
+- (void)cameraSnapshotControl:(id)control didTakeSnapshot:(id)snapshot error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  controlCopy = control;
+  snapshotCopy = snapshot;
 
-  v9 = a5;
-  sub_1D17DBEDC(a4, a5);
+  errorCopy = error;
+  sub_1D17DBEDC(snapshot, error);
 }
 
 @end

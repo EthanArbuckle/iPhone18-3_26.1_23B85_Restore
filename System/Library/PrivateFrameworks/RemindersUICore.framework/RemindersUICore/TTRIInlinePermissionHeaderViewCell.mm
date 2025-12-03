@@ -1,6 +1,6 @@
 @interface TTRIInlinePermissionHeaderViewCell
 + (Class)containerViewClass;
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3;
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews;
 - (void)prepareForReuse;
 @end
 
@@ -24,9 +24,9 @@
   TTRIInlinePermissionHeaderViewCell.configuration.setter(v3);
 }
 
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews
 {
-  v3 = self;
+  selfCopy = self;
   v5 = sub_21DB508E8(&OBJC_IVAR____TtC15RemindersUICore34TTRIInlinePermissionHeaderViewCell____lazy_storage___titleLabel, 9, &selRef_labelColor);
   UITableViewCell.setSeparatorInsetType(_:)(&v5);
 

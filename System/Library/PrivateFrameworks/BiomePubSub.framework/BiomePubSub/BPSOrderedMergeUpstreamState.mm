@@ -1,45 +1,45 @@
 @interface BPSOrderedMergeUpstreamState
-- (BPSOrderedMergeUpstreamState)initWithCoder:(id)a3;
-- (BPSOrderedMergeUpstreamState)initWithNextEvent:(id)a3 lastReturnedEvent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BPSOrderedMergeUpstreamState)initWithCoder:(id)coder;
+- (BPSOrderedMergeUpstreamState)initWithNextEvent:(id)event lastReturnedEvent:(id)returnedEvent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BPSOrderedMergeUpstreamState
 
-- (BPSOrderedMergeUpstreamState)initWithNextEvent:(id)a3 lastReturnedEvent:(id)a4
+- (BPSOrderedMergeUpstreamState)initWithNextEvent:(id)event lastReturnedEvent:(id)returnedEvent
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  returnedEventCopy = returnedEvent;
   v12.receiver = self;
   v12.super_class = BPSOrderedMergeUpstreamState;
   v9 = [(BPSOrderedMergeUpstreamState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_nextEvent, a3);
-    objc_storeStrong(&v10->_lastReturnedEvent, a4);
+    objc_storeStrong(&v9->_nextEvent, event);
+    objc_storeStrong(&v10->_lastReturnedEvent, returnedEvent);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BPSOrderedMergeUpstreamState *)self nextEvent];
-  [v4 encodeObject:v5 forKey:@"nextEvent"];
+  coderCopy = coder;
+  nextEvent = [(BPSOrderedMergeUpstreamState *)self nextEvent];
+  [coderCopy encodeObject:nextEvent forKey:@"nextEvent"];
 
-  v6 = [(BPSOrderedMergeUpstreamState *)self lastReturnedEvent];
-  [v4 encodeObject:v6 forKey:@"lastReturnedEvent"];
+  lastReturnedEvent = [(BPSOrderedMergeUpstreamState *)self lastReturnedEvent];
+  [coderCopy encodeObject:lastReturnedEvent forKey:@"lastReturnedEvent"];
 }
 
-- (BPSOrderedMergeUpstreamState)initWithCoder:(id)a3
+- (BPSOrderedMergeUpstreamState)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AB10];
-  v5 = a3;
-  v6 = [v4 bm_allowedClassesForSecureCodingBMBookmark];
-  v7 = [v5 decodeObjectOfClasses:v6 forKey:@"nextEvent"];
-  v8 = [v5 decodeObjectOfClasses:v6 forKey:@"lastReturnedEvent"];
+  coderCopy = coder;
+  bm_allowedClassesForSecureCodingBMBookmark = [v4 bm_allowedClassesForSecureCodingBMBookmark];
+  v7 = [coderCopy decodeObjectOfClasses:bm_allowedClassesForSecureCodingBMBookmark forKey:@"nextEvent"];
+  v8 = [coderCopy decodeObjectOfClasses:bm_allowedClassesForSecureCodingBMBookmark forKey:@"lastReturnedEvent"];
 
   v9 = [(BPSOrderedMergeUpstreamState *)self initWithNextEvent:v7 lastReturnedEvent:v8];
   return v9;

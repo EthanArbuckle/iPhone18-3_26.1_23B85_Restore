@@ -6,25 +6,25 @@
 
 - (double)spacingBetweenMonthCards
 {
-  v2 = [a1 sizeClass];
+  sizeClass = [self sizeClass];
   result = 24.0;
-  if (v2 != 2)
+  if (sizeClass != 2)
   {
-    v4 = [a1 sizeSubclass];
-    v5 = [a1 layoutOrientation];
+    sizeSubclass = [self sizeSubclass];
+    layoutOrientation = [self layoutOrientation];
     result = 12.0;
-    if (v4 == 1)
+    if (sizeSubclass == 1)
     {
       result = 8.0;
     }
 
     v6 = 24.0;
-    if (v4 == 1)
+    if (sizeSubclass == 1)
     {
       v6 = 20.0;
     }
 
-    if (v5 != 2)
+    if (layoutOrientation != 2)
     {
       return v6;
     }

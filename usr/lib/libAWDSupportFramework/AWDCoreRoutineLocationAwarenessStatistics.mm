@@ -1,14 +1,14 @@
 @interface AWDCoreRoutineLocationAwarenessStatistics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineLocationAwarenessStatistics
@@ -34,9 +34,9 @@
   [(AWDCoreRoutineLocationAwarenessStatistics *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -58,107 +58,107 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
   }
 
   timerFiringCount = self->_timerFiringCount;
   if (timerFiringCount)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](timerFiringCount forKey:{"dictionaryRepresentation"), @"timerFiringCount"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](timerFiringCount forKey:{"dictionaryRepresentation"), @"timerFiringCount"}];
   }
 
   activeRequestCount = self->_activeRequestCount;
   if (activeRequestCount)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestCount forKey:{"dictionaryRepresentation"), @"activeRequestCount"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestCount forKey:{"dictionaryRepresentation"), @"activeRequestCount"}];
   }
 
   validLocationCount = self->_validLocationCount;
   if (validLocationCount)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](validLocationCount forKey:{"dictionaryRepresentation"), @"validLocationCount"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](validLocationCount forKey:{"dictionaryRepresentation"), @"validLocationCount"}];
   }
 
   timerFiringDelayedCount = self->_timerFiringDelayedCount;
   if (timerFiringDelayedCount)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](timerFiringDelayedCount forKey:{"dictionaryRepresentation"), @"timerFiringDelayedCount"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](timerFiringDelayedCount forKey:{"dictionaryRepresentation"), @"timerFiringDelayedCount"}];
   }
 
   timerFiringDelayedTotalSeconds = self->_timerFiringDelayedTotalSeconds;
   if (timerFiringDelayedTotalSeconds)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](timerFiringDelayedTotalSeconds forKey:{"dictionaryRepresentation"), @"timerFiringDelayedTotalSeconds"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](timerFiringDelayedTotalSeconds forKey:{"dictionaryRepresentation"), @"timerFiringDelayedTotalSeconds"}];
   }
 
   timerFiringDelayedMaxSeconds = self->_timerFiringDelayedMaxSeconds;
   if (timerFiringDelayedMaxSeconds)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](timerFiringDelayedMaxSeconds forKey:{"dictionaryRepresentation"), @"timerFiringDelayedMaxSeconds"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](timerFiringDelayedMaxSeconds forKey:{"dictionaryRepresentation"), @"timerFiringDelayedMaxSeconds"}];
   }
 
   skippedRequestDueToRecentFix = self->_skippedRequestDueToRecentFix;
   if (skippedRequestDueToRecentFix)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](skippedRequestDueToRecentFix forKey:{"dictionaryRepresentation"), @"skippedRequestDueToRecentFix"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](skippedRequestDueToRecentFix forKey:{"dictionaryRepresentation"), @"skippedRequestDueToRecentFix"}];
   }
 
   skippedRequestDueToStationary = self->_skippedRequestDueToStationary;
   if (skippedRequestDueToStationary)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](skippedRequestDueToStationary forKey:{"dictionaryRepresentation"), @"skippedRequestDueToStationary"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](skippedRequestDueToStationary forKey:{"dictionaryRepresentation"), @"skippedRequestDueToStationary"}];
   }
 
   activeRequestTimeoutWithCoarseLocation = self->_activeRequestTimeoutWithCoarseLocation;
   if (activeRequestTimeoutWithCoarseLocation)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestTimeoutWithCoarseLocation forKey:{"dictionaryRepresentation"), @"activeRequestTimeoutWithCoarseLocation"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestTimeoutWithCoarseLocation forKey:{"dictionaryRepresentation"), @"activeRequestTimeoutWithCoarseLocation"}];
   }
 
   activeRequestTimeoutWithLocationServiceDisabled = self->_activeRequestTimeoutWithLocationServiceDisabled;
   if (activeRequestTimeoutWithLocationServiceDisabled)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestTimeoutWithLocationServiceDisabled forKey:{"dictionaryRepresentation"), @"activeRequestTimeoutWithLocationServiceDisabled"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestTimeoutWithLocationServiceDisabled forKey:{"dictionaryRepresentation"), @"activeRequestTimeoutWithLocationServiceDisabled"}];
   }
 
   activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled = self->_activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled;
   if (activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled forKey:{"dictionaryRepresentation"), @"activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled forKey:{"dictionaryRepresentation"), @"activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled"}];
   }
 
   activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff = self->_activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff;
   if (activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff forKey:{"dictionaryRepresentation"), @"activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff forKey:{"dictionaryRepresentation"), @"activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff"}];
   }
 
   activeRequestTimeoutWithOtherReasons = self->_activeRequestTimeoutWithOtherReasons;
   if (activeRequestTimeoutWithOtherReasons)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestTimeoutWithOtherReasons forKey:{"dictionaryRepresentation"), @"activeRequestTimeoutWithOtherReasons"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestTimeoutWithOtherReasons forKey:{"dictionaryRepresentation"), @"activeRequestTimeoutWithOtherReasons"}];
   }
 
   activeRequestInterrupted = self->_activeRequestInterrupted;
   if (activeRequestInterrupted)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestInterrupted forKey:{"dictionaryRepresentation"), @"activeRequestInterrupted"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](activeRequestInterrupted forKey:{"dictionaryRepresentation"), @"activeRequestInterrupted"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -246,97 +246,97 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 136) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 136) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 1) = self->_duration;
-    *(a3 + 136) |= 1u;
+    *(to + 1) = self->_duration;
+    *(to + 136) |= 1u;
   }
 
   if (self->_timerFiringCount)
   {
-    [a3 setTimerFiringCount:?];
+    [to setTimerFiringCount:?];
   }
 
   if (self->_activeRequestCount)
   {
-    [a3 setActiveRequestCount:?];
+    [to setActiveRequestCount:?];
   }
 
   if (self->_validLocationCount)
   {
-    [a3 setValidLocationCount:?];
+    [to setValidLocationCount:?];
   }
 
   if (self->_timerFiringDelayedCount)
   {
-    [a3 setTimerFiringDelayedCount:?];
+    [to setTimerFiringDelayedCount:?];
   }
 
   if (self->_timerFiringDelayedTotalSeconds)
   {
-    [a3 setTimerFiringDelayedTotalSeconds:?];
+    [to setTimerFiringDelayedTotalSeconds:?];
   }
 
   if (self->_timerFiringDelayedMaxSeconds)
   {
-    [a3 setTimerFiringDelayedMaxSeconds:?];
+    [to setTimerFiringDelayedMaxSeconds:?];
   }
 
   if (self->_skippedRequestDueToRecentFix)
   {
-    [a3 setSkippedRequestDueToRecentFix:?];
+    [to setSkippedRequestDueToRecentFix:?];
   }
 
   if (self->_skippedRequestDueToStationary)
   {
-    [a3 setSkippedRequestDueToStationary:?];
+    [to setSkippedRequestDueToStationary:?];
   }
 
   if (self->_activeRequestTimeoutWithCoarseLocation)
   {
-    [a3 setActiveRequestTimeoutWithCoarseLocation:?];
+    [to setActiveRequestTimeoutWithCoarseLocation:?];
   }
 
   if (self->_activeRequestTimeoutWithLocationServiceDisabled)
   {
-    [a3 setActiveRequestTimeoutWithLocationServiceDisabled:?];
+    [to setActiveRequestTimeoutWithLocationServiceDisabled:?];
   }
 
   if (self->_activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled)
   {
-    [a3 setActiveRequestTimeoutWithLocationServiceEnabledRoutineDisabled:?];
+    [to setActiveRequestTimeoutWithLocationServiceEnabledRoutineDisabled:?];
   }
 
   if (self->_activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff)
   {
-    [a3 setActiveRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff:?];
+    [to setActiveRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff:?];
   }
 
   if (self->_activeRequestTimeoutWithOtherReasons)
   {
-    [a3 setActiveRequestTimeoutWithOtherReasons:?];
+    [to setActiveRequestTimeoutWithOtherReasons:?];
   }
 
   if (self->_activeRequestInterrupted)
   {
 
-    [a3 setActiveRequestInterrupted:?];
+    [to setActiveRequestInterrupted:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -352,44 +352,44 @@
     *(v5 + 136) |= 1u;
   }
 
-  *(v6 + 96) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_timerFiringCount copyWithZone:a3];
-  *(v6 + 24) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestCount copyWithZone:a3];
+  *(v6 + 96) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_timerFiringCount copyWithZone:zone];
+  *(v6 + 24) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestCount copyWithZone:zone];
 
-  *(v6 + 128) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_validLocationCount copyWithZone:a3];
-  *(v6 + 104) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_timerFiringDelayedCount copyWithZone:a3];
+  *(v6 + 128) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_validLocationCount copyWithZone:zone];
+  *(v6 + 104) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_timerFiringDelayedCount copyWithZone:zone];
 
-  *(v6 + 120) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_timerFiringDelayedTotalSeconds copyWithZone:a3];
-  *(v6 + 112) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_timerFiringDelayedMaxSeconds copyWithZone:a3];
+  *(v6 + 120) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_timerFiringDelayedTotalSeconds copyWithZone:zone];
+  *(v6 + 112) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_timerFiringDelayedMaxSeconds copyWithZone:zone];
 
-  *(v6 + 80) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_skippedRequestDueToRecentFix copyWithZone:a3];
-  *(v6 + 88) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_skippedRequestDueToStationary copyWithZone:a3];
+  *(v6 + 80) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_skippedRequestDueToRecentFix copyWithZone:zone];
+  *(v6 + 88) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_skippedRequestDueToStationary copyWithZone:zone];
 
-  *(v6 + 40) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestTimeoutWithCoarseLocation copyWithZone:a3];
-  *(v6 + 48) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestTimeoutWithLocationServiceDisabled copyWithZone:a3];
+  *(v6 + 40) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestTimeoutWithCoarseLocation copyWithZone:zone];
+  *(v6 + 48) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestTimeoutWithLocationServiceDisabled copyWithZone:zone];
 
-  *(v6 + 56) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled copyWithZone:a3];
-  *(v6 + 64) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff copyWithZone:a3];
+  *(v6 + 56) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled copyWithZone:zone];
+  *(v6 + 64) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff copyWithZone:zone];
 
-  *(v6 + 72) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestTimeoutWithOtherReasons copyWithZone:a3];
-  *(v6 + 32) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestInterrupted copyWithZone:a3];
+  *(v6 + 72) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestTimeoutWithOtherReasons copyWithZone:zone];
+  *(v6 + 32) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestInterrupted copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 136);
+    v6 = *(equal + 136);
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 136) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 136) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_40;
       }
     }
 
-    else if ((*(a3 + 136) & 2) != 0)
+    else if ((*(equal + 136) & 2) != 0)
     {
 LABEL_40:
       LOBYTE(v5) = 0;
@@ -398,58 +398,58 @@ LABEL_40:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 136) & 1) == 0 || self->_duration != *(a3 + 1))
+      if ((*(equal + 136) & 1) == 0 || self->_duration != *(equal + 1))
       {
         goto LABEL_40;
       }
     }
 
-    else if (*(a3 + 136))
+    else if (*(equal + 136))
     {
       goto LABEL_40;
     }
 
     timerFiringCount = self->_timerFiringCount;
-    if (!(timerFiringCount | *(a3 + 12)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)timerFiringCount isEqual:?]) != 0)
+    if (!(timerFiringCount | *(equal + 12)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)timerFiringCount isEqual:?]) != 0)
     {
       activeRequestCount = self->_activeRequestCount;
-      if (!(activeRequestCount | *(a3 + 3)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestCount isEqual:?]) != 0)
+      if (!(activeRequestCount | *(equal + 3)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestCount isEqual:?]) != 0)
       {
         validLocationCount = self->_validLocationCount;
-        if (!(validLocationCount | *(a3 + 16)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)validLocationCount isEqual:?]) != 0)
+        if (!(validLocationCount | *(equal + 16)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)validLocationCount isEqual:?]) != 0)
         {
           timerFiringDelayedCount = self->_timerFiringDelayedCount;
-          if (!(timerFiringDelayedCount | *(a3 + 13)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)timerFiringDelayedCount isEqual:?]) != 0)
+          if (!(timerFiringDelayedCount | *(equal + 13)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)timerFiringDelayedCount isEqual:?]) != 0)
           {
             timerFiringDelayedTotalSeconds = self->_timerFiringDelayedTotalSeconds;
-            if (!(timerFiringDelayedTotalSeconds | *(a3 + 15)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)timerFiringDelayedTotalSeconds isEqual:?]) != 0)
+            if (!(timerFiringDelayedTotalSeconds | *(equal + 15)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)timerFiringDelayedTotalSeconds isEqual:?]) != 0)
             {
               timerFiringDelayedMaxSeconds = self->_timerFiringDelayedMaxSeconds;
-              if (!(timerFiringDelayedMaxSeconds | *(a3 + 14)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)timerFiringDelayedMaxSeconds isEqual:?]) != 0)
+              if (!(timerFiringDelayedMaxSeconds | *(equal + 14)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)timerFiringDelayedMaxSeconds isEqual:?]) != 0)
               {
                 skippedRequestDueToRecentFix = self->_skippedRequestDueToRecentFix;
-                if (!(skippedRequestDueToRecentFix | *(a3 + 10)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)skippedRequestDueToRecentFix isEqual:?]) != 0)
+                if (!(skippedRequestDueToRecentFix | *(equal + 10)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)skippedRequestDueToRecentFix isEqual:?]) != 0)
                 {
                   skippedRequestDueToStationary = self->_skippedRequestDueToStationary;
-                  if (!(skippedRequestDueToStationary | *(a3 + 11)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)skippedRequestDueToStationary isEqual:?]) != 0)
+                  if (!(skippedRequestDueToStationary | *(equal + 11)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)skippedRequestDueToStationary isEqual:?]) != 0)
                   {
                     activeRequestTimeoutWithCoarseLocation = self->_activeRequestTimeoutWithCoarseLocation;
-                    if (!(activeRequestTimeoutWithCoarseLocation | *(a3 + 5)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestTimeoutWithCoarseLocation isEqual:?]) != 0)
+                    if (!(activeRequestTimeoutWithCoarseLocation | *(equal + 5)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestTimeoutWithCoarseLocation isEqual:?]) != 0)
                     {
                       activeRequestTimeoutWithLocationServiceDisabled = self->_activeRequestTimeoutWithLocationServiceDisabled;
-                      if (!(activeRequestTimeoutWithLocationServiceDisabled | *(a3 + 6)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestTimeoutWithLocationServiceDisabled isEqual:?]) != 0)
+                      if (!(activeRequestTimeoutWithLocationServiceDisabled | *(equal + 6)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestTimeoutWithLocationServiceDisabled isEqual:?]) != 0)
                       {
                         activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled = self->_activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled;
-                        if (!(activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled | *(a3 + 7)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled isEqual:?]) != 0)
+                        if (!(activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled | *(equal + 7)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled isEqual:?]) != 0)
                         {
                           activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff = self->_activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff;
-                          if (!(activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff | *(a3 + 8)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff isEqual:?]) != 0)
+                          if (!(activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff | *(equal + 8)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff isEqual:?]) != 0)
                           {
                             activeRequestTimeoutWithOtherReasons = self->_activeRequestTimeoutWithOtherReasons;
-                            if (!(activeRequestTimeoutWithOtherReasons | *(a3 + 9)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestTimeoutWithOtherReasons isEqual:?]) != 0)
+                            if (!(activeRequestTimeoutWithOtherReasons | *(equal + 9)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestTimeoutWithOtherReasons isEqual:?]) != 0)
                             {
                               activeRequestInterrupted = self->_activeRequestInterrupted;
-                              if (activeRequestInterrupted | *(a3 + 4))
+                              if (activeRequestInterrupted | *(equal + 4))
                               {
 
                                 LOBYTE(v5) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)activeRequestInterrupted isEqual:?];
@@ -517,24 +517,24 @@ LABEL_6:
   return v14 ^ v17 ^ [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_activeRequestInterrupted hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 136);
+  v5 = *(from + 136);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 136);
+    v5 = *(from + 136);
   }
 
   if (v5)
   {
-    self->_duration = *(a3 + 1);
+    self->_duration = *(from + 1);
     *&self->_has |= 1u;
   }
 
   timerFiringCount = self->_timerFiringCount;
-  v7 = *(a3 + 12);
+  v7 = *(from + 12);
   if (timerFiringCount)
   {
     if (v7)
@@ -549,7 +549,7 @@ LABEL_6:
   }
 
   activeRequestCount = self->_activeRequestCount;
-  v9 = *(a3 + 3);
+  v9 = *(from + 3);
   if (activeRequestCount)
   {
     if (v9)
@@ -564,7 +564,7 @@ LABEL_6:
   }
 
   validLocationCount = self->_validLocationCount;
-  v11 = *(a3 + 16);
+  v11 = *(from + 16);
   if (validLocationCount)
   {
     if (v11)
@@ -579,7 +579,7 @@ LABEL_6:
   }
 
   timerFiringDelayedCount = self->_timerFiringDelayedCount;
-  v13 = *(a3 + 13);
+  v13 = *(from + 13);
   if (timerFiringDelayedCount)
   {
     if (v13)
@@ -594,7 +594,7 @@ LABEL_6:
   }
 
   timerFiringDelayedTotalSeconds = self->_timerFiringDelayedTotalSeconds;
-  v15 = *(a3 + 15);
+  v15 = *(from + 15);
   if (timerFiringDelayedTotalSeconds)
   {
     if (v15)
@@ -609,7 +609,7 @@ LABEL_6:
   }
 
   timerFiringDelayedMaxSeconds = self->_timerFiringDelayedMaxSeconds;
-  v17 = *(a3 + 14);
+  v17 = *(from + 14);
   if (timerFiringDelayedMaxSeconds)
   {
     if (v17)
@@ -624,7 +624,7 @@ LABEL_6:
   }
 
   skippedRequestDueToRecentFix = self->_skippedRequestDueToRecentFix;
-  v19 = *(a3 + 10);
+  v19 = *(from + 10);
   if (skippedRequestDueToRecentFix)
   {
     if (v19)
@@ -639,7 +639,7 @@ LABEL_6:
   }
 
   skippedRequestDueToStationary = self->_skippedRequestDueToStationary;
-  v21 = *(a3 + 11);
+  v21 = *(from + 11);
   if (skippedRequestDueToStationary)
   {
     if (v21)
@@ -654,7 +654,7 @@ LABEL_6:
   }
 
   activeRequestTimeoutWithCoarseLocation = self->_activeRequestTimeoutWithCoarseLocation;
-  v23 = *(a3 + 5);
+  v23 = *(from + 5);
   if (activeRequestTimeoutWithCoarseLocation)
   {
     if (v23)
@@ -669,7 +669,7 @@ LABEL_6:
   }
 
   activeRequestTimeoutWithLocationServiceDisabled = self->_activeRequestTimeoutWithLocationServiceDisabled;
-  v25 = *(a3 + 6);
+  v25 = *(from + 6);
   if (activeRequestTimeoutWithLocationServiceDisabled)
   {
     if (v25)
@@ -684,7 +684,7 @@ LABEL_6:
   }
 
   activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled = self->_activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled;
-  v27 = *(a3 + 7);
+  v27 = *(from + 7);
   if (activeRequestTimeoutWithLocationServiceEnabledRoutineDisabled)
   {
     if (v27)
@@ -699,7 +699,7 @@ LABEL_6:
   }
 
   activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff = self->_activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff;
-  v29 = *(a3 + 8);
+  v29 = *(from + 8);
   if (activeRequestTimeoutWithLocationServiceEnabledRoutineEnabledWifiOff)
   {
     if (v29)
@@ -714,7 +714,7 @@ LABEL_6:
   }
 
   activeRequestTimeoutWithOtherReasons = self->_activeRequestTimeoutWithOtherReasons;
-  v31 = *(a3 + 9);
+  v31 = *(from + 9);
   if (activeRequestTimeoutWithOtherReasons)
   {
     if (v31)
@@ -729,7 +729,7 @@ LABEL_6:
   }
 
   activeRequestInterrupted = self->_activeRequestInterrupted;
-  v33 = *(a3 + 4);
+  v33 = *(from + 4);
   if (activeRequestInterrupted)
   {
     if (v33)

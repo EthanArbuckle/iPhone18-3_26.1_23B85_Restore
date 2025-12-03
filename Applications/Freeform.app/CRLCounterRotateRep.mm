@@ -5,11 +5,11 @@
 - (id)p_childRep;
 - (id)p_counterRotateInfo;
 - (id)p_possibleChildRep;
-- (void)dynamicFreeTransformDidBeginWithTracker:(id)a3;
-- (void)dynamicFreeTransformDidEndWithTracker:(id)a3;
-- (void)dynamicResizeDidEndWithTracker:(id)a3;
-- (void)dynamicallyFreeTransformingWithTracker:(id)a3;
-- (void)dynamicallyResizingWithTracker:(id)a3;
+- (void)dynamicFreeTransformDidBeginWithTracker:(id)tracker;
+- (void)dynamicFreeTransformDidEndWithTracker:(id)tracker;
+- (void)dynamicResizeDidEndWithTracker:(id)tracker;
+- (void)dynamicallyFreeTransformingWithTracker:(id)tracker;
+- (void)dynamicallyResizingWithTracker:(id)tracker;
 - (void)setNeedsDisplay;
 @end
 
@@ -18,8 +18,8 @@
 - (id)p_counterRotateInfo
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasRep *)self info];
+  v5 = sub_100014370(v3, info);
 
   if (!v5)
   {
@@ -55,8 +55,8 @@
 
 - (id)p_possibleChildRep
 {
-  v3 = [(CRLCanvasRep *)self childReps];
-  if ([v3 count] >= 2)
+  childReps = [(CRLCanvasRep *)self childReps];
+  if ([childReps count] >= 2)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -85,16 +85,16 @@
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:31 isFatal:0 description:"Should have either one or zero child reps."];
   }
 
-  v7 = [(CRLCanvasRep *)self childReps];
-  v8 = [v7 firstObject];
+  childReps2 = [(CRLCanvasRep *)self childReps];
+  firstObject = [childReps2 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
 - (id)p_childRep
 {
-  v2 = [(CRLCounterRotateRep *)self p_possibleChildRep];
-  if (!v2)
+  p_possibleChildRep = [(CRLCounterRotateRep *)self p_possibleChildRep];
+  if (!p_possibleChildRep)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -123,22 +123,22 @@
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:37 isFatal:0 description:"invalid nil value for '%{public}s'", "childRepToReturn"];
   }
 
-  return v2;
+  return p_possibleChildRep;
 }
 
 - (CGRect)clipRect
 {
-  v2 = [(CRLCounterRotateRep *)self p_childRep];
-  [v2 clipRect];
+  p_childRep = [(CRLCounterRotateRep *)self p_childRep];
+  [p_childRep clipRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [v2 layout];
-  v12 = v11;
-  if (v11)
+  layout = [p_childRep layout];
+  v12 = layout;
+  if (layout)
   {
-    [v11 transform];
+    [layout transform];
   }
 
   else
@@ -172,79 +172,79 @@
   v4.receiver = self;
   v4.super_class = CRLCounterRotateRep;
   [(CRLCanvasRep *)&v4 setNeedsDisplay];
-  v3 = [(CRLCounterRotateRep *)self p_childRep];
-  [v3 setNeedsDisplay];
+  p_childRep = [(CRLCounterRotateRep *)self p_childRep];
+  [p_childRep setNeedsDisplay];
 }
 
 - (BOOL)isInDynamicOperation
 {
-  v2 = [(CRLCounterRotateRep *)self p_possibleChildRep];
-  v3 = [v2 isInDynamicOperation];
+  p_possibleChildRep = [(CRLCounterRotateRep *)self p_possibleChildRep];
+  isInDynamicOperation = [p_possibleChildRep isInDynamicOperation];
 
-  return v3;
+  return isInDynamicOperation;
 }
 
 - (id)dynamicResizeDidBegin
 {
   v7.receiver = self;
   v7.super_class = CRLCounterRotateRep;
-  v3 = [(CRLCanvasRep *)&v7 dynamicResizeDidBegin];
-  v4 = [(CRLCounterRotateRep *)self p_childRep];
-  v5 = [v4 dynamicResizeDidBegin];
+  dynamicResizeDidBegin = [(CRLCanvasRep *)&v7 dynamicResizeDidBegin];
+  p_childRep = [(CRLCounterRotateRep *)self p_childRep];
+  dynamicResizeDidBegin2 = [p_childRep dynamicResizeDidBegin];
 
-  return v3;
+  return dynamicResizeDidBegin;
 }
 
-- (void)dynamicallyResizingWithTracker:(id)a3
+- (void)dynamicallyResizingWithTracker:(id)tracker
 {
   v6.receiver = self;
   v6.super_class = CRLCounterRotateRep;
-  v4 = a3;
-  [(CRLCanvasRep *)&v6 dynamicallyResizingWithTracker:v4];
+  trackerCopy = tracker;
+  [(CRLCanvasRep *)&v6 dynamicallyResizingWithTracker:trackerCopy];
   v5 = [(CRLCounterRotateRep *)self p_childRep:v6.receiver];
-  [v5 dynamicallyResizingWithTracker:v4];
+  [v5 dynamicallyResizingWithTracker:trackerCopy];
 }
 
-- (void)dynamicResizeDidEndWithTracker:(id)a3
+- (void)dynamicResizeDidEndWithTracker:(id)tracker
 {
-  v4 = a3;
-  v5 = [(CRLCounterRotateRep *)self p_childRep];
-  [v4 applyNewBoundsToRep:v5];
+  trackerCopy = tracker;
+  p_childRep = [(CRLCounterRotateRep *)self p_childRep];
+  [trackerCopy applyNewBoundsToRep:p_childRep];
 
   v6.receiver = self;
   v6.super_class = CRLCounterRotateRep;
-  [(CRLCanvasRep *)&v6 dynamicResizeDidEndWithTracker:v4];
+  [(CRLCanvasRep *)&v6 dynamicResizeDidEndWithTracker:trackerCopy];
 }
 
-- (void)dynamicFreeTransformDidBeginWithTracker:(id)a3
+- (void)dynamicFreeTransformDidBeginWithTracker:(id)tracker
 {
   v6.receiver = self;
   v6.super_class = CRLCounterRotateRep;
-  v4 = a3;
-  [(CRLCanvasRep *)&v6 dynamicFreeTransformDidBeginWithTracker:v4];
+  trackerCopy = tracker;
+  [(CRLCanvasRep *)&v6 dynamicFreeTransformDidBeginWithTracker:trackerCopy];
   v5 = [(CRLCounterRotateRep *)self p_childRep:v6.receiver];
-  [v5 dynamicFreeTransformDidBeginWithTracker:v4];
+  [v5 dynamicFreeTransformDidBeginWithTracker:trackerCopy];
 }
 
-- (void)dynamicallyFreeTransformingWithTracker:(id)a3
+- (void)dynamicallyFreeTransformingWithTracker:(id)tracker
 {
   v6.receiver = self;
   v6.super_class = CRLCounterRotateRep;
-  v4 = a3;
-  [(CRLCanvasRep *)&v6 dynamicallyFreeTransformingWithTracker:v4];
+  trackerCopy = tracker;
+  [(CRLCanvasRep *)&v6 dynamicallyFreeTransformingWithTracker:trackerCopy];
   v5 = [(CRLCounterRotateRep *)self p_childRep:v6.receiver];
-  [v5 dynamicallyFreeTransformingWithTracker:v4];
+  [v5 dynamicallyFreeTransformingWithTracker:trackerCopy];
 }
 
-- (void)dynamicFreeTransformDidEndWithTracker:(id)a3
+- (void)dynamicFreeTransformDidEndWithTracker:(id)tracker
 {
-  v4 = a3;
-  v5 = [(CRLCounterRotateRep *)self p_childRep];
-  [v4 applyNewBoundsToRep:v5];
+  trackerCopy = tracker;
+  p_childRep = [(CRLCounterRotateRep *)self p_childRep];
+  [trackerCopy applyNewBoundsToRep:p_childRep];
 
   v6.receiver = self;
   v6.super_class = CRLCounterRotateRep;
-  [(CRLCanvasRep *)&v6 dynamicFreeTransformDidEndWithTracker:v4];
+  [(CRLCanvasRep *)&v6 dynamicFreeTransformDidEndWithTracker:trackerCopy];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface ANSTForegroundSegmentation
-+ (Class)_concreteClassOfVersion:(unint64_t)a3;
++ (Class)_concreteClassOfVersion:(unint64_t)version;
 + (id)new;
 - (ANSTForegroundSegmentation)init;
-- (ANSTForegroundSegmentation)initWithConfiguration:(id)a3;
-- (id)resultForPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
+- (ANSTForegroundSegmentation)initWithConfiguration:(id)configuration;
+- (id)resultForPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
 @end
 
 @implementation ANSTForegroundSegmentation
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
@@ -22,9 +22,9 @@
   return result;
 }
 
-+ (Class)_concreteClassOfVersion:(unint64_t)a3
++ (Class)_concreteClassOfVersion:(unint64_t)version
 {
-  if (a3 == 0x20000 || a3 == 0x10000)
+  if (version == 0x20000 || version == 0x10000)
   {
     v4 = objc_opt_class();
   }
@@ -37,16 +37,16 @@
   return v4;
 }
 
-- (ANSTForegroundSegmentation)initWithConfiguration:(id)a3
+- (ANSTForegroundSegmentation)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = ANSTForegroundSegmentation;
-  return [(ANSTAlgorithm *)&v4 initWithConfiguration:a3];
+  return [(ANSTAlgorithm *)&v4 initWithConfiguration:configuration];
 }
 
-- (id)resultForPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (id)resultForPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2, a4);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2, error);
   __break(1u);
   return result;
 }

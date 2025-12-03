@@ -1,15 +1,15 @@
 @interface ICNACloudOperationEventReporter
 + (id)sharedReporter;
-- (id)accountDataForOperation:(id)a3;
-- (id)cloudSyncableDataForOperation:(id)a3 recordsByRecordID:(id)a4;
-- (id)operationDataForOperaiton:(id)a3;
-- (id)partialCloudErrorDataForOperation:(id)a3 recordsByRecordID:(id)a4 operationError:(id)a5;
-- (id)saltedAccountIDForOperation:(id)a3;
-- (id)saltedIDForOperation:(id)a3;
-- (id)saltedIDforID:(id)a3;
-- (id)subTrackerForOperation:(id)a3;
-- (void)cloudContext:(id)a3 reportOperationEnd:(id)a4 recordsByRecordID:(id)a5 operationError:(id)a6;
-- (void)submitCloudOperationEndEventForCKOperation:(id)a3 recordsByRecordID:(id)a4 operationError:(id)a5;
+- (id)accountDataForOperation:(id)operation;
+- (id)cloudSyncableDataForOperation:(id)operation recordsByRecordID:(id)d;
+- (id)operationDataForOperaiton:(id)operaiton;
+- (id)partialCloudErrorDataForOperation:(id)operation recordsByRecordID:(id)d operationError:(id)error;
+- (id)saltedAccountIDForOperation:(id)operation;
+- (id)saltedIDForOperation:(id)operation;
+- (id)saltedIDforID:(id)d;
+- (id)subTrackerForOperation:(id)operation;
+- (void)cloudContext:(id)context reportOperationEnd:(id)end recordsByRecordID:(id)d operationError:(id)error;
+- (void)submitCloudOperationEndEventForCKOperation:(id)operation recordsByRecordID:(id)d operationError:(id)error;
 @end
 
 @implementation ICNACloudOperationEventReporter
@@ -26,28 +26,28 @@
   return v3;
 }
 
-- (id)saltedIDforID:(id)a3
+- (id)saltedIDforID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[ICNAIdentityManager sharedManager];
-  v5 = [v4 saltedID:v3 forClass:objc_opt_class()];
+  v5 = [v4 saltedID:dCopy forClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)saltedIDForOperation:(id)a3
+- (id)saltedIDForOperation:(id)operation
 {
-  v4 = [a3 operationID];
-  v5 = [(ICNACloudOperationEventReporter *)self saltedIDforID:v4];
+  operationID = [operation operationID];
+  v5 = [(ICNACloudOperationEventReporter *)self saltedIDforID:operationID];
 
   return v5;
 }
 
-- (id)saltedAccountIDForOperation:(id)a3
+- (id)saltedAccountIDForOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 database], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "container"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "setupInfo"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "accountOverrideInfo"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "accountID"), v9 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v5, v9))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([operationCopy database], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "container"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "setupInfo"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "accountOverrideInfo"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "accountID"), v9 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v5, v9))
   {
     v10 = [(ICNACloudOperationEventReporter *)self saltedIDforID:v9];
   }
@@ -60,55 +60,55 @@
   return v10;
 }
 
-- (id)subTrackerForOperation:(id)a3
+- (id)subTrackerForOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = [ICNASubTracker alloc];
-  v6 = [(ICNACloudOperationEventReporter *)self saltedIDForOperation:v4];
+  v6 = [(ICNACloudOperationEventReporter *)self saltedIDForOperation:operationCopy];
 
   v7 = [v5 initWithName:v6];
 
   return v7;
 }
 
-- (void)submitCloudOperationEndEventForCKOperation:(id)a3 recordsByRecordID:(id)a4 operationError:(id)a5
+- (void)submitCloudOperationEndEventForCKOperation:(id)operation recordsByRecordID:(id)d operationError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v35 = [(ICNACloudOperationEventReporter *)self subTrackerForOperation:v8];
-  v11 = [(ICNACloudOperationEventReporter *)self accountDataForOperation:v8];
-  v12 = [(ICNACloudOperationEventReporter *)self operationDataForOperaiton:v8];
-  v13 = [(ICNACloudOperationEventReporter *)self cloudSyncableDataForOperation:v8 recordsByRecordID:v9];
+  operationCopy = operation;
+  dCopy = d;
+  errorCopy = error;
+  v35 = [(ICNACloudOperationEventReporter *)self subTrackerForOperation:operationCopy];
+  v11 = [(ICNACloudOperationEventReporter *)self accountDataForOperation:operationCopy];
+  v12 = [(ICNACloudOperationEventReporter *)self operationDataForOperaiton:operationCopy];
+  v13 = [(ICNACloudOperationEventReporter *)self cloudSyncableDataForOperation:operationCopy recordsByRecordID:dCopy];
   v14 = objc_alloc_init(NSMutableArray);
   v34 = v11;
   [v14 addObject:v11];
   [v14 addObject:v12];
   [v14 addObject:v13];
-  v36 = v9;
-  if (!v10)
+  v36 = dCopy;
+  if (!errorCopy)
   {
     v18 = 1;
     goto LABEL_9;
   }
 
-  v15 = [v10 domain];
-  if (![v15 isEqualToString:CKErrorDomain])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:CKErrorDomain])
   {
 
     goto LABEL_7;
   }
 
-  v16 = [v10 code];
+  code = [errorCopy code];
 
-  if (v16 != 2)
+  if (code != 2)
   {
 LABEL_7:
-    v19 = [v10 domain];
-    v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@_%ld", v19, [v10 code]);
+    domain2 = [errorCopy domain];
+    v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@_%ld", domain2, [errorCopy code]);
 
     v20 = [ICASFullErrorData alloc];
-    v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 code]);
+    v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     v22 = [v20 initWithFullErrorCode:v21 errorString:v17];
 
     [v14 addObject:v22];
@@ -116,7 +116,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v17 = [(ICNACloudOperationEventReporter *)self partialCloudErrorDataForOperation:v8 recordsByRecordID:v9 operationError:v10];
+  v17 = [(ICNACloudOperationEventReporter *)self partialCloudErrorDataForOperation:operationCopy recordsByRecordID:dCopy operationError:errorCopy];
   [v14 addObject:v17];
   v18 = 2;
 LABEL_8:
@@ -134,8 +134,8 @@ LABEL_9:
     v43 = sub_1000A3C58;
     v44 = sub_1000A3C68;
     v45 = @"icna_device_id_unknown";
-    v26 = [v8 configuration];
-    v27 = [v26 container];
+    configuration = [operationCopy configuration];
+    container = [configuration container];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_1000A3C70;
@@ -143,7 +143,7 @@ LABEL_9:
     v39 = &v40;
     v28 = v25;
     v38 = v28;
-    [v27 fetchCurrentDeviceIDWithCompletionHandler:v37];
+    [container fetchCurrentDeviceIDWithCompletionHandler:v37];
 
     v29 = dispatch_time(0, 750000000);
     if (dispatch_semaphore_wait(v28, v29))
@@ -163,18 +163,18 @@ LABEL_9:
   [v33 submitEventOfType:objc_opt_class() pushThenPopDataObjects:v14 subTracker:v35];
 }
 
-- (id)accountDataForOperation:(id)a3
+- (id)accountDataForOperation:(id)operation
 {
-  v3 = [(ICNACloudOperationEventReporter *)self saltedAccountIDForOperation:a3];
+  v3 = [(ICNACloudOperationEventReporter *)self saltedAccountIDForOperation:operation];
   v4 = [[ICASAccountType alloc] initWithAccountType:1];
   v5 = [[ICASAccountData alloc] initWithAccountType:v4 accountID:v3];
 
   return v5;
 }
 
-- (id)operationDataForOperaiton:(id)a3
+- (id)operationDataForOperaiton:(id)operaiton
 {
-  v4 = a3;
+  operaitonCopy = operaiton;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -268,24 +268,24 @@ LABEL_9:
   }
 
   v6 = [ICASCloudOperationData alloc];
-  v7 = [(ICNACloudOperationEventReporter *)self saltedIDForOperation:v4];
+  v7 = [(ICNACloudOperationEventReporter *)self saltedIDForOperation:operaitonCopy];
   v8 = [[ICASOperationType alloc] initWithOperationType:v5];
-  v9 = [v4 group];
-  v10 = [v9 name];
-  v11 = [v6 initWithOperationID:v7 operationType:v8 operationGroupName:v10];
+  group = [operaitonCopy group];
+  name = [group name];
+  v11 = [v6 initWithOperationID:v7 operationType:v8 operationGroupName:name];
 
   return v11;
 }
 
-- (id)cloudSyncableDataForOperation:(id)a3 recordsByRecordID:(id)a4
+- (id)cloudSyncableDataForOperation:(id)operation recordsByRecordID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  operationCopy = operation;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 recordIDs];
-    v8 = 0;
+    recordIDs = [operationCopy recordIDs];
+    recordsToSave = 0;
 LABEL_6:
     v9 = @"icna_record_type_unknown";
     goto LABEL_7;
@@ -294,37 +294,37 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = 0;
-    v7 = 0;
+    recordsToSave = 0;
+    recordIDs = 0;
     goto LABEL_6;
   }
 
-  v7 = [v5 recordIDsToDelete];
-  v8 = [v5 recordsToSave];
+  recordIDs = [operationCopy recordIDsToDelete];
+  recordsToSave = [operationCopy recordsToSave];
   v9 = @"icna_record_type_deleted";
 LABEL_7:
   v33 = v9;
   v40 = objc_alloc_init(NSMutableArray);
   v10 = objc_alloc_init(NSMutableSet);
-  if ([v6 count] || objc_msgSend(v8, "count"))
+  if ([dCopy count] || objc_msgSend(recordsToSave, "count"))
   {
     v11 = objc_alloc_init(NSMutableDictionary);
     v12 = objc_alloc_init(NSMutableSet);
-    if ([v6 count])
+    if ([dCopy count])
     {
-      v13 = [v6 allValues];
-      [v12 addObjectsFromArray:v13];
+      allValues = [dCopy allValues];
+      [v12 addObjectsFromArray:allValues];
     }
 
-    v37 = v7;
-    v38 = v6;
-    v39 = v5;
-    if ([v8 count])
+    v37 = recordIDs;
+    v38 = dCopy;
+    v39 = operationCopy;
+    if ([recordsToSave count])
     {
-      [v12 addObjectsFromArray:v8];
+      [v12 addObjectsFromArray:recordsToSave];
     }
 
-    v36 = v8;
+    v36 = recordsToSave;
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = sub_1000A43D4;
@@ -339,8 +339,8 @@ LABEL_7:
     v41 = 0u;
     v42 = 0u;
     v34 = v14;
-    v15 = [v14 allValues];
-    v16 = [v15 countByEnumeratingWithState:&v41 objects:v48 count:16];
+    allValues2 = [v14 allValues];
+    v16 = [allValues2 countByEnumeratingWithState:&v41 objects:v48 count:16];
     if (v16)
     {
       v17 = v16;
@@ -351,37 +351,37 @@ LABEL_7:
         {
           if (*v42 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allValues2);
           }
 
           v20 = *(*(&v41 + 1) + 8 * i);
           v21 = [ICASCloudSyncableItemData alloc];
-          v22 = [v20 syncableDataType];
+          syncableDataType = [v20 syncableDataType];
           v23 = [v20 count];
           [v23 intValue];
           v24 = [NSNumber numberWithInteger:ICNARoundTo2SigFigsInt()];
-          v25 = [v21 initWithSyncableDataType:v22 count:v24];
+          v25 = [v21 initWithSyncableDataType:syncableDataType count:v24];
 
           [v40 addObject:v25];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v41 objects:v48 count:16];
+        v17 = [allValues2 countByEnumeratingWithState:&v41 objects:v48 count:16];
       }
 
       while (v17);
     }
 
-    v6 = v38;
-    v5 = v39;
-    v8 = v36;
-    v7 = v37;
+    dCopy = v38;
+    operationCopy = v39;
+    recordsToSave = v36;
+    recordIDs = v37;
   }
 
-  if ([v7 count])
+  if ([recordIDs count])
   {
-    v26 = [v7 mutableCopy];
-    v27 = [v10 allObjects];
-    [v26 removeObjectsInArray:v27];
+    v26 = [recordIDs mutableCopy];
+    allObjects = [v10 allObjects];
+    [v26 removeObjectsInArray:allObjects];
 
     if ([v26 count])
     {
@@ -399,19 +399,19 @@ LABEL_7:
   return v31;
 }
 
-- (id)partialCloudErrorDataForOperation:(id)a3 recordsByRecordID:(id)a4 operationError:(id)a5
+- (id)partialCloudErrorDataForOperation:(id)operation recordsByRecordID:(id)d operationError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 userInfo];
-  v10 = [v9 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+  operationCopy = operation;
+  dCopy = d;
+  userInfo = [error userInfo];
+  v10 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
   objc_opt_class();
-  v38 = v7;
+  v38 = operationCopy;
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v7 recordIDs];
-    v12 = 0;
+    recordIDs = [operationCopy recordIDs];
+    recordsToSave = 0;
   }
 
   else
@@ -419,32 +419,32 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v7 recordIDsToDelete];
-      v12 = [v7 recordsToSave];
+      recordIDs = [operationCopy recordIDsToDelete];
+      recordsToSave = [operationCopy recordsToSave];
       v13 = @"icna_record_type_deleted";
       goto LABEL_7;
     }
 
-    v12 = 0;
-    v11 = 0;
+    recordsToSave = 0;
+    recordIDs = 0;
   }
 
   v13 = @"icna_record_type_unknown";
 LABEL_7:
   v14 = objc_alloc_init(NSMutableDictionary);
-  v37 = v8;
-  [v14 addEntriesFromDictionary:v8];
-  if ([v12 count])
+  v37 = dCopy;
+  [v14 addEntriesFromDictionary:dCopy];
+  if ([recordsToSave count])
   {
     v49[0] = _NSConcreteStackBlock;
     v49[1] = 3221225472;
     v49[2] = sub_1000A4958;
     v49[3] = &unk_100647E80;
     v50 = v14;
-    [v12 enumerateObjectsUsingBlock:v49];
+    [recordsToSave enumerateObjectsUsingBlock:v49];
   }
 
-  v35 = v12;
+  v35 = recordsToSave;
   v15 = objc_alloc_init(NSMutableDictionary);
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
@@ -452,7 +452,7 @@ LABEL_7:
   v44[3] = &unk_100647EA8;
   v33 = v14;
   v45 = v33;
-  v34 = v11;
+  v34 = recordIDs;
   v46 = v34;
   v47 = v13;
   v16 = v15;
@@ -482,13 +482,13 @@ LABEL_7:
 
         v22 = *(*(&v40 + 1) + 8 * i);
         v23 = [ICASPartialCloudErrorItemData alloc];
-        v24 = [v22 syncableDataType];
-        v25 = [v22 errorCode];
+        syncableDataType = [v22 syncableDataType];
+        errorCode = [v22 errorCode];
         v26 = [v22 count];
         [v26 intValue];
         v27 = [NSNumber numberWithInteger:ICNARoundTo2SigFigsInt()];
-        v28 = [v22 errorString];
-        v29 = [v23 initWithSyncableDataType:v24 errorCode:v25 count:v27 errorString:v28];
+        errorString = [v22 errorString];
+        v29 = [v23 initWithSyncableDataType:syncableDataType errorCode:errorCode count:v27 errorString:errorString];
 
         [v17 addObject:v29];
       }
@@ -504,22 +504,22 @@ LABEL_7:
   return v30;
 }
 
-- (void)cloudContext:(id)a3 reportOperationEnd:(id)a4 recordsByRecordID:(id)a5 operationError:(id)a6
+- (void)cloudContext:(id)context reportOperationEnd:(id)end recordsByRecordID:(id)d operationError:(id)error
 {
-  v15 = a4;
-  v9 = a5;
-  v10 = a6;
+  endCopy = end;
+  dCopy = d;
+  errorCopy = error;
   v11 = +[NSUserDefaults standardUserDefaults];
   v12 = [v11 BOOLForKey:kICInternalSettingsMuteSyncHealthTracking];
 
   if ((v12 & 1) == 0)
   {
     v13 = +[ICNASamplingController sharedController];
-    v14 = [v13 shouldTrackSyncHealth];
+    shouldTrackSyncHealth = [v13 shouldTrackSyncHealth];
 
-    if (v14)
+    if (shouldTrackSyncHealth)
     {
-      [(ICNACloudOperationEventReporter *)self submitCloudOperationEndEventForCKOperation:v15 recordsByRecordID:v9 operationError:v10];
+      [(ICNACloudOperationEventReporter *)self submitCloudOperationEndEventForCKOperation:endCopy recordsByRecordID:dCopy operationError:errorCopy];
     }
   }
 }

@@ -1,23 +1,23 @@
 @interface _REMChangedObjectIDStorage
-- (BOOL)isEqual:(id)a3;
-- (_REMChangedObjectIDStorage)initWithCoder:(id)a3;
-- (_REMChangedObjectIDStorage)initWithUUID:(id)a3 entityName:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_REMChangedObjectIDStorage)initWithCoder:(id)coder;
+- (_REMChangedObjectIDStorage)initWithUUID:(id)d entityName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _REMChangedObjectIDStorage
 
-- (_REMChangedObjectIDStorage)initWithUUID:(id)a3 entityName:(id)a4
+- (_REMChangedObjectIDStorage)initWithUUID:(id)d entityName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  dCopy = d;
+  nameCopy = name;
+  v8 = nameCopy;
+  if (!dCopy || !nameCopy)
   {
     v9 = +[REMLog changeTracking];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(_REMChangedObjectIDStorage *)v6 initWithUUID:v8 entityName:v9];
+      [(_REMChangedObjectIDStorage *)dCopy initWithUUID:v8 entityName:v9];
     }
   }
 
@@ -26,7 +26,7 @@
   v10 = [(_REMChangedObjectIDStorage *)&v16 init];
   if (v10)
   {
-    v11 = [v6 copy];
+    v11 = [dCopy copy];
     uuid = v10->_uuid;
     v10->_uuid = v11;
 
@@ -38,11 +38,11 @@
   return v10;
 }
 
-- (_REMChangedObjectIDStorage)initWithCoder:(id)a3
+- (_REMChangedObjectIDStorage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
 
   if (v6)
   {
@@ -56,50 +56,50 @@
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_REMChangedObjectIDStorage *)self initWithUUID:v6 entityName:v5];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_REMChangedObjectIDStorage *)self entityName];
-  [v4 encodeObject:v5 forKey:@"entityName"];
+  coderCopy = coder;
+  entityName = [(_REMChangedObjectIDStorage *)self entityName];
+  [coderCopy encodeObject:entityName forKey:@"entityName"];
 
-  v6 = [(_REMChangedObjectIDStorage *)self uuid];
-  [v4 encodeObject:v6 forKey:@"uuid"];
+  uuid = [(_REMChangedObjectIDStorage *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(_REMChangedObjectIDStorage *)self entityName];
-      v8 = [(_REMChangedObjectIDStorage *)v6 entityName];
-      v9 = v8;
-      if (v7 == v8)
+      entityName = [(_REMChangedObjectIDStorage *)self entityName];
+      entityName2 = [(_REMChangedObjectIDStorage *)v6 entityName];
+      v9 = entityName2;
+      if (entityName == entityName2)
       {
       }
 
       else
       {
-        v10 = [(_REMChangedObjectIDStorage *)self entityName];
-        v11 = [(_REMChangedObjectIDStorage *)v6 entityName];
-        v12 = [v10 isEqual:v11];
+        entityName3 = [(_REMChangedObjectIDStorage *)self entityName];
+        entityName4 = [(_REMChangedObjectIDStorage *)v6 entityName];
+        v12 = [entityName3 isEqual:entityName4];
 
         if (!v12)
         {
@@ -107,18 +107,18 @@
         }
       }
 
-      v14 = [(_REMChangedObjectIDStorage *)self uuid];
-      v15 = [(_REMChangedObjectIDStorage *)v6 uuid];
-      if (v14 == v15)
+      uuid = [(_REMChangedObjectIDStorage *)self uuid];
+      uuid2 = [(_REMChangedObjectIDStorage *)v6 uuid];
+      if (uuid == uuid2)
       {
         v13 = 1;
       }
 
       else
       {
-        v16 = [(_REMChangedObjectIDStorage *)self uuid];
-        v17 = [(_REMChangedObjectIDStorage *)v6 uuid];
-        v13 = [v16 isEqual:v17];
+        uuid3 = [(_REMChangedObjectIDStorage *)self uuid];
+        uuid4 = [(_REMChangedObjectIDStorage *)v6 uuid];
+        v13 = [uuid3 isEqual:uuid4];
       }
 
       goto LABEL_12;

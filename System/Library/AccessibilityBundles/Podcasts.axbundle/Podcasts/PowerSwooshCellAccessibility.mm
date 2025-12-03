@@ -18,17 +18,17 @@
   v3 = UIAXStringForAllChildren();
   if ([v3 length])
   {
-    v4 = UIAXStringForAllChildren();
+    accessibilityLabel = UIAXStringForAllChildren();
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PowerSwooshCellAccessibility;
-    v4 = [(PowerSwooshCellAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(PowerSwooshCellAccessibility *)&v7 accessibilityLabel];
   }
 
-  v5 = v4;
+  v5 = accessibilityLabel;
 
   return v5;
 }

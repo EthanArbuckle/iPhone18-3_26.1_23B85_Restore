@@ -9,9 +9,9 @@
 {
   v4.receiver = self;
   v4.super_class = SBOrientationTransformWrapperViewController;
-  v2 = [(SBOrientationTransformWrapperViewController *)&v4 view];
+  view = [(SBOrientationTransformWrapperViewController *)&v4 view];
 
-  return v2;
+  return view;
 }
 
 - (void)loadView

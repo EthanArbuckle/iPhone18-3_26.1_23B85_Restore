@@ -1,9 +1,9 @@
 @interface BMScreenSharingEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMScreenSharingEvent)initWithIsStart:(BOOL)a3 type:(unint64_t)a4;
-- (BMScreenSharingEvent)initWithProto:(id)a3;
-- (BMScreenSharingEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMScreenSharingEvent)initWithIsStart:(BOOL)start type:(unint64_t)type;
+- (BMScreenSharingEvent)initWithProto:(id)proto;
+- (BMScreenSharingEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -11,15 +11,15 @@
 
 @implementation BMScreenSharingEvent
 
-- (BMScreenSharingEvent)initWithIsStart:(BOOL)a3 type:(unint64_t)a4
+- (BMScreenSharingEvent)initWithIsStart:(BOOL)start type:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = BMScreenSharingEvent;
   result = [(BMEventBase *)&v7 init];
   if (result)
   {
-    result->_isStart = a3;
-    result->_type = a4;
+    result->_isStart = start;
+    result->_type = type;
   }
 
   return result;
@@ -35,47 +35,47 @@
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 2)
+  if (version == 2)
   {
-    v4 = BMScreenSharingEvent_v2;
+    selfCopy = BMScreenSharingEvent_v2;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = a3;
-  v6 = [[v4 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[selfCopy alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMScreenSharingEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMScreenSharingEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMScreenSharingEvent)initWithProto:(id)a3
+- (BMScreenSharingEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 isStart];
-      v7 = [v5 type];
-      v8 = v7;
-      if (v7)
+      v5 = protoCopy;
+      isStart = [v5 isStart];
+      type = [v5 type];
+      v8 = type;
+      if (type)
       {
-        if (v7 == 1)
+        if (type == 1)
         {
           v8 = 1;
         }
@@ -92,8 +92,8 @@
         }
       }
 
-      self = [(BMScreenSharingEvent *)self initWithIsStart:v6 type:v8];
-      v9 = self;
+      self = [(BMScreenSharingEvent *)self initWithIsStart:isStart type:v8];
+      selfCopy = self;
     }
 
     else
@@ -104,35 +104,35 @@
         [BMScreenSharingEvent initWithProto:];
       }
 
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (BMScreenSharingEvent)initWithProtoData:(id)a3
+- (BMScreenSharingEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBScreenSharingEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBScreenSharingEvent alloc] initWithData:dataCopy];
 
     self = [(BMScreenSharingEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -167,13 +167,13 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     isStart = self->_isStart;
     if (isStart == [v5 isStart])
     {

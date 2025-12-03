@@ -1,21 +1,21 @@
 @interface SUUIComposeReviewViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (SUUIComposeReviewViewController)init;
 - (SUUIReviewMetadata)editedReviewMetadata;
 - (void)_attemptReviewSubmission;
-- (void)_finishLoadWithOutput:(id)a3 error:(id)a4;
-- (void)_loadReviewWithURL:(id)a3 completionBlock:(id)a4;
+- (void)_finishLoadWithOutput:(id)output error:(id)error;
+- (void)_loadReviewWithURL:(id)l completionBlock:(id)block;
 - (void)_promptForNickname;
 - (void)_promptForNicknameWithAlert;
 - (void)_sendDidCancel;
 - (void)_sendDidSubmit;
-- (void)_setNickname:(id)a3;
-- (void)_setNicknameShouldResetOnError:(BOOL)a3;
-- (void)composeReviewFormDidSubmit:(id)a3;
-- (void)composeReviewNicknameDidCancel:(id)a3;
-- (void)composeReviewNicknameDidConfirm:(id)a3 nickname:(id)a4;
+- (void)_setNickname:(id)nickname;
+- (void)_setNicknameShouldResetOnError:(BOOL)error;
+- (void)composeReviewFormDidSubmit:(id)submit;
+- (void)composeReviewNicknameDidCancel:(id)cancel;
+- (void)composeReviewNicknameDidConfirm:(id)confirm nickname:(id)nickname;
 - (void)dealloc;
-- (void)loadReviewWithURL:(id)a3 completionBlock:(id)a4;
+- (void)loadReviewWithURL:(id)l completionBlock:(id)block;
 - (void)submitReview;
 @end
 
@@ -25,8 +25,8 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277D7FE40]);
   v4 = MEMORY[0x277D7FDD8];
-  v5 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v6 = [v4 gradientWithColor:v5];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  v6 = [v4 gradientWithColor:systemBackgroundColor];
   [v3 setBackgroundGradient:v6];
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -47,13 +47,13 @@
     v13 = [v12 localizedStringForKey:@"CANCEL" value:&stru_286AECDE0 table:0];
     [v11 setTitle:v13];
 
-    v14 = [(SUPlaceholderViewController *)v10->_placeholderViewController navigationItem];
-    [v14 setLeftBarButtonItem:v11];
+    navigationItem = [(SUPlaceholderViewController *)v10->_placeholderViewController navigationItem];
+    [navigationItem setLeftBarButtonItem:v11];
 
-    v15 = [MEMORY[0x277D75418] currentDevice];
-    v16 = [v15 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v16 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(SUUIComposeReviewViewController *)v10 setModalPresentationStyle:2];
     }
@@ -72,36 +72,36 @@
 
 - (SUUIReviewMetadata)editedReviewMetadata
 {
-  v3 = [(SUUIComposeReviewFormViewController *)self->_formViewController editedReviewMetadata];
-  v4 = v3;
+  editedReviewMetadata = [(SUUIComposeReviewFormViewController *)self->_formViewController editedReviewMetadata];
+  v4 = editedReviewMetadata;
   if (self->_nickname)
   {
-    [v3 setNickname:?];
+    [editedReviewMetadata setNickname:?];
   }
 
   return v4;
 }
 
-- (void)loadReviewWithURL:(id)a3 completionBlock:(id)a4
+- (void)loadReviewWithURL:(id)l completionBlock:(id)block
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v8)
+  lCopy = l;
+  blockCopy = block;
+  v7 = blockCopy;
+  if (lCopy)
   {
-    [(SUUIComposeReviewViewController *)self _loadReviewWithURL:v8 completionBlock:v6];
+    [(SUUIComposeReviewViewController *)self _loadReviewWithURL:lCopy completionBlock:blockCopy];
   }
 
-  else if (v6)
+  else if (blockCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
   }
 }
 
 - (void)submitReview
 {
   v3 = *MEMORY[0x277D767B0];
-  v4 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v20[0] = MEMORY[0x277D85DD0];
@@ -109,11 +109,11 @@
   v20[2] = __47__SUUIComposeReviewViewController_submitReview__block_invoke;
   v20[3] = &__block_descriptor_40_e5_v8__0l;
   v20[4] = v3;
-  v7 = [v4 beginBackgroundTaskWithName:v6 expirationHandler:v20];
+  v7 = [mEMORY[0x277D75128] beginBackgroundTaskWithName:v6 expirationHandler:v20];
 
   v8 = [SUUIPostReviewOperation alloc];
-  v9 = [(SUUIComposeReviewViewController *)self editedReviewMetadata];
-  v10 = [(SUUIPostReviewOperation *)v8 initWithReviewMetadata:v9];
+  editedReviewMetadata = [(SUUIComposeReviewViewController *)self editedReviewMetadata];
+  v10 = [(SUUIPostReviewOperation *)v8 initWithReviewMetadata:editedReviewMetadata];
 
   objc_initWeak(&location, v10);
   objc_initWeak(&from, self);
@@ -125,8 +125,8 @@
   objc_copyWeak(v17, &from);
   v17[1] = v7;
   [(SUUIPostReviewOperation *)v10 setCompletionBlock:&v12];
-  v11 = [MEMORY[0x277D7FD20] mainQueue];
-  [v11 addOperation:v10];
+  mainQueue = [MEMORY[0x277D7FD20] mainQueue];
+  [mainQueue addOperation:v10];
 
   objc_destroyWeak(v17);
   objc_destroyWeak(&v16);
@@ -270,11 +270,11 @@ void __47__SUUIComposeReviewViewController_submitReview__block_invoke_4(uint64_t
   [v3 _setNickname:0];
 }
 
-- (void)composeReviewFormDidSubmit:(id)a3
+- (void)composeReviewFormDidSubmit:(id)submit
 {
-  v8 = [(SUUIComposeReviewViewController *)self editedReviewMetadata];
-  v4 = [v8 nickname];
-  if (v4 && (v5 = v4, [v8 nickname], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v5, v7))
+  editedReviewMetadata = [(SUUIComposeReviewViewController *)self editedReviewMetadata];
+  nickname = [editedReviewMetadata nickname];
+  if (nickname && (v5 = nickname, [editedReviewMetadata nickname], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v5, v7))
   {
     [(SUUIComposeReviewViewController *)self _attemptReviewSubmission];
   }
@@ -285,7 +285,7 @@ void __47__SUUIComposeReviewViewController_submitReview__block_invoke_4(uint64_t
   }
 }
 
-- (void)composeReviewNicknameDidCancel:(id)a3
+- (void)composeReviewNicknameDidCancel:(id)cancel
 {
   v5[1] = *MEMORY[0x277D85DE8];
   v5[0] = self->_formViewController;
@@ -293,12 +293,12 @@ void __47__SUUIComposeReviewViewController_submitReview__block_invoke_4(uint64_t
   [(SUUIComposeReviewViewController *)self setViewControllers:v4 animated:1];
 }
 
-- (void)composeReviewNicknameDidConfirm:(id)a3 nickname:(id)a4
+- (void)composeReviewNicknameDidConfirm:(id)confirm nickname:(id)nickname
 {
-  v5 = a4;
-  if ([v5 length])
+  nicknameCopy = nickname;
+  if ([nicknameCopy length])
   {
-    [(SUUIComposeReviewViewController *)self _setNickname:v5];
+    [(SUUIComposeReviewViewController *)self _setNickname:nicknameCopy];
     [(SUUIComposeReviewViewController *)self _setNicknameShouldResetOnError:1];
     [(SUUIComposeReviewViewController *)self _attemptReviewSubmission];
   }
@@ -309,13 +309,13 @@ void __47__SUUIComposeReviewViewController_submitReview__block_invoke_4(uint64_t
   }
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = [a3 text];
-  v11 = [v10 stringByReplacingCharactersInRange:location withString:{length, v9}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  text = [field text];
+  v11 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
   -[UIAlertAction setEnabled:](self->_nicknameOKAction, "setEnabled:", [v11 length] != 0);
   return 1;
@@ -323,9 +323,9 @@ void __47__SUUIComposeReviewViewController_submitReview__block_invoke_4(uint64_t
 
 - (void)_attemptReviewSubmission
 {
-  v4 = [(SUUIComposeReviewViewController *)self editedReviewMetadata];
-  v3 = [(SUUIComposeReviewViewController *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || [v3 composeReviewViewController:self shouldSubmitReview:v4])
+  editedReviewMetadata = [(SUUIComposeReviewViewController *)self editedReviewMetadata];
+  delegate = [(SUUIComposeReviewViewController *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || [delegate composeReviewViewController:self shouldSubmitReview:editedReviewMetadata])
   {
     [(SUUIComposeReviewViewController *)self submitReview];
   }
@@ -430,33 +430,33 @@ void __62__SUUIComposeReviewViewController__promptForNicknameWithAlert__block_in
   }
 }
 
-- (void)_setNickname:(id)a3
+- (void)_setNickname:(id)nickname
 {
-  v6 = a3;
+  nicknameCopy = nickname;
   if (![(NSString *)self->_nickname isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [nicknameCopy copy];
     nickname = self->_nickname;
     self->_nickname = v4;
   }
 }
 
-- (void)_setNicknameShouldResetOnError:(BOOL)a3
+- (void)_setNicknameShouldResetOnError:(BOOL)error
 {
-  if (self->_nicknameShouldResetOnError != a3)
+  if (self->_nicknameShouldResetOnError != error)
   {
-    self->_nicknameShouldResetOnError = a3;
+    self->_nicknameShouldResetOnError = error;
   }
 }
 
-- (void)_finishLoadWithOutput:(id)a3 error:(id)a4
+- (void)_finishLoadWithOutput:(id)output error:(id)error
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  outputCopy = output;
+  v6 = outputCopy;
+  if (outputCopy)
   {
-    v7 = [v5 objectForKey:*MEMORY[0x277D7FD78]];
+    v7 = [outputCopy objectForKey:*MEMORY[0x277D7FD78]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -468,13 +468,13 @@ void __62__SUUIComposeReviewViewController__promptForNicknameWithAlert__block_in
       v8 = 0;
     }
 
-    v9 = [(SUUIComposeReviewViewController *)self delegate];
+    delegate = [(SUUIComposeReviewViewController *)self delegate];
     v10 = [v6 objectForKey:*MEMORY[0x277D7FD80]];
     if (v10)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v9 composeReviewViewController:self didFailWithDialog:v8];
+        [delegate composeReviewViewController:self didFailWithDialog:v8];
 LABEL_21:
 
         goto LABEL_22;
@@ -492,16 +492,16 @@ LABEL_21:
       v23 = v11;
       if (v11)
       {
-        v14 = [(SUUIReviewMetadata *)v11 title];
-        if ([v14 length])
+        title = [(SUUIReviewMetadata *)v11 title];
+        if ([title length])
         {
           [(SUUIComposeReviewViewController *)self setEdit:1];
         }
 
         else
         {
-          v15 = [(SUUIReviewMetadata *)v11 body];
-          -[SUUIComposeReviewViewController setEdit:](self, "setEdit:", [v15 length] != 0);
+          body = [(SUUIReviewMetadata *)v11 body];
+          -[SUUIComposeReviewViewController setEdit:](self, "setEdit:", [body length] != 0);
         }
       }
 
@@ -511,10 +511,10 @@ LABEL_21:
       }
 
       v16 = self->_formViewController;
-      v17 = [(SUUIComposeReviewViewController *)self isEdit];
+      isEdit = [(SUUIComposeReviewViewController *)self isEdit];
       v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v19 = v18;
-      if (v17)
+      if (isEdit)
       {
         v20 = @"EDIT_REVIEW";
       }
@@ -542,15 +542,15 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)_loadReviewWithURL:(id)a3 completionBlock:(id)a4
+- (void)_loadReviewWithURL:(id)l completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  blockCopy = block;
   v8 = objc_alloc_init(MEMORY[0x277D7FD48]);
-  v9 = [MEMORY[0x277D7FD30] provider];
-  [v9 setShouldProcessDialogs:0];
-  [v8 setDataProvider:v9];
-  v10 = [objc_alloc(MEMORY[0x277D69CA0]) initWithURL:v6];
+  provider = [MEMORY[0x277D7FD30] provider];
+  [provider setShouldProcessDialogs:0];
+  [v8 setDataProvider:provider];
+  v10 = [objc_alloc(MEMORY[0x277D69CA0]) initWithURL:lCopy];
   [v8 setRequestProperties:v10];
   objc_initWeak(&location, self);
   v11 = v8;
@@ -561,12 +561,12 @@ LABEL_22:
   objc_copyWeak(&v21, &location);
   v12 = v11;
   v19 = v12;
-  v13 = v7;
+  v13 = blockCopy;
   v20 = v13;
   [v12 setCompletionBlock:&v15];
   [(SUPlaceholderViewController *)self->_placeholderViewController setSkLoading:1, v15, v16, v17, v18];
-  v14 = [MEMORY[0x277D7FD20] mainQueue];
-  [v14 addOperation:v12];
+  mainQueue = [MEMORY[0x277D7FD20] mainQueue];
+  [mainQueue addOperation:v12];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -605,24 +605,24 @@ void __70__SUUIComposeReviewViewController__loadReviewWithURL_completionBlock___
 
 - (void)_sendDidSubmit
 {
-  v3 = [(SUUIComposeReviewViewController *)self delegate];
+  delegate = [(SUUIComposeReviewViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 composeReviewViewControllerDidSubmit:self];
+    [delegate composeReviewViewControllerDidSubmit:self];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 composeReviewViewController:self didSubmitWithEdit:{-[SUUIComposeReviewViewController isEdit](self, "isEdit")}];
+    [delegate composeReviewViewController:self didSubmitWithEdit:{-[SUUIComposeReviewViewController isEdit](self, "isEdit")}];
   }
 }
 
 - (void)_sendDidCancel
 {
-  v3 = [(SUUIComposeReviewViewController *)self delegate];
+  delegate = [(SUUIComposeReviewViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 composeReviewViewControllerDidCancel:self];
+    [delegate composeReviewViewControllerDidCancel:self];
   }
 }
 

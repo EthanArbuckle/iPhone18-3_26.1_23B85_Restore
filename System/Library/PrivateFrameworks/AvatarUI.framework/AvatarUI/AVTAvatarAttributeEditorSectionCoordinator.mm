@@ -1,13 +1,13 @@
 @interface AVTAvatarAttributeEditorSectionCoordinator
 - (AVTAvatarAttributeEditorControllerSubSelectionDelegate)delegate;
 - (AVTAvatarAttributeEditorSectionCoordinator)init;
-- (BOOL)isCoordinatingForSectionController:(id)a3;
-- (void)addSectionController:(id)a3;
-- (void)attributeEditorSectionController:(id)a3 didDeleteSectionItems:(id)a4;
-- (void)attributeEditorSectionController:(id)a3 didSelectSectionItem:(id)a4;
-- (void)attributeEditorSectionController:(id)a3 didUpdateSectionItem:(id)a4;
-- (void)attributeEditorSectionControllerNeedsLayoutUpdate:(id)a3;
-- (void)removeSectionController:(id)a3;
+- (BOOL)isCoordinatingForSectionController:(id)controller;
+- (void)addSectionController:(id)controller;
+- (void)attributeEditorSectionController:(id)controller didDeleteSectionItems:(id)items;
+- (void)attributeEditorSectionController:(id)controller didSelectSectionItem:(id)item;
+- (void)attributeEditorSectionController:(id)controller didUpdateSectionItem:(id)item;
+- (void)attributeEditorSectionControllerNeedsLayoutUpdate:(id)update;
+- (void)removeSectionController:(id)controller;
 @end
 
 @implementation AVTAvatarAttributeEditorSectionCoordinator
@@ -19,81 +19,81 @@
   v2 = [(AVTAvatarAttributeEditorSectionCoordinator *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     sectionControllers = v2->_sectionControllers;
-    v2->_sectionControllers = v3;
+    v2->_sectionControllers = dictionary;
   }
 
   return v2;
 }
 
-- (BOOL)isCoordinatingForSectionController:(id)a3
+- (BOOL)isCoordinatingForSectionController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AVTAvatarAttributeEditorSectionCoordinator *)self sectionControllers];
-  v6 = [v4 section];
+  controllerCopy = controller;
+  sectionControllers = [(AVTAvatarAttributeEditorSectionCoordinator *)self sectionControllers];
+  section = [controllerCopy section];
 
-  v7 = [v6 identifier];
-  v8 = [v5 objectForKeyedSubscript:v7];
+  identifier = [section identifier];
+  v8 = [sectionControllers objectForKeyedSubscript:identifier];
   v9 = v8 != 0;
 
   return v9;
 }
 
-- (void)addSectionController:(id)a3
+- (void)addSectionController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   if (![(AVTAvatarAttributeEditorSectionCoordinator *)self isCoordinatingForSectionController:?])
   {
-    [v7 setDelegate:self];
-    v4 = [(AVTAvatarAttributeEditorSectionCoordinator *)self sectionControllers];
-    v5 = [v7 section];
-    v6 = [v5 identifier];
-    [v4 setObject:v7 forKeyedSubscript:v6];
+    [controllerCopy setDelegate:self];
+    sectionControllers = [(AVTAvatarAttributeEditorSectionCoordinator *)self sectionControllers];
+    section = [controllerCopy section];
+    identifier = [section identifier];
+    [sectionControllers setObject:controllerCopy forKeyedSubscript:identifier];
   }
 }
 
-- (void)removeSectionController:(id)a3
+- (void)removeSectionController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   if ([(AVTAvatarAttributeEditorSectionCoordinator *)self isCoordinatingForSectionController:?])
   {
-    v4 = [(AVTAvatarAttributeEditorSectionCoordinator *)self sectionControllers];
-    v5 = [v7 section];
-    v6 = [v5 identifier];
-    [v4 setObject:0 forKeyedSubscript:v6];
+    sectionControllers = [(AVTAvatarAttributeEditorSectionCoordinator *)self sectionControllers];
+    section = [controllerCopy section];
+    identifier = [section identifier];
+    [sectionControllers setObject:0 forKeyedSubscript:identifier];
   }
 }
 
-- (void)attributeEditorSectionController:(id)a3 didDeleteSectionItems:(id)a4
+- (void)attributeEditorSectionController:(id)controller didDeleteSectionItems:(id)items
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTAvatarAttributeEditorSectionCoordinator *)self delegate];
-  [v8 attributeEditorSectionController:v7 didDeleteSectionItems:v6];
+  itemsCopy = items;
+  controllerCopy = controller;
+  delegate = [(AVTAvatarAttributeEditorSectionCoordinator *)self delegate];
+  [delegate attributeEditorSectionController:controllerCopy didDeleteSectionItems:itemsCopy];
 }
 
-- (void)attributeEditorSectionController:(id)a3 didSelectSectionItem:(id)a4
+- (void)attributeEditorSectionController:(id)controller didSelectSectionItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTAvatarAttributeEditorSectionCoordinator *)self delegate];
-  [v8 attributeEditorSectionController:v7 didSelectSectionItem:v6];
+  itemCopy = item;
+  controllerCopy = controller;
+  delegate = [(AVTAvatarAttributeEditorSectionCoordinator *)self delegate];
+  [delegate attributeEditorSectionController:controllerCopy didSelectSectionItem:itemCopy];
 }
 
-- (void)attributeEditorSectionController:(id)a3 didUpdateSectionItem:(id)a4
+- (void)attributeEditorSectionController:(id)controller didUpdateSectionItem:(id)item
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  itemCopy = item;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(AVTAvatarAttributeEditorSectionCoordinator *)self sectionControllers];
-  v9 = [v8 allValues];
+  sectionControllers = [(AVTAvatarAttributeEditorSectionCoordinator *)self sectionControllers];
+  allValues = [sectionControllers allValues];
 
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -105,35 +105,35 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        if (v14 != v6)
+        if (v14 != controllerCopy)
         {
-          v15 = [v6 section];
-          [v14 attributeSection:v15 didChangeValueForSectionItem:v7];
+          section = [controllerCopy section];
+          [v14 attributeSection:section didChangeValueForSectionItem:itemCopy];
         }
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
   }
 
-  v16 = [(AVTAvatarAttributeEditorSectionCoordinator *)self delegate];
-  [v16 attributeEditorSectionController:v6 didUpdateSectionItem:v7];
+  delegate = [(AVTAvatarAttributeEditorSectionCoordinator *)self delegate];
+  [delegate attributeEditorSectionController:controllerCopy didUpdateSectionItem:itemCopy];
 }
 
-- (void)attributeEditorSectionControllerNeedsLayoutUpdate:(id)a3
+- (void)attributeEditorSectionControllerNeedsLayoutUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(AVTAvatarAttributeEditorSectionCoordinator *)self delegate];
-  [v5 attributeEditorSectionControllerNeedsLayoutUpdate:v4];
+  updateCopy = update;
+  delegate = [(AVTAvatarAttributeEditorSectionCoordinator *)self delegate];
+  [delegate attributeEditorSectionControllerNeedsLayoutUpdate:updateCopy];
 }
 
 - (AVTAvatarAttributeEditorControllerSubSelectionDelegate)delegate

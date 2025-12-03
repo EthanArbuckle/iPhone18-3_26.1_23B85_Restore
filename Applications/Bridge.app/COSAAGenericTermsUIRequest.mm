@@ -1,46 +1,46 @@
 @interface COSAAGenericTermsUIRequest
-+ (id)clientInfoHeaderForDevice:(id)a3;
-- (COSAAGenericTermsUIRequest)initWithGizmoDevice:(id)a3 showWarranty:(BOOL)a4;
++ (id)clientInfoHeaderForDevice:(id)device;
+- (COSAAGenericTermsUIRequest)initWithGizmoDevice:(id)device showWarranty:(BOOL)warranty;
 - (NSURLRequest)urlRequest;
 @end
 
 @implementation COSAAGenericTermsUIRequest
 
-+ (id)clientInfoHeaderForDevice:(id)a3
++ (id)clientInfoHeaderForDevice:(id)device
 {
   v3 = NRDevicePropertyProductType;
-  v4 = a3;
-  v5 = [v4 valueForProperty:v3];
+  deviceCopy = device;
+  v5 = [deviceCopy valueForProperty:v3];
   v6 = [NSString stringWithFormat:@"%@", v5];
 
-  v7 = [v4 valueForProperty:NRDevicePropertySystemName];
-  v8 = [v4 valueForProperty:NRDevicePropertySystemVersion];
-  v9 = [v4 valueForProperty:NRDevicePropertySystemBuildVersion];
+  v7 = [deviceCopy valueForProperty:NRDevicePropertySystemName];
+  v8 = [deviceCopy valueForProperty:NRDevicePropertySystemVersion];
+  v9 = [deviceCopy valueForProperty:NRDevicePropertySystemBuildVersion];
 
   v10 = [NSString stringWithFormat:@"%@%@;%@", v7, v8, v9];;
 
   v11 = [NSBundle bundleForClass:objc_opt_class()];
-  v12 = [v11 infoDictionary];
-  v13 = [v12 objectForKey:kCFBundleVersionKey];
+  infoDictionary = [v11 infoDictionary];
+  v13 = [infoDictionary objectForKey:kCFBundleVersionKey];
 
   v14 = +[NSBundle mainBundle];
-  v15 = [v14 infoDictionary];
-  v16 = [v15 objectForKey:kCFBundleVersionKey];
+  infoDictionary2 = [v14 infoDictionary];
+  v16 = [infoDictionary2 objectForKey:kCFBundleVersionKey];
 
-  v17 = [v11 bundleIdentifier];
-  v18 = [v14 bundleIdentifier];
-  v19 = [NSString stringWithFormat:@"%@/%@ (%@/%@)", v17, v13, v18, v16];
+  bundleIdentifier = [v11 bundleIdentifier];
+  bundleIdentifier2 = [v14 bundleIdentifier];
+  v19 = [NSString stringWithFormat:@"%@/%@ (%@/%@)", bundleIdentifier, v13, bundleIdentifier2, v16];
 
   v20 = [NSString stringWithFormat:@"<%@> <%@> <%@>", v6, v10, v19];
 
   return v20;
 }
 
-- (COSAAGenericTermsUIRequest)initWithGizmoDevice:(id)a3 showWarranty:(BOOL)a4
+- (COSAAGenericTermsUIRequest)initWithGizmoDevice:(id)device showWarranty:(BOOL)warranty
 {
-  v4 = a4;
-  v7 = a3;
-  if (v4)
+  warrantyCopy = warranty;
+  deviceCopy = device;
+  if (warrantyCopy)
   {
     v8 = [&off_100281858 arrayByAddingObject:&off_100282000];
   }
@@ -61,8 +61,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_device, a3);
-    v11->_showWarranty = v4;
+    objc_storeStrong(&v10->_device, device);
+    v11->_showWarranty = warrantyCopy;
   }
 
   return v11;
@@ -72,28 +72,28 @@
 {
   v13.receiver = self;
   v13.super_class = COSAAGenericTermsUIRequest;
-  v3 = [(COSAAGenericTermsUIRequest *)&v13 urlRequest];
-  if (v3)
+  urlRequest = [(COSAAGenericTermsUIRequest *)&v13 urlRequest];
+  if (urlRequest)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = urlRequest;
     }
 
     else
     {
-      v4 = [v3 mutableCopy];
+      v4 = [urlRequest mutableCopy];
     }
 
     v5 = v4;
     v6 = [objc_opt_class() clientInfoHeaderForDevice:self->_device];
-    v7 = [objc_opt_class() pairedClientInfoHeaderName];
-    [v5 addValue:v6 forHTTPHeaderField:v7];
+    pairedClientInfoHeaderName = [objc_opt_class() pairedClientInfoHeaderName];
+    [v5 addValue:v6 forHTTPHeaderField:pairedClientInfoHeaderName];
 
     v8 = [(NRDevice *)self->_device valueForProperty:NRDevicePropertyModelNumber];
-    v9 = [objc_opt_class() deviceModelHeaderName];
-    [v5 addValue:v8 forHTTPHeaderField:v9];
+    deviceModelHeaderName = [objc_opt_class() deviceModelHeaderName];
+    [v5 addValue:v8 forHTTPHeaderField:deviceModelHeaderName];
 
     if (self->_showWarranty)
     {

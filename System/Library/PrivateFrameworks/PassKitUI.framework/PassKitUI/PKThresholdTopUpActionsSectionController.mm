@@ -1,49 +1,49 @@
 @interface PKThresholdTopUpActionsSectionController
-- (BOOL)shouldHighlightItem:(id)a3;
+- (BOOL)shouldHighlightItem:(id)item;
 - (NSArray)identifiers;
-- (PKThresholdTopUpActionsSectionController)initWithExistingThresholdTopUp:(BOOL)a3 delegate:(id)a4 useSetupMargins:(BOOL)a5;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)didSelectItem:(id)a3;
-- (void)setCancelAutoReloadUnavailable:(BOOL)a3;
-- (void)setCancelTitle:(id)a3;
+- (PKThresholdTopUpActionsSectionController)initWithExistingThresholdTopUp:(BOOL)up delegate:(id)delegate useSetupMargins:(BOOL)margins;
+- (id)cellRegistrationForItem:(id)item;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
+- (void)setCancelAutoReloadUnavailable:(BOOL)unavailable;
+- (void)setCancelTitle:(id)title;
 @end
 
 @implementation PKThresholdTopUpActionsSectionController
 
-- (PKThresholdTopUpActionsSectionController)initWithExistingThresholdTopUp:(BOOL)a3 delegate:(id)a4 useSetupMargins:(BOOL)a5
+- (PKThresholdTopUpActionsSectionController)initWithExistingThresholdTopUp:(BOOL)up delegate:(id)delegate useSetupMargins:(BOOL)margins
 {
-  v8 = a4;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKThresholdTopUpActionsSectionController;
   v9 = [(PKThresholdTopUpActionsSectionController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    v9->_existingThresholdTopUp = a3;
-    objc_storeWeak(&v9->_delegate, v8);
+    v9->_existingThresholdTopUp = up;
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v10->_cancelInProgress = 0;
     v10->_cancelAutoReloadUnavailable = 0;
-    v10->_useSetupMargins = a5;
+    v10->_useSetupMargins = margins;
   }
 
   return v10;
 }
 
-- (void)setCancelAutoReloadUnavailable:(BOOL)a3
+- (void)setCancelAutoReloadUnavailable:(BOOL)unavailable
 {
-  if (self->_cancelAutoReloadUnavailable != a3)
+  if (self->_cancelAutoReloadUnavailable != unavailable)
   {
-    self->_cancelAutoReloadUnavailable = a3;
+    self->_cancelAutoReloadUnavailable = unavailable;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained reloadDataAnimated:1];
   }
 }
 
-- (void)setCancelTitle:(id)a3
+- (void)setCancelTitle:(id)title
 {
-  objc_storeStrong(&self->_cancelTitle, a3);
+  objc_storeStrong(&self->_cancelTitle, title);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained reloadDataAnimated:1];
 }
@@ -57,14 +57,14 @@
   return v2;
 }
 
-- (BOOL)shouldHighlightItem:(id)a3
+- (BOOL)shouldHighlightItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = v4;
-  if (v4 == @"cancel" || v4 && (v6 = [(__CFString *)v4 isEqualToString:@"cancel"], v5, v6))
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  v5 = identifier;
+  if (identifier == @"cancel" || identifier && (v6 = [(__CFString *)identifier isEqualToString:@"cancel"], v5, v6))
   {
-    v7 = [v3 cancelInProgress] ^ 1;
+    v7 = [itemCopy cancelInProgress] ^ 1;
   }
 
   else
@@ -75,12 +75,12 @@
   return v7;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = v5;
-  if (v5 == @"cancel" || v5 && (v7 = [(__CFString *)v5 isEqualToString:@"cancel"], v6, v7))
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  v6 = identifier;
+  if (identifier == @"cancel" || identifier && (v7 = [(__CFString *)identifier isEqualToString:@"cancel"], v6, v7))
   {
     self->_cancelInProgress = 1;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -128,11 +128,11 @@ void __58__PKThresholdTopUpActionsSectionController_didSelectItem___block_invoke
   }
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  v7 = v5;
+  v7 = identifierCopy;
   v8 = v7;
   if (v7 == @"thresholdActions" || v7 && (v9 = [(__CFString *)v7 isEqualToString:@"thresholdActions"], v8, v9))
   {
@@ -150,9 +150,9 @@ void __58__PKThresholdTopUpActionsSectionController_didSelectItem___block_invoke
   return v6;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = objc_opt_class();
   v6 = MEMORY[0x1E69DC800];
@@ -211,12 +211,12 @@ void __68__PKThresholdTopUpActionsSectionController_cellRegistrationForItem___bl
   }
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v5 = MEMORY[0x1E69DC7E0];
-  v6 = a3;
+  environmentCopy = environment;
   v7 = [[v5 alloc] initWithAppearance:2];
-  v8 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v7 layoutEnvironment:v6];
+  v8 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v7 layoutEnvironment:environmentCopy];
 
   if (self->_useSetupMargins)
   {

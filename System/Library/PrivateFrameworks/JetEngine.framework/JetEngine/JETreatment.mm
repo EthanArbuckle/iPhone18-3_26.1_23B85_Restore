@@ -1,16 +1,16 @@
 @interface JETreatment
-+ (id)treatmentWithConfiguration:(id)a3 topic:(id)a4;
-- (JETreatment)initWithConfigDictionary:(id)a3 topic:(id)a4;
-- (id)performTreatment:(id)a3;
++ (id)treatmentWithConfiguration:(id)configuration topic:(id)topic;
+- (JETreatment)initWithConfigDictionary:(id)dictionary topic:(id)topic;
+- (id)performTreatment:(id)treatment;
 @end
 
 @implementation JETreatment
 
-+ (id)treatmentWithConfiguration:(id)a3 topic:(id)a4
++ (id)treatmentWithConfiguration:(id)configuration topic:(id)topic
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  configurationCopy = configuration;
+  topicCopy = topic;
+  v7 = configurationCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -24,7 +24,7 @@
 
   if (v8)
   {
-    v9 = [[JETreatment alloc] initWithConfigDictionary:v8 topic:v6];
+    v9 = [[JETreatment alloc] initWithConfigDictionary:v8 topic:topicCopy];
   }
 
   else
@@ -35,26 +35,26 @@
   return v9;
 }
 
-- (JETreatment)initWithConfigDictionary:(id)a3 topic:(id)a4
+- (JETreatment)initWithConfigDictionary:(id)dictionary topic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  topicCopy = topic;
   v28.receiver = self;
   v28.super_class = JETreatment;
   v8 = [(JETreatment *)&v28 init];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"filters"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"filters"];
     v10 = [JEMetricsDataPredicate predicateWithConfiguration:v9];
     predicate = v8->_predicate;
     v8->_predicate = v10;
 
-    v12 = [v6 objectForKeyedSubscript:@"eventActions"];
-    v13 = [JETreatmentAction treatmentActionWithField:0 configuration:v12 topic:v7];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"eventActions"];
+    v13 = [JETreatmentAction treatmentActionWithField:0 configuration:v12 topic:topicCopy];
     eventAction = v8->_eventAction;
     v8->_eventAction = v13;
 
-    v15 = [v6 objectForKeyedSubscript:@"fieldActions"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"fieldActions"];
     objc_opt_class();
     v16 = 0;
     if (objc_opt_isKindOfClass())
@@ -69,7 +69,7 @@
       v23 = 3221225472;
       v24 = __46__JETreatment_initWithConfigDictionary_topic___block_invoke;
       v25 = &unk_1E794A930;
-      v26 = v7;
+      v26 = topicCopy;
       v27 = v17;
       v18 = v17;
       [v16 enumerateKeysAndObjectsUsingBlock:&v22];
@@ -92,18 +92,18 @@ void __46__JETreatment_initWithConfigDictionary_topic___block_invoke(uint64_t a1
   }
 }
 
-- (id)performTreatment:(id)a3
+- (id)performTreatment:(id)treatment
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[JETreatmentContext alloc] initWithTreatment:self metrics:v4];
+  treatmentCopy = treatment;
+  v5 = [[JETreatmentContext alloc] initWithTreatment:self metrics:treatmentCopy];
   if (self)
   {
     v6 = self->_predicate;
     if (v6)
     {
       v7 = v6;
-      v8 = [(JEMetricsDataPredicate *)self->_predicate evaluateWithMetricsData:v4];
+      v8 = [(JEMetricsDataPredicate *)self->_predicate evaluateWithMetricsData:treatmentCopy];
 
       if (!v8)
       {
@@ -131,8 +131,8 @@ void __46__JETreatment_initWithConfigDictionary_topic___block_invoke(uint64_t a1
     fieldActions = 0;
   }
 
-  v10 = [(NSDictionary *)fieldActions objectEnumerator];
-  v11 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  objectEnumerator = [(NSDictionary *)fieldActions objectEnumerator];
+  v11 = [objectEnumerator countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v11)
   {
     v12 = v11;
@@ -143,19 +143,19 @@ void __46__JETreatment_initWithConfigDictionary_topic___block_invoke(uint64_t a1
       {
         if (*v32 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        v16 = [(JETreatmentAction *)v15 sourceField];
+        sourceField = [(JETreatmentAction *)v15 sourceField];
 
-        if (v16)
+        if (sourceField)
         {
           [v15 performActionWithContext:v5];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v12 = [objectEnumerator countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v12);
@@ -175,8 +175,8 @@ void __46__JETreatment_initWithConfigDictionary_topic___block_invoke(uint64_t a1
     v17 = 0;
   }
 
-  v18 = [(NSDictionary *)v17 objectEnumerator];
-  v19 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  objectEnumerator2 = [(NSDictionary *)v17 objectEnumerator];
+  v19 = [objectEnumerator2 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v19)
   {
     v20 = v19;
@@ -187,28 +187,28 @@ void __46__JETreatment_initWithConfigDictionary_topic___block_invoke(uint64_t a1
       {
         if (*v28 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
         v23 = *(*(&v27 + 1) + 8 * j);
-        v24 = [(JETreatmentAction *)v23 sourceField];
+        sourceField2 = [(JETreatmentAction *)v23 sourceField];
 
-        if (!v24)
+        if (!sourceField2)
         {
           [v23 performActionWithContext:v5];
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v20 = [objectEnumerator2 countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v20);
   }
 
 LABEL_29:
-  v25 = [(JETreatmentContext *)v5 metrics];
+  metrics = [(JETreatmentContext *)v5 metrics];
 
-  return v25;
+  return metrics;
 }
 
 @end

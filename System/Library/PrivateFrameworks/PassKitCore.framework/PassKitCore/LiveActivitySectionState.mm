@@ -1,47 +1,47 @@
 @interface LiveActivitySectionState
 + (id)_propertySettersForState;
-+ (id)anyInDatabase:(id)a3 withIdentifier:(id)a4;
-+ (id)insertState:(id)a3 inDatabase:(id)a4;
-+ (id)liveActivitySectionStatesInDatabase:(id)a3;
-+ (void)deleteEntitiesForIdentifiers:(id)a3 inDatabase:(id)a4;
++ (id)anyInDatabase:(id)database withIdentifier:(id)identifier;
++ (id)insertState:(id)state inDatabase:(id)database;
++ (id)liveActivitySectionStatesInDatabase:(id)database;
++ (void)deleteEntitiesForIdentifiers:(id)identifiers inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
-- (LiveActivitySectionState)initWithState:(id)a3 inDatabase:(id)a4;
+- (LiveActivitySectionState)initWithState:(id)state inDatabase:(id)database;
 - (id)liveActivitySectionState;
-- (void)_updateActivityStates:(id)a3;
-- (void)updateWithState:(id)a3;
+- (void)_updateActivityStates:(id)states;
+- (void)updateWithState:(id)state;
 @end
 
 @implementation LiveActivitySectionState
 
-+ (id)anyInDatabase:(id)a3 withIdentifier:(id)a4
++ (id)anyInDatabase:(id)database withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [a1 _predicateForIdentifier:a4];
-  v8 = [(SQLiteEntity *)LiveActivitySectionState anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForIdentifier:identifier];
+  v8 = [(SQLiteEntity *)LiveActivitySectionState anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)liveActivitySectionStatesInDatabase:(id)a3
++ (id)liveActivitySectionStatesInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc_init(NSMutableSet);
   v7 = +[LiveActivitySectionState _propertySettersForState];
-  v8 = [(SQLiteEntity *)LiveActivitySectionState queryWithDatabase:v4 predicate:0];
-  v9 = [v7 allKeys];
+  v8 = [(SQLiteEntity *)LiveActivitySectionState queryWithDatabase:databaseCopy predicate:0];
+  allKeys = [v7 allKeys];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_10001E084;
   v18 = &unk_10083BF08;
-  v22 = a1;
+  selfCopy = self;
   v19 = v7;
-  v10 = v4;
+  v10 = databaseCopy;
   v20 = v10;
   v21 = v6;
   v11 = v6;
   v12 = v7;
-  [v8 enumeratePersistentIDsAndProperties:v9 usingBlock:&v15];
+  [v8 enumeratePersistentIDsAndProperties:allKeys usingBlock:&v15];
 
   v13 = [v11 copy];
   objc_autoreleasePoolPop(v5);
@@ -49,54 +49,54 @@
   return v13;
 }
 
-+ (id)insertState:(id)a3 inDatabase:(id)a4
++ (id)insertState:(id)state inDatabase:(id)database
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[LiveActivitySectionState alloc] initWithState:v6 inDatabase:v5];
-  v8 = [v6 activityStates];
+  databaseCopy = database;
+  stateCopy = state;
+  v7 = [[LiveActivitySectionState alloc] initWithState:stateCopy inDatabase:databaseCopy];
+  activityStates = [stateCopy activityStates];
 
-  v9 = [LiveActivityState insertActivityStates:v8 forSectionState:v7 inDatabase:v5];
+  v9 = [LiveActivityState insertActivityStates:activityStates forSectionState:v7 inDatabase:databaseCopy];
 
   return v7;
 }
 
-- (void)updateWithState:(id)a3
+- (void)updateWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v7 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v4 identifier];
-  [v7 setObjectOrNull:v5 forKey:@"identifier"];
+  identifier = [stateCopy identifier];
+  [v7 setObjectOrNull:identifier forKey:@"identifier"];
 
-  [v7 setInteger:objc_msgSend(v4 forKey:{"attributesType"), @"attributes_type"}];
-  v6 = [v4 activityStates];
+  [v7 setInteger:objc_msgSend(stateCopy forKey:{"attributesType"), @"attributes_type"}];
+  activityStates = [stateCopy activityStates];
 
-  [(LiveActivitySectionState *)self _updateActivityStates:v6];
+  [(LiveActivitySectionState *)self _updateActivityStates:activityStates];
   [(SQLiteEntity *)self setValuesWithDictionary:v7];
 }
 
-- (void)_updateActivityStates:(id)a3
+- (void)_updateActivityStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   database = self->super._database;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001E384;
   v7[3] = &unk_10083C2B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statesCopy;
+  v6 = statesCopy;
   sub_1005D4424(database, v7);
 }
 
-+ (void)deleteEntitiesForIdentifiers:(id)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForIdentifiers:(id)identifiers inDatabase:(id)database
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 count])
+  identifiersCopy = identifiers;
+  databaseCopy = database;
+  if ([identifiersCopy count])
   {
-    v7 = [a1 _predicateForIdentifiers:v9];
-    v8 = [a1 queryWithDatabase:v6 predicate:v7];
+    v7 = [self _predicateForIdentifiers:identifiersCopy];
+    v8 = [self queryWithDatabase:databaseCopy predicate:v7];
     [v8 deleteAllEntities];
   }
 }
@@ -120,19 +120,19 @@
   return v2;
 }
 
-- (LiveActivitySectionState)initWithState:(id)a3 inDatabase:(id)a4
+- (LiveActivitySectionState)initWithState:(id)state inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
+  databaseCopy = database;
+  stateCopy = state;
   v8 = objc_alloc_init(NSMutableDictionary);
-  v9 = [v7 identifier];
-  [v8 setObjectOrNull:v9 forKey:@"identifier"];
+  identifier = [stateCopy identifier];
+  [v8 setObjectOrNull:identifier forKey:@"identifier"];
 
-  [v7 attributesType];
+  [stateCopy attributesType];
   v10 = PKLiveActivityAttributesTypeToString();
   [v8 setObject:v10 forKey:@"attributes_type"];
 
-  v11 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:v6];
+  v11 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:databaseCopy];
   return v11;
 }
 
@@ -140,7 +140,7 @@
 {
   v3 = objc_alloc_init(PDLiveActivitySectionState);
   v4 = +[LiveActivitySectionState _propertySettersForState];
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_10001E838;
@@ -149,11 +149,11 @@
   v6 = v3;
   v18 = v6;
   v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:&v13];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:&v13];
 
   v8 = [LiveActivityState liveActivityStatesInDatabase:self->super._database forSectionStatePersistentID:self->super._persistentID, v13, v14, v15, v16];
-  v9 = [v8 allObjects];
-  [(PDLiveActivitySectionState *)v6 setActivityStates:v9];
+  allObjects = [v8 allObjects];
+  [(PDLiveActivitySectionState *)v6 setActivityStates:allObjects];
 
   v10 = v18;
   v11 = v6;

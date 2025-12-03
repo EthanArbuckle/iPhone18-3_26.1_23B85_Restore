@@ -1,7 +1,7 @@
 @interface VKCInternalSettings
-+ (BOOL)BOOLForKey:(id)a3 withDefaultValue:(BOOL)a4;
++ (BOOL)BOOLForKey:(id)key withDefaultValue:(BOOL)value;
 + (NSUserDefaults)defaults;
-+ (double)floatForKey:(id)a3 withDefaultValue:(double)a4;
++ (double)floatForKey:(id)key withDefaultValue:(double)value;
 + (id)addSubjectCropRectToPasteboardSettingsValue;
 + (id)alwaysShowTextSelectionBordersSettingsValue;
 + (id)bypassVIV2MinSizeWorkaroundSettingsValue;
@@ -16,7 +16,7 @@
 + (id)localeFreeQRSupportSettingsValue;
 + (id)logNormalizedVisibleRectProgressSettingsValue;
 + (id)overrideDeviceAvailabilitySettingsValue;
-+ (id)settingsValueForKey:(id)a3;
++ (id)settingsValueForKey:(id)key;
 + (id)shareHeicsCalloutEnabledSettingsValue;
 + (id)subjectAutomaticAnalysisDelaySettingsValue;
 + (id)subjectDragCancellationDelaySettingsValue;
@@ -45,13 +45,13 @@ void __31__VKCInternalSettings_defaults__block_invoke()
   defaults_sDefaults = v0;
 }
 
-+ (id)settingsValueForKey:(id)a3
++ (id)settingsValueForKey:(id)key
 {
-  v4 = [a3 stringByAppendingString:@"SettingsValue"];
+  v4 = [key stringByAppendingString:@"SettingsValue"];
   v5 = NSSelectorFromString(v4);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [a1 performSelector:v5];
+    v6 = [self performSelector:v5];
   }
 
   else
@@ -65,55 +65,55 @@ void __31__VKCInternalSettings_defaults__block_invoke()
 + (id)disableAllLiveTextSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 disableAllLiveText];
+  disableAllLiveText = [self disableAllLiveText];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:disableAllLiveText];
 }
 
 + (id)disableVisualIntelligenceSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 disableVisualIntelligence];
+  disableVisualIntelligence = [self disableVisualIntelligence];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:disableVisualIntelligence];
 }
 
 + (id)logNormalizedVisibleRectProgressSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 logNormalizedVisibleRectProgress];
+  logNormalizedVisibleRectProgress = [self logNormalizedVisibleRectProgress];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:logNormalizedVisibleRectProgress];
 }
 
 + (id)isCGImageForMadEnabledSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 isCGImageForMadEnabled];
+  isCGImageForMadEnabled = [self isCGImageForMadEnabled];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:isCGImageForMadEnabled];
 }
 
 + (id)bypassVIV2MinSizeWorkaroundSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 bypassVIV2MinSizeWorkaround];
+  bypassVIV2MinSizeWorkaround = [self bypassVIV2MinSizeWorkaround];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:bypassVIV2MinSizeWorkaround];
 }
 
 + (id)isOpticalFlowForTextEnabledSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 isOpticalFlowForTextEnabled];
+  isOpticalFlowForTextEnabled = [self isOpticalFlowForTextEnabled];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:isOpticalFlowForTextEnabled];
 }
 
 + (id)extraWindowPointTouchOffsetSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  [a1 extraWindowPointTouchOffset];
+  [self extraWindowPointTouchOffset];
 
   return [v2 numberWithDouble:?];
 }
@@ -121,23 +121,23 @@ void __31__VKCInternalSettings_defaults__block_invoke()
 + (id)debugMenuEnabledSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 debugMenuEnabled];
+  debugMenuEnabled = [self debugMenuEnabled];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:debugMenuEnabled];
 }
 
 + (id)inhibitVisualBIDISettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 inhibitVisualBIDI];
+  inhibitVisualBIDI = [self inhibitVisualBIDI];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:inhibitVisualBIDI];
 }
 
 + (id)visibleTextAreaButtonThresholdSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  [a1 visibleTextAreaButtonThreshold];
+  [self visibleTextAreaButtonThreshold];
 
   return [v2 numberWithDouble:?];
 }
@@ -145,31 +145,31 @@ void __31__VKCInternalSettings_defaults__block_invoke()
 + (id)alwaysShowTextSelectionBordersSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 alwaysShowTextSelectionBorders];
+  alwaysShowTextSelectionBorders = [self alwaysShowTextSelectionBorders];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:alwaysShowTextSelectionBorders];
 }
 
 + (id)overrideDeviceAvailabilitySettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 overrideDeviceAvailability];
+  overrideDeviceAvailability = [self overrideDeviceAvailability];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:overrideDeviceAvailability];
 }
 
 + (id)isPerformingAutomatedTestSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 isPerformingAutomatedTest];
+  isPerformingAutomatedTest = [self isPerformingAutomatedTest];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:isPerformingAutomatedTest];
 }
 
 + (id)subjectDragLiftDelaySettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  [a1 subjectDragLiftDelay];
+  [self subjectDragLiftDelay];
 
   return [v2 numberWithDouble:?];
 }
@@ -177,7 +177,7 @@ void __31__VKCInternalSettings_defaults__block_invoke()
 + (id)subjectDragCancellationDelaySettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  [a1 subjectDragCancellationDelay];
+  [self subjectDragCancellationDelay];
 
   return [v2 numberWithDouble:?];
 }
@@ -185,7 +185,7 @@ void __31__VKCInternalSettings_defaults__block_invoke()
 + (id)subjectAutomaticAnalysisDelaySettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  [a1 subjectAutomaticAnalysisDelay];
+  [self subjectAutomaticAnalysisDelay];
 
   return [v2 numberWithDouble:?];
 }
@@ -193,54 +193,54 @@ void __31__VKCInternalSettings_defaults__block_invoke()
 + (id)addSubjectCropRectToPasteboardSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 addSubjectCropRectToPasteboard];
+  addSubjectCropRectToPasteboard = [self addSubjectCropRectToPasteboard];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:addSubjectCropRectToPasteboard];
 }
 
 + (id)shareHeicsCalloutEnabledSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 shareHeicsCalloutEnabled];
+  shareHeicsCalloutEnabled = [self shareHeicsCalloutEnabled];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:shareHeicsCalloutEnabled];
 }
 
 + (id)localeFreeQRSupportSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 localeFreeQRSupport];
+  localeFreeQRSupport = [self localeFreeQRSupport];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:localeFreeQRSupport];
 }
 
-+ (BOOL)BOOLForKey:(id)a3 withDefaultValue:(BOOL)a4
++ (BOOL)BOOLForKey:(id)key withDefaultValue:(BOOL)value
 {
-  v6 = [a1 defaultsKeyForKey:a3];
-  v7 = [a1 defaults];
-  v8 = [v7 objectForKey:v6];
+  v6 = [self defaultsKeyForKey:key];
+  defaults = [self defaults];
+  v8 = [defaults objectForKey:v6];
 
   if (v8)
   {
-    a4 = [v8 BOOLValue];
+    value = [v8 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-+ (double)floatForKey:(id)a3 withDefaultValue:(double)a4
++ (double)floatForKey:(id)key withDefaultValue:(double)value
 {
-  v6 = [a1 defaultsKeyForKey:a3];
-  v7 = [a1 defaults];
-  v8 = [v7 objectForKey:v6];
+  v6 = [self defaultsKeyForKey:key];
+  defaults = [self defaults];
+  v8 = [defaults objectForKey:v6];
 
   if (v8)
   {
     [v8 floatValue];
-    a4 = v9;
+    value = v9;
   }
 
-  return a4;
+  return value;
 }
 
 @end

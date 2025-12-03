@@ -24,11 +24,11 @@ LABEL_14:
   }
 
   v7 = +[PersonalHotspotDataUsageCache sharedInstance];
-  v8 = [(PersonalHotspotDataUsageRootSpecifier *)v6 billingPeriodSource];
-  if (v8)
+  billingPeriodSource = [(PersonalHotspotDataUsageRootSpecifier *)v6 billingPeriodSource];
+  if (billingPeriodSource)
   {
-    v9 = [(PersonalHotspotDataUsageRootSpecifier *)v6 billingPeriodSource];
-    v10 = [v7 hotspotClientIDsForPeriod:objc_msgSend(v9 mruMap:{"selectedPeriod"), 0}];
+    billingPeriodSource2 = [(PersonalHotspotDataUsageRootSpecifier *)v6 billingPeriodSource];
+    v10 = [v7 hotspotClientIDsForPeriod:objc_msgSend(billingPeriodSource2 mruMap:{"selectedPeriod"), 0}];
   }
 
   else
@@ -79,11 +79,11 @@ LABEL_15:
 - (unint64_t)dataUsage
 {
   v3 = +[PersonalHotspotDataUsageCache sharedInstance];
-  v4 = [(PersonalHotspotDataUsageRootSpecifier *)self billingPeriodSource];
-  if (v4)
+  billingPeriodSource = [(PersonalHotspotDataUsageRootSpecifier *)self billingPeriodSource];
+  if (billingPeriodSource)
   {
-    v5 = [(PersonalHotspotDataUsageRootSpecifier *)self billingPeriodSource];
-    v6 = [v3 totalHotspotClientUsageForPeriod:{objc_msgSend(v5, "selectedPeriod")}];
+    billingPeriodSource2 = [(PersonalHotspotDataUsageRootSpecifier *)self billingPeriodSource];
+    v6 = [v3 totalHotspotClientUsageForPeriod:{objc_msgSend(billingPeriodSource2, "selectedPeriod")}];
   }
 
   else
@@ -96,10 +96,10 @@ LABEL_15:
 
 - (id)dataUsageString
 {
-  v2 = [(PersonalHotspotDataUsageRootSpecifier *)self dataUsage];
-  if (v2)
+  dataUsage = [(PersonalHotspotDataUsageRootSpecifier *)self dataUsage];
+  if (dataUsage)
   {
-    v3 = usageSizeString(v2);
+    v3 = usageSizeString(dataUsage);
   }
 
   else

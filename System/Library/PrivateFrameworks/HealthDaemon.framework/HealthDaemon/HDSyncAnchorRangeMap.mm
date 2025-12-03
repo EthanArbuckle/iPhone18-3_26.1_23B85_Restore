@@ -1,22 +1,22 @@
 @interface HDSyncAnchorRangeMap
-- (BOOL)getAnchorRange:(HDSyncAnchorRange *)a3 forSyncEntityIdentifier:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (HDSyncAnchorRangeMap)initWithCodableSyncAnchorRangeMap:(id)a3 error:(id *)a4;
-- (HDSyncAnchorRangeMap)initWithCoder:(id)a3;
+- (BOOL)getAnchorRange:(HDSyncAnchorRange *)range forSyncEntityIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (HDSyncAnchorRangeMap)initWithCodableSyncAnchorRangeMap:(id)map error:(id *)error;
+- (HDSyncAnchorRangeMap)initWithCoder:(id)coder;
 - (id)codableSyncAnchorRangeMap;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAnchorRangesAndEntityIdentifiersWithBlock:(id)a3;
-- (void)setAnchorRange:(HDSyncAnchorRange)a3 forSyncEntityIdentifier:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAnchorRangesAndEntityIdentifiersWithBlock:(id)block;
+- (void)setAnchorRange:(HDSyncAnchorRange)range forSyncEntityIdentifier:(id)identifier;
 @end
 
 @implementation HDSyncAnchorRangeMap
 
-- (HDSyncAnchorRangeMap)initWithCodableSyncAnchorRangeMap:(id)a3 error:(id *)a4
+- (HDSyncAnchorRangeMap)initWithCodableSyncAnchorRangeMap:(id)map error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  mapCopy = map;
   v34.receiver = self;
   v34.super_class = HDSyncAnchorRangeMap;
   v7 = [(HDSyncAnchorRangeMap *)&v34 init];
@@ -29,8 +29,8 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = [v6 anchorRanges];
-  v9 = [v8 countByEnumeratingWithState:&v30 objects:v37 count:16];
+  anchorRanges = [mapCopy anchorRanges];
+  v9 = [anchorRanges countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (!v9)
   {
     goto LABEL_22;
@@ -45,7 +45,7 @@
     {
       if (*v31 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(anchorRanges);
       }
 
       v13 = *(*(&v30 + 1) + 8 * v12);
@@ -53,14 +53,14 @@
       {
         v27 = @"Codable sync anchor range %@ does not contain all required fields.";
 LABEL_26:
-        [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{v27, v13}];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{v27, v13}];
 
         v26 = 0;
         goto LABEL_27;
       }
 
-      v14 = [v13 startAnchor];
-      if (v14 > [v13 endAnchor])
+      startAnchor = [v13 startAnchor];
+      if (startAnchor > [v13 endAnchor])
       {
         v27 = @"Codable sync anchor range %@ has a start anchor after its end anchor.";
         goto LABEL_26;
@@ -69,8 +69,8 @@ LABEL_26:
       if ([v13 hasEntityIdentifier])
       {
         v15 = [HDSyncEntityIdentifier alloc];
-        v16 = [v13 entityIdentifier];
-        v17 = [(HDSyncEntityIdentifier *)v15 initWithCodableEntityIdentifier:v16];
+        entityIdentifier = [v13 entityIdentifier];
+        v17 = [(HDSyncEntityIdentifier *)v15 initWithCodableEntityIdentifier:entityIdentifier];
 
         if (v17)
         {
@@ -81,13 +81,13 @@ LABEL_26:
       v18 = HDBuiltinSyncEntityClassForType([v13 entityType]);
       if (v18)
       {
-        v19 = [v18 syncEntityIdentifier];
-        if (!v19)
+        syncEntityIdentifier = [v18 syncEntityIdentifier];
+        if (!syncEntityIdentifier)
         {
           goto LABEL_17;
         }
 
-        v17 = v19;
+        v17 = syncEntityIdentifier;
 LABEL_16:
         v20 = HDSyncAnchorRangeMake([v13 startAnchor], objc_msgSend(v13, "endAnchor"));
         [(HDSyncAnchorRangeMap *)v7 setAnchorRange:v20 forSyncEntityIdentifier:v21, v17];
@@ -100,9 +100,9 @@ LABEL_16:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         v23 = v22;
-        v24 = [v13 entityType];
+        entityType = [v13 entityType];
         *buf = 134217984;
-        v36 = v24;
+        v36 = entityType;
         _os_log_impl(&dword_228986000, v23, OS_LOG_TYPE_DEFAULT, "Codable sync anchor range contains invalid sync entity type (%lld) which will be ignored.", buf, 0xCu);
       }
 
@@ -111,7 +111,7 @@ LABEL_17:
     }
 
     while (v10 != v12);
-    v25 = [v8 countByEnumeratingWithState:&v30 objects:v37 count:16];
+    v25 = [anchorRanges countByEnumeratingWithState:&v30 objects:v37 count:16];
     v10 = v25;
   }
 
@@ -126,10 +126,10 @@ LABEL_27:
   return v26;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[HDSyncAnchorRangeMap allocWithZone:](HDSyncAnchorRangeMap init];
-  v6 = [(NSMutableDictionary *)self->_anchorRangesByEntityIdentifier mutableCopyWithZone:a3];
+  v6 = [(NSMutableDictionary *)self->_anchorRangesByEntityIdentifier mutableCopyWithZone:zone];
   if (v5)
   {
     objc_storeStrong(&v5->_anchorRangesByEntityIdentifier, v6);
@@ -179,15 +179,15 @@ void __49__HDSyncAnchorRangeMap_codableSyncAnchorRangeMap__block_invoke(uint64_t
   [*(a1 + 32) addAnchorRanges:v6];
 }
 
-- (void)setAnchorRange:(HDSyncAnchorRange)a3 forSyncEntityIdentifier:(id)a4
+- (void)setAnchorRange:(HDSyncAnchorRange)range forSyncEntityIdentifier:(id)identifier
 {
-  end = a3.end;
-  start = a3.start;
-  v8 = a4;
-  if (!v8)
+  end = range.end;
+  start = range.start;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HDSyncAnchorRangeMap.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"syncEntityIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncAnchorRangeMap.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"syncEntityIdentifier != nil"}];
   }
 
   if (!self->_anchorRangesByEntityIdentifier)
@@ -216,22 +216,22 @@ void __49__HDSyncAnchorRangeMap_codableSyncAnchorRangeMap__block_invoke(uint64_t
     v13 = 0;
   }
 
-  [(NSMutableDictionary *)self->_anchorRangesByEntityIdentifier setObject:v13 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_anchorRangesByEntityIdentifier setObject:v13 forKeyedSubscript:identifierCopy];
 }
 
-- (BOOL)getAnchorRange:(HDSyncAnchorRange *)a3 forSyncEntityIdentifier:(id)a4
+- (BOOL)getAnchorRange:(HDSyncAnchorRange *)range forSyncEntityIdentifier:(id)identifier
 {
-  v7 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HDSyncAnchorRangeMap.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"syncEntityIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncAnchorRangeMap.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"syncEntityIdentifier != nil"}];
   }
 
-  v8 = [(NSMutableDictionary *)self->_anchorRangesByEntityIdentifier objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_anchorRangesByEntityIdentifier objectForKeyedSubscript:identifierCopy];
   if (v8)
   {
-    *a3 = *(v8 + 8);
+    *range = *(v8 + 8);
   }
 
   v9 = v8 != 0;
@@ -239,16 +239,16 @@ void __49__HDSyncAnchorRangeMap_codableSyncAnchorRangeMap__block_invoke(uint64_t
   return v9;
 }
 
-- (void)enumerateAnchorRangesAndEntityIdentifiersWithBlock:(id)a3
+- (void)enumerateAnchorRangesAndEntityIdentifiersWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   anchorRangesByEntityIdentifier = self->_anchorRangesByEntityIdentifier;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__HDSyncAnchorRangeMap_enumerateAnchorRangesAndEntityIdentifiersWithBlock___block_invoke;
   v7[3] = &unk_27862F1F8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)anchorRangesByEntityIdentifier enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -334,9 +334,9 @@ uint64_t __75__HDSyncAnchorRangeMap_enumerateAnchorRangesAndEntityIdentifiersWit
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -344,7 +344,7 @@ uint64_t __75__HDSyncAnchorRangeMap_enumerateAnchorRangesAndEntityIdentifiersWit
   }
 
   anchorRangesByEntityIdentifier = self->_anchorRangesByEntityIdentifier;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (anchorRangesByEntityIdentifier == v6)
   {
     v7 = 1;
@@ -367,11 +367,11 @@ LABEL_7:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v21 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  [v15 encodeObject:self->_anchorRangesByEntityIdentifier forKey:@"AnchorRangesByEntityIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_anchorRangesByEntityIdentifier forKey:@"AnchorRangesByEntityIdentifier"];
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = 0u;
   v17 = 0u;
@@ -393,9 +393,9 @@ LABEL_7:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 schemaIdentifier];
+        schemaIdentifier = [v10 schemaIdentifier];
 
-        if (!v11)
+        if (!schemaIdentifier)
         {
           v12 = [(NSMutableDictionary *)self->_anchorRangesByEntityIdentifier objectForKeyedSubscript:v10];
           v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "entityIdentifier")}];
@@ -409,14 +409,14 @@ LABEL_7:
     while (v7);
   }
 
-  [v15 encodeObject:v4 forKey:@"AnchorRangesByObjectType"];
+  [coderCopy encodeObject:v4 forKey:@"AnchorRangesByObjectType"];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (HDSyncAnchorRangeMap)initWithCoder:(id)a3
+- (HDSyncAnchorRangeMap)initWithCoder:(id)coder
 {
   v37[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = HDSyncAnchorRangeMap;
   v5 = [(HDSyncAnchorRangeMap *)&v34 init];
@@ -429,7 +429,7 @@ LABEL_7:
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:3];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"AnchorRangesByEntityIdentifier"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"AnchorRangesByEntityIdentifier"];
     anchorRangesByEntityIdentifier = v5->_anchorRangesByEntityIdentifier;
     v5->_anchorRangesByEntityIdentifier = v9;
 
@@ -441,8 +441,8 @@ LABEL_7:
       v36[2] = objc_opt_class();
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:3];
       v13 = [v11 setWithArray:v12];
-      v29 = v4;
-      v14 = [v4 decodeObjectOfClasses:v13 forKey:@"AnchorRangesByObjectType"];
+      v29 = coderCopy;
+      v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"AnchorRangesByObjectType"];
 
       v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v16 = v5->_anchorRangesByEntityIdentifier;
@@ -490,7 +490,7 @@ LABEL_7:
         while (v19);
       }
 
-      v4 = v29;
+      coderCopy = v29;
     }
   }
 

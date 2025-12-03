@@ -1,82 +1,82 @@
 @interface PHProject
 + (id)entityKeyMap;
-+ (id)fetchProjectsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)localIdentifierWithUUID:(id)a3;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
++ (id)fetchProjectsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)localIdentifierWithUUID:(id)d;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
 - (BOOL)hasProjectPreview;
 - (NSData)projectExtensionData;
-- (PHProject)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
+- (PHProject)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 @end
 
 @implementation PHProject
 
 - (NSData)projectExtensionData
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_projectExtensionData)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_projectExtensionData)
   {
-    v3 = [(PHObject *)v2 photoLibrary];
-    v4 = [v3 assetsdClient];
-    v5 = [v4 resourceClient];
-    v6 = [(PHObject *)v2 uuid];
-    v7 = [v5 projectExtensionDataForProjectUuid:v6];
+    photoLibrary = [(PHObject *)selfCopy photoLibrary];
+    assetsdClient = [photoLibrary assetsdClient];
+    resourceClient = [assetsdClient resourceClient];
+    uuid = [(PHObject *)selfCopy uuid];
+    v7 = [resourceClient projectExtensionDataForProjectUuid:uuid];
     v8 = v7;
     if (v7)
     {
-      v9 = v7;
+      data = v7;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DEF0] data];
+      data = [MEMORY[0x1E695DEF0] data];
     }
 
-    projectExtensionData = v2->_projectExtensionData;
-    v2->_projectExtensionData = v9;
+    projectExtensionData = selfCopy->_projectExtensionData;
+    selfCopy->_projectExtensionData = data;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v11 = v2->_projectExtensionData;
+  v11 = selfCopy->_projectExtensionData;
 
   return v11;
 }
 
 - (BOOL)hasProjectPreview
 {
-  v2 = [(PHProject *)self projectRenderUuid];
-  v3 = v2 != 0;
+  projectRenderUuid = [(PHProject *)self projectRenderUuid];
+  v3 = projectRenderUuid != 0;
 
   return v3;
 }
 
-- (PHProject)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHProject)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = PHProject;
-  v9 = [(PHAssetCollection *)&v21 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHAssetCollection *)&v21 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"projectExtensionIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"projectExtensionIdentifier"];
     projectExtensionIdentifier = v9->_projectExtensionIdentifier;
     v9->_projectExtensionIdentifier = v10;
 
-    v12 = [v8 objectForKeyedSubscript:@"projectDocumentType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"projectDocumentType"];
     projectDocumentType = v9->_projectDocumentType;
     v9->_projectDocumentType = v12;
 
-    v14 = [v8 objectForKeyedSubscript:@"projectData"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"projectData"];
     projectExtensionData = v9->_projectExtensionData;
     v9->_projectExtensionData = v14;
 
-    v16 = [v8 objectForKeyedSubscript:@"projectRenderUuid"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"projectRenderUuid"];
     projectRenderUuid = v9->_projectRenderUuid;
     v9->_projectRenderUuid = v16;
 
-    v18 = [v8 objectForKeyedSubscript:@"creationDate"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"creationDate"];
     creationDate = v9->_creationDate;
     v9->_creationDate = v18;
 
@@ -86,16 +86,16 @@
   return v9;
 }
 
-+ (id)fetchProjectsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)fetchProjectsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__PHProject_fetchProjectsWithLocalIdentifiers_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = identifiersCopy;
+  v6 = identifiersCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -116,23 +116,23 @@ id __38__PHProject_fetchProjectsWithOptions___block_invoke(uint64_t a1, uint64_t
   return v3;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__PHProject_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -213,17 +213,17 @@ void __25__PHProject_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_1230 = v10;
 }
 
-+ (id)localIdentifierWithUUID:(id)a3
++ (id)localIdentifierWithUUID:(id)d
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 identifierCode];
-  v7 = [v4 stringWithFormat:@"%@/L0/%@", v5, v6];
+  dCopy = d;
+  identifierCode = [self identifierCode];
+  v7 = [v4 stringWithFormat:@"%@/L0/%@", dCopy, identifierCode];
 
   return v7;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   if (propertiesToFetchWithHint__onceToken_1239 != -1)
   {

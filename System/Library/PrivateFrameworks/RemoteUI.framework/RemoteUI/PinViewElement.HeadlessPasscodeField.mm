@@ -1,8 +1,8 @@
 @interface PinViewElement.HeadlessPasscodeField
-- (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField)initWithCoder:(id)a3;
-- (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField)initWithFrame:(CGRect)a3;
+- (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField)initWithCoder:(id)coder;
+- (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField)initWithFrame:(CGRect)frame;
 - (id)stringValue;
-- (void)setStringValue:(id)a3;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation PinViewElement.HeadlessPasscodeField
@@ -15,9 +15,9 @@
   return v2;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     v4 = sub_21BA87CBC();
   }
@@ -33,12 +33,12 @@
   v6[1] = v5;
 }
 
-- (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField)initWithFrame:(CGRect)a3
+- (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField_numberOfEntryFields) = 1;
   v7 = (&self->super.super.super.isa + OBJC_IVAR____TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField__stringValue);
   *v7 = 0;
@@ -48,7 +48,7 @@
   return [(PinViewElement.HeadlessPasscodeField *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField)initWithCoder:(id)a3
+- (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField_numberOfEntryFields) = 1;
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField__stringValue);
@@ -56,8 +56,8 @@
   v4[1] = 0xE000000000000000;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PinViewElement.HeadlessPasscodeField();
-  v5 = a3;
-  v6 = [(PinViewElement.HeadlessPasscodeField *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(PinViewElement.HeadlessPasscodeField *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

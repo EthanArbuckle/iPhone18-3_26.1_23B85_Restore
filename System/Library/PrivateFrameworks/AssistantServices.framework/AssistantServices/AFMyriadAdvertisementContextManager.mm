@@ -1,10 +1,10 @@
 @interface AFMyriadAdvertisementContextManager
-- (AFMyriadAdvertisementContextManager)initWithQueue:(id)a3;
+- (AFMyriadAdvertisementContextManager)initWithQueue:(id)queue;
 - (id)_settingsConnection;
 - (void)_resetSettingsConnection;
-- (void)pushMyriadAdvertisementContext:(id)a3 completionHandler:(id)a4;
+- (void)pushMyriadAdvertisementContext:(id)context completionHandler:(id)handler;
 - (void)reset;
-- (void)triggerABCForType:(id)a3 subType:(id)a4 context:(id)a5;
+- (void)triggerABCForType:(id)type subType:(id)subType context:(id)context;
 @end
 
 @implementation AFMyriadAdvertisementContextManager
@@ -30,23 +30,23 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)triggerABCForType:(id)a3 subType:(id)a4 context:(id)a5
+- (void)triggerABCForType:(id)type subType:(id)subType context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  subTypeCopy = subType;
+  contextCopy = context;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__AFMyriadAdvertisementContextManager_triggerABCForType_subType_context___block_invoke;
   v15[3] = &unk_1E7349398;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = typeCopy;
+  v17 = subTypeCopy;
+  v18 = contextCopy;
+  v12 = contextCopy;
+  v13 = subTypeCopy;
+  v14 = typeCopy;
   dispatch_async(queue, v15);
 }
 
@@ -76,20 +76,20 @@ void __73__AFMyriadAdvertisementContextManager_triggerABCForType_subType_context
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pushMyriadAdvertisementContext:(id)a3 completionHandler:(id)a4
+- (void)pushMyriadAdvertisementContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__AFMyriadAdvertisementContextManager_pushMyriadAdvertisementContext_completionHandler___block_invoke;
   block[3] = &unk_1E73496E8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contextCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = contextCopy;
   dispatch_async(queue, block);
 }
 
@@ -220,10 +220,10 @@ void __88__AFMyriadAdvertisementContextManager_pushMyriadAdvertisementContext_co
   return settingsConnection;
 }
 
-- (AFMyriadAdvertisementContextManager)initWithQueue:(id)a3
+- (AFMyriadAdvertisementContextManager)initWithQueue:(id)queue
 {
-  v5 = a3;
-  if (v5)
+  queueCopy = queue;
+  if (queueCopy)
   {
     v10.receiver = self;
     v10.super_class = AFMyriadAdvertisementContextManager;
@@ -231,19 +231,19 @@ void __88__AFMyriadAdvertisementContextManager_pushMyriadAdvertisementContext_co
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_queue, a3);
+      objc_storeStrong(&v6->_queue, queue);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

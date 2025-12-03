@@ -1,6 +1,6 @@
 @interface NSSUserDefaultsDataDestructionItem
 - (NSSUserDefaultsDataDestructionItem)init;
-- (NSSUserDefaultsDataDestructionItem)initWithUserDefaults:(id)a3 domainName:(id)a4 stickyKeys:(id)a5;
+- (NSSUserDefaultsDataDestructionItem)initWithUserDefaults:(id)defaults domainName:(id)name stickyKeys:(id)keys;
 @end
 
 @implementation NSSUserDefaultsDataDestructionItem
@@ -31,21 +31,21 @@
   objc_exception_throw(v6);
 }
 
-- (NSSUserDefaultsDataDestructionItem)initWithUserDefaults:(id)a3 domainName:(id)a4 stickyKeys:(id)a5
+- (NSSUserDefaultsDataDestructionItem)initWithUserDefaults:(id)defaults domainName:(id)name stickyKeys:(id)keys
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  defaultsCopy = defaults;
+  nameCopy = name;
+  keysCopy = keys;
+  if (!defaultsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NSSUserDefaultsDataDestructionItem initWithUserDefaults:domainName:stickyKeys:];
-    if (v10)
+    if (nameCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v10)
+  else if (nameCopy)
   {
     goto LABEL_6;
   }
@@ -56,7 +56,7 @@
   }
 
 LABEL_6:
-  if (!v11 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!keysCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NSSUserDefaultsDataDestructionItem initWithUserDefaults:domainName:stickyKeys:];
   }
@@ -67,12 +67,12 @@ LABEL_6:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_userDefaults, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_userDefaults, defaults);
+    v14 = [nameCopy copy];
     domainName = v13->_domainName;
     v13->_domainName = v14;
 
-    v16 = [v11 copy];
+    v16 = [keysCopy copy];
     stickyKeys = v13->_stickyKeys;
     v13->_stickyKeys = v16;
   }

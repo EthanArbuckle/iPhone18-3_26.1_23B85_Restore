@@ -1,14 +1,14 @@
 @interface IMPipelineComponent
-+ (id)pipelineFromComponents:(id)a3;
-- (id)runWithInput:(id)a3;
++ (id)pipelineFromComponents:(id)components;
+- (id)runWithInput:(id)input;
 @end
 
 @implementation IMPipelineComponent
 
-- (id)runWithInput:(id)a3
+- (id)runWithInput:(id)input
 {
   nextComponent = self->_nextComponent;
-  v5 = [(IMPipelineComponent *)self runIndividuallyWithInput:a3];
+  v5 = [(IMPipelineComponent *)self runIndividuallyWithInput:input];
   v6 = v5;
   if (nextComponent)
   {
@@ -25,25 +25,25 @@
   return v6;
 }
 
-+ (id)pipelineFromComponents:(id)a3
++ (id)pipelineFromComponents:(id)components
 {
-  v3 = a3;
-  if ([v3 count])
+  componentsCopy = components;
+  if ([componentsCopy count])
   {
-    if ([v3 count] != 1)
+    if ([componentsCopy count] != 1)
     {
       v4 = 0;
       do
       {
-        v5 = [v3 objectAtIndexedSubscript:v4];
-        v6 = [v3 objectAtIndexedSubscript:++v4];
+        v5 = [componentsCopy objectAtIndexedSubscript:v4];
+        v6 = [componentsCopy objectAtIndexedSubscript:++v4];
         v7 = [v5 bindTo:v6];
       }
 
-      while ([v3 count] - 1 > v4);
+      while ([componentsCopy count] - 1 > v4);
     }
 
-    v8 = [v3 objectAtIndexedSubscript:0];
+    v8 = [componentsCopy objectAtIndexedSubscript:0];
   }
 
   else

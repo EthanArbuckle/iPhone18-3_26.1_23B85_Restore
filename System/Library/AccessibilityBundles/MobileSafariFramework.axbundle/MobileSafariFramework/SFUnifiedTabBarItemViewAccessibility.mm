@@ -1,9 +1,9 @@
 @interface SFUnifiedTabBarItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityScrollToVisible;
 - (BOOL)_axSearchFieldIsActive;
 - (CGRect)accessibilityFrame;
-- (SFUnifiedTabBarItemViewAccessibility)initWithFrame:(CGRect)a3;
+- (SFUnifiedTabBarItemViewAccessibility)initWithFrame:(CGRect)frame;
 - (_NSRange)_accessibilityRowRange;
 - (_NSRange)_accessibilitySelectedTextRange;
 - (_NSRange)_accessibilityVisibleTextRange;
@@ -17,62 +17,62 @@
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)a3 withString:(id)a4;
+- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)cursor withString:(id)string;
 - (void)_accessibilitySetFormatButtonLabel;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 - (void)_accessibilityUpdateWebExtensionLabels;
 - (void)makeFormatMenuButton;
-- (void)setExtensionButtonConfiguration:(id)a3;
-- (void)setOverlayConfiguration:(id)a3;
+- (void)setExtensionButtonConfiguration:(id)configuration;
+- (void)setOverlayConfiguration:(id)configuration;
 @end
 
 @implementation SFUnifiedTabBarItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_titleContainer" withType:"SFUnifiedTabBarItemTitleContainerView"];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"searchField" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_voiceSearchButton" withType:"UIButton"];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_closeButton" withType:"SFUnifiedTabBarItemViewCloseButton"];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_accessoryButtonArrangement" withType:"SFUnifiedTabBarItemAccessoryButtonArrangement"];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_active" withType:"B"];
-  [v3 validateClass:@"SFUnifiedTabBarItemAccessoryButtonArrangement" hasInstanceMethod:@"leadingButtonTypes" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemAccessoryButtonArrangement" hasInstanceMethod:@"trailingButtonTypes" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"_viewForAccessoryButtonOfType:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"showsCloseButton" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SFUnifiedTabBar"];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" isKindOfClass:@"SFUnifiedBarItemView"];
-  [v3 validateClass:@"SFUnifiedBarItemView" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFUnifiedBarItem" hasInstanceMethod:@"isPinned" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFUnifiedTabBar" hasInstanceMethod:@"itemArrangement" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFUnifiedTabBar" hasInstanceVariable:@"_scrollView" withType:"UIScrollView"];
-  [v3 validateClass:@"SFUnifiedTabBar" hasInstanceMethod:@"scrollToItem:animated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemArrangement" hasInstanceMethod:@"items" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_formatMenuButton" withType:"SFNavigationBarToggleButton"];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"makeFormatMenuButton" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_extensionButtonConfiguration" withType:"SFWebExtensionButtonConfiguration"];
-  [v3 validateClass:@"SFWebExtensionButtonConfiguration" hasInstanceMethod:@"buttons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_firstExtensionButton" withType:"UIButton"];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_secondExtensionButton" withType:"UIButton"];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"setExtensionButtonConfiguration:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SFWebExtensionButton" hasInstanceMethod:@"extension" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WBSWebExtensionData" hasInstanceMethod:@"displayShortName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_overlayView" withType:"SFURLFieldOverlayView"];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"setOverlayConfiguration:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SFURLFieldOverlayView" hasInstanceVariable:@"_textLabel" withType:"UILabel"];
-  [v3 validateClass:@"SFURLFieldOverlayView" hasInstanceVariable:@"_buttons" withType:"NSArray"];
-  [v3 validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_hasHiddenElements" withType:"BOOL"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_titleContainer" withType:"SFUnifiedTabBarItemTitleContainerView"];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"searchField" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_voiceSearchButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_closeButton" withType:"SFUnifiedTabBarItemViewCloseButton"];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_accessoryButtonArrangement" withType:"SFUnifiedTabBarItemAccessoryButtonArrangement"];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_active" withType:"B"];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemAccessoryButtonArrangement" hasInstanceMethod:@"leadingButtonTypes" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemAccessoryButtonArrangement" hasInstanceMethod:@"trailingButtonTypes" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"_viewForAccessoryButtonOfType:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"showsCloseButton" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBar"];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" isKindOfClass:@"SFUnifiedBarItemView"];
+  [validationsCopy validateClass:@"SFUnifiedBarItemView" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFUnifiedBarItem" hasInstanceMethod:@"isPinned" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBar" hasInstanceMethod:@"itemArrangement" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBar" hasInstanceVariable:@"_scrollView" withType:"UIScrollView"];
+  [validationsCopy validateClass:@"SFUnifiedTabBar" hasInstanceMethod:@"scrollToItem:animated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemArrangement" hasInstanceMethod:@"items" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_formatMenuButton" withType:"SFNavigationBarToggleButton"];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"makeFormatMenuButton" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_extensionButtonConfiguration" withType:"SFWebExtensionButtonConfiguration"];
+  [validationsCopy validateClass:@"SFWebExtensionButtonConfiguration" hasInstanceMethod:@"buttons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_firstExtensionButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_secondExtensionButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"setExtensionButtonConfiguration:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SFWebExtensionButton" hasInstanceMethod:@"extension" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WBSWebExtensionData" hasInstanceMethod:@"displayShortName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_overlayView" withType:"SFURLFieldOverlayView"];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceMethod:@"setOverlayConfiguration:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SFURLFieldOverlayView" hasInstanceVariable:@"_textLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SFURLFieldOverlayView" hasInstanceVariable:@"_buttons" withType:"NSArray"];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemView" hasInstanceVariable:@"_hasHiddenElements" withType:"BOOL"];
 }
 
 - (BOOL)_axSearchFieldIsActive
 {
   v2 = [(SFUnifiedTabBarItemViewAccessibility *)self safeUIViewForKey:@"searchField"];
-  v3 = [v2 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v2 _accessibilityViewIsVisible];
 
-  return v3;
+  return _accessibilityViewIsVisible;
 }
 
 - (id)_axScribbleOverlay
@@ -94,33 +94,33 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
-  if (v3)
+  _axScribbleOverlay = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
+  if (_axScribbleOverlay)
   {
     v12 = 0;
     objc_opt_class();
-    v4 = [v3 safeValueForKey:@"_textLabel"];
-    v5 = __UIAccessibilityCastAsClass();
+    v4 = [_axScribbleOverlay safeValueForKey:@"_textLabel"];
+    accessibilityLabel = __UIAccessibilityCastAsClass();
 
-    v6 = [v5 text];
+    text = [accessibilityLabel text];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SFUnifiedTabBarItemViewAccessibility;
-    v5 = [(SFUnifiedTabBarItemViewAccessibility *)&v11 accessibilityLabel];
-    if (!v5)
+    accessibilityLabel = [(SFUnifiedTabBarItemViewAccessibility *)&v11 accessibilityLabel];
+    if (!accessibilityLabel)
     {
       if ([(SFUnifiedTabBarItemViewAccessibility *)self safeBoolForKey:@"_active"])
       {
         v7 = [(SFUnifiedTabBarItemViewAccessibility *)self safeUIViewForKey:@"_titleContainer"];
-        v5 = [v7 accessibilityLabel];
+        accessibilityLabel = [v7 accessibilityLabel];
       }
 
       else
       {
-        v5 = 0;
+        accessibilityLabel = 0;
       }
     }
 
@@ -128,45 +128,45 @@
     if ([v8 safeBoolForKey:@"isPinned"])
     {
       v10 = accessibilityMobileSafariLocalizedString(@"tab.pinned");
-      v6 = __AXStringForVariables();
+      text = __AXStringForVariables();
     }
 
     else
     {
-      v6 = v5;
+      text = accessibilityLabel;
     }
   }
 
-  return v6;
+  return text;
 }
 
 - (CGRect)accessibilityFrame
 {
   if ([(SFUnifiedTabBarItemViewAccessibility *)self _axSearchFieldIsActive])
   {
-    v11 = self;
-    v3 = &v11;
+    selfCopy = self;
+    v3 = &selfCopy;
   }
 
   else
   {
-    v4 = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
+    _axScribbleOverlay = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
 
-    if (v4)
+    if (_axScribbleOverlay)
     {
-      v10 = self;
-      v3 = &v10;
+      selfCopy2 = self;
+      v3 = &selfCopy2;
     }
 
     else
     {
-      v9 = self;
-      v3 = &v9;
+      selfCopy3 = self;
+      v3 = &selfCopy3;
     }
   }
 
   v3[1] = SFUnifiedTabBarItemViewAccessibility;
-  objc_msgSendSuper2(v3, sel_accessibilityFrame, v9);
+  objc_msgSendSuper2(v3, sel_accessibilityFrame, selfCopy3);
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -179,10 +179,10 @@
   if ([(SFUnifiedTabBarItemViewAccessibility *)self _axSearchFieldIsActive])
   {
     v3 = [(SFUnifiedTabBarItemViewAccessibility *)self safeUIViewForKey:@"searchField"];
-    v4 = [v3 _accessibilityVisibleTextRange];
+    _accessibilityVisibleTextRange = [v3 _accessibilityVisibleTextRange];
     v6 = v5;
 
-    v7 = v4;
+    _accessibilityVisibleTextRange2 = _accessibilityVisibleTextRange;
     v8 = v6;
   }
 
@@ -190,18 +190,18 @@
   {
     v9.receiver = self;
     v9.super_class = SFUnifiedTabBarItemViewAccessibility;
-    v7 = [(SFUnifiedTabBarItemViewAccessibility *)&v9 _accessibilityVisibleTextRange];
+    _accessibilityVisibleTextRange2 = [(SFUnifiedTabBarItemViewAccessibility *)&v9 _accessibilityVisibleTextRange];
   }
 
   result.length = v8;
-  result.location = v7;
+  result.location = _accessibilityVisibleTextRange2;
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if ([(SFUnifiedTabBarItemViewAccessibility *)self _axSearchFieldIsActive])
   {
     v6 = [(SFUnifiedTabBarItemViewAccessibility *)self safeUIViewForKey:@"searchField"];
@@ -209,13 +209,13 @@
   }
 }
 
-- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)a3 withString:(id)a4
+- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)cursor withString:(id)string
 {
-  v7 = a4;
+  stringCopy = string;
   if ([(SFUnifiedTabBarItemViewAccessibility *)self _axSearchFieldIsActive])
   {
     v6 = [(SFUnifiedTabBarItemViewAccessibility *)self safeUIViewForKey:@"searchField"];
-    [v6 _accessibilityReplaceCharactersAtCursor:a3 withString:v7];
+    [v6 _accessibilityReplaceCharactersAtCursor:cursor withString:stringCopy];
   }
 }
 
@@ -224,19 +224,19 @@
   if ([(SFUnifiedTabBarItemViewAccessibility *)self _axSearchFieldIsActive])
   {
     v3 = [(SFUnifiedTabBarItemViewAccessibility *)self safeUIViewForKey:@"searchField"];
-    v4 = [v3 accessibilityTraits];
+    accessibilityTraits = [v3 accessibilityTraits];
 
-    return v4;
+    return accessibilityTraits;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SFUnifiedTabBarItemViewAccessibility;
-    v6 = [(SFUnifiedTabBarItemViewAccessibility *)&v10 accessibilityTraits];
-    v7 = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
+    accessibilityTraits2 = [(SFUnifiedTabBarItemViewAccessibility *)&v10 accessibilityTraits];
+    _axScribbleOverlay = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
 
-    if (v7)
+    if (_axScribbleOverlay)
     {
       return *MEMORY[0x29EDC7FA0];
     }
@@ -250,7 +250,7 @@
         v9 = 0;
       }
 
-      return v9 | v6;
+      return v9 | accessibilityTraits2;
     }
   }
 }
@@ -321,10 +321,10 @@
   if ([(SFUnifiedTabBarItemViewAccessibility *)self _axSearchFieldIsActive])
   {
     v3 = [(SFUnifiedTabBarItemViewAccessibility *)self safeUIViewForKey:@"searchField"];
-    v4 = [v3 _accessibilitySelectedTextRange];
+    _accessibilitySelectedTextRange = [v3 _accessibilitySelectedTextRange];
     v6 = v5;
 
-    v7 = v4;
+    _accessibilitySelectedTextRange2 = _accessibilitySelectedTextRange;
     v8 = v6;
   }
 
@@ -332,20 +332,20 @@
   {
     v9.receiver = self;
     v9.super_class = SFUnifiedTabBarItemViewAccessibility;
-    v7 = [(SFUnifiedTabBarItemViewAccessibility *)&v9 _accessibilitySelectedTextRange];
+    _accessibilitySelectedTextRange2 = [(SFUnifiedTabBarItemViewAccessibility *)&v9 _accessibilitySelectedTextRange];
   }
 
   result.length = v8;
-  result.location = v7;
+  result.location = _accessibilitySelectedTextRange2;
   return result;
 }
 
 - (id)_accessibilitySupplementaryHeaderViews
 {
   v36 = *MEMORY[0x29EDCA608];
-  v2 = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
+  _axScribbleOverlay = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
 
-  if (v2)
+  if (_axScribbleOverlay)
   {
     v3 = 0;
   }
@@ -353,7 +353,7 @@
   else
   {
     v3 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-    v4 = self;
+    selfCopy2 = self;
     if ([(SFUnifiedTabBarItemViewAccessibility *)self _axSearchFieldIsActive])
     {
       v32 = 0u;
@@ -361,9 +361,9 @@
       v30 = 0u;
       v31 = 0u;
       v5 = [(SFUnifiedTabBarItemViewAccessibility *)self safeUIViewForKey:@"searchField"];
-      v6 = [v5 _accessibilitySupplementaryHeaderViews];
+      _accessibilitySupplementaryHeaderViews = [v5 _accessibilitySupplementaryHeaderViews];
 
-      v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v7 = [_accessibilitySupplementaryHeaderViews countByEnumeratingWithState:&v30 objects:v35 count:16];
       if (v7)
       {
         v8 = *v31;
@@ -373,26 +373,26 @@
           {
             if (*v31 != v8)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(_accessibilitySupplementaryHeaderViews);
             }
 
             [v3 axSafelyAddObject:*(*(&v30 + 1) + 8 * i)];
           }
 
-          v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+          v7 = [_accessibilitySupplementaryHeaderViews countByEnumeratingWithState:&v30 objects:v35 count:16];
         }
 
         while (v7);
       }
 
-      v4 = self;
+      selfCopy2 = self;
     }
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = [(SFUnifiedTabBarItemViewAccessibility *)v4 safeValueForKey:@"_accessoryButtonArrangement"];
+    v10 = [(SFUnifiedTabBarItemViewAccessibility *)selfCopy2 safeValueForKey:@"_accessoryButtonArrangement"];
     obj = [v10 safeArrayForKey:@"leadingButtonTypes"];
 
     v11 = [obj countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -448,16 +448,16 @@ uint64_t __78__SFUnifiedTabBarItemViewAccessibility__accessibilitySupplementaryH
 {
   v45 = *MEMORY[0x29EDCA608];
   v3 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-  v23 = self;
-  v4 = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
-  v22 = v4;
-  if (v4)
+  selfCopy = self;
+  _axScribbleOverlay = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
+  v22 = _axScribbleOverlay;
+  if (_axScribbleOverlay)
   {
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v5 = [v4 safeArrayForKey:@"_buttons"];
+    v5 = [_axScribbleOverlay safeArrayForKey:@"_buttons"];
     v6 = [v5 countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (v6)
     {
@@ -490,9 +490,9 @@ uint64_t __78__SFUnifiedTabBarItemViewAccessibility__accessibilitySupplementaryH
       v34 = 0u;
       v35 = 0u;
       v9 = [(SFUnifiedTabBarItemViewAccessibility *)self safeUIViewForKey:@"searchField"];
-      v10 = [v9 _accessibilitySupplementaryFooterViews];
+      _accessibilitySupplementaryFooterViews = [v9 _accessibilitySupplementaryFooterViews];
 
-      v11 = [v10 countByEnumeratingWithState:&v34 objects:v43 count:16];
+      v11 = [_accessibilitySupplementaryFooterViews countByEnumeratingWithState:&v34 objects:v43 count:16];
       if (v11)
       {
         v12 = *v35;
@@ -502,19 +502,19 @@ uint64_t __78__SFUnifiedTabBarItemViewAccessibility__accessibilitySupplementaryH
           {
             if (*v35 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(_accessibilitySupplementaryFooterViews);
             }
 
             [v3 axSafelyAddObject:*(*(&v34 + 1) + 8 * j)];
           }
 
-          v11 = [v10 countByEnumeratingWithState:&v34 objects:v43 count:16];
+          v11 = [_accessibilitySupplementaryFooterViews countByEnumeratingWithState:&v34 objects:v43 count:16];
         }
 
         while (v11);
       }
 
-      self = v23;
+      self = selfCopy;
     }
 
     v32 = 0u;
@@ -670,11 +670,11 @@ id __74__SFUnifiedTabBarItemViewAccessibility__accessibilitySetFormatButtonLabel
   return v3;
 }
 
-- (SFUnifiedTabBarItemViewAccessibility)initWithFrame:(CGRect)a3
+- (SFUnifiedTabBarItemViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SFUnifiedTabBarItemViewAccessibility;
-  v3 = [(SFUnifiedTabBarItemViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFUnifiedTabBarItemViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SFUnifiedTabBarItemViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;
@@ -682,10 +682,10 @@ id __74__SFUnifiedTabBarItemViewAccessibility__accessibilitySetFormatButtonLabel
 
 - (id)accessibilityValue
 {
-  v3 = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
-  if (v3)
+  _axScribbleOverlay = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
+  if (_axScribbleOverlay)
   {
-    v4 = 0;
+    accessibilityValue = 0;
     goto LABEL_8;
   }
 
@@ -698,8 +698,8 @@ id __74__SFUnifiedTabBarItemViewAccessibility__accessibilitySetFormatButtonLabel
   {
     v8.receiver = self;
     v8.super_class = SFUnifiedTabBarItemViewAccessibility;
-    v4 = [(SFUnifiedTabBarItemViewAccessibility *)&v8 accessibilityValue];
-    if (v4)
+    accessibilityValue = [(SFUnifiedTabBarItemViewAccessibility *)&v8 accessibilityValue];
+    if (accessibilityValue)
     {
       goto LABEL_8;
     }
@@ -708,25 +708,25 @@ id __74__SFUnifiedTabBarItemViewAccessibility__accessibilitySetFormatButtonLabel
   }
 
   v6 = [(SFUnifiedTabBarItemViewAccessibility *)self safeUIViewForKey:v5];
-  v4 = [v6 accessibilityValue];
+  accessibilityValue = [v6 accessibilityValue];
 
 LABEL_8:
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
 {
   v6.receiver = self;
   v6.super_class = SFUnifiedTabBarItemViewAccessibility;
-  v3 = [(SFUnifiedTabBarItemViewAccessibility *)&v6 accessibilityHint];
-  if (!v3)
+  accessibilityHint = [(SFUnifiedTabBarItemViewAccessibility *)&v6 accessibilityHint];
+  if (!accessibilityHint)
   {
     v4 = [(SFUnifiedTabBarItemViewAccessibility *)self safeUIViewForKey:@"_titleContainer"];
-    v3 = [v4 accessibilityHint];
+    accessibilityHint = [v4 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (BOOL)_accessibilityScrollToVisible
@@ -749,22 +749,22 @@ LABEL_8:
   return v3;
 }
 
-- (void)setExtensionButtonConfiguration:(id)a3
+- (void)setExtensionButtonConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = SFUnifiedTabBarItemViewAccessibility;
-  [(SFUnifiedTabBarItemViewAccessibility *)&v4 setExtensionButtonConfiguration:a3];
+  [(SFUnifiedTabBarItemViewAccessibility *)&v4 setExtensionButtonConfiguration:configuration];
   [(SFUnifiedTabBarItemViewAccessibility *)self _accessibilityUpdateWebExtensionLabels];
 }
 
-- (void)setOverlayConfiguration:(id)a3
+- (void)setOverlayConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = SFUnifiedTabBarItemViewAccessibility;
-  [(SFUnifiedTabBarItemViewAccessibility *)&v5 setOverlayConfiguration:a3];
-  v4 = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
+  [(SFUnifiedTabBarItemViewAccessibility *)&v5 setOverlayConfiguration:configuration];
+  _axScribbleOverlay = [(SFUnifiedTabBarItemViewAccessibility *)self _axScribbleOverlay];
 
-  if (v4)
+  if (_axScribbleOverlay)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], self);
   }

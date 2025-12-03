@@ -1,7 +1,7 @@
 @interface MusicCrossFadeDurationCellAccessibility
 - (id)_axSlider;
 - (id)accessibilityValue;
-- (void)_axIncrementSlider:(BOOL)a3;
+- (void)_axIncrementSlider:(BOOL)slider;
 @end
 
 @implementation MusicCrossFadeDurationCellAccessibility
@@ -9,8 +9,8 @@
 - (id)accessibilityValue
 {
   v3 = accessibilityMusicSettingsLocalizedString(@"CROSS_FADE_DURATION_FORMAT");
-  v4 = [(MusicCrossFadeDurationCellAccessibility *)self _axSlider];
-  [v4 value];
+  _axSlider = [(MusicCrossFadeDurationCellAccessibility *)self _axSlider];
+  [_axSlider value];
   v6 = v5;
 
   v7 = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:v3, v6];
@@ -18,17 +18,17 @@
   return v7;
 }
 
-- (void)_axIncrementSlider:(BOOL)a3
+- (void)_axIncrementSlider:(BOOL)slider
 {
-  v3 = a3;
-  v5 = [(MusicCrossFadeDurationCellAccessibility *)self _axSlider];
-  objc_initWeak(&location, v5);
+  sliderCopy = slider;
+  _axSlider = [(MusicCrossFadeDurationCellAccessibility *)self _axSlider];
+  objc_initWeak(&location, _axSlider);
 
   v6 = objc_loadWeakRetained(&location);
   [v6 value];
   v8 = v7;
 
-  if (v3)
+  if (sliderCopy)
   {
     v9 = v8 + 1;
   }

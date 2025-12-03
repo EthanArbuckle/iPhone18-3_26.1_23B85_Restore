@@ -1,12 +1,12 @@
 @interface LegacyProfilesAdapter
 - (_TtC24LegacyProfilesSubscriber21LegacyProfilesAdapter)init;
 - (id)configurationClasses;
-- (id)declarationKeyForConfiguration:(id)a3;
-- (void)allDeclarationKeysForScope:(int64_t)a3 completionHandler:(id)a4;
-- (void)applyConfiguration:(RMSubscribedConfigurationReference *)a3 replaceKey:(RMStoreDeclarationKey *)a4 scope:(int64_t)a5 completionHandler:(id)a6;
-- (void)beginProcessingConfigurationsForScope:(int64_t)a3 completionHandler:(id)a4;
-- (void)endProcessingConfigurations:(BOOL)a3 scope:(int64_t)a4 completionHandler:(id)a5;
-- (void)removeDeclarationKey:(RMStoreDeclarationKey *)a3 scope:(int64_t)a4 completionHandler:(id)a5;
+- (id)declarationKeyForConfiguration:(id)configuration;
+- (void)allDeclarationKeysForScope:(int64_t)scope completionHandler:(id)handler;
+- (void)applyConfiguration:(RMSubscribedConfigurationReference *)configuration replaceKey:(RMStoreDeclarationKey *)key scope:(int64_t)scope completionHandler:(id)handler;
+- (void)beginProcessingConfigurationsForScope:(int64_t)scope completionHandler:(id)handler;
+- (void)endProcessingConfigurations:(BOOL)configurations scope:(int64_t)scope completionHandler:(id)handler;
+- (void)removeDeclarationKey:(RMStoreDeclarationKey *)key scope:(int64_t)scope completionHandler:(id)handler;
 @end
 
 @implementation LegacyProfilesAdapter
@@ -37,14 +37,14 @@
   return v3.super.isa;
 }
 
-- (void)beginProcessingConfigurationsForScope:(int64_t)a3 completionHandler:(id)a4
+- (void)beginProcessingConfigurationsForScope:(int64_t)scope completionHandler:(id)handler
 {
   v7 = (*(*(sub_1000012FC(&qword_100010758, &qword_1000090C8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = scope;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1000086CC();
@@ -59,19 +59,19 @@
   v14[3] = 0;
   v14[4] = &unk_100009188;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_100003A10(0, 0, v9, &unk_100009190, v14);
 }
 
-- (void)endProcessingConfigurations:(BOOL)a3 scope:(int64_t)a4 completionHandler:(id)a5
+- (void)endProcessingConfigurations:(BOOL)configurations scope:(int64_t)scope completionHandler:(id)handler
 {
   v9 = (*(*(sub_1000012FC(&qword_100010758, &qword_1000090C8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = configurations;
+  *(v13 + 24) = scope;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = sub_1000086CC();
@@ -86,18 +86,18 @@
   v16[3] = 0;
   v16[4] = &unk_100009168;
   v16[5] = v15;
-  v17 = self;
+  selfCopy = self;
   sub_100003A10(0, 0, v11, &unk_100009170, v16);
 }
 
-- (void)allDeclarationKeysForScope:(int64_t)a3 completionHandler:(id)a4
+- (void)allDeclarationKeysForScope:(int64_t)scope completionHandler:(id)handler
 {
   v7 = (*(*(sub_1000012FC(&qword_100010758, &qword_1000090C8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = scope;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1000086CC();
@@ -112,20 +112,20 @@
   v14[3] = 0;
   v14[4] = &unk_100009148;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_100003A10(0, 0, v9, &unk_100009150, v14);
 }
 
-- (void)applyConfiguration:(RMSubscribedConfigurationReference *)a3 replaceKey:(RMStoreDeclarationKey *)a4 scope:(int64_t)a5 completionHandler:(id)a6
+- (void)applyConfiguration:(RMSubscribedConfigurationReference *)configuration replaceKey:(RMStoreDeclarationKey *)key scope:(int64_t)scope completionHandler:(id)handler
 {
   v11 = (*(*(sub_1000012FC(&qword_100010758, &qword_1000090C8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v13 = &v22 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  v15[2] = a3;
-  v15[3] = a4;
-  v15[4] = a5;
+  v15[2] = configuration;
+  v15[3] = key;
+  v15[4] = scope;
   v15[5] = v14;
   v15[6] = self;
   v16 = sub_1000086CC();
@@ -140,21 +140,21 @@
   v18[3] = 0;
   v18[4] = &unk_100009128;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a4;
-  v21 = self;
+  configurationCopy = configuration;
+  keyCopy = key;
+  selfCopy = self;
   sub_100003A10(0, 0, v13, &unk_100009130, v18);
 }
 
-- (void)removeDeclarationKey:(RMStoreDeclarationKey *)a3 scope:(int64_t)a4 completionHandler:(id)a5
+- (void)removeDeclarationKey:(RMStoreDeclarationKey *)key scope:(int64_t)scope completionHandler:(id)handler
 {
   v9 = (*(*(sub_1000012FC(&qword_100010758, &qword_1000090C8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = key;
+  v13[3] = scope;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_1000086CC();
@@ -169,23 +169,23 @@
   v16[3] = 0;
   v16[4] = &unk_1000090E8;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  keyCopy = key;
+  selfCopy = self;
   sub_100003A10(0, 0, v11, &unk_1000090F8, v16);
 }
 
-- (id)declarationKeyForConfiguration:(id)a3
+- (id)declarationKeyForConfiguration:(id)configuration
 {
   v3 = *(self + OBJC_IVAR____TtC24LegacyProfilesSubscriber21LegacyProfilesAdapter_profilesController);
   if (v3)
   {
-    v4 = self;
-    v5 = a3;
-    v6 = v4;
+    selfCopy = self;
+    configurationCopy = configuration;
+    v6 = selfCopy;
     v7 = v3;
-    v8 = [v5 store];
-    v9 = [v5 declaration];
-    v10 = [v7 declarationKeyForStore:v8 declaration:v9];
+    store = [configurationCopy store];
+    declaration = [configurationCopy declaration];
+    v10 = [v7 declarationKeyForStore:store declaration:declaration];
 
     return v10;
   }

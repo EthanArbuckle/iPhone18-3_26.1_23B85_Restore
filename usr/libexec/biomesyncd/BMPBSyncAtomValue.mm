@@ -1,10 +1,10 @@
 @interface BMPBSyncAtomValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBSyncAtomValue
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = BMPBSyncAtomValue;
   v3 = [(BMPBSyncAtomValue *)&v7 description];
-  v4 = [(BMPBSyncAtomValue *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(BMPBSyncAtomValue *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -42,34 +42,34 @@
   value = self->_value;
   if (value)
   {
-    v7 = [(BMPBStoreEventAtomValue *)value dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"value"];
+    dictionaryRepresentation = [(BMPBStoreEventAtomValue *)value dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"value"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_value)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -77,31 +77,31 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(BMPBStoreEventAtomValue *)self->_value copyWithZone:a3];
+  v7 = [(BMPBStoreEventAtomValue *)self->_value copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_type != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_type != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -109,7 +109,7 @@ LABEL_9:
   }
 
   value = self->_value;
-  if (value | *(v4 + 2))
+  if (value | *(equalCopy + 2))
   {
     v7 = [(BMPBStoreEventAtomValue *)value isEqual:?];
   }

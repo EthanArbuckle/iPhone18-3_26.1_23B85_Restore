@@ -1,14 +1,14 @@
 @interface CDStoreAuthenticationGetAuthInfoResponse
-- (CDStoreAuthenticationGetAuthInfoResponse)initWithRapportDictionary:(id)a3;
+- (CDStoreAuthenticationGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDStoreAuthenticationGetAuthInfoResponse
 
-- (CDStoreAuthenticationGetAuthInfoResponse)initWithRapportDictionary:(id)a3
+- (CDStoreAuthenticationGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = CDStoreAuthenticationGetAuthInfoResponse;
   v5 = [(CDStoreAuthenticationGetAuthInfoResponse *)&v16 init];
@@ -25,7 +25,7 @@
     v5->_deviceName = v8;
 
     v10 = objc_opt_self();
-    v11 = v4;
+    v11 = dictionaryCopy;
     v12 = [NSSet setWithObject:v10];
     v13 = sub_100017500(v11, @"storeAuthenticationRequest", v12);
 
@@ -55,9 +55,9 @@
   [v3 appendString:self->_deviceClass withName:@"deviceClass" skipIfEmpty:1];
   [v3 appendString:self->_deviceName withName:@"deviceName" skipIfEmpty:1];
   v4 = [v3 appendObject:self->_authenticationRequest withName:@"authenticationRequest" skipIfNil:1];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

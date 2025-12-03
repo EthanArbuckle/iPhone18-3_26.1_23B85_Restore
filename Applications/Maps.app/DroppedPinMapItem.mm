@@ -1,5 +1,5 @@
 @interface DroppedPinMapItem
-- (DroppedPinMapItem)initWithSearchResult:(id)a3;
+- (DroppedPinMapItem)initWithSearchResult:(id)result;
 - (NSArray)autocompletionStrings;
 - (id)clientFeatureID;
 - (id)leafPersonalizedAutocompleteItems;
@@ -11,8 +11,8 @@
 
 - (id)leafPersonalizedAutocompleteItems
 {
-  v4 = self;
-  v2 = [NSArray arrayWithObjects:&v4 count:1];
+  selfCopy = self;
+  v2 = [NSArray arrayWithObjects:&selfCopy count:1];
 
   return v2;
 }
@@ -22,8 +22,8 @@
   autocompletionStrings = self->_autocompletionStrings;
   if (!autocompletionStrings)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_autocompletionStrings)
     {
       +[NSMutableArray array];
@@ -33,21 +33,21 @@
       v5 = v15[3] = &unk_101652AB0;
       v16 = v5;
       v6 = objc_retainBlock(v15);
-      v7 = [(SearchResultMapItemBase *)v4 searchResult];
-      v8 = [v7 name];
-      (v6[2])(v6, v8, 1, 1);
+      searchResult = [(SearchResultMapItemBase *)selfCopy searchResult];
+      name = [searchResult name];
+      (v6[2])(v6, name, 1, 1);
 
-      v9 = [(SearchResultMapItemBase *)v4 searchResult];
-      v10 = [v9 mapItem];
-      v11 = [v10 _addressFormattedAsName];
-      (v6[2])(v6, v11, 3, 4);
+      searchResult2 = [(SearchResultMapItemBase *)selfCopy searchResult];
+      mapItem = [searchResult2 mapItem];
+      _addressFormattedAsName = [mapItem _addressFormattedAsName];
+      (v6[2])(v6, _addressFormattedAsName, 3, 4);
 
       v12 = [v5 copy];
       v13 = self->_autocompletionStrings;
       self->_autocompletionStrings = v12;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     autocompletionStrings = self->_autocompletionStrings;
   }
@@ -57,11 +57,11 @@
 
 - (id)clientFeatureID
 {
-  v3 = [(DroppedPinMapItem *)self styleAttributes];
-  v4 = [v3 styleAttributes];
-  v5 = [v4 poiType];
-  v6 = [(SearchResultMapItemBase *)self mapItem];
-  [v6 _coordinate];
+  styleAttributes = [(DroppedPinMapItem *)self styleAttributes];
+  v3StyleAttributes = [styleAttributes styleAttributes];
+  poiType = [v3StyleAttributes poiType];
+  mapItem = [(SearchResultMapItemBase *)self mapItem];
+  [mapItem _coordinate];
   v8 = fabs(v7);
   v9 = floor(v8 + 0.5);
   v10 = (v8 - v9) * 1.84467441e19;
@@ -79,9 +79,9 @@
     v14 = v13;
   }
 
-  v15 = v14 ^ v5;
-  v16 = [(SearchResultMapItemBase *)self mapItem];
-  [v16 _coordinate];
+  v15 = v14 ^ poiType;
+  mapItem2 = [(SearchResultMapItemBase *)self mapItem];
+  [mapItem2 _coordinate];
   v18 = fabs(v17);
   v19 = floor(v18 + 0.5);
   v20 = (v18 - v19) * 1.84467441e19;
@@ -101,16 +101,16 @@
 
   v25 = v15 ^ v24;
 
-  v26 = [(SearchResultMapItemBase *)self mapItem];
-  v27 = [v26 _geoMapItem];
-  v28 = [v27 name];
+  mapItem3 = [(SearchResultMapItemBase *)self mapItem];
+  _geoMapItem = [mapItem3 _geoMapItem];
+  name = [_geoMapItem name];
 
-  if (v28)
+  if (name)
   {
-    v29 = [(SearchResultMapItemBase *)self mapItem];
-    v30 = [v29 _geoMapItem];
-    v31 = [v30 name];
-    v25 ^= [v31 hash];
+    mapItem4 = [(SearchResultMapItemBase *)self mapItem];
+    _geoMapItem2 = [mapItem4 _geoMapItem];
+    name2 = [_geoMapItem2 name];
+    v25 ^= [name2 hash];
   }
 
   return [PersonalizedItemClientFeatureIDAdornment adornmentWithClientFeatureID:v25];
@@ -129,25 +129,25 @@
 
 - (id)title
 {
-  v3 = [(SearchResultMapItemBase *)self searchResult];
-  v4 = [v3 isReverseGeocoded];
+  searchResult = [(SearchResultMapItemBase *)self searchResult];
+  isReverseGeocoded = [searchResult isReverseGeocoded];
 
-  if (v4)
+  if (isReverseGeocoded)
   {
-    v5 = [(SearchResultMapItemBase *)self searchResult];
-    v6 = [v5 mapItem];
-    v7 = [v6 _addressFormattedAsName];
+    searchResult2 = [(SearchResultMapItemBase *)self searchResult];
+    mapItem = [searchResult2 mapItem];
+    _addressFormattedAsName = [mapItem _addressFormattedAsName];
 
-    if (v7 && [v7 length])
+    if (_addressFormattedAsName && [_addressFormattedAsName length])
     {
-      v8 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:v7 priority:1];
+      v8 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:_addressFormattedAsName priority:1];
       goto LABEL_7;
     }
   }
 
   else
   {
-    v7 = 0;
+    _addressFormattedAsName = 0;
   }
 
   v8 = +[PersonalizedItemPrioritizedStringAdornment defaultAdornment];
@@ -157,16 +157,16 @@ LABEL_7:
   return v9;
 }
 
-- (DroppedPinMapItem)initWithSearchResult:(id)a3
+- (DroppedPinMapItem)initWithSearchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = DroppedPinMapItem;
-  v5 = [(SearchResultMapItemBase *)&v10 initWithSearchResult:v4];
+  v5 = [(SearchResultMapItemBase *)&v10 initWithSearchResult:resultCopy];
   if (v5)
   {
     v6 = [DroppedPinMapItemKey alloc];
-    [v4 coordinate];
+    [resultCopy coordinate];
     v7 = [(DroppedPinMapItemKey *)v6 initWithCoordinate:?];
     droppedPinKey = v5->_droppedPinKey;
     v5->_droppedPinKey = v7;

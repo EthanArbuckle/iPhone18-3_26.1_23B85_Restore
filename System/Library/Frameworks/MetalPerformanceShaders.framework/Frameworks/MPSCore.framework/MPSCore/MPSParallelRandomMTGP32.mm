@@ -1,56 +1,56 @@
 @interface MPSParallelRandomMTGP32
-- (MPSParallelRandomMTGP32)initWithCoder:(id)a3 device:(id)a4;
-- (MPSParallelRandomMTGP32)initWithDevice:(id)a3 destinationDataType:(unsigned int)a4 seed:(unint64_t)a5;
-- (MPSParallelRandomMTGP32)initWithDevice:(id)a3 destinationDataType:(unsigned int)a4 seed:(unint64_t)a5 distributionDescriptor:(id)a6;
-- (MPSParallelRandomMTGP32)initWithDevice:(id)a3 destinationDataType:(unsigned int)a4 state:(id)a5 distributionDescriptor:(id)a6;
+- (MPSParallelRandomMTGP32)initWithCoder:(id)coder device:(id)device;
+- (MPSParallelRandomMTGP32)initWithDevice:(id)device destinationDataType:(unsigned int)type seed:(unint64_t)seed;
+- (MPSParallelRandomMTGP32)initWithDevice:(id)device destinationDataType:(unsigned int)type seed:(unint64_t)seed distributionDescriptor:(id)descriptor;
+- (MPSParallelRandomMTGP32)initWithDevice:(id)device destinationDataType:(unsigned int)type state:(id)state distributionDescriptor:(id)descriptor;
 - (id)exportState;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3 computeEncoder:(id)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6 numEntries:(unint64_t)a7;
-- (void)encodeToCommandBuffer:(id)a3 computeEncoder:(id)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6 numEntries:(unint64_t)a7 stride:(unsigned int)a8;
-- (void)encodeWithCoder:(id)a3;
-- (void)reinitializeDistributionDescriptor:(id)a3;
-- (void)resetSeedOnCommandBuffer:(id)a3 seed:(unint64_t)a4;
+- (void)encodeToCommandBuffer:(id)buffer computeEncoder:(id)encoder destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)offset numEntries:(unint64_t)entries;
+- (void)encodeToCommandBuffer:(id)buffer computeEncoder:(id)encoder destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)offset numEntries:(unint64_t)entries stride:(unsigned int)stride;
+- (void)encodeWithCoder:(id)coder;
+- (void)reinitializeDistributionDescriptor:(id)descriptor;
+- (void)resetSeedOnCommandBuffer:(id)buffer seed:(unint64_t)seed;
 @end
 
 @implementation MPSParallelRandomMTGP32
 
-- (MPSParallelRandomMTGP32)initWithDevice:(id)a3 destinationDataType:(unsigned int)a4 seed:(unint64_t)a5 distributionDescriptor:(id)a6
+- (MPSParallelRandomMTGP32)initWithDevice:(id)device destinationDataType:(unsigned int)type seed:(unint64_t)seed distributionDescriptor:(id)descriptor
 {
-  v118 = a5;
+  seedCopy = seed;
   v119.receiver = self;
   v119.super_class = MPSParallelRandomMTGP32;
-  v8 = [(MPSParallelRandom *)&v119 initWithDevice:a3 destinationDataType:*&a4 generatorType:0 distributionDescriptor:?];
+  v8 = [(MPSParallelRandom *)&v119 initWithDevice:device destinationDataType:*&type generatorType:0 distributionDescriptor:?];
   if (objc_msgSend_distributionType(v8, v9, v10, v11, v12) == 3)
   {
-    objc_msgSend_mean(a6, v13, v14, v15, v16);
+    objc_msgSend_mean(descriptor, v13, v14, v15, v16);
     v8->_normalMean = v17;
-    objc_msgSend_standardDeviation(a6, v18, v19, v20, v21);
+    objc_msgSend_standardDeviation(descriptor, v18, v19, v20, v21);
     v8->_normalStandardDeviation = v22;
-    objc_msgSend_minimum(a6, v23, v24, v25, v26);
+    objc_msgSend_minimum(descriptor, v23, v24, v25, v26);
     v32 = fabsf(v31);
     v33 = 0.0;
     if (v32 != INFINITY)
     {
-      objc_msgSend_minimum(a6, v27, v28, v29, v30, 0.0);
+      objc_msgSend_minimum(descriptor, v27, v28, v29, v30, 0.0);
       v33 = (erf((v34 - v8->_normalMean) / v8->_normalStandardDeviation * 1.41421354) + 1.0) * 0.5;
     }
 
     v8->_uniformMin = v33;
-    objc_msgSend_maximum(a6, v27, v28, v29, v30);
+    objc_msgSend_maximum(descriptor, v27, v28, v29, v30);
     v39 = fabsf(*&v40);
     LODWORD(v40) = 1.0;
     if (v39 != INFINITY)
     {
-      objc_msgSend_maximum(a6, v35, v36, v37, v38, v40);
+      objc_msgSend_maximum(descriptor, v35, v36, v37, v38, v40);
       *&v40 = (erf((v41 - v8->_normalMean) / v8->_normalStandardDeviation * 1.41421354) + 1.0) * 0.5;
     }
   }
 
   else
   {
-    objc_msgSend_minimum(a6, v13, v14, v15, v16);
+    objc_msgSend_minimum(descriptor, v13, v14, v15, v16);
     v8->_uniformMin = v42;
-    objc_msgSend_maximum(a6, v43, v44, v45, v46);
+    objc_msgSend_maximum(descriptor, v43, v44, v45, v46);
   }
 
   v8->_uniformMax = *&v40;
@@ -67,12 +67,12 @@
 
   if ((*(v8->super.super._device + 369) & 0x400) != 0)
   {
-    v51 = objc_msgSend_newBufferWithLength_options_(a3, v47, 22464, v49, v48);
+    v51 = objc_msgSend_newBufferWithLength_options_(device, v47, 22464, v49, v48);
   }
 
   else
   {
-    v51 = objc_msgSend_newBufferWithLength_options_(a3, v47, 179712, v49, v48);
+    v51 = objc_msgSend_newBufferWithLength_options_(device, v47, 179712, v49, v48);
   }
 
   v8->_state = v51;
@@ -81,42 +81,42 @@
     MTLReportFailure();
   }
 
-  v54 = objc_msgSend_newBufferWithLength_options_(a3, v52, 4 * v50, v49, v53);
+  v54 = objc_msgSend_newBufferWithLength_options_(device, v52, 4 * v50, v49, v53);
   v8->_pShift1 = v54;
   if (!v54 && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  v57 = objc_msgSend_newBufferWithLength_options_(a3, v55, 4 * v50, v49, v56);
+  v57 = objc_msgSend_newBufferWithLength_options_(device, v55, 4 * v50, v49, v56);
   v8->_pShift2 = v57;
   if (!v57 && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  v60 = objc_msgSend_newBufferWithLength_options_(a3, v58, 16 * v50, v49, v59);
+  v60 = objc_msgSend_newBufferWithLength_options_(device, v58, 16 * v50, v49, v59);
   v8->_pMR = v60;
   if (!v60 && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  v63 = objc_msgSend_newBufferWithLength_options_(a3, v61, 16 * v50, v49, v62);
+  v63 = objc_msgSend_newBufferWithLength_options_(device, v61, 16 * v50, v49, v62);
   v8->_pMT = v63;
   if (!v63 && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  v66 = objc_msgSend_newBufferWithLength_options_(a3, v64, 4 * v50, v49, v65);
+  v66 = objc_msgSend_newBufferWithLength_options_(device, v64, 4 * v50, v49, v65);
   v8->_pM = v66;
   if (!v66 && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  v69 = objc_msgSend_newBufferWithLength_options_(a3, v67, 4 * v50, v49, v68);
+  v69 = objc_msgSend_newBufferWithLength_options_(device, v67, 4 * v50, v49, v68);
   v8->_pStateIdx = v69;
   if (!v69 && MTLReportFailureTypeEnabled())
   {
@@ -149,9 +149,9 @@
     *(v104 + 4 * i) = v106;
     v113 = HIDWORD(*(v89 + 16 * i)) ^ (*(v89 + 16 * i) << 16);
     memset(v74 + 2, v113 + HIWORD(v113) + ((v113 + HIWORD(v113)) >> 8), 0x574uLL);
-    *v74 = v118;
+    *v74 = seedCopy;
     v74[1] = v113;
-    v114 = v118;
+    v114 = seedCopy;
     for (j = 1; j != 351; ++j)
     {
       v114 = (j + 1812433253 * (v114 ^ (v114 >> 30))) ^ v74[j];
@@ -164,73 +164,73 @@
   return v117;
 }
 
-- (MPSParallelRandomMTGP32)initWithDevice:(id)a3 destinationDataType:(unsigned int)a4 seed:(unint64_t)a5
+- (MPSParallelRandomMTGP32)initWithDevice:(id)device destinationDataType:(unsigned int)type seed:(unint64_t)seed
 {
-  v6 = *&a4;
+  v6 = *&type;
   v9 = [MPSParallelRandomDistributionDescriptor alloc];
   objc_msgSend_setDistributionType_(v9, v10, 1, v11, v12);
-  v14 = objc_msgSend_initWithDevice_destinationDataType_seed_distributionDescriptor_(self, v13, a3, v6, a5, v9);
+  v14 = objc_msgSend_initWithDevice_destinationDataType_seed_distributionDescriptor_(self, v13, device, v6, seed, v9);
 
   return v14;
 }
 
-- (void)reinitializeDistributionDescriptor:(id)a3
+- (void)reinitializeDistributionDescriptor:(id)descriptor
 {
-  v7 = objc_msgSend_distributionType(a3, a2, a3, v3, v4);
+  v7 = objc_msgSend_distributionType(descriptor, a2, descriptor, v3, v4);
   objc_msgSend_setDistributionType_(self, v8, v7, v9, v10);
   if (objc_msgSend_distributionType(self, v11, v12, v13, v14) == 3)
   {
-    objc_msgSend_mean(a3, v15, v16, v17, v18);
+    objc_msgSend_mean(descriptor, v15, v16, v17, v18);
     self->_normalMean = v19;
-    objc_msgSend_standardDeviation(a3, v20, v21, v22, v23);
+    objc_msgSend_standardDeviation(descriptor, v20, v21, v22, v23);
     self->_normalStandardDeviation = v24;
-    objc_msgSend_minimum(a3, v25, v26, v27, v28);
+    objc_msgSend_minimum(descriptor, v25, v26, v27, v28);
     v34 = fabsf(v33);
     v35 = 0.0;
     if (v34 != INFINITY)
     {
-      objc_msgSend_minimum(a3, v29, v30, v31, v32, 0.0);
+      objc_msgSend_minimum(descriptor, v29, v30, v31, v32, 0.0);
       v35 = (erf((v36 - self->_normalMean) / self->_normalStandardDeviation * 1.41421354) + 1.0) * 0.5;
     }
 
     self->_uniformMin = v35;
-    objc_msgSend_maximum(a3, v29, v30, v31, v32);
+    objc_msgSend_maximum(descriptor, v29, v30, v31, v32);
     v41 = fabsf(*&v42);
     LODWORD(v42) = 1.0;
     if (v41 != INFINITY)
     {
-      objc_msgSend_maximum(a3, v37, v38, v39, v40, v42);
+      objc_msgSend_maximum(descriptor, v37, v38, v39, v40, v42);
       *&v42 = (erf((v43 - self->_normalMean) / self->_normalStandardDeviation * 1.41421354) + 1.0) * 0.5;
     }
   }
 
   else
   {
-    objc_msgSend_minimum(a3, v15, v16, v17, v18);
+    objc_msgSend_minimum(descriptor, v15, v16, v17, v18);
     self->_uniformMin = v44;
-    objc_msgSend_maximum(a3, v45, v46, v47, v48);
+    objc_msgSend_maximum(descriptor, v45, v46, v47, v48);
   }
 
   self->_uniformMax = *&v42;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 computeEncoder:(id)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6 numEntries:(unint64_t)a7
+- (void)encodeToCommandBuffer:(id)buffer computeEncoder:(id)encoder destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)offset numEntries:(unint64_t)entries
 {
   v7.receiver = self;
   v7.super_class = MPSParallelRandomMTGP32;
-  [(MPSParallelRandom *)&v7 encodeToCommandBuffer:a3 computeEncoder:a4 destinationBuffer:a5 destinationOffset:a6 numEntries:a7];
+  [(MPSParallelRandom *)&v7 encodeToCommandBuffer:buffer computeEncoder:encoder destinationBuffer:destinationBuffer destinationOffset:offset numEntries:entries];
 }
 
-- (void)encodeToCommandBuffer:(id)a3 computeEncoder:(id)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6 numEntries:(unint64_t)a7 stride:(unsigned int)a8
+- (void)encodeToCommandBuffer:(id)buffer computeEncoder:(id)encoder destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)offset numEntries:(unint64_t)entries stride:(unsigned int)stride
 {
   v8.receiver = self;
   v8.super_class = MPSParallelRandomMTGP32;
-  [(MPSParallelRandom *)&v8 encodeToCommandBuffer:a3 computeEncoder:a4 destinationBuffer:a5 destinationOffset:a6 numEntries:a7 stride:*&a8];
+  [(MPSParallelRandom *)&v8 encodeToCommandBuffer:buffer computeEncoder:encoder destinationBuffer:destinationBuffer destinationOffset:offset numEntries:entries stride:*&stride];
 }
 
-- (void)resetSeedOnCommandBuffer:(id)a3 seed:(unint64_t)a4
+- (void)resetSeedOnCommandBuffer:(id)buffer seed:(unint64_t)seed
 {
-  v4 = a4;
+  seedCopy = seed;
   UberShaderKey = MPSLibrary::CreateUberShaderKey(self->super.super._library, @"mtgp32SetState", xmmword_22E37BF78, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   library = self->super.super._library;
   explicit = atomic_load_explicit(UberShaderKey, memory_order_acquire);
@@ -239,7 +239,7 @@
     explicit = MPSLibrary::MPSKey_Compile(library, UberShaderKey);
   }
 
-  if (a3 && explicit && (objc_msgSend_retainedReferences(a3, v7, v8, v9, v10) & 1) == 0)
+  if (buffer && explicit && (objc_msgSend_retainedReferences(buffer, v7, v8, v9, v10) & 1) == 0)
   {
     v14 = explicit;
     v36.i64[0] = MEMORY[0x277D85DD0];
@@ -247,11 +247,11 @@
     v37 = sub_22E3717C4;
     v38 = &unk_2787BE7E8;
     v39 = explicit;
-    objc_msgSend_addCompletedHandler_(a3, v15, &v36, v16, v17);
+    objc_msgSend_addCompletedHandler_(buffer, v15, &v36, v16, v17);
   }
 
-  v18 = objc_msgSend_computeCommandEncoder(a3, v7, v8, v9, v10);
-  v35 = v4;
+  v18 = objc_msgSend_computeCommandEncoder(buffer, v7, v8, v9, v10);
+  v35 = seedCopy;
   objc_msgSend_setComputePipelineState_(v18, v19, explicit, v20, v21);
   objc_msgSend_setBuffer_offset_atIndex_(v18, v22, self->_state, 0, 0);
   objc_msgSend_setBuffer_offset_atIndex_(v18, v23, self->_pStateIdx, 0, 1);
@@ -272,9 +272,9 @@
   sub_22E2F0214(UberShaderKey);
 }
 
-- (MPSParallelRandomMTGP32)initWithDevice:(id)a3 destinationDataType:(unsigned int)a4 state:(id)a5 distributionDescriptor:(id)a6
+- (MPSParallelRandomMTGP32)initWithDevice:(id)device destinationDataType:(unsigned int)type state:(id)state distributionDescriptor:(id)descriptor
 {
-  v7 = objc_msgSend_initWithDevice_destinationDataType_seed_distributionDescriptor_(self, a2, a3, *&a4, 0, a6);
+  v7 = objc_msgSend_initWithDevice_destinationDataType_seed_distributionDescriptor_(self, a2, device, *&type, 0, descriptor);
   v12 = v7;
   if (v7)
   {
@@ -300,21 +300,21 @@
       v16 = 179712;
     }
 
-    memcpy(v14, *(a5 + 1), v16);
+    memcpy(v14, *(state + 1), v16);
     v21 = objc_msgSend_contents(v12->_pShift1, v17, v18, v19, v20);
     v22 = 4 * v15;
-    memcpy(v21, *(a5 + 2), 4 * v15);
+    memcpy(v21, *(state + 2), 4 * v15);
     v27 = objc_msgSend_contents(v12->_pShift2, v23, v24, v25, v26);
-    memcpy(v27, *(a5 + 3), 4 * v15);
+    memcpy(v27, *(state + 3), 4 * v15);
     v32 = objc_msgSend_contents(v12->_pMR, v28, v29, v30, v31);
     v33 = 16 * v15;
-    memcpy(v32, *(a5 + 4), v33);
+    memcpy(v32, *(state + 4), v33);
     v38 = objc_msgSend_contents(v12->_pMT, v34, v35, v36, v37);
-    memcpy(v38, *(a5 + 5), v33);
+    memcpy(v38, *(state + 5), v33);
     v43 = objc_msgSend_contents(v12->_pM, v39, v40, v41, v42);
-    memcpy(v43, *(a5 + 6), v22);
+    memcpy(v43, *(state + 6), v22);
     v48 = objc_msgSend_contents(v12->_pStateIdx, v44, v45, v46, v47);
-    memcpy(v48, *(a5 + 7), v22);
+    memcpy(v48, *(state + 7), v22);
   }
 
   return v12;
@@ -371,7 +371,7 @@
   return v3;
 }
 
-- (MPSParallelRandomMTGP32)initWithCoder:(id)a3 device:(id)a4
+- (MPSParallelRandomMTGP32)initWithCoder:(id)coder device:(id)device
 {
   v91.receiver = self;
   v91.super_class = MPSParallelRandomMTGP32;
@@ -400,7 +400,7 @@
     }
 
     v90 = v11;
-    v12 = objc_msgSend_newBufferWithLength_options_(a4, v7, v11, v9, v8);
+    v12 = objc_msgSend_newBufferWithLength_options_(device, v7, v11, v9, v8);
     self->_state = v12;
     if (!v12 && MTLReportFailureTypeEnabled())
     {
@@ -408,14 +408,14 @@
     }
 
     v15 = 4 * v10;
-    v16 = objc_msgSend_newBufferWithLength_options_(a4, v13, 4 * v10, v9, v14);
+    v16 = objc_msgSend_newBufferWithLength_options_(device, v13, 4 * v10, v9, v14);
     self->_pShift1 = v16;
     if (!v16 && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    v19 = objc_msgSend_newBufferWithLength_options_(a4, v17, 4 * v10, v9, v18);
+    v19 = objc_msgSend_newBufferWithLength_options_(device, v17, 4 * v10, v9, v18);
     self->_pShift2 = v19;
     if (!v19 && MTLReportFailureTypeEnabled())
     {
@@ -423,28 +423,28 @@
     }
 
     v22 = 16 * v10;
-    v23 = objc_msgSend_newBufferWithLength_options_(a4, v20, 16 * v10, v9, v21);
+    v23 = objc_msgSend_newBufferWithLength_options_(device, v20, 16 * v10, v9, v21);
     self->_pMR = v23;
     if (!v23 && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    v26 = objc_msgSend_newBufferWithLength_options_(a4, v24, v22, v9, v25);
+    v26 = objc_msgSend_newBufferWithLength_options_(device, v24, v22, v9, v25);
     self->_pMT = v26;
     if (!v26 && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    v29 = objc_msgSend_newBufferWithLength_options_(a4, v27, v15, v9, v28);
+    v29 = objc_msgSend_newBufferWithLength_options_(device, v27, v15, v9, v28);
     self->_pM = v29;
     if (!v29 && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    v32 = objc_msgSend_newBufferWithLength_options_(a4, v30, v15, v9, v31);
+    v32 = objc_msgSend_newBufferWithLength_options_(device, v30, v15, v9, v31);
     self->_pStateIdx = v32;
     if (!v32 && MTLReportFailureTypeEnabled())
     {
@@ -453,7 +453,7 @@
 
     v37 = objc_msgSend_contents(self->_state, v33, v34, v35, v36);
     v92 = 0;
-    v40 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v38, @"kMPSParallelRandomStateArrayKey", &v92, v39);
+    v40 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v38, @"kMPSParallelRandomStateArrayKey", &v92, v39);
     if (v40 && v90 == v92)
     {
       MPSCopyToFromNetworkByteOrder32(v37, v40, v90 >> 2);
@@ -461,7 +461,7 @@
 
     v45 = objc_msgSend_contents(self->_pShift1, v41, v42, v43, v44);
     v92 = 0;
-    v48 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v46, @"kMPSParallelRandomParameterShift1ArrayKey", &v92, v47);
+    v48 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v46, @"kMPSParallelRandomParameterShift1ArrayKey", &v92, v47);
     if (v48 && v15 == v92)
     {
       MPSCopyToFromNetworkByteOrder32(v45, v48, v10);
@@ -469,7 +469,7 @@
 
     v53 = objc_msgSend_contents(self->_pShift2, v49, v50, v51, v52);
     v92 = 0;
-    v56 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v54, @"kMPSParallelRandomParameterShift2ArrayKey", &v92, v55);
+    v56 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v54, @"kMPSParallelRandomParameterShift2ArrayKey", &v92, v55);
     if (v56 && v15 == v92)
     {
       MPSCopyToFromNetworkByteOrder32(v53, v56, v10);
@@ -477,7 +477,7 @@
 
     v61 = objc_msgSend_contents(self->_pMR, v57, v58, v59, v60);
     v92 = 0;
-    v64 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v62, @"kMPSParallelRandomParameterMRArrayKey", &v92, v63);
+    v64 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v62, @"kMPSParallelRandomParameterMRArrayKey", &v92, v63);
     if (v64 && v22 == v92)
     {
       MPSCopyToFromNetworkByteOrder32(v61, v64, v15);
@@ -485,7 +485,7 @@
 
     v69 = objc_msgSend_contents(self->_pMT, v65, v66, v67, v68);
     v92 = 0;
-    v72 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v70, @"kMPSParallelRandomParameterMTArrayKey", &v92, v71);
+    v72 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v70, @"kMPSParallelRandomParameterMTArrayKey", &v92, v71);
     if (v72 && v22 == v92)
     {
       MPSCopyToFromNetworkByteOrder32(v69, v72, v15);
@@ -493,7 +493,7 @@
 
     v77 = objc_msgSend_contents(self->_pM, v73, v74, v75, v76);
     v92 = 0;
-    v80 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v78, @"kMPSParallelRandomParameterMArrayKey", &v92, v79);
+    v80 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v78, @"kMPSParallelRandomParameterMArrayKey", &v92, v79);
     if (v80 && v15 == v92)
     {
       MPSCopyToFromNetworkByteOrder32(v77, v80, v10);
@@ -501,7 +501,7 @@
 
     v85 = objc_msgSend_contents(self->_pStateIdx, v81, v82, v83, v84);
     v92 = 0;
-    v88 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v86, @"kMPSParallelRandomParameterStateIdxArrayKey", &v92, v87);
+    v88 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v86, @"kMPSParallelRandomParameterStateIdxArrayKey", &v92, v87);
     if (v88 && v15 == v92)
     {
       MPSCopyToFromNetworkByteOrder32(v85, v88, v10);
@@ -511,7 +511,7 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super._fileVersion.var0 + 1) = 1;
   v67.receiver = self;
@@ -544,7 +544,7 @@
   {
     v18 = v13;
     MPSCopyToFromNetworkByteOrder32(v13, v10, v12);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v19, v18, 4 * v12, @"kMPSParallelRandomStateArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v19, v18, 4 * v12, @"kMPSParallelRandomStateArrayKey");
     free(v18);
   }
 
@@ -556,7 +556,7 @@
   {
     v28 = v23;
     MPSCopyToFromNetworkByteOrder32(v23, v20, 4 * v11);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v29, v28, 16 * v11, @"kMPSParallelRandomParameterShift1ArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v29, v28, 16 * v11, @"kMPSParallelRandomParameterShift1ArrayKey");
     free(v28);
   }
 
@@ -566,7 +566,7 @@
   {
     v36 = v31;
     MPSCopyToFromNetworkByteOrder32(v31, v30, 4 * v11);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v37, v36, 16 * v11, @"kMPSParallelRandomParameterShift2ArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v37, v36, 16 * v11, @"kMPSParallelRandomParameterShift2ArrayKey");
     free(v36);
   }
 
@@ -577,7 +577,7 @@
   {
     v45 = v40;
     MPSCopyToFromNetworkByteOrder32(v40, v38, v22);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v46, v45, v39, @"kMPSParallelRandomParameterMRArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v46, v45, v39, @"kMPSParallelRandomParameterMRArrayKey");
     free(v45);
   }
 
@@ -587,7 +587,7 @@
   {
     v53 = v48;
     MPSCopyToFromNetworkByteOrder32(v48, v47, v22);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v54, v53, v39, @"kMPSParallelRandomParameterMTArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v54, v53, v39, @"kMPSParallelRandomParameterMTArrayKey");
     free(v53);
   }
 
@@ -597,7 +597,7 @@
   {
     v61 = v56;
     MPSCopyToFromNetworkByteOrder32(v56, v55, v21);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v62, v61, v22, @"kMPSParallelRandomParameterMArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v62, v61, v22, @"kMPSParallelRandomParameterMArrayKey");
     free(v61);
   }
 
@@ -607,7 +607,7 @@
   {
     v65 = v64;
     MPSCopyToFromNetworkByteOrder32(v64, v63, v21);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v66, v65, v22, @"kMPSParallelRandomParameterStateIdxArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v66, v65, v22, @"kMPSParallelRandomParameterStateIdxArrayKey");
     free(v65);
   }
 }

@@ -3,87 +3,87 @@
 + (id)_extensionAuxiliaryVendorProtocol;
 - (void)dealloc;
 - (void)dispose;
-- (void)handleNewFlow:(id)a3 completionHandler:(id)a4;
-- (void)handleReport:(id)a3;
+- (void)handleNewFlow:(id)flow completionHandler:(id)handler;
+- (void)handleReport:(id)report;
 - (void)notifyRulesChanged;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)provideRemediationMap:(id)a3;
-- (void)provideURLAppendStringMap:(id)a3;
-- (void)startFilterWithOptions:(id)a3 completionHandler:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)provideRemediationMap:(id)map;
+- (void)provideURLAppendStringMap:(id)map;
+- (void)startFilterWithOptions:(id)options completionHandler:(id)handler;
 - (void)stopObserving;
 @end
 
 @implementation NEFilterControlExtensionProviderContext
 
-- (void)provideURLAppendStringMap:(id)a3
+- (void)provideURLAppendStringMap:(id)map
 {
-  v4 = a3;
-  v6 = [(NEExtensionProviderContext *)self hostContext];
-  [v6 provideURLAppendStringMap:v4];
+  mapCopy = map;
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
+  [hostContext provideURLAppendStringMap:mapCopy];
 }
 
-- (void)provideRemediationMap:(id)a3
+- (void)provideRemediationMap:(id)map
 {
-  v4 = a3;
-  v6 = [(NEExtensionProviderContext *)self hostContext];
-  [v6 provideRemediationMap:v4];
+  mapCopy = map;
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
+  [hostContext provideRemediationMap:mapCopy];
 }
 
 - (void)notifyRulesChanged
 {
-  v2 = [(NEExtensionProviderContext *)self hostContext];
-  [v2 notifyRulesChanged];
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
+  [hostContext notifyRulesChanged];
 }
 
-- (void)handleReport:(id)a3
+- (void)handleReport:(id)report
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderContext *)self _principalObject];
-  [v5 handleReport:v4];
+  reportCopy = report;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  [_principalObject handleReport:reportCopy];
 }
 
-- (void)handleNewFlow:(id)a3 completionHandler:(id)a4
+- (void)handleNewFlow:(id)flow completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NEExtensionProviderContext *)self _principalObject];
-  v9 = v8;
-  if (v7 && (v7[10] & 1) != 0)
+  handlerCopy = handler;
+  flowCopy = flow;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  v9 = _principalObject;
+  if (flowCopy && (flowCopy[10] & 1) != 0)
   {
-    [v8 handleRemediationForFlow:v7 completionHandler:v6];
+    [_principalObject handleRemediationForFlow:flowCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    [v8 handleNewFlow:v7 completionHandler:v6];
+    [_principalObject handleNewFlow:flowCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v14 = a3;
-  v7 = [(NEExtensionProviderContext *)self _principalObject];
-  if ([v14 isEqualToString:@"remediationMap"])
+  pathCopy = path;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  if ([pathCopy isEqualToString:@"remediationMap"])
   {
-    v8 = [v7 remediationMap];
-    v9 = [v8 count];
+    remediationMap = [_principalObject remediationMap];
+    v9 = [remediationMap count];
 
     if (v9)
     {
-      v10 = [v7 remediationMap];
-      [(NEFilterControlExtensionProviderContext *)self provideRemediationMap:v10];
+      remediationMap2 = [_principalObject remediationMap];
+      [(NEFilterControlExtensionProviderContext *)self provideRemediationMap:remediationMap2];
     }
   }
 
-  if ([v14 isEqualToString:@"URLAppendStringMap"])
+  if ([pathCopy isEqualToString:@"URLAppendStringMap"])
   {
-    v11 = [v7 URLAppendStringMap];
-    v12 = [v11 count];
+    uRLAppendStringMap = [_principalObject URLAppendStringMap];
+    v12 = [uRLAppendStringMap count];
 
     if (v12)
     {
-      v13 = [v7 URLAppendStringMap];
-      [(NEFilterControlExtensionProviderContext *)self provideURLAppendStringMap:v13];
+      uRLAppendStringMap2 = [_principalObject URLAppendStringMap];
+      [(NEFilterControlExtensionProviderContext *)self provideURLAppendStringMap:uRLAppendStringMap2];
     }
   }
 }
@@ -98,12 +98,12 @@
 
 - (void)stopObserving
 {
-  if (a1 && (a1[104] & 1) != 0)
+  if (self && (self[104] & 1) != 0)
   {
-    v2 = [a1 _principalObject];
-    [v2 removeObserver:a1 forKeyPath:@"remediationMap"];
-    [v2 removeObserver:a1 forKeyPath:@"URLAppendStringMap"];
-    a1[104] = 0;
+    _principalObject = [self _principalObject];
+    [_principalObject removeObserver:self forKeyPath:@"remediationMap"];
+    [_principalObject removeObserver:self forKeyPath:@"URLAppendStringMap"];
+    self[104] = 0;
   }
 }
 
@@ -118,23 +118,23 @@
   }
 }
 
-- (void)startFilterWithOptions:(id)a3 completionHandler:(id)a4
+- (void)startFilterWithOptions:(id)options completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NEExtensionProviderContext *)self _principalObject];
-  objc_initWeak(&location, v8);
+  optionsCopy = options;
+  handlerCopy = handler;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  objc_initWeak(&location, _principalObject);
 
   v16.receiver = self;
   v16.super_class = NEFilterControlExtensionProviderContext;
-  [(NEFilterExtensionProviderContext *)&v16 startFilterWithOptions:v6 completionHandler:v7];
+  [(NEFilterExtensionProviderContext *)&v16 startFilterWithOptions:optionsCopy completionHandler:handlerCopy];
   objc_initWeak(&from, self);
   v9 = ne_log_obj();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_DEFAULT, "%@: Calling startFilterWithCompletionHandler", buf, 0xCu);
   }
 

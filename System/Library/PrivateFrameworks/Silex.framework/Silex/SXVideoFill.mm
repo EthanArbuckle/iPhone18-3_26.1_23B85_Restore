@@ -1,14 +1,14 @@
 @interface SXVideoFill
-- (BOOL)loopWithValue:(id)a3 withType:(int)a4;
+- (BOOL)loopWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXVideoFill
 
-- (BOOL)loopWithValue:(id)a3 withType:(int)a4
+- (BOOL)loopWithValue:(id)value withType:(int)type
 {
-  if (a3)
+  if (value)
   {
-    return [a3 BOOLValue];
+    return [value BOOLValue];
   }
 
   else

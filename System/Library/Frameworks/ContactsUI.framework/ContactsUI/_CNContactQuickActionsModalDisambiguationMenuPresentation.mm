@@ -1,26 +1,26 @@
 @interface _CNContactQuickActionsModalDisambiguationMenuPresentation
-- (id)viewControllerForPresentingActionsController:(id)a3 fromView:(id)a4 dismissDisambiguationMenuHandler:(id)a5;
+- (id)viewControllerForPresentingActionsController:(id)controller fromView:(id)view dismissDisambiguationMenuHandler:(id)handler;
 @end
 
 @implementation _CNContactQuickActionsModalDisambiguationMenuPresentation
 
-- (id)viewControllerForPresentingActionsController:(id)a3 fromView:(id)a4 dismissDisambiguationMenuHandler:(id)a5
+- (id)viewControllerForPresentingActionsController:(id)controller fromView:(id)view dismissDisambiguationMenuHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  viewCopy = view;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = _CNContactQuickActionsModalDisambiguationMenuPresentation;
-  v11 = [(CNContactQuickActionsDisambiguationMenuPresentation *)&v24 viewControllerForPresentingActionsController:v8 fromView:v9 dismissDisambiguationMenuHandler:v10];
+  v11 = [(CNContactQuickActionsDisambiguationMenuPresentation *)&v24 viewControllerForPresentingActionsController:controllerCopy fromView:viewCopy dismissDisambiguationMenuHandler:handlerCopy];
   [v11 setModalPresentationStyle:3];
-  v12 = [v11 traitCollection];
-  v13 = [v12 userInterfaceIdiom];
+  traitCollection = [v11 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v13 == 3)
+  if (userInterfaceIdiom == 3)
   {
     v14 = +[CNUIColorRepository carPlayTableViewBackgroundColor];
-    v15 = [v11 view];
-    [v15 setBackgroundColor:v14];
+    view = [v11 view];
+    [view setBackgroundColor:v14];
   }
 
   else
@@ -32,10 +32,10 @@
     v20[2] = __148___CNContactQuickActionsModalDisambiguationMenuPresentation_viewControllerForPresentingActionsController_fromView_dismissDisambiguationMenuHandler___block_invoke;
     v20[3] = &unk_1E74E3000;
     objc_copyWeak(&v22, &location);
-    v21 = v10;
+    v21 = handlerCopy;
     v17 = [(CNUICancelBarButtonItem *)v16 initWithDidTapHandler:v20];
-    v18 = [v11 navigationItem];
-    [v18 setLeftBarButtonItem:v17];
+    navigationItem = [v11 navigationItem];
+    [navigationItem setLeftBarButtonItem:v17];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);

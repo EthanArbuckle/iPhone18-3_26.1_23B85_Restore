@@ -1,37 +1,37 @@
 @interface TSKHideOnTouchOutsideViewGestureRecognizerTarget
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SEL)action;
 - (unint64_t)hash;
-- (void)setAction:(SEL)a3;
+- (void)setAction:(SEL)action;
 @end
 
 @implementation TSKHideOnTouchOutsideViewGestureRecognizerTarget
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v5 = TSUDynamicCast();
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
   v6 = v5;
-  v7 = [(TSKHideOnTouchOutsideViewGestureRecognizerTarget *)self target];
-  if (v7 != [v6 target])
+  target = [(TSKHideOnTouchOutsideViewGestureRecognizerTarget *)self target];
+  if (target != [v6 target])
   {
     return 0;
   }
 
-  v9 = [(TSKHideOnTouchOutsideViewGestureRecognizerTarget *)self action];
-  return v9 == [v6 action];
+  action = [(TSKHideOnTouchOutsideViewGestureRecognizerTarget *)self action];
+  return action == [v6 action];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(TSKHideOnTouchOutsideViewGestureRecognizerTarget *)self target];
+  target = [(TSKHideOnTouchOutsideViewGestureRecognizerTarget *)self target];
 
-  return [v2 hash];
+  return [target hash];
 }
 
 - (SEL)action
@@ -47,19 +47,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->mAction = v3;
+  self->mAction = actionCopy;
 }
 
 @end

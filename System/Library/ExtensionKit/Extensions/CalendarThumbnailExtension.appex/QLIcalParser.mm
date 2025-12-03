@@ -1,28 +1,28 @@
 @interface QLIcalParser
-+ (id)parseICSDate:(id)a3 calendar:(id)a4 isEndDate:(BOOL)a5;
-- (QLIcalParser)initWithURL:(id)a3;
++ (id)parseICSDate:(id)date calendar:(id)calendar isEndDate:(BOOL)endDate;
+- (QLIcalParser)initWithURL:(id)l;
 @end
 
 @implementation QLIcalParser
 
-+ (id)parseICSDate:(id)a3 calendar:(id)a4 isEndDate:(BOOL)a5
++ (id)parseICSDate:(id)date calendar:(id)calendar isEndDate:(BOOL)endDate
 {
-  v5 = a5;
-  v7 = a3;
-  if (v7)
+  endDateCopy = endDate;
+  dateCopy = date;
+  if (dateCopy)
   {
-    v8 = [a4 systemCalendarForDate:v7 options:0];
-    v9 = [v7 hasTimeComponent];
-    v10 = [v7 components];
-    v11 = v10;
-    if ((v9 & 1) != 0 || !v5)
+    v8 = [calendar systemCalendarForDate:dateCopy options:0];
+    hasTimeComponent = [dateCopy hasTimeComponent];
+    components = [dateCopy components];
+    v11 = components;
+    if ((hasTimeComponent & 1) != 0 || !endDateCopy)
     {
-      [v10 setCalendar:v8];
+      [components setCalendar:v8];
     }
 
     else
     {
-      v12 = [v8 dateFromComponents:v10];
+      v12 = [v8 dateFromComponents:components];
 
       v13 = [v8 dateByAddingUnit:16 value:-1 toDate:v12 options:0];
       v11 = [v8 components:1048604 fromDate:v13];
@@ -37,9 +37,9 @@
   return v11;
 }
 
-- (QLIcalParser)initWithURL:(id)a3
+- (QLIcalParser)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v58.receiver = self;
   v58.super_class = QLIcalParser;
   v5 = [(QLIcalParser *)&v58 init];
@@ -48,18 +48,18 @@
     goto LABEL_42;
   }
 
-  v6 = [[ICSDocument alloc] initWithContentsOfURL:v4 options:0 error:0];
+  v6 = [[ICSDocument alloc] initWithContentsOfURL:lCopy options:0 error:0];
   v7 = v6;
   if (v6)
   {
-    v8 = [(QLIcalParser *)v6 calendar];
-    if (v8)
+    calendar = [(QLIcalParser *)v6 calendar];
+    if (calendar)
     {
-      v9 = v8;
+      v9 = calendar;
       v42 = v7;
       v43 = v5;
-      v44 = v4;
-      [v8 componentKeys];
+      v44 = lCopy;
+      [calendar componentKeys];
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
@@ -202,17 +202,17 @@ LABEL_35:
         dueDate = v43->_dueDate;
         v43->_dueDate = v27;
 
-        v29 = [v25 summary];
+        summary = [v25 summary];
         summary = v43->_summary;
-        v43->_summary = v29;
-        v4 = v44;
+        v43->_summary = summary;
+        lCopy = v44;
         v31 = v42;
       }
 
       else
       {
         objc_opt_class();
-        v4 = v44;
+        lCopy = v44;
         v31 = v42;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -224,19 +224,19 @@ LABEL_42:
         }
 
         v32 = v13;
-        v33 = [v32 dtend];
-        v34 = [QLIcalParser parseICSDate:v33 calendar:v9 isEndDate:1];
+        dtend = [v32 dtend];
+        v34 = [QLIcalParser parseICSDate:dtend calendar:v9 isEndDate:1];
         endDate = v43->_endDate;
         v43->_endDate = v34;
 
-        v36 = [v32 dtstart];
-        v37 = [QLIcalParser parseICSDate:v36 calendar:v9 isEndDate:0];
+        dtstart = [v32 dtstart];
+        v37 = [QLIcalParser parseICSDate:dtstart calendar:v9 isEndDate:0];
         startDate = v43->_startDate;
         v43->_startDate = v37;
 
-        v39 = [v32 summary];
+        summary2 = [v32 summary];
         v40 = v43->_summary;
-        v43->_summary = v39;
+        v43->_summary = summary2;
 
         summary = [v32 dtstart];
         v43->_fullDay = [summary hasTimeComponent] ^ 1;

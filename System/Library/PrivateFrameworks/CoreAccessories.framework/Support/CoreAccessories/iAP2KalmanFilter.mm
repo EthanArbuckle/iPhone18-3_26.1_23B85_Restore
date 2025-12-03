@@ -1,14 +1,14 @@
 @interface iAP2KalmanFilter
-- (BOOL)updateMeasurementNoiseEstimate:(double)a3;
-- (iAP2KalmanFilter)initWithReseedTimeout:(double)a3 AndCountForNoiseTraining:(unint64_t)a4;
-- (int)iAP2KalmanFilterUpdateDeviceTime:(double)a3 Offset:(double)a4 FilteredOffset:(double *)a5 OffsetUncertainty:(double *)a6;
-- (void)reseedWithInternalTime:(double)a3 RawOffset:(double)a4 FilteredOffset:(double *)a5 OffsetUncertainty:(double *)a6;
+- (BOOL)updateMeasurementNoiseEstimate:(double)estimate;
+- (iAP2KalmanFilter)initWithReseedTimeout:(double)timeout AndCountForNoiseTraining:(unint64_t)training;
+- (int)iAP2KalmanFilterUpdateDeviceTime:(double)time Offset:(double)offset FilteredOffset:(double *)filteredOffset OffsetUncertainty:(double *)uncertainty;
+- (void)reseedWithInternalTime:(double)time RawOffset:(double)offset FilteredOffset:(double *)filteredOffset OffsetUncertainty:(double *)uncertainty;
 - (void)reset;
 @end
 
 @implementation iAP2KalmanFilter
 
-- (iAP2KalmanFilter)initWithReseedTimeout:(double)a3 AndCountForNoiseTraining:(unint64_t)a4
+- (iAP2KalmanFilter)initWithReseedTimeout:(double)timeout AndCountForNoiseTraining:(unint64_t)training
 {
   v11.receiver = self;
   v11.super_class = iAP2KalmanFilter;
@@ -19,9 +19,9 @@
     *&v6->fIsMeasurementNoiseTrained = 0;
     *&v6->f_P = xmmword_1001C3830;
     v6->fLastInternalTime = -1.0;
-    v6->fTimeout = a3;
+    v6->fTimeout = timeout;
     v6->fMeasurementVar = 0.0;
-    v6->fMinCountForMeasNoiseTraining = a4;
+    v6->fMinCountForMeasNoiseTraining = training;
     v8 = objc_alloc_init(NSMutableArray);
     fOffsetHistory = v7->fOffsetHistory;
     v7->fOffsetHistory = v8;
@@ -73,17 +73,17 @@
   self->fLastInternalTime = -1.0;
 }
 
-- (void)reseedWithInternalTime:(double)a3 RawOffset:(double)a4 FilteredOffset:(double *)a5 OffsetUncertainty:(double *)a6
+- (void)reseedWithInternalTime:(double)time RawOffset:(double)offset FilteredOffset:(double *)filteredOffset OffsetUncertainty:(double *)uncertainty
 {
-  self->fFilterOffsetEstimate = a4;
+  self->fFilterOffsetEstimate = offset;
   self->f_P = 51840000.0;
-  *a6 = 7200.0;
-  *a5 = self->fFilterOffsetEstimate;
+  *uncertainty = 7200.0;
+  *filteredOffset = self->fFilterOffsetEstimate;
   self->fIsSeeded = 1;
-  self->fLastInternalTime = a3;
+  self->fLastInternalTime = time;
 }
 
-- (BOOL)updateMeasurementNoiseEstimate:(double)a3
+- (BOOL)updateMeasurementNoiseEstimate:(double)estimate
 {
   v5 = [(NSMutableArray *)self->fOffsetHistory count];
   if ((_iAP2LogEnableMask & 4) != 0)
@@ -121,7 +121,7 @@
   }
 
   fOffsetHistory = self->fOffsetHistory;
-  v16 = [NSNumber numberWithDouble:a3];
+  v16 = [NSNumber numberWithDouble:estimate];
   [(NSMutableArray *)fOffsetHistory addObject:v16];
 
   v18 = v5 >= self->fMinCountForMeasNoiseTraining && v5 > 1;
@@ -211,20 +211,20 @@
   return v18;
 }
 
-- (int)iAP2KalmanFilterUpdateDeviceTime:(double)a3 Offset:(double)a4 FilteredOffset:(double *)a5 OffsetUncertainty:(double *)a6
+- (int)iAP2KalmanFilterUpdateDeviceTime:(double)time Offset:(double)offset FilteredOffset:(double *)filteredOffset OffsetUncertainty:(double *)uncertainty
 {
   if (self->fIsMeasurementNoiseTrained)
   {
     goto LABEL_2;
   }
 
-  if (![(iAP2KalmanFilter *)self updateMeasurementNoiseEstimate:a4])
+  if (![(iAP2KalmanFilter *)self updateMeasurementNoiseEstimate:offset])
   {
 LABEL_52:
     result = 0;
-    *a5 = a4;
-    *a6 = 7200.0;
-    self->fLastInternalTime = a3;
+    *filteredOffset = offset;
+    *uncertainty = 7200.0;
+    self->fLastInternalTime = time;
     return result;
   }
 
@@ -308,20 +308,20 @@ LABEL_52:
   }
 
 LABEL_2:
-  if (!self->fIsSeeded || (v11 = a3 - self->fLastInternalTime, v11 > self->fTimeout))
+  if (!self->fIsSeeded || (v11 = time - self->fLastInternalTime, v11 > self->fTimeout))
   {
-    [(iAP2KalmanFilter *)self reseedWithInternalTime:a5 RawOffset:a6 FilteredOffset:a3 OffsetUncertainty:a4];
+    [(iAP2KalmanFilter *)self reseedWithInternalTime:filteredOffset RawOffset:uncertainty FilteredOffset:time OffsetUncertainty:offset];
     return 0;
   }
 
   p_fFilterOffsetEstimate = &self->fFilterOffsetEstimate;
   fFilterOffsetEstimate = self->fFilterOffsetEstimate;
-  self->fLastInternalTime = a3;
+  self->fLastInternalTime = time;
   v16 = self->fMeasurementVar;
   f_P = self->f_P;
   if (v16 + f_P <= 0.0)
   {
-    [(iAP2KalmanFilter *)self resetWithInternalTimeSecs:a5 RawOffset:a6 FilteredOffset:a3 OffsetUncertainty:a4];
+    [(iAP2KalmanFilter *)self resetWithInternalTimeSecs:filteredOffset RawOffset:uncertainty FilteredOffset:time OffsetUncertainty:offset];
     if ((_iAP2LogEnableMask & 4) != 0)
     {
       if (gLogObjects && gNumLogObjects >= 20)
@@ -349,7 +349,7 @@ LABEL_2:
     return 0;
   }
 
-  v18 = a4 - fFilterOffsetEstimate;
+  v18 = offset - fFilterOffsetEstimate;
   v19 = v18 * v18 / (v16 + f_P);
   if (v19 <= 20.25)
   {
@@ -394,11 +394,11 @@ LABEL_2:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
       v50 = 134218496;
-      v51 = fFilterOffsetEstimate;
+      timeCopy = fFilterOffsetEstimate;
       v52 = 2048;
-      v53 = v28;
+      offsetCopy = v28;
       v54 = 2048;
-      v55 = a4 - fFilterOffsetEstimate;
+      v55 = offset - fFilterOffsetEstimate;
       _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "fFilterOffsetPrior = %.3lf K = %.3lf v = %.3lf", &v50, 0x20u);
     }
 
@@ -441,8 +441,8 @@ LABEL_2:
         v43 = 0.00000225;
       }
 
-      *a6 = v43;
-      *a5 = self->fFilterOffsetEstimate;
+      *uncertainty = v43;
+      *filteredOffset = self->fFilterOffsetEstimate;
       if ((v40 & 4) != 0)
       {
         if (gLogObjects && gNumLogObjects >= 20)
@@ -463,7 +463,7 @@ LABEL_2:
 
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
         {
-          [iAP2KalmanFilter iAP2KalmanFilterUpdateDeviceTime:a5 Offset:? FilteredOffset:? OffsetUncertainty:?];
+          [iAP2KalmanFilter iAP2KalmanFilterUpdateDeviceTime:filteredOffset Offset:? FilteredOffset:? OffsetUncertainty:?];
         }
 
         if ((_iAP2LogEnableMask & 4) != 0)
@@ -486,12 +486,12 @@ LABEL_2:
 
           if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
           {
-            v48 = *a5;
-            v49 = *a6;
+            v48 = *filteredOffset;
+            v49 = *uncertainty;
             v50 = 134219776;
-            v51 = a3;
+            timeCopy = time;
             v52 = 2048;
-            v53 = a4;
+            offsetCopy = offset;
             v54 = 2048;
             v55 = v48;
             v56 = 2048;
@@ -501,7 +501,7 @@ LABEL_2:
             v60 = 2048;
             v61 = v20;
             v62 = 2048;
-            v63 = a4 - fFilterOffsetEstimate;
+            v63 = offset - fFilterOffsetEstimate;
             v64 = 2048;
             v65 = v19;
             _os_log_debug_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEBUG, "internalTimeSecs,%.6lf,rawOffset,%.6lf,filteredOffsetSecs,%.6lf,offsetUncertaintySecs,%.6lf,R,%.6lf,Q,%.6lf,v,%.6lf,vtest2,%.6lf\n", &v50, 0x52u);
@@ -531,8 +531,8 @@ LABEL_2:
     v37 = 0.00000225;
   }
 
-  *a6 = v37;
-  *a5 = self->fFilterOffsetEstimate;
+  *uncertainty = v37;
+  *filteredOffset = self->fFilterOffsetEstimate;
   return 1;
 }
 

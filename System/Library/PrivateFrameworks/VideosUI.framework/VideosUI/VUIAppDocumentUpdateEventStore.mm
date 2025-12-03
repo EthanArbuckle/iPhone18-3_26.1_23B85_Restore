@@ -2,10 +2,10 @@
 - (NSArray)events;
 - (VUIAppDocumentUpdateEventStore)init;
 - (id)description;
-- (void)addEvent:(id)a3;
-- (void)addEvents:(id)a3;
+- (void)addEvent:(id)event;
+- (void)addEvents:(id)events;
 - (void)removeAllEvents;
-- (void)removeEvent:(id)a3;
+- (void)removeEvent:(id)event;
 @end
 
 @implementation VUIAppDocumentUpdateEventStore
@@ -27,33 +27,33 @@
 
 - (NSArray)events
 {
-  v2 = [(VUIAppDocumentUpdateEventStore *)self eventByEventDescriptor];
-  v3 = [v2 allValues];
+  eventByEventDescriptor = [(VUIAppDocumentUpdateEventStore *)self eventByEventDescriptor];
+  allValues = [eventByEventDescriptor allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  eventCopy = event;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  eventCopy2 = event;
+  v6 = [v4 arrayWithObjects:&eventCopy count:1];
 
-  [(VUIAppDocumentUpdateEventStore *)self addEvents:v6, v7, v8];
+  [(VUIAppDocumentUpdateEventStore *)self addEvents:v6, eventCopy, v8];
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUIAppDocumentUpdateEventStore *)self eventByEventDescriptor];
+  eventsCopy = events;
+  eventByEventDescriptor = [(VUIAppDocumentUpdateEventStore *)self eventByEventDescriptor];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = eventsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -69,8 +69,8 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 descriptor];
-        v13 = [v5 objectForKey:v12];
+        descriptor = [v11 descriptor];
+        v13 = [eventByEventDescriptor objectForKey:descriptor];
         v14 = v13;
         if (v13)
         {
@@ -83,7 +83,7 @@
         }
 
         v16 = v15;
-        [v5 vui_setOrRemoveObject:v15 forKey:v12];
+        [eventByEventDescriptor vui_setOrRemoveObject:v15 forKey:descriptor];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -93,19 +93,19 @@
   }
 }
 
-- (void)removeEvent:(id)a3
+- (void)removeEvent:(id)event
 {
-  v4 = a3;
-  v6 = [(VUIAppDocumentUpdateEventStore *)self eventByEventDescriptor];
-  v5 = [v4 descriptor];
+  eventCopy = event;
+  eventByEventDescriptor = [(VUIAppDocumentUpdateEventStore *)self eventByEventDescriptor];
+  descriptor = [eventCopy descriptor];
 
-  [v6 removeObjectForKey:v5];
+  [eventByEventDescriptor removeObjectForKey:descriptor];
 }
 
 - (void)removeAllEvents
 {
-  v2 = [(VUIAppDocumentUpdateEventStore *)self eventByEventDescriptor];
-  [v2 removeAllObjects];
+  eventByEventDescriptor = [(VUIAppDocumentUpdateEventStore *)self eventByEventDescriptor];
+  [eventByEventDescriptor removeAllObjects];
 }
 
 - (id)description
@@ -117,8 +117,8 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIAppDocumentUpdateEventStore *)self eventByEventDescriptor];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"eventByEventDescriptor", v6];
+  eventByEventDescriptor = [(VUIAppDocumentUpdateEventStore *)self eventByEventDescriptor];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"eventByEventDescriptor", eventByEventDescriptor];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];

@@ -1,17 +1,17 @@
 @interface UIKBHandwritingStrokeViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
 @end
 
 @implementation UIKBHandwritingStrokeViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIHandwritingAssistantView"];
   [location[0] validateClass:@"UIKBKeyplaneView"];
   objc_storeStrong(location, 0);
@@ -28,14 +28,14 @@
 
 - (CGRect)accessibilityFrame
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   [(UIKBHandwritingStrokeViewAccessibility *)self bounds];
   v14.origin.x = v2;
   v14.origin.y = v3;
   v14.size.width = v4;
   v14.size.height = v5;
-  v13 = [(UIView *)v16 _accessibilityFindAncestor:&__block_literal_global_22 startWithSelf:0];
+  v13 = [(UIView *)selfCopy _accessibilityFindAncestor:&__block_literal_global_22 startWithSelf:0];
   if (AXDeviceIsPhoneIdiom())
   {
     v12 = [v13 _accessibilityFindSubviewDescendant:&__block_literal_global_318];
@@ -46,7 +46,7 @@
     objc_storeStrong(&v12, 0);
   }
 
-  v17 = UIAccessibilityConvertFrameToScreenCoordinates(v14, v16);
+  v17 = UIAccessibilityConvertFrameToScreenCoordinates(v14, selfCopy);
   objc_storeStrong(&v13, 0);
   y = v17.origin.y;
   x = v17.origin.x;

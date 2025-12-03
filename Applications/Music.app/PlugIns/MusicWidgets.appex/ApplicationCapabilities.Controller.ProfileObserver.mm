@@ -33,14 +33,14 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedConnection];
-  if (v5)
+  selfCopy = self;
+  sharedConnection = [v3 sharedConnection];
+  if (sharedConnection)
   {
-    v6 = v5;
-    [v5 unregisterObserver:v4];
+    v6 = sharedConnection;
+    [sharedConnection unregisterObserver:selfCopy];
 
-    v7.receiver = v4;
+    v7.receiver = selfCopy;
     v7.super_class = type metadata accessor for ApplicationCapabilities.Controller.ProfileObserver();
     [(ApplicationCapabilities.Controller.ProfileObserver *)&v7 dealloc];
   }

@@ -5,11 +5,11 @@
 - (CGPoint)referenceContentOffsetForPoint;
 - (UIEdgeInsets)touchInsets;
 - (UIScrollView)scrollView;
-- (_UIAutoScrollAssistant)initWithScrollView:(id)a3;
+- (_UIAutoScrollAssistant)initWithScrollView:(id)view;
 - (void)_adjustPointToCurrentContentOffset;
-- (void)_handleAutoScrollerWithContentOffset:(CGPoint)a3 direction:(unint64_t)a4;
-- (void)autoScrollFromPoint:(CGPoint)a3;
-- (void)displayLinkFired:(id)a3;
+- (void)_handleAutoScrollerWithContentOffset:(CGPoint)offset direction:(unint64_t)direction;
+- (void)autoScrollFromPoint:(CGPoint)point;
+- (void)displayLinkFired:(id)fired;
 - (void)stop;
 @end
 
@@ -28,16 +28,16 @@
   return result;
 }
 
-- (_UIAutoScrollAssistant)initWithScrollView:(id)a3
+- (_UIAutoScrollAssistant)initWithScrollView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v19.receiver = self;
   v19.super_class = _UIAutoScrollAssistant;
   v5 = [(_UIAutoScrollAssistant *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scrollView, v4);
+    objc_storeWeak(&v5->_scrollView, viewCopy);
     if (_UIInternalPreferencesRevisionOnce != -1)
     {
       dispatch_once(&_UIInternalPreferencesRevisionOnce, &__block_literal_global_5_11);
@@ -74,9 +74,9 @@
     v6->_referenceContentOffsetForPoint.x = v11;
     v6->_referenceContentOffsetForPoint.y = v12;
 
-    v13 = [v4 traitCollection];
-    v14 = [v13 userInterfaceIdiom];
-    if (v14 == 6 || v14 == 1)
+    traitCollection = [viewCopy traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+    if (userInterfaceIdiom == 6 || userInterfaceIdiom == 1)
     {
       v16 = -50.0;
     }
@@ -95,10 +95,10 @@
   return v6;
 }
 
-- (void)autoScrollFromPoint:(CGPoint)a3
+- (void)autoScrollFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(_UIAutoScrollAssistant *)self point];
   v7 = v6;
   v9 = v8;
@@ -109,17 +109,17 @@
   if (!self->_displayLink)
   {
     v13 = objc_loadWeakRetained(&self->_scrollView);
-    v14 = [v13 _screen];
-    v15 = [v14 displayLinkWithTarget:self selector:sel_displayLinkFired_];
+    _screen = [v13 _screen];
+    v15 = [_screen displayLinkWithTarget:self selector:sel_displayLinkFired_];
 
     v21 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
     [v15 setPreferredFrameRateRange:{*&v21.minimum, *&v21.maximum, *&v21.preferred}];
     [v15 setHighFrameRateReason:1048631];
-    v16 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v15 addToRunLoop:v16 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [v15 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
-    v17 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v15 addToRunLoop:v17 forMode:@"UITrackingRunLoopMode"];
+    mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [v15 addToRunLoop:mainRunLoop2 forMode:@"UITrackingRunLoopMode"];
 
     [(_UIAutoScrollAssistant *)self setDisplayLink:v15];
     _UIQOSManagedCommitsBegin(self, @"AutoScroll");
@@ -143,8 +143,8 @@
 
 - (void)stop
 {
-  v3 = [(_UIAutoScrollAssistant *)self displayLink];
-  [v3 invalidate];
+  displayLink = [(_UIAutoScrollAssistant *)self displayLink];
+  [displayLink invalidate];
 
   [(_UIAutoScrollAssistant *)self setDisplayLink:0];
   [(_UIAutoScrollBehavior *)self->_behavior autoScrollEnded:self];
@@ -155,53 +155,53 @@
 
 - (BOOL)isActive
 {
-  v2 = [(_UIAutoScrollAssistant *)self displayLink];
-  v3 = v2 != 0;
+  displayLink = [(_UIAutoScrollAssistant *)self displayLink];
+  v3 = displayLink != 0;
 
   return v3;
 }
 
 - (BOOL)_scrollContinuous
 {
-  v3 = [(_UIAutoScrollAssistant *)self mode];
-  if (v3 == 2)
+  mode = [(_UIAutoScrollAssistant *)self mode];
+  if (mode == 2)
   {
     LOBYTE(v5) = 0;
   }
 
-  else if (v3)
+  else if (mode)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v4 = [(_UIAutoScrollAssistant *)self scrollView];
-    v5 = [v4 isPagingEnabled] ^ 1;
+    scrollView = [(_UIAutoScrollAssistant *)self scrollView];
+    v5 = [scrollView isPagingEnabled] ^ 1;
   }
 
   return v5;
 }
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
-  v4 = a3;
-  v5 = [(_UIAutoScrollAssistant *)self _scrollContinuous];
-  v6 = [(_UIAutoScrollAssistant *)self behavior];
-  [v6 beginDelayForAutoScroller:self];
+  firedCopy = fired;
+  _scrollContinuous = [(_UIAutoScrollAssistant *)self _scrollContinuous];
+  behavior = [(_UIAutoScrollAssistant *)self behavior];
+  [behavior beginDelayForAutoScroller:self];
   v8 = v7;
 
   [(_UIAutoScrollAssistant *)self lastTimestamp];
   v10 = v8 + v9;
-  [v4 timestamp];
+  [firedCopy timestamp];
   v12 = v11;
-  [v4 timestamp];
+  [firedCopy timestamp];
   v14 = v13;
   [(_UIAutoScrollAssistant *)self lastTimestamp];
   v16 = v14 - v15;
   if ([(_UIAutoScrollAssistant *)self started]|| v10 >= v12)
   {
-    if (v10 >= v12 && (!v5 || ![(_UIAutoScrollAssistant *)self started]))
+    if (v10 >= v12 && (!_scrollContinuous || ![(_UIAutoScrollAssistant *)self started]))
     {
       goto LABEL_11;
     }
@@ -210,46 +210,46 @@
   else
   {
     [(_UIAutoScrollAssistant *)self setStarted:1];
-    if (v5)
+    if (_scrollContinuous)
     {
-      [v4 duration];
+      [firedCopy duration];
       v16 = v17;
     }
   }
 
-  v18 = [(_UIAutoScrollAssistant *)self behavior];
-  v19 = v18;
-  if (v18)
+  behavior2 = [(_UIAutoScrollAssistant *)self behavior];
+  v19 = behavior2;
+  if (behavior2)
   {
-    [v18 offsetForAutoScroller:self timeDelta:v16];
+    [behavior2 offsetForAutoScroller:self timeDelta:v16];
   }
 
   [(_UIAutoScrollAssistant *)self _handleAutoScrollerWithContentOffset:0 direction:0.0, 0.0];
-  [v4 timestamp];
+  [firedCopy timestamp];
   [(_UIAutoScrollAssistant *)self setLastTimestamp:?];
 LABEL_11:
   [(_UIAutoScrollAssistant *)self lastTimestamp];
   if (v20 == 0.0)
   {
-    [v4 timestamp];
+    [firedCopy timestamp];
     [(_UIAutoScrollAssistant *)self setLastTimestamp:?];
   }
 }
 
-- (void)_handleAutoScrollerWithContentOffset:(CGPoint)a3 direction:(unint64_t)a4
+- (void)_handleAutoScrollerWithContentOffset:(CGPoint)offset direction:(unint64_t)direction
 {
-  if (a4 == 1)
+  if (direction == 1)
   {
 
-    [(_UIAutoScrollAssistant *)self setStarted:0, a3.x, a3.y];
+    [(_UIAutoScrollAssistant *)self setStarted:0, offset.x, offset.y];
   }
 
   else
   {
-    y = a3.y;
-    x = a3.x;
-    v7 = [(_UIAutoScrollAssistant *)self scrollView];
-    [v7 _autoScrollAssistantUpdateContentOffset:{x, y}];
+    y = offset.y;
+    x = offset.x;
+    scrollView = [(_UIAutoScrollAssistant *)self scrollView];
+    [scrollView _autoScrollAssistantUpdateContentOffset:{x, y}];
   }
 }
 

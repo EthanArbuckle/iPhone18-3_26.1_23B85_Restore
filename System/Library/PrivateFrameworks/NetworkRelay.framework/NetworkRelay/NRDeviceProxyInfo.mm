@@ -1,46 +1,46 @@
 @interface NRDeviceProxyInfo
-- (BOOL)isEqual:(id)a3;
-- (NRDeviceProxyInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NRDeviceProxyInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRDeviceProxyInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(NRDeviceProxyInfo *)self proxyProviderType];
-      if (v6 != [v5 proxyProviderType])
+      v5 = equalCopy;
+      proxyProviderType = [(NRDeviceProxyInfo *)self proxyProviderType];
+      if (proxyProviderType != [v5 proxyProviderType])
       {
         goto LABEL_26;
       }
 
-      v7 = [(NRDeviceProxyInfo *)self httpConnectURLs];
-      if (v7)
+      httpConnectURLs = [(NRDeviceProxyInfo *)self httpConnectURLs];
+      if (httpConnectURLs)
       {
       }
 
       else
       {
-        v9 = [v5 httpConnectURLs];
+        httpConnectURLs2 = [v5 httpConnectURLs];
 
-        if (!v9)
+        if (!httpConnectURLs2)
         {
           goto LABEL_9;
         }
       }
 
-      v10 = [(NRDeviceProxyInfo *)self httpConnectURLs];
-      v11 = [v5 httpConnectURLs];
-      v12 = [v10 isEqual:v11];
+      httpConnectURLs3 = [(NRDeviceProxyInfo *)self httpConnectURLs];
+      httpConnectURLs4 = [v5 httpConnectURLs];
+      v12 = [httpConnectURLs3 isEqual:httpConnectURLs4];
 
       if (!v12)
       {
@@ -48,24 +48,24 @@
       }
 
 LABEL_9:
-      v13 = [(NRDeviceProxyInfo *)self httpConnectUserName];
-      if (v13)
+      httpConnectUserName = [(NRDeviceProxyInfo *)self httpConnectUserName];
+      if (httpConnectUserName)
       {
       }
 
       else
       {
-        v14 = [v5 httpConnectUserName];
+        httpConnectUserName2 = [v5 httpConnectUserName];
 
-        if (!v14)
+        if (!httpConnectUserName2)
         {
           goto LABEL_13;
         }
       }
 
-      v15 = [(NRDeviceProxyInfo *)self httpConnectUserName];
-      v16 = [v5 httpConnectUserName];
-      v17 = [v15 isEqual:v16];
+      httpConnectUserName3 = [(NRDeviceProxyInfo *)self httpConnectUserName];
+      httpConnectUserName4 = [v5 httpConnectUserName];
+      v17 = [httpConnectUserName3 isEqual:httpConnectUserName4];
 
       if (!v17)
       {
@@ -73,24 +73,24 @@ LABEL_9:
       }
 
 LABEL_13:
-      v18 = [(NRDeviceProxyInfo *)self httpConnectPassword];
-      if (v18)
+      httpConnectPassword = [(NRDeviceProxyInfo *)self httpConnectPassword];
+      if (httpConnectPassword)
       {
       }
 
       else
       {
-        v19 = [v5 httpConnectPassword];
+        httpConnectPassword2 = [v5 httpConnectPassword];
 
-        if (!v19)
+        if (!httpConnectPassword2)
         {
           goto LABEL_17;
         }
       }
 
-      v20 = [(NRDeviceProxyInfo *)self httpConnectPassword];
-      v21 = [v5 httpConnectPassword];
-      v22 = [v20 isEqual:v21];
+      httpConnectPassword3 = [(NRDeviceProxyInfo *)self httpConnectPassword];
+      httpConnectPassword4 = [v5 httpConnectPassword];
+      v22 = [httpConnectPassword3 isEqual:httpConnectPassword4];
 
       if (!v22)
       {
@@ -98,28 +98,28 @@ LABEL_13:
       }
 
 LABEL_17:
-      v23 = [(NRDeviceProxyInfo *)self httpConnectPSKIdentity];
-      if (v23)
+      httpConnectPSKIdentity = [(NRDeviceProxyInfo *)self httpConnectPSKIdentity];
+      if (httpConnectPSKIdentity)
       {
       }
 
       else
       {
-        v24 = [v5 httpConnectPSKIdentity];
+        httpConnectPSKIdentity2 = [v5 httpConnectPSKIdentity];
 
-        if (!v24)
+        if (!httpConnectPSKIdentity2)
         {
 LABEL_21:
-          v28 = [(NRDeviceProxyInfo *)self httpConnectPSK];
-          if (v28)
+          httpConnectPSK = [(NRDeviceProxyInfo *)self httpConnectPSK];
+          if (httpConnectPSK)
           {
           }
 
           else
           {
-            v29 = [v5 httpConnectPSK];
+            httpConnectPSK2 = [v5 httpConnectPSK];
 
-            if (!v29)
+            if (!httpConnectPSK2)
             {
 LABEL_25:
               v8 = 1;
@@ -129,9 +129,9 @@ LABEL_27:
             }
           }
 
-          v30 = [(NRDeviceProxyInfo *)self httpConnectPSK];
-          v31 = [v5 httpConnectPSK];
-          v32 = [v30 isEqual:v31];
+          httpConnectPSK3 = [(NRDeviceProxyInfo *)self httpConnectPSK];
+          httpConnectPSK4 = [v5 httpConnectPSK];
+          v32 = [httpConnectPSK3 isEqual:httpConnectPSK4];
 
           if (v32)
           {
@@ -144,9 +144,9 @@ LABEL_26:
         }
       }
 
-      v25 = [(NRDeviceProxyInfo *)self httpConnectPSKIdentity];
-      v26 = [v5 httpConnectPSKIdentity];
-      v27 = [v25 isEqual:v26];
+      httpConnectPSKIdentity3 = [(NRDeviceProxyInfo *)self httpConnectPSKIdentity];
+      httpConnectPSKIdentity4 = [v5 httpConnectPSKIdentity];
+      v27 = [httpConnectPSKIdentity3 isEqual:httpConnectPSKIdentity4];
 
       if (!v27)
       {
@@ -202,15 +202,15 @@ LABEL_28:
       {
         v6 = "MASQUE";
 LABEL_14:
-        v7 = [v5 initWithUTF8String:v6];
+        proxyProviderType = [v5 initWithUTF8String:v6];
         goto LABEL_15;
       }
     }
 
-    v7 = [v5 initWithFormat:@"Unknown(%llu)", proxyProviderType];
+    proxyProviderType = [v5 initWithFormat:@"Unknown(%llu)", proxyProviderType];
 LABEL_15:
-    v8 = v7;
-    [v3 appendFormat:@"type:%@, ", v7];
+    v8 = proxyProviderType;
+    [v3 appendFormat:@"type:%@, ", proxyProviderType];
 
     if (self->_httpConnectURLs)
     {
@@ -248,30 +248,30 @@ LABEL_15:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[NRDeviceProxyInfo proxyProviderType](self forKey:{"proxyProviderType"), @"proxyProviderType"}];
-  v5 = [(NRDeviceProxyInfo *)self httpConnectURLs];
-  [v4 encodeObject:v5 forKey:@"httpConnectURLs"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[NRDeviceProxyInfo proxyProviderType](self forKey:{"proxyProviderType"), @"proxyProviderType"}];
+  httpConnectURLs = [(NRDeviceProxyInfo *)self httpConnectURLs];
+  [coderCopy encodeObject:httpConnectURLs forKey:@"httpConnectURLs"];
 
-  v6 = [(NRDeviceProxyInfo *)self httpConnectPSKIdentity];
-  [v4 encodeObject:v6 forKey:@"httpConnectPSKIdentity"];
+  httpConnectPSKIdentity = [(NRDeviceProxyInfo *)self httpConnectPSKIdentity];
+  [coderCopy encodeObject:httpConnectPSKIdentity forKey:@"httpConnectPSKIdentity"];
 
-  v7 = [(NRDeviceProxyInfo *)self httpConnectPSK];
-  [v4 encodeObject:v7 forKey:@"httpConnectPSK"];
+  httpConnectPSK = [(NRDeviceProxyInfo *)self httpConnectPSK];
+  [coderCopy encodeObject:httpConnectPSK forKey:@"httpConnectPSK"];
 
-  v8 = [(NRDeviceProxyInfo *)self httpConnectUserName];
-  [v4 encodeObject:v8 forKey:@"httpConnectUserName"];
+  httpConnectUserName = [(NRDeviceProxyInfo *)self httpConnectUserName];
+  [coderCopy encodeObject:httpConnectUserName forKey:@"httpConnectUserName"];
 
-  v9 = [(NRDeviceProxyInfo *)self httpConnectPassword];
-  [v4 encodeObject:v9 forKey:@"httpConnectPassword"];
+  httpConnectPassword = [(NRDeviceProxyInfo *)self httpConnectPassword];
+  [coderCopy encodeObject:httpConnectPassword forKey:@"httpConnectPassword"];
 }
 
-- (NRDeviceProxyInfo)initWithCoder:(id)a3
+- (NRDeviceProxyInfo)initWithCoder:(id)coder
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = NRDeviceProxyInfo;
   v5 = [(NRDeviceProxyInfo *)&v28 init];
@@ -308,48 +308,48 @@ LABEL_7:
   }
 
   v6 = v5;
-  -[NRDeviceProxyInfo setProxyProviderType:](v5, "setProxyProviderType:", [v4 decodeInt64ForKey:@"proxyProviderType"]);
-  v7 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"httpConnectURLs"];
+  -[NRDeviceProxyInfo setProxyProviderType:](v5, "setProxyProviderType:", [coderCopy decodeInt64ForKey:@"proxyProviderType"]);
+  v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"httpConnectURLs"];
   [(NRDeviceProxyInfo *)v6 setHttpConnectURLs:v7];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"httpConnectPSKIdentity"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"httpConnectPSKIdentity"];
   [(NRDeviceProxyInfo *)v6 setHttpConnectPSKIdentity:v8];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"httpConnectPSK"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"httpConnectPSK"];
   [(NRDeviceProxyInfo *)v6 setHttpConnectPSK:v9];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"httpConnectUserName"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"httpConnectUserName"];
   [(NRDeviceProxyInfo *)v6 setHttpConnectUserName:v10];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"httpConnectPassword"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"httpConnectPassword"];
   [(NRDeviceProxyInfo *)v6 setHttpConnectPassword:v11];
 
   v12 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setProxyProviderType:{-[NRDeviceProxyInfo proxyProviderType](self, "proxyProviderType")}];
-  v5 = [(NRDeviceProxyInfo *)self httpConnectURLs];
-  v6 = [v5 copy];
+  httpConnectURLs = [(NRDeviceProxyInfo *)self httpConnectURLs];
+  v6 = [httpConnectURLs copy];
   [v4 setHttpConnectURLs:v6];
 
-  v7 = [(NRDeviceProxyInfo *)self httpConnectPSKIdentity];
-  v8 = [v7 copy];
+  httpConnectPSKIdentity = [(NRDeviceProxyInfo *)self httpConnectPSKIdentity];
+  v8 = [httpConnectPSKIdentity copy];
   [v4 setHttpConnectPSKIdentity:v8];
 
-  v9 = [(NRDeviceProxyInfo *)self httpConnectPSK];
-  v10 = [v9 copy];
+  httpConnectPSK = [(NRDeviceProxyInfo *)self httpConnectPSK];
+  v10 = [httpConnectPSK copy];
   [v4 setHttpConnectPSK:v10];
 
-  v11 = [(NRDeviceProxyInfo *)self httpConnectUserName];
-  v12 = [v11 copy];
+  httpConnectUserName = [(NRDeviceProxyInfo *)self httpConnectUserName];
+  v12 = [httpConnectUserName copy];
   [v4 setHttpConnectUserName:v12];
 
-  v13 = [(NRDeviceProxyInfo *)self httpConnectPassword];
-  v14 = [v13 copy];
+  httpConnectPassword = [(NRDeviceProxyInfo *)self httpConnectPassword];
+  v14 = [httpConnectPassword copy];
   [v4 setHttpConnectPassword:v14];
 
   return v4;

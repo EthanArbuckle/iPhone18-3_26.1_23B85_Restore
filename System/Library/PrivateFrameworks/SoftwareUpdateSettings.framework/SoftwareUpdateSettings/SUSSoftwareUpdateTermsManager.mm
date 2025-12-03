@@ -1,22 +1,22 @@
 @interface SUSSoftwareUpdateTermsManager
 - (SUSSoftwareUpdateTermsManager)init;
 - (void)_acceptedTermsFromAsset;
-- (void)_acceptedTermsVersion:(id)a3;
-- (void)_finishTermsWithAcceptance:(BOOL)a3 error:(id)a4;
-- (void)_handleAgreeFromObjectModel:(id)a3;
-- (void)_handleDisagreeFromObjectModel:(id)a3;
-- (void)_loadRemoteUITermsWithCloudAtURL:(id)a3;
+- (void)_acceptedTermsVersion:(id)version;
+- (void)_finishTermsWithAcceptance:(BOOL)acceptance error:(id)error;
+- (void)_handleAgreeFromObjectModel:(id)model;
+- (void)_handleDisagreeFromObjectModel:(id)model;
+- (void)_loadRemoteUITermsWithCloudAtURL:(id)l;
 - (void)_loadTermsFromUpdateAsset;
-- (void)_loadTermsRemoteUIFailureWithError:(id)a3;
-- (void)_presentModalController:(id)a3;
-- (void)_reportTermsUserAction:(id)a3;
-- (void)_reportTermsUserAction:(id)a3 agreeUrl:(id)a4;
-- (void)cancelLoadingTerms:(id)a3;
-- (void)presentTermsIfNecessaryForUpdate:(id)a3 overController:(id)a4 showLoadSpinner:(BOOL)a5 completion:(id)a6;
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5;
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5;
-- (void)remoteUIController:(id)a3 willPresentObjectModel:(id)a4 modally:(BOOL)a5;
-- (void)remoteUIControllerDidDismiss:(id)a3;
+- (void)_loadTermsRemoteUIFailureWithError:(id)error;
+- (void)_presentModalController:(id)controller;
+- (void)_reportTermsUserAction:(id)action;
+- (void)_reportTermsUserAction:(id)action agreeUrl:(id)url;
+- (void)cancelLoadingTerms:(id)terms;
+- (void)presentTermsIfNecessaryForUpdate:(id)update overController:(id)controller showLoadSpinner:(BOOL)spinner completion:(id)completion;
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request;
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal;
+- (void)remoteUIController:(id)controller willPresentObjectModel:(id)model modally:(BOOL)modally;
+- (void)remoteUIControllerDidDismiss:(id)dismiss;
 - (void)showLoadingSpinnerViewController;
 @end
 
@@ -43,19 +43,19 @@
   return v5;
 }
 
-- (void)_finishTermsWithAcceptance:(BOOL)a3 error:(id)a4
+- (void)_finishTermsWithAcceptance:(BOOL)acceptance error:(id)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v52 = self;
+  selfCopy = self;
   v51 = a2;
-  v50 = a3;
+  acceptanceCopy = acceptance;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, error);
   v48 = _SUSLoggingFacility();
   v47 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
-    if (v50)
+    if (acceptanceCopy)
     {
       v4 = @"YES";
     }
@@ -75,13 +75,13 @@
   v40 = 0;
   v41 = __66__SUSSoftwareUpdateTermsManager__finishTermsWithAcceptance_error___block_invoke;
   v42 = &unk_279CB6B08;
-  v43 = MEMORY[0x277D82BE0](v52);
-  v45 = v50;
+  v43 = MEMORY[0x277D82BE0](selfCopy);
+  v45 = acceptanceCopy;
   v44 = MEMORY[0x277D82BE0](location);
   v46 = MEMORY[0x26D669A60](&v38);
-  if (v52->_showProgressViewController)
+  if (selfCopy->_showProgressViewController)
   {
-    showProgressViewController = v52->_showProgressViewController;
+    showProgressViewController = selfCopy->_showProgressViewController;
     v32 = MEMORY[0x277D85DD0];
     v33 = -1073741824;
     v34 = 0;
@@ -92,9 +92,9 @@
     objc_storeStrong(&v37, 0);
   }
 
-  else if (v52->_termsRemoteUI)
+  else if (selfCopy->_termsRemoteUI)
   {
-    termsRemoteUI = v52->_termsRemoteUI;
+    termsRemoteUI = selfCopy->_termsRemoteUI;
     v26 = MEMORY[0x277D85DD0];
     v27 = -1073741824;
     v28 = 0;
@@ -107,17 +107,17 @@
 
   else
   {
-    v10 = [(UIViewController *)v52->_hostController presentedViewController];
+    presentedViewController = [(UIViewController *)selfCopy->_hostController presentedViewController];
     v24 = 0;
     v22 = 0;
     v11 = 0;
-    if (v10)
+    if (presentedViewController)
     {
-      v25 = [(UIViewController *)v52->_hostController presentedViewController];
+      presentedViewController2 = [(UIViewController *)selfCopy->_hostController presentedViewController];
       v24 = 1;
-      WeakRetained = objc_loadWeakRetained(&v52->_presentedViewController);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_presentedViewController);
       v22 = 1;
-      v11 = v25 == WeakRetained;
+      v11 = presentedViewController2 == WeakRetained;
     }
 
     if (v22)
@@ -127,13 +127,13 @@
 
     if (v24)
     {
-      MEMORY[0x277D82BD8](v25);
+      MEMORY[0x277D82BD8](presentedViewController2);
     }
 
-    v6 = MEMORY[0x277D82BD8](v10);
+    v6 = MEMORY[0x277D82BD8](presentedViewController);
     if (v11)
     {
-      hostController = v52->_hostController;
+      hostController = selfCopy->_hostController;
       v16 = MEMORY[0x277D85DD0];
       v17 = -1073741824;
       v18 = 0;
@@ -152,7 +152,7 @@
 
   v7 = objc_alloc(MEMORY[0x277D64868]);
   v15 = [v7 initWithEventName:*MEMORY[0x277D64958]];
-  if (v50)
+  if (acceptanceCopy)
   {
     v8 = *MEMORY[0x277D64A78];
   }
@@ -171,7 +171,7 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUManagerClient *)v52->termsAndConditionsClient submitSUAnalyticsEvent:v15];
+  [(SUManagerClient *)selfCopy->termsAndConditionsClient submitSUAnalyticsEvent:v15];
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v46, 0);
   objc_storeStrong(&v44, 0);
@@ -199,21 +199,21 @@ id __66__SUSSoftwareUpdateTermsManager__finishTermsWithAcceptance_error___block_
   return objc_storeWeak((*(a1 + 32) + 64), 0);
 }
 
-- (void)_presentModalController:(id)a3
+- (void)_presentModalController:(id)controller
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeWeak(&v4->_presentedViewController, location[0]);
-  [(UIViewController *)v4->_hostController presentViewController:location[0] animated:1 completion:0];
+  objc_storeStrong(location, controller);
+  objc_storeWeak(&selfCopy->_presentedViewController, location[0]);
+  [(UIViewController *)selfCopy->_hostController presentViewController:location[0] animated:1 completion:0];
   objc_storeStrong(location, 0);
 }
 
 - (void)showLoadingSpinnerViewController
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   v12[1] = a2;
   v12[0] = objc_opt_new();
   v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:? target:? action:?];
@@ -230,37 +230,37 @@ id __66__SUSSoftwareUpdateTermsManager__finishTermsWithAcceptance_error___block_
   MEMORY[0x277D82BD8](v10);
   v2 = [_PSSpinnerHandlingNavigationController alloc];
   v3 = [(_PSSpinnerHandlingNavigationController *)v2 initWithRootViewController:v12[0]];
-  showProgressViewController = v13->_showProgressViewController;
-  v13->_showProgressViewController = v3;
+  showProgressViewController = selfCopy->_showProgressViewController;
+  selfCopy->_showProgressViewController = v3;
   *&v5 = MEMORY[0x277D82BD8](showProgressViewController).n128_u64[0];
-  [(UINavigationController *)v13->_showProgressViewController setModalPresentationStyle:2, v5];
-  [(UINavigationController *)v13->_showProgressViewController setToolbarHidden:0];
-  [(SUSSoftwareUpdateTermsManager *)v13 _presentModalController:v13->_showProgressViewController];
+  [(UINavigationController *)selfCopy->_showProgressViewController setModalPresentationStyle:2, v5];
+  [(UINavigationController *)selfCopy->_showProgressViewController setToolbarHidden:0];
+  [(SUSSoftwareUpdateTermsManager *)selfCopy _presentModalController:selfCopy->_showProgressViewController];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(v12, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)presentTermsIfNecessaryForUpdate:(id)a3 overController:(id)a4 showLoadSpinner:(BOOL)a5 completion:(id)a6
+- (void)presentTermsIfNecessaryForUpdate:(id)update overController:(id)controller showLoadSpinner:(BOOL)spinner completion:(id)completion
 {
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v45 = 0;
-  objc_storeStrong(&v45, a4);
-  v44 = a5;
+  objc_storeStrong(&v45, controller);
+  spinnerCopy = spinner;
   v43 = 0;
-  objc_storeStrong(&v43, a6);
-  objc_storeStrong(&v47->_hostController, v45);
-  objc_storeStrong(&v47->_update, location[0]);
+  objc_storeStrong(&v43, completion);
+  objc_storeStrong(&selfCopy->_hostController, v45);
+  objc_storeStrong(&selfCopy->_update, location[0]);
   v42 = objc_opt_new();
-  v41 = [v42 aa_primaryAppleAccount];
-  v40 = [v41 aa_personID];
+  aa_primaryAppleAccount = [v42 aa_primaryAppleAccount];
+  aa_personID = [aa_primaryAppleAccount aa_personID];
   v6 = [v43 copy];
-  termsCompletion = v47->_termsCompletion;
-  v47->_termsCompletion = v6;
-  if ([v40 length])
+  termsCompletion = selfCopy->_termsCompletion;
+  selfCopy->_termsCompletion = v6;
+  if ([aa_personID length])
   {
     v39 = _SUSLoggingFacility();
     v38 = OS_LOG_TYPE_DEFAULT;
@@ -273,20 +273,20 @@ id __66__SUSSoftwareUpdateTermsManager__finishTermsWithAcceptance_error___block_
     }
 
     objc_storeStrong(&v39, 0);
-    if (v44)
+    if (spinnerCopy)
     {
-      [(SUSSoftwareUpdateTermsManager *)v47 showLoadingSpinnerViewController];
+      [(SUSSoftwareUpdateTermsManager *)selfCopy showLoadingSpinnerViewController];
     }
 
     v8 = objc_alloc(getAASetupAssistantServiceClass());
-    v36 = [v8 initWithAccount:v41];
+    v36 = [v8 initWithAccount:aa_primaryAppleAccount];
     v18 = v36;
     v30 = MEMORY[0x277D85DD0];
     v31 = -1073741824;
     v32 = 0;
     v33 = __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overController_showLoadSpinner_completion___block_invoke;
     v34 = &unk_279CB6B80;
-    v35 = MEMORY[0x277D82BE0](v47);
+    v35 = MEMORY[0x277D82BE0](selfCopy);
     [v18 downloadURLConfiguration:&v30];
     objc_storeStrong(&v35, 0);
     objc_storeStrong(&v36, 0);
@@ -294,11 +294,11 @@ id __66__SUSSoftwareUpdateTermsManager__finishTermsWithAcceptance_error___block_
 
   else
   {
-    v16 = [(SUDescriptor *)v47->_update documentation];
-    v15 = [v16 licenseAgreement];
-    v17 = [v15 length];
-    MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
+    documentation = [(SUDescriptor *)selfCopy->_update documentation];
+    licenseAgreement = [documentation licenseAgreement];
+    v17 = [licenseAgreement length];
+    MEMORY[0x277D82BD8](licenseAgreement);
+    MEMORY[0x277D82BD8](documentation);
     if (v17)
     {
       v29 = _SUSLoggingFacility();
@@ -312,7 +312,7 @@ id __66__SUSSoftwareUpdateTermsManager__finishTermsWithAcceptance_error___block_
       }
 
       objc_storeStrong(&v29, 0);
-      [(SUSSoftwareUpdateTermsManager *)v47 _loadTermsFromUpdateAsset];
+      [(SUSSoftwareUpdateTermsManager *)selfCopy _loadTermsFromUpdateAsset];
     }
 
     else if (v43)
@@ -335,8 +335,8 @@ id __66__SUSSoftwareUpdateTermsManager__finishTermsWithAcceptance_error___block_
     }
   }
 
-  objc_storeStrong(&v40, 0);
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&aa_personID, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   objc_storeStrong(&v42, 0);
   objc_storeStrong(&v43, 0);
   objc_storeStrong(&v45, 0);
@@ -409,17 +409,17 @@ void __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overC
   objc_storeStrong(v9, 0);
 }
 
-- (void)cancelLoadingTerms:(id)a3
+- (void)cancelLoadingTerms:(id)terms
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSSoftwareUpdateTermsManager *)v8 _reportTermsUserAction:@"Dismiss"];
-  v4 = [(RemoteUIController *)v8->_termsRemoteUI loader];
-  [v4 cancel];
-  *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  v5 = v8;
+  objc_storeStrong(location, terms);
+  [(SUSSoftwareUpdateTermsManager *)selfCopy _reportTermsUserAction:@"Dismiss"];
+  loader = [(RemoteUIController *)selfCopy->_termsRemoteUI loader];
+  [loader cancel];
+  *&v3 = MEMORY[0x277D82BD8](loader).n128_u64[0];
+  v5 = selfCopy;
   v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.softwareupdatesettings.errors" code:7 userInfo:{0, v3}];
   [(SUSSoftwareUpdateTermsManager *)v5 _finishTermsWithAcceptance:0 error:?];
   MEMORY[0x277D82BD8](v6);
@@ -429,37 +429,37 @@ void __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overC
 - (void)_loadTermsFromUpdateAsset
 {
   v49 = *MEMORY[0x277D85DE8];
-  v46 = self;
+  selfCopy = self;
   v45[1] = a2;
-  v29 = [(RemoteUIController *)self->_termsRemoteUI loader];
-  [v29 cancel];
-  [(RemoteUIController *)v46->_termsRemoteUI setNavigationController:MEMORY[0x277D82BD8](v29).n128_f64[0]];
-  objc_storeStrong(&v46->_termsRemoteUI, 0);
-  v45[0] = [(SUDescriptor *)v46->_update documentation];
+  loader = [(RemoteUIController *)self->_termsRemoteUI loader];
+  [loader cancel];
+  [(RemoteUIController *)selfCopy->_termsRemoteUI setNavigationController:MEMORY[0x277D82BD8](loader).n128_f64[0]];
+  objc_storeStrong(&selfCopy->_termsRemoteUI, 0);
+  v45[0] = [(SUDescriptor *)selfCopy->_update documentation];
   v30 = objc_alloc(MEMORY[0x277CCACA8]);
-  v31 = [v45[0] licenseAgreement];
+  licenseAgreement = [v45[0] licenseAgreement];
   v44 = [v30 initWithData:? encoding:?];
-  MEMORY[0x277D82BD8](v31);
+  MEMORY[0x277D82BD8](licenseAgreement);
   location = _SUSLoggingFacility();
   v42 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [(SUDescriptor *)v46->_update documentation];
-    v27 = [v28 slaVersion];
-    __os_log_helper_16_2_2_8_66_8_0(v48, v27, [v44 length]);
+    documentation = [(SUDescriptor *)selfCopy->_update documentation];
+    slaVersion = [documentation slaVersion];
+    __os_log_helper_16_2_2_8_66_8_0(v48, slaVersion, [v44 length]);
     _os_log_impl(&dword_26AC65000, location, v42, "[SU Terms] Update asset license agreement has version: %{public}@, length %llu", v48, 0x16u);
-    MEMORY[0x277D82BD8](v27);
-    MEMORY[0x277D82BD8](v28);
+    MEMORY[0x277D82BD8](slaVersion);
+    MEMORY[0x277D82BD8](documentation);
   }
 
   objc_storeStrong(&location, 0);
-  v40 = [getBYLicenseAgreementClass() versionOfAcceptedAgreement];
-  v25 = [v45[0] slaVersion];
-  v26 = [v25 unsignedIntegerValue];
-  *&v2 = MEMORY[0x277D82BD8](v25).n128_u64[0];
-  v39 = v26;
-  v41 = v40 != v26;
-  if (v40 == v26)
+  versionOfAcceptedAgreement = [getBYLicenseAgreementClass() versionOfAcceptedAgreement];
+  slaVersion2 = [v45[0] slaVersion];
+  unsignedIntegerValue = [slaVersion2 unsignedIntegerValue];
+  *&v2 = MEMORY[0x277D82BD8](slaVersion2).n128_u64[0];
+  v39 = unsignedIntegerValue;
+  v41 = versionOfAcceptedAgreement != unsignedIntegerValue;
+  if (versionOfAcceptedAgreement == unsignedIntegerValue)
   {
     [getBYLicenseAgreementClass() recordUserAcceptedAgreementVersion:v39];
     v38 = _SUSLoggingFacility();
@@ -467,10 +467,10 @@ void __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overC
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
       v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(getBYLicenseAgreementClass(), "versionOfAcceptedAgreement")}];
-      v23 = [v45[0] slaVersion];
-      __os_log_helper_16_2_2_8_66_8_66(v47, v24, v23);
+      slaVersion3 = [v45[0] slaVersion];
+      __os_log_helper_16_2_2_8_66_8_66(v47, v24, slaVersion3);
       _os_log_impl(&dword_26AC65000, v38, v37, "[SU Terms] Not showing terms because accepted version %{public}@ >= asset version: %{public}@", v47, 0x16u);
-      MEMORY[0x277D82BD8](v23);
+      MEMORY[0x277D82BD8](slaVersion3);
       MEMORY[0x277D82BD8](v24);
     }
 
@@ -487,7 +487,7 @@ void __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overC
     MEMORY[0x277D82BD8](v21);
     [v36 setModalInPresentation:{1, MEMORY[0x277D82BD8](v22).n128_f64[0]}];
     v35 = 0;
-    if (!v46->_showProgressViewController)
+    if (!selfCopy->_showProgressViewController)
     {
       v4 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v36];
       v5 = v35;
@@ -508,17 +508,17 @@ void __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overC
     MEMORY[0x277D82BD8](v17);
     [v33 setAccessibilityIdentifier:{@"SUSSoftwareUpdateTermsManagerAgreeButton", MEMORY[0x277D82BD8](v18).n128_f64[0]}];
     [v34 setAccessibilityIdentifier:@"SUSSoftwareUpdateTermsManagerDisagreeButton"];
-    v19 = [MEMORY[0x277D75418] currentDevice];
-    v20 = [v19 sf_isiPad];
-    *&v6 = MEMORY[0x277D82BD8](v19).n128_u64[0];
-    if (v20)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    sf_isiPad = [currentDevice sf_isiPad];
+    *&v6 = MEMORY[0x277D82BD8](currentDevice).n128_u64[0];
+    if (sf_isiPad)
     {
       [v35 setModalPresentationStyle:{2, v6}];
-      v11 = [v36 navigationItem];
-      [v11 setRightBarButtonItem:v33];
-      v12 = [v36 navigationItem];
-      [v12 setLeftBarButtonItem:v34];
-      *&v7 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+      navigationItem = [v36 navigationItem];
+      [navigationItem setRightBarButtonItem:v33];
+      navigationItem2 = [v36 navigationItem];
+      [navigationItem2 setLeftBarButtonItem:v34];
+      *&v7 = MEMORY[0x277D82BD8](navigationItem2).n128_u64[0];
     }
 
     else
@@ -533,14 +533,14 @@ void __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overC
       objc_storeStrong(&v32, 0);
     }
 
-    if (v46->_showProgressViewController)
+    if (selfCopy->_showProgressViewController)
     {
-      [(UINavigationController *)v46->_showProgressViewController pushViewController:v36 animated:0, v7];
+      [(UINavigationController *)selfCopy->_showProgressViewController pushViewController:v36 animated:0, v7];
     }
 
     else
     {
-      [(SUSSoftwareUpdateTermsManager *)v46 _presentModalController:v35, v7];
+      [(SUSSoftwareUpdateTermsManager *)selfCopy _presentModalController:v35, v7];
     }
 
     objc_storeStrong(&v33, 0);
@@ -551,7 +551,7 @@ void __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overC
 
   else
   {
-    [(SUSSoftwareUpdateTermsManager *)v46 _finishTermsWithAcceptance:1 error:0];
+    [(SUSSoftwareUpdateTermsManager *)selfCopy _finishTermsWithAcceptance:1 error:0];
   }
 
   objc_storeStrong(&v44, 0);
@@ -559,13 +559,13 @@ void __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overC
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_loadRemoteUITermsWithCloudAtURL:(id)a3
+- (void)_loadRemoteUITermsWithCloudAtURL:(id)l
 {
   v51 = *MEMORY[0x277D85DE8];
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v39 = _SUSLoggingFacility();
   v38 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -576,11 +576,11 @@ void __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overC
 
   objc_storeStrong(&v39, 0);
   v12 = MEMORY[0x277CCACA8];
-  v11 = [(SUDescriptor *)v41->_update productVersion];
-  v10 = [(SUDescriptor *)v41->_update productBuildVersion];
-  v37 = [v12 stringWithFormat:@"%@:%@", v11, v10];
-  MEMORY[0x277D82BD8](v10);
-  *&v3 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+  productVersion = [(SUDescriptor *)selfCopy->_update productVersion];
+  productBuildVersion = [(SUDescriptor *)selfCopy->_update productBuildVersion];
+  v37 = [v12 stringWithFormat:@"%@:%@", productVersion, productBuildVersion];
+  MEMORY[0x277D82BD8](productBuildVersion);
+  *&v3 = MEMORY[0x277D82BD8](productVersion).n128_u64[0];
   v48[0] = @"name";
   v49[0] = *MEMORY[0x277CEC720];
   v48[1] = @"version";
@@ -608,9 +608,9 @@ void __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overC
   v28 = __Block_byref_object_copy_;
   v29 = __Block_byref_object_dispose_;
   v30 = objc_opt_new();
-  v23 = [v25[5] aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v25[5] aa_primaryAppleAccount];
   v8 = objc_alloc(getAAGenericTermsUIRequestClass());
-  v22 = [v8 initWithAccount:v23 parameters:v31];
+  v22 = [v8 initWithAccount:aa_primaryAppleAccount parameters:v31];
   v43 = @"X-Apple-iOS-SLA-Version";
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", objc_msgSend(getBYLicenseAgreementClass(), "versionOfAcceptedAgreement")];
   v44 = v7;
@@ -622,10 +622,10 @@ void __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overC
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v22 customHeaders];
-    __os_log_helper_16_2_1_8_66(v42, v5);
+    customHeaders = [v22 customHeaders];
+    __os_log_helper_16_2_1_8_66(v42, customHeaders);
     _os_log_impl(&dword_26AC65000, oslog, v20, "[SU Terms] Adding headers: %{public}@", v42, 0xCu);
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](customHeaders);
   }
 
   objc_storeStrong(&oslog, 0);
@@ -635,14 +635,14 @@ void __108__SUSSoftwareUpdateTermsManager_presentTermsIfNecessaryForUpdate_overC
   v15 = 0;
   v16 = __66__SUSSoftwareUpdateTermsManager__loadRemoteUITermsWithCloudAtURL___block_invoke;
   v17 = &unk_279CB6BF8;
-  v18 = MEMORY[0x277D82BE0](v41);
+  v18 = MEMORY[0x277D82BE0](selfCopy);
   v19[0] = MEMORY[0x277D82BE0](location[0]);
   v19[1] = &v24;
   [v4 performRequestWithHandler:&v13];
   objc_storeStrong(v19, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v22, 0);
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   _Block_object_dispose(&v24, 8);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v31, 0);
@@ -827,16 +827,16 @@ void __66__SUSSoftwareUpdateTermsManager__loadRemoteUITermsWithCloudAtURL___bloc
   objc_storeStrong(location, 0);
 }
 
-- (void)_loadTermsRemoteUIFailureWithError:(id)a3
+- (void)_loadTermsRemoteUIFailureWithError:(id)error
 {
   v8 = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  [v3 setStatusBarShowsProgress:0];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, error);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setStatusBarShowsProgress:0];
+  MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
   oslog = _SUSLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -845,20 +845,20 @@ void __66__SUSSoftwareUpdateTermsManager__loadRemoteUITermsWithCloudAtURL___bloc
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUSSoftwareUpdateTermsManager *)v6 _loadTermsFromUpdateAsset];
+  [(SUSSoftwareUpdateTermsManager *)selfCopy _loadTermsFromUpdateAsset];
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteUIControllerDidDismiss:(id)a3
+- (void)remoteUIControllerDidDismiss:(id)dismiss
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  [v5 setStatusBarShowsProgress:0];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(location, dismiss);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setStatusBarShowsProgress:0];
+  MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
   v8 = _SUSLoggingFacility();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -870,27 +870,27 @@ void __66__SUSSoftwareUpdateTermsManager__loadRemoteUITermsWithCloudAtURL___bloc
   }
 
   objc_storeStrong(&v8, 0);
-  [(SUSSoftwareUpdateTermsManager *)v10 _reportTermsUserAction:@"Dismiss"];
-  [(SUSSoftwareUpdateTermsManager *)v10 _finishTermsWithAcceptance:1 error:0];
+  [(SUSSoftwareUpdateTermsManager *)selfCopy _reportTermsUserAction:@"Dismiss"];
+  [(SUSSoftwareUpdateTermsManager *)selfCopy _finishTermsWithAcceptance:1 error:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, error);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
-  v8 = [MEMORY[0x277D75128] sharedApplication];
-  [v8 setStatusBarShowsProgress:0];
-  *&v5 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+  objc_storeStrong(&v9, request);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setStatusBarShowsProgress:0];
+  *&v5 = MEMORY[0x277D82BD8](mEMORY[0x277D75128]).n128_u64[0];
   if (v10)
   {
-    [(SUSSoftwareUpdateTermsManager *)v12 _loadTermsRemoteUIFailureWithError:v10, v5];
+    [(SUSSoftwareUpdateTermsManager *)selfCopy _loadTermsRemoteUIFailureWithError:v10, v5];
   }
 
   objc_storeStrong(&v9, 0);
@@ -898,92 +898,92 @@ void __66__SUSSoftwareUpdateTermsManager__loadRemoteUITermsWithCloudAtURL___bloc
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 willPresentObjectModel:(id)a4 modally:(BOOL)a5
+- (void)remoteUIController:(id)controller willPresentObjectModel:(id)model modally:(BOOL)modally
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  [v6 setStatusBarShowsProgress:0];
-  MEMORY[0x277D82BD8](v6);
+  objc_storeStrong(&v7, model);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setStatusBarShowsProgress:0];
+  MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, model);
   v10 = 0;
   overrideNextRUIAction = 0;
-  if (location[0] == v14->_termsRemoteUI)
+  if (location[0] == selfCopy->_termsRemoteUI)
   {
     overrideNextRUIAction = 0;
-    if (a5)
+    if (signal)
     {
-      v11 = [v12 defaultPages];
+      defaultPages = [v12 defaultPages];
       v10 = 1;
       overrideNextRUIAction = 0;
-      if ([v11 count])
+      if ([defaultPages count])
       {
-        overrideNextRUIAction = v14->_overrideNextRUIAction;
+        overrideNextRUIAction = selfCopy->_overrideNextRUIAction;
       }
     }
   }
 
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](defaultPages);
   }
 
   if (overrideNextRUIAction)
   {
-    if (v14->_showProgressViewController)
+    if (selfCopy->_showProgressViewController)
     {
-      v5 = [(UINavigationController *)v14->_showProgressViewController topViewController];
+      topViewController = [(UINavigationController *)selfCopy->_showProgressViewController topViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      MEMORY[0x277D82BD8](v5);
+      MEMORY[0x277D82BD8](topViewController);
       if (isKindOfClass)
       {
-        *a5 = 3;
+        *signal = 3;
       }
     }
 
     else
     {
-      *a5 = 5;
+      *signal = 5;
     }
   }
 
-  v14->_overrideNextRUIAction = 0;
+  selfCopy->_overrideNextRUIAction = 0;
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleAgreeFromObjectModel:(id)a3
+- (void)_handleAgreeFromObjectModel:(id)model
 {
   v64 = *MEMORY[0x277D85DE8];
-  v62 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v62->_agreeToCombinedTOSInProgress)
+  objc_storeStrong(location, model);
+  if (selfCopy->_agreeToCombinedTOSInProgress)
   {
     v60 = 1;
   }
 
   else
   {
-    v59 = [location[0] clientInfo];
-    v58 = [v59 objectForKey:@"agreeUrl"];
+    clientInfo = [location[0] clientInfo];
+    v58 = [clientInfo objectForKey:@"agreeUrl"];
     v33 = objc_alloc(MEMORY[0x277CBEB18]);
     v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v35 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"OS_PLATFORM"];
@@ -1067,9 +1067,9 @@ void __66__SUSSoftwareUpdateTermsManager__loadRemoteUITermsWithCloudAtURL___bloc
     while ([v57 count] < 4)
     {
       v26 = v57;
-      v27 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       [v26 addObject:?];
-      MEMORY[0x277D82BD8](v27);
+      MEMORY[0x277D82BD8](null);
     }
 
     v4 = MEMORY[0x277CCACA8];
@@ -1112,18 +1112,18 @@ void __66__SUSSoftwareUpdateTermsManager__loadRemoteUITermsWithCloudAtURL___bloc
     v41 = 0;
     v42 = __61__SUSSoftwareUpdateTermsManager__handleAgreeFromObjectModel___block_invoke;
     v43 = &unk_279CB6C48;
-    v44 = MEMORY[0x277D82BE0](v62);
+    v44 = MEMORY[0x277D82BE0](selfCopy);
     v45 = MEMORY[0x277D82BE0](v58);
     v46 = MEMORY[0x277D82BE0](location[0]);
-    v47 = MEMORY[0x277D82BE0](v59);
+    v47 = MEMORY[0x277D82BE0](clientInfo);
     v22 = [v20 actionWithTitle:v23 style:0 handler:&v39];
     [v21 addAction:?];
     MEMORY[0x277D82BD8](v22);
     MEMORY[0x277D82BD8](v23);
     *&v3 = MEMORY[0x277D82BD8](v24).n128_u64[0];
-    v25 = [(UIViewController *)v62->_hostController presentedViewController];
-    [(UIViewController *)v25 presentViewController:v48 animated:1 completion:0];
-    MEMORY[0x277D82BD8](v25);
+    presentedViewController = [(UIViewController *)selfCopy->_hostController presentedViewController];
+    [(UIViewController *)presentedViewController presentViewController:v48 animated:1 completion:0];
+    MEMORY[0x277D82BD8](presentedViewController);
     objc_storeStrong(&v47, 0);
     objc_storeStrong(&v46, 0);
     objc_storeStrong(&v45, 0);
@@ -1133,7 +1133,7 @@ void __66__SUSSoftwareUpdateTermsManager__loadRemoteUITermsWithCloudAtURL___bloc
     objc_storeStrong(&v53, 0);
     objc_storeStrong(&v57, 0);
     objc_storeStrong(&v58, 0);
-    objc_storeStrong(&v59, 0);
+    objc_storeStrong(&clientInfo, 0);
     v60 = 0;
   }
 
@@ -1268,52 +1268,52 @@ void __61__SUSSoftwareUpdateTermsManager__handleAgreeFromObjectModel___block_inv
 
 - (void)_acceptedTermsFromAsset
 {
-  v4 = [(SUDescriptor *)self->_update documentation];
-  v3 = [v4 slaVersion];
+  documentation = [(SUDescriptor *)self->_update documentation];
+  slaVersion = [documentation slaVersion];
   [(SUSSoftwareUpdateTermsManager *)self _acceptedTermsVersion:?];
-  MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](slaVersion);
+  MEMORY[0x277D82BD8](documentation);
 }
 
-- (void)_acceptedTermsVersion:(id)a3
+- (void)_acceptedTermsVersion:(id)version
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   if (location[0])
   {
     [getBYLicenseAgreementClass() recordUserAcceptedAgreementVersion:{objc_msgSend(location[0], "unsignedIntegerValue")}];
   }
 
-  [(SUSSoftwareUpdateTermsManager *)v5 _finishTermsWithAcceptance:1 error:0];
+  [(SUSSoftwareUpdateTermsManager *)selfCopy _finishTermsWithAcceptance:1 error:0];
   objc_storeStrong(location, obj);
 }
 
-- (void)_handleDisagreeFromObjectModel:(id)a3
+- (void)_handleDisagreeFromObjectModel:(id)model
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [location[0] clientInfo];
-  v10 = [v11 objectForKey:@"disagreeUrl"];
+  objc_storeStrong(location, model);
+  clientInfo = [location[0] clientInfo];
+  v10 = [clientInfo objectForKey:@"disagreeUrl"];
   v9 = objc_opt_new();
-  v8 = [v9 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v9 aa_primaryAppleAccount];
   v3 = objc_alloc(getAAiCloudTermsDisagreeRequestClass());
-  v7 = [v3 initWithURLString:v10 account:v8];
-  v5 = [location[0] serverInfo];
-  v6 = [v5 objectForKeyedSubscript:@"serverInfoKey"];
-  *&v4 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  v7 = [v3 initWithURLString:v10 account:aa_primaryAppleAccount];
+  serverInfo = [location[0] serverInfo];
+  v6 = [serverInfo objectForKeyedSubscript:@"serverInfoKey"];
+  *&v4 = MEMORY[0x277D82BD8](serverInfo).n128_u64[0];
   [v7 setServerInfo:{v6, v4}];
   [v7 performRequestWithHandler:&__block_literal_global_0];
-  [(SUSSoftwareUpdateTermsManager *)v13 _termsDisagree];
+  [(SUSSoftwareUpdateTermsManager *)selfCopy _termsDisagree];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(&v7, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&clientInfo, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -1372,25 +1372,25 @@ void __64__SUSSoftwareUpdateTermsManager__handleDisagreeFromObjectModel___block_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportTermsUserAction:(id)a3
+- (void)_reportTermsUserAction:(id)action
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSSoftwareUpdateTermsManager *)v4 _reportTermsUserAction:location[0] agreeUrl:0];
+  objc_storeStrong(location, action);
+  [(SUSSoftwareUpdateTermsManager *)selfCopy _reportTermsUserAction:location[0] agreeUrl:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)_reportTermsUserAction:(id)a3 agreeUrl:(id)a4
+- (void)_reportTermsUserAction:(id)action agreeUrl:(id)url
 {
   v24[1] = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, action);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, url);
   v18 = 1;
   v17 = _os_feature_enabled_impl();
   if (v17)
@@ -1417,9 +1417,9 @@ void __64__SUSSoftwareUpdateTermsManager__handleDisagreeFromObjectModel___block_
     objc_storeStrong(&v15, 0);
     v6 = objc_alloc(MEMORY[0x277CEC850]);
     v8 = objc_opt_new();
-    v7 = [v8 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [v8 aa_primaryAppleAccount];
     v13 = [v6 initWithAccount:? parameters:?];
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](aa_primaryAppleAccount);
     *&v5 = MEMORY[0x277D82BD8](v8).n128_u64[0];
     [v13 reportEvent];
     objc_storeStrong(&v13, 0);

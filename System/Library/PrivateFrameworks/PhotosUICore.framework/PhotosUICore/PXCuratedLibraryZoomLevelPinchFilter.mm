@@ -1,6 +1,6 @@
 @interface PXCuratedLibraryZoomLevelPinchFilter
 - (PXCuratedLibraryZoomLevelPinchFilter)init;
-- (void)filterPinchGestureWithScale:(double)a3 initialPinchHandler:(id)a4 subsequentDirectionChangeHandler:(id)a5;
+- (void)filterPinchGestureWithScale:(double)scale initialPinchHandler:(id)handler subsequentDirectionChangeHandler:(id)changeHandler;
 - (void)reset;
 @end
 
@@ -42,22 +42,22 @@
   [(PXChangeDirectionNumberFilter *)v10 setMinimumChange:v5];
 }
 
-- (void)filterPinchGestureWithScale:(double)a3 initialPinchHandler:(id)a4 subsequentDirectionChangeHandler:(id)a5
+- (void)filterPinchGestureWithScale:(double)scale initialPinchHandler:(id)handler subsequentDirectionChangeHandler:(id)changeHandler
 {
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  changeHandlerCopy = changeHandler;
   scaleDirectionFilter = self->_scaleDirectionFilter;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __121__PXCuratedLibraryZoomLevelPinchFilter_filterPinchGestureWithScale_initialPinchHandler_subsequentDirectionChangeHandler___block_invoke;
   v18[3] = &__block_descriptor_40_e33_v16__0___PXMutableNumberFilter__8l;
-  *&v18[4] = a3;
+  *&v18[4] = scale;
   [(PXChangeDirectionNumberFilter *)scaleDirectionFilter performChanges:v18];
   [(PXChangeDirectionNumberFilter *)self->_scaleDirectionFilter output];
   v12 = v11;
   if (self->_isTrackingPinch)
   {
-    if (self->_didHandleInitialPinch && v9 && v11 != self->_lastDirection)
+    if (self->_didHandleInitialPinch && changeHandlerCopy && v11 != self->_lastDirection)
     {
       if (v11 > 0.0)
       {
@@ -69,7 +69,7 @@
         v13 = -1;
       }
 
-      v9[2](v9, v13);
+      changeHandlerCopy[2](changeHandlerCopy, v13);
     }
   }
 
@@ -80,7 +80,7 @@
     v17[1] = 3221225472;
     v17[2] = __121__PXCuratedLibraryZoomLevelPinchFilter_filterPinchGestureWithScale_initialPinchHandler_subsequentDirectionChangeHandler___block_invoke_2;
     v17[3] = &__block_descriptor_40_e33_v16__0___PXMutableNumberFilter__8l;
-    *&v17[4] = a3;
+    *&v17[4] = scale;
     [(PXInitialHysteresisNumberFilter *)initialDirectionFilter performChanges:v17];
     [(PXInitialHysteresisNumberFilter *)self->_initialDirectionFilter output];
     if (v15 != 1.0)
@@ -96,7 +96,7 @@
         v16 = -1;
       }
 
-      self->_didHandleInitialPinch = v8[2](v8, v16);
+      self->_didHandleInitialPinch = handlerCopy[2](handlerCopy, v16);
     }
   }
 

@@ -1,15 +1,15 @@
 @interface STKStickerRemoteSearchViewController
-- (STKStickerRemoteSearchViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (STKStickerRemoteSearchViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (STKStickerRemoteSearchViewControllerDelegate)delegate;
-- (void)configureWithConfiguration:(id)a3;
-- (void)didSelectEmoji:(id)a3 indexPath:(id)a4;
-- (void)didSelectSticker:(id)a3 indexPath:(id)a4;
-- (void)emojiGenerationRemoteController:(id)a3 didGenerateEmoji:(id)a4 shouldInsert:(BOOL)a5;
-- (void)emojiGenerationRemoteControllerDidCancel:(id)a3;
+- (void)configureWithConfiguration:(id)configuration;
+- (void)didSelectEmoji:(id)emoji indexPath:(id)path;
+- (void)didSelectSticker:(id)sticker indexPath:(id)path;
+- (void)emojiGenerationRemoteController:(id)controller didGenerateEmoji:(id)emoji shouldInsert:(BOOL)insert;
+- (void)emojiGenerationRemoteControllerDidCancel:(id)cancel;
 - (void)layoutDirectionDidChange;
-- (void)searchWithQuery:(id)a3;
-- (void)toggleGlow:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)searchWithQuery:(id)query;
+- (void)toggleGlow:(BOOL)glow;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -25,42 +25,42 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   StickerRemoteSearchViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  StickerRemoteSearchViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  StickerRemoteSearchViewController.viewDidAppear(_:)(appear);
 }
 
 - (void)layoutDirectionDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A7735D8();
 }
 
-- (void)searchWithQuery:(id)a3
+- (void)searchWithQuery:(id)query
 {
-  v4 = a3;
-  v5 = self;
-  StickerRemoteSearchViewController.search(withQuery:)(v4);
+  queryCopy = query;
+  selfCopy = self;
+  StickerRemoteSearchViewController.search(withQuery:)(queryCopy);
 }
 
-- (void)configureWithConfiguration:(id)a3
+- (void)configureWithConfiguration:(id)configuration
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_19A7AB644();
 
-  v7 = sub_19A6D51D0(1, v5, 0, 0);
+  v7 = sub_19A6D51D0(1, configurationCopy, 0, 0);
   [v8 sendAction_];
 }
 
-- (void)didSelectEmoji:(id)a3 indexPath:(id)a4
+- (void)didSelectEmoji:(id)emoji indexPath:(id)path
 {
   v5 = sub_19A7A9094();
   v6 = *(v5 - 8);
@@ -69,13 +69,13 @@
   v9 = sub_19A7AB014();
   v11 = v10;
   sub_19A7A9024();
-  v12 = self;
+  selfCopy = self;
   StickerRemoteSearchViewController.didSelectEmoji(_:indexPath:)(v9, v11);
 
   (*(v6 + 8))(v8, v5);
 }
 
-- (void)didSelectSticker:(id)a3 indexPath:(id)a4
+- (void)didSelectSticker:(id)sticker indexPath:(id)path
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -88,27 +88,27 @@
   v12 = sub_19A7AB394();
   (*(*(v12 - 8) + 56))(v7, 1, 1, v12);
   sub_19A7AB354();
-  v13 = a3;
+  stickerCopy = sticker;
   v14 = sub_19A7AB344();
   v15 = swift_allocObject();
   v16 = MEMORY[0x1E69E85E0];
   v15[2] = v14;
   v15[3] = v16;
-  v15[4] = v13;
+  v15[4] = stickerCopy;
   sub_19A6816F0(0, 0, v7, &unk_19A7C2538, v15);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)toggleGlow:(BOOL)a3
+- (void)toggleGlow:(BOOL)glow
 {
-  v4 = self;
-  StickerRemoteSearchViewController.toggleGlow(_:)(a3);
+  selfCopy = self;
+  StickerRemoteSearchViewController.toggleGlow(_:)(glow);
 }
 
-- (STKStickerRemoteSearchViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (STKStickerRemoteSearchViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_19A7AB014();
     v7 = v6;
@@ -120,25 +120,25 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return StickerRemoteSearchViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return StickerRemoteSearchViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (void)emojiGenerationRemoteController:(id)a3 didGenerateEmoji:(id)a4 shouldInsert:(BOOL)a5
+- (void)emojiGenerationRemoteController:(id)controller didGenerateEmoji:(id)emoji shouldInsert:(BOOL)insert
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  StickerRemoteSearchViewController.emojiGenerationRemoteController(_:didGenerateEmoji:shouldInsert:)(v8, v9, a5);
+  controllerCopy = controller;
+  emojiCopy = emoji;
+  selfCopy = self;
+  StickerRemoteSearchViewController.emojiGenerationRemoteController(_:didGenerateEmoji:shouldInsert:)(controllerCopy, emojiCopy, insert);
 }
 
-- (void)emojiGenerationRemoteControllerDidCancel:(id)a3
+- (void)emojiGenerationRemoteControllerDidCancel:(id)cancel
 {
   v5 = objc_opt_self();
-  v6 = a3;
-  v7 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   [v5 setRestoresToEmojiInputMode];
-  sub_19A70255C(v6, 0, 0, 0, 0);
+  sub_19A70255C(cancelCopy, 0, 0, 0, 0);
 }
 
 @end

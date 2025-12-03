@@ -1,30 +1,30 @@
 @interface _UIActivityBundleHelper
-+ (id)activityBundleHelperForExtension:(id)a3;
++ (id)activityBundleHelperForExtension:(id)extension;
 - (_UIActivityBundleHelper)init;
-- (_UIActivityBundleHelper)initWithBundleProxy:(id)a3;
+- (_UIActivityBundleHelper)initWithBundleProxy:(id)proxy;
 - (id)debugDescription;
-- (id)imageForApplicationIconFormat:(int)a3 activityCategory:(int64_t)a4 contentSizeCategory:(id)a5 userInterfaceStyle:(int64_t)a6;
+- (id)imageForApplicationIconFormat:(int)format activityCategory:(int64_t)category contentSizeCategory:(id)sizeCategory userInterfaceStyle:(int64_t)style;
 @end
 
 @implementation _UIActivityBundleHelper
 
-+ (id)activityBundleHelperForExtension:(id)a3
++ (id)activityBundleHelperForExtension:(id)extension
 {
-  v3 = a3;
-  v4 = [v3 _extensionBundle];
+  extensionCopy = extension;
+  _extensionBundle = [extensionCopy _extensionBundle];
 
-  if (!v4)
+  if (!_extensionBundle)
   {
     v5 = share_sheet_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(_UIActivityBundleHelper *)v3 activityBundleHelperForExtension:v5];
+      [(_UIActivityBundleHelper *)extensionCopy activityBundleHelperForExtension:v5];
     }
   }
 
-  v6 = [v3 _plugIn];
-  v7 = [v6 uuid];
-  v8 = [MEMORY[0x1E6963678] pluginKitProxyForUUID:v7];
+  _plugIn = [extensionCopy _plugIn];
+  uuid = [_plugIn uuid];
+  v8 = [MEMORY[0x1E6963678] pluginKitProxyForUUID:uuid];
   if (v8)
   {
     v9 = v8;
@@ -35,19 +35,19 @@
     v10 = share_sheet_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(_UIActivityBundleHelper *)v3 activityBundleHelperForExtension:v7, v10];
+      [(_UIActivityBundleHelper *)extensionCopy activityBundleHelperForExtension:uuid, v10];
     }
 
     v11 = MEMORY[0x1E6963678];
-    v12 = [v3 identifier];
-    v9 = [v11 pluginKitProxyForIdentifier:v12];
+    identifier = [extensionCopy identifier];
+    v9 = [v11 pluginKitProxyForIdentifier:identifier];
 
     if (!v9)
     {
       v13 = share_sheet_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
-        [(_UIActivityBundleHelper *)v3 activityBundleHelperForExtension:v7, v13];
+        [(_UIActivityBundleHelper *)extensionCopy activityBundleHelperForExtension:uuid, v13];
       }
 
       v9 = 0;
@@ -69,16 +69,16 @@
   return 0;
 }
 
-- (_UIActivityBundleHelper)initWithBundleProxy:(id)a3
+- (_UIActivityBundleHelper)initWithBundleProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v8.receiver = self;
   v8.super_class = _UIActivityBundleHelper;
   v5 = [(_UIActivityBundleHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIActivityBundleHelper *)v5 setBundleProxy:v4];
+    [(_UIActivityBundleHelper *)v5 setBundleProxy:proxyCopy];
   }
 
   return v6;
@@ -90,18 +90,18 @@
   v8.receiver = self;
   v8.super_class = _UIActivityBundleHelper;
   v4 = [(_UIActivityBundleHelper *)&v8 description];
-  v5 = [(_UIActivityBundleHelper *)self bundleProxy];
-  v6 = [v3 stringWithFormat:@"%@ {bundle = %@}", v4, v5];
+  bundleProxy = [(_UIActivityBundleHelper *)self bundleProxy];
+  v6 = [v3 stringWithFormat:@"%@ {bundle = %@}", v4, bundleProxy];
 
   return v6;
 }
 
-- (id)imageForApplicationIconFormat:(int)a3 activityCategory:(int64_t)a4 contentSizeCategory:(id)a5 userInterfaceStyle:(int64_t)a6
+- (id)imageForApplicationIconFormat:(int)format activityCategory:(int64_t)category contentSizeCategory:(id)sizeCategory userInterfaceStyle:(int64_t)style
 {
-  v9 = a4 != 1;
-  v10 = a3 != 10;
+  v9 = category != 1;
+  v10 = format != 10;
   v11 = MEMORY[0x1E69A8AA0];
-  if (a3 == 10)
+  if (format == 10)
   {
     v11 = MEMORY[0x1E69A8A78];
   }
@@ -109,25 +109,25 @@
   v12 = MEMORY[0x1E69A8A00];
   v13 = *v11;
   v14 = [v12 alloc];
-  v15 = [(_UIActivityBundleHelper *)self bundleProxy];
-  v16 = [v14 initWithResourceProxy:v15];
+  bundleProxy = [(_UIActivityBundleHelper *)self bundleProxy];
+  v16 = [v14 initWithResourceProxy:bundleProxy];
 
   v17 = objc_alloc_init(MEMORY[0x1E69A8A48]);
-  v18 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v18 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v20 = v19;
 
   [v17 setScale:v20];
-  v21 = [MEMORY[0x1E69DC938] currentDevice];
-  [v21 sh_hostUserInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  [currentDevice sh_hostUserInterfaceIdiom];
   [v17 setSize:3];
   v22 = [MEMORY[0x1E69A8A30] imageDescriptorNamed:v13];
 
   [v22 setTemplateVariant:v9];
   [v22 setDrawBorder:v10];
-  if (a4 == 1)
+  if (category == 1)
   {
-    v23 = [(objc_class *)getSFUIActivityImageProviderClass() tintImageDescriptor:v22 withUserInterfaceStyle:a6 forGraphicIcon:0];
+    v23 = [(objc_class *)getSFUIActivityImageProviderClass() tintImageDescriptor:v22 withUserInterfaceStyle:style forGraphicIcon:0];
 
     v22 = v23;
   }
@@ -139,9 +139,9 @@
   }
 
   v25 = MEMORY[0x1E69DCAB8];
-  v26 = [v24 CGImage];
+  cGImage = [v24 CGImage];
   [v24 scale];
-  v27 = [v25 imageWithCGImage:v26 scale:0 orientation:?];
+  v27 = [v25 imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v27;
 }

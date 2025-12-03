@@ -1,23 +1,23 @@
 @interface PUDuplicateActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 @end
 
 @implementation PUDuplicateActivity
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = [(PXActivity *)self itemSourceController];
-  v5 = [v4 isPreparingIndividualItems];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  isPreparingIndividualItems = [itemSourceController isPreparingIndividualItems];
 
-  if (!v5)
+  if (!isPreparingIndividualItems)
   {
     return 0;
   }
 
   v6 = MEMORY[0x1E69C34A8];
-  v7 = [(PXActivity *)self itemSourceController];
-  v8 = [v7 assets];
-  LOBYTE(v6) = [v6 canPerformOnAllAssets:v8];
+  itemSourceController2 = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController2 assets];
+  LOBYTE(v6) = [v6 canPerformOnAllAssets:assets];
 
   return v6;
 }

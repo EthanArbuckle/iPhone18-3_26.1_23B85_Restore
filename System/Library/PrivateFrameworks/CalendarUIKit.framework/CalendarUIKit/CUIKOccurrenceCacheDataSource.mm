@@ -1,20 +1,20 @@
 @interface CUIKOccurrenceCacheDataSource
 - (BOOL)cachedOccurrencesAreLoaded;
-- (CUIKOccurrenceCacheDataSource)initWithEventStore:(id)a3 calendars:(id)a4;
+- (CUIKOccurrenceCacheDataSource)initWithEventStore:(id)store calendars:(id)calendars;
 - (id)_cachedDays;
-- (id)_cachedOccurrenceAtIndexPath:(id)a3;
+- (id)_cachedOccurrenceAtIndexPath:(id)path;
 - (id)_createCachedDays;
-- (id)_mutableDayDictionaryAtIndex:(unint64_t)a3;
-- (id)cachedOccurrenceAtIndexPath:(id)a3;
-- (id)dateAtDayIndex:(int64_t)a3;
-- (id)faultOccurrencesForDay:(id)a3 inOccurrencesArray:(id)a4 index:(int64_t)a5 limit:(int64_t *)a6 cacheSeed:(int)a7;
-- (id)indexPathsForOccurrence:(id)a3;
+- (id)_mutableDayDictionaryAtIndex:(unint64_t)index;
+- (id)cachedOccurrenceAtIndexPath:(id)path;
+- (id)dateAtDayIndex:(int64_t)index;
+- (id)faultOccurrencesForDay:(id)day inOccurrencesArray:(id)array index:(int64_t)index limit:(int64_t *)limit cacheSeed:(int)seed;
+- (id)indexPathsForOccurrence:(id)occurrence;
 - (int64_t)cachedDayCount;
-- (int64_t)countOfOccurrencesAtDayIndex:(int64_t)a3;
-- (int64_t)sectionForCachedOccurrencesOnDate:(id)a3;
-- (void)_fetchDaysStartingFromSection:(int64_t)a3 sectionsToLoadInBothDirections:(int64_t)a4 background:(BOOL)a5 includeGivenSection:(BOOL)a6;
+- (int64_t)countOfOccurrencesAtDayIndex:(int64_t)index;
+- (int64_t)sectionForCachedOccurrencesOnDate:(id)date;
+- (void)_fetchDaysStartingFromSection:(int64_t)section sectionsToLoadInBothDirections:(int64_t)directions background:(BOOL)background includeGivenSection:(BOOL)givenSection;
 - (void)invalidateCachedOccurrences;
-- (void)setCachedDays:(id)a3;
+- (void)setCachedDays:(id)days;
 @end
 
 @implementation CUIKOccurrenceCacheDataSource
@@ -41,8 +41,8 @@
 - (int64_t)cachedDayCount
 {
   os_unfair_lock_lock(&self->_dataLock);
-  v3 = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
-  v4 = [v3 count];
+  _cachedDays = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
+  v4 = [_cachedDays count];
 
   os_unfair_lock_unlock(&self->_dataLock);
   return v4;
@@ -62,11 +62,11 @@
     if (!*p_cachedDays)
     {
       os_unfair_lock_unlock(&self->_dataLock);
-      v5 = [(CUIKOccurrenceCacheDataSource *)self _createCachedDays];
+      _createCachedDays = [(CUIKOccurrenceCacheDataSource *)self _createCachedDays];
       os_unfair_lock_lock(&self->_dataLock);
       if (!self->_cachedDays)
       {
-        objc_storeStrong(&self->_cachedDays, v5);
+        objc_storeStrong(&self->_cachedDays, _createCachedDays);
       }
     }
 
@@ -80,37 +80,37 @@
 - (id)_createCachedDays
 {
   v2 = [(EKEventStore *)self->_eventStore occurrenceCacheGetOccurrenceCountsForCalendars:self->_calendars];
-  v3 = [v2 mutableCopy];
+  array = [v2 mutableCopy];
 
-  if (!v3)
+  if (!array)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  return v3;
+  return array;
 }
 
-- (CUIKOccurrenceCacheDataSource)initWithEventStore:(id)a3 calendars:(id)a4
+- (CUIKOccurrenceCacheDataSource)initWithEventStore:(id)store calendars:(id)calendars
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  calendarsCopy = calendars;
   v12.receiver = self;
   v12.super_class = CUIKOccurrenceCacheDataSource;
   v9 = [(CUIKOccurrenceCacheDataSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_eventStore, a3);
-    objc_storeStrong(&v10->_calendars, a4);
+    objc_storeStrong(&v9->_eventStore, store);
+    objc_storeStrong(&v10->_calendars, calendars);
     *&v10->_dataLock._os_unfair_lock_opaque = 0;
   }
 
   return v10;
 }
 
-- (void)setCachedDays:(id)a3
+- (void)setCachedDays:(id)days
 {
-  v4 = [a3 mutableCopy];
+  v4 = [days mutableCopy];
   os_unfair_lock_lock(&self->_dataLock);
   cachedDays = self->_cachedDays;
   self->_cachedDays = v4;
@@ -120,40 +120,40 @@
   os_unfair_lock_unlock(&self->_dataLock);
 }
 
-- (int64_t)countOfOccurrencesAtDayIndex:(int64_t)a3
+- (int64_t)countOfOccurrencesAtDayIndex:(int64_t)index
 {
   os_unfair_lock_lock(&self->_dataLock);
-  v5 = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
-  if ([v5 count] <= a3)
+  _cachedDays = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
+  if ([_cachedDays count] <= index)
   {
-    v8 = 0;
+    intValue = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndex:a3];
+    v6 = [_cachedDays objectAtIndex:index];
     v7 = [v6 objectForKey:CUIKOccurrenceCacheOccurrenceCountKey];
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
   }
 
   os_unfair_lock_unlock(&self->_dataLock);
 
-  return v8;
+  return intValue;
 }
 
-- (id)dateAtDayIndex:(int64_t)a3
+- (id)dateAtDayIndex:(int64_t)index
 {
   os_unfair_lock_lock(&self->_dataLock);
-  v5 = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
-  v6 = v5;
-  if (a3 < 0 || [v5 count] <= a3)
+  _cachedDays = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
+  v6 = _cachedDays;
+  if (index < 0 || [_cachedDays count] <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [v6 objectAtIndex:a3];
+    v7 = [v6 objectAtIndex:index];
     v8 = [v7 objectForKey:CUIKOccurrenceCacheDayKey];
   }
 
@@ -162,28 +162,28 @@
   return v8;
 }
 
-- (id)cachedOccurrenceAtIndexPath:(id)a3
+- (id)cachedOccurrenceAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_lock(&self->_dataLock);
-  v5 = [(CUIKOccurrenceCacheDataSource *)self _cachedOccurrenceAtIndexPath:v4];
+  v5 = [(CUIKOccurrenceCacheDataSource *)self _cachedOccurrenceAtIndexPath:pathCopy];
 
   os_unfair_lock_unlock(&self->_dataLock);
 
   return v5;
 }
 
-- (id)_mutableDayDictionaryAtIndex:(unint64_t)a3
+- (id)_mutableDayDictionaryAtIndex:(unint64_t)index
 {
-  v4 = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
-  if ([v4 count] <= a3)
+  _cachedDays = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
+  if ([_cachedDays count] <= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [_cachedDays objectAtIndexedSubscript:index];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -193,32 +193,32 @@
     else
     {
       v6 = [v5 mutableCopy];
-      [v4 setObject:v6 atIndexedSubscript:a3];
+      [_cachedDays setObject:v6 atIndexedSubscript:index];
     }
   }
 
   return v6;
 }
 
-- (id)_cachedOccurrenceAtIndexPath:(id)a3
+- (id)_cachedOccurrenceAtIndexPath:(id)path
 {
-  v5 = a3;
-  if ([v5 length] != 2)
+  pathCopy = path;
+  if ([pathCopy length] != 2)
   {
     [(CUIKOccurrenceCacheDataSource *)a2 _cachedOccurrenceAtIndexPath:?];
   }
 
-  v6 = [v5 indexAtPosition:0];
-  v7 = [v5 indexAtPosition:1];
-  v8 = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
-  v9 = [v8 count];
+  v6 = [pathCopy indexAtPosition:0];
+  v7 = [pathCopy indexAtPosition:1];
+  _cachedDays = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
+  v9 = [_cachedDays count];
 
   if (v6 >= v9)
   {
     v10 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(CUIKOccurrenceCacheDataSource *)v5 _cachedOccurrenceAtIndexPath:?];
+      [(CUIKOccurrenceCacheDataSource *)pathCopy _cachedOccurrenceAtIndexPath:?];
     }
 
     v15 = 0;
@@ -237,7 +237,7 @@
       v14 = +[CUIKLogSubsystem defaultCategory];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(CUIKOccurrenceCacheDataSource *)v5 _cachedOccurrenceAtIndexPath:v13];
+        [(CUIKOccurrenceCacheDataSource *)pathCopy _cachedOccurrenceAtIndexPath:v13];
       }
 
       v15 = 0;
@@ -253,79 +253,79 @@
   return v15;
 }
 
-- (id)faultOccurrencesForDay:(id)a3 inOccurrencesArray:(id)a4 index:(int64_t)a5 limit:(int64_t *)a6 cacheSeed:(int)a7
+- (id)faultOccurrencesForDay:(id)day inOccurrencesArray:(id)array index:(int64_t)index limit:(int64_t *)limit cacheSeed:(int)seed
 {
-  v11 = a3;
-  v12 = a4;
-  if (v12)
+  dayCopy = day;
+  arrayCopy = array;
+  if (arrayCopy)
   {
     goto LABEL_5;
   }
 
-  v13 = [(EKEventStore *)self->_eventStore occurrenceCacheGetOccurrencesForCalendars:self->_calendars onDay:v11];
-  v12 = v13;
-  if (a6)
+  v13 = [(EKEventStore *)self->_eventStore occurrenceCacheGetOccurrencesForCalendars:self->_calendars onDay:dayCopy];
+  arrayCopy = v13;
+  if (limit)
   {
-    *a6 -= [v13 count];
+    *limit -= [v13 count];
   }
 
-  if (v12)
+  if (arrayCopy)
   {
 LABEL_5:
-    if (a5 < 0)
+    if (index < 0)
     {
-      v15 = [v12 count];
+      v15 = [arrayCopy count];
       v14 = v15;
-      a5 = 0;
-      if (a6)
+      index = 0;
+      if (limit)
       {
-        if (*a6 < v15)
+        if (*limit < v15)
         {
-          v14 = *a6 & ~(*a6 >> 63);
+          v14 = *limit & ~(*limit >> 63);
         }
 
-        *a6 -= v14;
+        *limit -= v14;
       }
     }
 
     else
     {
-      if ([v12 count] > a5)
+      if ([arrayCopy count] > index)
       {
-        v14 = a5 + 1;
+        v14 = index + 1;
 LABEL_14:
         objc_opt_class();
-        v25 = v12;
-        v26 = v11;
+        v25 = arrayCopy;
+        v26 = dayCopy;
         if (objc_opt_isKindOfClass())
         {
-          v16 = v12;
+          v16 = arrayCopy;
         }
 
         else
         {
-          v16 = [v12 mutableCopy];
+          v16 = [arrayCopy mutableCopy];
         }
 
-        v12 = v16;
-        v17 = self;
-        if (a5 < v14)
+        arrayCopy = v16;
+        selfCopy2 = self;
+        if (index < v14)
         {
-          v27 = a7;
+          seedCopy = seed;
           do
           {
-            if (v17->_cachedDaysSeed != a7)
+            if (selfCopy2->_cachedDaysSeed != seed)
             {
               break;
             }
 
-            v18 = [v12 objectAtIndex:a5];
+            v18 = [arrayCopy objectAtIndex:index];
             v19 = [v18 objectForKey:CUIKOccurrenceInfoEventKey];
             if (!v19)
             {
               v20 = [v18 objectForKey:CUIKOccurrenceInfoObjectIDKey];
               v21 = [v18 objectForKey:CUIKOccurrenceInfoDateKey];
-              v19 = [(EKEventStore *)v17->_eventStore eventForObjectID:v20 occurrenceDate:v21 checkValid:0];
+              v19 = [(EKEventStore *)selfCopy2->_eventStore eventForObjectID:v20 occurrenceDate:v21 checkValid:0];
               if (v19)
               {
                 v22 = [v18 objectForKeyedSubscript:CUIKOccurrenceInfoNextReminderDateKey];
@@ -336,28 +336,28 @@ LABEL_14:
 
                 v23 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{v18, v25}];
                 [v23 setObject:v19 forKey:CUIKOccurrenceInfoEventKey];
-                [v12 replaceObjectAtIndex:a5 withObject:v23];
+                [arrayCopy replaceObjectAtIndex:index withObject:v23];
 
-                v17 = self;
+                selfCopy2 = self;
               }
 
-              a7 = v27;
+              seed = seedCopy;
             }
 
-            ++a5;
+            ++index;
           }
 
-          while (v14 != a5);
+          while (v14 != index);
         }
 
-        v11 = v26;
+        dayCopy = v26;
         goto LABEL_28;
       }
 
-      v14 = [v12 count];
+      v14 = [arrayCopy count];
     }
 
-    if (a5 >= v14)
+    if (index >= v14)
     {
       goto LABEL_28;
     }
@@ -367,18 +367,18 @@ LABEL_14:
 
 LABEL_28:
 
-  return v12;
+  return arrayCopy;
 }
 
-- (int64_t)sectionForCachedOccurrencesOnDate:(id)a3
+- (int64_t)sectionForCachedOccurrencesOnDate:(id)date
 {
-  v4 = [MEMORY[0x1E695DF20] dictionaryWithObject:a3 forKey:CUIKOccurrenceCacheDayKey];
+  v4 = [MEMORY[0x1E695DF20] dictionaryWithObject:date forKey:CUIKOccurrenceCacheDayKey];
   os_unfair_lock_lock(&self->_dataLock);
-  v5 = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
-  v11.length = [v5 count];
+  _cachedDays = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
+  v11.length = [_cachedDays count];
   v11.location = 0;
-  v6 = CFArrayBSearchValues(v5, v11, v4, __CompareCachedDays, 0);
-  v7 = [v5 count];
+  v6 = CFArrayBSearchValues(_cachedDays, v11, v4, __CompareCachedDays, 0);
+  v7 = [_cachedDays count];
   os_unfair_lock_unlock(&self->_dataLock);
   v8 = v7 - 1;
   if (v6 < v7)
@@ -399,31 +399,31 @@ LABEL_28:
   return v9;
 }
 
-- (id)indexPathsForOccurrence:(id)a3
+- (id)indexPathsForOccurrence:(id)occurrence
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v36 = [MEMORY[0x1E695DF70] array];
-  v5 = [v4 startDate];
-  v6 = [(EKEventStore *)self->_eventStore timeZone];
-  v7 = [v5 dateForDayInTimeZone:v6];
+  occurrenceCopy = occurrence;
+  array = [MEMORY[0x1E695DF70] array];
+  startDate = [occurrenceCopy startDate];
+  timeZone = [(EKEventStore *)self->_eventStore timeZone];
+  v7 = [startDate dateForDayInTimeZone:timeZone];
 
-  v8 = [v4 endDateUnadjustedForLegacyClients];
-  v9 = [(EKEventStore *)self->_eventStore timeZone];
-  v10 = [v8 dateForDayInTimeZone:v9];
+  endDateUnadjustedForLegacyClients = [occurrenceCopy endDateUnadjustedForLegacyClients];
+  timeZone2 = [(EKEventStore *)self->_eventStore timeZone];
+  v10 = [endDateUnadjustedForLegacyClients dateForDayInTimeZone:timeZone2];
 
   os_unfair_lock_lock(&self->_dataLock);
-  v11 = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
-  v12 = v11;
-  if (v11)
+  _cachedDays = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
+  v12 = _cachedDays;
+  if (_cachedDays)
   {
-    v13 = [v11 firstObject];
-    v14 = [v13 objectForKey:CUIKOccurrenceCacheDayKey];
+    firstObject = [_cachedDays firstObject];
+    v14 = [firstObject objectForKey:CUIKOccurrenceCacheDayKey];
     v35 = v7;
     v15 = [v7 laterDate:v14];
 
-    v16 = [v12 lastObject];
-    v17 = [v16 objectForKey:CUIKOccurrenceCacheDayKey];
+    lastObject = [v12 lastObject];
+    v17 = [lastObject objectForKey:CUIKOccurrenceCacheDayKey];
     v34 = v10;
     v18 = [v10 earlierDate:v17];
 
@@ -437,7 +437,7 @@ LABEL_28:
     else
     {
       v37 = v12;
-      v38 = self;
+      selfCopy = self;
       do
       {
         v20 = [MEMORY[0x1E695DF90] dictionaryWithObject:v15 forKey:CUIKOccurrenceCacheDayKey];
@@ -475,12 +475,12 @@ LABEL_28:
               }
 
               v31 = [*(*(&v43 + 1) + 8 * v29) objectForKeyedSubscript:CUIKOccurrenceInfoEventKey];
-              if ([v4 isEqual:v31])
+              if ([occurrenceCopy isEqual:v31])
               {
                 v47[0] = v41;
                 v47[1] = v30;
                 v32 = [MEMORY[0x1E696AC88] indexPathWithIndexes:v47 length:2];
-                [v36 addObject:v32];
+                [array addObject:v32];
 
                 goto LABEL_16;
               }
@@ -507,7 +507,7 @@ LABEL_16:
 
         v15 = v19;
         v12 = v37;
-        self = v38;
+        self = selfCopy;
       }
 
       while ([v19 compare:v40] != 1);
@@ -524,18 +524,18 @@ LABEL_16:
     os_unfair_lock_unlock(&self->_dataLock);
   }
 
-  return v36;
+  return array;
 }
 
-- (void)_fetchDaysStartingFromSection:(int64_t)a3 sectionsToLoadInBothDirections:(int64_t)a4 background:(BOOL)a5 includeGivenSection:(BOOL)a6
+- (void)_fetchDaysStartingFromSection:(int64_t)section sectionsToLoadInBothDirections:(int64_t)directions background:(BOOL)background includeGivenSection:(BOOL)givenSection
 {
-  v7 = a5;
+  backgroundCopy = background;
   os_unfair_lock_lock(&self->_dataLock);
   cachedDaysSeed = self->_cachedDaysSeed;
-  v12 = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
-  v13 = [v12 count];
+  _cachedDays = [(CUIKOccurrenceCacheDataSource *)self _cachedDays];
+  v13 = [_cachedDays count];
   os_unfair_lock_unlock(&self->_dataLock);
-  if (v13 >= a3)
+  if (v13 >= section)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -543,13 +543,13 @@ LABEL_16:
     aBlock[3] = &unk_1E839AF58;
     v18 = cachedDaysSeed;
     aBlock[4] = self;
-    aBlock[5] = a3;
-    aBlock[6] = a4;
+    aBlock[5] = section;
+    aBlock[6] = directions;
     aBlock[7] = v13;
-    v19 = a6;
+    givenSectionCopy = givenSection;
     v14 = _Block_copy(aBlock);
     v15 = v14;
-    if (v7)
+    if (backgroundCopy)
     {
       v16 = dispatch_get_global_queue(0, 0);
       dispatch_async(v16, v15);

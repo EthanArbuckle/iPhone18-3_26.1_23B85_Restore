@@ -1,27 +1,27 @@
 @interface CLFullAccuracySession
-+ (id)fullAccuracySessionWithLocationManager:(id)a3 purposeKey:(id)a4 queue:(id)a5 handler:(id)a6;
-- (CLFullAccuracySession)initWithLocationManager:(id)a3 purposeKey:(id)a4 queue:(id)a5 handler:(id)a6;
++ (id)fullAccuracySessionWithLocationManager:(id)manager purposeKey:(id)key queue:(id)queue handler:(id)handler;
+- (CLFullAccuracySession)initWithLocationManager:(id)manager purposeKey:(id)key queue:(id)queue handler:(id)handler;
 - (void)createConnection;
 - (void)dealloc;
 - (void)destroyConnection;
-- (void)handleMessage:(shared_ptr<CLConnectionMessage>)a3;
-- (void)handleMessageDiagnostics:(shared_ptr<CLConnectionMessage>)a3;
+- (void)handleMessage:(shared_ptr<CLConnectionMessage>)message;
+- (void)handleMessageDiagnostics:(shared_ptr<CLConnectionMessage>)diagnostics;
 - (void)invalidate;
 - (void)manageConnection;
 - (void)tearDown;
-- (void)updateIdentityToken:(id)a3 withStorageToken:(id)a4;
+- (void)updateIdentityToken:(id)token withStorageToken:(id)storageToken;
 @end
 
 @implementation CLFullAccuracySession
 
-+ (id)fullAccuracySessionWithLocationManager:(id)a3 purposeKey:(id)a4 queue:(id)a5 handler:(id)a6
++ (id)fullAccuracySessionWithLocationManager:(id)manager purposeKey:(id)key queue:(id)queue handler:(id)handler
 {
-  v7 = [[CLFullAccuracySession alloc] initWithLocationManager:a3 purposeKey:a4 queue:a5 handler:a6];
-  [a3 addIdentifiableClient:v7];
+  v7 = [[CLFullAccuracySession alloc] initWithLocationManager:manager purposeKey:key queue:queue handler:handler];
+  [manager addIdentifiableClient:v7];
   return v7;
 }
 
-- (CLFullAccuracySession)initWithLocationManager:(id)a3 purposeKey:(id)a4 queue:(id)a5 handler:(id)a6
+- (CLFullAccuracySession)initWithLocationManager:(id)manager purposeKey:(id)key queue:(id)queue handler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
   v12 = _os_activity_create(&dword_19B873000, "CL: CLFullAccuracySession #fullAccuracySession", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -45,9 +45,9 @@
     v30 = 2114;
     v31 = v14;
     v32 = 2050;
-    v33 = self;
+    selfCopy = self;
     v34 = 2050;
-    v35 = a3;
+    managerCopy = manager;
     _os_log_impl(&dword_19B873000, v13, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLFullAccuracySession #fullAccuracySession, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, manager:%{public}p}", buf, 0x3Au);
   }
 
@@ -56,7 +56,7 @@
   v15 = [(CLFullAccuracySession *)&v22 init];
   if (v15)
   {
-    if (([a3 isMasquerading] & 1) == 0)
+    if (([manager isMasquerading] & 1) == 0)
     {
       if ((sub_19B8B8818() & 1) == 0)
       {
@@ -74,8 +74,8 @@
       }
     }
 
-    v18 = a5;
-    if (!a5)
+    queueCopy = queue;
+    if (!queue)
     {
       if (qword_1ED519088 != -1)
       {
@@ -94,21 +94,21 @@
         _os_log_impl(&dword_19B873000, v19, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#fullAccuracySession has nil callback queue; Creating locally, self:%{public}p}", buf, 0x1Cu);
       }
 
-      v18 = +[CLLocationManager sharedQueue];
+      queueCopy = +[CLLocationManager sharedQueue];
     }
 
-    v15->_silo = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:v18];
-    if (v18 != a5)
+    v15->_silo = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:queueCopy];
+    if (queueCopy != queue)
     {
-      dispatch_release(v18);
+      dispatch_release(queueCopy);
     }
 
     [(CLFullAccuracySession *)v15 setIsValid:1];
-    v15->_purposeKey = [a4 copy];
-    [(CLFullAccuracySession *)v15 setManager:a3];
-    if (a6)
+    v15->_purposeKey = [key copy];
+    [(CLFullAccuracySession *)v15 setManager:manager];
+    if (handler)
     {
-      v15->_clientCallback = _Block_copy(a6);
+      v15->_clientCallback = _Block_copy(handler);
     }
   }
 
@@ -117,7 +117,7 @@
   return v15;
 }
 
-- (void)updateIdentityToken:(id)a3 withStorageToken:(id)a4
+- (void)updateIdentityToken:(id)token withStorageToken:(id)storageToken
 {
   v24 = *MEMORY[0x1E69E9840];
   v7 = _os_activity_create(&dword_19B873000, "CL: CLFullAccuracySession #fullAccuracySession", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -141,7 +141,7 @@
     v20 = 2114;
     v21 = v9;
     v22 = 2050;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLFullAccuracySession #fullAccuracySession, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -151,7 +151,7 @@
   v12[2] = sub_19B95EA9C;
   v12[3] = &unk_1E753CF38;
   v12[4] = self;
-  v12[5] = a3;
+  v12[5] = token;
   [(CLDispatchSilo *)silo async:v12];
   os_activity_scope_leave(&state);
   v11 = *MEMORY[0x1E69E9840];
@@ -181,7 +181,7 @@
     v15 = 2114;
     v16 = v6;
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLFullAccuracySession #fullAccuracySession, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -212,9 +212,9 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMessage:(shared_ptr<CLConnectionMessage>)a3
+- (void)handleMessage:(shared_ptr<CLConnectionMessage>)message
 {
-  var0 = a3.var0;
+  var0 = message.var0;
   v32 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLFullAccuracySession #fullAccuracySession", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v6, &state);
@@ -248,7 +248,7 @@
     v26 = 2114;
     v27 = v8;
     v28 = 2050;
-    v29 = self;
+    selfCopy = self;
     v30 = 2082;
     v31 = v10;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLFullAccuracySession #fullAccuracySession, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, message:%{public, location:escape_only}s}", buf, 0x3Au);
@@ -281,11 +281,11 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMessageDiagnostics:(shared_ptr<CLConnectionMessage>)a3
+- (void)handleMessageDiagnostics:(shared_ptr<CLConnectionMessage>)diagnostics
 {
-  var0 = a3.var0;
+  var0 = diagnostics.var0;
   v30 = *MEMORY[0x1E69E9840];
-  [(CLDispatchSilo *)self->_silo assertInside:a3.var0];
+  [(CLDispatchSilo *)self->_silo assertInside:diagnostics.var0];
   if ([(CLFullAccuracySession *)self isValid]&& self->_clientCallback)
   {
     v6 = *var0;
@@ -310,11 +310,11 @@
       v20 = 2082;
       v21 = "";
       v22 = 2082;
-      v23 = "activity";
+      selfCopy2 = "activity";
       v24 = 2114;
       v25 = v13;
       v26 = 2050;
-      v27 = self;
+      selfCopy = self;
       v28 = 2113;
       v29 = DictionaryOfClasses;
       _os_log_impl(&dword_19B873000, v12, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationUpdater #locationUpdater, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, payload:%{private, location:escape_only}@}", buf, 0x3Au);
@@ -334,7 +334,7 @@
       v20 = 2082;
       v21 = "";
       v22 = 2050;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 1026;
       LODWORD(v25) = v14;
       _os_log_impl(&dword_19B873000, v15, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#fullAccuracySession handleMessageDiagnostics, self:%{public}p, diagnosticMask:%{public}d}", buf, 0x22u);
@@ -382,9 +382,9 @@
         v12[0] = 2082;
         *&v12[1] = "";
         v13 = 2082;
-        v14 = [(NSString *)[(CLFullAccuracySession *)self identityToken] UTF8String];
+        uTF8String = [(NSString *)[(CLFullAccuracySession *)self identityToken] UTF8String];
         v15 = 2050;
-        v16 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#fullAccuracySession destroyUponDisconnection(DIC), identityToken:%{public, location:escape_only}s, self:%{public}p}", buf, 0x26u);
         if (qword_1ED519088 != -1)
         {
@@ -395,15 +395,15 @@
       v4 = qword_1ED519090;
       if (os_signpost_enabled(qword_1ED519090))
       {
-        v5 = [(NSString *)[(CLFullAccuracySession *)self identityToken] UTF8String];
+        uTF8String2 = [(NSString *)[(CLFullAccuracySession *)self identityToken] UTF8String];
         *buf = 68289538;
         *&buf[4] = 0;
         v12[0] = 2082;
         *&v12[1] = "";
         v13 = 2082;
-        v14 = v5;
+        uTF8String = uTF8String2;
         v15 = 2050;
-        v16 = self;
+        selfCopy4 = self;
         _os_signpost_emit_with_name_impl(&dword_19B873000, v4, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#fullAccuracySession destroyUponDisconnection(DIC)", "{msg%{public}.0s:#fullAccuracySession destroyUponDisconnection(DIC), identityToken:%{public, location:escape_only}s, self:%{public}p}", buf, 0x26u);
       }
 
@@ -426,9 +426,9 @@
       v12[0] = 2082;
       *&v12[1] = "";
       v13 = 2082;
-      v14 = [(NSString *)[(CLFullAccuracySession *)self identityToken] UTF8String];
+      uTF8String = [(NSString *)[(CLFullAccuracySession *)self identityToken] UTF8String];
       v15 = 2050;
-      v16 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#fullAccuracySession invalidated and destroyed connection, identityToken:%{public, location:escape_only}s, self:%{public}p}", buf, 0x26u);
       if (qword_1ED519088 != -1)
       {
@@ -439,15 +439,15 @@
     v8 = qword_1ED519090;
     if (os_signpost_enabled(qword_1ED519090))
     {
-      v9 = [(NSString *)[(CLFullAccuracySession *)self identityToken] UTF8String];
+      uTF8String3 = [(NSString *)[(CLFullAccuracySession *)self identityToken] UTF8String];
       *buf = 68289538;
       *&buf[4] = 0;
       v12[0] = 2082;
       *&v12[1] = "";
       v13 = 2082;
-      v14 = v9;
+      uTF8String = uTF8String3;
       v15 = 2050;
-      v16 = self;
+      selfCopy4 = self;
       _os_signpost_emit_with_name_impl(&dword_19B873000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#fullAccuracySession invalidated and destroyed connection", "{msg%{public}.0s:#fullAccuracySession invalidated and destroyed connection, identityToken:%{public, location:escape_only}s, self:%{public}p}", buf, 0x26u);
     }
   }
@@ -479,7 +479,7 @@
     v20 = 2114;
     v21 = v6;
     v22 = 2050;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLFullAccuracySession #fullAccuracySession, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -529,7 +529,7 @@
       v17 = 2114;
       v18 = v6;
       v19 = 2050;
-      v20 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLFullAccuracySession #fullAccuracySession, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
     }
 

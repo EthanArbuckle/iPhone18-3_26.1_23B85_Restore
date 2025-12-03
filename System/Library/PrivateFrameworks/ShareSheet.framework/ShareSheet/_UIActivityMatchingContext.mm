@@ -1,12 +1,12 @@
 @interface _UIActivityMatchingContext
-- (BOOL)shouldExcludeActivity:(id)a3;
+- (BOOL)shouldExcludeActivity:(id)activity;
 - (NSString)sourceApplicationIdentifier;
-- (_UIActivityMatchingContext)initWithActivityItems:(id)a3 itemValues:(id)a4;
-- (_UIActivityMatchingContext)initWithActivityItems:(id)a3 itemValues:(id)a4 collaborationItems:(id)a5;
-- (id)activitiesByFilteringExcludedActivities:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIActivityMatchingContext)initWithActivityItems:(id)items itemValues:(id)values;
+- (_UIActivityMatchingContext)initWithActivityItems:(id)items itemValues:(id)values collaborationItems:(id)collaborationItems;
+- (id)activitiesByFilteringExcludedActivities:(id)activities;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setHostAuditToken:(id *)a3;
+- (void)setHostAuditToken:(id *)token;
 @end
 
 @implementation _UIActivityMatchingContext
@@ -36,10 +36,10 @@
     v3 = v5;
   }
 
-  v6 = [(_UIActivityMatchingContext *)self testingReferenceSnapshot];
-  if (v6)
+  testingReferenceSnapshot = [(_UIActivityMatchingContext *)self testingReferenceSnapshot];
+  if (testingReferenceSnapshot)
   {
-    v7 = v6;
+    v7 = testingReferenceSnapshot;
     v8 = _os_feature_enabled_impl();
 
     if (v8)
@@ -61,9 +61,9 @@
 
   if ([(_UIActivityMatchingContext *)self isCollaborative])
   {
-    v11 = [(_UIActivityMatchingContext *)self collaborationType];
+    collaborationType = [(_UIActivityMatchingContext *)self collaborationType];
     [(_UIActivityMatchingContext *)self collaborationIsPostShare];
-    v35 = v30 = v11;
+    v35 = v30 = collaborationType;
     NSAppendPrintF();
     v12 = v3;
 
@@ -110,24 +110,24 @@
     v3 = v17;
   }
 
-  v18 = [(_UIActivityMatchingContext *)self includedActivityTypes];
-  v19 = [v18 count];
+  includedActivityTypes = [(_UIActivityMatchingContext *)self includedActivityTypes];
+  v19 = [includedActivityTypes count];
 
   if (v19)
   {
-    v31 = [(_UIActivityMatchingContext *)self includedActivityTypes];
+    includedActivityTypes2 = [(_UIActivityMatchingContext *)self includedActivityTypes];
     NSAppendPrintF();
     v20 = v3;
 
     v3 = v20;
   }
 
-  v21 = [(_UIActivityMatchingContext *)self excludedActivityTypes];
-  v22 = [v21 count];
+  excludedActivityTypes = [(_UIActivityMatchingContext *)self excludedActivityTypes];
+  v22 = [excludedActivityTypes count];
 
   if (v22)
   {
-    v32 = [(_UIActivityMatchingContext *)self excludedActivityTypes];
+    excludedActivityTypes2 = [(_UIActivityMatchingContext *)self excludedActivityTypes];
     NSAppendPrintF();
     v23 = v3;
 
@@ -136,14 +136,14 @@
 
   if ([(_UIActivityMatchingContext *)self excludedActivityCategories])
   {
-    v33 = [(_UIActivityMatchingContext *)self excludedActivityCategories];
+    excludedActivityCategories = [(_UIActivityMatchingContext *)self excludedActivityCategories];
     NSAppendPrintF();
     v24 = v3;
 
     v3 = v24;
   }
 
-  v34 = [(_UIActivityMatchingContext *)self activityItemValueExtensionMatchingDictionaries];
+  activityItemValueExtensionMatchingDictionaries = [(_UIActivityMatchingContext *)self activityItemValueExtensionMatchingDictionaries];
   NSAppendPrintF();
   v25 = v3;
 
@@ -157,25 +157,25 @@
 {
   if ([(_UIActivityMatchingContext *)self hostAuditToken])
   {
-    v2 = _ShareSheetBundleIDFromAuditToken();
+    bundleIdentifier = _ShareSheetBundleIDFromAuditToken();
   }
 
   else
   {
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v2 = [v3 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
-  return v2;
+  return bundleIdentifier;
 }
 
-- (_UIActivityMatchingContext)initWithActivityItems:(id)a3 itemValues:(id)a4 collaborationItems:(id)a5
+- (_UIActivityMatchingContext)initWithActivityItems:(id)items itemValues:(id)values collaborationItems:(id)collaborationItems
 {
-  v8 = a5;
-  v9 = [(_UIActivityMatchingContext *)self initWithActivityItems:a3 itemValues:a4];
+  collaborationItemsCopy = collaborationItems;
+  v9 = [(_UIActivityMatchingContext *)self initWithActivityItems:items itemValues:values];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [collaborationItemsCopy copy];
     collaborationItems = v9->_collaborationItems;
     v9->_collaborationItems = v10;
   }
@@ -183,18 +183,18 @@
   return v9;
 }
 
-- (_UIActivityMatchingContext)initWithActivityItems:(id)a3 itemValues:(id)a4
+- (_UIActivityMatchingContext)initWithActivityItems:(id)items itemValues:(id)values
 {
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  valuesCopy = values;
   v13.receiver = self;
   v13.super_class = _UIActivityMatchingContext;
   v9 = [(_UIActivityMatchingContext *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_activityItems, a3);
-    objc_storeStrong(&v10->_activityItemValues, a4);
+    objc_storeStrong(&v9->_activityItems, items);
+    objc_storeStrong(&v10->_activityItemValues, values);
     v10->_allowMatchingBuiltInActivities = 1;
     v10->_canExcludeExtensionActivities = 0;
     memset(v12, 0, sizeof(v12));
@@ -205,87 +205,87 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [_UIActivityMatchingContext alloc];
-  v6 = [(_UIActivityMatchingContext *)self activityItems];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(_UIActivityMatchingContext *)self activityItemValues];
-  v9 = [v8 copyWithZone:a3];
+  activityItems = [(_UIActivityMatchingContext *)self activityItems];
+  v7 = [activityItems copyWithZone:zone];
+  activityItemValues = [(_UIActivityMatchingContext *)self activityItemValues];
+  v9 = [activityItemValues copyWithZone:zone];
   v10 = [(_UIActivityMatchingContext *)v5 initWithActivityItems:v7 itemValues:v9];
 
-  v11 = [(_UIActivityMatchingContext *)self activityItemValueClasses];
-  v12 = [v11 copyWithZone:a3];
+  activityItemValueClasses = [(_UIActivityMatchingContext *)self activityItemValueClasses];
+  v12 = [activityItemValueClasses copyWithZone:zone];
   [(_UIActivityMatchingContext *)v10 setActivityItemValueClasses:v12];
 
-  v13 = [(_UIActivityMatchingContext *)self activityItemValueExtensionMatchingDictionaries];
-  v14 = [v13 copyWithZone:a3];
+  activityItemValueExtensionMatchingDictionaries = [(_UIActivityMatchingContext *)self activityItemValueExtensionMatchingDictionaries];
+  v14 = [activityItemValueExtensionMatchingDictionaries copyWithZone:zone];
   [(_UIActivityMatchingContext *)v10 setActivityItemValueExtensionMatchingDictionaries:v14];
 
   [(_UIActivityMatchingContext *)v10 setAllowMatchingBuiltInActivities:[(_UIActivityMatchingContext *)self allowMatchingBuiltInActivities]];
   [(_UIActivityMatchingContext *)v10 setAllowMatchingExtensionActivities:[(_UIActivityMatchingContext *)self allowMatchingExtensionActivities]];
-  v15 = [(_UIActivityMatchingContext *)self externalMatchBuiltinOrderedActivities];
-  [(_UIActivityMatchingContext *)v10 setExternalMatchBuiltinOrderedActivities:v15];
+  externalMatchBuiltinOrderedActivities = [(_UIActivityMatchingContext *)self externalMatchBuiltinOrderedActivities];
+  [(_UIActivityMatchingContext *)v10 setExternalMatchBuiltinOrderedActivities:externalMatchBuiltinOrderedActivities];
 
-  v16 = [(_UIActivityMatchingContext *)self activityTypesGeneratedByDelegate];
-  [(_UIActivityMatchingContext *)v10 setActivityTypesGeneratedByDelegate:v16];
+  activityTypesGeneratedByDelegate = [(_UIActivityMatchingContext *)self activityTypesGeneratedByDelegate];
+  [(_UIActivityMatchingContext *)v10 setActivityTypesGeneratedByDelegate:activityTypesGeneratedByDelegate];
 
   [(_UIActivityMatchingContext *)v10 setIsContentManaged:[(_UIActivityMatchingContext *)self isContentManaged]];
   [(_UIActivityMatchingContext *)v10 setIsCollaborative:[(_UIActivityMatchingContext *)self isCollaborative]];
-  v17 = [(_UIActivityMatchingContext *)self collaborationType];
-  [(_UIActivityMatchingContext *)v10 setCollaborationType:v17];
+  collaborationType = [(_UIActivityMatchingContext *)self collaborationType];
+  [(_UIActivityMatchingContext *)v10 setCollaborationType:collaborationType];
 
-  v18 = [(_UIActivityMatchingContext *)self collaborationIsPostShare];
-  [(_UIActivityMatchingContext *)v10 setCollaborationIsPostShare:v18];
+  collaborationIsPostShare = [(_UIActivityMatchingContext *)self collaborationIsPostShare];
+  [(_UIActivityMatchingContext *)v10 setCollaborationIsPostShare:collaborationIsPostShare];
 
   [(_UIActivityMatchingContext *)v10 setShouldMatchOnlyUserElectedExtensions:[(_UIActivityMatchingContext *)self shouldMatchOnlyUserElectedExtensions]];
   [(_UIActivityMatchingContext *)v10 setShouldExcludeiCloudAddToDriveActivity:[(_UIActivityMatchingContext *)self shouldExcludeiCloudAddToDriveActivity]];
   [(_UIActivityMatchingContext *)v10 setShouldExcludeiCloudSharingActivity:[(_UIActivityMatchingContext *)self shouldExcludeiCloudSharingActivity]];
   [(_UIActivityMatchingContext *)v10 setCanExcludeExtensionActivities:[(_UIActivityMatchingContext *)self canExcludeExtensionActivities]];
   [(_UIActivityMatchingContext *)v10 setWhitelistActionActivitiesOnly:[(_UIActivityMatchingContext *)self whitelistActionActivitiesOnly]];
-  v19 = [(_UIActivityMatchingContext *)self activityTypeOrder];
-  v20 = [v19 copyWithZone:a3];
+  activityTypeOrder = [(_UIActivityMatchingContext *)self activityTypeOrder];
+  v20 = [activityTypeOrder copyWithZone:zone];
   [(_UIActivityMatchingContext *)v10 setActivityTypeOrder:v20];
 
-  v21 = [(_UIActivityMatchingContext *)self includedActivityTypes];
-  v22 = [v21 copyWithZone:a3];
+  includedActivityTypes = [(_UIActivityMatchingContext *)self includedActivityTypes];
+  v22 = [includedActivityTypes copyWithZone:zone];
   [(_UIActivityMatchingContext *)v10 setIncludedActivityTypes:v22];
 
-  v23 = [(_UIActivityMatchingContext *)self excludedActivityTypes];
-  v24 = [v23 copyWithZone:a3];
+  excludedActivityTypes = [(_UIActivityMatchingContext *)self excludedActivityTypes];
+  v24 = [excludedActivityTypes copyWithZone:zone];
   [(_UIActivityMatchingContext *)v10 setExcludedActivityTypes:v24];
 
   [(_UIActivityMatchingContext *)v10 setExcludedActivityCategories:[(_UIActivityMatchingContext *)self excludedActivityCategories]];
   [(_UIActivityMatchingContext *)v10 setSharingStyle:[(_UIActivityMatchingContext *)self sharingStyle]];
-  v25 = [(_UIActivityMatchingContext *)self currentlySelectedActivity];
-  [(_UIActivityMatchingContext *)v10 setCurrentlySelectedActivity:v25];
+  currentlySelectedActivity = [(_UIActivityMatchingContext *)self currentlySelectedActivity];
+  [(_UIActivityMatchingContext *)v10 setCurrentlySelectedActivity:currentlySelectedActivity];
 
-  v26 = [(_UIActivityMatchingContext *)self applicationActivities];
-  v27 = [v26 copyWithZone:a3];
+  applicationActivities = [(_UIActivityMatchingContext *)self applicationActivities];
+  v27 = [applicationActivities copyWithZone:zone];
   [(_UIActivityMatchingContext *)v10 setApplicationActivities:v27];
 
-  v28 = [(_UIActivityMatchingContext *)self hostAuditTokenData];
+  hostAuditTokenData = [(_UIActivityMatchingContext *)self hostAuditTokenData];
   hostAuditTokenData = v10->_hostAuditTokenData;
-  v10->_hostAuditTokenData = v28;
+  v10->_hostAuditTokenData = hostAuditTokenData;
 
-  v30 = [(_UIActivityMatchingContext *)self prematchedExtensionActivities];
-  [(_UIActivityMatchingContext *)v10 setPrematchedExtensionActivities:v30];
+  prematchedExtensionActivities = [(_UIActivityMatchingContext *)self prematchedExtensionActivities];
+  [(_UIActivityMatchingContext *)v10 setPrematchedExtensionActivities:prematchedExtensionActivities];
 
-  v31 = [(_UIActivityMatchingContext *)self testingReferenceSnapshot];
-  [(_UIActivityMatchingContext *)v10 setTestingReferenceSnapshot:v31];
+  testingReferenceSnapshot = [(_UIActivityMatchingContext *)self testingReferenceSnapshot];
+  [(_UIActivityMatchingContext *)v10 setTestingReferenceSnapshot:testingReferenceSnapshot];
 
   return v10;
 }
 
-- (BOOL)shouldExcludeActivity:(id)a3
+- (BOOL)shouldExcludeActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  if ([v5 isEqualToString:@"com.apple.UIKit.activity.Share"])
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  if ([activityType isEqualToString:@"com.apple.UIKit.activity.Share"])
   {
-    v6 = [(_UIActivityMatchingContext *)self sharingStyle];
+    sharingStyle = [(_UIActivityMatchingContext *)self sharingStyle];
 
-    if (v6 != 1)
+    if (sharingStyle != 1)
     {
       goto LABEL_7;
     }
@@ -295,12 +295,12 @@
   {
   }
 
-  v7 = [v4 activityType];
-  if ([v7 isEqualToString:@"com.apple.UIKit.activity.CloudSharing"])
+  activityType2 = [activityCopy activityType];
+  if ([activityType2 isEqualToString:@"com.apple.UIKit.activity.CloudSharing"])
   {
-    v8 = [(_UIActivityMatchingContext *)self shouldExcludeiCloudSharingActivity];
+    shouldExcludeiCloudSharingActivity = [(_UIActivityMatchingContext *)self shouldExcludeiCloudSharingActivity];
 
-    if (v8)
+    if (shouldExcludeiCloudSharingActivity)
     {
 LABEL_7:
       v9 = 1;
@@ -312,11 +312,11 @@ LABEL_7:
   {
   }
 
-  v10 = [(_UIActivityMatchingContext *)self excludedActivityTypes];
-  v11 = [v4 activityType];
-  if (([v10 containsObject:v11] & 1) != 0 || (v12 = 1 << objc_msgSend(objc_opt_class(), "activityCategory"), (-[_UIActivityMatchingContext excludedActivityCategories](self, "excludedActivityCategories") & v12) != 0))
+  excludedActivityTypes = [(_UIActivityMatchingContext *)self excludedActivityTypes];
+  activityType3 = [activityCopy activityType];
+  if (([excludedActivityTypes containsObject:activityType3] & 1) != 0 || (v12 = 1 << objc_msgSend(objc_opt_class(), "activityCategory"), (-[_UIActivityMatchingContext excludedActivityCategories](self, "excludedActivityCategories") & v12) != 0))
   {
-    v9 = [v4 _canBeExcludeWhenMatchingWithContext:self];
+    v9 = [activityCopy _canBeExcludeWhenMatchingWithContext:self];
   }
 
   else
@@ -328,25 +328,25 @@ LABEL_13:
   return v9;
 }
 
-- (id)activitiesByFilteringExcludedActivities:(id)a3
+- (id)activitiesByFilteringExcludedActivities:(id)activities
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70___UIActivityMatchingContext_activitiesByFilteringExcludedActivities___block_invoke;
   v7[3] = &unk_1E71FAC90;
   v7[4] = self;
-  v3 = a3;
-  v4 = [v3 indexesOfObjectsPassingTest:v7];
-  v5 = [v3 objectsAtIndexes:v4];
+  activitiesCopy = activities;
+  v4 = [activitiesCopy indexesOfObjectsPassingTest:v7];
+  v5 = [activitiesCopy objectsAtIndexes:v4];
 
   return v5;
 }
 
-- (void)setHostAuditToken:(id *)a3
+- (void)setHostAuditToken:(id *)token
 {
-  if (a3)
+  if (token)
   {
-    v4 = [MEMORY[0x1E695DEF0] dataWithBytes:a3 length:32];
+    v4 = [MEMORY[0x1E695DEF0] dataWithBytes:token length:32];
   }
 
   else

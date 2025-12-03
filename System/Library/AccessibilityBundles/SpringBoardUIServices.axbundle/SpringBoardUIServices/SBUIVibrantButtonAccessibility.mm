@@ -6,9 +6,9 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(SBUIVibrantButtonAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(SBUIVibrantButtonAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
     [(SBUIVibrantButtonAccessibility *)self accessibilityUserDefinedLabel];
   }

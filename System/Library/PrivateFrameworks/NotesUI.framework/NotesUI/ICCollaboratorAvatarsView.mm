@@ -1,23 +1,23 @@
 @interface ICCollaboratorAvatarsView
 - (CGSize)shadowOffset;
 - (CKShare)share;
-- (ICCollaboratorAvatarsView)initWithCoder:(id)a3;
-- (ICCollaboratorAvatarsView)initWithFrame:(CGRect)a3;
+- (ICCollaboratorAvatarsView)initWithCoder:(id)coder;
+- (ICCollaboratorAvatarsView)initWithFrame:(CGRect)frame;
 - (id)accessibilityValue;
 - (id)avatarViews;
 - (id)createAvatarContainerView;
-- (id)defaultAvatarImageViewWithSize:(CGSize)a3;
+- (id)defaultAvatarImageViewWithSize:(CGSize)size;
 - (unint64_t)displayedAvatarCount;
 - (void)commonInit;
 - (void)registerForTraitChanges;
-- (void)setBorderWidth:(double)a3;
-- (void)setDimension:(double)a3;
-- (void)setParticipants:(id)a3;
-- (void)setShadowOffset:(CGSize)a3;
-- (void)setShadowOpacity:(double)a3;
-- (void)setShadowRadius:(double)a3;
-- (void)setShare:(id)a3;
-- (void)setSpacing:(double)a3;
+- (void)setBorderWidth:(double)width;
+- (void)setDimension:(double)dimension;
+- (void)setParticipants:(id)participants;
+- (void)setShadowOffset:(CGSize)offset;
+- (void)setShadowOpacity:(double)opacity;
+- (void)setShadowRadius:(double)radius;
+- (void)setShare:(id)share;
+- (void)setSpacing:(double)spacing;
 - (void)setUpAvatarContainerViews;
 - (void)updateShadows;
 - (void)updateUI;
@@ -25,11 +25,11 @@
 
 @implementation ICCollaboratorAvatarsView
 
-- (ICCollaboratorAvatarsView)initWithCoder:(id)a3
+- (ICCollaboratorAvatarsView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICCollaboratorAvatarsView;
-  v3 = [(ICCollaboratorAvatarsView *)&v6 initWithCoder:a3];
+  v3 = [(ICCollaboratorAvatarsView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -39,11 +39,11 @@
   return v4;
 }
 
-- (ICCollaboratorAvatarsView)initWithFrame:(CGRect)a3
+- (ICCollaboratorAvatarsView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICCollaboratorAvatarsView;
-  v3 = [(ICCollaboratorAvatarsView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICCollaboratorAvatarsView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -55,8 +55,8 @@
 
 - (void)commonInit
 {
-  v3 = [(ICCollaboratorAvatarsView *)self layer];
-  [v3 setMasksToBounds:0];
+  layer = [(ICCollaboratorAvatarsView *)self layer];
+  [layer setMasksToBounds:0];
 
   self->_borderWidth = 1.5;
   self->_dimension = 26.0;
@@ -72,93 +72,93 @@
   [(ICCollaboratorAvatarsView *)self registerForTraitChanges];
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  if (self->_borderWidth != a3)
+  if (self->_borderWidth != width)
   {
-    self->_borderWidth = a3;
+    self->_borderWidth = width;
     [(ICCollaboratorAvatarsView *)self updateUI];
   }
 }
 
-- (void)setDimension:(double)a3
+- (void)setDimension:(double)dimension
 {
-  if (self->_dimension != a3)
+  if (self->_dimension != dimension)
   {
-    self->_dimension = a3;
+    self->_dimension = dimension;
     [(ICCollaboratorAvatarsView *)self setUpAvatarContainerViews];
   }
 }
 
-- (void)setParticipants:(id)a3
+- (void)setParticipants:(id)participants
 {
-  objc_storeStrong(&self->_participants, a3);
+  objc_storeStrong(&self->_participants, participants);
 
   [(ICCollaboratorAvatarsView *)self updateUI];
 }
 
-- (void)setShare:(id)a3
+- (void)setShare:(id)share
 {
-  objc_storeWeak(&self->_share, a3);
+  objc_storeWeak(&self->_share, share);
 
   [(ICCollaboratorAvatarsView *)self updateUI];
 }
 
-- (void)setShadowRadius:(double)a3
+- (void)setShadowRadius:(double)radius
 {
-  if (self->_shadowRadius != a3)
+  if (self->_shadowRadius != radius)
   {
-    self->_shadowRadius = a3;
+    self->_shadowRadius = radius;
     [(ICCollaboratorAvatarsView *)self updateShadows];
   }
 }
 
-- (void)setShadowOpacity:(double)a3
+- (void)setShadowOpacity:(double)opacity
 {
-  if (self->_shadowOpacity != a3)
+  if (self->_shadowOpacity != opacity)
   {
-    self->_shadowOpacity = a3;
+    self->_shadowOpacity = opacity;
     [(ICCollaboratorAvatarsView *)self updateShadows];
   }
 }
 
-- (void)setShadowOffset:(CGSize)a3
+- (void)setShadowOffset:(CGSize)offset
 {
-  if (self->_shadowOffset.width != a3.width || self->_shadowOffset.height != a3.height)
+  if (self->_shadowOffset.width != offset.width || self->_shadowOffset.height != offset.height)
   {
-    self->_shadowOffset = a3;
+    self->_shadowOffset = offset;
     [(ICCollaboratorAvatarsView *)self updateShadows];
   }
 }
 
-- (void)setSpacing:(double)a3
+- (void)setSpacing:(double)spacing
 {
-  if (self->_spacing != a3)
+  if (self->_spacing != spacing)
   {
-    self->_spacing = a3;
-    v4 = [(ICCollaboratorAvatarsView *)self avatarStackView];
-    [v4 setSpacing:a3];
+    self->_spacing = spacing;
+    avatarStackView = [(ICCollaboratorAvatarsView *)self avatarStackView];
+    [avatarStackView setSpacing:spacing];
   }
 }
 
 - (unint64_t)displayedAvatarCount
 {
-  v2 = [(ICCollaboratorAvatarsView *)self avatarStackView];
-  v3 = [v2 arrangedSubviews];
-  v4 = [v3 count];
+  avatarStackView = [(ICCollaboratorAvatarsView *)self avatarStackView];
+  arrangedSubviews = [avatarStackView arrangedSubviews];
+  v4 = [arrangedSubviews count];
 
   return v4;
 }
 
 - (void)registerForTraitChanges
 {
-  v3 = [MEMORY[0x1E69DD1B8] ic_traitsAffectingSizeAndColor];
+  ic_traitsAffectingSizeAndColor = [MEMORY[0x1E69DD1B8] ic_traitsAffectingSizeAndColor];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__ICCollaboratorAvatarsView_registerForTraitChanges__block_invoke;
   v5[3] = &unk_1E846B558;
   v5[4] = self;
-  v4 = [(ICCollaboratorAvatarsView *)self registerForTraitChanges:v3 withHandler:v5];
+  v4 = [(ICCollaboratorAvatarsView *)self registerForTraitChanges:ic_traitsAffectingSizeAndColor withHandler:v5];
 }
 
 uint64_t __52__ICCollaboratorAvatarsView_registerForTraitChanges__block_invoke(uint64_t a1)
@@ -176,13 +176,13 @@ uint64_t __52__ICCollaboratorAvatarsView_registerForTraitChanges__block_invoke(u
   [(ICCollaboratorAvatarsView *)self dimension];
   [v3 ic_applyRoundedCornersWithRadius:v4 * 0.5];
   v5 = MEMORY[0x1E696ACD8];
-  v6 = [v3 widthAnchor];
+  widthAnchor = [v3 widthAnchor];
   [(ICCollaboratorAvatarsView *)self dimension];
-  v7 = [v6 constraintEqualToConstant:?];
+  v7 = [widthAnchor constraintEqualToConstant:?];
   v12[0] = v7;
-  v8 = [v3 heightAnchor];
+  heightAnchor = [v3 heightAnchor];
   [(ICCollaboratorAvatarsView *)self dimension];
-  v9 = [v8 constraintEqualToConstant:?];
+  v9 = [heightAnchor constraintEqualToConstant:?];
   v12[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
   [v5 activateConstraints:v10];
@@ -193,48 +193,48 @@ uint64_t __52__ICCollaboratorAvatarsView_registerForTraitChanges__block_invoke(u
 - (void)setUpAvatarContainerViews
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v3 = [(ICCollaboratorAvatarsView *)self avatarStackView];
-  v4 = [v3 arrangedSubviews];
-  [v4 makeObjectsPerformSelector:sel_removeFromSuperview];
+  avatarStackView = [(ICCollaboratorAvatarsView *)self avatarStackView];
+  arrangedSubviews = [avatarStackView arrangedSubviews];
+  [arrangedSubviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
-  v5 = [(ICCollaboratorAvatarsView *)self createAvatarContainerView];
-  v6 = [(ICCollaboratorAvatarsView *)self createAvatarContainerView];
-  v7 = [(ICCollaboratorAvatarsView *)self createAvatarContainerView];
-  v18[0] = v5;
-  v18[1] = v6;
-  v18[2] = v7;
+  createAvatarContainerView = [(ICCollaboratorAvatarsView *)self createAvatarContainerView];
+  createAvatarContainerView2 = [(ICCollaboratorAvatarsView *)self createAvatarContainerView];
+  createAvatarContainerView3 = [(ICCollaboratorAvatarsView *)self createAvatarContainerView];
+  v18[0] = createAvatarContainerView;
+  v18[1] = createAvatarContainerView2;
+  v18[2] = createAvatarContainerView3;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
   [(ICCollaboratorAvatarsView *)self setAvatarContainerViews:v8];
 
   v9 = objc_alloc(MEMORY[0x1E69DCF90]);
-  v10 = [(ICCollaboratorAvatarsView *)self avatarContainerViews];
-  v11 = [v9 initWithArrangedSubviews:v10];
+  avatarContainerViews = [(ICCollaboratorAvatarsView *)self avatarContainerViews];
+  v11 = [v9 initWithArrangedSubviews:avatarContainerViews];
   [(ICCollaboratorAvatarsView *)self setAvatarStackView:v11];
 
-  v12 = [(ICCollaboratorAvatarsView *)self avatarStackView];
-  [v12 setDistribution:1];
+  avatarStackView2 = [(ICCollaboratorAvatarsView *)self avatarStackView];
+  [avatarStackView2 setDistribution:1];
 
   [(ICCollaboratorAvatarsView *)self spacing];
   v14 = v13;
-  v15 = [(ICCollaboratorAvatarsView *)self avatarStackView];
-  [v15 setSpacing:v14];
+  avatarStackView3 = [(ICCollaboratorAvatarsView *)self avatarStackView];
+  [avatarStackView3 setSpacing:v14];
 
-  v16 = [(ICCollaboratorAvatarsView *)self avatarStackView];
-  [(ICCollaboratorAvatarsView *)self addSubview:v16];
+  avatarStackView4 = [(ICCollaboratorAvatarsView *)self avatarStackView];
+  [(ICCollaboratorAvatarsView *)self addSubview:avatarStackView4];
 
-  v17 = [(ICCollaboratorAvatarsView *)self avatarStackView];
-  [v17 ic_addAnchorsToFillSuperview];
+  avatarStackView5 = [(ICCollaboratorAvatarsView *)self avatarStackView];
+  [avatarStackView5 ic_addAnchorsToFillSuperview];
 }
 
 - (void)updateShadows
 {
-  v3 = [(ICCollaboratorAvatarsView *)self avatarContainerViews];
+  avatarContainerViews = [(ICCollaboratorAvatarsView *)self avatarContainerViews];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __42__ICCollaboratorAvatarsView_updateShadows__block_invoke;
   v4[3] = &unk_1E846B580;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [avatarContainerViews enumerateObjectsUsingBlock:v4];
 }
 
 void __42__ICCollaboratorAvatarsView_updateShadows__block_invoke(uint64_t a1, void *a2)
@@ -251,21 +251,21 @@ void __42__ICCollaboratorAvatarsView_updateShadows__block_invoke(uint64_t a1, vo
 
 - (void)updateUI
 {
-  v3 = [(ICCollaboratorAvatarsView *)self avatarViews];
+  avatarViews = [(ICCollaboratorAvatarsView *)self avatarViews];
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
   v10[3] = 1000;
-  v4 = [(ICCollaboratorAvatarsView *)self avatarContainerViews];
+  avatarContainerViews = [(ICCollaboratorAvatarsView *)self avatarContainerViews];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__ICCollaboratorAvatarsView_updateUI__block_invoke;
   v6[3] = &unk_1E846B5A8;
-  v5 = v3;
+  v5 = avatarViews;
   v7 = v5;
-  v8 = self;
+  selfCopy = self;
   v9 = v10;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [avatarContainerViews enumerateObjectsUsingBlock:v6];
 
   _Block_object_dispose(v10, 8);
 }
@@ -326,23 +326,23 @@ void __37__ICCollaboratorAvatarsView_updateUI__block_invoke(uint64_t a1, void *a
   v4 = v3;
   [(ICCollaboratorAvatarsView *)self dimension];
   v6 = v5;
-  v7 = [(ICCollaboratorAvatarsView *)self participants];
-  v8 = v7;
-  if (v7)
+  participants = [(ICCollaboratorAvatarsView *)self participants];
+  v8 = participants;
+  if (participants)
   {
-    v9 = v7;
+    ic_nonCurrentUserParticipants = participants;
   }
 
   else
   {
-    v10 = [(ICCollaboratorAvatarsView *)self share];
-    v9 = [v10 ic_nonCurrentUserParticipants];
+    share = [(ICCollaboratorAvatarsView *)self share];
+    ic_nonCurrentUserParticipants = [share ic_nonCurrentUserParticipants];
   }
 
-  v11 = [(ICCollaboratorAvatarsView *)self share];
-  if ([v11 ic_isPublicShare])
+  share2 = [(ICCollaboratorAvatarsView *)self share];
+  if ([share2 ic_isPublicShare])
   {
-    v12 = [v9 count];
+    v12 = [ic_nonCurrentUserParticipants count];
 
     if (!v12)
     {
@@ -365,7 +365,7 @@ void __37__ICCollaboratorAvatarsView_updateUI__block_invoke(uint64_t a1, void *a
   v16[4] = self;
   *&v16[5] = v4;
   *&v16[6] = v6;
-  v14 = [v9 ic_map:v16];
+  v14 = [ic_nonCurrentUserParticipants ic_map:v16];
 LABEL_9:
 
   return v14;
@@ -422,21 +422,21 @@ void __40__ICCollaboratorAvatarsView_avatarViews__block_invoke_3(uint64_t a1)
   }
 }
 
-- (id)defaultAvatarImageViewWithSize:(CGSize)a3
+- (id)defaultAvatarImageViewWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   objc_initWeak(&location, v5);
   v6 = [ICThumbnailConfiguration alloc];
-  v7 = [(ICThumbnailConfiguration *)v6 initForAvatarWithParticipants:MEMORY[0x1E695E0F0] preferredSize:0 hasBorder:width, height];
+  height = [(ICThumbnailConfiguration *)v6 initForAvatarWithParticipants:MEMORY[0x1E695E0F0] preferredSize:0 hasBorder:width, height];
   v8 = +[ICThumbnailService sharedThumbnailService];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__ICCollaboratorAvatarsView_defaultAvatarImageViewWithSize___block_invoke;
   v10[3] = &unk_1E846B5D0;
   objc_copyWeak(&v11, &location);
-  [v8 thumbnailWithConfiguration:v7 completion:v10];
+  [v8 thumbnailWithConfiguration:height completion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -477,14 +477,14 @@ void __60__ICCollaboratorAvatarsView_defaultAvatarImageViewWithSize___block_invo
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__32;
   v11 = __Block_byref_object_dispose__32;
-  v12 = [MEMORY[0x1E695DF70] array];
-  v3 = [(ICCollaboratorAvatarsView *)self participants];
+  array = [MEMORY[0x1E695DF70] array];
+  participants = [(ICCollaboratorAvatarsView *)self participants];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__ICCollaboratorAvatarsView_accessibilityValue__block_invoke;
   v6[3] = &unk_1E846B620;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [participants enumerateObjectsUsingBlock:v6];
 
   v4 = [v8[5] copy];
   _Block_object_dispose(&v7, 8);

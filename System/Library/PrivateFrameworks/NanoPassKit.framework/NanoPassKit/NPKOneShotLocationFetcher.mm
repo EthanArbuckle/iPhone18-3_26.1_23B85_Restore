@@ -1,10 +1,10 @@
 @interface NPKOneShotLocationFetcher
 - (NPKOneShotLocationFetcher)init;
-- (void)_finishLocationFixWithLocation:(id)a3;
+- (void)_finishLocationFixWithLocation:(id)location;
 - (void)dealloc;
-- (void)fetchLocationWithCompletion:(id)a3;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)fetchLocationWithCompletion:(id)completion;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 @end
 
 @implementation NPKOneShotLocationFetcher
@@ -53,9 +53,9 @@ uint64_t __36__NPKOneShotLocationFetcher_dealloc__block_invoke(uint64_t a1)
   return [v2 invalidate];
 }
 
-- (void)fetchLocationWithCompletion:(id)a3
+- (void)fetchLocationWithCompletion:(id)completion
 {
-  [(NPKOneShotLocationFetcher *)self setCompletionHandler:a3];
+  [(NPKOneShotLocationFetcher *)self setCompletionHandler:completion];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__NPKOneShotLocationFetcher_fetchLocationWithCompletion___block_invoke;
@@ -228,11 +228,11 @@ void __57__NPKOneShotLocationFetcher_fetchLocationWithCompletion___block_invoke_
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -251,7 +251,7 @@ void __57__NPKOneShotLocationFetcher_fetchLocationWithCompletion___block_invoke_
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v7;
+  v11 = locationsCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v28 count:16];
   v13 = v11;
   if (!v12)
@@ -307,7 +307,7 @@ LABEL_20:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -326,37 +326,37 @@ LABEL_20:
   [(NPKOneShotLocationFetcher *)self _finishLocationFixWithLocation:0];
 }
 
-- (void)_finishLocationFixWithLocation:(id)a3
+- (void)_finishLocationFixWithLocation:(id)location
 {
-  v11 = a3;
+  locationCopy = location;
   dispatch_assert_queue_V2(self->_locationManagerQueue);
-  v4 = [(NPKOneShotLocationFetcher *)self locationManager];
-  [v4 stopUpdatingLocation];
+  locationManager = [(NPKOneShotLocationFetcher *)self locationManager];
+  [locationManager stopUpdatingLocation];
 
-  v5 = [(NPKOneShotLocationFetcher *)self locationManager];
-  [v5 setDelegate:0];
+  locationManager2 = [(NPKOneShotLocationFetcher *)self locationManager];
+  [locationManager2 setDelegate:0];
 
   [(NPKOneShotLocationFetcher *)self setLocationManager:0];
-  v6 = [(NPKOneShotLocationFetcher *)self locationFixTimeout];
+  locationFixTimeout = [(NPKOneShotLocationFetcher *)self locationFixTimeout];
 
-  if (v6)
+  if (locationFixTimeout)
   {
-    v7 = [(NPKOneShotLocationFetcher *)self locationFixTimeout];
-    dispatch_source_cancel(v7);
+    locationFixTimeout2 = [(NPKOneShotLocationFetcher *)self locationFixTimeout];
+    dispatch_source_cancel(locationFixTimeout2);
 
     [(NPKOneShotLocationFetcher *)self setLocationFixTimeout:0];
   }
 
-  v8 = [(NPKOneShotLocationFetcher *)self completionHandler];
+  completionHandler = [(NPKOneShotLocationFetcher *)self completionHandler];
 
-  v9 = v11;
-  if (v8)
+  v9 = locationCopy;
+  if (completionHandler)
   {
-    v10 = [(NPKOneShotLocationFetcher *)self completionHandler];
-    (v10)[2](v10, v11);
+    completionHandler2 = [(NPKOneShotLocationFetcher *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, locationCopy);
 
     [(NPKOneShotLocationFetcher *)self setCompletionHandler:0];
-    v9 = v11;
+    v9 = locationCopy;
   }
 }
 

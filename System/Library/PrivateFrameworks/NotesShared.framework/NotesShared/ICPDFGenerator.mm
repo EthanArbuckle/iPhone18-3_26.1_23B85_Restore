@@ -2,10 +2,10 @@
 - (BOOL)startGenerating;
 - (CGRect)pageRect;
 - (ICPDFGenerator)init;
-- (ICPDFGenerator)initWithMutableData:(id)a3 pageRect:(CGRect)a4 title:(id)a5;
-- (ICPDFGenerator)initWithURL:(id)a3 pageRect:(CGRect)a4 title:(id)a5;
-- (void)addPageWithPageRect:(CGRect)a3 renderBlock:(id)a4;
-- (void)addPageWithRenderBlock:(id)a3;
+- (ICPDFGenerator)initWithMutableData:(id)data pageRect:(CGRect)rect title:(id)title;
+- (ICPDFGenerator)initWithURL:(id)l pageRect:(CGRect)rect title:(id)title;
+- (void)addPageWithPageRect:(CGRect)rect renderBlock:(id)block;
+- (void)addPageWithRenderBlock:(id)block;
 - (void)dealloc;
 - (void)finishGenerating;
 - (void)startGenerating;
@@ -20,21 +20,21 @@
   return 0;
 }
 
-- (ICPDFGenerator)initWithURL:(id)a3 pageRect:(CGRect)a4 title:(id)a5
+- (ICPDFGenerator)initWithURL:(id)l pageRect:(CGRect)rect title:(id)title
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  lCopy = l;
+  titleCopy = title;
   v16.receiver = self;
   v16.super_class = ICPDFGenerator;
   v13 = [(ICPDFGenerator *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    [(ICPDFGenerator *)v13 setFileURL:v11];
+    [(ICPDFGenerator *)v13 setFileURL:lCopy];
     v17.origin.x = x;
     v17.origin.y = y;
     v17.size.width = width;
@@ -48,27 +48,27 @@
     }
 
     [(ICPDFGenerator *)v14 setPageRect:x, y, width, height];
-    [(ICPDFGenerator *)v14 setTitle:v12];
+    [(ICPDFGenerator *)v14 setTitle:titleCopy];
   }
 
   return v14;
 }
 
-- (ICPDFGenerator)initWithMutableData:(id)a3 pageRect:(CGRect)a4 title:(id)a5
+- (ICPDFGenerator)initWithMutableData:(id)data pageRect:(CGRect)rect title:(id)title
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
+  titleCopy = title;
   v16.receiver = self;
   v16.super_class = ICPDFGenerator;
   v13 = [(ICPDFGenerator *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    [(ICPDFGenerator *)v13 setData:v11];
+    [(ICPDFGenerator *)v13 setData:dataCopy];
     v17.origin.x = x;
     v17.origin.y = y;
     v17.size.width = width;
@@ -82,7 +82,7 @@
     }
 
     [(ICPDFGenerator *)v14 setPageRect:x, y, width, height];
-    [(ICPDFGenerator *)v14 setTitle:v12];
+    [(ICPDFGenerator *)v14 setTitle:titleCopy];
   }
 
   return v14;
@@ -124,9 +124,9 @@ LABEL_13:
   }
 
   v27[0] = *MEMORY[0x277CBF5E0];
-  v11 = [(ICPDFGenerator *)self title];
+  title = [(ICPDFGenerator *)self title];
   v27[1] = *MEMORY[0x277CBF578];
-  v28[0] = v11;
+  v28[0] = title;
   v28[1] = @"Notes";
   v2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
 
@@ -135,19 +135,19 @@ LABEL_13:
   mediaBox.origin.y = v13;
   mediaBox.size.width = v14;
   mediaBox.size.height = v15;
-  v16 = [(ICPDFGenerator *)self fileURL];
+  fileURL = [(ICPDFGenerator *)self fileURL];
 
-  if (v16)
+  if (fileURL)
   {
-    v17 = [(ICPDFGenerator *)self fileURL];
-    self->_pdfContext = CGPDFContextCreateWithURL(v17, &mediaBox, v2);
+    fileURL2 = [(ICPDFGenerator *)self fileURL];
+    self->_pdfContext = CGPDFContextCreateWithURL(fileURL2, &mediaBox, v2);
   }
 
   else
   {
-    v18 = [(ICPDFGenerator *)self data];
+    data = [(ICPDFGenerator *)self data];
 
-    if (!v18)
+    if (!data)
     {
 LABEL_10:
       v24 = os_log_create("com.apple.notes", "Export");
@@ -159,12 +159,12 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    v19 = [MEMORY[0x277CBEA90] data];
-    v20 = [(ICPDFGenerator *)self data];
-    [v20 setData:v19];
+    data2 = [MEMORY[0x277CBEA90] data];
+    data3 = [(ICPDFGenerator *)self data];
+    [data3 setData:data2];
 
-    v21 = [(ICPDFGenerator *)self data];
-    v22 = CGDataConsumerCreateWithCFData(v21);
+    data4 = [(ICPDFGenerator *)self data];
+    v22 = CGDataConsumerCreateWithCFData(data4);
 
     self->_pdfContext = CGPDFContextCreate(v22, &mediaBox, v2);
     CGDataConsumerRelease(v22);
@@ -181,24 +181,24 @@ LABEL_14:
   return v23;
 }
 
-- (void)addPageWithRenderBlock:(id)a3
+- (void)addPageWithRenderBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(ICPDFGenerator *)self pageRect];
-  [(ICPDFGenerator *)self addPageWithPageRect:v4 renderBlock:?];
+  [(ICPDFGenerator *)self addPageWithPageRect:blockCopy renderBlock:?];
 }
 
-- (void)addPageWithPageRect:(CGRect)a3 renderBlock:(id)a4
+- (void)addPageWithPageRect:(CGRect)rect renderBlock:(id)block
 {
-  v16 = a3;
-  v5 = a4;
+  rectCopy = rect;
+  blockCopy = block;
   if (self->_pdfContext)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-    v7 = CFDataCreate(0, &v16, 32);
+    v7 = CFDataCreate(0, &rectCopy, 32);
     CFDictionarySetValue(Mutable, *MEMORY[0x277CBF5A8], v7);
     CGPDFContextBeginPage(self->_pdfContext, Mutable);
-    v5[2](v5, self->_pdfContext, v16.origin.x, v16.origin.y, v16.size.width, v16.size.height);
+    blockCopy[2](blockCopy, self->_pdfContext, rectCopy.origin.x, rectCopy.origin.y, rectCopy.size.width, rectCopy.size.height);
     CGPDFContextEndPage(self->_pdfContext);
     CFRelease(Mutable);
     CFRelease(v7);
@@ -250,9 +250,9 @@ LABEL_14:
 - (void)startGenerating
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 fileURL];
+  fileURL = [self fileURL];
   v4 = 138412290;
-  v5 = v3;
+  v5 = fileURL;
   _os_log_error_impl(&dword_214D51000, a2, OS_LOG_TYPE_ERROR, "Failed to create a pdf document at: %@", &v4, 0xCu);
 }
 

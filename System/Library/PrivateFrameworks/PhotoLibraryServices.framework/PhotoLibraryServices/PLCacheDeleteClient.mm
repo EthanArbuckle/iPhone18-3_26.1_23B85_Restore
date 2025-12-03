@@ -2,23 +2,23 @@
 + (BOOL)hasEntitlementsForCacheDelete;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)_queryAvailableSpace;
 - (NSString)cacheDeleteVolume;
-- (PLCacheDeleteClient)initWithQoSClass:(unsigned int)a3 pathForVolume:(id)a4 callbackQueue:(id)a5;
-- (void)_notifyDiskAvailabilityRequestCompletionHandler:(id)a3 withSuccess:(BOOL)a4 numBytesPurged:(int64_t)a5 additionalBytesRequired:(int64_t)a6 error:(id)a7;
+- (PLCacheDeleteClient)initWithQoSClass:(unsigned int)class pathForVolume:(id)volume callbackQueue:(id)queue;
+- (void)_notifyDiskAvailabilityRequestCompletionHandler:(id)handler withSuccess:(BOOL)success numBytesPurged:(int64_t)purged additionalBytesRequired:(int64_t)required error:(id)error;
 - (void)cancelDiskSpaceAvailabilityRequest;
-- (void)requestDiskSpaceAvailabilityOfSize:(int64_t)a3 completion:(id)a4;
+- (void)requestDiskSpaceAvailabilityOfSize:(int64_t)size completion:(id)completion;
 @end
 
 @implementation PLCacheDeleteClient
 
 - (void)cancelDiskSpaceAvailabilityRequest
 {
-  v3 = [(PLCacheDeleteClient *)self cacheDeleteQueryQueue];
+  cacheDeleteQueryQueue = [(PLCacheDeleteClient *)self cacheDeleteQueryQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__PLCacheDeleteClient_cancelDiskSpaceAvailabilityRequest__block_invoke;
   block[3] = &unk_1E75781E8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(cacheDeleteQueryQueue, block);
 }
 
 void __57__PLCacheDeleteClient_cancelDiskSpaceAvailabilityRequest__block_invoke(uint64_t a1)
@@ -50,30 +50,30 @@ void __57__PLCacheDeleteClient_cancelDiskSpaceAvailabilityRequest__block_invoke(
   }
 }
 
-- (void)_notifyDiskAvailabilityRequestCompletionHandler:(id)a3 withSuccess:(BOOL)a4 numBytesPurged:(int64_t)a5 additionalBytesRequired:(int64_t)a6 error:(id)a7
+- (void)_notifyDiskAvailabilityRequestCompletionHandler:(id)handler withSuccess:(BOOL)success numBytesPurged:(int64_t)purged additionalBytesRequired:(int64_t)required error:(id)error
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = [(PLCacheDeleteClient *)self currentCacheDeletePurgeToken];
-  if (v14)
+  handlerCopy = handler;
+  errorCopy = error;
+  currentCacheDeletePurgeToken = [(PLCacheDeleteClient *)self currentCacheDeletePurgeToken];
+  if (currentCacheDeletePurgeToken)
   {
-    CFRelease(v14);
+    CFRelease(currentCacheDeletePurgeToken);
   }
 
   [(PLCacheDeleteClient *)self setCurrentCacheDeletePurgeToken:0];
-  v15 = [(PLCacheDeleteClient *)self callbackQueue];
+  callbackQueue = [(PLCacheDeleteClient *)self callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __128__PLCacheDeleteClient__notifyDiskAvailabilityRequestCompletionHandler_withSuccess_numBytesPurged_additionalBytesRequired_error___block_invoke;
   block[3] = &unk_1E7565578;
-  v23 = a4;
-  v21 = a5;
-  v22 = a6;
-  v19 = v13;
-  v20 = v12;
-  v16 = v13;
-  v17 = v12;
-  dispatch_async(v15, block);
+  successCopy = success;
+  purgedCopy = purged;
+  requiredCopy = required;
+  v19 = errorCopy;
+  v20 = handlerCopy;
+  v16 = errorCopy;
+  v17 = handlerCopy;
+  dispatch_async(callbackQueue, block);
 }
 
 uint64_t __128__PLCacheDeleteClient__notifyDiskAvailabilityRequestCompletionHandler_withSuccess_numBytesPurged_additionalBytesRequired_error___block_invoke(uint64_t a1)
@@ -87,30 +87,30 @@ uint64_t __128__PLCacheDeleteClient__notifyDiskAvailabilityRequestCompletionHand
   return result;
 }
 
-- (void)requestDiskSpaceAvailabilityOfSize:(int64_t)a3 completion:(id)a4
+- (void)requestDiskSpaceAvailabilityOfSize:(int64_t)size completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = PLBackendGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(PLCacheDeleteClient *)self byteFormatter];
-    v9 = [v8 stringFromByteCount:a3];
+    byteFormatter = [(PLCacheDeleteClient *)self byteFormatter];
+    v9 = [byteFormatter stringFromByteCount:size];
     *buf = 138543362;
     v16 = v9;
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "PLCacheDeleteClient: Ensuring availability of %{public}@ free space", buf, 0xCu);
   }
 
-  v10 = [(PLCacheDeleteClient *)self cacheDeleteQueryQueue];
+  cacheDeleteQueryQueue = [(PLCacheDeleteClient *)self cacheDeleteQueryQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__PLCacheDeleteClient_requestDiskSpaceAvailabilityOfSize_completion___block_invoke;
   block[3] = &unk_1E7575338;
   block[4] = self;
-  v13 = v6;
-  v14 = a3;
-  v11 = v6;
-  dispatch_async(v10, block);
+  v13 = completionCopy;
+  sizeCopy = size;
+  v11 = completionCopy;
+  dispatch_async(cacheDeleteQueryQueue, block);
 }
 
 void __69__PLCacheDeleteClient_requestDiskSpaceAvailabilityOfSize_completion___block_invoke(uint64_t a1)
@@ -426,28 +426,28 @@ void __69__PLCacheDeleteClient_requestDiskSpaceAvailabilityOfSize_completion___b
 - ($0AC6E346AE4835514AAA8AC86D8F4844)_queryAvailableSpace
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PLCacheDeleteClient *)self cacheDeleteQueryQueue];
-  dispatch_assert_queue_V2(v3);
+  cacheDeleteQueryQueue = [(PLCacheDeleteClient *)self cacheDeleteQueryQueue];
+  dispatch_assert_queue_V2(cacheDeleteQueryQueue);
 
-  v4 = [(PLCacheDeleteClient *)self cacheDeleteVolume];
-  if (v4)
+  cacheDeleteVolume = [(PLCacheDeleteClient *)self cacheDeleteVolume];
+  if (cacheDeleteVolume)
   {
     Current = CFAbsoluteTimeGetCurrent();
     v22 = @"CACHE_DELETE_VOLUME";
-    v23[0] = v4;
+    v23[0] = cacheDeleteVolume;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v6 = CacheDeleteCopyItemizedPurgeableSpaceWithInfo();
     v7 = CFAbsoluteTimeGetCurrent();
     v8 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_FREESPACE"];
-    v9 = [v8 longLongValue];
+    longLongValue = [v8 longLongValue];
 
     v10 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_TOTAL_FSPURGEABLE"];
-    v11 = [v10 longLongValue];
+    longLongValue2 = [v10 longLongValue];
 
     v12 = PLBackendGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Available space (MB):\n\tFree=%lld MB (%lld)\n\tPurgeable=%lld MB (%lld)", v9 / 0x100000, v9, v11 / 0x100000, v11];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Available space (MB):\n\tFree=%lld MB (%lld)\n\tPurgeable=%lld MB (%lld)", longLongValue / 0x100000, longLongValue, longLongValue2 / 0x100000, longLongValue2];
       *buf = 134218498;
       v17 = v7 - Current;
       v18 = 2112;
@@ -467,12 +467,12 @@ void __69__PLCacheDeleteClient_requestDiskSpaceAvailabilityOfSize_completion___b
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_ERROR, "PLCacheDeleteClient: queryAvailableSpace returning 0 available space because cacheDeleteVolume was nil", buf, 2u);
     }
 
-    v11 = 0;
-    v9 = 0;
+    longLongValue2 = 0;
+    longLongValue = 0;
   }
 
-  v14 = v9;
-  v15 = v11;
+  v14 = longLongValue;
+  v15 = longLongValue2;
   result.var1 = v15;
   result.var0 = v14;
   return result;
@@ -508,14 +508,14 @@ void __69__PLCacheDeleteClient_requestDiskSpaceAvailabilityOfSize_completion___b
   return cachedVolume;
 }
 
-- (PLCacheDeleteClient)initWithQoSClass:(unsigned int)a3 pathForVolume:(id)a4 callbackQueue:(id)a5
+- (PLCacheDeleteClient)initWithQoSClass:(unsigned int)class pathForVolume:(id)volume callbackQueue:(id)queue
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  volumeCopy = volume;
+  queueCopy = queue;
+  v12 = queueCopy;
+  if (volumeCopy)
   {
-    if (v11)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -523,8 +523,8 @@ void __69__PLCacheDeleteClient_requestDiskSpaceAvailabilityOfSize_completion___b
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PLCacheDeleteClient.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"pathForVolume"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCacheDeleteClient.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"pathForVolume"}];
 
     if (v12)
     {
@@ -532,8 +532,8 @@ void __69__PLCacheDeleteClient_requestDiskSpaceAvailabilityOfSize_completion___b
     }
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"PLCacheDeleteClient.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"callbackQueue"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLCacheDeleteClient.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"callbackQueue"}];
 
 LABEL_3:
   v22.receiver = self;
@@ -541,13 +541,13 @@ LABEL_3:
   v13 = [(PLCacheDeleteClient *)&v22 init];
   if (v13)
   {
-    v14 = dispatch_queue_attr_make_with_qos_class(0, a3, 0);
+    v14 = dispatch_queue_attr_make_with_qos_class(0, class, 0);
     v15 = dispatch_queue_create("com.apple.photos.CacheDeleteRequest", v14);
     cacheDeleteQueryQueue = v13->_cacheDeleteQueryQueue;
     v13->_cacheDeleteQueryQueue = v15;
 
-    objc_storeStrong(&v13->_pathForVolume, a4);
-    objc_storeStrong(&v13->_callbackQueue, a5);
+    objc_storeStrong(&v13->_pathForVolume, volume);
+    objc_storeStrong(&v13->_callbackQueue, queue);
     v17 = objc_alloc_init(MEMORY[0x1E696AAF0]);
     byteFormatter = v13->_byteFormatter;
     v13->_byteFormatter = v17;

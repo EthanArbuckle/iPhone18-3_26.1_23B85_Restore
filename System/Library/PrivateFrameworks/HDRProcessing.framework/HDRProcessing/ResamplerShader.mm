@@ -1,13 +1,13 @@
 @interface ResamplerShader
-+ (id)createShaderWithName:(id)a3;
++ (id)createShaderWithName:(id)name;
 @end
 
 @implementation ResamplerShader
 
-+ (id)createShaderWithName:(id)a3
++ (id)createShaderWithName:(id)name
 {
-  v3 = a3;
-  v4 = [(ForwardDmShader *)[ResamplerShader alloc] initShaderWithName:v3];
+  nameCopy = name;
+  v4 = [(ForwardDmShader *)[ResamplerShader alloc] initShaderWithName:nameCopy];
 
   return v4;
 }

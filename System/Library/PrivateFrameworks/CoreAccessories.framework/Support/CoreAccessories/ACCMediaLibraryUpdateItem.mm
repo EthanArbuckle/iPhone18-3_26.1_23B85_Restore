@@ -1,28 +1,28 @@
 @interface ACCMediaLibraryUpdateItem
-- (ACCMediaLibraryUpdateItem)initWithMediaLibrary:(id)a3 dict:(id)a4;
-- (ACCMediaLibraryUpdateItem)initWithMediaLibrary:(id)a3 persistentID:(unint64_t)a4 revision:(id)a5;
+- (ACCMediaLibraryUpdateItem)initWithMediaLibrary:(id)library dict:(id)dict;
+- (ACCMediaLibraryUpdateItem)initWithMediaLibrary:(id)library persistentID:(unint64_t)d revision:(id)revision;
 - (id)copyDict;
 - (id)debugDescription;
 - (void)copyDict;
-- (void)fillStruct:(id *)a3;
-- (void)setPersistentID:(unint64_t)a3;
+- (void)fillStruct:(id *)struct;
+- (void)setPersistentID:(unint64_t)d;
 @end
 
 @implementation ACCMediaLibraryUpdateItem
 
-- (ACCMediaLibraryUpdateItem)initWithMediaLibrary:(id)a3 persistentID:(unint64_t)a4 revision:(id)a5
+- (ACCMediaLibraryUpdateItem)initWithMediaLibrary:(id)library persistentID:(unint64_t)d revision:(id)revision
 {
-  v9 = a3;
-  v10 = a5;
+  libraryCopy = library;
+  revisionCopy = revision;
   v20.receiver = self;
   v20.super_class = ACCMediaLibraryUpdateItem;
   v11 = [(ACCMediaLibraryUpdateItem *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mediaLibraryUID, a3);
-    objc_storeStrong(&v12->_revision, a5);
-    v12->_persistentID = a4;
+    objc_storeStrong(&v11->_mediaLibraryUID, library);
+    objc_storeStrong(&v12->_revision, revision);
+    v12->_persistentID = d;
     v12->_validMask = 1;
     title = v12->_title;
     v12->_title = 0;
@@ -57,17 +57,17 @@
   return v12;
 }
 
-- (ACCMediaLibraryUpdateItem)initWithMediaLibrary:(id)a3 dict:(id)a4
+- (ACCMediaLibraryUpdateItem)initWithMediaLibrary:(id)library dict:(id)dict
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  dictCopy = dict;
   v72.receiver = self;
   v72.super_class = ACCMediaLibraryUpdateItem;
   v9 = [(ACCMediaLibraryUpdateItem *)&v72 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaLibraryUID, a3);
+    objc_storeStrong(&v9->_mediaLibraryUID, library);
     revision = v10->_revision;
     v10->_revision = &stru_10022D360;
 
@@ -101,236 +101,236 @@
     *&v10->_partOfCompilation = 0;
     v10->_chapterCount = 0;
     v10->_validMask = 0;
-    v18 = [v8 objectForKey:@"ACCMediaLibraryUpdateRevisionKey"];
+    v18 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateRevisionKey"];
 
     if (v18)
     {
-      v19 = [v8 objectForKey:@"ACCMediaLibraryUpdateRevisionKey"];
+      v19 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateRevisionKey"];
       v20 = v10->_revision;
       v10->_revision = v19;
     }
 
-    v21 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemPersistentID"];
+    v21 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemPersistentID"];
 
     if (v21)
     {
-      v22 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemPersistentID"];
+      v22 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemPersistentID"];
       v10->_persistentID = [v22 unsignedLongLongValue];
 
       v10->_validMask |= 1uLL;
     }
 
-    v23 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemTitle"];
+    v23 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemTitle"];
 
     if (v23)
     {
-      v24 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemTitle"];
+      v24 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemTitle"];
       v25 = v10->_title;
       v10->_title = v24;
 
       v10->_validMask |= 2uLL;
     }
 
-    v26 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemType"];
+    v26 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemType"];
 
     if (v26)
     {
-      v27 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemType"];
+      v27 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemType"];
       v10->_type = [v27 unsignedCharValue];
 
       v10->_validMask |= 4uLL;
     }
 
-    v28 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemRating"];
+    v28 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemRating"];
 
     if (v28)
     {
-      v29 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemRating"];
+      v29 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemRating"];
       v10->_rating = [v29 unsignedCharValue];
 
       v10->_validMask |= 8uLL;
     }
 
-    v30 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemPlaybackDurationInMilliseconds"];
+    v30 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemPlaybackDurationInMilliseconds"];
 
     if (v30)
     {
-      v31 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemPlaybackDurationInMilliseconds"];
+      v31 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemPlaybackDurationInMilliseconds"];
       v10->_duration = [v31 unsignedLongValue];
 
       v10->_validMask |= 0x10uLL;
     }
 
-    v32 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumPersistentID"];
+    v32 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumPersistentID"];
 
     if (v32)
     {
-      v33 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumPersistentID"];
+      v33 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumPersistentID"];
       v10->_albumPersistentID = [v33 unsignedLongLongValue];
 
       v10->_validMask |= 0x20uLL;
     }
 
-    v34 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumTitle"];
+    v34 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumTitle"];
 
     if (v34)
     {
-      v35 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumTitle"];
+      v35 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumTitle"];
       v36 = v10->_albumTitle;
       v10->_albumTitle = v35;
 
       v10->_validMask |= 0x40uLL;
     }
 
-    v37 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumTrackNumber"];
+    v37 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumTrackNumber"];
 
     if (v37)
     {
-      v38 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumTrackNumber"];
+      v38 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumTrackNumber"];
       v10->_albumTrackNumber = [v38 unsignedShortValue];
 
       v10->_validMask |= 0x80uLL;
     }
 
-    v39 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumTrackCount"];
+    v39 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumTrackCount"];
 
     if (v39)
     {
-      v40 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumTrackCount"];
+      v40 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumTrackCount"];
       v10->_albumTrackCount = [v40 unsignedShortValue];
 
       v10->_validMask |= 0x100uLL;
     }
 
-    v41 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumDiscNumber"];
+    v41 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumDiscNumber"];
 
     if (v41)
     {
-      v42 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumDiscNumber"];
+      v42 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumDiscNumber"];
       v10->_albumDiscNumber = [v42 unsignedShortValue];
 
       v10->_validMask |= 0x200uLL;
     }
 
-    v43 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumDiscCount"];
+    v43 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumDiscCount"];
 
     if (v43)
     {
-      v44 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumDiscCount"];
+      v44 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumDiscCount"];
       v10->_albumDiscCount = [v44 unsignedShortValue];
 
       v10->_validMask |= 0x400uLL;
     }
 
-    v45 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemArtistPersistentID"];
+    v45 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemArtistPersistentID"];
 
     if (v45)
     {
-      v46 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemArtistPersistentID"];
+      v46 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemArtistPersistentID"];
       v10->_artistPersistentID = [v46 unsignedLongLongValue];
 
       v10->_validMask |= 0x800uLL;
     }
 
-    v47 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemArtist"];
+    v47 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemArtist"];
 
     if (v47)
     {
-      v48 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemArtist"];
+      v48 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemArtist"];
       v49 = v10->_artist;
       v10->_artist = v48;
 
       v10->_validMask |= 0x1000uLL;
     }
 
-    v50 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumArtistPersistentID"];
+    v50 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumArtistPersistentID"];
 
     if (v50)
     {
-      v51 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumArtistPersistentID"];
+      v51 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumArtistPersistentID"];
       v10->_albumArtistPersistentID = [v51 unsignedLongLongValue];
 
       v10->_validMask |= 0x2000uLL;
     }
 
-    v52 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumArtist"];
+    v52 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumArtist"];
 
     if (v52)
     {
-      v53 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemAlbumArtist"];
+      v53 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemAlbumArtist"];
       v54 = v10->_albumArtist;
       v10->_albumArtist = v53;
 
       v10->_validMask |= 0x4000uLL;
     }
 
-    v55 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemGenrePersistentID"];
+    v55 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemGenrePersistentID"];
 
     if (v55)
     {
-      v56 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemGenrePersistentID"];
+      v56 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemGenrePersistentID"];
       v10->_genrePersistentID = [v56 unsignedLongLongValue];
 
       v10->_validMask |= 0x8000uLL;
     }
 
-    v57 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemGenre"];
+    v57 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemGenre"];
 
     if (v57)
     {
-      v58 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemGenre"];
+      v58 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemGenre"];
       v59 = v10->_genre;
       v10->_genre = v58;
 
       v10->_validMask |= 0x10000uLL;
     }
 
-    v60 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemComposerPersistentID"];
+    v60 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemComposerPersistentID"];
 
     if (v60)
     {
-      v61 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemComposerPersistentID"];
+      v61 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemComposerPersistentID"];
       v10->_composerPersistentID = [v61 unsignedLongLongValue];
 
       v10->_validMask |= 0x20000uLL;
     }
 
-    v62 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemComposer"];
+    v62 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemComposer"];
 
     if (v62)
     {
-      v63 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemComposer"];
+      v63 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemComposer"];
       v64 = v10->_composer;
       v10->_composer = v63;
 
       v10->_validMask |= 0x40000uLL;
     }
 
-    v65 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemIsPartOfCompilation"];
+    v65 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemIsPartOfCompilation"];
 
     if (v65)
     {
-      v66 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemIsPartOfCompilation"];
+      v66 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemIsPartOfCompilation"];
       v10->_partOfCompilation = [v66 unsignedCharValue] != 0;
 
       v10->_validMask |= 0x80000uLL;
     }
 
-    v67 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemIsLocal"];
+    v67 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemIsLocal"];
 
     if (v67)
     {
-      v68 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemIsLocal"];
+      v68 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemIsLocal"];
       v10->_local = [v68 unsignedCharValue] != 0;
 
       v10->_validMask |= 0x2000000uLL;
     }
 
-    v69 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemChapterCount"];
+    v69 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemChapterCount"];
 
     if (v69)
     {
-      v70 = [v8 objectForKey:@"ACCMediaLibraryUpdateItemChapterCount"];
+      v70 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateItemChapterCount"];
       v10->_chapterCount = [v70 unsignedShortValue];
 
       v10->_validMask |= 0x8000000uLL;
@@ -343,8 +343,8 @@
 - (id)debugDescription
 {
   v3 = [(ACCMediaLibraryUpdateItem *)self description];
-  v4 = [(ACCMediaLibraryUpdateItem *)self copyDict];
-  v5 = [NSString stringWithFormat:@"%@\n    %@", v3, v4];
+  copyDict = [(ACCMediaLibraryUpdateItem *)self copyDict];
+  v5 = [NSString stringWithFormat:@"%@\n    %@", v3, copyDict];
 
   return v5;
 }
@@ -706,21 +706,21 @@ LABEL_24:
   return v3;
 }
 
-- (void)fillStruct:(id *)a3
+- (void)fillStruct:(id *)struct
 {
-  *&a3->var17 = 0u;
-  *&a3->var19 = 0u;
-  *&a3->var13 = 0u;
-  *&a3->var15 = 0u;
-  *&a3->var6 = 0u;
-  *&a3->var8 = 0u;
-  *&a3->var0 = 0u;
-  *&a3->var2 = 0u;
+  *&struct->var17 = 0u;
+  *&struct->var19 = 0u;
+  *&struct->var13 = 0u;
+  *&struct->var15 = 0u;
+  *&struct->var6 = 0u;
+  *&struct->var8 = 0u;
+  *&struct->var0 = 0u;
+  *&struct->var2 = 0u;
   validMask = self->_validMask;
   if (validMask)
   {
-    a3->var1 = self->_persistentID;
-    a3->var0 |= 1u;
+    struct->var1 = self->_persistentID;
+    struct->var0 |= 1u;
     validMask = self->_validMask;
     if ((validMask & 2) == 0)
     {
@@ -746,8 +746,8 @@ LABEL_3:
     validMask = self->_validMask;
   }
 
-  a3->var2 = title;
-  a3->var0 |= 2u;
+  struct->var2 = title;
+  struct->var0 |= 2u;
   if ((validMask & 4) == 0)
   {
 LABEL_4:
@@ -760,8 +760,8 @@ LABEL_4:
   }
 
 LABEL_29:
-  a3->var3 = self->_type;
-  a3->var0 |= 4u;
+  struct->var3 = self->_type;
+  struct->var0 |= 4u;
   if ((validMask & 8) == 0)
   {
 LABEL_5:
@@ -774,8 +774,8 @@ LABEL_5:
   }
 
 LABEL_30:
-  a3->var4 = self->_rating;
-  a3->var0 |= 8u;
+  struct->var4 = self->_rating;
+  struct->var0 |= 8u;
   if ((validMask & 0x10) == 0)
   {
 LABEL_6:
@@ -788,8 +788,8 @@ LABEL_6:
   }
 
 LABEL_31:
-  a3->var5 = self->_duration;
-  a3->var0 |= 0x10u;
+  struct->var5 = self->_duration;
+  struct->var0 |= 0x10u;
   if ((validMask & 0x20) == 0)
   {
 LABEL_7:
@@ -802,8 +802,8 @@ LABEL_7:
   }
 
 LABEL_32:
-  a3->var6 = self->_albumPersistentID;
-  a3->var0 |= 0x20u;
+  struct->var6 = self->_albumPersistentID;
+  struct->var0 |= 0x20u;
   validMask = self->_validMask;
   if ((validMask & 0x40) == 0)
   {
@@ -824,8 +824,8 @@ LABEL_33:
     validMask = self->_validMask;
   }
 
-  a3->var7 = albumTitle;
-  a3->var0 |= 0x40u;
+  struct->var7 = albumTitle;
+  struct->var0 |= 0x40u;
   if ((validMask & 0x80) == 0)
   {
 LABEL_9:
@@ -838,8 +838,8 @@ LABEL_9:
   }
 
 LABEL_36:
-  a3->var8 = self->_albumTrackNumber;
-  a3->var0 |= 0x80u;
+  struct->var8 = self->_albumTrackNumber;
+  struct->var0 |= 0x80u;
   if ((validMask & 0x100) == 0)
   {
 LABEL_10:
@@ -852,8 +852,8 @@ LABEL_10:
   }
 
 LABEL_37:
-  a3->var9 = self->_albumTrackCount;
-  a3->var0 |= 0x100u;
+  struct->var9 = self->_albumTrackCount;
+  struct->var0 |= 0x100u;
   if ((validMask & 0x200) == 0)
   {
 LABEL_11:
@@ -866,8 +866,8 @@ LABEL_11:
   }
 
 LABEL_38:
-  a3->var10 = self->_albumDiscNumber;
-  a3->var0 |= 0x200u;
+  struct->var10 = self->_albumDiscNumber;
+  struct->var0 |= 0x200u;
   if ((validMask & 0x400) == 0)
   {
 LABEL_12:
@@ -880,8 +880,8 @@ LABEL_12:
   }
 
 LABEL_39:
-  a3->var11 = self->_albumDiscCount;
-  a3->var0 |= 0x400u;
+  struct->var11 = self->_albumDiscCount;
+  struct->var0 |= 0x400u;
   if ((validMask & 0x800) == 0)
   {
 LABEL_13:
@@ -894,8 +894,8 @@ LABEL_13:
   }
 
 LABEL_40:
-  a3->var12 = self->_artistPersistentID;
-  a3->var0 |= 0x800u;
+  struct->var12 = self->_artistPersistentID;
+  struct->var0 |= 0x800u;
   validMask = self->_validMask;
   if ((validMask & 0x1000) == 0)
   {
@@ -916,8 +916,8 @@ LABEL_41:
     validMask = self->_validMask;
   }
 
-  a3->var13 = artist;
-  a3->var0 |= 0x1000u;
+  struct->var13 = artist;
+  struct->var0 |= 0x1000u;
   if ((validMask & 0x2000) == 0)
   {
 LABEL_15:
@@ -930,8 +930,8 @@ LABEL_15:
   }
 
 LABEL_44:
-  a3->var14 = self->_albumArtistPersistentID;
-  a3->var0 |= 0x2000u;
+  struct->var14 = self->_albumArtistPersistentID;
+  struct->var0 |= 0x2000u;
   validMask = self->_validMask;
   if ((validMask & 0x4000) == 0)
   {
@@ -952,8 +952,8 @@ LABEL_45:
     validMask = self->_validMask;
   }
 
-  a3->var15 = albumArtist;
-  a3->var0 |= 0x4000u;
+  struct->var15 = albumArtist;
+  struct->var0 |= 0x4000u;
   if ((validMask & 0x8000) == 0)
   {
 LABEL_17:
@@ -966,8 +966,8 @@ LABEL_17:
   }
 
 LABEL_48:
-  a3->var16 = self->_genrePersistentID;
-  a3->var0 |= 0x8000u;
+  struct->var16 = self->_genrePersistentID;
+  struct->var0 |= 0x8000u;
   validMask = self->_validMask;
   if ((validMask & 0x10000) == 0)
   {
@@ -988,8 +988,8 @@ LABEL_49:
     validMask = self->_validMask;
   }
 
-  a3->var17 = genre;
-  a3->var0 |= 0x10000u;
+  struct->var17 = genre;
+  struct->var0 |= 0x10000u;
   if ((validMask & 0x20000) == 0)
   {
 LABEL_19:
@@ -1002,8 +1002,8 @@ LABEL_19:
   }
 
 LABEL_52:
-  a3->var18 = self->_composerPersistentID;
-  a3->var0 |= 0x20000u;
+  struct->var18 = self->_composerPersistentID;
+  struct->var0 |= 0x20000u;
   validMask = self->_validMask;
   if ((validMask & 0x40000) == 0)
   {
@@ -1024,8 +1024,8 @@ LABEL_53:
     validMask = self->_validMask;
   }
 
-  a3->var19 = composer;
-  a3->var0 |= 0x40000u;
+  struct->var19 = composer;
+  struct->var0 |= 0x40000u;
   if ((validMask & 0x80000) == 0)
   {
 LABEL_21:
@@ -1038,8 +1038,8 @@ LABEL_21:
   }
 
 LABEL_56:
-  a3->var20 = self->_partOfCompilation;
-  a3->var0 |= 0x80000u;
+  struct->var20 = self->_partOfCompilation;
+  struct->var0 |= 0x80000u;
   if ((validMask & 0x2000000) == 0)
   {
 LABEL_22:
@@ -1052,28 +1052,28 @@ LABEL_22:
   }
 
 LABEL_57:
-  a3->var21 = self->_local;
-  a3->var0 |= 0x2000000u;
+  struct->var21 = self->_local;
+  struct->var0 |= 0x2000000u;
   if ((validMask & 0x8000000) == 0)
   {
     return;
   }
 
 LABEL_23:
-  a3->var22 = self->_chapterCount;
-  a3->var0 |= 0x8000000u;
+  struct->var22 = self->_chapterCount;
+  struct->var0 |= 0x8000000u;
 }
 
-- (void)setPersistentID:(unint64_t)a3
+- (void)setPersistentID:(unint64_t)d
 {
   v3 = self->_validMask | 1;
-  self->_persistentID = a3;
+  self->_persistentID = d;
   self->_validMask = v3;
 }
 
 - (void)copyDict
 {
-  v3 = *a1;
+  v3 = *self;
   v4 = 134218242;
   v5 = v3;
   v6 = 2112;

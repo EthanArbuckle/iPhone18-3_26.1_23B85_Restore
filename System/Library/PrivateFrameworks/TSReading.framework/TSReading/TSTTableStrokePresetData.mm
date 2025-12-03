@@ -1,6 +1,6 @@
 @interface TSTTableStrokePresetData
 - (TSTTableStrokePresetData)init;
-- (TSTTableStrokePresetData)initWithMask:(unsigned int)a3 horizontalStroke:(id)a4 verticalStroke:(id)a5 exteriorStroke:(id)a6;
+- (TSTTableStrokePresetData)initWithMask:(unsigned int)mask horizontalStroke:(id)stroke verticalStroke:(id)verticalStroke exteriorStroke:(id)exteriorStroke;
 - (void)dealloc;
 @end
 
@@ -20,17 +20,17 @@
   [(TSTTableStrokePresetData *)&v3 dealloc];
 }
 
-- (TSTTableStrokePresetData)initWithMask:(unsigned int)a3 horizontalStroke:(id)a4 verticalStroke:(id)a5 exteriorStroke:(id)a6
+- (TSTTableStrokePresetData)initWithMask:(unsigned int)mask horizontalStroke:(id)stroke verticalStroke:(id)verticalStroke exteriorStroke:(id)exteriorStroke
 {
   v12.receiver = self;
   v12.super_class = TSTTableStrokePresetData;
   v10 = [(TSTTableStrokePresetData *)&v12 init];
   if (v10)
   {
-    v10->mVerticalStroke = a5;
-    v10->mHorizontalStroke = a4;
-    v10->mExteriorStroke = a6;
-    v10->mVisibleMask = a3;
+    v10->mVerticalStroke = verticalStroke;
+    v10->mHorizontalStroke = stroke;
+    v10->mExteriorStroke = exteriorStroke;
+    v10->mVisibleMask = mask;
   }
 
   return v10;

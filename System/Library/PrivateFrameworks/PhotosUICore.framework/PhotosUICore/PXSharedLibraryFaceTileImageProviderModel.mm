@@ -1,37 +1,37 @@
 @interface PXSharedLibraryFaceTileImageProviderModel
 - (PXSharedLibraryFaceTileImageProviderModel)init;
-- (void)performChanges:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBorderColor:(id)a3;
-- (void)setBorderWidth:(double)a3;
-- (void)setDisplayScale:(double)a3;
-- (void)setFaceTileCombinerItems:(id)a3;
-- (void)setImageDiameter:(double)a3;
-- (void)setImageOffset:(double)a3;
-- (void)setIncludeMeContact:(BOOL)a3;
-- (void)setIsAscending:(BOOL)a3;
-- (void)setIsRTL:(BOOL)a3;
+- (void)performChanges:(id)changes;
+- (void)setBackgroundColor:(id)color;
+- (void)setBorderColor:(id)color;
+- (void)setBorderWidth:(double)width;
+- (void)setDisplayScale:(double)scale;
+- (void)setFaceTileCombinerItems:(id)items;
+- (void)setImageDiameter:(double)diameter;
+- (void)setImageOffset:(double)offset;
+- (void)setIncludeMeContact:(BOOL)contact;
+- (void)setIsAscending:(BOOL)ascending;
+- (void)setIsRTL:(BOOL)l;
 @end
 
 @implementation PXSharedLibraryFaceTileImageProviderModel
 
-- (void)setFaceTileCombinerItems:(id)a3
+- (void)setFaceTileCombinerItems:(id)items
 {
-  v5 = a3;
-  if (!v5)
+  itemsCopy = items;
+  if (!itemsCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryFaceTileImageProviderModel.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"faceTileCombinerItems"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryFaceTileImageProviderModel.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"faceTileCombinerItems"}];
 
-    v5 = 0;
+    itemsCopy = 0;
   }
 
   faceTileCombinerItems = self->_faceTileCombinerItems;
-  if (faceTileCombinerItems != v5)
+  if (faceTileCombinerItems != itemsCopy)
   {
-    v11 = v5;
-    v7 = [(NSArray *)faceTileCombinerItems isEqual:v5];
-    v5 = v11;
+    v11 = itemsCopy;
+    v7 = [(NSArray *)faceTileCombinerItems isEqual:itemsCopy];
+    itemsCopy = v11;
     if ((v7 & 1) == 0)
     {
       v8 = [(NSArray *)v11 copy];
@@ -39,44 +39,44 @@
       self->_faceTileCombinerItems = v8;
 
       [(PXSharedLibraryFaceTileImageProviderModel *)self signalChange:512];
-      v5 = v11;
+      itemsCopy = v11;
     }
   }
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  if (a3 < 0.0)
+  if (width < 0.0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryFaceTileImageProviderModel.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"borderWidth >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryFaceTileImageProviderModel.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"borderWidth >= 0"}];
   }
 
-  if (self->_borderWidth != a3)
+  if (self->_borderWidth != width)
   {
-    self->_borderWidth = a3;
+    self->_borderWidth = width;
 
     [(PXSharedLibraryFaceTileImageProviderModel *)self signalChange:64];
   }
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  v5 = a3;
-  if (!v5)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryFaceTileImageProviderModel.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"borderColor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryFaceTileImageProviderModel.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"borderColor"}];
 
-    v5 = 0;
+    colorCopy = 0;
   }
 
   borderColor = self->_borderColor;
-  if (borderColor != v5)
+  if (borderColor != colorCopy)
   {
-    v11 = v5;
-    v7 = [(UIColor *)borderColor isEqual:v5];
-    v5 = v11;
+    v11 = colorCopy;
+    v7 = [(UIColor *)borderColor isEqual:colorCopy];
+    colorCopy = v11;
     if ((v7 & 1) == 0)
     {
       v8 = [(UIColor *)v11 copy];
@@ -84,28 +84,28 @@
       self->_borderColor = v8;
 
       [(PXSharedLibraryFaceTileImageProviderModel *)self signalChange:256];
-      v5 = v11;
+      colorCopy = v11;
     }
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (!v5)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryFaceTileImageProviderModel.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"backgroundColor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryFaceTileImageProviderModel.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"backgroundColor"}];
 
-    v5 = 0;
+    colorCopy = 0;
   }
 
   backgroundColor = self->_backgroundColor;
-  if (backgroundColor != v5)
+  if (backgroundColor != colorCopy)
   {
-    v11 = v5;
-    v7 = [(UIColor *)backgroundColor isEqual:v5];
-    v5 = v11;
+    v11 = colorCopy;
+    v7 = [(UIColor *)backgroundColor isEqual:colorCopy];
+    colorCopy = v11;
     if ((v7 & 1) == 0)
     {
       v8 = [(UIColor *)v11 copy];
@@ -113,84 +113,84 @@
       self->_backgroundColor = v8;
 
       [(PXSharedLibraryFaceTileImageProviderModel *)self signalChange:128];
-      v5 = v11;
+      colorCopy = v11;
     }
   }
 }
 
-- (void)setImageOffset:(double)a3
+- (void)setImageOffset:(double)offset
 {
-  if (self->_imageOffset != a3)
+  if (self->_imageOffset != offset)
   {
-    self->_imageOffset = a3;
+    self->_imageOffset = offset;
     [(PXSharedLibraryFaceTileImageProviderModel *)self signalChange:32];
   }
 }
 
-- (void)setImageDiameter:(double)a3
+- (void)setImageDiameter:(double)diameter
 {
-  if (a3 <= 0.0)
+  if (diameter <= 0.0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryFaceTileImageProviderModel.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"imageDiameter > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryFaceTileImageProviderModel.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"imageDiameter > 0"}];
   }
 
-  if (self->_imageDiameter != a3)
+  if (self->_imageDiameter != diameter)
   {
-    self->_imageDiameter = a3;
+    self->_imageDiameter = diameter;
 
     [(PXSharedLibraryFaceTileImageProviderModel *)self signalChange:16];
   }
 }
 
-- (void)setIsAscending:(BOOL)a3
+- (void)setIsAscending:(BOOL)ascending
 {
-  if (self->_isAscending != a3)
+  if (self->_isAscending != ascending)
   {
-    self->_isAscending = a3;
+    self->_isAscending = ascending;
     [(PXSharedLibraryFaceTileImageProviderModel *)self signalChange:8];
   }
 }
 
-- (void)setIsRTL:(BOOL)a3
+- (void)setIsRTL:(BOOL)l
 {
-  if (self->_isRTL != a3)
+  if (self->_isRTL != l)
   {
-    self->_isRTL = a3;
+    self->_isRTL = l;
     [(PXSharedLibraryFaceTileImageProviderModel *)self signalChange:4];
   }
 }
 
-- (void)setDisplayScale:(double)a3
+- (void)setDisplayScale:(double)scale
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryFaceTileImageProviderModel.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"displayScale > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryFaceTileImageProviderModel.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"displayScale > 0"}];
   }
 
-  if (self->_displayScale != a3)
+  if (self->_displayScale != scale)
   {
-    self->_displayScale = a3;
+    self->_displayScale = scale;
 
     [(PXSharedLibraryFaceTileImageProviderModel *)self signalChange:2];
   }
 }
 
-- (void)setIncludeMeContact:(BOOL)a3
+- (void)setIncludeMeContact:(BOOL)contact
 {
-  if (self->_includeMeContact != a3)
+  if (self->_includeMeContact != contact)
   {
-    self->_includeMeContact = a3;
+    self->_includeMeContact = contact;
     [(PXSharedLibraryFaceTileImageProviderModel *)self signalChange:1];
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXSharedLibraryFaceTileImageProviderModel;
-  [(PXSharedLibraryFaceTileImageProviderModel *)&v3 performChanges:a3];
+  [(PXSharedLibraryFaceTileImageProviderModel *)&v3 performChanges:changes];
 }
 
 - (PXSharedLibraryFaceTileImageProviderModel)init

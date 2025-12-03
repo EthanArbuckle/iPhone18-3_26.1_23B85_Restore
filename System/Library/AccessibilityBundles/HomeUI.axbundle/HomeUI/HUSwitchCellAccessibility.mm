@@ -1,5 +1,5 @@
 @interface HUSwitchCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,19 +8,19 @@
 
 @implementation HUSwitchCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUSwitchCell" conformsToProtocol:@"HUDisableableCellProtocol"];
-  [v3 validateProtocol:@"HUDisableableCellProtocol" hasRequiredInstanceMethod:@"isDisabled"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUSwitchCell" conformsToProtocol:@"HUDisableableCellProtocol"];
+  [validationsCopy validateProtocol:@"HUDisableableCellProtocol" hasRequiredInstanceMethod:@"isDisabled"];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(HUSwitchCellAccessibility *)self textLabel];
-  v4 = [v3 text];
-  v5 = [(HUSwitchCellAccessibility *)self detailTextLabel];
-  v8 = [v5 text];
+  textLabel = [(HUSwitchCellAccessibility *)self textLabel];
+  text = [textLabel text];
+  detailTextLabel = [(HUSwitchCellAccessibility *)self detailTextLabel];
+  text2 = [detailTextLabel text];
   v6 = __UIAXStringForVariables();
 
   return v6;
@@ -42,9 +42,9 @@
 - (id)accessibilityValue
 {
   v2 = [(HUSwitchCellAccessibility *)self safeUIViewForKey:@"accessoryView"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint

@@ -1,19 +1,19 @@
 @interface NTKTransactionCommitCoordinator
-+ (BOOL)addTransactionCommitHandler:(id)a3;
++ (BOOL)addTransactionCommitHandler:(id)handler;
 + (id)_sharedInstance;
 + (void)flushCommitHandlers;
-- (BOOL)_addTransactionCommitHandler:(id)a3;
+- (BOOL)_addTransactionCommitHandler:(id)handler;
 - (NTKTransactionCommitCoordinator)init;
 - (void)_registerCATransactionCommitHandler;
 @end
 
 @implementation NTKTransactionCommitCoordinator
 
-+ (BOOL)addTransactionCommitHandler:(id)a3
++ (BOOL)addTransactionCommitHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [a1 _sharedInstance];
-  v6 = [v5 _addTransactionCommitHandler:v4];
+  handlerCopy = handler;
+  _sharedInstance = [self _sharedInstance];
+  v6 = [_sharedInstance _addTransactionCommitHandler:handlerCopy];
 
   return v6;
 }
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __50__NTKTransactionCommitCoordinator__sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&_sharedInstance_onceToken_0, block);
@@ -57,14 +57,14 @@ void __50__NTKTransactionCommitCoordinator__sharedInstance__block_invoke(uint64_
   return v2;
 }
 
-- (BOOL)_addTransactionCommitHandler:(id)a3
+- (BOOL)_addTransactionCommitHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   [MEMORY[0x277CD9FF0] activate];
-  v5 = [MEMORY[0x277CD9FF0] currentState];
-  v6 = v5 & 3;
-  if ((v5 & 3) != 0)
+  currentState = [MEMORY[0x277CD9FF0] currentState];
+  v6 = currentState & 3;
+  if ((currentState & 3) != 0)
   {
     if (![(NSMutableArray *)self->_commitHandlers count])
     {
@@ -72,13 +72,13 @@ void __50__NTKTransactionCommitCoordinator__sharedInstance__block_invoke(uint64_
     }
 
     commitHandlers = self->_commitHandlers;
-    v8 = _Block_copy(v4);
+    v8 = _Block_copy(handlerCopy);
     [(NSMutableArray *)commitHandlers addObject:v8];
   }
 
   else
   {
-    v9 = v5;
+    v9 = currentState;
     v10 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -91,8 +91,8 @@ void __50__NTKTransactionCommitCoordinator__sharedInstance__block_invoke(uint64_
 
 + (void)flushCommitHandlers
 {
-  v2 = [a1 _sharedInstance];
-  [v2 _registerCATransactionCommitHandler];
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _registerCATransactionCommitHandler];
 }
 
 - (void)_registerCATransactionCommitHandler

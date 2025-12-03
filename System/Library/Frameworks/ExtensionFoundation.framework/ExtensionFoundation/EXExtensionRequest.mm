@@ -2,7 +2,7 @@
 - (EXExtensionRequest)init;
 - (NSExtensionContext)context;
 - (id)description;
-- (void)applyActiveWebPageAlternativeIfNeededForExtension:(id)a3;
+- (void)applyActiveWebPageAlternativeIfNeededForExtension:(id)extension;
 - (void)dealloc;
 @end
 
@@ -39,12 +39,12 @@
   return WeakRetained;
 }
 
-- (void)applyActiveWebPageAlternativeIfNeededForExtension:(id)a3
+- (void)applyActiveWebPageAlternativeIfNeededForExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = objc_opt_class();
-  v6 = [(EXExtensionRequest *)self inputItems];
-  LODWORD(v5) = [v5 _inputItemsMatchActiveWebPageAlternative:v6];
+  inputItems = [(EXExtensionRequest *)self inputItems];
+  LODWORD(v5) = [v5 _inputItemsMatchActiveWebPageAlternative:inputItems];
 
   if (v5)
   {
@@ -54,8 +54,8 @@
       [EXExtensionRequest(NSExtensionActiveWebPageAlternative) applyActiveWebPageAlternativeIfNeededForExtension:v7];
     }
 
-    v8 = [v4 infoDictionary];
-    v9 = [v8 _EX_dictionaryForKey:@"NSExtensionAttributes"];
+    infoDictionary = [extensionCopy infoDictionary];
+    v9 = [infoDictionary _EX_dictionaryForKey:@"NSExtensionAttributes"];
 
     v10 = [v9 _EX_dictionaryForKey:@"NSExtensionAttributes"];
     v11 = [v10 objectForKeyedSubscript:@"NSExtensionActivationRule"];
@@ -68,8 +68,8 @@
       }
 
       v13 = objc_opt_class();
-      v14 = [(EXExtensionRequest *)self inputItems];
-      v15 = [v13 _inputItemsByApplyingActiveWebPageAlternative:v14 ifNeededByActivationRule:v11];
+      inputItems2 = [(EXExtensionRequest *)self inputItems];
+      v15 = [v13 _inputItemsByApplyingActiveWebPageAlternative:inputItems2 ifNeededByActivationRule:v11];
       [(EXExtensionRequest *)self setInputItems:v15];
     }
   }

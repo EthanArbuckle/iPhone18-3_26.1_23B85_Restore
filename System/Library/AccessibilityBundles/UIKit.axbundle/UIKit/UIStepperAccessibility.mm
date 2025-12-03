@@ -1,5 +1,5 @@
 @interface UIStepperAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (double)_accessibilityFrameForDecrement;
 - (double)_accessibilityFrameForIncrement;
 - (id)_accessibilityKeyCommands;
@@ -13,23 +13,23 @@
 - (void)_accessibilityKeyCommandActionPlus;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateButtons;
-- (void)_axSetMockDecrementElement:(uint64_t)a1;
-- (void)_axSetMockIncrementElement:(uint64_t)a1;
+- (void)_axSetMockDecrementElement:(uint64_t)element;
+- (void)_axSetMockIncrementElement:(uint64_t)element;
 - (void)_commonStepperInit;
 - (void)_refreshVisualElement;
-- (void)_updateCount:(id)a3;
+- (void)_updateCount:(id)count;
 @end
 
 @implementation UIStepperAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v6 = @"UIStepper";
   v3 = "v";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -48,9 +48,9 @@
 
 - (id)_axMockDecrementElement
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &__UIStepperAccessibility___axMockDecrementElement);
+    v2 = objc_getAssociatedObject(self, &__UIStepperAccessibility___axMockDecrementElement);
   }
 
   else
@@ -61,12 +61,12 @@
   return v2;
 }
 
-- (void)_axSetMockDecrementElement:(uint64_t)a1
+- (void)_axSetMockDecrementElement:(uint64_t)element
 {
-  v3 = a1;
+  elementCopy = element;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (elementCopy)
   {
     __UIAccessibilitySetAssociatedObject();
   }
@@ -76,9 +76,9 @@
 
 - (id)_axMockIncrementElement
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &__UIStepperAccessibility___axMockIncrementElement);
+    v2 = objc_getAssociatedObject(self, &__UIStepperAccessibility___axMockIncrementElement);
   }
 
   else
@@ -89,12 +89,12 @@
   return v2;
 }
 
-- (void)_axSetMockIncrementElement:(uint64_t)a1
+- (void)_axSetMockIncrementElement:(uint64_t)element
 {
-  v3 = a1;
+  elementCopy = element;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (elementCopy)
   {
     __UIAccessibilitySetAssociatedObject();
   }
@@ -105,10 +105,10 @@
 - (void)_axAnnotateButtons
 {
   v103[2] = *MEMORY[0x29EDCA608];
-  v102 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    objc_initWeak(&location, v102);
+    objc_initWeak(&location, selfCopy);
     v94 = MEMORY[0x29EDCA5F8];
     v95 = -1073741824;
     v96 = 0;
@@ -123,27 +123,27 @@
     v91 = &unk_29F30C9E8;
     objc_copyWeak(&v92, &location);
     v93 = MEMORY[0x29ED3E4C0](&v87);
-    if (([(UIStepperAccessibility *)v102 _accessibilityNeedsMockStepper]& 1) != 0)
+    if (([(UIStepperAccessibility *)selfCopy _accessibilityNeedsMockStepper]& 1) != 0)
     {
-      v86 = [(UIStepperAccessibility *)v102 _axMockIncrementElement];
-      v85 = [(UIStepperAccessibility *)v102 _axMockDecrementElement];
-      if (!v86 || !v85)
+      _axMockIncrementElement = [(UIStepperAccessibility *)selfCopy _axMockIncrementElement];
+      _axMockDecrementElement = [(UIStepperAccessibility *)selfCopy _axMockDecrementElement];
+      if (!_axMockIncrementElement || !_axMockDecrementElement)
       {
         v22 = objc_alloc(MEMORY[0x29EDC78F8]);
-        v21 = [v22 initWithAccessibilityContainer:v102];
-        v1 = v86;
-        v86 = v21;
+        v21 = [v22 initWithAccessibilityContainer:selfCopy];
+        v1 = _axMockIncrementElement;
+        _axMockIncrementElement = v21;
         MEMORY[0x29EDC9740](v1);
         v20 = objc_alloc(MEMORY[0x29EDC78F8]);
-        v19 = [v20 initWithAccessibilityContainer:v102];
-        v2 = v85;
-        v85 = v19;
+        v19 = [v20 initWithAccessibilityContainer:selfCopy];
+        v2 = _axMockDecrementElement;
+        _axMockDecrementElement = v19;
         MEMORY[0x29EDC9740](v2);
-        [(UIStepperAccessibility *)v102 _axSetMockIncrementElement:v21];
-        [(UIStepperAccessibility *)v102 _axSetMockDecrementElement:v19];
+        [(UIStepperAccessibility *)selfCopy _axSetMockIncrementElement:v21];
+        [(UIStepperAccessibility *)selfCopy _axSetMockDecrementElement:v19];
         [v21 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
         [v19 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
-        v18 = v102;
+        v18 = selfCopy;
         v103[0] = v19;
         v103[1] = v21;
         v17 = [MEMORY[0x29EDB8D80] arrayWithObjects:v103 count:2];
@@ -151,9 +151,9 @@
         MEMORY[0x29EDC9740](v17);
       }
 
-      [v86 _setAccessibilityLabelBlock:v93];
-      [v85 _setAccessibilityLabelBlock:v100];
-      v16 = v86;
+      [_axMockIncrementElement _setAccessibilityLabelBlock:v93];
+      [_axMockDecrementElement _setAccessibilityLabelBlock:v100];
+      v16 = _axMockIncrementElement;
       v79 = MEMORY[0x29EDCA5F8];
       v80 = -1073741824;
       v81 = 0;
@@ -161,7 +161,7 @@
       v83 = &unk_29F30C9E8;
       objc_copyWeak(&v84, &location);
       [v16 _setAccessibilityValueBlock:&v79];
-      v15 = v85;
+      v15 = _axMockDecrementElement;
       v73 = MEMORY[0x29EDCA5F8];
       v74 = -1073741824;
       v75 = 0;
@@ -169,7 +169,7 @@
       v77 = &unk_29F30C9E8;
       objc_copyWeak(&v78, &location);
       [v15 _setAccessibilityValueBlock:&v73];
-      v14 = v86;
+      v14 = _axMockIncrementElement;
       v67 = MEMORY[0x29EDCA5F8];
       v68 = -1073741824;
       v69 = 0;
@@ -177,7 +177,7 @@
       v71 = &unk_29F30CAE8;
       objc_copyWeak(&v72, &location);
       [v14 _setAccessibilityFrameBlock:&v67];
-      v13 = v85;
+      v13 = _axMockDecrementElement;
       v61 = MEMORY[0x29EDCA5F8];
       v62 = -1073741824;
       v63 = 0;
@@ -185,7 +185,7 @@
       v65 = &unk_29F30CAE8;
       objc_copyWeak(&v66, &location);
       [v13 _setAccessibilityFrameBlock:&v61];
-      v12 = v86;
+      v12 = _axMockIncrementElement;
       v55 = MEMORY[0x29EDCA5F8];
       v56 = -1073741824;
       v57 = 0;
@@ -193,7 +193,7 @@
       v59 = &unk_29F30C9E8;
       objc_copyWeak(&v60, &location);
       [v12 _setAccessibilityIdentifierBlock:&v55];
-      v11 = v85;
+      v11 = _axMockDecrementElement;
       v49 = MEMORY[0x29EDCA5F8];
       v50 = -1073741824;
       v51 = 0;
@@ -201,12 +201,12 @@
       v53 = &unk_29F30C9E8;
       objc_copyWeak(&v54, &location);
       [v11 _setAccessibilityIdentifierBlock:&v49];
-      [v86 _accessibilitySetScannerActivateBehavior:1];
-      [v85 _accessibilitySetScannerActivateBehavior:1];
-      if (([(UIStepperAccessibility *)v102 _axIsAccessibilityNumericalPicker]& 1) != 0)
+      [_axMockIncrementElement _accessibilitySetScannerActivateBehavior:1];
+      [_axMockDecrementElement _accessibilitySetScannerActivateBehavior:1];
+      if (([(UIStepperAccessibility *)selfCopy _axIsAccessibilityNumericalPicker]& 1) != 0)
       {
-        [v86 _setAccessibilityAdditionalTraitsBlock:&__block_literal_global_35];
-        [v85 _setAccessibilityAdditionalTraitsBlock:&__block_literal_global_372];
+        [_axMockIncrementElement _setAccessibilityAdditionalTraitsBlock:&__block_literal_global_35];
+        [_axMockDecrementElement _setAccessibilityAdditionalTraitsBlock:&__block_literal_global_372];
       }
 
       objc_destroyWeak(&v54);
@@ -215,16 +215,16 @@
       objc_destroyWeak(&v72);
       objc_destroyWeak(&v78);
       objc_destroyWeak(&v84);
-      objc_storeStrong(&v85, 0);
-      objc_storeStrong(&v86, 0);
+      objc_storeStrong(&_axMockDecrementElement, 0);
+      objc_storeStrong(&_axMockIncrementElement, 0);
     }
 
     else
     {
-      v10 = [v102 safeValueForKey:@"visualElement"];
+      v10 = [selfCopy safeValueForKey:@"visualElement"];
       v48 = [v10 safeUIViewForKey:@"_plusButton"];
       *&v3 = MEMORY[0x29EDC9740](v10).n128_u64[0];
-      v9 = [v102 safeValueForKey:{@"visualElement", v3}];
+      v9 = [selfCopy safeValueForKey:{@"visualElement", v3}];
       v47 = [v9 safeUIViewForKey:@"_minusButton"];
       *&v4 = MEMORY[0x29EDC9740](v9).n128_u64[0];
       [v48 _setAccessibilityLabelBlock:{v93, v4}];
@@ -263,7 +263,7 @@
       [v5 _setAccessibilityValueBlock:&v23];
       [v48 _accessibilitySetScannerActivateBehavior:1];
       [v47 _accessibilitySetScannerActivateBehavior:1];
-      if (([(UIStepperAccessibility *)v102 _axIsAccessibilityNumericalPicker]& 1) != 0)
+      if (([(UIStepperAccessibility *)selfCopy _axIsAccessibilityNumericalPicker]& 1) != 0)
       {
         [v48 _setAccessibilityAdditionalTraitsBlock:&__block_literal_global_374];
         [v47 _setAccessibilityAdditionalTraitsBlock:&__block_literal_global_376];
@@ -321,13 +321,13 @@ id __44__UIStepperAccessibility__axAnnotateButtons__block_invoke_2(id *a1)
 
 - (uint64_t)_accessibilityNeedsMockStepper
 {
-  if (a1)
+  if (self)
   {
     v3 = 0;
     isKindOfClass = 1;
-    if (([a1 _accessibilityViewIsMacIdiom] & 1) == 0)
+    if (([self _accessibilityViewIsMacIdiom] & 1) == 0)
     {
-      v4 = [a1 safeValueForKey:@"visualElement"];
+      v4 = [self safeValueForKey:@"visualElement"];
       v3 = 1;
       NSClassFromString(&cfstr_Uistepperdesig.isa);
       isKindOfClass = objc_opt_isKindOfClass();
@@ -385,14 +385,14 @@ double __44__UIStepperAccessibility__axAnnotateButtons__block_invoke_5(id *a1)
 
 - (double)_accessibilityFrameForIncrement
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if ([a1 _accessibilityViewIsMacIdiom])
+  if ([self _accessibilityViewIsMacIdiom])
   {
-    [a1 accessibilityFrame];
+    [self accessibilityFrame];
     v9 = v12;
     CGRectGetMinX(v12);
     CGRectGetMinY(v9);
@@ -404,13 +404,13 @@ double __44__UIStepperAccessibility__axAnnotateButtons__block_invoke_5(id *a1)
 
   else
   {
-    [a1 bounds];
+    [self bounds];
     UIAccessibilityFrameForBounds();
     v8.origin.x = v2;
     v8.origin.y = v3;
     v8.size.width = v4;
     v8.size.height = v5;
-    if ([a1 _accessibilityIsRTL])
+    if ([self _accessibilityIsRTL])
     {
       CGRectGetMinX(v8);
     }
@@ -444,14 +444,14 @@ double __44__UIStepperAccessibility__axAnnotateButtons__block_invoke_6(id *a1)
 
 - (double)_accessibilityFrameForDecrement
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if ([a1 _accessibilityViewIsMacIdiom])
+  if ([self _accessibilityViewIsMacIdiom])
   {
-    [a1 accessibilityFrame];
+    [self accessibilityFrame];
     v9 = v12;
     CGRectGetMinX(v12);
     CGRectGetMinY(v9);
@@ -464,13 +464,13 @@ double __44__UIStepperAccessibility__axAnnotateButtons__block_invoke_6(id *a1)
 
   else
   {
-    [a1 bounds];
+    [self bounds];
     UIAccessibilityFrameForBounds();
     v8.origin.x = v2;
     v8.origin.y = v3;
     v8.size.width = v4;
     v8.size.height = v5;
-    if ([a1 _accessibilityIsRTL])
+    if ([self _accessibilityIsRTL])
     {
       CGRectGetMinX(v8);
       CGRectGetWidth(v8);
@@ -537,11 +537,11 @@ id __44__UIStepperAccessibility__axAnnotateButtons__block_invoke_8(id *a1)
 
 - (uint64_t)_axIsAccessibilityNumericalPicker
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 accessibilityIdentification];
-    v3 = [v2 isEqualToString:@"AXStepper"] & 1;
-    MEMORY[0x29EDC9740](v2);
+    accessibilityIdentification = [self accessibilityIdentification];
+    v3 = [accessibilityIdentification isEqualToString:@"AXStepper"] & 1;
+    MEMORY[0x29EDC9740](accessibilityIdentification);
   }
 
   else
@@ -622,54 +622,54 @@ id __44__UIStepperAccessibility__axAnnotateButtons__block_invoke_14(id *a1)
 
 - (void)_commonStepperInit
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIStepperAccessibility;
   [(UIStepperAccessibility *)&v2 _commonStepperInit];
-  [(UIStepperAccessibility *)v4 _axAnnotateButtons];
+  [(UIStepperAccessibility *)selfCopy _axAnnotateButtons];
 }
 
 - (void)_refreshVisualElement
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIStepperAccessibility;
   [(UIStepperAccessibility *)&v2 _refreshVisualElement];
-  [(UIStepperAccessibility *)v4 _axAnnotateButtons];
+  [(UIStepperAccessibility *)selfCopy _axAnnotateButtons];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIStepperAccessibility;
   [(UIStepperAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
-  [(UIStepperAccessibility *)v4 _axAnnotateButtons];
+  [(UIStepperAccessibility *)selfCopy _axAnnotateButtons];
 }
 
-- (void)_updateCount:(id)a3
+- (void)_updateCount:(id)count
 {
   v28 = *MEMORY[0x29EDCA608];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24.receiver = v26;
+  objc_storeStrong(location, count);
+  v24.receiver = selfCopy;
   v24.super_class = UIStepperAccessibility;
   [(UIStepperAccessibility *)&v24 _updateCount:location[0]];
-  [(UIStepperAccessibility *)v26 safeDoubleForKey:@"_value"];
+  [(UIStepperAccessibility *)selfCopy safeDoubleForKey:@"_value"];
   v23[1] = v3;
   v23[0] = 0;
-  if (([(UIStepperAccessibility *)v26 _axIsAccessibilityNumericalPicker]& 1) != 0)
+  if (([(UIStepperAccessibility *)selfCopy _axIsAccessibilityNumericalPicker]& 1) != 0)
   {
-    v22 = [(UIStepperAccessibility *)v26 _accessibilityFindAncestor:&__block_literal_global_389 startWithSelf:1];
+    v22 = [(UIStepperAccessibility *)selfCopy _accessibilityFindAncestor:&__block_literal_global_389 startWithSelf:1];
     v21 = [v22 safeValueForKey:@"contentView"];
-    v20 = [v21 subviews];
+    subviews = [v21 subviews];
     memset(__b, 0, sizeof(__b));
-    obj = MEMORY[0x29EDC9748](v20);
+    obj = MEMORY[0x29EDC9748](subviews);
     v14 = [obj countByEnumeratingWithState:__b objects:v27 count:16];
     if (v14)
     {
@@ -688,9 +688,9 @@ id __44__UIStepperAccessibility__axAnnotateButtons__block_invoke_14(id *a1)
         NSClassFromString(&cfstr_Uilabel.isa);
         if (objc_opt_isKindOfClass())
         {
-          v4 = [v19 text];
+          text = [v19 text];
           v5 = v23[0];
-          v23[0] = v4;
+          v23[0] = text;
           MEMORY[0x29EDC9740](v5);
         }
 
@@ -719,7 +719,7 @@ id __44__UIStepperAccessibility__axAnnotateButtons__block_invoke_14(id *a1)
     objc_storeStrong(&v15, 0);
     objc_storeStrong(&v16, 0);
     objc_storeStrong(&v17, 0);
-    objc_storeStrong(&v20, 0);
+    objc_storeStrong(&subviews, 0);
     objc_storeStrong(&v21, 0);
     objc_storeStrong(&v22, 0);
   }
@@ -742,16 +742,16 @@ uint64_t __39__UIStepperAccessibility__updateCount___block_invoke(void *a1, void
 - (id)_accessibilityKeyCommands
 {
   v13[2] = *MEMORY[0x29EDCA608];
-  v11 = [(UIStepperAccessibility *)self _accessibilityViewIsMacIdiom];
-  v10 = [(UIStepperAccessibility *)self _accessibilityIsRTL];
-  if (v11)
+  _accessibilityViewIsMacIdiom = [(UIStepperAccessibility *)self _accessibilityViewIsMacIdiom];
+  _accessibilityIsRTL = [(UIStepperAccessibility *)self _accessibilityIsRTL];
+  if (_accessibilityViewIsMacIdiom)
   {
     v9 = *MEMORY[0x29EDC8178];
   }
 
   else
   {
-    if (v10)
+    if (_accessibilityIsRTL)
     {
       v8 = *MEMORY[0x29EDC8168];
     }
@@ -766,14 +766,14 @@ uint64_t __39__UIStepperAccessibility__updateCount___block_invoke(void *a1, void
 
   v7 = [MEMORY[0x29EDC7AF0] keyCommandWithInput:v9 modifierFlags:0 action:sel__accessibilityKeyCommandActionPlus];
   v13[0] = v7;
-  if (v11)
+  if (_accessibilityViewIsMacIdiom)
   {
     v6 = *MEMORY[0x29EDC8160];
   }
 
   else
   {
-    if (v10)
+    if (_accessibilityIsRTL)
     {
       v5 = *MEMORY[0x29EDC8170];
     }
@@ -797,21 +797,21 @@ uint64_t __39__UIStepperAccessibility__updateCount___block_invoke(void *a1, void
 
 - (id)_accessibilityPlusButton
 {
-  if (a1)
+  if (self)
   {
     v7 = 0;
     v5 = 0;
     v3 = 0;
-    if (([(UIStepperAccessibility *)a1 _accessibilityNeedsMockStepper]& 1) != 0)
+    if (([(UIStepperAccessibility *)self _accessibilityNeedsMockStepper]& 1) != 0)
     {
-      v8 = [(UIStepperAccessibility *)a1 _axMockIncrementElement];
+      _axMockIncrementElement = [(UIStepperAccessibility *)self _axMockIncrementElement];
       v7 = 1;
-      v1 = MEMORY[0x29EDC9748](v8);
+      v1 = MEMORY[0x29EDC9748](_axMockIncrementElement);
     }
 
     else
     {
-      v6 = [a1 safeValueForKey:@"visualElement"];
+      v6 = [self safeValueForKey:@"visualElement"];
       v5 = 1;
       v4 = [v6 safeUIViewForKey:@"_plusButton"];
       v3 = 1;
@@ -831,7 +831,7 @@ uint64_t __39__UIStepperAccessibility__updateCount___block_invoke(void *a1, void
 
     if (v7)
     {
-      MEMORY[0x29EDC9740](v8);
+      MEMORY[0x29EDC9740](_axMockIncrementElement);
     }
   }
 
@@ -845,21 +845,21 @@ uint64_t __39__UIStepperAccessibility__updateCount___block_invoke(void *a1, void
 
 - (id)_accessibilityMinusButton
 {
-  if (a1)
+  if (self)
   {
     v7 = 0;
     v5 = 0;
     v3 = 0;
-    if (([(UIStepperAccessibility *)a1 _accessibilityNeedsMockStepper]& 1) != 0)
+    if (([(UIStepperAccessibility *)self _accessibilityNeedsMockStepper]& 1) != 0)
     {
-      v8 = [(UIStepperAccessibility *)a1 _axMockDecrementElement];
+      _axMockDecrementElement = [(UIStepperAccessibility *)self _axMockDecrementElement];
       v7 = 1;
-      v1 = MEMORY[0x29EDC9748](v8);
+      v1 = MEMORY[0x29EDC9748](_axMockDecrementElement);
     }
 
     else
     {
-      v6 = [a1 safeValueForKey:@"visualElement"];
+      v6 = [self safeValueForKey:@"visualElement"];
       v5 = 1;
       v4 = [v6 safeUIViewForKey:@"_minusButton"];
       v3 = 1;
@@ -879,7 +879,7 @@ uint64_t __39__UIStepperAccessibility__updateCount___block_invoke(void *a1, void
 
     if (v7)
     {
-      MEMORY[0x29EDC9740](v8);
+      MEMORY[0x29EDC9740](_axMockDecrementElement);
     }
   }
 

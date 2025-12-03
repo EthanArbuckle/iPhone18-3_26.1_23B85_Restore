@@ -58,8 +58,8 @@
 
   v22 = MEMORY[0x1E69C6638];
   v23 = MEMORY[0x1E69C65E8];
-  v24 = [MEMORY[0x1E69C6640] action];
-  v25 = [v23 rowWithTitle:@"Restore Defaults Settings" action:v24];
+  action = [MEMORY[0x1E69C6640] action];
+  v25 = [v23 rowWithTitle:@"Restore Defaults Settings" action:action];
   v30 = v25;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
   v27 = [v22 sectionWithRows:v26];

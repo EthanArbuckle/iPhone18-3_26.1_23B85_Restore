@@ -5,11 +5,11 @@
 - (SSNetworkQualityInquiry)init;
 - (id)investigateNetworks;
 - (void)dealloc;
-- (void)didStartTrackingNOI:(id)a3;
-- (void)didStopTrackingAllNOIs:(id)a3;
-- (void)didStopTrackingNOI:(id)a3;
+- (void)didStartTrackingNOI:(id)i;
+- (void)didStopTrackingAllNOIs:(id)is;
+- (void)didStopTrackingNOI:(id)i;
 - (void)drainKnownNetworksReadyHandlers;
-- (void)performWhenKnownNetworksReady:(id)a3;
+- (void)performWhenKnownNetworksReady:(id)ready;
 @end
 
 @implementation SSNetworkQualityInquiry
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __41__SSNetworkQualityInquiry_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -98,19 +98,19 @@ LABEL_13:
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
+    shouldLog = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    v14 = [v11 OSLogObject];
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v11 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v13 &= 2u;
     }
@@ -131,9 +131,9 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v14 = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v27, v25}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v27, v25}];
       free(v16);
-      SSFileLog(v11, @"%@", v17, v18, v19, v20, v21, v22, v14);
+      SSFileLog(v11, @"%@", v17, v18, v19, v20, v21, v22, oSLogObject);
     }
 
     goto LABEL_16;
@@ -189,27 +189,27 @@ LABEL_18:
 
 - (BOOL)areKnownNetworksReady
 {
-  v3 = [(SSNetworkQualityInquiry *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SSNetworkQualityInquiry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SSNetworkQualityInquiry *)self knownNetworks];
-  LOBYTE(v3) = [v4 count] == 3;
+  knownNetworks = [(SSNetworkQualityInquiry *)self knownNetworks];
+  LOBYTE(queue) = [knownNetworks count] == 3;
 
-  return v3;
+  return queue;
 }
 
-- (void)performWhenKnownNetworksReady:(id)a3
+- (void)performWhenKnownNetworksReady:(id)ready
 {
-  v4 = a3;
-  v5 = [(SSNetworkQualityInquiry *)self queue];
+  readyCopy = ready;
+  queue = [(SSNetworkQualityInquiry *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__SSNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke;
   v7[3] = &unk_1E84AC360;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = readyCopy;
+  v6 = readyCopy;
+  dispatch_async(queue, v7);
 }
 
 void __57__SSNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke(uint64_t a1)
@@ -242,15 +242,15 @@ void __57__SSNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke(
 - (void)drainKnownNetworksReadyHandlers
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(SSNetworkQualityInquiry *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SSNetworkQualityInquiry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(SSNetworkQualityInquiry *)self knownNetworksReadyHandlers];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  knownNetworksReadyHandlers = [(SSNetworkQualityInquiry *)self knownNetworksReadyHandlers];
+  v5 = [knownNetworksReadyHandlers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -262,14 +262,14 @@ void __57__SSNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke(
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(knownNetworksReadyHandlers);
         }
 
         (*(*(*(&v9 + 1) + 8 * v8++) + 16))();
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [knownNetworksReadyHandlers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -278,11 +278,11 @@ void __57__SSNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke(
   [(SSNetworkQualityInquiry *)self setKnownNetworksReadyHandlers:0];
 }
 
-- (void)didStartTrackingNOI:(id)a3
+- (void)didStartTrackingNOI:(id)i
 {
-  v4 = a3;
-  v5 = [(SSNetworkQualityInquiry *)self knownNetworks];
-  [v5 addObject:v4];
+  iCopy = i;
+  knownNetworks = [(SSNetworkQualityInquiry *)self knownNetworks];
+  [knownNetworks addObject:iCopy];
 
   if ([(SSNetworkQualityInquiry *)self areKnownNetworksReady])
   {
@@ -291,12 +291,12 @@ void __57__SSNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke(
   }
 }
 
-- (void)didStopTrackingNOI:(id)a3
+- (void)didStopTrackingNOI:(id)i
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SSNetworkQualityInquiry *)self knownNetworks];
-  [v5 removeObject:v4];
+  iCopy = i;
+  knownNetworks = [(SSNetworkQualityInquiry *)self knownNetworks];
+  [knownNetworks removeObject:iCopy];
 
   v6 = +[SSLogConfig sharedStoreServicesConfig];
   if (!v6)
@@ -304,19 +304,19 @@ void __57__SSNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke(
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
-  v9 = [v6 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v10 = v8;
   }
@@ -332,33 +332,33 @@ void __57__SSNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke(
   }
 
   v20 = 138412546;
-  v21 = self;
+  selfCopy = self;
   v22 = 2112;
-  v23 = v4;
+  v23 = iCopy;
   LODWORD(v19) = 22;
   v11 = _os_log_send_and_compose_impl();
 
   if (v11)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, &v20, v19}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, &v20, v19}];
     free(v11);
-    SSFileLog(v6, @"%@", v12, v13, v14, v15, v16, v17, v9);
+    SSFileLog(v6, @"%@", v12, v13, v14, v15, v16, v17, oSLogObject);
 LABEL_12:
   }
 
-  v18 = [(SSNetworkQualityInquiry *)self manager];
-  [v18 trackNOIAnyForInterfaceType:objc_msgSend(v4 options:{"interface"), 0}];
+  manager = [(SSNetworkQualityInquiry *)self manager];
+  [manager trackNOIAnyForInterfaceType:objc_msgSend(iCopy options:{"interface"), 0}];
 }
 
-- (void)didStopTrackingAllNOIs:(id)a3
+- (void)didStopTrackingAllNOIs:(id)is
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  isCopy = is;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [isCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -370,14 +370,14 @@ LABEL_12:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(isCopy);
         }
 
         [(SSNetworkQualityInquiry *)self didStopTrackingNOI:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [isCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);

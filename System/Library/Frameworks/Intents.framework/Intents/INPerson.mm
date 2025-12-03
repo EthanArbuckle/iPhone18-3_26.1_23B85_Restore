@@ -1,10 +1,10 @@
 @interface INPerson
 + (id)expectedCNContactKeys;
-+ (id)toNilScoredPersons:(id)a3;
-- (BOOL)_intents_compareValue:(id)a3 relation:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (INPerson)initWithCoder:(id)a3;
-- (INPerson)initWithContact:(id)a3;
++ (id)toNilScoredPersons:(id)persons;
+- (BOOL)_intents_compareValue:(id)value relation:(unint64_t)relation;
+- (BOOL)isEqual:(id)equal;
+- (INPerson)initWithCoder:(id)coder;
+- (INPerson)initWithContact:(id)contact;
 - (INPerson)initWithHandle:(NSString *)handle nameComponents:(NSPersonNameComponents *)nameComponents displayName:(NSString *)displayName image:(INImage *)image contactIdentifier:(NSString *)contactIdentifier;
 - (INPerson)initWithPersonHandle:(INPersonHandle *)personHandle nameComponents:(NSPersonNameComponents *)nameComponents displayName:(NSString *)displayName image:(INImage *)image contactIdentifier:(NSString *)contactIdentifier customIdentifier:(NSString *)customIdentifier aliases:(NSArray *)aliases suggestionType:(INPersonSuggestionType)suggestionType;
 - (INPerson)initWithPersonHandle:(INPersonHandle *)personHandle nameComponents:(NSPersonNameComponents *)nameComponents displayName:(NSString *)displayName image:(INImage *)image contactIdentifier:(NSString *)contactIdentifier customIdentifier:(NSString *)customIdentifier isContactSuggestion:(BOOL)isContactSuggestion suggestionType:(INPersonSuggestionType)suggestionType;
@@ -19,23 +19,23 @@
 - (NSString)userName;
 - (NSString)userURIString;
 - (id)_dictionaryRepresentation;
-- (id)_initWithUserInput:(id)a3 personHandle:(id)a4 nameComponents:(id)a5 displayName:(id)a6 image:(id)a7 contactIdentifier:(id)a8 customIdentifier:(id)a9 relationship:(id)a10 aliases:(id)a11 suggestionType:(int64_t)a12 isMe:(BOOL)a13 alternatives:(id)a14 sourceAppBundleIdentifier:(id)a15 phonemeData:(id)a16 isContactSuggestion:(BOOL)a17;
-- (id)_initWithUserInput:(id)a3 personHandle:(id)a4 nameComponents:(id)a5 displayName:(id)a6 image:(id)a7 contactIdentifier:(id)a8 customIdentifier:(id)a9 relationship:(id)a10 aliases:(id)a11 suggestionType:(int64_t)a12 isMe:(BOOL)a13 scoredAlternatives:(id)a14 sourceAppBundleIdentifier:(id)a15 phonemeData:(id)a16 isContactSuggestion:(BOOL)a17 searchProvider:(int64_t)a18;
+- (id)_initWithUserInput:(id)input personHandle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier customIdentifier:(id)customIdentifier relationship:(id)self0 aliases:(id)self1 suggestionType:(int64_t)self2 isMe:(BOOL)self3 alternatives:(id)self4 sourceAppBundleIdentifier:(id)self5 phonemeData:(id)self6 isContactSuggestion:(BOOL)self7;
+- (id)_initWithUserInput:(id)input personHandle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier customIdentifier:(id)customIdentifier relationship:(id)self0 aliases:(id)self1 suggestionType:(int64_t)self2 isMe:(BOOL)self3 scoredAlternatives:(id)self4 sourceAppBundleIdentifier:(id)self5 phonemeData:(id)self6 isContactSuggestion:(BOOL)self7 searchProvider:(int64_t)self8;
 - (id)_intents_cacheableObjects;
 - (id)_intents_indexingRepresentation;
-- (id)_intents_readableHandleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)_intents_readableSubtitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_intents_readableHandleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)_intents_readableSubtitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)spokenPhrases;
 - (unint64_t)hash;
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4;
-- (void)_intents_updateContainerWithCache:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlternatives:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setHandle:(id)a3;
+- (void)_injectProxiesForImages:(id)images completion:(id)completion;
+- (void)_intents_updateContainerWithCache:(id)cache;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlternatives:(id)alternatives;
+- (void)setDisplayName:(id)name;
+- (void)setHandle:(id)handle;
 @end
 
 @implementation INPerson
@@ -60,8 +60,8 @@
   v18 = v12 ^ v16 ^ [v17 hash];
 
   displayName = self->_displayName;
-  v20 = [(INPersonHandle *)self->_personHandle value];
-  LOBYTE(displayName) = [(NSString *)displayName isEqualToString:v20];
+  value = [(INPersonHandle *)self->_personHandle value];
+  LOBYTE(displayName) = [(NSString *)displayName isEqualToString:value];
 
   if ((displayName & 1) == 0)
   {
@@ -90,9 +90,9 @@
   if (![(NSString *)v3 length])
   {
     v8 = [INStringLocalizer alloc];
-    v9 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    v10 = [v9 localeIdentifier];
-    v11 = [(INStringLocalizer *)v8 initWithLanguageCode:v10];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    localeIdentifier = [autoupdatingCurrentLocale localeIdentifier];
+    v11 = [(INStringLocalizer *)v8 initWithLanguageCode:localeIdentifier];
     v12 = objc_opt_new();
     v13 = [(INPerson *)self _intents_readableHandleWithLocalizer:v11 metadata:v12];
 
@@ -139,63 +139,63 @@
   v28[1] = nameComponents;
   v27[2] = @"displayName";
   displayName = self->_displayName;
-  v6 = displayName;
+  null = displayName;
   if (!displayName)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v6;
-  v28[2] = v6;
+  v22 = null;
+  v28[2] = null;
   v27[3] = @"image";
   image = self->_image;
-  v8 = image;
+  null2 = image;
   if (!image)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v8;
-  v28[3] = v8;
+  v21 = null2;
+  v28[3] = null2;
   v27[4] = @"contactIdentifier";
   contactIdentifier = self->_contactIdentifier;
-  v10 = contactIdentifier;
+  null3 = contactIdentifier;
   if (!contactIdentifier)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v10;
-  v28[4] = v10;
+  v20 = null3;
+  v28[4] = null3;
   v27[5] = @"customIdentifier";
   customIdentifier = self->_customIdentifier;
-  v12 = customIdentifier;
+  null4 = customIdentifier;
   if (!customIdentifier)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[5] = v12;
+  v28[5] = null4;
   v27[6] = @"relationship";
   relationship = self->_relationship;
-  v14 = relationship;
+  null5 = relationship;
   if (!relationship)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[6] = v14;
+  v28[6] = null5;
   v27[7] = @"siriMatches";
-  v15 = [(INPerson *)self siriMatches];
-  v16 = v15;
-  if (!v15)
+  siriMatches = [(INPerson *)self siriMatches];
+  null6 = siriMatches;
+  if (!siriMatches)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[7] = v16;
+  v28[7] = null6;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:8];
-  if (!v15)
+  if (!siriMatches)
   {
   }
 
@@ -272,24 +272,24 @@ LABEL_24:
 - (id)_intents_indexingRepresentation
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(INPerson *)self contactIdentifier];
-  v4 = [v3 length];
+  contactIdentifier = [(INPerson *)self contactIdentifier];
+  v4 = [contactIdentifier length];
 
   if (v4)
   {
     v10 = @"contactIdentifier";
-    v5 = [(INPerson *)self contactIdentifier];
-    v11[0] = v5;
-    v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
+    contactIdentifier2 = [(INPerson *)self contactIdentifier];
+    v11[0] = contactIdentifier2;
+    _intents_indexingRepresentation = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
   else
   {
-    v5 = [(INPerson *)self _dictionaryRepresentation];
-    v6 = [v5 _intents_indexingRepresentation];
+    contactIdentifier2 = [(INPerson *)self _dictionaryRepresentation];
+    _intents_indexingRepresentation = [contactIdentifier2 _intents_indexingRepresentation];
   }
 
-  v7 = v6;
+  v7 = _intents_indexingRepresentation;
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -298,10 +298,10 @@ LABEL_24:
 
 - (id)_intents_cacheableObjects
 {
-  v2 = [(INPerson *)self image];
-  if (v2)
+  image = [(INPerson *)self image];
+  if (image)
   {
-    v3 = [MEMORY[0x1E695DFD8] setWithObject:v2];
+    v3 = [MEMORY[0x1E695DFD8] setWithObject:image];
   }
 
   else
@@ -314,85 +314,85 @@ LABEL_24:
 
 - (NSString)userURIString
 {
-  v2 = [(INPerson *)self personHandle];
-  v3 = [v2 value];
+  personHandle = [(INPerson *)self personHandle];
+  value = [personHandle value];
 
-  return v3;
+  return value;
 }
 
 - (NSString)userIdentifier
 {
-  v2 = [(INPerson *)self personHandle];
-  v3 = [v2 value];
+  personHandle = [(INPerson *)self personHandle];
+  value = [personHandle value];
 
-  return v3;
+  return value;
 }
 
 - (NSString)userName
 {
-  v2 = [(INPerson *)self personHandle];
-  v3 = [v2 value];
+  personHandle = [(INPerson *)self personHandle];
+  value = [personHandle value];
 
-  return v3;
+  return value;
 }
 
 - (NSString)lastName
 {
-  v2 = [(INPerson *)self nameComponents];
-  v3 = [v2 familyName];
+  nameComponents = [(INPerson *)self nameComponents];
+  familyName = [nameComponents familyName];
 
-  return v3;
+  return familyName;
 }
 
 - (NSString)firstName
 {
-  v2 = [(INPerson *)self nameComponents];
-  v3 = [v2 givenName];
+  nameComponents = [(INPerson *)self nameComponents];
+  givenName = [nameComponents givenName];
 
-  return v3;
+  return givenName;
 }
 
-- (void)_intents_updateContainerWithCache:(id)a3
+- (void)_intents_updateContainerWithCache:(id)cache
 {
-  v13 = a3;
-  v4 = [(INPerson *)self image];
-  if (v4)
+  cacheCopy = cache;
+  image = [(INPerson *)self image];
+  if (image)
   {
-    v5 = v4;
-    v6 = [(INPerson *)self image];
-    v7 = [v6 _identifier];
-    v8 = [v13 cacheableObjectForIdentifier:v7];
+    v5 = image;
+    image2 = [(INPerson *)self image];
+    _identifier = [image2 _identifier];
+    v8 = [cacheCopy cacheableObjectForIdentifier:_identifier];
 
     if (v8)
     {
-      v9 = [(INPerson *)self image];
-      v10 = [v9 _identifier];
-      v11 = [v13 cacheableObjectForIdentifier:v10];
+      image3 = [(INPerson *)self image];
+      _identifier2 = [image3 _identifier];
+      v11 = [cacheCopy cacheableObjectForIdentifier:_identifier2];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [(INPerson *)self image];
+        image4 = [(INPerson *)self image];
         [v11 _imageSize];
-        [v12 _setImageSize:?];
+        [image4 _setImageSize:?];
       }
     }
   }
 }
 
-- (id)_intents_readableHandleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableHandleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [(INPerson *)self personHandle];
-  v7 = [v6 type];
+  localizerCopy = localizer;
+  personHandle = [(INPerson *)self personHandle];
+  type = [personHandle type];
 
-  if (v7 == 2)
+  if (type == 2)
   {
-    v8 = [v5 locale];
-    v9 = [v8 regionCode];
-    v10 = [v9 lowercaseString];
+    locale = [localizerCopy locale];
+    regionCode = [locale regionCode];
+    lowercaseString = [regionCode lowercaseString];
 
-    if (!v10)
+    if (!lowercaseString)
     {
       v11 = CPPhoneNumberCopyNetworkCountryCode();
       if (!v11)
@@ -400,23 +400,23 @@ LABEL_24:
         v11 = CPPhoneNumberCopyHomeCountryCode();
       }
 
-      v10 = v11;
+      lowercaseString = v11;
     }
 
-    v12 = [(INPerson *)self personHandle];
-    v13 = [v12 value];
+    personHandle2 = [(INPerson *)self personHandle];
+    value = [personHandle2 value];
     v14 = PNCreateFormattedStringWithCountry();
 
-    if (!v10)
+    if (!lowercaseString)
     {
       goto LABEL_17;
     }
 
-    v15 = [(INPerson *)self personHandle];
-    v16 = [v15 value];
+    personHandle3 = [(INPerson *)self personHandle];
+    value2 = [personHandle3 value];
     v14 = v14;
-    v17 = v16;
-    v18 = v17;
+    v17 = value2;
+    value3 = v17;
     if (v14 == v17)
     {
     }
@@ -438,8 +438,8 @@ LABEL_24:
       }
     }
 
-    v15 = [(INPerson *)self personHandle];
-    v18 = [v15 value];
+    personHandle3 = [(INPerson *)self personHandle];
+    value3 = [personHandle3 value];
     v21 = PNCreateFormattedStringWithCountry();
 LABEL_16:
 
@@ -447,34 +447,34 @@ LABEL_16:
 LABEL_17:
     if ([v14 length])
     {
-      v20 = v14;
+      value4 = v14;
     }
 
     else
     {
-      v22 = [(INPerson *)self personHandle];
-      v20 = [v22 value];
+      personHandle4 = [(INPerson *)self personHandle];
+      value4 = [personHandle4 value];
     }
 
     goto LABEL_21;
   }
 
-  v10 = [(INPerson *)self personHandle];
-  v20 = [v10 value];
+  lowercaseString = [(INPerson *)self personHandle];
+  value4 = [lowercaseString value];
 LABEL_21:
 
-  return v20;
+  return value4;
 }
 
-- (id)_intents_readableSubtitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableSubtitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(INPerson *)self displayName];
-  v9 = [(INPerson *)self personHandle];
-  v10 = [v9 value];
-  v11 = v8;
-  v12 = v10;
+  localizerCopy = localizer;
+  metadataCopy = metadata;
+  displayName = [(INPerson *)self displayName];
+  personHandle = [(INPerson *)self personHandle];
+  value = [personHandle value];
+  v11 = displayName;
+  v12 = value;
   v13 = v12;
   if (v11 == v12)
   {
@@ -497,21 +497,21 @@ LABEL_7:
   }
 
 LABEL_9:
-  v15 = [(INPerson *)self _intents_readableHandleWithLocalizer:v6 metadata:v7];
+  v15 = [(INPerson *)self _intents_readableHandleWithLocalizer:localizerCopy metadata:metadataCopy];
 LABEL_10:
 
   return v15;
 }
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(INPerson *)self displayName];
-  v9 = [(INPerson *)self personHandle];
-  v10 = [v9 value];
-  v11 = v8;
-  v12 = v10;
+  localizerCopy = localizer;
+  metadataCopy = metadata;
+  displayName = [(INPerson *)self displayName];
+  personHandle = [(INPerson *)self personHandle];
+  value = [personHandle value];
+  v11 = displayName;
+  v12 = value;
   v13 = v12;
   if (v11 == v12)
   {
@@ -529,26 +529,26 @@ LABEL_10:
     }
 
 LABEL_7:
-    v15 = [(INPerson *)self _intents_readableHandleWithLocalizer:v6 metadata:v7];
+    displayName2 = [(INPerson *)self _intents_readableHandleWithLocalizer:localizerCopy metadata:metadataCopy];
     goto LABEL_10;
   }
 
 LABEL_9:
-  v15 = [(INPerson *)self displayName];
+  displayName2 = [(INPerson *)self displayName];
 LABEL_10:
-  v16 = v15;
+  v16 = displayName2;
 
   return v16;
 }
 
-- (INPerson)initWithContact:(id)a3
+- (INPerson)initWithContact:(id)contact
 {
   v65 = *MEMORY[0x1E69E9840];
-  v45 = a3;
+  contactCopy = contact;
   v44 = [MEMORY[0x1E696ADF0] componentsForContact:?];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = getCNContactPhoneNumbersKey();
-  v5 = [v45 isKeyAvailable:v4];
+  v5 = [contactCopy isKeyAvailable:v4];
 
   if (v5)
   {
@@ -556,8 +556,8 @@ LABEL_10:
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v6 = [v45 phoneNumbers];
-    v7 = [v6 countByEnumeratingWithState:&v50 objects:v64 count:16];
+    phoneNumbers = [contactCopy phoneNumbers];
+    v7 = [phoneNumbers countByEnumeratingWithState:&v50 objects:v64 count:16];
     if (v7)
     {
       v8 = *v51;
@@ -567,20 +567,20 @@ LABEL_10:
         {
           if (*v51 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(phoneNumbers);
           }
 
           v10 = *(*(&v50 + 1) + 8 * i);
           v11 = [INPersonHandle alloc];
-          v12 = [v10 value];
-          v13 = [v12 stringValue];
+          value = [v10 value];
+          stringValue = [value stringValue];
           v14 = INPersonHandleLabelForCNLabeledValue(v10);
-          v15 = [(INPersonHandle *)v11 initWithValue:v13 type:2 label:v14];
+          v15 = [(INPersonHandle *)v11 initWithValue:stringValue type:2 label:v14];
 
-          [v3 addObject:v15];
+          [array addObject:v15];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v50 objects:v64 count:16];
+        v7 = [phoneNumbers countByEnumeratingWithState:&v50 objects:v64 count:16];
       }
 
       while (v7);
@@ -588,7 +588,7 @@ LABEL_10:
   }
 
   v16 = getCNContactEmailAddressesKey();
-  v17 = [v45 isKeyAvailable:v16];
+  v17 = [contactCopy isKeyAvailable:v16];
 
   if (v17)
   {
@@ -596,8 +596,8 @@ LABEL_10:
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v18 = [v45 emailAddresses];
-    v19 = [v18 countByEnumeratingWithState:&v46 objects:v63 count:16];
+    emailAddresses = [contactCopy emailAddresses];
+    v19 = [emailAddresses countByEnumeratingWithState:&v46 objects:v63 count:16];
     if (v19)
     {
       v20 = *v47;
@@ -607,48 +607,48 @@ LABEL_10:
         {
           if (*v47 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(emailAddresses);
           }
 
           v22 = *(*(&v46 + 1) + 8 * j);
           v23 = [INPersonHandle alloc];
-          v24 = [v22 value];
+          value2 = [v22 value];
           v25 = INPersonHandleLabelForCNLabeledValue(v22);
-          v26 = [(INPersonHandle *)v23 initWithValue:v24 type:1 label:v25];
+          v26 = [(INPersonHandle *)v23 initWithValue:value2 type:1 label:v25];
 
-          [v3 addObject:v26];
+          [array addObject:v26];
         }
 
-        v19 = [v18 countByEnumeratingWithState:&v46 objects:v63 count:16];
+        v19 = [emailAddresses countByEnumeratingWithState:&v46 objects:v63 count:16];
       }
 
       while (v19);
     }
   }
 
-  v27 = [v3 firstObject];
-  if ([v3 count] < 2)
+  firstObject = [array firstObject];
+  if ([array count] < 2)
   {
 
-    v3 = 0;
+    array = 0;
   }
 
   else
   {
-    [v3 removeObjectAtIndex:0];
+    [array removeObjectAtIndex:0];
   }
 
   v28 = getCNContactIdentifierKey();
-  v29 = [v45 isKeyAvailable:v28];
+  v29 = [contactCopy isKeyAvailable:v28];
 
   if (v29)
   {
-    v30 = [v45 identifier];
+    identifier = [contactCopy identifier];
   }
 
   else
   {
-    v30 = 0;
+    identifier = 0;
   }
 
   v59 = 0;
@@ -676,8 +676,8 @@ LABEL_10:
     goto LABEL_39;
   }
 
-  v34 = *v31;
-  if (![v45 isKeyAvailable:v34])
+  imageData = *v31;
+  if (![contactCopy isKeyAvailable:imageData])
   {
     v39 = 0;
     goto LABEL_36;
@@ -711,50 +711,50 @@ LABEL_39:
     __break(1u);
   }
 
-  v38 = [v45 isKeyAvailable:*v35];
+  v38 = [contactCopy isKeyAvailable:*v35];
 
-  if (!v38 || ![v45 imageDataAvailable])
+  if (!v38 || ![contactCopy imageDataAvailable])
   {
     v39 = 0;
     goto LABEL_38;
   }
 
-  v34 = [v45 imageData];
-  v39 = [INImage imageWithImageData:v34];
+  imageData = [contactCopy imageData];
+  v39 = [INImage imageWithImageData:imageData];
 LABEL_36:
 
 LABEL_38:
-  v40 = [(INPerson *)self initWithPersonHandle:v27 nameComponents:v44 displayName:0 image:v39 contactIdentifier:v30 customIdentifier:0 aliases:v3 suggestionType:0];
+  v40 = [(INPerson *)self initWithPersonHandle:firstObject nameComponents:v44 displayName:0 image:v39 contactIdentifier:identifier customIdentifier:0 aliases:array suggestionType:0];
 
   v41 = *MEMORY[0x1E69E9840];
   return v40;
 }
 
-- (id)_initWithUserInput:(id)a3 personHandle:(id)a4 nameComponents:(id)a5 displayName:(id)a6 image:(id)a7 contactIdentifier:(id)a8 customIdentifier:(id)a9 relationship:(id)a10 aliases:(id)a11 suggestionType:(int64_t)a12 isMe:(BOOL)a13 scoredAlternatives:(id)a14 sourceAppBundleIdentifier:(id)a15 phonemeData:(id)a16 isContactSuggestion:(BOOL)a17 searchProvider:(int64_t)a18
+- (id)_initWithUserInput:(id)input personHandle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier customIdentifier:(id)customIdentifier relationship:(id)self0 aliases:(id)self1 suggestionType:(int64_t)self2 isMe:(BOOL)self3 scoredAlternatives:(id)self4 sourceAppBundleIdentifier:(id)self5 phonemeData:(id)self6 isContactSuggestion:(BOOL)self7 searchProvider:(int64_t)self8
 {
-  v56 = a3;
-  v23 = a4;
-  v24 = a5;
-  v60 = a6;
-  v59 = a7;
-  v25 = a8;
-  v26 = a9;
-  v27 = a10;
-  v28 = v24;
-  v29 = a11;
-  v30 = a14;
-  v58 = a15;
-  v31 = a16;
+  inputCopy = input;
+  handleCopy = handle;
+  componentsCopy = components;
+  nameCopy = name;
+  imageCopy = image;
+  identifierCopy = identifier;
+  customIdentifierCopy = customIdentifier;
+  relationshipCopy = relationship;
+  v28 = componentsCopy;
+  aliasesCopy = aliases;
+  alternativesCopy = alternatives;
+  bundleIdentifierCopy = bundleIdentifier;
+  dataCopy = data;
   v61.receiver = self;
   v61.super_class = INPerson;
   v32 = [(INPerson *)&v61 init];
   if (v32)
   {
-    v33 = [v56 copy];
+    v33 = [inputCopy copy];
     userInput = v32->_userInput;
     v32->_userInput = v33;
 
-    v35 = [v23 copy];
+    v35 = [handleCopy copy];
     personHandle = v32->_personHandle;
     v32->_personHandle = v35;
 
@@ -762,185 +762,185 @@ LABEL_38:
     nameComponents = v32->_nameComponents;
     v32->_nameComponents = v37;
 
-    v39 = [v60 copy];
+    v39 = [nameCopy copy];
     displayName = v32->_displayName;
     v32->_displayName = v39;
 
-    v41 = [v59 copy];
+    v41 = [imageCopy copy];
     image = v32->_image;
     v32->_image = v41;
 
-    v43 = [v25 copy];
+    v43 = [identifierCopy copy];
     contactIdentifier = v32->_contactIdentifier;
     v32->_contactIdentifier = v43;
 
-    v45 = [v26 copy];
+    v45 = [customIdentifierCopy copy];
     customIdentifier = v32->_customIdentifier;
     v32->_customIdentifier = v45;
 
-    v47 = [v27 copy];
+    v47 = [relationshipCopy copy];
     relationship = v32->_relationship;
     v32->_relationship = v47;
 
-    v49 = [v29 copy];
+    v49 = [aliasesCopy copy];
     aliases = v32->_aliases;
     v32->_aliases = v49;
 
-    v32->_suggestionType = a12;
-    v32->_isMe = a13;
-    v51 = [v30 copy];
+    v32->_suggestionType = type;
+    v32->_isMe = me;
+    v51 = [alternativesCopy copy];
     scoredAlternatives = v32->_scoredAlternatives;
     v32->_scoredAlternatives = v51;
 
-    objc_storeStrong(&v32->_sourceAppBundleIdentifier, a15);
-    v53 = [v31 copy];
+    objc_storeStrong(&v32->_sourceAppBundleIdentifier, bundleIdentifier);
+    v53 = [dataCopy copy];
     phonemeData = v32->_phonemeData;
     v32->_phonemeData = v53;
 
-    v32->_contactSuggestion = a17;
-    v32->_searchProvider = a18;
+    v32->_contactSuggestion = suggestion;
+    v32->_searchProvider = provider;
   }
 
   return v32;
 }
 
-- (id)_initWithUserInput:(id)a3 personHandle:(id)a4 nameComponents:(id)a5 displayName:(id)a6 image:(id)a7 contactIdentifier:(id)a8 customIdentifier:(id)a9 relationship:(id)a10 aliases:(id)a11 suggestionType:(int64_t)a12 isMe:(BOOL)a13 alternatives:(id)a14 sourceAppBundleIdentifier:(id)a15 phonemeData:(id)a16 isContactSuggestion:(BOOL)a17
+- (id)_initWithUserInput:(id)input personHandle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier customIdentifier:(id)customIdentifier relationship:(id)self0 aliases:(id)self1 suggestionType:(int64_t)self2 isMe:(BOOL)self3 alternatives:(id)self4 sourceAppBundleIdentifier:(id)self5 phonemeData:(id)self6 isContactSuggestion:(BOOL)self7
 {
-  v35 = a16;
-  v32 = a15;
-  v31 = a11;
-  v21 = a10;
-  v29 = a9;
-  v30 = a8;
-  v22 = a7;
-  v23 = a6;
-  v34 = a5;
-  v24 = a4;
-  v25 = a3;
-  v37 = [INPerson toNilScoredPersons:a14];
-  LOBYTE(v28) = a17;
-  LOBYTE(v27) = a13;
-  v39 = [(INPerson *)self _initWithUserInput:v25 personHandle:v24 nameComponents:v34 displayName:v23 image:v22 contactIdentifier:v30 customIdentifier:v29 relationship:v21 aliases:v31 suggestionType:a12 isMe:v27 scoredAlternatives:v37 sourceAppBundleIdentifier:v32 phonemeData:v35 isContactSuggestion:v28 searchProvider:0];
+  dataCopy = data;
+  bundleIdentifierCopy = bundleIdentifier;
+  aliasesCopy = aliases;
+  relationshipCopy = relationship;
+  customIdentifierCopy = customIdentifier;
+  identifierCopy = identifier;
+  imageCopy = image;
+  nameCopy = name;
+  componentsCopy = components;
+  handleCopy = handle;
+  inputCopy = input;
+  v37 = [INPerson toNilScoredPersons:alternatives];
+  LOBYTE(v28) = suggestion;
+  LOBYTE(v27) = me;
+  v39 = [(INPerson *)self _initWithUserInput:inputCopy personHandle:handleCopy nameComponents:componentsCopy displayName:nameCopy image:imageCopy contactIdentifier:identifierCopy customIdentifier:customIdentifierCopy relationship:relationshipCopy aliases:aliasesCopy suggestionType:type isMe:v27 scoredAlternatives:v37 sourceAppBundleIdentifier:bundleIdentifierCopy phonemeData:dataCopy isContactSuggestion:v28 searchProvider:0];
 
   return v39;
 }
 
-- (void)setAlternatives:(id)a3
+- (void)setAlternatives:(id)alternatives
 {
-  v4 = [INPerson toNilScoredPersons:a3];
+  v4 = [INPerson toNilScoredPersons:alternatives];
   scoredAlternatives = self->_scoredAlternatives;
   self->_scoredAlternatives = v4;
 
   MEMORY[0x1EEE66BB8](v4, scoredAlternatives);
 }
 
-- (INPerson)initWithCoder:(id)a3
+- (INPerson)initWithCoder:(id)coder
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v37.receiver = self;
   v37.super_class = INPerson;
   v5 = [(INPerson *)&v37 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_userInput"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_userInput"];
     userInput = v5->_userInput;
     v5->_userInput = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personHandle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personHandle"];
     personHandle = v5->_personHandle;
     v5->_personHandle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nameComponents"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nameComponents"];
     nameComponents = v5->_nameComponents;
     v5->_nameComponents = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"displayName"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     image = v5->_image;
     v5->_image = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customIdentifier"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customIdentifier"];
     customIdentifier = v5->_customIdentifier;
     v5->_customIdentifier = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relationship"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relationship"];
     relationship = v5->_relationship;
     v5->_relationship = v23;
 
     v25 = MEMORY[0x1E695DFD8];
     v26 = objc_opt_class();
     v27 = [v25 setWithObjects:{v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"aliases"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"aliases"];
     aliases = v5->_aliases;
     v5->_aliases = v28;
 
-    v5->_suggestionType = [v4 decodeIntegerForKey:@"suggestionType"];
-    v5->_isMe = [v4 decodeBoolForKey:@"isMe"];
+    v5->_suggestionType = [coderCopy decodeIntegerForKey:@"suggestionType"];
+    v5->_isMe = [coderCopy decodeBoolForKey:@"isMe"];
     v30 = MEMORY[0x1E695DFD8];
     v38[0] = objc_opt_class();
     v38[1] = objc_opt_class();
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
     v32 = [v30 setWithArray:v31];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"scoredAlternatives"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"scoredAlternatives"];
     scoredAlternatives = v5->_scoredAlternatives;
     v5->_scoredAlternatives = v33;
 
-    v5->_contactSuggestion = [v4 decodeBoolForKey:@"contactSuggestion"];
-    v5->_searchProvider = [v4 decodeIntForKey:@"searchProvider"];
+    v5->_contactSuggestion = [coderCopy decodeBoolForKey:@"contactSuggestion"];
+    v5->_searchProvider = [coderCopy decodeIntForKey:@"searchProvider"];
   }
 
   v35 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   userInput = self->_userInput;
-  v5 = a3;
-  [v5 encodeObject:userInput forKey:@"_userInput"];
-  [v5 encodeObject:self->_personHandle forKey:@"personHandle"];
-  [v5 encodeObject:self->_nameComponents forKey:@"nameComponents"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_image forKey:@"image"];
-  [v5 encodeObject:self->_contactIdentifier forKey:@"contactIdentifier"];
-  [v5 encodeObject:self->_customIdentifier forKey:@"customIdentifier"];
-  [v5 encodeObject:self->_relationship forKey:@"relationship"];
-  [v5 encodeObject:self->_aliases forKey:@"aliases"];
-  [v5 encodeInteger:self->_suggestionType forKey:@"suggestionType"];
-  [v5 encodeBool:self->_isMe forKey:@"isMe"];
-  [v5 encodeObject:self->_scoredAlternatives forKey:@"scoredAlternatives"];
-  [v5 encodeBool:self->_contactSuggestion forKey:@"contactSuggestion"];
-  [v5 encodeInteger:self->_searchProvider forKey:@"searchProvider"];
+  coderCopy = coder;
+  [coderCopy encodeObject:userInput forKey:@"_userInput"];
+  [coderCopy encodeObject:self->_personHandle forKey:@"personHandle"];
+  [coderCopy encodeObject:self->_nameComponents forKey:@"nameComponents"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_image forKey:@"image"];
+  [coderCopy encodeObject:self->_contactIdentifier forKey:@"contactIdentifier"];
+  [coderCopy encodeObject:self->_customIdentifier forKey:@"customIdentifier"];
+  [coderCopy encodeObject:self->_relationship forKey:@"relationship"];
+  [coderCopy encodeObject:self->_aliases forKey:@"aliases"];
+  [coderCopy encodeInteger:self->_suggestionType forKey:@"suggestionType"];
+  [coderCopy encodeBool:self->_isMe forKey:@"isMe"];
+  [coderCopy encodeObject:self->_scoredAlternatives forKey:@"scoredAlternatives"];
+  [coderCopy encodeBool:self->_contactSuggestion forKey:@"contactSuggestion"];
+  [coderCopy encodeInteger:self->_searchProvider forKey:@"searchProvider"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v22 = [objc_opt_class() allocWithZone:a3];
-  v17 = [(NSString *)self->_userInput copyWithZone:a3];
-  v5 = [(INPersonHandle *)self->_personHandle copyWithZone:a3];
-  v21 = [(NSPersonNameComponents *)self->_nameComponents copyWithZone:a3];
-  v20 = [(NSString *)self->_displayName copyWithZone:a3];
-  v19 = [(INImage *)self->_image copyWithZone:a3];
-  v18 = [(NSString *)self->_contactIdentifier copyWithZone:a3];
-  v16 = [(NSString *)self->_customIdentifier copyWithZone:a3];
-  v15 = [(NSString *)self->_relationship copyWithZone:a3];
-  v6 = [(NSArray *)self->_aliases copyWithZone:a3];
+  v22 = [objc_opt_class() allocWithZone:zone];
+  v17 = [(NSString *)self->_userInput copyWithZone:zone];
+  v5 = [(INPersonHandle *)self->_personHandle copyWithZone:zone];
+  v21 = [(NSPersonNameComponents *)self->_nameComponents copyWithZone:zone];
+  v20 = [(NSString *)self->_displayName copyWithZone:zone];
+  v19 = [(INImage *)self->_image copyWithZone:zone];
+  v18 = [(NSString *)self->_contactIdentifier copyWithZone:zone];
+  v16 = [(NSString *)self->_customIdentifier copyWithZone:zone];
+  v15 = [(NSString *)self->_relationship copyWithZone:zone];
+  v6 = [(NSArray *)self->_aliases copyWithZone:zone];
   isMe = self->_isMe;
   suggestionType = self->_suggestionType;
-  v9 = [(NSArray *)self->_scoredAlternatives copyWithZone:a3];
-  v10 = [(NSString *)self->_sourceAppBundleIdentifier copyWithZone:a3];
-  v11 = [(NSString *)self->_phonemeData copyWithZone:a3];
+  v9 = [(NSArray *)self->_scoredAlternatives copyWithZone:zone];
+  v10 = [(NSString *)self->_sourceAppBundleIdentifier copyWithZone:zone];
+  v11 = [(NSString *)self->_phonemeData copyWithZone:zone];
   LOBYTE(v14) = self->_contactSuggestion;
   LOBYTE(v13) = isMe;
   v23 = [v22 _initWithUserInput:v17 personHandle:v5 nameComponents:v21 displayName:v20 image:v19 contactIdentifier:v18 customIdentifier:v16 relationship:v15 aliases:v6 suggestionType:suggestionType isMe:v13 scoredAlternatives:v9 sourceAppBundleIdentifier:v10 phonemeData:v11 isContactSuggestion:v14 searchProvider:self->_searchProvider];
@@ -948,13 +948,13 @@ LABEL_38:
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[NSString length](self->_contactIdentifier, "length") && [*(v5 + 12) length] && -[NSString isEqual:](self->_contactIdentifier, "isEqual:", *(v5 + 12)) && (v6 = self->_personHandle) != 0 && *(v5 + 10) && -[INPersonHandle isEqual:](v6, "isEqual:"))
     {
       v7 = 1;
@@ -1001,29 +1001,29 @@ LABEL_34:
   return v7;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   displayName = self->_displayName;
   self->_displayName = v4;
 
   MEMORY[0x1EEE66BB8](v4, displayName);
 }
 
-- (void)setHandle:(id)a3
+- (void)setHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [[INPersonHandle alloc] initWithValue:v4 type:0];
+  handleCopy = handle;
+  v5 = [[INPersonHandle alloc] initWithValue:handleCopy type:0];
 
   [(INPerson *)self setPersonHandle:v5];
 }
 
 - (NSString)handle
 {
-  v2 = [(INPerson *)self personHandle];
-  v3 = [v2 value];
+  personHandle = [(INPerson *)self personHandle];
+  value = [personHandle value];
 
-  return v3;
+  return value;
 }
 
 - (INPerson)initWithHandle:(NSString *)handle nameComponents:(NSPersonNameComponents *)nameComponents displayName:(NSString *)displayName image:(INImage *)image contactIdentifier:(NSString *)contactIdentifier
@@ -1131,18 +1131,18 @@ LABEL_34:
   return v21;
 }
 
-+ (id)toNilScoredPersons:(id)a3
++ (id)toNilScoredPersons:(id)persons
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  personsCopy = persons;
+  if (personsCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(personsCopy, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = v3;
+    v5 = personsCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -1392,14 +1392,14 @@ LABEL_31:
   return v31;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INPerson;
   v6 = [(INPerson *)&v11 description];
-  v7 = [(INPerson *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INPerson *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
@@ -1412,26 +1412,26 @@ LABEL_31:
   return [(INPerson *)self _initWithUserInput:0 personHandle:personHandle nameComponents:nameComponents displayName:displayName image:image contactIdentifier:contactIdentifier customIdentifier:customIdentifier relationship:0 aliases:aliases suggestionType:suggestionType isMe:v11 alternatives:0 sourceAppBundleIdentifier:0 phonemeData:0 isContactSuggestion:v12];
 }
 
-- (BOOL)_intents_compareValue:(id)a3 relation:(unint64_t)a4
+- (BOOL)_intents_compareValue:(id)value relation:(unint64_t)relation
 {
-  v6 = a3;
+  valueCopy = value;
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __80__INPerson_INCodableAttributeRelationComparing___intents_compareValue_relation___block_invoke;
   v56[3] = &unk_1E72804A0;
   v56[4] = self;
-  v7 = v6;
+  v7 = valueCopy;
   v57 = v7;
   v8 = MEMORY[0x193AD7780](v56);
   v9 = v8;
   LOBYTE(v10) = 0;
-  if (a4 > 5)
+  if (relation > 5)
   {
-    if (a4 <= 7)
+    if (relation <= 7)
     {
-      if (a4 != 6)
+      if (relation != 6)
       {
-        v11 = [(INPerson *)self displayName];
+        displayName = [(INPerson *)self displayName];
         v17 = v7;
         if (v17)
         {
@@ -1454,9 +1454,9 @@ LABEL_31:
 
         v26 = v18;
 
-        v27 = [v26 displayName];
+        displayName2 = [v26 displayName];
 
-        if ([v11 compare:v27] == -1)
+        if ([displayName compare:displayName2] == -1)
         {
           goto LABEL_56;
         }
@@ -1464,7 +1464,7 @@ LABEL_31:
         goto LABEL_45;
       }
 
-      v11 = [(INPerson *)self displayName];
+      displayName = [(INPerson *)self displayName];
       v19 = v7;
       if (v19)
       {
@@ -1487,16 +1487,16 @@ LABEL_31:
 
       v28 = v20;
 
-      v29 = [v28 displayName];
+      displayName3 = [v28 displayName];
 
-      v30 = [v11 compare:v29] == -1;
+      v30 = [displayName compare:displayName3] == -1;
 LABEL_63:
       LOBYTE(v10) = v30;
 
       goto LABEL_67;
     }
 
-    switch(a4)
+    switch(relation)
     {
       case 8uLL:
         v21 = v7;
@@ -1519,11 +1519,11 @@ LABEL_63:
           v22 = 0;
         }
 
-        v14 = v22;
+        displayName4 = v22;
 
-        v31 = [v14 if_flatMap:&__block_literal_global_40676];
-        v32 = [(INPerson *)self contactIdentifier];
-        if (([v31 containsObject:v32] & 1) == 0)
+        v31 = [displayName4 if_flatMap:&__block_literal_global_40676];
+        contactIdentifier = [(INPerson *)self contactIdentifier];
+        if (([v31 containsObject:contactIdentifier] & 1) == 0)
         {
           v33 = v21;
           if (v21)
@@ -1548,11 +1548,11 @@ LABEL_63:
           v43 = v34;
 
           v44 = [v43 if_flatMap:&__block_literal_global_4];
-          v45 = [(INPerson *)self customIdentifier];
+          customIdentifier = [(INPerson *)self customIdentifier];
           v55 = v44;
           v46 = v44;
-          v47 = v45;
-          if ([v46 containsObject:v45])
+          v47 = customIdentifier;
+          if ([v46 containsObject:customIdentifier])
           {
             LOBYTE(v10) = 1;
           }
@@ -1584,9 +1584,9 @@ LABEL_63:
 
             v50 = [v10 if_flatMap:&__block_literal_global_6];
 
-            v51 = [(INPerson *)self personHandle];
-            v52 = [v51 value];
-            LOBYTE(v10) = [v50 containsObject:v52];
+            personHandle = [(INPerson *)self personHandle];
+            value = [personHandle value];
+            LOBYTE(v10) = [v50 containsObject:value];
 
             v43 = v54;
           }
@@ -1596,7 +1596,7 @@ LABEL_63:
 
         goto LABEL_60;
       case 9uLL:
-        v14 = [(INPerson *)self displayName];
+        displayName4 = [(INPerson *)self displayName];
         v15 = v7;
         if (v15)
         {
@@ -1619,8 +1619,8 @@ LABEL_63:
 
         v31 = v25;
 
-        v32 = [v31 displayName];
-        if ([v14 containsString:v32])
+        contactIdentifier = [v31 displayName];
+        if ([displayName4 containsString:contactIdentifier])
         {
 LABEL_60:
           LOBYTE(v10) = 1;
@@ -1631,7 +1631,7 @@ LABEL_86:
 
         break;
       case 0xAuLL:
-        v14 = [(INPerson *)self displayName];
+        displayName4 = [(INPerson *)self displayName];
         v15 = v7;
         if (v15)
         {
@@ -1654,8 +1654,8 @@ LABEL_86:
 
         v31 = v16;
 
-        v32 = [v31 displayName];
-        if (![v14 containsString:v32])
+        contactIdentifier = [v31 displayName];
+        if (![displayName4 containsString:contactIdentifier])
         {
           goto LABEL_60;
         }
@@ -1665,8 +1665,8 @@ LABEL_86:
         goto LABEL_87;
     }
 
-    v37 = [(INPerson *)self personHandle];
-    v38 = [v37 value];
+    personHandle2 = [(INPerson *)self personHandle];
+    value2 = [personHandle2 value];
     v39 = v15;
     if (v15)
     {
@@ -1689,22 +1689,22 @@ LABEL_86:
 
     v10 = v40;
 
-    v41 = [v10 personHandle];
+    personHandle3 = [v10 personHandle];
 
-    v42 = [v41 value];
-    LOBYTE(v10) = [v38 containsString:v42];
+    value3 = [personHandle3 value];
+    LOBYTE(v10) = [value2 containsString:value3];
 
     goto LABEL_86;
   }
 
-  if (a4 <= 2)
+  if (relation <= 2)
   {
-    if (a4 == 1)
+    if (relation == 1)
     {
       LOBYTE(v10) = 1;
     }
 
-    else if (a4 == 2)
+    else if (relation == 2)
     {
       LOBYTE(v10) = (*(v8 + 16))(v8);
     }
@@ -1712,11 +1712,11 @@ LABEL_86:
 
   else
   {
-    if (a4 != 3)
+    if (relation != 3)
     {
-      if (a4 != 4)
+      if (relation != 4)
       {
-        v11 = [(INPerson *)self displayName];
+        displayName = [(INPerson *)self displayName];
         v12 = v7;
         if (v12)
         {
@@ -1739,9 +1739,9 @@ LABEL_86:
 
         v35 = v13;
 
-        v27 = [v35 displayName];
+        displayName2 = [v35 displayName];
 
-        if ([v11 compare:v27] == 1)
+        if ([displayName compare:displayName2] == 1)
         {
 LABEL_56:
           LOBYTE(v10) = 1;
@@ -1756,7 +1756,7 @@ LABEL_67:
         goto LABEL_87;
       }
 
-      v11 = [(INPerson *)self displayName];
+      displayName = [(INPerson *)self displayName];
       v23 = v7;
       if (v23)
       {
@@ -1779,9 +1779,9 @@ LABEL_67:
 
       v36 = v24;
 
-      v29 = [v36 displayName];
+      displayName3 = [v36 displayName];
 
-      v30 = [v11 compare:v29] == 1;
+      v30 = [displayName compare:displayName3] == 1;
       goto LABEL_63;
     }
 
@@ -1956,28 +1956,28 @@ id __80__INPerson_INCodableAttributeRelationComparing___intents_compareValue_rel
   return v4;
 }
 
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4
+- (void)_injectProxiesForImages:(id)images completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  imagesCopy = images;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = [(INPerson *)self copy];
-    v9 = [(INPerson *)self image];
-    if (v9)
+    image = [(INPerson *)self image];
+    if (image)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __70__INPerson_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke;
       v10[3] = &unk_1E7285CD0;
       v10[4] = v8;
-      v11 = v7;
-      v6[2](v6, v9, v10);
+      v11 = completionCopy;
+      imagesCopy[2](imagesCopy, image, v10);
     }
 
     else
     {
-      (*(v7 + 2))(v7, v8);
+      (*(completionCopy + 2))(completionCopy, v8);
     }
   }
 }
@@ -1993,41 +1993,41 @@ uint64_t __70__INPerson_INImageProxyInjecting___injectProxiesForImages_completio
 
 - (id)spokenPhrases
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(INPerson *)self spokenPhrase];
-  [v3 addObject:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  spokenPhrase = [(INPerson *)self spokenPhrase];
+  [array addObject:spokenPhrase];
 
-  v5 = [(INPerson *)self nameComponents];
-  v6 = [v5 givenName];
+  nameComponents = [(INPerson *)self nameComponents];
+  givenName = [nameComponents givenName];
 
-  if (v6)
+  if (givenName)
   {
-    v7 = [(INPerson *)self nameComponents];
-    v8 = [v7 givenName];
-    [v3 addObject:v8];
+    nameComponents2 = [(INPerson *)self nameComponents];
+    givenName2 = [nameComponents2 givenName];
+    [array addObject:givenName2];
   }
 
-  v9 = [(INPerson *)self nameComponents];
-  v10 = [v9 familyName];
+  nameComponents3 = [(INPerson *)self nameComponents];
+  familyName = [nameComponents3 familyName];
 
-  if (v10)
+  if (familyName)
   {
-    v11 = [(INPerson *)self nameComponents];
-    v12 = [v11 familyName];
-    [v3 addObject:v12];
+    nameComponents4 = [(INPerson *)self nameComponents];
+    familyName2 = [nameComponents4 familyName];
+    [array addObject:familyName2];
   }
 
-  v13 = [(INPerson *)self nameComponents];
-  v14 = [v13 nickname];
+  nameComponents5 = [(INPerson *)self nameComponents];
+  nickname = [nameComponents5 nickname];
 
-  if (v14)
+  if (nickname)
   {
-    v15 = [(INPerson *)self nameComponents];
-    v16 = [v15 nickname];
-    [v3 addObject:v16];
+    nameComponents6 = [(INPerson *)self nameComponents];
+    nickname2 = [nameComponents6 nickname];
+    [array addObject:nickname2];
   }
 
-  return v3;
+  return array;
 }
 
 @end

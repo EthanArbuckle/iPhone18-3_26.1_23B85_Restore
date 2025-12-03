@@ -1,21 +1,21 @@
 @interface CXEnableVideoCallAction
-- (CXEnableVideoCallAction)initWithCallUUID:(id)a3 videoEnabled:(BOOL)a4;
-- (CXEnableVideoCallAction)initWithCoder:(id)a3;
+- (CXEnableVideoCallAction)initWithCallUUID:(id)d videoEnabled:(BOOL)enabled;
+- (CXEnableVideoCallAction)initWithCoder:(id)coder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXEnableVideoCallAction
 
-- (CXEnableVideoCallAction)initWithCallUUID:(id)a3 videoEnabled:(BOOL)a4
+- (CXEnableVideoCallAction)initWithCallUUID:(id)d videoEnabled:(BOOL)enabled
 {
   v6.receiver = self;
   v6.super_class = CXEnableVideoCallAction;
-  result = [(CXCallAction *)&v6 initWithCallUUID:a3];
+  result = [(CXCallAction *)&v6 initWithCallUUID:d];
   if (result)
   {
-    result->_videoEnabled = a4;
+    result->_videoEnabled = enabled;
   }
 
   return result;
@@ -25,45 +25,45 @@
 {
   v5.receiver = self;
   v5.super_class = CXEnableVideoCallAction;
-  v3 = [(CXCallAction *)&v5 customDescription];
-  [v3 appendFormat:@" videoEnabled=%d", -[CXEnableVideoCallAction isVideoEnabled](self, "isVideoEnabled")];
+  customDescription = [(CXCallAction *)&v5 customDescription];
+  [customDescription appendFormat:@" videoEnabled=%d", -[CXEnableVideoCallAction isVideoEnabled](self, "isVideoEnabled")];
 
-  return v3;
+  return customDescription;
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CXEnableVideoCallAction;
-  v6 = a3;
-  [(CXAction *)&v7 updateCopy:v6 withZone:a4];
-  [v6 setVideoEnabled:{-[CXEnableVideoCallAction isVideoEnabled](self, "isVideoEnabled", v7.receiver, v7.super_class)}];
+  copyCopy = copy;
+  [(CXAction *)&v7 updateCopy:copyCopy withZone:zone];
+  [copyCopy setVideoEnabled:{-[CXEnableVideoCallAction isVideoEnabled](self, "isVideoEnabled", v7.receiver, v7.super_class)}];
 }
 
-- (CXEnableVideoCallAction)initWithCoder:(id)a3
+- (CXEnableVideoCallAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CXEnableVideoCallAction;
-  v5 = [(CXCallAction *)&v8 initWithCoder:v4];
+  v5 = [(CXCallAction *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_isVideoEnabled);
-    v5->_videoEnabled = [v4 decodeBoolForKey:v6];
+    v5->_videoEnabled = [coderCopy decodeBoolForKey:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CXEnableVideoCallAction;
-  v4 = a3;
-  [(CXCallAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXCallAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CXEnableVideoCallAction *)self isVideoEnabled:v7.receiver];
   v6 = NSStringFromSelector(sel_isVideoEnabled);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:v5 forKey:v6];
 }
 
 @end

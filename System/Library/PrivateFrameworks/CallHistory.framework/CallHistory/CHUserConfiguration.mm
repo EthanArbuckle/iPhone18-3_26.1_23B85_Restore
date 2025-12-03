@@ -1,11 +1,11 @@
 @interface CHUserConfiguration
 + (id)registeredDefaults;
 + (id)userDefaults;
-- (BOOL)propertyNameForKeyPath:(id)a3;
+- (BOOL)propertyNameForKeyPath:(id)path;
 - (CHUserConfiguration)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setKeepCallsTimeIntervalType:(int64_t)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setKeepCallsTimeIntervalType:(int64_t)type;
 - (void)synchronize;
 @end
 
@@ -43,7 +43,7 @@ void __41__CHUserConfiguration_registeredDefaults__block_invoke()
   block[1] = 3221225472;
   block[2] = __35__CHUserConfiguration_userDefaults__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (userDefaults_onceToken != -1)
   {
     dispatch_once(&userDefaults_onceToken, block);
@@ -80,23 +80,23 @@ void __35__CHUserConfiguration_userDefaults__block_invoke(uint64_t a1)
 
 - (CHUserConfiguration)init
 {
-  v3 = [objc_opt_class() userDefaults];
-  [v3 addObserver:self forKeyPath:@"cloudKitEnabled" options:0 context:&CHUserConfigurationKeyValueObserverContext];
-  [v3 addObserver:self forKeyPath:@"keepCallsTimeIntervalType" options:0 context:&CHUserConfigurationKeyValueObserverContext];
+  userDefaults = [objc_opt_class() userDefaults];
+  [userDefaults addObserver:self forKeyPath:@"cloudKitEnabled" options:0 context:&CHUserConfigurationKeyValueObserverContext];
+  [userDefaults addObserver:self forKeyPath:@"keepCallsTimeIntervalType" options:0 context:&CHUserConfigurationKeyValueObserverContext];
   v6.receiver = self;
   v6.super_class = CHUserConfiguration;
-  v4 = [(CHConfiguration *)&v6 initWithDataSource:v3];
+  v4 = [(CHConfiguration *)&v6 initWithDataSource:userDefaults];
 
   return v4;
 }
 
 - (void)dealloc
 {
-  v3 = [(CHConfiguration *)self dataSource];
+  dataSource = [(CHConfiguration *)self dataSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = dataSource;
     [v4 removeObserver:self forKeyPath:@"cloudKitEnabled" context:&CHUserConfigurationKeyValueObserverContext];
     [v4 removeObserver:self forKeyPath:@"keepCallsTimeIntervalType" context:&CHUserConfigurationKeyValueObserverContext];
   }
@@ -106,11 +106,11 @@ void __35__CHUserConfiguration_userDefaults__block_invoke(uint64_t a1)
   [(CHUserConfiguration *)&v5 dealloc];
 }
 
-- (void)setKeepCallsTimeIntervalType:(int64_t)a3
+- (void)setKeepCallsTimeIntervalType:(int64_t)type
 {
-  v5 = [(CHConfiguration *)self dataSource];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forKey:@"keepCallsTimeIntervalType"];
+  dataSource = [(CHConfiguration *)self dataSource];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  [dataSource setObject:v4 forKey:@"keepCallsTimeIntervalType"];
 }
 
 - (void)synchronize
@@ -149,35 +149,35 @@ void __35__CHUserConfiguration_userDefaults__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  pathCopy = path;
+  objectCopy = object;
   v11 = ch_framework_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = v9;
+    v16 = pathCopy;
     v17 = 2114;
-    v18 = v10;
+    v18 = objectCopy;
     _os_log_impl(&dword_1C3E90000, v11, OS_LOG_TYPE_DEFAULT, "Received a key-value observing notification for key path (%{public}@) object (%{public}@).", buf, 0x16u);
   }
 
-  if (a6 == &CHUserConfigurationKeyValueObserverContext)
+  if (context == &CHUserConfigurationKeyValueObserverContext)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([(CHUserConfiguration *)self propertyNameForKeyPath:v9])
+      if ([(CHUserConfiguration *)self propertyNameForKeyPath:pathCopy])
       {
-        v12 = [(CHConfiguration *)self delegateController];
+        delegateController = [(CHConfiguration *)self delegateController];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __70__CHUserConfiguration_observeValueForKeyPath_ofObject_change_context___block_invoke;
         v14[3] = &unk_1E81DCF68;
         v14[4] = self;
-        [v12 enumerateDelegatesUsingBlock:v14];
+        [delegateController enumerateDelegatesUsingBlock:v14];
       }
     }
   }
@@ -203,17 +203,17 @@ void __70__CHUserConfiguration_observeValueForKeyPath_ofObject_change_context___
   }
 }
 
-- (BOOL)propertyNameForKeyPath:(id)a3
+- (BOOL)propertyNameForKeyPath:(id)path
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"cloudKitEnabled"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"cloudKitEnabled"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"keepCallsTimeIntervalType"];
+    v4 = [pathCopy isEqualToString:@"keepCallsTimeIntervalType"];
   }
 
   return v4;

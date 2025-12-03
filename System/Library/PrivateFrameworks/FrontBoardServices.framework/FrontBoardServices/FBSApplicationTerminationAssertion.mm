@@ -1,5 +1,5 @@
 @interface FBSApplicationTerminationAssertion
-- (FBSApplicationTerminationAssertion)initWithBundleID:(id)a3 reason:(id)a4 acquisitionHandler:(id)a5;
+- (FBSApplicationTerminationAssertion)initWithBundleID:(id)d reason:(id)reason acquisitionHandler:(id)handler;
 - (id)description;
 - (int64_t)assertionState;
 - (void)dealloc;
@@ -10,56 +10,56 @@
 
 - (int64_t)assertionState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  assertionState = v2->_assertionState;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  assertionState = selfCopy->_assertionState;
+  objc_sync_exit(selfCopy);
 
   return assertionState;
 }
 
-- (FBSApplicationTerminationAssertion)initWithBundleID:(id)a3 reason:(id)a4 acquisitionHandler:(id)a5
+- (FBSApplicationTerminationAssertion)initWithBundleID:(id)d reason:(id)reason acquisitionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dCopy = d;
+  reasonCopy = reason;
+  handlerCopy = handler;
+  if (!dCopy)
   {
     [FBSApplicationTerminationAssertion initWithBundleID:a2 reason:? acquisitionHandler:?];
   }
 
-  if (!v10)
+  if (!reasonCopy)
   {
     [FBSApplicationTerminationAssertion initWithBundleID:a2 reason:? acquisitionHandler:?];
   }
 
-  v12 = v11;
+  v12 = handlerCopy;
   v13 = [(FBSApplicationTerminationAssertion *)self init];
   if (v13)
   {
-    v14 = [v9 copy];
+    v14 = [dCopy copy];
     bundleID = v13->_bundleID;
     v13->_bundleID = v14;
 
-    v16 = [v10 copy];
+    v16 = [reasonCopy copy];
     reason = v13->_reason;
     v13->_reason = v16;
 
-    v18 = [MEMORY[0x1E698D050] terminationAssertionContext];
-    [v18 setExceptionCode:4227595259];
-    if ([v10 isEqualToString:@"critical"])
+    terminationAssertionContext = [MEMORY[0x1E698D050] terminationAssertionContext];
+    [terminationAssertionContext setExceptionCode:4227595259];
+    if ([reasonCopy isEqualToString:@"critical"])
     {
       v19 = 3;
     }
 
-    else if ([v10 isEqualToString:@"installation"])
+    else if ([reasonCopy isEqualToString:@"installation"])
     {
       v19 = 2;
     }
 
     else
     {
-      v19 = [v10 isEqualToString:@"deletion"];
+      v19 = [reasonCopy isEqualToString:@"deletion"];
     }
 
     v20 = objc_alloc(MEMORY[0x1E698D048]);
@@ -70,7 +70,7 @@
     v21 = v13;
     v26 = v21;
     v27 = v12;
-    v22 = [v20 initWithBundleIdentifier:v9 efficacy:v19 name:@"FBSApplicationTerminationAssertion" context:v18 withHandler:v25];
+    v22 = [v20 initWithBundleIdentifier:dCopy efficacy:v19 name:@"FBSApplicationTerminationAssertion" context:terminationAssertionContext withHandler:v25];
     assertion = v21->_assertion;
     v21->_assertion = v22;
   }
@@ -159,7 +159,7 @@ void __81__FBSApplicationTerminationAssertion_initWithBundleID_reason_acquisitio
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Must invalidate FBSApplicationTerminationAssertion after successful acquisition"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -187,9 +187,9 @@ void __81__FBSApplicationTerminationAssertion_initWithBundleID_reason_acquisitio
   v4 = [v3 appendObject:self->_reason withName:@"reason"];
   v5 = [v3 appendObject:self->_bundleID withName:@"bundleID"];
   v6 = [v3 appendUnsignedInteger:self->_assertionState withName:@"state"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 - (void)invalidate

@@ -11,26 +11,26 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [v5 startDate];
-    v7 = [a1 endDate];
-    if ([v6 compare:v7] < 0)
+    startDate = [v5 startDate];
+    endDate = [self endDate];
+    if ([startDate compare:endDate] < 0)
     {
-      v9 = [v5 endDateUnadjustedForLegacyClients];
-      v10 = [a1 startDate];
-      if ([v9 compare:v10] < 1)
+      endDateUnadjustedForLegacyClients = [v5 endDateUnadjustedForLegacyClients];
+      startDate2 = [self startDate];
+      if ([endDateUnadjustedForLegacyClients compare:startDate2] < 1)
       {
         v8 = 0;
       }
 
       else
       {
-        v11 = [a1 calendars];
-        if (v11)
+        calendars = [self calendars];
+        if (calendars)
         {
-          v15 = [a1 calendars];
-          v12 = [v5 calendar];
-          v13 = [v12 CADObjectID];
-          v8 = [v15 containsObject:v13];
+          calendars2 = [self calendars];
+          calendar = [v5 calendar];
+          cADObjectID = [calendar CADObjectID];
+          v8 = [calendars2 containsObject:cADObjectID];
         }
 
         else

@@ -1,7 +1,7 @@
 @interface DBGData
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withData:(id)a3;
-- (DBGData)initWithData:(id)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withData:(id)data;
+- (DBGData)initWithData:(id)data;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -9,24 +9,24 @@
 
 @implementation DBGData
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[self alloc] initWithData:dataCopy];
 
   return v5;
 }
 
-- (DBGData)initWithData:(id)a3
+- (DBGData)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = DBGData;
   v6 = [(DBGData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
   }
 
   return v7;
@@ -34,8 +34,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGData *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGData *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -50,33 +50,33 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if ([a4 isEqualToString:@"public.data"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if ([format isEqualToString:@"public.data"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v8 dbgDataValue];
+    dbgDataValue = [valueCopy dbgDataValue];
   }
 
   else
   {
-    v9 = 0;
-    if (!v8 && a5)
+    dbgDataValue = 0;
+    if (!valueCopy && error)
     {
-      v9 = 0;
-      *a5 = 0;
+      dbgDataValue = 0;
+      *error = 0;
     }
   }
 
-  v10 = [a1 withData:v9];
+  v10 = [self withData:dbgDataValue];
 
   return v10;
 }
 
 - (id)JSONCompatibleRepresentation
 {
-  v2 = [(DBGData *)self data];
-  v3 = [v2 base64EncodedStringWithOptions:0];
+  data = [(DBGData *)self data];
+  v3 = [data base64EncodedStringWithOptions:0];
 
   return v3;
 }

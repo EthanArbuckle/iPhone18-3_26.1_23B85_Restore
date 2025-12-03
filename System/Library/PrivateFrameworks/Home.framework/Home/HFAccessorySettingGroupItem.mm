@@ -1,39 +1,39 @@
 @interface HFAccessorySettingGroupItem
 - (BOOL)_useManagedConfigurationForProfiles;
 - (BOOL)_validateKeyPathDependencies;
-- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)a3 usageOptions:(id)a4;
-- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)a3 usageOptions:(id)a4 entity:(id)a5;
-- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)a3 usageOptions:(id)a4 group:(id)a5;
-- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)a3 usageOptions:(id)a4 selectionSetting:(id)a5;
+- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)vendor usageOptions:(id)options;
+- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)vendor usageOptions:(id)options entity:(id)entity;
+- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)vendor usageOptions:(id)options group:(id)group;
+- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)vendor usageOptions:(id)options selectionSetting:(id)setting;
 - (NSString)settingKeyPath;
 - (id)_displayTitle;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_decorateHiddenOrDisabled:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_decorateHiddenOrDisabled:(id)disabled;
 @end
 
 @implementation HFAccessorySettingGroupItem
 
-- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)a3 usageOptions:(id)a4
+- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)vendor usageOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 settings];
-  v9 = [v8 rootGroup];
+  optionsCopy = options;
+  vendorCopy = vendor;
+  settings = [vendorCopy settings];
+  rootGroup = [settings rootGroup];
 
-  v10 = [(HFAccessorySettingGroupItem *)self initWithHomeKitSettingsVendor:v7 usageOptions:v6 group:v9];
+  v10 = [(HFAccessorySettingGroupItem *)self initWithHomeKitSettingsVendor:vendorCopy usageOptions:optionsCopy group:rootGroup];
   return v10;
 }
 
-- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)a3 usageOptions:(id)a4 entity:(id)a5
+- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)vendor usageOptions:(id)options entity:(id)entity
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  vendorCopy = vendor;
+  optionsCopy = options;
+  entityCopy = entity;
+  if (!vendorCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingGroupItem.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"homeKitSettingsVendor"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingGroupItem.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"homeKitSettingsVendor"}];
   }
 
   v17.receiver = self;
@@ -42,23 +42,23 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_entity, a5);
-    objc_storeStrong(&v14->_homeKitSettingsVendor, a3);
-    objc_storeStrong(&v14->_usageOptions, a4);
+    objc_storeStrong(&v13->_entity, entity);
+    objc_storeStrong(&v14->_homeKitSettingsVendor, vendor);
+    objc_storeStrong(&v14->_usageOptions, options);
   }
 
   return v14;
 }
 
-- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)a3 usageOptions:(id)a4 group:(id)a5
+- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)vendor usageOptions:(id)options group:(id)group
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  vendorCopy = vendor;
+  optionsCopy = options;
+  groupCopy = group;
+  v12 = groupCopy;
+  if (vendorCopy)
   {
-    if (v11)
+    if (groupCopy)
     {
       goto LABEL_3;
     }
@@ -66,8 +66,8 @@
 
   else
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingGroupItem.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"homeKitSettingsVendor"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingGroupItem.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"homeKitSettingsVendor"}];
 
     if (v12)
     {
@@ -75,35 +75,35 @@
     }
   }
 
-  v22 = [MEMORY[0x277CCA890] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingGroupItem.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"group"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingGroupItem.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"group"}];
 
 LABEL_3:
-  v13 = [v12 keyPath];
-  v14 = [v9 settings];
-  v15 = [v14 hf_codex];
-  v16 = [v15 hf_nodeWithKeyPath:v13];
-  v17 = [v16 representedObject];
+  keyPath = [v12 keyPath];
+  settings = [vendorCopy settings];
+  hf_codex = [settings hf_codex];
+  v16 = [hf_codex hf_nodeWithKeyPath:keyPath];
+  representedObject = [v16 representedObject];
 
-  v18 = [(HFAccessorySettingGroupItem *)self initWithHomeKitSettingsVendor:v9 usageOptions:v10 entity:v17];
+  v18 = [(HFAccessorySettingGroupItem *)self initWithHomeKitSettingsVendor:vendorCopy usageOptions:optionsCopy entity:representedObject];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_settingGroup, a5);
+    objc_storeStrong(&v18->_settingGroup, group);
   }
 
   return v19;
 }
 
-- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)a3 usageOptions:(id)a4 selectionSetting:(id)a5
+- (HFAccessorySettingGroupItem)initWithHomeKitSettingsVendor:(id)vendor usageOptions:(id)options selectionSetting:(id)setting
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  vendorCopy = vendor;
+  optionsCopy = options;
+  settingCopy = setting;
+  v12 = settingCopy;
+  if (vendorCopy)
   {
-    if (v11)
+    if (settingCopy)
     {
       goto LABEL_3;
     }
@@ -111,8 +111,8 @@ LABEL_3:
 
   else
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingGroupItem.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"homeKitSettingsVendor"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingGroupItem.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"homeKitSettingsVendor"}];
 
     if (v12)
     {
@@ -120,56 +120,56 @@ LABEL_3:
     }
   }
 
-  v22 = [MEMORY[0x277CCA890] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingGroupItem.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"selectionSetting"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingGroupItem.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"selectionSetting"}];
 
 LABEL_3:
-  v13 = [v12 keyPath];
-  v14 = [v9 settings];
-  v15 = [v14 hf_codex];
-  v16 = [v15 hf_nodeWithKeyPath:v13];
-  v17 = [v16 representedObject];
+  keyPath = [v12 keyPath];
+  settings = [vendorCopy settings];
+  hf_codex = [settings hf_codex];
+  v16 = [hf_codex hf_nodeWithKeyPath:keyPath];
+  representedObject = [v16 representedObject];
 
-  v18 = [(HFAccessorySettingGroupItem *)self initWithHomeKitSettingsVendor:v9 usageOptions:v10 entity:v17];
+  v18 = [(HFAccessorySettingGroupItem *)self initWithHomeKitSettingsVendor:vendorCopy usageOptions:optionsCopy entity:representedObject];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_selectionSetting, a5);
+    objc_storeStrong(&v18->_selectionSetting, setting);
   }
 
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(HFAccessorySettingGroupItem *)self selectionSetting];
+  selectionSetting = [(HFAccessorySettingGroupItem *)self selectionSetting];
 
-  if (v5)
+  if (selectionSetting)
   {
-    v6 = [objc_opt_class() allocWithZone:a3];
-    v7 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
-    v8 = [(HFAccessorySettingGroupItem *)self usageOptions];
-    v9 = [(HFAccessorySettingGroupItem *)self selectionSetting];
-    v10 = [v6 initWithHomeKitSettingsVendor:v7 usageOptions:v8 selectionSetting:v9];
+    v6 = [objc_opt_class() allocWithZone:zone];
+    homeKitSettingsVendor = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+    usageOptions = [(HFAccessorySettingGroupItem *)self usageOptions];
+    selectionSetting2 = [(HFAccessorySettingGroupItem *)self selectionSetting];
+    v10 = [v6 initWithHomeKitSettingsVendor:homeKitSettingsVendor usageOptions:usageOptions selectionSetting:selectionSetting2];
   }
 
   else
   {
-    v11 = [(HFAccessorySettingGroupItem *)self settingGroup];
+    settingGroup = [(HFAccessorySettingGroupItem *)self settingGroup];
 
-    v12 = [objc_opt_class() allocWithZone:a3];
-    v7 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
-    v8 = [(HFAccessorySettingGroupItem *)self usageOptions];
-    if (v11)
+    v12 = [objc_opt_class() allocWithZone:zone];
+    homeKitSettingsVendor = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+    usageOptions = [(HFAccessorySettingGroupItem *)self usageOptions];
+    if (settingGroup)
     {
-      v9 = [(HFAccessorySettingGroupItem *)self settingGroup];
-      v10 = [v12 initWithHomeKitSettingsVendor:v7 usageOptions:v8 group:v9];
+      selectionSetting2 = [(HFAccessorySettingGroupItem *)self settingGroup];
+      v10 = [v12 initWithHomeKitSettingsVendor:homeKitSettingsVendor usageOptions:usageOptions group:selectionSetting2];
     }
 
     else
     {
-      v9 = [(HFAccessorySettingGroupItem *)self entity];
-      v10 = [v12 initWithHomeKitSettingsVendor:v7 usageOptions:v8 entity:v9];
+      selectionSetting2 = [(HFAccessorySettingGroupItem *)self entity];
+      v10 = [v12 initWithHomeKitSettingsVendor:homeKitSettingsVendor usageOptions:usageOptions entity:selectionSetting2];
     }
   }
 
@@ -181,18 +181,18 @@ LABEL_3:
 
 - (NSString)settingKeyPath
 {
-  v3 = [(HFAccessorySettingGroupItem *)self selectionSetting];
+  selectionSetting = [(HFAccessorySettingGroupItem *)self selectionSetting];
 
-  if (v3)
+  if (selectionSetting)
   {
-    v4 = [(HFAccessorySettingGroupItem *)self selectionSetting];
+    selectionSetting2 = [(HFAccessorySettingGroupItem *)self selectionSetting];
   }
 
   else
   {
-    v5 = [(HFAccessorySettingGroupItem *)self settingGroup];
+    settingGroup = [(HFAccessorySettingGroupItem *)self settingGroup];
 
-    if (v5)
+    if (settingGroup)
     {
       [(HFAccessorySettingGroupItem *)self settingGroup];
     }
@@ -201,101 +201,101 @@ LABEL_3:
     {
       [(HFAccessorySettingGroupItem *)self entity];
     }
-    v4 = ;
+    selectionSetting2 = ;
   }
 
-  v6 = v4;
-  v7 = [v4 keyPath];
+  v6 = selectionSetting2;
+  keyPath = [selectionSetting2 keyPath];
 
-  return v7;
+  return keyPath;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = self;
+  selfCopy = self;
   v84 = *MEMORY[0x277D85DE8];
-  v5 = [(HFAccessorySettingGroupItem *)self entity];
-  v6 = [(HFAccessorySettingGroupItem *)v4 settingKeyPath];
+  entity = [(HFAccessorySettingGroupItem *)self entity];
+  settingKeyPath = [(HFAccessorySettingGroupItem *)selfCopy settingKeyPath];
   v7 = objc_alloc_init(HFMutableItemUpdateOutcome);
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"AccessoryDetails.%@", v6];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"AccessoryDetails.%@", settingKeyPath];
   [(HFMutableItemUpdateOutcome *)v7 setObject:v8 forKeyedSubscript:@"HFResultDisplayAccessibilityIDKey"];
 
   [(HFMutableItemUpdateOutcome *)v7 setObject:&unk_282523C88 forKeyedSubscript:@"state"];
-  v9 = [(HFAccessorySettingGroupItem *)v4 entity];
-  v10 = [v9 previewValueKeyPath];
-  v11 = v10;
-  if (v10)
+  entity2 = [(HFAccessorySettingGroupItem *)selfCopy entity];
+  previewValueKeyPath = [entity2 previewValueKeyPath];
+  v11 = previewValueKeyPath;
+  if (previewValueKeyPath)
   {
-    v12 = v10;
+    settingKeyPath2 = previewValueKeyPath;
   }
 
   else
   {
-    v12 = [(HFAccessorySettingGroupItem *)v4 settingKeyPath];
+    settingKeyPath2 = [(HFAccessorySettingGroupItem *)selfCopy settingKeyPath];
   }
 
-  v13 = v12;
+  v13 = settingKeyPath2;
 
   v14 = [MEMORY[0x277CBEB98] setWithObject:v13];
   [(HFMutableItemUpdateOutcome *)v7 setObject:v14 forKeyedSubscript:@"HFResultSettingKeyPathsDependenciesKey"];
 
-  v15 = [(HFAccessorySettingGroupItem *)v4 homeKitSettingsVendor];
-  v16 = [v15 homekitObjectIdentifiers];
-  [(HFMutableItemUpdateOutcome *)v7 setObject:v16 forKeyedSubscript:@"HFResultSettingParentIdentifiersDependenciesKey"];
+  homeKitSettingsVendor = [(HFAccessorySettingGroupItem *)selfCopy homeKitSettingsVendor];
+  homekitObjectIdentifiers = [homeKitSettingsVendor homekitObjectIdentifiers];
+  [(HFMutableItemUpdateOutcome *)v7 setObject:homekitObjectIdentifiers forKeyedSubscript:@"HFResultSettingParentIdentifiersDependenciesKey"];
 
   v17 = MEMORY[0x277CBEB98];
-  v18 = [(HFAccessorySettingGroupItem *)v4 homeKitSettingsVendor];
-  v19 = [v17 setWithObject:v18];
+  homeKitSettingsVendor2 = [(HFAccessorySettingGroupItem *)selfCopy homeKitSettingsVendor];
+  v19 = [v17 setWithObject:homeKitSettingsVendor2];
   [(HFMutableItemUpdateOutcome *)v7 setObject:v19 forKeyedSubscript:@"dependentHomeKitObjects"];
 
   [(HFMutableItemUpdateOutcome *)v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"remoteAccessDependency"];
-  v20 = [(HFAccessorySettingGroupItem *)v4 homeKitSettingsVendor];
-  [(HFMutableItemUpdateOutcome *)v7 setObject:v20 forKeyedSubscript:@"HFResultHomeKitSettingsVendorKey"];
+  homeKitSettingsVendor3 = [(HFAccessorySettingGroupItem *)selfCopy homeKitSettingsVendor];
+  [(HFMutableItemUpdateOutcome *)v7 setObject:homeKitSettingsVendor3 forKeyedSubscript:@"HFResultHomeKitSettingsVendorKey"];
 
-  v21 = [v5 previewValueKeyPath];
+  previewValueKeyPath2 = [entity previewValueKeyPath];
   v22 = 0x277CCA000;
-  if (v21)
+  if (previewValueKeyPath2)
   {
   }
 
-  else if (([v5 previewAccessory] & 1) == 0)
+  else if (([entity previewAccessory] & 1) == 0)
   {
     goto LABEL_39;
   }
 
-  v23 = [v5 previewAccessory];
-  v24 = [(HFAccessorySettingGroupItem *)v4 homeKitSettingsVendor];
-  v25 = v24;
+  previewAccessory = [entity previewAccessory];
+  homeKitSettingsVendor4 = [(HFAccessorySettingGroupItem *)selfCopy homeKitSettingsVendor];
+  v25 = homeKitSettingsVendor4;
   aSelector = a2;
   v26 = v13;
-  if (v23)
+  if (previewAccessory)
   {
-    v27 = 0;
+    hf_isBooleanSetting = 0;
   }
 
   else
   {
-    v28 = [v24 hf_settingsValueManager];
+    hf_settingsValueManager = [homeKitSettingsVendor4 hf_settingsValueManager];
 
-    v29 = [(HFAccessorySettingGroupItem *)v4 homeKitSettingsVendor];
-    v30 = [v29 settings];
-    v31 = [v5 previewValueKeyPath];
-    v32 = [v30 hf_accessorySettingAtKeyPath:v31];
+    homeKitSettingsVendor5 = [(HFAccessorySettingGroupItem *)selfCopy homeKitSettingsVendor];
+    settings = [homeKitSettingsVendor5 settings];
+    previewValueKeyPath3 = [entity previewValueKeyPath];
+    v32 = [settings hf_accessorySettingAtKeyPath:previewValueKeyPath3];
 
-    v25 = [v28 valueForSetting:v32];
-    v27 = [v32 hf_isBooleanSetting];
+    v25 = [hf_settingsValueManager valueForSetting:v32];
+    hf_isBooleanSetting = [v32 hf_isBooleanSetting];
   }
 
   v33 = +[HFHomeKitDispatcher sharedDispatcher];
-  v34 = [v33 homeManager];
-  v35 = [v34 hasOptedToHH2];
+  homeManager = [v33 homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-  if (v35 && (([v6 isEqualToString:@"root.siri.recognitionLanguage"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"root.siri.outputVoice")))
+  if (hasOptedToHH2 && (([settingKeyPath isEqualToString:@"root.siri.recognitionLanguage"] & 1) != 0 || objc_msgSend(settingKeyPath, "isEqualToString:", @"root.siri.outputVoice")))
   {
-    v36 = [(HFAccessorySettingGroupItem *)v4 homeKitSettingsVendor];
-    if ([v36 conformsToProtocol:&unk_282584A38])
+    homeKitSettingsVendor6 = [(HFAccessorySettingGroupItem *)selfCopy homeKitSettingsVendor];
+    if ([homeKitSettingsVendor6 conformsToProtocol:&unk_282584A38])
     {
-      v37 = v36;
+      v37 = homeKitSettingsVendor6;
     }
 
     else
@@ -305,9 +305,9 @@ LABEL_3:
 
     v38 = v37;
 
-    v39 = [v38 hf_siriLanguageOptionsManager];
+    hf_siriLanguageOptionsManager = [v38 hf_siriLanguageOptionsManager];
 
-    if (v39)
+    if (hf_siriLanguageOptionsManager)
     {
       v40 = HFLogForCategory(0);
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -316,29 +316,29 @@ LABEL_3:
         *buf = 138412546;
         v81 = v41;
         v82 = 2112;
-        v83 = v6;
+        v83 = settingKeyPath;
         _os_log_impl(&dword_20D9BF000, v40, OS_LOG_TYPE_DEFAULT, "%@ language setting %@ is being formatted, fetching the option from the siri endpoint manager instead", buf, 0x16u);
       }
 
-      v42 = [v39 selectedLanguageOption];
+      selectedLanguageOption = [hf_siriLanguageOptionsManager selectedLanguageOption];
 
-      v25 = v42;
+      v25 = selectedLanguageOption;
     }
   }
 
-  v43 = [v5 previewValueFormatter];
-  v44 = v43;
+  previewValueFormatter = [entity previewValueFormatter];
+  v44 = previewValueFormatter;
   v13 = v26;
-  if (v43)
+  if (previewValueFormatter)
   {
-    v45 = [v43 stringForObjectValue:v25];
+    v45 = [previewValueFormatter stringForObjectValue:v25];
   }
 
   else
   {
     if (v25)
     {
-      v47 = v27;
+      v47 = hf_isBooleanSetting;
     }
 
     else
@@ -397,58 +397,58 @@ LABEL_35:
 
   v22 = 0x277CCA000uLL;
 LABEL_39:
-  v54 = [(HFAccessorySettingGroupItem *)v4 _displayTitle];
-  [(HFMutableItemUpdateOutcome *)v7 setObject:v54 forKeyedSubscript:@"title"];
+  _displayTitle = [(HFAccessorySettingGroupItem *)selfCopy _displayTitle];
+  [(HFMutableItemUpdateOutcome *)v7 setObject:_displayTitle forKeyedSubscript:@"title"];
 
-  [(HFMutableItemUpdateOutcome *)v7 setObject:v6 forKeyedSubscript:@"HFAccessorySettingGroupKeyPathKey"];
-  v55 = [(HFAccessorySettingGroupItem *)v4 settingGroup];
+  [(HFMutableItemUpdateOutcome *)v7 setObject:settingKeyPath forKeyedSubscript:@"HFAccessorySettingGroupKeyPathKey"];
+  settingGroup = [(HFAccessorySettingGroupItem *)selfCopy settingGroup];
 
-  if (v55)
+  if (settingGroup)
   {
-    v56 = [(HFAccessorySettingGroupItem *)v4 settingGroup];
+    settingGroup2 = [(HFAccessorySettingGroupItem *)selfCopy settingGroup];
     v57 = @"HFAccessorySettingGroupRepresentitiveObjectKey";
   }
 
   else
   {
-    v58 = [(HFAccessorySettingGroupItem *)v4 selectionSetting];
+    selectionSetting = [(HFAccessorySettingGroupItem *)selfCopy selectionSetting];
 
-    if (!v58)
+    if (!selectionSetting)
     {
       goto LABEL_44;
     }
 
-    v59 = [(HFAccessorySettingGroupItem *)v4 selectionSetting];
-    [(HFMutableItemUpdateOutcome *)v7 setObject:v59 forKeyedSubscript:@"HFAccessorySettingGroupRepresentitiveObjectKey"];
+    selectionSetting2 = [(HFAccessorySettingGroupItem *)selfCopy selectionSetting];
+    [(HFMutableItemUpdateOutcome *)v7 setObject:selectionSetting2 forKeyedSubscript:@"HFAccessorySettingGroupRepresentitiveObjectKey"];
 
-    v56 = [(HFAccessorySettingGroupItem *)v4 selectionSetting];
+    settingGroup2 = [(HFAccessorySettingGroupItem *)selfCopy selectionSetting];
     v57 = @"HFAccessorySettingValueKey";
   }
 
-  [(HFMutableItemUpdateOutcome *)v7 setObject:v56 forKeyedSubscript:v57];
+  [(HFMutableItemUpdateOutcome *)v7 setObject:settingGroup2 forKeyedSubscript:v57];
 
 LABEL_44:
   v60 = *(v22 + 2992);
-  v61 = [(HFAccessorySettingGroupItem *)v4 entity];
-  v62 = [v60 numberWithInteger:{objc_msgSend(v61, "interfaceModality")}];
+  entity3 = [(HFAccessorySettingGroupItem *)selfCopy entity];
+  v62 = [v60 numberWithInteger:{objc_msgSend(entity3, "interfaceModality")}];
   [(HFMutableItemUpdateOutcome *)v7 setObject:v62 forKeyedSubscript:@"HFAccessorySettingInterfaceModalityKey"];
 
-  if (v5)
+  if (entity)
   {
-    [(HFMutableItemUpdateOutcome *)v7 setObject:v5 forKeyedSubscript:@"HFAccessorySettingsEntityKey"];
+    [(HFMutableItemUpdateOutcome *)v7 setObject:entity forKeyedSubscript:@"HFAccessorySettingsEntityKey"];
   }
 
-  if ([v5 interfaceModality] == 9)
+  if ([entity interfaceModality] == 9)
   {
-    v63 = [(HFAccessorySettingGroupItem *)v4 homeKitSettingsVendor];
-    v64 = [v63 hf_settingsAdapterManager];
-    v65 = [(HFAccessorySettingGroupItem *)v4 entity];
-    [v65 adapterIdentifier];
-    aSelectorb = v4;
-    v66 = v5;
-    v67 = v6;
+    homeKitSettingsVendor7 = [(HFAccessorySettingGroupItem *)selfCopy homeKitSettingsVendor];
+    hf_settingsAdapterManager = [homeKitSettingsVendor7 hf_settingsAdapterManager];
+    entity4 = [(HFAccessorySettingGroupItem *)selfCopy entity];
+    [entity4 adapterIdentifier];
+    aSelectorb = selfCopy;
+    v66 = entity;
+    v67 = settingKeyPath;
     v69 = v68 = v13;
-    v70 = [v64 adapterForIdentifier:v69];
+    v70 = [hf_settingsAdapterManager adapterForIdentifier:v69];
     if ([v70 conformsToProtocol:&unk_282567A78])
     {
       v71 = v70;
@@ -462,16 +462,16 @@ LABEL_44:
     v72 = v71;
 
     v13 = v68;
-    v6 = v67;
-    v5 = v66;
-    v4 = aSelectorb;
+    settingKeyPath = v67;
+    entity = v66;
+    selfCopy = aSelectorb;
 
-    v73 = [v72 inProgressButtonPressFutureForEntity:v5];
+    v73 = [v72 inProgressButtonPressFutureForEntity:entity];
 
     [(HFMutableItemUpdateOutcome *)v7 setObject:v73 forKeyedSubscript:@"HFResultActionFutureKey"];
   }
 
-  [(HFAccessorySettingGroupItem *)v4 _decorateHiddenOrDisabled:v7];
+  [(HFAccessorySettingGroupItem *)selfCopy _decorateHiddenOrDisabled:v7];
   v74 = [MEMORY[0x277D2C900] futureWithResult:v7];
 
   v75 = *MEMORY[0x277D85DE8];
@@ -481,33 +481,33 @@ LABEL_44:
 
 - (id)_displayTitle
 {
-  v3 = [(HFAccessorySettingGroupItem *)self entity];
-  v4 = [v3 overrideLocalizedTitleKey];
+  entity = [(HFAccessorySettingGroupItem *)self entity];
+  overrideLocalizedTitleKey = [entity overrideLocalizedTitleKey];
 
-  if (v4)
+  if (overrideLocalizedTitleKey)
   {
-    v5 = [(HFAccessorySettingGroupItem *)self entity];
-    v6 = [v5 overrideLocalizedTitleKey];
-    v7 = _HFLocalizedStringWithDefaultValue(v6, v6, 1);
+    entity2 = [(HFAccessorySettingGroupItem *)self entity];
+    overrideLocalizedTitleKey2 = [entity2 overrideLocalizedTitleKey];
+    v7 = _HFLocalizedStringWithDefaultValue(overrideLocalizedTitleKey2, overrideLocalizedTitleKey2, 1);
   }
 
   else
   {
-    v8 = [(HFAccessorySettingGroupItem *)self settingGroup];
+    settingGroup = [(HFAccessorySettingGroupItem *)self settingGroup];
 
-    if (v8)
+    if (settingGroup)
     {
-      v5 = [(HFAccessorySettingGroupItem *)self settingGroup];
-      [v5 localizedTitle];
+      entity2 = [(HFAccessorySettingGroupItem *)self settingGroup];
+      [entity2 localizedTitle];
     }
 
     else
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = [(HFAccessorySettingGroupItem *)self settingKeyPath];
-      v5 = [v9 stringWithFormat:@"HFAccessorySettingsGroupTitle-%@", v10];
+      settingKeyPath = [(HFAccessorySettingGroupItem *)self settingKeyPath];
+      entity2 = [v9 stringWithFormat:@"HFAccessorySettingsGroupTitle-%@", settingKeyPath];
 
-      _HFLocalizedStringWithDefaultValue(v5, 0, 0);
+      _HFLocalizedStringWithDefaultValue(entity2, 0, 0);
     }
     v7 = ;
   }
@@ -529,23 +529,23 @@ LABEL_44:
 
 - (BOOL)_validateKeyPathDependencies
 {
-  v3 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
-  v4 = [v3 settings];
+  homeKitSettingsVendor = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+  settings = [homeKitSettingsVendor settings];
 
-  v5 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
-  v6 = [v5 hf_settingsValueManager];
+  homeKitSettingsVendor2 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+  hf_settingsValueManager = [homeKitSettingsVendor2 hf_settingsValueManager];
 
-  v7 = [(HFAccessorySettingGroupItem *)self entity];
-  v8 = [v7 BOOLeanKeyPathDependencies];
-  if ([v8 count])
+  entity = [(HFAccessorySettingGroupItem *)self entity];
+  bOOLeanKeyPathDependencies = [entity BOOLeanKeyPathDependencies];
+  if ([bOOLeanKeyPathDependencies count])
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __59__HFAccessorySettingGroupItem__validateKeyPathDependencies__block_invoke;
     v11[3] = &unk_277DF3DB0;
-    v12 = v4;
-    v13 = v6;
-    v9 = [v8 na_all:v11];
+    v12 = settings;
+    v13 = hf_settingsValueManager;
+    v9 = [bOOLeanKeyPathDependencies na_all:v11];
   }
 
   else
@@ -631,56 +631,56 @@ LABEL_15:
   return v18;
 }
 
-- (void)_decorateHiddenOrDisabled:(id)a3
+- (void)_decorateHiddenOrDisabled:(id)disabled
 {
-  v4 = a3;
-  v5 = [(HFAccessorySettingGroupItem *)self entity];
-  v6 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
-  v7 = [v6 hf_home];
-  v71 = [v7 hf_currentUserIsAdministrator];
+  disabledCopy = disabled;
+  entity = [(HFAccessorySettingGroupItem *)self entity];
+  homeKitSettingsVendor = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+  hf_home = [homeKitSettingsVendor hf_home];
+  hf_currentUserIsAdministrator = [hf_home hf_currentUserIsAdministrator];
 
-  v8 = [(HFAccessorySettingGroupItem *)self usageOptions];
-  v9 = [v8 objectForKeyedSubscript:?];
-  v10 = [v9 BOOLValue];
+  usageOptions = [(HFAccessorySettingGroupItem *)self usageOptions];
+  v9 = [usageOptions objectForKeyedSubscript:?];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [(HFAccessorySettingGroupItem *)self entity];
-  v12 = [v11 adapterIdentifier];
+  entity2 = [(HFAccessorySettingGroupItem *)self entity];
+  adapterIdentifier = [entity2 adapterIdentifier];
 
-  if (!v12)
+  if (!adapterIdentifier)
   {
     v25 = 0;
     goto LABEL_21;
   }
 
   v13 = +[HFHomeKitDispatcher sharedDispatcher];
-  v14 = [v13 homeManager];
-  if (![v14 hasOptedToHH2])
+  homeManager = [v13 homeManager];
+  if (![homeManager hasOptedToHH2])
   {
     goto LABEL_12;
   }
 
-  v15 = v10;
-  v16 = v5;
-  v17 = [(HFAccessorySettingGroupItem *)self entity];
-  v18 = [v17 adapterIdentifier];
-  if (![v18 isEqualToString:@"SiriLanguageAdapter"])
+  v15 = bOOLValue;
+  v16 = entity;
+  entity3 = [(HFAccessorySettingGroupItem *)self entity];
+  adapterIdentifier2 = [entity3 adapterIdentifier];
+  if (![adapterIdentifier2 isEqualToString:@"SiriLanguageAdapter"])
   {
 
-    v5 = v16;
-    v10 = v15;
+    entity = v16;
+    bOOLValue = v15;
 LABEL_12:
 
 LABEL_13:
-    v26 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
-    v27 = [v26 hf_settingsAdapterManager];
-    v28 = [(HFAccessorySettingGroupItem *)self entity];
-    v29 = [v28 adapterIdentifier];
-    v30 = [v27 adapterForIdentifier:v29];
+    homeKitSettingsVendor2 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+    hf_settingsAdapterManager = [homeKitSettingsVendor2 hf_settingsAdapterManager];
+    entity4 = [(HFAccessorySettingGroupItem *)self entity];
+    adapterIdentifier3 = [entity4 adapterIdentifier];
+    v30 = [hf_settingsAdapterManager adapterForIdentifier:adapterIdentifier3];
 
-    v24 = v30;
-    if ([v24 conformsToProtocol:&unk_282536168])
+    hf_siriLanguageOptionsManager = v30;
+    if ([hf_siriLanguageOptionsManager conformsToProtocol:&unk_282536168])
     {
-      v31 = v24;
+      v31 = hf_siriLanguageOptionsManager;
     }
 
     else
@@ -692,7 +692,7 @@ LABEL_13:
 
     if (!v32)
     {
-      v24 = 0;
+      hf_siriLanguageOptionsManager = 0;
       v25 = 0;
       goto LABEL_20;
     }
@@ -700,21 +700,21 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v19 = [(HFAccessorySettingGroupItem *)self entity];
-  v20 = [v19 keyPath];
-  v69 = [v20 isEqualToString:@"root.siri.personalRequests"];
+  entity5 = [(HFAccessorySettingGroupItem *)self entity];
+  keyPath = [entity5 keyPath];
+  v69 = [keyPath isEqualToString:@"root.siri.personalRequests"];
 
-  v5 = v16;
-  v10 = v15;
+  entity = v16;
+  bOOLValue = v15;
   if (v69)
   {
     goto LABEL_13;
   }
 
-  v21 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
-  if ([v21 conformsToProtocol:&unk_282584A38])
+  homeKitSettingsVendor3 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+  if ([homeKitSettingsVendor3 conformsToProtocol:&unk_282584A38])
   {
-    v22 = v21;
+    v22 = homeKitSettingsVendor3;
   }
 
   else
@@ -724,26 +724,26 @@ LABEL_13:
 
   v23 = v22;
 
-  v24 = [v23 hf_siriLanguageOptionsManager];
+  hf_siriLanguageOptionsManager = [v23 hf_siriLanguageOptionsManager];
 
-  if (!v24)
+  if (!hf_siriLanguageOptionsManager)
   {
     [0 conformsToProtocol:&unk_282536168];
-    v33 = 0;
+    entity6 = 0;
     v25 = 0;
     goto LABEL_18;
   }
 
-  v24 = v24;
+  hf_siriLanguageOptionsManager = hf_siriLanguageOptionsManager;
 
 LABEL_17:
-  v33 = [(HFAccessorySettingGroupItem *)self entity];
-  v25 = [v24 shouldShowSettingsEntity:v33] ^ 1;
+  entity6 = [(HFAccessorySettingGroupItem *)self entity];
+  v25 = [hf_siriLanguageOptionsManager shouldShowSettingsEntity:entity6] ^ 1;
 LABEL_18:
 
 LABEL_20:
 LABEL_21:
-  if ((v71 | v10))
+  if ((hf_currentUserIsAdministrator | bOOLValue))
   {
     if ([(HFAccessorySettingGroupItem *)self _validateKeyPathDependencies])
     {
@@ -752,24 +752,24 @@ LABEL_21:
 
     else
     {
-      v36 = [v5 requiresDependenciesToShowSetting];
-      v34 = v36 ^ 1;
-      v25 |= v36;
+      requiresDependenciesToShowSetting = [entity requiresDependenciesToShowSetting];
+      v34 = requiresDependenciesToShowSetting ^ 1;
+      v25 |= requiresDependenciesToShowSetting;
     }
 
-    [v4 setObject:&unk_282523C88 forKeyedSubscript:@"state"];
-    v37 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
-    v38 = [v37 settings];
-    v39 = [v38 isControllable];
+    [disabledCopy setObject:&unk_282523C88 forKeyedSubscript:@"state"];
+    homeKitSettingsVendor4 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+    settings = [homeKitSettingsVendor4 settings];
+    isControllable = [settings isControllable];
 
-    v35 = v39 ^ 1 | v34;
-    v40 = [v5 userInfo];
-    v41 = [v40 objectForKeyedSubscript:@"TargetViewControllerIdentifier"];
+    v35 = isControllable ^ 1 | v34;
+    userInfo = [entity userInfo];
+    v41 = [userInfo objectForKeyedSubscript:@"TargetViewControllerIdentifier"];
     if (v41)
     {
-      v42 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
-      v43 = [v42 settings];
-      v44 = [v43 isControllable] ^ 1;
+      homeKitSettingsVendor5 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+      settings2 = [homeKitSettingsVendor5 settings];
+      v44 = [settings2 isControllable] ^ 1;
 
       v35 |= v44;
     }
@@ -781,7 +781,7 @@ LABEL_21:
     v25 = 1;
   }
 
-  v45 = [v4 objectForKeyedSubscript:@"HFAccessorySettingGroupKeyPathKey"];
+  v45 = [disabledCopy objectForKeyedSubscript:@"HFAccessorySettingGroupKeyPathKey"];
   if ([v45 isEqual:@"root.general.profiles"])
   {
     if (([(HFAccessorySettingGroupItem *)self _useManagedConfigurationForProfiles]| v25))
@@ -811,18 +811,18 @@ LABEL_31:
 LABEL_38:
   if ([v45 isEqual:@"root.music.playbackInfluencesForYou"])
   {
-    v47 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+    homeKitSettingsVendor6 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v70 = v5;
+      v70 = entity;
       objc_opt_class();
-      v49 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+      homeKitSettingsVendor7 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
       if (objc_opt_isKindOfClass())
       {
-        v50 = v49;
+        v50 = homeKitSettingsVendor7;
       }
 
       else
@@ -832,16 +832,16 @@ LABEL_38:
 
       v51 = v50;
 
-      v52 = [v51 accessory];
+      accessory = [v51 accessory];
 
-      v53 = [v52 softwareVersion];
-      if (v53)
+      softwareVersion = [accessory softwareVersion];
+      if (softwareVersion)
       {
-        v54 = [v52 softwareVersion];
+        softwareVersion2 = [accessory softwareVersion];
         v72 = *MEMORY[0x277D0F608];
         v73 = *(MEMORY[0x277D0F608] + 16);
         v55 = [MEMORY[0x277D0F8F8] versionFromOperatingSystemVersion:&v72];
-        v56 = [v54 isAtLeastVersion:v55];
+        v56 = [softwareVersion2 isAtLeastVersion:v55];
       }
 
       else
@@ -850,22 +850,22 @@ LABEL_38:
       }
 
       v46 = v46 | v56;
-      v5 = v70;
+      entity = v70;
     }
 
     else
     {
-      v57 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+      homeKitSettingsVendor8 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
       objc_opt_class();
       v58 = objc_opt_isKindOfClass();
 
       if (v58)
       {
         objc_opt_class();
-        v59 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+        homeKitSettingsVendor9 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
         if (objc_opt_isKindOfClass())
         {
-          v60 = v59;
+          v60 = homeKitSettingsVendor9;
         }
 
         else
@@ -875,36 +875,36 @@ LABEL_38:
 
         v61 = v60;
 
-        v62 = [v61 mediaProfiles];
+        mediaProfiles = [v61 mediaProfiles];
 
-        LODWORD(v61) = [v62 na_any:&__block_literal_global_69];
+        LODWORD(v61) = [mediaProfiles na_any:&__block_literal_global_69];
         v46 = v46 | v61;
       }
     }
   }
 
   v63 = [MEMORY[0x277CCABB0] numberWithBool:v46];
-  [v4 setObject:v63 forKeyedSubscript:@"hidden"];
+  [disabledCopy setObject:v63 forKeyedSubscript:@"hidden"];
 
   v64 = [MEMORY[0x277CCABB0] numberWithBool:v35 & 1];
-  [v4 setObject:v64 forKeyedSubscript:@"isDisabled"];
+  [disabledCopy setObject:v64 forKeyedSubscript:@"isDisabled"];
 
   if ((v35 & 1) == 0)
   {
-    v65 = [(HFAccessorySettingGroupItem *)self usageOptions];
-    v66 = [v65 objectForKeyedSubscript:@"HMSettingDisplayOption_AllowNonAdminAccess"];
-    v67 = [v66 BOOLValue];
+    usageOptions2 = [(HFAccessorySettingGroupItem *)self usageOptions];
+    v66 = [usageOptions2 objectForKeyedSubscript:@"HMSettingDisplayOption_AllowNonAdminAccess"];
+    bOOLValue2 = [v66 BOOLValue];
 
-    if (v67)
+    if (bOOLValue2)
     {
-      [v4 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"shouldDisableForNonAdminUsers"];
+      [disabledCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"shouldDisableForNonAdminUsers"];
     }
   }
 
-  v68 = [MEMORY[0x277CCABB0] numberWithBool:v71];
-  [v4 setObject:v68 forKeyedSubscript:@"administrator"];
+  v68 = [MEMORY[0x277CCABB0] numberWithBool:hf_currentUserIsAdministrator];
+  [disabledCopy setObject:v68 forKeyedSubscript:@"administrator"];
 
-  [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"remoteAccessDependency"];
+  [disabledCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"remoteAccessDependency"];
 }
 
 uint64_t __57__HFAccessorySettingGroupItem__decorateHiddenOrDisabled___block_invoke(uint64_t a1, void *a2)
@@ -932,17 +932,17 @@ uint64_t __57__HFAccessorySettingGroupItem__decorateHiddenOrDisabled___block_inv
 
 - (BOOL)_useManagedConfigurationForProfiles
 {
-  v3 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+  homeKitSettingsVendor = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     objc_opt_class();
-    v5 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+    homeKitSettingsVendor2 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = homeKitSettingsVendor2;
     }
 
     else
@@ -950,12 +950,12 @@ uint64_t __57__HFAccessorySettingGroupItem__decorateHiddenOrDisabled___block_inv
       v6 = 0;
     }
 
-    v7 = v6;
+    anyObject = v6;
   }
 
   else
   {
-    v8 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+    homeKitSettingsVendor3 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
     objc_opt_class();
     v9 = objc_opt_isKindOfClass();
 
@@ -966,10 +966,10 @@ uint64_t __57__HFAccessorySettingGroupItem__decorateHiddenOrDisabled___block_inv
     }
 
     objc_opt_class();
-    v10 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
+    homeKitSettingsVendor4 = [(HFAccessorySettingGroupItem *)self homeKitSettingsVendor];
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = homeKitSettingsVendor4;
     }
 
     else
@@ -979,18 +979,18 @@ uint64_t __57__HFAccessorySettingGroupItem__decorateHiddenOrDisabled___block_inv
 
     v12 = v11;
 
-    v5 = [v12 mediaProfiles];
+    homeKitSettingsVendor2 = [v12 mediaProfiles];
 
-    v7 = [v5 anyObject];
+    anyObject = [homeKitSettingsVendor2 anyObject];
   }
 
-  v13 = v7;
+  v13 = anyObject;
 
 LABEL_13:
-  v14 = [v13 accessory];
-  v15 = [v14 supportsManagedConfigurationProfile];
+  accessory = [v13 accessory];
+  supportsManagedConfigurationProfile = [accessory supportsManagedConfigurationProfile];
 
-  return v15;
+  return supportsManagedConfigurationProfile;
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface PKApplePayTrustHashResponse
-- (PKApplePayTrustHashResponse)initWithCoder:(id)a3;
-- (PKApplePayTrustHashResponse)initWithData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKApplePayTrustHashResponse)initWithCoder:(id)coder;
+- (PKApplePayTrustHashResponse)initWithData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplePayTrustHashResponse
 
-- (PKApplePayTrustHashResponse)initWithData:(id)a3
+- (PKApplePayTrustHashResponse)initWithData:(id)data
 {
   v22 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = PKApplePayTrustHashResponse;
-  v3 = [(PKWebServiceResponse *)&v17 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v17 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [v6 PKStringForKey:@"referenceIdentifier"];
       referenceIdentifier = v4->_referenceIdentifier;
       v4->_referenceIdentifier = v7;
 
       v9 = [v6 PKStringForKey:@"nonce"];
 
-      v10 = [v9 pk_decodeHexadecimal];
+      pk_decodeHexadecimal = [v9 pk_decodeHexadecimal];
       nonce = v4->_nonce;
-      v4->_nonce = v10;
+      v4->_nonce = pk_decodeHexadecimal;
     }
 
     else
@@ -52,19 +52,19 @@
   return v4;
 }
 
-- (PKApplePayTrustHashResponse)initWithCoder:(id)a3
+- (PKApplePayTrustHashResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKApplePayTrustHashResponse;
-  v5 = [(PKWebServiceResponse *)&v11 initWithCoder:v4];
+  v5 = [(PKWebServiceResponse *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceIdentifier"];
     referenceIdentifier = v5->_referenceIdentifier;
     v5->_referenceIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
     nonce = v5->_nonce;
     v5->_nonce = v8;
   }
@@ -72,14 +72,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKApplePayTrustHashResponse;
-  v4 = a3;
-  [(PKWebServiceResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_referenceIdentifier forKey:{@"referenceIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_nonce forKey:@"nonce"];
+  coderCopy = coder;
+  [(PKWebServiceResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_referenceIdentifier forKey:{@"referenceIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_nonce forKey:@"nonce"];
 }
 
 @end

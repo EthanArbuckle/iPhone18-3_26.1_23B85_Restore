@@ -1,18 +1,18 @@
 @interface VCPersistentDataStore
-- (VCPersistentDataStore)initWithIdentifier:(id)a3;
+- (VCPersistentDataStore)initWithIdentifier:(id)identifier;
 - (void)closeDatabase;
 - (void)dealloc;
-- (void)deregisterDataProducerWithType:(int)a3;
+- (void)deregisterDataProducerWithType:(int)type;
 - (void)emptyBuffer;
 - (void)finalizeInternal;
-- (void)registerDataProducerWithType:(int)a3 producerCallback:(id)a4;
+- (void)registerDataProducerWithType:(int)type producerCallback:(id)callback;
 - (void)removeDatabaseFile;
 - (void)runDataProducers;
 @end
 
 @implementation VCPersistentDataStore
 
-- (VCPersistentDataStore)initWithIdentifier:(id)a3
+- (VCPersistentDataStore)initWithIdentifier:(id)identifier
 {
   kdebug_trace();
   v13.receiver = self;
@@ -25,7 +25,7 @@
     goto LABEL_21;
   }
 
-  if (!a3)
+  if (!identifier)
   {
     [VCPersistentDataStore initWithIdentifier:v5];
     goto LABEL_21;
@@ -39,7 +39,7 @@
 
   v6->_directory = +[VCDiskUtils getDefaultLogDumpPath];
   v7 = objc_alloc(MEMORY[0x277CCACA0]);
-  v8 = [v7 initWithFormat:@"%@/%@_%@%s", v6->_directory, a3, objc_msgSend(objc_msgSend(MEMORY[0x277CCAD70], "UUID"), "UUIDString"), ".db"];
+  v8 = [v7 initWithFormat:@"%@/%@_%@%s", v6->_directory, identifier, objc_msgSend(objc_msgSend(MEMORY[0x277CCAD70], "UUID"), "UUIDString"), ".db"];
   v6->_databasePath = v8;
   if (!v8)
   {
@@ -156,29 +156,29 @@ LABEL_21:
   [(VCPersistentDataStore *)&v6 dealloc];
 }
 
-- (void)registerDataProducerWithType:(int)a3 producerCallback:(id)a4
+- (void)registerDataProducerWithType:(int)type producerCallback:(id)callback
 {
-  if (!a3)
+  if (!type)
   {
     v5 = 8592;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = 8600;
 LABEL_5:
-    *(&self->super.isa + v5) = [a4 copy];
+    *(&self->super.isa + v5) = [callback copy];
   }
 
   ++self->_numberOfRegisteredProducers;
 }
 
-- (void)deregisterDataProducerWithType:(int)a3
+- (void)deregisterDataProducerWithType:(int)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
@@ -277,7 +277,7 @@ uint64_t __VCPersistentDataStore_Finalize_block_invoke(uint64_t a1)
     }
 
     databasePath = self->_databasePath;
-    v7 = [v16 localizedDescription];
+    localizedDescription = [v16 localizedDescription];
     *buf = 136316162;
     v18 = v4;
     v19 = 2080;
@@ -287,7 +287,7 @@ uint64_t __VCPersistentDataStore_Finalize_block_invoke(uint64_t a1)
     v23 = 2112;
     v24 = databasePath;
     v25 = 2112;
-    v26 = v7;
+    selfCopy = localizedDescription;
     v8 = " [%s] %s:%d Failed to delete database with databasePath=%@, error=%@";
     v9 = v5;
     v10 = 48;
@@ -313,7 +313,7 @@ LABEL_13:
     if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_ERROR))
     {
       v14 = self->_databasePath;
-      v15 = [v16 localizedDescription];
+      localizedDescription2 = [v16 localizedDescription];
       *buf = 136316674;
       v18 = v11;
       v19 = 2080;
@@ -323,11 +323,11 @@ LABEL_13:
       v23 = 2112;
       v24 = v3;
       v25 = 2048;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
       v28 = v14;
       v29 = 2112;
-      v30 = v15;
+      v30 = localizedDescription2;
       v8 = " [%s] %s:%d %@(%p) Failed to delete database with databasePath=%@, error=%@";
       v9 = v12;
       v10 = 68;
@@ -342,7 +342,7 @@ LABEL_11:
 - (void)runDataProducers
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule("") >= 7)
     {
@@ -366,7 +366,7 @@ LABEL_11:
   {
     if (objc_opt_respondsToSelector())
     {
-      v4 = [a1 performSelector:sel_logPrefix];
+      v4 = [self performSelector:sel_logPrefix];
     }
 
     else
@@ -387,7 +387,7 @@ LABEL_11:
         v15 = 2112;
         v16 = v4;
         v17 = 2048;
-        v18 = a1;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) No registered producers";
         v7 = v10;
         v8 = 48;

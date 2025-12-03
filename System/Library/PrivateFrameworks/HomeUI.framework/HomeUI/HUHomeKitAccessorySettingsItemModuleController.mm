@@ -1,40 +1,40 @@
 @interface HUHomeKitAccessorySettingsItemModuleController
-- (Class)cellClassForItem:(id)a3;
-- (HUHomeKitAccessorySettingsItemModuleController)initWithModule:(id)a3 delegate:(id)a4;
+- (Class)cellClassForItem:(id)item;
+- (HUHomeKitAccessorySettingsItemModuleController)initWithModule:(id)module delegate:(id)delegate;
 - (HUHomeKitAccessorySettingsItemModuleControllerDelegate)delegate;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)_updateSwitchSettingItem:(id)a3 forCell:(id)a4 withValue:(BOOL)a5;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (unint64_t)didSelectItem:(id)item;
+- (void)_updateSwitchSettingItem:(id)item forCell:(id)cell withValue:(BOOL)value;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUHomeKitAccessorySettingsItemModuleController
 
-- (HUHomeKitAccessorySettingsItemModuleController)initWithModule:(id)a3 delegate:(id)a4
+- (HUHomeKitAccessorySettingsItemModuleController)initWithModule:(id)module delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = HUHomeKitAccessorySettingsItemModuleController;
-  v7 = [(HUItemModuleController *)&v12 initWithModule:a3];
+  v7 = [(HUItemModuleController *)&v12 initWithModule:module];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
-    v9 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    objc_storeWeak(&v7->_delegate, delegateCopy);
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     cellToItemMap = v8->_cellToItemMap;
-    v8->_cellToItemMap = v9;
+    v8->_cellToItemMap = weakToWeakObjectsMapTable;
   }
 
   return v8;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -48,10 +48,10 @@
   v7 = v6;
 
   objc_opt_class();
-  v8 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = module;
   }
 
   else
@@ -85,18 +85,18 @@
   return v12;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v25.receiver = self;
   v25.super_class = HUHomeKitAccessorySettingsItemModuleController;
-  [(HUItemModuleController *)&v25 setupCell:v6 forItem:v7];
-  v8 = [(HUHomeKitAccessorySettingsItemModuleController *)self cellToItemMap];
-  [v8 setObject:v7 forKey:v6];
+  [(HUItemModuleController *)&v25 setupCell:cellCopy forItem:itemCopy];
+  cellToItemMap = [(HUHomeKitAccessorySettingsItemModuleController *)self cellToItemMap];
+  [cellToItemMap setObject:itemCopy forKey:cellCopy];
 
   objc_opt_class();
-  v9 = v6;
+  v9 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -124,10 +124,10 @@
   v14 = v13;
 
   objc_opt_class();
-  v15 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v16 = v15;
+    v16 = module;
   }
 
   else
@@ -138,7 +138,7 @@
   v17 = v16;
 
   objc_opt_class();
-  v18 = v7;
+  v18 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v19 = v18;
@@ -151,9 +151,9 @@
 
   v20 = v19;
 
-  v21 = [v20 settingDict];
-  v22 = [v20 settingKeyPath];
-  v23 = [v21 objectForKeyedSubscript:v22];
+  settingDict = [v20 settingDict];
+  settingKeyPath = [v20 settingKeyPath];
+  v23 = [settingDict objectForKeyedSubscript:settingKeyPath];
 
   if (v11)
   {
@@ -177,16 +177,16 @@
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v25.receiver = self;
   v25.super_class = HUHomeKitAccessorySettingsItemModuleController;
-  [(HUItemModuleController *)&v25 updateCell:v8 forItem:v9 animated:v5];
+  [(HUItemModuleController *)&v25 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
   objc_opt_class();
-  v10 = v9;
+  v10 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -200,7 +200,7 @@
   v12 = v11;
 
   objc_opt_class();
-  v13 = v8;
+  v13 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -229,8 +229,8 @@
 
   if (v15)
   {
-    v19 = [v12 settingValue];
-    [v15 setOn:{objc_msgSend(v19, "BOOLValue")}];
+    settingValue = [v12 settingValue];
+    [v15 setOn:{objc_msgSend(settingValue, "BOOLValue")}];
   }
 
   else
@@ -240,17 +240,17 @@
       goto LABEL_13;
     }
 
-    v20 = [v12 settingDict];
-    v21 = [v12 settingKeyPath];
-    v19 = [v20 objectForKeyedSubscript:v21];
+    settingDict = [v12 settingDict];
+    settingKeyPath = [v12 settingKeyPath];
+    settingValue = [settingDict objectForKeyedSubscript:settingKeyPath];
 
-    v22 = [v19 objectForKeyedSubscript:*MEMORY[0x277D13838]];
-    LOBYTE(v21) = [v22 BOOLValue];
+    v22 = [settingValue objectForKeyedSubscript:*MEMORY[0x277D13838]];
+    LOBYTE(settingKeyPath) = [v22 BOOLValue];
 
-    if (v21)
+    if (settingKeyPath)
     {
-      v23 = [v10 latestResults];
-      v24 = [v23 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+      latestResults = [v10 latestResults];
+      v24 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E20]];
       [v18 setValueText:v24];
     }
 
@@ -263,23 +263,23 @@
 LABEL_13:
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v32 = 138412290;
-    v33 = v4;
+    v33 = itemCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "User tapped item [%@]", &v32, 0xCu);
   }
 
   objc_opt_class();
-  v6 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = module;
   }
 
   else
@@ -290,7 +290,7 @@ LABEL_13:
   v8 = v7;
 
   objc_opt_class();
-  v9 = v4;
+  v9 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -303,22 +303,22 @@ LABEL_13:
 
   v11 = v10;
 
-  v12 = [v11 settingKeyPath];
-  v13 = [v11 settingDict];
-  v14 = [v13 objectForKeyedSubscript:v12];
+  settingKeyPath = [v11 settingKeyPath];
+  settingDict = [v11 settingDict];
+  v14 = [settingDict objectForKeyedSubscript:settingKeyPath];
 
-  v15 = [v11 latestResults];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-  v17 = [v16 BOOLValue];
+  latestResults = [v11 latestResults];
+  v16 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+  bOOLValue = [v16 BOOLValue];
 
-  if ((v17 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v18 = MEMORY[0x277D14160];
     v19 = [v14 objectForKeyedSubscript:*MEMORY[0x277D14160]];
     if (v19)
     {
       v20 = v19;
-      v21 = [(HUHomeKitAccessorySettingsItemModuleController *)self delegate];
+      delegate = [(HUHomeKitAccessorySettingsItemModuleController *)self delegate];
       v22 = objc_opt_respondsToSelector();
 
       if (v22)
@@ -327,11 +327,11 @@ LABEL_13:
         v24 = NSClassFromString(v23);
 
         v25 = [v24 alloc];
-        v26 = [(HUItemModuleController *)self module];
-        v27 = [v25 initWithAccessorySettingItem:v9 module:v26];
+        module2 = [(HUItemModuleController *)self module];
+        delegate4 = [v25 initWithAccessorySettingItem:v9 module:module2];
 
-        v28 = [(HUHomeKitAccessorySettingsItemModuleController *)self delegate];
-        [v28 moduleController:self presentSettingDetailsViewController:v27];
+        delegate2 = [(HUHomeKitAccessorySettingsItemModuleController *)self delegate];
+        [delegate2 moduleController:self presentSettingDetailsViewController:delegate4];
 
 LABEL_17:
         goto LABEL_18;
@@ -342,13 +342,13 @@ LABEL_17:
     {
       if ([v8 isCollapsed])
       {
-        v29 = [(HUHomeKitAccessorySettingsItemModuleController *)self delegate];
+        delegate3 = [(HUHomeKitAccessorySettingsItemModuleController *)self delegate];
         v30 = objc_opt_respondsToSelector();
 
         if (v30)
         {
-          v27 = [(HUHomeKitAccessorySettingsItemModuleController *)self delegate];
-          [v27 moduleController:self expandModule:v8];
+          delegate4 = [(HUHomeKitAccessorySettingsItemModuleController *)self delegate];
+          [delegate4 moduleController:self expandModule:v8];
           goto LABEL_17;
         }
       }
@@ -360,13 +360,13 @@ LABEL_18:
   return 0;
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
+  onCopy = on;
+  cellCopy = cell;
   objc_opt_class();
-  v7 = [(HUHomeKitAccessorySettingsItemModuleController *)self cellToItemMap];
-  v8 = [v7 objectForKey:v6];
+  cellToItemMap = [(HUHomeKitAccessorySettingsItemModuleController *)self cellToItemMap];
+  v8 = [cellToItemMap objectForKey:cellCopy];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -379,26 +379,26 @@ LABEL_18:
 
   v10 = v9;
 
-  v11 = [(HUHomeKitAccessorySettingsItemModuleController *)self delegate];
+  delegate = [(HUHomeKitAccessorySettingsItemModuleController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(HUHomeKitAccessorySettingsItemModuleController *)self delegate];
+    delegate2 = [(HUHomeKitAccessorySettingsItemModuleController *)self delegate];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __71__HUHomeKitAccessorySettingsItemModuleController_switchCell_didTurnOn___block_invoke;
     v14[3] = &unk_277DBDD10;
-    v15 = v6;
-    v18 = v4;
+    v15 = cellCopy;
+    v18 = onCopy;
     v16 = v10;
-    v17 = self;
-    [v13 moduleController:self preflightCheckToAllowSwitchingForSettingItem:v16 changingToOn:v4 withCompletion:v14];
+    selfCopy = self;
+    [delegate2 moduleController:self preflightCheckToAllowSwitchingForSettingItem:v16 changingToOn:onCopy withCompletion:v14];
   }
 
   else
   {
-    [(HUHomeKitAccessorySettingsItemModuleController *)self _updateSwitchSettingItem:v10 forCell:v6 withValue:v4];
+    [(HUHomeKitAccessorySettingsItemModuleController *)self _updateSwitchSettingItem:v10 forCell:cellCopy withValue:onCopy];
   }
 }
 
@@ -506,23 +506,23 @@ uint64_t __71__HUHomeKitAccessorySettingsItemModuleController_switchCell_didTurn
   return [*(a1 + 40) setOn:(*(a1 + 48) & 1) == 0 animated:1];
 }
 
-- (void)_updateSwitchSettingItem:(id)a3 forCell:(id)a4 withValue:(BOOL)a5
+- (void)_updateSwitchSettingItem:(id)item forCell:(id)cell withValue:(BOOL)value
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v5];
-  v10 = [v7 updateValue:v9];
+  valueCopy = value;
+  itemCopy = item;
+  cellCopy = cell;
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:valueCopy];
+  v10 = [itemCopy updateValue:v9];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __93__HUHomeKitAccessorySettingsItemModuleController__updateSwitchSettingItem_forCell_withValue___block_invoke;
   v14[3] = &unk_277DBA3A8;
-  v17 = v5;
-  v15 = v8;
-  v16 = v7;
-  v11 = v7;
-  v12 = v8;
+  v17 = valueCopy;
+  v15 = cellCopy;
+  v16 = itemCopy;
+  v11 = itemCopy;
+  v12 = cellCopy;
   v13 = [v10 addCompletionBlock:v14];
 }
 

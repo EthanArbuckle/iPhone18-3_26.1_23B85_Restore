@@ -1,6 +1,6 @@
 @interface _AegirEditingCoordinatorScrollViewScrollObserver
 - (_TtC11AegirPosterP33_8673730CEA60DB438C959F8C70985BF248_AegirEditingCoordinatorScrollViewScrollObserver)init;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 @end
 
 @implementation _AegirEditingCoordinatorScrollViewScrollObserver
@@ -13,13 +13,13 @@
   return [(_AegirEditingCoordinatorScrollViewScrollObserver *)&v4 init];
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   if (swift_weakLoadStrong())
   {
-    v5 = a3;
-    v6 = self;
-    sub_100023ACC(v5);
+    scrollCopy = scroll;
+    selfCopy = self;
+    sub_100023ACC(scrollCopy);
   }
 }
 

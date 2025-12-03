@@ -1,63 +1,63 @@
 @interface SSVPlatformContext
 - (NSDictionary)bagDictionary;
-- (SSVPlatformContext)initWithBagDictionary:(id)a3;
-- (SSVPlatformContext)initWithLookupURL:(id)a3 unpersonalizedLookupURL:(id)a4 signedHeaders:(id)a5 signedQueryParameters:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSVPlatformContext)initWithBagDictionary:(id)dictionary;
+- (SSVPlatformContext)initWithLookupURL:(id)l unpersonalizedLookupURL:(id)rL signedHeaders:(id)headers signedQueryParameters:(id)parameters;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SSVPlatformContext
 
-- (SSVPlatformContext)initWithLookupURL:(id)a3 unpersonalizedLookupURL:(id)a4 signedHeaders:(id)a5 signedQueryParameters:(id)a6
+- (SSVPlatformContext)initWithLookupURL:(id)l unpersonalizedLookupURL:(id)rL signedHeaders:(id)headers signedQueryParameters:(id)parameters
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  lCopy = l;
+  rLCopy = rL;
+  headersCopy = headers;
+  parametersCopy = parameters;
+  if (lCopy)
   {
     v25.receiver = self;
     v25.super_class = SSVPlatformContext;
     v14 = [(SSVPlatformContext *)&v25 init];
     if (v14)
     {
-      v15 = [v10 absoluteString];
+      absoluteString = [lCopy absoluteString];
       lookupURLString = v14->_lookupURLString;
-      v14->_lookupURLString = v15;
+      v14->_lookupURLString = absoluteString;
 
-      v17 = [v12 copy];
+      v17 = [headersCopy copy];
       signedHeaders = v14->_signedHeaders;
       v14->_signedHeaders = v17;
 
-      v19 = [v13 copy];
+      v19 = [parametersCopy copy];
       signedQueryParameters = v14->_signedQueryParameters;
       v14->_signedQueryParameters = v19;
 
-      v21 = [v11 absoluteString];
+      absoluteString2 = [rLCopy absoluteString];
       unpersonalizedLookupURLString = v14->_unpersonalizedLookupURLString;
-      v14->_unpersonalizedLookupURLString = v21;
+      v14->_unpersonalizedLookupURLString = absoluteString2;
     }
 
     self = v14;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
-- (SSVPlatformContext)initWithBagDictionary:(id)a3
+- (SSVPlatformContext)initWithBagDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = SSVPlatformContext;
   v5 = [(SSVPlatformContext *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"storeplatform-lookup-url"];
+    v6 = [dictionaryCopy objectForKey:@"storeplatform-lookup-url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       lookupURLString = v5->_lookupURLString;
       v5->_lookupURLString = v7;
 
-      v9 = [v4 objectForKey:@"storeplatform-lookup-url-unpersonalized"];
+      v9 = [dictionaryCopy objectForKey:@"storeplatform-lookup-url-unpersonalized"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -75,7 +75,7 @@
         v5->_unpersonalizedLookupURLString = v10;
       }
 
-      v12 = [v4 objectForKey:@"signed-actions"];
+      v12 = [dictionaryCopy objectForKey:@"signed-actions"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -123,12 +123,12 @@
 
 - (NSDictionary)bagDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   lookupURLString = self->_lookupURLString;
   if (lookupURLString)
   {
-    [v3 setObject:lookupURLString forKey:@"storeplatform-lookup-url"];
+    [dictionary setObject:lookupURLString forKey:@"storeplatform-lookup-url"];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -155,23 +155,23 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_lookupURLString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_lookupURLString copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
   objc_storeStrong((v5 + 16), self->_sapContext);
-  v8 = [(NSArray *)self->_signedHeaders copyWithZone:a3];
+  v8 = [(NSArray *)self->_signedHeaders copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSArray *)self->_signedQueryParameters copyWithZone:a3];
+  v10 = [(NSArray *)self->_signedQueryParameters copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSString *)self->_unpersonalizedLookupURLString copyWithZone:a3];
+  v12 = [(NSString *)self->_unpersonalizedLookupURLString copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 

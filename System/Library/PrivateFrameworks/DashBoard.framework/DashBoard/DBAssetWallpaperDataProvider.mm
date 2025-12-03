@@ -2,9 +2,9 @@
 - (CRSUIWallpaperDataProvidingDelegate)dataProviderDelegate;
 - (_TtC9DashBoard28DBAssetWallpaperDataProvider)init;
 - (id)displayID;
-- (id)dynamicAppearanceWallpapersForVehicle:(id)a3;
+- (id)dynamicAppearanceWallpapersForVehicle:(id)vehicle;
 - (int64_t)version;
-- (void)setDataProviderDelegate:(id)a3;
+- (void)setDataProviderDelegate:(id)delegate;
 @end
 
 @implementation DBAssetWallpaperDataProvider
@@ -17,11 +17,11 @@
   return v2;
 }
 
-- (void)setDataProviderDelegate:(id)a3
+- (void)setDataProviderDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC9DashBoard28DBAssetWallpaperDataProvider_dataProviderDelegate;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -36,7 +36,7 @@
   v8 = *(v7 - 8);
   MEMORY[0x28223BE20](v7);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = self;
+  selfCopy = self;
   DBThemeAssetDocument.document.getter(v10);
   sub_248381830();
   (*(v8 + 8))(v10, v7);
@@ -60,11 +60,11 @@
   return v2;
 }
 
-- (id)dynamicAppearanceWallpapersForVehicle:(id)a3
+- (id)dynamicAppearanceWallpapersForVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = self;
-  DBAssetWallpaperDataProvider.dynamicAppearanceWallpapers(for:)(v4);
+  vehicleCopy = vehicle;
+  selfCopy = self;
+  DBAssetWallpaperDataProvider.dynamicAppearanceWallpapers(for:)(vehicleCopy);
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE908D8);
   v6 = sub_248383B00();

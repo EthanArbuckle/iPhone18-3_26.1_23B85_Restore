@@ -14,13 +14,13 @@
 - (void)_updateWaypointCaptions
 {
   v27 = *MEMORY[0x1E69E9840];
-  v1 = [a1 routeInfo];
+  routeInfo = [self routeInfo];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v2 = [v1 waypoints];
-  v3 = [v2 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  waypoints = [routeInfo waypoints];
+  v3 = [waypoints countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v3)
   {
     v5 = *v21;
@@ -32,7 +32,7 @@
       {
         if (*v21 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(waypoints);
         }
 
         v7 = *(*(&v20 + 1) + 8 * i);
@@ -41,19 +41,19 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v8 = [v1 route];
-            v9 = [v7 waypoint];
-            v10 = [v8 waypointDisplayInfoForWaypoint:v9];
+            route = [routeInfo route];
+            waypoint = [v7 waypoint];
+            v10 = [route waypointDisplayInfoForWaypoint:waypoint];
 
-            v11 = [v10 waypointCaption];
-            LOBYTE(v8) = v11 == 0;
+            waypointCaption = [v10 waypointCaption];
+            LOBYTE(route) = waypointCaption == 0;
 
-            if (v8)
+            if (route)
             {
               v12 = v7;
               v13 = MEMORY[0x1E696AEC0];
-              v14 = [v12 chargeInfo];
-              [v14 chargingTime];
+              chargeInfo = [v12 chargeInfo];
+              [chargeInfo chargingTime];
               v16 = [v13 _navigation_stringWithSeconds:v15 abbreviated:1];
               [v12 setChargeTimeText:v16];
             }
@@ -74,7 +74,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v3 = [waypoints countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v3);
@@ -89,8 +89,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [a1 alternateRoutes];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  alternateRoutes = [self alternateRoutes];
+  v8 = [alternateRoutes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = *v15;
@@ -100,12 +100,12 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(alternateRoutes);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 route];
-        v13 = v12 == v6;
+        route = [v11 route];
+        v13 = route == v6;
 
         if (v13)
         {
@@ -114,7 +114,7 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [alternateRoutes countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -129,7 +129,7 @@ LABEL_11:
 
 - (void)_setRouteContextAnnotationFocus:()MKMapViewRouteContextUpdates forRoute:
 {
-  v5 = [a1 _routeInfoForRoute:a4];
+  v5 = [self _routeInfoForRoute:a4];
   [v5 setHasFocus:a3];
 }
 
@@ -137,22 +137,22 @@ LABEL_11:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 _routeInfoForRoute:v7];
+  v8 = [self _routeInfoForRoute:v7];
   v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
   v10 = [v6 count];
-  v11 = [v7 legs];
-  v12 = [v11 count];
+  legs = [v7 legs];
+  v12 = [legs count];
 
   if (v10 == v12)
   {
-    v13 = [v7 legs];
+    legs2 = [v7 legs];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __95__VKRouteContext_MKMapViewRouteContextUpdates___setRouteContextAnnotationTexts_forLegsInRoute___block_invoke;
     v18 = &unk_1E76C9AA0;
     v19 = v6;
     v20 = v9;
-    [v13 enumerateObjectsUsingBlock:&v15];
+    [legs2 enumerateObjectsUsingBlock:&v15];
   }
 
   v14 = [v9 copy];
@@ -163,7 +163,7 @@ LABEL_11:
 {
   v11 = a3;
   v8 = a4;
-  v9 = [a1 _routeInfoForRoute:a5];
+  v9 = [self _routeInfoForRoute:a5];
   v10 = [objc_alloc(MEMORY[0x1E69DF490]) initWithEtaText:v11 etaAdvisoryStyleAttributes:v8];
   [v9 setEtaDescription:v10];
 }
@@ -171,7 +171,7 @@ LABEL_11:
 - (void)_setRouteContextAnnotationText:()MKMapViewRouteContextUpdates tollCurrency:forRoute:
 {
   v10 = a3;
-  v8 = [a1 _routeInfoForRoute:a5];
+  v8 = [self _routeInfoForRoute:a5];
   v9 = [objc_alloc(MEMORY[0x1E69DF490]) initWithEtaText:v10 glyphType:a4 != 0];
   [v8 setEtaDescription:v9];
 }
@@ -180,7 +180,7 @@ LABEL_11:
 {
   v15 = a3;
   v12 = a6;
-  v13 = [a1 _routeInfoForRoute:a7];
+  v13 = [self _routeInfoForRoute:a7];
   if (a4 || v12)
   {
     v14 = [objc_alloc(MEMORY[0x1E69DF490]) initWithEtaText:v15 etaAdvisoryStyleAttributes:v12 routeEtaType:a4];
@@ -196,9 +196,9 @@ LABEL_11:
 
 - (uint64_t)_setRouteContextInspectedSegmentIndex:()MKMapViewRouteContextUpdates inspectedStepIndex:
 {
-  [a1 setInspectedSegmentIndex:?];
+  [self setInspectedSegmentIndex:?];
 
-  return [a1 setInspectedStepIndex:a4];
+  return [self setInspectedStepIndex:a4];
 }
 
 @end

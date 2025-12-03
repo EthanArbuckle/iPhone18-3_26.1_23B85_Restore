@@ -1,16 +1,16 @@
 @interface SRSystemAssistantExperienceViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)setupTextFieldForTextInput;
 @end
 
 @implementation SRSystemAssistantExperienceViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SRSystemAssistantExperienceViewController" hasInstanceMethod:@"setupTextFieldForTextInput" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SRSystemAssistantExperienceViewController" hasInstanceMethod:@"promptEntryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Siri.SystemAssistantPromptEntryView" hasSwiftField:@"entryView" withSwiftType:"EditMenuAwarePromptEntryView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SRSystemAssistantExperienceViewController" hasInstanceMethod:@"setupTextFieldForTextInput" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SRSystemAssistantExperienceViewController" hasInstanceMethod:@"promptEntryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Siri.SystemAssistantPromptEntryView" hasSwiftField:@"entryView" withSwiftType:"EditMenuAwarePromptEntryView"];
 }
 
 - (void)setupTextFieldForTextInput

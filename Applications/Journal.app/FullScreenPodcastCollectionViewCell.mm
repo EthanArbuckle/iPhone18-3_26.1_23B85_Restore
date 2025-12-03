@@ -1,10 +1,10 @@
 @interface FullScreenPodcastCollectionViewCell
-- (_TtC7Journal35FullScreenPodcastCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC7Journal35FullScreenPodcastCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation FullScreenPodcastCollectionViewCell
 
-- (_TtC7Journal35FullScreenPodcastCollectionViewCell)initWithCoder:(id)a3
+- (_TtC7Journal35FullScreenPodcastCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal35FullScreenPodcastCollectionViewCell_podcastAsset) = 0;
   v4 = OBJC_IVAR____TtC7Journal35FullScreenPodcastCollectionViewCell_podcastView;

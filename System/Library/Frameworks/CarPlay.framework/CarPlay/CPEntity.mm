@@ -1,8 +1,8 @@
 @interface CPEntity
-- (CPEntity)initWithCoder:(id)a3;
+- (CPEntity)initWithCoder:(id)coder;
 - (id)_init;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPEntity
@@ -14,21 +14,21 @@
   v2 = [(CPEntity *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v2->_identifier;
-    v2->_identifier = v3;
+    v2->_identifier = uUID;
   }
 
   return v2;
 }
 
-- (CPEntity)initWithCoder:(id)a3
+- (CPEntity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CPEntity *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPEntityIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPEntityIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -36,11 +36,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPEntity *)self identifier];
-  [v4 encodeObject:v5 forKey:@"CPEntityIdentifier"];
+  coderCopy = coder;
+  identifier = [(CPEntity *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"CPEntityIdentifier"];
 }
 
 - (id)description
@@ -49,8 +49,8 @@
   v8.receiver = self;
   v8.super_class = CPEntity;
   v4 = [(CPEntity *)&v8 description];
-  v5 = [(CPEntity *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ {UUID: %@}", v4, v5];
+  identifier = [(CPEntity *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ {UUID: %@}", v4, identifier];
 
   return v6;
 }

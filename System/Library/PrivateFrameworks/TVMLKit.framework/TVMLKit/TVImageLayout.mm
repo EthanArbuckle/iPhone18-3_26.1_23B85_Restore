@@ -1,24 +1,24 @@
 @interface TVImageLayout
-+ (id)layoutWithLayout:(id)a3 element:(id)a4;
-- (CGSize)_aspectFitToSize:(CGSize)a3 scaleToSize:(CGSize)a4 aspectRatio:(double)a5;
++ (id)layoutWithLayout:(id)layout element:(id)element;
+- (CGSize)_aspectFitToSize:(CGSize)size scaleToSize:(CGSize)toSize aspectRatio:(double)ratio;
 - (CGSize)decoratorSize;
 - (CGSize)imageSize;
 - (TVCornerRadii)borderRadii;
 - (TVImageLayout)init;
 - (UIEdgeInsets)borderWidth;
 - (double)defaultFocusSizeIncrease;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TVImageLayout
 
-+ (id)layoutWithLayout:(id)a3 element:(id)a4
++ (id)layoutWithLayout:(id)layout element:(id)element
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  layoutCopy = layout;
+  elementCopy = element;
+  if (!elementCopy)
   {
-    v22 = v6;
+    v22 = layoutCopy;
     goto LABEL_88;
   }
 
@@ -29,59 +29,59 @@
     goto LABEL_88;
   }
 
-  v8 = v6;
+  v8 = layoutCopy;
   if (!v8)
   {
     v8 = objc_opt_new();
   }
 
-  v104.receiver = a1;
+  v104.receiver = self;
   v104.super_class = &OBJC_METACLASS___TVImageLayout;
-  v9 = objc_msgSendSuper2(&v104, sel_layoutWithLayout_element_, v8, v7);
-  v10 = v7;
-  v11 = [v10 style];
-  v12 = [v11 tv_tintColor];
-  if (![v12 colorType])
+  v9 = objc_msgSendSuper2(&v104, sel_layoutWithLayout_element_, v8, elementCopy);
+  v10 = elementCopy;
+  style = [v10 style];
+  tv_tintColor = [style tv_tintColor];
+  if (![tv_tintColor colorType])
   {
-    v13 = [v11 tv_tintColor];
-    v14 = [v13 color];
+    tv_tintColor2 = [style tv_tintColor];
+    color = [tv_tintColor2 color];
 
-    if (!v14)
+    if (!color)
     {
       goto LABEL_9;
     }
 
-    [v8 setTintColor:v14];
-    [v8 setDarkTintColor:v14];
-    v12 = v14;
+    [v8 setTintColor:color];
+    [v8 setDarkTintColor:color];
+    tv_tintColor = color;
   }
 
 LABEL_9:
-  v15 = [v11 tv_darkTintColor];
-  if (![v15 colorType])
+  tv_darkTintColor = [style tv_darkTintColor];
+  if (![tv_darkTintColor colorType])
   {
-    v16 = [v11 tv_darkTintColor];
-    v17 = [v16 color];
+    tv_darkTintColor2 = [style tv_darkTintColor];
+    color2 = [tv_darkTintColor2 color];
 
-    if (!v17)
+    if (!color2)
     {
       goto LABEL_13;
     }
 
-    [v8 setDarkTintColor:v17];
-    v15 = v17;
+    [v8 setDarkTintColor:color2];
+    tv_darkTintColor = color2;
   }
 
 LABEL_13:
-  v18 = [v11 tv_highlightColor];
-  v19 = [v18 color];
+  tv_highlightColor = [style tv_highlightColor];
+  color3 = [tv_highlightColor color];
 
-  if (v19)
+  if (color3)
   {
-    [v8 setHighlightColor:v19];
+    [v8 setHighlightColor:color3];
   }
 
-  [v11 tv_width];
+  [style tv_width];
   if (v20 == 0.0)
   {
     [v10 width];
@@ -89,11 +89,11 @@ LABEL_13:
 
   else
   {
-    [v11 tv_width];
+    [style tv_width];
   }
 
   v23 = v21;
-  [v11 tv_height];
+  [style tv_height];
   if (v24 == 0.0)
   {
     [v10 height];
@@ -101,7 +101,7 @@ LABEL_13:
 
   else
   {
-    [v11 tv_height];
+    [style tv_height];
   }
 
   v26 = v25;
@@ -111,117 +111,117 @@ LABEL_13:
     v23 = v27;
   }
 
-  v99 = v19;
-  v100 = v7;
+  v99 = color3;
+  v100 = elementCopy;
   if (v26 == 0.0)
   {
     [v8 imageSize];
     v26 = v28;
   }
 
-  v29 = [v8 imageSymbolConfiguration];
-  v30 = [v11 tv_symbolScale];
-  if (v30)
+  imageSymbolConfiguration = [v8 imageSymbolConfiguration];
+  tv_symbolScale = [style tv_symbolScale];
+  if (tv_symbolScale)
   {
-    v31 = [MEMORY[0x277D755D0] configurationWithScale:v30];
+    v31 = [MEMORY[0x277D755D0] configurationWithScale:tv_symbolScale];
     v32 = v31;
-    if (v29)
+    if (imageSymbolConfiguration)
     {
-      v33 = [v29 configurationByApplyingConfiguration:v31];
+      v33 = [imageSymbolConfiguration configurationByApplyingConfiguration:v31];
 
-      v29 = v33;
+      imageSymbolConfiguration = v33;
     }
 
     else
     {
-      v29 = v31;
+      imageSymbolConfiguration = v31;
     }
   }
 
-  v34 = [v11 tv_symbolWeight];
-  if (v34)
+  tv_symbolWeight = [style tv_symbolWeight];
+  if (tv_symbolWeight)
   {
-    v35 = [MEMORY[0x277D755D0] configurationWithWeight:v34];
+    v35 = [MEMORY[0x277D755D0] configurationWithWeight:tv_symbolWeight];
     v36 = v35;
-    if (v29)
+    if (imageSymbolConfiguration)
     {
-      v37 = [v29 configurationByApplyingConfiguration:v35];
+      v37 = [imageSymbolConfiguration configurationByApplyingConfiguration:v35];
 
-      v29 = v37;
+      imageSymbolConfiguration = v37;
     }
 
     else
     {
-      v29 = v35;
+      imageSymbolConfiguration = v35;
     }
   }
 
-  [v11 tv_symbolPointSize];
+  [style tv_symbolPointSize];
   if (v38 != 0.0)
   {
     v39 = [MEMORY[0x277D755D0] configurationWithPointSize:?];
     v40 = v39;
-    if (v29)
+    if (imageSymbolConfiguration)
     {
-      v41 = [v29 configurationByApplyingConfiguration:v39];
+      v41 = [imageSymbolConfiguration configurationByApplyingConfiguration:v39];
 
-      v29 = v41;
+      imageSymbolConfiguration = v41;
     }
 
     else
     {
-      v29 = v39;
+      imageSymbolConfiguration = v39;
     }
   }
 
-  v42 = [v11 tv_symbolTextStyle];
-  v98 = v42;
-  if (v42)
+  tv_symbolTextStyle = [style tv_symbolTextStyle];
+  v98 = tv_symbolTextStyle;
+  if (tv_symbolTextStyle)
   {
-    v43 = [MEMORY[0x277D755D0] configurationWithTextStyle:v42];
+    v43 = [MEMORY[0x277D755D0] configurationWithTextStyle:tv_symbolTextStyle];
     v44 = v43;
-    if (v29)
+    if (imageSymbolConfiguration)
     {
-      v45 = [v29 configurationByApplyingConfiguration:v43];
+      v45 = [imageSymbolConfiguration configurationByApplyingConfiguration:v43];
 
-      v29 = v45;
+      imageSymbolConfiguration = v45;
     }
 
     else
     {
-      v29 = v43;
+      imageSymbolConfiguration = v43;
     }
   }
 
-  [v8 setImageSymbolConfiguration:v29];
+  [v8 setImageSymbolConfiguration:imageSymbolConfiguration];
   if (v23 != *MEMORY[0x277CBF3A8] || v26 != *(MEMORY[0x277CBF3A8] + 8))
   {
     goto LABEL_57;
   }
 
   v46 = [v10 url];
-  v47 = [v46 tv_isResourceURL];
+  tv_isResourceURL = [v46 tv_isResourceURL];
 
-  if (v47)
+  if (tv_isResourceURL)
   {
     v48 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v49 = [v10 url];
-    v50 = [v49 tv_resourceName];
-    v51 = [v48 imageForResource:v50];
+    mainScreen = [v10 url];
+    tv_resourceName = [mainScreen tv_resourceName];
+    v51 = [v48 imageForResource:tv_resourceName];
 
     goto LABEL_54;
   }
 
   v52 = [v10 url];
-  v53 = [v52 tv_isSymbolURL];
+  tv_isSymbolURL = [v52 tv_isSymbolURL];
 
-  if (v53)
+  if (tv_isSymbolURL)
   {
     v54 = MEMORY[0x277D755B8];
     v55 = [v10 url];
-    v56 = [v55 tv_symbolName];
-    v57 = [v8 imageSymbolConfiguration];
-    v48 = [v54 systemImageNamed:v56 withConfiguration:v57];
+    tv_symbolName = [v55 tv_symbolName];
+    imageSymbolConfiguration2 = [v8 imageSymbolConfiguration];
+    v48 = [v54 systemImageNamed:tv_symbolName withConfiguration:imageSymbolConfiguration2];
 
     if (!v48)
     {
@@ -239,10 +239,10 @@ LABEL_55:
     }
 
     v58 = MEMORY[0x277D755B8];
-    v59 = [v48 CGImage];
-    v49 = [MEMORY[0x277D759A0] mainScreen];
-    [v49 scale];
-    v51 = [v58 imageWithCGImage:v59 scale:0 orientation:?];
+    cGImage = [v48 CGImage];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    v51 = [v58 imageWithCGImage:cGImage scale:0 orientation:?];
 LABEL_54:
 
     goto LABEL_55;
@@ -256,7 +256,7 @@ LABEL_57:
     [v8 setAspectRatio:?];
   }
 
-  [v11 tv_imageUpscaleFactor];
+  [style tv_imageUpscaleFactor];
   if (v63 != 0.0)
   {
     [v8 setUpscaleFactor:?];
@@ -268,15 +268,15 @@ LABEL_57:
     [v8 setScaleMode:v64];
   }
 
-  v65 = [v11 tv_borderColor];
-  v66 = [v65 color];
+  tv_borderColor = [style tv_borderColor];
+  color4 = [tv_borderColor color];
 
-  if (v66)
+  if (color4)
   {
-    [v8 setBorderColor:v66];
+    [v8 setBorderColor:color4];
   }
 
-  [v11 tv_borderWidths];
+  [style tv_borderWidths];
   v68.f64[0] = v67;
   v68.f64[1] = v69;
   v71.f64[0] = v70;
@@ -286,32 +286,32 @@ LABEL_57:
     [v8 setBorderWidth:?];
   }
 
-  v73 = [v11 tv_shadow];
-  if (v73)
+  tv_shadow = [style tv_shadow];
+  if (tv_shadow)
   {
-    [v8 setShadow:v73];
+    [v8 setShadow:tv_shadow];
   }
 
-  v96 = v73;
-  v74 = [v11 tv_tintColor];
+  v96 = tv_shadow;
+  tv_tintColor3 = [style tv_tintColor];
 
-  if (v74)
+  if (tv_tintColor3)
   {
-    v75 = [v11 tv_tintColor];
-    [v8 setIkTintColor:v75];
+    tv_tintColor4 = [style tv_tintColor];
+    [v8 setIkTintColor:tv_tintColor4];
 
-    v76 = [v11 tv_tintColor];
-    [v8 setIkDarkTintColor:v76];
+    tv_tintColor5 = [style tv_tintColor];
+    [v8 setIkDarkTintColor:tv_tintColor5];
   }
 
-  v77 = [v11 tv_imageTreatment];
-  if (v77)
+  tv_imageTreatment = [style tv_imageTreatment];
+  if (tv_imageTreatment)
   {
-    [v8 setImageTreatment:v77];
+    [v8 setImageTreatment:tv_imageTreatment];
   }
 
-  v95 = v77;
-  v78 = [v11 valueForStyle:@"tv-placeholder"];
+  v95 = tv_imageTreatment;
+  v78 = [style valueForStyle:@"tv-placeholder"];
   if (v78)
   {
     v79 = v78;
@@ -324,18 +324,18 @@ LABEL_57:
     [v8 setPlaceholderArtworkName:v79];
   }
 
-  v80 = [v10 attributes];
-  v81 = [v80 valueForKey:@"inline-title"];
+  attributes = [v10 attributes];
+  v81 = [attributes valueForKey:@"inline-title"];
 
   if (v81)
   {
     [v8 setInlineTitle:v81];
   }
 
-  v82 = [v11 borderRadius];
-  if (v82)
+  borderRadius = [style borderRadius];
+  if (borderRadius)
   {
-    [v8 setIkBorderRadius:v82];
+    [v8 setIkBorderRadius:borderRadius];
   }
 
   v102 = TVCornerRadiiZero;
@@ -345,36 +345,36 @@ LABEL_57:
     [v8 setBorderRadii:{v102, v103}];
   }
 
-  v97 = v29;
-  v101 = v6;
-  v83 = [v11 valueForStyle:@"tv-border-continuous"];
+  v97 = imageSymbolConfiguration;
+  v101 = layoutCopy;
+  v83 = [style valueForStyle:@"tv-border-continuous"];
 
   if (v83)
   {
-    [v8 setContinuousBorder:{objc_msgSend(v11, "tv_borderContinuous")}];
+    [v8 setContinuousBorder:{objc_msgSend(style, "tv_borderContinuous")}];
   }
 
-  v84 = v66;
-  v85 = [v10 attributes];
-  [v85 objectForKeyedSubscript:@"opaque"];
+  v84 = color4;
+  attributes2 = [v10 attributes];
+  [attributes2 objectForKeyedSubscript:@"opaque"];
   v87 = v86 = v10;
 
   if (v87)
   {
-    v88 = [v86 attributes];
-    v89 = [v88 objectForKeyedSubscript:@"opaque"];
+    attributes3 = [v86 attributes];
+    v89 = [attributes3 objectForKeyedSubscript:@"opaque"];
     [v8 setAllowsNonOpaqueShadows:{objc_msgSend(v89, "BOOLValue") ^ 1}];
   }
 
-  v90 = [v86 appDocument];
-  v91 = [v90 templateElement];
-  v92 = [v91 style];
-  v93 = [v92 tv_searchStyle];
-  [v8 setUseInSearchPartial:{objc_msgSend(v93, "isEqualToString:", @"partial"}];
+  appDocument = [v86 appDocument];
+  templateElement = [appDocument templateElement];
+  style2 = [templateElement style];
+  tv_searchStyle = [style2 tv_searchStyle];
+  [v8 setUseInSearchPartial:{objc_msgSend(tv_searchStyle, "isEqualToString:", @"partial"}];
 
   v22 = v8;
-  v7 = v100;
-  v6 = v101;
+  elementCopy = v100;
+  layoutCopy = v101;
 LABEL_88:
 
   return v22;
@@ -393,7 +393,7 @@ LABEL_88:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16.receiver = self;
   v16.super_class = TVImageLayout;
@@ -404,33 +404,33 @@ LABEL_88:
   [v5 setScaleMode:self->_scaleMode];
   [v5 setBorderRadii:{self->_borderRadii.topLeft, self->_borderRadii.topRight, self->_borderRadii.bottomLeft, self->_borderRadii.bottomRight}];
   [v5 setBorderWidth:{self->_borderWidth.top, self->_borderWidth.left, self->_borderWidth.bottom, self->_borderWidth.right}];
-  v6 = [(UIColor *)self->_borderColor copyWithZone:a3];
+  v6 = [(UIColor *)self->_borderColor copyWithZone:zone];
   [v5 setBorderColor:v6];
 
   [v5 setContinuousBorder:self->_continuousBorder];
-  v7 = [(IKColor *)self->_ikTintColor copyWithZone:a3];
+  v7 = [(IKColor *)self->_ikTintColor copyWithZone:zone];
   [v5 setIkTintColor:v7];
 
-  v8 = [(IKColor *)self->_ikDarkTintColor copyWithZone:a3];
+  v8 = [(IKColor *)self->_ikDarkTintColor copyWithZone:zone];
   [v5 setIkDarkTintColor:v8];
 
-  v9 = [(NSShadow *)self->_shadow copyWithZone:a3];
+  v9 = [(NSShadow *)self->_shadow copyWithZone:zone];
   [v5 setShadow:v9];
 
-  v10 = [(NSString *)self->_placeholderArtworkName copyWithZone:a3];
+  v10 = [(NSString *)self->_placeholderArtworkName copyWithZone:zone];
   [v5 setPlaceholderArtworkName:v10];
 
-  v11 = [(NSString *)self->_cropCode copyWithZone:a3];
+  v11 = [(NSString *)self->_cropCode copyWithZone:zone];
   [v5 setCropCode:v11];
 
-  v12 = [(UIImageSymbolConfiguration *)self->_imageSymbolConfiguration copyWithZone:a3];
+  v12 = [(UIImageSymbolConfiguration *)self->_imageSymbolConfiguration copyWithZone:zone];
   [v5 setImageSymbolConfiguration:v12];
 
-  v13 = [(NSString *)self->_imageTreatment copyWithZone:a3];
+  v13 = [(NSString *)self->_imageTreatment copyWithZone:zone];
   [v5 setImageTreatment:v13];
 
   [v5 setIkBorderRadius:self->_ikBorderRadius];
-  v14 = [(NSString *)self->_inlineTitle copyWithZone:a3];
+  v14 = [(NSString *)self->_inlineTitle copyWithZone:zone];
   [v5 setInlineTitle:v14];
 
   return v5;
@@ -475,70 +475,70 @@ LABEL_88:
   return result;
 }
 
-- (CGSize)_aspectFitToSize:(CGSize)a3 scaleToSize:(CGSize)a4 aspectRatio:(double)a5
+- (CGSize)_aspectFitToSize:(CGSize)size scaleToSize:(CGSize)toSize aspectRatio:(double)ratio
 {
-  width = a4.width;
-  height = a3.height;
-  v7 = a3.width;
-  if (a3.width == 0.0 || a3.height == 0.0)
+  width = toSize.width;
+  height = size.height;
+  v7 = size.width;
+  if (size.width == 0.0 || size.height == 0.0)
   {
-    if (a3.height != 0.0)
+    if (size.height != 0.0)
     {
-      if (a5 != 0.0 && a4.width == *MEMORY[0x277CBF3A8] && a4.height == *(MEMORY[0x277CBF3A8] + 8))
+      if (ratio != 0.0 && toSize.width == *MEMORY[0x277CBF3A8] && toSize.height == *(MEMORY[0x277CBF3A8] + 8))
       {
-        width = ceil(a3.height * a5);
+        width = ceil(size.height * ratio);
       }
 
       else
       {
-        if (a4.height <= a3.height)
+        if (toSize.height <= size.height)
         {
           goto LABEL_30;
         }
 
-        width = a3.height * (a4.width / a4.height);
+        width = size.height * (toSize.width / toSize.height);
       }
 
-      a4.height = a3.height;
+      toSize.height = size.height;
       goto LABEL_30;
     }
 
-    if (a3.width == 0.0)
+    if (size.width == 0.0)
     {
       goto LABEL_30;
     }
 
-    if (a5 != 0.0 && (a4.width == *MEMORY[0x277CBF3A8] ? (v18 = a4.height == *(MEMORY[0x277CBF3A8] + 8)) : (v18 = 0), v18))
+    if (ratio != 0.0 && (toSize.width == *MEMORY[0x277CBF3A8] ? (v18 = toSize.height == *(MEMORY[0x277CBF3A8] + 8)) : (v18 = 0), v18))
     {
-      v19 = a3.width / a5;
+      v19 = size.width / ratio;
     }
 
     else
     {
-      if (a4.width <= a3.width || a4.height <= 0.0)
+      if (toSize.width <= size.width || toSize.height <= 0.0)
       {
         goto LABEL_30;
       }
 
-      v19 = a3.width / (a4.width / a4.height);
+      v19 = size.width / (toSize.width / toSize.height);
     }
 
-    a4.height = ceil(v19);
+    toSize.height = ceil(v19);
     width = v7;
     goto LABEL_30;
   }
 
-  v8 = ceil(a3.height * a5);
-  if (a4.width != *MEMORY[0x277CBF3A8] || a4.height != *(MEMORY[0x277CBF3A8] + 8))
+  v8 = ceil(size.height * ratio);
+  if (toSize.width != *MEMORY[0x277CBF3A8] || toSize.height != *(MEMORY[0x277CBF3A8] + 8))
   {
-    v8 = a4.width;
-    a3.height = a4.height;
+    v8 = toSize.width;
+    size.height = toSize.height;
   }
 
   v9 = 0;
   v10 = 0;
   v11 = v7;
-  v23 = AVMakeRectWithAspectRatioInsideRect(a3, *(&height - 3));
+  v23 = AVMakeRectWithAspectRatioInsideRect(size, *(&height - 3));
   x = v23.origin.x;
   y = v23.origin.y;
   v14 = v23.size.width;
@@ -548,10 +548,10 @@ LABEL_88:
   v24.origin.y = y;
   v24.size.width = v14;
   v24.size.height = v15;
-  a4.height = ceil(CGRectGetHeight(v24));
+  toSize.height = ceil(CGRectGetHeight(v24));
 LABEL_30:
   v20 = width;
-  v21 = a4.height;
+  v21 = toSize.height;
   result.height = v21;
   result.width = v20;
   return result;
@@ -610,9 +610,9 @@ LABEL_30:
     v6 = v5;
     v8 = v7;
     upscaleFactor = self->_upscaleFactor;
-    v10 = [(TVImageLayout *)self useInSearchPartial];
+    useInSearchPartial = [(TVImageLayout *)self useInSearchPartial];
 
-    [TVMLUtilities focusedSizeIncreaseForSize:v10 upscaleFactor:v6 useInSearchPartial:v8, upscaleFactor];
+    [TVMLUtilities focusedSizeIncreaseForSize:useInSearchPartial upscaleFactor:v6 useInSearchPartial:v8, upscaleFactor];
   }
 
   return result;

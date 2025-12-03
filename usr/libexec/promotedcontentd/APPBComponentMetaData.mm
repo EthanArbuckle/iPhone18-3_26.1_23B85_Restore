@@ -1,17 +1,17 @@
 @interface APPBComponentMetaData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)relevantIdentifierTypeAsString:(int)a3;
-- (int)StringAsRelevantIdentifierType:(id)a3;
+- (id)relevantIdentifierTypeAsString:(int)string;
+- (int)StringAsRelevantIdentifierType:(id)type;
 - (int)relevantIdentifierType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDurationInSeconds:(BOOL)a3;
-- (void)setHasRelevantIdentifierType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDurationInSeconds:(BOOL)seconds;
+- (void)setHasRelevantIdentifierType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBComponentMetaData
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasRelevantIdentifierType:(BOOL)a3
+- (void)setHasRelevantIdentifierType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -44,45 +44,45 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)relevantIdentifierTypeAsString:(int)a3
+- (id)relevantIdentifierTypeAsString:(int)string
 {
-  if ((a3 - 15001) >= 5)
+  if ((string - 15001) >= 5)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047E010 + (a3 - 15001));
+    v4 = *(&off_10047E010 + (string - 15001));
   }
 
   return v4;
 }
 
-- (int)StringAsRelevantIdentifierType:(id)a3
+- (int)StringAsRelevantIdentifierType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UniqueAd"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UniqueAd"])
   {
     v4 = 15001;
   }
 
-  else if ([v3 isEqualToString:@"Line"])
+  else if ([typeCopy isEqualToString:@"Line"])
   {
     v4 = 15002;
   }
 
-  else if ([v3 isEqualToString:@"Campaign"])
+  else if ([typeCopy isEqualToString:@"Campaign"])
   {
     v4 = 15003;
   }
 
-  else if ([v3 isEqualToString:@"Creative"])
+  else if ([typeCopy isEqualToString:@"Creative"])
   {
     v4 = 15004;
   }
 
-  else if ([v3 isEqualToString:@"AdamId"])
+  else if ([typeCopy isEqualToString:@"AdamId"])
   {
     v4 = 15005;
   }
@@ -95,9 +95,9 @@
   return v4;
 }
 
-- (void)setHasDurationInSeconds:(BOOL)a3
+- (void)setHasDurationInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }
@@ -115,8 +115,8 @@
   v7.receiver = self;
   v7.super_class = APPBComponentMetaData;
   v3 = [(APPBComponentMetaData *)&v7 description];
-  v4 = [(APPBComponentMetaData *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBComponentMetaData *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -164,9 +164,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
@@ -190,40 +190,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[8] = self->_relevantIdentifierType;
-    *(v4 + 36) |= 4u;
+    toCopy[8] = self->_relevantIdentifierType;
+    *(toCopy + 36) |= 4u;
   }
 
   if (self->_identifier)
   {
-    v6 = v4;
-    [v4 setIdentifier:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[4] = self->_durationInSeconds;
-    *(v4 + 36) |= 2u;
+    toCopy[4] = self->_durationInSeconds;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_eventTimestamp;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 1) = *&self->_eventTimestamp;
+    *(toCopy + 36) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -231,7 +231,7 @@
     *(v5 + 36) |= 4u;
   }
 
-  v7 = [(NSString *)self->_identifier copyWithZone:a3];
+  v7 = [(NSString *)self->_identifier copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
@@ -252,10 +252,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
@@ -263,19 +263,19 @@
   has = self->_has;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_relevantIdentifierType != *(v4 + 8))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_relevantIdentifierType != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 3))
+  if (identifier | *(equalCopy + 3))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -289,21 +289,21 @@ LABEL_19:
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_durationInSeconds != *(v4 + 4))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_durationInSeconds != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_19;
   }
 
-  v7 = (*(v4 + 36) & 1) == 0;
+  v7 = (*(equalCopy + 36) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_eventTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_eventTimestamp != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
@@ -377,33 +377,33 @@ LABEL_6:
   return v4 ^ v3 ^ v7 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 36) & 4) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 36) & 4) != 0)
   {
-    self->_relevantIdentifierType = *(v4 + 8);
+    self->_relevantIdentifierType = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(APPBComponentMetaData *)self setIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_durationInSeconds = *(v4 + 4);
+    self->_durationInSeconds = *(fromCopy + 4);
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if (v5)
   {
-    self->_eventTimestamp = *(v4 + 1);
+    self->_eventTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

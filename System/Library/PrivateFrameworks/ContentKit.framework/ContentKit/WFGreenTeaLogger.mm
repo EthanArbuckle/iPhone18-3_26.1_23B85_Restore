@@ -1,24 +1,24 @@
 @interface WFGreenTeaLogger
 + (id)sharedLogger;
-+ (void)log:(id)a3;
++ (void)log:(id)log;
 - (WFGreenTeaLogger)init;
 - (void)dealloc;
-- (void)log:(id)a3;
+- (void)log:(id)log;
 @end
 
 @implementation WFGreenTeaLogger
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  logCopy = log;
   [(WFGreenTeaLogger *)self logger];
   v5 = getCTGreenTeaOsLogHandle();
   v6 = v5;
   if (v5 && os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = logCopy;
     _os_log_impl(&dword_21E1BD000, v6, OS_LOG_TYPE_INFO, "%{public}@", &v7, 0xCu);
   }
 }
@@ -45,11 +45,11 @@
   return v2;
 }
 
-+ (void)log:(id)a3
++ (void)log:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   v4 = +[WFGreenTeaLogger sharedLogger];
-  [v4 log:v3];
+  [v4 log:logCopy];
 }
 
 + (id)sharedLogger

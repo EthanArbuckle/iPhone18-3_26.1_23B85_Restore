@@ -1,29 +1,29 @@
 @interface VUIMediaEntitiesFetchControllerOperation
-- (VUIMediaEntitiesFetchControllerOperation)initWithMediaLibrary:(id)a3 fetchReason:(int64_t)a4 requests:(id)a5;
-- (id)_resultWithResponses:(id)a3;
-- (void)_handleCompletdFetchWithResponses:(id)a3 error:(id)a4;
-- (void)_startChangesOperationWithMediaEntityFetchResponses:(id)a3 currentFetchResponses:(id)a4;
+- (VUIMediaEntitiesFetchControllerOperation)initWithMediaLibrary:(id)library fetchReason:(int64_t)reason requests:(id)requests;
+- (id)_resultWithResponses:(id)responses;
+- (void)_handleCompletdFetchWithResponses:(id)responses error:(id)error;
+- (void)_startChangesOperationWithMediaEntityFetchResponses:(id)responses currentFetchResponses:(id)fetchResponses;
 - (void)_startMediaLibraryFetchOperation;
 - (void)cancel;
 @end
 
 @implementation VUIMediaEntitiesFetchControllerOperation
 
-- (VUIMediaEntitiesFetchControllerOperation)initWithMediaLibrary:(id)a3 fetchReason:(int64_t)a4 requests:(id)a5
+- (VUIMediaEntitiesFetchControllerOperation)initWithMediaLibrary:(id)library fetchReason:(int64_t)reason requests:(id)requests
 {
-  v9 = a3;
-  v10 = a5;
+  libraryCopy = library;
+  requestsCopy = requests;
   v16.receiver = self;
   v16.super_class = VUIMediaEntitiesFetchControllerOperation;
   v11 = [(VUIMediaEntitiesFetchControllerOperation *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mediaLibrary, a3);
-    v12->_fetchReason = a4;
-    v13 = [v10 vui_deepCopy];
+    objc_storeStrong(&v11->_mediaLibrary, library);
+    v12->_fetchReason = reason;
+    vui_deepCopy = [requestsCopy vui_deepCopy];
     requests = v12->_requests;
-    v12->_requests = v13;
+    v12->_requests = vui_deepCopy;
   }
 
   return v12;
@@ -34,8 +34,8 @@
   v4.receiver = self;
   v4.super_class = VUIMediaEntitiesFetchControllerOperation;
   [(VUIMediaEntitiesFetchControllerOperation *)&v4 cancel];
-  v3 = [(VUIMediaEntitiesFetchControllerOperation *)self currentSubOperation];
-  [v3 cancel];
+  currentSubOperation = [(VUIMediaEntitiesFetchControllerOperation *)self currentSubOperation];
+  [currentSubOperation cancel];
 
   [(VUIAsynchronousOperation *)self finishExecutionIfPossible];
 }
@@ -46,19 +46,19 @@
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VUIMediaEntitiesFetchControllerOperation *)self mediaLibrary];
-    v5 = [v4 identifier];
-    v6 = [(VUIMediaEntitiesFetchControllerOperation *)self mediaLibrary];
-    v7 = [v6 title];
+    mediaLibrary = [(VUIMediaEntitiesFetchControllerOperation *)self mediaLibrary];
+    identifier = [mediaLibrary identifier];
+    mediaLibrary2 = [(VUIMediaEntitiesFetchControllerOperation *)self mediaLibrary];
+    title = [mediaLibrary2 title];
     *buf = 138412546;
-    v19 = v5;
+    v19 = identifier;
     v20 = 2112;
-    v21 = v7;
+    v21 = title;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIMediaEntitiesFetchControllerOperation:: start fetch with media library id %@ # title %@", buf, 0x16u);
   }
 
-  v8 = [(VUIMediaEntitiesFetchControllerOperation *)self mediaLibrary];
-  v9 = v8 == 0;
+  mediaLibrary3 = [(VUIMediaEntitiesFetchControllerOperation *)self mediaLibrary];
+  v9 = mediaLibrary3 == 0;
 
   if (v9)
   {
@@ -69,9 +69,9 @@
   else
   {
     v10 = [VUIMediaLibraryFetchMediaEntitiesOperation alloc];
-    v11 = [(VUIMediaEntitiesFetchControllerOperation *)self mediaLibrary];
-    v12 = [(VUIMediaEntitiesFetchControllerOperation *)self requests];
-    v13 = [(VUIMediaLibraryFetchMediaEntitiesOperation *)v10 initWithMediaLibrary:v11 requests:v12];
+    mediaLibrary4 = [(VUIMediaEntitiesFetchControllerOperation *)self mediaLibrary];
+    requests = [(VUIMediaEntitiesFetchControllerOperation *)self requests];
+    v13 = [(VUIMediaLibraryFetchMediaEntitiesOperation *)v10 initWithMediaLibrary:mediaLibrary4 requests:requests];
 
     objc_initWeak(buf, v13);
     objc_initWeak(&location, self);
@@ -103,22 +103,22 @@ void __76__VUIMediaEntitiesFetchControllerOperation__startMediaLibraryFetchOpera
   }
 }
 
-- (void)_handleCompletdFetchWithResponses:(id)a3 error:(id)a4
+- (void)_handleCompletdFetchWithResponses:(id)responses error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  responsesCopy = responses;
+  errorCopy = error;
+  if (responsesCopy)
   {
-    v8 = [(VUIMediaEntitiesFetchControllerOperation *)self currentFetchResponses];
-    if (v8)
+    currentFetchResponses = [(VUIMediaEntitiesFetchControllerOperation *)self currentFetchResponses];
+    if (currentFetchResponses)
     {
-      [(VUIMediaEntitiesFetchControllerOperation *)self _startChangesOperationWithMediaEntityFetchResponses:v6 currentFetchResponses:v8];
+      [(VUIMediaEntitiesFetchControllerOperation *)self _startChangesOperationWithMediaEntityFetchResponses:responsesCopy currentFetchResponses:currentFetchResponses];
     }
 
     else
     {
-      v11 = [(VUIMediaEntitiesFetchControllerOperation *)self _resultWithResponses:v6];
+      v11 = [(VUIMediaEntitiesFetchControllerOperation *)self _resultWithResponses:responsesCopy];
       [(VUIMediaEntitiesFetchControllerOperation *)self setResult:v11];
       [(VUIAsynchronousOperation *)self finishExecutionIfPossible];
     }
@@ -129,25 +129,25 @@ void __76__VUIMediaEntitiesFetchControllerOperation__startMediaLibraryFetchOpera
     v9 = VUIDefaultLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(VUIMediaEntitiesFetchControllerOperation *)self requests];
+      requests = [(VUIMediaEntitiesFetchControllerOperation *)self requests];
       v12 = 138412546;
-      v13 = v7;
+      v13 = errorCopy;
       v14 = 2112;
-      v15 = v10;
+      v15 = requests;
       _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "Media entity fetch failed with error (%@) for requests: %@", &v12, 0x16u);
     }
 
-    [(VUIMediaEntitiesFetchControllerOperation *)self setError:v7];
+    [(VUIMediaEntitiesFetchControllerOperation *)self setError:errorCopy];
     [(VUIAsynchronousOperation *)self finishExecutionIfPossible];
   }
 }
 
-- (void)_startChangesOperationWithMediaEntityFetchResponses:(id)a3 currentFetchResponses:(id)a4
+- (void)_startChangesOperationWithMediaEntityFetchResponses:(id)responses currentFetchResponses:(id)fetchResponses
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VUIMediaEntitiesFetchControllerOperation *)self _resultWithResponses:v6];
-  v9 = [[VUIMediaEntityFetchResponseChangesOperation alloc] initWithLatestFetchResponses:v6 currentFetchResponses:v7];
+  responsesCopy = responses;
+  fetchResponsesCopy = fetchResponses;
+  v8 = [(VUIMediaEntitiesFetchControllerOperation *)self _resultWithResponses:responsesCopy];
+  v9 = [[VUIMediaEntityFetchResponseChangesOperation alloc] initWithLatestFetchResponses:responsesCopy currentFetchResponses:fetchResponsesCopy];
   objc_initWeak(&location, v9);
   objc_initWeak(&from, self);
   v11[0] = MEMORY[0x1E69E9820];
@@ -183,10 +183,10 @@ void __118__VUIMediaEntitiesFetchControllerOperation__startChangesOperationWithM
   }
 }
 
-- (id)_resultWithResponses:(id)a3
+- (id)_resultWithResponses:(id)responses
 {
-  v4 = a3;
-  v5 = [[VUIMediaEntitiesFetchControllerResult alloc] initWithFetchReason:[(VUIMediaEntitiesFetchControllerOperation *)self fetchReason] fetchResponses:v4];
+  responsesCopy = responses;
+  v5 = [[VUIMediaEntitiesFetchControllerResult alloc] initWithFetchReason:[(VUIMediaEntitiesFetchControllerOperation *)self fetchReason] fetchResponses:responsesCopy];
 
   return v5;
 }

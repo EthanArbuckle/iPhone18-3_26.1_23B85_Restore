@@ -1,5 +1,5 @@
 @interface PXMemoriesInlineProblemReporter
-- (PXMemoriesInlineProblemReporter)initWithMemory:(id)a3 features:(id)a4;
+- (PXMemoriesInlineProblemReporter)initWithMemory:(id)memory features:(id)features;
 - (id)_headerText;
 - (id)_reportStringForFeatures;
 - (id)feedbackMailViewController;
@@ -9,12 +9,12 @@
 
 - (id)_headerText
 {
-  v2 = [(PXMemoriesInlineProblemReporter *)self memory];
-  v3 = [v2 localizedTitle];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F1741150];
+  memory = [(PXMemoriesInlineProblemReporter *)self memory];
+  localizedTitle = [memory localizedTitle];
+  v4 = [localizedTitle stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F1741150];
 
-  v5 = [v2 localizedSubtitle];
-  v6 = [v5 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F1741150];
+  localizedSubtitle = [memory localizedSubtitle];
+  v6 = [localizedSubtitle stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F1741150];
 
   if (v6)
   {
@@ -31,13 +31,13 @@
 - (id)_reportStringForFeatures
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PXMemoriesInlineProblemReporter *)self features];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  features = [(PXMemoriesInlineProblemReporter *)self features];
+  v5 = [features countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -48,22 +48,22 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(features);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 localizedTypeStringValue];
-        v11 = [v9 localizedTitle];
-        [v3 appendFormat:@"- %@: %@\n", v10, v11];
+        localizedTypeStringValue = [v9 localizedTypeStringValue];
+        localizedTitle = [v9 localizedTitle];
+        [string appendFormat:@"- %@: %@\n", localizedTypeStringValue, localizedTitle];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [features countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return string;
 }
 
 - (id)feedbackMailViewController
@@ -74,18 +74,18 @@
     v3 = objc_alloc_init(getMFMailComposeViewControllerClass_237954());
     [v3 setSubject:@"Memories living-on feedback"];
     [v3 setToRecipients:&unk_1F1911968];
-    v4 = [MEMORY[0x1E696AD60] string];
-    v5 = [(PXMemoriesInlineProblemReporter *)self _headerText];
-    [v4 appendString:v5];
+    string = [MEMORY[0x1E696AD60] string];
+    _headerText = [(PXMemoriesInlineProblemReporter *)self _headerText];
+    [string appendString:_headerText];
 
-    v6 = [(PXMemoriesInlineProblemReporter *)self _reportStringForFeatures];
-    [v4 appendString:v6];
+    _reportStringForFeatures = [(PXMemoriesInlineProblemReporter *)self _reportStringForFeatures];
+    [string appendString:_reportStringForFeatures];
 
-    v7 = [(PXMemoriesInlineProblemReporter *)self _infoText];
-    [v4 appendFormat:@"\n\n%@\n", v7];
+    _infoText = [(PXMemoriesInlineProblemReporter *)self _infoText];
+    [string appendFormat:@"\n\n%@\n", _infoText];
 
-    v8 = [(PXMemoriesInlineProblemReporter *)self memory];
-    v9 = [PXMemoriesRelatedDiagnosticsHelper getSummaryFromProviderItem:v8];
+    memory = [(PXMemoriesInlineProblemReporter *)self memory];
+    v9 = [PXMemoriesRelatedDiagnosticsHelper getSummaryFromProviderItem:memory];
 
     if (v9)
     {
@@ -105,10 +105,10 @@
     }
 
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v11 localizedDescription];
-    v10 = [v12 stringWithFormat:@"Cannot attach results.plist: %@.", v13];
+    localizedDescription = [v11 localizedDescription];
+    v10 = [v12 stringWithFormat:@"Cannot attach results.plist: %@.", localizedDescription];
 
-    [v4 appendFormat:@"%@\n\n", v10];
+    [string appendFormat:@"%@\n\n", v10];
     v14 = PLUIGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -118,17 +118,17 @@
     }
 
 LABEL_12:
-    v15 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v16 = [v15 urlForApplicationDataFolderIdentifier:1 error:0];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    v16 = [px_deprecated_appPhotoLibrary urlForApplicationDataFolderIdentifier:1 error:0];
 
     v17 = [v16 URLByAppendingPathComponent:@"Graph.plist"];
     if (!v17)
     {
 LABEL_27:
-      v29 = [(PXMemoriesInlineProblemReporter *)self _disclaimerText];
-      [v4 appendFormat:@"\n\n%@\n", v29];
+      _disclaimerText = [(PXMemoriesInlineProblemReporter *)self _disclaimerText];
+      [string appendFormat:@"\n\n%@\n", _disclaimerText];
 
-      [v3 setMessageBody:v4 isHTML:0];
+      [v3 setMessageBody:string isHTML:0];
       goto LABEL_28;
     }
 
@@ -139,8 +139,8 @@ LABEL_27:
 
     if (v18 && !v19)
     {
-      v20 = [v17 lastPathComponent];
-      [v3 addAttachmentData:v18 mimeType:@"application/octet-stream" fileName:v20];
+      lastPathComponent = [v17 lastPathComponent];
+      [v3 addAttachmentData:v18 mimeType:@"application/octet-stream" fileName:lastPathComponent];
       v11 = 0;
 LABEL_26:
 
@@ -148,21 +148,21 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v21 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    px_deprecated_appPhotoLibrary2 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
     v33 = 0;
-    v20 = [v21 exportGraphForPurpose:@"default" error:&v33];
+    lastPathComponent = [px_deprecated_appPhotoLibrary2 exportGraphForPurpose:@"default" error:&v33];
     v11 = v33;
 
-    if (v20 && !v11)
+    if (lastPathComponent && !v11)
     {
       v32 = 0;
-      v22 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v20 options:0 error:&v32];
+      v22 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:lastPathComponent options:0 error:&v32];
       v11 = v32;
 
       if (v22 && !v11)
       {
-        v23 = [v17 lastPathComponent];
-        [v3 addAttachmentData:v22 mimeType:@"application/octet-stream" fileName:v23];
+        lastPathComponent2 = [v17 lastPathComponent];
+        [v3 addAttachmentData:v22 mimeType:@"application/octet-stream" fileName:lastPathComponent2];
 
         [v22 writeToURL:v17 atomically:1];
         v11 = 0;
@@ -176,11 +176,11 @@ LABEL_26:
     if (v11)
     {
       v24 = MEMORY[0x1E696AEC0];
-      v25 = [v11 localizedDescription];
-      v26 = [v24 stringWithFormat:@"Cannot attach graph: %@", v25];
+      localizedDescription2 = [v11 localizedDescription];
+      v26 = [v24 stringWithFormat:@"Cannot attach graph: %@", localizedDescription2];
 
       v27 = v26;
-      [v4 appendFormat:@"%@\n\n", v26];
+      [string appendFormat:@"%@\n\n", v26];
       v28 = PLUIGetLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
@@ -193,11 +193,11 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v4 = PLUIGetLog();
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  string = PLUIGetLog();
+  if (os_log_type_enabled(string, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "Looks like email is not setup on this system.", buf, 2u);
+    _os_log_impl(&dword_1A3C1C000, string, OS_LOG_TYPE_DEFAULT, "Looks like email is not setup on this system.", buf, 2u);
   }
 
   v3 = 0;
@@ -206,18 +206,18 @@ LABEL_28:
   return v3;
 }
 
-- (PXMemoriesInlineProblemReporter)initWithMemory:(id)a3 features:(id)a4
+- (PXMemoriesInlineProblemReporter)initWithMemory:(id)memory features:(id)features
 {
-  v7 = a3;
-  v8 = a4;
+  memoryCopy = memory;
+  featuresCopy = features;
   v12.receiver = self;
   v12.super_class = PXMemoriesInlineProblemReporter;
   v9 = [(PXMemoriesInlineProblemReporter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_memory, a3);
-    objc_storeStrong(&v10->_features, a4);
+    objc_storeStrong(&v9->_memory, memory);
+    objc_storeStrong(&v10->_features, features);
   }
 
   return v10;

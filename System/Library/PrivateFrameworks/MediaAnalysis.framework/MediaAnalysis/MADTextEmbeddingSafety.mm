@@ -1,11 +1,11 @@
 @interface MADTextEmbeddingSafety
-+ (id)createForEmbeddingVersion:(unint64_t)a3;
++ (id)createForEmbeddingVersion:(unint64_t)version;
 - (MADTextEmbeddingSafety)init;
 - (int)_createPlan;
 - (int)_loadResources;
-- (int)_processEmbedding:(id)a3 safetyScore:(float *)a4 isSafe:(BOOL *)a5;
+- (int)_processEmbedding:(id)embedding safetyScore:(float *)score isSafe:(BOOL *)safe;
 - (int)loadResources;
-- (int)processEmbedding:(id)a3 safetyScore:(float *)a4 isSafe:(BOOL *)a5;
+- (int)processEmbedding:(id)embedding safetyScore:(float *)score isSafe:(BOOL *)safe;
 - (void)dealloc;
 @end
 
@@ -27,23 +27,23 @@
   return v2;
 }
 
-+ (id)createForEmbeddingVersion:(unint64_t)a3
++ (id)createForEmbeddingVersion:(unint64_t)version
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 == 9)
+  if (version == 9)
   {
     v4 = MADTextEmbeddingSafetyMD7v2;
     goto LABEL_7;
   }
 
-  v3 = a3;
-  if (a3 == 7)
+  versionCopy = version;
+  if (version == 7)
   {
     v4 = MADTextEmbeddingSafetyMD6;
     goto LABEL_7;
   }
 
-  if (a3 == 5)
+  if (version == 5)
   {
     v4 = MADTextEmbeddingSafetyMD5;
 LABEL_7:
@@ -54,7 +54,7 @@ LABEL_7:
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = versionCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[Text|Safety] Embedding version %d not supported", v7, 8u);
   }
 
@@ -93,15 +93,15 @@ LABEL_12:
     return -18;
   }
 
-  v4 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v5 = [v4 resourceURL];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
   v6 = MEMORY[0x1E695DFF8];
-  v7 = [objc_opt_class() modelName];
-  v8 = [v6 URLWithString:v7 relativeToURL:v5];
+  modelName = [objc_opt_class() modelName];
+  v8 = [v6 URLWithString:modelName relativeToURL:resourceURL];
 
-  v9 = [v8 path];
-  [v9 UTF8String];
+  path = [v8 path];
+  [path UTF8String];
   blob_dimensions = espresso_plan_add_network();
 
   if (!blob_dimensions)
@@ -180,7 +180,7 @@ LABEL_12:
     v10 = qos_class_self();
     v11 = VCPMAQoSDescription(v10);
     v12 = v11;
-    v13 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v14 = "Failure";
     if (!v2)
     {
@@ -188,7 +188,7 @@ LABEL_12:
     }
 
     *buf = 136446466;
-    v18 = v13;
+    v18 = uTF8String;
     v19 = 2082;
     v20 = v14;
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v9, OS_SIGNPOST_INTERVAL_END, v5, "MADTextEmbeddingSafety_loadResources", "QoS=%{public, signpost.telemetry:string1}s Status=%{public, signpost.telemetry:string2}s  enableTelemetry=YES ", buf, 0x16u);
@@ -285,12 +285,12 @@ uint64_t __39__MADTextEmbeddingSafety_loadResources__block_invoke(uint64_t a1)
   return result;
 }
 
-- (int)_processEmbedding:(id)a3 safetyScore:(float *)a4 isSafe:(BOOL *)a5
+- (int)_processEmbedding:(id)embedding safetyScore:(float *)score isSafe:(BOOL *)safe
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(MADTextEmbeddingSafety *)self _loadResources];
-  if (v9)
+  embeddingCopy = embedding;
+  _loadResources = [(MADTextEmbeddingSafety *)self _loadResources];
+  if (_loadResources)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -305,10 +305,10 @@ uint64_t __39__MADTextEmbeddingSafety_loadResources__block_invoke(uint64_t a1)
     v24 = 3221225472;
     v25 = __63__MADTextEmbeddingSafety__processEmbedding_safetyScore_isSafe___block_invoke;
     v26 = &unk_1E8351918;
-    v27 = v8;
-    v28 = self;
-    v29 = a4;
-    v30 = a5;
+    v27 = embeddingCopy;
+    selfCopy = self;
+    scoreCopy = score;
+    safeCopy = safe;
     v10 = _Block_copy(&v23);
     v11 = VCPSignPostPersistentLog();
     v12 = os_signpost_id_generate(v11);
@@ -321,7 +321,7 @@ uint64_t __39__MADTextEmbeddingSafety_loadResources__block_invoke(uint64_t a1)
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "MADTextEmbeddingSafety_processEmbedding", " enableTelemetry=YES ", buf, 2u);
     }
 
-    v9 = v10[2](v10);
+    _loadResources = v10[2](v10);
     v15 = VCPSignPostPersistentLog();
     v16 = v15;
     if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
@@ -329,22 +329,22 @@ uint64_t __39__MADTextEmbeddingSafety_loadResources__block_invoke(uint64_t a1)
       v17 = qos_class_self();
       v18 = VCPMAQoSDescription(v17);
       v19 = v18;
-      v20 = [v18 UTF8String];
+      uTF8String = [v18 UTF8String];
       v21 = "Failure";
-      if (!v9)
+      if (!_loadResources)
       {
         v21 = "Success";
       }
 
       *buf = 136446466;
-      v32 = v20;
+      v32 = uTF8String;
       v33 = 2082;
       v34 = v21;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v16, OS_SIGNPOST_INTERVAL_END, v12, "MADTextEmbeddingSafety_processEmbedding", "QoS=%{public, signpost.telemetry:string1}s Status=%{public, signpost.telemetry:string2}s  enableTelemetry=YES ", buf, 0x16u);
     }
   }
 
-  return v9;
+  return _loadResources;
 }
 
 uint64_t __63__MADTextEmbeddingSafety__processEmbedding_safetyScore_isSafe___block_invoke(uint64_t a1)
@@ -467,9 +467,9 @@ uint64_t __63__MADTextEmbeddingSafety__processEmbedding_safetyScore_isSafe___blo
   return v6;
 }
 
-- (int)processEmbedding:(id)a3 safetyScore:(float *)a4 isSafe:(BOOL *)a5
+- (int)processEmbedding:(id)embedding safetyScore:(float *)score isSafe:(BOOL *)safe
 {
-  v8 = a3;
+  embeddingCopy = embedding;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -480,16 +480,16 @@ uint64_t __63__MADTextEmbeddingSafety__processEmbedding_safetyScore_isSafe___blo
   block[2] = __62__MADTextEmbeddingSafety_processEmbedding_safetyScore_isSafe___block_invoke;
   block[3] = &unk_1E8351940;
   block[4] = self;
-  v13 = v8;
+  v13 = embeddingCopy;
   v14 = &v17;
-  v15 = a4;
-  v16 = a5;
-  v10 = v8;
+  scoreCopy = score;
+  safeCopy = safe;
+  v10 = embeddingCopy;
   dispatch_sync(queue, block);
-  LODWORD(a4) = *(v18 + 6);
+  LODWORD(score) = *(v18 + 6);
 
   _Block_object_dispose(&v17, 8);
-  return a4;
+  return score;
 }
 
 uint64_t __62__MADTextEmbeddingSafety_processEmbedding_safetyScore_isSafe___block_invoke(uint64_t a1)

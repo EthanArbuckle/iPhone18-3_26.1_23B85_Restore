@@ -1,59 +1,59 @@
 @interface SASActivationInstrumentation
-- (SASActivationInstrumentation)initWithSender:(id)a3;
-- (id)buttonDownWithIdentifier:(id)a3;
-- (id)buttonTapWithIdentifier:(id)a3 associateWithButtonDown:(BOOL)a4;
-- (id)buttonUpWithIdentifier:(id)a3;
+- (SASActivationInstrumentation)initWithSender:(id)sender;
+- (id)buttonDownWithIdentifier:(id)identifier;
+- (id)buttonTapWithIdentifier:(id)identifier associateWithButtonDown:(BOOL)down;
+- (id)buttonUpWithIdentifier:(id)identifier;
 @end
 
 @implementation SASActivationInstrumentation
 
-- (SASActivationInstrumentation)initWithSender:(id)a3
+- (SASActivationInstrumentation)initWithSender:(id)sender
 {
-  v5 = a3;
+  senderCopy = sender;
   v9.receiver = self;
   v9.super_class = SASActivationInstrumentation;
   v6 = [(SASActivationInstrumentation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_instrumentationSender, a3);
+    objc_storeStrong(&v6->_instrumentationSender, sender);
   }
 
   return v7;
 }
 
-- (id)buttonDownWithIdentifier:(id)a3
+- (id)buttonDownWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(v4);
   [(SASActivationInstrumentation *)self setActivationEventIdentifier:v6];
 
-  [(SASActivationInstrumentation *)self _instrumentButtonInteractionType:1 buttonIdentifier:v5];
+  [(SASActivationInstrumentation *)self _instrumentButtonInteractionType:1 buttonIdentifier:identifierCopy];
 
   return [(SASActivationInstrumentation *)self activationEventIdentifier];
 }
 
-- (id)buttonUpWithIdentifier:(id)a3
+- (id)buttonUpWithIdentifier:(id)identifier
 {
-  [(SASActivationInstrumentation *)self _instrumentButtonInteractionType:2 buttonIdentifier:a3];
+  [(SASActivationInstrumentation *)self _instrumentButtonInteractionType:2 buttonIdentifier:identifier];
 
   return [(SASActivationInstrumentation *)self activationEventIdentifier];
 }
 
-- (id)buttonTapWithIdentifier:(id)a3 associateWithButtonDown:(BOOL)a4
+- (id)buttonTapWithIdentifier:(id)identifier associateWithButtonDown:(BOOL)down
 {
-  v6 = a3;
-  if (!a4)
+  identifierCopy = identifier;
+  if (!down)
   {
     v7 = objc_alloc_init(MEMORY[0x1E696AFB0]);
     [(SASActivationInstrumentation *)self setActivationEventIdentifier:v7];
   }
 
-  [(SASActivationInstrumentation *)self _instrumentButtonInteractionType:3 buttonIdentifier:v6];
-  v8 = [(SASActivationInstrumentation *)self activationEventIdentifier];
+  [(SASActivationInstrumentation *)self _instrumentButtonInteractionType:3 buttonIdentifier:identifierCopy];
+  activationEventIdentifier = [(SASActivationInstrumentation *)self activationEventIdentifier];
 
-  return v8;
+  return activationEventIdentifier;
 }
 
 @end

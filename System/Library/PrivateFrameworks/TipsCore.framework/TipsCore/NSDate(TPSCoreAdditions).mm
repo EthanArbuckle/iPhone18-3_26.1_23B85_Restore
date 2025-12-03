@@ -13,7 +13,7 @@
   }
 
   [a4 timeIntervalSinceNow];
-  return v5 < a1;
+  return v5 < self;
 }
 
 - (BOOL)isTimeToDate:()TPSCoreAdditions withinTimeInterval:
@@ -23,7 +23,7 @@
     return 0;
   }
 
-  [a1 timeIntervalSinceDate:?];
+  [self timeIntervalSinceDate:?];
   return v5 > a2;
 }
 

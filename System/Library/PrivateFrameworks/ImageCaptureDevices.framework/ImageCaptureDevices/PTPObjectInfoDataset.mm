@@ -5,9 +5,9 @@
 - (id)relatedUUID;
 - (int64_t)intervalSince1970;
 - (unsigned)objectCompressedSize;
-- (void)addCustomKeyword:(id)a3 withIdentifier:(id)a4;
-- (void)contentLength:(unsigned int *)a3 bufferLength:(unsigned int *)a4 contentType:(int)a5;
-- (void)setKeywords:(id)a3;
+- (void)addCustomKeyword:(id)keyword withIdentifier:(id)identifier;
+- (void)contentLength:(unsigned int *)length bufferLength:(unsigned int *)bufferLength contentType:(int)type;
+- (void)setKeywords:(id)keywords;
 @end
 
 @implementation PTPObjectInfoDataset
@@ -19,7 +19,7 @@
   return [(PTPObjectInfoDataset *)&v3 init];
 }
 
-- (void)contentLength:(unsigned int *)a3 bufferLength:(unsigned int *)a4 contentType:(int)a5
+- (void)contentLength:(unsigned int *)length bufferLength:(unsigned int *)bufferLength contentType:(int)type
 {
   v9 = [(NSString *)self->_filename length];
   if (v9)
@@ -65,25 +65,25 @@
     v16 = 0;
   }
 
-  if (a5 == 2)
+  if (type == 2)
   {
     v19 = 2 * (v14 + v10 + v12 + v16);
-    *a3 = v19 + 60;
+    *length = v19 + 60;
     v17 = v19 + 68;
   }
 
-  else if (a5 == 1)
+  else if (type == 1)
   {
     v18 = 2 * (v14 + v10 + v12 + v16);
-    *a3 = v18 + 56;
+    *length = v18 + 56;
     v17 = v18 + 64;
   }
 
   else
   {
-    if (a5)
+    if (type)
     {
-      if ((a5 - 3) > 1)
+      if ((type - 3) > 1)
       {
         return;
       }
@@ -96,10 +96,10 @@
       v17 = 2 * (v14 + v10 + v12 + v16) + 56;
     }
 
-    *a3 = v17;
+    *length = v17;
   }
 
-  *a4 = v17;
+  *bufferLength = v17;
 }
 
 - (id)description
@@ -146,22 +146,22 @@
   return v2;
 }
 
-- (void)setKeywords:(id)a3
+- (void)setKeywords:(id)keywords
 {
-  v6 = a3;
+  keywordsCopy = keywords;
   if (([(NSMutableString *)self->_keywords isEqualToString:?]& 1) == 0)
   {
-    v4 = [v6 mutableCopy];
+    v4 = [keywordsCopy mutableCopy];
     keywords = self->_keywords;
     self->_keywords = v4;
   }
 }
 
-- (void)addCustomKeyword:(id)a3 withIdentifier:(id)a4
+- (void)addCustomKeyword:(id)keyword withIdentifier:(id)identifier
 {
-  v13 = a3;
-  v6 = a4;
-  if (v13 && v6)
+  keywordCopy = keyword;
+  identifierCopy = identifier;
+  if (keywordCopy && identifierCopy)
   {
     if (!self->_keywords)
     {
@@ -170,8 +170,8 @@
       self->_keywords = v7;
     }
 
-    v9 = [v13 length];
-    v10 = [v6 length];
+    v9 = [keywordCopy length];
+    v10 = [identifierCopy length];
     if ((v9 + v10 + [(NSMutableString *)self->_keywords length]+ 3) <= 0xFF)
     {
       v11 = [(NSMutableString *)self->_keywords length];
@@ -181,7 +181,7 @@
         v12 = &stru_2A253D090;
       }
 
-      [(NSMutableString *)self->_keywords appendFormat:@"%@%@^%@", v12, v6, v13];
+      [(NSMutableString *)self->_keywords appendFormat:@"%@%@^%@", v12, identifierCopy, keywordCopy];
     }
   }
 }
@@ -205,8 +205,8 @@
 
     else
     {
-      v9 = [MEMORY[0x29EDBA140] UUID];
-      v10 = [v9 copy];
+      uUID = [MEMORY[0x29EDBA140] UUID];
+      v10 = [uUID copy];
       v11 = self->_relatedUUID;
       self->_relatedUUID = v10;
     }

@@ -14,7 +14,7 @@
 
 - (void)handleRapportIdentitiesChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005973EC();
 }
 

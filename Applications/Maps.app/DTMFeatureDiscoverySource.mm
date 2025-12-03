@@ -1,20 +1,20 @@
 @interface DTMFeatureDiscoverySource
 + (void)resetAllPreviousDismissals;
-- (BOOL)_userPreviouslyDismissedTransportType:(int64_t)a3;
+- (BOOL)_userPreviouslyDismissedTransportType:(int64_t)type;
 - (BOOL)isAvailable;
-- (DTMFeatureDiscoverySource)initWithPriority:(int64_t)a3 delegate:(id)a4;
+- (DTMFeatureDiscoverySource)initWithPriority:(int64_t)priority delegate:(id)delegate;
 - (FeatureDiscoveryModel)model;
 - (FeatureDiscoverySourceDelegate)delegate;
 - (id)_bestModelForCurrentState;
-- (int)_targetForTransportType:(int64_t)a3;
+- (int)_targetForTransportType:(int64_t)type;
 - (int64_t)_fetchRepeatedRecentTransportType;
 - (int64_t)_performRemovalForTransportType;
-- (void)_didDisplayModelForPreference:(int64_t)a3;
+- (void)_didDisplayModelForPreference:(int64_t)preference;
 - (void)_dismiss;
-- (void)_performDTMActionWithPreference:(int64_t)a3;
-- (void)_recordDismissalForTransportType:(int64_t)a3;
+- (void)_performDTMActionWithPreference:(int64_t)preference;
+- (void)_recordDismissalForTransportType:(int64_t)type;
 - (void)_reloadAvailability;
-- (void)setTransportType:(int64_t)a3 routeCollection:(id)a4;
+- (void)setTransportType:(int64_t)type routeCollection:(id)collection;
 @end
 
 @implementation DTMFeatureDiscoverySource
@@ -26,20 +26,20 @@
   return WeakRetained;
 }
 
-- (int)_targetForTransportType:(int64_t)a3
+- (int)_targetForTransportType:(int64_t)type
 {
-  if ((a3 - 1) >= 5)
+  if ((type - 1) >= 5)
   {
     return 0;
   }
 
   else
   {
-    return a3 + 300;
+    return type + 300;
   }
 }
 
-- (void)_recordDismissalForTransportType:(int64_t)a3
+- (void)_recordDismissalForTransportType:(int64_t)type
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 objectForKey:@"PreferDTMDismissedTransportTypes"];
@@ -55,14 +55,14 @@
   }
 
   v7 = [v6 mutableCopy];
-  v8 = a3 - 1;
-  if ((a3 - 1) >= 5)
+  v8 = type - 1;
+  if ((type - 1) >= 5)
   {
     v13 = sub_10006250C();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
       v15 = @"Bicycle";
-      if (!a3)
+      if (!type)
       {
         v15 = @"Undefined";
       }
@@ -94,12 +94,12 @@
   }
 }
 
-- (BOOL)_userPreviouslyDismissedTransportType:(int64_t)a3
+- (BOOL)_userPreviouslyDismissedTransportType:(int64_t)type
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 objectForKey:@"PreferDTMDismissedTransportTypes"];
 
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     v6 = 4;
     if (v5)
@@ -112,7 +112,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = dword_101216100[a3 - 1];
+  v6 = dword_101216100[type - 1];
   if (!v5)
   {
     goto LABEL_5;
@@ -148,19 +148,19 @@ LABEL_6:
   [(DTMFeatureDiscoverySource *)self _recordDismissalForTransportType:[(DTMFeatureDiscoverySource *)self _performRemovalForTransportType]];
 }
 
-- (void)_performDTMActionWithPreference:(int64_t)a3
+- (void)_performDTMActionWithPreference:(int64_t)preference
 {
   v5 = sub_10006250C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 134217984;
-    v9 = a3;
+    preferenceCopy = preference;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "User accepted suggestion, changing DTM to %ld", &v8, 0xCu);
   }
 
-  if (a3 <= 4)
+  if (preference <= 4)
   {
-    v6 = dword_101213558[a3];
+    v6 = dword_101213558[preference];
     v7 = +[MKMapService sharedService];
     [v7 captureUserAction:v6 onTarget:-[DTMFeatureDiscoverySource _targetForTransportType:](self eventValue:{"_targetForTransportType:", self->_transportType), 0}];
   }
@@ -169,7 +169,7 @@ LABEL_6:
   [(DTMFeatureDiscoverySource *)self _performRemovalForTransportType];
 }
 
-- (void)_didDisplayModelForPreference:(int64_t)a3
+- (void)_didDisplayModelForPreference:(int64_t)preference
 {
   v5 = sub_10006250C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -178,9 +178,9 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Suggestion was displayed to change DTM", v8, 2u);
   }
 
-  if (a3 <= 4)
+  if (preference <= 4)
   {
-    v6 = dword_101213544[a3];
+    v6 = dword_101213544[preference];
     v7 = +[MKMapService sharedService];
     [v7 captureUserAction:v6 onTarget:-[DTMFeatureDiscoverySource _targetForTransportType:](self eventValue:{"_targetForTransportType:", self->_transportType), 0}];
   }
@@ -188,10 +188,10 @@ LABEL_6:
 
 - (void)_reloadAvailability
 {
-  v3 = [(DTMFeatureDiscoverySource *)self _bestModelForCurrentState];
+  _bestModelForCurrentState = [(DTMFeatureDiscoverySource *)self _bestModelForCurrentState];
   os_unfair_lock_lock(&self->_lock);
   model = self->_model;
-  v5 = v3;
+  v5 = _bestModelForCurrentState;
   v6 = v5;
   if (v5 | model)
   {
@@ -323,7 +323,7 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v16 = [v11 integerValue];
+  integerValue = [v11 integerValue];
   if (!GEOConfigGetBOOL())
   {
     if ([(DTMFeatureDiscoverySource *)self _userPreviouslyDismissedTransportType:transportType])
@@ -342,7 +342,7 @@ LABEL_14:
     {
       if (repeatedTransportType == transportType)
       {
-        if (v16 != GEOGetUserTransportTypePreference())
+        if (integerValue != GEOGetUserTransportTypePreference())
         {
           goto LABEL_26;
         }
@@ -404,15 +404,15 @@ LABEL_26:
       goto LABEL_14;
     }
 
-    v34 = [(DTMFeatureDiscoverySource *)self transportType];
-    if ((v34 - 1) > 4)
+    transportType = [(DTMFeatureDiscoverySource *)self transportType];
+    if ((transportType - 1) > 4)
     {
       v35 = @"Undefined";
     }
 
     else
     {
-      v35 = *(&off_101629F78 + v34 - 1);
+      v35 = *(&off_101629F78 + transportType - 1);
     }
 
     *buf = 138412290;
@@ -447,15 +447,15 @@ LABEL_26:
   v31 = sub_10006250C();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    v32 = [(DTMFeatureDiscoverySource *)self transportType];
-    if ((v32 - 1) > 4)
+    transportType2 = [(DTMFeatureDiscoverySource *)self transportType];
+    if ((transportType2 - 1) > 4)
     {
       v33 = @"Undefined";
     }
 
     else
     {
-      v33 = *(&off_101629F78 + v32 - 1);
+      v33 = *(&off_101629F78 + transportType2 - 1);
     }
 
     *buf = 138412290;
@@ -470,13 +470,13 @@ LABEL_26:
   v42[2] = sub_1007AD50C;
   v42[3] = &unk_10165FBC0;
   objc_copyWeak(v43, buf);
-  v43[1] = v16;
+  v43[1] = integerValue;
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_1007AD55C;
   v40[3] = &unk_10165FBC0;
   objc_copyWeak(v41, buf);
-  v41[1] = v16;
+  v41[1] = integerValue;
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_1007AD5AC;
@@ -497,9 +497,9 @@ LABEL_15:
 - (FeatureDiscoveryModel)model
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = self->_model;
+  _bestModelForCurrentState = self->_model;
   os_unfair_lock_unlock(&self->_lock);
-  if (!v3)
+  if (!_bestModelForCurrentState)
   {
     v4 = sub_10006250C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -508,26 +508,26 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Will create model on demand", v6, 2u);
     }
 
-    v3 = [(DTMFeatureDiscoverySource *)self _bestModelForCurrentState];
+    _bestModelForCurrentState = [(DTMFeatureDiscoverySource *)self _bestModelForCurrentState];
     os_unfair_lock_lock(&self->_lock);
-    objc_storeStrong(&self->_model, v3);
+    objc_storeStrong(&self->_model, _bestModelForCurrentState);
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  return v3;
+  return _bestModelForCurrentState;
 }
 
 - (int64_t)_fetchRepeatedRecentTransportType
 {
   v3 = +[Recents sharedRecents];
-  v4 = [v3 orderedRecents];
+  orderedRecents = [v3 orderedRecents];
 
   UInteger = GEOConfigGetUInteger();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = v4;
+  v5 = orderedRecents;
   v6 = [v5 countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v6)
   {
@@ -563,9 +563,9 @@ LABEL_15:
 
         if (v15)
         {
-          v16 = self;
-          v17 = [v15 historyEntry];
-          v18 = [v17 conformsToProtocol:v12];
+          selfCopy = self;
+          historyEntry = [v15 historyEntry];
+          v18 = [historyEntry conformsToProtocol:v12];
 
           if (v18)
           {
@@ -577,7 +577,7 @@ LABEL_15:
             v19 = 0;
           }
 
-          self = v16;
+          self = selfCopy;
         }
 
         else
@@ -589,12 +589,12 @@ LABEL_15:
         {
           if (!self->_recentsCutoffDate || ([v19 historyEntry], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "usageDate"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "timeIntervalSinceDate:", self->_recentsCutoffDate), v23 = v22, v21, v20, v23 < 0.0))
           {
-            v24 = [v19 historyEntry];
-            v25 = [v24 transportType];
+            historyEntry2 = [v19 historyEntry];
+            transportType = [historyEntry2 transportType];
 
             if (v9)
             {
-              if (v9 != v25)
+              if (v9 != transportType)
               {
 
                 v9 = 0;
@@ -605,7 +605,7 @@ LABEL_15:
 
             else
             {
-              v9 = v25;
+              v9 = transportType;
             }
 
             if (++v8 == UInteger)
@@ -666,11 +666,11 @@ LABEL_33:
   return v9;
 }
 
-- (void)setTransportType:(int64_t)a3 routeCollection:(id)a4
+- (void)setTransportType:(int64_t)type routeCollection:(id)collection
 {
   os_unfair_lock_lock(&self->_lock);
   transportType = self->_transportType;
-  if (transportType == a3)
+  if (transportType == type)
   {
 
     os_unfair_lock_unlock(&self->_lock);
@@ -680,7 +680,7 @@ LABEL_33:
   {
     if (transportType)
     {
-      if (!a3)
+      if (!type)
       {
         recentsCutoffDate = self->_recentsCutoffDate;
         self->_recentsCutoffDate = 0;
@@ -731,7 +731,7 @@ LABEL_33:
       }
     }
 
-    self->_transportType = a3;
+    self->_transportType = type;
     os_unfair_lock_unlock(&self->_lock);
     [(DTMFeatureDiscoverySource *)self _reloadAvailability];
   }
@@ -739,23 +739,23 @@ LABEL_33:
 
 - (BOOL)isAvailable
 {
-  v2 = [(DTMFeatureDiscoverySource *)self model];
-  v3 = v2 != 0;
+  model = [(DTMFeatureDiscoverySource *)self model];
+  v3 = model != 0;
 
   return v3;
 }
 
-- (DTMFeatureDiscoverySource)initWithPriority:(int64_t)a3 delegate:(id)a4
+- (DTMFeatureDiscoverySource)initWithPriority:(int64_t)priority delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = DTMFeatureDiscoverySource;
   v7 = [(DTMFeatureDiscoverySource *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_priority = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_priority = priority;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = +[NSDate date];
     recentsCutoffDate = v8->_recentsCutoffDate;
     v8->_recentsCutoffDate = v9;

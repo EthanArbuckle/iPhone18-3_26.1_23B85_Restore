@@ -1,40 +1,40 @@
 @interface _UICommandInternalDiff
-- (id)_deletesForMenu:(id)a3;
-- (id)_parentInsertsForMenu:(id)a3;
-- (id)_replacementsForMenu:(id)a3;
-- (void)deleteItem:(id)a3 inMenu:(id)a4;
-- (void)deleteMenu:(id)a3;
-- (void)insertAtStartElements:(id)a3 atEndElements:(id)a4 inMenu:(id)a5;
-- (void)insertBeforeElements:(id)a3 afterElements:(id)a4 aroundElement:(id)a5 inMenu:(id)a6;
-- (void)insertFallbackBeforeElements:(id)a3 fallbackAfterElements:(id)a4 inMenu:(id)a5;
-- (void)replaceItem:(id)a3 inMenu:(id)a4 withElements:(id)a5;
+- (id)_deletesForMenu:(id)menu;
+- (id)_parentInsertsForMenu:(id)menu;
+- (id)_replacementsForMenu:(id)menu;
+- (void)deleteItem:(id)item inMenu:(id)menu;
+- (void)deleteMenu:(id)menu;
+- (void)insertAtStartElements:(id)elements atEndElements:(id)endElements inMenu:(id)menu;
+- (void)insertBeforeElements:(id)elements afterElements:(id)afterElements aroundElement:(id)element inMenu:(id)menu;
+- (void)insertFallbackBeforeElements:(id)elements fallbackAfterElements:(id)afterElements inMenu:(id)menu;
+- (void)replaceItem:(id)item inMenu:(id)menu withElements:(id)elements;
 @end
 
 @implementation _UICommandInternalDiff
 
-- (void)deleteMenu:(id)a3
+- (void)deleteMenu:(id)menu
 {
   menuDeletes = self->_menuDeletes;
   if (menuDeletes)
   {
-    [(NSMutableSet *)menuDeletes addObject:a3];
+    [(NSMutableSet *)menuDeletes addObject:menu];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFA8] setWithObject:a3];
+    v5 = [MEMORY[0x1E695DFA8] setWithObject:menu];
     v6 = self->_menuDeletes;
     self->_menuDeletes = v5;
   }
 
-  [(NSMutableDictionary *)self->_itemDeletes removeObjectForKey:a3];
-  [(NSMutableDictionary *)self->_inserts removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_itemDeletes removeObjectForKey:menu];
+  [(NSMutableDictionary *)self->_inserts removeObjectForKey:menu];
 }
 
-- (id)_deletesForMenu:(id)a3
+- (id)_deletesForMenu:(id)menu
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_menuDeletes containsObject:v4]& 1) != 0)
+  menuCopy = menu;
+  if (([(NSMutableSet *)self->_menuDeletes containsObject:menuCopy]& 1) != 0)
   {
     v5 = 0;
   }
@@ -44,18 +44,18 @@
     itemDeletes = self->_itemDeletes;
     if (itemDeletes)
     {
-      v5 = [(NSMutableDictionary *)itemDeletes objectForKeyedSubscript:v4];
+      v5 = [(NSMutableDictionary *)itemDeletes objectForKeyedSubscript:menuCopy];
       if (!v5)
       {
         v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-        [(NSMutableDictionary *)self->_itemDeletes setObject:v5 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->_itemDeletes setObject:v5 forKeyedSubscript:menuCopy];
       }
     }
 
     else
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v7 = [MEMORY[0x1E695DF90] dictionaryWithObject:v5 forKey:v4];
+      v7 = [MEMORY[0x1E695DF90] dictionaryWithObject:v5 forKey:menuCopy];
       v8 = self->_itemDeletes;
       self->_itemDeletes = v7;
     }
@@ -64,10 +64,10 @@
   return v5;
 }
 
-- (id)_parentInsertsForMenu:(id)a3
+- (id)_parentInsertsForMenu:(id)menu
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_menuDeletes containsObject:v4]& 1) != 0)
+  menuCopy = menu;
+  if (([(NSMutableSet *)self->_menuDeletes containsObject:menuCopy]& 1) != 0)
   {
     v5 = 0;
   }
@@ -77,18 +77,18 @@
     inserts = self->_inserts;
     if (inserts)
     {
-      v5 = [(NSMutableDictionary *)inserts objectForKeyedSubscript:v4];
+      v5 = [(NSMutableDictionary *)inserts objectForKeyedSubscript:menuCopy];
       if (!v5)
       {
         v5 = objc_alloc_init(_UICommandParentInserts);
-        [(NSMutableDictionary *)self->_inserts setObject:v5 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->_inserts setObject:v5 forKeyedSubscript:menuCopy];
       }
     }
 
     else
     {
       v5 = objc_alloc_init(_UICommandParentInserts);
-      v7 = [MEMORY[0x1E695DF90] dictionaryWithObject:v5 forKey:v4];
+      v7 = [MEMORY[0x1E695DF90] dictionaryWithObject:v5 forKey:menuCopy];
       v8 = self->_inserts;
       self->_inserts = v7;
     }
@@ -97,10 +97,10 @@
   return v5;
 }
 
-- (id)_replacementsForMenu:(id)a3
+- (id)_replacementsForMenu:(id)menu
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_menuDeletes containsObject:v4]& 1) != 0)
+  menuCopy = menu;
+  if (([(NSMutableSet *)self->_menuDeletes containsObject:menuCopy]& 1) != 0)
   {
     v5 = 0;
   }
@@ -110,18 +110,18 @@
     replacements = self->_replacements;
     if (replacements)
     {
-      v5 = [(NSMutableDictionary *)replacements objectForKeyedSubscript:v4];
+      v5 = [(NSMutableDictionary *)replacements objectForKeyedSubscript:menuCopy];
       if (!v5)
       {
         v5 = objc_alloc_init(_UICommandParentReplacements);
-        [(NSMutableDictionary *)self->_replacements setObject:v5 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->_replacements setObject:v5 forKeyedSubscript:menuCopy];
       }
     }
 
     else
     {
       v5 = objc_alloc_init(_UICommandParentReplacements);
-      v7 = [MEMORY[0x1E695DF90] dictionaryWithObject:v5 forKey:v4];
+      v7 = [MEMORY[0x1E695DF90] dictionaryWithObject:v5 forKey:menuCopy];
       v8 = self->_replacements;
       self->_replacements = v7;
     }
@@ -130,44 +130,44 @@
   return v5;
 }
 
-- (void)deleteItem:(id)a3 inMenu:(id)a4
+- (void)deleteItem:(id)item inMenu:(id)menu
 {
-  v6 = a3;
-  v7 = [(_UICommandInternalDiff *)self _deletesForMenu:a4];
-  [v7 addObject:v6];
+  itemCopy = item;
+  v7 = [(_UICommandInternalDiff *)self _deletesForMenu:menu];
+  [v7 addObject:itemCopy];
 }
 
-- (void)replaceItem:(id)a3 inMenu:(id)a4 withElements:(id)a5
+- (void)replaceItem:(id)item inMenu:(id)menu withElements:(id)elements
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(_UICommandInternalDiff *)self _replacementsForMenu:a4];
-  [v10 _setReplacementElements:v8 forElement:v9];
+  elementsCopy = elements;
+  itemCopy = item;
+  v10 = [(_UICommandInternalDiff *)self _replacementsForMenu:menu];
+  [v10 _setReplacementElements:elementsCopy forElement:itemCopy];
 }
 
-- (void)insertAtStartElements:(id)a3 atEndElements:(id)a4 inMenu:(id)a5
+- (void)insertAtStartElements:(id)elements atEndElements:(id)endElements inMenu:(id)menu
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(_UICommandInternalDiff *)self _parentInsertsForMenu:a5];
-  [v10 _setAtStartElements:v9 atEndElements:v8];
+  endElementsCopy = endElements;
+  elementsCopy = elements;
+  v10 = [(_UICommandInternalDiff *)self _parentInsertsForMenu:menu];
+  [v10 _setAtStartElements:elementsCopy atEndElements:endElementsCopy];
 }
 
-- (void)insertBeforeElements:(id)a3 afterElements:(id)a4 aroundElement:(id)a5 inMenu:(id)a6
+- (void)insertBeforeElements:(id)elements afterElements:(id)afterElements aroundElement:(id)element inMenu:(id)menu
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(_UICommandInternalDiff *)self _parentInsertsForMenu:a6];
-  [v13 _setBeforeElements:v12 afterElements:v11 aroundElement:v10];
+  elementCopy = element;
+  afterElementsCopy = afterElements;
+  elementsCopy = elements;
+  v13 = [(_UICommandInternalDiff *)self _parentInsertsForMenu:menu];
+  [v13 _setBeforeElements:elementsCopy afterElements:afterElementsCopy aroundElement:elementCopy];
 }
 
-- (void)insertFallbackBeforeElements:(id)a3 fallbackAfterElements:(id)a4 inMenu:(id)a5
+- (void)insertFallbackBeforeElements:(id)elements fallbackAfterElements:(id)afterElements inMenu:(id)menu
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(_UICommandInternalDiff *)self _parentInsertsForMenu:a5];
-  [v10 _addFallbackBeforeElements:v9 fallbackAfterElements:v8];
+  afterElementsCopy = afterElements;
+  elementsCopy = elements;
+  v10 = [(_UICommandInternalDiff *)self _parentInsertsForMenu:menu];
+  [v10 _addFallbackBeforeElements:elementsCopy fallbackAfterElements:afterElementsCopy];
 }
 
 @end

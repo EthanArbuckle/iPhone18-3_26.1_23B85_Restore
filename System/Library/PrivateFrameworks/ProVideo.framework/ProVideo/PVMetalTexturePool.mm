@@ -1,7 +1,7 @@
 @interface PVMetalTexturePool
 - (HGMetalTexturePool)texturePool;
 - (PVMetalTexturePool)init;
-- (id)getTexture:(id)a3;
+- (id)getTexture:(id)texture;
 @end
 
 @implementation PVMetalTexturePool
@@ -13,18 +13,18 @@
   return [(PVMetalTexturePool *)&v3 init];
 }
 
-- (id)getTexture:(id)a3
+- (id)getTexture:(id)texture
 {
-  v4 = a3;
-  v5 = [(PVMetalTexturePool *)self texturePool];
-  if (v5)
+  textureCopy = texture;
+  texturePool = [(PVMetalTexturePool *)self texturePool];
+  if (texturePool)
   {
-    *(&v7 + 1) = [v4 height];
-    v8 = [v4 pixelFormat];
-    v9 = [v4 usage];
-    v10 = [v4 storageMode];
+    *(&v7 + 1) = [textureCopy height];
+    pixelFormat = [textureCopy pixelFormat];
+    usage = [textureCopy usage];
+    storageMode = [textureCopy storageMode];
     v11 = 0x100000002;
-    HGMetalTexturePool::newTexture(v5, &v7, 0);
+    HGMetalTexturePool::newTexture(texturePool, &v7, 0);
   }
 
   return 0;

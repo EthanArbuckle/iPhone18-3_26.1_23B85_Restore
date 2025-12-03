@@ -1,12 +1,12 @@
 @interface HMAccessorySetting
 + (id)logCategory;
-+ (id)settingForInternal:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)settingForInternal:(id)internal;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isReflected;
 - (BOOL)isWritable;
 - (HMAccessorySetting)init;
-- (HMAccessorySetting)initWithInternal:(id)a3;
-- (HMAccessorySetting)initWithKey:(id)a3 properties:(unint64_t)a4 value:(id)a5;
+- (HMAccessorySetting)initWithInternal:(id)internal;
+- (HMAccessorySetting)initWithKey:(id)key properties:(unint64_t)properties value:(id)value;
 - (HMAccessorySettingGroup)group;
 - (NSString)description;
 - (NSString)keyPath;
@@ -14,11 +14,11 @@
 - (id)logIdentifier;
 - (id)value;
 - (unint64_t)hash;
-- (void)_settingDidUpdateValue:(id)a3;
-- (void)_settingWillUpdateValue:(id)a3;
-- (void)logAndPostNotification:(id)a3 object:(id)a4 userInfo:(id)a5;
+- (void)_settingDidUpdateValue:(id)value;
+- (void)_settingWillUpdateValue:(id)value;
+- (void)logAndPostNotification:(id)notification object:(id)object userInfo:(id)info;
 - (void)settingDidUpdateReflected;
-- (void)updateValue:(id)a3 completionHandler:(id)a4;
+- (void)updateValue:(id)value completionHandler:(id)handler;
 @end
 
 @implementation HMAccessorySetting
@@ -1213,29 +1213,29 @@ uint64_t __34___HMAccessorySetting_logCategory__block_invoke()
 - (id)logIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HMAccessorySetting *)self keyPath];
-  v5 = [(HMAccessorySetting *)self internal];
-  v6 = [v5 identifier];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"%@: %@", v4, v7];
+  keyPath = [(HMAccessorySetting *)self keyPath];
+  internal = [(HMAccessorySetting *)self internal];
+  identifier = [internal identifier];
+  uUIDString = [identifier UUIDString];
+  v8 = [v3 stringWithFormat:@"%@: %@", keyPath, uUIDString];
 
   return v8;
 }
 
-- (void)logAndPostNotification:(id)a3 object:(id)a4 userInfo:(id)a5
+- (void)logAndPostNotification:(id)notification object:(id)object userInfo:(id)info
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  notificationCopy = notification;
+  objectCopy = object;
+  infoCopy = info;
+  if (!notificationCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v11 = v10;
+  v11 = infoCopy;
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -1243,59 +1243,59 @@ uint64_t __34___HMAccessorySetting_logCategory__block_invoke()
     v18 = 138544130;
     v19 = v15;
     v20 = 2112;
-    v21 = v8;
+    v21 = notificationCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = objectCopy;
     v24 = 2112;
     v25 = v11;
     _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_INFO, "%{public}@posting:%@ for object:%@ userinfo:%@", &v18, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v12);
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 postNotificationName:v8 object:v9 userInfo:v11];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:notificationCopy object:objectCopy userInfo:v11];
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_settingDidUpdateValue:(id)a3
+- (void)_settingDidUpdateValue:(id)value
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 value];
+    value = [valueCopy value];
     *buf = 138543618;
     v16 = v8;
     v17 = 2112;
-    v18 = v9;
+    v18 = value;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Did update to: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [(HMAccessorySetting *)v6 internal];
-  v11 = [v10 context];
-  v12 = [v11 delegateCaller];
+  internal = [(HMAccessorySetting *)selfCopy internal];
+  context = [internal context];
+  delegateCaller = [context delegateCaller];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __45__HMAccessorySetting__settingDidUpdateValue___block_invoke;
   v14[3] = &unk_1E754E2A8;
-  v14[4] = v6;
-  [v12 invokeBlock:v14];
+  v14[4] = selfCopy;
+  [delegateCaller invokeBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_settingWillUpdateValue:(id)a3
+- (void)_settingWillUpdateValue:(id)value
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1311,15 +1311,15 @@ uint64_t __34___HMAccessorySetting_logCategory__block_invoke()
 
 - (void)settingDidUpdateReflected
 {
-  v3 = [(HMAccessorySetting *)self internal];
-  v4 = [v3 context];
-  v5 = [v4 delegateCaller];
+  internal = [(HMAccessorySetting *)self internal];
+  context = [internal context];
+  delegateCaller = [context delegateCaller];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__HMAccessorySetting_settingDidUpdateReflected__block_invoke;
   v6[3] = &unk_1E754E2A8;
   v6[4] = self;
-  [v5 invokeBlock:v6];
+  [delegateCaller invokeBlock:v6];
 }
 
 void __47__HMAccessorySetting_settingDidUpdateReflected__block_invoke(uint64_t a1)
@@ -1330,47 +1330,47 @@ void __47__HMAccessorySetting_settingDidUpdateReflected__block_invoke(uint64_t a
 
 - (BOOL)isReflected
 {
-  v2 = [(HMAccessorySetting *)self internal];
-  v3 = [v2 isReflected];
+  internal = [(HMAccessorySetting *)self internal];
+  isReflected = [internal isReflected];
 
-  return v3;
+  return isReflected;
 }
 
-- (void)updateValue:(id)a3 completionHandler:(id)a4
+- (void)updateValue:(id)value completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMAccessorySetting *)self internal];
-  [v8 updateValue:v7 completionHandler:v6];
+  handlerCopy = handler;
+  valueCopy = value;
+  internal = [(HMAccessorySetting *)self internal];
+  [internal updateValue:valueCopy completionHandler:handlerCopy];
 }
 
 - (id)value
 {
-  v2 = [(HMAccessorySetting *)self internal];
-  v3 = [v2 value];
+  internal = [(HMAccessorySetting *)self internal];
+  value = [internal value];
 
-  return v3;
+  return value;
 }
 
 - (NSUUID)identifier
 {
-  v2 = [(HMAccessorySetting *)self internal];
-  v3 = [v2 identifier];
+  internal = [(HMAccessorySetting *)self internal];
+  identifier = [internal identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)keyPath
 {
-  v3 = [(HMAccessorySetting *)self group];
-  v4 = [v3 keyPath];
+  group = [(HMAccessorySetting *)self group];
+  keyPath = [group keyPath];
 
-  v5 = [(HMAccessorySetting *)self internal];
-  v6 = [v5 name];
-  v7 = v6;
-  if (v4)
+  internal = [(HMAccessorySetting *)self internal];
+  name = [internal name];
+  v7 = name;
+  if (keyPath)
   {
-    v8 = [v4 stringByAppendingFormat:@".%@", v6];
+    v8 = [keyPath stringByAppendingFormat:@".%@", name];
 
     v7 = v8;
   }
@@ -1382,32 +1382,32 @@ void __47__HMAccessorySetting_settingDidUpdateReflected__block_invoke(uint64_t a
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(HMSetting *)self localizedTitle];
+  localizedTitle = [(HMSetting *)self localizedTitle];
   [(HMAccessorySetting *)self isWritable];
   v6 = HMFBooleanToString();
-  v7 = [(HMAccessorySetting *)self value];
-  v8 = [v3 stringWithFormat:@"<%@, Title = %@, Writeable = %@, Value = %@", v4, v5, v6, v7];
+  value = [(HMAccessorySetting *)self value];
+  v8 = [v3 stringWithFormat:@"<%@, Title = %@, Writeable = %@, Value = %@", v4, localizedTitle, v6, value];
 
   return v8;
 }
 
 - (BOOL)isWritable
 {
-  v2 = [(HMAccessorySetting *)self internal];
-  v3 = [v2 properties];
+  internal = [(HMAccessorySetting *)self internal];
+  properties = [internal properties];
 
-  return (v3 >> 1) & 1;
+  return (properties >> 1) & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -1421,54 +1421,54 @@ void __47__HMAccessorySetting_settingDidUpdateReflected__block_invoke(uint64_t a
       goto LABEL_12;
     }
 
-    v7 = [(HMAccessorySetting *)self internal];
-    v8 = [(HMAccessorySetting *)v6 internal];
+    internal = [(HMAccessorySetting *)self internal];
+    internal2 = [(HMAccessorySetting *)v6 internal];
 
-    if (v7 == v8)
+    if (internal == internal2)
     {
       v27 = 1;
       goto LABEL_15;
     }
 
-    v9 = [(HMAccessorySetting *)self internal];
-    v10 = [v9 properties];
-    v11 = [(HMAccessorySetting *)v6 internal];
-    v12 = [v11 properties];
+    internal3 = [(HMAccessorySetting *)self internal];
+    properties = [internal3 properties];
+    internal4 = [(HMAccessorySetting *)v6 internal];
+    properties2 = [internal4 properties];
 
-    if (v10 != v12)
+    if (properties != properties2)
     {
       goto LABEL_12;
     }
 
-    v13 = [(HMAccessorySetting *)self internal];
-    v14 = [v13 type];
-    v15 = [(HMAccessorySetting *)v6 internal];
-    v16 = [v15 type];
+    internal5 = [(HMAccessorySetting *)self internal];
+    type = [internal5 type];
+    internal6 = [(HMAccessorySetting *)v6 internal];
+    type2 = [internal6 type];
 
-    if (v14 != v16)
+    if (type != type2)
     {
       goto LABEL_12;
     }
 
-    v17 = [(HMAccessorySetting *)self internal];
-    v18 = [v17 constraints];
-    v19 = [(HMAccessorySetting *)v6 internal];
-    v20 = [v19 constraints];
-    v21 = [v18 isEqualToArray:v20];
+    internal7 = [(HMAccessorySetting *)self internal];
+    constraints = [internal7 constraints];
+    internal8 = [(HMAccessorySetting *)v6 internal];
+    constraints2 = [internal8 constraints];
+    v21 = [constraints isEqualToArray:constraints2];
 
     if (!v21)
     {
       goto LABEL_12;
     }
 
-    v22 = [(HMAccessorySetting *)self keyPath];
-    v23 = [(HMAccessorySetting *)v6 keyPath];
-    v24 = [v22 isEqualToString:v23];
+    keyPath = [(HMAccessorySetting *)self keyPath];
+    keyPath2 = [(HMAccessorySetting *)v6 keyPath];
+    v24 = [keyPath isEqualToString:keyPath2];
 
     if (v24)
     {
-      v25 = [(HMAccessorySetting *)self value];
-      v26 = [(HMAccessorySetting *)v6 value];
+      value = [(HMAccessorySetting *)self value];
+      value2 = [(HMAccessorySetting *)v6 value];
       v27 = HMFEqualObjects();
     }
 
@@ -1491,18 +1491,18 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(HMAccessorySetting *)self internal];
-  v3 = [v2 name];
-  v4 = [v3 hash];
+  internal = [(HMAccessorySetting *)self internal];
+  name = [internal name];
+  v4 = [name hash];
 
   return v4;
 }
 
-- (HMAccessorySetting)initWithInternal:(id)a3
+- (HMAccessorySetting)initWithInternal:(id)internal
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  internalCopy = internal;
+  if (internalCopy)
   {
     v6 = objc_opt_class();
     if (v6 == objc_opt_class())
@@ -1512,16 +1512,16 @@ LABEL_16:
 
     v15.receiver = self;
     v15.super_class = HMAccessorySetting;
-    v7 = [(HMSetting *)&v15 initWithInternal];
-    v8 = v7;
-    if (v7)
+    initWithInternal = [(HMSetting *)&v15 initWithInternal];
+    v8 = initWithInternal;
+    if (initWithInternal)
     {
-      objc_storeStrong(&v7->_internal, a3);
-      [v5 setDelegate:v8];
+      objc_storeStrong(&initWithInternal->_internal, internal);
+      [internalCopy setDelegate:v8];
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -1537,17 +1537,17 @@ LABEL_16:
     }
 
     objc_autoreleasePoolPop(v10);
-    v9 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v9;
+  return selfCopy;
 }
 
-- (HMAccessorySetting)initWithKey:(id)a3 properties:(unint64_t)a4 value:(id)a5
+- (HMAccessorySetting)initWithKey:(id)key properties:(unint64_t)properties value:(id)value
 {
-  v7 = a3;
-  v8 = a5;
+  keyCopy = key;
+  valueCopy = value;
   v9 = MEMORY[0x1E695DF30];
   v10 = *MEMORY[0x1E695D930];
   v11 = MEMORY[0x1E696AEC0];
@@ -1594,14 +1594,14 @@ uint64_t __33__HMAccessorySetting_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)settingForInternal:(id)a3
++ (id)settingForInternal:(id)internal
 {
-  v3 = a3;
-  v4 = [v3 type];
+  internalCopy = internal;
+  type = [internalCopy type];
   v5 = 0;
-  if (v4 > 2)
+  if (type > 2)
   {
-    switch(v4)
+    switch(type)
     {
       case 3:
         v6 = off_1E7545208;
@@ -1617,7 +1617,7 @@ uint64_t __33__HMAccessorySetting_logCategory__block_invoke()
 
   else
   {
-    switch(v4)
+    switch(type)
     {
       case 0:
         goto LABEL_15;
@@ -1633,7 +1633,7 @@ LABEL_13:
     }
   }
 
-  v5 = [[v5 alloc] initWithInternal:v3];
+  v5 = [[v5 alloc] initWithInternal:internalCopy];
 LABEL_15:
 
   return v5;

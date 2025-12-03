@@ -1,22 +1,22 @@
 @interface LocalCaptureSettingsController
 - (BOOL)getLocalCaptureAudioOnlyValue;
 - (id)getCurrentSaveLocationName;
-- (id)getPreferenceValue:(__CFString *)a3;
-- (id)getSwitchState:(__CFString *)a3;
+- (id)getPreferenceValue:(__CFString *)value;
+- (id)getSwitchState:(__CFString *)state;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)audioOnlyToggleChanged:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)audioOnlyToggleChanged:(id)changed;
 - (void)dealloc;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
 - (void)handleAudioOnlyPreferenceChanged;
-- (void)setLocalCaptureAudioOnlyValue:(BOOL)a3;
-- (void)setPreferenceValue:(id)a3 forKey:(__CFString *)a4;
-- (void)setSwitchState:(__CFString *)a3 value:(id)a4;
-- (void)showDocumentPicker:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setLocalCaptureAudioOnlyValue:(BOOL)value;
+- (void)setPreferenceValue:(id)value forKey:(__CFString *)key;
+- (void)setSwitchState:(__CFString *)state value:(id)value;
+- (void)showDocumentPicker:(id)picker;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -74,8 +74,8 @@
 
   v19.receiver = self;
   v19.super_class = LocalCaptureSettingsController;
-  v3 = [(LocalCaptureSettingsController *)&v19 specifiers];
-  v4 = [v3 count];
+  specifiers = [(LocalCaptureSettingsController *)&v19 specifiers];
+  v4 = [specifiers count];
 
   if (!v4)
   {
@@ -121,8 +121,8 @@
   {
     v17.receiver = self;
     v17.super_class = LocalCaptureSettingsController;
-    v12 = [(LocalCaptureSettingsController *)&v17 specifiers];
-    v13 = [v12 count];
+    specifiers2 = [(LocalCaptureSettingsController *)&v17 specifiers];
+    v13 = [specifiers2 count];
     *buf = 136446722;
     v21 = "[LocalCaptureSettingsController specifiers]";
     v22 = 1024;
@@ -134,14 +134,14 @@
 
   v16.receiver = self;
   v16.super_class = LocalCaptureSettingsController;
-  v14 = [(LocalCaptureSettingsController *)&v16 specifiers];
+  specifiers3 = [(LocalCaptureSettingsController *)&v16 specifiers];
 
-  return v14;
+  return specifiers3;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446466;
@@ -154,9 +154,9 @@
   return 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = a3;
+  viewCopy = view;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446466;
@@ -169,10 +169,10 @@
   return 2;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 136446722;
@@ -180,29 +180,29 @@
     v29 = 1024;
     v30 = 134;
     v31 = 2048;
-    v32 = [v7 row];
+    v32 = [pathCopy row];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Creating cell for row %ld", &v27, 0x1Cu);
   }
 
   v8 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"HQLR_STATUSBAR_TAPPED_ALERT_TITLE"];
   [(LocalCaptureSettingsController *)self setTitle:v8];
 
-  if ([v7 row])
+  if ([pathCopy row])
   {
-    v9 = [v7 row];
+    v9 = [pathCopy row];
     v10 = [UITableViewCell alloc];
     if (v9 == 1)
     {
       v11 = [v10 initWithStyle:0 reuseIdentifier:@"AudioOnlyCell"];
-      v12 = [v11 textLabel];
-      [v12 setText:@"Audio Only"];
+      textLabel = [v11 textLabel];
+      [textLabel setText:@"Audio Only"];
 
       [v11 setSelectionStyle:0];
       v13 = objc_alloc_init(UISwitch);
       v14 = [(LocalCaptureSettingsController *)self getSwitchState:@"RPAudioOnlySelection"];
-      v15 = [v14 BOOLValue];
+      bOOLValue = [v14 BOOLValue];
 
-      [v13 setOn:v15];
+      [v13 setOn:bOOLValue];
       [v13 addTarget:self action:"audioOnlyToggleChanged:" forControlEvents:4096];
       [v11 setAccessoryView:v13];
       if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -212,7 +212,7 @@
         v29 = 1024;
         v30 = 162;
         v31 = 1024;
-        LODWORD(v32) = v15;
+        LODWORD(v32) = bOOLValue;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Created audio only toggle with value: %d", &v27, 0x18u);
       }
     }
@@ -220,12 +220,12 @@
     else
     {
       v11 = [v10 initWithStyle:0 reuseIdentifier:@"DefaultCell"];
-      v24 = [v11 textLabel];
-      [v24 setText:@"Unknown"];
+      textLabel2 = [v11 textLabel];
+      [textLabel2 setText:@"Unknown"];
 
       if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v7 row];
+        v25 = [pathCopy row];
         v27 = 136446722;
         v28 = "[LocalCaptureSettingsController tableView:cellForRowAtIndexPath:]";
         v29 = 1024;
@@ -241,29 +241,29 @@
   {
     v11 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:@"SaveLocationCell"];
     v16 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"HQLR_SETTINGS_SAVE_LOCATION"];
-    v17 = [v11 textLabel];
-    [v17 setText:v16];
+    textLabel3 = [v11 textLabel];
+    [textLabel3 setText:v16];
 
-    v18 = [(LocalCaptureSettingsController *)self getCurrentSaveLocationName];
-    v19 = [v11 detailTextLabel];
-    [v19 setText:v18];
+    getCurrentSaveLocationName = [(LocalCaptureSettingsController *)self getCurrentSaveLocationName];
+    detailTextLabel = [v11 detailTextLabel];
+    [detailTextLabel setText:getCurrentSaveLocationName];
 
     [v11 setAccessoryType:1];
     [v11 setSelectionStyle:3];
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v11 textLabel];
-      v21 = [v20 text];
-      v22 = [v11 detailTextLabel];
-      v23 = [v22 text];
+      textLabel4 = [v11 textLabel];
+      text = [textLabel4 text];
+      detailTextLabel2 = [v11 detailTextLabel];
+      text2 = [detailTextLabel2 text];
       v27 = 136446978;
       v28 = "[LocalCaptureSettingsController tableView:cellForRowAtIndexPath:]";
       v29 = 1024;
       v30 = 148;
       v31 = 2112;
-      v32 = v21;
+      v32 = text;
       v33 = 2112;
-      v34 = v23;
+      v34 = text2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Created Save Location cell - textLabel: %@, detailLabel: %@", &v27, 0x26u);
     }
   }
@@ -271,10 +271,10 @@
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446722;
@@ -282,11 +282,11 @@
     v9 = 1024;
     v10 = 176;
     v11 = 2048;
-    v12 = [v6 row];
+    v12 = [pathCopy row];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Row %ld tapped", &v7, 0x1Cu);
   }
 
-  if (![v6 row])
+  if (![pathCopy row])
   {
     [(LocalCaptureSettingsController *)self showDocumentPicker:0];
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -340,9 +340,9 @@
   return v2 != 0;
 }
 
-- (void)setLocalCaptureAudioOnlyValue:(BOOL)a3
+- (void)setLocalCaptureAudioOnlyValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446722;
@@ -350,11 +350,11 @@
     v7 = 1024;
     v8 = 205;
     v9 = 1024;
-    v10 = v3;
+    v10 = valueCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Setting audio only to: %d", &v5, 0x18u);
   }
 
-  if (v3)
+  if (valueCopy)
   {
     CFPreferencesSetAppValue(@"RPAudioOnlySelection", kCFBooleanTrue, @"com.apple.replayd");
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -386,10 +386,10 @@ LABEL_11:
   CFPreferencesAppSynchronize(@"com.apple.replayd");
 }
 
-- (id)getSwitchState:(__CFString *)a3
+- (id)getSwitchState:(__CFString *)state
 {
   CFPreferencesSynchronize(@"com.apple.replayd", kCFPreferencesAnyUser, kCFPreferencesCurrentHost);
-  v4 = CFPreferencesCopyAppValue(a3, @"com.apple.replayd");
+  v4 = CFPreferencesCopyAppValue(state, @"com.apple.replayd");
   v5 = v4;
   if (v4)
   {
@@ -418,9 +418,9 @@ LABEL_11:
   return v7;
 }
 
-- (void)setSwitchState:(__CFString *)a3 value:(id)a4
+- (void)setSwitchState:(__CFString *)state value:(id)value
 {
-  if ([a4 BOOLValue])
+  if ([value BOOLValue])
   {
     v5 = kCFBooleanTrue;
   }
@@ -430,14 +430,14 @@ LABEL_11:
     v5 = 0;
   }
 
-  CFPreferencesSetAppValue(a3, v5, @"com.apple.replayd");
+  CFPreferencesSetAppValue(state, v5, @"com.apple.replayd");
 
   CFPreferencesAppSynchronize(@"com.apple.replayd");
 }
 
-- (void)audioOnlyToggleChanged:(id)a3
+- (void)audioOnlyToggleChanged:(id)changed
 {
-  v4 = [a3 isOn];
+  isOn = [changed isOn];
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446722;
@@ -445,17 +445,17 @@ LABEL_11:
     v8 = 1024;
     v9 = 243;
     v10 = 1024;
-    v11 = v4;
+    v11 = isOn;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Audio only toggle changed: %d", &v6, 0x18u);
   }
 
-  v5 = [NSNumber numberWithBool:v4];
+  v5 = [NSNumber numberWithBool:isOn];
   [(LocalCaptureSettingsController *)self setSwitchState:@"RPAudioOnlySelection" value:v5];
 }
 
-- (void)showDocumentPicker:(id)a3
+- (void)showDocumentPicker:(id)picker
 {
-  [(LocalCaptureSettingsController *)self setSaveLocationSpecifier:a3];
+  [(LocalCaptureSettingsController *)self setSaveLocationSpecifier:picker];
   v4 = [UIDocumentPickerViewController alloc];
   v15 = UTTypeFolder;
   v5 = [NSArray arrayWithObjects:&v15 count:1];
@@ -463,29 +463,29 @@ LABEL_11:
 
   [v6 setDelegate:self];
   [v6 setModalPresentationStyle:2];
-  v7 = self;
-  v8 = [(LocalCaptureSettingsController *)v7 presentedViewController];
+  selfCopy = self;
+  presentedViewController = [(LocalCaptureSettingsController *)selfCopy presentedViewController];
 
-  if (v8)
+  if (presentedViewController)
   {
     do
     {
-      v9 = [(LocalCaptureSettingsController *)v7 presentedViewController];
+      presentedViewController2 = [(LocalCaptureSettingsController *)selfCopy presentedViewController];
 
-      v10 = [(LocalCaptureSettingsController *)v9 presentedViewController];
+      v9PresentedViewController = [(LocalCaptureSettingsController *)presentedViewController2 presentedViewController];
 
-      v7 = v9;
+      selfCopy = presentedViewController2;
     }
 
-    while (v10);
+    while (v9PresentedViewController);
   }
 
   else
   {
-    v9 = v7;
+    presentedViewController2 = selfCopy;
   }
 
-  [(LocalCaptureSettingsController *)v9 presentViewController:v6 animated:1 completion:0];
+  [(LocalCaptureSettingsController *)presentedViewController2 presentViewController:v6 animated:1 completion:0];
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136446466;
@@ -496,16 +496,16 @@ LABEL_11:
   }
 }
 
-- (id)getPreferenceValue:(__CFString *)a3
+- (id)getPreferenceValue:(__CFString *)value
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.replayd");
+  v3 = CFPreferencesCopyAppValue(value, @"com.apple.replayd");
 
   return v3;
 }
 
-- (void)setPreferenceValue:(id)a3 forKey:(__CFString *)a4
+- (void)setPreferenceValue:(id)value forKey:(__CFString *)key
 {
-  CFPreferencesSetAppValue(a4, a3, @"com.apple.replayd");
+  CFPreferencesSetAppValue(key, value, @"com.apple.replayd");
 
   CFPreferencesAppSynchronize(@"com.apple.replayd");
 }
@@ -547,25 +547,25 @@ LABEL_13:
   return v6;
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  v5 = a4;
-  if ([v5 count])
+  lsCopy = ls;
+  if ([lsCopy count])
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 path];
+    firstObject = [lsCopy firstObject];
+    path = [firstObject path];
     v8 = +[NSFileManager defaultManager];
-    v9 = [v8 displayNameAtPath:v7];
+    v9 = [v8 displayNameAtPath:path];
     v10 = v9;
     if (!v9 || ![v9 length])
     {
-      v11 = [v6 lastPathComponent];
-      v12 = [v11 stringByDeletingPathExtension];
+      lastPathComponent = [firstObject lastPathComponent];
+      stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-      v10 = v12;
+      v10 = stringByDeletingPathExtension;
     }
 
-    [(LocalCaptureSettingsController *)self setPreferenceValue:v7 forKey:@"RPSaveLocationPath"];
+    [(LocalCaptureSettingsController *)self setPreferenceValue:path forKey:@"RPSaveLocationPath"];
     [(LocalCaptureSettingsController *)self setPreferenceValue:v10 forKey:@"RPSaveLocationName"];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -582,15 +582,15 @@ LABEL_13:
       v18 = 2112;
       v19 = v10;
       v20 = 2112;
-      v21 = v7;
+      v21 = path;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Selected folder: %@ at path: %@", buf, 0x26u);
     }
   }
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
-  v3 = a3;
+  cancelledCopy = cancelled;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 136446466;

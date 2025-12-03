@@ -1,25 +1,25 @@
 @interface LibrarySearchController.BarDelegate
 - (_TtCC5Music23LibrarySearchControllerP33_D5FA0BEF708D1E9261BCB607AD690C3E11BarDelegate)init;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
 @end
 
 @implementation LibrarySearchController.BarDelegate
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = (self + OBJC_IVAR____TtCC5Music23LibrarySearchControllerP33_D5FA0BEF708D1E9261BCB607AD690C3E11BarDelegate_text);
   *v6 = v5;
   v6[1] = v7;
-  v9 = self;
+  selfCopy = self;
 
-  v8 = *(&v9->super.isa + OBJC_IVAR____TtCC5Music23LibrarySearchControllerP33_D5FA0BEF708D1E9261BCB607AD690C3E11BarDelegate_textDidChange);
+  v8 = *(&selfCopy->super.isa + OBJC_IVAR____TtCC5Music23LibrarySearchControllerP33_D5FA0BEF708D1E9261BCB607AD690C3E11BarDelegate_textDidChange);
   if (v8)
   {
 
     sub_100030444(v8);
-    v8(v9);
+    v8(selfCopy);
 
     sub_100020438(v8);
   }
@@ -29,11 +29,11 @@
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_10043EE14(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_10043EE14(clickedCopy);
 }
 
 - (_TtCC5Music23LibrarySearchControllerP33_D5FA0BEF708D1E9261BCB607AD690C3E11BarDelegate)init

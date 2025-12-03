@@ -1,162 +1,162 @@
 @interface NPKProtoStandalonePaymentProvisioningFlowResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsFromStep:(id)a3;
-- (int)StringAsToStep:(id)a3;
+- (int)StringAsFromStep:(id)step;
+- (int)StringAsToStep:(id)step;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentProvisioningFlowResponse
 
-- (int)StringAsFromStep:(id)a3
+- (int)StringAsFromStep:(id)step
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Initialized"])
+  stepCopy = step;
+  if ([stepCopy isEqualToString:@"Initialized"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"Preconditions"])
+  else if ([stepCopy isEqualToString:@"Preconditions"])
   {
     v4 = 110;
   }
 
-  else if ([v3 isEqualToString:@"Welcome"])
+  else if ([stepCopy isEqualToString:@"Welcome"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"ChooseFlow"])
+  else if ([stepCopy isEqualToString:@"ChooseFlow"])
   {
     v4 = 130;
   }
 
-  else if ([v3 isEqualToString:@"ChooseProduct"])
+  else if ([stepCopy isEqualToString:@"ChooseProduct"])
   {
     v4 = 135;
   }
 
-  else if ([v3 isEqualToString:@"ChooseTransitProduct"])
+  else if ([stepCopy isEqualToString:@"ChooseTransitProduct"])
   {
     v4 = 137;
   }
 
-  else if ([v3 isEqualToString:@"ChooseEMoneyProduct"])
+  else if ([stepCopy isEqualToString:@"ChooseEMoneyProduct"])
   {
     v4 = 138;
   }
 
-  else if ([v3 isEqualToString:@"ChooseCredentials"])
+  else if ([stepCopy isEqualToString:@"ChooseCredentials"])
   {
     v4 = 140;
   }
 
-  else if ([v3 isEqualToString:@"ChooseTransitProductType"])
+  else if ([stepCopy isEqualToString:@"ChooseTransitProductType"])
   {
     v4 = 144;
   }
 
-  else if ([v3 isEqualToString:@"ChooseServiceProviderProducts"])
+  else if ([stepCopy isEqualToString:@"ChooseServiceProviderProducts"])
   {
     v4 = 145;
   }
 
-  else if ([v3 isEqualToString:@"DigitalIssuanceAmount"])
+  else if ([stepCopy isEqualToString:@"DigitalIssuanceAmount"])
   {
     v4 = 150;
   }
 
-  else if ([v3 isEqualToString:@"DigitalIssuancePayment"])
+  else if ([stepCopy isEqualToString:@"DigitalIssuancePayment"])
   {
     v4 = 155;
   }
 
-  else if ([v3 isEqualToString:@"MoreInformation"])
+  else if ([stepCopy isEqualToString:@"MoreInformation"])
   {
     v4 = 157;
   }
 
-  else if ([v3 isEqualToString:@"ReaderModeEntry"])
+  else if ([stepCopy isEqualToString:@"ReaderModeEntry"])
   {
     v4 = 160;
   }
 
-  else if ([v3 isEqualToString:@"ReaderModeIngestion"])
+  else if ([stepCopy isEqualToString:@"ReaderModeIngestion"])
   {
     v4 = 165;
   }
 
-  else if ([v3 isEqualToString:@"ManualEntry"])
+  else if ([stepCopy isEqualToString:@"ManualEntry"])
   {
     v4 = 180;
   }
 
-  else if ([v3 isEqualToString:@"SecondaryManualEntry"])
+  else if ([stepCopy isEqualToString:@"SecondaryManualEntry"])
   {
     v4 = 190;
   }
 
-  else if ([v3 isEqualToString:@"LocalDeviceManualEntry"])
+  else if ([stepCopy isEqualToString:@"LocalDeviceManualEntry"])
   {
     v4 = 192;
   }
 
-  else if ([v3 isEqualToString:@"LocalDeviceManualEntryProgress"])
+  else if ([stepCopy isEqualToString:@"LocalDeviceManualEntryProgress"])
   {
     v4 = 193;
   }
 
-  else if ([v3 isEqualToString:@"ProductDisambiguation"])
+  else if ([stepCopy isEqualToString:@"ProductDisambiguation"])
   {
     v4 = 195;
   }
 
-  else if ([v3 isEqualToString:@"PasscodeUpgrade"])
+  else if ([stepCopy isEqualToString:@"PasscodeUpgrade"])
   {
     v4 = 197;
   }
 
-  else if ([v3 isEqualToString:@"TermsAndConditions"])
+  else if ([stepCopy isEqualToString:@"TermsAndConditions"])
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:@"ProvisioningProgress"])
+  else if ([stepCopy isEqualToString:@"ProvisioningProgress"])
   {
     v4 = 210;
   }
 
-  else if ([v3 isEqualToString:@"ProvisioningResult"])
+  else if ([stepCopy isEqualToString:@"ProvisioningResult"])
   {
     v4 = 220;
   }
 
-  else if ([v3 isEqualToString:@"IssuerVerificationChannels"])
+  else if ([stepCopy isEqualToString:@"IssuerVerificationChannels"])
   {
     v4 = 230;
   }
 
-  else if ([v3 isEqualToString:@"IssuerVerificationFields"])
+  else if ([stepCopy isEqualToString:@"IssuerVerificationFields"])
   {
     v4 = 240;
   }
 
-  else if ([v3 isEqualToString:@"IssuerVerificationCode"])
+  else if ([stepCopy isEqualToString:@"IssuerVerificationCode"])
   {
     v4 = 250;
   }
 
-  else if ([v3 isEqualToString:@"AppleBalanceAccountDetails"])
+  else if ([stepCopy isEqualToString:@"AppleBalanceAccountDetails"])
   {
     v4 = 260;
   }
 
-  else if ([v3 isEqualToString:@"GetIssuerApplicationAddRequest"])
+  else if ([stepCopy isEqualToString:@"GetIssuerApplicationAddRequest"])
   {
     v4 = 300;
   }
@@ -169,150 +169,150 @@
   return v4;
 }
 
-- (int)StringAsToStep:(id)a3
+- (int)StringAsToStep:(id)step
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Initialized"])
+  stepCopy = step;
+  if ([stepCopy isEqualToString:@"Initialized"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"Preconditions"])
+  else if ([stepCopy isEqualToString:@"Preconditions"])
   {
     v4 = 110;
   }
 
-  else if ([v3 isEqualToString:@"Welcome"])
+  else if ([stepCopy isEqualToString:@"Welcome"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"ChooseFlow"])
+  else if ([stepCopy isEqualToString:@"ChooseFlow"])
   {
     v4 = 130;
   }
 
-  else if ([v3 isEqualToString:@"ChooseProduct"])
+  else if ([stepCopy isEqualToString:@"ChooseProduct"])
   {
     v4 = 135;
   }
 
-  else if ([v3 isEqualToString:@"ChooseTransitProduct"])
+  else if ([stepCopy isEqualToString:@"ChooseTransitProduct"])
   {
     v4 = 137;
   }
 
-  else if ([v3 isEqualToString:@"ChooseEMoneyProduct"])
+  else if ([stepCopy isEqualToString:@"ChooseEMoneyProduct"])
   {
     v4 = 138;
   }
 
-  else if ([v3 isEqualToString:@"ChooseCredentials"])
+  else if ([stepCopy isEqualToString:@"ChooseCredentials"])
   {
     v4 = 140;
   }
 
-  else if ([v3 isEqualToString:@"ChooseTransitProductType"])
+  else if ([stepCopy isEqualToString:@"ChooseTransitProductType"])
   {
     v4 = 144;
   }
 
-  else if ([v3 isEqualToString:@"ChooseServiceProviderProducts"])
+  else if ([stepCopy isEqualToString:@"ChooseServiceProviderProducts"])
   {
     v4 = 145;
   }
 
-  else if ([v3 isEqualToString:@"DigitalIssuanceAmount"])
+  else if ([stepCopy isEqualToString:@"DigitalIssuanceAmount"])
   {
     v4 = 150;
   }
 
-  else if ([v3 isEqualToString:@"DigitalIssuancePayment"])
+  else if ([stepCopy isEqualToString:@"DigitalIssuancePayment"])
   {
     v4 = 155;
   }
 
-  else if ([v3 isEqualToString:@"MoreInformation"])
+  else if ([stepCopy isEqualToString:@"MoreInformation"])
   {
     v4 = 157;
   }
 
-  else if ([v3 isEqualToString:@"ReaderModeEntry"])
+  else if ([stepCopy isEqualToString:@"ReaderModeEntry"])
   {
     v4 = 160;
   }
 
-  else if ([v3 isEqualToString:@"ReaderModeIngestion"])
+  else if ([stepCopy isEqualToString:@"ReaderModeIngestion"])
   {
     v4 = 165;
   }
 
-  else if ([v3 isEqualToString:@"ManualEntry"])
+  else if ([stepCopy isEqualToString:@"ManualEntry"])
   {
     v4 = 180;
   }
 
-  else if ([v3 isEqualToString:@"SecondaryManualEntry"])
+  else if ([stepCopy isEqualToString:@"SecondaryManualEntry"])
   {
     v4 = 190;
   }
 
-  else if ([v3 isEqualToString:@"LocalDeviceManualEntry"])
+  else if ([stepCopy isEqualToString:@"LocalDeviceManualEntry"])
   {
     v4 = 192;
   }
 
-  else if ([v3 isEqualToString:@"LocalDeviceManualEntryProgress"])
+  else if ([stepCopy isEqualToString:@"LocalDeviceManualEntryProgress"])
   {
     v4 = 193;
   }
 
-  else if ([v3 isEqualToString:@"ProductDisambiguation"])
+  else if ([stepCopy isEqualToString:@"ProductDisambiguation"])
   {
     v4 = 195;
   }
 
-  else if ([v3 isEqualToString:@"PasscodeUpgrade"])
+  else if ([stepCopy isEqualToString:@"PasscodeUpgrade"])
   {
     v4 = 197;
   }
 
-  else if ([v3 isEqualToString:@"TermsAndConditions"])
+  else if ([stepCopy isEqualToString:@"TermsAndConditions"])
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:@"ProvisioningProgress"])
+  else if ([stepCopy isEqualToString:@"ProvisioningProgress"])
   {
     v4 = 210;
   }
 
-  else if ([v3 isEqualToString:@"ProvisioningResult"])
+  else if ([stepCopy isEqualToString:@"ProvisioningResult"])
   {
     v4 = 220;
   }
 
-  else if ([v3 isEqualToString:@"IssuerVerificationChannels"])
+  else if ([stepCopy isEqualToString:@"IssuerVerificationChannels"])
   {
     v4 = 230;
   }
 
-  else if ([v3 isEqualToString:@"IssuerVerificationFields"])
+  else if ([stepCopy isEqualToString:@"IssuerVerificationFields"])
   {
     v4 = 240;
   }
 
-  else if ([v3 isEqualToString:@"IssuerVerificationCode"])
+  else if ([stepCopy isEqualToString:@"IssuerVerificationCode"])
   {
     v4 = 250;
   }
 
-  else if ([v3 isEqualToString:@"AppleBalanceAccountDetails"])
+  else if ([stepCopy isEqualToString:@"AppleBalanceAccountDetails"])
   {
     v4 = 260;
   }
 
-  else if ([v3 isEqualToString:@"GetIssuerApplicationAddRequest"])
+  else if ([stepCopy isEqualToString:@"GetIssuerApplicationAddRequest"])
   {
     v4 = 300;
   }
@@ -331,20 +331,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentProvisioningFlowResponse;
   v4 = [(NPKProtoStandalonePaymentProvisioningFlowResponse *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentProvisioningFlowResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   responseHeader = self->_responseHeader;
   if (responseHeader)
   {
-    v5 = [(NPKProtoStandaloneResponseHeader *)responseHeader dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"responseHeader"];
+    dictionaryRepresentation = [(NPKProtoStandaloneResponseHeader *)responseHeader dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"responseHeader"];
   }
 
   fromStep = self->_fromStep;
@@ -560,7 +560,7 @@
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_fromStep];
 LABEL_74:
-  [v3 setObject:v7 forKey:@"fromStep"];
+  [dictionary setObject:v7 forKey:@"fromStep"];
 
   toStep = self->_toStep;
   if (toStep <= 164)
@@ -775,21 +775,21 @@ LABEL_74:
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_toStep];
 LABEL_145:
-  [v3 setObject:v9 forKey:@"toStep"];
+  [dictionary setObject:v9 forKey:@"toStep"];
 
   context = self->_context;
   if (context)
   {
-    v11 = [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)context dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"context"];
+    dictionaryRepresentation2 = [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)context dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"context"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   fromStep = self->_fromStep;
   PBDataWriterWriteInt32Field();
   toStep = self->_toStep;
@@ -807,44 +807,44 @@ LABEL_145:
   PBDataWriterWriteSubmessage();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[4] = self->_fromStep;
-  v4[8] = self->_toStep;
-  v5 = v4;
+  toCopy = to;
+  toCopy[4] = self->_fromStep;
+  toCopy[8] = self->_toStep;
+  v5 = toCopy;
   if (self->_context)
   {
-    [v4 setContext:?];
-    v4 = v5;
+    [toCopy setContext:?];
+    toCopy = v5;
   }
 
-  [v4 setResponseHeader:self->_responseHeader];
+  [toCopy setResponseHeader:self->_responseHeader];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_fromStep;
   *(v5 + 32) = self->_toStep;
-  v6 = [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self->_context copyWithZone:a3];
+  v6 = [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self->_context copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NPKProtoStandaloneResponseHeader *)self->_responseHeader copyWithZone:a3];
+  v8 = [(NPKProtoStandaloneResponseHeader *)self->_responseHeader copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_fromStep == *(v4 + 4) && self->_toStep == *(v4 + 8) && ((context = self->_context, !(context | v4[1])) || -[NPKProtoStandalonePaymentProvisioningFlowStepContext isEqual:](context, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_fromStep == *(equalCopy + 4) && self->_toStep == *(equalCopy + 8) && ((context = self->_context, !(context | equalCopy[1])) || -[NPKProtoStandalonePaymentProvisioningFlowStepContext isEqual:](context, "isEqual:")))
   {
     responseHeader = self->_responseHeader;
-    if (responseHeader | v4[3])
+    if (responseHeader | equalCopy[3])
     {
       v7 = [(NPKProtoStandaloneResponseHeader *)responseHeader isEqual:?];
     }
@@ -870,14 +870,14 @@ LABEL_145:
   return v3 ^ v4 ^ [(NPKProtoStandaloneResponseHeader *)self->_responseHeader hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_fromStep = v4[4];
-  self->_toStep = v4[8];
+  fromCopy = from;
+  self->_fromStep = fromCopy[4];
+  self->_toStep = fromCopy[8];
   context = self->_context;
-  v6 = *(v4 + 1);
-  v9 = v4;
+  v6 = *(fromCopy + 1);
+  v9 = fromCopy;
   if (context)
   {
     if (!v6)
@@ -898,10 +898,10 @@ LABEL_145:
     [(NPKProtoStandalonePaymentProvisioningFlowResponse *)self setContext:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   responseHeader = self->_responseHeader;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (responseHeader)
   {
     if (!v8)
@@ -922,7 +922,7 @@ LABEL_7:
     [(NPKProtoStandalonePaymentProvisioningFlowResponse *)self setResponseHeader:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
 }
 

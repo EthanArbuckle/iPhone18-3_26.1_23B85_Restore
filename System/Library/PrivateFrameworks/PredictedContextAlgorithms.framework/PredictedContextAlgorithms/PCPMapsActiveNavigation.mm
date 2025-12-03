@@ -1,20 +1,20 @@
 @interface PCPMapsActiveNavigation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasUsageTimeCFAbsolute:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasUsageTimeCFAbsolute:(BOOL)absolute;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPMapsActiveNavigation
 
-- (void)setHasUsageTimeCFAbsolute:(BOOL)a3
+- (void)setHasUsageTimeCFAbsolute:(BOOL)absolute
 {
-  if (a3)
+  if (absolute)
   {
     v3 = 2;
   }
@@ -33,125 +33,125 @@
   v8.receiver = self;
   v8.super_class = PCPMapsActiveNavigation;
   v4 = [(PCPMapsActiveNavigation *)&v8 description];
-  v5 = [(PCPMapsActiveNavigation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPMapsActiveNavigation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_travelTime];
-    [v3 setObject:v4 forKey:@"travelTime"];
+    [dictionary setObject:v4 forKey:@"travelTime"];
   }
 
   originLocation = self->_originLocation;
   if (originLocation)
   {
-    v6 = [(PCPLocation *)originLocation dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"originLocation"];
+    dictionaryRepresentation = [(PCPLocation *)originLocation dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"originLocation"];
   }
 
   destinationLocation = self->_destinationLocation;
   if (destinationLocation)
   {
-    v8 = [(PCPLocation *)destinationLocation dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"destinationLocation"];
+    dictionaryRepresentation2 = [(PCPLocation *)destinationLocation dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"destinationLocation"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_usageTimeCFAbsolute];
-    [v3 setObject:v9 forKey:@"usageTimeCFAbsolute"];
+    [dictionary setObject:v9 forKey:@"usageTimeCFAbsolute"];
   }
 
   loiIdentifier = self->_loiIdentifier;
   if (loiIdentifier)
   {
-    [v3 setObject:loiIdentifier forKey:@"loiIdentifier"];
+    [dictionary setObject:loiIdentifier forKey:@"loiIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (*&self->_has)
   {
     travelTime = self->_travelTime;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_originLocation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_destinationLocation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     usageTimeCFAbsolute = self->_usageTimeCFAbsolute;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_loiIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_travelTime;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = *&self->_travelTime;
+    *(toCopy + 48) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_originLocation)
   {
-    [v4 setOriginLocation:?];
-    v4 = v5;
+    [toCopy setOriginLocation:?];
+    toCopy = v5;
   }
 
   if (self->_destinationLocation)
   {
     [v5 setDestinationLocation:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = *&self->_usageTimeCFAbsolute;
-    *(v4 + 48) |= 2u;
+    toCopy[2] = *&self->_usageTimeCFAbsolute;
+    *(toCopy + 48) |= 2u;
   }
 
   if (self->_loiIdentifier)
   {
     [v5 setLoiIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -159,11 +159,11 @@
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(PCPLocation *)self->_originLocation copyWithZone:a3];
+  v7 = [(PCPLocation *)self->_originLocation copyWithZone:zone];
   v8 = *(v6 + 40);
   *(v6 + 40) = v7;
 
-  v9 = [(PCPLocation *)self->_destinationLocation copyWithZone:a3];
+  v9 = [(PCPLocation *)self->_destinationLocation copyWithZone:zone];
   v10 = *(v6 + 24);
   *(v6 + 24) = v9;
 
@@ -173,31 +173,31 @@
     *(v6 + 48) |= 2u;
   }
 
-  v11 = [(NSData *)self->_loiIdentifier copyWithZone:a3];
+  v11 = [(NSData *)self->_loiIdentifier copyWithZone:zone];
   v12 = *(v6 + 32);
   *(v6 + 32) = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_travelTime != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_travelTime != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_18:
     v10 = 0;
@@ -205,13 +205,13 @@ LABEL_18:
   }
 
   originLocation = self->_originLocation;
-  if (originLocation | *(v4 + 5) && ![(PCPLocation *)originLocation isEqual:?])
+  if (originLocation | *(equalCopy + 5) && ![(PCPLocation *)originLocation isEqual:?])
   {
     goto LABEL_18;
   }
 
   destinationLocation = self->_destinationLocation;
-  if (destinationLocation | *(v4 + 3))
+  if (destinationLocation | *(equalCopy + 3))
   {
     if (![(PCPLocation *)destinationLocation isEqual:?])
     {
@@ -219,22 +219,22 @@ LABEL_18:
     }
   }
 
-  v8 = *(v4 + 48);
+  v8 = *(equalCopy + 48);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_usageTimeCFAbsolute != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_usageTimeCFAbsolute != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_18;
   }
 
   loiIdentifier = self->_loiIdentifier;
-  if (loiIdentifier | *(v4 + 4))
+  if (loiIdentifier | *(equalCopy + 4))
   {
     v10 = [(NSData *)loiIdentifier isEqual:?];
   }
@@ -322,13 +322,13 @@ LABEL_19:
   return v9 ^ v5 ^ v10 ^ v13 ^ [(NSData *)self->_loiIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[6])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[6])
   {
-    self->_travelTime = v4[1];
+    self->_travelTime = fromCopy[1];
     *&self->_has |= 1u;
   }
 

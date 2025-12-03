@@ -1,39 +1,39 @@
 @interface CACTextMarkerRange
-+ (CACTextMarkerRange)markerRangeWithArray:(id)a3;
-+ (CACTextMarkerRange)markerRangeWithNSRange:(_NSRange)a3;
-+ (CACTextMarkerRange)markerRangeWithStartMarker:(id)a3 endMarker:(id)a4 forTextElement:(id)a5;
-- (BOOL)containsMarker:(id)a3;
-- (BOOL)containsRange:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CACTextMarkerRange)initWithStartMarker:(id)a3 endMarker:(id)a4;
++ (CACTextMarkerRange)markerRangeWithArray:(id)array;
++ (CACTextMarkerRange)markerRangeWithNSRange:(_NSRange)range;
++ (CACTextMarkerRange)markerRangeWithStartMarker:(id)marker endMarker:(id)endMarker forTextElement:(id)element;
+- (BOOL)containsMarker:(id)marker;
+- (BOOL)containsRange:(id)range;
+- (BOOL)isEqual:(id)equal;
+- (CACTextMarkerRange)initWithStartMarker:(id)marker endMarker:(id)endMarker;
 - (NSString)description;
 - (_NSRange)nsRange;
 - (id)array;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CACTextMarkerRange
 
-+ (CACTextMarkerRange)markerRangeWithStartMarker:(id)a3 endMarker:(id)a4 forTextElement:(id)a5
++ (CACTextMarkerRange)markerRangeWithStartMarker:(id)marker endMarker:(id)endMarker forTextElement:(id)element
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_allocWithZone(CACTextMarkerRange) initWithStartMarker:v7 endMarker:v6];
+  endMarkerCopy = endMarker;
+  markerCopy = marker;
+  v8 = [objc_allocWithZone(CACTextMarkerRange) initWithStartMarker:markerCopy endMarker:endMarkerCopy];
 
   return v8;
 }
 
-+ (CACTextMarkerRange)markerRangeWithNSRange:(_NSRange)a3
++ (CACTextMarkerRange)markerRangeWithNSRange:(_NSRange)range
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
   }
 
   else
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v6 = [CACTextMarker markerWithIndex:?];
     v7 = [CACTextMarker markerWithIndex:location + length];
     v3 = [objc_allocWithZone(CACTextMarkerRange) initWithStartMarker:v6 endMarker:v7];
@@ -42,17 +42,17 @@
   return v3;
 }
 
-+ (CACTextMarkerRange)markerRangeWithArray:(id)a3
++ (CACTextMarkerRange)markerRangeWithArray:(id)array
 {
-  v3 = a3;
-  if ([v3 count] == 2)
+  arrayCopy = array;
+  if ([arrayCopy count] == 2)
   {
     v4 = objc_allocWithZone(CACTextMarker);
-    v5 = [v3 objectAtIndex:0];
+    v5 = [arrayCopy objectAtIndex:0];
     v6 = [v4 initWithData:v5];
 
     v7 = objc_allocWithZone(CACTextMarker);
-    v8 = [v3 objectAtIndex:1];
+    v8 = [arrayCopy objectAtIndex:1];
     v9 = [v7 initWithData:v8];
 
     v10 = [objc_allocWithZone(CACTextMarkerRange) initWithStartMarker:v6 endMarker:v9];
@@ -66,10 +66,10 @@
   return v10;
 }
 
-- (CACTextMarkerRange)initWithStartMarker:(id)a3 endMarker:(id)a4
+- (CACTextMarkerRange)initWithStartMarker:(id)marker endMarker:(id)endMarker
 {
-  v7 = a3;
-  v8 = a4;
+  markerCopy = marker;
+  endMarkerCopy = endMarker;
   v13.receiver = self;
   v13.super_class = CACTextMarkerRange;
   v9 = [(CACTextMarkerRange *)&v13 init];
@@ -80,10 +80,10 @@
   }
 
   v11 = 0;
-  if (v7 && v8)
+  if (markerCopy && endMarkerCopy)
   {
-    objc_storeStrong(&v9->_startMarker, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_startMarker, marker);
+    objc_storeStrong(p_isa + 2, endMarker);
 LABEL_5:
     v11 = p_isa;
   }
@@ -93,8 +93,8 @@ LABEL_5:
 
 - (_NSRange)nsRange
 {
-  v3 = [(CACTextMarker *)self->_startMarker index];
-  v4 = [(CACTextMarker *)self->_endMarker index]- v3;
+  index = [(CACTextMarker *)self->_startMarker index];
+  v4 = [(CACTextMarker *)self->_endMarker index]- index;
   if (v4 < 0)
   {
     v5 = CACLogGeneral();
@@ -106,7 +106,7 @@ LABEL_5:
     v4 = 0;
   }
 
-  v6 = v3;
+  v6 = index;
   result.length = v4;
   result.location = v6;
   return result;
@@ -114,16 +114,16 @@ LABEL_5:
 
 - (id)array
 {
-  v3 = [(CACTextMarker *)self->_startMarker data];
-  if (v3)
+  data = [(CACTextMarker *)self->_startMarker data];
+  if (data)
   {
-    v4 = [(CACTextMarker *)self->_endMarker data];
-    if (v4)
+    data2 = [(CACTextMarker *)self->_endMarker data];
+    if (data2)
     {
       v5 = MEMORY[0x277CBEA60];
-      v6 = [(CACTextMarker *)self->_startMarker data];
-      v7 = [(CACTextMarker *)self->_endMarker data];
-      v8 = [v5 arrayWithObjects:{v6, v7, 0}];
+      data3 = [(CACTextMarker *)self->_startMarker data];
+      data4 = [(CACTextMarker *)self->_endMarker data];
+      v8 = [v5 arrayWithObjects:{data3, data4, 0}];
     }
 
     else
@@ -140,25 +140,25 @@ LABEL_5:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CACTextMarkerRange allocWithZone:a3];
+  v4 = [CACTextMarkerRange allocWithZone:zone];
   startMarker = self->_startMarker;
   endMarker = self->_endMarker;
 
   return [(CACTextMarkerRange *)v4 initWithStartMarker:startMarker endMarker:endMarker];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   startMarker = self->_startMarker;
-  v6 = [v4 startMarker];
-  if ([(CACTextMarker *)startMarker isEqual:v6])
+  startMarker = [equalCopy startMarker];
+  if ([(CACTextMarker *)startMarker isEqual:startMarker])
   {
     endMarker = self->_endMarker;
-    v8 = [v4 endMarker];
-    v9 = [(CACTextMarker *)endMarker isEqual:v8];
+    endMarker = [equalCopy endMarker];
+    v9 = [(CACTextMarker *)endMarker isEqual:endMarker];
   }
 
   else
@@ -169,12 +169,12 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)containsMarker:(id)a3
+- (BOOL)containsMarker:(id)marker
 {
-  v4 = a3;
-  if ([CACTextMarker marker:self->_startMarker precedesOrEqualsMarker:v4])
+  markerCopy = marker;
+  if ([CACTextMarker marker:self->_startMarker precedesOrEqualsMarker:markerCopy])
   {
-    v5 = [CACTextMarker marker:v4 precedesOrEqualsMarker:self->_endMarker];
+    v5 = [CACTextMarker marker:markerCopy precedesOrEqualsMarker:self->_endMarker];
   }
 
   else
@@ -185,15 +185,15 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)containsRange:(id)a3
+- (BOOL)containsRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   startMarker = self->_startMarker;
-  v6 = [v4 startMarker];
-  if ([CACTextMarker marker:startMarker precedesOrEqualsMarker:v6])
+  startMarker = [rangeCopy startMarker];
+  if ([CACTextMarker marker:startMarker precedesOrEqualsMarker:startMarker])
   {
-    v7 = [v4 endMarker];
-    v8 = [CACTextMarker marker:v7 precedesOrEqualsMarker:self->_endMarker];
+    endMarker = [rangeCopy endMarker];
+    v8 = [CACTextMarker marker:endMarker precedesOrEqualsMarker:self->_endMarker];
   }
 
   else
@@ -206,14 +206,14 @@ LABEL_5:
 
 - (NSString)description
 {
-  v3 = [(CACTextMarker *)self->_startMarker data];
-  if (v3 && ([(CACTextMarker *)self->_endMarker data], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  data = [(CACTextMarker *)self->_startMarker data];
+  if (data && ([(CACTextMarker *)self->_endMarker data], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(CACTextMarker *)self->_startMarker data];
-    v8 = [(CACTextMarker *)self->_endMarker data];
-    v9 = [v6 stringWithFormat:@"CAC Marker Range: start: %@, end: %@", v7, v8];
+    data2 = [(CACTextMarker *)self->_startMarker data];
+    data3 = [(CACTextMarker *)self->_endMarker data];
+    v9 = [v6 stringWithFormat:@"CAC Marker Range: start: %@, end: %@", data2, data3];
   }
 
   else

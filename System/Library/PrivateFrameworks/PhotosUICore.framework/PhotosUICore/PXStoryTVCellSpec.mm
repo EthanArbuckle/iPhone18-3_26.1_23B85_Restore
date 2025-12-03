@@ -1,24 +1,24 @@
 @interface PXStoryTVCellSpec
-- (BOOL)_isSupportedCharacterSetForFontDescriptor:(id)a3 fontSize:(double)a4 string:(id)a5 supportedCharacterAttributes:(id)a6 leading:(double)a7;
-- (PXStoryTVCellSpec)initWithExtendedTraitCollection:(id)a3;
-- (UIEdgeInsets)_languageAwareOutsetsForFont:(id)a3;
+- (BOOL)_isSupportedCharacterSetForFontDescriptor:(id)descriptor fontSize:(double)size string:(id)string supportedCharacterAttributes:(id)attributes leading:(double)leading;
+- (PXStoryTVCellSpec)initWithExtendedTraitCollection:(id)collection;
+- (UIEdgeInsets)_languageAwareOutsetsForFont:(id)font;
 - (UIFont)memorySubtitleFont;
 - (UIFont)memoryTitleFont;
 - (double)memorySubtitleLeading;
 - (double)memorySubtitleTracking;
 - (double)memoryTitleLeading;
 - (double)memoryTitleTracking;
-- (id)_setupSubtitleAttributesWithAllCharactersSupported:(BOOL)a3;
+- (id)_setupSubtitleAttributesWithAllCharactersSupported:(BOOL)supported;
 - (id)_setupSubtitleFont;
-- (id)_setupTitleAttributesWithAllCharactersSupported:(BOOL)a3;
+- (id)_setupTitleAttributesWithAllCharactersSupported:(BOOL)supported;
 - (id)_setupTitleFont;
-- (id)attributedStringForSubtitle:(id)a3;
-- (id)attributedStringForTitle:(id)a3;
+- (id)attributedStringForSubtitle:(id)subtitle;
+- (id)attributedStringForTitle:(id)title;
 @end
 
 @implementation PXStoryTVCellSpec
 
-- (UIEdgeInsets)_languageAwareOutsetsForFont:(id)a3
+- (UIEdgeInsets)_languageAwareOutsetsForFont:(id)font
 {
   v7 = *off_1E7721FA8;
   v8 = *(off_1E7721FA8 + 1);
@@ -34,18 +34,18 @@
   return result;
 }
 
-- (BOOL)_isSupportedCharacterSetForFontDescriptor:(id)a3 fontSize:(double)a4 string:(id)a5 supportedCharacterAttributes:(id)a6 leading:(double)a7
+- (BOOL)_isSupportedCharacterSetForFontDescriptor:(id)descriptor fontSize:(double)size string:(id)string supportedCharacterAttributes:(id)attributes leading:(double)leading
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  descriptorCopy = descriptor;
   v37 = *MEMORY[0x1E69DB8C0];
   v13 = MEMORY[0x1E696AD98];
-  v14 = a6;
-  v15 = a5;
-  v16 = [v13 numberWithDouble:a4];
+  attributesCopy = attributes;
+  stringCopy = string;
+  v16 = [v13 numberWithDouble:size];
   v38[0] = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
-  v18 = [v12 fontDescriptorByAddingAttributes:v17];
+  v18 = [descriptorCopy fontDescriptorByAddingAttributes:v17];
 
   if (_isSupportedCharacterSetForFontDescriptor_fontSize_string_supportedCharacterAttributes_leading__onceToken != -1)
   {
@@ -53,29 +53,29 @@
   }
 
   v19 = _isSupportedCharacterSetForFontDescriptor_fontSize_string_supportedCharacterAttributes_leading__cachedInvertedCharacterSetByFontDescriptor;
-  v20 = [v18 fontAttributes];
+  fontAttributes = [v18 fontAttributes];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __116__PXStoryTVCellSpec__isSupportedCharacterSetForFontDescriptor_fontSize_string_supportedCharacterAttributes_leading___block_invoke_2;
   v34[3] = &unk_1E773CC80;
-  v35 = v12;
-  v36 = a4;
-  v21 = v12;
-  v22 = [v19 px_objectForKey:v20 usingPromise:v34];
+  v35 = descriptorCopy;
+  sizeCopy = size;
+  v21 = descriptorCopy;
+  v22 = [v19 px_objectForKey:fontAttributes usingPromise:v34];
 
-  v23 = [MEMORY[0x1E69DB878] fontWithDescriptor:v21 size:a4];
+  v23 = [MEMORY[0x1E69DB878] fontWithDescriptor:v21 size:size];
   [(PXStoryTVCellSpec *)self _languageAwareOutsetsForFont:v23];
   v25 = v24;
-  v26 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v15 attributes:v14];
+  v26 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy attributes:attributesCopy];
 
   v27 = CTLineCreateWithAttributedString(v26);
   BoundsWithOptions = CTLineGetBoundsWithOptions(v27, 8uLL);
   y = BoundsWithOptions.origin.y;
   height = BoundsWithOptions.size.height;
   CFRelease(v27);
-  v30 = [v15 rangeOfCharacterFromSet:v22];
+  v30 = [stringCopy rangeOfCharacterFromSet:v22];
 
-  v32 = v25 * 0.5 + height - y < a7 && v30 == 0x7FFFFFFFFFFFFFFFLL;
+  v32 = v25 * 0.5 + height - y < leading && v30 == 0x7FFFFFFFFFFFFFFFLL;
   return v32;
 }
 
@@ -102,19 +102,19 @@ void __116__PXStoryTVCellSpec__isSupportedCharacterSetForFontDescriptor_fontSize
   _isSupportedCharacterSetForFontDescriptor_fontSize_string_supportedCharacterAttributes_leading__cachedInvertedCharacterSetByFontDescriptor = v0;
 }
 
-- (id)attributedStringForSubtitle:(id)a3
+- (id)attributedStringForSubtitle:(id)subtitle
 {
-  v4 = [a3 localizedUppercaseString];
-  v5 = [(PXStoryTVCellSpec *)self subtitleFont];
-  v6 = v5;
-  if (v4)
+  localizedUppercaseString = [subtitle localizedUppercaseString];
+  subtitleFont = [(PXStoryTVCellSpec *)self subtitleFont];
+  v6 = subtitleFont;
+  if (localizedUppercaseString)
   {
-    v7 = [v5 fontDescriptor];
+    fontDescriptor = [subtitleFont fontDescriptor];
     [v6 pointSize];
     v9 = v8;
-    v10 = [(PXStoryTVCellSpec *)self subtitleSupportedCharactersAttributes];
+    subtitleSupportedCharactersAttributes = [(PXStoryTVCellSpec *)self subtitleSupportedCharactersAttributes];
     [(PXStoryTVCellSpec *)self memorySubtitleLeading];
-    v12 = [(PXStoryTVCellSpec *)self _isSupportedCharacterSetForFontDescriptor:v7 fontSize:v4 string:v10 supportedCharacterAttributes:v9 leading:v11];
+    v12 = [(PXStoryTVCellSpec *)self _isSupportedCharacterSetForFontDescriptor:fontDescriptor fontSize:localizedUppercaseString string:subtitleSupportedCharactersAttributes supportedCharacterAttributes:v9 leading:v11];
 
     v13 = objc_alloc(MEMORY[0x1E696AAB0]);
     if (v12)
@@ -127,7 +127,7 @@ void __116__PXStoryTVCellSpec__isSupportedCharacterSetForFontDescriptor_fontSize
       [(PXStoryTVCellSpec *)self subtitleUnsupportedCharactersAttributes];
     }
     v15 = ;
-    v14 = [v13 initWithString:v4 attributes:v15];
+    v14 = [v13 initWithString:localizedUppercaseString attributes:v15];
   }
 
   else
@@ -138,22 +138,22 @@ void __116__PXStoryTVCellSpec__isSupportedCharacterSetForFontDescriptor_fontSize
   return v14;
 }
 
-- (id)attributedStringForTitle:(id)a3
+- (id)attributedStringForTitle:(id)title
 {
-  v4 = [a3 localizedUppercaseString];
-  v5 = [off_1E77217B8 defaultHelper];
-  v6 = [v5 displayableTextForTitle:v4 intent:1];
+  localizedUppercaseString = [title localizedUppercaseString];
+  defaultHelper = [off_1E77217B8 defaultHelper];
+  v6 = [defaultHelper displayableTextForTitle:localizedUppercaseString intent:1];
 
-  v7 = [(PXStoryTVCellSpec *)self titleFont];
-  v8 = v7;
+  titleFont = [(PXStoryTVCellSpec *)self titleFont];
+  v8 = titleFont;
   if (v6)
   {
-    v9 = [v7 fontDescriptor];
+    fontDescriptor = [titleFont fontDescriptor];
     [v8 pointSize];
     v11 = v10;
-    v12 = [(PXStoryTVCellSpec *)self titleSupportedCharactersAttributes];
+    titleSupportedCharactersAttributes = [(PXStoryTVCellSpec *)self titleSupportedCharactersAttributes];
     [(PXStoryTVCellSpec *)self memoryTitleLeading];
-    v14 = [(PXStoryTVCellSpec *)self _isSupportedCharacterSetForFontDescriptor:v9 fontSize:v6 string:v12 supportedCharacterAttributes:v11 leading:v13];
+    v14 = [(PXStoryTVCellSpec *)self _isSupportedCharacterSetForFontDescriptor:fontDescriptor fontSize:v6 string:titleSupportedCharactersAttributes supportedCharacterAttributes:v11 leading:v13];
 
     v15 = objc_alloc(MEMORY[0x1E696AAB0]);
     if (v14)
@@ -179,63 +179,63 @@ void __116__PXStoryTVCellSpec__isSupportedCharacterSetForFontDescriptor_fontSize
 
 - (double)memorySubtitleTracking
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryTVCellSpec.m" lineNumber:109 description:@"concrete subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTVCellSpec.m" lineNumber:109 description:@"concrete subclass must implement"];
 
   return 0.0;
 }
 
 - (double)memorySubtitleLeading
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryTVCellSpec.m" lineNumber:104 description:@"concrete subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTVCellSpec.m" lineNumber:104 description:@"concrete subclass must implement"];
 
   return 0.0;
 }
 
 - (UIFont)memorySubtitleFont
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryTVCellSpec.m" lineNumber:99 description:@"concrete subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTVCellSpec.m" lineNumber:99 description:@"concrete subclass must implement"];
 
   return 0;
 }
 
 - (double)memoryTitleTracking
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryTVCellSpec.m" lineNumber:94 description:@"concrete subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTVCellSpec.m" lineNumber:94 description:@"concrete subclass must implement"];
 
   return 0.0;
 }
 
 - (double)memoryTitleLeading
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryTVCellSpec.m" lineNumber:89 description:@"concrete subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTVCellSpec.m" lineNumber:89 description:@"concrete subclass must implement"];
 
   return 0.0;
 }
 
 - (UIFont)memoryTitleFont
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryTVCellSpec.m" lineNumber:84 description:@"concrete subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTVCellSpec.m" lineNumber:84 description:@"concrete subclass must implement"];
 
   return 0;
 }
 
-- (id)_setupSubtitleAttributesWithAllCharactersSupported:(BOOL)a3
+- (id)_setupSubtitleAttributesWithAllCharactersSupported:(BOOL)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(PXStoryTVCellSpec *)self memorySubtitleFont];
-  [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69DB648]];
+  memorySubtitleFont = [(PXStoryTVCellSpec *)self memorySubtitleFont];
+  [v5 setObject:memorySubtitleFont forKeyedSubscript:*MEMORY[0x1E69DB648]];
 
-  if (v3)
+  if (supportedCopy)
   {
-    v7 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v8 = [v7 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v8 = [defaultParagraphStyle mutableCopy];
 
     [(PXStoryTVCellSpec *)self memorySubtitleLeading];
     [v8 setMaximumLineHeight:?];
@@ -252,17 +252,17 @@ void __116__PXStoryTVCellSpec__isSupportedCharacterSetForFontDescriptor_fontSize
   return v11;
 }
 
-- (id)_setupTitleAttributesWithAllCharactersSupported:(BOOL)a3
+- (id)_setupTitleAttributesWithAllCharactersSupported:(BOOL)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(PXStoryTVCellSpec *)self memoryTitleFont];
-  [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69DB648]];
+  memoryTitleFont = [(PXStoryTVCellSpec *)self memoryTitleFont];
+  [v5 setObject:memoryTitleFont forKeyedSubscript:*MEMORY[0x1E69DB648]];
 
-  if (v3)
+  if (supportedCopy)
   {
-    v7 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v8 = [v7 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v8 = [defaultParagraphStyle mutableCopy];
 
     [(PXStoryTVCellSpec *)self memoryTitleLeading];
     [v8 setMaximumLineHeight:?];
@@ -298,8 +298,8 @@ void __116__PXStoryTVCellSpec__isSupportedCharacterSetForFontDescriptor_fontSize
 
   v8 = [objc_alloc(MEMORY[0x1E69DB880]) initWithFontAttributes:v7];
   v9 = MEMORY[0x1E69DB878];
-  v10 = [(PXStoryTVCellSpec *)self memorySubtitleFont];
-  [v10 pointSize];
+  memorySubtitleFont = [(PXStoryTVCellSpec *)self memorySubtitleFont];
+  [memorySubtitleFont pointSize];
   v11 = [v9 fontWithDescriptor:v8 size:?];
 
   return v11;
@@ -324,28 +324,28 @@ void __116__PXStoryTVCellSpec__isSupportedCharacterSetForFontDescriptor_fontSize
 
   v8 = [objc_alloc(MEMORY[0x1E69DB880]) initWithFontAttributes:v7];
   v9 = MEMORY[0x1E69DB878];
-  v10 = [(PXStoryTVCellSpec *)self memoryTitleFont];
-  [v10 pointSize];
+  memoryTitleFont = [(PXStoryTVCellSpec *)self memoryTitleFont];
+  [memoryTitleFont pointSize];
   v11 = [v9 fontWithDescriptor:v8 size:?];
 
   return v11;
 }
 
-- (PXStoryTVCellSpec)initWithExtendedTraitCollection:(id)a3
+- (PXStoryTVCellSpec)initWithExtendedTraitCollection:(id)collection
 {
   v18.receiver = self;
   v18.super_class = PXStoryTVCellSpec;
-  v3 = [(PXStoryTVCellSpec *)&v18 initWithExtendedTraitCollection:a3];
+  v3 = [(PXStoryTVCellSpec *)&v18 initWithExtendedTraitCollection:collection];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PXStoryTVCellSpec *)v3 _setupTitleFont];
+    _setupTitleFont = [(PXStoryTVCellSpec *)v3 _setupTitleFont];
     titleFont = v4->_titleFont;
-    v4->_titleFont = v5;
+    v4->_titleFont = _setupTitleFont;
 
-    v7 = [(PXStoryTVCellSpec *)v4 _setupSubtitleFont];
+    _setupSubtitleFont = [(PXStoryTVCellSpec *)v4 _setupSubtitleFont];
     subtitleFont = v4->_subtitleFont;
-    v4->_subtitleFont = v7;
+    v4->_subtitleFont = _setupSubtitleFont;
 
     v9 = [(PXStoryTVCellSpec *)v4 _setupTitleAttributesWithAllCharactersSupported:1];
     titleSupportedCharactersAttributes = v4->_titleSupportedCharactersAttributes;

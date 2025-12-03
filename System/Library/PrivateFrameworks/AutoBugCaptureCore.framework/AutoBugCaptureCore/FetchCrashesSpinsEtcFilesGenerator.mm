@@ -1,14 +1,14 @@
 @interface FetchCrashesSpinsEtcFilesGenerator
-- (FetchCrashesSpinsEtcFilesGenerator)initWithQueue:(id)a3;
+- (FetchCrashesSpinsEtcFilesGenerator)initWithQueue:(id)queue;
 @end
 
 @implementation FetchCrashesSpinsEtcFilesGenerator
 
-- (FetchCrashesSpinsEtcFilesGenerator)initWithQueue:(id)a3
+- (FetchCrashesSpinsEtcFilesGenerator)initWithQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = FetchCrashesSpinsEtcFilesGenerator;
-  v3 = [(NetworkDiagnosticsReportGenerator *)&v7 initWithQueue:a3];
+  v3 = [(NetworkDiagnosticsReportGenerator *)&v7 initWithQueue:queue];
   v4 = v3;
   if (v3)
   {

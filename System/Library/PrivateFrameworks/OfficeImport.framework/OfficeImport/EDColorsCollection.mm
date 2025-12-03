@@ -1,12 +1,12 @@
 @interface EDColorsCollection
-+ (int)oadSchemeColorIdFromThemeIndex:(int)a3;
-+ (int)systemColorIdFromIndex:(unint64_t)a3;
-+ (unsigned)xlColorIndexFromTCSystemColorIDEnum:(int)a3;
-- (EDColorsCollection)initWithDefaultSetup:(BOOL)a3;
++ (int)oadSchemeColorIdFromThemeIndex:(int)index;
++ (int)systemColorIdFromIndex:(unint64_t)index;
++ (unsigned)xlColorIndexFromTCSystemColorIDEnum:(int)enum;
+- (EDColorsCollection)initWithDefaultSetup:(BOOL)setup;
 - (NSString)description;
-- (unint64_t)addOrEquivalentColorExcludingDefaults:(id)a3;
-- (void)addColors:(const unsigned int *)a3 count:(unsigned int)a4 defaultColors:(const unsigned int *)a5 defaultCount:(unsigned int)a6;
-- (void)addPalette:(const unsigned int *)a3 paletteSize:(unsigned int)a4 paletteX:(const unsigned int *)a5 paletteXSize:(unsigned int)a6;
+- (unint64_t)addOrEquivalentColorExcludingDefaults:(id)defaults;
+- (void)addColors:(const unsigned int *)colors count:(unsigned int)count defaultColors:(const unsigned int *)defaultColors defaultCount:(unsigned int)defaultCount;
+- (void)addPalette:(const unsigned int *)palette paletteSize:(unsigned int)size paletteX:(const unsigned int *)x paletteXSize:(unsigned int)xSize;
 - (void)setupDefaults;
 @end
 
@@ -41,9 +41,9 @@
   self->mDefaultColorsCount = [(EDCollection *)self count];
 }
 
-- (EDColorsCollection)initWithDefaultSetup:(BOOL)a3
+- (EDColorsCollection)initWithDefaultSetup:(BOOL)setup
 {
-  v3 = a3;
+  setupCopy = setup;
   v7.receiver = self;
   v7.super_class = EDColorsCollection;
   v4 = [(EDCollection *)&v7 init];
@@ -51,7 +51,7 @@
   if (v4)
   {
     v4->mDefaultColorsCount = 0;
-    if (v3)
+    if (setupCopy)
     {
       [(EDColorsCollection *)v4 setupDefaults];
     }
@@ -60,11 +60,11 @@
   return v5;
 }
 
-+ (int)systemColorIdFromIndex:(unint64_t)a3
++ (int)systemColorIdFromIndex:(unint64_t)index
 {
   v3 = &dword_25D6FEAE4;
   v4 = 19;
-  while (*(v3 - 2) != a3)
+  while (*(v3 - 2) != index)
   {
     v3 += 2;
     if (!--v4)
@@ -76,11 +76,11 @@
   return *v3;
 }
 
-+ (unsigned)xlColorIndexFromTCSystemColorIDEnum:(int)a3
++ (unsigned)xlColorIndexFromTCSystemColorIDEnum:(int)enum
 {
   v3 = &dword_25D6FEAE4;
   v4 = 19;
-  while (*v3 != a3)
+  while (*v3 != enum)
   {
     v3 += 2;
     if (!--v4)
@@ -92,30 +92,30 @@
   return *(v3 - 2);
 }
 
-+ (int)oadSchemeColorIdFromThemeIndex:(int)a3
++ (int)oadSchemeColorIdFromThemeIndex:(int)index
 {
-  if (a3 > 0xC)
+  if (index > 0xC)
   {
     return -1;
   }
 
   else
   {
-    return dword_25D6FEC64[a3];
+    return dword_25D6FEC64[index];
   }
 }
 
-- (unint64_t)addOrEquivalentColorExcludingDefaults:(id)a3
+- (unint64_t)addOrEquivalentColorExcludingDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   v5 = [OITSUColor alloc];
-  [v4 redComponent];
+  [defaultsCopy redComponent];
   v7 = v6;
-  [v4 greenComponent];
+  [defaultsCopy greenComponent];
   v9 = v8;
-  [v4 blueComponent];
+  [defaultsCopy blueComponent];
   v11 = v10;
-  [v4 alphaComponent];
+  [defaultsCopy alphaComponent];
   v13 = [(OITSUColor *)v5 initWithRed:v7 green:v9 blue:v11 alpha:v12];
   v14 = [(EDCollection *)self count];
   mDefaultColorsCount = self->mDefaultColorsCount;
@@ -147,44 +147,44 @@ LABEL_4:
   return mDefaultColorsCount;
 }
 
-- (void)addColors:(const unsigned int *)a3 count:(unsigned int)a4 defaultColors:(const unsigned int *)a5 defaultCount:(unsigned int)a6
+- (void)addColors:(const unsigned int *)colors count:(unsigned int)count defaultColors:(const unsigned int *)defaultColors defaultCount:(unsigned int)defaultCount
 {
-  if (a4 >= a6)
+  if (count >= defaultCount)
   {
-    v9 = a6;
+    countCopy = defaultCount;
   }
 
   else
   {
-    v9 = a4;
+    countCopy = count;
   }
 
-  if (a3)
+  if (colors)
   {
-    v10 = v9;
-  }
-
-  else
-  {
-    v10 = a6;
-  }
-
-  if (a3)
-  {
-    v11 = a3;
+    defaultCountCopy2 = countCopy;
   }
 
   else
   {
-    v11 = a5;
+    defaultCountCopy2 = defaultCount;
   }
 
-  if (v10)
+  if (colors)
   {
-    v12 = v10;
+    defaultColorsCopy = colors;
+  }
+
+  else
+  {
+    defaultColorsCopy = defaultColors;
+  }
+
+  if (defaultCountCopy2)
+  {
+    v12 = defaultCountCopy2;
     do
     {
-      v13 = *v11++;
+      v13 = *defaultColorsCopy++;
       v14 = [OITSUColor colorWithBGRValue:v13];
       [(EDCollection *)self addObject:v14];
 
@@ -194,11 +194,11 @@ LABEL_4:
     while (v12);
   }
 
-  v15 = a6 >= v10;
-  v16 = a6 - v10;
+  v15 = defaultCount >= defaultCountCopy2;
+  v16 = defaultCount - defaultCountCopy2;
   if (v16 != 0 && v15)
   {
-    v17 = &a5[v10];
+    v17 = &defaultColors[defaultCountCopy2];
     do
     {
       v18 = *v17++;
@@ -212,17 +212,17 @@ LABEL_4:
   }
 }
 
-- (void)addPalette:(const unsigned int *)a3 paletteSize:(unsigned int)a4 paletteX:(const unsigned int *)a5 paletteXSize:(unsigned int)a6
+- (void)addPalette:(const unsigned int *)palette paletteSize:(unsigned int)size paletteX:(const unsigned int *)x paletteXSize:(unsigned int)xSize
 {
-  v6 = *&a6;
-  [(EDColorsCollection *)self addColors:a3 count:*&a4 defaultColors:[(EDColorsCollection *)self defaultPalette] defaultCount:56];
+  v6 = *&xSize;
+  [(EDColorsCollection *)self addColors:palette count:*&size defaultColors:[(EDColorsCollection *)self defaultPalette] defaultCount:56];
   for (i = 64; i != 77; ++i)
   {
     v10 = +[OITSUColor colorWithSystemColorID:](OITSUColor, "colorWithSystemColorID:", [objc_opt_class() systemColorIdFromIndex:i]);
     [(EDCollection *)self addObject:v10];
   }
 
-  [(EDColorsCollection *)self addColors:a5 count:v6 defaultColors:&[EDColorsCollection addPalette:paletteSize:paletteX:paletteXSize:]::defaultPaletteX defaultCount:3];
+  [(EDColorsCollection *)self addColors:x count:v6 defaultColors:&[EDColorsCollection addPalette:paletteSize:paletteX:paletteXSize:]::defaultPaletteX defaultCount:3];
   for (j = 80; j != 82; ++j)
   {
     v12 = +[OITSUColor colorWithSystemColorID:](OITSUColor, "colorWithSystemColorID:", [objc_opt_class() systemColorIdFromIndex:j]);

@@ -1,10 +1,10 @@
 @interface HUServiceDetailsRemoveItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUServiceDetailsRemoveItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v17[2] = *MEMORY[0x277D85DE8];
   if ([(HUServiceDetailsAbstractItem *)self isCamera])
@@ -36,12 +36,12 @@
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
   v8 = [v7 mutableCopy];
 
-  v9 = [(HUServiceDetailsAbstractItem *)self canShowAsIndividualTiles];
+  canShowAsIndividualTiles = [(HUServiceDetailsAbstractItem *)self canShowAsIndividualTiles];
   v10 = MEMORY[0x277D13FB8];
-  if (v9)
+  if (canShowAsIndividualTiles)
   {
-    v11 = [(HUServiceDetailsAbstractItem *)self isSensorService];
-    if ([(HUServiceDetailsAbstractItem *)self isContainedInAParent]&& !v11)
+    isSensorService = [(HUServiceDetailsAbstractItem *)self isSensorService];
+    if ([(HUServiceDetailsAbstractItem *)self isContainedInAParent]&& !isSensorService)
     {
       [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*v10];
     }

@@ -266,7 +266,7 @@
   v146.size.height = v72;
   if (CGRectIsEmpty(v146))
   {
-    v77 = [(CIPageCurlTransition *)self _CIPageCurlTransNoEmap];
+    _CIPageCurlTransNoEmap = [(CIPageCurlTransition *)self _CIPageCurlTransNoEmap];
     v128[0] = MEMORY[0x1E69E9820];
     v128[1] = 3221225472;
     v128[2] = __35__CIPageCurlTransition_outputImage__block_invoke;
@@ -308,12 +308,12 @@
     v131[8] = [MEMORY[0x1E696AD98] numberWithDouble:v112];
     v78 = [MEMORY[0x1E695DEC8] arrayWithObjects:v131 count:9];
     v79 = v128;
-    v80 = v77;
+    v80 = _CIPageCurlTransNoEmap;
   }
 
   else
   {
-    v81 = [(CIPageCurlTransition *)self _CIPageCurlTransition];
+    _CIPageCurlTransition = [(CIPageCurlTransition *)self _CIPageCurlTransition];
     v127[0] = MEMORY[0x1E69E9820];
     v127[1] = 3221225472;
     v127[2] = __35__CIPageCurlTransition_outputImage__block_invoke_2;
@@ -357,7 +357,7 @@
     v130[10] = v16;
     v78 = [MEMORY[0x1E695DEC8] arrayWithObjects:v130 count:11];
     v79 = v127;
-    v80 = v81;
+    v80 = _CIPageCurlTransition;
   }
 
   result = [v80 applyWithExtent:v79 roiCallback:v78 arguments:{v58, v59, v60, v61}];

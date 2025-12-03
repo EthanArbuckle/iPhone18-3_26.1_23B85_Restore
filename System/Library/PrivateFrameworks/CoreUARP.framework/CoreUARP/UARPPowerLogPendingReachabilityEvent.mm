@@ -1,39 +1,39 @@
 @interface UARPPowerLogPendingReachabilityEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)initModelNumber:(id)a3 uuid:(id)a4;
+- (id)initModelNumber:(id)number uuid:(id)uuid;
 @end
 
 @implementation UARPPowerLogPendingReachabilityEvent
 
-- (id)initModelNumber:(id)a3 uuid:(id)a4
+- (id)initModelNumber:(id)number uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  uuidCopy = uuid;
   v12.receiver = self;
   v12.super_class = UARPPowerLogPendingReachabilityEvent;
   v8 = [(UARPPowerLogPendingReachabilityEvent *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [numberCopy copy];
     modelNumber = v8->_modelNumber;
     v8->_modelNumber = v9;
 
-    objc_storeStrong(&v8->_uuid, a4);
+    objc_storeStrong(&v8->_uuid, uuid);
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     uuid = self->_uuid;
-    v6 = [v4 uuid];
-    v7 = [(NSUUID *)uuid isEqual:v6];
+    uuid = [equalCopy uuid];
+    v7 = [(NSUUID *)uuid isEqual:uuid];
   }
 
   else

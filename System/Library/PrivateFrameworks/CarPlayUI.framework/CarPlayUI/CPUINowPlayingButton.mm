@@ -1,7 +1,7 @@
 @interface CPUINowPlayingButton
 - (CGSize)intrinsicContentSize;
 - (CPUINowPlayingButton)init;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)updateConfiguration;
 @end
 
@@ -39,17 +39,17 @@
 {
   if (([(CPUINowPlayingButton *)self isHighlighted]& 1) != 0 || ([(CPUINowPlayingButton *)self isSelected]& 1) != 0)
   {
-    v3 = 1;
+    isFocused = 1;
   }
 
   else
   {
-    v3 = [(CPUINowPlayingButton *)self isFocused];
+    isFocused = [(CPUINowPlayingButton *)self isFocused];
   }
 
   if (_UISolariumEnabled())
   {
-    if (v3)
+    if (isFocused)
     {
       [MEMORY[0x277D75230] _tintedGlassButtonConfiguration];
     }
@@ -58,15 +58,15 @@
     {
       [MEMORY[0x277D75230] _glassButtonConfiguration];
     }
-    v4 = ;
+    tintedButtonConfiguration = ;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D75230] tintedButtonConfiguration];
+    tintedButtonConfiguration = [MEMORY[0x277D75230] tintedButtonConfiguration];
   }
 
-  v5 = v4;
+  v5 = tintedButtonConfiguration;
   v6 = [MEMORY[0x277D755B8] _systemImageNamed:@"apple.nowplaying"];
   [v5 setImage:v6];
 
@@ -77,10 +77,10 @@
   v10[1] = 3221225472;
   v10[2] = __43__CPUINowPlayingButton_updateConfiguration__block_invoke;
   v10[3] = &__block_descriptor_33_e26___UIColor_16__0__UIColor_8l;
-  v11 = v3;
+  v11 = isFocused;
   [v5 setImageColorTransformer:v10];
-  v8 = [MEMORY[0x277D751C0] clearConfiguration];
-  if (v3)
+  clearConfiguration = [MEMORY[0x277D751C0] clearConfiguration];
+  if (isFocused)
   {
     [MEMORY[0x277D75348] _carSystemFocusColor];
   }
@@ -90,9 +90,9 @@
     [MEMORY[0x277D75348] clearColor];
   }
   v9 = ;
-  [v8 setBackgroundColor:v9];
+  [clearConfiguration setBackgroundColor:v9];
 
-  [v5 setBackground:v8];
+  [v5 setBackground:clearConfiguration];
   [v5 setCornerStyle:4];
   [v5 setAutomaticallyUpdateForSelection:0];
   [(CPUINowPlayingButton *)self setConfiguration:v5];
@@ -114,15 +114,15 @@ id __43__CPUINowPlayingButton_updateConfiguration__block_invoke(uint64_t a1)
   return v1;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = CPUINowPlayingButton;
-  [(CPUINowPlayingButton *)&v10 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
-  v8 = v7;
-  if (v7 == self)
+  [(CPUINowPlayingButton *)&v10 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  v8 = nextFocusedItem;
+  if (nextFocusedItem == self)
   {
 
 LABEL_5:
@@ -130,9 +130,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [v6 previouslyFocusedItem];
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-  if (v9 == self)
+  if (previouslyFocusedItem == self)
   {
     goto LABEL_5;
   }

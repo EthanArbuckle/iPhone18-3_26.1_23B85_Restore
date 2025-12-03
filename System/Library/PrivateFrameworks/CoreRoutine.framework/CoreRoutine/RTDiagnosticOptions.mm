@@ -1,26 +1,26 @@
 @interface RTDiagnosticOptions
-+ (id)RTDiagnosticOptionsMaskToString:(unint64_t)a3;
-- (RTDiagnosticOptions)initWithCoder:(id)a3;
-- (RTDiagnosticOptions)initWithOptionsMask:(unint64_t)a3;
++ (id)RTDiagnosticOptionsMaskToString:(unint64_t)string;
+- (RTDiagnosticOptions)initWithCoder:(id)coder;
+- (RTDiagnosticOptions)initWithOptionsMask:(unint64_t)mask;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMask:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMask:(unint64_t)mask;
 @end
 
 @implementation RTDiagnosticOptions
 
-+ (id)RTDiagnosticOptionsMaskToString:(unint64_t)a3
++ (id)RTDiagnosticOptionsMaskToString:(unint64_t)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = v4;
-  if (v3)
+  stringCopy = string;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = array;
+  if (stringCopy)
   {
-    [v4 addObject:@"CoreRoutine"];
-    if ((v3 & 2) == 0)
+    [array addObject:@"CoreRoutine"];
+    if ((stringCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((stringCopy & 4) == 0)
       {
         goto LABEL_5;
       }
@@ -29,13 +29,13 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((stringCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"Location Workout Studies"];
-  if ((v3 & 4) != 0)
+  if ((stringCopy & 4) != 0)
   {
 LABEL_4:
     [v5 addObject:@"Location Monitoring Studies"];
@@ -47,42 +47,42 @@ LABEL_5:
   return v6;
 }
 
-- (RTDiagnosticOptions)initWithOptionsMask:(unint64_t)a3
+- (RTDiagnosticOptions)initWithOptionsMask:(unint64_t)mask
 {
   v5.receiver = self;
   v5.super_class = RTDiagnosticOptions;
   result = [(RTDiagnosticOptions *)&v5 init];
   if (result)
   {
-    result->_optionsMask = a3;
+    result->_optionsMask = mask;
   }
 
   return result;
 }
 
-- (void)setMask:(unint64_t)a3
+- (void)setMask:(unint64_t)mask
 {
-  v4 = [(RTDiagnosticOptions *)self optionsMask]| a3;
+  v4 = [(RTDiagnosticOptions *)self optionsMask]| mask;
 
   [(RTDiagnosticOptions *)self setOptionsMask:v4];
 }
 
-- (RTDiagnosticOptions)initWithCoder:(id)a3
+- (RTDiagnosticOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"optionsMask"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"optionsMask"];
 
   v6 = -[RTDiagnosticOptions initWithOptionsMask:](self, "initWithOptionsMask:", [v5 unsignedIntegerValue]);
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x1E696AD98];
   optionsMask = self->_optionsMask;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithUnsignedInteger:optionsMask];
-  [v5 encodeObject:v6 forKey:@"optionsMask"];
+  [coderCopy encodeObject:v6 forKey:@"optionsMask"];
 }
 
 - (id)description

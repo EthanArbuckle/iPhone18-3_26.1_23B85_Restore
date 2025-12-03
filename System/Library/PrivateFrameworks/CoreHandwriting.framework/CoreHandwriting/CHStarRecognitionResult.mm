@@ -1,22 +1,22 @@
 @interface CHStarRecognitionResult
 - (CGPoint)center;
 - (CGSize)size;
-- (CHStarRecognitionResult)initWithCoder:(id)a3;
-- (CHStarRecognitionResult)initWithString:(id)a3 score:(double)a4 rotation:(double)a5 center:(CGPoint)a6 size:(CGSize)a7;
-- (void)encodeWithCoder:(id)a3;
+- (CHStarRecognitionResult)initWithCoder:(id)coder;
+- (CHStarRecognitionResult)initWithString:(id)string score:(double)score rotation:(double)rotation center:(CGPoint)center size:(CGSize)size;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHStarRecognitionResult
 
-- (CHStarRecognitionResult)initWithString:(id)a3 score:(double)a4 rotation:(double)a5 center:(CGPoint)a6 size:(CGSize)a7
+- (CHStarRecognitionResult)initWithString:(id)string score:(double)score rotation:(double)rotation center:(CGPoint)center size:(CGSize)size
 {
-  height = a7.height;
-  width = a7.width;
-  y = a6.y;
-  x = a6.x;
+  height = size.height;
+  width = size.width;
+  y = center.y;
+  x = center.x;
   v12.receiver = self;
   v12.super_class = CHStarRecognitionResult;
-  result = [(CHSketchRecognitionResult *)&v12 initWithString:a3 score:a4 rotation:a5];
+  result = [(CHSketchRecognitionResult *)&v12 initWithString:string score:score rotation:rotation];
   if (result)
   {
     result->_center.x = x;
@@ -28,16 +28,16 @@
   return result;
 }
 
-- (CHStarRecognitionResult)initWithCoder:(id)a3
+- (CHStarRecognitionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CHStarRecognitionResult;
-  v5 = [(CHSketchRecognitionResult *)&v20 initWithCoder:v4];
+  v5 = [(CHSketchRecognitionResult *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"center", v8, v9);
+    v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"center", v8, v9);
     sub_1837A97C4(v10, v21);
     if ((v21[1] - v21[0]) == 8)
     {
@@ -56,7 +56,7 @@ LABEL_6:
         v5->_center.y = v12;
 
         v13 = objc_opt_class();
-        v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v14, v13, @"size", v15, v16);
+        v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v14, v13, @"size", v15, v16);
         v5->_size.width = sub_1837A9AC8(v17);
         v5->_size.height = v18;
 
@@ -73,17 +73,17 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = CHStarRecognitionResult;
-  v5 = [(CHSketchRecognitionResult *)&v25 encodeWithCoder:v4];
+  v5 = [(CHSketchRecognitionResult *)&v25 encodeWithCoder:coderCopy];
   v11 = sub_1837A9A94(self->_center.x, self->_center.y, v5, v6, v7, v8, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v4, v12, v11, @"center", v13, v14);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"center", v13, v14);
 
   v21 = sub_1837A9A94(self->_size.width, self->_size.height, v15, v16, v17, v18, v19, v20);
-  objc_msgSend_encodeObject_forKey_(v4, v22, v21, @"size", v23, v24);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v22, v21, @"size", v23, v24);
 }
 
 - (CGPoint)center

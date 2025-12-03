@@ -1,6 +1,6 @@
 @interface ACMDelegate
 - (ACMDelegate)init;
-- (void)appleConnect:(id)a3 authenticationDidEndWithResponse:(id)a4;
+- (void)appleConnect:(id)connect authenticationDidEndWithResponse:(id)response;
 @end
 
 @implementation ACMDelegate
@@ -19,11 +19,11 @@
   return v3;
 }
 
-- (void)appleConnect:(id)a3 authenticationDidEndWithResponse:(id)a4
+- (void)appleConnect:(id)connect authenticationDidEndWithResponse:(id)response
 {
-  if ([a4 error])
+  if ([response error])
   {
-    NSLog(&cfstr_Authentication.isa, [a4 error]);
+    NSLog(&cfstr_Authentication.isa, [response error]);
     v6 = 0;
   }
 
@@ -31,23 +31,23 @@
   {
     v7 = *MEMORY[0x29EDB8ED8];
     Mutable = CFDataCreateMutable(*MEMORY[0x29EDB8ED8], 0);
-    v9 = [a4 userName];
-    v10 = [a4 token];
+    userName = [response userName];
+    token = [response token];
     v6 = CFDataCreateMutable(v7, 0);
-    v11 = [a4 userName];
-    Length = CFStringGetLength([a4 token]);
-    NSLog(&cfstr_Authentication_0.isa, v11, Length, [a4 token]);
-    v13 = CFStringCreateWithFormat(v7, 0, @"%@/%d", v9, 1205);
+    userName2 = [response userName];
+    Length = CFStringGetLength([response token]);
+    NSLog(&cfstr_Authentication_0.isa, userName2, Length, [response token]);
+    v13 = CFStringCreateWithFormat(v7, 0, @"%@/%d", userName, 1205);
     v14 = CFStringGetLength(v13);
     CFDataSetLength(v6, v14 + 1);
     MutableBytePtr = CFDataGetMutableBytePtr(v6);
     v16 = CFDataGetLength(v6);
     CFStringGetCString(v13, MutableBytePtr, v16, 0x8000100u);
-    v17 = CFStringGetLength(v10);
+    v17 = CFStringGetLength(token);
     CFDataSetLength(Mutable, v17 + 1);
     v18 = CFDataGetMutableBytePtr(Mutable);
     v19 = CFDataGetLength(Mutable);
-    CFStringGetCString(v10, v18, v19, 0x8000100u);
+    CFStringGetCString(token, v18, v19, 0x8000100u);
     BytePtr = CFDataGetBytePtr(Mutable);
     v21 = CFDataGetLength(Mutable);
     CFDataAppendBytes(v6, BytePtr, v21 - 1);
@@ -57,8 +57,8 @@
     CFRelease(Mutable);
   }
 
-  v23 = [(ACMDelegate *)self copyTicketCompletion];
-  v23[2](v23, v6, [a4 error]);
+  copyTicketCompletion = [(ACMDelegate *)self copyTicketCompletion];
+  copyTicketCompletion[2](copyTicketCompletion, v6, [response error]);
   if (v6)
   {
 

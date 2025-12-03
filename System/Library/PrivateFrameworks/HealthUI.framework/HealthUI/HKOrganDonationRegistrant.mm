@@ -1,107 +1,107 @@
 @interface HKOrganDonationRegistrant
-+ (BOOL)_isNumericStringValid:(id)a3 withLength:(int64_t)a4;
-+ (HKOrganDonationRegistrant)organDonationRegistrantWithDemographicsInformation:(id)a3;
-+ (HKOrganDonationRegistrant)organDonationRegistrantWithJSONDictionary:(id)a3;
++ (BOOL)_isNumericStringValid:(id)valid withLength:(int64_t)length;
++ (HKOrganDonationRegistrant)organDonationRegistrantWithDemographicsInformation:(id)information;
++ (HKOrganDonationRegistrant)organDonationRegistrantWithJSONDictionary:(id)dictionary;
 + (id)_importNumberFormatter;
-+ (id)convertLocalizedNumericStringToLatin:(id)a3 withNumberFormatter:(id)a4;
++ (id)convertLocalizedNumericStringToLatin:(id)latin withNumberFormatter:(id)formatter;
 + (id)exportDateFormatter;
 + (id)ssnNumberFormatter;
 + (id)zipcodeNumberFormatter;
 + (void)_loadStateInformationIfNeeded;
-- (BOOL)isFieldValid:(int64_t)a3;
+- (BOOL)isFieldValid:(int64_t)valid;
 - (BOOL)isRegistrantValid;
 - (HKOrganDonationRegistrant)init;
-- (HKOrganDonationRegistrant)initWithCoder:(id)a3;
+- (HKOrganDonationRegistrant)initWithCoder:(id)coder;
 - (HKOrganDonationRegistrantDelegate)delegate;
 - (NSNumber)age;
 - (id)_createDateOfBirthEntryItem;
 - (id)_stateChoiceDisplayNames;
 - (id)_stateChoiceValues;
 - (id)_todayBirthdayDateComponents;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dataEntryItemForRegistrantField:(int64_t)a3;
-- (id)dataEntryItemsValidOnly:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dataEntryItemForRegistrantField:(int64_t)field;
+- (id)dataEntryItemsValidOnly:(BOOL)only;
 - (id)jsonDictionaryRepresentation;
-- (void)_addDataEntryItemIntoArray:(id)a3 validOnly:(BOOL)a4 forField:(int64_t)a5;
-- (void)dataEntryItemDidUpdateValue:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_addDataEntryItemIntoArray:(id)array validOnly:(BOOL)only forField:(int64_t)field;
+- (void)dataEntryItemDidUpdateValue:(id)value;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKOrganDonationRegistrant
 
-+ (HKOrganDonationRegistrant)organDonationRegistrantWithJSONDictionary:(id)a3
++ (HKOrganDonationRegistrant)organDonationRegistrantWithJSONDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(HKOrganDonationRegistrant);
-  v5 = [v3 objectForKeyedSubscript:@"firstname"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"firstname"];
   [(HKOrganDonationRegistrant *)v4 setFirstname:v5];
 
-  v6 = [v3 objectForKeyedSubscript:@"middlename"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"middlename"];
   [(HKOrganDonationRegistrant *)v4 setMiddlename:v6];
 
-  v7 = [v3 objectForKeyedSubscript:@"lastname"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"lastname"];
   [(HKOrganDonationRegistrant *)v4 setLastname:v7];
 
-  v8 = [v3 objectForKeyedSubscript:@"dob"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"dob"];
   [(HKOrganDonationRegistrant *)v4 setDob:v8];
 
-  v9 = [v3 objectForKeyedSubscript:@"gender"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"gender"];
   [(HKOrganDonationRegistrant *)v4 setSex:v9];
 
-  v10 = [v3 objectForKeyedSubscript:@"email"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"email"];
   [(HKOrganDonationRegistrant *)v4 setEmail:v10];
 
-  v11 = [v3 objectForKeyedSubscript:@"address1"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"address1"];
   [(HKOrganDonationRegistrant *)v4 setAddress1:v11];
 
-  v12 = [v3 objectForKeyedSubscript:@"address2"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"address2"];
   [(HKOrganDonationRegistrant *)v4 setAddress2:v12];
 
-  v13 = [v3 objectForKeyedSubscript:@"city"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"city"];
   [(HKOrganDonationRegistrant *)v4 setCity:v13];
 
-  v14 = [v3 objectForKeyedSubscript:@"state"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"state"];
   [(HKOrganDonationRegistrant *)v4 setState:v14];
 
-  v15 = [v3 objectForKeyedSubscript:@"zip"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"zip"];
   [(HKOrganDonationRegistrant *)v4 setZip:v15];
 
-  v16 = [v3 objectForKeyedSubscript:@"last4SSN"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"last4SSN"];
 
   [(HKOrganDonationRegistrant *)v4 setLast4SSN:v16];
 
   return v4;
 }
 
-+ (HKOrganDonationRegistrant)organDonationRegistrantWithDemographicsInformation:(id)a3
++ (HKOrganDonationRegistrant)organDonationRegistrantWithDemographicsInformation:(id)information
 {
   v84 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  informationCopy = information;
   v5 = objc_alloc_init(HKOrganDonationRegistrant);
-  if (!v4)
+  if (!informationCopy)
   {
     goto LABEL_60;
   }
 
-  v66 = a1;
-  v6 = [v4 firstName];
-  [(HKOrganDonationRegistrant *)v5 setFirstname:v6];
+  selfCopy = self;
+  firstName = [informationCopy firstName];
+  [(HKOrganDonationRegistrant *)v5 setFirstname:firstName];
 
-  v7 = [v4 middleName];
-  [(HKOrganDonationRegistrant *)v5 setMiddlename:v7];
+  middleName = [informationCopy middleName];
+  [(HKOrganDonationRegistrant *)v5 setMiddlename:middleName];
 
-  v8 = [v4 lastName];
-  [(HKOrganDonationRegistrant *)v5 setLastname:v8];
+  lastName = [informationCopy lastName];
+  [(HKOrganDonationRegistrant *)v5 setLastname:lastName];
 
   v80 = 0u;
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  obj = [v4 postalAddresses];
+  obj = [informationCopy postalAddresses];
   v9 = [obj countByEnumeratingWithState:&v78 objects:v83 count:16];
   v10 = MEMORY[0x1E695CB60];
   v67 = v5;
-  v68 = v4;
+  v68 = informationCopy;
   if (!v9)
   {
     v28 = 0;
@@ -112,7 +112,7 @@ LABEL_39:
   }
 
   v11 = v9;
-  v12 = 0;
+  value3 = 0;
   v72 = *v79;
   v69 = *MEMORY[0x1E695D978];
   v13 = *MEMORY[0x1E695CB60];
@@ -127,43 +127,43 @@ LABEL_39:
       }
 
       v16 = *(*(&v78 + 1) + 8 * i);
-      v17 = [v16 value];
-      v18 = [v16 label];
-      v19 = [v17 ISOCountryCode];
-      v20 = [v19 length];
+      value = [v16 value];
+      label = [v16 label];
+      iSOCountryCode = [value ISOCountryCode];
+      v20 = [iSOCountryCode length];
 
       if (v20)
       {
-        v21 = [v17 ISOCountryCode];
-        v22 = [v21 isEqualToString:@"us"];
+        iSOCountryCode2 = [value ISOCountryCode];
+        v22 = [iSOCountryCode2 isEqualToString:@"us"];
       }
 
       else
       {
-        v21 = [v17 country];
-        v23 = [MEMORY[0x1E695DF58] currentLocale];
-        [v23 displayNameForKey:v69 value:@"us"];
-        v25 = v24 = v12;
+        iSOCountryCode2 = [value country];
+        currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+        [currentLocale displayNameForKey:v69 value:@"us"];
+        v25 = v24 = value3;
 
-        v22 = [v21 isEqualToString:v25];
-        v12 = v24;
+        v22 = [iSOCountryCode2 isEqualToString:v25];
+        value3 = v24;
         v14 = obj;
       }
 
-      v26 = [v18 isEqualToString:v13];
-      if (!v22 || (v26 & 1) != 0 || v12)
+      v26 = [label isEqualToString:v13];
+      if (!v22 || (v26 & 1) != 0 || value3)
       {
         if ((v22 & v26) == 1)
         {
-          v27 = [v16 value];
+          value2 = [v16 value];
 
-          v12 = v27;
+          value3 = value2;
         }
       }
 
       else
       {
-        v12 = [v16 value];
+        value3 = [v16 value];
       }
     }
 
@@ -172,19 +172,19 @@ LABEL_39:
 
   while (v11);
 
-  if (v12)
+  if (value3)
   {
-    v28 = v12;
-    v29 = [v12 street];
-    v30 = [v29 componentsSeparatedByString:@"\n"];
+    v28 = value3;
+    street = [value3 street];
+    v30 = [street componentsSeparatedByString:@"\n"];
 
     v31 = [v30 count] == 1;
-    v4 = v68;
+    informationCopy = v68;
     v10 = MEMORY[0x1E695CB60];
     if (v31)
     {
-      v32 = [v30 lastObject];
-      [(HKOrganDonationRegistrant *)v67 setAddress1:v32];
+      lastObject = [v30 lastObject];
+      [(HKOrganDonationRegistrant *)v67 setAddress1:lastObject];
     }
 
     else
@@ -192,47 +192,47 @@ LABEL_39:
       if ([v30 count] < 2)
       {
 LABEL_27:
-        v34 = [v12 city];
-        [(HKOrganDonationRegistrant *)v67 setCity:v34];
+        city = [value3 city];
+        [(HKOrganDonationRegistrant *)v67 setCity:city];
 
-        v35 = [v12 postalCode];
-        if ([v35 length] < 5)
+        postalCode = [value3 postalCode];
+        if ([postalCode length] < 5)
         {
-          v36 = v35;
+          v36 = postalCode;
         }
 
         else
         {
-          v36 = [v35 substringToIndex:5];
+          v36 = [postalCode substringToIndex:5];
 
-          if ([v66 _isNumericStringValid:v36 withLength:5])
+          if ([selfCopy _isNumericStringValid:v36 withLength:5])
           {
             [(HKOrganDonationRegistrant *)v67 setZip:v36];
           }
         }
 
-        v37 = [v12 state];
-        v38 = [v37 uppercaseString];
+        state = [value3 state];
+        uppercaseString = [state uppercaseString];
 
-        if ([v38 length] == 2)
+        if ([uppercaseString length] == 2)
         {
-          [v66 _loadStateInformationIfNeeded];
-          if ([_sortedStateAbbreviations indexOfObject:v38] != 0x7FFFFFFFFFFFFFFFLL)
+          [selfCopy _loadStateInformationIfNeeded];
+          if ([_sortedStateAbbreviations indexOfObject:uppercaseString] != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [(HKOrganDonationRegistrant *)v67 setState:v38];
+            [(HKOrganDonationRegistrant *)v67 setState:uppercaseString];
           }
         }
 
-        else if ([v38 length])
+        else if ([uppercaseString length])
         {
-          [v66 _loadStateInformationIfNeeded];
-          v39 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF LIKE[c] %@", v38];
+          [selfCopy _loadStateInformationIfNeeded];
+          v39 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF LIKE[c] %@", uppercaseString];
           v40 = [_sortedStateNames filteredArrayUsingPredicate:v39];
-          v41 = [v40 firstObject];
+          firstObject = [v40 firstObject];
 
-          if (v41)
+          if (firstObject)
           {
-            v42 = [_sortedStateNames indexOfObject:v41];
+            v42 = [_sortedStateNames indexOfObject:firstObject];
             v43 = [_sortedStateAbbreviations objectAtIndexedSubscript:v42];
             [(HKOrganDonationRegistrant *)v67 setState:v43];
           }
@@ -241,18 +241,18 @@ LABEL_27:
         goto LABEL_39;
       }
 
-      v33 = [v30 firstObject];
-      [(HKOrganDonationRegistrant *)v67 setAddress1:v33];
+      firstObject2 = [v30 firstObject];
+      [(HKOrganDonationRegistrant *)v67 setAddress1:firstObject2];
 
-      v32 = [v30 lastObject];
-      [(HKOrganDonationRegistrant *)v67 setAddress2:v32];
+      lastObject = [v30 lastObject];
+      [(HKOrganDonationRegistrant *)v67 setAddress2:lastObject];
     }
 
     goto LABEL_27;
   }
 
   v28 = 0;
-  v4 = v68;
+  informationCopy = v68;
   v10 = MEMORY[0x1E695CB60];
 LABEL_40:
   obja = v28;
@@ -260,12 +260,12 @@ LABEL_40:
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v44 = [v4 emailAddresses];
-  v45 = [v44 countByEnumeratingWithState:&v74 objects:v82 count:16];
+  emailAddresses = [informationCopy emailAddresses];
+  v45 = [emailAddresses countByEnumeratingWithState:&v74 objects:v82 count:16];
   if (v45)
   {
     v46 = v45;
-    v73 = 0;
+    value6 = 0;
     v47 = *v75;
     v48 = *v10;
     while (2)
@@ -274,34 +274,34 @@ LABEL_40:
       {
         if (*v75 != v47)
         {
-          objc_enumerationMutation(v44);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v50 = *(*(&v74 + 1) + 8 * j);
-        v51 = [v50 value];
-        v52 = [v51 rangeOfString:@"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2 options:{}$", 1025}];
+        value4 = [v50 value];
+        v52 = [value4 rangeOfString:@"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2 options:{}$", 1025}];
 
         if (v52 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v53 = [v50 label];
-          v54 = [v53 isEqualToString:v48];
+          label2 = [v50 label];
+          v54 = [label2 isEqualToString:v48];
 
           if (v54)
           {
-            v55 = [v50 value];
+            value5 = [v50 value];
 
-            v73 = v55;
+            value6 = value5;
             goto LABEL_54;
           }
 
-          if (!v73)
+          if (!value6)
           {
-            v73 = [v50 value];
+            value6 = [v50 value];
           }
         }
       }
 
-      v46 = [v44 countByEnumeratingWithState:&v74 objects:v82 count:16];
+      v46 = [emailAddresses countByEnumeratingWithState:&v74 objects:v82 count:16];
       if (v46)
       {
         continue;
@@ -313,37 +313,37 @@ LABEL_40:
 
   else
   {
-    v73 = 0;
+    value6 = 0;
   }
 
 LABEL_54:
 
   v5 = v67;
-  [(HKOrganDonationRegistrant *)v67 setEmail:v73];
-  v4 = v68;
-  v56 = [v68 dateOfBirthComponents];
+  [(HKOrganDonationRegistrant *)v67 setEmail:value6];
+  informationCopy = v68;
+  dateOfBirthComponents = [v68 dateOfBirthComponents];
 
-  if (v56)
+  if (dateOfBirthComponents)
   {
     v57 = +[HKSimpleDataEntryDateItem gregorianGMTCalendar];
-    v58 = [v68 dateOfBirthComponents];
-    v59 = [v57 dateFromComponents:v58];
+    dateOfBirthComponents2 = [v68 dateOfBirthComponents];
+    v59 = [v57 dateFromComponents:dateOfBirthComponents2];
 
-    v60 = [v66 exportDateFormatter];
-    v61 = [v60 stringFromDate:v59];
+    exportDateFormatter = [selfCopy exportDateFormatter];
+    v61 = [exportDateFormatter stringFromDate:v59];
     [(HKOrganDonationRegistrant *)v67 setDob:v61];
   }
 
-  v62 = [v68 biologicalSexObject];
+  biologicalSexObject = [v68 biologicalSexObject];
 
-  if (v62)
+  if (biologicalSexObject)
   {
-    v63 = [v68 biologicalSexObject];
-    v64 = [v63 biologicalSex];
+    biologicalSexObject2 = [v68 biologicalSexObject];
+    biologicalSex = [biologicalSexObject2 biologicalSex];
 
-    if ((v64 - 1) <= 2)
+    if ((biologicalSex - 1) <= 2)
     {
-      [(HKOrganDonationRegistrant *)v67 setSex:off_1E81BA1A0[v64 - 1]];
+      [(HKOrganDonationRegistrant *)v67 setSex:off_1E81BA1A0[biologicalSex - 1]];
     }
   }
 
@@ -369,59 +369,59 @@ LABEL_60:
   return v2;
 }
 
-- (HKOrganDonationRegistrant)initWithCoder:(id)a3
+- (HKOrganDonationRegistrant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = HKOrganDonationRegistrant;
   v5 = [(HKOrganDonationRegistrant *)&v31 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"firstname"];
+    v6 = [coderCopy decodeObjectForKey:@"firstname"];
     firstname = v5->_firstname;
     v5->_firstname = v6;
 
-    v8 = [v4 decodeObjectForKey:@"middlename"];
+    v8 = [coderCopy decodeObjectForKey:@"middlename"];
     middlename = v5->_middlename;
     v5->_middlename = v8;
 
-    v10 = [v4 decodeObjectForKey:@"lastname"];
+    v10 = [coderCopy decodeObjectForKey:@"lastname"];
     lastname = v5->_lastname;
     v5->_lastname = v10;
 
-    v12 = [v4 decodeObjectForKey:@"dob"];
+    v12 = [coderCopy decodeObjectForKey:@"dob"];
     dob = v5->_dob;
     v5->_dob = v12;
 
-    v14 = [v4 decodeObjectForKey:@"sex"];
+    v14 = [coderCopy decodeObjectForKey:@"sex"];
     sex = v5->_sex;
     v5->_sex = v14;
 
-    v16 = [v4 decodeObjectForKey:@"email"];
+    v16 = [coderCopy decodeObjectForKey:@"email"];
     email = v5->_email;
     v5->_email = v16;
 
-    v18 = [v4 decodeObjectForKey:@"address1"];
+    v18 = [coderCopy decodeObjectForKey:@"address1"];
     address1 = v5->_address1;
     v5->_address1 = v18;
 
-    v20 = [v4 decodeObjectForKey:@"address2"];
+    v20 = [coderCopy decodeObjectForKey:@"address2"];
     address2 = v5->_address2;
     v5->_address2 = v20;
 
-    v22 = [v4 decodeObjectForKey:@"city"];
+    v22 = [coderCopy decodeObjectForKey:@"city"];
     city = v5->_city;
     v5->_city = v22;
 
-    v24 = [v4 decodeObjectForKey:@"state"];
+    v24 = [coderCopy decodeObjectForKey:@"state"];
     state = v5->_state;
     v5->_state = v24;
 
-    v26 = [v4 decodeObjectForKey:@"zip"];
+    v26 = [coderCopy decodeObjectForKey:@"zip"];
     zip = v5->_zip;
     v5->_zip = v26;
 
-    v28 = [v4 decodeObjectForKey:@"last4SSN"];
+    v28 = [coderCopy decodeObjectForKey:@"last4SSN"];
     last4SSN = v5->_last4SSN;
     v5->_last4SSN = v28;
   }
@@ -429,72 +429,72 @@ LABEL_60:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   firstname = self->_firstname;
-  v5 = a3;
-  [v5 encodeObject:firstname forKey:@"firstname"];
-  [v5 encodeObject:self->_middlename forKey:@"middlename"];
-  [v5 encodeObject:self->_lastname forKey:@"lastname"];
-  [v5 encodeObject:self->_dob forKey:@"dob"];
-  [v5 encodeObject:self->_sex forKey:@"sex"];
-  [v5 encodeObject:self->_email forKey:@"email"];
-  [v5 encodeObject:self->_address1 forKey:@"address1"];
-  [v5 encodeObject:self->_address2 forKey:@"address2"];
-  [v5 encodeObject:self->_city forKey:@"city"];
-  [v5 encodeObject:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_zip forKey:@"zip"];
-  [v5 encodeObject:self->_last4SSN forKey:@"last4SSN"];
+  coderCopy = coder;
+  [coderCopy encodeObject:firstname forKey:@"firstname"];
+  [coderCopy encodeObject:self->_middlename forKey:@"middlename"];
+  [coderCopy encodeObject:self->_lastname forKey:@"lastname"];
+  [coderCopy encodeObject:self->_dob forKey:@"dob"];
+  [coderCopy encodeObject:self->_sex forKey:@"sex"];
+  [coderCopy encodeObject:self->_email forKey:@"email"];
+  [coderCopy encodeObject:self->_address1 forKey:@"address1"];
+  [coderCopy encodeObject:self->_address2 forKey:@"address2"];
+  [coderCopy encodeObject:self->_city forKey:@"city"];
+  [coderCopy encodeObject:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_zip forKey:@"zip"];
+  [coderCopy encodeObject:self->_last4SSN forKey:@"last4SSN"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[HKOrganDonationRegistrant allocWithZone:](HKOrganDonationRegistrant init];
-  v6 = [(NSString *)self->_firstname copyWithZone:a3];
+  v6 = [(NSString *)self->_firstname copyWithZone:zone];
   firstname = v5->_firstname;
   v5->_firstname = v6;
 
-  v8 = [(NSString *)self->_middlename copyWithZone:a3];
+  v8 = [(NSString *)self->_middlename copyWithZone:zone];
   middlename = v5->_middlename;
   v5->_middlename = v8;
 
-  v10 = [(NSString *)self->_lastname copyWithZone:a3];
+  v10 = [(NSString *)self->_lastname copyWithZone:zone];
   lastname = v5->_lastname;
   v5->_lastname = v10;
 
-  v12 = [(NSString *)self->_dob copyWithZone:a3];
+  v12 = [(NSString *)self->_dob copyWithZone:zone];
   dob = v5->_dob;
   v5->_dob = v12;
 
-  v14 = [(NSString *)self->_sex copyWithZone:a3];
+  v14 = [(NSString *)self->_sex copyWithZone:zone];
   sex = v5->_sex;
   v5->_sex = v14;
 
-  v16 = [(NSString *)self->_email copyWithZone:a3];
+  v16 = [(NSString *)self->_email copyWithZone:zone];
   email = v5->_email;
   v5->_email = v16;
 
-  v18 = [(NSString *)self->_address1 copyWithZone:a3];
+  v18 = [(NSString *)self->_address1 copyWithZone:zone];
   address1 = v5->_address1;
   v5->_address1 = v18;
 
-  v20 = [(NSString *)self->_address2 copyWithZone:a3];
+  v20 = [(NSString *)self->_address2 copyWithZone:zone];
   address2 = v5->_address2;
   v5->_address2 = v20;
 
-  v22 = [(NSString *)self->_city copyWithZone:a3];
+  v22 = [(NSString *)self->_city copyWithZone:zone];
   city = v5->_city;
   v5->_city = v22;
 
-  v24 = [(NSString *)self->_state copyWithZone:a3];
+  v24 = [(NSString *)self->_state copyWithZone:zone];
   state = v5->_state;
   v5->_state = v24;
 
-  v26 = [(NSString *)self->_zip copyWithZone:a3];
+  v26 = [(NSString *)self->_zip copyWithZone:zone];
   zip = v5->_zip;
   v5->_zip = v26;
 
-  v28 = [(NSString *)self->_last4SSN copyWithZone:a3];
+  v28 = [(NSString *)self->_last4SSN copyWithZone:zone];
   last4SSN = v5->_last4SSN;
   v5->_last4SSN = v28;
 
@@ -526,8 +526,8 @@ LABEL_60:
   email = self->_email;
   if (email)
   {
-    v9 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v10 = [(NSString *)email stringByTrimmingCharactersInSet:v9];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v10 = [(NSString *)email stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     [v4 setObject:v10 forKey:@"email"];
   }
 
@@ -571,8 +571,8 @@ LABEL_60:
   {
     v17 = objc_opt_class();
     zip = self->_zip;
-    v19 = [objc_opt_class() zipcodeNumberFormatter];
-    v20 = [v17 convertLocalizedNumericStringToLatin:zip withNumberFormatter:v19];
+    zipcodeNumberFormatter = [objc_opt_class() zipcodeNumberFormatter];
+    v20 = [v17 convertLocalizedNumericStringToLatin:zip withNumberFormatter:zipcodeNumberFormatter];
 
     [v4 setObject:v20 forKey:@"zip"];
   }
@@ -581,8 +581,8 @@ LABEL_60:
   {
     v21 = objc_opt_class();
     last4SSN = self->_last4SSN;
-    v23 = [objc_opt_class() ssnNumberFormatter];
-    v24 = [v21 convertLocalizedNumericStringToLatin:last4SSN withNumberFormatter:v23];
+    ssnNumberFormatter = [objc_opt_class() ssnNumberFormatter];
+    v24 = [v21 convertLocalizedNumericStringToLatin:last4SSN withNumberFormatter:ssnNumberFormatter];
 
     [v4 setObject:v24 forKey:@"last4SSN"];
   }
@@ -590,13 +590,13 @@ LABEL_60:
   return v4;
 }
 
-- (id)dataEntryItemsValidOnly:(BOOL)a3
+- (id)dataEntryItemsValidOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  v7 = [v6 isGivenNameFirst];
-  if (v7)
+  isGivenNameFirst = [v6 isGivenNameFirst];
+  if (isGivenNameFirst)
   {
     v8 = 0;
   }
@@ -606,7 +606,7 @@ LABEL_60:
     v8 = 2;
   }
 
-  if (v7)
+  if (isGivenNameFirst)
   {
     v9 = 2;
   }
@@ -616,74 +616,74 @@ LABEL_60:
     v9 = 0;
   }
 
-  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:v3 forField:v8];
-  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:v3 forField:1];
-  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:v3 forField:v9];
-  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:v3 forField:3];
-  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:v3 forField:12];
-  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:v3 forField:5];
-  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:v3 forField:7];
-  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:v3 forField:8];
-  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:v3 forField:9];
-  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:v3 forField:10];
-  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:v3 forField:11];
-  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:v3 forField:4];
+  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:onlyCopy forField:v8];
+  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:onlyCopy forField:1];
+  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:onlyCopy forField:v9];
+  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:onlyCopy forField:3];
+  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:onlyCopy forField:12];
+  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:onlyCopy forField:5];
+  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:onlyCopy forField:7];
+  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:onlyCopy forField:8];
+  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:onlyCopy forField:9];
+  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:onlyCopy forField:10];
+  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:onlyCopy forField:11];
+  [(HKOrganDonationRegistrant *)self _addDataEntryItemIntoArray:v5 validOnly:onlyCopy forField:4];
 
   return v5;
 }
 
-- (void)_addDataEntryItemIntoArray:(id)a3 validOnly:(BOOL)a4 forField:(int64_t)a5
+- (void)_addDataEntryItemIntoArray:(id)array validOnly:(BOOL)only forField:(int64_t)field
 {
-  v6 = a4;
-  v9 = a3;
-  if (!v6 || [(HKOrganDonationRegistrant *)self isFieldValid:a5])
+  onlyCopy = only;
+  arrayCopy = array;
+  if (!onlyCopy || [(HKOrganDonationRegistrant *)self isFieldValid:field])
   {
-    v8 = [(HKOrganDonationRegistrant *)self dataEntryItemForRegistrantField:a5];
-    [v9 addObject:v8];
+    v8 = [(HKOrganDonationRegistrant *)self dataEntryItemForRegistrantField:field];
+    [arrayCopy addObject:v8];
   }
 }
 
-- (id)dataEntryItemForRegistrantField:(int64_t)a3
+- (id)dataEntryItemForRegistrantField:(int64_t)field
 {
   v65[4] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  v6 = [(NSMutableDictionary *)self->_dataEntryItems objectForKeyedSubscript:v5];
-  if (!v6)
+  _createDateOfBirthEntryItem = [(NSMutableDictionary *)self->_dataEntryItems objectForKeyedSubscript:v5];
+  if (!_createDateOfBirthEntryItem)
   {
-    switch(a3)
+    switch(field)
     {
       case 0:
         v7 = [HKSimpleDataEntryPlainTextItem alloc];
         v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
         v9 = [v8 localizedStringForKey:@"OD_FIRST_NAME" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-        v10 = [(HKOrganDonationRegistrant *)self firstname];
-        v6 = [(HKSimpleDataEntryPlainTextItem *)v7 initWithTitle:v9 registrantModelKey:@"firstname" defaultText:v10 intention:0];
+        firstname = [(HKOrganDonationRegistrant *)self firstname];
+        _createDateOfBirthEntryItem = [(HKSimpleDataEntryPlainTextItem *)v7 initWithTitle:v9 registrantModelKey:@"firstname" defaultText:firstname intention:0];
 
-        v11 = self;
+        selfCopy12 = self;
         v12 = 0;
         goto LABEL_17;
       case 1:
         v40 = [HKSimpleDataEntryPlainTextItem alloc];
         v41 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
         v42 = [v41 localizedStringForKey:@"OD_MIDDLE_NAME" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-        v43 = [(HKOrganDonationRegistrant *)self middlename];
-        v6 = [(HKSimpleDataEntryPlainTextItem *)v40 initWithTitle:v42 registrantModelKey:@"middlename" defaultText:v43 intention:1];
+        middlename = [(HKOrganDonationRegistrant *)self middlename];
+        _createDateOfBirthEntryItem = [(HKSimpleDataEntryPlainTextItem *)v40 initWithTitle:v42 registrantModelKey:@"middlename" defaultText:middlename intention:1];
 
-        v11 = self;
+        selfCopy12 = self;
         v12 = 1;
         goto LABEL_17;
       case 2:
         v32 = [HKSimpleDataEntryPlainTextItem alloc];
         v33 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
         v34 = [v33 localizedStringForKey:@"OD_LAST_NAME" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-        v35 = [(HKOrganDonationRegistrant *)self lastname];
-        v6 = [(HKSimpleDataEntryPlainTextItem *)v32 initWithTitle:v34 registrantModelKey:@"lastname" defaultText:v35 intention:2];
+        lastname = [(HKOrganDonationRegistrant *)self lastname];
+        _createDateOfBirthEntryItem = [(HKSimpleDataEntryPlainTextItem *)v32 initWithTitle:v34 registrantModelKey:@"lastname" defaultText:lastname intention:2];
 
-        v11 = self;
+        selfCopy12 = self;
         v12 = 2;
         goto LABEL_17;
       case 3:
-        v6 = [(HKOrganDonationRegistrant *)self _createDateOfBirthEntryItem];
+        _createDateOfBirthEntryItem = [(HKOrganDonationRegistrant *)self _createDateOfBirthEntryItem];
         break;
       case 4:
         v17 = [HKSimpleDataEntryMultipleChoiceItem alloc];
@@ -706,66 +706,66 @@ LABEL_60:
         v64[3] = v21;
         v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:4];
         v23 = [(HKOrganDonationRegistrant *)self sex];
-        v6 = [(HKSimpleDataEntryMultipleChoiceItem *)v17 initWithTitle:v18 registrantModelKey:@"sex" choices:v59 choiceDisplayNames:v22 defaultChoice:v23];
+        _createDateOfBirthEntryItem = [(HKSimpleDataEntryMultipleChoiceItem *)v17 initWithTitle:v18 registrantModelKey:@"sex" choices:v59 choiceDisplayNames:v22 defaultChoice:v23];
 
-        v11 = self;
+        selfCopy12 = self;
         v12 = 4;
         goto LABEL_17;
       case 5:
         v44 = [HKSimpleDataEntryPlainTextItem alloc];
         v45 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
         v46 = [v45 localizedStringForKey:@"OD_EMAIL" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-        v47 = [(HKOrganDonationRegistrant *)self email];
-        v6 = [(HKSimpleDataEntryPlainTextItem *)v44 initWithTitle:v46 registrantModelKey:@"email" defaultText:v47 intention:3];
+        email = [(HKOrganDonationRegistrant *)self email];
+        _createDateOfBirthEntryItem = [(HKSimpleDataEntryPlainTextItem *)v44 initWithTitle:v46 registrantModelKey:@"email" defaultText:email intention:3];
 
-        v11 = self;
+        selfCopy12 = self;
         v12 = 5;
         goto LABEL_17;
       case 6:
-        v6 = [[HKOrganDonationAddressEntryItem alloc] initWithRegistrant:self];
-        v11 = self;
+        _createDateOfBirthEntryItem = [[HKOrganDonationAddressEntryItem alloc] initWithRegistrant:self];
+        selfCopy12 = self;
         v12 = 6;
         goto LABEL_17;
       case 7:
         v36 = [HKSimpleDataEntryPlainTextItem alloc];
         v37 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
         v38 = [v37 localizedStringForKey:@"OD_ADDRESS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-        v39 = [(HKOrganDonationRegistrant *)self address1];
-        v6 = [(HKSimpleDataEntryPlainTextItem *)v36 initWithTitle:v38 registrantModelKey:@"address1" defaultText:v39 intention:4];
+        address1 = [(HKOrganDonationRegistrant *)self address1];
+        _createDateOfBirthEntryItem = [(HKSimpleDataEntryPlainTextItem *)v36 initWithTitle:v38 registrantModelKey:@"address1" defaultText:address1 intention:4];
 
-        v11 = self;
+        selfCopy12 = self;
         v12 = 7;
         goto LABEL_17;
       case 8:
         v54 = [HKSimpleDataEntryPlainTextItem alloc];
         v55 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
         v56 = [v55 localizedStringForKey:@"OD_ADDRESS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-        v57 = [(HKOrganDonationRegistrant *)self address2];
-        v6 = [(HKSimpleDataEntryPlainTextItem *)v54 initWithTitle:v56 registrantModelKey:@"address2" defaultText:v57 intention:5];
+        address2 = [(HKOrganDonationRegistrant *)self address2];
+        _createDateOfBirthEntryItem = [(HKSimpleDataEntryPlainTextItem *)v54 initWithTitle:v56 registrantModelKey:@"address2" defaultText:address2 intention:5];
 
-        v11 = self;
+        selfCopy12 = self;
         v12 = 8;
         goto LABEL_17;
       case 9:
         v28 = [HKSimpleDataEntryPlainTextItem alloc];
         v29 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
         v30 = [v29 localizedStringForKey:@"OD_ADDRESS_CITY" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-        v31 = [(HKOrganDonationRegistrant *)self city];
-        v6 = [(HKSimpleDataEntryPlainTextItem *)v28 initWithTitle:v30 registrantModelKey:@"city" defaultText:v31 intention:6];
+        city = [(HKOrganDonationRegistrant *)self city];
+        _createDateOfBirthEntryItem = [(HKSimpleDataEntryPlainTextItem *)v28 initWithTitle:v30 registrantModelKey:@"city" defaultText:city intention:6];
 
-        v11 = self;
+        selfCopy12 = self;
         v12 = 9;
         goto LABEL_17;
       case 10:
         v48 = [HKSimpleDataEntryMultipleChoiceItem alloc];
         v49 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
         v50 = [v49 localizedStringForKey:@"OD_ADDRESS_STATE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-        v51 = [(HKOrganDonationRegistrant *)self _stateChoiceValues];
-        v52 = [(HKOrganDonationRegistrant *)self _stateChoiceDisplayNames];
-        v53 = [(HKOrganDonationRegistrant *)self state];
-        v6 = [(HKSimpleDataEntryMultipleChoiceItem *)v48 initWithTitle:v50 registrantModelKey:@"state" choices:v51 choiceDisplayNames:v52 defaultChoice:v53];
+        _stateChoiceValues = [(HKOrganDonationRegistrant *)self _stateChoiceValues];
+        _stateChoiceDisplayNames = [(HKOrganDonationRegistrant *)self _stateChoiceDisplayNames];
+        state = [(HKOrganDonationRegistrant *)self state];
+        _createDateOfBirthEntryItem = [(HKSimpleDataEntryMultipleChoiceItem *)v48 initWithTitle:v50 registrantModelKey:@"state" choices:_stateChoiceValues choiceDisplayNames:_stateChoiceDisplayNames defaultChoice:state];
 
-        v11 = self;
+        selfCopy12 = self;
         v12 = 10;
         goto LABEL_17;
       case 11:
@@ -773,47 +773,47 @@ LABEL_60:
         v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
         v15 = [v14 localizedStringForKey:@"OD_ADDRESS_ZIP" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
         v16 = [(HKOrganDonationRegistrant *)self zip];
-        v6 = [(HKSimpleDataEntryPlainTextItem *)v13 initWithTitle:v15 registrantModelKey:@"zip" defaultText:v16 intention:7];
+        _createDateOfBirthEntryItem = [(HKSimpleDataEntryPlainTextItem *)v13 initWithTitle:v15 registrantModelKey:@"zip" defaultText:v16 intention:7];
 
-        v11 = self;
+        selfCopy12 = self;
         v12 = 11;
         goto LABEL_17;
       case 12:
         v24 = [HKSimpleDataEntryPlainTextItem alloc];
         v25 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
         v26 = [v25 localizedStringForKey:@"OD_SSN" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-        v27 = [(HKOrganDonationRegistrant *)self last4SSN];
-        v6 = [(HKSimpleDataEntryPlainTextItem *)v24 initWithTitle:v26 registrantModelKey:@"last4SSN" defaultText:v27 intention:8];
+        last4SSN = [(HKOrganDonationRegistrant *)self last4SSN];
+        _createDateOfBirthEntryItem = [(HKSimpleDataEntryPlainTextItem *)v24 initWithTitle:v26 registrantModelKey:@"last4SSN" defaultText:last4SSN intention:8];
 
-        v11 = self;
+        selfCopy12 = self;
         v12 = 12;
 LABEL_17:
-        [(HKSimpleDataEntryItem *)v6 setPlaceholderType:[(HKOrganDonationRegistrant *)v11 _placeHolderTypeForField:v12]];
-        [(HKSimpleDataEntryItem *)v6 setDelegate:self];
+        [(HKSimpleDataEntryItem *)_createDateOfBirthEntryItem setPlaceholderType:[(HKOrganDonationRegistrant *)selfCopy12 _placeHolderTypeForField:v12]];
+        [(HKSimpleDataEntryItem *)_createDateOfBirthEntryItem setDelegate:self];
         break;
       default:
-        v6 = 0;
+        _createDateOfBirthEntryItem = 0;
         break;
     }
 
-    [(NSMutableDictionary *)self->_dataEntryItems setObject:v6 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->_dataEntryItems setObject:_createDateOfBirthEntryItem forKeyedSubscript:v5];
   }
 
-  return v6;
+  return _createDateOfBirthEntryItem;
 }
 
-- (BOOL)isFieldValid:(int64_t)a3
+- (BOOL)isFieldValid:(int64_t)valid
 {
   LOBYTE(email) = 1;
-  if (a3 <= 6)
+  if (valid <= 6)
   {
-    if (a3 > 2)
+    if (valid > 2)
     {
-      switch(a3)
+      switch(valid)
       {
         case 3:
-          v11 = [objc_opt_class() exportDateFormatter];
-          v12 = [v11 dateFromString:self->_dob];
+          exportDateFormatter = [objc_opt_class() exportDateFormatter];
+          v12 = [exportDateFormatter dateFromString:self->_dob];
           LOBYTE(email) = v12 != 0;
 
           break;
@@ -824,8 +824,8 @@ LABEL_17:
           email = self->_email;
           if (email)
           {
-            v6 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-            v7 = [(NSString *)email stringByTrimmingCharactersInSet:v6];
+            whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+            v7 = [(NSString *)email stringByTrimmingCharactersInSet:whitespaceCharacterSet];
             LOBYTE(email) = [v7 rangeOfString:@"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2 options:{}$", 1025}] != 0x7FFFFFFFFFFFFFFFLL;
           }
 
@@ -835,7 +835,7 @@ LABEL_17:
       return email;
     }
 
-    switch(a3)
+    switch(valid)
     {
       case 0:
         firstname = self->_firstname;
@@ -855,14 +855,14 @@ LABEL_28:
     return email;
   }
 
-  if (a3 <= 9)
+  if (valid <= 9)
   {
-    if (a3 == 7)
+    if (valid == 7)
     {
       firstname = self->_address1;
     }
 
-    else if (a3 == 8)
+    else if (valid == 8)
     {
       firstname = self->_address2;
     }
@@ -875,13 +875,13 @@ LABEL_28:
     goto LABEL_27;
   }
 
-  if (a3 == 10)
+  if (valid == 10)
   {
     v13 = [_sortedStateAbbreviations indexOfObject:self->_state] == 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_28;
   }
 
-  if (a3 == 11)
+  if (valid == 11)
   {
     if (self->_zip)
     {
@@ -896,7 +896,7 @@ LABEL_38:
     return email;
   }
 
-  if (a3 != 12)
+  if (valid != 12)
   {
     return email;
   }
@@ -928,17 +928,17 @@ LABEL_35:
 {
   if (self->_dob)
   {
-    v3 = [objc_opt_class() exportDateFormatter];
-    v4 = [v3 dateFromString:self->_dob];
+    exportDateFormatter = [objc_opt_class() exportDateFormatter];
+    v4 = [exportDateFormatter dateFromString:self->_dob];
 
     if (v4)
     {
       v5 = +[HKSimpleDataEntryDateItem gregorianGMTCalendar];
       v6 = [v5 hk_dateOfBirthDateComponentsWithDate:v4];
 
-      v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v8 = [(HKOrganDonationRegistrant *)self _todayBirthdayDateComponents];
-      v9 = [v7 components:4 fromDateComponents:v6 toDateComponents:v8 options:0];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      _todayBirthdayDateComponents = [(HKOrganDonationRegistrant *)self _todayBirthdayDateComponents];
+      v9 = [currentCalendar components:4 fromDateComponents:v6 toDateComponents:_todayBirthdayDateComponents options:0];
 
       v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v9, "year")}];
     }
@@ -972,8 +972,8 @@ LABEL_35:
 
     v7 = exportDateFormatter___dateFormatter;
     v8 = +[HKSimpleDataEntryDateItem gregorianGMTCalendar];
-    v9 = [v8 timeZone];
-    [v7 setTimeZone:v9];
+    timeZone = [v8 timeZone];
+    [v7 setTimeZone:timeZone];
 
     [exportDateFormatter___dateFormatter setDateFormat:@"MM/dd/yyyy"];
     v10 = exportDateFormatter___dateFormatter;
@@ -1046,26 +1046,26 @@ LABEL_35:
   return v2;
 }
 
-+ (BOOL)_isNumericStringValid:(id)a3 withLength:(int64_t)a4
++ (BOOL)_isNumericStringValid:(id)valid withLength:(int64_t)length
 {
-  v5 = [MEMORY[0x1E696AE88] localizedScannerWithString:a3];
-  v6 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  v5 = [MEMORY[0x1E696AE88] localizedScannerWithString:valid];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
   v10 = 0;
-  [v5 scanCharactersFromSet:v6 intoString:&v10];
+  [v5 scanCharactersFromSet:decimalDigitCharacterSet intoString:&v10];
   v7 = v10;
 
   v8 = [v7 length];
-  return v8 == a4;
+  return v8 == length;
 }
 
-+ (id)convertLocalizedNumericStringToLatin:(id)a3 withNumberFormatter:(id)a4
++ (id)convertLocalizedNumericStringToLatin:(id)latin withNumberFormatter:(id)formatter
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() _importNumberFormatter];
-  v8 = [v7 numberFromString:v6];
+  formatterCopy = formatter;
+  latinCopy = latin;
+  _importNumberFormatter = [objc_opt_class() _importNumberFormatter];
+  v8 = [_importNumberFormatter numberFromString:latinCopy];
 
-  v9 = [v5 stringFromNumber:v8];
+  v9 = [formatterCopy stringFromNumber:v8];
 
   return v9;
 }
@@ -1073,24 +1073,24 @@ LABEL_35:
 - (id)_todayBirthdayDateComponents
 {
   v2 = +[HKSimpleDataEntryDateItem gregorianGMTCalendar];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v2 hk_dateOfBirthDateComponentsWithDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [v2 hk_dateOfBirthDateComponentsWithDate:date];
 
   return v4;
 }
 
 - (id)_createDateOfBirthEntryItem
 {
-  v3 = [(HKOrganDonationRegistrant *)self _todayBirthdayDateComponents];
+  _todayBirthdayDateComponents = [(HKOrganDonationRegistrant *)self _todayBirthdayDateComponents];
   v4 = +[HKSimpleDataEntryDateItem gregorianGMTCalendar];
-  v18 = v3;
-  v5 = [v4 dateFromComponents:v3];
+  v18 = _todayBirthdayDateComponents;
+  v5 = [v4 dateFromComponents:_todayBirthdayDateComponents];
   v6 = [v4 dateByAddingUnit:4 value:-130 toDate:v5 options:0];
   v17 = [v4 dateByAddingUnit:4 value:-30 toDate:v5 options:0];
   if ([(NSString *)self->_dob length])
   {
-    v7 = [objc_opt_class() exportDateFormatter];
-    v8 = [v7 dateFromString:self->_dob];
+    exportDateFormatter = [objc_opt_class() exportDateFormatter];
+    v8 = [exportDateFormatter dateFromString:self->_dob];
   }
 
   else
@@ -1149,14 +1149,14 @@ LABEL_35:
     v6 = [v3 dictionaryWithContentsOfFile:v5];
 
     v32 = v6;
-    v7 = [v6 allKeys];
-    v33 = [MEMORY[0x1E695DF70] array];
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    allKeys = [v6 allKeys];
+    array = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    obj = v7;
+    obj = allKeys;
     v9 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v9)
     {
@@ -1176,8 +1176,8 @@ LABEL_35:
           v15 = [v32 objectForKeyedSubscript:v13];
           v16 = [v14 localizedStringForKey:v15 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-USState"];
 
-          [v33 addObject:v16];
-          [v8 setObject:v13 forKey:v16];
+          [array addObject:v16];
+          [dictionary setObject:v13 forKey:v16];
         }
 
         v10 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -1186,11 +1186,11 @@ LABEL_35:
       while (v10);
     }
 
-    v17 = [v33 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+    v17 = [array sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
     v18 = [v17 mutableCopy];
 
     [v18 insertObject:&stru_1F42FFBE0 atIndex:0];
-    v19 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -1210,7 +1210,7 @@ LABEL_35:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [v8 objectForKeyedSubscript:*(*(&v34 + 1) + 8 * j)];
+          v25 = [dictionary objectForKeyedSubscript:*(*(&v34 + 1) + 8 * j)];
           v26 = v25;
           if (v25)
           {
@@ -1222,7 +1222,7 @@ LABEL_35:
             v27 = &stru_1F42FFBE0;
           }
 
-          [v19 addObject:v27];
+          [array2 addObject:v27];
         }
 
         v22 = [v20 countByEnumeratingWithState:&v34 objects:v42 count:16];
@@ -1236,19 +1236,19 @@ LABEL_35:
     v29 = v20;
 
     v30 = _sortedStateAbbreviations;
-    _sortedStateAbbreviations = v19;
+    _sortedStateAbbreviations = array2;
   }
 }
 
-- (void)dataEntryItemDidUpdateValue:(id)a3
+- (void)dataEntryItemDidUpdateValue:(id)value
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [a3 formattedKeyAndValue];
+  formattedKeyAndValue = [value formattedKeyAndValue];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [formattedKeyAndValue countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1259,11 +1259,11 @@ LABEL_35:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(formattedKeyAndValue);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:v9];
+        v10 = [formattedKeyAndValue objectForKeyedSubscript:v9];
         v11 = [(HKOrganDonationRegistrant *)self valueForKey:v9];
         if (([v10 isEqualToString:v11] & 1) == 0)
         {
@@ -1272,14 +1272,14 @@ LABEL_35:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [formattedKeyAndValue countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  v12 = [(HKOrganDonationRegistrant *)self delegate];
-  [v12 organDonationRegistrantDidUpdateValue:self];
+  delegate = [(HKOrganDonationRegistrant *)self delegate];
+  [delegate organDonationRegistrantDidUpdateValue:self];
 }
 
 - (HKOrganDonationRegistrantDelegate)delegate

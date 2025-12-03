@@ -1,10 +1,10 @@
 @interface AR3DSkeletonRetargetingTechnique
 - (AR3DSkeletonRetargetingTechnique)init;
-- (BOOL)isEqual:(id)a3;
-- (id)_retargetSkeleton:(id)a3;
-- (id)processData:(id)a3;
-- (void)prepare:(BOOL)a3;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)_retargetSkeleton:(id)skeleton;
+- (id)processData:(id)data;
+- (void)prepare:(BOOL)prepare;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
 @end
 
 @implementation AR3DSkeletonRetargetingTechnique
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (void)prepare:(BOOL)a3
+- (void)prepare:(BOOL)prepare
 {
   if (!self->_abpkRetargeting)
   {
@@ -34,10 +34,10 @@
   }
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = _ARLogGeneral_2();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -46,17 +46,17 @@
     *buf = 138543618;
     v29 = v7;
     v30 = 2048;
-    v31 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Process Data", buf, 0x16u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
+    v8 = dataCopy;
     v9 = objc_alloc(MEMORY[0x1E695DF70]);
-    v10 = [v8 detectedSkeletons];
-    v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
+    detectedSkeletons = [v8 detectedSkeletons];
+    v11 = [v9 initWithCapacity:{objc_msgSend(detectedSkeletons, "count")}];
 
     v12 = [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.bodytracking.multipleBodyAnchors"];
     [v8 timestamp];
@@ -65,8 +65,8 @@
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = [v8 detectedSkeletons];
-    v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    detectedSkeletons2 = [v8 detectedSkeletons];
+    v14 = [detectedSkeletons2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
       v15 = v14;
@@ -77,7 +77,7 @@ LABEL_6:
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(detectedSkeletons2);
         }
 
         v18 = [(AR3DSkeletonRetargetingTechnique *)self _retargetSkeleton:*(*(&v23 + 1) + 8 * v17)];
@@ -94,7 +94,7 @@ LABEL_6:
 
         if (v15 == ++v17)
         {
-          v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v15 = [detectedSkeletons2 countByEnumeratingWithState:&v23 objects:v27 count:16];
           if (v15)
           {
             goto LABEL_6;
@@ -111,97 +111,97 @@ LABEL_6:
     v20 = objc_opt_new();
     [(AR3DSkeletonRetargetingTechnique *)self setLatestResults:v20];
 
-    v21 = [(AR3DSkeletonRetargetingTechnique *)self latestResults];
-    [v21 setRetargetedSkeletons:v11];
+    latestResults = [(AR3DSkeletonRetargetingTechnique *)self latestResults];
+    [latestResults setRetargetedSkeletons:v11];
 
     dispatch_semaphore_signal(self->_resultSemaphore);
   }
 
-  return v4;
+  return dataCopy;
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  contextCopy = context;
   dispatch_semaphore_wait(self->_resultSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  v7 = [(AR3DSkeletonRetargetingTechnique *)self latestResults];
+  latestResults = [(AR3DSkeletonRetargetingTechnique *)self latestResults];
 
-  if (v7)
+  if (latestResults)
   {
-    v8 = [v6 imageData];
-    [v8 cameraIntrinsics];
+    imageData = [contextCopy imageData];
+    [imageData cameraIntrinsics];
     v33 = v10;
     v34 = v9;
     v32 = v11;
-    v12 = [(AR3DSkeletonRetargetingTechnique *)self latestResults];
-    [v12 setCameraIntrinsics:{v34, v33, v32}];
+    latestResults2 = [(AR3DSkeletonRetargetingTechnique *)self latestResults];
+    [latestResults2 setCameraIntrinsics:{v34, v33, v32}];
 
-    v13 = [v6 imageData];
-    [v13 imageResolution];
+    imageData2 = [contextCopy imageData];
+    [imageData2 imageResolution];
     v15 = v14;
     v17 = v16;
-    v18 = [(AR3DSkeletonRetargetingTechnique *)self latestResults];
-    [v18 setImageResolution:{v15, v17}];
+    latestResults3 = [(AR3DSkeletonRetargetingTechnique *)self latestResults];
+    [latestResults3 setImageResolution:{v15, v17}];
 
-    v19 = [(AR3DSkeletonRetargetingTechnique *)self latestResults];
-    v20 = [v19 retargetedSkeletons];
-    v21 = [v20 firstObject];
+    latestResults4 = [(AR3DSkeletonRetargetingTechnique *)self latestResults];
+    retargetedSkeletons = [latestResults4 retargetedSkeletons];
+    firstObject = [retargetedSkeletons firstObject];
 
-    v22 = [v6 resultDataOfClass:objc_opt_class()];
-    v23 = [v22 firstObject];
+    v22 = [contextCopy resultDataOfClass:objc_opt_class()];
+    firstObject2 = [v22 firstObject];
 
-    if (v23 && ([v23 estimatedScaleFactor], v24 > 0.0))
+    if (firstObject2 && ([firstObject2 estimatedScaleFactor], v24 > 0.0))
     {
-      [v23 estimatedScaleFactor];
-      [v21 setEstimatedScaleFactor:v25];
-      [v23 visionTransform];
-      [v21 setVisionTransform:?];
-      v26 = [(ARTechnique *)self delegate];
-      v27 = [(AR3DSkeletonRetargetingTechnique *)self latestResults];
-      v37[0] = v27;
+      [firstObject2 estimatedScaleFactor];
+      [firstObject setEstimatedScaleFactor:v25];
+      [firstObject2 visionTransform];
+      [firstObject setVisionTransform:?];
+      delegate = [(ARTechnique *)self delegate];
+      latestResults5 = [(AR3DSkeletonRetargetingTechnique *)self latestResults];
+      v37[0] = latestResults5;
       v28 = v37;
-      v29 = v26;
+      v29 = delegate;
     }
 
     else
     {
       v29 = objc_opt_new();
-      [v29 setTimestamp:a3];
+      [v29 setTimestamp:timestamp];
       [v29 setRetargetedSkeletons:MEMORY[0x1E695E0F0]];
-      v26 = [(ARTechnique *)self delegate];
+      delegate = [(ARTechnique *)self delegate];
       v36 = v29;
       v28 = &v36;
-      v27 = v26;
+      latestResults5 = delegate;
     }
 
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-    [v26 technique:self didOutputResultData:v30 timestamp:v6 context:a3];
+    [delegate technique:self didOutputResultData:v30 timestamp:contextCopy context:timestamp];
 
     [(AR3DSkeletonRetargetingTechnique *)self setLatestResults:0];
   }
 
   else
   {
-    v21 = objc_opt_new();
-    v23 = [(ARTechnique *)self delegate];
-    v35 = v21;
+    firstObject = objc_opt_new();
+    firstObject2 = [(ARTechnique *)self delegate];
+    v35 = firstObject;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
-    [v23 technique:self didOutputResultData:v31 timestamp:v6 context:a3];
+    [firstObject2 technique:self didOutputResultData:v31 timestamp:contextCopy context:timestamp];
   }
 
   dispatch_semaphore_signal(self->_resultSemaphore);
 }
 
-- (id)_retargetSkeleton:(id)a3
+- (id)_retargetSkeleton:(id)skeleton
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  skeletonCopy = skeleton;
   v5 = objc_alloc(MEMORY[0x1E698A918]);
-  v6 = [v4 joints];
-  v7 = [v4 jointCount];
-  v8 = [v4 skeletonDetectionResult2D];
-  v9 = [v5 initWithJoints:v6 numberOfJoints:v7 referenceDetectionResult:v8];
+  joints = [skeletonCopy joints];
+  jointCount = [skeletonCopy jointCount];
+  skeletonDetectionResult2D = [skeletonCopy skeletonDetectionResult2D];
+  v9 = [v5 initWithJoints:joints numberOfJoints:jointCount referenceDetectionResult:skeletonDetectionResult2D];
 
   v10 = [(ABPKRetargeting *)self->_abpkRetargeting processData:v9];
   [v10 jointTransformCount];
@@ -237,25 +237,25 @@ LABEL_6:
     *buf = 138543618;
     v35 = v24;
     v36 = 2048;
-    v37 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v22, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Creating result", buf, 0x16u);
   }
 
   v25 = [ARCoreRESkeletonResult alloc];
-  v26 = [v10 jointModelTransforms];
-  v27 = [v10 jointTransformCount];
+  jointModelTransforms = [v10 jointModelTransforms];
+  jointTransformCount = [v10 jointTransformCount];
   LODWORD(v28) = 981668463;
-  v29 = [v4 createResultScaledByFactor:v28];
-  v30 = [v10 identifier];
-  v31 = [(ARCoreRESkeletonResult *)v25 initWithModelJointTransforms:v26 localJointTransformsSRT:v12 numberOfTransforms:v27 liftedSkeletonData:v29 identifier:v30];
+  v29 = [skeletonCopy createResultScaledByFactor:v28];
+  identifier = [v10 identifier];
+  v31 = [(ARCoreRESkeletonResult *)v25 initWithModelJointTransforms:jointModelTransforms localJointTransformsSRT:v12 numberOfTransforms:jointTransformCount liftedSkeletonData:v29 identifier:identifier];
 
   return v31;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }

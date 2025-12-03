@@ -1,24 +1,24 @@
 @interface PKDashboardButtonCollectionViewCell
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardButtonCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardButtonCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_resetFonts;
 - (void)_updateTextColor;
 - (void)createSubviews;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setShowActivity:(BOOL)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setShowActivity:(BOOL)activity;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation PKDashboardButtonCollectionViewCell
 
-- (PKDashboardButtonCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKDashboardButtonCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKDashboardButtonCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -43,7 +43,7 @@ void __53__PKDashboardButtonCollectionViewCell_initWithFrame___block_invoke(uint
 
 - (void)createSubviews
 {
-  v13 = [(PKDashboardButtonCollectionViewCell *)self contentView];
+  contentView = [(PKDashboardButtonCollectionViewCell *)self contentView];
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   titleLabel = self->_titleLabel;
   self->_titleLabel = v3;
@@ -51,13 +51,13 @@ void __53__PKDashboardButtonCollectionViewCell_initWithFrame___block_invoke(uint
   [(UILabel *)self->_titleLabel setNumberOfLines:2];
   [(UILabel *)self->_titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
   [(PKDashboardButtonCollectionViewCell *)self _resetFonts];
-  [v13 addSubview:self->_titleLabel];
+  [contentView addSubview:self->_titleLabel];
   v5 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
   activityIndicator = self->_activityIndicator;
   self->_activityIndicator = v5;
 
   [(UIActivityIndicatorView *)self->_activityIndicator setHidesWhenStopped:1];
-  [v13 addSubview:self->_activityIndicator];
+  [contentView addSubview:self->_activityIndicator];
   v7 = objc_alloc(MEMORY[0x1E69DCAE0]);
   if (_UISolariumFeatureFlagEnabled())
   {
@@ -71,15 +71,15 @@ void __53__PKDashboardButtonCollectionViewCell_initWithFrame___block_invoke(uint
   v8 = ;
   v9 = [v7 initWithImage:v8];
 
-  v10 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [(UIImageView *)v9 setTintColor:v10];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [(UIImageView *)v9 setTintColor:tertiaryLabelColor];
 
   disclosureView = self->_disclosureView;
   self->_disclosureView = v9;
   v12 = v9;
 
   [(UIImageView *)self->_disclosureView setHidden:1];
-  [v13 addSubview:self->_disclosureView];
+  [contentView addSubview:self->_disclosureView];
 }
 
 - (void)layoutSubviews
@@ -87,15 +87,15 @@ void __53__PKDashboardButtonCollectionViewCell_initWithFrame___block_invoke(uint
   v4.receiver = self;
   v4.super_class = PKDashboardButtonCollectionViewCell;
   [(PKDashboardCollectionViewCell *)&v4 layoutSubviews];
-  v3 = [(PKDashboardButtonCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKDashboardButtonCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(PKDashboardButtonCollectionViewCell *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = *MEMORY[0x1E695EFF8];
   v7 = *(MEMORY[0x1E695EFF8] + 8);
   [(PKDashboardCollectionViewCell *)self horizontalInset];
@@ -111,13 +111,13 @@ void __53__PKDashboardButtonCollectionViewCell_initWithFrame___block_invoke(uint
   return result;
 }
 
-- (void)setShowActivity:(BOOL)a3
+- (void)setShowActivity:(BOOL)activity
 {
-  if (self->_showActivity == !a3)
+  if (self->_showActivity == !activity)
   {
-    self->_showActivity = a3;
+    self->_showActivity = activity;
     activityIndicator = self->_activityIndicator;
-    if (a3)
+    if (activity)
     {
       [(UIActivityIndicatorView *)activityIndicator startAnimating];
     }
@@ -129,32 +129,32 @@ void __53__PKDashboardButtonCollectionViewCell_initWithFrame___block_invoke(uint
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled == !a3)
+  if (self->_enabled == !enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(PKDashboardButtonCollectionViewCell *)self _updateTextColor];
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style == a3)
+  if (self->_style == style)
   {
     return;
   }
 
   v9 = v4;
   v10 = v3;
-  self->_style = a3;
-  if (!a3)
+  self->_style = style;
+  if (!style)
   {
     v8 = 1;
     goto LABEL_6;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v8 = 0;
 LABEL_6:
@@ -166,11 +166,11 @@ LABEL_6:
   [(PKDashboardButtonCollectionViewCell *)self setNeedsLayout];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
+  layoutCopy = layout;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v8 = _UISolariumFeatureFlagEnabled();
   v9 = _UISolariumFeatureFlagEnabled();
   v10 = 32.0;
@@ -202,7 +202,7 @@ LABEL_6:
     [(UIImageView *)self->_disclosureView sizeToFit];
     [(UIImageView *)self->_disclosureView frame];
     v16 = v15;
-    if (!v4)
+    if (!layoutCopy)
     {
       UIRectCenteredYInRect();
       [(UIImageView *)self->_disclosureView setFrame:?];
@@ -214,7 +214,7 @@ LABEL_6:
   [(UIActivityIndicatorView *)self->_activityIndicator sizeToFit];
   [(UIActivityIndicatorView *)self->_activityIndicator frame];
   v18 = v17;
-  if (!v4)
+  if (!layoutCopy)
   {
     UIRectCenteredYInRect();
     v18 = v19;
@@ -224,7 +224,7 @@ LABEL_6:
   [(UILabel *)self->_titleLabel sizeThatFits:v12 - v18 + -12.0, v14];
   UIRectCenteredYInRect();
   v21 = v20;
-  if (!v4)
+  if (!layoutCopy)
   {
     [(UILabel *)self->_titleLabel setFrame:?];
   }

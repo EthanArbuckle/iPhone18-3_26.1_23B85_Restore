@@ -7,7 +7,7 @@
 
 - (MPModelObject)innermostModelObject
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MPModelGenericObject.innermostModelObject.getter();
 
   return v3;
@@ -15,15 +15,15 @@
 
 - (double)preferredArtworkAspectRatio
 {
-  v2 = self;
+  selfCopy = self;
   v3 = 1.0;
-  if ([(MPModelGenericObject *)v2 type]== 1)
+  if ([(MPModelGenericObject *)selfCopy type]== 1)
   {
-    v4 = [(MPModelGenericObject *)v2 song];
-    if (v4)
+    song = [(MPModelGenericObject *)selfCopy song];
+    if (song)
     {
-      v5 = v4;
-      [v4 preferredArtworkAspectRatio];
+      v5 = song;
+      [song preferredArtworkAspectRatio];
       v3 = v6;
     }
   }

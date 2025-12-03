@@ -1,51 +1,51 @@
 @interface RMStoreDeclarationKeyPair
-+ (id)newDeclarationKeyPairWithNewKey:(id)a3;
-+ (id)newDeclarationKeyPairWithUpdateKey:(id)a3 replaceKey:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (RMStoreDeclarationKeyPair)initWithNewKey:(id)a3 replaceKey:(id)a4;
++ (id)newDeclarationKeyPairWithNewKey:(id)key;
++ (id)newDeclarationKeyPairWithUpdateKey:(id)key replaceKey:(id)replaceKey;
+- (BOOL)isEqual:(id)equal;
+- (RMStoreDeclarationKeyPair)initWithNewKey:(id)key replaceKey:(id)replaceKey;
 - (unint64_t)hash;
 @end
 
 @implementation RMStoreDeclarationKeyPair
 
-+ (id)newDeclarationKeyPairWithNewKey:(id)a3
++ (id)newDeclarationKeyPairWithNewKey:(id)key
 {
-  v3 = a3;
-  v4 = [[RMStoreDeclarationKeyPair alloc] initWithNewKey:v3 replaceKey:0];
+  keyCopy = key;
+  v4 = [[RMStoreDeclarationKeyPair alloc] initWithNewKey:keyCopy replaceKey:0];
 
   return v4;
 }
 
-+ (id)newDeclarationKeyPairWithUpdateKey:(id)a3 replaceKey:(id)a4
++ (id)newDeclarationKeyPairWithUpdateKey:(id)key replaceKey:(id)replaceKey
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[RMStoreDeclarationKeyPair alloc] initWithNewKey:v6 replaceKey:v5];
+  replaceKeyCopy = replaceKey;
+  keyCopy = key;
+  v7 = [[RMStoreDeclarationKeyPair alloc] initWithNewKey:keyCopy replaceKey:replaceKeyCopy];
 
   return v7;
 }
 
-- (RMStoreDeclarationKeyPair)initWithNewKey:(id)a3 replaceKey:(id)a4
+- (RMStoreDeclarationKeyPair)initWithNewKey:(id)key replaceKey:(id)replaceKey
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  replaceKeyCopy = replaceKey;
   v12.receiver = self;
   v12.super_class = RMStoreDeclarationKeyPair;
   v9 = [(RMStoreDeclarationKeyPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_applyKey, a3);
-    objc_storeStrong(&v10->_replaceKey, a4);
+    objc_storeStrong(&v9->_applyKey, key);
+    objc_storeStrong(&v10->_replaceKey, replaceKey);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -55,15 +55,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(RMStoreDeclarationKeyPair *)self applyKey];
-      v6 = [(RMStoreDeclarationKeyPair *)v4 applyKey];
-      if ([v5 isEqual:v6])
+      applyKey = [(RMStoreDeclarationKeyPair *)self applyKey];
+      applyKey2 = [(RMStoreDeclarationKeyPair *)equalCopy applyKey];
+      if ([applyKey isEqual:applyKey2])
       {
-        v7 = [(RMStoreDeclarationKeyPair *)self replaceKey];
-        v8 = v7;
-        if (v7)
+        replaceKey = [(RMStoreDeclarationKeyPair *)self replaceKey];
+        v8 = replaceKey;
+        if (replaceKey)
         {
-          v9 = v7;
+          v9 = replaceKey;
         }
 
         else
@@ -71,11 +71,11 @@
           v9 = &stru_287470728;
         }
 
-        v10 = [(RMStoreDeclarationKeyPair *)v4 replaceKey];
-        v11 = v10;
-        if (v10)
+        replaceKey2 = [(RMStoreDeclarationKeyPair *)equalCopy replaceKey];
+        v11 = replaceKey2;
+        if (replaceKey2)
         {
-          v12 = v10;
+          v12 = replaceKey2;
         }
 
         else
@@ -103,10 +103,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(RMStoreDeclarationKeyPair *)self applyKey];
-  v4 = [v3 hash];
-  v5 = [(RMStoreDeclarationKeyPair *)self replaceKey];
-  v6 = [v5 hash];
+  applyKey = [(RMStoreDeclarationKeyPair *)self applyKey];
+  v4 = [applyKey hash];
+  replaceKey = [(RMStoreDeclarationKeyPair *)self replaceKey];
+  v6 = [replaceKey hash];
 
   return v6 ^ v4;
 }

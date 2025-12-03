@@ -1,25 +1,25 @@
 @interface GeraNeighborCell
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNccPermitted:(BOOL)a3;
-- (void)setHasPMax:(BOOL)a3;
-- (void)setHasPriority:(BOOL)a3;
-- (void)setHasQRxlevMin:(BOOL)a3;
-- (void)setHasThreshXHighP:(BOOL)a3;
-- (void)setHasThreshXLowP:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNccPermitted:(BOOL)permitted;
+- (void)setHasPMax:(BOOL)max;
+- (void)setHasPriority:(BOOL)priority;
+- (void)setHasQRxlevMin:(BOOL)min;
+- (void)setHasThreshXHighP:(BOOL)p;
+- (void)setHasThreshXLowP:(BOOL)p;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GeraNeighborCell
 
-- (void)setHasPMax:(BOOL)a3
+- (void)setHasPMax:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 4;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasQRxlevMin:(BOOL)a3
+- (void)setHasQRxlevMin:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 16;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasThreshXHighP:(BOOL)a3
+- (void)setHasThreshXHighP:(BOOL)p
 {
-  if (a3)
+  if (p)
   {
     v3 = 32;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasThreshXLowP:(BOOL)a3
+- (void)setHasThreshXLowP:(BOOL)p
 {
-  if (a3)
+  if (p)
   {
     v3 = 64;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasPriority:(BOOL)a3
+- (void)setHasPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 8;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNccPermitted:(BOOL)a3
+- (void)setHasNccPermitted:(BOOL)permitted
 {
-  if (a3)
+  if (permitted)
   {
     v3 = 2;
   }
@@ -112,8 +112,8 @@
   v7.receiver = self;
   v7.super_class = GeraNeighborCell;
   v3 = [(GeraNeighborCell *)&v7 description];
-  v4 = [(GeraNeighborCell *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(GeraNeighborCell *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -224,9 +224,9 @@ LABEL_9:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -322,14 +322,14 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_arfcn;
-    *(v4 + 36) |= 1u;
+    toCopy[2] = self->_arfcn;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -348,8 +348,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_pMax;
-  *(v4 + 36) |= 4u;
+  toCopy[4] = self->_pMax;
+  *(toCopy + 36) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -363,8 +363,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  v4[6] = self->_qRxlevMin;
-  *(v4 + 36) |= 0x10u;
+  toCopy[6] = self->_qRxlevMin;
+  *(toCopy + 36) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -378,8 +378,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  v4[7] = self->_threshXHighP;
-  *(v4 + 36) |= 0x20u;
+  toCopy[7] = self->_threshXHighP;
+  *(toCopy + 36) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -393,8 +393,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  v4[8] = self->_threshXLowP;
-  *(v4 + 36) |= 0x40u;
+  toCopy[8] = self->_threshXLowP;
+  *(toCopy + 36) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -408,21 +408,21 @@ LABEL_7:
   }
 
 LABEL_17:
-  v4[5] = self->_priority;
-  *(v4 + 36) |= 8u;
+  toCopy[5] = self->_priority;
+  *(toCopy + 36) |= 8u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
-    v4[3] = self->_nccPermitted;
-    *(v4 + 36) |= 2u;
+    toCopy[3] = self->_nccPermitted;
+    *(toCopy + 36) |= 2u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -519,23 +519,23 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_arfcn != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_arfcn != *(equalCopy + 2))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_36:
     v5 = 0;
@@ -544,73 +544,73 @@ LABEL_36:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_pMax != *(v4 + 4))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_pMax != *(equalCopy + 4))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0 || self->_qRxlevMin != *(v4 + 6))
+    if ((*(equalCopy + 36) & 0x10) == 0 || self->_qRxlevMin != *(equalCopy + 6))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 36) & 0x20) == 0 || self->_threshXHighP != *(v4 + 7))
+    if ((*(equalCopy + 36) & 0x20) == 0 || self->_threshXHighP != *(equalCopy + 7))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 0x20) != 0)
+  else if ((*(equalCopy + 36) & 0x20) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 36) & 0x40) == 0 || self->_threshXLowP != *(v4 + 8))
+    if ((*(equalCopy + 36) & 0x40) == 0 || self->_threshXLowP != *(equalCopy + 8))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 0x40) != 0)
+  else if ((*(equalCopy + 36) & 0x40) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_priority != *(v4 + 5))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_priority != *(equalCopy + 5))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
     goto LABEL_36;
   }
 
-  v5 = (*(v4 + 36) & 2) == 0;
+  v5 = (*(equalCopy + 36) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_nccPermitted != *(v4 + 3))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_nccPermitted != *(equalCopy + 3))
     {
       goto LABEL_36;
     }
@@ -719,15 +719,15 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_arfcn = *(v4 + 2);
+    self->_arfcn = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -740,14 +740,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 4) == 0)
+  else if ((*(fromCopy + 36) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_pMax = *(v4 + 4);
+  self->_pMax = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -760,9 +760,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_qRxlevMin = *(v4 + 6);
+  self->_qRxlevMin = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x20) == 0)
   {
 LABEL_5:
@@ -775,9 +775,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_threshXHighP = *(v4 + 7);
+  self->_threshXHighP = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x40) == 0)
   {
 LABEL_6:
@@ -790,9 +790,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_threshXLowP = *(v4 + 8);
+  self->_threshXLowP = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 8) == 0)
   {
 LABEL_7:
@@ -805,12 +805,12 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_priority = *(v4 + 5);
+  self->_priority = *(fromCopy + 5);
   *&self->_has |= 8u;
-  if ((*(v4 + 36) & 2) != 0)
+  if ((*(fromCopy + 36) & 2) != 0)
   {
 LABEL_8:
-    self->_nccPermitted = *(v4 + 3);
+    self->_nccPermitted = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 

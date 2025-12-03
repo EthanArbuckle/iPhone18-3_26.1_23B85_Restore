@@ -1,21 +1,21 @@
 @interface AWDIDSDeviceConnectionDurationEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasClientInitToDaemonOpenSocket:(BOOL)a3;
-- (void)setHasClientOpenSocketHandlerToIncomingFirstPacket:(BOOL)a3;
-- (void)setHasConnectionInitToIncomingFirstPacket:(BOOL)a3;
-- (void)setHasDaemonCompletionHandlerToClientOpenSocketCompletion:(BOOL)a3;
-- (void)setHasDaemonCompletionHandlerToIncomingFirstPacket:(BOOL)a3;
-- (void)setHasDaemonOpenSocketToDaemonCompletionHandler:(BOOL)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasClientInitToDaemonOpenSocket:(BOOL)socket;
+- (void)setHasClientOpenSocketHandlerToIncomingFirstPacket:(BOOL)packet;
+- (void)setHasConnectionInitToIncomingFirstPacket:(BOOL)packet;
+- (void)setHasDaemonCompletionHandlerToClientOpenSocketCompletion:(BOOL)completion;
+- (void)setHasDaemonCompletionHandlerToIncomingFirstPacket:(BOOL)packet;
+- (void)setHasDaemonOpenSocketToDaemonCompletionHandler:(BOOL)handler;
+- (void)setHasSuccess:(BOOL)success;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSDeviceConnectionDurationEvent
@@ -28,9 +28,9 @@
   [(AWDIDSDeviceConnectionDurationEvent *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 128;
   }
@@ -43,9 +43,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 256;
   }
@@ -58,9 +58,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasClientInitToDaemonOpenSocket:(BOOL)a3
+- (void)setHasClientInitToDaemonOpenSocket:(BOOL)socket
 {
-  if (a3)
+  if (socket)
   {
     v3 = 2;
   }
@@ -73,9 +73,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasClientOpenSocketHandlerToIncomingFirstPacket:(BOOL)a3
+- (void)setHasClientOpenSocketHandlerToIncomingFirstPacket:(BOOL)packet
 {
-  if (a3)
+  if (packet)
   {
     v3 = 4;
   }
@@ -88,9 +88,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDaemonOpenSocketToDaemonCompletionHandler:(BOOL)a3
+- (void)setHasDaemonOpenSocketToDaemonCompletionHandler:(BOOL)handler
 {
-  if (a3)
+  if (handler)
   {
     v3 = 64;
   }
@@ -103,9 +103,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasDaemonCompletionHandlerToClientOpenSocketCompletion:(BOOL)a3
+- (void)setHasDaemonCompletionHandlerToClientOpenSocketCompletion:(BOOL)completion
 {
-  if (a3)
+  if (completion)
   {
     v3 = 16;
   }
@@ -118,9 +118,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasDaemonCompletionHandlerToIncomingFirstPacket:(BOOL)a3
+- (void)setHasDaemonCompletionHandlerToIncomingFirstPacket:(BOOL)packet
 {
-  if (a3)
+  if (packet)
   {
     v3 = 32;
   }
@@ -133,9 +133,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasConnectionInitToIncomingFirstPacket:(BOOL)a3
+- (void)setHasConnectionInitToIncomingFirstPacket:(BOOL)packet
 {
-  if (a3)
+  if (packet)
   {
     v3 = 8;
   }
@@ -157,22 +157,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 0x80) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   serviceName = self->_serviceName;
   if (serviceName)
   {
-    [v3 setObject:serviceName forKey:@"serviceName"];
+    [dictionary setObject:serviceName forKey:@"serviceName"];
   }
 
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_success), @"success"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_success), @"success"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -191,7 +191,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_clientInitToDaemonOpenSocket), @"clientInitToDaemonOpenSocket"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_clientInitToDaemonOpenSocket), @"clientInitToDaemonOpenSocket"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -205,7 +205,7 @@ LABEL_8:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_clientInitToClientOpenSocketHandler), @"clientInitToClientOpenSocketHandler"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_clientInitToClientOpenSocketHandler), @"clientInitToClientOpenSocketHandler"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -219,7 +219,7 @@ LABEL_9:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_clientOpenSocketHandlerToIncomingFirstPacket), @"clientOpenSocketHandlerToIncomingFirstPacket"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_clientOpenSocketHandlerToIncomingFirstPacket), @"clientOpenSocketHandlerToIncomingFirstPacket"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -233,7 +233,7 @@ LABEL_10:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_daemonOpenSocketToDaemonCompletionHandler), @"daemonOpenSocketToDaemonCompletionHandler"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_daemonOpenSocketToDaemonCompletionHandler), @"daemonOpenSocketToDaemonCompletionHandler"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -244,17 +244,17 @@ LABEL_11:
     }
 
 LABEL_21:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_daemonCompletionHandlerToIncomingFirstPacket), @"daemonCompletionHandlerToIncomingFirstPacket"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_daemonCompletionHandlerToIncomingFirstPacket), @"daemonCompletionHandlerToIncomingFirstPacket"}];
     if ((*&self->_has & 8) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_13;
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_daemonCompletionHandlerToClientOpenSocketCompletion), @"daemonCompletionHandlerToClientOpenSocketCompletion"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_daemonCompletionHandlerToClientOpenSocketCompletion), @"daemonCompletionHandlerToClientOpenSocketCompletion"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -265,13 +265,13 @@ LABEL_12:
   if ((has & 8) != 0)
   {
 LABEL_13:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectionInitToIncomingFirstPacket), @"connectionInitToIncomingFirstPacket"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectionInitToIncomingFirstPacket), @"connectionInitToIncomingFirstPacket"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 0x80) != 0)
   {
@@ -395,24 +395,24 @@ LABEL_21:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 0x80) != 0)
   {
-    *(a3 + 8) = self->_timestamp;
-    *(a3 + 42) |= 0x80u;
+    *(to + 8) = self->_timestamp;
+    *(to + 42) |= 0x80u;
   }
 
   if (self->_serviceName)
   {
-    [a3 setServiceName:?];
+    [to setServiceName:?];
   }
 
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    *(a3 + 80) = self->_success;
-    *(a3 + 42) |= 0x100u;
+    *(to + 80) = self->_success;
+    *(to + 42) |= 0x100u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -431,8 +431,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 2) = self->_clientInitToDaemonOpenSocket;
-  *(a3 + 42) |= 2u;
+  *(to + 2) = self->_clientInitToDaemonOpenSocket;
+  *(to + 42) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -446,8 +446,8 @@ LABEL_8:
   }
 
 LABEL_17:
-  *(a3 + 1) = self->_clientInitToClientOpenSocketHandler;
-  *(a3 + 42) |= 1u;
+  *(to + 1) = self->_clientInitToClientOpenSocketHandler;
+  *(to + 42) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -461,8 +461,8 @@ LABEL_9:
   }
 
 LABEL_18:
-  *(a3 + 3) = self->_clientOpenSocketHandlerToIncomingFirstPacket;
-  *(a3 + 42) |= 4u;
+  *(to + 3) = self->_clientOpenSocketHandlerToIncomingFirstPacket;
+  *(to + 42) |= 4u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -476,8 +476,8 @@ LABEL_10:
   }
 
 LABEL_19:
-  *(a3 + 7) = self->_daemonOpenSocketToDaemonCompletionHandler;
-  *(a3 + 42) |= 0x40u;
+  *(to + 7) = self->_daemonOpenSocketToDaemonCompletionHandler;
+  *(to + 42) |= 0x40u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -491,8 +491,8 @@ LABEL_11:
   }
 
 LABEL_20:
-  *(a3 + 5) = self->_daemonCompletionHandlerToClientOpenSocketCompletion;
-  *(a3 + 42) |= 0x10u;
+  *(to + 5) = self->_daemonCompletionHandlerToClientOpenSocketCompletion;
+  *(to + 42) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -506,21 +506,21 @@ LABEL_12:
   }
 
 LABEL_21:
-  *(a3 + 6) = self->_daemonCompletionHandlerToIncomingFirstPacket;
-  *(a3 + 42) |= 0x20u;
+  *(to + 6) = self->_daemonCompletionHandlerToIncomingFirstPacket;
+  *(to + 42) |= 0x20u;
   if ((*&self->_has & 8) == 0)
   {
     return;
   }
 
 LABEL_13:
-  *(a3 + 4) = self->_connectionInitToIncomingFirstPacket;
-  *(a3 + 42) |= 8u;
+  *(to + 4) = self->_connectionInitToIncomingFirstPacket;
+  *(to + 42) |= 8u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x80) != 0)
   {
@@ -528,7 +528,7 @@ LABEL_13:
     *(v5 + 84) |= 0x80u;
   }
 
-  *(v6 + 72) = [(NSString *)self->_serviceName copyWithZone:a3];
+  *(v6 + 72) = [(NSString *)self->_serviceName copyWithZone:zone];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -639,19 +639,19 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 42);
+  v7 = *(equal + 42);
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_timestamp != *(a3 + 8))
+    if ((v7 & 0x80) == 0 || self->_timestamp != *(equal + 8))
     {
       goto LABEL_52;
     }
@@ -663,7 +663,7 @@ LABEL_11:
   }
 
   serviceName = self->_serviceName;
-  if (serviceName | *(a3 + 9))
+  if (serviceName | *(equal + 9))
   {
     v5 = [(NSString *)serviceName isEqual:?];
     if (!v5)
@@ -674,21 +674,21 @@ LABEL_11:
     has = self->_has;
   }
 
-  v9 = *(a3 + 42);
+  v9 = *(equal + 42);
   if ((has & 0x100) != 0)
   {
-    if ((*(a3 + 42) & 0x100) != 0)
+    if ((*(equal + 42) & 0x100) != 0)
     {
-      v10 = *(a3 + 80);
+      v10 = *(equal + 80);
       if (self->_success)
       {
-        if ((*(a3 + 80) & 1) == 0)
+        if ((*(equal + 80) & 1) == 0)
         {
           goto LABEL_52;
         }
       }
 
-      else if (*(a3 + 80))
+      else if (*(equal + 80))
       {
         goto LABEL_52;
       }
@@ -701,7 +701,7 @@ LABEL_52:
     return v5;
   }
 
-  if ((*(a3 + 42) & 0x100) != 0)
+  if ((*(equal + 42) & 0x100) != 0)
   {
     goto LABEL_52;
   }
@@ -709,7 +709,7 @@ LABEL_52:
 LABEL_12:
   if ((has & 2) != 0)
   {
-    if ((v9 & 2) == 0 || self->_clientInitToDaemonOpenSocket != *(a3 + 2))
+    if ((v9 & 2) == 0 || self->_clientInitToDaemonOpenSocket != *(equal + 2))
     {
       goto LABEL_52;
     }
@@ -722,7 +722,7 @@ LABEL_12:
 
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_clientInitToClientOpenSocketHandler != *(a3 + 1))
+    if ((v9 & 1) == 0 || self->_clientInitToClientOpenSocketHandler != *(equal + 1))
     {
       goto LABEL_52;
     }
@@ -735,7 +735,7 @@ LABEL_12:
 
   if ((has & 4) != 0)
   {
-    if ((v9 & 4) == 0 || self->_clientOpenSocketHandlerToIncomingFirstPacket != *(a3 + 3))
+    if ((v9 & 4) == 0 || self->_clientOpenSocketHandlerToIncomingFirstPacket != *(equal + 3))
     {
       goto LABEL_52;
     }
@@ -748,7 +748,7 @@ LABEL_12:
 
   if ((has & 0x40) != 0)
   {
-    if ((v9 & 0x40) == 0 || self->_daemonOpenSocketToDaemonCompletionHandler != *(a3 + 7))
+    if ((v9 & 0x40) == 0 || self->_daemonOpenSocketToDaemonCompletionHandler != *(equal + 7))
     {
       goto LABEL_52;
     }
@@ -761,7 +761,7 @@ LABEL_12:
 
   if ((has & 0x10) != 0)
   {
-    if ((v9 & 0x10) == 0 || self->_daemonCompletionHandlerToClientOpenSocketCompletion != *(a3 + 5))
+    if ((v9 & 0x10) == 0 || self->_daemonCompletionHandlerToClientOpenSocketCompletion != *(equal + 5))
     {
       goto LABEL_52;
     }
@@ -774,7 +774,7 @@ LABEL_12:
 
   if ((has & 0x20) != 0)
   {
-    if ((v9 & 0x20) == 0 || self->_daemonCompletionHandlerToIncomingFirstPacket != *(a3 + 6))
+    if ((v9 & 0x20) == 0 || self->_daemonCompletionHandlerToIncomingFirstPacket != *(equal + 6))
     {
       goto LABEL_52;
     }
@@ -788,7 +788,7 @@ LABEL_12:
   LOBYTE(v5) = (v9 & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((v9 & 8) == 0 || self->_connectionInitToIncomingFirstPacket != *(a3 + 4))
+    if ((v9 & 8) == 0 || self->_connectionInitToIncomingFirstPacket != *(equal + 4))
     {
       goto LABEL_52;
     }
@@ -921,25 +921,25 @@ LABEL_12:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 42) & 0x80) != 0)
+  if ((*(from + 42) & 0x80) != 0)
   {
-    self->_timestamp = *(a3 + 8);
+    self->_timestamp = *(from + 8);
     *&self->_has |= 0x80u;
   }
 
-  if (*(a3 + 9))
+  if (*(from + 9))
   {
     [(AWDIDSDeviceConnectionDurationEvent *)self setServiceName:?];
   }
 
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x100) != 0)
   {
-    self->_success = *(a3 + 80);
+    self->_success = *(from + 80);
     *&self->_has |= 0x100u;
-    v5 = *(a3 + 42);
+    v5 = *(from + 42);
     if ((v5 & 2) == 0)
     {
 LABEL_7:
@@ -957,9 +957,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_clientInitToDaemonOpenSocket = *(a3 + 2);
+  self->_clientInitToDaemonOpenSocket = *(from + 2);
   *&self->_has |= 2u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 1) == 0)
   {
 LABEL_8:
@@ -972,9 +972,9 @@ LABEL_8:
   }
 
 LABEL_17:
-  self->_clientInitToClientOpenSocketHandler = *(a3 + 1);
+  self->_clientInitToClientOpenSocketHandler = *(from + 1);
   *&self->_has |= 1u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 4) == 0)
   {
 LABEL_9:
@@ -987,9 +987,9 @@ LABEL_9:
   }
 
 LABEL_18:
-  self->_clientOpenSocketHandlerToIncomingFirstPacket = *(a3 + 3);
+  self->_clientOpenSocketHandlerToIncomingFirstPacket = *(from + 3);
   *&self->_has |= 4u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x40) == 0)
   {
 LABEL_10:
@@ -1002,9 +1002,9 @@ LABEL_10:
   }
 
 LABEL_19:
-  self->_daemonOpenSocketToDaemonCompletionHandler = *(a3 + 7);
+  self->_daemonOpenSocketToDaemonCompletionHandler = *(from + 7);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x10) == 0)
   {
 LABEL_11:
@@ -1017,9 +1017,9 @@ LABEL_11:
   }
 
 LABEL_20:
-  self->_daemonCompletionHandlerToClientOpenSocketCompletion = *(a3 + 5);
+  self->_daemonCompletionHandlerToClientOpenSocketCompletion = *(from + 5);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x20) == 0)
   {
 LABEL_12:
@@ -1032,15 +1032,15 @@ LABEL_12:
   }
 
 LABEL_21:
-  self->_daemonCompletionHandlerToIncomingFirstPacket = *(a3 + 6);
+  self->_daemonCompletionHandlerToIncomingFirstPacket = *(from + 6);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 42) & 8) == 0)
+  if ((*(from + 42) & 8) == 0)
   {
     return;
   }
 
 LABEL_13:
-  self->_connectionInitToIncomingFirstPacket = *(a3 + 4);
+  self->_connectionInitToIncomingFirstPacket = *(from + 4);
   *&self->_has |= 8u;
 }
 

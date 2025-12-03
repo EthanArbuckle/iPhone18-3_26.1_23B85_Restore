@@ -1,13 +1,13 @@
 @interface NavBarDateCacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation NavBarDateCacheKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -16,15 +16,15 @@
   {
     v12.receiver = self;
     v12.super_class = NavBarDateCacheKey;
-    if ([(NavBarDateCacheKey *)&v12 isEqual:v4])
+    if ([(NavBarDateCacheKey *)&v12 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       month = self->_month;
       if (month == [(NavBarDateCacheKey *)v5 month]&& (year = self->_year, year == [(NavBarDateCacheKey *)v5 year]))
       {
         font = self->_font;
-        v9 = [(NavBarDateCacheKey *)v5 font];
-        v10 = font == v9;
+        font = [(NavBarDateCacheKey *)v5 font];
+        v10 = font == font;
       }
 
       else

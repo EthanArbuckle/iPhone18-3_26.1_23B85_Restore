@@ -1,49 +1,49 @@
 @interface XRLazyKVOAdapter
-+ (id)observeKeyPath:(id)a3 object:(id)a4 observer:(id)a5 lazyUpdateBlock:(id)a6;
-+ (id)observeKeyPathArray:(id)a3 object:(id)a4 observer:(id)a5 lazyUpdateBlock:(id)a6;
++ (id)observeKeyPath:(id)path object:(id)object observer:(id)observer lazyUpdateBlock:(id)block;
++ (id)observeKeyPathArray:(id)array object:(id)object observer:(id)observer lazyUpdateBlock:(id)block;
 - (XRLazyKVOAdapter)init;
-- (XRLazyKVOAdapter)initWithLazyKVOResponder:(id)a3;
+- (XRLazyKVOAdapter)initWithLazyKVOResponder:(id)responder;
 - (id).cxx_construct;
 - (void)_callbackHandler;
 - (void)dealloc;
-- (void)fireCallbackContext:(const void *)a3 whenKeypaths:(id)a4 changeOnClass:(Class)a5;
-- (void)observeObject:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)fireCallbackContext:(const void *)context whenKeypaths:(id)keypaths changeOnClass:(Class)class;
+- (void)observeObject:(id)object;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation XRLazyKVOAdapter
 
-+ (id)observeKeyPath:(id)a3 object:(id)a4 observer:(id)a5 lazyUpdateBlock:(id)a6
++ (id)observeKeyPath:(id)path object:(id)object observer:(id)observer lazyUpdateBlock:(id)block
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v21[0] = v10;
+  pathCopy = path;
+  objectCopy = object;
+  observerCopy = observer;
+  blockCopy = block;
+  v21[0] = pathCopy;
   v16 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v14, v21, 1, v15);
-  v18 = objc_msgSend_observeKeyPathArray_object_observer_lazyUpdateBlock_(a1, v17, v16, v11, v12, v13);
+  v18 = objc_msgSend_observeKeyPathArray_object_observer_lazyUpdateBlock_(self, v17, v16, objectCopy, observerCopy, blockCopy);
 
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
 }
 
-+ (id)observeKeyPathArray:(id)a3 object:(id)a4 observer:(id)a5 lazyUpdateBlock:(id)a6
++ (id)observeKeyPathArray:(id)array object:(id)object observer:(id)observer lazyUpdateBlock:(id)block
 {
   v104[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  arrayCopy = array;
+  objectCopy = object;
+  observerCopy = observer;
+  blockCopy = block;
   v15 = [_XRLazyKVOBlockToken alloc];
-  v18 = objc_msgSend_initWithObject_observer_(v15, v16, v12, v13, v17);
-  v19 = [a1 alloc];
+  v18 = objc_msgSend_initWithObject_observer_(v15, v16, objectCopy, observerCopy, v17);
+  v19 = [self alloc];
   v23 = objc_msgSend_initWithLazyKVOResponder_(v19, v20, v18, v21, v22);
   v24 = objc_opt_class();
   v25 = objc_opt_class();
-  objc_msgSend_fireCallbackContext_whenKeypaths_changeOnClass_(v23, v26, v24, v11, v25);
-  objc_msgSend_observeObject_(v23, v27, v12, v28, v29);
+  objc_msgSend_fireCallbackContext_whenKeypaths_changeOnClass_(v23, v26, v24, arrayCopy, v25);
+  objc_msgSend_observeObject_(v23, v27, objectCopy, v28, v29);
   v104[0] = *MEMORY[0x277CBE640];
   v32 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v30, v104, 1, v31);
   objc_msgSend_setRunLoopModes_(v23, v33, v32, v34, v35);
@@ -51,11 +51,11 @@
   objc_msgSend_setStrongBlockAdapterToken_(v23, v36, v18, v37, v38);
   objc_msgSend_setSuspended_(v23, v39, 0, v40, v41);
   objc_initWeak(&location, v23);
-  if (_DVTIURuntimeCheckForBlockCaptureOfObject(v14, v12))
+  if (_DVTIURuntimeCheckForBlockCaptureOfObject(blockCopy, objectCopy))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
-      if (objc_opt_class() == a1)
+      if (objc_opt_class() == self)
       {
         v48 = 43;
       }
@@ -71,7 +71,7 @@
       v50 = v90;
       v88 = objc_msgSend_UTF8String(v90, v51, v52, v53, v54);
       Name = sel_getName(a2);
-      v60 = objc_msgSend_description(v12, v56, v57, v58, v59);
+      v60 = objc_msgSend_description(objectCopy, v56, v57, v58, v59);
       v61 = v60;
       v66 = objc_msgSend_UTF8String(v60, v62, v63, v64, v65);
       *buf = 67109890;
@@ -85,14 +85,14 @@
       _os_log_fault_impl(&dword_248087000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "The block provided to %c[%s %s] captures the observed object (%s) which may extend its lifetime.  Use the 'object' parameter passed to the block instead.\nSet a breakpoint in '_DVTIUInvalidBlockCaptureBreak' to debug", buf, 0x26u);
     }
 
-    _DVTIUInvalidBlockCaptureBreak(v14, v12);
+    _DVTIUInvalidBlockCaptureBreak(blockCopy, objectCopy);
   }
 
-  if (_DVTIURuntimeCheckForBlockCaptureOfObject(v14, v13))
+  if (_DVTIURuntimeCheckForBlockCaptureOfObject(blockCopy, observerCopy))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
-      if (objc_opt_class() == a1)
+      if (objc_opt_class() == self)
       {
         v67 = 43;
       }
@@ -108,7 +108,7 @@
       v70 = v69;
       v75 = objc_msgSend_UTF8String(v69, v71, v72, v73, v74);
       v76 = sel_getName(a2);
-      v81 = objc_msgSend_description(v13, v77, v78, v79, v80);
+      v81 = objc_msgSend_description(observerCopy, v77, v78, v79, v80);
       v82 = v81;
       v87 = objc_msgSend_UTF8String(v81, v83, v84, v85, v86);
       *buf = 67109890;
@@ -122,14 +122,14 @@
       _os_log_fault_impl(&dword_248087000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "The block provided to %c[%s %s] captures the observer (%s) which could lead to a retain cycle -- possibly via 'self' or ivar usage.  Use the 'observer' parameter passed to the block instead.\nSet a breakpoint in '_DVTIUInvalidBlockCaptureBreak' to debug", buf, 0x26u);
     }
 
-    _DVTIUInvalidBlockCaptureBreak(v14, v13);
+    _DVTIUInvalidBlockCaptureBreak(blockCopy, observerCopy);
   }
 
   v92[0] = MEMORY[0x277D85DD0];
   v92[1] = 3221225472;
   v92[2] = sub_2480A6844;
   v92[3] = &unk_278EFC338;
-  v42 = v14;
+  v42 = blockCopy;
   v93 = v42;
   objc_copyWeak(&v94, &location);
   objc_msgSend_setBlock_(v18, v43, v92, v44, v45);
@@ -150,17 +150,17 @@
   return 0;
 }
 
-- (XRLazyKVOAdapter)initWithLazyKVOResponder:(id)a3
+- (XRLazyKVOAdapter)initWithLazyKVOResponder:(id)responder
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responderCopy = responder;
   v26.receiver = self;
   v26.super_class = XRLazyKVOAdapter;
   v5 = [(XRLazyKVOAdapter *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_responder, v4);
+    objc_storeWeak(&v5->_responder, responderCopy);
     v11 = objc_msgSend_strongToStrongObjectsMapTable(MEMORY[0x277CCAB00], v7, v8, v9, v10);
     keyPathsByContextByClz = v6->_keyPathsByContextByClz;
     v6->_keyPathsByContextByClz = v11;
@@ -193,31 +193,31 @@
   [(XRLazyKVOAdapter *)&v10 dealloc];
 }
 
-- (void)fireCallbackContext:(const void *)a3 whenKeypaths:(id)a4 changeOnClass:(Class)a5
+- (void)fireCallbackContext:(const void *)context whenKeypaths:(id)keypaths changeOnClass:(Class)class
 {
-  v8 = a4;
+  keypathsCopy = keypaths;
   v9 = self->_keyPathsByContextByClz;
-  v18 = v8;
-  v15 = objc_msgSend_objectForKey_(v9, v10, a5, v11, v12);
+  v18 = keypathsCopy;
+  v15 = objc_msgSend_objectForKey_(v9, v10, class, v11, v12);
   if (!v15)
   {
     v15 = objc_opt_new();
-    objc_msgSend_setObject_forKey_(v9, v16, v15, a5, v17);
+    objc_msgSend_setObject_forKey_(v9, v16, v15, class, v17);
   }
 
-  objc_msgSend_setObject_forIntegerKey_(v15, v13, v18, a3, v14);
+  objc_msgSend_setObject_forIntegerKey_(v15, v13, v18, context, v14);
 }
 
-- (void)observeObject:(id)a3
+- (void)observeObject:(id)object
 {
-  v7 = a3;
-  if (v7)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v8 = objc_msgSend_objectForKey_(self->_keyPathsByContextByObj, v4, v7, v5, v6);
+    v8 = objc_msgSend_objectForKey_(self->_keyPathsByContextByObj, v4, objectCopy, v5, v6);
     if (!v8)
     {
       v9 = objc_opt_new();
-      objc_msgSend_setObject_forKey_(self->_keyPathsByContextByObj, v10, v9, v7, v11);
+      objc_msgSend_setObject_forKey_(self->_keyPathsByContextByObj, v10, v9, objectCopy, v11);
       Superclass = objc_opt_class();
       v16 = 0;
       while (Superclass && !v16)
@@ -240,8 +240,8 @@
       v21[1] = 3221225472;
       v21[2] = sub_2480A7028;
       v21[3] = &unk_278EFC360;
-      v22 = v7;
-      v23 = self;
+      v22 = objectCopy;
+      selfCopy = self;
       v25 = v17;
       v8 = v9;
       v24 = v8;
@@ -268,17 +268,17 @@
   objc_sync_exit(obj);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v16 = v12;
-  v38 = a6;
-  if (self->_implementsWillChangeHandler && (objc_msgSend_objectForKeyedSubscript_(v12, v13, *MEMORY[0x277CCA2F8], v14, v15), v17 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend_BOOLValue(v17, v18, v19, v20, v21), v17, v22))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v16 = changeCopy;
+  contextCopy = context;
+  if (self->_implementsWillChangeHandler && (objc_msgSend_objectForKeyedSubscript_(changeCopy, v13, *MEMORY[0x277CCA2F8], v14, v15), v17 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend_BOOLValue(v17, v18, v19, v20, v21), v17, v22))
   {
     WeakRetained = objc_loadWeakRetained(&self->_responder);
-    objc_msgSend_prepareForLazyKVOUpdate_object_keyPath_context_(WeakRetained, v24, self, v11, v10, a6);
+    objc_msgSend_prepareForLazyKVOUpdate_object_keyPath_context_(WeakRetained, v24, self, objectCopy, pathCopy, context);
   }
 
   else if (self->_runLoopModes)
@@ -291,11 +291,11 @@
       objc_msgSend_performSelector_target_argument_order_modes_(v30, v31, sel__callbackHandler, self, 0, 0, self->_runLoopModes);
     }
 
-    v32 = objc_msgSend_objectForKey_(self->_keyPathsByContextByObj, v26, v11, v28, v29);
+    v32 = objc_msgSend_objectForKey_(self->_keyPathsByContextByObj, v26, objectCopy, v28, v29);
 
     if (v32)
     {
-      sub_2480A7B48(&self->_updatedContexts.__table_.__bucket_list_.__ptr_, &v38);
+      sub_2480A7B48(&self->_updatedContexts.__table_.__bucket_list_.__ptr_, &contextCopy);
     }
 
     objc_sync_exit(v25);
@@ -303,11 +303,11 @@
 
   else
   {
-    v33 = objc_msgSend_objectForKey_(self->_keyPathsByContextByObj, v13, v11, v14, v15);
+    v33 = objc_msgSend_objectForKey_(self->_keyPathsByContextByObj, v13, objectCopy, v14, v15);
 
     if (v33)
     {
-      sub_2480A7B48(&self->_updatedContexts.__table_.__bucket_list_.__ptr_, &v38);
+      sub_2480A7B48(&self->_updatedContexts.__table_.__bucket_list_.__ptr_, &contextCopy);
     }
 
     objc_msgSend__callbackHandler(self, v34, v35, v36, v37);

@@ -3,34 +3,34 @@
 - (NSArray)applications;
 - (NSArray)webClips;
 - (SBHIconModel)iconModel;
-- (SBHIconModelApplicationDataSourceAdapter)initWithIconModel:(id)a3 applicationDataSource:(id)a4;
+- (SBHIconModelApplicationDataSourceAdapter)initWithIconModel:(id)model applicationDataSource:(id)source;
 - (id)iconRepository;
-- (void)addApplicationInfoProviderObserver:(id)a3;
-- (void)iconModelApplicationDataSource:(id)a3 applicationPlaceholdersAdded:(id)a4;
-- (void)iconModelApplicationDataSource:(id)a3 applicationPlaceholdersRemoved:(id)a4;
-- (void)iconModelApplicationDataSource:(id)a3 applicationsAdded:(id)a4;
-- (void)iconModelApplicationDataSource:(id)a3 applicationsRemoved:(id)a4;
-- (void)iconModelApplicationDataSource:(id)a3 applicationsUpdated:(id)a4;
-- (void)uninstallApplicationWithBundleIdentifier:(id)a3 completion:(id)a4;
+- (void)addApplicationInfoProviderObserver:(id)observer;
+- (void)iconModelApplicationDataSource:(id)source applicationPlaceholdersAdded:(id)added;
+- (void)iconModelApplicationDataSource:(id)source applicationPlaceholdersRemoved:(id)removed;
+- (void)iconModelApplicationDataSource:(id)source applicationsAdded:(id)added;
+- (void)iconModelApplicationDataSource:(id)source applicationsRemoved:(id)removed;
+- (void)iconModelApplicationDataSource:(id)source applicationsUpdated:(id)updated;
+- (void)uninstallApplicationWithBundleIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SBHIconModelApplicationDataSourceAdapter
 
-- (SBHIconModelApplicationDataSourceAdapter)initWithIconModel:(id)a3 applicationDataSource:(id)a4
+- (SBHIconModelApplicationDataSourceAdapter)initWithIconModel:(id)model applicationDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = SBHIconModelApplicationDataSourceAdapter;
   v8 = [(SBHIconModelApplicationDataSourceAdapter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_iconModel, v6);
-    objc_storeStrong(&v9->_applicationDataSource, a4);
+    objc_storeWeak(&v8->_iconModel, modelCopy);
+    objc_storeStrong(&v9->_applicationDataSource, source);
     if (objc_opt_respondsToSelector())
     {
-      [v7 addIconModelApplicationDataSourceObserver:v9];
+      [sourceCopy addIconModelApplicationDataSourceObserver:v9];
     }
   }
 
@@ -39,30 +39,30 @@
 
 - (NSArray)applications
 {
-  v3 = [(SBHIconModelApplicationDataSourceAdapter *)self applicationDataSource];
-  v4 = [(SBHIconModelApplicationDataSourceAdapter *)self iconModel];
-  v5 = [v3 allApplicationsForIconModel:v4];
+  applicationDataSource = [(SBHIconModelApplicationDataSourceAdapter *)self applicationDataSource];
+  iconModel = [(SBHIconModelApplicationDataSourceAdapter *)self iconModel];
+  v5 = [applicationDataSource allApplicationsForIconModel:iconModel];
 
   return v5;
 }
 
 - (NSArray)applicationPlaceholders
 {
-  v3 = [(SBHIconModelApplicationDataSourceAdapter *)self applicationDataSource];
-  v4 = [(SBHIconModelApplicationDataSourceAdapter *)self iconModel];
-  v5 = [v3 allApplicationPlaceholdersForIconModel:v4];
+  applicationDataSource = [(SBHIconModelApplicationDataSourceAdapter *)self applicationDataSource];
+  iconModel = [(SBHIconModelApplicationDataSourceAdapter *)self iconModel];
+  v5 = [applicationDataSource allApplicationPlaceholdersForIconModel:iconModel];
 
   return v5;
 }
 
 - (NSArray)webClips
 {
-  v2 = [(SBHIconModelApplicationDataSourceAdapter *)self applicationDataSource];
-  if (v2)
+  applicationDataSource = [(SBHIconModelApplicationDataSourceAdapter *)self applicationDataSource];
+  if (applicationDataSource)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v2 webClips];
+      [applicationDataSource webClips];
     }
 
     else
@@ -82,58 +82,58 @@
 
 - (id)iconRepository
 {
-  v2 = [(SBHIconModelApplicationDataSourceAdapter *)self iconModel];
-  v3 = [v2 iconRepository];
+  iconModel = [(SBHIconModelApplicationDataSourceAdapter *)self iconModel];
+  iconRepository = [iconModel iconRepository];
 
-  return v3;
+  return iconRepository;
 }
 
-- (void)addApplicationInfoProviderObserver:(id)a3
+- (void)addApplicationInfoProviderObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)uninstallApplicationWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)uninstallApplicationWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(SBHIconModelApplicationDataSourceAdapter *)self iconRepository];
-  v8 = [v7 applicationIconForBundleIdentifier:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  iconRepository = [(SBHIconModelApplicationDataSourceAdapter *)self iconRepository];
+  v8 = [iconRepository applicationIconForBundleIdentifier:identifierCopy];
 
   if (v8)
   {
-    [v7 uninstallIcon:v8 completionHandler:v9];
+    [iconRepository uninstallIcon:v8 completionHandler:completionCopy];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)iconModelApplicationDataSource:(id)a3 applicationsAdded:(id)a4
+- (void)iconModelApplicationDataSource:(id)source applicationsAdded:(id)added
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(SBHIconModelApplicationDataSourceAdapter *)self iconRepository];
+  addedCopy = added;
+  iconRepository = [(SBHIconModelApplicationDataSourceAdapter *)self iconRepository];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = addedCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -149,7 +149,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v6 addApplicationIconForApplication:{*(*(&v13 + 1) + 8 * v11++), v13}];
+        v12 = [iconRepository addApplicationIconForApplication:{*(*(&v13 + 1) + 8 * v11++), v13}];
       }
 
       while (v9 != v11);
@@ -160,16 +160,16 @@
   }
 }
 
-- (void)iconModelApplicationDataSource:(id)a3 applicationsUpdated:(id)a4
+- (void)iconModelApplicationDataSource:(id)source applicationsUpdated:(id)updated
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(SBHIconModelApplicationDataSourceAdapter *)self iconRepository];
+  updatedCopy = updated;
+  iconRepository = [(SBHIconModelApplicationDataSourceAdapter *)self iconRepository];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = updatedCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -185,7 +185,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v6 addApplicationIconForApplication:{*(*(&v13 + 1) + 8 * v11++), v13}];
+        v12 = [iconRepository addApplicationIconForApplication:{*(*(&v13 + 1) + 8 * v11++), v13}];
       }
 
       while (v9 != v11);
@@ -196,16 +196,16 @@
   }
 }
 
-- (void)iconModelApplicationDataSource:(id)a3 applicationsRemoved:(id)a4
+- (void)iconModelApplicationDataSource:(id)source applicationsRemoved:(id)removed
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(SBHIconModelApplicationDataSourceAdapter *)self iconRepository];
+  removedCopy = removed;
+  iconRepository = [(SBHIconModelApplicationDataSourceAdapter *)self iconRepository];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v5;
+  v7 = removedCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -221,7 +221,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [v6 removeApplicationIconForApplication:{*(*(&v12 + 1) + 8 * v11++), v12}];
+        [iconRepository removeApplicationIconForApplication:{*(*(&v12 + 1) + 8 * v11++), v12}];
       }
 
       while (v9 != v11);
@@ -232,16 +232,16 @@
   }
 }
 
-- (void)iconModelApplicationDataSource:(id)a3 applicationPlaceholdersAdded:(id)a4
+- (void)iconModelApplicationDataSource:(id)source applicationPlaceholdersAdded:(id)added
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(SBHIconModelApplicationDataSourceAdapter *)self iconRepository];
+  addedCopy = added;
+  iconRepository = [(SBHIconModelApplicationDataSourceAdapter *)self iconRepository];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = addedCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -257,7 +257,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v6 addApplicationIconForApplicationPlaceholder:{*(*(&v13 + 1) + 8 * v11++), v13}];
+        v12 = [iconRepository addApplicationIconForApplicationPlaceholder:{*(*(&v13 + 1) + 8 * v11++), v13}];
       }
 
       while (v9 != v11);
@@ -268,16 +268,16 @@
   }
 }
 
-- (void)iconModelApplicationDataSource:(id)a3 applicationPlaceholdersRemoved:(id)a4
+- (void)iconModelApplicationDataSource:(id)source applicationPlaceholdersRemoved:(id)removed
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(SBHIconModelApplicationDataSourceAdapter *)self iconRepository];
+  removedCopy = removed;
+  iconRepository = [(SBHIconModelApplicationDataSourceAdapter *)self iconRepository];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v5;
+  v7 = removedCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -293,7 +293,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [v6 removeApplicationIconForApplicationPlaceholder:{*(*(&v12 + 1) + 8 * v11++), v12}];
+        [iconRepository removeApplicationIconForApplicationPlaceholder:{*(*(&v12 + 1) + 8 * v11++), v12}];
       }
 
       while (v9 != v11);

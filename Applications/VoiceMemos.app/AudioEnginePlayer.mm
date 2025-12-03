@@ -1,15 +1,15 @@
 @interface AudioEnginePlayer
 - (id)audioEngineOutputNodeAccessQueue;
-- (int)fillNextBuffer:(AudioBufferList *)a3 frameCount:(int)a4;
-- (void)audioRendererError:(id)a3;
+- (int)fillNextBuffer:(AudioBufferList *)buffer frameCount:(int)count;
+- (void)audioRendererError:(id)error;
 @end
 
 @implementation AudioEnginePlayer
 
-- (int)fillNextBuffer:(AudioBufferList *)a3 frameCount:(int)a4
+- (int)fillNextBuffer:(AudioBufferList *)buffer frameCount:(int)count
 {
 
-  v6 = AudioEnginePlayer.fillNextBuffer(_:frameCount:)(a3, a4);
+  v6 = AudioEnginePlayer.fillNextBuffer(_:frameCount:)(buffer, count);
 
   return v6;
 }
@@ -19,25 +19,25 @@
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    v3 = [Strong audioEngineOutputNodeAccessQueue];
+    audioEngineOutputNodeAccessQueue = [Strong audioEngineOutputNodeAccessQueue];
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v3 = 0;
+    audioEngineOutputNodeAccessQueue = 0;
   }
 
-  return v3;
+  return audioEngineOutputNodeAccessQueue;
 }
 
-- (void)audioRendererError:(id)a3
+- (void)audioRendererError:(id)error
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v5 = Strong;
-    v6 = a3;
+    errorCopy = error;
 
     v7 = _convertErrorToNSError(_:)();
     [v5 audioPlayerError:v7];

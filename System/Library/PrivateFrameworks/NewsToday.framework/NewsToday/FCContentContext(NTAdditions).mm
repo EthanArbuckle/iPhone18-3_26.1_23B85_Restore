@@ -29,10 +29,10 @@
   }
 
 LABEL_6:
-  v10 = [MEMORY[0x277D30F18] defaultConfiguration];
+  defaultConfiguration = [MEMORY[0x277D30F18] defaultConfiguration];
   v11 = objc_alloc(MEMORY[0x277D30F08]);
-  v12 = [MEMORY[0x277D31140] sharedNetworkReachability];
-  v13 = [v11 initWithConfiguration:v10 configurationManager:v7 contentHostDirectory:v8 networkBehaviorMonitor:v9 networkReachability:v12 desiredHeadlineFieldOptions:0x101FC383FLL feedUsage:10 assetKeyManagerDelegate:0 appActivityMonitor:0 backgroundTaskable:0 pptContext:0];
+  mEMORY[0x277D31140] = [MEMORY[0x277D31140] sharedNetworkReachability];
+  v13 = [v11 initWithConfiguration:defaultConfiguration configurationManager:v7 contentHostDirectory:v8 networkBehaviorMonitor:v9 networkReachability:mEMORY[0x277D31140] desiredHeadlineFieldOptions:0x101FC383FLL feedUsage:10 assetKeyManagerDelegate:0 appActivityMonitor:0 backgroundTaskable:0 pptContext:0];
 
   return v13;
 }

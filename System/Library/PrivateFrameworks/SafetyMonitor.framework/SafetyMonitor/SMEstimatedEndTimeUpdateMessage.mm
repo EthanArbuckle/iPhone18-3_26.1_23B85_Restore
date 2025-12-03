@@ -1,36 +1,36 @@
 @interface SMEstimatedEndTimeUpdateMessage
-- (SMEstimatedEndTimeUpdateMessage)initWithCoder:(id)a3;
-- (SMEstimatedEndTimeUpdateMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 estimatedEndTime:(id)a6;
-- (SMEstimatedEndTimeUpdateMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 estimatedEndTime:(id)a6 coarseEstimatedEndTime:(id)a7;
-- (SMEstimatedEndTimeUpdateMessage)initWithDictionary:(id)a3;
-- (SMEstimatedEndTimeUpdateMessage)initWithSessionID:(id)a3 estimatedEndTime:(id)a4 coarseEstimatedEndTime:(id)a5;
+- (SMEstimatedEndTimeUpdateMessage)initWithCoder:(id)coder;
+- (SMEstimatedEndTimeUpdateMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD estimatedEndTime:(id)time;
+- (SMEstimatedEndTimeUpdateMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD estimatedEndTime:(id)time coarseEstimatedEndTime:(id)endTime;
+- (SMEstimatedEndTimeUpdateMessage)initWithDictionary:(id)dictionary;
+- (SMEstimatedEndTimeUpdateMessage)initWithSessionID:(id)d estimatedEndTime:(id)time coarseEstimatedEndTime:(id)endTime;
 - (id)outputToDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMEstimatedEndTimeUpdateMessage
 
-- (SMEstimatedEndTimeUpdateMessage)initWithSessionID:(id)a3 estimatedEndTime:(id)a4 coarseEstimatedEndTime:(id)a5
+- (SMEstimatedEndTimeUpdateMessage)initWithSessionID:(id)d estimatedEndTime:(id)time coarseEstimatedEndTime:(id)endTime
 {
   v8 = MEMORY[0x277CBEAA8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  endTimeCopy = endTime;
+  timeCopy = time;
+  dCopy = d;
   v12 = [v8 now];
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v14 = [(SMEstimatedEndTimeUpdateMessage *)self initWithDate:v12 messageID:v13 sessionID:v11 estimatedEndTime:v10 coarseEstimatedEndTime:v9];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v14 = [(SMEstimatedEndTimeUpdateMessage *)self initWithDate:v12 messageID:uUID sessionID:dCopy estimatedEndTime:timeCopy coarseEstimatedEndTime:endTimeCopy];
 
   return v14;
 }
 
-- (SMEstimatedEndTimeUpdateMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 estimatedEndTime:(id)a6
+- (SMEstimatedEndTimeUpdateMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD estimatedEndTime:(id)time
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v10)
+  dateCopy = date;
+  dCopy = d;
+  iDCopy = iD;
+  timeCopy = time;
+  v14 = timeCopy;
+  if (!dateCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -46,7 +46,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v11)
+  if (!dCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -60,7 +60,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v12)
+  if (!iDCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -74,7 +74,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v13)
+  if (!timeCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -87,25 +87,25 @@ LABEL_14:
 
 LABEL_15:
 
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
-  self = [(SMEstimatedEndTimeUpdateMessage *)self initWithDate:v10 messageID:v11 sessionID:v12 estimatedEndTime:v13 coarseEstimatedEndTime:v13];
-  v15 = self;
+  self = [(SMEstimatedEndTimeUpdateMessage *)self initWithDate:dateCopy messageID:dCopy sessionID:iDCopy estimatedEndTime:timeCopy coarseEstimatedEndTime:timeCopy];
+  selfCopy = self;
 LABEL_16:
 
-  return v15;
+  return selfCopy;
 }
 
-- (SMEstimatedEndTimeUpdateMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 estimatedEndTime:(id)a6 coarseEstimatedEndTime:(id)a7
+- (SMEstimatedEndTimeUpdateMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD estimatedEndTime:(id)time coarseEstimatedEndTime:(id)endTime
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12)
+  dateCopy = date;
+  dCopy = d;
+  iDCopy = iD;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  if (!dateCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -120,7 +120,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v13)
+  if (!dCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -133,7 +133,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v14)
+  if (!iDCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -146,7 +146,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v15)
+  if (!timeCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -158,33 +158,33 @@ LABEL_16:
 
 LABEL_17:
 
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
   v23.receiver = self;
   v23.super_class = SMEstimatedEndTimeUpdateMessage;
-  v17 = [(SMMessage *)&v23 initWithDate:v12 messageID:v13 sessionID:v14];
+  v17 = [(SMMessage *)&v23 initWithDate:dateCopy messageID:dCopy sessionID:iDCopy];
   p_isa = &v17->super.super.isa;
   if (v17)
   {
-    objc_storeStrong(&v17->_estimatedEndTime, a6);
-    objc_storeStrong(p_isa + 6, a7);
+    objc_storeStrong(&v17->_estimatedEndTime, time);
+    objc_storeStrong(p_isa + 6, endTime);
   }
 
   self = p_isa;
-  v19 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v19;
+  return selfCopy;
 }
 
-- (SMEstimatedEndTimeUpdateMessage)initWithDictionary:(id)a3
+- (SMEstimatedEndTimeUpdateMessage)initWithDictionary:(id)dictionary
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -196,16 +196,16 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  v7 = [v5 valueForKey:@"messageType"];
-  v8 = [v7 intValue];
+  v7 = [dictionaryCopy valueForKey:@"messageType"];
+  intValue = [v7 intValue];
 
-  if ([objc_opt_class() messageType] != v8)
+  if ([objc_opt_class() messageType] != intValue)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
 LABEL_15:
-      v34 = 0;
+      selfCopy = 0;
       goto LABEL_16;
     }
 
@@ -217,9 +217,9 @@ LABEL_15:
     v59 = 2112;
     v60 = v30;
     v61 = 1024;
-    v62 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v63 = 1024;
-    v64 = v8;
+    v64 = intValue;
     v31 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
     v32 = v12;
     v33 = 34;
@@ -230,9 +230,9 @@ LABEL_30:
   }
 
   v9 = [v6 valueForKey:@"interfaceVersion"];
-  v10 = [v9 intValue];
+  intValue2 = [v9 intValue];
 
-  if (v10 != 1)
+  if (intValue2 != 1)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -248,7 +248,7 @@ LABEL_30:
     v59 = 2112;
     v60 = v30;
     v61 = 1024;
-    v62 = v10;
+    messageType = intValue2;
     v31 = "#SafetyCache,%@,%@,unrecognized interface version,%d";
     v32 = v12;
     v33 = 28;
@@ -311,7 +311,7 @@ LABEL_30:
           v37 = v56;
           self = [(SMEstimatedEndTimeUpdateMessage *)self initWithDate:v14 messageID:v17 sessionID:v20 estimatedEndTime:v56 coarseEstimatedEndTime:v27, v55];
 
-          v34 = self;
+          selfCopy = self;
         }
 
         else
@@ -332,7 +332,7 @@ LABEL_30:
             v37 = v50;
           }
 
-          v34 = 0;
+          selfCopy = 0;
         }
       }
 
@@ -351,7 +351,7 @@ LABEL_30:
           _os_log_error_impl(&dword_26455D000, v22, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing sessionID", buf, 0x16u);
         }
 
-        v34 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -370,7 +370,7 @@ LABEL_30:
         _os_log_error_impl(&dword_26455D000, v20, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing messageID", buf, 0x16u);
       }
 
-      v34 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -389,44 +389,44 @@ LABEL_30:
       _os_log_error_impl(&dword_26455D000, v14, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing date", buf, 0x16u);
     }
 
-    v34 = 0;
+    selfCopy = 0;
   }
 
 LABEL_16:
   v35 = *MEMORY[0x277D85DE8];
-  return v34;
+  return selfCopy;
 }
 
 - (id)outputToDictionary
 {
   v12.receiver = self;
   v12.super_class = SMEstimatedEndTimeUpdateMessage;
-  v3 = [(SMMessage *)&v12 outputToDictionary];
+  outputToDictionary = [(SMMessage *)&v12 outputToDictionary];
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(SMEstimatedEndTimeUpdateMessage *)self estimatedEndTime];
-  [v5 timeIntervalSince1970];
+  estimatedEndTime = [(SMEstimatedEndTimeUpdateMessage *)self estimatedEndTime];
+  [estimatedEndTime timeIntervalSince1970];
   v6 = [v4 numberWithDouble:?];
-  [v3 setObject:v6 forKey:@"estimatedEndTime"];
+  [outputToDictionary setObject:v6 forKey:@"estimatedEndTime"];
 
-  v7 = [(SMEstimatedEndTimeUpdateMessage *)self coarseEstimatedEndTime];
+  coarseEstimatedEndTime = [(SMEstimatedEndTimeUpdateMessage *)self coarseEstimatedEndTime];
 
-  if (v7)
+  if (coarseEstimatedEndTime)
   {
     v8 = MEMORY[0x277CCABB0];
-    v9 = [(SMEstimatedEndTimeUpdateMessage *)self coarseEstimatedEndTime];
-    [v9 timeIntervalSince1970];
+    coarseEstimatedEndTime2 = [(SMEstimatedEndTimeUpdateMessage *)self coarseEstimatedEndTime];
+    [coarseEstimatedEndTime2 timeIntervalSince1970];
     v10 = [v8 numberWithDouble:?];
-    [v3 setObject:v10 forKey:@"coarseEstimatedEndTime"];
+    [outputToDictionary setObject:v10 forKey:@"coarseEstimatedEndTime"];
   }
 
-  return v3;
+  return outputToDictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  coderCopy = coder;
+  if (!coderCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -441,22 +441,22 @@ LABEL_16:
 
   v9.receiver = self;
   v9.super_class = SMEstimatedEndTimeUpdateMessage;
-  [(SMMessage *)&v9 encodeWithCoder:v4];
-  v6 = [(SMEstimatedEndTimeUpdateMessage *)self estimatedEndTime];
-  [v4 encodeObject:v6 forKey:@"estimatedEndTime"];
+  [(SMMessage *)&v9 encodeWithCoder:coderCopy];
+  estimatedEndTime = [(SMEstimatedEndTimeUpdateMessage *)self estimatedEndTime];
+  [coderCopy encodeObject:estimatedEndTime forKey:@"estimatedEndTime"];
 
-  v7 = [(SMEstimatedEndTimeUpdateMessage *)self coarseEstimatedEndTime];
-  [v4 encodeObject:v7 forKey:@"coarseEstimatedEndTime"];
+  coarseEstimatedEndTime = [(SMEstimatedEndTimeUpdateMessage *)self coarseEstimatedEndTime];
+  [coderCopy encodeObject:coarseEstimatedEndTime forKey:@"coarseEstimatedEndTime"];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (SMEstimatedEndTimeUpdateMessage)initWithCoder:(id)a3
+- (SMEstimatedEndTimeUpdateMessage)initWithCoder:(id)coder
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  coderCopy = coder;
+  v6 = coderCopy;
+  if (!coderCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -468,7 +468,7 @@ LABEL_16:
     goto LABEL_14;
   }
 
-  v7 = [v5 decodeIntegerForKey:@"messageType"];
+  v7 = [coderCopy decodeIntegerForKey:@"messageType"];
   if ([objc_opt_class() messageType] != v7)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -485,7 +485,7 @@ LABEL_16:
     v41 = 2112;
     v42 = v18;
     v43 = 1024;
-    v44 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v45 = 1024;
     v46 = v7;
     v19 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
@@ -516,7 +516,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v10, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing date", &v39, 0x16u);
       }
 
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_30;
     }
 
@@ -536,7 +536,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v11, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing messageID", &v39, 0x16u);
       }
 
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_29;
     }
 
@@ -550,7 +550,7 @@ LABEL_32:
         v14 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"coarseEstimatedEndTime"];
         self = [(SMEstimatedEndTimeUpdateMessage *)self initWithDate:v9 messageID:v10 sessionID:v11 estimatedEndTime:v13 coarseEstimatedEndTime:v14];
 
-        v15 = self;
+        selfCopy = self;
 LABEL_28:
 
 LABEL_29:
@@ -591,7 +591,7 @@ LABEL_30:
       }
     }
 
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_28;
   }
 
@@ -607,7 +607,7 @@ LABEL_30:
     v41 = 2112;
     v42 = v18;
     v43 = 1024;
-    v44 = v22;
+    messageType = v22;
     v19 = "#SafetyCache,%@,%@,unrecognized interface version,%d";
     v20 = v9;
     v21 = 28;
@@ -615,11 +615,11 @@ LABEL_30:
   }
 
 LABEL_14:
-  v15 = 0;
+  selfCopy = 0;
 LABEL_15:
 
   v23 = *MEMORY[0x277D85DE8];
-  return v15;
+  return selfCopy;
 }
 
 @end

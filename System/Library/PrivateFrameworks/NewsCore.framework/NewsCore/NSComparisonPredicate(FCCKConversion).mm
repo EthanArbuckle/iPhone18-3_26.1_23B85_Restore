@@ -18,20 +18,20 @@
 {
   v27 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 leftExpression];
-  v6 = [a1 rightExpression];
-  if ([a1 predicateOperatorType] != 10 || objc_msgSend(a1, "comparisonPredicateModifier") || objc_msgSend(v5, "expressionType") || objc_msgSend(v6, "expressionType") != 3)
+  leftExpression = [self leftExpression];
+  rightExpression = [self rightExpression];
+  if ([self predicateOperatorType] != 10 || objc_msgSend(self, "comparisonPredicateModifier") || objc_msgSend(leftExpression, "expressionType") || objc_msgSend(rightExpression, "expressionType") != 3)
   {
-    if ([a1 predicateOperatorType] == 99 && !objc_msgSend(a1, "comparisonPredicateModifier") && objc_msgSend(v5, "expressionType") == 3 && !objc_msgSend(v6, "expressionType"))
+    if ([self predicateOperatorType] == 99 && !objc_msgSend(self, "comparisonPredicateModifier") && objc_msgSend(leftExpression, "expressionType") == 3 && !objc_msgSend(rightExpression, "expressionType"))
     {
       v7 = objc_opt_new();
-      v20 = [v5 CKExpressionValue];
-      v21 = NTPBCKRecordFieldIdentifierForUserFieldName(v20);
+      cKExpressionValue = [leftExpression CKExpressionValue];
+      v21 = NTPBCKRecordFieldIdentifierForUserFieldName(cKExpressionValue);
       [v7 setFieldName:v21];
 
       [v7 setType:12];
-      v22 = [v6 CKExpressionValue];
-      v23 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:v22];
+      cKExpressionValue2 = [rightExpression CKExpressionValue];
+      v23 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:cKExpressionValue2];
       [v7 setFieldValue:v23];
 
       v25 = v7;
@@ -40,20 +40,20 @@
 
     else
     {
-      if ([a1 predicateOperatorType] != 4 || objc_msgSend(a1, "comparisonPredicateModifier") != 2 || objc_msgSend(v5, "expressionType") != 3 || objc_msgSend(v6, "expressionType"))
+      if ([self predicateOperatorType] != 4 || objc_msgSend(self, "comparisonPredicateModifier") != 2 || objc_msgSend(leftExpression, "expressionType") != 3 || objc_msgSend(rightExpression, "expressionType"))
       {
         v13 = 0;
         goto LABEL_15;
       }
 
       v7 = objc_opt_new();
-      v16 = [v5 CKExpressionValue];
-      v17 = NTPBCKRecordFieldIdentifierForUserFieldName(v16);
+      cKExpressionValue3 = [leftExpression CKExpressionValue];
+      v17 = NTPBCKRecordFieldIdentifierForUserFieldName(cKExpressionValue3);
       [v7 setFieldName:v17];
 
       [v7 setType:12];
-      v18 = [v6 CKExpressionValue];
-      v19 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:v18];
+      cKExpressionValue4 = [rightExpression CKExpressionValue];
+      v19 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:cKExpressionValue4];
       [v7 setFieldValue:v19];
 
       v24 = v7;
@@ -64,13 +64,13 @@
   else
   {
     v7 = objc_opt_new();
-    v8 = [v6 CKExpressionValue];
-    v9 = NTPBCKRecordFieldIdentifierForUserFieldName(v8);
+    cKExpressionValue5 = [rightExpression CKExpressionValue];
+    v9 = NTPBCKRecordFieldIdentifierForUserFieldName(cKExpressionValue5);
     [v7 setFieldName:v9];
 
     [v7 setType:12];
-    v10 = [v5 CKExpressionValue];
-    v11 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:v10];
+    cKExpressionValue6 = [leftExpression CKExpressionValue];
+    v11 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:cKExpressionValue6];
     [v7 setFieldValue:v11];
 
     v26 = v7;
@@ -89,20 +89,20 @@ LABEL_15:
 {
   v34 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 leftExpression];
-  v6 = [a1 rightExpression];
-  v7 = [v5 expressionType];
-  v8 = [v6 expressionType];
-  if ([a1 predicateOperatorType] == 10 && !objc_msgSend(a1, "comparisonPredicateModifier") && v7 == 3 && (v8 == 14 || !v8))
+  leftExpression = [self leftExpression];
+  rightExpression = [self rightExpression];
+  expressionType = [leftExpression expressionType];
+  expressionType2 = [rightExpression expressionType];
+  if ([self predicateOperatorType] == 10 && !objc_msgSend(self, "comparisonPredicateModifier") && expressionType == 3 && (expressionType2 == 14 || !expressionType2))
   {
     v9 = objc_opt_new();
-    v10 = [v5 CKExpressionValue];
-    v11 = NTPBCKRecordFieldIdentifierForUserFieldName(v10);
+    cKExpressionValue = [leftExpression CKExpressionValue];
+    v11 = NTPBCKRecordFieldIdentifierForUserFieldName(cKExpressionValue);
     [v9 setFieldName:v11];
 
     [v9 setType:3];
-    v12 = [v6 CKExpressionValue];
-    v13 = FCCKNSArrayFromCollection(v12);
+    cKExpressionValue2 = [rightExpression CKExpressionValue];
+    v13 = FCCKNSArrayFromCollection(cKExpressionValue2);
     v14 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:v13];
     [v9 setFieldValue:v14];
 
@@ -110,16 +110,16 @@ LABEL_15:
     v15 = &v33;
   }
 
-  else if ([a1 predicateOperatorType] == 4 && objc_msgSend(a1, "comparisonPredicateModifier") == 2 && (v7 != 14 ? (v16 = v7 == 0) : (v16 = 1), v16 && v8 == 3))
+  else if ([self predicateOperatorType] == 4 && objc_msgSend(self, "comparisonPredicateModifier") == 2 && (expressionType != 14 ? (v16 = expressionType == 0) : (v16 = 1), v16 && expressionType2 == 3))
   {
     v9 = objc_opt_new();
-    v17 = [v6 CKExpressionValue];
-    v18 = NTPBCKRecordFieldIdentifierForUserFieldName(v17);
+    cKExpressionValue3 = [rightExpression CKExpressionValue];
+    v18 = NTPBCKRecordFieldIdentifierForUserFieldName(cKExpressionValue3);
     [v9 setFieldName:v18];
 
     [v9 setType:3];
-    v19 = [v5 CKExpressionValue];
-    v20 = FCCKNSArrayFromCollection(v19);
+    cKExpressionValue4 = [leftExpression CKExpressionValue];
+    v20 = FCCKNSArrayFromCollection(cKExpressionValue4);
     v21 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:v20];
     [v9 setFieldValue:v21];
 
@@ -129,27 +129,27 @@ LABEL_15:
 
   else
   {
-    if ([a1 predicateOperatorType] != 99 || objc_msgSend(a1, "comparisonPredicateModifier"))
+    if ([self predicateOperatorType] != 99 || objc_msgSend(self, "comparisonPredicateModifier"))
     {
       v22 = 0;
       goto LABEL_27;
     }
 
     v22 = 0;
-    v23 = v7 == 14 || v7 == 0;
-    if (!v23 || v8 != 3)
+    v23 = expressionType == 14 || expressionType == 0;
+    if (!v23 || expressionType2 != 3)
     {
       goto LABEL_27;
     }
 
     v9 = objc_opt_new();
-    v24 = [v6 CKExpressionValue];
-    v25 = NTPBCKRecordFieldIdentifierForUserFieldName(v24);
+    cKExpressionValue5 = [rightExpression CKExpressionValue];
+    v25 = NTPBCKRecordFieldIdentifierForUserFieldName(cKExpressionValue5);
     [v9 setFieldName:v25];
 
     [v9 setType:3];
-    v26 = [v5 CKExpressionValue];
-    v27 = FCCKNSArrayFromCollection(v26);
+    cKExpressionValue6 = [leftExpression CKExpressionValue];
+    v27 = FCCKNSArrayFromCollection(cKExpressionValue6);
     v28 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:v27];
     [v9 setFieldValue:v28];
 
@@ -169,20 +169,20 @@ LABEL_27:
 {
   v26[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 leftExpression];
-  v6 = [a1 rightExpression];
-  v7 = [v5 expressionType];
-  v8 = [v6 expressionType];
-  if ([a1 predicateOperatorType] == 10 && objc_msgSend(a1, "comparisonPredicateModifier") == 2 && v7 == 3 && (v8 == 14 || !v8))
+  leftExpression = [self leftExpression];
+  rightExpression = [self rightExpression];
+  expressionType = [leftExpression expressionType];
+  expressionType2 = [rightExpression expressionType];
+  if ([self predicateOperatorType] == 10 && objc_msgSend(self, "comparisonPredicateModifier") == 2 && expressionType == 3 && (expressionType2 == 14 || !expressionType2))
   {
     v9 = objc_opt_new();
-    v10 = [v5 CKExpressionValue];
-    v11 = NTPBCKRecordFieldIdentifierForUserFieldName(v10);
+    cKExpressionValue = [leftExpression CKExpressionValue];
+    v11 = NTPBCKRecordFieldIdentifierForUserFieldName(cKExpressionValue);
     [v9 setFieldName:v11];
 
     [v9 setType:14];
-    v12 = [v6 CKExpressionValue];
-    v13 = FCCKNSArrayFromCollection(v12);
+    cKExpressionValue2 = [rightExpression CKExpressionValue];
+    v13 = FCCKNSArrayFromCollection(cKExpressionValue2);
     v14 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:v13];
     [v9 setFieldValue:v14];
 
@@ -194,23 +194,23 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if ([a1 predicateOperatorType] == 10 && objc_msgSend(a1, "comparisonPredicateModifier") == 2)
+  if ([self predicateOperatorType] == 10 && objc_msgSend(self, "comparisonPredicateModifier") == 2)
   {
     v16 = 0;
-    v17 = v7 == 14 || v7 == 0;
-    if (!v17 || v8 != 3)
+    v17 = expressionType == 14 || expressionType == 0;
+    if (!v17 || expressionType2 != 3)
     {
       goto LABEL_18;
     }
 
     v9 = objc_opt_new();
-    v18 = [v6 CKExpressionValue];
-    v19 = NTPBCKRecordFieldIdentifierForUserFieldName(v18);
+    cKExpressionValue3 = [rightExpression CKExpressionValue];
+    v19 = NTPBCKRecordFieldIdentifierForUserFieldName(cKExpressionValue3);
     [v9 setFieldName:v19];
 
     [v9 setType:14];
-    v20 = [v5 CKExpressionValue];
-    v21 = FCCKNSArrayFromCollection(v20);
+    cKExpressionValue4 = [leftExpression CKExpressionValue];
+    v21 = FCCKNSArrayFromCollection(cKExpressionValue4);
     v22 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:v21];
     [v9 setFieldValue:v22];
 
@@ -231,24 +231,24 @@ LABEL_18:
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 leftExpression];
-  v6 = [a1 rightExpression];
-  v7 = [v5 expressionType];
-  v8 = [v6 expressionType];
-  if ([a1 predicateOperatorType] == 10 && objc_msgSend(a1, "comparisonPredicateModifier") == 1)
+  leftExpression = [self leftExpression];
+  rightExpression = [self rightExpression];
+  expressionType = [leftExpression expressionType];
+  expressionType2 = [rightExpression expressionType];
+  if ([self predicateOperatorType] == 10 && objc_msgSend(self, "comparisonPredicateModifier") == 1)
   {
     v9 = 0;
-    v10 = v7 == 14 || v7 == 0;
-    if (v10 && v8 == 3)
+    v10 = expressionType == 14 || expressionType == 0;
+    if (v10 && expressionType2 == 3)
     {
       v11 = objc_opt_new();
-      v12 = [v6 CKExpressionValue];
-      v13 = NTPBCKRecordFieldIdentifierForUserFieldName(v12);
+      cKExpressionValue = [rightExpression CKExpressionValue];
+      v13 = NTPBCKRecordFieldIdentifierForUserFieldName(cKExpressionValue);
       [v11 setFieldName:v13];
 
       [v11 setType:20];
-      v14 = [v5 CKExpressionValue];
-      v15 = FCCKNSArrayFromCollection(v14);
+      cKExpressionValue2 = [leftExpression CKExpressionValue];
+      v15 = FCCKNSArrayFromCollection(cKExpressionValue2);
       v16 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:v15];
       [v11 setFieldValue:v16];
 
@@ -271,15 +271,15 @@ LABEL_18:
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 leftExpression];
-  v8 = [a1 rightExpression];
-  if ([a1 predicateOperatorType] != 8 || objc_msgSend(v7, "expressionType") != 3 || objc_msgSend(v8, "expressionType"))
+  leftExpression = [self leftExpression];
+  rightExpression = [self rightExpression];
+  if ([self predicateOperatorType] != 8 || objc_msgSend(leftExpression, "expressionType") != 3 || objc_msgSend(rightExpression, "expressionType"))
   {
     v9 = 0;
     goto LABEL_5;
   }
 
-  v12 = [v8 CKExpressionValue];
+  cKExpressionValue = [rightExpression CKExpressionValue];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -288,7 +288,7 @@ LABEL_18:
     {
       if (a4)
       {
-        [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Expected NSString or NSData on right hand side: %@", a1}];
+        [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Expected NSString or NSData on right hand side: %@", self}];
         *a4 = v9 = 0;
       }
 
@@ -302,16 +302,16 @@ LABEL_18:
   }
 
   v13 = objc_opt_new();
-  v14 = [v7 CKExpressionValue];
-  v15 = NTPBCKRecordFieldIdentifierForUserFieldName(v14);
+  cKExpressionValue2 = [leftExpression CKExpressionValue];
+  v15 = NTPBCKRecordFieldIdentifierForUserFieldName(cKExpressionValue2);
   [v13 setFieldName:v15];
 
-  v16 = [(FCCKProtocolTranslator *)v6 fieldValueFromObject:v12];
+  v16 = [(FCCKProtocolTranslator *)v6 fieldValueFromObject:cKExpressionValue];
   [v13 setFieldValue:v16];
 
-  if ([a1 comparisonPredicateModifier])
+  if ([self comparisonPredicateModifier])
   {
-    if ([a1 comparisonPredicateModifier] != 2)
+    if ([self comparisonPredicateModifier] != 2)
     {
       v9 = 0;
       goto LABEL_18;
@@ -342,39 +342,39 @@ LABEL_5:
 {
   v28[2] = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 leftExpression];
-  v8 = [a1 rightExpression];
-  if ([a1 predicateOperatorType] == 100 && !objc_msgSend(a1, "comparisonPredicateModifier") && objc_msgSend(v7, "expressionType") == 3 && objc_msgSend(v8, "expressionType") == 14)
+  leftExpression = [self leftExpression];
+  rightExpression = [self rightExpression];
+  if ([self predicateOperatorType] == 100 && !objc_msgSend(self, "comparisonPredicateModifier") && objc_msgSend(leftExpression, "expressionType") == 3 && objc_msgSend(rightExpression, "expressionType") == 14)
   {
-    v9 = [v8 constantValue];
+    constantValue = [rightExpression constantValue];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 count] == 2)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [constantValue count] == 2)
     {
-      v10 = [v9 objectAtIndexedSubscript:0];
-      v11 = [v10 CKExpressionValue];
+      v10 = [constantValue objectAtIndexedSubscript:0];
+      cKExpressionValue = [v10 CKExpressionValue];
 
-      v12 = [v9 objectAtIndexedSubscript:1];
-      v13 = [v12 CKExpressionValue];
+      v12 = [constantValue objectAtIndexedSubscript:1];
+      cKExpressionValue2 = [v12 CKExpressionValue];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
         v14 = objc_opt_new();
         v27 = objc_opt_new();
-        v15 = [v7 CKExpressionValue];
-        NTPBCKRecordFieldIdentifierForUserFieldName(v15);
-        v17 = v16 = v11;
+        cKExpressionValue3 = [leftExpression CKExpressionValue];
+        NTPBCKRecordFieldIdentifierForUserFieldName(cKExpressionValue3);
+        v17 = v16 = cKExpressionValue;
         [v14 setFieldName:v17];
 
-        v11 = v16;
+        cKExpressionValue = v16;
         v18 = [(FCCKProtocolTranslator *)v6 fieldValueFromObject:v16];
         [v14 setFieldValue:v18];
 
         [v14 setType:8];
-        v19 = [v14 fieldName];
-        [v27 setFieldName:v19];
+        fieldName = [v14 fieldName];
+        [v27 setFieldName:fieldName];
 
-        v20 = [(FCCKProtocolTranslator *)v6 fieldValueFromObject:v13];
+        v20 = [(FCCKProtocolTranslator *)v6 fieldValueFromObject:cKExpressionValue2];
         [v27 setFieldValue:v20];
 
         [v27 setType:6];
@@ -385,7 +385,7 @@ LABEL_5:
 
       else if (a4)
       {
-        [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Expected array with two number arguments on right hand side: %@", a1}];
+        [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Expected array with two number arguments on right hand side: %@", self}];
         *a4 = v21 = 0;
       }
 
@@ -402,7 +402,7 @@ LABEL_5:
         v24 = MEMORY[0x1E695B978];
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
-        *a4 = [v24 errorWithCode:1009 format:{@"Expected array with two number arguments on right hand side, but got %@: %@", v26, a1}];
+        *a4 = [v24 errorWithCode:1009 format:{@"Expected array with two number arguments on right hand side, but got %@: %@", v26, self}];
       }
 
       v21 = 0;
@@ -448,12 +448,12 @@ LABEL_5:
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 leftExpression];
-  v6 = [a1 rightExpression];
-  if ([a1 predicateOperatorType] == 99 && objc_msgSend(v5, "expressionType") == 1 && !objc_msgSend(v6, "expressionType"))
+  leftExpression = [self leftExpression];
+  rightExpression = [self rightExpression];
+  if ([self predicateOperatorType] == 99 && objc_msgSend(leftExpression, "expressionType") == 1 && !objc_msgSend(rightExpression, "expressionType"))
   {
     v10 = objc_opt_new();
-    if ([a1 comparisonPredicateModifier] == 1)
+    if ([self comparisonPredicateModifier] == 1)
     {
       v11 = 10;
     }
@@ -464,8 +464,8 @@ LABEL_5:
     }
 
     [v10 setType:v11];
-    v12 = [v6 constantValue];
-    v13 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:v12];
+    constantValue = [rightExpression constantValue];
+    v13 = [(FCCKProtocolTranslator *)v4 fieldValueFromObject:constantValue];
     [v10 setFieldValue:v13];
 
     v14[0] = v10;
@@ -486,11 +486,11 @@ LABEL_5:
 {
   v44[1] = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 leftExpression];
-  v8 = [a1 rightExpression];
-  if ([v7 expressionType] != 3 || (objc_msgSend(v7, "keyPath"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", @"allTokens"), v9, v11 = v7, v12 = v8, (v10 & 1) == 0))
+  leftExpression = [self leftExpression];
+  rightExpression = [self rightExpression];
+  if ([leftExpression expressionType] != 3 || (objc_msgSend(leftExpression, "keyPath"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", @"allTokens"), v9, v11 = leftExpression, v12 = rightExpression, (v10 & 1) == 0))
   {
-    if ([v8 expressionType] != 3 || (objc_msgSend(v8, "keyPath"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"allTokens"), v13, v11 = v8, v12 = v7, !v14))
+    if ([rightExpression expressionType] != 3 || (objc_msgSend(rightExpression, "keyPath"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"allTokens"), v13, v11 = rightExpression, v12 = leftExpression, !v14))
     {
       v29 = 0;
       goto LABEL_59;
@@ -500,17 +500,17 @@ LABEL_5:
   v15 = v11;
   v16 = v12;
   v17 = objc_opt_new();
-  v18 = [v16 expressionType];
-  if (!v18)
+  expressionType = [v16 expressionType];
+  if (!expressionType)
   {
     v42 = v6;
-    v27 = [v16 constantValue];
+    constantValue = [v16 constantValue];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       if (a4)
       {
-        *a4 = [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required string or tokenize() arguments when comparing to special key-path allTokens: %@", a1}];
+        *a4 = [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required string or tokenize() arguments when comparing to special key-path allTokens: %@", self}];
       }
 
       v29 = 0;
@@ -519,18 +519,18 @@ LABEL_5:
     }
 
     v41 = v15;
-    v28 = [v16 constantValue];
-    v30 = [(FCCKProtocolTranslator *)v42 fieldValueFromObject:v28];
+    constantValue2 = [v16 constantValue];
+    v30 = [(FCCKProtocolTranslator *)v42 fieldValueFromObject:constantValue2];
     [v17 setFieldValue:v30];
 
 LABEL_17:
     v15 = v41;
-    if ([a1 comparisonPredicateModifier] == 1 && v41 == v7)
+    if ([self comparisonPredicateModifier] == 1 && v41 == leftExpression)
     {
       v6 = v42;
       if (a4)
       {
-        [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Enumerating special key-path allTokens is not allowed: %@", a1}];
+        [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Enumerating special key-path allTokens is not allowed: %@", self}];
         goto LABEL_14;
       }
 
@@ -540,20 +540,20 @@ LABEL_57:
     }
 
     v6 = v42;
-    if ([a1 predicateOperatorType] == 1000)
+    if ([self predicateOperatorType] == 1000)
     {
-      if (!v18 && (([a1 options] & 4) != 0 || (objc_msgSend(a1, "options") & 1) == 0 || (objc_msgSend(a1, "options") & 2) == 0 || (objc_msgSend(a1, "options") & 8) == 0))
+      if (!expressionType && (([self options] & 4) != 0 || (objc_msgSend(self, "options") & 1) == 0 || (objc_msgSend(self, "options") & 2) == 0 || (objc_msgSend(self, "options") & 8) == 0))
       {
         if (a4)
         {
-          [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required NSCaseInsensitivePredicateOption, NSDiacriticInsensitivePredicateOption, and NSLocaleSensitivePredicateOption comparison predicate options: %@", a1}];
+          [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required NSCaseInsensitivePredicateOption, NSDiacriticInsensitivePredicateOption, and NSLocaleSensitivePredicateOption comparison predicate options: %@", self}];
           goto LABEL_14;
         }
 
         goto LABEL_57;
       }
 
-      if ([a1 comparisonPredicateModifier] == 1)
+      if ([self comparisonPredicateModifier] == 1)
       {
         v31 = 10;
       }
@@ -571,29 +571,29 @@ LABEL_57:
 
     else
     {
-      if ([a1 predicateOperatorType] != 10)
+      if ([self predicateOperatorType] != 10)
       {
         if (a4)
         {
-          [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required comparison operators TOKENMATCHES or IN when searching special key-path allTokens: %@", a1}];
+          [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required comparison operators TOKENMATCHES or IN when searching special key-path allTokens: %@", self}];
           goto LABEL_14;
         }
 
         goto LABEL_57;
       }
 
-      if ([a1 comparisonPredicateModifier] == 2)
+      if ([self comparisonPredicateModifier] == 2)
       {
         v34 = 11;
       }
 
       else
       {
-        if ([a1 comparisonPredicateModifier] != 1)
+        if ([self comparisonPredicateModifier] != 1)
         {
           if (a4)
           {
-            [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required predicate modifier ANY or ALL when searching special key-path allTokens: %@", a1}];
+            [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required predicate modifier ANY or ALL when searching special key-path allTokens: %@", self}];
             goto LABEL_14;
           }
 
@@ -608,7 +608,7 @@ LABEL_57:
       {
         if (a4)
         {
-          [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required tokenize() operand when searching special key-path allTokens: %@", a1}];
+          [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required tokenize() operand when searching special key-path allTokens: %@", self}];
           goto LABEL_14;
         }
 
@@ -635,23 +635,23 @@ LABEL_57:
     {
       v40 = v17;
       v42 = v6;
-      v21 = [v16 arguments];
-      v22 = [v21 objectAtIndexedSubscript:1];
-      v23 = [v22 constantValue];
-      v24 = [a1 _comparisonOptionForString:v23];
+      arguments = [v16 arguments];
+      v22 = [arguments objectAtIndexedSubscript:1];
+      constantValue3 = [v22 constantValue];
+      v24 = [self _comparisonOptionForString:constantValue3];
 
       if ((v24 & 0xF) == 0xBLL)
       {
-        v25 = [v16 arguments];
-        v26 = [v25 objectAtIndexedSubscript:0];
-        v27 = [v26 constantValue];
+        arguments2 = [v16 arguments];
+        v26 = [arguments2 objectAtIndexedSubscript:0];
+        constantValue = [v26 constantValue];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v28 = [(FCCKProtocolTranslator *)v42 fieldValueFromObject:v27];
+          constantValue2 = [(FCCKProtocolTranslator *)v42 fieldValueFromObject:constantValue];
           v17 = v40;
-          [v40 setFieldValue:v28];
+          [v40 setFieldValue:constantValue2];
           goto LABEL_17;
         }
 
@@ -660,7 +660,7 @@ LABEL_57:
           v35 = MEMORY[0x1E695B978];
           v36 = objc_opt_class();
           v37 = NSStringFromClass(v36);
-          *a4 = [v35 errorWithCode:1009 format:{@"Required string argument when using tokenize(), but got %@: %@", v37, a1}];
+          *a4 = [v35 errorWithCode:1009 format:{@"Required string argument when using tokenize(), but got %@: %@", v37, self}];
         }
 
         v29 = 0;
@@ -674,7 +674,7 @@ LABEL_57:
         v6 = v42;
         if (a4)
         {
-          [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required NSCaseInsensitivePredicateOption, NSDiacriticInsensitivePredicateOption, and NSLocaleSensitivePredicateOption tokenization options on tokenize() function: %@", a1}];
+          [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required NSCaseInsensitivePredicateOption, NSDiacriticInsensitivePredicateOption, and NSLocaleSensitivePredicateOption tokenization options on tokenize() function: %@", self}];
           *a4 = v29 = 0;
         }
 
@@ -694,7 +694,7 @@ LABEL_57:
     goto LABEL_57;
   }
 
-  [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required string or tokenize() arguments when searching special key-path allTokens: %@", a1}];
+  [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Required string or tokenize() arguments when searching special key-path allTokens: %@", self}];
 LABEL_14:
   *a4 = v29 = 0;
 LABEL_58:
@@ -709,55 +709,55 @@ LABEL_59:
 {
   v34[1] = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 leftExpression];
-  v8 = [a1 rightExpression];
-  if ([a1 predicateOperatorType] > 5)
+  leftExpression = [self leftExpression];
+  rightExpression = [self rightExpression];
+  if ([self predicateOperatorType] > 5)
   {
-    v11 = 0;
+    cKExpressionValue = 0;
 LABEL_14:
     v17 = 0;
     goto LABEL_15;
   }
 
-  if ([v7 expressionType] == 3 || objc_msgSend(v7, "expressionType") == 1)
+  if ([leftExpression expressionType] == 3 || objc_msgSend(leftExpression, "expressionType") == 1)
   {
     v9 = 0;
-    v10 = v7;
+    v10 = leftExpression;
 LABEL_5:
-    v11 = [v10 CKExpressionValue];
+    cKExpressionValue = [v10 CKExpressionValue];
     goto LABEL_6;
   }
 
-  if ([v8 expressionType] == 3 || objc_msgSend(v8, "expressionType") == 1)
+  if ([rightExpression expressionType] == 3 || objc_msgSend(rightExpression, "expressionType") == 1)
   {
     v9 = 1;
-    v10 = v8;
+    v10 = rightExpression;
     goto LABEL_5;
   }
 
-  v11 = 0;
+  cKExpressionValue = 0;
   v9 = 0;
 LABEL_6:
-  if (![v7 expressionType])
+  if (![leftExpression expressionType])
   {
-    v19 = v7;
+    v19 = leftExpression;
 LABEL_21:
-    v16 = [v19 CKExpressionValue];
+    cKExpressionValue2 = [v19 CKExpressionValue];
     goto LABEL_22;
   }
 
-  if (![v8 expressionType])
+  if (![rightExpression expressionType])
   {
-    v19 = v8;
+    v19 = rightExpression;
     goto LABEL_21;
   }
 
-  if ([v7 expressionType] != 4 || (objc_msgSend(v7, "function"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"now"), v12, !v13))
+  if ([leftExpression expressionType] != 4 || (objc_msgSend(leftExpression, "function"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"now"), v12, !v13))
   {
-    if ([v8 expressionType] != 4 || (objc_msgSend(v8, "function"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"now"), v14, !v15))
+    if ([rightExpression expressionType] != 4 || (objc_msgSend(rightExpression, "function"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"now"), v14, !v15))
     {
       v17 = 0;
-      if (v11)
+      if (cKExpressionValue)
       {
         goto LABEL_23;
       }
@@ -765,34 +765,34 @@ LABEL_21:
 LABEL_36:
       if (a4)
       {
-        v22 = [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Expected key-path in comparison expression: %@", a1}];
-        v11 = 0;
+        v22 = [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Expected key-path in comparison expression: %@", self}];
+        cKExpressionValue = 0;
         goto LABEL_42;
       }
 
-      v11 = 0;
+      cKExpressionValue = 0;
 LABEL_15:
       v18 = 0;
       goto LABEL_43;
     }
   }
 
-  v16 = [MEMORY[0x1E695DF00] date];
+  cKExpressionValue2 = [MEMORY[0x1E695DF00] date];
 LABEL_22:
-  v17 = v16;
-  if (!v11)
+  v17 = cKExpressionValue2;
+  if (!cKExpressionValue)
   {
     goto LABEL_36;
   }
 
 LABEL_23:
-  v20 = [v11 isEqualToString:*MEMORY[0x1E695B7F8]];
+  v20 = [cKExpressionValue isEqualToString:*MEMORY[0x1E695B7F8]];
   v21 = v20;
   if (!v17 && (v20 & 1) == 0)
   {
     if (a4)
     {
-      v22 = [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Expected constant value in comparison expression: %@", a1}];
+      v22 = [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Expected constant value in comparison expression: %@", self}];
       v17 = 0;
 LABEL_42:
       v18 = 0;
@@ -803,9 +803,9 @@ LABEL_42:
     goto LABEL_14;
   }
 
-  v23 = [a1 predicateOperatorType];
-  v24 = v23;
-  if (v23 < 4)
+  predicateOperatorType = [self predicateOperatorType];
+  v24 = predicateOperatorType;
+  if (predicateOperatorType < 4)
   {
     v25 = v9;
   }
@@ -817,29 +817,29 @@ LABEL_42:
 
   if (v25 == 1)
   {
-    v24 = qword_1B681A8D8[v23];
+    v24 = qword_1B681A8D8[predicateOperatorType];
   }
 
-  if ([a1 comparisonPredicateModifier] == 1)
+  if ([self comparisonPredicateModifier] == 1)
   {
     if (!a4)
     {
       goto LABEL_15;
     }
 
-    [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Aggregate operator ALL not allowed for comparison expression: %@", a1}];
+    [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Aggregate operator ALL not allowed for comparison expression: %@", self}];
     v22 = LABEL_41:;
     goto LABEL_42;
   }
 
-  if ([a1 comparisonPredicateModifier] == 2)
+  if ([self comparisonPredicateModifier] == 2)
   {
     if (!a4)
     {
       goto LABEL_15;
     }
 
-    [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Aggregate operator ANY not allowed for comparison expression: %@", a1}];
+    [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Aggregate operator ANY not allowed for comparison expression: %@", self}];
     goto LABEL_41;
   }
 
@@ -850,14 +850,14 @@ LABEL_42:
       v28 = MEMORY[0x1E695B978];
       v29 = objc_opt_class();
       v30 = NSStringFromClass(v29);
-      *a4 = [v28 errorWithCode:1009 format:{@"Type '%@' not allowed in comparison expression: %@", v30, a1}];
+      *a4 = [v28 errorWithCode:1009 format:{@"Type '%@' not allowed in comparison expression: %@", v30, self}];
     }
 
     goto LABEL_15;
   }
 
   v31 = objc_opt_new();
-  v32 = NTPBCKRecordFieldIdentifierForUserFieldName(v11);
+  v32 = NTPBCKRecordFieldIdentifierForUserFieldName(cKExpressionValue);
   [v31 setFieldName:v32];
 
   [v31 setType:NTPBCKQueryFilterTypeForNSPredicateOperatorType(v24)];
@@ -877,7 +877,7 @@ LABEL_43:
 {
   v6 = a3;
   v32 = 0;
-  v7 = [a1 _fcck_parseFullTextSearchUsingContainsTranslator:v6 withError:&v32];
+  v7 = [self _fcck_parseFullTextSearchUsingContainsTranslator:v6 withError:&v32];
   v8 = v32;
   v9 = v8;
   if (v7)
@@ -887,7 +887,7 @@ LABEL_43:
   }
 
   v31 = v8;
-  v11 = [a1 _fcck_parseFullTextSearchFiltersWithTranslator:v6 withError:&v31];
+  v11 = [self _fcck_parseFullTextSearchFiltersWithTranslator:v6 withError:&v31];
   v12 = v31;
 
   if (v11)
@@ -914,14 +914,14 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if ([a1 options])
+  if ([self options])
   {
-    v12 = [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Predicate comparison options are not supported for expression: %@", a1}];
+    v12 = [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Predicate comparison options are not supported for expression: %@", self}];
     goto LABEL_9;
   }
 
   v30 = 0;
-  v16 = [a1 _fcck_parseListContainsFiltersWithTranslator:v6 withError:&v30];
+  v16 = [self _fcck_parseListContainsFiltersWithTranslator:v6 withError:&v30];
   v17 = v30;
   v12 = v17;
   if (v16)
@@ -935,7 +935,7 @@ LABEL_9:
   }
 
   v29 = 0;
-  v16 = [a1 _fcck_parseInFiltersWithTranslator:v6 withError:&v29];
+  v16 = [self _fcck_parseInFiltersWithTranslator:v6 withError:&v29];
   v18 = v29;
   v12 = v18;
   if (v16)
@@ -949,7 +949,7 @@ LABEL_9:
   }
 
   v28 = 0;
-  v16 = [a1 _fcck_parseListContainsAnyFiltersWithTranslator:v6 withError:&v28];
+  v16 = [self _fcck_parseListContainsAnyFiltersWithTranslator:v6 withError:&v28];
   v19 = v28;
   v12 = v19;
   if (v16)
@@ -963,7 +963,7 @@ LABEL_9:
   }
 
   v27 = 0;
-  v16 = [a1 _fcck_parseListContainsAllFiltersWithTranslator:v6 withError:&v27];
+  v16 = [self _fcck_parseListContainsAllFiltersWithTranslator:v6 withError:&v27];
   v20 = v27;
   v12 = v20;
   if (v16)
@@ -977,7 +977,7 @@ LABEL_9:
   }
 
   v26 = 0;
-  v16 = [a1 _fcck_parseBeginsWithFiltersWithTranslator:v6 withError:&v26];
+  v16 = [self _fcck_parseBeginsWithFiltersWithTranslator:v6 withError:&v26];
   v21 = v26;
   v12 = v21;
   if (v16)
@@ -991,7 +991,7 @@ LABEL_9:
   }
 
   v25 = 0;
-  v16 = [a1 _fcck_parseBetweenFiltersWithTranslator:v6 withError:&v25];
+  v16 = [self _fcck_parseBetweenFiltersWithTranslator:v6 withError:&v25];
   v22 = v25;
   v12 = v22;
   if (v16)
@@ -1005,7 +1005,7 @@ LABEL_9:
   }
 
   v24 = 0;
-  v16 = [a1 _fcck_parseBasicOperatorFiltersWithTranslator:v6 withError:&v24];
+  v16 = [self _fcck_parseBasicOperatorFiltersWithTranslator:v6 withError:&v24];
   v23 = v24;
   v12 = v23;
   if (v16)
@@ -1022,7 +1022,7 @@ LABEL_17:
 
   if (a4)
   {
-    [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Unexpected expression: %@", a1}];
+    [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Unexpected expression: %@", self}];
     v10 = 0;
     *a4 = v9 = 0;
   }

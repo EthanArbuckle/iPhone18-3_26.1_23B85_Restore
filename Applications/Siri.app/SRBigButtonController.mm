@@ -1,32 +1,32 @@
 @interface SRBigButtonController
 - (UIEdgeInsets)defaultViewInsets;
-- (double)desiredHeightForWidth:(double)a3;
-- (void)_bigButtonHit:(id)a3;
+- (double)desiredHeightForWidth:(double)width;
+- (void)_bigButtonHit:(id)hit;
 - (void)dealloc;
 - (void)loadView;
-- (void)setAceObject:(id)a3;
+- (void)setAceObject:(id)object;
 @end
 
 @implementation SRBigButtonController
 
 - (void)dealloc
 {
-  v3 = [(SRBigButtonView *)self->_buttonView button];
-  [v3 removeTarget:self action:"_bigButtonHit:" forControlEvents:64];
+  button = [(SRBigButtonView *)self->_buttonView button];
+  [button removeTarget:self action:"_bigButtonHit:" forControlEvents:64];
 
   v4.receiver = self;
   v4.super_class = SRBigButtonController;
   [(SRBigButtonController *)&v4 dealloc];
 }
 
-- (void)setAceObject:(id)a3
+- (void)setAceObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v6.receiver = self;
   v6.super_class = SRBigButtonController;
-  [(SRBigButtonController *)&v6 setAceObject:v4];
+  [(SRBigButtonController *)&v6 setAceObject:objectCopy];
   buttonObject = self->_buttonObject;
-  self->_buttonObject = v4;
+  self->_buttonObject = objectCopy;
 }
 
 - (UIEdgeInsets)defaultViewInsets
@@ -50,19 +50,19 @@
     buttonView = self->_buttonView;
     self->_buttonView = v3;
 
-    v5 = [(SRBigButtonView *)self->_buttonView button];
-    v6 = [(SAUIButton *)self->_buttonObject text];
-    [v5 setTitle:v6 forState:0];
+    button = [(SRBigButtonView *)self->_buttonView button];
+    text = [(SAUIButton *)self->_buttonObject text];
+    [button setTitle:text forState:0];
 
-    v7 = [(SRBigButtonView *)self->_buttonView button];
-    [v7 addTarget:self action:"_bigButtonHit:" forControlEvents:64];
+    button2 = [(SRBigButtonView *)self->_buttonView button];
+    [button2 addTarget:self action:"_bigButtonHit:" forControlEvents:64];
 
-    v8 = [(SRBigButtonView *)self->_buttonView button];
-    v9 = [v8 layer];
-    [v9 setCornerRadius:9.0];
+    button3 = [(SRBigButtonView *)self->_buttonView button];
+    layer = [button3 layer];
+    [layer setCornerRadius:9.0];
 
-    v10 = [(SRBigButtonView *)self->_buttonView button];
-    [v10 setRole:0];
+    button4 = [(SRBigButtonView *)self->_buttonView button];
+    [button4 setRole:0];
 
     v11 = self->_buttonView;
 
@@ -70,20 +70,20 @@
   }
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  v4 = [(SRBigButtonController *)self view];
-  [v4 sizeThatFits:{a3, 1.79769313e308}];
+  view = [(SRBigButtonController *)self view];
+  [view sizeThatFits:{width, 1.79769313e308}];
   v6 = v5;
 
   return v6;
 }
 
-- (void)_bigButtonHit:(id)a3
+- (void)_bigButtonHit:(id)hit
 {
-  v5 = [(SRBigButtonController *)self delegate];
-  v4 = [(SAUIButton *)self->_buttonObject commands];
-  [v5 siriViewController:self performAceCommands:v4];
+  delegate = [(SRBigButtonController *)self delegate];
+  commands = [(SAUIButton *)self->_buttonObject commands];
+  [delegate siriViewController:self performAceCommands:commands];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface DRPDropletContextSolidColorKeylineStyle
 - (DRPDropletContextSolidColorKeylineStyle)init;
-- (DRPDropletContextSolidColorKeylineStyle)initWithInnerWidth:(double)a3 outerWidth:(double)a4 keylineOutsets:(UIEdgeInsets)a5 keylineFadeLengths:(UIEdgeInsets)a6 normalizedStartLocation:(double)a7 normalizedStopLocation:(double)a8 color:(id)a9;
+- (DRPDropletContextSolidColorKeylineStyle)initWithInnerWidth:(double)width outerWidth:(double)outerWidth keylineOutsets:(UIEdgeInsets)outsets keylineFadeLengths:(UIEdgeInsets)lengths normalizedStartLocation:(double)location normalizedStopLocation:(double)stopLocation color:(id)color;
 - (UIColor)color;
 - (UIEdgeInsets)keylineFadeLengths;
 - (UIEdgeInsets)keylineOutsets;
@@ -8,11 +8,11 @@
 - (double)normalizedStartLocation;
 - (double)normalizedStopLocation;
 - (double)outerWidth;
-- (void)setColor:(id)a3;
-- (void)setInnerWidth:(double)a3;
-- (void)setNormalizedStartLocation:(double)a3;
-- (void)setNormalizedStopLocation:(double)a3;
-- (void)setOuterWidth:(double)a3;
+- (void)setColor:(id)color;
+- (void)setInnerWidth:(double)width;
+- (void)setNormalizedStartLocation:(double)location;
+- (void)setNormalizedStopLocation:(double)location;
+- (void)setOuterWidth:(double)width;
 @end
 
 @implementation DRPDropletContextSolidColorKeylineStyle
@@ -24,11 +24,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setInnerWidth:(double)a3
+- (void)setInnerWidth:(double)width
 {
   v5 = OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_innerWidth;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = width;
 }
 
 - (double)outerWidth
@@ -38,11 +38,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setOuterWidth:(double)a3
+- (void)setOuterWidth:(double)width
 {
   v5 = OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_outerWidth;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = width;
 }
 
 - (UIEdgeInsets)keylineOutsets
@@ -72,11 +72,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setNormalizedStartLocation:(double)a3
+- (void)setNormalizedStartLocation:(double)location
 {
   v5 = OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_normalizedStartLocation;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = location;
 }
 
 - (double)normalizedStopLocation
@@ -86,11 +86,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setNormalizedStopLocation:(double)a3
+- (void)setNormalizedStopLocation:(double)location
 {
   v5 = OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_normalizedStopLocation;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = location;
 }
 
 - (UIColor)color
@@ -100,27 +100,27 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
   v5 = OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_color;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = color;
+  colorCopy = color;
 }
 
-- (DRPDropletContextSolidColorKeylineStyle)initWithInnerWidth:(double)a3 outerWidth:(double)a4 keylineOutsets:(UIEdgeInsets)a5 keylineFadeLengths:(UIEdgeInsets)a6 normalizedStartLocation:(double)a7 normalizedStopLocation:(double)a8 color:(id)a9
+- (DRPDropletContextSolidColorKeylineStyle)initWithInnerWidth:(double)width outerWidth:(double)outerWidth keylineOutsets:(UIEdgeInsets)outsets keylineFadeLengths:(UIEdgeInsets)lengths normalizedStartLocation:(double)location normalizedStopLocation:(double)stopLocation color:(id)color
 {
-  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_innerWidth) = a3;
-  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_outerWidth) = a4;
-  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_keylineOutsets) = a5;
-  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_keylineFadeLengths) = a6;
-  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_normalizedStartLocation) = a7;
-  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_normalizedStopLocation) = a8;
-  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_color) = a9;
+  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_innerWidth) = width;
+  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_outerWidth) = outerWidth;
+  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_keylineOutsets) = outsets;
+  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_keylineFadeLengths) = lengths;
+  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_normalizedStartLocation) = location;
+  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_normalizedStopLocation) = stopLocation;
+  *(&self->super.isa + OBJC_IVAR___DRPDropletContextSolidColorKeylineStyle_color) = color;
   v11.receiver = self;
   v11.super_class = DRPDropletContextSolidColorKeylineStyle;
-  v9 = a9;
+  colorCopy = color;
   return [(DRPDropletContextSolidColorKeylineStyle *)&v11 init];
 }
 

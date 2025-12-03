@@ -1,20 +1,20 @@
 @interface CKLinkSearchController
-+ (BOOL)handleSelectionForResult:(id)a3;
-+ (id)_additionalMenuElementsForResult:(id)a3;
++ (BOOL)handleSelectionForResult:(id)result;
++ (id)_additionalMenuElementsForResult:(id)result;
 + (id)indexingString;
-+ (id)itemProviderForSearchResult:(id)a3;
++ (id)itemProviderForSearchResult:(id)result;
 + (id)sectionTitle;
-- (BOOL)shouldStartMenuInteractionForResult:(id)a3;
+- (BOOL)shouldStartMenuInteractionForResult:(id)result;
 - (CKLinkSearchController)init;
 - (Class)_richLinkDatasourceClass;
 - (double)interGroupSpacing;
-- (id)_activityItemProviderForResult:(id)a3;
-- (id)cellForSupplementaryItemInCollectionView:(id)a3 atIndexPath:(id)a4 supplementaryViewKind:(id)a5;
-- (id)layoutGroupWithEnvironment:(id)a3;
-- (id)previewViewControllerForResult:(id)a3;
-- (void)deleteAttachmentForResult:(id)a3;
-- (void)fractionalWidth:(double *)a3 count:(unint64_t *)a4 forLayoutWidth:(unint64_t)a5;
-- (void)updateSupplementryViewIfNeeded:(id)a3 atIndexPath:(id)a4;
+- (id)_activityItemProviderForResult:(id)result;
+- (id)cellForSupplementaryItemInCollectionView:(id)view atIndexPath:(id)path supplementaryViewKind:(id)kind;
+- (id)layoutGroupWithEnvironment:(id)environment;
+- (id)previewViewControllerForResult:(id)result;
+- (void)deleteAttachmentForResult:(id)result;
+- (void)fractionalWidth:(double *)width count:(unint64_t *)count forLayoutWidth:(unint64_t)layoutWidth;
+- (void)updateSupplementryViewIfNeeded:(id)needed atIndexPath:(id)path;
 @end
 
 @implementation CKLinkSearchController
@@ -52,29 +52,29 @@
   return v4;
 }
 
-- (id)cellForSupplementaryItemInCollectionView:(id)a3 atIndexPath:(id)a4 supplementaryViewKind:(id)a5
+- (id)cellForSupplementaryItemInCollectionView:(id)view atIndexPath:(id)path supplementaryViewKind:(id)kind
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  pathCopy = path;
+  kindCopy = kind;
+  viewCopy = view;
   v11 = +[CKDetailsSearchResultsFooterCell supplementaryViewType];
-  v12 = [v9 isEqualToString:v11];
+  v12 = [kindCopy isEqualToString:v11];
 
   if (v12)
   {
     v13 = +[CKDetailsSearchResultsFooterCell supplementaryViewType];
     v14 = +[CKDetailsSearchResultsFooterCell reuseIdentifier];
-    v15 = [v10 dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:v14 forIndexPath:v8];
+    v15 = [viewCopy dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:v14 forIndexPath:pathCopy];
 
     v16 = MEMORY[0x1E696AEC0];
     v17 = CKFrameworkBundle();
     v18 = [v17 localizedStringForKey:@"SEE_ALL_LINKS_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
     v19 = [v16 stringWithFormat:v18];
 
-    v20 = [MEMORY[0x1E69DC668] sharedApplication];
-    v21 = [v20 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v21 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v22 = @"\u200F";
     }
@@ -87,31 +87,31 @@
     v23 = [(__CFString *)v22 stringByAppendingString:v19];
 
     [v15 setTitle:v23];
-    v24 = [objc_opt_class() sectionIdentifier];
-    [v15 setSectionIdentifier:v24];
+    sectionIdentifier = [objc_opt_class() sectionIdentifier];
+    [v15 setSectionIdentifier:sectionIdentifier];
   }
 
   else
   {
     v25 = +[CKSearchAvatarSupplementryView supplementaryViewType];
     v26 = +[CKSearchAvatarSupplementryView reuseIdentifier];
-    v15 = [v10 dequeueReusableSupplementaryViewOfKind:v25 withReuseIdentifier:v26 forIndexPath:v8];
+    v15 = [viewCopy dequeueReusableSupplementaryViewOfKind:v25 withReuseIdentifier:v26 forIndexPath:pathCopy];
 
-    v27 = [v8 row];
-    v28 = [(CKSearchController *)self results];
-    v29 = [v28 count];
+    v27 = [pathCopy row];
+    results = [(CKSearchController *)self results];
+    v29 = [results count];
 
     if (v27 >= v29)
     {
       goto LABEL_9;
     }
 
-    v30 = [(CKSearchController *)self results];
-    v24 = [v30 objectAtIndex:{objc_msgSend(v8, "row")}];
+    results2 = [(CKSearchController *)self results];
+    sectionIdentifier = [results2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v31 = [CKSpotlightQueryResultUtilities contactForResult:v24];
+    v31 = [CKSpotlightQueryResultUtilities contactForResult:sectionIdentifier];
     [v15 setContact:v31];
-    [v15 setAssociatedResult:v24];
+    [v15 setAssociatedResult:sectionIdentifier];
     [v15 setParentContentType:2];
   }
 
@@ -120,14 +120,14 @@ LABEL_9:
   return v15;
 }
 
-- (void)updateSupplementryViewIfNeeded:(id)a3 atIndexPath:(id)a4
+- (void)updateSupplementryViewIfNeeded:(id)needed atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v16 = v6;
-  v8 = [v7 row];
-  v9 = [(CKSearchController *)self results];
-  v10 = [v9 count];
+  neededCopy = needed;
+  pathCopy = path;
+  v16 = neededCopy;
+  v8 = [pathCopy row];
+  results = [(CKSearchController *)self results];
+  v10 = [results count];
 
   if (v8 >= v10)
   {
@@ -136,11 +136,11 @@ LABEL_9:
 
   else
   {
-    v11 = [(CKSearchController *)self results];
-    v12 = [v11 objectAtIndex:{objc_msgSend(v7, "row")}];
+    results2 = [(CKSearchController *)self results];
+    v12 = [results2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v13 = [v16 associatedResult];
-    v14 = [v12 isEqual:v13];
+    associatedResult = [v16 associatedResult];
+    v14 = [v12 isEqual:associatedResult];
 
     if ((v14 & 1) == 0)
     {
@@ -152,7 +152,7 @@ LABEL_9:
   }
 }
 
-- (id)layoutGroupWithEnvironment:(id)a3
+- (id)layoutGroupWithEnvironment:(id)environment
 {
   v37[1] = *MEMORY[0x1E69E9840];
   v35 = 0;
@@ -160,11 +160,11 @@ LABEL_9:
   [(CKLinkSearchController *)self fractionalWidth:&v36 count:&v35 forLayoutWidth:[(CKSearchController *)self layoutWidth]];
   v4 = [MEMORY[0x1E6995558] fractionalWidthDimension:v36];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v5 isAccessibilityPreferredContentSizeCategory];
 
   v7 = MEMORY[0x1E6995558];
   v8 = v36;
-  if (v6)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
     v9 = [MEMORY[0x1E6995558] fractionalWidthDimension:v36 * 1.2];
   }
@@ -190,8 +190,8 @@ LABEL_9:
     v16 = [v14 absoluteDimension:?];
 
     v17 = [MEMORY[0x1E6995588] sizeWithWidthDimension:v16 heightDimension:v16];
-    v18 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
-    if (v18 == 1)
+    userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+    if (userInterfaceLayoutDirection == 1)
     {
       v19 = 3;
     }
@@ -202,7 +202,7 @@ LABEL_9:
     }
 
     v20 = -8.0;
-    if (v18 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v20 = 8.0;
     }
@@ -232,18 +232,18 @@ LABEL_9:
   return v30;
 }
 
-- (void)fractionalWidth:(double *)a3 count:(unint64_t *)a4 forLayoutWidth:(unint64_t)a5
+- (void)fractionalWidth:(double *)width count:(unint64_t *)count forLayoutWidth:(unint64_t)layoutWidth
 {
   if (CKIsRunningInMacCatalyst())
   {
-    if (a3)
+    if (width)
     {
-      *a3 = 0.5;
+      *width = 0.5;
     }
 
-    if (a4)
+    if (count)
     {
-      *a4 = 2;
+      *count = 2;
     }
   }
 
@@ -251,22 +251,22 @@ LABEL_9:
   {
     v9.receiver = self;
     v9.super_class = CKLinkSearchController;
-    [(CKMessageTypeSearchController *)&v9 fractionalWidth:a3 count:a4 forLayoutWidth:a5];
+    [(CKMessageTypeSearchController *)&v9 fractionalWidth:width count:count forLayoutWidth:layoutWidth];
   }
 }
 
 - (Class)_richLinkDatasourceClass
 {
-  v2 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v3 = [v2 dataSourceClassForBundleID:*MEMORY[0x1E69A6A18]];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  v3 = [mEMORY[0x1E69A5AD0] dataSourceClassForBundleID:*MEMORY[0x1E69A6A18]];
 
   return v3;
 }
 
-+ (id)_additionalMenuElementsForResult:(id)a3
++ (id)_additionalMenuElementsForResult:(id)result
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultCopy = result;
   v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"safari"];
   v5 = MEMORY[0x1E69DC628];
   v6 = CKFrameworkBundle();
@@ -275,8 +275,8 @@ LABEL_9:
   v12[1] = 3221225472;
   v12[2] = __59__CKLinkSearchController__additionalMenuElementsForResult___block_invoke;
   v12[3] = &unk_1E72EC060;
-  v13 = v3;
-  v8 = v3;
+  v13 = resultCopy;
+  v8 = resultCopy;
   v9 = [v5 actionWithTitle:v7 image:v4 identifier:0 handler:v12];
 
   v14[0] = v9;
@@ -295,20 +295,20 @@ void __59__CKLinkSearchController__additionalMenuElementsForResult___block_invok
   [v3 openURL:v4 withCompletionHandler:0];
 }
 
-+ (id)itemProviderForSearchResult:(id)a3
++ (id)itemProviderForSearchResult:(id)result
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  resultCopy = result;
+  v4 = resultCopy;
+  if (resultCopy)
   {
-    v5 = [v3 item];
-    v6 = [v5 attributeSet];
-    v7 = [v6 URL];
+    item = [resultCopy item];
+    attributeSet = [item attributeSet];
+    v7 = [attributeSet URL];
 
     if (v7)
     {
-      v8 = [v7 absoluteString];
-      v9 = [v8 dataUsingEncoding:4];
+      absoluteString = [v7 absoluteString];
+      v9 = [absoluteString dataUsingEncoding:4];
       v10 = objc_alloc_init(MEMORY[0x1E696ACA0]);
       v11 = *MEMORY[0x1E69638B8];
       v20[0] = MEMORY[0x1E69E9820];
@@ -362,18 +362,18 @@ void __59__CKLinkSearchController__additionalMenuElementsForResult___block_invok
   return v10;
 }
 
-- (id)_activityItemProviderForResult:(id)a3
+- (id)_activityItemProviderForResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-  v5 = [v4 cachedLinkMetadataForQueryResult:v3];
+  v5 = [v4 cachedLinkMetadataForQueryResult:resultCopy];
 
   if (v5)
   {
-    v6 = [v3 item];
-    v7 = [v6 attributeSet];
+    item = [resultCopy item];
+    attributeSet = [item attributeSet];
 
-    v8 = [v7 URL];
+    v8 = [attributeSet URL];
     v9 = [[CKSearchActivityItemProvider alloc] initWithPlaceholderItem:v8 metadata:v5];
   }
 
@@ -385,21 +385,21 @@ void __59__CKLinkSearchController__additionalMenuElementsForResult___block_invok
   return v9;
 }
 
-- (void)deleteAttachmentForResult:(id)a3
+- (void)deleteAttachmentForResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [v5 uniqueIdentifier];
+  resultCopy = result;
+  item = [resultCopy item];
+  uniqueIdentifier = [item uniqueIdentifier];
 
-  v7 = [MEMORY[0x1E69A5AE8] sharedInstance];
+  mEMORY[0x1E69A5AE8] = [MEMORY[0x1E69A5AE8] sharedInstance];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__CKLinkSearchController_deleteAttachmentForResult___block_invoke;
   v9[3] = &unk_1E72EC8A0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 loadMessageItemWithGUID:v6 completionBlock:v9];
+  v10 = resultCopy;
+  v8 = resultCopy;
+  [mEMORY[0x1E69A5AE8] loadMessageItemWithGUID:uniqueIdentifier completionBlock:v9];
 }
 
 void __52__CKLinkSearchController_deleteAttachmentForResult___block_invoke(uint64_t a1, void *a2)
@@ -415,55 +415,55 @@ void __52__CKLinkSearchController_deleteAttachmentForResult___block_invoke(uint6
   [v7 deleteMessageItem:v5];
 }
 
-- (BOOL)shouldStartMenuInteractionForResult:(id)a3
+- (BOOL)shouldStartMenuInteractionForResult:(id)result
 {
-  v3 = [a3 item];
-  v4 = [v3 attributeSet];
+  item = [result item];
+  attributeSet = [item attributeSet];
 
-  v5 = [v4 URL];
+  v5 = [attributeSet URL];
   v6 = shouldDisable3DTouchPreviewWithNegativeFeedbackForURL(v5);
 
   return !v6;
 }
 
-- (id)previewViewControllerForResult:(id)a3
+- (id)previewViewControllerForResult:(id)result
 {
-  v3 = [a3 item];
-  v4 = [v3 attributeSet];
+  item = [result item];
+  attributeSet = [item attributeSet];
 
-  v5 = [v4 URL];
+  v5 = [attributeSet URL];
   if (shouldDisable3DTouchPreviewWithNegativeFeedbackForURL(v5) || (v6 = MEMORY[0x193AF5EC0](@"MLULookupItem", @"MobileLookup")) == 0)
   {
-    v8 = 0;
+    viewControllerToPresent = 0;
   }
 
   else
   {
     v7 = [[v6 alloc] initWithURL:v5 dataDetectorsResult:0 text:&stru_1F04268F8 range:{0, 0}];
     [v7 resolve];
-    v8 = [v7 viewControllerToPresent];
+    viewControllerToPresent = [v7 viewControllerToPresent];
   }
 
-  return v8;
+  return viewControllerToPresent;
 }
 
-+ (BOOL)handleSelectionForResult:(id)a3
++ (BOOL)handleSelectionForResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 item];
-  v5 = [v4 attributeSet];
-  v6 = [v5 URL];
+  resultCopy = result;
+  item = [resultCopy item];
+  attributeSet = [item attributeSet];
+  v6 = [attributeSet URL];
 
   v7 = MEMORY[0x1E69A5AC8];
-  v8 = [v3 conversation];
-  v9 = [v8 chat];
-  v10 = [v9 lastAddressedHandleID];
-  v11 = [v3 linkMetadata];
+  conversation = [resultCopy conversation];
+  chat = [conversation chat];
+  lastAddressedHandleID = [chat lastAddressedHandleID];
+  linkMetadata = [resultCopy linkMetadata];
 
-  v12 = [v7 URLForDugongShareURL:v6 handle:v10 metadata:v11];
+  v12 = [v7 URLForDugongShareURL:v6 handle:lastAddressedHandleID metadata:linkMetadata];
 
-  v13 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v13 openURL:v12 withCompletionHandler:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] openURL:v12 withCompletionHandler:0];
 
   return 1;
 }

@@ -1,23 +1,23 @@
 @interface SXDataRecord
 - (id)description;
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 @end
 
 @implementation SXDataRecord
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SXJSONObject *)self jsonDictionary];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  jsonDictionary = [(SXJSONObject *)self jsonDictionary];
+  v6 = [jsonDictionary valueForKey:keyCopy];
 
   return v6;
 }
 
 - (id)description
 {
-  v2 = [(SXJSONObject *)self jsonDictionary];
-  v3 = [v2 description];
+  jsonDictionary = [(SXJSONObject *)self jsonDictionary];
+  v3 = [jsonDictionary description];
 
   return v3;
 }

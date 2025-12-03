@@ -1,8 +1,8 @@
 @interface MPVoicemailAccount
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MPVoicemailAccount)init;
-- (MPVoicemailAccount)initWithUuid:(id)a3 callVoicemailSupported:(BOOL)a4 subscribed:(BOOL)a5 greetingChangeSupported:(BOOL)a6 provisioned:(BOOL)a7 hasHandle:(BOOL)a8 accountDescription:(id)a9;
-- (MPVoicemailAccount)initWithVmAccount:(id)a3 callVoicemailSupported:(BOOL)a4 subscribed:(BOOL)a5 greetingChangeSupported:(BOOL)a6;
+- (MPVoicemailAccount)initWithUuid:(id)uuid callVoicemailSupported:(BOOL)supported subscribed:(BOOL)subscribed greetingChangeSupported:(BOOL)changeSupported provisioned:(BOOL)provisioned hasHandle:(BOOL)handle accountDescription:(id)description;
+- (MPVoicemailAccount)initWithVmAccount:(id)account callVoicemailSupported:(BOOL)supported subscribed:(BOOL)subscribed greetingChangeSupported:(BOOL)changeSupported;
 - (NSString)accountDescription;
 - (NSString)description;
 - (NSUUID)UUID;
@@ -39,20 +39,20 @@
   return v2;
 }
 
-- (MPVoicemailAccount)initWithUuid:(id)a3 callVoicemailSupported:(BOOL)a4 subscribed:(BOOL)a5 greetingChangeSupported:(BOOL)a6 provisioned:(BOOL)a7 hasHandle:(BOOL)a8 accountDescription:(id)a9
+- (MPVoicemailAccount)initWithUuid:(id)uuid callVoicemailSupported:(BOOL)supported subscribed:(BOOL)subscribed greetingChangeSupported:(BOOL)changeSupported provisioned:(BOOL)provisioned hasHandle:(BOOL)handle accountDescription:(id)description
 {
-  v26 = a7;
-  v27 = a8;
-  v13 = a9;
+  provisionedCopy = provisioned;
+  handleCopy = handle;
+  descriptionCopy = description;
   ObjectType = swift_getObjectType();
   v15 = sub_10006036C();
   v16 = *(v15 - 8);
   __chkstk_darwin(v15);
   v18 = &v25 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10006035C();
-  if (a9)
+  if (description)
   {
-    v13 = sub_10006081C();
+    descriptionCopy = sub_10006081C();
     v20 = v19;
   }
 
@@ -62,14 +62,14 @@
   }
 
   (*(v16 + 16))(self + OBJC_IVAR___MPVoicemailAccount_uuid, v18, v15);
-  *(self + OBJC_IVAR___MPVoicemailAccount_callVoicemailSupported) = a4;
-  *(self + OBJC_IVAR___MPVoicemailAccount_subscribed) = a5;
-  *(self + OBJC_IVAR___MPVoicemailAccount_greetingChangeSupported) = a6;
-  v21 = v27;
-  *(self + OBJC_IVAR___MPVoicemailAccount_provisioned) = v26;
+  *(self + OBJC_IVAR___MPVoicemailAccount_callVoicemailSupported) = supported;
+  *(self + OBJC_IVAR___MPVoicemailAccount_subscribed) = subscribed;
+  *(self + OBJC_IVAR___MPVoicemailAccount_greetingChangeSupported) = changeSupported;
+  v21 = handleCopy;
+  *(self + OBJC_IVAR___MPVoicemailAccount_provisioned) = provisionedCopy;
   *(self + OBJC_IVAR___MPVoicemailAccount_hasHandle) = v21;
   v22 = (self + OBJC_IVAR___MPVoicemailAccount_accountDescription);
-  *v22 = v13;
+  *v22 = descriptionCopy;
   v22[1] = v20;
   v28.receiver = self;
   v28.super_class = ObjectType;
@@ -78,10 +78,10 @@
   return v23;
 }
 
-- (MPVoicemailAccount)initWithVmAccount:(id)a3 callVoicemailSupported:(BOOL)a4 subscribed:(BOOL)a5 greetingChangeSupported:(BOOL)a6
+- (MPVoicemailAccount)initWithVmAccount:(id)account callVoicemailSupported:(BOOL)supported subscribed:(BOOL)subscribed greetingChangeSupported:(BOOL)changeSupported
 {
-  v9 = a3;
-  v10 = sub_10001E39C(v9, a4, a5, a6);
+  accountCopy = account;
+  v10 = sub_10001E39C(accountCopy, supported, subscribed, changeSupported);
 
   return v10;
 }
@@ -95,7 +95,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001DF44();
 
   v3 = sub_1000607EC();
@@ -103,12 +103,12 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   swift_getObjectType();
-  if (a3)
+  if (equal)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100060B0C();
     swift_unknownObjectRelease();
@@ -117,7 +117,7 @@
   else
   {
     memset(v12, 0, sizeof(v12));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   sub_10001E2C4(v12, v10);

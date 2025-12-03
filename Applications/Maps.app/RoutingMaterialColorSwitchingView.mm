@@ -1,28 +1,28 @@
 @interface RoutingMaterialColorSwitchingView
-- (RoutingMaterialColorSwitchingView)initWithLightMaterial:(int64_t)a3 darkColor:(id)a4;
+- (RoutingMaterialColorSwitchingView)initWithLightMaterial:(int64_t)material darkColor:(id)color;
 - (UIView)darkView;
 - (UIView)lightView;
-- (void)_setDarkViewVisible:(BOOL)a3;
-- (void)_setLightViewVisible:(BOOL)a3;
+- (void)_setDarkViewVisible:(BOOL)visible;
+- (void)_setLightViewVisible:(BOOL)visible;
 - (void)_updateForCurrentInterfaceStyle;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RoutingMaterialColorSwitchingView
 
-- (void)_setDarkViewVisible:(BOOL)a3
+- (void)_setDarkViewVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
     [(UIView *)self->_lightView removeFromSuperview];
-    v4 = [(RoutingMaterialColorSwitchingView *)self darkView];
-    [(RoutingMaterialColorSwitchingView *)self addSubview:v4];
+    darkView = [(RoutingMaterialColorSwitchingView *)self darkView];
+    [(RoutingMaterialColorSwitchingView *)self addSubview:darkView];
 
-    v9 = [(RoutingMaterialColorSwitchingView *)self darkView];
+    darkView2 = [(RoutingMaterialColorSwitchingView *)self darkView];
     LODWORD(v5) = 1148846080;
-    v6 = [v9 _maps_constraintsEqualToEdgesOfView:self priority:v5];
-    v7 = [v6 allConstraints];
-    [NSLayoutConstraint activateConstraints:v7];
+    v6 = [darkView2 _maps_constraintsEqualToEdgesOfView:self priority:v5];
+    allConstraints = [v6 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
   }
 
   else
@@ -50,19 +50,19 @@
   return darkView;
 }
 
-- (void)_setLightViewVisible:(BOOL)a3
+- (void)_setLightViewVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
     [(UIView *)self->_darkView removeFromSuperview];
-    v4 = [(RoutingMaterialColorSwitchingView *)self lightView];
-    [(RoutingMaterialColorSwitchingView *)self addSubview:v4];
+    lightView = [(RoutingMaterialColorSwitchingView *)self lightView];
+    [(RoutingMaterialColorSwitchingView *)self addSubview:lightView];
 
-    v9 = [(RoutingMaterialColorSwitchingView *)self lightView];
+    lightView2 = [(RoutingMaterialColorSwitchingView *)self lightView];
     LODWORD(v5) = 1148846080;
-    v6 = [v9 _maps_constraintsEqualToEdgesOfView:self priority:v5];
-    v7 = [v6 allConstraints];
-    [NSLayoutConstraint activateConstraints:v7];
+    v6 = [lightView2 _maps_constraintsEqualToEdgesOfView:self priority:v5];
+    allConstraints = [v6 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
   }
 
   else
@@ -95,42 +95,42 @@
 
 - (void)_updateForCurrentInterfaceStyle
 {
-  v3 = [(RoutingMaterialColorSwitchingView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(RoutingMaterialColorSwitchingView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  [(RoutingMaterialColorSwitchingView *)self _setLightViewVisible:v4 == 1];
+  [(RoutingMaterialColorSwitchingView *)self _setLightViewVisible:userInterfaceStyle == 1];
 
-  [(RoutingMaterialColorSwitchingView *)self _setDarkViewVisible:v4 == 2];
+  [(RoutingMaterialColorSwitchingView *)self _setDarkViewVisible:userInterfaceStyle == 2];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = RoutingMaterialColorSwitchingView;
-  v4 = a3;
-  [(RoutingMaterialColorSwitchingView *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(RoutingMaterialColorSwitchingView *)&v8 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(RoutingMaterialColorSwitchingView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(RoutingMaterialColorSwitchingView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(RoutingMaterialColorSwitchingView *)self _updateForCurrentInterfaceStyle];
   }
 }
 
-- (RoutingMaterialColorSwitchingView)initWithLightMaterial:(int64_t)a3 darkColor:(id)a4
+- (RoutingMaterialColorSwitchingView)initWithLightMaterial:(int64_t)material darkColor:(id)color
 {
-  v7 = a4;
+  colorCopy = color;
   v11.receiver = self;
   v11.super_class = RoutingMaterialColorSwitchingView;
   v8 = [(RoutingMaterialColorSwitchingView *)&v11 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v9 = v8;
   if (v8)
   {
-    v8->_lightMaterial = a3;
-    objc_storeStrong(&v8->_darkColor, a4);
+    v8->_lightMaterial = material;
+    objc_storeStrong(&v8->_darkColor, color);
     [(RoutingMaterialColorSwitchingView *)v9 _updateForCurrentInterfaceStyle];
   }
 

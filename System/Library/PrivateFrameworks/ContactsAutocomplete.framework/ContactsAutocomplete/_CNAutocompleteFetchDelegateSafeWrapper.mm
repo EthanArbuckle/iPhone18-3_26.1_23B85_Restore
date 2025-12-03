@@ -1,113 +1,113 @@
 @interface _CNAutocompleteFetchDelegateSafeWrapper
-- (BOOL)autocompleteFetch:(id)a3 shouldExpectSupplementalResultsForRequest:(id)a4 completionHandler:(id)a5;
-- (_CNAutocompleteFetchDelegateSafeWrapper)initWithDelegate:(id)a3;
-- (id)autocompleteFetch:(id)a3 willAdjustResults:(id)a4;
-- (id)resultComparatorForAutocompleteFetch:(id)a3;
-- (void)autocompleteFetch:(id)a3 didFailWithError:(id)a4;
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4;
-- (void)autocompleteFetch:(id)a3 willSortResults:(id)a4;
-- (void)autocompleteFetchDidBeginNetworkActivity:(id)a3;
-- (void)autocompleteFetchDidEndNetworkActivity:(id)a3;
-- (void)autocompleteFetchDidFinish:(id)a3;
+- (BOOL)autocompleteFetch:(id)fetch shouldExpectSupplementalResultsForRequest:(id)request completionHandler:(id)handler;
+- (_CNAutocompleteFetchDelegateSafeWrapper)initWithDelegate:(id)delegate;
+- (id)autocompleteFetch:(id)fetch willAdjustResults:(id)results;
+- (id)resultComparatorForAutocompleteFetch:(id)fetch;
+- (void)autocompleteFetch:(id)fetch didFailWithError:(id)error;
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results;
+- (void)autocompleteFetch:(id)fetch willSortResults:(id)results;
+- (void)autocompleteFetchDidBeginNetworkActivity:(id)activity;
+- (void)autocompleteFetchDidEndNetworkActivity:(id)activity;
+- (void)autocompleteFetchDidFinish:(id)finish;
 @end
 
 @implementation _CNAutocompleteFetchDelegateSafeWrapper
 
-- (_CNAutocompleteFetchDelegateSafeWrapper)initWithDelegate:(id)a3
+- (_CNAutocompleteFetchDelegateSafeWrapper)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = _CNAutocompleteFetchDelegateSafeWrapper;
   v5 = [(_CNAutocompleteFetchDelegateSafeWrapper *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results
 {
-  v10 = a3;
-  v6 = a4;
+  fetchCopy = fetch;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 autocompleteFetch:v10 didReceiveResults:v6];
+    [v9 autocompleteFetch:fetchCopy didReceiveResults:resultsCopy];
   }
 }
 
-- (void)autocompleteFetch:(id)a3 didFailWithError:(id)a4
+- (void)autocompleteFetch:(id)fetch didFailWithError:(id)error
 {
-  v10 = a3;
-  v6 = a4;
+  fetchCopy = fetch;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 autocompleteFetch:v10 didFailWithError:v6];
+    [v9 autocompleteFetch:fetchCopy didFailWithError:errorCopy];
   }
 }
 
-- (void)autocompleteFetchDidFinish:(id)a3
+- (void)autocompleteFetchDidFinish:(id)finish
 {
-  v7 = a3;
+  finishCopy = finish;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 autocompleteFetchDidFinish:v7];
+    [v6 autocompleteFetchDidFinish:finishCopy];
   }
 }
 
-- (void)autocompleteFetchDidBeginNetworkActivity:(id)a3
+- (void)autocompleteFetchDidBeginNetworkActivity:(id)activity
 {
-  v7 = a3;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 autocompleteFetchDidBeginNetworkActivity:v7];
+    [v6 autocompleteFetchDidBeginNetworkActivity:activityCopy];
   }
 }
 
-- (void)autocompleteFetchDidEndNetworkActivity:(id)a3
+- (void)autocompleteFetchDidEndNetworkActivity:(id)activity
 {
-  v7 = a3;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 autocompleteFetchDidEndNetworkActivity:v7];
+    [v6 autocompleteFetchDidEndNetworkActivity:activityCopy];
   }
 }
 
-- (BOOL)autocompleteFetch:(id)a3 shouldExpectSupplementalResultsForRequest:(id)a4 completionHandler:(id)a5
+- (BOOL)autocompleteFetch:(id)fetch shouldExpectSupplementalResultsForRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fetchCopy = fetch;
+  requestCopy = request;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
     v13 = objc_loadWeakRetained(&self->_delegate);
-    v14 = [v13 autocompleteFetch:v8 shouldExpectSupplementalResultsForRequest:v9 completionHandler:v10];
+    v14 = [v13 autocompleteFetch:fetchCopy shouldExpectSupplementalResultsForRequest:requestCopy completionHandler:handlerCopy];
   }
 
   else
@@ -118,10 +118,10 @@
   return v14;
 }
 
-- (id)autocompleteFetch:(id)a3 willAdjustResults:(id)a4
+- (id)autocompleteFetch:(id)fetch willAdjustResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  fetchCopy = fetch;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
@@ -135,7 +135,7 @@
     }
 
     v11 = objc_loadWeakRetained(&self->_delegate);
-    v12 = [v11 autocompleteFetch:v6 willAdjustResults:v7];
+    v12 = [v11 autocompleteFetch:fetchCopy willAdjustResults:resultsCopy];
   }
 
   else
@@ -146,30 +146,30 @@
   return v12;
 }
 
-- (void)autocompleteFetch:(id)a3 willSortResults:(id)a4
+- (void)autocompleteFetch:(id)fetch willSortResults:(id)results
 {
-  v10 = a3;
-  v6 = a4;
+  fetchCopy = fetch;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 autocompleteFetch:v10 willSortResults:v6];
+    [v9 autocompleteFetch:fetchCopy willSortResults:resultsCopy];
   }
 }
 
-- (id)resultComparatorForAutocompleteFetch:(id)a3
+- (id)resultComparatorForAutocompleteFetch:(id)fetch
 {
-  v4 = a3;
+  fetchCopy = fetch;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 resultComparatorForAutocompleteFetch:v4];
+    v8 = [v7 resultComparatorForAutocompleteFetch:fetchCopy];
   }
 
   else

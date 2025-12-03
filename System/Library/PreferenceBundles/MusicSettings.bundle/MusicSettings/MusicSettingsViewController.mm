@@ -1,41 +1,41 @@
 @interface MusicSettingsViewController
 - (_TtC13MusicSettings27MusicSettingsViewController)init;
-- (_TtC13MusicSettings27MusicSettingsViewController)initWithCoder:(id)a3;
-- (_TtC13MusicSettings27MusicSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setParentController:(id)a3;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)setRootController:(id)a3;
-- (void)setSpecifier:(id)a3;
+- (_TtC13MusicSettings27MusicSettingsViewController)initWithCoder:(id)coder;
+- (_TtC13MusicSettings27MusicSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setParentController:(id)controller;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)setRootController:(id)controller;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation MusicSettingsViewController
 
-- (void)setParentController:(id)a3
+- (void)setParentController:(id)controller
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC13MusicSettings27MusicSettingsViewController__parentController);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC13MusicSettings27MusicSettingsViewController__parentController) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC13MusicSettings27MusicSettingsViewController__parentController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)setRootController:(id)a3
+- (void)setRootController:(id)controller
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC13MusicSettings27MusicSettingsViewController__root);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC13MusicSettings27MusicSettingsViewController__root) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC13MusicSettings27MusicSettingsViewController__root) = controller;
+  controllerCopy = controller;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC13MusicSettings27MusicSettingsViewController__specifier);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC13MusicSettings27MusicSettingsViewController__specifier) = a3;
-  v8 = self;
-  v5 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC13MusicSettings27MusicSettingsViewController__specifier) = specifier;
+  selfCopy = self;
+  specifierCopy = specifier;
 
-  if (v5)
+  if (specifierCopy)
   {
-    v6 = v5;
-    v7 = [v6 name];
-    [(MusicSettingsViewController *)v8 setTitle:v7];
+    v6 = specifierCopy;
+    name = [v6 name];
+    [(MusicSettingsViewController *)selfCopy setTitle:name];
   }
 
   else
@@ -44,9 +44,9 @@
   }
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  if (a3)
+  if (value)
   {
     swift_unknownObjectRetain();
     sub_16E04();
@@ -71,7 +71,7 @@
   return [(MusicSettingsViewController *)&v3 initWithNibName:0 bundle:0];
 }
 
-- (_TtC13MusicSettings27MusicSettingsViewController)initWithCoder:(id)a3
+- (_TtC13MusicSettings27MusicSettingsViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13MusicSettings27MusicSettingsViewController__parentController) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13MusicSettings27MusicSettingsViewController__root) = 0;
@@ -81,7 +81,7 @@
   return result;
 }
 
-- (_TtC13MusicSettings27MusicSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13MusicSettings27MusicSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

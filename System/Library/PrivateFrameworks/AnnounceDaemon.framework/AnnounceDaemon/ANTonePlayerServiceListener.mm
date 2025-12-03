@@ -1,7 +1,7 @@
 @interface ANTonePlayerServiceListener
 - (ANTonePlayerServiceListener)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_fileURLForTone:(unint64_t)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_fileURLForTone:(unint64_t)tone;
 - (void)cleanForExit;
 @end
 
@@ -35,22 +35,22 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = ANLogHandleTonePlayerServiceListener();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "processIdentifier")}];
-    v10 = [v7 serviceName];
+    v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(connectionCopy, "processIdentifier")}];
+    serviceName = [connectionCopy serviceName];
     *buf = 138412802;
     v24 = &stru_2851BDB18;
     v25 = 2112;
     v26 = v9;
     v27 = 2112;
-    v28 = v10;
+    v28 = serviceName;
     _os_log_impl(&dword_23F525000, v8, OS_LOG_TYPE_DEFAULT, "%@New Connection Request From (PID = %@) For Service: (%@)", buf, 0x20u);
   }
 
@@ -67,7 +67,7 @@
     goto LABEL_13;
   }
 
-  if (([v7 hasAnnounceEntitlement] & 1) == 0)
+  if (([connectionCopy hasAnnounceEntitlement] & 1) == 0)
   {
     v14 = ANLogHandleTonePlayerServiceListener();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -86,31 +86,31 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = [MEMORY[0x277CCAE90] an_tonePlayerServiceInterface];
-  [v7 setExportedInterface:v11];
+  an_tonePlayerServiceInterface = [MEMORY[0x277CCAE90] an_tonePlayerServiceInterface];
+  [connectionCopy setExportedInterface:an_tonePlayerServiceInterface];
 
-  [v7 setExportedObject:self];
-  objc_initWeak(&location, v7);
+  [connectionCopy setExportedObject:self];
+  objc_initWeak(&location, connectionCopy);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __66__ANTonePlayerServiceListener_listener_shouldAcceptNewConnection___block_invoke;
   v20[3] = &unk_278C86580;
   objc_copyWeak(&v21, &location);
-  [v7 setInterruptionHandler:v20];
+  [connectionCopy setInterruptionHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __66__ANTonePlayerServiceListener_listener_shouldAcceptNewConnection___block_invoke_5;
   v18[3] = &unk_278C86580;
   objc_copyWeak(&v19, &location);
-  [v7 setInvalidationHandler:v18];
-  [v7 resume];
+  [connectionCopy setInvalidationHandler:v18];
+  [connectionCopy resume];
   v12 = ANLogHandleTonePlayerServiceListener();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v24 = &stru_2851BDB18;
     v25 = 2112;
-    v26 = v7;
+    v26 = connectionCopy;
     _os_log_impl(&dword_23F525000, v12, OS_LOG_TYPE_DEFAULT, "%@Connection Accepted: (%@)", buf, 0x16u);
   }
 
@@ -160,13 +160,13 @@ void __66__ANTonePlayerServiceListener_listener_shouldAcceptNewConnection___bloc
 
 - (void)cleanForExit
 {
-  v2 = [(ANTonePlayerServiceListener *)self listener];
-  [v2 invalidate];
+  listener = [(ANTonePlayerServiceListener *)self listener];
+  [listener invalidate];
 }
 
-- (id)_fileURLForTone:(unint64_t)a3
+- (id)_fileURLForTone:(unint64_t)tone
 {
-  if (a3)
+  if (tone)
   {
     v3 = 0;
   }

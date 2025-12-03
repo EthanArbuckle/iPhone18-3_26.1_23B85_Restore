@@ -1,10 +1,10 @@
 @interface ErrorHandlerClient
 - (NSSet)failureTypes;
 - (id)popAllSessions;
-- (id)popSessionWithIdentifier:(int64_t)a3;
-- (void)addSession:(id)a3;
+- (id)popSessionWithIdentifier:(int64_t)identifier;
+- (void)addSession:(id)session;
 - (void)dealloc;
-- (void)setFailureTypes:(id)a3;
+- (void)setFailureTypes:(id)types;
 @end
 
 @implementation ErrorHandlerClient
@@ -16,7 +16,7 @@
   [(XPCClient *)&v3 dealloc];
 }
 
-- (void)addSession:(id)a3
+- (void)addSession:(id)session
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -24,7 +24,7 @@
   v4[2] = sub_10020EBCC;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = session;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -70,7 +70,7 @@
   return v3;
 }
 
-- (id)popSessionWithIdentifier:(int64_t)a3
+- (id)popSessionWithIdentifier:(int64_t)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -84,7 +84,7 @@
   block[2] = sub_10020F020;
   block[3] = &unk_10032BF90;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = identifier;
   block[4] = self;
   dispatch_sync(dispatchQueue, block);
   v4 = v8[5];
@@ -92,7 +92,7 @@
   return v4;
 }
 
-- (void)setFailureTypes:(id)a3
+- (void)setFailureTypes:(id)types
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -100,7 +100,7 @@
   v4[2] = sub_10020F12C;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = types;
   dispatch_async(dispatchQueue, v4);
 }
 

@@ -1,8 +1,8 @@
 @interface MADContactsPersonProcessingTask
 - (MADContactsPersonProcessingTask)init;
-- (int)_analyzeContactWithContactUUID:(id)a3 assetUUID:(id)a4 confirmed:(BOOL)a5 andCVPixelBuffer:(__CVBuffer *)a6;
-- (int)_processContactWithIdentifier:(id)a3 andImageData:(id)a4;
-- (int)_processContactWithIdentifier:(id)a3 andPosterArchiveData:(id)a4;
+- (int)_analyzeContactWithContactUUID:(id)d assetUUID:(id)iD confirmed:(BOOL)confirmed andCVPixelBuffer:(__CVBuffer *)buffer;
+- (int)_processContactWithIdentifier:(id)identifier andImageData:(id)data;
+- (int)_processContactWithIdentifier:(id)identifier andPosterArchiveData:(id)data;
 - (void)process;
 @end
 
@@ -23,9 +23,9 @@
     context = v2->_context;
     v2->_context = v5;
 
-    v7 = [(PHPhotoLibrary *)v2->_photoLibrary vcp_visionCacheStorageDirectoryURL];
+    vcp_visionCacheStorageDirectoryURL = [(PHPhotoLibrary *)v2->_photoLibrary vcp_visionCacheStorageDirectoryURL];
     v21 = 0;
-    v8 = [[VUWGallery alloc] initWithClient:3 path:v7 error:&v21];
+    v8 = [[VUWGallery alloc] initWithClient:3 path:vcp_visionCacheStorageDirectoryURL error:&v21];
     v9 = v21;
     gallery = v2->_gallery;
     v2->_gallery = v8;
@@ -72,18 +72,18 @@
   return v19;
 }
 
-- (int)_analyzeContactWithContactUUID:(id)a3 assetUUID:(id)a4 confirmed:(BOOL)a5 andCVPixelBuffer:(__CVBuffer *)a6
+- (int)_analyzeContactWithContactUUID:(id)d assetUUID:(id)iD confirmed:(BOOL)confirmed andCVPixelBuffer:(__CVBuffer *)buffer
 {
-  v10 = a3;
-  v11 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12 = +[PHPhotoLibrary vcp_defaultPhotoLibrary];
   v13 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:v12];
   v14 = [[VCPFaceAnalyzer alloc] initWithContext:v13];
   v34 = 0;
-  v15 = [v14 quickAnalyzeCVPixelBuffer:a6 results:&v34];
+  code = [v14 quickAnalyzeCVPixelBuffer:buffer results:&v34];
   v16 = v34;
   v17 = v16;
-  if (!v15)
+  if (!code)
   {
     v18 = [v16 objectForKeyedSubscript:MediaAnalysisFaceResultsKey];
     if (MediaAnalysisLogLevel() >= 6)
@@ -108,9 +108,9 @@
       v28[3] = &unk_100288010;
       v29 = v18;
       v30 = @"[ContactIngestion][FaceProcessing]";
-      v31 = v11;
-      v32 = v10;
-      v33 = a5;
+      v31 = iDCopy;
+      v32 = dCopy;
+      confirmedCopy = confirmed;
       v21 = objc_retainBlock(v28);
       gallery = self->_gallery;
       v27 = 0;
@@ -118,7 +118,7 @@
       v24 = v27;
       if (v23)
       {
-        v15 = 0;
+        code = 0;
       }
 
       else
@@ -136,28 +136,28 @@
           }
         }
 
-        v15 = [v24 code];
+        code = [v24 code];
       }
     }
 
     else
     {
-      v15 = 0;
+      code = 0;
     }
   }
 
-  return v15;
+  return code;
 }
 
-- (int)_processContactWithIdentifier:(id)a3 andImageData:(id)a4
+- (int)_processContactWithIdentifier:(id)identifier andImageData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[NSUUID alloc] initWithUUIDString:v6];
+  identifierCopy = identifier;
+  dataCopy = data;
+  v8 = [[NSUUID alloc] initWithUUIDString:identifierCopy];
   if (v8)
   {
     v27[1] = 0;
-    v9 = vdupq_n_s64([v6 hash]);
+    v9 = vdupq_n_s64([identifierCopy hash]);
     v27[0] = vmovn_s16(vuzp1q_s16(vuzp1q_s32(vshlq_u64(vandq_s8(v9, xmmword_10024CD40), xmmword_10024CD70), vshlq_u64(vandq_s8(v9, xmmword_10024CD50), xmmword_10024CD60)), vuzp1q_s32(vshlq_u64(vandq_s8(v9, xmmword_10024CD20), xmmword_10024CD90), vshlq_u64(vandq_s8(v9, xmmword_10024CD30), xmmword_10024CD80))));
     v10 = [[NSUUID alloc] initWithUUIDBytes:v27];
     if (MediaAnalysisLogLevel() >= 7)
@@ -204,7 +204,7 @@
             *buf = 138412802;
             v22 = @"[ContactIngestion][Avatar]";
             v23 = 2112;
-            v24 = v6;
+            v24 = identifierCopy;
             v25 = 2112;
             v26 = v10;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v16, "%@ Processing contact %@ with avatar data %@ ... ", buf, 0x20u);
@@ -212,7 +212,7 @@
         }
 
         v17 = +[VCPImageManager sharedImageManager];
-        v20 = [v17 pixelBufferWithFormat:875704422 andMaxDimension:0 fromData:v7 withUniformTypeIdentifier:UTTypeJPEG flushCache:1 orientation:0];
+        v20 = [v17 pixelBufferWithFormat:875704422 andMaxDimension:0 fromData:dataCopy withUniformTypeIdentifier:UTTypeJPEG flushCache:1 orientation:0];
 
         v13 = [(MADContactsPersonProcessingTask *)self _analyzeContactWithContactUUID:v8 assetUUID:v10 confirmed:0 andCVPixelBuffer:v20];
         if (!v13 && MediaAnalysisLogLevel() >= 7)
@@ -223,7 +223,7 @@
             *buf = 138412546;
             v22 = @"[ContactIngestion][Avatar]";
             v23 = 2112;
-            v24 = v6;
+            v24 = identifierCopy;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v18, "%@ Finished processing contact %@ with avatar data", buf, 0x16u);
           }
         }
@@ -261,7 +261,7 @@
         *buf = 138412546;
         v22 = @"[ContactIngestion][Avatar]";
         v23 = 2112;
-        v24 = v6;
+        v24 = identifierCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "%@ Invalid contact identifier %@", buf, 0x16u);
       }
     }
@@ -272,11 +272,11 @@
   return v13;
 }
 
-- (int)_processContactWithIdentifier:(id)a3 andPosterArchiveData:(id)a4
+- (int)_processContactWithIdentifier:(id)identifier andPosterArchiveData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[NSUUID alloc] initWithUUIDString:v6];
+  identifierCopy = identifier;
+  dataCopy = data;
+  v8 = [[NSUUID alloc] initWithUUIDString:identifierCopy];
   if (!v8)
   {
     if (MediaAnalysisLogLevel() < 3)
@@ -293,14 +293,14 @@
     *buf = 138412546;
     *&buf[4] = @"[ContactIngestion][Poster]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = identifierCopy;
     v29 = "%@ Invalid contact identifier %@";
     v30 = v28;
     v31 = 22;
     goto LABEL_33;
   }
 
-  if (v7)
+  if (dataCopy)
   {
     if (MediaAnalysisLogLevel() >= 6)
     {
@@ -310,7 +310,7 @@
         *buf = 138412546;
         *&buf[4] = @"[ContactIngestion][Poster]";
         *&buf[12] = 2112;
-        *&buf[14] = v6;
+        *&buf[14] = identifierCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "%@ Processing contact %@ with poster archive data ... ", buf, 0x16u);
       }
     }
@@ -334,7 +334,7 @@
     v11 = v10;
     _Block_object_dispose(&v74, 8);
     v70 = 0;
-    v12 = [v10 unarchiveConfigurationFromData:v7 error:&v70];
+    v12 = [v10 unarchiveConfigurationFromData:dataCopy error:&v70];
     v13 = v70;
     if (!v12)
     {
@@ -355,8 +355,8 @@
       goto LABEL_97;
     }
 
-    v14 = [v12 providerBundleIdentifier];
-    v15 = [v14 isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
+    providerBundleIdentifier = [v12 providerBundleIdentifier];
+    v15 = [providerBundleIdentifier isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
 
     if ((v15 & 1) == 0)
     {
@@ -365,11 +365,11 @@
         v34 = VCPLogToOSLogType[6];
         if (os_log_type_enabled(&_os_log_default, v34))
         {
-          v35 = [v12 providerBundleIdentifier];
+          providerBundleIdentifier2 = [v12 providerBundleIdentifier];
           *buf = 138412802;
           *&buf[4] = @"[ContactIngestion][Poster]";
           *&buf[12] = 2112;
-          *&buf[14] = v35;
+          *&buf[14] = providerBundleIdentifier2;
           *&buf[22] = 2112;
           v72 = @"com.apple.PhotosUIPrivate.PhotosPosterProvider";
           _os_log_impl(&_mh_execute_header, &_os_log_default, v34, "%@ Unsupported poster bundle identifier %@ (expect %@); skipping", buf, 0x20u);
@@ -380,8 +380,8 @@
       goto LABEL_97;
     }
 
-    v16 = [v12 assetDirectory];
-    if (!v16)
+    assetDirectory = [v12 assetDirectory];
+    if (!assetDirectory)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -399,7 +399,7 @@
     }
 
     v69 = v13;
-    v67 = [PFPosterConfiguration loadFromURL:v16 error:&v69];
+    v67 = [PFPosterConfiguration loadFromURL:assetDirectory error:&v69];
     v65 = v69;
 
     if (!v67)
@@ -412,7 +412,7 @@
           *buf = 138412802;
           *&buf[4] = @"[ContactIngestion][Poster]";
           *&buf[12] = 2112;
-          *&buf[14] = v16;
+          *&buf[14] = assetDirectory;
           *&buf[22] = 2112;
           v72 = v65;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v37, "%@ Failed to load photos poster configuration at %@ - %@", buf, 0x20u);
@@ -423,12 +423,12 @@
       goto LABEL_95;
     }
 
-    v17 = [v67 userInfo];
-    v64 = v17;
-    if (v17)
+    userInfo = [v67 userInfo];
+    v64 = userInfo;
+    if (userInfo)
     {
-      v18 = [v17 objectForKeyedSubscript:@"representsDeviceOwner"];
-      v63 = [v18 BOOLValue];
+      v18 = [userInfo objectForKeyedSubscript:@"representsDeviceOwner"];
+      bOOLValue = [v18 BOOLValue];
 
       if (MediaAnalysisLogLevel() >= 7)
       {
@@ -436,7 +436,7 @@
         if (os_log_type_enabled(&_os_log_default, v19))
         {
           v20 = @"NO";
-          if (v63)
+          if (bOOLValue)
           {
             v20 = @"YES";
           }
@@ -450,10 +450,10 @@
       }
 
       v21 = [v64 objectForKeyedSubscript:@"hashedAssetIdentifier"];
-      v22 = [v21 unsignedIntegerValue];
+      unsignedIntegerValue = [v21 unsignedIntegerValue];
 
       v75 = 0;
-      v23 = vdupq_n_s64(v22);
+      v23 = vdupq_n_s64(unsignedIntegerValue);
       v74 = vmovn_s16(vuzp1q_s16(vuzp1q_s32(vshlq_u64(vandq_s8(v23, xmmword_10024CD40), xmmword_10024CD70), vshlq_u64(vandq_s8(v23, xmmword_10024CD50), xmmword_10024CD60)), vuzp1q_s32(vshlq_u64(vandq_s8(v23, xmmword_10024CD20), xmmword_10024CD90), vshlq_u64(vandq_s8(v23, xmmword_10024CD30), xmmword_10024CD80))));
       v24 = [[NSUUID alloc] initWithUUIDBytes:&v74];
       if (MediaAnalysisLogLevel() >= 7)
@@ -491,11 +491,11 @@
           goto LABEL_94;
         }
 
-        v43 = [v67 media];
-        if ([v43 count])
+        media = [v67 media];
+        if ([media count])
         {
-          v44 = [v67 media];
-          v45 = [v44 count] > 1;
+          media2 = [v67 media];
+          v45 = [media2 count] > 1;
 
           if (!v45)
           {
@@ -512,8 +512,8 @@
           v46 = VCPLogToOSLogType[4];
           if (os_log_type_enabled(&_os_log_default, v46))
           {
-            v47 = [v67 media];
-            v48 = [v47 count];
+            media3 = [v67 media];
+            v48 = [media3 count];
             *buf = 138412546;
             *&buf[4] = @"[ContactIngestion][Poster]";
             *&buf[12] = 2048;
@@ -523,11 +523,11 @@
         }
 
 LABEL_66:
-        v49 = [v67 media];
-        v61 = [v49 firstObject];
+        media4 = [v67 media];
+        firstObject = [media4 firstObject];
 
-        v50 = [v61 subpath];
-        v62 = [v16 URLByAppendingPathComponent:v50];
+        subpath = [firstObject subpath];
+        v62 = [assetDirectory URLByAppendingPathComponent:subpath];
 
         v68 = v65;
         v51 = [sub_10018DB04() loadCompoundLayerStackFromWallpaperURL:v62 options:1 error:&v68];
@@ -562,9 +562,9 @@ LABEL_66:
           goto LABEL_93;
         }
 
-        v53 = [v51 portraitLayerStack];
-        v54 = v53;
-        if (!v53)
+        portraitLayerStack = [v51 portraitLayerStack];
+        v54 = portraitLayerStack;
+        if (!portraitLayerStack)
         {
           if (MediaAnalysisLogLevel() < 3)
           {
@@ -588,11 +588,11 @@ LABEL_66:
           goto LABEL_92;
         }
 
-        v66 = [v53 backgroundLayer];
+        backgroundLayer = [portraitLayerStack backgroundLayer];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v27 = -[MADContactsPersonProcessingTask _analyzeContactWithContactUUID:assetUUID:confirmed:andCVPixelBuffer:](self, "_analyzeContactWithContactUUID:assetUUID:confirmed:andCVPixelBuffer:", v8, v24, v63, [v66 image]);
+          v27 = -[MADContactsPersonProcessingTask _analyzeContactWithContactUUID:assetUUID:confirmed:andCVPixelBuffer:](self, "_analyzeContactWithContactUUID:assetUUID:confirmed:andCVPixelBuffer:", v8, v24, bOOLValue, [backgroundLayer image]);
           if (v27)
           {
 LABEL_91:
@@ -616,7 +616,7 @@ LABEL_93:
             *buf = 138412546;
             *&buf[4] = @"[ContactIngestion][Poster]";
             *&buf[12] = 2112;
-            *&buf[14] = v6;
+            *&buf[14] = identifierCopy;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v55, "%@ Finished processing contact %@ with poster archive data", buf, 0x16u);
           }
 
@@ -774,8 +774,8 @@ LABEL_6:
 
       v9 = *(*(&v63 + 1) + 8 * v8);
       v10 = objc_autoreleasePoolPush();
-      v11 = [(MADProcessingTask *)self cancelBlock];
-      if (v11 && ([(MADProcessingTask *)self cancelBlock], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12[2](), v12, v11, (v13 & 1) != 0))
+      cancelBlock = [(MADProcessingTask *)self cancelBlock];
+      if (cancelBlock && ([(MADProcessingTask *)self cancelBlock], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12[2](), v12, cancelBlock, (v13 & 1) != 0))
       {
         v14 = 1;
       }
@@ -785,20 +785,20 @@ LABEL_6:
         v15 = +[VCPWatchdog sharedWatchdog];
         [v15 pet];
 
-        v16 = [v9 identifier];
-        v17 = [v16 substringToIndex:36];
+        identifier = [v9 identifier];
+        v17 = [identifier substringToIndex:36];
 
-        v18 = [v9 givenName];
-        v19 = [v9 familyName];
-        v20 = [v9 wallpaper];
-        v21 = [v20 posterArchiveData];
+        givenName = [v9 givenName];
+        familyName = [v9 familyName];
+        wallpaper = [v9 wallpaper];
+        posterArchiveData = [wallpaper posterArchiveData];
 
-        v22 = [v9 thumbnailImageData];
+        thumbnailImageData = [v9 thumbnailImageData];
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
         {
           *buf = 138413570;
           v23 = @"YES";
-          if (v21)
+          if (posterArchiveData)
           {
             v24 = @"YES";
           }
@@ -809,7 +809,7 @@ LABEL_6:
           }
 
           v71 = @"[ContactIngestion]";
-          if (!v22)
+          if (!thumbnailImageData)
           {
             v23 = @"NO";
           }
@@ -817,9 +817,9 @@ LABEL_6:
           v72 = 2112;
           v73 = v17;
           v74 = 2112;
-          v75 = v18;
+          v75 = givenName;
           v76 = 2112;
-          v77 = v19;
+          v77 = familyName;
           v78 = 2112;
           v79 = v24;
           v80 = 2112;
@@ -827,14 +827,14 @@ LABEL_6:
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Contact: %@ (%@ %@), wallpaper.posterArchiveData: %@, thumbnailImageData: %@", buf, 0x3Eu);
         }
 
-        if (v21)
+        if (posterArchiveData)
         {
-          [(MADContactsPersonProcessingTask *)self _processContactWithIdentifier:v17 andPosterArchiveData:v21];
+          [(MADContactsPersonProcessingTask *)self _processContactWithIdentifier:v17 andPosterArchiveData:posterArchiveData];
         }
 
-        else if (v22)
+        else if (thumbnailImageData)
         {
-          [(MADContactsPersonProcessingTask *)self _processContactWithIdentifier:v17 andImageData:v22];
+          [(MADContactsPersonProcessingTask *)self _processContactWithIdentifier:v17 andImageData:thumbnailImageData];
         }
 
         v14 = 0;
@@ -859,13 +859,13 @@ LABEL_6:
     }
   }
 
-  v25 = [(MADProcessingTask *)self cancelBlock];
-  if (!v25 || ([(MADProcessingTask *)self cancelBlock], v26 = objc_claimAutoreleasedReturnValue(), v27 = v26[2](), v26, v25, (v27 & 1) == 0))
+  cancelBlock2 = [(MADProcessingTask *)self cancelBlock];
+  if (!cancelBlock2 || ([(MADProcessingTask *)self cancelBlock], v26 = objc_claimAutoreleasedReturnValue(), v27 = v26[2](), v26, cancelBlock2, (v27 & 1) == 0))
   {
     v28 = +[VCPWatchdog sharedWatchdog];
     [v28 pet];
 
-    v29 = self;
+    selfCopy2 = self;
     if ([(NSSet *)self->_vuKnownAssets count])
     {
       v30 = [(NSSet *)self->_vuKnownAssets mutableCopy];
@@ -911,10 +911,10 @@ LABEL_6:
         }
       }
 
-      v29 = self;
+      selfCopy2 = self;
     }
 
-    if (([(VUWGallery *)v29->_gallery ready]& 1) != 0)
+    if (([(VUWGallery *)selfCopy2->_gallery ready]& 1) != 0)
     {
       if (MediaAnalysisLogLevel() >= 7)
       {
@@ -941,14 +941,14 @@ LABEL_6:
       }
     }
 
-    v40 = v29->_gallery;
+    v40 = selfCopy2->_gallery;
     v55 = 0;
     v56[0] = _NSConcreteStackBlock;
     v56[1] = 3221225472;
     v56[2] = sub_10018EAA0;
     v56[3] = &unk_100286268;
     v57 = @"[ContactIngestion]";
-    v58 = v29;
+    v58 = selfCopy2;
     v41 = [(VUWGallery *)v40 updateForType:1 mode:1 progressHandler:v56 error:&v55];
     v42 = v55;
     if (v41)

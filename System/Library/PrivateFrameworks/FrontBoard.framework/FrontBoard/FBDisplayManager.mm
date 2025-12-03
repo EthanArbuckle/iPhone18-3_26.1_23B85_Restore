@@ -3,8 +3,8 @@
 + (FBSDisplayIdentity)mainIdentity;
 + (id)sharedInstance;
 - (FBDisplayManager)init;
-- (FBDisplayManager)initWithInitializationCompletion:(id)a3;
-- (FBDisplayManager)initWithTransformer:(id)a3;
+- (FBDisplayManager)initWithInitializationCompletion:(id)completion;
+- (FBDisplayManager)initWithTransformer:(id)transformer;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -18,7 +18,7 @@
   v4[2] = __34__FBDisplayManager_sharedInstance__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (sharedInstance_onceToken_5 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_5, v4);
@@ -31,18 +31,18 @@
 
 + (FBSDisplayIdentity)mainIdentity
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 mainIdentity];
+  sharedInstance = [self sharedInstance];
+  mainIdentity = [sharedInstance mainIdentity];
 
-  return v3;
+  return mainIdentity;
 }
 
 + (FBSDisplayConfiguration)mainConfiguration
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 mainConfiguration];
+  sharedInstance = [self sharedInstance];
+  mainConfiguration = [sharedInstance mainConfiguration];
 
-  return v3;
+  return mainConfiguration;
 }
 
 - (FBDisplayManager)init
@@ -58,7 +58,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBDisplayManager.m";
     v17 = 1024;
@@ -74,9 +74,9 @@
   return result;
 }
 
-- (FBDisplayManager)initWithInitializationCompletion:(id)a3
+- (FBDisplayManager)initWithInitializationCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-initWithInitializationCompletion: is not allowed - call +sharedInstance instead"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -88,7 +88,7 @@
     v13 = 2114;
     v14 = v9;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"FBDisplayManager.m";
     v19 = 1024;
@@ -104,9 +104,9 @@
   return result;
 }
 
-- (FBDisplayManager)initWithTransformer:(id)a3
+- (FBDisplayManager)initWithTransformer:(id)transformer
 {
-  v5 = a3;
+  transformerCopy = transformer;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-initWithTransformer: is not allowed - call +sharedInstance instead"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -118,7 +118,7 @@
     v13 = 2114;
     v14 = v9;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"FBDisplayManager.m";
     v19 = 1024;
@@ -147,7 +147,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBDisplayManager.m";
     v16 = 1024;
@@ -210,7 +210,7 @@ void __34__FBDisplayManager_sharedInstance__block_invoke(uint64_t a1)
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBDisplayManager.m";
     v16 = 1024;

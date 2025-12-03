@@ -2,9 +2,9 @@
 - (double)height;
 - (id)_myTableView;
 - (id)_recurrenceLabel;
-- (void)layoutForWidth:(double)a3 position:(int)a4;
+- (void)layoutForWidth:(double)width position:(int)position;
 - (void)layoutSubviews;
-- (void)setRecurrenceString:(id)a3;
+- (void)setRecurrenceString:(id)string;
 @end
 
 @implementation EKEventDetailRecurrenceCell
@@ -25,14 +25,14 @@
     v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     [(UILabel *)self->_recurrenceLabel setFont:v7];
 
-    v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)self->_recurrenceLabel setTextColor:v8];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)self->_recurrenceLabel setTextColor:secondaryLabelColor];
 
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)self->_recurrenceLabel setBackgroundColor:v9];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)self->_recurrenceLabel setBackgroundColor:clearColor];
 
-    v10 = [(EKEventDetailRecurrenceCell *)self contentView];
-    [v10 addSubview:self->_recurrenceLabel];
+    contentView = [(EKEventDetailRecurrenceCell *)self contentView];
+    [contentView addSubview:self->_recurrenceLabel];
 
     recurrenceLabel = self->_recurrenceLabel;
   }
@@ -40,20 +40,20 @@
   return recurrenceLabel;
 }
 
-- (void)setRecurrenceString:(id)a3
+- (void)setRecurrenceString:(id)string
 {
-  v4 = a3;
-  v5 = [(EKEventDetailRecurrenceCell *)self _recurrenceLabel];
-  [v5 setText:v4];
+  stringCopy = string;
+  _recurrenceLabel = [(EKEventDetailRecurrenceCell *)self _recurrenceLabel];
+  [_recurrenceLabel setText:stringCopy];
 }
 
 - (id)_myTableView
 {
-  v2 = [(EKEventDetailRecurrenceCell *)self superview];
+  superview = [(EKEventDetailRecurrenceCell *)self superview];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = superview;
   }
 
   else
@@ -66,12 +66,12 @@
   return v3;
 }
 
-- (void)layoutForWidth:(double)a3 position:(int)a4
+- (void)layoutForWidth:(double)width position:(int)position
 {
   v6.receiver = self;
   v6.super_class = EKEventDetailRecurrenceCell;
-  [(EKEventDetailCell *)&v6 layoutForWidth:*&a4 position:?];
-  self->_lastLayoutWidth = a3;
+  [(EKEventDetailCell *)&v6 layoutForWidth:*&position position:?];
+  self->_lastLayoutWidth = width;
 }
 
 - (void)layoutSubviews
@@ -79,19 +79,19 @@
   v20.receiver = self;
   v20.super_class = EKEventDetailRecurrenceCell;
   [(EKUITableViewCell *)&v20 layoutSubviews];
-  v3 = [(EKEventDetailRecurrenceCell *)self _recurrenceLabel];
-  v4 = [(EKEventDetailRecurrenceCell *)self textLabel];
-  [v4 frame];
+  _recurrenceLabel = [(EKEventDetailRecurrenceCell *)self _recurrenceLabel];
+  textLabel = [(EKEventDetailRecurrenceCell *)self textLabel];
+  [textLabel frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(EKEventDetailRecurrenceCell *)self _myTableView];
-  v14 = v13;
-  if (v13)
+  _myTableView = [(EKEventDetailRecurrenceCell *)self _myTableView];
+  v14 = _myTableView;
+  if (_myTableView)
   {
-    [v13 _backgroundInset];
+    [_myTableView _backgroundInset];
     v16 = v15 + 11.0;
   }
 
@@ -106,14 +106,14 @@
   v21.size.height = v12;
   v17 = v16 + CGRectGetMaxX(v21) + 10.0;
   v18 = self->_lastLayoutWidth - v17 - v16;
-  [v3 sizeThatFits:{v18, 3.40282347e38}];
+  [_recurrenceLabel sizeThatFits:{v18, 3.40282347e38}];
   [(UILabel *)self->_recurrenceLabel setFrame:v17, 9.0, v18, v19];
 }
 
 - (double)height
 {
-  v2 = [(EKEventDetailRecurrenceCell *)self _recurrenceLabel];
-  [v2 frame];
+  _recurrenceLabel = [(EKEventDetailRecurrenceCell *)self _recurrenceLabel];
+  [_recurrenceLabel frame];
   v4 = v3;
   v6 = v5;
 

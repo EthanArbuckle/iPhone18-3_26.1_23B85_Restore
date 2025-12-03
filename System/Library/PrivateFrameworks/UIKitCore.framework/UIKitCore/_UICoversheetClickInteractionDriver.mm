@@ -13,8 +13,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(_UILongPressClickInteractionDriver *)v2 primaryGestureRecognizer];
-    [v4 setMinimumDurationRequired:0.0];
+    primaryGestureRecognizer = [(_UILongPressClickInteractionDriver *)v2 primaryGestureRecognizer];
+    [primaryGestureRecognizer setMinimumDurationRequired:0.0];
   }
 
   return v3;

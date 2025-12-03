@@ -1,8 +1,8 @@
 @interface PHASEScatteringData
 + (id)objectForDefault;
 - (PHASEScatteringData)init;
-- (PHASEScatteringData)initWithScatteringCoefficients:(id)a3;
-- (PHASEScatteringData)initWithScatteringCoefficients:(id)a3 frequencyBands:(id)a4;
+- (PHASEScatteringData)initWithScatteringCoefficients:(id)coefficients;
+- (PHASEScatteringData)initWithScatteringCoefficients:(id)coefficients frequencyBands:(id)bands;
 @end
 
 @implementation PHASEScatteringData
@@ -14,11 +14,11 @@
   return 0;
 }
 
-- (PHASEScatteringData)initWithScatteringCoefficients:(id)a3
+- (PHASEScatteringData)initWithScatteringCoefficients:(id)coefficients
 {
   v33 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  if ([v22 count])
+  coefficientsCopy = coefficients;
+  if ([coefficientsCopy count])
   {
     v27.receiver = self;
     v27.super_class = PHASEScatteringData;
@@ -30,7 +30,7 @@
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v6 = v22;
+      v6 = coefficientsCopy;
       v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v7)
       {
@@ -77,7 +77,7 @@
     }
 
     self = v4;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
@@ -92,18 +92,18 @@
       _os_log_impl(&dword_23A302000, v20, OS_LOG_TYPE_ERROR, "%25s:%-5d [PHASEScatteringData:initWithScatteringCoefficients]: scatteringCoeffients is empty", buf, 0x12u);
     }
 
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (PHASEScatteringData)initWithScatteringCoefficients:(id)a3 frequencyBands:(id)a4
+- (PHASEScatteringData)initWithScatteringCoefficients:(id)coefficients frequencyBands:(id)bands
 {
   v44 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v29 = a4;
-  if (![v28 count])
+  coefficientsCopy = coefficients;
+  bandsCopy = bands;
+  if (![coefficientsCopy count])
   {
     v23 = **(Phase::Logger::GetInstance(0) + 448);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -118,11 +118,11 @@ LABEL_19:
     }
 
 LABEL_23:
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_24;
   }
 
-  if (![v29 count])
+  if (![bandsCopy count])
   {
     v23 = **(Phase::Logger::GetInstance(0) + 448);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -138,8 +138,8 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v6 = [v28 count];
-  v7 = [v29 count];
+  v6 = [coefficientsCopy count];
+  v7 = [bandsCopy count];
   if (v6 != v7)
   {
     v25 = **(Phase::Logger::GetInstance(v7) + 448);
@@ -150,9 +150,9 @@ LABEL_23:
       v38 = 1024;
       v39 = 447;
       v40 = 2048;
-      v41 = [v28 count];
+      v41 = [coefficientsCopy count];
       v42 = 2048;
-      v43 = [v29 count];
+      v43 = [bandsCopy count];
       _os_log_impl(&dword_23A302000, v25, OS_LOG_TYPE_ERROR, "%25s:%-5d [PHASEScatteringData:initWithScatteringCoefficients:frequencyBands]: scatteringsCoefficent count %zu must match frequencyBands count %zu", buf, 0x26u);
     }
 
@@ -165,10 +165,10 @@ LABEL_23:
   if (v8)
   {
     v27 = v8;
-    v9 = [v28 count];
-    if (v9 != [v29 count])
+    v9 = [coefficientsCopy count];
+    if (v9 != [bandsCopy count])
     {
-      v22 = 0;
+      selfCopy = 0;
       self = v27;
       goto LABEL_24;
     }
@@ -178,7 +178,7 @@ LABEL_23:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v11 = v28;
+    v11 = coefficientsCopy;
     v12 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v12)
     {
@@ -196,7 +196,7 @@ LABEL_23:
           v16 = *(*(&v30 + 1) + 8 * i);
           [v16 floatValue];
           v17 = [PHASESubband alloc];
-          v18 = [v29 objectAtIndexedSubscript:v13];
+          v18 = [bandsCopy objectAtIndexedSubscript:v13];
           [v18 floatValue];
           v19 = [PHASESubband initWithFrequency:v17 value:"initWithFrequency:value:"];
 
@@ -218,10 +218,10 @@ LABEL_23:
   }
 
   self = v8;
-  v22 = self;
+  selfCopy = self;
 LABEL_24:
 
-  return v22;
+  return selfCopy;
 }
 
 + (id)objectForDefault

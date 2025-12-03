@@ -1,10 +1,10 @@
 @interface AnalyticsLaunchpad
-+ (BOOL)foundBreadcrumb:(id)a3;
++ (BOOL)foundBreadcrumb:(id)breadcrumb;
 + (BOOL)foundDestroyPersistentStoreBreadcrumb;
 + (BOOL)foundInitialWorkspaceSaveBreadcrumb;
-+ (BOOL)foundIntegrityCheckBreadcrumbAboveThreshold:(BOOL)a3;
-+ (BOOL)launchHealthCheck:(id)a3;
-+ (id)configureClass:(id)a3;
++ (BOOL)foundIntegrityCheckBreadcrumbAboveThreshold:(BOOL)threshold;
++ (BOOL)launchHealthCheck:(id)check;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
 + (unint64_t)integrityCheckBreadcrumbCount;
 + (void)appendLaunchTime;
@@ -14,16 +14,16 @@
 + (void)leaveBreadcrumbForDestroyPersistentStore;
 + (void)leaveBreadcrumbForInitialWorkspaceSave;
 + (void)leaveBreadcrumbForIntegrityCheck;
-+ (void)postLaunchIntervalMetricWithPreviousLaunchTime:(unint64_t)a3;
++ (void)postLaunchIntervalMetricWithPreviousLaunchTime:(unint64_t)time;
 - (AnalyticsLaunchpad)init;
 - (BOOL)_checkUnlockedSinceBoot;
-- (id)_allocateNOIEngineWithParams:(id)a3;
-- (int)configureInstance:(id)a3;
-- (void)_launchSequence:(id)a3;
+- (id)_allocateNOIEngineWithParams:(id)params;
+- (int)configureInstance:(id)instance;
+- (void)_launchSequence:(id)sequence;
 - (void)_launchSequenceWithSelfParams;
-- (void)deleteDatabaseCompleted:(BOOL)a3 error:(id)a4;
-- (void)destroyPersistentStoreCompleted:(BOOL)a3 error:(id)a4;
-- (void)integrityCheckCompleted:(BOOL)a3 error:(id)a4;
+- (void)deleteDatabaseCompleted:(BOOL)completed error:(id)error;
+- (void)destroyPersistentStoreCompleted:(BOOL)completed error:(id)error;
+- (void)integrityCheckCompleted:(BOOL)completed error:(id)error;
 @end
 
 @implementation AnalyticsLaunchpad
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __36__AnalyticsLaunchpad_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_0 != -1)
   {
     dispatch_once(&sharedInstance_pred_0, block);
@@ -167,9 +167,9 @@ uint64_t __36__AnalyticsLaunchpad_sharedInstance__block_invoke_3()
   }
 
   v11 = +[SystemProperties sharedInstance];
-  v12 = [v11 internalBuild];
+  internalBuild = [v11 internalBuild];
 
-  if (v12)
+  if (internalBuild)
   {
     shared_prefs_store = get_shared_prefs_store();
     if (shared_prefs_store)
@@ -442,11 +442,11 @@ void __26__AnalyticsLaunchpad_init__block_invoke_2_57(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[AnalyticsLaunchpad sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
@@ -483,10 +483,10 @@ void __51__AnalyticsLaunchpad__launchSequenceWithSelfParams__block_invoke(uint64
   [v1 _launchSequence:v2];
 }
 
-- (void)_launchSequence:(id)a3
+- (void)_launchSequence:(id)sequence
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sequenceCopy = sequence;
   v5 = otherLogHandle;
   if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -525,8 +525,8 @@ void __51__AnalyticsLaunchpad__launchSequenceWithSelfParams__block_invoke(uint64
     }
 
     self->_launchSequenceStarted = 1;
-    v11 = [v4 objectForKeyedSubscript:@"isHelper"];
-    v12 = [v11 BOOLValue];
+    v11 = [sequenceCopy objectForKeyedSubscript:@"isHelper"];
+    bOOLValue = [v11 BOOLValue];
 
     v13 = +[SystemSettingsRelay defaultRelay];
 
@@ -540,7 +540,7 @@ void __51__AnalyticsLaunchpad__launchSequenceWithSelfParams__block_invoke(uint64
       }
     }
 
-    if (v12)
+    if (bOOLValue)
     {
       v15 = 0;
     }
@@ -557,9 +557,9 @@ void __51__AnalyticsLaunchpad__launchSequenceWithSelfParams__block_invoke(uint64
     v18[2] = __38__AnalyticsLaunchpad__launchSequence___block_invoke;
     v18[3] = &unk_27898A378;
     v19 = v15;
-    v20 = self;
-    v22 = v12;
-    v21 = v4;
+    selfCopy = self;
+    v22 = bOOLValue;
+    v21 = sequenceCopy;
     dispatch_sync(flows_queue, v18);
 
     v9 = v19;
@@ -920,13 +920,13 @@ xpc_activity_state_t __38__AnalyticsLaunchpad__launchSequence___block_invoke_2(u
   return result;
 }
 
-- (id)_allocateNOIEngineWithParams:(id)a3
+- (id)_allocateNOIEngineWithParams:(id)params
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"isHelper"];
-  v5 = [v4 BOOLValue];
+  paramsCopy = params;
+  v4 = [paramsCopy objectForKeyedSubscript:@"isHelper"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = otherLogHandle;
     if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -948,7 +948,7 @@ LABEL_10:
   }
 
   markMeasurement(2, 12);
-  v8 = [[NOIAnalyticsEngine alloc] initWithWorkspace:0 params:v3];
+  v8 = [[NOIAnalyticsEngine alloc] initWithWorkspace:0 params:paramsCopy];
   if (!v8)
   {
     v9 = otherLogHandle;
@@ -970,13 +970,13 @@ LABEL_11:
   return v8;
 }
 
-- (void)integrityCheckCompleted:(BOOL)a3 error:(id)a4
+- (void)integrityCheckCompleted:(BOOL)completed error:(id)error
 {
-  if (!a3)
+  if (!completed)
   {
-    v5 = a4;
+    errorCopy = error;
     v6 = +[AWDAgent defaultInstance];
-    [v6 postMetricForSignificantEvent:1 errorContext:3 error:v5 status:0];
+    [v6 postMetricForSignificantEvent:1 errorContext:3 error:errorCopy status:0];
 
     v4 = vars8;
   }
@@ -984,13 +984,13 @@ LABEL_11:
   +[AnalyticsLaunchpad clearIntegrityCheckBreadcrumb];
 }
 
-- (void)destroyPersistentStoreCompleted:(BOOL)a3 error:(id)a4
+- (void)destroyPersistentStoreCompleted:(BOOL)completed error:(id)error
 {
-  v4 = a3;
+  completedCopy = completed;
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = otherLogHandle;
-  if (v4)
+  if (completedCopy)
   {
     if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEFAULT))
     {
@@ -1010,14 +1010,14 @@ LABEL_11:
     if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = errorCopy;
       _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_ERROR, "DATA LOSS: Failure to destroy the PersistentStore because %@", &v13, 0xCu);
     }
 
     v7 = +[AWDAgent defaultInstance];
     v8 = v7;
     v9 = 3;
-    v10 = v5;
+    v10 = errorCopy;
     v11 = 2;
   }
 
@@ -1027,13 +1027,13 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteDatabaseCompleted:(BOOL)a3 error:(id)a4
+- (void)deleteDatabaseCompleted:(BOOL)completed error:(id)error
 {
-  v4 = a3;
+  completedCopy = completed;
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = otherLogHandle;
-  if (v4)
+  if (completedCopy)
   {
     if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEFAULT))
     {
@@ -1053,14 +1053,14 @@ LABEL_11:
     if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = errorCopy;
       _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_ERROR, "DATA LOSS: Failure to delete database file because %@", &v13, 0xCu);
     }
 
     v7 = +[AWDAgent defaultInstance];
     v8 = v7;
     v9 = 3;
-    v10 = v5;
+    v10 = errorCopy;
     v11 = 2;
   }
 
@@ -1069,12 +1069,12 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)launchHealthCheck:(id)a3
++ (BOOL)launchHealthCheck:(id)check
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  checkCopy = check;
   p_superclass = CountDown.superclass;
-  v5 = [AnalyticsLaunchpad foundBreadcrumb:v3];
+  v5 = [AnalyticsLaunchpad foundBreadcrumb:checkCopy];
   v6 = MEMORY[0x277CBF040];
   v7 = MEMORY[0x277CBF030];
   if (!v5)
@@ -1141,11 +1141,11 @@ LABEL_30:
               objc_enumerationMutation(v15);
             }
 
-            v23 = [*(*(&v34 + 1) + 8 * v21) unsignedLongLongValue];
-            v19 = v23;
+            unsignedLongLongValue = [*(*(&v34 + 1) + 8 * v21) unsignedLongLongValue];
+            v19 = unsignedLongLongValue;
             if (v22)
             {
-              if ((v23 - v22) > 0xE10)
+              if ((unsignedLongLongValue - v22) > 0xE10)
               {
 
                 v24 = 1;
@@ -1155,11 +1155,11 @@ LABEL_30:
                 goto LABEL_29;
               }
 
-              v18 += v23 - v22;
+              v18 += unsignedLongLongValue - v22;
             }
 
             ++v21;
-            v22 = v23;
+            v22 = unsignedLongLongValue;
           }
 
           while (v17 != v21);
@@ -1209,14 +1209,14 @@ LABEL_30:
         [v28 postMetricForSignificantEventWithName:@"LowLaunchIntervalAverage" errorContext:3 error:0 status:0];
 
         v24 = 1;
-        [v3 setForceIntegrityCheck:1];
+        [checkCopy setForceIntegrityCheck:1];
         v9 = 0;
       }
     }
 
 LABEL_29:
-    v29 = [v12 lastObject];
-    [p_superclass + 489 postLaunchIntervalMetricWithPreviousLaunchTime:{objc_msgSend(v29, "unsignedLongLongValue")}];
+    lastObject = [v12 lastObject];
+    [p_superclass + 489 postLaunchIntervalMetricWithPreviousLaunchTime:{objc_msgSend(lastObject, "unsignedLongLongValue")}];
 
     goto LABEL_30;
   }
@@ -1246,7 +1246,7 @@ LABEL_34:
   return v9;
 }
 
-+ (void)postLaunchIntervalMetricWithPreviousLaunchTime:(unint64_t)a3
++ (void)postLaunchIntervalMetricWithPreviousLaunchTime:(unint64_t)time
 {
   v4 = objc_alloc_init(AWDSymptomsLaunchIntervalMetric);
   if (v4)
@@ -1256,7 +1256,7 @@ LABEL_34:
     v7.tv_sec = 0;
     *&v7.tv_usec = 0;
     gettimeofday(&v7, 0);
-    [(AWDSymptomsLaunchIntervalMetric *)v5 setIntervalSincePreviousLaunch:v7.tv_sec - a3];
+    [(AWDSymptomsLaunchIntervalMetric *)v5 setIntervalSincePreviousLaunch:v7.tv_sec - time];
     v6 = +[AWDAgent defaultInstance];
     [v6 postMetric:v5 withIdentifier:3145748];
   }
@@ -1265,7 +1265,7 @@ LABEL_34:
 + (void)appendLaunchTime
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11.tv_sec = 0;
   *&v11.tv_usec = 0;
   gettimeofday(&v11, 0);
@@ -1275,26 +1275,26 @@ LABEL_34:
   if (v5)
   {
     v6 = v5;
-    [v2 addObjectsFromArray:v5];
+    [array addObjectsFromArray:v5];
   }
 
   v7 = [MEMORY[0x277CCABB0] numberWithLong:v11.tv_sec];
-  [v2 addObject:v7];
+  [array addObject:v7];
 
-  if ([v2 count] >= 0xB)
+  if ([array count] >= 0xB)
   {
-    [v2 removeObjectAtIndex:0];
+    [array removeObjectAtIndex:0];
   }
 
   v8 = otherLogHandle;
   if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v13 = v2;
+    v13 = array;
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEBUG, "About to save launchTimes: %@", buf, 0xCu);
   }
 
-  v9 = v2;
+  v9 = array;
   if (v9)
   {
     CFPreferencesSetValue(@"launchTimestamps", v9, @"com.apple.symptomsd", v3, v4);
@@ -1305,9 +1305,9 @@ LABEL_34:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)foundBreadcrumb:(id)a3
++ (BOOL)foundBreadcrumb:(id)breadcrumb
 {
-  v3 = a3;
+  breadcrumbCopy = breadcrumb;
   if (+[AnalyticsLaunchpad foundDestroyPersistentStoreBreadcrumb])
   {
     v4 = otherLogHandle;
@@ -1321,7 +1321,7 @@ LABEL_34:
     [v5 postMetricForSignificantEvent:2 errorContext:3 error:0 status:0];
 
     v6 = 1;
-    [v3 setForceDeleteFile:1];
+    [breadcrumbCopy setForceDeleteFile:1];
     +[AnalyticsLaunchpad clearDestroyPersistentStoreBreadcrumb];
   }
 
@@ -1340,7 +1340,7 @@ LABEL_34:
       v6 = 1;
       [v8 postMetricForSignificantEvent:1 errorContext:3 error:0 status:0];
 
-      [v3 setForceDestroyPersistentStore:1];
+      [breadcrumbCopy setForceDestroyPersistentStore:1];
       +[AnalyticsLaunchpad clearIntegrityCheckBreadcrumb];
     }
 
@@ -1350,11 +1350,11 @@ LABEL_34:
       if ([AnalyticsLaunchpad foundIntegrityCheckBreadcrumbAboveThreshold:0])
       {
         v6 = 1;
-        [v3 setForceIntegrityCheck:1];
+        [breadcrumbCopy setForceIntegrityCheck:1];
       }
     }
 
-    if (([v3 forceDestroyPersistentStore] & 1) == 0 && +[AnalyticsLaunchpad foundInitialWorkspaceSaveBreadcrumb](AnalyticsLaunchpad, "foundInitialWorkspaceSaveBreadcrumb"))
+    if (([breadcrumbCopy forceDestroyPersistentStore] & 1) == 0 && +[AnalyticsLaunchpad foundInitialWorkspaceSaveBreadcrumb](AnalyticsLaunchpad, "foundInitialWorkspaceSaveBreadcrumb"))
     {
       v9 = otherLogHandle;
       if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_ERROR))
@@ -1367,7 +1367,7 @@ LABEL_34:
       [v10 postMetricForSignificantEventWithName:@"InitialWorkspaceSaveCrashed" errorContext:3 error:0 status:0];
 
       v6 = 1;
-      [v3 setForceIntegrityCheck:1];
+      [breadcrumbCopy setForceIntegrityCheck:1];
       +[AnalyticsLaunchpad clearInitialWorkspaceSaveBreadcrumb];
     }
   }
@@ -1419,12 +1419,12 @@ LABEL_34:
     v4 = CFGetTypeID(v2);
     if (v4 == CFNumberGetTypeID())
     {
-      v5 = [v3 unsignedIntegerValue];
+      unsignedIntegerValue = [v3 unsignedIntegerValue];
       v6 = otherLogHandle;
       if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_INFO))
       {
         v10 = 134217984;
-        v11 = v5;
+        v11 = unsignedIntegerValue;
         _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_INFO, "IntegrityCheckInProgress breadcrumb count is %ld.", &v10, 0xCu);
       }
     }
@@ -1440,25 +1440,25 @@ LABEL_34:
       }
 
       +[AnalyticsLaunchpad clearIntegrityCheckBreadcrumb];
-      v5 = 0;
+      unsignedIntegerValue = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v5;
+  return unsignedIntegerValue;
 }
 
-+ (BOOL)foundIntegrityCheckBreadcrumbAboveThreshold:(BOOL)a3
++ (BOOL)foundIntegrityCheckBreadcrumbAboveThreshold:(BOOL)threshold
 {
-  v3 = a3;
+  thresholdCopy = threshold;
   v4 = +[AnalyticsLaunchpad integrityCheckBreadcrumbCount];
   v5 = 3;
-  if (!v3)
+  if (!thresholdCopy)
   {
     v5 = 0;
   }
@@ -1538,10 +1538,10 @@ LABEL_34:
   CFPreferencesAppSynchronize(@"com.apple.symptomsd");
 }
 
-- (int)configureInstance:(id)a3
+- (int)configureInstance:(id)instance
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  instanceCopy = instance;
   v5 = measureLaunchXPCHandle();
   if (os_signpost_enabled(v5))
   {
@@ -1561,23 +1561,23 @@ LABEL_34:
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "configureInstance: QoS %s", buf, 0xCu);
   }
 
-  v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v4];
+  v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:instanceCopy];
 
   [(AnalyticsLaunchpad *)self setLaunchParams:v10];
   v11 = +[SystemProperties sharedInstance];
-  v12 = [v11 isSymptomsdHelper];
+  isSymptomsdHelper = [v11 isSymptomsdHelper];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:v12];
-  v14 = [(AnalyticsLaunchpad *)self launchParams];
-  [v14 setObject:v13 forKeyedSubscript:@"isHelper"];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:isSymptomsdHelper];
+  launchParams = [(AnalyticsLaunchpad *)self launchParams];
+  [launchParams setObject:v13 forKeyedSubscript:@"isHelper"];
 
-  setMeasurement(1, 255, v12);
+  setMeasurement(1, 255, isSymptomsdHelper);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __40__AnalyticsLaunchpad_configureInstance___block_invoke;
   v17[3] = &unk_27898A3A0;
   v17[4] = self;
-  v18 = v12;
+  v18 = isSymptomsdHelper;
   if (configureInstance__pred != -1)
   {
     dispatch_once(&configureInstance__pred, v17);
@@ -1691,7 +1691,7 @@ void __40__AnalyticsLaunchpad_configureInstance___block_invoke_2(uint64_t a1)
 - (BOOL)_checkUnlockedSinceBoot
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     v10 = 0;
     goto LABEL_12;

@@ -7,26 +7,26 @@
 
 - (id)mf_substringTruncatedToIndex:()MFUtilities
 {
-  v4 = a1;
-  if ([v4 length] > a3)
+  selfCopy = self;
+  if ([selfCopy length] > a3)
   {
-    v5 = [v4 substringToIndex:a3];
+    v5 = [selfCopy substringToIndex:a3];
     v6 = [v5 stringByAppendingString:@"…"];
 
-    v4 = v6;
+    selfCopy = v6;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)mf_substringTruncatedInRange:()MFUtilities
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = a1;
-  v7 = v6;
+  selfCopy = self;
+  v7 = selfCopy;
   if (a3 != 0x7FFFFFFFFFFFFFFFLL && a4)
   {
-    v8 = [v6 substringToIndex:a3];
+    v8 = [selfCopy substringToIndex:a3];
     v9 = [v7 substringFromIndex:a3 + a4];
     v13[0] = v8;
     v13[1] = v9;

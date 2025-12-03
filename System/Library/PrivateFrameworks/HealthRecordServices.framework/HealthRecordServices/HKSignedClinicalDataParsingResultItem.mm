@@ -1,11 +1,11 @@
 @interface HKSignedClinicalDataParsingResultItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKSignedClinicalDataParsingResultItem)init;
-- (HKSignedClinicalDataParsingResultItem)initWithCoder:(id)a3;
-- (HKSignedClinicalDataParsingResultItem)initWithOriginalRecord:(id)a3 mainRecord:(id)a4;
+- (HKSignedClinicalDataParsingResultItem)initWithCoder:(id)coder;
+- (HKSignedClinicalDataParsingResultItem)initWithOriginalRecord:(id)record mainRecord:(id)mainRecord;
 - (NSData)uniquenessChecksum;
-- (id)copyWithOriginalRecord:(id)a3 mainRecord:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithOriginalRecord:(id)record mainRecord:(id)mainRecord;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSignedClinicalDataParsingResultItem
@@ -20,20 +20,20 @@
   return 0;
 }
 
-- (HKSignedClinicalDataParsingResultItem)initWithOriginalRecord:(id)a3 mainRecord:(id)a4
+- (HKSignedClinicalDataParsingResultItem)initWithOriginalRecord:(id)record mainRecord:(id)mainRecord
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  mainRecordCopy = mainRecord;
   v14.receiver = self;
   v14.super_class = HKSignedClinicalDataParsingResultItem;
   v8 = [(HKSignedClinicalDataParsingResultItem *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [recordCopy copy];
     originalRecord = v8->_originalRecord;
     v8->_originalRecord = v9;
 
-    v11 = [v7 copy];
+    v11 = [mainRecordCopy copy];
     mainRecord = v8->_mainRecord;
     v8->_mainRecord = v11;
   }
@@ -41,67 +41,67 @@
   return v8;
 }
 
-- (id)copyWithOriginalRecord:(id)a3 mainRecord:(id)a4
+- (id)copyWithOriginalRecord:(id)record mainRecord:(id)mainRecord
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithOriginalRecord:v6 mainRecord:v5];
+  mainRecordCopy = mainRecord;
+  recordCopy = record;
+  v7 = [objc_alloc(objc_opt_class()) initWithOriginalRecord:recordCopy mainRecord:mainRecordCopy];
 
   return v7;
 }
 
 - (NSData)uniquenessChecksum
 {
-  v2 = [(HDHRSOriginalSignedClinicalDataRecord *)self->_originalRecord rawContent];
-  v3 = [v2 hk_MD5];
+  rawContent = [(HDHRSOriginalSignedClinicalDataRecord *)self->_originalRecord rawContent];
+  hk_MD5 = [rawContent hk_MD5];
 
-  return v3;
+  return hk_MD5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originalRecord = self->_originalRecord;
-  v5 = a3;
-  [v5 encodeObject:originalRecord forKey:@"OriginalRecord"];
-  [v5 encodeObject:self->_mainRecord forKey:@"MainRecord"];
+  coderCopy = coder;
+  [coderCopy encodeObject:originalRecord forKey:@"OriginalRecord"];
+  [coderCopy encodeObject:self->_mainRecord forKey:@"MainRecord"];
 }
 
-- (HKSignedClinicalDataParsingResultItem)initWithCoder:(id)a3
+- (HKSignedClinicalDataParsingResultItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OriginalRecord"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OriginalRecord"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MainRecord"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MainRecord"];
     if (v6)
     {
       self = [(HKSignedClinicalDataParsingResultItem *)self initWithOriginalRecord:v5 mainRecord:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
-      v7 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v7 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (self != v6)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (self != equalCopy)
   {
-    v8 = v6;
+    v8 = equalCopy;
     if (![(HKSignedClinicalDataParsingResultItem *)v8 isMemberOfClass:objc_opt_class()])
     {
       v13 = 0;
@@ -111,14 +111,14 @@ LABEL_18:
     }
 
     originalRecord = self->_originalRecord;
-    v10 = [(HKSignedClinicalDataParsingResultItem *)v8 originalRecord];
-    if (originalRecord == v10)
+    originalRecord = [(HKSignedClinicalDataParsingResultItem *)v8 originalRecord];
+    if (originalRecord == originalRecord)
     {
       goto LABEL_9;
     }
 
-    v11 = [(HKSignedClinicalDataParsingResultItem *)v8 originalRecord];
-    if (!v11)
+    originalRecord2 = [(HKSignedClinicalDataParsingResultItem *)v8 originalRecord];
+    if (!originalRecord2)
     {
       v13 = 0;
 LABEL_17:
@@ -126,16 +126,16 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v3 = v11;
+    v3 = originalRecord2;
     v12 = self->_originalRecord;
-    v4 = [(HKSignedClinicalDataParsingResultItem *)v8 originalRecord];
-    if ([(HDHRSOriginalSignedClinicalDataRecord *)v12 isEqual:v4])
+    originalRecord3 = [(HKSignedClinicalDataParsingResultItem *)v8 originalRecord];
+    if ([(HDHRSOriginalSignedClinicalDataRecord *)v12 isEqual:originalRecord3])
     {
 LABEL_9:
       mainRecord = self->_mainRecord;
-      v15 = [(HKSignedClinicalDataParsingResultItem *)v8 mainRecord];
-      v16 = v15;
-      if (mainRecord == v15)
+      mainRecord = [(HKSignedClinicalDataParsingResultItem *)v8 mainRecord];
+      v16 = mainRecord;
+      if (mainRecord == mainRecord)
       {
 
         v13 = 1;
@@ -143,13 +143,13 @@ LABEL_9:
 
       else
       {
-        v17 = [(HKSignedClinicalDataParsingResultItem *)v8 mainRecord];
-        if (v17)
+        mainRecord2 = [(HKSignedClinicalDataParsingResultItem *)v8 mainRecord];
+        if (mainRecord2)
         {
-          v18 = v17;
+          v18 = mainRecord2;
           v19 = self->_mainRecord;
-          v20 = [(HKSignedClinicalDataParsingResultItem *)v8 mainRecord];
-          v13 = [(HKSignedClinicalDataRecord *)v19 isEqual:v20];
+          mainRecord3 = [(HKSignedClinicalDataParsingResultItem *)v8 mainRecord];
+          v13 = [(HKSignedClinicalDataRecord *)v19 isEqual:mainRecord3];
         }
 
         else
@@ -159,7 +159,7 @@ LABEL_9:
         }
       }
 
-      if (originalRecord == v10)
+      if (originalRecord == originalRecord)
       {
         goto LABEL_17;
       }

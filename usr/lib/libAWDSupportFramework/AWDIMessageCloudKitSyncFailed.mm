@@ -1,16 +1,16 @@
 @interface AWDIMessageCloudKitSyncFailed
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLinkQuality:(BOOL)a3;
-- (void)setHasNestedErrorCode:(BOOL)a3;
-- (void)setHasTopLevelErrorCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasLinkQuality:(BOOL)quality;
+- (void)setHasNestedErrorCode:(BOOL)code;
+- (void)setHasTopLevelErrorCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIMessageCloudKitSyncFailed
@@ -25,9 +25,9 @@
   [(AWDIMessageCloudKitSyncFailed *)&v3 dealloc];
 }
 
-- (void)setHasTopLevelErrorCode:(BOOL)a3
+- (void)setHasTopLevelErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 8;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNestedErrorCode:(BOOL)a3
+- (void)setHasNestedErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasLinkQuality:(BOOL)a3
+- (void)setHasLinkQuality:(BOOL)quality
 {
-  if (a3)
+  if (quality)
   {
     v3 = 2;
   }
@@ -79,51 +79,51 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   syncType = self->_syncType;
   if (syncType)
   {
-    [v3 setObject:syncType forKey:@"syncType"];
+    [dictionary setObject:syncType forKey:@"syncType"];
   }
 
   topLevelErrorDomain = self->_topLevelErrorDomain;
   if (topLevelErrorDomain)
   {
-    [v3 setObject:topLevelErrorDomain forKey:@"topLevelErrorDomain"];
+    [dictionary setObject:topLevelErrorDomain forKey:@"topLevelErrorDomain"];
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_topLevelErrorCode), @"topLevelErrorCode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_topLevelErrorCode), @"topLevelErrorCode"}];
   }
 
   nestedErrorDomain = self->_nestedErrorDomain;
   if (nestedErrorDomain)
   {
-    [v3 setObject:nestedErrorDomain forKey:@"nestedErrorDomain"];
+    [dictionary setObject:nestedErrorDomain forKey:@"nestedErrorDomain"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_nestedErrorCode), @"nestedErrorCode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_nestedErrorCode), @"nestedErrorCode"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_linkQuality), @"linkQuality"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_linkQuality), @"linkQuality"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -168,53 +168,53 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 56) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 56) |= 1u;
   }
 
   if (self->_syncType)
   {
-    [a3 setSyncType:?];
+    [to setSyncType:?];
   }
 
   if (self->_topLevelErrorDomain)
   {
-    [a3 setTopLevelErrorDomain:?];
+    [to setTopLevelErrorDomain:?];
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(a3 + 10) = self->_topLevelErrorCode;
-    *(a3 + 56) |= 8u;
+    *(to + 10) = self->_topLevelErrorCode;
+    *(to + 56) |= 8u;
   }
 
   if (self->_nestedErrorDomain)
   {
-    [a3 setNestedErrorDomain:?];
+    [to setNestedErrorDomain:?];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 5) = self->_nestedErrorCode;
-    *(a3 + 56) |= 4u;
+    *(to + 5) = self->_nestedErrorCode;
+    *(to + 56) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 4) = self->_linkQuality;
-    *(a3 + 56) |= 2u;
+    *(to + 4) = self->_linkQuality;
+    *(to + 56) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -222,15 +222,15 @@
     *(v5 + 56) |= 1u;
   }
 
-  *(v6 + 32) = [(NSString *)self->_syncType copyWithZone:a3];
-  *(v6 + 48) = [(NSString *)self->_topLevelErrorDomain copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_syncType copyWithZone:zone];
+  *(v6 + 48) = [(NSString *)self->_topLevelErrorDomain copyWithZone:zone];
   if ((*&self->_has & 8) != 0)
   {
     *(v6 + 40) = self->_topLevelErrorCode;
     *(v6 + 56) |= 8u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_nestedErrorDomain copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_nestedErrorDomain copyWithZone:zone];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -248,21 +248,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 56);
+    v6 = *(equal + 56);
     if (*&self->_has)
     {
-      if ((*(a3 + 56) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 56) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_28;
       }
     }
 
-    else if (*(a3 + 56))
+    else if (*(equal + 56))
     {
 LABEL_28:
       LOBYTE(v5) = 0;
@@ -270,28 +270,28 @@ LABEL_28:
     }
 
     syncType = self->_syncType;
-    if (!(syncType | *(a3 + 4)) || (v5 = [(NSString *)syncType isEqual:?]) != 0)
+    if (!(syncType | *(equal + 4)) || (v5 = [(NSString *)syncType isEqual:?]) != 0)
     {
       topLevelErrorDomain = self->_topLevelErrorDomain;
-      if (!(topLevelErrorDomain | *(a3 + 6)) || (v5 = [(NSString *)topLevelErrorDomain isEqual:?]) != 0)
+      if (!(topLevelErrorDomain | *(equal + 6)) || (v5 = [(NSString *)topLevelErrorDomain isEqual:?]) != 0)
       {
         has = self->_has;
-        v10 = *(a3 + 56);
+        v10 = *(equal + 56);
         if ((has & 8) != 0)
         {
-          if ((*(a3 + 56) & 8) == 0 || self->_topLevelErrorCode != *(a3 + 10))
+          if ((*(equal + 56) & 8) == 0 || self->_topLevelErrorCode != *(equal + 10))
           {
             goto LABEL_28;
           }
         }
 
-        else if ((*(a3 + 56) & 8) != 0)
+        else if ((*(equal + 56) & 8) != 0)
         {
           goto LABEL_28;
         }
 
         nestedErrorDomain = self->_nestedErrorDomain;
-        if (nestedErrorDomain | *(a3 + 3))
+        if (nestedErrorDomain | *(equal + 3))
         {
           v5 = [(NSString *)nestedErrorDomain isEqual:?];
           if (!v5)
@@ -304,21 +304,21 @@ LABEL_28:
 
         if ((has & 4) != 0)
         {
-          if ((*(a3 + 56) & 4) == 0 || self->_nestedErrorCode != *(a3 + 5))
+          if ((*(equal + 56) & 4) == 0 || self->_nestedErrorCode != *(equal + 5))
           {
             goto LABEL_28;
           }
         }
 
-        else if ((*(a3 + 56) & 4) != 0)
+        else if ((*(equal + 56) & 4) != 0)
         {
           goto LABEL_28;
         }
 
-        LOBYTE(v5) = (*(a3 + 56) & 2) == 0;
+        LOBYTE(v5) = (*(equal + 56) & 2) == 0;
         if ((has & 2) != 0)
         {
-          if ((*(a3 + 56) & 2) == 0 || self->_linkQuality != *(a3 + 4))
+          if ((*(equal + 56) & 2) == 0 || self->_linkQuality != *(equal + 4))
           {
             goto LABEL_28;
           }
@@ -381,46 +381,46 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 56))
+  if (*(from + 56))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDIMessageCloudKitSyncFailed *)self setSyncType:?];
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(AWDIMessageCloudKitSyncFailed *)self setTopLevelErrorDomain:?];
   }
 
-  if ((*(a3 + 56) & 8) != 0)
+  if ((*(from + 56) & 8) != 0)
   {
-    self->_topLevelErrorCode = *(a3 + 10);
+    self->_topLevelErrorCode = *(from + 10);
     *&self->_has |= 8u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDIMessageCloudKitSyncFailed *)self setNestedErrorDomain:?];
   }
 
-  v5 = *(a3 + 56);
+  v5 = *(from + 56);
   if ((v5 & 4) != 0)
   {
-    self->_nestedErrorCode = *(a3 + 5);
+    self->_nestedErrorCode = *(from + 5);
     *&self->_has |= 4u;
-    v5 = *(a3 + 56);
+    v5 = *(from + 56);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_linkQuality = *(a3 + 4);
+    self->_linkQuality = *(from + 4);
     *&self->_has |= 2u;
   }
 }

@@ -1,42 +1,42 @@
 @interface CPSURLValidator
-- (CPSURLValidator)initWithRequest:(id)a3;
-- (void)_validateURL:(id)a3 forBundleID:(id)a4 policy:(id)a5 completion:(id)a6;
-- (void)validateWithCompletion:(id)a3;
+- (CPSURLValidator)initWithRequest:(id)request;
+- (void)_validateURL:(id)l forBundleID:(id)d policy:(id)policy completion:(id)completion;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation CPSURLValidator
 
-- (CPSURLValidator)initWithRequest:(id)a3
+- (CPSURLValidator)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = CPSURLValidator;
   v6 = [(CPSURLValidator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     request = self->_request;
     v7 = v5;
-    v8 = [(CPSValidationRequest *)request urls];
-    v9 = [(CPSValidationRequest *)self->_request bundleIdentifiers];
+    urls = [(CPSValidationRequest *)request urls];
+    bundleIdentifiers = [(CPSValidationRequest *)self->_request bundleIdentifiers];
     *buf = 138478083;
-    v15 = v8;
+    v15 = urls;
     v16 = 2113;
-    v17 = v9;
+    v17 = bundleIdentifiers;
     _os_log_impl(&dword_2436ED000, v7, OS_LOG_TYPE_INFO, "Client requests validation for URLs: %{private}@, bundleIDs: %{private}@", buf, 0x16u);
   }
 
@@ -45,8 +45,8 @@
   v12[2] = __42__CPSURLValidator_validateWithCompletion___block_invoke;
   v12[3] = &unk_278DCE4F8;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
+  v13 = completionCopy;
+  v10 = completionCopy;
   [CPSClipInvocationPolicy requestAccountPolicyForClipMetadata:0 withCompletion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -150,29 +150,29 @@ LABEL_5:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_validateURL:(id)a3 forBundleID:(id)a4 policy:(id)a5 completion:(id)a6
+- (void)_validateURL:(id)l forBundleID:(id)d policy:(id)policy completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  completionCopy = completion;
+  policyCopy = policy;
+  dCopy = d;
+  lCopy = l;
   v13 = objc_alloc_init(CPSClipMetadata);
-  [(CPSClipMetadata *)v13 setClipRequestURL:v12];
+  [(CPSClipMetadata *)v13 setClipRequestURL:lCopy];
 
-  [(CPSClipMetadata *)v13 setClipBundleID:v11];
-  [(CPSClipMetadata *)v13 setInvocationPolicy:v10];
+  [(CPSClipMetadata *)v13 setClipBundleID:dCopy];
+  [(CPSClipMetadata *)v13 setInvocationPolicy:policyCopy];
 
   v14 = +[CPSSessionManager sharedManager];
-  v15 = [v14 appInfoFetcher];
+  appInfoFetcher = [v14 appInfoFetcher];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __62__CPSURLValidator__validateURL_forBundleID_policy_completion___block_invoke;
   v18[3] = &unk_278DCE520;
   v19 = v13;
-  v20 = v9;
+  v20 = completionCopy;
   v16 = v13;
-  v17 = v9;
-  [v15 lookUpClipMetadataByBundleID:v11 sourceBundleID:0 downloadIconIfNeeded:0 skipCaching:0 completionHandler:v18];
+  v17 = completionCopy;
+  [appInfoFetcher lookUpClipMetadataByBundleID:dCopy sourceBundleID:0 downloadIconIfNeeded:0 skipCaching:0 completionHandler:v18];
 }
 
 uint64_t __62__CPSURLValidator__validateURL_forBundleID_policy_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)

@@ -1,29 +1,29 @@
 @interface BKAssetMetadataCache
-- (id)coverWritingModeLanguageAndPageProgressionDirectionFromAssetID:(id)a3;
-- (void)saveTitle:(id)a3 author:(id)a4 genre:(id)a5 language:(id)a6 pageProgressionDirection:(id)a7 forAssetID:(id)a8;
+- (id)coverWritingModeLanguageAndPageProgressionDirectionFromAssetID:(id)d;
+- (void)saveTitle:(id)title author:(id)author genre:(id)genre language:(id)language pageProgressionDirection:(id)direction forAssetID:(id)d;
 @end
 
 @implementation BKAssetMetadataCache
 
-- (id)coverWritingModeLanguageAndPageProgressionDirectionFromAssetID:(id)a3
+- (id)coverWritingModeLanguageAndPageProgressionDirectionFromAssetID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_opt_new();
-  v5 = [v4 coverWritingModeLanguageAndPageProgressionDirectionFromAssetID:v3];
+  v5 = [v4 coverWritingModeLanguageAndPageProgressionDirectionFromAssetID:dCopy];
 
   return v5;
 }
 
-- (void)saveTitle:(id)a3 author:(id)a4 genre:(id)a5 language:(id)a6 pageProgressionDirection:(id)a7 forAssetID:(id)a8
+- (void)saveTitle:(id)title author:(id)author genre:(id)genre language:(id)language pageProgressionDirection:(id)direction forAssetID:(id)d
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  dCopy = d;
+  directionCopy = direction;
+  languageCopy = language;
+  genreCopy = genre;
+  authorCopy = author;
+  titleCopy = title;
   v19 = objc_opt_new();
-  [v19 saveTitle:v18 author:v17 genre:v16 language:v15 pageProgressionDirection:v14 forAssetID:v13];
+  [v19 saveTitle:titleCopy author:authorCopy genre:genreCopy language:languageCopy pageProgressionDirection:directionCopy forAssetID:dCopy];
 }
 
 @end

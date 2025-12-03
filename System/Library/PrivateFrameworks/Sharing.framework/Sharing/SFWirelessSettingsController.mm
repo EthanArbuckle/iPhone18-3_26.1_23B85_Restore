@@ -2,12 +2,12 @@
 - (SFWirelessSettingsController)init;
 - (SFWirelessSettingsControllerDelegate)delegate;
 - (void)dealloc;
-- (void)handleOperationCallback:(__SFOperation *)a3 event:(int64_t)a4 withResults:(id)a5;
+- (void)handleOperationCallback:(__SFOperation *)callback event:(int64_t)event withResults:(id)results;
 - (void)invalidate;
-- (void)setAirplaneModeEnabled:(BOOL)a3;
-- (void)setBluetoothEnabled:(BOOL)a3;
-- (void)setWifiEnabled:(BOOL)a3;
-- (void)setWirelessAccessPointEnabled:(BOOL)a3;
+- (void)setAirplaneModeEnabled:(BOOL)enabled;
+- (void)setBluetoothEnabled:(BOOL)enabled;
+- (void)setWifiEnabled:(BOOL)enabled;
+- (void)setWirelessAccessPointEnabled:(BOOL)enabled;
 @end
 
 @implementation SFWirelessSettingsController
@@ -57,11 +57,11 @@
   return v3;
 }
 
-- (void)handleOperationCallback:(__SFOperation *)a3 event:(int64_t)a4 withResults:(id)a5
+- (void)handleOperationCallback:(__SFOperation *)callback event:(int64_t)event withResults:(id)results
 {
-  v7 = a5;
-  v8 = v7;
-  if (a4 == 10)
+  resultsCopy = results;
+  v8 = resultsCopy;
+  if (event == 10)
   {
     v17 = airdrop_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -72,12 +72,12 @@
     goto LABEL_8;
   }
 
-  if (a4 != 12)
+  if (event != 12)
   {
     v17 = airdrop_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [SFWirelessSettingsController handleOperationCallback:a4 event:v8 withResults:v17];
+      [SFWirelessSettingsController handleOperationCallback:event event:v8 withResults:v17];
     }
 
 LABEL_8:
@@ -85,7 +85,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"WirelessEnabled"];
+  v9 = [resultsCopy objectForKeyedSubscript:@"WirelessEnabled"];
   self->_wifiEnabled = [v9 BOOLValue];
 
   v10 = [v8 objectForKeyedSubscript:@"BluetoothEnabled"];
@@ -124,11 +124,11 @@ void __74__SFWirelessSettingsController_handleOperationCallback_event_withResult
   [WeakRetained wirelessSettingsDidChange:*(a1 + 32)];
 }
 
-- (void)setWifiEnabled:(BOOL)a3
+- (void)setWifiEnabled:(BOOL)enabled
 {
   information = self->_information;
   v4 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!enabled)
   {
     v4 = MEMORY[0x1E695E4C0];
   }
@@ -136,11 +136,11 @@ void __74__SFWirelessSettingsController_handleOperationCallback_event_withResult
   SFOperationSetProperty(information, @"WirelessEnabled", *v4);
 }
 
-- (void)setBluetoothEnabled:(BOOL)a3
+- (void)setBluetoothEnabled:(BOOL)enabled
 {
   information = self->_information;
   v4 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!enabled)
   {
     v4 = MEMORY[0x1E695E4C0];
   }
@@ -148,11 +148,11 @@ void __74__SFWirelessSettingsController_handleOperationCallback_event_withResult
   SFOperationSetProperty(information, @"BluetoothEnabled", *v4);
 }
 
-- (void)setAirplaneModeEnabled:(BOOL)a3
+- (void)setAirplaneModeEnabled:(BOOL)enabled
 {
   information = self->_information;
   v4 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!enabled)
   {
     v4 = MEMORY[0x1E695E4C0];
   }
@@ -160,11 +160,11 @@ void __74__SFWirelessSettingsController_handleOperationCallback_event_withResult
   SFOperationSetProperty(information, @"AirplaneModeEnabled", *v4);
 }
 
-- (void)setWirelessAccessPointEnabled:(BOOL)a3
+- (void)setWirelessAccessPointEnabled:(BOOL)enabled
 {
   information = self->_information;
   v4 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!enabled)
   {
     v4 = MEMORY[0x1E695E4C0];
   }

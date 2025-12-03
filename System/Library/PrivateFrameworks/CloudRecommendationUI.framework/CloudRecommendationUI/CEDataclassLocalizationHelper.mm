@@ -1,15 +1,15 @@
 @interface CEDataclassLocalizationHelper
-+ (id)localizedTextForDataclass:(id)a3;
++ (id)localizedTextForDataclass:(id)dataclass;
 @end
 
 @implementation CEDataclassLocalizationHelper
 
-+ (id)localizedTextForDataclass:(id)a3
++ (id)localizedTextForDataclass:(id)dataclass
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if ([v3 isEqualToString:*MEMORY[0x277CB8960]])
+  dataclassCopy = dataclass;
+  v4 = dataclassCopy;
+  if ([dataclassCopy isEqualToString:*MEMORY[0x277CB8960]])
   {
     v4 = *MEMORY[0x277CB89D0];
   }

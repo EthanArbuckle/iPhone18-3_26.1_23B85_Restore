@@ -1,76 +1,76 @@
 @interface AMDOptArgParser
-- (AMDOptArgParser)initWithOptArgs:(id)a3;
-- (id)getValueForOption:(id)a3;
-- (id)parseArgs:(id)a3;
+- (AMDOptArgParser)initWithOptArgs:(id)args;
+- (id)getValueForOption:(id)option;
+- (id)parseArgs:(id)args;
 - (void)showHelp;
 @end
 
 @implementation AMDOptArgParser
 
-- (id)getValueForOption:(id)a3
+- (id)getValueForOption:(id)option
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = [(AMDOptArgParser *)v13 parsedOptArgs];
-  v11 = [(NSMutableDictionary *)v10 objectForKey:location[0]];
+  objc_storeStrong(location, option);
+  parsedOptArgs = [(AMDOptArgParser *)selfCopy parsedOptArgs];
+  v11 = [(NSMutableDictionary *)parsedOptArgs objectForKey:location[0]];
   MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](parsedOptArgs);
   if (v11)
   {
-    v9 = [(AMDOptArgParser *)v13 parsedOptArgs];
-    v14 = [(NSMutableDictionary *)v9 objectForKey:location[0]];
-    MEMORY[0x277D82BD8](v9);
+    parsedOptArgs2 = [(AMDOptArgParser *)selfCopy parsedOptArgs];
+    defaultValue = [(NSMutableDictionary *)parsedOptArgs2 objectForKey:location[0]];
+    MEMORY[0x277D82BD8](parsedOptArgs2);
   }
 
   else
   {
-    v7 = [(AMDOptArgParser *)v13 options];
-    v8 = [(NSMutableDictionary *)v7 objectForKey:location[0]];
+    options = [(AMDOptArgParser *)selfCopy options];
+    v8 = [(NSMutableDictionary *)options objectForKey:location[0]];
     MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](options);
     if (v8)
     {
-      v6 = [(AMDOptArgParser *)v13 options];
-      v5 = [(NSMutableDictionary *)v6 objectForKey:location[0]];
-      v14 = [v5 defaultValue];
+      options2 = [(AMDOptArgParser *)selfCopy options];
+      v5 = [(NSMutableDictionary *)options2 objectForKey:location[0]];
+      defaultValue = [v5 defaultValue];
       MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](options2);
     }
 
     else
     {
-      v14 = 0;
+      defaultValue = 0;
     }
   }
 
   objc_storeStrong(location, 0);
-  v3 = v14;
+  v3 = defaultValue;
 
   return v3;
 }
 
-- (AMDOptArgParser)initWithOptArgs:(id)a3
+- (AMDOptArgParser)initWithOptArgs:(id)args
 {
   v42 = *MEMORY[0x277D85DE8];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v40;
-  v40 = 0;
+  objc_storeStrong(location, args);
+  v3 = selfCopy;
+  selfCopy = 0;
   v38.receiver = v3;
   v38.super_class = AMDOptArgParser;
-  v40 = [(AMDOptArgParser *)&v38 init];
-  objc_storeStrong(&v40, v40);
+  selfCopy = [(AMDOptArgParser *)&v38 init];
+  objc_storeStrong(&selfCopy, selfCopy);
   v25 = objc_alloc(MEMORY[0x277CBEB38]);
   v26 = [v25 initWithCapacity:{objc_msgSend(location[0], "count") + 1}];
-  [(AMDOptArgParser *)v40 setOptions:?];
+  [(AMDOptArgParser *)selfCopy setOptions:?];
   MEMORY[0x277D82BD8](v26);
   v27 = objc_alloc(MEMORY[0x277CBEB38]);
   v28 = [v27 initWithCapacity:{objc_msgSend(location[0], "count") + 1}];
-  [(AMDOptArgParser *)v40 setShortOptions:?];
+  [(AMDOptArgParser *)selfCopy setShortOptions:?];
   MEMORY[0x277D82BD8](v28);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
@@ -105,26 +105,26 @@
       MEMORY[0x277D82BD8](v17);
       MEMORY[0x277D82BD8](v18);
       MEMORY[0x277D82BD8](v19);
-      v20 = [(AMDOptArgParser *)v40 options];
-      [(NSMutableDictionary *)v20 setObject:v33 forKey:v37];
-      MEMORY[0x277D82BD8](v20);
+      options = [(AMDOptArgParser *)selfCopy options];
+      [(NSMutableDictionary *)options setObject:v33 forKey:v37];
+      MEMORY[0x277D82BD8](options);
       if (!v34)
       {
         goto LABEL_9;
       }
 
-      v12 = [(AMDOptArgParser *)v40 shortOptions];
-      v13 = [(NSMutableDictionary *)v12 objectForKey:v34];
+      shortOptions = [(AMDOptArgParser *)selfCopy shortOptions];
+      v13 = [(NSMutableDictionary *)shortOptions objectForKey:v34];
       MEMORY[0x277D82BD8](v13);
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](shortOptions);
       if (!v13)
       {
         break;
       }
 
       NSLog(&cfstr_ShortOptionBei.isa, v34);
-      [(AMDOptArgParser *)v40 setOptions:?];
-      [(AMDOptArgParser *)v40 setShortOptions:0];
+      [(AMDOptArgParser *)selfCopy setOptions:?];
+      [(AMDOptArgParser *)selfCopy setShortOptions:0];
       v32 = 2;
 LABEL_10:
       objc_storeStrong(&v33, 0);
@@ -147,9 +147,9 @@ LABEL_10:
       }
     }
 
-    v11 = [(AMDOptArgParser *)v40 shortOptions];
-    [(NSMutableDictionary *)v11 setObject:v33 forKey:v34];
-    MEMORY[0x277D82BD8](v11);
+    shortOptions2 = [(AMDOptArgParser *)selfCopy shortOptions];
+    [(NSMutableDictionary *)shortOptions2 setObject:v33 forKey:v34];
+    MEMORY[0x277D82BD8](shortOptions2);
 LABEL_9:
     v32 = 0;
     goto LABEL_10;
@@ -160,36 +160,36 @@ LABEL_13:
 LABEL_14:
   MEMORY[0x277D82BD8](obj);
   v31 = [[AMDCommandLineOption alloc] initWithName:@"-help" withDefaultValue:0 withHelpText:@"Show help text" withShortName:@"-h" andIsBoolFlag:1];
-  v10 = [(AMDOptArgParser *)v40 options];
-  MEMORY[0x277D82BD8](v10);
-  if (v10)
+  options2 = [(AMDOptArgParser *)selfCopy options];
+  MEMORY[0x277D82BD8](options2);
+  if (options2)
   {
-    v8 = [(AMDOptArgParser *)v40 options];
-    [(NSMutableDictionary *)v8 setObject:v31 forKey:@"-help"];
-    MEMORY[0x277D82BD8](v8);
-    v9 = [(AMDOptArgParser *)v40 shortOptions];
-    [(NSMutableDictionary *)v9 setObject:v31 forKey:@"-h"];
-    MEMORY[0x277D82BD8](v9);
+    options3 = [(AMDOptArgParser *)selfCopy options];
+    [(NSMutableDictionary *)options3 setObject:v31 forKey:@"-help"];
+    MEMORY[0x277D82BD8](options3);
+    shortOptions3 = [(AMDOptArgParser *)selfCopy shortOptions];
+    [(NSMutableDictionary *)shortOptions3 setObject:v31 forKey:@"-h"];
+    MEMORY[0x277D82BD8](shortOptions3);
   }
 
-  v7 = MEMORY[0x277D82BE0](v40);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   v32 = 1;
   objc_storeStrong(&v31, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v40, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (id)parseArgs:(id)a3
+- (id)parseArgs:(id)args
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = [(AMDOptArgParser *)v28 options];
-  MEMORY[0x277D82BD8](v20);
-  if (!v20)
+  objc_storeStrong(location, args);
+  options = [(AMDOptArgParser *)selfCopy options];
+  MEMORY[0x277D82BD8](options);
+  if (!options)
   {
     v29 = 0;
     v26 = 1;
@@ -209,17 +209,17 @@ LABEL_14:
     v22 = [location[0] objectAtIndexedSubscript:i];
     if ([v22 hasPrefix:@"-"])
     {
-      v18 = [(AMDOptArgParser *)v28 options];
-      v21 = [(NSMutableDictionary *)v18 objectForKey:v22];
-      MEMORY[0x277D82BD8](v18);
+      options2 = [(AMDOptArgParser *)selfCopy options];
+      v21 = [(NSMutableDictionary *)options2 objectForKey:v22];
+      MEMORY[0x277D82BD8](options2);
       if (!v21)
       {
-        v17 = [(AMDOptArgParser *)v28 shortOptions];
-        v3 = [(NSMutableDictionary *)v17 objectForKey:v22];
+        shortOptions = [(AMDOptArgParser *)selfCopy shortOptions];
+        v3 = [(NSMutableDictionary *)shortOptions objectForKey:v22];
         v4 = v21;
         v21 = v3;
         MEMORY[0x277D82BD8](v4);
-        MEMORY[0x277D82BD8](v17);
+        MEMORY[0x277D82BD8](shortOptions);
       }
 
       if (!v21)
@@ -235,9 +235,9 @@ LABEL_14:
       if ([v21 isBool])
       {
         v14 = v25;
-        v15 = [v21 name];
+        name = [v21 name];
         [v14 setObject:MEMORY[0x277CBEC38] forKey:?];
-        MEMORY[0x277D82BD8](v15);
+        MEMORY[0x277D82BD8](name);
         goto LABEL_15;
       }
 
@@ -246,9 +246,9 @@ LABEL_14:
       {
         v9 = v25;
         v11 = [location[0] objectAtIndexedSubscript:i];
-        v10 = [v21 name];
+        name2 = [v21 name];
         [v9 setObject:v11 forKey:?];
-        MEMORY[0x277D82BD8](v10);
+        MEMORY[0x277D82BD8](name2);
         MEMORY[0x277D82BD8](v11);
 LABEL_15:
         v26 = 0;
@@ -289,7 +289,7 @@ LABEL_20:
     [v25 setObject:v24 forKey:@"arguments"];
   }
 
-  [(AMDOptArgParser *)v28 setParsedOptArgs:v25];
+  [(AMDOptArgParser *)selfCopy setParsedOptArgs:v25];
   v29 = MEMORY[0x277D82BE0](v25);
   v26 = 1;
 LABEL_25:
@@ -305,11 +305,11 @@ LABEL_26:
 - (void)showHelp
 {
   v37 = *MEMORY[0x277D85DE8];
-  v35 = self;
+  selfCopy = self;
   v34 = a2;
   printf("\n");
   memset(__b, 0, sizeof(__b));
-  obj = [(AMDOptArgParser *)v35 options];
+  obj = [(AMDOptArgParser *)selfCopy options];
   v29 = [(NSMutableDictionary *)obj countByEnumeratingWithState:__b objects:v36 count:16];
   if (v29)
   {
@@ -325,57 +325,57 @@ LABEL_26:
       }
 
       v33 = *(__b[1] + 8 * v26);
-      v23 = [(AMDOptArgParser *)v35 options];
-      v31 = [(NSMutableDictionary *)v23 objectForKey:v33];
-      MEMORY[0x277D82BD8](v23);
+      options = [(AMDOptArgParser *)selfCopy options];
+      v31 = [(NSMutableDictionary *)options objectForKey:v33];
+      MEMORY[0x277D82BD8](options);
       v30 = MEMORY[0x277D82BE0](@"false");
       if (([v31 isBool] & 1) == 0)
       {
-        v21 = [v31 defaultValue];
+        defaultValue = [v31 defaultValue];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        MEMORY[0x277D82BD8](v21);
+        MEMORY[0x277D82BD8](defaultValue);
         if (isKindOfClass)
         {
-          v20 = [v31 defaultValue];
-          v2 = [v20 stringValue];
+          defaultValue2 = [v31 defaultValue];
+          stringValue = [defaultValue2 stringValue];
           v3 = v30;
-          v30 = v2;
+          v30 = stringValue;
           MEMORY[0x277D82BD8](v3);
-          MEMORY[0x277D82BD8](v20);
+          MEMORY[0x277D82BD8](defaultValue2);
         }
 
         else
         {
-          v4 = [v31 defaultValue];
+          defaultValue3 = [v31 defaultValue];
           v5 = v30;
-          v30 = v4;
+          v30 = defaultValue3;
           MEMORY[0x277D82BD8](v5);
         }
       }
 
       v12 = v33;
       v6 = v33;
-      v14 = [v12 UTF8String];
-      v19 = [v31 shortName];
-      v7 = v19;
-      v15 = [v19 UTF8String];
-      v18 = [v31 helpText];
-      v8 = v18;
-      v16 = [v18 UTF8String];
+      uTF8String = [v12 UTF8String];
+      shortName = [v31 shortName];
+      v7 = shortName;
+      uTF8String2 = [shortName UTF8String];
+      helpText = [v31 helpText];
+      v8 = helpText;
+      uTF8String3 = [helpText UTF8String];
       v13 = v30;
       v9 = v30;
-      v17 = [v13 UTF8String];
-      v10 = [v31 isBool];
+      uTF8String4 = [v13 UTF8String];
+      isBool = [v31 isBool];
       v11 = "yes";
-      if ((v10 & 1) == 0)
+      if ((isBool & 1) == 0)
       {
         v11 = "no";
       }
 
-      printf("%s (%s)\t: %s\ndefault value\t\t: %s\nisBool\t\t\t: %s\n\n", v14, v15, v16, v17, v11);
-      MEMORY[0x277D82BD8](v18);
-      MEMORY[0x277D82BD8](v19);
+      printf("%s (%s)\t: %s\ndefault value\t\t: %s\nisBool\t\t\t: %s\n\n", uTF8String, uTF8String2, uTF8String3, uTF8String4, v11);
+      MEMORY[0x277D82BD8](helpText);
+      MEMORY[0x277D82BD8](shortName);
       objc_storeStrong(&v30, 0);
       objc_storeStrong(&v31, 0);
       ++v26;

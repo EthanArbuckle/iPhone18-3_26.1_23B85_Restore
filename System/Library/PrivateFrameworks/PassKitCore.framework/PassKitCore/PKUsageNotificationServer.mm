@@ -1,9 +1,9 @@
 @interface PKUsageNotificationServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PKUsageNotificationServer)init;
 - (void)dealloc;
-- (void)notifyPassUsed:(id)a3 fromSource:(int64_t)a4;
-- (void)notifyPaymentPassUsedWithTransactionInfo:(id)a3;
+- (void)notifyPassUsed:(id)used fromSource:(int64_t)source;
+- (void)notifyPaymentPassUsedWithTransactionInfo:(id)info;
 @end
 
 @implementation PKUsageNotificationServer
@@ -26,7 +26,7 @@
     v3->_listener = v6;
 
     [(NSXPCListener *)v3->_listener setDelegate:v3];
-    v8 = [(NSXPCListener *)v3->_listener _xpcConnection];
+    _xpcConnection = [(NSXPCListener *)v3->_listener _xpcConnection];
     xpc_connection_set_non_launching();
 
     [(NSXPCListener *)v3->_listener resume];
@@ -44,40 +44,40 @@
   [(PKUsageNotificationServer *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = PKUsageNotificationClientInterface();
-  [v7 setRemoteObjectInterface:v8];
+  [connectionCopy setRemoteObjectInterface:v8];
 
-  [v7 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F24142D0];
-  [v7 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
-  [v7 setInterruptionHandler:&__block_literal_global_107];
-  objc_initWeak(&location, v7);
+  [connectionCopy setInterruptionHandler:&__block_literal_global_107];
+  objc_initWeak(&location, connectionCopy);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__PKUsageNotificationServer_listener_shouldAcceptNewConnection___block_invoke_64;
   v13[3] = &unk_1E79C54B8;
   objc_copyWeak(&v14, &location);
   v13[4] = self;
-  [v7 setInvalidationHandler:v13];
+  [connectionCopy setInvalidationHandler:v13];
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_connections addObject:v7];
+  [(NSMutableSet *)self->_connections addObject:connectionCopy];
   os_unfair_lock_unlock(&self->_lock);
   v10 = PKLogFacilityTypeGetObject(5uLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v7 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     *buf = 67109120;
-    v17 = v11;
+    v17 = processIdentifier;
     _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_INFO, "Pass usage connection added from pid %d", buf, 8u);
   }
 
-  [v7 resume];
+  [connectionCopy resume];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 
@@ -112,21 +112,21 @@ void __64__PKUsageNotificationServer_listener_shouldAcceptNewConnection___block_
   }
 }
 
-- (void)notifyPassUsed:(id)a3 fromSource:(int64_t)a4
+- (void)notifyPassUsed:(id)used fromSource:(int64_t)source
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  usedCopy = used;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [v6 storeIdentifiers];
-  if ([v8 count])
+  storeIdentifiers = [usedCopy storeIdentifiers];
+  if ([storeIdentifiers count])
   {
-    v19 = a4;
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+    sourceCopy = source;
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(storeIdentifiers, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = v8;
+    v10 = storeIdentifiers;
     v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v11)
     {
@@ -142,8 +142,8 @@ void __64__PKUsageNotificationServer_listener_shouldAcceptNewConnection___block_
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v24 + 1) + 8 * v14) stringValue];
-          [v9 addObject:v15];
+          stringValue = [*(*(&v24 + 1) + 8 * v14) stringValue];
+          [v9 addObject:stringValue];
 
           ++v14;
         }
@@ -156,7 +156,7 @@ void __64__PKUsageNotificationServer_listener_shouldAcceptNewConnection___block_
     }
 
     [v7 setObject:v9 forKey:@"associatedStoreIdentifiers"];
-    a4 = v19;
+    source = sourceCopy;
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -167,10 +167,10 @@ void __64__PKUsageNotificationServer_listener_shouldAcceptNewConnection___block_
   v20[2] = __55__PKUsageNotificationServer_notifyPassUsed_fromSource___block_invoke;
   v20[3] = &unk_1E79D48A0;
   v22 = v7;
-  v23 = a4;
-  v21 = v6;
+  sourceCopy2 = source;
+  v21 = usedCopy;
   v17 = v7;
-  v18 = v6;
+  v18 = usedCopy;
   [v16 enumerateObjectsUsingBlock:v20];
 }
 
@@ -182,27 +182,27 @@ void __55__PKUsageNotificationServer_notifyPassUsed_fromSource___block_invoke(ui
   [v5 usedPassFromSource:v3 withTypeIdentifier:v4 info:*(a1 + 40)];
 }
 
-- (void)notifyPaymentPassUsedWithTransactionInfo:(id)a3
+- (void)notifyPaymentPassUsedWithTransactionInfo:(id)info
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  infoCopy = info;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 merchant];
-  v8 = [v7 mapsMerchant];
+  merchant = [infoCopy merchant];
+  mapsMerchant = [merchant mapsMerchant];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v8, "identifier")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(mapsMerchant, "identifier")}];
   [v6 setValue:v9 forKey:@"muid"];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v8, "resultProviderIdentifier")}];
+  v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(mapsMerchant, "resultProviderIdentifier")}];
   [v6 setValue:v10 forKey:@"resultProviderIdentifier"];
 
-  v11 = [v5 location];
-  [v6 setValue:v11 forKey:@"transactionLocation"];
+  location = [infoCopy location];
+  [v6 setValue:location forKey:@"transactionLocation"];
 
-  v12 = [v5 transactionDate];
-  [v6 setValue:v12 forKey:@"transactionDate"];
+  transactionDate = [infoCopy transactionDate];
+  [v6 setValue:transactionDate forKey:@"transactionDate"];
 
-  v13 = [v5 identifier];
+  identifier = [infoCopy identifier];
 
   os_unfair_lock_lock(&self->_lock);
   v14 = [(NSMutableSet *)self->_connections copy];
@@ -212,10 +212,10 @@ void __55__PKUsageNotificationServer_notifyPassUsed_fromSource___block_invoke(ui
   v17[2] = __70__PKUsageNotificationServer_notifyPaymentPassUsedWithTransactionInfo___block_invoke;
   v17[3] = &unk_1E79D48C8;
   v18 = &stru_1F227FD28;
-  v19 = v13;
+  v19 = identifier;
   v20 = v6;
   v15 = v6;
-  v16 = v13;
+  v16 = identifier;
   [v14 enumerateObjectsUsingBlock:v17];
   CLPassKitNotifyPayment();
 }

@@ -1,10 +1,10 @@
 @interface HKUITodayCirclePulseBackground
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation HKUITodayCirclePulseBackground
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   if (CurrentContext)

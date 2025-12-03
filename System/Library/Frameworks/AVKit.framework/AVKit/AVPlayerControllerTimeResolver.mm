@@ -9,24 +9,24 @@
 - (double)targetTime;
 - (double)targetTimeWithinEndTimes;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCurrentTime:(double)a3;
-- (void)setCurrentTimeWithinEndTimes:(double)a3;
-- (void)setInterval:(double)a3;
-- (void)setPlayerController:(id)a3;
-- (void)setResolution:(double)a3;
-- (void)setTargetTimeWithinEndTimes:(double)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCurrentTime:(double)time;
+- (void)setCurrentTimeWithinEndTimes:(double)times;
+- (void)setInterval:(double)interval;
+- (void)setPlayerController:(id)controller;
+- (void)setResolution:(double)resolution;
+- (void)setTargetTimeWithinEndTimes:(double)times;
 @end
 
 @implementation AVPlayerControllerTimeResolver
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   kdebug_trace();
-  if (AVPlayerControllerTimeResolverUpdateContext == a6)
+  if (AVPlayerControllerTimeResolverUpdateContext == context)
   {
     AVPlayerControllerTimeResolverUpdate(self);
   }
@@ -35,54 +35,54 @@
   {
     v13.receiver = self;
     v13.super_class = AVPlayerControllerTimeResolver;
-    [(AVPlayerControllerTimeResolver *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(AVPlayerControllerTimeResolver *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
   kdebug_trace();
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  if (self->_currentTime != a3)
+  if (self->_currentTime != time)
   {
-    self->_currentTime = a3;
+    self->_currentTime = time;
     EffectiveInterval = AVPlayerControllerTimeResolverGetEffectiveInterval(self);
     playerController = self->_playerController;
-    v7 = a3 - EffectiveInterval * floor(a3 / EffectiveInterval);
-    v8 = EffectiveInterval * ceil(a3 / EffectiveInterval) - a3;
+    v7 = time - EffectiveInterval * floor(time / EffectiveInterval);
+    v8 = EffectiveInterval * ceil(time / EffectiveInterval) - time;
 
-    [(AVTimeControlling *)playerController seekToTime:a3 toleranceBefore:v7 toleranceAfter:v8];
+    [(AVTimeControlling *)playerController seekToTime:time toleranceBefore:v7 toleranceAfter:v8];
   }
 }
 
-- (void)setResolution:(double)a3
+- (void)setResolution:(double)resolution
 {
-  if (self->_resolution != a3)
+  if (self->_resolution != resolution)
   {
-    self->_resolution = a3;
+    self->_resolution = resolution;
     AVPlayerControllerTimeResolverUpdate(self);
   }
 }
 
-- (void)setInterval:(double)a3
+- (void)setInterval:(double)interval
 {
-  if (self->_interval != a3)
+  if (self->_interval != interval)
   {
-    self->_interval = a3;
+    self->_interval = interval;
     AVPlayerControllerTimeResolverUpdate(self);
   }
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   playerController = self->_playerController;
   p_playerController = &self->_playerController;
-  if (playerController != v5)
+  if (playerController != controllerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_playerController, a3);
-    v5 = v8;
+    v8 = controllerCopy;
+    objc_storeStrong(p_playerController, controller);
+    controllerCopy = v8;
   }
 }
 
@@ -126,10 +126,10 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(AVPlayerControllerTimeResolver *)self playerController];
-  v4 = [v3 seekableTimeRanges];
+  playerController = [(AVPlayerControllerTimeResolver *)self playerController];
+  seekableTimeRanges = [playerController seekableTimeRanges];
 
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [seekableTimeRanges countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -141,7 +141,7 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(seekableTimeRanges);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -160,7 +160,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [seekableTimeRanges countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -189,8 +189,8 @@
 
 - (double)remainingTimeWithinEndTimes
 {
-  v3 = [(AVPlayerControllerTimeResolver *)self playerController];
-  [v3 maxTime];
+  playerController = [(AVPlayerControllerTimeResolver *)self playerController];
+  [playerController maxTime];
   v5 = v4;
   [(AVPlayerControllerTimeResolver *)self currentTime];
   v7 = v5 - v6;
@@ -200,8 +200,8 @@
 
 - (double)remainingTime
 {
-  v3 = [(AVPlayerControllerTimeResolver *)self playerController];
-  [v3 contentDuration];
+  playerController = [(AVPlayerControllerTimeResolver *)self playerController];
+  [playerController contentDuration];
   v5 = v4;
   [(AVPlayerControllerTimeResolver *)self currentTime];
   v7 = v5 - v6;
@@ -209,19 +209,19 @@
   return v7;
 }
 
-- (void)setCurrentTimeWithinEndTimes:(double)a3
+- (void)setCurrentTimeWithinEndTimes:(double)times
 {
-  v6 = [(AVPlayerControllerTimeResolver *)self playerController];
-  [v6 minTime];
-  [(AVPlayerControllerTimeResolver *)self setCurrentTime:v5 + a3];
+  playerController = [(AVPlayerControllerTimeResolver *)self playerController];
+  [playerController minTime];
+  [(AVPlayerControllerTimeResolver *)self setCurrentTime:v5 + times];
 }
 
 - (double)currentTimeWithinEndTimes
 {
   [(AVPlayerControllerTimeResolver *)self currentTime];
   v4 = v3;
-  v5 = [(AVPlayerControllerTimeResolver *)self playerController];
-  [v5 minTime];
+  playerController = [(AVPlayerControllerTimeResolver *)self playerController];
+  [playerController minTime];
   v7 = v4 - v6;
 
   return v7;
@@ -229,8 +229,8 @@
 
 - (double)remainingTargetTimeWithinEndTimes
 {
-  v3 = [(AVPlayerControllerTimeResolver *)self playerController];
-  [v3 maxTime];
+  playerController = [(AVPlayerControllerTimeResolver *)self playerController];
+  [playerController maxTime];
   v5 = v4;
   [(AVPlayerControllerTimeResolver *)self targetTime];
   v7 = v5 - v6;
@@ -238,19 +238,19 @@
   return v7;
 }
 
-- (void)setTargetTimeWithinEndTimes:(double)a3
+- (void)setTargetTimeWithinEndTimes:(double)times
 {
-  v6 = [(AVPlayerControllerTimeResolver *)self playerController];
-  [v6 minTime];
-  [(AVPlayerControllerTimeResolver *)self setTargetTime:v5 + a3];
+  playerController = [(AVPlayerControllerTimeResolver *)self playerController];
+  [playerController minTime];
+  [(AVPlayerControllerTimeResolver *)self setTargetTime:v5 + times];
 }
 
 - (double)targetTimeWithinEndTimes
 {
   [(AVPlayerControllerTimeResolver *)self targetTime];
   v4 = v3;
-  v5 = [(AVPlayerControllerTimeResolver *)self playerController];
-  [v5 minTime];
+  playerController = [(AVPlayerControllerTimeResolver *)self playerController];
+  [playerController minTime];
   v7 = v4 - v6;
 
   return v7;
@@ -260,14 +260,14 @@
 {
   [(AVPlayerControllerTimeResolver *)self currentTime];
   v4 = v3;
-  v5 = [(AVPlayerControllerTimeResolver *)self playerController];
-  [v5 seekToTime];
+  playerController = [(AVPlayerControllerTimeResolver *)self playerController];
+  [playerController seekToTime];
   v7 = v6;
 
-  v8 = [(AVPlayerControllerTimeResolver *)self playerController];
-  LOBYTE(v5) = [v8 isSeeking];
+  playerController2 = [(AVPlayerControllerTimeResolver *)self playerController];
+  LOBYTE(playerController) = [playerController2 isSeeking];
 
-  if (v5)
+  if (playerController)
   {
     return v7;
   }

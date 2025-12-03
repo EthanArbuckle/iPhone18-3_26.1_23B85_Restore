@@ -1,7 +1,7 @@
 @interface SiriTTSUserPreferences
 + (NSString)spokenLanguageChangedNotification;
 + (id)getAvailableLanguageIdentifiers;
-+ (void)setSpokenLanguageIdentifier:(id)a3;
++ (void)setSpokenLanguageIdentifier:(id)identifier;
 @end
 
 @implementation SiriTTSUserPreferences
@@ -14,9 +14,9 @@
   return v2;
 }
 
-+ (void)setSpokenLanguageIdentifier:(id)a3
++ (void)setSpokenLanguageIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = sub_1B1C2CB58();
     v5 = v4;

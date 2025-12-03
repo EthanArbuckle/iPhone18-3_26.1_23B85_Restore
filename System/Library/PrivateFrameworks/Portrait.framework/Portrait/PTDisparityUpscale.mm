@@ -1,18 +1,18 @@
 @interface PTDisparityUpscale
-- (PTDisparityUpscale)initWithMetalContext:(id)a3 colorSize:(CGSize)a4 disparitySize:(CGSize)a5;
-- (id)guidedUpsampling:(id)a3 inDisparity:(id)a4 inRGBA:(id)a5 colorDepth:(int64_t)a6;
+- (PTDisparityUpscale)initWithMetalContext:(id)context colorSize:(CGSize)size disparitySize:(CGSize)disparitySize;
+- (id)guidedUpsampling:(id)upsampling inDisparity:(id)disparity inRGBA:(id)a colorDepth:(int64_t)depth;
 @end
 
 @implementation PTDisparityUpscale
 
-- (PTDisparityUpscale)initWithMetalContext:(id)a3 colorSize:(CGSize)a4 disparitySize:(CGSize)a5
+- (PTDisparityUpscale)initWithMetalContext:(id)context colorSize:(CGSize)size disparitySize:(CGSize)disparitySize
 {
-  width = a5.width;
-  height = a5.height;
-  v59 = a4.height;
-  v60 = a4.width;
+  width = disparitySize.width;
+  height = disparitySize.height;
+  v59 = size.height;
+  v60 = size.width;
   v65[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  contextCopy = context;
   v63.receiver = self;
   v63.super_class = PTDisparityUpscale;
   v8 = [(PTDisparityUpscale *)&v63 init];
@@ -22,7 +22,7 @@
     goto LABEL_24;
   }
 
-  objc_storeStrong(&v8->_metalContext, a3);
+  objc_storeStrong(&v8->_metalContext, context);
   v9->_upscaleFactor = 2.0;
   Bool = PTDefaultsPublicGetBool(@"harvesting.enabled", 0);
   v9->_isShaderHarvesting = Bool;
@@ -41,8 +41,8 @@
 
     if (v9->_portraitUtil)
     {
-      v17 = [(PTMetalContext *)v9->_metalContext textureUtil];
-      v18 = [v17 createWithWidth:v9->_width height:v9->_height pixelFormat:25];
+      textureUtil = [(PTMetalContext *)v9->_metalContext textureUtil];
+      v18 = [textureUtil createWithWidth:v9->_width height:v9->_height pixelFormat:25];
       disparityUpscaled = v9->_disparityUpscaled;
       v9->_disparityUpscaled = v18;
 
@@ -62,8 +62,8 @@
         }
 
         v30 = objc_alloc(MEMORY[0x277CD7568]);
-        v31 = [(PTMetalContext *)v9->_metalContext device];
-        v32 = [v30 initWithDevice:v31 filterDescriptor:v21];
+        device = [(PTMetalContext *)v9->_metalContext device];
+        v32 = [v30 initWithDevice:device filterDescriptor:v21];
         guidedFilter = v9->_guidedFilter;
         v9->_guidedFilter = v32;
 
@@ -83,8 +83,8 @@
 
           [v34 setResourceOptions:v35];
           [v34 setTextureType:3];
-          v36 = [(PTMetalContext *)v9->_metalContext device];
-          v37 = [v36 newTextureWithDescriptor:v34];
+          device2 = [(PTMetalContext *)v9->_metalContext device];
+          v37 = [device2 newTextureWithDescriptor:v34];
           v64 = v37;
           v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v64 count:1];
           v65[0] = v38;
@@ -133,22 +133,22 @@ LABEL_25:
   return v41;
 }
 
-- (id)guidedUpsampling:(id)a3 inDisparity:(id)a4 inRGBA:(id)a5 colorDepth:(int64_t)a6
+- (id)guidedUpsampling:(id)upsampling inDisparity:(id)disparity inRGBA:(id)a colorDepth:(int64_t)depth
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  v14 = v11;
+  upsamplingCopy = upsampling;
+  disparityCopy = disparity;
+  aCopy = a;
+  v13 = aCopy;
+  v14 = disparityCopy;
   if (self->_upscaleFactor > 1.0)
   {
     if (!self->_guideConversionTexture)
     {
-      v15 = [v12 pixelFormat];
-      v16 = [(PTMetalContext *)self->_metalContext textureUtil];
-      v17 = v16;
-      if (v15 == 555)
+      pixelFormat = [aCopy pixelFormat];
+      textureUtil = [(PTMetalContext *)self->_metalContext textureUtil];
+      v17 = textureUtil;
+      if (pixelFormat == 555)
       {
         v18 = 71;
       }
@@ -158,32 +158,32 @@ LABEL_25:
         v18 = 115;
       }
 
-      v19 = [v16 createWithWidth:self->_width height:self->_height pixelFormat:v18];
+      v19 = [textureUtil createWithWidth:self->_width height:self->_height pixelFormat:v18];
       guideConversionTexture = self->_guideConversionTexture;
       self->_guideConversionTexture = v19;
     }
 
-    v21 = [(PTMetalContext *)self->_metalContext textureUtil];
-    v22 = v21;
+    textureUtil2 = [(PTMetalContext *)self->_metalContext textureUtil];
+    v22 = textureUtil2;
     LODWORD(v23) = 1042983595;
-    if (a6 == 8)
+    if (depth == 8)
     {
       *&v23 = 1.0;
     }
 
-    [v21 multiply:v10 inTex:v13 outTex:self->_guideConversionTexture multiplier:v23];
+    [textureUtil2 multiply:upsamplingCopy inTex:v13 outTex:self->_guideConversionTexture multiplier:v23];
 
     guidedFilter = self->_guidedFilter;
-    v33[0] = v11;
+    v33[0] = disparityCopy;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
-    [(MPSImageSpatioTemporalGuidedFilter *)guidedFilter encodeRegressionToCommandBuffer:v10 sourceTextureArray:v25 guidanceTexture:self->_guideConversionTexture constraintsTextureArray:0 numberOfIterations:1 destinationCoefficientsTextureArray:self->_coefficientsTextureArray];
+    [(MPSImageSpatioTemporalGuidedFilter *)guidedFilter encodeRegressionToCommandBuffer:upsamplingCopy sourceTextureArray:v25 guidanceTexture:self->_guideConversionTexture constraintsTextureArray:0 numberOfIterations:1 destinationCoefficientsTextureArray:self->_coefficientsTextureArray];
 
     v26 = self->_guideConversionTexture;
     coefficientsTextureArray = self->_coefficientsTextureArray;
     v28 = self->_guidedFilter;
     disparityUpscaled = self->_disparityUpscaled;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&disparityUpscaled count:1];
-    [(MPSImageSpatioTemporalGuidedFilter *)v28 encodeReconstructionToCommandBuffer:v10 guidanceTexture:v26 coefficientsTextureArray:coefficientsTextureArray destinationTextureArray:v29];
+    [(MPSImageSpatioTemporalGuidedFilter *)v28 encodeReconstructionToCommandBuffer:upsamplingCopy guidanceTexture:v26 coefficientsTextureArray:coefficientsTextureArray destinationTextureArray:v29];
 
     v14 = self->_disparityUpscaled;
   }

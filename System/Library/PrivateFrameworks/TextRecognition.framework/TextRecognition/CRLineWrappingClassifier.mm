@@ -1,12 +1,12 @@
 @interface CRLineWrappingClassifier
-+ (BOOL)localeIsSupported:(id)a3;
++ (BOOL)localeIsSupported:(id)supported;
 + (id)localeToModelMap;
-+ (id)modelLocaleForLocale:(id)a3;
-+ (id)urlOfModelForLocale:(id)a3;
-- (CRLineWrappingClassifier)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (CRLineWrappingClassifier)initWithLocale:(id)a3;
++ (id)modelLocaleForLocale:(id)locale;
++ (id)urlOfModelForLocale:(id)locale;
+- (CRLineWrappingClassifier)initWithContentsOfURL:(id)l error:(id *)error;
+- (CRLineWrappingClassifier)initWithLocale:(id)locale;
 - (NSString)modelLocale;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
 - (unint64_t)featureCount;
 @end
 
@@ -92,28 +92,28 @@ void __44__CRLineWrappingClassifier_localeToModelMap__block_invoke()
   _MergedGlobals_23 = v0;
 }
 
-+ (BOOL)localeIsSupported:(id)a3
++ (BOOL)localeIsSupported:(id)supported
 {
-  v4 = a3;
-  v5 = [a1 localeToModelMap];
-  v6 = [v5 objectForKey:v4];
+  supportedCopy = supported;
+  localeToModelMap = [self localeToModelMap];
+  v6 = [localeToModelMap objectForKey:supportedCopy];
 
   return v6 != 0;
 }
 
-+ (id)urlOfModelForLocale:(id)a3
++ (id)urlOfModelForLocale:(id)locale
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 localeToModelMap];
-  v6 = [v5 objectForKey:v4];
+  localeCopy = locale;
+  localeToModelMap = [self localeToModelMap];
+  v6 = [localeToModelMap objectForKey:localeCopy];
 
   if (v6)
   {
-    v7 = [v6 stringByDeletingPathExtension];
-    v8 = [v6 pathExtension];
+    stringByDeletingPathExtension = [v6 stringByDeletingPathExtension];
+    pathExtension = [v6 pathExtension];
     v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v10 = [v9 pathForResource:v7 ofType:v8];
+    v10 = [v9 pathForResource:stringByDeletingPathExtension ofType:pathExtension];
     if (v10)
     {
       v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10];
@@ -125,7 +125,7 @@ void __44__CRLineWrappingClassifier_localeToModelMap__block_invoke()
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
         v14 = 138412290;
-        v15 = v7;
+        v15 = stringByDeletingPathExtension;
         _os_log_impl(&dword_1B40D2000, v12, OS_LOG_TYPE_FAULT, "Failed to load resource: %@", &v14, 0xCu);
       }
 
@@ -141,37 +141,37 @@ void __44__CRLineWrappingClassifier_localeToModelMap__block_invoke()
   return v11;
 }
 
-+ (id)modelLocaleForLocale:(id)a3
++ (id)modelLocaleForLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   if (qword_1ED960140 != -1)
   {
     dispatch_once(&qword_1ED960140, &__block_literal_global_199);
   }
 
-  if ([qword_1ED960138 containsObject:v4])
+  if ([qword_1ED960138 containsObject:localeCopy])
   {
-    v5 = [a1 modelLocaleForExtendedLatin];
+    modelLocaleForExtendedLatin = [self modelLocaleForExtendedLatin];
     goto LABEL_11;
   }
 
-  if ([CRImageReader languageIsChinese:v4])
+  if ([CRImageReader languageIsChinese:localeCopy])
   {
     v6 = CRImageReaderLanguageZh_Hans;
 LABEL_9:
-    v5 = *v6;
+    modelLocaleForExtendedLatin = *v6;
     goto LABEL_11;
   }
 
-  if ([CRImageReader languageIsArabic:v4])
+  if ([CRImageReader languageIsArabic:localeCopy])
   {
     v6 = CRImageReaderLanguageAr_SA;
     goto LABEL_9;
   }
 
-  v5 = v4;
+  modelLocaleForExtendedLatin = localeCopy;
 LABEL_11:
-  v7 = v5;
+  v7 = modelLocaleForExtendedLatin;
 
   return v7;
 }
@@ -195,10 +195,10 @@ void __49__CRLineWrappingClassifier_modelLocaleForLocale___block_invoke()
   qword_1ED960138 = v2;
 }
 
-- (CRLineWrappingClassifier)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (CRLineWrappingClassifier)initWithContentsOfURL:(id)l error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = CRLineWrappingClassifier;
   v7 = [(CRLineWrappingClassifier *)&v14 init];
@@ -209,7 +209,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:v6 error:a4];
+  v8 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:lCopy error:error];
   model = v7->_model;
   v7->_model = v8;
 
@@ -218,9 +218,9 @@ LABEL_7:
     v11 = CROSLogForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      v12 = [v6 path];
+      path = [lCopy path];
       *buf = 138412290;
-      v16 = v12;
+      v16 = path;
       _os_log_impl(&dword_1B40D2000, v11, OS_LOG_TYPE_FAULT, "Failed to load model: %@", buf, 0xCu);
     }
 
@@ -233,65 +233,65 @@ LABEL_8:
   return v10;
 }
 
-- (CRLineWrappingClassifier)initWithLocale:(id)a3
+- (CRLineWrappingClassifier)initWithLocale:(id)locale
 {
-  v5 = a3;
-  v6 = [CRLineWrappingClassifier urlOfModelForLocale:v5];
+  localeCopy = locale;
+  v6 = [CRLineWrappingClassifier urlOfModelForLocale:localeCopy];
   if (v6)
   {
-    objc_storeStrong(&self->_locale, a3);
+    objc_storeStrong(&self->_locale, locale);
     self = [(CRLineWrappingClassifier *)self initWithContentsOfURL:v6 error:0];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (NSString)modelLocale
 {
   v3 = objc_opt_class();
-  v4 = [(CRLineWrappingClassifier *)self locale];
-  v5 = [v3 modelLocaleForLocale:v4];
+  locale = [(CRLineWrappingClassifier *)self locale];
+  v5 = [v3 modelLocaleForLocale:locale];
 
   return v5;
 }
 
 - (unint64_t)featureCount
 {
-  v2 = [(MLModel *)self->_model modelDescription];
-  v3 = [v2 inputDescriptionsByName];
-  v4 = [v3 objectForKeyedSubscript:@"input"];
-  v5 = [v4 multiArrayConstraint];
-  v6 = [v5 shape];
-  v7 = [v6 objectAtIndexedSubscript:0];
-  v8 = [v7 unsignedLongValue];
+  modelDescription = [(MLModel *)self->_model modelDescription];
+  inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+  v4 = [inputDescriptionsByName objectForKeyedSubscript:@"input"];
+  multiArrayConstraint = [v4 multiArrayConstraint];
+  shape = [multiArrayConstraint shape];
+  v7 = [shape objectAtIndexedSubscript:0];
+  unsignedLongValue = [v7 unsignedLongValue];
 
-  return v8;
+  return unsignedLongValue;
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
   model = self->_model;
-  v7 = a3;
-  v8 = [(MLModel *)model modelDescription];
-  v9 = [v8 inputDescriptionsByName];
-  v10 = [v9 objectForKeyedSubscript:@"input"];
-  v11 = [v10 multiArrayConstraint];
-  v12 = [v11 shape];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  featuresCopy = features;
+  modelDescription = [(MLModel *)model modelDescription];
+  inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+  v10 = [inputDescriptionsByName objectForKeyedSubscript:@"input"];
+  multiArrayConstraint = [v10 multiArrayConstraint];
+  shape = [multiArrayConstraint shape];
+  v13 = [shape objectAtIndexedSubscript:0];
   [v13 longValue];
 
   v14 = objc_alloc_init(MEMORY[0x1E695FF08]);
-  v15 = [(MLModel *)self->_model predictionFromFeatures:v7 options:v14 error:a4];
+  v15 = [(MLModel *)self->_model predictionFromFeatures:featuresCopy options:v14 error:error];
 
   v16 = [v15 featureValueForName:@"classProbability"];
-  v17 = [v16 dictionaryValue];
-  v18 = [v17 objectForKeyedSubscript:&unk_1F2BF85C0];
+  dictionaryValue = [v16 dictionaryValue];
+  v18 = [dictionaryValue objectForKeyedSubscript:&unk_1F2BF85C0];
 
   if (v18)
   {

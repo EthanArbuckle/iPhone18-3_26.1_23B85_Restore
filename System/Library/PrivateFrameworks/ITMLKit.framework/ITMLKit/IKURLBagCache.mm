@@ -1,16 +1,16 @@
 @interface IKURLBagCache
 + (id)URLBagContext;
 + (id)sharedCache;
-- (BOOL)isTrustedURL:(id)a3;
+- (BOOL)isTrustedURL:(id)l;
 - (IKURLBagCache)init;
-- (id)_bagValueForKey:(id)a3 valueType:(unint64_t)a4;
-- (id)_urlForKey:(id)a3;
-- (id)valueForKey:(id)a3;
-- (void)_loadWithNotification:(BOOL)a3 completion:(id)a4;
-- (void)checkTrustStatusForURL:(id)a3 completion:(id)a4;
-- (void)createSnapshotWithCompletion:(id)a3;
-- (void)loadValueForKey:(id)a3 completion:(id)a4;
-- (void)updateWithInvalidation:(BOOL)a3;
+- (id)_bagValueForKey:(id)key valueType:(unint64_t)type;
+- (id)_urlForKey:(id)key;
+- (id)valueForKey:(id)key;
+- (void)_loadWithNotification:(BOOL)notification completion:(id)completion;
+- (void)checkTrustStatusForURL:(id)l completion:(id)completion;
+- (void)createSnapshotWithCompletion:(id)completion;
+- (void)loadValueForKey:(id)key completion:(id)completion;
+- (void)updateWithInvalidation:(BOOL)invalidation;
 @end
 
 @implementation IKURLBagCache
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __28__IKURLBagCache_sharedCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCache_onceToken != -1)
   {
     dispatch_once(&sharedCache_onceToken, block);
@@ -48,8 +48,8 @@ uint64_t __28__IKURLBagCache_sharedCache__block_invoke(uint64_t a1)
   if (v2)
   {
     v3 = MEMORY[0x277D69C88];
-    v4 = [objc_opt_class() URLBagContext];
-    v5 = [v3 URLBagForContext:v4];
+    uRLBagContext = [objc_opt_class() URLBagContext];
+    v5 = [v3 URLBagForContext:uRLBagContext];
     urlBag = v2->_urlBag;
     v2->_urlBag = v5;
 
@@ -65,38 +65,38 @@ uint64_t __28__IKURLBagCache_sharedCache__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)updateWithInvalidation:(BOOL)a3
+- (void)updateWithInvalidation:(BOOL)invalidation
 {
-  v3 = a3;
+  invalidationCopy = invalidation;
   v5 = ITMLKitGetLogObject(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [IKURLBagCache updateWithInvalidation:];
   }
 
-  if (v3)
+  if (invalidationCopy)
   {
-    v6 = [(IKURLBagCache *)self urlBag];
-    [v6 invalidate];
+    urlBag = [(IKURLBagCache *)self urlBag];
+    [urlBag invalidate];
   }
 
   [(IKURLBagCache *)self _loadWithNotification:1 completion:0];
 }
 
-- (void)_loadWithNotification:(BOOL)a3 completion:(id)a4
+- (void)_loadWithNotification:(BOOL)notification completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v7 = [(IKURLBagCache *)self urlBag];
+  urlBag = [(IKURLBagCache *)self urlBag];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__IKURLBagCache__loadWithNotification_completion___block_invoke;
   v9[3] = &unk_279799618;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = completionCopy;
   v10 = v8;
-  v12 = a3;
-  [v7 loadWithCompletionBlock:v9];
+  notificationCopy = notification;
+  [urlBag loadWithCompletionBlock:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -170,9 +170,9 @@ LABEL_10:
 LABEL_16:
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -187,7 +187,7 @@ LABEL_16:
   v11 = &v12;
   v6 = v5;
   v10 = v6;
-  [(IKURLBagCache *)self loadValueForKey:v4 completion:v9];
+  [(IKURLBagCache *)self loadValueForKey:keyCopy completion:v9];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[5];
 
@@ -203,9 +203,9 @@ void __29__IKURLBagCache_valueForKey___block_invoke(uint64_t a1, void *a2)
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_urlForKey:(id)a3
+- (id)_urlForKey:(id)key
 {
-  v3 = [(IKURLBagCache *)self valueForKey:a3];
+  v3 = [(IKURLBagCache *)self valueForKey:key];
   if (v3)
   {
     v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
@@ -219,18 +219,18 @@ void __29__IKURLBagCache_valueForKey___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)loadValueForKey:(id)a3 completion:(id)a4
+- (void)loadValueForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__IKURLBagCache_loadValueForKey_completion___block_invoke;
   v10[3] = &unk_279799668;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = keyCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = keyCopy;
   [(IKURLBagCache *)self _loadWithNotification:1 completion:v10];
 }
 
@@ -254,9 +254,9 @@ void __44__IKURLBagCache_loadValueForKey_completion___block_invoke(uint64_t a1, 
   }
 }
 
-- (BOOL)isTrustedURL:(id)a3
+- (BOOL)isTrustedURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -269,7 +269,7 @@ void __44__IKURLBagCache_loadValueForKey_completion___block_invoke(uint64_t a1, 
   v10 = &v11;
   v6 = v5;
   v9 = v6;
-  [(IKURLBagCache *)self checkTrustStatusForURL:v4 completion:v8];
+  [(IKURLBagCache *)self checkTrustStatusForURL:lCopy completion:v8];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   LOBYTE(self) = *(v12 + 24);
 
@@ -277,20 +277,20 @@ void __44__IKURLBagCache_loadValueForKey_completion___block_invoke(uint64_t a1, 
   return self;
 }
 
-- (void)checkTrustStatusForURL:(id)a3 completion:(id)a4
+- (void)checkTrustStatusForURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IKURLBagCache *)self urlBag];
+  lCopy = l;
+  completionCopy = completion;
+  urlBag = [(IKURLBagCache *)self urlBag];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__IKURLBagCache_checkTrustStatusForURL_completion___block_invoke;
   v11[3] = &unk_2797996B8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 getTrustForURL:v10 completionBlock:v11];
+  v12 = lCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = lCopy;
+  [urlBag getTrustForURL:v10 completionBlock:v11];
 }
 
 void __51__IKURLBagCache_checkTrustStatusForURL_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -315,23 +315,23 @@ void __51__IKURLBagCache_checkTrustStatusForURL_completion___block_invoke(uint64
 + (id)URLBagContext
 {
   v2 = [MEMORY[0x277D69C90] contextWithBagType:0];
-  v3 = [MEMORY[0x277D69A80] currentDevice];
-  v4 = [v3 userAgent];
-  [v2 setValue:v4 forHTTPHeaderField:*MEMORY[0x277D6A130]];
+  currentDevice = [MEMORY[0x277D69A80] currentDevice];
+  userAgent = [currentDevice userAgent];
+  [v2 setValue:userAgent forHTTPHeaderField:*MEMORY[0x277D6A130]];
 
   return v2;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__IKURLBagCache_createSnapshotWithCompletion___block_invoke;
   v6[3] = &unk_2797996E0;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(IKURLBagCache *)self _loadWithNotification:1 completion:v6];
 
@@ -406,28 +406,28 @@ LABEL_10:
 LABEL_15:
 }
 
-- (id)_bagValueForKey:(id)a3 valueType:(unint64_t)a4
+- (id)_bagValueForKey:(id)key valueType:(unint64_t)type
 {
-  v6 = a3;
-  if (a4 == 5)
+  keyCopy = key;
+  if (type == 5)
   {
-    [(IKURLBagCache *)self _urlForKey:v6];
+    [(IKURLBagCache *)self _urlForKey:keyCopy];
   }
 
   else
   {
-    [(IKURLBagCache *)self valueForKey:v6];
+    [(IKURLBagCache *)self valueForKey:keyCopy];
   }
   v7 = ;
   if (v7)
   {
-    v8 = [MEMORY[0x277CEE418] frozenBagValueWithKey:v6 value:v7 valueType:a4];
+    v8 = [MEMORY[0x277CEE418] frozenBagValueWithKey:keyCopy value:v7 valueType:type];
   }
 
   else
   {
     v9 = AMSErrorWithFormat();
-    v8 = [MEMORY[0x277CEE418] failingBagValueWithKey:v6 valueType:a4 error:{v9, v6}];
+    v8 = [MEMORY[0x277CEE418] failingBagValueWithKey:keyCopy valueType:type error:{v9, keyCopy}];
   }
 
   return v8;

@@ -1,17 +1,17 @@
 @interface _UIStackedImageContainerLayerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityLayerHostingView;
 @end
 
 @implementation _UIStackedImageContainerLayerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:?];
   [location[0] validateClass:@"_UIStackedImageContainerLayer" hasInstanceVariable:@"_scale" withType:"d"];
   [location[0] validateClass:@"_UIStackedImageContainerLayer" hasInstanceVariable:@"_imageLayersContainer" withType:"CALayer"];
@@ -20,7 +20,7 @@
 
 - (CGRect)accessibilityFrame
 {
-  v45 = self;
+  selfCopy = self;
   v44[1] = a2;
   v44[0] = [(_UIStackedImageContainerLayerAccessibility *)self _accessibilityLayerHostingView];
   v46 = 0u;
@@ -32,7 +32,7 @@
     v41 = v3;
     v42 = v4;
     v43 = v5;
-    v24 = [(_UIStackedImageContainerLayerAccessibility *)v45 safeValueForKey:@"_scale"];
+    v24 = [(_UIStackedImageContainerLayerAccessibility *)selfCopy safeValueForKey:@"_scale"];
     [v24 floatValue];
     v25 = v6;
     MEMORY[0x29EDC9740](v24);
@@ -58,7 +58,7 @@
     *(&v47 + 1) = v43 * v39;
     *&v46 = v40 - (v42 * v23 - v42) / 2.0;
     *(&v46 + 1) = v41 - (v43 * v39 - v43) / 2.0;
-    location[0] = [(_UIStackedImageContainerLayerAccessibility *)v45 valueForKey:@"_imageLayersContainer"];
+    location[0] = [(_UIStackedImageContainerLayerAccessibility *)selfCopy valueForKey:@"_imageLayersContainer"];
     if (location[0])
     {
       [location[0] frame];
@@ -81,7 +81,7 @@
 
   else
   {
-    v26.receiver = v45;
+    v26.receiver = selfCopy;
     v26.super_class = _UIStackedImageContainerLayerAccessibility;
     [(_UIStackedImageContainerLayerAccessibility *)&v26 accessibilityFrame];
     *&v27 = v15;
@@ -106,8 +106,8 @@
 
 - (id)_accessibilityLayerHostingView
 {
-  v11[1] = a1;
-  if (a1)
+  v11[1] = self;
+  if (self)
   {
     v11[0] = 0;
     v9 = 0;
@@ -133,9 +133,9 @@
 
       else
       {
-        v1 = [v10 superlayer];
+        superlayer = [v10 superlayer];
         v2 = v10;
-        v10 = v1;
+        v10 = superlayer;
         MEMORY[0x29EDC9740](v2);
         v5 = 0;
       }

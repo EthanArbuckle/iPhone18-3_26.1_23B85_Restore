@@ -1,20 +1,20 @@
 @interface EmojiGenerationClientToHostAction
-- (_TtC10StickerKit33EmojiGenerationClientToHostAction)initWithInfo:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6;
-- (void)performActionForSceneController:(id)a3;
+- (_TtC10StickerKit33EmojiGenerationClientToHostAction)initWithInfo:(id)info timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler;
+- (void)performActionForSceneController:(id)controller;
 @end
 
 @implementation EmojiGenerationClientToHostAction
 
-- (void)performActionForSceneController:(id)a3
+- (void)performActionForSceneController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_19A6E8310(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_19A6E8310(controllerCopy);
 }
 
-- (_TtC10StickerKit33EmojiGenerationClientToHostAction)initWithInfo:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6
+- (_TtC10StickerKit33EmojiGenerationClientToHostAction)initWithInfo:(id)info timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   if (v9)
   {
     v10 = swift_allocObject();
@@ -27,9 +27,9 @@
     v10 = 0;
   }
 
-  v11 = a3;
-  v12 = a5;
-  return EmojiGenerationClientToHostAction.init(info:timeout:forResponseOn:withHandler:)(a3, a5, v9, v10, a4);
+  infoCopy = info;
+  queueCopy = queue;
+  return EmojiGenerationClientToHostAction.init(info:timeout:forResponseOn:withHandler:)(info, queue, v9, v10, timeout);
 }
 
 @end

@@ -1,49 +1,49 @@
 @interface CHXChartType
-+ (Class)chxChartTypeClassWithXmlElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)stringWithGroupingEnum:(int)a3;
-+ (int)chdGroupingFromXmlGroupingElement:(_xmlNode *)a3;
-+ (int)chdShapeTypeFromXmlShapeTypeElement:(_xmlNode *)a3;
-+ (void)prepareChartTypeForWriting:(id)a3;
-+ (void)resolveStyle:(id)a3 state:(id)a4;
++ (Class)chxChartTypeClassWithXmlElement:(_xmlNode *)element state:(id)state;
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state;
++ (id)stringWithGroupingEnum:(int)enum;
++ (int)chdGroupingFromXmlGroupingElement:(_xmlNode *)element;
++ (int)chdShapeTypeFromXmlShapeTypeElement:(_xmlNode *)element;
++ (void)prepareChartTypeForWriting:(id)writing;
++ (void)resolveStyle:(id)style state:(id)state;
 @end
 
 @implementation CHXChartType
 
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [CHXChartType chxChartTypeClassWithXmlElement:a3 state:v5];
+  stateCopy = state;
+  v6 = [CHXChartType chxChartTypeClassWithXmlElement:element state:stateCopy];
   if (v6)
   {
-    v7 = [(objc_class *)v6 chdChartTypeFromXmlChartTypeElement:a3 state:v5];
-    [v5 setCurrentChartType:v7];
-    v8 = [v5 drawingState];
-    v9 = [v8 OAXChartNamespace];
-    v10 = OCXFindChild(a3, v9, "varyColors");
+    v7 = [(objc_class *)v6 chdChartTypeFromXmlChartTypeElement:element state:stateCopy];
+    [stateCopy setCurrentChartType:v7];
+    drawingState = [stateCopy drawingState];
+    oAXChartNamespace = [drawingState OAXChartNamespace];
+    v10 = OCXFindChild(element, oAXChartNamespace, "varyColors");
 
     if (v10)
     {
       [v7 setVaryColors:{CXRequiredBoolAttribute(v10, CXNoNamespace, "val")}];
     }
 
-    v11 = OCXFirstChildNamed(a3, "ser");
+    v11 = OCXFirstChildNamed(element, "ser");
     while (v11)
     {
-      v12 = [CHXSeries readFrom:v11 state:v5];
+      v12 = [CHXSeries readFrom:v11 state:stateCopy];
       [v12 setChartType:v7];
-      v13 = [v7 seriesCollection];
-      [v13 addObject:v12];
+      seriesCollection = [v7 seriesCollection];
+      [seriesCollection addObject:v12];
 
       v11 = OCXNextSiblingNamed(v11, "ser");
     }
 
-    for (i = OCXFirstChildNamed(a3, "axId"); i; i = OCXNextSiblingNamed(i, "axId"))
+    for (i = OCXFirstChildNamed(element, "axId"); i; i = OCXNextSiblingNamed(i, "axId"))
     {
       v15 = CXRequiredUnsignedLongAttribute(i, CXNoNamespace, "val");
-      v16 = [v7 axisIds];
+      axisIds = [v7 axisIds];
       v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v15];
-      [v16 addObject:v17];
+      [axisIds addObject:v17];
     }
   }
 
@@ -55,15 +55,15 @@
   return v7;
 }
 
-+ (int)chdGroupingFromXmlGroupingElement:(_xmlNode *)a3
++ (int)chdGroupingFromXmlGroupingElement:(_xmlNode *)element
 {
-  if (!a3)
+  if (!element)
   {
     return 0;
   }
 
   v7 = 0;
-  v3 = CXOptionalStringAttribute(a3, CXNoNamespace, "val", &v7);
+  v3 = CXOptionalStringAttribute(element, CXNoNamespace, "val", &v7);
   v4 = v7;
   v5 = v4;
   if (v3)
@@ -97,28 +97,28 @@
   return v3;
 }
 
-+ (id)stringWithGroupingEnum:(int)a3
++ (id)stringWithGroupingEnum:(int)enum
 {
-  if ((a3 - 1) > 2)
+  if ((enum - 1) > 2)
   {
     return @"clustered";
   }
 
   else
   {
-    return off_2799CD258[a3 - 1];
+    return off_2799CD258[enum - 1];
   }
 }
 
-+ (int)chdShapeTypeFromXmlShapeTypeElement:(_xmlNode *)a3
++ (int)chdShapeTypeFromXmlShapeTypeElement:(_xmlNode *)element
 {
-  if (!a3)
+  if (!element)
   {
     return 0;
   }
 
   v7 = 0;
-  v3 = CXOptionalStringAttribute(a3, CXNoNamespace, "val", &v7);
+  v3 = CXOptionalStringAttribute(element, CXNoNamespace, "val", &v7);
   v4 = v7;
   v5 = v4;
   if (v3)
@@ -162,158 +162,158 @@
   return v3;
 }
 
-+ (void)resolveStyle:(id)a3 state:(id)a4
++ (void)resolveStyle:(id)style state:(id)state
 {
-  v10 = a3;
-  v5 = a4;
-  if (v10)
+  styleCopy = style;
+  stateCopy = state;
+  if (styleCopy)
   {
-    v6 = [v10 seriesCollection];
-    v7 = [v6 count];
+    seriesCollection = [styleCopy seriesCollection];
+    v7 = [seriesCollection count];
     if (v7)
     {
       for (i = 0; i != v7; ++i)
       {
-        v9 = [v6 objectAtIndex:i];
+        v9 = [seriesCollection objectAtIndex:i];
         if (v9)
         {
-          [CHXSeries resolveSeriesStyle:v9 state:v5];
+          [CHXSeries resolveSeriesStyle:v9 state:stateCopy];
         }
       }
     }
   }
 }
 
-+ (Class)chxChartTypeClassWithXmlElement:(_xmlNode *)a3 state:(id)a4
++ (Class)chxChartTypeClassWithXmlElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 drawingState];
-  v7 = [v6 OAXChartNamespace];
-  HasName = CXNodeHasName(a3, v7, "pieChart");
+  stateCopy = state;
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  HasName = CXNodeHasName(element, oAXChartNamespace, "pieChart");
 
   if (HasName)
   {
     goto LABEL_18;
   }
 
-  v9 = [v5 drawingState];
-  v10 = [v9 OAXChartNamespace];
-  v11 = CXNodeHasName(a3, v10, "doughnutChart");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v11 = CXNodeHasName(element, oAXChartNamespace2, "doughnutChart");
 
   if (v11)
   {
     goto LABEL_18;
   }
 
-  v12 = [v5 drawingState];
-  v13 = [v12 OAXChartNamespace];
-  v14 = CXNodeHasName(a3, v13, "ofPieChart");
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v14 = CXNodeHasName(element, oAXChartNamespace3, "ofPieChart");
 
   if (v14)
   {
     goto LABEL_18;
   }
 
-  v15 = [v5 drawingState];
-  v16 = [v15 OAXChartNamespace];
-  v17 = CXNodeHasName(a3, v16, "pie3DChart");
+  drawingState4 = [stateCopy drawingState];
+  oAXChartNamespace4 = [drawingState4 OAXChartNamespace];
+  v17 = CXNodeHasName(element, oAXChartNamespace4, "pie3DChart");
 
   if (v17)
   {
     goto LABEL_18;
   }
 
-  v18 = [v5 drawingState];
-  v19 = [v18 OAXChartNamespace];
-  v20 = CXNodeHasName(a3, v19, "barChart");
+  drawingState5 = [stateCopy drawingState];
+  oAXChartNamespace5 = [drawingState5 OAXChartNamespace];
+  v20 = CXNodeHasName(element, oAXChartNamespace5, "barChart");
 
   if (v20)
   {
     goto LABEL_18;
   }
 
-  v21 = [v5 drawingState];
-  v22 = [v21 OAXChartNamespace];
-  v23 = CXNodeHasName(a3, v22, "bar3DChart");
+  drawingState6 = [stateCopy drawingState];
+  oAXChartNamespace6 = [drawingState6 OAXChartNamespace];
+  v23 = CXNodeHasName(element, oAXChartNamespace6, "bar3DChart");
 
   if (v23)
   {
     goto LABEL_18;
   }
 
-  v24 = [v5 drawingState];
-  v25 = [v24 OAXChartNamespace];
-  v26 = CXNodeHasName(a3, v25, "areaChart");
+  drawingState7 = [stateCopy drawingState];
+  oAXChartNamespace7 = [drawingState7 OAXChartNamespace];
+  v26 = CXNodeHasName(element, oAXChartNamespace7, "areaChart");
 
   if (v26)
   {
     goto LABEL_18;
   }
 
-  v27 = [v5 drawingState];
-  v28 = [v27 OAXChartNamespace];
-  v29 = CXNodeHasName(a3, v28, "area3DChart");
+  drawingState8 = [stateCopy drawingState];
+  oAXChartNamespace8 = [drawingState8 OAXChartNamespace];
+  v29 = CXNodeHasName(element, oAXChartNamespace8, "area3DChart");
 
   if (v29)
   {
     goto LABEL_18;
   }
 
-  v30 = [v5 drawingState];
-  v31 = [v30 OAXChartNamespace];
-  v32 = CXNodeHasName(a3, v31, "lineChart");
+  drawingState9 = [stateCopy drawingState];
+  oAXChartNamespace9 = [drawingState9 OAXChartNamespace];
+  v32 = CXNodeHasName(element, oAXChartNamespace9, "lineChart");
 
   if (v32)
   {
     goto LABEL_18;
   }
 
-  v33 = [v5 drawingState];
-  v34 = [v33 OAXChartNamespace];
-  v35 = CXNodeHasName(a3, v34, "stockChart");
+  drawingState10 = [stateCopy drawingState];
+  oAXChartNamespace10 = [drawingState10 OAXChartNamespace];
+  v35 = CXNodeHasName(element, oAXChartNamespace10, "stockChart");
 
   if (v35)
   {
     goto LABEL_18;
   }
 
-  v36 = [v5 drawingState];
-  v37 = [v36 OAXChartNamespace];
-  v38 = CXNodeHasName(a3, v37, "line3DChart");
+  drawingState11 = [stateCopy drawingState];
+  oAXChartNamespace11 = [drawingState11 OAXChartNamespace];
+  v38 = CXNodeHasName(element, oAXChartNamespace11, "line3DChart");
 
   if (v38)
   {
     goto LABEL_18;
   }
 
-  v39 = [v5 drawingState];
-  v40 = [v39 OAXChartNamespace];
-  v41 = CXNodeHasName(a3, v40, "scatterChart");
+  drawingState12 = [stateCopy drawingState];
+  oAXChartNamespace12 = [drawingState12 OAXChartNamespace];
+  v41 = CXNodeHasName(element, oAXChartNamespace12, "scatterChart");
 
   if (v41)
   {
     goto LABEL_18;
   }
 
-  v42 = [v5 drawingState];
-  v43 = [v42 OAXChartNamespace];
-  v44 = CXNodeHasName(a3, v43, "bubbleChart");
+  drawingState13 = [stateCopy drawingState];
+  oAXChartNamespace13 = [drawingState13 OAXChartNamespace];
+  v44 = CXNodeHasName(element, oAXChartNamespace13, "bubbleChart");
 
   if (v44)
   {
     goto LABEL_18;
   }
 
-  v53 = [v5 drawingState];
-  v45 = [v53 OAXChartNamespace];
-  if (CXNodeHasName(a3, v45, "radarChart"))
+  drawingState14 = [stateCopy drawingState];
+  oAXChartNamespace14 = [drawingState14 OAXChartNamespace];
+  if (CXNodeHasName(element, oAXChartNamespace14, "radarChart"))
   {
     goto LABEL_17;
   }
 
-  v46 = [v5 drawingState];
-  v47 = [v46 OAXChartNamespace];
-  if (CXNodeHasName(a3, v47, "surfaceChart"))
+  drawingState15 = [stateCopy drawingState];
+  oAXChartNamespace15 = [drawingState15 OAXChartNamespace];
+  if (CXNodeHasName(element, oAXChartNamespace15, "surfaceChart"))
   {
 
 LABEL_17:
@@ -322,9 +322,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v50 = [v5 drawingState];
-  v51 = [v50 OAXChartNamespace];
-  v52 = CXNodeHasName(a3, v51, "surface3DChart");
+  drawingState16 = [stateCopy drawingState];
+  oAXChartNamespace16 = [drawingState16 OAXChartNamespace];
+  v52 = CXNodeHasName(element, oAXChartNamespace16, "surface3DChart");
 
   if (v52)
   {
@@ -337,19 +337,19 @@ LABEL_19:
   return v48;
 }
 
-+ (void)prepareChartTypeForWriting:(id)a3
++ (void)prepareChartTypeForWriting:(id)writing
 {
-  v24 = a3;
-  v3 = [v24 axes];
-  v4 = [v3 count];
+  writingCopy = writing;
+  axes = [writingCopy axes];
+  v4 = [axes count];
 
   if (v4)
   {
-    v5 = [v24 axes];
-    v6 = [v5 objectAtIndex:0];
-    v7 = [v6 axisId];
+    axes2 = [writingCopy axes];
+    v6 = [axes2 objectAtIndex:0];
+    axisId = [v6 axisId];
 
-    v8 = v7 > 2;
+    v8 = axisId > 2;
   }
 
   else
@@ -357,34 +357,34 @@ LABEL_19:
     v8 = 0;
   }
 
-  v9 = [v24 axisIds];
-  [v9 removeAllObjects];
+  axisIds = [writingCopy axisIds];
+  [axisIds removeAllObjects];
 
-  v10 = [v24 chart];
-  v11 = [v10 plotArea];
-  v12 = [v11 axes];
+  chart = [writingCopy chart];
+  plotArea = [chart plotArea];
+  axes3 = [plotArea axes];
 
-  for (i = 0; i < [v12 count]; ++i)
+  for (i = 0; i < [axes3 count]; ++i)
   {
-    v14 = [v12 objectAtIndex:i];
-    v15 = [v14 axisId];
+    v14 = [axes3 objectAtIndex:i];
+    axisId2 = [v14 axisId];
 
-    if (((v8 ^ (v15 > 2)) & 1) == 0)
+    if (((v8 ^ (axisId2 > 2)) & 1) == 0)
     {
-      v16 = [v24 axisIds];
-      v17 = [MEMORY[0x277CCABB0] numberWithInt:v15];
-      [v16 addObject:v17];
+      axisIds2 = [writingCopy axisIds];
+      v17 = [MEMORY[0x277CCABB0] numberWithInt:axisId2];
+      [axisIds2 addObject:v17];
     }
   }
 
-  v18 = [v24 axes];
-  for (j = 0; j < [v18 count]; ++j)
+  axes4 = [writingCopy axes];
+  for (j = 0; j < [axes4 count]; ++j)
   {
-    v20 = [v18 objectAtIndex:j];
-    v21 = [v20 axisId];
-    if (v21)
+    v20 = [axes4 objectAtIndex:j];
+    axisId3 = [v20 axisId];
+    if (axisId3)
     {
-      v22 = v21 == 3;
+      v22 = axisId3 == 3;
     }
 
     else
@@ -394,12 +394,12 @@ LABEL_19:
 
     if (v22)
     {
-      v23 = v21 + 1;
+      v23 = axisId3 + 1;
     }
 
     else
     {
-      v23 = v21 - 1;
+      v23 = axisId3 - 1;
     }
 
     [v20 setCrossAxisId:v23];

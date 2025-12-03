@@ -1,9 +1,9 @@
 @interface HKClinicalGatewayFeature
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalGatewayFeature)init;
-- (HKClinicalGatewayFeature)initWithCoder:(id)a3;
-- (HKClinicalGatewayFeature)initWithName:(id)a3 minCompatibleAPIVersion:(int64_t)a4 status:(int64_t)a5 interactions:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (HKClinicalGatewayFeature)initWithCoder:(id)coder;
+- (HKClinicalGatewayFeature)initWithName:(id)name minCompatibleAPIVersion:(int64_t)version status:(int64_t)status interactions:(id)interactions;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalGatewayFeature
@@ -18,22 +18,22 @@
   return 0;
 }
 
-- (HKClinicalGatewayFeature)initWithName:(id)a3 minCompatibleAPIVersion:(int64_t)a4 status:(int64_t)a5 interactions:(id)a6
+- (HKClinicalGatewayFeature)initWithName:(id)name minCompatibleAPIVersion:(int64_t)version status:(int64_t)status interactions:(id)interactions
 {
-  v10 = a3;
-  v11 = a6;
+  nameCopy = name;
+  interactionsCopy = interactions;
   v18.receiver = self;
   v18.super_class = HKClinicalGatewayFeature;
   v12 = [(HKClinicalGatewayFeature *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [nameCopy copy];
     name = v12->_name;
     v12->_name = v13;
 
-    v12->_minCompatibleAPIVersion = a4;
-    v12->_status = a5;
-    v15 = [v11 copy];
+    v12->_minCompatibleAPIVersion = version;
+    v12->_status = status;
+    v15 = [interactionsCopy copy];
     interactions = v12->_interactions;
     v12->_interactions = v15;
   }
@@ -41,13 +41,13 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (self != v6)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (self != equalCopy)
   {
-    v8 = v6;
+    v8 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -58,20 +58,20 @@ LABEL_21:
     }
 
     name = self->_name;
-    v10 = [(HKClinicalGatewayFeature *)v8 name];
-    if (name != v10)
+    name = [(HKClinicalGatewayFeature *)v8 name];
+    if (name != name)
     {
-      v11 = [(HKClinicalGatewayFeature *)v8 name];
-      if (!v11)
+      name2 = [(HKClinicalGatewayFeature *)v8 name];
+      if (!name2)
       {
         v13 = 0;
         goto LABEL_20;
       }
 
-      v3 = v11;
+      v3 = name2;
       v12 = self->_name;
-      v4 = [(HKClinicalGatewayFeature *)v8 name];
-      if (![(NSString *)v12 isEqualToString:v4])
+      name3 = [(HKClinicalGatewayFeature *)v8 name];
+      if (![(NSString *)v12 isEqualToString:name3])
       {
         v13 = 0;
 LABEL_19:
@@ -87,22 +87,22 @@ LABEL_19:
       if (status == [(HKClinicalGatewayFeature *)v8 status])
       {
         interactions = self->_interactions;
-        v17 = [(HKClinicalGatewayFeature *)v8 interactions];
-        v18 = v17;
-        if (interactions == v17)
+        interactions = [(HKClinicalGatewayFeature *)v8 interactions];
+        v18 = interactions;
+        if (interactions == interactions)
         {
 
           v13 = 1;
           goto LABEL_18;
         }
 
-        v19 = [(HKClinicalGatewayFeature *)v8 interactions];
-        if (v19)
+        interactions2 = [(HKClinicalGatewayFeature *)v8 interactions];
+        if (interactions2)
         {
-          v20 = v19;
+          v20 = interactions2;
           v21 = self->_interactions;
-          v22 = [(HKClinicalGatewayFeature *)v8 interactions];
-          v13 = [(NSArray *)v21 isEqualToArray:v22];
+          interactions3 = [(HKClinicalGatewayFeature *)v8 interactions];
+          v13 = [(NSArray *)v21 isEqualToArray:interactions3];
 
           goto LABEL_18;
         }
@@ -111,7 +111,7 @@ LABEL_19:
 
     v13 = 0;
 LABEL_18:
-    if (name != v10)
+    if (name != name)
     {
       goto LABEL_19;
     }
@@ -127,46 +127,46 @@ LABEL_22:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeInteger:self->_minCompatibleAPIVersion forKey:@"minCompatibleAPIVersion"];
-  [v5 encodeInteger:self->_status forKey:@"status"];
-  [v5 encodeObject:self->_interactions forKey:@"interactions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeInteger:self->_minCompatibleAPIVersion forKey:@"minCompatibleAPIVersion"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeObject:self->_interactions forKey:@"interactions"];
 }
 
-- (HKClinicalGatewayFeature)initWithCoder:(id)a3
+- (HKClinicalGatewayFeature)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  if (v5 && [v4 containsValueForKey:@"minCompatibleAPIVersion"] && (objc_msgSend(v4, "containsValueForKey:", @"status") & 1) != 0)
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  if (v5 && [coderCopy containsValueForKey:@"minCompatibleAPIVersion"] && (objc_msgSend(coderCopy, "containsValueForKey:", @"status") & 1) != 0)
   {
-    v6 = [v4 decodeIntegerForKey:@"minCompatibleAPIVersion"];
-    v7 = [v4 decodeIntegerForKey:@"status"];
+    v6 = [coderCopy decodeIntegerForKey:@"minCompatibleAPIVersion"];
+    v7 = [coderCopy decodeIntegerForKey:@"status"];
     v8 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"interactions"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"interactions"];
     if (v9)
     {
       self = [(HKClinicalGatewayFeature *)self initWithName:v5 minCompatibleAPIVersion:v6 status:v7 interactions:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
-      v10 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v10 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

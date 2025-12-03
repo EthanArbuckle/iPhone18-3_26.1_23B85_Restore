@@ -1,14 +1,14 @@
 @interface _PXFileBackedAssetCollection
 - (NSString)uuid;
-- (id)localizedDateDescriptionWithOptions:(unint64_t)a3;
+- (id)localizedDateDescriptionWithOptions:(unint64_t)options;
 @end
 
 @implementation _PXFileBackedAssetCollection
 
-- (id)localizedDateDescriptionWithOptions:(unint64_t)a3
+- (id)localizedDateDescriptionWithOptions:(unint64_t)options
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXFileBackedAssetsDataSource.m" lineNumber:71 description:@"This code path is not implemented."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFileBackedAssetsDataSource.m" lineNumber:71 description:@"This code path is not implemented."];
 
   abort();
 }

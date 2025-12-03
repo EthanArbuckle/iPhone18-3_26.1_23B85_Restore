@@ -1,32 +1,32 @@
 @interface BLTPBSectionBulletinList
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addBulletinIdentifier:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBulletinIdentifier:(id)identifier;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBSectionBulletinList
 
-- (void)addBulletinIdentifier:(id)a3
+- (void)addBulletinIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   bulletinIdentifiers = self->_bulletinIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!bulletinIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_bulletinIdentifiers;
     self->_bulletinIdentifiers = v6;
 
-    v4 = v8;
+    identifierCopy = v8;
     bulletinIdentifiers = self->_bulletinIdentifiers;
   }
 
-  [(NSMutableArray *)bulletinIdentifiers addObject:v4];
+  [(NSMutableArray *)bulletinIdentifiers addObject:identifierCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = BLTPBSectionBulletinList;
   v4 = [(BLTPBSectionBulletinList *)&v8 description];
-  v5 = [(BLTPBSectionBulletinList *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBSectionBulletinList *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   sectionID = self->_sectionID;
   if (sectionID)
   {
-    [v3 setObject:sectionID forKey:@"sectionID"];
+    [dictionary setObject:sectionID forKey:@"sectionID"];
   }
 
   if ([(NSMutableArray *)self->_bulletinIdentifiers count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -92,16 +92,16 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (!self->_sectionID)
   {
     [BLTPBSectionBulletinList writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v15 = 0u;
   v16 = 0u;
@@ -138,31 +138,31 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setSectionID:self->_sectionID];
+  toCopy = to;
+  [toCopy setSectionID:self->_sectionID];
   if ([(BLTPBSectionBulletinList *)self bulletinIdentifiersCount])
   {
-    [v8 clearBulletinIdentifiers];
-    v4 = [(BLTPBSectionBulletinList *)self bulletinIdentifiersCount];
-    if (v4)
+    [toCopy clearBulletinIdentifiers];
+    bulletinIdentifiersCount = [(BLTPBSectionBulletinList *)self bulletinIdentifiersCount];
+    if (bulletinIdentifiersCount)
     {
-      v5 = v4;
+      v5 = bulletinIdentifiersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BLTPBSectionBulletinList *)self bulletinIdentifierAtIndex:i];
-        [v8 addBulletinIdentifier:v7];
+        [toCopy addBulletinIdentifier:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sectionID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sectionID copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -186,7 +186,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addBulletinIdentifier:v13];
 
         ++v12;
@@ -203,13 +203,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((sectionID = self->_sectionID, !(sectionID | v4[2])) || -[NSString isEqual:](sectionID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((sectionID = self->_sectionID, !(sectionID | equalCopy[2])) || -[NSString isEqual:](sectionID, "isEqual:")))
   {
     bulletinIdentifiers = self->_bulletinIdentifiers;
-    if (bulletinIdentifiers | v4[1])
+    if (bulletinIdentifiers | equalCopy[1])
     {
       v7 = [(NSMutableArray *)bulletinIdentifiers isEqual:?];
     }
@@ -228,11 +228,11 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(BLTPBSectionBulletinList *)self setSectionID:?];
   }
@@ -241,7 +241,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

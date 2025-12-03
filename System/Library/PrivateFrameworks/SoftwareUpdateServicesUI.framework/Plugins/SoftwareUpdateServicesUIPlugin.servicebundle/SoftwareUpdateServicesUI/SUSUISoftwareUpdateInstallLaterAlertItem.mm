@@ -1,58 +1,58 @@
 @interface SUSUISoftwareUpdateInstallLaterAlertItem
-- (SUSUISoftwareUpdateInstallLaterAlertItem)initWithDescriptor:(id)a3 softwareUpdateController:(id)a4 tryTonightOperationForecast:(id)a5;
-- (id)_alertMessageForForecast:(id)a3;
-- (id)_installTonightLabelForScheduleType:(int64_t)a3;
+- (SUSUISoftwareUpdateInstallLaterAlertItem)initWithDescriptor:(id)descriptor softwareUpdateController:(id)controller tryTonightOperationForecast:(id)forecast;
+- (id)_alertMessageForForecast:(id)forecast;
+- (id)_installTonightLabelForScheduleType:(int64_t)type;
 - (id)buttons;
 - (id)graphicIcon;
 - (id)title;
-- (void)_scheduleInstallAlertRepopOnDismissWithReason:(id)a3;
+- (void)_scheduleInstallAlertRepopOnDismissWithReason:(id)reason;
 - (void)dismissAlert;
 @end
 
 @implementation SUSUISoftwareUpdateInstallLaterAlertItem
 
-- (SUSUISoftwareUpdateInstallLaterAlertItem)initWithDescriptor:(id)a3 softwareUpdateController:(id)a4 tryTonightOperationForecast:(id)a5
+- (SUSUISoftwareUpdateInstallLaterAlertItem)initWithDescriptor:(id)descriptor softwareUpdateController:(id)controller tryTonightOperationForecast:(id)forecast
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptor);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, controller);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
-  v5 = v15;
-  v15 = 0;
+  objc_storeStrong(&v12, forecast);
+  v5 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v5;
   v11.super_class = SUSUISoftwareUpdateInstallLaterAlertItem;
   v10 = [(SUSUIBaseSoftwareUpdateAlertItem *)&v11 initWithDescriptor:location[0] softwareUpdateController:v13];
-  v15 = v10;
-  objc_storeStrong(&v15, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
-    BYTE1(v15->_repopReason) = 0;
-    BYTE2(v15->_repopReason) = 0;
-    objc_storeStrong((&v15->super._controller + 1), v12);
+    BYTE1(selfCopy->_repopReason) = 0;
+    BYTE2(selfCopy->_repopReason) = 0;
+    objc_storeStrong((&selfCopy->super._controller + 1), v12);
   }
 
-  v7 = v15;
+  v7 = selfCopy;
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
 - (id)title
 {
-  v4 = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
-  v5 = [(SUDescriptor *)v4 isSplatOnly];
+  descriptor = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
+  isSplatOnly = [(SUDescriptor *)descriptor isSplatOnly];
 
   v12 = 0;
   v10 = 0;
   v8 = 0;
   v6 = 0;
-  if (v5)
+  if (isSplatOnly)
   {
     v13 = sub_17868();
     v12 = 1;
@@ -92,34 +92,34 @@
 
 - (id)buttons
 {
-  v47 = self;
+  selfCopy = self;
   v46[1] = a2;
   v2 = objc_opt_class();
   v46[0] = NSStringFromClass(v2);
   v45 = +[NSMutableArray array];
-  objc_initWeak(&location, v47);
-  if (*(&v47->super._controller + 1))
+  objc_initWeak(&location, selfCopy);
+  if (*(&selfCopy->super._controller + 1))
   {
-    v17 = [*(&v47->super._controller + 1) scheduleType];
+    scheduleType = [*(&selfCopy->super._controller + 1) scheduleType];
   }
 
   else
   {
-    v17 = 0;
+    scheduleType = 0;
   }
 
-  v43 = v17;
-  if (![(SUSUIBaseAlertItem *)v47 isUILocked]&& *(&v47->super._controller + 1) && v43)
+  v43 = scheduleType;
+  if (![(SUSUIBaseAlertItem *)selfCopy isUILocked]&& *(&selfCopy->super._controller + 1) && v43)
   {
     v16 = [SUSUIAlertButtonDefinition alloc];
-    v15 = [(SUSUISoftwareUpdateInstallLaterAlertItem *)v47 _installTonightLabelForScheduleType:v43];
+    v15 = [(SUSUISoftwareUpdateInstallLaterAlertItem *)selfCopy _installTonightLabelForScheduleType:v43];
     v34 = _NSConcreteStackBlock;
     v35 = -1073741824;
     v36 = 0;
     v37 = sub_16D34;
     v38 = &unk_5F180;
     v39 = v46[0];
-    v40 = v47;
+    v40 = selfCopy;
     objc_copyWeak(&v41, &location);
     v42 = [(SUSUIAlertButtonDefinition *)v16 initWithLabel:v15 presentationStyle:0 isPreferredButton:1 handler:&v34];
 
@@ -130,10 +130,10 @@
     objc_storeStrong(&v39, 0);
   }
 
-  v13 = [(SUSUIBaseSoftwareUpdateAlertItem *)v47 softwareUpdateController];
-  v14 = [(SUSUISoftwareUpdateController *)v13 canDeferInstallation];
+  softwareUpdateController = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy softwareUpdateController];
+  canDeferInstallation = [(SUSUISoftwareUpdateController *)softwareUpdateController canDeferInstallation];
 
-  if (v14)
+  if (canDeferInstallation)
   {
     v12 = [SUSUIAlertButtonDefinition alloc];
     v11 = sub_17868();
@@ -156,9 +156,9 @@
   else
   {
     v8 = +[UIDevice currentDevice];
-    v9 = [(UIDevice *)v8 userInterfaceIdiom];
+    userInterfaceIdiom = [(UIDevice *)v8 userInterfaceIdiom];
 
-    if (v9 != &dword_0 + 1)
+    if (userInterfaceIdiom != &dword_0 + 1)
     {
       v7 = [SUSUIAlertButtonDefinition alloc];
       v6 = sub_17868();
@@ -189,23 +189,23 @@
 
 - (void)dismissAlert
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (BYTE2(self->_repopReason))
   {
-    v2 = [(SUSUIBaseSoftwareUpdateAlertItem *)v5 softwareUpdateController];
-    [(SUSUISoftwareUpdateController *)v2 repopInstallAlertWithDefaultDurationFromNowForReason:*(&v5->_forecast + 1)];
+    softwareUpdateController = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy softwareUpdateController];
+    [(SUSUISoftwareUpdateController *)softwareUpdateController repopInstallAlertWithDefaultDurationFromNowForReason:*(&selfCopy->_forecast + 1)];
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = SUSUISoftwareUpdateInstallLaterAlertItem;
   [(SUSUIBaseSoftwareUpdateAlertItem *)&v3 dismissAlert];
 }
 
 - (id)graphicIcon
 {
-  v4 = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
-  if (([(SUDescriptor *)v4 isSplatOnly]& 1) != 0)
+  descriptor = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
+  if (([(SUDescriptor *)descriptor isSplatOnly]& 1) != 0)
   {
     v2 = @"com.apple.graphic-icon.background-security-improvements";
   }
@@ -220,13 +220,13 @@
   return v5;
 }
 
-- (void)_scheduleInstallAlertRepopOnDismissWithReason:(id)a3
+- (void)_scheduleInstallAlertRepopOnDismissWithReason:(id)reason
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  BYTE2(v9->_repopReason) = 1;
+  objc_storeStrong(location, reason);
+  BYTE2(selfCopy->_repopReason) = 1;
   if (!location[0])
   {
     v3 = objc_opt_class();
@@ -236,29 +236,29 @@
   }
 
   v6 = [location[0] copy];
-  v7 = *(&v9->_forecast + 1);
-  *(&v9->_forecast + 1) = v6;
+  v7 = *(&selfCopy->_forecast + 1);
+  *(&selfCopy->_forecast + 1) = v6;
 
   objc_storeStrong(location, 0);
 }
 
-- (id)_alertMessageForForecast:(id)a3
+- (id)_alertMessageForForecast:(id)forecast
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, forecast);
   *&v18[8] = 0;
-  v17 = [(SUSUIBaseSoftwareUpdateAlertItem *)v20 softwareUpdateController];
-  *v18 = [(SUSUISoftwareUpdateController *)v17 canDeferInstallation];
+  softwareUpdateController = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy softwareUpdateController];
+  *v18 = [(SUSUISoftwareUpdateController *)softwareUpdateController canDeferInstallation];
 
   if (v18[0])
   {
     v13 = [NSString alloc];
     v16 = sub_17868();
     v15 = [v16 localizedStringForKey:@"SOFTWARE_UPDATE_INSTALL_ALERT_AUTO_INSTALL_BODY_FALLBACK" value:&stru_62DF0 table:@"ui_alerts"];
-    v14 = [(SUSUIBaseSoftwareUpdateAlertItem *)v20 updateName];
-    v3 = [v13 initWithFormat:v15, v14];
+    updateName = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy updateName];
+    v3 = [v13 initWithFormat:v15, updateName];
     v4 = *&v18[4];
     *&v18[4] = v3;
   }
@@ -268,8 +268,8 @@
     v9 = [NSString alloc];
     v12 = sub_17868();
     v11 = [v12 localizedStringForKey:@"SOFTWARE_UPDATE_INSTALL_ALERT_FORCED_BODY" value:&stru_62DF0 table:@"ui_alerts"];
-    v10 = [(SUSUIBaseSoftwareUpdateAlertItem *)v20 updateName];
-    v5 = [v9 initWithFormat:v11, v10];
+    updateName2 = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy updateName];
+    v5 = [v9 initWithFormat:v11, updateName2];
     v6 = *&v18[4];
     *&v18[4] = v5;
   }
@@ -281,13 +281,13 @@
   return v8;
 }
 
-- (id)_installTonightLabelForScheduleType:(int64_t)a3
+- (id)_installTonightLabelForScheduleType:(int64_t)type
 {
   v14[3] = self;
   v14[2] = a2;
-  v14[1] = a3;
+  v14[1] = type;
   v14[0] = 0;
-  switch(a3)
+  switch(type)
   {
     case 1:
       v12 = sub_17868();

@@ -1,6 +1,6 @@
 @interface RoutePickerItemAccessoryView
 - (UIColor)tintColor;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation RoutePickerItemAccessoryView
@@ -9,16 +9,16 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for RoutePickerItemAccessoryView();
-  v2 = [(RoutePickerItemAccessoryView *)&v4 tintColor];
+  tintColor = [(RoutePickerItemAccessoryView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v6 = a3;
-  v5 = self;
-  sub_1A22B4E48(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1A22B4E48(color);
 }
 
 @end

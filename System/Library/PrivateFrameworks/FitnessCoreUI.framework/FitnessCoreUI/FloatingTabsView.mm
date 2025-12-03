@@ -1,21 +1,21 @@
 @interface FloatingTabsView
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (CGSize)intrinsicContentSize;
-- (_TtC13FitnessCoreUI16FloatingTabsView)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI16FloatingTabsView)initWithFrame:(CGRect)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (_TtC13FitnessCoreUI16FloatingTabsView)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI16FloatingTabsView)initWithFrame:(CGRect)frame;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)layoutMarginsDidChange;
 @end
 
 @implementation FloatingTabsView
 
-- (_TtC13FitnessCoreUI16FloatingTabsView)initWithFrame:(CGRect)a3
+- (_TtC13FitnessCoreUI16FloatingTabsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_20C3E8E3C();
   sub_20C3E8E2C();
   sub_20C3E8E1C();
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (_TtC13FitnessCoreUI16FloatingTabsView)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI16FloatingTabsView)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -62,7 +62,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_20C3BA994();
 }
 
@@ -78,13 +78,13 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for FloatingTabsView();
-  v3 = self;
+  selfCopy = self;
   [(FloatingTabsView *)&v6 layoutMarginsDidChange];
-  v4 = [*(&v3->super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI16FloatingTabsView_tabsViewController) view];
-  if (v4)
+  view = [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI16FloatingTabsView_tabsViewController) view];
+  if (view)
   {
-    v5 = v4;
-    [(FloatingTabsView *)v3 directionalLayoutMargins];
+    v5 = view;
+    [(FloatingTabsView *)selfCopy directionalLayoutMargins];
     [v5 setDirectionalLayoutMargins_];
   }
 
@@ -94,7 +94,7 @@
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v8 = sub_20C3E809C();
   v9 = *(v8 - 8);
@@ -109,10 +109,10 @@
   }
 
   sub_20C3E805C();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_20C3BAAA8(v12);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_20C3BAAA8(viewCopy);
   v16 = v15;
   v18 = v17;
 
@@ -125,7 +125,7 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_20C3E809C();
   v7 = *(v6 - 8);
@@ -140,14 +140,14 @@
   }
 
   sub_20C3E805C();
-  v10 = a3;
-  v11 = self;
-  FloatingTabsView.collectionView(_:didSelectItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  FloatingTabsView.collectionView(_:didSelectItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v6 = sub_20C3E809C();
   v7 = *(v6 - 8);
@@ -162,9 +162,9 @@
   }
 
   sub_20C3E805C();
-  v10 = a3;
-  v11 = self;
-  v12 = FloatingTabsView.collectionView(_:shouldSelectItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = FloatingTabsView.collectionView(_:shouldSelectItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 

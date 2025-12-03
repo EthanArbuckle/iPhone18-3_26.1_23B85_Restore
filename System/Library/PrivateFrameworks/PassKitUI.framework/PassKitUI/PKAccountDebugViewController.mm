@@ -1,33 +1,33 @@
 @interface PKAccountDebugViewController
-- (PKAccountDebugViewController)initWithConfiguration:(id)a3;
-- (void)_handleShareButton:(id)a3;
+- (PKAccountDebugViewController)initWithConfiguration:(id)configuration;
+- (void)_handleShareButton:(id)button;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKAccountDebugViewController
 
-- (PKAccountDebugViewController)initWithConfiguration:(id)a3
+- (PKAccountDebugViewController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = PKAccountDebugViewController;
   v6 = [(PKAccountDebugViewController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
-    v8 = [[_PKAccountDebugViewController alloc] initWithConfiguration:v5];
+    objc_storeStrong(&v6->_config, configuration);
+    v8 = [[_PKAccountDebugViewController alloc] initWithConfiguration:configurationCopy];
     viewController = v7->_viewController;
     v7->_viewController = v8;
 
     [(PKAccountDebugViewController *)v7 addChildViewController:v7->_viewController];
-    v10 = [(PKAccountDebugViewController *)v7 navigationItem];
-    [v10 setTitle:@"Account Diagnostics"];
-    [v10 setLargeTitleDisplayMode:2];
-    [v10 setBackButtonDisplayMode:2];
+    navigationItem = [(PKAccountDebugViewController *)v7 navigationItem];
+    [navigationItem setTitle:@"Account Diagnostics"];
+    [navigationItem setLargeTitleDisplayMode:2];
+    [navigationItem setBackButtonDisplayMode:2];
     v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:9 target:v7 action:sel__handleShareButton_];
-    [v10 setRightBarButtonItem:v11];
+    [navigationItem setRightBarButtonItem:v11];
   }
 
   return v7;
@@ -39,9 +39,9 @@
   v5.super_class = PKAccountDebugViewController;
   [(PKAccountDebugViewController *)&v5 loadView];
   [(_PKAccountDebugViewController *)self->_viewController didMoveToParentViewController:self];
-  v3 = [(_PKAccountDebugViewController *)self->_viewController view];
-  v4 = [(PKAccountDebugViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(_PKAccountDebugViewController *)self->_viewController view];
+  view2 = [(PKAccountDebugViewController *)self view];
+  [view2 addSubview:view];
 }
 
 - (void)viewWillLayoutSubviews
@@ -49,46 +49,46 @@
   v13.receiver = self;
   v13.super_class = PKAccountDebugViewController;
   [(PKAccountDebugViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(PKAccountDebugViewController *)self view];
-  [v3 bounds];
+  view = [(PKAccountDebugViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_PKAccountDebugViewController *)self->_viewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(_PKAccountDebugViewController *)self->_viewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)_handleShareButton:(id)a3
+- (void)_handleShareButton:(id)button
 {
-  v4 = [(PKAccountDebugViewController *)self navigationItem];
-  v5 = [v4 rightBarButtonItem];
-  [v5 setEnabled:0];
+  navigationItem = [(PKAccountDebugViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
   v6 = objc_alloc_init(MEMORY[0x1E69B8658]);
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [(PKAccountViewInterfaceConfiguration *)self->_config account];
-  v9 = [v8 accountIdentifier];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  account = [(PKAccountViewInterfaceConfiguration *)self->_config account];
+  accountIdentifier = [account accountIdentifier];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"account_transaction_report_%@.json", v9];
-  v12 = [v7 temporaryDirectory];
-  v13 = [v12 URLByAppendingPathComponent:v11];
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"account_transaction_report_%@.json", accountIdentifier];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v13 = [temporaryDirectory URLByAppendingPathComponent:v11];
 
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __51__PKAccountDebugViewController__handleShareButton___block_invoke;
   v27[3] = &unk_1E8015210;
   v27[4] = self;
-  v14 = v7;
+  v14 = defaultManager;
   v28 = v14;
   v15 = v13;
   v29 = v15;
   v16 = v10;
   v30 = v16;
   [v6 addOperation:v27];
-  v17 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __51__PKAccountDebugViewController__handleShareButton___block_invoke_2;
@@ -96,11 +96,11 @@
   v23 = v16;
   v24 = v14;
   v25 = v15;
-  v26 = self;
+  selfCopy = self;
   v18 = v15;
   v19 = v14;
   v20 = v16;
-  v21 = [v6 evaluateWithInput:v17 completion:v22];
+  v21 = [v6 evaluateWithInput:null completion:v22];
 }
 
 void __51__PKAccountDebugViewController__handleShareButton___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)

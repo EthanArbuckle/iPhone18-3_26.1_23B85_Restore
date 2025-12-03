@@ -1,58 +1,58 @@
 @interface NNMKProtoSendMessageRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCc:(id)a3;
-- (void)addTo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIncludeAttachments:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCc:(id)cc;
+- (void)addTo:(id)to;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIncludeAttachments:(BOOL)attachments;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoSendMessageRequest
 
-- (void)addTo:(id)a3
+- (void)addTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   tos = self->_tos;
-  v8 = v4;
+  v8 = toCopy;
   if (!tos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_tos;
     self->_tos = v6;
 
-    v4 = v8;
+    toCopy = v8;
     tos = self->_tos;
   }
 
-  [(NSMutableArray *)tos addObject:v4];
+  [(NSMutableArray *)tos addObject:toCopy];
 }
 
-- (void)addCc:(id)a3
+- (void)addCc:(id)cc
 {
-  v4 = a3;
+  ccCopy = cc;
   ccs = self->_ccs;
-  v8 = v4;
+  v8 = ccCopy;
   if (!ccs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_ccs;
     self->_ccs = v6;
 
-    v4 = v8;
+    ccCopy = v8;
     ccs = self->_ccs;
   }
 
-  [(NSMutableArray *)ccs addObject:v4];
+  [(NSMutableArray *)ccs addObject:ccCopy];
 }
 
-- (void)setHasIncludeAttachments:(BOOL)a3
+- (void)setHasIncludeAttachments:(BOOL)attachments
 {
-  if (a3)
+  if (attachments)
   {
     v3 = 2;
   }
@@ -71,20 +71,20 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoSendMessageRequest;
   v4 = [(NNMKProtoSendMessageRequest *)&v8 description];
-  v5 = [(NNMKProtoSendMessageRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoSendMessageRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   tos = self->_tos;
   if (tos)
   {
-    [v3 setObject:tos forKey:@"to"];
+    [dictionary setObject:tos forKey:@"to"];
   }
 
   ccs = self->_ccs;
@@ -144,10 +144,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -257,55 +257,55 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if ([(NNMKProtoSendMessageRequest *)self tosCount])
   {
-    [v13 clearTos];
-    v4 = [(NNMKProtoSendMessageRequest *)self tosCount];
-    if (v4)
+    [toCopy clearTos];
+    tosCount = [(NNMKProtoSendMessageRequest *)self tosCount];
+    if (tosCount)
     {
-      v5 = v4;
+      v5 = tosCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NNMKProtoSendMessageRequest *)self toAtIndex:i];
-        [v13 addTo:v7];
+        [toCopy addTo:v7];
       }
     }
   }
 
   if ([(NNMKProtoSendMessageRequest *)self ccsCount])
   {
-    [v13 clearCcs];
-    v8 = [(NNMKProtoSendMessageRequest *)self ccsCount];
-    if (v8)
+    [toCopy clearCcs];
+    ccsCount = [(NNMKProtoSendMessageRequest *)self ccsCount];
+    if (ccsCount)
     {
-      v9 = v8;
+      v9 = ccsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NNMKProtoSendMessageRequest *)self ccAtIndex:j];
-        [v13 addCc:v11];
+        [toCopy addCc:v11];
       }
     }
   }
 
   if (self->_subject)
   {
-    [v13 setSubject:?];
+    [toCopy setSubject:?];
   }
 
-  v12 = v13;
+  v12 = toCopy;
   if (self->_body)
   {
-    [v13 setBody:?];
-    v12 = v13;
+    [toCopy setBody:?];
+    v12 = toCopy;
   }
 
   if (self->_composedMessageId)
   {
-    [v13 setComposedMessageId:?];
-    v12 = v13;
+    [toCopy setComposedMessageId:?];
+    v12 = toCopy;
   }
 
   if (*&self->_has)
@@ -316,8 +316,8 @@
 
   if (self->_referenceMessageId)
   {
-    [v13 setReferenceMessageId:?];
-    v12 = v13;
+    [toCopy setReferenceMessageId:?];
+    v12 = toCopy;
   }
 
   if ((*&self->_has & 2) != 0)
@@ -328,21 +328,21 @@
 
   if (self->_accountId)
   {
-    [v13 setAccountId:?];
-    v12 = v13;
+    [toCopy setAccountId:?];
+    v12 = toCopy;
   }
 
   if (self->_from)
   {
-    [v13 setFrom:?];
-    v12 = v13;
+    [toCopy setFrom:?];
+    v12 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -363,7 +363,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v36 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v36 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addTo:v11];
 
         ++v10;
@@ -396,7 +396,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v32 + 1) + 8 * v16) copyWithZone:{a3, v32}];
+        v17 = [*(*(&v32 + 1) + 8 * v16) copyWithZone:{zone, v32}];
         [v5 addCc:v17];
 
         ++v16;
@@ -409,15 +409,15 @@
     while (v14);
   }
 
-  v18 = [(NSString *)self->_subject copyWithZone:a3];
+  v18 = [(NSString *)self->_subject copyWithZone:zone];
   v19 = *(v5 + 64);
   *(v5 + 64) = v18;
 
-  v20 = [(NSString *)self->_body copyWithZone:a3];
+  v20 = [(NSString *)self->_body copyWithZone:zone];
   v21 = *(v5 + 16);
   *(v5 + 16) = v20;
 
-  v22 = [(NSString *)self->_composedMessageId copyWithZone:a3];
+  v22 = [(NSString *)self->_composedMessageId copyWithZone:zone];
   v23 = *(v5 + 32);
   *(v5 + 32) = v22;
 
@@ -427,7 +427,7 @@
     *(v5 + 84) |= 1u;
   }
 
-  v24 = [(NSString *)self->_referenceMessageId copyWithZone:a3, v32];
+  v24 = [(NSString *)self->_referenceMessageId copyWithZone:zone, v32];
   v25 = *(v5 + 48);
   *(v5 + 48) = v24;
 
@@ -437,11 +437,11 @@
     *(v5 + 84) |= 2u;
   }
 
-  v26 = [(NSString *)self->_accountId copyWithZone:a3];
+  v26 = [(NSString *)self->_accountId copyWithZone:zone];
   v27 = *(v5 + 8);
   *(v5 + 8) = v26;
 
-  v28 = [(NSString *)self->_from copyWithZone:a3];
+  v28 = [(NSString *)self->_from copyWithZone:zone];
   v29 = *(v5 + 40);
   *(v5 + 40) = v28;
 
@@ -449,16 +449,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   tos = self->_tos;
-  if (tos | *(v4 + 9))
+  if (tos | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)tos isEqual:?])
     {
@@ -467,7 +467,7 @@
   }
 
   ccs = self->_ccs;
-  if (ccs | *(v4 + 3))
+  if (ccs | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)ccs isEqual:?])
     {
@@ -476,7 +476,7 @@
   }
 
   subject = self->_subject;
-  if (subject | *(v4 + 8))
+  if (subject | *(equalCopy + 8))
   {
     if (![(NSString *)subject isEqual:?])
     {
@@ -485,7 +485,7 @@
   }
 
   body = self->_body;
-  if (body | *(v4 + 2))
+  if (body | *(equalCopy + 2))
   {
     if (![(NSString *)body isEqual:?])
     {
@@ -494,7 +494,7 @@
   }
 
   composedMessageId = self->_composedMessageId;
-  if (composedMessageId | *(v4 + 4))
+  if (composedMessageId | *(equalCopy + 4))
   {
     if (![(NSString *)composedMessageId isEqual:?])
     {
@@ -503,22 +503,22 @@
   }
 
   has = self->_has;
-  v11 = *(v4 + 84);
+  v11 = *(equalCopy + 84);
   if (has)
   {
-    if ((*(v4 + 84) & 1) == 0 || self->_sendingType != *(v4 + 14))
+    if ((*(equalCopy + 84) & 1) == 0 || self->_sendingType != *(equalCopy + 14))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
     goto LABEL_27;
   }
 
   referenceMessageId = self->_referenceMessageId;
-  if (referenceMessageId | *(v4 + 6))
+  if (referenceMessageId | *(equalCopy + 6))
   {
     if (![(NSString *)referenceMessageId isEqual:?])
     {
@@ -528,10 +528,10 @@
     has = self->_has;
   }
 
-  v13 = *(v4 + 84);
+  v13 = *(equalCopy + 84);
   if ((has & 2) == 0)
   {
-    if ((*(v4 + 84) & 2) == 0)
+    if ((*(equalCopy + 84) & 2) == 0)
     {
       goto LABEL_22;
     }
@@ -541,34 +541,34 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ((*(v4 + 84) & 2) == 0)
+  if ((*(equalCopy + 84) & 2) == 0)
   {
     goto LABEL_27;
   }
 
-  v18 = *(v4 + 80);
+  v18 = *(equalCopy + 80);
   if (self->_includeAttachments)
   {
-    if ((*(v4 + 80) & 1) == 0)
+    if ((*(equalCopy + 80) & 1) == 0)
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
     goto LABEL_27;
   }
 
 LABEL_22:
   accountId = self->_accountId;
-  if (accountId | *(v4 + 1) && ![(NSString *)accountId isEqual:?])
+  if (accountId | *(equalCopy + 1) && ![(NSString *)accountId isEqual:?])
   {
     goto LABEL_27;
   }
 
   from = self->_from;
-  if (from | *(v4 + 5))
+  if (from | *(equalCopy + 5))
   {
     v16 = [(NSString *)from isEqual:?];
   }
@@ -616,15 +616,15 @@ LABEL_28:
   return v11 ^ v12 ^ [(NSString *)self->_from hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = *(v4 + 9);
+  v5 = *(fromCopy + 9);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -652,7 +652,7 @@ LABEL_28:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -676,44 +676,44 @@ LABEL_28:
     while (v12);
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(NNMKProtoSendMessageRequest *)self setSubject:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NNMKProtoSendMessageRequest *)self setBody:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NNMKProtoSendMessageRequest *)self setComposedMessageId:?];
   }
 
-  if (*(v4 + 84))
+  if (*(fromCopy + 84))
   {
-    self->_sendingType = *(v4 + 14);
+    self->_sendingType = *(fromCopy + 14);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(NNMKProtoSendMessageRequest *)self setReferenceMessageId:?];
   }
 
-  if ((*(v4 + 84) & 2) != 0)
+  if ((*(fromCopy + 84) & 2) != 0)
   {
-    self->_includeAttachments = *(v4 + 80);
+    self->_includeAttachments = *(fromCopy + 80);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NNMKProtoSendMessageRequest *)self setAccountId:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NNMKProtoSendMessageRequest *)self setFrom:?];
   }

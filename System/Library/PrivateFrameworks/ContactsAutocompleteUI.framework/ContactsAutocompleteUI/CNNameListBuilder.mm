@@ -1,20 +1,20 @@
 @interface CNNameListBuilder
-- (CNNameListBuilder)initWithDelegate:(id)a3;
+- (CNNameListBuilder)initWithDelegate:(id)delegate;
 - (id)build;
 @end
 
 @implementation CNNameListBuilder
 
-- (CNNameListBuilder)initWithDelegate:(id)a3
+- (CNNameListBuilder)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = CNNameListBuilder;
   v5 = [(CNNameListBuilder *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = v6;
   }
 

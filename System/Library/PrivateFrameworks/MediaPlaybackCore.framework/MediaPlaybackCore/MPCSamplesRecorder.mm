@@ -1,10 +1,10 @@
 @interface MPCSamplesRecorder
-- (MPCSamplesRecorder)initWithRecordID:(id)a3 modelID:(id)a4 firstFailureDetector:(id)a5 shouldStoreSamples:(BOOL)a6 delegate:(id)a7;
+- (MPCSamplesRecorder)initWithRecordID:(id)d modelID:(id)iD firstFailureDetector:(id)detector shouldStoreSamples:(BOOL)samples delegate:(id)delegate;
 - (MPCSamplesRecorderDelegate)delegate;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)flushSamplesToCSVDataWithHeader:(BOOL)a3;
-- (void)recordSample:(id)a3;
+- (id)flushSamplesToCSVDataWithHeader:(BOOL)header;
+- (void)recordSample:(id)sample;
 @end
 
 @implementation MPCSamplesRecorder
@@ -16,7 +16,7 @@
   return WeakRetained;
 }
 
-- (id)flushSamplesToCSVDataWithHeader:(BOOL)a3
+- (id)flushSamplesToCSVDataWithHeader:(BOOL)header
 {
   if ([(MPCSamplesRecorder *)self isStoringSamples])
   {
@@ -31,7 +31,7 @@
     block[1] = 3221225472;
     block[2] = __54__MPCSamplesRecorder_flushSamplesToCSVDataWithHeader___block_invoke;
     block[3] = &unk_1E82318C8;
-    v9 = a3;
+    headerCopy = header;
     block[4] = self;
     block[5] = &v10;
     dispatch_sync(accessQueue, block);
@@ -233,17 +233,17 @@ uint64_t __33__MPCSamplesRecorder_description__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v5, v7);
 }
 
-- (void)recordSample:(id)a3
+- (void)recordSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__MPCSamplesRecorder_recordSample___block_invoke;
   v7[3] = &unk_1E82392C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sampleCopy;
+  v6 = sampleCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -305,13 +305,13 @@ uint64_t __35__MPCSamplesRecorder_recordSample___block_invoke(uint64_t a1)
   return result;
 }
 
-- (MPCSamplesRecorder)initWithRecordID:(id)a3 modelID:(id)a4 firstFailureDetector:(id)a5 shouldStoreSamples:(BOOL)a6 delegate:(id)a7
+- (MPCSamplesRecorder)initWithRecordID:(id)d modelID:(id)iD firstFailureDetector:(id)detector shouldStoreSamples:(BOOL)samples delegate:(id)delegate
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  samplesCopy = samples;
+  dCopy = d;
+  iDCopy = iD;
+  detectorCopy = detector;
+  delegateCopy = delegate;
   v27.receiver = self;
   v27.super_class = MPCSamplesRecorder;
   v16 = [(MPCSamplesRecorder *)&v27 init];
@@ -319,11 +319,11 @@ uint64_t __35__MPCSamplesRecorder_recordSample___block_invoke(uint64_t a1)
   if (v16)
   {
     v16->_glitches = 0;
-    v18 = [v12 copy];
+    v18 = [dCopy copy];
     recordID = v17->_recordID;
     v17->_recordID = v18;
 
-    v20 = [v13 copy];
+    v20 = [iDCopy copy];
     modelID = v17->_modelID;
     v17->_modelID = v20;
 
@@ -331,16 +331,16 @@ uint64_t __35__MPCSamplesRecorder_recordSample___block_invoke(uint64_t a1)
     v17->_rms = 0.0;
     *&v17->_min = xmmword_1C60451F0;
     v17->_k = 0;
-    v17->_storingSamples = v8;
-    if (v8)
+    v17->_storingSamples = samplesCopy;
+    if (samplesCopy)
     {
       v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:500];
       samples = v17->_samples;
       v17->_samples = v22;
     }
 
-    objc_storeStrong(&v17->_firstFailureDetector, a5);
-    objc_storeWeak(&v17->_delegate, v15);
+    objc_storeStrong(&v17->_firstFailureDetector, detector);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
     v24 = dispatch_queue_create("com.apple.MediaPlaybackCore/Suntory.samplesRecorderQueue", 0);
     accessQueue = v17->_accessQueue;
     v17->_accessQueue = v24;

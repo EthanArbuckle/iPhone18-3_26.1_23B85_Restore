@@ -1,7 +1,7 @@
 @interface _UIAssertionBase
 - (NSString)description;
 - (_UIAssertionController)parentController;
-- (id)_initWithType:(unint64_t)a3 initialState:(BOOL)a4 reason:(id)a5 requiresExplicitInvalidation:(BOOL)a6;
+- (id)_initWithType:(unint64_t)type initialState:(BOOL)state reason:(id)reason requiresExplicitInvalidation:(BOOL)invalidation;
 - (void)_invalidate;
 - (void)dealloc;
 @end
@@ -30,22 +30,22 @@
   [(_UIAssertionBase *)&v5 dealloc];
 }
 
-- (id)_initWithType:(unint64_t)a3 initialState:(BOOL)a4 reason:(id)a5 requiresExplicitInvalidation:(BOOL)a6
+- (id)_initWithType:(unint64_t)type initialState:(BOOL)state reason:(id)reason requiresExplicitInvalidation:(BOOL)invalidation
 {
-  v10 = a5;
+  reasonCopy = reason;
   v16.receiver = self;
   v16.super_class = _UIAssertionBase;
   v11 = [(_UIAssertionBase *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    v13 = [v10 copy];
+    v11->_type = type;
+    v13 = [reasonCopy copy];
     reason = v12->_reason;
     v12->_reason = v13;
 
-    v12->_initialState = a4;
-    v12->_requiresExplicitInvalidation = a6;
+    v12->_initialState = state;
+    v12->_requiresExplicitInvalidation = invalidation;
   }
 
   return v12;
@@ -55,8 +55,8 @@
 {
   if (self->_invalidated)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"_UIAssertionController.m" lineNumber:56 description:{@"Tried to invalidate an assertion that is already invalid. %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIAssertionController.m" lineNumber:56 description:{@"Tried to invalidate an assertion that is already invalid. %@", self}];
   }
 
   self->_invalidated = 1;

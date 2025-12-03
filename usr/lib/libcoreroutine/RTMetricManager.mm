@@ -1,48 +1,48 @@
 @interface RTMetricManager
-+ (double)doubleWithSignificantDigits:(double)a3 digits:(int)a4;
-+ (id)metricForType:(unint64_t)a3;
++ (double)doubleWithSignificantDigits:(double)digits digits:(int)a4;
++ (id)metricForType:(unint64_t)type;
 + (id)productionMetrics;
-+ (int)roundTimeInterval:(double)a3 byIntervalUnit:(unint64_t)a4;
-- (BOOL)_routineConfiguredForMetric:(id)a3;
-- (BOOL)setupWithConfiguredClasses:(id)a3 platform:(id)a4 error:(id *)a5;
-- (RTMetricManager)initWithAWDServerConnection:(id)a3 configuredClasses:(id)a4 managedConfigurationManager:(id)a5 platform:(id)a6 xpcActivityManager:(id)a7;
-- (RTMetricManager)initWithPlatform:(id)a3 xpcActivityManager:(id)a4;
-- (void)_fetchDiagnosticsEnabled:(id)a3;
-- (void)_registerQueriableMetric:(unint64_t)a3 withHandler:(id)a4;
-- (void)_releaseMetricPlaceholderForMetric:(id)a3 withHandler:(id)a4;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_submitMetric:(id)a3 withHandler:(id)a4;
-- (void)fetchDiagnosticsEnabled:(id)a3;
-- (void)registerForXPCActivities:(id)a3;
-- (void)registerQueriableMetric:(unint64_t)a3 withHandler:(id)a4;
-- (void)submitMetric:(id)a3 withHandler:(id)a4;
++ (int)roundTimeInterval:(double)interval byIntervalUnit:(unint64_t)unit;
+- (BOOL)_routineConfiguredForMetric:(id)metric;
+- (BOOL)setupWithConfiguredClasses:(id)classes platform:(id)platform error:(id *)error;
+- (RTMetricManager)initWithAWDServerConnection:(id)connection configuredClasses:(id)classes managedConfigurationManager:(id)manager platform:(id)platform xpcActivityManager:(id)activityManager;
+- (RTMetricManager)initWithPlatform:(id)platform xpcActivityManager:(id)manager;
+- (void)_fetchDiagnosticsEnabled:(id)enabled;
+- (void)_registerQueriableMetric:(unint64_t)metric withHandler:(id)handler;
+- (void)_releaseMetricPlaceholderForMetric:(id)metric withHandler:(id)handler;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_submitMetric:(id)metric withHandler:(id)handler;
+- (void)fetchDiagnosticsEnabled:(id)enabled;
+- (void)registerForXPCActivities:(id)activities;
+- (void)registerQueriableMetric:(unint64_t)metric withHandler:(id)handler;
+- (void)submitMetric:(id)metric withHandler:(id)handler;
 @end
 
 @implementation RTMetricManager
 
-- (RTMetricManager)initWithPlatform:(id)a3 xpcActivityManager:(id)a4
+- (RTMetricManager)initWithPlatform:(id)platform xpcActivityManager:(id)manager
 {
   v6 = MEMORY[0x277D7BC58];
-  v7 = a4;
-  v8 = a3;
+  managerCopy = manager;
+  platformCopy = platform;
   v9 = [[v6 alloc] initWithComponentId:44 andBlockOnConfiguration:1];
   v10 = +[RTMetricManager productionMetrics];
   v11 = objc_opt_new();
-  v12 = [(RTMetricManager *)self initWithAWDServerConnection:v9 configuredClasses:v10 managedConfigurationManager:v11 platform:v8 xpcActivityManager:v7];
+  v12 = [(RTMetricManager *)self initWithAWDServerConnection:v9 configuredClasses:v10 managedConfigurationManager:v11 platform:platformCopy xpcActivityManager:managerCopy];
 
   return v12;
 }
 
-- (RTMetricManager)initWithAWDServerConnection:(id)a3 configuredClasses:(id)a4 managedConfigurationManager:(id)a5 platform:(id)a6 xpcActivityManager:(id)a7
+- (RTMetricManager)initWithAWDServerConnection:(id)connection configuredClasses:(id)classes managedConfigurationManager:(id)manager platform:(id)platform xpcActivityManager:(id)activityManager
 {
   v38 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = v17;
-  if (!v14)
+  connectionCopy = connection;
+  classesCopy = classes;
+  managerCopy = manager;
+  platformCopy = platform;
+  activityManagerCopy = activityManager;
+  v18 = activityManagerCopy;
+  if (!classesCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -57,7 +57,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (!v15)
+  if (!managerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (!v16)
+  if (!platformCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -83,7 +83,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (!v17)
+  if (!activityManagerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -95,7 +95,7 @@ LABEL_24:
 
 LABEL_25:
 
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_26;
   }
 
@@ -104,7 +104,7 @@ LABEL_25:
   v19 = [(RTNotifier *)&v33 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [classesCopy copy];
     configuredMetricClasses = v19->_configuredMetricClasses;
     v19->_configuredMetricClasses = v20;
 
@@ -113,23 +113,23 @@ LABEL_25:
       log = _rt_log_facility_get_os_log(RTLogFacilityMetric);
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
       {
-        v30 = [v14 count];
+        v30 = [classesCopy count];
         *buf = 134218242;
         v35 = v30;
         v36 = 2112;
-        v37 = v14;
+        v37 = classesCopy;
         _os_log_debug_impl(&dword_2304B3000, log, OS_LOG_TYPE_DEBUG, "Configured metric manager with %lu classes, %@", buf, 0x16u);
       }
     }
 
-    objc_storeStrong(&v19->_managedConfigurationManager, a5);
-    objc_storeStrong(&v19->_awdServerConnection, a3);
-    objc_storeStrong(&v19->_platform, a6);
-    objc_storeStrong(&v19->_xpcActivityManager, a7);
-    v22 = [(RTMetricManager *)v19 configuredMetricClasses];
+    objc_storeStrong(&v19->_managedConfigurationManager, manager);
+    objc_storeStrong(&v19->_awdServerConnection, connection);
+    objc_storeStrong(&v19->_platform, platform);
+    objc_storeStrong(&v19->_xpcActivityManager, activityManager);
+    configuredMetricClasses = [(RTMetricManager *)v19 configuredMetricClasses];
     platform = v19->_platform;
     v32 = 0;
-    [(RTMetricManager *)v19 setupWithConfiguredClasses:v22 platform:platform error:&v32];
+    [(RTMetricManager *)v19 setupWithConfiguredClasses:configuredMetricClasses platform:platform error:&v32];
     v24 = v32;
 
     if (v24)
@@ -143,14 +143,14 @@ LABEL_25:
       }
     }
 
-    [(RTMetricManager *)v19 registerForXPCActivities:v19->_xpcActivityManager, v13];
+    [(RTMetricManager *)v19 registerForXPCActivities:v19->_xpcActivityManager, connectionCopy];
   }
 
   self = v19;
-  v26 = self;
+  selfCopy = self;
 LABEL_26:
 
-  return v26;
+  return selfCopy;
 }
 
 + (id)productionMetrics
@@ -181,20 +181,20 @@ LABEL_26:
   return v2;
 }
 
-- (void)fetchDiagnosticsEnabled:(id)a3
+- (void)fetchDiagnosticsEnabled:(id)enabled
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  enabledCopy = enabled;
+  if (enabledCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __43__RTMetricManager_fetchDiagnosticsEnabled___block_invoke;
     v7[3] = &unk_2788C4938;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = enabledCopy;
+    dispatch_async(queue, v7);
   }
 
   else
@@ -211,54 +211,54 @@ LABEL_26:
   }
 }
 
-- (void)_fetchDiagnosticsEnabled:(id)a3
+- (void)_fetchDiagnosticsEnabled:(id)enabled
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  enabledCopy = enabled;
+  if (enabledCopy)
   {
-    v5 = [(RTMetricManager *)self managedConfigurationManager];
-    v4[2](v4, [v5 effectiveBoolValueForSetting:@"RTFeatureDiagnosticsSubmissionAllowed"]);
+    managedConfigurationManager = [(RTMetricManager *)self managedConfigurationManager];
+    enabledCopy[2](enabledCopy, [managedConfigurationManager effectiveBoolValueForSetting:@"RTFeatureDiagnosticsSubmissionAllowed"]);
   }
 
   else
   {
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    managedConfigurationManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(managedConfigurationManager, OS_LOG_TYPE_ERROR))
     {
       v6 = 136315394;
       v7 = "[RTMetricManager _fetchDiagnosticsEnabled:]";
       v8 = 1024;
       v9 = 136;
-      _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", &v6, 0x12u);
+      _os_log_error_impl(&dword_2304B3000, managedConfigurationManager, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", &v6, 0x12u);
     }
   }
 }
 
-- (BOOL)setupWithConfiguredClasses:(id)a3 platform:(id)a4 error:(id *)a5
+- (BOOL)setupWithConfiguredClasses:(id)classes platform:(id)platform error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  classesCopy = classes;
+  platformCopy = platform;
   v9 = objc_opt_new();
-  v10 = [v8 internalInstall];
+  internalInstall = [platformCopy internalInstall];
 
-  if (v10)
+  if (internalInstall)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __61__RTMetricManager_setupWithConfiguredClasses_platform_error___block_invoke;
     v15[3] = &unk_2788C4BA8;
     v16 = v9;
-    [v7 enumerateObjectsUsingBlock:v15];
+    [classesCopy enumerateObjectsUsingBlock:v15];
   }
 
   v11 = _RTSafeArray();
   v12 = _RTMultiErrorCreate();
 
-  if (a5)
+  if (error)
   {
     v13 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v12 == 0;
@@ -283,10 +283,10 @@ void __61__RTMetricManager_setupWithConfiguredClasses_platform_error___block_inv
   }
 }
 
-- (void)registerForXPCActivities:(id)a3
+- (void)registerForXPCActivities:(id)activities
 {
-  v5 = a3;
-  if (v5)
+  activitiesCopy = activities;
+  if (activitiesCopy)
   {
     v6 = [[RTXPCActivityCriteria alloc] initWithInterval:1 gracePeriod:1 priority:1 requireNetworkConnectivity:0 requireInexpensiveNetworkConnectivity:0 networkTransferDirection:1 allowBattery:86400.0 powerNap:60.0];
     [(RTXPCActivityCriteria *)v6 setCpuIntensive:1];
@@ -297,7 +297,7 @@ void __61__RTMetricManager_setupWithConfiguredClasses_platform_error___block_inv
     v7[3] = &unk_2788C6A18;
     v8[1] = a2;
     objc_copyWeak(v8, location);
-    [v5 registerActivityWithIdentifier:@"com.apple.routined.metrics.daily" criteria:v6 handler:v7];
+    [activitiesCopy registerActivityWithIdentifier:@"com.apple.routined.metrics.daily" criteria:v6 handler:v7];
     objc_destroyWeak(v8);
     objc_destroyWeak(location);
   }
@@ -393,12 +393,12 @@ uint64_t __44__RTMetricManager_registerForXPCActivities___block_invoke_87(uint64
   return result;
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTMetricManager *)self awdServerConnection];
+  handlerCopy = handler;
+  awdServerConnection = [(RTMetricManager *)self awdServerConnection];
 
-  if (v5)
+  if (awdServerConnection)
   {
     v6 = dispatch_semaphore_create(0);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -411,7 +411,7 @@ uint64_t __44__RTMetricManager_registerForXPCActivities___block_invoke_87(uint64
       }
     }
 
-    v8 = [(RTMetricManager *)self awdServerConnection];
+    awdServerConnection2 = [(RTMetricManager *)self awdServerConnection];
     v9 = dispatch_get_global_queue(2, 0);
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -419,7 +419,7 @@ uint64_t __44__RTMetricManager_registerForXPCActivities___block_invoke_87(uint64
     v15[3] = &unk_2788C4EA0;
     v10 = v6;
     v16 = v10;
-    [v8 flushToQueue:v9 block:v15];
+    [awdServerConnection2 flushToQueue:v9 block:v15];
 
     v11 = v10;
     v12 = [MEMORY[0x277CBEAA8] now];
@@ -431,32 +431,32 @@ uint64_t __44__RTMetricManager_registerForXPCActivities___block_invoke_87(uint64
     }
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)registerQueriableMetric:(unint64_t)a3 withHandler:(id)a4
+- (void)registerQueriableMetric:(unint64_t)metric withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__RTMetricManager_registerQueriableMetric_withHandler___block_invoke;
   block[3] = &unk_2788C6300;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  metricCopy = metric;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_registerQueriableMetric:(unint64_t)a3 withHandler:(id)a4
+- (void)_registerQueriableMetric:(unint64_t)metric withHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (!v6)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -469,25 +469,25 @@ uint64_t __44__RTMetricManager_registerForXPCActivities___block_invoke_87(uint64
     }
   }
 
-  v8 = [RTMetricManager metricForType:a3];
-  v9 = [v8 metricId];
-  v10 = [(RTMetricManager *)self awdServerConnection];
-  v11 = v10 == 0;
+  v8 = [RTMetricManager metricForType:metric];
+  metricId = [v8 metricId];
+  awdServerConnection = [(RTMetricManager *)self awdServerConnection];
+  v11 = awdServerConnection == 0;
 
   if (!v11)
   {
     objc_initWeak(&location, self);
-    v12 = [(RTMetricManager *)self awdServerConnection];
+    awdServerConnection2 = [(RTMetricManager *)self awdServerConnection];
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __56__RTMetricManager__registerQueriableMetric_withHandler___block_invoke;
     v27 = &unk_2788C7510;
     objc_copyWeak(v29, &location);
-    v30 = v9;
-    v13 = v6;
+    v30 = metricId;
+    v13 = handlerCopy;
     v28 = v13;
-    v29[1] = a3;
-    v14 = [v12 registerQueriableMetric:v9 callback:&v24];
+    v29[1] = metric;
+    v14 = [awdServerConnection2 registerQueriableMetric:metricId callback:&v24];
 
     if (v14)
     {
@@ -504,20 +504,20 @@ LABEL_17:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        LODWORD(v37) = v9;
+        LODWORD(v37) = metricId;
         _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "Queriable Metric (%u) is registered.", buf, 8u);
       }
     }
 
     else
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"AWD registerQueriableMetric failure (%d)", v9, v24, v25, v26, v27];
+      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"AWD registerQueriableMetric failure (%d)", metricId, v24, v25, v26, v27];
       v20 = MEMORY[0x277CCA9B8];
       v32 = *MEMORY[0x277CCA450];
       v33 = v15;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
       v22 = [v20 errorWithDomain:@"RTMetricManagerErrorDomain" code:9 userInfo:v21];
-      (*(v13 + 2))(v13, a3, v22, 0);
+      (*(v13 + 2))(v13, metric, v22, 0);
 
       v23 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -536,7 +536,7 @@ LABEL_17:
   v35 = @"Failed metric submission because routined didn't have a connection to awdd.";
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
   v18 = [v16 errorWithDomain:@"RTMetricManagerErrorDomain" code:3 userInfo:v17];
-  (*(v6 + 2))(v6, a3, v18, 0);
+  (*(handlerCopy + 2))(handlerCopy, metric, v18, 0);
 
   v19 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -710,22 +710,22 @@ void __56__RTMetricManager__registerQueriableMetric_withHandler___block_invoke_2
   }
 }
 
-- (void)_releaseMetricPlaceholderForMetric:(id)a3 withHandler:(id)a4
+- (void)_releaseMetricPlaceholderForMetric:(id)metric withHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTMetricManager *)self awdServerConnection];
+  metricCopy = metric;
+  handlerCopy = handler;
+  awdServerConnection = [(RTMetricManager *)self awdServerConnection];
 
-  if (v8)
+  if (awdServerConnection)
   {
-    v9 = [v6 metricId];
-    v10 = [(RTMetricManager *)self awdServerConnection];
-    v11 = [v10 newMetricContainerWithIdentifier:v9];
+    metricId = [metricCopy metricId];
+    awdServerConnection2 = [(RTMetricManager *)self awdServerConnection];
+    v11 = [awdServerConnection2 newMetricContainerWithIdentifier:metricId];
 
     if (!v11)
     {
-      v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed metric submission because AWD was not configured to accept the metric id %u.", v9];
+      v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed metric submission because AWD was not configured to accept the metric id %u.", metricId];
       v19 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -734,23 +734,23 @@ void __56__RTMetricManager__registerQueriableMetric_withHandler___block_invoke_2
         _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
-      if (v7)
+      if (handlerCopy)
       {
         v20 = MEMORY[0x277CCA9B8];
         v29 = *MEMORY[0x277CCA450];
         v30 = v18;
         v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
         v22 = [v20 errorWithDomain:@"RTMetricManagerErrorDomain" code:4 userInfo:v21];
-        v7[2](v7, v22);
+        handlerCopy[2](handlerCopy, v22);
       }
 
       v11 = 0;
       goto LABEL_22;
     }
 
-    [v11 setMetric:v6];
-    v12 = [(RTMetricManager *)self awdServerConnection];
-    v13 = [v12 submitMetric:v11];
+    [v11 setMetric:metricCopy];
+    awdServerConnection3 = [(RTMetricManager *)self awdServerConnection];
+    v13 = [awdServerConnection3 submitMetric:v11];
 
     if (v13)
     {
@@ -758,19 +758,19 @@ void __56__RTMetricManager__registerQueriableMetric_withHandler___block_invoke_2
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        LODWORD(v34) = v9;
+        LODWORD(v34) = metricId;
         _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "AWD placeholder is released %u, success!", buf, 8u);
       }
 
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
 
       goto LABEL_22;
     }
 
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"AWD placeholder may be not released %u, failed!", v9];
+    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"AWD placeholder may be not released %u, failed!", metricId];
     v23 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -779,14 +779,14 @@ void __56__RTMetricManager__registerQueriableMetric_withHandler___block_invoke_2
       _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
       v24 = MEMORY[0x277CCA9B8];
       v27 = *MEMORY[0x277CCA450];
       v28 = v17;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
       v26 = [v24 errorWithDomain:@"RTMetricManagerErrorDomain" code:6 userInfo:v25];
-      v7[2](v7, v26);
+      handlerCopy[2](handlerCopy, v26);
     }
 
 LABEL_21:
@@ -803,45 +803,45 @@ LABEL_22:
     _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v16 = MEMORY[0x277CCA9B8];
     v31 = *MEMORY[0x277CCA450];
     v32 = @"Failed metric submission because routined didn't have a connection to awdd.";
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v17 = [v16 errorWithDomain:@"RTMetricManagerErrorDomain" code:3 userInfo:v11];
-    v7[2](v7, v17);
+    handlerCopy[2](handlerCopy, v17);
     goto LABEL_21;
   }
 
 LABEL_23:
 }
 
-- (void)submitMetric:(id)a3 withHandler:(id)a4
+- (void)submitMetric:(id)metric withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  metricCopy = metric;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__RTMetricManager_submitMetric_withHandler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = metricCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = metricCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_submitMetric:(id)a3 withHandler:(id)a4
+- (void)_submitMetric:(id)metric withHandler:(id)handler
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTMetricManager *)self awdServerConnection];
+  metricCopy = metric;
+  handlerCopy = handler;
+  awdServerConnection = [(RTMetricManager *)self awdServerConnection];
 
-  if (!v8)
+  if (!awdServerConnection)
   {
     v14 = @"Failed metric submission because routined didn't have a connection to awdd.";
     v30 = 3;
@@ -852,9 +852,9 @@ LABEL_18:
     v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:&v46 count:1];
     v12 = [v31 errorWithDomain:@"RTMetricManagerErrorDomain" code:v30 userInfo:v32];
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, v12);
+      handlerCopy[2](handlerCopy, v12);
     }
 
     v33 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
@@ -868,22 +868,22 @@ LABEL_18:
     goto LABEL_23;
   }
 
-  if (!v6)
+  if (!metricCopy)
   {
     v14 = @"Failed metric submission because the metric was nil.";
     v30 = 1;
     goto LABEL_18;
   }
 
-  if (![(RTMetricManager *)self _routineConfiguredForMetric:v6])
+  if (![(RTMetricManager *)self _routineConfiguredForMetric:metricCopy])
   {
     v14 = @"Failed metric submission because the metric was not an AWD metric.";
     v30 = 2;
     goto LABEL_18;
   }
 
-  v9 = [(RTMetricManager *)self managedConfigurationManager];
-  v10 = [v9 effectiveBoolValueForSetting:@"RTFeatureDiagnosticsSubmissionAllowed"];
+  managedConfigurationManager = [(RTMetricManager *)self managedConfigurationManager];
+  v10 = [managedConfigurationManager effectiveBoolValueForSetting:@"RTFeatureDiagnosticsSubmissionAllowed"];
 
   if ((v10 & 1) == 0)
   {
@@ -893,20 +893,20 @@ LABEL_18:
   }
 
   v39 = 0;
-  v11 = [v6 valid:&v39];
+  v11 = [metricCopy valid:&v39];
   v12 = v39;
   if (v11)
   {
-    v13 = [(RTMetricManager *)self awdServerConnection];
-    v14 = [v13 newMetricContainerWithIdentifier:{objc_msgSend(v6, "metricId")}];
+    awdServerConnection2 = [(RTMetricManager *)self awdServerConnection];
+    v14 = [awdServerConnection2 newMetricContainerWithIdentifier:{objc_msgSend(metricCopy, "metricId")}];
 
     if (v14)
     {
-      [(__CFString *)v14 setMetric:v6];
-      v15 = [(RTMetricManager *)self awdServerConnection];
-      v16 = [v15 submitMetric:v14];
+      [(__CFString *)v14 setMetric:metricCopy];
+      awdServerConnection3 = [(RTMetricManager *)self awdServerConnection];
+      v16 = [awdServerConnection3 submitMetric:v14];
 
-      if (v7)
+      if (handlerCopy)
       {
         if ((v16 & 1) == 0)
         {
@@ -923,7 +923,7 @@ LABEL_18:
           v12 = v23;
         }
 
-        v7[2](v7, v12);
+        handlerCopy[2](handlerCopy, v12);
       }
 
       v24 = v12;
@@ -960,9 +960,9 @@ LABEL_18:
       v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
       v24 = [v37 errorWithDomain:@"RTMetricManagerErrorDomain" code:4 userInfo:v38];
 
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7, v24);
+        handlerCopy[2](handlerCopy, v24);
       }
 
       v27 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
@@ -985,9 +985,9 @@ LABEL_32:
     goto LABEL_23;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v12);
+    handlerCopy[2](handlerCopy, v12);
   }
 
   v14 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
@@ -1001,10 +1001,10 @@ LABEL_32:
 LABEL_23:
 }
 
-- (BOOL)_routineConfiguredForMetric:(id)a3
+- (BOOL)_routineConfiguredForMetric:(id)metric
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metricCopy = metric;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1056,48 +1056,48 @@ LABEL_13:
   return v10;
 }
 
-+ (id)metricForType:(unint64_t)a3
++ (id)metricForType:(unint64_t)type
 {
-  if (a3 > 0x13)
+  if (type > 0x13)
   {
-    v5 = 0;
+    _init = 0;
   }
 
   else
   {
-    v5 = [objc_alloc(**(&unk_2788C7530 + a3)) _init];
+    _init = [objc_alloc(**(&unk_2788C7530 + type)) _init];
   }
 
-  return v5;
+  return _init;
 }
 
-+ (int)roundTimeInterval:(double)a3 byIntervalUnit:(unint64_t)a4
++ (int)roundTimeInterval:(double)interval byIntervalUnit:(unint64_t)unit
 {
-  if (a4)
+  if (unit)
   {
-    return (a3 / a4) * a4;
+    return (interval / unit) * unit;
   }
 
   else
   {
-    return (a3 * 1000.0);
+    return (interval * 1000.0);
   }
 }
 
-+ (double)doubleWithSignificantDigits:(double)a3 digits:(int)a4
++ (double)doubleWithSignificantDigits:(double)digits digits:(int)a4
 {
   result = 0.0;
-  if (a3 != 0.0 && a4 >= 1)
+  if (digits != 0.0 && a4 >= 1)
   {
-    v8 = -a3;
-    if (a3 >= 0.0)
+    digitsCopy = -digits;
+    if (digits >= 0.0)
     {
-      v8 = a3;
+      digitsCopy = digits;
     }
 
-    v9 = log10(v8);
+    v9 = log10(digitsCopy);
     v10 = __exp10((a4 - vcvtpd_s64_f64(v9)));
-    return round(v10 * a3) / v10;
+    return round(v10 * digits) / v10;
   }
 
   return result;

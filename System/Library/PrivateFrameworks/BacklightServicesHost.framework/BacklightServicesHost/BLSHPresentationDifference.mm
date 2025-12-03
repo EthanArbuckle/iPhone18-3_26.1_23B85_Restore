@@ -1,23 +1,23 @@
 @interface BLSHPresentationDifference
-- (BLSHPresentationDifference)initWithHasChanges:(BOOL)a3 insertedEnvironments:(id)a4 removedEnvironments:(id)a5;
+- (BLSHPresentationDifference)initWithHasChanges:(BOOL)changes insertedEnvironments:(id)environments removedEnvironments:(id)removedEnvironments;
 - (id)description;
 @end
 
 @implementation BLSHPresentationDifference
 
-- (BLSHPresentationDifference)initWithHasChanges:(BOOL)a3 insertedEnvironments:(id)a4 removedEnvironments:(id)a5
+- (BLSHPresentationDifference)initWithHasChanges:(BOOL)changes insertedEnvironments:(id)environments removedEnvironments:(id)removedEnvironments
 {
-  v9 = a4;
-  v10 = a5;
+  environmentsCopy = environments;
+  removedEnvironmentsCopy = removedEnvironments;
   v14.receiver = self;
   v14.super_class = BLSHPresentationDifference;
   v11 = [(BLSHPresentationDifference *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_hasChanges = a3;
-    objc_storeStrong(&v11->_insertions, a4);
-    objc_storeStrong(&v12->_removals, a5);
+    v11->_hasChanges = changes;
+    objc_storeStrong(&v11->_insertions, environments);
+    objc_storeStrong(&v12->_removals, removedEnvironments);
   }
 
   return v12;
@@ -33,9 +33,9 @@
   v6 = [(NSArray *)self->_removals bs_map:&__block_literal_global_154];
   [v3 appendArraySection:v6 withName:@"removes" skipIfEmpty:1];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 id __41__BLSHPresentationDifference_description__block_invoke(uint64_t a1, void *a2)

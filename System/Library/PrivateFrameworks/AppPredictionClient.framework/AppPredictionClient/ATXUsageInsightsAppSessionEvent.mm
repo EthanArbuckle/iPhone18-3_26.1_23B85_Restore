@@ -1,99 +1,99 @@
 @interface ATXUsageInsightsAppSessionEvent
-+ (id)usageInsightsAppLaunchReasonFromBMAppInFocus:(id)a3;
-- (ATXUsageInsightsAppSessionEvent)initWithBundleID:(id)a3 category:(unint64_t)a4 launchReason:(id)a5 startTime:(id)a6 endTime:(id)a7 duration:(double)a8;
-- (ATXUsageInsightsAppSessionEvent)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)usageInsightsAppLaunchReasonFromBMAppInFocus:(id)focus;
+- (ATXUsageInsightsAppSessionEvent)initWithBundleID:(id)d category:(unint64_t)category launchReason:(id)reason startTime:(id)time endTime:(id)endTime duration:(double)duration;
+- (ATXUsageInsightsAppSessionEvent)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXUsageInsightsAppSessionEvent
 
-- (ATXUsageInsightsAppSessionEvent)initWithBundleID:(id)a3 category:(unint64_t)a4 launchReason:(id)a5 startTime:(id)a6 endTime:(id)a7 duration:(double)a8
+- (ATXUsageInsightsAppSessionEvent)initWithBundleID:(id)d category:(unint64_t)category launchReason:(id)reason startTime:(id)time endTime:(id)endTime duration:(double)duration
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dCopy = d;
+  reasonCopy = reason;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v24.receiver = self;
   v24.super_class = ATXUsageInsightsAppSessionEvent;
   v18 = [(ATXUsageInsightsAppSessionEvent *)&v24 init];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [dCopy copy];
     bundleID = v18->_bundleID;
     v18->_bundleID = v19;
 
-    v18->_category = a4;
-    v21 = [v15 copy];
+    v18->_category = category;
+    v21 = [reasonCopy copy];
     launchReason = v18->_launchReason;
     v18->_launchReason = v21;
 
-    objc_storeStrong(&v18->_startTime, a6);
-    objc_storeStrong(&v18->_endTime, a7);
-    v18->_duration = a8;
+    objc_storeStrong(&v18->_startTime, time);
+    objc_storeStrong(&v18->_endTime, endTime);
+    v18->_duration = duration;
   }
 
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(ATXUsageInsightsAppSessionEvent *)self bundleID];
-  [v8 encodeObject:v4 forKey:@"bundleID"];
+  coderCopy = coder;
+  bundleID = [(ATXUsageInsightsAppSessionEvent *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
 
-  [v8 encodeInteger:-[ATXUsageInsightsAppSessionEvent category](self forKey:{"category"), @"category"}];
-  v5 = [(ATXUsageInsightsAppSessionEvent *)self launchReason];
-  [v8 encodeObject:v5 forKey:@"launchReason"];
+  [coderCopy encodeInteger:-[ATXUsageInsightsAppSessionEvent category](self forKey:{"category"), @"category"}];
+  launchReason = [(ATXUsageInsightsAppSessionEvent *)self launchReason];
+  [coderCopy encodeObject:launchReason forKey:@"launchReason"];
 
-  v6 = [(ATXUsageInsightsAppSessionEvent *)self startTime];
-  [v8 encodeObject:v6 forKey:@"startTime"];
+  startTime = [(ATXUsageInsightsAppSessionEvent *)self startTime];
+  [coderCopy encodeObject:startTime forKey:@"startTime"];
 
-  v7 = [(ATXUsageInsightsAppSessionEvent *)self endTime];
-  [v8 encodeObject:v7 forKey:@"endTime"];
+  endTime = [(ATXUsageInsightsAppSessionEvent *)self endTime];
+  [coderCopy encodeObject:endTime forKey:@"endTime"];
 
   [(ATXUsageInsightsAppSessionEvent *)self duration];
-  [v8 encodeDouble:@"duration" forKey:?];
+  [coderCopy encodeDouble:@"duration" forKey:?];
 }
 
-- (ATXUsageInsightsAppSessionEvent)initWithCoder:(id)a3
+- (ATXUsageInsightsAppSessionEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
-  v6 = [v4 decodeIntegerForKey:@"category"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"launchReason"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endTime"];
-  [v4 decodeDoubleForKey:@"duration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+  v6 = [coderCopy decodeIntegerForKey:@"category"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"launchReason"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endTime"];
+  [coderCopy decodeDoubleForKey:@"duration"];
   v11 = v10;
 
   v12 = [(ATXUsageInsightsAppSessionEvent *)self initWithBundleID:v5 category:v6 launchReason:v7 startTime:v8 endTime:v9 duration:v11];
   return v12;
 }
 
-+ (id)usageInsightsAppLaunchReasonFromBMAppInFocus:(id)a3
++ (id)usageInsightsAppLaunchReasonFromBMAppInFocus:(id)focus
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  focusCopy = focus;
+  v4 = focusCopy;
+  if (focusCopy)
   {
-    if ([v3 hasPrefix:@"com.apple.SpringBoard.transitionReason"])
+    if ([focusCopy hasPrefix:@"com.apple.SpringBoard.transitionReason"])
     {
       v5 = [v4 componentsSeparatedByString:@"."];
-      v6 = [v5 lastObject];
+      lastObject = [v5 lastObject];
     }
 
     else
     {
-      v6 = v4;
+      lastObject = v4;
     }
   }
 
   else
   {
-    v6 = @"Unknown";
+    lastObject = @"Unknown";
   }
 
-  return v6;
+  return lastObject;
 }
 
 @end

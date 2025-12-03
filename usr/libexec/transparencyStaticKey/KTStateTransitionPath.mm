@@ -1,23 +1,23 @@
 @interface KTStateTransitionPath
-+ (id)pathFromDictionary:(id)a3;
-- (KTStateTransitionPath)initWithState:(id)a3 pathStep:(id)a4;
++ (id)pathFromDictionary:(id)dictionary;
+- (KTStateTransitionPath)initWithState:(id)state pathStep:(id)step;
 - (id)asPathStep;
 @end
 
 @implementation KTStateTransitionPath
 
-- (KTStateTransitionPath)initWithState:(id)a3 pathStep:(id)a4
+- (KTStateTransitionPath)initWithState:(id)state pathStep:(id)step
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  stepCopy = step;
   v12.receiver = self;
   v12.super_class = KTStateTransitionPath;
   v9 = [(KTStateTransitionPath *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_initialState, a3);
-    objc_storeStrong(&v10->_pathStep, a4);
+    objc_storeStrong(&v9->_initialState, state);
+    objc_storeStrong(&v10->_pathStep, step);
   }
 
   return v10;
@@ -26,25 +26,25 @@
 - (id)asPathStep
 {
   v3 = [KTStateTransitionPathStep alloc];
-  v4 = [(KTStateTransitionPath *)self initialState];
-  v9 = v4;
-  v5 = [(KTStateTransitionPath *)self pathStep];
-  v10 = v5;
+  initialState = [(KTStateTransitionPath *)self initialState];
+  v9 = initialState;
+  pathStep = [(KTStateTransitionPath *)self pathStep];
+  v10 = pathStep;
   v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v7 = [(KTStateTransitionPathStep *)v3 initWithPath:v6];
 
   return v7;
 }
 
-+ (id)pathFromDictionary:(id)a3
++ (id)pathFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v5)
   {
     v11 = 0;
@@ -59,11 +59,11 @@
     {
       if (*v16 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(allKeys);
       }
 
       v9 = *(*(&v15 + 1) + 8 * i);
-      v10 = [v3 objectForKeyedSubscript:v9];
+      v10 = [dictionaryCopy objectForKeyedSubscript:v9];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -84,7 +84,7 @@ LABEL_14:
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     v11 = 0;
     if (v6)
     {

@@ -1,15 +1,15 @@
 @interface SearchUIAppClipImage
-- (SearchUIAppClipImage)initWithSFImage:(id)a3;
-- (id)loadImageWithImageData:(id)a3 scale:(double)a4 isDarkStyle:(BOOL)a5;
+- (SearchUIAppClipImage)initWithSFImage:(id)image;
+- (id)loadImageWithImageData:(id)data scale:(double)scale isDarkStyle:(BOOL)style;
 @end
 
 @implementation SearchUIAppClipImage
 
-- (SearchUIAppClipImage)initWithSFImage:(id)a3
+- (SearchUIAppClipImage)initWithSFImage:(id)image
 {
   v9.receiver = self;
   v9.super_class = SearchUIAppClipImage;
-  v3 = [(SearchUIImage *)&v9 initWithSFImage:a3];
+  v3 = [(SearchUIImage *)&v9 initWithSFImage:image];
   v4 = v3;
   if (v3)
   {
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (id)loadImageWithImageData:(id)a3 scale:(double)a4 isDarkStyle:(BOOL)a5
+- (id)loadImageWithImageData:(id)data scale:(double)scale isDarkStyle:(BOOL)style
 {
   v9.receiver = self;
   v9.super_class = SearchUIAppClipImage;
-  v6 = [(SearchUIImage *)&v9 loadImageWithImageData:a3 scale:a5 isDarkStyle:?];
+  v6 = [(SearchUIImage *)&v9 loadImageWithImageData:data scale:style isDarkStyle:?];
   [(SearchUIImage *)self size];
   v7 = [SearchUIWebClipIconImage convertImage:"convertImage:ofSize:withShape:scale:" ofSize:v6 withShape:5 scale:?];
 

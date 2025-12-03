@@ -9,9 +9,9 @@
 - (id)ls_fixupExtensionPointIdentifierKey
 {
   v27 = *MEMORY[0x1E69E9840];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
-  v3 = [v1 objectForKey:@"EXAppExtensionAttributes"];
+  v3 = [selfCopy objectForKey:@"EXAppExtensionAttributes"];
   v4 = v3;
   if (v2)
   {
@@ -37,7 +37,7 @@
     if (objc_opt_isKindOfClass())
     {
 LABEL_16:
-      v9 = [v1 mutableCopy];
+      v9 = [selfCopy mutableCopy];
       v10 = [v9 objectForKey:@"NSExtension"];
       v11 = [v10 mutableCopy];
 
@@ -47,7 +47,7 @@ LABEL_16:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v13 = objc_opt_class();
-          v14 = [v1 objectForKey:*MEMORY[0x1E695E4F0]];
+          v14 = [selfCopy objectForKey:*MEMORY[0x1E695E4F0]];
           v15 = v14;
           if (v13 && v14 && (objc_opt_isKindOfClass() & 1) == 0)
           {
@@ -69,7 +69,7 @@ LABEL_16:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           v17 = objc_opt_class();
-          v18 = [v1 objectForKey:*MEMORY[0x1E695E4F0]];
+          v18 = [selfCopy objectForKey:*MEMORY[0x1E695E4F0]];
           v19 = v18;
           if (v17 && v18 && (objc_opt_isKindOfClass() & 1) == 0)
           {
@@ -91,7 +91,7 @@ LABEL_16:
       [v9 setObject:v11 forKey:@"NSExtension"];
       v20 = [v9 copy];
 
-      v1 = v20;
+      selfCopy = v20;
       goto LABEL_32;
     }
 
@@ -122,14 +122,14 @@ LABEL_32:
 LABEL_33:
   v21 = *MEMORY[0x1E69E9840];
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)ls_insertExtensionPointVersion:()LSNormalizePluginDictionary
 {
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = [a1 objectForKey:@"NSExtension"];
+  v6 = [self objectForKey:@"NSExtension"];
   v7 = v6;
   if (v5)
   {
@@ -167,7 +167,7 @@ LABEL_33:
     }
 
 LABEL_16:
-    v15 = a1;
+    selfCopy = self;
     goto LABEL_22;
   }
 
@@ -177,7 +177,7 @@ LABEL_16:
   }
 
 LABEL_17:
-  v15 = [a1 mutableCopy];
+  selfCopy = [self mutableCopy];
   v14 = [v7 mutableCopy];
   if (!v14)
   {
@@ -192,16 +192,16 @@ LABEL_17:
 
   [v16 setObject:v4 forKey:@"NSExtensionVersion"];
   [v14 setObject:v16 forKey:@"NSExtensionAttributes"];
-  [v15 setObject:v14 forKey:@"NSExtension"];
+  [selfCopy setObject:v14 forKey:@"NSExtension"];
 
 LABEL_22:
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)_ls_normalizedPluginPlist
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   v2 = [v1 objectForKey:@"NSExtension"];
 
   if (v2)
@@ -234,9 +234,9 @@ LABEL_22:
 
   if (v8)
   {
-    v9 = [v1 ls_fixupExtensionPointIdentifierKey];
+    ls_fixupExtensionPointIdentifierKey = [v1 ls_fixupExtensionPointIdentifierKey];
 
-    v1 = v9;
+    v1 = ls_fixupExtensionPointIdentifierKey;
   }
 
   return v1;

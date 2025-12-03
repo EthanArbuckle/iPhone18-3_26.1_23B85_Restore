@@ -1,49 +1,49 @@
 @interface HMDSSource
 + (id)logCategory;
 - (HMDSSource)init;
-- (HMDSSource)initWithContext:(id)a3;
-- (void)_performBlock:(id)a3;
-- (void)fetchSharedResourcesWithCompletion:(id)a3;
-- (void)stopAllSharingWithCompletion:(id)a3;
-- (void)stopSharing:(id)a3 withCompletion:(id)a4;
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4;
+- (HMDSSource)initWithContext:(id)context;
+- (void)_performBlock:(id)block;
+- (void)fetchSharedResourcesWithCompletion:(id)completion;
+- (void)stopAllSharingWithCompletion:(id)completion;
+- (void)stopSharing:(id)sharing withCompletion:(id)completion;
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion;
 @end
 
 @implementation HMDSSource
 
-- (void)_performBlock:(id)a3
+- (void)_performBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDSSource *)self context];
-  v6 = [v5 didUpdateHomesFuture];
+  blockCopy = block;
+  context = [(HMDSSource *)self context];
+  didUpdateHomesFuture = [context didUpdateHomesFuture];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_3C7C;
   v9[3] = &unk_C600;
-  v10 = v4;
-  v7 = v4;
-  v8 = [v6 addCompletionBlock:v9];
+  v10 = blockCopy;
+  v7 = blockCopy;
+  v8 = [didUpdateHomesFuture addCompletionBlock:v9];
 }
 
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  participantCopy = participant;
+  completionCopy = completion;
+  if (!participantCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = completionCopy;
+  if (!completionCopy)
   {
     goto LABEL_7;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -51,7 +51,7 @@ LABEL_7:
     *buf = 138543618;
     v20 = v12;
     v21 = 2112;
-    v22 = v6;
+    v22 = participantCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "%{public}@Stopping sharing with participant: %@", buf, 0x16u);
   }
 
@@ -60,33 +60,33 @@ LABEL_7:
   v15[1] = 3221225472;
   v15[2] = sub_3E30;
   v15[3] = &unk_C5D8;
-  v16 = v6;
-  v17 = v10;
+  v16 = participantCopy;
+  v17 = selfCopy;
   v18 = v8;
   v13 = v8;
-  v14 = v6;
-  [(HMDSSource *)v10 _performBlock:v15];
+  v14 = participantCopy;
+  [(HMDSSource *)selfCopy _performBlock:v15];
 }
 
-- (void)stopSharing:(id)a3 withCompletion:(id)a4
+- (void)stopSharing:(id)sharing withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  sharingCopy = sharing;
+  completionCopy = completion;
+  if (!sharingCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = completionCopy;
+  if (!completionCopy)
   {
     goto LABEL_7;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -94,7 +94,7 @@ LABEL_7:
     *buf = 138543618;
     v20 = v12;
     v21 = 2112;
-    v22 = v6;
+    v22 = sharingCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "%{public}@Stopping sharing resource: %@", buf, 0x16u);
   }
 
@@ -103,25 +103,25 @@ LABEL_7:
   v15[1] = 3221225472;
   v15[2] = sub_4204;
   v15[3] = &unk_C5D8;
-  v16 = v6;
-  v17 = v10;
+  v16 = sharingCopy;
+  v17 = selfCopy;
   v18 = v8;
   v13 = v8;
-  v14 = v6;
-  [(HMDSSource *)v10 _performBlock:v15];
+  v14 = sharingCopy;
+  [(HMDSSource *)selfCopy _performBlock:v15];
 }
 
-- (void)stopAllSharingWithCompletion:(id)a3
+- (void)stopAllSharingWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = completionCopy;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -136,23 +136,23 @@ LABEL_7:
   v11[1] = 3221225472;
   v11[2] = sub_4598;
   v11[3] = &unk_C4E8;
-  v11[4] = v7;
+  v11[4] = selfCopy;
   v12 = v5;
   v10 = v5;
-  [(HMDSSource *)v7 _performBlock:v11];
+  [(HMDSSource *)selfCopy _performBlock:v11];
 }
 
-- (void)fetchSharedResourcesWithCompletion:(id)a3
+- (void)fetchSharedResourcesWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = completionCopy;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -163,16 +163,16 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDSSource *)v7 context];
-  v11 = [v10 refreshData];
+  context = [(HMDSSource *)selfCopy context];
+  refreshData = [context refreshData];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_4ABC;
   v14[3] = &unk_C510;
-  v14[4] = v7;
+  v14[4] = selfCopy;
   v15 = v5;
   v12 = v5;
-  v13 = [v11 addCompletionBlock:v14];
+  v13 = [refreshData addCompletionBlock:v14];
 }
 
 - (HMDSSource)init
@@ -188,16 +188,16 @@ LABEL_7:
   return v6;
 }
 
-- (HMDSSource)initWithContext:(id)a3
+- (HMDSSource)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = HMDSSource;
   v6 = [(HMDSSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;

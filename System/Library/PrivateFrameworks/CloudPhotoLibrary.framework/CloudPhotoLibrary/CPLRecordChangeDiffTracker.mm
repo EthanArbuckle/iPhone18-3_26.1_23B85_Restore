@@ -1,10 +1,10 @@
 @interface CPLRecordChangeDiffTracker
-- (BOOL)areObjectsDifferentOnProperty:(id)a3 changeType:(unint64_t)a4;
-- (CPLRecordChangeDiffTracker)initWithTrackingChangeTypeMask:(unint64_t)a3;
+- (BOOL)areObjectsDifferentOnProperty:(id)property changeType:(unint64_t)type;
+- (CPLRecordChangeDiffTracker)initWithTrackingChangeTypeMask:(unint64_t)mask;
 - (NSArray)updatedProperties;
 - (id)description;
 - (id)redactedDescription;
-- (void)withTrackerForChangeType:(unint64_t)a3 block:(id)a4;
+- (void)withTrackerForChangeType:(unint64_t)type block:(id)block;
 @end
 
 @implementation CPLRecordChangeDiffTracker
@@ -47,17 +47,17 @@
   return v4;
 }
 
-- (BOOL)areObjectsDifferentOnProperty:(id)a3 changeType:(unint64_t)a4
+- (BOOL)areObjectsDifferentOnProperty:(id)property changeType:(unint64_t)type
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  propertyCopy = property;
   trackingChangeType = self->_trackingChangeType;
   if (!trackingChangeType)
   {
     goto LABEL_7;
   }
 
-  if ((a4 & 0xFFFFFFFFFFFFFBFFLL) == 0)
+  if ((type & 0xFFFFFFFFFFFFFBFFLL) == 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -65,20 +65,20 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v21 = a4;
+        typeCopy2 = type;
         _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_ERROR, "Invalid change type %ld", buf, 0xCu);
       }
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
-    [v15 handleFailureInMethod:a2 object:self file:v16 lineNumber:1569 description:{@"Invalid change type %ld", a4, v19}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v16 lineNumber:1569 description:{@"Invalid change type %ld", type, v19}];
 LABEL_19:
 
     abort();
   }
 
-  v9 = trackingChangeType & a4;
+  v9 = trackingChangeType & type;
   if (!v9)
   {
 LABEL_7:
@@ -86,7 +86,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v9 != a4)
+  if (v9 != type)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -95,16 +95,16 @@ LABEL_7:
       {
         v18 = self->_trackingChangeType;
         *buf = 134218240;
-        v21 = a4;
+        typeCopy2 = type;
         v22 = 2048;
         v23 = v18;
         _os_log_impl(&dword_1DC05A000, v17, OS_LOG_TYPE_ERROR, "Invalid change type %ld - tracked %ld", buf, 0x16u);
       }
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
-    [v15 handleFailureInMethod:a2 object:self file:v16 lineNumber:1575 description:{@"Invalid change type %ld - tracked %ld", a4, self->_trackingChangeType}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v16 lineNumber:1575 description:{@"Invalid change type %ld - tracked %ld", type, self->_trackingChangeType}];
     goto LABEL_19;
   }
 
@@ -114,7 +114,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v11 = [(CPLDiffTracker *)diffTracker areObjectsDifferentOnProperty:v7];
+  v11 = [(CPLDiffTracker *)diffTracker areObjectsDifferentOnProperty:propertyCopy];
 LABEL_8:
 
   v12 = *MEMORY[0x1E69E9840];
@@ -123,12 +123,12 @@ LABEL_8:
 
 - (NSArray)updatedProperties
 {
-  v2 = [(CPLDiffTracker *)self->_diffTracker differingProperties];
-  v3 = [v2 allObjects];
-  v4 = v3;
-  if (v3)
+  differingProperties = [(CPLDiffTracker *)self->_diffTracker differingProperties];
+  allObjects = [differingProperties allObjects];
+  v4 = allObjects;
+  if (allObjects)
   {
-    v5 = v3;
+    v5 = allObjects;
   }
 
   else
@@ -141,9 +141,9 @@ LABEL_8:
   return v5;
 }
 
-- (void)withTrackerForChangeType:(unint64_t)a3 block:(id)a4
+- (void)withTrackerForChangeType:(unint64_t)type block:(id)block
 {
-  v9 = a4;
+  blockCopy = block;
   diffTracker = self->_diffTracker;
   if (!diffTracker)
   {
@@ -154,18 +154,18 @@ LABEL_8:
     diffTracker = self->_diffTracker;
   }
 
-  [(CPLDiffTracker *)diffTracker setShouldCompareAllProperties:(self->_trackingChangeType & a3) != 0];
-  v9[2](v9, self->_diffTracker);
+  [(CPLDiffTracker *)diffTracker setShouldCompareAllProperties:(self->_trackingChangeType & type) != 0];
+  blockCopy[2](blockCopy, self->_diffTracker);
 }
 
-- (CPLRecordChangeDiffTracker)initWithTrackingChangeTypeMask:(unint64_t)a3
+- (CPLRecordChangeDiffTracker)initWithTrackingChangeTypeMask:(unint64_t)mask
 {
   v5.receiver = self;
   v5.super_class = CPLRecordChangeDiffTracker;
   result = [(CPLRecordChangeDiffTracker *)&v5 init];
   if (result)
   {
-    result->_trackingChangeType = a3;
+    result->_trackingChangeType = mask;
   }
 
   return result;

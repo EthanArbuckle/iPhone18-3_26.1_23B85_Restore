@@ -1,7 +1,7 @@
 @interface PHDeclineWithReminderController
-+ (void)configureButton:(id)a3 forIncomingCall:(id)a4 presenter:(id)a5;
++ (void)configureButton:(id)button forIncomingCall:(id)call presenter:(id)presenter;
 - (CLLocationManager)locationManager;
-- (PHDeclineWithReminderController)initWithCall:(id)a3 presenter:(id)a4;
+- (PHDeclineWithReminderController)initWithCall:(id)call presenter:(id)presenter;
 - (UIViewController)presenter;
 - (id)destinationID;
 - (id)displayName;
@@ -10,52 +10,52 @@
 - (id)reminderAction;
 - (id)reminderActivity;
 - (id)reminderText;
-- (void)createReminderForLocation:(id)a3;
+- (void)createReminderForLocation:(id)location;
 - (void)createReminderForWhenILeave;
-- (void)createReminderWithDurationInMinutes:(int)a3;
+- (void)createReminderWithDurationInMinutes:(int)minutes;
 - (void)declineCall;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)performLocationReminderAction:(id)a3 ifAuthorizedForStatus:(int)a4;
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)performLocationReminderAction:(id)action ifAuthorizedForStatus:(int)status;
+- (void)presentAlertWithTitle:(id)title message:(id)message;
 @end
 
 @implementation PHDeclineWithReminderController
 
-+ (void)configureButton:(id)a3 forIncomingCall:(id)a4 presenter:(id)a5
++ (void)configureButton:(id)button forIncomingCall:(id)call presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v7 setContextMenuInteractionEnabled:1];
-  [v7 setShowsMenuAsPrimaryAction:1];
-  objc_initWeak(&location, v9);
+  buttonCopy = button;
+  callCopy = call;
+  presenterCopy = presenter;
+  [buttonCopy setContextMenuInteractionEnabled:1];
+  [buttonCopy setShowsMenuAsPrimaryAction:1];
+  objc_initWeak(&location, presenterCopy);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000AEFE8;
   v11[3] = &unk_100358978;
-  v10 = v8;
+  v10 = callCopy;
   v12 = v10;
   objc_copyWeak(&v13, &location);
-  [v7 _setMenuProvider:v11];
+  [buttonCopy _setMenuProvider:v11];
   objc_destroyWeak(&v13);
 
   objc_destroyWeak(&location);
 }
 
-- (PHDeclineWithReminderController)initWithCall:(id)a3 presenter:(id)a4
+- (PHDeclineWithReminderController)initWithCall:(id)call presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  callCopy = call;
+  presenterCopy = presenter;
   v9 = [(PHDeclineWithReminderController *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_call, a3);
-    v11 = [[PHMeCardGeocoder alloc] initWithCall:v7];
+    objc_storeStrong(&v9->_call, call);
+    v11 = [[PHMeCardGeocoder alloc] initWithCall:callCopy];
     meCardGeocoder = v10->_meCardGeocoder;
     v10->_meCardGeocoder = v11;
 
-    objc_storeWeak(&v10->_presenter, v8);
+    objc_storeWeak(&v10->_presenter, presenterCopy);
   }
 
   return v10;
@@ -64,14 +64,14 @@
 - (void)declineCall
 {
   v4 = +[TUCallCenter sharedInstance];
-  v3 = [(PHDeclineWithReminderController *)self call];
-  [v4 disconnectCall:v3 withReason:4];
+  call = [(PHDeclineWithReminderController *)self call];
+  [v4 disconnectCall:call withReason:4];
 }
 
 - (id)numberForReminder
 {
-  v2 = [(PHDeclineWithReminderController *)self destinationID];
-  if ([v2 destinationIdIsPhoneNumber])
+  destinationID = [(PHDeclineWithReminderController *)self destinationID];
+  if ([destinationID destinationIdIsPhoneNumber])
   {
     v3 = CPPhoneNumberCopyCountryCodeForIncomingTextMessage();
     if (!v3)
@@ -85,7 +85,7 @@
 
   else
   {
-    v5 = v2;
+    v5 = destinationID;
   }
 
   return v5;
@@ -93,19 +93,19 @@
 
 - (id)displayName
 {
-  v2 = [(PHDeclineWithReminderController *)self call];
-  v3 = [v2 displayName];
+  call = [(PHDeclineWithReminderController *)self call];
+  displayName = [call displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (id)destinationID
 {
-  v2 = [(PHDeclineWithReminderController *)self call];
-  v3 = [v2 handle];
-  v4 = [v3 value];
+  call = [(PHDeclineWithReminderController *)self call];
+  handle = [call handle];
+  value = [handle value];
 
-  return v4;
+  return value;
 }
 
 - (id)menuActions
@@ -144,22 +144,22 @@
       v15 = v3;
       [v3 addObject:v14];
 
-      v16 = [(PHDeclineWithReminderController *)self meCardGeocoder];
-      v35 = v16;
-      if (v16)
+      meCardGeocoder = [(PHDeclineWithReminderController *)self meCardGeocoder];
+      v35 = meCardGeocoder;
+      if (meCardGeocoder)
       {
-        v17 = v16;
-        v18 = [v16 currentValidLocations];
+        v17 = meCardGeocoder;
+        currentValidLocations = [meCardGeocoder currentValidLocations];
         [v17 setActivelyUsing:1];
       }
 
       else
       {
-        v18 = 0;
+        currentValidLocations = 0;
       }
 
-      v38 = self;
-      v19 = [v18 count];
+      selfCopy = self;
+      v19 = [currentValidLocations count];
       if (v19 >= 2)
       {
         v20 = 2;
@@ -171,13 +171,13 @@
       }
 
       v39 = v15;
-      if (v18 && v19)
+      if (currentValidLocations && v19)
       {
         v21 = 0;
         do
         {
           v22 = v20;
-          v23 = [v18 objectAtIndex:v21];
+          v23 = [currentValidLocations objectAtIndex:v21];
           v24 = [v23 valueForKey:@"Name"];
 
           LODWORD(v23) = [v24 isEqualToString:CNLabelHome];
@@ -199,8 +199,8 @@
           v41[1] = 3221225472;
           v41[2] = sub_1000AF8F0;
           v41[3] = &unk_1003589C8;
-          v41[4] = v38;
-          v42 = v18;
+          v41[4] = selfCopy;
+          v42 = currentValidLocations;
           v43 = v21;
           v44 = v5;
           v29 = [UIAction actionWithTitle:v28 image:v13 identifier:0 handler:v41];
@@ -215,7 +215,7 @@
 
       v6 = v13;
       v3 = v39;
-      self = v38;
+      self = selfCopy;
       v7 = v37;
     }
   }
@@ -235,23 +235,23 @@
   return v33;
 }
 
-- (void)performLocationReminderAction:(id)a3 ifAuthorizedForStatus:(int)a4
+- (void)performLocationReminderAction:(id)action ifAuthorizedForStatus:(int)status
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  actionCopy = action;
+  v7 = actionCopy;
+  if (status)
   {
-    if ((a4 - 3) <= 1)
+    if ((status - 3) <= 1)
     {
-      (*(v6 + 2))(v6);
+      (*(actionCopy + 2))(actionCopy);
     }
   }
 
   else
   {
-    v8 = [(PHDeclineWithReminderController *)self locationAuthorizationStatusCallback];
+    locationAuthorizationStatusCallback = [(PHDeclineWithReminderController *)self locationAuthorizationStatusCallback];
 
-    if (!v8)
+    if (!locationAuthorizationStatusCallback)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
@@ -261,8 +261,8 @@
       [(PHDeclineWithReminderController *)self setLocationAuthorizationStatusCallback:v10];
     }
 
-    v9 = [(PHDeclineWithReminderController *)self locationManager];
-    [v9 startUpdatingLocationWithPrompt];
+    locationManager = [(PHDeclineWithReminderController *)self locationManager];
+    [locationManager startUpdatingLocationWithPrompt];
   }
 }
 
@@ -284,16 +284,16 @@
   return locationManager;
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  v4 = *&a4;
-  v8 = a3;
-  v6 = [(PHDeclineWithReminderController *)self locationAuthorizationStatusCallback];
+  v4 = *&status;
+  managerCopy = manager;
+  locationAuthorizationStatusCallback = [(PHDeclineWithReminderController *)self locationAuthorizationStatusCallback];
 
-  if (v6)
+  if (locationAuthorizationStatusCallback)
   {
-    v7 = [(PHDeclineWithReminderController *)self locationAuthorizationStatusCallback];
-    (v7)[2](v7, v8, v4);
+    locationAuthorizationStatusCallback2 = [(PHDeclineWithReminderController *)self locationAuthorizationStatusCallback];
+    (locationAuthorizationStatusCallback2)[2](locationAuthorizationStatusCallback2, managerCopy, v4);
 
     if (v4)
     {
@@ -302,23 +302,23 @@
   }
 }
 
-- (void)createReminderWithDurationInMinutes:(int)a3
+- (void)createReminderWithDurationInMinutes:(int)minutes
 {
   v5 = objc_alloc_init(EKEventStore);
   v6 = [EKReminder reminderWithEventStore:v5];
-  v7 = [(PHDeclineWithReminderController *)self reminderText];
-  [v6 setTitle:v7];
+  reminderText = [(PHDeclineWithReminderController *)self reminderText];
+  [v6 setTitle:reminderText];
 
-  v8 = [v5 defaultCalendarForNewReminders];
-  [v6 setCalendar:v8];
+  defaultCalendarForNewReminders = [v5 defaultCalendarForNewReminders];
+  [v6 setCalendar:defaultCalendarForNewReminders];
 
-  v9 = [v6 calendar];
+  calendar = [v6 calendar];
 
-  if (!v9)
+  if (!calendar)
   {
 LABEL_12:
-    v31 = +[NSBundle mainBundle];
-    v33 = [v31 localizedStringForKey:@"ERROR" value:&stru_100361FD0 table:@"InCallService"];
+    displayName = +[NSBundle mainBundle];
+    v33 = [displayName localizedStringForKey:@"ERROR" value:&stru_100361FD0 table:@"InCallService"];
     v34 = +[NSBundle mainBundle];
     v35 = [v34 localizedStringForKey:@"REMINDER_FAILED_TRY_LATER" value:&stru_100361FD0 table:@"InCallService"];
     [(PHDeclineWithReminderController *)self presentAlertWithTitle:v33 message:v35];
@@ -326,34 +326,34 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v10 = [(PHDeclineWithReminderController *)self call];
-  v11 = [v10 provider];
-  v12 = [v11 isSystemProvider];
+  call = [(PHDeclineWithReminderController *)self call];
+  provider = [call provider];
+  isSystemProvider = [provider isSystemProvider];
 
-  if (v12)
+  if (isSystemProvider)
   {
-    v13 = [v6 calendar];
-    v14 = [v13 source];
-    v15 = [v14 constraints];
-    v16 = [v15 supportsReminderActions];
+    calendar2 = [v6 calendar];
+    source = [calendar2 source];
+    constraints = [source constraints];
+    supportsReminderActions = [constraints supportsReminderActions];
 
-    if (!v16)
+    if (!supportsReminderActions)
     {
       goto LABEL_7;
     }
 
-    v17 = [(PHDeclineWithReminderController *)self reminderAction];
-    [v6 setAction:v17];
+    reminderAction = [(PHDeclineWithReminderController *)self reminderAction];
+    [v6 setAction:reminderAction];
   }
 
   else
   {
-    v17 = [(PHDeclineWithReminderController *)self reminderActivity];
-    [v6 setAppLink:v17];
+    reminderAction = [(PHDeclineWithReminderController *)self reminderActivity];
+    [v6 setAppLink:reminderAction];
   }
 
 LABEL_7:
-  v18 = [NSDate dateWithTimeIntervalSinceNow:(60 * a3)];
+  v18 = [NSDate dateWithTimeIntervalSinceNow:(60 * minutes)];
   v19 = [EKAlarm alarmWithAbsoluteDate:v18];
   v20 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   v21 = +[NSTimeZone localTimeZone];
@@ -381,22 +381,22 @@ LABEL_7:
   }
 
   v27 = [NSUUID alloc];
-  v28 = [v6 uniqueID];
-  v29 = [v27 initWithUUIDString:v28];
-  v30 = [(PHDeclineWithReminderController *)self call];
-  [v30 setReminderUUID:v29];
+  uniqueID = [v6 uniqueID];
+  v29 = [v27 initWithUUIDString:uniqueID];
+  call2 = [(PHDeclineWithReminderController *)self call];
+  [call2 setReminderUUID:v29];
 
-  v31 = [(PHDeclineWithReminderController *)self displayName];
+  displayName = [(PHDeclineWithReminderController *)self displayName];
   TUNotifyOfRemindMeLater();
 LABEL_13:
 }
 
-- (void)createReminderForLocation:(id)a3
+- (void)createReminderForLocation:(id)location
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"Address"];
-  v6 = [v4 objectForKey:@"CLLocation"];
-  v7 = [v4 objectForKey:@"Radius"];
+  locationCopy = location;
+  v5 = [locationCopy objectForKey:@"Address"];
+  v6 = [locationCopy objectForKey:@"CLLocation"];
+  v7 = [locationCopy objectForKey:@"Radius"];
   [v7 doubleValue];
   v9 = v8;
 
@@ -407,25 +407,25 @@ LABEL_13:
   [v10 setRadius:v9];
   v11 = objc_alloc_init(EKEventStore);
   v12 = [EKReminder reminderWithEventStore:v11];
-  v13 = [(PHDeclineWithReminderController *)self reminderText];
-  [v12 setTitle:v13];
+  reminderText = [(PHDeclineWithReminderController *)self reminderText];
+  [v12 setTitle:reminderText];
 
-  v14 = [v11 defaultCalendarForNewReminders];
-  [v12 setCalendar:v14];
+  defaultCalendarForNewReminders = [v11 defaultCalendarForNewReminders];
+  [v12 setCalendar:defaultCalendarForNewReminders];
 
-  v15 = [v12 calendar];
+  calendar = [v12 calendar];
 
-  if (!v15)
+  if (!calendar)
   {
     goto LABEL_22;
   }
 
-  v16 = [v12 calendar];
-  v17 = [v16 source];
-  v18 = [v17 constraints];
-  v19 = [v18 supportsReminderLocations];
+  calendar2 = [v12 calendar];
+  source = [calendar2 source];
+  constraints = [source constraints];
+  supportsReminderLocations = [constraints supportsReminderLocations];
 
-  if (!v19)
+  if (!supportsReminderLocations)
   {
     v28 = sub_100004F84();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -442,8 +442,8 @@ LABEL_13:
       v31 = v30;
       v32 = v31;
 LABEL_23:
-      v47 = +[NSBundle mainBundle];
-      v50 = [v47 localizedStringForKey:@"ERROR" value:&stru_100361FD0 table:@"InCallService"];
+      displayName = +[NSBundle mainBundle];
+      v50 = [displayName localizedStringForKey:@"ERROR" value:&stru_100361FD0 table:@"InCallService"];
       [(PHDeclineWithReminderController *)self presentAlertWithTitle:v50 message:v31];
 
       goto LABEL_24;
@@ -457,30 +457,30 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v20 = [(PHDeclineWithReminderController *)self call];
-  v21 = [v20 provider];
-  v22 = [v21 isSystemProvider];
+  call = [(PHDeclineWithReminderController *)self call];
+  provider = [call provider];
+  isSystemProvider = [provider isSystemProvider];
 
-  if (v22)
+  if (isSystemProvider)
   {
-    v23 = [v12 calendar];
-    v24 = [v23 source];
-    v25 = [v24 constraints];
-    v26 = [v25 supportsReminderActions];
+    calendar3 = [v12 calendar];
+    source2 = [calendar3 source];
+    constraints2 = [source2 constraints];
+    supportsReminderActions = [constraints2 supportsReminderActions];
 
-    if (!v26)
+    if (!supportsReminderActions)
     {
       goto LABEL_12;
     }
 
-    v27 = [(PHDeclineWithReminderController *)self reminderAction];
-    [v12 setAction:v27];
+    reminderAction = [(PHDeclineWithReminderController *)self reminderAction];
+    [v12 setAction:reminderAction];
   }
 
   else
   {
-    v27 = [(PHDeclineWithReminderController *)self reminderActivity];
-    [v12 setAppLink:v27];
+    reminderAction = [(PHDeclineWithReminderController *)self reminderActivity];
+    [v12 setAppLink:reminderAction];
   }
 
 LABEL_12:
@@ -514,7 +514,7 @@ LABEL_12:
     goto LABEL_22;
   }
 
-  v32 = [v4 valueForKey:@"Name"];
+  v32 = [locationCopy valueForKey:@"Name"];
   v39 = [v32 isEqualToString:CNLabelHome];
   v40 = +[NSBundle mainBundle];
   v41 = v40;
@@ -531,12 +531,12 @@ LABEL_12:
   v31 = [v40 localizedStringForKey:v42 value:&stru_100361FD0 table:@"InCallService"];
 
   v43 = [NSUUID alloc];
-  v44 = [v12 uniqueID];
-  v45 = [v43 initWithUUIDString:v44];
-  v46 = [(PHDeclineWithReminderController *)self call];
-  [v46 setReminderUUID:v45];
+  uniqueID = [v12 uniqueID];
+  v45 = [v43 initWithUUIDString:uniqueID];
+  call2 = [(PHDeclineWithReminderController *)self call];
+  [call2 setReminderUUID:v45];
 
-  v47 = [(PHDeclineWithReminderController *)self displayName];
+  displayName = [(PHDeclineWithReminderController *)self displayName];
   TUNotifyOfRemindMeLater();
 LABEL_24:
 }
@@ -562,27 +562,27 @@ LABEL_24:
   v11[5] = v5;
   [PHLocationFinder findLocationWithBundle:v6 completion:v11];
 
-  v7 = [(PHDeclineWithReminderController *)self displayName];
-  v8 = [(PHDeclineWithReminderController *)self reminderText];
+  displayName = [(PHDeclineWithReminderController *)self displayName];
+  reminderText = [(PHDeclineWithReminderController *)self reminderText];
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"WHEN_I_LEAVE" value:&stru_100361FD0 table:@"InCallService"];
   TUNotifyOfRemindMeLaterWhenILeave();
 }
 
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4
+- (void)presentAlertWithTitle:(id)title message:(id)message
 {
-  v5 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  v5 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"OK" value:&stru_100361FD0 table:@"InCallService"];
   v8 = [UIAlertAction actionWithTitle:v7 style:0 handler:&stru_100358AC8];
 
   [v5 addAction:v8];
-  v9 = [(PHDeclineWithReminderController *)self presenter];
+  presenter = [(PHDeclineWithReminderController *)self presenter];
 
-  if (v9)
+  if (presenter)
   {
-    v10 = [(PHDeclineWithReminderController *)self presenter];
-    [v10 presentViewController:v5 animated:1 completion:0];
+    presenter2 = [(PHDeclineWithReminderController *)self presenter];
+    [presenter2 presentViewController:v5 animated:1 completion:0];
   }
 
   else
@@ -594,44 +594,44 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "PHDeclineWithReminderController: presenter for alert deallocated so falling back to UIWindow._applicationKeyWindow.rootViewController", v13, 2u);
     }
 
-    v10 = +[UIWindow _applicationKeyWindow];
-    v12 = [v10 rootViewController];
-    [v12 presentViewController:v5 animated:1 completion:&stru_100358AE8];
+    presenter2 = +[UIWindow _applicationKeyWindow];
+    rootViewController = [presenter2 rootViewController];
+    [rootViewController presentViewController:v5 animated:1 completion:&stru_100358AE8];
   }
 }
 
 - (id)reminderAction
 {
-  v2 = [(PHDeclineWithReminderController *)self call];
-  v3 = [v2 dialRequestForRedial];
-  v4 = [v3 URL];
+  call = [(PHDeclineWithReminderController *)self call];
+  dialRequestForRedial = [call dialRequestForRedial];
+  v4 = [dialRequestForRedial URL];
 
   return v4;
 }
 
 - (id)reminderActivity
 {
-  v2 = [(PHDeclineWithReminderController *)self call];
-  v3 = [v2 dialRequestForRedial];
-  v4 = [v3 userActivity];
+  call = [(PHDeclineWithReminderController *)self call];
+  dialRequestForRedial = [call dialRequestForRedial];
+  userActivity = [dialRequestForRedial userActivity];
 
-  return v4;
+  return userActivity;
 }
 
 - (id)reminderText
 {
-  v3 = [(PHDeclineWithReminderController *)self call];
-  v4 = [v3 provider];
-  v5 = [v4 isFaceTimeProvider];
+  call = [(PHDeclineWithReminderController *)self call];
+  provider = [call provider];
+  isFaceTimeProvider = [provider isFaceTimeProvider];
 
-  v6 = [(PHDeclineWithReminderController *)self call];
-  v7 = v6;
-  if (v5)
+  call2 = [(PHDeclineWithReminderController *)self call];
+  v7 = call2;
+  if (isFaceTimeProvider)
   {
-    v8 = [v6 isVideo];
+    isVideo = [call2 isVideo];
     v9 = +[NSBundle mainBundle];
     v10 = v9;
-    if (v8)
+    if (isVideo)
     {
       v11 = @"FACETIME_%@";
     }
@@ -643,22 +643,22 @@ LABEL_24:
 
     v12 = [v9 localizedStringForKey:v11 value:&stru_100361FD0 table:@"InCallService"];
 
-    v13 = [(PHDeclineWithReminderController *)self displayName];
-    v14 = [NSString stringWithFormat:v12, v13];
+    displayName = [(PHDeclineWithReminderController *)self displayName];
+    v14 = [NSString stringWithFormat:v12, displayName];
     goto LABEL_18;
   }
 
-  v15 = [v6 provider];
-  v16 = [v15 isTelephonyProvider];
+  provider2 = [call2 provider];
+  isTelephonyProvider = [provider2 isTelephonyProvider];
 
-  v17 = [(PHDeclineWithReminderController *)self call];
-  v18 = v17;
-  if (!v16)
+  call3 = [(PHDeclineWithReminderController *)self call];
+  v18 = call3;
+  if (!isTelephonyProvider)
   {
-    v27 = [v17 isVideo];
+    isVideo2 = [call3 isVideo];
     v28 = +[NSBundle mainBundle];
     v29 = v28;
-    if (v27)
+    if (isVideo2)
     {
       v30 = @"VOIP_%@_VIDEO_%@";
     }
@@ -670,42 +670,42 @@ LABEL_24:
 
     v12 = [v28 localizedStringForKey:v30 value:&stru_100361FD0 table:@"InCallService"];
 
-    v13 = [(PHDeclineWithReminderController *)self call];
-    v23 = [v13 provider];
-    v24 = [v23 localizedName];
-    v25 = [(PHDeclineWithReminderController *)self displayName];
-    v14 = [NSString stringWithFormat:v12, v24, v25];
+    displayName = [(PHDeclineWithReminderController *)self call];
+    provider3 = [displayName provider];
+    localizedName = [provider3 localizedName];
+    displayName2 = [(PHDeclineWithReminderController *)self displayName];
+    v14 = [NSString stringWithFormat:v12, localizedName, displayName2];
     goto LABEL_14;
   }
 
-  v19 = [v17 provider];
-  v20 = [v19 prioritizedSenderIdentities];
-  if ([v20 count] <= 1)
+  provider4 = [call3 provider];
+  prioritizedSenderIdentities = [provider4 prioritizedSenderIdentities];
+  if ([prioritizedSenderIdentities count] <= 1)
   {
 
     goto LABEL_16;
   }
 
-  v21 = [(PHDeclineWithReminderController *)self call];
-  v22 = [v21 localSenderIdentity];
+  call4 = [(PHDeclineWithReminderController *)self call];
+  localSenderIdentity = [call4 localSenderIdentity];
 
-  if (!v22)
+  if (!localSenderIdentity)
   {
 LABEL_16:
     v12 = +[NSBundle mainBundle];
-    v13 = [v12 localizedStringForKey:@"CALL_BACK_%@" value:&stru_100361FD0 table:@"InCallService"];
-    v23 = [(PHDeclineWithReminderController *)self displayName];
-    v14 = [NSString stringWithFormat:v13, v23];
+    displayName = [v12 localizedStringForKey:@"CALL_BACK_%@" value:&stru_100361FD0 table:@"InCallService"];
+    provider3 = [(PHDeclineWithReminderController *)self displayName];
+    v14 = [NSString stringWithFormat:displayName, provider3];
     goto LABEL_17;
   }
 
   v12 = +[NSBundle mainBundle];
-  v13 = [v12 localizedStringForKey:@"CALL_BACK_%@_WITH_SENDER_IDENTITY_%@" value:&stru_100361FD0 table:@"InCallService"];
-  v23 = [(PHDeclineWithReminderController *)self displayName];
-  v24 = [(PHDeclineWithReminderController *)self call];
-  v25 = [v24 localSenderIdentity];
-  v26 = [v25 localizedName];
-  v14 = [NSString stringWithFormat:v13, v23, v26];
+  displayName = [v12 localizedStringForKey:@"CALL_BACK_%@_WITH_SENDER_IDENTITY_%@" value:&stru_100361FD0 table:@"InCallService"];
+  provider3 = [(PHDeclineWithReminderController *)self displayName];
+  localizedName = [(PHDeclineWithReminderController *)self call];
+  displayName2 = [localizedName localSenderIdentity];
+  localizedName2 = [displayName2 localizedName];
+  v14 = [NSString stringWithFormat:displayName, provider3, localizedName2];
 
 LABEL_14:
 LABEL_17:

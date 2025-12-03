@@ -1,10 +1,10 @@
 @interface MusicVocalsAttenuationSlider
-- (MusicVocalsAttenuationSlider)initWithCoder:(id)a3;
+- (MusicVocalsAttenuationSlider)initWithCoder:(id)coder;
 @end
 
 @implementation MusicVocalsAttenuationSlider
 
-- (MusicVocalsAttenuationSlider)initWithCoder:(id)a3
+- (MusicVocalsAttenuationSlider)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

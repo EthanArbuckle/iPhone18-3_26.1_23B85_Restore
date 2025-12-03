@@ -1,46 +1,46 @@
 @interface MFLegacyAccount
-+ (BOOL)_isActiveWithLegacyProperties:(id)a3;
-+ (id)_copyLegacyAccountsWithAccountSettings:(id)a3 allowedLegacyAccountTypes:(id)a4;
-+ (id)legacyAccountsWithAccountSettings:(id)a3;
++ (BOOL)_isActiveWithLegacyProperties:(id)properties;
++ (id)_copyLegacyAccountsWithAccountSettings:(id)settings allowedLegacyAccountTypes:(id)types;
++ (id)legacyAccountsWithAccountSettings:(id)settings;
 - (BOOL)_isActive;
-- (BOOL)_isMailAccountClass:(id)a3;
+- (BOOL)_isMailAccountClass:(id)class;
 - (BOOL)isValidDefaultSendingAccount;
-- (MFLegacyAccount)initWithLegacyProperties:(id)a3 allowedLegacyAccountTypes:(id)a4;
+- (MFLegacyAccount)initWithLegacyProperties:(id)properties allowedLegacyAccountTypes:(id)types;
 - (id)_accountTypeIdentifier;
 - (id)description;
-- (id)performMigrationWithAccountStore:(id)a3;
-- (void)_configurePersistentAccount:(id)a3 withParentAccount:(id)a4;
-- (void)_setActiveForAccount:(id)a3;
+- (id)performMigrationWithAccountStore:(id)store;
+- (void)_configurePersistentAccount:(id)account withParentAccount:(id)parentAccount;
+- (void)_setActiveForAccount:(id)account;
 @end
 
 @implementation MFLegacyAccount
 
-- (MFLegacyAccount)initWithLegacyProperties:(id)a3 allowedLegacyAccountTypes:(id)a4
+- (MFLegacyAccount)initWithLegacyProperties:(id)properties allowedLegacyAccountTypes:(id)types
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  typesCopy = types;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 objectForKeyedSubscript:kASSAccountType];
-    if ([v7 count] && v8 && (objc_msgSend(v7, "containsObject:", v8) & 1) == 0)
+    v8 = [propertiesCopy objectForKeyedSubscript:kASSAccountType];
+    if ([typesCopy count] && v8 && (objc_msgSend(typesCopy, "containsObject:", v8) & 1) == 0)
     {
-      v9 = 0;
+      selfCopy = 0;
     }
 
     else
     {
       v13.receiver = self;
       v13.super_class = MFLegacyAccount;
-      v9 = [(MFLegacyAccount *)&v13 init];
-      if (v9)
+      selfCopy = [(MFLegacyAccount *)&v13 init];
+      if (selfCopy)
       {
-        v10 = [v6 copy];
-        legacyProperties = v9->_legacyProperties;
-        v9->_legacyProperties = v10;
+        v10 = [propertiesCopy copy];
+        legacyProperties = selfCopy->_legacyProperties;
+        selfCopy->_legacyProperties = v10;
 
-        self = v9;
-        v9 = self;
+        self = selfCopy;
+        selfCopy = self;
       }
 
       else
@@ -52,16 +52,16 @@
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)performMigrationWithAccountStore:(id)a3
+- (id)performMigrationWithAccountStore:(id)store
 {
-  v4 = a3;
-  v5 = v4;
+  storeCopy = store;
+  v5 = storeCopy;
   p_migratedAccount = &self->_migratedAccount;
   migratedAccount = self->_migratedAccount;
   if (migratedAccount)
@@ -76,16 +76,16 @@
     goto LABEL_9;
   }
 
-  v9 = [v4 accountWithIdentifier:?];
+  v9 = [storeCopy accountWithIdentifier:?];
   if (v9)
   {
 LABEL_9:
     v10 = self->_legacyProperties;
-    v11 = [(MFLegacyAccount *)self _accountTypeIdentifier];
-    v21 = v11;
-    if (v11)
+    _accountTypeIdentifier = [(MFLegacyAccount *)self _accountTypeIdentifier];
+    v21 = _accountTypeIdentifier;
+    if (_accountTypeIdentifier)
     {
-      v12 = [v5 accountTypeWithAccountTypeIdentifier:{v11, v11}];
+      v12 = [v5 accountTypeWithAccountTypeIdentifier:{_accountTypeIdentifier, _accountTypeIdentifier}];
     }
 
     else
@@ -105,9 +105,9 @@ LABEL_9:
       v15 = [v5 accountWithIdentifier:v13];
       if (v15 || (createACAccountWithASAccountPropertiesAndACAccountType(), (v15 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v16 = [v15 parentAccount];
+        parentAccount = [v15 parentAccount];
 
-        if (!v16)
+        if (!parentAccount)
         {
           [(MFLegacyAccount *)self _setActiveForAccount:v15];
         }
@@ -221,49 +221,49 @@ LABEL_11:
   return v8;
 }
 
-- (void)_setActiveForAccount:(id)a3
+- (void)_setActiveForAccount:(id)account
 {
-  v8 = a3;
-  v4 = [(MFLegacyAccount *)self _isActive];
-  v5 = [v8 accountType];
-  v6 = [v5 identifier];
+  accountCopy = account;
+  _isActive = [(MFLegacyAccount *)self _isActive];
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
 
-  if ([ACAccountTypeIdentifierSMTP isEqualToString:v6])
+  if ([ACAccountTypeIdentifierSMTP isEqualToString:identifier])
   {
-    [v8 setActive:v4];
+    [accountCopy setActive:_isActive];
   }
 
   else
   {
     v7 = kAccountDataclassMail;
-    if (v4 != [v8 isEnabledForDataclass:kAccountDataclassMail])
+    if (_isActive != [accountCopy isEnabledForDataclass:kAccountDataclassMail])
     {
-      [v8 setEnabled:v4 forDataclass:v7];
+      [accountCopy setEnabled:_isActive forDataclass:v7];
     }
   }
 }
 
-- (void)_configurePersistentAccount:(id)a3 withParentAccount:(id)a4
+- (void)_configurePersistentAccount:(id)account withParentAccount:(id)parentAccount
 {
-  v9 = a3;
-  v5 = a4;
-  if (v5)
+  accountCopy = account;
+  parentAccountCopy = parentAccount;
+  if (parentAccountCopy)
   {
-    [v9 setParentAccount:v5];
-    v6 = [v5 accountType];
-    v7 = [v6 identifier];
-    v8 = [ACAccountTypeIdentifierAppleAccount isEqualToString:v7];
+    [accountCopy setParentAccount:parentAccountCopy];
+    accountType = [parentAccountCopy accountType];
+    identifier = [accountType identifier];
+    v8 = [ACAccountTypeIdentifierAppleAccount isEqualToString:identifier];
 
     if (v8)
     {
-      [v9 setAuthenticationType:kAccountAuthenticationTypeParent];
+      [accountCopy setAuthenticationType:kAccountAuthenticationTypeParent];
     }
   }
 }
 
-+ (id)legacyAccountsWithAccountSettings:(id)a3
++ (id)legacyAccountsWithAccountSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_alloc_init(NSMutableArray);
   v12[0] = kASSSMTPAccountType;
   v12[1] = kASSMailAccountType;
@@ -271,7 +271,7 @@ LABEL_11:
   v12[3] = kASSYahooAccountType;
   v12[4] = kASSCastleIMAPAccountType;
   v6 = [NSArray arrayWithObjects:v12 count:5];
-  v7 = [a1 _copyLegacyAccountsWithAccountSettings:v4 allowedLegacyAccountTypes:v6];
+  v7 = [self _copyLegacyAccountsWithAccountSettings:settingsCopy allowedLegacyAccountTypes:v6];
   if ([v7 count])
   {
     [v5 addObjectsFromArray:v7];
@@ -279,7 +279,7 @@ LABEL_11:
 
   v11 = kASSExchangeAccountType;
   v8 = [NSArray arrayWithObjects:&v11 count:1];
-  v9 = [a1 _copyLegacyAccountsWithAccountSettings:v4 allowedLegacyAccountTypes:v8];
+  v9 = [self _copyLegacyAccountsWithAccountSettings:settingsCopy allowedLegacyAccountTypes:v8];
   if ([v9 count])
   {
     [v5 addObjectsFromArray:v9];
@@ -294,17 +294,17 @@ LABEL_11:
   return v5;
 }
 
-+ (id)_copyLegacyAccountsWithAccountSettings:(id)a3 allowedLegacyAccountTypes:(id)a4
++ (id)_copyLegacyAccountsWithAccountSettings:(id)settings allowedLegacyAccountTypes:(id)types
 {
-  v5 = a3;
-  v6 = a4;
-  v19 = v5;
-  if (v5)
+  settingsCopy = settings;
+  typesCopy = types;
+  v19 = settingsCopy;
+  if (settingsCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = objc_alloc_init(NSMutableArray);
+      settingsCopy = objc_alloc_init(NSMutableArray);
       [v19 objectForKeyedSubscript:kASSPlistAccountsKey];
       v34 = 0u;
       v35 = 0u;
@@ -327,11 +327,11 @@ LABEL_11:
             }
 
             v7 = *(*(&v32 + 1) + 8 * v27);
-            v8 = [[MFLegacyAccount alloc] initWithLegacyProperties:v7 allowedLegacyAccountTypes:v6];
+            v8 = [[MFLegacyAccount alloc] initWithLegacyProperties:v7 allowedLegacyAccountTypes:typesCopy];
             v26 = v8;
             if (v8)
             {
-              [v5 addObject:v8];
+              [settingsCopy addObject:v8];
             }
 
             v9 = [v7 objectForKeyedSubscript:{v22, v19}];
@@ -364,13 +364,13 @@ LABEL_11:
                           objc_enumerationMutation(v12);
                         }
 
-                        v16 = [[MFLegacyAccount alloc] initWithLegacyProperties:*(*(&v28 + 1) + 8 * v15) allowedLegacyAccountTypes:v6];
+                        v16 = [[MFLegacyAccount alloc] initWithLegacyProperties:*(*(&v28 + 1) + 8 * v15) allowedLegacyAccountTypes:typesCopy];
                         v17 = v16;
                         if (v16)
                         {
                           [(MFLegacyAccount *)v16 setParentAccountIdentifier:v9];
                           [(MFLegacyAccount *)v17 setParentAccountIsActive:v11];
-                          [v5 addObject:v17];
+                          [settingsCopy addObject:v17];
                         }
 
                         v15 = v15 + 1;
@@ -399,11 +399,11 @@ LABEL_11:
 
     else
     {
-      v5 = 0;
+      settingsCopy = 0;
     }
   }
 
-  return v5;
+  return settingsCopy;
 }
 
 - (BOOL)isValidDefaultSendingAccount
@@ -448,14 +448,14 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_isMailAccountClass:(id)a3
+- (BOOL)_isMailAccountClass:(id)class
 {
-  v4 = a3;
+  classCopy = class;
   v5 = [(NSDictionary *)self->_legacyProperties objectForKeyedSubscript:kASSAccountType];
   v6 = [(NSDictionary *)self->_legacyProperties objectForKeyedSubscript:kASSAccountClass];
   if ([v5 isEqualToString:kASSMailAccountType])
   {
-    v7 = [v6 isEqualToString:v4];
+    v7 = [v6 isEqualToString:classCopy];
   }
 
   else
@@ -474,31 +474,31 @@ LABEL_11:
   return [v3 _isActiveWithLegacyProperties:legacyProperties];
 }
 
-+ (BOOL)_isActiveWithLegacyProperties:(id)a3
++ (BOOL)_isActiveWithLegacyProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"IsActive"];
+  propertiesCopy = properties;
+  v4 = [propertiesCopy objectForKeyedSubscript:@"IsActive"];
   if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = [v3 objectForKeyedSubscript:kASSAccountType];
+    v6 = [propertiesCopy objectForKeyedSubscript:kASSAccountType];
     if ([kASSSMTPAccountType isEqualToString:v6])
     {
-      v5 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
-      v7 = [v3 objectForKeyedSubscript:kASSAccountEnabledDataclasses];
-      v5 = [v7 containsObject:kAccountDataclassMail];
+      v7 = [propertiesCopy objectForKeyedSubscript:kASSAccountEnabledDataclasses];
+      bOOLValue = [v7 containsObject:kAccountDataclassMail];
     }
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)description

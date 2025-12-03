@@ -1,40 +1,40 @@
 @interface _MTLIOCommandBuffer
 - (BOOL)isCommitted;
-- (_MTLIOCommandBuffer)initWithQueue:(id)a3;
-- (_MTLIOCommandBuffer)initWithQueue:(id)a3 resourceList:(id)a4 retained:(BOOL)a5;
+- (_MTLIOCommandBuffer)initWithQueue:(id)queue;
+- (_MTLIOCommandBuffer)initWithQueue:(id)queue resourceList:(id)list retained:(BOOL)retained;
 - (id).cxx_construct;
-- (id)getReusableScratchBuffer:(unint64_t)a3;
+- (id)getReusableScratchBuffer:(unint64_t)buffer;
 - (void)addBarrier;
-- (void)addCompletedHandler:(id)a3;
+- (void)addCompletedHandler:(id)handler;
 - (void)commit;
-- (void)copyStatusToBuffer:(id)a3 offset:(unint64_t)a4;
+- (void)copyStatusToBuffer:(id)buffer offset:(unint64_t)offset;
 - (void)dealloc;
-- (void)didCompleteWithStatus:(int64_t)a3;
+- (void)didCompleteWithStatus:(int64_t)status;
 - (void)enqueue;
-- (void)loadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 sourceHandle:(id)a6 sourceHandleOffset:(unint64_t)a7;
-- (void)loadBytes:(void *)a3 size:(unint64_t)a4 sourceHandle:(id)a5 sourceHandleOffset:(unint64_t)a6;
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8 dstOrigin:(id *)a9 handle:(id)a10 handleOffset:(unint64_t)a11;
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 sourceBytesPerRow:(unint64_t)a7 sourceBytesPerImage:(unint64_t)a8 destinationOrigin:(id *)a9 sourceHandle:(id)a10 sourceHandleOffset:(unint64_t)a11;
-- (void)pushDebugGroup:(id)a3;
+- (void)loadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)handleOffset;
+- (void)loadBytes:(void *)bytes size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)offset;
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image dstOrigin:(id *)origin handle:(id)self0 handleOffset:(unint64_t)self1;
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image destinationOrigin:(id *)origin sourceHandle:(id)self0 sourceHandleOffset:(unint64_t)self1;
+- (void)pushDebugGroup:(id)group;
 - (void)reuseActiveScratchBuffers;
-- (void)signalEvent:(id)a3 value:(unint64_t)a4;
+- (void)signalEvent:(id)event value:(unint64_t)value;
 - (void)tryCancel;
-- (void)waitForEvent:(id)a3 value:(unint64_t)a4;
+- (void)waitForEvent:(id)event value:(unint64_t)value;
 - (void)waitUntilCompleted;
 @end
 
 @implementation _MTLIOCommandBuffer
 
-- (_MTLIOCommandBuffer)initWithQueue:(id)a3
+- (_MTLIOCommandBuffer)initWithQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = _MTLIOCommandBuffer;
   v4 = [(_MTLObjectWithLabel *)&v7 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_queue = v5;
-    dispatch_semaphore_wait(v5[8], 0xFFFFFFFFFFFFFFFFLL);
+    queueCopy = queue;
+    v4->_queue = queueCopy;
+    dispatch_semaphore_wait(queueCopy[8], 0xFFFFFFFFFFFFFFFFLL);
     v4->_status = 0;
     v4->_currentStagingBuffer = 0;
     v4->_currentStagingBufferRemainingBytes = 0;
@@ -45,16 +45,16 @@
   return v4;
 }
 
-- (_MTLIOCommandBuffer)initWithQueue:(id)a3 resourceList:(id)a4 retained:(BOOL)a5
+- (_MTLIOCommandBuffer)initWithQueue:(id)queue resourceList:(id)list retained:(BOOL)retained
 {
   v11.receiver = self;
   v11.super_class = _MTLIOCommandBuffer;
   v8 = [(_MTLObjectWithLabel *)&v11 init];
   if (v8)
   {
-    v9 = a3;
-    v8->_queue = v9;
-    dispatch_semaphore_wait(v9[8], 0xFFFFFFFFFFFFFFFFLL);
+    queueCopy = queue;
+    v8->_queue = queueCopy;
+    dispatch_semaphore_wait(queueCopy[8], 0xFFFFFFFFFFFFFFFFLL);
     v8->_status = 0;
     v8->_completedCallbacksDone = 0;
     v8->_mutex.__sig = 850045863;
@@ -70,17 +70,17 @@
     v8->_currentStagingBuffer = 0;
     v8->_currentStagingBufferRemainingBytes = 0;
     v8->_currentStagingBufferOffset = 0;
-    [(_MTLIOCommandBuffer *)v8 createCommandListWithResourcePool:a4];
-    v8->_resourceList = MTLResourceListPoolCreateResourceList(a4);
-    v8->_retained = a5;
+    [(_MTLIOCommandBuffer *)v8 createCommandListWithResourcePool:list];
+    v8->_resourceList = MTLResourceListPoolCreateResourceList(list);
+    v8->_retained = retained;
     v8->_enqueued = 0;
     v8->_activeScratchBuffers.var0 = v8->_activeScratchBuffers.__begin_;
     v8->_poolScratchBuffers.var0 = v8->_poolScratchBuffers.__begin_;
     if (MTLTraceEnabled())
     {
       [(_MTLIOCommandBuffer *)v8 globalTraceObjectID];
-      [a3 globalTraceObjectID];
-      [objc_msgSend(a3 "device")];
+      [queue globalTraceObjectID];
+      [objc_msgSend(queue "device")];
       kdebug_trace();
     }
   }
@@ -99,13 +99,13 @@
   return commandList & 1;
 }
 
-- (void)addCompletedHandler:(id)a3
+- (void)addCompletedHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     p_completedDispatchListTail = &self->_completedDispatchListTail;
     v6 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
-    v7 = _Block_copy(a3);
+    v7 = _Block_copy(handler);
     *v6 = 0;
     *(v6 + 1) = v7;
     v8 = *p_completedDispatchListTail;
@@ -125,25 +125,25 @@
   }
 }
 
-- (void)waitForEvent:(id)a3 value:(unint64_t)a4
+- (void)waitForEvent:(id)event value:(unint64_t)value
 {
-  if (a3)
+  if (event)
   {
     v12 = 2;
     v13 = 0;
     *&v7 = MTLIOCommandList::addCommand(self->commandList, &v12).n128_u64[0];
     v9 = v8;
-    v10 = [(_MTLIOCommandQueue *)self->_queue eventSignalListener];
+    eventSignalListener = [(_MTLIOCommandQueue *)self->_queue eventSignalListener];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __42___MTLIOCommandBuffer_waitForEvent_value___block_invoke;
     v11[3] = &unk_1E6EEA6C8;
     v11[4] = self;
     v11[5] = v9;
-    [a3 notifyListener:v10 atValue:a4 block:v11];
+    [event notifyListener:eventSignalListener atValue:value block:v11];
     if (self->_retained)
     {
-      MTLResourceListAddResource(self->_resourceList, a3);
+      MTLResourceListAddResource(self->_resourceList, event);
     }
 
     if (MTLTraceEnabled())
@@ -154,15 +154,15 @@
   }
 }
 
-- (void)signalEvent:(id)a3 value:(unint64_t)a4
+- (void)signalEvent:(id)event value:(unint64_t)value
 {
   v6 = 3;
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  valueCopy = value;
   MTLIOCommandList::addCommand(self->commandList, &v6);
   if (self->_retained)
   {
-    MTLResourceListAddResource(self->_resourceList, a3);
+    MTLResourceListAddResource(self->_resourceList, event);
   }
 
   if (MTLTraceEnabled())
@@ -173,9 +173,9 @@
   }
 }
 
-- (void)loadBytes:(void *)a3 size:(unint64_t)a4 sourceHandle:(id)a5 sourceHandleOffset:(unint64_t)a6
+- (void)loadBytes:(void *)bytes size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)offset
 {
-  v11 = [a5 stagingBufferSize:a4 offset:{a6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}];
+  v11 = [handle stagingBufferSize:size offset:{offset, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}];
   v12 = v11;
   if (self->_currentStagingBufferRemainingBytes >= v11)
   {
@@ -195,22 +195,22 @@ LABEL_13:
     self->_currentStagingBufferOffset += v12;
     self->_currentStagingBufferRemainingBytes -= v12;
     v17 = 0;
-    v18 = a5;
-    v19 = a6;
+    handleCopy = handle;
+    offsetCopy = offset;
     v24 = v12;
-    v25 = a3;
-    v20 = a4;
+    bytesCopy = bytes;
+    sizeCopy = size;
     *&v26 = 0;
     MTLIOCommandList::addCommand(self->commandList, &v17);
     if (self->_retained)
     {
-      MTLResourceListAddResource(self->_resourceList, a5);
+      MTLResourceListAddResource(self->_resourceList, handle);
     }
 
     if (MTLTraceEnabled())
     {
       [(_MTLIOCommandBuffer *)self globalTraceObjectID];
-      [a5 globalTraceObjectID];
+      [handle globalTraceObjectID];
 
       kdebug_trace();
     }
@@ -244,7 +244,7 @@ LABEL_3:
   os_unfair_lock_unlock(&commandList->var5);
 }
 
-- (void)loadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 sourceHandle:(id)a6 sourceHandleOffset:(unint64_t)a7
+- (void)loadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)handleOffset
 {
   v35 = 0;
   v33 = 0u;
@@ -256,61 +256,61 @@ LABEL_3:
   v27 = 0u;
   v28 = 0u;
   v26 = 0u;
-  v13 = [a3 storageMode];
-  v25 = a6;
-  v14 = [a6 stagingBufferSize:a5 offset:a7];
-  v15 = v13 == 2;
-  if (v13 == 2)
+  storageMode = [buffer storageMode];
+  handleCopy = handle;
+  v14 = [handle stagingBufferSize:size offset:handleOffset];
+  v15 = storageMode == 2;
+  if (storageMode == 2)
   {
-    v16 = a5;
+    sizeCopy = size;
   }
 
   else
   {
-    v16 = 0;
+    sizeCopy = 0;
   }
 
-  v17 = v16 + v14;
-  if (self->_currentStagingBufferRemainingBytes >= v16 + v14)
+  v17 = sizeCopy + v14;
+  if (self->_currentStagingBufferRemainingBytes >= sizeCopy + v14)
   {
-    v19 = a7;
+    handleOffsetCopy2 = handleOffset;
     if (!v17)
     {
       *&v28 = 0;
       goto LABEL_16;
     }
 
-    v23 = a4;
+    offsetCopy2 = offset;
     currentStagingBuffer = self->_currentStagingBuffer;
 LABEL_9:
     currentStagingBufferOffset = self->_currentStagingBufferOffset;
     *&v28 = currentStagingBuffer;
     *(&v28 + 1) = currentStagingBufferOffset;
     *&v29 = [-[MTLIOScratchBuffer buffer](currentStagingBuffer buffer] + currentStagingBufferOffset;
-    a4 = v24;
+    offset = v24;
 LABEL_16:
     self->_currentStagingBufferOffset += v17;
     self->_currentStagingBufferRemainingBytes -= v17;
     LODWORD(v26) = 0;
-    *(&v26 + 1) = v25;
-    *&v27 = v19;
+    *(&v26 + 1) = handleCopy;
+    *&v27 = handleOffsetCopy2;
     *(&v29 + 1) = v17;
-    *(&v27 + 1) = a5;
-    *&v30 = [a3 contents] + a4;
-    *(&v30 + 1) = a3;
-    *&v31 = a4;
+    *(&v27 + 1) = size;
+    *&v30 = [buffer contents] + offset;
+    *(&v30 + 1) = buffer;
+    *&v31 = offset;
     BYTE9(v31) = v15;
     MTLIOCommandList::addCommand(self->commandList, &v26);
     if (self->_retained)
     {
-      MTLResourceListAddResource(self->_resourceList, a3);
-      MTLResourceListAddResource(self->_resourceList, v25);
+      MTLResourceListAddResource(self->_resourceList, buffer);
+      MTLResourceListAddResource(self->_resourceList, handleCopy);
     }
 
     if (MTLTraceEnabled())
     {
       [(_MTLIOCommandBuffer *)self globalTraceObjectID];
-      [v25 globalTraceObjectID];
+      [handleCopy globalTraceObjectID];
 
       kdebug_trace();
     }
@@ -318,12 +318,12 @@ LABEL_16:
     return;
   }
 
-  v23 = a4;
+  offsetCopy2 = offset;
   currentStagingBuffer = [(_MTLIOCommandBuffer *)self getReusableScratchBuffer:v17];
   if (currentStagingBuffer)
   {
 LABEL_6:
-    v19 = a7;
+    handleOffsetCopy2 = handleOffset;
     self->_currentStagingBufferRemainingBytes = [-[MTLIOScratchBuffer buffer](currentStagingBuffer "buffer")];
     self->_currentStagingBufferOffset = 0;
     self->_currentStagingBuffer = currentStagingBuffer;
@@ -346,30 +346,30 @@ LABEL_6:
   os_unfair_lock_unlock(&commandList->var5);
 }
 
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8 dstOrigin:(id *)a9 handle:(id)a10 handleOffset:(unint64_t)a11
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image dstOrigin:(id *)origin handle:(id)self0 handleOffset:(unint64_t)self1
 {
-  v12 = *a6;
-  v11 = *a9;
-  [(_MTLIOCommandBuffer *)self loadTexture:a3 slice:a4 level:a5 size:&v12 sourceBytesPerRow:a7 sourceBytesPerImage:a8 destinationOrigin:&v11 sourceHandle:a10 sourceHandleOffset:a11];
+  v12 = *size;
+  v11 = *origin;
+  [(_MTLIOCommandBuffer *)self loadTexture:texture slice:slice level:level size:&v12 sourceBytesPerRow:row sourceBytesPerImage:image destinationOrigin:&v11 sourceHandle:handle sourceHandleOffset:offset];
 }
 
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 sourceBytesPerRow:(unint64_t)a7 sourceBytesPerImage:(unint64_t)a8 destinationOrigin:(id *)a9 sourceHandle:(id)a10 sourceHandleOffset:(unint64_t)a11
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image destinationOrigin:(id *)origin sourceHandle:(id)self0 sourceHandleOffset:(unint64_t)self1
 {
-  v27 = a8;
-  v25 = a4;
+  imageCopy = image;
+  sliceCopy = slice;
   v40 = 0;
   v41 = 0;
-  v24 = a9;
-  v29 = *&a9->var0;
+  originCopy = origin;
+  v29 = *&origin->var0;
   *&v30 = 0;
-  v38 = *&a6->var0;
+  v38 = *&size->var0;
   v39 = 1;
-  *&v26 = a5;
-  *(&v26 + 1) = a7;
-  MTLCalculateSourceBufferSizeAndAlignment(a3, &v29, &v38, a5, a7, &v41, &v40);
-  if (a6->var2)
+  *&v26 = level;
+  *(&v26 + 1) = row;
+  MTLCalculateSourceBufferSizeAndAlignment(texture, &v29, &v38, level, row, &v41, &v40);
+  if (size->var2)
   {
-    for (i = 0; i < a6->var2; ++i)
+    for (i = 0; i < size->var2; ++i)
     {
       v37 = 0;
       v35 = 0u;
@@ -380,7 +380,7 @@ LABEL_6:
       v30 = 0u;
       v31 = 0u;
       v29 = 0u;
-      v15 = [a10 stagingBufferSize:v41 offset:{a11, v24, v25, v26, v27}];
+      v15 = [handle stagingBufferSize:v41 offset:{offset, originCopy, sliceCopy, v26, imageCopy}];
       v16 = v41 + v15;
       v17 = v41 + v15 + v40;
       if (self->_currentStagingBufferRemainingBytes >= v17)
@@ -432,47 +432,47 @@ LABEL_12:
       self->_currentStagingBufferOffset += v17;
       self->_currentStagingBufferRemainingBytes -= v17;
       LODWORD(v29) = 1;
-      *(&v29 + 1) = a10;
-      *&v30 = a11;
+      *(&v29 + 1) = handle;
+      *&v30 = offset;
       *(&v30 + 1) = v41;
       *(&v32 + 1) = v16;
-      *&v33[0] = a3;
-      v22 = i + v24->var2;
-      *(v33 + 8) = *&v24->var0;
+      *&v33[0] = texture;
+      v22 = i + originCopy->var2;
+      *(v33 + 8) = *&originCopy->var0;
       *(&v33[1] + 1) = v22;
       v36 = v26;
-      v37 = v27;
-      v34 = *&a6->var0;
+      v37 = imageCopy;
+      v34 = *&size->var0;
       *&v35 = 1;
-      *(&v35 + 1) = v25;
+      *(&v35 + 1) = sliceCopy;
       MTLIOCommandList::addCommand(self->commandList, &v29);
-      a11 += v27;
+      offset += imageCopy;
     }
   }
 
   if (self->_retained)
   {
-    MTLResourceListAddResource(self->_resourceList, a3);
-    MTLResourceListAddResource(self->_resourceList, a10);
+    MTLResourceListAddResource(self->_resourceList, texture);
+    MTLResourceListAddResource(self->_resourceList, handle);
   }
 
   if (MTLTraceEnabled())
   {
     [(_MTLIOCommandBuffer *)self globalTraceObjectID];
-    [a10 globalTraceObjectID];
+    [handle globalTraceObjectID];
     kdebug_trace();
   }
 }
 
-- (void)copyStatusToBuffer:(id)a3 offset:(unint64_t)a4
+- (void)copyStatusToBuffer:(id)buffer offset:(unint64_t)offset
 {
-  v7 = [a3 contents];
+  contents = [buffer contents];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __49___MTLIOCommandBuffer_copyStatusToBuffer_offset___block_invoke;
   v12[3] = &unk_1E6EEA6F0;
   v12[4] = self;
-  v12[5] = v7 + a4;
+  v12[5] = contents + offset;
   v8 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
   v9 = _Block_copy(v12);
   v8->var0 = 0;
@@ -493,7 +493,7 @@ LABEL_12:
   v8->var1 = v9;
   if (self->_retained)
   {
-    MTLResourceListAddResource(self->_resourceList, a3);
+    MTLResourceListAddResource(self->_resourceList, buffer);
   }
 }
 
@@ -544,10 +544,10 @@ LABEL_12:
   pthread_mutex_unlock(&self->_mutex);
 }
 
-- (void)didCompleteWithStatus:(int64_t)a3
+- (void)didCompleteWithStatus:(int64_t)status
 {
   dispatch_semaphore_signal(self->_queue->_commandBufferSemaphore);
-  self->_status = a3;
+  self->_status = status;
   completedDispatchList = self->_completedDispatchList;
   if (completedDispatchList)
   {
@@ -615,9 +615,9 @@ LABEL_12:
   }
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
-  if (a3)
+  if (group)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -659,7 +659,7 @@ LABEL_12:
   [(_MTLObjectWithLabel *)&v5 dealloc];
 }
 
-- (id)getReusableScratchBuffer:(unint64_t)a3
+- (id)getReusableScratchBuffer:(unint64_t)buffer
 {
   currentStagingBuffer = self->_currentStagingBuffer;
   if (currentStagingBuffer)
@@ -741,7 +741,7 @@ LABEL_12:
     v22 = v21;
   }
 
-  while ([-[__end_ buffer](p_poolScratchBuffers->__begin_[v20] "buffer")] < a3)
+  while ([-[__end_ buffer](p_poolScratchBuffers->__begin_[v20] "buffer")] < buffer)
   {
     ++v20;
     if (!--v22)
@@ -766,14 +766,14 @@ LABEL_12:
 
 - (void)reuseActiveScratchBuffers
 {
-  v2 = self;
+  selfCopy = self;
   self->_currentStagingBufferRemainingBytes = [-[MTLIOScratchBuffer buffer](self->_currentStagingBuffer "buffer")];
-  v2->_currentStagingBufferOffset = 0;
-  p_poolScratchBuffers = &v2->_poolScratchBuffers;
-  var0 = v2->_poolScratchBuffers.var0;
-  v2 = (v2 + 240);
-  std::vector<objc_object  {objcproto18MTLIOScratchBuffer}*>::__insert_with_size[abi:ne200100]<std::__wrap_iter<objc_object  {objcproto18MTLIOScratchBuffer}*>,objc_object  {objcproto18MTLIOScratchBuffer}*>(p_poolScratchBuffers, var0, v2->super.super.isa, v2->super._label, (v2->super._label - v2->super.super.isa) >> 3);
-  v2->super._label = v2->super.super.isa;
+  selfCopy->_currentStagingBufferOffset = 0;
+  p_poolScratchBuffers = &selfCopy->_poolScratchBuffers;
+  var0 = selfCopy->_poolScratchBuffers.var0;
+  selfCopy = (selfCopy + 240);
+  std::vector<objc_object  {objcproto18MTLIOScratchBuffer}*>::__insert_with_size[abi:ne200100]<std::__wrap_iter<objc_object  {objcproto18MTLIOScratchBuffer}*>,objc_object  {objcproto18MTLIOScratchBuffer}*>(p_poolScratchBuffers, var0, selfCopy->super.super.isa, selfCopy->super._label, (selfCopy->super._label - selfCopy->super.super.isa) >> 3);
+  selfCopy->super._label = selfCopy->super.super.isa;
 }
 
 - (id).cxx_construct

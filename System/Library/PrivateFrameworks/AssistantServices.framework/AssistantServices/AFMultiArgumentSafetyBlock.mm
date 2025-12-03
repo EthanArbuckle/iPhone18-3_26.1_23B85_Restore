@@ -1,20 +1,20 @@
 @interface AFMultiArgumentSafetyBlock
-- (AFMultiArgumentSafetyBlock)initWithBlock:(id)a3 defaultValueArray:(id)a4;
-- (AFMultiArgumentSafetyBlock)initWithBlock:(id)a3 defaultValues:(id)a4;
-- (BOOL)invokeWithValueArray:(id)a3;
-- (BOOL)invokeWithValues:(id)a3;
+- (AFMultiArgumentSafetyBlock)initWithBlock:(id)block defaultValueArray:(id)array;
+- (AFMultiArgumentSafetyBlock)initWithBlock:(id)block defaultValues:(id)values;
+- (BOOL)invokeWithValueArray:(id)array;
+- (BOOL)invokeWithValues:(id)values;
 @end
 
 @implementation AFMultiArgumentSafetyBlock
 
-- (BOOL)invokeWithValueArray:(id)a3
+- (BOOL)invokeWithValueArray:(id)array
 {
-  v5 = a3;
-  v6 = [v5 count];
+  arrayCopy = array;
+  v6 = [arrayCopy count];
   if (v6 >= [(NSMethodSignature *)self->_blockMethodSignature numberOfArguments])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"AFSafetyBlock.m" lineNumber:235 description:{@"Number of values for invocation (%lu) is expected to be equal or less than the number of block arguments (%lu).", objc_msgSend(v5, "count"), -[NSMethodSignature numberOfArguments](self->_blockMethodSignature, "numberOfArguments") - 1}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AFSafetyBlock.m" lineNumber:235 description:{@"Number of values for invocation (%lu) is expected to be equal or less than the number of block arguments (%lu).", objc_msgSend(arrayCopy, "count"), -[NSMethodSignature numberOfArguments](self->_blockMethodSignature, "numberOfArguments") - 1}];
   }
 
   v7 = atomic_exchange(&self->_hasInvoked._Value, 1u);
@@ -27,7 +27,7 @@
     v13[3] = &unk_1E7346C60;
     v14 = v8;
     v9 = v8;
-    [v5 enumerateObjectsUsingBlock:v13];
+    [arrayCopy enumerateObjectsUsingBlock:v13];
     [v9 invokeWithTarget:self->_block];
 
     block = self->_block;
@@ -43,13 +43,13 @@ void __51__AFMultiArgumentSafetyBlock_invokeWithValueArray___block_invoke(uint64
   [*(a1 + 32) setArgument:&v5 atIndex:a3 + 1];
 }
 
-- (BOOL)invokeWithValues:(id)a3
+- (BOOL)invokeWithValues:(id)values
 {
-  v4 = a3;
-  if (v4)
+  valuesCopy = values;
+  if (valuesCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v5 addObject:v4];
+    [v5 addObject:valuesCopy];
     v12 = &v14;
     v6 = v13;
     if (v6)
@@ -78,20 +78,20 @@ void __51__AFMultiArgumentSafetyBlock_invokeWithValueArray___block_invoke(uint64
   return v10;
 }
 
-- (AFMultiArgumentSafetyBlock)initWithBlock:(id)a3 defaultValueArray:(id)a4
+- (AFMultiArgumentSafetyBlock)initWithBlock:(id)block defaultValueArray:(id)array
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  blockCopy = block;
+  arrayCopy = array;
+  if (!blockCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"AFSafetyBlock.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AFSafetyBlock.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
   }
 
-  if (!_Block_has_signature(v7))
+  if (!_Block_has_signature(blockCopy))
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"AFSafetyBlock.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"_Block_has_signature((__bridge void *)block)"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"AFSafetyBlock.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"_Block_has_signature((__bridge void *)block)"}];
   }
 
   v22.receiver = self;
@@ -99,7 +99,7 @@ void __51__AFMultiArgumentSafetyBlock_invokeWithValueArray___block_invoke(uint64
   v9 = [(AFMultiArgumentSafetyBlock *)&v22 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [blockCopy copy];
     block = v9->_block;
     v9->_block = v10;
 
@@ -112,18 +112,18 @@ void __51__AFMultiArgumentSafetyBlock_invokeWithValueArray___block_invoke(uint64
 
     if (!v9->_blockMethodSignature)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:v9 file:@"AFSafetyBlock.m" lineNumber:207 description:{@"Copied block %@ is expected to have a signature.", v9->_block}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:v9 file:@"AFSafetyBlock.m" lineNumber:207 description:{@"Copied block %@ is expected to have a signature.", v9->_block}];
     }
 
-    v14 = [v8 count];
+    v14 = [arrayCopy count];
     if (v14 >= [(NSMethodSignature *)v9->_blockMethodSignature numberOfArguments])
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:v9 file:@"AFSafetyBlock.m" lineNumber:208 description:{@"Number of default values (%lu) is expected to be equal or less than the number of block arguments (%lu).", objc_msgSend(v8, "count"), -[NSMethodSignature numberOfArguments](v9->_blockMethodSignature, "numberOfArguments") - 1}];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:v9 file:@"AFSafetyBlock.m" lineNumber:208 description:{@"Number of default values (%lu) is expected to be equal or less than the number of block arguments (%lu).", objc_msgSend(arrayCopy, "count"), -[NSMethodSignature numberOfArguments](v9->_blockMethodSignature, "numberOfArguments") - 1}];
     }
 
-    v15 = [v8 copy];
+    v15 = [arrayCopy copy];
     defaultValueArray = v9->_defaultValueArray;
     v9->_defaultValueArray = v15;
   }
@@ -131,14 +131,14 @@ void __51__AFMultiArgumentSafetyBlock_invokeWithValueArray___block_invoke(uint64
   return v9;
 }
 
-- (AFMultiArgumentSafetyBlock)initWithBlock:(id)a3 defaultValues:(id)a4
+- (AFMultiArgumentSafetyBlock)initWithBlock:(id)block defaultValues:(id)values
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  blockCopy = block;
+  valuesCopy = values;
+  if (valuesCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v8 addObject:v7];
+    [v8 addObject:valuesCopy];
     v15 = &v17;
     v9 = v16;
     if (v9)
@@ -162,7 +162,7 @@ void __51__AFMultiArgumentSafetyBlock_invokeWithValueArray___block_invoke(uint64
     v8 = 0;
   }
 
-  v13 = [(AFMultiArgumentSafetyBlock *)self initWithBlock:v6 defaultValueArray:v8];
+  v13 = [(AFMultiArgumentSafetyBlock *)self initWithBlock:blockCopy defaultValueArray:v8];
 
   return v13;
 }

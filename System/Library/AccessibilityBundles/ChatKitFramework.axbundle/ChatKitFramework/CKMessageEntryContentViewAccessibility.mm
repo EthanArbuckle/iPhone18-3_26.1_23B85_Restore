@@ -1,23 +1,23 @@
 @interface CKMessageEntryContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CKMessageEntryContentViewAccessibility)initWithFrame:(CGRect)a3 shouldShowSubject:(BOOL)a4 shouldDisableAttachments:(BOOL)a5 shouldUseNonEmojiKeyboard:(BOOL)a6 shouldUseNonHandwritingKeyboard:(BOOL)a7 shouldDisableKeyboardStickers:(BOOL)a8 shouldAllowPollSuggestions:(BOOL)a9 translationLanguage:(id)a10;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CKMessageEntryContentViewAccessibility)initWithFrame:(CGRect)frame shouldShowSubject:(BOOL)subject shouldDisableAttachments:(BOOL)attachments shouldUseNonEmojiKeyboard:(BOOL)keyboard shouldUseNonHandwritingKeyboard:(BOOL)handwritingKeyboard shouldDisableKeyboardStickers:(BOOL)stickers shouldAllowPollSuggestions:(BOOL)suggestions translationLanguage:(id)self0;
 - (void)_accessibilityClearPlugin;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setPluginEntryViewController:(id)a3;
+- (void)setPluginEntryViewController:(id)controller;
 @end
 
 @implementation CKMessageEntryContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"initWithFrame:shouldShowSubject: shouldDisableAttachments:shouldUseNonEmojiKeyboard:shouldUseNonHandwritingKeyboard:shouldDisableKeyboardStickers:shouldAllowPollSuggestions:translationLanguage:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "B", "B", "B", "B", "B", "B", "@", 0}];
-  [v3 validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"subjectView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"clearPluginButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"clearPluginButtonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"shouldShowClearButton" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"pluginEntryViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"initWithFrame:shouldShowSubject: shouldDisableAttachments:shouldUseNonEmojiKeyboard:shouldUseNonHandwritingKeyboard:shouldDisableKeyboardStickers:shouldAllowPollSuggestions:translationLanguage:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "B", "B", "B", "B", "B", "B", "@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"subjectView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"clearPluginButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"clearPluginButtonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"shouldShowClearButton" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"pluginEntryViewController" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -34,22 +34,22 @@
   [v5 setAccessibilityLabel:v6];
 }
 
-- (CKMessageEntryContentViewAccessibility)initWithFrame:(CGRect)a3 shouldShowSubject:(BOOL)a4 shouldDisableAttachments:(BOOL)a5 shouldUseNonEmojiKeyboard:(BOOL)a6 shouldUseNonHandwritingKeyboard:(BOOL)a7 shouldDisableKeyboardStickers:(BOOL)a8 shouldAllowPollSuggestions:(BOOL)a9 translationLanguage:(id)a10
+- (CKMessageEntryContentViewAccessibility)initWithFrame:(CGRect)frame shouldShowSubject:(BOOL)subject shouldDisableAttachments:(BOOL)attachments shouldUseNonEmojiKeyboard:(BOOL)keyboard shouldUseNonHandwritingKeyboard:(BOOL)handwritingKeyboard shouldDisableKeyboardStickers:(BOOL)stickers shouldAllowPollSuggestions:(BOOL)suggestions translationLanguage:(id)self0
 {
   v12.receiver = self;
   v12.super_class = CKMessageEntryContentViewAccessibility;
-  v10 = [(CKMessageEntryContentViewAccessibility *)&v12 initWithFrame:a4 shouldShowSubject:a5 shouldDisableAttachments:a6 shouldUseNonEmojiKeyboard:a7 shouldUseNonHandwritingKeyboard:a8 shouldDisableKeyboardStickers:a9 shouldAllowPollSuggestions:a3.origin.x translationLanguage:a3.origin.y, a3.size.width, a3.size.height, a10];
-  [(CKMessageEntryContentViewAccessibility *)v10 _accessibilityLoadAccessibilityInformation];
+  language = [(CKMessageEntryContentViewAccessibility *)&v12 initWithFrame:subject shouldShowSubject:attachments shouldDisableAttachments:keyboard shouldUseNonEmojiKeyboard:handwritingKeyboard shouldUseNonHandwritingKeyboard:stickers shouldDisableKeyboardStickers:suggestions shouldAllowPollSuggestions:frame.origin.x translationLanguage:frame.origin.y, frame.size.width, frame.size.height, language];
+  [(CKMessageEntryContentViewAccessibility *)language _accessibilityLoadAccessibilityInformation];
 
-  return v10;
+  return language;
 }
 
-- (void)setPluginEntryViewController:(id)a3
+- (void)setPluginEntryViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6.receiver = self;
   v6.super_class = CKMessageEntryContentViewAccessibility;
-  [(CKMessageEntryContentViewAccessibility *)&v6 setPluginEntryViewController:v4];
+  [(CKMessageEntryContentViewAccessibility *)&v6 setPluginEntryViewController:controllerCopy];
   if ([(CKMessageEntryContentViewAccessibility *)self safeBoolForKey:@"shouldShowClearButton"])
   {
     objc_opt_class();

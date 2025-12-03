@@ -1,14 +1,14 @@
 @interface _UISEEdgeTypeRecognizeGestureFeature
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3;
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample;
 @end
 
 @implementation _UISEEdgeTypeRecognizeGestureFeature
 
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample
 {
-  if (a3->var0 == 1)
+  if (sample->var0 == 1)
   {
-    var3 = a3->var3;
+    var3 = sample->var3;
     v4 = var3 == 1 || var3 == 4;
     if (v4 || self->_initialFromEdgeTip)
     {
@@ -16,9 +16,9 @@
     }
   }
 
-  else if (!a3->var0)
+  else if (!sample->var0)
   {
-    self->_initialFromEdgeTip = a3->var3 == 1;
+    self->_initialFromEdgeTip = sample->var3 == 1;
   }
 }
 

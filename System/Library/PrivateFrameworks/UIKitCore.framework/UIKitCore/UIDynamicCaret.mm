@@ -1,29 +1,29 @@
 @interface UIDynamicCaret
 - (BOOL)isActive;
-- (BOOL)isDeleteCandidate:(id)a3;
-- (UIDynamicCaret)initWithFrame:(CGRect)a3;
+- (BOOL)isDeleteCandidate:(id)candidate;
+- (UIDynamicCaret)initWithFrame:(CGRect)frame;
 - (id)backgroundImage;
 - (id)currentCandidate;
-- (void)alternativeTappedAtIndex:(int64_t)a3;
+- (void)alternativeTappedAtIndex:(int64_t)index;
 - (void)didMoveToSuperview;
-- (void)displayAlternatives:(BOOL)a3;
+- (void)displayAlternatives:(BOOL)alternatives;
 - (void)layoutSubviews;
-- (void)setCandidates:(id)a3 inlineText:(id)a4 inlineRect:(CGRect)a5 maxX:(double)a6 layout:(BOOL)a7;
-- (void)setDocumentHasContent:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setCandidates:(id)candidates inlineText:(id)text inlineRect:(CGRect)rect maxX:(double)x layout:(BOOL)layout;
+- (void)setDocumentHasContent:(BOOL)content;
+- (void)setFrame:(CGRect)frame;
+- (void)setIsActive:(BOOL)active;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIDynamicCaret
 
-- (UIDynamicCaret)initWithFrame:(CGRect)a3
+- (UIDynamicCaret)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = UIDynamicCaret;
-  v3 = [(UIImageView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIImageView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -48,24 +48,24 @@
     v13 = [[_UIDynamicCaretHelpLabel alloc] initWithImage:0];
     [(UIDynamicCaret *)v4 setHelpLabel:v13];
 
-    v14 = [(UIDynamicCaret *)v4 inputView];
-    [(UIView *)v4 addSubview:v14];
+    inputView = [(UIDynamicCaret *)v4 inputView];
+    [(UIView *)v4 addSubview:inputView];
 
-    v15 = [(UIDynamicCaret *)v4 alternativesView];
-    [(UIView *)v4 addSubview:v15];
+    alternativesView = [(UIDynamicCaret *)v4 alternativesView];
+    [(UIView *)v4 addSubview:alternativesView];
 
-    v16 = [(UIDynamicCaret *)v4 noContentView];
-    [(UIView *)v4 addSubview:v16];
+    noContentView = [(UIDynamicCaret *)v4 noContentView];
+    [(UIView *)v4 addSubview:noContentView];
 
-    v17 = [(UIDynamicCaret *)v4 helpLabel];
-    [(UIView *)v4 addSubview:v17];
+    helpLabel = [(UIDynamicCaret *)v4 helpLabel];
+    [(UIView *)v4 addSubview:helpLabel];
 
     [(UIDynamicCaret *)v4 displayAlternatives:0];
-    v18 = [(UIDynamicCaret *)v4 noContentView];
-    [v18 setAlpha:0.0];
+    noContentView2 = [(UIDynamicCaret *)v4 noContentView];
+    [noContentView2 setAlpha:0.0];
 
-    v19 = [(UIDynamicCaret *)v4 helpLabel];
-    [v19 setAlpha:0.0];
+    helpLabel2 = [(UIDynamicCaret *)v4 helpLabel];
+    [helpLabel2 setAlpha:0.0];
   }
 
   return v4;
@@ -76,28 +76,28 @@
   v12.receiver = self;
   v12.super_class = UIDynamicCaret;
   [(UIImageView *)&v12 layoutSubviews];
-  v3 = [(UIDynamicCaret *)self helpLabel];
-  [v3 sizeToFit];
+  helpLabel = [(UIDynamicCaret *)self helpLabel];
+  [helpLabel sizeToFit];
 
-  v4 = [(UIDynamicCaret *)self helpLabel];
-  [v4 frame];
+  helpLabel2 = [(UIDynamicCaret *)self helpLabel];
+  [helpLabel2 frame];
   v6 = v5;
   v8 = v7;
 
   [(UIView *)self frame];
   v10 = v9;
-  v11 = [(UIDynamicCaret *)self helpLabel];
-  [v11 setFrame:{0.0, v10, v6, v8}];
+  helpLabel3 = [(UIDynamicCaret *)self helpLabel];
+  [helpLabel3 setFrame:{0.0, v10, v6, v8}];
 }
 
-- (void)displayAlternatives:(BOOL)a3
+- (void)displayAlternatives:(BOOL)alternatives
 {
-  v3 = a3;
-  v5 = [(UIDynamicCaret *)self inputView];
-  [v5 setHidden:v3];
+  alternativesCopy = alternatives;
+  inputView = [(UIDynamicCaret *)self inputView];
+  [inputView setHidden:alternativesCopy];
 
-  v6 = [(UIDynamicCaret *)self alternativesView];
-  [v6 setHidden:v3 ^ 1];
+  alternativesView = [(UIDynamicCaret *)self alternativesView];
+  [alternativesView setHidden:alternativesCopy ^ 1];
 }
 
 - (id)backgroundImage
@@ -134,17 +134,17 @@ void __33__UIDynamicCaret_backgroundImage__block_invoke(uint64_t a1)
 
 - (void)didMoveToSuperview
 {
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(UIDynamicCaret *)self setIsActive:1];
-    v4 = [(UIImageView *)self image];
+    image = [(UIImageView *)self image];
 
-    if (!v4)
+    if (!image)
     {
-      v5 = [(UIDynamicCaret *)self backgroundImage];
-      [(UIImageView *)self setImage:v5];
+      backgroundImage = [(UIDynamicCaret *)self backgroundImage];
+      [(UIImageView *)self setImage:backgroundImage];
     }
   }
 }
@@ -157,17 +157,17 @@ void __33__UIDynamicCaret_backgroundImage__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = +[UIWindow _applicationKeyWindow];
-    v6 = [v3 firstResponder];
+    firstResponder = [v3 firstResponder];
 
-    if ([v6 _requiresKeyboardWhenFirstResponder])
+    if ([firstResponder _requiresKeyboardWhenFirstResponder])
     {
       v4 = +[UIKeyboardImpl sharedInstance];
-      [v4 setDelegate:v6];
+      [v4 setDelegate:firstResponder];
     }
 
     v5 = +[UIKeyboardImpl sharedInstance];
@@ -175,9 +175,9 @@ void __33__UIDynamicCaret_backgroundImage__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDocumentHasContent:(BOOL)a3
+- (void)setDocumentHasContent:(BOOL)content
 {
-  if (a3)
+  if (content)
   {
     v4 = 0.0;
   }
@@ -187,111 +187,111 @@ void __33__UIDynamicCaret_backgroundImage__block_invoke(uint64_t a1)
     v4 = 1.0;
   }
 
-  v5 = [(UIDynamicCaret *)self noContentView];
-  [v5 setAlpha:v4];
+  noContentView = [(UIDynamicCaret *)self noContentView];
+  [noContentView setAlpha:v4];
 
-  v6 = [(UIDynamicCaret *)self helpLabel];
-  [v6 setAlpha:v4];
+  helpLabel = [(UIDynamicCaret *)self helpLabel];
+  [helpLabel setAlpha:v4];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = UIDynamicCaret;
-  [(UIImageView *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.height];
+  [(UIImageView *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.height];
 }
 
-- (void)alternativeTappedAtIndex:(int64_t)a3
+- (void)alternativeTappedAtIndex:(int64_t)index
 {
-  self->_selectedIndex = a3;
+  self->_selectedIndex = index;
   [(UIKeyboardCandidateListDelegate *)self->_candidateListDelegate candidateListAcceptCandidate:self];
   self->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
   [(UIDynamicCaret *)self displayAlternatives:0];
   self->_justDeleted = 0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5 = UIApp;
-  v6 = a3;
-  [v5 _disableTouchCoalescingWithCount:{objc_msgSend(v6, "count")}];
-  v7 = [v6 anyObject];
+  beganCopy = began;
+  [v5 _disableTouchCoalescingWithCount:{objc_msgSend(beganCopy, "count")}];
+  anyObject = [beganCopy anyObject];
 
-  [v7 locationInView:self];
+  [anyObject locationInView:self];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(UIDynamicCaret *)self inputView];
-  LODWORD(v6) = [v12 isHidden];
+  inputView = [(UIDynamicCaret *)self inputView];
+  LODWORD(beganCopy) = [inputView isHidden];
 
-  if (v6)
+  if (beganCopy)
   {
-    v13 = [(UIDynamicCaret *)self alternativesView];
-    self->_selectedIndex = [v13 indexOfButtonForPoint:{v9, v11}];
+    alternativesView = [(UIDynamicCaret *)self alternativesView];
+    self->_selectedIndex = [alternativesView indexOfButtonForPoint:{v9, v11}];
 
-    v14 = [(UIDynamicCaret *)self alternativesView];
-    [v14 highlightButtonAtIndex:self->_selectedIndex];
+    alternativesView2 = [(UIDynamicCaret *)self alternativesView];
+    [alternativesView2 highlightButtonAtIndex:self->_selectedIndex];
   }
 
   else
   {
-    v14 = [(UIDynamicCaret *)self inputView];
-    [v14 startTouchAtPoint:{v9, v11}];
+    alternativesView2 = [(UIDynamicCaret *)self inputView];
+    [alternativesView2 startTouchAtPoint:{v9, v11}];
   }
 
   [(UIDynamicCaret *)self setDocumentHasContent:1];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v15 = [a3 anyObject];
-  [v15 locationInView:self];
+  anyObject = [moved anyObject];
+  [anyObject locationInView:self];
   v6 = v5;
   v8 = v7;
-  v9 = [(UIDynamicCaret *)self inputView];
-  v10 = [v9 isInking];
+  inputView = [(UIDynamicCaret *)self inputView];
+  isInking = [inputView isInking];
 
-  if (v10)
+  if (isInking)
   {
-    v11 = [(UIDynamicCaret *)self inputView];
-    [v11 addTouchAtPoint:{v6, v8}];
+    inputView2 = [(UIDynamicCaret *)self inputView];
+    [inputView2 addTouchAtPoint:{v6, v8}];
   }
 
   else
   {
-    [v15 previousLocationInView:self];
+    [anyObject previousLocationInView:self];
     if (sqrt((v6 - v12) * (v6 - v12) + (v8 - v13) * (v8 - v13)) > 1.0)
     {
       self->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
-      v14 = [(UIDynamicCaret *)self inputView];
-      [v14 startTouchAtPoint:{v6, v8}];
+      inputView3 = [(UIDynamicCaret *)self inputView];
+      [inputView3 startTouchAtPoint:{v6, v8}];
 
       [(UIDynamicCaret *)self displayAlternatives:0];
     }
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v15 = a3;
-  v6 = a4;
-  if (v6)
+  endedCopy = ended;
+  eventCopy = event;
+  if (eventCopy)
   {
-    [UIApp _enableTouchCoalescingWithCount:{objc_msgSend(v15, "count")}];
+    [UIApp _enableTouchCoalescingWithCount:{objc_msgSend(endedCopy, "count")}];
   }
 
-  v7 = [v15 anyObject];
-  [v7 locationInView:self];
+  anyObject = [endedCopy anyObject];
+  [anyObject locationInView:self];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(UIDynamicCaret *)self inputView];
-  v13 = [v12 isInking];
+  inputView = [(UIDynamicCaret *)self inputView];
+  isInking = [inputView isInking];
 
-  if (v13)
+  if (isInking)
   {
-    v14 = [(UIDynamicCaret *)self inputView];
-    [v14 endTouchAtPoint:{v9, v11}];
+    inputView2 = [(UIDynamicCaret *)self inputView];
+    [inputView2 endTouchAtPoint:{v9, v11}];
   }
 
   else
@@ -300,28 +300,28 @@ void __33__UIDynamicCaret_backgroundImage__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)isDeleteCandidate:(id)a3
+- (BOOL)isDeleteCandidate:(id)candidate
 {
-  v3 = [a3 candidate];
-  v4 = [v3 isEqualToString:@"DELETE"];
+  candidate = [candidate candidate];
+  v4 = [candidate isEqualToString:@"DELETE"];
 
   return v4;
 }
 
-- (void)setCandidates:(id)a3 inlineText:(id)a4 inlineRect:(CGRect)a5 maxX:(double)a6 layout:(BOOL)a7
+- (void)setCandidates:(id)candidates inlineText:(id)text inlineRect:(CGRect)rect maxX:(double)x layout:(BOOL)layout
 {
-  v8 = a3;
+  candidatesCopy = candidates;
   self->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
-  v9 = [(UIDynamicCaret *)self candidateSet];
-  v10 = [v9 candidates];
-  v11 = [v10 firstObject];
-  v12 = [v11 candidate];
+  candidateSet = [(UIDynamicCaret *)self candidateSet];
+  candidates = [candidateSet candidates];
+  firstObject = [candidates firstObject];
+  candidate = [firstObject candidate];
 
-  v13 = [v8 candidates];
-  v14 = [v13 firstObject];
-  LODWORD(v11) = [(UIDynamicCaret *)self isDeleteCandidate:v14];
+  candidates2 = [candidatesCopy candidates];
+  firstObject2 = [candidates2 firstObject];
+  LODWORD(firstObject) = [(UIDynamicCaret *)self isDeleteCandidate:firstObject2];
 
-  if (v11)
+  if (firstObject)
   {
     if (self->_justDeleted)
     {
@@ -330,21 +330,21 @@ void __33__UIDynamicCaret_backgroundImage__block_invoke(uint64_t a1)
 
     else
     {
-      v15 = [MEMORY[0x1E695DF70] array];
-      v16 = [(UIDynamicCaret *)self candidateSet];
-      v17 = [v16 candidates];
+      array = [MEMORY[0x1E695DF70] array];
+      candidateSet2 = [(UIDynamicCaret *)self candidateSet];
+      candidates3 = [candidateSet2 candidates];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __66__UIDynamicCaret_setCandidates_inlineText_inlineRect_maxX_layout___block_invoke;
       v20[3] = &unk_1E7117AF0;
-      v18 = v15;
+      v18 = array;
       v21 = v18;
-      [v17 enumerateObjectsUsingBlock:v20];
+      [candidates3 enumerateObjectsUsingBlock:v20];
 
-      v19 = [(UIDynamicCaret *)self alternativesView];
-      [v19 setButtonLabels:v18];
+      alternativesView = [(UIDynamicCaret *)self alternativesView];
+      [alternativesView setButtonLabels:v18];
 
-      if ([v12 length])
+      if ([candidate length])
       {
         [(UIDynamicCaret *)self displayAlternatives:1];
       }
@@ -355,7 +355,7 @@ void __33__UIDynamicCaret_backgroundImage__block_invoke(uint64_t a1)
 
   else
   {
-    [(UIDynamicCaret *)self setCandidateSet:v8];
+    [(UIDynamicCaret *)self setCandidateSet:candidatesCopy];
     [(UIDynamicCaret *)self displayAlternatives:0];
     self->_justDeleted = 0;
   }
@@ -379,9 +379,9 @@ void __66__UIDynamicCaret_setCandidates_inlineText_inlineRect_maxX_layout___bloc
 
   else
   {
-    v4 = [(UIDynamicCaret *)self candidateSet];
-    v5 = [v4 candidates];
-    v6 = [v5 objectAtIndex:self->_selectedIndex];
+    candidateSet = [(UIDynamicCaret *)self candidateSet];
+    candidates = [candidateSet candidates];
+    v6 = [candidates objectAtIndex:self->_selectedIndex];
 
     if ([(UIDynamicCaret *)self isDeleteCandidate:v6])
     {

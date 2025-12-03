@@ -7,19 +7,19 @@
 
 - (id)pdfURL
 {
-  v2 = [(ICFallbackPDFAttachmentView *)self attachment];
-  v3 = [v2 fallbackPDFURL];
+  attachment = [(ICFallbackPDFAttachmentView *)self attachment];
+  fallbackPDFURL = [attachment fallbackPDFURL];
 
-  return v3;
+  return fallbackPDFURL;
 }
 
 - (BOOL)needToStartRender
 {
-  v3 = [(ICFallbackPDFAttachmentView *)self superview];
-  if (v3)
+  superview = [(ICFallbackPDFAttachmentView *)self superview];
+  if (superview)
   {
-    v4 = [(ICFallbackPDFAttachmentView *)self window];
-    if (v4 && ![(ICPDFAttachmentView *)self isRendering])
+    window = [(ICFallbackPDFAttachmentView *)self window];
+    if (window && ![(ICPDFAttachmentView *)self isRendering])
     {
       v5 = ![(ICPDFAttachmentView *)self availableImageIsAcceptable];
     }

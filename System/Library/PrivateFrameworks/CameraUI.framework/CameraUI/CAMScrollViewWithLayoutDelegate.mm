@@ -10,8 +10,8 @@
   v4.receiver = self;
   v4.super_class = CAMScrollViewWithLayoutDelegate;
   [(CAMScrollViewWithLayoutDelegate *)&v4 layoutSubviews];
-  v3 = [(CAMScrollViewWithLayoutDelegate *)self layoutDelegate];
-  [v3 scrollViewDidLayoutSubviews:self];
+  layoutDelegate = [(CAMScrollViewWithLayoutDelegate *)self layoutDelegate];
+  [layoutDelegate scrollViewDidLayoutSubviews:self];
 }
 
 - (CAMScrollViewLayoutDelegate)layoutDelegate

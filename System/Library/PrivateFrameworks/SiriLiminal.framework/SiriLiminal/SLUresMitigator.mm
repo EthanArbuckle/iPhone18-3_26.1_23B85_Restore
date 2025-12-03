@@ -1,9 +1,9 @@
 @interface SLUresMitigator
-- (SLUresMitigator)initWithConfig:(id)a3 bnnsIrPath:(id)a4 error:(id *)a5;
-- (id)_processInputFeats:(id)a3;
-- (void)_createInputOriginThresholdMap:(id)a3;
+- (SLUresMitigator)initWithConfig:(id)config bnnsIrPath:(id)path error:(id *)error;
+- (id)_processInputFeats:(id)feats;
+- (void)_createInputOriginThresholdMap:(id)map;
 - (void)dealloc;
-- (void)processInputFeats:(id)a3 completion:(id)a4;
+- (void)processInputFeats:(id)feats completion:(id)completion;
 @end
 
 @implementation SLUresMitigator
@@ -25,16 +25,16 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_processInputFeats:(id)a3
+- (id)_processInputFeats:(id)feats
 {
   v91 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 speechPackage];
+  featsCopy = feats;
+  speechPackage = [featsCopy speechPackage];
 
-  if (v5)
+  if (speechPackage)
   {
-    v6 = [v4 speechPackage];
-    v7 = [SLASRFeatureExtractor extractASRFaturesFrom:v6];
+    speechPackage2 = [featsCopy speechPackage];
+    v7 = [SLASRFeatureExtractor extractASRFaturesFrom:speechPackage2];
   }
 
   else
@@ -42,11 +42,11 @@
     v7 = 0;
   }
 
-  v8 = [v4 inputOrigin];
+  inputOrigin = [featsCopy inputOrigin];
 
-  if (v8)
+  if (inputOrigin)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     inputOpsMap = self->_inputOpsMap;
     v77[0] = MEMORY[0x277D85DD0];
     v77[1] = 3221225472;
@@ -54,9 +54,9 @@
     v77[3] = &unk_279C0EBC0;
     v11 = v7;
     v78 = v11;
-    v12 = v4;
+    v12 = featsCopy;
     v79 = v12;
-    v52 = v9;
+    v52 = dictionary;
     v80 = v52;
     [(NSDictionary *)inputOpsMap enumerateKeysAndObjectsUsingBlock:v77];
     uresModel = self->_uresModel;
@@ -67,8 +67,8 @@
     if (!v14 || v15)
     {
       v43 = MEMORY[0x277CCACA8];
-      v44 = [v15 localizedDescription];
-      v45 = [v43 stringWithFormat:@"Failed to get output with error %@", v44];
+      localizedDescription = [v15 localizedDescription];
+      v45 = [v43 stringWithFormat:@"Failed to get output with error %@", localizedDescription];
 
       v46 = SLLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -118,8 +118,8 @@
       v59 = &v64;
       [(NSDictionary *)outputMap enumerateKeysAndObjectsUsingBlock:v53];
       thresholdMap = self->_thresholdMap;
-      v18 = [v12 inputOrigin];
-      v50 = [(NSMutableDictionary *)thresholdMap objectForKeyedSubscript:v18];
+      inputOrigin2 = [v12 inputOrigin];
+      v50 = [(NSMutableDictionary *)thresholdMap objectForKeyedSubscript:inputOrigin2];
 
       if (v50)
       {
@@ -173,8 +173,8 @@
 
       v81[0] = @"numAsrRecords";
       v32 = MEMORY[0x277CCABB0];
-      v33 = [v11 latticePathMaxScores];
-      v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(v33, "count")}];
+      latticePathMaxScores = [v11 latticePathMaxScores];
+      v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(latticePathMaxScores, "count")}];
       v82[0] = v34;
       v81[1] = @"numTokensTopPath";
       v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "topLatticePathTokenCount")}];
@@ -651,22 +651,22 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createInputOriginThresholdMap:(id)a3
+- (void)_createInputOriginThresholdMap:(id)map
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  mapCopy = map;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   thresholdMap = self->_thresholdMap;
-  self->_thresholdMap = v5;
+  self->_thresholdMap = dictionary;
 
-  if (v4)
+  if (mapCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __50__SLUresMitigator__createInputOriginThresholdMap___block_invoke;
     v10[3] = &unk_279C0EB98;
     v10[4] = self;
-    [v4 enumerateKeysAndObjectsUsingBlock:v10];
+    [mapCopy enumerateKeysAndObjectsUsingBlock:v10];
     v7 = SLLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
@@ -711,12 +711,12 @@ void __50__SLUresMitigator__createInputOriginThresholdMap___block_invoke(uint64_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processInputFeats:(id)a3 completion:(id)a4
+- (void)processInputFeats:(id)feats completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CEF0E8];
   v8 = *MEMORY[0x277CEF0E8];
-  v9 = a3;
+  featsCopy = feats;
   v10 = os_signpost_id_generate(v8);
   v11 = *v7;
   v12 = v11;
@@ -726,7 +726,7 @@ void __50__SLUresMitigator__createInputOriginThresholdMap___block_invoke(uint64_
     _os_signpost_emit_with_name_impl(&dword_26754E000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "UresMitigator_ProcessFeats", &unk_2675B2B36, buf, 2u);
   }
 
-  v13 = [(SLUresMitigator *)self _processInputFeats:v9];
+  v13 = [(SLUresMitigator *)self _processInputFeats:featsCopy];
 
   v14 = *v7;
   v15 = v14;
@@ -736,17 +736,17 @@ void __50__SLUresMitigator__createInputOriginThresholdMap___block_invoke(uint64_
     _os_signpost_emit_with_name_impl(&dword_26754E000, v15, OS_SIGNPOST_INTERVAL_END, v10, "UresMitigator_ProcessFeats", &unk_2675B2B36, v16, 2u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, v13);
+    completionCopy[2](completionCopy, v13);
   }
 }
 
-- (SLUresMitigator)initWithConfig:(id)a3 bnnsIrPath:(id)a4 error:(id *)a5
+- (SLUresMitigator)initWithConfig:(id)config bnnsIrPath:(id)path error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  configCopy = config;
+  pathCopy = path;
   v51.receiver = self;
   v51.super_class = SLUresMitigator;
   v10 = [(SLUresMitigator *)&v51 init];
@@ -774,7 +774,7 @@ LABEL_25:
   }
 
   v50 = 0;
-  v16 = [[SLUresMitigatorConfigDecoder alloc] initWithConfigFile:v8 errOut:&v50];
+  v16 = [[SLUresMitigatorConfigDecoder alloc] initWithConfigFile:configCopy errOut:&v50];
   v17 = v50;
   if (v17)
   {
@@ -792,17 +792,17 @@ LABEL_25:
     goto LABEL_11;
   }
 
-  v21 = [(SLUresMitigatorConfigDecoder *)v16 getModelFile];
-  if (v9)
+  getModelFile = [(SLUresMitigatorConfigDecoder *)v16 getModelFile];
+  if (pathCopy)
   {
-    v22 = v9;
+    v22 = pathCopy;
 
-    v21 = v22;
+    getModelFile = v22;
   }
 
-  v48 = [(SLUresMitigatorConfigDecoder *)v16 getBnnsIrWeightFile];
+  getBnnsIrWeightFile = [(SLUresMitigatorConfigDecoder *)v16 getBnnsIrWeightFile];
   v49 = 0;
-  v23 = [MEMORY[0x277D01768] provideComputeBackendWithModelFile:v21 separateWeight:? error:?];
+  v23 = [MEMORY[0x277D01768] provideComputeBackendWithModelFile:getModelFile separateWeight:? error:?];
   v24 = v49;
   uresModel = v10->_uresModel;
   v10->_uresModel = v23;
@@ -813,20 +813,20 @@ LABEL_25:
     if (!v24)
     {
 LABEL_21:
-      v34 = [(SLUresMitigatorConfigDecoder *)v16 getVersion];
+      getVersion = [(SLUresMitigatorConfigDecoder *)v16 getVersion];
       version = v10->_version;
-      v10->_version = v34;
+      v10->_version = getVersion;
 
-      v36 = [(SLUresMitigatorConfigDecoder *)v16 getInputOpsMap];
+      getInputOpsMap = [(SLUresMitigatorConfigDecoder *)v16 getInputOpsMap];
       inputOpsMap = v10->_inputOpsMap;
-      v10->_inputOpsMap = v36;
+      v10->_inputOpsMap = getInputOpsMap;
 
-      v38 = [(SLUresMitigatorConfigDecoder *)v16 getOutputMap];
+      getOutputMap = [(SLUresMitigatorConfigDecoder *)v16 getOutputMap];
       outputMap = v10->_outputMap;
-      v10->_outputMap = v38;
+      v10->_outputMap = getOutputMap;
 
-      v40 = [(SLUresMitigatorConfigDecoder *)v16 getSupportedInputOrigins];
-      [(SLUresMitigator *)v10 _createInputOriginThresholdMap:v40];
+      getSupportedInputOrigins = [(SLUresMitigatorConfigDecoder *)v16 getSupportedInputOrigins];
+      [(SLUresMitigator *)v10 _createInputOriginThresholdMap:getSupportedInputOrigins];
 
       v41 = *MEMORY[0x277CEF0E8];
       v42 = v41;
@@ -841,10 +841,10 @@ LABEL_21:
   }
 
   v45 = v12;
-  v46 = v21;
+  v46 = getModelFile;
   v27 = MEMORY[0x277CCACA8];
-  v28 = [v24 localizedDescription];
-  v29 = [v27 stringWithFormat:@"Unable to create model with error %@", v28];
+  localizedDescription = [v24 localizedDescription];
+  v29 = [v27 stringWithFormat:@"Unable to create model with error %@", localizedDescription];
 
   v30 = MEMORY[0x277CCA9B8];
   v52 = @"reason";
@@ -863,8 +863,8 @@ LABEL_21:
     _os_log_error_impl(&dword_26754E000, v32, OS_LOG_TYPE_ERROR, "%s %{public}@", buf, 0x16u);
   }
 
-  v21 = v46;
-  if (!a5)
+  getModelFile = v46;
+  if (!error)
   {
 
     v12 = v45;
@@ -872,7 +872,7 @@ LABEL_21:
   }
 
   v33 = v26;
-  *a5 = v26;
+  *error = v26;
 
 LABEL_11:
   v20 = 0;

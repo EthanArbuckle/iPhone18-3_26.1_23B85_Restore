@@ -1,20 +1,20 @@
 @interface SUUIHorizontalListCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (SUUIHorizontalListCollectionViewCell)initWithFrame:(CGRect)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (SUUIHorizontalListCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SUUIHorizontalListCollectionViewCell
 
-- (SUUIHorizontalListCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIHorizontalListCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SUUIHorizontalListCollectionViewCell;
-  v3 = [(SUUICollectionViewCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICollectionViewCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [SUUIHorizontalListView alloc];
@@ -23,31 +23,31 @@
     horizontalList = v3->_horizontalList;
     v3->_horizontalList = v5;
 
-    v7 = [(SUUIHorizontalListCollectionViewCell *)v3 contentView];
-    [v7 addSubview:v3->_horizontalList];
+    contentView = [(SUUIHorizontalListCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_horizontalList];
   }
 
   return v3;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   horizontalList = self->_horizontalList;
-  v5 = a3;
-  v6 = [v5 backgroundColor];
-  [(SUUIViewReuseView *)horizontalList setBackgroundColor:v6];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SUUIViewReuseView *)horizontalList setBackgroundColor:backgroundColor];
 
   v7.receiver = self;
   v7.super_class = SUUIHorizontalListCollectionViewCell;
-  [(SUUICollectionViewCell *)&v7 applyLayoutAttributes:v5];
+  [(SUUICollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -58,9 +58,9 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [SUUIHorizontalListView sizeThatFitsWidth:a4 viewElement:a5 context:a3];
+  [SUUIHorizontalListView sizeThatFitsWidth:element viewElement:context context:width];
   result.height = v6;
   result.width = v5;
   return result;
@@ -72,19 +72,19 @@
   v5.super_class = SUUIHorizontalListCollectionViewCell;
   [(SUUICollectionViewCell *)&v5 layoutSubviews];
   horizontalList = self->_horizontalList;
-  v4 = [(SUUIHorizontalListCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SUUIHorizontalListCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SUUIHorizontalListView *)horizontalList setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   horizontalList = self->_horizontalList;
-  v5 = a3;
-  [(SUUIViewReuseView *)horizontalList setBackgroundColor:v5];
+  colorCopy = color;
+  [(SUUIViewReuseView *)horizontalList setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIHorizontalListCollectionViewCell;
-  [(SUUICollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SUUICollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 - (UIEdgeInsets)contentInset

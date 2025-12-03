@@ -1,44 +1,44 @@
 @interface USUIInterventionScreenModel
-+ (id)actionsForScreen:(int64_t)a3 workflow:(int64_t)a4 type:(int64_t)a5 options:(int64_t)a6;
-+ (id)actionsForScreenOne:(int64_t)a3 type:(int64_t)a4 options:(int64_t)a5;
-+ (id)actionsForScreenTwo:(int64_t)a3 type:(int64_t)a4;
-+ (id)bulletsForScreen:(int64_t)a3 workflow:(int64_t)a4 type:(int64_t)a5;
-+ (id)bulletsForScreenOneOver13:(int64_t)a3;
-+ (id)bulletsForScreenOneUnder13:(int64_t)a3;
-+ (id)bulletsForScreenTwoOver13:(int64_t)a3;
-+ (id)bulletsForScreenTwoUnder13:(int64_t)a3;
-+ (id)emojiForScreen:(int64_t)a3;
-+ (id)imageNameForScreen:(int64_t)a3;
-+ (id)modelForScreen:(int64_t)a3 workflow:(int64_t)a4 type:(int64_t)a5 options:(int64_t)a6;
-+ (id)titleForScreen:(int64_t)a3 workflow:(int64_t)a4;
++ (id)actionsForScreen:(int64_t)screen workflow:(int64_t)workflow type:(int64_t)type options:(int64_t)options;
++ (id)actionsForScreenOne:(int64_t)one type:(int64_t)type options:(int64_t)options;
++ (id)actionsForScreenTwo:(int64_t)two type:(int64_t)type;
++ (id)bulletsForScreen:(int64_t)screen workflow:(int64_t)workflow type:(int64_t)type;
++ (id)bulletsForScreenOneOver13:(int64_t)over13;
++ (id)bulletsForScreenOneUnder13:(int64_t)under13;
++ (id)bulletsForScreenTwoOver13:(int64_t)over13;
++ (id)bulletsForScreenTwoUnder13:(int64_t)under13;
++ (id)emojiForScreen:(int64_t)screen;
++ (id)imageNameForScreen:(int64_t)screen;
++ (id)modelForScreen:(int64_t)screen workflow:(int64_t)workflow type:(int64_t)type options:(int64_t)options;
++ (id)titleForScreen:(int64_t)screen workflow:(int64_t)workflow;
 @end
 
 @implementation USUIInterventionScreenModel
 
-+ (id)modelForScreen:(int64_t)a3 workflow:(int64_t)a4 type:(int64_t)a5 options:(int64_t)a6
++ (id)modelForScreen:(int64_t)screen workflow:(int64_t)workflow type:(int64_t)type options:(int64_t)options
 {
   v11 = objc_opt_new();
-  v12 = [a1 titleForScreen:a3 workflow:a4];
+  v12 = [self titleForScreen:screen workflow:workflow];
   [v11 setTitle:v12];
 
-  v13 = [a1 imageNameForScreen:a3];
+  v13 = [self imageNameForScreen:screen];
   [v11 setImageName:v13];
 
-  v14 = [a1 emojiForScreen:a3];
+  v14 = [self emojiForScreen:screen];
   [v11 setEmoji:v14];
 
-  v15 = [a1 bulletsForScreen:a3 workflow:a4 type:a5];
+  v15 = [self bulletsForScreen:screen workflow:workflow type:type];
   [v11 setBullets:v15];
 
-  v16 = [a1 actionsForScreen:a3 workflow:a4 type:a5 options:a6];
+  v16 = [self actionsForScreen:screen workflow:workflow type:type options:options];
   [v11 setActions:v16];
 
   return v11;
 }
 
-+ (id)titleForScreen:(int64_t)a3 workflow:(int64_t)a4
++ (id)titleForScreen:(int64_t)screen workflow:(int64_t)workflow
 {
-  if (a3 == 1)
+  if (screen == 1)
   {
     v4 = MEMORY[0x277D4D390];
     v5 = @"RECEIVE_SECOND_EDU_SCREEN_TITLE";
@@ -46,13 +46,13 @@
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!screen)
   {
     v4 = MEMORY[0x277D4D390];
     v5 = @"RECEIVE_FIRST_EDU_SCREEN_TITLE";
     v6 = @"SEND_FIRST_EDU_SCREEN_TITLE";
 LABEL_5:
-    if (a4 == 1)
+    if (workflow == 1)
     {
       v7 = v6;
     }
@@ -62,15 +62,15 @@ LABEL_5:
       v7 = v5;
     }
 
-    a1 = [v4 localizedStringForKey:v7];
+    self = [v4 localizedStringForKey:v7];
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)imageNameForScreen:(int64_t)a3
++ (id)imageNameForScreen:(int64_t)screen
 {
-  if (a3)
+  if (screen)
   {
     return @"header-monocle";
   }
@@ -81,9 +81,9 @@ LABEL_5:
   }
 }
 
-+ (id)emojiForScreen:(int64_t)a3
++ (id)emojiForScreen:(int64_t)screen
 {
-  if (a3)
+  if (screen)
   {
     return @"🧐";
   }
@@ -94,19 +94,19 @@ LABEL_5:
   }
 }
 
-+ (id)bulletsForScreen:(int64_t)a3 workflow:(int64_t)a4 type:(int64_t)a5
++ (id)bulletsForScreen:(int64_t)screen workflow:(int64_t)workflow type:(int64_t)type
 {
-  if (a3 == 1)
+  if (screen == 1)
   {
-    if (a5 == 1)
+    if (type == 1)
     {
-      v6 = [a1 bulletsForScreenTwoOver13:a4];
+      v6 = [self bulletsForScreenTwoOver13:workflow];
       goto LABEL_12;
     }
 
-    if (!a5)
+    if (!type)
     {
-      v6 = [a1 bulletsForScreenTwoUnder13:a4];
+      v6 = [self bulletsForScreenTwoUnder13:workflow];
       goto LABEL_12;
     }
 
@@ -115,23 +115,23 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (a3)
+  if (screen)
   {
     goto LABEL_13;
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
-    v6 = [a1 bulletsForScreenOneOver13:a4];
+    v6 = [self bulletsForScreenOneOver13:workflow];
     goto LABEL_12;
   }
 
-  if (a5)
+  if (type)
   {
     goto LABEL_9;
   }
 
-  v6 = [a1 bulletsForScreenOneUnder13:a4];
+  v6 = [self bulletsForScreenOneUnder13:workflow];
 LABEL_12:
   v5 = v6;
 LABEL_13:
@@ -139,11 +139,11 @@ LABEL_13:
   return v5;
 }
 
-+ (id)bulletsForScreenOneUnder13:(int64_t)a3
++ (id)bulletsForScreenOneUnder13:(int64_t)under13
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v3 = a3 == 1;
-  if (a3 == 1)
+  v3 = under13 == 1;
+  if (under13 == 1)
   {
     v4 = @"SEND_FIRST_EDU_SCREEN_POINT_1";
   }
@@ -188,11 +188,11 @@ LABEL_13:
   return v13;
 }
 
-+ (id)bulletsForScreenOneOver13:(int64_t)a3
++ (id)bulletsForScreenOneOver13:(int64_t)over13
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v3 = a3 == 1;
-  if (a3 == 1)
+  v3 = over13 == 1;
+  if (over13 == 1)
   {
     v4 = @"SEND_FIRST_EDU_SCREEN_POINT_1_OVER_13";
   }
@@ -225,11 +225,11 @@ LABEL_13:
   return v10;
 }
 
-+ (id)bulletsForScreenTwoUnder13:(int64_t)a3
++ (id)bulletsForScreenTwoUnder13:(int64_t)under13
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v3 = a3 == 1;
-  if (a3 == 1)
+  v3 = under13 == 1;
+  if (under13 == 1)
   {
     v4 = @"SEND_SECOND_EDU_SCREEN_POINT_1";
   }
@@ -262,11 +262,11 @@ LABEL_13:
   return v10;
 }
 
-+ (id)bulletsForScreenTwoOver13:(int64_t)a3
++ (id)bulletsForScreenTwoOver13:(int64_t)over13
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v3 = a3 == 1;
-  if (a3 == 1)
+  v3 = over13 == 1;
+  if (over13 == 1)
   {
     v4 = @"SEND_SECOND_EDU_SCREEN_POINT_1_OVER_13";
   }
@@ -299,21 +299,21 @@ LABEL_13:
   return v10;
 }
 
-+ (id)actionsForScreen:(int64_t)a3 workflow:(int64_t)a4 type:(int64_t)a5 options:(int64_t)a6
++ (id)actionsForScreen:(int64_t)screen workflow:(int64_t)workflow type:(int64_t)type options:(int64_t)options
 {
-  if (a3 == 1)
+  if (screen == 1)
   {
-    v6 = [a1 actionsForScreenTwo:a4 type:a5];
+    v6 = [self actionsForScreenTwo:workflow type:type];
   }
 
   else
   {
-    if (a3)
+    if (screen)
     {
       goto LABEL_6;
     }
 
-    v6 = [a1 actionsForScreenOne:a4 type:a5 options:a6];
+    v6 = [self actionsForScreenOne:workflow type:type options:options];
   }
 
   a2 = v6;
@@ -322,17 +322,17 @@ LABEL_6:
   return a2;
 }
 
-+ (id)actionsForScreenOne:(int64_t)a3 type:(int64_t)a4 options:(int64_t)a5
++ (id)actionsForScreenOne:(int64_t)one type:(int64_t)type options:(int64_t)options
 {
-  v5 = a5;
+  optionsCopy = options;
   v16[3] = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277D4D390] localizedStringForKey:{@"NOT_NOW", a4}];
+  v6 = [MEMORY[0x277D4D390] localizedStringForKey:{@"NOT_NOW", type}];
   v7 = [USUIInterventionScreenAction action:v6 primary:1 actionID:1];
 
   v8 = [MEMORY[0x277D4D390] localizedStringForKey:@"IM_SURE"];
   v9 = [USUIInterventionScreenAction action:v8 primary:0 actionID:3];
 
-  if (v5)
+  if (optionsCopy)
   {
     v11 = [MEMORY[0x277D4D390] localizedStringForKey:@"MORE_HELP"];
     v12 = [USUIInterventionScreenAction action:v11 primary:0 actionID:2];
@@ -355,11 +355,11 @@ LABEL_6:
   return v10;
 }
 
-+ (id)actionsForScreenTwo:(int64_t)a3 type:(int64_t)a4
++ (id)actionsForScreenTwo:(int64_t)two type:(int64_t)type
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v5 = a3 == 1;
-  if (a3 == 1)
+  v5 = two == 1;
+  if (two == 1)
   {
     v6 = @"CANCEL";
   }
@@ -382,7 +382,7 @@ LABEL_6:
   v8 = [MEMORY[0x277D4D390] localizedStringForKey:v6];
   v9 = [USUIInterventionScreenAction action:v8 primary:1 actionID:4];
 
-  if (a4)
+  if (type)
   {
     v10 = @"MESSAGE_SOMEONE";
   }

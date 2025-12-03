@@ -1,18 +1,18 @@
 @interface PLModelMigrationAction_UpdateDayHighlightDateTitles
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_UpdateDayHighlightDateTitles
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLModelMigrationActionBackground *)self resumeMarker];
-  v8 = v6;
-  if (v7)
+  contextCopy = context;
+  resumeMarker = [(PLModelMigrationActionBackground *)self resumeMarker];
+  v8 = contextCopy;
+  if (resumeMarker)
   {
-    v9 = [MEMORY[0x1E695DFF8] URLWithString:v7];
+    v9 = [MEMORY[0x1E695DFF8] URLWithString:resumeMarker];
   }
 
   else
@@ -20,8 +20,8 @@
     v9 = 0;
   }
 
-  v10 = [v8 persistentStoreCoordinator];
-  v11 = [v10 managedObjectIDForURIRepresentation:v9];
+  persistentStoreCoordinator = [v8 persistentStoreCoordinator];
+  v11 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v9];
 
   v12 = MEMORY[0x1E695D5E0];
   v13 = +[PLPhotosHighlight entityName];
@@ -68,10 +68,10 @@
   [(PLModelMigrationActionBackground *)self finalizeProgress];
   v27 = v26;
   v28 = v27;
-  if (v25 != 1 && a4)
+  if (v25 != 1 && error)
   {
     v29 = v27;
-    *a4 = v28;
+    *error = v28;
   }
 
   return v25;

@@ -1,36 +1,36 @@
 @interface _UISearchBarSearchFieldBackgroundView
-- (_UISearchBarSearchFieldBackgroundView)initWithFrame:(CGRect)a3 active:(BOOL)a4;
-- (_UISearchBarSearchFieldBackgroundView)initWithFrame:(CGRect)a3 active:(BOOL)a4 updateView:(BOOL)a5;
-- (id)_automaticFillColorForActive:(BOOL)a3;
-- (id)_fillColor:(BOOL)a3;
-- (id)_strokeColor:(BOOL)a3;
-- (id)_ultralightFillColorForOverlayFilter:(BOOL)a3 active:(BOOL)a4;
+- (_UISearchBarSearchFieldBackgroundView)initWithFrame:(CGRect)frame active:(BOOL)active;
+- (_UISearchBarSearchFieldBackgroundView)initWithFrame:(CGRect)frame active:(BOOL)active updateView:(BOOL)view;
+- (id)_automaticFillColorForActive:(BOOL)active;
+- (id)_fillColor:(BOOL)color;
+- (id)_strokeColor:(BOOL)color;
+- (id)_ultralightFillColorForOverlayFilter:(BOOL)filter active:(BOOL)active;
 - (void)layoutSubviews;
-- (void)setBackgroundContainer:(BOOL)a3;
-- (void)setBarStyle:(int64_t)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setSearchBarStyle:(unint64_t)a3;
-- (void)setShowingCursor:(BOOL)a3;
-- (void)setShowingTouch:(BOOL)a3;
+- (void)setBackgroundContainer:(BOOL)container;
+- (void)setBarStyle:(int64_t)style;
+- (void)setCornerRadius:(double)radius;
+- (void)setSearchBarStyle:(unint64_t)style;
+- (void)setShowingCursor:(BOOL)cursor;
+- (void)setShowingTouch:(BOOL)touch;
 @end
 
 @implementation _UISearchBarSearchFieldBackgroundView
 
-- (_UISearchBarSearchFieldBackgroundView)initWithFrame:(CGRect)a3 active:(BOOL)a4
+- (_UISearchBarSearchFieldBackgroundView)initWithFrame:(CGRect)frame active:(BOOL)active
 {
   v5.receiver = self;
   v5.super_class = _UISearchBarSearchFieldBackgroundView;
-  return [(_UITextFieldRoundedRectBackgroundViewNeue *)&v5 _initWithFrame:a4 active:0 usesSinglePixelLineWidth:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(_UITextFieldRoundedRectBackgroundViewNeue *)&v5 _initWithFrame:active active:0 usesSinglePixelLineWidth:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (_UISearchBarSearchFieldBackgroundView)initWithFrame:(CGRect)a3 active:(BOOL)a4 updateView:(BOOL)a5
+- (_UISearchBarSearchFieldBackgroundView)initWithFrame:(CGRect)frame active:(BOOL)active updateView:(BOOL)view
 {
   v6.receiver = self;
   v6.super_class = _UISearchBarSearchFieldBackgroundView;
-  return [(_UITextFieldRoundedRectBackgroundViewNeue *)&v6 _initWithFrame:a4 active:0 usesSinglePixelLineWidth:0 updateView:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(_UITextFieldRoundedRectBackgroundViewNeue *)&v6 _initWithFrame:active active:0 usesSinglePixelLineWidth:0 updateView:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -40,8 +40,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(UIView *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  subviews = [(UIView *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -53,66 +53,66 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v10 setCornerRadius:a3];
+          [v10 setCornerRadius:radius];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setBarStyle:(int64_t)a3
+- (void)setBarStyle:(int64_t)style
 {
-  if (self->_barStyle != a3)
+  if (self->_barStyle != style)
   {
-    self->_barStyle = a3;
+    self->_barStyle = style;
     [(_UITextFieldRoundedRectBackgroundViewNeue *)self updateView];
   }
 }
 
-- (void)setSearchBarStyle:(unint64_t)a3
+- (void)setSearchBarStyle:(unint64_t)style
 {
-  if (self->_searchBarStyle != a3)
+  if (self->_searchBarStyle != style)
   {
-    self->_searchBarStyle = a3;
+    self->_searchBarStyle = style;
     [(_UITextFieldRoundedRectBackgroundViewNeue *)self updateView];
   }
 }
 
-- (void)setShowingTouch:(BOOL)a3
+- (void)setShowingTouch:(BOOL)touch
 {
-  if (self->_showingTouch != a3)
+  if (self->_showingTouch != touch)
   {
-    self->_showingTouch = a3;
+    self->_showingTouch = touch;
     [(_UITextFieldRoundedRectBackgroundViewNeue *)self updateView];
   }
 }
 
-- (void)setShowingCursor:(BOOL)a3
+- (void)setShowingCursor:(BOOL)cursor
 {
-  if (self->_showingCursor != a3)
+  if (self->_showingCursor != cursor)
   {
-    self->_showingCursor = a3;
+    self->_showingCursor = cursor;
     [(_UITextFieldRoundedRectBackgroundViewNeue *)self updateView];
   }
 }
 
-- (id)_strokeColor:(BOOL)a3
+- (id)_strokeColor:(BOOL)color
 {
-  v3 = a3;
+  colorCopy = color;
   if ([(_UISearchBarSearchFieldBackgroundView *)self barStyle])
   {
     v5 = 0;
@@ -122,24 +122,24 @@
   {
     v7.receiver = self;
     v7.super_class = _UISearchBarSearchFieldBackgroundView;
-    v5 = [(_UITextFieldRoundedRectBackgroundViewNeue *)&v7 _strokeColor:v3];
+    v5 = [(_UITextFieldRoundedRectBackgroundViewNeue *)&v7 _strokeColor:colorCopy];
   }
 
   return v5;
 }
 
-- (id)_fillColor:(BOOL)a3
+- (id)_fillColor:(BOOL)color
 {
   if (self->_backgroundContainer)
   {
     goto LABEL_2;
   }
 
-  v4 = a3;
-  v6 = [(UIView *)self traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  colorCopy = color;
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v7 == 3)
+  if (userInterfaceIdiom == 3)
   {
     v8 = +[UIColor _carSystemQuaternaryColor];
 LABEL_35:
@@ -147,28 +147,28 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v9 = [(_UISearchBarSearchFieldBackgroundView *)self searchBarStyle];
-  if (v9 > 2009)
+  searchBarStyle = [(_UISearchBarSearchFieldBackgroundView *)self searchBarStyle];
+  if (searchBarStyle > 2009)
   {
-    switch(v9)
+    switch(searchBarStyle)
     {
       case 2010:
-        v18 = [(UIView *)self layer];
-        v19 = [v18 compositingFilter];
-        v20 = [v19 type];
-        v21 = v20;
+        layer = [(UIView *)self layer];
+        compositingFilter = [layer compositingFilter];
+        type = [compositingFilter type];
+        v21 = type;
         v22 = *MEMORY[0x1E6979CD0];
         goto LABEL_17;
       case 2020:
-        v10 = !v4;
+        v10 = !colorCopy;
         v11 = 0.063;
         v12 = 0.18;
         goto LABEL_22;
       case 2030:
-        v13 = [(UIView *)self layer];
-        v14 = [v13 compositingFilter];
-        v15 = [v14 type];
-        v16 = [v15 isEqualToString:*MEMORY[0x1E6979CD0]];
+        layer2 = [(UIView *)self layer];
+        compositingFilter2 = [layer2 compositingFilter];
+        type2 = [compositingFilter2 type];
+        v16 = [type2 isEqualToString:*MEMORY[0x1E6979CD0]];
 
         if (v16)
         {
@@ -182,7 +182,7 @@ LABEL_35:
           v12 = 0.04;
         }
 
-        if (!v4)
+        if (!colorCopy)
         {
           v12 = v17;
         }
@@ -201,26 +201,26 @@ LABEL_2:
         goto LABEL_36;
       }
 
-      v24 = !v4;
+      v24 = !colorCopy;
       v25 = 0.105;
       v26 = 0.3;
       goto LABEL_49;
     }
 
     v29 = UISearchBarUsesModernAppearance();
-    v18 = [(UIView *)self layer];
-    v19 = [v18 compositingFilter];
-    v20 = [v19 type];
-    v21 = v20;
+    layer = [(UIView *)self layer];
+    compositingFilter = [layer compositingFilter];
+    type = [compositingFilter type];
+    v21 = type;
     if (!v29)
     {
-      v32 = [v20 isEqualToString:*MEMORY[0x1E6979850]];
+      v32 = [type isEqualToString:*MEMORY[0x1E6979850]];
 
-      v24 = !v4;
+      v24 = !colorCopy;
       if (v32)
       {
         v12 = 1.0;
-        if (!v4)
+        if (!colorCopy)
         {
           v12 = 0.35;
         }
@@ -248,17 +248,17 @@ LABEL_49:
 
     v22 = *MEMORY[0x1E6979CD0];
 LABEL_17:
-    v23 = [v20 isEqualToString:v22];
+    v23 = [type isEqualToString:v22];
 
-    v8 = [(_UISearchBarSearchFieldBackgroundView *)self _ultralightFillColorForOverlayFilter:v23 != 0 active:v4];
+    v8 = [(_UISearchBarSearchFieldBackgroundView *)self _ultralightFillColorForOverlayFilter:v23 != 0 active:colorCopy];
     goto LABEL_35;
   }
 
-  if (v9 >= 2)
+  if (searchBarStyle >= 2)
   {
-    if (v9 == 2005)
+    if (searchBarStyle == 2005)
     {
-      v8 = [(_UISearchBarSearchFieldBackgroundView *)self _automaticFillColorForActive:v4];
+      v8 = [(_UISearchBarSearchFieldBackgroundView *)self _automaticFillColorForActive:colorCopy];
       goto LABEL_35;
     }
 
@@ -267,7 +267,7 @@ LABEL_17:
 
   if ([(_UISearchBarSearchFieldBackgroundView *)self barStyle])
   {
-    v10 = !v4;
+    v10 = !colorCopy;
     v11 = 0.105;
     v12 = 0.3;
 LABEL_22:
@@ -284,7 +284,7 @@ LABEL_34:
 
   if (dyld_program_sdk_at_least())
   {
-    if (v4)
+    if (colorCopy)
     {
       +[UIColor tertiarySystemFillColor];
     }
@@ -299,7 +299,7 @@ LABEL_34:
 
   v30 = +[UIColor _textFieldBackgroundColor];
   v3 = v30;
-  if (!v4)
+  if (!colorCopy)
   {
     v31 = [v30 colorWithAlphaComponent:0.35];
 
@@ -311,9 +311,9 @@ LABEL_36:
   return v3;
 }
 
-- (id)_automaticFillColorForActive:(BOOL)a3
+- (id)_automaticFillColorForActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     if ([(_UISearchBarSearchFieldBackgroundView *)self showingTouch])
     {
@@ -343,30 +343,30 @@ LABEL_36:
   return v4;
 }
 
-- (id)_ultralightFillColorForOverlayFilter:(BOOL)a3 active:(BOOL)a4
+- (id)_ultralightFillColorForOverlayFilter:(BOOL)filter active:(BOOL)active
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(_UISearchBarSearchFieldBackgroundView *)self showingTouch];
+  activeCopy = active;
+  filterCopy = filter;
+  showingTouch = [(_UISearchBarSearchFieldBackgroundView *)self showingTouch];
   v7 = 0.72;
-  if (v6)
+  if (showingTouch)
   {
     v7 = 0.8;
   }
 
   v8 = 0.05;
-  if (v6)
+  if (showingTouch)
   {
     v8 = 0.16;
   }
 
-  if (!v5)
+  if (!filterCopy)
   {
     v7 = v8;
   }
 
   v9 = 0.35;
-  if (v4)
+  if (activeCopy)
   {
     v9 = 1.0;
   }
@@ -374,11 +374,11 @@ LABEL_36:
   return [UIColor colorWithRed:0.0 green:0.0274509804 blue:0.0980392157 alpha:v9 * v7];
 }
 
-- (void)setBackgroundContainer:(BOOL)a3
+- (void)setBackgroundContainer:(BOOL)container
 {
-  if (self->_backgroundContainer != a3)
+  if (self->_backgroundContainer != container)
   {
-    self->_backgroundContainer = a3;
+    self->_backgroundContainer = container;
     [(_UITextFieldRoundedRectBackgroundViewNeue *)self updateView];
   }
 }
@@ -402,8 +402,8 @@ LABEL_36:
     v25.size.width = width;
     v25.size.height = height;
     MidY = CGRectGetMidY(v25);
-    v9 = [(UIView *)self subviews];
-    v10 = [v9 copy];
+    subviews = [(UIView *)self subviews];
+    v10 = [subviews copy];
 
     v19 = 0u;
     v20 = 0u;

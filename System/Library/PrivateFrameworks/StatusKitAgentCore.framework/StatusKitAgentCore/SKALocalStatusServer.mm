@@ -1,7 +1,7 @@
 @interface SKALocalStatusServer
 - (SKALocalStatusServer)init;
 - (void)objcShutdown;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)service:(id)service devicesChanged:(id)changed;
 @end
 
 @implementation SKALocalStatusServer
@@ -22,9 +22,9 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v6, &closure #1 in SKALocalStatusServer.objcShutdown()partial apply, v8);
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  if (a4)
+  if (changed)
   {
     v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -34,7 +34,7 @@
     v5 = 0;
   }
 
-  v6 = a3;
+  serviceCopy = service;
 
   specialized SKALocalStatusServer.service(_:devicesChanged:)(v5);
 }

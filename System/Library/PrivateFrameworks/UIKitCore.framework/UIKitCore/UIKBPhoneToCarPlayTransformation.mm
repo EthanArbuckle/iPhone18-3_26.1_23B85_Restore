@@ -1,12 +1,12 @@
 @interface UIKBPhoneToCarPlayTransformation
 + (id)cachedKeys;
-+ (id)cachedKeysForTransformationContext:(id)a3;
-+ (id)fillFrame:(CGRect)a3 withEmptyKeyNamed:(id)a4 inKeyplane:(id)a5 withTransformationContext:(id)a6;
-+ (id)transform10KeyKeyplane:(id)a3 withTransformationContext:(id)a4;
-+ (id)transformKeyplane:(id)a3 withTransformationContext:(id)a4;
-+ (id)transformQWERTYKeyplane:(id)a3 withTransformationContext:(id)a4;
-+ (unint64_t)columnBySwappingForLeftHandDriveIfNeeded:(unint64_t)a3;
-+ (void)removeAddedKeysFromKeyplane:(id)a3;
++ (id)cachedKeysForTransformationContext:(id)context;
++ (id)fillFrame:(CGRect)frame withEmptyKeyNamed:(id)named inKeyplane:(id)keyplane withTransformationContext:(id)context;
++ (id)transform10KeyKeyplane:(id)keyplane withTransformationContext:(id)context;
++ (id)transformKeyplane:(id)keyplane withTransformationContext:(id)context;
++ (id)transformQWERTYKeyplane:(id)keyplane withTransformationContext:(id)context;
++ (unint64_t)columnBySwappingForLeftHandDriveIfNeeded:(unint64_t)needed;
++ (void)removeAddedKeysFromKeyplane:(id)keyplane;
 @end
 
 @implementation UIKBPhoneToCarPlayTransformation
@@ -16,9 +16,9 @@
   v2 = __cachedKeys;
   if (!__cachedKeys)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v4 = __cachedKeys;
-    __cachedKeys = v3;
+    __cachedKeys = dictionary;
 
     v2 = __cachedKeys;
   }
@@ -26,32 +26,32 @@
   return v2;
 }
 
-+ (unint64_t)columnBySwappingForLeftHandDriveIfNeeded:(unint64_t)a3
++ (unint64_t)columnBySwappingForLeftHandDriveIfNeeded:(unint64_t)needed
 {
   IsRightHandDrive = UIKeyboardCarPlayIsRightHandDrive();
-  if ((a3 & 0xFFFFFFFFFFFFFFFCLL) == 4)
+  if ((needed & 0xFFFFFFFFFFFFFFFCLL) == 4)
   {
-    v5 = a3 - 3;
+    neededCopy = needed - 3;
   }
 
   else
   {
-    v5 = a3;
+    neededCopy = needed;
   }
 
-  if (a3 - 1 <= 2)
+  if (needed - 1 <= 2)
   {
-    v6 = a3 | 4;
+    v6 = needed | 4;
   }
 
   else
   {
-    v6 = v5;
+    v6 = neededCopy;
   }
 
   if (IsRightHandDrive)
   {
-    return a3;
+    return needed;
   }
 
   else
@@ -60,26 +60,26 @@
   }
 }
 
-+ (id)fillFrame:(CGRect)a3 withEmptyKeyNamed:(id)a4 inKeyplane:(id)a5 withTransformationContext:(id)a6
++ (id)fillFrame:(CGRect)frame withEmptyKeyNamed:(id)named inKeyplane:(id)keyplane withTransformationContext:(id)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [a1 cachedKeys];
-  v17 = [v16 objectForKey:v13];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  namedCopy = named;
+  keyplaneCopy = keyplane;
+  contextCopy = context;
+  cachedKeys = [self cachedKeys];
+  v17 = [cachedKeys objectForKey:namedCopy];
 
   if (v17)
   {
-    [v14 removeKey:v17];
+    [keyplaneCopy removeKey:v17];
   }
 
   else
   {
-    v18 = [v14 firstCachedKeyWithName:@"Return-Key"];
+    v18 = [keyplaneCopy firstCachedKeyWithName:@"Return-Key"];
     v17 = [v18 copy];
   }
 
@@ -89,37 +89,37 @@
   [v17 setRepresentedString:&stru_1EFB14550];
   [v17 setFrame:{x, y, width, height}];
   [v17 setPaddedFrame:{x, y, width, height}];
-  [v17 setName:v13];
-  v19 = [a1 cachedKeys];
-  v20 = [v17 name];
-  [v19 setObject:v17 forKey:v20];
+  [v17 setName:namedCopy];
+  cachedKeys2 = [self cachedKeys];
+  name = [v17 name];
+  [cachedKeys2 setObject:v17 forKey:name];
 
   [v17 frame];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [v15 screenTraits];
+  screenTraits = [contextCopy screenTraits];
 
-  v30 = [v29 screen];
-  [v30 scale];
-  [v14 insertKey:v17 withFrame:0 andShiftKeys:v22 scale:{v24, v26, v28, v31}];
+  screen = [screenTraits screen];
+  [screen scale];
+  [keyplaneCopy insertKey:v17 withFrame:0 andShiftKeys:v22 scale:{v24, v26, v28, v31}];
 
   return v17;
 }
 
-+ (void)removeAddedKeysFromKeyplane:(id)a3
++ (void)removeAddedKeysFromKeyplane:(id)keyplane
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyplaneCopy = keyplane;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a1 cachedKeys];
-  v6 = [v5 allValues];
+  cachedKeys = [self cachedKeys];
+  allValues = [cachedKeys allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -131,47 +131,47 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        [v4 removeKey:*(*(&v11 + 1) + 8 * v10++)];
+        [keyplaneCopy removeKey:*(*(&v11 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-+ (id)transformQWERTYKeyplane:(id)a3 withTransformationContext:(id)a4
++ (id)transformQWERTYKeyplane:(id)keyplane withTransformationContext:(id)context
 {
   v116 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v78 = a1;
-  [a1 removeAddedKeysFromKeyplane:v6];
-  v79 = v6;
-  [v6 keyUnionFrame];
+  keyplaneCopy = keyplane;
+  contextCopy = context;
+  selfCopy = self;
+  [self removeAddedKeysFromKeyplane:keyplaneCopy];
+  v79 = keyplaneCopy;
+  [keyplaneCopy keyUnionFrame];
   v9 = v8;
   v11 = v10;
-  v80 = v7;
-  v12 = [v7 screenTraits];
-  v13 = [v12 screen];
-  [v13 scale];
+  v80 = contextCopy;
+  screenTraits = [contextCopy screenTraits];
+  screen = [screenTraits screen];
+  [screen scale];
 
-  [v6 frame];
-  v14 = [v6 numberOfRows];
-  LODWORD(v6) = UIKeyboardAlwaysShowCandidateBarForCurrentInputMode();
+  [keyplaneCopy frame];
+  numberOfRows = [keyplaneCopy numberOfRows];
+  LODWORD(keyplaneCopy) = UIKeyboardAlwaysShowCandidateBarForCurrentInputMode();
   [v80 keyboardSize];
-  v77 = v6;
-  UICeilToScale((v15 - v9) / (v14 + v6), 1.0);
-  v17 = v16 <= 0.0 || v14 == 0;
+  v77 = keyplaneCopy;
+  UICeilToScale((v15 - v9) / (numberOfRows + keyplaneCopy), 1.0);
+  v17 = v16 <= 0.0 || numberOfRows == 0;
   if (!v17 && v11 > 0.0)
   {
     v18 = v16;
-    v19 = [v79 keys];
+    keys = [v79 keys];
     [v80 keyboardSize];
     v21 = v20 / v11;
     if (v20 / v11 != 1.0)
@@ -180,7 +180,7 @@
       v113 = 0u;
       v110 = 0u;
       v111 = 0u;
-      v22 = v19;
+      v22 = keys;
       v23 = [v22 countByEnumeratingWithState:&v110 objects:v115 count:16];
       if (v23)
       {
@@ -200,8 +200,8 @@
             v30 = v29;
             v32 = v31;
             v34 = v33;
-            v35 = [v26 shape];
-            v36 = [v35 copy];
+            shape = [v26 shape];
+            v36 = [shape copy];
 
             [v36 setFrame:{v21 * v28, v30, v21 * v32, v34}];
             [v26 setShape:v36];
@@ -220,14 +220,14 @@
     v107 = __Block_byref_object_copy__153;
     v108 = __Block_byref_object_dispose__153;
     v109 = 0;
-    v37 = [v19 sortedArrayUsingComparator:&__block_literal_global_445];
+    v37 = [keys sortedArrayUsingComparator:&__block_literal_global_445];
 
-    v38 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __86__UIKBPhoneToCarPlayTransformation_transformQWERTYKeyplane_withTransformationContext___block_invoke_2;
     aBlock[3] = &unk_1E70F6200;
-    v39 = v38;
+    v39 = array;
     v103 = v39;
     v40 = _Block_copy(aBlock);
     v99[0] = MEMORY[0x1E69E9820];
@@ -248,7 +248,7 @@
     v93[2] = __86__UIKBPhoneToCarPlayTransformation_transformQWERTYKeyplane_withTransformationContext___block_invoke_4;
     v93[3] = &unk_1E711AA98;
     v96 = v98;
-    v97 = v78;
+    v97 = selfCopy;
     v74 = v79;
     v94 = v74;
     v83 = v80;
@@ -345,8 +345,8 @@
     v44[2](v44, 0, 1);
     if (v77)
     {
-      v67 = [v78 cachedKeys];
-      v68 = [v67 objectForKey:@"Candidate-Selection"];
+      cachedKeys = [selfCopy cachedKeys];
+      v68 = [cachedKeys objectForKey:@"Candidate-Selection"];
 
       if (!v68)
       {
@@ -363,9 +363,9 @@
       [v68 setFrame:{0.0, v9, v70, v18}];
       [v68 frame];
       [v68 setPaddedFrame:?];
-      v71 = [v78 cachedKeys];
-      v72 = [v68 name];
-      [v71 setObject:v68 forKey:v72];
+      cachedKeys2 = [selfCopy cachedKeys];
+      name = [v68 name];
+      [cachedKeys2 setObject:v68 forKey:name];
 
       [v68 frame];
       [v75 insertKey:v68 withFrame:0 andShiftKeys:? scale:?];
@@ -555,18 +555,18 @@ void __86__UIKBPhoneToCarPlayTransformation_transformQWERTYKeyplane_withTransfor
   }
 }
 
-+ (id)transform10KeyKeyplane:(id)a3 withTransformationContext:(id)a4
++ (id)transform10KeyKeyplane:(id)keyplane withTransformationContext:(id)context
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 keyUnionFrame];
+  keyplaneCopy = keyplane;
+  contextCopy = context;
+  [keyplaneCopy keyUnionFrame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v7 keyboardSize];
+  [contextCopy keyboardSize];
   v15 = v14;
-  [v7 keyboardSize];
+  [contextCopy keyboardSize];
   v49 = round((v16 - v9) * 0.25);
   v50 = v9;
   if (v49 > 0.0)
@@ -574,12 +574,12 @@ void __86__UIKBPhoneToCarPlayTransformation_transformQWERTYKeyplane_withTransfor
     v17 = v15 * 0.125;
     if (v15 * 0.125 > 0.0)
     {
-      v18 = [v6 keys];
+      keys = [keyplaneCopy keys];
       v51 = 0u;
       v52 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v19 = [v18 countByEnumeratingWithState:&v51 objects:v55 count:16];
+      v19 = [keys countByEnumeratingWithState:&v51 objects:v55 count:16];
       if (v19)
       {
         v20 = v19;
@@ -592,12 +592,12 @@ void __86__UIKBPhoneToCarPlayTransformation_transformQWERTYKeyplane_withTransfor
           {
             if (*v52 != v23)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(keys);
             }
 
             v25 = *(*(&v51 + 1) + 8 * i);
-            v26 = [v25 shape];
-            v27 = [v26 copy];
+            shape = [v25 shape];
+            v27 = [shape copy];
 
             [v27 frame];
             v29 = v28;
@@ -613,20 +613,20 @@ void __86__UIKBPhoneToCarPlayTransformation_transformQWERTYKeyplane_withTransfor
             {
               v36 = v50 + v49 * round(v31 / v22) + 1.0;
               v37 = v49 * round(v35 / v22);
-              v38 = [a1 columnBySwappingForLeftHandDriveIfNeeded:vcvtad_u64_f64(v29 / v21)];
+              v38 = [self columnBySwappingForLeftHandDriveIfNeeded:vcvtad_u64_f64(v29 / v21)];
               UIRoundToScale(v17 * v38, 1.0);
               v40 = v39;
               v41 = round(v33 / v21);
-              v42 = [v25 interactionType];
+              interactionType = [v25 interactionType];
               v43 = 3.0;
-              if (v42 != 3)
+              if (interactionType != 3)
               {
                 v43 = v41;
               }
 
               UIRoundToScale(v17 * (v43 + v38), 1.0);
               v45 = v44;
-              [v7 keyboardSize];
+              [contextCopy keyboardSize];
               if (v45 < v46)
               {
                 v46 = v45;
@@ -639,7 +639,7 @@ void __86__UIKBPhoneToCarPlayTransformation_transformQWERTYKeyplane_withTransfor
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v51 objects:v55 count:16];
+          v20 = [keys countByEnumeratingWithState:&v51 objects:v55 count:16];
         }
 
         while (v20);
@@ -647,46 +647,46 @@ void __86__UIKBPhoneToCarPlayTransformation_transformQWERTYKeyplane_withTransfor
     }
   }
 
-  return v6;
+  return keyplaneCopy;
 }
 
-+ (id)transformKeyplane:(id)a3 withTransformationContext:(id)a4
++ (id)transformKeyplane:(id)keyplane withTransformationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 visualStyling];
-  v9 = BYTE2(v8);
-  [v6 setVisualStyling:v8 & 0xFFFFFFFFFFFFFFC0 | 3];
+  keyplaneCopy = keyplane;
+  contextCopy = context;
+  visualStyling = [keyplaneCopy visualStyling];
+  v9 = BYTE2(visualStyling);
+  [keyplaneCopy setVisualStyling:visualStyling & 0xFFFFFFFFFFFFFFC0 | 3];
   if (v9 <= 0x22u && ((1 << v9) & 0x600000002) != 0)
   {
-    v11 = [a1 transform10KeyKeyplane:v6 withTransformationContext:v7];
+    v11 = [self transform10KeyKeyplane:keyplaneCopy withTransformationContext:contextCopy];
 LABEL_6:
     v12 = v11;
 
-    v6 = v12;
+    keyplaneCopy = v12;
     goto LABEL_7;
   }
 
-  v14 = [v6 name];
-  v15 = [v14 containsString:@"iPhone"];
+  name = [keyplaneCopy name];
+  v15 = [name containsString:@"iPhone"];
 
   if (v15)
   {
-    v11 = [a1 transformQWERTYKeyplane:v6 withTransformationContext:v7];
+    v11 = [self transformQWERTYKeyplane:keyplaneCopy withTransformationContext:contextCopy];
     goto LABEL_6;
   }
 
 LABEL_7:
 
-  return v6;
+  return keyplaneCopy;
 }
 
-+ (id)cachedKeysForTransformationContext:(id)a3
++ (id)cachedKeysForTransformationContext:(id)context
 {
-  v3 = [a1 cachedKeys];
-  v4 = [v3 allValues];
+  cachedKeys = [self cachedKeys];
+  allValues = [cachedKeys allValues];
 
-  return v4;
+  return allValues;
 }
 
 @end

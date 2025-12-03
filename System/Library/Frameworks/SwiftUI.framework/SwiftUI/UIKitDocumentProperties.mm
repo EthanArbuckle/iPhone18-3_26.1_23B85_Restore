@@ -1,11 +1,11 @@
 @interface UIKitDocumentProperties
-- (_TtC7SwiftUI23UIKitDocumentProperties)initWithTitle:(id)a3 iconProvider:(id)a4 imageProvider:(id)a5;
-- (_TtC7SwiftUI23UIKitDocumentProperties)initWithURL:(id)a3;
+- (_TtC7SwiftUI23UIKitDocumentProperties)initWithTitle:(id)title iconProvider:(id)provider imageProvider:(id)imageProvider;
+- (_TtC7SwiftUI23UIKitDocumentProperties)initWithURL:(id)l;
 @end
 
 @implementation UIKitDocumentProperties
 
-- (_TtC7SwiftUI23UIKitDocumentProperties)initWithURL:(id)a3
+- (_TtC7SwiftUI23UIKitDocumentProperties)initWithURL:(id)l
 {
   ObjectType = swift_getObjectType();
   v5 = type metadata accessor for URL();
@@ -23,27 +23,27 @@
   return v12;
 }
 
-- (_TtC7SwiftUI23UIKitDocumentProperties)initWithTitle:(id)a3 iconProvider:(id)a4 imageProvider:(id)a5
+- (_TtC7SwiftUI23UIKitDocumentProperties)initWithTitle:(id)title iconProvider:(id)provider imageProvider:(id)imageProvider
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (title)
   {
     v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = v11;
-    v13 = a4;
-    v14 = a5;
-    a3 = MEMORY[0x18D00C850](v10, v12);
+    providerCopy = provider;
+    imageProviderCopy = imageProvider;
+    title = MEMORY[0x18D00C850](v10, v12);
   }
 
   else
   {
-    v15 = a4;
-    v16 = a5;
+    providerCopy2 = provider;
+    imageProviderCopy2 = imageProvider;
   }
 
   v19.receiver = self;
   v19.super_class = ObjectType;
-  v17 = [(UIDocumentProperties *)&v19 initWithTitle:a3 iconProvider:a4 imageProvider:a5];
+  v17 = [(UIDocumentProperties *)&v19 initWithTitle:title iconProvider:provider imageProvider:imageProvider];
 
   return v17;
 }

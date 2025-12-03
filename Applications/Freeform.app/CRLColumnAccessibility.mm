@@ -1,31 +1,31 @@
 @interface CRLColumnAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-- (CGRect)crlaxColumnRectForRange:(_NSRange)a3;
-- (CGRect)crlaxGlyphRectForRange:(_NSRange)a3 includingLabel:(BOOL)a4;
++ (id)crlaxCastFrom:(id)from;
+- (CGRect)crlaxColumnRectForRange:(_NSRange)range;
+- (CGRect)crlaxGlyphRectForRange:(_NSRange)range includingLabel:(BOOL)label;
 - (_NSRange)crlaxRange;
-- (_NSRange)crlaxRangeOfLineFragmentAtIndex:(unint64_t)a3;
+- (_NSRange)crlaxRangeOfLineFragmentAtIndex:(unint64_t)index;
 - (unint64_t)crlaxLineCount;
-- (unint64_t)crlaxLineIndexForCharIndex:(unint64_t)a3 eol:(BOOL)a4;
+- (unint64_t)crlaxLineIndexForCharIndex:(unint64_t)index eol:(BOOL)eol;
 @end
 
 @implementation CRLColumnAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (_NSRange)crlaxRange
 {
-  v2 = [(CRLColumnAccessibility *)self crlaxTarget];
-  v3 = [v2 range];
+  crlaxTarget = [(CRLColumnAccessibility *)self crlaxTarget];
+  range = [crlaxTarget range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -34,13 +34,13 @@
 
 - (unint64_t)crlaxLineCount
 {
-  v2 = [(CRLColumnAccessibility *)self crlaxTarget];
-  v3 = [v2 lineCount];
+  crlaxTarget = [(CRLColumnAccessibility *)self crlaxTarget];
+  lineCount = [crlaxTarget lineCount];
 
-  return v3;
+  return lineCount;
 }
 
-- (CGRect)crlaxColumnRectForRange:(_NSRange)a3
+- (CGRect)crlaxColumnRectForRange:(_NSRange)range
 {
   v13 = 0;
   v14 = &v13;
@@ -54,7 +54,7 @@
   v11[3] = &unk_1018427D8;
   v11[4] = self;
   v11[5] = &v13;
-  v12 = a3;
+  rangeCopy = range;
   if (__CRLAccessibilityPerformSafeBlock(v11))
   {
     abort();
@@ -76,7 +76,7 @@
   return result;
 }
 
-- (CGRect)crlaxGlyphRectForRange:(_NSRange)a3 includingLabel:(BOOL)a4
+- (CGRect)crlaxGlyphRectForRange:(_NSRange)range includingLabel:(BOOL)label
 {
   v15 = 0;
   v16 = &v15;
@@ -90,8 +90,8 @@
   v12[3] = &unk_101845388;
   v12[4] = self;
   v12[5] = &v15;
-  v13 = a3;
-  v14 = a4;
+  rangeCopy = range;
+  labelCopy = label;
   if (__CRLAccessibilityPerformSafeBlock(v12))
   {
     abort();
@@ -113,7 +113,7 @@
   return result;
 }
 
-- (_NSRange)crlaxRangeOfLineFragmentAtIndex:(unint64_t)a3
+- (_NSRange)crlaxRangeOfLineFragmentAtIndex:(unint64_t)index
 {
   v8 = 0;
   v9 = &v8;
@@ -127,7 +127,7 @@
   v7[3] = &unk_10183B670;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
+  v7[6] = index;
   if (__CRLAccessibilityPerformSafeBlock(v7))
   {
     abort();
@@ -143,7 +143,7 @@
   return result;
 }
 
-- (unint64_t)crlaxLineIndexForCharIndex:(unint64_t)a3 eol:(BOOL)a4
+- (unint64_t)crlaxLineIndexForCharIndex:(unint64_t)index eol:(BOOL)eol
 {
   v8 = 0;
   v9 = &v8;
@@ -155,8 +155,8 @@
   v6[3] = &unk_10183B6B8;
   v6[4] = self;
   v6[5] = &v8;
-  v6[6] = a3;
-  v7 = a4;
+  v6[6] = index;
+  eolCopy = eol;
   if (__CRLAccessibilityPerformSafeBlock(v6))
   {
     abort();

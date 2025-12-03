@@ -1,64 +1,64 @@
 @interface PKPeerPaymentRecurringPaymentViewController
-- (PKPeerPaymentRecurringPaymentViewController)initWithContext:(int64_t)a3 peerPaymentService:(id)a4 transactionSourceCollection:(id)a5 familyCollection:(id)a6;
-- (void)preflightWithCompletion:(id)a3;
-- (void)reloadRecurringPaymentsWithCompletion:(id)a3;
-- (void)showDetailsForRecurringPaymentIdentifier:(id)a3;
+- (PKPeerPaymentRecurringPaymentViewController)initWithContext:(int64_t)context peerPaymentService:(id)service transactionSourceCollection:(id)collection familyCollection:(id)familyCollection;
+- (void)preflightWithCompletion:(id)completion;
+- (void)reloadRecurringPaymentsWithCompletion:(id)completion;
+- (void)showDetailsForRecurringPaymentIdentifier:(id)identifier;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentViewController
 
-- (PKPeerPaymentRecurringPaymentViewController)initWithContext:(int64_t)a3 peerPaymentService:(id)a4 transactionSourceCollection:(id)a5 familyCollection:(id)a6
+- (PKPeerPaymentRecurringPaymentViewController)initWithContext:(int64_t)context peerPaymentService:(id)service transactionSourceCollection:(id)collection familyCollection:(id)familyCollection
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
   v24.receiver = self;
   v24.super_class = PKPeerPaymentRecurringPaymentViewController;
   v14 = [(PKDynamicCollectionViewController *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    v14->_context = a3;
-    objc_storeStrong(&v14->_peerPaymentService, a4);
+    v14->_context = context;
+    objc_storeStrong(&v14->_peerPaymentService, service);
     [(PKPeerPaymentService *)v15->_peerPaymentService registerObserver:v15];
     v16 = objc_alloc_init(PKPeerPaymentRecurringPaymentSectionController);
     paymentsSectionController = v15->_paymentsSectionController;
     v15->_paymentsSectionController = v16;
 
-    [(PKPeerPaymentRecurringPaymentSectionController *)v15->_paymentsSectionController setSourceCollection:v12];
-    [(PKPeerPaymentRecurringPaymentSectionController *)v15->_paymentsSectionController setFamilyCollection:v13];
+    [(PKPeerPaymentRecurringPaymentSectionController *)v15->_paymentsSectionController setSourceCollection:collectionCopy];
+    [(PKPeerPaymentRecurringPaymentSectionController *)v15->_paymentsSectionController setFamilyCollection:familyCollectionCopy];
     [(PKPeerPaymentRecurringPaymentSectionController *)v15->_paymentsSectionController setDelegate:v15];
     v18 = objc_alloc_init(PKPeerPaymentRecurringPaymentActionSectionController);
-    v19 = [v11 account];
-    [(PKPeerPaymentRecurringPaymentActionSectionController *)v18 setAccount:v19];
+    account = [serviceCopy account];
+    [(PKPeerPaymentRecurringPaymentActionSectionController *)v18 setAccount:account];
 
-    [(PKPeerPaymentRecurringPaymentActionSectionController *)v18 setSourceCollection:v12];
-    [(PKPeerPaymentRecurringPaymentActionSectionController *)v18 setFamilyCollection:v13];
+    [(PKPeerPaymentRecurringPaymentActionSectionController *)v18 setSourceCollection:collectionCopy];
+    [(PKPeerPaymentRecurringPaymentActionSectionController *)v18 setFamilyCollection:familyCollectionCopy];
     [(PKPeerPaymentRecurringPaymentActionSectionController *)v18 setDelegate:v15];
     v25[0] = v15->_paymentsSectionController;
     v25[1] = v18;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
     [(PKDynamicCollectionViewController *)v15 setSections:v20 animated:0];
 
-    v21 = [(PKPeerPaymentRecurringPaymentViewController *)v15 navigationItem];
+    navigationItem = [(PKPeerPaymentRecurringPaymentViewController *)v15 navigationItem];
     v22 = PKLocalizedPeerPaymentRecurringString(&cfstr_DashboardMoreM.isa);
-    [v21 setTitle:v22];
+    [navigationItem setTitle:v22];
   }
 
   return v15;
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__PKPeerPaymentRecurringPaymentViewController_preflightWithCompletion___block_invoke;
   v6[3] = &unk_1E8010DF8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(PKPeerPaymentRecurringPaymentViewController *)self reloadRecurringPaymentsWithCompletion:v6];
 }
 
@@ -69,10 +69,10 @@ void __71__PKPeerPaymentRecurringPaymentViewController_preflightWithCompletion__
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)showDetailsForRecurringPaymentIdentifier:(id)a3
+- (void)showDetailsForRecurringPaymentIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -93,23 +93,23 @@ void __71__PKPeerPaymentRecurringPaymentViewController_preflightWithCompletion__
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = v4;
+        identifier = [v10 identifier];
+        v12 = identifierCopy;
         v13 = v12;
-        if (v11 == v12)
+        if (identifier == v12)
         {
         }
 
         else
         {
-          if (!v4 || !v11)
+          if (!identifierCopy || !identifier)
           {
 
 LABEL_16:
             continue;
           }
 
-          v14 = [v11 isEqualToString:v12];
+          v14 = [identifier isEqualToString:v12];
 
           if (!v14)
           {
@@ -122,9 +122,9 @@ LABEL_16:
           goto LABEL_16;
         }
 
-        v15 = [v10 sentByMe];
+        sentByMe = [v10 sentByMe];
 
-        if (v15)
+        if (sentByMe)
         {
           [(PKPeerPaymentRecurringPaymentSectionController *)self->_paymentsSectionController didSelectItem:v10];
           goto LABEL_19;
@@ -140,17 +140,17 @@ LABEL_16:
 LABEL_19:
 }
 
-- (void)reloadRecurringPaymentsWithCompletion:(id)a3
+- (void)reloadRecurringPaymentsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   peerPaymentService = self->_peerPaymentService;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__PKPeerPaymentRecurringPaymentViewController_reloadRecurringPaymentsWithCompletion___block_invoke;
   v7[3] = &unk_1E8010DF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(PKPeerPaymentService *)peerPaymentService recurringPaymentsWithCompletion:v7];
 }
 

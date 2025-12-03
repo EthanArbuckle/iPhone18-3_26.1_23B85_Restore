@@ -1,6 +1,6 @@
 @interface VSAccountSaveOperation
 - (VSAccountSaveOperation)init;
-- (VSAccountSaveOperation)initWithUnsavedAccounts:(id)a3 channels:(id)a4 storage:(id)a5;
+- (VSAccountSaveOperation)initWithUnsavedAccounts:(id)accounts channels:(id)channels storage:(id)storage;
 - (void)_startAccountChannelsSaveOperation;
 - (void)_startCredentialSaveOperation;
 - (void)cancel;
@@ -18,21 +18,21 @@
   return 0;
 }
 
-- (VSAccountSaveOperation)initWithUnsavedAccounts:(id)a3 channels:(id)a4 storage:(id)a5
+- (VSAccountSaveOperation)initWithUnsavedAccounts:(id)accounts channels:(id)channels storage:(id)storage
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  accountsCopy = accounts;
+  channelsCopy = channels;
+  storageCopy = storage;
+  if (accountsCopy)
   {
-    if (v9)
+    if (channelsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The channels parameter must not be nil."];
-    if (v10)
+    if (storageCopy)
     {
       goto LABEL_4;
     }
@@ -41,13 +41,13 @@ LABEL_8:
   }
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The accounts parameter must not be nil."];
-  if (!v9)
+  if (!channelsCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v10)
+  if (storageCopy)
   {
     goto LABEL_4;
   }
@@ -60,15 +60,15 @@ LABEL_4:
   v11 = [(VSAccountSaveOperation *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [accountsCopy copy];
     unsavedAccounts = v11->_unsavedAccounts;
     v11->_unsavedAccounts = v12;
 
-    v14 = [v9 copy];
+    v14 = [channelsCopy copy];
     unsavedChannels = v11->_unsavedChannels;
     v11->_unsavedChannels = v14;
 
-    objc_storeStrong(&v11->_storage, a5);
+    objc_storeStrong(&v11->_storage, storage);
     v16 = objc_alloc_init(VSOptional);
     v17 = v11->_result;
     v11->_result = v16;
@@ -89,10 +89,10 @@ LABEL_4:
   }
 
   v4 = [VSCredentialSaveOperation alloc];
-  v5 = [(VSAccountSaveOperation *)self unsavedAccounts];
-  v6 = [(VSAccountSaveOperation *)self storage];
-  v7 = [v6 accountStore];
-  v8 = [(VSCredentialSaveOperation *)v4 initWithUnsavedAccounts:v5 accountStore:v7];
+  unsavedAccounts = [(VSAccountSaveOperation *)self unsavedAccounts];
+  storage = [(VSAccountSaveOperation *)self storage];
+  accountStore = [storage accountStore];
+  v8 = [(VSCredentialSaveOperation *)v4 initWithUnsavedAccounts:unsavedAccounts accountStore:accountStore];
 
   objc_initWeak(buf, self);
   objc_initWeak(&location, v8);
@@ -172,10 +172,10 @@ void __55__VSAccountSaveOperation__startCredentialSaveOperation__block_invoke_3(
   }
 
   v4 = [VSAccountChannelsSaveOperation alloc];
-  v5 = [(VSAccountSaveOperation *)self unsavedChannels];
-  v6 = [(VSAccountSaveOperation *)self storage];
-  v7 = [v6 channelsCenter];
-  v8 = [(VSAccountChannelsSaveOperation *)v4 initWithUnsavedAccountChannels:v5 accountChannelsCenter:v7];
+  unsavedChannels = [(VSAccountSaveOperation *)self unsavedChannels];
+  storage = [(VSAccountSaveOperation *)self storage];
+  channelsCenter = [storage channelsCenter];
+  v8 = [(VSAccountChannelsSaveOperation *)v4 initWithUnsavedAccountChannels:unsavedChannels accountChannelsCenter:channelsCenter];
 
   objc_initWeak(buf, self);
   v9[0] = MEMORY[0x277D85DD0];
@@ -206,8 +206,8 @@ void __60__VSAccountSaveOperation__startAccountChannelsSaveOperation__block_invo
   v4.receiver = self;
   v4.super_class = VSAccountSaveOperation;
   [(VSAsyncOperation *)&v4 cancel];
-  v3 = [(VSAccountSaveOperation *)self currentOperation];
-  [v3 cancel];
+  currentOperation = [(VSAccountSaveOperation *)self currentOperation];
+  [currentOperation cancel];
 }
 
 @end

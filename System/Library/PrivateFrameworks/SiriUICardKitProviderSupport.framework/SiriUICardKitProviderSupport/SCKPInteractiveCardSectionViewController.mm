@@ -29,8 +29,8 @@ uint64_t __62__SCKPInteractiveCardSectionViewController_cardSectionClasses__bloc
   v4.receiver = self;
   v4.super_class = SCKPInteractiveCardSectionViewController;
   [(CRKCardSectionViewController *)&v4 _loadCardSectionView];
-  v3 = [(SCKPInteractiveCardSectionViewController *)self view];
-  [v3 setInterceptsTouches:0];
+  view = [(SCKPInteractiveCardSectionViewController *)self view];
+  [view setInterceptsTouches:0];
 }
 
 @end

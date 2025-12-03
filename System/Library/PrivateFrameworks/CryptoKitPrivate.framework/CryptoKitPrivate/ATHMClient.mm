@@ -1,24 +1,24 @@
 @interface ATHMClient
 - (_TtC16CryptoKitPrivate10ATHMClient)init;
-- (_TtC16CryptoKitPrivate10ATHMClient)initWithKeyCommitmentsData:(id)a3 numBuckets:(int64_t)a4 deploymentID:(id)a5 error:(id *)a6;
+- (_TtC16CryptoKitPrivate10ATHMClient)initWithKeyCommitmentsData:(id)data numBuckets:(int64_t)buckets deploymentID:(id)d error:(id *)error;
 - (id)deploymentID;
-- (id)finalizeWithResponseData:(id)a3 nbuckets:(int64_t)a4 error:(id *)a5;
+- (id)finalizeWithResponseData:(id)data nbuckets:(int64_t)nbuckets error:(id *)error;
 - (id)request;
 @end
 
 @implementation ATHMClient
 
-- (_TtC16CryptoKitPrivate10ATHMClient)initWithKeyCommitmentsData:(id)a3 numBuckets:(int64_t)a4 deploymentID:(id)a5 error:(id *)a6
+- (_TtC16CryptoKitPrivate10ATHMClient)initWithKeyCommitmentsData:(id)data numBuckets:(int64_t)buckets deploymentID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  dCopy = d;
   v10 = sub_1C0D7832C();
   v12 = v11;
 
   v13 = sub_1C0D78A9C();
   v15 = v14;
 
-  return ATHMClient.init(keyCommitmentsData:numBuckets:deploymentID:)(v10, v12, a4, v13, v15);
+  return ATHMClient.init(keyCommitmentsData:numBuckets:deploymentID:)(v10, v12, buckets, v13, v15);
 }
 
 - (id)deploymentID
@@ -34,7 +34,7 @@
 - (id)request
 {
   v2 = *&self->client[OBJC_IVAR____TtC16CryptoKitPrivate10ATHMClient_client + 72];
-  v3 = self;
+  selfCopy = self;
   result = [v2 serializedPublicKey_];
   if (result)
   {
@@ -56,14 +56,14 @@
   return result;
 }
 
-- (id)finalizeWithResponseData:(id)a3 nbuckets:(int64_t)a4 error:(id *)a5
+- (id)finalizeWithResponseData:(id)data nbuckets:(int64_t)nbuckets error:(id *)error
 {
-  v7 = a3;
-  v8 = self;
+  dataCopy = data;
+  selfCopy = self;
   v9 = sub_1C0D7832C();
   v11 = v10;
 
-  v12 = sub_1C0D25DF0(v9, v11, a4);
+  v12 = sub_1C0D25DF0(v9, v11, nbuckets);
   v14 = v13;
 
   sub_1C0CF448C(v9, v11);

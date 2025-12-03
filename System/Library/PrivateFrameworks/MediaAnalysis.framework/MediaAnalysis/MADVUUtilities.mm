@@ -1,18 +1,18 @@
 @interface MADVUUtilities
 + (MADVUUtilities)sharedInstance;
-+ (id)fetchKeyFaceLocalIdentifiersForPhotoLibrary:(id)a3;
-- (BOOL)_addFacesWithFaceBatch:(id)a3 gallery:(id)a4 cancelOrExtendTimeoutBlock:(id)a5 error:(id *)a6;
-- (BOOL)_removeObservationIDs:(id)a3 fromGallery:(id)a4;
-- (BOOL)_resetObservationIDForFaces:(id)a3 fromPhotoLibrary:(id)a4;
-- (BOOL)prepareClusteringWithFaces:(id)a3 gallery:(id)a4 cancelOrExtendTimeoutBlock:(id)a5 error:(id *)a6;
-- (BOOL)removeObservationsWithAssetLocalIdentifiers:(id)a3 gallery:(id)a4 cancelOrExtendTimeoutBlock:(id)a5 error:(id *)a6;
-- (BOOL)synchronizeVUWGallery:(id)a3 withPhotosLibrary:(id)a4 cancelOrExtendTimeoutBlock:(id)a5;
-- (BOOL)updatePersonWithPhotosLibrary:(id)a3 gallery:(id)a4 entityIdentifier:(id)a5 entityClass:(int64_t)a6 observationIDs:(id)a7 taggedPersonUUID:(id)a8 keyFaceLocalIdentifiers:(id)a9 cancelOrExtendTimeoutBlock:(id)a10 error:(id *)a11;
-- (BOOL)updatePersonWithSyndicationLibrary:(id)a3 gallery:(id)a4 entityIdentifier:(id)a5 entityClass:(int64_t)a6 observationIDs:(id)a7 taggedPersonUUID:(id)a8 cancelOrExtendTimeoutBlock:(id)a9 error:(id *)a10;
++ (id)fetchKeyFaceLocalIdentifiersForPhotoLibrary:(id)library;
+- (BOOL)_addFacesWithFaceBatch:(id)batch gallery:(id)gallery cancelOrExtendTimeoutBlock:(id)block error:(id *)error;
+- (BOOL)_removeObservationIDs:(id)ds fromGallery:(id)gallery;
+- (BOOL)_resetObservationIDForFaces:(id)faces fromPhotoLibrary:(id)library;
+- (BOOL)prepareClusteringWithFaces:(id)faces gallery:(id)gallery cancelOrExtendTimeoutBlock:(id)block error:(id *)error;
+- (BOOL)removeObservationsWithAssetLocalIdentifiers:(id)identifiers gallery:(id)gallery cancelOrExtendTimeoutBlock:(id)block error:(id *)error;
+- (BOOL)synchronizeVUWGallery:(id)gallery withPhotosLibrary:(id)library cancelOrExtendTimeoutBlock:(id)block;
+- (BOOL)updatePersonWithPhotosLibrary:(id)library gallery:(id)gallery entityIdentifier:(id)identifier entityClass:(int64_t)class observationIDs:(id)ds taggedPersonUUID:(id)d keyFaceLocalIdentifiers:(id)identifiers cancelOrExtendTimeoutBlock:(id)self0 error:(id *)self1;
+- (BOOL)updatePersonWithSyndicationLibrary:(id)library gallery:(id)gallery entityIdentifier:(id)identifier entityClass:(int64_t)class observationIDs:(id)ds taggedPersonUUID:(id)d cancelOrExtendTimeoutBlock:(id)block error:(id *)self0;
 - (MADVUUtilities)init;
-- (int)_fetchChangedPersonSinceChangeToken:(id)a3 photosLibrary:(id)a4 changedPersonLocalIdentifiers:(id *)a5 changedFaceCropLocalIdentifiers:(id *)a6 latestChangeToken:(id *)a7 cancelOrExtendTimeoutBlock:(id)a8;
-- (void)_dedupeGraphVerifiedPersonsForPerson:(id)a3 photoLibrary:(id)a4;
-- (void)_deleteUnverifiedPersonsWithZeroFaces:(id)a3;
+- (int)_fetchChangedPersonSinceChangeToken:(id)token photosLibrary:(id)library changedPersonLocalIdentifiers:(id *)identifiers changedFaceCropLocalIdentifiers:(id *)localIdentifiers latestChangeToken:(id *)changeToken cancelOrExtendTimeoutBlock:(id)block;
+- (void)_dedupeGraphVerifiedPersonsForPerson:(id)person photoLibrary:(id)library;
+- (void)_deleteUnverifiedPersonsWithZeroFaces:(id)faces;
 @end
 
 @implementation MADVUUtilities
@@ -43,17 +43,17 @@
   return v5;
 }
 
-- (BOOL)_removeObservationIDs:(id)a3 fromGallery:(id)a4
+- (BOOL)_removeObservationIDs:(id)ds fromGallery:(id)gallery
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  galleryCopy = gallery;
   if (MediaAnalysisLogLevel() >= 7)
   {
     v7 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v7))
     {
       *buf = 134217984;
-      v19 = [v5 count];
+      v19 = [dsCopy count];
       _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "[GallerySync] Removing %lu observation(s) from Gallery", buf, 0xCu);
     }
   }
@@ -62,11 +62,11 @@
   v16[1] = 3221225472;
   v16[2] = sub_10018F430;
   v16[3] = &unk_100288168;
-  v8 = v5;
+  v8 = dsCopy;
   v17 = v8;
   v9 = objc_retainBlock(v16);
   v15 = 0;
-  v10 = [v6 mutateAndReturnError:&v15 handler:v9];
+  v10 = [galleryCopy mutateAndReturnError:&v15 handler:v9];
 
   v11 = v15;
   if ((v10 & 1) == 0 && MediaAnalysisLogLevel() >= 3)
@@ -86,16 +86,16 @@
   return v10;
 }
 
-- (BOOL)_resetObservationIDForFaces:(id)a3 fromPhotoLibrary:(id)a4
+- (BOOL)_resetObservationIDForFaces:(id)faces fromPhotoLibrary:(id)library
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10018F8C4;
   v14[3] = &unk_100285BC0;
-  v5 = a3;
-  v15 = v5;
+  facesCopy = faces;
+  v15 = facesCopy;
   v13 = 0;
-  v6 = [a4 performChangesAndWait:v14 error:&v13];
+  v6 = [library performChangesAndWait:v14 error:&v13];
   v7 = v13;
   v8 = MediaAnalysisLogLevel();
   if (v6)
@@ -105,7 +105,7 @@
       v9 = VCPLogToOSLogType[7];
       if (os_log_type_enabled(&_os_log_default, v9))
       {
-        v10 = [v5 count];
+        v10 = [facesCopy count];
         *buf = 134217984;
         v17 = v10;
         v11 = "[GallerySync] Reset %lu vuObservationID(s) in Photos";
@@ -130,19 +130,19 @@ LABEL_8:
   return v6;
 }
 
-- (int)_fetchChangedPersonSinceChangeToken:(id)a3 photosLibrary:(id)a4 changedPersonLocalIdentifiers:(id *)a5 changedFaceCropLocalIdentifiers:(id *)a6 latestChangeToken:(id *)a7 cancelOrExtendTimeoutBlock:(id)a8
+- (int)_fetchChangedPersonSinceChangeToken:(id)token photosLibrary:(id)library changedPersonLocalIdentifiers:(id *)identifiers changedFaceCropLocalIdentifiers:(id *)localIdentifiers latestChangeToken:(id *)changeToken cancelOrExtendTimeoutBlock:(id)block
 {
-  v13 = a3;
-  v14 = a4;
-  v25 = a8;
-  *a5 = 0;
-  *a6 = 0;
-  *a7 = 0;
+  tokenCopy = token;
+  libraryCopy = library;
+  blockCopy = block;
+  *identifiers = 0;
+  *localIdentifiers = 0;
+  *changeToken = 0;
   v15 = objc_alloc_init(PHPersistentChangeFetchRequest);
   [v15 setMaximumChangeThreshold:10000];
-  [v15 setToken:v13];
+  [v15 setToken:tokenCopy];
   v51 = 0;
-  v16 = [v14 fetchPersistentChangesWithRequest:v15 error:&v51];
+  v16 = [libraryCopy fetchPersistentChangesWithRequest:v15 error:&v51];
   v17 = v51;
   if (v17)
   {
@@ -155,7 +155,7 @@ LABEL_8:
         *buf = 138412802;
         *&buf[4] = @"[GallerySync][PersonChangeToken]";
         *&buf[12] = 2112;
-        *&buf[14] = v13;
+        *&buf[14] = tokenCopy;
         *&buf[22] = 2112;
         v53 = v19;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v18, "%@ Failed to fetch Photos changes since %@ (%@); falling back to full scan", buf, 0x20u);
@@ -172,11 +172,11 @@ LABEL_8:
       v21 = VCPLogToOSLogType[6];
       if (os_log_type_enabled(&_os_log_default, v21))
       {
-        v22 = [v16 changeCount];
+        changeCount = [v16 changeCount];
         *buf = 138412546;
         *&buf[4] = @"[GallerySync][PersonChangeToken]";
         *&buf[12] = 1024;
-        *&buf[14] = v22;
+        *&buf[14] = changeCount;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v21, "%@ Evaluating %d changes", buf, 0x12u);
       }
     }
@@ -208,7 +208,7 @@ LABEL_8:
     v28[2] = sub_10018FF64;
     v28[3] = &unk_1002881B8;
     v29 = @"[GallerySync][PersonChangeToken]";
-    v30 = v25;
+    v30 = blockCopy;
     v31 = &v47;
     v32 = buf;
     v33 = &v41;
@@ -224,9 +224,9 @@ LABEL_8:
     v20 = *(v48 + 6);
     if (!v20)
     {
-      *a5 = v42[5];
-      *a6 = v36[5];
-      *a7 = *(*&buf[8] + 40);
+      *identifiers = v42[5];
+      *localIdentifiers = v36[5];
+      *changeToken = *(*&buf[8] + 40);
     }
 
     _Block_object_dispose(&v35, 8);
@@ -244,10 +244,10 @@ LABEL_8:
   return v20;
 }
 
-- (void)_deleteUnverifiedPersonsWithZeroFaces:(id)a3
+- (void)_deleteUnverifiedPersonsWithZeroFaces:(id)faces
 {
-  v4 = a3;
-  if ([v4 count])
+  facesCopy = faces;
+  if ([facesCopy count])
   {
     if (MediaAnalysisLogLevel() >= 6)
     {
@@ -257,22 +257,22 @@ LABEL_8:
         *buf = 138412546;
         v24 = @"[GallerySync][RemoveUnverifiedPerson]";
         v25 = 2048;
-        v26 = [v4 count];
+        v26 = [facesCopy count];
         _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "%@ Deleting %lu 0-face unverified persons", buf, 0x16u);
       }
     }
 
-    v6 = [v4 firstObject];
-    v7 = [v6 photoLibrary];
+    firstObject = [facesCopy firstObject];
+    photoLibrary = [firstObject photoLibrary];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100190770;
     v20[3] = &unk_100288208;
-    v8 = v4;
+    v8 = facesCopy;
     v21 = v8;
     v22 = a2;
     v19 = 0;
-    v9 = [v7 performChangesAndWait:v20 error:&v19];
+    v9 = [photoLibrary performChangesAndWait:v20 error:&v19];
     v10 = v19;
 
     v11 = MediaAnalysisLogLevel();
@@ -329,17 +329,17 @@ LABEL_13:
   }
 }
 
-- (BOOL)synchronizeVUWGallery:(id)a3 withPhotosLibrary:(id)a4 cancelOrExtendTimeoutBlock:(id)a5
+- (BOOL)synchronizeVUWGallery:(id)gallery withPhotosLibrary:(id)library cancelOrExtendTimeoutBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  galleryCopy = gallery;
+  libraryCopy = library;
+  blockCopy = block;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  v11 = [v9 vcp_description];
-  v12 = [NSString stringWithFormat:@"[GallerySync] Syncing VU Service w PL %@", v11];
+  vcp_description = [libraryCopy vcp_description];
+  v12 = [NSString stringWithFormat:@"[GallerySync] Syncing VU Service w PL %@", vcp_description];
 
   v13 = +[MADStateHandler sharedStateHandler];
   [v13 addBreadcrumb:{@"%@", v12}];
@@ -349,35 +349,35 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_1001909CC;
   block[3] = &unk_100288398;
-  v20 = v9;
-  v21 = self;
-  v23 = v10;
+  v20 = libraryCopy;
+  selfCopy = self;
+  v23 = blockCopy;
   v24 = &v25;
-  v22 = v8;
-  v15 = v8;
-  v16 = v10;
-  v17 = v9;
+  v22 = galleryCopy;
+  v15 = galleryCopy;
+  v16 = blockCopy;
+  v17 = libraryCopy;
   dispatch_sync(operationQueue, block);
-  LOBYTE(v10) = *(v26 + 24);
+  LOBYTE(blockCopy) = *(v26 + 24);
 
   _Block_object_dispose(&v25, 8);
-  return v10;
+  return blockCopy;
 }
 
-- (BOOL)_addFacesWithFaceBatch:(id)a3 gallery:(id)a4 cancelOrExtendTimeoutBlock:(id)a5 error:(id *)a6
+- (BOOL)_addFacesWithFaceBatch:(id)batch gallery:(id)gallery cancelOrExtendTimeoutBlock:(id)block error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 firstObject];
-  v13 = [v12 photoLibrary];
+  batchCopy = batch;
+  galleryCopy = gallery;
+  blockCopy = block;
+  firstObject = [batchCopy firstObject];
+  photoLibrary = [firstObject photoLibrary];
 
-  v35 = v10;
-  if (v13)
+  v35 = galleryCopy;
+  if (photoLibrary)
   {
-    v34 = a6;
-    v14 = [v13 vcp_description];
-    v15 = [NSString stringWithFormat:@"[GalleryAddFace][%@]", v14];
+    errorCopy = error;
+    vcp_description = [photoLibrary vcp_description];
+    v15 = [NSString stringWithFormat:@"[GalleryAddFace][%@]", vcp_description];
 
     if (MediaAnalysisLogLevel() >= 6)
     {
@@ -387,19 +387,19 @@ LABEL_13:
         *buf = 138412546;
         v47 = v15;
         v48 = 2048;
-        v49 = [v9 count];
+        v49 = [batchCopy count];
         _os_log_impl(&_mh_execute_header, &_os_log_default, v16, "%@ Adding %lu faces to Gallery", buf, 0x16u);
       }
     }
 
     v45 = PHAssetPropertySetImport;
     v17 = [NSArray arrayWithObjects:&v45 count:1];
-    v18 = [PHAsset fetchAssetsGroupedByFaceUUIDForFaces:v9 fetchPropertySets:v17];
+    v18 = [PHAsset fetchAssetsGroupedByFaceUUIDForFaces:batchCopy fetchPropertySets:v17];
     if ([v18 count])
     {
-      v19 = [v13 librarySpecificFetchOptions];
-      v20 = [v18 allValues];
-      v21 = [PHMoment fetchMomentUUIDByAssetUUIDForAssets:v20 options:v19];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+      allValues = [v18 allValues];
+      v21 = [PHMoment fetchMomentUUIDByAssetUUIDForAssets:allValues options:librarySpecificFetchOptions];
     }
 
     else
@@ -411,18 +411,18 @@ LABEL_13:
     v37[1] = 3221225472;
     v37[2] = sub_10019901C;
     v37[3] = &unk_1002883E8;
-    v27 = v13;
+    v27 = photoLibrary;
     v38 = v27;
-    v39 = v9;
-    v33 = v11;
-    v44 = v11;
-    v24 = v15;
-    v40 = v24;
+    v39 = batchCopy;
+    v33 = blockCopy;
+    v44 = blockCopy;
+    firstObject3 = v15;
+    v40 = firstObject3;
     v25 = v18;
     v41 = v25;
     v28 = v21;
     v42 = v28;
-    v43 = v10;
+    v43 = galleryCopy;
     v29 = objc_retainBlock(v37);
     v36 = 0;
     v26 = [v27 performCancellableChangesAndWait:v29 error:&v36];
@@ -435,20 +435,20 @@ LABEL_13:
         if (os_log_type_enabled(&_os_log_default, v31))
         {
           *buf = 138412546;
-          v47 = v24;
+          v47 = firstObject3;
           v48 = 2112;
           v49 = v30;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v31, "%@ Failed to update face ObservationIDs from Gallery to Photos - %@", buf, 0x16u);
         }
       }
 
-      if (v34)
+      if (errorCopy)
       {
-        *v34 = [v30 copy];
+        *errorCopy = [v30 copy];
       }
     }
 
-    v11 = v33;
+    blockCopy = v33;
   }
 
   else
@@ -458,37 +458,37 @@ LABEL_13:
       v22 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v22))
       {
-        v23 = [v9 firstObject];
+        firstObject2 = [batchCopy firstObject];
         *buf = 138412290;
-        v47 = v23;
+        v47 = firstObject2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[GalleryAddFace] Nil photo library for face %@", buf, 0xCu);
       }
     }
 
-    if (!a6)
+    if (!error)
     {
       v26 = 0;
       goto LABEL_21;
     }
 
     v50 = NSLocalizedDescriptionKey;
-    v24 = [v9 firstObject];
-    v17 = [NSString stringWithFormat:@"[GalleryAddFace] Nil photo library for face %@", v24];
+    firstObject3 = [batchCopy firstObject];
+    v17 = [NSString stringWithFormat:@"[GalleryAddFace] Nil photo library for face %@", firstObject3];
     v51 = v17;
     v25 = [NSDictionary dictionaryWithObjects:&v51 forKeys:&v50 count:1];
     [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v25];
-    *a6 = v26 = 0;
+    *error = v26 = 0;
   }
 
 LABEL_21:
   return v26;
 }
 
-- (BOOL)prepareClusteringWithFaces:(id)a3 gallery:(id)a4 cancelOrExtendTimeoutBlock:(id)a5 error:(id *)a6
+- (BOOL)prepareClusteringWithFaces:(id)faces gallery:(id)gallery cancelOrExtendTimeoutBlock:(id)block error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  facesCopy = faces;
+  galleryCopy = gallery;
+  blockCopy = block;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -504,22 +504,22 @@ LABEL_21:
   v21 = 3221225472;
   v22 = sub_10019A4C4;
   v23 = &unk_100288410;
-  v14 = v10;
+  v14 = facesCopy;
   v24 = v14;
-  v15 = v12;
+  v15 = blockCopy;
   v27 = v15;
   v28 = &v30;
-  v25 = self;
-  v16 = v11;
+  selfCopy = self;
+  v16 = galleryCopy;
   v26 = v16;
   v29 = &v36;
   dispatch_sync(operationQueue, &v20);
-  if (a6)
+  if (error)
   {
     v17 = v31[5];
     if (v17)
     {
-      *a6 = [v17 copy];
+      *error = [v17 copy];
     }
   }
 
@@ -531,10 +531,10 @@ LABEL_21:
   return v18;
 }
 
-- (BOOL)removeObservationsWithAssetLocalIdentifiers:(id)a3 gallery:(id)a4 cancelOrExtendTimeoutBlock:(id)a5 error:(id *)a6
+- (BOOL)removeObservationsWithAssetLocalIdentifiers:(id)identifiers gallery:(id)gallery cancelOrExtendTimeoutBlock:(id)block error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  identifiersCopy = identifiers;
+  galleryCopy = gallery;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -544,12 +544,12 @@ LABEL_21:
   v15[1] = 3221225472;
   v15[2] = sub_10019AA48;
   v15[3] = &unk_100288438;
-  v16 = v9;
-  v17 = v10;
+  v16 = identifiersCopy;
+  v17 = galleryCopy;
   v18 = &v20;
-  v19 = a6;
-  v12 = v10;
-  v13 = v9;
+  errorCopy = error;
+  v12 = galleryCopy;
+  v13 = identifiersCopy;
   dispatch_sync(operationQueue, v15);
   LOBYTE(operationQueue) = *(v21 + 24);
 
@@ -557,19 +557,19 @@ LABEL_21:
   return operationQueue;
 }
 
-- (void)_dedupeGraphVerifiedPersonsForPerson:(id)a3 photoLibrary:(id)a4
+- (void)_dedupeGraphVerifiedPersonsForPerson:(id)person photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 mad_allPersonsFetchOptions];
-  v66 = v5;
+  personCopy = person;
+  libraryCopy = library;
+  mad_allPersonsFetchOptions = [libraryCopy mad_allPersonsFetchOptions];
+  v66 = personCopy;
   v8 = [NSArray arrayWithObjects:&v66 count:1];
-  v9 = [PHPerson fetchPersonsWithLocalIdentifiers:v8 options:v7];
-  v10 = [v9 firstObject];
+  v9 = [PHPerson fetchPersonsWithLocalIdentifiers:v8 options:mad_allPersonsFetchOptions];
+  firstObject = [v9 firstObject];
 
-  if (v10)
+  if (firstObject)
   {
-    if ([v10 verifiedType] == 1 || objc_msgSend(v10, "verifiedType") == 2)
+    if ([firstObject verifiedType] == 1 || objc_msgSend(firstObject, "verifiedType") == 2)
     {
       if (MediaAnalysisLogLevel() >= 7)
       {
@@ -577,21 +577,21 @@ LABEL_21:
         if (os_log_type_enabled(&_os_log_default, v11))
         {
           *buf = 138412290;
-          v62 = v5;
+          v62 = personCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "[VUDedupe] Checking person %@", buf, 0xCu);
         }
       }
 
-      v12 = [v6 mad_allFacesFetchOptions];
+      mad_allFacesFetchOptions = [libraryCopy mad_allFacesFetchOptions];
       v13 = [NSPredicate predicateWithFormat:@"(trainingType = %d) || (trainingType = %d)", 1, 5];
-      [v12 setInternalPredicate:v13];
+      [mad_allFacesFetchOptions setInternalPredicate:v13];
 
       v65[0] = PHFacePropertySetIdentifier;
       v65[1] = PHFacePropertySetPersonBuilder;
       v14 = [NSArray arrayWithObjects:v65 count:2];
-      [v12 setFetchPropertySets:v14];
+      [mad_allFacesFetchOptions setFetchPropertySets:v14];
 
-      v15 = [PHFace fetchFacesForPerson:v10 options:v12];
+      v15 = [PHFace fetchFacesForPerson:firstObject options:mad_allFacesFetchOptions];
       if (![v15 count])
       {
         if (MediaAnalysisLogLevel() >= 3)
@@ -600,7 +600,7 @@ LABEL_21:
           if (os_log_type_enabled(&_os_log_default, v41))
           {
             *buf = 138412290;
-            v62 = v5;
+            v62 = personCopy;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v41, "[VUDedupe] Person has no training face %@; ignoring", buf, 0xCu);
           }
         }
@@ -608,10 +608,10 @@ LABEL_21:
         goto LABEL_44;
       }
 
-      v16 = [v6 librarySpecificFetchOptions];
-      v17 = [PHFaceCrop fetchFaceCropByFaceLocalIdentifierForFaces:v15 fetchOptions:v16];
-      v18 = [v17 allValues];
-      if (![v18 count])
+      librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+      v17 = [PHFaceCrop fetchFaceCropByFaceLocalIdentifierForFaces:v15 fetchOptions:librarySpecificFetchOptions];
+      allValues = [v17 allValues];
+      if (![allValues count])
       {
 LABEL_43:
 
@@ -620,43 +620,43 @@ LABEL_44:
       }
 
       v47 = v17;
-      v48 = v16;
+      v48 = librarySpecificFetchOptions;
       v49 = v15;
-      v50 = v12;
-      v51 = v10;
-      v52 = v5;
-      v53 = v6;
+      v50 = mad_allFacesFetchOptions;
+      v51 = firstObject;
+      v52 = personCopy;
+      v53 = libraryCopy;
       v19 = +[NSMutableArray array];
       v20 = +[NSMutableArray array];
-      if ([v18 count])
+      if ([allValues count])
       {
         v21 = 0;
         do
         {
           v22 = objc_autoreleasePoolPush();
-          v23 = [v18 objectAtIndexedSubscript:v21];
-          v24 = [PHPerson fetchPersonForFaceCrop:v23 options:v7];
-          v25 = [v24 firstObject];
+          v23 = [allValues objectAtIndexedSubscript:v21];
+          v24 = [PHPerson fetchPersonForFaceCrop:v23 options:mad_allPersonsFetchOptions];
+          firstObject2 = [v24 firstObject];
 
-          v26 = [v25 verifiedType];
+          verifiedType = [firstObject2 verifiedType];
           v27 = v19;
-          if (v26 == 1 || (v28 = [v25 verifiedType], v27 = v20, v28 == 2))
+          if (verifiedType == 1 || (v28 = [firstObject2 verifiedType], v27 = v20, v28 == 2))
           {
-            [v27 addObject:v25];
+            [v27 addObject:firstObject2];
           }
 
           objc_autoreleasePoolPop(v22);
           ++v21;
         }
 
-        while (v21 < [v18 count]);
+        while (v21 < [allValues count]);
       }
 
       v29 = [v19 count];
       v30 = [v20 count];
       if (v29)
       {
-        v12 = v50;
+        mad_allFacesFetchOptions = v50;
         if (v30)
         {
           v58[0] = _NSConcreteStackBlock;
@@ -721,7 +721,7 @@ LABEL_40:
 
       else
       {
-        v12 = v50;
+        mad_allFacesFetchOptions = v50;
         if (v30 >= 2)
         {
           v55[0] = _NSConcreteStackBlock;
@@ -780,10 +780,10 @@ LABEL_41:
         }
       }
 
-      v5 = v52;
-      v6 = v53;
-      v10 = v51;
-      v16 = v48;
+      personCopy = v52;
+      libraryCopy = v53;
+      firstObject = v51;
+      librarySpecificFetchOptions = v48;
       v15 = v49;
       v17 = v47;
       goto LABEL_43;
@@ -795,7 +795,7 @@ LABEL_41:
       if (os_log_type_enabled(&_os_log_default, v39))
       {
         *buf = 138412290;
-        v62 = v5;
+        v62 = personCopy;
         v40 = "[VUDedupe] Person %@ is not verified; ignoring";
         goto LABEL_30;
       }
@@ -808,7 +808,7 @@ LABEL_41:
     if (os_log_type_enabled(&_os_log_default, v39))
     {
       *buf = 138412290;
-      v62 = v5;
+      v62 = personCopy;
       v40 = "[VUDedupe] Failed to find person %@; ignoring";
 LABEL_30:
       _os_log_impl(&_mh_execute_header, &_os_log_default, v39, v40, buf, 0xCu);
@@ -818,15 +818,15 @@ LABEL_30:
 LABEL_45:
 }
 
-- (BOOL)updatePersonWithPhotosLibrary:(id)a3 gallery:(id)a4 entityIdentifier:(id)a5 entityClass:(int64_t)a6 observationIDs:(id)a7 taggedPersonUUID:(id)a8 keyFaceLocalIdentifiers:(id)a9 cancelOrExtendTimeoutBlock:(id)a10 error:(id *)a11
+- (BOOL)updatePersonWithPhotosLibrary:(id)library gallery:(id)gallery entityIdentifier:(id)identifier entityClass:(int64_t)class observationIDs:(id)ds taggedPersonUUID:(id)d keyFaceLocalIdentifiers:(id)identifiers cancelOrExtendTimeoutBlock:(id)self0 error:(id *)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  libraryCopy = library;
+  galleryCopy = gallery;
+  identifierCopy = identifier;
+  dsCopy = ds;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  blockCopy = block;
   v45 = 0;
   v46 = &v45;
   v47 = 0x2020000000;
@@ -836,24 +836,24 @@ LABEL_45:
   block[1] = 3221225472;
   block[2] = sub_10019BA18;
   block[3] = &unk_1002884B0;
-  v34 = v19;
-  v35 = v20;
-  v36 = v17;
-  v37 = v21;
-  v38 = v18;
-  v39 = v22;
-  v40 = self;
-  v41 = v23;
-  v43 = a11;
-  v44 = a6;
+  v34 = identifierCopy;
+  v35 = dsCopy;
+  v36 = libraryCopy;
+  v37 = dCopy;
+  v38 = galleryCopy;
+  v39 = identifiersCopy;
+  selfCopy = self;
+  v41 = blockCopy;
+  errorCopy = error;
+  classCopy = class;
   v42 = &v45;
-  v25 = v22;
-  v26 = v18;
-  v27 = v21;
-  v28 = v17;
-  v29 = v20;
-  v30 = v19;
-  v31 = v23;
+  v25 = identifiersCopy;
+  v26 = galleryCopy;
+  v27 = dCopy;
+  v28 = libraryCopy;
+  v29 = dsCopy;
+  v30 = identifierCopy;
+  v31 = blockCopy;
   dispatch_sync(operationQueue, block);
   LOBYTE(operationQueue) = *(v46 + 24);
 
@@ -861,13 +861,13 @@ LABEL_45:
   return operationQueue;
 }
 
-- (BOOL)updatePersonWithSyndicationLibrary:(id)a3 gallery:(id)a4 entityIdentifier:(id)a5 entityClass:(int64_t)a6 observationIDs:(id)a7 taggedPersonUUID:(id)a8 cancelOrExtendTimeoutBlock:(id)a9 error:(id *)a10
+- (BOOL)updatePersonWithSyndicationLibrary:(id)library gallery:(id)gallery entityIdentifier:(id)identifier entityClass:(int64_t)class observationIDs:(id)ds taggedPersonUUID:(id)d cancelOrExtendTimeoutBlock:(id)block error:(id *)self0
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  libraryCopy = library;
+  identifierCopy = identifier;
+  dsCopy = ds;
+  dCopy = d;
+  blockCopy = block;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -877,43 +877,43 @@ LABEL_45:
   v27[1] = 3221225472;
   v27[2] = sub_10019E788;
   v27[3] = &unk_1002884D8;
-  v28 = v17;
-  v29 = v16;
-  v34 = a10;
-  v35 = a6;
-  v32 = v19;
+  v28 = dsCopy;
+  v29 = identifierCopy;
+  errorCopy = error;
+  classCopy = class;
+  v32 = blockCopy;
   v33 = &v36;
-  v30 = v18;
-  v31 = v15;
-  v21 = v15;
-  v22 = v18;
-  v23 = v16;
-  v24 = v17;
-  v25 = v19;
+  v30 = dCopy;
+  v31 = libraryCopy;
+  v21 = libraryCopy;
+  v22 = dCopy;
+  v23 = identifierCopy;
+  v24 = dsCopy;
+  v25 = blockCopy;
   dispatch_sync(operationQueue, v27);
-  LOBYTE(v18) = *(v37 + 24);
+  LOBYTE(dCopy) = *(v37 + 24);
 
   _Block_object_dispose(&v36, 8);
-  return v18;
+  return dCopy;
 }
 
-+ (id)fetchKeyFaceLocalIdentifiersForPhotoLibrary:(id)a3
++ (id)fetchKeyFaceLocalIdentifiersForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v23 = [v3 mad_allPersonsFetchOptionsWithDetectionTypes:0 andVerifiedTypes:&off_1002965D8];
+  libraryCopy = library;
+  v23 = [libraryCopy mad_allPersonsFetchOptionsWithDetectionTypes:0 andVerifiedTypes:&off_1002965D8];
   v4 = [PHPerson fetchPersonsWithOptions:?];
-  v5 = [v3 mad_allFacesFetchOptions];
-  [v5 setIncludeNonvisibleFaces:0];
+  mad_allFacesFetchOptions = [libraryCopy mad_allFacesFetchOptions];
+  [mad_allFacesFetchOptions setIncludeNonvisibleFaces:0];
   v22 = v4;
-  v6 = [PHFace fetchKeyFaceByPersonLocalIdentifierForPersons:v4 options:v5];
+  v6 = [PHFace fetchKeyFaceByPersonLocalIdentifierForPersons:v4 options:mad_allFacesFetchOptions];
   v7 = +[NSMutableSet set];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v21 = v6;
-  v8 = [v6 allValues];
-  v9 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  allValues = [v6 allValues];
+  v9 = [allValues countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v9)
   {
     v10 = v9;
@@ -924,23 +924,23 @@ LABEL_45:
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 localIdentifier];
+        localIdentifier = [v13 localIdentifier];
 
-        if (v15)
+        if (localIdentifier)
         {
-          v16 = [v13 localIdentifier];
-          [v7 addObject:v16];
+          localIdentifier2 = [v13 localIdentifier];
+          [v7 addObject:localIdentifier2];
         }
 
         objc_autoreleasePoolPop(v14);
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v10);

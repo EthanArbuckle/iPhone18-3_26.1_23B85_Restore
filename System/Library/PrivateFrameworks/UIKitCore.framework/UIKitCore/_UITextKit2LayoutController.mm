@@ -1,82 +1,82 @@
 @interface _UITextKit2LayoutController
 + (BOOL)coordinateSystemCompatibilityFor2022AndEarlierSDKEnabled;
-- (CGRect)boundingRectForCharacterRange:(_NSRange)a3;
-- (CGRect)boundingRectForRange:(id)a3;
+- (CGRect)boundingRectForCharacterRange:(_NSRange)range;
+- (CGRect)boundingRectForRange:(id)range;
 - (CGRect)extraLineFragmentRect;
-- (CGRect)insertionRectForPosition:(id)a3 typingAttributes:(id)a4 placeholderAttachment:(id)a5 textContainer:(id *)a6;
-- (CGRect)unionRectForCharacterRange:(_NSRange)a3 bottomInset:(double)a4;
-- (CGRect)updateLayoutForSizeChangeOfTextContainer:(id)a3;
-- (CGRect)usedRectForTextContainer:(id)a3;
+- (CGRect)insertionRectForPosition:(id)position typingAttributes:(id)attributes placeholderAttachment:(id)attachment textContainer:(id *)container;
+- (CGRect)unionRectForCharacterRange:(_NSRange)range bottomInset:(double)inset;
+- (CGRect)updateLayoutForSizeChangeOfTextContainer:(id)container;
+- (CGRect)usedRectForTextContainer:(id)container;
 - (UITextPosition)beginningOfDocument;
 - (UITextPosition)endOfDocument;
 - (UITextRange)documentRange;
-- (_NSRange)characterRangeForTextRange:(id)a3;
-- (_NSRange)characterRangeForTextRange:(id)a3 clippedToDocument:(BOOL)a4;
-- (_NSRange)rangeOfCharacterClusterAtIndex:(unint64_t)a3 type:(int64_t)a4;
-- (_UITextKit2LayoutController)initWithTextView:(id)a3 textContainer:(id)a4;
-- (_UITextKit2LayoutController)initWithTextView:(id)a3 textContentStorage:(id)a4 textContainer:(id)a5;
+- (_NSRange)characterRangeForTextRange:(id)range;
+- (_NSRange)characterRangeForTextRange:(id)range clippedToDocument:(BOOL)document;
+- (_NSRange)rangeOfCharacterClusterAtIndex:(unint64_t)index type:(int64_t)type;
+- (_UITextKit2LayoutController)initWithTextView:(id)view textContainer:(id)container;
+- (_UITextKit2LayoutController)initWithTextView:(id)view textContentStorage:(id)storage textContainer:(id)container;
 - (double)baselineOffsetForFirstGlyph;
-- (id)_locationWithOffset:(int64_t)a3;
-- (id)_rangeForCharacterRange:(_NSRange)a3;
-- (id)_updateSelectionWithTextRange:(id)a3 affinity:(int64_t)a4 typingAttributes:(id)a5;
-- (id)_visualSelectionRangeForExtent:(id)a3 forPoint:(CGPoint)a4 fromPosition:(id)a5 inDirection:(int64_t)a6;
-- (id)_writingToolsMinimumContextualRangeForRange:(id)a3;
-- (id)annotatedSubstringForRange:(id)a3;
-- (id)annotationAttribute:(id)a3 atPosition:(id)a4;
-- (id)attributedTextInRange:(id)a3;
-- (id)attributesAtPosition:(id)a3 inDirection:(int64_t)a4;
-- (id)characterRangesForTextRange:(id)a3 clippedToDocument:(BOOL)a4;
-- (id)cursorPositionAtPoint:(CGPoint)a3 inContainer:(id)a4;
-- (id)dequeueCanvasViewForTextContainer:(id)a3;
-- (id)emptyTextRangeAtPosition:(id)a3;
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5 affinity:(int64_t)a6 anchorPositionOffset:(double)a7;
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4 affinity:(int64_t)a5;
-- (id)positionWithOffset:(int64_t)a3 affinity:(int64_t)a4;
-- (id)previewRendererForRange:(id)a3 unifyRects:(BOOL)a4;
+- (id)_locationWithOffset:(int64_t)offset;
+- (id)_rangeForCharacterRange:(_NSRange)range;
+- (id)_updateSelectionWithTextRange:(id)range affinity:(int64_t)affinity typingAttributes:(id)attributes;
+- (id)_visualSelectionRangeForExtent:(id)extent forPoint:(CGPoint)point fromPosition:(id)position inDirection:(int64_t)direction;
+- (id)_writingToolsMinimumContextualRangeForRange:(id)range;
+- (id)annotatedSubstringForRange:(id)range;
+- (id)annotationAttribute:(id)attribute atPosition:(id)position;
+- (id)attributedTextInRange:(id)range;
+- (id)attributesAtPosition:(id)position inDirection:(int64_t)direction;
+- (id)characterRangesForTextRange:(id)range clippedToDocument:(BOOL)document;
+- (id)cursorPositionAtPoint:(CGPoint)point inContainer:(id)container;
+- (id)dequeueCanvasViewForTextContainer:(id)container;
+- (id)emptyTextRangeAtPosition:(id)position;
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset affinity:(int64_t)affinity anchorPositionOffset:(double)positionOffset;
+- (id)positionFromPosition:(id)position offset:(int64_t)offset affinity:(int64_t)affinity;
+- (id)positionWithOffset:(int64_t)offset affinity:(int64_t)affinity;
+- (id)previewRendererForRange:(id)range unifyRects:(BOOL)rects;
 - (id)searchableObject;
-- (id)selectionRectsForRange:(id)a3 fromView:(id)a4 forContainerPassingTest:(id)a5;
-- (id)textContainerForPosition:(id)a3;
-- (id)textLayoutManager:(id)a3 renderingAttributesForLink:(id)a4 atLocation:(id)a5 defaultAttributes:(id)a6;
-- (id)textRangeForBounds:(CGRect)a3 inTextContainer:(id)a4 layoutIfNeeded:(BOOL)a5;
-- (id)textRangeForCharacterRange:(_NSRange)a3;
-- (id)textRangeForCharacterRanges:(id)a3;
-- (id)textRangeForLineEnclosingPosition:(id)a3;
-- (id)textRangeForLineEnclosingPosition:(id)a3 effectiveAffinity:(int64_t)a4;
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4;
-- (id)viewportRangeForTextContainer:(id)a3;
-- (int64_t)baseWritingDirectionAtPosition:(id)a3;
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4;
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4;
-- (void)_invalidateTemporaryAttributesInRange:(id)a3;
-- (void)_textContentStorageAddedUnsupportedAttribute:(id)a3;
-- (void)addAnnotationAttribute:(id)a3 value:(id)a4 forRange:(id)a5;
-- (void)addGhostedRange:(id)a3;
-- (void)addInvisibleRange:(id)a3;
-- (void)addRenderingAttributes:(id)a3 forRange:(id)a4;
+- (id)selectionRectsForRange:(id)range fromView:(id)view forContainerPassingTest:(id)test;
+- (id)textContainerForPosition:(id)position;
+- (id)textLayoutManager:(id)manager renderingAttributesForLink:(id)link atLocation:(id)location defaultAttributes:(id)attributes;
+- (id)textRangeForBounds:(CGRect)bounds inTextContainer:(id)container layoutIfNeeded:(BOOL)needed;
+- (id)textRangeForCharacterRange:(_NSRange)range;
+- (id)textRangeForCharacterRanges:(id)ranges;
+- (id)textRangeForLineEnclosingPosition:(id)position;
+- (id)textRangeForLineEnclosingPosition:(id)position effectiveAffinity:(int64_t)affinity;
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition;
+- (id)viewportRangeForTextContainer:(id)container;
+- (int64_t)baseWritingDirectionAtPosition:(id)position;
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition;
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition;
+- (void)_invalidateTemporaryAttributesInRange:(id)range;
+- (void)_textContentStorageAddedUnsupportedAttribute:(id)attribute;
+- (void)addAnnotationAttribute:(id)attribute value:(id)value forRange:(id)range;
+- (void)addGhostedRange:(id)range;
+- (void)addInvisibleRange:(id)range;
+- (void)addRenderingAttributes:(id)attributes forRange:(id)range;
 - (void)dealloc;
-- (void)ensureLayoutForBounds:(CGRect)a3 inTextContainer:(id)a4;
-- (void)ensureLayoutForRange:(id)a3;
-- (void)ensureLayoutForTextContainer:(id)a3;
-- (void)enumerateTextLineFragmentsInRange:(id)a3 usingBlock:(id)a4;
-- (void)enumerateTextSegmentsInRange:(id)a3 inTextContainer:(id)a4 usingBlock:(id)a5;
-- (void)invalidateLayoutForRange:(id)a3;
-- (void)removeAnnotationAttribute:(id)a3 forRange:(id)a4;
-- (void)removeRenderingAttributes:(id)a3 forRange:(id)a4;
-- (void)requestTextGeometryAtPosition:(id)a3 typingAttributes:(id)a4 resultBlock:(id)a5;
-- (void)resetTextViewportLayoutControllerLayoutForPosition:(id)a3;
-- (void)setDocumentObscured:(BOOL)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)setUnobscuredRange:(id)a3;
+- (void)ensureLayoutForBounds:(CGRect)bounds inTextContainer:(id)container;
+- (void)ensureLayoutForRange:(id)range;
+- (void)ensureLayoutForTextContainer:(id)container;
+- (void)enumerateTextLineFragmentsInRange:(id)range usingBlock:(id)block;
+- (void)enumerateTextSegmentsInRange:(id)range inTextContainer:(id)container usingBlock:(id)block;
+- (void)invalidateLayoutForRange:(id)range;
+- (void)removeAnnotationAttribute:(id)attribute forRange:(id)range;
+- (void)removeRenderingAttributes:(id)attributes forRange:(id)range;
+- (void)requestTextGeometryAtPosition:(id)position typingAttributes:(id)attributes resultBlock:(id)block;
+- (void)resetTextViewportLayoutControllerLayoutForPosition:(id)position;
+- (void)setDocumentObscured:(BOOL)obscured;
+- (void)setEditable:(BOOL)editable;
+- (void)setUnobscuredRange:(id)range;
 @end
 
 @implementation _UITextKit2LayoutController
 
 - (UITextPosition)beginningOfDocument
 {
-  v3 = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
-  v4 = [v3 location];
+  documentRange = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
+  location = [documentRange location];
 
-  v5 = [_UITextKitTextPosition positionWithTextContentManager:self->_textContentStorage location:v4 affinity:0];
+  v5 = [_UITextKitTextPosition positionWithTextContentManager:self->_textContentStorage location:location affinity:0];
 
   return v5;
 }
@@ -85,8 +85,8 @@
 {
   v7[1] = *MEMORY[0x1E69E9840];
   textContentStorage = self->_textContentStorage;
-  v3 = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
-  v7[0] = v3;
+  documentRange = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
+  v7[0] = documentRange;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   v5 = [_UITextKitTextRange rangeWithTextContentManager:textContentStorage textRanges:v4 affinity:0];
 
@@ -99,12 +99,12 @@
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v3 = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
-  if (([v3 isEmpty] & 1) == 0)
+  documentRange = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
+  if (([documentRange isEmpty] & 1) == 0)
   {
     v4 = [off_1E70ECBF0 alloc];
-    v5 = [v3 location];
-    v6 = [v4 initWithLocation:v5];
+    location = [documentRange location];
+    v6 = [v4 initWithLocation:location];
 
     textLayoutManager = self->_textLayoutManager;
     v10[0] = MEMORY[0x1E69E9820];
@@ -134,15 +134,15 @@
 - (id)searchableObject
 {
   WeakRetained = objc_loadWeakRetained(&self->_textView);
-  v3 = [WeakRetained searchableObject];
+  searchableObject = [WeakRetained searchableObject];
 
-  return v3;
+  return searchableObject;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*off_1E70ECA18 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*off_1E70ECA18 object:0];
 
   v4.receiver = self;
   v4.super_class = _UITextKit2LayoutController;
@@ -151,10 +151,10 @@
 
 - (UITextPosition)endOfDocument
 {
-  v3 = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
-  v4 = [v3 endLocation];
+  documentRange = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
+  endLocation = [documentRange endLocation];
 
-  v5 = [_UITextKitTextPosition positionWithTextContentManager:self->_textContentStorage location:v4 affinity:0];
+  v5 = [_UITextKitTextPosition positionWithTextContentManager:self->_textContentStorage location:endLocation affinity:0];
 
   return v5;
 }
@@ -162,9 +162,9 @@
 - (CGRect)extraLineFragmentRect
 {
   v3 = [off_1E70ECBF0 alloc];
-  v4 = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
-  v5 = [v4 endLocation];
-  v6 = [v3 initWithLocation:v5];
+  documentRange = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
+  endLocation = [documentRange endLocation];
+  v6 = [v3 initWithLocation:endLocation];
 
   v18 = 0;
   v19 = &v18;
@@ -197,23 +197,23 @@
   return result;
 }
 
-- (_UITextKit2LayoutController)initWithTextView:(id)a3 textContentStorage:(id)a4 textContainer:(id)a5
+- (_UITextKit2LayoutController)initWithTextView:(id)view textContentStorage:(id)storage textContainer:(id)container
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  storageCopy = storage;
+  containerCopy = container;
   v21.receiver = self;
   v21.super_class = _UITextKit2LayoutController;
   v11 = [(_UITextKit2LayoutController *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_textView, v8);
+    objc_storeWeak(&v11->_textView, viewCopy);
     v13 = objc_alloc_init(off_1E70ECBD8);
     textLayoutManager = v12->_textLayoutManager;
     v12->_textLayoutManager = v13;
 
-    [(NSTextLayoutManager *)v12->_textLayoutManager setTextContainer:v10];
+    [(NSTextLayoutManager *)v12->_textLayoutManager setTextContainer:containerCopy];
     [(NSTextLayoutManager *)v12->_textLayoutManager setDelegate:v12];
     if (objc_opt_respondsToSelector())
     {
@@ -222,76 +222,76 @@
       -[NSTextLayoutManager setBreaksLinesForInteractiveText:](v15, "setBreaksLinesForInteractiveText:", [WeakRetained isEditable]);
     }
 
-    objc_storeStrong(&v12->_textContentStorage, a4);
+    objc_storeStrong(&v12->_textContentStorage, storage);
     [(NSTextContentStorage *)v12->_textContentStorage addTextLayoutManager:v12->_textLayoutManager];
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v12 selector:sel__textContentStorageAddedUnsupportedAttribute_ name:*off_1E70ECA18 object:v12->_textContentStorage];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__textContentStorageAddedUnsupportedAttribute_ name:*off_1E70ECA18 object:v12->_textContentStorage];
 
-    v18 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     textCanvasViews = v12->_textCanvasViews;
-    v12->_textCanvasViews = v18;
+    v12->_textCanvasViews = strongToStrongObjectsMapTable;
   }
 
   return v12;
 }
 
-- (_UITextKit2LayoutController)initWithTextView:(id)a3 textContainer:(id)a4
+- (_UITextKit2LayoutController)initWithTextView:(id)view textContainer:(id)container
 {
-  v7 = a3;
-  v8 = [a4 textLayoutManager];
+  viewCopy = view;
+  textLayoutManager = [container textLayoutManager];
   v27.receiver = self;
   v27.super_class = _UITextKit2LayoutController;
   v9 = [(_UITextKit2LayoutController *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_textView, v7);
-    objc_storeStrong(&v10->_textLayoutManager, v8);
-    v11 = [(NSTextLayoutManager *)v10->_textLayoutManager delegate];
+    objc_storeWeak(&v9->_textView, viewCopy);
+    objc_storeStrong(&v10->_textLayoutManager, textLayoutManager);
+    delegate = [(NSTextLayoutManager *)v10->_textLayoutManager delegate];
 
-    if (!v11)
+    if (!delegate)
     {
       [(NSTextLayoutManager *)v10->_textLayoutManager setDelegate:v10];
     }
 
-    v12 = [v8 textContentManager];
-    if (v12)
+    textContentManager = [textLayoutManager textContentManager];
+    if (textContentManager)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_6:
         textContentStorage = v10->_textContentStorage;
-        v10->_textContentStorage = v12;
+        v10->_textContentStorage = textContentManager;
 
-        v14 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v14 addObserver:v10 selector:sel__textContentStorageAddedUnsupportedAttribute_ name:*off_1E70ECA18 object:v10->_textContentStorage];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:v10 selector:sel__textContentStorageAddedUnsupportedAttribute_ name:*off_1E70ECA18 object:v10->_textContentStorage];
 
-        v15 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+        strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
         textCanvasViews = v10->_textCanvasViews;
-        v10->_textCanvasViews = v15;
+        v10->_textCanvasViews = strongToStrongObjectsMapTable;
 
         goto LABEL_7;
       }
 
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v21 = objc_opt_class();
       v20 = NSStringFromClass(v21);
       v22 = MEMORY[0x1E696AEC0];
-      v23 = v12;
+      v23 = textContentManager;
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
       v26 = [v22 stringWithFormat:@"<%@: %p>", v25, v23];
 
-      [v18 handleFailureInMethod:a2 object:v10 file:@"_UITextKit2LayoutController.m" lineNumber:114 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"textLayoutManager.textContentManager", v20, v26}];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"_UITextKit2LayoutController.m" lineNumber:114 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"textLayoutManager.textContentManager", v20, v26}];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      [v18 handleFailureInMethod:a2 object:v10 file:@"_UITextKit2LayoutController.m" lineNumber:114 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"textLayoutManager.textContentManager", v20}];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"_UITextKit2LayoutController.m" lineNumber:114 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"textLayoutManager.textContentManager", v20}];
     }
 
     goto LABEL_6;
@@ -302,59 +302,59 @@ LABEL_7:
   return v10;
 }
 
-- (id)_locationWithOffset:(int64_t)a3
+- (id)_locationWithOffset:(int64_t)offset
 {
-  v4 = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
-  v5 = [v4 documentRange];
-  v6 = [v5 location];
+  textContentManager = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
+  documentRange = [textContentManager documentRange];
+  location = [documentRange location];
 
-  v7 = [v4 locationFromLocation:v6 withOffset:a3];
+  v7 = [textContentManager locationFromLocation:location withOffset:offset];
 
   return v7;
 }
 
-- (id)_rangeForCharacterRange:(_NSRange)a3
+- (id)_rangeForCharacterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
-  v6 = [v5 documentRange];
-  v7 = [v6 location];
-  v8 = [v5 locationFromLocation:v7 withOffset:location];
+  length = range.length;
+  location = range.location;
+  textContentManager = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
+  documentRange = [textContentManager documentRange];
+  location = [documentRange location];
+  v8 = [textContentManager locationFromLocation:location withOffset:location];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    endLocation = v8;
   }
 
   else
   {
-    v10 = [v6 endLocation];
+    endLocation = [documentRange endLocation];
   }
 
-  v11 = v10;
+  v11 = endLocation;
 
-  v12 = [v5 locationFromLocation:v11 withOffset:length];
+  v12 = [textContentManager locationFromLocation:v11 withOffset:length];
   v13 = [[off_1E70ECBF0 alloc] initWithLocation:v11 endLocation:v12];
 
   return v13;
 }
 
-- (id)_updateSelectionWithTextRange:(id)a3 affinity:(int64_t)a4 typingAttributes:(id)a5
+- (id)_updateSelectionWithTextRange:(id)range affinity:(int64_t)affinity typingAttributes:(id)attributes
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  rangeCopy = range;
+  attributesCopy = attributes;
+  if (rangeCopy)
   {
-    v10 = [[off_1E70ECBF8 alloc] initWithRange:v8 affinity:a4 == 0 granularity:0];
-    [v10 setTypingAttributes:v9];
+    v10 = [[off_1E70ECBF8 alloc] initWithRange:rangeCopy affinity:affinity == 0 granularity:0];
+    [v10 setTypingAttributes:attributesCopy];
     v18[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     [(NSTextLayoutManager *)self->_textLayoutManager setTextSelections:v11];
 
-    v12 = [v10 textRanges];
-    v13 = [v12 firstObject];
+    textRanges = [v10 textRanges];
+    firstObject = [textRanges firstObject];
   }
 
   else
@@ -379,16 +379,16 @@ LABEL_7:
       }
     }
 
-    v13 = 0;
+    firstObject = 0;
   }
 
-  return v13;
+  return firstObject;
 }
 
-- (id)viewportRangeForTextContainer:(id)a3
+- (id)viewportRangeForTextContainer:(id)container
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = [(NSTextLayoutManager *)self->_textLayoutManager viewportRangeForTextContainer:a3];
+  v4 = [(NSTextLayoutManager *)self->_textLayoutManager viewportRangeForTextContainer:container];
   v5 = v4;
   if (v4)
   {
@@ -406,18 +406,18 @@ LABEL_7:
   return v8;
 }
 
-- (id)emptyTextRangeAtPosition:(id)a3
+- (id)emptyTextRangeAtPosition:(id)position
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  positionCopy = position;
+  if (!positionCopy)
   {
-    v4 = [(_UITextKit2LayoutController *)self beginningOfDocument];
+    positionCopy = [(_UITextKit2LayoutController *)self beginningOfDocument];
   }
 
   v5 = [off_1E70ECBF0 alloc];
-  v6 = [v4 location];
-  v7 = [v5 initWithLocation:v6];
+  location = [positionCopy location];
+  v7 = [v5 initWithLocation:location];
 
   textContentStorage = self->_textContentStorage;
   v12[0] = v7;
@@ -427,15 +427,15 @@ LABEL_7:
   return v10;
 }
 
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  positionCopy = position;
+  toPositionCopy = toPosition;
+  v9 = toPositionCopy;
+  if (positionCopy)
   {
-    if (v8)
+    if (toPositionCopy)
     {
       goto LABEL_3;
     }
@@ -443,66 +443,66 @@ LABEL_7:
 
   else
   {
-    v7 = [(_UITextKit2LayoutController *)self beginningOfDocument];
+    positionCopy = [(_UITextKit2LayoutController *)self beginningOfDocument];
     if (v9)
     {
       goto LABEL_3;
     }
   }
 
-  v9 = v7;
+  v9 = positionCopy;
 LABEL_3:
-  v10 = [v7 location];
-  v11 = [v9 location];
-  v12 = [v10 compare:v11];
+  location = [positionCopy location];
+  location2 = [v9 location];
+  v12 = [location compare:location2];
   if (v12 == 1)
   {
-    v13 = v11;
+    v13 = location2;
   }
 
   else
   {
-    v13 = v10;
+    v13 = location;
   }
 
   if (v12 != 1)
   {
-    v10 = v11;
+    location = location2;
   }
 
-  v14 = [[off_1E70ECBF0 alloc] initWithLocation:v13 endLocation:v10];
+  v14 = [[off_1E70ECBF0 alloc] initWithLocation:v13 endLocation:location];
   if (!v14)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_UITextKit2LayoutController.m" lineNumber:238 description:{@"couldn't create text range with %@ and %@.", v7, v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextKit2LayoutController.m" lineNumber:238 description:{@"couldn't create text range with %@ and %@.", positionCopy, v9}];
   }
 
   textContentStorage = self->_textContentStorage;
   v20[0] = v14;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  v17 = +[_UITextKitTextRange rangeWithTextContentManager:textRanges:startAffinity:endAffinity:](_UITextKitTextRange, "rangeWithTextContentManager:textRanges:startAffinity:endAffinity:", textContentStorage, v16, [v7 affinity], objc_msgSend(v9, "affinity"));
+  v17 = +[_UITextKitTextRange rangeWithTextContentManager:textRanges:startAffinity:endAffinity:](_UITextKitTextRange, "rangeWithTextContentManager:textRanges:startAffinity:endAffinity:", textContentStorage, v16, [positionCopy affinity], objc_msgSend(v9, "affinity"));
 
   return v17;
 }
 
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4 affinity:(int64_t)a5
+- (id)positionFromPosition:(id)position offset:(int64_t)offset affinity:(int64_t)affinity
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4)
+  positionCopy = position;
+  beginningOfDocument = positionCopy;
+  if (offset)
   {
-    if (!v8)
+    if (!positionCopy)
     {
-      v9 = [(_UITextKit2LayoutController *)self beginningOfDocument];
+      beginningOfDocument = [(_UITextKit2LayoutController *)self beginningOfDocument];
     }
 
-    v10 = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
-    v11 = [v9 location];
-    v12 = [v10 locationFromLocation:v11 withOffset:a4];
+    textContentManager = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
+    location = [beginningOfDocument location];
+    v12 = [textContentManager locationFromLocation:location withOffset:offset];
 
     if (v12)
     {
-      v13 = [_UITextKitTextPosition positionWithTextContentManager:self->_textContentStorage location:v12 affinity:a5];
+      v13 = [_UITextKitTextPosition positionWithTextContentManager:self->_textContentStorage location:v12 affinity:affinity];
     }
 
     else
@@ -513,31 +513,31 @@ LABEL_3:
 
   else
   {
-    v9 = v8;
-    v13 = v9;
+    beginningOfDocument = positionCopy;
+    v13 = beginningOfDocument;
   }
 
   return v13;
 }
 
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5 affinity:(int64_t)a6 anchorPositionOffset:(double)a7
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset affinity:(int64_t)affinity anchorPositionOffset:(double)positionOffset
 {
-  v12 = a3;
-  v13 = [v12 location];
-  v14 = [[off_1E70ECBF8 alloc] initWithLocation:v13 affinity:{objc_msgSend(v12, "affinity") == 0}];
-  [v14 setAnchorPositionOffset:a7];
-  if ((a4 - 2) >= 4)
+  positionCopy = position;
+  location = [positionCopy location];
+  v14 = [[off_1E70ECBF8 alloc] initWithLocation:location affinity:{objc_msgSend(positionCopy, "affinity") == 0}];
+  [v14 setAnchorPositionOffset:positionOffset];
+  if ((direction - 2) >= 4)
   {
-    v15 = 3;
+    directionCopy = 3;
   }
 
   else
   {
-    v15 = a4;
+    directionCopy = direction;
   }
 
-  v16 = [(NSTextLayoutManager *)self->_textLayoutManager textSelectionNavigation];
-  if (a5 < 1)
+  textSelectionNavigation = [(NSTextLayoutManager *)self->_textLayoutManager textSelectionNavigation];
+  if (offset < 1)
   {
     v17 = v14;
   }
@@ -546,52 +546,52 @@ LABEL_3:
   {
     do
     {
-      v17 = [v16 destinationSelectionForTextSelection:v14 direction:v15 destination:0 extending:0 confined:0];
+      v17 = [textSelectionNavigation destinationSelectionForTextSelection:v14 direction:directionCopy destination:0 extending:0 confined:0];
 
       v14 = v17;
-      --a5;
+      --offset;
     }
 
-    while (a5);
+    while (offset);
   }
 
-  v18 = [v17 textRanges];
-  if ([v18 count] == 1)
+  textRanges = [v17 textRanges];
+  if ([textRanges count] == 1)
   {
-    v19 = [v17 textRanges];
-    v20 = [v19 firstObject];
-    v21 = [v20 isEmpty];
-  }
-
-  else
-  {
-    v21 = 0;
-  }
-
-  v22 = [v17 affinity];
-  v23 = [v17 textRanges];
-  v24 = v23;
-  if (v22)
-  {
-    v25 = [v23 lastObject];
-    [v25 endLocation];
+    textRanges2 = [v17 textRanges];
+    firstObject = [textRanges2 firstObject];
+    isEmpty = [firstObject isEmpty];
   }
 
   else
   {
-    v25 = [v23 firstObject];
-    [v25 location];
+    isEmpty = 0;
+  }
+
+  affinity = [v17 affinity];
+  textRanges3 = [v17 textRanges];
+  v24 = textRanges3;
+  if (affinity)
+  {
+    lastObject = [textRanges3 lastObject];
+    [lastObject endLocation];
+  }
+
+  else
+  {
+    lastObject = [textRanges3 firstObject];
+    [lastObject location];
   }
   v26 = ;
 
-  if (v21)
+  if (isEmpty)
   {
-    a6 = [v17 affinity] == 0;
+    affinity = [v17 affinity] == 0;
   }
 
   if (v26)
   {
-    v27 = [_UITextKitTextPosition positionWithTextContentManager:self->_textContentStorage location:v26 affinity:a6];
+    v27 = [_UITextKitTextPosition positionWithTextContentManager:self->_textContentStorage location:v26 affinity:affinity];
   }
 
   else
@@ -602,46 +602,46 @@ LABEL_3:
   return v27;
 }
 
-- (id)textRangeForLineEnclosingPosition:(id)a3
+- (id)textRangeForLineEnclosingPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(_UITextKit2LayoutController *)self textRangeForLineEnclosingPosition:v4 effectiveAffinity:[(_UITextKit2LayoutController *)self affinityForPosition:v4]];
+  positionCopy = position;
+  v5 = [(_UITextKit2LayoutController *)self textRangeForLineEnclosingPosition:positionCopy effectiveAffinity:[(_UITextKit2LayoutController *)self affinityForPosition:positionCopy]];
 
   return v5;
 }
 
-- (id)textRangeForLineEnclosingPosition:(id)a3 effectiveAffinity:(int64_t)a4
+- (id)textRangeForLineEnclosingPosition:(id)position effectiveAffinity:(int64_t)affinity
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  positionCopy = position;
+  if (!positionCopy)
   {
-    v6 = [(_UITextKit2LayoutController *)self beginningOfDocument];
+    positionCopy = [(_UITextKit2LayoutController *)self beginningOfDocument];
   }
 
-  v35 = v6;
-  v7 = [v6 location];
-  v32 = self;
-  v8 = [(NSTextLayoutManager *)self->_textLayoutManager textSelectionNavigation];
-  v9 = a4 == 0;
-  v10 = [[off_1E70ECBF8 alloc] initWithLocation:v7 affinity:v9];
-  v11 = [v8 destinationSelectionForTextSelection:v10 direction:1 destination:2 extending:0 confined:1];
+  v35 = positionCopy;
+  location = [positionCopy location];
+  selfCopy = self;
+  textSelectionNavigation = [(NSTextLayoutManager *)self->_textLayoutManager textSelectionNavigation];
+  v9 = affinity == 0;
+  v10 = [[off_1E70ECBF8 alloc] initWithLocation:location affinity:v9];
+  v11 = [textSelectionNavigation destinationSelectionForTextSelection:v10 direction:1 destination:2 extending:0 confined:1];
   v33 = v10;
-  v34 = v8;
-  v12 = [v8 destinationSelectionForTextSelection:v10 direction:0 destination:2 extending:0 confined:1];
-  v13 = [v11 textRanges];
-  v14 = [v13 firstObject];
-  v15 = [v14 location];
+  v34 = textSelectionNavigation;
+  v12 = [textSelectionNavigation destinationSelectionForTextSelection:v10 direction:0 destination:2 extending:0 confined:1];
+  textRanges = [v11 textRanges];
+  firstObject = [textRanges firstObject];
+  location2 = [firstObject location];
 
-  v16 = [v12 textRanges];
-  v17 = [v16 lastObject];
-  v18 = [v17 endLocation];
+  textRanges2 = [v12 textRanges];
+  lastObject = [textRanges2 lastObject];
+  endLocation = [lastObject endLocation];
 
-  v19 = [v11 affinity];
-  v20 = [v12 affinity];
-  if (v15)
+  affinity = [v11 affinity];
+  affinity2 = [v12 affinity];
+  if (location2)
   {
-    v21 = v18 == 0;
+    v21 = endLocation == 0;
   }
 
   else
@@ -649,25 +649,25 @@ LABEL_3:
     v21 = 1;
   }
 
-  v31 = v7;
+  v31 = location;
   if (v21)
   {
-    v22 = [[off_1E70ECBF0 alloc] initWithLocation:v7];
+    v22 = [[off_1E70ECBF0 alloc] initWithLocation:location];
     v23 = v9;
   }
 
   else
   {
-    v24 = v20;
-    v25 = [v15 compare:v18];
+    v24 = affinity2;
+    v25 = [location2 compare:endLocation];
     if (v25 == 1)
     {
-      v26 = v15;
+      v26 = location2;
     }
 
     else
     {
-      v26 = v18;
+      v26 = endLocation;
     }
 
     if (v25 == 1)
@@ -677,12 +677,12 @@ LABEL_3:
 
     else
     {
-      v9 = v19;
+      v9 = affinity;
     }
 
     if (v25 == 1)
     {
-      v23 = v19;
+      v23 = affinity;
     }
 
     else
@@ -692,14 +692,14 @@ LABEL_3:
 
     if (v25 == 1)
     {
-      v15 = v18;
+      location2 = endLocation;
     }
 
-    v22 = [[off_1E70ECBF0 alloc] initWithLocation:v15 endLocation:v26];
-    v18 = v26;
+    v22 = [[off_1E70ECBF0 alloc] initWithLocation:location2 endLocation:v26];
+    endLocation = v26;
   }
 
-  textContentStorage = v32->_textContentStorage;
+  textContentStorage = selfCopy->_textContentStorage;
   v36[0] = v22;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
   v29 = [_UITextKitTextRange rangeWithTextContentManager:textContentStorage textRanges:v28 startAffinity:!v9 endAffinity:v23 == 0];
@@ -707,21 +707,21 @@ LABEL_3:
   return v29;
 }
 
-- (id)_visualSelectionRangeForExtent:(id)a3 forPoint:(CGPoint)a4 fromPosition:(id)a5 inDirection:(int64_t)a6
+- (id)_visualSelectionRangeForExtent:(id)extent forPoint:(CGPoint)point fromPosition:(id)position inDirection:(int64_t)direction
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v38[1] = *MEMORY[0x1E69E9840];
   textLayoutManager = self->_textLayoutManager;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(NSTextLayoutManager *)textLayoutManager textSelectionNavigation];
-  v15 = [v12 location];
+  positionCopy = position;
+  extentCopy = extent;
+  textSelectionNavigation = [(NSTextLayoutManager *)textLayoutManager textSelectionNavigation];
+  location = [positionCopy location];
 
-  v16 = [[off_1E70ECBF8 alloc] initWithLocation:v15 affinity:a6 == 0];
-  v17 = [v13 location];
+  v16 = [[off_1E70ECBF8 alloc] initWithLocation:location affinity:direction == 0];
+  location2 = [extentCopy location];
 
-  v18 = [(NSTextLayoutManager *)self->_textLayoutManager textContainerForLocation:v17];
+  v18 = [(NSTextLayoutManager *)self->_textLayoutManager textContainerForLocation:location2];
   v19 = *MEMORY[0x1E695EFF8];
   v20 = *(MEMORY[0x1E695EFF8] + 8);
   [v18 size];
@@ -739,19 +739,19 @@ LABEL_3:
 
   v38[0] = v16;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:1];
-  v31 = [v14 textSelectionsInteractingAtPoint:v17 inContainerAtLocation:v30 anchors:1 modifiers:1 selecting:v26 bounds:{v28, v19, v20, v22, v24}];
+  v31 = [textSelectionNavigation textSelectionsInteractingAtPoint:location2 inContainerAtLocation:v30 anchors:1 modifiers:1 selecting:v26 bounds:{v28, v19, v20, v22, v24}];
 
-  v32 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __96___UITextKit2LayoutController__visualSelectionRangeForExtent_forPoint_fromPosition_inDirection___block_invoke;
   v36[3] = &unk_1E710A9C0;
-  v33 = v32;
+  v33 = array;
   v37 = v33;
   [v31 enumerateObjectsUsingBlock:v36];
   if ([v33 count])
   {
-    v34 = [_UITextKitTextRange rangeWithTextContentManager:self->_textContentStorage textRanges:v33 affinity:a6];
+    v34 = [_UITextKitTextRange rangeWithTextContentManager:self->_textContentStorage textRanges:v33 affinity:direction];
   }
 
   else
@@ -762,53 +762,53 @@ LABEL_3:
   return v34;
 }
 
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition
 {
-  v5 = a4;
-  v6 = [a3 location];
-  v7 = [v5 location];
+  toPositionCopy = toPosition;
+  location = [position location];
+  location2 = [toPositionCopy location];
 
-  v8 = [v6 compare:v7];
+  v8 = [location compare:location2];
   return v8;
 }
 
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  positionCopy = position;
+  toPositionCopy = toPosition;
+  v8 = toPositionCopy;
+  if (!positionCopy)
   {
-    v6 = [(_UITextKit2LayoutController *)self beginningOfDocument];
+    positionCopy = [(_UITextKit2LayoutController *)self beginningOfDocument];
     if (v8)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v8 = v6;
+    v8 = positionCopy;
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!toPositionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v9 = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
-  v10 = [v6 location];
-  v11 = [v8 location];
-  v12 = [v9 offsetFromLocation:v10 toLocation:v11];
+  textContentManager = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
+  location = [positionCopy location];
+  location2 = [v8 location];
+  v12 = [textContentManager offsetFromLocation:location toLocation:location2];
 
   return v12;
 }
 
-- (CGRect)insertionRectForPosition:(id)a3 typingAttributes:(id)a4 placeholderAttachment:(id)a5 textContainer:(id *)a6
+- (CGRect)insertionRectForPosition:(id)position typingAttributes:(id)attributes placeholderAttachment:(id)attachment textContainer:(id *)container
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  positionCopy = position;
+  attributesCopy = attributes;
+  attachmentCopy = attachment;
   v52 = 0;
   v53 = &v52;
   v54 = 0x4010000000;
@@ -816,15 +816,15 @@ LABEL_3:
   v13 = *(MEMORY[0x1E695F050] + 16);
   v56 = *MEMORY[0x1E695F050];
   v57 = v13;
-  if (!v10)
+  if (!positionCopy)
   {
-    v10 = [(_UITextKit2LayoutController *)self beginningOfDocument];
+    positionCopy = [(_UITextKit2LayoutController *)self beginningOfDocument];
   }
 
-  v14 = v10;
+  v14 = positionCopy;
   v15 = [off_1E70ECBF0 alloc];
-  v16 = [v14 location];
-  v17 = [v15 initWithLocation:v16];
+  location = [v14 location];
+  v17 = [v15 initWithLocation:location];
 
   if ([v14 affinity] == 1)
   {
@@ -836,7 +836,7 @@ LABEL_3:
     v18 = 1;
   }
 
-  v19 = -[_UITextKit2LayoutController _updateSelectionWithTextRange:affinity:typingAttributes:](self, "_updateSelectionWithTextRange:affinity:typingAttributes:", v17, [v14 affinity], v11);
+  v19 = -[_UITextKit2LayoutController _updateSelectionWithTextRange:affinity:typingAttributes:](self, "_updateSelectionWithTextRange:affinity:typingAttributes:", v17, [v14 affinity], attributesCopy);
 
   [(NSTextLayoutManager *)self->_textLayoutManager ui_ensureLayoutForViewportBoundsAtRange:v19];
   textLayoutManager = self->_textLayoutManager;
@@ -848,7 +848,7 @@ LABEL_3:
   [(NSTextLayoutManager *)textLayoutManager enumerateTextSegmentsInRange:v19 type:1 options:v18 usingBlock:v51];
   if (CGRectIsNull(v53[1]))
   {
-    v42 = a6;
+    containerCopy = container;
     v45 = 0;
     v46 = &v45;
     v47 = 0x3032000000;
@@ -856,13 +856,13 @@ LABEL_3:
     v49 = __Block_byref_object_dispose__97;
     v50 = 0;
     v21 = self->_textLayoutManager;
-    v22 = [v19 location];
+    location2 = [v19 location];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __109___UITextKit2LayoutController_insertionRectForPosition_typingAttributes_placeholderAttachment_textContainer___block_invoke_76;
     v44[3] = &unk_1E710AA10;
     v44[4] = &v45;
-    v23 = [(NSTextLayoutManager *)v21 enumerateTextLayoutFragmentsFromLocation:v22 options:1 usingBlock:v44];
+    v23 = [(NSTextLayoutManager *)v21 enumerateTextLayoutFragmentsFromLocation:location2 options:1 usingBlock:v44];
 
     v24 = v46[5];
     if (v24)
@@ -878,35 +878,35 @@ LABEL_3:
 
     _Block_object_dispose(&v45, 8);
 
-    a6 = v42;
+    container = containerCopy;
   }
 
   if (!CGRectIsNull(v53[1]))
   {
     v26 = self->_textLayoutManager;
-    v27 = [v14 location];
-    v28 = [(NSTextLayoutManager *)v26 textContainerForLocation:v27];
+    location3 = [v14 location];
+    v28 = [(NSTextLayoutManager *)v26 textContainerForLocation:location3];
 
-    v29 = [v28 layoutOrientation];
+    layoutOrientation = [v28 layoutOrientation];
     v30 = v53;
     v31 = 40;
-    if (!v29)
+    if (!layoutOrientation)
     {
       v31 = 32;
     }
 
     v32 = 56;
-    if (!v29)
+    if (!layoutOrientation)
     {
       v32 = 48;
     }
 
     *(&v53->origin.x + v31) = *(&v53->origin.x + v31) + -1.0;
     *(&v30->origin.x + v32) = 2.0;
-    if (a6)
+    if (container)
     {
       v33 = v28;
-      *a6 = v28;
+      *container = v28;
     }
   }
 
@@ -927,16 +927,16 @@ LABEL_3:
   return result;
 }
 
-- (id)textRangeForBounds:(CGRect)a3 inTextContainer:(id)a4 layoutIfNeeded:(BOOL)a5
+- (id)textRangeForBounds:(CGRect)bounds inTextContainer:(id)container layoutIfNeeded:(BOOL)needed
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  neededCopy = needed;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v17[1] = *MEMORY[0x1E69E9840];
-  v11 = [(NSMapTable *)self->_textCanvasViews objectForKey:a4];
-  v12 = [v11 textRangeForBounds:v5 layoutIfNeeded:{x, y, width, height}];
+  v11 = [(NSMapTable *)self->_textCanvasViews objectForKey:container];
+  v12 = [v11 textRangeForBounds:neededCopy layoutIfNeeded:{x, y, width, height}];
   textContentStorage = self->_textContentStorage;
   v17[0] = v12;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
@@ -945,29 +945,29 @@ LABEL_3:
   return v15;
 }
 
-- (id)attributesAtPosition:(id)a3 inDirection:(int64_t)a4
+- (id)attributesAtPosition:(id)position inDirection:(int64_t)direction
 {
-  v7 = a3;
+  positionCopy = position;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__97;
   v25 = __Block_byref_object_dispose__97;
   v26 = 0;
-  v8 = [v7 location];
-  v9 = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
+  location = [positionCopy location];
+  textContentManager = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64___UITextKit2LayoutController_attributesAtPosition_inDirection___block_invoke;
   v15[3] = &unk_1E710AA38;
   v19 = a2;
   v15[4] = self;
-  v10 = v9;
+  v10 = textContentManager;
   v16 = v10;
-  v11 = v8;
+  v11 = location;
   v17 = v11;
   v18 = &v21;
-  v20 = a4;
+  directionCopy = direction;
   v12 = [v10 enumerateTextElementsFromLocation:v11 options:0 usingBlock:v15];
   v13 = v22[5];
 
@@ -976,56 +976,56 @@ LABEL_3:
   return v13;
 }
 
-- (int64_t)baseWritingDirectionAtPosition:(id)a3
+- (int64_t)baseWritingDirectionAtPosition:(id)position
 {
   textLayoutManager = self->_textLayoutManager;
-  v4 = [a3 location];
-  v5 = [(NSTextLayoutManager *)textLayoutManager baseWritingDirectionAtLocation:v4];
+  location = [position location];
+  v5 = [(NSTextLayoutManager *)textLayoutManager baseWritingDirectionAtLocation:location];
 
   return v5;
 }
 
-- (void)enumerateTextLineFragmentsInRange:(id)a3 usingBlock:(id)a4
+- (void)enumerateTextLineFragmentsInRange:(id)range usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = self->_textLayoutManager;
-  v8 = [a3 unionTextRange];
-  v9 = [v8 location];
+  unionTextRange = [range unionTextRange];
+  location = [unionTextRange location];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __76___UITextKit2LayoutController_enumerateTextLineFragmentsInRange_usingBlock___block_invoke;
   v14[3] = &unk_1E710AA60;
-  v15 = v8;
+  v15 = unionTextRange;
   v16 = v7;
-  v17 = self;
-  v18 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v18 = blockCopy;
+  v10 = blockCopy;
   v11 = v7;
-  v12 = v8;
-  v13 = [(NSTextLayoutManager *)v11 enumerateTextLayoutFragmentsFromLocation:v9 options:4 usingBlock:v14];
+  v12 = unionTextRange;
+  v13 = [(NSTextLayoutManager *)v11 enumerateTextLayoutFragmentsFromLocation:location options:4 usingBlock:v14];
 }
 
-- (void)enumerateTextSegmentsInRange:(id)a3 inTextContainer:(id)a4 usingBlock:(id)a5
+- (void)enumerateTextSegmentsInRange:(id)range inTextContainer:(id)container usingBlock:(id)block
 {
-  v7 = a5;
+  blockCopy = block;
   textLayoutManager = self->_textLayoutManager;
-  v9 = [a3 unionTextRange];
+  unionTextRange = [range unionTextRange];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __87___UITextKit2LayoutController_enumerateTextSegmentsInRange_inTextContainer_usingBlock___block_invoke;
   v11[3] = &unk_1E710AA88;
-  v12 = v7;
-  v10 = v7;
-  [(NSTextLayoutManager *)textLayoutManager enumerateTextSegmentsInRange:v9 type:0 options:1 usingBlock:v11];
+  v12 = blockCopy;
+  v10 = blockCopy;
+  [(NSTextLayoutManager *)textLayoutManager enumerateTextSegmentsInRange:unionTextRange type:0 options:1 usingBlock:v11];
 }
 
-- (id)selectionRectsForRange:(id)a3 fromView:(id)a4 forContainerPassingTest:(id)a5
+- (id)selectionRectsForRange:(id)range fromView:(id)view forContainerPassingTest:(id)test
 {
-  v8 = a3;
-  v27 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [MEMORY[0x1E695DF70] array];
+  rangeCopy = range;
+  viewCopy = view;
+  testCopy = test;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
@@ -1042,27 +1042,27 @@ LABEL_3:
   v47[1] = v47;
   v47[2] = 0x2020000000;
   v47[3] = 0;
-  v12 = v8;
-  v13 = [v12 textKit2Ranges];
+  v12 = rangeCopy;
+  textKit2Ranges = [v12 textKit2Ranges];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __87___UITextKit2LayoutController_selectionRectsForRange_fromView_forContainerPassingTest___block_invoke;
   v37[3] = &unk_1E710AAD8;
   v42 = v48;
   v37[4] = self;
-  v14 = v11;
+  v14 = array2;
   v38 = v14;
-  v15 = v9;
+  v15 = testCopy;
   v41 = v15;
   v16 = v12;
   v39 = v16;
   v43 = &v53;
-  v17 = v10;
+  v17 = array;
   v40 = v17;
   v44 = &v49;
   v45 = v47;
   v46 = xmmword_18A6507C0;
-  [v13 enumerateObjectsUsingBlock:v37];
+  [textKit2Ranges enumerateObjectsUsingBlock:v37];
 
   if ([v17 count])
   {
@@ -1072,7 +1072,7 @@ LABEL_3:
     v30 = __87___UITextKit2LayoutController_selectionRectsForRange_fromView_forContainerPassingTest___block_invoke_3;
     v31 = &unk_1E710AB00;
     v32 = v14;
-    v33 = v27;
+    v33 = viewCopy;
     v35 = v48;
     v36 = v47;
     v19 = v18;
@@ -1094,7 +1094,7 @@ LABEL_3:
         v20 = v54[3];
       }
 
-      v22 = [v19 objectAtIndexedSubscript:{v20, v27, v28, v29, v30, v31, v32, v33}];
+      v22 = [v19 objectAtIndexedSubscript:{v20, viewCopy, v28, v29, v30, v31, v32, v33}];
       [v22 setContainsStart:1];
 
       v23 = [v19 objectAtIndexedSubscript:v50[3]];
@@ -1123,16 +1123,16 @@ LABEL_3:
   return v25;
 }
 
-- (id)cursorPositionAtPoint:(CGPoint)a3 inContainer:(id)a4
+- (id)cursorPositionAtPoint:(CGPoint)point inContainer:(id)container
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(NSTextLayoutManager *)self->_textLayoutManager textContainers];
-  v9 = [v8 indexOfObject:v7];
+  y = point.y;
+  x = point.x;
+  containerCopy = container;
+  textContainers = [(NSTextLayoutManager *)self->_textLayoutManager textContainers];
+  v9 = [textContainers indexOfObject:containerCopy];
 
   v10 = [(NSTextLayoutManager *)self->_textLayoutManager rangeForTextContainerAtIndex:v9];
-  v11 = [v10 location];
+  location = [v10 location];
 
   WeakRetained = objc_loadWeakRetained(&self->_textView);
   if (WeakRetained)
@@ -1143,64 +1143,64 @@ LABEL_3:
     y = v15;
   }
 
-  v16 = [(NSTextLayoutManager *)self->_textLayoutManager textSelectionNavigation];
+  textSelectionNavigation = [(NSTextLayoutManager *)self->_textLayoutManager textSelectionNavigation];
   v17 = *MEMORY[0x1E695EFF8];
   v18 = *(MEMORY[0x1E695EFF8] + 8);
-  [v7 size];
-  v21 = [v16 textSelectionsInteractingAtPoint:v11 inContainerAtLocation:MEMORY[0x1E695E0F0] anchors:0 modifiers:1 selecting:x bounds:{y, v17, v18, v19, v20}];
-  v22 = [v21 firstObject];
-  v23 = [v22 textRanges];
-  v24 = [v23 firstObject];
+  [containerCopy size];
+  v21 = [textSelectionNavigation textSelectionsInteractingAtPoint:location inContainerAtLocation:MEMORY[0x1E695E0F0] anchors:0 modifiers:1 selecting:x bounds:{y, v17, v18, v19, v20}];
+  firstObject = [v21 firstObject];
+  textRanges = [firstObject textRanges];
+  firstObject2 = [textRanges firstObject];
 
-  v25 = [v22 affinity];
-  if (v24)
+  affinity = [firstObject affinity];
+  if (firstObject2)
   {
-    v26 = v25 == 0;
+    v26 = affinity == 0;
     textContentStorage = self->_textContentStorage;
-    v28 = [v24 location];
-    v29 = [_UITextKitTextPosition positionWithTextContentManager:textContentStorage location:v28 affinity:v26];
+    location2 = [firstObject2 location];
+    endOfDocument = [_UITextKitTextPosition positionWithTextContentManager:textContentStorage location:location2 affinity:v26];
   }
 
   else
   {
-    v29 = [(_UITextKit2LayoutController *)self endOfDocument];
+    endOfDocument = [(_UITextKit2LayoutController *)self endOfDocument];
   }
 
-  return v29;
+  return endOfDocument;
 }
 
-- (void)_invalidateTemporaryAttributesInRange:(id)a3
+- (void)_invalidateTemporaryAttributesInRange:(id)range
 {
   textCanvasViews = self->_textCanvasViews;
-  v4 = a3;
+  rangeCopy = range;
   v5 = NSAllMapTableValues(textCanvasViews);
-  [v5 makeObjectsPerformSelector:sel_invalidateTemporaryAttributesInRange_ withObject:v4];
+  [v5 makeObjectsPerformSelector:sel_invalidateTemporaryAttributesInRange_ withObject:rangeCopy];
 }
 
-- (void)addAnnotationAttribute:(id)a3 value:(id)a4 forRange:(id)a5
+- (void)addAnnotationAttribute:(id)attribute value:(id)value forRange:(id)range
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 textKit2Ranges];
+  attributeCopy = attribute;
+  valueCopy = value;
+  rangeCopy = range;
+  textKit2Ranges = [rangeCopy textKit2Ranges];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __69___UITextKit2LayoutController_addAnnotationAttribute_value_forRange___block_invoke;
   v14[3] = &unk_1E710AB28;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  [v11 enumerateObjectsUsingBlock:v14];
+  v15 = attributeCopy;
+  v16 = valueCopy;
+  v12 = valueCopy;
+  v13 = attributeCopy;
+  [textKit2Ranges enumerateObjectsUsingBlock:v14];
 
-  [(_UITextKit2LayoutController *)self _invalidateTemporaryAttributesInRange:v10];
+  [(_UITextKit2LayoutController *)self _invalidateTemporaryAttributesInRange:rangeCopy];
 }
 
-- (id)annotationAttribute:(id)a3 atPosition:(id)a4
+- (id)annotationAttribute:(id)attribute atPosition:(id)position
 {
-  v6 = a3;
-  v7 = a4;
+  attributeCopy = attribute;
+  positionCopy = position;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1208,15 +1208,15 @@ LABEL_3:
   v20 = __Block_byref_object_dispose__97;
   v21 = 0;
   textLayoutManager = self->_textLayoutManager;
-  v9 = [v7 location];
+  location = [positionCopy location];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62___UITextKit2LayoutController_annotationAttribute_atPosition___block_invoke;
   v13[3] = &unk_1E710AB50;
   v15 = &v16;
-  v10 = v6;
+  v10 = attributeCopy;
   v14 = v10;
-  [(NSTextLayoutManager *)textLayoutManager enumerateTemporaryAttributesFromLocation:v9 reverse:0 usingBlock:v13];
+  [(NSTextLayoutManager *)textLayoutManager enumerateTemporaryAttributesFromLocation:location reverse:0 usingBlock:v13];
 
   v11 = v17[5];
   _Block_object_dispose(&v16, 8);
@@ -1224,48 +1224,48 @@ LABEL_3:
   return v11;
 }
 
-- (void)removeAnnotationAttribute:(id)a3 forRange:(id)a4
+- (void)removeAnnotationAttribute:(id)attribute forRange:(id)range
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 textKit2Ranges];
+  attributeCopy = attribute;
+  rangeCopy = range;
+  textKit2Ranges = [rangeCopy textKit2Ranges];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __66___UITextKit2LayoutController_removeAnnotationAttribute_forRange___block_invoke;
   v13 = &unk_1E710AB78;
-  v14 = self;
-  v15 = v6;
-  v9 = v6;
-  [v8 enumerateObjectsUsingBlock:&v10];
+  selfCopy = self;
+  v15 = attributeCopy;
+  v9 = attributeCopy;
+  [textKit2Ranges enumerateObjectsUsingBlock:&v10];
 
-  [(_UITextKit2LayoutController *)self _invalidateTemporaryAttributesInRange:v7, v10, v11, v12, v13, v14];
+  [(_UITextKit2LayoutController *)self _invalidateTemporaryAttributesInRange:rangeCopy, v10, v11, v12, v13, selfCopy];
 }
 
-- (void)addRenderingAttributes:(id)a3 forRange:(id)a4
+- (void)addRenderingAttributes:(id)attributes forRange:(id)range
 {
-  v6 = a4;
+  rangeCopy = range;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __63___UITextKit2LayoutController_addRenderingAttributes_forRange___block_invoke;
   v11 = &unk_1E70F3898;
-  v12 = v6;
-  v13 = self;
-  v7 = v6;
-  [a3 enumerateKeysAndObjectsUsingBlock:&v8];
+  v12 = rangeCopy;
+  selfCopy = self;
+  v7 = rangeCopy;
+  [attributes enumerateKeysAndObjectsUsingBlock:&v8];
   [(_UITextKit2LayoutController *)self _invalidateTemporaryAttributesInRange:v7, v8, v9, v10, v11];
 }
 
-- (void)removeRenderingAttributes:(id)a3 forRange:(id)a4
+- (void)removeRenderingAttributes:(id)attributes forRange:(id)range
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  rangeCopy = range;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v6;
-  v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  obj = attributesCopy;
+  v8 = [attributesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1281,14 +1281,14 @@ LABEL_3:
         }
 
         v12 = *(*(&v16 + 1) + 8 * v11);
-        v13 = [v7 textKit2Ranges];
+        textKit2Ranges = [rangeCopy textKit2Ranges];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __66___UITextKit2LayoutController_removeRenderingAttributes_forRange___block_invoke;
         v15[3] = &unk_1E710AB78;
         v15[4] = self;
         v15[5] = v12;
-        [v13 enumerateObjectsUsingBlock:v15];
+        [textKit2Ranges enumerateObjectsUsingBlock:v15];
 
         ++v11;
       }
@@ -1300,48 +1300,48 @@ LABEL_3:
     while (v9);
   }
 
-  [(_UITextKit2LayoutController *)self _invalidateTemporaryAttributesInRange:v7];
+  [(_UITextKit2LayoutController *)self _invalidateTemporaryAttributesInRange:rangeCopy];
 }
 
-- (void)addGhostedRange:(id)a3
+- (void)addGhostedRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   ghostedRanges = self->_ghostedRanges;
-  v8 = v4;
+  v8 = rangeCopy;
   if (!ghostedRanges)
   {
     v6 = objc_opt_new();
     v7 = self->_ghostedRanges;
     self->_ghostedRanges = v6;
 
-    v4 = v8;
+    rangeCopy = v8;
     ghostedRanges = self->_ghostedRanges;
   }
 
-  [(NSMutableSet *)ghostedRanges addObject:v4];
+  [(NSMutableSet *)ghostedRanges addObject:rangeCopy];
 }
 
-- (void)addInvisibleRange:(id)a3
+- (void)addInvisibleRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   invisibleRanges = self->_invisibleRanges;
-  v8 = v4;
+  v8 = rangeCopy;
   if (!invisibleRanges)
   {
     v6 = objc_opt_new();
     v7 = self->_invisibleRanges;
     self->_invisibleRanges = v6;
 
-    v4 = v8;
+    rangeCopy = v8;
     invisibleRanges = self->_invisibleRanges;
   }
 
-  [(NSMutableSet *)invisibleRanges addObject:v4];
+  [(NSMutableSet *)invisibleRanges addObject:rangeCopy];
 }
 
-- (void)setDocumentObscured:(BOOL)a3
+- (void)setDocumentObscured:(BOOL)obscured
 {
-  v3 = a3;
+  obscuredCopy = obscured;
   v5 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
@@ -1355,14 +1355,14 @@ LABEL_3:
 
   v7 = textContentStorage;
 
-  [(NSTextContentStorage *)v7 setObscured:v3];
+  [(NSTextContentStorage *)v7 setObscured:obscuredCopy];
 }
 
-- (void)setUnobscuredRange:(id)a3
+- (void)setUnobscuredRange:(id)range
 {
   v10.receiver = self;
   v10.super_class = _UITextKit2LayoutController;
-  [(_UITextLayoutControllerBase *)&v10 setUnobscuredRange:a3];
+  [(_UITextLayoutControllerBase *)&v10 setUnobscuredRange:range];
   v4 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
@@ -1376,53 +1376,53 @@ LABEL_3:
 
   v6 = textContentStorage;
 
-  v7 = [(_UITextLayoutControllerBase *)self unobscuredRange];
-  v8 = [(_UITextKit2LayoutController *)self characterRangeForTextRange:v7];
+  unobscuredRange = [(_UITextLayoutControllerBase *)self unobscuredRange];
+  v8 = [(_UITextKit2LayoutController *)self characterRangeForTextRange:unobscuredRange];
   [(NSTextContentStorage *)v6 setUnobscuredRange:v8, v9];
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  if (self->_editable != a3)
+  if (self->_editable != editable)
   {
-    v3 = a3;
-    self->_editable = a3;
+    editableCopy = editable;
+    self->_editable = editable;
     if (objc_opt_respondsToSelector())
     {
       textLayoutManager = self->_textLayoutManager;
 
-      [(NSTextLayoutManager *)textLayoutManager setBreaksLinesForInteractiveText:v3];
+      [(NSTextLayoutManager *)textLayoutManager setBreaksLinesForInteractiveText:editableCopy];
     }
   }
 }
 
-- (id)attributedTextInRange:(id)a3
+- (id)attributedTextInRange:(id)range
 {
-  v5 = a3;
+  rangeCopy = range;
   v6 = objc_opt_new();
-  v7 = v5;
-  v8 = [v7 unionTextRange];
-  v9 = [v8 location];
+  v7 = rangeCopy;
+  unionTextRange = [v7 unionTextRange];
+  location = [unionTextRange location];
 
-  v10 = [v7 unionTextRange];
+  unionTextRange2 = [v7 unionTextRange];
 
-  v11 = [v10 endLocation];
+  endLocation = [unionTextRange2 endLocation];
 
-  v12 = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
+  textContentManager = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __53___UITextKit2LayoutController_attributedTextInRange___block_invoke;
   v21[3] = &unk_1E710ABA0;
   v26 = a2;
   v21[4] = self;
-  v22 = v9;
-  v23 = v12;
-  v24 = v11;
+  v22 = location;
+  v23 = textContentManager;
+  v24 = endLocation;
   v13 = v6;
   v25 = v13;
-  v14 = v11;
-  v15 = v12;
-  v16 = v9;
+  v14 = endLocation;
+  v15 = textContentManager;
+  v16 = location;
   v17 = [v15 enumerateTextElementsFromLocation:v16 options:0 usingBlock:v21];
   v18 = v25;
   v19 = v13;
@@ -1430,27 +1430,27 @@ LABEL_3:
   return v13;
 }
 
-- (id)annotatedSubstringForRange:(id)a3
+- (id)annotatedSubstringForRange:(id)range
 {
-  v4 = a3;
-  v5 = [(_UITextKit2LayoutController *)self attributedTextInRange:v4];
+  rangeCopy = range;
+  v5 = [(_UITextKit2LayoutController *)self attributedTextInRange:rangeCopy];
   v6 = [v5 mutableCopy];
 
   [v6 removeAttribute:*off_1E70EC9B0 range:{0, objc_msgSend(v6, "length")}];
-  v7 = [v4 unionTextRange];
+  unionTextRange = [rangeCopy unionTextRange];
 
-  v8 = [v7 location];
+  location = [unionTextRange location];
   textLayoutManager = self->_textLayoutManager;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __58___UITextKit2LayoutController_annotatedSubstringForRange___block_invoke;
   v16[3] = &unk_1E710ABC8;
-  v17 = v7;
-  v18 = v8;
+  v17 = unionTextRange;
+  v18 = location;
   v10 = v6;
   v19 = v10;
-  v11 = v8;
-  v12 = v7;
+  v11 = location;
+  v12 = unionTextRange;
   [(NSTextLayoutManager *)textLayoutManager enumerateTemporaryAttributesFromLocation:v11 reverse:0 usingBlock:v16];
   v13 = v19;
   v14 = v10;
@@ -1458,24 +1458,24 @@ LABEL_3:
   return v10;
 }
 
-- (id)_writingToolsMinimumContextualRangeForRange:(id)a3
+- (id)_writingToolsMinimumContextualRangeForRange:(id)range
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
+  rangeCopy = range;
+  documentRange = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__97;
   v28 = __Block_byref_object_dispose__97;
   v29 = 0;
-  if (([v6 isEmpty] & 1) == 0)
+  if (([documentRange isEmpty] & 1) == 0)
   {
-    v7 = [v5 unionTextRange];
-    v8 = [v7 location];
+    unionTextRange = [rangeCopy unionTextRange];
+    location = [unionTextRange location];
 
-    v9 = [v5 unionTextRange];
-    v10 = [v9 endLocation];
+    unionTextRange2 = [rangeCopy unionTextRange];
+    endLocation = [unionTextRange2 endLocation];
 
     textContentStorage = self->_textContentStorage;
     v19[0] = MEMORY[0x1E69E9820];
@@ -1485,14 +1485,14 @@ LABEL_3:
     v19[4] = self;
     v22 = &v24;
     v23 = a2;
-    v12 = v8;
+    v12 = location;
     v20 = v12;
-    v13 = v10;
+    v13 = endLocation;
     v21 = v13;
     v14 = [(NSTextContentStorage *)textContentStorage enumerateTextElementsFromLocation:v12 options:0 usingBlock:v19];
   }
 
-  v15 = v5;
+  v15 = rangeCopy;
   if (v25[5])
   {
     v30[0] = v25[5];
@@ -1506,11 +1506,11 @@ LABEL_3:
   return v17;
 }
 
-- (void)requestTextGeometryAtPosition:(id)a3 typingAttributes:(id)a4 resultBlock:(id)a5
+- (void)requestTextGeometryAtPosition:(id)position typingAttributes:(id)attributes resultBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  positionCopy = position;
+  attributesCopy = attributes;
+  blockCopy = block;
   v38 = 0;
   v39 = &v38;
   v40 = 0x4010000000;
@@ -1523,95 +1523,95 @@ LABEL_3:
   v36 = 0x2020000000;
   v37 = 0;
   v13 = [off_1E70ECBF0 alloc];
-  v14 = [v9 location];
-  v15 = [v13 initWithLocation:v14];
+  location = [positionCopy location];
+  v15 = [v13 initWithLocation:location];
 
   textLayoutManager = self->_textLayoutManager;
-  v17 = [v15 endLocation];
-  v18 = [(NSTextLayoutManager *)textLayoutManager textContainerForLocation:v17];
+  endLocation = [v15 endLocation];
+  firstObject = [(NSTextLayoutManager *)textLayoutManager textContainerForLocation:endLocation];
 
-  if (!v18)
+  if (!firstObject)
   {
     v27 = a2;
-    v19 = [(NSTextLayoutManager *)self->_textLayoutManager textContainers];
-    if ([v19 count] != 1)
+    textContainers = [(NSTextLayoutManager *)self->_textLayoutManager textContainers];
+    if ([textContainers count] != 1)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"_UITextKit2LayoutController.m" lineNumber:896 description:{@"Invalid parameter not satisfying: %@", @"textContainers.count == 1"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextKit2LayoutController.m" lineNumber:896 description:{@"Invalid parameter not satisfying: %@", @"textContainers.count == 1"}];
     }
 
-    v18 = [v19 firstObject];
+    firstObject = [textContainers firstObject];
     v20 = [(NSTextLayoutManager *)self->_textLayoutManager rangeForTextContainerAtIndex:0];
 
-    v21 = [v20 endLocation];
-    v15 = [[off_1E70ECBF0 alloc] initWithLocation:v21];
+    endLocation2 = [v20 endLocation];
+    v15 = [[off_1E70ECBF0 alloc] initWithLocation:endLocation2];
 
-    v22 = [_UITextKitTextPosition positionWithTextContentManager:self->_textContentStorage location:v21 affinity:0];
+    v22 = [_UITextKitTextPosition positionWithTextContentManager:self->_textContentStorage location:endLocation2 affinity:0];
 
-    v9 = v22;
+    positionCopy = v22;
     a2 = v27;
   }
 
-  v23 = [(_UITextKit2LayoutController *)self _updateSelectionWithTextRange:v15 affinity:0 typingAttributes:v10];
+  v23 = [(_UITextKit2LayoutController *)self _updateSelectionWithTextRange:v15 affinity:0 typingAttributes:attributesCopy];
   v24 = self->_textLayoutManager;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __90___UITextKit2LayoutController_requestTextGeometryAtPosition_typingAttributes_resultBlock___block_invoke;
   v28[3] = &unk_1E710AC18;
-  v25 = v18;
+  v25 = firstObject;
   v29 = v25;
-  v30 = self;
+  selfCopy = self;
   v31 = &v38;
   v32 = &v34;
   v33 = a2;
   [(NSTextLayoutManager *)v24 enumerateTextSegmentsInRange:v15 type:0 options:0 usingBlock:v28];
-  v11[2](v11, v25, v9, v39[4], v39[5], v39[6], v39[7], v35[3]);
+  blockCopy[2](blockCopy, v25, positionCopy, v39[4], v39[5], v39[6], v39[7], v35[3]);
 
   _Block_object_dispose(&v34, 8);
   _Block_object_dispose(&v38, 8);
 }
 
-- (id)textContainerForPosition:(id)a3
+- (id)textContainerForPosition:(id)position
 {
   textLayoutManager = self->_textLayoutManager;
-  v4 = [a3 location];
-  v5 = [(NSTextLayoutManager *)textLayoutManager textContainerForLocation:v4];
+  location = [position location];
+  v5 = [(NSTextLayoutManager *)textLayoutManager textContainerForLocation:location];
 
   return v5;
 }
 
-- (id)dequeueCanvasViewForTextContainer:(id)a3
+- (id)dequeueCanvasViewForTextContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_textCanvasViews objectForKey:v4];
+  containerCopy = container;
+  v5 = [(NSMapTable *)self->_textCanvasViews objectForKey:containerCopy];
   if (!v5)
   {
-    v5 = [[_UITextLayoutCanvasView alloc] initWithTextLayoutManager:self->_textLayoutManager textContainer:v4];
-    [(NSMapTable *)self->_textCanvasViews setObject:v5 forKey:v4];
+    v5 = [[_UITextLayoutCanvasView alloc] initWithTextLayoutManager:self->_textLayoutManager textContainer:containerCopy];
+    [(NSMapTable *)self->_textCanvasViews setObject:v5 forKey:containerCopy];
   }
 
   return v5;
 }
 
-- (id)previewRendererForRange:(id)a3 unifyRects:(BOOL)a4
+- (id)previewRendererForRange:(id)range unifyRects:(BOOL)rects
 {
-  v4 = a4;
-  v6 = a3;
+  rectsCopy = rects;
+  rangeCopy = range;
   v7 = [_UITextLayoutPreviewRenderer alloc];
   textLayoutManager = self->_textLayoutManager;
-  v9 = [v6 unionTextRange];
+  unionTextRange = [rangeCopy unionTextRange];
 
-  v10 = [(_UITextLayoutPreviewRenderer *)v7 initWithTextLayoutManager:textLayoutManager range:v9 unifyRects:v4];
+  v10 = [(_UITextLayoutPreviewRenderer *)v7 initWithTextLayoutManager:textLayoutManager range:unionTextRange unifyRects:rectsCopy];
 
   return v10;
 }
 
-- (void)ensureLayoutForTextContainer:(id)a3
+- (void)ensureLayoutForTextContainer:(id)container
 {
   textLayoutManager = self->_textLayoutManager;
-  v5 = a3;
-  v6 = [(NSTextLayoutManager *)textLayoutManager textContainers];
-  v7 = [v6 indexOfObject:v5];
+  containerCopy = container;
+  textContainers = [(NSTextLayoutManager *)textLayoutManager textContainers];
+  v7 = [textContainers indexOfObject:containerCopy];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1625,18 +1625,18 @@ LABEL_3:
   }
 }
 
-- (void)ensureLayoutForBounds:(CGRect)a3 inTextContainer:(id)a4
+- (void)ensureLayoutForBounds:(CGRect)bounds inTextContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   textLayoutManager = self->_textLayoutManager;
-  v10 = a4;
-  v11 = [(NSTextLayoutManager *)textLayoutManager textContainers];
-  v12 = [v11 lastObject];
+  containerCopy = container;
+  textContainers = [(NSTextLayoutManager *)textLayoutManager textContainers];
+  lastObject = [textContainers lastObject];
 
-  if (v12 == v10)
+  if (lastObject == containerCopy)
   {
     v13 = self->_textLayoutManager;
 
@@ -1644,14 +1644,14 @@ LABEL_3:
   }
 }
 
-- (CGRect)usedRectForTextContainer:(id)a3
+- (CGRect)usedRectForTextContainer:(id)container
 {
   textLayoutManager = self->_textLayoutManager;
-  v5 = a3;
-  v6 = [(NSTextLayoutManager *)textLayoutManager textContainers];
-  v7 = [v6 lastObject];
+  containerCopy = container;
+  textContainers = [(NSTextLayoutManager *)textLayoutManager textContainers];
+  lastObject = [textContainers lastObject];
 
-  if (v7 == v5)
+  if (lastObject == containerCopy)
   {
     v8 = *MEMORY[0x1E695EFF8];
     v9 = *(MEMORY[0x1E695EFF8] + 8);
@@ -1677,13 +1677,13 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)updateLayoutForSizeChangeOfTextContainer:(id)a3
+- (CGRect)updateLayoutForSizeChangeOfTextContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(_UITextKit2LayoutController *)self documentRange];
-  [(_UITextKit2LayoutController *)self invalidateLayoutForRange:v5];
-  [(_UITextKit2LayoutController *)self ensureLayoutForRange:v5];
-  [(_UITextKit2LayoutController *)self usedRectForTextContainer:v4];
+  containerCopy = container;
+  documentRange = [(_UITextKit2LayoutController *)self documentRange];
+  [(_UITextKit2LayoutController *)self invalidateLayoutForRange:documentRange];
+  [(_UITextKit2LayoutController *)self ensureLayoutForRange:documentRange];
+  [(_UITextKit2LayoutController *)self usedRectForTextContainer:containerCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1700,35 +1700,35 @@ LABEL_3:
   return result;
 }
 
-- (void)ensureLayoutForRange:(id)a3
+- (void)ensureLayoutForRange:(id)range
 {
   textLayoutManager = self->_textLayoutManager;
-  v4 = [a3 unionTextRange];
-  [(NSTextLayoutManager *)textLayoutManager ensureLayoutForRange:v4];
+  unionTextRange = [range unionTextRange];
+  [(NSTextLayoutManager *)textLayoutManager ensureLayoutForRange:unionTextRange];
 }
 
-- (void)invalidateLayoutForRange:(id)a3
+- (void)invalidateLayoutForRange:(id)range
 {
-  v9 = [a3 unionTextRange];
+  unionTextRange = [range unionTextRange];
   [(NSTextLayoutManager *)self->_textLayoutManager invalidateLayoutForRange:?];
   if ([(NSTextLayoutManager *)self->_textLayoutManager usesContiguousLayout])
   {
-    v4 = [(NSTextContentStorage *)self->_textContentStorage documentRange];
-    v5 = [v4 isEqualToTextRange:v9];
+    documentRange = [(NSTextContentStorage *)self->_textContentStorage documentRange];
+    v5 = [documentRange isEqualToTextRange:unionTextRange];
 
     if (v5)
     {
       textLayoutManager = self->_textLayoutManager;
-      v7 = [v9 location];
-      v8 = [(NSTextLayoutManager *)textLayoutManager textContainerForLocation:v7];
+      location = [unionTextRange location];
+      v8 = [(NSTextLayoutManager *)textLayoutManager textContainerForLocation:location];
       [(NSTextLayoutManager *)textLayoutManager textContainerChangedGeometry:v8];
     }
   }
 }
 
-- (CGRect)boundingRectForRange:(id)a3
+- (CGRect)boundingRectForRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v26 = 0;
   v27 = &v26;
   v28 = 0x4010000000;
@@ -1743,14 +1743,14 @@ LABEL_3:
   v24 = __Block_byref_object_dispose__97;
   v25 = 0;
   textLayoutManager = self->_textLayoutManager;
-  v7 = [v4 unionTextRange];
+  unionTextRange = [rangeCopy unionTextRange];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __52___UITextKit2LayoutController_boundingRectForRange___block_invoke;
   v19[3] = &unk_1E710AC40;
   v19[4] = &v20;
   v19[5] = &v26;
-  [(NSTextLayoutManager *)textLayoutManager enumerateTextSegmentsInRange:v7 type:0 options:1 usingBlock:v19];
+  [(NSTextLayoutManager *)textLayoutManager enumerateTextSegmentsInRange:unionTextRange type:0 options:1 usingBlock:v19];
 
   v8 = v21[5];
   if (v8)
@@ -1786,13 +1786,13 @@ LABEL_3:
   return result;
 }
 
-- (void)_textContentStorageAddedUnsupportedAttribute:(id)a3
+- (void)_textContentStorageAddedUnsupportedAttribute:(id)attribute
 {
   v12 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_textView);
-  v5 = [WeakRetained isWritingToolsActive];
+  isWritingToolsActive = [WeakRetained isWritingToolsActive];
 
-  if (v5)
+  if (isWritingToolsActive)
   {
     if (os_variant_has_internal_diagnostics() && ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0 && byte_1EA95E17C || (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0 && byte_1EA95E184))
     {
@@ -1815,41 +1815,41 @@ LABEL_3:
   }
 }
 
-- (_NSRange)characterRangeForTextRange:(id)a3
+- (_NSRange)characterRangeForTextRange:(id)range
 {
-  v3 = [(_UITextKit2LayoutController *)self characterRangeForTextRange:a3 clippedToDocument:0];
+  v3 = [(_UITextKit2LayoutController *)self characterRangeForTextRange:range clippedToDocument:0];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)characterRangeForTextRange:(id)a3 clippedToDocument:(BOOL)a4
+- (_NSRange)characterRangeForTextRange:(id)range clippedToDocument:(BOOL)document
 {
-  v4 = a4;
+  documentCopy = document;
   textLayoutManager = self->_textLayoutManager;
-  v6 = a3;
-  v7 = [(NSTextLayoutManager *)textLayoutManager textContentManager];
-  v8 = [v7 documentRange];
-  v9 = [v6 unionTextRange];
+  rangeCopy = range;
+  textContentManager = [(NSTextLayoutManager *)textLayoutManager textContentManager];
+  documentRange = [textContentManager documentRange];
+  unionTextRange = [rangeCopy unionTextRange];
 
-  if (v4)
+  if (documentCopy)
   {
-    v10 = [v9 textRangeByIntersectingWithTextRange:v8];
+    v10 = [unionTextRange textRangeByIntersectingWithTextRange:documentRange];
 
-    v9 = v10;
+    unionTextRange = v10;
   }
 
-  if (v9)
+  if (unionTextRange)
   {
-    v11 = [v8 location];
-    v12 = v9;
-    v13 = v7;
-    v14 = [v12 location];
-    v15 = [v13 offsetFromLocation:v11 toLocation:v14];
+    location = [documentRange location];
+    v12 = unionTextRange;
+    v13 = textContentManager;
+    location2 = [v12 location];
+    v15 = [v13 offsetFromLocation:location toLocation:location2];
 
-    v16 = [v12 endLocation];
+    endLocation = [v12 endLocation];
 
-    v17 = [v13 offsetFromLocation:v11 toLocation:v16];
+    v17 = [v13 offsetFromLocation:location toLocation:endLocation];
     v18 = v17 - v15;
   }
 
@@ -1866,20 +1866,20 @@ LABEL_3:
   return result;
 }
 
-- (id)characterRangesForTextRange:(id)a3 clippedToDocument:(BOOL)a4
+- (id)characterRangesForTextRange:(id)range clippedToDocument:(BOOL)document
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v32 = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
-  v6 = [v32 documentRange];
-  v28 = v5;
-  v7 = [v5 textKit2Ranges];
-  v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  rangeCopy = range;
+  textContentManager = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
+  documentRange = [textContentManager documentRange];
+  v28 = rangeCopy;
+  textKit2Ranges = [rangeCopy textKit2Ranges];
+  v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(textKit2Ranges, "count")}];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v7;
+  obj = textKit2Ranges;
   v8 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v8)
   {
@@ -1895,9 +1895,9 @@ LABEL_3:
         }
 
         v12 = *(*(&v33 + 1) + 8 * i);
-        if (a4)
+        if (document)
         {
-          v13 = [*(*(&v33 + 1) + 8 * i) textRangeByIntersectingWithTextRange:v6];
+          v13 = [*(*(&v33 + 1) + 8 * i) textRangeByIntersectingWithTextRange:documentRange];
           v14 = v13;
           if (v13)
           {
@@ -1917,15 +1917,15 @@ LABEL_3:
           v16 = v12;
         }
 
-        v17 = [v6 location];
+        location = [documentRange location];
         v18 = v16;
-        v19 = v32;
-        v20 = [v18 location];
-        v21 = [v19 offsetFromLocation:v17 toLocation:v20];
+        v19 = textContentManager;
+        location2 = [v18 location];
+        v21 = [v19 offsetFromLocation:location toLocation:location2];
 
-        v22 = [v18 endLocation];
+        endLocation = [v18 endLocation];
 
-        v23 = [v19 offsetFromLocation:v17 toLocation:v22];
+        v23 = [v19 offsetFromLocation:location toLocation:endLocation];
         v24 = [MEMORY[0x1E696B098] valueWithRange:{v21, v23 - v21}];
         [v31 addObject:v24];
       }
@@ -1951,10 +1951,10 @@ LABEL_3:
   return v25;
 }
 
-- (id)textRangeForCharacterRange:(_NSRange)a3
+- (id)textRangeForCharacterRange:(_NSRange)range
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = [(_UITextKit2LayoutController *)self _rangeForCharacterRange:a3.location, a3.length];
+  v4 = [(_UITextKit2LayoutController *)self _rangeForCharacterRange:range.location, range.length];
   textContentStorage = self->_textContentStorage;
   v9[0] = v4;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
@@ -1963,16 +1963,16 @@ LABEL_3:
   return v7;
 }
 
-- (id)textRangeForCharacterRanges:(id)a3
+- (id)textRangeForCharacterRanges:(id)ranges
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rangesCopy = ranges;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = rangesCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -1987,8 +1987,8 @@ LABEL_3:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) rangeValue];
-        v13 = [(_UITextKit2LayoutController *)self _rangeForCharacterRange:v11, v12];
+        rangeValue = [*(*(&v16 + 1) + 8 * i) rangeValue];
+        v13 = [(_UITextKit2LayoutController *)self _rangeForCharacterRange:rangeValue, v12];
         [v5 addObject:v13];
       }
 
@@ -2003,39 +2003,39 @@ LABEL_3:
   return v14;
 }
 
-- (id)positionWithOffset:(int64_t)a3 affinity:(int64_t)a4
+- (id)positionWithOffset:(int64_t)offset affinity:(int64_t)affinity
 {
-  v6 = [(_UITextKit2LayoutController *)self _locationWithOffset:a3];
-  v7 = [_UITextKitTextPosition positionWithTextContentManager:self->_textContentStorage location:v6 affinity:a4];
+  v6 = [(_UITextKit2LayoutController *)self _locationWithOffset:offset];
+  v7 = [_UITextKitTextPosition positionWithTextContentManager:self->_textContentStorage location:v6 affinity:affinity];
 
   return v7;
 }
 
-- (_NSRange)rangeOfCharacterClusterAtIndex:(unint64_t)a3 type:(int64_t)a4
+- (_NSRange)rangeOfCharacterClusterAtIndex:(unint64_t)index type:(int64_t)type
 {
   v17 = 0;
   v18 = &v17;
   v19 = 0x3010000000;
   v20 = "";
-  v21 = a3;
+  indexCopy = index;
   v22 = 0;
   v8 = [(_UITextKit2LayoutController *)self _locationWithOffset:?];
-  if ((a4 - 1) >= 2)
+  if ((type - 1) >= 2)
   {
-    if (a4 == 3)
+    if (type == 3)
     {
       v9 = 2053;
     }
 
-    else if (a4 == 4)
+    else if (type == 4)
     {
       v9 = 2054;
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"_UITextKit2LayoutController.m" lineNumber:1103 description:{@"Unexpected clusterType = %lu", a4}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextKit2LayoutController.m" lineNumber:1103 description:{@"Unexpected clusterType = %lu", type}];
 
       v9 = 2048;
     }
@@ -2053,7 +2053,7 @@ LABEL_3:
   v16[3] = &unk_1E710AC68;
   v16[4] = self;
   v16[5] = &v17;
-  v16[6] = a3;
+  v16[6] = index;
   [(NSTextLayoutManager *)textLayoutManager enumerateSubstringsFromLocation:v8 options:v9 usingBlock:v16];
   v12 = v18[4];
   v13 = v18[5];
@@ -2066,9 +2066,9 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)boundingRectForCharacterRange:(_NSRange)a3
+- (CGRect)boundingRectForCharacterRange:(_NSRange)range
 {
-  v4 = [(_UITextKit2LayoutController *)self textRangeForCharacterRange:a3.location, a3.length];
+  v4 = [(_UITextKit2LayoutController *)self textRangeForCharacterRange:range.location, range.length];
   [(_UITextKit2LayoutController *)self boundingRectForRange:v4];
   v6 = v5;
   v8 = v7;
@@ -2086,7 +2086,7 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)unionRectForCharacterRange:(_NSRange)a3 bottomInset:(double)a4
+- (CGRect)unionRectForCharacterRange:(_NSRange)range bottomInset:(double)inset
 {
   v25 = 0;
   v26 = &v25;
@@ -2095,7 +2095,7 @@ LABEL_3:
   v6 = *(MEMORY[0x1E695F050] + 16);
   v29 = *MEMORY[0x1E695F050];
   v30 = v6;
-  v7 = [(_UITextKit2LayoutController *)self _rangeForCharacterRange:a3.location, a3.length];
+  v7 = [(_UITextKit2LayoutController *)self _rangeForCharacterRange:range.location, range.length];
   [(NSTextLayoutManager *)self->_textLayoutManager ui_ensureLayoutForViewportBoundsAtRange:v7];
   textLayoutManager = self->_textLayoutManager;
   v24[0] = MEMORY[0x1E69E9820];
@@ -2104,22 +2104,22 @@ LABEL_3:
   v24[3] = &unk_1E710A9E8;
   v24[4] = &v25;
   [(NSTextLayoutManager *)textLayoutManager enumerateTextSegmentsInRange:v7 type:1 options:3 usingBlock:v24];
-  v9 = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
-  v10 = [v9 endLocation];
+  documentRange = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
+  endLocation = [documentRange endLocation];
 
-  v11 = [v7 endLocation];
-  v12 = [v11 isEqual:v10];
+  endLocation2 = [v7 endLocation];
+  v12 = [endLocation2 isEqual:endLocation];
 
   if (v12)
   {
-    v13 = [[off_1E70ECBF0 alloc] initWithLocation:v10];
+    v13 = [[off_1E70ECBF0 alloc] initWithLocation:endLocation];
     v14 = self->_textLayoutManager;
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __70___UITextKit2LayoutController_unionRectForCharacterRange_bottomInset___block_invoke_2;
     v23[3] = &unk_1E710AC90;
     v23[4] = &v25;
-    *&v23[5] = a4;
+    *&v23[5] = inset;
     [(NSTextLayoutManager *)v14 enumerateTextSegmentsInRange:v13 type:1 options:3 usingBlock:v23];
   }
 
@@ -2140,36 +2140,36 @@ LABEL_3:
   return result;
 }
 
-- (id)textLayoutManager:(id)a3 renderingAttributesForLink:(id)a4 atLocation:(id)a5 defaultAttributes:(id)a6
+- (id)textLayoutManager:(id)manager renderingAttributesForLink:(id)link atLocation:(id)location defaultAttributes:(id)attributes
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 textContainerForLocation:v12];
-  v15 = [v14 textView];
+  managerCopy = manager;
+  linkCopy = link;
+  locationCopy = location;
+  attributesCopy = attributes;
+  v14 = [managerCopy textContainerForLocation:locationCopy];
+  textView = [v14 textView];
 
   if (objc_opt_respondsToSelector())
   {
-    v16 = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
-    v17 = [v16 documentRange];
-    v18 = [v17 location];
-    v19 = [v15 linkAttributesForLink:v11 forCharacterAtIndex:{objc_msgSend(v10, "offsetFromLocation:toLocation:", v18, v12)}];
+    textContentManager = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
+    documentRange = [textContentManager documentRange];
+    location = [documentRange location];
+    linkTextAttributes = [textView linkAttributesForLink:linkCopy forCharacterAtIndex:{objc_msgSend(managerCopy, "offsetFromLocation:toLocation:", location, locationCopy)}];
   }
 
   else
   {
-    v19 = [v15 linkTextAttributes];
+    linkTextAttributes = [textView linkTextAttributes];
   }
 
-  if (v19)
+  if (linkTextAttributes)
   {
-    v20 = v19;
+    v20 = linkTextAttributes;
   }
 
   else
   {
-    v20 = v13;
+    v20 = attributesCopy;
   }
 
   v21 = v20;
@@ -2177,22 +2177,22 @@ LABEL_3:
   return v20;
 }
 
-- (void)resetTextViewportLayoutControllerLayoutForPosition:(id)a3
+- (void)resetTextViewportLayoutControllerLayoutForPosition:(id)position
 {
-  v8 = a3;
-  if (v8 && ([v8 location], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  positionCopy = position;
+  if (positionCopy && ([positionCopy location], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [(NSTextLayoutManager *)self->_textLayoutManager textContainerForLocation:v4];
+    textContainer = [(NSTextLayoutManager *)self->_textLayoutManager textContainerForLocation:v4];
   }
 
   else
   {
-    v6 = [(NSTextLayoutManager *)self->_textLayoutManager textContainer];
+    textContainer = [(NSTextLayoutManager *)self->_textLayoutManager textContainer];
   }
 
-  v7 = [v6 textViewportLayoutController];
-  [v7 _resetLayout];
+  textViewportLayoutController = [textContainer textViewportLayoutController];
+  [textViewportLayoutController _resetLayout];
 }
 
 @end

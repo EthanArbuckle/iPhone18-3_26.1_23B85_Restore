@@ -1,17 +1,17 @@
 @interface IdentityProofingDataSharingClient
-- (void)checkUserConsentWithCompletionHandler:(id)a3;
-- (void)didChangeUserConsentWithStatus:(int64_t)a3 completionHandler:(id)a4;
-- (void)fetchUserConsentWithCompletionHandler:(id)a3;
+- (void)checkUserConsentWithCompletionHandler:(id)handler;
+- (void)didChangeUserConsentWithStatus:(int64_t)status completionHandler:(id)handler;
+- (void)fetchUserConsentWithCompletionHandler:(id)handler;
 @end
 
 @implementation IdentityProofingDataSharingClient
 
-- (void)fetchUserConsentWithCompletionHandler:(id)a3
+- (void)fetchUserConsentWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -31,14 +31,14 @@
   sub_225CBCC70(0, 0, v8, &unk_225D02CA8, v13);
 }
 
-- (void)didChangeUserConsentWithStatus:(int64_t)a3 completionHandler:(id)a4
+- (void)didChangeUserConsentWithStatus:(int64_t)status completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v7 - 8, v8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = status;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_225CCE994();
@@ -57,12 +57,12 @@
   sub_225CBCC70(0, 0, v10, &unk_225D02C88, v15);
 }
 
-- (void)checkUserConsentWithCompletionHandler:(id)a3
+- (void)checkUserConsentWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

@@ -1,16 +1,16 @@
 @interface BrandLockupCell
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (id)zoomSourceView;
-- (void)vui_setHighlighted:(BOOL)a3;
+- (void)vui_setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation BrandLockupCell
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  width = a3.width;
-  v6 = self;
-  v7 = sub_1E3E0162C(a4, width);
+  width = subviews.width;
+  selfCopy = self;
+  v7 = sub_1E3E0162C(only, width);
   v9 = v8;
 
   v10 = v7;
@@ -20,10 +20,10 @@
   return result;
 }
 
-- (void)vui_setHighlighted:(BOOL)a3
+- (void)vui_setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1E3E01790(a3);
+  selfCopy = self;
+  sub_1E3E01790(highlighted);
 }
 
 - (id)zoomSourceView

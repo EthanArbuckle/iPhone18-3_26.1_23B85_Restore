@@ -1,31 +1,31 @@
 @interface MKPlaceHoursDayRow
-- (MKPlaceHoursDayRow)initWithBusinessHours:(id)a3 frame:(CGRect)a4;
+- (MKPlaceHoursDayRow)initWithBusinessHours:(id)hours frame:(CGRect)frame;
 - (void)_setUpConstraints;
 - (void)_setUpViewsForPlaceHoursDayRow;
-- (void)hoursViewDidUpdate:(id)a3;
+- (void)hoursViewDidUpdate:(id)update;
 @end
 
 @implementation MKPlaceHoursDayRow
 
-- (void)hoursViewDidUpdate:(id)a3
+- (void)hoursViewDidUpdate:(id)update
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  if (*&self->super._selected == a3)
+  if (*&self->super._selected == update)
   {
     v4 = MEMORY[0x1E696ACD8];
     v18[0] = self->_hoursView;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     [v4 deactivateConstraints:v5];
 
-    v6 = [*&self->super._selected topLabel];
-    v7 = [v6 font];
-    [v7 _mapkit_scaledValueForValue:8.0];
+    topLabel = [*&self->super._selected topLabel];
+    font = [topLabel font];
+    [font _mapkit_scaledValueForValue:8.0];
     v9 = v8;
 
-    v10 = [(MKPlaceHoursDayRow *)self topAnchor];
-    v11 = [*&self->super._selected topLabel];
-    v12 = [v11 firstBaselineAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12 constant:-v9];
+    topAnchor = [(MKPlaceHoursDayRow *)self topAnchor];
+    topLabel2 = [*&self->super._selected topLabel];
+    firstBaselineAnchor = [topLabel2 firstBaselineAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:firstBaselineAnchor constant:-v9];
     hoursView = self->_hoursView;
     self->_hoursView = v13;
 
@@ -39,32 +39,32 @@
 - (void)_setUpConstraints
 {
   v21 = objc_opt_new();
-  v3 = [*&self->super._selected topLabel];
-  v4 = [v3 font];
-  [v4 _mapkit_scaledValueForValue:8.0];
+  topLabel = [*&self->super._selected topLabel];
+  font = [topLabel font];
+  [font _mapkit_scaledValueForValue:8.0];
   v6 = v5;
 
-  v7 = [(MKPlaceHoursDayRow *)self topAnchor];
-  v8 = [*&self->super._selected topLabel];
-  v9 = [v8 firstBaselineAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9 constant:-v6];
+  topAnchor = [(MKPlaceHoursDayRow *)self topAnchor];
+  topLabel2 = [*&self->super._selected topLabel];
+  firstBaselineAnchor = [topLabel2 firstBaselineAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:firstBaselineAnchor constant:-v6];
   hoursView = self->_hoursView;
   self->_hoursView = v10;
 
   [v21 addObject:self->_hoursView];
-  v12 = [(MKPlaceHoursDayRow *)self bottomAnchor];
-  v13 = [*&self->super._selected bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:0.0];
+  bottomAnchor = [(MKPlaceHoursDayRow *)self bottomAnchor];
+  bottomAnchor2 = [*&self->super._selected bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   [v21 addObject:v14];
 
-  v15 = [(MKPlaceHoursDayRow *)self leftAnchor];
-  v16 = [*&self->super._selected leftAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:0.0];
+  leftAnchor = [(MKPlaceHoursDayRow *)self leftAnchor];
+  leftAnchor2 = [*&self->super._selected leftAnchor];
+  v17 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:0.0];
   [v21 addObject:v17];
 
-  v18 = [(MKPlaceHoursDayRow *)self rightAnchor];
-  v19 = [*&self->super._selected rightAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:0.0];
+  rightAnchor = [(MKPlaceHoursDayRow *)self rightAnchor];
+  rightAnchor2 = [*&self->super._selected rightAnchor];
+  v20 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:0.0];
   [v21 addObject:v20];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v21];
@@ -80,27 +80,27 @@
   [(MKPlaceHoursDayRow *)self _setUpConstraints];
 }
 
-- (MKPlaceHoursDayRow)initWithBusinessHours:(id)a3 frame:(CGRect)a4
+- (MKPlaceHoursDayRow)initWithBusinessHours:(id)hours frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  hoursCopy = hours;
   v14.receiver = self;
   v14.super_class = MKPlaceHoursDayRow;
-  v10 = [(MKPlaceSectionItemView *)&v14 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(MKPlaceSectionItemView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [[MKPlaceHoursView alloc] initWithBusinessHours:v9];
-    v12 = *(v10 + 57);
-    *(v10 + 57) = v11;
+    v11 = [[MKPlaceHoursView alloc] initWithBusinessHours:hoursCopy];
+    v12 = *(height + 57);
+    *(height + 57) = v11;
 
-    [*(v10 + 57) setHoursDelegate:v10];
-    [v10 _setUpViewsForPlaceHoursDayRow];
+    [*(height + 57) setHoursDelegate:height];
+    [height _setUpViewsForPlaceHoursDayRow];
   }
 
-  return v10;
+  return height;
 }
 
 @end

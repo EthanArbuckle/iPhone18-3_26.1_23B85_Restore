@@ -1,20 +1,20 @@
 @interface PAEGradientBlur
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (PAEGradientBlur)initWithAPIManager:(id)a3;
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (PAEGradientBlur)initWithAPIManager:(id)manager;
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error;
 - (id)properties;
 @end
 
 @implementation PAEGradientBlur
 
-- (PAEGradientBlur)initWithAPIManager:(id)a3
+- (PAEGradientBlur)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEGradientBlur;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -28,11 +28,11 @@
   return [v2 dictionaryWithObjectsAndKeys:{v3, @"PositionIndependent", v4, @"SupportsHeliumRendering", v5, @"MayRemapTime", v6, @"SupportsLargeRenderScale", v7, @"InputSizeLimit", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 3), @"AutoColorProcessingSupport", 0}];
 }
 
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error
 {
-  v7 = [(PAEFilterDefaultBase *)self getParamAPIWithError:a4];
+  v7 = [(PAEFilterDefaultBase *)self getParamAPIWithError:error];
   v13 = 0.0;
-  if ([v7 getFloatValue:&v13 fromParm:3 atFxTime:a3.var1] & 1) != 0 && (v12 = 0, (objc_msgSend(v7, "getBoolValue:fromParm:atFxTime:", &v12, 4, a3.var1)))
+  if ([v7 getFloatValue:&v13 fromParm:3 atFxTime:time.var1] & 1) != 0 && (v12 = 0, (objc_msgSend(v7, "getBoolValue:fromParm:atFxTime:", &v12, 4, time.var1)))
   {
     if (v12 & 1 | (v13 != 0.0))
     {
@@ -47,12 +47,12 @@
     return [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", v8, v13), @"PixelTransformSupport", 0}];
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = objc_opt_class();
     v11 = [(PAEFilterDefaultBase *)self getParamErrorFor:NSStringFromClass(v10)];
     result = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -81,29 +81,29 @@
   return v3 != 0;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
-  if (v10 && (v11 = v10, v16 = 0, [v10 getBoolValue:&v16 fromParm:4 atFxTime:a6->var0.var1], (v16 & 1) == 0))
+  if (v10 && (v11 = v10, v16 = 0, [v10 getBoolValue:&v16 fromParm:4 atFxTime:info->var0.var1], (v16 & 1) == 0))
   {
     v15 = 0.0;
-    [v11 getFloatValue:&v15 fromParm:3 atFxTime:a6->var0.var1];
+    [v11 getFloatValue:&v15 fromParm:3 atFxTime:info->var0.var1];
     v13 = v15 + v15;
-    *a3 = (v15 + v15 + a5->var0);
-    var1 = (v13 + a5->var1);
+    *width = (v15 + v15 + input->var0);
+    var1 = (v13 + input->var1);
   }
 
   else
   {
-    *a3 = a5->var0;
-    var1 = a5->var1;
+    *width = input->var0;
+    var1 = input->var1;
   }
 
-  *a4 = var1;
+  *height = var1;
   return 1;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v54 = *MEMORY[0x277D85DE8];
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
@@ -112,12 +112,12 @@
     v10 = v9;
     v49 = 10.0;
     v48 = 1;
-    [v9 getFloatValue:&v49 fromParm:3 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v49 fromParm:3 atFxTime:info->var0.var1];
     if (v49 == 0.0)
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       else
@@ -125,7 +125,7 @@
         v45[0] = 0;
       }
 
-      [a3 setHeliumRef:v45];
+      [output setHeliumRef:v45];
       if (v45[0])
       {
         (*(*v45[0] + 24))(v45[0]);
@@ -137,23 +137,23 @@ LABEL_18:
     }
 
     v47 = 0uLL;
-    [v10 getXValue:&v47 YValue:&v47.u32[2] fromParm:1 atFxTime:{a5->var0.var1, v49}];
+    [v10 getXValue:&v47 YValue:&v47.u32[2] fromParm:1 atFxTime:{info->var0.var1, v49}];
     v46 = vdupq_n_s64(0x3FE570A3D70A3D71uLL);
-    [v10 getXValue:&v46 YValue:&v46.u64[1] fromParm:2 atFxTime:a5->var0.var1];
-    [v10 getBoolValue:&v48 fromParm:4 atFxTime:a5->var0.var1];
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
-    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a3];
+    [v10 getXValue:&v46 YValue:&v46.u64[1] fromParm:2 atFxTime:info->var0.var1];
+    [v10 getBoolValue:&v48 fromParm:4 atFxTime:info->var0.var1];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
+    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:output];
     v11 = *v45;
     v12 = *&v45[5];
-    [(PAESharedDefaultBase *)self convertRelativeToPixelCoordinates:&v47 withImage:a3];
+    [(PAESharedDefaultBase *)self convertRelativeToPixelCoordinates:&v47 withImage:output];
     v47 = v52;
-    [(PAESharedDefaultBase *)self convertRelativeToPixelCoordinates:&v46 withImage:a3];
+    [(PAESharedDefaultBase *)self convertRelativeToPixelCoordinates:&v46 withImage:output];
     v46 = v52;
     if (v49 == 0.0)
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       else
@@ -161,7 +161,7 @@ LABEL_18:
         v52.i64[0] = 0;
       }
 
-      [a3 setHeliumRef:&v52];
+      [output setHeliumRef:&v52];
       if (v52.i64[0])
       {
         (*(*v52.i64[0] + 24))(v52.i64[0]);
@@ -170,14 +170,14 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    LODWORD(v9) = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1, v49];
+    LODWORD(v9) = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1, v49];
     if (v9)
     {
-      if ([a4 imageType] == 3)
+      if ([input imageType] == 3)
       {
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         else
@@ -193,7 +193,7 @@ LABEL_18:
             (*(*v44 + 16))(v44);
           }
 
-          [(PAESharedDefaultBase *)self smear:&v43 fromImage:a4 toImage:a4];
+          [(PAESharedDefaultBase *)self smear:&v43 fromImage:input toImage:input];
           v13 = v52.i64[0];
           if (v44 == v52.i64[0])
           {
@@ -292,10 +292,10 @@ LABEL_18:
         (*(*v23 + 16))(v23);
         if (v48 == 1)
         {
-          [(PAESharedDefaultBase *)self crop:&v52 fromImage:a4 toImage:a3];
+          [(PAESharedDefaultBase *)self crop:&v52 fromImage:input toImage:output];
         }
 
-        [a3 setHeliumRef:{&v52, v43}];
+        [output setHeliumRef:{&v52, v43}];
         if (v52.i64[0])
         {
           (*(*v52.i64[0] + 24))(v52.i64[0]);
@@ -318,15 +318,15 @@ LABEL_18:
   return v9;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 1;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 1;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

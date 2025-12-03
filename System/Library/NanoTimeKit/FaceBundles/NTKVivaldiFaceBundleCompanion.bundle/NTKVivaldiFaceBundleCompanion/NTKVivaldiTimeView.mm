@@ -5,75 +5,75 @@
 + (id)vivaldiOutlineFontDescriptor;
 + (id)vivaldiUpperFontDescriptor;
 + (id)vivaldiUpperOutlineFontDescriptor;
-- (NTKVivaldiTimeView)initWithDevice:(id)a3 color:(id)a4;
+- (NTKVivaldiTimeView)initWithDevice:(id)device color:(id)color;
 - (NTKVivaldiTimeViewDelegate)delegate;
 - (id)_shadowImage;
 - (void)_updateAnimating;
 - (void)_updateLabels;
-- (void)applyColorPalette:(id)a3;
+- (void)applyColorPalette:(id)palette;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)updateColorsForComplicationsEditingFraction:(double)a3 withColorPalette:(id)a4;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)updateColorsForComplicationsEditingFraction:(double)fraction withColorPalette:(id)palette;
 @end
 
 @implementation NTKVivaldiTimeView
 
-- (NTKVivaldiTimeView)initWithDevice:(id)a3 color:(id)a4
+- (NTKVivaldiTimeView)initWithDevice:(id)device color:(id)color
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  colorCopy = color;
   v47.receiver = self;
   v47.super_class = NTKVivaldiTimeView;
   v9 = [(NTKVivaldiTimeView *)&v47 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
+    objc_storeStrong(&v9->_device, device);
     v11 = objc_opt_new();
     timeLabelsContainerView = v10->_timeLabelsContainerView;
     v10->_timeLabelsContainerView = v11;
 
-    v13 = sub_23C0AC0AC([(NTKVivaldiTimeView *)v10 addSubview:v10->_timeLabelsContainerView], v7);
+    v13 = sub_23C0AC0AC([(NTKVivaldiTimeView *)v10 addSubview:v10->_timeLabelsContainerView], deviceCopy);
     v14 = MEMORY[0x277CBBB08];
-    v15 = [objc_opt_class() vivaldiUpperFontDescriptor];
-    v16 = [v14 fontWithDescriptor:v15 size:v13];
+    vivaldiUpperFontDescriptor = [objc_opt_class() vivaldiUpperFontDescriptor];
+    v16 = [v14 fontWithDescriptor:vivaldiUpperFontDescriptor size:v13];
     topLabelFont = v10->_topLabelFont;
     v10->_topLabelFont = v16;
 
     v18 = MEMORY[0x277CBBB08];
-    v19 = [objc_opt_class() vivaldiLowerFontDescriptor];
-    v20 = [v18 fontWithDescriptor:v19 size:v13];
+    vivaldiLowerFontDescriptor = [objc_opt_class() vivaldiLowerFontDescriptor];
+    v20 = [v18 fontWithDescriptor:vivaldiLowerFontDescriptor size:v13];
     bottomLabelFont = v10->_bottomLabelFont;
     v10->_bottomLabelFont = v20;
 
     v22 = MEMORY[0x277CBBB08];
-    v23 = [objc_opt_class() vivaldiUpperOutlineFontDescriptor];
-    v24 = [v22 fontWithDescriptor:v23 size:v13];
+    vivaldiUpperOutlineFontDescriptor = [objc_opt_class() vivaldiUpperOutlineFontDescriptor];
+    v24 = [v22 fontWithDescriptor:vivaldiUpperOutlineFontDescriptor size:v13];
     topLabelOutlineFont = v10->_topLabelOutlineFont;
     v10->_topLabelOutlineFont = v24;
 
     v26 = MEMORY[0x277CBBB08];
-    v27 = [objc_opt_class() vivaldiLowerOutlineFontDescriptor];
-    v28 = [v26 fontWithDescriptor:v27 size:v13];
+    vivaldiLowerOutlineFontDescriptor = [objc_opt_class() vivaldiLowerOutlineFontDescriptor];
+    v28 = [v26 fontWithDescriptor:vivaldiLowerOutlineFontDescriptor size:v13];
     bottomLabelOutlineFont = v10->_bottomLabelOutlineFont;
     v10->_bottomLabelOutlineFont = v28;
 
-    v30 = [[NTKVivaldiTimeLabel alloc] initWithTimeComponent:0 color:v8 font:v10->_topLabelFont fontSize:0 outline:v13];
+    v30 = [[NTKVivaldiTimeLabel alloc] initWithTimeComponent:0 color:colorCopy font:v10->_topLabelFont fontSize:0 outline:v13];
     topLabel = v10->_topLabel;
     v10->_topLabel = v30;
 
     [(NTKVivaldiTimeLabel *)v10->_topLabel setTextAlignment:1];
     [(UIView *)v10->_timeLabelsContainerView addSubview:v10->_topLabel];
-    v32 = [[NTKVivaldiTimeLabel alloc] initWithTimeComponent:1 color:v8 font:v10->_bottomLabelFont fontSize:0 outline:v13];
+    v32 = [[NTKVivaldiTimeLabel alloc] initWithTimeComponent:1 color:colorCopy font:v10->_bottomLabelFont fontSize:0 outline:v13];
     bottomLabel = v10->_bottomLabel;
     v10->_bottomLabel = v32;
 
     [(NTKVivaldiTimeLabel *)v10->_bottomLabel setTextAlignment:1];
     [(UIView *)v10->_timeLabelsContainerView addSubview:v10->_bottomLabel];
-    v34 = [(NTKVivaldiTimeView *)v10 _shadowImage];
+    _shadowImage = [(NTKVivaldiTimeView *)v10 _shadowImage];
     shadowImage = v10->_shadowImage;
-    v10->_shadowImage = v34;
+    v10->_shadowImage = _shadowImage;
 
     v36 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v10->_shadowImage];
     shadowView = v10->_shadowView;
@@ -88,13 +88,13 @@
     [(NTKVivaldiTimeView *)v10 sendSubviewToBack:v10->_shadowView];
     [(NTKVivaldiTimeView *)v10 sendSubviewToBack:v10->_globeView];
     objc_initWeak(&location, v10);
-    v40 = [MEMORY[0x277CBB700] sharedInstance];
+    mEMORY[0x277CBB700] = [MEMORY[0x277CBB700] sharedInstance];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = sub_23C0AAF68;
     v44[3] = &unk_278BAECB0;
     objc_copyWeak(&v45, &location);
-    v41 = [v40 startUpdatesWithUpdateFrequency:0 withHandler:v44 identificationLog:&unk_284EDE448];
+    v41 = [mEMORY[0x277CBB700] startUpdatesWithUpdateFrequency:0 withHandler:v44 identificationLog:&unk_284EDE448];
     timerToken = v10->_timerToken;
     v10->_timerToken = v41;
 
@@ -107,8 +107,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CBB700] sharedInstance];
-  [v3 stopUpdatesForToken:self->_timerToken];
+  mEMORY[0x277CBB700] = [MEMORY[0x277CBB700] sharedInstance];
+  [mEMORY[0x277CBB700] stopUpdatesForToken:self->_timerToken];
 
   v4.receiver = self;
   v4.super_class = NTKVivaldiTimeView;
@@ -149,54 +149,54 @@
   overrideDate = self->_overrideDate;
   if (overrideDate)
   {
-    v4 = overrideDate;
+    faceDate = overrideDate;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D2BFD8] faceDate];
+    faceDate = [MEMORY[0x277D2BFD8] faceDate];
   }
 
-  v6 = v4;
-  [(NTKVivaldiTimeLabel *)self->_topLabel setDate:v4];
+  v6 = faceDate;
+  [(NTKVivaldiTimeLabel *)self->_topLabel setDate:faceDate];
   [(NTKVivaldiTimeLabel *)self->_bottomLabel setDate:v6];
   [(NTKVivaldiTimeView *)self setNeedsLayout];
   [(NTKVivaldiTimeView *)self layoutIfNeeded];
-  v5 = [(NTKVivaldiTimeView *)self delegate];
-  [v5 vivaldiTimeViewDidChangeTime];
+  delegate = [(NTKVivaldiTimeView *)self delegate];
+  [delegate vivaldiTimeViewDidChangeTime];
 }
 
-- (void)applyColorPalette:(id)a3
+- (void)applyColorPalette:(id)palette
 {
   v4 = MEMORY[0x277CD9FF0];
-  v5 = a3;
+  paletteCopy = palette;
   [v4 setDisableActions:1];
   shadowView = self->_shadowView;
-  v7 = [v5 numeralsShadow];
-  [(UIImageView *)shadowView setTintColor:v7];
+  numeralsShadow = [paletteCopy numeralsShadow];
+  [(UIImageView *)shadowView setTintColor:numeralsShadow];
 
-  [(NTKVivaldiTimeView *)self updateColorsForComplicationsEditingFraction:v5 withColorPalette:0.0];
+  [(NTKVivaldiTimeView *)self updateColorsForComplicationsEditingFraction:paletteCopy withColorPalette:0.0];
   v8 = MEMORY[0x277CD9FF0];
 
   [v8 setDisableActions:0];
 }
 
-- (void)updateColorsForComplicationsEditingFraction:(double)a3 withColorPalette:(id)a4
+- (void)updateColorsForComplicationsEditingFraction:(double)fraction withColorPalette:(id)palette
 {
   topLabel = self->_topLabel;
-  v7 = a4;
-  [(NTKVivaldiTimeLabel *)topLabel updateColorsForComplicationsEditingFraction:v7 withColorPalette:a3];
-  [(NTKVivaldiTimeLabel *)self->_bottomLabel updateColorsForComplicationsEditingFraction:v7 withColorPalette:a3];
-  [(UIImageView *)self->_shadowView setAlpha:1.0 - a3];
-  [(NTKVivaldiGlobeView *)self->_globeView updateColorsForComplicationsEditingFraction:v7 withColorPalette:a3];
+  paletteCopy = palette;
+  [(NTKVivaldiTimeLabel *)topLabel updateColorsForComplicationsEditingFraction:paletteCopy withColorPalette:fraction];
+  [(NTKVivaldiTimeLabel *)self->_bottomLabel updateColorsForComplicationsEditingFraction:paletteCopy withColorPalette:fraction];
+  [(UIImageView *)self->_shadowView setAlpha:1.0 - fraction];
+  [(NTKVivaldiGlobeView *)self->_globeView updateColorsForComplicationsEditingFraction:paletteCopy withColorPalette:fraction];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  objc_storeStrong(&self->_overrideDate, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_overrideDate, date);
+  dateCopy = date;
   [(NTKVivaldiTimeView *)self _updateLabels];
-  [(NTKVivaldiGlobeView *)self->_globeView setDate:v6];
+  [(NTKVivaldiGlobeView *)self->_globeView setDate:dateCopy];
 }
 
 - (void)_updateAnimating
@@ -224,7 +224,7 @@
   block[1] = 3221225472;
   block[2] = sub_23C0AB5E4;
   block[3] = &unk_278BAEDB8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27E1EE6F0 != -1)
   {
     dispatch_once(&qword_27E1EE6F0, block);
@@ -241,7 +241,7 @@
   block[1] = 3221225472;
   block[2] = sub_23C0AB7D0;
   block[3] = &unk_278BAEDB8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27E1EE700 != -1)
   {
     dispatch_once(&qword_27E1EE700, block);
@@ -258,7 +258,7 @@
   block[1] = 3221225472;
   block[2] = sub_23C0AB9BC;
   block[3] = &unk_278BAEDB8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27E1EE710 != -1)
   {
     dispatch_once(&qword_27E1EE710, block);
@@ -275,7 +275,7 @@
   block[1] = 3221225472;
   block[2] = sub_23C0ABC10;
   block[3] = &unk_278BAEDB8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27E1EE720 != -1)
   {
     dispatch_once(&qword_27E1EE720, block);

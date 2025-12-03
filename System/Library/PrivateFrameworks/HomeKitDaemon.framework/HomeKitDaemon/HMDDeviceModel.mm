@@ -1,24 +1,24 @@
 @interface HMDDeviceModel
 + (id)properties;
 + (id)schemaHashRoot;
-- (BOOL)diff:(id)a3 differingFields:(id *)a4;
-- (id)cd_childrenExcluding:(id)a3 fromContext:(id)a4 error:(id *)a5;
+- (BOOL)diff:(id)diff differingFields:(id *)fields;
+- (id)cd_childrenExcluding:(id)excluding fromContext:(id)context error:(id *)error;
 @end
 
 @implementation HMDDeviceModel
 
-- (BOOL)diff:(id)a3 differingFields:(id *)a4
+- (BOOL)diff:(id)diff differingFields:(id *)fields
 {
-  v6 = a3;
+  diffCopy = diff;
   v21.receiver = self;
   v21.super_class = HMDDeviceModel;
   v22 = 0;
-  v7 = [(HMDBackingStoreModelObject *)&v21 diff:v6 differingFields:&v22];
+  v7 = [(HMDBackingStoreModelObject *)&v21 diff:diffCopy differingFields:&v22];
   v8 = v22;
   v9 = v8;
   if (v7 && [v8 containsObject:@"handles"])
   {
-    v10 = v6;
+    v10 = diffCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,9 +34,9 @@
 
     if (v12)
     {
-      v13 = [(HMDDeviceModel *)self deviceHandles];
-      v14 = [v12 deviceHandles];
-      v15 = isEqualDeepCompare(v13, v14);
+      deviceHandles = [(HMDDeviceModel *)self deviceHandles];
+      deviceHandles2 = [v12 deviceHandles];
+      v15 = isEqualDeepCompare(deviceHandles, deviceHandles2);
 
       if (v15)
       {
@@ -49,10 +49,10 @@
     }
   }
 
-  if (a4)
+  if (fields)
   {
     v18 = v9;
-    *a4 = v9;
+    *fields = v9;
   }
 
   v19 = [v9 count] != 0;
@@ -107,9 +107,9 @@ void __28__HMDDeviceModel_properties__block_invoke()
   return v2;
 }
 
-- (id)cd_childrenExcluding:(id)a3 fromContext:(id)a4 error:(id *)a5
+- (id)cd_childrenExcluding:(id)excluding fromContext:(id)context error:(id *)error
 {
-  v5 = [(HMDBackingStoreModelObject *)self cd_fetchManagedObjectInContext:a4 error:a5];
+  v5 = [(HMDBackingStoreModelObject *)self cd_fetchManagedObjectInContext:context error:error];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] set];

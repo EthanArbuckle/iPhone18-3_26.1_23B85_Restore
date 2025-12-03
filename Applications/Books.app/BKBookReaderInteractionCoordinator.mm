@@ -1,17 +1,17 @@
 @interface BKBookReaderInteractionCoordinator
 - (BKBookReaderInteractionCoordinator)init;
-- (void)setWindow:(id)a3;
+- (void)setWindow:(id)window;
 @end
 
 @implementation BKBookReaderInteractionCoordinator
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.isa + OBJC_IVAR___BKBookReaderInteractionCoordinator_assetViewControllerTracker);
   v7 = *(v4 + 16);
-  *(v4 + 16) = a3;
-  v5 = a3;
-  v6 = self;
+  *(v4 + 16) = window;
+  windowCopy = window;
+  selfCopy = self;
   sub_10001DA04(v7);
 }
 

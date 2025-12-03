@@ -1,24 +1,24 @@
 @interface AAUIiCloudMediaUsageInfo
-- (AAUIiCloudMediaUsageInfo)initWithMediaType:(id)a3 representativeColor:(id)a4 bytesUsed:(float)a5;
+- (AAUIiCloudMediaUsageInfo)initWithMediaType:(id)type representativeColor:(id)color bytesUsed:(float)used;
 - (NSString)displayLabel;
 - (id)capacityBarCatagory;
 @end
 
 @implementation AAUIiCloudMediaUsageInfo
 
-- (AAUIiCloudMediaUsageInfo)initWithMediaType:(id)a3 representativeColor:(id)a4 bytesUsed:(float)a5
+- (AAUIiCloudMediaUsageInfo)initWithMediaType:(id)type representativeColor:(id)color bytesUsed:(float)used
 {
-  v9 = a3;
-  v10 = a4;
+  typeCopy = type;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = AAUIiCloudMediaUsageInfo;
   v11 = [(AAUIiCloudMediaUsageInfo *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mediaType, a3);
-    objc_storeStrong(&v12->_representativeColor, a4);
-    v12->_bytesUsed = a5;
+    objc_storeStrong(&v11->_mediaType, type);
+    objc_storeStrong(&v12->_representativeColor, color);
+    v12->_bytesUsed = used;
   }
 
   return v12;

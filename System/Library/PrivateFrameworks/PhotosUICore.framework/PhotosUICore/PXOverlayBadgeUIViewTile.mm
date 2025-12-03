@@ -1,30 +1,30 @@
 @interface PXOverlayBadgeUIViewTile
-- (PXOverlayBadgeUIViewTile)initWithFrame:(CGRect)a3;
-- (void)_setBadgeOptions:(unint64_t)a3;
+- (PXOverlayBadgeUIViewTile)initWithFrame:(CGRect)frame;
+- (void)_setBadgeOptions:(unint64_t)options;
 - (void)_updateBadgeViewIfNeeded;
 - (void)becomeReusable;
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4;
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)prepareForReuse;
-- (void)setBadgeManager:(id)a3;
-- (void)setImageRequester:(id)a3;
+- (void)setBadgeManager:(id)manager;
+- (void)setImageRequester:(id)requester;
 @end
 
 @implementation PXOverlayBadgeUIViewTile
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PXImageRequesterObserverContext_155372 == a5)
+  if (PXImageRequesterObserverContext_155372 == context)
   {
-    v5 = a4;
-    v7 = a3;
-    v8 = [(PXOverlayBadgeUIViewTile *)self imageRequester];
+    changeCopy = change;
+    observableCopy = observable;
+    imageRequester = [(PXOverlayBadgeUIViewTile *)self imageRequester];
 
-    if (v8 == v7)
+    if (imageRequester == observableCopy)
     {
 
-      if ((v5 & 0x15) != 0)
+      if ((changeCopy & 0x15) != 0)
       {
 
         [(PXOverlayBadgeUIViewTile *)self _invalidateBadgeView];
@@ -43,30 +43,30 @@
   {
     v17 = v2;
     v18 = v3;
-    v5 = [(PXOverlayBadgeUIViewTile *)self _badgeView];
-    v6 = [(PXOverlayBadgeUIViewTile *)self imageRequester];
-    v7 = v6;
-    if (v6)
+    _badgeView = [(PXOverlayBadgeUIViewTile *)self _badgeView];
+    imageRequester = [(PXOverlayBadgeUIViewTile *)self imageRequester];
+    v7 = imageRequester;
+    if (imageRequester)
     {
-      v8 = [v6 image];
-      if (v8)
+      image = [imageRequester image];
+      if (image)
       {
-        v9 = 0;
+        isInCloud = 0;
       }
 
       else
       {
-        v9 = [v7 isInCloud];
+        isInCloud = [v7 isInCloud];
       }
 
-      v10 = [v7 asset];
+      asset = [v7 asset];
       v15 = 0u;
       v16 = 0u;
-      v11 = [(PXOverlayBadgeUIViewTile *)self badgeManager];
-      v12 = v11;
-      if (v11)
+      badgeManager = [(PXOverlayBadgeUIViewTile *)self badgeManager];
+      v12 = badgeManager;
+      if (badgeManager)
       {
-        [v11 badgeInfoForAsset:v10 inCollection:0 options:0];
+        [badgeManager badgeInfoForAsset:asset inCollection:0 options:0];
       }
 
       else
@@ -80,20 +80,20 @@
         *&v15 = 0;
       }
 
-      if (v9)
+      if (isInCloud)
       {
         *&v15 = v15 | 0x20;
       }
 
       v13 = v15;
       v14 = v16;
-      [v5 setBadgeInfo:&v13];
+      [_badgeView setBadgeInfo:&v13];
       v13 = v15;
       v14 = v16;
       PXAssetBadgeInfoIsNull();
     }
 
-    [v5 setHidden:1];
+    [_badgeView setHidden:1];
   }
 }
 
@@ -115,88 +115,88 @@
   v16.size.width = v8;
   v16.size.height = v10;
   v13 = CGRectGetMaxY(v16) - v12;
-  v14 = [(PXOverlayBadgeUIViewTile *)self _badgeView];
-  [v14 setFrame:{v4, v13, v8, v12}];
+  _badgeView = [(PXOverlayBadgeUIViewTile *)self _badgeView];
+  [_badgeView setFrame:{v4, v13, v8, v12}];
 }
 
-- (void)_setBadgeOptions:(unint64_t)a3
+- (void)_setBadgeOptions:(unint64_t)options
 {
-  if (self->__badgeOptions != a3)
+  if (self->__badgeOptions != options)
   {
-    self->__badgeOptions = a3;
+    self->__badgeOptions = options;
     [(PXOverlayBadgeUIViewTile *)self _invalidateBadgeView];
   }
 }
 
-- (void)setBadgeManager:(id)a3
+- (void)setBadgeManager:(id)manager
 {
-  v5 = a3;
-  if (self->_badgeManager != v5)
+  managerCopy = manager;
+  if (self->_badgeManager != managerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_badgeManager, a3);
+    v6 = managerCopy;
+    objc_storeStrong(&self->_badgeManager, manager);
     [(PXOverlayBadgeUIViewTile *)self _invalidateBadgeView];
-    v5 = v6;
+    managerCopy = v6;
   }
 }
 
-- (void)setImageRequester:(id)a3
+- (void)setImageRequester:(id)requester
 {
-  v5 = a3;
+  requesterCopy = requester;
   imageRequester = self->_imageRequester;
-  if (imageRequester != v5)
+  if (imageRequester != requesterCopy)
   {
-    v7 = v5;
+    v7 = requesterCopy;
     [(PXImageRequester *)imageRequester unregisterChangeObserver:self context:PXImageRequesterObserverContext_155372];
-    objc_storeStrong(&self->_imageRequester, a3);
+    objc_storeStrong(&self->_imageRequester, requester);
     [(PXImageRequester *)v7 registerChangeObserver:self context:PXImageRequesterObserverContext_155372];
     [(PXOverlayBadgeUIViewTile *)self _invalidateBadgeView];
-    v5 = v7;
+    requesterCopy = v7;
   }
 }
 
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data
 {
-  if (a4)
+  if (data)
   {
-    v5 = [a4 badgeOptions];
+    badgeOptions = [data badgeOptions];
   }
 
   else
   {
-    v5 = 0;
+    badgeOptions = 0;
   }
 
-  [(PXOverlayBadgeUIViewTile *)self _setBadgeOptions:v5];
+  [(PXOverlayBadgeUIViewTile *)self _setBadgeOptions:badgeOptions];
 
   [(PXOverlayBadgeUIViewTile *)self layoutIfNeeded];
 }
 
 - (void)prepareForReuse
 {
-  v2 = [(PXOverlayBadgeUIViewTile *)self view];
-  [v2 setHidden:0];
+  view = [(PXOverlayBadgeUIViewTile *)self view];
+  [view setHidden:0];
 }
 
 - (void)becomeReusable
 {
-  v3 = [(PXOverlayBadgeUIViewTile *)self view];
-  [v3 setHidden:1];
+  view = [(PXOverlayBadgeUIViewTile *)self view];
+  [view setHidden:1];
 
   [(PXOverlayBadgeUIViewTile *)self setImageRequester:0];
 }
 
-- (PXOverlayBadgeUIViewTile)initWithFrame:(CGRect)a3
+- (PXOverlayBadgeUIViewTile)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PXOverlayBadgeUIViewTile;
-  v3 = [(PXOverlayBadgeUIViewTile *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXOverlayBadgeUIViewTile *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PXOverlayBadgeUIViewTile *)v3 setUserInteractionEnabled:0];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(PXOverlayBadgeUIViewTile *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PXOverlayBadgeUIViewTile *)v4 setBackgroundColor:clearColor];
 
     v6 = [PXUIAssetBadgeView alloc];
     [(PXOverlayBadgeUIViewTile *)v4 bounds];
@@ -207,8 +207,8 @@
     [(PXUIAssetBadgeView *)v4->__badgeView setStyle:1];
     [(PXUIAssetBadgeView *)v4->__badgeView setHidden:1];
     [(PXOverlayBadgeUIViewTile *)v4 addSubview:v4->__badgeView];
-    v9 = [(PXOverlayBadgeUIViewTile *)v4 layer];
-    [v9 setAllowsGroupOpacity:0];
+    layer = [(PXOverlayBadgeUIViewTile *)v4 layer];
+    [layer setAllowsGroupOpacity:0];
   }
 
   return v4;

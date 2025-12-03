@@ -1,14 +1,14 @@
 @interface NTKRawImage
-+ (id)rawImageWithImage:(id)a3 width:(int)a4 height:(int)a5;
-- (NTKRawImage)initWithContent:(NTKRawImage *)self width:(SEL)a2 height:;
-- (id)scaleToWidth:(int)a3 height:(int)a4;
++ (id)rawImageWithImage:(id)image width:(int)width height:(int)height;
+- (NTKRawImage)initWithContent:(NTKRawImage *)self width:(SEL)width height:;
+- (id)scaleToWidth:(int)width height:(int)height;
 - (void)dealloc;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation NTKRawImage
 
-- (NTKRawImage)initWithContent:(NTKRawImage *)self width:(SEL)a2 height:
+- (NTKRawImage)initWithContent:(NTKRawImage *)self width:(SEL)width height:
 {
   v5 = v4;
   v6 = v3;
@@ -36,16 +36,16 @@
   [(NTKRawImage *)&v3 dealloc];
 }
 
-+ (id)rawImageWithImage:(id)a3 width:(int)a4 height:(int)a5
++ (id)rawImageWithImage:(id)image width:(int)width height:(int)height
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v7 = a3;
-  v8 = [v7 CGImage];
-  Width = CGImageGetWidth(v8);
-  Height = CGImageGetHeight(v8);
+  v5 = *&height;
+  v6 = *&width;
+  imageCopy = image;
+  cGImage = [imageCopy CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   v11 = 0;
-  if (v7 && Width >= 1 && Height >= 1)
+  if (imageCopy && Width >= 1 && Height >= 1)
   {
     v17 = malloc_type_malloc(16 * v6 * v5, 0x1000040451B5BE8uLL);
     v12 = v5 * v6;
@@ -66,7 +66,7 @@
     v19.size.height = v5;
     v19.origin.x = 0.0;
     v19.origin.y = 0.0;
-    CGContextDrawImage(v15, v19, v8);
+    CGContextDrawImage(v15, v19, cGImage);
     if (v12 >= 1)
     {
       CLKUIConvertToRGBfFromSRGB8_fast();
@@ -81,24 +81,24 @@
   return v11;
 }
 
-- (id)scaleToWidth:(int)a3 height:(int)a4
+- (id)scaleToWidth:(int)width height:(int)height
 {
   width = self->_width;
-  if (width == a3 && self->_height == a4)
+  if (width == width && self->_height == height)
   {
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = *&a3;
+    v8 = *&width;
     height = self->_height;
-    v10 = malloc_type_malloc(16 * a3 * a4, 0x1000040451B5BE8uLL);
+    v10 = malloc_type_malloc(16 * width * height, 0x1000040451B5BE8uLL);
     v11 = v8 / width;
     contents = self->_contents;
     v68 = v10;
-    v74 = height;
-    v12 = a4 / height;
+    heightCopy = height;
+    v12 = height / height;
     if (height * v8 < 1)
     {
       v13 = 0;
@@ -118,17 +118,17 @@
       v16 = (((1.0 / v11) * 2.0) + 1.0);
     }
 
-    if (v8 <= a4)
+    if (v8 <= height)
     {
-      v17 = a4;
+      heightCopy2 = height;
     }
 
     else
     {
-      v17 = v8;
+      heightCopy2 = v8;
     }
 
-    v18 = v16 * v17;
+    v18 = v16 * heightCopy2;
     if (v18 < 1)
     {
       v72 = 0;
@@ -143,7 +143,7 @@
     }
 
     v66 = 1.0 / v12;
-    if (v17 < 1)
+    if (heightCopy2 < 1)
     {
       v20 = 0;
       v21 = 0;
@@ -151,8 +151,8 @@
 
     else
     {
-      v20 = malloc_type_malloc(4 * v17, 0x100004052888210uLL);
-      v21 = malloc_type_malloc(4 * v17, 0x100004052888210uLL);
+      v20 = malloc_type_malloc(4 * heightCopy2, 0x100004052888210uLL);
+      v21 = malloc_type_malloc(4 * heightCopy2, 0x100004052888210uLL);
     }
 
     if (v8 >= 1)
@@ -203,7 +203,7 @@
       while (v22 != v8);
     }
 
-    if (v74 >= 1)
+    if (heightCopy >= 1)
     {
       v32 = 0;
       v33 = 4 * v70;
@@ -246,11 +246,11 @@
         ++v32;
       }
 
-      while (v32 != v74);
+      while (v32 != heightCopy);
     }
 
-    v71 = a4;
-    if (a4 >= 1)
+    heightCopy3 = height;
+    if (height >= 1)
     {
       v43 = 0;
       do
@@ -267,7 +267,7 @@
           v49 = v46 + 1;
           do
           {
-            if ((v45 & 0x80000000) == 0 && v45 < v74)
+            if ((v45 & 0x80000000) == 0 && v45 < heightCopy)
             {
               v50 = v12 * (v44 - v45);
               if (fabsf(v50) < 1.0)
@@ -295,7 +295,7 @@
         *&v20[v43++] = 1.0 / v47;
       }
 
-      while (v43 != v71);
+      while (v43 != heightCopy3);
     }
 
     if (v8 >= 1)
@@ -304,7 +304,7 @@
       v54 = 4 * v69;
       do
       {
-        if (v71 >= 1)
+        if (heightCopy3 >= 1)
         {
           v55 = 0;
           v56 = v72;
@@ -335,7 +335,7 @@
             v56 = (v56 + v54);
           }
 
-          while (v55 != v71);
+          while (v55 != heightCopy3);
         }
 
         ++v53;
@@ -344,7 +344,7 @@
       while (v53 != v8);
     }
 
-    v14 = [[NTKRawImage alloc] initWithContent:v68 width:v8 height:v71];
+    selfCopy = [[NTKRawImage alloc] initWithContent:v68 width:v8 height:heightCopy3];
     free(v21);
     free(v20);
     free(v72);
@@ -352,20 +352,20 @@
     free(v13);
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
-  v4 = a3;
+  writeCopy = write;
   width = self->_width;
   height = self->_height;
   v11 = height * width;
   v12 = height * width;
-  v9 = v4;
+  v9 = writeCopy;
   if (height * width <= 0)
   {
-    v8 = v4;
+    v8 = writeCopy;
     v7 = 0;
     v10 = 0;
   }

@@ -1,12 +1,12 @@
 @interface Gradient.View
 + (Class)layerClass;
-- (_TtCV11MusicCoreUI8Gradient4View)initWithCoder:(id)a3;
-- (_TtCV11MusicCoreUI8Gradient4View)initWithFrame:(CGRect)a3;
+- (_TtCV11MusicCoreUI8Gradient4View)initWithCoder:(id)coder;
+- (_TtCV11MusicCoreUI8Gradient4View)initWithFrame:(CGRect)frame;
 @end
 
 @implementation Gradient.View
 
-- (_TtCV11MusicCoreUI8Gradient4View)initWithCoder:(id)a3
+- (_TtCV11MusicCoreUI8Gradient4View)initWithCoder:(id)coder
 {
   result = sub_1004DECCC();
   __break(1u);
@@ -20,7 +20,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtCV11MusicCoreUI8Gradient4View)initWithFrame:(CGRect)a3
+- (_TtCV11MusicCoreUI8Gradient4View)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

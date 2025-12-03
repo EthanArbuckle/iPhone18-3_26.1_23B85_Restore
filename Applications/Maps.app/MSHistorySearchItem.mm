@@ -1,23 +1,23 @@
 @interface MSHistorySearchItem
 - (GEOMapRegion)mapRegion;
-- (void)ifSearch:(id)a3 ifRoute:(id)a4 ifPlaceDisplay:(id)a5 ifTransitLineItem:(id)a6;
+- (void)ifSearch:(id)search ifRoute:(id)route ifPlaceDisplay:(id)display ifTransitLineItem:(id)item;
 @end
 
 @implementation MSHistorySearchItem
 
-- (void)ifSearch:(id)a3 ifRoute:(id)a4 ifPlaceDisplay:(id)a5 ifTransitLineItem:(id)a6
+- (void)ifSearch:(id)search ifRoute:(id)route ifPlaceDisplay:(id)display ifTransitLineItem:(id)item
 {
-  if (a3)
+  if (search)
   {
-    (*(a3 + 2))(a3, self);
+    (*(search + 2))(search, self);
   }
 }
 
 - (GEOMapRegion)mapRegion
 {
   v3 = [GEOMapRegion alloc];
-  v4 = [(MSHistorySearchItem *)self geoMapRegion];
-  v5 = [v3 initWithData:v4];
+  geoMapRegion = [(MSHistorySearchItem *)self geoMapRegion];
+  v5 = [v3 initWithData:geoMapRegion];
 
   return v5;
 }

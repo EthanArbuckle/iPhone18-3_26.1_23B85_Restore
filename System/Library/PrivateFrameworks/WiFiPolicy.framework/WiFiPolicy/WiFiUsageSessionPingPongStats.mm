@@ -1,33 +1,33 @@
 @interface WiFiUsageSessionPingPongStats
-- (WiFiUsageSessionPingPongStats)initWithPingPongSequence:(id)a3;
+- (WiFiUsageSessionPingPongStats)initWithPingPongSequence:(id)sequence;
 @end
 
 @implementation WiFiUsageSessionPingPongStats
 
-- (WiFiUsageSessionPingPongStats)initWithPingPongSequence:(id)a3
+- (WiFiUsageSessionPingPongStats)initWithPingPongSequence:(id)sequence
 {
-  v4 = a3;
+  sequenceCopy = sequence;
   v20.receiver = self;
   v20.super_class = WiFiUsageSessionPingPongStats;
   v5 = [(WiFiUsageSessionPingPongStats *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    [(WiFiUsageSessionPingPongStats *)v5 setSequence:v4];
-    -[WiFiUsageSessionPingPongStats setPingPongNth:](v6, "setPingPongNth:", [v4 count] - 2);
-    v7 = [v4 count];
+    [(WiFiUsageSessionPingPongStats *)v5 setSequence:sequenceCopy];
+    -[WiFiUsageSessionPingPongStats setPingPongNth:](v6, "setPingPongNth:", [sequenceCopy count] - 2);
+    v7 = [sequenceCopy count];
     v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF = 'Low RSSI'"];
-    v9 = [v4 filteredArrayUsingPredicate:v8];
+    v9 = [sequenceCopy filteredArrayUsingPredicate:v8];
     -[WiFiUsageSessionPingPongStats setPingPongSequenceIsLowRssiOnly:](v6, "setPingPongSequenceIsLowRssiOnly:", v7 == [v9 count]);
 
-    v10 = [v4 count];
+    v10 = [sequenceCopy count];
     v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF = 'Reassoc'"];
-    v12 = [v4 filteredArrayUsingPredicate:v11];
+    v12 = [sequenceCopy filteredArrayUsingPredicate:v11];
     -[WiFiUsageSessionPingPongStats setPingPongSequenceIsReassocOnly:](v6, "setPingPongSequenceIsReassocOnly:", v10 == [v12 count]);
 
-    v13 = [v4 count];
+    v13 = [sequenceCopy count];
     v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF = 'Low RSSI' OR SELF = 'Reassoc'"];
-    v15 = [v4 filteredArrayUsingPredicate:v14];
+    v15 = [sequenceCopy filteredArrayUsingPredicate:v14];
     -[WiFiUsageSessionPingPongStats setPingPongSequenceIsReassocOrLowRSSIOnly:](v6, "setPingPongSequenceIsReassocOrLowRSSIOnly:", v13 == [v15 count]);
 
     v16 = @"NO";

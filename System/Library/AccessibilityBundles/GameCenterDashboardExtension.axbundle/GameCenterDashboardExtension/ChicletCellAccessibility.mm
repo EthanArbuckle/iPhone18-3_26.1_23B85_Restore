@@ -1,5 +1,5 @@
 @interface ChicletCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (void)accessibilityPresentMetadata;
@@ -7,13 +7,13 @@
 
 @implementation ChicletCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GameCenterDashboardExtension.ChicletCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterDashboardExtension.ChicletCell" hasInstanceMethod:@"accessibilityMetadataContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterDashboardExtension.ChicletCell" hasInstanceMethod:@"accessibilityPresentMetadata" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"GameCenterDashboardExtension.ChicletMetadata"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GameCenterDashboardExtension.ChicletCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterDashboardExtension.ChicletCell" hasInstanceMethod:@"accessibilityMetadataContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterDashboardExtension.ChicletCell" hasInstanceMethod:@"accessibilityPresentMetadata" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"GameCenterDashboardExtension.ChicletMetadata"];
 }
 
 - (id)accessibilityLabel
@@ -21,8 +21,8 @@
   v3 = [(ChicletCellAccessibility *)self safeValueForKey:@"accessibilityTitleLabel"];
   v4 = [(ChicletCellAccessibility *)self safeUIViewForKey:@"accessibilityMetadataContainer"];
   v5 = [v4 _accessibilityFindSubviewDescendant:&__block_literal_global_0];
-  v6 = [v3 accessibilityLabel];
-  v9 = [v5 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v7 = __UIAXStringForVariables();
 
   return v7;

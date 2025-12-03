@@ -1,60 +1,60 @@
 @interface PEGASUSSchemaPEGASUSMultistepSubSearchExecution
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSMultistepSubSearchExecution)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSMultistepSubSearchExecution)initWithJSON:(id)a3;
+- (PEGASUSSchemaPEGASUSMultistepSubSearchExecution)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSMultistepSubSearchExecution)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)subSearchDomainsAtIndex:(unint64_t)a3;
+- (int)subSearchDomainsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addSubSearchDomains:(int)a3;
-- (void)setHasHasAugmentedQuery:(BOOL)a3;
-- (void)setHasHasNextSteps:(BOOL)a3;
-- (void)setHasParentDomain:(BOOL)a3;
-- (void)setHasSearchType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSubSearchDomains:(int)domains;
+- (void)setHasHasAugmentedQuery:(BOOL)query;
+- (void)setHasHasNextSteps:(BOOL)steps;
+- (void)setHasParentDomain:(BOOL)domain;
+- (void)setHasSearchType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSMultistepSubSearchExecution
 
-- (PEGASUSSchemaPEGASUSMultistepSubSearchExecution)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSMultistepSubSearchExecution)initWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = PEGASUSSchemaPEGASUSMultistepSubSearchExecution;
   v5 = [(PEGASUSSchemaPEGASUSMultistepSubSearchExecution *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"loopbackDepth"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"loopbackDepth"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSMultistepSubSearchExecution setLoopbackDepth:](v5, "setLoopbackDepth:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"parentDomain"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"parentDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSMultistepSubSearchExecution setParentDomain:](v5, "setParentDomain:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"hasNextSteps"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"hasNextSteps"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSMultistepSubSearchExecution setHasNextSteps:](v5, "setHasNextSteps:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"searchType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"searchType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSMultistepSubSearchExecution setSearchType:](v5, "setSearchType:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"subSearchDomains"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"subSearchDomains"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,7 +103,7 @@
       v8 = v20;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"hasAugmentedQuery"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"hasAugmentedQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,30 +116,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSMultistepSubSearchExecution)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSMultistepSubSearchExecution)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSMultistepSubSearchExecution *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSMultistepSubSearchExecution *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSMultistepSubSearchExecution *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -152,12 +152,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_hasAugmentedQuery + 1);
   if ((v4 & 0x10) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSMultistepSubSearchExecution hasAugmentedQuery](self, "hasAugmentedQuery")}];
-    [v3 setObject:v5 forKeyedSubscript:@"hasAugmentedQuery"];
+    [dictionary setObject:v5 forKeyedSubscript:@"hasAugmentedQuery"];
 
     v4 = *(&self->_hasAugmentedQuery + 1);
     if ((v4 & 4) == 0)
@@ -178,7 +178,7 @@ LABEL_3:
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSMultistepSubSearchExecution hasNextSteps](self, "hasNextSteps")}];
-  [v3 setObject:v6 forKeyedSubscript:@"hasNextSteps"];
+  [dictionary setObject:v6 forKeyedSubscript:@"hasNextSteps"];
 
   v4 = *(&self->_hasAugmentedQuery + 1);
   if ((v4 & 1) == 0)
@@ -194,7 +194,7 @@ LABEL_4:
 
 LABEL_9:
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[PEGASUSSchemaPEGASUSMultistepSubSearchExecution loopbackDepth](self, "loopbackDepth")}];
-  [v3 setObject:v7 forKeyedSubscript:@"loopbackDepth"];
+  [dictionary setObject:v7 forKeyedSubscript:@"loopbackDepth"];
 
   v4 = *(&self->_hasAugmentedQuery + 1);
   if ((v4 & 2) == 0)
@@ -220,7 +220,7 @@ LABEL_10:
     v9 = off_1E78DF9A0[v8];
   }
 
-  [v3 setObject:v9 forKeyedSubscript:@"parentDomain"];
+  [dictionary setObject:v9 forKeyedSubscript:@"parentDomain"];
   if ((*(&self->_hasAugmentedQuery + 1) & 8) != 0)
   {
 LABEL_14:
@@ -235,20 +235,20 @@ LABEL_14:
       v11 = off_1E78DFA98[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"searchType"];
+    [dictionary setObject:v11 forKeyedSubscript:@"searchType"];
   }
 
 LABEL_18:
   if ([(NSArray *)self->_subSearchDomains count])
   {
-    v12 = [(PEGASUSSchemaPEGASUSMultistepSubSearchExecution *)self subSearchDomains];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"subSearchDomains"];
+    subSearchDomains = [(PEGASUSSchemaPEGASUSMultistepSubSearchExecution *)self subSearchDomains];
+    v13 = [subSearchDomains copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"subSearchDomains"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -317,16 +317,16 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v8 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   v5 = *(&self->_hasAugmentedQuery + 1);
-  v6 = v4[33];
+  v6 = equalCopy[33];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_27;
@@ -335,13 +335,13 @@ LABEL_10:
   if (v5)
   {
     loopbackDepth = self->_loopbackDepth;
-    if (loopbackDepth != [v4 loopbackDepth])
+    if (loopbackDepth != [equalCopy loopbackDepth])
     {
       goto LABEL_27;
     }
 
     v5 = *(&self->_hasAugmentedQuery + 1);
-    v6 = v4[33];
+    v6 = equalCopy[33];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -353,13 +353,13 @@ LABEL_10:
   if (v8)
   {
     parentDomain = self->_parentDomain;
-    if (parentDomain != [v4 parentDomain])
+    if (parentDomain != [equalCopy parentDomain])
     {
       goto LABEL_27;
     }
 
     v5 = *(&self->_hasAugmentedQuery + 1);
-    v6 = v4[33];
+    v6 = equalCopy[33];
   }
 
   v10 = (v5 >> 2) & 1;
@@ -371,10 +371,10 @@ LABEL_10:
   if (v10)
   {
     hasNextSteps = self->_hasNextSteps;
-    if (hasNextSteps == [v4 hasNextSteps])
+    if (hasNextSteps == [equalCopy hasNextSteps])
     {
       v5 = *(&self->_hasAugmentedQuery + 1);
-      v6 = v4[33];
+      v6 = equalCopy[33];
       goto LABEL_14;
     }
 
@@ -393,28 +393,28 @@ LABEL_14:
   if (v12)
   {
     searchType = self->_searchType;
-    if (searchType != [v4 searchType])
+    if (searchType != [equalCopy searchType])
     {
       goto LABEL_27;
     }
   }
 
-  v14 = [(PEGASUSSchemaPEGASUSMultistepSubSearchExecution *)self subSearchDomains];
-  v15 = [v4 subSearchDomains];
-  v16 = v15;
-  if ((v14 != 0) == (v15 == 0))
+  subSearchDomains = [(PEGASUSSchemaPEGASUSMultistepSubSearchExecution *)self subSearchDomains];
+  subSearchDomains2 = [equalCopy subSearchDomains];
+  v16 = subSearchDomains2;
+  if ((subSearchDomains != 0) == (subSearchDomains2 == 0))
   {
 
     goto LABEL_27;
   }
 
-  v17 = [(PEGASUSSchemaPEGASUSMultistepSubSearchExecution *)self subSearchDomains];
-  if (v17)
+  subSearchDomains3 = [(PEGASUSSchemaPEGASUSMultistepSubSearchExecution *)self subSearchDomains];
+  if (subSearchDomains3)
   {
-    v18 = v17;
-    v19 = [(PEGASUSSchemaPEGASUSMultistepSubSearchExecution *)self subSearchDomains];
-    v20 = [v4 subSearchDomains];
-    v21 = [v19 isEqual:v20];
+    v18 = subSearchDomains3;
+    subSearchDomains4 = [(PEGASUSSchemaPEGASUSMultistepSubSearchExecution *)self subSearchDomains];
+    subSearchDomains5 = [equalCopy subSearchDomains];
+    v21 = [subSearchDomains4 isEqual:subSearchDomains5];
 
     if (!v21)
     {
@@ -427,7 +427,7 @@ LABEL_14:
   }
 
   v22 = (*(&self->_hasAugmentedQuery + 1) >> 4) & 1;
-  if (v22 != ((v4[33] >> 4) & 1))
+  if (v22 != ((equalCopy[33] >> 4) & 1))
   {
     goto LABEL_27;
   }
@@ -435,7 +435,7 @@ LABEL_14:
   if (v22)
   {
     hasAugmentedQuery = self->_hasAugmentedQuery;
-    if (hasAugmentedQuery != [v4 hasAugmentedQuery])
+    if (hasAugmentedQuery != [equalCopy hasAugmentedQuery])
     {
       goto LABEL_27;
     }
@@ -447,10 +447,10 @@ LABEL_28:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_hasAugmentedQuery + 1);
   if (v5)
   {
@@ -530,9 +530,9 @@ LABEL_6:
   }
 }
 
-- (void)setHasHasAugmentedQuery:(BOOL)a3
+- (void)setHasHasAugmentedQuery:(BOOL)query
 {
-  if (a3)
+  if (query)
   {
     v3 = 16;
   }
@@ -545,23 +545,23 @@ LABEL_6:
   *(&self->_hasAugmentedQuery + 1) = *(&self->_hasAugmentedQuery + 1) & 0xEF | v3;
 }
 
-- (int)subSearchDomainsAtIndex:(unint64_t)a3
+- (int)subSearchDomainsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_subSearchDomains objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_subSearchDomains objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addSubSearchDomains:(int)a3
+- (void)addSubSearchDomains:(int)domains
 {
-  v3 = *&a3;
+  v3 = *&domains;
   subSearchDomains = self->_subSearchDomains;
   if (!subSearchDomains)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_subSearchDomains;
-    self->_subSearchDomains = v6;
+    self->_subSearchDomains = array;
 
     subSearchDomains = self->_subSearchDomains;
   }
@@ -570,9 +570,9 @@ LABEL_6:
   [(NSArray *)subSearchDomains addObject:v8];
 }
 
-- (void)setHasSearchType:(BOOL)a3
+- (void)setHasSearchType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -585,9 +585,9 @@ LABEL_6:
   *(&self->_hasAugmentedQuery + 1) = *(&self->_hasAugmentedQuery + 1) & 0xF7 | v3;
 }
 
-- (void)setHasHasNextSteps:(BOOL)a3
+- (void)setHasHasNextSteps:(BOOL)steps
 {
-  if (a3)
+  if (steps)
   {
     v3 = 4;
   }
@@ -600,9 +600,9 @@ LABEL_6:
   *(&self->_hasAugmentedQuery + 1) = *(&self->_hasAugmentedQuery + 1) & 0xFB | v3;
 }
 
-- (void)setHasParentDomain:(BOOL)a3
+- (void)setHasParentDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 2;
   }

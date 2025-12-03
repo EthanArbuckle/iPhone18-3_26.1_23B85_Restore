@@ -1,7 +1,7 @@
 @interface AIDAAccountNotification
-- (id)_appleIDAuthenticationAccountsMatchingAppleAccount:(id)a3 inStore:(id)a4;
+- (id)_appleIDAuthenticationAccountsMatchingAppleAccount:(id)account inStore:(id)store;
 - (id)_supportedServiceIDs;
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 @end
 
 @implementation AIDAAccountNotification
@@ -21,11 +21,11 @@
   return v4;
 }
 
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
   v53 = *MEMORY[0x29EDCA608];
-  v9 = a5;
-  v38 = a6;
+  storeCopy = store;
+  oldAccountCopy = oldAccount;
   v10 = _AIDALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -33,15 +33,15 @@
     _os_log_impl(&dword_29C89B000, v10, OS_LOG_TYPE_DEFAULT, "AIDA Notification plugin running", buf, 2u);
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
-    v11 = [v38 accountType];
-    v12 = [v11 identifier];
-    v13 = [v12 isEqualToString:*MEMORY[0x29EDB81D0]];
+    accountType = [oldAccountCopy accountType];
+    identifier = [accountType identifier];
+    v13 = [identifier isEqualToString:*MEMORY[0x29EDB81D0]];
 
     if (v13)
     {
-      v36 = v9;
+      v36 = storeCopy;
       v14 = _AIDALogSystem();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
@@ -53,8 +53,8 @@
       v48 = 0u;
       v46 = 0u;
       v45 = 0u;
-      v15 = [(AIDAAccountNotification *)self _supportedServiceIDs];
-      v16 = [v15 countByEnumeratingWithState:&v45 objects:v52 count:16];
+      _supportedServiceIDs = [(AIDAAccountNotification *)self _supportedServiceIDs];
+      v16 = [_supportedServiceIDs countByEnumeratingWithState:&v45 objects:v52 count:16];
       if (v16)
       {
         v17 = v16;
@@ -65,7 +65,7 @@
           {
             if (*v46 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(_supportedServiceIDs);
             }
 
             v20 = *(*(&v45 + 1) + 8 * i);
@@ -78,7 +78,7 @@
             }
 
             v44 = 0;
-            [MEMORY[0x29EDBDFF8] removeCredentialForAccount:v38 clientID:v20 error:&v44];
+            [MEMORY[0x29EDBDFF8] removeCredentialForAccount:oldAccountCopy clientID:v20 error:&v44];
             v22 = v44;
             if (v22)
             {
@@ -92,25 +92,25 @@
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v45 objects:v52 count:16];
+          v17 = [_supportedServiceIDs countByEnumeratingWithState:&v45 objects:v52 count:16];
         }
 
         while (v17);
       }
 
-      v9 = v36;
+      storeCopy = v36;
     }
 
-    v24 = [v38 accountType];
-    v25 = [v24 identifier];
-    v26 = [v25 isEqual:*MEMORY[0x29EDB81C8]];
+    accountType2 = [oldAccountCopy accountType];
+    identifier2 = [accountType2 identifier];
+    v26 = [identifier2 isEqual:*MEMORY[0x29EDB81C8]];
 
     if (v26)
     {
-      v27 = [(AIDAAccountNotification *)self _appleIDAuthenticationAccountsMatchingAppleAccount:v38 inStore:v9];
+      v27 = [(AIDAAccountNotification *)self _appleIDAuthenticationAccountsMatchingAppleAccount:oldAccountCopy inStore:storeCopy];
       if ([v27 count])
       {
-        v37 = v9;
+        v37 = storeCopy;
         v28 = _AIDALogSystem();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
@@ -148,7 +148,7 @@
           while (v32);
         }
 
-        v9 = v37;
+        storeCopy = v37;
       }
     }
   }
@@ -156,14 +156,14 @@
   v35 = *MEMORY[0x29EDCA608];
 }
 
-- (id)_appleIDAuthenticationAccountsMatchingAppleAccount:(id)a3 inStore:(id)a4
+- (id)_appleIDAuthenticationAccountsMatchingAppleAccount:(id)account inStore:(id)store
 {
   v29 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
-  v20 = [v6 accountTypeWithAccountTypeIdentifier:*MEMORY[0x29EDB81D0]];
-  v21 = v6;
-  v7 = [v6 _accountsWithAcountType:? error:?];
+  accountCopy = account;
+  storeCopy = store;
+  v20 = [storeCopy accountTypeWithAccountTypeIdentifier:*MEMORY[0x29EDB81D0]];
+  v21 = storeCopy;
+  v7 = [storeCopy _accountsWithAcountType:? error:?];
   v23 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v24 = 0u;
   v25 = 0u;
@@ -185,17 +185,17 @@
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 aida_alternateDSID];
-        v14 = [v5 aida_alternateDSID];
-        if ([v13 isEqualToString:v14])
+        aida_alternateDSID = [v12 aida_alternateDSID];
+        aida_alternateDSID2 = [accountCopy aida_alternateDSID];
+        if ([aida_alternateDSID isEqualToString:aida_alternateDSID2])
         {
         }
 
         else
         {
-          v15 = [v12 username];
-          v16 = [v5 username];
-          v17 = [v15 isEqualToString:v16];
+          username = [v12 username];
+          username2 = [accountCopy username];
+          v17 = [username isEqualToString:username2];
 
           if (!v17)
           {

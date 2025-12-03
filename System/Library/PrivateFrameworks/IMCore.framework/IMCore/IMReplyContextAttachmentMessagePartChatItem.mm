@@ -1,55 +1,55 @@
 @interface IMReplyContextAttachmentMessagePartChatItem
-- (id)_initWithItem:(id)a3 parentItem:(id)a4 replyMessageGUID:(id)a5 replyIsFromMe:(BOOL)a6 text:(id)a7 index:(int64_t)a8 messagePartRange:(_NSRange)a9 transferGUID:(id)a10 chatContext:(id)a11;
-- (id)_initWithItem:(id)a3 parentItem:(id)a4 replyMessageGUID:(id)a5 replyIsFromMe:(BOOL)a6 text:(id)a7 index:(int64_t)a8 messagePartRange:(_NSRange)a9 transferGUID:(id)a10 chatContext:(id)a11 visibleAssociatedMessageChatItems:(id)a12;
+- (id)_initWithItem:(id)item parentItem:(id)parentItem replyMessageGUID:(id)d replyIsFromMe:(BOOL)me text:(id)text index:(int64_t)index messagePartRange:(_NSRange)range transferGUID:(id)self0 chatContext:(id)self1;
+- (id)_initWithItem:(id)item parentItem:(id)parentItem replyMessageGUID:(id)d replyIsFromMe:(BOOL)me text:(id)text index:(int64_t)index messagePartRange:(_NSRange)range transferGUID:(id)self0 chatContext:(id)self1 visibleAssociatedMessageChatItems:(id)self2;
 @end
 
 @implementation IMReplyContextAttachmentMessagePartChatItem
 
-- (id)_initWithItem:(id)a3 parentItem:(id)a4 replyMessageGUID:(id)a5 replyIsFromMe:(BOOL)a6 text:(id)a7 index:(int64_t)a8 messagePartRange:(_NSRange)a9 transferGUID:(id)a10 chatContext:(id)a11
+- (id)_initWithItem:(id)item parentItem:(id)parentItem replyMessageGUID:(id)d replyIsFromMe:(BOOL)me text:(id)text index:(int64_t)index messagePartRange:(_NSRange)range transferGUID:(id)self0 chatContext:(id)self1
 {
-  v16 = a3;
-  obj = a5;
-  v27 = a4;
-  v17 = a5;
+  itemCopy = item;
+  obj = d;
+  parentItemCopy = parentItem;
+  dCopy = d;
   v28.receiver = self;
   v28.super_class = IMReplyContextAttachmentMessagePartChatItem;
-  v20 = [(IMAttachmentMessagePartChatItem *)&v28 _initWithItem:v16 text:a7 index:a8 messagePartRange:a9.location transferGUID:a9.length chatContext:a10, a11];
-  if (v20)
+  context = [(IMAttachmentMessagePartChatItem *)&v28 _initWithItem:itemCopy text:text index:index messagePartRange:range.location transferGUID:range.length chatContext:iD, context];
+  if (context)
   {
-    v21 = objc_msgSend_guid(v16, v18, v19);
+    v21 = objc_msgSend_guid(itemCopy, v18, v19);
     v22 = sub_1A83AC604();
 
-    objc_msgSend__setGUID_(v20, v23, v22);
-    objc_storeStrong(v20 + 29, a4);
-    *(v20 + 224) = a6;
-    objc_storeStrong(v20 + 30, obj);
+    objc_msgSend__setGUID_(context, v23, v22);
+    objc_storeStrong(context + 29, parentItem);
+    *(context + 224) = me;
+    objc_storeStrong(context + 30, obj);
   }
 
-  return v20;
+  return context;
 }
 
-- (id)_initWithItem:(id)a3 parentItem:(id)a4 replyMessageGUID:(id)a5 replyIsFromMe:(BOOL)a6 text:(id)a7 index:(int64_t)a8 messagePartRange:(_NSRange)a9 transferGUID:(id)a10 chatContext:(id)a11 visibleAssociatedMessageChatItems:(id)a12
+- (id)_initWithItem:(id)item parentItem:(id)parentItem replyMessageGUID:(id)d replyIsFromMe:(BOOL)me text:(id)text index:(int64_t)index messagePartRange:(_NSRange)range transferGUID:(id)self0 chatContext:(id)self1 visibleAssociatedMessageChatItems:(id)self2
 {
-  v16 = a3;
-  obj = a4;
-  v29 = a4;
-  v27 = a5;
-  v17 = a5;
+  itemCopy = item;
+  obj = parentItem;
+  parentItemCopy = parentItem;
+  dCopy = d;
+  dCopy2 = d;
   v30.receiver = self;
   v30.super_class = IMReplyContextAttachmentMessagePartChatItem;
-  v20 = [(IMAttachmentMessagePartChatItem *)&v30 _initWithItem:v16 text:a7 index:a8 messagePartRange:a9.location transferGUID:a9.length chatContext:a10 visibleAssociatedMessageChatItems:a11, a12];
-  if (v20)
+  items = [(IMAttachmentMessagePartChatItem *)&v30 _initWithItem:itemCopy text:text index:index messagePartRange:range.location transferGUID:range.length chatContext:iD visibleAssociatedMessageChatItems:context, items];
+  if (items)
   {
-    v21 = objc_msgSend_guid(v16, v18, v19);
+    v21 = objc_msgSend_guid(itemCopy, v18, v19);
     v22 = sub_1A83AC604();
 
-    objc_msgSend__setGUID_(v20, v23, v22);
-    objc_storeStrong(v20 + 29, obj);
-    *(v20 + 224) = a6;
-    objc_storeStrong(v20 + 30, v27);
+    objc_msgSend__setGUID_(items, v23, v22);
+    objc_storeStrong(items + 29, obj);
+    *(items + 224) = me;
+    objc_storeStrong(items + 30, dCopy);
   }
 
-  return v20;
+  return items;
 }
 
 @end

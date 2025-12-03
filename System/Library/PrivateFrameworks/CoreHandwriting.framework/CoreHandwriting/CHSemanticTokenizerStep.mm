@@ -1,41 +1,41 @@
 @interface CHSemanticTokenizerStep
-- (CHSemanticTokenizerStep)initWithWordLanguageModel:(void *)a3 ovsStringChecker:(id)a4;
-- (id)process:(id)a3 options:(id)a4;
+- (CHSemanticTokenizerStep)initWithWordLanguageModel:(void *)model ovsStringChecker:(id)checker;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHSemanticTokenizerStep
 
-- (CHSemanticTokenizerStep)initWithWordLanguageModel:(void *)a3 ovsStringChecker:(id)a4
+- (CHSemanticTokenizerStep)initWithWordLanguageModel:(void *)model ovsStringChecker:(id)checker
 {
-  v7 = a4;
+  checkerCopy = checker;
   v11.receiver = self;
   v11.super_class = CHSemanticTokenizerStep;
   v8 = [(CHSemanticTokenizerStep *)&v11 init];
   if (v8)
   {
-    if (a3)
+    if (model)
     {
-      CFRetain(a3);
+      CFRetain(model);
     }
 
     mCFObject = v8->_wordLanguageModel.mCFObject;
-    v8->_wordLanguageModel.mCFObject = a3;
+    v8->_wordLanguageModel.mCFObject = model;
     if (mCFObject)
     {
       CFRelease(mCFObject);
     }
 
-    objc_storeStrong(&v8->_ovsStringChecker, a4);
+    objc_storeStrong(&v8->_ovsStringChecker, checker);
   }
 
   return v8;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v305 = *MEMORY[0x1E69E9840];
-  v263 = a3;
-  v261 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -48,7 +48,7 @@
     _os_log_impl(&dword_18366B000, v6, OS_LOG_TYPE_DEBUG, "CHSemanticTokenizerStep is running", buf, 2u);
   }
 
-  v12 = objc_msgSend_result(v263, v7, v8, v9, v10, v11);
+  v12 = objc_msgSend_result(processCopy, v7, v8, v9, v10, v11);
   v266 = objc_msgSend_topTranscription(v12, v13, v14, v15, v16, v17);
   v18 = objc_opt_class();
   v298 = 0;
@@ -168,7 +168,7 @@
     v280 = &v283;
     v281 = v291;
     v274 = v21;
-    v275 = self;
+    selfCopy = self;
     v262 = v260;
     v276 = v262;
     v282 = v289;
@@ -212,11 +212,11 @@
       objc_msgSend_addObject_(v264, v249, v248, v250, v251, v252);
     }
 
-    v253 = objc_msgSend_result(v263, v203, v204, v205, v206, v207);
+    v253 = objc_msgSend_result(processCopy, v203, v204, v205, v206, v207);
     v257 = objc_msgSend_modifiedResultWithBestPathTokens_pathProbabilities_(v253, v254, v265, v264, v255, v256);
-    if (v263)
+    if (processCopy)
     {
-      objc_storeStrong(v263 + 3, v257);
+      objc_storeStrong(processCopy + 3, v257);
     }
 
     _Block_object_dispose(&v283, 8);
@@ -228,9 +228,9 @@
     _Block_object_dispose(v297, 8);
   }
 
-  v258 = v263;
+  v258 = processCopy;
 
-  return v263;
+  return processCopy;
 }
 
 @end

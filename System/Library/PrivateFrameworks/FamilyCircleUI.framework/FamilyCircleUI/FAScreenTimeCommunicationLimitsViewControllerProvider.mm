@@ -1,12 +1,12 @@
 @interface FAScreenTimeCommunicationLimitsViewControllerProvider
-+ (id)communicationLimitsViewControllerForDSID:(id)a3;
++ (id)communicationLimitsViewControllerForDSID:(id)d;
 @end
 
 @implementation FAScreenTimeCommunicationLimitsViewControllerProvider
 
-+ (id)communicationLimitsViewControllerForDSID:(id)a3
++ (id)communicationLimitsViewControllerForDSID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -25,7 +25,7 @@
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [v4 communicationLimitsViewControllerForDSID:v3];
+  v6 = [v4 communicationLimitsViewControllerForDSID:dCopy];
 
   return v6;
 }

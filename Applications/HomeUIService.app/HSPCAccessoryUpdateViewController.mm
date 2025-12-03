@@ -1,5 +1,5 @@
 @interface HSPCAccessoryUpdateViewController
-- (HSPCAccessoryUpdateViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCAccessoryUpdateViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)displayAutomaticUpdatesAlert;
 - (id)handleInstallUpdate;
 - (id)handleNotNowButtonTapped;
@@ -8,16 +8,16 @@
 
 @implementation HSPCAccessoryUpdateViewController
 
-- (HSPCAccessoryUpdateViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCAccessoryUpdateViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a4;
+  configCopy = config;
   v15.receiver = self;
   v15.super_class = HSPCAccessoryUpdateViewController;
-  v8 = [(HSPCCenterIconViewController *)&v15 initWithCoordinator:a3 config:v7];
+  v8 = [(HSPCCenterIconViewController *)&v15 initWithCoordinator:coordinator config:configCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_config, a4);
+    objc_storeStrong(&v8->_config, config);
     v10 = HULocalizedString();
     [(HSPCAccessoryUpdateViewController *)v9 setTitle:v10];
 
@@ -46,26 +46,26 @@
 
 - (id)handleInstallUpdate
 {
-  v2 = [(HSPCAccessoryUpdateViewController *)self config];
-  v3 = [v2 addedAccessory];
-  v4 = [v3 hf_startSoftwareUpdate];
+  config = [(HSPCAccessoryUpdateViewController *)self config];
+  addedAccessory = [config addedAccessory];
+  hf_startSoftwareUpdate = [addedAccessory hf_startSoftwareUpdate];
 
   return [NAFuture futureWithResult:&off_1000CE020];
 }
 
 - (id)handleNotNowButtonTapped
 {
-  v3 = [(HSPCAccessoryUpdateViewController *)self config];
-  v4 = [v3 home];
-  if ([v4 hf_hasResidentDeviceCapableOfSupportingThreadBorderRouter])
+  config = [(HSPCAccessoryUpdateViewController *)self config];
+  home = [config home];
+  if ([home hf_hasResidentDeviceCapableOfSupportingThreadBorderRouter])
   {
-    v5 = [(HSPCAccessoryUpdateViewController *)self config];
-    v6 = [v5 home];
-    v7 = [v6 hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
+    config2 = [(HSPCAccessoryUpdateViewController *)self config];
+    home2 = [config2 home];
+    hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled = [home2 hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
 
-    if ((v7 & 1) == 0)
+    if ((hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled & 1) == 0)
     {
-      v8 = [(HSPCAccessoryUpdateViewController *)self displayAutomaticUpdatesAlert];
+      displayAutomaticUpdatesAlert = [(HSPCAccessoryUpdateViewController *)self displayAutomaticUpdatesAlert];
       goto LABEL_8;
     }
   }
@@ -77,24 +77,24 @@
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(HSPCAccessoryUpdateViewController *)self config];
-    v11 = [v10 home];
-    v12 = [v11 hf_hasResidentDeviceCapableOfSupportingThreadBorderRouter];
-    v13 = [(HSPCAccessoryUpdateViewController *)self config];
-    v14 = [v13 home];
+    config3 = [(HSPCAccessoryUpdateViewController *)self config];
+    home3 = [config3 home];
+    hf_hasResidentDeviceCapableOfSupportingThreadBorderRouter = [home3 hf_hasResidentDeviceCapableOfSupportingThreadBorderRouter];
+    config4 = [(HSPCAccessoryUpdateViewController *)self config];
+    home4 = [config4 home];
     v16 = 136315650;
     v17 = "[HSPCAccessoryUpdateViewController handleNotNowButtonTapped]";
     v18 = 1024;
-    v19 = v12;
+    v19 = hf_hasResidentDeviceCapableOfSupportingThreadBorderRouter;
     v20 = 1024;
-    v21 = [v14 hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
+    hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled2 = [home4 hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s Did not display automatic software updates popup: hf_hasResidentDeviceCapableOfSupportingThreadBorderRouter - [%d], hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled - [%d]", &v16, 0x18u);
   }
 
-  v8 = [NAFuture futureWithResult:&off_1000CE020];
+  displayAutomaticUpdatesAlert = [NAFuture futureWithResult:&off_1000CE020];
 LABEL_8:
 
-  return v8;
+  return displayAutomaticUpdatesAlert;
 }
 
 - (id)displayAutomaticUpdatesAlert

@@ -1,14 +1,14 @@
 @interface GKExpiringCacheObject
 + (id)fetchSortDescriptors;
-+ (void)expireObjectsMatchingPredicate:(id)a3 context:(id)a4;
-+ (void)invalidateObjectsMatchingPredicate:(id)a3 context:(id)a4;
++ (void)expireObjectsMatchingPredicate:(id)predicate context:(id)context;
++ (void)invalidateObjectsMatchingPredicate:(id)predicate context:(id)context;
 - (BOOL)expired;
 - (BOOL)isValid;
 - (void)awakeFromInsert;
 - (void)expire;
 - (void)invalidate;
-- (void)updateWithServerRepresentation:(id)a3;
-- (void)updateWithServerRepresentation:(id)a3 expirationDate:(id)a4;
+- (void)updateWithServerRepresentation:(id)representation;
+- (void)updateWithServerRepresentation:(id)representation expirationDate:(id)date;
 @end
 
 @implementation GKExpiringCacheObject
@@ -24,8 +24,8 @@
 
 - (BOOL)isValid
 {
-  v2 = [(GKExpiringCacheObject *)self expirationDate];
-  v3 = v2 != 0;
+  expirationDate = [(GKExpiringCacheObject *)self expirationDate];
+  v3 = expirationDate != 0;
 
   return v3;
 }
@@ -38,8 +38,8 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKExpiringCacheObject invalidate]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKExpiringCacheObject invalidate]", [v7 UTF8String], 593);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKExpiringCacheObject invalidate]", [lastPathComponent UTF8String], 593);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
@@ -55,8 +55,8 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKExpiringCacheObject expire]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKExpiringCacheObject expire]", [v7 UTF8String], 599);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKExpiringCacheObject expire]", [lastPathComponent UTF8String], 599);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
@@ -86,8 +86,8 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKExpiringCacheObject expired]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKExpiringCacheObject expired]", [v7 UTF8String], 608);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKExpiringCacheObject expired]", [lastPathComponent UTF8String], 608);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
@@ -97,24 +97,24 @@
     return 1;
   }
 
-  v9 = [(GKExpiringCacheObject *)self expirationDate];
-  [v9 timeIntervalSinceNow];
+  expirationDate = [(GKExpiringCacheObject *)self expirationDate];
+  [expirationDate timeIntervalSinceNow];
   v11 = v10 <= 0.0;
 
   return v11;
 }
 
-- (void)updateWithServerRepresentation:(id)a3
+- (void)updateWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [NSDate dateWithTimeIntervalSinceNow:30.0];
-  [(GKExpiringCacheObject *)self updateWithServerRepresentation:v4 expirationDate:v5];
+  [(GKExpiringCacheObject *)self updateWithServerRepresentation:representationCopy expirationDate:v5];
 }
 
-- (void)updateWithServerRepresentation:(id)a3 expirationDate:(id)a4
+- (void)updateWithServerRepresentation:(id)representation expirationDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  dateCopy = date;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -131,8 +131,8 @@
     v10 = +[NSThread callStackSymbols];
     v11 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKExpiringCacheObject updateWithServerRepresentation:expirationDate:]", v10];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v11, "-[GKExpiringCacheObject updateWithServerRepresentation:expirationDate:]", [v13 UTF8String], 626);
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v11, "-[GKExpiringCacheObject updateWithServerRepresentation:expirationDate:]", [lastPathComponent UTF8String], 626);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v14];
   }
@@ -140,18 +140,18 @@
   v15 = +[NSDate date];
   v16.receiver = self;
   v16.super_class = GKExpiringCacheObject;
-  [(GKCacheObject *)&v16 updateWithServerRepresentation:v6];
-  if (!v7)
+  [(GKCacheObject *)&v16 updateWithServerRepresentation:representationCopy];
+  if (!dateCopy)
   {
-    v7 = [(GKExpiringCacheObject *)self expirationDate];
-    if (!v7)
+    dateCopy = [(GKExpiringCacheObject *)self expirationDate];
+    if (!dateCopy)
     {
-      v7 = v15;
+      dateCopy = v15;
     }
   }
 
   [(GKExpiringCacheObject *)self setTimeStamp:v15];
-  [(GKExpiringCacheObject *)self setExpirationDate:v7];
+  [(GKExpiringCacheObject *)self setExpirationDate:dateCopy];
 }
 
 - (void)awakeFromInsert
@@ -163,10 +163,10 @@
   [(GKExpiringCacheObject *)self setTimeStamp:v3];
 }
 
-+ (void)expireObjectsMatchingPredicate:(id)a3 context:(id)a4
++ (void)expireObjectsMatchingPredicate:(id)predicate context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  contextCopy = context;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -183,13 +183,13 @@
     v10 = +[NSThread callStackSymbols];
     v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s not invoked on managed object context queue at %@", "+[GKExpiringCacheObject expireObjectsMatchingPredicate:context:]", v10);
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v11, "+[GKExpiringCacheObject expireObjectsMatchingPredicate:context:]", [v13 UTF8String], 646);
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v11, "+[GKExpiringCacheObject expireObjectsMatchingPredicate:context:]", [lastPathComponent UTF8String], 646);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v14];
   }
 
-  v15 = [a1 objectsMatchingPredicate:v6 context:v7];
+  v15 = [self objectsMatchingPredicate:predicateCopy context:contextCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -221,23 +221,23 @@
   }
 }
 
-+ (void)invalidateObjectsMatchingPredicate:(id)a3 context:(id)a4
++ (void)invalidateObjectsMatchingPredicate:(id)predicate context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  contextCopy = context;
   v8 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v8, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v9 = +[NSThread callStackSymbols];
     v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s not invoked on managed object context queue at %@", "+[GKExpiringCacheObject invalidateObjectsMatchingPredicate:context:]", v9);
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v12 = [v11 lastPathComponent];
-    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v10, "+[GKExpiringCacheObject invalidateObjectsMatchingPredicate:context:]", [v12 UTF8String], 655);
+    lastPathComponent = [v11 lastPathComponent];
+    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v10, "+[GKExpiringCacheObject invalidateObjectsMatchingPredicate:context:]", [lastPathComponent UTF8String], 655);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v13];
   }
 
-  v14 = [a1 objectsMatchingPredicate:v6 context:v7];
+  v14 = [self objectsMatchingPredicate:predicateCopy context:contextCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;

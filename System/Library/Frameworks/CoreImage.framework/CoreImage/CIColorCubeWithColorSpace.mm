@@ -77,39 +77,39 @@
   inputImage = [(CIImage *)self->super.inputImage imageByColorMatchingWorkingSpaceToColorSpace:v4];
   v7 = 0;
 LABEL_9:
-  v8 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
-  v9 = [(NSNumber *)self->super.inputCubeDimension intValue];
-  v10 = [CIVector vectorWithX:v9 + -1.0 Y:1.0 / (v9 + -1.0) Z:1.0 / v9 W:1.0 / (v9 * v9)];
-  v11 = [(CIColorCube *)self cubeImage];
-  if ([v11 isOpaque])
+  imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+  intValue = [(NSNumber *)self->super.inputCubeDimension intValue];
+  v10 = [CIVector vectorWithX:intValue + -1.0 Y:1.0 / (intValue + -1.0) Z:1.0 / intValue W:1.0 / (intValue * intValue)];
+  cubeImage = [(CIColorCube *)self cubeImage];
+  if ([cubeImage isOpaque])
   {
-    v12 = [(CIColorCube *)self _kernelOpaque];
+    _kernelOpaque = [(CIColorCube *)self _kernelOpaque];
   }
 
   else
   {
-    v12 = [(CIColorCube *)self _kernel];
+    _kernelOpaque = [(CIColorCube *)self _kernel];
   }
 
-  v13 = v12;
+  _kernelOpaqueExtend = _kernelOpaque;
   if ([(NSNumber *)self->super.inputExtrapolate BOOLValue])
   {
-    if ([v11 isOpaque])
+    if ([cubeImage isOpaque])
     {
-      v13 = [(CIColorCube *)self _kernelOpaqueExtend];
+      _kernelOpaqueExtend = [(CIColorCube *)self _kernelOpaqueExtend];
     }
 
     else
     {
-      v13 = 0;
+      _kernelOpaqueExtend = 0;
     }
   }
 
-  [(CIImage *)v8 extent];
-  v19[0] = v8;
-  v19[1] = v11;
+  [(CIImage *)imageByUnpremultiplyingAlpha extent];
+  v19[0] = imageByUnpremultiplyingAlpha;
+  v19[1] = cubeImage;
   v19[2] = v10;
-  result = [objc_msgSend(v13 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v19, 3), v15, v16, v17, v18), "imageByPremultiplyingAlpha"}];
+  result = [objc_msgSend(_kernelOpaqueExtend applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v19, 3), v15, v16, v17, v18), "imageByPremultiplyingAlpha"}];
   if ((v7 & 1) == 0)
   {
     return [result imageByColorMatchingColorSpaceToWorkingSpace:v4];

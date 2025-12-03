@@ -1,26 +1,26 @@
 @interface SESRKESession
-- (BOOL)continueExecutingRKEFunction:(id)a3 action:(id)a4 arbitraryData:(id)a5 readerIdentifier:(id)a6 error:(id *)a7;
-- (BOOL)isPassiveEntryAvailable:(id)a3 isAvailable:(BOOL *)a4 error:(id *)a5;
-- (BOOL)sendPassthroughMessage:(id)a3 readerIdentifier:(id)a4 error:(id *)a5;
+- (BOOL)continueExecutingRKEFunction:(id)function action:(id)action arbitraryData:(id)data readerIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isPassiveEntryAvailable:(id)available isAvailable:(BOOL *)isAvailable error:(id *)error;
+- (BOOL)sendPassthroughMessage:(id)message readerIdentifier:(id)identifier error:(id *)error;
 - (SESRKESessionContinuationDelegate)continuationDelegate;
 - (SESRKESessionDelegate)delegate;
-- (id)cancelRKEFunction:(id)a3 readerIdentifier:(id)a4;
-- (id)getVehicleReports:(id *)a3;
-- (id)sign:(id)a3 readerIdentifier:(id)a4 error:(id *)a5;
-- (void)didCreateKey:(id)a3 forVehicle:(id)a4;
-- (void)didEndUnexpectedly:(id)a3;
-- (void)didInvalidateWithError:(id)a3;
-- (void)didReceiveContinuationRequestFor:(id)a3 actionIdentifier:(id)a4 arbitraryData:(id)a5 fromVehicle:(id)a6;
-- (void)didReceivePassthroughMessage:(id)a3 fromVehicle:(id)a4;
-- (void)didStartSession:(id)a3;
-- (void)sendEvent:(id)a3 fromVehicle:(id)a4;
+- (id)cancelRKEFunction:(id)function readerIdentifier:(id)identifier;
+- (id)getVehicleReports:(id *)reports;
+- (id)sign:(id)sign readerIdentifier:(id)identifier error:(id *)error;
+- (void)didCreateKey:(id)key forVehicle:(id)vehicle;
+- (void)didEndUnexpectedly:(id)unexpectedly;
+- (void)didInvalidateWithError:(id)error;
+- (void)didReceiveContinuationRequestFor:(id)for actionIdentifier:(id)identifier arbitraryData:(id)data fromVehicle:(id)vehicle;
+- (void)didReceivePassthroughMessage:(id)message fromVehicle:(id)vehicle;
+- (void)didStartSession:(id)session;
+- (void)sendEvent:(id)event fromVehicle:(id)vehicle;
 @end
 
 @implementation SESRKESession
 
-- (BOOL)isPassiveEntryAvailable:(id)a3 isAvailable:(BOOL *)a4 error:(id *)a5
+- (BOOL)isPassiveEntryAvailable:(id)available isAvailable:(BOOL *)isAvailable error:(id *)error
 {
-  v8 = a3;
+  availableCopy = available;
   if ([(SESSession *)self state]== 1)
   {
     v21 = 0;
@@ -45,46 +45,46 @@
     v13[3] = &unk_1E82D0DF0;
     v13[4] = &v21;
     v13[5] = &v15;
-    [v9 isPassiveEntryAvailable:v8 reply:v13];
+    [v9 isPassiveEntryAvailable:availableCopy reply:v13];
 
-    if (a4)
+    if (isAvailable)
     {
-      *a4 = *(v22 + 24);
+      *isAvailable = *(v22 + 24);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v16[5];
+      *error = v16[5];
     }
 
-    LOBYTE(a5) = v16[5] == 0;
+    LOBYTE(error) = v16[5] == 0;
     _Block_object_dispose(&v15, 8);
 
     _Block_object_dispose(&v21, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     v10 = SESDefaultLogObject();
     v11 = *MEMORY[0x1E69E5148];
-    *a5 = SESCreateAndLogError();
+    *error = SESCreateAndLogError();
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a5;
+  return error;
 }
 
-- (id)cancelRKEFunction:(id)a3 readerIdentifier:(id)a4
+- (id)cancelRKEFunction:(id)function readerIdentifier:(id)identifier
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  functionCopy = function;
+  identifierCopy = identifier;
   v8 = SESDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    *&buf[4] = [v6 unsignedIntValue];
+    *&buf[4] = [functionCopy unsignedIntValue];
     _os_log_impl(&dword_1C7B9A000, v8, OS_LOG_TYPE_INFO, "cancelRKEFunction 0x%X", buf, 8u);
   }
 
@@ -106,14 +106,14 @@
     v25[3] = &unk_1E82D1170;
     v25[4] = buf;
     v9 = [(SESSession *)self synchronousRemoteObjectProxyWithErrorHandler:v25];
-    v10 = [v6 unsignedShortValue];
+    unsignedShortValue = [functionCopy unsignedShortValue];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __52__SESRKESession_cancelRKEFunction_readerIdentifier___block_invoke_2;
     v24[3] = &unk_1E82D0DF0;
     v24[4] = &v26;
     v24[5] = buf;
-    [v9 cancelRKEFunction:v10 readerIdentifier:v7 reply:v24];
+    [v9 cancelRKEFunction:unsignedShortValue readerIdentifier:identifierCopy reply:v24];
 
     v11 = v33;
     if ((v27[3] & 1) == 0 && !*(v33 + 5))
@@ -159,24 +159,24 @@
   return v19;
 }
 
-- (BOOL)continueExecutingRKEFunction:(id)a3 action:(id)a4 arbitraryData:(id)a5 readerIdentifier:(id)a6 error:(id *)a7
+- (BOOL)continueExecutingRKEFunction:(id)function action:(id)action arbitraryData:(id)data readerIdentifier:(id)identifier error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  functionCopy = function;
+  actionCopy = action;
+  dataCopy = data;
+  identifierCopy = identifier;
   v16 = SESDefaultLogObject();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     *buf = 67109890;
-    *&buf[4] = [v12 unsignedIntValue];
+    *&buf[4] = [functionCopy unsignedIntValue];
     LOWORD(v36) = 1024;
-    *(&v36 + 2) = [v13 unsignedIntValue];
+    *(&v36 + 2) = [actionCopy unsignedIntValue];
     HIWORD(v36) = 1024;
-    LODWORD(v37) = v14 != 0;
+    LODWORD(v37) = dataCopy != 0;
     WORD2(v37) = 2112;
-    *(&v37 + 6) = v15;
+    *(&v37 + 6) = identifierCopy;
     _os_log_impl(&dword_1C7B9A000, v16, OS_LOG_TYPE_INFO, "continueExecutingRKEFunction 0x%X rkeAction 0x%X arbitraryData %d readerIdentifier %@", buf, 0x1Eu);
   }
 
@@ -198,23 +198,23 @@
     v30[3] = &unk_1E82D1170;
     v30[4] = buf;
     v17 = [(SESSession *)self synchronousRemoteObjectProxyWithErrorHandler:v30];
-    v18 = [v12 unsignedShortValue];
-    v19 = [v13 unsignedCharValue];
+    unsignedShortValue = [functionCopy unsignedShortValue];
+    unsignedCharValue = [actionCopy unsignedCharValue];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __90__SESRKESession_continueExecutingRKEFunction_action_arbitraryData_readerIdentifier_error___block_invoke_2;
     v29[3] = &unk_1E82D0DF0;
     v29[4] = &v31;
     v29[5] = buf;
-    [v17 continueExecutingRKEFunction:v18 action:v19 arbitraryData:v14 readerIdentifier:v15 reply:v29];
+    [v17 continueExecutingRKEFunction:unsignedShortValue action:unsignedCharValue arbitraryData:dataCopy readerIdentifier:identifierCopy reply:v29];
 
     v20 = v36;
     if ((v32[3] & 1) != 0 || *(v36 + 5))
     {
-      if (!a7)
+      if (!error)
       {
 LABEL_8:
-        LOBYTE(a7) = *(v20 + 5) == 0;
+        LOBYTE(error) = *(v20 + 5) == 0;
         _Block_object_dispose(&v31, 8);
         _Block_object_dispose(buf, 8);
 
@@ -231,37 +231,37 @@ LABEL_8:
       *(v36 + 5) = v27;
 
       v20 = v36;
-      if (!a7)
+      if (!error)
       {
         goto LABEL_8;
       }
     }
 
-    *a7 = *(v20 + 5);
+    *error = *(v20 + 5);
     v20 = v36;
     goto LABEL_8;
   }
 
-  if (a7)
+  if (error)
   {
     v21 = SESDefaultLogObject();
     v22 = *MEMORY[0x1E69E5148];
-    *a7 = SESCreateAndLogError();
+    *error = SESCreateAndLogError();
 
-    LOBYTE(a7) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_11:
 
   v23 = *MEMORY[0x1E69E9840];
-  return a7;
+  return error;
 }
 
-- (BOOL)sendPassthroughMessage:(id)a3 readerIdentifier:(id)a4 error:(id *)a5
+- (BOOL)sendPassthroughMessage:(id)message readerIdentifier:(id)identifier error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   v10 = SESDefaultLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -271,7 +271,7 @@ LABEL_11:
 
   if ([(SESSession *)self state]== 1)
   {
-    if ([v8 length] < 0x10000)
+    if ([messageCopy length] < 0x10000)
     {
       *buf = 0;
       v32 = buf;
@@ -295,7 +295,7 @@ LABEL_11:
       v25[3] = &unk_1E82D0DF0;
       v25[4] = &v27;
       v25[5] = buf;
-      [v15 sendPassthroughMessage:v8 readerIdentifier:v9 reply:v25];
+      [v15 sendPassthroughMessage:messageCopy readerIdentifier:identifierCopy reply:v25];
 
       v16 = v32;
       if ((v28[3] & 1) == 0 && !*(v32 + 5))
@@ -323,43 +323,43 @@ LABEL_11:
         v16 = v32;
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = *(v16 + 5);
+        *error = *(v16 + 5);
         v16 = v32;
       }
 
-      LOBYTE(a5) = *(v16 + 5) == 0;
+      LOBYTE(error) = *(v16 + 5) == 0;
       _Block_object_dispose(&v27, 8);
       _Block_object_dispose(buf, 8);
     }
 
-    else if (a5)
+    else if (error)
     {
       v11 = SESDefaultLogObject();
       v12 = *MEMORY[0x1E69E5148];
-      [v8 length];
-      *a5 = SESCreateAndLogError();
+      [messageCopy length];
+      *error = SESCreateAndLogError();
 
 LABEL_9:
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v13 = SESDefaultLogObject();
     v14 = *MEMORY[0x1E69E5148];
-    *a5 = SESCreateAndLogError();
+    *error = SESCreateAndLogError();
 
     goto LABEL_9;
   }
 
   v23 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
-- (id)getVehicleReports:(id *)a3
+- (id)getVehicleReports:(id *)reports
 {
   v34 = *MEMORY[0x1E69E9840];
   v5 = SESDefaultLogObject();
@@ -421,29 +421,29 @@ LABEL_9:
       }
     }
 
-    if (a3)
+    if (reports)
     {
-      *a3 = *(v27 + 5);
+      *reports = *(v27 + 5);
     }
 
-    a3 = v21[5];
+    reports = v21[5];
     _Block_object_dispose(&v20, 8);
 
     _Block_object_dispose(buf, 8);
   }
 
-  else if (a3)
+  else if (reports)
   {
     v14 = SESDefaultLogObject();
     v15 = *MEMORY[0x1E69E5148];
-    *a3 = SESCreateAndLogError();
+    *reports = SESCreateAndLogError();
 
-    a3 = 0;
+    reports = 0;
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return a3;
+  return reports;
 }
 
 void __35__SESRKESession_getVehicleReports___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -460,11 +460,11 @@ void __35__SESRKESession_getVehicleReports___block_invoke_2(uint64_t a1, void *a
   *(v9 + 40) = v6;
 }
 
-- (id)sign:(id)a3 readerIdentifier:(id)a4 error:(id *)a5
+- (id)sign:(id)sign readerIdentifier:(id)identifier error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  signCopy = sign;
+  identifierCopy = identifier;
   v10 = SESDefaultLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -474,8 +474,8 @@ void __35__SESRKESession_getVehicleReports___block_invoke_2(uint64_t a1, void *a
 
   if ([(SESSession *)self state]== 1)
   {
-    v11 = [v9 hexStringAsData];
-    if (v11)
+    hexStringAsData = [identifierCopy hexStringAsData];
+    if (hexStringAsData)
     {
       *buf = 0;
       v35 = buf;
@@ -501,7 +501,7 @@ void __35__SESRKESession_getVehicleReports___block_invoke_2(uint64_t a1, void *a
       v26[3] = &unk_1E82D17E0;
       v26[4] = &v28;
       v26[5] = buf;
-      [v12 sign:v8 readerIdentifier:v11 reply:v26];
+      [v12 sign:signCopy readerIdentifier:hexStringAsData reply:v26];
 
       v13 = v35;
       if (!v29[5] && !*(v35 + 5))
@@ -527,9 +527,9 @@ void __35__SESRKESession_getVehicleReports___block_invoke_2(uint64_t a1, void *a
         }
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = *(v35 + 5);
+        *error = *(v35 + 5);
       }
 
       v20 = v29[5];
@@ -540,11 +540,11 @@ void __35__SESRKESession_getVehicleReports___block_invoke_2(uint64_t a1, void *a
 
     else
     {
-      if (a5)
+      if (error)
       {
         v22 = SESDefaultLogObject();
         v23 = *MEMORY[0x1E69E5148];
-        *a5 = SESCreateAndLogError();
+        *error = SESCreateAndLogError();
       }
 
       v20 = 0;
@@ -553,16 +553,16 @@ void __35__SESRKESession_getVehicleReports___block_invoke_2(uint64_t a1, void *a
 
   else
   {
-    if (!a5)
+    if (!error)
     {
       v20 = 0;
       goto LABEL_22;
     }
 
-    v11 = SESDefaultLogObject();
+    hexStringAsData = SESDefaultLogObject();
     v21 = *MEMORY[0x1E69E5148];
     SESCreateAndLogError();
-    *a5 = v20 = 0;
+    *error = v20 = 0;
   }
 
 LABEL_22:
@@ -585,34 +585,34 @@ void __45__SESRKESession_sign_readerIdentifier_error___block_invoke_2(uint64_t a
   *(v9 + 40) = v6;
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v3.receiver = self;
   v3.super_class = SESRKESession;
-  [(SESSession *)&v3 didStartSession:a3];
+  [(SESSession *)&v3 didStartSession:session];
 }
 
-- (void)didEndUnexpectedly:(id)a3
+- (void)didEndUnexpectedly:(id)unexpectedly
 {
-  v4 = a3;
-  [(SESRKESession *)self didInvalidateWithError:v4];
+  unexpectedlyCopy = unexpectedly;
+  [(SESRKESession *)self didInvalidateWithError:unexpectedlyCopy];
   v5.receiver = self;
   v5.super_class = SESRKESession;
-  [(SESSession *)&v5 didEndUnexpectedly:v4];
+  [(SESSession *)&v5 didEndUnexpectedly:unexpectedlyCopy];
 }
 
-- (void)didInvalidateWithError:(id)a3
+- (void)didInvalidateWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(SESSession *)self queue];
+  errorCopy = error;
+  queue = [(SESSession *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__SESRKESession_didInvalidateWithError___block_invoke;
   v7[3] = &unk_1E82D11C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(queue, v7);
 }
 
 void __40__SESRKESession_didInvalidateWithError___block_invoke(uint64_t a1)
@@ -621,21 +621,21 @@ void __40__SESRKESession_didInvalidateWithError___block_invoke(uint64_t a1)
   [v2 sesSession:*(a1 + 32) didInvalidateWithError:*(a1 + 40)];
 }
 
-- (void)didCreateKey:(id)a3 forVehicle:(id)a4
+- (void)didCreateKey:(id)key forVehicle:(id)vehicle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SESSession *)self queue];
+  keyCopy = key;
+  vehicleCopy = vehicle;
+  queue = [(SESSession *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__SESRKESession_didCreateKey_forVehicle___block_invoke;
   block[3] = &unk_1E82D0CF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = keyCopy;
+  v13 = vehicleCopy;
+  v9 = vehicleCopy;
+  v10 = keyCopy;
+  dispatch_async(queue, block);
 }
 
 void __41__SESRKESession_didCreateKey_forVehicle___block_invoke(id *a1)
@@ -647,21 +647,21 @@ void __41__SESRKESession_didCreateKey_forVehicle___block_invoke(id *a1)
   [v5 sesSession:v2 didCreateKey:v3 forVehicle:v4];
 }
 
-- (void)sendEvent:(id)a3 fromVehicle:(id)a4
+- (void)sendEvent:(id)event fromVehicle:(id)vehicle
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  vehicleCopy = vehicle;
   if ([(SESSession *)self state]== 1)
   {
-    v8 = [(SESSession *)self queue];
+    queue = [(SESSession *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __39__SESRKESession_sendEvent_fromVehicle___block_invoke;
     block[3] = &unk_1E82D0CF8;
     block[4] = self;
-    v11 = v6;
-    v12 = v7;
-    dispatch_async(v8, block);
+    v11 = eventCopy;
+    v12 = vehicleCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -684,21 +684,21 @@ void __39__SESRKESession_sendEvent_fromVehicle___block_invoke(uint64_t a1)
   [v5 sesSession:v2 event:v3 fromVehicle:v4];
 }
 
-- (void)didReceivePassthroughMessage:(id)a3 fromVehicle:(id)a4
+- (void)didReceivePassthroughMessage:(id)message fromVehicle:(id)vehicle
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  vehicleCopy = vehicle;
   if ([(SESSession *)self state]== 1)
   {
-    v8 = [(SESSession *)self queue];
+    queue = [(SESSession *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__SESRKESession_didReceivePassthroughMessage_fromVehicle___block_invoke;
     block[3] = &unk_1E82D0CF8;
     block[4] = self;
-    v11 = v6;
-    v12 = v7;
-    dispatch_async(v8, block);
+    v11 = messageCopy;
+    v12 = vehicleCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -721,25 +721,25 @@ void __58__SESRKESession_didReceivePassthroughMessage_fromVehicle___block_invoke
   [v5 sesSession:v2 didReceivePassthroughMessage:v3 fromVehicle:v4];
 }
 
-- (void)didReceiveContinuationRequestFor:(id)a3 actionIdentifier:(id)a4 arbitraryData:(id)a5 fromVehicle:(id)a6
+- (void)didReceiveContinuationRequestFor:(id)for actionIdentifier:(id)identifier arbitraryData:(id)data fromVehicle:(id)vehicle
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  forCopy = for;
+  identifierCopy = identifier;
+  dataCopy = data;
+  vehicleCopy = vehicle;
   if ([(SESSession *)self state]== 1)
   {
-    v14 = [(SESSession *)self queue];
+    queue = [(SESSession *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __93__SESRKESession_didReceiveContinuationRequestFor_actionIdentifier_arbitraryData_fromVehicle___block_invoke;
     block[3] = &unk_1E82D1808;
     block[4] = self;
-    v17 = v10;
-    v18 = v11;
-    v19 = v12;
-    v20 = v13;
-    dispatch_async(v14, block);
+    v17 = forCopy;
+    v18 = identifierCopy;
+    v19 = dataCopy;
+    v20 = vehicleCopy;
+    dispatch_async(queue, block);
   }
 
   else

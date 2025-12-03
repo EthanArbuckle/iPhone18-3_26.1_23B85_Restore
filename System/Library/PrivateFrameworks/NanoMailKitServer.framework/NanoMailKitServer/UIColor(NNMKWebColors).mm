@@ -35,9 +35,9 @@
   }
 
   v5 = __colorsByColorNames;
-  v6 = [v4 lowercaseString];
+  lowercaseString = [v4 lowercaseString];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [v5 objectForKeyedSubscript:lowercaseString];
 
   return v7;
 }
@@ -63,16 +63,16 @@
         while (1)
         {
           v12 = [v9 objectAtIndexedSubscript:v11];
-          v13 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-          v14 = [v12 stringByTrimmingCharactersInSet:v13];
+          whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+          v14 = [v12 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
           if ([v14 hasSuffix:@"%"])
           {
             v15 = [v14 substringToIndex:{objc_msgSend(v14, "length") - 1}];
-            v16 = [v15 integerValue];
+            integerValue = [v15 integerValue];
 
             v17 = MEMORY[0x277CCABB0];
-            v18 = v16 / 100.0;
+            v18 = integerValue / 100.0;
           }
 
           else
@@ -86,7 +86,7 @@ LABEL_16:
               goto LABEL_26;
             }
 
-            v19 = [v14 integerValue];
+            integerValue2 = [v14 integerValue];
             v20 = v44 ^ 1;
             if (v11 == 3)
             {
@@ -107,7 +107,7 @@ LABEL_16:
 
               if (v24)
               {
-                if (v19 > 1)
+                if (integerValue2 > 1)
                 {
                   v8 = 0;
                   goto LABEL_37;
@@ -118,13 +118,13 @@ LABEL_16:
               }
 
               v21 = MEMORY[0x277CCABB0];
-              v18 = v19 / 360.0;
+              v18 = integerValue2 / 360.0;
             }
 
             else
             {
               v21 = MEMORY[0x277CCABB0];
-              v18 = v19 / 255.0;
+              v18 = integerValue2 / 255.0;
             }
 
             v17 = v21;

@@ -1,23 +1,23 @@
 @interface MADVideoSessionSafetyClassificationTask
-+ (id)_addToDetectionResults:(id)a3 sensitivityKey:(id)a4 sensitivity:(id)a5 sensitivityScoreKey:(id)a6 sensitivityScore:(id)a7;
-+ (id)taskWithRequest:(id)a3 signpostPayload:(id)a4;
-- (BOOL)processPixelBufferAsset:(id)a3 resultHandler:(id)a4;
-- (MADVideoSessionSafetyClassificationTask)initWithRequestID:(id)a3 enableDetectionTypeN:(BOOL)a4 enableDetectionTypeGV:(BOOL)a5 signpostPayload:(id)a6;
++ (id)_addToDetectionResults:(id)results sensitivityKey:(id)key sensitivity:(id)sensitivity sensitivityScoreKey:(id)scoreKey sensitivityScore:(id)score;
++ (id)taskWithRequest:(id)request signpostPayload:(id)payload;
+- (BOOL)processPixelBufferAsset:(id)asset resultHandler:(id)handler;
+- (MADVideoSessionSafetyClassificationTask)initWithRequestID:(id)d enableDetectionTypeN:(BOOL)n enableDetectionTypeGV:(BOOL)v signpostPayload:(id)payload;
 - (id).cxx_construct;
-- (int)createUprightPixelBuffer:(__CVBuffer *)a3 fromSourceBuffer:(__CVBuffer *)a4 andOrientation:(unsigned int)a5;
-- (int)scalePixelBuffer:(__CVBuffer *)a3 output:(__CVBuffer *)a4 regionOfInterest:(CGRect)a5 width:(int)a6 height:(int)a7 format:(unsigned int)a8;
-- (unint64_t)performQRCodeDetections:(unint64_t)a3 pixelBuffer:(__CVBuffer *)a4 orientation:(unsigned int)a5 results:(id *)a6;
+- (int)createUprightPixelBuffer:(__CVBuffer *)buffer fromSourceBuffer:(__CVBuffer *)sourceBuffer andOrientation:(unsigned int)orientation;
+- (int)scalePixelBuffer:(__CVBuffer *)buffer output:(__CVBuffer *)output regionOfInterest:(CGRect)interest width:(int)width height:(int)height format:(unsigned int)format;
+- (unint64_t)performQRCodeDetections:(unint64_t)detections pixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation results:(id *)results;
 @end
 
 @implementation MADVideoSessionSafetyClassificationTask
 
-- (MADVideoSessionSafetyClassificationTask)initWithRequestID:(id)a3 enableDetectionTypeN:(BOOL)a4 enableDetectionTypeGV:(BOOL)a5 signpostPayload:(id)a6
+- (MADVideoSessionSafetyClassificationTask)initWithRequestID:(id)d enableDetectionTypeN:(BOOL)n enableDetectionTypeGV:(BOOL)v signpostPayload:(id)payload
 {
-  v7 = a5;
-  v8 = a4;
+  vCopy = v;
+  nCopy = n;
   v44[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  dCopy = d;
+  payloadCopy = payload;
   v36.receiver = self;
   v36.super_class = MADVideoSessionSafetyClassificationTask;
   v12 = [(MADVideoSessionSafetyClassificationTask *)&v36 init];
@@ -26,14 +26,14 @@
     goto LABEL_11;
   }
 
-  v13 = [v10 copy];
+  v13 = [dCopy copy];
   requestID = v12->_requestID;
   v12->_requestID = v13;
 
-  objc_storeStrong(&v12->_signpostPayload, a6);
-  v12->_enableDetectionTypeN = v8;
-  v12->_enableDetectionTypeGV = v7;
-  if (v8)
+  objc_storeStrong(&v12->_signpostPayload, payload);
+  v12->_enableDetectionTypeN = nCopy;
+  v12->_enableDetectionTypeGV = vCopy;
+  if (nCopy)
   {
     v15 = *MEMORY[0x1E69CA820];
     v43[0] = *MEMORY[0x1E69CA830];
@@ -106,7 +106,7 @@ LABEL_18:
   }
 
   v16 = 0;
-  if (v7)
+  if (vCopy)
   {
     goto LABEL_8;
   }
@@ -127,17 +127,17 @@ LABEL_19:
   return v28;
 }
 
-+ (id)taskWithRequest:(id)a3 signpostPayload:(id)a4
++ (id)taskWithRequest:(id)request signpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v8 = v6;
-    v9 = [a1 alloc];
-    v10 = [v8 requestID];
-    v11 = [v9 initWithRequestID:v10 enableDetectionTypeN:objc_msgSend(v8 enableDetectionTypeGV:"enableDetectionTypeN") signpostPayload:{objc_msgSend(v8, "enableDetectionTypeGV"), v7}];
+    v8 = requestCopy;
+    v9 = [self alloc];
+    requestID = [v8 requestID];
+    v11 = [v9 initWithRequestID:requestID enableDetectionTypeN:objc_msgSend(v8 enableDetectionTypeGV:"enableDetectionTypeN") signpostPayload:{objc_msgSend(v8, "enableDetectionTypeGV"), payloadCopy}];
   }
 
   else
@@ -161,21 +161,21 @@ LABEL_19:
   return v11;
 }
 
-- (int)scalePixelBuffer:(__CVBuffer *)a3 output:(__CVBuffer *)a4 regionOfInterest:(CGRect)a5 width:(int)a6 height:(int)a7 format:(unsigned int)a8
+- (int)scalePixelBuffer:(__CVBuffer *)buffer output:(__CVBuffer *)output regionOfInterest:(CGRect)interest width:(int)width height:(int)height format:(unsigned int)format
 {
-  v8 = *&a8;
-  v9 = *&a7;
-  v10 = *&a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v18 = CVPixelBufferGetWidth(a3);
-  v19 = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  v8 = *&format;
+  v9 = *&height;
+  v10 = *&width;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v18 = CVPixelBufferGetWidth(buffer);
+  v19 = CVPixelBufferGetHeight(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   if (v18 == v10 && v19 == v9 && PixelFormatType == v8 && (v27.origin.x = x, v27.origin.y = y, v27.size.width = width, v27.size.height = height, CGRectIsEmpty(v27)))
   {
-    *a4 = CFRetain(a3);
+    *output = CFRetain(buffer);
     return 0;
   }
 
@@ -195,24 +195,24 @@ LABEL_19:
 
     v22 = x;
     v23 = y;
-    v24 = width;
-    v25 = height;
+    widthCopy = width;
+    heightCopy = height;
 
-    return Scaler::ScaleCropped(&self->_scaler, *&v22, a3, a4, v10, v9, v8);
+    return Scaler::ScaleCropped(&self->_scaler, *&v22, buffer, output, v10, v9, v8);
   }
 }
 
-- (int)createUprightPixelBuffer:(__CVBuffer *)a3 fromSourceBuffer:(__CVBuffer *)a4 andOrientation:(unsigned int)a5
+- (int)createUprightPixelBuffer:(__CVBuffer *)buffer fromSourceBuffer:(__CVBuffer *)sourceBuffer andOrientation:(unsigned int)orientation
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (a5 == 1)
+  if (orientation == 1)
   {
     v7 = 0;
-    *a3 = CFRetain(a4);
+    *buffer = CFRetain(sourceBuffer);
     return v7;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(sourceBuffer);
   v10 = PixelFormatType;
   if (PixelFormatType > 1111970368)
   {
@@ -237,12 +237,12 @@ LABEL_19:
   if (PixelFormatType == v11)
   {
 LABEL_9:
-    Width = CVPixelBufferGetWidth(a4);
-    Height = CVPixelBufferGetHeight(a4);
+    Width = CVPixelBufferGetWidth(sourceBuffer);
+    Height = CVPixelBufferGetHeight(sourceBuffer);
     v14 = Height;
     *v48 = 0u;
     memset(buf, 0, sizeof(buf));
-    if (a5 <= 4)
+    if (orientation <= 4)
     {
       v15 = Width;
     }
@@ -252,7 +252,7 @@ LABEL_9:
       v15 = Height;
     }
 
-    if (a5 <= 4)
+    if (orientation <= 4)
     {
       v16 = Height;
     }
@@ -262,9 +262,9 @@ LABEL_9:
       v16 = Width;
     }
 
-    if (a5 <= 4)
+    if (orientation <= 4)
     {
-      switch(a5)
+      switch(orientation)
       {
         case 2u:
           v18 = Width;
@@ -293,9 +293,9 @@ LABEL_9:
 
     else
     {
-      if (a5 <= 6)
+      if (orientation <= 6)
       {
-        if (a5 != 5)
+        if (orientation != 5)
         {
           v17 = Width;
           *&buf[8] = xmmword_1C9F60750;
@@ -321,18 +321,18 @@ LABEL_38:
           else
           {
             v37 = 0;
-            v38 = a4;
+            sourceBufferCopy = sourceBuffer;
             v39 = 1;
-            if (a4)
+            if (sourceBuffer)
             {
-              v7 = CVPixelBufferLockBaseAddress(a4, 1uLL);
+              v7 = CVPixelBufferLockBaseAddress(sourceBuffer, 1uLL);
               v37 = v7;
-              if (!v7 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*v43 = 134218240, *&v43[4] = v38, *&v43[12] = 1024, *&v43[14] = v7, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", v43, 0x12u), (v7 = v37) == 0))
+              if (!v7 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*v43 = 134218240, *&v43[4] = sourceBufferCopy, *&v43[12] = 1024, *&v43[14] = v7, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", v43, 0x12u), (v7 = v37) == 0))
               {
-                *v43 = CVPixelBufferGetBaseAddress(a4);
+                *v43 = CVPixelBufferGetBaseAddress(sourceBuffer);
                 *&v43[8] = v14;
                 *&v43[16] = Width;
-                BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
+                BytesPerRow = CVPixelBufferGetBytesPerRow(sourceBuffer);
                 v34 = 0;
                 pixelBuffer = cf;
                 unlockFlags = 0;
@@ -373,7 +373,7 @@ LABEL_38:
                           }
 
                           v7 = 0;
-                          *a3 = v31;
+                          *buffer = v31;
                         }
                       }
                     }
@@ -395,7 +395,7 @@ LABEL_38:
                   v7 = -50;
                 }
 
-                if (v38 && !v37 && CVPixelBufferUnlockBaseAddress(v38, v39) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+                if (sourceBufferCopy && !v37 && CVPixelBufferUnlockBaseAddress(sourceBufferCopy, v39) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
                 {
                   [VCPVideoCNNAnalyzer copyImage:withChannels:settling:];
                 }
@@ -428,7 +428,7 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      if (a5 == 7)
+      if (orientation == 7)
       {
         __asm { FMOV            V0.2D, #1.0 }
 
@@ -438,7 +438,7 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      if (a5 == 8)
+      if (orientation == 8)
       {
         v18 = Height;
         *&buf[8] = xmmword_1C9F60740;
@@ -465,49 +465,49 @@ LABEL_32:
   return -50;
 }
 
-+ (id)_addToDetectionResults:(id)a3 sensitivityKey:(id)a4 sensitivity:(id)a5 sensitivityScoreKey:(id)a6 sensitivityScore:(id)a7
++ (id)_addToDetectionResults:(id)results sensitivityKey:(id)key sensitivity:(id)sensitivity sensitivityScoreKey:(id)scoreKey sensitivityScore:(id)score
 {
   v22[4] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  resultsCopy = results;
+  keyCopy = key;
+  sensitivityCopy = sensitivity;
+  scoreKeyCopy = scoreKey;
+  scoreCopy = score;
   v16 = MEMORY[0x1E69CA718];
-  v21[0] = v12;
-  v21[1] = v14;
-  v22[0] = v13;
-  v22[1] = v15;
+  v21[0] = keyCopy;
+  v21[1] = scoreKeyCopy;
+  v22[0] = sensitivityCopy;
+  v22[1] = scoreCopy;
   v17 = *MEMORY[0x1E69CA800];
   v21[2] = *MEMORY[0x1E69CA7F8];
   v21[3] = v17;
-  v22[2] = v13;
-  v22[3] = v15;
+  v22[2] = sensitivityCopy;
+  v22[3] = scoreCopy;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:4];
-  v19 = [v16 mad_mergeSensitiveAnalysisResults:v11 withSensitiveAnalysisResults:v18];
+  v19 = [v16 mad_mergeSensitiveAnalysisResults:resultsCopy withSensitiveAnalysisResults:v18];
 
   return v19;
 }
 
-- (unint64_t)performQRCodeDetections:(unint64_t)a3 pixelBuffer:(__CVBuffer *)a4 orientation:(unsigned int)a5 results:(id *)a6
+- (unint64_t)performQRCodeDetections:(unint64_t)detections pixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation results:(id *)results
 {
-  v7 = *&a5;
+  v7 = *&orientation;
   v27 = *MEMORY[0x1E69E9840];
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@][performQRCodeDetections]", objc_opt_class()];
   if (+[MADUserSafetyQRCodeDetector enabled])
   {
     v12 = objc_autoreleasePoolPush();
     v13 = objc_alloc_init(MADUserSafetyQRCodeDetector);
-    [(MADUserSafetyQRCodeDetector *)v13 processPixelBuffer:a4 orientation:v7 signpostPayload:self->_signpostPayload];
-    v14 = [(MADUserSafetyQRCodeDetector *)v13 sensitivity];
-    v15 = v14;
-    if (v14)
+    [(MADUserSafetyQRCodeDetector *)v13 processPixelBuffer:buffer orientation:v7 signpostPayload:self->_signpostPayload];
+    sensitivity = [(MADUserSafetyQRCodeDetector *)v13 sensitivity];
+    v15 = sensitivity;
+    if (sensitivity)
     {
-      v16 = [v14 unsignedIntegerValue];
-      if (a3 & v16)
+      unsignedIntegerValue = [sensitivity unsignedIntegerValue];
+      if (detections & unsignedIntegerValue)
       {
         [objc_opt_class() _addToDetectionResults:0 sensitivityKey:*MEMORY[0x1E69CA7D0] sensitivity:MEMORY[0x1E695E118] sensitivityScoreKey:*MEMORY[0x1E69CA7D8] sensitivityScore:&unk_1F49BB758];
-        v17 = a3 ^= 1uLL;
+        v17 = detections ^= 1uLL;
       }
 
       else
@@ -515,13 +515,13 @@ LABEL_32:
         v17 = 0;
       }
 
-      if ((v16 & a3 & 2) != 0)
+      if ((unsignedIntegerValue & detections & 2) != 0)
       {
         v19 = [objc_opt_class() _addToDetectionResults:v17 sensitivityKey:*MEMORY[0x1E69CA7E8] sensitivity:MEMORY[0x1E695E118] sensitivityScoreKey:*MEMORY[0x1E69CA7F0] sensitivityScore:&unk_1F49BB758];
 
         v20 = [objc_opt_class() _addToDetectionResults:v19 sensitivityKey:*MEMORY[0x1E69CA808] sensitivity:MEMORY[0x1E695E118] sensitivityScoreKey:*MEMORY[0x1E69CA818] sensitivityScore:&unk_1F49BB758];
 
-        a3 ^= 2uLL;
+        detections ^= 2uLL;
         v17 = v20;
       }
     }
@@ -542,10 +542,10 @@ LABEL_32:
     }
 
     objc_autoreleasePoolPop(v12);
-    if (a6 && v17)
+    if (results && v17)
     {
       v21 = v17;
-      *a6 = v17;
+      *results = v17;
     }
   }
 
@@ -554,14 +554,14 @@ LABEL_32:
     v17 = 0;
   }
 
-  return a3;
+  return detections;
 }
 
-- (BOOL)processPixelBufferAsset:(id)a3 resultHandler:(id)a4
+- (BOOL)processPixelBufferAsset:(id)asset resultHandler:(id)handler
 {
   v146[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@][processPixelBufferAsset]", objc_opt_class()];
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
@@ -570,7 +570,7 @@ LABEL_32:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ running...", buf, 0xCu);
   }
 
-  if ([v6 userSafetyEligible])
+  if ([assetCopy userSafetyEligible])
   {
     enableDetectionTypeN = self->_enableDetectionTypeN;
     v10 = 2;
@@ -584,7 +584,7 @@ LABEL_32:
     {
       v124 = 0;
       v123 = 0;
-      if ([v6 loadPixelBuffer:&v124 orientation:&v123 regionOfInterest:v122])
+      if ([assetCopy loadPixelBuffer:&v124 orientation:&v123 regionOfInterest:v122])
       {
         if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
@@ -599,7 +599,7 @@ LABEL_32:
         v142 = v96;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v142 forKeys:&v141 count:1];
         v14 = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v13];
-        v7[2](v7, 0, v14);
+        handlerCopy[2](handlerCopy, 0, v14);
 
         v15 = 0;
         goto LABEL_94;
@@ -643,7 +643,7 @@ LABEL_32:
         }
 
         v50 = [v13 copy];
-        (v7)[2](v7, v34, v50);
+        (handlerCopy)[2](handlerCopy, v34, v50);
 
         v15 = 1;
         goto LABEL_94;
@@ -678,7 +678,7 @@ LABEL_32:
         v138 = v31;
         v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v138 forKeys:&v137 count:1];
         v33 = [v30 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v32];
-        v7[2](v7, 0, v33);
+        handlerCopy[2](handlerCopy, 0, v33);
 
         v13 = 0;
         v15 = 0;
@@ -724,7 +724,7 @@ LABEL_32:
         v136 = v44;
         v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v136 forKeys:&v135 count:1];
         v46 = [v43 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v45];
-        v7[2](v7, 0, v46);
+        handlerCopy[2](handlerCopy, 0, v46);
 
         v13 = 0;
         v15 = 0;
@@ -821,7 +821,7 @@ LABEL_32:
         }
 
         v84 = [v108[5] copy];
-        v7[2](v7, 0, v84);
+        handlerCopy[2](handlerCopy, 0, v84);
       }
 
       else
@@ -832,16 +832,16 @@ LABEL_32:
           if (v58)
           {
             v59 = MEMORY[0x1E69CA710];
-            v60 = [v58 sensitivityScoreExplicit];
-            [v60 floatValue];
+            sensitivityScoreExplicit = [v58 sensitivityScoreExplicit];
+            [sensitivityScoreExplicit floatValue];
             v62 = [v59 isImageSensitiveForLabel:*MEMORY[0x1E69CA7B8] confidenceScore:0 classificationMode:v61];
 
             v63 = objc_opt_class();
             v64 = *MEMORY[0x1E69CA7D0];
             v94 = [MEMORY[0x1E696AD98] numberWithBool:v62];
             v65 = *MEMORY[0x1E69CA7D8];
-            v66 = [*(*&buf[8] + 40) sensitivityScoreExplicit];
-            v67 = [v63 _addToDetectionResults:v96 sensitivityKey:v64 sensitivity:v94 sensitivityScoreKey:v65 sensitivityScore:v66];
+            sensitivityScoreExplicit2 = [*(*&buf[8] + 40) sensitivityScoreExplicit];
+            v67 = [v63 _addToDetectionResults:v96 sensitivityKey:v64 sensitivity:v94 sensitivityScoreKey:v65 sensitivityScore:sensitivityScoreExplicit2];
 
             v96 = v67;
           }
@@ -858,28 +858,28 @@ LABEL_32:
             else
             {
               v69 = MEMORY[0x1E69CA710];
-              v70 = [v114[5] sensitivityScoreGore];
-              [v70 floatValue];
+              sensitivityScoreGore = [v114[5] sensitivityScoreGore];
+              [sensitivityScoreGore floatValue];
               v72 = [v69 isImageSensitiveForLabel:*MEMORY[0x1E69CA7A0] confidenceScore:0 classificationMode:v71];
 
               v73 = objc_opt_class();
               v74 = *MEMORY[0x1E69CA7E8];
               v92 = [MEMORY[0x1E696AD98] numberWithBool:v72];
               v75 = *MEMORY[0x1E69CA7F0];
-              v76 = [v114[5] sensitivityScoreGore];
-              v95 = [v73 _addToDetectionResults:v96 sensitivityKey:v74 sensitivity:v92 sensitivityScoreKey:v75 sensitivityScore:v76];
+              sensitivityScoreGore2 = [v114[5] sensitivityScoreGore];
+              v95 = [v73 _addToDetectionResults:v96 sensitivityKey:v74 sensitivity:v92 sensitivityScoreKey:v75 sensitivityScore:sensitivityScoreGore2];
 
               v77 = MEMORY[0x1E69CA710];
-              v78 = [v114[5] sensitivityScoreViolence];
-              [v78 floatValue];
+              sensitivityScoreViolence = [v114[5] sensitivityScoreViolence];
+              [sensitivityScoreViolence floatValue];
               v80 = [v77 isImageSensitiveForLabel:*MEMORY[0x1E69CA7C0] confidenceScore:0 classificationMode:v79];
 
               v81 = objc_opt_class();
               v93 = *MEMORY[0x1E69CA808];
               v68 = [MEMORY[0x1E696AD98] numberWithBool:v80];
               v82 = *MEMORY[0x1E69CA818];
-              v83 = [v114[5] sensitivityScoreViolence];
-              v96 = [v81 _addToDetectionResults:v95 sensitivityKey:v93 sensitivity:v68 sensitivityScoreKey:v82 sensitivityScore:v83];
+              sensitivityScoreViolence2 = [v114[5] sensitivityScoreViolence];
+              v96 = [v81 _addToDetectionResults:v95 sensitivityKey:v93 sensitivity:v68 sensitivityScoreKey:v82 sensitivityScore:sensitivityScoreViolence2];
             }
           }
 
@@ -916,7 +916,7 @@ LABEL_32:
           }
 
           v88 = [v13 copy];
-          (v7)[2](v7, v84, v88);
+          (handlerCopy)[2](handlerCopy, v84, v88);
 
           v15 = 1;
           goto LABEL_91;
@@ -933,7 +933,7 @@ LABEL_32:
         }
 
         v84 = [v102[5] copy];
-        v7[2](v7, 0, v84);
+        handlerCopy[2](handlerCopy, 0, v84);
       }
 
       v13 = 0;
@@ -969,7 +969,7 @@ LABEL_94:
     v144 = v21;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v144 forKeys:&v143 count:1];
     v23 = [v20 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v22];
-    v7[2](v7, 0, v23);
+    handlerCopy[2](handlerCopy, 0, v23);
   }
 
   else
@@ -987,7 +987,7 @@ LABEL_94:
     v146[0] = v17;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v146 forKeys:&v145 count:1];
     v19 = [v16 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v18];
-    v7[2](v7, 0, v19);
+    handlerCopy[2](handlerCopy, 0, v19);
   }
 
   v15 = 0;

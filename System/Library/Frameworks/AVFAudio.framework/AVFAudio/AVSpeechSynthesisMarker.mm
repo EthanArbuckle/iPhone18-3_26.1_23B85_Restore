@@ -1,9 +1,9 @@
 @interface AVSpeechSynthesisMarker
 + (void)initialize;
-- (AVSpeechSynthesisMarker)initWithCoder:(id)a3;
+- (AVSpeechSynthesisMarker)initWithCoder:(id)coder;
 - (NSRange)textRange;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVSpeechSynthesisMarker
@@ -17,44 +17,44 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setMark:{-[AVSpeechSynthesisMarker mark](self, "mark")}];
   [v4 setByteSampleOffset:{-[AVSpeechSynthesisMarker byteSampleOffset](self, "byteSampleOffset")}];
-  v5 = [(AVSpeechSynthesisMarker *)self textRange];
-  [v4 setTextRange:{v5, v6}];
-  v7 = [(AVSpeechSynthesisMarker *)self bookmarkName];
-  [v4 setBookmarkName:v7];
+  textRange = [(AVSpeechSynthesisMarker *)self textRange];
+  [v4 setTextRange:{textRange, v6}];
+  bookmarkName = [(AVSpeechSynthesisMarker *)self bookmarkName];
+  [v4 setBookmarkName:bookmarkName];
 
-  v8 = [(AVSpeechSynthesisMarker *)self phoneme];
-  [v4 setPhoneme:v8];
+  phoneme = [(AVSpeechSynthesisMarker *)self phoneme];
+  [v4 setPhoneme:phoneme];
 
   return v4;
 }
 
-- (AVSpeechSynthesisMarker)initWithCoder:(id)a3
+- (AVSpeechSynthesisMarker)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = AVSpeechSynthesisMarker;
   v5 = [(AVSpeechSynthesisMarker *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mark"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mark"];
     -[AVSpeechSynthesisMarker setMark:](v5, "setMark:", [v6 integerValue]);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"byteSampleOffset"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"byteSampleOffset"];
     -[AVSpeechSynthesisMarker setByteSampleOffset:](v5, "setByteSampleOffset:", [v7 unsignedIntegerValue]);
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textRange"];
-    v9 = [v8 rangeValue];
-    [(AVSpeechSynthesisMarker *)v5 setTextRange:v9, v10];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textRange"];
+    rangeValue = [v8 rangeValue];
+    [(AVSpeechSynthesisMarker *)v5 setTextRange:rangeValue, v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bookmarkName"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bookmarkName"];
     [(AVSpeechSynthesisMarker *)v5 setBookmarkName:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneme"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneme"];
     [(AVSpeechSynthesisMarker *)v5 setPhoneme:v12];
 
     v13 = v5;
@@ -63,21 +63,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  [v10 encodeInteger:-[AVSpeechSynthesisMarker mark](self forKey:{"mark"), @"mark"}];
-  [v10 encodeInteger:-[AVSpeechSynthesisMarker byteSampleOffset](self forKey:{"byteSampleOffset"), @"byteSampleOffset"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[AVSpeechSynthesisMarker mark](self forKey:{"mark"), @"mark"}];
+  [coderCopy encodeInteger:-[AVSpeechSynthesisMarker byteSampleOffset](self forKey:{"byteSampleOffset"), @"byteSampleOffset"}];
   v4 = MEMORY[0x1E696B098];
-  v5 = [(AVSpeechSynthesisMarker *)self textRange];
-  v7 = [v4 valueWithRange:{v5, v6}];
-  [v10 encodeObject:v7 forKey:@"textRange"];
+  textRange = [(AVSpeechSynthesisMarker *)self textRange];
+  v7 = [v4 valueWithRange:{textRange, v6}];
+  [coderCopy encodeObject:v7 forKey:@"textRange"];
 
-  v8 = [(AVSpeechSynthesisMarker *)self phoneme];
-  [v10 encodeObject:v8 forKey:@"phoneme"];
+  phoneme = [(AVSpeechSynthesisMarker *)self phoneme];
+  [coderCopy encodeObject:phoneme forKey:@"phoneme"];
 
-  v9 = [(AVSpeechSynthesisMarker *)self bookmarkName];
-  [v10 encodeObject:v9 forKey:@"bookmarkName"];
+  bookmarkName = [(AVSpeechSynthesisMarker *)self bookmarkName];
+  [coderCopy encodeObject:bookmarkName forKey:@"bookmarkName"];
 }
 
 + (void)initialize

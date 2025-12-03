@@ -1,45 +1,45 @@
 @interface _SBContinuitySessionStateMachineStatePreparingForRemoteUnlock
 - (_SBContinuitySessionStateMachineClientExternallyBlockedReasonsProvider)clientExternallyBlockedReasonsProvider;
-- (_SBContinuitySessionStateMachineStatePreparingForRemoteUnlock)initWithSystemEventMonitor:(id)a3 continuityDisplayAuthenticationCoordinator:(id)a4;
+- (_SBContinuitySessionStateMachineStatePreparingForRemoteUnlock)initWithSystemEventMonitor:(id)monitor continuityDisplayAuthenticationCoordinator:(id)coordinator;
 - (void)_evaluateClientExternallyBlockedReasons;
 - (void)_evaluateLockState;
 - (void)_evaluateSystemEvents;
-- (void)_reevaluateStateForReason:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)continuityDisplayAuthenticationCoordinatorDidUpdateLockState:(id)a3;
-- (void)enteredStateFrom:(unint64_t)a3;
+- (void)_reevaluateStateForReason:(id)reason;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)continuityDisplayAuthenticationCoordinatorDidUpdateLockState:(id)state;
+- (void)enteredStateFrom:(unint64_t)from;
 - (void)invalidate;
-- (void)setAutomaticBiometricsDisabled:(BOOL)a3;
+- (void)setAutomaticBiometricsDisabled:(BOOL)disabled;
 @end
 
 @implementation _SBContinuitySessionStateMachineStatePreparingForRemoteUnlock
 
-- (_SBContinuitySessionStateMachineStatePreparingForRemoteUnlock)initWithSystemEventMonitor:(id)a3 continuityDisplayAuthenticationCoordinator:(id)a4
+- (_SBContinuitySessionStateMachineStatePreparingForRemoteUnlock)initWithSystemEventMonitor:(id)monitor continuityDisplayAuthenticationCoordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
+  monitorCopy = monitor;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = _SBContinuitySessionStateMachineStatePreparingForRemoteUnlock;
   v9 = [(_SBContinuitySessionStateMachineStatePreparingForRemoteUnlock *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_systemEventMonitor, a3);
-    [v7 addObserver:v10];
-    objc_storeStrong(&v10->_authenticationCoordinator, a4);
+    objc_storeStrong(&v9->_systemEventMonitor, monitor);
+    [monitorCopy addObserver:v10];
+    objc_storeStrong(&v10->_authenticationCoordinator, coordinator);
     [(SBContinuityDisplayAuthenticationCoordinator *)v10->_authenticationCoordinator addObserver:v10];
   }
 
   return v10;
 }
 
-- (void)setAutomaticBiometricsDisabled:(BOOL)a3
+- (void)setAutomaticBiometricsDisabled:(BOOL)disabled
 {
-  if (self->_automaticBiometricsDisabled != a3)
+  if (self->_automaticBiometricsDisabled != disabled)
   {
-    self->_automaticBiometricsDisabled = a3;
+    self->_automaticBiometricsDisabled = disabled;
     v5 = @"enabled";
-    if (a3)
+    if (disabled)
     {
       v5 = @"disabled";
     }
@@ -49,19 +49,19 @@
   }
 }
 
-- (void)enteredStateFrom:(unint64_t)a3
+- (void)enteredStateFrom:(unint64_t)from
 {
   self->_isCurrentState = 1;
   [(_SBContinuitySessionStateMachineStatePreparingForRemoteUnlock *)self _evaluateClientExternallyBlockedReasons];
   [(_SBContinuitySessionStateMachineStatePreparingForRemoteUnlock *)self _evaluateLockState];
   [(_SBContinuitySessionStateMachineStatePreparingForRemoteUnlock *)self _evaluateSystemEvents];
   v5 = MEMORY[0x277CCACA8];
-  v7 = NSStringFromSBContinuitySessionState(a3);
+  v7 = NSStringFromSBContinuitySessionState(from);
   v6 = [v5 stringWithFormat:@"entered state from: %@", v7];
   [(_SBContinuitySessionStateMachineStatePreparingForRemoteUnlock *)self _reevaluateStateForReason:v6];
 }
 
-- (void)continuityDisplayAuthenticationCoordinatorDidUpdateLockState:(id)a3
+- (void)continuityDisplayAuthenticationCoordinatorDidUpdateLockState:(id)state
 {
   [(_SBContinuitySessionStateMachineStatePreparingForRemoteUnlock *)self _evaluateLockState];
 
@@ -80,24 +80,24 @@
   self->_invalidStateHandler = 0;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C10] collectionLineBreakNoneStyle];
+  streamCopy = stream;
+  collectionLineBreakNoneStyle = [MEMORY[0x277CF0C10] collectionLineBreakNoneStyle];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __91___SBContinuitySessionStateMachineStatePreparingForRemoteUnlock_appendDescriptionToStream___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v6 overlayStyle:v5 block:v7];
+  v8 = streamCopy;
+  selfCopy = self;
+  v6 = streamCopy;
+  [v6 overlayStyle:collectionLineBreakNoneStyle block:v7];
 }
 
 - (void)_evaluateClientExternallyBlockedReasons
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"_SBContinuitySessionStateMachineStatePreparingForRemoteUnlock.m" lineNumber:116 description:@"Must have _SBContinuitySessionStateMachineExternallyBlockedReasonsProvider"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"_SBContinuitySessionStateMachineStatePreparingForRemoteUnlock.m" lineNumber:116 description:@"Must have _SBContinuitySessionStateMachineExternallyBlockedReasonsProvider"];
 }
 
 - (void)_evaluateSystemEvents
@@ -106,15 +106,15 @@
   {
     v22 = v2;
     v23 = v3;
-    v5 = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isUIBlocked];
-    v6 = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isUILocked];
-    v7 = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isInCall];
-    v8 = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isSOSActive];
-    v9 = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isLockScreenSearchPresented];
-    v10 = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isUsingSecureApp];
-    v11 = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isAirplayMirroring];
-    v12 = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isUserInitiatedRemoteTransientOverlayPresented];
-    if (v5)
+    isUIBlocked = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isUIBlocked];
+    isUILocked = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isUILocked];
+    isInCall = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isInCall];
+    isSOSActive = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isSOSActive];
+    isLockScreenSearchPresented = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isLockScreenSearchPresented];
+    isUsingSecureApp = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isUsingSecureApp];
+    isAirplayMirroring = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isAirplayMirroring];
+    isUserInitiatedRemoteTransientOverlayPresented = [(SBContinuitySessionSystemEventMonitor *)self->_systemEventMonitor isUserInitiatedRemoteTransientOverlayPresented];
+    if (isUIBlocked)
     {
       v13 = SBLogContinuitySession();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -123,10 +123,10 @@
         _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[State.PreparingForRemoteUnlock] --> moving to .blocked because UI blocked", v21, 2u);
       }
 
-      if (v6)
+      if (isUILocked)
       {
 LABEL_4:
-        if (!v7)
+        if (!isInCall)
         {
           goto LABEL_5;
         }
@@ -135,7 +135,7 @@ LABEL_4:
       }
     }
 
-    else if (v6)
+    else if (isUILocked)
     {
       goto LABEL_4;
     }
@@ -147,10 +147,10 @@ LABEL_4:
       _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "[State.PreparingForRemoteUnlock] --> moving to .blocked because UI unlocked", v21, 2u);
     }
 
-    if (!v7)
+    if (!isInCall)
     {
 LABEL_5:
-      if (!v8)
+      if (!isSOSActive)
       {
         goto LABEL_6;
       }
@@ -166,10 +166,10 @@ LABEL_17:
       _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "[State.PreparingForRemoteUnlock] --> moving to .blocked because in call", v21, 2u);
     }
 
-    if (!v8)
+    if (!isSOSActive)
     {
 LABEL_6:
-      if (!v9)
+      if (!isLockScreenSearchPresented)
       {
         goto LABEL_7;
       }
@@ -185,10 +185,10 @@ LABEL_20:
       _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "[State.PreparingForRemoteUnlock] --> moving to .blocked because sos active", v21, 2u);
     }
 
-    if (!v9)
+    if (!isLockScreenSearchPresented)
     {
 LABEL_7:
-      if (!v10)
+      if (!isUsingSecureApp)
       {
         goto LABEL_8;
       }
@@ -204,10 +204,10 @@ LABEL_23:
       _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "[State.PreparingForRemoteUnlock] --> moving to .blocked because lock screen search presented", v21, 2u);
     }
 
-    if (!v10)
+    if (!isUsingSecureApp)
     {
 LABEL_8:
-      if (!v11)
+      if (!isAirplayMirroring)
       {
         goto LABEL_9;
       }
@@ -223,13 +223,13 @@ LABEL_26:
       _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "[State.PreparingForRemoteUnlock] --> moving to .blocked because using secure app", v21, 2u);
     }
 
-    if (!v11)
+    if (!isAirplayMirroring)
     {
 LABEL_9:
-      if (!v12)
+      if (!isUserInitiatedRemoteTransientOverlayPresented)
       {
 LABEL_35:
-        if (v5 || v7 || !v6 || v8 || v9 || v10 || v11 || v12)
+        if (isUIBlocked || isInCall || !isUILocked || isSOSActive || isLockScreenSearchPresented || isUsingSecureApp || isAirplayMirroring || isUserInitiatedRemoteTransientOverlayPresented)
         {
           (*(self->_stateTransitionHandler + 2))();
         }
@@ -256,7 +256,7 @@ LABEL_29:
       _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "[State.PreparingForRemoteUnlock] --> moving to .blocked because AirPlay mirroring", v21, 2u);
     }
 
-    if (!v12)
+    if (!isUserInitiatedRemoteTransientOverlayPresented)
     {
       goto LABEL_35;
     }
@@ -271,8 +271,8 @@ LABEL_29:
   {
     v10 = v2;
     v11 = v3;
-    v5 = [(SBContinuityDisplayAuthenticationCoordinator *)self->_authenticationCoordinator lockState];
-    switch(v5)
+    lockState = [(SBContinuityDisplayAuthenticationCoordinator *)self->_authenticationCoordinator lockState];
+    switch(lockState)
     {
       case 2uLL:
         self->_keybagLocked = 0;
@@ -297,17 +297,17 @@ LABEL_29:
   }
 }
 
-- (void)_reevaluateStateForReason:(id)a3
+- (void)_reevaluateStateForReason:(id)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_isCurrentState)
   {
     v5 = SBLogContinuitySession();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v4;
+      v14 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[State.PreparingForRemoteUnlock] Re-evaluating state for reason: %{public}@", &v13, 0xCu);
     }
 
@@ -330,9 +330,9 @@ LABEL_29:
     {
       if (v10)
       {
-        v11 = [v7 bs_array];
+        bs_array = [v7 bs_array];
         v13 = 138543362;
-        v14 = v11;
+        v14 = bs_array;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[State.PreparingForRemoteUnlock] still blocked by %{public}@", &v13, 0xCu);
       }
 

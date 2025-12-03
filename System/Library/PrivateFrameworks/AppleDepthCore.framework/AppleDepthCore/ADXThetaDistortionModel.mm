@@ -1,14 +1,14 @@
 @interface ADXThetaDistortionModel
-- (ADXThetaDistortionModel)initWithDictionary:(id)a3;
-- (ADXThetaDistortionModel)initWithDistortionCenter:(CGPoint)a3 XThetaType:(unint64_t)a4 distortionCoefficients:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (ADXThetaDistortionModel)initWithDictionary:(id)dictionary;
+- (ADXThetaDistortionModel)initWithDistortionCenter:(CGPoint)center XThetaType:(unint64_t)type distortionCoefficients:(id)coefficients;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)distortionCenter;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dictionaryRepresentation:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dictionaryRepresentation:(BOOL)representation;
 - (unint64_t)hash;
-- (void)applyDistortionModelToPixels:(double)a3 inPixels:(float32x2_t)a4 intrinsicsMatrix:(uint64_t)a5 distort:(uint64_t)a6 outPixels:(float64x2_t *)a7;
-- (void)distortPixels:(unint64_t)a3 undistortedPixels:(const CGPoint *)a4 withCameraCalibration:(id)a5 outDistortedPixels:(CGPoint *)a6;
-- (void)undistortPixels:(unint64_t)a3 distortedPixels:(const CGPoint *)a4 withCameraCalibration:(id)a5 outUndistortedPixels:(CGPoint *)a6;
+- (void)applyDistortionModelToPixels:(double)pixels inPixels:(float32x2_t)inPixels intrinsicsMatrix:(uint64_t)matrix distort:(uint64_t)distort outPixels:(float64x2_t *)outPixels;
+- (void)distortPixels:(unint64_t)pixels undistortedPixels:(const CGPoint *)undistortedPixels withCameraCalibration:(id)calibration outDistortedPixels:(CGPoint *)distortedPixels;
+- (void)undistortPixels:(unint64_t)pixels distortedPixels:(const CGPoint *)distortedPixels withCameraCalibration:(id)calibration outUndistortedPixels:(CGPoint *)undistortedPixels;
 @end
 
 @implementation ADXThetaDistortionModel
@@ -22,55 +22,55 @@
   return result;
 }
 
-- (id)dictionaryRepresentation:(BOOL)a3
+- (id)dictionaryRepresentation:(BOOL)representation
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   DictionaryRepresentation = CGPointCreateDictionaryRepresentation(self->_distortionCenter);
-  [v4 setObject:DictionaryRepresentation forKeyedSubscript:@"lensDistortionCenter"];
+  [dictionary setObject:DictionaryRepresentation forKeyedSubscript:@"lensDistortionCenter"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_XThetaType];
-  [v4 setObject:v6 forKeyedSubscript:@"typeXTheta"];
+  [dictionary setObject:v6 forKeyedSubscript:@"typeXTheta"];
 
-  [v4 setObject:self->_distortionCoefficients forKeyedSubscript:@"distortionCoefficients"];
-  v7 = [v4 copy];
+  [dictionary setObject:self->_distortionCoefficients forKeyedSubscript:@"distortionCoefficients"];
+  v7 = [dictionary copy];
 
   return v7;
 }
 
-- (ADXThetaDistortionModel)initWithDictionary:(id)a3
+- (ADXThetaDistortionModel)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (getDistortionCenterFromDictionary(v4, &self->_distortionCenter))
+  dictionaryCopy = dictionary;
+  if (getDistortionCenterFromDictionary(dictionaryCopy, &self->_distortionCenter))
   {
-    v5 = [(NSDictionary *)v4 objectForKeyedSubscript:@"typeXTheta"];
+    selfCopy = [(NSDictionary *)dictionaryCopy objectForKeyedSubscript:@"typeXTheta"];
 
-    if (v5)
+    if (selfCopy)
     {
-      v6 = [(NSDictionary *)v4 objectForKeyedSubscript:@"distortionCoefficients"];
+      v6 = [(NSDictionary *)dictionaryCopy objectForKeyedSubscript:@"distortionCoefficients"];
       distortionCoefficients = self->_distortionCoefficients;
       self->_distortionCoefficients = v6;
 
-      v8 = [(NSDictionary *)v4 objectForKeyedSubscript:@"typeXTheta"];
-      v9 = [v8 unsignedIntegerValue];
+      v8 = [(NSDictionary *)dictionaryCopy objectForKeyedSubscript:@"typeXTheta"];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-      self = [(ADXThetaDistortionModel *)self initWithDistortionCenter:v9 XThetaType:self->_distortionCoefficients distortionCoefficients:self->_distortionCenter.x, self->_distortionCenter.y];
-      v5 = self;
+      self = [(ADXThetaDistortionModel *)self initWithDistortionCenter:unsignedIntegerValue XThetaType:self->_distortionCoefficients distortionCoefficients:self->_distortionCenter.x, self->_distortionCenter.y];
+      selfCopy = self;
     }
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (ADXThetaDistortionModel)initWithDistortionCenter:(CGPoint)a3 XThetaType:(unint64_t)a4 distortionCoefficients:(id)a5
+- (ADXThetaDistortionModel)initWithDistortionCenter:(CGPoint)center XThetaType:(unint64_t)type distortionCoefficients:(id)coefficients
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = a5;
+  y = center.y;
+  x = center.x;
+  coefficientsCopy = coefficients;
   v14.receiver = self;
   v14.super_class = ADXThetaDistortionModel;
   v11 = [(ADXThetaDistortionModel *)&v14 init];
@@ -79,14 +79,14 @@
   {
     v11->_distortionCenter.x = x;
     v11->_distortionCenter.y = y;
-    v11->_XThetaType = a4;
-    objc_storeStrong(&v11->_distortionCoefficients, a5);
+    v11->_XThetaType = type;
+    objc_storeStrong(&v11->_distortionCoefficients, coefficients);
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ADXThetaDistortionModel alloc];
   x = self->_distortionCenter.x;
@@ -97,49 +97,49 @@
   return [(ADXThetaDistortionModel *)v4 initWithDistortionCenter:XThetaType XThetaType:distortionCoefficients distortionCoefficients:x, y];
 }
 
-- (void)undistortPixels:(unint64_t)a3 distortedPixels:(const CGPoint *)a4 withCameraCalibration:(id)a5 outUndistortedPixels:(CGPoint *)a6
+- (void)undistortPixels:(unint64_t)pixels distortedPixels:(const CGPoint *)distortedPixels withCameraCalibration:(id)calibration outUndistortedPixels:(CGPoint *)undistortedPixels
 {
-  v10 = a5;
-  [v10 intrinsicMatrix];
-  [(ADXThetaDistortionModel *)self applyDistortionModelToPixels:a3 inPixels:a4 intrinsicsMatrix:0 distort:a6 outPixels:?];
+  calibrationCopy = calibration;
+  [calibrationCopy intrinsicMatrix];
+  [(ADXThetaDistortionModel *)self applyDistortionModelToPixels:pixels inPixels:distortedPixels intrinsicsMatrix:0 distort:undistortedPixels outPixels:?];
 }
 
-- (void)distortPixels:(unint64_t)a3 undistortedPixels:(const CGPoint *)a4 withCameraCalibration:(id)a5 outDistortedPixels:(CGPoint *)a6
+- (void)distortPixels:(unint64_t)pixels undistortedPixels:(const CGPoint *)undistortedPixels withCameraCalibration:(id)calibration outDistortedPixels:(CGPoint *)distortedPixels
 {
-  v10 = a5;
-  [v10 intrinsicMatrix];
-  [(ADXThetaDistortionModel *)self applyDistortionModelToPixels:a3 inPixels:a4 intrinsicsMatrix:1 distort:a6 outPixels:?];
+  calibrationCopy = calibration;
+  [calibrationCopy intrinsicMatrix];
+  [(ADXThetaDistortionModel *)self applyDistortionModelToPixels:pixels inPixels:undistortedPixels intrinsicsMatrix:1 distort:distortedPixels outPixels:?];
 }
 
-- (void)applyDistortionModelToPixels:(double)a3 inPixels:(float32x2_t)a4 intrinsicsMatrix:(uint64_t)a5 distort:(uint64_t)a6 outPixels:(float64x2_t *)a7
+- (void)applyDistortionModelToPixels:(double)pixels inPixels:(float32x2_t)inPixels intrinsicsMatrix:(uint64_t)matrix distort:(uint64_t)distort outPixels:(float64x2_t *)outPixels
 {
   v74 = *MEMORY[0x277D85DE8];
-  v10 = *(a1 + 8);
+  v10 = *(self + 8);
   switch(v10)
   {
     case 0:
-      if (!a6)
+      if (!distort)
       {
         return;
       }
 
-      v13 = __PAIR64__(HIDWORD(a3), LODWORD(a2));
+      v13 = __PAIR64__(HIDWORD(pixels), LODWORD(a2));
       v14 = 0;
       __asm { FMOV            V0.2S, #1.0 }
 
       v52 = v13;
-      v56 = vcvt_f32_f64(*(a1 + 24));
+      v56 = vcvt_f32_f64(*(self + 24));
       v57 = vdiv_f32(_D0, v13);
       v53 = vneg_f32(0x3F0000003FLL);
       while (1)
       {
-        v19 = vcvt_f32_f64(a7[v14]);
+        v19 = vcvt_f32_f64(outPixels[v14]);
         if (!a8)
         {
           break;
         }
 
-        v20 = vmul_f32(v57, vsub_f32(v19, a4));
+        v20 = vmul_f32(v57, vsub_f32(v19, inPixels));
         v21 = sqrtf(vaddv_f32(vmul_f32(v20, v20)));
         v22 = atanf(v21);
         if (v22 > 0.0000001)
@@ -148,7 +148,7 @@
           v70 = 0u;
           v67 = 0u;
           v68 = 0u;
-          v23 = *(a1 + 16);
+          v23 = *(self + 16);
           v24 = [v23 countByEnumeratingWithState:&v67 objects:v73 count:16];
           if (v24)
           {
@@ -177,14 +177,14 @@
 
           v30 = v22 / v21;
           v31 = vmul_f32(v52, v20);
-          v32 = v56;
+          inPixelsCopy = v56;
 LABEL_44:
-          v19 = vmla_n_f32(v32, v31, v30);
+          v19 = vmla_n_f32(inPixelsCopy, v31, v30);
         }
 
 LABEL_45:
         a9[v14++] = vcvtq_f64_f32(v19);
-        if (v14 == a6)
+        if (v14 == distort)
         {
           return;
         }
@@ -206,7 +206,7 @@ LABEL_45:
         v66 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v36 = *(a1 + 16);
+        v36 = *(self + 16);
         v37 = [v36 countByEnumeratingWithState:&v63 objects:v72 count:16];
         v61 = v34;
         if (v37)
@@ -289,7 +289,7 @@ LABEL_40:
 
       v30 = tanf(v35) / v62;
       v31 = vmul_f32(v52, v54);
-      v32 = a4;
+      inPixelsCopy = inPixels;
       goto LABEL_44;
     case 1:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -300,9 +300,9 @@ LABEL_40:
 
       break;
     case 2:
-      v11 = 16 * a6;
+      v11 = 16 * distort;
 
-      memcpy(a9, a7, v11);
+      memcpy(a9, outPixels, v11);
       break;
   }
 }
@@ -321,22 +321,22 @@ LABEL_40:
   return v8 ^ (4 * ADCommonUtils::hashArray(self->_distortionCoefficients, v9));
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_10;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v10 = 1;
     goto LABEL_17;
   }
 
-  if (([(ADXThetaDistortionModel *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  if (([(ADXThetaDistortionModel *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
     v6 = v5;
     x = self->_distortionCenter.x;
@@ -349,8 +349,8 @@ LABEL_40:
       if (XThetaType == [(ADXThetaDistortionModel *)v6 XThetaType])
       {
         distortionCoefficients = self->_distortionCoefficients;
-        v14 = [(ADXThetaDistortionModel *)v6 distortionCoefficients];
-        if ((distortionCoefficients == 0) == (v14 != 0))
+        distortionCoefficients = [(ADXThetaDistortionModel *)v6 distortionCoefficients];
+        if ((distortionCoefficients == 0) == (distortionCoefficients != 0))
         {
           v10 = 0;
         }
@@ -360,8 +360,8 @@ LABEL_40:
           v15 = self->_distortionCoefficients;
           if (v15)
           {
-            v16 = [(ADXThetaDistortionModel *)v6 distortionCoefficients];
-            v10 = [(NSArray *)v15 isEqualToArray:v16];
+            distortionCoefficients2 = [(ADXThetaDistortionModel *)v6 distortionCoefficients];
+            v10 = [(NSArray *)v15 isEqualToArray:distortionCoefficients2];
           }
 
           else

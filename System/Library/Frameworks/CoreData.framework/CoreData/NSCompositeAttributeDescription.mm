@@ -1,28 +1,28 @@
 @interface NSCompositeAttributeDescription
-- (BOOL)_isSchemaEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isSchemaEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
 - (NSCompositeAttributeDescription)init;
-- (NSCompositeAttributeDescription)initWithCoder:(id)a3;
+- (NSCompositeAttributeDescription)initWithCoder:(id)coder;
 - (id)_buildDefaultValue;
-- (id)_flattenElements:(id)a3;
+- (id)_flattenElements:(id)elements;
 - (id)_flattenedElements;
-- (id)_initWithName:(id)a3;
-- (id)_initWithName:(id)a3 type:(unint64_t)a4;
-- (id)_initWithName:(id)a3 type:(unint64_t)a4 withClassName:(id)a5;
-- (id)_initWithType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithName:(id)name;
+- (id)_initWithName:(id)name type:(unint64_t)type;
+- (id)_initWithName:(id)name type:(unint64_t)type withClassName:(id)className;
+- (id)_initWithType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (uint64_t)_buildDefaultValue:(void *)a3 usingElements:;
+- (uint64_t)_buildDefaultValue:(void *)value usingElements:;
 - (uint64_t)_checkElements:(uint64_t)result;
-- (void)_addElement:(id)a3;
+- (void)_addElement:(id)element;
 - (void)_createCachesAndOptimizeState;
-- (void)_setEntityAndMaintainIndices:(id)a3;
-- (void)_versionHash:(char *)a3 inStyle:(unint64_t)a4;
-- (void)_writeIntoData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8 fetchRequests:(id)a9;
+- (void)_setEntityAndMaintainIndices:(id)indices;
+- (void)_versionHash:(char *)hash inStyle:(unint64_t)style;
+- (void)_writeIntoData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots fetchRequests:(id)requests;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAttributeType:(unint64_t)a3;
-- (void)setDefaultValue:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAttributeType:(unint64_t)type;
+- (void)setDefaultValue:(id)value;
 - (void)setElements:(NSArray *)elements;
 @end
 
@@ -42,11 +42,11 @@
   return v3;
 }
 
-- (id)_initWithName:(id)a3
+- (id)_initWithName:(id)name
 {
   v6.receiver = self;
   v6.super_class = NSCompositeAttributeDescription;
-  v3 = [(NSPropertyDescription *)&v6 _initWithName:a3];
+  v3 = [(NSPropertyDescription *)&v6 _initWithName:name];
   v4 = v3;
   if (v3)
   {
@@ -56,9 +56,9 @@
   return v4;
 }
 
-- (id)_initWithType:(unint64_t)a3
+- (id)_initWithType:(unint64_t)type
 {
-  if (a3 != 2100)
+  if (type != 2100)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSCompositeAttributeDescription only supports NSCompositeAttributeType as a type." userInfo:0]);
@@ -69,9 +69,9 @@
   return [(NSAttributeDescription *)&v4 _initWithType:?];
 }
 
-- (id)_initWithName:(id)a3 type:(unint64_t)a4
+- (id)_initWithName:(id)name type:(unint64_t)type
 {
-  if (a4 != 2100)
+  if (type != 2100)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSCompositeAttributeDescription only supports NSCompositeAttributeType as a type." userInfo:0]);
@@ -79,12 +79,12 @@
 
   v5.receiver = self;
   v5.super_class = NSCompositeAttributeDescription;
-  return [(NSAttributeDescription *)&v5 _initWithName:a3 type:?];
+  return [(NSAttributeDescription *)&v5 _initWithName:name type:?];
 }
 
-- (id)_initWithName:(id)a3 type:(unint64_t)a4 withClassName:(id)a5
+- (id)_initWithName:(id)name type:(unint64_t)type withClassName:(id)className
 {
-  if (a4 != 2100)
+  if (type != 2100)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSCompositeAttributeDescription only supports NSCompositeAttributeType as a type." userInfo:0]);
@@ -92,7 +92,7 @@
 
   v6.receiver = self;
   v6.super_class = NSCompositeAttributeDescription;
-  return [(NSAttributeDescription *)&v6 _initWithName:a3 type:2100 withClassName:a5];
+  return [(NSAttributeDescription *)&v6 _initWithName:name type:2100 withClassName:className];
 }
 
 - (void)dealloc
@@ -105,10 +105,10 @@
   [(NSAttributeDescription *)&v3 dealloc];
 }
 
-- (void)setAttributeType:(unint64_t)a3
+- (void)setAttributeType:(unint64_t)type
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (a3 != 2100)
+  if (type != 2100)
   {
     v4 = *MEMORY[0x1E695D940];
     v6 = @"offending attribute";
@@ -129,21 +129,21 @@
   v12.receiver = self;
   v12.super_class = NSCompositeAttributeDescription;
   v5 = [(NSAttributeDescription *)&v12 description];
-  v6 = [(NSCompositeAttributeDescription *)self attributeType];
-  v7 = [(NSCompositeAttributeDescription *)self elements];
-  v8 = [(NSAttributeDescription *)self preservesValueInHistoryOnDeletion];
+  attributeType = [(NSCompositeAttributeDescription *)self attributeType];
+  elements = [(NSCompositeAttributeDescription *)self elements];
+  preservesValueInHistoryOnDeletion = [(NSAttributeDescription *)self preservesValueInHistoryOnDeletion];
   v9 = @"NO";
-  if (v8)
+  if (preservesValueInHistoryOnDeletion)
   {
     v9 = @"YES";
   }
 
-  v10 = [v4 stringWithFormat:@"%@, attributeType %lu, elements %@, preservesValueInHistoryOnDeletion %@", v5, v6, v7, v9];
+  v10 = [v4 stringWithFormat:@"%@, attributeType %lu, elements %@, preservesValueInHistoryOnDeletion %@", v5, attributeType, elements, v9];
   objc_autoreleasePoolPop(v3);
   return v10;
 }
 
-- (NSCompositeAttributeDescription)initWithCoder:(id)a3
+- (NSCompositeAttributeDescription)initWithCoder:(id)coder
 {
   v23 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
@@ -153,7 +153,7 @@
   {
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
-    v4->_elements = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"NSCompositeElements"}];
+    v4->_elements = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"NSCompositeElements"}];
     v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSArray count](v4->_elements, "count")}];
     v17 = 0u;
     v18 = 0u;
@@ -193,19 +193,19 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NSCompositeAttributeDescription;
   [(NSAttributeDescription *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_elements forKey:@"NSCompositeElements"];
+  [coder encodeObject:self->_elements forKey:@"NSCompositeElements"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NSCompositeAttributeDescription;
-  v4 = [(NSAttributeDescription *)&v7 copyWithZone:a3];
+  v4 = [(NSAttributeDescription *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -221,70 +221,70 @@
   [(NSPropertyDescription *)self _throwIfNotEditable];
   [(NSCompositeAttributeDescription *)self _checkElements:?];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](elements, "count")}];
-  v6 = [(NSAttributeDescription *)self preservesValueInHistoryOnDeletion];
+  preservesValueInHistoryOnDeletion = [(NSAttributeDescription *)self preservesValueInHistoryOnDeletion];
   [v5 addObjectsFromArray:elements];
   v7 = 0;
   v8 = 0;
   while ([v5 count])
   {
-    v9 = [v5 firstObject];
-    if ([v9 preservesValueInHistoryOnDeletion])
+    firstObject = [v5 firstObject];
+    if ([firstObject preservesValueInHistoryOnDeletion])
     {
-      v7 = v9;
+      v7 = firstObject;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v9 preservesValueInHistoryOnDeletion] && !-[NSAttributeDescription preservesValueInHistoryOnDeletion](self, "preservesValueInHistoryOnDeletion"))
+      if ([firstObject preservesValueInHistoryOnDeletion] && !-[NSAttributeDescription preservesValueInHistoryOnDeletion](self, "preservesValueInHistoryOnDeletion"))
       {
         v24 = MEMORY[0x1E695DF30];
-        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Nested composite %@ is not eligible for preserving values on deletion (only allowed for root composite and leaves).", objc_msgSend(v9, "_qualifiedName")];
+        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Nested composite %@ is not eligible for preserving values on deletion (only allowed for root composite and leaves).", objc_msgSend(firstObject, "_qualifiedName")];
         v47[0] = @"Composite";
         v47[1] = @"Element";
         v48[0] = self;
-        v48[1] = v9;
+        v48[1] = firstObject;
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
 LABEL_36:
         objc_exception_throw([v24 exceptionWithName:*MEMORY[0x1E695D940] reason:v25 userInfo:v26]);
       }
 
-      v10 = [v9 preservesValueInHistoryOnDeletion];
-      if (v10 != [(NSAttributeDescription *)self preservesValueInHistoryOnDeletion])
+      preservesValueInHistoryOnDeletion2 = [firstObject preservesValueInHistoryOnDeletion];
+      if (preservesValueInHistoryOnDeletion2 != [(NSAttributeDescription *)self preservesValueInHistoryOnDeletion])
       {
         v24 = MEMORY[0x1E695DF30];
-        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Nested composite %@ is not eligible for preserving values on deletion (only allowed for root composite and leaves).", objc_msgSend(v9, "_qualifiedName")];
+        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Nested composite %@ is not eligible for preserving values on deletion (only allowed for root composite and leaves).", objc_msgSend(firstObject, "_qualifiedName")];
         v45[0] = @"Composite";
         v45[1] = @"Element";
         v46[0] = self;
-        v46[1] = v9;
+        v46[1] = firstObject;
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:2];
         goto LABEL_36;
       }
     }
 
-    if (v6)
+    if (preservesValueInHistoryOnDeletion)
     {
       if (!v7)
       {
         v24 = MEMORY[0x1E695DF30];
-        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Composite %@ that is preserved on deletion but element %@ is not.", -[NSPropertyDescription _qualifiedName](self, "_qualifiedName"), objc_msgSend(v9, "_qualifiedName")];
+        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Composite %@ that is preserved on deletion but element %@ is not.", -[NSPropertyDescription _qualifiedName](self, "_qualifiedName"), objc_msgSend(firstObject, "_qualifiedName")];
         v41[0] = @"Composite";
         v41[1] = @"Element";
         v42[0] = self;
-        v42[1] = v9;
+        v42[1] = firstObject;
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:2];
         goto LABEL_36;
       }
     }
 
-    else if ([v9 preservesValueInHistoryOnDeletion])
+    else if ([firstObject preservesValueInHistoryOnDeletion])
     {
       v24 = MEMORY[0x1E695DF30];
-      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Element %@ is preserved on deletion but its composite %@ is not.", objc_msgSend(v9, "_qualifiedName"), -[NSPropertyDescription _qualifiedName](self, "_qualifiedName")];
+      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Element %@ is preserved on deletion but its composite %@ is not.", objc_msgSend(firstObject, "_qualifiedName"), -[NSPropertyDescription _qualifiedName](self, "_qualifiedName")];
       v43[0] = @"Element";
       v43[1] = @"Composite";
-      v44[0] = v9;
+      v44[0] = firstObject;
       v44[1] = self;
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:2];
       goto LABEL_36;
@@ -293,7 +293,7 @@ LABEL_36:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 addObjectsFromArray:{objc_msgSend(v9, "elements")}];
+      [v5 addObjectsFromArray:{objc_msgSend(firstObject, "elements")}];
     }
 
     else
@@ -306,7 +306,7 @@ LABEL_36:
     }
 
     ++v8;
-    [v5 removeObject:v9];
+    [v5 removeObject:firstObject];
   }
 
   if (v8 >= 0x3EA)
@@ -441,17 +441,17 @@ LABEL_36:
             goto LABEL_51;
           }
 
-          v8 = [v7 attributeType];
-          v9 = v8;
-          if (v8 <= 799)
+          attributeType = [v7 attributeType];
+          v9 = attributeType;
+          if (attributeType <= 799)
           {
-            if (v8 <= 399)
+            if (attributeType <= 399)
             {
-              if (v8 <= 199)
+              if (attributeType <= 199)
               {
-                if (v8 != 100)
+                if (attributeType != 100)
                 {
-                  if (!v8)
+                  if (!attributeType)
                   {
                     goto LABEL_50;
                   }
@@ -488,31 +488,31 @@ LABEL_51:
                 }
               }
 
-              else if (v8 != 200 && v8 != 300)
+              else if (attributeType != 200 && attributeType != 300)
               {
                 goto LABEL_46;
               }
             }
 
-            else if (v8 > 599)
+            else if (attributeType > 599)
             {
-              if (v8 != 600 && v8 != 700)
+              if (attributeType != 600 && attributeType != 700)
               {
                 goto LABEL_46;
               }
             }
 
-            else if (v8 != 400 && v8 != 500)
+            else if (attributeType != 400 && attributeType != 500)
             {
               goto LABEL_46;
             }
           }
 
-          else if (v8 <= 1199)
+          else if (attributeType <= 1199)
           {
-            if (v8 > 999)
+            if (attributeType > 999)
             {
-              if (v8 == 1000)
+              if (attributeType == 1000)
               {
                 if ([v7 allowsExternalBinaryDataStorage] & 1) != 0 || (objc_msgSend(v7, "isFileBackedFuture"))
                 {
@@ -520,29 +520,29 @@ LABEL_51:
                 }
               }
 
-              else if (v8 != 1100)
+              else if (attributeType != 1100)
               {
                 goto LABEL_46;
               }
             }
 
-            else if (v8 != 800 && v8 != 900)
+            else if (attributeType != 800 && attributeType != 900)
             {
               goto LABEL_46;
             }
           }
 
-          else if (v8 <= 1999)
+          else if (attributeType <= 1999)
           {
-            if (v8 != 1200 && v8 != 1800)
+            if (attributeType != 1200 && attributeType != 1800)
             {
               goto LABEL_46;
             }
           }
 
-          else if (v8 != 2100 && v8 != 2200)
+          else if (attributeType != 2100 && attributeType != 2200)
           {
-            if (v8 == 2000)
+            if (attributeType == 2000)
             {
               goto LABEL_50;
             }
@@ -629,7 +629,7 @@ LABEL_11:
   return result;
 }
 
-- (void)_setEntityAndMaintainIndices:(id)a3
+- (void)_setEntityAndMaintainIndices:(id)indices
 {
   v7.receiver = self;
   v7.super_class = NSCompositeAttributeDescription;
@@ -643,10 +643,10 @@ LABEL_11:
   v5[1] = 3221225472;
   v5[2] = __64__NSCompositeAttributeDescription__setEntityAndMaintainIndices___block_invoke;
   v5[3] = &unk_1E6EC5828;
-  v5[4] = a3;
+  v5[4] = indices;
   v5[5] = v6;
   v6[5] = v5;
-  __64__NSCompositeAttributeDescription__setEntityAndMaintainIndices___block_invoke(v5, self->_elements, a3);
+  __64__NSCompositeAttributeDescription__setEntityAndMaintainIndices___block_invoke(v5, self->_elements, indices);
   _Block_object_dispose(v6, 8);
 }
 
@@ -713,31 +713,31 @@ LABEL_11:
   return result;
 }
 
-- (void)_addElement:(id)a3
+- (void)_addElement:(id)element
 {
   v5 = [MEMORY[0x1E695DF70] arrayWithArray:self->_elements];
-  [v5 addObject:a3];
+  [v5 addObject:element];
   v6 = [MEMORY[0x1E695DEC8] arrayWithArray:v5];
 
   [(NSCompositeAttributeDescription *)self setElements:v6];
 }
 
-- (BOOL)_isSchemaEqual:(id)a3
+- (BOOL)_isSchemaEqual:(id)equal
 {
   v7.receiver = self;
   v7.super_class = NSCompositeAttributeDescription;
   v5 = [(NSAttributeDescription *)&v7 _isSchemaEqual:?];
   if (v5)
   {
-    LOBYTE(v5) = -[NSArray isEqual:](self->_elements, "isEqual:", [a3 elements]);
+    LOBYTE(v5) = -[NSArray isEqual:](self->_elements, "isEqual:", [equal elements]);
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -752,8 +752,8 @@ LABEL_11:
     if (v7)
     {
       elements = self->_elements;
-      v9 = [a3 elements];
-      if (elements == v9)
+      elements = [equal elements];
+      if (elements == elements)
       {
         LOBYTE(v7) = 1;
       }
@@ -762,7 +762,7 @@ LABEL_11:
       {
         if (elements)
         {
-          v10 = v9 == 0;
+          v10 = elements == 0;
         }
 
         else
@@ -777,7 +777,7 @@ LABEL_11:
 
         else
         {
-          LOBYTE(v7) = [(NSArray *)elements isEqual:v9];
+          LOBYTE(v7) = [(NSArray *)elements isEqual:elements];
         }
       }
     }
@@ -786,10 +786,10 @@ LABEL_11:
   return v7;
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (([a3 isNSDictionary] & 1) == 0)
+  if (([value isNSDictionary] & 1) == 0)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
@@ -800,7 +800,7 @@ LABEL_11:
 
   v8.receiver = self;
   v8.super_class = NSCompositeAttributeDescription;
-  [(NSAttributeDescription *)&v8 setDefaultValue:a3];
+  [(NSAttributeDescription *)&v8 setDefaultValue:value];
   v5 = *MEMORY[0x1E69E9840];
 }
 
@@ -824,7 +824,7 @@ LABEL_11:
   return v5;
 }
 
-- (uint64_t)_buildDefaultValue:(void *)a3 usingElements:
+- (uint64_t)_buildDefaultValue:(void *)value usingElements:
 {
   v43 = *MEMORY[0x1E69E9840];
   v26 = result;
@@ -834,7 +834,7 @@ LABEL_11:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    result = [a3 countByEnumeratingWithState:&v35 objects:v42 count:16];
+    result = [value countByEnumeratingWithState:&v35 objects:v42 count:16];
     if (result)
     {
       v4 = result;
@@ -850,7 +850,7 @@ LABEL_11:
         {
           if (*v36 != v5)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(value);
           }
 
           v8 = *(*(&v35 + 1) + 8 * v7);
@@ -873,12 +873,12 @@ LABEL_11:
               objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:v22 reason:@"Unsupported attribute type for composite." userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v40, &v39, 1)}]);
             }
 
-            v28 = [(__CFString *)v8 defaultValue];
-            if (v28)
+            defaultValue = [(__CFString *)v8 defaultValue];
+            if (defaultValue)
             {
               v30 = v9;
-              v29 = [(NSPropertyDescription *)v8 _elementPath];
-              v11 = [(__CFString *)v29 componentsSeparatedByString:@"."];
+              _elementPath = [(NSPropertyDescription *)v8 _elementPath];
+              v11 = [(__CFString *)_elementPath componentsSeparatedByString:@"."];
               if ([v11 count] >= 2)
               {
                 v33 = 0u;
@@ -923,14 +923,14 @@ LABEL_11:
               }
 
               a2 = v25;
-              v20 = [v25 valueForKeyPath:{v29, v23}];
+              v20 = [v25 valueForKeyPath:{_elementPath, v23}];
               v5 = v23;
               v4 = v24;
               v6 = 0x1E6EC0000;
               v9 = v30;
               if (!v20)
               {
-                [v25 setValue:v28 forKeyPath:v29];
+                [v25 setValue:defaultValue forKeyPath:_elementPath];
               }
             }
           }
@@ -940,7 +940,7 @@ LABEL_11:
         }
 
         while (v7 != v4);
-        result = [a3 countByEnumeratingWithState:&v35 objects:v42 count:16];
+        result = [value countByEnumeratingWithState:&v35 objects:v42 count:16];
         v4 = result;
       }
 
@@ -954,12 +954,12 @@ LABEL_11:
 
 - (id)_flattenedElements
 {
-  v3 = [(NSCompositeAttributeDescription *)self elements];
+  elements = [(NSCompositeAttributeDescription *)self elements];
 
-  return [(NSCompositeAttributeDescription *)self _flattenElements:v3];
+  return [(NSCompositeAttributeDescription *)self _flattenElements:elements];
 }
 
-- (id)_flattenElements:(id)a3
+- (id)_flattenElements:(id)elements
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -967,7 +967,7 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  v6 = [elements countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -979,7 +979,7 @@ LABEL_11:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(elements);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
@@ -1007,7 +1007,7 @@ LABEL_11:
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v7 = [elements countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v7);
@@ -1106,14 +1106,14 @@ LABEL_11:
   return result;
 }
 
-- (void)_versionHash:(char *)a3 inStyle:(unint64_t)a4
+- (void)_versionHash:(char *)hash inStyle:(unint64_t)style
 {
   v32 = *MEMORY[0x1E69E9840];
   memset(&c, 0, sizeof(c));
   CC_SHA256_Init(&c);
   v27.receiver = self;
   v27.super_class = NSCompositeAttributeDescription;
-  [(NSAttributeDescription *)&v27 _versionHash:data inStyle:a4];
+  [(NSAttributeDescription *)&v27 _versionHash:data inStyle:style];
   if (self->_elements)
   {
     v6 = [-[NSCompositeAttributeDescription _flattenElements:](self _flattenElements:{-[NSCompositeAttributeDescription elements](self, "elements")), "sortedArrayUsingFunction:context:", _comparePropertiesByName, 0}];
@@ -1157,7 +1157,7 @@ LABEL_11:
                     objc_enumerationMutation(v12);
                   }
 
-                  [*(*(&v19 + 1) + 8 * j) _versionHash:data inStyle:a4];
+                  [*(*(&v19 + 1) + 8 * j) _versionHash:data inStyle:style];
                   CC_SHA256_Update(&c, data, 0x20u);
                 }
 
@@ -1173,7 +1173,7 @@ LABEL_11:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) != 0 && ([v11 isTransient] & 1) == 0)
             {
-              [v11 _versionHash:data inStyle:a4];
+              [v11 _versionHash:data inStyle:style];
               CC_SHA256_Update(&c, data, 0x20u);
             }
           }
@@ -1186,20 +1186,20 @@ LABEL_11:
     }
   }
 
-  CC_SHA256_Final(a3, &c);
+  CC_SHA256_Final(hash, &c);
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_writeIntoData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8 fetchRequests:(id)a9
+- (void)_writeIntoData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots fetchRequests:(id)requests
 {
-  v16 = [a3 length];
-  v17 = [a3 length];
+  v16 = [data length];
+  v17 = [data length];
   v20.receiver = self;
   v20.super_class = NSCompositeAttributeDescription;
-  [(NSAttributeDescription *)&v20 _writeIntoData:a3 propertiesDict:a4 uniquedPropertyNames:a5 uniquedStrings:a6 uniquedData:a7 entitiesSlots:a8 fetchRequests:a9];
+  [(NSAttributeDescription *)&v20 _writeIntoData:data propertiesDict:dict uniquedPropertyNames:names uniquedStrings:strings uniquedData:uniquedData entitiesSlots:slots fetchRequests:requests];
   if (self->_elements)
   {
-    v18 = [objc_msgSend(a7 "objectForKey:"unsignedIntegerValue"")];
+    v18 = [objc_msgSend(uniquedData "objectForKey:"unsignedIntegerValue"")];
   }
 
   else
@@ -1207,9 +1207,9 @@ LABEL_11:
     v18 = 0;
   }
 
-  _writeInt32IntoData(a3, v18);
-  v19 = bswap32([a3 length] - v16);
-  [a3 replaceBytesInRange:v17 withBytes:{4, &v19}];
+  _writeInt32IntoData(data, v18);
+  v19 = bswap32([data length] - v16);
+  [data replaceBytesInRange:v17 withBytes:{4, &v19}];
 }
 
 @end

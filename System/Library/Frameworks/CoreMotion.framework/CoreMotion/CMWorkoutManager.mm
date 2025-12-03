@@ -1,22 +1,22 @@
 @interface CMWorkoutManager
 + (BOOL)isAvailable;
-+ (unint64_t)supportedMetricsForWorkoutType:(int64_t)a3;
++ (unint64_t)supportedMetricsForWorkoutType:(int64_t)type;
 - (CMWorkoutManager)init;
-- (void)beginWorkoutSession:(id)a3 withWorkout:(id)a4 enableWorkoutChangeDetection:(BOOL)a5;
+- (void)beginWorkoutSession:(id)session withWorkout:(id)workout enableWorkoutChangeDetection:(BOOL)detection;
 - (void)dealloc;
-- (void)endWorkoutSession:(id)a3;
-- (void)getPromptsNeededForWorkoutType:(int64_t)a3 handler:(id)a4;
-- (void)muteAutoPauseForWorkoutType:(int64_t)a3 mute:(BOOL)a4;
-- (void)muteReminderType:(int64_t)a3 mute:(BOOL)a4;
-- (void)pauseWorkout:(id)a3;
-- (void)resumeWorkout:(id)a3;
-- (void)setCurrentWorkoutType:(id)a3 isManualTransition:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setSuggestedStopTimeout:(double)a3;
-- (void)snapshotWithCompletion:(id)a3;
-- (void)startWorkout:(id)a3;
-- (void)stopWorkout:(id)a3;
-- (void)triggerWorkoutLocationUpdateForTesting:(int64_t)a3;
+- (void)endWorkoutSession:(id)session;
+- (void)getPromptsNeededForWorkoutType:(int64_t)type handler:(id)handler;
+- (void)muteAutoPauseForWorkoutType:(int64_t)type mute:(BOOL)mute;
+- (void)muteReminderType:(int64_t)type mute:(BOOL)mute;
+- (void)pauseWorkout:(id)workout;
+- (void)resumeWorkout:(id)workout;
+- (void)setCurrentWorkoutType:(id)type isManualTransition:(BOOL)transition;
+- (void)setDelegate:(id)delegate;
+- (void)setSuggestedStopTimeout:(double)timeout;
+- (void)snapshotWithCompletion:(id)completion;
+- (void)startWorkout:(id)workout;
+- (void)stopWorkout:(id)workout;
+- (void)triggerWorkoutLocationUpdateForTesting:(int64_t)testing;
 - (void)userDismissedWorkoutAlert;
 @end
 
@@ -51,10 +51,10 @@
   [(CMWorkoutManager *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   internal = self->_internal;
-  internal->fDelegate = a3;
+  internal->fDelegate = delegate;
   internal->fSender = self;
   fInternalQueue = internal->fInternalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -88,9 +88,9 @@
   return objc_msgSend_featureAvailability_(CMMotionUtils, v3, "kCLConnectionMessageNatalimetryAvailable");
 }
 
-- (void)startWorkout:(id)a3
+- (void)startWorkout:(id)workout
 {
-  if (!a3)
+  if (!workout)
   {
     v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMWorkoutManager.mm", 817, @"Invalid parameter not satisfying: %@", @"workout");
@@ -103,13 +103,13 @@
   block[2] = sub_19B7A298C;
   block[3] = &unk_1E7532A00;
   block[4] = internal;
-  block[5] = a3;
+  block[5] = workout;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)stopWorkout:(id)a3
+- (void)stopWorkout:(id)workout
 {
-  if (!a3)
+  if (!workout)
   {
     v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMWorkoutManager.mm", 826, @"Invalid parameter not satisfying: %@", @"workout");
@@ -122,14 +122,14 @@
   block[2] = sub_19B7A2A68;
   block[3] = &unk_1E7532A00;
   block[4] = internal;
-  block[5] = a3;
+  block[5] = workout;
   dispatch_async(fInternalQueue, block);
 }
 
-+ (unint64_t)supportedMetricsForWorkoutType:(int64_t)a3
++ (unint64_t)supportedMetricsForWorkoutType:(int64_t)type
 {
   v4 = 0;
-  switch(a3)
+  switch(type)
   {
     case 1:
     case 2:
@@ -149,7 +149,7 @@
     case 49:
     case 66:
     case 67:
-      if (objc_msgSend_isPaceAvailable(CMPedometer, a2, a3))
+      if (objc_msgSend_isPaceAvailable(CMPedometer, a2, type))
       {
         v4 = 7;
       }
@@ -245,7 +245,7 @@
       break;
   }
 
-  if (sub_19B6C44E8(a3) != 96)
+  if (sub_19B6C44E8(type) != 96)
   {
     sub_19B421798();
     sub_19B43CC3C();
@@ -254,17 +254,17 @@
   return v4;
 }
 
-- (void)getPromptsNeededForWorkoutType:(int64_t)a3 handler:(id)a4
+- (void)getPromptsNeededForWorkoutType:(int64_t)type handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v9 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v9 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, type);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v9, v10, a2, self, @"CMWorkoutManager.mm", 966, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
-  if ((a3 - 96) <= 0xFFFFFFFFFFFFFFA0)
+  if ((type - 96) <= 0xFFFFFFFFFFFFFFA0)
   {
-    v11 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v11 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, type);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v11, v12, a2, self, @"CMWorkoutManager.mm", 967, @"Invalid parameter not satisfying: %@", @"workoutType > kCMWorkoutTypeNoWorkout && workoutType < kCMWorkoutTypeMax");
   }
 
@@ -273,15 +273,15 @@
   block[1] = 3221225472;
   block[2] = sub_19B7A2C34;
   block[3] = &unk_1E7534030;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = handler;
+  block[6] = type;
   block[4] = self;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)setSuggestedStopTimeout:(double)a3
+- (void)setSuggestedStopTimeout:(double)timeout
 {
-  if (a3 <= 0.0)
+  if (timeout <= 0.0)
   {
     v9 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, v3);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v9, v10, a2, self, @"CMWorkoutManager.mm", 976, @"Invalid parameter not satisfying: %@", @"seconds > 0");
@@ -294,7 +294,7 @@
   block[2] = sub_19B7A2D48;
   block[3] = &unk_1E7533490;
   block[4] = internal;
-  *&block[5] = a3;
+  *&block[5] = timeout;
   dispatch_async(fInternalQueue, block);
 }
 
@@ -310,11 +310,11 @@
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)triggerWorkoutLocationUpdateForTesting:(int64_t)a3
+- (void)triggerWorkoutLocationUpdateForTesting:(int64_t)testing
 {
-  if (a3 >= 3)
+  if (testing >= 3)
   {
-    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, testing);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMWorkoutManager.mm", 993, @"Invalid parameter not satisfying: %@", @"workoutLocation >= kCMWorkoutLocationTypeUnknown && workoutLocation < kCMWorkoutLocationTypeTbd");
   }
 
@@ -325,11 +325,11 @@
   block[2] = sub_19B7A2EA8;
   block[3] = &unk_1E7533490;
   block[4] = internal;
-  block[5] = a3;
+  block[5] = testing;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)muteReminderType:(int64_t)a3 mute:(BOOL)a4
+- (void)muteReminderType:(int64_t)type mute:(BOOL)mute
 {
   fInternalQueue = self->_internal->fInternalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -337,12 +337,12 @@
   block[2] = sub_19B7A2F30;
   block[3] = &unk_1E75343A8;
   block[4] = self;
-  block[5] = a3;
-  v6 = a4;
+  block[5] = type;
+  muteCopy = mute;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)muteAutoPauseForWorkoutType:(int64_t)a3 mute:(BOOL)a4
+- (void)muteAutoPauseForWorkoutType:(int64_t)type mute:(BOOL)mute
 {
   fInternalQueue = self->_internal->fInternalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -350,29 +350,29 @@
   block[2] = sub_19B7A2FC0;
   block[3] = &unk_1E75343A8;
   block[4] = self;
-  block[5] = a3;
-  v6 = a4;
+  block[5] = type;
+  muteCopy = mute;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)beginWorkoutSession:(id)a3 withWorkout:(id)a4 enableWorkoutChangeDetection:(BOOL)a5
+- (void)beginWorkoutSession:(id)session withWorkout:(id)workout enableWorkoutChangeDetection:(BOOL)detection
 {
-  if (!a3)
+  if (!session)
   {
     v12 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CMWorkoutManager.mm", 1021, @"Invalid parameter not satisfying: %@", @"overview");
-    if (a4)
+    if (workout)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, session);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CMWorkoutManager.mm", 1022, @"Invalid parameter not satisfying: %@", @"workout");
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!workout)
   {
     goto LABEL_5;
   }
@@ -385,15 +385,15 @@ LABEL_3:
   block[2] = sub_19B7A3104;
   block[3] = &unk_1E75360C0;
   block[4] = internal;
-  block[5] = a3;
-  block[6] = a4;
-  v17 = a5;
+  block[5] = session;
+  block[6] = workout;
+  detectionCopy = detection;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)setCurrentWorkoutType:(id)a3 isManualTransition:(BOOL)a4
+- (void)setCurrentWorkoutType:(id)type isManualTransition:(BOOL)transition
 {
-  if (!a3)
+  if (!type)
   {
     v10 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v10, v11, a2, self, @"CMWorkoutManager.mm", 1031, @"Invalid parameter not satisfying: %@", @"workout");
@@ -406,14 +406,14 @@ LABEL_3:
   block[2] = sub_19B7A31F0;
   block[3] = &unk_1E7534FF0;
   block[4] = internal;
-  block[5] = a3;
-  v13 = a4;
+  block[5] = type;
+  transitionCopy = transition;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)endWorkoutSession:(id)a3
+- (void)endWorkoutSession:(id)session
 {
-  if (!a3)
+  if (!session)
   {
     v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMWorkoutManager.mm", 1040, @"Invalid parameter not satisfying: %@", @"workout");
@@ -426,13 +426,13 @@ LABEL_3:
   block[2] = sub_19B7A32D0;
   block[3] = &unk_1E7532A00;
   block[4] = internal;
-  block[5] = a3;
+  block[5] = session;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)pauseWorkout:(id)a3
+- (void)pauseWorkout:(id)workout
 {
-  if (!a3)
+  if (!workout)
   {
     v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMWorkoutManager.mm", 1049, @"Invalid parameter not satisfying: %@", @"workout");
@@ -445,13 +445,13 @@ LABEL_3:
   block[2] = sub_19B7A33AC;
   block[3] = &unk_1E7532A00;
   block[4] = internal;
-  block[5] = a3;
+  block[5] = workout;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)resumeWorkout:(id)a3
+- (void)resumeWorkout:(id)workout
 {
-  if (!a3)
+  if (!workout)
   {
     v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMWorkoutManager.mm", 1058, @"Invalid parameter not satisfying: %@", @"workout");
@@ -464,11 +464,11 @@ LABEL_3:
   block[2] = sub_19B7A3488;
   block[3] = &unk_1E7532A00;
   block[4] = internal;
-  block[5] = a3;
+  block[5] = workout;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)snapshotWithCompletion:(id)a3
+- (void)snapshotWithCompletion:(id)completion
 {
   fInternalQueue = self->_internal->fInternalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -476,7 +476,7 @@ LABEL_3:
   v4[2] = sub_19B7A350C;
   v4[3] = &unk_1E7532B68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = completion;
   dispatch_async(fInternalQueue, v4);
 }
 

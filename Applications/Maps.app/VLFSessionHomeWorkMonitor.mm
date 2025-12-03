@@ -2,35 +2,35 @@
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
 - (NSString)debugDescription;
-- (VLFSessionHomeWorkMonitor)initWithObserver:(id)a3 locationManager:(id)a4 navigationService:(id)a5 transportTypeSupportProvider:(Class)a6;
+- (VLFSessionHomeWorkMonitor)initWithObserver:(id)observer locationManager:(id)manager navigationService:(id)service transportTypeSupportProvider:(Class)provider;
 - (id)favoritesAndDistances;
 - (id)mapItemsAndDistances;
 - (void)_pauseLocationUpdates;
 - (void)_resumeLocationUpdates;
-- (void)_updateHomeWorkEntries:(id)a3;
-- (void)_updateHomeWorkFavorites:(id)a3;
+- (void)_updateHomeWorkEntries:(id)entries;
+- (void)_updateHomeWorkFavorites:(id)favorites;
 - (void)_updateMeCard;
-- (void)_updateStateWithLocation:(id)a3;
+- (void)_updateStateWithLocation:(id)location;
 - (void)dealloc;
-- (void)homeDataProvidingObjectDidUpdate:(id)a3;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)shortcutManagerMeCardDidChange:(id)a3;
+- (void)homeDataProvidingObjectDidUpdate:(id)update;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)shortcutManagerMeCardDidChange:(id)change;
 @end
 
 @implementation VLFSessionHomeWorkMonitor
 
-- (void)homeDataProvidingObjectDidUpdate:(id)a3
+- (void)homeDataProvidingObjectDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (![(VLFSessionHomeWorkMonitor *)self useMapsFavoritesManager])
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v12 = "[VLFSessionHomeWorkMonitor homeDataProvidingObjectDidUpdate:]";
+      selfCopy = "[VLFSessionHomeWorkMonitor homeDataProvidingObjectDidUpdate:]";
       v13 = 2080;
       v14 = "VLFSessionHomeWorkMonitor.m";
       v15 = 1024;
@@ -47,7 +47,7 @@
       {
         v8 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v12 = v8;
+        selfCopy = v8;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -57,9 +57,9 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = updateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Updated favorites: %@", buf, 0x16u);
   }
 
@@ -74,16 +74,16 @@
   objc_destroyWeak(buf);
 }
 
-- (void)shortcutManagerMeCardDidChange:(id)a3
+- (void)shortcutManagerMeCardDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ([(VLFSessionHomeWorkMonitor *)self useMapsFavoritesManager])
   {
     v7 = sub_10006D178();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v14 = "[VLFSessionHomeWorkMonitor shortcutManagerMeCardDidChange:]";
+      selfCopy = "[VLFSessionHomeWorkMonitor shortcutManagerMeCardDidChange:]";
       v15 = 2080;
       v16 = "VLFSessionHomeWorkMonitor.m";
       v17 = 1024;
@@ -100,7 +100,7 @@
       {
         v9 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v14 = v9;
+        selfCopy = v9;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -110,7 +110,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Got a new me card", buf, 0xCu);
   }
 
@@ -120,25 +120,25 @@
   v10[2] = sub_100617474;
   v10[3] = &unk_101661340;
   objc_copyWeak(&v12, buf);
-  v11 = v4;
-  v6 = v4;
+  v11 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(&_dispatch_main_q, v10);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
-  v8 = [(VLFSessionHomeWorkMonitor *)self transportTypeSupportProvider:a3];
-  if ((a4 - 1) > 5)
+  v8 = [(VLFSessionHomeWorkMonitor *)self transportTypeSupportProvider:service];
+  if ((type - 1) > 5)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = qword_101216278[a4 - 1];
+    v9 = qword_101216278[type - 1];
   }
 
   if ([(objc_class *)v8 isSupportedForTransportType:v9])
@@ -154,10 +154,10 @@
   }
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v9 = a3;
-  if (MNNavigationServiceStateIsNavigating() && ((v6 = -[VLFSessionHomeWorkMonitor transportTypeSupportProvider](self, "transportTypeSupportProvider"), v7 = [v9 navigationTransportType] - 1, v7 > 5) ? (v8 = 1) : (v8 = qword_101216278[v7]), !-[objc_class isSupportedForTransportType:](v6, "isSupportedForTransportType:", v8)))
+  serviceCopy = service;
+  if (MNNavigationServiceStateIsNavigating() && ((v6 = -[VLFSessionHomeWorkMonitor transportTypeSupportProvider](self, "transportTypeSupportProvider"), v7 = [serviceCopy navigationTransportType] - 1, v7 > 5) ? (v8 = 1) : (v8 = qword_101216278[v7]), !-[objc_class isSupportedForTransportType:](v6, "isSupportedForTransportType:", v8)))
   {
     [(VLFSessionHomeWorkMonitor *)self _pauseLocationUpdates];
   }
@@ -168,9 +168,9 @@
   }
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -210,8 +210,8 @@
     }
   }
 
-  v8 = [v4 lastLocation];
-  [(VLFSessionHomeWorkMonitor *)self _updateStateWithLocation:v8];
+  lastLocation = [locationCopy lastLocation];
+  [(VLFSessionHomeWorkMonitor *)self _updateStateWithLocation:lastLocation];
 }
 
 - (id)favoritesAndDistances
@@ -245,20 +245,20 @@
     }
   }
 
-  v3 = [(VLFSessionHomeWorkMonitor *)self locationManager];
-  v4 = [v3 lastLocation];
+  locationManager = [(VLFSessionHomeWorkMonitor *)self locationManager];
+  lastLocation = [locationManager lastLocation];
 
-  if (!v4)
+  if (!lastLocation)
   {
     goto LABEL_24;
   }
 
-  v5 = [(VLFSessionHomeWorkMonitor *)self homeFavoriteItems];
-  if (!v5)
+  homeFavoriteItems = [(VLFSessionHomeWorkMonitor *)self homeFavoriteItems];
+  if (!homeFavoriteItems)
   {
-    v6 = [(VLFSessionHomeWorkMonitor *)self workFavoriteItems];
+    workFavoriteItems = [(VLFSessionHomeWorkMonitor *)self workFavoriteItems];
 
-    if (v6)
+    if (workFavoriteItems)
     {
       goto LABEL_6;
     }
@@ -270,20 +270,20 @@ LABEL_24:
 
 LABEL_6:
   v7 = +[NSMutableArray array];
-  v8 = [(VLFSessionHomeWorkMonitor *)self homeFavoriteItems];
+  homeFavoriteItems2 = [(VLFSessionHomeWorkMonitor *)self homeFavoriteItems];
 
-  if (v8)
+  if (homeFavoriteItems2)
   {
-    v9 = [(VLFSessionHomeWorkMonitor *)self homeFavoriteItems];
-    [v7 addObjectsFromArray:v9];
+    homeFavoriteItems3 = [(VLFSessionHomeWorkMonitor *)self homeFavoriteItems];
+    [v7 addObjectsFromArray:homeFavoriteItems3];
   }
 
-  v10 = [(VLFSessionHomeWorkMonitor *)self workFavoriteItems];
+  workFavoriteItems2 = [(VLFSessionHomeWorkMonitor *)self workFavoriteItems];
 
-  if (v10)
+  if (workFavoriteItems2)
   {
-    v11 = [(VLFSessionHomeWorkMonitor *)self workFavoriteItems];
-    [v7 addObjectsFromArray:v11];
+    workFavoriteItems3 = [(VLFSessionHomeWorkMonitor *)self workFavoriteItems];
+    [v7 addObjectsFromArray:workFavoriteItems3];
   }
 
   v32 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
@@ -307,27 +307,27 @@ LABEL_6:
         }
 
         v16 = *(*(&v33 + 1) + 8 * i);
-        v17 = [v16 mapItemStorage];
-        [v17 coordinate];
+        mapItemStorage = [v16 mapItemStorage];
+        [mapItemStorage coordinate];
 
         v18 = CLLocationFromGEOLocationCoordinate2D();
-        [v4 distanceFromLocation:v18];
+        [lastLocation distanceFromLocation:v18];
         v19 = [NSNumber numberWithDouble:?];
-        v20 = [v16 customName];
-        if (v20)
+        customName = [v16 customName];
+        if (customName)
         {
-          [v32 setObject:v19 forKey:v20];
+          [v32 setObject:v19 forKey:customName];
         }
 
         else
         {
-          v21 = [v16 mapItemStorage];
-          v22 = [v21 name];
-          v23 = v4;
-          v24 = v22;
-          if (v22)
+          mapItemStorage2 = [v16 mapItemStorage];
+          name = [mapItemStorage2 name];
+          v23 = lastLocation;
+          v24 = name;
+          if (name)
           {
-            v25 = v22;
+            v25 = name;
           }
 
           else
@@ -337,7 +337,7 @@ LABEL_6:
 
           [v32 setObject:v19 forKey:v25];
 
-          v4 = v23;
+          lastLocation = v23;
         }
       }
 
@@ -384,20 +384,20 @@ LABEL_25:
     }
   }
 
-  v3 = [(VLFSessionHomeWorkMonitor *)self locationManager];
-  v4 = [v3 lastLocation];
+  locationManager = [(VLFSessionHomeWorkMonitor *)self locationManager];
+  lastLocation = [locationManager lastLocation];
 
-  if (!v4)
+  if (!lastLocation)
   {
     goto LABEL_18;
   }
 
-  v5 = [(VLFSessionHomeWorkMonitor *)self homeMapItems];
-  if (!v5)
+  homeMapItems = [(VLFSessionHomeWorkMonitor *)self homeMapItems];
+  if (!homeMapItems)
   {
-    v6 = [(VLFSessionHomeWorkMonitor *)self workMapItems];
+    workMapItems = [(VLFSessionHomeWorkMonitor *)self workMapItems];
 
-    if (v6)
+    if (workMapItems)
     {
       goto LABEL_6;
     }
@@ -409,20 +409,20 @@ LABEL_18:
 
 LABEL_6:
   v7 = +[NSMutableArray array];
-  v8 = [(VLFSessionHomeWorkMonitor *)self homeMapItems];
+  homeMapItems2 = [(VLFSessionHomeWorkMonitor *)self homeMapItems];
 
-  if (v8)
+  if (homeMapItems2)
   {
-    v9 = [(VLFSessionHomeWorkMonitor *)self homeMapItems];
-    [v7 addObjectsFromArray:v9];
+    homeMapItems3 = [(VLFSessionHomeWorkMonitor *)self homeMapItems];
+    [v7 addObjectsFromArray:homeMapItems3];
   }
 
-  v10 = [(VLFSessionHomeWorkMonitor *)self workMapItems];
+  workMapItems2 = [(VLFSessionHomeWorkMonitor *)self workMapItems];
 
-  if (v10)
+  if (workMapItems2)
   {
-    v11 = [(VLFSessionHomeWorkMonitor *)self workMapItems];
-    [v7 addObjectsFromArray:v11];
+    workMapItems3 = [(VLFSessionHomeWorkMonitor *)self workMapItems];
+    [v7 addObjectsFromArray:workMapItems3];
   }
 
   v12 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
@@ -447,10 +447,10 @@ LABEL_6:
 
         v18 = *(*(&v27 + 1) + 8 * i);
         v19 = MapsSuggestionsLocationForMapItem();
-        [v4 distanceFromLocation:{v19, v27}];
+        [lastLocation distanceFromLocation:{v19, v27}];
         v20 = [NSNumber numberWithDouble:?];
-        v21 = [v18 name];
-        [v12 setObject:v20 forKey:v21];
+        name = [v18 name];
+        [v12 setObject:v20 forKey:name];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -513,14 +513,14 @@ LABEL_19:
   }
 
   v12 = v11;
-  v13 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v14 = @"Hide";
-  if (v13 == 1)
+  if (state == 1)
   {
     v14 = @"EnablePuck";
   }
 
-  if (v13 == 2)
+  if (state == 2)
   {
     v15 = @"EnablePuckAndBanner";
   }
@@ -571,25 +571,25 @@ LABEL_19:
 
 - (void)_pauseLocationUpdates
 {
-  v3 = [(VLFSessionHomeWorkMonitor *)self locationManager];
-  [v3 stopListeningForLocationUpdates:self];
+  locationManager = [(VLFSessionHomeWorkMonitor *)self locationManager];
+  [locationManager stopListeningForLocationUpdates:self];
 
   [(VLFSessionMonitor *)self setState:2];
 }
 
 - (void)_resumeLocationUpdates
 {
-  v3 = [(VLFSessionHomeWorkMonitor *)self locationManager];
-  [v3 listenForLocationUpdates:self];
+  locationManager = [(VLFSessionHomeWorkMonitor *)self locationManager];
+  [locationManager listenForLocationUpdates:self];
 
-  v5 = [(VLFSessionHomeWorkMonitor *)self locationManager];
-  v4 = [v5 lastLocation];
-  [(VLFSessionHomeWorkMonitor *)self _updateStateWithLocation:v4];
+  locationManager2 = [(VLFSessionHomeWorkMonitor *)self locationManager];
+  lastLocation = [locationManager2 lastLocation];
+  [(VLFSessionHomeWorkMonitor *)self _updateStateWithLocation:lastLocation];
 }
 
-- (void)_updateStateWithLocation:(id)a3
+- (void)_updateStateWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -601,7 +601,7 @@ LABEL_19:
       if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
       {
         *buf = 136316418;
-        v80 = "[VLFSessionHomeWorkMonitor _updateStateWithLocation:]";
+        selfCopy20 = "[VLFSessionHomeWorkMonitor _updateStateWithLocation:]";
         v81 = 2080;
         v82 = "VLFSessionHomeWorkMonitor.m";
         v83 = 1024;
@@ -622,7 +622,7 @@ LABEL_19:
         {
           v68 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v80 = v68;
+          selfCopy20 = v68;
           _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -632,23 +632,23 @@ LABEL_19:
   v8 = sub_100083A38();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(VLFSessionHomeWorkMonitor *)self lastLocation];
+    lastLocation = [(VLFSessionHomeWorkMonitor *)self lastLocation];
     *buf = 134349571;
-    v80 = self;
+    selfCopy20 = self;
     v81 = 2113;
-    v82 = v4;
+    v82 = locationCopy;
     v83 = 2113;
-    *v84 = v9;
+    *v84 = lastLocation;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[%{public}p] Got a new location: %{private}@, lastLocation: %{private}@", buf, 0x20u);
   }
 
-  if (!v4)
+  if (!locationCopy)
   {
     v18 = sub_100083A38();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v80 = self;
+      selfCopy20 = self;
       v20 = "[%{public}p] Location is nil; ignoring";
       v21 = v18;
       v22 = OS_LOG_TYPE_INFO;
@@ -662,18 +662,18 @@ LABEL_74:
     goto LABEL_75;
   }
 
-  v10 = [(VLFSessionHomeWorkMonitor *)self lastLocation];
+  lastLocation2 = [(VLFSessionHomeWorkMonitor *)self lastLocation];
 
-  if (v10)
+  if (lastLocation2)
   {
     GEOConfigGetDouble();
     v12 = v11;
-    v13 = [(VLFSessionHomeWorkMonitor *)self lastLocation];
-    [v13 coordinate];
-    v14 = [(VLFSessionHomeWorkMonitor *)self lastLocation];
-    [v14 coordinate];
-    [v4 coordinate];
-    [v4 coordinate];
+    lastLocation3 = [(VLFSessionHomeWorkMonitor *)self lastLocation];
+    [lastLocation3 coordinate];
+    lastLocation4 = [(VLFSessionHomeWorkMonitor *)self lastLocation];
+    [lastLocation4 coordinate];
+    [locationCopy coordinate];
+    [locationCopy coordinate];
     CLClientGetDistanceCoordinates();
     v16 = v15;
 
@@ -683,7 +683,7 @@ LABEL_74:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134349568;
-        v80 = self;
+        selfCopy20 = self;
         v81 = 2048;
         v82 = *&v16;
         v83 = 2048;
@@ -699,13 +699,13 @@ LABEL_74:
     }
   }
 
-  [(VLFSessionHomeWorkMonitor *)self setLastLocation:v4];
-  v17 = [(VLFSessionHomeWorkMonitor *)self useMapsFavoritesManager];
+  [(VLFSessionHomeWorkMonitor *)self setLastLocation:locationCopy];
+  useMapsFavoritesManager = [(VLFSessionHomeWorkMonitor *)self useMapsFavoritesManager];
   v18 = +[NSMutableArray array];
-  if ((v17 & 1) == 0)
+  if ((useMapsFavoritesManager & 1) == 0)
   {
-    v24 = [(VLFSessionHomeWorkMonitor *)self homeMapItems];
-    if (v24)
+    homeMapItems = [(VLFSessionHomeWorkMonitor *)self homeMapItems];
+    if (homeMapItems)
     {
     }
 
@@ -718,36 +718,36 @@ LABEL_74:
       }
 
       *buf = 134349056;
-      v80 = self;
+      selfCopy20 = self;
       v26 = "[%{public}p] Home map items are not available yet; ignoring";
       goto LABEL_72;
     }
 
-    v31 = [(VLFSessionHomeWorkMonitor *)self shouldProcessHomeItems];
-    v32 = sub_100083A38();
-    v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG);
-    if (v31)
+    shouldProcessHomeItems = [(VLFSessionHomeWorkMonitor *)self shouldProcessHomeItems];
+    homeMapItems2 = sub_100083A38();
+    v33 = os_log_type_enabled(homeMapItems2, OS_LOG_TYPE_DEBUG);
+    if (shouldProcessHomeItems)
     {
       if (v33)
       {
         *buf = 134349056;
-        v80 = self;
-        _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "[%{public}p] Processing home map items", buf, 0xCu);
+        selfCopy20 = self;
+        _os_log_impl(&_mh_execute_header, homeMapItems2, OS_LOG_TYPE_DEBUG, "[%{public}p] Processing home map items", buf, 0xCu);
       }
 
-      v32 = [(VLFSessionHomeWorkMonitor *)self homeMapItems];
-      [v18 addObjectsFromArray:v32];
+      homeMapItems2 = [(VLFSessionHomeWorkMonitor *)self homeMapItems];
+      [v18 addObjectsFromArray:homeMapItems2];
     }
 
     else if (v33)
     {
       *buf = 134349056;
-      v80 = self;
-      _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "[%{public}p] Home map items are not enabled; will not process", buf, 0xCu);
+      selfCopy20 = self;
+      _os_log_impl(&_mh_execute_header, homeMapItems2, OS_LOG_TYPE_DEBUG, "[%{public}p] Home map items are not enabled; will not process", buf, 0xCu);
     }
 
-    v34 = [(VLFSessionHomeWorkMonitor *)self workMapItems];
-    if (v34)
+    workMapItems = [(VLFSessionHomeWorkMonitor *)self workMapItems];
+    if (workMapItems)
     {
     }
 
@@ -757,7 +757,7 @@ LABEL_74:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134349056;
-        v80 = self;
+        selfCopy20 = self;
         v26 = "[%{public}p] Work map items are not available yet; ignoring";
         goto LABEL_72;
       }
@@ -765,27 +765,27 @@ LABEL_74:
       goto LABEL_73;
     }
 
-    v51 = [(VLFSessionHomeWorkMonitor *)self shouldProcessWorkItems];
-    v52 = sub_100083A38();
-    v53 = os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG);
-    if (v51)
+    shouldProcessWorkItems = [(VLFSessionHomeWorkMonitor *)self shouldProcessWorkItems];
+    workMapItems2 = sub_100083A38();
+    v53 = os_log_type_enabled(workMapItems2, OS_LOG_TYPE_DEBUG);
+    if (shouldProcessWorkItems)
     {
       if (v53)
       {
         *buf = 134349056;
-        v80 = self;
-        _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEBUG, "[%{public}p] Processing work map items", buf, 0xCu);
+        selfCopy20 = self;
+        _os_log_impl(&_mh_execute_header, workMapItems2, OS_LOG_TYPE_DEBUG, "[%{public}p] Processing work map items", buf, 0xCu);
       }
 
-      v52 = [(VLFSessionHomeWorkMonitor *)self workMapItems];
-      [v18 addObjectsFromArray:v52];
+      workMapItems2 = [(VLFSessionHomeWorkMonitor *)self workMapItems];
+      [v18 addObjectsFromArray:workMapItems2];
     }
 
     else if (v53)
     {
       *buf = 134349056;
-      v80 = self;
-      _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEBUG, "[%{public}p] Work map items are not enabled; will not process", buf, 0xCu);
+      selfCopy20 = self;
+      _os_log_impl(&_mh_execute_header, workMapItems2, OS_LOG_TYPE_DEBUG, "[%{public}p] Work map items are not enabled; will not process", buf, 0xCu);
     }
 
     v54 = sub_100083A38();
@@ -793,7 +793,7 @@ LABEL_74:
     {
       [(VLFSessionHomeWorkMonitor *)self distanceThreshold];
       *buf = 134349313;
-      v80 = self;
+      selfCopy20 = self;
       v81 = 2049;
       v82 = v55;
       _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEBUG, "[%{public}p] Computing distances to map items with threshold: %{private}f", buf, 0x16u);
@@ -819,7 +819,7 @@ LABEL_74:
           }
 
           v60 = MapsSuggestionsLocationForMapItem();
-          [v4 distanceFromLocation:v60];
+          [locationCopy distanceFromLocation:v60];
           v62 = v61;
           [(VLFSessionHomeWorkMonitor *)self distanceThreshold];
           if (v62 <= v63)
@@ -830,7 +830,7 @@ LABEL_74:
               if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
               {
                 *buf = 134349056;
-                v80 = self;
+                selfCopy20 = self;
                 _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_INFO, "[%{public}p] User is too close to one of the map items; updating state", buf, 0xCu);
               }
 
@@ -855,8 +855,8 @@ LABEL_101:
     goto LABEL_92;
   }
 
-  v19 = [(VLFSessionHomeWorkMonitor *)self homeFavoriteItems];
-  if (v19)
+  homeFavoriteItems = [(VLFSessionHomeWorkMonitor *)self homeFavoriteItems];
+  if (homeFavoriteItems)
   {
 
     goto LABEL_25;
@@ -871,7 +871,7 @@ LABEL_101:
     }
 
     *buf = 134349056;
-    v80 = self;
+    selfCopy20 = self;
     v26 = "[%{public}p] Home favorites are not available yet; ignoring";
 LABEL_72:
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, v26, buf, 0xCu);
@@ -879,31 +879,31 @@ LABEL_72:
   }
 
 LABEL_25:
-  v27 = [(VLFSessionHomeWorkMonitor *)self shouldProcessHomeItems];
-  v28 = sub_100083A38();
-  v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG);
-  if (v27)
+  shouldProcessHomeItems2 = [(VLFSessionHomeWorkMonitor *)self shouldProcessHomeItems];
+  homeFavoriteItems2 = sub_100083A38();
+  v29 = os_log_type_enabled(homeFavoriteItems2, OS_LOG_TYPE_DEBUG);
+  if (shouldProcessHomeItems2)
   {
     if (v29)
     {
       *buf = 134349056;
-      v80 = self;
-      _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "[%{public}p] Processing home favorites", buf, 0xCu);
+      selfCopy20 = self;
+      _os_log_impl(&_mh_execute_header, homeFavoriteItems2, OS_LOG_TYPE_DEBUG, "[%{public}p] Processing home favorites", buf, 0xCu);
     }
 
-    v28 = [(VLFSessionHomeWorkMonitor *)self homeFavoriteItems];
-    [v18 addObjectsFromArray:v28];
+    homeFavoriteItems2 = [(VLFSessionHomeWorkMonitor *)self homeFavoriteItems];
+    [v18 addObjectsFromArray:homeFavoriteItems2];
   }
 
   else if (v29)
   {
     *buf = 134349056;
-    v80 = self;
-    _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "[%{public}p] Home favorites are not enabled; will not process", buf, 0xCu);
+    selfCopy20 = self;
+    _os_log_impl(&_mh_execute_header, homeFavoriteItems2, OS_LOG_TYPE_DEBUG, "[%{public}p] Home favorites are not enabled; will not process", buf, 0xCu);
   }
 
-  v30 = [(VLFSessionHomeWorkMonitor *)self workFavoriteItems];
-  if (v30)
+  workFavoriteItems = [(VLFSessionHomeWorkMonitor *)self workFavoriteItems];
+  if (workFavoriteItems)
   {
 
     goto LABEL_47;
@@ -915,7 +915,7 @@ LABEL_25:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134349056;
-      v80 = self;
+      selfCopy20 = self;
       v26 = "[%{public}p] Work favorites are not available yet; ignoring";
       goto LABEL_72;
     }
@@ -926,27 +926,27 @@ LABEL_73:
   }
 
 LABEL_47:
-  v35 = [(VLFSessionHomeWorkMonitor *)self shouldProcessWorkItems];
-  v36 = sub_100083A38();
-  v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG);
-  if (v35)
+  shouldProcessWorkItems2 = [(VLFSessionHomeWorkMonitor *)self shouldProcessWorkItems];
+  workFavoriteItems2 = sub_100083A38();
+  v37 = os_log_type_enabled(workFavoriteItems2, OS_LOG_TYPE_DEBUG);
+  if (shouldProcessWorkItems2)
   {
     if (v37)
     {
       *buf = 134349056;
-      v80 = self;
-      _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEBUG, "[%{public}p] Processing work favorites", buf, 0xCu);
+      selfCopy20 = self;
+      _os_log_impl(&_mh_execute_header, workFavoriteItems2, OS_LOG_TYPE_DEBUG, "[%{public}p] Processing work favorites", buf, 0xCu);
     }
 
-    v36 = [(VLFSessionHomeWorkMonitor *)self workFavoriteItems];
-    [v18 addObjectsFromArray:v36];
+    workFavoriteItems2 = [(VLFSessionHomeWorkMonitor *)self workFavoriteItems];
+    [v18 addObjectsFromArray:workFavoriteItems2];
   }
 
   else if (v37)
   {
     *buf = 134349056;
-    v80 = self;
-    _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEBUG, "[%{public}p] Work favorites are not enabled; will not process", buf, 0xCu);
+    selfCopy20 = self;
+    _os_log_impl(&_mh_execute_header, workFavoriteItems2, OS_LOG_TYPE_DEBUG, "[%{public}p] Work favorites are not enabled; will not process", buf, 0xCu);
   }
 
   v38 = sub_100083A38();
@@ -954,7 +954,7 @@ LABEL_47:
   {
     [(VLFSessionHomeWorkMonitor *)self distanceThreshold];
     *buf = 134349313;
-    v80 = self;
+    selfCopy20 = self;
     v81 = 2049;
     v82 = v39;
     _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEBUG, "[%{public}p] Computing distances to favorites with threshold: %{private}f", buf, 0x16u);
@@ -979,11 +979,11 @@ LABEL_47:
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v69 + 1) + 8 * j) mapItemStorage];
-        [v45 coordinate];
+        mapItemStorage = [*(*(&v69 + 1) + 8 * j) mapItemStorage];
+        [mapItemStorage coordinate];
 
         v46 = CLLocationFromGEOLocationCoordinate2D();
-        [v4 distanceFromLocation:v46];
+        [locationCopy distanceFromLocation:v46];
         v48 = v47;
         [(VLFSessionHomeWorkMonitor *)self distanceThreshold];
         if (v48 <= v49)
@@ -994,7 +994,7 @@ LABEL_47:
             if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
             {
               *buf = 134349056;
-              v80 = self;
+              selfCopy20 = self;
               _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "[%{public}p] User is too close to one of the favorites; updating state", buf, 0xCu);
             }
 
@@ -1023,7 +1023,7 @@ LABEL_92:
     if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v80 = self;
+      selfCopy20 = self;
       _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_INFO, "[%{public}p] User is not sufficiently close to any map item; updating state", buf, 0xCu);
     }
 
@@ -1033,9 +1033,9 @@ LABEL_92:
 LABEL_75:
 }
 
-- (void)_updateHomeWorkFavorites:(id)a3
+- (void)_updateHomeWorkFavorites:(id)favorites
 {
-  v4 = a3;
+  favoritesCopy = favorites;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -1047,7 +1047,7 @@ LABEL_75:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v19 = 136316418;
-        v20 = "[VLFSessionHomeWorkMonitor _updateHomeWorkFavorites:]";
+        selfCopy = "[VLFSessionHomeWorkMonitor _updateHomeWorkFavorites:]";
         v21 = 2080;
         v22 = "VLFSessionHomeWorkMonitor.m";
         v23 = 1024;
@@ -1068,7 +1068,7 @@ LABEL_75:
         {
           v15 = +[NSThread callStackSymbols];
           v19 = 138412290;
-          v20 = v15;
+          selfCopy = v15;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%@", &v19, 0xCu);
         }
       }
@@ -1081,7 +1081,7 @@ LABEL_75:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v19 = 136315906;
-      v20 = "[VLFSessionHomeWorkMonitor _updateHomeWorkFavorites:]";
+      selfCopy = "[VLFSessionHomeWorkMonitor _updateHomeWorkFavorites:]";
       v21 = 2080;
       v22 = "VLFSessionHomeWorkMonitor.m";
       v23 = 1024;
@@ -1098,7 +1098,7 @@ LABEL_75:
       {
         v18 = +[NSThread callStackSymbols];
         v19 = 138412290;
-        v20 = v18;
+        selfCopy = v18;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@", &v19, 0xCu);
       }
     }
@@ -1108,13 +1108,13 @@ LABEL_75:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v19 = 134349056;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Updating home and work favorites", &v19, 0xCu);
   }
 
   if ([(VLFSessionHomeWorkMonitor *)self shouldProcessHomeItems])
   {
-    v9 = sub_1000282CC(v4, &stru_101624120);
+    v9 = sub_1000282CC(favoritesCopy, &stru_101624120);
     [(VLFSessionHomeWorkMonitor *)self setHomeFavoriteItems:v9];
   }
 
@@ -1125,7 +1125,7 @@ LABEL_75:
 
   if ([(VLFSessionHomeWorkMonitor *)self shouldProcessWorkItems])
   {
-    v10 = sub_1000282CC(v4, &stru_101624140);
+    v10 = sub_1000282CC(favoritesCopy, &stru_101624140);
     [(VLFSessionHomeWorkMonitor *)self setWorkFavoriteItems:v10];
   }
 
@@ -1134,21 +1134,21 @@ LABEL_75:
     [(VLFSessionHomeWorkMonitor *)self setWorkFavoriteItems:0];
   }
 
-  v11 = [(VLFSessionHomeWorkMonitor *)self locationManager];
-  v12 = [v11 lastLocation];
-  [(VLFSessionHomeWorkMonitor *)self _updateStateWithLocation:v12];
+  locationManager = [(VLFSessionHomeWorkMonitor *)self locationManager];
+  lastLocation = [locationManager lastLocation];
+  [(VLFSessionHomeWorkMonitor *)self _updateStateWithLocation:lastLocation];
 }
 
-- (void)_updateHomeWorkEntries:(id)a3
+- (void)_updateHomeWorkEntries:(id)entries
 {
-  v4 = a3;
-  if (!v4)
+  entriesCopy = entries;
+  if (!entriesCopy)
   {
     v18 = sub_10006D178();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v24 = 136315906;
-      v25 = "[VLFSessionHomeWorkMonitor _updateHomeWorkEntries:]";
+      selfCopy = "[VLFSessionHomeWorkMonitor _updateHomeWorkEntries:]";
       v26 = 2080;
       v27 = "VLFSessionHomeWorkMonitor.m";
       v28 = 1024;
@@ -1165,7 +1165,7 @@ LABEL_75:
       {
         v20 = +[NSThread callStackSymbols];
         v24 = 138412290;
-        v25 = v20;
+        selfCopy = v20;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%@", &v24, 0xCu);
       }
     }
@@ -1184,7 +1184,7 @@ LABEL_75:
         v14 = dispatch_queue_get_label(&_dispatch_main_q);
         v15 = dispatch_queue_get_label(0);
         v24 = 136316418;
-        v25 = "[VLFSessionHomeWorkMonitor _updateHomeWorkEntries:]";
+        selfCopy = "[VLFSessionHomeWorkMonitor _updateHomeWorkEntries:]";
         v26 = 2080;
         v27 = "VLFSessionHomeWorkMonitor.m";
         v28 = 1024;
@@ -1205,7 +1205,7 @@ LABEL_75:
         {
           v17 = +[NSThread callStackSymbols];
           v24 = 138412290;
-          v25 = v17;
+          selfCopy = v17;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%@", &v24, 0xCu);
         }
       }
@@ -1218,7 +1218,7 @@ LABEL_75:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v24 = 136315906;
-      v25 = "[VLFSessionHomeWorkMonitor _updateHomeWorkEntries:]";
+      selfCopy = "[VLFSessionHomeWorkMonitor _updateHomeWorkEntries:]";
       v26 = 2080;
       v27 = "VLFSessionHomeWorkMonitor.m";
       v28 = 1024;
@@ -1235,7 +1235,7 @@ LABEL_75:
       {
         v23 = +[NSThread callStackSymbols];
         v24 = 138412290;
-        v25 = v23;
+        selfCopy = v23;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%@", &v24, 0xCu);
       }
     }
@@ -1245,14 +1245,14 @@ LABEL_75:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v24 = 134349056;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Updating home and work entries", &v24, 0xCu);
   }
 
   if ([(VLFSessionHomeWorkMonitor *)self shouldProcessHomeItems])
   {
-    v9 = [v4 mapItemsForHome];
-    [(VLFSessionHomeWorkMonitor *)self setHomeMapItems:v9];
+    mapItemsForHome = [entriesCopy mapItemsForHome];
+    [(VLFSessionHomeWorkMonitor *)self setHomeMapItems:mapItemsForHome];
   }
 
   else
@@ -1262,8 +1262,8 @@ LABEL_75:
 
   if ([(VLFSessionHomeWorkMonitor *)self shouldProcessWorkItems])
   {
-    v10 = [v4 mapItemsForWork];
-    [(VLFSessionHomeWorkMonitor *)self setWorkMapItems:v10];
+    mapItemsForWork = [entriesCopy mapItemsForWork];
+    [(VLFSessionHomeWorkMonitor *)self setWorkMapItems:mapItemsForWork];
   }
 
   else
@@ -1271,9 +1271,9 @@ LABEL_75:
     [(VLFSessionHomeWorkMonitor *)self setWorkMapItems:0];
   }
 
-  v11 = [(VLFSessionHomeWorkMonitor *)self locationManager];
-  v12 = [v11 lastLocation];
-  [(VLFSessionHomeWorkMonitor *)self _updateStateWithLocation:v12];
+  locationManager = [(VLFSessionHomeWorkMonitor *)self locationManager];
+  lastLocation = [locationManager lastLocation];
+  [(VLFSessionHomeWorkMonitor *)self _updateStateWithLocation:lastLocation];
 }
 
 - (void)_updateMeCard
@@ -1282,25 +1282,25 @@ LABEL_75:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v7 = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Updating me card", &v7, 0xCu);
   }
 
   if ([(VLFSessionHomeWorkMonitor *)self useMapsFavoritesManager])
   {
-    v4 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v5 = [v4 shortcuts];
-    [(VLFSessionHomeWorkMonitor *)self _updateHomeWorkFavorites:v5];
+    meCard = +[_TtC4Maps20MapsFavoritesManager sharedManager];
+    shortcuts = [meCard shortcuts];
+    [(VLFSessionHomeWorkMonitor *)self _updateHomeWorkFavorites:shortcuts];
   }
 
   else
   {
     v6 = +[ShortcutManager sharedManager];
-    v4 = [v6 meCard];
+    meCard = [v6 meCard];
 
-    if (v4)
+    if (meCard)
     {
-      [(VLFSessionHomeWorkMonitor *)self _updateHomeWorkEntries:v4];
+      [(VLFSessionHomeWorkMonitor *)self _updateHomeWorkEntries:meCard];
     }
   }
 }
@@ -1311,7 +1311,7 @@ LABEL_75:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -1334,12 +1334,12 @@ LABEL_75:
   [(VLFSessionHomeWorkMonitor *)&v5 dealloc];
 }
 
-- (VLFSessionHomeWorkMonitor)initWithObserver:(id)a3 locationManager:(id)a4 navigationService:(id)a5 transportTypeSupportProvider:(Class)a6
+- (VLFSessionHomeWorkMonitor)initWithObserver:(id)observer locationManager:(id)manager navigationService:(id)service transportTypeSupportProvider:(Class)provider
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  observerCopy = observer;
+  managerCopy = manager;
+  serviceCopy = service;
+  if (!observerCopy)
   {
     v18 = sub_10006D178();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1368,7 +1368,7 @@ LABEL_75:
     }
   }
 
-  if (!v11)
+  if (!managerCopy)
   {
     v21 = sub_10006D178();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1399,7 +1399,7 @@ LABEL_75:
 
   v24.receiver = self;
   v24.super_class = VLFSessionHomeWorkMonitor;
-  v13 = [(VLFSessionMonitor *)&v24 initWithObserver:v10];
+  v13 = [(VLFSessionMonitor *)&v24 initWithObserver:observerCopy];
   if (v13)
   {
     v14 = sub_100083A38();
@@ -1410,11 +1410,11 @@ LABEL_75:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeStrong(&v13->_locationManager, a4);
+    objc_storeStrong(&v13->_locationManager, manager);
     [(MKLocationManager *)v13->_locationManager listenForLocationUpdates:v13];
-    objc_storeStrong(&v13->_navigationService, a5);
+    objc_storeStrong(&v13->_navigationService, service);
     [(MNNavigationService *)v13->_navigationService registerObserver:v13];
-    objc_storeStrong(&v13->_transportTypeSupportProvider, a6);
+    objc_storeStrong(&v13->_transportTypeSupportProvider, provider);
     v15 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
     v13->_useMapsFavoritesManager = v15;
     if (v15)

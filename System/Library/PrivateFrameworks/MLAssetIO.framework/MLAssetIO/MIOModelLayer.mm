@@ -1,59 +1,59 @@
 @interface MIOModelLayer
-- (BOOL)isEqual:(id)a3;
-- (MIOModelLayer)initWithMessageStream:(CodedInputStream *)a3 error:(id *)a4;
-- (MIOModelLayer)initWithName:(id)a3 type:(id)a4;
-- (MIOModelLayer)initWithName:(id)a3 type:(id)a4 histogram:(id)a5 computePrecision:(id)a6 storagePrecision:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (MIOModelLayer)initWithMessageStream:(CodedInputStream *)stream error:(id *)error;
+- (MIOModelLayer)initWithName:(id)name type:(id)type;
+- (MIOModelLayer)initWithName:(id)name type:(id)type histogram:(id)histogram computePrecision:(id)precision storagePrecision:(id)storagePrecision;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation MIOModelLayer
 
-- (MIOModelLayer)initWithName:(id)a3 type:(id)a4
+- (MIOModelLayer)initWithName:(id)name type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  typeCopy = type;
   v12.receiver = self;
   v12.super_class = MIOModelLayer;
   v8 = [(MIOModelLayer *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    objc_storeStrong(&v8->_type, a4);
+    objc_storeStrong(&v8->_type, type);
   }
 
   return v8;
 }
 
-- (MIOModelLayer)initWithName:(id)a3 type:(id)a4 histogram:(id)a5 computePrecision:(id)a6 storagePrecision:(id)a7
+- (MIOModelLayer)initWithName:(id)name type:(id)type histogram:(id)histogram computePrecision:(id)precision storagePrecision:(id)storagePrecision
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  typeCopy = type;
+  histogramCopy = histogram;
+  precisionCopy = precision;
+  storagePrecisionCopy = storagePrecision;
   v27.receiver = self;
   v27.super_class = MIOModelLayer;
   v17 = [(MIOModelLayer *)&v27 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [nameCopy copy];
     name = v17->_name;
     v17->_name = v18;
 
-    objc_storeStrong(&v17->_type, a4);
-    v20 = [v14 copy];
+    objc_storeStrong(&v17->_type, type);
+    v20 = [histogramCopy copy];
     layerHistogram = v17->_layerHistogram;
     v17->_layerHistogram = v20;
 
-    v22 = [v15 copy];
+    v22 = [precisionCopy copy];
     computePrecision = v17->_computePrecision;
     v17->_computePrecision = v22;
 
-    v24 = [v16 copy];
+    v24 = [storagePrecisionCopy copy];
     storagePrecision = v17->_storagePrecision;
     v17->_storagePrecision = v24;
   }
@@ -61,13 +61,13 @@
   return v17;
 }
 
-- (MIOModelLayer)initWithMessageStream:(CodedInputStream *)a3 error:(id *)a4
+- (MIOModelLayer)initWithMessageStream:(CodedInputStream *)stream error:(id *)error
 {
   v11 = *MEMORY[0x1E69E9840];
   v10 = 0;
   v8 = 0u;
   v9 = 0u;
-  MIOParseNeuralNetworkLayerSpecification(a3, &v8);
+  MIOParseNeuralNetworkLayerSpecification(stream, &v8);
   v5 = [MIOModelLayer initWithName:"initWithName:type:histogram:computePrecision:storagePrecision:" type:v8 histogram:v9 computePrecision:v10 storagePrecision:?];
 
   v6 = *MEMORY[0x1E69E9840];
@@ -77,16 +77,16 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MIOModelLayer *)self name];
-  v5 = [v3 stringWithFormat:@"MIOModelLayer (%p) %@", self, v4];
+  name = [(MIOModelLayer *)self name];
+  v5 = [v3 stringWithFormat:@"MIOModelLayer (%p) %@", self, name];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -96,14 +96,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIOModelLayer *)self name];
-      v7 = [(MIOModelLayer *)v5 name];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      name = [(MIOModelLayer *)self name];
+      name2 = [(MIOModelLayer *)v5 name];
+      if ([name isEqual:name2])
       {
-        v8 = [(MIOModelLayer *)self type];
-        v9 = [(MIOModelLayer *)v5 type];
-        v10 = [v8 isEqual:v9];
+        type = [(MIOModelLayer *)self type];
+        type2 = [(MIOModelLayer *)v5 type];
+        v10 = [type isEqual:type2];
       }
 
       else
@@ -123,10 +123,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MIOModelLayer *)self name];
-  v4 = [v3 hash];
-  v5 = [(MIOModelLayer *)self type];
-  v6 = [v5 hash];
+  name = [(MIOModelLayer *)self name];
+  v4 = [name hash];
+  type = [(MIOModelLayer *)self type];
+  v6 = [type hash];
 
   return v6 ^ v4;
 }

@@ -1,67 +1,67 @@
 @interface SUCoreProgress
-- (BOOL)isEqual:(id)a3;
-- (BOOL)sameProgress:(id)a3 isStalled:(BOOL)a4 portion:(float)a5 remaining:(double)a6;
-- (BOOL)sameProgress:(id)a3 isStalled:(BOOL)a4 portion:(float)a5 remaining:(double)a6 actionText:(id)a7;
-- (SUCoreProgress)initWithCoder:(id)a3;
-- (SUCoreProgress)initWithPhase:(id)a3 isStalled:(BOOL)a4 portionComplete:(float)a5 totalWrittenBytes:(int64_t)a6 totalExpectedBytes:(int64_t)a7 remaining:(double)a8 actionText:(id)a9 taskDescription:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)sameProgress:(id)progress isStalled:(BOOL)stalled portion:(float)portion remaining:(double)remaining;
+- (BOOL)sameProgress:(id)progress isStalled:(BOOL)stalled portion:(float)portion remaining:(double)remaining actionText:(id)text;
+- (SUCoreProgress)initWithCoder:(id)coder;
+- (SUCoreProgress)initWithPhase:(id)phase isStalled:(BOOL)stalled portionComplete:(float)complete totalWrittenBytes:(int64_t)bytes totalExpectedBytes:(int64_t)expectedBytes remaining:(double)remaining actionText:(id)text taskDescription:(id)self0;
 - (id)copy;
 - (id)description;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCoreProgress
 
-- (SUCoreProgress)initWithPhase:(id)a3 isStalled:(BOOL)a4 portionComplete:(float)a5 totalWrittenBytes:(int64_t)a6 totalExpectedBytes:(int64_t)a7 remaining:(double)a8 actionText:(id)a9 taskDescription:(id)a10
+- (SUCoreProgress)initWithPhase:(id)phase isStalled:(BOOL)stalled portionComplete:(float)complete totalWrittenBytes:(int64_t)bytes totalExpectedBytes:(int64_t)expectedBytes remaining:(double)remaining actionText:(id)text taskDescription:(id)self0
 {
-  v19 = a3;
-  v20 = a9;
-  v21 = a10;
+  phaseCopy = phase;
+  textCopy = text;
+  descriptionCopy = description;
   v25.receiver = self;
   v25.super_class = SUCoreProgress;
   v22 = [(SUCoreProgress *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_phase, a3);
-    v23->_isStalled = a4;
-    v23->_portionComplete = a5;
-    v23->_totalWrittenBytes = a6;
-    v23->_totalExpectedBytes = a7;
-    v23->_estimatedTimeRemaining = a8;
-    objc_storeStrong(&v23->_actionText, a9);
+    objc_storeStrong(&v22->_phase, phase);
+    v23->_isStalled = stalled;
+    v23->_portionComplete = complete;
+    v23->_totalWrittenBytes = bytes;
+    v23->_totalExpectedBytes = expectedBytes;
+    v23->_estimatedTimeRemaining = remaining;
+    objc_storeStrong(&v23->_actionText, text);
     v23->_disableVerboseLogging = 0;
-    objc_storeStrong(&v23->_taskDescription, a10);
+    objc_storeStrong(&v23->_taskDescription, description);
   }
 
   return v23;
 }
 
-- (SUCoreProgress)initWithCoder:(id)a3
+- (SUCoreProgress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SUCoreProgress;
   v5 = [(SUCoreProgress *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phase"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phase"];
     phase = v5->_phase;
     v5->_phase = v6;
 
-    v5->_isStalled = [v4 decodeBoolForKey:@"isStalled"];
-    [v4 decodeFloatForKey:@"portionComplete"];
+    v5->_isStalled = [coderCopy decodeBoolForKey:@"isStalled"];
+    [coderCopy decodeFloatForKey:@"portionComplete"];
     v5->_portionComplete = v8;
-    v5->_totalWrittenBytes = [v4 decodeInt64ForKey:@"totalWrittenBytes"];
-    v5->_totalExpectedBytes = [v4 decodeInt64ForKey:@"totalExpectedBytes"];
-    [v4 decodeFloatForKey:@"estimatedTimeRemaining"];
+    v5->_totalWrittenBytes = [coderCopy decodeInt64ForKey:@"totalWrittenBytes"];
+    v5->_totalExpectedBytes = [coderCopy decodeInt64ForKey:@"totalExpectedBytes"];
+    [coderCopy decodeFloatForKey:@"estimatedTimeRemaining"];
     v5->_estimatedTimeRemaining = v9;
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionText"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionText"];
     actionText = v5->_actionText;
     v5->_actionText = v10;
 
-    v5->_disableVerboseLogging = [v4 decodeBoolForKey:@"disableVerboseLogging"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"taskDescription"];
+    v5->_disableVerboseLogging = [coderCopy decodeBoolForKey:@"disableVerboseLogging"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"taskDescription"];
     taskDescription = v5->_taskDescription;
     v5->_taskDescription = v12;
   }
@@ -69,39 +69,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUCoreProgress *)self phase];
-  [v4 encodeObject:v5 forKey:@"phase"];
+  coderCopy = coder;
+  phase = [(SUCoreProgress *)self phase];
+  [coderCopy encodeObject:phase forKey:@"phase"];
 
-  [v4 encodeBool:-[SUCoreProgress isStalled](self forKey:{"isStalled"), @"isStalled"}];
+  [coderCopy encodeBool:-[SUCoreProgress isStalled](self forKey:{"isStalled"), @"isStalled"}];
   [(SUCoreProgress *)self portionComplete];
-  [v4 encodeFloat:@"portionComplete" forKey:?];
-  [v4 encodeInt64:-[SUCoreProgress totalWrittenBytes](self forKey:{"totalWrittenBytes"), @"totalWrittenBytes"}];
-  [v4 encodeInt64:-[SUCoreProgress totalExpectedBytes](self forKey:{"totalExpectedBytes"), @"totalExpectedBytes"}];
+  [coderCopy encodeFloat:@"portionComplete" forKey:?];
+  [coderCopy encodeInt64:-[SUCoreProgress totalWrittenBytes](self forKey:{"totalWrittenBytes"), @"totalWrittenBytes"}];
+  [coderCopy encodeInt64:-[SUCoreProgress totalExpectedBytes](self forKey:{"totalExpectedBytes"), @"totalExpectedBytes"}];
   [(SUCoreProgress *)self estimatedTimeRemaining];
   *&v6 = v6;
-  [v4 encodeFloat:@"estimatedTimeRemaining" forKey:v6];
-  v7 = [(SUCoreProgress *)self actionText];
-  [v4 encodeObject:v7 forKey:@"actionText"];
+  [coderCopy encodeFloat:@"estimatedTimeRemaining" forKey:v6];
+  actionText = [(SUCoreProgress *)self actionText];
+  [coderCopy encodeObject:actionText forKey:@"actionText"];
 
-  [v4 encodeBool:-[SUCoreProgress disableVerboseLogging](self forKey:{"disableVerboseLogging"), @"disableVerboseLogging"}];
-  v8 = [(SUCoreProgress *)self taskDescription];
-  [v4 encodeObject:v8 forKey:@"taskDescription"];
+  [coderCopy encodeBool:-[SUCoreProgress disableVerboseLogging](self forKey:{"disableVerboseLogging"), @"disableVerboseLogging"}];
+  taskDescription = [(SUCoreProgress *)self taskDescription];
+  [coderCopy encodeObject:taskDescription forKey:@"taskDescription"];
 }
 
-- (BOOL)sameProgress:(id)a3 isStalled:(BOOL)a4 portion:(float)a5 remaining:(double)a6
+- (BOOL)sameProgress:(id)progress isStalled:(BOOL)stalled portion:(float)portion remaining:(double)remaining
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = [(SUCoreProgress *)self phase];
-  v12 = [SUCore stringIsEqual:v10 to:v11];
+  stalledCopy = stalled;
+  progressCopy = progress;
+  phase = [(SUCoreProgress *)self phase];
+  v12 = [SUCore stringIsEqual:progressCopy to:phase];
 
-  if (v12 && [(SUCoreProgress *)self isStalled]== v8 && ([(SUCoreProgress *)self portionComplete], v13 == a5))
+  if (v12 && [(SUCoreProgress *)self isStalled]== stalledCopy && ([(SUCoreProgress *)self portionComplete], v13 == portion))
   {
     [(SUCoreProgress *)self estimatedTimeRemaining];
-    v15 = v14 == a6;
+    v15 = v14 == remaining;
   }
 
   else
@@ -112,18 +112,18 @@
   return v15;
 }
 
-- (BOOL)sameProgress:(id)a3 isStalled:(BOOL)a4 portion:(float)a5 remaining:(double)a6 actionText:(id)a7
+- (BOOL)sameProgress:(id)progress isStalled:(BOOL)stalled portion:(float)portion remaining:(double)remaining actionText:(id)text
 {
-  v9 = a4;
-  v12 = a7;
-  v13 = a3;
-  v14 = [(SUCoreProgress *)self phase];
-  v15 = [SUCore stringIsEqual:v13 to:v14];
+  stalledCopy = stalled;
+  textCopy = text;
+  progressCopy = progress;
+  phase = [(SUCoreProgress *)self phase];
+  v15 = [SUCore stringIsEqual:progressCopy to:phase];
 
-  if (v15 && [(SUCoreProgress *)self isStalled]== v9 && ([(SUCoreProgress *)self portionComplete], v16 == a5) && ([(SUCoreProgress *)self estimatedTimeRemaining], v17 == a6))
+  if (v15 && [(SUCoreProgress *)self isStalled]== stalledCopy && ([(SUCoreProgress *)self portionComplete], v16 == portion) && ([(SUCoreProgress *)self estimatedTimeRemaining], v17 == remaining))
   {
-    v18 = [(SUCoreProgress *)self actionText];
-    v19 = [SUCore stringIsEqual:v12 to:v18];
+    actionText = [(SUCoreProgress *)self actionText];
+    v19 = [SUCore stringIsEqual:textCopy to:actionText];
   }
 
   else
@@ -142,10 +142,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v21 = 1;
   }
@@ -155,16 +155,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUCoreProgress *)self phase];
-      v7 = [(SUCoreProgress *)v5 phase];
-      if (![SUCore stringIsEqual:v6 to:v7])
+      v5 = equalCopy;
+      phase = [(SUCoreProgress *)self phase];
+      phase2 = [(SUCoreProgress *)v5 phase];
+      if (![SUCore stringIsEqual:phase to:phase2])
       {
         goto LABEL_13;
       }
 
-      v8 = [(SUCoreProgress *)v5 isStalled];
-      if (v8 != [(SUCoreProgress *)self isStalled])
+      isStalled = [(SUCoreProgress *)v5 isStalled];
+      if (isStalled != [(SUCoreProgress *)self isStalled])
       {
         goto LABEL_13;
       }
@@ -177,16 +177,16 @@
         goto LABEL_13;
       }
 
-      v12 = [(SUCoreProgress *)v5 totalWrittenBytes];
-      if (v12 == [(SUCoreProgress *)self totalWrittenBytes]&& (v13 = [(SUCoreProgress *)v5 totalExpectedBytes], v13 == [(SUCoreProgress *)self totalExpectedBytes]) && ([(SUCoreProgress *)v5 estimatedTimeRemaining], v15 = v14, [(SUCoreProgress *)self estimatedTimeRemaining], v15 == v16))
+      totalWrittenBytes = [(SUCoreProgress *)v5 totalWrittenBytes];
+      if (totalWrittenBytes == [(SUCoreProgress *)self totalWrittenBytes]&& (v13 = [(SUCoreProgress *)v5 totalExpectedBytes], v13 == [(SUCoreProgress *)self totalExpectedBytes]) && ([(SUCoreProgress *)v5 estimatedTimeRemaining], v15 = v14, [(SUCoreProgress *)self estimatedTimeRemaining], v15 == v16))
       {
-        v17 = [(SUCoreProgress *)self actionText];
-        v18 = [(SUCoreProgress *)v5 actionText];
-        if ([SUCore stringIsEqual:v17 to:v18])
+        actionText = [(SUCoreProgress *)self actionText];
+        actionText2 = [(SUCoreProgress *)v5 actionText];
+        if ([SUCore stringIsEqual:actionText to:actionText2])
         {
-          v19 = [(SUCoreProgress *)self taskDescription];
-          v20 = [(SUCoreProgress *)v5 taskDescription];
-          v21 = [SUCore stringIsEqual:v19 to:v20];
+          taskDescription = [(SUCoreProgress *)self taskDescription];
+          taskDescription2 = [(SUCoreProgress *)v5 taskDescription];
+          v21 = [SUCore stringIsEqual:taskDescription to:taskDescription2];
         }
 
         else
@@ -214,7 +214,7 @@ LABEL_13:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SUCoreProgress *)self phase];
+  phase = [(SUCoreProgress *)self phase];
   if ([(SUCoreProgress *)self isStalled])
   {
     v5 = @"YES";
@@ -227,11 +227,11 @@ LABEL_13:
 
   [(SUCoreProgress *)self portionComplete];
   v7 = v6;
-  v8 = [(SUCoreProgress *)self totalWrittenBytes];
-  v9 = [(SUCoreProgress *)self totalExpectedBytes];
+  totalWrittenBytes = [(SUCoreProgress *)self totalWrittenBytes];
+  totalExpectedBytes = [(SUCoreProgress *)self totalExpectedBytes];
   [(SUCoreProgress *)self estimatedTimeRemaining];
   v11 = v10;
-  v12 = [(SUCoreProgress *)self actionText];
+  actionText = [(SUCoreProgress *)self actionText];
   if ([(SUCoreProgress *)self disableVerboseLogging])
   {
     v13 = @"YES";
@@ -242,16 +242,16 @@ LABEL_13:
     v13 = @"NO";
   }
 
-  v14 = [(SUCoreProgress *)self taskDescription];
-  if (v14)
+  taskDescription = [(SUCoreProgress *)self taskDescription];
+  if (taskDescription)
   {
-    v15 = [(SUCoreProgress *)self taskDescription];
-    v16 = [v3 initWithFormat:@"phase:%@ stalled:%@ portionComplete:%f totalWrittenBytes:%lld totalExpectedBytes:%lld estimatedTimeRemaining:%f actionText:%@ disableVerboseLogging:%@ CFNetworkTask:%@", v4, v5, *&v7, v8, v9, v11, v12, v13, v15];
+    taskDescription2 = [(SUCoreProgress *)self taskDescription];
+    v16 = [v3 initWithFormat:@"phase:%@ stalled:%@ portionComplete:%f totalWrittenBytes:%lld totalExpectedBytes:%lld estimatedTimeRemaining:%f actionText:%@ disableVerboseLogging:%@ CFNetworkTask:%@", phase, v5, *&v7, totalWrittenBytes, totalExpectedBytes, v11, actionText, v13, taskDescription2];
   }
 
   else
   {
-    v16 = [v3 initWithFormat:@"phase:%@ stalled:%@ portionComplete:%f totalWrittenBytes:%lld totalExpectedBytes:%lld estimatedTimeRemaining:%f actionText:%@ disableVerboseLogging:%@ CFNetworkTask:%@", v4, v5, *&v7, v8, v9, v11, v12, v13, @"NO"];
+    v16 = [v3 initWithFormat:@"phase:%@ stalled:%@ portionComplete:%f totalWrittenBytes:%lld totalExpectedBytes:%lld estimatedTimeRemaining:%f actionText:%@ disableVerboseLogging:%@ CFNetworkTask:%@", phase, v5, *&v7, totalWrittenBytes, totalExpectedBytes, v11, actionText, v13, @"NO"];
   }
 
   return v16;
@@ -270,7 +270,7 @@ LABEL_13:
   }
 
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v5 = [(SUCoreProgress *)self phase];
+  phase = [(SUCoreProgress *)self phase];
   if ([(SUCoreProgress *)self isStalled])
   {
     v6 = @"YES";
@@ -285,9 +285,9 @@ LABEL_13:
   v8 = v7;
   [(SUCoreProgress *)self estimatedTimeRemaining];
   v10 = v9;
-  v11 = [(SUCoreProgress *)self taskDescription];
-  v12 = [(SUCoreProgress *)self actionText];
-  v13 = [v4 initWithFormat:@"phase:%@ stalled:%@ portionComplete:%f %@estimatedTimeRemaining:%f task:%@ actionText:%@", v5, v6, *&v8, v3, v10, v11, v12];
+  taskDescription = [(SUCoreProgress *)self taskDescription];
+  actionText = [(SUCoreProgress *)self actionText];
+  v13 = [v4 initWithFormat:@"phase:%@ stalled:%@ portionComplete:%f %@estimatedTimeRemaining:%f task:%@ actionText:%@", phase, v6, *&v8, v3, v10, taskDescription, actionText];
 
   return v13;
 }

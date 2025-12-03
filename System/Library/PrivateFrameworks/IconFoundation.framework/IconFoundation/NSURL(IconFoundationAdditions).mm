@@ -22,20 +22,20 @@
 - (id)_IF_extendedAttributeForName:()IconFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 fileSystemRepresentation];
-  v6 = [v4 fileSystemRepresentation];
-  if (!v5 || (v7 = v6) == 0)
+  fileSystemRepresentation = [self fileSystemRepresentation];
+  fileSystemRepresentation2 = [v4 fileSystemRepresentation];
+  if (!fileSystemRepresentation || (v7 = fileSystemRepresentation2) == 0)
   {
     v12 = IFDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(IconFoundationAdditions) *)a1 _IF_extendedAttributeForName:v4, v12];
+      [(NSURL(IconFoundationAdditions) *)self _IF_extendedAttributeForName:v4, v12];
     }
 
     goto LABEL_9;
   }
 
-  v8 = getxattr(v5, v6, 0, 0, 0, 0);
+  v8 = getxattr(fileSystemRepresentation, fileSystemRepresentation2, 0, 0, 0, 0);
   if (v8 < 1)
   {
 LABEL_9:
@@ -45,7 +45,7 @@ LABEL_9:
 
   v9 = v8;
   v10 = malloc_type_malloc(v8, 0x5028CAABuLL);
-  if (getxattr(v5, v7, v10, v9, 0, 0) != v9)
+  if (getxattr(fileSystemRepresentation, v7, v10, v9, 0, 0) != v9)
   {
     [NSURL(IconFoundationAdditions) _IF_extendedAttributeForName:];
   }
@@ -61,13 +61,13 @@ LABEL_10:
   v33[1] = *MEMORY[0x1E69E9840];
   v8 = a3;
   v9 = a4;
-  v10 = [a1 fileSystemRepresentation];
-  v11 = [v9 fileSystemRepresentation];
-  if (v10 && v11)
+  fileSystemRepresentation = [self fileSystemRepresentation];
+  fileSystemRepresentation2 = [v9 fileSystemRepresentation];
+  if (fileSystemRepresentation && fileSystemRepresentation2)
   {
     if (v8)
     {
-      if (setxattr(v10, v11, [v8 bytes], objc_msgSend(v8, "length"), 0, 0))
+      if (setxattr(fileSystemRepresentation, fileSystemRepresentation2, [v8 bytes], objc_msgSend(v8, "length"), 0, 0))
       {
 LABEL_5:
         v12 = MEMORY[0x1E696ABC0];
@@ -87,7 +87,7 @@ LABEL_5:
       }
     }
 
-    else if (removexattr(v10, v11, 0))
+    else if (removexattr(fileSystemRepresentation, fileSystemRepresentation2, 0))
     {
       goto LABEL_5;
     }
@@ -100,7 +100,7 @@ LABEL_5:
   v24 = *MEMORY[0x1E696A768];
   v15 = *MEMORY[0x1E696A278];
   v32 = *MEMORY[0x1E696A278];
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"XAttr set on invalid URL %@ or with invalid name %@", a1, v9];
+  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"XAttr set on invalid URL %@ or with invalid name %@", self, v9];
   v33[0] = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
   v20 = v23;
@@ -142,7 +142,7 @@ LABEL_16:
 - (id)_IF_contentModifiedDate
 {
   v13 = 0;
-  v1 = [a1 _IF_getResourceValue:&v13 forKey:*MEMORY[0x1E695DA98] error:0];
+  v1 = [self _IF_getResourceValue:&v13 forKey:*MEMORY[0x1E695DA98] error:0];
   v2 = v13;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -152,9 +152,9 @@ LABEL_16:
       [(NSURL(IconFoundationAdditions) *)v3 _IF_contentModifiedDate:v4];
     }
 
-    v11 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
 
-    v2 = v11;
+    v2 = distantPast;
   }
 
   return v2;
@@ -164,7 +164,7 @@ LABEL_16:
 {
   v9 = 0;
   error = 0;
-  v7 = CFURLCopyResourcePropertyForKey(a1, key, &v9, &error);
+  v7 = CFURLCopyResourcePropertyForKey(self, key, &v9, &error);
   if (v7)
   {
     *a3 = v9;
@@ -186,7 +186,7 @@ LABEL_16:
 - (id)_IF_attributeModifiedDate
 {
   v13 = 0;
-  v1 = [a1 _IF_getResourceValue:&v13 forKey:*MEMORY[0x1E695DA80] error:0];
+  v1 = [self _IF_getResourceValue:&v13 forKey:*MEMORY[0x1E695DA80] error:0];
   v2 = v13;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -196,9 +196,9 @@ LABEL_16:
       [(NSURL(IconFoundationAdditions) *)v3 _IF_contentModifiedDate:v4];
     }
 
-    v11 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
 
-    v2 = v11;
+    v2 = distantPast;
   }
 
   return v2;
@@ -206,16 +206,16 @@ LABEL_16:
 
 - (void)_IF_modifiedDate
 {
-  v2 = [a1 _IF_attributeModifiedDate];
-  v3 = [a1 _IF_contentModifiedDate];
-  if ([v3 compare:v2] == -1)
+  _IF_attributeModifiedDate = [self _IF_attributeModifiedDate];
+  _IF_contentModifiedDate = [self _IF_contentModifiedDate];
+  if ([_IF_contentModifiedDate compare:_IF_attributeModifiedDate] == -1)
   {
-    v4 = v2;
+    v4 = _IF_attributeModifiedDate;
   }
 
   else
   {
-    v4 = v3;
+    v4 = _IF_contentModifiedDate;
   }
 
   v5 = v4;
@@ -226,7 +226,7 @@ LABEL_16:
 - (uint64_t)_IF_fileSize
 {
   v5 = 0;
-  v1 = [a1 _IF_getResourceValue:&v5 forKey:*MEMORY[0x1E695DB50] error:0];
+  v1 = [self _IF_getResourceValue:&v5 forKey:*MEMORY[0x1E695DB50] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -234,15 +234,15 @@ LABEL_16:
     v2 = 0;
   }
 
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (uint64_t)_IF_isVolume
 {
   v5 = 0;
-  v1 = [a1 _IF_getResourceValue:&v5 forKey:*MEMORY[0x1E695DBE8] error:0];
+  v1 = [self _IF_getResourceValue:&v5 forKey:*MEMORY[0x1E695DBE8] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -250,15 +250,15 @@ LABEL_16:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)_IF_volumeURL
 {
   v4 = 0;
-  v1 = [a1 _IF_getResourceValue:&v4 forKey:*MEMORY[0x1E695DEB0] error:0];
+  v1 = [self _IF_getResourceValue:&v4 forKey:*MEMORY[0x1E695DEB0] error:0];
   v2 = v4;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -272,7 +272,7 @@ LABEL_16:
 - (uint64_t)_IF_isBootVolume
 {
   v5 = 0;
-  v1 = [a1 _IF_getResourceValue:&v5 forKey:*MEMORY[0x1E695DDC0] error:0];
+  v1 = [self _IF_getResourceValue:&v5 forKey:*MEMORY[0x1E695DDC0] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -280,23 +280,23 @@ LABEL_16:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)_IF_isOnBootVolume
 {
-  v1 = [a1 _IF_volumeURL];
-  v2 = [v1 _IF_isBootVolume];
+  _IF_volumeURL = [self _IF_volumeURL];
+  _IF_isBootVolume = [_IF_volumeURL _IF_isBootVolume];
 
-  return v2;
+  return _IF_isBootVolume;
 }
 
 - (uint64_t)_IF_isSymLink
 {
   v5 = 0;
-  v1 = [a1 _IF_getResourceValue:&v5 forKey:*MEMORY[0x1E695DBC8] error:0];
+  v1 = [self _IF_getResourceValue:&v5 forKey:*MEMORY[0x1E695DBC8] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -304,15 +304,15 @@ LABEL_16:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)_IF_isAliasFile
 {
   v6 = 0;
-  v2 = [a1 _IF_getResourceValue:&v6 forKey:*MEMORY[0x1E695DB68] error:0];
+  v2 = [self _IF_getResourceValue:&v6 forKey:*MEMORY[0x1E695DB68] error:0];
   v3 = v6;
   if (!v2 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -322,7 +322,7 @@ LABEL_16:
 
   if ([v3 BOOLValue])
   {
-    v4 = [a1 _IF_isSymLink] ^ 1;
+    v4 = [self _IF_isSymLink] ^ 1;
   }
 
   else
@@ -336,7 +336,7 @@ LABEL_16:
 - (id)_IF_typeIdentifier
 {
   v5 = 0;
-  v1 = [a1 _IF_getResourceValue:&v5 forKey:*MEMORY[0x1E695DC68] error:0];
+  v1 = [self _IF_getResourceValue:&v5 forKey:*MEMORY[0x1E695DC68] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -352,7 +352,7 @@ LABEL_16:
 {
   v4 = a3;
   inUTI = 0;
-  [a1 _IF_getResourceValue:&inUTI forKey:*MEMORY[0x1E695DC68] error:0];
+  [self _IF_getResourceValue:&inUTI forKey:*MEMORY[0x1E695DC68] error:0];
   if (inUTI)
   {
     v5 = UTTypeConformsTo(inUTI, v4) != 0;
@@ -369,7 +369,7 @@ LABEL_16:
 - (uint64_t)_IF_isDirectory
 {
   v13 = 0;
-  v1 = [a1 _IF_getResourceValue:&v13 forKey:*MEMORY[0x1E695DB78] error:0];
+  v1 = [self _IF_getResourceValue:&v13 forKey:*MEMORY[0x1E695DB78] error:0];
   v2 = v13;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -382,9 +382,9 @@ LABEL_16:
     v2 = 0;
   }
 
-  v11 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v11;
+  return bOOLValue;
 }
 
 - (void)_IF_extendedAttributeForName:()IconFoundationAdditions .cold.2(uint64_t a1, uint64_t a2, os_log_t log)

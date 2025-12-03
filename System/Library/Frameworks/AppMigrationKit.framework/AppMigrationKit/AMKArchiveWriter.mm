@@ -1,23 +1,23 @@
 @interface AMKArchiveWriter
-- (AMKArchiveWriter)initWithArchiveFormat:(unint64_t)a3 compressionScheme:(unint64_t)a4 fileHandle:(id)a5 progress:(id)a6 updateProgress:(BOOL)a7 error:(id *)a8;
-- (BOOL)_appendContentsOfDirectory:(id)a3 pathInArchive:(id)a4 error:(id *)a5;
-- (BOOL)_appendItemAtURL:(id)a3 pathInArchive:(id)a4 error:(id *)a5;
-- (BOOL)_applyArchiveFormat:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_applyCompressionScheme:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_closeWithError:(id *)a3;
-- (BOOL)_fillSymlinkEntryFromURL:(id)a3 entry:(archive_entry *)a4 error:(id *)a5;
-- (BOOL)_writeContentsOfFdToArchive:(int)a3 error:(id *)a4;
-- (void)appendItemAtURL:(id)a3 pathInArchive:(id)a4 completion:(id)a5;
-- (void)closeWithCompletion:(id)a3;
+- (AMKArchiveWriter)initWithArchiveFormat:(unint64_t)format compressionScheme:(unint64_t)scheme fileHandle:(id)handle progress:(id)progress updateProgress:(BOOL)updateProgress error:(id *)error;
+- (BOOL)_appendContentsOfDirectory:(id)directory pathInArchive:(id)archive error:(id *)error;
+- (BOOL)_appendItemAtURL:(id)l pathInArchive:(id)archive error:(id *)error;
+- (BOOL)_applyArchiveFormat:(unint64_t)format error:(id *)error;
+- (BOOL)_applyCompressionScheme:(unint64_t)scheme error:(id *)error;
+- (BOOL)_closeWithError:(id *)error;
+- (BOOL)_fillSymlinkEntryFromURL:(id)l entry:(archive_entry *)entry error:(id *)error;
+- (BOOL)_writeContentsOfFdToArchive:(int)archive error:(id *)error;
+- (void)appendItemAtURL:(id)l pathInArchive:(id)archive completion:(id)completion;
+- (void)closeWithCompletion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation AMKArchiveWriter
 
-- (AMKArchiveWriter)initWithArchiveFormat:(unint64_t)a3 compressionScheme:(unint64_t)a4 fileHandle:(id)a5 progress:(id)a6 updateProgress:(BOOL)a7 error:(id *)a8
+- (AMKArchiveWriter)initWithArchiveFormat:(unint64_t)format compressionScheme:(unint64_t)scheme fileHandle:(id)handle progress:(id)progress updateProgress:(BOOL)updateProgress error:(id *)error
 {
-  v15 = a5;
-  v16 = a6;
+  handleCopy = handle;
+  progressCopy = progress;
   v25.receiver = self;
   v25.super_class = AMKArchiveWriter;
   v17 = [(AMKArchiveWriter *)&v25 init];
@@ -27,9 +27,9 @@
   }
 
   v17->_archive = archive_write_new();
-  objc_storeStrong(&v17->_fileHandle, a5);
-  objc_storeStrong(&v17->_progress, a6);
-  v17->_updateProgress = a7;
+  objc_storeStrong(&v17->_fileHandle, handle);
+  objc_storeStrong(&v17->_progress, progress);
+  v17->_updateProgress = updateProgress;
   v18 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
   v19 = dispatch_queue_attr_make_with_autorelease_frequency(v18, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
 
@@ -37,14 +37,14 @@
   queue = v17->_queue;
   v17->_queue = v20;
 
-  if ([(AMKArchiveWriter *)v17 _applyCompressionScheme:a4 error:a8]&& [(AMKArchiveWriter *)v17 _applyArchiveFormat:a3 error:a8])
+  if ([(AMKArchiveWriter *)v17 _applyCompressionScheme:scheme error:error]&& [(AMKArchiveWriter *)v17 _applyArchiveFormat:format error:error])
   {
     archive = v17->_archive;
     if (archive_write_open2())
     {
-      if (a8)
+      if (error)
       {
-        *a8 = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:v17->_archive];
+        *error = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:v17->_archive];
       }
 
       goto LABEL_7;
@@ -63,18 +63,18 @@ LABEL_10:
   return v23;
 }
 
-- (BOOL)_applyArchiveFormat:(unint64_t)a3 error:(id *)a4
+- (BOOL)_applyArchiveFormat:(unint64_t)format error:(id *)error
 {
-  if (a3)
+  if (format)
   {
-    if (a4)
+    if (error)
     {
       v5 = [MEMORY[0x29EDB9FA0] amk_errorFromPosixCode:22];
 LABEL_7:
       v8 = v5;
       v9 = v5;
       result = 0;
-      *a4 = v8;
+      *error = v8;
       return result;
     }
 
@@ -84,7 +84,7 @@ LABEL_7:
   archive = self->_archive;
   if (archive_write_set_format_gnutar())
   {
-    if (a4)
+    if (error)
     {
       v5 = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:self->_archive];
       goto LABEL_7;
@@ -96,16 +96,16 @@ LABEL_7:
   return 1;
 }
 
-- (BOOL)_applyCompressionScheme:(unint64_t)a3 error:(id *)a4
+- (BOOL)_applyCompressionScheme:(unint64_t)scheme error:(id *)error
 {
-  if (!a3)
+  if (!scheme)
   {
     return 1;
   }
 
-  if (a3 != 1)
+  if (scheme != 1)
   {
-    if (a4)
+    if (error)
     {
       v7 = [MEMORY[0x29EDB9FA0] amk_errorFromPosixCode:22];
       goto LABEL_9;
@@ -117,14 +117,14 @@ LABEL_7:
   archive = self->_archive;
   if (archive_write_add_filter_gzip())
   {
-    if (a4)
+    if (error)
     {
       v7 = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:self->_archive];
 LABEL_9:
       v9 = v7;
       v10 = v7;
       result = 0;
-      *a4 = v9;
+      *error = v9;
       return result;
     }
 
@@ -134,17 +134,17 @@ LABEL_9:
   return 1;
 }
 
-- (void)closeWithCompletion:(id)a3
+- (void)closeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __40__AMKArchiveWriter_closeWithCompletion___block_invoke;
   v7[3] = &unk_29F37F778;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -157,13 +157,13 @@ void __40__AMKArchiveWriter_closeWithCompletion___block_invoke(uint64_t a1)
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)_closeWithError:(id *)a3
+- (BOOL)_closeWithError:(id *)error
 {
   archive = self->_archive;
   archive_write_close();
   fileHandle = self->_fileHandle;
 
-  return [(NSFileHandle *)fileHandle closeAndReturnError:a3];
+  return [(NSFileHandle *)fileHandle closeAndReturnError:error];
 }
 
 - (void)dealloc
@@ -176,14 +176,14 @@ void __40__AMKArchiveWriter_closeWithCompletion___block_invoke(uint64_t a1)
   [(AMKArchiveWriter *)&v4 dealloc];
 }
 
-- (BOOL)_writeContentsOfFdToArchive:(int)a3 error:(id *)a4
+- (BOOL)_writeContentsOfFdToArchive:(int)archive error:(id *)error
 {
   v16 = *MEMORY[0x29EDCA608];
   if (![(NSProgress *)self->_progress isCancelled])
   {
     do
     {
-      v7 = read(a3, v15, 0x2000uLL);
+      v7 = read(archive, v15, 0x2000uLL);
       if (v7 < 1)
       {
         break;
@@ -199,7 +199,7 @@ void __40__AMKArchiveWriter_closeWithCompletion___block_invoke(uint64_t a1)
       self->_uncompressedBytes += v7;
       if (v9 < 0)
       {
-        v10 = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:self->_archive];
+        amk_errorFromErrno = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:self->_archive];
         goto LABEL_15;
       }
     }
@@ -215,19 +215,19 @@ void __40__AMKArchiveWriter_closeWithCompletion___block_invoke(uint64_t a1)
       goto LABEL_12;
     }
 
-    v10 = [MEMORY[0x29EDB9FA0] amk_errorFromErrno];
+    amk_errorFromErrno = [MEMORY[0x29EDB9FA0] amk_errorFromErrno];
 LABEL_15:
-    v12 = v10;
-    v13 = v10;
+    v12 = amk_errorFromErrno;
+    v13 = amk_errorFromErrno;
     result = 0;
-    *a4 = v12;
+    *error = v12;
     goto LABEL_16;
   }
 
   if ([(NSProgress *)self->_progress isCancelled])
   {
 LABEL_10:
-    v10 = [MEMORY[0x29EDB9FA0] amk_canceledError];
+    amk_errorFromErrno = [MEMORY[0x29EDB9FA0] amk_canceledError];
     goto LABEL_15;
   }
 
@@ -238,34 +238,34 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)_appendContentsOfDirectory:(id)a3 pathInArchive:(id)a4 error:(id *)a5
+- (BOOL)_appendContentsOfDirectory:(id)directory pathInArchive:(id)archive error:(id *)error
 {
   v47[2] = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
+  directoryCopy = directory;
+  archiveCopy = archive;
   disk_new = archive_read_disk_new();
   archive_read_disk_set_standard_lookup();
-  v47[0] = [v8 fileSystemRepresentation];
+  v47[0] = [directoryCopy fileSystemRepresentation];
   v47[1] = 0;
   v11 = fts_open(v47, 84, 0);
-  v12 = 0;
+  amk_errorFromErrno = 0;
   if (!v11)
   {
-    v12 = [MEMORY[0x29EDB9FA0] amk_errorFromErrno];
+    amk_errorFromErrno = [MEMORY[0x29EDB9FA0] amk_errorFromErrno];
   }
 
-  v13 = [v8 lastPathComponent];
-  v14 = [v13 isEqualToString:v9];
+  lastPathComponent = [directoryCopy lastPathComponent];
+  v14 = [lastPathComponent isEqualToString:archiveCopy];
 
   if (v14)
   {
-    v15 = [v8 URLByDeletingLastPathComponent];
-    v16 = strlen([v15 fileSystemRepresentation]);
+    uRLByDeletingLastPathComponent = [directoryCopy URLByDeletingLastPathComponent];
+    v16 = strlen([uRLByDeletingLastPathComponent fileSystemRepresentation]);
   }
 
   else
   {
-    v16 = strlen([v8 fileSystemRepresentation]);
+    v16 = strlen([directoryCopy fileSystemRepresentation]);
   }
 
   if (!v11)
@@ -278,7 +278,7 @@ LABEL_16:
   p_symlinkCount = &self->_symlinkCount;
   p_fileCount = &self->_fileCount;
   v44 = v16;
-  v45 = a5;
+  errorCopy = error;
   while (2)
   {
     v17 = fts_read(v11);
@@ -308,7 +308,7 @@ LABEL_16:
         {
           v18 = 1;
 LABEL_38:
-          a5 = v45;
+          error = errorCopy;
           goto LABEL_39;
         }
       }
@@ -318,7 +318,7 @@ LABEL_38:
 LABEL_15:
         if ([(NSProgress *)self->_progress isCancelled])
         {
-          v31 = [MEMORY[0x29EDB9FA0] amk_canceledError];
+          amk_canceledError = [MEMORY[0x29EDB9FA0] amk_canceledError];
           goto LABEL_37;
         }
 
@@ -326,12 +326,12 @@ LABEL_15:
         if ((v40 & 0x80000000) == 0)
         {
           archive_entry_new();
-          v37 = self;
+          selfCopy = self;
           if ((v14 & 1) == 0)
           {
             v38 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:&v19->fts_path[v44 + 1]];
-            v24 = [v9 stringByAppendingPathComponent:v38];
-            v36 = [v24 fileSystemRepresentation];
+            v24 = [archiveCopy stringByAppendingPathComponent:v38];
+            fileSystemRepresentation = [v24 fileSystemRepresentation];
           }
 
           archive_entry_set_pathname();
@@ -340,18 +340,18 @@ LABEL_15:
           fts_statp = v19->fts_statp;
           if (archive_read_disk_entry_from_file())
           {
-            v36 = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:disk_new];
+            fileSystemRepresentation = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:disk_new];
             v39 = 0;
-            self = v37;
+            self = selfCopy;
           }
 
           else
           {
-            self = v37;
-            archive = v37->_archive;
+            self = selfCopy;
+            archive = selfCopy->_archive;
             if (archive_write_header())
             {
-              v36 = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:v37->_archive];
+              fileSystemRepresentation = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:selfCopy->_archive];
               v39 = 0;
             }
 
@@ -381,7 +381,7 @@ LABEL_32:
                       archive_entry_free();
                       close(v40);
                       objc_autoreleasePoolPop(v21);
-                      a5 = v45;
+                      error = errorCopy;
                       if (v30)
                       {
                         continue;
@@ -396,24 +396,24 @@ LABEL_32:
                 goto LABEL_32;
               }
 
-              v46 = v12;
-              v39 = [(AMKArchiveWriter *)v37 _writeContentsOfFdToArchive:v40 error:&v46];
-              v36 = v46;
+              v46 = amk_errorFromErrno;
+              v39 = [(AMKArchiveWriter *)selfCopy _writeContentsOfFdToArchive:v40 error:&v46];
+              fileSystemRepresentation = v46;
             }
           }
 
-          v12 = v36;
+          amk_errorFromErrno = fileSystemRepresentation;
           goto LABEL_26;
         }
       }
 
-      v31 = [MEMORY[0x29EDB9FA0] amk_errorFromErrno];
+      amk_canceledError = [MEMORY[0x29EDB9FA0] amk_errorFromErrno];
 LABEL_37:
-      v32 = v31;
+      v32 = amk_canceledError;
 
       objc_autoreleasePoolPop(v21);
       v18 = 0;
-      v12 = v32;
+      amk_errorFromErrno = v32;
       goto LABEL_38;
     }
 
@@ -431,26 +431,26 @@ LABEL_39:
     fts_close(v11);
   }
 
-  if (a5 && v12)
+  if (error && amk_errorFromErrno)
   {
-    v33 = v12;
-    *a5 = v12;
+    v33 = amk_errorFromErrno;
+    *error = amk_errorFromErrno;
   }
 
   v34 = *MEMORY[0x29EDCA608];
   return v18;
 }
 
-- (BOOL)_fillSymlinkEntryFromURL:(id)a3 entry:(archive_entry *)a4 error:(id *)a5
+- (BOOL)_fillSymlinkEntryFromURL:(id)l entry:(archive_entry *)entry error:(id *)error
 {
   v11 = *MEMORY[0x29EDCA608];
-  v6 = readlink([a3 fileSystemRepresentation], v10, 0x3FFuLL);
+  v6 = readlink([l fileSystemRepresentation], v10, 0x3FFuLL);
   v7 = v6;
   if (v6 == -1)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] amk_errorFromErrno];
+      *error = [MEMORY[0x29EDB9FA0] amk_errorFromErrno];
     }
   }
 
@@ -465,23 +465,23 @@ LABEL_39:
   return result;
 }
 
-- (void)appendItemAtURL:(id)a3 pathInArchive:(id)a4 completion:(id)a5
+- (void)appendItemAtURL:(id)l pathInArchive:(id)archive completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  archiveCopy = archive;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x29EDCA5F8];
   v15[1] = 3221225472;
   v15[2] = __61__AMKArchiveWriter_appendItemAtURL_pathInArchive_completion___block_invoke;
   v15[3] = &unk_29F37F7A0;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = archiveCopy;
+  v17 = lCopy;
+  v18 = completionCopy;
+  v12 = lCopy;
+  v13 = archiveCopy;
+  v14 = completionCopy;
   dispatch_async(queue, v15);
 }
 
@@ -516,16 +516,16 @@ void __61__AMKArchiveWriter_appendItemAtURL_pathInArchive_completion___block_inv
   }
 }
 
-- (BOOL)_appendItemAtURL:(id)a3 pathInArchive:(id)a4 error:(id *)a5
+- (BOOL)_appendItemAtURL:(id)l pathInArchive:(id)archive error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  archiveCopy = archive;
   v10 = archive_entry_new();
-  v11 = open([v8 fileSystemRepresentation], 2129920);
+  v11 = open([lCopy fileSystemRepresentation], 2129920);
   if ((v11 & 0x80000000) != 0)
   {
     [MEMORY[0x29EDB9FA0] amk_errorFromErrno];
-    *a5 = v14 = 0;
+    *error = v14 = 0;
     goto LABEL_7;
   }
 
@@ -536,7 +536,7 @@ void __61__AMKArchiveWriter_appendItemAtURL_pathInArchive_completion___block_inv
     switch(v16)
     {
       case 16384:
-        if (![(AMKArchiveWriter *)self _appendContentsOfDirectory:v8 pathInArchive:v9 error:a5])
+        if (![(AMKArchiveWriter *)self _appendContentsOfDirectory:lCopy pathInArchive:archiveCopy error:error])
         {
           goto LABEL_18;
         }
@@ -544,9 +544,9 @@ void __61__AMKArchiveWriter_appendItemAtURL_pathInArchive_completion___block_inv
         break;
       case 40960:
         archive_entry_copy_stat();
-        [v9 UTF8String];
+        [archiveCopy UTF8String];
         archive_entry_set_pathname();
-        if (![(AMKArchiveWriter *)self _fillSymlinkEntryFromURL:v8 entry:v10 error:a5])
+        if (![(AMKArchiveWriter *)self _fillSymlinkEntryFromURL:lCopy entry:v10 error:error])
         {
           goto LABEL_18;
         }
@@ -555,7 +555,7 @@ void __61__AMKArchiveWriter_appendItemAtURL_pathInArchive_completion___block_inv
         if (archive_write_header())
         {
 LABEL_16:
-          v13 = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:self->_archive];
+          amk_errorFromErrno = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:self->_archive];
           goto LABEL_4;
         }
 
@@ -563,13 +563,13 @@ LABEL_16:
         break;
       case 32768:
         archive_entry_copy_stat();
-        [v9 UTF8String];
+        [archiveCopy UTF8String];
         archive_entry_set_pathname();
         ++self->_fileCount;
         v17 = self->_archive;
         if (!archive_write_header())
         {
-          if ([(AMKArchiveWriter *)self _writeContentsOfFdToArchive:v12 error:a5])
+          if ([(AMKArchiveWriter *)self _writeContentsOfFdToArchive:v12 error:error])
           {
             break;
           }
@@ -581,7 +581,7 @@ LABEL_18:
 
         goto LABEL_16;
       default:
-        v13 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9E30] code:3328 userInfo:0];
+        amk_errorFromErrno = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9E30] code:3328 userInfo:0];
         goto LABEL_4;
     }
 
@@ -589,10 +589,10 @@ LABEL_18:
     goto LABEL_5;
   }
 
-  v13 = [MEMORY[0x29EDB9FA0] amk_errorFromErrno];
+  amk_errorFromErrno = [MEMORY[0x29EDB9FA0] amk_errorFromErrno];
 LABEL_4:
   v14 = 0;
-  *a5 = v13;
+  *error = amk_errorFromErrno;
 LABEL_5:
   close(v12);
 LABEL_7:

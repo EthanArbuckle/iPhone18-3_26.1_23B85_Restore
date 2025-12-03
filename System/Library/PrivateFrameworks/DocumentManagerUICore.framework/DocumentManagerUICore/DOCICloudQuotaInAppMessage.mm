@@ -1,52 +1,52 @@
 @interface DOCICloudQuotaInAppMessage
-- (DOCICloudQuotaInAppMessage)initWithContentType:(unint64_t)a3 title:(id)a4 subTitle:(id)a5 icon:(id)a6 actions:(id)a7;
-- (DOCICloudQuotaInAppMessage)initWithICQInAppMessage:(id)a3;
+- (DOCICloudQuotaInAppMessage)initWithContentType:(unint64_t)type title:(id)title subTitle:(id)subTitle icon:(id)icon actions:(id)actions;
+- (DOCICloudQuotaInAppMessage)initWithICQInAppMessage:(id)message;
 - (id)contentTypeDescription;
-- (unint64_t)contentTypeWithMessage:(id)a3;
+- (unint64_t)contentTypeWithMessage:(id)message;
 @end
 
 @implementation DOCICloudQuotaInAppMessage
 
-- (DOCICloudQuotaInAppMessage)initWithICQInAppMessage:(id)a3
+- (DOCICloudQuotaInAppMessage)initWithICQInAppMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v23.receiver = self;
   v23.super_class = DOCICloudQuotaInAppMessage;
   v5 = [(DOCICloudQuotaInAppMessage *)&v23 init];
-  v5->_contentType = [(DOCICloudQuotaInAppMessage *)v5 contentTypeWithMessage:v4];
-  v6 = [v4 title];
+  v5->_contentType = [(DOCICloudQuotaInAppMessage *)v5 contentTypeWithMessage:messageCopy];
+  title = [messageCopy title];
   title = v5->_title;
-  v5->_title = v6;
+  v5->_title = title;
 
-  v8 = [v4 subTitle];
+  subTitle = [messageCopy subTitle];
   subTitle = v5->_subTitle;
-  v5->_subTitle = v8;
+  v5->_subTitle = subTitle;
 
-  v10 = [v4 sfSymbolName];
-  if (v10)
+  sfSymbolName = [messageCopy sfSymbolName];
+  if (sfSymbolName)
   {
     v11 = MEMORY[0x277D755B8];
-    v12 = [v4 sfSymbolName];
-    v13 = [v11 systemImageNamed:v12];
+    sfSymbolName2 = [messageCopy sfSymbolName];
+    v13 = [v11 systemImageNamed:sfSymbolName2];
     icon = v5->_icon;
     v5->_icon = v13;
   }
 
   else
   {
-    v12 = v5->_icon;
+    sfSymbolName2 = v5->_icon;
     v5->_icon = 0;
   }
 
-  v15 = [MEMORY[0x277CBEB18] array];
-  v16 = [v4 actions];
+  array = [MEMORY[0x277CBEB18] array];
+  actions = [messageCopy actions];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __54__DOCICloudQuotaInAppMessage_initWithICQInAppMessage___block_invoke;
   v21[3] = &unk_278FB3AB0;
-  v17 = v15;
+  v17 = array;
   v22 = v17;
-  [v16 enumerateObjectsUsingBlock:v21];
+  [actions enumerateObjectsUsingBlock:v21];
 
   actions = v5->_actions;
   v5->_actions = v17;
@@ -63,59 +63,59 @@ void __54__DOCICloudQuotaInAppMessage_initWithICQInAppMessage___block_invoke(uin
   [*(a1 + 32) addObject:v4];
 }
 
-- (DOCICloudQuotaInAppMessage)initWithContentType:(unint64_t)a3 title:(id)a4 subTitle:(id)a5 icon:(id)a6 actions:(id)a7
+- (DOCICloudQuotaInAppMessage)initWithContentType:(unint64_t)type title:(id)title subTitle:(id)subTitle icon:(id)icon actions:(id)actions
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  titleCopy = title;
+  subTitleCopy = subTitle;
+  iconCopy = icon;
+  actionsCopy = actions;
   v25.receiver = self;
   v25.super_class = DOCICloudQuotaInAppMessage;
   v16 = [(DOCICloudQuotaInAppMessage *)&v25 init];
   title = v16->_title;
-  v16->_contentType = a3;
-  v16->_title = v12;
-  v18 = v12;
+  v16->_contentType = type;
+  v16->_title = titleCopy;
+  v18 = titleCopy;
 
   subTitle = v16->_subTitle;
-  v16->_subTitle = v13;
-  v20 = v13;
+  v16->_subTitle = subTitleCopy;
+  v20 = subTitleCopy;
 
   icon = v16->_icon;
-  v16->_icon = v14;
-  v22 = v14;
+  v16->_icon = iconCopy;
+  v22 = iconCopy;
 
   actions = v16->_actions;
-  v16->_actions = v15;
+  v16->_actions = actionsCopy;
 
   return v16;
 }
 
-- (unint64_t)contentTypeWithMessage:(id)a3
+- (unint64_t)contentTypeWithMessage:(id)message
 {
-  v3 = [a3 contentType];
-  if (v3 > 4)
+  contentType = [message contentType];
+  if (contentType > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_249D072D0[v3];
+    return qword_249D072D0[contentType];
   }
 }
 
 - (id)contentTypeDescription
 {
-  v2 = [(DOCICloudQuotaInAppMessage *)self contentType];
-  if (v2 > 3)
+  contentType = [(DOCICloudQuotaInAppMessage *)self contentType];
+  if (contentType > 3)
   {
     return @"Error";
   }
 
   else
   {
-    return off_278FB3AD0[v2];
+    return off_278FB3AD0[contentType];
   }
 }
 

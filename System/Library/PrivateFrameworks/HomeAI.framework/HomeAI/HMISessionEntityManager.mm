@@ -1,13 +1,13 @@
 @interface HMISessionEntityManager
-+ (id)updatePersonEventWithPersonEvent:(id)a3 sessionEntityUUID:(id)a4 predictedLinkedEntityUUIDs:(id)a5 sessionEntityAssignment:(int64_t)a6;
++ (id)updatePersonEventWithPersonEvent:(id)event sessionEntityUUID:(id)d predictedLinkedEntityUUIDs:(id)ds sessionEntityAssignment:(int64_t)assignment;
 - (HMISessionEntityManager)init;
-- (id)assignSessionEntitiesToPersonEvents:(id)a3 regionOfInterest:(CGRect)a4 timeStamp:(id *)a5 homeUUID:(id)a6;
-- (id)assignSessionEntityToFaceRecognition:(id)a3 torsoRecognition:(id)a4 predictedLinkedEntityUUIDs:(id)a5 availableSessionEntityUUIDs:(id)a6 sessionEntityAssignment:(int64_t *)a7;
-- (id)clusterSessionEntityToFaceRecognition:(id)a3 torsoRecognition:(id)a4 predictedLinkedEntityUUIDs:(id)a5 availableSessionEntityUUIDs:(id)a6 sessionEntityAssignment:(int64_t *)a7;
-- (id)updateTorsoModelAndGetTorsoAnnotationsForHome:(id)a3;
-- (void)createSessionEntityWithUUID:(id)a3 faceRecognition:(id)a4 torsoRecognition:(id)a5 predictedLinkedEntityUUIDs:(id)a6 sessionEntityAssignment:(int64_t *)a7;
-- (void)submitTorsoprintsToModelManagerForHome:(id)a3 withTorsoAnnotations:(id)a4;
-- (void)updatePreviousPrintsForSessionEntityUUID:(id)a3 faceRecognition:(id)a4 torsoRecognition:(id)a5;
+- (id)assignSessionEntitiesToPersonEvents:(id)events regionOfInterest:(CGRect)interest timeStamp:(id *)stamp homeUUID:(id)d;
+- (id)assignSessionEntityToFaceRecognition:(id)recognition torsoRecognition:(id)torsoRecognition predictedLinkedEntityUUIDs:(id)ds availableSessionEntityUUIDs:(id)iDs sessionEntityAssignment:(int64_t *)assignment;
+- (id)clusterSessionEntityToFaceRecognition:(id)recognition torsoRecognition:(id)torsoRecognition predictedLinkedEntityUUIDs:(id)ds availableSessionEntityUUIDs:(id)iDs sessionEntityAssignment:(int64_t *)assignment;
+- (id)updateTorsoModelAndGetTorsoAnnotationsForHome:(id)home;
+- (void)createSessionEntityWithUUID:(id)d faceRecognition:(id)recognition torsoRecognition:(id)torsoRecognition predictedLinkedEntityUUIDs:(id)ds sessionEntityAssignment:(int64_t *)assignment;
+- (void)submitTorsoprintsToModelManagerForHome:(id)home withTorsoAnnotations:(id)annotations;
+- (void)updatePreviousPrintsForSessionEntityUUID:(id)d faceRecognition:(id)recognition torsoRecognition:(id)torsoRecognition;
 @end
 
 @implementation HMISessionEntityManager
@@ -19,17 +19,17 @@
   v2 = [(HMISessionEntityManager *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sessionEntities = v2->_sessionEntities;
-    v2->_sessionEntities = v3;
+    v2->_sessionEntities = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     sessionUUIDToPreviousFaceprints = v2->_sessionUUIDToPreviousFaceprints;
-    v2->_sessionUUIDToPreviousFaceprints = v5;
+    v2->_sessionUUIDToPreviousFaceprints = dictionary2;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     sessionUUIDToPreviousTorsoprints = v2->_sessionUUIDToPreviousTorsoprints;
-    v2->_sessionUUIDToPreviousTorsoprints = v7;
+    v2->_sessionUUIDToPreviousTorsoprints = dictionary3;
 
     v9 = objc_alloc_init(HMIPersonTracker);
     personTracker = v2->_personTracker;
@@ -44,22 +44,22 @@
   return v2;
 }
 
-- (void)submitTorsoprintsToModelManagerForHome:(id)a3 withTorsoAnnotations:(id)a4
+- (void)submitTorsoprintsToModelManagerForHome:(id)home withTorsoAnnotations:(id)annotations
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  homeCopy = home;
+  annotationsCopy = annotations;
+  if ([annotationsCopy count])
   {
     v8 = +[HMIPersonsModelManager sharedInstance];
     v13 = 0;
-    [v8 updateTorsoModelForHome:v6 torsoAnnotations:v7 error:&v13];
+    [v8 updateTorsoModelForHome:homeCopy torsoAnnotations:annotationsCopy error:&v13];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -73,45 +73,45 @@
   }
 }
 
-- (id)assignSessionEntitiesToPersonEvents:(id)a3 regionOfInterest:(CGRect)a4 timeStamp:(id *)a5 homeUUID:(id)a6
+- (id)assignSessionEntitiesToPersonEvents:(id)events regionOfInterest:(CGRect)interest timeStamp:(id *)stamp homeUUID:(id)d
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v12 = MEMORY[0x277CBEB58];
-  v13 = a3;
-  v14 = [(HMISessionEntityManager *)self sessionEntities];
-  v15 = [v14 allKeys];
-  v16 = [v12 setWithArray:v15];
+  eventsCopy = events;
+  sessionEntities = [(HMISessionEntityManager *)self sessionEntities];
+  allKeys = [sessionEntities allKeys];
+  v16 = [v12 setWithArray:allKeys];
 
   v17 = [MEMORY[0x277CBEB58] set];
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __99__HMISessionEntityManager_assignSessionEntitiesToPersonEvents_regionOfInterest_timeStamp_homeUUID___block_invoke;
   v33[3] = &unk_278754448;
-  v34 = v18;
-  v35 = self;
+  v34 = array;
+  selfCopy = self;
   v36 = v16;
   v19 = v17;
   v37 = v19;
   v20 = v16;
-  v21 = v18;
-  [v13 na_each:v33];
+  v21 = array;
+  [eventsCopy na_each:v33];
 
   personTracker = self->_personTracker;
   v23 = [v21 copy];
-  v24 = [v19 allObjects];
-  v32 = *a5;
-  [(HMIPersonTracker *)personTracker trackNewPersons:v23 knownPersons:v24 regionOfInterest:&v32 timeStamp:x, y, width, height];
+  allObjects = [v19 allObjects];
+  v32 = *stamp;
+  [(HMIPersonTracker *)personTracker trackNewPersons:v23 knownPersons:allObjects regionOfInterest:&v32 timeStamp:x, y, width, height];
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __99__HMISessionEntityManager_assignSessionEntitiesToPersonEvents_regionOfInterest_timeStamp_homeUUID___block_invoke_157;
   v29[3] = &unk_278754470;
   v30 = v19;
-  v31 = self;
+  selfCopy2 = self;
   v25 = v19;
   [v21 enumerateObjectsUsingBlock:v29];
   v28[0] = MEMORY[0x277D85DD0];
@@ -506,12 +506,12 @@ BOOL __99__HMISessionEntityManager_assignSessionEntitiesToPersonEvents_regionOfI
   return v7;
 }
 
-- (id)updateTorsoModelAndGetTorsoAnnotationsForHome:(id)a3
+- (id)updateTorsoModelAndGetTorsoAnnotationsForHome:(id)home
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -519,26 +519,26 @@ BOOL __99__HMISessionEntityManager_assignSessionEntitiesToPersonEvents_regionOfI
     *buf = 138543618;
     v22 = v8;
     v23 = 2112;
-    v24 = v4;
+    v24 = homeCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@updateTorsoModelAndGetTorsoAnnotationsForHome: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [(HMISessionEntityManager *)v6 sessionEntities];
+  array = [MEMORY[0x277CBEB18] array];
+  sessionEntities = [(HMISessionEntityManager *)selfCopy sessionEntities];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __73__HMISessionEntityManager_updateTorsoModelAndGetTorsoAnnotationsForHome___block_invoke;
   v18 = &unk_2787544C0;
-  v19 = v6;
-  v11 = v9;
+  v19 = selfCopy;
+  v11 = array;
   v20 = v11;
-  [v10 na_each:&v15];
+  [sessionEntities na_each:&v15];
 
   if (([v11 hmf_isEmpty] & 1) == 0)
   {
     v12 = [v11 copy];
-    [(HMISessionEntityManager *)v6 submitTorsoprintsToModelManagerForHome:v4 withTorsoAnnotations:v12];
+    [(HMISessionEntityManager *)selfCopy submitTorsoprintsToModelManagerForHome:homeCopy withTorsoAnnotations:v12];
   }
 
   v13 = [v11 copy];
@@ -586,20 +586,20 @@ void __73__HMISessionEntityManager_updateTorsoModelAndGetTorsoAnnotationsForHome
   }
 }
 
-- (id)assignSessionEntityToFaceRecognition:(id)a3 torsoRecognition:(id)a4 predictedLinkedEntityUUIDs:(id)a5 availableSessionEntityUUIDs:(id)a6 sessionEntityAssignment:(int64_t *)a7
+- (id)assignSessionEntityToFaceRecognition:(id)recognition torsoRecognition:(id)torsoRecognition predictedLinkedEntityUUIDs:(id)ds availableSessionEntityUUIDs:(id)iDs sessionEntityAssignment:(int64_t *)assignment
 {
   v78 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!(v12 | v13))
+  recognitionCopy = recognition;
+  torsoRecognitionCopy = torsoRecognition;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  if (!(recognitionCopy | torsoRecognitionCopy))
   {
     [HMISessionEntityManager assignSessionEntityToFaceRecognition:torsoRecognition:predictedLinkedEntityUUIDs:availableSessionEntityUUIDs:sessionEntityAssignment:];
     __break(1u);
   }
 
-  v43 = a7;
+  assignmentCopy = assignment;
   v66 = 0;
   v67 = &v66;
   v68 = 0x3032000000;
@@ -616,7 +616,7 @@ void __73__HMISessionEntityManager_updateTorsoModelAndGetTorsoAnnotationsForHome
   v57 = &v56;
   v58 = 0x2020000000;
   v59 = 2139095039;
-  v16 = v15;
+  v16 = iDsCopy;
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
@@ -625,13 +625,13 @@ void __73__HMISessionEntityManager_updateTorsoModelAndGetTorsoAnnotationsForHome
   v44[1] = 3221225472;
   v44[2] = __160__HMISessionEntityManager_assignSessionEntityToFaceRecognition_torsoRecognition_predictedLinkedEntityUUIDs_availableSessionEntityUUIDs_sessionEntityAssignment___block_invoke;
   v44[3] = &unk_2787544E8;
-  v42 = self;
+  selfCopy = self;
   v44[4] = self;
-  v17 = v14;
+  v17 = dsCopy;
   v45 = v17;
-  v18 = v12;
+  v18 = recognitionCopy;
   v46 = v18;
-  v19 = v13;
+  v19 = torsoRecognitionCopy;
   v47 = v19;
   v48 = &v56;
   v49 = &v52;
@@ -653,10 +653,10 @@ void __73__HMISessionEntityManager_updateTorsoModelAndGetTorsoAnnotationsForHome
 
     if (v57[6] < *v21)
     {
-      if (v12)
+      if (recognitionCopy)
       {
         v22 = objc_autoreleasePoolPush();
-        v23 = v42;
+        v23 = selfCopy;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
@@ -671,16 +671,16 @@ void __73__HMISessionEntityManager_updateTorsoModelAndGetTorsoAnnotationsForHome
 
         objc_autoreleasePoolPop(v22);
         v27 = v61[5];
-        v28 = [v18 faceprint];
-        v73 = v28;
+        faceprint = [v18 faceprint];
+        v73 = faceprint;
         v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v73 count:1];
         [v27 addFaceprints:v29];
       }
 
-      if (v13)
+      if (torsoRecognitionCopy)
       {
         v30 = objc_autoreleasePoolPush();
-        v31 = v42;
+        v31 = selfCopy;
         v32 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
         {
@@ -695,18 +695,18 @@ void __73__HMISessionEntityManager_updateTorsoModelAndGetTorsoAnnotationsForHome
 
         objc_autoreleasePoolPop(v30);
         v35 = v61[5];
-        v36 = [v19 torsoprint];
-        v72 = v36;
+        torsoprint = [v19 torsoprint];
+        v72 = torsoprint;
         v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v72 count:1];
         [v35 addTorsoprints:v37];
       }
     }
 
     v38 = v61[5];
-    v39 = [v17 allObjects];
-    [v38 addLinkedEntityUUIDs:v39];
+    allObjects = [v17 allObjects];
+    [v38 addLinkedEntityUUIDs:allObjects];
 
-    *v43 = 1;
+    *assignmentCopy = 1;
     v20 = v67[5];
   }
 
@@ -774,20 +774,20 @@ void __160__HMISessionEntityManager_assignSessionEntityToFaceRecognition_torsoRe
   }
 }
 
-- (id)clusterSessionEntityToFaceRecognition:(id)a3 torsoRecognition:(id)a4 predictedLinkedEntityUUIDs:(id)a5 availableSessionEntityUUIDs:(id)a6 sessionEntityAssignment:(int64_t *)a7
+- (id)clusterSessionEntityToFaceRecognition:(id)recognition torsoRecognition:(id)torsoRecognition predictedLinkedEntityUUIDs:(id)ds availableSessionEntityUUIDs:(id)iDs sessionEntityAssignment:(int64_t *)assignment
 {
   v65 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v36 = a5;
-  v14 = a6;
-  if (!(v12 | v13))
+  recognitionCopy = recognition;
+  torsoRecognitionCopy = torsoRecognition;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  if (!(recognitionCopy | torsoRecognitionCopy))
   {
     [HMISessionEntityManager assignSessionEntityToFaceRecognition:torsoRecognition:predictedLinkedEntityUUIDs:availableSessionEntityUUIDs:sessionEntityAssignment:];
     __break(1u);
   }
 
-  v15 = v14;
+  v15 = iDsCopy;
   v56 = 0;
   v57[0] = &v56;
   v57[1] = 0x3032000000;
@@ -812,12 +812,12 @@ void __160__HMISessionEntityManager_assignSessionEntityToFaceRecognition_torsoRe
   v37[1] = 3221225472;
   v37[2] = __161__HMISessionEntityManager_clusterSessionEntityToFaceRecognition_torsoRecognition_predictedLinkedEntityUUIDs_availableSessionEntityUUIDs_sessionEntityAssignment___block_invoke;
   v37[3] = &unk_278754560;
-  v16 = v12;
+  v16 = recognitionCopy;
   v38 = v16;
-  v39 = self;
+  selfCopy = self;
   v41 = &v49;
   v42 = &v56;
-  v17 = v13;
+  v17 = torsoRecognitionCopy;
   v40 = v17;
   v43 = &v45;
   v44 = &v53;
@@ -838,17 +838,17 @@ void __160__HMISessionEntityManager_assignSessionEntityToFaceRecognition_torsoRe
     v18 = v57;
   }
 
-  *a7 = 3;
+  *assignment = 3;
   v19 = *(*v18 + 40);
   if (v19)
   {
-    v20 = [(HMISessionEntityManager *)self sessionEntities];
-    v21 = [v20 objectForKeyedSubscript:v19];
+    sessionEntities = [(HMISessionEntityManager *)self sessionEntities];
+    v21 = [sessionEntities objectForKeyedSubscript:v19];
 
-    if (v12)
+    if (recognitionCopy)
     {
       context = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy2 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
@@ -861,16 +861,16 @@ void __160__HMISessionEntityManager_assignSessionEntityToFaceRecognition_torsoRe
       }
 
       objc_autoreleasePoolPop(context);
-      v25 = [v16 faceprint];
-      v60 = v25;
+      faceprint = [v16 faceprint];
+      v60 = faceprint;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
       [v21 addFaceprints:v26];
     }
 
-    if (v13)
+    if (torsoRecognitionCopy)
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy3 = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
@@ -883,14 +883,14 @@ void __160__HMISessionEntityManager_assignSessionEntityToFaceRecognition_torsoRe
       }
 
       objc_autoreleasePoolPop(v27);
-      v31 = [v17 torsoprint];
-      v59 = v31;
+      torsoprint = [v17 torsoprint];
+      v59 = torsoprint;
       v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v59 count:1];
       [v21 addTorsoprints:v32];
     }
 
-    v33 = [v36 allObjects];
-    [v21 addLinkedEntityUUIDs:v33];
+    allObjects = [dsCopy allObjects];
+    [v21 addLinkedEntityUUIDs:allObjects];
   }
 
 LABEL_17:
@@ -978,37 +978,37 @@ void __161__HMISessionEntityManager_clusterSessionEntityToFaceRecognition_torsoR
   }
 }
 
-- (void)createSessionEntityWithUUID:(id)a3 faceRecognition:(id)a4 torsoRecognition:(id)a5 predictedLinkedEntityUUIDs:(id)a6 sessionEntityAssignment:(int64_t *)a7
+- (void)createSessionEntityWithUUID:(id)d faceRecognition:(id)recognition torsoRecognition:(id)torsoRecognition predictedLinkedEntityUUIDs:(id)ds sessionEntityAssignment:(int64_t *)assignment
 {
   v62 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!(v13 | v14))
+  dCopy = d;
+  recognitionCopy = recognition;
+  torsoRecognitionCopy = torsoRecognition;
+  dsCopy = ds;
+  if (!(recognitionCopy | torsoRecognitionCopy))
   {
     [HMISessionEntityManager assignSessionEntityToFaceRecognition:torsoRecognition:predictedLinkedEntityUUIDs:availableSessionEntityUUIDs:sessionEntityAssignment:];
   }
 
-  v16 = v15;
-  v17 = [(HMISessionEntityManager *)self sessionEntities];
-  v18 = [v17 objectForKeyedSubscript:v12];
+  v16 = dsCopy;
+  sessionEntities = [(HMISessionEntityManager *)self sessionEntities];
+  v18 = [sessionEntities objectForKeyedSubscript:dCopy];
 
   if (!v18)
   {
-    *a7 = 5;
-    v32 = [(HMISessionEntityManager *)self sessionEntities];
-    v33 = [v32 count];
+    *assignment = 5;
+    sessionEntities2 = [(HMISessionEntityManager *)self sessionEntities];
+    v33 = [sessionEntities2 count];
 
     if (v33 > 0x3B)
     {
       goto LABEL_26;
     }
 
-    if (v13)
+    if (recognitionCopy)
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = self;
+      selfCopy = self;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
@@ -1016,23 +1016,23 @@ void __161__HMISessionEntityManager_clusterSessionEntityToFaceRecognition_torsoR
         *buf = 138543618;
         v59 = v37;
         v60 = 2112;
-        v61 = v12;
+        v61 = dCopy;
         _os_log_impl(&dword_22D12F000, v36, OS_LOG_TYPE_INFO, "%{public}@Adding new face sessionEntityUUID: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v34);
       v38 = [HMIMutableCluster alloc];
-      v39 = [v13 faceprint];
-      v40 = [(HMIMutableCluster *)v38 initWithFaceprint:v39];
+      faceprint = [recognitionCopy faceprint];
+      v40 = [(HMIMutableCluster *)v38 initWithFaceprint:faceprint];
 
-      if (!v14)
+      if (!torsoRecognitionCopy)
       {
         goto LABEL_25;
       }
 
       v54 = v16;
       v41 = objc_autoreleasePoolPush();
-      v42 = v35;
+      v42 = selfCopy;
       v43 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
@@ -1040,13 +1040,13 @@ void __161__HMISessionEntityManager_clusterSessionEntityToFaceRecognition_torsoR
         *buf = 138543618;
         v59 = v44;
         v60 = 2112;
-        v61 = v12;
+        v61 = dCopy;
         _os_log_impl(&dword_22D12F000, v43, OS_LOG_TYPE_INFO, "%{public}@Adding new torso sessionEntityUUID: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v41);
-      v45 = [v14 torsoprint];
-      v55 = v45;
+      torsoprint = [torsoRecognitionCopy torsoprint];
+      v55 = torsoprint;
       v46 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
       [(HMIMutableCluster *)v40 addTorsoprints:v46];
 
@@ -1055,14 +1055,14 @@ void __161__HMISessionEntityManager_clusterSessionEntityToFaceRecognition_torsoR
 
     else
     {
-      if (!v14)
+      if (!torsoRecognitionCopy)
       {
         v40 = 0;
         goto LABEL_25;
       }
 
       v47 = objc_autoreleasePoolPush();
-      v48 = self;
+      selfCopy2 = self;
       v49 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
       {
@@ -1070,31 +1070,31 @@ void __161__HMISessionEntityManager_clusterSessionEntityToFaceRecognition_torsoR
         *buf = 138543618;
         v59 = v50;
         v60 = 2112;
-        v61 = v12;
+        v61 = dCopy;
         _os_log_impl(&dword_22D12F000, v49, OS_LOG_TYPE_INFO, "%{public}@Adding new torso sessionEntityUUID: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v47);
       v51 = [HMIMutableCluster alloc];
-      v45 = [v14 torsoprint];
-      v40 = [(HMIMutableCluster *)v51 initWithTorsoprint:v45];
+      torsoprint = [torsoRecognitionCopy torsoprint];
+      v40 = [(HMIMutableCluster *)v51 initWithTorsoprint:torsoprint];
     }
 
 LABEL_25:
-    v52 = [v16 allObjects];
-    [(HMIMutableCluster *)v40 addLinkedEntityUUIDs:v52];
+    allObjects = [v16 allObjects];
+    [(HMIMutableCluster *)v40 addLinkedEntityUUIDs:allObjects];
 
-    v53 = [(HMISessionEntityManager *)self sessionEntities];
-    [v53 setObject:v40 forKeyedSubscript:v12];
+    sessionEntities3 = [(HMISessionEntityManager *)self sessionEntities];
+    [sessionEntities3 setObject:v40 forKeyedSubscript:dCopy];
 
     goto LABEL_26;
   }
 
-  if (v13)
+  if (recognitionCopy)
   {
     v54 = v16;
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy3 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -1102,23 +1102,23 @@ LABEL_25:
       *buf = 138543618;
       v59 = v22;
       v60 = 2112;
-      v61 = v12;
+      v61 = dCopy;
       _os_log_impl(&dword_22D12F000, v21, OS_LOG_TYPE_INFO, "%{public}@Adding face to existing sessionEntityUUID: %@ (track)", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v19);
-    v23 = [v13 faceprint];
-    v57 = v23;
+    faceprint2 = [recognitionCopy faceprint];
+    v57 = faceprint2;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
     [v18 addFaceprints:v24];
 
     v16 = v54;
   }
 
-  if (v14)
+  if (torsoRecognitionCopy)
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy4 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
@@ -1126,200 +1126,200 @@ LABEL_25:
       *buf = 138543618;
       v59 = v28;
       v60 = 2112;
-      v61 = v12;
+      v61 = dCopy;
       _os_log_impl(&dword_22D12F000, v27, OS_LOG_TYPE_INFO, "%{public}@Adding torso to existing sessionEntityUUID: %@ (track)", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v25);
-    v29 = [v14 torsoprint];
-    v56 = v29;
+    torsoprint2 = [torsoRecognitionCopy torsoprint];
+    v56 = torsoprint2;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
     [v18 addTorsoprints:v30];
   }
 
-  v31 = [v16 allObjects];
-  [v18 addLinkedEntityUUIDs:v31];
+  allObjects2 = [v16 allObjects];
+  [v18 addLinkedEntityUUIDs:allObjects2];
 
-  *a7 = 2;
+  *assignment = 2;
 LABEL_26:
 }
 
-- (void)updatePreviousPrintsForSessionEntityUUID:(id)a3 faceRecognition:(id)a4 torsoRecognition:(id)a5
+- (void)updatePreviousPrintsForSessionEntityUUID:(id)d faceRecognition:(id)recognition torsoRecognition:(id)torsoRecognition
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  dCopy = d;
+  recognitionCopy = recognition;
+  torsoRecognitionCopy = torsoRecognition;
+  if (recognitionCopy)
   {
-    v10 = [(NSMutableDictionary *)self->_sessionUUIDToPreviousFaceprints objectForKeyedSubscript:v16];
+    v10 = [(NSMutableDictionary *)self->_sessionUUIDToPreviousFaceprints objectForKeyedSubscript:dCopy];
     if (v10)
     {
-      v11 = v10;
+      array = v10;
       if ([v10 count] == 5)
       {
-        [v11 removeObjectAtIndex:0];
+        [array removeObjectAtIndex:0];
       }
     }
 
     else
     {
-      v11 = [MEMORY[0x277CBEB18] array];
-      [(NSMutableDictionary *)self->_sessionUUIDToPreviousFaceprints setObject:v11 forKeyedSubscript:v16];
+      array = [MEMORY[0x277CBEB18] array];
+      [(NSMutableDictionary *)self->_sessionUUIDToPreviousFaceprints setObject:array forKeyedSubscript:dCopy];
     }
 
-    v12 = [v8 faceprint];
-    [v11 addObject:v12];
+    faceprint = [recognitionCopy faceprint];
+    [array addObject:faceprint];
   }
 
-  if (v9)
+  if (torsoRecognitionCopy)
   {
-    v13 = [(NSMutableDictionary *)self->_sessionUUIDToPreviousTorsoprints objectForKeyedSubscript:v16];
+    v13 = [(NSMutableDictionary *)self->_sessionUUIDToPreviousTorsoprints objectForKeyedSubscript:dCopy];
     if (v13)
     {
-      v14 = v13;
+      array2 = v13;
       if ([v13 count] == 5)
       {
-        [v14 removeObjectAtIndex:0];
+        [array2 removeObjectAtIndex:0];
       }
     }
 
     else
     {
-      v14 = [MEMORY[0x277CBEB18] array];
-      [(NSMutableDictionary *)self->_sessionUUIDToPreviousTorsoprints setObject:v14 forKeyedSubscript:v16];
+      array2 = [MEMORY[0x277CBEB18] array];
+      [(NSMutableDictionary *)self->_sessionUUIDToPreviousTorsoprints setObject:array2 forKeyedSubscript:dCopy];
     }
 
-    v15 = [v9 torsoprint];
-    [v14 addObject:v15];
+    torsoprint = [torsoRecognitionCopy torsoprint];
+    [array2 addObject:torsoprint];
   }
 }
 
-+ (id)updatePersonEventWithPersonEvent:(id)a3 sessionEntityUUID:(id)a4 predictedLinkedEntityUUIDs:(id)a5 sessionEntityAssignment:(int64_t)a6
++ (id)updatePersonEventWithPersonEvent:(id)event sessionEntityUUID:(id)d predictedLinkedEntityUUIDs:(id)ds sessionEntityAssignment:(int64_t)assignment
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 face];
-  v14 = [v10 face];
-  if (v14)
+  eventCopy = event;
+  dCopy = d;
+  dsCopy = ds;
+  face = [eventCopy face];
+  face2 = [eventCopy face];
+  if (face2)
   {
-    v15 = v14;
-    v16 = [v10 face];
-    v17 = [v16 faceRecognition];
+    v15 = face2;
+    face3 = [eventCopy face];
+    faceRecognition = [face3 faceRecognition];
 
-    if (v17)
+    if (faceRecognition)
     {
-      v18 = [v10 face];
-      v19 = [v18 faceRecognition];
+      face4 = [eventCopy face];
+      faceRecognition2 = [face4 faceRecognition];
 
-      v20 = [v19 classifications];
+      classifications = [faceRecognition2 classifications];
       v92[0] = MEMORY[0x277D85DD0];
       v92[1] = 3221225472;
       v92[2] = __129__HMISessionEntityManager_updatePersonEventWithPersonEvent_sessionEntityUUID_predictedLinkedEntityUUIDs_sessionEntityAssignment___block_invoke;
       v92[3] = &unk_278754588;
-      v21 = v11;
+      v21 = dCopy;
       v93 = v21;
-      v94 = a1;
-      v85 = [v20 na_map:v92];
+      selfCopy = self;
+      v85 = [classifications na_map:v92];
 
       v22 = [HMIFaceRecognition alloc];
-      v86 = v19;
-      v23 = [v19 faceCrop];
-      [v19 faceprint];
-      v24 = v90 = v13;
-      [v19 faceQualityScore];
-      v82 = [(HMIFaceRecognition *)v22 initWithFaceCrop:v23 faceprint:v24 classifications:v85 predictedLinkedEntityUUIDs:v12 faceQualityScore:a6 sessionEntityAssignment:v21 sessionEntityUUID:?];
+      v86 = faceRecognition2;
+      faceCrop = [faceRecognition2 faceCrop];
+      [faceRecognition2 faceprint];
+      v24 = v90 = face;
+      [faceRecognition2 faceQualityScore];
+      v82 = [(HMIFaceRecognition *)v22 initWithFaceCrop:faceCrop faceprint:v24 classifications:v85 predictedLinkedEntityUUIDs:dsCopy faceQualityScore:assignment sessionEntityAssignment:v21 sessionEntityUUID:?];
 
       v80 = [HMIVideoAnalyzerEventFace alloc];
-      v84 = [v10 face];
-      [v84 confidence];
-      v79 = v88 = v11;
-      v83 = [v10 face];
-      [v83 boundingBox];
+      face5 = [eventCopy face];
+      [face5 confidence];
+      v79 = v88 = dCopy;
+      face6 = [eventCopy face];
+      [face6 boundingBox];
       v26 = v25;
       v28 = v27;
       v30 = v29;
       v32 = v31;
-      v33 = [v10 face];
-      v34 = [v33 yaw];
-      v35 = [v10 face];
-      [v35 roll];
-      v37 = v36 = v12;
-      [v10 face];
-      v39 = v38 = a6;
-      v40 = [v39 userInfo];
-      v81 = [(HMIVideoAnalyzerEventFace *)v80 initWithConfidence:v79 boundingBox:v34 yaw:v37 roll:v82 faceRecognition:0 torsoAnnotation:v40 userInfo:v26, v28, v30, v32];
+      face7 = [eventCopy face];
+      v34 = [face7 yaw];
+      face8 = [eventCopy face];
+      [face8 roll];
+      v37 = v36 = dsCopy;
+      [eventCopy face];
+      v39 = v38 = assignment;
+      userInfo = [v39 userInfo];
+      v81 = [(HMIVideoAnalyzerEventFace *)v80 initWithConfidence:v79 boundingBox:v34 yaw:v37 roll:v82 faceRecognition:0 torsoAnnotation:userInfo userInfo:v26, v28, v30, v32];
 
-      a6 = v38;
-      v12 = v36;
+      assignment = v38;
+      dsCopy = v36;
 
-      v11 = v88;
-      v13 = v81;
+      dCopy = v88;
+      face = v81;
     }
   }
 
-  v41 = [v10 torso];
-  v42 = [v10 torso];
-  if (v42)
+  torso = [eventCopy torso];
+  torso2 = [eventCopy torso];
+  if (torso2)
   {
-    v43 = v42;
-    v44 = [v10 torso];
-    v45 = [v44 torsoRecognition];
+    v43 = torso2;
+    torso3 = [eventCopy torso];
+    torsoRecognition = [torso3 torsoRecognition];
 
-    if (v45)
+    if (torsoRecognition)
     {
-      v89 = v12;
-      v91 = v13;
-      v46 = [v10 torso];
-      v47 = [v46 torsoRecognition];
-      v48 = [v47 torsoprint];
-      v49 = [v48 unrecognizable];
+      v89 = dsCopy;
+      v91 = face;
+      torso4 = [eventCopy torso];
+      torsoRecognition2 = [torso4 torsoRecognition];
+      torsoprint = [torsoRecognition2 torsoprint];
+      unrecognizable = [torsoprint unrecognizable];
 
-      if (v49)
+      if (unrecognizable)
       {
         v50 = 0;
       }
 
       else
       {
-        v51 = [v10 torso];
-        v52 = [v51 torsoRecognition];
+        torso5 = [eventCopy torso];
+        torsoRecognition3 = [torso5 torsoRecognition];
 
         v53 = [HMITorsoClassification alloc];
-        v54 = [v52 classification];
-        v55 = [v54 personUUID];
-        v56 = [v52 classification];
-        v57 = [v56 sourceUUID];
-        [v52 classification];
-        v58 = v87 = a6;
+        classification = [torsoRecognition3 classification];
+        personUUID = [classification personUUID];
+        classification2 = [torsoRecognition3 classification];
+        sourceUUID = [classification2 sourceUUID];
+        [torsoRecognition3 classification];
+        v58 = v87 = assignment;
         [v58 confidence];
-        v59 = [(HMITorsoClassification *)v53 initWithPersonUUID:v55 sourceUUID:v57 confidence:?];
+        v59 = [(HMITorsoClassification *)v53 initWithPersonUUID:personUUID sourceUUID:sourceUUID confidence:?];
 
         v60 = [HMITorsoRecognition alloc];
-        v61 = [v52 torsoprint];
-        v50 = [(HMITorsoRecognition *)v60 initWithTorsoprint:v61 classification:v59 predictedLinkedEntityUUIDs:v89 sessionEntityAssignment:v87 sessionEntityUUID:v11];
+        torsoprint2 = [torsoRecognition3 torsoprint];
+        v50 = [(HMITorsoRecognition *)v60 initWithTorsoprint:torsoprint2 classification:v59 predictedLinkedEntityUUIDs:v89 sessionEntityAssignment:v87 sessionEntityUUID:dCopy];
       }
 
       v62 = [HMIVideoAnalyzerEventTorso alloc];
-      v63 = [v10 torso];
-      v64 = [v63 confidence];
-      v65 = [v10 torso];
-      [v65 boundingBox];
+      torso6 = [eventCopy torso];
+      confidence = [torso6 confidence];
+      torso7 = [eventCopy torso];
+      [torso7 boundingBox];
       v67 = v66;
       v69 = v68;
       v71 = v70;
       v73 = v72;
-      v74 = [v10 torso];
-      v75 = [v74 roll];
-      v76 = [(HMIVideoAnalyzerEventTorso *)v62 initWithConfidence:v64 boundingBox:v75 roll:v50 torsoRecognition:v67, v69, v71, v73];
+      torso8 = [eventCopy torso];
+      roll = [torso8 roll];
+      v76 = [(HMIVideoAnalyzerEventTorso *)v62 initWithConfidence:confidence boundingBox:roll roll:v50 torsoRecognition:v67, v69, v71, v73];
 
-      v41 = v76;
-      v12 = v89;
-      v13 = v91;
+      torso = v76;
+      dsCopy = v89;
+      face = v91;
     }
   }
 
-  v77 = [v10 copyWithFaceEvent:v13 torso:v41];
+  v77 = [eventCopy copyWithFaceEvent:face torso:torso];
 
   return v77;
 }

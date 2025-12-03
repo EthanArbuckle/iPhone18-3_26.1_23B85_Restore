@@ -7,18 +7,18 @@
 - (id)contentsForContext:()MNInstructions
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [a1 composedRoute];
-  v6 = [v5 legIndexForStepIndex:{objc_msgSend(a1, "stepIndex")}];
-  v7 = [v5 legs];
-  v8 = [v7 count];
+  composedRoute = [self composedRoute];
+  v6 = [composedRoute legIndexForStepIndex:{objc_msgSend(self, "stepIndex")}];
+  legs = [composedRoute legs];
+  v8 = [legs count];
 
   if (v6 < v8)
   {
-    v9 = [v5 legs];
-    v10 = [v9 objectAtIndexedSubscript:v6];
+    legs2 = [composedRoute legs];
+    v10 = [legs2 objectAtIndexedSubscript:v6];
 
-    v11 = [v10 destination];
-    if ([a1 transportType] == 1)
+    destination = [v10 destination];
+    if ([self transportType] == 1)
     {
       v12 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -36,11 +36,11 @@ LABEL_11:
 
     else
     {
-      if ([a1 transportType] != 6)
+      if ([self transportType] != 6)
       {
         if (a3 == 1 || a3 == 3)
         {
-          v16 = [MNSignInstructionContents contentsWithStep:a1 destination:v11];
+          v16 = [MNSignInstructionContents contentsWithStep:self destination:destination];
         }
 
         else
@@ -62,7 +62,7 @@ LABEL_11:
             goto LABEL_11;
           }
 
-          v16 = [MNListInstructionContents contentsWithStep:a1];
+          v16 = [MNListInstructionContents contentsWithStep:self];
         }
 
         v13 = v16;

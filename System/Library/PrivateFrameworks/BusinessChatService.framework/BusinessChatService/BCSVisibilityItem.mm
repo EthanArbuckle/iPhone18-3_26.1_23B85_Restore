@@ -1,45 +1,45 @@
 @interface BCSVisibilityItem
-- (BCSVisibilityItem)initWithCoder:(id)a3;
-- (BCSVisibilityItem)initWithLanguage:(id)a3 country:(id)a4 ratio:(double)a5;
-- (BCSVisibilityItem)initWithVisibility:(id)a3;
-- (BOOL)isVisibleForDSID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BCSVisibilityItem)initWithCoder:(id)coder;
+- (BCSVisibilityItem)initWithLanguage:(id)language country:(id)country ratio:(double)ratio;
+- (BCSVisibilityItem)initWithVisibility:(id)visibility;
+- (BOOL)isVisibleForDSID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCSVisibilityItem
 
-- (BCSVisibilityItem)initWithVisibility:(id)a3
+- (BCSVisibilityItem)initWithVisibility:(id)visibility
 {
-  v4 = a3;
-  v5 = [v4 language];
-  v6 = [v4 country];
-  [v4 ratio];
+  visibilityCopy = visibility;
+  language = [visibilityCopy language];
+  country = [visibilityCopy country];
+  [visibilityCopy ratio];
   v8 = v7;
 
-  v9 = [(BCSVisibilityItem *)self initWithLanguage:v5 country:v6 ratio:v8];
+  v9 = [(BCSVisibilityItem *)self initWithLanguage:language country:country ratio:v8];
   return v9;
 }
 
-- (BCSVisibilityItem)initWithLanguage:(id)a3 country:(id)a4 ratio:(double)a5
+- (BCSVisibilityItem)initWithLanguage:(id)language country:(id)country ratio:(double)ratio
 {
-  v8 = a3;
-  v9 = a4;
+  languageCopy = language;
+  countryCopy = country;
   v16.receiver = self;
   v16.super_class = BCSVisibilityItem;
   v10 = [(BCSVisibilityItem *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [languageCopy copy];
     language = v10->_language;
     v10->_language = v11;
 
-    v13 = [v9 copy];
+    v13 = [countryCopy copy];
     country = v10->_country;
     v10->_country = v13;
 
-    v10->_ratio = a5;
+    v10->_ratio = ratio;
   }
 
   return v10;
@@ -48,47 +48,47 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(BCSVisibilityItem *)self language];
-  v5 = [(BCSVisibilityItem *)self country];
+  language = [(BCSVisibilityItem *)self language];
+  country = [(BCSVisibilityItem *)self country];
   [(BCSVisibilityItem *)self ratio];
-  v7 = [v3 stringWithFormat:@"(%@ - %@) : %f", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"(%@ - %@) : %f", language, country, v6];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   language = self->_language;
-  v5 = a3;
-  [v5 encodeObject:language forKey:@"BCSVisibilityItemLanguageKey"];
-  [v5 encodeObject:self->_country forKey:@"BCSVisibilityItemCountryKey"];
-  [v5 encodeDouble:@"BCSVisibilityItemRatioKey" forKey:self->_ratio];
+  coderCopy = coder;
+  [coderCopy encodeObject:language forKey:@"BCSVisibilityItemLanguageKey"];
+  [coderCopy encodeObject:self->_country forKey:@"BCSVisibilityItemCountryKey"];
+  [coderCopy encodeDouble:@"BCSVisibilityItemRatioKey" forKey:self->_ratio];
 }
 
-- (BCSVisibilityItem)initWithCoder:(id)a3
+- (BCSVisibilityItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BCSVisibilityItemLanguageKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BCSVisibilityItemCountryKey"];
-  [v4 decodeDoubleForKey:@"BCSVisibilityItemRatioKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BCSVisibilityItemLanguageKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BCSVisibilityItemCountryKey"];
+  [coderCopy decodeDoubleForKey:@"BCSVisibilityItemRatioKey"];
   v8 = v7;
 
   v9 = [(BCSVisibilityItem *)self initWithLanguage:v5 country:v6 ratio:v8];
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(BCSVisibilityItem *)self language];
-    v7 = [v6 copyWithZone:a3];
+    language = [(BCSVisibilityItem *)self language];
+    v7 = [language copyWithZone:zone];
     v8 = v5[1];
     v5[1] = v7;
 
-    v9 = [(BCSVisibilityItem *)self language];
-    v10 = [v9 copyWithZone:a3];
+    language2 = [(BCSVisibilityItem *)self language];
+    v10 = [language2 copyWithZone:zone];
     v11 = v5[2];
     v5[2] = v10;
 
@@ -99,19 +99,19 @@
   return v5;
 }
 
-- (BOOL)isVisibleForDSID:(id)a3
+- (BOOL)isVisibleForDSID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [BCSHashService SHA256TruncatedHashForInputString:v4 includedBytes:32];
-  v6 = [v4 length];
+  dCopy = d;
+  v5 = [BCSHashService SHA256TruncatedHashForInputString:dCopy includedBytes:32];
+  v6 = [dCopy length];
   v7 = ABSLogCommon();
   v8 = v7;
   if (!v6 || (v5 & 0x8000000000000000) != 0)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [v4 length];
+      [dCopy length];
       v16 = NSStringFromBOOL();
       v17 = NSStringFromBOOL();
       v18 = 136315650;

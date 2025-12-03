@@ -1,25 +1,25 @@
 @interface HDPauseRingsScheduleEntity
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)foreignKeys;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
-+ (id)orderingTermForSortDescriptor:(id)a3;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
++ (id)orderingTermForSortDescriptor:(id)descriptor;
 @end
 
 @implementation HDPauseRingsScheduleEntity
 
-+ (id)orderingTermForSortDescriptor:(id)a3
++ (id)orderingTermForSortDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 key];
-  v6 = [v4 ascending];
+  descriptorCopy = descriptor;
+  v5 = [descriptorCopy key];
+  ascending = [descriptorCopy ascending];
   if ([v5 isEqualToString:*MEMORY[0x277CCC650]])
   {
     v7 = MEMORY[0x277D10B68];
     v8 = objc_opt_class();
     v9 = @"start_date_index";
 LABEL_5:
-    v10 = [v7 orderingTermWithProperty:v9 entityClass:v8 ascending:v6];
+    v10 = [v7 orderingTermWithProperty:v9 entityClass:v8 ascending:ascending];
     goto LABEL_7;
   }
 
@@ -31,9 +31,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___HDPauseRingsScheduleEntity;
-  v10 = objc_msgSendSuper2(&v13, sel_orderingTermForSortDescriptor_, v4);
+  v10 = objc_msgSendSuper2(&v13, sel_orderingTermForSortDescriptor_, descriptorCopy);
 LABEL_7:
   v11 = v10;
 
@@ -53,17 +53,17 @@ LABEL_7:
   return v3;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a5;
+  objectCopy = object;
+  dCopy = d;
+  databaseCopy = database;
   v15 = objc_opt_class();
   if (([v15 isEqual:objc_opt_class()] & 1) == 0)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"HDPauseRingsScheduleEntity.m" lineNumber:62 description:{@"Subclasses must override %s", "+[HDPauseRingsScheduleEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDPauseRingsScheduleEntity.m" lineNumber:62 description:{@"Subclasses must override %s", "+[HDPauseRingsScheduleEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
   }
 
   v28[0] = @"data_id";
@@ -74,11 +74,11 @@ LABEL_7:
   v25[1] = 3221225472;
   v25[2] = __92__HDPauseRingsScheduleEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
   v25[3] = &unk_278613DE8;
-  v26 = v13;
-  v27 = v12;
-  v17 = v12;
-  v18 = v13;
-  v19 = [a1 insertOrReplaceEntity:1 database:v14 properties:v16 error:a7 bindingHandler:v25];
+  v26 = dCopy;
+  v27 = objectCopy;
+  v17 = objectCopy;
+  v18 = dCopy;
+  v19 = [self insertOrReplaceEntity:1 database:databaseCopy properties:v16 error:error bindingHandler:v25];
 
   if (v19)
   {
@@ -105,23 +105,23 @@ void __92__HDPauseRingsScheduleEntity_insertDataObject_withProvenance_inDatabase
   JUMPOUT(0x22AAC6B90);
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
-  if (a3)
+  if (object)
   {
-    [a4 addPauseRingsSchedules:a3];
+    [collection addPauseRingsSchedules:object];
   }
 
-  return a3 != 0;
+  return object != 0;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDPauseRingsScheduleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDPauseRingsScheduleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }

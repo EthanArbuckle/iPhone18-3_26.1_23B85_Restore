@@ -1,16 +1,16 @@
 @interface HMDDataStreamSetupOperation
-+ (id)tcpSetupOperationWithAccessory:(id)a3 queue:(id)a4 logIdentifier:(id)a5 transferManagementService:(id)a6;
-- (BOOL)removeBulkSendListener:(id)a3;
-- (HMDDataStreamSetupOperation)initWithAccessory:(id)a3 queue:(id)a4 logIdentifier:(id)a5 transferManagementService:(id)a6;
++ (id)tcpSetupOperationWithAccessory:(id)accessory queue:(id)queue logIdentifier:(id)identifier transferManagementService:(id)service;
+- (BOOL)removeBulkSendListener:(id)listener;
+- (HMDDataStreamSetupOperation)initWithAccessory:(id)accessory queue:(id)queue logIdentifier:(id)identifier transferManagementService:(id)service;
 - (HMDDataStreamSetupOperationDelegate)delegate;
 - (void)_clearPendingBulkSendListeners;
-- (void)addBulkSendListener:(id)a3 fileType:(id)a4;
-- (void)continueStreamSetupWithResponse:(id)a3;
+- (void)addBulkSendListener:(id)listener fileType:(id)type;
+- (void)continueStreamSetupWithResponse:(id)response;
 - (void)dealloc;
-- (void)movePendingBulkSendListenersToBulkSendProtocol:(id)a3;
-- (void)postDidFailWithError:(id)a3;
-- (void)postDidSucceedWithTransport:(id)a3 sessionEncryption:(id)a4;
-- (void)processTransportSetupResponse:(id)a3;
+- (void)movePendingBulkSendListenersToBulkSendProtocol:(id)protocol;
+- (void)postDidFailWithError:(id)error;
+- (void)postDidSucceedWithTransport:(id)transport sessionEncryption:(id)encryption;
+- (void)processTransportSetupResponse:(id)response;
 - (void)startSetup;
 @end
 
@@ -23,19 +23,19 @@
   return WeakRetained;
 }
 
-- (void)movePendingBulkSendListenersToBulkSendProtocol:(id)a3
+- (void)movePendingBulkSendListenersToBulkSendProtocol:(id)protocol
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDDataStreamSetupOperation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  protocolCopy = protocol;
+  queue = [(HMDDataStreamSetupOperation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  pendingBulkSendListeners = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
+  v7 = [pendingBulkSendListeners countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -46,43 +46,43 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(pendingBulkSendListeners);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 listener];
-        if (v12)
+        listener = [v11 listener];
+        if (listener)
         {
-          v13 = [v11 fileType];
-          [v4 addListener:v12 fileType:v13];
+          fileType = [v11 fileType];
+          [protocolCopy addListener:listener fileType:fileType];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [pendingBulkSendListeners countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
-  [v14 removeAllObjects];
+  pendingBulkSendListeners2 = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
+  [pendingBulkSendListeners2 removeAllObjects];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeBulkSendListener:(id)a3
+- (BOOL)removeBulkSendListener:(id)listener
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDDataStreamSetupOperation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  listenerCopy = listener;
+  queue = [(HMDDataStreamSetupOperation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  pendingBulkSendListeners = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
+  v7 = [pendingBulkSendListeners countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -93,23 +93,23 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(pendingBulkSendListeners);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 listener];
+        listener = [v11 listener];
 
-        if (v12 == v4)
+        if (listener == listenerCopy)
         {
-          v14 = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
-          [v14 removeObject:v11];
+          pendingBulkSendListeners2 = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
+          [pendingBulkSendListeners2 removeObject:v11];
 
           v13 = 1;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [pendingBulkSendListeners countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -126,21 +126,21 @@ LABEL_11:
   return v13;
 }
 
-- (void)addBulkSendListener:(id)a3 fileType:(id)a4
+- (void)addBulkSendListener:(id)listener fileType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDDataStreamSetupOperation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  typeCopy = type;
+  listenerCopy = listener;
+  queue = [(HMDDataStreamSetupOperation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [[HMDPendingBulkSendListener alloc] initWithListener:v7 fileType:v6];
-  v9 = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
-  [v9 addObject:v10];
+  v10 = [[HMDPendingBulkSendListener alloc] initWithListener:listenerCopy fileType:typeCopy];
+  pendingBulkSendListeners = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
+  [pendingBulkSendListeners addObject:v10];
 }
 
-- (void)processTransportSetupResponse:(id)a3
+- (void)processTransportSetupResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s must be overridden in a subclass/category", "-[HMDDataStreamSetupOperation processTransportSetupResponse:]"];
@@ -168,8 +168,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  pendingBulkSendListeners = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
+  v4 = [pendingBulkSendListeners countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -181,38 +181,38 @@ LABEL_11:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pendingBulkSendListeners);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * v7) listener];
-        if (v8)
+        listener = [*(*(&v12 + 1) + 8 * v7) listener];
+        if (listener)
         {
-          v9 = [(HMDDataStreamSetupOperation *)self accessory];
-          [v8 accessory:v9 didCloseDataStreamWithError:0];
+          accessory = [(HMDDataStreamSetupOperation *)self accessory];
+          [listener accessory:accessory didCloseDataStreamWithError:0];
         }
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [pendingBulkSendListeners countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  v10 = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
-  [v10 removeAllObjects];
+  pendingBulkSendListeners2 = [(HMDDataStreamSetupOperation *)self pendingBulkSendListeners];
+  [pendingBulkSendListeners2 removeAllObjects];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)continueStreamSetupWithResponse:(id)a3
+- (void)continueStreamSetupWithResponse:(id)response
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -222,13 +222,13 @@ LABEL_11:
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_DEBUG, "%{public}@[Start Stream] Parsing accessory response", buf, 0xCu);
   }
 
-  v56 = v6;
+  v56 = selfCopy;
   objc_autoreleasePoolPop(v5);
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v9 = v4;
+  v9 = responseCopy;
   v10 = [v9 countByEnumeratingWithState:&v58 objects:v66 count:16];
   if (v10)
   {
@@ -244,10 +244,10 @@ LABEL_5:
       }
 
       v14 = *(*(&v58 + 1) + 8 * v13);
-      v15 = [v14 request];
-      v16 = [v15 characteristic];
-      v17 = [v16 type];
-      v18 = [v17 isEqualToString:@"00000131-0000-1000-8000-0026BB765291"];
+      request = [v14 request];
+      characteristic = [request characteristic];
+      type = [characteristic type];
+      v18 = [type isEqualToString:@"00000131-0000-1000-8000-0026BB765291"];
 
       if (v18)
       {
@@ -273,9 +273,9 @@ LABEL_5:
       goto LABEL_17;
     }
 
-    v20 = [v19 error];
+    error = [v19 error];
 
-    if (v20)
+    if (error)
     {
       v21 = objc_autoreleasePoolPush();
       v22 = v56;
@@ -283,25 +283,25 @@ LABEL_5:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         v24 = HMFGetLogIdentifier();
-        v25 = [v19 error];
+        error2 = [v19 error];
         *buf = 138543618;
         v63 = v24;
         v64 = 2112;
-        v65 = v25;
+        v65 = error2;
         _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_ERROR, "%{public}@[Start Stream] The setup transfer write reply errored out: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v21);
-      v26 = [v19 error];
-      [(HMDDataStreamSetupOperation *)v22 postDidFailWithError:v26];
+      error3 = [v19 error];
+      [(HMDDataStreamSetupOperation *)v22 postDidFailWithError:error3];
 
       goto LABEL_20;
     }
 
     v32 = MEMORY[0x277CFEB28];
-    v33 = [v19 value];
+    value = [v19 value];
     v57 = 0;
-    v34 = [v32 parsedFromData:v33 error:&v57];
+    v34 = [v32 parsedFromData:value error:&v57];
     v35 = v57;
 
     if (v35 || !v34)
@@ -326,9 +326,9 @@ LABEL_5:
       goto LABEL_45;
     }
 
-    v36 = [v34 status];
+    status = [v34 status];
 
-    if (!v36)
+    if (!status)
     {
       v45 = objc_autoreleasePoolPush();
       v46 = v56;
@@ -356,22 +356,22 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v37 = [v34 status];
-    v38 = [v37 value];
-    if (v38 == 1)
+    status2 = [v34 status];
+    value2 = [status2 value];
+    if (value2 == 1)
     {
       v39 = 52;
     }
 
     else
     {
-      if (v38 != 2)
+      if (value2 != 2)
       {
 
 LABEL_38:
-        v55 = [v34 parameters];
+        parameters = [v34 parameters];
 
-        if (v55)
+        if (parameters)
         {
           [(HMDDataStreamSetupOperation *)v56 processTransportSetupResponse:v34];
 LABEL_46:
@@ -407,8 +407,8 @@ LABEL_46:
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
       {
         v52 = HMFGetLogIdentifier();
-        v53 = [v34 status];
-        [v53 value];
+        status3 = [v34 status];
+        [status3 value];
         v54 = HAPDataStreamTransportCommandStatusAsString();
         *buf = 138543618;
         v63 = v52;
@@ -446,21 +446,21 @@ LABEL_20:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postDidSucceedWithTransport:(id)a3 sessionEncryption:(id)a4
+- (void)postDidSucceedWithTransport:(id)transport sessionEncryption:(id)encryption
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDDataStreamSetupOperation *)self queue];
+  transportCopy = transport;
+  encryptionCopy = encryption;
+  queue = [(HMDDataStreamSetupOperation *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__HMDDataStreamSetupOperation_postDidSucceedWithTransport_sessionEncryption___block_invoke;
   block[3] = &unk_279734960;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = transportCopy;
+  v13 = encryptionCopy;
+  v9 = encryptionCopy;
+  v10 = transportCopy;
+  dispatch_async(queue, block);
 }
 
 void __77__HMDDataStreamSetupOperation_postDidSucceedWithTransport_sessionEncryption___block_invoke(uint64_t a1)
@@ -469,18 +469,18 @@ void __77__HMDDataStreamSetupOperation_postDidSucceedWithTransport_sessionEncryp
   [v2 dataStreamSetupOperation:*(a1 + 32) didSucceedWithTransport:*(a1 + 40) sessionEncryption:*(a1 + 48)];
 }
 
-- (void)postDidFailWithError:(id)a3
+- (void)postDidFailWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HMDDataStreamSetupOperation *)self queue];
+  errorCopy = error;
+  queue = [(HMDDataStreamSetupOperation *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HMDDataStreamSetupOperation_postDidFailWithError___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(queue, v7);
 }
 
 void __52__HMDDataStreamSetupOperation_postDidFailWithError___block_invoke(uint64_t a1)
@@ -497,22 +497,22 @@ void __52__HMDDataStreamSetupOperation_postDidFailWithError___block_invoke(uint6
   [(HMDDataStreamSetupOperation *)&v3 dealloc];
 }
 
-- (HMDDataStreamSetupOperation)initWithAccessory:(id)a3 queue:(id)a4 logIdentifier:(id)a5 transferManagementService:(id)a6
+- (HMDDataStreamSetupOperation)initWithAccessory:(id)accessory queue:(id)queue logIdentifier:(id)identifier transferManagementService:(id)service
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  accessoryCopy = accessory;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  serviceCopy = service;
   v20.receiver = self;
   v20.super_class = HMDDataStreamSetupOperation;
   v15 = [(HMDDataStreamSetupOperation *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accessory, a3);
-    objc_storeStrong(&v16->_queue, a4);
-    objc_storeStrong(&v16->_logIdentifier, a5);
-    objc_storeStrong(&v16->_transferManagementService, a6);
+    objc_storeStrong(&v15->_accessory, accessory);
+    objc_storeStrong(&v16->_queue, queue);
+    objc_storeStrong(&v16->_logIdentifier, identifier);
+    objc_storeStrong(&v16->_transferManagementService, service);
     v17 = [MEMORY[0x277CBEB58] set];
     pendingBulkSendListeners = v16->_pendingBulkSendListeners;
     v16->_pendingBulkSendListeners = v17;
@@ -521,13 +521,13 @@ void __52__HMDDataStreamSetupOperation_postDidFailWithError___block_invoke(uint6
   return v16;
 }
 
-+ (id)tcpSetupOperationWithAccessory:(id)a3 queue:(id)a4 logIdentifier:(id)a5 transferManagementService:(id)a6
++ (id)tcpSetupOperationWithAccessory:(id)accessory queue:(id)queue logIdentifier:(id)identifier transferManagementService:(id)service
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[HMDDataStreamTCPSetupOperation alloc] initWithAccessory:v12 queue:v11 logIdentifier:v10 transferManagementService:v9];
+  serviceCopy = service;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  accessoryCopy = accessory;
+  v13 = [[HMDDataStreamTCPSetupOperation alloc] initWithAccessory:accessoryCopy queue:queueCopy logIdentifier:identifierCopy transferManagementService:serviceCopy];
 
   return v13;
 }

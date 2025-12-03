@@ -1,33 +1,33 @@
 @interface PDAuxiliaryPassInformationManager
-- (BOOL)_canUpdateMapsDataForMerchant:(id)a3 configurations:(id *)a4;
-- (PDAuxiliaryPassInformationManager)initWithDatabaseManager:(id)a3 withMerchantUpdater:(id)a4 userNotificationManager:(id)a5;
-- (id)_mapsBrandAndMerchantForMerchant:(id)a3;
-- (void)_lookupMapsInformationForItem:(id)a3 completion:(id)a4;
-- (void)_markOutstandingUpdatesInvalidForPassUniqueIdentifier:(id)a3;
-- (void)_processAuxiliaryPassInformation:(id)a3 pass:(id)a4;
-- (void)didInsertOrUpdatePass:(id)a3 oldPass:(id)a4 oldAuxiliaryInformationIdentifiers:(id)a5;
-- (void)merchantForPassUniqueIdentifier:(id)a3 withAuxiliaryPassInformationItem:(id)a4 completion:(id)a5;
-- (void)passWillBeRemoved:(id)a3;
+- (BOOL)_canUpdateMapsDataForMerchant:(id)merchant configurations:(id *)configurations;
+- (PDAuxiliaryPassInformationManager)initWithDatabaseManager:(id)manager withMerchantUpdater:(id)updater userNotificationManager:(id)notificationManager;
+- (id)_mapsBrandAndMerchantForMerchant:(id)merchant;
+- (void)_lookupMapsInformationForItem:(id)item completion:(id)completion;
+- (void)_markOutstandingUpdatesInvalidForPassUniqueIdentifier:(id)identifier;
+- (void)_processAuxiliaryPassInformation:(id)information pass:(id)pass;
+- (void)didInsertOrUpdatePass:(id)pass oldPass:(id)oldPass oldAuxiliaryInformationIdentifiers:(id)identifiers;
+- (void)merchantForPassUniqueIdentifier:(id)identifier withAuxiliaryPassInformationItem:(id)item completion:(id)completion;
+- (void)passWillBeRemoved:(id)removed;
 @end
 
 @implementation PDAuxiliaryPassInformationManager
 
-- (PDAuxiliaryPassInformationManager)initWithDatabaseManager:(id)a3 withMerchantUpdater:(id)a4 userNotificationManager:(id)a5
+- (PDAuxiliaryPassInformationManager)initWithDatabaseManager:(id)manager withMerchantUpdater:(id)updater userNotificationManager:(id)notificationManager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  updaterCopy = updater;
+  notificationManagerCopy = notificationManager;
   v21.receiver = self;
   v21.super_class = PDAuxiliaryPassInformationManager;
   v12 = [(PDAuxiliaryPassInformationManager *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_databaseManager, a3);
-    objc_storeStrong(&v13->_merchantUpdater, a4);
+    objc_storeStrong(&v12->_databaseManager, manager);
+    objc_storeStrong(&v13->_merchantUpdater, updater);
     if (PKMultiReservationTTUNotificationEnabled())
     {
-      v14 = [[PDAuxiliaryPassInformationNotificationManager alloc] initWithUserNotificationManager:v11];
+      v14 = [[PDAuxiliaryPassInformationNotificationManager alloc] initWithUserNotificationManager:notificationManagerCopy];
       notificationManager = v13->_notificationManager;
       v13->_notificationManager = v14;
     }
@@ -45,20 +45,20 @@
   return v13;
 }
 
-- (void)didInsertOrUpdatePass:(id)a3 oldPass:(id)a4 oldAuxiliaryInformationIdentifiers:(id)a5
+- (void)didInsertOrUpdatePass:(id)pass oldPass:(id)oldPass oldAuxiliaryInformationIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v26 = a4;
-  v8 = a5;
-  v27 = v7;
-  v9 = [v7 auxiliaryPassInformation];
+  passCopy = pass;
+  oldPassCopy = oldPass;
+  identifiersCopy = identifiers;
+  v27 = passCopy;
+  auxiliaryPassInformation = [passCopy auxiliaryPassInformation];
   v10 = objc_alloc_init(NSMutableSet);
-  v11 = [[NSMutableSet alloc] initWithSet:v8];
+  v11 = [[NSMutableSet alloc] initWithSet:identifiersCopy];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v9;
+  obj = auxiliaryPassInformation;
   v30 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v30)
   {
@@ -72,12 +72,12 @@
           objc_enumerationMutation(obj);
         }
 
-        v13 = [*(*(&v39 + 1) + 8 * i) items];
+        items = [*(*(&v39 + 1) + 8 * i) items];
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v14 = [v13 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        v14 = [items countByEnumeratingWithState:&v35 objects:v43 count:16];
         if (v14)
         {
           v15 = v14;
@@ -88,14 +88,14 @@
             {
               if (*v36 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(items);
               }
 
               v18 = *(*(&v35 + 1) + 8 * j);
-              v19 = [v18 identifier];
-              if ([v8 containsObject:v19])
+              identifier = [v18 identifier];
+              if ([identifiersCopy containsObject:identifier])
               {
-                [v11 removeObject:v19];
+                [v11 removeObject:identifier];
               }
 
               else
@@ -104,7 +104,7 @@
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v35 objects:v43 count:16];
+            v15 = [items countByEnumeratingWithState:&v35 objects:v43 count:16];
           }
 
           while (v15);
@@ -119,47 +119,47 @@
 
   if ([v11 count])
   {
-    v20 = [v26 uniqueID];
-    [(PDAuxiliaryPassInformationManager *)self _markOutstandingUpdatesInvalidForPassUniqueIdentifier:v20];
+    uniqueID = [oldPassCopy uniqueID];
+    [(PDAuxiliaryPassInformationManager *)self _markOutstandingUpdatesInvalidForPassUniqueIdentifier:uniqueID];
     databaseManager = self->_databaseManager;
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_10009AA2C;
     v31[3] = &unk_100841740;
     v32 = v11;
-    v33 = self;
-    v34 = v20;
-    v22 = v20;
+    selfCopy = self;
+    v34 = uniqueID;
+    v22 = uniqueID;
     [(PDDatabaseManager *)databaseManager performTransactionWithBlock:v31];
   }
 
   if ([v10 count])
   {
-    v23 = [v27 uniqueID];
-    [(PDAuxiliaryPassInformationManager *)self _markOutstandingUpdatesInvalidForPassUniqueIdentifier:v23];
+    uniqueID2 = [v27 uniqueID];
+    [(PDAuxiliaryPassInformationManager *)self _markOutstandingUpdatesInvalidForPassUniqueIdentifier:uniqueID2];
 
-    v24 = [v10 allObjects];
-    [(PDAuxiliaryPassInformationManager *)self _processAuxiliaryPassInformation:v24 pass:v27];
+    allObjects = [v10 allObjects];
+    [(PDAuxiliaryPassInformationManager *)self _processAuxiliaryPassInformation:allObjects pass:v27];
   }
 
   if (PKMultiReservationTTUNotificationEnabled())
   {
-    [(PDAuxiliaryPassInformationNotificationManager *)self->_notificationManager didInsertOrUpdatePass:v27 oldPass:v26];
+    [(PDAuxiliaryPassInformationNotificationManager *)self->_notificationManager didInsertOrUpdatePass:v27 oldPass:oldPassCopy];
   }
 }
 
-- (void)passWillBeRemoved:(id)a3
+- (void)passWillBeRemoved:(id)removed
 {
   databaseManager = self->_databaseManager;
-  v4 = [a3 uniqueID];
-  [(PDDatabaseManager *)databaseManager deleteAllPassAuxiliaryItemMerchantsForPassUniqueIdentifier:v4];
+  uniqueID = [removed uniqueID];
+  [(PDDatabaseManager *)databaseManager deleteAllPassAuxiliaryItemMerchantsForPassUniqueIdentifier:uniqueID];
 }
 
-- (void)_markOutstandingUpdatesInvalidForPassUniqueIdentifier:(id)a3
+- (void)_markOutstandingUpdatesInvalidForPassUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_processingItemUpdatesForPass objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_processingItemUpdatesForPass objectForKey:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -194,16 +194,16 @@
     }
   }
 
-  [(NSMutableDictionary *)self->_processingItemUpdatesForPass setObject:v6 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_processingItemUpdatesForPass setObject:v6 forKeyedSubscript:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_processAuxiliaryPassInformation:(id)a3 pass:(id)a4
+- (void)_processAuxiliaryPassInformation:(id)information pass:(id)pass
 {
-  v6 = a3;
-  if (v6)
+  informationCopy = information;
+  if (informationCopy)
   {
-    v7 = [a4 uniqueID];
+    uniqueID = [pass uniqueID];
     v8 = objc_alloc_init(NSMutableArray);
     v39 = objc_alloc_init(NSMutableArray);
     v47 = objc_alloc_init(NSMutableDictionary);
@@ -212,16 +212,16 @@
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v37 = v6;
-    obj = v6;
+    v37 = informationCopy;
+    obj = informationCopy;
     v9 = [obj countByEnumeratingWithState:&v61 objects:v68 count:16];
     v40 = v8;
-    v46 = self;
+    selfCopy = self;
     if (v9)
     {
       v10 = v9;
       v11 = *v62;
-      v38 = v7;
+      v38 = uniqueID;
       v42 = *v62;
       do
       {
@@ -235,14 +235,14 @@
           }
 
           v13 = *(*(&v61 + 1) + 8 * v12);
-          v14 = [v13 identifier];
-          if (v14)
+          identifier = [v13 identifier];
+          if (identifier)
           {
-            v15 = [v13 mapsURL];
+            mapsURL = [v13 mapsURL];
 
-            if (v15)
+            if (mapsURL)
             {
-              v16 = [(PDDatabaseManager *)self->_databaseManager merchantForPassUniqueIdentifier:v7 auxiliaryPassInformationItemIdentifier:v14];
+              v16 = [(PDDatabaseManager *)self->_databaseManager merchantForPassUniqueIdentifier:uniqueID auxiliaryPassInformationItemIdentifier:identifier];
               if (v16)
               {
                 v17 = [(PDAuxiliaryPassInformationManager *)self _mapsBrandAndMerchantForMerchant:v16];
@@ -251,7 +251,7 @@
 
               else
               {
-                v18 = [(NSMutableDictionary *)self->_processingItemUpdatesForPass objectForKey:v7];
+                v18 = [(NSMutableDictionary *)self->_processingItemUpdatesForPass objectForKey:uniqueID];
                 v19 = objc_alloc_init(PDAuxiliaryPassInformationManagerItemUpdate);
                 [(PDAuxiliaryPassInformationManagerItemUpdate *)v19 setItem:v13];
                 [(PDAuxiliaryPassInformationManagerItemUpdate *)v19 setIsInvalid:0];
@@ -278,17 +278,17 @@
                         }
 
                         v24 = *(*(&v57 + 1) + 8 * i);
-                        v25 = [v24 item];
-                        if ([v13 isEqual:v25])
+                        item = [v24 item];
+                        if ([v13 isEqual:item])
                         {
-                          v26 = [v24 isInvalid];
+                          isInvalid = [v24 isInvalid];
 
-                          if ((v26 & 1) == 0)
+                          if ((isInvalid & 1) == 0)
                           {
 
-                            self = v46;
-                            v7 = v38;
-                            [(NSMutableDictionary *)v46->_processingItemUpdatesForPass setObject:v17 forKeyedSubscript:v38];
+                            self = selfCopy;
+                            uniqueID = v38;
+                            [(NSMutableDictionary *)selfCopy->_processingItemUpdatesForPass setObject:v17 forKeyedSubscript:v38];
 
                             goto LABEL_26;
                           }
@@ -307,8 +307,8 @@
 
                   v19 = v41;
                   [v17 addObject:v41];
-                  v7 = v38;
-                  self = v46;
+                  uniqueID = v38;
+                  self = selfCopy;
                 }
 
                 else
@@ -319,9 +319,9 @@
                   v17 = [v27 initWithArray:v28];
                 }
 
-                [(NSMutableDictionary *)self->_processingItemUpdatesForPass setObject:v17 forKeyedSubscript:v7];
+                [(NSMutableDictionary *)self->_processingItemUpdatesForPass setObject:v17 forKeyedSubscript:uniqueID];
                 [v39 addObject:v13];
-                [v47 setObject:v19 forKey:v14];
+                [v47 setObject:v19 forKey:identifier];
 
 LABEL_26:
                 v8 = v40;
@@ -363,17 +363,17 @@ LABEL_26:
           }
 
           v33 = *(*(&v53 + 1) + 8 * j);
-          v34 = [v33 identifier];
+          identifier2 = [v33 identifier];
           v48[0] = _NSConcreteStackBlock;
           v48[1] = 3221225472;
           v48[2] = sub_10009B1D8;
           v48[3] = &unk_100841790;
-          v48[4] = v46;
-          v49 = v7;
+          v48[4] = selfCopy;
+          v49 = uniqueID;
           v50 = v47;
-          v51 = v34;
+          v51 = identifier2;
           v52 = v33;
-          [(PDAuxiliaryPassInformationManager *)v46 _lookupMapsInformationForItem:v33 completion:v48];
+          [(PDAuxiliaryPassInformationManager *)selfCopy _lookupMapsInformationForItem:v33 completion:v48];
         }
 
         v30 = [obja countByEnumeratingWithState:&v53 objects:v65 count:16];
@@ -384,45 +384,45 @@ LABEL_26:
 
     if ([v40 count])
     {
-      merchantUpdater = v46->_merchantUpdater;
+      merchantUpdater = selfCopy->_merchantUpdater;
       v36 = [v40 copy];
       [(PDMapsBrandAndMerchantUpdater *)merchantUpdater updateMapsDataForConfigurations:v36];
     }
 
-    v6 = v37;
+    informationCopy = v37;
   }
 }
 
-- (void)merchantForPassUniqueIdentifier:(id)a3 withAuxiliaryPassInformationItem:(id)a4 completion:(id)a5
+- (void)merchantForPassUniqueIdentifier:(id)identifier withAuxiliaryPassInformationItem:(id)item completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  identifierCopy = identifier;
+  itemCopy = item;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
-    if (v8 && v9)
+    if (identifierCopy && itemCopy)
     {
-      v12 = [v9 identifier];
-      if (!v12)
+      identifier = [itemCopy identifier];
+      if (!identifier)
       {
         v11[2](v11, 0);
       }
 
       os_unfair_lock_lock(&self->_lock);
-      v13 = [(NSMutableDictionary *)self->_processingItemUpdatesForPass objectForKey:v8];
+      v13 = [(NSMutableDictionary *)self->_processingItemUpdatesForPass objectForKey:identifierCopy];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_10009BA54;
       v30[3] = &unk_1008417B8;
-      v30[4] = v12;
+      v30[4] = identifier;
       if ([v13 pk_hasObjectPassingTest:v30])
       {
-        v14 = [(NSMutableDictionary *)self->_processingItemCompletions objectForKey:v8];
+        v14 = [(NSMutableDictionary *)self->_processingItemCompletions objectForKey:identifierCopy];
         if (v14)
         {
           v15 = v14;
-          v16 = [v14 objectForKey:v12];
+          v16 = [v14 objectForKey:identifier];
           if (v16)
           {
             v17 = objc_retainBlock(v11);
@@ -434,7 +434,7 @@ LABEL_26:
             v24 = [NSMutableArray alloc];
             v17 = objc_retainBlock(v11);
             v25 = [v24 initWithObjects:{v17, 0}];
-            [v15 setObject:v25 forKey:v12];
+            [v15 setObject:v25 forKey:identifier];
           }
         }
 
@@ -444,9 +444,9 @@ LABEL_26:
           v21 = [NSMutableArray alloc];
           v22 = objc_retainBlock(v11);
           v23 = [v21 initWithObjects:{v22, 0}];
-          v15 = [v20 initWithObjectsAndKeys:{v23, v12, 0}];
+          v15 = [v20 initWithObjectsAndKeys:{v23, identifier, 0}];
 
-          [(NSMutableDictionary *)self->_processingItemCompletions setObject:v15 forKey:v8];
+          [(NSMutableDictionary *)self->_processingItemCompletions setObject:v15 forKey:identifierCopy];
         }
 
         v26 = PKLogFacilityTypeGetObject();
@@ -454,9 +454,9 @@ LABEL_26:
         {
           processingItemCompletions = self->_processingItemCompletions;
           *buf = 138412802;
-          v32 = v12;
+          v32 = identifier;
           v33 = 2112;
-          v34 = v8;
+          v34 = identifierCopy;
           v35 = 2112;
           v36 = processingItemCompletions;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "PDAuxiliaryPassInformationManager: Merchant lookup for %@ in pass %@ in progress, queueing completion %@", buf, 0x20u);
@@ -468,15 +468,15 @@ LABEL_26:
       else
       {
         os_unfair_lock_unlock(&self->_lock);
-        v18 = [(PDDatabaseManager *)self->_databaseManager merchantForPassUniqueIdentifier:v8 auxiliaryPassInformationItemIdentifier:v12];
+        v18 = [(PDDatabaseManager *)self->_databaseManager merchantForPassUniqueIdentifier:identifierCopy auxiliaryPassInformationItemIdentifier:identifier];
         [(NSMutableDictionary *)v18 setUseDisplayNameIgnoringBrand:1];
         v19 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v32 = v12;
+          v32 = identifier;
           v33 = 2112;
-          v34 = v8;
+          v34 = identifierCopy;
           v35 = 2112;
           v36 = v18;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "PDAuxiliaryPassInformationManager: Fetched merchant for %@ in pass %@ (merchant lookup not in progress): %@", buf, 0x20u);
@@ -494,28 +494,28 @@ LABEL_26:
           v28[2] = sub_10009BAE8;
           v28[3] = &unk_1008417E0;
           v29 = v11;
-          [(PDAuxiliaryPassInformationManager *)self _lookupMapsInformationForItem:v9 completion:v28];
+          [(PDAuxiliaryPassInformationManager *)self _lookupMapsInformationForItem:itemCopy completion:v28];
         }
       }
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)_lookupMapsInformationForItem:(id)a3 completion:(id)a4
+- (void)_lookupMapsInformationForItem:(id)item completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[PKAuxiliaryItemMerchantLookupSource alloc] initWithAuxiliaryItem:v5];
+  itemCopy = item;
+  completionCopy = completion;
+  v7 = [[PKAuxiliaryItemMerchantLookupSource alloc] initWithAuxiliaryItem:itemCopy];
   v8 = [[PKMerchantLookupRequest alloc] initWithSource:v7];
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v5 description];
+    v10 = [itemCopy description];
     *buf = 138412290;
     v17 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PDAuxiliaryPassInformationManager: Looking up maps data for aux item %@", buf, 0xCu);
@@ -525,17 +525,17 @@ LABEL_26:
   v13[1] = 3221225472;
   v13[2] = sub_10009BCD8;
   v13[3] = &unk_100841808;
-  v14 = v5;
-  v15 = v6;
-  v11 = v6;
-  v12 = v5;
+  v14 = itemCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = itemCopy;
   [v8 startLookupWithCompletion:v13];
 }
 
-- (id)_mapsBrandAndMerchantForMerchant:(id)a3
+- (id)_mapsBrandAndMerchantForMerchant:(id)merchant
 {
   v8 = 0;
-  v3 = [(PDAuxiliaryPassInformationManager *)self _canUpdateMapsDataForMerchant:a3 configurations:&v8];
+  v3 = [(PDAuxiliaryPassInformationManager *)self _canUpdateMapsDataForMerchant:merchant configurations:&v8];
   v4 = v8;
   v5 = v4;
   v6 = 0;
@@ -547,27 +547,27 @@ LABEL_26:
   return v6;
 }
 
-- (BOOL)_canUpdateMapsDataForMerchant:(id)a3 configurations:(id *)a4
+- (BOOL)_canUpdateMapsDataForMerchant:(id)merchant configurations:(id *)configurations
 {
-  v5 = a3;
+  merchantCopy = merchant;
   v6 = objc_alloc_init(NSMutableArray);
-  v7 = [v5 mapsBrand];
+  mapsBrand = [merchantCopy mapsBrand];
   v16 = 0;
-  v8 = [PDMapsBrandAndMerchantUpdater canUpdateMapsBrandForBrand:v7 outConfiguration:&v16];
+  v8 = [PDMapsBrandAndMerchantUpdater canUpdateMapsBrandForBrand:mapsBrand outConfiguration:&v16];
   v9 = v16;
 
   [v6 safelyAddObject:v9];
-  v10 = [v5 mapsMerchant];
+  mapsMerchant = [merchantCopy mapsMerchant];
 
   v15 = 0;
-  v11 = [PDMapsBrandAndMerchantUpdater canUpdateMapsMerchantForMerchant:v10 outConfiguration:&v15];
+  v11 = [PDMapsBrandAndMerchantUpdater canUpdateMapsMerchantForMerchant:mapsMerchant outConfiguration:&v15];
   v12 = v15;
 
   [v6 safelyAddObject:v12];
   v13 = PKIsPhone();
-  if (a4)
+  if (configurations)
   {
-    *a4 = [v6 copy];
+    *configurations = [v6 copy];
   }
 
   return v13 & (v8 | v11);

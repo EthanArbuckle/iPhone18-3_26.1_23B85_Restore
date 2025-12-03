@@ -8,20 +8,20 @@
 {
   v9.receiver = self;
   v9.super_class = UIKeyboardCandidateViewConfigurationCarPlay;
-  v3 = [(UIKeyboardCandidateViewConfigurationTenKeyCarPlay *)&v9 initialState];
-  [v3 setPrimaryGridRowType:0];
-  v4 = [(UIKeyboardCandidateViewConfiguration *)self darkKeyboard];
+  initialState = [(UIKeyboardCandidateViewConfigurationTenKeyCarPlay *)&v9 initialState];
+  [initialState setPrimaryGridRowType:0];
+  darkKeyboard = [(UIKeyboardCandidateViewConfiguration *)self darkKeyboard];
   v5 = UIKBColorWhite_Alpha15;
-  if (!v4)
+  if (!darkKeyboard)
   {
     v5 = UIKBColorBlack_Alpha18;
   }
 
   v6 = [UIColor colorWithCGColor:UIKBGetNamedColor(*v5)];
-  v7 = [v3 style];
-  [v7 setBackgroundColor:v6];
+  style = [initialState style];
+  [style setBackgroundColor:v6];
 
-  return v3;
+  return initialState;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface CDPRemoteDeviceSecretValidatorAccessibility__CoreCDPUI__Setup
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CDPRemoteDeviceSecretValidatorAccessibility__CoreCDPUI__Setup)initWithContext:(id)a3 validator:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CDPRemoteDeviceSecretValidatorAccessibility__CoreCDPUI__Setup)initWithContext:(id)context validator:(id)validator;
 @end
 
 @implementation CDPRemoteDeviceSecretValidatorAccessibility__CoreCDPUI__Setup
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CDPRemoteDeviceSecretValidator" hasInstanceMethod:@"supportedEscapeOfferMask" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CDPRemoteDeviceSecretValidator" hasInstanceMethod:@"initWithContext:validator:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CDPRemoteDeviceSecretValidator" hasInstanceMethod:@"supportedEscapeOfferMask" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CDPRemoteDeviceSecretValidator" hasInstanceMethod:@"initWithContext:validator:" withFullSignature:{"@", "@", 0}];
 }
 
-- (CDPRemoteDeviceSecretValidatorAccessibility__CoreCDPUI__Setup)initWithContext:(id)a3 validator:(id)a4
+- (CDPRemoteDeviceSecretValidatorAccessibility__CoreCDPUI__Setup)initWithContext:(id)context validator:(id)validator
 {
   v13.receiver = self;
   v13.super_class = CDPRemoteDeviceSecretValidatorAccessibility__CoreCDPUI__Setup;
-  v4 = [(CDPRemoteDeviceSecretValidatorAccessibility__CoreCDPUI__Setup *)&v13 initWithContext:a3 validator:a4];
+  v4 = [(CDPRemoteDeviceSecretValidatorAccessibility__CoreCDPUI__Setup *)&v13 initWithContext:context validator:validator];
   v5 = dispatch_get_global_queue(0, 0);
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;

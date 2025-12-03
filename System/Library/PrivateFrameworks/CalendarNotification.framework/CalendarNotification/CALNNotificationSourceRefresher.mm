@@ -1,36 +1,36 @@
 @interface CALNNotificationSourceRefresher
-- (CALNNotificationSourceRefresher)initWithSources:(id)a3 notificationMonitor:(id)a4 notificationManager:(id)a5;
-- (void)_refreshNotifications:(id)a3;
-- (void)_withdrawExpiredNotificationsForSource:(id)a3;
-- (void)handleNotificationsChangedNotification:(id)a3;
+- (CALNNotificationSourceRefresher)initWithSources:(id)sources notificationMonitor:(id)monitor notificationManager:(id)manager;
+- (void)_refreshNotifications:(id)notifications;
+- (void)_withdrawExpiredNotificationsForSource:(id)source;
+- (void)handleNotificationsChangedNotification:(id)notification;
 - (void)handleNotificationsLoadedNotification;
 - (void)refreshNotifications;
 @end
 
 @implementation CALNNotificationSourceRefresher
 
-- (CALNNotificationSourceRefresher)initWithSources:(id)a3 notificationMonitor:(id)a4 notificationManager:(id)a5
+- (CALNNotificationSourceRefresher)initWithSources:(id)sources notificationMonitor:(id)monitor notificationManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourcesCopy = sources;
+  monitorCopy = monitor;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = CALNNotificationSourceRefresher;
   v11 = [(CALNNotificationSourceRefresher *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [sourcesCopy copy];
     sources = v11->_sources;
     v11->_sources = v12;
 
-    objc_storeStrong(&v11->_inboxNotificationMonitor, a4);
-    objc_storeStrong(&v11->_notificationManager, a5);
+    objc_storeStrong(&v11->_inboxNotificationMonitor, monitor);
+    objc_storeStrong(&v11->_notificationManager, manager);
     v14 = dispatch_queue_create("com.apple.calendar.notification.NotificationSourceRefresher", 0);
     refreshQueue = v11->_refreshQueue;
     v11->_refreshQueue = v14;
 
-    [v9 addNotificationsChangedObserver:v11 selector:sel_handleNotificationsChangedNotification_];
-    [v9 addNotificationsLoadedObserver:v11 selector:sel_handleNotificationsLoadedNotification];
+    [monitorCopy addNotificationsChangedObserver:v11 selector:sel_handleNotificationsChangedNotification_];
+    [monitorCopy addNotificationsLoadedObserver:v11 selector:sel_handleNotificationsLoadedNotification];
   }
 
   return v11;
@@ -73,9 +73,9 @@ void __72__CALNNotificationSourceRefresher_handleNotificationsLoadedNotification
   }
 }
 
-- (void)handleNotificationsChangedNotification:(id)a3
+- (void)handleNotificationsChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = +[CALNLogSubsystem defaultCategory];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -83,9 +83,9 @@ void __72__CALNNotificationSourceRefresher_handleNotificationsLoadedNotification
     _os_log_impl(&dword_242909000, v5, OS_LOG_TYPE_DEFAULT, "Received notification changed callback.", buf, 2u);
   }
 
-  v6 = [v4 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CC5B28]];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CC5B28]];
 
   if (v7)
   {
@@ -120,24 +120,24 @@ void __72__CALNNotificationSourceRefresher_handleNotificationsLoadedNotification
   dispatch_sync(refreshQueue, block);
 }
 
-- (void)_refreshNotifications:(id)a3
+- (void)_refreshNotifications:(id)notifications
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationsCopy = notifications;
   dispatch_assert_queue_V2(self->_refreshQueue);
-  v5 = [(CALNInboxNotificationMonitor *)self->_inboxNotificationMonitor eventNotificationReferences];
+  eventNotificationReferences = [(CALNInboxNotificationMonitor *)self->_inboxNotificationMonitor eventNotificationReferences];
 
-  if (v5)
+  if (eventNotificationReferences)
   {
     self->_needsRefreshOnNotificationsLoaded = 0;
     v6 = +[CALNLogSubsystem defaultCategory];
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (notificationsCopy)
     {
       if (v7)
       {
         *buf = 138412290;
-        v27 = v4;
+        v27 = notificationsCopy;
         v8 = "Refreshing notifications affected by changes to objects %@.";
         v9 = v6;
         v10 = 12;
@@ -177,7 +177,7 @@ LABEL_10:
           v17 = *(*(&v21 + 1) + 8 * i);
           v18 = objc_autoreleasePoolPush();
           [(CALNNotificationSourceRefresher *)self _withdrawExpiredNotificationsForSource:v17, v21];
-          [v17 refreshNotifications:v4];
+          [v17 refreshNotifications:notificationsCopy];
           objc_autoreleasePoolPop(v18);
         }
 
@@ -210,12 +210,12 @@ LABEL_21:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_withdrawExpiredNotificationsForSource:(id)a3
+- (void)_withdrawExpiredNotificationsForSource:(id)source
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = [a3 sourceIdentifier];
-  v5 = [(CALNNotificationSourceRefresher *)self notificationManager];
-  v6 = [v5 fetchRecordsWithSourceIdentifier:v4];
+  sourceIdentifier = [source sourceIdentifier];
+  notificationManager = [(CALNNotificationSourceRefresher *)self notificationManager];
+  v6 = [notificationManager fetchRecordsWithSourceIdentifier:sourceIdentifier];
 
   v24 = 0u;
   v25 = 0u;
@@ -239,27 +239,27 @@ LABEL_21:
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 content];
-        v15 = [v14 expirationDate];
+        content = [v13 content];
+        expirationDate = [content expirationDate];
 
-        if (v15)
+        if (expirationDate)
         {
-          [v15 timeIntervalSinceNow];
+          [expirationDate timeIntervalSinceNow];
           if (v16 <= 0.0)
           {
-            v17 = [v13 sourceClientIdentifier];
+            sourceClientIdentifier = [v13 sourceClientIdentifier];
             v18 = +[CALNLogSubsystem defaultCategory];
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
               *buf = v21;
-              v27 = v4;
+              v27 = sourceIdentifier;
               v28 = 2114;
-              v29 = v17;
+              v29 = sourceClientIdentifier;
               _os_log_impl(&dword_242909000, v18, OS_LOG_TYPE_DEFAULT, "Withdrawing expired notification with sourceIdentifier %{public}@ and sourceClientIdentifier %{public}@", buf, 0x16u);
             }
 
-            v19 = [(CALNNotificationSourceRefresher *)self notificationManager];
-            [v19 removeRecordWithSourceIdentifier:v4 sourceClientIdentifier:v17];
+            notificationManager2 = [(CALNNotificationSourceRefresher *)self notificationManager];
+            [notificationManager2 removeRecordWithSourceIdentifier:sourceIdentifier sourceClientIdentifier:sourceClientIdentifier];
           }
         }
       }

@@ -1,11 +1,11 @@
 @interface BRCRTCReporter
-- (BOOL)_shouldRemoveZoneNameWithPayload:(id)a3;
+- (BOOL)_shouldRemoveZoneNameWithPayload:(id)payload;
 - (BRCRTCReporter)init;
-- (BRCRTCReporter)initWithFPRTCReportingSession:(id)a3;
+- (BRCRTCReporter)initWithFPRTCReportingSession:(id)session;
 - (void)_init;
 - (void)_processReportingBatch;
 - (void)close;
-- (void)postReportWithCategory:(unint64_t)a3 type:(unint64_t)a4 payload:(id)a5 error:(id)a6;
+- (void)postReportWithCategory:(unint64_t)category type:(unint64_t)type payload:(id)payload error:(id)error;
 @end
 
 @implementation BRCRTCReporter
@@ -23,7 +23,7 @@
   self->_userInfo = v4;
 
   v6 = objc_alloc_init(BRCDeviceConfiguration);
-  v7 = [(BRCDeviceConfiguration *)v6 getConfiguration];
+  getConfiguration = [(BRCDeviceConfiguration *)v6 getConfiguration];
   v22[0] = @"isIcloudAnalyticsFlagOn";
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{+[BRCAnalyticsReporter isTelemetryReportingEnabled](BRCAnalyticsReporter, "isTelemetryReportingEnabled")}];
   v23[0] = v8;
@@ -33,39 +33,39 @@
   v11 = [v9 numberWithBool:{objc_msgSend(v10, "br_isEnabledForDesktopSync")}];
   v23[1] = v11;
   v22[2] = @"isEDS";
-  v12 = [v7 objectForKeyedSubscript:@"EDS"];
+  v12 = [getConfiguration objectForKeyedSubscript:@"EDS"];
   v23[2] = v12;
   v22[3] = @"isFPFS";
-  v13 = [v7 objectForKeyedSubscript:@"FPFS"];
+  v13 = [getConfiguration objectForKeyedSubscript:@"FPFS"];
   v23[3] = v13;
   v22[4] = @"isTestDevice";
-  v14 = [v7 objectForKeyedSubscript:@"TESTING"];
+  v14 = [getConfiguration objectForKeyedSubscript:@"TESTING"];
   v23[4] = v14;
   v22[5] = @"isSharedIPad";
-  v15 = [v7 objectForKeyedSubscript:@"SHARED_IPAD"];
+  v15 = [getConfiguration objectForKeyedSubscript:@"SHARED_IPAD"];
   v23[5] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:6];
   globalPayload = self->_globalPayload;
   self->_globalPayload = v16;
 
   v18 = [BRCUserDefaults defaultsForMangledID:0];
-  v19 = [v18 telemetryRTCAllowedZoneNamePrefixes];
+  telemetryRTCAllowedZoneNamePrefixes = [v18 telemetryRTCAllowedZoneNamePrefixes];
   allowedZoneNamePrefixes = self->_allowedZoneNamePrefixes;
-  self->_allowedZoneNamePrefixes = v19;
+  self->_allowedZoneNamePrefixes = telemetryRTCAllowedZoneNamePrefixes;
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BRCRTCReporter)initWithFPRTCReportingSession:(id)a3
+- (BRCRTCReporter)initWithFPRTCReportingSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v22.receiver = self;
   v22.super_class = BRCRTCReporter;
   v6 = [(BRCRTCReporter *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reportingManager, a3);
+    objc_storeStrong(&v6->_reportingManager, session);
     v8 = [BRCUserDefaults defaultsForMangledID:0];
     [v8 telemetryRTCPacerMinFireInterval];
 
@@ -98,8 +98,8 @@
 
 - (BRCRTCReporter)init
 {
-  v3 = [MEMORY[0x277D086A8] defaultManager];
-  if (!v3)
+  defaultManager = [MEMORY[0x277D086A8] defaultManager];
+  if (!defaultManager)
   {
     v4 = brc_bread_crumbs();
     v5 = brc_default_log();
@@ -109,7 +109,7 @@
     }
   }
 
-  v6 = [(BRCRTCReporter *)self initWithFPRTCReportingSession:v3];
+  v6 = [(BRCRTCReporter *)self initWithFPRTCReportingSession:defaultManager];
 
   return v6;
 }
@@ -137,9 +137,9 @@ uint64_t __23__BRCRTCReporter_close__block_invoke(uint64_t a1)
   return br_pacer_cancel();
 }
 
-- (BOOL)_shouldRemoveZoneNameWithPayload:(id)a3
+- (BOOL)_shouldRemoveZoneNameWithPayload:(id)payload
 {
-  v4 = [a3 objectForKeyedSubscript:@"zoneName"];
+  v4 = [payload objectForKeyedSubscript:@"zoneName"];
   v5 = v4;
   if (v4)
   {
@@ -174,43 +174,43 @@ uint64_t __23__BRCRTCReporter_close__block_invoke(uint64_t a1)
   }
 }
 
-- (void)postReportWithCategory:(unint64_t)a3 type:(unint64_t)a4 payload:(id)a5 error:(id)a6
+- (void)postReportWithCategory:(unint64_t)category type:(unint64_t)type payload:(id)payload error:(id)error
 {
-  v23 = a5;
-  v9 = a6;
-  if ([(BRCRTCReporter *)self _shouldRemoveZoneNameWithPayload:v23])
+  payloadCopy = payload;
+  errorCopy = error;
+  if ([(BRCRTCReporter *)self _shouldRemoveZoneNameWithPayload:payloadCopy])
   {
-    [v23 setObject:@"private" forKeyedSubscript:@"zoneName"];
+    [payloadCopy setObject:@"private" forKeyedSubscript:@"zoneName"];
   }
 
-  if (v23)
+  if (payloadCopy)
   {
-    v10 = v23;
+    dictionary = payloadCopy;
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v11 = v10;
-  [v10 addEntriesFromDictionary:self->_globalPayload];
+  v11 = dictionary;
+  [dictionary addEntriesFromDictionary:self->_globalPayload];
   v12 = self->_events;
   objc_sync_enter(v12);
   events = self->_events;
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:category];
   v15 = [(NSMutableDictionary *)events objectForKey:v14];
 
   if (!v15)
   {
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v17 = self->_events;
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:category];
     [(NSMutableDictionary *)v17 setObject:v16 forKeyedSubscript:v18];
   }
 
   v19 = self->_events;
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:category];
   v21 = [(NSMutableDictionary *)v19 objectForKeyedSubscript:v20];
   [v21 addObject:v11];
 

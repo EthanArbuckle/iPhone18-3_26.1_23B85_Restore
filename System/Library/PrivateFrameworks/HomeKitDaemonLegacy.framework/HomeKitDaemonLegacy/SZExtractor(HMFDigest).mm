@@ -14,9 +14,9 @@
   if (v11 < 7 && ((0x79u >> v11) & 1) != 0)
   {
     v12 = **(&unk_27972BFF8 + v11);
-    v13 = [v8 path];
+    path = [v8 path];
     v37 = 0;
-    v14 = [v10 attributesOfItemAtPath:v13 error:&v37];
+    v14 = [v10 attributesOfItemAtPath:path error:&v37];
     v15 = v37;
 
     if (v14)
@@ -26,9 +26,9 @@
       v17 = *MEMORY[0x277D6A778];
       v39[0] = v16;
       v39[1] = v17;
-      v36 = [v9 value];
-      v18 = [v36 hmf_hexadecimalRepresentation];
-      v38 = v18;
+      value = [v9 value];
+      hmf_hexadecimalRepresentation = [value hmf_hexadecimalRepresentation];
+      v38 = hmf_hexadecimalRepresentation;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
       v40[1] = v19;
       v39[2] = *MEMORY[0x277D6A770];
@@ -49,7 +49,7 @@
     else
     {
       v30 = objc_autoreleasePoolPush();
-      v31 = a1;
+      selfCopy = self;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
@@ -69,7 +69,7 @@
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = a1;
+    selfCopy2 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {

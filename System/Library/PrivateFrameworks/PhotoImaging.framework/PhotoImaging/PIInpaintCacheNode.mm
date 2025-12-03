@@ -1,53 +1,53 @@
 @interface PIInpaintCacheNode
 + (NSCache)intermediateCache;
-+ (id)inpaintNodeWithInput:(id)a3 operations:(id)a4 masks:(id)a5 error:(id *)a6;
++ (id)inpaintNodeWithInput:(id)input operations:(id)operations masks:(id)masks error:(id *)error;
 + (void)purge;
-- ($721907E0E1CDE8B6CD3FA271A8B25860)_exclusionMaskExtentForOperation:(SEL)a3 error:(id)a4;
-- ($721907E0E1CDE8B6CD3FA271A8B25860)_extentForInputIdentifiers:(SEL)a3 error:(id)a4;
-- ($721907E0E1CDE8B6CD3FA271A8B25860)_maskExtentForOperation:(SEL)a3 error:(id)a4;
-- (BOOL)_applyInpaintOperation:(id)a3 toImage:(id)a4 operationIndex:(unint64_t)a5 renderer:(id)a6 error:(id *)a7;
-- (BOOL)_renderBackgroundImage:(id)a3 intoMutableBuffer:(id)a4 renderer:(id)a5 error:(id *)a6;
-- (BOOL)_renderWithBackgroundImage:(id)a3 error:(id *)a4;
-- (BOOL)_tryLoad:(id *)a3;
-- (BOOL)_updateInputRegion:(id)a3 outputRegion:(id)a4 forOperation:(id)a5 geometry:(id)a6 error:(id *)a7;
-- (BOOL)applyInpaintOperations:(id)a3 toImage:(id)a4 renderer:(id)a5 error:(id *)a6;
+- ($721907E0E1CDE8B6CD3FA271A8B25860)_exclusionMaskExtentForOperation:(SEL)operation error:(id)error;
+- ($721907E0E1CDE8B6CD3FA271A8B25860)_extentForInputIdentifiers:(SEL)identifiers error:(id)error;
+- ($721907E0E1CDE8B6CD3FA271A8B25860)_maskExtentForOperation:(SEL)operation error:(id)error;
+- (BOOL)_applyInpaintOperation:(id)operation toImage:(id)image operationIndex:(unint64_t)index renderer:(id)renderer error:(id *)error;
+- (BOOL)_renderBackgroundImage:(id)image intoMutableBuffer:(id)buffer renderer:(id)renderer error:(id *)error;
+- (BOOL)_renderWithBackgroundImage:(id)image error:(id *)error;
+- (BOOL)_tryLoad:(id *)load;
+- (BOOL)_updateInputRegion:(id)region outputRegion:(id)outputRegion forOperation:(id)operation geometry:(id)geometry error:(id *)error;
+- (BOOL)applyInpaintOperations:(id)operations toImage:(id)image renderer:(id)renderer error:(id *)error;
 - (BOOL)shouldDumpSourceMasks;
-- (BOOL)tryLoad:(id *)a3;
-- (PIInpaintCacheNode)initWithInputs:(id)a3 settings:(id)a4 subsampleFactor:(int64_t)a5;
+- (BOOL)tryLoad:(id *)load;
+- (PIInpaintCacheNode)initWithInputs:(id)inputs settings:(id)settings subsampleFactor:(int64_t)factor;
 - (id)_computeBaseIdentifier;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)_modifyEvaluatedGeometry:(id)a3;
-- (id)_newMaskImageFromIdentifiers:(id)a3 useSourceImage:(BOOL)a4 error:(id *)a5;
-- (id)evaluateRenderDependenciesWithRequest:(id)a3 error:(id *)a4;
-- (id)inputGeometryForPipelineState:(id)a3 error:(id *)a4;
-- (id)newExclusionMaskImageForOperation:(id)a3 inputImage:(id)a4 error:(id *)a5;
-- (id)newImageOfSize:(id)a3 colorSpace:(id)a4;
-- (id)newMaskImageForOperation:(id)a3 useSourceImage:(BOOL)a4 error:(id *)a5;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)_modifyEvaluatedGeometry:(id)geometry;
+- (id)_newMaskImageFromIdentifiers:(id)identifiers useSourceImage:(BOOL)image error:(id *)error;
+- (id)evaluateRenderDependenciesWithRequest:(id)request error:(id *)error;
+- (id)inputGeometryForPipelineState:(id)state error:(id *)error;
+- (id)newExclusionMaskImageForOperation:(id)operation inputImage:(id)image error:(id *)error;
+- (id)newImageOfSize:(id)size colorSpace:(id)space;
+- (id)newMaskImageForOperation:(id)operation useSourceImage:(BOOL)image error:(id *)error;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 - (id)outputRegion;
-- (void)_debugDumpMaskImage:(id)a3 name:(id)a4;
-- (void)provideImageData:(void *)a3 bytesPerRow:(unint64_t)a4 origin:(unint64_t)a5 :(unint64_t)a6 size:(unint64_t)a7 :(unint64_t)a8 userInfo:(id)a9;
+- (void)_debugDumpMaskImage:(id)image name:(id)name;
+- (void)provideImageData:(void *)data bytesPerRow:(unint64_t)row origin:(unint64_t)origin :(unint64_t)a6 size:(unint64_t)size :(unint64_t)a8 userInfo:(id)info;
 @end
 
 @implementation PIInpaintCacheNode
 
-- (BOOL)applyInpaintOperations:(id)a3 toImage:(id)a4 renderer:(id)a5 error:(id *)a6
+- (BOOL)applyInpaintOperations:(id)operations toImage:(id)image renderer:(id)renderer error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 count])
+  operationsCopy = operations;
+  imageCopy = image;
+  rendererCopy = renderer;
+  if ([operationsCopy count])
   {
     v12 = 0;
     while (1)
     {
       kdebug_trace();
       v13 = objc_autoreleasePoolPush();
-      v14 = [v9 objectAtIndexedSubscript:v12];
+      v14 = [operationsCopy objectAtIndexedSubscript:v12];
       v24 = 0;
-      v15 = [(PIInpaintCacheNode *)self _applyInpaintOperation:v14 toImage:v10 operationIndex:v12 renderer:v11 error:&v24];
+      v15 = [(PIInpaintCacheNode *)self _applyInpaintOperation:v14 toImage:imageCopy operationIndex:v12 renderer:rendererCopy error:&v24];
       v16 = v24;
 
       objc_autoreleasePoolPop(v13);
@@ -57,14 +57,14 @@
         break;
       }
 
-      if (++v12 >= [v9 count])
+      if (++v12 >= [operationsCopy count])
       {
         goto LABEL_5;
       }
     }
 
     v21 = v16;
-    *a6 = v16;
+    *error = v16;
 
     v20 = 0;
   }
@@ -81,7 +81,7 @@ LABEL_5:
     if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v9 count];
+      v19 = [operationsCopy count];
       *buf = 134217984;
       v26 = v19;
       _os_log_impl(&dword_1C7694000, v18, OS_LOG_TYPE_DEFAULT, "Recomputed inpaint for %ld operations", buf, 0xCu);
@@ -93,19 +93,19 @@ LABEL_5:
   return v20;
 }
 
-- (BOOL)_applyInpaintOperation:(id)a3 toImage:(id)a4 operationIndex:(unint64_t)a5 renderer:(id)a6 error:(id *)a7
+- (BOOL)_applyInpaintOperation:(id)operation toImage:(id)image operationIndex:(unint64_t)index renderer:(id)renderer error:(id *)error
 {
   v120[4] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v109 = a6;
-  v14 = [v12 mode];
-  v15 = [v12 options];
-  if (v14 == 1)
+  operationCopy = operation;
+  imageCopy = image;
+  rendererCopy = renderer;
+  mode = [operationCopy mode];
+  options = [operationCopy options];
+  if (mode == 1)
   {
-    v16 = [v12 brushStroke];
-    [v12 sourceOffset];
-    +[PIRepairUtilities applyRepairStrokeToMutableBuffer:brushStroke:sourceOffset:repairEdges:](PIRepairUtilities, "applyRepairStrokeToMutableBuffer:brushStroke:sourceOffset:repairEdges:", v13, v16, [v12 repairEdges], v17, v18);
+    brushStroke = [operationCopy brushStroke];
+    [operationCopy sourceOffset];
+    +[PIRepairUtilities applyRepairStrokeToMutableBuffer:brushStroke:sourceOffset:repairEdges:](PIRepairUtilities, "applyRepairStrokeToMutableBuffer:brushStroke:sourceOffset:repairEdges:", imageCopy, brushStroke, [operationCopy repairEdges], v17, v18);
 
     v19 = 1;
 LABEL_56:
@@ -113,17 +113,17 @@ LABEL_56:
     return v19;
   }
 
-  v20 = v15;
-  if (OperationUsesLegacyFilter(v12))
+  v20 = options;
+  if (OperationUsesLegacyFilter(operationCopy))
   {
-    v21 = [v12 brushStroke];
-    v22 = v21;
+    brushStroke2 = [operationCopy brushStroke];
+    v22 = brushStroke2;
     if ((v20 & 0x100) != 0)
     {
       memset(buf, 0, sizeof(buf));
-      if (v21)
+      if (brushStroke2)
       {
-        [v21 extent];
+        [brushStroke2 extent];
         v32 = *buf;
       }
 
@@ -155,51 +155,51 @@ LABEL_56:
       v23 = MEMORY[0x1E695E0F0];
     }
 
-    v80 = [v109 context];
-    v19 = [PIRepairUtilities applyRepairMLStrokeToMutableBuffer:v13 brushStroke:v22 detectedFaces:v23 context:v80 error:a7];
+    context = [rendererCopy context];
+    v19 = [PIRepairUtilities applyRepairMLStrokeToMutableBuffer:imageCopy brushStroke:v22 detectedFaces:v23 context:context error:error];
 
     goto LABEL_56;
   }
 
-  v24 = [MEMORY[0x1E69B3B10] newCIImageFromBufferImage:v13];
-  v108 = v13;
-  if (v14 == 2)
+  v24 = [MEMORY[0x1E69B3B10] newCIImageFromBufferImage:imageCopy];
+  v108 = imageCopy;
+  if (mode == 2)
   {
-    v105 = a5;
-    v25 = ([v12 options] >> 4) & 1;
-    v26 = [v12 brushStroke];
-    v27 = [v26 ciImageTiled:0 closed:1 pressureMode:1 filled:v25];
+    indexCopy2 = index;
+    v25 = ([operationCopy options] >> 4) & 1;
+    brushStroke3 = [operationCopy brushStroke];
+    v27 = [brushStroke3 ciImageTiled:0 closed:1 pressureMode:1 filled:v25];
     if ([(PIInpaintCacheNode *)self shouldDumpSourceMasks])
     {
-      v102 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02ld_brushStroke", v105];
-      v28 = [MEMORY[0x1E695F658] blackImage];
+      indexCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02ld_brushStroke", indexCopy2];
+      blackImage = [MEMORY[0x1E695F658] blackImage];
       [v24 extent];
-      [v28 imageByCroppingToRect:?];
-      v30 = v29 = a7;
+      [blackImage imageByCroppingToRect:?];
+      v30 = v29 = error;
 
       v31 = [PIInpaintRendering imageByOverlayingMaskImage:v27 onImage:v30 withOpacity:1.0];
 
-      a7 = v29;
-      [(PIInpaintCacheNode *)self _debugDumpMaskImage:v31 name:v102];
+      error = v29;
+      [(PIInpaintCacheNode *)self _debugDumpMaskImage:v31 name:indexCopy2];
     }
 
     goto LABEL_20;
   }
 
-  if ((v14 - 3) <= 1)
+  if ((mode - 3) <= 1)
   {
     if ([(PIInpaintCacheNode *)self shouldDumpSourceMasks])
     {
       v115 = 0;
-      v33 = a7;
-      v34 = [(PIInpaintCacheNode *)self newMaskImageForOperation:v12 useSourceImage:1 error:&v115];
-      v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02ld_inpaintMask", a5];
-      [(PIInpaintCacheNode *)self _debugDumpMaskImage:v34 name:v35];
+      errorCopy = error;
+      v34 = [(PIInpaintCacheNode *)self newMaskImageForOperation:operationCopy useSourceImage:1 error:&v115];
+      index = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02ld_inpaintMask", index];
+      [(PIInpaintCacheNode *)self _debugDumpMaskImage:v34 name:index];
 
-      a7 = v33;
+      error = errorCopy;
     }
 
-    v36 = [(PIInpaintCacheNode *)self newMaskImageForOperation:v12 useSourceImage:0 error:a7];
+    v36 = [(PIInpaintCacheNode *)self newMaskImageForOperation:operationCopy useSourceImage:0 error:error];
     if (!v36)
     {
       v19 = 0;
@@ -208,16 +208,16 @@ LABEL_55:
       goto LABEL_56;
     }
 
-    v105 = a5;
+    indexCopy2 = index;
     v27 = v36;
-    if ([PIInpaintRendering shouldDilateMaskForOperation:v12])
+    if ([PIInpaintRendering shouldDilateMaskForOperation:operationCopy])
     {
-      v106 = a7;
+      errorCopy2 = error;
       v37 = +[PIGlobalSettings globalSettings];
-      v38 = [v37 inpaintFillsMaskHoles];
+      inpaintFillsMaskHoles = [v37 inpaintFillsMaskHoles];
 
       v103 = v27;
-      if (v38)
+      if (inpaintFillsMaskHoles)
       {
         v27 = [PIInpaintRendering maskByFillingHolesInMask:v27];
       }
@@ -225,7 +225,7 @@ LABEL_55:
       [v24 extent];
       v39 = [PIInpaintRendering maskByDilatingMask:v27 fullExtent:?];
 
-      a7 = v106;
+      error = errorCopy2;
       v27 = v103;
 LABEL_21:
       v113 = 0u;
@@ -239,7 +239,7 @@ LABEL_21:
         {
 LABEL_53:
           [MEMORY[0x1E69B3A48] invalidError:@"couldn't get inpainted image" object:0];
-          *a7 = v19 = 0;
+          *error = v19 = 0;
 LABEL_54:
 
           goto LABEL_55;
@@ -248,7 +248,7 @@ LABEL_54:
 LABEL_27:
         *buf = v113;
         *&buf[16] = v114;
-        if ([PIInpaintRendering renderImage:v48 intoMutableBuffer:v13 destinationBounds:buf renderer:v109 error:a7])
+        if ([PIInpaintRendering renderImage:v48 intoMutableBuffer:imageCopy destinationBounds:buf renderer:rendererCopy error:error])
         {
           v19 = 1;
         }
@@ -264,9 +264,9 @@ LABEL_27:
           v50 = *MEMORY[0x1E69B3D80];
           if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
           {
-            v86 = *a7;
+            v86 = *error;
             *buf = 138412546;
-            *&buf[4] = v12;
+            *&buf[4] = operationCopy;
             *&buf[12] = 2112;
             *&buf[14] = v86;
             _os_log_error_impl(&dword_1C7694000, v50, OS_LOG_TYPE_ERROR, "Unable to apply object removal operation for operation: %@ error: %@", buf, 0x16u);
@@ -274,15 +274,15 @@ LABEL_27:
 
           v19 = 0;
           v27 = v49;
-          v13 = v108;
+          imageCopy = v108;
         }
 
         goto LABEL_54;
       }
 
       v40 = v27;
-      v107 = a7;
-      v104 = [(PIInpaintCacheNode *)self newExclusionMaskImageForOperation:v12 inputImage:v24 error:a7];
+      errorCopy3 = error;
+      v104 = [(PIInpaintCacheNode *)self newExclusionMaskImageForOperation:operationCopy inputImage:v24 error:error];
       sourceOrientation = self->_sourceOrientation;
       v42 = +[PIGlobalSettings globalSettings];
       if ([v42 inpaintOrientInputImages])
@@ -328,29 +328,29 @@ LABEL_27:
           }
 
 LABEL_36:
-          v13 = v108;
+          imageCopy = v108;
           v51 = +[PIGlobalSettings globalSettings];
-          v52 = [v51 inpaintDumpsProcessedMasks];
+          inpaintDumpsProcessedMasks = [v51 inpaintDumpsProcessedMasks];
 
-          if (v52)
+          if (inpaintDumpsProcessedMasks)
           {
-            v53 = [MEMORY[0x1E695F658] blackImage];
-            v54 = [v39 imageByCompositingOverImage:v53];
+            blackImage2 = [MEMORY[0x1E695F658] blackImage];
+            v54 = [v39 imageByCompositingOverImage:blackImage2];
             [v24 extent];
             [v54 imageByCroppingToRect:?];
             v56 = v55 = v27;
 
-            v57 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02ld_processedInputMask", v105];
-            [(PIInpaintCacheNode *)self _debugDumpMaskImage:v56 name:v57];
+            indexCopy22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02ld_processedInputMask", indexCopy2];
+            [(PIInpaintCacheNode *)self _debugDumpMaskImage:v56 name:indexCopy22];
 
             v27 = v55;
-            v13 = v108;
+            imageCopy = v108;
           }
 
           v58 = +[PIGlobalSettings globalSettings];
-          v59 = [v58 inpaintOverlaysMasks];
+          inpaintOverlaysMasks = [v58 inpaintOverlaysMasks];
 
-          if (v59)
+          if (inpaintOverlaysMasks)
           {
             v61 = [PIInpaintRendering imageByOverlayingMaskImage:v39 onImage:v24 withOpacity:0.25];
             v48 = [PIInpaintRendering imageByOverlayingMaskImage:v27 onImage:v61 withOpacity:0.8];
@@ -365,8 +365,8 @@ LABEL_36:
               v65 = v64;
               v67 = v66;
               v69 = v68;
-              v70 = [v109 context];
-              [PIInpaintRendering computeLocalHeadroomForHDRImage:v24 inRect:v70 context:v63, v65, v67, v69];
+              context2 = [rendererCopy context];
+              [PIInpaintRendering computeLocalHeadroomForHDRImage:v24 inRect:context2 context:v63, v65, v67, v69];
               LODWORD(v63) = v71;
 
               v72 = v24;
@@ -383,14 +383,14 @@ LABEL_36:
               v74 = v104;
             }
 
-            v48 = [PIInpaintRendering inpaintedImageWithInputImage:v72 maskImage:v73 exclusionMaskImage:v74 headroom:v12 operation:v60];
-            v13 = v108;
+            v48 = [PIInpaintRendering inpaintedImageWithInputImage:v72 maskImage:v73 exclusionMaskImage:v74 headroom:operationCopy operation:v60];
+            imageCopy = v108;
           }
 
           v81 = +[PIGlobalSettings globalSettings];
-          v82 = [v81 inpaintOverlaysMaskBounds];
+          inpaintOverlaysMaskBounds = [v81 inpaintOverlaysMaskBounds];
 
-          if (v82)
+          if (inpaintOverlaysMaskBounds)
           {
             [v39 extent];
             v83 = [PIInpaintRendering imageByOverlayingBoundsRect:v48 onImage:?];
@@ -414,7 +414,7 @@ LABEL_36:
             v48 = v84;
           }
 
-          a7 = v107;
+          error = errorCopy3;
 
           if (!v48)
           {
@@ -443,9 +443,9 @@ LABEL_20:
   v87 = NUAssertLogger_16994();
   if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
   {
-    v88 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid inpaint operation: %@", v12];
+    operationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid inpaint operation: %@", operationCopy];
     *buf = 138543362;
-    *&buf[4] = v88;
+    *&buf[4] = operationCopy;
     _os_log_error_impl(&dword_1C7694000, v87, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
   }
 
@@ -460,8 +460,8 @@ LABEL_20:
       v95 = dispatch_get_specific(*v89);
       v96 = MEMORY[0x1E696AF00];
       v97 = v95;
-      v98 = [v96 callStackSymbols];
-      v99 = [v98 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v96 callStackSymbols];
+      v99 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v95;
       *&buf[12] = 2114;
@@ -472,8 +472,8 @@ LABEL_20:
 
   else if (v92)
   {
-    v93 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v94 = [v93 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v94 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     *&buf[4] = v94;
     _os_log_error_impl(&dword_1C7694000, v91, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -488,24 +488,24 @@ LABEL_20:
   v2 = +[PIGlobalSettings globalSettings];
   if ([v2 inpaintDumpsOriginalMasks])
   {
-    v3 = 1;
+    inpaintDumpsInputImages = 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69B3AB0] inpaintDumpsInputImages];
+    inpaintDumpsInputImages = [MEMORY[0x1E69B3AB0] inpaintDumpsInputImages];
   }
 
-  return v3;
+  return inpaintDumpsInputImages;
 }
 
-- (id)newExclusionMaskImageForOperation:(id)a3 inputImage:(id)a4 error:(id *)a5
+- (id)newExclusionMaskImageForOperation:(id)operation inputImage:(id)image error:(id *)error
 {
   v80 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v69 = a4;
-  v9 = [v8 exclusionMaskIdentifiers];
-  if (![v9 count])
+  operationCopy = operation;
+  imageCopy = image;
+  exclusionMaskIdentifiers = [operationCopy exclusionMaskIdentifiers];
+  if (![exclusionMaskIdentifiers count])
   {
     v40 = 0;
     goto LABEL_20;
@@ -514,17 +514,17 @@ LABEL_20:
   if ([(PIInpaintCacheNode *)self shouldDumpSourceMasks])
   {
     v74 = 0;
-    v10 = [(PIInpaintCacheNode *)self _newMaskImageFromIdentifiers:v9 useSourceImage:1 error:&v74];
+    v10 = [(PIInpaintCacheNode *)self _newMaskImageFromIdentifiers:exclusionMaskIdentifiers useSourceImage:1 error:&v74];
     [(PIInpaintCacheNode *)self _debugDumpMaskImage:v10 name:@"exclusionMask"];
   }
 
-  v65 = v9;
-  v66 = v8;
+  v65 = exclusionMaskIdentifiers;
+  v66 = operationCopy;
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = v9;
+  obj = exclusionMaskIdentifiers;
   v11 = [obj countByEnumeratingWithState:&v70 objects:v79 count:16];
   if (!v11)
   {
@@ -570,8 +570,8 @@ LABEL_20:
             v56 = dispatch_get_specific(*v44);
             v57 = MEMORY[0x1E696AF00];
             v5 = v56;
-            v58 = [v57 callStackSymbols];
-            v59 = [v58 componentsJoinedByString:@"\n"];
+            callStackSymbols = [v57 callStackSymbols];
+            v59 = [callStackSymbols componentsJoinedByString:@"\n"];
             *buf = 138543618;
             v76 = v56;
             v77 = 2114;
@@ -582,8 +582,8 @@ LABEL_20:
 
         else if (v47)
         {
-          v48 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v49 = [v48 componentsJoinedByString:@"\n"];
+          callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+          v49 = [callStackSymbols2 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           v76 = v49;
           _os_log_error_impl(&dword_1C7694000, v46, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -596,8 +596,8 @@ LABEL_34:
           v60 = dispatch_get_specific(*v5);
           v61 = MEMORY[0x1E696AF00];
           v62 = v60;
-          v63 = [v61 callStackSymbols];
-          v64 = [v63 componentsJoinedByString:@"\n"];
+          callStackSymbols3 = [v61 callStackSymbols];
+          v64 = [callStackSymbols3 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v76 = v60;
           v77 = 2114;
@@ -634,8 +634,8 @@ LABEL_36:
 
         if (v53)
         {
-          v54 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v55 = [v54 componentsJoinedByString:@"\n"];
+          callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+          v55 = [callStackSymbols4 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           v76 = v55;
           _os_log_error_impl(&dword_1C7694000, v46, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -644,7 +644,7 @@ LABEL_36:
         goto LABEL_36;
       }
 
-      v20 = [v19 sourceImage:a5];
+      v20 = [v19 sourceImage:error];
       if (!v20)
       {
 
@@ -669,7 +669,7 @@ LABEL_36:
       v37 = v36;
       v38 = [v21 imageByCroppingToRect:{v23, v25, v27, v29}];
 
-      v5 = [v69 imageByCroppingToRect:{v31, v33, v35, v37}];
+      v5 = [imageCopy imageByCroppingToRect:{v31, v33, v35, v37}];
       v39 = [PIInpaintRendering maskByUpscalingMask:v38 withGuideImage:v5];
 
       v13 = [PIInpaintRendering maskByAddingMask:v39 toMask:v16];
@@ -689,28 +689,28 @@ LABEL_18:
   v40 = v16;
 LABEL_19:
 
-  v9 = v65;
-  v8 = v66;
+  exclusionMaskIdentifiers = v65;
+  operationCopy = v66;
 LABEL_20:
 
   return v40;
 }
 
-- (id)newMaskImageForOperation:(id)a3 useSourceImage:(BOOL)a4 error:(id *)a5
+- (id)newMaskImageForOperation:(id)operation useSourceImage:(BOOL)image error:(id *)error
 {
-  v6 = a4;
-  v8 = [a3 maskIdentifiers];
-  v9 = [(PIInpaintCacheNode *)self _newMaskImageFromIdentifiers:v8 useSourceImage:v6 error:a5];
+  imageCopy = image;
+  maskIdentifiers = [operation maskIdentifiers];
+  v9 = [(PIInpaintCacheNode *)self _newMaskImageFromIdentifiers:maskIdentifiers useSourceImage:imageCopy error:error];
 
   return v9;
 }
 
-- (id)_newMaskImageFromIdentifiers:(id)a3 useSourceImage:(BOOL)a4 error:(id *)a5
+- (id)_newMaskImageFromIdentifiers:(id)identifiers useSourceImage:(BOOL)image error:(id *)error
 {
-  v6 = a4;
+  imageCopy = image;
   v59 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!a5)
+  identifiersCopy = identifiers;
+  if (!error)
   {
     goto LABEL_28;
   }
@@ -719,7 +719,7 @@ LABEL_20:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v9 = v8;
+  v9 = identifiersCopy;
   v10 = [v9 countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (!v10)
   {
@@ -769,8 +769,8 @@ LABEL_4:
           v31 = dispatch_get_specific(*v25);
           v32 = MEMORY[0x1E696AF00];
           v33 = v31;
-          v34 = [v32 callStackSymbols];
-          v35 = [v34 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v32 callStackSymbols];
+          v35 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v56 = v31;
           v57 = 2114;
@@ -781,8 +781,8 @@ LABEL_4:
 
       else if (v28)
       {
-        v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v30 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v56 = v30;
         _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -810,8 +810,8 @@ LABEL_28:
           v44 = dispatch_get_specific(*v38);
           v45 = MEMORY[0x1E696AF00];
           v46 = v44;
-          v47 = [v45 callStackSymbols];
-          v48 = [v47 componentsJoinedByString:@"\n"];
+          callStackSymbols3 = [v45 callStackSymbols];
+          v48 = [callStackSymbols3 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v56 = v44;
           v57 = 2114;
@@ -822,8 +822,8 @@ LABEL_28:
 
       else if (v41)
       {
-        v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v43 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v56 = v43;
         _os_log_error_impl(&dword_1C7694000, v40, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -833,14 +833,14 @@ LABEL_28:
     }
 
     v18 = v17;
-    if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (imageCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v19 = [v18 sourceImage:a5];
+      v19 = [v18 sourceImage:error];
     }
 
     else
     {
-      v19 = [v18 outputImage:a5];
+      v19 = [v18 outputImage:error];
     }
 
     v20 = v19;
@@ -873,17 +873,17 @@ LABEL_19:
   return v21;
 }
 
-- (void)_debugDumpMaskImage:(id)a3 name:(id)a4
+- (void)_debugDumpMaskImage:(id)image name:(id)name
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  imageCopy = image;
   v7 = +[PIGlobalSettings globalSettings];
-  v8 = [v7 inpaintDumpPath];
+  inpaintDumpPath = [v7 inpaintDumpPath];
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v29 = 0;
-  v10 = [v9 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v29];
+  v10 = [defaultManager createDirectoryAtPath:inpaintDumpPath withIntermediateDirectories:1 attributes:0 error:&v29];
   v11 = v29;
 
   v12 = MEMORY[0x1E69B3D78];
@@ -903,21 +903,21 @@ LABEL_19:
       _os_log_impl(&dword_1C7694000, v14, OS_LOG_TYPE_DEFAULT, "Error creating mask directory: %@", buf, 0xCu);
     }
 
-    v15 = [MEMORY[0x1E69B3AB0] tempDir];
+    tempDir = [MEMORY[0x1E69B3AB0] tempDir];
 
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
-    [v16 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 createDirectoryAtPath:tempDir withIntermediateDirectories:1 attributes:0 error:0];
 
-    v8 = v15;
+    inpaintDumpPath = tempDir;
   }
 
-  v17 = [v5 stringByAppendingPathExtension:@"png"];
-  v18 = [v8 stringByAppendingPathComponent:v17];
+  v17 = [nameCopy stringByAppendingPathExtension:@"png"];
+  v18 = [inpaintDumpPath stringByAppendingPathComponent:v17];
 
-  v19 = [MEMORY[0x1E696AC08] defaultManager];
-  [v19 removeItemAtPath:v18 error:0];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager3 removeItemAtPath:v18 error:0];
 
-  v20 = [MEMORY[0x1E695F620] context];
+  context = [MEMORY[0x1E695F620] context];
   if (*v12 != -1)
   {
     dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_292);
@@ -928,27 +928,27 @@ LABEL_19:
   {
     v22 = v18;
     v23 = v21;
-    v24 = [v18 UTF8String];
+    uTF8String = [v18 UTF8String];
     *buf = 136315138;
-    v31 = v24;
+    v31 = uTF8String;
     _os_log_impl(&dword_1C7694000, v23, OS_LOG_TYPE_DEFAULT, "saving: %s\n", buf, 0xCu);
   }
 
   v25 = [MEMORY[0x1E695DFF8] fileURLWithPath:v18];
   v26 = *MEMORY[0x1E695F8B8];
-  v27 = [MEMORY[0x1E69B3A10] linearGrayColorSpace];
-  v28 = [v27 CGColorSpace];
-  [v20 writePNGRepresentationOfImage:v6 toURL:v25 format:v26 colorSpace:v28 options:MEMORY[0x1E695E0F8] error:0];
+  linearGrayColorSpace = [MEMORY[0x1E69B3A10] linearGrayColorSpace];
+  cGColorSpace = [linearGrayColorSpace CGColorSpace];
+  [context writePNGRepresentationOfImage:imageCopy toURL:v25 format:v26 colorSpace:cGColorSpace options:MEMORY[0x1E695E0F8] error:0];
 }
 
-- (BOOL)_renderBackgroundImage:(id)a3 intoMutableBuffer:(id)a4 renderer:(id)a5 error:(id *)a6
+- (BOOL)_renderBackgroundImage:(id)image intoMutableBuffer:(id)buffer renderer:(id)renderer error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  imageCopy = image;
+  bufferCopy = buffer;
+  rendererCopy = renderer;
   inputRegion = self->_inputRegion;
-  v14 = [(NUMutableBufferImage *)self->_inputImage validRegion];
-  v15 = [(NURegion *)inputRegion regionByRemovingRegion:v14];
+  validRegion = [(NUMutableBufferImage *)self->_inputImage validRegion];
+  v15 = [(NURegion *)inputRegion regionByRemovingRegion:validRegion];
 
   if ([v15 isEmpty])
   {
@@ -971,13 +971,13 @@ LABEL_19:
     v18[1] = 3221225472;
     v18[2] = __78__PIInpaintCacheNode__renderBackgroundImage_intoMutableBuffer_renderer_error___block_invoke;
     v18[3] = &unk_1E82AB5F8;
-    v19 = v11;
+    v19 = bufferCopy;
     v22 = &v30;
-    v20 = v10;
-    v21 = v12;
+    v20 = imageCopy;
+    v21 = rendererCopy;
     v23 = &v24;
     [v15 enumerateRects:v18];
-    *a6 = v25[5];
+    *error = v25[5];
     v16 = *(v31 + 24);
 
     _Block_object_dispose(&v24, 8);
@@ -1015,10 +1015,10 @@ void __78__PIInpaintCacheNode__renderBackgroundImage_intoMutableBuffer_renderer_
   }
 }
 
-- (BOOL)_renderWithBackgroundImage:(id)a3 error:(id *)a4
+- (BOOL)_renderWithBackgroundImage:(id)image error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  imageCopy = image;
   if (!self->_inputImage)
   {
     v25 = NUAssertLogger_16994();
@@ -1041,8 +1041,8 @@ void __78__PIInpaintCacheNode__renderBackgroundImage_intoMutableBuffer_renderer_
         v33 = dispatch_get_specific(*v27);
         v34 = MEMORY[0x1E696AF00];
         v35 = v33;
-        v36 = [v34 callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v34 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v43 = v33;
         v44 = 2114;
@@ -1053,8 +1053,8 @@ void __78__PIInpaintCacheNode__renderBackgroundImage_intoMutableBuffer_renderer_
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v43 = v32;
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1063,14 +1063,14 @@ void __78__PIInpaintCacheNode__renderBackgroundImage_intoMutableBuffer_renderer_
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x1E69B3AB0] rendererContextDefaultMemoryTarget];
+  v7 = imageCopy;
+  rendererContextDefaultMemoryTarget = [MEMORY[0x1E69B3AB0] rendererContextDefaultMemoryTarget];
   v9 = MEMORY[0x1E695F620];
   v10 = *MEMORY[0x1E695F818];
   v40[0] = *MEMORY[0x1E695F7F0];
   v40[1] = v10;
   v41[0] = MEMORY[0x1E695E110];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:rendererContextDefaultMemoryTarget];
   v41[1] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:2];
   v13 = [v9 contextWithOptions:v12];
@@ -1092,9 +1092,9 @@ void __78__PIInpaintCacheNode__renderBackgroundImage_intoMutableBuffer_renderer_
     {
       if ([(PIInpaintCacheNode *)self shouldCacheIntermediates])
       {
-        v21 = [objc_opt_class() intermediateCache];
-        v22 = [(NUMutableBufferImage *)self->_inputImage purgeableImageCopy];
-        [v21 setObject:v22 forKey:self->_cacheKey];
+        intermediateCache = [objc_opt_class() intermediateCache];
+        purgeableImageCopy = [(NUMutableBufferImage *)self->_inputImage purgeableImageCopy];
+        [intermediateCache setObject:purgeableImageCopy forKey:self->_cacheKey];
       }
 
       v23 = 1;
@@ -1103,7 +1103,7 @@ void __78__PIInpaintCacheNode__renderBackgroundImage_intoMutableBuffer_renderer_
     else
     {
       [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to render inpaint operations:@" object:self->_operations underlyingError:v20];
-      *a4 = v23 = 0;
+      *error = v23 = 0;
     }
 
     v16 = v20;
@@ -1112,16 +1112,16 @@ void __78__PIInpaintCacheNode__renderBackgroundImage_intoMutableBuffer_renderer_
   else
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to render inpaint background" object:v7 underlyingError:v16];
-    *a4 = v23 = 0;
+    *error = v23 = 0;
   }
 
   return v23;
 }
 
-- (void)provideImageData:(void *)a3 bytesPerRow:(unint64_t)a4 origin:(unint64_t)a5 :(unint64_t)a6 size:(unint64_t)a7 :(unint64_t)a8 userInfo:(id)a9
+- (void)provideImageData:(void *)data bytesPerRow:(unint64_t)row origin:(unint64_t)origin :(unint64_t)a6 size:(unint64_t)size :(unint64_t)a8 userInfo:(id)info
 {
   v51 = *MEMORY[0x1E69E9840];
-  v40 = a9;
+  infoCopy = info;
   if (*MEMORY[0x1E69B3D78] != -1)
   {
     dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_292);
@@ -1131,33 +1131,33 @@ void __78__PIInpaintCacheNode__renderBackgroundImage_intoMutableBuffer_renderer_
   v17 = *MEMORY[0x1E69B3D80];
   if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_DEBUG))
   {
-    v35 = a3;
+    dataCopy = data;
     v36 = MEMORY[0x1E696AF00];
     v37 = v17;
-    v38 = [v36 currentThread];
+    currentThread = [v36 currentThread];
     LODWORD(buf) = 67110144;
-    DWORD1(buf) = a5;
+    DWORD1(buf) = origin;
     WORD4(buf) = 1024;
     *(&buf + 10) = a6;
     HIWORD(buf) = 1024;
-    *v50 = a7;
+    *v50 = size;
     *&v50[4] = 1024;
     *&v50[6] = a8;
     *&v50[10] = 2048;
-    *&v50[12] = v38;
+    *&v50[12] = currentThread;
     _os_log_debug_impl(&dword_1C7694000, v37, OS_LOG_TYPE_DEBUG, "provideImageData (%d,%d,%d,%d) tid=%p", &buf, 0x24u);
 
-    a3 = v35;
+    data = dataCopy;
   }
 
   outputImage = self->_outputImage;
-  v39 = a5;
+  originCopy = origin;
   if (!outputImage)
   {
-    v19 = a4;
-    v20 = a3;
+    rowCopy = row;
+    dataCopy2 = data;
     v48 = 0;
-    v21 = [(PIInpaintCacheNode *)self _renderWithBackgroundImage:v40 error:&v48];
+    v21 = [(PIInpaintCacheNode *)self _renderWithBackgroundImage:infoCopy error:&v48];
     v22 = v48;
     if (!v21)
     {
@@ -1175,36 +1175,36 @@ void __78__PIInpaintCacheNode__renderBackgroundImage_intoMutableBuffer_renderer_
       }
     }
 
-    v24 = [(NUMutableBufferImage *)self->_inputImage immutableImageCopy];
+    immutableImageCopy = [(NUMutableBufferImage *)self->_inputImage immutableImageCopy];
     v25 = self->_outputImage;
-    self->_outputImage = v24;
+    self->_outputImage = immutableImageCopy;
 
     inputImage = self->_inputImage;
     self->_inputImage = 0;
 
     outputImage = self->_outputImage;
-    a3 = v20;
-    a4 = v19;
-    a5 = v39;
+    data = dataCopy2;
+    row = rowCopy;
+    origin = originCopy;
   }
 
-  *&buf = a5;
+  *&buf = origin;
   *(&buf + 1) = a6;
-  *v50 = a7;
+  *v50 = size;
   *&v50[8] = a8;
-  [MEMORY[0x1E69B3B38] copyPixelsFromImage:outputImage rect:&buf destPtr:a3 destPtrRowBytes:a4];
-  *&buf = a5;
+  [MEMORY[0x1E69B3B38] copyPixelsFromImage:outputImage rect:&buf destPtr:data destPtrRowBytes:row];
+  *&buf = origin;
   *(&buf + 1) = a6;
-  *v50 = a7;
+  *v50 = size;
   *&v50[8] = a8;
   [MEMORY[0x1E69B3C10] regionWithRect:&buf];
-  v28 = v27 = a3;
-  v29 = [(NUBufferImage *)self->_outputImage validRegion];
-  v30 = [v28 regionByRemovingRegion:v29];
+  v28 = v27 = data;
+  validRegion = [(NUBufferImage *)self->_outputImage validRegion];
+  v30 = [v28 regionByRemovingRegion:validRegion];
 
   v31 = objc_alloc(MEMORY[0x1E69B3B98]);
-  v32 = [(NUBufferImage *)self->_outputImage format];
-  v33 = [v31 initWithSize:a7 format:a8 rowBytes:v32 mutableBytes:{a4, v27}];
+  format = [(NUBufferImage *)self->_outputImage format];
+  v33 = [v31 initWithSize:size format:a8 rowBytes:format mutableBytes:{row, v27}];
 
   *&buf = 0;
   v41[0] = MEMORY[0x1E69E9820];
@@ -1212,9 +1212,9 @@ void __78__PIInpaintCacheNode__renderBackgroundImage_intoMutableBuffer_renderer_
   v41[2] = __74__PIInpaintCacheNode_provideImageData_bytesPerRow_origin::size::userInfo___block_invoke;
   v41[3] = &unk_1E82AB5D0;
   v44 = a6;
-  v45 = a7;
+  sizeCopy = size;
   v42 = v33;
-  v43 = v39;
+  v43 = originCopy;
   v46 = a8;
   p_buf = &buf;
   v34 = v33;
@@ -1236,24 +1236,24 @@ uint64_t __74__PIInpaintCacheNode_provideImageData_bytesPerRow_origin::size::use
   return [MEMORY[0x1E69B3B38] fillPixelsInBuffer:v4 rect:&v7 srcPixel:v5];
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v5 = [(NUCacheNode *)self inputNode];
-  v6 = [v5 outputImage:a3];
+  inputNode = [(NUCacheNode *)self inputNode];
+  v6 = [inputNode outputImage:image];
 
   if (v6)
   {
-    v7 = [(NUCacheNode *)self inputNode];
-    v8 = [v7 outputImageGeometry:a3];
+    inputNode2 = [(NUCacheNode *)self inputNode];
+    v8 = [inputNode2 outputImageGeometry:image];
 
     if (v8)
     {
-      v9 = [v8 scaledSize];
+      scaledSize = [v8 scaledSize];
       v11 = v10;
       v26 = *MEMORY[0x1E695F9F8];
-      v12 = [MEMORY[0x1E695DFB0] null];
-      v27[0] = v12;
+      null = [MEMORY[0x1E695DFB0] null];
+      v27[0] = null;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
 
       objc_initWeak(&location, self);
@@ -1265,8 +1265,8 @@ uint64_t __74__PIInpaintCacheNode_provideImageData_bytesPerRow_origin::size::use
       v23 = v6;
       v14 = MEMORY[0x1CCA61740](&v19);
       v15 = [(NUMutableBufferImage *)self->_inputImage format:v19];
-      v16 = [(NUMutableBufferImage *)self->_inputImage colorSpace];
-      v17 = [objc_alloc(MEMORY[0x1E695F658]) initWithImageProvider:v14 width:v9 height:v11 format:objc_msgSend(v15 colorSpace:"CIFormat") options:{objc_msgSend(v16, "CGColorSpace"), v13}];
+      colorSpace = [(NUMutableBufferImage *)self->_inputImage colorSpace];
+      v17 = [objc_alloc(MEMORY[0x1E695F658]) initWithImageProvider:v14 width:scaledSize height:v11 format:objc_msgSend(v15 colorSpace:"CIFormat") options:{objc_msgSend(colorSpace, "CGColorSpace"), v13}];
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(&location);
@@ -1330,8 +1330,8 @@ void __37__PIInpaintCacheNode__evaluateImage___block_invoke(uint64_t a1, uint64_
       if (v11)
       {
         v14 = dispatch_get_specific(*v8);
-        v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v14;
         v26 = 2114;
@@ -1342,8 +1342,8 @@ void __37__PIInpaintCacheNode__evaluateImage___block_invoke(uint64_t a1, uint64_
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v13;
       _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1359,7 +1359,7 @@ void __37__PIInpaintCacheNode__evaluateImage___block_invoke(uint64_t a1, uint64_
   return v4;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
   v13.receiver = self;
   v13.super_class = PIInpaintCacheNode;
@@ -1379,19 +1379,19 @@ void __37__PIInpaintCacheNode__evaluateImage___block_invoke(uint64_t a1, uint64_
     v11 = v10;
 
     v7 = 0;
-    *a3 = v10;
+    *geometry = v10;
   }
 
   return v7;
 }
 
-- (id)_modifyEvaluatedGeometry:(id)a3
+- (id)_modifyEvaluatedGeometry:(id)geometry
 {
-  v3 = a3;
+  geometryCopy = geometry;
   v4 = objc_alloc(MEMORY[0x1E69B3B18]);
-  if (v3)
+  if (geometryCopy)
   {
-    [v3 extent];
+    [geometryCopy extent];
   }
 
   else
@@ -1400,17 +1400,17 @@ void __37__PIInpaintCacheNode__evaluateImage___block_invoke(uint64_t a1, uint64_
     v9 = 0u;
   }
 
-  v5 = [v3 orientation];
-  v6 = [v4 initWithExtent:&v8 renderScale:*MEMORY[0x1E69B3918] orientation:{*(MEMORY[0x1E69B3918] + 8), v5}];
+  orientation = [geometryCopy orientation];
+  v6 = [v4 initWithExtent:&v8 renderScale:*MEMORY[0x1E69B3918] orientation:{*(MEMORY[0x1E69B3918] + 8), orientation}];
 
   return v6;
 }
 
-- (id)inputGeometryForPipelineState:(id)a3 error:(id *)a4
+- (id)inputGeometryForPipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = PIInpaintCacheNode;
-  v5 = [(NUCacheNode *)&v8 inputGeometryForPipelineState:a3 error:a4];
+  v5 = [(NUCacheNode *)&v8 inputGeometryForPipelineState:state error:error];
   if (v5)
   {
     v6 = [(PIInpaintCacheNode *)self _modifyEvaluatedGeometry:v5];
@@ -1424,19 +1424,19 @@ void __37__PIInpaintCacheNode__evaluateImage___block_invoke(uint64_t a1, uint64_
   return v6;
 }
 
-- (BOOL)_updateInputRegion:(id)a3 outputRegion:(id)a4 forOperation:(id)a5 geometry:(id)a6 error:(id *)a7
+- (BOOL)_updateInputRegion:(id)region outputRegion:(id)outputRegion forOperation:(id)operation geometry:(id)geometry error:(id *)error
 {
   v77 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
+  regionCopy = region;
+  outputRegionCopy = outputRegion;
+  operationCopy = operation;
+  geometryCopy = geometry;
+  v16 = geometryCopy;
   v73 = 0u;
   v74 = 0u;
-  if (v15)
+  if (geometryCopy)
   {
-    [v15 extent];
+    [geometryCopy extent];
   }
 
   v17 = *(MEMORY[0x1E69B3900] + 16);
@@ -1447,14 +1447,14 @@ void __37__PIInpaintCacheNode__evaluateImage___block_invoke(uint64_t a1, uint64_
   v61 = v17;
   v67 = v71;
   v68 = v17;
-  if ([v14 mode] == 1)
+  if ([operationCopy mode] == 1)
   {
-    v18 = [v14 brushStroke];
-    v19 = v18;
+    brushStroke = [operationCopy brushStroke];
+    v19 = brushStroke;
     memset(buf, 0, 32);
-    if (v18)
+    if (brushStroke)
     {
-      [v18 extent];
+      [brushStroke extent];
     }
 
     else
@@ -1463,7 +1463,7 @@ void __37__PIInpaintCacheNode__evaluateImage___block_invoke(uint64_t a1, uint64_
     }
 
     NUPixelRectIntersection();
-    [v14 sourceOffset];
+    [operationCopy sourceOffset];
     [v19 radius];
     v23 = v22;
     v24 = NUPixelPointFromCGPoint();
@@ -1476,7 +1476,7 @@ void __37__PIInpaintCacheNode__evaluateImage___block_invoke(uint64_t a1, uint64_
     goto LABEL_13;
   }
 
-  if (OperationUsesLegacyFilter(v14))
+  if (OperationUsesLegacyFilter(operationCopy))
   {
     v69 = v73;
     v70 = v74;
@@ -1514,7 +1514,7 @@ LABEL_13:
     v63 = v73;
     v64 = v74;
     NUPixelRectIntersection();
-    [v12 addRect:v75];
+    [regionCopy addRect:v75];
     memset(v75, 0, sizeof(v75));
     v65 = v69;
     v66 = v70;
@@ -1522,7 +1522,7 @@ LABEL_13:
     v63 = *v75;
     v64 = *&v75[16];
     NUPixelRectIntersection();
-    [v12 addRect:&v65];
+    [regionCopy addRect:&v65];
     v65 = v67;
     v66 = v68;
     if ((NUPixelRectIsNull() & 1) == 0)
@@ -1538,7 +1538,7 @@ LABEL_13:
       v64 = v68;
       NUAlignPixelRectToPixelGrid();
       NUPixelRectIntersection();
-      [v12 addRect:&v63];
+      [regionCopy addRect:&v63];
     }
 
     v65 = 0u;
@@ -1547,18 +1547,18 @@ LABEL_13:
     v64 = v70;
     NUAlignPixelRectToPixelGrid();
     NUPixelRectIntersection();
-    [v13 addRect:&v63];
+    [outputRegionCopy addRect:&v63];
     v26 = 1;
     goto LABEL_16;
   }
 
-  if ([v14 mode] == 2)
+  if ([operationCopy mode] == 2)
   {
-    v20 = [v14 brushStroke];
-    v21 = v20;
-    if (v20)
+    brushStroke2 = [operationCopy brushStroke];
+    v21 = brushStroke2;
+    if (brushStroke2)
     {
-      [v20 extent];
+      [brushStroke2 extent];
     }
 
     else
@@ -1587,20 +1587,20 @@ LABEL_22:
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_FAULT))
       {
         *buf = 138543362;
-        *&buf[4] = v14;
+        *&buf[4] = operationCopy;
         _os_log_fault_impl(&dword_1C7694000, v29, OS_LOG_TYPE_FAULT, "Invalid mask extent for operation %{public}@", buf, 0xCu);
       }
 
-      v30 = [MEMORY[0x1E69B3A48] errorWithCode:2 reason:@"Invalid mask extent for operation" object:v14 underlyingError:*a7];
+      v30 = [MEMORY[0x1E69B3A48] errorWithCode:2 reason:@"Invalid mask extent for operation" object:operationCopy underlyingError:*error];
     }
 
     else
     {
       *buf = v71;
       *&buf[16] = v61;
-      if ([v14 hasExclusionMask])
+      if ([operationCopy hasExclusionMask])
       {
-        [(PIInpaintCacheNode *)self _exclusionMaskExtentForOperation:v14 error:a7];
+        [(PIInpaintCacheNode *)self _exclusionMaskExtentForOperation:operationCopy error:error];
         *v75 = *buf;
         *&v75[16] = *&buf[16];
         if (NUPixelRectIsNull())
@@ -1613,9 +1613,9 @@ LABEL_22:
           v31 = *MEMORY[0x1E69B3D80];
           if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
           {
-            v41 = *a7;
+            v41 = *error;
             *v75 = 138543618;
-            *&v75[4] = v14;
+            *&v75[4] = operationCopy;
             *&v75[12] = 2114;
             *&v75[14] = v41;
             _os_log_error_impl(&dword_1C7694000, v31, OS_LOG_TYPE_ERROR, "Invalid exclusion mask extent for operation %{public}@, error %{public}@", v75, 0x16u);
@@ -1625,7 +1625,7 @@ LABEL_22:
 
       v33 = *(&v60 + 1);
       v32 = v60;
-      if ([PIInpaintRendering shouldDilateMaskForOperation:v14])
+      if ([PIInpaintRendering shouldDilateMaskForOperation:operationCopy])
       {
         NUPixelSizeToCGSize();
         v35 = v34;
@@ -1650,7 +1650,7 @@ LABEL_22:
       v66 = *&buf[16];
       v63 = v73;
       v64 = v74;
-      [PIInpaintRendering sourceExtentForMaskExtent:v75 exclusionMaskExtent:&v65 imageExtent:&v63 operation:v14];
+      [PIInpaintRendering sourceExtentForMaskExtent:v75 exclusionMaskExtent:&v65 imageExtent:&v63 operation:operationCopy];
       *v75 = v71;
       *&v75[16] = v72;
       if (!NUPixelRectIsNull())
@@ -1669,23 +1669,23 @@ LABEL_22:
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_FAULT))
       {
         *v75 = 138543362;
-        *&v75[4] = v14;
+        *&v75[4] = operationCopy;
         _os_log_fault_impl(&dword_1C7694000, v40, OS_LOG_TYPE_FAULT, "Invalid source extent for operation %{public}@", v75, 0xCu);
       }
 
-      v30 = [MEMORY[0x1E69B3A48] invalidError:@"Invalid source extent for operation" object:v14];
+      v30 = [MEMORY[0x1E69B3A48] invalidError:@"Invalid source extent for operation" object:operationCopy];
     }
 
     v26 = 0;
-    *a7 = v30;
+    *error = v30;
 LABEL_16:
 
     return v26;
   }
 
-  if ([v14 mode] == 3 || objc_msgSend(v14, "mode") == 4)
+  if ([operationCopy mode] == 3 || objc_msgSend(operationCopy, "mode") == 4)
   {
-    [(PIInpaintCacheNode *)self _maskExtentForOperation:v14 error:a7];
+    [(PIInpaintCacheNode *)self _maskExtentForOperation:operationCopy error:error];
     v28 = *&buf[16];
     v62 = *buf;
     goto LABEL_22;
@@ -1694,9 +1694,9 @@ LABEL_16:
   v42 = NUAssertLogger_16994();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
   {
-    v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid operation: %@", v14];
+    operationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid operation: %@", operationCopy];
     *buf = 138543362;
-    *&buf[4] = v43;
+    *&buf[4] = operationCopy;
     _os_log_error_impl(&dword_1C7694000, v42, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
   }
 
@@ -1711,8 +1711,8 @@ LABEL_16:
       v50 = dispatch_get_specific(*v44);
       v51 = MEMORY[0x1E696AF00];
       v52 = v50;
-      v53 = [v51 callStackSymbols];
-      v54 = [v53 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v51 callStackSymbols];
+      v54 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v50;
       *&buf[12] = 2114;
@@ -1723,8 +1723,8 @@ LABEL_16:
 
   else if (v47)
   {
-    v48 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v49 = [v48 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v49 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     *&buf[4] = v49;
     _os_log_error_impl(&dword_1C7694000, v46, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1734,30 +1734,30 @@ LABEL_16:
   return [(PIInpaintCacheNode *)v59 _exclusionMaskExtentForOperation:v55 error:v56, v57, v58];
 }
 
-- ($721907E0E1CDE8B6CD3FA271A8B25860)_exclusionMaskExtentForOperation:(SEL)a3 error:(id)a4
+- ($721907E0E1CDE8B6CD3FA271A8B25860)_exclusionMaskExtentForOperation:(SEL)operation error:(id)error
 {
   retstr->var0 = 0u;
   retstr->var1 = 0u;
-  v8 = [a4 exclusionMaskIdentifiers];
-  [(PIInpaintCacheNode *)self _extentForInputIdentifiers:v8 error:a5];
+  exclusionMaskIdentifiers = [error exclusionMaskIdentifiers];
+  [(PIInpaintCacheNode *)self _extentForInputIdentifiers:exclusionMaskIdentifiers error:a5];
 
   return result;
 }
 
-- ($721907E0E1CDE8B6CD3FA271A8B25860)_maskExtentForOperation:(SEL)a3 error:(id)a4
+- ($721907E0E1CDE8B6CD3FA271A8B25860)_maskExtentForOperation:(SEL)operation error:(id)error
 {
   retstr->var0 = 0u;
   retstr->var1 = 0u;
-  v8 = [a4 maskIdentifiers];
-  [(PIInpaintCacheNode *)self _extentForInputIdentifiers:v8 error:a5];
+  maskIdentifiers = [error maskIdentifiers];
+  [(PIInpaintCacheNode *)self _extentForInputIdentifiers:maskIdentifiers error:a5];
 
   return result;
 }
 
-- ($721907E0E1CDE8B6CD3FA271A8B25860)_extentForInputIdentifiers:(SEL)a3 error:(id)a4
+- ($721907E0E1CDE8B6CD3FA271A8B25860)_extentForInputIdentifiers:(SEL)identifiers error:(id)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  errorCopy = error;
   v21 = *(MEMORY[0x1E69B3900] + 16);
   v22 = *MEMORY[0x1E69B3900];
   v29 = *MEMORY[0x1E69B3900];
@@ -1766,7 +1766,7 @@ LABEL_16:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = v8;
+  v9 = errorCopy;
   v10 = [v9 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v10)
   {
@@ -1823,20 +1823,20 @@ LABEL_11:
   return result;
 }
 
-- (id)newImageOfSize:(id)a3 colorSpace:(id)a4
+- (id)newImageOfSize:(id)size colorSpace:(id)space
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = a4;
+  var1 = size.var1;
+  var0 = size.var0;
+  spaceCopy = space;
   v7 = [MEMORY[0x1E69B3B20] tiledLayoutForImageSize:var0 tileSize:{var1, 256, 256}];
-  if (([v6 hasCICP] & 1) == 0)
+  if (([spaceCopy hasCICP] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E69B3A10] displayP3ColorSpace];
+    displayP3ColorSpace = [MEMORY[0x1E69B3A10] displayP3ColorSpace];
 
-    v6 = v8;
+    spaceCopy = displayP3ColorSpace;
   }
 
-  if ([v6 isExtended])
+  if ([spaceCopy isExtended])
   {
     [MEMORY[0x1E69B3BF0] RGBAh];
   }
@@ -1846,12 +1846,12 @@ LABEL_11:
     [MEMORY[0x1E69B3BF0] A2RGB10];
   }
   v9 = ;
-  v10 = [MEMORY[0x1E69B3B10] bufferImageWithLayout:v7 format:v9 colorSpace:v6];
+  v10 = [MEMORY[0x1E69B3B10] bufferImageWithLayout:v7 format:v9 colorSpace:spaceCopy];
 
   return v10;
 }
 
-- (BOOL)_tryLoad:(id *)a3
+- (BOOL)_tryLoad:(id *)load
 {
   v93 = *MEMORY[0x1E69E9840];
   if (self->_outputRegion)
@@ -1859,13 +1859,13 @@ LABEL_11:
     return 1;
   }
 
-  v5 = [(NURenderNode *)self settings];
-  v6 = [v5 objectForKeyedSubscript:@"operations"];
+  settings = [(NURenderNode *)self settings];
+  v6 = [settings objectForKeyedSubscript:@"operations"];
 
   v55 = [v6 count];
-  v7 = [(PIInpaintCacheNode *)self _computeBaseIdentifier];
+  _computeBaseIdentifier = [(PIInpaintCacheNode *)self _computeBaseIdentifier];
   v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v55 + 1];
-  [v8 addObject:v7];
+  [v8 addObject:_computeBaseIdentifier];
   v83 = 0u;
   v84 = 0u;
   v81 = 0u;
@@ -1878,7 +1878,7 @@ LABEL_11:
     do
     {
       v12 = 0;
-      v13 = v7;
+      v13 = _computeBaseIdentifier;
       do
       {
         if (*v82 != v11)
@@ -1890,11 +1890,11 @@ LABEL_11:
         v15 = objc_alloc_init(MEMORY[0x1E69B3A38]);
         [v13 nu_updateDigest:v15];
         [v14 nu_updateDigest:v15];
-        v7 = [v15 stringValue];
+        _computeBaseIdentifier = [v15 stringValue];
 
-        [v8 addObject:v7];
+        [v8 addObject:_computeBaseIdentifier];
         ++v12;
-        v13 = v7;
+        v13 = _computeBaseIdentifier;
       }
 
       while (v10 != v12);
@@ -1904,19 +1904,19 @@ LABEL_11:
     while (v10);
   }
 
-  v16 = [(NUCacheNode *)self inputNode];
-  v17 = [v16 outputImageGeometry:a3];
+  inputNode = [(NUCacheNode *)self inputNode];
+  v17 = [inputNode outputImageGeometry:load];
 
   if (v17)
   {
-    v54 = [(NURenderNode *)self imageProperties:a3];
+    v54 = [(NURenderNode *)self imageProperties:load];
     if (v54)
     {
       v57 = objc_alloc_init(MEMORY[0x1E69B3BB0]);
       v18 = objc_alloc_init(MEMORY[0x1E69B3BB0]);
       v58 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v55 + 1];
-      v19 = [MEMORY[0x1E69B3C10] region];
-      [v58 addObject:v19];
+      region = [MEMORY[0x1E69B3C10] region];
+      [v58 addObject:region];
 
       v79 = 0u;
       v80 = 0u;
@@ -1936,7 +1936,7 @@ LABEL_11:
               objc_enumerationMutation(obj);
             }
 
-            if (![(PIInpaintCacheNode *)self _updateInputRegion:v57 outputRegion:v18 forOperation:*(*(&v77 + 1) + 8 * i) geometry:v17 error:a3])
+            if (![(PIInpaintCacheNode *)self _updateInputRegion:v57 outputRegion:v18 forOperation:*(*(&v77 + 1) + 8 * i) geometry:v17 error:load])
             {
 
               v3 = 0;
@@ -1975,24 +1975,24 @@ LABEL_11:
       v70 = __Block_byref_object_copy__17069;
       v71 = __Block_byref_object_dispose__17070;
       v72 = 0;
-      v28 = self;
+      selfCopy3 = self;
       if ([(PIInpaintCacheNode *)self shouldCacheIntermediates])
       {
-        v29 = [objc_opt_class() intermediateCache];
+        intermediateCache = [objc_opt_class() intermediateCache];
         v60[0] = MEMORY[0x1E69E9820];
         v60[1] = 3221225472;
         v60[2] = __31__PIInpaintCacheNode__tryLoad___block_invoke;
         v60[3] = &unk_1E82AB558;
         v64 = &v67;
-        v30 = v29;
+        v30 = intermediateCache;
         v61 = v30;
         v62 = v58;
-        v63 = self;
+        selfCopy2 = self;
         v65 = &v73;
         v66 = v55;
         [v8 enumerateObjectsWithOptions:2 usingBlock:v60];
 
-        v28 = self;
+        selfCopy3 = self;
       }
 
       v31 = MEMORY[0x1E69B3D80];
@@ -2006,10 +2006,10 @@ LABEL_11:
         v32 = *v31;
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [(NUCacheNode *)v28 subsampleFactor];
+          subsampleFactor = [(NUCacheNode *)selfCopy3 subsampleFactor];
           v34 = v74[3];
           *buf = 67109632;
-          v86 = v33;
+          v86 = subsampleFactor;
           v87 = 1024;
           v88 = v34;
           v89 = 1024;
@@ -2017,16 +2017,16 @@ LABEL_11:
           _os_log_impl(&dword_1C7694000, v32, OS_LOG_TYPE_DEFAULT, "Inpaint intermediate #%d cache hit (operation #%d out of %d)", buf, 0x14u);
         }
 
-        v35 = [v68[5] mutableImageCopy];
+        mutableImageCopy = [v68[5] mutableImageCopy];
         inputImage = self->_inputImage;
-        self->_inputImage = v35;
+        self->_inputImage = mutableImageCopy;
 
         v37 = [obj subarrayWithRange:{v74[3], v55 - v74[3]}];
         operations = self->_operations;
         self->_operations = v37;
 
         [v68[5] endAccess];
-        v39 = self;
+        selfCopy5 = self;
       }
 
       else
@@ -2039,20 +2039,20 @@ LABEL_11:
         v40 = *v31;
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
-          v41 = [(NUCacheNode *)v28 subsampleFactor];
+          subsampleFactor2 = [(NUCacheNode *)selfCopy3 subsampleFactor];
           *buf = 67109632;
-          v86 = v41;
+          v86 = subsampleFactor2;
           v87 = 1024;
           v88 = v55;
           v89 = 2048;
-          v90 = v28;
+          v90 = selfCopy3;
           _os_log_impl(&dword_1C7694000, v40, OS_LOG_TYPE_DEFAULT, "Inpaint intermediate #%d cache miss [%d operations] (%p)", buf, 0x18u);
         }
 
-        v42 = [v17 scaledSize];
+        scaledSize = [v17 scaledSize];
         v44 = v43;
-        v45 = [v54 colorSpace];
-        v46 = [(PIInpaintCacheNode *)self newImageOfSize:v42 colorSpace:v44, v45];
+        colorSpace = [v54 colorSpace];
+        v46 = [(PIInpaintCacheNode *)self newImageOfSize:scaledSize colorSpace:v44, colorSpace];
         v47 = self->_inputImage;
         self->_inputImage = v46;
 
@@ -2060,12 +2060,12 @@ LABEL_11:
         v49 = self->_operations;
         self->_operations = v48;
 
-        v39 = self;
+        selfCopy5 = self;
       }
 
-      v50 = [v7 copy];
-      cacheKey = v39->_cacheKey;
-      v39->_cacheKey = v50;
+      v50 = [_computeBaseIdentifier copy];
+      cacheKey = selfCopy5->_cacheKey;
+      selfCopy5->_cacheKey = v50;
 
       outputImage = self->_outputImage;
       self->_outputImage = 0;
@@ -2148,20 +2148,20 @@ void __31__PIInpaintCacheNode__tryLoad___block_invoke(uint64_t a1, void *a2, uin
 - (id)_computeBaseIdentifier
 {
   v3 = objc_alloc_init(MEMORY[0x1E69B3A38]);
-  v4 = [(NUCacheNode *)self inputNode];
-  [v4 nu_updateDigest:v3];
+  inputNode = [(NUCacheNode *)self inputNode];
+  [inputNode nu_updateDigest:v3];
 
   [v3 addString:@"subsample["];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[NUCacheNode subsampleFactor](self, "subsampleFactor")}];
   [v5 nu_updateDigest:v3];
 
   [v3 addString:@"]"];
-  v6 = [v3 stringValue];
+  stringValue = [v3 stringValue];
 
-  return v6;
+  return stringValue;
 }
 
-- (BOOL)tryLoad:(id *)a3
+- (BOOL)tryLoad:(id *)load
 {
   v7 = 0;
   v8 = &v7;
@@ -2174,7 +2174,7 @@ void __31__PIInpaintCacheNode__tryLoad___block_invoke(uint64_t a1, void *a2, uin
   block[3] = &unk_1E82AB530;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = load;
   dispatch_sync(inpaintQueue, block);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -2188,12 +2188,12 @@ uint64_t __30__PIInpaintCacheNode_tryLoad___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)evaluateRenderDependenciesWithRequest:(id)a3 error:(id *)a4
+- (id)evaluateRenderDependenciesWithRequest:(id)request error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = PIInpaintCacheNode;
-  v6 = [(NUCacheNode *)&v9 evaluateRenderDependenciesWithRequest:a3 error:?];
-  if (v6 && [(PIInpaintCacheNode *)self tryLoad:a4])
+  v6 = [(NUCacheNode *)&v9 evaluateRenderDependenciesWithRequest:request error:?];
+  if (v6 && [(PIInpaintCacheNode *)self tryLoad:error])
   {
     v7 = v6;
   }
@@ -2206,12 +2206,12 @@ uint64_t __30__PIInpaintCacheNode_tryLoad___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v29 = NUAssertLogger_16994();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -2233,8 +2233,8 @@ uint64_t __30__PIInpaintCacheNode_tryLoad___block_invoke(uint64_t a1)
         v37 = dispatch_get_specific(*v31);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v37;
         v48 = 2114;
@@ -2245,8 +2245,8 @@ uint64_t __30__PIInpaintCacheNode_tryLoad___block_invoke(uint64_t a1)
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v36;
       _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2255,14 +2255,14 @@ uint64_t __30__PIInpaintCacheNode_tryLoad___block_invoke(uint64_t a1)
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  if ([v9 evaluationMode] == 1 || !objc_msgSend(v10, "evaluationMode"))
+  v10 = stateCopy;
+  if ([stateCopy evaluationMode] == 1 || !objc_msgSend(v10, "evaluationMode"))
   {
     v12 = [v10 copy];
     [v12 setDisableIntermediateCaching:0];
     v45.receiver = self;
     v45.super_class = PIInpaintCacheNode;
-    v13 = [(NUCacheNode *)&v45 nodeByReplayingAgainstCache:v8 pipelineState:v12 error:a5];
+    v13 = [(NUCacheNode *)&v45 nodeByReplayingAgainstCache:cacheCopy pipelineState:v12 error:error];
     if (v13)
     {
       if ([(NURenderNode *)self isCached])
@@ -2295,23 +2295,23 @@ uint64_t __30__PIInpaintCacheNode_tryLoad___block_invoke(uint64_t a1)
           v19 = *(MEMORY[0x1E69B3918] + 8);
         }
 
-        v21 = [(PIInpaintCacheNode *)self inpaintInputNode];
-        v22 = [v21 nodeByReplayingAgainstCache:v8 pipelineState:v12 error:a5];
+        inpaintInputNode = [(PIInpaintCacheNode *)self inpaintInputNode];
+        v22 = [inpaintInputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:v12 error:error];
 
         if (v22)
         {
           v23 = -[PIInpaintCompositeNode initWithScale:sampleMode:input:retouch:]([PIInpaintCompositeNode alloc], "initWithScale:sampleMode:input:retouch:", v17, v19, [v10 sampleMode], v22, v13);
-          v11 = [MEMORY[0x1E69B3C28] nodeFromCache:v23 cache:v8];
+          v11 = [MEMORY[0x1E69B3C28] nodeFromCache:v23 cache:cacheCopy];
 
           [v11 setEvaluatedForMode:{objc_msgSend(v10, "evaluationMode")}];
           if ((NUScaleEqual() & 1) == 0)
           {
             v43 = objc_alloc(MEMORY[0x1E69B3C90]);
             v24 = v20;
-            v25 = [v10 scale];
-            v27 = [v43 initWithTargetScale:v25 effectiveScale:v26 sampleMode:v44 input:{v24, objc_msgSend(v10, "sampleMode"), v11}];
+            scale = [v10 scale];
+            v27 = [v43 initWithTargetScale:scale effectiveScale:v26 sampleMode:v44 input:{v24, objc_msgSend(v10, "sampleMode"), v11}];
 
-            v11 = [MEMORY[0x1E69B3C28] nodeFromCache:v27 cache:v8];
+            v11 = [MEMORY[0x1E69B3C28] nodeFromCache:v27 cache:cacheCopy];
 
             [v11 setEvaluatedForMode:{objc_msgSend(v10, "evaluationMode")}];
           }
@@ -2333,20 +2333,20 @@ uint64_t __30__PIInpaintCacheNode_tryLoad___block_invoke(uint64_t a1)
   else
   {
     [MEMORY[0x1E69B3A48] invalidError:@"Cannot evaluate cache node" object:self];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   return v11;
 }
 
-- (PIInpaintCacheNode)initWithInputs:(id)a3 settings:(id)a4 subsampleFactor:(int64_t)a5
+- (PIInpaintCacheNode)initWithInputs:(id)inputs settings:(id)settings subsampleFactor:(int64_t)factor
 {
-  v8 = a3;
-  v9 = [a4 mutableCopy];
+  inputsCopy = inputs;
+  v9 = [settings mutableCopy];
   [v9 setObject:*MEMORY[0x1E69B38E0] forKeyedSubscript:@"__dominantInputSettingsKey"];
   v14.receiver = self;
   v14.super_class = PIInpaintCacheNode;
-  v10 = [(NUCacheNode *)&v14 initWithInputs:v8 settings:v9 subsampleFactor:a5];
+  v10 = [(NUCacheNode *)&v14 initWithInputs:inputsCopy settings:v9 subsampleFactor:factor];
 
   v11 = dispatch_queue_create("PIInpaintCacheNode", 0);
   inpaintQueue = v10->_inpaintQueue;
@@ -2380,17 +2380,17 @@ uint64_t __39__PIInpaintCacheNode_intermediateCache__block_invoke()
 
 + (void)purge
 {
-  v2 = [a1 intermediateCache];
-  [v2 removeAllObjects];
+  intermediateCache = [self intermediateCache];
+  [intermediateCache removeAllObjects];
 }
 
-+ (id)inpaintNodeWithInput:(id)a3 operations:(id)a4 masks:(id)a5 error:(id *)a6
++ (id)inpaintNodeWithInput:(id)input operations:(id)operations masks:(id)masks error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!a6)
+  inputCopy = input;
+  operationsCopy = operations;
+  masksCopy = masks;
+  if (!error)
   {
     v29 = NUAssertLogger_16994();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -2401,7 +2401,7 @@ uint64_t __39__PIInpaintCacheNode_intermediateCache__block_invoke()
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_16994();
     v34 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2409,11 +2409,11 @@ uint64_t __39__PIInpaintCacheNode_intermediateCache__block_invoke()
     {
       if (v34)
       {
-        v47 = dispatch_get_specific(*v31);
+        v47 = dispatch_get_specific(*callStackSymbols);
         v48 = MEMORY[0x1E696AF00];
         v49 = v47;
-        v31 = [v48 callStackSymbols];
-        v50 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v48 callStackSymbols];
+        v50 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v69 = v47;
         v70 = 2114;
@@ -2424,10 +2424,10 @@ uint64_t __39__PIInpaintCacheNode_intermediateCache__block_invoke()
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v69 = v31;
+      v69 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -2435,7 +2435,7 @@ uint64_t __39__PIInpaintCacheNode_intermediateCache__block_invoke()
     goto LABEL_35;
   }
 
-  if (!v9)
+  if (!inputCopy)
   {
     v36 = NUAssertLogger_16994();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -2446,7 +2446,7 @@ uint64_t __39__PIInpaintCacheNode_intermediateCache__block_invoke()
       _os_log_error_impl(&dword_1C7694000, v36, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v38 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_16994();
     v39 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2454,10 +2454,10 @@ uint64_t __39__PIInpaintCacheNode_intermediateCache__block_invoke()
     {
       if (v39)
       {
-        v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v31 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v69 = v31;
+        v69 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -2470,11 +2470,11 @@ LABEL_37:
 LABEL_35:
     if (v39)
     {
-      v51 = dispatch_get_specific(*v31);
+      v51 = dispatch_get_specific(*callStackSymbols);
       v52 = MEMORY[0x1E696AF00];
       v53 = v51;
-      v31 = [v52 callStackSymbols];
-      v54 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v52 callStackSymbols];
+      v54 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v69 = v51;
       v70 = 2114;
@@ -2485,7 +2485,7 @@ LABEL_35:
     goto LABEL_37;
   }
 
-  if (!v10)
+  if (!operationsCopy)
   {
     v41 = NUAssertLogger_16994();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -2496,7 +2496,7 @@ LABEL_35:
       _os_log_error_impl(&dword_1C7694000, v41, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v43 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_16994();
     v44 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2504,8 +2504,8 @@ LABEL_35:
     {
       if (v44)
       {
-        v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v46 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v69 = v46;
         _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2517,11 +2517,11 @@ LABEL_35:
 LABEL_38:
     if (v44)
     {
-      v55 = dispatch_get_specific(*v31);
+      v55 = dispatch_get_specific(*callStackSymbols);
       v56 = MEMORY[0x1E696AF00];
       v57 = v55;
-      v58 = [v56 callStackSymbols];
-      v59 = [v58 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v56 callStackSymbols];
+      v59 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v69 = v55;
       v70 = 2114;
@@ -2534,12 +2534,12 @@ LABEL_40:
     _NUAssertFailHandler();
   }
 
-  v12 = v11;
-  v60 = a6;
-  v61 = v10;
-  v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v11, "count") + 1}];
+  v12 = masksCopy;
+  errorCopy = error;
+  v61 = operationsCopy;
+  v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(masksCopy, "count") + 1}];
   v14 = *MEMORY[0x1E69B38E0];
-  [v13 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69B38E0]];
+  [v13 setObject:inputCopy forKeyedSubscript:*MEMORY[0x1E69B38E0]];
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
@@ -2565,16 +2565,16 @@ LABEL_40:
         v22 = v62;
         if (!v21)
         {
-          *v60 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to create inpaint mask source node" object:v20 underlyingError:v22];
+          *errorCopy = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to create inpaint mask source node" object:v20 underlyingError:v22];
 
           v27 = 0;
-          v24 = v15;
+          dictionary = v15;
           v25 = v61;
           goto LABEL_14;
         }
 
-        v23 = [v20 assetIdentifier];
-        [v13 setObject:v21 forKeyedSubscript:v23];
+        assetIdentifier = [v20 assetIdentifier];
+        [v13 setObject:v21 forKeyedSubscript:assetIdentifier];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v63 objects:v67 count:16];
@@ -2587,13 +2587,13 @@ LABEL_40:
     }
   }
 
-  v24 = [MEMORY[0x1E695DF90] dictionary];
-  [v24 setObject:v14 forKeyedSubscript:@"__dominantInputSettingsKey"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v14 forKeyedSubscript:@"__dominantInputSettingsKey"];
   v25 = v61;
   v26 = PFMap();
-  [v24 setObject:v26 forKeyedSubscript:@"operations"];
+  [dictionary setObject:v26 forKeyedSubscript:@"operations"];
 
-  v27 = [(NURenderNode *)[PIInpaintPlaceholderNode alloc] initWithSettings:v24 inputs:v13];
+  v27 = [(NURenderNode *)[PIInpaintPlaceholderNode alloc] initWithSettings:dictionary inputs:v13];
 LABEL_14:
 
   return v27;

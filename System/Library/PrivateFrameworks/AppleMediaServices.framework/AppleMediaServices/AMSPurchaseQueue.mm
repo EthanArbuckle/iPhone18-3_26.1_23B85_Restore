@@ -1,18 +1,18 @@
 @interface AMSPurchaseQueue
 + (AMSBagKeySet)bagKeySet;
-- (AMSPurchaseQueue)initWithConfiguration:(id)a3;
+- (AMSPurchaseQueue)initWithConfiguration:(id)configuration;
 - (BOOL)isSuspended;
-- (id)_createPurchasePromiseForTask:(id)a3 purchase:(id)a4;
-- (id)_performPreauthenticateForPurchaseTask:(id)a3;
-- (id)_processPurchase:(id)a3;
-- (id)enquePurchases:(id)a3;
+- (id)_createPurchasePromiseForTask:(id)task purchase:(id)purchase;
+- (id)_performPreauthenticateForPurchaseTask:(id)task;
+- (id)_processPurchase:(id)purchase;
+- (id)enquePurchases:(id)purchases;
 - (void)_handleNextPurchase;
-- (void)_handleResult:(id)a3 error:(id)a4 forPurchase:(id)a5;
-- (void)purchase:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleEngagementRequest:(id)a4 completion:(id)a5;
-- (void)setSuspended:(BOOL)a3;
-- (void)setSuspended:(BOOL)a3 logUUID:(id)a4;
+- (void)_handleResult:(id)result error:(id)error forPurchase:(id)purchase;
+- (void)purchase:(id)purchase handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)purchase:(id)purchase handleDialogRequest:(id)request completion:(id)completion;
+- (void)purchase:(id)purchase handleEngagementRequest:(id)request completion:(id)completion;
+- (void)setSuspended:(BOOL)suspended;
+- (void)setSuspended:(BOOL)suspended logUUID:(id)d;
 @end
 
 @implementation AMSPurchaseQueue
@@ -24,16 +24,16 @@
   return v2;
 }
 
-- (AMSPurchaseQueue)initWithConfiguration:(id)a3
+- (AMSPurchaseQueue)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = AMSPurchaseQueue;
   v6 = [(AMSPurchaseQueue *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, configuration);
     v8 = objc_alloc_init(AMSPurchaseQueueBatchList);
     batches = v7->_batches;
     v7->_batches = v8;
@@ -51,9 +51,9 @@
   return v7;
 }
 
-- (id)enquePurchases:(id)a3
+- (id)enquePurchases:(id)purchases
 {
-  v4 = a3;
+  purchasesCopy = purchases;
   objc_initWeak(&location, self);
   v5 = [AMSMutableLazyPromise alloc];
   v9[0] = MEMORY[0x1E69E9820];
@@ -61,7 +61,7 @@
   v9[2] = __35__AMSPurchaseQueue_enquePurchases___block_invoke;
   v9[3] = &unk_1E73B5678;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = purchasesCopy;
   v10 = v6;
   v7 = [(AMSMutableLazyPromise *)v5 initWithBlock:v9];
 
@@ -92,24 +92,24 @@ void __35__AMSPurchaseQueue_enquePurchases___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setSuspended:(BOOL)a3 logUUID:(id)a4
+- (void)setSuspended:(BOOL)suspended logUUID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(AMSPurchaseQueue *)self batches];
-  v8 = [v7 count];
+  dCopy = d;
+  batches = [(AMSPurchaseQueue *)self batches];
+  v8 = [batches count];
 
   if (v8)
   {
-    v9 = [(AMSPurchaseQueue *)self dispatchQueue];
+    dispatchQueue = [(AMSPurchaseQueue *)self dispatchQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41__AMSPurchaseQueue_setSuspended_logUUID___block_invoke;
     block[3] = &unk_1E73B9C20;
     block[4] = self;
-    v14 = a3;
-    v13 = v6;
-    dispatch_async(v9, block);
+    suspendedCopy = suspended;
+    v13 = dCopy;
+    dispatch_async(dispatchQueue, block);
   }
 
   else
@@ -120,14 +120,14 @@ void __35__AMSPurchaseQueue_enquePurchases___block_invoke(uint64_t a1, void *a2)
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       v16 = objc_opt_class();
       v17 = 2114;
-      v18 = v6;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Ignoring suspend request due to queue being empty", buf, 0x16u);
+      v18 = dCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Ignoring suspend request due to queue being empty", buf, 0x16u);
     }
   }
 }
@@ -184,13 +184,13 @@ void __41__AMSPurchaseQueue_setSuspended_logUUID___block_invoke(uint64_t a1)
 
 - (void)_handleNextPurchase
 {
-  v3 = [(AMSPurchaseQueue *)self dispatchQueue];
+  dispatchQueue = [(AMSPurchaseQueue *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__AMSPurchaseQueue__handleNextPurchase__block_invoke;
   block[3] = &unk_1E73B3680;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 void __39__AMSPurchaseQueue__handleNextPurchase__block_invoke(uint64_t a1)
@@ -265,12 +265,12 @@ LABEL_18:
   }
 }
 
-- (id)_processPurchase:(id)a3
+- (id)_processPurchase:(id)purchase
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSPurchaseQueue *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  purchaseCopy = purchase;
+  dispatchQueue = [(AMSPurchaseQueue *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v6 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v6)
@@ -278,29 +278,29 @@ LABEL_18:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
-    v9 = [v4 logUUID];
+    logUUID = [purchaseCopy logUUID];
     *buf = 138543618;
     v43 = v8;
     v44 = 2114;
-    v45 = v9;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Processing purchase", buf, 0x16u);
+    v45 = logUUID;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Processing purchase", buf, 0x16u);
   }
 
-  v10 = [(AMSPurchaseQueue *)self config];
-  v11 = [v10 purchaseTaskClass];
-  if (!v11)
+  config = [(AMSPurchaseQueue *)self config];
+  purchaseTaskClass = [config purchaseTaskClass];
+  if (!purchaseTaskClass)
   {
-    v11 = objc_opt_class();
+    purchaseTaskClass = objc_opt_class();
   }
 
-  v12 = [v11 alloc];
-  v13 = [(AMSPurchaseQueue *)self config];
-  v14 = [v13 bag];
-  v15 = [v12 initWithPurchase:v4 bag:v14];
+  v12 = [purchaseTaskClass alloc];
+  config2 = [(AMSPurchaseQueue *)self config];
+  v14 = [config2 bag];
+  v15 = [v12 initWithPurchase:purchaseCopy bag:v14];
 
   [v15 setDelegate:self];
   [v15 setRunMode:1];
@@ -309,15 +309,15 @@ LABEL_18:
   aBlock[2] = __37__AMSPurchaseQueue__processPurchase___block_invoke;
   aBlock[3] = &unk_1E73B2E50;
   aBlock[4] = self;
-  v16 = v4;
+  v16 = purchaseCopy;
   v40 = v16;
   v17 = v15;
   v41 = v17;
   v18 = _Block_copy(aBlock);
-  v19 = [(AMSPurchaseQueue *)self preAuthenticatedDSIDs];
-  v20 = [v16 account];
-  v21 = [v20 ams_DSID];
-  v22 = [v19 containsObject:v21];
+  preAuthenticatedDSIDs = [(AMSPurchaseQueue *)self preAuthenticatedDSIDs];
+  account = [v16 account];
+  ams_DSID = [account ams_DSID];
+  v22 = [preAuthenticatedDSIDs containsObject:ams_DSID];
 
   if (v22)
   {
@@ -337,8 +337,8 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v26 = [v17 purchaseInfo];
-  v27 = [AMSPurchaseTask shouldPreauthenticatePurchaseWithInfo:v26];
+  purchaseInfo = [v17 purchaseInfo];
+  v27 = [AMSPurchaseTask shouldPreauthenticatePurchaseWithInfo:purchaseInfo];
 
   if (v27)
   {
@@ -347,11 +347,11 @@ LABEL_11:
     v31 = 3221225472;
     v32 = __37__AMSPurchaseQueue__processPurchase___block_invoke_16;
     v33 = &unk_1E73BB1E8;
-    v34 = self;
+    selfCopy = self;
     v35 = v17;
     v36 = v16;
     [v28 addSuccessBlock:&v30];
-    v24 = [v28 continueWithBlock:{v18, v30, v31, v32, v33, v34}];
+    v24 = [v28 continueWithBlock:{v18, v30, v31, v32, v33, selfCopy}];
 
     v25 = v35;
     goto LABEL_11;
@@ -437,20 +437,20 @@ void __37__AMSPurchaseQueue__processPurchase___block_invoke_16(id *a1)
   [v7 addObject:v9];
 }
 
-- (id)_createPurchasePromiseForTask:(id)a3 purchase:(id)a4
+- (id)_createPurchasePromiseForTask:(id)task purchase:(id)purchase
 {
-  v6 = a4;
-  v7 = [a3 performPurchase];
+  purchaseCopy = purchase;
+  performPurchase = [task performPurchase];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__AMSPurchaseQueue__createPurchasePromiseForTask_purchase___block_invoke;
   v10[3] = &unk_1E73BB210;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
-  [v7 addFinishBlock:v10];
+  v11 = purchaseCopy;
+  v8 = purchaseCopy;
+  [performPurchase addFinishBlock:v10];
 
-  return v7;
+  return performPurchase;
 }
 
 void __59__AMSPurchaseQueue__createPurchasePromiseForTask_purchase___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -486,40 +486,40 @@ uint64_t __59__AMSPurchaseQueue__createPurchasePromiseForTask_purchase___block_i
   return result;
 }
 
-- (void)_handleResult:(id)a3 error:(id)a4 forPurchase:(id)a5
+- (void)_handleResult:(id)result error:(id)error forPurchase:(id)purchase
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AMSPurchaseQueue *)self batches];
-  v11 = [v10 batchForPurchase:v9];
+  resultCopy = result;
+  errorCopy = error;
+  purchaseCopy = purchase;
+  batches = [(AMSPurchaseQueue *)self batches];
+  v11 = [batches batchForPurchase:purchaseCopy];
 
   if (v11)
   {
-    if (v8)
+    if (errorCopy)
     {
-      [v11 finishPurchase:v9 withError:v8];
+      [v11 finishPurchase:purchaseCopy withError:errorCopy];
     }
 
     else
     {
-      [v11 finishPurchase:v9 withResult:v13];
+      [v11 finishPurchase:purchaseCopy withResult:resultCopy];
     }
 
     if ([v11 isComplete])
     {
-      v12 = [(AMSPurchaseQueue *)self batches];
-      [v12 popBatch:v11];
+      batches2 = [(AMSPurchaseQueue *)self batches];
+      [batches2 popBatch:v11];
     }
   }
 }
 
-- (id)_performPreauthenticateForPurchaseTask:(id)a3
+- (id)_performPreauthenticateForPurchaseTask:(id)task
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSPurchaseQueue *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  taskCopy = task;
+  dispatchQueue = [(AMSPurchaseQueue *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v6 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v6)
@@ -527,8 +527,8 @@ uint64_t __59__AMSPurchaseQueue__createPurchasePromiseForTask_purchase___block_i
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
@@ -536,26 +536,26 @@ uint64_t __59__AMSPurchaseQueue__createPurchasePromiseForTask_purchase___block_i
     v27 = v8;
     v28 = 2114;
     v29 = v9;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to pre-authenticate purchase queue for device restrictions", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to pre-authenticate purchase queue for device restrictions", buf, 0x16u);
   }
 
   v10 = objc_alloc_init(AMSAuthenticateOptions);
   [(AMSAuthenticateOptions *)v10 setAuthenticationType:2];
   [(AMSAuthenticateOptions *)v10 setCanMakeAccountActive:0];
-  v11 = [v4 purchaseInfo];
-  v12 = [v11 clientInfo];
-  [(AMSAuthenticateOptions *)v10 setClientInfo:v12];
+  purchaseInfo = [taskCopy purchaseInfo];
+  clientInfo = [purchaseInfo clientInfo];
+  [(AMSAuthenticateOptions *)v10 setClientInfo:clientInfo];
 
   [(AMSAuthenticateOptions *)v10 setDebugReason:@"Pre-authentication due to device restrictions around purchasing."];
   v13 = [AMSAuthenticateRequest alloc];
-  v14 = [v4 purchaseInfo];
-  v15 = [v14 account];
-  v16 = [(AMSAuthenticateRequest *)v13 initWithAccount:v15 options:v10];
+  purchaseInfo2 = [taskCopy purchaseInfo];
+  account = [purchaseInfo2 account];
+  v16 = [(AMSAuthenticateRequest *)v13 initWithAccount:account options:v10];
 
   v17 = AMSLogKey();
   [(AMSAuthenticateRequest *)v16 setLogKey:v17];
 
-  v18 = [v4 delegate];
+  delegate = [taskCopy delegate];
   if (objc_opt_respondsToSelector())
   {
     v19 = objc_alloc_init(AMSPromise);
@@ -571,16 +571,16 @@ uint64_t __59__AMSPurchaseQueue__createPurchasePromiseForTask_purchase___block_i
     v24[3] = &unk_1E73B34B8;
     v24[4] = self;
     [(AMSPromise *)v19 addErrorBlock:v24];
-    v20 = [v4 purchaseInfo];
-    v21 = [v20 purchase];
-    v22 = [(AMSPromise *)v19 completionHandlerAdapter];
-    [v18 purchase:v21 handleAuthenticateRequest:v16 completion:v22];
+    purchaseInfo3 = [taskCopy purchaseInfo];
+    purchase = [purchaseInfo3 purchase];
+    completionHandlerAdapter = [(AMSPromise *)v19 completionHandlerAdapter];
+    [delegate purchase:purchase handleAuthenticateRequest:v16 completion:completionHandlerAdapter];
   }
 
   else
   {
-    v20 = AMSError(12, @"Purchase Authentication Failed", @"Delegate does not respond to auth callback", 0);
-    v19 = [AMSPromise promiseWithError:v20];
+    purchaseInfo3 = AMSError(12, @"Purchase Authentication Failed", @"Delegate does not respond to auth callback", 0);
+    v19 = [AMSPromise promiseWithError:purchaseInfo3];
   }
 
   return v19;
@@ -636,92 +636,92 @@ void __59__AMSPurchaseQueue__performPreauthenticateForPurchaseTask___block_invok
 
 - (BOOL)isSuspended
 {
-  v3 = [(AMSPurchaseQueue *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(AMSPurchaseQueue *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   return self->_suspended;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  v5 = [(AMSPurchaseQueue *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  dispatchQueue = [(AMSPurchaseQueue *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  self->_suspended = a3;
+  self->_suspended = suspended;
 }
 
-- (void)purchase:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AMSPurchaseQueue *)self config];
-  v11 = [v10 delegate];
+  purchaseCopy = purchase;
+  requestCopy = request;
+  completionCopy = completion;
+  config = [(AMSPurchaseQueue *)self config];
+  delegate = [config delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(AMSPurchaseQueue *)self config];
-    v14 = [v13 delegate];
-    [v14 handleAuthenticateRequest:v8 purchase:v15 purchaseQueue:self completion:v9];
+    config2 = [(AMSPurchaseQueue *)self config];
+    delegate2 = [config2 delegate];
+    [delegate2 handleAuthenticateRequest:requestCopy purchase:purchaseCopy purchaseQueue:self completion:completionCopy];
 
-    v9 = v14;
+    completionCopy = delegate2;
   }
 
   else
   {
-    v13 = AMSError(12, @"Purchase Batch Failed", @"Delegate method for authentications not found", 0);
-    (*(v9 + 2))(v9, 0, v13);
+    config2 = AMSError(12, @"Purchase Batch Failed", @"Delegate method for authentications not found", 0);
+    (*(completionCopy + 2))(completionCopy, 0, config2);
   }
 }
 
-- (void)purchase:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleDialogRequest:(id)request completion:(id)completion
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AMSPurchaseQueue *)self config];
-  v11 = [v10 delegate];
+  purchaseCopy = purchase;
+  requestCopy = request;
+  completionCopy = completion;
+  config = [(AMSPurchaseQueue *)self config];
+  delegate = [config delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(AMSPurchaseQueue *)self config];
-    v14 = [v13 delegate];
-    [v14 handleDialogRequest:v8 purchase:v15 purchaseQueue:self completion:v9];
+    config2 = [(AMSPurchaseQueue *)self config];
+    delegate2 = [config2 delegate];
+    [delegate2 handleDialogRequest:requestCopy purchase:purchaseCopy purchaseQueue:self completion:completionCopy];
 
-    v9 = v14;
+    completionCopy = delegate2;
   }
 
   else
   {
-    v13 = AMSError(12, @"Purchase Batch Failed", @"Delegate method for dialogs not found", 0);
-    (*(v9 + 2))(v9, 0, v13);
+    config2 = AMSError(12, @"Purchase Batch Failed", @"Delegate method for dialogs not found", 0);
+    (*(completionCopy + 2))(completionCopy, 0, config2);
   }
 }
 
-- (void)purchase:(id)a3 handleEngagementRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleEngagementRequest:(id)request completion:(id)completion
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AMSPurchaseQueue *)self config];
-  v11 = [v10 delegate];
+  purchaseCopy = purchase;
+  requestCopy = request;
+  completionCopy = completion;
+  config = [(AMSPurchaseQueue *)self config];
+  delegate = [config delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(AMSPurchaseQueue *)self config];
-    v14 = [v13 delegate];
-    [v14 handleEngagementRequest:v8 purchase:v15 purchaseQueue:self completion:v9];
+    config2 = [(AMSPurchaseQueue *)self config];
+    delegate2 = [config2 delegate];
+    [delegate2 handleEngagementRequest:requestCopy purchase:purchaseCopy purchaseQueue:self completion:completionCopy];
 
-    v9 = v14;
+    completionCopy = delegate2;
   }
 
   else
   {
-    v13 = AMSError(12, @"Purchase Batch Failed", @"Delegate method for engagement not found", 0);
-    (*(v9 + 2))(v9, 0, v13);
+    config2 = AMSError(12, @"Purchase Batch Failed", @"Delegate method for engagement not found", 0);
+    (*(completionCopy + 2))(completionCopy, 0, config2);
   }
 }
 

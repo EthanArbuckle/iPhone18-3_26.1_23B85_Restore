@@ -1,19 +1,19 @@
 @interface PresentFlyoverAction
-- (PresentFlyoverAction)initWithAnnouncement:(id)a3 muid:(unint64_t)a4;
-- (void)resolveFlyoverWithCompletion:(id)a3;
+- (PresentFlyoverAction)initWithAnnouncement:(id)announcement muid:(unint64_t)muid;
+- (void)resolveFlyoverWithCompletion:(id)completion;
 @end
 
 @implementation PresentFlyoverAction
 
-- (void)resolveFlyoverWithCompletion:(id)a3
+- (void)resolveFlyoverWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PresentAnnouncementAction *)self announcement];
-  v6 = [v5 userMessage];
+  completionCopy = completion;
+  announcement = [(PresentAnnouncementAction *)self announcement];
+  userMessage = [announcement userMessage];
 
-  v7 = [(PresentFlyoverAction *)self muid];
+  muid = [(PresentFlyoverAction *)self muid];
   v8 = [MKMapItemIdentifier alloc];
-  v9 = [v8 initWithMUID:v7 resultProviderID:0 coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
+  v9 = [v8 initWithMUID:muid resultProviderID:0 coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
   if (v9)
   {
     v10 = +[MKMapService sharedService];
@@ -25,21 +25,21 @@
     v13[1] = 3221225472;
     v13[2] = sub_100AFCDDC;
     v13[3] = &unk_101661318;
-    v14 = v6;
-    v16 = v7;
-    v15 = v4;
+    v14 = userMessage;
+    v16 = muid;
+    v15 = completionCopy;
     [v12 submitWithHandler:v13 networkActivity:0];
   }
 }
 
-- (PresentFlyoverAction)initWithAnnouncement:(id)a3 muid:(unint64_t)a4
+- (PresentFlyoverAction)initWithAnnouncement:(id)announcement muid:(unint64_t)muid
 {
   v6.receiver = self;
   v6.super_class = PresentFlyoverAction;
-  result = [(PresentAnnouncementAction *)&v6 initWithAnnouncement:a3];
+  result = [(PresentAnnouncementAction *)&v6 initWithAnnouncement:announcement];
   if (result)
   {
-    result->_muid = a4;
+    result->_muid = muid;
   }
 
   return result;

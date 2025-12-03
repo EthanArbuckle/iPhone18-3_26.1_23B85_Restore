@@ -1,41 +1,41 @@
 @interface SISchemaUEIDictationEnablementPromptShown
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUEIDictationEnablementPromptShown)initWithDictionary:(id)a3;
-- (SISchemaUEIDictationEnablementPromptShown)initWithJSON:(id)a3;
+- (SISchemaUEIDictationEnablementPromptShown)initWithDictionary:(id)dictionary;
+- (SISchemaUEIDictationEnablementPromptShown)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsLearnMoreButtonClicked:(BOOL)a3;
-- (void)setHasPromptVisibilityDurationInMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsLearnMoreButtonClicked:(BOOL)clicked;
+- (void)setHasPromptVisibilityDurationInMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUEIDictationEnablementPromptShown
 
-- (SISchemaUEIDictationEnablementPromptShown)initWithDictionary:(id)a3
+- (SISchemaUEIDictationEnablementPromptShown)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SISchemaUEIDictationEnablementPromptShown;
   v5 = [(SISchemaUEIDictationEnablementPromptShown *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isDictationEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isDictationEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationEnablementPromptShown setIsDictationEnabled:](v5, "setIsDictationEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isLearnMoreButtonClicked"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isLearnMoreButtonClicked"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationEnablementPromptShown setIsLearnMoreButtonClicked:](v5, "setIsLearnMoreButtonClicked:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"promptVisibilityDurationInMs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"promptVisibilityDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (SISchemaUEIDictationEnablementPromptShown)initWithJSON:(id)a3
+- (SISchemaUEIDictationEnablementPromptShown)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUEIDictationEnablementPromptShown *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUEIDictationEnablementPromptShown *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUEIDictationEnablementPromptShown *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,12 +84,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaUEIDictationEnablementPromptShown isDictationEnabled](self, "isDictationEnabled")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isDictationEnabled"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isDictationEnabled"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -110,19 +110,19 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaUEIDictationEnablementPromptShown isLearnMoreButtonClicked](self, "isLearnMoreButtonClicked")}];
-  [v3 setObject:v8 forKeyedSubscript:@"isLearnMoreButtonClicked"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isLearnMoreButtonClicked"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[SISchemaUEIDictationEnablementPromptShown promptVisibilityDurationInMs](self, "promptVisibilityDurationInMs")}];
-    [v3 setObject:v5 forKeyedSubscript:@"promptVisibilityDurationInMs"];
+    [dictionary setObject:v5 forKeyedSubscript:@"promptVisibilityDurationInMs"];
   }
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -165,16 +165,16 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -183,13 +183,13 @@ LABEL_4:
   if (*&has)
   {
     isDictationEnabled = self->_isDictationEnabled;
-    if (isDictationEnabled != [v4 isDictationEnabled])
+    if (isDictationEnabled != [equalCopy isDictationEnabled])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -201,10 +201,10 @@ LABEL_4:
   if (v8)
   {
     isLearnMoreButtonClicked = self->_isLearnMoreButtonClicked;
-    if (isLearnMoreButtonClicked == [v4 isLearnMoreButtonClicked])
+    if (isLearnMoreButtonClicked == [equalCopy isLearnMoreButtonClicked])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_10;
     }
 
@@ -223,7 +223,7 @@ LABEL_10:
   if (v10)
   {
     promptVisibilityDurationInMs = self->_promptVisibilityDurationInMs;
-    if (promptVisibilityDurationInMs != [v4 promptVisibilityDurationInMs])
+    if (promptVisibilityDurationInMs != [equalCopy promptVisibilityDurationInMs])
     {
       goto LABEL_14;
     }
@@ -235,15 +235,15 @@ LABEL_15:
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -263,20 +263,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasPromptVisibilityDurationInMs:(BOOL)a3
+- (void)setHasPromptVisibilityDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -289,9 +289,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsLearnMoreButtonClicked:(BOOL)a3
+- (void)setHasIsLearnMoreButtonClicked:(BOOL)clicked
 {
-  if (a3)
+  if (clicked)
   {
     v3 = 2;
   }

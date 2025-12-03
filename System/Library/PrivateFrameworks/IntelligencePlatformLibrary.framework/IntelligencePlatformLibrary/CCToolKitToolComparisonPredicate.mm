@@ -1,27 +1,27 @@
 @interface CCToolKitToolComparisonPredicate
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolComparisonPredicate)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolComparisonPredicate)initWithProperty:(id)a3 comparison:(id)a4 rawGroupId:(id)a5 contentItemClass:(id)a6 error:(id *)a7;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolComparisonPredicate)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolComparisonPredicate)initWithProperty:(id)property comparison:(id)comparison rawGroupId:(id)id contentItemClass:(id)class error:(id *)error;
 - (CCToolKitToolComparisonPredicateComparison)comparison;
 - (CCToolKitToolContentItemClassDescriptor)contentItemClass;
 - (CCToolKitToolTypeDefinitionVersion1EntityProperty)property;
 - (NSString)rawGroupId;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolComparisonPredicate
 
-- (CCToolKitToolComparisonPredicate)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolComparisonPredicate)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v23[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"property"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"property"];
     if (v9)
     {
       v23[0] = 0;
@@ -40,7 +40,7 @@ LABEL_22:
       v9 = v10;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"comparison"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"comparison"];
     if (v12)
     {
       v22 = 0;
@@ -56,8 +56,8 @@ LABEL_22:
       v12 = v13;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"rawGroupId"];
-    v15 = [v6 objectForKeyedSubscript:@"contentItemClass"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"rawGroupId"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"contentItemClass"];
     if (!v15)
     {
       v16 = 0;
@@ -73,7 +73,7 @@ LABEL_22:
     {
 
 LABEL_18:
-      v19 = [[CCToolKitToolComparisonPredicate alloc] initWithProperty:v9 comparison:v12 rawGroupId:v10 contentItemClass:v16 error:a4];
+      v19 = [[CCToolKitToolComparisonPredicate alloc] initWithProperty:v9 comparison:v12 rawGroupId:v10 contentItemClass:v16 error:error];
       v13 = v16;
 LABEL_21:
 
@@ -99,29 +99,29 @@ LABEL_23:
   v3 = objc_opt_new();
   if (self->_property)
   {
-    v4 = [(CCToolKitToolComparisonPredicate *)self property];
-    v5 = [v4 jsonDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"property"];
+    property = [(CCToolKitToolComparisonPredicate *)self property];
+    jsonDictionary = [property jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"property"];
   }
 
   if (self->_comparison)
   {
-    v6 = [(CCToolKitToolComparisonPredicate *)self comparison];
-    v7 = [v6 jsonDictionary];
-    [v3 setObject:v7 forKeyedSubscript:@"comparison"];
+    comparison = [(CCToolKitToolComparisonPredicate *)self comparison];
+    jsonDictionary2 = [comparison jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"comparison"];
   }
 
   if (self->_rawGroupId)
   {
-    v8 = [(CCToolKitToolComparisonPredicate *)self rawGroupId];
-    [v3 setObject:v8 forKeyedSubscript:@"rawGroupId"];
+    rawGroupId = [(CCToolKitToolComparisonPredicate *)self rawGroupId];
+    [v3 setObject:rawGroupId forKeyedSubscript:@"rawGroupId"];
   }
 
   if (self->_contentItemClass)
   {
-    v9 = [(CCToolKitToolComparisonPredicate *)self contentItemClass];
-    v10 = [v9 jsonDictionary];
-    [v3 setObject:v10 forKeyedSubscript:@"contentItemClass"];
+    contentItemClass = [(CCToolKitToolComparisonPredicate *)self contentItemClass];
+    jsonDictionary3 = [contentItemClass jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"contentItemClass"];
   }
 
   v11 = [v3 copy];
@@ -129,11 +129,11 @@ LABEL_23:
   return v11;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v12 = v5;
+  v12 = blockCopy;
   if (self->_property)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] subMessageValue:self->_property];
@@ -190,10 +190,10 @@ LABEL_23:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -375,14 +375,14 @@ LABEL_42:
   return v38;
 }
 
-- (CCToolKitToolComparisonPredicate)initWithProperty:(id)a3 comparison:(id)a4 rawGroupId:(id)a5 contentItemClass:(id)a6 error:(id *)a7
+- (CCToolKitToolComparisonPredicate)initWithProperty:(id)property comparison:(id)comparison rawGroupId:(id)id contentItemClass:(id)class error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  propertyCopy = property;
+  comparisonCopy = comparison;
+  idCopy = id;
+  classCopy = class;
   v16 = objc_opt_new();
-  if (v12)
+  if (propertyCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -392,27 +392,27 @@ LABEL_42:
       goto LABEL_8;
     }
 
-    v19 = [v12 data];
+    data = [propertyCopy data];
     CCPBDataWriterWriteDataField();
 
-    if (!v13)
+    if (!comparisonCopy)
     {
 LABEL_4:
       v20 = v18;
-      if (v14)
+      if (idCopy)
       {
         goto LABEL_5;
       }
 
 LABEL_12:
       v18 = v20;
-      if (!v15)
+      if (!classCopy)
       {
 LABEL_15:
-        v27 = [v16 immutableData];
-        self = [(CCItemMessage *)self initWithData:v27 error:a7];
+        immutableData = [v16 immutableData];
+        self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-        v22 = self;
+        selfCopy = self;
         goto LABEL_17;
       }
 
@@ -423,7 +423,7 @@ LABEL_15:
   else
   {
     v18 = 0;
-    if (!v13)
+    if (!comparisonCopy)
     {
       goto LABEL_4;
     }
@@ -438,10 +438,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v24 = [v13 data];
+  data2 = [comparisonCopy data];
   CCPBDataWriterWriteDataField();
 
-  if (!v14)
+  if (!idCopy)
   {
     goto LABEL_12;
   }
@@ -454,7 +454,7 @@ LABEL_5:
   if (v21)
   {
     CCPBDataWriterWriteStringField();
-    if (!v15)
+    if (!classCopy)
     {
       goto LABEL_15;
     }
@@ -467,7 +467,7 @@ LABEL_13:
 
     if (v25)
     {
-      v26 = [v15 data];
+      data3 = [classCopy data];
       CCPBDataWriterWriteDataField();
 
       v18 = v20;
@@ -476,17 +476,17 @@ LABEL_13:
 
 LABEL_16:
     CCSetError();
-    v22 = 0;
+    selfCopy = 0;
     v18 = v20;
     goto LABEL_17;
   }
 
 LABEL_8:
   CCSetError();
-  v22 = 0;
+  selfCopy = 0;
 LABEL_17:
 
-  return v22;
+  return selfCopy;
 }
 
 @end

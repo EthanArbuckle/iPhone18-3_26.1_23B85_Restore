@@ -1,45 +1,45 @@
 @interface GCLightXPCProxyClientEndpointDescription
-- (GCLightXPCProxyClientEndpointDescription)initWithCoder:(id)a3;
-- (GCLightXPCProxyClientEndpointDescription)initWithIdentifier:(id)a3 initialLight:(id)a4;
-- (id)materializeWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GCLightXPCProxyClientEndpointDescription)initWithCoder:(id)coder;
+- (GCLightXPCProxyClientEndpointDescription)initWithIdentifier:(id)identifier initialLight:(id)light;
+- (id)materializeWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCLightXPCProxyClientEndpointDescription
 
-- (GCLightXPCProxyClientEndpointDescription)initWithIdentifier:(id)a3 initialLight:(id)a4
+- (GCLightXPCProxyClientEndpointDescription)initWithIdentifier:(id)identifier initialLight:(id)light
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  lightCopy = light;
   v12.receiver = self;
   v12.super_class = GCLightXPCProxyClientEndpointDescription;
   v8 = [(GCLightXPCProxyClientEndpointDescription *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copyWithZone:0];
+    v9 = [identifierCopy copyWithZone:0];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeStrong(&v8->_initialLight, a4);
+    objc_storeStrong(&v8->_initialLight, light);
   }
 
   return v8;
 }
 
-- (GCLightXPCProxyClientEndpointDescription)initWithCoder:(id)a3
+- (GCLightXPCProxyClientEndpointDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = GCLightXPCProxyClientEndpointDescription;
   v5 = [(GCLightXPCProxyClientEndpointDescription *)&v12 init];
   if (v5)
   {
     v6 = GCIPCObjectIdentifier_Classes();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"initialLight"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"initialLight"];
     initialLight = v5->_initialLight;
     v5->_initialLight = v9;
   }
@@ -47,33 +47,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   initialLight = self->_initialLight;
-  v5 = a3;
-  [v5 encodeObject:initialLight forKey:@"initialLight"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:initialLight forKey:@"initialLight"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   materializedObject = self->_materializedObject;
   if (materializedObject)
   {
     goto LABEL_4;
   }
 
-  v7 = [v4 IPCServiceRegistry];
-  v8 = [v7 serviceClientForIPCService:&unk_1F4EB3588];
+  iPCServiceRegistry = [contextCopy IPCServiceRegistry];
+  v8 = [iPCServiceRegistry serviceClientForIPCService:&unk_1F4EB3588];
 
   if (v8)
   {
-    v9 = [v8 lightXPCProxyServiceRemoteServer];
+    lightXPCProxyServiceRemoteServer = [v8 lightXPCProxyServiceRemoteServer];
     v10 = [[GCLightXPCProxyClientEndpoint alloc] initWithIdentifier:self->_identifier initialLight:self->_initialLight];
-    v11 = [v5 IPCObjectRegistry];
-    [v11 registerIPCObject:v10];
+    iPCObjectRegistry = [v5 IPCObjectRegistry];
+    [iPCObjectRegistry registerIPCObject:v10];
 
     v12 = dispatch_semaphore_create(0);
     v21[0] = MEMORY[0x1E69E9820];
@@ -86,7 +86,7 @@
     v24 = v12;
     v14 = v12;
     v15 = v8;
-    [v9 lightXPCProxyServiceClientEndpointConnect:v13 reply:v21];
+    [lightXPCProxyServiceRemoteServer lightXPCProxyServiceClientEndpointConnect:v13 reply:v21];
     v16 = dispatch_time(0, 1000000000);
     dispatch_semaphore_wait(v14, v16);
     v17 = self->_materializedObject;

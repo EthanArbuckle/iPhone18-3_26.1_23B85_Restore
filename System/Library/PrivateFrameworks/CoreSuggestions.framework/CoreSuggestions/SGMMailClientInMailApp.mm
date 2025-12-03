@@ -1,25 +1,25 @@
 @interface SGMMailClientInMailApp
 - (SGMMailClientInMailApp)init;
-- (void)trackEventWithScalar:(unint64_t)a3 isSynced:(SGMTypeSafeBool_)a4 service:(SGMEventICSSourceType_)a5;
+- (void)trackEventWithScalar:(unint64_t)scalar isSynced:(SGMTypeSafeBool_)synced service:(SGMEventICSSourceType_)service;
 @end
 
 @implementation SGMMailClientInMailApp
 
-- (void)trackEventWithScalar:(unint64_t)a3 isSynced:(SGMTypeSafeBool_)a4 service:(SGMEventICSSourceType_)a5
+- (void)trackEventWithScalar:(unint64_t)scalar isSynced:(SGMTypeSafeBool_)synced service:(SGMEventICSSourceType_)service
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  if (a4.var0)
+  if (synced.var0)
   {
-    if (a4.var0 == 1)
+    if (synced.var0 == 1)
     {
       v9 = @"1";
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMTypeSafeBool_toString(SGMTypeSafeBool)"];
-      [v10 handleFailureInFunction:v11 file:@"SGMetricsDefines.h" lineNumber:12 description:{@"unrecognized tag %lu on SGMTypeSafeBool", a4.var0}];
+      [currentHandler handleFailureInFunction:v11 file:@"SGMetricsDefines.h" lineNumber:12 description:{@"unrecognized tag %lu on SGMTypeSafeBool", synced.var0}];
 
       v9 = @"ERR_UNMATCHED_TAG";
     }
@@ -30,25 +30,25 @@
     v9 = @"0";
   }
 
-  if (a5.var0 >= 5)
+  if (service.var0 >= 5)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMEventICSSourceType_toString(SGMEventICSSourceType)"];
-    [v13 handleFailureInFunction:v14 file:@"SGMetricsDefines.h" lineNumber:243 description:{@"unrecognized tag %lu on SGMEventICSSourceType", a5.var0}];
+    [currentHandler2 handleFailureInFunction:v14 file:@"SGMetricsDefines.h" lineNumber:243 description:{@"unrecognized tag %lu on SGMEventICSSourceType", service.var0}];
 
     v12 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v12 = off_1E7EFC368[a5.var0];
+    v12 = off_1E7EFC368[service.var0];
   }
 
   tracker = self->_tracker;
   v18[0] = v9;
   v18[1] = v12;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v16 value:a3];
+  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v16 value:scalar];
 
   v17 = *MEMORY[0x1E69E9840];
 }

@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneSearchDisiPriorityQueue_$1
-- (OrgApacheLuceneSearchDisiPriorityQueue_$1)initWithOrgApacheLuceneSearchDisiPriorityQueue:(id)a3 withInt:(int)a4;
+- (OrgApacheLuceneSearchDisiPriorityQueue_$1)initWithOrgApacheLuceneSearchDisiPriorityQueue:(id)queue withInt:(int)int;
 - (id)next;
 - (void)dealloc;
 @end
@@ -28,11 +28,11 @@ LABEL_6:
   return result;
 }
 
-- (OrgApacheLuceneSearchDisiPriorityQueue_$1)initWithOrgApacheLuceneSearchDisiPriorityQueue:(id)a3 withInt:(int)a4
+- (OrgApacheLuceneSearchDisiPriorityQueue_$1)initWithOrgApacheLuceneSearchDisiPriorityQueue:(id)queue withInt:(int)int
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, queue);
   self->i_ = -1;
-  self->val$size_ = a4;
+  self->val$size_ = int;
   return self;
 }
 

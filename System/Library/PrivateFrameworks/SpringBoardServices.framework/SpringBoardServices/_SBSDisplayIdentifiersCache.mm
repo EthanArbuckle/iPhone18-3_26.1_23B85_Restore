@@ -4,7 +4,7 @@
 - (id)displayIdentifiers;
 - (void)_queue_noteChanged;
 - (void)dealloc;
-- (void)registerChangedBlock:(id)a3;
+- (void)registerChangedBlock:(id)block;
 @end
 
 @implementation _SBSDisplayIdentifiersCache
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __45___SBSDisplayIdentifiersCache_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_5 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_5, block);
@@ -102,17 +102,17 @@
   [(_SBSDisplayIdentifiersCache *)&v3 dealloc];
 }
 
-- (void)registerChangedBlock:(id)a3
+- (void)registerChangedBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52___SBSDisplayIdentifiersCache_registerChangedBlock___block_invoke;
   v7[3] = &unk_1E73619A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(queue, v7);
 }
 

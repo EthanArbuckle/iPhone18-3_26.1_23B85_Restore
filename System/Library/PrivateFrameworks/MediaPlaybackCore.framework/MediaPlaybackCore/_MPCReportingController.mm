@@ -1,6 +1,6 @@
 @interface _MPCReportingController
 - (MPCPlaybackEngine)playbackEngine;
-- (_MPCReportingController)initWithPlaybackEngine:(id)a3;
+- (_MPCReportingController)initWithPlaybackEngine:(id)engine;
 @end
 
 @implementation _MPCReportingController
@@ -12,16 +12,16 @@
   return WeakRetained;
 }
 
-- (_MPCReportingController)initWithPlaybackEngine:(id)a3
+- (_MPCReportingController)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v10.receiver = self;
   v10.super_class = _MPCReportingController;
   v5 = [(_MPCReportingController *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playbackEngine, v4);
+    objc_storeWeak(&v5->_playbackEngine, engineCopy);
     v7 = objc_alloc_init(MPCLyricsReportingController);
     lyricsReportingController = v6->_lyricsReportingController;
     v6->_lyricsReportingController = v7;

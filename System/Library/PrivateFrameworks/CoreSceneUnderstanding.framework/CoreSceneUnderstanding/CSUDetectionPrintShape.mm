@@ -1,10 +1,10 @@
 @interface CSUDetectionPrintShape
-- (CSUDetectionPrintShape)initWithHeight:(unint64_t)a3 width:(unint64_t)a4 channels:(unint64_t)a5;
+- (CSUDetectionPrintShape)initWithHeight:(unint64_t)height width:(unint64_t)width channels:(unint64_t)channels;
 @end
 
 @implementation CSUDetectionPrintShape
 
-- (CSUDetectionPrintShape)initWithHeight:(unint64_t)a3 width:(unint64_t)a4 channels:(unint64_t)a5
+- (CSUDetectionPrintShape)initWithHeight:(unint64_t)height width:(unint64_t)width channels:(unint64_t)channels
 {
   v12.receiver = self;
   v12.super_class = CSUDetectionPrintShape;
@@ -12,9 +12,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_width = a4;
-    v8->_height = a3;
-    v8->_channels = a5;
+    v8->_width = width;
+    v8->_height = height;
+    v8->_channels = channels;
     v10 = v8;
   }
 

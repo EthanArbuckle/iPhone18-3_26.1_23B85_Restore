@@ -1,11 +1,11 @@
 @interface TSPVersionMessageObject
-- (TSPVersionMessageObject)initWithVersionMessage:(const void *)a3;
+- (TSPVersionMessageObject)initWithVersionMessage:(const void *)message;
 - (id).cxx_construct;
 @end
 
 @implementation TSPVersionMessageObject
 
-- (TSPVersionMessageObject)initWithVersionMessage:(const void *)a3
+- (TSPVersionMessageObject)initWithVersionMessage:(const void *)message
 {
   v8.receiver = self;
   v8.super_class = TSPVersionMessageObject;
@@ -13,7 +13,7 @@
   p_versionMessage = &v4->_versionMessage;
   if (v4)
   {
-    v6 = p_versionMessage == a3;
+    v6 = p_versionMessage == message;
   }
 
   else
@@ -24,7 +24,7 @@
   if (!v6)
   {
     p_versionMessage->current_size_ = 0;
-    if (*a3)
+    if (*message)
     {
       google::protobuf::RepeatedField<unsigned int>::Reserve();
     }

@@ -1,19 +1,19 @@
 @interface _UITabContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityViewIsModal;
-- (void)updateEditModeAppearanceAnimated:(BOOL)a3;
+- (void)updateEditModeAppearanceAnimated:(BOOL)animated;
 @end
 
 @implementation _UITabContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UITabContainerView";
   v4 = "B";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -25,33 +25,33 @@
 
 - (BOOL)accessibilityViewIsModal
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v4 = [(_UITabContainerViewAccessibility *)self safeValueForKey:@"tabModel"];
   if ([v4 safeBoolForKey:@"isEditing"])
   {
-    v3 = [(_UITabContainerViewAccessibility *)v7 safeBoolForKey:@"_isShowingSidebar"];
+    accessibilityViewIsModal = [(_UITabContainerViewAccessibility *)selfCopy safeBoolForKey:@"_isShowingSidebar"];
   }
 
   else
   {
-    v5.receiver = v7;
+    v5.receiver = selfCopy;
     v5.super_class = _UITabContainerViewAccessibility;
-    v3 = [(_UITabContainerViewAccessibility *)&v5 accessibilityViewIsModal];
+    accessibilityViewIsModal = [(_UITabContainerViewAccessibility *)&v5 accessibilityViewIsModal];
   }
 
   MEMORY[0x29EDC9740](v4);
-  return v3 != 0;
+  return accessibilityViewIsModal != 0;
 }
 
-- (void)updateEditModeAppearanceAnimated:(BOOL)a3
+- (void)updateEditModeAppearanceAnimated:(BOOL)animated
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  animatedCopy = animated;
   v6.receiver = self;
   v6.super_class = _UITabContainerViewAccessibility;
-  [(_UITabContainerViewAccessibility *)&v6 updateEditModeAppearanceAnimated:a3];
+  [(_UITabContainerViewAccessibility *)&v6 updateEditModeAppearanceAnimated:animated];
   v4 = MEMORY[0x29EDCA578];
   v3 = MEMORY[0x29EDCA578];
   v5 = v4;

@@ -1,8 +1,8 @@
 @interface _PXStoryObservation
 - (PXObservable)observable;
-- (_PXStoryObservation)initWithObservable:(id)a3 changeHandler:(id)a4;
+- (_PXStoryObservation)initWithObservable:(id)observable changeHandler:(id)handler;
 - (void)cancel;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation _PXStoryObservation
@@ -14,38 +14,38 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  v7 = [(_PXStoryObservation *)self changeHandler];
+  observableCopy = observable;
+  changeHandler = [(_PXStoryObservation *)self changeHandler];
 
-  if (v7)
+  if (changeHandler)
   {
-    v8 = [(_PXStoryObservation *)self changeHandler];
-    (v8)[2](v8, v9, a4);
+    changeHandler2 = [(_PXStoryObservation *)self changeHandler];
+    (changeHandler2)[2](changeHandler2, observableCopy, change);
   }
 }
 
 - (void)cancel
 {
-  v3 = [(_PXStoryObservation *)self observable];
-  [v3 unregisterChangeObserver:self context:0];
+  observable = [(_PXStoryObservation *)self observable];
+  [observable unregisterChangeObserver:self context:0];
 
   [(_PXStoryObservation *)self setChangeHandler:0];
 }
 
-- (_PXStoryObservation)initWithObservable:(id)a3 changeHandler:(id)a4
+- (_PXStoryObservation)initWithObservable:(id)observable changeHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  observableCopy = observable;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = _PXStoryObservation;
   v8 = [(_PXStoryObservation *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_observable, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_observable, observableCopy);
+    v10 = [handlerCopy copy];
     changeHandler = v9->_changeHandler;
     v9->_changeHandler = v10;
 

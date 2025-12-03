@@ -1,24 +1,24 @@
 @interface _CDSpotlightQuerier
 + (id)mdSearchableQueryAttributes;
-+ (id)orQueryStrings:(uint64_t)a1;
-+ (id)querySpotlightForPredicateString:(void *)a3 startDate:(void *)a4 endDate:;
-+ (id)queryStringWithPredicateStr:(void *)a3 userEmails:(void *)a4 startDate:(void *)a5 endDate:;
++ (id)orQueryStrings:(uint64_t)strings;
++ (id)querySpotlightForPredicateString:(void *)string startDate:(void *)date endDate:;
++ (id)queryStringWithPredicateStr:(void *)str userEmails:(void *)emails startDate:(void *)date endDate:;
 + (uint64_t)queryStringForMail;
 + (uint64_t)queryStringForMessages;
-- (NSMutableArray)requestQuery:(uint64_t)a1;
+- (NSMutableArray)requestQuery:(uint64_t)query;
 @end
 
 @implementation _CDSpotlightQuerier
 
-+ (id)querySpotlightForPredicateString:(void *)a3 startDate:(void *)a4 endDate:
++ (id)querySpotlightForPredicateString:(void *)string startDate:(void *)date endDate:
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  stringCopy = string;
   v8 = a2;
   v9 = objc_opt_self();
   v10 = objc_alloc_init(_CDSpotlightQuerier);
-  v11 = [(_CDSpotlightQuerier *)v9 queryStringWithPredicateStr:v8 userEmails:0 startDate:v7 endDate:v6];
+  v11 = [(_CDSpotlightQuerier *)v9 queryStringWithPredicateStr:v8 userEmails:0 startDate:stringCopy endDate:dateCopy];
 
   v12 = +[_CDSpotlightQuerier mdSearchableQueryAttributes];
   if (v12)
@@ -51,30 +51,30 @@
   return v16;
 }
 
-+ (id)queryStringWithPredicateStr:(void *)a3 userEmails:(void *)a4 startDate:(void *)a5 endDate:
++ (id)queryStringWithPredicateStr:(void *)str userEmails:(void *)emails startDate:(void *)date endDate:
 {
   v50 = *MEMORY[0x1E69E9840];
   v39 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  strCopy = str;
+  emailsCopy = emails;
+  dateCopy = date;
   objc_opt_self();
   v11 = objc_alloc_init(MEMORY[0x1E696AB78]);
   v37 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v11 setLocale:?];
   [v11 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v11 stringFromDate:v9];
+  v13 = [v11 stringFromDate:emailsCopy];
   v38 = v11;
-  v14 = [v11 stringFromDate:v10];
+  v14 = [v11 stringFromDate:dateCopy];
   v36 = [v12 stringWithFormat:@"(InRange(kMDItemContentCreationDate, $time.iso(%@), $time.iso(%@)))", v13, v14];
 
-  v15 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v16 = v8;
+  v16 = strCopy;
   v17 = [v16 countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v17)
   {
@@ -90,7 +90,7 @@
         }
 
         v21 = *(*(&v44 + 1) + 8 * i);
-        if ([v15 length])
+        if ([string length])
         {
           v22 = @" || ";
         }
@@ -100,7 +100,7 @@
           v22 = &stru_1F05B9908;
         }
 
-        [v15 appendFormat:@"%@%@=%@", v22, 0, v21];
+        [string appendFormat:@"%@%@=%@", v22, 0, v21];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -109,7 +109,7 @@
     while (v18);
   }
 
-  v23 = [MEMORY[0x1E696AD60] string];
+  string2 = [MEMORY[0x1E696AD60] string];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -130,7 +130,7 @@
         }
 
         v29 = *(*(&v40 + 1) + 8 * j);
-        if ([v23 length])
+        if ([string2 length])
         {
           v30 = @" || ";
         }
@@ -140,7 +140,7 @@
           v30 = &stru_1F05B9908;
         }
 
-        [v23 appendFormat:@"%@%@=%@", v30, 0, v29];
+        [string2 appendFormat:@"%@%@=%@", v30, 0, v29];
       }
 
       v26 = [v24 countByEnumeratingWithState:&v40 objects:v48 count:16];
@@ -149,7 +149,7 @@
     while (v26);
   }
 
-  v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@ || %@)", v15, v23];
+  v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@ || %@)", string, string2];
   v32 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@ && (%@)", v36, v39];
   v33 = v32;
   if (v24)
@@ -227,7 +227,7 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@=public.message || %@=public.email-message || %@= com.apple.mail.emlx)", @"kMDItemContentType", @"kMDItemContentType", @"kMDItemContentType"];
 }
 
-+ (id)orQueryStrings:(uint64_t)a1
++ (id)orQueryStrings:(uint64_t)strings
 {
   v2 = a2;
   objc_opt_self();
@@ -244,10 +244,10 @@
   return v3;
 }
 
-- (NSMutableArray)requestQuery:(uint64_t)a1
+- (NSMutableArray)requestQuery:(uint64_t)query
 {
   v3 = a2;
-  if (a1)
+  if (query)
   {
     v4 = objc_alloc_init(_CDMDSearchQueryDelegate);
     v5 = dispatch_semaphore_create(0);

@@ -1,42 +1,42 @@
 @interface CNFutureResult
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setResult:(id)a3 error:(id)a4;
+- (void)setResult:(id)result error:(id)error;
 @end
 
 @implementation CNFutureResult
 
 - (id)description
 {
-  v3 = [(CNFutureResult *)self result];
-  if (v3)
+  result = [(CNFutureResult *)self result];
+  if (result)
   {
 
 LABEL_4:
-    v5 = [(CNFutureResult *)self result];
+    result2 = [(CNFutureResult *)self result];
 
     v6 = MEMORY[0x1E696AEC0];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    if (v5)
+    if (result2)
     {
-      v9 = [(CNFutureResult *)self result];
-      [v6 stringWithFormat:@"<%@: %p result='%@'>", v8, self, v9];
+      result3 = [(CNFutureResult *)self result];
+      [v6 stringWithFormat:@"<%@: %p result='%@'>", v8, self, result3];
     }
 
     else
     {
-      v9 = [(CNFutureResult *)self error];
-      [v6 stringWithFormat:@"<%@: %p error='%@'>", v8, self, v9];
+      result3 = [(CNFutureResult *)self error];
+      [v6 stringWithFormat:@"<%@: %p error='%@'>", v8, self, result3];
     }
     v10 = ;
 
     goto LABEL_8;
   }
 
-  v4 = [(CNFutureResult *)self error];
+  error = [(CNFutureResult *)self error];
 
-  if (v4)
+  if (error)
   {
     goto LABEL_4;
   }
@@ -50,25 +50,25 @@ LABEL_8:
   return v10;
 }
 
-- (void)setResult:(id)a3 error:(id)a4
+- (void)setResult:(id)result error:(id)error
 {
-  if (a3)
+  if (result)
   {
-    [(CNFutureResult *)self setResult:a3, a4];
+    [(CNFutureResult *)self setResult:result, error];
   }
 
   else
   {
-    [(CNFutureResult *)self setError:a4];
+    [(CNFutureResult *)self setError:error];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(CNFutureResult *)self result];
-  v6 = [(CNFutureResult *)self error];
-  [v4 setResult:v5 error:v6];
+  result = [(CNFutureResult *)self result];
+  error = [(CNFutureResult *)self error];
+  [v4 setResult:result error:error];
 
   return v4;
 }

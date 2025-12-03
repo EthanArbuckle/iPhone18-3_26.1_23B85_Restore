@@ -1,5 +1,5 @@
 @interface CKVideoPlayerBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_isAccessibilityBalloonViewPlayingVideo;
 - (BOOL)accessibilityBalloonViewPlaysInlineVideo;
 - (BOOL)isAccessibilityElement;
@@ -8,12 +8,12 @@
 
 @implementation CKVideoPlayerBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKVideoPlayerBalloonView" isKindOfClass:@"CKImageBalloonView"];
-  [v3 validateClass:@"CKVideoPlayerBalloonView" hasInstanceMethod:@"playerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKVideoPlayerBalloonView" hasInstanceMethod:@"startPlayingInlineVideo" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKVideoPlayerBalloonView" isKindOfClass:@"CKImageBalloonView"];
+  [validationsCopy validateClass:@"CKVideoPlayerBalloonView" hasInstanceMethod:@"playerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKVideoPlayerBalloonView" hasInstanceMethod:@"startPlayingInlineVideo" withFullSignature:{"v", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -33,10 +33,10 @@
 {
   v16.receiver = self;
   v16.super_class = CKVideoPlayerBalloonViewAccessibility;
-  v3 = [(CKVideoPlayerBalloonViewAccessibility *)&v16 accessibilityCustomActions];
+  accessibilityCustomActions = [(CKVideoPlayerBalloonViewAccessibility *)&v16 accessibilityCustomActions];
   if ([(CKVideoPlayerBalloonViewAccessibility *)self accessibilityBalloonViewPlaysInlineVideo])
   {
-    v4 = [v3 mutableCopy];
+    v4 = [accessibilityCustomActions mutableCopy];
     if (![(CKVideoPlayerBalloonViewAccessibility *)self _isAccessibilityBalloonViewPlayingVideo])
     {
       objc_initWeak(&location, self);
@@ -56,10 +56,10 @@
 
     v8 = [v4 copy];
 
-    v3 = v8;
+    accessibilityCustomActions = v8;
   }
 
-  return v3;
+  return accessibilityCustomActions;
 }
 
 uint64_t __67__CKVideoPlayerBalloonViewAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1)
@@ -72,10 +72,10 @@ uint64_t __67__CKVideoPlayerBalloonViewAccessibility_accessibilityCustomActions_
 
 - (BOOL)accessibilityBalloonViewPlaysInlineVideo
 {
-  v2 = [NSClassFromString(&cfstr_Ckuibehavior.isa) sharedBehaviors];
-  v3 = [v2 playsInlineVideo];
+  nSClassFromString(&cfstr_Ckuibehavior.isa) = [NSClassFromString(&cfstr_Ckuibehavior.isa) sharedBehaviors];
+  playsInlineVideo = [nSClassFromString(&cfstr_Ckuibehavior.isa) playsInlineVideo];
 
-  return v3;
+  return playsInlineVideo;
 }
 
 - (BOOL)_isAccessibilityBalloonViewPlayingVideo

@@ -1,7 +1,7 @@
 @interface MarkedLocationDataProvider
 - (GEOObserverHashTable)observers;
-- (void)_updateAndNotifyObservers:(BOOL)a3;
-- (void)setActive:(BOOL)a3;
+- (void)_updateAndNotifyObservers:(BOOL)observers;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation MarkedLocationDataProvider
@@ -21,20 +21,20 @@
   return observers;
 }
 
-- (void)_updateAndNotifyObservers:(BOOL)a3
+- (void)_updateAndNotifyObservers:(BOOL)observers
 {
   if (self->_active)
   {
-    v3 = a3;
+    observersCopy = observers;
     v6 = +[CustomSearchManager sharedManager];
-    v7 = [v6 customSearchResult];
+    customSearchResult = [v6 customSearchResult];
 
-    if ([v7 type] == 3)
+    if ([customSearchResult type] == 3)
     {
       v8 = +[CustomSearchManager sharedManager];
-      v9 = [v8 customSearchResult];
+      customSearchResult2 = [v8 customSearchResult];
       markedLocation = self->_markedLocation;
-      self->_markedLocation = v9;
+      self->_markedLocation = customSearchResult2;
 
       v11 = +[CustomLocationManager sharedManager];
       [v11 processSearchResult:self->_markedLocation traits:0];
@@ -65,7 +65,7 @@
       }
 
       v20 = @"NO";
-      if (v3)
+      if (observersCopy)
       {
         v20 = @"YES";
       }
@@ -85,22 +85,22 @@
       }
     }
 
-    if (v3)
+    if (observersCopy)
     {
       [(GEOObserverHashTable *)self->_observers homeDataProvidingObjectDidUpdate:self];
     }
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     v5 = +[CustomSearchManager sharedManager];
     v6 = v5;
-    if (v3)
+    if (activeCopy)
     {
       [v5 addObserver:self];
 

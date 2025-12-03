@@ -1,12 +1,12 @@
 @interface _TUIHStackSpacer
-- (CGRect)computedBoundsPrimitiveWithFlags:(unint64_t)a3;
+- (CGRect)computedBoundsPrimitiveWithFlags:(unint64_t)flags;
 @end
 
 @implementation _TUIHStackSpacer
 
-- (CGRect)computedBoundsPrimitiveWithFlags:(unint64_t)a3
+- (CGRect)computedBoundsPrimitiveWithFlags:(unint64_t)flags
 {
-  if ((a3 & 2) != 0)
+  if ((flags & 2) != 0)
   {
     v10 = v3;
     v11 = v4;

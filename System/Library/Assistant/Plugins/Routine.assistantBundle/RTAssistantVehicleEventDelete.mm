@@ -1,6 +1,6 @@
 @interface RTAssistantVehicleEventDelete
 - (RTRoutineManager)routineManager;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation RTAssistantVehicleEventDelete
@@ -20,17 +20,17 @@
   return routineManager;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RTAssistantVehicleEventDelete *)self routineManager];
+  completionCopy = completion;
+  routineManager = [(RTAssistantVehicleEventDelete *)self routineManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2335432E0;
   v7[3] = &unk_2789DF400;
-  v8 = v4;
-  v6 = v4;
-  [v5 clearAllVehicleEventsWithHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [routineManager clearAllVehicleEventsWithHandler:v7];
 }
 
 @end

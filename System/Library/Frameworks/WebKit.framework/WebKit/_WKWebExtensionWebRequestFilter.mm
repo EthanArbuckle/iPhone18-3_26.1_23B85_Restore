@@ -1,16 +1,16 @@
 @interface _WKWebExtensionWebRequestFilter
-- (BOOL)matchesRequestForResourceOfType:(int64_t)a3 URL:(id)a4 tabID:(double)a5 windowID:(double)a6;
-- (_WKWebExtensionWebRequestFilter)initWithDictionary:(id)a3 outErrorMessage:(id *)a4;
+- (BOOL)matchesRequestForResourceOfType:(int64_t)type URL:(id)l tabID:(double)d windowID:(double)iD;
+- (_WKWebExtensionWebRequestFilter)initWithDictionary:(id)dictionary outErrorMessage:(id *)message;
 - (id).cxx_construct;
-- (id)_initializeWithDictionary:(id)a3;
+- (id)_initializeWithDictionary:(id)dictionary;
 @end
 
 @implementation _WKWebExtensionWebRequestFilter
 
-- (_WKWebExtensionWebRequestFilter)initWithDictionary:(id)a3 outErrorMessage:(id *)a4
+- (_WKWebExtensionWebRequestFilter)initWithDictionary:(id)dictionary outErrorMessage:(id *)message
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _WKWebExtensionWebRequestFilter;
   v7 = [(_WKWebExtensionWebRequestFilter *)&v12 init];
@@ -40,7 +40,7 @@
       byte_1ED6417E9 = 1;
     }
 
-    if (WebKit::validateDictionary(v6, 0, qword_1ED6417F0, qword_1ED6417F8, a4) && ([(_WKWebExtensionWebRequestFilter *)v7 _initializeWithDictionary:v6], v8 = objc_claimAutoreleasedReturnValue(), (*a4 = v8) == 0))
+    if (WebKit::validateDictionary(dictionaryCopy, 0, qword_1ED6417F0, qword_1ED6417F8, message) && ([(_WKWebExtensionWebRequestFilter *)v7 _initializeWithDictionary:dictionaryCopy], v8 = objc_claimAutoreleasedReturnValue(), (*message = v8) == 0))
     {
       v9 = v7;
     }
@@ -54,17 +54,17 @@
   else
   {
     v9 = 0;
-    *a4 = @"Runtime failure.";
+    *message = @"Runtime failure.";
   }
 
   return v9;
 }
 
-- (id)_initializeWithDictionary:(id)a3
+- (id)_initializeWithDictionary:(id)dictionary
 {
   __y[16] = *MEMORY[0x1E69E9840];
-  v65 = a3;
-  v3 = [v65 objectForKeyedSubscript:@"urls"];
+  dictionaryCopy = dictionary;
+  v3 = [dictionaryCopy objectForKeyedSubscript:@"urls"];
   if ([v3 count])
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -99,7 +99,7 @@
           {
             MEMORY[0x19EB02040](&v71, @"urls");
             MEMORY[0x19EB02040](&v66, @"'%@' is an invalid match pattern. %@");
-            v15 = [v7 localizedDescription];
+            localizedDescription = [v7 localizedDescription];
             WebKit::toErrorString(MEMORY[0x1E696EBA0], &v71, &v72, v11);
             v16 = v72;
             if (v72)
@@ -189,7 +189,7 @@ LABEL_27:
 
   if (!v25)
   {
-    v27 = [v65 objectForKeyedSubscript:@"types"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"types"];
     if ([v27 count])
     {
       v28 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -295,7 +295,7 @@ LABEL_54:
 
     if (!v25)
     {
-      v45 = [v65 objectForKeyedSubscript:@"tabId"];
+      v45 = [dictionaryCopy objectForKeyedSubscript:@"tabId"];
       v46 = v45;
       if (v45)
       {
@@ -358,7 +358,7 @@ LABEL_61:
       self->_tabID.var0.__val_.m_identifier = v51 | v50;
       self->_tabID.__engaged_ = v49;
 
-      v52 = [v65 objectForKeyedSubscript:@"windowId"];
+      v52 = [dictionaryCopy objectForKeyedSubscript:@"windowId"];
       v53 = v52;
       if (!v52)
       {
@@ -436,12 +436,12 @@ LABEL_79:
   return v25;
 }
 
-- (BOOL)matchesRequestForResourceOfType:(int64_t)a3 URL:(id)a4 tabID:(double)a5 windowID:(double)a6
+- (BOOL)matchesRequestForResourceOfType:(int64_t)type URL:(id)l tabID:(double)d windowID:(double)iD
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  lCopy = l;
   types = self->_types;
-  if (!types || ([MEMORY[0x1E696AD98] numberWithInteger:a3], v12 = objc_claimAutoreleasedReturnValue(), v13 = -[NSSet containsObject:](types, "containsObject:", v12), v12, v13))
+  if (!types || ([MEMORY[0x1E696AD98] numberWithInteger:type], v12 = objc_claimAutoreleasedReturnValue(), v13 = -[NSSet containsObject:](types, "containsObject:", v12), v12, v13))
   {
     urlPatterns = self->_urlPatterns;
     if (urlPatterns)
@@ -464,7 +464,7 @@ LABEL_79:
               objc_enumerationMutation(v15);
             }
 
-            if ([*(*(&v24 + 1) + 8 * i) matchesURL:{v10, v24}])
+            if ([*(*(&v24 + 1) + 8 * i) matchesURL:{lCopy, v24}])
             {
 
               goto LABEL_14;
@@ -485,7 +485,7 @@ LABEL_79:
     else
     {
 LABEL_14:
-      if ((*&self->_tabID.__engaged_ & 1) == 0 || (v19 = self->_tabID.var0.__val_.m_identifier, v19 == -2) || v19 == a5)
+      if ((*&self->_tabID.__engaged_ & 1) == 0 || (v19 = self->_tabID.var0.__val_.m_identifier, v19 == -2) || v19 == d)
       {
         if ((*&self->_windowID.__engaged_ & 1) == 0)
         {
@@ -504,7 +504,7 @@ LABEL_14:
           v21 = -1.0;
         }
 
-        if (v21 == a6)
+        if (v21 == iD)
         {
 LABEL_24:
           v22 = 1;

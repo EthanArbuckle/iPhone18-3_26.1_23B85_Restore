@@ -1,23 +1,23 @@
 @interface AMDMegadomeTest
 + (id)testAPI;
-+ (id)testMegadome:(id)a3;
-+ (void)testSingleView:(id)a3 summary:(id)a4;
++ (id)testMegadome:(id)megadome;
++ (void)testSingleView:(id)view summary:(id)summary;
 @end
 
 @implementation AMDMegadomeTest
 
-+ (id)testMegadome:(id)a3
++ (id)testMegadome:(id)megadome
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v15 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, megadome);
   v9 = [location[0] objectForKey:TEST_API];
   MEMORY[0x277D82BD8](v9);
   if (v9)
   {
-    v16 = [v15 testAPI];
+    testAPI = [selfCopy testAPI];
     v13 = 1;
   }
 
@@ -37,15 +37,15 @@
       if (v12)
       {
         v17 = @"error";
-        v5 = [v12 localizedDescription];
-        v18[0] = v5;
-        v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-        MEMORY[0x277D82BD8](v5);
+        localizedDescription = [v12 localizedDescription];
+        v18[0] = localizedDescription;
+        testAPI = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
+        MEMORY[0x277D82BD8](localizedDescription);
       }
 
       else
       {
-        v16 = MEMORY[0x277D82BE0](v11);
+        testAPI = MEMORY[0x277D82BE0](v11);
       }
 
       v13 = 1;
@@ -54,7 +54,7 @@
 
     else
     {
-      v16 = MEMORY[0x277D82BE0](&unk_2852BBB50);
+      testAPI = MEMORY[0x277D82BE0](&unk_2852BBB50);
       v13 = 1;
     }
 
@@ -63,19 +63,19 @@
 
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
-  v3 = v16;
+  v3 = testAPI;
 
   return v3;
 }
 
 + (id)testAPI
 {
-  v5 = a1;
+  selfCopy = self;
   v4[1] = a2;
   v4[0] = objc_alloc_init(MEMORY[0x277CBEB38]);
   NSLog(&cfstr_InMegadomeApiT.isa);
-  [v5 testSingleView:0x2852A7488 summary:v4[0]];
-  [v5 testSingleView:0x2852A74C8 summary:v4[0]];
+  [selfCopy testSingleView:0x2852A7488 summary:v4[0]];
+  [selfCopy testSingleView:0x2852A74C8 summary:v4[0]];
   NSLog(&cfstr_DoneMegadomeAp.isa);
   v3 = MEMORY[0x277D82BE0](v4[0]);
   objc_storeStrong(v4, 0);
@@ -83,26 +83,26 @@
   return v3;
 }
 
-+ (void)testSingleView:(id)a3 summary:(id)a4
++ (void)testSingleView:(id)view summary:(id)summary
 {
   v67[3] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v65 = 0;
-  objc_storeStrong(&v65, a4);
+  objc_storeStrong(&v65, summary);
   NSLog(&cfstr_ListingView.isa, location[0]);
   v64 = 0;
   v63 = 0;
   v62 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v61 = 0;
-  v60 = [getGDViewServiceClass_0() clientService];
+  clientService = [getGDViewServiceClass_0() clientService];
   v59 = 0;
   if ([location[0] isEqualToString:0x2852A74C8])
   {
     v58 = v64;
-    v33 = [v60 firstPartyShortTermTopicViewWithError:&v58];
+    v33 = [clientService firstPartyShortTermTopicViewWithError:&v58];
     objc_storeStrong(&v64, v58);
     v4 = v59;
     v59 = v33;
@@ -124,7 +124,7 @@
     }
 
     v57 = v64;
-    v32 = [v60 firstPartyLongTermTopicViewWithError:&v57];
+    v32 = [clientService firstPartyLongTermTopicViewWithError:&v57];
     objc_storeStrong(&v64, v57);
     v5 = v59;
     v59 = v32;
@@ -135,12 +135,12 @@
   {
     v30 = MEMORY[0x277CCACA8];
     v31 = location[0];
-    v29 = [v64 localizedDescription];
-    v8 = [v30 stringWithFormat:@"Error obtaining viewProtocol for %@: %@", v31, v29];
+    localizedDescription = [v64 localizedDescription];
+    v8 = [v30 stringWithFormat:@"Error obtaining viewProtocol for %@: %@", v31, localizedDescription];
     v9 = v63;
     v63 = v8;
     MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v29);
+    MEMORY[0x277D82BD8](localizedDescription);
     NSLog(&stru_2852A8188.isa, v63);
     [v62 setObject:v63 forKey:@"error"];
     v56 = 1;
@@ -170,15 +170,15 @@
     MEMORY[0x277D82BD8](v26);
     NSLog(&cfstr_FoundUEntriesI.isa, *(v52 + 6), location[0]);
     v25 = location[0];
-    v24 = [v59 databaseFilePath];
-    NSLog(&cfstr_DbPathForView.isa, v25, v24);
-    MEMORY[0x277D82BD8](v24);
+    databaseFilePath = [v59 databaseFilePath];
+    NSLog(&cfstr_DbPathForView.isa, v25, databaseFilePath);
+    MEMORY[0x277D82BD8](databaseFilePath);
     v43 = 0;
     ppDb = 0;
-    v23 = [v59 databaseFilePath];
-    v10 = v23;
-    v43 = sqlite3_open_v2([v23 UTF8String], &ppDb, 65538, 0);
-    MEMORY[0x277D82BD8](v23);
+    databaseFilePath2 = [v59 databaseFilePath];
+    v10 = databaseFilePath2;
+    v43 = sqlite3_open_v2([databaseFilePath2 UTF8String], &ppDb, 65538, 0);
+    MEMORY[0x277D82BD8](databaseFilePath2);
     if (v43)
     {
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"MEGADOME DB loading failed: %d", v43];
@@ -253,7 +253,7 @@
 
 LABEL_19:
   objc_storeStrong(&v59, 0);
-  objc_storeStrong(&v60, 0);
+  objc_storeStrong(&clientService, 0);
   if (!v56)
   {
     v56 = 0;

@@ -1,5 +1,5 @@
 @interface MUActivityViewController
-- (MUActivityViewController)initWithShareItem:(id)a3;
+- (MUActivityViewController)initWithShareItem:(id)item;
 - (MUActivityViewControllerDelegate)activityControllerDelegate;
 - (id)_activityHandler;
 - (id)_completionHandler;
@@ -81,29 +81,29 @@ void __44__MUActivityViewController__registerPreload__block_invoke(uint64_t a1)
   }
 }
 
-- (MUActivityViewController)initWithShareItem:(id)a3
+- (MUActivityViewController)initWithShareItem:(id)item
 {
-  v5 = a3;
-  v6 = [v5 activityProviders];
-  v7 = [v5 applicationActivities];
+  itemCopy = item;
+  activityProviders = [itemCopy activityProviders];
+  applicationActivities = [itemCopy applicationActivities];
   v14.receiver = self;
   v14.super_class = MUActivityViewController;
-  v8 = [(MUActivityViewController *)&v14 initWithActivityItems:v6 applicationActivities:v7];
+  v8 = [(MUActivityViewController *)&v14 initWithActivityItems:activityProviders applicationActivities:applicationActivities];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_shareItem, a3);
-    v9 = [v5 excludedActivityTypes];
-    [(MUActivityViewController *)v8 setExcludedActivityTypes:v9];
+    objc_storeStrong(&v8->_shareItem, item);
+    excludedActivityTypes = [itemCopy excludedActivityTypes];
+    [(MUActivityViewController *)v8 setExcludedActivityTypes:excludedActivityTypes];
 
-    v10 = [v5 includedActivityTypes];
-    [(MUActivityViewController *)v8 setIncludedActivityTypes:v10];
+    includedActivityTypes = [itemCopy includedActivityTypes];
+    [(MUActivityViewController *)v8 setIncludedActivityTypes:includedActivityTypes];
 
-    v11 = [(MUActivityViewController *)v8 _activityHandler];
-    [(MUActivityViewController *)v8 setPreCompletionHandler:v11];
+    _activityHandler = [(MUActivityViewController *)v8 _activityHandler];
+    [(MUActivityViewController *)v8 setPreCompletionHandler:_activityHandler];
 
-    v12 = [(MUActivityViewController *)v8 _completionHandler];
-    [(MUActivityViewController *)v8 setCompletionWithItemsHandler:v12];
+    _completionHandler = [(MUActivityViewController *)v8 _completionHandler];
+    [(MUActivityViewController *)v8 setCompletionWithItemsHandler:_completionHandler];
 
     [(MUActivityViewController *)v8 setShowKeyboardAutomatically:1];
     [(MUActivityViewController *)v8 setAirDropDelegate:v8];

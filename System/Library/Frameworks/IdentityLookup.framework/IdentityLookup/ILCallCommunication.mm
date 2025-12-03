@@ -1,5 +1,5 @@
 @interface ILCallCommunication
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
@@ -19,11 +19,11 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ILCallCommunication *)self isEqualToCallCommunication:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ILCallCommunication *)self isEqualToCallCommunication:equalCopy];
 
   return v5;
 }

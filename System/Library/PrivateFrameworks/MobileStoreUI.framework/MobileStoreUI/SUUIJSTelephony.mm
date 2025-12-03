@@ -6,21 +6,21 @@
 - (NSString)operatorName;
 - (NSString)phoneNumber;
 - (NSString)providerName;
-- (SUUIJSTelephony)initWithAppContext:(id)a3;
+- (SUUIJSTelephony)initWithAppContext:(id)context;
 - (__CTServerConnection)_telephonyServer;
-- (id)formattedPhoneNumber:(id)a3;
+- (id)formattedPhoneNumber:(id)number;
 - (void)beginObserving;
 - (void)dealloc;
-- (void)sendSMSWithBodyText:(id)a3 :(id)a4 :(id)a5;
+- (void)sendSMSWithBodyText:(id)text :(id)a4 :(id)a5;
 @end
 
 @implementation SUUIJSTelephony
 
-- (SUUIJSTelephony)initWithAppContext:(id)a3
+- (SUUIJSTelephony)initWithAppContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = SUUIJSTelephony;
-  v3 = [(IKJSObject *)&v7 initWithAppContext:a3];
+  v3 = [(IKJSObject *)&v7 initWithAppContext:context];
   if (v3)
   {
     v4 = dispatch_queue_create("com.apple.iTunesStoreUI.SUUIJSTelephony", 0);
@@ -63,10 +63,10 @@
 {
   if (!self->_isObserving)
   {
-    v3 = [(SUUIJSTelephony *)self _telephonyServer];
-    if (v3)
+    _telephonyServer = [(SUUIJSTelephony *)self _telephonyServer];
+    if (_telephonyServer)
     {
-      v4 = v3;
+      v4 = _telephonyServer;
       v5 = SUUICoreTelephonyFramework();
       v6 = SUUIWeakLinkedSymbolForString("_CTServerConnectionRegisterForNotification", v5);
       if (v6)
@@ -94,7 +94,7 @@
   return active;
 }
 
-- (id)formattedPhoneNumber:(id)a3
+- (id)formattedPhoneNumber:(id)number
 {
   v3 = CPPhoneNumberCopyFormattedStringForTextMessage();
 
@@ -138,77 +138,77 @@
 - (NSString)mobileCountryCode
 {
   v6 = 0;
-  v2 = [(SUUIJSTelephony *)self _telephonyServer];
-  if (v2)
+  _telephonyServer = [(SUUIJSTelephony *)self _telephonyServer];
+  if (_telephonyServer)
   {
-    v3 = v2;
+    v3 = _telephonyServer;
     v4 = SUUICoreTelephonyFramework();
-    v2 = SUUIWeakLinkedSymbolForString("_CTServerConnectionCopyMobileCountryCode", v4);
-    if (v2)
+    _telephonyServer = SUUIWeakLinkedSymbolForString("_CTServerConnectionCopyMobileCountryCode", v4);
+    if (_telephonyServer)
     {
-      (v2)(v3, &v6);
-      v2 = v6;
+      (_telephonyServer)(v3, &v6);
+      _telephonyServer = v6;
     }
   }
 
-  return v2;
+  return _telephonyServer;
 }
 
 - (NSString)mobileNetworkCode
 {
   v6 = 0;
-  v2 = [(SUUIJSTelephony *)self _telephonyServer];
-  if (v2)
+  _telephonyServer = [(SUUIJSTelephony *)self _telephonyServer];
+  if (_telephonyServer)
   {
-    v3 = v2;
+    v3 = _telephonyServer;
     v4 = SUUICoreTelephonyFramework();
-    v2 = SUUIWeakLinkedSymbolForString("_CTServerConnectionCopyMobileNetworkCode", v4);
-    if (v2)
+    _telephonyServer = SUUIWeakLinkedSymbolForString("_CTServerConnectionCopyMobileNetworkCode", v4);
+    if (_telephonyServer)
     {
-      (v2)(v3, &v6);
-      v2 = v6;
+      (_telephonyServer)(v3, &v6);
+      _telephonyServer = v6;
     }
   }
 
-  return v2;
+  return _telephonyServer;
 }
 
 - (NSString)operatorName
 {
-  v2 = [MEMORY[0x277D7FD00] sharedInstance];
-  v3 = [v2 operatorName];
+  mEMORY[0x277D7FD00] = [MEMORY[0x277D7FD00] sharedInstance];
+  operatorName = [mEMORY[0x277D7FD00] operatorName];
 
-  return v3;
+  return operatorName;
 }
 
 - (NSString)phoneNumber
 {
-  v2 = [MEMORY[0x277D7FD00] sharedInstance];
-  v3 = [v2 phoneNumber];
+  mEMORY[0x277D7FD00] = [MEMORY[0x277D7FD00] sharedInstance];
+  phoneNumber = [mEMORY[0x277D7FD00] phoneNumber];
 
-  return v3;
+  return phoneNumber;
 }
 
 - (NSString)providerName
 {
-  v2 = [MEMORY[0x277D7FD00] sharedInstance];
-  v3 = [v2 providerName];
+  mEMORY[0x277D7FD00] = [MEMORY[0x277D7FD00] sharedInstance];
+  providerName = [mEMORY[0x277D7FD00] providerName];
 
-  return v3;
+  return providerName;
 }
 
-- (void)sendSMSWithBodyText:(id)a3 :(id)a4 :(id)a5
+- (void)sendSMSWithBodyText:(id)text :(id)a4 :(id)a5
 {
   v7 = a5;
   v8 = a4;
-  v9 = a3;
+  textCopy = text;
   v10 = SUUICoreTelephonyFramework();
   v11 = SUUIWeakLinkedClassForString(&cfstr_Ctmessagecente.isa, v10);
   v14 = [SUUIWeakLinkedClassForString(&cfstr_Ctphonenumber.isa v10)];
 
-  v12 = [v11 sharedMessageCenter];
-  v13 = [v14 canonicalFormat];
-  [v12 sendSMSWithText:v9 serviceCenter:0 toAddress:v13];
+  sharedMessageCenter = [v11 sharedMessageCenter];
+  canonicalFormat = [v14 canonicalFormat];
+  [sharedMessageCenter sendSMSWithText:textCopy serviceCenter:0 toAddress:canonicalFormat];
 }
 
 - (__CTServerConnection)_telephonyServer

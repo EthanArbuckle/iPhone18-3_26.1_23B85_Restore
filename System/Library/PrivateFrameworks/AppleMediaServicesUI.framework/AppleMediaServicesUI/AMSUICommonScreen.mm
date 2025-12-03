@@ -6,8 +6,8 @@
 
 + (double)scale
 {
-  v2 = [a1 mainScreen];
-  [v2 scale];
+  mainScreen = [self mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   return v4;

@@ -1,5 +1,5 @@
 @interface _PASLazyPurgeableResult
-- (_PASLazyPurgeableResult)initWithBlock:(id)a3 idleTimeout:(double)a4;
+- (_PASLazyPurgeableResult)initWithBlock:(id)block idleTimeout:(double)timeout;
 - (id)result;
 - (id)resultIfAvailable;
 - (void)dealloc;
@@ -145,15 +145,15 @@ LABEL_18:
   [(_PASLazyResult *)&v5 dealloc];
 }
 
-- (_PASLazyPurgeableResult)initWithBlock:(id)a3 idleTimeout:(double)a4
+- (_PASLazyPurgeableResult)initWithBlock:(id)block idleTimeout:(double)timeout
 {
   v6.receiver = self;
   v6.super_class = _PASLazyPurgeableResult;
-  result = [(_PASLazyResult *)&v6 _initWithBlock:a3];
+  result = [(_PASLazyResult *)&v6 _initWithBlock:block];
   if (result)
   {
     atomic_store(0, &result->_nil);
-    result->_idleTimeout = a4;
+    result->_idleTimeout = timeout;
   }
 
   return result;

@@ -1,14 +1,14 @@
 @interface CALayer
-+ (void)cancelAnimation:(uint64_t)a1;
++ (void)cancelAnimation:(uint64_t)animation;
 - (float)displayHeadroom;
 - (uint64_t)kitScreen;
 - (uint64_t)observeDisplayHeadroomChanges:(uint64_t)result;
-- (void)scheduleAnimation:(double)a3 atTime:(float)a4 maxVelocityInPixels:;
+- (void)scheduleAnimation:(double)animation atTime:(float)time maxVelocityInPixels:;
 @end
 
 @implementation CALayer
 
-+ (void)cancelAnimation:(uint64_t)a1
++ (void)cancelAnimation:(uint64_t)animation
 {
   v3 = objc_opt_self();
 }
@@ -30,11 +30,11 @@
   return result;
 }
 
-- (void)scheduleAnimation:(double)a3 atTime:(float)a4 maxVelocityInPixels:
+- (void)scheduleAnimation:(double)animation atTime:(float)time maxVelocityInPixels:
 {
-  if (a1)
+  if (self)
   {
-    v7 = [(CALayer *)a1 kitScreen];
+    kitScreen = [(CALayer *)self kitScreen];
   }
 }
 
@@ -86,12 +86,12 @@ LABEL_5:
 - (float)displayHeadroom
 {
   v1 = 0.0;
-  if (a1)
+  if (self)
   {
-    v2 = [(CALayer *)a1 kitScreen];
-    if (v2)
+    kitScreen = [(CALayer *)self kitScreen];
+    if (kitScreen)
     {
-      [v2 currentEDRHeadroom];
+      [kitScreen currentEDRHeadroom];
       return v3;
     }
   }

@@ -1,24 +1,24 @@
 @interface FCContentColorPair
-+ (id)colorPairWithDictionary:(id)a3;
-- (FCContentColorPair)initWithLightColor:(id)a3 darkColor:(id)a4;
++ (id)colorPairWithDictionary:(id)dictionary;
+- (FCContentColorPair)initWithLightColor:(id)color darkColor:(id)darkColor;
 @end
 
 @implementation FCContentColorPair
 
-- (FCContentColorPair)initWithLightColor:(id)a3 darkColor:(id)a4
+- (FCContentColorPair)initWithLightColor:(id)color darkColor:(id)darkColor
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  darkColorCopy = darkColor;
   v14.receiver = self;
   v14.super_class = FCContentColorPair;
   v8 = [(FCContentColorPair *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [colorCopy copy];
     lightColor = v8->_lightColor;
     v8->_lightColor = v9;
 
-    v11 = [v7 copy];
+    v11 = [darkColorCopy copy];
     darkColor = v8->_darkColor;
     v8->_darkColor = v11;
   }
@@ -26,11 +26,11 @@
   return v8;
 }
 
-+ (id)colorPairWithDictionary:(id)a3
++ (id)colorPairWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = FCAppConfigurationStringValue(v3, @"light", 0);
-  v5 = FCAppConfigurationStringValue(v3, @"dark", 0);
+  dictionaryCopy = dictionary;
+  v4 = FCAppConfigurationStringValue(dictionaryCopy, @"light", 0);
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"dark", 0);
 
   v6 = [FCColor nullableColorWithHexString:v4];
   v7 = [FCColor nullableColorWithHexString:v5];

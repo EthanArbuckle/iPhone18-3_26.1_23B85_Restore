@@ -1,26 +1,26 @@
 @interface GTMTLReplayActivityLog
-- (GTMTLReplayActivityLog)initWithLog:(id)a3;
+- (GTMTLReplayActivityLog)initWithLog:(id)log;
 - (id)description;
 - (id)getBreadcrumbSummary;
 - (id)getBreadcrumbsAsJSON;
-- (id)init:(BOOL)a3;
-- (void)enterActivity:(id)a3;
+- (id)init:(BOOL)init;
+- (void)enterActivity:(id)activity;
 - (void)enterArgumentBufferDownload;
 - (void)enterArgumentBufferUpload;
-- (void)enterCollectCounters:(id)a3 statLocations:(unint64_t)a4 withIndex:(unint64_t)a5;
-- (void)enterDebugFuncStopFromIndex:(id)a3 toIndex:(id)a4;
-- (void)enterDisplayAttachmentAtIndex:(id)a3;
-- (void)enterHarvestResourceObjectWithAttributes:(id)a3;
-- (void)enterLoadArchiveWithPath:(id)a3;
-- (void)enterMessage:(id)a3;
+- (void)enterCollectCounters:(id)counters statLocations:(unint64_t)locations withIndex:(unint64_t)index;
+- (void)enterDebugFuncStopFromIndex:(id)index toIndex:(id)toIndex;
+- (void)enterDisplayAttachmentAtIndex:(id)index;
+- (void)enterHarvestResourceObjectWithAttributes:(id)attributes;
+- (void)enterLoadArchiveWithPath:(id)path;
+- (void)enterMessage:(id)message;
 - (void)enterOptimizeRestores;
 - (void)enterRewind;
 - (void)leaveActivity;
-- (void)logActivitiesToFile:(id)a3;
-- (void)logCommandBuffer:(id)a3 atIndex:(unsigned int)a4;
-- (void)logCommandBuffer:(id)a3 withKey:(unint64_t)a4;
-- (void)logMTL4Queue:(id)a3 commit:(id)a4 options:(id)a5 atIndex:(unsigned int)a6;
-- (void)logMTL4Queue:(id)a3 commit:(id)a4 options:(id)a5 withKeys:(id)a6;
+- (void)logActivitiesToFile:(id)file;
+- (void)logCommandBuffer:(id)buffer atIndex:(unsigned int)index;
+- (void)logCommandBuffer:(id)buffer withKey:(unint64_t)key;
+- (void)logMTL4Queue:(id)queue commit:(id)commit options:(id)options atIndex:(unsigned int)index;
+- (void)logMTL4Queue:(id)queue commit:(id)commit options:(id)options withKeys:(id)keys;
 @end
 
 @implementation GTMTLReplayActivityLog
@@ -31,23 +31,23 @@
   [(GTMTLReplayActivityLog *)self enterActivity:v3];
 }
 
-- (void)enterDisplayAttachmentAtIndex:(id)a3
+- (void)enterDisplayAttachmentAtIndex:(id)index
 {
-  v4 = [[GTMTLReplayActivityDisplayAttachment alloc] initWithIndex:a3];
+  v4 = [[GTMTLReplayActivityDisplayAttachment alloc] initWithIndex:index];
   [(GTMTLReplayActivityLog *)self enterActivity:v4];
 }
 
-- (void)enterCollectCounters:(id)a3 statLocations:(unint64_t)a4 withIndex:(unint64_t)a5
+- (void)enterCollectCounters:(id)counters statLocations:(unint64_t)locations withIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = [[GTMTLReplayActivityCollectCounters alloc] initWithCounters:v8 statLocations:a4 index:a5];
+  countersCopy = counters;
+  v9 = [[GTMTLReplayActivityCollectCounters alloc] initWithCounters:countersCopy statLocations:locations index:index];
 
   [(GTMTLReplayActivityLog *)self enterActivity:v9];
 }
 
-- (void)enterDebugFuncStopFromIndex:(id)a3 toIndex:(id)a4
+- (void)enterDebugFuncStopFromIndex:(id)index toIndex:(id)toIndex
 {
-  v5 = [[GTMTLReplayActivityDebugFuncStop alloc] initWithCurrentIndex:a3 targetIndex:a4];
+  v5 = [[GTMTLReplayActivityDebugFuncStop alloc] initWithCurrentIndex:index targetIndex:toIndex];
   [(GTMTLReplayActivityLog *)self enterActivity:v5];
 }
 
@@ -69,21 +69,21 @@
   [(GTMTLReplayActivityLog *)self enterActivity:v3];
 }
 
-- (void)enterHarvestResourceObjectWithAttributes:(id)a3
+- (void)enterHarvestResourceObjectWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [[GTMTLReplayActivityHarvestResourceObject alloc] initWithAttributes:v4];
+  attributesCopy = attributes;
+  v5 = [[GTMTLReplayActivityHarvestResourceObject alloc] initWithAttributes:attributesCopy];
 
   [(GTMTLReplayActivityLog *)self enterActivity:v5];
 }
 
-- (void)enterLoadArchiveWithPath:(id)a3
+- (void)enterLoadArchiveWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_lock(&self->_lock);
   gputracePath = self->_gputracePath;
-  self->_gputracePath = v4;
-  v6 = v4;
+  self->_gputracePath = pathCopy;
+  v6 = pathCopy;
 
   os_unfair_lock_unlock(&self->_lock);
   v7 = [[GTMTLReplayActivityLoadArchive alloc] initWithPath:v6];
@@ -91,10 +91,10 @@
   [(GTMTLReplayActivityLog *)self enterActivity:v7];
 }
 
-- (void)enterMessage:(id)a3
+- (void)enterMessage:(id)message
 {
-  v4 = a3;
-  v5 = [[GTMTLReplayActivityMessage alloc] initWithMessage:v4];
+  messageCopy = message;
+  v5 = [[GTMTLReplayActivityMessage alloc] initWithMessage:messageCopy];
 
   [(GTMTLReplayActivityLog *)self enterActivity:v5];
 }
@@ -103,9 +103,9 @@
 {
   os_unfair_lock_lock(&self->_lock);
   v6 = self->_lastBreadcrumb;
-  v3 = [(GTMTLReplayActivity *)v6 previousActivity];
+  previousActivity = [(GTMTLReplayActivity *)v6 previousActivity];
   lastBreadcrumb = self->_lastBreadcrumb;
-  self->_lastBreadcrumb = v3;
+  self->_lastBreadcrumb = previousActivity;
 
   if (!self->_lastBreadcrumb && self->_retainActivityLog)
   {
@@ -120,13 +120,13 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)enterActivity:(id)a3
+- (void)enterActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   os_unfair_lock_lock(&self->_lock);
-  [(GTMTLReplayActivity *)v4 setPreviousActivity:self->_lastBreadcrumb];
+  [(GTMTLReplayActivity *)activityCopy setPreviousActivity:self->_lastBreadcrumb];
   lastBreadcrumb = self->_lastBreadcrumb;
-  self->_lastBreadcrumb = v4;
+  self->_lastBreadcrumb = activityCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -151,32 +151,32 @@
   return v3;
 }
 
-- (void)logMTL4Queue:(id)a3 commit:(id)a4 options:(id)a5 atIndex:(unsigned int)a6
+- (void)logMTL4Queue:(id)queue commit:(id)commit options:(id)options atIndex:(unsigned int)index
 {
-  v9 = a3;
-  if (v9)
+  queueCopy = queue;
+  if (queueCopy)
   {
-    v10 = a5;
+    optionsCopy = options;
     os_unfair_lock_lock(&self->_lock);
     v11 = self->_gputracePath;
     v12 = self->_lastBreadcrumb;
     v13 = self->_lastActivity;
-    [(GTMTLReplayActivity *)v12 signpostIntervalBegin:os_signpost_id_make_with_pointer(g_signpostLog, v9)];
+    [(GTMTLReplayActivity *)v12 signpostIntervalBegin:os_signpost_id_make_with_pointer(g_signpostLog, queueCopy)];
     os_unfair_lock_unlock(&self->_lock);
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __62__GTMTLReplayActivityLog_logMTL4Queue_commit_options_atIndex___block_invoke;
     v17[3] = &unk_279657F78;
-    v23 = a6;
-    v18 = v9;
+    indexCopy = index;
+    v18 = queueCopy;
     v19 = v12;
     v20 = v11;
-    v21 = self;
+    selfCopy = self;
     v22 = v13;
     v14 = v13;
     v15 = v11;
     v16 = v12;
-    [v10 addFeedbackHandler:v17];
+    [optionsCopy addFeedbackHandler:v17];
   }
 }
 
@@ -235,33 +235,33 @@ void __62__GTMTLReplayActivityLog_logMTL4Queue_commit_options_atIndex___block_in
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logMTL4Queue:(id)a3 commit:(id)a4 options:(id)a5 withKeys:(id)a6
+- (void)logMTL4Queue:(id)queue commit:(id)commit options:(id)options withKeys:(id)keys
 {
-  v9 = a3;
-  v10 = a6;
-  if (v9)
+  queueCopy = queue;
+  keysCopy = keys;
+  if (queueCopy)
   {
-    v11 = a5;
+    optionsCopy = options;
     os_unfair_lock_lock(&self->_lock);
     v12 = self->_gputracePath;
     v13 = self->_lastBreadcrumb;
     v14 = self->_lastActivity;
-    [(GTMTLReplayActivity *)v13 signpostIntervalBegin:os_signpost_id_make_with_pointer(g_signpostLog, v9)];
+    [(GTMTLReplayActivity *)v13 signpostIntervalBegin:os_signpost_id_make_with_pointer(g_signpostLog, queueCopy)];
     os_unfair_lock_unlock(&self->_lock);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __63__GTMTLReplayActivityLog_logMTL4Queue_commit_options_withKeys___block_invoke;
     v18[3] = &unk_279657F50;
-    v19 = v9;
-    v20 = v10;
+    v19 = queueCopy;
+    v20 = keysCopy;
     v21 = v13;
     v22 = v12;
-    v23 = self;
+    selfCopy = self;
     v24 = v14;
     v15 = v14;
     v16 = v12;
     v17 = v13;
-    [v11 addFeedbackHandler:v18];
+    [optionsCopy addFeedbackHandler:v18];
   }
 }
 
@@ -320,30 +320,30 @@ void __63__GTMTLReplayActivityLog_logMTL4Queue_commit_options_withKeys___block_i
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCommandBuffer:(id)a3 withKey:(unint64_t)a4
+- (void)logCommandBuffer:(id)buffer withKey:(unint64_t)key
 {
-  if (a3)
+  if (buffer)
   {
-    v6 = a3;
+    bufferCopy = buffer;
     os_unfair_lock_lock(&self->_lock);
     v7 = self->_gputracePath;
     v8 = self->_lastBreadcrumb;
     v9 = self->_lastActivity;
-    [(GTMTLReplayActivity *)v8 signpostIntervalBegin:os_signpost_id_make_with_pointer(g_signpostLog, v6)];
+    [(GTMTLReplayActivity *)v8 signpostIntervalBegin:os_signpost_id_make_with_pointer(g_signpostLog, bufferCopy)];
     os_unfair_lock_unlock(&self->_lock);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __51__GTMTLReplayActivityLog_logCommandBuffer_withKey___block_invoke;
     v13[3] = &unk_279657F28;
     v17 = v9;
-    v18 = a4;
+    keyCopy = key;
     v14 = v8;
     v15 = v7;
-    v16 = self;
+    selfCopy = self;
     v10 = v9;
     v11 = v7;
     v12 = v8;
-    [v6 addCompletedHandler:v13];
+    [bufferCopy addCompletedHandler:v13];
   }
 }
 
@@ -399,30 +399,30 @@ void __51__GTMTLReplayActivityLog_logCommandBuffer_withKey___block_invoke(uint64
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCommandBuffer:(id)a3 atIndex:(unsigned int)a4
+- (void)logCommandBuffer:(id)buffer atIndex:(unsigned int)index
 {
-  if (a3)
+  if (buffer)
   {
-    v6 = a3;
+    bufferCopy = buffer;
     os_unfair_lock_lock(&self->_lock);
     v7 = self->_gputracePath;
     v8 = self->_lastBreadcrumb;
     v9 = self->_lastActivity;
-    [(GTMTLReplayActivity *)v8 signpostIntervalBegin:os_signpost_id_make_with_pointer(g_signpostLog, v6)];
+    [(GTMTLReplayActivity *)v8 signpostIntervalBegin:os_signpost_id_make_with_pointer(g_signpostLog, bufferCopy)];
     os_unfair_lock_unlock(&self->_lock);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __51__GTMTLReplayActivityLog_logCommandBuffer_atIndex___block_invoke;
     v13[3] = &unk_279657F00;
-    v18 = a4;
+    indexCopy = index;
     v14 = v8;
     v15 = v7;
-    v16 = self;
+    selfCopy = self;
     v17 = v9;
     v10 = v9;
     v11 = v7;
     v12 = v8;
-    [v6 addCompletedHandler:v13];
+    [bufferCopy addCompletedHandler:v13];
   }
 }
 
@@ -478,25 +478,25 @@ void __51__GTMTLReplayActivityLog_logCommandBuffer_atIndex___block_invoke(uint64
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logActivitiesToFile:(id)a3
+- (void)logActivitiesToFile:(id)file
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = ArrayFromActivities(a3, 1);
+  v4 = ArrayFromActivities(file, 1);
   v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v4 options:3 error:0];
 
   v6 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 temporaryDirectory];
-  v9 = [v6 initFileURLWithPath:@"GTMTLReplayActivityLog.json" relativeToURL:v8];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v9 = [v6 initFileURLWithPath:@"GTMTLReplayActivityLog.json" relativeToURL:temporaryDirectory];
 
   [v5 writeToURL:v9 atomically:0];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v11 = log;
-    v12 = [v9 path];
+    path = [v9 path];
     v14 = 138543362;
-    v15 = v12;
+    v15 = path;
     _os_log_impl(&dword_24D764000, v11, OS_LOG_TYPE_INFO, "logPath:\t%{public}@", &v14, 0xCu);
   }
 
@@ -514,27 +514,27 @@ void __51__GTMTLReplayActivityLog_logCommandBuffer_atIndex___block_invoke(uint64
   return v4;
 }
 
-- (GTMTLReplayActivityLog)initWithLog:(id)a3
+- (GTMTLReplayActivityLog)initWithLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   v9.receiver = self;
   v9.super_class = GTMTLReplayActivityLog;
   v5 = [(GTMTLReplayActivityLog *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    if (!v4)
+    if (!logCopy)
     {
       v7 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v5->_log, v4[1]);
+    objc_storeStrong(&v5->_log, logCopy[1]);
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_gputracePath, v4[2]);
-    objc_storeStrong(&v6->_lastBreadcrumb, v4[3]);
-    objc_storeStrong(&v6->_lastActivity, v4[4]);
-    v6->_retainActivityLog = *(v4 + 40);
+    objc_storeStrong(&v6->_gputracePath, logCopy[2]);
+    objc_storeStrong(&v6->_lastBreadcrumb, logCopy[3]);
+    objc_storeStrong(&v6->_lastActivity, logCopy[4]);
+    v6->_retainActivityLog = *(logCopy + 40);
   }
 
   v7 = v6;
@@ -543,7 +543,7 @@ LABEL_6:
   return v7;
 }
 
-- (id)init:(BOOL)a3
+- (id)init:(BOOL)init
 {
   v7.receiver = self;
   v7.super_class = GTMTLReplayActivityLog;
@@ -553,7 +553,7 @@ LABEL_6:
   {
     objc_storeStrong(&v4->_log, MEMORY[0x277D86220]);
     v5->_lock._os_unfair_lock_opaque = 0;
-    v5->_retainActivityLog = a3;
+    v5->_retainActivityLog = init;
   }
 
   return v5;

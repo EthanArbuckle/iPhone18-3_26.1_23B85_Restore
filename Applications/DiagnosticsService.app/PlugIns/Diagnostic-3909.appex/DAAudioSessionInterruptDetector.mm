@@ -1,5 +1,5 @@
 @interface DAAudioSessionInterruptDetector
-- (void)audioSystemInterrupt:(id)a3;
+- (void)audioSystemInterrupt:(id)interrupt;
 - (void)start;
 - (void)stop;
 @end
@@ -12,10 +12,10 @@
   [v3 addObserver:self selector:"audioSystemInterrupt:" name:AVAudioSessionInterruptionNotification object:0];
 }
 
-- (void)audioSystemInterrupt:(id)a3
+- (void)audioSystemInterrupt:(id)interrupt
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:AVAudioSessionInterruptionTypeKey];
+  userInfo = [interrupt userInfo];
+  v4 = [userInfo objectForKeyedSubscript:AVAudioSessionInterruptionTypeKey];
   v5 = [v4 isEqualToNumber:&off_100010840];
 
   if (v5)

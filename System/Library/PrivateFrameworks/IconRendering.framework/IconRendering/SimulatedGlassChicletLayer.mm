@@ -1,14 +1,14 @@
 @interface SimulatedGlassChicletLayer
-- (void)drawInDisplayList:(id)a3;
+- (void)drawInDisplayList:(id)list;
 @end
 
 @implementation SimulatedGlassChicletLayer
 
-- (void)drawInDisplayList:(id)a3
+- (void)drawInDisplayList:(id)list
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B160CFB8(v4);
+  listCopy = list;
+  selfCopy = self;
+  sub_1B160CFB8(listCopy);
 }
 
 @end

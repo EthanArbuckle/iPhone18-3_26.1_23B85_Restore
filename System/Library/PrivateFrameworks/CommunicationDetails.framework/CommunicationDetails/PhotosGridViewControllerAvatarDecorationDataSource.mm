@@ -1,11 +1,11 @@
 @interface PhotosGridViewControllerAvatarDecorationDataSource
 - (_TtC20CommunicationDetails50PhotosGridViewControllerAvatarDecorationDataSource)init;
-- (id)userDataForAsset:(id)a3;
+- (id)userDataForAsset:(id)asset;
 @end
 
 @implementation PhotosGridViewControllerAvatarDecorationDataSource
 
-- (id)userDataForAsset:(id)a3
+- (id)userDataForAsset:(id)asset
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -16,7 +16,7 @@
   }
 
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = PhotosGridViewControllerAvatarDecorationDataSource.userData(for:)();
 
   swift_unknownObjectRelease();

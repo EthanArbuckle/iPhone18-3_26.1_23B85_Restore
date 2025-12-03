@@ -1,52 +1,52 @@
 @interface HUHomeHubSharedUserWarningItemManager
-- (HUHomeHubSharedUserWarningItemManager)initWithDelegate:(id)a3 homesToUsersMap:(id)a4;
-- (HUHomeHubSharedUserWarningItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUHomeHubSharedUserWarningItemManager)initWithDelegate:(id)delegate homesToUsersMap:(id)map;
+- (HUHomeHubSharedUserWarningItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUHomeHubSharedUserWarningItemManager
 
-- (HUHomeHubSharedUserWarningItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUHomeHubSharedUserWarningItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDelegate_home_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUHomeHubSharedUserWarningItemManager.m" lineNumber:23 description:{@"%s is unavailable; use %@ instead", "-[HUHomeHubSharedUserWarningItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUHomeHubSharedUserWarningItemManager.m" lineNumber:23 description:{@"%s is unavailable; use %@ instead", "-[HUHomeHubSharedUserWarningItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HUHomeHubSharedUserWarningItemManager)initWithDelegate:(id)a3 homesToUsersMap:(id)a4
+- (HUHomeHubSharedUserWarningItemManager)initWithDelegate:(id)delegate homesToUsersMap:(id)map
 {
-  v6 = a4;
+  mapCopy = map;
   v10.receiver = self;
   v10.super_class = HUHomeHubSharedUserWarningItemManager;
-  v7 = [(HFItemManager *)&v10 initWithDelegate:a3 sourceItem:0];
+  v7 = [(HFItemManager *)&v10 initWithDelegate:delegate sourceItem:0];
   v8 = v7;
   if (v7)
   {
-    [(HUHomeHubSharedUserWarningItemManager *)v7 setHomesToUsersMap:v6];
+    [(HUHomeHubSharedUserWarningItemManager *)v7 setHomesToUsersMap:mapCopy];
   }
 
   return v8;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(HUHomeHubSharedUserWarningItemManager *)self homesToUsersMap];
-  v7 = [v6 keyEnumerator];
+  homesToUsersMap = [(HUHomeHubSharedUserWarningItemManager *)self homesToUsersMap];
+  keyEnumerator = [homesToUsersMap keyEnumerator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__HUHomeHubSharedUserWarningItemManager__buildItemProvidersForHome___block_invoke;
   v14[3] = &unk_277DBFE78;
   v15 = v5;
-  v16 = self;
+  selfCopy = self;
   v8 = v4;
   v17 = v8;
   v9 = v5;
-  [v7 na_each:v14];
+  [keyEnumerator na_each:v14];
 
   v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_164];
   [(HUHomeHubSharedUserWarningItemManager *)self setHomes:v10];
@@ -115,13 +115,13 @@ uint64_t __68__HUHomeHubSharedUserWarningItemManager__buildItemProvidersForHome_
   return v11;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v45 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  if ([v31 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v30 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -131,7 +131,7 @@ uint64_t __68__HUHomeHubSharedUserWarningItemManager__buildItemProvidersForHome_
     if (v32)
     {
       v28 = *v40;
-      v29 = self;
+      selfCopy = self;
       do
       {
         v4 = 0;
@@ -146,17 +146,17 @@ uint64_t __68__HUHomeHubSharedUserWarningItemManager__buildItemProvidersForHome_
           v5 = *(*(&v39 + 1) + 8 * v4);
           v6 = objc_opt_new();
           v7 = objc_alloc(MEMORY[0x277D14850]);
-          v8 = [v5 uniqueIdentifier];
-          v9 = [v8 UUIDString];
-          v10 = [v7 initWithIdentifier:v9];
+          uniqueIdentifier = [v5 uniqueIdentifier];
+          uUIDString = [uniqueIdentifier UUIDString];
+          v10 = [v7 initWithIdentifier:uUIDString];
 
-          v11 = [(HUHomeHubSharedUserWarningItemManager *)self homes];
-          v12 = [v11 count];
+          homes = [(HUHomeHubSharedUserWarningItemManager *)self homes];
+          v12 = [homes count];
 
           if (v12 >= 2)
           {
-            v13 = [v5 hf_displayName];
-            [v10 setHeaderTitle:v13];
+            hf_displayName = [v5 hf_displayName];
+            [v10 setHeaderTitle:hf_displayName];
           }
 
           v33 = v10;
@@ -164,7 +164,7 @@ uint64_t __68__HUHomeHubSharedUserWarningItemManager__buildItemProvidersForHome_
           v38 = 0u;
           v35 = 0u;
           v36 = 0u;
-          v14 = v31;
+          v14 = itemsCopy;
           v15 = [v14 countByEnumeratingWithState:&v35 objects:v43 count:16];
           if (v15)
           {
@@ -194,8 +194,8 @@ uint64_t __68__HUHomeHubSharedUserWarningItemManager__buildItemProvidersForHome_
 
                 v22 = v21;
 
-                v23 = [v22 home];
-                v24 = [v23 isEqual:v5];
+                home = [v22 home];
+                v24 = [home isEqual:v5];
 
                 if (v24)
                 {
@@ -211,10 +211,10 @@ uint64_t __68__HUHomeHubSharedUserWarningItemManager__buildItemProvidersForHome_
 
           v25 = [v6 sortedArrayUsingComparator:&__block_literal_global_16_3];
           [v33 setItems:v25];
-          [v30 addObject:v33];
+          [array addObject:v33];
 
           v4 = v34 + 1;
-          self = v29;
+          self = selfCopy;
         }
 
         while (v34 + 1 != v32);
@@ -227,10 +227,10 @@ uint64_t __68__HUHomeHubSharedUserWarningItemManager__buildItemProvidersForHome_
 
   else
   {
-    v30 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
-  return v30;
+  return array;
 }
 
 uint64_t __74__HUHomeHubSharedUserWarningItemManager__buildSectionsWithDisplayedItems___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -9,32 +9,32 @@
 
 - (id)urlString
 {
-  v2 = [MEMORY[0x1E698DDF8] sharedBag];
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [MEMORY[0x1E698DDF8] sharedBag];
-    v4 = [v3 siwaManagementURL];
-    v5 = [v4 absoluteString];
+    mEMORY[0x1E698DDF8]2 = [MEMORY[0x1E698DDF8] sharedBag];
+    siwaManagementURL = [mEMORY[0x1E698DDF8]2 siwaManagementURL];
+    absoluteString = [siwaManagementURL absoluteString];
   }
 
   else
   {
-    v5 = 0;
+    absoluteString = 0;
   }
 
-  return v5;
+  return absoluteString;
 }
 
 - (id)urlRequest
 {
-  v3 = [(AASignInWithAppleManagementUIRequest *)self _isPasswordAppInstalled];
+  _isPasswordAppInstalled = [(AASignInWithAppleManagementUIRequest *)self _isPasswordAppInstalled];
   v8.receiver = self;
   v8.super_class = AASignInWithAppleManagementUIRequest;
-  v4 = [(AAAppleIDSettingsRequest *)&v8 urlRequest];
-  v5 = [v4 mutableCopy];
+  urlRequest = [(AAAppleIDSettingsRequest *)&v8 urlRequest];
+  v5 = [urlRequest mutableCopy];
 
   v6 = kAATrueString;
-  if (!v3)
+  if (!_isPasswordAppInstalled)
   {
     v6 = kAAFalseString;
   }
@@ -51,31 +51,31 @@
   v3 = v8;
   if (v2)
   {
-    v4 = [v2 applicationState];
-    if (([v4 isInstalled]& 1) != 0)
+    applicationState = [v2 applicationState];
+    if (([applicationState isInstalled]& 1) != 0)
     {
-      v5 = 1;
+      isPlaceholder = 1;
     }
 
     else
     {
-      v6 = [v2 applicationState];
-      v5 = [v6 isPlaceholder];
+      applicationState2 = [v2 applicationState];
+      isPlaceholder = [applicationState2 isPlaceholder];
     }
   }
 
   else
   {
-    v4 = _AALogSystem();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    applicationState = _AALogSystem();
+    if (os_log_type_enabled(applicationState, OS_LOG_TYPE_DEBUG))
     {
       [(AASignInWithAppleManagementUIRequest *)v3 _isPasswordAppInstalled];
     }
 
-    v5 = 0;
+    isPlaceholder = 0;
   }
 
-  return v5;
+  return isPlaceholder;
 }
 
 - (void)_isPasswordAppInstalled
@@ -84,7 +84,7 @@
   v3 = 138412546;
   v4 = @"com.apple.Passwords";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1B6F6A000, a2, OS_LOG_TYPE_DEBUG, "Error creating appRecord for %@. %@", &v3, 0x16u);
   v2 = *MEMORY[0x1E69E9840];
 }

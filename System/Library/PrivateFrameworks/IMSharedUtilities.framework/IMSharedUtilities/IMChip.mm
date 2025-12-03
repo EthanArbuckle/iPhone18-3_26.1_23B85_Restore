@@ -1,9 +1,9 @@
 @interface IMChip
-+ (id)chipWithType:(int64_t)a3 dictionary:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)chipWithType:(int64_t)type dictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (IMAttributableContent)chip;
 - (IMChip)init;
-- (IMChip)initWithType:(int64_t)a3 chip:(id)a4;
+- (IMChip)initWithType:(int64_t)type chip:(id)chip;
 - (id)dictionaryRepresentation;
 - (int64_t)hash;
 @end
@@ -17,10 +17,10 @@
   return v2;
 }
 
-- (IMChip)initWithType:(int64_t)a3 chip:(id)a4
+- (IMChip)initWithType:(int64_t)type chip:(id)chip
 {
-  *(&self->super.isa + OBJC_IVAR___IMChip_type) = a3;
-  *(&self->super.isa + OBJC_IVAR___IMChip_chip) = a4;
+  *(&self->super.isa + OBJC_IVAR___IMChip_type) = type;
+  *(&self->super.isa + OBJC_IVAR___IMChip_chip) = chip;
   v5.receiver = self;
   v5.super_class = IMChip;
   swift_unknownObjectRetain();
@@ -29,7 +29,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A8836778();
 
   v3 = sub_1A88C8188();
@@ -37,9 +37,9 @@
   return v3;
 }
 
-+ (id)chipWithType:(int64_t)a3 dictionary:(id)a4
++ (id)chipWithType:(int64_t)type dictionary:(id)dictionary
 {
-  if (a4)
+  if (dictionary)
   {
     v5 = sub_1A88C81A8();
   }
@@ -49,16 +49,16 @@
     v5 = 0;
   }
 
-  v6 = sub_1A8836CB8(a3, v5);
+  v6 = sub_1A8836CB8(type, v5);
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1A88C8CB8();
     swift_unknownObjectRelease();
@@ -67,7 +67,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = IMChip.isEqual(_:)(v8);
@@ -79,8 +79,8 @@
 - (int64_t)hash
 {
   sub_1A88C9588();
-  v3 = self;
-  MEMORY[0x1AC56FE00]([(IMChip *)v3 type]);
+  selfCopy = self;
+  MEMORY[0x1AC56FE00]([(IMChip *)selfCopy type]);
   v4 = sub_1A88C9568();
 
   return v4;

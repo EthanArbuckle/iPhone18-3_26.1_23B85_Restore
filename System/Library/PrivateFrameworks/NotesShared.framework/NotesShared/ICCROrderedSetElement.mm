@@ -1,61 +1,61 @@
 @interface ICCROrderedSetElement
-+ (id)temporaryElementWithValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ICCROrderedSetElement)initWithProtobufSetElement:(const void *)a3 decoder:(id)a4;
++ (id)temporaryElementWithValue:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (ICCROrderedSetElement)initWithProtobufSetElement:(const void *)element decoder:(id)decoder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeIntoProtobufSetElement:(void *)a3 coder:(id)a4;
-- (void)mergeWith:(id)a3;
-- (void)setDocument:(id)a3;
-- (void)walkGraph:(id)a3;
+- (void)encodeIntoProtobufSetElement:(void *)element coder:(id)coder;
+- (void)mergeWith:(id)with;
+- (void)setDocument:(id)document;
+- (void)walkGraph:(id)graph;
 @end
 
 @implementation ICCROrderedSetElement
 
-+ (id)temporaryElementWithValue:(id)a3
++ (id)temporaryElementWithValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = objc_alloc_init(ICCROrderedSetElement);
-  [(ICCROrderedSetElement *)v4 setValue:v3];
+  [(ICCROrderedSetElement *)v4 setValue:valueCopy];
 
   return v4;
 }
 
-- (ICCROrderedSetElement)initWithProtobufSetElement:(const void *)a3 decoder:(id)a4
+- (ICCROrderedSetElement)initWithProtobufSetElement:(const void *)element decoder:(id)decoder
 {
-  v6 = a4;
+  decoderCopy = decoder;
   v7 = [(ICCROrderedSetElement *)self init];
   v8 = v7;
   if (v7)
   {
-    v9 = *(a3 + 8);
+    v9 = *(element + 8);
     if ((v9 & 2) != 0)
     {
-      v10 = *(a3 + 6);
+      v10 = *(element + 6);
       if (!v10)
       {
         v10 = *(CRDT::Dictionary_Element::default_instance(v7) + 48);
       }
 
-      v11 = [v6 decodeObjectForProtobufObjectID:v10];
+      v11 = [decoderCopy decodeObjectForProtobufObjectID:v10];
       value = v8->_value;
       v8->_value = v11;
 
-      v9 = *(a3 + 8);
+      v9 = *(element + 8);
     }
 
     if ((v9 & 8) != 0)
     {
       v13 = [ICCRRegisterLatest alloc];
       v14 = v13;
-      v15 = *(a3 + 8);
+      v15 = *(element + 8);
       if (!v15)
       {
         v15 = *(CRDT::Dictionary_Element::default_instance(v13) + 64);
       }
 
-      v16 = [(ICCRRegisterLatest *)v14 initWithProtobufRegisterLatest:v15 decoder:v6];
+      v16 = [(ICCRRegisterLatest *)v14 initWithProtobufRegisterLatest:v15 decoder:decoderCopy];
       index = v8->_index;
       v8->_index = v16;
     }
@@ -64,52 +64,52 @@
   return v8;
 }
 
-- (void)encodeIntoProtobufSetElement:(void *)a3 coder:(id)a4
+- (void)encodeIntoProtobufSetElement:(void *)element coder:(id)coder
 {
-  v11 = a4;
-  v6 = [(ICCROrderedSetElement *)self value];
+  coderCopy = coder;
+  value = [(ICCROrderedSetElement *)self value];
 
-  if (v6)
+  if (value)
   {
-    v7 = [(ICCROrderedSetElement *)self value];
-    *(a3 + 8) |= 2u;
-    v8 = *(a3 + 6);
+    value2 = [(ICCROrderedSetElement *)self value];
+    *(element + 8) |= 2u;
+    v8 = *(element + 6);
     if (!v8)
     {
       operator new();
     }
 
-    [v11 encodeObject:v7 forObjectID:v8];
+    [coderCopy encodeObject:value2 forObjectID:v8];
   }
 
-  v9 = [(ICCROrderedSetElement *)self index];
-  *(a3 + 8) |= 8u;
-  v10 = *(a3 + 8);
+  index = [(ICCROrderedSetElement *)self index];
+  *(element + 8) |= 8u;
+  v10 = *(element + 8);
   if (!v10)
   {
     operator new();
   }
 
-  [v9 encodeIntoProtobufRegisterLatest:v10 coder:v11];
+  [index encodeIntoProtobufRegisterLatest:v10 coder:coderCopy];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(ICCROrderedSetElement *)self value];
-  v3 = [v2 hash];
+  value = [(ICCROrderedSetElement *)self value];
+  v3 = [value hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ICCROrderedSetElement *)self value];
-    v6 = [v4 value];
-    v7 = [v5 isEqual:v6];
+    value = [(ICCROrderedSetElement *)self value];
+    value2 = [equalCopy value];
+    v7 = [value isEqual:value2];
   }
 
   else
@@ -120,45 +120,45 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ICCROrderedSetElement allocWithZone:?]];
-  v5 = [(ICCROrderedSetElement *)self value];
-  [(ICCROrderedSetElement *)v4 setValue:v5];
+  value = [(ICCROrderedSetElement *)self value];
+  [(ICCROrderedSetElement *)v4 setValue:value];
 
-  v6 = [(ICCROrderedSetElement *)self index];
-  [(ICCROrderedSetElement *)v4 setIndex:v6];
+  index = [(ICCROrderedSetElement *)self index];
+  [(ICCROrderedSetElement *)v4 setIndex:index];
 
   return v4;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v8 = a3;
-  v4 = [(ICCROrderedSetElement *)self index];
-  v5 = [v8 index];
-  [v4 mergeWith:v5];
+  withCopy = with;
+  index = [(ICCROrderedSetElement *)self index];
+  index2 = [withCopy index];
+  [index mergeWith:index2];
 
-  v6 = [(ICCROrderedSetElement *)self value];
-  v7 = [v8 value];
-  [v6 mergeWith:v7];
+  value = [(ICCROrderedSetElement *)self value];
+  value2 = [withCopy value];
+  [value mergeWith:value2];
 }
 
-- (void)walkGraph:(id)a3
+- (void)walkGraph:(id)graph
 {
-  v6 = a3;
-  v4 = [(ICCROrderedSetElement *)self index];
-  v6[2](v6, v4);
+  graphCopy = graph;
+  index = [(ICCROrderedSetElement *)self index];
+  graphCopy[2](graphCopy, index);
 
-  v5 = [(ICCROrderedSetElement *)self value];
-  v6[2](v6, v5);
+  value = [(ICCROrderedSetElement *)self value];
+  graphCopy[2](graphCopy, value);
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
-  v7 = a3;
-  v4 = [(ICCROrderedSetElement *)self value];
-  v5 = [v7 localObject:v4];
+  documentCopy = document;
+  value = [(ICCROrderedSetElement *)self value];
+  v5 = [documentCopy localObject:value];
   value = self->_value;
   self->_value = v5;
 }
@@ -168,9 +168,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICCROrderedSetElement *)self index];
-  v7 = [(ICCROrderedSetElement *)self value];
-  v8 = [v3 stringWithFormat:@"<%@ %p %@ %@>", v5, self, v6, v7];
+  index = [(ICCROrderedSetElement *)self index];
+  value = [(ICCROrderedSetElement *)self value];
+  v8 = [v3 stringWithFormat:@"<%@ %p %@ %@>", v5, self, index, value];
 
   return v8;
 }

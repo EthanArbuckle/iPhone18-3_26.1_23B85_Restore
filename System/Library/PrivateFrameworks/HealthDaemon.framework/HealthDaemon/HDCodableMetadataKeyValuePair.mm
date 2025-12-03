@@ -1,21 +1,21 @@
 @interface HDCodableMetadataKeyValuePair
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumberDoubleValue:(BOOL)a3;
-- (void)setHasNumberIntValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumberDoubleValue:(BOOL)value;
+- (void)setHasNumberIntValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableMetadataKeyValuePair
 
-- (void)setHasNumberIntValue:(BOOL)a3
+- (void)setHasNumberIntValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumberDoubleValue:(BOOL)a3
+- (void)setHasNumberDoubleValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableMetadataKeyValuePair;
   v4 = [(HDCodableMetadataKeyValuePair *)&v8 description];
-  v5 = [(HDCodableMetadataKeyValuePair *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableMetadataKeyValuePair *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   stringValue = self->_stringValue;
@@ -109,8 +109,8 @@ LABEL_9:
   quantityValue = self->_quantityValue;
   if (quantityValue)
   {
-    v10 = [(HDCodableQuantity *)quantityValue dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"quantityValue"];
+    dictionaryRepresentation = [(HDCodableQuantity *)quantityValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"quantityValue"];
   }
 
   dataValue = self->_dataValue;
@@ -122,20 +122,20 @@ LABEL_9:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -143,7 +143,7 @@ LABEL_9:
   {
     dateValue = self->_dateValue;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -164,50 +164,50 @@ LABEL_7:
 
   numberIntValue = self->_numberIntValue;
   PBDataWriterWriteInt64Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
     numberDoubleValue = self->_numberDoubleValue;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_9:
   if (self->_quantityValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_dataValue)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v6;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   if (self->_stringValue)
   {
     [v6 setStringValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_dateValue;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 1) = *&self->_dateValue;
+    *(toCopy + 64) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -226,37 +226,37 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 3) = self->_numberIntValue;
-  *(v4 + 64) |= 4u;
+  *(toCopy + 3) = self->_numberIntValue;
+  *(toCopy + 64) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
-    *(v4 + 2) = *&self->_numberDoubleValue;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 2) = *&self->_numberDoubleValue;
+    *(toCopy + 64) |= 2u;
   }
 
 LABEL_9:
   if (self->_quantityValue)
   {
     [v6 setQuantityValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dataValue)
   {
     [v6 setDataValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v8 = [(NSString *)self->_stringValue copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
@@ -296,27 +296,27 @@ LABEL_4:
   }
 
 LABEL_5:
-  v11 = [(HDCodableQuantity *)self->_quantityValue copyWithZone:a3];
+  v11 = [(HDCodableQuantity *)self->_quantityValue copyWithZone:zone];
   v12 = *(v5 + 48);
   *(v5 + 48) = v11;
 
-  v13 = [(NSData *)self->_dataValue copyWithZone:a3];
+  v13 = [(NSData *)self->_dataValue copyWithZone:zone];
   v14 = *(v5 + 32);
   *(v5 + 32) = v13;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
   key = self->_key;
-  if (key | *(v4 + 5))
+  if (key | *(equalCopy + 5))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -325,7 +325,7 @@ LABEL_5:
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 7))
+  if (stringValue | *(equalCopy + 7))
   {
     if (![(NSString *)stringValue isEqual:?])
     {
@@ -333,16 +333,16 @@ LABEL_5:
     }
   }
 
-  v7 = *(v4 + 64);
+  v7 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_dateValue != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_dateValue != *(equalCopy + 1))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_25:
     v10 = 0;
@@ -351,38 +351,38 @@ LABEL_25:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_numberIntValue != *(v4 + 3))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_numberIntValue != *(equalCopy + 3))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_numberDoubleValue != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_numberDoubleValue != *(equalCopy + 2))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_25;
   }
 
   quantityValue = self->_quantityValue;
-  if (quantityValue | *(v4 + 6) && ![(HDCodableQuantity *)quantityValue isEqual:?])
+  if (quantityValue | *(equalCopy + 6) && ![(HDCodableQuantity *)quantityValue isEqual:?])
   {
     goto LABEL_25;
   }
 
   dataValue = self->_dataValue;
-  if (dataValue | *(v4 + 4))
+  if (dataValue | *(equalCopy + 4))
   {
     v10 = [(NSData *)dataValue isEqual:?];
   }
@@ -485,28 +485,28 @@ LABEL_17:
   return v16 ^ [(NSData *)self->_dataValue hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(HDCodableMetadataKeyValuePair *)self setKey:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HDCodableMetadataKeyValuePair *)self setStringValue:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if (v5)
   {
-    self->_dateValue = *(v4 + 1);
+    self->_dateValue = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 64);
+    v5 = *(fromCopy + 64);
     if ((v5 & 4) == 0)
     {
 LABEL_7:
@@ -519,23 +519,23 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 64) & 4) == 0)
+  else if ((*(fromCopy + 64) & 4) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_numberIntValue = *(v4 + 3);
+  self->_numberIntValue = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 64) & 2) != 0)
+  if ((*(fromCopy + 64) & 2) != 0)
   {
 LABEL_8:
-    self->_numberDoubleValue = *(v4 + 2);
+    self->_numberDoubleValue = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_9:
   quantityValue = self->_quantityValue;
-  v7 = *(v4 + 6);
+  v7 = *(fromCopy + 6);
   if (quantityValue)
   {
     if (!v7)
@@ -556,9 +556,9 @@ LABEL_9:
     [(HDCodableMetadataKeyValuePair *)self setQuantityValue:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_18:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HDCodableMetadataKeyValuePair *)self setDataValue:?];
   }

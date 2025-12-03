@@ -1,11 +1,11 @@
 @interface _UIWebFileUploadItem
-- (_UIWebFileUploadItem)initWithFilePath:(id)a3;
+- (_UIWebFileUploadItem)initWithFilePath:(id)path;
 - (void)dealloc;
 @end
 
 @implementation _UIWebFileUploadItem
 
-- (_UIWebFileUploadItem)initWithFilePath:(id)a3
+- (_UIWebFileUploadItem)initWithFilePath:(id)path
 {
   v7.receiver = self;
   v7.super_class = _UIWebFileUploadItem;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    [(_UIWebFileUploadItem *)v4 setFilePath:a3];
+    [(_UIWebFileUploadItem *)v4 setFilePath:path];
   }
 
   return v5;

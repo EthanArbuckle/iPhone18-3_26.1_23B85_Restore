@@ -3,7 +3,7 @@
 - (NSString)description;
 - (SKSetupBase)skSetupObject;
 - (SKStepWiFiSetupClientLegacy)init;
-- (void)_completeWithError:(id)a3;
+- (void)_completeWithError:(id)error;
 - (void)_invalidateCore;
 - (void)_invalidated;
 - (void)_run;
@@ -12,7 +12,7 @@
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation SKStepWiFiSetupClientLegacy
@@ -53,8 +53,8 @@
     [(CWFInterface *)v4 activate];
   }
 
-  v5 = [(CWFInterface *)v4 currentKnownNetworkProfile];
-  if (!v5)
+  currentKnownNetworkProfile = [(CWFInterface *)v4 currentKnownNetworkProfile];
+  if (!currentKnownNetworkProfile)
   {
     v21 = *MEMORY[0x277CCA590];
     v22 = NSErrorF_safe();
@@ -63,18 +63,18 @@
     goto LABEL_21;
   }
 
-  v6 = [(CWFInterface *)v4 channel];
-  v7 = [v6 channel];
+  channel = [(CWFInterface *)v4 channel];
+  v6Channel = [channel channel];
 
-  if (v7)
+  if (v6Channel)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6Channel];
     [v34 setObject:v8 forKeyedSubscript:@"_wiCh"];
   }
 
-  v9 = [v5 SSID];
-  v10 = v9;
-  if (!v9)
+  sSID = [currentKnownNetworkProfile SSID];
+  v10 = sSID;
+  if (!sSID)
   {
     v23 = *MEMORY[0x277CCA590];
     v24 = NSErrorF_safe();
@@ -84,15 +84,15 @@
   }
 
   v36 = 0;
-  MEMORY[0x266769F90](v9, &v36);
+  MEMORY[0x266769F90](sSID, &v36);
   v11 = v36;
   if (v11)
   {
     [v34 setObject:v11 forKeyedSubscript:@"_wiPW"];
   }
 
-  v12 = [v5 networkName];
-  if (!v12)
+  networkName = [currentKnownNetworkProfile networkName];
+  if (!networkName)
   {
     v25 = *MEMORY[0x277CCA590];
     v26 = NSErrorF_safe();
@@ -101,7 +101,7 @@
     goto LABEL_19;
   }
 
-  [v34 setObject:v12 forKeyedSubscript:@"_wiSS"];
+  [v34 setObject:networkName forKeyedSubscript:@"_wiSS"];
   v13 = self->_skMessaging;
   if (!v13)
   {
@@ -126,7 +126,7 @@ LABEL_13:
         v17 = "no";
       }
 
-      v31 = v7;
+      v31 = v6Channel;
       v32 = v17;
       v30 = v15;
       LogPrintF();
@@ -526,10 +526,10 @@ LABEL_6:
       {
         if (runState == 15)
         {
-          v9 = self;
+          selfCopy2 = self;
           stepError = 0;
 LABEL_23:
-          [(SKStepWiFiSetupClientLegacy *)v9 _completeWithError:stepError, v15, v16];
+          [(SKStepWiFiSetupClientLegacy *)selfCopy2 _completeWithError:stepError, v15, v16];
           goto LABEL_28;
         }
 
@@ -545,7 +545,7 @@ LABEL_23:
             stepError = self->_stepError;
           }
 
-          v9 = self;
+          selfCopy2 = self;
           goto LABEL_23;
         }
       }
@@ -636,10 +636,10 @@ LABEL_31:
   }
 }
 
-- (void)_completeWithError:(id)a3
+- (void)_completeWithError:(id)error
 {
-  v17 = a3;
-  if (v17)
+  errorCopy = error;
+  if (errorCopy)
   {
     v4 = 3;
   }
@@ -656,7 +656,7 @@ LABEL_31:
   v7 = v6;
   self->_metricTotalSeconds = v6;
   var0 = self->_ucat->var0;
-  if (!v17)
+  if (!errorCopy)
   {
     if (var0 > 30)
     {
@@ -707,7 +707,7 @@ LABEL_14:
 
   if (v12)
   {
-    (v12)[2](v12, v17);
+    (v12)[2](v12, errorCopy);
   }
 }
 
@@ -872,12 +872,12 @@ LABEL_5:
   return [v5 _run];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 

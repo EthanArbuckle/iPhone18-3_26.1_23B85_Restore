@@ -1,12 +1,12 @@
 @interface PKApplyHeroCardView
-- (PKApplyHeroCardView)initWithFeatureIdentifier:(unint64_t)a3;
+- (PKApplyHeroCardView)initWithFeatureIdentifier:(unint64_t)identifier;
 @end
 
 @implementation PKApplyHeroCardView
 
-- (PKApplyHeroCardView)initWithFeatureIdentifier:(unint64_t)a3
+- (PKApplyHeroCardView)initWithFeatureIdentifier:(unint64_t)identifier
 {
-  if (a3 == 5)
+  if (identifier == 5)
   {
     v5 = PKPassKitUIBundle();
     v6 = [v5 URLForResource:@"SAVINGS_Icon" withExtension:@"pdf"];
@@ -33,8 +33,8 @@
   v11 = v10;
   if (v10)
   {
-    v10->_featureIdentifier = a3;
-    if (a3 == 5)
+    v10->_featureIdentifier = identifier;
+    if (identifier == 5)
     {
       [(PKHeroCardExplanationHeaderView *)v10 setPadding:4];
       [(PKHeroCardExplanationHeaderView *)v11 setHideBorders:1];

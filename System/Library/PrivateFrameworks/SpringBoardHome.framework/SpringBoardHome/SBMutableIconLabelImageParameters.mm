@@ -1,22 +1,22 @@
 @interface SBMutableIconLabelImageParameters
 - (SBMutableIconLabelImageParameters)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAccessibilityReduceTransparencyEnabled:(BOOL)a3;
-- (void)setCanTighten:(BOOL)a3;
-- (void)setCanTruncate:(BOOL)a3;
-- (void)setColorspaceGrayscale:(BOOL)a3;
-- (void)setContainsEmoji:(BOOL)a3;
-- (void)setContentSizeCategory:(id)a3;
-- (void)setFocusHighlightColor:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setFontLanguageInsets:(UIEdgeInsets)a3;
-- (void)setLegibilityStyle:(unint64_t)a3;
-- (void)setMaxSize:(CGSize)a3;
-- (void)setOverrideTraitCollection:(id)a3;
-- (void)setScale:(double)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextInsets:(UIEdgeInsets)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAccessibilityReduceTransparencyEnabled:(BOOL)enabled;
+- (void)setCanTighten:(BOOL)tighten;
+- (void)setCanTruncate:(BOOL)truncate;
+- (void)setColorspaceGrayscale:(BOOL)grayscale;
+- (void)setContainsEmoji:(BOOL)emoji;
+- (void)setContentSizeCategory:(id)category;
+- (void)setFocusHighlightColor:(id)color;
+- (void)setFont:(id)font;
+- (void)setFontLanguageInsets:(UIEdgeInsets)insets;
+- (void)setLegibilityStyle:(unint64_t)style;
+- (void)setMaxSize:(CGSize)size;
+- (void)setOverrideTraitCollection:(id)collection;
+- (void)setScale:(double)scale;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
+- (void)setTextInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation SBMutableIconLabelImageParameters
@@ -25,12 +25,12 @@
 {
   v9.receiver = self;
   v9.super_class = SBMutableIconLabelImageParameters;
-  v2 = [(SBIconLabelImageParameters *)&v9 _init];
-  v3 = v2;
-  if (v2)
+  _init = [(SBIconLabelImageParameters *)&v9 _init];
+  v3 = _init;
+  if (_init)
   {
-    text = v2->super._text;
-    v2->super._text = &stru_1F3D472A8;
+    text = _init->super._text;
+    _init->super._text = &stru_1F3D472A8;
 
     v5 = MEMORY[0x1E69DB878];
     [MEMORY[0x1E69DB878] defaultFontSize];
@@ -42,19 +42,19 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SBIconLabelImageParameters allocWithZone:a3];
+  v4 = [SBIconLabelImageParameters allocWithZone:zone];
 
   return [(SBIconLabelImageParameters *)v4 initWithParameters:self];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     text = self->super._text;
     self->super._text = v4;
 
@@ -62,97 +62,97 @@
   }
 }
 
-- (void)setMaxSize:(CGSize)a3
+- (void)setMaxSize:(CGSize)size
 {
-  if (self->super._maxSize.width != a3.width || self->super._maxSize.height != a3.height)
+  if (self->super._maxSize.width != size.width || self->super._maxSize.height != size.height)
   {
-    self->super._maxSize = a3;
+    self->super._maxSize = size;
     [(SBIconLabelImageParameters *)self markDirty];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->super._font, a3);
+    objc_storeStrong(&self->super._font, font);
     [(SBIconLabelImageParameters *)self markDirty];
   }
 }
 
-- (void)setCanTruncate:(BOOL)a3
+- (void)setCanTruncate:(BOOL)truncate
 {
-  if (self->super._canTruncate != a3)
+  if (self->super._canTruncate != truncate)
   {
-    self->super._canTruncate = a3;
+    self->super._canTruncate = truncate;
     [(SBIconLabelImageParameters *)self markDirty];
   }
 }
 
-- (void)setCanTighten:(BOOL)a3
+- (void)setCanTighten:(BOOL)tighten
 {
-  if (self->super._canTighten != a3)
+  if (self->super._canTighten != tighten)
   {
-    self->super._canTighten = a3;
+    self->super._canTighten = tighten;
     [(SBIconLabelImageParameters *)self markDirty];
   }
 }
 
-- (void)setContainsEmoji:(BOOL)a3
+- (void)setContainsEmoji:(BOOL)emoji
 {
-  if (self->super._containsEmoji != a3)
+  if (self->super._containsEmoji != emoji)
   {
-    self->super._containsEmoji = a3;
+    self->super._containsEmoji = emoji;
     [(SBIconLabelImageParameters *)self markDirty];
   }
 }
 
-- (void)setLegibilityStyle:(unint64_t)a3
+- (void)setLegibilityStyle:(unint64_t)style
 {
-  if (self->super._legibilityStyle != a3)
+  if (self->super._legibilityStyle != style)
   {
-    self->super._legibilityStyle = a3;
+    self->super._legibilityStyle = style;
     [(SBIconLabelImageParameters *)self markDirty];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->super._textColor != v5)
+  colorCopy = color;
+  if (self->super._textColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super._textColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->super._textColor, color);
     [(SBIconLabelImageParameters *)self markDirty];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->super._scale = a3;
+    self->super._scale = scale;
 
     [(SBIconLabelImageParameters *)self markDirty];
   }
 }
 
-- (void)setAccessibilityReduceTransparencyEnabled:(BOOL)a3
+- (void)setAccessibilityReduceTransparencyEnabled:(BOOL)enabled
 {
-  if (self->super._accessibilityReduceTransparencyEnabled != a3)
+  if (self->super._accessibilityReduceTransparencyEnabled != enabled)
   {
-    self->super._accessibilityReduceTransparencyEnabled = a3;
+    self->super._accessibilityReduceTransparencyEnabled = enabled;
     [(SBIconLabelImageParameters *)self markDirty];
   }
 }
 
-- (void)setContentSizeCategory:(id)a3
+- (void)setContentSizeCategory:(id)category
 {
-  if (self->super._contentSizeCategory != a3)
+  if (self->super._contentSizeCategory != category)
   {
-    v4 = [a3 copy];
+    v4 = [category copy];
     contentSizeCategory = self->super._contentSizeCategory;
     self->super._contentSizeCategory = v4;
 
@@ -160,55 +160,55 @@
   }
 }
 
-- (void)setFocusHighlightColor:(id)a3
+- (void)setFocusHighlightColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->super._focusHighlightColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->super._focusHighlightColor, a3);
+    objc_storeStrong(&self->super._focusHighlightColor, color);
     [(SBIconLabelImageParameters *)self markDirty];
   }
 }
 
-- (void)setTextInsets:(UIEdgeInsets)a3
+- (void)setTextInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->super._textInsets.top, v3), vceqq_f64(*&self->super._textInsets.bottom, v4)))) & 1) == 0)
   {
-    self->super._textInsets = a3;
+    self->super._textInsets = insets;
     [(SBIconLabelImageParameters *)self markDirty];
   }
 }
 
-- (void)setFontLanguageInsets:(UIEdgeInsets)a3
+- (void)setFontLanguageInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->super._fontLanguageInsets.top, v3), vceqq_f64(*&self->super._fontLanguageInsets.bottom, v4)))) & 1) == 0)
   {
-    self->super._fontLanguageInsets = a3;
+    self->super._fontLanguageInsets = insets;
     [(SBIconLabelImageParameters *)self markDirty];
   }
 }
 
-- (void)setColorspaceGrayscale:(BOOL)a3
+- (void)setColorspaceGrayscale:(BOOL)grayscale
 {
-  self->super._colorspaceGrayscale = a3;
+  self->super._colorspaceGrayscale = grayscale;
   self->super._colorspaceGrayscaleSet = 1;
   [(SBIconLabelImageParameters *)self markDirty];
 }
 
-- (void)setOverrideTraitCollection:(id)a3
+- (void)setOverrideTraitCollection:(id)collection
 {
-  v6 = a3;
+  collectionCopy = collection;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [collectionCopy copy];
     overrideTraitCollection = self->super._overrideTraitCollection;
     self->super._overrideTraitCollection = v4;
 

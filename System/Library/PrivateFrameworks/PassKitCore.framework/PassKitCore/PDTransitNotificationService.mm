@@ -9,9 +9,9 @@
   if (+[PKWalletVisibility isWalletVisible])
   {
     v3 = +[NSProcessInfo processInfo];
-    v4 = [v3 isLowPowerModeEnabled];
+    isLowPowerModeEnabled = [v3 isLowPowerModeEnabled];
 
-    if (v4)
+    if (isLowPowerModeEnabled)
     {
       v5 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -28,7 +28,7 @@
       v6[2] = sub_100013C68;
       v6[3] = &unk_100845C80;
       v7 = PDOSTransactionCreate("PDTransitNotificationService.check");
-      v8 = self;
+      selfCopy = self;
       v5 = v7;
       [(PDTransitNotificationService *)self _shouldScheduleNotificationActivity:v6];
     }

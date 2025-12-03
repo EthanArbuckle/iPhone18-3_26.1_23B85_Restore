@@ -1,15 +1,15 @@
 @interface DatePickerTableViewCell
-- (_TtC24MenstrualCyclesAppPlugin23DatePickerTableViewCell)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin23DatePickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)datePickerChangedWithPicker:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin23DatePickerTableViewCell)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin23DatePickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)datePickerChangedWithPicker:(id)picker;
 - (void)prepareForReuse;
 @end
 
 @implementation DatePickerTableViewCell
 
-- (_TtC24MenstrualCyclesAppPlugin23DatePickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin23DatePickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   }
@@ -38,7 +38,7 @@
   sub_29DEF8AA0();
 }
 
-- (_TtC24MenstrualCyclesAppPlugin23DatePickerTableViewCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin23DatePickerTableViewCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin23DatePickerTableViewCell_item;
   *v4 = 0u;
@@ -56,10 +56,10 @@
   return result;
 }
 
-- (void)datePickerChangedWithPicker:(id)a3
+- (void)datePickerChangedWithPicker:(id)picker
 {
-  v4 = a3;
-  v5 = self;
+  pickerCopy = picker;
+  selfCopy = self;
   sub_29DEF9304();
 }
 

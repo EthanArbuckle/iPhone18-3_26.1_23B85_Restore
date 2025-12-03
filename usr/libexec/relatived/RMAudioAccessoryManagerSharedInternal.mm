@@ -4,9 +4,9 @@
 - (BOOL)shouldActivateDeviceMotionUpdates;
 - (BOOL)shouldActivateStatusUpdates;
 - (RMAudioAccessoryManagerSharedInternal)init;
-- (void)onActiveAudioRouteChanged:(id)a3;
+- (void)onActiveAudioRouteChanged:(id)changed;
 - (void)postAudioRouteChangeCompleted;
-- (void)setTempestActive:(BOOL)a3;
+- (void)setTempestActive:(BOOL)active;
 - (void)startActivityUpdates;
 - (void)startDeviceMotionUpdates;
 - (void)startMonitoringActiveAudioRoute;
@@ -17,7 +17,7 @@
 - (void)stopActivityUpdates;
 - (void)stopDeviceMotionUpdates;
 - (void)stopStatusUpdates;
-- (void)updateActiveAudioRouteDeviceIDAllowingSimulatedCrash:(BOOL)a3;
+- (void)updateActiveAudioRouteDeviceIDAllowingSimulatedCrash:(BOOL)crash;
 @end
 
 @implementation RMAudioAccessoryManagerSharedInternal
@@ -68,8 +68,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(RMAudioAccessoryManagerSharedInternal *)self managers];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    managers = [(RMAudioAccessoryManagerSharedInternal *)self managers];
+    v4 = [managers countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = *v10;
@@ -79,19 +79,19 @@
         {
           if (*v10 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(managers);
           }
 
-          v7 = [*(*(&v9 + 1) + 8 * i) deviceMotionStatusHandler];
+          deviceMotionStatusHandler = [*(*(&v9 + 1) + 8 * i) deviceMotionStatusHandler];
 
-          if (v7)
+          if (deviceMotionStatusHandler)
           {
             LOBYTE(v4) = 1;
             goto LABEL_13;
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [managers countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           continue;
@@ -132,14 +132,14 @@ LABEL_13:
   objc_initWeak(&location, self);
   if (![(RMAudioAccessoryManagerSharedInternal *)self statusUpdatesActive])
   {
-    v3 = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
+    audioAccessoryManager = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
     v4 = +[NSOperationQueue mainQueue];
     v5 = _NSConcreteStackBlock;
     v6 = 3221225472;
     v7 = sub_1000050D4;
     v8 = &unk_100024C70;
     objc_copyWeak(&v9, &location);
-    [v3 _startAudioAccessoryDeviceMotionStatusUpdatesToQueue:v4 withHandler:&v5];
+    [audioAccessoryManager _startAudioAccessoryDeviceMotionStatusUpdatesToQueue:v4 withHandler:&v5];
 
     [(RMAudioAccessoryManagerSharedInternal *)self setStatusUpdatesActive:1, v5, v6, v7, v8];
     objc_destroyWeak(&v9);
@@ -150,8 +150,8 @@ LABEL_13:
 
 - (void)stopStatusUpdates
 {
-  v3 = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
-  [v3 _stopAudioAccessoryDeviceMotionStatusUpdates];
+  audioAccessoryManager = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
+  [audioAccessoryManager _stopAudioAccessoryDeviceMotionStatusUpdates];
 
   [(RMAudioAccessoryManagerSharedInternal *)self setLastDeviceStatus:1];
 
@@ -166,8 +166,8 @@ LABEL_13:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(RMAudioAccessoryManagerSharedInternal *)self managers];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    managers = [(RMAudioAccessoryManagerSharedInternal *)self managers];
+    v4 = [managers countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = *v10;
@@ -177,19 +177,19 @@ LABEL_13:
         {
           if (*v10 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(managers);
           }
 
-          v7 = [*(*(&v9 + 1) + 8 * i) deviceMotionHandler];
+          deviceMotionHandler = [*(*(&v9 + 1) + 8 * i) deviceMotionHandler];
 
-          if (v7)
+          if (deviceMotionHandler)
           {
             LOBYTE(v4) = 1;
             goto LABEL_13;
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [managers countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           continue;
@@ -230,21 +230,21 @@ LABEL_13:
   if (![(RMAudioAccessoryManagerSharedInternal *)self isDeviceMotionActive])
   {
     [(RMAudioAccessoryManagerSharedInternal *)self updateActiveAudioRouteDeviceIDAllowingSimulatedCrash:[(RMAudioAccessoryManagerSharedInternal *)self isTempestActive]];
-    v3 = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
-    [v3 _setAudioAccessoryDeviceMotionUpdateInterval:0.02];
+    audioAccessoryManager = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
+    [audioAccessoryManager _setAudioAccessoryDeviceMotionUpdateInterval:0.02];
 
     objc_initWeak(&location, self);
     [(RMAudioAccessoryManagerSharedInternal *)self setLastDMSampleTime:0.0];
     [(RMAudioAccessoryManagerSharedInternal *)self setLastDMPrintTime:0.0];
     [(RMAudioAccessoryManagerSharedInternal *)self setDmSamplesPerSecond:0];
-    v4 = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
+    audioAccessoryManager2 = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
     v5 = +[NSOperationQueue mainQueue];
     v6 = _NSConcreteStackBlock;
     v7 = 3221225472;
     v8 = sub_1000055C0;
     v9 = &unk_100024C98;
     objc_copyWeak(&v10, &location);
-    [v4 _startAudioAccessoryDeviceMotionUpdatesToQueue:v5 lowLatencyMode:1 withHandler:&v6];
+    [audioAccessoryManager2 _startAudioAccessoryDeviceMotionUpdatesToQueue:v5 lowLatencyMode:1 withHandler:&v6];
 
     [(RMAudioAccessoryManagerSharedInternal *)self setDeviceMotionActive:1, v6, v7, v8, v9];
     objc_destroyWeak(&v10);
@@ -256,8 +256,8 @@ LABEL_13:
 {
   if ([(RMAudioAccessoryManagerSharedInternal *)self isDeviceMotionActive])
   {
-    v3 = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
-    [v3 _stopAudioAccessoryDeviceMotionUpdates];
+    audioAccessoryManager = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
+    [audioAccessoryManager _stopAudioAccessoryDeviceMotionUpdates];
 
     [(RMAudioAccessoryManagerSharedInternal *)self setDeviceMotionActive:0];
     [(RMAudioAccessoryManagerSharedInternal *)self setLastDMSampleTime:0.0];
@@ -276,8 +276,8 @@ LABEL_13:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(RMAudioAccessoryManagerSharedInternal *)self managers];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    managers = [(RMAudioAccessoryManagerSharedInternal *)self managers];
+    v4 = [managers countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = *v10;
@@ -287,19 +287,19 @@ LABEL_13:
         {
           if (*v10 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(managers);
           }
 
-          v7 = [*(*(&v9 + 1) + 8 * i) activityHandler];
+          activityHandler = [*(*(&v9 + 1) + 8 * i) activityHandler];
 
-          if (v7)
+          if (activityHandler)
           {
             LOBYTE(v4) = 1;
             goto LABEL_13;
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [managers countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           continue;
@@ -340,30 +340,30 @@ LABEL_13:
   if (![(RMAudioAccessoryManagerSharedInternal *)self motionActivityActive])
   {
     [(RMAudioAccessoryManagerSharedInternal *)self updateActiveAudioRouteDeviceIDAllowingSimulatedCrash:[(RMAudioAccessoryManagerSharedInternal *)self isTempestActive]];
-    v3 = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
-    [v3 _setAudioAccessoryActivityUpdateInterval:0.2];
+    audioAccessoryManager = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
+    [audioAccessoryManager _setAudioAccessoryActivityUpdateInterval:0.2];
 
     [(RMAudioAccessoryManagerSharedInternal *)self setLastActivitySampleTime:0.0];
     [(RMAudioAccessoryManagerSharedInternal *)self setLastActivityPrintTime:0.0];
     [(RMAudioAccessoryManagerSharedInternal *)self setActivitySamplesPerSecond:0];
     v4 = +[RMHeadphoneActivityManager sharedInstance];
-    v5 = [v4 mslLoggingEnabled];
+    mslLoggingEnabled = [v4 mslLoggingEnabled];
 
-    if (v5)
+    if (mslLoggingEnabled)
     {
       v6 = +[RMHeadphoneActivityManager sharedInstance];
       [v6 startMslLogging];
     }
 
     objc_initWeak(&location, self);
-    v7 = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
+    audioAccessoryManager2 = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
     v8 = +[NSOperationQueue mainQueue];
     v9 = _NSConcreteStackBlock;
     v10 = 3221225472;
     v11 = sub_100005C20;
     v12 = &unk_100024CC0;
     objc_copyWeak(&v13, &location);
-    [v7 _startAudioAccessoryActivityUpdatesToQueue:v8 withHandler:&v9];
+    [audioAccessoryManager2 _startAudioAccessoryActivityUpdatesToQueue:v8 withHandler:&v9];
 
     [(RMAudioAccessoryManagerSharedInternal *)self setMotionActivityActive:1, v9, v10, v11, v12];
     objc_destroyWeak(&v13);
@@ -375,8 +375,8 @@ LABEL_13:
 {
   if ([(RMAudioAccessoryManagerSharedInternal *)self motionActivityActive])
   {
-    v3 = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
-    [v3 _stopAudioAccessoryActivityUpdates];
+    audioAccessoryManager = [(RMAudioAccessoryManagerSharedInternal *)self audioAccessoryManager];
+    [audioAccessoryManager _stopAudioAccessoryActivityUpdates];
 
     v4 = +[RMHeadphoneActivityManager sharedInstance];
     [v4 stopMslLogging];
@@ -389,11 +389,11 @@ LABEL_13:
   }
 }
 
-- (void)setTempestActive:(BOOL)a3
+- (void)setTempestActive:(BOOL)active
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_tempestActive = a3;
+  obj->_tempestActive = active;
   if ([(RMAudioAccessoryManagerSharedInternal *)obj isTempestActive])
   {
     [(RMAudioAccessoryManagerSharedInternal *)obj updateActiveAudioRouteDeviceIDAllowingSimulatedCrash:1];
@@ -415,9 +415,9 @@ LABEL_13:
   [v6 addObserver:self selector:"onActiveAudioRouteChanged:" name:AVOutputContextOutputDevicesDidChangeNotification object:0];
 }
 
-- (void)onActiveAudioRouteChanged:(id)a3
+- (void)onActiveAudioRouteChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (qword_10002C0C8 != -1)
   {
     sub_100012A3C();
@@ -433,11 +433,11 @@ LABEL_13:
   [(RMAudioAccessoryManagerSharedInternal *)self updateActiveAudioRouteDeviceIDAllowingSimulatedCrash:0];
 }
 
-- (void)updateActiveAudioRouteDeviceIDAllowingSimulatedCrash:(BOOL)a3
+- (void)updateActiveAudioRouteDeviceIDAllowingSimulatedCrash:(BOOL)crash
 {
-  v33 = a3;
-  v36 = self;
-  objc_sync_enter(v36);
+  crashCopy = crash;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if ((+[CMAudioAccessoryManager _isAvailable]& 1) == 0)
   {
     goto LABEL_56;
@@ -448,16 +448,16 @@ LABEL_13:
   v37 = 0u;
   v38 = 0u;
   v3 = +[AVOutputContext sharedSystemAudioContext];
-  v4 = [v3 outputDevices];
+  outputDevices = [v3 outputDevices];
 
-  v5 = [v4 countByEnumeratingWithState:&v37 objects:v43 count:16];
+  v5 = [outputDevices countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (!v5)
   {
     goto LABEL_42;
   }
 
   v35 = *v38;
-  obj = v4;
+  obj = outputDevices;
   while (2)
   {
     v6 = 0;
@@ -469,15 +469,15 @@ LABEL_13:
       }
 
       v7 = *(*(&v37 + 1) + 8 * v6);
-      v8 = [v7 deviceType];
-      v9 = [v7 deviceSubType];
-      v10 = [v7 deviceID];
-      v11 = [v7 name];
-      v12 = [v7 modelID];
-      v13 = [v7 alternateTransportType];
-      if (v13)
+      deviceType = [v7 deviceType];
+      deviceSubType = [v7 deviceSubType];
+      deviceID = [v7 deviceID];
+      name = [v7 name];
+      modelID = [v7 modelID];
+      alternateTransportType = [v7 alternateTransportType];
+      if (alternateTransportType)
       {
-        v14 = v13;
+        v14 = alternateTransportType;
       }
 
       else
@@ -485,19 +485,19 @@ LABEL_13:
         v14 = @"Unknown";
       }
 
-      if (v8 != 1 || v9 != 2 || v10 == 0)
+      if (deviceType != 1 || deviceSubType != 2 || deviceID == 0)
       {
 
         goto LABEL_40;
       }
 
-      v17 = [NSString stringWithFormat:@"%@ ID %@ model %@ type %ld-%ld transport %@", v11, v10, v12, 1, 2, v14];
-      v18 = [(RMAudioAccessoryManagerSharedInternal *)v36 activeAudioRouteDeviceID];
-      v19 = [v18 isEqualToString:v10];
+      v17 = [NSString stringWithFormat:@"%@ ID %@ model %@ type %ld-%ld transport %@", name, deviceID, modelID, 1, 2, v14];
+      activeAudioRouteDeviceID = [(RMAudioAccessoryManagerSharedInternal *)selfCopy activeAudioRouteDeviceID];
+      v19 = [activeAudioRouteDeviceID isEqualToString:deviceID];
       if (v19)
       {
-        v20 = [(RMAudioAccessoryManagerSharedInternal *)v36 activeAudioRouteAlternateTransportType];
-        v21 = [v20 isEqualToString:v14];
+        activeAudioRouteAlternateTransportType = [(RMAudioAccessoryManagerSharedInternal *)selfCopy activeAudioRouteAlternateTransportType];
+        v21 = [activeAudioRouteAlternateTransportType isEqualToString:v14];
 
         if (v21)
         {
@@ -523,7 +523,7 @@ LABEL_49:
       {
       }
 
-      v22 = [CMAudioAccessoryManager _selectActiveAudioRouteForDeviceMotionWithBTAddress:v10 modelID:v12];
+      v22 = [CMAudioAccessoryManager _selectActiveAudioRouteForDeviceMotionWithBTAddress:deviceID modelID:modelID];
       if (v22)
       {
         if (qword_10002C0C8 != -1)
@@ -539,13 +539,13 @@ LABEL_49:
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[RMAudioAccessoryManager] relatived sucessfully selected active audio route for device %{public}@", buf, 0xCu);
         }
 
-        [(RMAudioAccessoryManagerSharedInternal *)v36 setActiveAudioRouteDeviceID:v10];
-        [(RMAudioAccessoryManagerSharedInternal *)v36 setActiveAudioRouteAlternateTransportType:v14];
-        [(RMAudioAccessoryManagerSharedInternal *)v36 postAudioRouteChangeCompleted];
+        [(RMAudioAccessoryManagerSharedInternal *)selfCopy setActiveAudioRouteDeviceID:deviceID];
+        [(RMAudioAccessoryManagerSharedInternal *)selfCopy setActiveAudioRouteAlternateTransportType:v14];
+        [(RMAudioAccessoryManagerSharedInternal *)selfCopy postAudioRouteChangeCompleted];
         goto LABEL_39;
       }
 
-      if (+[RMPlatformInfo isInternalBuild]&& v33)
+      if (+[RMPlatformInfo isInternalBuild]&& crashCopy)
       {
         if (qword_10002C0C8 != -1)
         {
@@ -594,7 +594,7 @@ LABEL_40:
     }
 
     while (v5 != v6);
-    v4 = obj;
+    outputDevices = obj;
     v5 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v5)
     {
@@ -606,15 +606,15 @@ LABEL_40:
 
 LABEL_42:
 
-  v28 = [(RMAudioAccessoryManagerSharedInternal *)v36 activeAudioRouteDeviceID];
-  if (v28)
+  activeAudioRouteDeviceID2 = [(RMAudioAccessoryManagerSharedInternal *)selfCopy activeAudioRouteDeviceID];
+  if (activeAudioRouteDeviceID2)
   {
 
     goto LABEL_51;
   }
 
-  v30 = [(RMAudioAccessoryManagerSharedInternal *)v36 activeAudioRouteAlternateTransportType];
-  v31 = v30 == 0;
+  activeAudioRouteAlternateTransportType2 = [(RMAudioAccessoryManagerSharedInternal *)selfCopy activeAudioRouteAlternateTransportType];
+  v31 = activeAudioRouteAlternateTransportType2 == 0;
 
   if (!v31)
   {
@@ -632,24 +632,24 @@ LABEL_51:
     }
 
     [CMAudioAccessoryManager _selectActiveAudioRouteForDeviceMotionWithBTAddress:0 modelID:0];
-    [(RMAudioAccessoryManagerSharedInternal *)v36 setActiveAudioRouteDeviceID:0];
-    [(RMAudioAccessoryManagerSharedInternal *)v36 setActiveAudioRouteAlternateTransportType:0];
-    [(RMAudioAccessoryManagerSharedInternal *)v36 postAudioRouteChangeCompleted];
+    [(RMAudioAccessoryManagerSharedInternal *)selfCopy setActiveAudioRouteDeviceID:0];
+    [(RMAudioAccessoryManagerSharedInternal *)selfCopy setActiveAudioRouteAlternateTransportType:0];
+    [(RMAudioAccessoryManagerSharedInternal *)selfCopy postAudioRouteChangeCompleted];
   }
 
 LABEL_56:
-  objc_sync_exit(v36);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)postAudioRouteChangeCompleted
 {
-  v3 = [(RMAudioAccessoryManagerSharedInternal *)self activeAudioRouteDeviceID];
+  activeAudioRouteDeviceID = [(RMAudioAccessoryManagerSharedInternal *)self activeAudioRouteDeviceID];
 
-  if (v3)
+  if (activeAudioRouteDeviceID)
   {
     v7 = @"RMAudioDeviceChangeCompletedRouteIDKey";
-    v4 = [(RMAudioAccessoryManagerSharedInternal *)self activeAudioRouteDeviceID];
-    v8 = v4;
+    activeAudioRouteDeviceID2 = [(RMAudioAccessoryManagerSharedInternal *)self activeAudioRouteDeviceID];
+    v8 = activeAudioRouteDeviceID2;
     v5 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   }
 

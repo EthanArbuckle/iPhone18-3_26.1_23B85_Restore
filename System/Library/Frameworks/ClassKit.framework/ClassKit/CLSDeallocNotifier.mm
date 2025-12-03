@@ -1,19 +1,19 @@
 @interface CLSDeallocNotifier
-- (CLSDeallocNotifier)initWithDeallocCallbackBlock:(id)a3;
+- (CLSDeallocNotifier)initWithDeallocCallbackBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation CLSDeallocNotifier
 
-- (CLSDeallocNotifier)initWithDeallocCallbackBlock:(id)a3
+- (CLSDeallocNotifier)initWithDeallocCallbackBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = CLSDeallocNotifier;
   v5 = [(CLSDeallocNotifier *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x2383C3E80](v4);
+    v6 = MEMORY[0x2383C3E80](blockCopy);
     block = v5->_block;
     v5->_block = v6;
   }

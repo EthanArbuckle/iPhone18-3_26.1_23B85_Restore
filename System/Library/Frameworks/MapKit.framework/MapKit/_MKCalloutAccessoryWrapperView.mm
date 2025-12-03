@@ -1,6 +1,6 @@
 @interface _MKCalloutAccessoryWrapperView
 - (CGSize)intrinsicContentSize;
-- (_MKCalloutAccessoryWrapperView)initWithView:(id)a3;
+- (_MKCalloutAccessoryWrapperView)initWithView:(id)view;
 @end
 
 @implementation _MKCalloutAccessoryWrapperView
@@ -15,16 +15,16 @@
   return result;
 }
 
-- (_MKCalloutAccessoryWrapperView)initWithView:(id)a3
+- (_MKCalloutAccessoryWrapperView)initWithView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = _MKCalloutAccessoryWrapperView;
   v6 = [(_MKCalloutAccessoryWrapperView *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_view, a3);
+    objc_storeStrong(&v6->_view, view);
     view = v7->_view;
     if (view)
     {

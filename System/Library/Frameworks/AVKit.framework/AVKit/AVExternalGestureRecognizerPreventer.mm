@@ -1,33 +1,33 @@
 @interface AVExternalGestureRecognizerPreventer
-- (AVExternalGestureRecognizerPreventer)initWithTarget:(id)a3 action:(SEL)a4;
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3;
+- (AVExternalGestureRecognizerPreventer)initWithTarget:(id)target action:(SEL)action;
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer;
 @end
 
 @implementation AVExternalGestureRecognizerPreventer
 
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer
 {
-  v4 = [a3 view];
-  v5 = [(AVExternalGestureRecognizerPreventer *)self view];
-  v6 = [v4 isDescendantOfView:v5];
+  view = [recognizer view];
+  view2 = [(AVExternalGestureRecognizerPreventer *)self view];
+  v6 = [view isDescendantOfView:view2];
 
   if (v6)
   {
     return 0;
   }
 
-  v8 = [(AVExternalGestureRecognizerPreventer *)self view];
-  [(AVExternalGestureRecognizerPreventer *)self locationInView:v8];
+  view3 = [(AVExternalGestureRecognizerPreventer *)self view];
+  [(AVExternalGestureRecognizerPreventer *)self locationInView:view3];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(AVExternalGestureRecognizerPreventer *)self view];
-  v14 = [v13 hitTest:0 withEvent:{v10, v12}];
+  view4 = [(AVExternalGestureRecognizerPreventer *)self view];
+  v14 = [view4 hitTest:0 withEvent:{v10, v12}];
 
   if ([v14 conformsToProtocol:&unk_1EFF32C08])
   {
-    v15 = [(AVExternalGestureRecognizerPreventer *)self view];
-    [v15 convertPoint:v14 toView:{v10, v12}];
+    view5 = [(AVExternalGestureRecognizerPreventer *)self view];
+    [view5 convertPoint:v14 toView:{v10, v12}];
     v7 = [v14 avkit_shouldPreventExternalGestureRecognizerAtPoint:?];
   }
 
@@ -39,11 +39,11 @@
   return v7;
 }
 
-- (AVExternalGestureRecognizerPreventer)initWithTarget:(id)a3 action:(SEL)a4
+- (AVExternalGestureRecognizerPreventer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = AVExternalGestureRecognizerPreventer;
-  v4 = [(AVExternalGestureRecognizerPreventer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(AVExternalGestureRecognizerPreventer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {

@@ -1,10 +1,10 @@
 @interface SyncedLyricsLineView
 - (BOOL)isHighlighted;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC7LyricsX20SyncedLyricsLineView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC7LyricsX20SyncedLyricsLineView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animator:(id)a4;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected animator:(id)animator;
 @end
 
 @implementation SyncedLyricsLineView
@@ -16,18 +16,18 @@
   return [(SyncedLyricsLineView *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5 = type metadata accessor for SyncedLyricsLineView();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(SyncedLyricsLineView *)&v9 isHighlighted];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHighlighted = [(SyncedLyricsLineView *)&v9 isHighlighted];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(SyncedLyricsLineView *)&v8 setHighlighted:v3];
-  SyncedLyricsLineView.isHighlighted.didset(v7);
+  [(SyncedLyricsLineView *)&v8 setHighlighted:highlightedCopy];
+  SyncedLyricsLineView.isHighlighted.didset(isHighlighted);
 }
 
 - (void)layoutSubviews
@@ -41,18 +41,18 @@
   [v3 setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7LyricsX20SyncedLyricsLineView_contentView);
   if (v3)
   {
-    height = a3.height;
-    width = a3.width;
+    height = fits.height;
+    width = fits.width;
     v7 = *&self->specs[OBJC_IVAR____TtC7LyricsX20SyncedLyricsLineView_contentView];
     ObjectType = swift_getObjectType();
-    v9 = self;
+    selfCopy = self;
     v10 = v3;
-    v11 = (*(v7 + 96))([(SyncedLyricsLineView *)v9 isSelected], ObjectType, v7, width, height);
+    v11 = (*(v7 + 96))([(SyncedLyricsLineView *)selfCopy isSelected], ObjectType, v7, width, height);
     v13 = v12;
   }
 
@@ -69,17 +69,17 @@
   return result;
 }
 
-- (void)setSelected:(BOOL)a3 animator:(id)a4
+- (void)setSelected:(BOOL)selected animator:(id)animator
 {
-  v7 = a4;
-  v8 = self;
-  v11.is_nil = v8;
-  v9 = v8;
-  v11.value.super.isa = a4;
-  SyncedLyricsLineView.setSelected(_:animator:)(a3, v11);
+  animatorCopy = animator;
+  selfCopy = self;
+  v11.is_nil = selfCopy;
+  v9 = selfCopy;
+  v11.value.super.isa = animator;
+  SyncedLyricsLineView.setSelected(_:animator:)(selected, v11);
 }
 
-- (_TtC7LyricsX20SyncedLyricsLineView)initWithFrame:(CGRect)a3
+- (_TtC7LyricsX20SyncedLyricsLineView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

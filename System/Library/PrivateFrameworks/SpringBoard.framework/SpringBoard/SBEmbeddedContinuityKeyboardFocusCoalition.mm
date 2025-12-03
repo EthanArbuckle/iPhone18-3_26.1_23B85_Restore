@@ -1,6 +1,6 @@
 @interface SBEmbeddedContinuityKeyboardFocusCoalition
 - (SBEmbeddedContinuityKeyboardFocusCoalition)init;
-- (id)updatePolicyForArbitrationRequestFromMember:(id)a3 reason:(id)a4;
+- (id)updatePolicyForArbitrationRequestFromMember:(id)member reason:(id)reason;
 @end
 
 @implementation SBEmbeddedContinuityKeyboardFocusCoalition
@@ -29,70 +29,70 @@
   return v2;
 }
 
-- (id)updatePolicyForArbitrationRequestFromMember:(id)a3 reason:(id)a4
+- (id)updatePolicyForArbitrationRequestFromMember:(id)member reason:(id)reason
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBExclusiveMultiDisplayCoalition *)self embeddedMember];
-  v9 = [(SBExclusiveMultiDisplayCoalition *)self externalMember];
-  v10 = [v8 updateCoalitionPreferencesWithReason:v7];
-  v11 = [v9 updateCoalitionPreferencesWithReason:v7];
-  v12 = [v8 preferences];
+  memberCopy = member;
+  reasonCopy = reason;
+  embeddedMember = [(SBExclusiveMultiDisplayCoalition *)self embeddedMember];
+  externalMember = [(SBExclusiveMultiDisplayCoalition *)self externalMember];
+  v10 = [embeddedMember updateCoalitionPreferencesWithReason:reasonCopy];
+  v11 = [externalMember updateCoalitionPreferencesWithReason:reasonCopy];
+  preferences = [embeddedMember preferences];
   v13 = 0;
-  if ([v7 isKeyboardArbiterSuggestion] && v8 == v6)
+  if ([reasonCopy isKeyboardArbiterSuggestion] && embeddedMember == memberCopy)
   {
-    v14 = [v12 policy];
-    if ([v14 advicePolicy] == 1)
+    policy = [preferences policy];
+    if ([policy advicePolicy] == 1)
     {
       v13 = 0;
     }
 
     else
     {
-      v15 = [v12 lockReasons];
-      v13 = [v15 bs_containsObjectPassingTest:&__block_literal_global_278] ^ 1;
+      lockReasons = [preferences lockReasons];
+      v13 = [lockReasons bs_containsObjectPassingTest:&__block_literal_global_278] ^ 1;
     }
   }
 
-  if (v6 && !(v13 & 1 | (([v7 isKeyboardArbiterSuggestion] & 1) == 0)))
+  if (memberCopy && !(v13 & 1 | (([reasonCopy isKeyboardArbiterSuggestion] & 1) == 0)))
   {
-    v17 = v6;
+    v17 = memberCopy;
   }
 
   else
   {
-    if ([v9 hasFocus])
+    if ([externalMember hasFocus])
     {
-      v16 = v9;
+      v16 = externalMember;
     }
 
     else
     {
-      v16 = v8;
+      v16 = embeddedMember;
     }
 
     v17 = v16;
     v18 = SBLogKeyboardFocus();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(SBKeyboardFocusCoalition *)self debugName];
+      debugName = [(SBKeyboardFocusCoalition *)self debugName];
       [v17 uniqueIdentifier];
-      v20 = v24 = v12;
-      v21 = [v6 uniqueIdentifier];
+      v20 = v24 = preferences;
+      uniqueIdentifier = [memberCopy uniqueIdentifier];
       *buf = 138544386;
-      v26 = v19;
+      v26 = debugName;
       v27 = 2114;
       v28 = v20;
       v29 = 2114;
-      v30 = v21;
+      v30 = uniqueIdentifier;
       v31 = 2114;
-      v32 = v7;
+      v32 = reasonCopy;
       v33 = 1024;
       v34 = v13;
       _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] arbitration: selecting member %{public}@, original requester %{public}@, reason: %{public}@, was overruled by hard focus lock: %d", buf, 0x30u);
 
-      v12 = v24;
+      preferences = v24;
     }
   }
 

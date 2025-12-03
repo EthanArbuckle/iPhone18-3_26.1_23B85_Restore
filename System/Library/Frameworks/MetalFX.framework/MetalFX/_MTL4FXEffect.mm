@@ -1,8 +1,8 @@
 @interface _MTL4FXEffect
 - (MTL4FXEffectTracingDelegate)tracingDelegate;
 - (_MTL4FXEffect)init;
-- (void)_didCreateComputeCommandEncoder:(id)a3 forEncode:(unint64_t)a4;
-- (void)_didCreateRenderCommandEncoder:(id)a3 forEncode:(unint64_t)a4;
+- (void)_didCreateComputeCommandEncoder:(id)encoder forEncode:(unint64_t)encode;
+- (void)_didCreateRenderCommandEncoder:(id)encoder forEncode:(unint64_t)encode;
 @end
 
 @implementation _MTL4FXEffect
@@ -24,18 +24,18 @@
   return v2;
 }
 
-- (void)_didCreateRenderCommandEncoder:(id)a3 forEncode:(unint64_t)a4
+- (void)_didCreateRenderCommandEncoder:(id)encoder forEncode:(unint64_t)encode
 {
-  v6 = a3;
+  encoderCopy = encoder;
   WeakRetained = objc_loadWeakRetained(&self->_tracingDelegate);
-  [WeakRetained scaler:self didCreateRenderCommandEncoder:v6 forEncode:a4];
+  [WeakRetained scaler:self didCreateRenderCommandEncoder:encoderCopy forEncode:encode];
 }
 
-- (void)_didCreateComputeCommandEncoder:(id)a3 forEncode:(unint64_t)a4
+- (void)_didCreateComputeCommandEncoder:(id)encoder forEncode:(unint64_t)encode
 {
-  v6 = a3;
+  encoderCopy = encoder;
   WeakRetained = objc_loadWeakRetained(&self->_tracingDelegate);
-  [WeakRetained scaler:self didCreateComputeCommandEncoder:v6 forEncode:a4];
+  [WeakRetained scaler:self didCreateComputeCommandEncoder:encoderCopy forEncode:encode];
 }
 
 - (MTL4FXEffectTracingDelegate)tracingDelegate

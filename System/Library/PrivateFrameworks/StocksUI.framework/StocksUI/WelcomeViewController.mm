@@ -1,20 +1,20 @@
 @interface WelcomeViewController
-- (_TtC8StocksUI21WelcomeViewController)initWithCoder:(id)a3;
-- (_TtC8StocksUI21WelcomeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8StocksUI21WelcomeViewController)initWithCoder:(id)coder;
+- (_TtC8StocksUI21WelcomeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)preferredStatusBarStyle;
 - (void)didTapContinueButton;
 - (void)showPrivacyText;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation WelcomeViewController
 
-- (_TtC8StocksUI21WelcomeViewController)initWithCoder:(id)a3
+- (_TtC8StocksUI21WelcomeViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8StocksUI21WelcomeViewController_allowRendering) = 0;
   v3 = OBJC_IVAR____TtC8StocksUI21WelcomeViewController_statusBarView;
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (_TtC8StocksUI21WelcomeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8StocksUI21WelcomeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -33,48 +33,48 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_22083E91C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(WelcomeViewController *)&v5 viewWillAppear:v3];
+  [(WelcomeViewController *)&v5 viewWillAppear:appearCopy];
   swift_getObjectType();
   sub_22088BB9C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_22083EF1C(a3);
+  selfCopy = self;
+  sub_22083EF1C(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_22083F078(a3);
+  selfCopy = self;
+  sub_22083F078(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_22083F1B8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(WelcomeViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
-  sub_22083EBC4(v6);
+  [(WelcomeViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
+  sub_22083EBC4(traitCollection);
 }
 
 - (int64_t)preferredStatusBarStyle
@@ -97,7 +97,7 @@
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8StocksUI21WelcomeViewController_eventHandler);
   __swift_project_boxed_opaque_existential_1(v3 + 11, v3[14]);
-  v5 = self;
+  selfCopy = self;
   sub_22088726C();
   v4 = off_283424EE8;
   type metadata accessor for WelcomeInteractor();
@@ -108,7 +108,7 @@
 
 - (void)showPrivacyText
 {
-  v2 = self;
+  selfCopy = self;
   sub_22083E684();
 }
 

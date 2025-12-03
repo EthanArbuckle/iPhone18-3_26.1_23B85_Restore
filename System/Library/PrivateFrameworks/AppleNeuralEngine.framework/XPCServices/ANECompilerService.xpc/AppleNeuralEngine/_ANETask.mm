@@ -1,34 +1,34 @@
 @interface _ANETask
-+ (id)taskWithName:(id)a3 period:(unint64_t)a4 handler:(id)a5;
-- (_ANETask)initWithName:(id)a3 period:(unint64_t)a4 handler:(id)a5;
++ (id)taskWithName:(id)name period:(unint64_t)period handler:(id)handler;
+- (_ANETask)initWithName:(id)name period:(unint64_t)period handler:(id)handler;
 @end
 
 @implementation _ANETask
 
-- (_ANETask)initWithName:(id)a3 period:(unint64_t)a4 handler:(id)a5
+- (_ANETask)initWithName:(id)name period:(unint64_t)period handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  v11 = 0;
-  if (v8 && v9)
+  nameCopy = name;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  selfCopy = 0;
+  if (nameCopy && handlerCopy)
   {
     v25.receiver = self;
     v25.super_class = _ANETask;
     v12 = [(_ANETask *)&v25 init];
     if (v12)
     {
-      v13 = [v8 copy];
+      v13 = [nameCopy copy];
       name = v12->_name;
       v12->_name = v13;
 
-      v15 = 5;
-      if (a4 > 5)
+      periodCopy = 5;
+      if (period > 5)
       {
-        v15 = a4;
+        periodCopy = period;
       }
 
-      v12->_periodSeconds = v15;
+      v12->_periodSeconds = periodCopy;
       v16 = objc_retainBlock(v10);
       handler = v12->_handler;
       v12->_handler = v16;
@@ -60,17 +60,17 @@
     }
 
     self = v12;
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-+ (id)taskWithName:(id)a3 period:(unint64_t)a4 handler:(id)a5
++ (id)taskWithName:(id)name period:(unint64_t)period handler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithName:v9 period:a4 handler:v8];
+  handlerCopy = handler;
+  nameCopy = name;
+  v10 = [[self alloc] initWithName:nameCopy period:period handler:handlerCopy];
 
   return v10;
 }

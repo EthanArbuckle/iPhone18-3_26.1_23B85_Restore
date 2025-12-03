@@ -1,40 +1,40 @@
 @interface BMMessagesSharedWithYouFeedbackRankableSocialHighlight
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMessagesSharedWithYouFeedbackRankableSocialHighlight)initWithHighlightIdentifier:(id)a3 highlightType:(int)a4 syndicationSecondsSinceReferenceDate:(id)a5 sourceBundleID:(id)a6 applicationIdentifiers:(id)a7 resourceURL:(id)a8 sender:(id)a9 domainIdentifier:(id)a10 batchIdentifier:(id)a11 calculatedFeatures:(id)a12 clientIdentifier:(id)a13 contentCreationSecondsSinceReferenceDate:(id)a14 groupPhotoPathDigest:(id)a15 displayName:(id)a16 isPrimary:(id)a17 attributionIdentifier:(id)a18 rank:(id)a19 score:(id)a20 isConversationAutoDonating:(id)a21 originatingDeviceId:(id)a22 rankingSecondsSinceReferenceDate:(id)a23 resolvedUrl:(id)a24 clientVariant:(id)a25;
-- (BMMessagesSharedWithYouFeedbackRankableSocialHighlight)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMessagesSharedWithYouFeedbackRankableSocialHighlight)initWithHighlightIdentifier:(id)identifier highlightType:(int)type syndicationSecondsSinceReferenceDate:(id)date sourceBundleID:(id)d applicationIdentifiers:(id)identifiers resourceURL:(id)l sender:(id)sender domainIdentifier:(id)self0 batchIdentifier:(id)self1 calculatedFeatures:(id)self2 clientIdentifier:(id)self3 contentCreationSecondsSinceReferenceDate:(id)self4 groupPhotoPathDigest:(id)self5 displayName:(id)self6 isPrimary:(id)self7 attributionIdentifier:(id)self8 rank:(id)self9 score:(id)score isConversationAutoDonating:(id)donating originatingDeviceId:(id)id rankingSecondsSinceReferenceDate:(id)sinceReferenceDate resolvedUrl:(id)url clientVariant:(id)variant;
+- (BMMessagesSharedWithYouFeedbackRankableSocialHighlight)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_applicationIdentifiersJSONArray;
 - (id)_calculatedFeaturesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMessagesSharedWithYouFeedbackRankableSocialHighlight
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self highlightIdentifier];
-    v7 = [v5 highlightIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    highlightIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self highlightIdentifier];
+    highlightIdentifier2 = [v5 highlightIdentifier];
+    v8 = highlightIdentifier2;
+    if (highlightIdentifier == highlightIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self highlightIdentifier];
-      v10 = [v5 highlightIdentifier];
-      v11 = [v9 isEqual:v10];
+      highlightIdentifier3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self highlightIdentifier];
+      highlightIdentifier4 = [v5 highlightIdentifier];
+      v11 = [highlightIdentifier3 isEqual:highlightIdentifier4];
 
       if (!v11)
       {
@@ -42,8 +42,8 @@
       }
     }
 
-    v13 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self highlightType];
-    if (v13 != [v5 highlightType])
+    highlightType = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self highlightType];
+    if (highlightType != [v5 highlightType])
     {
       goto LABEL_93;
     }
@@ -69,18 +69,18 @@
       }
     }
 
-    v17 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sourceBundleID];
-    v18 = [v5 sourceBundleID];
-    v19 = v18;
-    if (v17 == v18)
+    sourceBundleID = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sourceBundleID];
+    sourceBundleID2 = [v5 sourceBundleID];
+    v19 = sourceBundleID2;
+    if (sourceBundleID == sourceBundleID2)
     {
     }
 
     else
     {
-      v20 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sourceBundleID];
-      v21 = [v5 sourceBundleID];
-      v22 = [v20 isEqual:v21];
+      sourceBundleID3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sourceBundleID];
+      sourceBundleID4 = [v5 sourceBundleID];
+      v22 = [sourceBundleID3 isEqual:sourceBundleID4];
 
       if (!v22)
       {
@@ -88,18 +88,18 @@
       }
     }
 
-    v23 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self applicationIdentifiers];
-    v24 = [v5 applicationIdentifiers];
-    v25 = v24;
-    if (v23 == v24)
+    applicationIdentifiers = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self applicationIdentifiers];
+    applicationIdentifiers2 = [v5 applicationIdentifiers];
+    v25 = applicationIdentifiers2;
+    if (applicationIdentifiers == applicationIdentifiers2)
     {
     }
 
     else
     {
-      v26 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self applicationIdentifiers];
-      v27 = [v5 applicationIdentifiers];
-      v28 = [v26 isEqual:v27];
+      applicationIdentifiers3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self applicationIdentifiers];
+      applicationIdentifiers4 = [v5 applicationIdentifiers];
+      v28 = [applicationIdentifiers3 isEqual:applicationIdentifiers4];
 
       if (!v28)
       {
@@ -107,18 +107,18 @@
       }
     }
 
-    v29 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resourceURL];
-    v30 = [v5 resourceURL];
-    v31 = v30;
-    if (v29 == v30)
+    resourceURL = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resourceURL];
+    resourceURL2 = [v5 resourceURL];
+    v31 = resourceURL2;
+    if (resourceURL == resourceURL2)
     {
     }
 
     else
     {
-      v32 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resourceURL];
-      v33 = [v5 resourceURL];
-      v34 = [v32 isEqual:v33];
+      resourceURL3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resourceURL];
+      resourceURL4 = [v5 resourceURL];
+      v34 = [resourceURL3 isEqual:resourceURL4];
 
       if (!v34)
       {
@@ -126,18 +126,18 @@
       }
     }
 
-    v35 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sender];
-    v36 = [v5 sender];
-    v37 = v36;
-    if (v35 == v36)
+    sender = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sender];
+    sender2 = [v5 sender];
+    v37 = sender2;
+    if (sender == sender2)
     {
     }
 
     else
     {
-      v38 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sender];
-      v39 = [v5 sender];
-      v40 = [v38 isEqual:v39];
+      sender3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sender];
+      sender4 = [v5 sender];
+      v40 = [sender3 isEqual:sender4];
 
       if (!v40)
       {
@@ -145,18 +145,18 @@
       }
     }
 
-    v41 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self domainIdentifier];
-    v42 = [v5 domainIdentifier];
-    v43 = v42;
-    if (v41 == v42)
+    domainIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self domainIdentifier];
+    domainIdentifier2 = [v5 domainIdentifier];
+    v43 = domainIdentifier2;
+    if (domainIdentifier == domainIdentifier2)
     {
     }
 
     else
     {
-      v44 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self domainIdentifier];
-      v45 = [v5 domainIdentifier];
-      v46 = [v44 isEqual:v45];
+      domainIdentifier3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self domainIdentifier];
+      domainIdentifier4 = [v5 domainIdentifier];
+      v46 = [domainIdentifier3 isEqual:domainIdentifier4];
 
       if (!v46)
       {
@@ -164,18 +164,18 @@
       }
     }
 
-    v47 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self batchIdentifier];
-    v48 = [v5 batchIdentifier];
-    v49 = v48;
-    if (v47 == v48)
+    batchIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self batchIdentifier];
+    batchIdentifier2 = [v5 batchIdentifier];
+    v49 = batchIdentifier2;
+    if (batchIdentifier == batchIdentifier2)
     {
     }
 
     else
     {
-      v50 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self batchIdentifier];
-      v51 = [v5 batchIdentifier];
-      v52 = [v50 isEqual:v51];
+      batchIdentifier3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self batchIdentifier];
+      batchIdentifier4 = [v5 batchIdentifier];
+      v52 = [batchIdentifier3 isEqual:batchIdentifier4];
 
       if (!v52)
       {
@@ -183,18 +183,18 @@
       }
     }
 
-    v53 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self calculatedFeatures];
-    v54 = [v5 calculatedFeatures];
-    v55 = v54;
-    if (v53 == v54)
+    calculatedFeatures = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self calculatedFeatures];
+    calculatedFeatures2 = [v5 calculatedFeatures];
+    v55 = calculatedFeatures2;
+    if (calculatedFeatures == calculatedFeatures2)
     {
     }
 
     else
     {
-      v56 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self calculatedFeatures];
-      v57 = [v5 calculatedFeatures];
-      v58 = [v56 isEqual:v57];
+      calculatedFeatures3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self calculatedFeatures];
+      calculatedFeatures4 = [v5 calculatedFeatures];
+      v58 = [calculatedFeatures3 isEqual:calculatedFeatures4];
 
       if (!v58)
       {
@@ -202,18 +202,18 @@
       }
     }
 
-    v59 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientIdentifier];
-    v60 = [v5 clientIdentifier];
-    v61 = v60;
-    if (v59 == v60)
+    clientIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientIdentifier];
+    clientIdentifier2 = [v5 clientIdentifier];
+    v61 = clientIdentifier2;
+    if (clientIdentifier == clientIdentifier2)
     {
     }
 
     else
     {
-      v62 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientIdentifier];
-      v63 = [v5 clientIdentifier];
-      v64 = [v62 isEqual:v63];
+      clientIdentifier3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientIdentifier];
+      clientIdentifier4 = [v5 clientIdentifier];
+      v64 = [clientIdentifier3 isEqual:clientIdentifier4];
 
       if (!v64)
       {
@@ -242,18 +242,18 @@
       }
     }
 
-    v68 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self groupPhotoPathDigest];
-    v69 = [v5 groupPhotoPathDigest];
-    v70 = v69;
-    if (v68 == v69)
+    groupPhotoPathDigest = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self groupPhotoPathDigest];
+    groupPhotoPathDigest2 = [v5 groupPhotoPathDigest];
+    v70 = groupPhotoPathDigest2;
+    if (groupPhotoPathDigest == groupPhotoPathDigest2)
     {
     }
 
     else
     {
-      v71 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self groupPhotoPathDigest];
-      v72 = [v5 groupPhotoPathDigest];
-      v73 = [v71 isEqual:v72];
+      groupPhotoPathDigest3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self groupPhotoPathDigest];
+      groupPhotoPathDigest4 = [v5 groupPhotoPathDigest];
+      v73 = [groupPhotoPathDigest3 isEqual:groupPhotoPathDigest4];
 
       if (!v73)
       {
@@ -261,18 +261,18 @@
       }
     }
 
-    v74 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self displayName];
-    v75 = [v5 displayName];
-    v76 = v75;
-    if (v74 == v75)
+    displayName = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self displayName];
+    displayName2 = [v5 displayName];
+    v76 = displayName2;
+    if (displayName == displayName2)
     {
     }
 
     else
     {
-      v77 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self displayName];
-      v78 = [v5 displayName];
-      v79 = [v77 isEqual:v78];
+      displayName3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self displayName];
+      displayName4 = [v5 displayName];
+      v79 = [displayName3 isEqual:displayName4];
 
       if (!v79)
       {
@@ -292,25 +292,25 @@
         goto LABEL_93;
       }
 
-      v80 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self isPrimary];
-      if (v80 != [v5 isPrimary])
+      isPrimary = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self isPrimary];
+      if (isPrimary != [v5 isPrimary])
       {
         goto LABEL_93;
       }
     }
 
-    v81 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self attributionIdentifier];
-    v82 = [v5 attributionIdentifier];
-    v83 = v82;
-    if (v81 == v82)
+    attributionIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self attributionIdentifier];
+    attributionIdentifier2 = [v5 attributionIdentifier];
+    v83 = attributionIdentifier2;
+    if (attributionIdentifier == attributionIdentifier2)
     {
     }
 
     else
     {
-      v84 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self attributionIdentifier];
-      v85 = [v5 attributionIdentifier];
-      v86 = [v84 isEqual:v85];
+      attributionIdentifier3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self attributionIdentifier];
+      attributionIdentifier4 = [v5 attributionIdentifier];
+      v86 = [attributionIdentifier3 isEqual:attributionIdentifier4];
 
       if (!v86)
       {
@@ -330,8 +330,8 @@
         goto LABEL_93;
       }
 
-      v87 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self rank];
-      if (v87 != [v5 rank])
+      rank = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self rank];
+      if (rank != [v5 rank])
       {
         goto LABEL_93;
       }
@@ -370,25 +370,25 @@
         goto LABEL_93;
       }
 
-      v91 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self isConversationAutoDonating];
-      if (v91 != [v5 isConversationAutoDonating])
+      isConversationAutoDonating = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self isConversationAutoDonating];
+      if (isConversationAutoDonating != [v5 isConversationAutoDonating])
       {
         goto LABEL_93;
       }
     }
 
-    v92 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self originatingDeviceId];
-    v93 = [v5 originatingDeviceId];
-    v94 = v93;
-    if (v92 == v93)
+    originatingDeviceId = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self originatingDeviceId];
+    originatingDeviceId2 = [v5 originatingDeviceId];
+    v94 = originatingDeviceId2;
+    if (originatingDeviceId == originatingDeviceId2)
     {
     }
 
     else
     {
-      v95 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self originatingDeviceId];
-      v96 = [v5 originatingDeviceId];
-      v97 = [v95 isEqual:v96];
+      originatingDeviceId3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self originatingDeviceId];
+      originatingDeviceId4 = [v5 originatingDeviceId];
+      v97 = [originatingDeviceId3 isEqual:originatingDeviceId4];
 
       if (!v97)
       {
@@ -417,18 +417,18 @@
       }
     }
 
-    v101 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resolvedUrl];
-    v102 = [v5 resolvedUrl];
-    v103 = v102;
-    if (v101 == v102)
+    resolvedUrl = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resolvedUrl];
+    resolvedUrl2 = [v5 resolvedUrl];
+    v103 = resolvedUrl2;
+    if (resolvedUrl == resolvedUrl2)
     {
     }
 
     else
     {
-      v104 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resolvedUrl];
-      v105 = [v5 resolvedUrl];
-      v106 = [v104 isEqual:v105];
+      resolvedUrl3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resolvedUrl];
+      resolvedUrl4 = [v5 resolvedUrl];
+      v106 = [resolvedUrl3 isEqual:resolvedUrl4];
 
       if (!v106)
       {
@@ -440,18 +440,18 @@ LABEL_94:
       }
     }
 
-    v108 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientVariant];
-    v109 = [v5 clientVariant];
-    if (v108 == v109)
+    clientVariant = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientVariant];
+    clientVariant2 = [v5 clientVariant];
+    if (clientVariant == clientVariant2)
     {
       v12 = 1;
     }
 
     else
     {
-      v110 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientVariant];
-      v111 = [v5 clientVariant];
-      v12 = [v110 isEqual:v111];
+      clientVariant3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientVariant];
+      clientVariant4 = [v5 clientVariant];
+      v12 = [clientVariant3 isEqual:clientVariant4];
     }
 
     goto LABEL_94;
@@ -466,7 +466,7 @@ LABEL_95:
 - (id)jsonDictionary
 {
   v86[23] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self highlightIdentifier];
+  highlightIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self highlightIdentifier];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMessagesSharedWithYouFeedbackRankableSocialHighlight highlightType](self, "highlightType")}];
   if (![(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self hasSyndicationSecondsSinceReferenceDate]|| ([(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self syndicationSecondsSinceReferenceDate], fabs(v5) == INFINITY))
   {
@@ -481,16 +481,16 @@ LABEL_95:
     v7 = [v6 numberWithDouble:?];
   }
 
-  v8 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sourceBundleID];
-  v9 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self _applicationIdentifiersJSONArray];
-  v10 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resourceURL];
-  v11 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sender];
-  v12 = [v11 jsonDictionary];
+  sourceBundleID = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sourceBundleID];
+  _applicationIdentifiersJSONArray = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self _applicationIdentifiersJSONArray];
+  resourceURL = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resourceURL];
+  sender = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sender];
+  jsonDictionary = [sender jsonDictionary];
 
-  v84 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self domainIdentifier];
-  v83 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self batchIdentifier];
-  v82 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self _calculatedFeaturesJSONArray];
-  v81 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientIdentifier];
+  domainIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self domainIdentifier];
+  batchIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self batchIdentifier];
+  _calculatedFeaturesJSONArray = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self _calculatedFeaturesJSONArray];
+  clientIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientIdentifier];
   if (![(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self hasContentCreationSecondsSinceReferenceDate]|| ([(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self contentCreationSecondsSinceReferenceDate], fabs(v13) == INFINITY))
   {
     v80 = 0;
@@ -504,8 +504,8 @@ LABEL_95:
     v80 = [v14 numberWithDouble:?];
   }
 
-  v79 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self groupPhotoPathDigest];
-  v78 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self displayName];
+  groupPhotoPathDigest = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self groupPhotoPathDigest];
+  displayName = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self displayName];
   if ([(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self hasIsPrimary])
   {
     v77 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMessagesSharedWithYouFeedbackRankableSocialHighlight isPrimary](self, "isPrimary")}];
@@ -516,7 +516,7 @@ LABEL_95:
     v77 = 0;
   }
 
-  v76 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self attributionIdentifier];
+  attributionIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self attributionIdentifier];
   if ([(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self hasRank])
   {
     v75 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMessagesSharedWithYouFeedbackRankableSocialHighlight rank](self, "rank")}];
@@ -550,7 +550,7 @@ LABEL_95:
     v73 = 0;
   }
 
-  v72 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self originatingDeviceId];
+  originatingDeviceId = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self originatingDeviceId];
   if (![(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self hasRankingSecondsSinceReferenceDate]|| ([(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self rankingSecondsSinceReferenceDate], fabs(v17) == INFINITY))
   {
     v71 = 0;
@@ -564,221 +564,221 @@ LABEL_95:
     v71 = [v18 numberWithDouble:?];
   }
 
-  v70 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resolvedUrl];
-  v19 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientVariant];
+  resolvedUrl = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resolvedUrl];
+  clientVariant = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientVariant];
   v85[0] = @"highlightIdentifier";
-  v20 = v3;
-  if (!v3)
+  null = highlightIdentifier;
+  if (!highlightIdentifier)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v58 = v20;
-  v86[0] = v20;
+  v58 = null;
+  v86[0] = null;
   v85[1] = @"highlightType";
-  v21 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v57 = v21;
-  v86[1] = v21;
+  v57 = null2;
+  v86[1] = null2;
   v85[2] = @"syndicationSecondsSinceReferenceDate";
-  v22 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v56 = v22;
-  v86[2] = v22;
+  v56 = null3;
+  v86[2] = null3;
   v85[3] = @"sourceBundleID";
-  v23 = v8;
-  if (!v8)
+  null4 = sourceBundleID;
+  if (!sourceBundleID)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v55 = v23;
-  v86[3] = v23;
+  v55 = null4;
+  v86[3] = null4;
   v85[4] = @"applicationIdentifiers";
-  v24 = v9;
-  if (!v9)
+  null5 = _applicationIdentifiersJSONArray;
+  if (!_applicationIdentifiersJSONArray)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v54 = v24;
-  v86[4] = v24;
+  v54 = null5;
+  v86[4] = null5;
   v85[5] = @"resourceURL";
-  v25 = v10;
-  if (!v10)
+  null6 = resourceURL;
+  if (!resourceURL)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v53 = v25;
-  v86[5] = v25;
+  v53 = null6;
+  v86[5] = null6;
   v85[6] = @"sender";
-  v26 = v12;
-  if (!v12)
+  null7 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52 = v26;
-  v86[6] = v26;
+  v52 = null7;
+  v86[6] = null7;
   v85[7] = @"domainIdentifier";
-  v27 = v84;
-  if (!v84)
+  null8 = domainIdentifier;
+  if (!domainIdentifier)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v86[7] = v27;
+  v86[7] = null8;
   v85[8] = @"batchIdentifier";
-  v28 = v83;
-  if (!v83)
+  null9 = batchIdentifier;
+  if (!batchIdentifier)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v86[8] = v28;
+  v86[8] = null9;
   v85[9] = @"calculatedFeatures";
-  v29 = v82;
-  if (!v82)
+  null10 = _calculatedFeaturesJSONArray;
+  if (!_calculatedFeaturesJSONArray)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v63 = v29;
-  v86[9] = v29;
+  v63 = null10;
+  v86[9] = null10;
   v85[10] = @"clientIdentifier";
-  v30 = v81;
-  if (!v81)
+  null11 = clientIdentifier;
+  if (!clientIdentifier)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v62 = v30;
-  v86[10] = v30;
+  v62 = null11;
+  v86[10] = null11;
   v85[11] = @"contentCreationSecondsSinceReferenceDate";
-  v31 = v80;
+  null12 = v80;
   if (!v80)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v61 = v31;
-  v86[11] = v31;
+  v61 = null12;
+  v86[11] = null12;
   v85[12] = @"groupPhotoPathDigest";
-  v32 = v79;
-  if (!v79)
+  null13 = groupPhotoPathDigest;
+  if (!groupPhotoPathDigest)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v67 = v8;
-  v86[12] = v32;
+  v67 = sourceBundleID;
+  v86[12] = null13;
   v85[13] = @"displayName";
-  v33 = v78;
-  v34 = v32;
-  if (!v78)
+  null14 = displayName;
+  v34 = null13;
+  if (!displayName)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v64 = v12;
-  v60 = v33;
-  v86[13] = v33;
+  v64 = jsonDictionary;
+  v60 = null14;
+  v86[13] = null14;
   v85[14] = @"isPrimary";
-  v35 = v77;
+  null15 = v77;
   if (!v77)
   {
-    v35 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v65 = v10;
-  v47 = v35;
-  v86[14] = v35;
+  v65 = resourceURL;
+  v47 = null15;
+  v86[14] = null15;
   v85[15] = @"attributionIdentifier";
-  v36 = v76;
-  if (!v76)
+  null16 = attributionIdentifier;
+  if (!attributionIdentifier)
   {
-    v36 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
   v68 = v7;
-  v86[15] = v36;
+  v86[15] = null16;
   v85[16] = @"rank";
-  v37 = v75;
+  null17 = v75;
   if (!v75)
   {
-    v37 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v66 = v9;
-  v69 = v3;
-  v86[16] = v37;
+  v66 = _applicationIdentifiersJSONArray;
+  v69 = highlightIdentifier;
+  v86[16] = null17;
   v85[17] = @"score";
-  v38 = v74;
+  null18 = v74;
   if (!v74)
   {
-    v38 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
   v39 = v4;
-  v86[17] = v38;
+  v86[17] = null18;
   v85[18] = @"isConversationAutoDonating";
-  v40 = v73;
+  null19 = v73;
   if (!v73)
   {
-    v40 = [MEMORY[0x1E695DFB0] null];
+    null19 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v51 = v27;
-  v86[18] = v40;
+  v51 = null8;
+  v86[18] = null19;
   v85[19] = @"originatingDeviceId";
-  v41 = v72;
-  if (!v72)
+  null20 = originatingDeviceId;
+  if (!originatingDeviceId)
   {
-    v41 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50 = v28;
-  v86[19] = v41;
+  v50 = null9;
+  v86[19] = null20;
   v85[20] = @"rankingSecondsSinceReferenceDate";
-  v42 = v71;
+  null21 = v71;
   if (!v71)
   {
-    v42 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
   v49 = v34;
-  v86[20] = v42;
+  v86[20] = null21;
   v85[21] = @"resolvedUrl";
-  v43 = v70;
-  if (!v70)
+  null22 = resolvedUrl;
+  if (!resolvedUrl)
   {
-    v43 = [MEMORY[0x1E695DFB0] null];
+    null22 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v86[21] = v43;
+  v86[21] = null22;
   v85[22] = @"clientVariant";
-  v44 = v19;
-  if (!v19)
+  null23 = clientVariant;
+  if (!clientVariant)
   {
-    v44 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v86[22] = v44;
+  v86[22] = null23;
   v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v86 forKeys:v85 count:{23, v47}];
-  if (!v19)
+  if (!clientVariant)
   {
   }
 
-  if (!v70)
+  if (!resolvedUrl)
   {
   }
 
@@ -786,7 +786,7 @@ LABEL_95:
   {
   }
 
-  if (!v72)
+  if (!originatingDeviceId)
   {
   }
 
@@ -802,7 +802,7 @@ LABEL_95:
   {
   }
 
-  if (!v76)
+  if (!attributionIdentifier)
   {
   }
 
@@ -810,11 +810,11 @@ LABEL_95:
   {
   }
 
-  if (!v78)
+  if (!displayName)
   {
   }
 
-  if (!v79)
+  if (!groupPhotoPathDigest)
   {
   }
 
@@ -822,19 +822,19 @@ LABEL_95:
   {
   }
 
-  if (!v81)
+  if (!clientIdentifier)
   {
   }
 
-  if (!v82)
+  if (!_calculatedFeaturesJSONArray)
   {
   }
 
-  if (!v83)
+  if (!batchIdentifier)
   {
   }
 
-  if (v84)
+  if (domainIdentifier)
   {
     if (v64)
     {
@@ -943,8 +943,8 @@ LABEL_110:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self calculatedFeatures];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  calculatedFeatures = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self calculatedFeatures];
+  v5 = [calculatedFeatures countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -955,14 +955,14 @@ LABEL_110:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(calculatedFeatures);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [calculatedFeatures countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -981,8 +981,8 @@ LABEL_110:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self applicationIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  applicationIdentifiers = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self applicationIdentifiers];
+  v5 = [applicationIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -993,13 +993,13 @@ LABEL_110:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(applicationIdentifiers);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [applicationIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1010,27 +1010,27 @@ LABEL_110:
   return v3;
 }
 
-- (BMMessagesSharedWithYouFeedbackRankableSocialHighlight)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMessagesSharedWithYouFeedbackRankableSocialHighlight)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v316[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"highlightIdentifier"];
-  v247 = self;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"highlightIdentifier"];
+  selfCopy = self;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v10 = objc_alloc(MEMORY[0x1E696ABC0]);
         v11 = *MEMORY[0x1E698F240];
         v315 = *MEMORY[0x1E696A578];
-        v12 = v6;
+        v12 = dictionaryCopy;
         v13 = objc_alloc(MEMORY[0x1E696AEC0]);
         v181 = objc_opt_class();
         v14 = v13;
-        v6 = v12;
+        dictionaryCopy = v12;
         v15 = [v14 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", v181, @"highlightIdentifier"];
         v316[0] = v15;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v316 forKeys:&v315 count:1];
@@ -1038,7 +1038,7 @@ LABEL_110:
         v9 = v16;
         v8 = 0;
         v18 = 0;
-        *a4 = [v10 initWithDomain:v17 code:2 userInfo:v16];
+        *error = [v10 initWithDomain:v17 code:2 userInfo:v16];
         goto LABEL_227;
       }
 
@@ -1055,7 +1055,7 @@ LABEL_110:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"highlightType"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"highlightType"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -1069,7 +1069,7 @@ LABEL_110:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v66 = objc_alloc(MEMORY[0x1E696ABC0]);
           v67 = v9;
@@ -1083,7 +1083,7 @@ LABEL_110:
           v71 = [v66 initWithDomain:v70 code:2 userInfo:v69];
           v15 = 0;
           v18 = 0;
-          *a4 = v71;
+          *error = v71;
           v20 = v69;
           goto LABEL_226;
         }
@@ -1103,14 +1103,14 @@ LABEL_110:
     v243 = 0;
   }
 
-  v20 = [v6 objectForKeyedSubscript:@"syndicationSecondsSinceReferenceDate"];
-  v244 = a4;
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"syndicationSecondsSinceReferenceDate"];
+  errorCopy = error;
   if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v51 = objc_alloc(MEMORY[0x1E696ABC0]);
         v52 = v9;
@@ -1127,7 +1127,7 @@ LABEL_110:
         v245 = 0;
         v18 = 0;
         v15 = v243;
-        *a4 = [v56 initWithDomain:v57 code:2 userInfo:?];
+        *error = [v56 initWithDomain:v57 code:2 userInfo:?];
         goto LABEL_225;
       }
 
@@ -1145,7 +1145,7 @@ LABEL_110:
     v245 = 0;
   }
 
-  v21 = [v6 objectForKeyedSubscript:@"sourceBundleID"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"sourceBundleID"];
   v241 = v9;
   v246 = v21;
   if (!v21)
@@ -1160,7 +1160,7 @@ LABEL_110:
   if (objc_opt_isKindOfClass())
   {
 LABEL_24:
-    v24 = v6;
+    v24 = dictionaryCopy;
     v25 = v20;
     v26 = 0;
     goto LABEL_25;
@@ -1169,7 +1169,7 @@ LABEL_24:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (v244)
+    if (errorCopy)
     {
       v249 = objc_alloc(MEMORY[0x1E696ABC0]);
       v58 = *MEMORY[0x1E698F240];
@@ -1183,7 +1183,7 @@ LABEL_24:
       v250 = v59;
       v30 = 0;
       v18 = 0;
-      *v244 = [v60 initWithDomain:v61 code:2 userInfo:?];
+      *errorCopy = [v60 initWithDomain:v61 code:2 userInfo:?];
       v15 = v243;
 
       goto LABEL_224;
@@ -1195,13 +1195,13 @@ LABEL_24:
     goto LABEL_225;
   }
 
-  v24 = v6;
+  v24 = dictionaryCopy;
   v25 = v20;
   v26 = v22;
 LABEL_25:
   v27 = [v24 objectForKeyedSubscript:@"applicationIdentifiers"];
-  v28 = [MEMORY[0x1E695DFB0] null];
-  v29 = [v27 isEqual:v28];
+  null = [MEMORY[0x1E695DFB0] null];
+  v29 = [v27 isEqual:null];
 
   v242 = v23;
   v239 = v24;
@@ -1220,7 +1220,7 @@ LABEL_25:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v244)
+      if (errorCopy)
       {
         v62 = objc_alloc(MEMORY[0x1E696ABC0]);
         v63 = *MEMORY[0x1E698F240];
@@ -1232,10 +1232,10 @@ LABEL_25:
         v30 = v26;
         v65 = [v64 initWithDomain:v63 code:2 userInfo:v50];
         v18 = 0;
-        *v244 = v65;
+        *errorCopy = v65;
         v15 = v243;
         v20 = v25;
-        v6 = v24;
+        dictionaryCopy = v24;
         v8 = v23;
         goto LABEL_222;
       }
@@ -1243,7 +1243,7 @@ LABEL_25:
       v18 = 0;
       v15 = v243;
       v20 = v25;
-      v6 = v24;
+      dictionaryCopy = v24;
       v8 = v23;
       v9 = v241;
       goto LABEL_224;
@@ -1276,8 +1276,8 @@ LABEL_25:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v41 = v244;
-          if (v244)
+          v41 = errorCopy;
+          if (errorCopy)
           {
             v42 = objc_alloc(MEMORY[0x1E696ABC0]);
             v43 = *MEMORY[0x1E698F240];
@@ -1296,7 +1296,7 @@ LABEL_47:
             v18 = 0;
             *v41 = [v48 initWithDomain:v43 code:2 userInfo:?];
             v50 = v27;
-            v6 = v239;
+            dictionaryCopy = v239;
             v20 = v240;
             goto LABEL_219;
           }
@@ -1304,7 +1304,7 @@ LABEL_47:
 LABEL_50:
           v18 = 0;
           v50 = v27;
-          v6 = v24;
+          dictionaryCopy = v24;
           v20 = v240;
           v7 = v237;
           v30 = v238;
@@ -1316,8 +1316,8 @@ LABEL_50:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v41 = v244;
-          if (v244)
+          v41 = errorCopy;
+          if (errorCopy)
           {
             v42 = objc_alloc(MEMORY[0x1E696ABC0]);
             v43 = *MEMORY[0x1E698F240];
@@ -1344,7 +1344,7 @@ LABEL_50:
     while (v33);
   }
 
-  v6 = v24;
+  dictionaryCopy = v24;
   v39 = [v24 objectForKeyedSubscript:@"resourceURL"];
   v232 = v27;
   v236 = v39;
@@ -1366,7 +1366,7 @@ LABEL_50:
       v7 = v237;
       if ((isKindOfClass & 1) == 0)
       {
-        if (v244)
+        if (errorCopy)
         {
           v91 = objc_alloc(MEMORY[0x1E696ABC0]);
           v92 = *MEMORY[0x1E698F240];
@@ -1378,7 +1378,7 @@ LABEL_50:
           v93 = [v91 initWithDomain:v92 code:2 userInfo:v74];
           v50 = 0;
           v18 = 0;
-          *v244 = v93;
+          *errorCopy = v93;
           v8 = v242;
           v15 = v243;
           goto LABEL_218;
@@ -1420,7 +1420,7 @@ LABEL_50:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v244)
+        if (errorCopy)
         {
           v233 = objc_alloc(MEMORY[0x1E696ABC0]);
           v94 = *MEMORY[0x1E698F240];
@@ -1429,7 +1429,7 @@ LABEL_50:
           v299 = v95;
           v96 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v299 forKeys:&v298 count:1];
           v20 = v240;
-          *v244 = [v233 initWithDomain:v94 code:2 userInfo:v96];
+          *errorCopy = [v233 initWithDomain:v94 code:2 userInfo:v96];
 
           v18 = 0;
           v83 = v74;
@@ -1457,10 +1457,10 @@ LABEL_50:
       if (v86)
       {
         v15 = v243;
-        if (v244)
+        if (errorCopy)
         {
           v86 = v86;
-          *v244 = v86;
+          *errorCopy = v86;
         }
 
         v18 = 0;
@@ -1491,7 +1491,7 @@ LABEL_50:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v244)
+      if (errorCopy)
       {
         v97 = objc_alloc(MEMORY[0x1E696ABC0]);
         v98 = *MEMORY[0x1E698F240];
@@ -1503,13 +1503,13 @@ LABEL_50:
         v101 = [v97 initWithDomain:v98 code:2 userInfo:v100];
         v102 = 0;
         v18 = 0;
-        *v244 = v101;
+        *errorCopy = v101;
         v15 = v243;
         v103 = v100;
         v104 = v99;
         v78 = v103;
         v50 = v231;
-        v6 = v239;
+        dictionaryCopy = v239;
         goto LABEL_216;
       }
 
@@ -1518,12 +1518,12 @@ LABEL_50:
       v15 = v243;
       v50 = v231;
       v89 = v88;
-      v6 = v239;
+      dictionaryCopy = v239;
       goto LABEL_217;
     }
 
     v227 = v77;
-    v6 = v239;
+    dictionaryCopy = v239;
   }
 
   else
@@ -1531,14 +1531,14 @@ LABEL_50:
     v227 = 0;
   }
 
-  v78 = [v6 objectForKeyedSubscript:@"batchIdentifier"];
+  v78 = [dictionaryCopy objectForKeyedSubscript:@"batchIdentifier"];
   if (v78 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v89 = v20;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v244)
+      if (errorCopy)
       {
         v119 = objc_alloc(MEMORY[0x1E696ABC0]);
         v120 = *MEMORY[0x1E698F240];
@@ -1551,7 +1551,7 @@ LABEL_50:
         v104 = 0;
         v18 = 0;
         v15 = v243;
-        *v244 = v121;
+        *errorCopy = v121;
         v50 = v231;
         v102 = v227;
 
@@ -1579,9 +1579,9 @@ LABEL_50:
     v79 = v74;
   }
 
-  v80 = [v6 objectForKeyedSubscript:@"calculatedFeatures"];
-  v81 = [MEMORY[0x1E695DFB0] null];
-  v82 = [v80 isEqual:v81];
+  v80 = [dictionaryCopy objectForKeyedSubscript:@"calculatedFeatures"];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v82 = [v80 isEqual:null2];
 
   if (v82)
   {
@@ -1597,7 +1597,7 @@ LABEL_50:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v74 = v79;
-        if (!v244)
+        if (!errorCopy)
         {
           v89 = v20;
           v18 = 0;
@@ -1617,7 +1617,7 @@ LABEL_50:
         v293 = v234;
         v131 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v293 forKeys:&v292 count:1];
         v18 = 0;
-        *v244 = [v129 initWithDomain:v130 code:2 userInfo:v131];
+        *errorCopy = [v129 initWithDomain:v130 code:2 userInfo:v131];
         v15 = v243;
         v107 = v131;
         v50 = v231;
@@ -1666,8 +1666,8 @@ LABEL_97:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v122 = v244;
-        if (v244)
+        v122 = errorCopy;
+        if (errorCopy)
         {
           v123 = objc_alloc(MEMORY[0x1E696ABC0]);
           v124 = *MEMORY[0x1E698F240];
@@ -1682,7 +1682,7 @@ LABEL_119:
           v18 = 0;
           *v122 = [v123 initWithDomain:v124 code:2 userInfo:?];
 LABEL_123:
-          v6 = v239;
+          dictionaryCopy = v239;
           v128 = v240;
           v15 = v243;
           v50 = v231;
@@ -1697,8 +1697,8 @@ LABEL_123:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v122 = v244;
-        if (v244)
+        v122 = errorCopy;
+        if (errorCopy)
         {
           v123 = objc_alloc(MEMORY[0x1E696ABC0]);
           v124 = *MEMORY[0x1E698F240];
@@ -1713,7 +1713,7 @@ LABEL_123:
 
 LABEL_126:
         v18 = 0;
-        v6 = v239;
+        dictionaryCopy = v239;
         v89 = v240;
         v15 = v243;
         v50 = v231;
@@ -1728,10 +1728,10 @@ LABEL_126:
       v116 = v251;
       if (v116)
       {
-        if (v244)
+        if (errorCopy)
         {
           v116 = v116;
-          *v244 = v116;
+          *errorCopy = v116;
         }
 
         v215 = v116;
@@ -1755,7 +1755,7 @@ LABEL_126:
 
 LABEL_107:
 
-  v6 = v239;
+  dictionaryCopy = v239;
   v113 = [v239 objectForKeyedSubscript:@"clientIdentifier"];
   if (!v113 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -1766,8 +1766,8 @@ LABEL_107:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v107 = v244;
-    if (v244)
+    v107 = errorCopy;
+    if (errorCopy)
     {
       v148 = objc_alloc(MEMORY[0x1E696ABC0]);
       v149 = *MEMORY[0x1E698F240];
@@ -1776,7 +1776,7 @@ LABEL_107:
       v286 = v215;
       v214 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v286 forKeys:&v285 count:1];
       v18 = 0;
-      *v244 = [v148 initWithDomain:v149 code:2 userInfo:?];
+      *errorCopy = [v148 initWithDomain:v149 code:2 userInfo:?];
       v107 = 0;
       goto LABEL_237;
     }
@@ -1819,7 +1819,7 @@ LABEL_135:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v244)
+          if (!errorCopy)
           {
             v212 = 0;
             v18 = 0;
@@ -1842,7 +1842,7 @@ LABEL_135:
           v155 = [v213 initWithDomain:v154 code:2 userInfo:?];
           v212 = 0;
           v18 = 0;
-          *v244 = v155;
+          *errorCopy = v155;
           goto LABEL_248;
         }
 
@@ -1872,7 +1872,7 @@ LABEL_145:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v244)
+          if (!errorCopy)
           {
             v205 = 0;
             v18 = 0;
@@ -1885,7 +1885,7 @@ LABEL_145:
           v218 = objc_alloc(MEMORY[0x1E696ABC0]);
           v206 = *MEMORY[0x1E698F240];
           v277 = *MEMORY[0x1E696A578];
-          v6 = v239;
+          dictionaryCopy = v239;
           v74 = v226;
           v203 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isPrimary"];
           v278 = v203;
@@ -1893,7 +1893,7 @@ LABEL_145:
           v157 = [v218 initWithDomain:v206 code:2 userInfo:?];
           v205 = 0;
           v18 = 0;
-          *v244 = v157;
+          *errorCopy = v157;
           v15 = v243;
           v50 = v231;
           goto LABEL_206;
@@ -1914,7 +1914,7 @@ LABEL_145:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v244)
+          if (!errorCopy)
           {
             v203 = 0;
             v18 = 0;
@@ -1933,7 +1933,7 @@ LABEL_145:
           v199 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v276 forKeys:&v275 count:1];
           v203 = 0;
           v18 = 0;
-          *v244 = [v219 initWithDomain:v167 code:2 userInfo:?];
+          *errorCopy = [v219 initWithDomain:v167 code:2 userInfo:?];
           v15 = v243;
           v50 = v231;
           v74 = v226;
@@ -1960,7 +1960,7 @@ LABEL_206:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v244)
+          if (!errorCopy)
           {
             v200 = 0;
             v18 = 0;
@@ -1973,7 +1973,7 @@ LABEL_206:
           v220 = objc_alloc(MEMORY[0x1E696ABC0]);
           v201 = *MEMORY[0x1E698F240];
           v273 = *MEMORY[0x1E696A578];
-          v6 = v239;
+          dictionaryCopy = v239;
           v74 = v226;
           v197 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"rank"];
           v274 = v197;
@@ -1981,7 +1981,7 @@ LABEL_206:
           v168 = [v220 initWithDomain:v201 code:2 userInfo:?];
           v200 = 0;
           v18 = 0;
-          *v244 = v168;
+          *errorCopy = v168;
           v15 = v243;
           v50 = v231;
           goto LABEL_204;
@@ -2002,7 +2002,7 @@ LABEL_206:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v244)
+          if (!errorCopy)
           {
             v197 = 0;
             v18 = 0;
@@ -2015,7 +2015,7 @@ LABEL_206:
           v221 = objc_alloc(MEMORY[0x1E696ABC0]);
           v198 = *MEMORY[0x1E698F240];
           v271 = *MEMORY[0x1E696A578];
-          v6 = v239;
+          dictionaryCopy = v239;
           v74 = v226;
           v194 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"score"];
           v272 = v194;
@@ -2023,7 +2023,7 @@ LABEL_206:
           v169 = [v221 initWithDomain:v198 code:2 userInfo:?];
           v197 = 0;
           v18 = 0;
-          *v244 = v169;
+          *errorCopy = v169;
           v15 = v243;
           v50 = v231;
 LABEL_203:
@@ -2047,7 +2047,7 @@ LABEL_204:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v244)
+          if (!errorCopy)
           {
             v194 = 0;
             v18 = 0;
@@ -2060,7 +2060,7 @@ LABEL_204:
           v222 = objc_alloc(MEMORY[0x1E696ABC0]);
           v195 = *MEMORY[0x1E698F240];
           v269 = *MEMORY[0x1E696A578];
-          v6 = v239;
+          dictionaryCopy = v239;
           v74 = v226;
           v190 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isConversationAutoDonating"];
           v270 = v190;
@@ -2068,7 +2068,7 @@ LABEL_204:
           v170 = [v222 initWithDomain:v195 code:2 userInfo:?];
           v194 = 0;
           v18 = 0;
-          *v244 = v170;
+          *errorCopy = v170;
           v15 = v243;
           v50 = v231;
           goto LABEL_202;
@@ -2097,7 +2097,7 @@ LABEL_204:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v244)
+            if (!errorCopy)
             {
               v190 = 0;
               v18 = 0;
@@ -2116,7 +2116,7 @@ LABEL_204:
             v188 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v268 forKeys:&v267 count:1];
             v190 = 0;
             v18 = 0;
-            *v244 = [v223 initWithDomain:v171 code:2 userInfo:?];
+            *errorCopy = [v223 initWithDomain:v171 code:2 userInfo:?];
             v15 = v243;
             v50 = v231;
             v74 = v226;
@@ -2140,7 +2140,7 @@ LABEL_202:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v244)
+          if (!errorCopy)
           {
             v192 = 0;
             v18 = 0;
@@ -2153,7 +2153,7 @@ LABEL_202:
           v172 = objc_alloc(MEMORY[0x1E696ABC0]);
           v224 = *MEMORY[0x1E698F240];
           v265 = *MEMORY[0x1E696A578];
-          v6 = v239;
+          dictionaryCopy = v239;
           v74 = v226;
           v189 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"rankingSecondsSinceReferenceDate"];
           v266 = v189;
@@ -2161,7 +2161,7 @@ LABEL_202:
           v173 = [v172 initWithDomain:v224 code:2 userInfo:?];
           v192 = 0;
           v18 = 0;
-          *v244 = v173;
+          *errorCopy = v173;
           v15 = v243;
           v50 = v231;
           goto LABEL_200;
@@ -2182,7 +2182,7 @@ LABEL_202:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v244)
+          if (!errorCopy)
           {
             v189 = 0;
             v18 = 0;
@@ -2202,7 +2202,7 @@ LABEL_202:
           v176 = [v174 initWithDomain:v175 code:2 userInfo:?];
           v189 = 0;
           v18 = 0;
-          *v244 = v176;
+          *errorCopy = v176;
           v15 = v243;
           v50 = v231;
           v74 = v226;
@@ -2227,7 +2227,7 @@ LABEL_202:
         v15 = v243;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v244)
+          if (errorCopy)
           {
             v185 = objc_alloc(MEMORY[0x1E696ABC0]);
             v177 = *MEMORY[0x1E698F240];
@@ -2237,7 +2237,7 @@ LABEL_202:
             v179 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v262 forKeys:&v261 count:1];
             v180 = v177;
             v15 = v243;
-            *v244 = [v185 initWithDomain:v180 code:2 userInfo:v179];
+            *errorCopy = [v185 initWithDomain:v180 code:2 userInfo:v179];
           }
 
           v184 = 0;
@@ -2261,8 +2261,8 @@ LABEL_202:
       v182 = v147;
       v74 = v226;
       v50 = v231;
-      v18 = -[BMMessagesSharedWithYouFeedbackRankableSocialHighlight initWithHighlightIdentifier:highlightType:syndicationSecondsSinceReferenceDate:sourceBundleID:applicationIdentifiers:resourceURL:sender:domainIdentifier:batchIdentifier:calculatedFeatures:clientIdentifier:contentCreationSecondsSinceReferenceDate:groupPhotoPathDigest:displayName:isPrimary:attributionIdentifier:rank:score:isConversationAutoDonating:originatingDeviceId:rankingSecondsSinceReferenceDate:resolvedUrl:clientVariant:](v247, "initWithHighlightIdentifier:highlightType:syndicationSecondsSinceReferenceDate:sourceBundleID:applicationIdentifiers:resourceURL:sender:domainIdentifier:batchIdentifier:calculatedFeatures:clientIdentifier:contentCreationSecondsSinceReferenceDate:groupPhotoPathDigest:displayName:isPrimary:attributionIdentifier:rank:score:isConversationAutoDonating:originatingDeviceId:rankingSecondsSinceReferenceDate:resolvedUrl:clientVariant:", v242, [v15 intValue], v245, v108, v248, v231, v226, v227, v225, v234, v107, v215, v212, v210, v205, v203, v200, v197, v194, v182, v192, v189, v183);
-      v247 = v18;
+      v18 = -[BMMessagesSharedWithYouFeedbackRankableSocialHighlight initWithHighlightIdentifier:highlightType:syndicationSecondsSinceReferenceDate:sourceBundleID:applicationIdentifiers:resourceURL:sender:domainIdentifier:batchIdentifier:calculatedFeatures:clientIdentifier:contentCreationSecondsSinceReferenceDate:groupPhotoPathDigest:displayName:isPrimary:attributionIdentifier:rank:score:isConversationAutoDonating:originatingDeviceId:rankingSecondsSinceReferenceDate:resolvedUrl:clientVariant:](selfCopy, "initWithHighlightIdentifier:highlightType:syndicationSecondsSinceReferenceDate:sourceBundleID:applicationIdentifiers:resourceURL:sender:domainIdentifier:batchIdentifier:calculatedFeatures:clientIdentifier:contentCreationSecondsSinceReferenceDate:groupPhotoPathDigest:displayName:isPrimary:attributionIdentifier:rank:score:isConversationAutoDonating:originatingDeviceId:rankingSecondsSinceReferenceDate:resolvedUrl:clientVariant:", v242, [v15 intValue], v245, v108, v248, v231, v226, v227, v225, v234, v107, v215, v212, v210, v205, v203, v200, v197, v194, v182, v192, v189, v183);
+      selfCopy = v18;
 LABEL_199:
 
 LABEL_200:
@@ -2278,7 +2278,7 @@ LABEL_200:
       goto LABEL_145;
     }
 
-    if (v244)
+    if (errorCopy)
     {
       v217 = objc_alloc(MEMORY[0x1E696ABC0]);
       v156 = *MEMORY[0x1E698F240];
@@ -2288,7 +2288,7 @@ LABEL_200:
       v204 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v280 forKeys:&v279 count:1];
       v210 = 0;
       v18 = 0;
-      *v244 = [v217 initWithDomain:v156 code:2 userInfo:?];
+      *errorCopy = [v217 initWithDomain:v156 code:2 userInfo:?];
       v15 = v243;
       v50 = v231;
       v74 = v226;
@@ -2327,7 +2327,7 @@ LABEL_248:
     goto LABEL_135;
   }
 
-  if (v244)
+  if (errorCopy)
   {
     v150 = objc_alloc(MEMORY[0x1E696ABC0]);
     v151 = *MEMORY[0x1E698F240];
@@ -2339,7 +2339,7 @@ LABEL_248:
     v215 = 0;
     v18 = 0;
     v15 = v243;
-    *v244 = v152;
+    *errorCopy = v152;
     v128 = v240;
     v50 = v231;
     v74 = v226;
@@ -2402,15 +2402,15 @@ LABEL_228:
 {
   v3 = objc_opt_new();
   [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_highlightIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -2470,7 +2470,7 @@ LABEL_228:
   {
     v30 = 0;
     PBDataWriterPlaceMark();
-    [(BMMessagesSharedWithYouFeedbackRankableSocialHighlightContact *)self->_sender writeTo:v4];
+    [(BMMessagesSharedWithYouFeedbackRankableSocialHighlightContact *)self->_sender writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -2507,7 +2507,7 @@ LABEL_228:
         v18 = *(*(&v26 + 1) + 8 * v17);
         v30 = 0;
         PBDataWriterPlaceMark();
-        [v18 writeTo:{v4, v26}];
+        [v18 writeTo:{toCopy, v26}];
         PBDataWriterRecallMark();
         ++v17;
       }
@@ -2593,9 +2593,9 @@ LABEL_228:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v75.receiver = self;
   v75.super_class = BMMessagesSharedWithYouFeedbackRankableSocialHighlight;
   v5 = [(BMEventBase *)&v75 init];
@@ -2606,12 +2606,12 @@ LABEL_228:
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v4 position];
-  if (v8 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -2622,18 +2622,18 @@ LABEL_228:
       while (1)
       {
         LOBYTE(v76) = 0;
-        v12 = [v4 position] + 1;
-        if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+        v12 = [fromCopy position] + 1;
+        if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
         {
-          v14 = [v4 data];
-          [v14 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v11 |= (v76 & 0x7F) << v9;
@@ -2651,9 +2651,9 @@ LABEL_228:
         }
       }
 
-      v16 = [v4 hasError] ? 0 : v11;
+      v16 = [fromCopy hasError] ? 0 : v11;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v16 & 7) == 4)
       {
         break;
       }
@@ -2671,18 +2671,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v76) = 0;
-            v43 = [v4 position] + 1;
-            if (v43 >= [v4 position] && (v44 = objc_msgSend(v4, "position") + 1, v44 <= objc_msgSend(v4, "length")))
+            v43 = [fromCopy position] + 1;
+            if (v43 >= [fromCopy position] && (v44 = objc_msgSend(fromCopy, "position") + 1, v44 <= objc_msgSend(fromCopy, "length")))
             {
-              v45 = [v4 data];
-              [v45 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v42 |= (v76 & 0x7F) << v40;
@@ -2698,7 +2698,7 @@ LABEL_16:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v42 > 2)
+          if (([fromCopy hasError] & 1) != 0 || v42 > 2)
           {
 LABEL_99:
             LODWORD(v42) = 0;
@@ -2709,18 +2709,18 @@ LABEL_99:
         case 3u:
           v5->_hasSyndicationSecondsSinceReferenceDate = 1;
           v76 = 0;
-          v38 = [v4 position] + 8;
-          if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 8, v39 <= objc_msgSend(v4, "length")))
+          v38 = [fromCopy position] + 8;
+          if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 8, v39 <= objc_msgSend(fromCopy, "length")))
           {
-            v64 = [v4 data];
-            [v64 getBytes:&v76 range:{objc_msgSend(v4, "position"), 8}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = v76;
@@ -2752,7 +2752,7 @@ LABEL_99:
             goto LABEL_118;
           }
 
-          v51 = [[BMMessagesSharedWithYouFeedbackRankableSocialHighlightContact alloc] initByReadFrom:v4];
+          v51 = [[BMMessagesSharedWithYouFeedbackRankableSocialHighlightContact alloc] initByReadFrom:fromCopy];
           if (!v51)
           {
             goto LABEL_118;
@@ -2779,7 +2779,7 @@ LABEL_99:
             goto LABEL_118;
           }
 
-          v37 = [[BMMessagesSharedWithYouFeedbackRankableSocialHighlightFeature alloc] initByReadFrom:v4];
+          v37 = [[BMMessagesSharedWithYouFeedbackRankableSocialHighlightFeature alloc] initByReadFrom:fromCopy];
           if (!v37)
           {
             goto LABEL_118;
@@ -2798,18 +2798,18 @@ LABEL_47:
         case 0xCu:
           v5->_hasContentCreationSecondsSinceReferenceDate = 1;
           v76 = 0;
-          v33 = [v4 position] + 8;
-          if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 8, v34 <= objc_msgSend(v4, "length")))
+          v33 = [fromCopy position] + 8;
+          if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 8, v34 <= objc_msgSend(fromCopy, "length")))
           {
-            v61 = [v4 data];
-            [v61 getBytes:&v76 range:{objc_msgSend(v4, "position"), 8}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = v76;
@@ -2831,18 +2831,18 @@ LABEL_47:
           while (1)
           {
             LOBYTE(v76) = 0;
-            v29 = [v4 position] + 1;
-            if (v29 >= [v4 position] && (v30 = objc_msgSend(v4, "position") + 1, v30 <= objc_msgSend(v4, "length")))
+            v29 = [fromCopy position] + 1;
+            if (v29 >= [fromCopy position] && (v30 = objc_msgSend(fromCopy, "position") + 1, v30 <= objc_msgSend(fromCopy, "length")))
             {
-              v31 = [v4 data];
-              [v31 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v28 |= (v76 & 0x7F) << v26;
@@ -2860,7 +2860,7 @@ LABEL_47:
             }
           }
 
-          v32 = (v28 != 0) & ~[v4 hasError];
+          v32 = (v28 != 0) & ~[fromCopy hasError];
 LABEL_96:
           v60 = 18;
           goto LABEL_103;
@@ -2876,18 +2876,18 @@ LABEL_96:
           while (1)
           {
             LOBYTE(v76) = 0;
-            v22 = [v4 position] + 1;
-            if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+            v22 = [fromCopy position] + 1;
+            if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
             {
-              v24 = [v4 data];
-              [v24 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data6 = [fromCopy data];
+              [data6 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v21 |= (v76 & 0x7F) << v19;
@@ -2905,7 +2905,7 @@ LABEL_96:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v25 = 0;
           }
@@ -2921,18 +2921,18 @@ LABEL_94:
         case 0x12u:
           v5->_hasScore = 1;
           v76 = 0;
-          v47 = [v4 position] + 8;
-          if (v47 >= [v4 position] && (v48 = objc_msgSend(v4, "position") + 8, v48 <= objc_msgSend(v4, "length")))
+          v47 = [fromCopy position] + 8;
+          if (v47 >= [fromCopy position] && (v48 = objc_msgSend(fromCopy, "position") + 8, v48 <= objc_msgSend(fromCopy, "length")))
           {
-            v65 = [v4 data];
-            [v65 getBytes:&v76 range:{objc_msgSend(v4, "position"), 8}];
+            data7 = [fromCopy data];
+            [data7 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = v76;
@@ -2951,18 +2951,18 @@ LABEL_94:
         case 0x15u:
           v5->_hasRankingSecondsSinceReferenceDate = 1;
           v76 = 0;
-          v49 = [v4 position] + 8;
-          if (v49 >= [v4 position] && (v50 = objc_msgSend(v4, "position") + 8, v50 <= objc_msgSend(v4, "length")))
+          v49 = [fromCopy position] + 8;
+          if (v49 >= [fromCopy position] && (v50 = objc_msgSend(fromCopy, "position") + 8, v50 <= objc_msgSend(fromCopy, "length")))
           {
-            v66 = [v4 data];
-            [v66 getBytes:&v76 range:{objc_msgSend(v4, "position"), 8}];
+            data8 = [fromCopy data];
+            [data8 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v62 = v76;
@@ -2996,18 +2996,18 @@ LABEL_118:
       while (1)
       {
         LOBYTE(v76) = 0;
-        v56 = [v4 position] + 1;
-        if (v56 >= [v4 position] && (v57 = objc_msgSend(v4, "position") + 1, v57 <= objc_msgSend(v4, "length")))
+        v56 = [fromCopy position] + 1;
+        if (v56 >= [fromCopy position] && (v57 = objc_msgSend(fromCopy, "position") + 1, v57 <= objc_msgSend(fromCopy, "length")))
         {
-          v58 = [v4 data];
-          [v58 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+          data9 = [fromCopy data];
+          [data9 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v55 |= (v76 & 0x7F) << v53;
@@ -3025,16 +3025,16 @@ LABEL_118:
         }
       }
 
-      v32 = (v55 != 0) & ~[v4 hasError];
+      v32 = (v55 != 0) & ~[fromCopy hasError];
 LABEL_102:
       v60 = 22;
 LABEL_103:
       *(&v5->super.super.isa + v60) = v32;
 LABEL_113:
-      v67 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v67 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v68 = [v6 copy];
@@ -3045,8 +3045,8 @@ LABEL_113:
   calculatedFeatures = v5->_calculatedFeatures;
   v5->_calculatedFeatures = v70;
 
-  v72 = [v4 hasError];
-  if (v72)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_115:
     v73 = 0;
@@ -3064,103 +3064,103 @@ LABEL_116:
 - (NSString)description
 {
   v21 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v30 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self highlightIdentifier];
+  highlightIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self highlightIdentifier];
   v32 = BMMessagesSharedWithYouFeedbackRankableSocialHighlightTypeAsString([(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self highlightType]);
   v3 = MEMORY[0x1E696AD98];
   [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self syndicationSecondsSinceReferenceDate];
   v29 = [v3 numberWithDouble:?];
-  v31 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sourceBundleID];
-  v20 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self applicationIdentifiers];
-  v28 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resourceURL];
-  v19 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sender];
-  v27 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self domainIdentifier];
-  v26 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self batchIdentifier];
-  v18 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self calculatedFeatures];
-  v25 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientIdentifier];
+  sourceBundleID = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sourceBundleID];
+  applicationIdentifiers = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self applicationIdentifiers];
+  resourceURL = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resourceURL];
+  sender = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self sender];
+  domainIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self domainIdentifier];
+  batchIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self batchIdentifier];
+  calculatedFeatures = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self calculatedFeatures];
+  clientIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientIdentifier];
   v4 = MEMORY[0x1E696AD98];
   [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self contentCreationSecondsSinceReferenceDate];
   v17 = [v4 numberWithDouble:?];
-  v24 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self groupPhotoPathDigest];
-  v23 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self displayName];
+  groupPhotoPathDigest = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self groupPhotoPathDigest];
+  displayName = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self displayName];
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMessagesSharedWithYouFeedbackRankableSocialHighlight isPrimary](self, "isPrimary")}];
-  v15 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self attributionIdentifier];
+  attributionIdentifier = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self attributionIdentifier];
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMessagesSharedWithYouFeedbackRankableSocialHighlight rank](self, "rank")}];
   v5 = MEMORY[0x1E696AD98];
   [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self score];
   v6 = [v5 numberWithDouble:?];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMessagesSharedWithYouFeedbackRankableSocialHighlight isConversationAutoDonating](self, "isConversationAutoDonating")}];
-  v8 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self originatingDeviceId];
+  originatingDeviceId = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self originatingDeviceId];
   v9 = MEMORY[0x1E696AD98];
   [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self rankingSecondsSinceReferenceDate];
   v10 = [v9 numberWithDouble:?];
-  v11 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resolvedUrl];
-  v12 = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientVariant];
-  v22 = [v21 initWithFormat:@"BMMessagesSharedWithYouFeedbackRankableSocialHighlight with highlightIdentifier: %@, highlightType: %@, syndicationSecondsSinceReferenceDate: %@, sourceBundleID: %@, applicationIdentifiers: %@, resourceURL: %@, sender: %@, domainIdentifier: %@, batchIdentifier: %@, calculatedFeatures: %@, clientIdentifier: %@, contentCreationSecondsSinceReferenceDate: %@, groupPhotoPathDigest: %@, displayName: %@, isPrimary: %@, attributionIdentifier: %@, rank: %@, score: %@, isConversationAutoDonating: %@, originatingDeviceId: %@, rankingSecondsSinceReferenceDate: %@, resolvedUrl: %@, clientVariant: %@", v30, v32, v29, v31, v20, v28, v19, v27, v26, v18, v25, v17, v24, v23, v16, v15, v14, v6, v7, v8, v10, v11, v12];
+  resolvedUrl = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self resolvedUrl];
+  clientVariant = [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self clientVariant];
+  v22 = [v21 initWithFormat:@"BMMessagesSharedWithYouFeedbackRankableSocialHighlight with highlightIdentifier: %@, highlightType: %@, syndicationSecondsSinceReferenceDate: %@, sourceBundleID: %@, applicationIdentifiers: %@, resourceURL: %@, sender: %@, domainIdentifier: %@, batchIdentifier: %@, calculatedFeatures: %@, clientIdentifier: %@, contentCreationSecondsSinceReferenceDate: %@, groupPhotoPathDigest: %@, displayName: %@, isPrimary: %@, attributionIdentifier: %@, rank: %@, score: %@, isConversationAutoDonating: %@, originatingDeviceId: %@, rankingSecondsSinceReferenceDate: %@, resolvedUrl: %@, clientVariant: %@", highlightIdentifier, v32, v29, sourceBundleID, applicationIdentifiers, resourceURL, sender, domainIdentifier, batchIdentifier, calculatedFeatures, clientIdentifier, v17, groupPhotoPathDigest, displayName, v16, attributionIdentifier, v14, v6, v7, originatingDeviceId, v10, resolvedUrl, clientVariant];
 
   return v22;
 }
 
-- (BMMessagesSharedWithYouFeedbackRankableSocialHighlight)initWithHighlightIdentifier:(id)a3 highlightType:(int)a4 syndicationSecondsSinceReferenceDate:(id)a5 sourceBundleID:(id)a6 applicationIdentifiers:(id)a7 resourceURL:(id)a8 sender:(id)a9 domainIdentifier:(id)a10 batchIdentifier:(id)a11 calculatedFeatures:(id)a12 clientIdentifier:(id)a13 contentCreationSecondsSinceReferenceDate:(id)a14 groupPhotoPathDigest:(id)a15 displayName:(id)a16 isPrimary:(id)a17 attributionIdentifier:(id)a18 rank:(id)a19 score:(id)a20 isConversationAutoDonating:(id)a21 originatingDeviceId:(id)a22 rankingSecondsSinceReferenceDate:(id)a23 resolvedUrl:(id)a24 clientVariant:(id)a25
+- (BMMessagesSharedWithYouFeedbackRankableSocialHighlight)initWithHighlightIdentifier:(id)identifier highlightType:(int)type syndicationSecondsSinceReferenceDate:(id)date sourceBundleID:(id)d applicationIdentifiers:(id)identifiers resourceURL:(id)l sender:(id)sender domainIdentifier:(id)self0 batchIdentifier:(id)self1 calculatedFeatures:(id)self2 clientIdentifier:(id)self3 contentCreationSecondsSinceReferenceDate:(id)self4 groupPhotoPathDigest:(id)self5 displayName:(id)self6 isPrimary:(id)self7 attributionIdentifier:(id)self8 rank:(id)self9 score:(id)score isConversationAutoDonating:(id)donating originatingDeviceId:(id)id rankingSecondsSinceReferenceDate:(id)sinceReferenceDate resolvedUrl:(id)url clientVariant:(id)variant
 {
-  v62 = a3;
-  v29 = a5;
-  v45 = a6;
-  v61 = a6;
-  v46 = a7;
-  v60 = a7;
-  v47 = a8;
-  v59 = a8;
-  v58 = a9;
-  v57 = a10;
-  v56 = a11;
-  v55 = a12;
-  v54 = a13;
-  v63 = a14;
-  v53 = a15;
-  v52 = a16;
-  v30 = a17;
-  v51 = a18;
-  v31 = a19;
-  v32 = a20;
-  v33 = a21;
-  v50 = a22;
-  v34 = a23;
-  v35 = a24;
-  v49 = a25;
+  identifierCopy = identifier;
+  dateCopy = date;
+  dCopy = d;
+  dCopy2 = d;
+  identifiersCopy = identifiers;
+  identifiersCopy2 = identifiers;
+  lCopy = l;
+  lCopy2 = l;
+  senderCopy = sender;
+  domainIdentifierCopy = domainIdentifier;
+  batchIdentifierCopy = batchIdentifier;
+  featuresCopy = features;
+  clientIdentifierCopy = clientIdentifier;
+  referenceDateCopy = referenceDate;
+  digestCopy = digest;
+  nameCopy = name;
+  primaryCopy = primary;
+  attributionIdentifierCopy = attributionIdentifier;
+  rankCopy = rank;
+  scoreCopy = score;
+  donatingCopy = donating;
+  idCopy = id;
+  sinceReferenceDateCopy = sinceReferenceDate;
+  urlCopy = url;
+  variantCopy = variant;
   v64.receiver = self;
   v64.super_class = BMMessagesSharedWithYouFeedbackRankableSocialHighlight;
   v36 = [(BMEventBase *)&v64 init];
   if (v36)
   {
     v36->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v36->_highlightIdentifier, a3);
-    v36->_highlightType = a4;
-    if (v29)
+    objc_storeStrong(&v36->_highlightIdentifier, identifier);
+    v36->_highlightType = type;
+    if (dateCopy)
     {
       v36->_hasSyndicationSecondsSinceReferenceDate = 1;
-      [v29 doubleValue];
+      [dateCopy doubleValue];
     }
 
     else
     {
-      v29 = 0;
+      dateCopy = 0;
       v36->_hasSyndicationSecondsSinceReferenceDate = 0;
       v37 = -1.0;
     }
 
     v36->_syndicationSecondsSinceReferenceDate = v37;
-    objc_storeStrong(&v36->_sourceBundleID, v45);
-    objc_storeStrong(&v36->_applicationIdentifiers, v46);
-    objc_storeStrong(&v36->_resourceURL, v47);
-    objc_storeStrong(&v36->_sender, a9);
-    objc_storeStrong(&v36->_domainIdentifier, a10);
-    objc_storeStrong(&v36->_batchIdentifier, a11);
-    objc_storeStrong(&v36->_calculatedFeatures, a12);
-    objc_storeStrong(&v36->_clientIdentifier, a13);
-    if (v63)
+    objc_storeStrong(&v36->_sourceBundleID, dCopy);
+    objc_storeStrong(&v36->_applicationIdentifiers, identifiersCopy);
+    objc_storeStrong(&v36->_resourceURL, lCopy);
+    objc_storeStrong(&v36->_sender, sender);
+    objc_storeStrong(&v36->_domainIdentifier, domainIdentifier);
+    objc_storeStrong(&v36->_batchIdentifier, batchIdentifier);
+    objc_storeStrong(&v36->_calculatedFeatures, features);
+    objc_storeStrong(&v36->_clientIdentifier, clientIdentifier);
+    if (referenceDateCopy)
     {
       v36->_hasContentCreationSecondsSinceReferenceDate = 1;
-      [v63 doubleValue];
+      [referenceDateCopy doubleValue];
     }
 
     else
@@ -3170,12 +3170,12 @@ LABEL_116:
     }
 
     v36->_contentCreationSecondsSinceReferenceDate = v38;
-    objc_storeStrong(&v36->_groupPhotoPathDigest, a15);
-    objc_storeStrong(&v36->_displayName, a16);
-    if (v30)
+    objc_storeStrong(&v36->_groupPhotoPathDigest, digest);
+    objc_storeStrong(&v36->_displayName, name);
+    if (primaryCopy)
     {
       v36->_hasIsPrimary = 1;
-      v36->_isPrimary = [v30 BOOLValue];
+      v36->_isPrimary = [primaryCopy BOOLValue];
     }
 
     else
@@ -3184,24 +3184,24 @@ LABEL_116:
       v36->_isPrimary = 0;
     }
 
-    objc_storeStrong(&v36->_attributionIdentifier, a18);
-    if (v31)
+    objc_storeStrong(&v36->_attributionIdentifier, attributionIdentifier);
+    if (rankCopy)
     {
       v36->_hasRank = 1;
-      v39 = [v31 unsignedIntValue];
+      unsignedIntValue = [rankCopy unsignedIntValue];
     }
 
     else
     {
-      v39 = 0;
+      unsignedIntValue = 0;
       v36->_hasRank = 0;
     }
 
-    v36->_rank = v39;
-    if (v32)
+    v36->_rank = unsignedIntValue;
+    if (scoreCopy)
     {
       v36->_hasScore = 1;
-      [v32 doubleValue];
+      [scoreCopy doubleValue];
     }
 
     else
@@ -3211,10 +3211,10 @@ LABEL_116:
     }
 
     v36->_score = v40;
-    if (v33)
+    if (donatingCopy)
     {
       v36->_hasIsConversationAutoDonating = 1;
-      v36->_isConversationAutoDonating = [v33 BOOLValue];
+      v36->_isConversationAutoDonating = [donatingCopy BOOLValue];
     }
 
     else
@@ -3223,11 +3223,11 @@ LABEL_116:
       v36->_isConversationAutoDonating = 0;
     }
 
-    objc_storeStrong(&v36->_originatingDeviceId, a22);
-    if (v34)
+    objc_storeStrong(&v36->_originatingDeviceId, id);
+    if (sinceReferenceDateCopy)
     {
       v36->_hasRankingSecondsSinceReferenceDate = 1;
-      [v34 doubleValue];
+      [sinceReferenceDateCopy doubleValue];
     }
 
     else
@@ -3237,8 +3237,8 @@ LABEL_116:
     }
 
     v36->_rankingSecondsSinceReferenceDate = v41;
-    objc_storeStrong(&v36->_resolvedUrl, a24);
-    objc_storeStrong(&v36->_clientVariant, a25);
+    objc_storeStrong(&v36->_resolvedUrl, url);
+    objc_storeStrong(&v36->_clientVariant, variant);
   }
 
   return v36;
@@ -3384,13 +3384,13 @@ id __65__BMMessagesSharedWithYouFeedbackRankableSocialHighlight_columns__block_i
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 4)
+  if (version == 4)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMMessagesSharedWithYouFeedbackRankableSocialHighlight alloc] initByReadFrom:v6];
     v8 = v7;

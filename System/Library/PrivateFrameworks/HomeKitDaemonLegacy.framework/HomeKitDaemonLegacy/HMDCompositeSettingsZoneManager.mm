@@ -1,11 +1,11 @@
 @interface HMDCompositeSettingsZoneManager
 + (id)logCategory;
 - (BOOL)isConfigured;
-- (HMDCompositeSettingsZoneManager)initWithDatabase:(id)a3 workQueue:(id)a4 zoneName:(id)a5 createZoneIfNotExists:(BOOL)a6;
-- (id)database:(id)a3 willRemoveZoneWithName:(id)a4 isPrivate:(BOOL)a5;
-- (void)database:(id)a3 didCreateZoneWithName:(id)a4 isPrivate:(BOOL)a5;
-- (void)database:(id)a3 didReceiveMessageWithUserInfo:(id)a4;
-- (void)database:(id)a3 didRemoveZoneWithName:(id)a4 isPrivate:(BOOL)a5;
+- (HMDCompositeSettingsZoneManager)initWithDatabase:(id)database workQueue:(id)queue zoneName:(id)name createZoneIfNotExists:(BOOL)exists;
+- (id)database:(id)database willRemoveZoneWithName:(id)name isPrivate:(BOOL)private;
+- (void)database:(id)database didCreateZoneWithName:(id)name isPrivate:(BOOL)private;
+- (void)database:(id)database didReceiveMessageWithUserInfo:(id)info;
+- (void)database:(id)database didRemoveZoneWithName:(id)name isPrivate:(BOOL)private;
 - (void)remove;
 @end
 
@@ -14,11 +14,11 @@
 - (void)remove
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCompositeSettingsZoneManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCompositeSettingsZoneManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -29,14 +29,14 @@
   }
 
   objc_autoreleasePoolPop(v4);
-  objc_initWeak(buf, v5);
-  v8 = [(HMDCompositeSettingsZoneManager *)v5 configurationFuture];
+  objc_initWeak(buf, selfCopy);
+  configurationFuture = [(HMDCompositeSettingsZoneManager *)selfCopy configurationFuture];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __41__HMDCompositeSettingsZoneManager_remove__block_invoke;
   v11[3] = &unk_2797310B0;
   objc_copyWeak(&v12, buf);
-  v9 = [v8 addSuccessBlock:v11];
+  v9 = [configurationFuture addSuccessBlock:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
@@ -143,13 +143,13 @@ uint64_t __41__HMDCompositeSettingsZoneManager_remove__block_invoke_19(uint64_t 
   return [v2 setLocalZone:0];
 }
 
-- (void)database:(id)a3 didReceiveMessageWithUserInfo:(id)a4
+- (void)database:(id)database didReceiveMessageWithUserInfo:(id)info
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  infoCopy = info;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -157,7 +157,7 @@ uint64_t __41__HMDCompositeSettingsZoneManager_remove__block_invoke_19(uint64_t 
     v13 = 138543618;
     v14 = v11;
     v15 = 2112;
-    v16 = v7;
+    v16 = infoCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@did receive message with  user info %@", &v13, 0x16u);
   }
 
@@ -165,21 +165,21 @@ uint64_t __41__HMDCompositeSettingsZoneManager_remove__block_invoke_19(uint64_t 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)database:(id)a3 didRemoveZoneWithName:(id)a4 isPrivate:(BOOL)a5
+- (void)database:(id)database didRemoveZoneWithName:(id)name isPrivate:(BOOL)private
 {
-  v6 = a4;
-  v7 = [(HMDCompositeSettingsZoneManager *)self zoneName];
-  v8 = [v6 isEqualToString:v7];
+  nameCopy = name;
+  zoneName = [(HMDCompositeSettingsZoneManager *)self zoneName];
+  v8 = [nameCopy isEqualToString:zoneName];
 
   if (v8)
   {
-    v9 = [(HMDCompositeSettingsZoneManager *)self workQueue];
+    workQueue = [(HMDCompositeSettingsZoneManager *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __76__HMDCompositeSettingsZoneManager_database_didRemoveZoneWithName_isPrivate___block_invoke;
     block[3] = &unk_279735D00;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -204,13 +204,13 @@ uint64_t __76__HMDCompositeSettingsZoneManager_database_didRemoveZoneWithName_is
   return result;
 }
 
-- (id)database:(id)a3 willRemoveZoneWithName:(id)a4 isPrivate:(BOOL)a5
+- (id)database:(id)database willRemoveZoneWithName:(id)name isPrivate:(BOOL)private
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  nameCopy = name;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -221,20 +221,20 @@ uint64_t __76__HMDCompositeSettingsZoneManager_database_didRemoveZoneWithName_is
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return futureWithNoResult;
 }
 
-- (void)database:(id)a3 didCreateZoneWithName:(id)a4 isPrivate:(BOOL)a5
+- (void)database:(id)database didCreateZoneWithName:(id)name isPrivate:(BOOL)private
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  nameCopy = name;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -250,32 +250,32 @@ uint64_t __76__HMDCompositeSettingsZoneManager_database_didRemoveZoneWithName_is
 
 - (BOOL)isConfigured
 {
-  v2 = [(HMDCompositeSettingsZoneManager *)self localZone];
-  v3 = v2 != 0;
+  localZone = [(HMDCompositeSettingsZoneManager *)self localZone];
+  v3 = localZone != 0;
 
   return v3;
 }
 
-- (HMDCompositeSettingsZoneManager)initWithDatabase:(id)a3 workQueue:(id)a4 zoneName:(id)a5 createZoneIfNotExists:(BOOL)a6
+- (HMDCompositeSettingsZoneManager)initWithDatabase:(id)database workQueue:(id)queue zoneName:(id)name createZoneIfNotExists:(BOOL)exists
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  databaseCopy = database;
+  queueCopy = queue;
+  nameCopy = name;
+  if (!databaseCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v12)
+  if (!queueCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = nameCopy;
+  if (!nameCopy)
   {
 LABEL_9:
     v25 = _HMFPreconditionFailure();
@@ -289,10 +289,10 @@ LABEL_9:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_database, a3);
-    objc_storeStrong(&v16->_workQueue, a4);
-    objc_storeStrong(&v16->_zoneName, a5);
-    v16->_createZoneIfNotExist = a6;
+    objc_storeStrong(&v15->_database, database);
+    objc_storeStrong(&v16->_workQueue, queue);
+    objc_storeStrong(&v16->_zoneName, name);
+    v16->_createZoneIfNotExist = exists;
     [(HMDDatabase *)v16->_database addDelegate:v16];
     v17 = MEMORY[0x277D2C900];
     v27[0] = MEMORY[0x277D85DD0];
@@ -302,8 +302,8 @@ LABEL_9:
     v18 = v16;
     v28 = v18;
     v19 = MEMORY[0x277D2C938];
-    v20 = [(HMDCompositeSettingsZoneManager *)v18 workQueue];
-    v21 = [v19 schedulerWithDispatchQueue:v20];
+    workQueue = [(HMDCompositeSettingsZoneManager *)v18 workQueue];
+    v21 = [v19 schedulerWithDispatchQueue:workQueue];
     v22 = [v17 futureWithBlock:v27 scheduler:v21];
     configurationFuture = v18->_configurationFuture;
     v18->_configurationFuture = v22;

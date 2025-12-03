@@ -1,8 +1,8 @@
 @interface HKHeartbeatSeriesBuilder
 - (HKHeartbeatSeriesBuilder)initWithHealthStore:(HKHealthStore *)healthStore device:(HKDevice *)device startDate:(NSDate *)startDate;
-- (void)_resourceQueue_addHeartbeatWithTimeIntervalSinceSeriesStartDate:(double)a3 precededByGap:(BOOL)a4 completion:(id)a5;
-- (void)_resourceQueue_addMetadata:(id)a3 completion:(id)a4;
-- (void)_resourceQueue_finishSeriesWithCompletion:(id)a3;
+- (void)_resourceQueue_addHeartbeatWithTimeIntervalSinceSeriesStartDate:(double)date precededByGap:(BOOL)gap completion:(id)completion;
+- (void)_resourceQueue_addMetadata:(id)metadata completion:(id)completion;
+- (void)_resourceQueue_finishSeriesWithCompletion:(id)completion;
 - (void)addHeartbeatWithTimeIntervalSinceSeriesStartDate:(NSTimeInterval)timeIntervalSinceStart precededByGap:(BOOL)precededByGap completion:(void *)completion;
 - (void)addMetadata:(NSDictionary *)metadata completion:(void *)completion;
 - (void)discard;
@@ -47,7 +47,7 @@
 - (void)addHeartbeatWithTimeIntervalSinceSeriesStartDate:(NSTimeInterval)timeIntervalSinceStart precededByGap:(BOOL)precededByGap completion:(void *)completion
 {
   v8 = completion;
-  v9 = [(HKSeriesBuilder *)self resourceQueue];
+  resourceQueue = [(HKSeriesBuilder *)self resourceQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __102__HKHeartbeatSeriesBuilder_addHeartbeatWithTimeIntervalSinceSeriesStartDate_precededByGap_completion___block_invoke;
@@ -57,14 +57,14 @@
   v11[4] = self;
   v12 = v8;
   v10 = v8;
-  dispatch_async(v9, v11);
+  dispatch_async(resourceQueue, v11);
 }
 
 - (void)addMetadata:(NSDictionary *)metadata completion:(void *)completion
 {
   v6 = metadata;
   v7 = completion;
-  v8 = [(HKSeriesBuilder *)self resourceQueue];
+  resourceQueue = [(HKSeriesBuilder *)self resourceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__HKHeartbeatSeriesBuilder_addMetadata_completion___block_invoke;
@@ -74,13 +74,13 @@
   v13 = v7;
   v9 = v7;
   v10 = v6;
-  dispatch_async(v8, block);
+  dispatch_async(resourceQueue, block);
 }
 
 - (void)finishSeriesWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(HKSeriesBuilder *)self resourceQueue];
+  resourceQueue = [(HKSeriesBuilder *)self resourceQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__HKHeartbeatSeriesBuilder_finishSeriesWithCompletion___block_invoke;
@@ -88,25 +88,25 @@
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, v7);
+  dispatch_async(resourceQueue, v7);
 }
 
-- (void)_resourceQueue_addHeartbeatWithTimeIntervalSinceSeriesStartDate:(double)a3 precededByGap:(BOOL)a4 completion:(id)a5
+- (void)_resourceQueue_addHeartbeatWithTimeIntervalSinceSeriesStartDate:(double)date precededByGap:(BOOL)gap completion:(id)completion
 {
-  v9 = a5;
-  v10 = [(HKSeriesBuilder *)self resourceQueue];
-  dispatch_assert_queue_V2(v10);
+  completionCopy = completion;
+  resourceQueue = [(HKSeriesBuilder *)self resourceQueue];
+  dispatch_assert_queue_V2(resourceQueue);
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __117__HKHeartbeatSeriesBuilder__resourceQueue_addHeartbeatWithTimeIntervalSinceSeriesStartDate_precededByGap_completion___block_invoke;
   aBlock[3] = &unk_1E7378BE8;
-  v11 = v9;
+  v11 = completionCopy;
   aBlock[4] = self;
   v21 = v11;
   v12 = _Block_copy(aBlock);
-  v13 = [(HKSeriesBuilder *)self state];
-  if ((v13 - 2) < 2 || !v13)
+  state = [(HKSeriesBuilder *)self state];
+  if ((state - 2) < 2 || !state)
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = objc_opt_class();
@@ -114,7 +114,7 @@
     goto LABEL_9;
   }
 
-  if (v13 == 1)
+  if (state == 1)
   {
     count = self->_count;
     if (count >= +[HKHeartbeatSeriesBuilder maximumCount])
@@ -123,11 +123,11 @@
       goto LABEL_10;
     }
 
-    if (a3 >= 0.0 && self->_lastHeartbeatTimeInterval < a3)
+    if (date >= 0.0 && self->_lastHeartbeatTimeInterval < date)
     {
-      HKHeartbeatSeriesAppendDatum(*&a3, a4, self->_mutableHeartbeats);
+      HKHeartbeatSeriesAppendDatum(*&date, gap, self->_mutableHeartbeats);
       ++self->_count;
-      self->_lastHeartbeatTimeInterval = a3;
+      self->_lastHeartbeatTimeInterval = date;
       v12[2](v12, 1, 0);
       goto LABEL_11;
     }
@@ -161,36 +161,36 @@ void __117__HKHeartbeatSeriesBuilder__resourceQueue_addHeartbeatWithTimeInterval
   }
 }
 
-- (void)_resourceQueue_addMetadata:(id)a3 completion:(id)a4
+- (void)_resourceQueue_addMetadata:(id)metadata completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HKSeriesBuilder *)self resourceQueue];
-  dispatch_assert_queue_V2(v9);
+  metadataCopy = metadata;
+  completionCopy = completion;
+  resourceQueue = [(HKSeriesBuilder *)self resourceQueue];
+  dispatch_assert_queue_V2(resourceQueue);
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__HKHeartbeatSeriesBuilder__resourceQueue_addMetadata_completion___block_invoke;
   aBlock[3] = &unk_1E7378BE8;
-  v10 = v8;
+  v10 = completionCopy;
   aBlock[4] = self;
   v17 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [(HKSeriesBuilder *)self state];
-  if ((v12 - 2) < 2 || !v12)
+  state = [(HKSeriesBuilder *)self state];
+  if ((state - 2) < 2 || !state)
   {
     v14 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"Cannot add metadata to an inactive builder"];
     goto LABEL_7;
   }
 
-  if (v12 == 1)
+  if (state == 1)
   {
     v15 = 0;
-    v13 = [v7 hk_validateMetadataKeysAndValuesAllowingPrivateMetadataKeys:1 applicationSDKVersionToken:851968 error:&v15];
+    v13 = [metadataCopy hk_validateMetadataKeysAndValuesAllowingPrivateMetadataKeys:1 applicationSDKVersionToken:851968 error:&v15];
     v14 = v15;
     if (v13)
     {
-      [(NSMutableDictionary *)self->_mutableMetadata addEntriesFromDictionary:v7];
+      [(NSMutableDictionary *)self->_mutableMetadata addEntriesFromDictionary:metadataCopy];
       v11[2](v11, 1, 0);
 LABEL_8:
 
@@ -222,22 +222,22 @@ void __66__HKHeartbeatSeriesBuilder__resourceQueue_addMetadata_completion___bloc
   }
 }
 
-- (void)_resourceQueue_finishSeriesWithCompletion:(id)a3
+- (void)_resourceQueue_finishSeriesWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(HKSeriesBuilder *)self resourceQueue];
-  dispatch_assert_queue_V2(v6);
+  completionCopy = completion;
+  resourceQueue = [(HKSeriesBuilder *)self resourceQueue];
+  dispatch_assert_queue_V2(resourceQueue);
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__HKHeartbeatSeriesBuilder__resourceQueue_finishSeriesWithCompletion___block_invoke;
   aBlock[3] = &unk_1E737A2F0;
-  v7 = v5;
+  v7 = completionCopy;
   aBlock[4] = self;
   v26 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [(HKSeriesBuilder *)self state];
-  if ((v9 - 2) < 2 || !v9)
+  state = [(HKSeriesBuilder *)self state];
+  if ((state - 2) < 2 || !state)
   {
     v19 = MEMORY[0x1E696ABC0];
     v20 = objc_opt_class();
@@ -245,7 +245,7 @@ void __66__HKHeartbeatSeriesBuilder__resourceQueue_addMetadata_completion___bloc
     goto LABEL_7;
   }
 
-  if (v9 == 1)
+  if (state == 1)
   {
     [(HKSeriesBuilder *)self setState:2];
     if (self->_count)
@@ -253,12 +253,12 @@ void __66__HKHeartbeatSeriesBuilder__resourceQueue_addMetadata_completion___bloc
       v10 = [MEMORY[0x1E695DF00] dateWithTimeInterval:self->_startDate sinceDate:self->_lastHeartbeatTimeInterval];
       v11 = [(NSMutableData *)self->_mutableHeartbeats copy];
       startDate = self->_startDate;
-      v13 = [(HKSeriesBuilder *)self configuration];
-      v14 = [v13 device];
+      configuration = [(HKSeriesBuilder *)self configuration];
+      device = [configuration device];
       v15 = [(NSMutableDictionary *)self->_mutableMetadata copy];
-      v16 = [HKHeartbeatSeriesSample _heartbeatSeriesSampleWithData:v11 startDate:startDate endDate:v10 device:v14 metadata:v15];
+      v16 = [HKHeartbeatSeriesSample _heartbeatSeriesSampleWithData:v11 startDate:startDate endDate:v10 device:device metadata:v15];
 
-      v17 = [(HKSeriesBuilder *)self store];
+      store = [(HKSeriesBuilder *)self store];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __70__HKHeartbeatSeriesBuilder__resourceQueue_finishSeriesWithCompletion___block_invoke_3;
@@ -266,7 +266,7 @@ void __66__HKHeartbeatSeriesBuilder__resourceQueue_addMetadata_completion___bloc
       v23 = v16;
       v24 = v8;
       v18 = v16;
-      [v17 saveObject:v18 withCompletion:v22];
+      [store saveObject:v18 withCompletion:v22];
 
 LABEL_8:
       goto LABEL_9;
@@ -320,13 +320,13 @@ uint64_t __70__HKHeartbeatSeriesBuilder__resourceQueue_finishSeriesWithCompletio
 
 - (void)discard
 {
-  v3 = [(HKSeriesBuilder *)self resourceQueue];
+  resourceQueue = [(HKSeriesBuilder *)self resourceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__HKHeartbeatSeriesBuilder_discard__block_invoke;
   block[3] = &unk_1E7376780;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(resourceQueue, block);
 }
 
 void __35__HKHeartbeatSeriesBuilder_discard__block_invoke(uint64_t a1)

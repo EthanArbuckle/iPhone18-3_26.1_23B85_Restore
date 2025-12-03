@@ -1,47 +1,47 @@
 @interface PKPaymentVerificationMethodsViewController
 - (BOOL)pkui_disablesAutomaticDismissalUponEnteringBackground;
-- (PKPaymentVerificationMethodsViewController)initWithVerificationController:(id)a3 fieldsModel:(id)a4;
-- (PKPaymentVerificationMethodsViewController)initWithVerificationController:(id)a3 verificationMethodGroups:(id)a4;
+- (PKPaymentVerificationMethodsViewController)initWithVerificationController:(id)controller fieldsModel:(id)model;
+- (PKPaymentVerificationMethodsViewController)initWithVerificationController:(id)controller verificationMethodGroups:(id)groups;
 - (PKPaymentVerificationMethodsViewControllerFlowItemDelegate)flowItemDelegate;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_newVerificationRequest;
-- (id)_requestErrorAlertController:(id)a3;
+- (id)_requestErrorAlertController:(id)controller;
 - (id)defaultHeaderViewSubTitle;
 - (id)defaultHeaderViewTitle;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)visibleFieldIdentifiers;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_configure;
 - (void)_handleVerificationFinished;
 - (void)_loadVerificationOptions;
 - (void)_terminateSetupFlow;
 - (void)_verifyLaterButtonPressed;
-- (void)handleNextButtonTapped:(id)a3;
+- (void)handleNextButtonTapped:(id)tapped;
 - (void)loadView;
-- (void)showActivitySpinnerWithTitle:(id)a3 subtitle:(id)a4;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)showActivitySpinnerWithTitle:(id)title subtitle:(id)subtitle;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPaymentVerificationMethodsViewController
 
-- (PKPaymentVerificationMethodsViewController)initWithVerificationController:(id)a3 fieldsModel:(id)a4
+- (PKPaymentVerificationMethodsViewController)initWithVerificationController:(id)controller fieldsModel:(id)model
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentVerificationController *)v6 webService];
+  controllerCopy = controller;
+  modelCopy = model;
+  webService = [(PKPaymentVerificationController *)controllerCopy webService];
   v15.receiver = self;
   v15.super_class = PKPaymentVerificationMethodsViewController;
-  v9 = [(PKPaymentSetupFieldsViewController *)&v15 initWithWebService:v8 context:[(PKPaymentVerificationController *)v6 context] setupDelegate:0 setupFieldsModel:v7];
+  v9 = [(PKPaymentSetupFieldsViewController *)&v15 initWithWebService:webService context:[(PKPaymentVerificationController *)controllerCopy context] setupDelegate:0 setupFieldsModel:modelCopy];
 
   verificationController = v9->_verificationController;
-  v9->_verificationController = v6;
-  v11 = v6;
+  v9->_verificationController = controllerCopy;
+  v11 = controllerCopy;
 
   v12 = [[PKPaymentSetupVerificationMethodTableController alloc] initWithVerificationController:v11];
   methodTableController = v9->_methodTableController;
@@ -50,14 +50,14 @@
   return v9;
 }
 
-- (PKPaymentVerificationMethodsViewController)initWithVerificationController:(id)a3 verificationMethodGroups:(id)a4
+- (PKPaymentVerificationMethodsViewController)initWithVerificationController:(id)controller verificationMethodGroups:(id)groups
 {
-  v6 = a4;
-  v7 = [(PKPaymentVerificationMethodsViewController *)self initWithVerificationController:a3];
+  groupsCopy = groups;
+  v7 = [(PKPaymentVerificationMethodsViewController *)self initWithVerificationController:controller];
   v8 = v7;
   if (v7)
   {
-    [(PKPaymentSetupVerificationMethodTableController *)v7->_methodTableController setVerificationMethodGroups:v6];
+    [(PKPaymentSetupVerificationMethodTableController *)v7->_methodTableController setVerificationMethodGroups:groupsCopy];
   }
 
   return v8;
@@ -68,11 +68,11 @@
   v12.receiver = self;
   v12.super_class = PKPaymentVerificationMethodsViewController;
   [(PKPaymentSetupFieldsViewController *)&v12 loadView];
-  v3 = [(PKPaymentSetupFieldsViewController *)self headerView];
-  v4 = [(PKPaymentVerificationController *)self->_verificationController passSnapshot];
-  if (v4)
+  headerView = [(PKPaymentSetupFieldsViewController *)self headerView];
+  passSnapshot = [(PKPaymentVerificationController *)self->_verificationController passSnapshot];
+  if (passSnapshot)
   {
-    v5 = v3 == 0;
+    v5 = headerView == 0;
   }
 
   else
@@ -83,72 +83,72 @@
   if (!v5)
   {
     v6 = PKUIGetMinScreenWidthType();
-    [v3 setPassSnapshot:v4 withSize:0 animated:0 needsCorners:{dbl_1BE1148A0[v6 == 0], dbl_1BE1148B0[v6 == 0]}];
+    [headerView setPassSnapshot:passSnapshot withSize:0 animated:0 needsCorners:{dbl_1BE1148A0[v6 == 0], dbl_1BE1148B0[v6 == 0]}];
   }
 
-  v7 = [(PKPaymentSetupTableViewController *)self dockView];
-  v8 = [v7 footerView];
-  v9 = [v8 skipCardButton];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  footerView = [dockView footerView];
+  skipCardButton = [footerView skipCardButton];
   v10 = PKLocalizedPaymentString(&cfstr_ActivationVeri.isa);
-  [v9 setTitle:v10 forState:0];
+  [skipCardButton setTitle:v10 forState:0];
 
-  [v9 addTarget:self action:sel__verifyLaterButtonPressed forControlEvents:0x2000];
+  [skipCardButton addTarget:self action:sel__verifyLaterButtonPressed forControlEvents:0x2000];
   [(PKPaymentSetupFieldsViewController *)self setPreferPrimaryButtonInNavigationBar:0];
   v11 = PKLocalizedPaymentString(&cfstr_Next.isa);
   [(PKPaymentSetupFieldsViewController *)self setPrimaryButtonTitleText:v11];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentVerificationMethodsViewController;
-  [(PKPaymentSetupFieldsViewController *)&v4 viewWillAppear:a3];
+  [(PKPaymentSetupFieldsViewController *)&v4 viewWillAppear:appear];
   [(PKPaymentSetupFieldsViewController *)self setHidesBackButton:1 animated:0];
   [(PKPaymentVerificationMethodsViewController *)self _configure];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentVerificationMethodsViewController;
-  [(PKPaymentSetupFieldsViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupFieldsViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PKPaymentVerificationMethodsViewController;
-  [(PKPaymentVerificationMethodsViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-  [v4 resetAllPaymentSetupFieldValues];
+  [(PKPaymentVerificationMethodsViewController *)&v5 viewDidDisappear:disappear];
+  fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+  [fieldsModel resetAllPaymentSetupFieldValues];
 }
 
 - (void)_configure
 {
-  v3 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-  v4 = [v3 visiblePaymentSetupFields];
-  if ([v4 count])
+  fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+  visiblePaymentSetupFields = [fieldsModel visiblePaymentSetupFields];
+  if ([visiblePaymentSetupFields count])
   {
   }
 
   else
   {
-    v5 = [(PKPaymentSetupVerificationMethodTableController *)self->_methodTableController verificationMethodGroups];
-    v6 = [v5 count];
+    verificationMethodGroups = [(PKPaymentSetupVerificationMethodTableController *)self->_methodTableController verificationMethodGroups];
+    v6 = [verificationMethodGroups count];
 
     if (!v6)
     {
-      v7 = [(PKPaymentVerificationMethodsViewController *)self defaultHeaderViewTitle];
-      [(PKPaymentVerificationMethodsViewController *)self showActivitySpinnerWithTitle:v7 subtitle:&stru_1F3BD7330];
+      defaultHeaderViewTitle = [(PKPaymentVerificationMethodsViewController *)self defaultHeaderViewTitle];
+      [(PKPaymentVerificationMethodsViewController *)self showActivitySpinnerWithTitle:defaultHeaderViewTitle subtitle:&stru_1F3BD7330];
 
-      v8 = [(PKPaymentSetupTableViewController *)self dockView];
-      [v8 setButtonsEnabled:0];
+      dockView = [(PKPaymentSetupTableViewController *)self dockView];
+      [dockView setButtonsEnabled:0];
 
       objc_initWeak(&location, self);
       v9 = MEMORY[0x1E69B8EE0];
-      v10 = [(PKPaymentVerificationController *)self->_verificationController pass];
-      v11 = [v9 requestWithPass:v10];
+      pass = [(PKPaymentVerificationController *)self->_verificationController pass];
+      v11 = [v9 requestWithPass:pass];
 
       verificationController = self->_verificationController;
       v13[0] = MEMORY[0x1E69E9820];
@@ -264,24 +264,24 @@ void __56__PKPaymentVerificationMethodsViewController__configure__block_invoke_2
 
 - (void)_loadVerificationOptions
 {
-  v3 = [(PKPaymentVerificationController *)self->_verificationController verificationRecord];
-  self->_verificationStatus = [v3 verificationStatus];
+  verificationRecord = [(PKPaymentVerificationController *)self->_verificationController verificationRecord];
+  self->_verificationStatus = [verificationRecord verificationStatus];
 
-  v4 = [(PKPaymentVerificationMethodsViewController *)self defaultHeaderViewTitle];
-  v5 = [(PKPaymentVerificationMethodsViewController *)self defaultHeaderViewSubTitle];
-  [(PKPaymentSetupFieldsViewController *)self setHeaderViewTitle:v4 subtitle:v5];
+  defaultHeaderViewTitle = [(PKPaymentVerificationMethodsViewController *)self defaultHeaderViewTitle];
+  defaultHeaderViewSubTitle = [(PKPaymentVerificationMethodsViewController *)self defaultHeaderViewSubTitle];
+  [(PKPaymentSetupFieldsViewController *)self setHeaderViewTitle:defaultHeaderViewTitle subtitle:defaultHeaderViewSubTitle];
 
-  v6 = [(PKPaymentSetupTableViewController *)self dockView];
-  [v6 setButtonsEnabled:1];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  [dockView setButtonsEnabled:1];
 
-  v7 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView reloadData];
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [(PKPaymentVerificationController *)self->_verificationController verificationRecord];
-  v9 = [v8 methodGroups];
+  verificationRecord2 = [(PKPaymentVerificationController *)self->_verificationController verificationRecord];
+  methodGroups = [verificationRecord2 methodGroups];
 
-  v10 = [v9 pk_arrayByApplyingBlock:&__block_literal_global_24];
+  v10 = [methodGroups pk_arrayByApplyingBlock:&__block_literal_global_24];
   v11 = [v10 componentsJoinedByString:{@", "}];
   [v12 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69BB438]];
 
@@ -302,15 +302,15 @@ id __70__PKPaymentVerificationMethodsViewController__loadVerificationOptions__bl
   verificationStatus = self->_verificationStatus;
   if ((verificationStatus - 2) < 2 || verificationStatus == 4000)
   {
-    v3 = [(PKPaymentSetupVerificationMethodTableController *)self->_methodTableController defaultHeaderViewTitle];
+    defaultHeaderViewTitle = [(PKPaymentSetupVerificationMethodTableController *)self->_methodTableController defaultHeaderViewTitle];
   }
 
   else
   {
-    v5 = [(PKPaymentVerificationController *)self->_verificationController pass];
-    v6 = [v5 supportsBarcodePayment];
+    pass = [(PKPaymentVerificationController *)self->_verificationController pass];
+    supportsBarcodePayment = [pass supportsBarcodePayment];
 
-    if (v6)
+    if (supportsBarcodePayment)
     {
       PKLocalizedAquamanString(&cfstr_AccountVerific.isa);
     }
@@ -319,10 +319,10 @@ id __70__PKPaymentVerificationMethodsViewController__loadVerificationOptions__bl
     {
       PKLocalizedPaymentString(&cfstr_CardVerificati.isa);
     }
-    v3 = ;
+    defaultHeaderViewTitle = ;
   }
 
-  return v3;
+  return defaultHeaderViewTitle;
 }
 
 - (id)defaultHeaderViewSubTitle
@@ -330,33 +330,33 @@ id __70__PKPaymentVerificationMethodsViewController__loadVerificationOptions__bl
   verificationStatus = self->_verificationStatus;
   if ((verificationStatus - 2) < 2 || verificationStatus == 4000)
   {
-    v3 = [(PKPaymentSetupVerificationMethodTableController *)self->_methodTableController defaultHeaderViewSubTitle];
+    defaultHeaderViewSubTitle = [(PKPaymentSetupVerificationMethodTableController *)self->_methodTableController defaultHeaderViewSubTitle];
   }
 
   else
   {
-    v3 = PKLocalizedPaymentString(&cfstr_EnterVerificat.isa);
+    defaultHeaderViewSubTitle = PKLocalizedPaymentString(&cfstr_EnterVerificat.isa);
   }
 
-  return v3;
+  return defaultHeaderViewSubTitle;
 }
 
 - (id)visibleFieldIdentifiers
 {
-  v2 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-  v3 = [v2 visibleSetupFieldIdentifiers];
+  fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+  visibleSetupFieldIdentifiers = [fieldsModel visibleSetupFieldIdentifiers];
 
-  return v3;
+  return visibleSetupFieldIdentifiers;
 }
 
-- (void)showActivitySpinnerWithTitle:(id)a3 subtitle:(id)a4
+- (void)showActivitySpinnerWithTitle:(id)title subtitle:(id)subtitle
 {
-  [(PKPaymentSetupFieldsViewController *)self setHeaderViewTitle:a3 subtitle:a4];
+  [(PKPaymentSetupFieldsViewController *)self setHeaderViewTitle:title subtitle:subtitle];
 
   [(PKPaymentVerificationMethodsViewController *)self showLoadingUI:1 animated:1];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_verificationStatus == 1)
   {
@@ -364,18 +364,18 @@ id __70__PKPaymentVerificationMethodsViewController__loadVerificationOptions__bl
     v9 = v4;
     v7.receiver = self;
     v7.super_class = PKPaymentVerificationMethodsViewController;
-    return [(PKPaymentSetupFieldsViewController *)&v7 numberOfSectionsInTableView:a3];
+    return [(PKPaymentSetupFieldsViewController *)&v7 numberOfSectionsInTableView:view];
   }
 
   else
   {
     methodTableController = self->_methodTableController;
 
-    return [(PKPaymentSetupVerificationMethodTableController *)methodTableController numberOfSectionsInTableView:a3];
+    return [(PKPaymentSetupVerificationMethodTableController *)methodTableController numberOfSectionsInTableView:view];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (self->_verificationStatus == 1)
   {
@@ -383,18 +383,18 @@ id __70__PKPaymentVerificationMethodsViewController__loadVerificationOptions__bl
     v10 = v5;
     v8.receiver = self;
     v8.super_class = PKPaymentVerificationMethodsViewController;
-    return [(PKPaymentSetupFieldsViewController *)&v8 tableView:a3 numberOfRowsInSection:a4];
+    return [(PKPaymentSetupFieldsViewController *)&v8 tableView:view numberOfRowsInSection:section];
   }
 
   else
   {
     methodTableController = self->_methodTableController;
 
-    return [(PKPaymentSetupVerificationMethodTableController *)methodTableController tableView:a3 numberOfRowsInSection:a4];
+    return [(PKPaymentSetupVerificationMethodTableController *)methodTableController tableView:view numberOfRowsInSection:section];
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   if (self->_verificationStatus == 1)
   {
@@ -402,37 +402,37 @@ id __70__PKPaymentVerificationMethodsViewController__loadVerificationOptions__bl
     v10 = v5;
     v8.receiver = self;
     v8.super_class = PKPaymentVerificationMethodsViewController;
-    [(PKPaymentSetupFieldsViewController *)&v8 tableView:a3 heightForRowAtIndexPath:a4];
+    [(PKPaymentSetupFieldsViewController *)&v8 tableView:view heightForRowAtIndexPath:path];
   }
 
   else
   {
     methodTableController = self->_methodTableController;
 
-    [(PKPaymentSetupVerificationMethodTableController *)methodTableController tableView:a3 heightForRowAtIndexPath:a4];
+    [(PKPaymentSetupVerificationMethodTableController *)methodTableController tableView:view heightForRowAtIndexPath:path];
   }
 
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   if (self->_verificationStatus == 1)
   {
     v6.receiver = self;
     v6.super_class = PKPaymentVerificationMethodsViewController;
-    v4 = [(PKPaymentSetupFieldsViewController *)&v6 tableView:a3 cellForRowAtIndexPath:a4];
+    v4 = [(PKPaymentSetupFieldsViewController *)&v6 tableView:view cellForRowAtIndexPath:path];
   }
 
   else
   {
-    v4 = [(PKPaymentSetupVerificationMethodTableController *)self->_methodTableController tableView:a3 cellForRowAtIndexPath:a4];
+    v4 = [(PKPaymentSetupVerificationMethodTableController *)self->_methodTableController tableView:view cellForRowAtIndexPath:path];
   }
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   if (self->_verificationStatus == 1)
   {
@@ -440,18 +440,18 @@ id __70__PKPaymentVerificationMethodsViewController__loadVerificationOptions__bl
     v9 = v5;
     v7.receiver = self;
     v7.super_class = PKPaymentVerificationMethodsViewController;
-    [(PKPaymentSetupFieldsViewController *)&v7 tableView:a3 didSelectRowAtIndexPath:a4];
+    [(PKPaymentSetupFieldsViewController *)&v7 tableView:view didSelectRowAtIndexPath:path];
   }
 
   else
   {
     methodTableController = self->_methodTableController;
 
-    [(PKPaymentSetupVerificationMethodTableController *)methodTableController tableView:a3 didSelectRowAtIndexPath:a4];
+    [(PKPaymentSetupVerificationMethodTableController *)methodTableController tableView:view didSelectRowAtIndexPath:path];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   if (self->_verificationStatus == 1)
   {
@@ -459,14 +459,14 @@ id __70__PKPaymentVerificationMethodsViewController__loadVerificationOptions__bl
     v10 = v6;
     v8.receiver = self;
     v8.super_class = PKPaymentVerificationMethodsViewController;
-    [(PKPaymentSetupFieldsViewController *)&v8 tableView:a3 willDisplayCell:a4 forRowAtIndexPath:a5];
+    [(PKPaymentSetupFieldsViewController *)&v8 tableView:view willDisplayCell:cell forRowAtIndexPath:path];
   }
 
   else
   {
     methodTableController = self->_methodTableController;
 
-    [(PKPaymentSetupVerificationMethodTableController *)methodTableController tableView:a3 willDisplayCell:a4 forRowAtIndexPath:a5];
+    [(PKPaymentSetupVerificationMethodTableController *)methodTableController tableView:view willDisplayCell:cell forRowAtIndexPath:path];
   }
 }
 
@@ -492,7 +492,7 @@ id __70__PKPaymentVerificationMethodsViewController__loadVerificationOptions__bl
     _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "Terminating setup flow", v8, 2u);
   }
 
-  v4 = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
+  setupDelegate = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
   WeakRetained = objc_loadWeakRetained(&self->_flowItemDelegate);
 
   if (WeakRetained)
@@ -501,50 +501,50 @@ id __70__PKPaymentVerificationMethodsViewController__loadVerificationOptions__bl
     [v6 verificationMethodsViewControllerDidFinish:self];
   }
 
-  else if (v4)
+  else if (setupDelegate)
   {
-    [v4 viewControllerDidTerminateSetupFlow:self];
+    [setupDelegate viewControllerDidTerminateSetupFlow:self];
     [(PKPaymentSetupFieldsViewController *)self setHidesBackButton:0 animated:0];
   }
 
   else
   {
-    v7 = [(PKPaymentVerificationMethodsViewController *)self presentingViewController];
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKPaymentVerificationMethodsViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)handleNextButtonTapped:(id)a3
+- (void)handleNextButtonTapped:(id)tapped
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [(PKPaymentVerificationMethodsViewController *)self _newVerificationRequest];
-  v5 = [v4 methodGroup];
+  _newVerificationRequest = [(PKPaymentVerificationMethodsViewController *)self _newVerificationRequest];
+  methodGroup = [_newVerificationRequest methodGroup];
   v6 = PKLogFacilityTypeGetObject();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (methodGroup)
   {
     if (v7)
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = methodGroup;
       _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Performing verification update request for method group: %@", &v13, 0xCu);
     }
 
     [(PKPaymentVerificationMethodsViewController *)self showActivitySpinnerWithTitle:0 subtitle:0];
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v9 = [v5 methods];
-    v10 = [v9 pk_createArrayByApplyingBlock:&__block_literal_global_189];
+    methods = [methodGroup methods];
+    v10 = [methods pk_createArrayByApplyingBlock:&__block_literal_global_189];
     v11 = [v10 componentsJoinedByString:@"|"];
 
     [v8 safelySetObject:v11 forKey:*MEMORY[0x1E69BB430]];
     [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:0 context:v8];
-    [(PKPaymentVerificationController *)self->_verificationController setActiveVerificationMethodGroup:v5];
+    [(PKPaymentVerificationController *)self->_verificationController setActiveVerificationMethodGroup:methodGroup];
     WeakRetained = objc_loadWeakRetained(&self->_flowItemDelegate);
 
     if (WeakRetained)
     {
       v6 = objc_loadWeakRetained(&self->_flowItemDelegate);
-      [v6 performVerificationForViewController:self methodGroup:v5];
+      [v6 performVerificationForViewController:self methodGroup:methodGroup];
     }
 
     else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -565,8 +565,8 @@ id __70__PKPaymentVerificationMethodsViewController__loadVerificationOptions__bl
 
 - (BOOL)pkui_disablesAutomaticDismissalUponEnteringBackground
 {
-  v2 = [(PKPaymentVerificationController *)self->_verificationController verificationRecord];
-  v3 = [v2 verificationStatus] == 1;
+  verificationRecord = [(PKPaymentVerificationController *)self->_verificationController verificationRecord];
+  v3 = [verificationRecord verificationStatus] == 1;
 
   return v3;
 }
@@ -584,58 +584,58 @@ id __70__PKPaymentVerificationMethodsViewController__loadVerificationOptions__bl
   else
   {
     v6 = objc_alloc_init(MEMORY[0x1E69B8EF0]);
-    v7 = [(PKPaymentVerificationController *)self->_verificationController pass];
-    [v6 setPass:v7];
+    pass = [(PKPaymentVerificationController *)self->_verificationController pass];
+    [v6 setPass:pass];
 
-    v8 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+    fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
     v9 = *MEMORY[0x1E69BC258];
-    v10 = [v8 submissionValuesForDestination:*MEMORY[0x1E69BC258]];
+    v10 = [fieldsModel submissionValuesForDestination:*MEMORY[0x1E69BC258]];
 
     [v6 setDynamicFieldParameters:v10];
-    v11 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-    v12 = [v11 secureSubmissionValuesForDestination:v9];
+    fieldsModel2 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+    v12 = [fieldsModel2 secureSubmissionValuesForDestination:v9];
 
     [v6 setEncryptedDynamicFieldParameters:v12];
     return v6;
   }
 }
 
-- (id)_requestErrorAlertController:(id)a3
+- (id)_requestErrorAlertController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = PKLocalizedPaymentString(&cfstr_ActivationNotA.isa);
   v6 = PKLocalizedPaymentString(&cfstr_ActivationNotA_0.isa);
-  v7 = [v4 domain];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E696A978]];
+  domain = [controllerCopy domain];
+  v8 = [domain isEqualToString:*MEMORY[0x1E696A978]];
 
   if (v8)
   {
-    v9 = PKLocalizedPaymentString(&cfstr_CouldNotConnec.isa);
+    localizedFailureReason3 = PKLocalizedPaymentString(&cfstr_CouldNotConnec.isa);
 
-    v10 = PKLocalizedPaymentString(&cfstr_CouldNotConnec_0.isa);
+    localizedRecoverySuggestion = PKLocalizedPaymentString(&cfstr_CouldNotConnec_0.isa);
 LABEL_10:
-    v15 = v6;
-    v5 = v9;
-    v6 = v10;
+    domain3 = v6;
+    v5 = localizedFailureReason3;
+    v6 = localizedRecoverySuggestion;
     goto LABEL_11;
   }
 
-  v11 = [v4 domain];
-  v12 = [v11 isEqualToString:*MEMORY[0x1E69BC6F0]];
+  domain2 = [controllerCopy domain];
+  v12 = [domain2 isEqualToString:*MEMORY[0x1E69BC6F0]];
 
   if (!v12)
   {
-    v15 = [v4 domain];
-    if (![v15 isEqualToString:*MEMORY[0x1E69BC300]])
+    domain3 = [controllerCopy domain];
+    if (![domain3 isEqualToString:*MEMORY[0x1E69BC300]])
     {
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v16 = [v4 localizedFailureReason];
+    localizedFailureReason = [controllerCopy localizedFailureReason];
 
-    if (!v16)
+    if (!localizedFailureReason)
     {
 LABEL_12:
       v17 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v5 message:v6 preferredStyle:1];
@@ -658,27 +658,27 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v13 = [v4 code];
-  if ((v13 - 2) < 4)
+  code = [controllerCopy code];
+  if ((code - 2) < 4)
   {
 LABEL_5:
-    v14 = [v4 localizedFailureReason];
+    localizedFailureReason2 = [controllerCopy localizedFailureReason];
 
-    if (!v14)
+    if (!localizedFailureReason2)
     {
       goto LABEL_12;
     }
 
 LABEL_9:
-    v9 = [v4 localizedFailureReason];
+    localizedFailureReason3 = [controllerCopy localizedFailureReason];
 
-    v10 = [v4 localizedRecoverySuggestion];
+    localizedRecoverySuggestion = [controllerCopy localizedRecoverySuggestion];
     goto LABEL_10;
   }
 
-  if (v13 != 1)
+  if (code != 1)
   {
-    if (v13)
+    if (code)
     {
       goto LABEL_12;
     }
@@ -698,18 +698,18 @@ void __75__PKPaymentVerificationMethodsViewController__requestErrorAlertControll
   [WeakRetained _handleVerificationFinished];
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(PKPaymentVerificationMethodsViewController *)self view:a3];
-  [v6 setUserInteractionEnabled:v4 ^ 1];
+  iCopy = i;
+  v6 = [(PKPaymentVerificationMethodsViewController *)self view:i];
+  [v6 setUserInteractionEnabled:iCopy ^ 1];
 
-  v8 = [(PKPaymentSetupTableViewController *)self dockView];
-  [v8 setButtonsEnabled:v4 ^ 1];
-  if ([v8 hasPrimaryButton])
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  [dockView setButtonsEnabled:iCopy ^ 1];
+  if ([dockView hasPrimaryButton])
   {
-    v7 = [v8 primaryButton];
-    [v7 setShowSpinner:v4];
+    primaryButton = [dockView primaryButton];
+    [primaryButton setShowSpinner:iCopy];
   }
 }
 

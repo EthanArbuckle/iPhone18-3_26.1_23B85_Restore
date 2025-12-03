@@ -1,46 +1,46 @@
 @interface BLSHEngineRenderFlipbookSession
-- (BLSHEngineRenderFlipbookSession)initWithDelegate:(id)a3 flipbook:(id)a4 presentation:(id)a5 osInterfaceProvider:(id)a6;
+- (BLSHEngineRenderFlipbookSession)initWithDelegate:(id)delegate flipbook:(id)flipbook presentation:(id)presentation osInterfaceProvider:(id)provider;
 - (NSArray)renderedFrames;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)telemetryDataWithEndTime:(double)a3 reasonEnded:(id)a4 preventedSleepDuration:(double)a5;
+- (id)telemetryDataWithEndTime:(double)time reasonEnded:(id)ended preventedSleepDuration:(double)duration;
 - (uint64_t)lock_memoryUsage;
 - (unint64_t)count;
 - (unint64_t)memoryUsage;
-- (void)_lock_scheduleTimeoutForSpecifier:(uint64_t)a1;
+- (void)_lock_scheduleTimeoutForSpecifier:(uint64_t)specifier;
 - (void)dealloc;
-- (void)environment:(void *)a3 didUpdateToSpecifier:;
+- (void)environment:(void *)environment didUpdateToSpecifier:;
 - (void)invalidate;
-- (void)prepareAndRenderFrameSpecifier:(id)a3;
-- (void)renderFrameSpecifier:(void *)a3 timedOutEnvironments:;
-- (void)timeoutTimerFiredForSpecifier:(uint64_t)a1;
+- (void)prepareAndRenderFrameSpecifier:(id)specifier;
+- (void)renderFrameSpecifier:(void *)specifier timedOutEnvironments:;
+- (void)timeoutTimerFiredForSpecifier:(uint64_t)specifier;
 @end
 
 @implementation BLSHEngineRenderFlipbookSession
 
-- (BLSHEngineRenderFlipbookSession)initWithDelegate:(id)a3 flipbook:(id)a4 presentation:(id)a5 osInterfaceProvider:(id)a6
+- (BLSHEngineRenderFlipbookSession)initWithDelegate:(id)delegate flipbook:(id)flipbook presentation:(id)presentation osInterfaceProvider:(id)provider
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  delegateCopy = delegate;
+  flipbookCopy = flipbook;
+  presentationCopy = presentation;
+  providerCopy = provider;
   v35.receiver = self;
   v35.super_class = BLSHEngineRenderFlipbookSession;
   v14 = [(BLSHEngineRenderFlipbookSession *)&v35 init];
   v15 = v14;
   if (v14)
   {
-    v27 = v13;
-    v28 = v11;
-    objc_storeStrong(&v14->_flipbook, a4);
-    objc_storeStrong(&v15->_presentation, a5);
+    v27 = providerCopy;
+    v28 = flipbookCopy;
+    objc_storeStrong(&v14->_flipbook, flipbook);
+    objc_storeStrong(&v15->_presentation, presentation);
     v15->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v15->_lock_delegate, v10);
-    objc_storeStrong(&v15->_osInterfaceProvider, a6);
-    v16 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v15->_lock_delegate, delegateCopy);
+    objc_storeStrong(&v15->_osInterfaceProvider, provider);
+    array = [MEMORY[0x277CBEB18] array];
     lock_renderedFrames = v15->_lock_renderedFrames;
-    v15->_lock_renderedFrames = v16;
+    v15->_lock_renderedFrames = array;
 
     BSContinuousMachTimeNow();
     v15->_sessionStartTime = v18;
@@ -48,8 +48,8 @@
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v19 = [v12 presentationEntries];
-    v20 = [v19 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    presentationEntries = [presentationCopy presentationEntries];
+    v20 = [presentationEntries countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v20)
     {
       v21 = v20;
@@ -60,17 +60,17 @@
         {
           if (*v32 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(presentationEntries);
           }
 
-          v24 = [*(*(&v31 + 1) + 8 * i) environment];
+          environment = [*(*(&v31 + 1) + 8 * i) environment];
           if (objc_opt_respondsToSelector())
           {
-            [v24 willBeginRenderSession:v15];
+            [environment willBeginRenderSession:v15];
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v21 = [presentationEntries countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v21);
@@ -81,8 +81,8 @@
     v15->_stateHandler = os_state_add_handler();
     objc_destroyWeak(&v29);
     objc_destroyWeak(&location);
-    v13 = v27;
-    v11 = v28;
+    providerCopy = v27;
+    flipbookCopy = v28;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -103,7 +103,7 @@ uint64_t __94__BLSHEngineRenderFlipbookSession_initWithDelegate_flipbook_present
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_4();
     v4 = NSStringFromClass(v3);
@@ -120,9 +120,9 @@ uint64_t __94__BLSHEngineRenderFlipbookSession_initWithDelegate_flipbook_present
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendUnsignedInteger:-[BLSHEngineRenderFlipbookSession count](self withName:{"count"), @"renderedCount"}];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (NSString)debugDescription
@@ -144,14 +144,14 @@ uint64_t __94__BLSHEngineRenderFlipbookSession_initWithDelegate_flipbook_present
   v12 = [v3 appendDouble:@"accumulatedRenderSeconds" withName:3 decimalPrecision:self->_lock_accumulatedRenderDuration];
   v13 = [v3 appendObject:self->_lock_preparingSpecifier withName:@"preparingSpecifier" skipIfNil:1];
   v14 = [v3 appendObject:self->_lock_timeoutTimer withName:@"timeoutTimer" skipIfNil:1];
-  v15 = [(NSMutableSet *)self->_lock_pendingEnvironments allObjects];
-  [v3 appendArraySection:v15 withName:@"pendingEnvironments" multilinePrefix:@"      " skipIfEmpty:1];
+  allObjects = [(NSMutableSet *)self->_lock_pendingEnvironments allObjects];
+  [v3 appendArraySection:allObjects withName:@"pendingEnvironments" multilinePrefix:@"      " skipIfEmpty:1];
 
   [v3 appendArraySection:self->_lock_renderedFrames withName:@"renderedFrames" multilinePrefix:@"      " skipIfEmpty:1];
   os_unfair_lock_unlock(&self->_lock);
-  v16 = [v3 build];
+  build = [v3 build];
 
-  return v16;
+  return build;
 }
 
 - (unint64_t)count
@@ -165,9 +165,9 @@ uint64_t __94__BLSHEngineRenderFlipbookSession_initWithDelegate_flipbook_present
 - (unint64_t)memoryUsage
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BLSHEngineRenderFlipbookSession *)self lock_memoryUsage];
+  lock_memoryUsage = [(BLSHEngineRenderFlipbookSession *)self lock_memoryUsage];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return lock_memoryUsage;
 }
 
 - (NSArray)renderedFrames
@@ -202,8 +202,8 @@ uint64_t __94__BLSHEngineRenderFlipbookSession_initWithDelegate_flipbook_present
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(BLSHBacklightEnvironmentPresentation *)self->_presentation presentationEntries];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  presentationEntries = [(BLSHBacklightEnvironmentPresentation *)self->_presentation presentationEntries];
+  v6 = [presentationEntries countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -215,20 +215,20 @@ uint64_t __94__BLSHEngineRenderFlipbookSession_initWithDelegate_flipbook_present
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(presentationEntries);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) environment];
+        environment = [*(*(&v12 + 1) + 8 * v9) environment];
         if (objc_opt_respondsToSelector())
         {
-          [v10 willEndRenderSession:self];
+          [environment willEndRenderSession:self];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [presentationEntries countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -237,16 +237,16 @@ uint64_t __94__BLSHEngineRenderFlipbookSession_initWithDelegate_flipbook_present
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareAndRenderFrameSpecifier:(id)a3
+- (void)prepareAndRenderFrameSpecifier:(id)specifier
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  specifierCopy = specifier;
+  if (!specifierCopy)
   {
     [BLSHEngineRenderFlipbookSession prepareAndRenderFrameSpecifier:a2];
   }
 
-  v7 = v6;
+  v7 = specifierCopy;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
@@ -267,7 +267,7 @@ uint64_t __94__BLSHEngineRenderFlipbookSession_initWithDelegate_flipbook_present
     [WeakRetained incrementDisablePowerSavingUsageCountForReason:3];
   }
 
-  objc_storeStrong(&self->_lock_preparingSpecifier, a3);
+  objc_storeStrong(&self->_lock_preparingSpecifier, specifier);
   v10 = [MEMORY[0x277CBEB58] set];
   lock_pendingEnvironments = self->_lock_pendingEnvironments;
   self->_lock_pendingEnvironments = v10;
@@ -291,9 +291,9 @@ uint64_t __94__BLSHEngineRenderFlipbookSession_initWithDelegate_flipbook_present
         }
 
         v16 = self->_lock_pendingEnvironments;
-        v17 = [*(*(&v37 + 1) + 8 * i) environment];
-        v18 = [v17 identifier];
-        [(NSMutableSet *)v16 addObject:v18];
+        environment = [*(*(&v37 + 1) + 8 * i) environment];
+        identifier = [environment identifier];
+        [(NSMutableSet *)v16 addObject:identifier];
       }
 
       v13 = [v12 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -329,17 +329,17 @@ uint64_t __94__BLSHEngineRenderFlipbookSession_initWithDelegate_flipbook_present
         }
 
         v23 = *(*(&v32 + 1) + 8 * j);
-        v24 = [v23 environment];
-        v25 = [v23 dateSpecifier];
+        environment2 = [v23 environment];
+        dateSpecifier = [v23 dateSpecifier];
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __66__BLSHEngineRenderFlipbookSession_prepareAndRenderFrameSpecifier___block_invoke;
         v28[3] = &unk_27841EE88;
         objc_copyWeak(&v31, &location);
-        v26 = v24;
+        v26 = environment2;
         v29 = v26;
         v30 = v7;
-        [v26 updateToDateSpecifier:v25 sceneContentsUpdated:v28];
+        [v26 updateToDateSpecifier:dateSpecifier sceneContentsUpdated:v28];
 
         objc_destroyWeak(&v31);
       }
@@ -354,25 +354,25 @@ uint64_t __94__BLSHEngineRenderFlipbookSession_initWithDelegate_flipbook_present
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_scheduleTimeoutForSpecifier:(uint64_t)a1
+- (void)_lock_scheduleTimeoutForSpecifier:(uint64_t)specifier
 {
   v3 = a2;
-  if (a1)
+  if (specifier)
   {
-    objc_initWeak(&location, a1);
-    [*(a1 + 48) invalidate];
-    v4 = *(a1 + 64);
-    v5 = [MEMORY[0x277CF0C00] builderWithObject:a1];
-    v6 = [v5 build];
+    objc_initWeak(&location, specifier);
+    [*(specifier + 48) invalidate];
+    v4 = *(specifier + 64);
+    v5 = [MEMORY[0x277CF0C00] builderWithObject:specifier];
+    build = [v5 build];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __69__BLSHEngineRenderFlipbookSession__lock_scheduleTimeoutForSpecifier___block_invoke;
     v9[3] = &unk_27841EED0;
     objc_copyWeak(&v11, &location);
     v10 = v3;
-    v7 = [v4 scheduledTimerWithIdentifier:v6 interval:v9 leewayInterval:1.0 handler:2.0];
-    v8 = *(a1 + 48);
-    *(a1 + 48) = v7;
+    v7 = [v4 scheduledTimerWithIdentifier:build interval:v9 leewayInterval:1.0 handler:2.0];
+    v8 = *(specifier + 48);
+    *(specifier + 48) = v7;
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -385,18 +385,18 @@ void __66__BLSHEngineRenderFlipbookSession_prepareAndRenderFrameSpecifier___bloc
   [(BLSHEngineRenderFlipbookSession *)WeakRetained environment:a1[5] didUpdateToSpecifier:?];
 }
 
-- (id)telemetryDataWithEndTime:(double)a3 reasonEnded:(id)a4 preventedSleepDuration:(double)a5
+- (id)telemetryDataWithEndTime:(double)time reasonEnded:(id)ended preventedSleepDuration:(double)duration
 {
-  v8 = a4;
+  endedCopy = ended;
   os_unfair_lock_lock(&self->_lock);
   v9 = objc_alloc(MEMORY[0x277CBEAA8]);
-  v10 = [v9 bls_initWithBSContinuousMachTime:a3];
+  v10 = [v9 bls_initWithBSContinuousMachTime:time];
 
   v11 = [BLSHFlipbookFramesHistogram histogramWithReferenceDate:v10 flipbookFrames:self->_lock_renderedFrames];
-  v12 = [(BLSHBacklightEnvironmentPresentation *)self->_presentation presentationEntries];
-  v13 = [v12 bs_mapNoNulls:&__block_literal_global_612];
+  presentationEntries = [(BLSHBacklightEnvironmentPresentation *)self->_presentation presentationEntries];
+  v13 = [presentationEntries bs_mapNoNulls:&__block_literal_global_612];
 
-  v14 = [[BLSHFlipbookRenderSessionTelemetryData alloc] initWithTimestamp:v13 environmentIdentifiers:v8 reasonEnded:v11 sessionFramesHistogram:self->_lock_didFailToRender totalPreparationDuration:[(NSMutableSet *)self->_lock_pendingEnvironments count] accumulatedLayoutDuration:a3 accumulatedRenderDuration:a3 - self->_sessionStartTime preventedSleepDuration:self->_lock_accumulatedLayoutDuration didFailToRender:self->_lock_accumulatedRenderDuration timedOutEnvironmentCount:a5];
+  v14 = [[BLSHFlipbookRenderSessionTelemetryData alloc] initWithTimestamp:v13 environmentIdentifiers:endedCopy reasonEnded:v11 sessionFramesHistogram:self->_lock_didFailToRender totalPreparationDuration:[(NSMutableSet *)self->_lock_pendingEnvironments count] accumulatedLayoutDuration:time accumulatedRenderDuration:time - self->_sessionStartTime preventedSleepDuration:self->_lock_accumulatedLayoutDuration didFailToRender:self->_lock_accumulatedRenderDuration timedOutEnvironmentCount:duration];
   os_unfair_lock_unlock(&self->_lock);
 
   return v14;
@@ -416,29 +416,29 @@ void __69__BLSHEngineRenderFlipbookSession__lock_scheduleTimeoutForSpecifier___b
   [(BLSHEngineRenderFlipbookSession *)WeakRetained timeoutTimerFiredForSpecifier:?];
 }
 
-- (void)timeoutTimerFiredForSpecifier:(uint64_t)a1
+- (void)timeoutTimerFiredForSpecifier:(uint64_t)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (specifier)
   {
-    os_unfair_lock_lock((a1 + 16));
-    v4 = *(a1 + 24);
+    os_unfair_lock_lock((specifier + 16));
+    v4 = *(specifier + 24);
     if (v4 != v3)
     {
       [BLSHEngineRenderFlipbookSession timeoutTimerFiredForSpecifier:?];
     }
 
-    *(a1 + 117) = 1;
-    v5 = *(a1 + 118);
-    *(a1 + 24) = 0;
+    *(specifier + 117) = 1;
+    v5 = *(specifier + 118);
+    *(specifier + 24) = 0;
 
-    v6 = [*(a1 + 32) allObjects];
-    [*(a1 + 48) invalidate];
-    v7 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    allObjects = [*(specifier + 32) allObjects];
+    [*(specifier + 48) invalidate];
+    v7 = *(specifier + 48);
+    *(specifier + 48) = 0;
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((specifier + 16));
     if (v5 == 1)
     {
       v8 = bls_flipbook_log();
@@ -460,16 +460,16 @@ void __69__BLSHEngineRenderFlipbookSession__lock_scheduleTimeoutForSpecifier___b
           [BLSHEngineRenderFlipbookSession timeoutTimerFiredForSpecifier:];
         }
 
-        [(BLSHEngineRenderFlipbookSession *)a1 renderFrameSpecifier:v3 timedOutEnvironments:v6];
+        [(BLSHEngineRenderFlipbookSession *)specifier renderFrameSpecifier:v3 timedOutEnvironments:allObjects];
         goto LABEL_10;
       }
 
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v12 = 134218242;
-        v13 = a1;
+        specifierCopy = specifier;
         v14 = 2114;
-        v15 = v6;
+        v15 = allObjects;
         _os_log_impl(&dword_21FD11000, v8, OS_LOG_TYPE_INFO, "%p prepare frame operation did not complete after ~1 second (+leeway), (but it is being debugged), pending environments:%{public}@ ", &v12, 0x16u);
       }
     }
@@ -491,7 +491,7 @@ void __77__BLSHEngineRenderFlipbookSession_renderFrameSpecifier_timedOutEnvironm
 - (uint64_t)lock_memoryUsage
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_28();
     v2 = *(v1 + 40);
@@ -534,68 +534,68 @@ void __77__BLSHEngineRenderFlipbookSession_renderFrameSpecifier_timedOutEnvironm
   return v5;
 }
 
-- (void)environment:(void *)a3 didUpdateToSpecifier:
+- (void)environment:(void *)environment didUpdateToSpecifier:
 {
   v10 = a2;
-  v5 = a3;
-  if (a1)
+  environmentCopy = environment;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 16));
-    if ((*(a1 + 118) & 1) != 0 || (*(a1 + 117) & 1) != 0 || *(a1 + 24) != v5 || (v6 = *(a1 + 32), [v10 identifier], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "removeObject:", v7), v7, objc_msgSend(*(a1 + 32), "count")))
+    os_unfair_lock_lock((self + 16));
+    if ((*(self + 118) & 1) != 0 || (*(self + 117) & 1) != 0 || *(self + 24) != environmentCopy || (v6 = *(self + 32), [v10 identifier], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "removeObject:", v7), v7, objc_msgSend(*(self + 32), "count")))
     {
-      os_unfair_lock_unlock((a1 + 16));
+      os_unfair_lock_unlock((self + 16));
     }
 
     else
     {
-      v8 = *(a1 + 24);
-      *(a1 + 24) = 0;
+      v8 = *(self + 24);
+      *(self + 24) = 0;
 
-      [*(a1 + 48) invalidate];
-      v9 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      [*(self + 48) invalidate];
+      v9 = *(self + 48);
+      *(self + 48) = 0;
 
-      *(a1 + 112) = 0;
-      os_unfair_lock_unlock((a1 + 16));
-      [(BLSHEngineRenderFlipbookSession *)a1 renderFrameSpecifier:v5 timedOutEnvironments:0];
+      *(self + 112) = 0;
+      os_unfair_lock_unlock((self + 16));
+      [(BLSHEngineRenderFlipbookSession *)self renderFrameSpecifier:environmentCopy timedOutEnvironments:0];
     }
   }
 }
 
-- (void)renderFrameSpecifier:(void *)a3 timedOutEnvironments:
+- (void)renderFrameSpecifier:(void *)specifier timedOutEnvironments:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  specifierCopy = specifier;
+  if (self)
   {
-    v7 = [v5 encodedPresentationTime];
-    [v6 count];
+    encodedPresentationTime = [v5 encodedPresentationTime];
+    [specifierCopy count];
     [v5 encodedPresentationTime];
     kdebug_trace();
     BSContinuousMachTimeNow();
-    *(a1 + 96) = *(a1 + 96) + v8 - *(a1 + 88);
-    v9 = [v5 specifiers];
-    [v9 count];
+    *(self + 96) = *(self + 96) + v8 - *(self + 88);
+    specifiers = [v5 specifiers];
+    [specifiers count];
     kdebug_trace();
 
     BSContinuousMachTimeNow();
     v11 = v10;
-    v12 = *(a1 + 8);
-    v13 = *(a1 + 120);
+    v12 = *(self + 8);
+    v13 = *(self + 120);
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __77__BLSHEngineRenderFlipbookSession_renderFrameSpecifier_timedOutEnvironments___block_invoke;
     v24[3] = &unk_27841EAF0;
-    v24[4] = a1;
+    v24[4] = self;
     v25 = v5;
-    v26 = v6;
+    v26 = specifierCopy;
     OUTLINED_FUNCTION_0_5();
     v15 = 3221225472;
     v16 = __77__BLSHEngineRenderFlipbookSession_renderFrameSpecifier_timedOutEnvironments___block_invoke_2;
     v17 = &unk_27841EF20;
-    v21 = v7;
+    v21 = encodedPresentationTime;
     v18 = v25;
-    v19 = a1;
+    selfCopy = self;
     v22 = v11;
     v20 = v26;
     v23 = sel_renderFrameSpecifier_timedOutEnvironments_;

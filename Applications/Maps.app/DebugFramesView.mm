@@ -1,28 +1,28 @@
 @interface DebugFramesView
-- (DebugFramesView)initWithFrame:(CGRect)a3;
+- (DebugFramesView)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)registerName:(id)a3 color:(id)a4 weight:(double)a5 edges:(unint64_t)a6;
-- (void)setFrame:(CGRect)a3 forName:(id)a4;
-- (void)setLayoutGuide:(id)a3 forName:(id)a4;
+- (void)registerName:(id)name color:(id)color weight:(double)weight edges:(unint64_t)edges;
+- (void)setFrame:(CGRect)frame forName:(id)name;
+- (void)setLayoutGuide:(id)guide forName:(id)name;
 - (void)unregisterAll;
-- (void)unregisterName:(id)a3;
+- (void)unregisterName:(id)name;
 @end
 
 @implementation DebugFramesView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v102.receiver = self;
   v102.super_class = DebugFramesView;
-  [(DebugFramesView *)&v102 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(DebugFramesView *)&v102 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [(DebugFramesView *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(DebugFramesView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v7 = 5.0;
-  if (v6 == 5)
+  if (userInterfaceIdiom == 5)
   {
     v7 = 10.0;
   }
@@ -36,7 +36,7 @@
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v97 = self;
+  selfCopy = self;
   v93 = self->_names;
   v95 = [(NSMutableOrderedSet *)v93 countByEnumeratingWithState:&v98 objects:v105 count:16];
   if (v95)
@@ -54,18 +54,18 @@
           objc_enumerationMutation(v93);
         }
 
-        framesByName = v97->_framesByName;
+        framesByName = selfCopy->_framesByName;
         v96 = *(*(&v98 + 1) + 8 * i);
         v15 = [(NSMutableDictionary *)framesByName objectForKeyedSubscript:?];
-        v16 = [v15 color];
-        if (!v16)
+        color = [v15 color];
+        if (!color)
         {
-          v16 = +[UIColor grayColor];
+          color = +[UIColor grayColor];
         }
 
         v17 = v11;
-        CGContextSetStrokeColorWithColor(CurrentContext, [v16 CGColor]);
-        CGContextSetFillColorWithColor(CurrentContext, [v16 CGColor]);
+        CGContextSetStrokeColorWithColor(CurrentContext, [color CGColor]);
+        CGContextSetFillColorWithColor(CurrentContext, [color CGColor]);
         [v15 weight];
         v18 = 1.0;
         if (v19 >= 1.0)
@@ -80,20 +80,20 @@
         v24 = v23;
         v26 = v25;
         v28 = v27;
-        v29 = [v15 layoutGuide];
+        layoutGuide = [v15 layoutGuide];
 
-        if (v29)
+        if (layoutGuide)
         {
-          v30 = [v15 layoutGuide];
-          [v30 layoutFrame];
+          layoutGuide2 = [v15 layoutGuide];
+          [layoutGuide2 layoutFrame];
           v32 = v31;
           v34 = v33;
           v36 = v35;
           v38 = v37;
 
-          v39 = [v15 layoutGuide];
-          v40 = [v39 owningView];
-          [(DebugFramesView *)v97 convertRect:v40 fromView:v32, v34, v36, v38];
+          layoutGuide3 = [v15 layoutGuide];
+          owningView = [layoutGuide3 owningView];
+          [(DebugFramesView *)selfCopy convertRect:owningView fromView:v32, v34, v36, v38];
           v22 = v41;
           v24 = v42;
           v26 = v43;
@@ -102,10 +102,10 @@
 
         v11 = v17;
         v45 = v18 * 0.5;
-        v46 = [v15 edges];
-        if (v46 > 3)
+        edges = [v15 edges];
+        if (edges > 3)
         {
-          if (v46 == 4)
+          if (edges == 4)
           {
             v82 = v22 + v45;
             v83 = v26 - v18;
@@ -155,7 +155,7 @@
             goto LABEL_34;
           }
 
-          if (v46 == 8)
+          if (edges == 8)
           {
             v47 = v24 + v45;
             v48 = v28 - v18;
@@ -212,7 +212,7 @@ LABEL_34:
 
         else
         {
-          if (v46 == 1)
+          if (edges == 1)
           {
             v74 = v22 + v45;
             v75 = v26 - v18;
@@ -262,7 +262,7 @@ LABEL_34:
             goto LABEL_34;
           }
 
-          if (v46 == 2)
+          if (edges == 2)
           {
             v47 = v24 + v45;
             v48 = v28 - v18;
@@ -340,7 +340,7 @@ LABEL_34:
         v103[0] = v92;
         v103[1] = v91;
         v104[0] = v8;
-        v104[1] = v16;
+        v104[1] = color;
         v72 = [NSDictionary dictionaryWithObjects:v104 forKeys:v103 count:2];
         [v96 drawAtPoint:v72 withAttributes:{v65, v66}];
 
@@ -358,30 +358,30 @@ LABEL_35:
   }
 }
 
-- (void)setLayoutGuide:(id)a3 forName:(id)a4
+- (void)setLayoutGuide:(id)guide forName:(id)name
 {
-  v9 = a3;
-  v6 = [(NSMutableDictionary *)self->_framesByName objectForKeyedSubscript:a4];
+  guideCopy = guide;
+  v6 = [(NSMutableDictionary *)self->_framesByName objectForKeyedSubscript:name];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 layoutGuide];
+    layoutGuide = [v6 layoutGuide];
 
-    if (v8 != v9)
+    if (layoutGuide != guideCopy)
     {
-      [v7 setLayoutGuide:v9];
+      [v7 setLayoutGuide:guideCopy];
       [(DebugFramesView *)self setNeedsDisplay];
     }
   }
 }
 
-- (void)setFrame:(CGRect)a3 forName:(id)a4
+- (void)setFrame:(CGRect)frame forName:(id)name
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(NSMutableDictionary *)self->_framesByName objectForKeyedSubscript:a4];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v9 = [(NSMutableDictionary *)self->_framesByName objectForKeyedSubscript:name];
   v10 = v9;
   if (v9)
   {
@@ -410,34 +410,34 @@ LABEL_35:
   [(NSMutableDictionary *)framesByName removeAllObjects];
 }
 
-- (void)unregisterName:(id)a3
+- (void)unregisterName:(id)name
 {
-  if (a3)
+  if (name)
   {
     names = self->_names;
-    v5 = a3;
-    [(NSMutableOrderedSet *)names removeObject:v5];
-    [(NSMutableDictionary *)self->_framesByName removeObjectForKey:v5];
+    nameCopy = name;
+    [(NSMutableOrderedSet *)names removeObject:nameCopy];
+    [(NSMutableDictionary *)self->_framesByName removeObjectForKey:nameCopy];
   }
 }
 
-- (void)registerName:(id)a3 color:(id)a4 weight:(double)a5 edges:(unint64_t)a6
+- (void)registerName:(id)name color:(id)color weight:(double)weight edges:(unint64_t)edges
 {
-  v12 = a3;
-  v10 = a4;
-  if (v12)
+  nameCopy = name;
+  colorCopy = color;
+  if (nameCopy)
   {
-    v11 = [(NSMutableDictionary *)self->_framesByName objectForKeyedSubscript:v12];
+    v11 = [(NSMutableDictionary *)self->_framesByName objectForKeyedSubscript:nameCopy];
     if (!v11)
     {
       v11 = objc_alloc_init(DebugFrameConfig);
-      [(NSMutableDictionary *)self->_framesByName setObject:v11 forKeyedSubscript:v12];
+      [(NSMutableDictionary *)self->_framesByName setObject:v11 forKeyedSubscript:nameCopy];
     }
 
-    [(DebugFrameConfig *)v11 setColor:v10];
-    [(DebugFrameConfig *)v11 setWeight:a5];
-    [(DebugFrameConfig *)v11 setEdges:a6];
-    [(NSMutableOrderedSet *)self->_names addObject:v12];
+    [(DebugFrameConfig *)v11 setColor:colorCopy];
+    [(DebugFrameConfig *)v11 setWeight:weight];
+    [(DebugFrameConfig *)v11 setEdges:edges];
+    [(NSMutableOrderedSet *)self->_names addObject:nameCopy];
   }
 }
 
@@ -446,8 +446,8 @@ LABEL_35:
   v4.receiver = self;
   v4.super_class = DebugFramesView;
   [(DebugFramesView *)&v4 layoutSubviews];
-  v3 = [(DebugFramesView *)self superview];
-  [v3 bringSubviewToFront:self];
+  superview = [(DebugFramesView *)self superview];
+  [superview bringSubviewToFront:self];
 }
 
 - (void)didMoveToSuperview
@@ -455,15 +455,15 @@ LABEL_35:
   v4.receiver = self;
   v4.super_class = DebugFramesView;
   [(DebugFramesView *)&v4 didMoveToSuperview];
-  v3 = [(DebugFramesView *)self superview];
-  [v3 bringSubviewToFront:self];
+  superview = [(DebugFramesView *)self superview];
+  [superview bringSubviewToFront:self];
 }
 
-- (DebugFramesView)initWithFrame:(CGRect)a3
+- (DebugFramesView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = DebugFramesView;
-  v3 = [(DebugFramesView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DebugFramesView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[NSMutableOrderedSet orderedSet];

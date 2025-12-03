@@ -1,22 +1,22 @@
 @interface AttachmentDataReport
 - (_TtC14CopresenceCore20AttachmentDataReport)init;
-- (_TtC14CopresenceCore20AttachmentDataReport)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC14CopresenceCore20AttachmentDataReport)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AttachmentDataReport
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AttachmentDataReport.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AttachmentDataReport.encode(with:)(coderCopy);
 }
 
-- (_TtC14CopresenceCore20AttachmentDataReport)initWithCoder:(id)a3
+- (_TtC14CopresenceCore20AttachmentDataReport)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized AttachmentDataReport.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized AttachmentDataReport.init(coder:)(coderCopy);
 
   return v4;
 }

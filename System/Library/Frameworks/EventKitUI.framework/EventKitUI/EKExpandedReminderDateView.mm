@@ -1,9 +1,9 @@
 @interface EKExpandedReminderDateView
 + (id)exampleHeader;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (EKExpandedReminderDateView)initWithFrame:(CGRect)a3;
-- (void)setBlurFilterRadius:(double)a3;
-- (void)setupWithDate:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (EKExpandedReminderDateView)initWithFrame:(CGRect)frame;
+- (void)setBlurFilterRadius:(double)radius;
+- (void)setupWithDate:(id)date;
 @end
 
 @implementation EKExpandedReminderDateView
@@ -18,16 +18,16 @@
   return v3;
 }
 
-- (EKExpandedReminderDateView)initWithFrame:(CGRect)a3
+- (EKExpandedReminderDateView)initWithFrame:(CGRect)frame
 {
   v87[9] = *MEMORY[0x1E69E9840];
   v84.receiver = self;
   v84.super_class = EKExpandedReminderDateView;
-  v3 = [(EKExpandedReminderDateView *)&v84 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKExpandedReminderDateView *)&v84 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(EKExpandedReminderDateView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(EKExpandedReminderDateView *)v3 setBackgroundColor:clearColor];
 
     v5 = [EKExpandedReminderDayCircleView alloc];
     v6 = *MEMORY[0x1E695F058];
@@ -37,36 +37,36 @@
     v10 = [(EKExpandedReminderDayCircleView *)v5 initWithFrame:*MEMORY[0x1E695F058], v7, v8, v9];
     [(EKExpandedReminderDateView *)v3 setDateNumberView:v10];
 
-    v11 = [(EKExpandedReminderDateView *)v3 dateNumberView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    dateNumberView = [(EKExpandedReminderDateView *)v3 dateNumberView];
+    [dateNumberView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    v13 = [(EKExpandedReminderDateView *)v3 dateNumberView];
-    [v13 setBackgroundColor:v12];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    dateNumberView2 = [(EKExpandedReminderDateView *)v3 dateNumberView];
+    [dateNumberView2 setBackgroundColor:clearColor2];
 
-    v14 = [(EKExpandedReminderDateView *)v3 dateNumberView];
-    [(EKExpandedReminderDateView *)v3 addSubview:v14];
+    dateNumberView3 = [(EKExpandedReminderDateView *)v3 dateNumberView];
+    [(EKExpandedReminderDateView *)v3 addSubview:dateNumberView3];
 
     v15 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{0.0, 0.0, 62.0, 62.0}];
     [(EKExpandedReminderDateView *)v3 setDateLabel:v15];
 
-    v16 = [(EKExpandedReminderDateView *)v3 dateLabel];
-    [v16 setTextAlignment:1];
+    dateLabel = [(EKExpandedReminderDateView *)v3 dateLabel];
+    [dateLabel setTextAlignment:1];
 
-    v17 = [(EKExpandedReminderDateView *)v3 dateLabel];
-    [v17 setNumberOfLines:1];
+    dateLabel2 = [(EKExpandedReminderDateView *)v3 dateLabel];
+    [dateLabel2 setNumberOfLines:1];
 
     v18 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:34.0];
-    v19 = [(EKExpandedReminderDateView *)v3 dateLabel];
-    [v19 setFont:v18];
+    dateLabel3 = [(EKExpandedReminderDateView *)v3 dateLabel];
+    [dateLabel3 setFont:v18];
 
     v20 = CalendarAppCircleTextColor();
-    v21 = [(EKExpandedReminderDateView *)v3 dateLabel];
-    [v21 setTextColor:v20];
+    dateLabel4 = [(EKExpandedReminderDateView *)v3 dateLabel];
+    [dateLabel4 setTextColor:v20];
 
-    v22 = [(EKExpandedReminderDateView *)v3 dateNumberView];
-    v23 = [(EKExpandedReminderDateView *)v3 dateLabel];
-    [v22 addSubview:v23];
+    dateNumberView4 = [(EKExpandedReminderDateView *)v3 dateNumberView];
+    dateLabel5 = [(EKExpandedReminderDateView *)v3 dateLabel];
+    [dateNumberView4 addSubview:dateLabel5];
 
     v24 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v6, v7, v8, v9}];
     [(EKExpandedReminderDateView *)v3 setWeekdayLabel:v24];
@@ -75,21 +75,21 @@
     v79 = [v25 fontDescriptorWithSymbolicTraits:2];
 
     v78 = [MEMORY[0x1E69DB878] fontWithDescriptor:v79 size:26.0];
-    v26 = [(EKExpandedReminderDateView *)v3 weekdayLabel];
-    [v26 setFont:v78];
+    weekdayLabel = [(EKExpandedReminderDateView *)v3 weekdayLabel];
+    [weekdayLabel setFont:v78];
 
-    v27 = [(EKExpandedReminderDateView *)v3 weekdayLabel];
-    [v27 setNumberOfLines:1];
+    weekdayLabel2 = [(EKExpandedReminderDateView *)v3 weekdayLabel];
+    [weekdayLabel2 setNumberOfLines:1];
 
-    v28 = [MEMORY[0x1E69DC888] labelColor];
-    v29 = [(EKExpandedReminderDateView *)v3 weekdayLabel];
-    [v29 setTextColor:v28];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    weekdayLabel3 = [(EKExpandedReminderDateView *)v3 weekdayLabel];
+    [weekdayLabel3 setTextColor:labelColor];
 
-    v30 = [(EKExpandedReminderDateView *)v3 weekdayLabel];
-    [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+    weekdayLabel4 = [(EKExpandedReminderDateView *)v3 weekdayLabel];
+    [weekdayLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v31 = [(EKExpandedReminderDateView *)v3 weekdayLabel];
-    [(EKExpandedReminderDateView *)v3 addSubview:v31];
+    weekdayLabel5 = [(EKExpandedReminderDateView *)v3 weekdayLabel];
+    [(EKExpandedReminderDateView *)v3 addSubview:weekdayLabel5];
 
     v32 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v6, v7, v8, v9}];
     [(EKExpandedReminderDateView *)v3 setMonthYearLabel:v32];
@@ -98,59 +98,59 @@
     v77 = [v33 fontDescriptorWithSymbolicTraits:2];
 
     v76 = [MEMORY[0x1E69DB878] fontWithDescriptor:v77 size:15.0];
-    v34 = [(EKExpandedReminderDateView *)v3 monthYearLabel];
-    [v34 setFont:v76];
+    monthYearLabel = [(EKExpandedReminderDateView *)v3 monthYearLabel];
+    [monthYearLabel setFont:v76];
 
-    v35 = [(EKExpandedReminderDateView *)v3 monthYearLabel];
-    [v35 setNumberOfLines:1];
+    monthYearLabel2 = [(EKExpandedReminderDateView *)v3 monthYearLabel];
+    [monthYearLabel2 setNumberOfLines:1];
 
-    v36 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v37 = [(EKExpandedReminderDateView *)v3 monthYearLabel];
-    [v37 setTextColor:v36];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    monthYearLabel3 = [(EKExpandedReminderDateView *)v3 monthYearLabel];
+    [monthYearLabel3 setTextColor:secondaryLabelColor];
 
-    v38 = [(EKExpandedReminderDateView *)v3 monthYearLabel];
-    [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
+    monthYearLabel4 = [(EKExpandedReminderDateView *)v3 monthYearLabel];
+    [monthYearLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v39 = [(EKExpandedReminderDateView *)v3 monthYearLabel];
-    [(EKExpandedReminderDateView *)v3 addSubview:v39];
+    monthYearLabel5 = [(EKExpandedReminderDateView *)v3 monthYearLabel];
+    [(EKExpandedReminderDateView *)v3 addSubview:monthYearLabel5];
 
-    v40 = [(EKExpandedReminderDayCircleView *)v3->_dateNumberView topAnchor];
-    v41 = [(EKExpandedReminderDateView *)v3 topAnchor];
-    v80 = [v40 constraintEqualToAnchor:v41];
+    topAnchor = [(EKExpandedReminderDayCircleView *)v3->_dateNumberView topAnchor];
+    topAnchor2 = [(EKExpandedReminderDateView *)v3 topAnchor];
+    v80 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
     LODWORD(v42) = 1132068864;
     [v80 setPriority:v42];
     v61 = MEMORY[0x1E696ACD8];
     v87[0] = v80;
-    v75 = [(EKExpandedReminderDayCircleView *)v3->_dateNumberView centerXAnchor];
-    v74 = [(EKExpandedReminderDateView *)v3 centerXAnchor];
-    v73 = [v75 constraintEqualToAnchor:v74];
+    centerXAnchor = [(EKExpandedReminderDayCircleView *)v3->_dateNumberView centerXAnchor];
+    centerXAnchor2 = [(EKExpandedReminderDateView *)v3 centerXAnchor];
+    v73 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v87[1] = v73;
-    v72 = [(EKExpandedReminderDayCircleView *)v3->_dateNumberView widthAnchor];
-    v71 = [v72 constraintEqualToConstant:62.0];
+    widthAnchor = [(EKExpandedReminderDayCircleView *)v3->_dateNumberView widthAnchor];
+    v71 = [widthAnchor constraintEqualToConstant:62.0];
     v87[2] = v71;
-    v70 = [(EKExpandedReminderDayCircleView *)v3->_dateNumberView heightAnchor];
-    v69 = [v70 constraintEqualToConstant:62.0];
+    heightAnchor = [(EKExpandedReminderDayCircleView *)v3->_dateNumberView heightAnchor];
+    v69 = [heightAnchor constraintEqualToConstant:62.0];
     v87[3] = v69;
-    v68 = [(UILabel *)v3->_weekdayLabel firstBaselineAnchor];
-    v67 = [(EKExpandedReminderDayCircleView *)v3->_dateNumberView bottomAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67 constant:32.0];
+    firstBaselineAnchor = [(UILabel *)v3->_weekdayLabel firstBaselineAnchor];
+    bottomAnchor = [(EKExpandedReminderDayCircleView *)v3->_dateNumberView bottomAnchor];
+    v66 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:32.0];
     v87[4] = v66;
-    v65 = [(UILabel *)v3->_weekdayLabel centerXAnchor];
-    v64 = [(EKExpandedReminderDateView *)v3 centerXAnchor];
-    v63 = [v65 constraintEqualToAnchor:v64];
+    centerXAnchor3 = [(UILabel *)v3->_weekdayLabel centerXAnchor];
+    centerXAnchor4 = [(EKExpandedReminderDateView *)v3 centerXAnchor];
+    v63 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v87[5] = v63;
-    v62 = [(UILabel *)v3->_monthYearLabel firstBaselineAnchor];
-    v43 = [(UILabel *)v3->_weekdayLabel firstBaselineAnchor];
-    v44 = [v62 constraintEqualToAnchor:v43 constant:26.0];
+    firstBaselineAnchor2 = [(UILabel *)v3->_monthYearLabel firstBaselineAnchor];
+    firstBaselineAnchor3 = [(UILabel *)v3->_weekdayLabel firstBaselineAnchor];
+    v44 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3 constant:26.0];
     v87[6] = v44;
-    v45 = [(UILabel *)v3->_monthYearLabel centerXAnchor];
-    v46 = [(EKExpandedReminderDateView *)v3 centerXAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46];
+    centerXAnchor5 = [(UILabel *)v3->_monthYearLabel centerXAnchor];
+    centerXAnchor6 = [(EKExpandedReminderDateView *)v3 centerXAnchor];
+    v47 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v87[7] = v47;
-    v48 = [(UILabel *)v3->_monthYearLabel bottomAnchor];
-    v49 = [(EKExpandedReminderDateView *)v3 bottomAnchor];
-    v50 = [v48 constraintEqualToAnchor:v49];
+    bottomAnchor2 = [(UILabel *)v3->_monthYearLabel bottomAnchor];
+    bottomAnchor3 = [(EKExpandedReminderDateView *)v3 bottomAnchor];
+    v50 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v87[8] = v50;
     v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:9];
     [v61 activateConstraints:v51];
@@ -159,14 +159,14 @@
     v53 = [v52 initWithType:*MEMORY[0x1E6979928]];
     [(EKExpandedReminderDateView *)v3 setBlurFilter:v53];
 
-    v54 = [(EKExpandedReminderDateView *)v3 blurFilter];
-    [v54 setValue:0 forKey:*MEMORY[0x1E6979BA8]];
+    blurFilter = [(EKExpandedReminderDateView *)v3 blurFilter];
+    [blurFilter setValue:0 forKey:*MEMORY[0x1E6979BA8]];
 
-    v55 = [(EKExpandedReminderDateView *)v3 blurFilter];
-    v86 = v55;
+    blurFilter2 = [(EKExpandedReminderDateView *)v3 blurFilter];
+    v86 = blurFilter2;
     v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v86 count:1];
-    v57 = [(EKExpandedReminderDateView *)v3 layer];
-    [v57 setFilters:v56];
+    layer = [(EKExpandedReminderDateView *)v3 layer];
+    [layer setFilters:v56];
 
     objc_initWeak(&location, v3);
     v85 = objc_opt_class();
@@ -192,10 +192,10 @@ void __44__EKExpandedReminderDateView_initWithFrame___block_invoke(uint64_t a1)
   [v1 setNeedsDisplay];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"])
   {
     v5 = 1;
   }
@@ -204,54 +204,54 @@ void __44__EKExpandedReminderDateView_initWithFrame___block_invoke(uint64_t a1)
   {
     v7.receiver = self;
     v7.super_class = EKExpandedReminderDateView;
-    v5 = [(EKExpandedReminderDateView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(EKExpandedReminderDateView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (void)setBlurFilterRadius:(double)a3
+- (void)setBlurFilterRadius:(double)radius
 {
-  v5 = [(EKExpandedReminderDateView *)self layer];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+  layer = [(EKExpandedReminderDateView *)self layer];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
+  [layer setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 }
 
-- (void)setupWithDate:(id)a3
+- (void)setupWithDate:(id)date
 {
-  v21 = a3;
+  dateCopy = date;
   v4 = [MEMORY[0x1E695DF00] now];
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [v21 isSameDayAsDate:v4 inCalendar:v5];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v6 = [dateCopy isSameDayAsDate:v4 inCalendar:currentCalendar];
 
   if (v6)
   {
     v7 = CalendarAppTintColor();
-    v8 = [(EKExpandedReminderDateView *)self dateNumberView];
-    [v8 setCircleColor:v7];
+    dateNumberView = [(EKExpandedReminderDateView *)self dateNumberView];
+    [dateNumberView setCircleColor:v7];
 
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    v10 = [(EKExpandedReminderDateView *)self dateLabel];
-    [v10 setTextColor:v9];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    dateLabel = [(EKExpandedReminderDateView *)self dateLabel];
+    [dateLabel setTextColor:whiteColor];
   }
 
   v11 = objc_alloc(MEMORY[0x1E69930C8]);
-  v12 = [MEMORY[0x1E695DFE8] calendarTimeZone];
-  v13 = [v11 initWithDate:v21 timeZone:v12];
+  calendarTimeZone = [MEMORY[0x1E695DFE8] calendarTimeZone];
+  v13 = [v11 initWithDate:dateCopy timeZone:calendarTimeZone];
 
   [v13 day];
   v14 = CUIKLocalizedStringForInteger();
-  v15 = [(EKExpandedReminderDateView *)self dateLabel];
-  [v15 setText:v14];
+  dateLabel2 = [(EKExpandedReminderDateView *)self dateLabel];
+  [dateLabel2 setText:v14];
 
   v16 = CUIKLongStringForWeekday();
-  v17 = [(EKExpandedReminderDateView *)self weekdayLabel];
-  [v17 setText:v16];
+  weekdayLabel = [(EKExpandedReminderDateView *)self weekdayLabel];
+  [weekdayLabel setText:v16];
 
   v18 = CUIKStringForMonthYear();
-  v19 = [v18 localizedUppercaseString];
-  v20 = [(EKExpandedReminderDateView *)self monthYearLabel];
-  [v20 setText:v19];
+  localizedUppercaseString = [v18 localizedUppercaseString];
+  monthYearLabel = [(EKExpandedReminderDateView *)self monthYearLabel];
+  [monthYearLabel setText:localizedUppercaseString];
 }
 
 @end

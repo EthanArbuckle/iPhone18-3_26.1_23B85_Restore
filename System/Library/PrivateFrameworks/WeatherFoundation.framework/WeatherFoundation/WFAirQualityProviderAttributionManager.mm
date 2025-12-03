@@ -1,11 +1,11 @@
 @interface WFAirQualityProviderAttributionManager
 + (WFAirQualityProviderAttributionManager)sharedManager;
 - (WFAirQualityProviderAttributionManager)init;
-- (id)cachedAttributionForProvider:(id)a3;
-- (id)p_archivedDataForProviderAttribution:(id)a3;
-- (void)loadAttributionForProvider:(id)a3 completion:(id)a4;
-- (void)p_updateCacheWithProviderAttribution:(id)a3;
-- (void)registerProviderAttribution:(id)a3;
+- (id)cachedAttributionForProvider:(id)provider;
+- (id)p_archivedDataForProviderAttribution:(id)attribution;
+- (void)loadAttributionForProvider:(id)provider completion:(id)completion;
+- (void)p_updateCacheWithProviderAttribution:(id)attribution;
+- (void)registerProviderAttribution:(id)attribution;
 @end
 
 @implementation WFAirQualityProviderAttributionManager
@@ -58,20 +58,20 @@ uint64_t __55__WFAirQualityProviderAttributionManager_sharedManager__block_invok
   return v3;
 }
 
-- (void)registerProviderAttribution:(id)a3
+- (void)registerProviderAttribution:(id)attribution
 {
-  v4 = a3;
-  v5 = [v4 name];
+  attributionCopy = attribution;
+  name = [attributionCopy name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [(WFAirQualityProviderAttributionManager *)self p_archivedDataForProviderAttribution:v4];
+    v6 = [(WFAirQualityProviderAttributionManager *)self p_archivedDataForProviderAttribution:attributionCopy];
     if (v6)
     {
       os_unfair_lock_lock_with_options();
-      v7 = [(WFAirQualityProviderAttributionManager *)self attributionCache];
-      v8 = [v4 name];
-      [v7 setObject:v6 forKeyedSubscript:v8];
+      attributionCache = [(WFAirQualityProviderAttributionManager *)self attributionCache];
+      name2 = [attributionCopy name];
+      [attributionCache setObject:v6 forKeyedSubscript:name2];
 
       os_unfair_lock_unlock(&self->_dataSynchronizationLock);
     }
@@ -81,19 +81,19 @@ uint64_t __55__WFAirQualityProviderAttributionManager_sharedManager__block_invok
     v9[2] = __70__WFAirQualityProviderAttributionManager_registerProviderAttribution___block_invoke;
     v9[3] = &unk_279E6E6C0;
     v9[4] = self;
-    v10 = v4;
+    v10 = attributionCopy;
     [v10 loadLogoImageWithCompletion:v9];
   }
 }
 
-- (id)cachedAttributionForProvider:(id)a3
+- (id)cachedAttributionForProvider:(id)provider
 {
-  v4 = a3;
-  if (v4)
+  providerCopy = provider;
+  if (providerCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5 = [(WFAirQualityProviderAttributionManager *)self attributionCache];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    attributionCache = [(WFAirQualityProviderAttributionManager *)self attributionCache];
+    v6 = [attributionCache objectForKeyedSubscript:providerCopy];
 
     if (v6)
     {
@@ -126,10 +126,10 @@ uint64_t __55__WFAirQualityProviderAttributionManager_sharedManager__block_invok
   return v7;
 }
 
-- (void)loadAttributionForProvider:(id)a3 completion:(id)a4
+- (void)loadAttributionForProvider:(id)provider completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(WFAirQualityProviderAttributionManager *)self cachedAttributionForProvider:a3];
+  completionCopy = completion;
+  v7 = [(WFAirQualityProviderAttributionManager *)self cachedAttributionForProvider:provider];
   v8 = v7;
   if (v7)
   {
@@ -138,15 +138,15 @@ uint64_t __55__WFAirQualityProviderAttributionManager_sharedManager__block_invok
     v10[2] = __80__WFAirQualityProviderAttributionManager_loadAttributionForProvider_completion___block_invoke;
     v10[3] = &unk_279E6E6E8;
     v11 = v7;
-    v12 = self;
-    v13 = v6;
+    selfCopy = self;
+    v13 = completionCopy;
     [v11 loadLogoImageWithCompletion:v10];
   }
 
   else
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.weather.foundation.airQuality.provider.attribution.manager.errorDomain" code:6667 userInfo:0];
-    (*(v6 + 2))(v6, 0, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v9);
   }
 }
 
@@ -165,37 +165,37 @@ void __80__WFAirQualityProviderAttributionManager_loadAttributionForProvider_com
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)p_archivedDataForProviderAttribution:(id)a3
+- (id)p_archivedDataForProviderAttribution:(id)attribution
 {
-  v3 = a3;
+  attributionCopy = attribution;
   v8 = 0;
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v8];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:attributionCopy requiringSecureCoding:1 error:&v8];
   v5 = v8;
   if (v5)
   {
     v6 = WFLogForCategory(5uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(WFAirQualityProviderAttributionManager *)v3 p_archivedDataForProviderAttribution:v5, v6];
+      [(WFAirQualityProviderAttributionManager *)attributionCopy p_archivedDataForProviderAttribution:v5, v6];
     }
   }
 
   return v4;
 }
 
-- (void)p_updateCacheWithProviderAttribution:(id)a3
+- (void)p_updateCacheWithProviderAttribution:(id)attribution
 {
-  v10 = a3;
+  attributionCopy = attribution;
   v4 = [(WFAirQualityProviderAttributionManager *)self p_archivedDataForProviderAttribution:?];
   if (v4)
   {
     os_unfair_lock_lock_with_options();
-    v5 = [(WFAirQualityProviderAttributionManager *)self attributionCache];
-    v6 = [v10 name];
-    [v5 setObject:v4 forKeyedSubscript:v6];
+    attributionCache = [(WFAirQualityProviderAttributionManager *)self attributionCache];
+    name = [attributionCopy name];
+    [attributionCache setObject:v4 forKeyedSubscript:name];
 
-    v7 = [(WFAirQualityProviderAttributionManager *)self attributionCache];
-    v8 = [v7 copy];
+    attributionCache2 = [(WFAirQualityProviderAttributionManager *)self attributionCache];
+    v8 = [attributionCache2 copy];
 
     os_unfair_lock_unlock(&self->_dataSynchronizationLock);
     v9 = WeatherFoundationInternalUserDefaults();

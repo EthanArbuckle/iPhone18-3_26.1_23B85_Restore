@@ -1,9 +1,9 @@
 @interface VUIUpNextButtonProperties
 - (VUIUpNextButtonProperties)init;
 - (VUIUpNextButtonProtocol)delegate;
-- (void)_handleClearFromPlayHistoryNotification:(id)a3;
+- (void)_handleClearFromPlayHistoryNotification:(id)notification;
 - (void)_toggleUpNextState;
-- (void)_updatingState:(id)a3;
+- (void)_updatingState:(id)state;
 - (void)callAPIAndToggleUpNextState;
 - (void)dealloc;
 - (void)removeNotificationObserver;
@@ -36,35 +36,35 @@
 
 - (void)setupNotificationObserver
 {
-  v3 = [(VUIUpNextButtonProperties *)self canonicalID];
-  if (v3)
+  canonicalID = [(VUIUpNextButtonProperties *)self canonicalID];
+  if (canonicalID)
   {
-    v7 = v3;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel__updatingState_ name:@"VUIUpNextRequestDidFinishNotification" object:0];
+    v7 = canonicalID;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__updatingState_ name:@"VUIUpNextRequestDidFinishNotification" object:0];
 
     v5 = _os_feature_enabled_impl();
-    v3 = v7;
+    canonicalID = v7;
     if (v5)
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:self selector:sel__handleClearFromPlayHistoryNotification_ name:@"VUIClearFromPlayHistoryRequestDidFinishNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__handleClearFromPlayHistoryNotification_ name:@"VUIClearFromPlayHistoryRequestDidFinishNotification" object:0];
 
-      v3 = v7;
+      canonicalID = v7;
     }
   }
 }
 
 - (void)removeNotificationObserver
 {
-  v3 = [(VUIUpNextButtonProperties *)self canonicalID];
-  if (v3)
+  canonicalID = [(VUIUpNextButtonProperties *)self canonicalID];
+  if (canonicalID)
   {
-    v5 = v3;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:@"VUIUpNextRequestDidFinishNotification" object:0];
+    v5 = canonicalID;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"VUIUpNextRequestDidFinishNotification" object:0];
 
-    v3 = v5;
+    canonicalID = v5;
   }
 }
 
@@ -95,9 +95,9 @@ uint64_t __47__VUIUpNextButtonProperties__toggleUpNextState__block_invoke(uint64
 - (void)callAPIAndToggleUpNextState
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIUpNextButtonProperties *)self isWatchListed];
+  isWatchListed = [(VUIUpNextButtonProperties *)self isWatchListed];
   v4 = @"removed";
-  if (v3)
+  if (isWatchListed)
   {
     v4 = @"added";
   }
@@ -164,45 +164,45 @@ void __56__VUIUpNextButtonProperties_callAPIAndToggleUpNextState__block_invoke(u
 
 - (void)updateButtonContentView
 {
-  v3 = [(VUIUpNextButtonProperties *)self delegate];
+  delegate = [(VUIUpNextButtonProperties *)self delegate];
   if ([(VUIUpNextButtonProperties *)self isWatchListed])
   {
-    [v3 upNextStateChangedToAdded];
+    [delegate upNextStateChangedToAdded];
   }
 
   else
   {
-    [v3 upNextStateChangedToRemoved];
+    [delegate upNextStateChangedToRemoved];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"VUIUpNextRequestDidFinishNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"VUIUpNextRequestDidFinishNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = VUIUpNextButtonProperties;
   [(VUIUpNextButtonProperties *)&v4 dealloc];
 }
 
-- (void)_updatingState:(id)a3
+- (void)_updatingState:(id)state
 {
-  v4 = a3;
-  v13 = [v4 userInfo];
-  v5 = [v13 objectForKey:@"Error"];
-  v6 = [v13 objectForKey:@"Action"];
-  v7 = [v4 object];
+  stateCopy = state;
+  userInfo = [stateCopy userInfo];
+  v5 = [userInfo objectForKey:@"Error"];
+  v6 = [userInfo objectForKey:@"Action"];
+  object = [stateCopy object];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(VUIUpNextButtonProperties *)self canonicalID];
-    v9 = [v7 isEqualToString:v8];
+    canonicalID = [(VUIUpNextButtonProperties *)self canonicalID];
+    v9 = [object isEqualToString:canonicalID];
 
     if (v9)
     {
-      v10 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
       if (v5)
       {
         v11 = v6 == 0;
@@ -215,7 +215,7 @@ void __56__VUIUpNextButtonProperties_callAPIAndToggleUpNextState__block_invoke(u
 
       if (!v11)
       {
-        if (v10 == 1)
+        if (unsignedIntegerValue == 1)
         {
           if ([(VUIUpNextButtonProperties *)self isWatchListed])
           {
@@ -223,7 +223,7 @@ void __56__VUIUpNextButtonProperties_callAPIAndToggleUpNextState__block_invoke(u
           }
         }
 
-        else if (v10 || ![(VUIUpNextButtonProperties *)self isWatchListed])
+        else if (unsignedIntegerValue || ![(VUIUpNextButtonProperties *)self isWatchListed])
         {
           goto LABEL_21;
         }
@@ -235,7 +235,7 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      if (v10 == 1)
+      if (unsignedIntegerValue == 1)
       {
         if (![(VUIUpNextButtonProperties *)self isWatchListed])
         {
@@ -246,7 +246,7 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      if (!v10 && ![(VUIUpNextButtonProperties *)self isWatchListed])
+      if (!unsignedIntegerValue && ![(VUIUpNextButtonProperties *)self isWatchListed])
       {
         v12 = 1;
         goto LABEL_20;
@@ -257,18 +257,18 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_handleClearFromPlayHistoryNotification:(id)a3
+- (void)_handleClearFromPlayHistoryNotification:(id)notification
 {
-  v4 = a3;
-  v9 = [v4 userInfo];
-  v5 = [v9 objectForKey:@"Error"];
-  v6 = [v4 object];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKey:@"Error"];
+  object = [notificationCopy object];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(VUIUpNextButtonProperties *)self canonicalID];
-    v8 = [v6 isEqualToString:v7];
+    canonicalID = [(VUIUpNextButtonProperties *)self canonicalID];
+    v8 = [object isEqualToString:canonicalID];
 
     if (v8)
     {

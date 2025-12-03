@@ -1,38 +1,38 @@
 @interface VCPFaceLibraryProcessingTask
-+ (id)taskWithPhotoLibraries:(id)a3 andOptions:(id)a4 andProgressHandler:(id)a5 andCompletionHandler:(id)a6 andCancelBlock:(id)a7;
-- (BOOL)_readyToProcessProcessLibrary:(id)a3;
++ (id)taskWithPhotoLibraries:(id)libraries andOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block;
+- (BOOL)_readyToProcessProcessLibrary:(id)library;
 - (BOOL)isCancelled;
-- (VCPFaceLibraryProcessingTask)initWithPhotoLibraries:(id)a3 andOptions:(id)a4 andProgressHandler:(id)a5 andCompletionHandler:(id)a6 andCancelBlock:(id)a7;
-- (id)_processingTaskForPhotoLibrary:(id)a3;
-- (int)_addBatchWithAsset:(id)a3 isRetry:(BOOL)a4 withTask:(id)a5;
-- (int)_analyzeAllAssetsWithTask:(id)a3;
-- (int)_detectFacesForPhotoLibrary:(id)a3;
-- (int)_generateAndDetectFaceCropsForPhotoLibrary:(id)a3;
-- (int)_maintainProcessingStatusWithTask:(id)a3;
-- (int)_processAutoCounterForPhotoLibrary:(id)a3;
-- (int)_processFetchedAssets:(id)a3 withProcessingTask:(id)a4 andProgressReporter:(id)a5;
-- (int)_processLibrary:(id)a3;
-- (int)_processLocalIdentifiers:(id)a3 change:(id)a4 insert:(BOOL)a5 withTask:(id)a6;
-- (int)_retryEligibleAssetsWithTask:(id)a3 andStatus:(unint64_t)a4 andReporter:(id)a5;
-- (int)_retryFailedAssetsWithTask:(id)a3;
-- (int)_screenLocalIdentifiers:(id)a3 withTask:(id)a4 andPreviousStatus:(unint64_t)a5 andProgressReporter:(id)a6;
-- (int)_streamAnalysisWithTask:(id)a3 andProcessingStatus:(unint64_t)a4;
-- (int)_updateQuickFaceIDModelForPhotoLibrary:(id)a3 withContext:(id)a4 andQuickFaceIDManager:(id)a5;
+- (VCPFaceLibraryProcessingTask)initWithPhotoLibraries:(id)libraries andOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block;
+- (id)_processingTaskForPhotoLibrary:(id)library;
+- (int)_addBatchWithAsset:(id)asset isRetry:(BOOL)retry withTask:(id)task;
+- (int)_analyzeAllAssetsWithTask:(id)task;
+- (int)_detectFacesForPhotoLibrary:(id)library;
+- (int)_generateAndDetectFaceCropsForPhotoLibrary:(id)library;
+- (int)_maintainProcessingStatusWithTask:(id)task;
+- (int)_processAutoCounterForPhotoLibrary:(id)library;
+- (int)_processFetchedAssets:(id)assets withProcessingTask:(id)task andProgressReporter:(id)reporter;
+- (int)_processLibrary:(id)library;
+- (int)_processLocalIdentifiers:(id)identifiers change:(id)change insert:(BOOL)insert withTask:(id)task;
+- (int)_retryEligibleAssetsWithTask:(id)task andStatus:(unint64_t)status andReporter:(id)reporter;
+- (int)_retryFailedAssetsWithTask:(id)task;
+- (int)_screenLocalIdentifiers:(id)identifiers withTask:(id)task andPreviousStatus:(unint64_t)status andProgressReporter:(id)reporter;
+- (int)_streamAnalysisWithTask:(id)task andProcessingStatus:(unint64_t)status;
+- (int)_updateQuickFaceIDModelForPhotoLibrary:(id)library withContext:(id)context andQuickFaceIDManager:(id)manager;
 - (int)completeSceneProcessing;
 - (int)run;
-- (int)runGalleryProcessingForPhotoLibrary:(id)a3 progressHandler:(id)a4;
+- (int)runGalleryProcessingForPhotoLibrary:(id)library progressHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation VCPFaceLibraryProcessingTask
 
-- (VCPFaceLibraryProcessingTask)initWithPhotoLibraries:(id)a3 andOptions:(id)a4 andProgressHandler:(id)a5 andCompletionHandler:(id)a6 andCancelBlock:(id)a7
+- (VCPFaceLibraryProcessingTask)initWithPhotoLibraries:(id)libraries andOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  librariesCopy = libraries;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
   v43.receiver = self;
   v43.super_class = VCPFaceLibraryProcessingTask;
   v18 = [(VCPFaceLibraryProcessingTask *)&v43 init];
@@ -40,15 +40,15 @@
   v20 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_photoLibraries, a3);
+    objc_storeStrong(&v18->_photoLibraries, libraries);
     v21 = +[NSMutableDictionary dictionary];
     processingTasks = v20->_processingTasks;
     v20->_processingTasks = v21;
 
-    objc_storeStrong(&v19->_options, a4);
-    if (v15)
+    objc_storeStrong(&v19->_options, options);
+    if (handlerCopy)
     {
-      v23 = v15;
+      v23 = handlerCopy;
     }
 
     else
@@ -60,9 +60,9 @@
     progressHandler = v20->_progressHandler;
     v20->_progressHandler = v24;
 
-    if (v16)
+    if (completionHandlerCopy)
     {
-      v26 = v16;
+      v26 = completionHandlerCopy;
     }
 
     else
@@ -74,9 +74,9 @@
     completionHandler = v20->_completionHandler;
     v20->_completionHandler = v27;
 
-    if (v17)
+    if (blockCopy)
     {
-      v29 = v17;
+      v29 = blockCopy;
     }
 
     else
@@ -94,9 +94,9 @@
 
     v20->_subtasks = -1;
     v34 = [(NSDictionary *)v20->_options objectForKeyedSubscript:MADFaceLibraryProcessing_ModifyPersonRequest];
-    v35 = [v34 BOOLValue];
+    bOOLValue = [v34 BOOLValue];
 
-    if (v35)
+    if (bOOLValue)
     {
       v36 = 52;
     }
@@ -104,9 +104,9 @@
     else
     {
       v37 = [(NSDictionary *)v19->_options objectForKeyedSubscript:MADFaceLibraryProcessing_AutoCounterOnly];
-      v38 = [v37 BOOLValue];
+      bOOLValue2 = [v37 BOOLValue];
 
-      if (!v38)
+      if (!bOOLValue2)
       {
         v40 = MADFaceLibraryProcessing_SubTasks;
         v41 = [(NSDictionary *)v19->_options objectForKeyedSubscript:MADFaceLibraryProcessing_SubTasks];
@@ -131,14 +131,14 @@ LABEL_16:
   return v20;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 andOptions:(id)a4 andProgressHandler:(id)a5 andCompletionHandler:(id)a6 andCancelBlock:(id)a7
++ (id)taskWithPhotoLibraries:(id)libraries andOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:v11 andOptions:v12 andProgressHandler:v13 andCompletionHandler:v14 andCancelBlock:v15];
+  librariesCopy = libraries;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
+  v16 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:librariesCopy andOptions:optionsCopy andProgressHandler:handlerCopy andCompletionHandler:completionHandlerCopy andCancelBlock:blockCopy];
 
   return v16;
 }
@@ -171,14 +171,14 @@ LABEL_16:
   return v3 & 1;
 }
 
-- (id)_processingTaskForPhotoLibrary:(id)a3
+- (id)_processingTaskForPhotoLibrary:(id)library
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  processingTasks = v5->_processingTasks;
-  v7 = [v4 databaseUUID];
-  v8 = [(NSMutableDictionary *)processingTasks objectForKeyedSubscript:v7];
+  libraryCopy = library;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  processingTasks = selfCopy->_processingTasks;
+  databaseUUID = [libraryCopy databaseUUID];
+  v8 = [(NSMutableDictionary *)processingTasks objectForKeyedSubscript:databaseUUID];
 
   if (!v8)
   {
@@ -188,58 +188,58 @@ LABEL_16:
       if (os_log_type_enabled(&_os_log_default, v9))
       {
         *buf = 138412290;
-        v24 = v4;
+        v24 = libraryCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "[FaceLibraryProcessing] Creating VCPFaceProcessingTask for library %@", buf, 0xCu);
       }
     }
 
-    v10 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:v4];
-    v11 = [(NSDictionary *)v5->_options objectForKeyedSubscript:MADFaceLibraryProcessing_ModifyPersonRequest];
-    v12 = [v11 BOOLValue];
+    v10 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:libraryCopy];
+    v11 = [(NSDictionary *)selfCopy->_options objectForKeyedSubscript:MADFaceLibraryProcessing_ModifyPersonRequest];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       [v10 setSkipGallerySyncing:1];
     }
 
-    objc_initWeak(buf, v5);
+    objc_initWeak(buf, selfCopy);
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1000F0240;
     v21[3] = &unk_100286310;
     objc_copyWeak(&v22, buf);
     v13 = objc_retainBlock(v21);
-    v14 = [VCPFaceProcessingTask taskWithPhotoLibrary:v4 andContext:v10 andCancelBlock:v13];
-    v15 = v5->_processingTasks;
-    v16 = [v4 databaseUUID];
-    [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:v16];
+    v14 = [VCPFaceProcessingTask taskWithPhotoLibrary:libraryCopy andContext:v10 andCancelBlock:v13];
+    v15 = selfCopy->_processingTasks;
+    databaseUUID2 = [libraryCopy databaseUUID];
+    [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:databaseUUID2];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(buf);
   }
 
-  v17 = v5->_processingTasks;
-  v18 = [v4 databaseUUID];
-  v19 = [(NSMutableDictionary *)v17 objectForKeyedSubscript:v18];
+  v17 = selfCopy->_processingTasks;
+  databaseUUID3 = [libraryCopy databaseUUID];
+  v19 = [(NSMutableDictionary *)v17 objectForKeyedSubscript:databaseUUID3];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v19;
 }
 
-- (int)_addBatchWithAsset:(id)a3 isRetry:(BOOL)a4 withTask:(id)a5
+- (int)_addBatchWithAsset:(id)asset isRetry:(BOOL)retry withTask:(id)task
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  retryCopy = retry;
+  assetCopy = asset;
+  taskCopy = task;
   if (![(VCPFaceLibraryProcessingTask *)self isCancelled])
   {
     v11 = +[VCPWatchdog sharedWatchdog];
     [v11 pet];
 
-    if (([v8 vcp_needsFaceProcessing] & 1) == 0)
+    if (([assetCopy vcp_needsFaceProcessing] & 1) == 0)
     {
-      if (v6)
+      if (retryCopy)
       {
         if (+[MADManagedProcessingStatus isMACDPersistEnabled])
         {
@@ -248,24 +248,24 @@ LABEL_16:
             v16 = VCPLogToOSLogType[7];
             if (os_log_type_enabled(&_os_log_default, v16))
             {
-              v17 = [v8 localIdentifier];
+              localIdentifier = [assetCopy localIdentifier];
               *buf = 138412546;
-              v63 = v17;
+              v63 = localIdentifier;
               v64 = 1024;
               *v65 = 3;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v16, "[FaceLibraryProcessing][%@][MACD] Removing processing status for taskID %d", buf, 0x12u);
             }
           }
 
-          v18 = [v9 photoLibrary];
+          photoLibrary = [taskCopy photoLibrary];
           v60[0] = _NSConcreteStackBlock;
           v60[1] = 3221225472;
           v60[2] = sub_1000F0C64;
           v60[3] = &unk_100283AD0;
-          v19 = v8;
+          v19 = assetCopy;
           v61 = v19;
           v59 = 0;
-          v20 = [v18 mad_performAnalysisDataStoreChanges:v60 error:&v59];
+          v20 = [photoLibrary mad_performAnalysisDataStoreChanges:v60 error:&v59];
           v21 = v59;
 
           if ((v20 & 1) == 0 && MediaAnalysisLogLevel() >= 3)
@@ -273,9 +273,9 @@ LABEL_16:
             v22 = VCPLogToOSLogType[3];
             if (os_log_type_enabled(&_os_log_default, v22))
             {
-              v23 = [v19 localIdentifier];
+              localIdentifier2 = [v19 localIdentifier];
               *buf = 138412802;
-              v63 = v23;
+              v63 = localIdentifier2;
               v64 = 1024;
               *v65 = 3;
               *&v65[4] = 2112;
@@ -287,12 +287,12 @@ LABEL_16:
 
         else
         {
-          v33 = [v9 database];
-          v34 = [v8 localIdentifier];
-          [v33 removeProcessingStatusForLocalIdentifier:v34 andTaskID:3];
+          database = [taskCopy database];
+          localIdentifier3 = [assetCopy localIdentifier];
+          [database removeProcessingStatusForLocalIdentifier:localIdentifier3 andTaskID:3];
 
-          v35 = [v9 database];
-          [v35 commit];
+          database2 = [taskCopy database];
+          [database2 commit];
         }
 
         if (MediaAnalysisLogLevel() >= 6)
@@ -300,9 +300,9 @@ LABEL_16:
           v36 = VCPLogToOSLogType[6];
           if (os_log_type_enabled(&_os_log_default, v36))
           {
-            v37 = [v8 localIdentifier];
+            localIdentifier4 = [assetCopy localIdentifier];
             *buf = 138412290;
-            v63 = v37;
+            v63 = localIdentifier4;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v36, "[FaceLibraryProcessing][%@] Analysis is up-to-date", buf, 0xCu);
           }
         }
@@ -311,27 +311,27 @@ LABEL_16:
       goto LABEL_33;
     }
 
-    v12 = [v8 photoLibrary];
-    if ([v12 mad_pauseFCPeopleFurtherProcessing])
+    photoLibrary2 = [assetCopy photoLibrary];
+    if ([photoLibrary2 mad_pauseFCPeopleFurtherProcessing])
     {
-      v13 = [v8 faceAnalysisVersion];
+      faceAnalysisVersion = [assetCopy faceAnalysisVersion];
 
-      if (v13 == 14)
+      if (faceAnalysisVersion == 14)
       {
         if (MediaAnalysisLogLevel() >= 5)
         {
           v14 = VCPLogToOSLogType[5];
           if (os_log_type_enabled(&_os_log_default, v14))
           {
-            v15 = [v8 localIdentifier];
+            localIdentifier5 = [assetCopy localIdentifier];
             *buf = 138412290;
-            v63 = v15;
+            v63 = localIdentifier5;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "[%@][FaceAnalysisStateCheck] already with FC version; skip", buf, 0xCu);
           }
         }
 
 LABEL_33:
-        LODWORD(v10) = 0;
+        LODWORD(photoLibrary4) = 0;
         goto LABEL_66;
       }
     }
@@ -344,35 +344,35 @@ LABEL_33:
     v57 = 0;
     if (+[MADManagedProcessingStatus isMACDReadEnabled])
     {
-      v24 = [v9 photoLibrary];
-      v25 = [v24 mad_fetchRequest];
+      photoLibrary3 = [taskCopy photoLibrary];
+      mad_fetchRequest = [photoLibrary3 mad_fetchRequest];
       v56 = 0;
-      v26 = [v8 localIdentifier];
-      v10 = [v25 fetchProcessingStatus:&v58 attempts:&v57 lastAttemptDate:0 nextAttemptDate:&v56 localIdentifier:v26 taskID:3];
+      localIdentifier6 = [assetCopy localIdentifier];
+      photoLibrary4 = [mad_fetchRequest fetchProcessingStatus:&v58 attempts:&v57 lastAttemptDate:0 nextAttemptDate:&v56 localIdentifier:localIdentifier6 taskID:3];
       v27 = v56;
     }
 
     else
     {
-      v28 = [v9 database];
+      database3 = [taskCopy database];
       v55 = 0;
-      v29 = [v8 localIdentifier];
-      v10 = [v28 queryProcessingStatus:&v58 attempts:&v57 lastAttemptDate:0 andNextAttemptDate:&v55 forLocalIdentifier:v29 andTaskID:3];
+      localIdentifier7 = [assetCopy localIdentifier];
+      photoLibrary4 = [database3 queryProcessingStatus:&v58 attempts:&v57 lastAttemptDate:0 andNextAttemptDate:&v55 forLocalIdentifier:localIdentifier7 andTaskID:3];
       v27 = v55;
     }
 
-    if (!v10)
+    if (!photoLibrary4)
     {
       v30 = v58;
       if (v58 == 7 || v58 == 2)
       {
-        v10 = [v9 photoLibrary];
-        if ([v10 vcp_supportsCloudLibraryResourceDownload])
+        photoLibrary4 = [taskCopy photoLibrary];
+        if ([photoLibrary4 vcp_supportsCloudLibraryResourceDownload])
         {
-          v31 = [v9 photoLibrary];
-          if ([v31 vcp_allowsCloudLibraryResourceDownload])
+          photoLibrary5 = [taskCopy photoLibrary];
+          if ([photoLibrary5 vcp_allowsCloudLibraryResourceDownload])
           {
-            v32 = [v9 allowStreaming] ^ 1;
+            v32 = [taskCopy allowStreaming] ^ 1;
           }
 
           else
@@ -403,13 +403,13 @@ LABEL_33:
           v38 = VCPLogToOSLogType[6];
           if (os_log_type_enabled(&_os_log_default, v38))
           {
-            v39 = [v8 localIdentifier];
+            localIdentifier8 = [assetCopy localIdentifier];
             v40 = VCPProcessingStatusDescription();
             v41 = v57;
             v42 = +[VCPLogManager dateFormatter];
             v43 = [v42 stringFromDate:v27];
             *buf = 138413058;
-            v63 = v39;
+            v63 = localIdentifier8;
             v64 = 2112;
             *v65 = v40;
             *&v65[8] = 1024;
@@ -435,13 +435,13 @@ LABEL_33:
             v47 = VCPLogToOSLogType[6];
             if (os_log_type_enabled(&_os_log_default, v47))
             {
-              v48 = [v8 localIdentifier];
+              localIdentifier9 = [assetCopy localIdentifier];
               v49 = VCPProcessingStatusDescription();
               v50 = v57;
               v51 = +[VCPLogManager dateFormatter];
               v52 = [v51 stringFromDate:v27];
               *buf = 138413058;
-              v63 = v48;
+              v63 = localIdentifier9;
               v64 = 2112;
               *v65 = v49;
               *&v65[8] = 1024;
@@ -465,34 +465,34 @@ LABEL_33:
       {
         if ([(NSMutableSet *)assetBatch count])
         {
-          LODWORD(v10) = [v9 processAssets:self->_assetBatch];
+          LODWORD(photoLibrary4) = [taskCopy processAssets:self->_assetBatch];
           [(NSMutableSet *)self->_assetBatch removeAllObjects];
-          if (v10)
+          if (photoLibrary4)
           {
             goto LABEL_65;
           }
         }
 
-        [(NSMutableSet *)self->_assetBatch addObject:v8];
-        LODWORD(v10) = [v9 processAssets:self->_assetBatch];
+        [(NSMutableSet *)self->_assetBatch addObject:assetCopy];
+        LODWORD(photoLibrary4) = [taskCopy processAssets:self->_assetBatch];
         [(NSMutableSet *)self->_assetBatch removeAllObjects];
       }
 
       else
       {
-        [(NSMutableSet *)assetBatch addObject:v8];
+        [(NSMutableSet *)assetBatch addObject:assetCopy];
         if ([(NSMutableSet *)self->_assetBatch count]< 0x64)
         {
 LABEL_64:
-          LODWORD(v10) = 0;
+          LODWORD(photoLibrary4) = 0;
           goto LABEL_65;
         }
 
-        LODWORD(v10) = [v9 processAssets:self->_assetBatch];
+        LODWORD(photoLibrary4) = [taskCopy processAssets:self->_assetBatch];
         [(NSMutableSet *)self->_assetBatch removeAllObjects];
       }
 
-      if (!v10)
+      if (!photoLibrary4)
       {
         goto LABEL_64;
       }
@@ -503,21 +503,21 @@ LABEL_65:
     goto LABEL_66;
   }
 
-  LODWORD(v10) = -128;
+  LODWORD(photoLibrary4) = -128;
 LABEL_66:
 
-  return v10;
+  return photoLibrary4;
 }
 
-- (int)_screenLocalIdentifiers:(id)a3 withTask:(id)a4 andPreviousStatus:(unint64_t)a5 andProgressReporter:(id)a6
+- (int)_screenLocalIdentifiers:(id)identifiers withTask:(id)task andPreviousStatus:(unint64_t)status andProgressReporter:(id)reporter
 {
-  v9 = a3;
-  v10 = a4;
-  v50 = v9;
-  v51 = a6;
-  v52 = [[NSMutableSet alloc] initWithArray:v9];
-  v11 = [v10 photoLibrary];
-  v12 = [PHAsset vcp_fetchOptionsForLibrary:v11 forTaskID:3];
+  identifiersCopy = identifiers;
+  taskCopy = task;
+  v50 = identifiersCopy;
+  reporterCopy = reporter;
+  v52 = [[NSMutableSet alloc] initWithArray:identifiersCopy];
+  photoLibrary = [taskCopy photoLibrary];
+  v12 = [PHAsset vcp_fetchOptionsForLibrary:photoLibrary forTaskID:3];
 
   v49 = v12;
   v13 = [PHAsset fetchAssetsWithLocalIdentifiers:v50 options:v12];
@@ -526,7 +526,7 @@ LABEL_66:
   if (!v15)
   {
 LABEL_15:
-    if (-[NSMutableSet count](self->_assetBatch, "count") && (v22 = [v10 processAssets:self->_assetBatch], -[NSMutableSet removeAllObjects](self->_assetBatch, "removeAllObjects"), v22))
+    if (-[NSMutableSet count](self->_assetBatch, "count") && (v22 = [taskCopy processAssets:self->_assetBatch], -[NSMutableSet removeAllObjects](self->_assetBatch, "removeAllObjects"), v22))
     {
       if (MediaAnalysisLogLevel() < 3)
       {
@@ -571,7 +571,7 @@ LABEL_15:
           }
         }
 
-        v29 = [v10 photoLibrary];
+        photoLibrary2 = [taskCopy photoLibrary];
         v58[0] = _NSConcreteStackBlock;
         v58[1] = 3221225472;
         v58[2] = sub_1000F1444;
@@ -579,7 +579,7 @@ LABEL_15:
         v30 = v52;
         v59 = v30;
         v57 = 0;
-        v31 = [v29 mad_performAnalysisDataStoreChanges:v58 error:&v57];
+        v31 = [photoLibrary2 mad_performAnalysisDataStoreChanges:v58 error:&v57];
         obj = v57;
 
         if ((v31 & 1) == 0)
@@ -626,8 +626,8 @@ LABEL_29:
             }
 
             v36 = *(*(&v53 + 1) + 8 * v34);
-            v37 = [v10 database];
-            v38 = [v37 removeProcessingStatusForLocalIdentifier:v36 andTaskID:3];
+            database = [taskCopy database];
+            v38 = [database removeProcessingStatusForLocalIdentifier:v36 andTaskID:3];
 
             v39 = 7;
             if (v38 == -108)
@@ -718,11 +718,11 @@ LABEL_47:
 
     else
     {
-      v20 = [v18 localIdentifier];
-      [v52 removeObject:v20];
+      localIdentifier = [v18 localIdentifier];
+      [v52 removeObject:localIdentifier];
 
-      [v51 increaseProcessedJobCountByOne];
-      v21 = [(VCPFaceLibraryProcessingTask *)self _addBatchWithAsset:v18 isRetry:1 withTask:v10];
+      [reporterCopy increaseProcessedJobCountByOne];
+      v21 = [(VCPFaceLibraryProcessingTask *)self _addBatchWithAsset:v18 isRetry:1 withTask:taskCopy];
       v19 = v21 ? 7 : 0;
       v14 = v21 ? v21 : v14;
     }
@@ -740,7 +740,7 @@ LABEL_47:
   }
 
 LABEL_57:
-  if (!+[VCPDatabaseWriter isLegacyPersistEnabled](VCPDatabaseWriter, "isLegacyPersistEnabled") || ([v10 database], v45 = objc_claimAutoreleasedReturnValue(), v46 = objc_msgSend(v45, "commit"), v45, v46 != -108) && v46 != -36 && v46 != -23)
+  if (!+[VCPDatabaseWriter isLegacyPersistEnabled](VCPDatabaseWriter, "isLegacyPersistEnabled") || ([taskCopy database], v45 = objc_claimAutoreleasedReturnValue(), v46 = objc_msgSend(v45, "commit"), v45, v46 != -108) && v46 != -36 && v46 != -23)
   {
     v46 = v14;
   }
@@ -748,23 +748,23 @@ LABEL_57:
   return v46;
 }
 
-- (int)_streamAnalysisWithTask:(id)a3 andProcessingStatus:(unint64_t)a4
+- (int)_streamAnalysisWithTask:(id)task andProcessingStatus:(unint64_t)status
 {
-  v7 = a3;
-  v8 = [v7 photoLibrary];
-  v9 = [v8 vcp_allowsCloudLibraryResourceDownload];
+  taskCopy = task;
+  photoLibrary = [taskCopy photoLibrary];
+  vcp_allowsCloudLibraryResourceDownload = [photoLibrary vcp_allowsCloudLibraryResourceDownload];
 
-  if ((v9 & 1) == 0)
+  if ((vcp_allowsCloudLibraryResourceDownload & 1) == 0)
   {
 LABEL_52:
     v30 = 0;
     goto LABEL_53;
   }
 
-  v10 = [v7 photoLibrary];
-  v11 = [v10 mad_pauseFCPeopleFurtherProcessing];
+  photoLibrary2 = [taskCopy photoLibrary];
+  mad_pauseFCPeopleFurtherProcessing = [photoLibrary2 mad_pauseFCPeopleFurtherProcessing];
 
-  if (v11)
+  if (mad_pauseFCPeopleFurtherProcessing)
   {
     if (MediaAnalysisLogLevel() >= 6)
     {
@@ -781,32 +781,32 @@ LABEL_52:
 
   if (MediaAnalysisLogLevel() >= 5)
   {
-    v4 = VCPLogToOSLogType[5];
+    mad_fetchRequest = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, VCPLogToOSLogType[5]))
     {
-      v13 = [v7 photoLibrary];
-      v14 = [v13 photoLibraryURL];
-      v15 = [v14 path];
+      photoLibrary3 = [taskCopy photoLibrary];
+      photoLibraryURL = [photoLibrary3 photoLibraryURL];
+      path = [photoLibraryURL path];
       v16 = VCPProcessingStatusDescription();
       *buf = 138412546;
-      v41 = v15;
+      v41 = path;
       v42 = 2112;
       v43 = v16;
-      _os_log_impl(&_mh_execute_header, &_os_log_default, v4, "[FaceLibraryProcessing] Stream Library %@ for eligible %@ assets", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, &_os_log_default, mad_fetchRequest, "[FaceLibraryProcessing] Stream Library %@ for eligible %@ assets", buf, 0x16u);
     }
   }
 
   if (+[MADManagedProcessingStatus isMACDReadEnabled])
   {
-    v17 = [v7 photoLibrary];
-    v4 = [v17 mad_fetchRequest];
-    v18 = [v4 fetchAssetCountForTaskID:3 status:a4 attempts:1];
+    photoLibrary4 = [taskCopy photoLibrary];
+    mad_fetchRequest = [photoLibrary4 mad_fetchRequest];
+    v18 = [mad_fetchRequest fetchAssetCountForTaskID:3 status:status attempts:1];
   }
 
   else
   {
-    v17 = [v7 database];
-    v18 = [v17 queryAssetCountForTaskID:3 withStatus:a4 andAttempts:1];
+    photoLibrary4 = [taskCopy database];
+    v18 = [photoLibrary4 queryAssetCountForTaskID:3 withStatus:status andAttempts:1];
   }
 
   if (!v18)
@@ -830,16 +830,16 @@ LABEL_52:
     v20 = objc_autoreleasePoolPush();
     if ([(VCPFaceLibraryProcessingTask *)self isCancelled])
     {
-      v4 = 4294967168;
+      mad_fetchRequest = 4294967168;
       v21 = 1;
       goto LABEL_47;
     }
 
     if (!+[MADManagedProcessingStatus isMACDReadEnabled])
     {
-      v26 = [v7 database];
+      database = [taskCopy database];
       v37 = 0;
-      v27 = [v26 fetchLocalIdentifiers:&v37 withProcessingStatus:a4 andTaskID:3 andAttempts:1 andFetchLimit:100];
+      v27 = [database fetchLocalIdentifiers:&v37 withProcessingStatus:status andTaskID:3 andAttempts:1 andFetchLimit:100];
       v25 = v37;
 
       if (v27 == -108 || v27 == -36)
@@ -852,7 +852,7 @@ LABEL_52:
         v24 = v27;
         if (v27 != -23)
         {
-          v24 = v4;
+          v24 = mad_fetchRequest;
         }
       }
 
@@ -865,19 +865,19 @@ LABEL_52:
       goto LABEL_32;
     }
 
-    v22 = [v7 photoLibrary];
-    v23 = [v22 mad_fetchRequest];
+    photoLibrary5 = [taskCopy photoLibrary];
+    mad_fetchRequest2 = [photoLibrary5 mad_fetchRequest];
     v38 = 0;
-    v24 = [v23 fetchLocalIdentifiers:&v38 processingStatus:a4 taskID:3 attempts:1 fetchLimit:100];
+    v24 = [mad_fetchRequest2 fetchLocalIdentifiers:&v38 processingStatus:status taskID:3 attempts:1 fetchLimit:100];
     v25 = v38;
 
     if (!v24)
     {
-      v24 = v4;
+      v24 = mad_fetchRequest;
 LABEL_32:
       if ([v25 count])
       {
-        [v7 setAllowStreaming:1];
+        [taskCopy setAllowStreaming:1];
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v33))
         {
           v28 = [v25 count];
@@ -888,7 +888,7 @@ LABEL_32:
           _os_log_impl(&_mh_execute_header, &_os_log_default, v33, "[FaceLibraryProcessing] Screening %lu assets: %@", buf, 0x16u);
         }
 
-        v29 = [(VCPFaceLibraryProcessingTask *)self _screenLocalIdentifiers:v25 withTask:v7 andPreviousStatus:a4 andProgressReporter:v36];
+        v29 = [(VCPFaceLibraryProcessingTask *)self _screenLocalIdentifiers:v25 withTask:taskCopy andPreviousStatus:status andProgressReporter:v36];
         if (v29)
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
@@ -930,7 +930,7 @@ LABEL_32:
     v21 = 1;
 LABEL_46:
 
-    v4 = v24;
+    mad_fetchRequest = v24;
 LABEL_47:
     objc_autoreleasePoolPop(v20);
   }
@@ -943,41 +943,41 @@ LABEL_47:
 
   else
   {
-    v30 = v4;
+    v30 = mad_fetchRequest;
   }
 
 LABEL_53:
   return v30;
 }
 
-- (int)_retryEligibleAssetsWithTask:(id)a3 andStatus:(unint64_t)a4 andReporter:(id)a5
+- (int)_retryEligibleAssetsWithTask:(id)task andStatus:(unint64_t)status andReporter:(id)reporter
 {
-  v9 = a3;
-  v46 = a5;
+  taskCopy = task;
+  reporterCopy = reporter;
   if (+[MADManagedProcessingStatus isMACDReadEnabled])
   {
-    v10 = [v9 photoLibrary];
-    v11 = [v10 mad_fetchRequest];
-    v12 = [v11 fetchEligibleToRetryAssetCountWithProcessingStatus:a4 taskID:3];
+    photoLibrary = [taskCopy photoLibrary];
+    mad_fetchRequest = [photoLibrary mad_fetchRequest];
+    v12 = [mad_fetchRequest fetchEligibleToRetryAssetCountWithProcessingStatus:status taskID:3];
   }
 
   else
   {
-    v10 = [v9 database];
-    v12 = [v10 queryEligibleToRetryAssetCountWithProcessingStatus:a4 andTaskID:3];
+    photoLibrary = [taskCopy database];
+    v12 = [photoLibrary queryEligibleToRetryAssetCountWithProcessingStatus:status andTaskID:3];
   }
 
   if (!v12)
   {
 LABEL_9:
-    v16 = 0;
+    reporterCopy4 = 0;
     goto LABEL_70;
   }
 
-  v13 = [v9 photoLibrary];
-  v14 = [v13 mad_pauseFCPeopleFurtherProcessing];
+  photoLibrary2 = [taskCopy photoLibrary];
+  mad_pauseFCPeopleFurtherProcessing = [photoLibrary2 mad_pauseFCPeopleFurtherProcessing];
 
-  if (v14)
+  if (mad_pauseFCPeopleFurtherProcessing)
   {
     if (MediaAnalysisLogLevel() >= 6)
     {
@@ -992,19 +992,19 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (a4 <= 7 && ((1 << a4) & 0x9C) != 0)
+  if (status <= 7 && ((1 << status) & 0x9C) != 0)
   {
     if (MediaAnalysisLogLevel() >= 6)
     {
       v18 = VCPLogToOSLogType[6];
       if (os_log_type_enabled(&_os_log_default, v18))
       {
-        v19 = [v9 photoLibrary];
-        v20 = [v19 photoLibraryURL];
-        v21 = [v20 path];
+        photoLibrary3 = [taskCopy photoLibrary];
+        photoLibraryURL = [photoLibrary3 photoLibraryURL];
+        path = [photoLibraryURL path];
         v5 = VCPProcessingStatusDescription();
         *buf = 138412802;
-        v50 = v21;
+        v50 = path;
         v51 = 2048;
         v52 = v12;
         v53 = 2112;
@@ -1019,12 +1019,12 @@ LABEL_9:
     v22 = VCPLogToOSLogType[3];
     if (os_log_type_enabled(&_os_log_default, v22))
     {
-      v23 = [v9 photoLibrary];
-      v24 = [v23 photoLibraryURL];
-      v25 = [v24 path];
+      photoLibrary4 = [taskCopy photoLibrary];
+      photoLibraryURL2 = [photoLibrary4 photoLibraryURL];
+      path2 = [photoLibraryURL2 path];
       v5 = VCPProcessingStatusDescription();
       *buf = 138412802;
-      v50 = v25;
+      v50 = path2;
       v51 = 2048;
       v52 = v12;
       v53 = 2112;
@@ -1043,18 +1043,18 @@ LABEL_9:
     v26 = objc_autoreleasePoolPush();
     if ([(VCPFaceLibraryProcessingTask *)self isCancelled])
     {
-      a5 = 4294967168;
+      reporter = 4294967168;
 LABEL_34:
       v31 = 1;
       goto LABEL_66;
     }
 
-    if ((a4 == 7 || a4 == 2) && ([v9 photoLibrary], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "vcp_supportsCloudLibraryResourceDownload")))
+    if ((status == 7 || status == 2) && ([taskCopy photoLibrary], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "vcp_supportsCloudLibraryResourceDownload")))
     {
-      v27 = [v9 photoLibrary];
-      v28 = [v27 vcp_allowsCloudLibraryResourceDownload];
+      photoLibrary5 = [taskCopy photoLibrary];
+      vcp_allowsCloudLibraryResourceDownload = [photoLibrary5 vcp_allowsCloudLibraryResourceDownload];
 
-      v29 = v28 ^ 1;
+      v29 = vcp_allowsCloudLibraryResourceDownload ^ 1;
     }
 
     else
@@ -1062,7 +1062,7 @@ LABEL_34:
       v29 = 0;
     }
 
-    if (a4 == 7 || a4 == 2)
+    if (status == 7 || status == 2)
     {
     }
 
@@ -1076,28 +1076,28 @@ LABEL_34:
         _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[FaceLibraryProcessing] Internet unavailable; skip %@ assets", buf, 0xCu);
       }
 
-      a5 = 0;
+      reporter = 0;
       goto LABEL_34;
     }
 
     if (!+[MADManagedProcessingStatus isMACDReadEnabled])
     {
-      v36 = [v9 database];
+      database = [taskCopy database];
       v47 = 0;
-      v37 = [v36 fetchEligibleToRetryLocalIdentifiers:&v47 withProcessingStatus:a4 andTaskID:3 andFetchLimit:100];
+      v37 = [database fetchEligibleToRetryLocalIdentifiers:&v47 withProcessingStatus:status andTaskID:3 andFetchLimit:100];
       v35 = v47;
 
       if (v37 == -108 || v37 == -36)
       {
-        v34 = v37;
+        reporterCopy3 = v37;
       }
 
       else
       {
-        v34 = v37;
+        reporterCopy3 = v37;
         if (v37 != -23)
         {
-          v34 = a5;
+          reporterCopy3 = reporter;
         }
       }
 
@@ -1110,15 +1110,15 @@ LABEL_34:
       goto LABEL_51;
     }
 
-    v32 = [v9 photoLibrary];
-    v33 = [v32 mad_fetchRequest];
+    photoLibrary6 = [taskCopy photoLibrary];
+    mad_fetchRequest2 = [photoLibrary6 mad_fetchRequest];
     v48 = 0;
-    v34 = [v33 fetchEligibleToRetryLocalIdentifiers:&v48 processingStatus:a4 taskID:3 fetchLimit:100];
+    reporterCopy3 = [mad_fetchRequest2 fetchEligibleToRetryLocalIdentifiers:&v48 processingStatus:status taskID:3 fetchLimit:100];
     v35 = v48;
 
-    if (!v34)
+    if (!reporterCopy3)
     {
-      v34 = a5;
+      reporterCopy3 = reporter;
 LABEL_51:
       if ([v35 count])
       {
@@ -1132,10 +1132,10 @@ LABEL_51:
           _os_log_impl(&_mh_execute_header, &_os_log_default, v43, "[FaceLibraryProcessing] Screening %lu assets: %@", buf, 0x16u);
         }
 
-        v39 = [v9 photoLibrary];
-        [v9 setAllowStreaming:{objc_msgSend(v39, "vcp_allowsCloudLibraryResourceDownload")}];
+        photoLibrary7 = [taskCopy photoLibrary];
+        [taskCopy setAllowStreaming:{objc_msgSend(photoLibrary7, "vcp_allowsCloudLibraryResourceDownload")}];
 
-        v40 = [(VCPFaceLibraryProcessingTask *)self _screenLocalIdentifiers:v35 withTask:v9 andPreviousStatus:a4 andProgressReporter:v46];
+        v40 = [(VCPFaceLibraryProcessingTask *)self _screenLocalIdentifiers:v35 withTask:taskCopy andPreviousStatus:status andProgressReporter:reporterCopy];
         if (v40)
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v44))
@@ -1145,7 +1145,7 @@ LABEL_51:
           }
 
           v31 = 1;
-          v34 = v40;
+          reporterCopy3 = v40;
         }
 
         else
@@ -1177,7 +1177,7 @@ LABEL_51:
     v31 = 1;
 LABEL_65:
 
-    a5 = v34;
+    reporter = reporterCopy3;
 LABEL_66:
     objc_autoreleasePoolPop(v26);
   }
@@ -1185,47 +1185,47 @@ LABEL_66:
   while (!v31);
   if (v31 == 11)
   {
-    v16 = 0;
+    reporterCopy4 = 0;
   }
 
   else
   {
-    v16 = a5;
+    reporterCopy4 = reporter;
   }
 
 LABEL_70:
 
-  return v16;
+  return reporterCopy4;
 }
 
-- (int)_retryFailedAssetsWithTask:(id)a3
+- (int)_retryFailedAssetsWithTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   if (MediaAnalysisLogLevel() >= 5)
   {
     v5 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
-      v6 = [v4 photoLibrary];
-      v7 = [v6 photoLibraryURL];
-      v8 = [v7 path];
+      photoLibrary = [taskCopy photoLibrary];
+      photoLibraryURL = [photoLibrary photoLibraryURL];
+      path = [photoLibraryURL path];
       *buf = 138412290;
-      v18 = v8;
+      v18 = path;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[FaceLibraryProcessing] Retry Library %@ for eligible failed assets", buf, 0xCu);
     }
   }
 
   if (+[MADManagedProcessingStatus isMACDReadEnabled])
   {
-    v9 = [v4 photoLibrary];
-    v10 = [v9 mad_fetchRequest];
-    v11 = [v10 fetchEligibleToRetryAssetCountWithTaskID:3];
+    photoLibrary2 = [taskCopy photoLibrary];
+    mad_fetchRequest = [photoLibrary2 mad_fetchRequest];
+    v11 = [mad_fetchRequest fetchEligibleToRetryAssetCountWithTaskID:3];
   }
 
   else
   {
-    v9 = [v4 database];
-    v11 = [v9 queryEligibleToRetryAssetCountWithTaskID:3];
+    photoLibrary2 = [taskCopy database];
+    v11 = [photoLibrary2 queryEligibleToRetryAssetCountWithTaskID:3];
   }
 
   if (v11)
@@ -1237,22 +1237,22 @@ LABEL_70:
     v16[4] = self;
     v12 = objc_retainBlock(v16);
     v13 = [VCPProgressReporter reporterWithIntervalSeconds:10 andTotalJobCount:v11 andBlock:v12];
-    v14 = [(VCPFaceLibraryProcessingTask *)self _retryEligibleAssetsWithTask:v4 andStatus:0 andReporter:v13];
+    v14 = [(VCPFaceLibraryProcessingTask *)self _retryEligibleAssetsWithTask:taskCopy andStatus:0 andReporter:v13];
     if (!v14)
     {
-      v14 = [(VCPFaceLibraryProcessingTask *)self _retryEligibleAssetsWithTask:v4 andStatus:1 andReporter:v13];
+      v14 = [(VCPFaceLibraryProcessingTask *)self _retryEligibleAssetsWithTask:taskCopy andStatus:1 andReporter:v13];
       if (!v14)
       {
-        v14 = [(VCPFaceLibraryProcessingTask *)self _retryEligibleAssetsWithTask:v4 andStatus:2 andReporter:v13];
+        v14 = [(VCPFaceLibraryProcessingTask *)self _retryEligibleAssetsWithTask:taskCopy andStatus:2 andReporter:v13];
         if (!v14)
         {
-          v14 = [(VCPFaceLibraryProcessingTask *)self _retryEligibleAssetsWithTask:v4 andStatus:7 andReporter:v13];
+          v14 = [(VCPFaceLibraryProcessingTask *)self _retryEligibleAssetsWithTask:taskCopy andStatus:7 andReporter:v13];
           if (!v14)
           {
-            v14 = [(VCPFaceLibraryProcessingTask *)self _retryEligibleAssetsWithTask:v4 andStatus:3 andReporter:v13];
+            v14 = [(VCPFaceLibraryProcessingTask *)self _retryEligibleAssetsWithTask:taskCopy andStatus:3 andReporter:v13];
             if (!v14)
             {
-              v14 = [(VCPFaceLibraryProcessingTask *)self _retryEligibleAssetsWithTask:v4 andStatus:4 andReporter:v13];
+              v14 = [(VCPFaceLibraryProcessingTask *)self _retryEligibleAssetsWithTask:taskCopy andStatus:4 andReporter:v13];
             }
           }
         }
@@ -1268,11 +1268,11 @@ LABEL_70:
   return v14;
 }
 
-- (int)_processFetchedAssets:(id)a3 withProcessingTask:(id)a4 andProgressReporter:(id)a5
+- (int)_processFetchedAssets:(id)assets withProcessingTask:(id)task andProgressReporter:(id)reporter
 {
-  v9 = a3;
-  v37 = a4;
-  v36 = a5;
+  assetsCopy = assets;
+  taskCopy = task;
+  reporterCopy = reporter;
   v38 = +[NSMutableArray array];
   v10 = 0;
   type = VCPLogToOSLogType[5];
@@ -1280,7 +1280,7 @@ LABEL_70:
   v33 = VCPLogToOSLogType[3];
   *&v11 = 138412546;
   v32 = v11;
-  while (v10 < [v9 count])
+  while (v10 < [assetsCopy count])
   {
     v12 = objc_autoreleasePoolPush();
     if ([(VCPFaceLibraryProcessingTask *)self isCancelled])
@@ -1291,11 +1291,11 @@ LABEL_70:
 
     else
     {
-      v14 = [v9 objectAtIndexedSubscript:v10];
-      [v36 increaseProcessedJobCountByOne];
+      v14 = [assetsCopy objectAtIndexedSubscript:v10];
+      [reporterCopy increaseProcessedJobCountByOne];
       if (([PHPhotoLibrary mad_isProcessingNeededOnAsset:v14 forTaskID:3]& 1) != 0)
       {
-        v15 = [(VCPFaceLibraryProcessingTask *)self _addBatchWithAsset:v14 isRetry:0 withTask:v37];
+        v15 = [(VCPFaceLibraryProcessingTask *)self _addBatchWithAsset:v14 isRetry:0 withTask:taskCopy];
         v13 = v15 != 0;
         if (v15)
         {
@@ -1308,11 +1308,11 @@ LABEL_70:
         if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
         {
           v16 = objc_opt_class();
-          v17 = [v14 localIdentifier];
+          localIdentifier = [v14 localIdentifier];
           *buf = 138412802;
           v43 = v16;
           v44 = 2112;
-          *v45 = v17;
+          *v45 = localIdentifier;
           *&v45[8] = 2048;
           *&v45[10] = 3;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[%@][%@] Asset does not need processing in task %lu, ignoring... ", buf, 0x20u);
@@ -1323,15 +1323,15 @@ LABEL_70:
         {
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v34))
           {
-            v18 = [v14 localIdentifier];
+            localIdentifier2 = [v14 localIdentifier];
             *buf = v32;
-            v43 = v18;
+            v43 = localIdentifier2;
             v44 = 1024;
             *v45 = 3;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v34, "[FaceLibraryProcessing][%@][MACD] Removing processing status for taskID %d", buf, 0x12u);
           }
 
-          v19 = [v37 photoLibrary];
+          photoLibrary = [taskCopy photoLibrary];
           v40[0] = _NSConcreteStackBlock;
           v40[1] = 3221225472;
           v40[2] = sub_1000F2DD0;
@@ -1339,30 +1339,30 @@ LABEL_70:
           v20 = v14;
           v41 = v20;
           v39 = 0;
-          v21 = [v19 mad_performAnalysisDataStoreChanges:v40 error:&v39];
-          v22 = v39;
+          v21 = [photoLibrary mad_performAnalysisDataStoreChanges:v40 error:&v39];
+          database2 = v39;
 
           if ((v21 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v33))
           {
-            v23 = [v20 localIdentifier];
+            localIdentifier3 = [v20 localIdentifier];
             *buf = 138412802;
-            v43 = v23;
+            v43 = localIdentifier3;
             v44 = 1024;
             *v45 = 3;
             *&v45[4] = 2112;
-            *&v45[6] = v22;
+            *&v45[6] = database2;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v33, "[FaceLibraryProcessing][%@][MACD] Failed to remove processing status for taskID %d: %@", buf, 0x1Cu);
           }
         }
 
         else
         {
-          v24 = [v37 database];
-          v25 = [v14 localIdentifier];
-          [v24 removeProcessingStatusForLocalIdentifier:v25 andTaskID:3];
+          database = [taskCopy database];
+          localIdentifier4 = [v14 localIdentifier];
+          [database removeProcessingStatusForLocalIdentifier:localIdentifier4 andTaskID:3];
 
-          v22 = [v37 database];
-          [v22 commit];
+          database2 = [taskCopy database];
+          [database2 commit];
         }
 
         v26 = [v38 count];
@@ -1371,8 +1371,8 @@ LABEL_70:
           v27 = +[VCPWatchdog sharedWatchdog];
           [v27 pet];
 
-          v28 = [v37 photoLibrary];
-          [v28 mad_markAsProcessedByTask:3 forAssets:v38 cancelBlock:self->_cancelBlock extendTimeoutBlock:&stru_100286330];
+          photoLibrary2 = [taskCopy photoLibrary];
+          [photoLibrary2 mad_markAsProcessedByTask:3 forAssets:v38 cancelBlock:self->_cancelBlock extendTimeoutBlock:&stru_100286330];
 
           [v38 removeAllObjects];
         }
@@ -1395,15 +1395,15 @@ LABEL_70:
     v29 = +[VCPWatchdog sharedWatchdog];
     [v29 pet];
 
-    v30 = [v37 photoLibrary];
-    [v30 mad_markAsProcessedByTask:3 forAssets:v38 cancelBlock:self->_cancelBlock extendTimeoutBlock:&stru_100286350];
+    photoLibrary3 = [taskCopy photoLibrary];
+    [photoLibrary3 mad_markAsProcessedByTask:3 forAssets:v38 cancelBlock:self->_cancelBlock extendTimeoutBlock:&stru_100286350];
 
     [v38 removeAllObjects];
   }
 
   if ([(NSMutableSet *)self->_assetBatch count])
   {
-    v5 = [v37 processAssets:self->_assetBatch];
+    v5 = [taskCopy processAssets:self->_assetBatch];
     [(NSMutableSet *)self->_assetBatch removeAllObjects];
     if (v5 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v33))
     {
@@ -1423,25 +1423,25 @@ LABEL_36:
   return v5;
 }
 
-- (int)_analyzeAllAssetsWithTask:(id)a3
+- (int)_analyzeAllAssetsWithTask:(id)task
 {
-  v39 = a3;
+  taskCopy = task;
   if (MediaAnalysisLogLevel() >= 5)
   {
     v4 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v4))
     {
-      v5 = [v39 photoLibrary];
-      v3 = [v5 photoLibraryURL];
-      v6 = [v3 path];
+      photoLibrary = [taskCopy photoLibrary];
+      photoLibraryURL = [photoLibrary photoLibraryURL];
+      path = [photoLibraryURL path];
       *buf = 138412290;
-      v47[0] = v6;
+      v47[0] = path;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v4, "[FaceLibraryProcessing] Analyzing Library %@", buf, 0xCu);
     }
   }
 
-  v7 = [v39 photoLibrary];
-  v8 = [v7 vcp_assetCountForTaskID:3];
+  photoLibrary2 = [taskCopy photoLibrary];
+  v8 = [photoLibrary2 vcp_assetCountForTaskID:3];
 
   if (v8)
   {
@@ -1452,7 +1452,7 @@ LABEL_36:
     v45[4] = self;
     v31 = objc_retainBlock(v45);
     v34 = [VCPProgressReporter reporterWithIntervalSeconds:10 andTotalJobCount:v8 andBlock:v31];
-    [v39 setAllowStreaming:0];
+    [taskCopy setAllowStreaming:0];
     if (MediaAnalysisLogLevel() >= 5)
     {
       v9 = VCPLogToOSLogType[5];
@@ -1463,8 +1463,8 @@ LABEL_36:
       }
     }
 
-    v10 = [v39 photoLibrary];
-    v38 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedVersionProviderWithPhotoLibrary:v10];
+    photoLibrary3 = [taskCopy photoLibrary];
+    v38 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedVersionProviderWithPhotoLibrary:photoLibrary3];
 
     v43 = 0u;
     v44 = 0u;
@@ -1490,11 +1490,11 @@ LABEL_10:
 
         v14 = *(*(&v41 + 1) + 8 * v13);
         v15 = objc_autoreleasePoolPush();
-        v16 = [v14 unsignedIntegerValue];
+        unsignedIntegerValue = [v14 unsignedIntegerValue];
         if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
         {
           *buf = 67109120;
-          LODWORD(v47[0]) = v16;
+          LODWORD(v47[0]) = unsignedIntegerValue;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[FaceLibraryProcessing] Processing P%d assets ... ", buf, 8u);
         }
 
@@ -1509,10 +1509,10 @@ LABEL_10:
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v20, OS_SIGNPOST_INTERVAL_BEGIN, v18, "VCPFaceLibraryProcessingTask_FetchAssets", "", buf, 2u);
         }
 
-        v21 = [v39 photoLibrary];
+        photoLibrary4 = [taskCopy photoLibrary];
         +[PHAsset mad_peopleThreshold];
         v40 = 0;
-        v22 = [v21 fetchAssetsForMediaProcessingTaskID:3 priority:v16 algorithmVersion:v38 sceneConfidenceThreshold:&v40 error:?];
+        v22 = [photoLibrary4 fetchAssetsForMediaProcessingTaskID:3 priority:unsignedIntegerValue algorithmVersion:v38 sceneConfidenceThreshold:&v40 error:?];
         v23 = v40;
 
         v24 = VCPSignPostLog();
@@ -1528,14 +1528,14 @@ LABEL_10:
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v33))
           {
             *buf = 67109378;
-            LODWORD(v47[0]) = v16;
+            LODWORD(v47[0]) = unsignedIntegerValue;
             WORD2(v47[0]) = 2112;
             *(v47 + 6) = v23;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v33, "[FaceLibraryProcessing] Failed to fetch P%d assets: %@", buf, 0x12u);
           }
 
           v26 = 0;
-          LODWORD(v3) = -18;
+          LODWORD(photoLibraryURL) = -18;
         }
 
         else
@@ -1548,11 +1548,11 @@ LABEL_10:
             _os_log_impl(&_mh_execute_header, &_os_log_default, v32, "[FaceLibraryProcessing] Fetched %lu assets", buf, 0xCu);
           }
 
-          v28 = [(VCPFaceLibraryProcessingTask *)self _processFetchedAssets:v22 withProcessingTask:v39 andProgressReporter:v34, v30];
+          v28 = [(VCPFaceLibraryProcessingTask *)self _processFetchedAssets:v22 withProcessingTask:taskCopy andProgressReporter:v34, v30];
           v26 = v28 == 0;
           if (v28)
           {
-            LODWORD(v3) = v28;
+            LODWORD(photoLibraryURL) = v28;
           }
         }
 
@@ -1578,26 +1578,26 @@ LABEL_10:
     else
     {
 LABEL_35:
-      LODWORD(v3) = 0;
+      LODWORD(photoLibraryURL) = 0;
     }
   }
 
   else
   {
-    LODWORD(v3) = 0;
+    LODWORD(photoLibraryURL) = 0;
   }
 
-  return v3;
+  return photoLibraryURL;
 }
 
-- (int)_processLocalIdentifiers:(id)a3 change:(id)a4 insert:(BOOL)a5 withTask:(id)a6
+- (int)_processLocalIdentifiers:(id)identifiers change:(id)change insert:(BOOL)insert withTask:(id)task
 {
-  v48 = a5;
-  v44 = a3;
-  v47 = a4;
-  v49 = a6;
-  v10 = [v49 photoLibrary];
-  v11 = [PHAsset vcp_fetchOptionsForLibrary:v10 forTaskID:3];
+  insertCopy = insert;
+  identifiersCopy = identifiers;
+  changeCopy = change;
+  taskCopy = task;
+  photoLibrary = [taskCopy photoLibrary];
+  v11 = [PHAsset vcp_fetchOptionsForLibrary:photoLibrary forTaskID:3];
 
   v45 = v11;
   v12 = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:0];
@@ -1605,12 +1605,12 @@ LABEL_35:
   v13 = [NSArray arrayWithObjects:&v59 count:1];
   [v11 setSortDescriptors:v13];
 
-  v14 = [v44 allObjects];
-  v15 = [PHAsset fetchAssetsWithLocalIdentifiers:v14 options:v11];
+  allObjects = [identifiersCopy allObjects];
+  v15 = [PHAsset fetchAssetsWithLocalIdentifiers:allObjects options:v11];
 
   v17 = 0;
   type = VCPLogToOSLogType[6];
-  if (v48)
+  if (insertCopy)
   {
     v18 = @"inserted";
   }
@@ -1636,16 +1636,16 @@ LABEL_35:
       goto LABEL_41;
     }
 
-    if (!v48)
+    if (!insertCopy)
     {
-      v22 = [v20 objectID];
-      if (([v47 contentOrThumbnailChangedForPHAssetOID:v22] & 1) == 0)
+      objectID = [v20 objectID];
+      if (([changeCopy contentOrThumbnailChangedForPHAssetOID:objectID] & 1) == 0)
       {
-        v35 = [v20 objectID];
-        if (![v47 trashedStateChangedForPHAssetOID:v35] || (objc_msgSend(v20, "isTrashed") & 1) != 0)
+        objectID2 = [v20 objectID];
+        if (![changeCopy trashedStateChangedForPHAssetOID:objectID2] || (objc_msgSend(v20, "isTrashed") & 1) != 0)
         {
-          v36 = [v20 objectID];
-          if (([v47 hiddenStateChangedForPHAssetOID:v36] & 1) == 0)
+          objectID3 = [v20 objectID];
+          if (([changeCopy hiddenStateChangedForPHAssetOID:objectID3] & 1) == 0)
           {
 
 LABEL_40:
@@ -1653,9 +1653,9 @@ LABEL_40:
             goto LABEL_41;
           }
 
-          v37 = [v20 isHidden];
+          isHidden = [v20 isHidden];
 
-          if (v37)
+          if (isHidden)
           {
             goto LABEL_40;
           }
@@ -1668,9 +1668,9 @@ LABEL_40:
 LABEL_11:
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, type))
     {
-      v23 = [v20 localIdentifier];
+      localIdentifier = [v20 localIdentifier];
       *buf = 138412546;
-      v56 = v23;
+      v56 = localIdentifier;
       v57 = 2112;
       v58[0] = v43;
       _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[FaceLibraryProcessing][%@] Asset %@", buf, 0x16u);
@@ -1680,17 +1680,17 @@ LABEL_11:
     v53 = 0;
     if (+[MADManagedProcessingStatus isMACDReadEnabled])
     {
-      v24 = [v49 photoLibrary];
-      v25 = [v24 mad_fetchRequest];
-      v26 = [v20 localIdentifier];
-      v27 = [v25 fetchProcessingStatus:&v54 attempts:&v53 lastAttemptDate:0 nextAttemptDate:0 localIdentifier:v26 taskID:3];
+      photoLibrary2 = [taskCopy photoLibrary];
+      mad_fetchRequest = [photoLibrary2 mad_fetchRequest];
+      localIdentifier2 = [v20 localIdentifier];
+      v27 = [mad_fetchRequest fetchProcessingStatus:&v54 attempts:&v53 lastAttemptDate:0 nextAttemptDate:0 localIdentifier:localIdentifier2 taskID:3];
     }
 
     else
     {
-      v24 = [v49 database];
-      v25 = [v20 localIdentifier];
-      v27 = [v24 queryProcessingStatus:&v54 attempts:&v53 lastAttemptDate:0 andNextAttemptDate:0 forLocalIdentifier:v25 andTaskID:3];
+      photoLibrary2 = [taskCopy database];
+      mad_fetchRequest = [v20 localIdentifier];
+      v27 = [photoLibrary2 queryProcessingStatus:&v54 attempts:&v53 lastAttemptDate:0 andNextAttemptDate:0 forLocalIdentifier:mad_fetchRequest andTaskID:3];
     }
 
     if (!v27 && v53 && (v54 == 7 || v54 == 2))
@@ -1699,15 +1699,15 @@ LABEL_11:
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v42))
         {
-          v28 = [v20 localIdentifier];
+          localIdentifier3 = [v20 localIdentifier];
           *buf = 138412546;
-          v56 = v28;
+          v56 = localIdentifier3;
           v57 = 1024;
           LODWORD(v58[0]) = 3;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v42, "[FaceLibraryProcessing][%@][MACD] Removing processing status for taskID %d", buf, 0x12u);
         }
 
-        v29 = [v49 photoLibrary];
+        photoLibrary3 = [taskCopy photoLibrary];
         v51[0] = _NSConcreteStackBlock;
         v51[1] = 3221225472;
         v51[2] = sub_1000F3D58;
@@ -1715,33 +1715,33 @@ LABEL_11:
         v30 = v20;
         v52 = v30;
         v50 = 0;
-        v31 = [v29 mad_performAnalysisDataStoreChanges:v51 error:&v50];
-        v32 = v50;
+        v31 = [photoLibrary3 mad_performAnalysisDataStoreChanges:v51 error:&v50];
+        database = v50;
 
         if ((v31 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v41))
         {
-          v33 = [v30 localIdentifier];
+          localIdentifier4 = [v30 localIdentifier];
           *buf = v40;
-          v56 = v33;
+          v56 = localIdentifier4;
           v57 = 1024;
           LODWORD(v58[0]) = 3;
           WORD2(v58[0]) = 2112;
-          *(v58 + 6) = v32;
+          *(v58 + 6) = database;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v41, "[FaceLibraryProcessing][%@][MACD] Failed to remove processing status for taskID %d: %@", buf, 0x1Cu);
         }
 
-        v34 = v52;
+        localIdentifier5 = v52;
       }
 
       else
       {
-        v32 = [v49 database];
-        v34 = [v20 localIdentifier];
-        [v32 removeProcessingStatusForLocalIdentifier:v34 andTaskID:3];
+        database = [taskCopy database];
+        localIdentifier5 = [v20 localIdentifier];
+        [database removeProcessingStatusForLocalIdentifier:localIdentifier5 andTaskID:3];
       }
     }
 
-    v38 = [(VCPFaceLibraryProcessingTask *)self _addBatchWithAsset:v20 isRetry:0 withTask:v49];
+    v38 = [(VCPFaceLibraryProcessingTask *)self _addBatchWithAsset:v20 isRetry:0 withTask:taskCopy];
     if (!v38)
     {
       goto LABEL_40;
@@ -1765,32 +1765,32 @@ LABEL_45:
   return v6;
 }
 
-- (int)_maintainProcessingStatusWithTask:(id)a3
+- (int)_maintainProcessingStatusWithTask:(id)task
 {
-  v50 = a3;
+  taskCopy = task;
   if (+[MADManagedProcessingStatus isMACDReadEnabled])
   {
-    v4 = [v50 photoLibrary];
-    v5 = [v4 mad_fetchRequest];
+    photoLibrary = [taskCopy photoLibrary];
+    mad_fetchRequest = [photoLibrary mad_fetchRequest];
     v56 = 0;
-    [v5 fetchLocalIdentifiers:&v56 taskID:3 processingStatus:1];
+    [mad_fetchRequest fetchLocalIdentifiers:&v56 taskID:3 processingStatus:1];
     v48 = v56;
   }
 
   else
   {
-    v4 = [v50 database];
+    photoLibrary = [taskCopy database];
     v55 = 0;
-    [v4 fetchLocalIdentifiers:&v55 withTaskID:3 andProcessingStatus:1];
+    [photoLibrary fetchLocalIdentifiers:&v55 withTaskID:3 andProcessingStatus:1];
     v48 = v55;
   }
 
   v6 = [v48 count];
   if (v6)
   {
-    v7 = [v50 photoLibrary];
+    photoLibrary2 = [taskCopy photoLibrary];
     v8 = v6;
-    v45 = [PHAsset vcp_fetchOptionsForLibrary:v7 forTaskID:3];
+    v45 = [PHAsset vcp_fetchOptionsForLibrary:photoLibrary2 forTaskID:3];
 
     v9 = [PHAsset fetchAssetsWithLocalIdentifiers:v48 options:v45];
     v10 = 0;
@@ -1822,9 +1822,9 @@ LABEL_45:
             _os_log_impl(&_mh_execute_header, &_os_log_default, v47, "[FaceLibraryProcessing][MACD] Change %lu processing status to Hard Failure", buf, 0xCu);
           }
 
-          v32 = [v50 photoLibrary];
+          photoLibrary3 = [taskCopy photoLibrary];
           v51 = 0;
-          v33 = [v32 mad_performAnalysisDataStoreChanges:&stru_100286370 error:&v51];
+          v33 = [photoLibrary3 mad_performAnalysisDataStoreChanges:&stru_100286370 error:&v51];
           v34 = v51;
 
           if (v33)
@@ -1837,7 +1837,7 @@ LABEL_50:
             break;
           }
 
-          LODWORD(v20) = [v34 code];
+          LODWORD(code) = [v34 code];
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v44))
           {
             *buf = 134218242;
@@ -1850,8 +1850,8 @@ LABEL_50:
 
         else
         {
-          v37 = [v50 database];
-          v38 = [v37 hardFailAllRunningProcessingStatusForTaskID:3];
+          database = [taskCopy database];
+          v38 = [database hardFailAllRunningProcessingStatusForTaskID:3];
 
           if (v38 == -108 || v38 == -36)
           {
@@ -1869,29 +1869,29 @@ LABEL_50:
 
           if (v38 == -108 || v38 == -36 || v38 == -23)
           {
-            LODWORD(v20) = v39;
+            LODWORD(code) = v39;
           }
 
           else
           {
-            v41 = [v50 database];
-            v42 = [v41 commit];
+            database2 = [taskCopy database];
+            commit = [database2 commit];
 
-            if (v42 == -108 || v42 == -36)
+            if (commit == -108 || commit == -36)
             {
-              LODWORD(v20) = v42;
+              LODWORD(code) = commit;
             }
 
             else
             {
-              LODWORD(v20) = v42;
-              if (v42 != -23)
+              LODWORD(code) = commit;
+              if (commit != -23)
               {
-                LODWORD(v20) = v39;
+                LODWORD(code) = v39;
               }
             }
 
-            if (v42 != -108 && v42 != -36 && v42 != -23)
+            if (commit != -108 && commit != -36 && commit != -23)
             {
               goto LABEL_50;
             }
@@ -1903,8 +1903,8 @@ LABEL_50:
 
       v14 = objc_autoreleasePoolPush();
       v15 = [v9 objectAtIndexedSubscript:v10];
-      v16 = [v15 photoLibrary];
-      if ([v16 mad_pauseFCPeopleFurtherProcessing])
+      photoLibrary4 = [v15 photoLibrary];
+      if ([photoLibrary4 mad_pauseFCPeopleFurtherProcessing])
       {
         v17 = [v15 faceAnalysisVersion] == 14;
 
@@ -1912,9 +1912,9 @@ LABEL_50:
         {
           if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
           {
-            v18 = [v15 localIdentifier];
+            localIdentifier = [v15 localIdentifier];
             *buf = 138412290;
-            v58 = v18;
+            v58 = localIdentifier;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[FaceLibraryProcessing][%@] already with FC version; skip", buf, 0xCu);
           }
 
@@ -1931,7 +1931,7 @@ LABEL_50:
       {
         v19 = 0;
 LABEL_16:
-        v20 = v3;
+        code = v3;
         goto LABEL_17;
       }
 
@@ -1939,15 +1939,15 @@ LABEL_16:
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v47))
         {
-          v21 = [v15 localIdentifier];
+          localIdentifier2 = [v15 localIdentifier];
           *buf = 138412546;
-          v58 = v21;
+          v58 = localIdentifier2;
           v59 = 1024;
           LODWORD(v60[0]) = 3;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v47, "[FaceLibraryProcessing][%@][MACD] Removing processing status for taskID %d", buf, 0x12u);
         }
 
-        v22 = [v50 photoLibrary];
+        photoLibrary5 = [taskCopy photoLibrary];
         v53[0] = _NSConcreteStackBlock;
         v53[1] = 3221225472;
         v53[2] = sub_1000F47E8;
@@ -1955,20 +1955,20 @@ LABEL_16:
         v23 = v15;
         v54 = v23;
         v52 = 0;
-        v24 = [v22 mad_performAnalysisDataStoreChanges:v53 error:&v52];
+        v24 = [photoLibrary5 mad_performAnalysisDataStoreChanges:v53 error:&v52];
         v25 = v52;
 
         if (v24)
         {
 
-          v20 = v3;
+          code = v3;
           v26 = v13;
 LABEL_37:
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v46))
           {
-            v31 = [v15 localIdentifier];
+            localIdentifier3 = [v15 localIdentifier];
             *buf = 138412290;
-            v58 = v31;
+            v58 = localIdentifier3;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v46, "[FaceLibraryProcessing][%@] Analysis is up-to-date", buf, 0xCu);
 
             v26 = v13;
@@ -1979,12 +1979,12 @@ LABEL_37:
           goto LABEL_17;
         }
 
-        v20 = [v25 code];
+        code = [v25 code];
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v44))
         {
-          v30 = [v23 localIdentifier];
+          localIdentifier4 = [v23 localIdentifier];
           *buf = v43;
-          v58 = v30;
+          v58 = localIdentifier4;
           v59 = 1024;
           LODWORD(v60[0]) = 3;
           WORD2(v60[0]) = 2112;
@@ -1997,23 +1997,23 @@ LABEL_37:
 
       else
       {
-        v27 = [v50 database];
-        v28 = [v15 localIdentifier];
-        v29 = [v27 removeProcessingStatusForLocalIdentifier:v28 andTaskID:3];
+        database3 = [taskCopy database];
+        localIdentifier5 = [v15 localIdentifier];
+        v29 = [database3 removeProcessingStatusForLocalIdentifier:localIdentifier5 andTaskID:3];
 
         if (v29 == -108 || v29 == -36)
         {
-          v20 = v29;
+          code = v29;
           v26 = v13;
         }
 
         else
         {
-          v20 = v29;
+          code = v29;
           v26 = v13;
           if (v29 != -23)
           {
-            v20 = v3;
+            code = v3;
           }
         }
 
@@ -2035,7 +2035,7 @@ LABEL_17:
 
       v12 = v13;
       ++v10;
-      v3 = v20;
+      v3 = code;
     }
   }
 
@@ -2049,24 +2049,24 @@ LABEL_17:
     }
   }
 
-  LODWORD(v20) = 0;
+  LODWORD(code) = 0;
 LABEL_70:
 
-  return v20;
+  return code;
 }
 
-- (int)_processLibrary:(id)a3
+- (int)_processLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [(VCPFaceLibraryProcessingTask *)self _processingTaskForPhotoLibrary:v4];
+  libraryCopy = library;
+  v5 = [(VCPFaceLibraryProcessingTask *)self _processingTaskForPhotoLibrary:libraryCopy];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1000F4D90;
   v28[3] = &unk_100283000;
   v28[4] = self;
   v6 = objc_retainBlock(v28);
-  v7 = [v5 photoLibrary];
-  [VCPAnalysisProgressQuery reportProgressForPhotoLibrary:v7 taskID:3 logMessage:@"[FaceLibraryProcessing] Before task" cancelOrExtendTimeoutBlock:v6];
+  photoLibrary = [v5 photoLibrary];
+  [VCPAnalysisProgressQuery reportProgressForPhotoLibrary:photoLibrary taskID:3 logMessage:@"[FaceLibraryProcessing] Before task" cancelOrExtendTimeoutBlock:v6];
 
   v8 = objc_alloc_init(VCPTimeMeasurement);
   [v8 start];
@@ -2075,15 +2075,15 @@ LABEL_70:
   {
     if (+[MADManagedProcessingStatus isMACDReadEnabled])
     {
-      v10 = [v5 photoLibrary];
-      v11 = [v10 mad_fetchRequest];
-      v12 = [v11 fetchAssetCountForTaskID:3];
+      photoLibrary2 = [v5 photoLibrary];
+      mad_fetchRequest = [photoLibrary2 mad_fetchRequest];
+      v12 = [mad_fetchRequest fetchAssetCountForTaskID:3];
     }
 
     else
     {
-      v10 = [v5 database];
-      v12 = [v10 queryAssetCountForTaskID:3];
+      photoLibrary2 = [v5 database];
+      v12 = [photoLibrary2 queryAssetCountForTaskID:3];
     }
 
     if (MediaAnalysisLogLevel() >= 6)
@@ -2111,38 +2111,38 @@ LABEL_70:
     objc_autoreleasePoolPop(v14);
   }
 
-  v15 = [v5 flush];
+  flush = [v5 flush];
   if (+[VCPDatabaseWriter isLegacyPersistEnabled])
   {
-    v16 = [v5 database];
-    v17 = [v16 commit];
+    database = [v5 database];
+    commit = [database commit];
 
-    if (v17 == -108 || v17 == -36 || v17 == -23)
+    if (commit == -108 || commit == -36 || commit == -23)
     {
       goto LABEL_27;
     }
 
-    v18 = [v5 database];
-    [v18 flush];
+    database2 = [v5 database];
+    [database2 flush];
   }
 
   [v8 stop];
   [v8 elapsedTimeSeconds];
   v20 = [NSString stringWithFormat:@"[FaceLibraryProcessing] Checking progress after task (%.2f seconds)", v19];
-  v21 = [v5 photoLibrary];
-  [VCPAnalysisProgressQuery reportProgressForPhotoLibrary:v21 taskID:3 logMessage:v20 cancelOrExtendTimeoutBlock:v6];
+  photoLibrary3 = [v5 photoLibrary];
+  [VCPAnalysisProgressQuery reportProgressForPhotoLibrary:photoLibrary3 taskID:3 logMessage:v20 cancelOrExtendTimeoutBlock:v6];
 
   if (+[MADManagedProcessingStatus isMACDPersistEnabled])
   {
-    v22 = [v5 photoLibrary];
-    v23 = [v22 mad_fetchRequest];
-    v24 = [v23 fetchAssetCountForTaskID:3];
+    photoLibrary4 = [v5 photoLibrary];
+    mad_fetchRequest2 = [photoLibrary4 mad_fetchRequest];
+    v24 = [mad_fetchRequest2 fetchAssetCountForTaskID:3];
   }
 
   else
   {
-    v22 = [v5 database];
-    v24 = [v22 queryAssetCountForTaskID:3];
+    photoLibrary4 = [v5 database];
+    v24 = [photoLibrary4 queryAssetCountForTaskID:3];
   }
 
   if (MediaAnalysisLogLevel() >= 6)
@@ -2156,21 +2156,21 @@ LABEL_70:
     }
   }
 
-  v26 = [v5 photoLibrary];
-  [MADProgressManager cacheCurrentFaceProgressForPhotoLibrary:v26];
+  photoLibrary5 = [v5 photoLibrary];
+  [MADProgressManager cacheCurrentFaceProgressForPhotoLibrary:photoLibrary5];
 
-  if (v15)
+  if (flush)
   {
-    v17 = v15;
+    commit = flush;
   }
 
   else
   {
-    v17 = v9;
+    commit = v9;
   }
 
 LABEL_27:
-  return v17;
+  return commit;
 }
 
 - (int)completeSceneProcessing
@@ -2195,20 +2195,20 @@ LABEL_27:
   return v7;
 }
 
-- (BOOL)_readyToProcessProcessLibrary:(id)a3
+- (BOOL)_readyToProcessProcessLibrary:(id)library
 {
-  v3 = a3;
-  if (([v3 isReadyForAnalysis] & 1) == 0)
+  libraryCopy = library;
+  if (([libraryCopy isReadyForAnalysis] & 1) == 0)
   {
     if (MediaAnalysisLogLevel() >= 5)
     {
       v5 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v5))
       {
-        v6 = [v3 photoLibraryURL];
-        v7 = [v6 path];
+        photoLibraryURL = [libraryCopy photoLibraryURL];
+        path = [photoLibraryURL path];
         v12 = 138412290;
-        v13 = v7;
+        v13 = path;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[FaceLibraryProcessing] Photo Library is not ready for analysis; skipping library (%@)", &v12, 0xCu);
       }
     }
@@ -2216,17 +2216,17 @@ LABEL_27:
     goto LABEL_10;
   }
 
-  if (([v3 vcp_anyAssetsForTaskID:3] & 1) == 0)
+  if (([libraryCopy vcp_anyAssetsForTaskID:3] & 1) == 0)
   {
     if (MediaAnalysisLogLevel() >= 5)
     {
       v8 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v8))
       {
-        v9 = [v3 photoLibraryURL];
-        v10 = [v9 path];
+        photoLibraryURL2 = [libraryCopy photoLibraryURL];
+        path2 = [photoLibraryURL2 path];
         v12 = 138412290;
-        v13 = v10;
+        v13 = path2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "[FaceLibraryProcessing] Photo library is empty; skipping library (%@)", &v12, 0xCu);
       }
     }
@@ -2242,9 +2242,9 @@ LABEL_11:
   return v4;
 }
 
-- (int)_detectFacesForPhotoLibrary:(id)a3
+- (int)_detectFacesForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v5 = VCPLogToOSLogType[6];
@@ -2255,7 +2255,7 @@ LABEL_11:
     }
   }
 
-  v6 = [(VCPFaceLibraryProcessingTask *)self _processLibrary:v4];
+  v6 = [(VCPFaceLibraryProcessingTask *)self _processLibrary:libraryCopy];
   if (v6)
   {
     if (MediaAnalysisLogLevel() >= 3)
@@ -2287,11 +2287,11 @@ LABEL_11:
   return v6;
 }
 
-- (int)_generateAndDetectFaceCropsForPhotoLibrary:(id)a3
+- (int)_generateAndDetectFaceCropsForPhotoLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [v4 countOfFaceCropsToBeGenerated];
-  v6 = [v4 countOfUnprocessedFaceCrops];
+  libraryCopy = library;
+  countOfFaceCropsToBeGenerated = [libraryCopy countOfFaceCropsToBeGenerated];
+  countOfUnprocessedFaceCrops = [libraryCopy countOfUnprocessedFaceCrops];
   if (MediaAnalysisLogLevel() >= 6)
   {
     v7 = VCPLogToOSLogType[6];
@@ -2308,20 +2308,20 @@ LABEL_11:
     if (os_log_type_enabled(&_os_log_default, v8))
     {
       v18 = 134218240;
-      v19 = v5;
+      v19 = countOfFaceCropsToBeGenerated;
       v20 = 2048;
-      v21 = v6;
+      v21 = countOfUnprocessedFaceCrops;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "[FaceLibraryProcessing] countOfFaceCropsToBeGenerated: %lu, countOfUnprocessedFaceCrops: %lu", &v18, 0x16u);
     }
   }
 
-  if (v5 | v6)
+  if (countOfFaceCropsToBeGenerated | countOfUnprocessedFaceCrops)
   {
-    v9 = [(VCPFaceLibraryProcessingTask *)self _processingTaskForPhotoLibrary:v4];
-    v10 = [v9 photoLibrary];
-    v11 = [v10 vcp_supportsCloudLibraryResourceDownload];
+    v9 = [(VCPFaceLibraryProcessingTask *)self _processingTaskForPhotoLibrary:libraryCopy];
+    photoLibrary = [v9 photoLibrary];
+    vcp_supportsCloudLibraryResourceDownload = [photoLibrary vcp_supportsCloudLibraryResourceDownload];
 
-    if ((!v11 || ([v9 photoLibrary], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "vcp_allowsCloudLibraryResourceDownload"), v12, v13)) && (objc_msgSend(v9, "setAllowStreaming:", v11), (v14 = objc_msgSend(v9, "processFaceCrops")) != 0))
+    if ((!vcp_supportsCloudLibraryResourceDownload || ([v9 photoLibrary], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "vcp_allowsCloudLibraryResourceDownload"), v12, v13)) && (objc_msgSend(v9, "setAllowStreaming:", vcp_supportsCloudLibraryResourceDownload), (v14 = objc_msgSend(v9, "processFaceCrops")) != 0))
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -2359,9 +2359,9 @@ LABEL_11:
   return v14;
 }
 
-- (int)_updateQuickFaceIDModelForPhotoLibrary:(id)a3 withContext:(id)a4 andQuickFaceIDManager:(id)a5
+- (int)_updateQuickFaceIDModelForPhotoLibrary:(id)library withContext:(id)context andQuickFaceIDManager:(id)manager
 {
-  v6 = a5;
+  managerCopy = manager;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000F5A6C;
@@ -2385,7 +2385,7 @@ LABEL_11:
   }
 
   v16 = 0;
-  v10 = [v6 generateVIPModelWithType:0 ignoreLastGenerationTime:0 evaluationMode:0 allowUnverifiedPerson:0 modelGenerated:&v16 extendTimeout:v8 andCancel:v7];
+  v10 = [managerCopy generateVIPModelWithType:0 ignoreLastGenerationTime:0 evaluationMode:0 allowUnverifiedPerson:0 modelGenerated:&v16 extendTimeout:v8 andCancel:v7];
   if (v10)
   {
     goto LABEL_20;
@@ -2397,7 +2397,7 @@ LABEL_11:
     [v11 accumulateInt64Value:1 forField:@"PeopleVIPGenerated" andEvent:@"com.apple.mediaanalysisd.FaceAnalysisRunSession"];
   }
 
-  v10 = [v6 generateVIPModelWithType:1 ignoreLastGenerationTime:0 evaluationMode:0 allowUnverifiedPerson:0 modelGenerated:&v16 extendTimeout:v8 andCancel:v7];
+  v10 = [managerCopy generateVIPModelWithType:1 ignoreLastGenerationTime:0 evaluationMode:0 allowUnverifiedPerson:0 modelGenerated:&v16 extendTimeout:v8 andCancel:v7];
   if (v10)
   {
 LABEL_20:
@@ -2437,11 +2437,11 @@ LABEL_20:
   return v10;
 }
 
-- (int)_processAutoCounterForPhotoLibrary:(id)a3
+- (int)_processAutoCounterForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = _os_feature_enabled_impl();
-  if ([v4 isSystemPhotoLibrary] & v5) == 1 && (VCPMAIsAppleInternal())
+  if ([libraryCopy isSystemPhotoLibrary] & v5) == 1 && (VCPMAIsAppleInternal())
   {
     v52[0] = _NSConcreteStackBlock;
     v52[1] = 3221225472;
@@ -2495,25 +2495,25 @@ LABEL_61:
     v51[4] = self;
     v46 = objc_retainBlock(v51);
     v50 = 0;
-    [VCPAnalysisProgressQuery queryProgressDetail:&v50 photoLibrary:v4 taskID:3 cancelOrExtendTimeoutBlock:v46];
+    [VCPAnalysisProgressQuery queryProgressDetail:&v50 photoLibrary:libraryCopy taskID:3 cancelOrExtendTimeoutBlock:v46];
     v13 = v50;
     v14 = [v13 objectForKeyedSubscript:VCPAnalysisCountTotalAllowedKey];
-    v15 = [v14 integerValue];
+    integerValue = [v14 integerValue];
 
     v16 = [v13 objectForKeyedSubscript:VCPAnalysisCountProcessedKey];
-    v17 = [v16 integerValue];
+    integerValue2 = [v16 integerValue];
 
     v18 = [v13 objectForKeyedSubscript:VCPAnalysisCountFailedKey];
-    v19 = [v18 integerValue];
+    integerValue3 = [v18 integerValue];
 
-    if (v15 < 1)
+    if (integerValue < 1)
     {
       v21 = 0;
       v20 = 0;
       v22 = 0;
       v23 = 0;
       v24 = 0;
-      if (!v15)
+      if (!integerValue)
       {
 LABEL_18:
         if (MediaAnalysisLogLevel() >= 7)
@@ -2524,11 +2524,11 @@ LABEL_18:
             *buf = 138413058;
             v54 = @"[FaceLibraryProcessing][AutoCounter]";
             v55 = 2048;
-            v56 = v15;
+            v56 = integerValue;
             v57 = 2048;
-            v58 = v17;
+            v58 = integerValue2;
             v59 = 2048;
-            v60 = v19;
+            v60 = integerValue3;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v25, "%@ Progress: totalCount = %ld, processed = %ld, failed = %ld", buf, 0x2Au);
           }
         }
@@ -2558,8 +2558,8 @@ LABEL_60:
           goto LABEL_61;
         }
 
-        v29 = [VCPPhotosAutoCounterWorker workerWithPhotoLibrary:v4];
-        v30 = [v29 optInPersonCount];
+        v29 = [VCPPhotosAutoCounterWorker workerWithPhotoLibrary:libraryCopy];
+        optInPersonCount = [v29 optInPersonCount];
         if (MediaAnalysisLogLevel() >= 7)
         {
           v31 = VCPLogToOSLogType[7];
@@ -2568,12 +2568,12 @@ LABEL_60:
             *buf = 138412546;
             v54 = @"[FaceLibraryProcessing][AutoCounter]";
             v55 = 2048;
-            v56 = v30;
+            v56 = optInPersonCount;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v31, "%@ Opt-in person count - %lu", buf, 0x16u);
           }
         }
 
-        if (!v30)
+        if (!optInPersonCount)
         {
           v10 = 0;
 LABEL_59:
@@ -2650,11 +2650,11 @@ LABEL_59:
               }
             }
 
-            v41 = [VCPFaceProcessingVersionManager sharedManagerForPhotoLibrary:v4];
+            v41 = [VCPFaceProcessingVersionManager sharedManagerForPhotoLibrary:libraryCopy];
             if ([v41 currentProcessingVersion] <= 14)
             {
               v47[0] = 0;
-              v10 = [v4 vcp_bumpFaceProcessingToVersion:15 withError:v47];
+              v10 = [libraryCopy vcp_bumpFaceProcessingToVersion:15 withError:v47];
               v42 = v47[0];
               if (v10)
               {
@@ -2697,8 +2697,8 @@ LABEL_58:
 
     else
     {
-      v20 = 100 * (v17 + v19) / v15 > 98;
-      v21 = 100 * v19 / v15 > 5;
+      v20 = 100 * (integerValue2 + integerValue3) / integerValue > 98;
+      v21 = 100 * integerValue3 / integerValue > 5;
     }
 
     v24 = v20 && !v21;
@@ -2713,11 +2713,11 @@ LABEL_62:
   return v10;
 }
 
-- (int)runGalleryProcessingForPhotoLibrary:(id)a3 progressHandler:(id)a4
+- (int)runGalleryProcessingForPhotoLibrary:(id)library progressHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v30 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:v6];
+  libraryCopy = library;
+  handlerCopy = handler;
+  v30 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:libraryCopy];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_1000F6C60;
@@ -2732,34 +2732,34 @@ LABEL_62:
   v29 = objc_retainBlock(v32);
   if ((self->_subtasks & 2) != 0)
   {
-    v8 = [(VCPFaceLibraryProcessingTask *)self _detectFacesForPhotoLibrary:v6];
+    v8 = [(VCPFaceLibraryProcessingTask *)self _detectFacesForPhotoLibrary:libraryCopy];
     if (v8)
     {
       goto LABEL_39;
     }
   }
 
-  if ([v6 vcp_isSyndicationLibrary] && (_os_feature_enabled_impl() & 1) == 0)
+  if ([libraryCopy vcp_isSyndicationLibrary] && (_os_feature_enabled_impl() & 1) == 0)
   {
     v22 = +[VCPDefaultPhotoLibraryManager sharedManager];
-    v9 = [v22 defaultPhotoLibrary];
+    defaultPhotoLibrary = [v22 defaultPhotoLibrary];
 
-    v11 = [[VCPPhotosQuickFaceIdentificationManager alloc] initWithPhotoLibrary:v9];
+    v11 = [[VCPPhotosQuickFaceIdentificationManager alloc] initWithPhotoLibrary:defaultPhotoLibrary];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_1000F6CE8;
     v31[3] = &unk_100283000;
     v31[4] = self;
-    [v11 personIdentificationForSyndicationPhotoLibrary:v6 withCancelOrExtendTimeoutBlock:v31];
+    [v11 personIdentificationForSyndicationPhotoLibrary:libraryCopy withCancelOrExtendTimeoutBlock:v31];
     if (MediaAnalysisLogLevel() >= 7)
     {
       v23 = VCPLogToOSLogType[7];
       if (os_log_type_enabled(&_os_log_default, v23))
       {
-        v24 = [v6 photoLibraryURL];
-        v25 = [v24 path];
+        photoLibraryURL = [libraryCopy photoLibraryURL];
+        path = [photoLibraryURL path];
         *buf = 138412290;
-        v35 = v25;
+        v35 = path;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v23, "[FaceLibraryProcessing] Skipping clustering and person processing for syndication library (%@)", buf, 0xCu);
       }
     }
@@ -2767,13 +2767,13 @@ LABEL_62:
     goto LABEL_36;
   }
 
-  if ((self->_subtasks & 8) != 0 && ([v6 vcp_isSyndicationLibrary] & 1) == 0)
+  if ((self->_subtasks & 8) != 0 && ([libraryCopy vcp_isSyndicationLibrary] & 1) == 0)
   {
-    v9 = [[VCPPhotosQuickFaceIdentificationManager alloc] initWithPhotoLibrary:v6];
-    v27 = [v9 fetchEntityForModelType:0 evaluationMode:0 allowUnverifiedPerson:0];
+    defaultPhotoLibrary = [[VCPPhotosQuickFaceIdentificationManager alloc] initWithPhotoLibrary:libraryCopy];
+    v27 = [defaultPhotoLibrary fetchEntityForModelType:0 evaluationMode:0 allowUnverifiedPerson:0];
     v10 = [v27 count];
 
-    v8 = [(VCPFaceLibraryProcessingTask *)self _updateQuickFaceIDModelForPhotoLibrary:v6 withContext:v30 andQuickFaceIDManager:v9];
+    v8 = [(VCPFaceLibraryProcessingTask *)self _updateQuickFaceIDModelForPhotoLibrary:libraryCopy withContext:v30 andQuickFaceIDManager:defaultPhotoLibrary];
     if (v8)
     {
       goto LABEL_38;
@@ -2782,11 +2782,11 @@ LABEL_62:
 
   else
   {
-    v9 = 0;
+    defaultPhotoLibrary = 0;
     v10 = -1;
   }
 
-  v11 = [VCPProgressReporter reporterWithIntervalSeconds:10 andTotalJobCount:1 andBlock:v7];
+  v11 = [VCPProgressReporter reporterWithIntervalSeconds:10 andTotalJobCount:1 andBlock:handlerCopy];
   v8 = 0;
   do
   {
@@ -2795,7 +2795,7 @@ LABEL_62:
     subtasks = self->_subtasks;
     if ((subtasks & 4) != 0)
     {
-      v14 = [(VCPFaceLibraryProcessingTask *)self _generateAndDetectFaceCropsForPhotoLibrary:v6];
+      v14 = [(VCPFaceLibraryProcessingTask *)self _generateAndDetectFaceCropsForPhotoLibrary:libraryCopy];
       if (v14)
       {
         v15 = 1;
@@ -2806,7 +2806,7 @@ LABEL_62:
       subtasks = self->_subtasks;
     }
 
-    if ((subtasks & 0x70) != 0 && (-[VCPFaceLibraryProcessingTask _processingTaskForPhotoLibrary:](self, "_processingTaskForPhotoLibrary:", v6), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 processGalleryPersons:buf], v16, v17))
+    if ((subtasks & 0x70) != 0 && (-[VCPFaceLibraryProcessingTask _processingTaskForPhotoLibrary:](self, "_processingTaskForPhotoLibrary:", libraryCopy), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 processGalleryPersons:buf], v16, v17))
     {
       v15 = 1;
       v8 = v17;
@@ -2840,7 +2840,7 @@ LABEL_19:
       goto LABEL_30;
     }
 
-    v18 = [v9 fetchEntityForModelType:0 evaluationMode:0 allowUnverifiedPerson:0];
+    v18 = [defaultPhotoLibrary fetchEntityForModelType:0 evaluationMode:0 allowUnverifiedPerson:0];
     v19 = 10 * [v18 count] > (11 * v10);
 
     if (!v19)
@@ -2859,7 +2859,7 @@ LABEL_19:
     }
 
     buf[0] = 0;
-    v8 = [v9 generateVIPModelWithType:0 ignoreLastGenerationTime:1 evaluationMode:0 allowUnverifiedPerson:0 modelGenerated:buf extendTimeout:v29 andCancel:v28];
+    v8 = [defaultPhotoLibrary generateVIPModelWithType:0 ignoreLastGenerationTime:1 evaluationMode:0 allowUnverifiedPerson:0 modelGenerated:buf extendTimeout:v29 andCancel:v28];
     if (!v8)
     {
       if (buf[0] == 1)
@@ -2871,7 +2871,7 @@ LABEL_19:
 LABEL_30:
       if ((self->_subtasks & 0x80) != 0)
       {
-        [(VCPFaceLibraryProcessingTask *)self _processAutoCounterForPhotoLibrary:v6];
+        [(VCPFaceLibraryProcessingTask *)self _processAutoCounterForPhotoLibrary:libraryCopy];
       }
 
       (*(self->_progressHandler + 2))(100.0);
@@ -2891,10 +2891,10 @@ LABEL_39:
   atomic_store(1u, &self->_started);
   if (self->_subtasks)
   {
-    v3 = [(VCPFaceLibraryProcessingTask *)self completeSceneProcessing];
-    if (v3)
+    completeSceneProcessing = [(VCPFaceLibraryProcessingTask *)self completeSceneProcessing];
+    if (completeSceneProcessing)
     {
-      v4 = v3;
+      v4 = completeSceneProcessing;
       (*(self->_completionHandler + 2))();
       return v4;
     }

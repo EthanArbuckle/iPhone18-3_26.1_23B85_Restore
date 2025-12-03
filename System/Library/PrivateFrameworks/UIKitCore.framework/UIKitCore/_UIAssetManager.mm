@@ -1,48 +1,48 @@
 @interface _UIAssetManager
 + (double)_watchScreenScale;
 + (id)_assetManagerCache;
-+ (id)_sharedRuntimeAssetMapKeyForAssetName:(id)a3 fromFilesInBundle:(id)a4;
-+ (id)_sharedRuntimeAssetMapKeyForAssetName:(id)a3 inAssetManager:(id)a4;
-+ (id)assetManagerForBundle:(id)a3;
-+ (id)newAssetNamed:(id)a3 fromBundle:(id)a4;
++ (id)_sharedRuntimeAssetMapKeyForAssetName:(id)name fromFilesInBundle:(id)bundle;
++ (id)_sharedRuntimeAssetMapKeyForAssetName:(id)name inAssetManager:(id)manager;
++ (id)assetManagerForBundle:(id)bundle;
++ (id)newAssetNamed:(id)named fromBundle:(id)bundle;
 + (id)sharedRuntimeAssetMap;
 + (id)sharedRuntimeCatalog;
-+ (int64_t)_userInterfaceIdiomForDeviceClass:(unint64_t)a3;
++ (int64_t)_userInterfaceIdiomForDeviceClass:(unint64_t)class;
 + (void)_clearAllCachedImagesAndAssets;
-+ (void)_convertTraitCollection:(double *)a3 toCUIScale:(void *)a4 CUIIdiom:(unint64_t *)a5 UIKitIdiom:(uint64_t *)a6 UIKitUserInterfaceStyle:(uint64_t *)a7 subtype:(uint64_t *)a8 CUIDisplayGamut:(uint64_t *)a9 UIKitLayoutDirection:(uint64_t *)a10 CUILayoutDirection:;
-+ (void)_executeUnitTestWithAssetManagerCache:(id)a3;
-+ (void)_saveAssetManager:(id)a3 forBundle:(id)a4 lock:(BOOL)a5;
++ (void)_convertTraitCollection:(double *)collection toCUIScale:(void *)scale CUIIdiom:(unint64_t *)idiom UIKitIdiom:(uint64_t *)kitIdiom UIKitUserInterfaceStyle:(uint64_t *)style subtype:(uint64_t *)subtype CUIDisplayGamut:(uint64_t *)gamut UIKitLayoutDirection:(uint64_t *)self0 CUILayoutDirection:;
++ (void)_executeUnitTestWithAssetManagerCache:(id)cache;
++ (void)_saveAssetManager:(id)manager forBundle:(id)bundle lock:(BOOL)lock;
 + (void)clearSharedRuntimeAssetMapForUnitTests;
 - (BOOL)_hasMultipleAppearances;
-- (BOOL)_imageBelongsToCoreGlyphs:(id)a3;
-- (BOOL)_imageBelongsToUIKit:(id)a3;
-- (BOOL)_imageIsSystemImage:(id)a3;
+- (BOOL)_imageBelongsToCoreGlyphs:(id)glyphs;
+- (BOOL)_imageBelongsToUIKit:(id)kit;
+- (BOOL)_imageIsSystemImage:(id)image;
 - (CUIMutableCatalog)runtimeCatalog;
 - (UITraitCollection)preferredTraitCollection;
-- (_UIAssetManager)initWithData:(id)a3 idiom:(int64_t)a4 error:(id *)a5;
-- (_UIAssetManager)initWithURL:(id)a3 idiom:(int64_t)a4 error:(id *)a5;
+- (_UIAssetManager)initWithData:(id)data idiom:(int64_t)idiom error:(id *)error;
+- (_UIAssetManager)initWithURL:(id)l idiom:(int64_t)idiom error:(id *)error;
 - (id)_appearanceNames;
-- (id)_assetForName:(id)a3;
-- (id)_assetFromMapForName:(id)a3 lock:(BOOL)a4;
+- (id)_assetForName:(id)name;
+- (id)_assetFromMapForName:(id)name lock:(BOOL)lock;
 - (id)_carPlayAssetManager;
-- (id)_catalogDataForSymbolImageNamed:(id)a3;
+- (id)_catalogDataForSymbolImageNamed:(id)named;
 - (id)_defaultAppearanceNames;
-- (id)_initWithCatalog:(id)a3 idiom:(int64_t)a4;
-- (id)_initWithName:(id)a3 inBundle:(id)a4 idiom:(int64_t)a5 lock:(BOOL)a6 allowMissingCatalog:(BOOL)a7 type:(unint64_t)a8;
-- (id)_insertAssetIntoMap:(id)a3 forName:(id)a4 lock:(BOOL)a5;
-- (id)_lookUpObjectForTraitCollection:(id)a3 objectAccessor:(id)a4;
-- (id)_performLookUpObjectForTraitCollection:(id)a3 outNamedLookup:(id *)a4 objectAccessor:(id)a5;
-- (id)colorNamed:(id)a3 withTraitCollection:(id)a4;
+- (id)_initWithCatalog:(id)catalog idiom:(int64_t)idiom;
+- (id)_initWithName:(id)name inBundle:(id)bundle idiom:(int64_t)idiom lock:(BOOL)lock allowMissingCatalog:(BOOL)catalog type:(unint64_t)type;
+- (id)_insertAssetIntoMap:(id)map forName:(id)name lock:(BOOL)lock;
+- (id)_lookUpObjectForTraitCollection:(id)collection objectAccessor:(id)accessor;
+- (id)_performLookUpObjectForTraitCollection:(id)collection outNamedLookup:(id *)lookup objectAccessor:(id)accessor;
+- (id)colorNamed:(id)named withTraitCollection:(id)collection;
 - (id)description;
-- (id)imageNamed:(id)a3 configuration:(id)a4;
-- (id)imageNamed:(id)a3 configuration:(id)a4 cachingOptions:(unint64_t)a5 attachCatalogImage:(BOOL)a6;
-- (id)imageNamed:(id)a3 scale:(double)a4 idiom:(int64_t)a5 subtype:(unint64_t)a6;
-- (id)imageNamed:(id)a3 withTrait:(id)a4;
-- (id)resolvedColorNamed:(id)a3 withTraitCollection:(id)a4;
+- (id)imageNamed:(id)named configuration:(id)configuration;
+- (id)imageNamed:(id)named configuration:(id)configuration cachingOptions:(unint64_t)options attachCatalogImage:(BOOL)image;
+- (id)imageNamed:(id)named scale:(double)scale idiom:(int64_t)idiom subtype:(unint64_t)subtype;
+- (id)imageNamed:(id)named withTrait:(id)trait;
+- (id)resolvedColorNamed:(id)named withTraitCollection:(id)collection;
 - (void)_clearCachedResources;
-- (void)_clearCachedResources:(id)a3;
+- (void)_clearCachedResources:(id)resources;
 - (void)_disconnectImageAssets;
-- (void)_performBlockWithAssetLock:(id)a3;
+- (void)_performBlockWithAssetLock:(id)lock;
 - (void)dealloc;
 - (void)disableCacheFlushing;
 @end
@@ -63,19 +63,19 @@
 
 - (id)_appearanceNames
 {
-  v3 = [(CUICatalog *)self->_catalog appearanceNames];
-  v4 = v3;
-  if (v3 && [v3 count])
+  appearanceNames = [(CUICatalog *)self->_catalog appearanceNames];
+  v4 = appearanceNames;
+  if (appearanceNames && [appearanceNames count])
   {
-    v5 = v4;
+    _defaultAppearanceNames = v4;
   }
 
   else
   {
-    v5 = [(_UIAssetManager *)self _defaultAppearanceNames];
+    _defaultAppearanceNames = [(_UIAssetManager *)self _defaultAppearanceNames];
   }
 
-  v6 = v5;
+  v6 = _defaultAppearanceNames;
 
   return v6;
 }
@@ -102,11 +102,11 @@
 
 - (BOOL)_hasMultipleAppearances
 {
-  v3 = [(CUICatalog *)self->_catalog appearanceNames];
-  if ([v3 count])
+  appearanceNames = [(CUICatalog *)self->_catalog appearanceNames];
+  if ([appearanceNames count])
   {
-    v4 = [(_UIAssetManager *)self _defaultAppearanceNames];
-    v5 = [v3 isEqualToArray:v4] ^ 1;
+    _defaultAppearanceNames = [(_UIAssetManager *)self _defaultAppearanceNames];
+    v5 = [appearanceNames isEqualToArray:_defaultAppearanceNames] ^ 1;
   }
 
   else
@@ -221,9 +221,9 @@
 
         v16 = *(*(&v19 + 1) + 8 * j);
         v17 = [(NSMapTable *)self->_assetMap objectForKey:v16];
-        v18 = [v17 imageAsset];
+        imageAsset = [v17 imageAsset];
 
-        if (!v18)
+        if (!imageAsset)
         {
           [(NSMapTable *)self->_assetMap removeObjectForKey:v16];
         }
@@ -238,41 +238,41 @@
   os_unfair_lock_unlock(&self->_assetMapLock);
 }
 
-- (id)_initWithName:(id)a3 inBundle:(id)a4 idiom:(int64_t)a5 lock:(BOOL)a6 allowMissingCatalog:(BOOL)a7 type:(unint64_t)a8
+- (id)_initWithName:(id)name inBundle:(id)bundle idiom:(int64_t)idiom lock:(BOOL)lock allowMissingCatalog:(BOOL)catalog type:(unint64_t)type
 {
-  v10 = a6;
+  lockCopy = lock;
   v40 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v35.receiver = self;
   v35.super_class = _UIAssetManager;
   v16 = [(_UIAssetManager *)&v35 init];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [nameCopy copy];
     assetManagerName = v16->_assetManagerName;
     v16->_assetManagerName = v17;
 
-    objc_storeStrong(&v16->_bundle, a4);
+    objc_storeStrong(&v16->_bundle, bundle);
     if (+[UIDevice _isWatchCompanion])
     {
-      v19 = [getWKInterfaceDeviceClass() currentDevice];
-      [v19 screenScale];
+      currentDevice = [getWKInterfaceDeviceClass() currentDevice];
+      [currentDevice screenScale];
       v16->_preferredScale = v20;
       v16->_preferredGamut = 0;
       v16->_preferredIdiom = 4;
-      v21 = [objc_opt_self() mainScreen];
-      v22 = [v21 traitCollection];
-      v16->_preferredLayoutDirectionTrait = [v22 layoutDirection];
+      mainScreen = [objc_opt_self() mainScreen];
+      traitCollection = [mainScreen traitCollection];
+      v16->_preferredLayoutDirectionTrait = [traitCollection layoutDirection];
     }
 
     else
     {
-      v19 = [objc_opt_self() mainScreen];
-      [v19 scale];
+      currentDevice = [objc_opt_self() mainScreen];
+      [currentDevice scale];
       v16->_preferredScale = v23;
-      v16->_preferredGamut = [v19 gamut];
-      v16->_preferredIdiom = a5;
+      v16->_preferredGamut = [currentDevice gamut];
+      v16->_preferredIdiom = idiom;
       v16->_preferredLayoutDirectionTrait = [UIApp userInterfaceLayoutDirection];
     }
 
@@ -281,25 +281,25 @@
     imageCache = v16->_imageCache;
     v16->_imageCache = v24;
 
-    v26 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     assetMap = v16->_assetMap;
-    v16->_assetMap = v26;
+    v16->_assetMap = strongToStrongObjectsMapTable;
 
     v16->_assetMapLock._os_unfair_lock_opaque = 0;
     v16->_runtimeCatalogCreationLock._os_unfair_lock_opaque = 0;
-    v16->_type = a8;
+    v16->_type = type;
     v34 = 0;
-    v28 = [objc_alloc(MEMORY[0x1E6999368]) initWithName:@"Assets" fromBundle:v15 error:&v34];
+    v28 = [objc_alloc(MEMORY[0x1E6999368]) initWithName:@"Assets" fromBundle:bundleCopy error:&v34];
     v29 = v34;
     catalog = v16->_catalog;
     v16->_catalog = v28;
 
-    if (v16->_catalog || a7)
+    if (v16->_catalog || catalog)
     {
-      v32 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v32 addObserver:v16 selector:sel__clearCachedResources_ name:@"UIApplicationDidReceiveMemoryWarningNotification" object:UIApp];
-      [v32 addObserver:v16 selector:sel__clearCachedResources_ name:@"UIApplicationDidEnterBackgroundNotification" object:UIApp];
-      [_UIAssetManager _saveAssetManager:v16 forBundle:v15 lock:v10];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v16 selector:sel__clearCachedResources_ name:@"UIApplicationDidReceiveMemoryWarningNotification" object:UIApp];
+      [defaultCenter addObserver:v16 selector:sel__clearCachedResources_ name:@"UIApplicationDidEnterBackgroundNotification" object:UIApp];
+      [_UIAssetManager _saveAssetManager:v16 forBundle:bundleCopy lock:lockCopy];
     }
 
     else
@@ -309,14 +309,14 @@
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v37 = v15;
+        v37 = bundleCopy;
         v38 = 2112;
         v39 = v29;
         _os_log_impl(&dword_188A29000, v31, OS_LOG_TYPE_DEFAULT, "Could not load asset catalog from bundle %@: %@", buf, 0x16u);
       }
 
-      v32 = [MEMORY[0x1E695DFB0] null];
-      [_UIAssetManager _saveAssetManager:v32 forBundle:v15 lock:v10];
+      defaultCenter = [MEMORY[0x1E695DFB0] null];
+      [_UIAssetManager _saveAssetManager:defaultCenter forBundle:bundleCopy lock:lockCopy];
       v16 = 0;
     }
   }
@@ -324,15 +324,15 @@
   return v16;
 }
 
-- (_UIAssetManager)initWithURL:(id)a3 idiom:(int64_t)a4 error:(id *)a5
+- (_UIAssetManager)initWithURL:(id)l idiom:(int64_t)idiom error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  lCopy = l;
   v28[0] = *MEMORY[0x1E695DB78];
   v9 = v28[0];
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
   v25 = 0;
-  v11 = [v8 resourceValuesForKeys:v10 error:&v25];
+  v11 = [lCopy resourceValuesForKeys:v10 error:&v25];
   v12 = v25;
   v13 = [v11 objectForKey:v9];
 
@@ -340,9 +340,9 @@
   {
     if ([v13 BOOLValue])
     {
-      v14 = [v8 URLByAppendingPathComponent:@"Assets.car"];
+      v14 = [lCopy URLByAppendingPathComponent:@"Assets.car"];
 
-      v8 = v14;
+      lCopy = v14;
     }
   }
 
@@ -352,29 +352,29 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = v15;
-      v17 = [v8 absoluteString];
-      v18 = [v17 UTF8String];
+      absoluteString = [lCopy absoluteString];
+      uTF8String = [absoluteString UTF8String];
       *buf = 136315138;
-      v27 = v18;
+      v27 = uTF8String;
       _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_ERROR, "Could not determine whether path is directory: %s", buf, 0xCu);
     }
   }
 
   v24 = v12;
-  v19 = [objc_alloc(MEMORY[0x1E6999368]) initWithURL:v8 error:&v24];
+  v19 = [objc_alloc(MEMORY[0x1E6999368]) initWithURL:lCopy error:&v24];
   v20 = v24;
 
   if (v19)
   {
-    v21 = [(_UIAssetManager *)self _initWithCatalog:v19 idiom:a4];
+    v21 = [(_UIAssetManager *)self _initWithCatalog:v19 idiom:idiom];
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       v22 = v20;
-      *a5 = v20;
+      *error = v20;
     }
 
     v21 = 0;
@@ -383,25 +383,25 @@
   return v21;
 }
 
-- (_UIAssetManager)initWithData:(id)a3 idiom:(int64_t)a4 error:(id *)a5
+- (_UIAssetManager)initWithData:(id)data idiom:(int64_t)idiom error:(id *)error
 {
-  v9 = a3;
+  dataCopy = data;
   v16 = 0;
-  v10 = [objc_alloc(MEMORY[0x1E6999368]) initWithBytes:objc_msgSend(v9 length:"bytes") error:{objc_msgSend(v9, "length"), &v16}];
+  v10 = [objc_alloc(MEMORY[0x1E6999368]) initWithBytes:objc_msgSend(dataCopy length:"bytes") error:{objc_msgSend(dataCopy, "length"), &v16}];
   v11 = v16;
   v12 = v11;
   if (v10)
   {
-    objc_storeStrong(&self->_assetData, a3);
-    v13 = [(_UIAssetManager *)self _initWithCatalog:v10 idiom:a4];
+    objc_storeStrong(&self->_assetData, data);
+    v13 = [(_UIAssetManager *)self _initWithCatalog:v10 idiom:idiom];
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       v14 = v11;
-      *a5 = v12;
+      *error = v12;
     }
 
     v13 = 0;
@@ -410,26 +410,26 @@
   return v13;
 }
 
-- (id)_initWithCatalog:(id)a3 idiom:(int64_t)a4
+- (id)_initWithCatalog:(id)catalog idiom:(int64_t)idiom
 {
-  v7 = a3;
+  catalogCopy = catalog;
   v14.receiver = self;
   v14.super_class = _UIAssetManager;
   v8 = [(_UIAssetManager *)&v14 init];
   if (v8)
   {
-    v9 = [objc_opt_self() mainScreen];
-    [v9 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v8->_preferredScale = v10;
-    v8->_preferredIdiom = a4;
-    v8->_preferredIdiomSubtype = __preferredIdiomSubtypeForIdiom(a4);
-    v8->_preferredGamut = [v9 gamut];
+    v8->_preferredIdiom = idiom;
+    v8->_preferredIdiomSubtype = __preferredIdiomSubtypeForIdiom(idiom);
+    v8->_preferredGamut = [mainScreen gamut];
     v8->_preferredLayoutDirectionTrait = [UIApp userInterfaceLayoutDirection];
-    objc_storeStrong(&v8->_catalog, a3);
+    objc_storeStrong(&v8->_catalog, catalog);
     v8->_runtimeCatalogCreationLock._os_unfair_lock_opaque = 0;
-    v11 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     assetMap = v8->_assetMap;
-    v8->_assetMap = v11;
+    v8->_assetMap = strongToStrongObjectsMapTable;
 
     v8->_assetMapLock._os_unfair_lock_opaque = 0;
     *&v8->_assetManagerFlags |= 1u;
@@ -441,11 +441,11 @@
 - (void)dealloc
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIApplicationDidReceiveMemoryWarningNotification";
   v6[1] = @"UIApplicationDidEnterBackgroundNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   [(_UIAssetManager *)self _disconnectImageAssets];
   v5.receiver = self;
@@ -453,55 +453,55 @@
   [(_UIAssetManager *)&v5 dealloc];
 }
 
-+ (void)_executeUnitTestWithAssetManagerCache:(id)a3
++ (void)_executeUnitTestWithAssetManagerCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   os_unfair_lock_lock(&stru_1ED4A261C);
-  v4 = [a1 _assetManagerCache];
-  v5[2](v5, v4);
+  _assetManagerCache = [self _assetManagerCache];
+  cacheCopy[2](cacheCopy, _assetManagerCache);
 
   os_unfair_lock_unlock(&stru_1ED4A261C);
 }
 
-+ (void)_saveAssetManager:(id)a3 forBundle:(id)a4 lock:(BOOL)a5
++ (void)_saveAssetManager:(id)manager forBundle:(id)bundle lock:(BOOL)lock
 {
-  v5 = a5;
-  v7 = a4;
-  if (v7)
+  lockCopy = lock;
+  bundleCopy = bundle;
+  if (bundleCopy)
   {
-    v11 = v7;
-    v8 = a3;
+    v11 = bundleCopy;
+    managerCopy = manager;
     v9 = +[_UIAssetManager _assetManagerCache];
-    if (v5)
+    if (lockCopy)
     {
       os_unfair_lock_lock(&stru_1ED4A261C);
     }
 
-    v10 = [v11 bundlePath];
-    [v9 setObject:v8 forKey:v10];
+    bundlePath = [v11 bundlePath];
+    [v9 setObject:managerCopy forKey:bundlePath];
 
-    if (v5)
+    if (lockCopy)
     {
       os_unfair_lock_unlock(&stru_1ED4A261C);
     }
 
-    v7 = v11;
+    bundleCopy = v11;
   }
 }
 
-+ (id)assetManagerForBundle:(id)a3
++ (id)assetManagerForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = +[_UIAssetManager _assetManagerCache];
-  v6 = [v4 bundlePath];
-  v7 = [objc_opt_self() mainScreen];
+  bundlePath = [bundleCopy bundlePath];
+  mainScreen = [objc_opt_self() mainScreen];
   os_unfair_lock_lock(&stru_1ED4A261C);
-  v8 = [v5 objectForKey:v6];
+  v8 = [v5 objectForKey:bundlePath];
   if (!v8)
   {
-    v9 = [a1 alloc];
+    v9 = [self alloc];
     v10 = +[UIDevice currentDevice];
-    v8 = [v9 _initWithName:@"Assets" inBundle:v4 idiom:objc_msgSend(v10 lock:"userInterfaceIdiom") allowMissingCatalog:0 type:{0, 0}];
+    v8 = [v9 _initWithName:@"Assets" inBundle:bundleCopy idiom:objc_msgSend(v10 lock:"userInterfaceIdiom") allowMissingCatalog:0 type:{0, 0}];
 
     if (v8)
     {
@@ -510,8 +510,8 @@
   }
 
   os_unfair_lock_unlock(&stru_1ED4A261C);
-  v11 = [MEMORY[0x1E695DFB0] null];
-  if ([v8 isEqual:v11])
+  null = [MEMORY[0x1E695DFB0] null];
+  if ([v8 isEqual:null])
   {
     v12 = 0;
   }
@@ -553,11 +553,11 @@
   return v4;
 }
 
-- (id)imageNamed:(id)a3 configuration:(id)a4 cachingOptions:(unint64_t)a5 attachCatalogImage:(BOOL)a6
+- (id)imageNamed:(id)named configuration:(id)configuration cachingOptions:(unint64_t)options attachCatalogImage:(BOOL)image
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  optionsCopy = options;
+  namedCopy = named;
+  configurationCopy = configuration;
   if ((self->_type & 4) != 0)
   {
     v12 = 3;
@@ -565,7 +565,7 @@
 
   else
   {
-    v12 = v7;
+    v12 = optionsCopy;
   }
 
   v42 = 0;
@@ -574,8 +574,8 @@
   v45 = __Block_byref_object_copy__228;
   v46 = __Block_byref_object_dispose__228;
   v47 = 0;
-  v13 = [UIImageConfiguration _completeConfiguration:v11 fromConfiguration:0];
-  v14 = ((v12 & 2) >> 1);
+  v13 = [UIImageConfiguration _completeConfiguration:configurationCopy fromConfiguration:0];
+  mainScreen = ((v12 & 2) >> 1);
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -584,10 +584,10 @@
   v39 = v12 & 1;
   v15 = v13;
   v35 = v15;
-  v36 = self;
-  v40 = a6;
-  v16 = v10;
-  v41 = v14;
+  selfCopy = self;
+  imageCopy = image;
+  v16 = namedCopy;
+  v41 = mainScreen;
   v37 = v16;
   v38 = &v42;
   v17 = _Block_copy(aBlock);
@@ -595,21 +595,21 @@
   if ([(_UIAssetManager *)self _isSystemAssetManager]|| dyld_program_sdk_at_least())
   {
     v19 = v17[2](v17, v18, 1);
-    v20 = v18;
+    stringByDeletingPathExtension = v18;
     if (!v19)
     {
-      v20 = [v18 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [v18 stringByDeletingPathExtension];
 
-      v21 = v17[2](v17, v20, 0);
+      v21 = v17[2](v17, stringByDeletingPathExtension, 0);
       goto LABEL_10;
     }
   }
 
   else
   {
-    v20 = [v18 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [v18 stringByDeletingPathExtension];
 
-    v19 = v17[2](v17, v20, 0);
+    v19 = v17[2](v17, stringByDeletingPathExtension, 0);
     if (!v19)
     {
       v21 = v17[2](v17, v18, 0);
@@ -626,38 +626,38 @@ LABEL_10:
   {
     if ([v19 _isSymbolImage])
     {
-      LODWORD(v14) = 1;
+      LODWORD(mainScreen) = 1;
     }
 
     else
     {
-      v14 = [objc_opt_self() mainScreen];
-      [v14 bounds];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen bounds];
       v23 = v22;
       v25 = v24;
 
       [v19 size];
       v27 = v26;
       [v19 size];
-      LODWORD(v14) = v27 * v28 <= v23 * v25 * 0.125;
+      LODWORD(mainScreen) = v27 * v28 <= v23 * v25 * 0.125;
     }
   }
 
   _UIImageDecorateFallbackImage(v19);
-  if (v14)
+  if (mainScreen)
   {
-    v29 = [_UIImageCacheKey keyWithName:v20 configuration:v15];
+    v29 = [_UIImageCacheKey keyWithName:stringByDeletingPathExtension configuration:v15];
     [(_UICache *)self->_imageCache setObject:v19 forKey:v29];
     v30 = v43[5];
     if (v30)
     {
-      v31 = [_UIImageCacheKey keyWithName:v20 configuration:v30];
+      v31 = [_UIImageCacheKey keyWithName:stringByDeletingPathExtension configuration:v30];
 
       [(_UICache *)self->_imageCache setObject:v19 forKey:v31];
       v29 = v31;
     }
 
-    if (v20 != v18)
+    if (stringByDeletingPathExtension != v18)
     {
       v32 = [_UIImageCacheKey keyWithName:v18 configuration:v15];
 
@@ -673,116 +673,116 @@ LABEL_21:
   return v19;
 }
 
-+ (void)_convertTraitCollection:(double *)a3 toCUIScale:(void *)a4 CUIIdiom:(unint64_t *)a5 UIKitIdiom:(uint64_t *)a6 UIKitUserInterfaceStyle:(uint64_t *)a7 subtype:(uint64_t *)a8 CUIDisplayGamut:(uint64_t *)a9 UIKitLayoutDirection:(uint64_t *)a10 CUILayoutDirection:
++ (void)_convertTraitCollection:(double *)collection toCUIScale:(void *)scale CUIIdiom:(unint64_t *)idiom UIKitIdiom:(uint64_t *)kitIdiom UIKitUserInterfaceStyle:(uint64_t *)style subtype:(uint64_t *)subtype CUIDisplayGamut:(uint64_t *)gamut UIKitLayoutDirection:(uint64_t *)self0 CUILayoutDirection:
 {
   v29 = a2;
   v16 = objc_opt_self();
-  if (!a3)
+  if (!collection)
   {
     v27 = v16;
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:sel__convertTraitCollection_toCUIScale_CUIIdiom_UIKitIdiom_UIKitUserInterfaceStyle_subtype_CUIDisplayGamut_UIKitLayoutDirection_CUILayoutDirection_ object:v27 file:@"_UIAssetManager.m" lineNumber:1239 description:{@"Invalid parameter not satisfying: %@", @"scale != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__convertTraitCollection_toCUIScale_CUIIdiom_UIKitIdiom_UIKitUserInterfaceStyle_subtype_CUIDisplayGamut_UIKitLayoutDirection_CUILayoutDirection_ object:v27 file:@"_UIAssetManager.m" lineNumber:1239 description:{@"Invalid parameter not satisfying: %@", @"scale != NULL"}];
   }
 
   [v29 displayScale];
   if (v17 == 0.0)
   {
-    v17 = *a3;
-    if (*a3 == 0.0)
+    v17 = *collection;
+    if (*collection == 0.0)
     {
       v17 = 1.0;
     }
   }
 
-  *a3 = v17;
-  v18 = [v29 userInterfaceIdiom];
-  v19 = v18;
-  if (a5)
+  *collection = v17;
+  userInterfaceIdiom = [v29 userInterfaceIdiom];
+  v19 = userInterfaceIdiom;
+  if (idiom)
   {
-    *a5 = v18;
+    *idiom = userInterfaceIdiom;
   }
 
-  if (v18 > 5)
+  if (userInterfaceIdiom > 5)
   {
     v20 = 0;
   }
 
   else
   {
-    v20 = qword_18A682FA8[v18];
+    v20 = qword_18A682FA8[userInterfaceIdiom];
   }
 
-  if (a4)
+  if (scale)
   {
-    *a4 = v20;
+    *scale = v20;
   }
 
-  v21 = [v29 userInterfaceStyle];
-  if (a6)
+  userInterfaceStyle = [v29 userInterfaceStyle];
+  if (kitIdiom)
   {
-    *a6 = v21;
+    *kitIdiom = userInterfaceStyle;
   }
 
-  v22 = [v29 artworkSubtype];
-  if (!v22)
+  artworkSubtype = [v29 artworkSubtype];
+  if (!artworkSubtype)
   {
-    v22 = __preferredIdiomSubtypeForIdiom(v19);
+    artworkSubtype = __preferredIdiomSubtypeForIdiom(v19);
   }
 
-  *a7 = v22;
-  v23 = [v29 displayGamut];
-  if (v23 == -1)
+  *style = artworkSubtype;
+  displayGamut = [v29 displayGamut];
+  if (displayGamut == -1)
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = v23;
+    v24 = displayGamut;
   }
 
-  *a8 = v24;
-  v25 = [v29 layoutDirection];
-  if (v25 == -1)
+  *subtype = v24;
+  layoutDirection = [v29 layoutDirection];
+  if (layoutDirection == -1)
   {
-    v25 = *a9;
+    layoutDirection = *gamut;
   }
 
-  *a9 = v25;
-  if (a10)
+  *gamut = layoutDirection;
+  if (direction)
   {
     v26 = 5;
-    if (v25)
+    if (layoutDirection)
     {
       v26 = 0;
     }
 
-    if (v25 == 1)
+    if (layoutDirection == 1)
     {
       v26 = 4;
     }
 
-    *a10 = v26;
+    *direction = v26;
   }
 }
 
-- (id)imageNamed:(id)a3 scale:(double)a4 idiom:(int64_t)a5 subtype:(unint64_t)a6
+- (id)imageNamed:(id)named scale:(double)scale idiom:(int64_t)idiom subtype:(unint64_t)subtype
 {
-  v10 = a3;
+  namedCopy = named;
   v11 = dyld_program_sdk_at_least();
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __50___UIAssetManager_imageNamed_scale_idiom_subtype___block_invoke;
   v18[3] = &unk_1E7128218;
-  *&v18[5] = a4;
-  v18[6] = a5;
-  v18[7] = a6;
+  *&v18[5] = scale;
+  v18[6] = idiom;
+  v18[7] = subtype;
   v18[4] = self;
-  v12 = [UITraitCollection traitCollectionWithTraits:v18];
-  v13 = v12;
-  if (v12)
+  imageConfiguration = [UITraitCollection traitCollectionWithTraits:v18];
+  v13 = imageConfiguration;
+  if (imageConfiguration)
   {
-    v12 = [v12 imageConfiguration];
+    imageConfiguration = [imageConfiguration imageConfiguration];
   }
 
   if (v11)
@@ -795,40 +795,40 @@ LABEL_21:
     v14 = 3;
   }
 
-  v15 = v12;
-  v16 = [(_UIAssetManager *)self imageNamed:v10 configuration:v15 cachingOptions:v14 attachCatalogImage:0];
+  v15 = imageConfiguration;
+  v16 = [(_UIAssetManager *)self imageNamed:namedCopy configuration:v15 cachingOptions:v14 attachCatalogImage:0];
 
   return v16;
 }
 
-- (id)imageNamed:(id)a3 withTrait:(id)a4
+- (id)imageNamed:(id)named withTrait:(id)trait
 {
-  v6 = a3;
-  if (a4)
+  namedCopy = named;
+  if (trait)
   {
-    v7 = [a4 imageConfiguration];
+    imageConfiguration = [trait imageConfiguration];
   }
 
   else
   {
-    v7 = 0;
+    imageConfiguration = 0;
   }
 
-  v8 = v7;
-  v9 = [(_UIAssetManager *)self imageNamed:v6 configuration:v8];
+  v8 = imageConfiguration;
+  v9 = [(_UIAssetManager *)self imageNamed:namedCopy configuration:v8];
 
   return v9;
 }
 
-- (id)imageNamed:(id)a3 configuration:(id)a4
+- (id)imageNamed:(id)named configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  namedCopy = named;
+  configurationCopy = configuration;
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
-    v10 = [v7 _effectiveTraitCollectionForImageLookup];
-    v11 = v10;
-    if (!v10 || [v10 userInterfaceIdiom] == -1)
+    _effectiveTraitCollectionForImageLookup = [configurationCopy _effectiveTraitCollectionForImageLookup];
+    v11 = _effectiveTraitCollectionForImageLookup;
+    if (!_effectiveTraitCollectionForImageLookup || [_effectiveTraitCollectionForImageLookup userInterfaceIdiom] == -1)
     {
       preferredIdiom = self->_preferredIdiom;
     }
@@ -838,41 +838,41 @@ LABEL_21:
       preferredIdiom = [v11 userInterfaceIdiom];
     }
 
-    v13 = [(_UIAssetManager *)self imageNamed:v6 idiom:preferredIdiom];
+    v13 = [(_UIAssetManager *)self imageNamed:namedCopy idiom:preferredIdiom];
     goto LABEL_29;
   }
 
-  v8 = [(_UIAssetManager *)self _assetFromMapForName:v6];
+  v8 = [(_UIAssetManager *)self _assetFromMapForName:namedCopy];
   v9 = v8;
   if (v8)
   {
-    [v8 imageWithConfiguration:v7];
+    [v8 imageWithConfiguration:configurationCopy];
   }
 
   else
   {
-    [(_UIAssetManager *)self imageNamed:v6 configuration:v7 cachingOptions:0 attachCatalogImage:0];
+    [(_UIAssetManager *)self imageNamed:namedCopy configuration:configurationCopy cachingOptions:0 attachCatalogImage:0];
   }
   v13 = ;
   if (v13)
   {
-    v14 = v6;
+    stringByDeletingPathExtension = namedCopy;
   }
 
   else
   {
-    v14 = [v6 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [namedCopy stringByDeletingPathExtension];
 
-    v11 = [(_UIAssetManager *)self _assetFromMapForName:v14];
+    v11 = [(_UIAssetManager *)self _assetFromMapForName:stringByDeletingPathExtension];
 
     if (v11)
     {
-      [v11 imageWithConfiguration:v7];
+      [v11 imageWithConfiguration:configurationCopy];
     }
 
     else
     {
-      [(_UIAssetManager *)self imageNamed:v14 configuration:v7 cachingOptions:0 attachCatalogImage:0];
+      [(_UIAssetManager *)self imageNamed:stringByDeletingPathExtension configuration:configurationCopy cachingOptions:0 attachCatalogImage:0];
     }
     v13 = ;
     if ([v13 _isSymbolImage])
@@ -892,11 +892,11 @@ LABEL_21:
 
     os_unfair_lock_lock(&unk_1ED4A2620);
     v15 = +[_UIAssetManager sharedRuntimeAssetMap];
-    v16 = [_UIAssetManager _sharedRuntimeAssetMapKeyForAssetName:v14 inAssetManager:self];
+    v16 = [_UIAssetManager _sharedRuntimeAssetMapKeyForAssetName:stringByDeletingPathExtension inAssetManager:self];
     v9 = [v15 objectForKey:v16];
 
     os_unfair_lock_unlock(&unk_1ED4A2620);
-    v13 = [v9 imageWithConfiguration:v7];
+    v13 = [v9 imageWithConfiguration:configurationCopy];
   }
 
   v11 = v9;
@@ -911,20 +911,20 @@ LABEL_23:
     CFRetain(v13);
   }
 
-  v6 = v14;
+  namedCopy = stringByDeletingPathExtension;
 LABEL_29:
 
   return v13;
 }
 
-+ (id)newAssetNamed:(id)a3 fromBundle:(id)a4
++ (id)newAssetNamed:(id)named fromBundle:(id)bundle
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  namedCopy = named;
+  bundleCopy = bundle;
   if (os_variant_has_internal_diagnostics())
   {
-    if (!v6)
+    if (!bundleCopy)
     {
       v36 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_FAULT))
@@ -935,7 +935,7 @@ LABEL_29:
     }
   }
 
-  else if (!v6)
+  else if (!bundleCopy)
   {
     v37 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED4A2670) + 8);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -945,21 +945,21 @@ LABEL_29:
     }
   }
 
-  if (v5 && [v5 length])
+  if (namedCopy && [namedCopy length])
   {
-    v7 = [v5 hasPrefix:@"/"];
+    v7 = [namedCopy hasPrefix:@"/"];
     if (v7)
     {
-      v8 = [v5 lastPathComponent];
+      lastPathComponent = [namedCopy lastPathComponent];
     }
 
     else
     {
-      v8 = v5;
+      lastPathComponent = namedCopy;
     }
 
-    v10 = v8;
-    v11 = [_UIAssetManager _sharedRuntimeAssetMapKeyForAssetName:v5 fromFilesInBundle:v6];
+    v10 = lastPathComponent;
+    v11 = [_UIAssetManager _sharedRuntimeAssetMapKeyForAssetName:namedCopy fromFilesInBundle:bundleCopy];
     os_unfair_lock_lock(&unk_1ED4A2620);
     v12 = +[_UIAssetManager sharedRuntimeAssetMap];
     v13 = [v12 objectForKey:v11];
@@ -990,10 +990,10 @@ LABEL_38:
 
     else
     {
-      v15 = v6;
+      v15 = bundleCopy;
     }
 
-    v16 = _UIImageCollectImagePathsForPath(v5, v15, 0, v14);
+    v16 = _UIImageCollectImagePathsForPath(namedCopy, v15, 0, v14);
     if (![v16 count])
     {
       v18 = 0;
@@ -1006,12 +1006,12 @@ LABEL_37:
 
     if (v7)
     {
-      [v5 stringByDeletingLastPathComponent];
+      [namedCopy stringByDeletingLastPathComponent];
     }
 
     else
     {
-      [v6 bundlePath];
+      [bundleCopy bundlePath];
     }
     v17 = ;
     v19 = MEMORY[0x1E696AC08];
@@ -1027,8 +1027,8 @@ LABEL_37:
       {
         v39 = v11;
         v40 = v10;
-        v41 = v6;
-        v18 = [[UIImageAsset alloc] _initWithAssetName:v10 forFilesInBundle:v6];
+        v41 = bundleCopy;
+        v18 = [[UIImageAsset alloc] _initWithAssetName:v10 forFilesInBundle:bundleCopy];
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
@@ -1050,14 +1050,14 @@ LABEL_37:
               }
 
               v29 = *(*(&v42 + 1) + 8 * i);
-              v30 = _UserInterfaceTraitFromPath(v29);
-              v31 = v30;
-              if (v30)
+              imageConfiguration = _UserInterfaceTraitFromPath(v29);
+              v31 = imageConfiguration;
+              if (imageConfiguration)
               {
-                v30 = [v30 imageConfiguration];
+                imageConfiguration = [imageConfiguration imageConfiguration];
               }
 
-              v32 = v30;
+              v32 = imageConfiguration;
 
               ImageAtPath = GetImageAtPath(v29, v7 ^ 1u, 0.0);
               [v18 _registerImage:ImageAtPath withConfiguration:v32];
@@ -1070,7 +1070,7 @@ LABEL_37:
         }
 
         v10 = v40;
-        v6 = v41;
+        bundleCopy = v41;
         v16 = v38;
         v11 = v39;
         goto LABEL_36;
@@ -1081,7 +1081,7 @@ LABEL_37:
     {
     }
 
-    v18 = [[_UIPathLazyImageAsset alloc] _initWithAssetName:v10 forFilesInBundle:v6 imagePaths:v16 haveCGCacheImages:v7 ^ 1u];
+    v18 = [[_UIPathLazyImageAsset alloc] _initWithAssetName:v10 forFilesInBundle:bundleCopy imagePaths:v16 haveCGCacheImages:v7 ^ 1u];
 LABEL_36:
     v34 = +[_UIAssetManager sharedRuntimeAssetMap];
     [v34 setObject:v18 forKey:v11];
@@ -1095,15 +1095,15 @@ LABEL_39:
   return v9;
 }
 
-- (id)colorNamed:(id)a3 withTraitCollection:(id)a4
+- (id)colorNamed:(id)named withTraitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if ((!v7 || (v9 = [v7 displayGamut], v9 == -1)) && (-[_UIAssetManager preferredTraitCollection](self, "preferredTraitCollection"), v10 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v10, "displayGamut"), v10, !v8) || (v11 = objc_msgSend(v8, "userInterfaceIdiom"), v11 == -1))
+  namedCopy = named;
+  collectionCopy = collection;
+  v8 = collectionCopy;
+  if ((!collectionCopy || (v9 = [collectionCopy displayGamut], v9 == -1)) && (-[_UIAssetManager preferredTraitCollection](self, "preferredTraitCollection"), v10 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v10, "displayGamut"), v10, !v8) || (userInterfaceIdiom = objc_msgSend(v8, "userInterfaceIdiom"), userInterfaceIdiom == -1))
   {
-    v12 = [(_UIAssetManager *)self preferredTraitCollection];
-    v11 = [v12 userInterfaceIdiom];
+    preferredTraitCollection = [(_UIAssetManager *)self preferredTraitCollection];
+    userInterfaceIdiom = [preferredTraitCollection userInterfaceIdiom];
   }
 
   v13 = 0;
@@ -1117,23 +1117,23 @@ LABEL_39:
     v14 = v9;
   }
 
-  if (v11 <= 5)
+  if (userInterfaceIdiom <= 5)
   {
-    v13 = qword_18A682FA8[v11];
+    v13 = qword_18A682FA8[userInterfaceIdiom];
   }
 
-  v15 = [(CUICatalog *)self->_catalog colorWithName:v6 displayGamut:v14 deviceIdiom:v13];
+  v15 = [(CUICatalog *)self->_catalog colorWithName:namedCopy displayGamut:v14 deviceIdiom:v13];
   v16 = _UIColorFromCUINamedColor(v15);
   if (v16 && [(_UIAssetManager *)self _hasMultipleAppearances])
   {
-    v17 = [[UIDynamicCatalogColor alloc] initWithName:v6 assetManager:self genericColor:v16];
+    v17 = [[UIDynamicCatalogColor alloc] initWithName:namedCopy assetManager:self genericColor:v16];
   }
 
   else
   {
-    [v16 _setDebugName:v6];
-    v18 = [(NSBundle *)self->_bundle bundleIdentifier];
-    [v16 _setDebugCatalogBundleIdentifier:v18];
+    [v16 _setDebugName:namedCopy];
+    bundleIdentifier = [(NSBundle *)self->_bundle bundleIdentifier];
+    [v16 _setDebugCatalogBundleIdentifier:bundleIdentifier];
 
     v17 = v16;
   }
@@ -1143,15 +1143,15 @@ LABEL_39:
   return v19;
 }
 
-- (id)resolvedColorNamed:(id)a3 withTraitCollection:(id)a4
+- (id)resolvedColorNamed:(id)named withTraitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if ((((!v7 || (v9 = [v7 displayGamut], v9 == -1)) && (-[_UIAssetManager preferredTraitCollection](self, "preferredTraitCollection"), v10 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v10, "displayGamut"), v10, !v8) || (v11 = objc_msgSend(v8, "userInterfaceIdiom"), v11 == -1)) && (-[_UIAssetManager preferredTraitCollection](self, "preferredTraitCollection"), v12 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v12, "userInterfaceIdiom"), v12, !v8) || (v13 = objc_msgSend(v8, "userInterfaceStyle")) == 0) && (-[_UIAssetManager preferredTraitCollection](self, "preferredTraitCollection"), v14 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v14, "userInterfaceStyle"), v14, !v8) || (v15 = objc_msgSend(v8, "accessibilityContrast"), v15 == -1))
+  namedCopy = named;
+  collectionCopy = collection;
+  v8 = collectionCopy;
+  if ((((!collectionCopy || (v9 = [collectionCopy displayGamut], v9 == -1)) && (-[_UIAssetManager preferredTraitCollection](self, "preferredTraitCollection"), v10 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v10, "displayGamut"), v10, !v8) || (v11 = objc_msgSend(v8, "userInterfaceIdiom"), v11 == -1)) && (-[_UIAssetManager preferredTraitCollection](self, "preferredTraitCollection"), v12 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v12, "userInterfaceIdiom"), v12, !v8) || (v13 = objc_msgSend(v8, "userInterfaceStyle")) == 0) && (-[_UIAssetManager preferredTraitCollection](self, "preferredTraitCollection"), v14 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v14, "userInterfaceStyle"), v14, !v8) || (accessibilityContrast = objc_msgSend(v8, "accessibilityContrast"), accessibilityContrast == -1))
   {
-    v16 = [(_UIAssetManager *)self preferredTraitCollection];
-    v15 = [v16 accessibilityContrast];
+    preferredTraitCollection = [(_UIAssetManager *)self preferredTraitCollection];
+    accessibilityContrast = [preferredTraitCollection accessibilityContrast];
   }
 
   if (v11 > 5)
@@ -1181,51 +1181,51 @@ LABEL_39:
   v33[4] = v9;
   v33[5] = v11;
   v33[6] = v13;
-  v33[7] = v15;
+  v33[7] = accessibilityContrast;
   v19 = [UITraitCollection traitCollectionWithTraits:v33];
   v25 = MEMORY[0x1E69E9820];
   v26 = 3221225472;
   v27 = __58___UIAssetManager_resolvedColorNamed_withTraitCollection___block_invoke_2;
   v28 = &unk_1E7128260;
-  v29 = self;
-  v30 = v6;
+  selfCopy = self;
+  v30 = namedCopy;
   v31 = v18;
   v32 = v17;
-  v20 = v6;
+  v20 = namedCopy;
   v21 = _Block_copy(&v25);
-  v22 = [(_UIAssetManager *)self _lookUpObjectForTraitCollection:v19 objectAccessor:v21, v25, v26, v27, v28, v29];
-  v23 = _UIColorFromCUINamedColor(v22);
+  selfCopy = [(_UIAssetManager *)self _lookUpObjectForTraitCollection:v19 objectAccessor:v21, v25, v26, v27, v28, selfCopy];
+  v23 = _UIColorFromCUINamedColor(selfCopy);
 
   return v23;
 }
 
-+ (int64_t)_userInterfaceIdiomForDeviceClass:(unint64_t)a3
++ (int64_t)_userInterfaceIdiomForDeviceClass:(unint64_t)class
 {
-  v7 = a3 - 1;
-  if (a3 - 1 < 7 && ((0x5Fu >> v7) & 1) != 0)
+  v7 = class - 1;
+  if (class - 1 < 7 && ((0x5Fu >> v7) & 1) != 0)
   {
     return qword_18A682FD8[v7];
   }
 
   v9 = [UIDevice currentDevice:v4];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  return v10;
+  return userInterfaceIdiom;
 }
 
-- (void)_performBlockWithAssetLock:(id)a3
+- (void)_performBlockWithAssetLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_assetMapLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_assetMapLock);
 }
 
-- (id)_assetFromMapForName:(id)a3 lock:(BOOL)a4
+- (id)_assetFromMapForName:(id)name lock:(BOOL)lock
 {
-  v4 = a4;
-  v6 = a3;
+  lockCopy = lock;
+  nameCopy = name;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1237,12 +1237,12 @@ LABEL_39:
   aBlock[2] = __45___UIAssetManager__assetFromMapForName_lock___block_invoke;
   aBlock[3] = &unk_1E70FEE78;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = nameCopy;
   v13 = v7;
   v14 = &v15;
   v8 = _Block_copy(aBlock);
   v9 = v8;
-  if (v4)
+  if (lockCopy)
   {
     [(_UIAssetManager *)self _performBlockWithAssetLock:v8];
   }
@@ -1259,11 +1259,11 @@ LABEL_39:
   return v10;
 }
 
-- (id)_insertAssetIntoMap:(id)a3 forName:(id)a4 lock:(BOOL)a5
+- (id)_insertAssetIntoMap:(id)map forName:(id)name lock:(BOOL)lock
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  lockCopy = lock;
+  mapCopy = map;
+  nameCopy = name;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1275,16 +1275,16 @@ LABEL_39:
   v18 = __52___UIAssetManager__insertAssetIntoMap_forName_lock___block_invoke;
   v19 = &unk_1E7103C20;
   v23 = &v24;
-  v20 = self;
-  v10 = v9;
+  selfCopy = self;
+  v10 = nameCopy;
   v21 = v10;
-  v11 = v8;
+  v11 = mapCopy;
   v22 = v11;
   v12 = _Block_copy(&v16);
   v13 = v12;
-  if (v5)
+  if (lockCopy)
   {
-    [(_UIAssetManager *)self _performBlockWithAssetLock:v12, v16, v17, v18, v19, v20, v21];
+    [(_UIAssetManager *)self _performBlockWithAssetLock:v12, v16, v17, v18, v19, selfCopy, v21];
   }
 
   else
@@ -1299,9 +1299,9 @@ LABEL_39:
   return v14;
 }
 
-- (id)_assetForName:(id)a3
+- (id)_assetForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1314,7 +1314,7 @@ LABEL_39:
   aBlock[3] = &unk_1E70FB728;
   v11 = &v12;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = nameCopy;
   v10 = v5;
   v6 = _Block_copy(aBlock);
   [(_UIAssetManager *)self _performBlockWithAssetLock:v6];
@@ -1337,8 +1337,8 @@ LABEL_39:
     os_unfair_lock_lock(&self->_runtimeCatalogCreationLock);
     if (!self->_runtimeCatalog)
     {
-      v4 = [(NSBundle *)self->_bundle bundlePath];
-      v5 = [v4 stringByAppendingString:@" - runtime catalog"];
+      bundlePath = [(NSBundle *)self->_bundle bundlePath];
+      v5 = [bundlePath stringByAppendingString:@" - runtime catalog"];
 
       v6 = [objc_alloc(MEMORY[0x1E6999390]) initWithName:v5];
       runtimeCatalog = self->_runtimeCatalog;
@@ -1352,31 +1352,31 @@ LABEL_39:
   return v3;
 }
 
-+ (id)_sharedRuntimeAssetMapKeyForAssetName:(id)a3 inAssetManager:(id)a4
++ (id)_sharedRuntimeAssetMapKeyForAssetName:(id)name inAssetManager:(id)manager
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 carFileName];
-  v9 = [v6 bundle];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v6 bundle];
+  managerCopy = manager;
+  nameCopy = name;
+  carFileName = [managerCopy carFileName];
+  bundle = [managerCopy bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
+  bundle2 = [managerCopy bundle];
 
-  v12 = [v11 bundlePath];
-  v13 = [v5 stringWithFormat:@"<image asset named '%@' in asset catalog '%@' for bundle '%@' at path '%@'>", v7, v8, v10, v12];
+  bundlePath = [bundle2 bundlePath];
+  v13 = [v5 stringWithFormat:@"<image asset named '%@' in asset catalog '%@' for bundle '%@' at path '%@'>", nameCopy, carFileName, bundleIdentifier, bundlePath];
 
   return v13;
 }
 
-+ (id)_sharedRuntimeAssetMapKeyForAssetName:(id)a3 fromFilesInBundle:(id)a4
++ (id)_sharedRuntimeAssetMapKeyForAssetName:(id)name fromFilesInBundle:(id)bundle
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 bundleIdentifier];
-  v9 = [v6 bundlePath];
+  bundleCopy = bundle;
+  nameCopy = name;
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  bundlePath = [bundleCopy bundlePath];
 
-  v10 = [v5 stringWithFormat:@"<image asset named %@ from files in bundle '%@' at path '%@'>", v7, v8, v9];
+  v10 = [v5 stringWithFormat:@"<image asset named %@ from files in bundle '%@' at path '%@'>", nameCopy, bundleIdentifier, bundlePath];
 
   return v10;
 }
@@ -1390,10 +1390,10 @@ LABEL_39:
   os_unfair_lock_unlock(&unk_1ED4A2620);
 }
 
-- (void)_clearCachedResources:(id)a3
+- (void)_clearCachedResources:(id)resources
 {
-  v4 = [a3 name];
-  v5 = [v4 isEqualToString:@"UIApplicationDidEnterBackgroundNotification"];
+  name = [resources name];
+  v5 = [name isEqualToString:@"UIApplicationDidEnterBackgroundNotification"];
 
   if (v5)
   {
@@ -1417,38 +1417,38 @@ LABEL_39:
   }
 }
 
-- (BOOL)_imageBelongsToUIKit:(id)a3
+- (BOOL)_imageBelongsToUIKit:(id)kit
 {
   if ((self->_type & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [a3 imageAsset];
-  v6 = [v5 _assetManager];
+  imageAsset = [kit imageAsset];
+  _assetManager = [imageAsset _assetManager];
 
-  v3 = v6 && (v6 == self || (self->_type & 2) != 0);
+  v3 = _assetManager && (_assetManager == self || (self->_type & 2) != 0);
   return v3;
 }
 
-- (BOOL)_imageBelongsToCoreGlyphs:(id)a3
+- (BOOL)_imageBelongsToCoreGlyphs:(id)glyphs
 {
-  v5 = [a3 imageAsset];
-  v4 = [v5 _assetManager];
+  imageAsset = [glyphs imageAsset];
+  _assetManager = [imageAsset _assetManager];
 
-  LOBYTE(v5) = 0;
-  if (v4 && v4 == self)
+  LOBYTE(imageAsset) = 0;
+  if (_assetManager && _assetManager == self)
   {
-    LODWORD(v5) = (LOBYTE(self->_type) >> 2) & 1;
+    LODWORD(imageAsset) = (LOBYTE(self->_type) >> 2) & 1;
   }
 
-  return v5;
+  return imageAsset;
 }
 
-- (BOOL)_imageIsSystemImage:(id)a3
+- (BOOL)_imageIsSystemImage:(id)image
 {
-  v4 = a3;
-  v5 = [(_UIAssetManager *)self _imageBelongsToUIKit:v4]|| [(_UIAssetManager *)self _imageBelongsToCoreGlyphs:v4];
+  imageCopy = image;
+  v5 = [(_UIAssetManager *)self _imageBelongsToUIKit:imageCopy]|| [(_UIAssetManager *)self _imageBelongsToCoreGlyphs:imageCopy];
 
   return v5;
 }
@@ -1468,8 +1468,8 @@ LABEL_39:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 cacheKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  cacheKeys = [v4 cacheKeys];
+  v6 = [cacheKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1481,7 +1481,7 @@ LABEL_39:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cacheKeys);
         }
 
         v10 = [v4 objectForKey:*(*(&v12 + 1) + 8 * v9)];
@@ -1495,7 +1495,7 @@ LABEL_39:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [cacheKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -1533,8 +1533,8 @@ LABEL_39:
         }
 
         v8 = [(NSMapTable *)self->_assetMap objectForKey:*(*(&v10 + 1) + 8 * v7), v10];
-        v9 = [v8 imageAsset];
-        [v9 _disconnectFromAssetManager];
+        imageAsset = [v8 imageAsset];
+        [imageAsset _disconnectFromAssetManager];
 
         ++v7;
       }
@@ -1549,10 +1549,10 @@ LABEL_39:
   os_unfair_lock_unlock(&self->_assetMapLock);
 }
 
-- (id)_catalogDataForSymbolImageNamed:(id)a3
+- (id)_catalogDataForSymbolImageNamed:(id)named
 {
   catalog = self->_catalog;
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:named];
   v5 = [(CUICatalog *)catalog dataForVectorGlyphsWithNames:v4];
 
   return v5;
@@ -1570,25 +1570,25 @@ LABEL_39:
 
 + (double)_watchScreenScale
 {
-  v2 = [objc_opt_self() mainScreen];
-  [v2 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   if (+[UIDevice _isWatchCompanion])
   {
-    v5 = [getWKInterfaceDeviceClass() currentDevice];
-    [v5 screenScale];
+    currentDevice = [getWKInterfaceDeviceClass() currentDevice];
+    [currentDevice screenScale];
     v4 = v6;
   }
 
   return v4;
 }
 
-- (id)_performLookUpObjectForTraitCollection:(id)a3 outNamedLookup:(id *)a4 objectAccessor:(id)a5
+- (id)_performLookUpObjectForTraitCollection:(id)collection outNamedLookup:(id *)lookup objectAccessor:(id)accessor
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(_UIAssetManager *)self _appearanceNames];
+  collectionCopy = collection;
+  accessorCopy = accessor;
+  _appearanceNames = [(_UIAssetManager *)self _appearanceNames];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1600,13 +1600,13 @@ LABEL_39:
   v15[2] = __88___UIAssetManager__performLookUpObjectForTraitCollection_outNamedLookup_objectAccessor___block_invoke;
   v15[3] = &unk_1E7128288;
   v15[4] = self;
-  v11 = v10;
+  v11 = _appearanceNames;
   v16 = v11;
   v18 = &v20;
-  v12 = v9;
+  v12 = accessorCopy;
   v17 = v12;
-  v19 = a4;
-  [(UITraitCollection *)v8 _enumerateThemeAppearanceNamesForLookup:v15];
+  lookupCopy = lookup;
+  [(UITraitCollection *)collectionCopy _enumerateThemeAppearanceNamesForLookup:v15];
   v13 = v21[5];
 
   _Block_object_dispose(&v20, 8);
@@ -1614,17 +1614,17 @@ LABEL_39:
   return v13;
 }
 
-- (id)_lookUpObjectForTraitCollection:(id)a3 objectAccessor:(id)a4
+- (id)_lookUpObjectForTraitCollection:(id)collection objectAccessor:(id)accessor
 {
-  if (a3)
+  if (collection)
   {
     v6 = 0;
-    v4 = [(_UIAssetManager *)self _performLookUpObjectForTraitCollection:a3 outNamedLookup:&v6 objectAccessor:a4];
+    v4 = [(_UIAssetManager *)self _performLookUpObjectForTraitCollection:collection outNamedLookup:&v6 objectAccessor:accessor];
   }
 
   else
   {
-    v4 = (*(a4 + 2))(a4, 0);
+    v4 = (*(accessor + 2))(accessor, 0);
   }
 
   return v4;

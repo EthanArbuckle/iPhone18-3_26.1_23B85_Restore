@@ -1,116 +1,116 @@
 @interface RouteStepManeuverView
-+ (double)heightForItem:(id)a3 width:(double)a4 maximumHeight:(double)a5;
-- (RouteStepManeuverView)initWithFrame:(CGRect)a3;
-- (void)setItem:(id)a3;
-- (void)setShouldUseTextToBottomConstraint:(BOOL)a3;
-- (void)setTrailingView:(id)a3;
++ (double)heightForItem:(id)item width:(double)width maximumHeight:(double)height;
+- (RouteStepManeuverView)initWithFrame:(CGRect)frame;
+- (void)setItem:(id)item;
+- (void)setShouldUseTextToBottomConstraint:(BOOL)constraint;
+- (void)setTrailingView:(id)view;
 @end
 
 @implementation RouteStepManeuverView
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
   v63.receiver = self;
   v63.super_class = RouteStepManeuverView;
-  [(RouteStepListView *)&v63 setItem:a3];
-  v4 = [(RouteStepListView *)self item];
-  v5 = [v4 trailingView];
-  [(RouteStepManeuverView *)self setTrailingView:v5];
+  [(RouteStepListView *)&v63 setItem:item];
+  item = [(RouteStepListView *)self item];
+  trailingView = [item trailingView];
+  [(RouteStepManeuverView *)self setTrailingView:trailingView];
 
-  v6 = [v4 metrics];
-  [v6 imageAreaWidth];
+  metrics = [item metrics];
+  [metrics imageAreaWidth];
   v8 = v7;
-  v9 = [(RouteStepManeuverView *)self containerWidthConstraint];
-  [v9 setConstant:v8];
+  containerWidthConstraint = [(RouteStepManeuverView *)self containerWidthConstraint];
+  [containerWidthConstraint setConstant:v8];
 
-  v10 = [v4 metrics];
-  [v10 stepImageWidth];
+  metrics2 = [item metrics];
+  [metrics2 stepImageWidth];
   v12 = v11;
-  v13 = [(RouteStepManeuverView *)self imageWidthConstraint];
-  [v13 setConstant:v12];
+  imageWidthConstraint = [(RouteStepManeuverView *)self imageWidthConstraint];
+  [imageWidthConstraint setConstant:v12];
 
-  v14 = [v4 metrics];
-  [v14 stepImageHeight];
+  metrics3 = [item metrics];
+  [metrics3 stepImageHeight];
   v16 = v15;
-  v17 = [(RouteStepManeuverView *)self imageHeightConstraint];
-  [v17 setConstant:v16];
+  imageHeightConstraint = [(RouteStepManeuverView *)self imageHeightConstraint];
+  [imageHeightConstraint setConstant:v16];
 
-  v18 = [v4 metrics];
-  [v18 textTrailingMargin];
+  metrics4 = [item metrics];
+  [metrics4 textTrailingMargin];
   v20 = v19;
-  v21 = [(RouteStepManeuverView *)self trailingView];
-  [v21 frame];
+  trailingView2 = [(RouteStepManeuverView *)self trailingView];
+  [trailingView2 frame];
   v23 = -(v22 + v20);
-  v24 = [(RouteStepManeuverView *)self primaryTrailingConstraint];
-  [v24 setConstant:v23];
+  primaryTrailingConstraint = [(RouteStepManeuverView *)self primaryTrailingConstraint];
+  [primaryTrailingConstraint setConstant:v23];
 
-  v25 = [v4 metrics];
-  [v25 primaryTextTopMargin];
+  metrics5 = [item metrics];
+  [metrics5 primaryTextTopMargin];
   v27 = v26;
-  v28 = [(RouteStepManeuverView *)self primaryTopConstraint];
-  [v28 setConstant:v27];
+  primaryTopConstraint = [(RouteStepManeuverView *)self primaryTopConstraint];
+  [primaryTopConstraint setConstant:v27];
 
-  v29 = [v4 metrics];
-  [v29 secondaryTextTopMargin];
+  metrics6 = [item metrics];
+  [metrics6 secondaryTextTopMargin];
   v31 = v30;
-  v32 = [(RouteStepManeuverView *)self secondaryTopConstraint];
-  [v32 setConstant:v31];
+  secondaryTopConstraint = [(RouteStepManeuverView *)self secondaryTopConstraint];
+  [secondaryTopConstraint setConstant:v31];
 
-  v33 = [v4 metrics];
-  [v33 tertiaryTextTopMargin];
+  metrics7 = [item metrics];
+  [metrics7 tertiaryTextTopMargin];
   v35 = v34;
-  v36 = [(RouteStepManeuverView *)self tertiaryTopConstraint];
-  [v36 setConstant:v35];
+  tertiaryTopConstraint = [(RouteStepManeuverView *)self tertiaryTopConstraint];
+  [tertiaryTopConstraint setConstant:v35];
 
-  v37 = [v4 metrics];
-  [v37 textBottomMargin];
+  metrics8 = [item metrics];
+  [metrics8 textBottomMargin];
   v39 = -v38;
-  v40 = [(RouteStepManeuverView *)self textToBottomConstraint];
-  [v40 setConstant:v39];
+  textToBottomConstraint = [(RouteStepManeuverView *)self textToBottomConstraint];
+  [textToBottomConstraint setConstant:v39];
 
-  v41 = [v4 primaryText];
-  v42 = [(RouteStepManeuverView *)self primaryTextLabel];
-  [v42 setAttributedText:v41];
+  primaryText = [item primaryText];
+  primaryTextLabel = [(RouteStepManeuverView *)self primaryTextLabel];
+  [primaryTextLabel setAttributedText:primaryText];
 
-  v43 = [v4 secondaryText];
-  v44 = [(RouteStepManeuverView *)self secondaryTextLabel];
-  [v44 setAttributedText:v43];
+  secondaryText = [item secondaryText];
+  secondaryTextLabel = [(RouteStepManeuverView *)self secondaryTextLabel];
+  [secondaryTextLabel setAttributedText:secondaryText];
 
-  v45 = [v4 tertiaryText];
-  v46 = [(RouteStepManeuverView *)self tertiaryTextLabel];
-  [v46 setAttributedText:v45];
+  tertiaryText = [item tertiaryText];
+  tertiaryTextLabel = [(RouteStepManeuverView *)self tertiaryTextLabel];
+  [tertiaryTextLabel setAttributedText:tertiaryText];
 
-  v47 = [(RouteStepManeuverView *)self shieldImageView];
-  [v47 setImage:0];
+  shieldImageView = [(RouteStepManeuverView *)self shieldImageView];
+  [shieldImageView setImage:0];
 
-  v48 = [(RouteStepManeuverView *)self guidanceManeuverView];
-  [v48 setManeuverArtwork:0];
+  guidanceManeuverView = [(RouteStepManeuverView *)self guidanceManeuverView];
+  [guidanceManeuverView setManeuverArtwork:0];
 
-  v49 = [v4 shieldImage];
+  shieldImage = [item shieldImage];
 
-  if (v49)
+  if (shieldImage)
   {
-    v50 = [v4 shieldImage];
-    v51 = [(RouteStepManeuverView *)self shieldImageView];
-    [v51 setImage:v50];
+    shieldImage2 = [item shieldImage];
+    shieldImageView2 = [(RouteStepManeuverView *)self shieldImageView];
+    [shieldImageView2 setImage:shieldImage2];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v52 = [v4 maneuverArtwork];
+  maneuverArtwork = [item maneuverArtwork];
 
-  if (v52)
+  if (maneuverArtwork)
   {
-    v53 = [v4 maneuverArtwork];
-    v54 = [(RouteStepManeuverView *)self guidanceManeuverView];
-    [v54 setManeuverArtwork:v53];
+    maneuverArtwork2 = [item maneuverArtwork];
+    guidanceManeuverView2 = [(RouteStepManeuverView *)self guidanceManeuverView];
+    [guidanceManeuverView2 setManeuverArtwork:maneuverArtwork2];
 
-    v55 = [v4 metrics];
-    v56 = v55;
-    if (v55)
+    metrics9 = [item metrics];
+    v56 = metrics9;
+    if (metrics9)
     {
-      [v55 arrowMetrics];
+      [metrics9 arrowMetrics];
     }
 
     else
@@ -118,15 +118,15 @@ LABEL_11:
       memset(__src, 0, sizeof(__src));
     }
 
-    v57 = [(RouteStepManeuverView *)self guidanceManeuverView];
+    guidanceManeuverView3 = [(RouteStepManeuverView *)self guidanceManeuverView];
     memcpy(__dst, __src, sizeof(__dst));
-    [v57 setArrowMetrics:__dst];
+    [guidanceManeuverView3 setArrowMetrics:__dst];
 
-    v58 = [v4 metrics];
-    v50 = v58;
-    if (v58)
+    metrics10 = [item metrics];
+    shieldImage2 = metrics10;
+    if (metrics10)
     {
-      [v58 junctionArrowMetrics];
+      [metrics10 junctionArrowMetrics];
     }
 
     else
@@ -134,57 +134,57 @@ LABEL_11:
       memset(v60, 0, sizeof(v60));
     }
 
-    v51 = [(RouteStepManeuverView *)self guidanceManeuverView:v60[0]];
+    shieldImageView2 = [(RouteStepManeuverView *)self guidanceManeuverView:v60[0]];
     memcpy(__dst, v60, sizeof(__dst));
-    [v51 setJunctionArrowMetrics:__dst];
+    [shieldImageView2 setJunctionArrowMetrics:__dst];
     goto LABEL_11;
   }
 
 LABEL_12:
-  v59 = [v4 backgroundColor];
-  [(RouteStepManeuverView *)self setBackgroundColor:v59];
+  backgroundColor = [item backgroundColor];
+  [(RouteStepManeuverView *)self setBackgroundColor:backgroundColor];
 }
 
-- (void)setTrailingView:(id)a3
+- (void)setTrailingView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   trailingView = self->_trailingView;
-  if (trailingView != v5)
+  if (trailingView != viewCopy)
   {
     [(UIView *)trailingView removeFromSuperview];
-    if (v5)
+    if (viewCopy)
     {
-      [(RouteStepManeuverView *)self addSubview:v5];
-      v13 = [(UIView *)v5 trailingAnchor];
-      v7 = [(RouteStepManeuverView *)self trailingAnchor];
-      v8 = [v13 constraintEqualToAnchor:v7];
+      [(RouteStepManeuverView *)self addSubview:viewCopy];
+      trailingAnchor = [(UIView *)viewCopy trailingAnchor];
+      trailingAnchor2 = [(RouteStepManeuverView *)self trailingAnchor];
+      v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v14[0] = v8;
-      v9 = [(UIView *)v5 centerYAnchor];
-      v10 = [(RouteStepManeuverView *)self centerYAnchor];
-      v11 = [v9 constraintEqualToAnchor:v10];
+      centerYAnchor = [(UIView *)viewCopy centerYAnchor];
+      centerYAnchor2 = [(RouteStepManeuverView *)self centerYAnchor];
+      v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v14[1] = v11;
       v12 = [NSArray arrayWithObjects:v14 count:2];
       [NSLayoutConstraint activateConstraints:v12];
     }
 
-    objc_storeStrong(&self->_trailingView, a3);
+    objc_storeStrong(&self->_trailingView, view);
   }
 }
 
-- (void)setShouldUseTextToBottomConstraint:(BOOL)a3
+- (void)setShouldUseTextToBottomConstraint:(BOOL)constraint
 {
-  if (self->_shouldUseTextToBottomConstraint != a3)
+  if (self->_shouldUseTextToBottomConstraint != constraint)
   {
-    self->_shouldUseTextToBottomConstraint = a3;
+    self->_shouldUseTextToBottomConstraint = constraint;
     [(NSLayoutConstraint *)self->_textToBottomConstraint setActive:?];
   }
 }
 
-- (RouteStepManeuverView)initWithFrame:(CGRect)a3
+- (RouteStepManeuverView)initWithFrame:(CGRect)frame
 {
   v106.receiver = self;
   v106.super_class = RouteStepManeuverView;
-  v3 = [(RouteStepListView *)&v106 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RouteStepListView *)&v106 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -235,131 +235,131 @@ LABEL_12:
     [(UILabel *)v3->_tertiaryTextLabel setNumberOfLines:0];
     [(UILabel *)v3->_tertiaryTextLabel setAccessibilityIdentifier:@"TertiaryTextLabel"];
     [(RouteStepManeuverView *)v3 addSubview:v3->_tertiaryTextLabel];
-    v17 = [v4 widthAnchor];
-    v18 = [v17 constraintEqualToConstant:0.0];
+    widthAnchor = [v4 widthAnchor];
+    v18 = [widthAnchor constraintEqualToConstant:0.0];
     containerWidthConstraint = v3->_containerWidthConstraint;
     v3->_containerWidthConstraint = v18;
 
     v105 = v10;
-    v20 = [v10 widthAnchor];
-    v21 = [v20 constraintEqualToConstant:0.0];
+    widthAnchor2 = [v10 widthAnchor];
+    v21 = [widthAnchor2 constraintEqualToConstant:0.0];
     imageWidthConstraint = v3->_imageWidthConstraint;
     v3->_imageWidthConstraint = v21;
 
-    v23 = [v10 heightAnchor];
-    v24 = [v23 constraintEqualToConstant:0.0];
+    heightAnchor = [v10 heightAnchor];
+    v24 = [heightAnchor constraintEqualToConstant:0.0];
     imageHeightConstraint = v3->_imageHeightConstraint;
     v3->_imageHeightConstraint = v24;
 
-    v26 = [(UILabel *)v3->_primaryTextLabel trailingAnchor];
-    v27 = [(RouteStepManeuverView *)v3 safeAreaLayoutGuide];
-    v28 = [v27 trailingAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
+    trailingAnchor = [(UILabel *)v3->_primaryTextLabel trailingAnchor];
+    safeAreaLayoutGuide = [(RouteStepManeuverView *)v3 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     primaryTrailingConstraint = v3->_primaryTrailingConstraint;
     v3->_primaryTrailingConstraint = v29;
 
-    v31 = [(UILabel *)v3->_primaryTextLabel topAnchor];
-    v32 = [(RouteStepManeuverView *)v3 topAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    topAnchor = [(UILabel *)v3->_primaryTextLabel topAnchor];
+    topAnchor2 = [(RouteStepManeuverView *)v3 topAnchor];
+    v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
     primaryTopConstraint = v3->_primaryTopConstraint;
     v3->_primaryTopConstraint = v33;
 
-    v35 = [(UILabel *)v3->_secondaryTextLabel topAnchor];
-    v36 = [(UILabel *)v3->_primaryTextLabel bottomAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    topAnchor3 = [(UILabel *)v3->_secondaryTextLabel topAnchor];
+    bottomAnchor = [(UILabel *)v3->_primaryTextLabel bottomAnchor];
+    v37 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     secondaryTopConstraint = v3->_secondaryTopConstraint;
     v3->_secondaryTopConstraint = v37;
 
-    v39 = [(UILabel *)v3->_tertiaryTextLabel topAnchor];
-    v40 = [(UILabel *)v3->_secondaryTextLabel bottomAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    topAnchor4 = [(UILabel *)v3->_tertiaryTextLabel topAnchor];
+    bottomAnchor2 = [(UILabel *)v3->_secondaryTextLabel bottomAnchor];
+    v41 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2];
     tertiaryTopConstraint = v3->_tertiaryTopConstraint;
     v3->_tertiaryTopConstraint = v41;
 
-    v43 = [(UILabel *)v3->_tertiaryTextLabel bottomAnchor];
-    v44 = [(RouteStepManeuverView *)v3 bottomAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
+    bottomAnchor3 = [(UILabel *)v3->_tertiaryTextLabel bottomAnchor];
+    bottomAnchor4 = [(RouteStepManeuverView *)v3 bottomAnchor];
+    v45 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     textToBottomConstraint = v3->_textToBottomConstraint;
     v3->_textToBottomConstraint = v45;
 
-    v102 = [v104 leadingAnchor];
-    v103 = [(RouteStepManeuverView *)v3 safeAreaLayoutGuide];
-    v101 = [v103 leadingAnchor];
-    v100 = [v102 constraintEqualToAnchor:v101];
+    leadingAnchor = [v104 leadingAnchor];
+    safeAreaLayoutGuide2 = [(RouteStepManeuverView *)v3 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+    v100 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v107[0] = v100;
     v107[1] = v3->_containerWidthConstraint;
-    v99 = [v104 topAnchor];
-    v98 = [(RouteStepManeuverView *)v3 topAnchor];
-    v97 = [v99 constraintEqualToAnchor:v98];
+    topAnchor5 = [v104 topAnchor];
+    topAnchor6 = [(RouteStepManeuverView *)v3 topAnchor];
+    v97 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v107[2] = v97;
-    v96 = [v104 bottomAnchor];
-    v95 = [(RouteStepManeuverView *)v3 bottomAnchor];
-    v94 = [v96 constraintEqualToAnchor:v95];
+    bottomAnchor5 = [v104 bottomAnchor];
+    bottomAnchor6 = [(RouteStepManeuverView *)v3 bottomAnchor];
+    v94 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v107[3] = v94;
-    v93 = [v105 centerXAnchor];
-    v92 = [v104 centerXAnchor];
-    v91 = [v93 constraintEqualToAnchor:v92];
+    centerXAnchor = [v105 centerXAnchor];
+    centerXAnchor2 = [v104 centerXAnchor];
+    v91 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v107[4] = v91;
-    v90 = [v105 centerYAnchor];
-    v89 = [v104 centerYAnchor];
-    v88 = [v90 constraintEqualToAnchor:v89];
+    centerYAnchor = [v105 centerYAnchor];
+    centerYAnchor2 = [v104 centerYAnchor];
+    v88 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v107[5] = v88;
     v107[6] = v3->_imageWidthConstraint;
     v107[7] = v3->_imageHeightConstraint;
-    v86 = [(GuidanceManeuverView *)v3->_guidanceManeuverView leadingAnchor];
-    v85 = [v105 leadingAnchor];
-    v84 = [v86 constraintEqualToAnchor:v85];
+    leadingAnchor3 = [(GuidanceManeuverView *)v3->_guidanceManeuverView leadingAnchor];
+    leadingAnchor4 = [v105 leadingAnchor];
+    v84 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v107[8] = v84;
-    v83 = [(GuidanceManeuverView *)v3->_guidanceManeuverView trailingAnchor];
-    v82 = [v105 trailingAnchor];
-    v81 = [v83 constraintEqualToAnchor:v82];
+    trailingAnchor3 = [(GuidanceManeuverView *)v3->_guidanceManeuverView trailingAnchor];
+    trailingAnchor4 = [v105 trailingAnchor];
+    v81 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v107[9] = v81;
-    v80 = [(GuidanceManeuverView *)v3->_guidanceManeuverView topAnchor];
-    v79 = [v105 topAnchor];
-    v78 = [v80 constraintEqualToAnchor:v79];
+    topAnchor7 = [(GuidanceManeuverView *)v3->_guidanceManeuverView topAnchor];
+    topAnchor8 = [v105 topAnchor];
+    v78 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
     v107[10] = v78;
-    v77 = [(GuidanceManeuverView *)v3->_guidanceManeuverView bottomAnchor];
-    v76 = [v105 bottomAnchor];
-    v75 = [v77 constraintEqualToAnchor:v76];
+    bottomAnchor7 = [(GuidanceManeuverView *)v3->_guidanceManeuverView bottomAnchor];
+    bottomAnchor8 = [v105 bottomAnchor];
+    v75 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     v107[11] = v75;
-    v74 = [(UIImageView *)v3->_shieldImageView leadingAnchor];
-    v73 = [v105 leadingAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73];
+    leadingAnchor5 = [(UIImageView *)v3->_shieldImageView leadingAnchor];
+    leadingAnchor6 = [v105 leadingAnchor];
+    v72 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v107[12] = v72;
-    v71 = [(UIImageView *)v3->_shieldImageView trailingAnchor];
-    v70 = [v105 trailingAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    trailingAnchor5 = [(UIImageView *)v3->_shieldImageView trailingAnchor];
+    trailingAnchor6 = [v105 trailingAnchor];
+    v69 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v107[13] = v69;
-    v68 = [(UIImageView *)v3->_shieldImageView topAnchor];
-    v67 = [v105 topAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    topAnchor9 = [(UIImageView *)v3->_shieldImageView topAnchor];
+    topAnchor10 = [v105 topAnchor];
+    v66 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
     v107[14] = v66;
-    v65 = [(UIImageView *)v3->_shieldImageView bottomAnchor];
-    v64 = [v105 bottomAnchor];
-    v63 = [v65 constraintEqualToAnchor:v64];
+    bottomAnchor9 = [(UIImageView *)v3->_shieldImageView bottomAnchor];
+    bottomAnchor10 = [v105 bottomAnchor];
+    v63 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
     v107[15] = v63;
-    v62 = [(UILabel *)v3->_primaryTextLabel leadingAnchor];
-    v61 = [v104 trailingAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    leadingAnchor7 = [(UILabel *)v3->_primaryTextLabel leadingAnchor];
+    trailingAnchor7 = [v104 trailingAnchor];
+    v60 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor7];
     v107[16] = v60;
     v107[17] = v3->_primaryTrailingConstraint;
     v107[18] = v3->_primaryTopConstraint;
-    v87 = [(UILabel *)v3->_secondaryTextLabel leadingAnchor];
-    v59 = [(UILabel *)v3->_primaryTextLabel leadingAnchor];
-    v58 = [v87 constraintEqualToAnchor:v59];
+    leadingAnchor8 = [(UILabel *)v3->_secondaryTextLabel leadingAnchor];
+    leadingAnchor9 = [(UILabel *)v3->_primaryTextLabel leadingAnchor];
+    v58 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
     v107[19] = v58;
-    v57 = [(UILabel *)v3->_secondaryTextLabel trailingAnchor];
-    v47 = [(UILabel *)v3->_primaryTextLabel trailingAnchor];
-    v48 = [v57 constraintEqualToAnchor:v47];
+    trailingAnchor8 = [(UILabel *)v3->_secondaryTextLabel trailingAnchor];
+    trailingAnchor9 = [(UILabel *)v3->_primaryTextLabel trailingAnchor];
+    v48 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
     v107[20] = v48;
     v107[21] = v3->_secondaryTopConstraint;
-    v49 = [(UILabel *)v3->_tertiaryTextLabel leadingAnchor];
-    v50 = [(UILabel *)v3->_primaryTextLabel leadingAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    leadingAnchor10 = [(UILabel *)v3->_tertiaryTextLabel leadingAnchor];
+    leadingAnchor11 = [(UILabel *)v3->_primaryTextLabel leadingAnchor];
+    v51 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
     v107[22] = v51;
-    v52 = [(UILabel *)v3->_tertiaryTextLabel trailingAnchor];
-    v53 = [(UILabel *)v3->_primaryTextLabel trailingAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53];
+    trailingAnchor10 = [(UILabel *)v3->_tertiaryTextLabel trailingAnchor];
+    trailingAnchor11 = [(UILabel *)v3->_primaryTextLabel trailingAnchor];
+    v54 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
     v107[23] = v54;
     v107[24] = v3->_tertiaryTopConstraint;
     v55 = [NSArray arrayWithObjects:v107 count:25];
@@ -369,13 +369,13 @@ LABEL_12:
   return v3;
 }
 
-+ (double)heightForItem:(id)a3 width:(double)a4 maximumHeight:(double)a5
++ (double)heightForItem:(id)item width:(double)width maximumHeight:(double)height
 {
-  v6 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = itemCopy;
   }
 
   else
@@ -384,34 +384,34 @@ LABEL_12:
   }
 
   v8 = v7;
-  v9 = [v8 metrics];
-  [v9 imageAreaWidth];
+  metrics = [v8 metrics];
+  [metrics imageAreaWidth];
   v11 = v10;
-  v12 = [v8 metrics];
-  [v12 textTrailingMargin];
+  metrics2 = [v8 metrics];
+  [metrics2 textTrailingMargin];
   v14 = v13;
-  v15 = [v8 trailingView];
-  [v15 frame];
-  v17 = a4 - (v11 + v14 + v16);
+  trailingView = [v8 trailingView];
+  [trailingView frame];
+  v17 = width - (v11 + v14 + v16);
 
-  v18 = [v8 metrics];
-  [v18 imageTopMargin];
+  metrics3 = [v8 metrics];
+  [metrics3 imageTopMargin];
   v20 = v19;
-  v21 = [v8 metrics];
-  [v21 stepImageHeight];
+  metrics4 = [v8 metrics];
+  [metrics4 stepImageHeight];
   v23 = v22;
-  v24 = [v8 metrics];
-  [v24 imageBottomMargin];
+  metrics5 = [v8 metrics];
+  [metrics5 imageBottomMargin];
   v26 = v25;
 
-  v27 = [v8 primaryText];
-  if (v27)
+  primaryText = [v8 primaryText];
+  if (primaryText)
   {
-    v28 = [v8 metrics];
-    [v28 primaryTextTopMargin];
+    metrics6 = [v8 metrics];
+    [metrics6 primaryTextTopMargin];
     v30 = v29;
 
-    [v27 boundingRectWithSize:1 options:0 context:{v17, 1.79769313e308}];
+    [primaryText boundingRectWithSize:1 options:0 context:{v17, 1.79769313e308}];
     v32 = ceil(v31) + v30;
   }
 
@@ -420,31 +420,31 @@ LABEL_12:
     v32 = 0.0;
   }
 
-  v33 = [v8 secondaryText];
-  if (v33)
+  secondaryText = [v8 secondaryText];
+  if (secondaryText)
   {
-    v34 = [v8 metrics];
-    [v34 secondaryTextTopMargin];
+    metrics7 = [v8 metrics];
+    [metrics7 secondaryTextTopMargin];
     v36 = v35 + v32;
 
-    [v33 boundingRectWithSize:1 options:0 context:{v17, 1.79769313e308}];
+    [secondaryText boundingRectWithSize:1 options:0 context:{v17, 1.79769313e308}];
     v32 = v36 + ceil(v37);
   }
 
-  v38 = [v8 tertiaryText];
-  if (v38)
+  tertiaryText = [v8 tertiaryText];
+  if (tertiaryText)
   {
-    v39 = [v8 metrics];
-    [v39 tertiaryTextTopMargin];
+    metrics8 = [v8 metrics];
+    [metrics8 tertiaryTextTopMargin];
     v41 = v40 + v32;
 
-    [v38 boundingRectWithSize:1 options:0 context:{v17, 1.79769313e308}];
+    [tertiaryText boundingRectWithSize:1 options:0 context:{v17, 1.79769313e308}];
     v32 = v41 + ceil(v42);
   }
 
   v43 = v23 + v20 + v26;
-  v44 = [v8 metrics];
-  [v44 textBottomMargin];
+  metrics9 = [v8 metrics];
+  [metrics9 textBottomMargin];
   v46 = v45 + v32;
 
   return fmax(v43, v46);

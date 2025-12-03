@@ -3,24 +3,24 @@
 - (BOOL)isRepeatSupported;
 - (BOOL)isShuffleEnabled;
 - (BOOL)isShuffleSupported;
-- (HFPlaybackArchive)initWithMediaPlayerPlaybackArchive:(id)a3;
+- (HFPlaybackArchive)initWithMediaPlayerPlaybackArchive:(id)archive;
 - (NSData)artworkImageData;
 - (unint64_t)targetOptions;
-- (void)setTargetOptions:(unint64_t)a3;
+- (void)setTargetOptions:(unint64_t)options;
 @end
 
 @implementation HFPlaybackArchive
 
-- (HFPlaybackArchive)initWithMediaPlayerPlaybackArchive:(id)a3
+- (HFPlaybackArchive)initWithMediaPlayerPlaybackArchive:(id)archive
 {
-  v5 = a3;
+  archiveCopy = archive;
   v9.receiver = self;
   v9.super_class = HFPlaybackArchive;
   v6 = [(HFPlaybackArchive *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaPlayerPlaybackArchive, a3);
+    objc_storeStrong(&v6->_mediaPlayerPlaybackArchive, archive);
   }
 
   return v7;
@@ -38,9 +38,9 @@
     v3 = 0;
   }
 
-  v4 = [(HFPlaybackArchive *)self isRepeatEnabled];
+  isRepeatEnabled = [(HFPlaybackArchive *)self isRepeatEnabled];
   v5 = 4;
-  if (!v4)
+  if (!isRepeatEnabled)
   {
     v5 = 0;
   }
@@ -48,41 +48,41 @@
   return v5 | v3;
 }
 
-- (void)setTargetOptions:(unint64_t)a3
+- (void)setTargetOptions:(unint64_t)options
 {
-  [(HFPlaybackArchive *)self setShuffleEnabled:(a3 >> 1) & 1];
+  [(HFPlaybackArchive *)self setShuffleEnabled:(options >> 1) & 1];
 
-  [(HFPlaybackArchive *)self setRepeatEnabled:(a3 >> 2) & 1];
+  [(HFPlaybackArchive *)self setRepeatEnabled:(options >> 2) & 1];
 }
 
 - (BOOL)isShuffleSupported
 {
-  v2 = [(HFPlaybackArchive *)self mediaPlayerPlaybackArchive];
-  v3 = ([v2 supportedOptions] >> 1) & 1;
+  mediaPlayerPlaybackArchive = [(HFPlaybackArchive *)self mediaPlayerPlaybackArchive];
+  v3 = ([mediaPlayerPlaybackArchive supportedOptions] >> 1) & 1;
 
   return v3;
 }
 
 - (BOOL)isShuffleEnabled
 {
-  v2 = [(HFPlaybackArchive *)self mediaPlayerPlaybackArchive];
-  v3 = [v2 BOOLValueForOption:1];
+  mediaPlayerPlaybackArchive = [(HFPlaybackArchive *)self mediaPlayerPlaybackArchive];
+  v3 = [mediaPlayerPlaybackArchive BOOLValueForOption:1];
 
   return v3;
 }
 
 - (BOOL)isRepeatSupported
 {
-  v2 = [(HFPlaybackArchive *)self mediaPlayerPlaybackArchive];
-  v3 = ([v2 supportedOptions] >> 2) & 1;
+  mediaPlayerPlaybackArchive = [(HFPlaybackArchive *)self mediaPlayerPlaybackArchive];
+  v3 = ([mediaPlayerPlaybackArchive supportedOptions] >> 2) & 1;
 
   return v3;
 }
 
 - (BOOL)isRepeatEnabled
 {
-  v2 = [(HFPlaybackArchive *)self mediaPlayerPlaybackArchive];
-  v3 = [v2 BOOLValueForOption:2];
+  mediaPlayerPlaybackArchive = [(HFPlaybackArchive *)self mediaPlayerPlaybackArchive];
+  v3 = [mediaPlayerPlaybackArchive BOOLValueForOption:2];
 
   return v3;
 }
@@ -92,17 +92,17 @@
   artworkImageData = self->_artworkImageData;
   if (artworkImageData)
   {
-    v3 = artworkImageData;
+    artworkImageData = artworkImageData;
   }
 
   else
   {
-    v4 = [(HFPlaybackArchive *)self mediaPlayerPlaybackArchive];
-    v5 = [v4 displayProperties];
-    v3 = [v5 artworkImageData];
+    mediaPlayerPlaybackArchive = [(HFPlaybackArchive *)self mediaPlayerPlaybackArchive];
+    displayProperties = [mediaPlayerPlaybackArchive displayProperties];
+    artworkImageData = [displayProperties artworkImageData];
   }
 
-  return v3;
+  return artworkImageData;
 }
 
 @end

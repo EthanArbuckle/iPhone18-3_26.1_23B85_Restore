@@ -1,22 +1,22 @@
 @interface UIKBSplitTraits
-+ (id)traitsWithLeftFrame:(CGRect)a3 rightFrame:(CGRect)a4 corners:(unint64_t)a5;
++ (id)traitsWithLeftFrame:(CGRect)frame rightFrame:(CGRect)rightFrame corners:(unint64_t)corners;
 - (CGRect)leftFrame;
 - (CGRect)rightFrame;
-- (UIKBSplitTraits)initWithLeftFrame:(CGRect)a3 rightFrame:(CGRect)a4 corners:(unint64_t)a5;
+- (UIKBSplitTraits)initWithLeftFrame:(CGRect)frame rightFrame:(CGRect)rightFrame corners:(unint64_t)corners;
 @end
 
 @implementation UIKBSplitTraits
 
-- (UIKBSplitTraits)initWithLeftFrame:(CGRect)a3 rightFrame:(CGRect)a4 corners:(unint64_t)a5
+- (UIKBSplitTraits)initWithLeftFrame:(CGRect)frame rightFrame:(CGRect)rightFrame corners:(unint64_t)corners
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
+  height = rightFrame.size.height;
+  width = rightFrame.size.width;
+  y = rightFrame.origin.y;
+  x = rightFrame.origin.x;
+  v10 = frame.size.height;
+  v11 = frame.size.width;
+  v12 = frame.origin.y;
+  v13 = frame.origin.x;
   v18.receiver = self;
   v18.super_class = UIKBSplitTraits;
   v14 = [(UIKBSplitTraits *)&v18 init];
@@ -31,16 +31,16 @@
     v14->_leftFrame.origin.y = v12;
     v14->_leftFrame.size.width = v11;
     v14->_leftFrame.size.height = v10;
-    v14->_corners = a5;
+    v14->_corners = corners;
     v16 = v14;
   }
 
   return v15;
 }
 
-+ (id)traitsWithLeftFrame:(CGRect)a3 rightFrame:(CGRect)a4 corners:(unint64_t)a5
++ (id)traitsWithLeftFrame:(CGRect)frame rightFrame:(CGRect)rightFrame corners:(unint64_t)corners
 {
-  v5 = [[UIKBSplitTraits alloc] initWithLeftFrame:a5 rightFrame:a3.origin.x corners:a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  v5 = [[UIKBSplitTraits alloc] initWithLeftFrame:corners rightFrame:frame.origin.x corners:frame.origin.y, frame.size.width, frame.size.height, rightFrame.origin.x, rightFrame.origin.y, rightFrame.size.width, rightFrame.size.height];
 
   return v5;
 }

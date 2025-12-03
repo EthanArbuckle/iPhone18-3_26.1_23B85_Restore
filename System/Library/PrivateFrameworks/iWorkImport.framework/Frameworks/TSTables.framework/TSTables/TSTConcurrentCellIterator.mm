@@ -1,73 +1,73 @@
 @interface TSTConcurrentCellIterator
-- (TSTConcurrentCellIterator)initWithTableInfo:(id)a3 flags:(unint64_t)a4 searchFlags:(unint64_t)a5;
-- (TSTConcurrentCellIterator)initWithTableInfo:(id)a3 region:(id)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6;
-- (TSTConcurrentCellIterator)initWithTableInfo:(id)a3 region:(id)a4 forcingRegion:(id)a5 flags:(unint64_t)a6 searchFlags:(unint64_t)a7;
-- (TSTConcurrentCellIterator)initWithTableInfo:(id)a3 tableModel:(id)a4 region:(id)a5 forcingRegion:(id)a6 clampingRect:(TSUCellRect)a7 flags:(unint64_t)a8 searchFlags:(unint64_t)a9;
-- (TSTConcurrentCellIterator)initWithTableModel:(id)a3 baseRegion:(id)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6;
+- (TSTConcurrentCellIterator)initWithTableInfo:(id)info flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags;
+- (TSTConcurrentCellIterator)initWithTableInfo:(id)info region:(id)region flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags;
+- (TSTConcurrentCellIterator)initWithTableInfo:(id)info region:(id)region forcingRegion:(id)forcingRegion flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags;
+- (TSTConcurrentCellIterator)initWithTableInfo:(id)info tableModel:(id)model region:(id)region forcingRegion:(id)forcingRegion clampingRect:(TSUCellRect)rect flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags;
+- (TSTConcurrentCellIterator)initWithTableModel:(id)model baseRegion:(id)region flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags;
 - (TSUCellRect)clampingRect;
-- (void)enumerateConcurrentlyUsingChunkBeginBlock:(id)a3 perDispatchThreadBlock:(id)a4 concurrentBlock:(id)a5 furtherPassNeededBlock:(id)a6 furtherPassConcurrentBlock:(id)a7 finalBlock:(id)a8;
-- (void)enumerateModelConcurrentlyUsingChunkBeginBlock:(id)a3 concurrentBlock:(id)a4 furtherPassNeededBlock:(id)a5 furtherPassConcurrentBlock:(id)a6 finalBlock:(id)a7;
-- (void)p_enumerateConcurrentlyUsingChunkBeginBlock:(id)a3 perDispatchThreadBlock:(id)a4 concurrentBlock:(id)a5 furtherPassNeededBlock:(id)a6 furtherPassConcurrentBlock:(id)a7 finalBlock:(id)a8;
+- (void)enumerateConcurrentlyUsingChunkBeginBlock:(id)block perDispatchThreadBlock:(id)threadBlock concurrentBlock:(id)concurrentBlock furtherPassNeededBlock:(id)neededBlock furtherPassConcurrentBlock:(id)passConcurrentBlock finalBlock:(id)finalBlock;
+- (void)enumerateModelConcurrentlyUsingChunkBeginBlock:(id)block concurrentBlock:(id)concurrentBlock furtherPassNeededBlock:(id)neededBlock furtherPassConcurrentBlock:(id)passConcurrentBlock finalBlock:(id)finalBlock;
+- (void)p_enumerateConcurrentlyUsingChunkBeginBlock:(id)block perDispatchThreadBlock:(id)threadBlock concurrentBlock:(id)concurrentBlock furtherPassNeededBlock:(id)neededBlock furtherPassConcurrentBlock:(id)passConcurrentBlock finalBlock:(id)finalBlock;
 @end
 
 @implementation TSTConcurrentCellIterator
 
-- (TSTConcurrentCellIterator)initWithTableInfo:(id)a3 flags:(unint64_t)a4 searchFlags:(unint64_t)a5
+- (TSTConcurrentCellIterator)initWithTableInfo:(id)info flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags
 {
-  v8 = a3;
-  v13 = objc_msgSend_range(v8, v9, v10, v11, v12);
+  infoCopy = info;
+  v13 = objc_msgSend_range(infoCopy, v9, v10, v11, v12);
   v16 = objc_msgSend_regionFromRange_(TSTCellRegion, v14, v13, v14, v15);
-  v21 = objc_msgSend_range(v8, v17, v18, v19, v20);
-  v23 = objc_msgSend_initWithTableInfo_tableModel_region_forcingRegion_clampingRect_flags_searchFlags_(self, v22, v8, 0, v16, 0, v21, v22, a4, a5);
+  v21 = objc_msgSend_range(infoCopy, v17, v18, v19, v20);
+  v23 = objc_msgSend_initWithTableInfo_tableModel_region_forcingRegion_clampingRect_flags_searchFlags_(self, v22, infoCopy, 0, v16, 0, v21, v22, flags, searchFlags);
 
   return v23;
 }
 
-- (TSTConcurrentCellIterator)initWithTableInfo:(id)a3 region:(id)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6
+- (TSTConcurrentCellIterator)initWithTableInfo:(id)info region:(id)region flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags
 {
-  v10 = a3;
-  v11 = a4;
-  v16 = objc_msgSend_range(v10, v12, v13, v14, v15);
-  v18 = objc_msgSend_initWithTableInfo_tableModel_region_forcingRegion_clampingRect_flags_searchFlags_(self, v17, v10, 0, v11, 0, v16, v17, a5, a6);
+  infoCopy = info;
+  regionCopy = region;
+  v16 = objc_msgSend_range(infoCopy, v12, v13, v14, v15);
+  v18 = objc_msgSend_initWithTableInfo_tableModel_region_forcingRegion_clampingRect_flags_searchFlags_(self, v17, infoCopy, 0, regionCopy, 0, v16, v17, flags, searchFlags);
 
   return v18;
 }
 
-- (TSTConcurrentCellIterator)initWithTableInfo:(id)a3 region:(id)a4 forcingRegion:(id)a5 flags:(unint64_t)a6 searchFlags:(unint64_t)a7
+- (TSTConcurrentCellIterator)initWithTableInfo:(id)info region:(id)region forcingRegion:(id)forcingRegion flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v19 = objc_msgSend_range(v12, v15, v16, v17, v18);
-  v21 = objc_msgSend_initWithTableInfo_tableModel_region_forcingRegion_clampingRect_flags_searchFlags_(self, v20, v12, 0, v13, v14, v19, v20, a6, a7);
+  infoCopy = info;
+  regionCopy = region;
+  forcingRegionCopy = forcingRegion;
+  v19 = objc_msgSend_range(infoCopy, v15, v16, v17, v18);
+  v21 = objc_msgSend_initWithTableInfo_tableModel_region_forcingRegion_clampingRect_flags_searchFlags_(self, v20, infoCopy, 0, regionCopy, forcingRegionCopy, v19, v20, flags, searchFlags);
 
   return v21;
 }
 
-- (TSTConcurrentCellIterator)initWithTableModel:(id)a3 baseRegion:(id)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6
+- (TSTConcurrentCellIterator)initWithTableModel:(id)model baseRegion:(id)region flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags
 {
-  v10 = a3;
-  v11 = a4;
-  v16 = objc_msgSend_range(v10, v12, v13, v14, v15);
-  v18 = objc_msgSend_initWithTableInfo_tableModel_region_forcingRegion_clampingRect_flags_searchFlags_(self, v17, 0, v10, v11, 0, v16, v17, a5, a6);
+  modelCopy = model;
+  regionCopy = region;
+  v16 = objc_msgSend_range(modelCopy, v12, v13, v14, v15);
+  v18 = objc_msgSend_initWithTableInfo_tableModel_region_forcingRegion_clampingRect_flags_searchFlags_(self, v17, 0, modelCopy, regionCopy, 0, v16, v17, flags, searchFlags);
 
   return v18;
 }
 
-- (TSTConcurrentCellIterator)initWithTableInfo:(id)a3 tableModel:(id)a4 region:(id)a5 forcingRegion:(id)a6 clampingRect:(TSUCellRect)a7 flags:(unint64_t)a8 searchFlags:(unint64_t)a9
+- (TSTConcurrentCellIterator)initWithTableInfo:(id)info tableModel:(id)model region:(id)region forcingRegion:(id)forcingRegion clampingRect:(TSUCellRect)rect flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags
 {
-  size = a7.size;
-  origin = a7.origin;
-  v68 = a3;
-  v16 = a4;
-  v67 = a5;
-  v17 = a6;
+  size = rect.size;
+  origin = rect.origin;
+  infoCopy = info;
+  modelCopy = model;
+  regionCopy = region;
+  forcingRegionCopy = forcingRegion;
   v69.receiver = self;
   v69.super_class = TSTConcurrentCellIterator;
   v21 = [(TSTConcurrentCellIterator *)&v69 init];
   if (v21)
   {
-    if ((v68 == 0) != (v16 != 0))
+    if ((infoCopy == 0) != (modelCopy != 0))
     {
       v22 = MEMORY[0x277D81150];
       v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSTConcurrentCellIterator initWithTableInfo:tableModel:region:forcingRegion:clampingRect:flags:searchFlags:]", v19, v20);
@@ -77,7 +77,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v29, v30, v31, v32);
     }
 
-    objc_storeStrong(v21 + 2, a3);
+    objc_storeStrong(v21 + 2, info);
     v37 = *(v21 + 2);
     if (v37)
     {
@@ -86,7 +86,7 @@
 
     else
     {
-      v38 = v16;
+      v38 = modelCopy;
     }
 
     v39 = *(v21 + 3);
@@ -94,11 +94,11 @@
 
     *(v21 + 9) = origin;
     *(v21 + 10) = size;
-    v42 = objc_msgSend_regionByIntersectingRange_(v67, v40, origin, size, v41);
+    v42 = objc_msgSend_regionByIntersectingRange_(regionCopy, v40, origin, size, v41);
     v43 = *(v21 + 4);
     *(v21 + 4) = v42;
 
-    v46 = objc_msgSend_regionByIntersectingRange_(v17, v44, *(v21 + 9), *(v21 + 10), v45);
+    v46 = objc_msgSend_regionByIntersectingRange_(forcingRegionCopy, v44, *(v21 + 9), *(v21 + 10), v45);
     v47 = *(v21 + 5);
     *(v21 + 5) = v46;
 
@@ -116,33 +116,33 @@
       *(v21 + 4) = v57;
     }
 
-    v59 = a8;
-    if ((a8 & 0x40) != 0)
+    flagsCopy = flags;
+    if ((flags & 0x40) != 0)
     {
       v60 = objc_msgSend_mergeOwner(*(v21 + 3), v52, v56, v53, v54);
       hasMergeRanges = objc_msgSend_hasMergeRanges(v60, v61, v62, v63, v64);
 
       if (!hasMergeRanges)
       {
-        v59 = a8 & 0xFFFFFFFFFFFFFFBFLL;
+        flagsCopy = flags & 0xFFFFFFFFFFFFFFBFLL;
       }
     }
 
-    *(v21 + 7) = v59;
-    *(v21 + 8) = a9;
+    *(v21 + 7) = flagsCopy;
+    *(v21 + 8) = searchFlags;
     *(v21 + 1) = 0;
   }
 
   return v21;
 }
 
-- (void)enumerateModelConcurrentlyUsingChunkBeginBlock:(id)a3 concurrentBlock:(id)a4 furtherPassNeededBlock:(id)a5 furtherPassConcurrentBlock:(id)a6 finalBlock:(id)a7
+- (void)enumerateModelConcurrentlyUsingChunkBeginBlock:(id)block concurrentBlock:(id)concurrentBlock furtherPassNeededBlock:(id)neededBlock furtherPassConcurrentBlock:(id)passConcurrentBlock finalBlock:(id)finalBlock
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v19 = a7;
+  blockCopy = block;
+  concurrentBlockCopy = concurrentBlock;
+  neededBlockCopy = neededBlock;
+  passConcurrentBlockCopy = passConcurrentBlock;
+  finalBlockCopy = finalBlock;
   if (self->_tableInfo)
   {
     v20 = MEMORY[0x277D81150];
@@ -157,19 +157,19 @@
   v33[1] = 3221225472;
   v33[2] = sub_2213C10A0;
   v33[3] = &unk_278464250;
-  v31 = v12;
+  v31 = blockCopy;
   v34 = v31;
-  objc_msgSend_p_enumerateConcurrentlyUsingChunkBeginBlock_perDispatchThreadBlock_concurrentBlock_furtherPassNeededBlock_furtherPassConcurrentBlock_finalBlock_(self, v32, v33, 0, v13, v14, v15, v19);
+  objc_msgSend_p_enumerateConcurrentlyUsingChunkBeginBlock_perDispatchThreadBlock_concurrentBlock_furtherPassNeededBlock_furtherPassConcurrentBlock_finalBlock_(self, v32, v33, 0, concurrentBlockCopy, neededBlockCopy, passConcurrentBlockCopy, finalBlockCopy);
 }
 
-- (void)enumerateConcurrentlyUsingChunkBeginBlock:(id)a3 perDispatchThreadBlock:(id)a4 concurrentBlock:(id)a5 furtherPassNeededBlock:(id)a6 furtherPassConcurrentBlock:(id)a7 finalBlock:(id)a8
+- (void)enumerateConcurrentlyUsingChunkBeginBlock:(id)block perDispatchThreadBlock:(id)threadBlock concurrentBlock:(id)concurrentBlock furtherPassNeededBlock:(id)neededBlock furtherPassConcurrentBlock:(id)passConcurrentBlock finalBlock:(id)finalBlock
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v22 = a8;
+  blockCopy = block;
+  threadBlockCopy = threadBlock;
+  concurrentBlockCopy = concurrentBlock;
+  neededBlockCopy = neededBlock;
+  passConcurrentBlockCopy = passConcurrentBlock;
+  finalBlockCopy = finalBlock;
   if (!self->_tableInfo)
   {
     v23 = MEMORY[0x277D81150];
@@ -184,19 +184,19 @@
   v36[1] = 3221225472;
   v36[2] = sub_2213C12BC;
   v36[3] = &unk_278464250;
-  v34 = v14;
+  v34 = blockCopy;
   v37 = v34;
-  objc_msgSend_p_enumerateConcurrentlyUsingChunkBeginBlock_perDispatchThreadBlock_concurrentBlock_furtherPassNeededBlock_furtherPassConcurrentBlock_finalBlock_(self, v35, v36, v15, v16, v17, v18, v22);
+  objc_msgSend_p_enumerateConcurrentlyUsingChunkBeginBlock_perDispatchThreadBlock_concurrentBlock_furtherPassNeededBlock_furtherPassConcurrentBlock_finalBlock_(self, v35, v36, threadBlockCopy, concurrentBlockCopy, neededBlockCopy, passConcurrentBlockCopy, finalBlockCopy);
 }
 
-- (void)p_enumerateConcurrentlyUsingChunkBeginBlock:(id)a3 perDispatchThreadBlock:(id)a4 concurrentBlock:(id)a5 furtherPassNeededBlock:(id)a6 furtherPassConcurrentBlock:(id)a7 finalBlock:(id)a8
+- (void)p_enumerateConcurrentlyUsingChunkBeginBlock:(id)block perDispatchThreadBlock:(id)threadBlock concurrentBlock:(id)concurrentBlock furtherPassNeededBlock:(id)neededBlock furtherPassConcurrentBlock:(id)passConcurrentBlock finalBlock:(id)finalBlock
 {
-  v14 = a3;
-  v59 = a4;
-  v58 = a5;
-  v57 = a6;
-  v56 = a7;
-  v55 = a8;
+  blockCopy = block;
+  threadBlockCopy = threadBlock;
+  concurrentBlockCopy = concurrentBlock;
+  neededBlockCopy = neededBlock;
+  passConcurrentBlockCopy = passConcurrentBlock;
+  finalBlockCopy = finalBlock;
   v76 = 0;
   v77 = 0uLL;
   searchFlags = self->_searchFlags;
@@ -246,7 +246,7 @@
   v29 = (v75 - v74) >> 4;
   v54 = v60 - v21;
   v30 = v29 + ((v60 - v21) >> 4);
-  if (v14)
+  if (blockCopy)
   {
     v31 = objc_msgSend_strongObjectsPointerArray(MEMORY[0x277CCAC18], v25, v26, v27, v28);
     arrayOfChunkRocks = self->_arrayOfChunkRocks;
@@ -269,7 +269,7 @@
           v38 = v23;
         }
 
-        v41 = (*(v14 + 2))(v14, *v38, *(v38 + 1));
+        v41 = (*(blockCopy + 2))(blockCopy, *v38, *(v38 + 1));
         if (v41)
         {
           objc_msgSend_replacePointerAtIndex_withPointer_(self->_arrayOfChunkRocks, v39, v36, v41, v40);
@@ -289,7 +289,7 @@
   v72[2] = sub_2213C17D4;
   v72[3] = &unk_2784642A0;
   v72[4] = self;
-  v42 = v58;
+  v42 = concurrentBlockCopy;
   v73 = v42;
   v43 = MEMORY[0x223DA1C10](v72);
   block[0] = MEMORY[0x277D85DD0];
@@ -298,7 +298,7 @@
   block[3] = &unk_2834A7138;
   block[4] = self;
   v67 = &v76;
-  v44 = v59;
+  v44 = threadBlockCopy;
   v65 = v44;
   v45 = v43;
   v66 = v45;
@@ -308,12 +308,12 @@
   sub_22116C9DC(&__p, v61, v60, v54 >> 4);
   v71 = v53;
   dispatch_apply(v30, 0, block);
-  if (v57)
+  if (neededBlockCopy)
   {
-    if (v56)
+    if (passConcurrentBlockCopy)
     {
       v50 = objc_msgSend_allObjects(self->_arrayOfChunkRocks, v46, v47, v48, v49);
-      v51 = v57[2](v57, v50);
+      v51 = neededBlockCopy[2](neededBlockCopy, v50);
 
       if (v51)
       {
@@ -322,16 +322,16 @@
         v62[2] = sub_2213C1F24;
         v62[3] = &unk_27845FD10;
         v62[4] = self;
-        v63 = v56;
+        v63 = passConcurrentBlockCopy;
         dispatch_apply(v30, 0, v62);
       }
     }
   }
 
-  if (v55)
+  if (finalBlockCopy)
   {
     v52 = objc_msgSend_allObjects(self->_arrayOfChunkRocks, v46, v47, v48, v49);
-    v55[2](v55, v52);
+    finalBlockCopy[2](finalBlockCopy, v52);
   }
 
   if (__p)

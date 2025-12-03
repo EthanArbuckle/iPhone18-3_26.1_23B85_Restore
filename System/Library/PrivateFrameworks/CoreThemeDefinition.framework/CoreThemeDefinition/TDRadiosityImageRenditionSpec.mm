@@ -1,22 +1,22 @@
 @interface TDRadiosityImageRenditionSpec
-- (id)createCSIRepresentationWithCompression:(BOOL)a3 colorSpaceID:(unint64_t)a4 document:(id)a5;
+- (id)createCSIRepresentationWithCompression:(BOOL)compression colorSpaceID:(unint64_t)d document:(id)document;
 @end
 
 @implementation TDRadiosityImageRenditionSpec
 
-- (id)createCSIRepresentationWithCompression:(BOOL)a3 colorSpaceID:(unint64_t)a4 document:(id)a5
+- (id)createCSIRepresentationWithCompression:(BOOL)compression colorSpaceID:(unint64_t)d document:(id)document
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  compressionCopy = compression;
   if (![-[TDRadiosityImageRenditionSpec flattenedImage](self "flattenedImage")] && !objc_msgSend(objc_msgSend(-[TDRadiosityImageRenditionSpec flattenedImage](self, "flattenedImage"), "layerReferences"), "count"))
   {
     return 0;
   }
 
-  v30 = v7;
+  v30 = compressionCopy;
   v9 = [objc_alloc(MEMORY[0x277D02668]) initWithCanvasSize:0 sliceCount:0 layout:{-[TDRadiosityImageRenditionSpec width](self, "width"), -[TDRadiosityImageRenditionSpec height](self, "height")}];
   v10 = [objc_msgSend(-[TDRadiosityImageRenditionSpec keySpec](self "keySpec")];
-  [v9 setTargetPlatform:{objc_msgSend(a5, "targetPlatform")}];
+  [v9 setTargetPlatform:{objc_msgSend(document, "targetPlatform")}];
   if ([(TDRadiosityImageRenditionSpec *)self monochrome])
   {
     v11 = 1195456544;
@@ -36,7 +36,7 @@
 
   else
   {
-    v12 = v6;
+    v12 = dCopy;
   }
 
   [v9 setColorSpaceID:v12];
@@ -57,7 +57,7 @@
 
   [v9 setCompressionType:v13];
   v14 = [objc_alloc(MEMORY[0x277D02660]) initWithPixelWidth:-[TDRadiosityImageRenditionSpec width](self pixelHeight:{"width"), -[TDRadiosityImageRenditionSpec height](self, "height")}];
-  [v14 setTargetPlatform:{objc_msgSend(a5, "targetPlatform")}];
+  [v14 setTargetPlatform:{objc_msgSend(document, "targetPlatform")}];
   [v14 setPixelFormat:objc_msgSend(v9, "pixelFormat")];
   if ([(TDRadiosityImageRenditionSpec *)self opaque])
   {
@@ -70,13 +70,13 @@
   }
 
   [v14 setSourceAlphaInfo:v15];
-  v16 = [v14 bitmapContext];
+  bitmapContext = [v14 bitmapContext];
   [-[TDRadiosityImageRenditionSpec flattenedImage](self "flattenedImage")];
-  Data = CGBitmapContextGetData(v16);
-  BytesPerRow = CGBitmapContextGetBytesPerRow(v16);
-  BitsPerPixel = CGBitmapContextGetBitsPerPixel(v16);
-  Width = CGBitmapContextGetWidth(v16);
-  Height = CGBitmapContextGetHeight(v16);
+  Data = CGBitmapContextGetData(bitmapContext);
+  BytesPerRow = CGBitmapContextGetBytesPerRow(bitmapContext);
+  BitsPerPixel = CGBitmapContextGetBitsPerPixel(bitmapContext);
+  Width = CGBitmapContextGetWidth(bitmapContext);
+  Height = CGBitmapContextGetHeight(bitmapContext);
   v40[0] = 1;
   v22 = *MEMORY[0x277CBF3A8];
   v38 = 0u;
@@ -94,14 +94,14 @@
     v36 = 0;
     v31[0] = 8;
     v31[1] = BitsPerPixel;
-    ColorSpace = CGBitmapContextGetColorSpace(v16);
+    ColorSpace = CGBitmapContextGetColorSpace(bitmapContext);
     v33 = 8194;
     v35 = 0;
     v34 = 0;
     v24 = MEMORY[0x24C1B1FF0](v37, v31, 0, 0, 0, 0);
     v25 = objc_alloc(MEMORY[0x277D02660]);
     v26 = [v25 initWithPixelWidth:v39.width pixelHeight:v39.height];
-    [v26 setTargetPlatform:{objc_msgSend(a5, "targetPlatform")}];
+    [v26 setTargetPlatform:{objc_msgSend(document, "targetPlatform")}];
     [v26 setPixelFormat:objc_msgSend(v9, "pixelFormat")];
     if ([(TDRadiosityImageRenditionSpec *)self opaque])
     {
@@ -114,11 +114,11 @@
     }
 
     [v26 setSourceAlphaInfo:v27];
-    v28 = [v26 bitmapContext];
+    bitmapContext2 = [v26 bitmapContext];
     v41.size = v39;
     v41.origin.x = 0.0;
     v41.origin.y = 0.0;
-    CGContextDrawImage(v28, v41, v24);
+    CGContextDrawImage(bitmapContext2, v41, v24);
     [v9 addBitmap:v26];
     v23 = [v9 CSIRepresentationWithCompression:v30];
     CGImageRelease(v24);

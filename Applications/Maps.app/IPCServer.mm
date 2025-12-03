@@ -1,78 +1,78 @@
 @interface IPCServer
 + (id)sharedServer;
-- (BOOL)_isAnySceneForegroundAndNotOccludedForRole:(id)a3;
+- (BOOL)_isAnySceneForegroundAndNotOccludedForRole:(id)role;
 - (BOOL)_isInBackground;
 - (BOOL)_isMapsForegroundOnMainWindow;
 - (BOOL)_isMapsForegroundOnlyOnHybridIC;
-- (BOOL)_isSceneOccluded:(id)a3;
+- (BOOL)_isSceneOccluded:(id)occluded;
 - (BackgroundNavigationDelegate)backgroundNavigationDelegate;
 - (ExternalGuidanceSource)externalGuidanceSource;
 - (IPCServer)init;
 - (VirtualGarageSource)virtualGarageSource;
-- (id)_currentGuidanceStateMessageWithGuidanceCausedVibration:(BOOL)a3;
+- (id)_currentGuidanceStateMessageWithGuidanceCausedVibration:(BOOL)vibration;
 - (unint64_t)_maximumScenePollCount;
 - (void)_checkKeySceneInternal;
-- (void)_invalidatedTrafficIncidentAlert:(id)a3;
+- (void)_invalidatedTrafficIncidentAlert:(id)alert;
 - (void)_postWeakLocationNotification;
-- (void)_pushGuidanceStateIfChangedWithVibration:(BOOL)a3;
-- (void)_receivedTrafficIncidentAlert:(id)a3;
-- (void)_removeTrafficIncidentAlertFromTimer:(id)a3;
-- (void)_sceneDidActivate:(id)a3;
-- (void)_sceneDidEnterBackground:(id)a3;
+- (void)_pushGuidanceStateIfChangedWithVibration:(BOOL)vibration;
+- (void)_receivedTrafficIncidentAlert:(id)alert;
+- (void)_removeTrafficIncidentAlertFromTimer:(id)timer;
+- (void)_sceneDidActivate:(id)activate;
+- (void)_sceneDidEnterBackground:(id)background;
 - (void)_sceneWillConnect;
-- (void)_sceneWillDeactivate:(id)a3;
-- (void)_sceneWillEnterForeground:(id)a3;
-- (void)_sendWeakLocationNotificationIfNeededWithGuidanceState:(id)a3;
-- (void)_setTimeToManeuver:(double)a3 distanceToManeuver:(double)a4 forStep:(id)a5;
+- (void)_sceneWillDeactivate:(id)deactivate;
+- (void)_sceneWillEnterForeground:(id)foreground;
+- (void)_sendWeakLocationNotificationIfNeededWithGuidanceState:(id)state;
+- (void)_setTimeToManeuver:(double)maneuver distanceToManeuver:(double)toManeuver forStep:(id)step;
 - (void)_showNoGuidance;
-- (void)_startWaitingToHandleMessage:(id)a3;
+- (void)_startWaitingToHandleMessage:(id)message;
 - (void)_startWaitingToSendResponse;
 - (void)_timedOutWaitingToSendResponse;
-- (void)_updatedTrafficIncidentAlert:(id)a3;
-- (void)_vibrateForRerouteWithService:(id)a3;
-- (void)checkNotificationSettingsAndPerformBlock:(id)a3;
+- (void)_updatedTrafficIncidentAlert:(id)alert;
+- (void)_vibrateForRerouteWithService:(id)service;
+- (void)checkNotificationSettingsAndPerformBlock:(id)block;
 - (void)dealloc;
-- (void)dismissNavigationSafetyAlertWithReply:(id)a3;
-- (void)dismissTrafficIncidentAlert:(id)a3;
-- (void)endNavigationWithReply:(id)a3;
-- (void)getGuidanceState:(id)a3 reply:(id)a4;
-- (void)handleTrafficeReroute:(id)a3 reply:(id)a4;
-- (void)loadDirections:(id)a3 reply:(id)a4;
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationService:(id)a3 didChangeGuidanceState:(id)a4;
-- (void)navigationService:(id)a3 didChangeNavigationState:(int)a4;
-- (void)navigationService:(id)a3 didEnableGuidancePrompts:(BOOL)a4;
-- (void)navigationService:(id)a3 didFailWithError:(id)a4;
-- (void)navigationService:(id)a3 didProcessSpeechEvent:(id)a4;
-- (void)navigationService:(id)a3 didReceiveRouteSignalStrength:(unint64_t)a4;
-- (void)navigationService:(id)a3 didReceiveTransitAlert:(id)a4;
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)navigationService:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5;
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6;
-- (void)navigationService:(id)a3 didUpdateDistanceUntilSign:(double)a4 timeUntilSign:(double)a5 forStepIndex:(unint64_t)a6;
-- (void)navigationService:(id)a3 didUpdateProceedToRouteDistance:(double)a4 displayString:(id)a5 closestStepIndex:(unint64_t)a6;
-- (void)navigationService:(id)a3 didUpdateVehicleParkingInfo:(id)a4;
-- (void)navigationService:(id)a3 displayManeuverAlertForAnnouncementStage:(unint64_t)a4;
-- (void)navigationService:(id)a3 displayPrimaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8 maneuverStepIndex:(unint64_t)a9 isSynthetic:(BOOL)a10;
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4;
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4;
-- (void)navigationService:(id)a3 usePersistentDisplay:(BOOL)a4;
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 willProcessSpeechEvent:(id)a4;
-- (void)navigationServiceWillReroute:(id)a3;
-- (void)navigationStateDidChangeTo:(unint64_t)a3 reason:(id)a4 error:(id)a5;
-- (void)repeatLastGuidanceInstructionWithReply:(id)a3;
-- (void)repeatLastReroutePromptWithReply:(id)a3;
-- (void)setCompanionDaemonListenerEndpoint:(id)a3;
-- (void)setNavigationMuted:(id)a3;
-- (void)setNavigationVoiceVolume:(id)a3;
-- (void)setPushDaemonListenerEndpoint:(id)a3;
-- (void)setSiriPluginListenerEndpoint:(id)a3;
-- (void)setState:(unint64_t)a3 withReason:(unint64_t)a4;
-- (void)set_maneuverID:(id)a3;
+- (void)dismissNavigationSafetyAlertWithReply:(id)reply;
+- (void)dismissTrafficIncidentAlert:(id)alert;
+- (void)endNavigationWithReply:(id)reply;
+- (void)getGuidanceState:(id)state reply:(id)reply;
+- (void)handleTrafficeReroute:(id)reroute reply:(id)reply;
+- (void)loadDirections:(id)directions reply:(id)reply;
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationService:(id)service didChangeGuidanceState:(id)state;
+- (void)navigationService:(id)service didChangeNavigationState:(int)state;
+- (void)navigationService:(id)service didEnableGuidancePrompts:(BOOL)prompts;
+- (void)navigationService:(id)service didFailWithError:(id)error;
+- (void)navigationService:(id)service didProcessSpeechEvent:(id)event;
+- (void)navigationService:(id)service didReceiveRouteSignalStrength:(unint64_t)strength;
+- (void)navigationService:(id)service didReceiveTransitAlert:(id)alert;
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)navigationService:(id)service didUpdateArrivalInfo:(id)info previousState:(int64_t)state;
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info;
+- (void)navigationService:(id)service didUpdateDistanceUntilSign:(double)sign timeUntilSign:(double)untilSign forStepIndex:(unint64_t)index;
+- (void)navigationService:(id)service didUpdateProceedToRouteDistance:(double)distance displayString:(id)string closestStepIndex:(unint64_t)index;
+- (void)navigationService:(id)service didUpdateVehicleParkingInfo:(id)info;
+- (void)navigationService:(id)service displayManeuverAlertForAnnouncementStage:(unint64_t)stage;
+- (void)navigationService:(id)service displayPrimaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side maneuverStepIndex:(unint64_t)index isSynthetic:(BOOL)self0;
+- (void)navigationService:(id)service showLaneDirections:(id)directions;
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info;
+- (void)navigationService:(id)service usePersistentDisplay:(BOOL)display;
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service willProcessSpeechEvent:(id)event;
+- (void)navigationServiceWillReroute:(id)reroute;
+- (void)navigationStateDidChangeTo:(unint64_t)to reason:(id)reason error:(id)error;
+- (void)repeatLastGuidanceInstructionWithReply:(id)reply;
+- (void)repeatLastReroutePromptWithReply:(id)reply;
+- (void)setCompanionDaemonListenerEndpoint:(id)endpoint;
+- (void)setNavigationMuted:(id)muted;
+- (void)setNavigationVoiceVolume:(id)volume;
+- (void)setPushDaemonListenerEndpoint:(id)endpoint;
+- (void)setSiriPluginListenerEndpoint:(id)endpoint;
+- (void)setState:(unint64_t)state withReason:(unint64_t)reason;
+- (void)set_maneuverID:(id)d;
 - (void)showRecalculating;
-- (void)startPreparedNavigation:(id)a3 reply:(id)a4;
+- (void)startPreparedNavigation:(id)navigation reply:(id)reply;
 @end
 
 @implementation IPCServer
@@ -83,7 +83,7 @@
   block[1] = 3221225472;
   block[2] = sub_100005C68;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195CE38 != -1)
   {
     dispatch_once(&qword_10195CE38, block);
@@ -150,8 +150,8 @@
 - (BOOL)_isMapsForegroundOnlyOnHybridIC
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 connectedScenes];
-  v5 = sub_1000282CC(v4, &stru_101625710);
+  connectedScenes = [v3 connectedScenes];
+  v5 = sub_1000282CC(connectedScenes, &stru_101625710);
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -199,24 +199,24 @@
   return WeakRetained;
 }
 
-- (void)navigationService:(id)a3 didReceiveRouteSignalStrength:(unint64_t)a4
+- (void)navigationService:(id)service didReceiveRouteSignalStrength:(unint64_t)strength
 {
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = [v6 BOOLForKey:@"NavigationEnableWeakLocationNotification"];
 
   if (v7)
   {
-    self->_hasPendingWeakLocationAlert = a4 == 2;
+    self->_hasPendingWeakLocationAlert = strength == 2;
     [(IPCServer *)self _noteGuidanceStateChanged];
 
     [(IPCServer *)self _pushGuidanceState];
   }
 }
 
-- (void)navigationService:(id)a3 didReceiveTransitAlert:(id)a4
+- (void)navigationService:(id)service didReceiveTransitAlert:(id)alert
 {
-  v6 = a4;
-  objc_storeStrong(&self->_alightAlert, a4);
+  alertCopy = alert;
+  objc_storeStrong(&self->_alightAlert, alert);
   self->_hasPendingAlight = 1;
   v7 = sub_100E9E6E8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -231,7 +231,7 @@
   [(IPCServer *)self _pushGuidanceState];
 }
 
-- (void)navigationService:(id)a3 didProcessSpeechEvent:(id)a4
+- (void)navigationService:(id)service didProcessSpeechEvent:(id)event
 {
   self->_spokenEventProcessing = 0;
   currentSpokenEventID = self->_currentSpokenEventID;
@@ -242,113 +242,113 @@
   [(IPCServer *)self _pushGuidanceState];
 }
 
-- (void)navigationService:(id)a3 willProcessSpeechEvent:(id)a4
+- (void)navigationService:(id)service willProcessSpeechEvent:(id)event
 {
   self->_spokenEventProcessing = 1;
-  v5 = [a4 uniqueID];
+  uniqueID = [event uniqueID];
   currentSpokenEventID = self->_currentSpokenEventID;
-  self->_currentSpokenEventID = v5;
+  self->_currentSpokenEventID = uniqueID;
 
   [(IPCServer *)self _noteGuidanceStateChanged];
 
   [(IPCServer *)self _pushGuidanceState];
 }
 
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4
+- (void)navigationService:(id)service showLaneDirections:(id)directions
 {
-  v5 = a4;
-  v6 = [[NavSignLaneGuidanceInfo alloc] initWithGuidanceLaneInfo:v5];
+  directionsCopy = directions;
+  v6 = [[NavSignLaneGuidanceInfo alloc] initWithGuidanceLaneInfo:directionsCopy];
 
   [(IPCServer *)self setLaneGuidanceInfo:v6];
 }
 
-- (void)navigationService:(id)a3 usePersistentDisplay:(BOOL)a4
+- (void)navigationService:(id)service usePersistentDisplay:(BOOL)display
 {
-  v4 = a4;
+  displayCopy = display;
   v6 = sub_100E9E6E8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [NSNumber numberWithBool:v4];
+    v7 = [NSNumber numberWithBool:displayCopy];
     v8 = 138412290;
     v9 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "MAPS IPC Updated usePersistentDisplay : %@", &v8, 0xCu);
   }
 
-  self->_isPersistentDisplay = v4;
-  self->_isStickySignal = v4;
+  self->_isPersistentDisplay = displayCopy;
+  self->_isStickySignal = displayCopy;
   [(IPCServer *)self _noteGuidanceStateChanged];
   [(IPCServer *)self _pushGuidanceState];
 }
 
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info
 {
-  v5 = a4;
-  v6 = [v5 primarySign];
-  if (v6)
+  infoCopy = info;
+  primarySign = [infoCopy primarySign];
+  if (primarySign)
   {
 
     goto LABEL_4;
   }
 
-  v7 = [v5 secondarySign];
+  secondarySign = [infoCopy secondarySign];
 
-  if (v7)
+  if (secondarySign)
   {
 LABEL_4:
     v8 = [MKServerFormattedStringParameters alloc];
-    v9 = [v5 primarySign];
-    v10 = [v9 distanceDetailLevel];
-    v11 = [v5 primarySign];
-    v12 = [v11 variableOverrides];
-    v13 = [v8 initWithInstructionsDistanceDetailLevel:v10 variableOverrides:v12];
+    primarySign2 = [infoCopy primarySign];
+    distanceDetailLevel = [primarySign2 distanceDetailLevel];
+    primarySign3 = [infoCopy primarySign];
+    variableOverrides = [primarySign3 variableOverrides];
+    v13 = [v8 initWithInstructionsDistanceDetailLevel:distanceDetailLevel variableOverrides:variableOverrides];
 
-    v14 = [v5 primarySign];
-    v15 = [v14 titles];
+    primarySign4 = [infoCopy primarySign];
+    titles = [primarySign4 titles];
     v52[0] = _NSConcreteStackBlock;
     v52[1] = 3221225472;
     v52[2] = sub_100678B44;
     v52[3] = &unk_10165CBB8;
     v16 = v13;
     v53 = v16;
-    v17 = sub_100021DB0(v15, v52);
+    v17 = sub_100021DB0(titles, v52);
 
-    v18 = [v5 primarySign];
-    v19 = [v18 details];
+    primarySign5 = [infoCopy primarySign];
+    details = [primarySign5 details];
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_100678BAC;
     v50[3] = &unk_10165CBB8;
     v20 = v16;
     v51 = v20;
-    v21 = sub_100021DB0(v19, v50);
+    v21 = sub_100021DB0(details, v50);
 
     if ([(IPCServer *)self state]!= 4)
     {
       goto LABEL_13;
     }
 
-    v22 = [v5 primarySign];
-    v23 = [v22 junction];
-    v24 = [v23 maneuverType];
-    if (v24 == [(IPCServer *)self _maneuver])
+    primarySign6 = [infoCopy primarySign];
+    junction = [primarySign6 junction];
+    maneuverType = [junction maneuverType];
+    if (maneuverType == [(IPCServer *)self _maneuver])
     {
-      v25 = [(IPCServer *)self maneuverInstructions];
-      if ([v25 isEqualToArray:v17])
+      maneuverInstructions = [(IPCServer *)self maneuverInstructions];
+      if ([maneuverInstructions isEqualToArray:v17])
       {
-        v26 = [(IPCServer *)self secondaryManeuverInstructions];
-        if ([v26 isEqualToArray:v21])
+        secondaryManeuverInstructions = [(IPCServer *)self secondaryManeuverInstructions];
+        if ([secondaryManeuverInstructions isEqualToArray:v21])
         {
-          v49 = [(IPCServer *)self _maneuverID];
-          v47 = [v5 primarySign];
-          v27 = [v47 uniqueID];
-          v48 = [v49 isEqual:v27];
+          _maneuverID = [(IPCServer *)self _maneuverID];
+          primarySign7 = [infoCopy primarySign];
+          uniqueID = [primarySign7 uniqueID];
+          v48 = [_maneuverID isEqual:uniqueID];
 
           if (v48)
           {
 LABEL_17:
-            [v5 timeUntilPrimarySign_SIRI_USE_ONLY];
+            [infoCopy timeUntilPrimarySign_SIRI_USE_ONLY];
             [(IPCServer *)self set_timeToManeuver:?];
-            [v5 primaryDistance_SIRI_USE_ONLY];
+            [infoCopy primaryDistance_SIRI_USE_ONLY];
             [(IPCServer *)self set_distanceToManeuver:?];
             self->_waitingForDistanceAndTimeToManeuver = 0;
             [(IPCServer *)self _noteGuidanceStateChanged];
@@ -358,18 +358,18 @@ LABEL_17:
 
 LABEL_13:
           [(IPCServer *)self setState:4 withReason:4];
-          v28 = [v5 primarySign];
-          v29 = [v28 junction];
-          -[IPCServer set_maneuver:](self, "set_maneuver:", [v29 maneuverType]);
+          primarySign8 = [infoCopy primarySign];
+          junction2 = [primarySign8 junction];
+          -[IPCServer set_maneuver:](self, "set_maneuver:", [junction2 maneuverType]);
 
-          v30 = [v5 primarySign];
-          v31 = [v30 junction];
-          if (v31)
+          primarySign9 = [infoCopy primarySign];
+          junction3 = [primarySign9 junction];
+          if (junction3)
           {
             v32 = [MKJunction alloc];
-            v33 = [v5 primarySign];
-            v34 = [v33 junction];
-            v35 = [v32 initWithJunction:v34];
+            primarySign10 = [infoCopy primarySign];
+            junction4 = [primarySign10 junction];
+            v35 = [v32 initWithJunction:junction4];
             [(IPCServer *)self setJunction:v35];
           }
 
@@ -378,25 +378,25 @@ LABEL_13:
             [(IPCServer *)self setJunction:0];
           }
 
-          v36 = [v5 primarySign];
-          v37 = [v36 artworkOverride];
-          [(IPCServer *)self setArtworkOverride:v37];
+          primarySign11 = [infoCopy primarySign];
+          artworkOverride = [primarySign11 artworkOverride];
+          [(IPCServer *)self setArtworkOverride:artworkOverride];
 
-          v38 = [v5 primarySign];
-          v39 = [v38 uniqueID];
-          [(IPCServer *)self set_maneuverID:v39];
+          primarySign12 = [infoCopy primarySign];
+          uniqueID2 = [primarySign12 uniqueID];
+          [(IPCServer *)self set_maneuverID:uniqueID2];
 
-          v40 = [v5 primarySign];
-          v41 = [v40 junction];
-          -[IPCServer set_drivingSide:](self, "set_drivingSide:", [v41 drivingSide]);
+          primarySign13 = [infoCopy primarySign];
+          junction5 = [primarySign13 junction];
+          -[IPCServer set_drivingSide:](self, "set_drivingSide:", [junction5 drivingSide]);
 
           [(IPCServer *)self setManeuverInstructions:v17];
           [(IPCServer *)self setSecondaryManeuverInstructions:v21];
-          v42 = [v5 primarySign];
-          v43 = [v42 shieldID];
-          v44 = [v42 shieldStringID];
-          v45 = [v42 shieldText];
-          v46 = [NavSignShieldInfo shieldWithID:v43 stringID:v44 text:v45];
+          primarySign14 = [infoCopy primarySign];
+          shieldID = [primarySign14 shieldID];
+          shieldStringID = [primarySign14 shieldStringID];
+          shieldText = [primarySign14 shieldText];
+          v46 = [NavSignShieldInfo shieldWithID:shieldID stringID:shieldStringID text:shieldText];
           [(IPCServer *)self setShieldInfo:v46];
 
           goto LABEL_17;
@@ -410,26 +410,26 @@ LABEL_13:
 LABEL_18:
 }
 
-- (void)navigationService:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5
+- (void)navigationService:(id)service didUpdateArrivalInfo:(id)info previousState:(int64_t)state
 {
-  [(IPCServer *)self _noteGuidanceStateChanged:a3];
+  [(IPCServer *)self _noteGuidanceStateChanged:service];
 
   [(IPCServer *)self _pushGuidanceState];
 }
 
-- (void)navigationService:(id)a3 didChangeGuidanceState:(id)a4
+- (void)navigationService:(id)service didChangeGuidanceState:(id)state
 {
-  [(IPCServer *)self _noteGuidanceStateChanged:a3];
+  [(IPCServer *)self _noteGuidanceStateChanged:service];
 
   [(IPCServer *)self _pushGuidanceState];
 }
 
-- (void)navigationService:(id)a3 didChangeNavigationState:(int)a4
+- (void)navigationService:(id)service didChangeNavigationState:(int)state
 {
-  v6 = a3;
+  serviceCopy = service;
   if ([(IPCServer *)self _transportType]== 2)
   {
-    if (a4 == 5)
+    if (state == 5)
     {
       [(IPCServer *)self showRecalculating];
       goto LABEL_8;
@@ -437,11 +437,11 @@ LABEL_18:
 
     if ([(IPCServer *)self state]== 2)
     {
-      [(IPCServer *)self _vibrateForRerouteWithService:v6];
+      [(IPCServer *)self _vibrateForRerouteWithService:serviceCopy];
     }
   }
 
-  if (!a4)
+  if (!state)
   {
     [(BannerSource *)self->_bannerSource reset];
     self->_isRerouting = 0;
@@ -451,26 +451,26 @@ LABEL_18:
 LABEL_8:
 }
 
-- (void)navigationService:(id)a3 didFailWithError:(id)a4
+- (void)navigationService:(id)service didFailWithError:(id)error
 {
-  v5 = a3;
+  serviceCopy = service;
   [(IPCServer *)self _showNoGuidance];
   if ([(IPCServer *)self _transportType]== 2 && [(IPCServer *)self state]== 2)
   {
-    [(IPCServer *)self _vibrateForRerouteWithService:v5];
+    [(IPCServer *)self _vibrateForRerouteWithService:serviceCopy];
   }
 }
 
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason
 {
   self->_isRerouting = 0;
-  [(BannerSource *)self->_bannerSource resetExcludingJindo:a3];
+  [(BannerSource *)self->_bannerSource resetExcludingJindo:service];
   [(IPCServer *)self _noteGuidanceStateChanged];
 
   [(IPCServer *)self _pushGuidanceState];
 }
 
-- (void)navigationServiceWillReroute:(id)a3
+- (void)navigationServiceWillReroute:(id)reroute
 {
   self->_isRerouting = 1;
   [(IPCServer *)self _noteGuidanceStateChanged];
@@ -478,15 +478,15 @@ LABEL_8:
   [(IPCServer *)self _pushGuidanceState];
 }
 
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v7 = a3;
+  serviceCopy = service;
   if (MNNavigationServiceStateChangedToNavigating())
   {
-    -[IPCServer set_transportType:](self, "set_transportType:", [v7 desiredTransportType]);
+    -[IPCServer set_transportType:](self, "set_transportType:", [serviceCopy desiredTransportType]);
   }
 
-  else if (!a5)
+  else if (!toState)
   {
     if (self->_trafficAlertTimer)
     {
@@ -497,32 +497,32 @@ LABEL_8:
   }
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
-  v6 = *&a4;
-  v9 = a3;
-  v8 = [(IPCServer *)self _transportType];
-  if (v6 == 2 && !v8 && [(IPCServer *)self _isInBackground])
+  v6 = *&type;
+  serviceCopy = service;
+  _transportType = [(IPCServer *)self _transportType];
+  if (v6 == 2 && !_transportType && [(IPCServer *)self _isInBackground])
   {
-    [v9 vibrateForPrompt:5 completion:&stru_101625828];
+    [serviceCopy vibrateForPrompt:5 completion:&stru_101625828];
   }
 
   [(IPCServer *)self set_transportType:v6];
 }
 
-- (void)navigationService:(id)a3 didEnableGuidancePrompts:(BOOL)a4
+- (void)navigationService:(id)service didEnableGuidancePrompts:(BOOL)prompts
 {
-  if (!a4)
+  if (!prompts)
   {
     [(IPCServer *)self setState:0 withReason:5];
     self->_lastSeenManeuverAlert = 0;
   }
 }
 
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  waypointCopy = waypoint;
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -537,7 +537,7 @@ LABEL_8:
     v10[2] = sub_1006791B8;
     v10[3] = &unk_10165F438;
     v11 = v9;
-    [v7 vibrateForPrompt:4 completion:v10];
+    [serviceCopy vibrateForPrompt:4 completion:v10];
   }
 
   else
@@ -549,24 +549,24 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)navigationService:(id)a3 displayManeuverAlertForAnnouncementStage:(unint64_t)a4
+- (void)navigationService:(id)service displayManeuverAlertForAnnouncementStage:(unint64_t)stage
 {
-  v4 = a4;
-  v6 = a3;
+  stageCopy = stage;
+  serviceCopy = service;
   v7 = 3;
   v8 = 2;
-  if (v4 != 4)
+  if (stageCopy != 4)
   {
     v8 = 0;
   }
 
-  if (v4 != 5)
+  if (stageCopy != 5)
   {
     v7 = v8;
   }
 
-  v9 = v4 != 3 && v4 == 5;
-  if (v4 == 3)
+  v9 = stageCopy != 3 && stageCopy == 5;
+  if (stageCopy == 3)
   {
     v10 = 1;
   }
@@ -576,7 +576,7 @@ LABEL_8:
     v10 = v7;
   }
 
-  v11 = (v10 | *&v4 & 0x10000);
+  v11 = (v10 | *&stageCopy & 0x10000);
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -589,7 +589,7 @@ LABEL_8:
   {
     [(IPCServer *)self _maneuver];
     [(IPCServer *)self _drivingSide];
-    [v6 vibrateForPrompt:MNInstructionsShortPromptTypeForManeuver() completion:v12];
+    [serviceCopy vibrateForPrompt:MNInstructionsShortPromptTypeForManeuver() completion:v12];
   }
 
   else
@@ -601,20 +601,20 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)navigationService:(id)a3 displayPrimaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8 maneuverStepIndex:(unint64_t)a9 isSynthetic:(BOOL)a10
+- (void)navigationService:(id)service displayPrimaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side maneuverStepIndex:(unint64_t)index isSynthetic:(BOOL)self0
 {
-  v10 = *&a8;
-  v12 = *&a6;
-  v24 = a4;
-  v15 = a7;
-  v16 = sub_100021DB0(a5, &stru_101625808);
-  if (-[IPCServer state](self, "state") != 4 || (v17 = [v24 maneuverType], v17 != -[IPCServer _maneuver](self, "_maneuver")) || (-[IPCServer secondaryManeuverInstructions](self, "secondaryManeuverInstructions"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToArray:", v16), v18, (v19 & 1) == 0))
+  v10 = *&side;
+  v12 = *&type;
+  stepCopy = step;
+  textCopy = text;
+  v16 = sub_100021DB0(instructions, &stru_101625808);
+  if (-[IPCServer state](self, "state") != 4 || (v17 = [stepCopy maneuverType], v17 != -[IPCServer _maneuver](self, "_maneuver")) || (-[IPCServer secondaryManeuverInstructions](self, "secondaryManeuverInstructions"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToArray:", v16), v18, (v19 & 1) == 0))
   {
     [(IPCServer *)self setState:4 withReason:4];
-    -[IPCServer set_maneuver:](self, "set_maneuver:", [v24 maneuverType]);
-    if ([v24 hasJunctionType])
+    -[IPCServer set_maneuver:](self, "set_maneuver:", [stepCopy maneuverType]);
+    if ([stepCopy hasJunctionType])
     {
-      v20 = [[MKJunction alloc] initWithType:objc_msgSend(v24 maneuver:"junctionType") drivingSide:objc_msgSend(v24 elements:"maneuverType") count:{v10, objc_msgSend(v24, "junctionElements"), objc_msgSend(v24, "junctionElementsCount")}];
+      v20 = [[MKJunction alloc] initWithType:objc_msgSend(stepCopy maneuver:"junctionType") drivingSide:objc_msgSend(stepCopy elements:"maneuverType") count:{v10, objc_msgSend(stepCopy, "junctionElements"), objc_msgSend(stepCopy, "junctionElementsCount")}];
       [(IPCServer *)self setJunction:v20];
     }
 
@@ -623,8 +623,8 @@ LABEL_8:
       [(IPCServer *)self setJunction:0];
     }
 
-    v21 = [v24 artworkOverride];
-    [(IPCServer *)self setArtworkOverride:v21];
+    artworkOverride = [stepCopy artworkOverride];
+    [(IPCServer *)self setArtworkOverride:artworkOverride];
 
     [(IPCServer *)self set_drivingSide:v10];
     [(IPCServer *)self setManeuverInstructions:0];
@@ -635,7 +635,7 @@ LABEL_8:
     self->_lastSeenManeuverAlert = 0;
     if (v12)
     {
-      v23 = [NavSignShieldInfo shieldWithID:v12 stringID:0 text:v15];
+      v23 = [NavSignShieldInfo shieldWithID:v12 stringID:0 text:textCopy];
       [(IPCServer *)self setShieldInfo:v23];
     }
 
@@ -651,66 +651,66 @@ LABEL_8:
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateVehicleParkingInfo:(id)a4
+- (void)navigationService:(id)service didUpdateVehicleParkingInfo:(id)info
 {
-  [(IPCServer *)self _noteGuidanceStateChanged:a3];
+  [(IPCServer *)self _noteGuidanceStateChanged:service];
 
   [(IPCServer *)self _pushGuidanceState];
 }
 
-- (void)navigationService:(id)a3 didUpdateDistanceUntilSign:(double)a4 timeUntilSign:(double)a5 forStepIndex:(unint64_t)a6
+- (void)navigationService:(id)service didUpdateDistanceUntilSign:(double)sign timeUntilSign:(double)untilSign forStepIndex:(unint64_t)index
 {
-  v16 = a3;
-  v10 = [v16 route];
-  v11 = [v10 steps];
-  v12 = [v11 count];
+  serviceCopy = service;
+  route = [serviceCopy route];
+  steps = [route steps];
+  v12 = [steps count];
 
-  if (v12 > a6)
+  if (v12 > index)
   {
-    v13 = [v16 route];
-    v14 = [v13 steps];
-    v15 = [v14 objectAtIndexedSubscript:a6];
+    route2 = [serviceCopy route];
+    steps2 = [route2 steps];
+    v15 = [steps2 objectAtIndexedSubscript:index];
 
-    [(IPCServer *)self _setTimeToManeuver:v15 distanceToManeuver:a5 forStep:a4];
+    [(IPCServer *)self _setTimeToManeuver:v15 distanceToManeuver:untilSign forStep:sign];
     [(IPCServer *)self _noteGuidanceStateChanged];
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateProceedToRouteDistance:(double)a4 displayString:(id)a5 closestStepIndex:(unint64_t)a6
+- (void)navigationService:(id)service didUpdateProceedToRouteDistance:(double)distance displayString:(id)string closestStepIndex:(unint64_t)index
 {
-  v8 = [MNNavigationService sharedService:a3];
-  v9 = [v8 navigationState];
+  v8 = [MNNavigationService sharedService:service];
+  navigationState = [v8 navigationState];
 
-  if (v9 != 5)
+  if (navigationState != 5)
   {
     self->_lastSeenManeuverAlert = 0;
     [(IPCServer *)self setState:3 withReason:3];
-    [(IPCServer *)self set_distanceToRoute:a4];
+    [(IPCServer *)self set_distanceToRoute:distance];
     self->_waitingForDistanceAndTimeToManeuver = 0;
 
     [(IPCServer *)self _noteGuidanceStateChanged];
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info
 {
-  v7 = a3;
+  serviceCopy = service;
   v8 = [GuidanceETA alloc];
-  v16 = [v7 displayEtaInfo];
-  v9 = [v7 remainingDistanceInfo];
-  v10 = [v7 batteryChargeInfo];
-  v11 = [v7 upcomingStop];
-  v12 = [v11 timezone];
-  v13 = [v7 navigationTransportType];
+  displayEtaInfo = [serviceCopy displayEtaInfo];
+  remainingDistanceInfo = [serviceCopy remainingDistanceInfo];
+  batteryChargeInfo = [serviceCopy batteryChargeInfo];
+  upcomingStop = [serviceCopy upcomingStop];
+  timezone = [upcomingStop timezone];
+  navigationTransportType = [serviceCopy navigationTransportType];
 
-  v14 = [(GuidanceETA *)v8 initWithDisplayETA:v16 remainingDistance:v9 batteryChargeInfo:v10 destinationTimeZone:v12 transportType:v13];
+  v14 = [(GuidanceETA *)v8 initWithDisplayETA:displayEtaInfo remainingDistance:remainingDistanceInfo batteryChargeInfo:batteryChargeInfo destinationTimeZone:timezone transportType:navigationTransportType];
   latestETA = self->_latestETA;
   self->_latestETA = v14;
 }
 
-- (void)_vibrateForRerouteWithService:(id)a3
+- (void)_vibrateForRerouteWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   [(IPCServer *)self setState:3 withReason:2];
   self->_waitingForDistanceAndTimeToManeuver = 0;
   objc_initWeak(&location, self);
@@ -719,15 +719,15 @@ LABEL_8:
   v5[2] = sub_100679A90;
   v5[3] = &unk_1016619A8;
   objc_copyWeak(&v6, &location);
-  [v4 vibrateForPrompt:3 completion:v5];
+  [serviceCopy vibrateForPrompt:3 completion:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (void)navigationStateDidChangeTo:(unint64_t)a3 reason:(id)a4 error:(id)a5
+- (void)navigationStateDidChangeTo:(unint64_t)to reason:(id)reason error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  reasonCopy = reason;
+  errorCopy = error;
   if (!+[NSThread isMainThread])
   {
     block[0] = _NSConcreteStackBlock;
@@ -735,9 +735,9 @@ LABEL_8:
     block[2] = sub_100679FA8;
     block[3] = &unk_10165EB08;
     block[4] = self;
-    v30 = a3;
-    v28 = v8;
-    v29 = v9;
+    toCopy = to;
+    v28 = reasonCopy;
+    v29 = errorCopy;
     dispatch_async(&_dispatch_main_q, block);
 
     goto LABEL_33;
@@ -746,20 +746,20 @@ LABEL_8:
   v10 = sub_100E9E6E8();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    if (a3 >= 5)
+    if (to >= 5)
     {
-      v11 = [NSString stringWithFormat:@"?? - %lu", a3];
+      v11 = [NSString stringWithFormat:@"?? - %lu", to];
     }
 
     else
     {
-      v11 = off_101625898[a3];
+      v11 = off_101625898[to];
     }
 
     *buf = 138412546;
     v32 = v11;
     v33 = 2112;
-    v34 = v8;
+    v34 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "MAPS IPC Received a navigation state change to %@ for reason %@.", buf, 0x16u);
   }
 
@@ -767,23 +767,23 @@ LABEL_8:
   waitingToRespondToMessageTimer = self->_waitingToRespondToMessageTimer;
   self->_waitingToRespondToMessageTimer = 0;
 
-  if (a3)
+  if (to)
   {
     [(CLInUseAssertion *)self->_coreLocationInUseAssertion invalidate];
     coreLocationInUseAssertion = self->_coreLocationInUseAssertion;
     self->_coreLocationInUseAssertion = 0;
   }
 
-  v14 = [(IPCServer *)self loadDirectionsDelayedReply];
-  if (v14)
+  loadDirectionsDelayedReply = [(IPCServer *)self loadDirectionsDelayedReply];
+  if (loadDirectionsDelayedReply)
   {
   }
 
   else
   {
-    v15 = [(IPCServer *)self startNavigationDelayedReply];
+    startNavigationDelayedReply = [(IPCServer *)self startNavigationDelayedReply];
 
-    if (!v15)
+    if (!startNavigationDelayedReply)
     {
       v24 = sub_100E9E6E8();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -810,14 +810,14 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "MAPS IPC Sending reply so Siri/Watch can handle the change.", buf, 2u);
   }
 
-  v18 = [(IPCServer *)self loadDirectionsDelayedReply];
+  loadDirectionsDelayedReply2 = [(IPCServer *)self loadDirectionsDelayedReply];
 
-  if (v18)
+  if (loadDirectionsDelayedReply2)
   {
     v19 = objc_alloc_init(IPCLoadDirectionsReply);
-    [(IPCLoadDirectionsReply *)v19 setNavigationState:a3];
-    [(IPCLoadDirectionsReply *)v19 setError:v9];
-    if (a3)
+    [(IPCLoadDirectionsReply *)v19 setNavigationState:to];
+    [(IPCLoadDirectionsReply *)v19 setError:errorCopy];
+    if (to)
     {
       [(CLInUseAssertion *)self->_coreLocationInUseAssertion invalidate];
       v20 = self->_coreLocationInUseAssertion;
@@ -830,20 +830,20 @@ LABEL_8:
       self->_pendingSafetyWarning = 0;
     }
 
-    v23 = [(IPCServer *)self loadDirectionsDelayedReply];
-    (v23)[2](v23, v19);
+    loadDirectionsDelayedReply3 = [(IPCServer *)self loadDirectionsDelayedReply];
+    (loadDirectionsDelayedReply3)[2](loadDirectionsDelayedReply3, v19);
 
     [(IPCServer *)self setLoadDirectionsDelayedReply:0];
     goto LABEL_32;
   }
 
-  v21 = [(IPCServer *)self startNavigationDelayedReply];
+  startNavigationDelayedReply2 = [(IPCServer *)self startNavigationDelayedReply];
 
-  if (a3 && v21)
+  if (to && startNavigationDelayedReply2)
   {
     v22 = objc_alloc_init(IPCNavigationActionReply);
     v19 = v22;
-    if (a3 == 1)
+    if (to == 1)
     {
       [(IPCNavigationActionReply *)v22 setSuccess:1];
     }
@@ -854,8 +854,8 @@ LABEL_8:
       [(IPCLoadDirectionsReply *)v19 setNavigationActionError:3];
     }
 
-    v25 = [(IPCServer *)self startNavigationDelayedReply];
-    (v25)[2](v25, v19);
+    startNavigationDelayedReply3 = [(IPCServer *)self startNavigationDelayedReply];
+    (startNavigationDelayedReply3)[2](startNavigationDelayedReply3, v19);
 
     [(IPCServer *)self setStartNavigationDelayedReply:0];
     [(CLInUseAssertion *)self->_coreLocationInUseAssertion invalidate];
@@ -875,9 +875,9 @@ LABEL_33:
   v5 = v4;
   if (v3)
   {
-    v6 = v3;
+    firstObject = v3;
 LABEL_6:
-    v8 = v6;
+    v8 = firstObject;
     v9 = sub_100E9E6E8();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -895,8 +895,8 @@ LABEL_6:
     {
       if (v8)
       {
-        v11 = [(IPCServer *)self backgroundNavigationDelegate];
-        [v11 prepareBackgroundNavigationWithMessage:self->_pendingLoadDirectionsMessage];
+        backgroundNavigationDelegate = [(IPCServer *)self backgroundNavigationDelegate];
+        [backgroundNavigationDelegate prepareBackgroundNavigationWithMessage:self->_pendingLoadDirectionsMessage];
       }
 
       else
@@ -920,7 +920,7 @@ LABEL_6:
 
   if ([v4 count] || (keyScenePollCount = self->_keyScenePollCount, keyScenePollCount > -[IPCServer _maximumScenePollCount](self, "_maximumScenePollCount")))
   {
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     goto LABEL_6;
   }
 
@@ -936,10 +936,10 @@ LABEL_6:
 LABEL_15:
 }
 
-- (void)_startWaitingToHandleMessage:(id)a3
+- (void)_startWaitingToHandleMessage:(id)message
 {
-  v5 = a3;
-  objc_storeStrong(&self->_pendingLoadDirectionsMessage, a3);
+  messageCopy = message;
+  objc_storeStrong(&self->_pendingLoadDirectionsMessage, message);
   self->_keyScenePollCount = 0;
   [(NSTimer *)self->_waitingForKeyScenePollTimer invalidate];
   v6 = sub_100E9E6E8();
@@ -948,7 +948,7 @@ LABEL_15:
     v9 = 134218240;
     v10 = 0x3FB999999999999ALL;
     v11 = 2048;
-    v12 = [(IPCServer *)self _maximumScenePollCount];
+    _maximumScenePollCount = [(IPCServer *)self _maximumScenePollCount];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "MAPS IPC Start waiting for a scene to service message, will poll every %#.1lfs up to %lu times", &v9, 0x16u);
   }
 
@@ -970,9 +970,9 @@ LABEL_15:
   waitingToRespondToMessageTimer = self->_waitingToRespondToMessageTimer;
   self->_waitingToRespondToMessageTimer = 0;
 
-  v4 = [(IPCServer *)self loadDirectionsDelayedReply];
+  loadDirectionsDelayedReply = [(IPCServer *)self loadDirectionsDelayedReply];
 
-  if (v4)
+  if (loadDirectionsDelayedReply)
   {
     [(CLInUseAssertion *)self->_coreLocationInUseAssertion invalidate];
     coreLocationInUseAssertion = self->_coreLocationInUseAssertion;
@@ -983,17 +983,17 @@ LABEL_15:
     v6 = [NSError errorWithDomain:NSCocoaErrorDomain code:4610 userInfo:0];
     [(IPCLoadDirectionsReply *)v10 setError:v6];
 
-    v7 = [(IPCServer *)self loadDirectionsDelayedReply];
-    (v7)[2](v7, v10);
+    loadDirectionsDelayedReply2 = [(IPCServer *)self loadDirectionsDelayedReply];
+    (loadDirectionsDelayedReply2)[2](loadDirectionsDelayedReply2, v10);
 
     [(IPCServer *)self setLoadDirectionsDelayedReply:0];
   }
 
   else
   {
-    v8 = [(IPCServer *)self startNavigationDelayedReply];
+    startNavigationDelayedReply = [(IPCServer *)self startNavigationDelayedReply];
 
-    if (!v8)
+    if (!startNavigationDelayedReply)
     {
       return;
     }
@@ -1001,8 +1001,8 @@ LABEL_15:
     v10 = objc_alloc_init(IPCNavigationActionReply);
     [(IPCLoadDirectionsReply *)v10 setSuccess:0];
     [(IPCLoadDirectionsReply *)v10 setNavigationActionError:3];
-    v9 = [(IPCServer *)self startNavigationDelayedReply];
-    (v9)[2](v9, v10);
+    startNavigationDelayedReply2 = [(IPCServer *)self startNavigationDelayedReply];
+    (startNavigationDelayedReply2)[2](startNavigationDelayedReply2, v10);
 
     [(IPCServer *)self setStartNavigationDelayedReply:0];
   }
@@ -1016,12 +1016,12 @@ LABEL_15:
   self->_waitingToRespondToMessageTimer = v3;
 }
 
-- (id)_currentGuidanceStateMessageWithGuidanceCausedVibration:(BOOL)a3
+- (id)_currentGuidanceStateMessageWithGuidanceCausedVibration:(BOOL)vibration
 {
-  v3 = a3;
+  vibrationCopy = vibration;
   v5 = objc_alloc_init(IPCGuidanceStateReply);
   [(IPCGuidanceStateReply *)v5 setGuidanceState:[(IPCServer *)self state]];
-  [(IPCGuidanceStateReply *)v5 setAffectsDimming:[(IPCServer *)self _guidanceAffectsDimming]| v3];
+  [(IPCGuidanceStateReply *)v5 setAffectsDimming:[(IPCServer *)self _guidanceAffectsDimming]| vibrationCopy];
   [(IPCGuidanceStateReply *)v5 setTransportType:self->_transportType];
   transportType = self->_transportType;
   if (qword_10195CE48 != -1)
@@ -1029,7 +1029,7 @@ LABEL_15:
     dispatch_once(&qword_10195CE48, &stru_101625848);
   }
 
-  v7 = [qword_10195CE40 path];
+  path = [qword_10195CE40 path];
   AppBooleanValueWithContainer = _CFPreferencesGetAppBooleanValueWithContainer();
 
   v9 = @"Off Volume";
@@ -1058,7 +1058,7 @@ LABEL_15:
       v13 = @"VoiceVolumeForDrivingContext";
     }
 
-    v14 = [v10 path];
+    path2 = [v10 path];
     v15 = _CFPreferencesCopyAppValueWithContainer();
 
     if (v15)
@@ -1091,44 +1091,44 @@ LABEL_15:
 
   [(IPCGuidanceStateReply *)v5 setNavVolumeSetting:v9];
 
-  v18 = [(IPCServer *)self lastSceneDeactivationTime];
-  [(IPCGuidanceStateReply *)v5 setLastSceneDeactivationTime:v18];
+  lastSceneDeactivationTime = [(IPCServer *)self lastSceneDeactivationTime];
+  [(IPCGuidanceStateReply *)v5 setLastSceneDeactivationTime:lastSceneDeactivationTime];
 
   v19 = +[MNNavigationService sharedService];
-  v20 = [v19 currentResponse];
-  if ([v20 hasSessionState])
+  currentResponse = [v19 currentResponse];
+  if ([currentResponse hasSessionState])
   {
-    v21 = [v20 sessionState];
-    [(IPCGuidanceStateReply *)v5 setNavSessionData:v21];
+    sessionState = [currentResponse sessionState];
+    [(IPCGuidanceStateReply *)v5 setNavSessionData:sessionState];
   }
 
-  v106 = v20;
-  v22 = [v19 route];
-  -[IPCGuidanceStateReply setCurrentLegIndex:](v5, "setCurrentLegIndex:", [v22 legIndexForStepIndex:{objc_msgSend(v19, "stepIndex")}]);
-  v105 = v22;
-  v23 = [v22 legs];
-  -[IPCGuidanceStateReply setNumberOfLegs:](v5, "setNumberOfLegs:", [v23 count]);
+  v106 = currentResponse;
+  route = [v19 route];
+  -[IPCGuidanceStateReply setCurrentLegIndex:](v5, "setCurrentLegIndex:", [route legIndexForStepIndex:{objc_msgSend(v19, "stepIndex")}]);
+  v105 = route;
+  legs = [route legs];
+  -[IPCGuidanceStateReply setNumberOfLegs:](v5, "setNumberOfLegs:", [legs count]);
 
-  v24 = [v19 arrivalInfo];
-  [(IPCGuidanceStateReply *)v5 setArrivalInfo:v24];
+  arrivalInfo = [v19 arrivalInfo];
+  [(IPCGuidanceStateReply *)v5 setArrivalInfo:arrivalInfo];
 
   if (self->_hasPendingAlight)
   {
     v25 = objc_opt_new();
     v26 = objc_opt_new();
-    v27 = [v26 UUIDString];
-    [v25 setIdentifier:v27];
+    uUIDString = [v26 UUIDString];
+    [v25 setIdentifier:uUIDString];
 
     [v25 setStopIndex:{-[MNTransitAlert stopIndex](self->_alightAlert, "stopIndex")}];
     [v25 setStepIndex:{-[MNTransitAlert stepIndex](self->_alightAlert, "stepIndex")}];
-    v28 = [(MNTransitAlert *)self->_alightAlert artwork];
-    [v25 setArtwork:v28];
+    artwork = [(MNTransitAlert *)self->_alightAlert artwork];
+    [v25 setArtwork:artwork];
 
-    v29 = [(MNTransitAlert *)self->_alightAlert primaryString];
-    [v25 setTitle:v29];
+    primaryString = [(MNTransitAlert *)self->_alightAlert primaryString];
+    [v25 setTitle:primaryString];
 
-    v30 = [(MNTransitAlert *)self->_alightAlert secondaryString];
-    [v25 setDetail:v30];
+    secondaryString = [(MNTransitAlert *)self->_alightAlert secondaryString];
+    [v25 setDetail:secondaryString];
 
     [(IPCGuidanceStateReply *)v5 setAlightMessage:v25];
     [(IPCGuidanceStateReply *)v5 setAffectsDimming:1];
@@ -1139,48 +1139,48 @@ LABEL_15:
   {
     v31 = objc_alloc_init(IPCTrafficIncidentAlertMessage);
     [(IPCTrafficIncidentAlertMessage *)v31 setType:[(MNTrafficIncidentAlert *)self->_trafficIncidentAlert alertType]];
-    v32 = [(MNTrafficIncidentAlert *)self->_trafficIncidentAlert alertTitles];
-    v33 = [v32 firstObject];
-    [(IPCTrafficIncidentAlertMessage *)v31 setTitle:v33];
+    alertTitles = [(MNTrafficIncidentAlert *)self->_trafficIncidentAlert alertTitles];
+    firstObject = [alertTitles firstObject];
+    [(IPCTrafficIncidentAlertMessage *)v31 setTitle:firstObject];
 
-    v34 = [(MNTrafficIncidentAlert *)self->_trafficIncidentAlert alertDescriptions];
-    v35 = [v34 firstObject];
-    [(IPCTrafficIncidentAlertMessage *)v31 setSubtitle:v35];
+    alertDescriptions = [(MNTrafficIncidentAlert *)self->_trafficIncidentAlert alertDescriptions];
+    firstObject2 = [alertDescriptions firstObject];
+    [(IPCTrafficIncidentAlertMessage *)v31 setSubtitle:firstObject2];
 
     v36 = [NSUUID alloc];
-    v37 = [(MNTrafficIncidentAlert *)self->_trafficIncidentAlert alertID];
-    v38 = [v36 initWithUUIDBytes:{objc_msgSend(v37, "bytes")}];
-    v39 = [v38 UUIDString];
-    [(IPCTrafficIncidentAlertMessage *)v31 setIdentifier:v39];
+    alertID = [(MNTrafficIncidentAlert *)self->_trafficIncidentAlert alertID];
+    v38 = [v36 initWithUUIDBytes:{objc_msgSend(alertID, "bytes")}];
+    uUIDString2 = [v38 UUIDString];
+    [(IPCTrafficIncidentAlertMessage *)v31 setIdentifier:uUIDString2];
 
-    v40 = [(MNTrafficIncidentAlert *)self->_trafficIncidentAlert incident];
-    [(IPCTrafficIncidentAlertMessage *)v31 setIncident:v40];
+    incident = [(MNTrafficIncidentAlert *)self->_trafficIncidentAlert incident];
+    [(IPCTrafficIncidentAlertMessage *)v31 setIncident:incident];
 
     [(IPCGuidanceStateReply *)v5 setTrafficIncidentAlert:v31];
   }
 
   [(IPCGuidanceStateReply *)v5 setIsRerouting:self->_isRerouting];
-  v41 = [(IPCServer *)self state];
-  if (v41 > 2)
+  state = [(IPCServer *)self state];
+  if (state > 2)
   {
-    if (v41 == 4)
+    if (state == 4)
     {
       [(IPCGuidanceStateReply *)v5 setManeuver:[(IPCServer *)self _maneuver]];
       [(IPCGuidanceStateReply *)v5 setDrivingSide:[(IPCServer *)self _drivingSide]];
-      v58 = [(IPCServer *)self junction];
-      [(IPCGuidanceStateReply *)v5 setJunction:v58];
+      junction = [(IPCServer *)self junction];
+      [(IPCGuidanceStateReply *)v5 setJunction:junction];
 
-      v59 = [(IPCServer *)self artworkOverride];
-      [(IPCGuidanceStateReply *)v5 setArtworkOverride:v59];
+      artworkOverride = [(IPCServer *)self artworkOverride];
+      [(IPCGuidanceStateReply *)v5 setArtworkOverride:artworkOverride];
 
-      v60 = [(IPCServer *)self maneuverInstructions];
-      [(IPCGuidanceStateReply *)v5 setPrimaryInstructions:v60];
+      maneuverInstructions = [(IPCServer *)self maneuverInstructions];
+      [(IPCGuidanceStateReply *)v5 setPrimaryInstructions:maneuverInstructions];
 
-      v61 = [(IPCServer *)self secondaryManeuverInstructions];
-      [(IPCGuidanceStateReply *)v5 setSecondaryInstructions:v61];
+      secondaryManeuverInstructions = [(IPCServer *)self secondaryManeuverInstructions];
+      [(IPCGuidanceStateReply *)v5 setSecondaryInstructions:secondaryManeuverInstructions];
 
-      v62 = [(IPCServer *)self _maneuverID];
-      [(IPCGuidanceStateReply *)v5 setManeuverID:v62];
+      _maneuverID = [(IPCServer *)self _maneuverID];
+      [(IPCGuidanceStateReply *)v5 setManeuverID:_maneuverID];
 
       [(IPCServer *)self _distanceToManeuver];
       v63 = [NSNumber numberWithDouble:?];
@@ -1194,39 +1194,39 @@ LABEL_15:
       [(IPCGuidanceStateReply *)v5 setIsAlerting:v65];
       [(IPCGuidanceStateReply *)v5 setCurrentSpokenEventID:self->_currentSpokenEventID];
       *&self->_isStickySignal = 0;
-      v66 = [(IPCServer *)self _latestETA];
-      [v66 remainingDistance];
+      _latestETA = [(IPCServer *)self _latestETA];
+      [_latestETA remainingDistance];
       v67 = [NSNumber numberWithDouble:?];
       [(IPCGuidanceStateReply *)v5 setRemainingDistanceOnRoute:v67];
 
-      v68 = [(IPCServer *)self _latestETA];
-      v69 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v68 remainingMinutes]);
+      _latestETA2 = [(IPCServer *)self _latestETA];
+      v69 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [_latestETA2 remainingMinutes]);
       [(IPCGuidanceStateReply *)v5 setRemainingMinutesOnRoute:v69];
 
-      v70 = [(IPCServer *)self shieldInfo];
-      v71 = [IPCShieldInfoMessage ipcMessageForShieldInfo:v70];
+      shieldInfo = [(IPCServer *)self shieldInfo];
+      v71 = [IPCShieldInfoMessage ipcMessageForShieldInfo:shieldInfo];
       [(IPCGuidanceStateReply *)v5 setShieldInfo:v71];
 
-      v72 = [(IPCServer *)self laneGuidanceInfo];
-      v73 = [IPCLaneGuidanceInfoReply ipcReplyForLaneGuidanceInfo:v72];
+      laneGuidanceInfo = [(IPCServer *)self laneGuidanceInfo];
+      v73 = [IPCLaneGuidanceInfoReply ipcReplyForLaneGuidanceInfo:laneGuidanceInfo];
       [(IPCGuidanceStateReply *)v5 setLaneGuidanceInfo:v73];
 
       goto LABEL_41;
     }
 
-    if (v41 == 3)
+    if (state == 3)
     {
       v42 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
       [(IPCServer *)self _distanceToRoute];
       v43 = [NSNumber numberWithDouble:?];
       [(IPCGuidanceStateReply *)v5 setDistance:v43];
 
-      v44 = [(IPCServer *)self distanceText];
+      distanceText = [(IPCServer *)self distanceText];
 
-      if (v44)
+      if (distanceText)
       {
-        v45 = [(IPCServer *)self distanceText];
-        v134 = v45;
+        distanceText2 = [(IPCServer *)self distanceText];
+        v134 = distanceText2;
         v46 = [NSArray arrayWithObjects:&v134 count:1];
 
         [(IPCGuidanceStateReply *)v5 setPrimaryInstructions:v46];
@@ -1238,35 +1238,35 @@ LABEL_15:
 
   else
   {
-    if (v41 == 1)
+    if (state == 1)
     {
       [(IPCGuidanceStateReply *)v5 setManeuver:[(IPCServer *)self _maneuver]];
-      v53 = [(IPCServer *)self _maneuverID];
-      [(IPCGuidanceStateReply *)v5 setManeuverID:v53];
+      _maneuverID2 = [(IPCServer *)self _maneuverID];
+      [(IPCGuidanceStateReply *)v5 setManeuverID:_maneuverID2];
 
       v54 = +[NSBundle mainBundle];
       v55 = [v54 localizedStringForKey:@"Arrived [Driving/Walking Navigation]" value:@"localized string not found" table:0];
-      v56 = [v55 mkServerFormattedString];
-      v133 = v56;
+      mkServerFormattedString = [v55 mkServerFormattedString];
+      v133 = mkServerFormattedString;
       v57 = [NSArray arrayWithObjects:&v133 count:1];
       [(IPCGuidanceStateReply *)v5 setPrimaryInstructions:v57];
 
       goto LABEL_41;
     }
 
-    if (v41 == 2)
+    if (state == 2)
     {
       v42 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
 LABEL_35:
       v47 = v42[445];
-      v48 = [(IPCServer *)self _latestETA];
-      [v48 remainingDistance];
+      _latestETA3 = [(IPCServer *)self _latestETA];
+      [_latestETA3 remainingDistance];
       v49 = [v47 numberWithDouble:?];
       [(IPCGuidanceStateReply *)v5 setRemainingDistanceOnRoute:v49];
 
       v50 = v42[445];
-      v51 = [(IPCServer *)self _latestETA];
-      v52 = [v50 numberWithUnsignedInteger:{objc_msgSend(v51, "remainingMinutes")}];
+      _latestETA4 = [(IPCServer *)self _latestETA];
+      v52 = [v50 numberWithUnsignedInteger:{objc_msgSend(_latestETA4, "remainingMinutes")}];
       [(IPCGuidanceStateReply *)v5 setRemainingMinutesOnRoute:v52];
 
       [(IPCGuidanceStateReply *)v5 setIsAlerting:1];
@@ -1274,14 +1274,14 @@ LABEL_35:
   }
 
 LABEL_41:
-  v74 = [(IPCServer *)self notificationSettings];
-  v75 = [v74 authorizationStatus];
-  v76 = [v74 alertSetting];
-  v77 = [v74 carPlaySetting];
-  v101 = [(IPCServer *)self state];
-  v78 = [(IPCServer *)self state];
-  v79 = [v19 isInNavigatingState];
-  v104 = v79;
+  notificationSettings = [(IPCServer *)self notificationSettings];
+  authorizationStatus = [notificationSettings authorizationStatus];
+  alertSetting = [notificationSettings alertSetting];
+  carPlaySetting = [notificationSettings carPlaySetting];
+  state2 = [(IPCServer *)self state];
+  state3 = [(IPCServer *)self state];
+  isInNavigatingState = [v19 isInNavigatingState];
+  v104 = isInNavigatingState;
   if ([(IPCServer *)self etaOnlyNavMode])
   {
     v80 = 0;
@@ -1289,13 +1289,13 @@ LABEL_41:
 
   else
   {
-    v80 = ![(IPCServer *)self routePreviewGuidanceNavMode]& v79;
+    v80 = ![(IPCServer *)self routePreviewGuidanceNavMode]& isInNavigatingState;
   }
 
   v107 = v19;
-  v100 = v78;
+  v100 = state3;
   v99 = v80;
-  if (v78 || [(IPCServer *)self _transportType]== 1)
+  if (state3 || [(IPCServer *)self _transportType]== 1)
   {
     v81 = v80;
   }
@@ -1305,16 +1305,16 @@ LABEL_41:
     v81 = 0;
   }
 
-  v102 = v76;
-  v103 = v75;
-  v82 = v76 != 1 && v75 == 2;
+  v102 = alertSetting;
+  v103 = authorizationStatus;
+  v82 = alertSetting != 1 && authorizationStatus == 2;
   v83 = v82 & v81;
-  v84 = v77 != 1 && v75 == 2;
-  v85 = [(IPCGuidanceStateReply *)v5 alightMessage];
+  trafficIncidentAlert = carPlaySetting != 1 && authorizationStatus == 2;
+  alightMessage = [(IPCGuidanceStateReply *)v5 alightMessage];
 
-  v86 = [(IPCServer *)self _isMapsForegroundOnMainWindow];
-  v108 = [(IPCServer *)self _isMapsForegroundOnCarPlay];
-  if (v83 == 1 && (v85 != 0) | (v86 ^ 1) & 1)
+  _isMapsForegroundOnMainWindow = [(IPCServer *)self _isMapsForegroundOnMainWindow];
+  _isMapsForegroundOnCarPlay = [(IPCServer *)self _isMapsForegroundOnCarPlay];
+  if (v83 == 1 && (alightMessage != 0) | (_isMapsForegroundOnMainWindow ^ 1) & 1)
   {
     v87 = +[CarDisplayController sharedInstance];
     -[IPCGuidanceStateReply setShowInMainScreen:](v5, "setShowInMainScreen:", [v87 isCurrentlyConnectedToCarAppScene] ^ 1);
@@ -1325,33 +1325,33 @@ LABEL_41:
     [(IPCGuidanceStateReply *)v5 setShowInMainScreen:0];
   }
 
-  v88 = v84 & v81;
+  v88 = trafficIncidentAlert & v81;
   if (SBUIIsSystemApertureEnabled())
   {
     [(IPCGuidanceStateReply *)v5 setShowInMainScreen:v81];
   }
 
-  [(IPCGuidanceStateReply *)v5 setIsMapsForegroundOnMainScreen:v86 & 1];
-  v89 = [(IPCServer *)self _isMapsForegroundOnlyOnHybridIC];
+  [(IPCGuidanceStateReply *)v5 setIsMapsForegroundOnMainScreen:_isMapsForegroundOnMainWindow & 1];
+  _isMapsForegroundOnlyOnHybridIC = [(IPCServer *)self _isMapsForegroundOnlyOnHybridIC];
   if (!v88)
   {
     goto LABEL_65;
   }
 
-  if (!v108)
+  if (!_isMapsForegroundOnCarPlay)
   {
     goto LABEL_63;
   }
 
-  if (!v89)
+  if (!_isMapsForegroundOnlyOnHybridIC)
   {
 LABEL_65:
     [(IPCGuidanceStateReply *)v5 setShowInCarPlay:0];
     goto LABEL_69;
   }
 
-  v84 = [(IPCGuidanceStateReply *)v5 trafficIncidentAlert];
-  if (!v84)
+  trafficIncidentAlert = [(IPCGuidanceStateReply *)v5 trafficIncidentAlert];
+  if (!trafficIncidentAlert)
   {
     [(IPCGuidanceStateReply *)v5 setShowInCarPlay:0];
     goto LABEL_68;
@@ -1359,16 +1359,16 @@ LABEL_65:
 
 LABEL_63:
   v90 = +[MapsCarPlayExternalDeviceMonitor sharedInstance];
-  v91 = [v90 carPlayExternalDevice];
-  [(IPCGuidanceStateReply *)v5 setShowInCarPlay:v91 != 0];
+  carPlayExternalDevice = [v90 carPlayExternalDevice];
+  [(IPCGuidanceStateReply *)v5 setShowInCarPlay:carPlayExternalDevice != 0];
 
-  if (v108)
+  if (_isMapsForegroundOnCarPlay)
   {
 LABEL_68:
   }
 
 LABEL_69:
-  v92 = [v74 alertStyle];
+  alertStyle = [notificationSettings alertStyle];
   isPersistentDisplay = self->_isPersistentDisplay;
   v94 = +[NSUserDefaults standardUserDefaults];
   v95 = [v94 BOOLForKey:@"__internal_MapsDebugForceStickyBanners"];
@@ -1380,7 +1380,7 @@ LABEL_69:
 
   else
   {
-    v96 = (v92 == 2) & isPersistentDisplay;
+    v96 = (alertStyle == 2) & isPersistentDisplay;
   }
 
   [(IPCGuidanceStateReply *)v5 setIsSticky:v96];
@@ -1399,30 +1399,30 @@ LABEL_69:
     v117 = 1024;
     v118 = v100 != 0;
     v119 = 1024;
-    v120 = v101 == 4;
+    v120 = state2 == 4;
     v121 = 1024;
     v122 = v99;
     v123 = 1024;
-    v124 = v92 == 2;
+    v124 = alertStyle == 2;
     v125 = 1024;
     v126 = isPersistentDisplay;
     v127 = 1024;
-    v128 = v86 & 1;
+    v128 = _isMapsForegroundOnMainWindow & 1;
     v129 = 1024;
-    v130 = v108;
+    v130 = _isMapsForegroundOnCarPlay;
     v131 = 1024;
-    v132 = v85 != 0;
+    v132 = alightMessage != 0;
     _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_INFO, "MAPS IPC allowBannersOnPhone: %d, allowBannersOnCarplay: %d due to notificationsAllowed: %d, bannerNotificationsAllowed: %d, hasIPCState:%d, isDriving: %d, isFullGuidanceNavigation: %d; stickyBannersAllowed: %d, bannerShouldStick: %d isMapsForegroundOnMainWindow: %d isMapsForegroundOnCarPlay: %d hasAlightMessage: %d", buf, 0x4Au);
   }
 
   return v5;
 }
 
-- (void)set_maneuverID:(id)a3
+- (void)set_maneuverID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->__maneuverID;
-  v6 = v4;
+  v6 = dCopy;
   if (v6 | v5)
   {
     v10 = v6;
@@ -1479,16 +1479,16 @@ LABEL_69:
   [v2 addNotificationRequest:v12 withCompletionHandler:v13];
 }
 
-- (void)_sendWeakLocationNotificationIfNeededWithGuidanceState:(id)a3
+- (void)_sendWeakLocationNotificationIfNeededWithGuidanceState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
+  stateCopy = state;
+  v5 = stateCopy;
   if (!self->_shownWeakLocationAlert && self->_hasPendingWeakLocationAlert)
   {
-    v7 = v4;
-    v6 = [v4 showInMainScreen];
+    v7 = stateCopy;
+    showInMainScreen = [stateCopy showInMainScreen];
     v5 = v7;
-    if (v6)
+    if (showInMainScreen)
     {
       self->_shownWeakLocationAlert = 1;
       [(IPCServer *)self _postWeakLocationNotification];
@@ -1497,7 +1497,7 @@ LABEL_69:
   }
 }
 
-- (void)_pushGuidanceStateIfChangedWithVibration:(BOOL)a3
+- (void)_pushGuidanceStateIfChangedWithVibration:(BOOL)vibration
 {
   if (!self->_waitingForDistanceAndTimeToManeuver)
   {
@@ -1509,21 +1509,21 @@ LABEL_69:
       v5[2] = sub_10067B724;
       v5[3] = &unk_101661AE0;
       v5[4] = self;
-      v6 = a3;
+      vibrationCopy = vibration;
       [(IPCServer *)self checkNotificationSettingsAndPerformBlock:v5];
     }
   }
 }
 
-- (void)_sceneDidActivate:(id)a3
+- (void)_sceneDidActivate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   v5 = sub_100E9E6E8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 object];
+    object = [activateCopy object];
     v7 = 138412290;
-    v8 = v6;
+    v8 = object;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "MAPS IPC _sceneDidActivate: %@", &v7, 0xCu);
   }
 
@@ -1531,16 +1531,16 @@ LABEL_69:
   [(IPCServer *)self _pushGuidanceState];
 }
 
-- (void)_setTimeToManeuver:(double)a3 distanceToManeuver:(double)a4 forStep:(id)a5
+- (void)_setTimeToManeuver:(double)maneuver distanceToManeuver:(double)toManeuver forStep:(id)step
 {
-  v8 = a5;
-  [(IPCServer *)self set_timeToManeuver:a3];
-  [(IPCServer *)self set_distanceToManeuver:a4];
-  v11 = [v8 contentsForContext:1];
+  stepCopy = step;
+  [(IPCServer *)self set_timeToManeuver:maneuver];
+  [(IPCServer *)self set_distanceToManeuver:toManeuver];
+  v11 = [stepCopy contentsForContext:1];
 
-  v9 = [v11 stringForDistance:a4];
-  v10 = [v9 mkServerFormattedString];
-  [(IPCServer *)self setDistanceText:v10];
+  v9 = [v11 stringForDistance:toManeuver];
+  mkServerFormattedString = [v9 mkServerFormattedString];
+  [(IPCServer *)self setDistanceText:mkServerFormattedString];
 
   self->_waitingForDistanceAndTimeToManeuver = 0;
 }
@@ -1567,22 +1567,22 @@ LABEL_69:
   [(IPCServer *)self _pushGuidanceState];
 }
 
-- (void)dismissTrafficIncidentAlert:(id)a3
+- (void)dismissTrafficIncidentAlert:(id)alert
 {
-  if (self->_trafficIncidentAlert == a3)
+  if (self->_trafficIncidentAlert == alert)
   {
     [(IPCServer *)self _removeTrafficIncidentAlertFromTimer:self->_trafficAlertTimer];
   }
 }
 
-- (void)_removeTrafficIncidentAlertFromTimer:(id)a3
+- (void)_removeTrafficIncidentAlertFromTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   trafficIncidentAlert = self->_trafficIncidentAlert;
-  v10 = v4;
-  v6 = [(NSTimer *)v4 userInfo];
+  v10 = timerCopy;
+  userInfo = [(NSTimer *)timerCopy userInfo];
 
-  if (trafficIncidentAlert == v6)
+  if (trafficIncidentAlert == userInfo)
   {
     v7 = self->_trafficIncidentAlert;
     self->_trafficIncidentAlert = 0;
@@ -1600,15 +1600,15 @@ LABEL_69:
   [(NSTimer *)v9 invalidate];
 }
 
-- (void)_invalidatedTrafficIncidentAlert:(id)a3
+- (void)_invalidatedTrafficIncidentAlert:(id)alert
 {
-  if (self->_trafficIncidentAlert == a3)
+  if (self->_trafficIncidentAlert == alert)
   {
     trafficAlertTimer = self->_trafficAlertTimer;
-    v5 = a3;
-    v6 = [(NSTimer *)trafficAlertTimer userInfo];
+    alertCopy = alert;
+    userInfo = [(NSTimer *)trafficAlertTimer userInfo];
 
-    if (v6 == v5)
+    if (userInfo == alertCopy)
     {
       v7 = self->_trafficAlertTimer;
 
@@ -1617,43 +1617,43 @@ LABEL_69:
   }
 }
 
-- (void)_updatedTrafficIncidentAlert:(id)a3
+- (void)_updatedTrafficIncidentAlert:(id)alert
 {
   [(IPCServer *)self _noteGuidanceStateChanged];
 
   [(IPCServer *)self _pushGuidanceState];
 }
 
-- (void)_receivedTrafficIncidentAlert:(id)a3
+- (void)_receivedTrafficIncidentAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   if (self->_trafficAlertTimer)
   {
     [(IPCServer *)self _removeTrafficIncidentAlertFromTimer:?];
   }
 
-  [v4 alertDisplayDuration];
+  [alertCopy alertDisplayDuration];
   if (v5 > 0.0)
   {
-    v6 = [NSTimer scheduledTimerWithTimeInterval:self target:"_removeTrafficIncidentAlertFromTimer:" selector:v4 userInfo:0 repeats:?];
+    v6 = [NSTimer scheduledTimerWithTimeInterval:self target:"_removeTrafficIncidentAlertFromTimer:" selector:alertCopy userInfo:0 repeats:?];
     trafficAlertTimer = self->_trafficAlertTimer;
     self->_trafficAlertTimer = v6;
   }
 
   trafficIncidentAlert = self->_trafficIncidentAlert;
-  self->_trafficIncidentAlert = v4;
+  self->_trafficIncidentAlert = alertCopy;
 }
 
-- (void)setNavigationVoiceVolume:(id)a3
+- (void)setNavigationVoiceVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v5 = sub_100E9E6E8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v10 = "[IPCServer setNavigationVoiceVolume:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = volumeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "MAPS IPC %s %@", buf, 0x16u);
   }
 
@@ -1662,21 +1662,21 @@ LABEL_69:
   v7[2] = sub_10067BD38;
   v7[3] = &unk_101661A90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = volumeCopy;
+  v6 = volumeCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)setNavigationMuted:(id)a3
+- (void)setNavigationMuted:(id)muted
 {
-  v4 = a3;
+  mutedCopy = muted;
   v5 = sub_100E9E6E8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v10 = "[IPCServer setNavigationMuted:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = mutedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "MAPS IPC %s %@", buf, 0x16u);
   }
 
@@ -1685,22 +1685,22 @@ LABEL_69:
   v7[2] = sub_10067C0F4;
   v7[3] = &unk_101661A90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = mutedCopy;
+  v6 = mutedCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)startPreparedNavigation:(id)a3 reply:(id)a4
+- (void)startPreparedNavigation:(id)navigation reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  navigationCopy = navigation;
+  replyCopy = reply;
   v8 = sub_100E9E6E8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v15 = "[IPCServer startPreparedNavigation:reply:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = navigationCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "MAPS IPC %s %@", buf, 0x16u);
   }
 
@@ -1708,25 +1708,25 @@ LABEL_69:
   block[1] = 3221225472;
   block[2] = sub_10067C2AC;
   block[3] = &unk_1016605F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = navigationCopy;
+  v13 = replyCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = navigationCopy;
+  v10 = replyCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)loadDirections:(id)a3 reply:(id)a4
+- (void)loadDirections:(id)directions reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  directionsCopy = directions;
+  replyCopy = reply;
   v8 = sub_100E9E6E8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v15 = "[IPCServer loadDirections:reply:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = directionsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "MAPS IPC %s %@", buf, 0x16u);
   }
 
@@ -1734,17 +1734,17 @@ LABEL_69:
   block[1] = 3221225472;
   block[2] = sub_10067C46C;
   block[3] = &unk_1016605F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = directionsCopy;
+  v13 = replyCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = directionsCopy;
+  v10 = replyCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)repeatLastGuidanceInstructionWithReply:(id)a3
+- (void)repeatLastGuidanceInstructionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = sub_100E9E6E8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1758,14 +1758,14 @@ LABEL_69:
   v7[2] = sub_10067C70C;
   v7[3] = &unk_101661090;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)repeatLastReroutePromptWithReply:(id)a3
+- (void)repeatLastReroutePromptWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = sub_100E9E6E8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1779,18 +1779,18 @@ LABEL_69:
   v7[2] = sub_10067C9D0;
   v7[3] = &unk_101661090;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)checkNotificationSettingsAndPerformBlock:(id)a3
+- (void)checkNotificationSettingsAndPerformBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   if (self->_hasCheckedNotificationSettingsForManeuver)
   {
-    (*(v4 + 2))(v4);
+    (*(blockCopy + 2))(blockCopy);
   }
 
   else
@@ -1806,17 +1806,17 @@ LABEL_69:
   }
 }
 
-- (void)getGuidanceState:(id)a3 reply:(id)a4
+- (void)getGuidanceState:(id)state reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  replyCopy = reply;
   v8 = sub_100E9E6E8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v15 = "[IPCServer getGuidanceState:reply:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = stateCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "MAPS IPC %s %@", buf, 0x16u);
   }
 
@@ -1825,16 +1825,16 @@ LABEL_69:
   v11[2] = sub_10067CE7C;
   v11[3] = &unk_1016605F8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stateCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = stateCopy;
   [(IPCServer *)self checkNotificationSettingsAndPerformBlock:v11];
 }
 
-- (void)endNavigationWithReply:(id)a3
+- (void)endNavigationWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = sub_100E9E6E8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1848,14 +1848,14 @@ LABEL_69:
   v7[2] = sub_10067D304;
   v7[3] = &unk_101661090;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)dismissNavigationSafetyAlertWithReply:(id)a3
+- (void)dismissNavigationSafetyAlertWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = sub_100E9E6E8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -1868,22 +1868,22 @@ LABEL_69:
   block[1] = 3221225472;
   block[2] = sub_10067D51C;
   block[3] = &unk_101661760;
-  v7 = v3;
-  v5 = v3;
+  v7 = replyCopy;
+  v5 = replyCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)handleTrafficeReroute:(id)a3 reply:(id)a4
+- (void)handleTrafficeReroute:(id)reroute reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  rerouteCopy = reroute;
+  replyCopy = reply;
   v8 = sub_100E9E6E8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v15 = "[IPCServer handleTrafficeReroute:reply:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = rerouteCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "MAPS IPC %s %@", buf, 0x16u);
   }
 
@@ -1892,17 +1892,17 @@ LABEL_69:
   block[2] = sub_10067D6F4;
   block[3] = &unk_1016605F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = rerouteCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = rerouteCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setPushDaemonListenerEndpoint:(id)a3
+- (void)setPushDaemonListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
-  if (+[NSThread isMainThread]&& self->_pushDaemonListenerEndpoint != v5)
+  endpointCopy = endpoint;
+  if (+[NSThread isMainThread]&& self->_pushDaemonListenerEndpoint != endpointCopy)
   {
     v6 = sub_100E9E6E8();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1911,19 +1911,19 @@ LABEL_69:
       *buf = 138412546;
       v19 = pushDaemonListenerEndpoint;
       v20 = 2112;
-      v21 = v5;
+      v21 = endpointCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "MAPS IPC Changing pushDaemonListenerEndpoint from %@ to %@", buf, 0x16u);
     }
 
-    objc_storeStrong(&self->_pushDaemonListenerEndpoint, a3);
+    objc_storeStrong(&self->_pushDaemonListenerEndpoint, endpoint);
     [(NSXPCConnection *)self->_pushDaemonConnection setInvalidationHandler:0];
     [(NSXPCConnection *)self->_pushDaemonConnection invalidate];
     pushDaemonConnection = self->_pushDaemonConnection;
     self->_pushDaemonConnection = 0;
 
-    if (v5)
+    if (endpointCopy)
     {
-      v9 = [[NSXPCConnection alloc] initWithListenerEndpoint:v5];
+      v9 = [[NSXPCConnection alloc] initWithListenerEndpoint:endpointCopy];
       v10 = self->_pushDaemonConnection;
       self->_pushDaemonConnection = v9;
 
@@ -1946,8 +1946,8 @@ LABEL_69:
       [(NSXPCConnection *)self->_pushDaemonConnection setInvalidationHandler:v14];
       [(NSXPCConnection *)self->_pushDaemonConnection setInterruptionHandler:&stru_101625798];
       [(NSXPCConnection *)self->_pushDaemonConnection resume];
-      v13 = [(NSXPCConnection *)self->_pushDaemonConnection remoteObjectProxy];
-      [v13 establishConnection];
+      remoteObjectProxy = [(NSXPCConnection *)self->_pushDaemonConnection remoteObjectProxy];
+      [remoteObjectProxy establishConnection];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&v15);
@@ -1957,10 +1957,10 @@ LABEL_69:
   }
 }
 
-- (void)setCompanionDaemonListenerEndpoint:(id)a3
+- (void)setCompanionDaemonListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
-  if (+[NSThread isMainThread]&& self->_companionDaemonListenerEndpoint != v5)
+  endpointCopy = endpoint;
+  if (+[NSThread isMainThread]&& self->_companionDaemonListenerEndpoint != endpointCopy)
   {
     v6 = sub_100E9E6E8();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1969,19 +1969,19 @@ LABEL_69:
       *buf = 138412546;
       v19 = companionDaemonListenerEndpoint;
       v20 = 2112;
-      v21 = v5;
+      v21 = endpointCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "MAPS IPC Changing companionDaemonListenerEndpoint from %@ to %@", buf, 0x16u);
     }
 
-    objc_storeStrong(&self->_companionDaemonListenerEndpoint, a3);
+    objc_storeStrong(&self->_companionDaemonListenerEndpoint, endpoint);
     [(NSXPCConnection *)self->_companionDaemonConnection setInvalidationHandler:0];
     [(NSXPCConnection *)self->_companionDaemonConnection invalidate];
     companionDaemonConnection = self->_companionDaemonConnection;
     self->_companionDaemonConnection = 0;
 
-    if (v5)
+    if (endpointCopy)
     {
-      v9 = [[NSXPCConnection alloc] initWithListenerEndpoint:v5];
+      v9 = [[NSXPCConnection alloc] initWithListenerEndpoint:endpointCopy];
       v10 = self->_companionDaemonConnection;
       self->_companionDaemonConnection = v9;
 
@@ -2004,8 +2004,8 @@ LABEL_69:
       [(NSXPCConnection *)self->_companionDaemonConnection setInvalidationHandler:v14];
       [(NSXPCConnection *)self->_companionDaemonConnection setInterruptionHandler:&stru_101625778];
       [(NSXPCConnection *)self->_companionDaemonConnection resume];
-      v13 = [(NSXPCConnection *)self->_companionDaemonConnection remoteObjectProxy];
-      [v13 establishConnection];
+      remoteObjectProxy = [(NSXPCConnection *)self->_companionDaemonConnection remoteObjectProxy];
+      [remoteObjectProxy establishConnection];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&v15);
@@ -2015,10 +2015,10 @@ LABEL_69:
   }
 }
 
-- (void)setSiriPluginListenerEndpoint:(id)a3
+- (void)setSiriPluginListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
-  if (+[NSThread isMainThread]&& self->_siriPluginListenerEndpoint != v5)
+  endpointCopy = endpoint;
+  if (+[NSThread isMainThread]&& self->_siriPluginListenerEndpoint != endpointCopy)
   {
     v6 = sub_100E9E6E8();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -2027,19 +2027,19 @@ LABEL_69:
       *buf = 138412546;
       v19 = siriPluginListenerEndpoint;
       v20 = 2112;
-      v21 = v5;
+      v21 = endpointCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "MAPS IPC Changing siriPluginListenerEndpoint from %@ to %@", buf, 0x16u);
     }
 
-    objc_storeStrong(&self->_siriPluginListenerEndpoint, a3);
+    objc_storeStrong(&self->_siriPluginListenerEndpoint, endpoint);
     [(NSXPCConnection *)self->_siriPluginConnection setInvalidationHandler:0];
     [(NSXPCConnection *)self->_siriPluginConnection invalidate];
     siriPluginConnection = self->_siriPluginConnection;
     self->_siriPluginConnection = 0;
 
-    if (v5)
+    if (endpointCopy)
     {
-      v9 = [[NSXPCConnection alloc] initWithListenerEndpoint:v5];
+      v9 = [[NSXPCConnection alloc] initWithListenerEndpoint:endpointCopy];
       v10 = self->_siriPluginConnection;
       self->_siriPluginConnection = v9;
 
@@ -2062,8 +2062,8 @@ LABEL_69:
       [(NSXPCConnection *)self->_siriPluginConnection setInvalidationHandler:v14];
       [(NSXPCConnection *)self->_siriPluginConnection setInterruptionHandler:&stru_101625758];
       [(NSXPCConnection *)self->_siriPluginConnection resume];
-      v13 = [(NSXPCConnection *)self->_siriPluginConnection remoteObjectProxy];
-      [v13 establishConnection];
+      remoteObjectProxy = [(NSXPCConnection *)self->_siriPluginConnection remoteObjectProxy];
+      [remoteObjectProxy establishConnection];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&v15);
@@ -2086,30 +2086,30 @@ LABEL_69:
   }
 }
 
-- (BOOL)_isSceneOccluded:(id)a3
+- (BOOL)_isSceneOccluded:(id)occluded
 {
-  v3 = a3;
-  v4 = [v3 _FBSScene];
-  v5 = [v4 uiSettings];
-  v6 = [v5 deactivationReasons];
+  occludedCopy = occluded;
+  _FBSScene = [occludedCopy _FBSScene];
+  uiSettings = [_FBSScene uiSettings];
+  deactivationReasons = [uiSettings deactivationReasons];
 
-  v7 = [v3 activationState];
-  v8 = v7 == 1 && (v6 & 0x80) != 0;
+  activationState = [occludedCopy activationState];
+  v8 = activationState == 1 && (deactivationReasons & 0x80) != 0;
 
   return v8;
 }
 
-- (BOOL)_isAnySceneForegroundAndNotOccludedForRole:(id)a3
+- (BOOL)_isAnySceneForegroundAndNotOccludedForRole:(id)role
 {
-  v4 = a3;
+  roleCopy = role;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 connectedScenes];
+  connectedScenes = [v5 connectedScenes];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [connectedScenes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2120,13 +2120,13 @@ LABEL_69:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 session];
-        v13 = [v12 role];
-        v14 = [v13 isEqualToString:v4];
+        session = [v11 session];
+        role = [session role];
+        v14 = [role isEqualToString:roleCopy];
 
         if (v14 && ![UIApplication _maps_shouldIgnoreActivationStateForScene:v11]&& ![(IPCServer *)self _isSceneOccluded:v11]&& [(IPCServer *)self _isSceneForeground:v11])
         {
@@ -2135,7 +2135,7 @@ LABEL_69:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [connectedScenes countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -2151,9 +2151,9 @@ LABEL_14:
   return v15;
 }
 
-- (void)_sceneWillEnterForeground:(id)a3
+- (void)_sceneWillEnterForeground:(id)foreground
 {
-  v4 = [a3 object];
+  object = [foreground object];
   if (![UIApplication _maps_shouldIgnoreActivationStateForScene:?])
   {
     [(IPCServer *)self _noteGuidanceStateChanged];
@@ -2161,9 +2161,9 @@ LABEL_14:
   }
 }
 
-- (void)_sceneDidEnterBackground:(id)a3
+- (void)_sceneDidEnterBackground:(id)background
 {
-  v4 = [a3 object];
+  object = [background object];
   if (![UIApplication _maps_shouldIgnoreActivationStateForScene:?])
   {
     [(IPCServer *)self _noteGuidanceStateChanged];
@@ -2171,16 +2171,16 @@ LABEL_14:
   }
 }
 
-- (void)_sceneWillDeactivate:(id)a3
+- (void)_sceneWillDeactivate:(id)deactivate
 {
-  v4 = [a3 object];
-  if (![UIApplication _maps_shouldIgnoreActivationStateForScene:v4])
+  object = [deactivate object];
+  if (![UIApplication _maps_shouldIgnoreActivationStateForScene:object])
   {
     v5 = sub_100E9E6E8();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = object;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "MAPS IPC _sceneWillDeactivate: %@", &v7, 0xCu);
     }
 
@@ -2191,34 +2191,34 @@ LABEL_14:
   }
 }
 
-- (void)setState:(unint64_t)a3 withReason:(unint64_t)a4
+- (void)setState:(unint64_t)state withReason:(unint64_t)reason
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v7 = sub_100E9E6E8();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       state = self->_state;
-      if (a4 > 5)
+      if (reason > 5)
       {
         v9 = @"Unknown Reason";
       }
 
       else
       {
-        v9 = off_101625868[a4];
+        v9 = off_101625868[reason];
       }
 
       v10 = 134218498;
-      v11 = state;
+      stateCopy = state;
       v12 = 2048;
-      v13 = a3;
+      stateCopy2 = state;
       v14 = 2112;
       v15 = v9;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "MAPS IPC IPCServer state is changing from %lu to %lu for reason %@", &v10, 0x20u);
     }
 
-    self->_state = a3;
+    self->_state = state;
   }
 }
 

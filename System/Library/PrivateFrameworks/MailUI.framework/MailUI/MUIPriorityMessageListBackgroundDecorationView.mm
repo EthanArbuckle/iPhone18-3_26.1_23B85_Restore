@@ -1,7 +1,7 @@
 @interface MUIPriorityMessageListBackgroundDecorationView
 + (NSString)elementKind;
 + (double)decorationViewInset;
-- (MUIPriorityMessageListBackgroundDecorationView)initWithCoder:(id)a3;
+- (MUIPriorityMessageListBackgroundDecorationView)initWithCoder:(id)coder;
 - (void)shimmer;
 - (void)updateBorderColor;
 @end
@@ -25,10 +25,10 @@
   return v3;
 }
 
-- (MUIPriorityMessageListBackgroundDecorationView)initWithCoder:(id)a3
+- (MUIPriorityMessageListBackgroundDecorationView)initWithCoder:(id)coder
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](coder);
   MUIPriorityMessageListBackgroundDecorationView.init(coder:)();
 }
 

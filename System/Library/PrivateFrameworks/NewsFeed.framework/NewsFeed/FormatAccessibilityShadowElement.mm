@@ -2,7 +2,7 @@
 - (CGRect)accessibilityFrame;
 - (NSArray)accessibilityCustomActions;
 - (_TtC8NewsFeed32FormatAccessibilityShadowElement)init;
-- (_TtC8NewsFeed32FormatAccessibilityShadowElement)initWithAccessibilityContainer:(id)a3;
+- (_TtC8NewsFeed32FormatAccessibilityShadowElement)initWithAccessibilityContainer:(id)container;
 - (unint64_t)accessibilityTraits;
 @end
 
@@ -10,7 +10,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D6A6082C();
 
   return v3;
@@ -18,7 +18,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D6A5E96C();
   if ((v4 & 0x100) != 0 || (v4 & 1) != 0 && !v3)
   {
@@ -50,7 +50,7 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
+    selfCopy = self;
     [v4 accessibilityFrame];
     v7 = v6;
     v9 = v8;
@@ -77,7 +77,7 @@
   return result;
 }
 
-- (_TtC8NewsFeed32FormatAccessibilityShadowElement)initWithAccessibilityContainer:(id)a3
+- (_TtC8NewsFeed32FormatAccessibilityShadowElement)initWithAccessibilityContainer:(id)container
 {
   swift_unknownObjectRetain();
   sub_1D7263AEC();

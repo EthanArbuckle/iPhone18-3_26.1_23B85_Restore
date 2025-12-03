@@ -1,12 +1,12 @@
 @interface SKUICommenter
-- (SKUICommenter)initWithAuthor:(id)a3;
+- (SKUICommenter)initWithAuthor:(id)author;
 @end
 
 @implementation SKUICommenter
 
-- (SKUICommenter)initWithAuthor:(id)a3
+- (SKUICommenter)initWithAuthor:(id)author
 {
-  v4 = a3;
+  authorCopy = author;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -24,17 +24,17 @@
   v13 = [(SKUICommenter *)&v19 init];
   if (v13)
   {
-    v14 = [v4 thumbnailImageURL];
-    [(SKUIMediaSocialAuthor *)v13 setThumbnailImageURL:v14];
+    thumbnailImageURL = [authorCopy thumbnailImageURL];
+    [(SKUIMediaSocialAuthor *)v13 setThumbnailImageURL:thumbnailImageURL];
 
-    v15 = [v4 name];
-    [(SKUIMediaSocialAuthor *)v13 setName:v15];
+    name = [authorCopy name];
+    [(SKUIMediaSocialAuthor *)v13 setName:name];
 
-    v16 = [v4 authorType];
-    [(SKUIMediaSocialAuthor *)v13 setAuthorType:v16];
+    authorType = [authorCopy authorType];
+    [(SKUIMediaSocialAuthor *)v13 setAuthorType:authorType];
 
-    v17 = [v4 identifier];
-    [(SKUIMediaSocialAuthor *)v13 setIdentifier:v17];
+    identifier = [authorCopy identifier];
+    [(SKUIMediaSocialAuthor *)v13 setIdentifier:identifier];
   }
 
   return v13;

@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000A7F0C;
   block[3] = &unk_1001756A8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001B3998 != -1)
   {
     dispatch_once(&qword_1001B3998, block);
@@ -49,29 +49,29 @@
 - (void)loadEvents
 {
   v3 = +[NRTermsEventCollectionDB pathToTermsEventLog];
-  v4 = [v3 path];
+  path = [v3 path];
   v48 = 0;
-  v5 = [NSData dataWithContentsOfFile:v4 options:0 error:&v48];
+  v5 = [NSData dataWithContentsOfFile:path options:0 error:&v48];
   v6 = v48;
 
   if (v6)
   {
-    v7 = [v6 domain];
-    if ([NSCocoaErrorDomain isEqual:v7])
+    domain = [v6 domain];
+    if ([NSCocoaErrorDomain isEqual:domain])
     {
-      v8 = [v6 code];
+      code = [v6 code];
 
-      if (v8 == 260)
+      if (code == 260)
       {
-        v9 = [v6 userInfo];
-        v10 = [v9 objectForKeyedSubscript:NSUnderlyingErrorKey];
+        userInfo = [v6 userInfo];
+        v10 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-        v11 = [v10 domain];
-        if ([NSPOSIXErrorDomain isEqual:v11])
+        domain2 = [v10 domain];
+        if ([NSPOSIXErrorDomain isEqual:domain2])
         {
-          v12 = [v10 code];
+          code2 = [v10 code];
 
-          if (v12 == 2)
+          if (code2 == 2)
           {
             v13 = nr_daemon_log();
             v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -117,11 +117,11 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  v20 = [(NRTermsEventCollection *)v18 termsTextCleared];
+  termsTextCleared = [(NRTermsEventCollection *)v18 termsTextCleared];
   v21 = nr_daemon_log();
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
 
-  if (v20)
+  if (termsTextCleared)
   {
     if (v22)
     {
@@ -139,7 +139,7 @@ LABEL_42:
 
   else
   {
-    v41 = self;
+    selfCopy = self;
     if (v22)
     {
       v25 = nr_daemon_log();
@@ -154,8 +154,8 @@ LABEL_42:
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v26 = [(NRTermsEventCollection *)v18 events];
-    v27 = [v26 countByEnumeratingWithState:&v42 objects:v49 count:16];
+    events = [(NRTermsEventCollection *)v18 events];
+    v27 = [events countByEnumeratingWithState:&v42 objects:v49 count:16];
     if (v27)
     {
       v28 = v27;
@@ -166,16 +166,16 @@ LABEL_42:
         {
           if (*v43 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(events);
           }
 
           v31 = *(*(&v42 + 1) + 8 * i);
           v32 = objc_autoreleasePoolPush();
           if ([v31 hasTermsText])
           {
-            v33 = [v31 termsDigest];
+            termsDigest = [v31 termsDigest];
 
-            if (!v33)
+            if (!termsDigest)
             {
               v34 = nr_daemon_log();
               v35 = os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT);
@@ -190,8 +190,8 @@ LABEL_42:
                 }
               }
 
-              v37 = [v31 termsText];
-              v38 = [NRTermsEvent digestFromData:v37];
+              termsText = [v31 termsText];
+              v38 = [NRTermsEvent digestFromData:termsText];
               [v31 setTermsDigest:v38];
             }
 
@@ -205,17 +205,17 @@ LABEL_42:
           objc_autoreleasePoolPop(v32);
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v42 objects:v49 count:16];
+        v28 = [events countByEnumeratingWithState:&v42 objects:v49 count:16];
       }
 
       while (v28);
     }
 
     [(NRTermsEventCollection *)v18 setTermsTextCleared:1];
-    v39 = v41->_events;
-    v41->_events = v18;
+    v39 = selfCopy->_events;
+    selfCopy->_events = v18;
 
-    [(NRTermsEventCollectionDB *)v41 saveEvents];
+    [(NRTermsEventCollectionDB *)selfCopy saveEvents];
     v5 = v40;
   }
 
@@ -224,10 +224,10 @@ LABEL_38:
 
 - (void)saveEvents
 {
-  v3 = [(NRTermsEventCollectionDB *)self events];
-  v4 = [v3 dirty];
+  events = [(NRTermsEventCollectionDB *)self events];
+  dirty = [events dirty];
 
-  if (v4)
+  if (dirty)
   {
     v23 = 0u;
     v24 = 0u;
@@ -251,12 +251,12 @@ LABEL_38:
           v10 = *(*(&v21 + 1) + 8 * i);
           if ([v10 hasTermsText])
           {
-            v11 = [v10 termsDigest];
+            termsDigest = [v10 termsDigest];
 
-            if (!v11)
+            if (!termsDigest)
             {
-              v12 = [v10 termsText];
-              v13 = [NRTermsEvent digestFromData:v12];
+              termsText = [v10 termsText];
+              v13 = [NRTermsEvent digestFromData:termsText];
               [v10 setTermsDigest:v13];
             }
           }
@@ -278,9 +278,9 @@ LABEL_38:
     v16 = v20;
     if (!v16)
     {
-      v17 = [objc_opt_class() pathToTermsEventLog];
+      pathToTermsEventLog = [objc_opt_class() pathToTermsEventLog];
       v19 = 0;
-      [v15 writeToURL:v17 options:1073741825 error:&v19];
+      [v15 writeToURL:pathToTermsEventLog options:1073741825 error:&v19];
       v18 = v19;
 
       if (!v18)
@@ -298,10 +298,10 @@ LABEL_38:
 
 - (id)reverseObjectEnumerator
 {
-  v2 = [(NRTermsEventCollectionDB *)self events];
-  v3 = [v2 reverseObjectEnumerator];
+  events = [(NRTermsEventCollectionDB *)self events];
+  reverseObjectEnumerator = [events reverseObjectEnumerator];
 
-  return v3;
+  return reverseObjectEnumerator;
 }
 
 - (NRTermsEventCollection)events

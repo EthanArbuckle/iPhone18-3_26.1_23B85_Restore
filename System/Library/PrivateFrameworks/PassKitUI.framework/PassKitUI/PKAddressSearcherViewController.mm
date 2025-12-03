@@ -1,43 +1,43 @@
 @interface PKAddressSearcherViewController
-- (BOOL)_validateContact:(id)a3;
-- (BOOL)tableView:(id)a3 wantsHeaderForSection:(int64_t)a4;
-- (PKAddressSearcherViewController)initWithSetupDelegate:(id)a3 style:(int64_t)a4;
+- (BOOL)_validateContact:(id)contact;
+- (BOOL)tableView:(id)view wantsHeaderForSection:(int64_t)section;
+- (PKAddressSearcherViewController)initWithSetupDelegate:(id)delegate style:(int64_t)style;
 - (PKAddressSearcherViewControllerDelegate)delegate;
 - (PKPaymentSetupViewControllerDelegate)setupDelegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_handleCancelButtonTapped:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_handleCancelButtonTapped:(id)tapped;
 - (void)_processNextViewController;
 - (void)_removeNavigationBarButtonItems;
-- (void)_setNavigationBarEnabled:(BOOL)a3;
-- (void)_showAddressEditorWithContact:(id)a3 withContactErrors:(id)a4;
+- (void)_setNavigationBarEnabled:(BOOL)enabled;
+- (void)_showAddressEditorWithContact:(id)contact withContactErrors:(id)errors;
 - (void)_terminateFlow;
 - (void)_updateNavigationButtons;
 - (void)_updateSectionMapping;
-- (void)addressEditorViewController:(id)a3 selectedContact:(id)a4;
-- (void)addressEditorViewControllerDidCancel:(id)a3;
-- (void)contactsSearchUpdated:(id)a3;
+- (void)addressEditorViewController:(id)controller selectedContact:(id)contact;
+- (void)addressEditorViewControllerDidCancel:(id)cancel;
+- (void)contactsSearchUpdated:(id)updated;
 - (void)loadView;
-- (void)mapSearchUpdated:(id)a3;
-- (void)selectedAddress:(id)a3 withError:(id)a4;
-- (void)setHeaderSubtitle:(id)a3;
-- (void)setHeaderTitle:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)mapSearchUpdated:(id)updated;
+- (void)selectedAddress:(id)address withError:(id)error;
+- (void)setHeaderSubtitle:(id)subtitle;
+- (void)setHeaderTitle:(id)title;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKAddressSearcherViewController
 
-- (PKAddressSearcherViewController)initWithSetupDelegate:(id)a3 style:(int64_t)a4
+- (PKAddressSearcherViewController)initWithSetupDelegate:(id)delegate style:(int64_t)style
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = PKAddressSearcherViewController;
   v7 = [(PKAddressSearcherViewController *)&v16 initWithStyle:2];
@@ -48,8 +48,8 @@
     v7->_searchModel = v8;
 
     [(PKAddressSearchModel *)v7->_searchModel setDelegate:v7];
-    objc_storeWeak(&v7->_setupDelegate, v6);
-    v7->_style = a4;
+    objc_storeWeak(&v7->_setupDelegate, delegateCopy);
+    v7->_style = style;
     v10 = *MEMORY[0x1E695CC30];
     v17[0] = *MEMORY[0x1E69BB7C0];
     v17[1] = v10;
@@ -73,17 +73,17 @@
   v20.receiver = self;
   v20.super_class = PKAddressSearcherViewController;
   [(PKAddressSearcherViewController *)&v20 loadView];
-  v3 = [(PKAddressSearcherViewController *)self view];
-  v4 = v3;
+  view = [(PKAddressSearcherViewController *)self view];
+  v4 = view;
   if (self->_backgroundColor)
   {
-    [v3 setBackgroundColor:?];
+    [view setBackgroundColor:?];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v4 setBackgroundColor:clearColor];
   }
 
   v6 = [objc_alloc(MEMORY[0x1E69DCF10]) initWithSearchResultsController:0];
@@ -94,14 +94,14 @@
   [(UISearchController *)self->_searchController setHidesNavigationBarDuringPresentation:0];
   [(UISearchController *)self->_searchController setObscuresBackgroundDuringPresentation:0];
   [(UISearchController *)self->_searchController setShowsSearchResultsController:0];
-  v8 = [(UISearchController *)self->_searchController searchBar];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
   v9 = PKLocalizedPaymentString(&cfstr_InAppPaymentSe_0.isa);
-  [v8 setPlaceholder:v9];
+  [searchBar setPlaceholder:v9];
 
-  [v8 setReturnKeyType:9];
-  [v8 setEnablesReturnKeyAutomatically:1];
-  [v8 setTextContentType:*MEMORY[0x1E69DE4C0]];
-  [v8 setAccessibilityIdentifier:*MEMORY[0x1E69B9BD0]];
+  [searchBar setReturnKeyType:9];
+  [searchBar setEnablesReturnKeyAutomatically:1];
+  [searchBar setTextContentType:*MEMORY[0x1E69DE4C0]];
+  [searchBar setAccessibilityIdentifier:*MEMORY[0x1E69B9BD0]];
   if (self->_headerTitle || self->_headerSubtitle)
   {
     v10 = [PKTableHeaderView alloc];
@@ -111,14 +111,14 @@
 
     if (self->_headerTitle)
     {
-      v13 = [(PKTableHeaderView *)self->_headerView titleLabel];
-      [v13 setText:self->_headerTitle];
+      titleLabel = [(PKTableHeaderView *)self->_headerView titleLabel];
+      [titleLabel setText:self->_headerTitle];
     }
 
     if (self->_headerSubtitle)
     {
-      v14 = [(PKTableHeaderView *)self->_headerView subtitleLabel];
-      [v14 setText:self->_headerSubtitle];
+      subtitleLabel = [(PKTableHeaderView *)self->_headerView subtitleLabel];
+      [subtitleLabel setText:self->_headerSubtitle];
     }
 
     [(PKTableHeaderView *)self->_headerView setStyle:3];
@@ -133,51 +133,51 @@
 
     [(PKTableHeaderView *)v15 setBottomPadding:v17];
     [(PKTableHeaderView *)self->_headerView sizeToFit];
-    v18 = [(PKAddressSearcherViewController *)self tableView];
-    [v18 setTableHeaderView:self->_headerView];
+    tableView = [(PKAddressSearcherViewController *)self tableView];
+    [tableView setTableHeaderView:self->_headerView];
   }
 
   if (self->_style == 2)
   {
     v19 = PKBridgeAppearanceGetAppearanceSpecifier();
-    PKAppearanceApplyToContainer(v19, v8);
+    PKAppearanceApplyToContainer(v19, searchBar);
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKAddressSearcherViewController;
-  [(PKAddressSearcherViewController *)&v5 viewWillAppear:a3];
-  v4 = [(PKAddressSearcherViewController *)self navigationItem];
-  [v4 setSearchController:self->_searchController];
+  [(PKAddressSearcherViewController *)&v5 viewWillAppear:appear];
+  navigationItem = [(PKAddressSearcherViewController *)self navigationItem];
+  [navigationItem setSearchController:self->_searchController];
   if ((PKIsVision() & 1) != 0 || PKIsPad())
   {
-    [v4 setPreferredSearchBarPlacement:2];
+    [navigationItem setPreferredSearchBarPlacement:2];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKAddressSearcherViewController;
-  [(PKAddressSearcherViewController *)&v4 viewDidAppear:a3];
+  [(PKAddressSearcherViewController *)&v4 viewDidAppear:appear];
   [(UISearchController *)self->_searchController setActive:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKAddressSearcherViewController;
-  [(PKAddressSearcherViewController *)&v4 viewWillDisappear:a3];
+  [(PKAddressSearcherViewController *)&v4 viewWillDisappear:disappear];
   [(UISearchController *)self->_searchController setActive:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKAddressSearcherViewController;
-  [(PKAddressSearcherViewController *)&v4 viewDidDisappear:a3];
+  [(PKAddressSearcherViewController *)&v4 viewDidDisappear:disappear];
   [(PKAddressSearchModel *)self->_searchModel endSearch];
 }
 
@@ -189,8 +189,8 @@
   headerView = self->_headerView;
   if (headerView)
   {
-    v4 = [(PKAddressSearcherViewController *)self tableView];
-    [v4 bounds];
+    tableView = [(PKAddressSearcherViewController *)self tableView];
+    [tableView bounds];
     [(PKTableHeaderView *)headerView sizeThatFits:CGRectGetWidth(v10), 3.40282347e38];
     v6 = v5;
     v8 = v7;
@@ -199,13 +199,13 @@
   }
 }
 
-- (void)_handleCancelButtonTapped:(id)a3
+- (void)_handleCancelButtonTapped:(id)tapped
 {
-  MEMORY[0x1BFB41980](*MEMORY[0x1E69BA0D0], 0, a3);
-  v4 = [(PKAddressSearcherViewController *)self setupDelegate];
+  MEMORY[0x1BFB41980](*MEMORY[0x1E69BA0D0], 0, tapped);
+  setupDelegate = [(PKAddressSearcherViewController *)self setupDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 viewControllerDidCancelSetupFlow:self];
+    [setupDelegate viewControllerDidCancelSetupFlow:self];
   }
 
   else
@@ -216,37 +216,37 @@
 
 - (void)_terminateFlow
 {
-  v3 = [(PKAddressSearcherViewController *)self setupDelegate];
-  v5 = v3;
-  if (v3)
+  setupDelegate = [(PKAddressSearcherViewController *)self setupDelegate];
+  v5 = setupDelegate;
+  if (setupDelegate)
   {
-    [v3 viewControllerDidTerminateSetupFlow:self];
+    [setupDelegate viewControllerDidTerminateSetupFlow:self];
   }
 
   else
   {
-    v4 = [(PKAddressSearcherViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKAddressSearcherViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)_showAddressEditorWithContact:(id)a3 withContactErrors:(id)a4
+- (void)_showAddressEditorWithContact:(id)contact withContactErrors:(id)errors
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  errorsCopy = errors;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (v9 = WeakRetained, v10 = objc_loadWeakRetained(&self->_delegate), v11 = objc_opt_respondsToSelector(), v10, v9, (v11 & 1) != 0))
   {
-    if ([(PKAddressSearcherViewController *)self _validateContact:v6])
+    if ([(PKAddressSearcherViewController *)self _validateContact:contactCopy])
     {
       v12 = objc_loadWeakRetained(&self->_delegate);
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
       {
-        v14 = [(PKAddressSearcherViewController *)self delegate];
-        [v14 addressSearcherViewController:self selectedContact:v6];
+        delegate = [(PKAddressSearcherViewController *)self delegate];
+        [delegate addressSearcherViewController:self selectedContact:contactCopy];
       }
 
       [(PKAddressSearcherViewController *)self _processNextViewController];
@@ -256,12 +256,12 @@
   else
   {
     v15 = [PKAddressEditorViewController alloc];
-    v16 = [(PKAddressSearcherViewController *)self requiredKeys];
+    requiredKeys = [(PKAddressSearcherViewController *)self requiredKeys];
     v24[0] = *MEMORY[0x1E69BB7C0];
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-    if (v7)
+    if (errorsCopy)
     {
-      v18 = v7;
+      v18 = errorsCopy;
     }
 
     else
@@ -269,33 +269,33 @@
       v18 = MEMORY[0x1E695E0F0];
     }
 
-    v19 = [(PKAddressEditorViewController *)v15 initWithContact:v6 requiredKeys:v16 highlightedKeys:v17 errors:v18 style:self->_style];
+    v19 = [(PKAddressEditorViewController *)v15 initWithContact:contactCopy requiredKeys:requiredKeys highlightedKeys:v17 errors:v18 style:self->_style];
 
-    v20 = [(PKAddressSearcherViewController *)self title];
-    [(PKAddressEditorViewController *)v19 setTitle:v20];
+    title = [(PKAddressSearcherViewController *)self title];
+    [(PKAddressEditorViewController *)v19 setTitle:title];
 
-    v21 = [(PKAddressEditorViewController *)v19 view];
+    view = [(PKAddressEditorViewController *)v19 view];
     v22 = PKProvisioningBackgroundColor();
-    [v21 setBackgroundColor:v22];
+    [view setBackgroundColor:v22];
 
     [(PKAddressEditorViewController *)v19 setDelegate:self];
     [(PKAddressEditorViewController *)v19 setContactFormatValidator:self->_contactFormatValidator];
-    v23 = [(PKAddressSearcherViewController *)self navigationController];
-    [v23 pushViewController:v19 animated:1];
+    navigationController = [(PKAddressSearcherViewController *)self navigationController];
+    [navigationController pushViewController:v19 animated:1];
   }
 }
 
-- (BOOL)_validateContact:(id)a3
+- (BOOL)_validateContact:(id)contact
 {
-  v4 = a3;
-  if (v4 && [(NSSet *)self->_supportedCountryCodes count])
+  contactCopy = contact;
+  if (contactCopy && [(NSSet *)self->_supportedCountryCodes count])
   {
-    v5 = [v4 postalAddresses];
-    v6 = [v5 firstObject];
-    v7 = [v6 value];
+    postalAddresses = [contactCopy postalAddresses];
+    firstObject = [postalAddresses firstObject];
+    value = [firstObject value];
 
-    v8 = [v7 ISOCountryCode];
-    v9 = [(NSSet *)self->_supportedCountryCodes containsObject:v8];
+    iSOCountryCode = [value ISOCountryCode];
+    v9 = [(NSSet *)self->_supportedCountryCodes containsObject:iSOCountryCode];
     if (!v9)
     {
       supportedCountryCodes = self->_supportedCountryCodes;
@@ -309,8 +309,8 @@
         v14 = PKDisplayableErrorCustom();
 
         v15 = PKAlertForDisplayableErrorWithHandlers(v14, 0, 0, 0);
-        v16 = [(PKAddressSearcherViewController *)self navigationController];
-        [v16 presentViewController:v15 animated:1 completion:0];
+        navigationController = [(PKAddressSearcherViewController *)self navigationController];
+        [navigationController presentViewController:v15 animated:1 completion:0];
       }
     }
   }
@@ -434,11 +434,11 @@ void __61__PKAddressSearcherViewController__processNextViewController__block_inv
   self->_sectionMapping = v7;
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v6 = self->_headerTitle;
-  v7 = v5;
+  v7 = titleCopy;
   v10 = v7;
   if (v6 == v7)
   {
@@ -457,9 +457,9 @@ void __61__PKAddressSearcherViewController__processNextViewController__block_inv
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_headerTitle, a3);
-    v9 = [(PKTableHeaderView *)self->_headerView titleLabel];
-    [v9 setText:self->_headerTitle];
+    objc_storeStrong(&self->_headerTitle, title);
+    titleLabel = [(PKTableHeaderView *)self->_headerView titleLabel];
+    [titleLabel setText:self->_headerTitle];
 
     [(PKTableHeaderView *)self->_headerView setNeedsLayout];
   }
@@ -467,11 +467,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setHeaderSubtitle:(id)a3
+- (void)setHeaderSubtitle:(id)subtitle
 {
-  v5 = a3;
+  subtitleCopy = subtitle;
   v6 = self->_headerSubtitle;
-  v7 = v5;
+  v7 = subtitleCopy;
   v10 = v7;
   if (v6 == v7)
   {
@@ -490,9 +490,9 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_headerSubtitle, a3);
-    v9 = [(PKTableHeaderView *)self->_headerView subtitleLabel];
-    [v9 setText:self->_headerSubtitle];
+    objc_storeStrong(&self->_headerSubtitle, subtitle);
+    subtitleLabel = [(PKTableHeaderView *)self->_headerView subtitleLabel];
+    [subtitleLabel setText:self->_headerSubtitle];
 
     [(PKTableHeaderView *)self->_headerView setNeedsLayout];
   }
@@ -502,74 +502,74 @@ LABEL_9:
 
 - (void)_updateNavigationButtons
 {
-  v3 = [(PKAddressSearcherViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(PKAddressSearcherViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v5 = objc_alloc(MEMORY[0x1E69DC708]);
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
     v7 = [v5 initWithBarButtonSystemItem:1 target:self action:sel__handleCancelButtonTapped_];
-    v6 = [(PKAddressSearcherViewController *)self navigationItem];
-    [v6 setRightBarButtonItem:v7];
+    navigationItem = [(PKAddressSearcherViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v7];
   }
 
   else
   {
     v7 = [v5 initWithBarButtonSystemItem:24 target:self action:sel__handleCancelButtonTapped_];
-    v6 = [(PKAddressSearcherViewController *)self navigationItem];
-    [v6 setLeftBarButtonItem:v7];
+    navigationItem = [(PKAddressSearcherViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v7];
   }
 }
 
-- (void)_setNavigationBarEnabled:(BOOL)a3
+- (void)_setNavigationBarEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v10 = [(PKAddressSearcherViewController *)self navigationController];
-  v5 = [v10 navigationBar];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  navigationController = [(PKAddressSearcherViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:enabledCopy];
 
-  v6 = [v10 interactivePopGestureRecognizer];
-  [v6 setEnabled:v3];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:enabledCopy];
 
-  v7 = [(PKAddressSearcherViewController *)self navigationItem];
-  v8 = [v7 leftBarButtonItem];
-  [v8 setEnabled:v3];
+  navigationItem = [(PKAddressSearcherViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:enabledCopy];
 
-  v9 = [v7 rightBarButtonItem];
-  [v9 setEnabled:v3];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:enabledCopy];
 }
 
 - (void)_removeNavigationBarButtonItems
 {
-  v3 = [(PKAddressSearcherViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:0];
+  navigationItem = [(PKAddressSearcherViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 
-  v4 = [(PKAddressSearcherViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:0];
+  navigationItem2 = [(PKAddressSearcherViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:0];
 
-  v5 = [(PKAddressSearcherViewController *)self navigationItem];
-  [v5 setHidesBackButton:1];
+  navigationItem3 = [(PKAddressSearcherViewController *)self navigationItem];
+  [navigationItem3 setHidesBackButton:1];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   sectionMapping = self->_sectionMapping;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   v7 = [(NSDictionary *)sectionMapping objectForKey:v6];
 
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
-    if (v8)
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
+    if (unsignedIntegerValue)
     {
-      if (v8 == 1)
+      if (unsignedIntegerValue == 1)
       {
         v9 = [(NSArray *)self->_completionSearchResults count];
       }
 
       else
       {
-        v9 = v8 == 2;
+        v9 = unsignedIntegerValue == 2;
       }
     }
 
@@ -596,22 +596,22 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)tableView:(id)a3 wantsHeaderForSection:(int64_t)a4
+- (BOOL)tableView:(id)view wantsHeaderForSection:(int64_t)section
 {
   sectionMapping = self->_sectionMapping;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   v7 = [(NSDictionary *)sectionMapping objectForKey:v6];
 
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
-    if (!v8)
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
+    if (!unsignedIntegerValue)
     {
       v9 = &OBJC_IVAR___PKAddressSearcherViewController__contactsSearchResults;
       goto LABEL_7;
     }
 
-    if (v8 == 1)
+    if (unsignedIntegerValue == 1)
     {
       v9 = &OBJC_IVAR___PKAddressSearcherViewController__completionSearchResults;
 LABEL_7:
@@ -626,10 +626,10 @@ LABEL_8:
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   sectionMapping = self->_sectionMapping;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   v6 = [(NSDictionary *)sectionMapping objectForKey:v5];
 
   if (!v6)
@@ -637,14 +637,14 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  v7 = [v6 unsignedIntegerValue];
-  if (!v7)
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  if (!unsignedIntegerValue)
   {
     v8 = @"CONTACTS";
     goto LABEL_7;
   }
 
-  if (v7 != 1)
+  if (unsignedIntegerValue != 1)
   {
 LABEL_5:
     v9 = 0;
@@ -659,12 +659,12 @@ LABEL_8:
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   sectionMapping = self->_sectionMapping;
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "section")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
   v10 = [(NSDictionary *)sectionMapping objectForKey:v9];
 
   if (!v10)
@@ -673,29 +673,29 @@ LABEL_8:
     goto LABEL_20;
   }
 
-  v11 = [v10 unsignedIntegerValue];
-  if (v11)
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
+  if (unsignedIntegerValue)
   {
-    if (v11 != 1)
+    if (unsignedIntegerValue != 1)
     {
-      if (v11 == 2)
+      if (unsignedIntegerValue == 2)
       {
-        v12 = [v6 dequeueReusableCellWithIdentifier:@"Manual"];
+        v12 = [viewCopy dequeueReusableCellWithIdentifier:@"Manual"];
         if (!v12)
         {
           v12 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"Manual"];
         }
 
-        v13 = [v12 textLabel];
+        textLabel = [v12 textLabel];
         v14 = PKLocalizedPaymentString(&cfstr_InAppPaymentOp_14.isa);
-        [v13 setText:v14];
+        [textLabel setText:v14];
 
-        v15 = [v12 textLabel];
+        textLabel2 = [v12 textLabel];
         v16 = PKOBKListInlineCellTitleFont();
-        [v15 setFont:v16];
+        [textLabel2 setFont:v16];
 
-        v17 = [v12 detailTextLabel];
-        [v17 setText:0];
+        detailTextLabel = [v12 detailTextLabel];
+        [detailTextLabel setText:0];
 
         PKAccessibilityIDCellSet(v12, *MEMORY[0x1E69B9760]);
       }
@@ -708,56 +708,56 @@ LABEL_8:
       goto LABEL_17;
     }
 
-    v12 = [v6 dequeueReusableCellWithIdentifier:@"Address"];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:@"Address"];
     if (!v12)
     {
       v12 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"Address"];
     }
 
-    v18 = -[NSArray objectAtIndex:](self->_completionSearchResults, "objectAtIndex:", [v7 row]);
-    v19 = [v12 textLabel];
-    v20 = [v18 title];
-    [v19 setText:v20];
+    v18 = -[NSArray objectAtIndex:](self->_completionSearchResults, "objectAtIndex:", [pathCopy row]);
+    textLabel3 = [v12 textLabel];
+    title = [v18 title];
+    [textLabel3 setText:title];
 
-    v21 = [v12 textLabel];
+    textLabel4 = [v12 textLabel];
     v22 = PKOBKListSubtitleCellTitleFont();
-    [v21 setFont:v22];
+    [textLabel4 setFont:v22];
 
-    v23 = [v12 detailTextLabel];
-    v24 = [v18 subtitle];
-    [v23 setText:v24];
+    detailTextLabel2 = [v12 detailTextLabel];
+    subtitle = [v18 subtitle];
+    [detailTextLabel2 setText:subtitle];
 
-    v25 = [v12 detailTextLabel];
+    detailTextLabel3 = [v12 detailTextLabel];
     v26 = PKOBKListSubtitleCellSubtitleFont(0);
-    [v25 setFont:v26];
+    [detailTextLabel3 setFont:v26];
 
     v27 = MEMORY[0x1E69B9930];
   }
 
   else
   {
-    v12 = [v6 dequeueReusableCellWithIdentifier:@"Address"];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:@"Address"];
     if (!v12)
     {
       v12 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"Address"];
     }
 
-    v18 = -[NSArray objectAtIndex:](self->_contactsSearchResults, "objectAtIndex:", [v7 row]);
-    v28 = [v12 textLabel];
-    v29 = [v18 pk_displayName];
-    [v28 setText:v29];
+    v18 = -[NSArray objectAtIndex:](self->_contactsSearchResults, "objectAtIndex:", [pathCopy row]);
+    textLabel5 = [v12 textLabel];
+    pk_displayName = [v18 pk_displayName];
+    [textLabel5 setText:pk_displayName];
 
-    v30 = [v12 textLabel];
+    textLabel6 = [v12 textLabel];
     v31 = PKOBKListSubtitleCellTitleFont();
-    [v30 setFont:v31];
+    [textLabel6 setFont:v31];
 
-    v32 = [v12 detailTextLabel];
-    v33 = [v18 pkSingleLineFormattedContactAddress];
-    [v32 setText:v33];
+    detailTextLabel4 = [v12 detailTextLabel];
+    pkSingleLineFormattedContactAddress = [v18 pkSingleLineFormattedContactAddress];
+    [detailTextLabel4 setText:pkSingleLineFormattedContactAddress];
 
-    v34 = [v12 detailTextLabel];
+    detailTextLabel5 = [v12 detailTextLabel];
     v35 = PKOBKListSubtitleCellSubtitleFont(0);
-    [v34 setFont:v35];
+    [detailTextLabel5 setFont:v35];
 
     v27 = MEMORY[0x1E69B9620];
   }
@@ -780,23 +780,23 @@ LABEL_20:
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   sectionMapping = self->_sectionMapping;
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "section")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
   v10 = [(NSDictionary *)sectionMapping objectForKey:v9];
 
   if (v10)
   {
-    v11 = [v10 unsignedIntegerValue];
-    if (v11)
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
+    if (unsignedIntegerValue)
     {
-      if (v11 != 1)
+      if (unsignedIntegerValue != 1)
       {
-        if (v11 == 2)
+        if (unsignedIntegerValue == 2)
         {
           [(PKAddressSearchModel *)self->_searchModel endSearch];
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -810,15 +810,15 @@ LABEL_20:
           else
           {
             v26 = objc_alloc_init(MEMORY[0x1E695CF30]);
-            v27 = [(UISearchController *)self->_searchController searchBar];
-            v28 = [v27 text];
-            [v26 setStreet:v28];
+            searchBar = [(UISearchController *)self->_searchController searchBar];
+            text = [searchBar text];
+            [v26 setStreet:text];
 
             v29 = PKCurrentRegion();
             [v26 setISOCountryCode:v29];
 
-            v30 = [MEMORY[0x1E695DF58] currentLocale];
-            v31 = [v26 ISOCountryCode];
+            currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+            iSOCountryCode = [v26 ISOCountryCode];
             v32 = PKLocalizedStringForCountryCode();
 
             [v26 setCountry:v32];
@@ -839,33 +839,33 @@ LABEL_20:
         goto LABEL_32;
       }
 
-      v15 = -[NSArray objectAtIndex:](self->_completionSearchResults, "objectAtIndex:", [v7 row]);
-      [(PKAddressSearchModel *)self->_searchModel selectMapSearchCompletion:v15];
+      pkContactWithCleanedUpCountryCode = -[NSArray objectAtIndex:](self->_completionSearchResults, "objectAtIndex:", [pathCopy row]);
+      [(PKAddressSearchModel *)self->_searchModel selectMapSearchCompletion:pkContactWithCleanedUpCountryCode];
 LABEL_31:
 
 LABEL_32:
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       goto LABEL_33;
     }
 
-    v16 = -[NSArray objectAtIndex:](self->_contactsSearchResults, "objectAtIndex:", [v7 row]);
-    v15 = [v16 pkContactWithCleanedUpCountryCode];
+    v16 = -[NSArray objectAtIndex:](self->_contactsSearchResults, "objectAtIndex:", [pathCopy row]);
+    pkContactWithCleanedUpCountryCode = [v16 pkContactWithCleanedUpCountryCode];
 
-    v17 = [v15 postalAddresses];
-    v18 = [v17 firstObject];
+    postalAddresses = [pkContactWithCleanedUpCountryCode postalAddresses];
+    firstObject = [postalAddresses firstObject];
 
-    v19 = [v18 value];
-    v20 = [v19 ISOCountryCode];
-    v21 = [(PKContactFormatValidator *)self->_contactFormatValidator checkPostalAddressFormat:v19];
-    if ([v20 length] == 2)
+    value = [firstObject value];
+    iSOCountryCode2 = [value ISOCountryCode];
+    v21 = [(PKContactFormatValidator *)self->_contactFormatValidator checkPostalAddressFormat:value];
+    if ([iSOCountryCode2 length] == 2)
     {
-      v44 = v18;
-      if ([v20 caseInsensitiveCompare:@"cn"] || (objc_msgSend(v19, "subLocality"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "length"), v22, v23))
+      v44 = firstObject;
+      if ([iSOCountryCode2 caseInsensitiveCompare:@"cn"] || (objc_msgSend(value, "subLocality"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "length"), v22, v23))
       {
         if (!v21)
         {
-          v18 = v44;
-          if ([(PKAddressSearcherViewController *)self _validateContact:v15])
+          firstObject = v44;
+          if ([(PKAddressSearcherViewController *)self _validateContact:pkContactWithCleanedUpCountryCode])
           {
             v39 = objc_loadWeakRetained(&self->_delegate);
             if (v39)
@@ -876,20 +876,20 @@ LABEL_32:
 
               if (v42)
               {
-                v43 = [(PKAddressSearcherViewController *)self delegate];
-                [v43 addressSearcherViewController:self selectedContact:v15];
+                delegate = [(PKAddressSearcherViewController *)self delegate];
+                [delegate addressSearcherViewController:self selectedContact:pkContactWithCleanedUpCountryCode];
               }
             }
 
             [(PKAddressSearcherViewController *)self _processNextViewController];
-            v18 = v44;
+            firstObject = v44;
           }
 
           goto LABEL_30;
         }
 
         v24 = PKLogFacilityTypeGetObject();
-        v18 = v44;
+        firstObject = v44;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
@@ -906,7 +906,7 @@ LABEL_32:
         _os_log_impl(&dword_1BD026000, v25, OS_LOG_TYPE_DEFAULT, "Selected address was in China and missing a sublocality, redirecting to the edit flow for confirmation", buf, 2u);
       }
 
-      v18 = v44;
+      firstObject = v44;
     }
 
     else
@@ -922,7 +922,7 @@ LABEL_32:
     if (!v21)
     {
 LABEL_29:
-      [(PKAddressSearcherViewController *)self _showAddressEditorWithContact:v15 withContactErrors:v21];
+      [(PKAddressSearcherViewController *)self _showAddressEditorWithContact:pkContactWithCleanedUpCountryCode withContactErrors:v21];
 
 LABEL_30:
       goto LABEL_31;
@@ -936,15 +936,15 @@ LABEL_28:
 LABEL_33:
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v5 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
   [(PKAddressSearchModel *)self->_searchModel endSearch];
-  if ([v5 length])
+  if ([text length])
   {
-    v6 = [objc_alloc(MEMORY[0x1E69B8530]) initWithFullText:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69B8530]) initWithFullText:text];
     [v6 setOutputKey:*MEMORY[0x1E695C360]];
     [(PKAddressSearchModel *)self->_searchModel beginSearch:v6];
   }
@@ -983,11 +983,11 @@ void __74__PKAddressSearcherViewController_updateSearchResultsForSearchControlle
   }
 }
 
-- (void)mapSearchUpdated:(id)a3
+- (void)mapSearchUpdated:(id)updated
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [a3 completionSearchResults];
-  v5 = [v4 copy];
+  completionSearchResults = [updated completionSearchResults];
+  v5 = [completionSearchResults copy];
 
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1026,11 +1026,11 @@ void __52__PKAddressSearcherViewController_mapSearchUpdated___block_invoke(uint6
   }
 }
 
-- (void)contactsSearchUpdated:(id)a3
+- (void)contactsSearchUpdated:(id)updated
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [a3 contactsSearchResults];
-  v5 = [v4 copy];
+  contactsSearchResults = [updated contactsSearchResults];
+  v5 = [contactsSearchResults copy];
 
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1069,35 +1069,35 @@ void __57__PKAddressSearcherViewController_contactsSearchUpdated___block_invoke(
   }
 }
 
-- (void)selectedAddress:(id)a3 withError:(id)a4
+- (void)selectedAddress:(id)address withError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  addressCopy = address;
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = addressCopy;
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Selected address: %@", &v7, 0xCu);
   }
 
-  [(PKAddressSearcherViewController *)self _showAddressEditorWithContact:v5 withContactErrors:0];
+  [(PKAddressSearcherViewController *)self _showAddressEditorWithContact:addressCopy withContactErrors:0];
 }
 
-- (void)addressEditorViewController:(id)a3 selectedContact:(id)a4
+- (void)addressEditorViewController:(id)controller selectedContact:(id)contact
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  contactCopy = contact;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v7;
+    v15 = contactCopy;
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Editor inputted address: %@", &v14, 0xCu);
   }
 
-  if ([(PKAddressSearcherViewController *)self _validateContact:v7])
+  if ([(PKAddressSearcherViewController *)self _validateContact:contactCopy])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained)
@@ -1108,17 +1108,17 @@ void __57__PKAddressSearcherViewController_contactsSearchUpdated___block_invoke(
 
       if (v12)
       {
-        v13 = [(PKAddressSearcherViewController *)self delegate];
-        [v13 addressSearcherViewController:self selectedContact:v7];
+        delegate = [(PKAddressSearcherViewController *)self delegate];
+        [delegate addressSearcherViewController:self selectedContact:contactCopy];
       }
     }
   }
 }
 
-- (void)addressEditorViewControllerDidCancel:(id)a3
+- (void)addressEditorViewControllerDidCancel:(id)cancel
 {
-  v4 = [(PKAddressSearcherViewController *)self delegate];
-  [v4 addressSearcherViewControllerDidCancel:self];
+  delegate = [(PKAddressSearcherViewController *)self delegate];
+  [delegate addressSearcherViewControllerDidCancel:self];
 }
 
 - (PKAddressSearcherViewControllerDelegate)delegate

@@ -2,21 +2,21 @@
 - (BOOL)_hasExternalPowerSourceConnected;
 - (NPTOPowerSourceInfoDelegate)delegate;
 - (void)_handlePowerSourceNotification;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation NPTOPowerSourceInfo
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    v6 = objc_storeWeak(&self->_delegate, v4);
+    v6 = objc_storeWeak(&self->_delegate, delegateCopy);
 
-    if (v4)
+    if (delegateCopy)
     {
       objc_initWeak(&location, self);
       v7 = [NPTODarwinNotificationObserver alloc];
@@ -57,7 +57,7 @@
     v5 = v4;
     if (CFArrayGetCount(v4) < 1)
     {
-      v9 = 0;
+      bOOLValue = 0;
     }
 
     else
@@ -65,7 +65,7 @@
       ValueAtIndex = CFArrayGetValueAtIndex(v5, 0);
       v7 = IOPSGetPowerSourceDescription(v3, ValueAtIndex);
       v8 = [v7 objectForKeyedSubscript:@"Raw External Connected"];
-      v9 = [v8 BOOLValue];
+      bOOLValue = [v8 BOOLValue];
     }
 
     CFRelease(v5);
@@ -73,11 +73,11 @@
 
   else
   {
-    v9 = 0;
+    bOOLValue = 0;
   }
 
   CFRelease(v3);
-  return v9;
+  return bOOLValue;
 }
 
 - (void)_handlePowerSourceNotification
@@ -99,11 +99,11 @@
 
   if (v5)
   {
-    v6 = [(NPTOPowerSourceInfo *)self _hasExternalPowerSourceConnected];
+    _hasExternalPowerSourceConnected = [(NPTOPowerSourceInfo *)self _hasExternalPowerSourceConnected];
     lastNotifiedExternalPowerSourceConnected = self->_lastNotifiedExternalPowerSourceConnected;
-    if (!lastNotifiedExternalPowerSourceConnected || v6 != [(NSNumber *)lastNotifiedExternalPowerSourceConnected BOOLValue])
+    if (!lastNotifiedExternalPowerSourceConnected || _hasExternalPowerSourceConnected != [(NSNumber *)lastNotifiedExternalPowerSourceConnected BOOLValue])
     {
-      v8 = [NSNumber numberWithBool:v6];
+      v8 = [NSNumber numberWithBool:_hasExternalPowerSourceConnected];
       v9 = self->_lastNotifiedExternalPowerSourceConnected;
       self->_lastNotifiedExternalPowerSourceConnected = v8;
 

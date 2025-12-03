@@ -1,61 +1,61 @@
 @interface _MFEmailAddress
 - (NSString)fullAddress;
-- (_MFEmailAddress)initWithAddress:(id)a3;
-- (_MFEmailAddress)initWithAddress:(id)a3 displayName:(id)a4;
+- (_MFEmailAddress)initWithAddress:(id)address;
+- (_MFEmailAddress)initWithAddress:(id)address displayName:(id)name;
 @end
 
 @implementation _MFEmailAddress
 
 - (NSString)fullAddress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_fullAddress)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_fullAddress)
   {
     v3 = objc_alloc(MEMORY[0x1E699B248]);
-    v4 = [(_MFEmailAddress *)v2 address];
-    v5 = [v3 initWithString:v4];
+    address = [(_MFEmailAddress *)selfCopy address];
+    v5 = [v3 initWithString:address];
 
-    v6 = [(_MFEmailAddress *)v2 displayName];
-    [v5 setDisplayName:v6];
+    displayName = [(_MFEmailAddress *)selfCopy displayName];
+    [v5 setDisplayName:displayName];
 
-    v7 = [v5 stringValue];
-    v8 = v7;
-    if (v7)
+    stringValue = [v5 stringValue];
+    v8 = stringValue;
+    if (stringValue)
     {
-      v9 = v7;
+      address2 = stringValue;
     }
 
     else
     {
-      v9 = [(_MFEmailAddress *)v2 address];
+      address2 = [(_MFEmailAddress *)selfCopy address];
     }
 
-    fullAddress = v2->_fullAddress;
-    v2->_fullAddress = v9;
+    fullAddress = selfCopy->_fullAddress;
+    selfCopy->_fullAddress = address2;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v11 = v2->_fullAddress;
+  v11 = selfCopy->_fullAddress;
 
   return v11;
 }
 
-- (_MFEmailAddress)initWithAddress:(id)a3 displayName:(id)a4
+- (_MFEmailAddress)initWithAddress:(id)address displayName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = _MFEmailAddress;
   v8 = [(_MFEmailAddress *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [addressCopy copy];
     address = v8->_address;
     v8->_address = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     displayName = v8->_displayName;
     v8->_displayName = v11;
 
@@ -66,47 +66,47 @@
   return v8;
 }
 
-- (_MFEmailAddress)initWithAddress:(id)a3
+- (_MFEmailAddress)initWithAddress:(id)address
 {
-  v4 = a3;
-  v5 = [v4 emailAddressValue];
-  v6 = [v5 simpleAddress];
-  v7 = v6;
-  if (v6)
+  addressCopy = address;
+  emailAddressValue = [addressCopy emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
+  v7 = simpleAddress;
+  if (simpleAddress)
   {
-    v8 = v6;
+    stringValue = simpleAddress;
   }
 
   else
   {
-    v8 = [v4 stringValue];
+    stringValue = [addressCopy stringValue];
   }
 
-  v9 = v8;
+  v9 = stringValue;
 
-  v10 = [v5 displayName];
-  if (v10)
+  displayName = [emailAddressValue displayName];
+  if (displayName)
   {
-    v11 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v12 = [v10 stringByTrimmingCharactersInSet:v11];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v12 = [displayName stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v13 = [v12 ef_stringByTrimmingOuterQuotes];
+    ef_stringByTrimmingOuterQuotes = [v12 ef_stringByTrimmingOuterQuotes];
 
-    v14 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v10 = [v13 stringByTrimmingCharactersInSet:v14];
+    whitespaceAndNewlineCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    displayName = [ef_stringByTrimmingOuterQuotes stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
   }
 
-  if (v5)
+  if (emailAddressValue)
   {
-    v15 = [v10 emailAddressValue];
-    if (v15)
+    emailAddressValue2 = [displayName emailAddressValue];
+    if (emailAddressValue2)
     {
 
-      v10 = 0;
+      displayName = 0;
     }
   }
 
-  v16 = [(_MFEmailAddress *)self initWithAddress:v9 displayName:v10];
+  v16 = [(_MFEmailAddress *)self initWithAddress:v9 displayName:displayName];
 
   return v16;
 }

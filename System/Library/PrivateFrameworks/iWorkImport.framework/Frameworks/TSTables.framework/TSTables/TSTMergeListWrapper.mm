@@ -1,13 +1,13 @@
 @interface TSTMergeListWrapper
-- (TSTMergeListWrapper)initWithMergeList:(const void *)a3;
-- (TSTMergeListWrapper)mergeListWrapperWithRangesPassingTest:(id)a3;
+- (TSTMergeListWrapper)initWithMergeList:(const void *)list;
+- (TSTMergeListWrapper)mergeListWrapperWithRangesPassingTest:(id)test;
 - (id).cxx_construct;
-- (void)enumerateRangesUsingBlock:(id)a3;
+- (void)enumerateRangesUsingBlock:(id)block;
 @end
 
 @implementation TSTMergeListWrapper
 
-- (TSTMergeListWrapper)initWithMergeList:(const void *)a3
+- (TSTMergeListWrapper)initWithMergeList:(const void *)list
 {
   v8.receiver = self;
   v8.super_class = TSTMergeListWrapper;
@@ -15,7 +15,7 @@
   p_mergeList = &v4->_mergeList;
   if (v4)
   {
-    v6 = p_mergeList == a3;
+    v6 = p_mergeList == list;
   }
 
   else
@@ -25,15 +25,15 @@
 
   if (!v6)
   {
-    sub_2210BD068(p_mergeList, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+    sub_2210BD068(p_mergeList, *list, *(list + 1), (*(list + 1) - *list) >> 4);
   }
 
   return v4;
 }
 
-- (void)enumerateRangesUsingBlock:(id)a3
+- (void)enumerateRangesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8 = 0;
   begin = self->_mergeList.__begin_;
   end = self->_mergeList.__end_;
@@ -42,7 +42,7 @@
     v7 = 0;
     do
     {
-      (*(v4 + 2))(v4, v7, *&begin->origin, *&begin->size, &v8);
+      (*(blockCopy + 2))(blockCopy, v7, *&begin->origin, *&begin->size, &v8);
       if (v8)
       {
         break;
@@ -56,9 +56,9 @@
   }
 }
 
-- (TSTMergeListWrapper)mergeListWrapperWithRangesPassingTest:(id)a3
+- (TSTMergeListWrapper)mergeListWrapperWithRangesPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   __p = 0;
   v18 = 0;
   v19 = 0;
@@ -71,7 +71,7 @@
     do
     {
       v15 = v7[-1];
-      if ((*(v4 + 2))(v4, *&v15.origin, *&v15.size, &v16))
+      if ((*(testCopy + 2))(testCopy, *&v15.origin, *&v15.size, &v16))
       {
         sub_221083454(&__p, &v15);
       }

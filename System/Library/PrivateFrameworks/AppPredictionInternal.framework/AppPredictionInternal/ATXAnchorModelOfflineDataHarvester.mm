@@ -1,19 +1,19 @@
 @interface ATXAnchorModelOfflineDataHarvester
-+ (id)actionIdentifiersFromActionsInMessage:(id)a3;
-+ (id)bundleIdsFromAppLaunchesInMessage:(id)a3;
++ (id)actionIdentifiersFromActionsInMessage:(id)message;
++ (id)bundleIdsFromAppLaunchesInMessage:(id)message;
 + (id)getUserUUIDForDataCollection;
 - (ATXAnchorModelOfflineDataHarvester)init;
-- (ATXAnchorModelOfflineDataHarvester)initWithSamplingGroup:(id)a3 userId:(id)a4;
+- (ATXAnchorModelOfflineDataHarvester)initWithSamplingGroup:(id)group userId:(id)id;
 - (id)allInstalledAppsKnownToSpringBoard;
-- (id)fetchAnchorEvents:(id)a3;
-- (id)processAnchorOccurrence:(id)a3 anchor:(id)a4;
-- (void)addActionEventsFromAnchorOccurrenceDate:(id)a3 toMessage:(id)a4;
-- (void)addAppLaunchEventsFromAnchorOccurrenceDate:(id)a3 toMessage:(id)a4;
-- (void)addNegativeSamplesForAnchorOccurrenceDate:(id)a3 toMessage:(id)a4;
+- (id)fetchAnchorEvents:(id)events;
+- (id)processAnchorOccurrence:(id)occurrence anchor:(id)anchor;
+- (void)addActionEventsFromAnchorOccurrenceDate:(id)date toMessage:(id)message;
+- (void)addAppLaunchEventsFromAnchorOccurrenceDate:(id)date toMessage:(id)message;
+- (void)addNegativeSamplesForAnchorOccurrenceDate:(id)date toMessage:(id)message;
 - (void)harvestData;
-- (void)harvestDataForAnchor:(id)a3;
-- (void)setNegativeActionSamplesForAnchorOccurrenceDate:(id)a3 mainMessage:(id)a4;
-- (void)setNegativeAppLaunchSamplesForAnchorOccurrenceDate:(id)a3 mainMessage:(id)a4;
+- (void)harvestDataForAnchor:(id)anchor;
+- (void)setNegativeActionSamplesForAnchorOccurrenceDate:(id)date mainMessage:(id)message;
+- (void)setNegativeAppLaunchSamplesForAnchorOccurrenceDate:(id)date mainMessage:(id)message;
 @end
 
 @implementation ATXAnchorModelOfflineDataHarvester
@@ -28,38 +28,38 @@
     _os_log_impl(&dword_2263AA000, v3, OS_LOG_TYPE_DEFAULT, "ATXAnchorModelOfflineDataHarvester is being initialized.", &v11, 2u);
   }
 
-  v4 = [objc_opt_class() getUserUUIDForDataCollection];
-  if (v4)
+  getUserUUIDForDataCollection = [objc_opt_class() getUserUUIDForDataCollection];
+  if (getUserUUIDForDataCollection)
   {
-    v5 = [objc_opt_class() getSamplingGroupForDataCollection];
-    if (v5)
+    getSamplingGroupForDataCollection = [objc_opt_class() getSamplingGroupForDataCollection];
+    if (getSamplingGroupForDataCollection)
     {
       v6 = __atxlog_handle_default();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v5 description];
+        v7 = [getSamplingGroupForDataCollection description];
         v11 = 138412290;
         v12 = v7;
         _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "AnchorModel: User is enrolled in Anchor Model data collection. Sampling group description: %@", &v11, 0xCu);
       }
 
-      self = [(ATXAnchorModelOfflineDataHarvester *)self initWithSamplingGroup:v5 userId:v4];
-      v8 = self;
+      self = [(ATXAnchorModelOfflineDataHarvester *)self initWithSamplingGroup:getSamplingGroupForDataCollection userId:getUserUUIDForDataCollection];
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy;
 }
 
 + (id)getUserUUIDForDataCollection
@@ -78,11 +78,11 @@
   return v3;
 }
 
-- (ATXAnchorModelOfflineDataHarvester)initWithSamplingGroup:(id)a3 userId:(id)a4
+- (ATXAnchorModelOfflineDataHarvester)initWithSamplingGroup:(id)group userId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  groupCopy = group;
+  idCopy = id;
+  if (!groupCopy)
   {
     [ATXAnchorModelOfflineDataHarvester initWithSamplingGroup:a2 userId:self];
   }
@@ -92,9 +92,9 @@
   v9 = [(ATXAnchorModelOfflineDataHarvester *)&v17 init];
   if (v9)
   {
-    v10 = [v7 anchorWhitelist];
+    anchorWhitelist = [groupCopy anchorWhitelist];
     anchorsToCollect = v9->_anchorsToCollect;
-    v9->_anchorsToCollect = v10;
+    v9->_anchorsToCollect = anchorWhitelist;
 
     v12 = objc_opt_new();
     eventFeaturizer = v9->_eventFeaturizer;
@@ -104,7 +104,7 @@
     harvester = v9->_harvester;
     v9->_harvester = v14;
 
-    objc_storeStrong(&v9->_userId, a4);
+    objc_storeStrong(&v9->_userId, id);
   }
 
   return v9;
@@ -186,11 +186,11 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)harvestDataForAnchor:(id)a3
+- (void)harvestDataForAnchor:(id)anchor
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATXAnchorModelOfflineDataHarvester *)self fetchAnchorEvents:v4];
+  anchorCopy = anchor;
+  v5 = [(ATXAnchorModelOfflineDataHarvester *)self fetchAnchorEvents:anchorCopy];
   v6 = __atxlog_handle_default();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -228,10 +228,10 @@
           _os_log_debug_impl(&dword_2263AA000, v13, OS_LOG_TYPE_DEBUG, "AnchorModel: Anchor description: %@", buf, 0xCu);
         }
 
-        v14 = [(ATXAnchorModelOfflineDataHarvester *)self processAnchorOccurrence:v12 anchor:v4];
+        v14 = [(ATXAnchorModelOfflineDataHarvester *)self processAnchorOccurrence:v12 anchor:anchorCopy];
         [ATXAnchorModelDataAnonymizer anonymizeMessage:v14];
-        v15 = [MEMORY[0x277D41DA8] sharedInstance];
-        [v15 logMessage:v14];
+        mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+        [mEMORY[0x277D41DA8] logMessage:v14];
 
         v16 = __atxlog_handle_default();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -253,33 +253,33 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchAnchorEvents:(id)a3
+- (id)fetchAnchorEvents:(id)events
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 date];
+  eventsCopy = events;
+  date = [v3 date];
   v6 = objc_opt_class();
 
-  v7 = [v5 dateByAddingTimeInterval:-115200.0];
-  v8 = [v5 dateByAddingTimeInterval:-7200.0];
+  v7 = [date dateByAddingTimeInterval:-115200.0];
+  v8 = [date dateByAddingTimeInterval:-7200.0];
   v9 = [v6 fetchAnchorOccurrencesBetweenStartDate:v7 endDate:v8];
 
   return v9;
 }
 
-- (id)processAnchorOccurrence:(id)a3 anchor:(id)a4
+- (id)processAnchorOccurrence:(id)occurrence anchor:(id)anchor
 {
-  v6 = a4;
-  v7 = a3;
+  anchorCopy = anchor;
+  occurrenceCopy = occurrence;
   v8 = objc_opt_new();
-  v9 = [(NSUUID *)self->_userId UUIDString];
-  [v8 setUserId:v9];
+  uUIDString = [(NSUUID *)self->_userId UUIDString];
+  [v8 setUserId:uUIDString];
 
-  v10 = [(ATXAnchorModelEventFeaturizer *)self->_eventFeaturizer featurizeAnchorEvent:v7 anchor:v6];
+  v10 = [(ATXAnchorModelEventFeaturizer *)self->_eventFeaturizer featurizeAnchorEvent:occurrenceCopy anchor:anchorCopy];
   [v8 setAnchor:v10];
 
   v11 = objc_opt_class();
-  v12 = [v11 anchorOccurenceDateFromDuetEvent:v7];
+  v12 = [v11 anchorOccurenceDateFromDuetEvent:occurrenceCopy];
 
   [(ATXAnchorModelOfflineDataHarvester *)self addAppLaunchEventsFromAnchorOccurrenceDate:v12 toMessage:v8];
   [(ATXAnchorModelOfflineDataHarvester *)self addActionEventsFromAnchorOccurrenceDate:v12 toMessage:v8];
@@ -288,14 +288,14 @@
   return v8;
 }
 
-- (void)addAppLaunchEventsFromAnchorOccurrenceDate:(id)a3 toMessage:(id)a4
+- (void)addAppLaunchEventsFromAnchorOccurrenceDate:(id)date toMessage:(id)message
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  messageCopy = message;
   v8 = objc_opt_new();
-  v9 = [v6 dateByAddingTimeInterval:-300.0];
-  v10 = [v6 dateByAddingTimeInterval:5400.0];
+  v9 = [dateCopy dateByAddingTimeInterval:-300.0];
+  v10 = [dateCopy dateByAddingTimeInterval:5400.0];
   v11 = v10;
   if (v9)
   {
@@ -322,7 +322,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = [(ATXAnchorModelEventFeaturizer *)self->_eventFeaturizer featurizeAppLaunchEvents:v8 anchorOccurrenceDate:v6, 0];
+  v14 = [(ATXAnchorModelEventFeaturizer *)self->_eventFeaturizer featurizeAppLaunchEvents:v8 anchorOccurrenceDate:dateCopy, 0];
   v15 = [v14 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v15)
   {
@@ -337,7 +337,7 @@
           objc_enumerationMutation(v14);
         }
 
-        [v7 addPositiveAppLaunches:*(*(&v20 + 1) + 8 * i)];
+        [messageCopy addPositiveAppLaunches:*(*(&v20 + 1) + 8 * i)];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v20 objects:v26 count:16];
@@ -362,12 +362,12 @@ uint64_t __91__ATXAnchorModelOfflineDataHarvester_addAppLaunchEventsFromAnchorOc
   return 1;
 }
 
-- (void)addActionEventsFromAnchorOccurrenceDate:(id)a3 toMessage:(id)a4
+- (void)addActionEventsFromAnchorOccurrenceDate:(id)date toMessage:(id)message
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXAnchorModelOfflineDataHarvester *)self fetchEventsAfterAnchorOccurrenceDate:v6 withDuetDataProviderClass:objc_opt_class() limit:100 maxSecondsBeforeAnchor:300 maxSecondsAfterAnchor:5400];
+  dateCopy = date;
+  messageCopy = message;
+  v8 = [(ATXAnchorModelOfflineDataHarvester *)self fetchEventsAfterAnchorOccurrenceDate:dateCopy withDuetDataProviderClass:objc_opt_class() limit:100 maxSecondsBeforeAnchor:300 maxSecondsAfterAnchor:5400];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -387,8 +387,8 @@ uint64_t __91__ATXAnchorModelOfflineDataHarvester_addAppLaunchEventsFromAnchorOc
           objc_enumerationMutation(v8);
         }
 
-        v13 = [(ATXAnchorModelEventFeaturizer *)self->_eventFeaturizer featurizeActionEvent:*(*(&v15 + 1) + 8 * v12) anchorOccurrenceDate:v6];
-        [v7 addPositiveActions:v13];
+        v13 = [(ATXAnchorModelEventFeaturizer *)self->_eventFeaturizer featurizeActionEvent:*(*(&v15 + 1) + 8 * v12) anchorOccurrenceDate:dateCopy];
+        [messageCopy addPositiveActions:v13];
 
         ++v12;
       }
@@ -403,35 +403,35 @@ uint64_t __91__ATXAnchorModelOfflineDataHarvester_addAppLaunchEventsFromAnchorOc
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addNegativeSamplesForAnchorOccurrenceDate:(id)a3 toMessage:(id)a4
+- (void)addNegativeSamplesForAnchorOccurrenceDate:(id)date toMessage:(id)message
 {
-  v6 = a4;
-  v7 = a3;
-  [(ATXAnchorModelOfflineDataHarvester *)self setNegativeAppLaunchSamplesForAnchorOccurrenceDate:v7 mainMessage:v6];
-  [(ATXAnchorModelOfflineDataHarvester *)self setNegativeActionSamplesForAnchorOccurrenceDate:v7 mainMessage:v6];
+  messageCopy = message;
+  dateCopy = date;
+  [(ATXAnchorModelOfflineDataHarvester *)self setNegativeAppLaunchSamplesForAnchorOccurrenceDate:dateCopy mainMessage:messageCopy];
+  [(ATXAnchorModelOfflineDataHarvester *)self setNegativeActionSamplesForAnchorOccurrenceDate:dateCopy mainMessage:messageCopy];
 }
 
 - (id)allInstalledAppsKnownToSpringBoard
 {
   v2 = +[_ATXAppIconState sharedInstance];
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [v2 allInstalledAppsKnownToSpringBoard];
-  v5 = [v3 initWithArray:v4];
+  allInstalledAppsKnownToSpringBoard = [v2 allInstalledAppsKnownToSpringBoard];
+  v5 = [v3 initWithArray:allInstalledAppsKnownToSpringBoard];
 
   return v5;
 }
 
-- (void)setNegativeAppLaunchSamplesForAnchorOccurrenceDate:(id)a3 mainMessage:(id)a4
+- (void)setNegativeAppLaunchSamplesForAnchorOccurrenceDate:(id)date mainMessage:(id)message
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXAnchorModelOfflineDataHarvester *)self allInstalledAppsKnownToSpringBoard];
-  v9 = [ATXAnchorModelOfflineDataHarvester bundleIdsFromAppLaunchesInMessage:v7];
-  v10 = [ATXAnchorModelEventHarvester negativeAppsGivenAllAppIds:v8 positiveAppIds:v9];
+  dateCopy = date;
+  messageCopy = message;
+  allInstalledAppsKnownToSpringBoard = [(ATXAnchorModelOfflineDataHarvester *)self allInstalledAppsKnownToSpringBoard];
+  v9 = [ATXAnchorModelOfflineDataHarvester bundleIdsFromAppLaunchesInMessage:messageCopy];
+  v10 = [ATXAnchorModelEventHarvester negativeAppsGivenAllAppIds:allInstalledAppsKnownToSpringBoard positiveAppIds:v9];
 
   v25 = v10;
-  v24 = [v10 allObjects];
+  allObjects = [v10 allObjects];
   [ATXAnchorModelEventHarvester randomSampleFromArray:"randomSampleFromArray:sampleSize:" sampleSize:?];
   v27 = 0u;
   v28 = 0u;
@@ -454,15 +454,15 @@ uint64_t __91__ATXAnchorModelOfflineDataHarvester_addAppLaunchEventsFromAnchorOc
 
         v15 = *(*(&v27 + 1) + 8 * v14);
         v16 = [ATXAppLaunchDuetEvent alloc];
-        v17 = [v6 dateByAddingTimeInterval:1.0];
-        v18 = [(ATXAppLaunchDuetEvent *)v16 initWithBundleId:v15 startDate:v6 endDate:v17];
+        v17 = [dateCopy dateByAddingTimeInterval:1.0];
+        v18 = [(ATXAppLaunchDuetEvent *)v16 initWithBundleId:v15 startDate:dateCopy endDate:v17];
 
         eventFeaturizer = self->_eventFeaturizer;
         v31 = v18;
         v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
-        v21 = [(ATXAnchorModelEventFeaturizer *)eventFeaturizer featurizeAppLaunchEvents:v20 anchorOccurrenceDate:v6];
+        v21 = [(ATXAnchorModelEventFeaturizer *)eventFeaturizer featurizeAppLaunchEvents:v20 anchorOccurrenceDate:dateCopy];
         v22 = [v21 objectAtIndexedSubscript:0];
-        [v7 addNegativeAppLaunches:v22];
+        [messageCopy addNegativeAppLaunches:v22];
 
         ++v14;
       }
@@ -477,13 +477,13 @@ uint64_t __91__ATXAnchorModelOfflineDataHarvester_addAppLaunchEventsFromAnchorOc
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNegativeActionSamplesForAnchorOccurrenceDate:(id)a3 mainMessage:(id)a4
+- (void)setNegativeActionSamplesForAnchorOccurrenceDate:(id)date mainMessage:(id)message
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [ATXAnchorModelOfflineDataHarvester actionIdentifiersFromActionsInMessage:v7];
-  v9 = [(ATXAnchorModelEventHarvester *)self->_harvester negativeActionsOnAnchorOccurrenceDate:v6 positiveActionIds:v8];
+  dateCopy = date;
+  messageCopy = message;
+  v8 = [ATXAnchorModelOfflineDataHarvester actionIdentifiersFromActionsInMessage:messageCopy];
+  v9 = [(ATXAnchorModelEventHarvester *)self->_harvester negativeActionsOnAnchorOccurrenceDate:dateCopy positiveActionIds:v8];
   v10 = [ATXAnchorModelEventHarvester randomSampleFromArray:v9 sampleSize:7];
   v17 = 0u;
   v18 = 0u;
@@ -504,8 +504,8 @@ uint64_t __91__ATXAnchorModelOfflineDataHarvester_addAppLaunchEventsFromAnchorOc
           objc_enumerationMutation(v10);
         }
 
-        v15 = [(ATXAnchorModelEventFeaturizer *)self->_eventFeaturizer featurizeActionEvent:*(*(&v17 + 1) + 8 * v14) anchorOccurrenceDate:v6];
-        [v7 addNegativeActions:v15];
+        v15 = [(ATXAnchorModelEventFeaturizer *)self->_eventFeaturizer featurizeActionEvent:*(*(&v17 + 1) + 8 * v14) anchorOccurrenceDate:dateCopy];
+        [messageCopy addNegativeActions:v15];
 
         ++v14;
       }
@@ -520,17 +520,17 @@ uint64_t __91__ATXAnchorModelOfflineDataHarvester_addAppLaunchEventsFromAnchorOc
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)bundleIdsFromAppLaunchesInMessage:(id)a3
++ (id)bundleIdsFromAppLaunchesInMessage:(id)message
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 positiveAppLaunches];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  positiveAppLaunches = [messageCopy positiveAppLaunches];
+  v6 = [positiveAppLaunches countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -541,18 +541,18 @@ uint64_t __91__ATXAnchorModelOfflineDataHarvester_addAppLaunchEventsFromAnchorOc
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(positiveAppLaunches);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([v10 hasBundleId])
         {
-          v11 = [v10 bundleId];
-          [v4 addObject:v11];
+          bundleId = [v10 bundleId];
+          [v4 addObject:bundleId];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [positiveAppLaunches countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -563,17 +563,17 @@ uint64_t __91__ATXAnchorModelOfflineDataHarvester_addAppLaunchEventsFromAnchorOc
   return v4;
 }
 
-+ (id)actionIdentifiersFromActionsInMessage:(id)a3
++ (id)actionIdentifiersFromActionsInMessage:(id)message
 {
   v27 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  messageCopy = message;
   v20 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [v19 positiveActions];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  positiveActions = [messageCopy positiveActions];
+  v4 = [positiveActions countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -584,40 +584,40 @@ uint64_t __91__ATXAnchorModelOfflineDataHarvester_addAppLaunchEventsFromAnchorOc
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(positiveActions);
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
         if ([v8 hasAppLaunchMetadata])
         {
-          v9 = [v8 appLaunchMetadata];
-          if ([v9 hasBundleId] && objc_msgSend(v8, "hasActionKeyMetadata"))
+          appLaunchMetadata = [v8 appLaunchMetadata];
+          if ([appLaunchMetadata hasBundleId] && objc_msgSend(v8, "hasActionKeyMetadata"))
           {
-            v10 = [v8 actionKeyMetadata];
-            if ([v10 hasActionType])
+            actionKeyMetadata = [v8 actionKeyMetadata];
+            if ([actionKeyMetadata hasActionType])
             {
-              v11 = [v8 actionUUIDMetadatasCount];
+              actionUUIDMetadatasCount = [v8 actionUUIDMetadatasCount];
 
-              if (v11 != 1)
+              if (actionUUIDMetadatasCount != 1)
               {
                 continue;
               }
 
               v12 = objc_alloc(MEMORY[0x277CCACA8]);
-              v9 = [v8 appLaunchMetadata];
-              v10 = [v9 bundleId];
-              v21 = [v8 actionKeyMetadata];
-              v13 = [v21 actionType];
-              v14 = [v8 actionUUIDMetadatas];
-              v15 = [v14 firstObject];
-              v16 = [v12 initWithFormat:@"%@:%@:%lld", v10, v13, objc_msgSend(v15, "actionUUID")];
+              appLaunchMetadata = [v8 appLaunchMetadata];
+              actionKeyMetadata = [appLaunchMetadata bundleId];
+              actionKeyMetadata2 = [v8 actionKeyMetadata];
+              actionType = [actionKeyMetadata2 actionType];
+              actionUUIDMetadatas = [v8 actionUUIDMetadatas];
+              firstObject = [actionUUIDMetadatas firstObject];
+              v16 = [v12 initWithFormat:@"%@:%@:%lld", actionKeyMetadata, actionType, objc_msgSend(firstObject, "actionUUID")];
               [v20 addObject:v16];
             }
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v5 = [positiveActions countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v5);

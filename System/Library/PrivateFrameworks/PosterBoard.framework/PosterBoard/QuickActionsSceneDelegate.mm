@@ -1,39 +1,39 @@
 @interface QuickActionsSceneDelegate
 - (_TtC11PosterBoard25QuickActionsSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)setWindow:(id)window;
 @end
 
 @implementation QuickActionsSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC11PosterBoard25QuickActionsSceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC11PosterBoard25QuickActionsSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC11PosterBoard25QuickActionsSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_21B647454(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_21B647454(sceneCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC11PosterBoard25QuickActionsSceneDelegate_window);
   if (v3)
   {
-    v5 = a3;
-    v9 = self;
-    v6 = [v3 rootViewController];
-    if (v6)
+    disconnectCopy = disconnect;
+    selfCopy = self;
+    rootViewController = [v3 rootViewController];
+    if (rootViewController)
     {
-      v7 = v6;
+      v7 = rootViewController;
       v8 = swift_dynamicCastObjCProtocolConditional();
       if (v8)
       {

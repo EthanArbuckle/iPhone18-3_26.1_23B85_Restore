@@ -1,11 +1,11 @@
 @interface IDSDevicePropertiesStateNotifier
 + (id)sharedInstance;
 - (IDSDevicePropertiesStateNotifier)init;
-- (IDSDevicePropertiesStateNotifier)initWithUTunDeliveryController:(id)a3 pairingManager:(id)a4;
-- (unint64_t)_getCurrentState:(id)a3;
+- (IDSDevicePropertiesStateNotifier)initWithUTunDeliveryController:(id)controller pairingManager:(id)manager;
+- (unint64_t)_getCurrentState:(id)state;
 - (void)dealloc;
-- (void)setState:(unint64_t)a3 forProperty:(unint64_t)a4 deviceUniqueID:(id)a5;
-- (void)updateStateForDeviceWithUniqueID:(id)a3;
+- (void)setState:(unint64_t)state forProperty:(unint64_t)property deviceUniqueID:(id)d;
+- (void)updateStateForDeviceWithUniqueID:(id)d;
 @end
 
 @implementation IDSDevicePropertiesStateNotifier
@@ -31,10 +31,10 @@
   return v5;
 }
 
-- (IDSDevicePropertiesStateNotifier)initWithUTunDeliveryController:(id)a3 pairingManager:(id)a4
+- (IDSDevicePropertiesStateNotifier)initWithUTunDeliveryController:(id)controller pairingManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = IDSDevicePropertiesStateNotifier;
   v9 = [(IDSDevicePropertiesStateNotifier *)&v13 init];
@@ -44,8 +44,8 @@
     notifyDict = v9->_notifyDict;
     v9->_notifyDict = v10;
 
-    objc_storeStrong(&v9->_deliveryController, a3);
-    objc_storeStrong(&v9->_pairingManager, a4);
+    objc_storeStrong(&v9->_deliveryController, controller);
+    objc_storeStrong(&v9->_pairingManager, manager);
   }
 
   return v9;
@@ -57,8 +57,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(IDSDevicePropertiesStateNotifier *)self notifyDict];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  notifyDict = [(IDSDevicePropertiesStateNotifier *)self notifyDict];
+  v4 = [notifyDict countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -70,20 +70,20 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(notifyDict);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
-        v9 = [(IDSDevicePropertiesStateNotifier *)self notifyDict];
-        v10 = [v9 objectForKey:v8];
-        v11 = [v10 pointerValue];
+        notifyDict2 = [(IDSDevicePropertiesStateNotifier *)self notifyDict];
+        v10 = [notifyDict2 objectForKey:v8];
+        pointerValue = [v10 pointerValue];
 
-        free(v11);
+        free(pointerValue);
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [notifyDict countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -94,31 +94,31 @@
   [(IDSDevicePropertiesStateNotifier *)&v12 dealloc];
 }
 
-- (unint64_t)_getCurrentState:(id)a3
+- (unint64_t)_getCurrentState:(id)state
 {
-  v4 = a3;
-  v5 = [(IDSDevicePropertiesStateNotifier *)self pairingManager];
-  v6 = [v5 pairedDeviceUniqueID];
+  stateCopy = state;
+  pairingManager = [(IDSDevicePropertiesStateNotifier *)self pairingManager];
+  pairedDeviceUniqueID = [pairingManager pairedDeviceUniqueID];
 
-  LODWORD(v5) = [v6 isEqualToIgnoringCase:v4];
-  if (v5)
+  LODWORD(pairingManager) = [pairedDeviceUniqueID isEqualToIgnoringCase:stateCopy];
+  if (pairingManager)
   {
-    v7 = [(IDSDevicePropertiesStateNotifier *)self deliveryController];
-    v8 = [v7 defaultPeerIsConnected];
+    deliveryController = [(IDSDevicePropertiesStateNotifier *)self deliveryController];
+    defaultPeerIsConnected = [deliveryController defaultPeerIsConnected];
 
-    v9 = [(IDSDevicePropertiesStateNotifier *)self deliveryController];
-    v10 = [v9 defaultPeerIsNearby];
+    deliveryController2 = [(IDSDevicePropertiesStateNotifier *)self deliveryController];
+    defaultPeerIsNearby = [deliveryController2 defaultPeerIsNearby];
 
-    v11 = [(IDSDevicePropertiesStateNotifier *)self deliveryController];
-    v12 = [v11 defaultPeerIsCloudConnected];
+    deliveryController3 = [(IDSDevicePropertiesStateNotifier *)self deliveryController];
+    defaultPeerIsCloudConnected = [deliveryController3 defaultPeerIsCloudConnected];
 
-    if (v8)
+    if (defaultPeerIsConnected)
     {
       v13 = kIDSDeviceStatePropertiesIsConnected;
-      if (v10)
+      if (defaultPeerIsNearby)
       {
         v13 = kIDSDeviceStatePropertiesIsNearby | kIDSDeviceStatePropertiesIsConnected;
-        if ((v12 & 1) == 0)
+        if ((defaultPeerIsCloudConnected & 1) == 0)
         {
           goto LABEL_11;
         }
@@ -129,10 +129,10 @@
 
     else
     {
-      if ((v10 & 1) == 0)
+      if ((defaultPeerIsNearby & 1) == 0)
       {
         v13 = 0;
-        if ((v12 & 1) == 0)
+        if ((defaultPeerIsCloudConnected & 1) == 0)
         {
           goto LABEL_11;
         }
@@ -143,7 +143,7 @@
       v13 = kIDSDeviceStatePropertiesIsNearby;
     }
 
-    if (v12)
+    if (defaultPeerIsCloudConnected)
     {
 LABEL_10:
       v13 |= kIDSDeviceStatePropertiesIsCloudConnected;
@@ -160,24 +160,24 @@ LABEL_11:
   return v13;
 }
 
-- (void)updateStateForDeviceWithUniqueID:(id)a3
+- (void)updateStateForDeviceWithUniqueID:(id)d
 {
-  v5 = a3;
-  v4 = [(IDSDevicePropertiesStateNotifier *)self _getCurrentState:v5];
-  [(IDSDevicePropertiesStateNotifier *)self setState:v4 forProperty:kIDSDeviceStatePropertiesIsNearby | kIDSDeviceStatePropertiesIsConnected | kIDSDeviceStatePropertiesIsCloudConnected deviceUniqueID:v5];
+  dCopy = d;
+  v4 = [(IDSDevicePropertiesStateNotifier *)self _getCurrentState:dCopy];
+  [(IDSDevicePropertiesStateNotifier *)self setState:v4 forProperty:kIDSDeviceStatePropertiesIsNearby | kIDSDeviceStatePropertiesIsConnected | kIDSDeviceStatePropertiesIsCloudConnected deviceUniqueID:dCopy];
 }
 
-- (void)setState:(unint64_t)a3 forProperty:(unint64_t)a4 deviceUniqueID:(id)a5
+- (void)setState:(unint64_t)state forProperty:(unint64_t)property deviceUniqueID:(id)d
 {
-  v8 = a5;
-  if ([v8 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    if ([v8 isEqualToIgnoringCase:IDSDeviceDefaultPairedDeviceUniqueID])
+    if ([dCopy isEqualToIgnoringCase:IDSDeviceDefaultPairedDeviceUniqueID])
     {
-      v9 = [(IDSDevicePropertiesStateNotifier *)self pairingManager];
-      v10 = [v9 pairedDeviceUniqueID];
+      pairingManager = [(IDSDevicePropertiesStateNotifier *)self pairingManager];
+      pairedDeviceUniqueID = [pairingManager pairedDeviceUniqueID];
 
-      if (![v10 length])
+      if (![pairedDeviceUniqueID length])
       {
         v27 = +[IMRGLog deviceState];
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -188,32 +188,32 @@ LABEL_11:
         goto LABEL_32;
       }
 
-      v8 = v10;
+      dCopy = pairedDeviceUniqueID;
     }
 
-    v10 = [NSString stringWithFormat:@"%@-%@", IDSDeviceStateTokenPrefix, v8];
-    v11 = [(IDSDevicePropertiesStateNotifier *)self notifyDict];
-    v12 = [v11 objectForKey:v10];
-    v13 = [v12 pointerValue];
+    pairedDeviceUniqueID = [NSString stringWithFormat:@"%@-%@", IDSDeviceStateTokenPrefix, dCopy];
+    notifyDict = [(IDSDevicePropertiesStateNotifier *)self notifyDict];
+    v12 = [notifyDict objectForKey:pairedDeviceUniqueID];
+    pointerValue = [v12 pointerValue];
 
     state64 = 0;
     v14 = +[IMRGLog deviceState];
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v13)
+    if (pointerValue)
     {
       if (v15)
       {
-        v16 = *v13;
+        v16 = *pointerValue;
         *buf = 67109378;
         *v30 = v16;
         *&v30[4] = 2112;
-        *&v30[6] = v10;
+        *&v30[6] = pairedDeviceUniqueID;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Found existing notify token %d for name %@", buf, 0x12u);
       }
 
-      notify_get_state(*v13, &state64);
+      notify_get_state(*pointerValue, &state64);
       v17 = state64;
-      v18 = v13;
+      v18 = pointerValue;
     }
 
     else
@@ -221,22 +221,22 @@ LABEL_11:
       if (v15)
       {
         *buf = 138412290;
-        *v30 = v10;
+        *v30 = pairedDeviceUniqueID;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "We didn't find a notify token for %@, adding one...", buf, 0xCu);
       }
 
       v18 = malloc_type_malloc(4uLL, 0x100004052888210uLL);
       *v18 = 0;
-      notify_register_check([v10 UTF8String], v18);
-      v19 = [(IDSDevicePropertiesStateNotifier *)self notifyDict];
+      notify_register_check([pairedDeviceUniqueID UTF8String], v18);
+      notifyDict2 = [(IDSDevicePropertiesStateNotifier *)self notifyDict];
       v20 = [NSValue valueWithPointer:v18];
-      [v19 setValue:v20 forKey:v10];
+      [notifyDict2 setValue:v20 forKey:pairedDeviceUniqueID];
 
-      v17 = [(IDSDevicePropertiesStateNotifier *)self _getCurrentState:v8];
+      v17 = [(IDSDevicePropertiesStateNotifier *)self _getCurrentState:dCopy];
       state64 = v17;
     }
 
-    v21 = v17 & ~a4 | a4 & a3;
+    v21 = v17 & ~property | property & state;
     v22 = +[IMRGLog deviceState];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
@@ -267,7 +267,7 @@ LABEL_11:
       }
 
       *buf = 138413058;
-      *v30 = v10;
+      *v30 = pairedDeviceUniqueID;
       *&v30[8] = 2112;
       *&v30[10] = v24;
       v31 = 2112;
@@ -277,7 +277,7 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Received device properties state change for device with uniqueID %@ - nearby %@  connected %@  cloud connected %@", buf, 0x2Au);
     }
 
-    if (!v13 || v17 != v21)
+    if (!pointerValue || v17 != v21)
     {
       v26 = +[IMRGLog deviceState];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -290,7 +290,7 @@ LABEL_11:
       }
 
       notify_set_state(*v18, v21);
-      notify_post([v10 UTF8String]);
+      notify_post([pairedDeviceUniqueID UTF8String]);
       if ((kIDSDeviceStatePropertiesIsNearby & (v21 ^ v17)) != 0)
       {
         v27 = +[IDSDaemon sharedInstance];
@@ -302,10 +302,10 @@ LABEL_32:
 
   else
   {
-    v10 = +[IMRGLog deviceState];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    pairedDeviceUniqueID = +[IMRGLog deviceState];
+    if (os_log_type_enabled(pairedDeviceUniqueID, OS_LOG_TYPE_ERROR))
     {
-      sub_10093308C(v10);
+      sub_10093308C(pairedDeviceUniqueID);
     }
   }
 }

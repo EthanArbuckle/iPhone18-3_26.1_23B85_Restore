@@ -1,11 +1,11 @@
 @interface _NSPersistentHistoryToken
-- (BOOL)isEqual:(id)a3;
-- (_NSPersistentHistoryToken)initWithCoder:(id)a3;
-- (_NSPersistentHistoryToken)initWithDictionary:(id)a3;
-- (_NSPersistentHistoryToken)initWithTransactionNumber:(id)a3 andStoreID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_NSPersistentHistoryToken)initWithCoder:(id)coder;
+- (_NSPersistentHistoryToken)initWithDictionary:(id)dictionary;
+- (_NSPersistentHistoryToken)initWithTransactionNumber:(id)number andStoreID:(id)d;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (int64_t)compareToken:(id)a3 error:(id *)a4;
+- (int64_t)compare:(id)compare;
+- (int64_t)compareToken:(id)token error:(id *)error;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -29,7 +29,7 @@
   return v4;
 }
 
-- (_NSPersistentHistoryToken)initWithTransactionNumber:(id)a3 andStoreID:(id)a4
+- (_NSPersistentHistoryToken)initWithTransactionNumber:(id)number andStoreID:(id)d
 {
   v9.receiver = self;
   v9.super_class = _NSPersistentHistoryToken;
@@ -37,9 +37,9 @@
   v7 = v6;
   if (v6)
   {
-    if (a3 && a4)
+    if (number && d)
     {
-      v6->_storeTokens = [MEMORY[0x1E695DF20] dictionaryWithObject:a3 forKey:a4];
+      v6->_storeTokens = [MEMORY[0x1E695DF20] dictionaryWithObject:number forKey:d];
     }
 
     else
@@ -52,16 +52,16 @@
   return v7;
 }
 
-- (_NSPersistentHistoryToken)initWithDictionary:(id)a3
+- (_NSPersistentHistoryToken)initWithDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = _NSPersistentHistoryToken;
   v4 = [(_NSPersistentHistoryToken *)&v6 init];
   if (v4)
   {
-    if ([a3 count])
+    if ([dictionary count])
     {
-      v4->_storeTokens = a3;
+      v4->_storeTokens = dictionary;
     }
 
     else
@@ -74,9 +74,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -88,12 +88,12 @@
   }
 
   storeTokens = self->_storeTokens;
-  v6 = [a3 storeTokens];
+  storeTokens = [equal storeTokens];
 
-  return [(NSDictionary *)storeTokens isEqual:v6];
+  return [(NSDictionary *)storeTokens isEqual:storeTokens];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(a2);
@@ -103,11 +103,11 @@
   objc_exception_throw(v7);
 }
 
-- (int64_t)compareToken:(id)a3 error:(id *)a4
+- (int64_t)compareToken:(id)token error:(id *)error
 {
   v40[1] = *MEMORY[0x1E69E9840];
   v7 = [objc_msgSend(-[_NSPersistentHistoryToken storeTokens](self "storeTokens")];
-  v8 = [objc_msgSend(objc_msgSend(a3 "storeTokens")];
+  v8 = [objc_msgSend(objc_msgSend(token "storeTokens")];
   v9 = [v7 count];
   if (v9 != [v8 count])
   {
@@ -154,10 +154,10 @@
     if (v20)
     {
 LABEL_19:
-      if (a4)
+      if (error)
       {
         v13 = 0;
-        *a4 = v20;
+        *error = v20;
         goto LABEL_29;
       }
 
@@ -211,7 +211,7 @@ LABEL_31:
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
-        v16 = [objc_msgSend(a3 "storeTokens")];
+        v16 = [objc_msgSend(token "storeTokens")];
         if (v16)
         {
           v17 = [-[NSDictionary objectForKey:](self->_storeTokens objectForKey:{v15), "compare:", v16}];
@@ -282,7 +282,7 @@ LABEL_29:
   return v4;
 }
 
-- (_NSPersistentHistoryToken)initWithCoder:(id)a3
+- (_NSPersistentHistoryToken)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = _NSPersistentHistoryToken;
@@ -292,7 +292,7 @@ LABEL_29:
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
     v7 = objc_opt_class();
-    v8 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, objc_opt_class(), 0), @"NSPersistentHistoryTokenDictionary"}];
+    v8 = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, objc_opt_class(), 0), @"NSPersistentHistoryTokenDictionary"}];
     v4->_storeTokens = v8;
     if (![(NSDictionary *)v8 count])
     {

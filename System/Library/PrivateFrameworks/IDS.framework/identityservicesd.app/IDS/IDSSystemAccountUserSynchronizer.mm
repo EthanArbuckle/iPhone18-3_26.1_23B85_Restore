@@ -1,49 +1,49 @@
 @interface IDSSystemAccountUserSynchronizer
-- (IDSSystemAccountUserSynchronizer)initWithSystemAccountAdapter:(id)a3 userStore:(id)a4 migrationTracker:(id)a5 queue:(id)a6;
-- (id)updatedUserDescriptionSetForRealm:(int64_t)a3 currentUserDescriptions:(id)a4;
-- (void)forceRemoveUser:(id)a3 silently:(BOOL)a4;
+- (IDSSystemAccountUserSynchronizer)initWithSystemAccountAdapter:(id)adapter userStore:(id)store migrationTracker:(id)tracker queue:(id)queue;
+- (id)updatedUserDescriptionSetForRealm:(int64_t)realm currentUserDescriptions:(id)descriptions;
+- (void)forceRemoveUser:(id)user silently:(BOOL)silently;
 @end
 
 @implementation IDSSystemAccountUserSynchronizer
 
-- (IDSSystemAccountUserSynchronizer)initWithSystemAccountAdapter:(id)a3 userStore:(id)a4 migrationTracker:(id)a5 queue:(id)a6
+- (IDSSystemAccountUserSynchronizer)initWithSystemAccountAdapter:(id)adapter userStore:(id)store migrationTracker:(id)tracker queue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  adapterCopy = adapter;
+  storeCopy = store;
+  trackerCopy = tracker;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = IDSSystemAccountUserSynchronizer;
   v15 = [(IDSSystemAccountUserSynchronizer *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_systemAccountAdapter, a3);
-    objc_storeStrong(&v16->_userStore, a4);
-    objc_storeStrong(&v16->_migrationTracker, a5);
-    objc_storeStrong(&v16->_queue, a6);
+    objc_storeStrong(&v15->_systemAccountAdapter, adapter);
+    objc_storeStrong(&v16->_userStore, store);
+    objc_storeStrong(&v16->_migrationTracker, tracker);
+    objc_storeStrong(&v16->_queue, queue);
   }
 
   return v16;
 }
 
-- (void)forceRemoveUser:(id)a3 silently:(BOOL)a4
+- (void)forceRemoveUser:(id)user silently:(BOOL)silently
 {
-  v4 = a3;
+  userCopy = user;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
-    sub_1009330D0(v4, v5);
+    sub_1009330D0(userCopy, v5);
   }
 }
 
-- (id)updatedUserDescriptionSetForRealm:(int64_t)a3 currentUserDescriptions:(id)a4
+- (id)updatedUserDescriptionSetForRealm:(int64_t)realm currentUserDescriptions:(id)descriptions
 {
-  v6 = a4;
-  if (a3 != 1)
+  descriptionsCopy = descriptions;
+  if (realm != 1)
   {
 LABEL_29:
-    v30 = v6;
+    v30 = descriptionsCopy;
     goto LABEL_30;
   }
 
@@ -58,9 +58,9 @@ LABEL_29:
 
     if (!self->_migrationPromise)
     {
-      v32 = [(IDSDataMigrationTracker *)self->_migrationTracker performMigrationIfNeeded];
+      performMigrationIfNeeded = [(IDSDataMigrationTracker *)self->_migrationTracker performMigrationIfNeeded];
       migrationPromise = self->_migrationPromise;
-      self->_migrationPromise = v32;
+      self->_migrationPromise = performMigrationIfNeeded;
 
       v34 = self->_migrationPromise;
       v48[0] = _NSConcreteStackBlock;
@@ -74,17 +74,17 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v39 = [v6 mutableCopy];
+  v39 = [descriptionsCopy mutableCopy];
   systemAccountAdapter = self->_systemAccountAdapter;
   v47 = 0;
   v8 = [(IDSSystemAccountAdapter *)systemAccountAdapter iCloudSystemAccountWithError:&v47];
   v36 = v47;
-  v38 = v6;
+  v38 = descriptionsCopy;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v6;
+  obj = descriptionsCopy;
   v42 = [obj countByEnumeratingWithState:&v43 objects:v57 count:16];
   if (!v42)
   {
@@ -103,29 +103,29 @@ LABEL_29:
       }
 
       v10 = *(*(&v43 + 1) + 8 * v9);
-      v11 = [v10 user];
-      v12 = [v11 userName];
-      v13 = [v8 username];
-      if (v12 == v13)
+      user = [v10 user];
+      userName = [user userName];
+      username = [v8 username];
+      if (userName == username)
       {
         v16 = 1;
       }
 
       else
       {
-        v14 = [v11 userName];
-        v15 = [v8 username];
-        v16 = [v14 isEqual:v15];
+        userName2 = [user userName];
+        username2 = [v8 username];
+        v16 = [userName2 isEqual:username2];
       }
 
-      v17 = [v11 DSID];
-      v18 = [v8 DSID];
-      v19 = v18;
-      if (v17 != v18)
+      dSID = [user DSID];
+      dSID2 = [v8 DSID];
+      v19 = dSID2;
+      if (dSID != dSID2)
       {
-        v20 = [v11 DSID];
-        v21 = [v8 DSID];
-        v22 = [v20 isEqual:v21];
+        dSID3 = [user DSID];
+        dSID4 = [v8 DSID];
+        v22 = [dSID3 isEqual:dSID4];
 
         if (v22 & v16)
         {
@@ -158,9 +158,9 @@ LABEL_19:
   if (![v39 count] && v8)
   {
     v24 = [IDSAppleUser alloc];
-    v25 = [v8 username];
-    v26 = [v8 DSID];
-    v27 = [(IDSAppleUser *)v24 initWithUserName:v25 DSID:v26];
+    username3 = [v8 username];
+    dSID5 = [v8 DSID];
+    v27 = [(IDSAppleUser *)v24 initWithUserName:username3 DSID:dSID5];
 
     v28 = [[IDSUserDescription alloc] initWithUser:v27 properties:0];
     [v39 addObject:v28];
@@ -181,7 +181,7 @@ LABEL_19:
   }
 
   v30 = v39;
-  v6 = v38;
+  descriptionsCopy = v38;
 LABEL_30:
 
   return v30;

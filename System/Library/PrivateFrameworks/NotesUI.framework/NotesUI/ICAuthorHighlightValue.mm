@@ -1,5 +1,5 @@
 @interface ICAuthorHighlightValue
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
@@ -10,25 +10,25 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICAuthorHighlightValue *)self value];
-  v7 = [(ICAuthorHighlightValue *)self color];
+  value = [(ICAuthorHighlightValue *)self value];
+  color = [(ICAuthorHighlightValue *)self color];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICAuthorHighlightValue isAboveImplicitHighlights](self, "isAboveImplicitHighlights")}];
-  v9 = [v3 stringWithFormat:@"<%@: %p, value: %@, color: %@, aboveImplicitHighlights: %@>", v5, self, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p, value: %@, color: %@, aboveImplicitHighlights: %@>", v5, self, value, color, v8];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = ICDynamicCast();
 
-    v6 = [v5 value];
-    v7 = [(ICAuthorHighlightValue *)self value];
-    if (![v6 isEqual:v7])
+    value = [v5 value];
+    value2 = [(ICAuthorHighlightValue *)self value];
+    if (![value isEqual:value2])
     {
       LOBYTE(v17) = 0;
 LABEL_22:
@@ -36,28 +36,28 @@ LABEL_22:
       return v17;
     }
 
-    v8 = [(ICAuthorHighlightValue *)self color];
-    v9 = [v5 color];
+    color = [(ICAuthorHighlightValue *)self color];
+    color2 = [v5 color];
     v10 = *MEMORY[0x1E695E738];
-    if (*MEMORY[0x1E695E738] == v8)
+    if (*MEMORY[0x1E695E738] == color)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v8;
+      v11 = color;
     }
 
     v12 = v11;
-    if (v10 == v9)
+    if (v10 == color2)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = v9;
+      v13 = color2;
     }
 
     v14 = v13;
@@ -88,8 +88,8 @@ LABEL_22:
       if (v18)
       {
 LABEL_19:
-        v19 = [v5 isAboveImplicitHighlights];
-        v17 = v19 ^ [(ICAuthorHighlightValue *)self isAboveImplicitHighlights]^ 1;
+        isAboveImplicitHighlights = [v5 isAboveImplicitHighlights];
+        v17 = isAboveImplicitHighlights ^ [(ICAuthorHighlightValue *)self isAboveImplicitHighlights]^ 1;
 LABEL_21:
 
         goto LABEL_22;

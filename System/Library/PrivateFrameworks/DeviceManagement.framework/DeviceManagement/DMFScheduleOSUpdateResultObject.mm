@@ -1,28 +1,28 @@
 @interface DMFScheduleOSUpdateResultObject
-- (DMFScheduleOSUpdateResultObject)initWithAction:(unint64_t)a3 productKey:(id)a4 error:(id)a5;
-- (DMFScheduleOSUpdateResultObject)initWithCoder:(id)a3;
+- (DMFScheduleOSUpdateResultObject)initWithAction:(unint64_t)action productKey:(id)key error:(id)error;
+- (DMFScheduleOSUpdateResultObject)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFScheduleOSUpdateResultObject
 
-- (DMFScheduleOSUpdateResultObject)initWithAction:(unint64_t)a3 productKey:(id)a4 error:(id)a5
+- (DMFScheduleOSUpdateResultObject)initWithAction:(unint64_t)action productKey:(id)key error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  errorCopy = error;
   v17.receiver = self;
   v17.super_class = DMFScheduleOSUpdateResultObject;
   v10 = [(CATTaskResultObject *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_action = a3;
-    v12 = [v8 copy];
+    v10->_action = action;
+    v12 = [keyCopy copy];
     productKey = v11->_productKey;
     v11->_productKey = v12;
 
-    v14 = [v9 copy];
+    v14 = [errorCopy copy];
     error = v11->_error;
     v11->_error = v14;
   }
@@ -30,24 +30,24 @@
   return v11;
 }
 
-- (DMFScheduleOSUpdateResultObject)initWithCoder:(id)a3
+- (DMFScheduleOSUpdateResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = DMFScheduleOSUpdateResultObject;
-  v5 = [(CATTaskResultObject *)&v14 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     v5->_action = [v6 unsignedIntegerValue];
 
     v7 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"productKey"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"productKey"];
     productKey = v5->_productKey;
     v5->_productKey = v8;
 
     v10 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"error"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"error"];
     error = v5->_error;
     v5->_error = v11;
   }
@@ -55,20 +55,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = DMFScheduleOSUpdateResultObject;
-  v4 = a3;
-  [(CATTaskResultObject *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskResultObject *)&v8 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFScheduleOSUpdateResultObject action](self, "action", v8.receiver, v8.super_class)}];
-  [v4 encodeObject:v5 forKey:@"action"];
+  [coderCopy encodeObject:v5 forKey:@"action"];
 
-  v6 = [(DMFScheduleOSUpdateResultObject *)self productKey];
-  [v4 encodeObject:v6 forKey:@"productKey"];
+  productKey = [(DMFScheduleOSUpdateResultObject *)self productKey];
+  [coderCopy encodeObject:productKey forKey:@"productKey"];
 
-  v7 = [(DMFScheduleOSUpdateResultObject *)self error];
-  [v4 encodeObject:v7 forKey:@"error"];
+  error = [(DMFScheduleOSUpdateResultObject *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 }
 
 - (id)description
@@ -77,11 +77,11 @@
   v4 = [DMFScheduleOSUpdateRequest _descriptionForAction:[(DMFScheduleOSUpdateResultObject *)self action]];
   [v3 appendFormat:@"\tAction      : %@\n", v4];
 
-  v5 = [(DMFScheduleOSUpdateResultObject *)self productKey];
-  v6 = v5;
-  if (v5)
+  productKey = [(DMFScheduleOSUpdateResultObject *)self productKey];
+  v6 = productKey;
+  if (productKey)
   {
-    v7 = v5;
+    v7 = productKey;
   }
 
   else
@@ -91,11 +91,11 @@
 
   [v3 appendFormat:@"\tProduct Key : %@\n", v7];
 
-  v8 = [(DMFScheduleOSUpdateResultObject *)self error];
-  v9 = v8;
-  if (v8)
+  error = [(DMFScheduleOSUpdateResultObject *)self error];
+  v9 = error;
+  if (error)
   {
-    v10 = v8;
+    v10 = error;
   }
 
   else

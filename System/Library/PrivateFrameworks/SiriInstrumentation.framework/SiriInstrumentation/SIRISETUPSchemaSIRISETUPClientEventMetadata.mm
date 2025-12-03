@@ -1,25 +1,25 @@
 @interface SIRISETUPSchemaSIRISETUPClientEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SIRISETUPSchemaSIRISETUPClientEventMetadata)initWithDictionary:(id)a3;
-- (SIRISETUPSchemaSIRISETUPClientEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SIRISETUPSchemaSIRISETUPClientEventMetadata)initWithDictionary:(id)dictionary;
+- (SIRISETUPSchemaSIRISETUPClientEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRISETUPSchemaSIRISETUPClientEventMetadata
 
-- (SIRISETUPSchemaSIRISETUPClientEventMetadata)initWithDictionary:(id)a3
+- (SIRISETUPSchemaSIRISETUPClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SIRISETUPSchemaSIRISETUPClientEventMetadata;
   v5 = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"siriSetupId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"siriSetupId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (SIRISETUPSchemaSIRISETUPClientEventMetadata)initWithJSON:(id)a3
+- (SIRISETUPSchemaSIRISETUPClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_siriSetupId)
   {
-    v4 = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    siriSetupId = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId];
+    dictionaryRepresentation = [siriSetupId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"siriSetupId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"siriSetupId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"siriSetupId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"siriSetupId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId];
-    v6 = [v4 siriSetupId];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    siriSetupId = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId];
+    siriSetupId2 = [equalCopy siriSetupId];
+    v7 = siriSetupId2;
+    if ((siriSetupId != 0) != (siriSetupId2 == 0))
     {
-      v8 = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId];
-      if (!v8)
+      siriSetupId3 = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId];
+      if (!siriSetupId3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId];
-      v11 = [v4 siriSetupId];
-      v12 = [v10 isEqual:v11];
+      v9 = siriSetupId3;
+      siriSetupId4 = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId];
+      siriSetupId5 = [equalCopy siriSetupId];
+      v12 = [siriSetupId4 isEqual:siriSetupId5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId];
+  toCopy = to;
+  siriSetupId = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId];
 
-  if (v4)
+  if (siriSetupId)
   {
-    v5 = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId];
+    siriSetupId2 = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SIRISETUPSchemaSIRISETUPClientEventMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self siriSetupId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SIRISETUPSchemaSIRISETUPClientEventMetadata *)self deleteSiriSetupId];
   }

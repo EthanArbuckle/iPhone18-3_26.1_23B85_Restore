@@ -1,51 +1,51 @@
 @interface TimeIntervalProvider
-- (TimeIntervalProvider)initWithStartDate:(id)a3 endDate:(id)a4;
-- (TimeIntervalProvider)initWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 locale:(id)a6 timeZone:(id)a7;
-- (_NSRange)_rangeOfAnnontatedTime:(id)a3 matchingPattern:(id)a4;
-- (_NSRange)_rangeOfDesignatorInAnnotatedTime:(id)a3;
-- (_NSRange)_rangeOfHoursInAnnotatedTime:(id)a3;
-- (id)_dateIntervalTextWithNarrow:(BOOL)a3;
+- (TimeIntervalProvider)initWithStartDate:(id)date endDate:(id)endDate;
+- (TimeIntervalProvider)initWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar locale:(id)locale timeZone:(id)zone;
+- (_NSRange)_rangeOfAnnontatedTime:(id)time matchingPattern:(id)pattern;
+- (_NSRange)_rangeOfDesignatorInAnnotatedTime:(id)time;
+- (_NSRange)_rangeOfHoursInAnnotatedTime:(id)time;
+- (id)_dateIntervalTextWithNarrow:(BOOL)narrow;
 - (id)_fallbackSequence;
-- (id)_sessionTextForIndex:(int64_t)a3 context:(id)a4;
-- (id)_stringByRemovingDesignatorRange:(_NSRange)a3 fromString:(id)a4;
-- (id)_textForSequenceItem:(int64_t)a3;
-- (id)_timeIntervalTextWithDropMinutes:(BOOL)a3 onlyStartDate:(BOOL)a4;
+- (id)_sessionTextForIndex:(int64_t)index context:(id)context;
+- (id)_stringByRemovingDesignatorRange:(_NSRange)range fromString:(id)string;
+- (id)_textForSequenceItem:(int64_t)item;
+- (id)_timeIntervalTextWithDropMinutes:(BOOL)minutes onlyStartDate:(BOOL)date;
 @end
 
 @implementation TimeIntervalProvider
 
-- (TimeIntervalProvider)initWithStartDate:(id)a3 endDate:(id)a4
+- (TimeIntervalProvider)initWithStartDate:(id)date endDate:(id)endDate
 {
   v6 = MEMORY[0x1E695DEE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 currentCalendar];
-  v10 = [MEMORY[0x1E695DF58] currentLocale];
-  v11 = [(TimeIntervalProvider *)self initWithStartDate:v8 endDate:v7 calendar:v9 locale:v10 timeZone:0];
+  endDateCopy = endDate;
+  dateCopy = date;
+  currentCalendar = [v6 currentCalendar];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v11 = [(TimeIntervalProvider *)self initWithStartDate:dateCopy endDate:endDateCopy calendar:currentCalendar locale:currentLocale timeZone:0];
 
   return v11;
 }
 
-- (TimeIntervalProvider)initWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 locale:(id)a6 timeZone:(id)a7
+- (TimeIntervalProvider)initWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar locale:(id)locale timeZone:(id)zone
 {
-  v13 = a3;
-  v14 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v18.receiver = self;
   v18.super_class = TimeIntervalProvider;
-  v15 = [(BaseDateProvider *)&v18 initWithCalendar:a5 locale:a6 timeZone:a7];
+  v15 = [(BaseDateProvider *)&v18 initWithCalendar:calendar locale:locale timeZone:zone];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_startDate, a3);
-    objc_storeStrong(&v16->_endDate, a4);
+    objc_storeStrong(&v15->_startDate, date);
+    objc_storeStrong(&v16->_endDate, endDate);
   }
 
   return v16;
 }
 
-- (id)_sessionTextForIndex:(int64_t)a3 context:(id)a4
+- (id)_sessionTextForIndex:(int64_t)index context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   if (!self->_startDate || !self->_endDate)
   {
     goto LABEL_11;
@@ -57,37 +57,37 @@
     dateFormatter = self->_dateFormatter;
     self->_dateFormatter = v7;
 
-    v9 = [(BaseDateProvider *)self timeZone];
+    timeZone = [(BaseDateProvider *)self timeZone];
 
-    if (v9)
+    if (timeZone)
     {
-      v10 = [(BaseDateProvider *)self timeZone];
-      [(NSDateFormatter *)self->_dateFormatter setTimeZone:v10];
+      timeZone2 = [(BaseDateProvider *)self timeZone];
+      [(NSDateFormatter *)self->_dateFormatter setTimeZone:timeZone2];
     }
 
-    v11 = [(BaseDateProvider *)self calendar];
-    [(NSDateFormatter *)self->_dateFormatter setCalendar:v11];
+    calendar = [(BaseDateProvider *)self calendar];
+    [(NSDateFormatter *)self->_dateFormatter setCalendar:calendar];
 
-    v12 = [(BaseDateProvider *)self locale];
-    [(NSDateFormatter *)self->_dateFormatter setLocale:v12];
+    locale = [(BaseDateProvider *)self locale];
+    [(NSDateFormatter *)self->_dateFormatter setLocale:locale];
   }
 
   fallbackSequence = self->_fallbackSequence;
   if (!fallbackSequence)
   {
-    v14 = [(TimeIntervalProvider *)self _fallbackSequence];
+    _fallbackSequence = [(TimeIntervalProvider *)self _fallbackSequence];
     v15 = self->_fallbackSequence;
-    self->_fallbackSequence = v14;
+    self->_fallbackSequence = _fallbackSequence;
 
     fallbackSequence = self->_fallbackSequence;
   }
 
-  if ([(NSArray *)fallbackSequence count]> a3)
+  if ([(NSArray *)fallbackSequence count]> index)
   {
-    v16 = [(NSArray *)self->_fallbackSequence objectAtIndex:a3];
-    v17 = [v16 integerValue];
+    v16 = [(NSArray *)self->_fallbackSequence objectAtIndex:index];
+    integerValue = [v16 integerValue];
 
-    v18 = [(TimeIntervalProvider *)self _textForSequenceItem:v17];
+    v18 = [(TimeIntervalProvider *)self _textForSequenceItem:integerValue];
   }
 
   else
@@ -99,17 +99,17 @@ LABEL_11:
   return v18;
 }
 
-- (_NSRange)_rangeOfDesignatorInAnnotatedTime:(id)a3
+- (_NSRange)_rangeOfDesignatorInAnnotatedTime:(id)time
 {
-  v3 = [(TimeIntervalProvider *)self _rangeOfAnnontatedTime:a3 matchingPattern:&__block_literal_global_4];
+  v3 = [(TimeIntervalProvider *)self _rangeOfAnnontatedTime:time matchingPattern:&__block_literal_global_4];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)_rangeOfHoursInAnnotatedTime:(id)a3
+- (_NSRange)_rangeOfHoursInAnnotatedTime:(id)time
 {
-  v3 = [(TimeIntervalProvider *)self _rangeOfAnnontatedTime:a3 matchingPattern:&__block_literal_global_11];
+  v3 = [(TimeIntervalProvider *)self _rangeOfAnnontatedTime:time matchingPattern:&__block_literal_global_11];
   result.length = v4;
   result.location = v3;
   return result;
@@ -131,24 +131,24 @@ uint64_t __53__TimeIntervalProvider__rangeOfHoursInAnnotatedTime___block_invoke(
   return v3;
 }
 
-- (_NSRange)_rangeOfAnnontatedTime:(id)a3 matchingPattern:(id)a4
+- (_NSRange)_rangeOfAnnontatedTime:(id)time matchingPattern:(id)pattern
 {
-  v5 = a3;
-  v6 = a4;
+  timeCopy = time;
+  patternCopy = pattern;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3010000000;
   v19 = &unk_18DF3E30F;
   v20 = xmmword_18DD854F0;
-  v7 = [v5 length];
+  v7 = [timeCopy length];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __63__TimeIntervalProvider__rangeOfAnnontatedTime_matchingPattern___block_invoke;
   v13[3] = &unk_1E7242288;
-  v8 = v6;
+  v8 = patternCopy;
   v14 = v8;
   v15 = &v16;
-  [v5 enumerateAttributesInRange:0 options:v7 usingBlock:{0, v13}];
+  [timeCopy enumerateAttributesInRange:0 options:v7 usingBlock:{0, v13}];
   v9 = v17[4];
   v10 = v17[5];
 
@@ -172,27 +172,27 @@ void __63__TimeIntervalProvider__rangeOfAnnontatedTime_matchingPattern___block_i
   }
 }
 
-- (id)_stringByRemovingDesignatorRange:(_NSRange)a3 fromString:(id)a4
+- (id)_stringByRemovingDesignatorRange:(_NSRange)range fromString:(id)string
 {
-  v4 = [a4 stringByReplacingCharactersInRange:a3.location withString:{a3.length, &stru_1F00C2360}];
-  v5 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  v4 = [string stringByReplacingCharactersInRange:range.location withString:{range.length, &stru_1F00C2360}];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v6 = [v4 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v6;
 }
 
 - (id)_fallbackSequence
 {
-  v3 = [(BaseDateProvider *)self calendar];
-  v4 = [(BaseDateProvider *)self timeZone];
+  calendar = [(BaseDateProvider *)self calendar];
+  timeZone = [(BaseDateProvider *)self timeZone];
 
-  if (v4)
+  if (timeZone)
   {
-    v5 = [(BaseDateProvider *)self timeZone];
-    [v3 setTimeZone:v5];
+    timeZone2 = [(BaseDateProvider *)self timeZone];
+    [calendar setTimeZone:timeZone2];
   }
 
-  v6 = [v3 components:16 fromDate:self->_startDate toDate:self->_endDate options:0];
+  v6 = [calendar components:16 fromDate:self->_startDate toDate:self->_endDate options:0];
   v7 = [v6 day];
 
   if (v7)
@@ -202,8 +202,8 @@ void __63__TimeIntervalProvider__rangeOfAnnontatedTime_matchingPattern___block_i
   }
 
   v8 = [MEMORY[0x1E695DF70] arrayWithObject:&unk_1F00D2270];
-  v9 = [v3 component:64 fromDate:self->_startDate];
-  if (v9 | [v3 component:64 fromDate:self->_endDate])
+  v9 = [calendar component:64 fromDate:self->_startDate];
+  if (v9 | [calendar component:64 fromDate:self->_endDate])
   {
     [v8 addObject:&unk_1F00D22A0];
     if (v9)
@@ -224,81 +224,81 @@ LABEL_9:
   return v8;
 }
 
-- (id)_textForSequenceItem:(int64_t)a3
+- (id)_textForSequenceItem:(int64_t)item
 {
-  v4 = 0;
-  if (a3 > 2)
+  _startTimeDropMinutesText = 0;
+  if (item > 2)
   {
-    switch(a3)
+    switch(item)
     {
       case 3:
-        v4 = [(TimeIntervalProvider *)self _startTimeDropMinutesText];
+        _startTimeDropMinutesText = [(TimeIntervalProvider *)self _startTimeDropMinutesText];
         break;
       case 4:
-        v4 = [(TimeIntervalProvider *)self _dateIntervalWideText];
+        _startTimeDropMinutesText = [(TimeIntervalProvider *)self _dateIntervalWideText];
         break;
       case 5:
-        v4 = [(TimeIntervalProvider *)self _dateIntervalNarrowText];
+        _startTimeDropMinutesText = [(TimeIntervalProvider *)self _dateIntervalNarrowText];
         break;
     }
   }
 
-  else if (a3)
+  else if (item)
   {
-    if (a3 == 1)
+    if (item == 1)
     {
-      v4 = [(TimeIntervalProvider *)self _timeIntervalDropMinutesText];
+      _startTimeDropMinutesText = [(TimeIntervalProvider *)self _timeIntervalDropMinutesText];
     }
 
-    else if (a3 == 2)
+    else if (item == 2)
     {
-      v4 = [(TimeIntervalProvider *)self _startTimeFullText];
+      _startTimeDropMinutesText = [(TimeIntervalProvider *)self _startTimeFullText];
     }
   }
 
   else
   {
-    v4 = [(TimeIntervalProvider *)self _timeIntervalFullText];
+    _startTimeDropMinutesText = [(TimeIntervalProvider *)self _timeIntervalFullText];
   }
 
-  return v4;
+  return _startTimeDropMinutesText;
 }
 
-- (id)_timeIntervalTextWithDropMinutes:(BOOL)a3 onlyStartDate:(BOOL)a4
+- (id)_timeIntervalTextWithDropMinutes:(BOOL)minutes onlyStartDate:(BOOL)date
 {
-  v4 = a4;
+  dateCopy = date;
   v6 = MEMORY[0x1E696AB78];
   v7 = _StandardTimeFormatTemplate;
-  if (a3)
+  if (minutes)
   {
     v7 = &_NoMinutesTimeFormatTemplate;
   }
 
   v8 = *v7;
-  v9 = [(BaseDateProvider *)self locale];
-  v10 = [v6 dateFormatFromTemplate:v8 options:0 locale:v9];
+  locale = [(BaseDateProvider *)self locale];
+  v10 = [v6 dateFormatFromTemplate:v8 options:0 locale:locale];
 
   v49 = 0;
   v11 = [(BaseDateProvider *)self _timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:v10 designatorExists:&v49];
 
   [(NSDateFormatter *)self->_dateFormatter setDateFormat:v11];
   v12 = [(NSDateFormatter *)self->_dateFormatter _attributedStringWithFieldsFromDate:self->_startDate];
-  v13 = [v12 string];
+  string = [v12 string];
 
-  if (v13)
+  if (string)
   {
     v15 = [(TimeIntervalProvider *)self _rangeOfDesignatorInAnnotatedTime:v12];
     v16 = v14;
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v17 = 0;
-      if (!v4)
+      string9 = 0;
+      if (!dateCopy)
       {
 LABEL_6:
         v18 = [(NSDateFormatter *)self->_dateFormatter _attributedStringWithFieldsFromDate:self->_endDate];
-        v13 = [v18 string];
+        string = [v18 string];
 
-        if (!v13)
+        if (!string)
         {
 LABEL_30:
 
@@ -314,39 +314,39 @@ LABEL_30:
         if (v20 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v25 = v18;
-          v24 = v17;
-          v27 = 0;
+          v24 = string9;
+          string2 = 0;
         }
 
         else
         {
-          v24 = v17;
+          v24 = string9;
           v25 = v22;
           v26 = [v22 attributedSubstringFromRange:{v20, v19}];
-          v27 = [v26 string];
+          string2 = [v26 string];
 
           v21 = v20;
         }
 
 LABEL_12:
-        v28 = [(BaseDateProvider *)self locale];
-        v29 = LocalizedString(@"INTERVAL_HYPHEN_NARROW", v28);
+        locale2 = [(BaseDateProvider *)self locale];
+        v29 = LocalizedString(@"INTERVAL_HYPHEN_NARROW", locale2);
 
-        v17 = v24;
-        if (!(v24 | v27))
+        string9 = v24;
+        if (!(v24 | string2))
         {
           v18 = v25;
-          if (v4)
+          if (dateCopy)
           {
-            v13 = [v12 string];
+            string = [v12 string];
           }
 
           else
           {
             v32 = MEMORY[0x1E696AEC0];
-            v33 = [v12 string];
-            v34 = [v25 string];
-            v13 = [v32 stringWithFormat:@"%@%@%@", v33, v29, v34];
+            string3 = [v12 string];
+            string4 = [v25 string];
+            string = [v32 stringWithFormat:@"%@%@%@", string3, v29, string4];
           }
 
           v11 = v48;
@@ -354,40 +354,40 @@ LABEL_12:
         }
 
         v47 = v24;
-        v30 = [v12 string];
-        v31 = v30;
+        string5 = [v12 string];
+        v31 = string5;
         v18 = v25;
-        if (v4)
+        if (dateCopy)
         {
-          v13 = v30;
-          v31 = v13;
+          string = string5;
+          v31 = string;
           v11 = v48;
 LABEL_28:
 
-          v17 = v47;
+          string9 = v47;
 LABEL_29:
 
           goto LABEL_30;
         }
 
-        v35 = [v25 string];
+        string6 = [v25 string];
         v44 = v29;
         v11 = v48;
-        if (v27 && [v47 isEqualToString:v27])
+        if (string2 && [v47 isEqualToString:string2])
         {
-          v43 = v35;
-          v36 = [(BaseDateProvider *)self locale];
-          v42 = DropLeftRedundantDesignator(v36);
+          v43 = string6;
+          locale3 = [(BaseDateProvider *)self locale];
+          v42 = DropLeftRedundantDesignator(locale3);
 
           if (v42)
           {
-            v35 = v43;
+            string6 = v43;
             if (v15 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v37 = [v12 string];
+              string7 = [v12 string];
               v38 = v15;
-              v39 = v37;
-              [(TimeIntervalProvider *)self _stringByRemovingDesignatorRange:v38 fromString:v46, v37];
+              string8 = string7;
+              [(TimeIntervalProvider *)self _stringByRemovingDesignatorRange:v38 fromString:v46, string7];
               v31 = v40 = v31;
 LABEL_26:
             }
@@ -395,20 +395,20 @@ LABEL_26:
 
           else
           {
-            v35 = v43;
+            string6 = v43;
             if (v21 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v39 = [v18 string];
-              [(TimeIntervalProvider *)self _stringByRemovingDesignatorRange:v21 fromString:v45, v39];
-              v35 = v40 = v43;
+              string8 = [v18 string];
+              [(TimeIntervalProvider *)self _stringByRemovingDesignatorRange:v21 fromString:v45, string8];
+              string6 = v40 = v43;
               goto LABEL_26;
             }
           }
         }
 
-        v13 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v31];
-        [v13 appendString:v44];
-        [v13 appendString:v35];
+        string = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v31];
+        [string appendString:v44];
+        [string appendString:string6];
 
         goto LABEL_28;
       }
@@ -417,9 +417,9 @@ LABEL_26:
     else
     {
       v23 = [v12 attributedSubstringFromRange:{v15, v14}];
-      v17 = [v23 string];
+      string9 = [v23 string];
 
-      if (!v4)
+      if (!dateCopy)
       {
         goto LABEL_6;
       }
@@ -428,8 +428,8 @@ LABEL_26:
     v45 = 0;
     v46 = v16;
     v48 = v11;
-    v24 = v17;
-    v27 = 0;
+    v24 = string9;
+    string2 = 0;
     v25 = 0;
     v21 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_12;
@@ -437,12 +437,12 @@ LABEL_26:
 
 LABEL_31:
 
-  return v13;
+  return string;
 }
 
-- (id)_dateIntervalTextWithNarrow:(BOOL)a3
+- (id)_dateIntervalTextWithNarrow:(BOOL)narrow
 {
-  if (a3)
+  if (narrow)
   {
     v4 = @"M/d";
   }
@@ -456,8 +456,8 @@ LABEL_31:
   v5 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:self->_startDate];
   v6 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:self->_endDate];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(BaseDateProvider *)self locale];
-  v9 = LocalizedString(@"INTERVAL_HYPHEN_WIDE", v8);
+  locale = [(BaseDateProvider *)self locale];
+  v9 = LocalizedString(@"INTERVAL_HYPHEN_WIDE", locale);
   v10 = [v7 stringWithFormat:@"%@%@%@", v5, v9, v6];
 
   return v10;

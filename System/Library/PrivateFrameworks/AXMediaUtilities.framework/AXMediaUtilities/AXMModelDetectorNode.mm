@@ -1,11 +1,11 @@
 @interface AXMModelDetectorNode
-- (AXMModelDetectorNode)initWithCoder:(id)a3;
-- (BOOL)_loadModel:(id *)a3;
+- (AXMModelDetectorNode)initWithCoder:(id)coder;
+- (BOOL)_loadModel:(id *)model;
 - (NSString)modelIdentifier;
-- (void)encodeWithCoder:(id)a3;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 - (void)nodeInitialize;
-- (void)setModelURL:(id)a3;
+- (void)setModelURL:(id)l;
 @end
 
 @implementation AXMModelDetectorNode
@@ -17,15 +17,15 @@
   [(AXMEvaluationNode *)&v2 nodeInitialize];
 }
 
-- (AXMModelDetectorNode)initWithCoder:(id)a3
+- (AXMModelDetectorNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = AXMModelDetectorNode;
-  v5 = [(AXMEvaluationNode *)&v10 initWithCoder:v4];
+  v5 = [(AXMEvaluationNode *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"modelURL"];
+    v6 = [coderCopy decodeObjectForKey:@"modelURL"];
     if (v6)
     {
       v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
@@ -37,42 +37,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AXMModelDetectorNode;
-  v4 = a3;
-  [(AXMEvaluationNode *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AXMEvaluationNode *)&v6 encodeWithCoder:coderCopy];
   v5 = [(NSURL *)self->_modelURL path:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"modelURL"];
+  [coderCopy encodeObject:v5 forKey:@"modelURL"];
 }
 
 - (NSString)modelIdentifier
 {
-  v2 = [(NSURL *)self->_modelURL lastPathComponent];
-  v3 = [v2 stringByDeletingPathExtension];
+  lastPathComponent = [(NSURL *)self->_modelURL lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  return v3;
+  return stringByDeletingPathExtension;
 }
 
-- (void)setModelURL:(id)a3
+- (void)setModelURL:(id)l
 {
-  v6 = a3;
+  lCopy = l;
   if (([(NSURL *)self->_modelURL isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_modelURL, a3);
+    objc_storeStrong(&self->_modelURL, l);
     model = self->_model;
     self->_model = 0;
   }
 }
 
-- (BOOL)_loadModel:(id *)a3
+- (BOOL)_loadModel:(id *)model
 {
   v57 = *MEMORY[0x1E69E9840];
   if (self->_model)
   {
     v4 = 0;
-    if (!a3)
+    if (!model)
     {
       goto LABEL_19;
     }
@@ -80,9 +80,9 @@
     goto LABEL_18;
   }
 
-  v6 = [(AXMModelDetectorNode *)self modelURL];
+  modelURL = [(AXMModelDetectorNode *)self modelURL];
 
-  if (!v6)
+  if (!modelURL)
   {
     v17 = @"Could not load model. modelURL was nil";
     goto LABEL_17;
@@ -113,21 +113,21 @@
     v17 = @"Could not load model. VNCoreMLModelSoft does not respond to modelForMLModel:error:";
 LABEL_17:
     v4 = _AXMMakeError(0, v17, v7, v8, v9, v10, v11, v12, v50);
-    if (!a3)
+    if (!model)
     {
       goto LABEL_19;
     }
 
 LABEL_18:
     v18 = v4;
-    *a3 = v4;
+    *model = v4;
     goto LABEL_19;
   }
 
   MLModelClass = getMLModelClass();
-  v14 = [(AXMModelDetectorNode *)self modelURL];
+  modelURL2 = [(AXMModelDetectorNode *)self modelURL];
   v54 = 0;
-  v15 = [MLModelClass modelWithContentsOfURL:v14 error:&v54];
+  v15 = [MLModelClass modelWithContentsOfURL:modelURL2 error:&v54];
   v16 = v54;
 
   if (!v15 || v16)
@@ -140,15 +140,15 @@ LABEL_18:
     }
 
     v21 = getMLModelClass();
-    v22 = [(AXMModelDetectorNode *)self modelURL];
+    modelURL3 = [(AXMModelDetectorNode *)self modelURL];
     v53 = 0;
-    v23 = [v21 compileModelAtURL:v22 error:&v53];
+    v23 = [v21 compileModelAtURL:modelURL3 error:&v53];
     v24 = v53;
 
     if (!v23 || v24)
     {
-      v28 = [(AXMModelDetectorNode *)self modelURL];
-      v4 = _AXMMakeError(0, @"Failed to compile model on the fly at URL: %@. error:%@\nTried to compile model due to original error: %@", v35, v36, v37, v38, v39, v40, v28);
+      modelURL4 = [(AXMModelDetectorNode *)self modelURL];
+      v4 = _AXMMakeError(0, @"Failed to compile model on the fly at URL: %@. error:%@\nTried to compile model due to original error: %@", v35, v36, v37, v38, v39, v40, modelURL4);
 
       v27 = v15;
     }
@@ -159,17 +159,17 @@ LABEL_18:
       v25 = AXMediaLogCommon();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v23 path];
+        path = [v23 path];
         *buf = 138412290;
-        v56 = v26;
+        v56 = path;
         _os_log_impl(&dword_1AE37B000, v25, OS_LOG_TYPE_DEFAULT, "Successfully compiled CoreML model to %@", buf, 0xCu);
       }
 
       v52 = 0;
       v27 = [getMLModelClass() modelWithContentsOfURL:v23 error:&v52];
-      v28 = v52;
+      modelURL4 = v52;
 
-      if (v27 && !v28)
+      if (v27 && !modelURL4)
       {
         v4 = 0;
 LABEL_32:
@@ -203,7 +203,7 @@ LABEL_33:
     }
   }
 
-  if (a3)
+  if (model)
   {
     goto LABEL_18;
   }
@@ -213,22 +213,22 @@ LABEL_19:
   return v4 == 0;
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
   v49.receiver = self;
   v49.super_class = AXMModelDetectorNode;
-  [(AXMEvaluationNode *)&v49 evaluate:v6 metrics:v7];
+  [(AXMEvaluationNode *)&v49 evaluate:evaluateCopy metrics:metricsCopy];
   v8 = objc_autoreleasePoolPush();
   if (getVNClassificationObservationClass())
   {
     if (getVNCoreMLRequestClass())
     {
-      v9 = [(AXMModelDetectorNode *)self modelURL];
+      modelURL = [(AXMModelDetectorNode *)self modelURL];
 
-      if (v9)
+      if (modelURL)
       {
         v48 = 0;
         v10 = [(AXMModelDetectorNode *)self _loadModel:&v48];
@@ -240,35 +240,35 @@ LABEL_19:
           v50[0] = v12;
           v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
           v47 = v11;
-          [(AXMEvaluationNode *)self evaluateRequests:v13 withContext:v6 requestHandlerOptions:0 metrics:v7 error:&v47];
+          [(AXMEvaluationNode *)self evaluateRequests:v13 withContext:evaluateCopy requestHandlerOptions:0 metrics:metricsCopy error:&v47];
           v14 = v47;
 
-          v15 = [v12 results];
-          v16 = [v15 firstObject];
+          results = [v12 results];
+          firstObject = [results firstObject];
 
           getVNClassificationObservationClass();
           if (objc_opt_isKindOfClass())
           {
-            v17 = v16;
+            v17 = firstObject;
             [v17 confidence];
             v19 = v18;
             [(AXMEvaluationNode *)self minimumConfidence];
             if (v20 <= v19)
             {
-              v43 = [(AXMModelDetectorNode *)self modelIdentifier];
-              v44 = v43;
+              modelIdentifier = [(AXMModelDetectorNode *)self modelIdentifier];
+              v44 = modelIdentifier;
               v45 = @"UnknownModel";
-              if (v43)
+              if (modelIdentifier)
               {
-                v45 = v43;
+                v45 = modelIdentifier;
               }
 
               v46 = v45;
 
-              [v6 size];
+              [evaluateCopy size];
               v21 = [AXMVisionFeature featureWithVisionRequest:v12 modelClassificationResult:v17 modelIdentifier:v46 canvasSize:?];
 
-              [v6 appendFeature:v21];
+              [evaluateCopy appendFeature:v21];
             }
 
             else

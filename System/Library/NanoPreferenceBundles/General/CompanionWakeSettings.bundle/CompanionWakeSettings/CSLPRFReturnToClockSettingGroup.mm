@@ -1,28 +1,28 @@
 @interface CSLPRFReturnToClockSettingGroup
-- (BOOL)specifierIsWithinGroup:(id)a3;
-- (CSLPRFReturnToClockSettingGroup)initWithDelegate:(id)a3 returnToClockSetting:(int64_t)a4 header:(id)a5 appSpecific:(BOOL)a6;
+- (BOOL)specifierIsWithinGroup:(id)group;
+- (CSLPRFReturnToClockSettingGroup)initWithDelegate:(id)delegate returnToClockSetting:(int64_t)setting header:(id)header appSpecific:(BOOL)specific;
 - (CSLPRFReturnToClockSettingGroupDelegate)delegate;
 - (NSArray)specifiers;
-- (void)setSelectedSpecifier:(id)a3;
-- (void)specifierSelected:(id)a3;
+- (void)setSelectedSpecifier:(id)specifier;
+- (void)specifierSelected:(id)selected;
 @end
 
 @implementation CSLPRFReturnToClockSettingGroup
 
-- (CSLPRFReturnToClockSettingGroup)initWithDelegate:(id)a3 returnToClockSetting:(int64_t)a4 header:(id)a5 appSpecific:(BOOL)a6
+- (CSLPRFReturnToClockSettingGroup)initWithDelegate:(id)delegate returnToClockSetting:(int64_t)setting header:(id)header appSpecific:(BOOL)specific
 {
-  v10 = a3;
-  v11 = a5;
+  delegateCopy = delegate;
+  headerCopy = header;
   v15.receiver = self;
   v15.super_class = CSLPRFReturnToClockSettingGroup;
   v12 = [(CSLPRFReturnToClockSettingGroup *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v10);
-    v13->_returnToClockSetting = a4;
-    objc_storeStrong(&v13->_header, a5);
-    v13->_appSpecific = a6;
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    v13->_returnToClockSetting = setting;
+    objc_storeStrong(&v13->_header, header);
+    v13->_appSpecific = specific;
   }
 
   return v13;
@@ -69,13 +69,13 @@
   return v10;
 }
 
-- (void)setSelectedSpecifier:(id)a3
+- (void)setSelectedSpecifier:(id)specifier
 {
-  v4 = a3;
-  [(PSSpecifier *)self->_groupSpecifier setProperty:v4 forKey:PSRadioGroupCheckedSpecifierKey];
+  specifierCopy = specifier;
+  [(PSSpecifier *)self->_groupSpecifier setProperty:specifierCopy forKey:PSRadioGroupCheckedSpecifierKey];
   appSpecific = self->_appSpecific;
-  v6 = [v4 identifier];
-  v7 = v6;
+  identifier = [specifierCopy identifier];
+  v7 = identifier;
   if (appSpecific)
   {
     v8 = @"%@_APP_FOOTER";
@@ -86,7 +86,7 @@
     v8 = @"%@_FOOTER";
   }
 
-  v9 = [NSString stringWithFormat:v8, v6];
+  v9 = [NSString stringWithFormat:v8, identifier];
 
   v10 = cslprf_sessions_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -94,7 +94,7 @@
     *buf = 138412546;
     v16 = v9;
     v17 = 2112;
-    v18 = v4;
+    v18 = specifierCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "setting selected footer %@ for specifier %@", buf, 0x16u);
   }
 
@@ -107,30 +107,30 @@
   [WeakRetained reloadSpecifier:self->_groupSpecifier animated:0];
 }
 
-- (BOOL)specifierIsWithinGroup:(id)a3
+- (BOOL)specifierIsWithinGroup:(id)group
 {
-  v3 = [a3 propertyForKey:@"kCSLPRFReturnToClockSetting"];
-  v4 = [v3 BOOLValue];
+  v3 = [group propertyForKey:@"kCSLPRFReturnToClockSetting"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)specifierSelected:(id)a3
+- (void)specifierSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   v5 = cslprf_sessions_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = selectedCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "specifier selected %@", &v10, 0xCu);
   }
 
-  if ([(CSLPRFReturnToClockSettingGroup *)self specifierIsWithinGroup:v4])
+  if ([(CSLPRFReturnToClockSettingGroup *)self specifierIsWithinGroup:selectedCopy])
   {
-    [(CSLPRFReturnToClockSettingGroup *)self setSelectedSpecifier:v4];
-    v6 = [v4 propertyForKey:PSValueKey];
-    v7 = [v6 integerValue];
+    [(CSLPRFReturnToClockSettingGroup *)self setSelectedSpecifier:selectedCopy];
+    v6 = [selectedCopy propertyForKey:PSValueKey];
+    integerValue = [v6 integerValue];
     v8 = cslprf_sessions_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -139,11 +139,11 @@
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "specifier is within group value %@", &v10, 0xCu);
     }
 
-    if (v7 != self->_returnToClockSetting)
+    if (integerValue != self->_returnToClockSetting)
     {
-      self->_returnToClockSetting = v7;
+      self->_returnToClockSetting = integerValue;
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained returnToClockSettingDidChange:v7];
+      [WeakRetained returnToClockSettingDidChange:integerValue];
     }
   }
 }

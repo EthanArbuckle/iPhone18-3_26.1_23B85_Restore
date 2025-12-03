@@ -4,33 +4,33 @@
 - (id)logIdentifier;
 - (void)_fillSlotForCameraSource;
 - (void)setCameraSource:(HMCameraSource *)cameraSource;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation HMCameraView
 
 - (id)logIdentifier
 {
-  v2 = [(HMCameraView *)self cameraSource];
-  v3 = [v2 logIdentifier];
+  cameraSource = [(HMCameraView *)self cameraSource];
+  logIdentifier = [cameraSource logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
 - (void)_fillSlotForCameraSource
 {
-  v3 = [(HMCameraView *)self cameraSource];
-  v4 = [v3 slotIdentifier];
-  v5 = [v4 unsignedIntValue];
+  cameraSource = [(HMCameraView *)self cameraSource];
+  slotIdentifier = [cameraSource slotIdentifier];
+  unsignedIntValue = [slotIdentifier unsignedIntValue];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__HMCameraView__fillSlotForCameraSource__block_invoke;
   v7[3] = &unk_1E7547B68;
-  v8 = v3;
-  v9 = self;
-  v10 = v5;
-  v6 = v3;
+  v8 = cameraSource;
+  selfCopy = self;
+  v10 = unsignedIntValue;
+  v6 = cameraSource;
   [v6 fillSlotWithCompletionHandler:v7];
 }
 
@@ -128,11 +128,11 @@ void __40__HMCameraView__fillSlotForCameraSource__block_invoke_1(uint64_t a1)
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = [(HMCameraView *)self cameraSource];
+  cameraSource = [(HMCameraView *)self cameraSource];
 
-  if (a3 && v5)
+  if (window && cameraSource)
   {
 
     [(HMCameraView *)self _fillSlotForCameraSource];
@@ -143,13 +143,13 @@ void __40__HMCameraView__fillSlotForCameraSource__block_invoke_1(uint64_t a1)
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = cameraSource;
-  v6 = [(HMCameraView *)self cameraSource];
+  cameraSource = [(HMCameraView *)self cameraSource];
 
-  if (v6 != v5)
+  if (cameraSource != v5)
   {
     objc_storeStrong(&self->_cameraSource, cameraSource);
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -164,19 +164,19 @@ void __40__HMCameraView__fillSlotForCameraSource__block_invoke_1(uint64_t a1)
     objc_autoreleasePoolPop(v7);
     if (v5)
     {
-      v11 = [(HMCameraView *)v8 window];
+      window = [(HMCameraView *)selfCopy window];
 
-      if (v11)
+      if (window)
       {
-        [(HMCameraView *)v8 _fillSlotForCameraSource];
+        [(HMCameraView *)selfCopy _fillSlotForCameraSource];
       }
     }
 
     else
     {
       [MEMORY[0x1E6979518] begin];
-      v12 = [(HMCameraView *)v8 layer];
-      [v12 setContents:0];
+      layer = [(HMCameraView *)selfCopy layer];
+      [layer setContents:0];
 
       [MEMORY[0x1E6979518] commit];
     }

@@ -1,22 +1,22 @@
 @interface UIRemoteKeyboardWindowHostedAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityWindowVisible;
 @end
 
 @implementation UIRemoteKeyboardWindowHostedAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)_accessibilityWindowVisible
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v5 = AXUIKeyboardWindow();
   v9 = 0;
@@ -27,19 +27,19 @@
   v4 = v7;
   if (v5 == v7 && (AXUIKeyboardIsOnScreen() & 1) != 0)
   {
-    v3 = 1;
+    _accessibilityWindowVisible = 1;
   }
 
   else
   {
-    v6.receiver = v11;
+    v6.receiver = selfCopy;
     v6.super_class = UIRemoteKeyboardWindowHostedAccessibility;
-    v3 = [(UIRemoteKeyboardWindowHostedAccessibility *)&v6 _accessibilityWindowVisible];
+    _accessibilityWindowVisible = [(UIRemoteKeyboardWindowHostedAccessibility *)&v6 _accessibilityWindowVisible];
   }
 
   MEMORY[0x29EDC9740](v4);
   MEMORY[0x29EDC9740](v5);
-  return v3 != 0;
+  return _accessibilityWindowVisible != 0;
 }
 
 @end

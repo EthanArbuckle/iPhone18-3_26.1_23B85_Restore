@@ -1,27 +1,27 @@
 @interface AUServiceShim
-- (AUServiceShim)initWithDeviceClass:(id)a3 delegate:(id)delegate info:(id *)a5 options:(id)a6;
-- (void)applyFirmwareWithOptions:(id)a3;
-- (void)bootstrapWithOptions:(id)a3;
+- (AUServiceShim)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options;
+- (void)applyFirmwareWithOptions:(id)options;
+- (void)bootstrapWithOptions:(id)options;
 - (void)closeXPCConnection;
 - (void)connectToServer;
 - (void)dealloc;
-- (void)didApply:(BOOL)a3 info:(id)a4 error:(id)a5;
-- (void)didBootstrap:(BOOL)a3 info:(id)a4 error:(id)a5;
-- (void)didDownload:(BOOL)a3 info:(id)a4 error:(id)a5;
-- (void)didFinish:(BOOL)a3 info:(id)a4 error:(id)a5;
-- (void)didPrepare:(BOOL)a3 info:(id)a4 error:(id)a5;
-- (void)downloadFirmwareWithOptions:(id)a3;
-- (void)finishWithOptions:(id)a3;
+- (void)didApply:(BOOL)apply info:(id)info error:(id)error;
+- (void)didBootstrap:(BOOL)bootstrap info:(id)info error:(id)error;
+- (void)didDownload:(BOOL)download info:(id)info error:(id)error;
+- (void)didFinish:(BOOL)finish info:(id)info error:(id)error;
+- (void)didPrepare:(BOOL)prepare info:(id)info error:(id)error;
+- (void)downloadFirmwareWithOptions:(id)options;
+- (void)finishWithOptions:(id)options;
 - (void)handleServiceDisconnect;
-- (void)issueNotification:(id)a3;
-- (void)personalizationResponse:(id)a3 response:(id)a4 status:(id)a5;
-- (void)prepareFirmwareWithOptions:(id)a3;
-- (void)queryDeviceList:(id *)a3;
+- (void)issueNotification:(id)notification;
+- (void)personalizationResponse:(id)response response:(id)a4 status:(id)status;
+- (void)prepareFirmwareWithOptions:(id)options;
+- (void)queryDeviceList:(id *)list;
 @end
 
 @implementation AUServiceShim
 
-- (AUServiceShim)initWithDeviceClass:(id)a3 delegate:(id)delegate info:(id *)a5 options:(id)a6
+- (AUServiceShim)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options
 {
   v35 = 0;
   v36 = &v35;
@@ -38,24 +38,24 @@
   v27 = 0x2020000000;
   v28 = 1;
   v10 = objc_opt_class();
-  [delegate log:7 format:{@"Initializing Plugin %@ for DeviceClass %@ with options %@", NSStringFromClass(v10), a3, a6}];
+  [delegate log:7 format:{@"Initializing Plugin %@ for DeviceClass %@ with options %@", NSStringFromClass(v10), class, options}];
   v24.receiver = self;
   v24.super_class = AUServiceShim;
   v11 = [(AUServiceShim *)&v24 init];
   v12 = v11;
   v13 = @"Init Failure";
   v14 = 7;
-  if (!delegate || !a3 || !v11)
+  if (!delegate || !class || !v11)
   {
     goto LABEL_21;
   }
 
-  v11->_deviceClass = a3;
+  v11->_deviceClass = class;
   v11->_delegate = delegate;
   v11->_currentState = 2;
   v11->_inTeardown = 0;
-  v11->_queue = dispatch_queue_create([a3 UTF8String], 0);
-  v15 = [a6 objectForKey:@"AUServiceName"];
+  v11->_queue = dispatch_queue_create([class UTF8String], 0);
+  v15 = [options objectForKey:@"AUServiceName"];
   v12->_xpcServiceName = v15;
   if (!v15)
   {
@@ -86,7 +86,7 @@ LABEL_21:
       v23[2] = sub_100006B14;
       v23[3] = &unk_1000812C0;
       v23[4] = v12;
-      v23[5] = a3;
+      v23[5] = class;
       v23[6] = &v35;
       v23[7] = &v25;
       v19 = [(NSXPCConnection *)xpcServiceConn synchronousRemoteObjectProxyWithErrorHandler:v23];
@@ -98,8 +98,8 @@ LABEL_21:
       v22[7] = &v25;
       v22[8] = &v29;
       v22[4] = v12;
-      v22[5] = a3;
-      [v19 deviceClassAttached:a3 options:a6 withReply:v22];
+      v22[5] = class;
+      [v19 deviceClassAttached:class options:options withReply:v22];
       if (*(v26 + 24) == 1)
       {
         [(AUServiceShim *)v12 closeXPCConnection];
@@ -131,7 +131,7 @@ LABEL_21:
 LABEL_15:
   if (v36[3])
   {
-    *a5 = v30[5];
+    *info = v30[5];
   }
 
   else
@@ -242,7 +242,7 @@ LABEL_20:
   }
 }
 
-- (void)bootstrapWithOptions:(id)a3
+- (void)bootstrapWithOptions:(id)options
 {
   v10 = 0;
   v11 = &v10;
@@ -280,7 +280,7 @@ LABEL_3:
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)downloadFirmwareWithOptions:(id)a3
+- (void)downloadFirmwareWithOptions:(id)options
 {
   v10 = 0;
   v11 = &v10;
@@ -307,7 +307,7 @@ LABEL_3:
   v5[4] = self;
   v5[5] = &v6;
   v5[6] = &v10;
-  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](xpcServiceConn remoteObjectProxyWithErrorHandler:{v5), "downloadFirmwareWithOptions:", a3}];
+  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](xpcServiceConn remoteObjectProxyWithErrorHandler:{v5), "downloadFirmwareWithOptions:", options}];
   if ((v7[3] & 1) == 0)
   {
 LABEL_3:
@@ -318,7 +318,7 @@ LABEL_3:
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)prepareFirmwareWithOptions:(id)a3
+- (void)prepareFirmwareWithOptions:(id)options
 {
   v10 = 0;
   v11 = &v10;
@@ -345,7 +345,7 @@ LABEL_3:
   v5[4] = self;
   v5[5] = &v6;
   v5[6] = &v10;
-  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](xpcServiceConn remoteObjectProxyWithErrorHandler:{v5), "prepareFirmwareWithOptions:", a3}];
+  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](xpcServiceConn remoteObjectProxyWithErrorHandler:{v5), "prepareFirmwareWithOptions:", options}];
   if ((v7[3] & 1) == 0)
   {
 LABEL_3:
@@ -356,7 +356,7 @@ LABEL_3:
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)applyFirmwareWithOptions:(id)a3
+- (void)applyFirmwareWithOptions:(id)options
 {
   v10 = 0;
   v11 = &v10;
@@ -383,7 +383,7 @@ LABEL_3:
   v5[4] = self;
   v5[5] = &v6;
   v5[6] = &v10;
-  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](xpcServiceConn remoteObjectProxyWithErrorHandler:{v5), "applyFirmwareWithOptions:", a3}];
+  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](xpcServiceConn remoteObjectProxyWithErrorHandler:{v5), "applyFirmwareWithOptions:", options}];
   if ((v7[3] & 1) == 0)
   {
 LABEL_3:
@@ -394,7 +394,7 @@ LABEL_3:
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)finishWithOptions:(id)a3
+- (void)finishWithOptions:(id)options
 {
   v10 = 0;
   v11 = &v10;
@@ -421,7 +421,7 @@ LABEL_3:
   v5[4] = self;
   v5[5] = &v6;
   v5[6] = &v10;
-  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](xpcServiceConn remoteObjectProxyWithErrorHandler:{v5), "finishWithOptions:", a3}];
+  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](xpcServiceConn remoteObjectProxyWithErrorHandler:{v5), "finishWithOptions:", options}];
   if ((v7[3] & 1) == 0)
   {
 LABEL_3:
@@ -432,7 +432,7 @@ LABEL_3:
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)queryDeviceList:(id *)a3
+- (void)queryDeviceList:(id *)list
 {
   v5 = &v10;
   v10 = 0;
@@ -464,7 +464,7 @@ LABEL_3:
     v7 = 0;
   }
 
-  *a3 = v7;
+  *list = v7;
   if (![v5[5] count])
   {
     [(AUServiceShim *)self closeXPCConnection];
@@ -494,7 +494,7 @@ LABEL_3:
   [(AUServiceShim *)&v3 dealloc];
 }
 
-- (void)personalizationResponse:(id)a3 response:(id)a4 status:(id)a5
+- (void)personalizationResponse:(id)response response:(id)a4 status:(id)status
 {
   xpcServiceConn = self->_xpcServiceConn;
   v6[0] = _NSConcreteStackBlock;
@@ -502,25 +502,25 @@ LABEL_3:
   v6[2] = sub_100007F18;
   v6[3] = &unk_100081360;
   v6[4] = self;
-  [-[NSXPCConnection synchronousRemoteObjectProxyWithErrorHandler:](xpcServiceConn synchronousRemoteObjectProxyWithErrorHandler:{v6), "personalizationResponse:response:status:", a3, a4, a5}];
+  [-[NSXPCConnection synchronousRemoteObjectProxyWithErrorHandler:](xpcServiceConn synchronousRemoteObjectProxyWithErrorHandler:{v6), "personalizationResponse:response:status:", response, a4, status}];
 }
 
-- (void)issueNotification:(id)a3
+- (void)issueNotification:(id)notification
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
     v6 = self->_delegate;
 
-    [(FudPluginDelegate *)v6 issueNotification:a3];
+    [(FudPluginDelegate *)v6 issueNotification:notification];
   }
 }
 
-- (void)didBootstrap:(BOOL)a3 info:(id)a4 error:(id)a5
+- (void)didBootstrap:(BOOL)bootstrap info:(id)info error:(id)error
 {
   if (self->_currentState == 3)
   {
-    v9 = a3 & ~[(NSString *)self->_xpcServiceName containsString:@"AppleSTDP2700Bootstrap"];
+    v9 = bootstrap & ~[(NSString *)self->_xpcServiceName containsString:@"AppleSTDP2700Bootstrap"];
     if ((v9 & 1) == 0)
     {
       [(AUServiceShim *)self closeXPCConnection];
@@ -528,11 +528,11 @@ LABEL_3:
 
     delegate = self->_delegate;
 
-    [(FudPluginDelegate *)delegate didBootstrap:v9 info:a4 error:a5];
+    [(FudPluginDelegate *)delegate didBootstrap:v9 info:info error:error];
   }
 }
 
-- (void)didDownload:(BOOL)a3 info:(id)a4 error:(id)a5
+- (void)didDownload:(BOOL)download info:(id)info error:(id)error
 {
   if (self->_currentState == 7)
   {
@@ -548,7 +548,7 @@ LABEL_3:
   }
 }
 
-- (void)didPrepare:(BOOL)a3 info:(id)a4 error:(id)a5
+- (void)didPrepare:(BOOL)prepare info:(id)info error:(id)error
 {
   if (self->_currentState == 8)
   {
@@ -564,7 +564,7 @@ LABEL_3:
   }
 }
 
-- (void)didApply:(BOOL)a3 info:(id)a4 error:(id)a5
+- (void)didApply:(BOOL)apply info:(id)info error:(id)error
 {
   if (self->_currentState == 9)
   {
@@ -580,7 +580,7 @@ LABEL_3:
   }
 }
 
-- (void)didFinish:(BOOL)a3 info:(id)a4 error:(id)a5
+- (void)didFinish:(BOOL)finish info:(id)info error:(id)error
 {
   if (self->_currentState == 10)
   {

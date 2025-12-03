@@ -1,5 +1,5 @@
 @interface VSWaitGroup
-- (BOOL)waitWithMilliseconds:(unint64_t)a3;
+- (BOOL)waitWithMilliseconds:(unint64_t)milliseconds;
 - (VSWaitGroup)init;
 @end
 
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (BOOL)waitWithMilliseconds:(unint64_t)a3
+- (BOOL)waitWithMilliseconds:(unint64_t)milliseconds
 {
-  if (a3)
+  if (milliseconds)
   {
-    v4 = dispatch_time(0, 1000000 * a3);
+    v4 = dispatch_time(0, 1000000 * milliseconds);
   }
 
   else

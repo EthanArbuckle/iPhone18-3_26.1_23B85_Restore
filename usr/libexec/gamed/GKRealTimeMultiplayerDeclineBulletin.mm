@@ -22,12 +22,12 @@
   v12.super_class = GKRealTimeMultiplayerDeclineBulletin;
   [(GKRealTimeMultiplayerActionBulletin *)&v12 assembleBulletin];
   v5 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings KETTLE_GAME_INVITE_NOTIFICATION_TITLE];
-  v6 = [(GKBulletin *)self gameName];
-  v7 = [NSString localizedStringWithFormat:v5, v6];
+  gameName = [(GKBulletin *)self gameName];
+  v7 = [NSString localizedStringWithFormat:v5, gameName];
   [(GKBulletin *)self setTitle:v7];
 
-  v8 = [(GKGameplayBulletin *)self originatorPlayer];
-  v9 = [v8 displayNameWithOptions:0];
+  originatorPlayer = [(GKGameplayBulletin *)self originatorPlayer];
+  v9 = [originatorPlayer displayNameWithOptions:0];
 
   if (v9)
   {

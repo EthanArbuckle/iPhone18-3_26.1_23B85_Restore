@@ -1,8 +1,8 @@
 @interface SBFloatingDockWindowLevelAssertion
 - (SBFloatingDockController)floatingDockController;
-- (SBFloatingDockWindowLevelAssertion)initWithFloatingDockController:(id)a3 priority:(unint64_t)a4 level:(double)a5 reason:(id)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBFloatingDockWindowLevelAssertion)initWithFloatingDockController:(id)controller priority:(unint64_t)priority level:(double)level reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -10,24 +10,24 @@
 
 @implementation SBFloatingDockWindowLevelAssertion
 
-- (SBFloatingDockWindowLevelAssertion)initWithFloatingDockController:(id)a3 priority:(unint64_t)a4 level:(double)a5 reason:(id)a6
+- (SBFloatingDockWindowLevelAssertion)initWithFloatingDockController:(id)controller priority:(unint64_t)priority level:(double)level reason:(id)reason
 {
-  v10 = a3;
-  v11 = a6;
+  controllerCopy = controller;
+  reasonCopy = reason;
   v17.receiver = self;
   v17.super_class = SBFloatingDockWindowLevelAssertion;
   v12 = [(SBFloatingDockWindowLevelAssertion *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_floatingDockController, v10);
-    v13->_priority = a4;
-    v13->_level = a5;
-    v14 = [v11 copy];
+    objc_storeWeak(&v12->_floatingDockController, controllerCopy);
+    v13->_priority = priority;
+    v13->_level = level;
+    v14 = [reasonCopy copy];
     reason = v13->_reason;
     v13->_reason = v14;
 
-    [v10 _addFloatingDockWindowLevelAssertion:v13];
+    [controllerCopy _addFloatingDockWindowLevelAssertion:v13];
   }
 
   return v13;
@@ -49,32 +49,32 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBFloatingDockWindowLevelAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFloatingDockWindowLevelAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFloatingDockWindowLevelAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFloatingDockWindowLevelAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBFloatingDockWindowLevelAssertion *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBFloatingDockWindowLevelAssertion *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__SBFloatingDockWindowLevelAssertion_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

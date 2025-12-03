@@ -1,7 +1,7 @@
 @interface CMSensorDataList
 - (BOOL)_updatePointers;
 - (id).cxx_construct;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)_updateCurrentBlockProperties;
 - (void)dealloc;
 @end
@@ -26,18 +26,18 @@
   self->fCurrentBlockTimestamp = objc_msgSend_timestamp(self->fCurrentBlock, v9, v10);
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   result = 0;
-  a3->var1 = a4;
-  a3->var2 = self;
-  if (a5 && self->fCurrentBlock)
+  state->var1 = objects;
+  state->var2 = self;
+  if (count && self->fCurrentBlock)
   {
     v10 = 0;
     while (1)
     {
       fBlockOffset = self->fBlockOffset;
-      if (fBlockOffset + objc_msgSend_offset(self->fCurrentBlock, a2, a3) >= self->fDataBufferLength)
+      if (fBlockOffset + objc_msgSend_offset(self->fCurrentBlock, a2, state) >= self->fDataBufferLength)
       {
         v64 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v12, v13);
         v65 = self->fBlockOffset;
@@ -113,7 +113,7 @@ LABEL_23:
 LABEL_28:
 
 LABEL_29:
-      a4[v10] = objc_msgSend_objectAtIndexedSubscript_(self->fCachedData, v33, v10);
+      objects[v10] = objc_msgSend_objectAtIndexedSubscript_(self->fCachedData, v33, v10);
       v59 = self->fBlockOffset + v76;
       self->fBlockOffset = v59;
       if (v59 >= objc_msgSend_dataSize(self->fCurrentBlock, v60, v61))
@@ -127,9 +127,9 @@ LABEL_29:
         return v10 + 1;
       }
 
-      if (a5 == ++v10)
+      if (count == ++v10)
       {
-        return a5;
+        return count;
       }
     }
 

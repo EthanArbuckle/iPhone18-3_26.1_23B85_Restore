@@ -1,14 +1,14 @@
 @interface OSLogEventStreamBase
-- (id)assignFilterPredicate:(id)a3 error:(id *)a4;
+- (id)assignFilterPredicate:(id)predicate error:(id *)error;
 @end
 
 @implementation OSLogEventStreamBase
 
-- (id)assignFilterPredicate:(id)a3 error:(id *)a4
+- (id)assignFilterPredicate:(id)predicate error:(id *)error
 {
-  v5 = a3;
-  [(OSLogEventStreamBase *)self setFilterPredicate:v5];
-  v6 = v5;
+  predicateCopy = predicate;
+  [(OSLogEventStreamBase *)self setFilterPredicate:predicateCopy];
+  v6 = predicateCopy;
 
   return v6;
 }

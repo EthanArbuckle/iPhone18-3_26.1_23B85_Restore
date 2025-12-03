@@ -1,17 +1,17 @@
 @interface SFStartPageBackgroundImageModelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SFStartPageBackgroundImageModelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFStartPageBackgroundImageModel" hasInstanceMethod:@"isCustomImage" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SFStartPageBackgroundImageModel" hasInstanceMethod:@"itemProvider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFStartPageBackgroundImageModel" hasInstanceMethod:@"imageDescription" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WBSStartPageBackgroundImageDescription" hasInstanceMethod:@"url" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFStartPageBackgroundImageModel" hasInstanceMethod:@"isCustomImage" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SFStartPageBackgroundImageModel" hasInstanceMethod:@"itemProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFStartPageBackgroundImageModel" hasInstanceMethod:@"imageDescription" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WBSStartPageBackgroundImageDescription" hasInstanceMethod:@"url" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -23,9 +23,9 @@
     v4 = [v3 safeValueForKey:@"url"];
     v5 = __UIAccessibilityCastAsClass();
 
-    v6 = [v5 lastPathComponent];
+    lastPathComponent = [v5 lastPathComponent];
 
-    v7 = accessibilityMobileSafariLocalizedString(v6);
+    v7 = accessibilityMobileSafariLocalizedString(lastPathComponent);
 
     goto LABEL_16;
   }

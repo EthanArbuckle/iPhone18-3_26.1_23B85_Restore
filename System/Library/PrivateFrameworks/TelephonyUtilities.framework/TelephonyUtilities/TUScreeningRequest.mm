@@ -1,28 +1,28 @@
 @interface TUScreeningRequest
-- (TUScreeningRequest)initWithCoder:(id)a3;
-- (TUScreeningRequest)initWithTUCallUpdate:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUScreeningRequest)initWithCoder:(id)coder;
+- (TUScreeningRequest)initWithTUCallUpdate:(id)update;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUScreeningRequest
 
-- (TUScreeningRequest)initWithTUCallUpdate:(id)a3
+- (TUScreeningRequest)initWithTUCallUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v13.receiver = self;
   v13.super_class = TUScreeningRequest;
   v5 = [(TUScreeningRequest *)&v13 init];
   if (v5)
   {
-    v6 = [v4 UUID];
-    v7 = [v6 copy];
+    uUID = [updateCopy UUID];
+    v7 = [uUID copy];
     UUID = v5->_UUID;
     v5->_UUID = v7;
 
-    v9 = [v4 callUUID];
-    v10 = [v9 copy];
+    callUUID = [updateCopy callUUID];
+    v10 = [callUUID copy];
     callUUID = v5->_callUUID;
     v5->_callUUID = v10;
   }
@@ -33,39 +33,39 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUScreeningRequest *)self UUID];
-  [v3 appendFormat:@" UUID=%@", v4];
+  uUID = [(TUScreeningRequest *)self UUID];
+  [v3 appendFormat:@" UUID=%@", uUID];
 
-  v5 = [(TUScreeningRequest *)self callUUID];
-  [v3 appendFormat:@" callUUID=%@", v5];
+  callUUID = [(TUScreeningRequest *)self callUUID];
+  [v3 appendFormat:@" callUUID=%@", callUUID];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"UUID"];
-  [v5 encodeObject:self->_callUUID forKey:@"callUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_callUUID forKey:@"callUUID"];
 }
 
-- (TUScreeningRequest)initWithCoder:(id)a3
+- (TUScreeningRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = TUScreeningRequest;
   v5 = [(TUScreeningRequest *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     v7 = [v6 copy];
     UUID = v5->_UUID;
     v5->_UUID = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
     v10 = [v9 copy];
     callUUID = v5->_callUUID;
     v5->_callUUID = v10;
@@ -74,15 +74,15 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TUScreeningRequest allocWithZone:?]];
-  v5 = [(TUScreeningRequest *)self UUID];
-  v6 = [v5 copy];
+  uUID = [(TUScreeningRequest *)self UUID];
+  v6 = [uUID copy];
   [(TUScreeningRequest *)v4 setUUID:v6];
 
-  v7 = [(TUScreeningRequest *)self callUUID];
-  v8 = [v7 copy];
+  callUUID = [(TUScreeningRequest *)self callUUID];
+  v8 = [callUUID copy];
   [(TUScreeningRequest *)v4 setCallUUID:v8];
 
   return v4;

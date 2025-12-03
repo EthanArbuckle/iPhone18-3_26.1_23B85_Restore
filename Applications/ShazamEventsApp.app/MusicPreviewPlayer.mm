@@ -1,26 +1,26 @@
 @interface MusicPreviewPlayer
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)playerDidFinishPlaying;
 @end
 
 @implementation MusicPreviewPlayer
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = v10;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v17, 0, sizeof(v17));
-    v15 = a5;
-    v16 = self;
-    if (a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (change)
     {
       goto LABEL_4;
     }
@@ -32,18 +32,18 @@ LABEL_7:
 
   v9 = 0;
   v11 = 0;
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v12 = a5;
-  v13 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  if (!a5)
+  if (!change)
   {
     goto LABEL_7;
   }
@@ -61,7 +61,7 @@ LABEL_8:
 
 - (void)playerDidFinishPlaying
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005C3EC();
 }
 

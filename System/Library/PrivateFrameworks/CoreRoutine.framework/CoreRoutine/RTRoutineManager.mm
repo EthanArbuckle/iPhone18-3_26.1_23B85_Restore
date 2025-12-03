@@ -1,132 +1,132 @@
 @interface RTRoutineManager
 + (id)defaultManager;
-+ (id)modeOfTransportationToString:(int64_t)a3;
-+ (id)routineModeToString:(int64_t)a3;
-- (RTRoutineManager)initWithRestorationIdentifier:(id)a3 targertUserSession:(BOOL)a4;
-- (id)_proxyForServicingSelector:(SEL)a3 asynchronous:(BOOL)a4 withErrorHandler:(id)a5;
++ (id)modeOfTransportationToString:(int64_t)string;
++ (id)routineModeToString:(int64_t)string;
+- (RTRoutineManager)initWithRestorationIdentifier:(id)identifier targertUserSession:(BOOL)session;
+- (id)_proxyForServicingSelector:(SEL)selector asynchronous:(BOOL)asynchronous withErrorHandler:(id)handler;
 - (void)_createConnection;
-- (void)_enumerateElevationsWithOptions:(id)a3 reply:(id)a4;
-- (void)_enumerateStoredLocationsWithOptions:(id)a3 usingBlock:(id)a4;
-- (void)_launchTaskWithSelector:(SEL)a3 remainingAttempts:(unint64_t)a4 proxyErrorHandler:(id)a5 taskBlock:(id)a6;
-- (void)addBackgroundInertialOdometrySamples:(id)a3 handler:(id)a4;
-- (void)addElevations:(id)a3 handler:(id)a4;
-- (void)addLocationOfInterestOfType:(int64_t)a3 mapItem:(id)a4 customLabel:(id)a5 handler:(id)a6;
-- (void)clearAllVehicleEvents:(id)a3;
-- (void)clearAllVehicleEventsWithHandler:(id)a3;
-- (void)clearRoutineWithHandler:(id)a3;
-- (void)correctLabelForCurrentPlace:(id)a3 date:(id)a4 newLabel:(id)a5 handler:(id)a6;
-- (void)correctLabelForVisitWithIdentifier:(id)a3 entryDate:(id)a4 originalLabel:(id)a5 newLabel:(id)a6 handler:(id)a7;
+- (void)_enumerateElevationsWithOptions:(id)options reply:(id)reply;
+- (void)_enumerateStoredLocationsWithOptions:(id)options usingBlock:(id)block;
+- (void)_launchTaskWithSelector:(SEL)selector remainingAttempts:(unint64_t)attempts proxyErrorHandler:(id)handler taskBlock:(id)block;
+- (void)addBackgroundInertialOdometrySamples:(id)samples handler:(id)handler;
+- (void)addElevations:(id)elevations handler:(id)handler;
+- (void)addLocationOfInterestOfType:(int64_t)type mapItem:(id)item customLabel:(id)label handler:(id)handler;
+- (void)clearAllVehicleEvents:(id)events;
+- (void)clearAllVehicleEventsWithHandler:(id)handler;
+- (void)clearRoutineWithHandler:(id)handler;
+- (void)correctLabelForCurrentPlace:(id)place date:(id)date newLabel:(id)label handler:(id)handler;
+- (void)correctLabelForVisitWithIdentifier:(id)identifier entryDate:(id)date originalLabel:(id)label newLabel:(id)newLabel handler:(id)handler;
 - (void)createConnection;
 - (void)dealloc;
-- (void)deleteTripSegmentWithUUID:(id)a3 handler:(id)a4;
-- (void)engageInVehicleEventWithIdentifier:(id)a3;
-- (void)enumerateElevationsWithOptions:(id)a3 reply:(id)a4;
-- (void)enumerateObjectsWithOptions:(id)a3 usingBlock:(id)a4;
-- (void)enumerateStoredLocationsWithOptions:(id)a3 usingBlock:(id)a4;
-- (void)extendLifetimeOfVisitWithIdentifier:(id)a3 handler:(id)a4;
-- (void)extendLifetimeOfVisitsWithIdentifiers:(id)a3 handler:(id)a4;
-- (void)fetchAllLocationsOfInterestForSettingsWithHandler:(id)a3;
-- (void)fetchAuthorizedLocationStatus:(id)a3;
-- (void)fetchAutomaticVehicleEventDetectionSupportedWithHandler:(id)a3;
-- (void)fetchBackgroundInertialOdometrySamplesWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchCloudSyncAuthorizationState:(id)a3;
-- (void)fetchContactScoresFromContactIDs:(id)a3 completionHandler:(id)a4;
-- (void)fetchCurrentPeopleDensity:(id)a3;
-- (void)fetchCurrentPredictedLocationsOfInterestLookingBack:(double)a3 lookingAhead:(double)a4 handler:(id)a5;
-- (void)fetchDedupedLocationOfInterestIdentifiersWithIdentifier:(id)a3 handler:(id)a4;
-- (void)fetchElevationsWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchEstimatedLocationAtDate:(id)a3 handler:(id)a4;
-- (void)fetchEstimatedLocationAtDate:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchFamiliarityIndexResultsWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchFinerGranularityInferredMapItemWithVisitIdentifier:(id)a3 handler:(id)a4;
-- (void)fetchFormattedPostalAddressesFromMeCard:(id)a3;
-- (void)fetchLastVehicleEventsWithHandler:(id)a3;
-- (void)fetchLearnedRoutesWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchLocationOfInterestAtLocation:(id)a3 withHandler:(id)a4;
-- (void)fetchLocationOfInterestForRegion:(id)a3 withHandler:(id)a4;
-- (void)fetchLocationOfInterestWithIdentifier:(id)a3 withHandler:(id)a4;
-- (void)fetchLocationsCountForTripSegmentWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchLocationsForTripSegmentWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchLocationsOfInterestAssociatedToIdentifier:(id)a3 withHandler:(id)a4;
-- (void)fetchLocationsOfInterestOfType:(int64_t)a3 withHandler:(id)a4;
-- (void)fetchLocationsOfInterestVisitedBetweenStartDate:(id)a3 endDate:(id)a4 withHandler:(id)a5;
-- (void)fetchLocationsOfInterestVisitedSinceDate:(id)a3 withHandler:(id)a4;
-- (void)fetchLocationsOfInterestWithinDistance:(double)a3 ofLocation:(id)a4 withHandler:(id)a5;
-- (void)fetchLookbackWindowStartDateWithLocation:(id)a3 handler:(id)a4;
-- (void)fetchMonitoredScenarioTriggerTypesWithHandler:(id)a3;
-- (void)fetchNextPredictedLocationsOfInterestFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5 withHandler:(id)a6;
-- (void)fetchNextPredictedLocationsOfInterestWithHandler:(id)a3;
-- (void)fetchPathToDiagnosticFilesWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchPeopleCountEventsHistory:(id)a3 completionHandler:(id)a4;
-- (void)fetchPeopleDensityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5;
-- (void)fetchPlaceInferencesWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchPredictedContextWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)fetchPredictedExitDatesFromLocation:(id)a3 onDate:(id)a4 withHandler:(id)a5;
-- (void)fetchPredictedLocationsOfInterestAssociatedToTitle:(id)a3 location:(id)a4 calendarIdentifier:(id)a5 withHandler:(id)a6;
-- (void)fetchPredictedLocationsOfInterestBetweenStartDate:(id)a3 endDate:(id)a4 withHandler:(id)a5;
-- (void)fetchPredictedLocationsOfInterestOnDate:(id)a3 withHandler:(id)a4;
-- (void)fetchProximityHistoryFromEventIDs:(id)a3 completionHandler:(id)a4;
-- (void)fetchProximityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5;
-- (void)fetchRemoteStatusWithHandler:(id)a3;
-- (void)fetchRoutineEnabledWithHandler:(id)a3;
-- (void)fetchRoutineModeFromLocation:(id)a3 withHandler:(id)a4;
-- (void)fetchRoutineStateWithHandler:(id)a3;
-- (void)fetchStoredVisitsWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchTransitionsBetweenStartDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)fetchTripClusterMetadataWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchTripSegmentMetadataWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchTripSegmentsWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchVehiclesWithOptions:(id)a3 handler:(id)a4;
-- (void)launchTaskWithSelector:(SEL)a3 remainingAttempts:(unint64_t)a4 proxyErrorHandler:(id)a5 taskBlock:(id)a6;
-- (void)onDensityUpdate:(id)a3 error:(id)a4;
-- (void)onLeechedLowConfidenceVisit:(id)a3 withError:(id)a4;
-- (void)onLeechedVisit:(id)a3 withError:(id)a4;
-- (void)onPlaceInferences:(id)a3 error:(id)a4;
-- (void)onPredictedContextResult:(id)a3 error:(id)a4;
-- (void)onRemoteStatusUpdate:(int64_t)a3 error:(id)a4;
-- (void)onScenarioTrigger:(id)a3 withError:(id)a4;
-- (void)onVehicleEvents:(id)a3 error:(id)a4;
-- (void)onVisit:(id)a3 withError:(id)a4;
-- (void)performBluePOIQueryLookingBack:(double)a3 lookingAhead:(double)a4 handler:(id)a5;
-- (void)processHindsightVisitsWithHandler:(id)a3;
-- (void)purgeTripClusterTable:(id)a3 handler:(id)a4;
-- (void)purgeTripClusterWithClusterID:(id)a3 handler:(id)a4;
-- (void)removeLocationOfInterestWithIdentifier:(id)a3 handler:(id)a4;
-- (void)removeVisitWithIdentifier:(id)a3 handler:(id)a4;
-- (void)setHintForRegionState:(int64_t)a3 significantRegion:(id)a4 withHandler:(id)a5;
-- (void)setRoutineEnabled:(BOOL)a3 withHandler:(id)a4;
-- (void)startLeechingLowConfidenceVisitsWithHandler:(id)a3;
-- (void)startLeechingVisitsWithHandler:(id)a3;
-- (void)startMonitoringForPeopleDiscovery:(id)a3 handler:(id)a4;
-- (void)startMonitoringPlaceInferencesWithOptions:(id)a3 handler:(id)a4;
-- (void)startMonitoringPredictedContextWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)startMonitoringRemoteStatusWithHandler:(id)a3;
-- (void)startMonitoringScenarioTriggerOfType:(unint64_t)a3 withHandler:(id)a4;
-- (void)startMonitoringVehicleEventsWithHandler:(id)a3;
-- (void)startMonitoringVisitsWithHandler:(id)a3;
+- (void)deleteTripSegmentWithUUID:(id)d handler:(id)handler;
+- (void)engageInVehicleEventWithIdentifier:(id)identifier;
+- (void)enumerateElevationsWithOptions:(id)options reply:(id)reply;
+- (void)enumerateObjectsWithOptions:(id)options usingBlock:(id)block;
+- (void)enumerateStoredLocationsWithOptions:(id)options usingBlock:(id)block;
+- (void)extendLifetimeOfVisitWithIdentifier:(id)identifier handler:(id)handler;
+- (void)extendLifetimeOfVisitsWithIdentifiers:(id)identifiers handler:(id)handler;
+- (void)fetchAllLocationsOfInterestForSettingsWithHandler:(id)handler;
+- (void)fetchAuthorizedLocationStatus:(id)status;
+- (void)fetchAutomaticVehicleEventDetectionSupportedWithHandler:(id)handler;
+- (void)fetchBackgroundInertialOdometrySamplesWithOptions:(id)options handler:(id)handler;
+- (void)fetchCloudSyncAuthorizationState:(id)state;
+- (void)fetchContactScoresFromContactIDs:(id)ds completionHandler:(id)handler;
+- (void)fetchCurrentPeopleDensity:(id)density;
+- (void)fetchCurrentPredictedLocationsOfInterestLookingBack:(double)back lookingAhead:(double)ahead handler:(id)handler;
+- (void)fetchDedupedLocationOfInterestIdentifiersWithIdentifier:(id)identifier handler:(id)handler;
+- (void)fetchElevationsWithOptions:(id)options reply:(id)reply;
+- (void)fetchEstimatedLocationAtDate:(id)date handler:(id)handler;
+- (void)fetchEstimatedLocationAtDate:(id)date options:(id)options handler:(id)handler;
+- (void)fetchFamiliarityIndexResultsWithOptions:(id)options handler:(id)handler;
+- (void)fetchFinerGranularityInferredMapItemWithVisitIdentifier:(id)identifier handler:(id)handler;
+- (void)fetchFormattedPostalAddressesFromMeCard:(id)card;
+- (void)fetchLastVehicleEventsWithHandler:(id)handler;
+- (void)fetchLearnedRoutesWithOptions:(id)options handler:(id)handler;
+- (void)fetchLocationOfInterestAtLocation:(id)location withHandler:(id)handler;
+- (void)fetchLocationOfInterestForRegion:(id)region withHandler:(id)handler;
+- (void)fetchLocationOfInterestWithIdentifier:(id)identifier withHandler:(id)handler;
+- (void)fetchLocationsCountForTripSegmentWithOptions:(id)options handler:(id)handler;
+- (void)fetchLocationsForTripSegmentWithOptions:(id)options handler:(id)handler;
+- (void)fetchLocationsOfInterestAssociatedToIdentifier:(id)identifier withHandler:(id)handler;
+- (void)fetchLocationsOfInterestOfType:(int64_t)type withHandler:(id)handler;
+- (void)fetchLocationsOfInterestVisitedBetweenStartDate:(id)date endDate:(id)endDate withHandler:(id)handler;
+- (void)fetchLocationsOfInterestVisitedSinceDate:(id)date withHandler:(id)handler;
+- (void)fetchLocationsOfInterestWithinDistance:(double)distance ofLocation:(id)location withHandler:(id)handler;
+- (void)fetchLookbackWindowStartDateWithLocation:(id)location handler:(id)handler;
+- (void)fetchMonitoredScenarioTriggerTypesWithHandler:(id)handler;
+- (void)fetchNextPredictedLocationsOfInterestFromLocation:(id)location startDate:(id)date timeInterval:(double)interval withHandler:(id)handler;
+- (void)fetchNextPredictedLocationsOfInterestWithHandler:(id)handler;
+- (void)fetchPathToDiagnosticFilesWithOptions:(id)options handler:(id)handler;
+- (void)fetchPeopleCountEventsHistory:(id)history completionHandler:(id)handler;
+- (void)fetchPeopleDensityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler;
+- (void)fetchPlaceInferencesWithOptions:(id)options handler:(id)handler;
+- (void)fetchPredictedContextWithOptions:(id)options completionHandler:(id)handler;
+- (void)fetchPredictedExitDatesFromLocation:(id)location onDate:(id)date withHandler:(id)handler;
+- (void)fetchPredictedLocationsOfInterestAssociatedToTitle:(id)title location:(id)location calendarIdentifier:(id)identifier withHandler:(id)handler;
+- (void)fetchPredictedLocationsOfInterestBetweenStartDate:(id)date endDate:(id)endDate withHandler:(id)handler;
+- (void)fetchPredictedLocationsOfInterestOnDate:(id)date withHandler:(id)handler;
+- (void)fetchProximityHistoryFromEventIDs:(id)ds completionHandler:(id)handler;
+- (void)fetchProximityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler;
+- (void)fetchRemoteStatusWithHandler:(id)handler;
+- (void)fetchRoutineEnabledWithHandler:(id)handler;
+- (void)fetchRoutineModeFromLocation:(id)location withHandler:(id)handler;
+- (void)fetchRoutineStateWithHandler:(id)handler;
+- (void)fetchStoredVisitsWithOptions:(id)options handler:(id)handler;
+- (void)fetchTransitionsBetweenStartDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)fetchTripClusterMetadataWithOptions:(id)options handler:(id)handler;
+- (void)fetchTripSegmentMetadataWithOptions:(id)options handler:(id)handler;
+- (void)fetchTripSegmentsWithOptions:(id)options handler:(id)handler;
+- (void)fetchVehiclesWithOptions:(id)options handler:(id)handler;
+- (void)launchTaskWithSelector:(SEL)selector remainingAttempts:(unint64_t)attempts proxyErrorHandler:(id)handler taskBlock:(id)block;
+- (void)onDensityUpdate:(id)update error:(id)error;
+- (void)onLeechedLowConfidenceVisit:(id)visit withError:(id)error;
+- (void)onLeechedVisit:(id)visit withError:(id)error;
+- (void)onPlaceInferences:(id)inferences error:(id)error;
+- (void)onPredictedContextResult:(id)result error:(id)error;
+- (void)onRemoteStatusUpdate:(int64_t)update error:(id)error;
+- (void)onScenarioTrigger:(id)trigger withError:(id)error;
+- (void)onVehicleEvents:(id)events error:(id)error;
+- (void)onVisit:(id)visit withError:(id)error;
+- (void)performBluePOIQueryLookingBack:(double)back lookingAhead:(double)ahead handler:(id)handler;
+- (void)processHindsightVisitsWithHandler:(id)handler;
+- (void)purgeTripClusterTable:(id)table handler:(id)handler;
+- (void)purgeTripClusterWithClusterID:(id)d handler:(id)handler;
+- (void)removeLocationOfInterestWithIdentifier:(id)identifier handler:(id)handler;
+- (void)removeVisitWithIdentifier:(id)identifier handler:(id)handler;
+- (void)setHintForRegionState:(int64_t)state significantRegion:(id)region withHandler:(id)handler;
+- (void)setRoutineEnabled:(BOOL)enabled withHandler:(id)handler;
+- (void)startLeechingLowConfidenceVisitsWithHandler:(id)handler;
+- (void)startLeechingVisitsWithHandler:(id)handler;
+- (void)startMonitoringForPeopleDiscovery:(id)discovery handler:(id)handler;
+- (void)startMonitoringPlaceInferencesWithOptions:(id)options handler:(id)handler;
+- (void)startMonitoringPredictedContextWithOptions:(id)options completionHandler:(id)handler;
+- (void)startMonitoringRemoteStatusWithHandler:(id)handler;
+- (void)startMonitoringScenarioTriggerOfType:(unint64_t)type withHandler:(id)handler;
+- (void)startMonitoringVehicleEventsWithHandler:(id)handler;
+- (void)startMonitoringVisitsWithHandler:(id)handler;
 - (void)stopLeechingLowConfidenceVisits;
 - (void)stopLeechingVisits;
-- (void)stopMonitoringForPeopleDiscoveryWithHandler:(id)a3;
+- (void)stopMonitoringForPeopleDiscoveryWithHandler:(id)handler;
 - (void)stopMonitoringPlaceInferences;
-- (void)stopMonitoringPredictedContextWithHandler:(id)a3;
-- (void)stopMonitoringRemoteStatusWithHandler:(id)a3;
-- (void)stopMonitoringScenarioTriggerOfType:(unint64_t)a3;
+- (void)stopMonitoringPredictedContextWithHandler:(id)handler;
+- (void)stopMonitoringRemoteStatusWithHandler:(id)handler;
+- (void)stopMonitoringScenarioTriggerOfType:(unint64_t)type;
 - (void)stopMonitoringVehicleEvents;
 - (void)stopMonitoringVisits;
-- (void)submitUserCurationForDate:(id)a3 newLabel:(id)a4 handler:(id)a5;
-- (void)submitUserCurationForVisitDateRange:(id)a3 newLabel:(id)a4 handler:(id)a5;
-- (void)updateCloudSyncProvisionedForAccount:(BOOL)a3 handler:(id)a4;
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 customLabel:(id)a4 handler:(id)a5;
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 mapItem:(id)a4 handler:(id)a5;
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 type:(int64_t)a4 customLabel:(id)a5 handler:(id)a6;
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 type:(int64_t)a4 handler:(id)a5;
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 type:(int64_t)a4 mapItem:(id)a5 customLabel:(id)a6 handler:(id)a7;
-- (void)updateVehicleEventWithIdentifier:(id)a3 geoMapItem:(id)a4;
-- (void)updateVehicleEventWithIdentifier:(id)a3 location:(id)a4;
-- (void)updateVehicleEventWithIdentifier:(id)a3 notes:(id)a4;
-- (void)updateVehicleEventWithIdentifier:(id)a3 photo:(id)a4;
-- (void)userInteractionWithPredictedLocationOfInterest:(id)a3 interaction:(unint64_t)a4 feedback:(id)a5 geoMapItem:(id)a6 handler:(id)a7;
-- (void)vehicleEventAtLocation:(id)a3 notes:(id)a4 handler:(id)a5;
+- (void)submitUserCurationForDate:(id)date newLabel:(id)label handler:(id)handler;
+- (void)submitUserCurationForVisitDateRange:(id)range newLabel:(id)label handler:(id)handler;
+- (void)updateCloudSyncProvisionedForAccount:(BOOL)account handler:(id)handler;
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier customLabel:(id)label handler:(id)handler;
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier mapItem:(id)item handler:(id)handler;
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier type:(int64_t)type customLabel:(id)label handler:(id)handler;
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier type:(int64_t)type handler:(id)handler;
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier type:(int64_t)type mapItem:(id)item customLabel:(id)label handler:(id)handler;
+- (void)updateVehicleEventWithIdentifier:(id)identifier geoMapItem:(id)item;
+- (void)updateVehicleEventWithIdentifier:(id)identifier location:(id)location;
+- (void)updateVehicleEventWithIdentifier:(id)identifier notes:(id)notes;
+- (void)updateVehicleEventWithIdentifier:(id)identifier photo:(id)photo;
+- (void)userInteractionWithPredictedLocationOfInterest:(id)interest interaction:(unint64_t)interaction feedback:(id)feedback geoMapItem:(id)item handler:(id)handler;
+- (void)vehicleEventAtLocation:(id)location notes:(id)notes handler:(id)handler;
 @end
 
 @implementation RTRoutineManager
@@ -152,621 +152,621 @@ uint64_t __34__RTRoutineManager_defaultManager__block_invoke()
 
 - (void)createConnection
 {
-  v3 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__RTRoutineManager_createConnection__block_invoke;
   block[3] = &unk_1E80B3E70;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_createConnection
 {
-  v4 = [(RTRoutineManager *)self xpcConnection];
-  [v4 invalidate];
+  xpcConnection = [(RTRoutineManager *)self xpcConnection];
+  [xpcConnection invalidate];
 
   v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.routined.registration" options:4096];
   [(RTRoutineManager *)self setXpcConnection:v5];
 
-  v6 = [(RTRoutineManager *)self xpcConnection];
+  xpcConnection2 = [(RTRoutineManager *)self xpcConnection];
 
-  if (v6)
+  if (xpcConnection2)
   {
-    v7 = [(RTRoutineManager *)self xpcConnection];
-    v8 = [(RTRoutineManager *)self xpcQueue];
-    [v7 _setQueue:v8];
+    xpcConnection3 = [(RTRoutineManager *)self xpcConnection];
+    xpcQueue = [(RTRoutineManager *)self xpcQueue];
+    [xpcConnection3 _setQueue:xpcQueue];
 
-    v9 = [(RTRoutineManager *)self xpcConnection];
+    xpcConnection4 = [(RTRoutineManager *)self xpcConnection];
     v10 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F3DE5CB0];
-    [v9 setExportedInterface:v10];
+    [xpcConnection4 setExportedInterface:v10];
 
-    v11 = [(RTRoutineManager *)self xpcConnection];
+    xpcConnection5 = [(RTRoutineManager *)self xpcConnection];
     v12 = [[RTRoutineManagerExportedObject alloc] initWithRoutineManager:self];
-    [v11 setExportedObject:v12];
+    [xpcConnection5 setExportedObject:v12];
 
-    v13 = [(RTRoutineManager *)self xpcConnection];
-    v14 = [v13 exportedInterface];
+    xpcConnection6 = [(RTRoutineManager *)self xpcConnection];
+    exportedInterface = [xpcConnection6 exportedInterface];
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    [v14 setClasses:v17 forSelector:sel_onVehicleEvents_error_ argumentIndex:0 ofReply:0];
+    [exportedInterface setClasses:v17 forSelector:sel_onVehicleEvents_error_ argumentIndex:0 ofReply:0];
 
-    v18 = [(RTRoutineManager *)self xpcConnection];
-    v19 = [v18 exportedInterface];
+    xpcConnection7 = [(RTRoutineManager *)self xpcConnection];
+    exportedInterface2 = [xpcConnection7 exportedInterface];
     v20 = MEMORY[0x1E695DFD8];
     v21 = objc_opt_class();
     v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
-    [v19 setClasses:v22 forSelector:sel_onDensityUpdate_error_ argumentIndex:0 ofReply:0];
+    [exportedInterface2 setClasses:v22 forSelector:sel_onDensityUpdate_error_ argumentIndex:0 ofReply:0];
 
-    v23 = [(RTRoutineManager *)self xpcConnection];
-    v24 = [v23 exportedInterface];
+    xpcConnection8 = [(RTRoutineManager *)self xpcConnection];
+    exportedInterface3 = [xpcConnection8 exportedInterface];
     v25 = MEMORY[0x1E695DFD8];
     v26 = objc_opt_class();
     v27 = [v25 setWithObjects:{v26, objc_opt_class(), 0}];
-    [v24 setClasses:v27 forSelector:sel_onPlaceInferences_error_ argumentIndex:0 ofReply:0];
+    [exportedInterface3 setClasses:v27 forSelector:sel_onPlaceInferences_error_ argumentIndex:0 ofReply:0];
 
-    v28 = [(RTRoutineManager *)self xpcConnection];
+    xpcConnection9 = [(RTRoutineManager *)self xpcConnection];
     v29 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F3DF2580];
-    [v28 setRemoteObjectInterface:v29];
+    [xpcConnection9 setRemoteObjectInterface:v29];
 
-    v30 = [(RTRoutineManager *)self xpcConnection];
-    v31 = [v30 remoteObjectInterface];
+    xpcConnection10 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface = [xpcConnection10 remoteObjectInterface];
     v32 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    [v31 setClasses:v32 forSelector:sel_fetchPathToDiagnosticFilesWithOptions_reply_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface setClasses:v32 forSelector:sel_fetchPathToDiagnosticFilesWithOptions_reply_ argumentIndex:0 ofReply:0];
 
-    v33 = [(RTRoutineManager *)self xpcConnection];
-    v34 = [v33 remoteObjectInterface];
+    xpcConnection11 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface2 = [xpcConnection11 remoteObjectInterface];
     v35 = MEMORY[0x1E695DFD8];
     v36 = objc_opt_class();
     v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-    [v34 setClasses:v37 forSelector:sel_fetchLocationsOfInterestWithinDistance_ofLocation_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface2 setClasses:v37 forSelector:sel_fetchLocationsOfInterestWithinDistance_ofLocation_reply_ argumentIndex:0 ofReply:1];
 
-    v38 = [(RTRoutineManager *)self xpcConnection];
-    v39 = [v38 remoteObjectInterface];
+    xpcConnection12 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface3 = [xpcConnection12 remoteObjectInterface];
     v40 = MEMORY[0x1E695DFD8];
     v41 = objc_opt_class();
     v42 = [v40 setWithObjects:{v41, objc_opt_class(), 0}];
-    [v39 setClasses:v42 forSelector:sel_fetchLocationsOfInterestOfType_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface3 setClasses:v42 forSelector:sel_fetchLocationsOfInterestOfType_reply_ argumentIndex:0 ofReply:1];
 
-    v43 = [(RTRoutineManager *)self xpcConnection];
-    v44 = [v43 remoteObjectInterface];
+    xpcConnection13 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface4 = [xpcConnection13 remoteObjectInterface];
     v45 = MEMORY[0x1E695DFD8];
     v46 = objc_opt_class();
     v47 = [v45 setWithObjects:{v46, objc_opt_class(), 0}];
-    [v44 setClasses:v47 forSelector:sel_fetchLocationsOfInterestVisitedBetweenStartDate_endDate_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface4 setClasses:v47 forSelector:sel_fetchLocationsOfInterestVisitedBetweenStartDate_endDate_reply_ argumentIndex:0 ofReply:1];
 
-    v48 = [(RTRoutineManager *)self xpcConnection];
-    v49 = [v48 remoteObjectInterface];
+    xpcConnection14 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface5 = [xpcConnection14 remoteObjectInterface];
     v50 = MEMORY[0x1E695DFD8];
     v51 = objc_opt_class();
     v52 = [v50 setWithObjects:{v51, objc_opt_class(), 0}];
-    [v49 setClasses:v52 forSelector:sel_fetchAllLocationsOfInterestForSettingsWithReply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface5 setClasses:v52 forSelector:sel_fetchAllLocationsOfInterestForSettingsWithReply_ argumentIndex:0 ofReply:1];
 
-    v53 = [(RTRoutineManager *)self xpcConnection];
-    v54 = [v53 remoteObjectInterface];
+    xpcConnection15 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface6 = [xpcConnection15 remoteObjectInterface];
     v55 = MEMORY[0x1E695DFD8];
     v56 = objc_opt_class();
     v57 = [v55 setWithObjects:{v56, objc_opt_class(), 0}];
-    [v54 setClasses:v57 forSelector:sel_fetchNextPredictedLocationsOfInterestFromLocation_startDate_timeInterval_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface6 setClasses:v57 forSelector:sel_fetchNextPredictedLocationsOfInterestFromLocation_startDate_timeInterval_reply_ argumentIndex:0 ofReply:1];
 
-    v58 = [(RTRoutineManager *)self xpcConnection];
-    v59 = [v58 remoteObjectInterface];
+    xpcConnection16 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface7 = [xpcConnection16 remoteObjectInterface];
     v60 = MEMORY[0x1E695DFD8];
     v61 = objc_opt_class();
     v62 = [v60 setWithObjects:{v61, objc_opt_class(), 0}];
-    [v59 setClasses:v62 forSelector:sel_fetchLocationsOfInterestAssociatedToIdentifier_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface7 setClasses:v62 forSelector:sel_fetchLocationsOfInterestAssociatedToIdentifier_reply_ argumentIndex:0 ofReply:1];
 
-    v63 = [(RTRoutineManager *)self xpcConnection];
-    v64 = [v63 remoteObjectInterface];
+    xpcConnection17 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface8 = [xpcConnection17 remoteObjectInterface];
     v65 = MEMORY[0x1E695DFD8];
     v66 = objc_opt_class();
     v67 = [v65 setWithObjects:{v66, objc_opt_class(), 0}];
-    [v64 setClasses:v67 forSelector:sel_fetchPredictedLocationsOfInterestAssociatedToTitle_location_calendarIdentifier_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface8 setClasses:v67 forSelector:sel_fetchPredictedLocationsOfInterestAssociatedToTitle_location_calendarIdentifier_reply_ argumentIndex:0 ofReply:1];
 
-    v68 = [(RTRoutineManager *)self xpcConnection];
-    v69 = [v68 remoteObjectInterface];
+    xpcConnection18 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface9 = [xpcConnection18 remoteObjectInterface];
     v70 = MEMORY[0x1E695DFD8];
     v71 = objc_opt_class();
     v72 = [v70 setWithObjects:{v71, objc_opt_class(), 0}];
-    [v69 setClasses:v72 forSelector:sel_fetchPredictedLocationsOfInterestOnDate_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface9 setClasses:v72 forSelector:sel_fetchPredictedLocationsOfInterestOnDate_reply_ argumentIndex:0 ofReply:1];
 
-    v73 = [(RTRoutineManager *)self xpcConnection];
-    v74 = [v73 remoteObjectInterface];
+    xpcConnection19 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface10 = [xpcConnection19 remoteObjectInterface];
     v75 = MEMORY[0x1E695DFD8];
     v76 = objc_opt_class();
     v77 = [v75 setWithObjects:{v76, objc_opt_class(), 0}];
-    [v74 setClasses:v77 forSelector:sel_fetchPredictedExitDatesFromLocation_onDate_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface10 setClasses:v77 forSelector:sel_fetchPredictedExitDatesFromLocation_onDate_reply_ argumentIndex:0 ofReply:1];
 
-    v78 = [(RTRoutineManager *)self xpcConnection];
-    v79 = [v78 remoteObjectInterface];
+    xpcConnection20 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface11 = [xpcConnection20 remoteObjectInterface];
     v80 = MEMORY[0x1E695DFD8];
     v81 = objc_opt_class();
     v82 = [v80 setWithObjects:{v81, objc_opt_class(), 0}];
-    [v79 setClasses:v82 forSelector:sel_fetchCurrentPredictedLocationsOfInterestLookingBack_lookingAhead_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface11 setClasses:v82 forSelector:sel_fetchCurrentPredictedLocationsOfInterestLookingBack_lookingAhead_reply_ argumentIndex:0 ofReply:1];
 
-    v83 = [(RTRoutineManager *)self xpcConnection];
-    v84 = [v83 remoteObjectInterface];
+    xpcConnection21 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface12 = [xpcConnection21 remoteObjectInterface];
     v85 = MEMORY[0x1E695DFD8];
     v86 = objc_opt_class();
     v87 = objc_opt_class();
     v88 = [v85 setWithObjects:{v86, v87, objc_opt_class(), 0}];
-    [v84 setClasses:v88 forSelector:sel_performBluePOIQueryLookingBack_lookingAhead_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface12 setClasses:v88 forSelector:sel_performBluePOIQueryLookingBack_lookingAhead_reply_ argumentIndex:0 ofReply:1];
 
-    v89 = [(RTRoutineManager *)self xpcConnection];
-    v90 = [v89 remoteObjectInterface];
+    xpcConnection22 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface13 = [xpcConnection22 remoteObjectInterface];
     v91 = MEMORY[0x1E695DFD8];
     v92 = objc_opt_class();
     v93 = objc_opt_class();
     v94 = objc_opt_class();
     v95 = objc_opt_class();
     v96 = [v91 setWithObjects:{v92, v93, v94, v95, objc_opt_class(), 0}];
-    [v90 setClasses:v96 forSelector:sel_performBluePOIQueryLookingBack_lookingAhead_reply_ argumentIndex:1 ofReply:1];
+    [remoteObjectInterface13 setClasses:v96 forSelector:sel_performBluePOIQueryLookingBack_lookingAhead_reply_ argumentIndex:1 ofReply:1];
 
-    v97 = [(RTRoutineManager *)self xpcConnection];
-    v98 = [v97 remoteObjectInterface];
+    xpcConnection23 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface14 = [xpcConnection23 remoteObjectInterface];
     v99 = MEMORY[0x1E695DFD8];
     v100 = objc_opt_class();
     v101 = [v99 setWithObjects:{v100, objc_opt_class(), 0}];
-    [v98 setClasses:v101 forSelector:sel_performBluePOIQueryLookingBack_lookingAhead_reply_ argumentIndex:2 ofReply:1];
+    [remoteObjectInterface14 setClasses:v101 forSelector:sel_performBluePOIQueryLookingBack_lookingAhead_reply_ argumentIndex:2 ofReply:1];
 
-    v102 = [(RTRoutineManager *)self xpcConnection];
-    v103 = [v102 remoteObjectInterface];
+    xpcConnection24 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface15 = [xpcConnection24 remoteObjectInterface];
     v104 = MEMORY[0x1E695DFD8];
     v105 = objc_opt_class();
     v106 = [v104 setWithObjects:{v105, objc_opt_class(), 0}];
-    [v103 setClasses:v106 forSelector:sel_fetchPredictedLocationsOfInterestBetweenStartDate_endDate_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface15 setClasses:v106 forSelector:sel_fetchPredictedLocationsOfInterestBetweenStartDate_endDate_reply_ argumentIndex:0 ofReply:1];
 
-    v107 = [(RTRoutineManager *)self xpcConnection];
-    v108 = [v107 remoteObjectInterface];
+    xpcConnection25 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface16 = [xpcConnection25 remoteObjectInterface];
     v109 = MEMORY[0x1E695DFD8];
     v110 = objc_opt_class();
     v111 = [v109 setWithObjects:{v110, objc_opt_class(), 0}];
-    [v108 setClasses:v111 forSelector:sel_fetchLastVehicleEventsWithReply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface16 setClasses:v111 forSelector:sel_fetchLastVehicleEventsWithReply_ argumentIndex:0 ofReply:1];
 
-    v112 = [(RTRoutineManager *)self xpcConnection];
-    v113 = [v112 remoteObjectInterface];
+    xpcConnection26 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface17 = [xpcConnection26 remoteObjectInterface];
     v114 = MEMORY[0x1E695DFD8];
     v115 = objc_opt_class();
     v116 = [v114 setWithObjects:{v115, objc_opt_class(), 0}];
-    [v113 setClasses:v116 forSelector:sel_fetchLocationOfInterestWithIdentifier_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface17 setClasses:v116 forSelector:sel_fetchLocationOfInterestWithIdentifier_reply_ argumentIndex:0 ofReply:1];
 
-    v117 = [(RTRoutineManager *)self xpcConnection];
-    v118 = [v117 remoteObjectInterface];
+    xpcConnection27 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface18 = [xpcConnection27 remoteObjectInterface];
     v119 = MEMORY[0x1E695DFD8];
     v120 = objc_opt_class();
     v121 = [v119 setWithObjects:{v120, objc_opt_class(), 0}];
-    [v118 setClasses:v121 forSelector:sel_addLocationOfInterestOfType_mapItemStorage_customLabel_reply_ argumentIndex:1 ofReply:1];
+    [remoteObjectInterface18 setClasses:v121 forSelector:sel_addLocationOfInterestOfType_mapItemStorage_customLabel_reply_ argumentIndex:1 ofReply:1];
 
-    v122 = [(RTRoutineManager *)self xpcConnection];
-    v123 = [v122 remoteObjectInterface];
+    xpcConnection28 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface19 = [xpcConnection28 remoteObjectInterface];
     v124 = MEMORY[0x1E695DFD8];
     v125 = objc_opt_class();
     v126 = [v124 setWithObjects:{v125, objc_opt_class(), 0}];
-    [v123 setClasses:v126 forSelector:sel_fetchTransitionsBetweenStartDate_endDate_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface19 setClasses:v126 forSelector:sel_fetchTransitionsBetweenStartDate_endDate_reply_ argumentIndex:0 ofReply:1];
 
-    v127 = [(RTRoutineManager *)self xpcConnection];
-    v128 = [v127 remoteObjectInterface];
+    xpcConnection29 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface20 = [xpcConnection29 remoteObjectInterface];
     v129 = MEMORY[0x1E695DFD8];
     v130 = objc_opt_class();
     v131 = [v129 setWithObjects:{v130, objc_opt_class(), 0}];
-    [v128 setClasses:v131 forSelector:sel_fetchStoredLocationsWithContext_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface20 setClasses:v131 forSelector:sel_fetchStoredLocationsWithContext_reply_ argumentIndex:0 ofReply:1];
 
-    v132 = [(RTRoutineManager *)self xpcConnection];
-    v133 = [v132 remoteObjectInterface];
+    xpcConnection30 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface21 = [xpcConnection30 remoteObjectInterface];
     v134 = MEMORY[0x1E695DFD8];
     v135 = objc_opt_class();
     v136 = [v134 setWithObjects:{v135, objc_opt_class(), 0}];
-    [v133 setClasses:v136 forSelector:sel_fetchStoredLocationsWithContext_reply_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface21 setClasses:v136 forSelector:sel_fetchStoredLocationsWithContext_reply_ argumentIndex:0 ofReply:0];
 
-    v137 = [(RTRoutineManager *)self xpcConnection];
-    v138 = [v137 remoteObjectInterface];
+    xpcConnection31 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface22 = [xpcConnection31 remoteObjectInterface];
     v139 = MEMORY[0x1E695DFD8];
     v140 = objc_opt_class();
     v141 = [v139 setWithObjects:{v140, objc_opt_class(), 0}];
-    [v138 setClasses:v141 forSelector:sel_fetchPlaceInferencesWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface22 setClasses:v141 forSelector:sel_fetchPlaceInferencesWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v142 = [(RTRoutineManager *)self xpcConnection];
-    v143 = [v142 remoteObjectInterface];
+    xpcConnection32 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface23 = [xpcConnection32 remoteObjectInterface];
     v144 = MEMORY[0x1E695DFD8];
     v145 = objc_opt_class();
     v146 = [v144 setWithObjects:{v145, objc_opt_class(), 0}];
-    [v143 setClasses:v146 forSelector:sel_fetchFamiliarityIndexResultsWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface23 setClasses:v146 forSelector:sel_fetchFamiliarityIndexResultsWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v147 = [(RTRoutineManager *)self xpcConnection];
-    v148 = [v147 remoteObjectInterface];
-    [v148 setClass:objc_opt_class() forSelector:sel_fetchAuthorizedLocationStatus_ argumentIndex:0 ofReply:1];
+    xpcConnection33 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface24 = [xpcConnection33 remoteObjectInterface];
+    [remoteObjectInterface24 setClass:objc_opt_class() forSelector:sel_fetchAuthorizedLocationStatus_ argumentIndex:0 ofReply:1];
 
-    v149 = [(RTRoutineManager *)self xpcConnection];
-    v150 = [v149 remoteObjectInterface];
+    xpcConnection34 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface25 = [xpcConnection34 remoteObjectInterface];
     v151 = MEMORY[0x1E695DFD8];
     v152 = objc_opt_class();
     v153 = [v151 setWithObjects:{v152, objc_opt_class(), 0}];
-    [v150 setClasses:v153 forSelector:sel_fetchEstimatedLocationAtDate_options_reply_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface25 setClasses:v153 forSelector:sel_fetchEstimatedLocationAtDate_options_reply_ argumentIndex:0 ofReply:0];
 
-    v154 = [(RTRoutineManager *)self xpcConnection];
-    v155 = [v154 remoteObjectInterface];
+    xpcConnection35 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface26 = [xpcConnection35 remoteObjectInterface];
     v156 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    [v155 setClasses:v156 forSelector:sel_fetchEstimatedLocationAtDate_options_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface26 setClasses:v156 forSelector:sel_fetchEstimatedLocationAtDate_options_reply_ argumentIndex:0 ofReply:1];
 
-    v157 = [(RTRoutineManager *)self xpcConnection];
-    v158 = [v157 remoteObjectInterface];
+    xpcConnection36 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface27 = [xpcConnection36 remoteObjectInterface];
     v159 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    [v158 setClasses:v159 forSelector:sel_fetchEstimatedLocationAtDate_options_reply_ argumentIndex:1 ofReply:1];
+    [remoteObjectInterface27 setClasses:v159 forSelector:sel_fetchEstimatedLocationAtDate_options_reply_ argumentIndex:1 ofReply:1];
 
-    v160 = [(RTRoutineManager *)self xpcConnection];
-    v161 = [v160 remoteObjectInterface];
+    xpcConnection37 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface28 = [xpcConnection37 remoteObjectInterface];
     v162 = MEMORY[0x1E695DFD8];
     v163 = objc_opt_class();
     v164 = [v162 setWithObjects:{v163, objc_opt_class(), 0}];
-    [v161 setClasses:v164 forSelector:sel_fetchStoredVisitsWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface28 setClasses:v164 forSelector:sel_fetchStoredVisitsWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v165 = [(RTRoutineManager *)self xpcConnection];
-    v166 = [v165 remoteObjectInterface];
+    xpcConnection38 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface29 = [xpcConnection38 remoteObjectInterface];
     v167 = MEMORY[0x1E695DFD8];
     v168 = objc_opt_class();
     v169 = [v167 setWithObjects:{v168, objc_opt_class(), 0}];
-    [v166 setClasses:v169 forSelector:sel_fetchFinerGranularityInferredMapItemWithVisitIdentifier_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface29 setClasses:v169 forSelector:sel_fetchFinerGranularityInferredMapItemWithVisitIdentifier_reply_ argumentIndex:0 ofReply:1];
 
-    v170 = [(RTRoutineManager *)self xpcConnection];
-    v171 = [v170 remoteObjectInterface];
+    xpcConnection39 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface30 = [xpcConnection39 remoteObjectInterface];
     v172 = MEMORY[0x1E695DFD8];
     v173 = objc_opt_class();
     v174 = [v172 setWithObjects:{v173, objc_opt_class(), 0}];
-    [v171 setClasses:v174 forSelector:sel_fetchLearnedRoutesWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface30 setClasses:v174 forSelector:sel_fetchLearnedRoutesWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v175 = [(RTRoutineManager *)self xpcConnection];
-    v176 = [v175 remoteObjectInterface];
+    xpcConnection40 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface31 = [xpcConnection40 remoteObjectInterface];
     v177 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    [v176 setClasses:v177 forSelector:sel_purgeTripClusterTable_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface31 setClasses:v177 forSelector:sel_purgeTripClusterTable_reply_ argumentIndex:0 ofReply:1];
 
-    v178 = [(RTRoutineManager *)self xpcConnection];
-    v179 = [v178 remoteObjectInterface];
+    xpcConnection41 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface32 = [xpcConnection41 remoteObjectInterface];
     v180 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    [v179 setClasses:v180 forSelector:sel_purgeTripClusterWithClusterID_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface32 setClasses:v180 forSelector:sel_purgeTripClusterWithClusterID_reply_ argumentIndex:0 ofReply:1];
 
-    v181 = [(RTRoutineManager *)self xpcConnection];
-    v182 = [v181 remoteObjectInterface];
-    [v182 setClass:objc_opt_class() forSelector:sel_fetchTripClusterMetadataWithOptions_reply_ argumentIndex:0 ofReply:0];
+    xpcConnection42 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface33 = [xpcConnection42 remoteObjectInterface];
+    [remoteObjectInterface33 setClass:objc_opt_class() forSelector:sel_fetchTripClusterMetadataWithOptions_reply_ argumentIndex:0 ofReply:0];
 
-    v183 = [(RTRoutineManager *)self xpcConnection];
-    v184 = [v183 remoteObjectInterface];
+    xpcConnection43 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface34 = [xpcConnection43 remoteObjectInterface];
     v185 = MEMORY[0x1E695DFD8];
     v186 = objc_opt_class();
     v187 = [v185 setWithObjects:{v186, objc_opt_class(), 0}];
-    [v184 setClasses:v187 forSelector:sel_fetchTripClusterMetadataWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface34 setClasses:v187 forSelector:sel_fetchTripClusterMetadataWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v188 = [(RTRoutineManager *)self xpcConnection];
-    v189 = [v188 remoteObjectInterface];
+    xpcConnection44 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface35 = [xpcConnection44 remoteObjectInterface];
     v190 = MEMORY[0x1E695DFD8];
     v191 = objc_opt_class();
     v192 = [v190 setWithObjects:{v191, objc_opt_class(), 0}];
-    [v189 setClasses:v192 forSelector:sel_fetchTripSegmentsWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface35 setClasses:v192 forSelector:sel_fetchTripSegmentsWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v193 = [(RTRoutineManager *)self xpcConnection];
-    v194 = [v193 remoteObjectInterface];
-    [v194 setClass:objc_opt_class() forSelector:sel_fetchLocationsForTripSegmentWithOptions_reply_ argumentIndex:0 ofReply:0];
+    xpcConnection45 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface36 = [xpcConnection45 remoteObjectInterface];
+    [remoteObjectInterface36 setClass:objc_opt_class() forSelector:sel_fetchLocationsForTripSegmentWithOptions_reply_ argumentIndex:0 ofReply:0];
 
-    v195 = [(RTRoutineManager *)self xpcConnection];
-    v196 = [v195 remoteObjectInterface];
+    xpcConnection46 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface37 = [xpcConnection46 remoteObjectInterface];
     v197 = MEMORY[0x1E695DFD8];
     v198 = objc_opt_class();
     v199 = [v197 setWithObjects:{v198, objc_opt_class(), 0}];
-    [v196 setClasses:v199 forSelector:sel_fetchLocationsForTripSegmentWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface37 setClasses:v199 forSelector:sel_fetchLocationsForTripSegmentWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v200 = [(RTRoutineManager *)self xpcConnection];
-    v201 = [v200 remoteObjectInterface];
+    xpcConnection47 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface38 = [xpcConnection47 remoteObjectInterface];
     v202 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    [v201 setClasses:v202 forSelector:sel_deleteTripSegmentWithUUID_reply_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface38 setClasses:v202 forSelector:sel_deleteTripSegmentWithUUID_reply_ argumentIndex:0 ofReply:0];
 
-    v203 = [(RTRoutineManager *)self xpcConnection];
-    v204 = [v203 remoteObjectInterface];
+    xpcConnection48 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface39 = [xpcConnection48 remoteObjectInterface];
     v205 = MEMORY[0x1E695DFD8];
     v206 = objc_opt_class();
     v207 = [v205 setWithObjects:{v206, objc_opt_class(), 0}];
-    [v204 setClasses:v207 forSelector:sel_fetchVehiclesWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface39 setClasses:v207 forSelector:sel_fetchVehiclesWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v208 = [(RTRoutineManager *)self xpcConnection];
-    v209 = [v208 remoteObjectInterface];
-    [v209 setClass:objc_opt_class() forSelector:sel_fetchTripSegmentMetadataWithOptions_reply_ argumentIndex:0 ofReply:0];
+    xpcConnection49 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface40 = [xpcConnection49 remoteObjectInterface];
+    [remoteObjectInterface40 setClass:objc_opt_class() forSelector:sel_fetchTripSegmentMetadataWithOptions_reply_ argumentIndex:0 ofReply:0];
 
-    v210 = [(RTRoutineManager *)self xpcConnection];
-    v211 = [v210 remoteObjectInterface];
+    xpcConnection50 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface41 = [xpcConnection50 remoteObjectInterface];
     v212 = MEMORY[0x1E695DFD8];
     v213 = objc_opt_class();
     v214 = [v212 setWithObjects:{v213, objc_opt_class(), 0}];
-    [v211 setClasses:v214 forSelector:sel_fetchTripSegmentMetadataWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface41 setClasses:v214 forSelector:sel_fetchTripSegmentMetadataWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v215 = [(RTRoutineManager *)self xpcConnection];
-    v216 = [v215 remoteObjectInterface];
+    xpcConnection51 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface42 = [xpcConnection51 remoteObjectInterface];
     v217 = MEMORY[0x1E695DFD8];
     v218 = objc_opt_class();
     v219 = objc_opt_class();
     v220 = [v217 setWithObjects:{v218, v219, objc_opt_class(), 0}];
-    [v216 setClasses:v220 forSelector:sel_fetchEnumerableObjectsWithOptions_offset_reply_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface42 setClasses:v220 forSelector:sel_fetchEnumerableObjectsWithOptions_offset_reply_ argumentIndex:0 ofReply:0];
 
-    v221 = [(RTRoutineManager *)self xpcConnection];
-    v222 = [v221 remoteObjectInterface];
+    xpcConnection52 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface43 = [xpcConnection52 remoteObjectInterface];
     v223 = MEMORY[0x1E695DFD8];
     v224 = objc_opt_class();
     v225 = objc_opt_class();
     v226 = objc_opt_class();
     v227 = [v223 setWithObjects:{v224, v225, v226, objc_opt_class(), 0}];
-    [v222 setClasses:v227 forSelector:sel_fetchEnumerableObjectsWithOptions_offset_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface43 setClasses:v227 forSelector:sel_fetchEnumerableObjectsWithOptions_offset_reply_ argumentIndex:0 ofReply:1];
 
-    v228 = [(RTRoutineManager *)self xpcConnection];
-    v229 = [v228 remoteObjectInterface];
-    [v229 setClass:objc_opt_class() forSelector:sel_fetchEnumerableObjectsWithOptions_offset_reply_ argumentIndex:1 ofReply:1];
+    xpcConnection53 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface44 = [xpcConnection53 remoteObjectInterface];
+    [remoteObjectInterface44 setClass:objc_opt_class() forSelector:sel_fetchEnumerableObjectsWithOptions_offset_reply_ argumentIndex:1 ofReply:1];
 
-    v230 = [(RTRoutineManager *)self xpcConnection];
-    v231 = [v230 remoteObjectInterface];
+    xpcConnection54 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface45 = [xpcConnection54 remoteObjectInterface];
     v232 = MEMORY[0x1E695DFD8];
     v233 = objc_opt_class();
     v234 = [v232 setWithObjects:{v233, objc_opt_class(), 0}];
-    [v231 setClasses:v234 forSelector:sel_fetchDedupedLocationOfInterestIdentifiersWithIdentifier_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface45 setClasses:v234 forSelector:sel_fetchDedupedLocationOfInterestIdentifiersWithIdentifier_reply_ argumentIndex:0 ofReply:1];
 
-    v235 = [(RTRoutineManager *)self xpcConnection];
-    v236 = [v235 remoteObjectInterface];
+    xpcConnection55 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface46 = [xpcConnection55 remoteObjectInterface];
     v237 = MEMORY[0x1E695DFD8];
     v238 = objc_opt_class();
     v239 = [v237 setWithObjects:{v238, objc_opt_class(), 0}];
-    [v236 setClasses:v239 forSelector:sel_fetchElevationsWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface46 setClasses:v239 forSelector:sel_fetchElevationsWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v240 = [(RTRoutineManager *)self xpcConnection];
-    v241 = [v240 remoteObjectInterface];
+    xpcConnection56 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface47 = [xpcConnection56 remoteObjectInterface];
     v242 = MEMORY[0x1E695DFD8];
     v243 = objc_opt_class();
     v244 = [v242 setWithObjects:{v243, objc_opt_class(), 0}];
-    [v241 setClasses:v244 forSelector:sel_fetchElevationsWithContext_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface47 setClasses:v244 forSelector:sel_fetchElevationsWithContext_reply_ argumentIndex:0 ofReply:1];
 
-    v245 = [(RTRoutineManager *)self xpcConnection];
-    v246 = [v245 remoteObjectInterface];
+    xpcConnection57 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface48 = [xpcConnection57 remoteObjectInterface];
     v247 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    [v246 setClasses:v247 forSelector:sel_fetchElevationsWithContext_reply_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface48 setClasses:v247 forSelector:sel_fetchElevationsWithContext_reply_ argumentIndex:0 ofReply:0];
 
-    v248 = [(RTRoutineManager *)self xpcConnection];
-    v249 = [v248 remoteObjectInterface];
+    xpcConnection58 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface49 = [xpcConnection58 remoteObjectInterface];
     v250 = MEMORY[0x1E695DFD8];
     v251 = objc_opt_class();
     v252 = [v250 setWithObjects:{v251, objc_opt_class(), 0}];
-    [v249 setClasses:v252 forSelector:sel_fetchBackgroundInertialOdometrySamplesWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface49 setClasses:v252 forSelector:sel_fetchBackgroundInertialOdometrySamplesWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v253 = [(RTRoutineManager *)self xpcConnection];
-    v254 = [v253 remoteObjectInterface];
+    xpcConnection59 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface50 = [xpcConnection59 remoteObjectInterface];
     v255 = MEMORY[0x1E695DFD8];
     v256 = objc_opt_class();
     v257 = [v255 setWithObjects:{v256, objc_opt_class(), 0}];
-    [v254 setClasses:v257 forSelector:sel_addBackgroundInertialOdometrySamples_reply_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface50 setClasses:v257 forSelector:sel_addBackgroundInertialOdometrySamples_reply_ argumentIndex:0 ofReply:0];
 
-    v258 = [(RTRoutineManager *)self xpcConnection];
-    v259 = [v258 remoteObjectInterface];
-    [v259 setClass:objc_opt_class() forSelector:sel_submitUserCurationForVisitDateRange_newLabel_handler_ argumentIndex:0 ofReply:0];
+    xpcConnection60 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface51 = [xpcConnection60 remoteObjectInterface];
+    [remoteObjectInterface51 setClass:objc_opt_class() forSelector:sel_submitUserCurationForVisitDateRange_newLabel_handler_ argumentIndex:0 ofReply:0];
 
-    v260 = [(RTRoutineManager *)self xpcConnection];
-    v261 = [v260 remoteObjectInterface];
-    [v261 setClass:objc_opt_class() forSelector:sel_submitUserCurationForVisitDateRange_newLabel_handler_ argumentIndex:1 ofReply:0];
+    xpcConnection61 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface52 = [xpcConnection61 remoteObjectInterface];
+    [remoteObjectInterface52 setClass:objc_opt_class() forSelector:sel_submitUserCurationForVisitDateRange_newLabel_handler_ argumentIndex:1 ofReply:0];
 
-    v262 = [(RTRoutineManager *)self xpcConnection];
-    v263 = [v262 remoteObjectInterface];
-    [v263 setClass:objc_opt_class() forSelector:sel_correctLabelForVisitWithIdentifier_entryDate_originalLabel_newLabel_handler_ argumentIndex:0 ofReply:0];
+    xpcConnection62 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface53 = [xpcConnection62 remoteObjectInterface];
+    [remoteObjectInterface53 setClass:objc_opt_class() forSelector:sel_correctLabelForVisitWithIdentifier_entryDate_originalLabel_newLabel_handler_ argumentIndex:0 ofReply:0];
 
-    v264 = [(RTRoutineManager *)self xpcConnection];
-    v265 = [v264 remoteObjectInterface];
-    [v265 setClass:objc_opt_class() forSelector:sel_correctLabelForVisitWithIdentifier_entryDate_originalLabel_newLabel_handler_ argumentIndex:1 ofReply:0];
+    xpcConnection63 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface54 = [xpcConnection63 remoteObjectInterface];
+    [remoteObjectInterface54 setClass:objc_opt_class() forSelector:sel_correctLabelForVisitWithIdentifier_entryDate_originalLabel_newLabel_handler_ argumentIndex:1 ofReply:0];
 
-    v266 = [(RTRoutineManager *)self xpcConnection];
-    v267 = [v266 remoteObjectInterface];
-    [v267 setClass:objc_opt_class() forSelector:sel_correctLabelForVisitWithIdentifier_entryDate_originalLabel_newLabel_handler_ argumentIndex:2 ofReply:0];
+    xpcConnection64 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface55 = [xpcConnection64 remoteObjectInterface];
+    [remoteObjectInterface55 setClass:objc_opt_class() forSelector:sel_correctLabelForVisitWithIdentifier_entryDate_originalLabel_newLabel_handler_ argumentIndex:2 ofReply:0];
 
-    v268 = [(RTRoutineManager *)self xpcConnection];
-    v269 = [v268 remoteObjectInterface];
-    [v269 setClass:objc_opt_class() forSelector:sel_correctLabelForVisitWithIdentifier_entryDate_originalLabel_newLabel_handler_ argumentIndex:3 ofReply:0];
+    xpcConnection65 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface56 = [xpcConnection65 remoteObjectInterface];
+    [remoteObjectInterface56 setClass:objc_opt_class() forSelector:sel_correctLabelForVisitWithIdentifier_entryDate_originalLabel_newLabel_handler_ argumentIndex:3 ofReply:0];
 
-    v270 = [(RTRoutineManager *)self xpcConnection];
-    v271 = [v270 remoteObjectInterface];
+    xpcConnection66 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface57 = [xpcConnection66 remoteObjectInterface];
     v272 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    [v271 setClasses:v272 forSelector:sel_startMonitoringPlaceInferencesWithOptions_reply_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface57 setClasses:v272 forSelector:sel_startMonitoringPlaceInferencesWithOptions_reply_ argumentIndex:0 ofReply:0];
 
-    v273 = [(RTRoutineManager *)self xpcConnection];
-    v274 = [v273 remoteObjectInterface];
+    xpcConnection67 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface58 = [xpcConnection67 remoteObjectInterface];
     v275 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    [v274 setClasses:v275 forSelector:sel_fetchPredictedContextWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface58 setClasses:v275 forSelector:sel_fetchPredictedContextWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v276 = [(RTRoutineManager *)self xpcConnection];
-    v277 = [v276 remoteObjectInterface];
-    [v277 setClass:objc_opt_class() forSelector:sel_startMonitoringForPeopleDiscoveryWithIdentifier_configuration_reply_ argumentIndex:0 ofReply:0];
+    xpcConnection68 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface59 = [xpcConnection68 remoteObjectInterface];
+    [remoteObjectInterface59 setClass:objc_opt_class() forSelector:sel_startMonitoringForPeopleDiscoveryWithIdentifier_configuration_reply_ argumentIndex:0 ofReply:0];
 
-    v278 = [(RTRoutineManager *)self xpcConnection];
-    v279 = [v278 remoteObjectInterface];
-    [v279 setClass:objc_opt_class() forSelector:sel_fetchOngoingPeopleDensity_ argumentIndex:0 ofReply:1];
+    xpcConnection69 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface60 = [xpcConnection69 remoteObjectInterface];
+    [remoteObjectInterface60 setClass:objc_opt_class() forSelector:sel_fetchOngoingPeopleDensity_ argumentIndex:0 ofReply:1];
 
-    v280 = [(RTRoutineManager *)self xpcConnection];
-    v281 = [v280 remoteObjectInterface];
-    [v281 setClass:objc_opt_class() forSelector:sel_fetchProximityHistoryFromStartDate_endDate_completionHandler_ argumentIndex:0 ofReply:0];
+    xpcConnection70 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface61 = [xpcConnection70 remoteObjectInterface];
+    [remoteObjectInterface61 setClass:objc_opt_class() forSelector:sel_fetchProximityHistoryFromStartDate_endDate_completionHandler_ argumentIndex:0 ofReply:0];
 
-    v282 = [(RTRoutineManager *)self xpcConnection];
-    v283 = [v282 remoteObjectInterface];
-    [v283 setClass:objc_opt_class() forSelector:sel_fetchProximityHistoryFromStartDate_endDate_completionHandler_ argumentIndex:1 ofReply:0];
+    xpcConnection71 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface62 = [xpcConnection71 remoteObjectInterface];
+    [remoteObjectInterface62 setClass:objc_opt_class() forSelector:sel_fetchProximityHistoryFromStartDate_endDate_completionHandler_ argumentIndex:1 ofReply:0];
 
-    v284 = [(RTRoutineManager *)self xpcConnection];
-    v285 = [v284 remoteObjectInterface];
+    xpcConnection72 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface63 = [xpcConnection72 remoteObjectInterface];
     v286 = MEMORY[0x1E695DFD8];
     v287 = objc_opt_class();
     v288 = [v286 setWithObjects:{v287, objc_opt_class(), 0}];
-    [v285 setClasses:v288 forSelector:sel_fetchProximityHistoryFromStartDate_endDate_completionHandler_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface63 setClasses:v288 forSelector:sel_fetchProximityHistoryFromStartDate_endDate_completionHandler_ argumentIndex:0 ofReply:1];
 
-    v289 = [(RTRoutineManager *)self xpcConnection];
-    v290 = [v289 remoteObjectInterface];
+    xpcConnection73 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface64 = [xpcConnection73 remoteObjectInterface];
     v291 = MEMORY[0x1E695DFD8];
     v292 = objc_opt_class();
     v293 = [v291 setWithObjects:{v292, objc_opt_class(), 0}];
-    [v290 setClasses:v293 forSelector:sel_fetchProximityHistoryFromEventIDs_completionHandler_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface64 setClasses:v293 forSelector:sel_fetchProximityHistoryFromEventIDs_completionHandler_ argumentIndex:0 ofReply:0];
 
-    v294 = [(RTRoutineManager *)self xpcConnection];
-    v295 = [v294 remoteObjectInterface];
+    xpcConnection74 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface65 = [xpcConnection74 remoteObjectInterface];
     v296 = MEMORY[0x1E695DFD8];
     v297 = objc_opt_class();
     v298 = [v296 setWithObjects:{v297, objc_opt_class(), 0}];
-    [v295 setClasses:v298 forSelector:sel_fetchProximityHistoryFromEventIDs_completionHandler_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface65 setClasses:v298 forSelector:sel_fetchProximityHistoryFromEventIDs_completionHandler_ argumentIndex:0 ofReply:1];
 
-    v299 = [(RTRoutineManager *)self xpcConnection];
-    v300 = [v299 remoteObjectInterface];
+    xpcConnection75 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface66 = [xpcConnection75 remoteObjectInterface];
     v301 = MEMORY[0x1E695DFD8];
     v302 = objc_opt_class();
     v303 = [v301 setWithObjects:{v302, objc_opt_class(), 0}];
-    [v300 setClasses:v303 forSelector:sel_fetchPeopleCountEventsHistory_completionHandler_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface66 setClasses:v303 forSelector:sel_fetchPeopleCountEventsHistory_completionHandler_ argumentIndex:0 ofReply:0];
 
-    v304 = [(RTRoutineManager *)self xpcConnection];
-    v305 = [v304 remoteObjectInterface];
+    xpcConnection76 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface67 = [xpcConnection76 remoteObjectInterface];
     v306 = MEMORY[0x1E695DFD8];
     v307 = objc_opt_class();
     v308 = [v306 setWithObjects:{v307, objc_opt_class(), 0}];
-    [v305 setClasses:v308 forSelector:sel_fetchPeopleCountEventsHistory_completionHandler_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface67 setClasses:v308 forSelector:sel_fetchPeopleCountEventsHistory_completionHandler_ argumentIndex:0 ofReply:1];
 
-    v309 = [(RTRoutineManager *)self xpcConnection];
-    v310 = [v309 remoteObjectInterface];
-    [v310 setClass:objc_opt_class() forSelector:sel_fetchPeopleDensityHistoryFromStartDate_endDate_completionHandler_ argumentIndex:0 ofReply:0];
+    xpcConnection77 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface68 = [xpcConnection77 remoteObjectInterface];
+    [remoteObjectInterface68 setClass:objc_opt_class() forSelector:sel_fetchPeopleDensityHistoryFromStartDate_endDate_completionHandler_ argumentIndex:0 ofReply:0];
 
-    v311 = [(RTRoutineManager *)self xpcConnection];
-    v312 = [v311 remoteObjectInterface];
-    [v312 setClass:objc_opt_class() forSelector:sel_fetchPeopleDensityHistoryFromStartDate_endDate_completionHandler_ argumentIndex:1 ofReply:0];
+    xpcConnection78 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface69 = [xpcConnection78 remoteObjectInterface];
+    [remoteObjectInterface69 setClass:objc_opt_class() forSelector:sel_fetchPeopleDensityHistoryFromStartDate_endDate_completionHandler_ argumentIndex:1 ofReply:0];
 
-    v313 = [(RTRoutineManager *)self xpcConnection];
-    v314 = [v313 remoteObjectInterface];
+    xpcConnection79 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface70 = [xpcConnection79 remoteObjectInterface];
     v315 = MEMORY[0x1E695DFD8];
     v316 = objc_opt_class();
     v317 = [v315 setWithObjects:{v316, objc_opt_class(), 0}];
-    [v314 setClasses:v317 forSelector:sel_fetchPeopleDensityHistoryFromStartDate_endDate_completionHandler_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface70 setClasses:v317 forSelector:sel_fetchPeopleDensityHistoryFromStartDate_endDate_completionHandler_ argumentIndex:0 ofReply:1];
 
-    v318 = [(RTRoutineManager *)self xpcConnection];
-    v319 = [v318 remoteObjectInterface];
+    xpcConnection80 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface71 = [xpcConnection80 remoteObjectInterface];
     v320 = MEMORY[0x1E695DFD8];
     v321 = objc_opt_class();
     v322 = [v320 setWithObjects:{v321, objc_opt_class(), 0}];
-    [v319 setClasses:v322 forSelector:sel_fetchContactScoresFromContactIDs_completionHandler_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface71 setClasses:v322 forSelector:sel_fetchContactScoresFromContactIDs_completionHandler_ argumentIndex:0 ofReply:0];
 
-    v323 = [(RTRoutineManager *)self xpcConnection];
-    v324 = [v323 remoteObjectInterface];
+    xpcConnection81 = [(RTRoutineManager *)self xpcConnection];
+    remoteObjectInterface72 = [xpcConnection81 remoteObjectInterface];
     v325 = MEMORY[0x1E695DFD8];
     v326 = objc_opt_class();
     v327 = [v325 setWithObjects:{v326, objc_opt_class(), 0}];
-    [v324 setClasses:v327 forSelector:sel_fetchContactScoresFromContactIDs_completionHandler_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface72 setClasses:v327 forSelector:sel_fetchContactScoresFromContactIDs_completionHandler_ argumentIndex:0 ofReply:1];
 
-    v328 = [(RTRoutineManager *)self xpcConnection];
-    [v328 resume];
+    xpcConnection82 = [(RTRoutineManager *)self xpcConnection];
+    [xpcConnection82 resume];
 
-    v329 = [(RTRoutineManager *)self restorationIdentifier];
+    restorationIdentifier = [(RTRoutineManager *)self restorationIdentifier];
 
-    if (v329)
+    if (restorationIdentifier)
     {
-      v330 = [(RTRoutineManager *)self xpcConnection];
+      xpcConnection83 = [(RTRoutineManager *)self xpcConnection];
       v357[0] = MEMORY[0x1E69E9820];
       v357[1] = 3221225472;
       v357[2] = __37__RTRoutineManager__createConnection__block_invoke;
       v357[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
       v357[4] = a2;
-      v331 = [v330 remoteObjectProxyWithErrorHandler:v357];
-      v332 = [(RTRoutineManager *)self restorationIdentifier];
-      [v331 setRestorationIdentifier:v332];
+      v331 = [xpcConnection83 remoteObjectProxyWithErrorHandler:v357];
+      restorationIdentifier2 = [(RTRoutineManager *)self restorationIdentifier];
+      [v331 setRestorationIdentifier:restorationIdentifier2];
     }
 
-    v333 = [(RTRoutineManager *)self visitHandler];
+    visitHandler = [(RTRoutineManager *)self visitHandler];
 
-    if (v333)
+    if (visitHandler)
     {
-      v334 = [(RTRoutineManager *)self visitHandler];
-      [(RTRoutineManager *)self startMonitoringVisitsWithHandler:v334];
+      visitHandler2 = [(RTRoutineManager *)self visitHandler];
+      [(RTRoutineManager *)self startMonitoringVisitsWithHandler:visitHandler2];
     }
 
-    v335 = [(RTRoutineManager *)self leechedVisitHandler];
+    leechedVisitHandler = [(RTRoutineManager *)self leechedVisitHandler];
 
-    if (v335)
+    if (leechedVisitHandler)
     {
-      v336 = [(RTRoutineManager *)self leechedVisitHandler];
-      [(RTRoutineManager *)self startLeechingVisitsWithHandler:v336];
+      leechedVisitHandler2 = [(RTRoutineManager *)self leechedVisitHandler];
+      [(RTRoutineManager *)self startLeechingVisitsWithHandler:leechedVisitHandler2];
     }
 
-    v337 = [(RTRoutineManager *)self leechedLowConfidenceVisitHandler];
+    leechedLowConfidenceVisitHandler = [(RTRoutineManager *)self leechedLowConfidenceVisitHandler];
 
-    if (v337)
+    if (leechedLowConfidenceVisitHandler)
     {
-      v338 = [(RTRoutineManager *)self leechedLowConfidenceVisitHandler];
-      [(RTRoutineManager *)self startLeechingLowConfidenceVisitsWithHandler:v338];
+      leechedLowConfidenceVisitHandler2 = [(RTRoutineManager *)self leechedLowConfidenceVisitHandler];
+      [(RTRoutineManager *)self startLeechingLowConfidenceVisitsWithHandler:leechedLowConfidenceVisitHandler2];
     }
 
-    v339 = [(RTRoutineManager *)self placeInferencesHandler];
-    if (v339)
+    placeInferencesHandler = [(RTRoutineManager *)self placeInferencesHandler];
+    if (placeInferencesHandler)
     {
-      v340 = v339;
-      v341 = [(RTRoutineManager *)self placeInferenceOptions];
+      v340 = placeInferencesHandler;
+      placeInferenceOptions = [(RTRoutineManager *)self placeInferenceOptions];
 
-      if (v341)
+      if (placeInferenceOptions)
       {
-        v342 = [(RTRoutineManager *)self placeInferenceOptions];
-        v343 = [(RTRoutineManager *)self placeInferencesHandler];
-        [(RTRoutineManager *)self startMonitoringPlaceInferencesWithOptions:v342 handler:v343];
+        placeInferenceOptions2 = [(RTRoutineManager *)self placeInferenceOptions];
+        placeInferencesHandler2 = [(RTRoutineManager *)self placeInferencesHandler];
+        [(RTRoutineManager *)self startMonitoringPlaceInferencesWithOptions:placeInferenceOptions2 handler:placeInferencesHandler2];
       }
     }
 
     if ([(RTRoutineManagerRegistrantScenarioTrigger *)self->_scenarioTriggerRegistrant registered])
     {
-      v344 = [(RTRoutineManagerRegistrantScenarioTrigger *)self->_scenarioTriggerRegistrant scenarioTriggerHandlers];
+      scenarioTriggerHandlers = [(RTRoutineManagerRegistrantScenarioTrigger *)self->_scenarioTriggerRegistrant scenarioTriggerHandlers];
       v356[0] = MEMORY[0x1E69E9820];
       v356[1] = 3221225472;
       v356[2] = __37__RTRoutineManager__createConnection__block_invoke_413;
       v356[3] = &unk_1E80B3E48;
       v356[4] = self;
-      [v344 enumerateKeysAndObjectsUsingBlock:v356];
+      [scenarioTriggerHandlers enumerateKeysAndObjectsUsingBlock:v356];
     }
 
     if ([(RTRoutineManagerRegistrantPeopleDiscovery *)self->_peopleDiscoveryRegistrant registered])
     {
-      v345 = [(RTRoutineManagerRegistrantPeopleDiscovery *)self->_peopleDiscoveryRegistrant configuration];
-      v346 = [(RTRoutineManager *)self peopleDiscoveryErrorHandler];
-      [(RTRoutineManager *)self startMonitoringForPeopleDiscovery:v345 handler:v346];
+      configuration = [(RTRoutineManagerRegistrantPeopleDiscovery *)self->_peopleDiscoveryRegistrant configuration];
+      peopleDiscoveryErrorHandler = [(RTRoutineManager *)self peopleDiscoveryErrorHandler];
+      [(RTRoutineManager *)self startMonitoringForPeopleDiscovery:configuration handler:peopleDiscoveryErrorHandler];
     }
 
-    v347 = [(RTRoutineManager *)self vehicleEventsHandler];
+    vehicleEventsHandler = [(RTRoutineManager *)self vehicleEventsHandler];
 
-    if (v347)
+    if (vehicleEventsHandler)
     {
-      v348 = [(RTRoutineManager *)self vehicleEventsHandler];
-      [(RTRoutineManager *)self startMonitoringVehicleEventsWithHandler:v348];
+      vehicleEventsHandler2 = [(RTRoutineManager *)self vehicleEventsHandler];
+      [(RTRoutineManager *)self startMonitoringVehicleEventsWithHandler:vehicleEventsHandler2];
     }
 
-    v349 = [(RTRoutineManager *)self predictedContextHandler];
-    if (v349)
+    predictedContextHandler = [(RTRoutineManager *)self predictedContextHandler];
+    if (predictedContextHandler)
     {
-      v350 = v349;
-      v351 = [(RTRoutineManager *)self predictedContextOptions];
+      v350 = predictedContextHandler;
+      predictedContextOptions = [(RTRoutineManager *)self predictedContextOptions];
 
-      if (v351)
+      if (predictedContextOptions)
       {
-        v352 = [(RTRoutineManager *)self predictedContextOptions];
-        v353 = [(RTRoutineManager *)self predictedContextHandler];
-        [(RTRoutineManager *)self startMonitoringPredictedContextWithOptions:v352 completionHandler:v353];
+        predictedContextOptions2 = [(RTRoutineManager *)self predictedContextOptions];
+        predictedContextHandler2 = [(RTRoutineManager *)self predictedContextHandler];
+        [(RTRoutineManager *)self startMonitoringPredictedContextWithOptions:predictedContextOptions2 completionHandler:predictedContextHandler2];
       }
     }
 
-    v354 = [(RTRoutineManager *)self remoteStatusHandler];
+    remoteStatusHandler = [(RTRoutineManager *)self remoteStatusHandler];
 
-    if (v354)
+    if (remoteStatusHandler)
     {
-      v355 = [(RTRoutineManager *)self remoteStatusHandler];
-      [(RTRoutineManager *)self startMonitoringRemoteStatusWithHandler:v355];
+      remoteStatusHandler2 = [(RTRoutineManager *)self remoteStatusHandler];
+      [(RTRoutineManager *)self startMonitoringRemoteStatusWithHandler:remoteStatusHandler2];
     }
   }
 }
 
-+ (id)routineModeToString:(int64_t)a3
++ (id)routineModeToString:(int64_t)string
 {
   v3 = @"Unknown";
-  if (a3 == 2)
+  if (string == 2)
   {
     v3 = @"Tourist";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"Local";
   }
@@ -777,23 +777,23 @@ uint64_t __34__RTRoutineManager_defaultManager__block_invoke()
   }
 }
 
-+ (id)modeOfTransportationToString:(int64_t)a3
++ (id)modeOfTransportationToString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E80B4808[a3 - 1];
+    return off_1E80B4808[string - 1];
   }
 }
 
-- (RTRoutineManager)initWithRestorationIdentifier:(id)a3 targertUserSession:(BOOL)a4
+- (RTRoutineManager)initWithRestorationIdentifier:(id)identifier targertUserSession:(BOOL)session
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v49.receiver = self;
   v49.super_class = RTRoutineManager;
   v7 = [(RTRoutineManager *)&v49 init];
@@ -801,15 +801,15 @@ uint64_t __34__RTRoutineManager_defaultManager__block_invoke()
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v42 = a4;
+      sessionCopy = session;
       v43 = v7;
-      v44 = v6;
-      v8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v44 = identifierCopy;
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v9 = [v8 countByEnumeratingWithState:&v45 objects:v52 count:16];
+      v9 = [callStackSymbols countByEnumeratingWithState:&v45 objects:v52 count:16];
       if (v9)
       {
         v10 = v9;
@@ -822,7 +822,7 @@ uint64_t __34__RTRoutineManager_defaultManager__block_invoke()
           {
             if (*v46 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(callStackSymbols);
             }
 
             v14 = *(*(&v45 + 1) + 8 * v13);
@@ -841,15 +841,15 @@ uint64_t __34__RTRoutineManager_defaultManager__block_invoke()
           }
 
           while (v10 != v13);
-          v10 = [v8 countByEnumeratingWithState:&v45 objects:v52 count:16];
+          v10 = [callStackSymbols countByEnumeratingWithState:&v45 objects:v52 count:16];
         }
 
         while (v10);
       }
 
       v7 = v43;
-      v6 = v44;
-      a4 = v42;
+      identifierCopy = v44;
+      session = sessionCopy;
     }
 
     v16 = v7;
@@ -857,16 +857,16 @@ uint64_t __34__RTRoutineManager_defaultManager__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [(RTRoutineManager *)v16 UTF8String];
+      uTF8String = [(RTRoutineManager *)v16 UTF8String];
     }
 
     else
     {
       v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%p", objc_opt_class(), v16];
-      v18 = [v19 UTF8String];
+      uTF8String = [v19 UTF8String];
     }
 
-    v20 = dispatch_queue_create(v18, v17);
+    v20 = dispatch_queue_create(uTF8String, v17);
 
     queue = v16->_queue;
     v16->_queue = v20;
@@ -876,16 +876,16 @@ uint64_t __34__RTRoutineManager_defaultManager__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = [(RTRoutineManager *)v22 UTF8String];
+      uTF8String2 = [(RTRoutineManager *)v22 UTF8String];
     }
 
     else
     {
       v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%p", objc_opt_class(), v22];
-      v24 = [v25 UTF8String];
+      uTF8String2 = [v25 UTF8String];
     }
 
-    v26 = dispatch_queue_create(v24, v23);
+    v26 = dispatch_queue_create(uTF8String2, v23);
 
     xpcQueue = v22->_xpcQueue;
     v22->_xpcQueue = v26;
@@ -902,15 +902,15 @@ uint64_t __34__RTRoutineManager_defaultManager__block_invoke()
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v51 = v6;
+      v51 = identifierCopy;
       _os_log_impl(&dword_1BF1C4000, v32, OS_LOG_TYPE_DEFAULT, "creating _peopleDiscoveryRegistrant initWithConfigurationIdentifier %@", buf, 0xCu);
     }
 
-    v33 = [[RTRoutineManagerRegistrantPeopleDiscovery alloc] initWithConfigurationIdentifier:v6];
+    v33 = [[RTRoutineManagerRegistrantPeopleDiscovery alloc] initWithConfigurationIdentifier:identifierCopy];
     peopleDiscoveryRegistrant = v22->_peopleDiscoveryRegistrant;
     v22->_peopleDiscoveryRegistrant = v33;
 
-    v35 = [v6 copy];
+    v35 = [identifierCopy copy];
     restorationIdentifier = v22->_restorationIdentifier;
     v22->_restorationIdentifier = v35;
 
@@ -918,7 +918,7 @@ uint64_t __34__RTRoutineManager_defaultManager__block_invoke()
     eventAgentHelper = v22->_eventAgentHelper;
     v22->_eventAgentHelper = v37;
 
-    v22->_targetUserSession = a4;
+    v22->_targetUserSession = session;
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v22, onDaemonStartNotification, @"com.apple.routined.registration", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     [(RTRoutineManager *)v22 createConnection];
@@ -932,8 +932,8 @@ uint64_t __34__RTRoutineManager_defaultManager__block_invoke()
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v4 = [(RTRoutineManager *)self xpcConnection];
-  [v4 invalidate];
+  xpcConnection = [(RTRoutineManager *)self xpcConnection];
+  [xpcConnection invalidate];
 
   v5.receiver = self;
   v5.super_class = RTRoutineManager;
@@ -962,42 +962,42 @@ void __37__RTRoutineManager__createConnection__block_invoke_413(uint64_t a1, voi
   [v4 startMonitoringScenarioTriggerOfType:objc_msgSend(a2 withHandler:{"unsignedIntegerValue"), v5}];
 }
 
-- (void)launchTaskWithSelector:(SEL)a3 remainingAttempts:(unint64_t)a4 proxyErrorHandler:(id)a5 taskBlock:(id)a6
+- (void)launchTaskWithSelector:(SEL)selector remainingAttempts:(unint64_t)attempts proxyErrorHandler:(id)handler taskBlock:(id)block
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [(RTRoutineManager *)self queue];
+  handlerCopy = handler;
+  blockCopy = block;
+  queue = [(RTRoutineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__RTRoutineManager_launchTaskWithSelector_remainingAttempts_proxyErrorHandler_taskBlock___block_invoke;
   block[3] = &unk_1E80B3E98;
-  v18 = a3;
-  v19 = a4;
+  selectorCopy = selector;
+  attemptsCopy = attempts;
   block[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, block);
+  v16 = handlerCopy;
+  v17 = blockCopy;
+  v13 = blockCopy;
+  v14 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_launchTaskWithSelector:(SEL)a3 remainingAttempts:(unint64_t)a4 proxyErrorHandler:(id)a5 taskBlock:(id)a6
+- (void)_launchTaskWithSelector:(SEL)selector remainingAttempts:(unint64_t)attempts proxyErrorHandler:(id)handler taskBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  handlerCopy = handler;
+  blockCopy = block;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __90__RTRoutineManager__launchTaskWithSelector_remainingAttempts_proxyErrorHandler_taskBlock___block_invoke;
   v20[3] = &unk_1E80B3EC0;
-  v23 = a4;
-  v24 = a3;
+  attemptsCopy = attempts;
+  selectorCopy = selector;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = [(RTRoutineManager *)self _proxyForServicingSelector:a3 withErrorHandler:v20];
+  v21 = handlerCopy;
+  v22 = blockCopy;
+  v12 = blockCopy;
+  v13 = handlerCopy;
+  v14 = [(RTRoutineManager *)self _proxyForServicingSelector:selector withErrorHandler:v20];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
@@ -1005,7 +1005,7 @@ void __37__RTRoutineManager__createConnection__block_invoke_413(uint64_t a1, voi
     {
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      v18 = NSStringFromSelector(a3);
+      v18 = NSStringFromSelector(selector);
       *buf = 138412546;
       v26 = v17;
       v27 = 2112;
@@ -1090,30 +1090,30 @@ LABEL_13:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_proxyForServicingSelector:(SEL)a3 asynchronous:(BOOL)a4 withErrorHandler:(id)a5
+- (id)_proxyForServicingSelector:(SEL)selector asynchronous:(BOOL)asynchronous withErrorHandler:(id)handler
 {
-  v5 = a4;
+  asynchronousCopy = asynchronous;
   v47[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  handlerCopy = handler;
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __77__RTRoutineManager__proxyForServicingSelector_asynchronous_withErrorHandler___block_invoke;
   v39[3] = &unk_1E80B3EE8;
   v39[4] = self;
-  v41 = a3;
-  v9 = v8;
+  selectorCopy = selector;
+  v9 = handlerCopy;
   v40 = v9;
   v10 = MEMORY[0x1BFB54DD0](v39);
   v32 = MEMORY[0x1E69E9820];
   v33 = 3221225472;
   v34 = __77__RTRoutineManager__proxyForServicingSelector_asynchronous_withErrorHandler___block_invoke_415;
   v35 = &unk_1E80B3EE8;
-  v36 = self;
-  v38 = a3;
+  selfCopy = self;
+  selectorCopy2 = selector;
   v11 = v9;
   v37 = v11;
   v12 = MEMORY[0x1BFB54DD0](&v32);
-  if (![(RTRoutineManager *)self selectorIsAllowed:a3]&& ![(RTTokenBucket *)self->_clientThrottle operationAllowed:v32])
+  if (![(RTRoutineManager *)self selectorIsAllowed:selector]&& ![(RTTokenBucket *)self->_clientThrottle operationAllowed:v32])
   {
     v46 = *MEMORY[0x1E696A578];
     v47[0] = @"Client is exceeding maximum call rate!";
@@ -1122,31 +1122,31 @@ LABEL_13:
     v15 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v31 = [(RTTokenBucket *)self->_clientThrottle dumpStatistics];
+      dumpStatistics = [(RTTokenBucket *)self->_clientThrottle dumpStatistics];
       *buf = 138412546;
       v43 = v14;
       v44 = 2112;
-      v45 = v31;
+      v45 = dumpStatistics;
       _os_log_error_impl(&dword_1BF1C4000, v15, OS_LOG_TYPE_ERROR, "Error: %@, %@", buf, 0x16u);
     }
   }
 
-  v16 = [(RTRoutineManager *)self xpcConnection];
-  v23 = v16;
-  if (!v16)
+  xpcConnection = [(RTRoutineManager *)self xpcConnection];
+  v23 = xpcConnection;
+  if (!xpcConnection)
   {
     v25 = @"no xpc connection";
 LABEL_17:
-    v28 = RTErrorConnectionCreate(a3, v25, v17, v18, v19, v20, v21, v22, v32);
+    v28 = RTErrorConnectionCreate(selector, v25, v17, v18, v19, v20, v21, v22, v32);
     (v10)[2](v10, v28);
 
     v27 = 0;
     goto LABEL_18;
   }
 
-  if (v5)
+  if (asynchronousCopy)
   {
-    v24 = [v16 remoteObjectProxyWithErrorHandler:v12];
+    v24 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
   }
 
   else
@@ -1226,15 +1226,15 @@ void __77__RTRoutineManager__proxyForServicingSelector_asynchronous_withErrorHan
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchTransitionsBetweenStartDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)fetchTransitionsBetweenStartDate:(id)date endDate:(id)endDate handler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v17 = a5;
-  if (v17)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -1243,7 +1243,7 @@ LABEL_8:
     v20 = @"startDate is required";
 LABEL_10:
     v18 = RTErrorInvalidParameterCreate(a2, v20, v11, v12, v13, v14, v15, v16, v22);
-    v17[2](v17, 0, v18);
+    handlerCopy[2](handlerCopy, 0, v18);
     goto LABEL_11;
   }
 
@@ -1257,13 +1257,13 @@ LABEL_10:
     _os_log_error_impl(&dword_1BF1C4000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v9)
+  if (!dateCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (!v10)
+  if (!endDateCopy)
   {
     v20 = @"endDate is required";
     goto LABEL_10;
@@ -1273,14 +1273,14 @@ LABEL_3:
   v28[1] = 3221225472;
   v28[2] = __69__RTRoutineManager_fetchTransitionsBetweenStartDate_endDate_handler___block_invoke;
   v28[3] = &unk_1E80B3F10;
-  v29 = v17;
+  v29 = handlerCopy;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __69__RTRoutineManager_fetchTransitionsBetweenStartDate_endDate_handler___block_invoke_2;
   v23[3] = &unk_1E80B3F38;
-  v24 = v9;
-  v25 = v10;
-  v26 = self;
+  v24 = dateCopy;
+  v25 = endDateCopy;
+  selfCopy = self;
   v27 = v29;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v28 taskBlock:v23];
 
@@ -1322,12 +1322,12 @@ void __69__RTRoutineManager_fetchTransitionsBetweenStartDate_endDate_handler___b
   dispatch_async(v7, block);
 }
 
-- (void)fetchTripSegmentsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchTripSegmentsWithOptions:(id)options handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1354,16 +1354,16 @@ void __69__RTRoutineManager_fetchTransitionsBetweenStartDate_endDate_handler___b
   v18[1] = 3221225472;
   v18[2] = __57__RTRoutineManager_fetchTripSegmentsWithOptions_handler___block_invoke;
   v18[3] = &unk_1E80B3F10;
-  v19 = v8;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __57__RTRoutineManager_fetchTripSegmentsWithOptions_handler___block_invoke_2;
   v14[3] = &unk_1E80B3F60;
-  v15 = v7;
-  v16 = self;
+  v15 = optionsCopy;
+  selfCopy = self;
   v17 = v19;
   v11 = v19;
-  v12 = v7;
+  v12 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v18 taskBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1411,12 +1411,12 @@ void __57__RTRoutineManager_fetchTripSegmentsWithOptions_handler___block_invoke_
   dispatch_async(v7, block);
 }
 
-- (void)fetchLocationsCountForTripSegmentWithOptions:(id)a3 handler:(id)a4
+- (void)fetchLocationsCountForTripSegmentWithOptions:(id)options handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1443,16 +1443,16 @@ void __57__RTRoutineManager_fetchTripSegmentsWithOptions_handler___block_invoke_
   v18[1] = 3221225472;
   v18[2] = __73__RTRoutineManager_fetchLocationsCountForTripSegmentWithOptions_handler___block_invoke;
   v18[3] = &unk_1E80B3F10;
-  v19 = v8;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __73__RTRoutineManager_fetchLocationsCountForTripSegmentWithOptions_handler___block_invoke_2;
   v14[3] = &unk_1E80B3F60;
-  v15 = v7;
-  v16 = self;
+  v15 = optionsCopy;
+  selfCopy = self;
   v17 = v19;
   v11 = v19;
-  v12 = v7;
+  v12 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v18 taskBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1497,12 +1497,12 @@ void __73__RTRoutineManager_fetchLocationsCountForTripSegmentWithOptions_handler
   dispatch_async(v6, block);
 }
 
-- (void)fetchLocationsForTripSegmentWithOptions:(id)a3 handler:(id)a4
+- (void)fetchLocationsForTripSegmentWithOptions:(id)options handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1529,16 +1529,16 @@ void __73__RTRoutineManager_fetchLocationsCountForTripSegmentWithOptions_handler
   v18[1] = 3221225472;
   v18[2] = __68__RTRoutineManager_fetchLocationsForTripSegmentWithOptions_handler___block_invoke;
   v18[3] = &unk_1E80B3F10;
-  v19 = v8;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __68__RTRoutineManager_fetchLocationsForTripSegmentWithOptions_handler___block_invoke_2;
   v14[3] = &unk_1E80B3F60;
-  v15 = v7;
-  v16 = self;
+  v15 = optionsCopy;
+  selfCopy = self;
   v17 = v19;
   v11 = v19;
-  v12 = v7;
+  v12 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v18 taskBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1586,12 +1586,12 @@ void __68__RTRoutineManager_fetchLocationsForTripSegmentWithOptions_handler___bl
   dispatch_async(v7, block);
 }
 
-- (void)deleteTripSegmentWithUUID:(id)a3 handler:(id)a4
+- (void)deleteTripSegmentWithUUID:(id)d handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1618,16 +1618,16 @@ void __68__RTRoutineManager_fetchLocationsForTripSegmentWithOptions_handler___bl
   v18[1] = 3221225472;
   v18[2] = __54__RTRoutineManager_deleteTripSegmentWithUUID_handler___block_invoke;
   v18[3] = &unk_1E80B3F10;
-  v19 = v8;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54__RTRoutineManager_deleteTripSegmentWithUUID_handler___block_invoke_2;
   v14[3] = &unk_1E80B3F60;
-  v15 = v7;
-  v16 = self;
+  v15 = dCopy;
+  selfCopy = self;
   v17 = v19;
   v11 = v19;
-  v12 = v7;
+  v12 = dCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v18 taskBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1672,12 +1672,12 @@ void __54__RTRoutineManager_deleteTripSegmentWithUUID_handler___block_invoke_3(u
   dispatch_async(v4, v7);
 }
 
-- (void)fetchTripSegmentMetadataWithOptions:(id)a3 handler:(id)a4
+- (void)fetchTripSegmentMetadataWithOptions:(id)options handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1704,16 +1704,16 @@ void __54__RTRoutineManager_deleteTripSegmentWithUUID_handler___block_invoke_3(u
   v18[1] = 3221225472;
   v18[2] = __64__RTRoutineManager_fetchTripSegmentMetadataWithOptions_handler___block_invoke;
   v18[3] = &unk_1E80B3F10;
-  v19 = v8;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__RTRoutineManager_fetchTripSegmentMetadataWithOptions_handler___block_invoke_2;
   v14[3] = &unk_1E80B3F60;
-  v15 = v7;
-  v16 = self;
+  v15 = optionsCopy;
+  selfCopy = self;
   v17 = v19;
   v11 = v19;
-  v12 = v7;
+  v12 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v18 taskBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1761,12 +1761,12 @@ void __64__RTRoutineManager_fetchTripSegmentMetadataWithOptions_handler___block_
   dispatch_async(v7, block);
 }
 
-- (void)fetchVehiclesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchVehiclesWithOptions:(id)options handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1793,16 +1793,16 @@ void __64__RTRoutineManager_fetchTripSegmentMetadataWithOptions_handler___block_
   v18[1] = 3221225472;
   v18[2] = __53__RTRoutineManager_fetchVehiclesWithOptions_handler___block_invoke;
   v18[3] = &unk_1E80B3F10;
-  v19 = v8;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53__RTRoutineManager_fetchVehiclesWithOptions_handler___block_invoke_2;
   v14[3] = &unk_1E80B3F60;
-  v15 = v7;
-  v16 = self;
+  v15 = optionsCopy;
+  selfCopy = self;
   v17 = v19;
   v11 = v19;
-  v12 = v7;
+  v12 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v18 taskBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1850,11 +1850,11 @@ void __53__RTRoutineManager_fetchVehiclesWithOptions_handler___block_invoke_3(ui
   dispatch_async(v7, block);
 }
 
-- (void)fetchRoutineEnabledWithHandler:(id)a3
+- (void)fetchRoutineEnabledWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1871,7 +1871,7 @@ void __53__RTRoutineManager_fetchVehiclesWithOptions_handler___block_invoke_3(ui
   v11[1] = 3221225472;
   v11[2] = __51__RTRoutineManager_fetchRoutineEnabledWithHandler___block_invoke;
   v11[3] = &unk_1E80B3F10;
-  v12 = v5;
+  v12 = handlerCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__RTRoutineManager_fetchRoutineEnabledWithHandler___block_invoke_439;
@@ -1924,11 +1924,11 @@ void __51__RTRoutineManager_fetchRoutineEnabledWithHandler___block_invoke_2(uint
   dispatch_async(v4, v5);
 }
 
-- (void)fetchRoutineStateWithHandler:(id)a3
+- (void)fetchRoutineStateWithHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1957,7 +1957,7 @@ void __51__RTRoutineManager_fetchRoutineEnabledWithHandler___block_invoke_2(uint
   v16[2] = __49__RTRoutineManager_fetchRoutineStateWithHandler___block_invoke;
   v16[3] = &unk_1E80B4078;
   v18 = v8;
-  v17 = v5;
+  v17 = handlerCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __49__RTRoutineManager_fetchRoutineStateWithHandler___block_invoke_441;
@@ -2050,19 +2050,19 @@ uint64_t __49__RTRoutineManager_fetchRoutineStateWithHandler___block_invoke_3(ui
   return (*(*(a1 + 32) + 16))(*(a1 + 32), v5, 0);
 }
 
-- (void)setRoutineEnabled:(BOOL)a3 withHandler:(id)a4
+- (void)setRoutineEnabled:(BOOL)enabled withHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__RTRoutineManager_setRoutineEnabled_withHandler___block_invoke;
   v12[3] = &unk_1E80B3F10;
-  v13 = v7;
+  v13 = handlerCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__RTRoutineManager_setRoutineEnabled_withHandler___block_invoke_2;
   v9[3] = &unk_1E80B4140;
-  v11 = a3;
+  enabledCopy = enabled;
   v9[4] = self;
   v10 = v13;
   v8 = v13;
@@ -2127,14 +2127,14 @@ uint64_t __50__RTRoutineManager_setRoutineEnabled_withHandler___block_invoke_4(u
   return result;
 }
 
-- (void)clearRoutineWithHandler:(id)a3
+- (void)clearRoutineWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__RTRoutineManager_clearRoutineWithHandler___block_invoke;
   v9[3] = &unk_1E80B3F10;
-  v10 = v5;
+  v10 = handlerCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__RTRoutineManager_clearRoutineWithHandler___block_invoke_2;
@@ -2202,11 +2202,11 @@ uint64_t __44__RTRoutineManager_clearRoutineWithHandler___block_invoke_4(uint64_
   return result;
 }
 
-- (void)fetchCloudSyncAuthorizationState:(id)a3
+- (void)fetchCloudSyncAuthorizationState:(id)state
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  stateCopy = state;
+  if (!stateCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2223,7 +2223,7 @@ uint64_t __44__RTRoutineManager_clearRoutineWithHandler___block_invoke_4(uint64_
   v11[1] = 3221225472;
   v11[2] = __53__RTRoutineManager_fetchCloudSyncAuthorizationState___block_invoke;
   v11[3] = &unk_1E80B3F10;
-  v12 = v5;
+  v12 = stateCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__RTRoutineManager_fetchCloudSyncAuthorizationState___block_invoke_2;
@@ -2295,11 +2295,11 @@ uint64_t __53__RTRoutineManager_fetchCloudSyncAuthorizationState___block_invoke_
   return result;
 }
 
-- (void)updateCloudSyncProvisionedForAccount:(BOOL)a3 handler:(id)a4
+- (void)updateCloudSyncProvisionedForAccount:(BOOL)account handler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2316,12 +2316,12 @@ uint64_t __53__RTRoutineManager_fetchCloudSyncAuthorizationState___block_invoke_
   v14[1] = 3221225472;
   v14[2] = __65__RTRoutineManager_updateCloudSyncProvisionedForAccount_handler___block_invoke;
   v14[3] = &unk_1E80B3F10;
-  v15 = v7;
+  v15 = handlerCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__RTRoutineManager_updateCloudSyncProvisionedForAccount_handler___block_invoke_2;
   v11[3] = &unk_1E80B4140;
-  v13 = a3;
+  accountCopy = account;
   v11[4] = self;
   v12 = v15;
   v9 = v15;
@@ -2388,12 +2388,12 @@ uint64_t __65__RTRoutineManager_updateCloudSyncProvisionedForAccount_handler___b
   return result;
 }
 
-- (void)fetchLearnedRoutesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchLearnedRoutesWithOptions:(id)options handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2420,16 +2420,16 @@ uint64_t __65__RTRoutineManager_updateCloudSyncProvisionedForAccount_handler___b
   v18[1] = 3221225472;
   v18[2] = __58__RTRoutineManager_fetchLearnedRoutesWithOptions_handler___block_invoke;
   v18[3] = &unk_1E80B3F10;
-  v19 = v8;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__RTRoutineManager_fetchLearnedRoutesWithOptions_handler___block_invoke_2;
   v14[3] = &unk_1E80B3F60;
-  v15 = v7;
-  v16 = self;
+  v15 = optionsCopy;
+  selfCopy = self;
   v17 = v19;
   v11 = v19;
-  v12 = v7;
+  v12 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v18 taskBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -2477,12 +2477,12 @@ void __58__RTRoutineManager_fetchLearnedRoutesWithOptions_handler___block_invoke
   dispatch_async(v8, block);
 }
 
-- (void)fetchTripClusterMetadataWithOptions:(id)a3 handler:(id)a4
+- (void)fetchTripClusterMetadataWithOptions:(id)options handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2509,16 +2509,16 @@ void __58__RTRoutineManager_fetchLearnedRoutesWithOptions_handler___block_invoke
   v18[1] = 3221225472;
   v18[2] = __64__RTRoutineManager_fetchTripClusterMetadataWithOptions_handler___block_invoke;
   v18[3] = &unk_1E80B3F10;
-  v19 = v8;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__RTRoutineManager_fetchTripClusterMetadataWithOptions_handler___block_invoke_2;
   v14[3] = &unk_1E80B3F60;
-  v15 = v7;
-  v16 = self;
+  v15 = optionsCopy;
+  selfCopy = self;
   v17 = v19;
   v11 = v19;
-  v12 = v7;
+  v12 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v18 taskBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -2566,12 +2566,12 @@ void __64__RTRoutineManager_fetchTripClusterMetadataWithOptions_handler___block_
   dispatch_async(v7, block);
 }
 
-- (void)purgeTripClusterTable:(id)a3 handler:(id)a4
+- (void)purgeTripClusterTable:(id)table handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  tableCopy = table;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2598,16 +2598,16 @@ void __64__RTRoutineManager_fetchTripClusterMetadataWithOptions_handler___block_
   v18[1] = 3221225472;
   v18[2] = __50__RTRoutineManager_purgeTripClusterTable_handler___block_invoke;
   v18[3] = &unk_1E80B3F10;
-  v19 = v8;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__RTRoutineManager_purgeTripClusterTable_handler___block_invoke_2;
   v14[3] = &unk_1E80B3F60;
-  v15 = v7;
-  v16 = self;
+  v15 = tableCopy;
+  selfCopy = self;
   v17 = v19;
   v11 = v19;
-  v12 = v7;
+  v12 = tableCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v18 taskBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -2652,12 +2652,12 @@ void __50__RTRoutineManager_purgeTripClusterTable_handler___block_invoke_3(uint6
   dispatch_async(v4, v7);
 }
 
-- (void)purgeTripClusterWithClusterID:(id)a3 handler:(id)a4
+- (void)purgeTripClusterWithClusterID:(id)d handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2684,16 +2684,16 @@ void __50__RTRoutineManager_purgeTripClusterTable_handler___block_invoke_3(uint6
   v18[1] = 3221225472;
   v18[2] = __58__RTRoutineManager_purgeTripClusterWithClusterID_handler___block_invoke;
   v18[3] = &unk_1E80B3F10;
-  v19 = v8;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__RTRoutineManager_purgeTripClusterWithClusterID_handler___block_invoke_2;
   v14[3] = &unk_1E80B3F60;
-  v15 = v7;
-  v16 = self;
+  v15 = dCopy;
+  selfCopy = self;
   v17 = v19;
   v11 = v19;
-  v12 = v7;
+  v12 = dCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v18 taskBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -2738,17 +2738,17 @@ void __58__RTRoutineManager_purgeTripClusterWithClusterID_handler___block_invoke
   dispatch_async(v4, v7);
 }
 
-- (void)fetchRemoteStatusWithHandler:(id)a3
+- (void)fetchRemoteStatusWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __49__RTRoutineManager_fetchRemoteStatusWithHandler___block_invoke;
     v9[3] = &unk_1E80B3F10;
-    v10 = v5;
+    v10 = handlerCopy;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __49__RTRoutineManager_fetchRemoteStatusWithHandler___block_invoke_2;
@@ -2797,11 +2797,11 @@ uint64_t __49__RTRoutineManager_fetchRemoteStatusWithHandler___block_invoke_4(vo
   return result;
 }
 
-- (void)startMonitoringRemoteStatusWithHandler:(id)a3
+- (void)startMonitoringRemoteStatusWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2814,16 +2814,16 @@ uint64_t __49__RTRoutineManager_fetchRemoteStatusWithHandler___block_invoke_4(vo
     }
   }
 
-  v7 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__RTRoutineManager_startMonitoringRemoteStatusWithHandler___block_invoke;
   block[3] = &unk_1E80B4168;
   block[4] = self;
-  v11 = v5;
+  v11 = handlerCopy;
   v12 = a2;
-  v8 = v5;
-  dispatch_async(v7, block);
+  v8 = handlerCopy;
+  dispatch_async(queue, block);
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -2924,10 +2924,10 @@ uint64_t __59__RTRoutineManager_startMonitoringRemoteStatusWithHandler___block_i
   return result;
 }
 
-- (void)stopMonitoringRemoteStatusWithHandler:(id)a3
+- (void)stopMonitoringRemoteStatusWithHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!handler)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -2940,14 +2940,14 @@ uint64_t __59__RTRoutineManager_startMonitoringRemoteStatusWithHandler___block_i
     }
   }
 
-  v6 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__RTRoutineManager_stopMonitoringRemoteStatusWithHandler___block_invoke;
   v8[3] = &unk_1E80B4208;
   v8[4] = self;
   v8[5] = a2;
-  dispatch_async(v6, v8);
+  dispatch_async(queue, v8);
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -3049,24 +3049,24 @@ uint64_t __58__RTRoutineManager_stopMonitoringRemoteStatusWithHandler___block_in
   return result;
 }
 
-- (void)onRemoteStatusUpdate:(int64_t)a3 error:(id)a4
+- (void)onRemoteStatusUpdate:(int64_t)update error:(id)error
 {
-  v8 = a4;
-  v6 = [(RTRoutineManager *)self remoteStatusHandler];
+  errorCopy = error;
+  remoteStatusHandler = [(RTRoutineManager *)self remoteStatusHandler];
 
-  if (v6)
+  if (remoteStatusHandler)
   {
-    v7 = [(RTRoutineManager *)self remoteStatusHandler];
-    (v7)[2](v7, a3, v8);
+    remoteStatusHandler2 = [(RTRoutineManager *)self remoteStatusHandler];
+    (remoteStatusHandler2)[2](remoteStatusHandler2, update, errorCopy);
   }
 }
 
-- (void)fetchLookbackWindowStartDateWithLocation:(id)a3 handler:(id)a4
+- (void)fetchLookbackWindowStartDateWithLocation:(id)location handler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -3083,16 +3083,16 @@ uint64_t __58__RTRoutineManager_stopMonitoringRemoteStatusWithHandler___block_in
   v17[1] = 3221225472;
   v17[2] = __69__RTRoutineManager_fetchLookbackWindowStartDateWithLocation_handler___block_invoke;
   v17[3] = &unk_1E80B3F10;
-  v18 = v8;
+  v18 = handlerCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__RTRoutineManager_fetchLookbackWindowStartDateWithLocation_handler___block_invoke_2;
   v13[3] = &unk_1E80B3F60;
-  v14 = v7;
-  v15 = self;
+  v14 = locationCopy;
+  selfCopy = self;
   v16 = v18;
   v10 = v18;
-  v11 = v7;
+  v11 = locationCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v17 taskBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -3152,30 +3152,30 @@ uint64_t __69__RTRoutineManager_fetchLookbackWindowStartDateWithLocation_handler
   return result;
 }
 
-- (void)enumerateObjectsWithOptions:(id)a3 usingBlock:(id)a4
+- (void)enumerateObjectsWithOptions:(id)options usingBlock:(id)block
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 1;
-  if (v8)
+  if (blockCopy)
   {
-    if (v7)
+    if (optionsCopy)
     {
-      v9 = [(RTRoutineManager *)self queue];
+      queue = [(RTRoutineManager *)self queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __59__RTRoutineManager_enumerateObjectsWithOptions_usingBlock___block_invoke;
       block[3] = &unk_1E80B42A8;
       block[4] = self;
       v25 = a2;
-      v23 = v8;
+      v23 = blockCopy;
       v24 = &v26;
-      v22 = v7;
-      dispatch_sync(v9, block);
+      v22 = optionsCopy;
+      dispatch_sync(queue, block);
     }
 
     else
@@ -3197,7 +3197,7 @@ uint64_t __69__RTRoutineManager_fetchLookbackWindowStartDateWithLocation_handler
         _os_log_error_impl(&dword_1BF1C4000, v17, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
       }
 
-      (*(v8 + 2))(v8, 0, v16, v27 + 3);
+      (*(blockCopy + 2))(blockCopy, 0, v16, v27 + 3);
     }
   }
 
@@ -3420,22 +3420,22 @@ void __59__RTRoutineManager_enumerateObjectsWithOptions_usingBlock___block_invok
   }
 }
 
-- (void)enumerateStoredLocationsWithOptions:(id)a3 usingBlock:(id)a4
+- (void)enumerateStoredLocationsWithOptions:(id)options usingBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v8 = [(RTRoutineManager *)self queue];
+    queue = [(RTRoutineManager *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __67__RTRoutineManager_enumerateStoredLocationsWithOptions_usingBlock___block_invoke;
     block[3] = &unk_1E80B4460;
     block[4] = self;
-    v15 = v6;
-    v16 = v7;
-    dispatch_sync(v8, block);
+    v15 = optionsCopy;
+    v16 = blockCopy;
+    dispatch_sync(queue, block);
   }
 
   else
@@ -3466,12 +3466,12 @@ void __59__RTRoutineManager_enumerateObjectsWithOptions_usingBlock___block_invok
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_enumerateStoredLocationsWithOptions:(id)a3 usingBlock:(id)a4
+- (void)_enumerateStoredLocationsWithOptions:(id)options usingBlock:(id)block
 {
   v72 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  blockCopy = block;
+  if (!blockCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -3488,12 +3488,12 @@ void __59__RTRoutineManager_enumerateObjectsWithOptions_usingBlock___block_invok
   v57 = &v56;
   v58 = 0x2020000000;
   v59 = 0;
-  v10 = [[RTStoredLocationEnumerationContext alloc] initWithEnumerationOptions:v7];
+  v10 = [[RTStoredLocationEnumerationContext alloc] initWithEnumerationOptions:optionsCopy];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __68__RTRoutineManager__enumerateStoredLocationsWithOptions_usingBlock___block_invoke;
   v53[3] = &unk_1E80B4258;
-  v11 = v8;
+  v11 = blockCopy;
   v54 = v11;
   v55 = &v56;
   v44 = [(RTRoutineManager *)self _proxyForServicingSelector:a2 asynchronous:0 withErrorHandler:v53];
@@ -3514,7 +3514,7 @@ void __59__RTRoutineManager_enumerateObjectsWithOptions_usingBlock___block_invok
   v50 = __Block_byref_object_copy_;
   v51 = __Block_byref_object_dispose_;
   v52 = 0;
-  if (([v7 downsampleRequired] & 1) == 0)
+  if (([optionsCopy downsampleRequired] & 1) == 0)
   {
     *&v12 = 138412290;
     v41 = v12;
@@ -3526,26 +3526,26 @@ void __59__RTRoutineManager_enumerateObjectsWithOptions_usingBlock___block_invok
         v17 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          v42 = v7;
-          v43 = [(RTStoredLocationEnumerationContext *)v10 options];
-          v26 = [v43 dateInterval];
-          v27 = [(RTStoredLocationEnumerationContext *)v10 options];
-          [v27 horizontalAccuracy];
+          v42 = optionsCopy;
+          options = [(RTStoredLocationEnumerationContext *)v10 options];
+          dateInterval = [options dateInterval];
+          options2 = [(RTStoredLocationEnumerationContext *)v10 options];
+          [options2 horizontalAccuracy];
           v29 = v28;
-          v30 = [(RTStoredLocationEnumerationContext *)v10 options];
-          v31 = [v30 batchSize];
-          v32 = [(RTStoredLocationEnumerationContext *)v10 offset];
+          options3 = [(RTStoredLocationEnumerationContext *)v10 options];
+          batchSize = [options3 batchSize];
+          offset = [(RTStoredLocationEnumerationContext *)v10 offset];
           *buf = 138413058;
-          v61 = v26;
+          v61 = dateInterval;
           v62 = 2048;
           v63 = v29;
           v64 = 2048;
-          v65 = v31;
+          v65 = batchSize;
           v66 = 2048;
-          v67 = v32;
+          v67 = offset;
           _os_log_debug_impl(&dword_1BF1C4000, v17, OS_LOG_TYPE_DEBUG, "iterating stored locations between %@, horizontal accuracy, %lf, batch size, %lu, offset, %lu", buf, 0x2Au);
 
-          v7 = v42;
+          optionsCopy = v42;
         }
       }
 
@@ -3564,13 +3564,13 @@ void __59__RTRoutineManager_enumerateObjectsWithOptions_usingBlock___block_invok
 
       if (v48[5])
       {
-        v18 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        options4 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
+        if (os_log_type_enabled(options4, OS_LOG_TYPE_ERROR))
         {
           v33 = v48[5];
           *buf = v41;
           v61 = v33;
-          _os_log_error_impl(&dword_1BF1C4000, v18, OS_LOG_TYPE_ERROR, "received error while fetching stored locations, %@, breaking out.", buf, 0xCu);
+          _os_log_error_impl(&dword_1BF1C4000, options4, OS_LOG_TYPE_ERROR, "received error while fetching stored locations, %@, breaking out.", buf, 0xCu);
         }
 
         goto LABEL_27;
@@ -3578,11 +3578,11 @@ void __59__RTRoutineManager_enumerateObjectsWithOptions_usingBlock___block_invok
 
       if ([*(*&v68[8] + 40) count])
       {
-        v22 = [(RTStoredLocationEnumerationContext *)v10 offset];
+        offset2 = [(RTStoredLocationEnumerationContext *)v10 offset];
         v23 = [*(*&v68[8] + 40) count];
         v24 = [RTStoredLocationEnumerationContext alloc];
-        v18 = [(RTStoredLocationEnumerationContext *)v10 options];
-        v25 = [(RTStoredLocationEnumerationContext *)v24 initWithEnumerationOptions:v18 offset:v23 + v22];
+        options4 = [(RTStoredLocationEnumerationContext *)v10 options];
+        v25 = [(RTStoredLocationEnumerationContext *)v24 initWithEnumerationOptions:options4 offset:v23 + offset2];
 
         v21 = 1;
         v10 = v25;
@@ -3596,11 +3596,11 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v18 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+      options4 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
+      if (os_log_type_enabled(options4, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        v19 = v18;
+        v19 = options4;
         v20 = "no more stored locations to enumerate, breaking out.";
 LABEL_23:
         _os_log_impl(&dword_1BF1C4000, v19, OS_LOG_TYPE_INFO, v20, buf, 2u);
@@ -3623,14 +3623,14 @@ LABEL_35:
       goto LABEL_34;
     }
 
-    v18 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+    options4 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
+    if (!os_log_type_enabled(options4, OS_LOG_TYPE_INFO))
     {
       goto LABEL_27;
     }
 
     *buf = 0;
-    v19 = v18;
+    v19 = options4;
     v20 = "client set stop bit while enumerating stored locations, breaking out.";
     goto LABEL_23;
   }
@@ -3640,19 +3640,19 @@ LABEL_35:
     v13 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [(RTStoredLocationEnumerationContext *)v10 options];
-      v35 = [v34 dateInterval];
-      v36 = [(RTStoredLocationEnumerationContext *)v10 options];
-      [v36 horizontalAccuracy];
+      options5 = [(RTStoredLocationEnumerationContext *)v10 options];
+      dateInterval2 = [options5 dateInterval];
+      options6 = [(RTStoredLocationEnumerationContext *)v10 options];
+      [options6 horizontalAccuracy];
       v38 = v37;
-      v39 = [(RTStoredLocationEnumerationContext *)v10 options];
-      v40 = [v39 batchSize];
+      options7 = [(RTStoredLocationEnumerationContext *)v10 options];
+      batchSize2 = [options7 batchSize];
       *buf = 138412802;
-      v61 = v35;
+      v61 = dateInterval2;
       v62 = 2048;
       v63 = v38;
       v64 = 2048;
-      v65 = v40;
+      v65 = batchSize2;
       _os_log_debug_impl(&dword_1BF1C4000, v13, OS_LOG_TYPE_DEBUG, "fetching downsampled locations between %@, horizontal accuracy, %lf, output size, %lu", buf, 0x20u);
     }
   }
@@ -3723,12 +3723,12 @@ void __68__RTRoutineManager__enumerateStoredLocationsWithOptions_usingBlock___bl
   *(v9 + 40) = v6;
 }
 
-- (void)fetchRoutineModeFromLocation:(id)a3 withHandler:(id)a4
+- (void)fetchRoutineModeFromLocation:(id)location withHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -3745,16 +3745,16 @@ void __68__RTRoutineManager__enumerateStoredLocationsWithOptions_usingBlock___bl
   v17[1] = 3221225472;
   v17[2] = __61__RTRoutineManager_fetchRoutineModeFromLocation_withHandler___block_invoke;
   v17[3] = &unk_1E80B3F10;
-  v18 = v8;
+  v18 = handlerCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__RTRoutineManager_fetchRoutineModeFromLocation_withHandler___block_invoke_2;
   v13[3] = &unk_1E80B3F60;
-  v14 = v7;
-  v15 = self;
+  v14 = locationCopy;
+  selfCopy = self;
   v16 = v18;
   v10 = v18;
-  v11 = v7;
+  v11 = locationCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v17 taskBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -3788,15 +3788,15 @@ void __61__RTRoutineManager_fetchRoutineModeFromLocation_withHandler___block_inv
   dispatch_async(v6, block);
 }
 
-- (void)fetchEstimatedLocationAtDate:(id)a3 handler:(id)a4
+- (void)fetchEstimatedLocationAtDate:(id)date handler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dateCopy = date;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (dateCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -3838,11 +3838,11 @@ LABEL_10:
   v15[1] = 3221225472;
   v15[2] = __57__RTRoutineManager_fetchEstimatedLocationAtDate_handler___block_invoke_2;
   v15[3] = &unk_1E80B3F60;
-  v16 = v7;
-  v17 = self;
+  v16 = dateCopy;
+  selfCopy = self;
   v18 = v20;
   v12 = v20;
-  v13 = v7;
+  v13 = dateCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v19 taskBlock:v15];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -3901,16 +3901,16 @@ uint64_t __57__RTRoutineManager_fetchEstimatedLocationAtDate_handler___block_inv
   return result;
 }
 
-- (void)fetchEstimatedLocationAtDate:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchEstimatedLocationAtDate:(id)date options:(id)options handler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  dateCopy = date;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (dateCopy)
   {
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -3952,13 +3952,13 @@ LABEL_10:
   v19[1] = 3221225472;
   v19[2] = __65__RTRoutineManager_fetchEstimatedLocationAtDate_options_handler___block_invoke_2;
   v19[3] = &unk_1E80B3F38;
-  v20 = v9;
-  v21 = v10;
-  v22 = self;
+  v20 = dateCopy;
+  v21 = optionsCopy;
+  selfCopy = self;
   v23 = v25;
   v15 = v25;
-  v16 = v10;
-  v17 = v9;
+  v16 = optionsCopy;
+  v17 = dateCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v24 taskBlock:v19];
 
   v18 = *MEMORY[0x1E69E9840];
@@ -4018,11 +4018,11 @@ uint64_t __65__RTRoutineManager_fetchEstimatedLocationAtDate_options_handler___b
   return result;
 }
 
-- (void)fetchNextPredictedLocationsOfInterestWithHandler:(id)a3
+- (void)fetchNextPredictedLocationsOfInterestWithHandler:(id)handler
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -4035,18 +4035,18 @@ uint64_t __65__RTRoutineManager_fetchEstimatedLocationAtDate_options_handler___b
     }
   }
 
-  [(RTRoutineManager *)self fetchNextPredictedLocationsOfInterestFromLocation:0 startDate:0 timeInterval:v4 withHandler:-1.0];
+  [(RTRoutineManager *)self fetchNextPredictedLocationsOfInterestFromLocation:0 startDate:0 timeInterval:handlerCopy withHandler:-1.0];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchNextPredictedLocationsOfInterestFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5 withHandler:(id)a6
+- (void)fetchNextPredictedLocationsOfInterestFromLocation:(id)location startDate:(id)date timeInterval:(double)interval withHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v13)
+  locationCopy = location;
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -4063,19 +4063,19 @@ uint64_t __65__RTRoutineManager_fetchEstimatedLocationAtDate_options_handler___b
   v25[1] = 3221225472;
   v25[2] = __105__RTRoutineManager_fetchNextPredictedLocationsOfInterestFromLocation_startDate_timeInterval_withHandler___block_invoke;
   v25[3] = &unk_1E80B3F10;
-  v26 = v13;
+  v26 = handlerCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __105__RTRoutineManager_fetchNextPredictedLocationsOfInterestFromLocation_startDate_timeInterval_withHandler___block_invoke_2;
   v19[3] = &unk_1E80B4320;
-  v20 = v11;
-  v21 = v12;
-  v24 = a5;
-  v22 = self;
+  v20 = locationCopy;
+  v21 = dateCopy;
+  intervalCopy = interval;
+  selfCopy = self;
   v23 = v26;
   v15 = v26;
-  v16 = v12;
-  v17 = v11;
+  v16 = dateCopy;
+  v17 = locationCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v25 taskBlock:v19];
 
   v18 = *MEMORY[0x1E69E9840];
@@ -4114,14 +4114,14 @@ void __105__RTRoutineManager_fetchNextPredictedLocationsOfInterestFromLocation_s
   dispatch_async(v7, block);
 }
 
-- (void)fetchPredictedLocationsOfInterestAssociatedToTitle:(id)a3 location:(id)a4 calendarIdentifier:(id)a5 withHandler:(id)a6
+- (void)fetchPredictedLocationsOfInterestAssociatedToTitle:(id)title location:(id)location calendarIdentifier:(id)identifier withHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  titleCopy = title;
+  locationCopy = location;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -4138,20 +4138,20 @@ void __105__RTRoutineManager_fetchNextPredictedLocationsOfInterestFromLocation_s
   v27[1] = 3221225472;
   v27[2] = __111__RTRoutineManager_fetchPredictedLocationsOfInterestAssociatedToTitle_location_calendarIdentifier_withHandler___block_invoke;
   v27[3] = &unk_1E80B3F10;
-  v28 = v14;
+  v28 = handlerCopy;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __111__RTRoutineManager_fetchPredictedLocationsOfInterestAssociatedToTitle_location_calendarIdentifier_withHandler___block_invoke_2;
   v21[3] = &unk_1E80B4348;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v25 = self;
+  v22 = titleCopy;
+  v23 = locationCopy;
+  v24 = identifierCopy;
+  selfCopy = self;
   v26 = v28;
   v16 = v28;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
+  v17 = identifierCopy;
+  v18 = locationCopy;
+  v19 = titleCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v27 taskBlock:v21];
 
   v20 = *MEMORY[0x1E69E9840];
@@ -4190,12 +4190,12 @@ void __111__RTRoutineManager_fetchPredictedLocationsOfInterestAssociatedToTitle_
   dispatch_async(v7, block);
 }
 
-- (void)fetchPredictedLocationsOfInterestOnDate:(id)a3 withHandler:(id)a4
+- (void)fetchPredictedLocationsOfInterestOnDate:(id)date withHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -4212,16 +4212,16 @@ void __111__RTRoutineManager_fetchPredictedLocationsOfInterestAssociatedToTitle_
   v17[1] = 3221225472;
   v17[2] = __72__RTRoutineManager_fetchPredictedLocationsOfInterestOnDate_withHandler___block_invoke;
   v17[3] = &unk_1E80B3F10;
-  v18 = v8;
+  v18 = handlerCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__RTRoutineManager_fetchPredictedLocationsOfInterestOnDate_withHandler___block_invoke_2;
   v13[3] = &unk_1E80B3F60;
-  v14 = v7;
-  v15 = self;
+  v14 = dateCopy;
+  selfCopy = self;
   v16 = v18;
   v10 = v18;
-  v11 = v7;
+  v11 = dateCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v17 taskBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -4258,11 +4258,11 @@ void __72__RTRoutineManager_fetchPredictedLocationsOfInterestOnDate_withHandler_
   dispatch_async(v7, block);
 }
 
-- (void)startMonitoringVisitsWithHandler:(id)a3
+- (void)startMonitoringVisitsWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -4275,16 +4275,16 @@ void __72__RTRoutineManager_fetchPredictedLocationsOfInterestOnDate_withHandler_
     }
   }
 
-  v7 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__RTRoutineManager_startMonitoringVisitsWithHandler___block_invoke;
   block[3] = &unk_1E80B4168;
   block[4] = self;
-  v11 = v5;
+  v11 = handlerCopy;
   v12 = a2;
-  v8 = v5;
-  dispatch_async(v7, block);
+  v8 = handlerCopy;
+  dispatch_async(queue, block);
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -4338,14 +4338,14 @@ void __53__RTRoutineManager_startMonitoringVisitsWithHandler___block_invoke_4(ui
 
 - (void)stopMonitoringVisits
 {
-  v4 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __40__RTRoutineManager_stopMonitoringVisits__block_invoke;
   v5[3] = &unk_1E80B4208;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(queue, v5);
 }
 
 void __40__RTRoutineManager_stopMonitoringVisits__block_invoke(uint64_t a1)
@@ -4445,24 +4445,24 @@ uint64_t __40__RTRoutineManager_stopMonitoringVisits__block_invoke_3(uint64_t re
   return result;
 }
 
-- (void)onVisit:(id)a3 withError:(id)a4
+- (void)onVisit:(id)visit withError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(RTRoutineManager *)self visitHandler];
+  visitCopy = visit;
+  errorCopy = error;
+  visitHandler = [(RTRoutineManager *)self visitHandler];
 
-  if (v7)
+  if (visitHandler)
   {
-    v8 = [(RTRoutineManager *)self visitHandler];
-    (v8)[2](v8, v9, v6);
+    visitHandler2 = [(RTRoutineManager *)self visitHandler];
+    (visitHandler2)[2](visitHandler2, visitCopy, errorCopy);
   }
 }
 
-- (void)startLeechingVisitsWithHandler:(id)a3
+- (void)startLeechingVisitsWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -4475,16 +4475,16 @@ uint64_t __40__RTRoutineManager_stopMonitoringVisits__block_invoke_3(uint64_t re
     }
   }
 
-  v7 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__RTRoutineManager_startLeechingVisitsWithHandler___block_invoke;
   block[3] = &unk_1E80B4168;
   block[4] = self;
-  v11 = v5;
+  v11 = handlerCopy;
   v12 = a2;
-  v8 = v5;
-  dispatch_async(v7, block);
+  v8 = handlerCopy;
+  dispatch_async(queue, block);
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -4538,14 +4538,14 @@ void __51__RTRoutineManager_startLeechingVisitsWithHandler___block_invoke_4(uint
 
 - (void)stopLeechingVisits
 {
-  v4 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __38__RTRoutineManager_stopLeechingVisits__block_invoke;
   v5[3] = &unk_1E80B4208;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(queue, v5);
 }
 
 void __38__RTRoutineManager_stopLeechingVisits__block_invoke(uint64_t a1)
@@ -4645,24 +4645,24 @@ uint64_t __38__RTRoutineManager_stopLeechingVisits__block_invoke_3(uint64_t resu
   return result;
 }
 
-- (void)onLeechedVisit:(id)a3 withError:(id)a4
+- (void)onLeechedVisit:(id)visit withError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(RTRoutineManager *)self leechedVisitHandler];
+  visitCopy = visit;
+  errorCopy = error;
+  leechedVisitHandler = [(RTRoutineManager *)self leechedVisitHandler];
 
-  if (v7)
+  if (leechedVisitHandler)
   {
-    v8 = [(RTRoutineManager *)self leechedVisitHandler];
-    (v8)[2](v8, v9, v6);
+    leechedVisitHandler2 = [(RTRoutineManager *)self leechedVisitHandler];
+    (leechedVisitHandler2)[2](leechedVisitHandler2, visitCopy, errorCopy);
   }
 }
 
-- (void)startLeechingLowConfidenceVisitsWithHandler:(id)a3
+- (void)startLeechingLowConfidenceVisitsWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -4675,16 +4675,16 @@ uint64_t __38__RTRoutineManager_stopLeechingVisits__block_invoke_3(uint64_t resu
     }
   }
 
-  v7 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__RTRoutineManager_startLeechingLowConfidenceVisitsWithHandler___block_invoke;
   block[3] = &unk_1E80B4168;
   block[4] = self;
-  v11 = v5;
+  v11 = handlerCopy;
   v12 = a2;
-  v8 = v5;
-  dispatch_async(v7, block);
+  v8 = handlerCopy;
+  dispatch_async(queue, block);
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -4738,14 +4738,14 @@ void __64__RTRoutineManager_startLeechingLowConfidenceVisitsWithHandler___block_
 
 - (void)stopLeechingLowConfidenceVisits
 {
-  v4 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __51__RTRoutineManager_stopLeechingLowConfidenceVisits__block_invoke;
   v5[3] = &unk_1E80B4208;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(queue, v5);
 }
 
 void __51__RTRoutineManager_stopLeechingLowConfidenceVisits__block_invoke(uint64_t a1)
@@ -4845,25 +4845,25 @@ uint64_t __51__RTRoutineManager_stopLeechingLowConfidenceVisits__block_invoke_3(
   return result;
 }
 
-- (void)onLeechedLowConfidenceVisit:(id)a3 withError:(id)a4
+- (void)onLeechedLowConfidenceVisit:(id)visit withError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(RTRoutineManager *)self leechedLowConfidenceVisitHandler];
+  visitCopy = visit;
+  errorCopy = error;
+  leechedLowConfidenceVisitHandler = [(RTRoutineManager *)self leechedLowConfidenceVisitHandler];
 
-  if (v7)
+  if (leechedLowConfidenceVisitHandler)
   {
-    v8 = [(RTRoutineManager *)self leechedLowConfidenceVisitHandler];
-    (v8)[2](v8, v9, v6);
+    leechedLowConfidenceVisitHandler2 = [(RTRoutineManager *)self leechedLowConfidenceVisitHandler];
+    (leechedLowConfidenceVisitHandler2)[2](leechedLowConfidenceVisitHandler2, visitCopy, errorCopy);
   }
 }
 
-- (void)startMonitoringPlaceInferencesWithOptions:(id)a3 handler:(id)a4
+- (void)startMonitoringPlaceInferencesWithOptions:(id)options handler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -4876,18 +4876,18 @@ uint64_t __51__RTRoutineManager_stopLeechingLowConfidenceVisits__block_invoke_3(
     }
   }
 
-  v10 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__RTRoutineManager_startMonitoringPlaceInferencesWithOptions_handler___block_invoke;
   v14[3] = &unk_1E80B4370;
   v14[4] = self;
-  v15 = v7;
-  v16 = v8;
+  v15 = optionsCopy;
+  v16 = handlerCopy;
   v17 = a2;
-  v11 = v8;
-  v12 = v7;
-  dispatch_async(v10, v14);
+  v11 = handlerCopy;
+  v12 = optionsCopy;
+  dispatch_async(queue, v14);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -4993,14 +4993,14 @@ uint64_t __70__RTRoutineManager_startMonitoringPlaceInferencesWithOptions_handle
 
 - (void)stopMonitoringPlaceInferences
 {
-  v4 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __49__RTRoutineManager_stopMonitoringPlaceInferences__block_invoke;
   v5[3] = &unk_1E80B4208;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(queue, v5);
 }
 
 void __49__RTRoutineManager_stopMonitoringPlaceInferences__block_invoke(uint64_t a1)
@@ -5101,23 +5101,23 @@ uint64_t __49__RTRoutineManager_stopMonitoringPlaceInferences__block_invoke_3(ui
   return result;
 }
 
-- (void)onPlaceInferences:(id)a3 error:(id)a4
+- (void)onPlaceInferences:(id)inferences error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(RTRoutineManager *)self placeInferencesHandler];
+  inferencesCopy = inferences;
+  errorCopy = error;
+  placeInferencesHandler = [(RTRoutineManager *)self placeInferencesHandler];
 
-  if (v7)
+  if (placeInferencesHandler)
   {
-    v8 = [(RTRoutineManager *)self placeInferencesHandler];
-    (v8)[2](v8, v9, v6);
+    placeInferencesHandler2 = [(RTRoutineManager *)self placeInferencesHandler];
+    (placeInferencesHandler2)[2](placeInferencesHandler2, inferencesCopy, errorCopy);
   }
 }
 
-- (void)fetchStoredVisitsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchStoredVisitsWithOptions:(id)options handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v9 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
   v10 = os_signpost_id_generate(v9);
 
@@ -5134,17 +5134,17 @@ uint64_t __49__RTRoutineManager_stopMonitoringPlaceInferences__block_invoke_3(ui
   v20[2] = __57__RTRoutineManager_fetchStoredVisitsWithOptions_handler___block_invoke;
   v20[3] = &unk_1E80B4078;
   v22 = v10;
-  v21 = v8;
+  v21 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __57__RTRoutineManager_fetchStoredVisitsWithOptions_handler___block_invoke_477;
   v15[3] = &unk_1E80B43C0;
-  v16 = v7;
-  v17 = self;
+  v16 = optionsCopy;
+  selfCopy = self;
   v18 = v21;
   v19 = v10;
   v13 = v21;
-  v14 = v7;
+  v14 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v20 taskBlock:v15];
 }
 
@@ -5226,14 +5226,14 @@ uint64_t __57__RTRoutineManager_fetchStoredVisitsWithOptions_handler___block_inv
   return result;
 }
 
-- (void)processHindsightVisitsWithHandler:(id)a3
+- (void)processHindsightVisitsWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__RTRoutineManager_processHindsightVisitsWithHandler___block_invoke;
   v9[3] = &unk_1E80B3F10;
-  v10 = v5;
+  v10 = handlerCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__RTRoutineManager_processHindsightVisitsWithHandler___block_invoke_2;
@@ -5293,12 +5293,12 @@ uint64_t __54__RTRoutineManager_processHindsightVisitsWithHandler___block_invoke
   return result;
 }
 
-- (void)fetchFinerGranularityInferredMapItemWithVisitIdentifier:(id)a3 handler:(id)a4
+- (void)fetchFinerGranularityInferredMapItemWithVisitIdentifier:(id)identifier handler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -5310,7 +5310,7 @@ uint64_t __54__RTRoutineManager_processHindsightVisitsWithHandler___block_invoke
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!identifierCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -5328,22 +5328,22 @@ uint64_t __54__RTRoutineManager_processHindsightVisitsWithHandler___block_invoke
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v10 = [v12 initWithDomain:@"RTErrorDomain" code:7 userInfo:v13];
 
-    v8[2](v8, 0, v10);
+    handlerCopy[2](handlerCopy, 0, v10);
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v9 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__RTRoutineManager_fetchFinerGranularityInferredMapItemWithVisitIdentifier_handler___block_invoke;
   v15[3] = &unk_1E80B4370;
   v15[4] = self;
   v18 = a2;
-  v17 = v8;
-  v16 = v7;
-  dispatch_async(v9, v15);
+  v17 = handlerCopy;
+  v16 = identifierCopy;
+  dispatch_async(queue, v15);
 
 LABEL_10:
   v14 = *MEMORY[0x1E69E9840];
@@ -5387,12 +5387,12 @@ void __84__RTRoutineManager_fetchFinerGranularityInferredMapItemWithVisitIdentif
   dispatch_async(v7, block);
 }
 
-- (void)fetchPlaceInferencesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchPlaceInferencesWithOptions:(id)options handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v15 = v8;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  if (!handlerCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -5404,7 +5404,7 @@ void __84__RTRoutineManager_fetchFinerGranularityInferredMapItemWithVisitIdentif
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!optionsCopy)
   {
     v19 = RTErrorInvalidParameterCreate(a2, @"options is required", v9, v10, v11, v12, v13, v14, v20);
     (v15)[2](v15, 0, v19);
@@ -5417,7 +5417,7 @@ LABEL_7:
   v26[1] = 3221225472;
   v26[2] = __60__RTRoutineManager_fetchPlaceInferencesWithOptions_handler___block_invoke;
   v26[3] = &unk_1E80B4410;
-  v16 = v8;
+  v16 = handlerCopy;
   v26[4] = self;
   v27 = v16;
   v17 = MEMORY[0x1BFB54DD0](v26);
@@ -5430,7 +5430,7 @@ LABEL_7:
   v21[1] = 3221225472;
   v21[2] = __60__RTRoutineManager_fetchPlaceInferencesWithOptions_handler___block_invoke_4;
   v21[3] = &unk_1E80B4050;
-  v22 = v7;
+  v22 = optionsCopy;
   v23 = v17;
   v18 = v17;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v24 taskBlock:v21];
@@ -5456,17 +5456,17 @@ void __60__RTRoutineManager_fetchPlaceInferencesWithOptions_handler___block_invo
   }
 }
 
-- (void)fetchFormattedPostalAddressesFromMeCard:(id)a3
+- (void)fetchFormattedPostalAddressesFromMeCard:(id)card
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  cardCopy = card;
+  v6 = cardCopy;
+  if (cardCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __60__RTRoutineManager_fetchFormattedPostalAddressesFromMeCard___block_invoke;
     v10[3] = &unk_1E80B3F10;
-    v11 = v5;
+    v11 = cardCopy;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __60__RTRoutineManager_fetchFormattedPostalAddressesFromMeCard___block_invoke_2;
@@ -5519,12 +5519,12 @@ void __60__RTRoutineManager_fetchFormattedPostalAddressesFromMeCard___block_invo
   dispatch_async(v7, block);
 }
 
-- (void)fetchPredictedContextWithOptions:(id)a3 completionHandler:(id)a4
+- (void)fetchPredictedContextWithOptions:(id)options completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -5541,16 +5541,16 @@ void __60__RTRoutineManager_fetchFormattedPostalAddressesFromMeCard___block_invo
   v17[1] = 3221225472;
   v17[2] = __71__RTRoutineManager_fetchPredictedContextWithOptions_completionHandler___block_invoke;
   v17[3] = &unk_1E80B3F10;
-  v18 = v8;
+  v18 = handlerCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71__RTRoutineManager_fetchPredictedContextWithOptions_completionHandler___block_invoke_2;
   v13[3] = &unk_1E80B3F60;
-  v14 = v7;
-  v15 = self;
+  v14 = optionsCopy;
+  selfCopy = self;
   v16 = v18;
   v10 = v18;
-  v11 = v7;
+  v11 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v17 taskBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -5623,15 +5623,15 @@ uint64_t __71__RTRoutineManager_fetchPredictedContextWithOptions_completionHandl
   return result;
 }
 
-- (void)startMonitoringPredictedContextWithOptions:(id)a3 completionHandler:(id)a4
+- (void)startMonitoringPredictedContextWithOptions:(id)options completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (optionsCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -5664,18 +5664,18 @@ LABEL_7:
   }
 
 LABEL_10:
-  v12 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __81__RTRoutineManager_startMonitoringPredictedContextWithOptions_completionHandler___block_invoke;
   v16[3] = &unk_1E80B4370;
   v16[4] = self;
-  v17 = v7;
+  v17 = optionsCopy;
   v18 = v9;
   v19 = a2;
   v13 = v9;
-  v14 = v7;
-  dispatch_async(v12, v16);
+  v14 = optionsCopy;
+  dispatch_async(queue, v16);
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -5779,10 +5779,10 @@ uint64_t __81__RTRoutineManager_startMonitoringPredictedContextWithOptions_compl
   return result;
 }
 
-- (void)stopMonitoringPredictedContextWithHandler:(id)a3
+- (void)stopMonitoringPredictedContextWithHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!handler)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -5795,14 +5795,14 @@ uint64_t __81__RTRoutineManager_startMonitoringPredictedContextWithOptions_compl
     }
   }
 
-  v6 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__RTRoutineManager_stopMonitoringPredictedContextWithHandler___block_invoke;
   v8[3] = &unk_1E80B4208;
   v8[4] = self;
   v8[5] = a2;
-  dispatch_sync(v6, v8);
+  dispatch_sync(queue, v8);
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -5905,25 +5905,25 @@ uint64_t __62__RTRoutineManager_stopMonitoringPredictedContextWithHandler___bloc
   return result;
 }
 
-- (void)onPredictedContextResult:(id)a3 error:(id)a4
+- (void)onPredictedContextResult:(id)result error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(RTRoutineManager *)self predictedContextHandler];
+  resultCopy = result;
+  errorCopy = error;
+  predictedContextHandler = [(RTRoutineManager *)self predictedContextHandler];
 
-  if (v7)
+  if (predictedContextHandler)
   {
-    v8 = [(RTRoutineManager *)self predictedContextHandler];
-    (v8)[2](v8, v9, v6);
+    predictedContextHandler2 = [(RTRoutineManager *)self predictedContextHandler];
+    (predictedContextHandler2)[2](predictedContextHandler2, resultCopy, errorCopy);
   }
 }
 
-- (void)fetchPathToDiagnosticFilesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchPathToDiagnosticFilesWithOptions:(id)options handler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -5940,16 +5940,16 @@ uint64_t __62__RTRoutineManager_stopMonitoringPredictedContextWithHandler___bloc
   v17[1] = 3221225472;
   v17[2] = __66__RTRoutineManager_fetchPathToDiagnosticFilesWithOptions_handler___block_invoke;
   v17[3] = &unk_1E80B3F10;
-  v18 = v8;
+  v18 = handlerCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __66__RTRoutineManager_fetchPathToDiagnosticFilesWithOptions_handler___block_invoke_2;
   v13[3] = &unk_1E80B44D8;
-  v14 = v7;
-  v15 = self;
+  v14 = optionsCopy;
+  selfCopy = self;
   v16 = v18;
   v10 = v18;
-  v11 = v7;
+  v11 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v17 taskBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -6001,11 +6001,11 @@ uint64_t __66__RTRoutineManager_fetchPathToDiagnosticFilesWithOptions_handler___
   return v5();
 }
 
-- (void)startMonitoringScenarioTriggerOfType:(unint64_t)a3 withHandler:(id)a4
+- (void)startMonitoringScenarioTriggerOfType:(unint64_t)type withHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -6018,17 +6018,17 @@ uint64_t __66__RTRoutineManager_fetchPathToDiagnosticFilesWithOptions_handler___
     }
   }
 
-  v9 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__RTRoutineManager_startMonitoringScenarioTriggerOfType_withHandler___block_invoke;
   v12[3] = &unk_1E80B4500;
   v12[4] = self;
-  v13 = v7;
-  v14 = a3;
+  v13 = handlerCopy;
+  typeCopy = type;
   v15 = a2;
-  v10 = v7;
-  dispatch_async(v9, v12);
+  v10 = handlerCopy;
+  dispatch_async(queue, v12);
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -6107,17 +6107,17 @@ uint64_t __69__RTRoutineManager_startMonitoringScenarioTriggerOfType_withHandler
   return result;
 }
 
-- (void)stopMonitoringScenarioTriggerOfType:(unint64_t)a3
+- (void)stopMonitoringScenarioTriggerOfType:(unint64_t)type
 {
-  v6 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__RTRoutineManager_stopMonitoringScenarioTriggerOfType___block_invoke;
   block[3] = &unk_1E80B4598;
   block[4] = self;
-  block[5] = a3;
+  block[5] = type;
   block[6] = a2;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __56__RTRoutineManager_stopMonitoringScenarioTriggerOfType___block_invoke(void *a1)
@@ -6194,28 +6194,28 @@ void __56__RTRoutineManager_stopMonitoringScenarioTriggerOfType___block_invoke_3
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onScenarioTrigger:(id)a3 withError:(id)a4
+- (void)onScenarioTrigger:(id)trigger withError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (trigger)
   {
     scenarioTriggerRegistrant = self->_scenarioTriggerRegistrant;
-    v11 = a3;
+    triggerCopy = trigger;
     v6 = MEMORY[0x1E695DEC8];
-    v7 = a4;
-    v8 = a3;
-    v9 = [v6 arrayWithObjects:&v11 count:1];
-    [(RTRoutineManagerRegistrantScenarioTrigger *)scenarioTriggerRegistrant onScenarioTriggers:v9 error:v7, v11, v12];
+    errorCopy = error;
+    triggerCopy2 = trigger;
+    v9 = [v6 arrayWithObjects:&triggerCopy count:1];
+    [(RTRoutineManagerRegistrantScenarioTrigger *)scenarioTriggerRegistrant onScenarioTriggers:v9 error:errorCopy, triggerCopy, v12];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchMonitoredScenarioTriggerTypesWithHandler:(id)a3
+- (void)fetchMonitoredScenarioTriggerTypesWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -6232,7 +6232,7 @@ void __56__RTRoutineManager_stopMonitoringScenarioTriggerOfType___block_invoke_3
   v11[1] = 3221225472;
   v11[2] = __66__RTRoutineManager_fetchMonitoredScenarioTriggerTypesWithHandler___block_invoke;
   v11[3] = &unk_1E80B3F10;
-  v12 = v5;
+  v12 = handlerCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__RTRoutineManager_fetchMonitoredScenarioTriggerTypesWithHandler___block_invoke_2;
@@ -6272,13 +6272,13 @@ void __66__RTRoutineManager_fetchMonitoredScenarioTriggerTypesWithHandler___bloc
   dispatch_async(v6, block);
 }
 
-- (void)fetchPredictedExitDatesFromLocation:(id)a3 onDate:(id)a4 withHandler:(id)a5
+- (void)fetchPredictedExitDatesFromLocation:(id)location onDate:(id)date withHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  locationCopy = location;
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -6295,18 +6295,18 @@ void __66__RTRoutineManager_fetchMonitoredScenarioTriggerTypesWithHandler___bloc
   v22[1] = 3221225472;
   v22[2] = __75__RTRoutineManager_fetchPredictedExitDatesFromLocation_onDate_withHandler___block_invoke;
   v22[3] = &unk_1E80B3F10;
-  v23 = v11;
+  v23 = handlerCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __75__RTRoutineManager_fetchPredictedExitDatesFromLocation_onDate_withHandler___block_invoke_2;
   v17[3] = &unk_1E80B3F38;
-  v18 = v9;
-  v19 = v10;
-  v20 = self;
+  v18 = locationCopy;
+  v19 = dateCopy;
+  selfCopy = self;
   v21 = v23;
   v13 = v23;
-  v14 = v10;
-  v15 = v9;
+  v14 = dateCopy;
+  v15 = locationCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v22 taskBlock:v17];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -6344,13 +6344,13 @@ void __75__RTRoutineManager_fetchPredictedExitDatesFromLocation_onDate_withHandl
   dispatch_async(v7, block);
 }
 
-- (void)fetchPredictedLocationsOfInterestBetweenStartDate:(id)a3 endDate:(id)a4 withHandler:(id)a5
+- (void)fetchPredictedLocationsOfInterestBetweenStartDate:(id)date endDate:(id)endDate withHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -6367,18 +6367,18 @@ void __75__RTRoutineManager_fetchPredictedExitDatesFromLocation_onDate_withHandl
   v22[1] = 3221225472;
   v22[2] = __90__RTRoutineManager_fetchPredictedLocationsOfInterestBetweenStartDate_endDate_withHandler___block_invoke;
   v22[3] = &unk_1E80B3F10;
-  v23 = v11;
+  v23 = handlerCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __90__RTRoutineManager_fetchPredictedLocationsOfInterestBetweenStartDate_endDate_withHandler___block_invoke_2;
   v17[3] = &unk_1E80B3F38;
-  v18 = v9;
-  v19 = v10;
-  v20 = self;
+  v18 = dateCopy;
+  v19 = endDateCopy;
+  selfCopy = self;
   v21 = v23;
   v13 = v23;
-  v14 = v10;
-  v15 = v9;
+  v14 = endDateCopy;
+  v15 = dateCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v22 taskBlock:v17];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -6416,12 +6416,12 @@ void __90__RTRoutineManager_fetchPredictedLocationsOfInterestBetweenStartDate_en
   dispatch_async(v7, block);
 }
 
-- (void)fetchLocationOfInterestWithIdentifier:(id)a3 withHandler:(id)a4
+- (void)fetchLocationOfInterestWithIdentifier:(id)identifier withHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -6450,17 +6450,17 @@ void __90__RTRoutineManager_fetchPredictedLocationsOfInterestBetweenStartDate_en
   v22[2] = __70__RTRoutineManager_fetchLocationOfInterestWithIdentifier_withHandler___block_invoke;
   v22[3] = &unk_1E80B4078;
   v24 = v11;
-  v23 = v8;
+  v23 = handlerCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __70__RTRoutineManager_fetchLocationOfInterestWithIdentifier_withHandler___block_invoke_493;
   v17[3] = &unk_1E80B45E8;
-  v18 = v7;
-  v19 = self;
+  v18 = identifierCopy;
+  selfCopy = self;
   v20 = v23;
   v21 = v11;
   v14 = v23;
-  v15 = v7;
+  v15 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v22 taskBlock:v17];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -6539,12 +6539,12 @@ uint64_t __70__RTRoutineManager_fetchLocationOfInterestWithIdentifier_withHandle
   return result;
 }
 
-- (void)fetchLocationOfInterestAtLocation:(id)a3 withHandler:(id)a4
+- (void)fetchLocationOfInterestAtLocation:(id)location withHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -6561,16 +6561,16 @@ uint64_t __70__RTRoutineManager_fetchLocationOfInterestWithIdentifier_withHandle
   v17[1] = 3221225472;
   v17[2] = __66__RTRoutineManager_fetchLocationOfInterestAtLocation_withHandler___block_invoke;
   v17[3] = &unk_1E80B3F10;
-  v18 = v8;
+  v18 = handlerCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __66__RTRoutineManager_fetchLocationOfInterestAtLocation_withHandler___block_invoke_2;
   v13[3] = &unk_1E80B3F60;
-  v14 = v7;
-  v15 = self;
+  v14 = locationCopy;
+  selfCopy = self;
   v16 = v18;
   v10 = v18;
-  v11 = v7;
+  v11 = locationCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v17 taskBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -6607,12 +6607,12 @@ void __66__RTRoutineManager_fetchLocationOfInterestAtLocation_withHandler___bloc
   dispatch_async(v7, block);
 }
 
-- (void)fetchLocationOfInterestForRegion:(id)a3 withHandler:(id)a4
+- (void)fetchLocationOfInterestForRegion:(id)region withHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  regionCopy = region;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -6629,16 +6629,16 @@ void __66__RTRoutineManager_fetchLocationOfInterestAtLocation_withHandler___bloc
   v17[1] = 3221225472;
   v17[2] = __65__RTRoutineManager_fetchLocationOfInterestForRegion_withHandler___block_invoke;
   v17[3] = &unk_1E80B3F10;
-  v18 = v8;
+  v18 = handlerCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__RTRoutineManager_fetchLocationOfInterestForRegion_withHandler___block_invoke_2;
   v13[3] = &unk_1E80B3F60;
-  v14 = v7;
-  v15 = self;
+  v14 = regionCopy;
+  selfCopy = self;
   v16 = v18;
   v10 = v18;
-  v11 = v7;
+  v11 = regionCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v17 taskBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -6675,12 +6675,12 @@ void __65__RTRoutineManager_fetchLocationOfInterestForRegion_withHandler___block
   dispatch_async(v7, block);
 }
 
-- (void)fetchLocationsOfInterestWithinDistance:(double)a3 ofLocation:(id)a4 withHandler:(id)a5
+- (void)fetchLocationsOfInterestWithinDistance:(double)distance ofLocation:(id)location withHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -6697,17 +6697,17 @@ void __65__RTRoutineManager_fetchLocationOfInterestForRegion_withHandler___block
   v20[1] = 3221225472;
   v20[2] = __82__RTRoutineManager_fetchLocationsOfInterestWithinDistance_ofLocation_withHandler___block_invoke;
   v20[3] = &unk_1E80B3F10;
-  v21 = v10;
+  v21 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __82__RTRoutineManager_fetchLocationsOfInterestWithinDistance_ofLocation_withHandler___block_invoke_2;
   v15[3] = &unk_1E80B45E8;
-  v19 = a3;
-  v16 = v9;
-  v17 = self;
+  distanceCopy = distance;
+  v16 = locationCopy;
+  selfCopy = self;
   v18 = v21;
   v12 = v21;
-  v13 = v9;
+  v13 = locationCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v20 taskBlock:v15];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -6745,11 +6745,11 @@ void __82__RTRoutineManager_fetchLocationsOfInterestWithinDistance_ofLocation_wi
   dispatch_async(v7, block);
 }
 
-- (void)fetchLocationsOfInterestOfType:(int64_t)a3 withHandler:(id)a4
+- (void)fetchLocationsOfInterestOfType:(int64_t)type withHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -6778,12 +6778,12 @@ void __82__RTRoutineManager_fetchLocationsOfInterestWithinDistance_ofLocation_wi
   v19[2] = __63__RTRoutineManager_fetchLocationsOfInterestOfType_withHandler___block_invoke;
   v19[3] = &unk_1E80B4078;
   v21 = v10;
-  v20 = v7;
+  v20 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__RTRoutineManager_fetchLocationsOfInterestOfType_withHandler___block_invoke_495;
   v15[3] = &unk_1E80B4638;
-  v17 = a3;
+  typeCopy = type;
   v18 = v10;
   v15[4] = self;
   v16 = v20;
@@ -6866,12 +6866,12 @@ uint64_t __63__RTRoutineManager_fetchLocationsOfInterestOfType_withHandler___blo
   return result;
 }
 
-- (void)fetchLocationsOfInterestVisitedSinceDate:(id)a3 withHandler:(id)a4
+- (void)fetchLocationsOfInterestVisitedSinceDate:(id)date withHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v14 = a4;
-  if (!v14)
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -6883,18 +6883,18 @@ uint64_t __63__RTRoutineManager_fetchLocationsOfInterestOfType_withHandler___blo
       _os_log_error_impl(&dword_1BF1C4000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
     }
 
-    if (v7)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
     v19 = RTErrorInvalidParameterCreate(a2, @"sinceDate is required", v8, v9, v10, v11, v12, v13, v22[0]);
-    v14[2](v14, 0, v19);
+    handlerCopy[2](handlerCopy, 0, v19);
     goto LABEL_11;
   }
 
-  if (!v7)
+  if (!dateCopy)
   {
     goto LABEL_10;
   }
@@ -6916,13 +6916,13 @@ LABEL_3:
   v27[2] = __73__RTRoutineManager_fetchLocationsOfInterestVisitedSinceDate_withHandler___block_invoke;
   v27[3] = &unk_1E80B4078;
   v29 = v16;
-  v28 = v14;
+  v28 = handlerCopy;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __73__RTRoutineManager_fetchLocationsOfInterestVisitedSinceDate_withHandler___block_invoke_499;
   v22[3] = &unk_1E80B45E8;
-  v23 = v7;
-  v24 = self;
+  v23 = dateCopy;
+  selfCopy = self;
   v26 = v16;
   v25 = v28;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v27 taskBlock:v22];
@@ -7009,15 +7009,15 @@ uint64_t __73__RTRoutineManager_fetchLocationsOfInterestVisitedSinceDate_withHan
   return result;
 }
 
-- (void)fetchLocationsOfInterestVisitedBetweenStartDate:(id)a3 endDate:(id)a4 withHandler:(id)a5
+- (void)fetchLocationsOfInterestVisitedBetweenStartDate:(id)date endDate:(id)endDate withHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v17 = a5;
-  if (v17)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -7037,24 +7037,24 @@ LABEL_9:
     _os_log_error_impl(&dword_1BF1C4000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v9)
+  if (!dateCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_3:
-  if (!v10)
+  if (!endDateCopy)
   {
     v18 = @"endDate is required";
     goto LABEL_11;
   }
 
-  if ([v9 compare:v10] == 1)
+  if ([dateCopy compare:endDateCopy] == 1)
   {
     v18 = @"endDate must be greater than or equal to startDate";
 LABEL_11:
     v20 = RTErrorInvalidParameterCreate(a2, v18, v11, v12, v13, v14, v15, v16, v26);
-    v17[2](v17, 0, v20);
+    handlerCopy[2](handlerCopy, 0, v20);
     goto LABEL_12;
   }
 
@@ -7074,14 +7074,14 @@ LABEL_11:
   v33[2] = __88__RTRoutineManager_fetchLocationsOfInterestVisitedBetweenStartDate_endDate_withHandler___block_invoke;
   v33[3] = &unk_1E80B4078;
   v35 = v23;
-  v34 = v17;
+  v34 = handlerCopy;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __88__RTRoutineManager_fetchLocationsOfInterestVisitedBetweenStartDate_endDate_withHandler___block_invoke_503;
   v27[3] = &unk_1E80B4320;
-  v28 = v9;
-  v29 = v10;
-  v30 = self;
+  v28 = dateCopy;
+  v29 = endDateCopy;
+  selfCopy = self;
   v32 = v23;
   v31 = v34;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v33 taskBlock:v27];
@@ -7166,11 +7166,11 @@ uint64_t __88__RTRoutineManager_fetchLocationsOfInterestVisitedBetweenStartDate_
   return result;
 }
 
-- (void)fetchAllLocationsOfInterestForSettingsWithHandler:(id)a3
+- (void)fetchAllLocationsOfInterestForSettingsWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -7187,7 +7187,7 @@ uint64_t __88__RTRoutineManager_fetchLocationsOfInterestVisitedBetweenStartDate_
   v11[1] = 3221225472;
   v11[2] = __70__RTRoutineManager_fetchAllLocationsOfInterestForSettingsWithHandler___block_invoke;
   v11[3] = &unk_1E80B3F10;
-  v12 = v5;
+  v12 = handlerCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__RTRoutineManager_fetchAllLocationsOfInterestForSettingsWithHandler___block_invoke_2;
@@ -7245,12 +7245,12 @@ uint64_t __70__RTRoutineManager_fetchAllLocationsOfInterestForSettingsWithHandle
   return v5();
 }
 
-- (void)fetchLocationsOfInterestAssociatedToIdentifier:(id)a3 withHandler:(id)a4
+- (void)fetchLocationsOfInterestAssociatedToIdentifier:(id)identifier withHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -7267,16 +7267,16 @@ uint64_t __70__RTRoutineManager_fetchAllLocationsOfInterestForSettingsWithHandle
   v17[1] = 3221225472;
   v17[2] = __79__RTRoutineManager_fetchLocationsOfInterestAssociatedToIdentifier_withHandler___block_invoke;
   v17[3] = &unk_1E80B3F10;
-  v18 = v8;
+  v18 = handlerCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__RTRoutineManager_fetchLocationsOfInterestAssociatedToIdentifier_withHandler___block_invoke_2;
   v13[3] = &unk_1E80B3F60;
-  v14 = v7;
-  v15 = self;
+  v14 = identifierCopy;
+  selfCopy = self;
   v16 = v18;
   v10 = v18;
-  v11 = v7;
+  v11 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v17 taskBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -7313,28 +7313,28 @@ void __79__RTRoutineManager_fetchLocationsOfInterestAssociatedToIdentifier_withH
   dispatch_async(v7, block);
 }
 
-- (void)addLocationOfInterestOfType:(int64_t)a3 mapItem:(id)a4 customLabel:(id)a5 handler:(id)a6
+- (void)addLocationOfInterestOfType:(int64_t)type mapItem:(id)item customLabel:(id)label handler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  labelCopy = label;
+  handlerCopy = handler;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __76__RTRoutineManager_addLocationOfInterestOfType_mapItem_customLabel_handler___block_invoke;
   v23[3] = &unk_1E80B3F10;
-  v24 = v13;
+  v24 = handlerCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __76__RTRoutineManager_addLocationOfInterestOfType_mapItem_customLabel_handler___block_invoke_2;
   v17[3] = &unk_1E80B4320;
   v21 = v24;
-  v22 = a3;
-  v18 = v11;
-  v19 = v12;
-  v20 = self;
+  typeCopy = type;
+  v18 = itemCopy;
+  v19 = labelCopy;
+  selfCopy = self;
   v14 = v24;
-  v15 = v12;
-  v16 = v11;
+  v15 = labelCopy;
+  v16 = itemCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v23 taskBlock:v17];
 }
 
@@ -7396,31 +7396,31 @@ uint64_t __76__RTRoutineManager_addLocationOfInterestOfType_mapItem_customLabel_
   return result;
 }
 
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 type:(int64_t)a4 mapItem:(id)a5 customLabel:(id)a6 handler:(id)a7
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier type:(int64_t)type mapItem:(id)item customLabel:(id)label handler:(id)handler
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  itemCopy = item;
+  labelCopy = label;
+  handlerCopy = handler;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __92__RTRoutineManager_updateLocationOfInterestWithIdentifier_type_mapItem_customLabel_handler___block_invoke;
   v28[3] = &unk_1E80B3F10;
-  v29 = v16;
+  v29 = handlerCopy;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __92__RTRoutineManager_updateLocationOfInterestWithIdentifier_type_mapItem_customLabel_handler___block_invoke_2;
   v21[3] = &unk_1E80B4660;
-  v22 = v13;
-  v23 = v14;
-  v24 = v15;
-  v25 = self;
+  v22 = identifierCopy;
+  v23 = itemCopy;
+  v24 = labelCopy;
+  selfCopy = self;
   v26 = v29;
-  v27 = a4;
+  typeCopy = type;
   v17 = v29;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
+  v18 = labelCopy;
+  v19 = itemCopy;
+  v20 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v28 taskBlock:v21];
 }
 
@@ -7483,27 +7483,27 @@ uint64_t __92__RTRoutineManager_updateLocationOfInterestWithIdentifier_type_mapI
   return result;
 }
 
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 mapItem:(id)a4 handler:(id)a5
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier mapItem:(id)item handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  itemCopy = item;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __75__RTRoutineManager_updateLocationOfInterestWithIdentifier_mapItem_handler___block_invoke;
   v20[3] = &unk_1E80B3F10;
-  v21 = v11;
+  v21 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__RTRoutineManager_updateLocationOfInterestWithIdentifier_mapItem_handler___block_invoke_2;
   v15[3] = &unk_1E80B3F38;
-  v16 = v9;
-  v17 = v10;
-  v18 = self;
+  v16 = identifierCopy;
+  v17 = itemCopy;
+  selfCopy = self;
   v19 = v21;
   v12 = v21;
-  v13 = v10;
-  v14 = v9;
+  v13 = itemCopy;
+  v14 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v20 taskBlock:v15];
 }
 
@@ -7561,12 +7561,12 @@ uint64_t __75__RTRoutineManager_updateLocationOfInterestWithIdentifier_mapItem_h
   return result;
 }
 
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 type:(int64_t)a4 handler:(id)a5
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier type:(int64_t)type handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!identifierCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -7583,17 +7583,17 @@ uint64_t __75__RTRoutineManager_updateLocationOfInterestWithIdentifier_mapItem_h
   v20[1] = 3221225472;
   v20[2] = __72__RTRoutineManager_updateLocationOfInterestWithIdentifier_type_handler___block_invoke;
   v20[3] = &unk_1E80B3F10;
-  v21 = v10;
+  v21 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__RTRoutineManager_updateLocationOfInterestWithIdentifier_type_handler___block_invoke_2;
   v15[3] = &unk_1E80B45E8;
-  v16 = v9;
-  v17 = self;
+  v16 = identifierCopy;
+  selfCopy = self;
   v18 = v21;
-  v19 = a4;
+  typeCopy = type;
   v12 = v21;
-  v13 = v9;
+  v13 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v20 taskBlock:v15];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -7650,13 +7650,13 @@ uint64_t __72__RTRoutineManager_updateLocationOfInterestWithIdentifier_type_hand
   return result;
 }
 
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 customLabel:(id)a4 handler:(id)a5
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier customLabel:(id)label handler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  labelCopy = label;
+  handlerCopy = handler;
+  if (!identifierCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -7673,18 +7673,18 @@ uint64_t __72__RTRoutineManager_updateLocationOfInterestWithIdentifier_type_hand
   v22[1] = 3221225472;
   v22[2] = __79__RTRoutineManager_updateLocationOfInterestWithIdentifier_customLabel_handler___block_invoke;
   v22[3] = &unk_1E80B3F10;
-  v23 = v11;
+  v23 = handlerCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __79__RTRoutineManager_updateLocationOfInterestWithIdentifier_customLabel_handler___block_invoke_2;
   v17[3] = &unk_1E80B3F38;
-  v18 = v9;
-  v19 = v10;
-  v20 = self;
+  v18 = identifierCopy;
+  v19 = labelCopy;
+  selfCopy = self;
   v21 = v23;
   v13 = v23;
-  v14 = v10;
-  v15 = v9;
+  v14 = labelCopy;
+  v15 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v22 taskBlock:v17];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -7741,13 +7741,13 @@ uint64_t __79__RTRoutineManager_updateLocationOfInterestWithIdentifier_customLab
   return result;
 }
 
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 type:(int64_t)a4 customLabel:(id)a5 handler:(id)a6
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier type:(int64_t)type customLabel:(id)label handler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  labelCopy = label;
+  handlerCopy = handler;
+  if (!identifierCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -7764,19 +7764,19 @@ uint64_t __79__RTRoutineManager_updateLocationOfInterestWithIdentifier_customLab
   v25[1] = 3221225472;
   v25[2] = __84__RTRoutineManager_updateLocationOfInterestWithIdentifier_type_customLabel_handler___block_invoke;
   v25[3] = &unk_1E80B3F10;
-  v26 = v13;
+  v26 = handlerCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __84__RTRoutineManager_updateLocationOfInterestWithIdentifier_type_customLabel_handler___block_invoke_2;
   v19[3] = &unk_1E80B4320;
   v23 = v26;
-  v24 = a4;
-  v20 = v11;
-  v21 = v12;
-  v22 = self;
+  typeCopy = type;
+  v20 = identifierCopy;
+  v21 = labelCopy;
+  selfCopy = self;
   v15 = v26;
-  v16 = v12;
-  v17 = v11;
+  v16 = labelCopy;
+  v17 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v25 taskBlock:v19];
 
   v18 = *MEMORY[0x1E69E9840];
@@ -7834,29 +7834,29 @@ uint64_t __84__RTRoutineManager_updateLocationOfInterestWithIdentifier_type_cust
   return result;
 }
 
-- (void)removeLocationOfInterestWithIdentifier:(id)a3 handler:(id)a4
+- (void)removeLocationOfInterestWithIdentifier:(id)identifier handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v15 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  if (identifierCopy)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __67__RTRoutineManager_removeLocationOfInterestWithIdentifier_handler___block_invoke;
     v21[3] = &unk_1E80B3F10;
-    v22 = v8;
+    v22 = handlerCopy;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __67__RTRoutineManager_removeLocationOfInterestWithIdentifier_handler___block_invoke_2;
     v17[3] = &unk_1E80B3F60;
-    v18 = v7;
-    v19 = self;
+    v18 = identifierCopy;
+    selfCopy = self;
     v20 = v22;
     [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v21 taskBlock:v17];
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
     v16 = RTErrorInvalidParameterCreate(a2, @"Identifier must not be nil.", v9, v10, v11, v12, v13, v14, v17[0]);
     (v15)[2](v15, v16);
@@ -7913,24 +7913,24 @@ uint64_t __67__RTRoutineManager_removeLocationOfInterestWithIdentifier_handler__
   return result;
 }
 
-- (void)fetchDedupedLocationOfInterestIdentifiersWithIdentifier:(id)a3 handler:(id)a4
+- (void)fetchDedupedLocationOfInterestIdentifiersWithIdentifier:(id)identifier handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__RTRoutineManager_fetchDedupedLocationOfInterestIdentifiersWithIdentifier_handler___block_invoke;
   v15[3] = &unk_1E80B3F10;
-  v16 = v8;
+  v16 = handlerCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__RTRoutineManager_fetchDedupedLocationOfInterestIdentifiersWithIdentifier_handler___block_invoke_2;
   v11[3] = &unk_1E80B3F60;
-  v12 = v7;
-  v13 = self;
+  v12 = identifierCopy;
+  selfCopy = self;
   v14 = v16;
   v9 = v16;
-  v10 = v7;
+  v10 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v15 taskBlock:v11];
 }
 
@@ -7987,25 +7987,25 @@ uint64_t __84__RTRoutineManager_fetchDedupedLocationOfInterestIdentifiersWithIde
   return result;
 }
 
-- (void)setHintForRegionState:(int64_t)a3 significantRegion:(id)a4 withHandler:(id)a5
+- (void)setHintForRegionState:(int64_t)state significantRegion:(id)region withHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
+  regionCopy = region;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __72__RTRoutineManager_setHintForRegionState_significantRegion_withHandler___block_invoke;
   v18[3] = &unk_1E80B3F10;
-  v19 = v10;
+  v19 = handlerCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__RTRoutineManager_setHintForRegionState_significantRegion_withHandler___block_invoke_2;
   v13[3] = &unk_1E80B45E8;
-  v14 = v9;
-  v15 = self;
+  v14 = regionCopy;
+  selfCopy = self;
   v16 = v19;
-  v17 = a3;
+  stateCopy = state;
   v11 = v19;
-  v12 = v9;
+  v12 = regionCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v18 taskBlock:v13];
 }
 
@@ -8061,29 +8061,29 @@ uint64_t __72__RTRoutineManager_setHintForRegionState_significantRegion_withHand
   return result;
 }
 
-- (void)removeVisitWithIdentifier:(id)a3 handler:(id)a4
+- (void)removeVisitWithIdentifier:(id)identifier handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v15 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  if (identifierCopy)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __54__RTRoutineManager_removeVisitWithIdentifier_handler___block_invoke;
     v21[3] = &unk_1E80B3F10;
-    v22 = v8;
+    v22 = handlerCopy;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __54__RTRoutineManager_removeVisitWithIdentifier_handler___block_invoke_2;
     v17[3] = &unk_1E80B3F60;
-    v18 = v7;
-    v19 = self;
+    v18 = identifierCopy;
+    selfCopy = self;
     v20 = v22;
     [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v21 taskBlock:v17];
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
     v16 = RTErrorInvalidParameterCreate(a2, @"Visit identifier must not be nil", v9, v10, v11, v12, v13, v14, v17[0]);
     (v15)[2](v15, v16);
@@ -8140,29 +8140,29 @@ uint64_t __54__RTRoutineManager_removeVisitWithIdentifier_handler___block_invoke
   return result;
 }
 
-- (void)extendLifetimeOfVisitWithIdentifier:(id)a3 handler:(id)a4
+- (void)extendLifetimeOfVisitWithIdentifier:(id)identifier handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v15 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  if (identifierCopy)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __64__RTRoutineManager_extendLifetimeOfVisitWithIdentifier_handler___block_invoke;
     v21[3] = &unk_1E80B3F10;
-    v22 = v8;
+    v22 = handlerCopy;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __64__RTRoutineManager_extendLifetimeOfVisitWithIdentifier_handler___block_invoke_2;
     v17[3] = &unk_1E80B3F60;
-    v18 = v7;
-    v19 = self;
+    v18 = identifierCopy;
+    selfCopy = self;
     v20 = v22;
     [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v21 taskBlock:v17];
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
     v16 = RTErrorInvalidParameterCreate(a2, @"visitIdentifier is required", v9, v10, v11, v12, v13, v14, v17[0]);
     (v15)[2](v15, v16);
@@ -8222,14 +8222,14 @@ uint64_t __64__RTRoutineManager_extendLifetimeOfVisitWithIdentifier_handler___bl
   return result;
 }
 
-- (void)extendLifetimeOfVisitsWithIdentifiers:(id)a3 handler:(id)a4
+- (void)extendLifetimeOfVisitsWithIdentifiers:(id)identifiers handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v15 = v8;
-  if (v7)
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  if (identifiersCopy)
   {
-    if ([v7 count])
+    if ([identifiersCopy count])
     {
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
@@ -8240,8 +8240,8 @@ uint64_t __64__RTRoutineManager_extendLifetimeOfVisitWithIdentifier_handler___bl
       v17[1] = 3221225472;
       v17[2] = __66__RTRoutineManager_extendLifetimeOfVisitsWithIdentifiers_handler___block_invoke_2;
       v17[3] = &unk_1E80B3F60;
-      v18 = v7;
-      v19 = self;
+      v18 = identifiersCopy;
+      selfCopy = self;
       v20 = v22;
       [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v21 taskBlock:v17];
     }
@@ -8252,7 +8252,7 @@ uint64_t __64__RTRoutineManager_extendLifetimeOfVisitWithIdentifier_handler___bl
     }
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
     v16 = RTErrorInvalidParameterCreate(a2, @"visitIdentifiers is required", v9, v10, v11, v12, v13, v14, v17[0]);
     (v15)[2](v15, v16);
@@ -8309,15 +8309,15 @@ uint64_t __66__RTRoutineManager_extendLifetimeOfVisitsWithIdentifiers_handler___
   return result;
 }
 
-- (void)fetchFamiliarityIndexResultsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchFamiliarityIndexResultsWithOptions:(id)options handler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (optionsCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -8359,11 +8359,11 @@ LABEL_10:
   v15[1] = 3221225472;
   v15[2] = __68__RTRoutineManager_fetchFamiliarityIndexResultsWithOptions_handler___block_invoke_2;
   v15[3] = &unk_1E80B3F60;
-  v16 = v7;
-  v17 = self;
+  v16 = optionsCopy;
+  selfCopy = self;
   v18 = v20;
   v12 = v20;
-  v13 = v7;
+  v13 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v19 taskBlock:v15];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -8422,11 +8422,11 @@ uint64_t __68__RTRoutineManager_fetchFamiliarityIndexResultsWithOptions_handler_
   return result;
 }
 
-- (void)fetchAuthorizedLocationStatus:(id)a3
+- (void)fetchAuthorizedLocationStatus:(id)status
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  statusCopy = status;
+  if (!statusCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -8455,7 +8455,7 @@ uint64_t __68__RTRoutineManager_fetchFamiliarityIndexResultsWithOptions_handler_
   v16[2] = __50__RTRoutineManager_fetchAuthorizedLocationStatus___block_invoke;
   v16[3] = &unk_1E80B4078;
   v18 = v8;
-  v17 = v5;
+  v17 = statusCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__RTRoutineManager_fetchAuthorizedLocationStatus___block_invoke_517;
@@ -8549,11 +8549,11 @@ uint64_t __50__RTRoutineManager_fetchAuthorizedLocationStatus___block_invoke_3(u
   return result;
 }
 
-- (void)fetchLastVehicleEventsWithHandler:(id)a3
+- (void)fetchLastVehicleEventsWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -8570,7 +8570,7 @@ uint64_t __50__RTRoutineManager_fetchAuthorizedLocationStatus___block_invoke_3(u
   v11[1] = 3221225472;
   v11[2] = __54__RTRoutineManager_fetchLastVehicleEventsWithHandler___block_invoke;
   v11[3] = &unk_1E80B3F10;
-  v12 = v5;
+  v12 = handlerCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__RTRoutineManager_fetchLastVehicleEventsWithHandler___block_invoke_2;
@@ -8613,27 +8613,27 @@ void __54__RTRoutineManager_fetchLastVehicleEventsWithHandler___block_invoke_3(u
   dispatch_async(v7, block);
 }
 
-- (void)vehicleEventAtLocation:(id)a3 notes:(id)a4 handler:(id)a5
+- (void)vehicleEventAtLocation:(id)location notes:(id)notes handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  locationCopy = location;
+  notesCopy = notes;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __57__RTRoutineManager_vehicleEventAtLocation_notes_handler___block_invoke;
   v20[3] = &unk_1E80B3F10;
-  v21 = v11;
+  v21 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __57__RTRoutineManager_vehicleEventAtLocation_notes_handler___block_invoke_2;
   v15[3] = &unk_1E80B3F38;
-  v16 = v9;
-  v17 = v10;
-  v18 = self;
+  v16 = locationCopy;
+  v17 = notesCopy;
+  selfCopy = self;
   v19 = v21;
   v12 = v21;
-  v13 = v10;
-  v14 = v9;
+  v13 = notesCopy;
+  v14 = locationCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v20 taskBlock:v15];
 }
 
@@ -8688,15 +8688,15 @@ uint64_t __57__RTRoutineManager_vehicleEventAtLocation_notes_handler___block_inv
   return result;
 }
 
-- (void)clearAllVehicleEventsWithHandler:(id)a3
+- (void)clearAllVehicleEventsWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__RTRoutineManager_clearAllVehicleEventsWithHandler___block_invoke;
   v10[3] = &unk_1E80B4078;
   v12 = a2;
-  v11 = v5;
+  v11 = handlerCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__RTRoutineManager_clearAllVehicleEventsWithHandler___block_invoke_519;
@@ -8788,14 +8788,14 @@ uint64_t __53__RTRoutineManager_clearAllVehicleEventsWithHandler___block_invoke_
   return result;
 }
 
-- (void)clearAllVehicleEvents:(id)a3
+- (void)clearAllVehicleEvents:(id)events
 {
-  v5 = a3;
+  eventsCopy = events;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__RTRoutineManager_clearAllVehicleEvents___block_invoke;
   v9[3] = &unk_1E80B3F10;
-  v10 = v5;
+  v10 = eventsCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__RTRoutineManager_clearAllVehicleEvents___block_invoke_2;
@@ -8855,48 +8855,48 @@ uint64_t __42__RTRoutineManager_clearAllVehicleEvents___block_invoke_4(uint64_t 
   return result;
 }
 
-- (void)updateVehicleEventWithIdentifier:(id)a3 notes:(id)a4
+- (void)updateVehicleEventWithIdentifier:(id)identifier notes:(id)notes
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  notesCopy = notes;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__RTRoutineManager_updateVehicleEventWithIdentifier_notes___block_invoke_2;
   v11[3] = &unk_1E80B4728;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = notesCopy;
+  v9 = notesCopy;
+  v10 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:&__block_literal_global_522 taskBlock:v11];
 }
 
-- (void)updateVehicleEventWithIdentifier:(id)a3 photo:(id)a4
+- (void)updateVehicleEventWithIdentifier:(id)identifier photo:(id)photo
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  photoCopy = photo;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__RTRoutineManager_updateVehicleEventWithIdentifier_photo___block_invoke_2;
   v11[3] = &unk_1E80B4728;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = photoCopy;
+  v9 = photoCopy;
+  v10 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:&__block_literal_global_526 taskBlock:v11];
 }
 
-- (void)updateVehicleEventWithIdentifier:(id)a3 geoMapItem:(id)a4
+- (void)updateVehicleEventWithIdentifier:(id)identifier geoMapItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  itemCopy = item;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__RTRoutineManager_updateVehicleEventWithIdentifier_geoMapItem___block_invoke_2;
   v11[3] = &unk_1E80B4728;
-  v12 = v8;
-  v13 = v7;
-  v9 = v7;
-  v10 = v8;
+  v12 = itemCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = itemCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:&__block_literal_global_530 taskBlock:v11];
 }
 
@@ -8909,51 +8909,51 @@ void __64__RTRoutineManager_updateVehicleEventWithIdentifier_geoMapItem___block_
   [v5 updateVehicleEventWithIdentifier:*(a1 + 40) geoMapItem:v6 reply:&__block_literal_global_532];
 }
 
-- (void)updateVehicleEventWithIdentifier:(id)a3 location:(id)a4
+- (void)updateVehicleEventWithIdentifier:(id)identifier location:(id)location
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  locationCopy = location;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__RTRoutineManager_updateVehicleEventWithIdentifier_location___block_invoke_2;
   v11[3] = &unk_1E80B4728;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = locationCopy;
+  v9 = locationCopy;
+  v10 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:&__block_literal_global_534 taskBlock:v11];
 }
 
-- (void)engageInVehicleEventWithIdentifier:(id)a3
+- (void)engageInVehicleEventWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__RTRoutineManager_engageInVehicleEventWithIdentifier___block_invoke_2;
   v7[3] = &unk_1E80B4750;
-  v8 = v5;
-  v6 = v5;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:&__block_literal_global_538 taskBlock:v7];
 }
 
-- (void)onVehicleEvents:(id)a3 error:(id)a4
+- (void)onVehicleEvents:(id)events error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(RTRoutineManager *)self vehicleEventsHandler];
+  eventsCopy = events;
+  errorCopy = error;
+  vehicleEventsHandler = [(RTRoutineManager *)self vehicleEventsHandler];
 
-  if (v7)
+  if (vehicleEventsHandler)
   {
-    v8 = [(RTRoutineManager *)self vehicleEventsHandler];
-    (v8)[2](v8, v9, v6);
+    vehicleEventsHandler2 = [(RTRoutineManager *)self vehicleEventsHandler];
+    (vehicleEventsHandler2)[2](vehicleEventsHandler2, eventsCopy, errorCopy);
   }
 }
 
-- (void)startMonitoringVehicleEventsWithHandler:(id)a3
+- (void)startMonitoringVehicleEventsWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -8966,16 +8966,16 @@ void __64__RTRoutineManager_updateVehicleEventWithIdentifier_geoMapItem___block_
     }
   }
 
-  v7 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__RTRoutineManager_startMonitoringVehicleEventsWithHandler___block_invoke;
   block[3] = &unk_1E80B4168;
   block[4] = self;
-  v11 = v5;
+  v11 = handlerCopy;
   v12 = a2;
-  v8 = v5;
-  dispatch_async(v7, block);
+  v8 = handlerCopy;
+  dispatch_async(queue, block);
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -8991,14 +8991,14 @@ uint64_t __60__RTRoutineManager_startMonitoringVehicleEventsWithHandler___block_
 
 - (void)stopMonitoringVehicleEvents
 {
-  v4 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__RTRoutineManager_stopMonitoringVehicleEvents__block_invoke;
   v5[3] = &unk_1E80B4208;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(queue, v5);
 }
 
 uint64_t __47__RTRoutineManager_stopMonitoringVehicleEvents__block_invoke(uint64_t a1)
@@ -9010,11 +9010,11 @@ uint64_t __47__RTRoutineManager_stopMonitoringVehicleEvents__block_invoke(uint64
   return [v2 _launchTaskWithSelector:v3 remainingAttempts:3 proxyErrorHandler:&__block_literal_global_548 taskBlock:&__block_literal_global_550];
 }
 
-- (void)fetchAutomaticVehicleEventDetectionSupportedWithHandler:(id)a3
+- (void)fetchAutomaticVehicleEventDetectionSupportedWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -9031,7 +9031,7 @@ uint64_t __47__RTRoutineManager_stopMonitoringVehicleEvents__block_invoke(uint64
   v11[1] = 3221225472;
   v11[2] = __76__RTRoutineManager_fetchAutomaticVehicleEventDetectionSupportedWithHandler___block_invoke;
   v11[3] = &unk_1E80B3F10;
-  v12 = v5;
+  v12 = handlerCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__RTRoutineManager_fetchAutomaticVehicleEventDetectionSupportedWithHandler___block_invoke_2;
@@ -9072,31 +9072,31 @@ void __76__RTRoutineManager_fetchAutomaticVehicleEventDetectionSupportedWithHand
   dispatch_async(v6, block);
 }
 
-- (void)userInteractionWithPredictedLocationOfInterest:(id)a3 interaction:(unint64_t)a4 feedback:(id)a5 geoMapItem:(id)a6 handler:(id)a7
+- (void)userInteractionWithPredictedLocationOfInterest:(id)interest interaction:(unint64_t)interaction feedback:(id)feedback geoMapItem:(id)item handler:(id)handler
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  interestCopy = interest;
+  feedbackCopy = feedback;
+  itemCopy = item;
+  handlerCopy = handler;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __107__RTRoutineManager_userInteractionWithPredictedLocationOfInterest_interaction_feedback_geoMapItem_handler___block_invoke;
   v28[3] = &unk_1E80B3F10;
-  v29 = v16;
+  v29 = handlerCopy;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __107__RTRoutineManager_userInteractionWithPredictedLocationOfInterest_interaction_feedback_geoMapItem_handler___block_invoke_2;
   v21[3] = &unk_1E80B4660;
-  v22 = v13;
-  v23 = v14;
-  v24 = v15;
-  v25 = self;
+  v22 = interestCopy;
+  v23 = feedbackCopy;
+  v24 = itemCopy;
+  selfCopy = self;
   v26 = v29;
-  v27 = a4;
+  interactionCopy = interaction;
   v17 = v29;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
+  v18 = itemCopy;
+  v19 = feedbackCopy;
+  v20 = interestCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v28 taskBlock:v21];
 }
 
@@ -9156,15 +9156,15 @@ uint64_t __107__RTRoutineManager_userInteractionWithPredictedLocationOfInterest_
   return result;
 }
 
-- (void)startMonitoringForPeopleDiscovery:(id)a3 handler:(id)a4
+- (void)startMonitoringForPeopleDiscovery:(id)discovery handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  discoveryCopy = discovery;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (discoveryCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -9198,18 +9198,18 @@ LABEL_7:
 
 LABEL_10:
   [(RTRoutineManager *)self setPeopleDiscoveryErrorHandler:v9];
-  v12 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __62__RTRoutineManager_startMonitoringForPeopleDiscovery_handler___block_invoke;
   v16[3] = &unk_1E80B4370;
   v16[4] = self;
-  v17 = v7;
+  v17 = discoveryCopy;
   v18 = v9;
   v19 = a2;
   v13 = v9;
-  v14 = v7;
-  dispatch_async(v12, v16);
+  v14 = discoveryCopy;
+  dispatch_async(queue, v16);
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -9321,11 +9321,11 @@ uint64_t __62__RTRoutineManager_startMonitoringForPeopleDiscovery_handler___bloc
   return result;
 }
 
-- (void)stopMonitoringForPeopleDiscoveryWithHandler:(id)a3
+- (void)stopMonitoringForPeopleDiscoveryWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -9338,16 +9338,16 @@ uint64_t __62__RTRoutineManager_startMonitoringForPeopleDiscovery_handler___bloc
     }
   }
 
-  v7 = [(RTRoutineManager *)self queue];
+  queue = [(RTRoutineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__RTRoutineManager_stopMonitoringForPeopleDiscoveryWithHandler___block_invoke;
   block[3] = &unk_1E80B4168;
   block[4] = self;
-  v11 = v5;
+  v11 = handlerCopy;
   v12 = a2;
-  v8 = v5;
-  dispatch_async(v7, block);
+  v8 = handlerCopy;
+  dispatch_async(queue, block);
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -9464,19 +9464,19 @@ uint64_t __64__RTRoutineManager_stopMonitoringForPeopleDiscoveryWithHandler___bl
   return result;
 }
 
-- (void)onDensityUpdate:(id)a3 error:(id)a4
+- (void)onDensityUpdate:(id)update error:(id)error
 {
-  if (a3)
+  if (update)
   {
-    [(RTRoutineManagerRegistrantPeopleDiscovery *)self->_peopleDiscoveryRegistrant onDensityUpdate:a3 error:a4];
+    [(RTRoutineManagerRegistrantPeopleDiscovery *)self->_peopleDiscoveryRegistrant onDensityUpdate:update error:error];
   }
 }
 
-- (void)fetchCurrentPeopleDensity:(id)a3
+- (void)fetchCurrentPeopleDensity:(id)density
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  densityCopy = density;
+  if (!densityCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -9493,7 +9493,7 @@ uint64_t __64__RTRoutineManager_stopMonitoringForPeopleDiscoveryWithHandler___bl
   v11[1] = 3221225472;
   v11[2] = __46__RTRoutineManager_fetchCurrentPeopleDensity___block_invoke;
   v11[3] = &unk_1E80B3F10;
-  v12 = v5;
+  v12 = densityCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__RTRoutineManager_fetchCurrentPeopleDensity___block_invoke_2;
@@ -9536,27 +9536,27 @@ void __46__RTRoutineManager_fetchCurrentPeopleDensity___block_invoke_3(uint64_t 
   dispatch_async(v7, block);
 }
 
-- (void)fetchProximityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5
+- (void)fetchProximityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __81__RTRoutineManager_fetchProximityHistoryFromStartDate_endDate_completionHandler___block_invoke;
   v20[3] = &unk_1E80B3F10;
-  v21 = v11;
+  v21 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81__RTRoutineManager_fetchProximityHistoryFromStartDate_endDate_completionHandler___block_invoke_557;
   v15[3] = &unk_1E80B3F38;
-  v16 = v9;
-  v17 = v10;
-  v18 = self;
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  selfCopy = self;
   v19 = v21;
   v12 = v21;
-  v13 = v10;
-  v14 = v9;
+  v13 = endDateCopy;
+  v14 = dateCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v20 taskBlock:v15];
 }
 
@@ -9628,24 +9628,24 @@ uint64_t __81__RTRoutineManager_fetchProximityHistoryFromStartDate_endDate_compl
   return result;
 }
 
-- (void)fetchProximityHistoryFromEventIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchProximityHistoryFromEventIDs:(id)ds completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__RTRoutineManager_fetchProximityHistoryFromEventIDs_completionHandler___block_invoke;
   v15[3] = &unk_1E80B3F10;
-  v16 = v8;
+  v16 = handlerCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__RTRoutineManager_fetchProximityHistoryFromEventIDs_completionHandler___block_invoke_558;
   v11[3] = &unk_1E80B3F60;
-  v12 = v7;
-  v13 = self;
+  v12 = dsCopy;
+  selfCopy = self;
   v14 = v16;
   v9 = v16;
-  v10 = v7;
+  v10 = dsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v15 taskBlock:v11];
 }
 
@@ -9716,24 +9716,24 @@ uint64_t __72__RTRoutineManager_fetchProximityHistoryFromEventIDs_completionHand
   return result;
 }
 
-- (void)fetchPeopleCountEventsHistory:(id)a3 completionHandler:(id)a4
+- (void)fetchPeopleCountEventsHistory:(id)history completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  historyCopy = history;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __68__RTRoutineManager_fetchPeopleCountEventsHistory_completionHandler___block_invoke;
   v15[3] = &unk_1E80B3F10;
-  v16 = v8;
+  v16 = handlerCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__RTRoutineManager_fetchPeopleCountEventsHistory_completionHandler___block_invoke_559;
   v11[3] = &unk_1E80B3F60;
-  v12 = v7;
-  v13 = self;
+  v12 = historyCopy;
+  selfCopy = self;
   v14 = v16;
   v9 = v16;
-  v10 = v7;
+  v10 = historyCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v15 taskBlock:v11];
 }
 
@@ -9804,27 +9804,27 @@ uint64_t __68__RTRoutineManager_fetchPeopleCountEventsHistory_completionHandler_
   return result;
 }
 
-- (void)fetchPeopleDensityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5
+- (void)fetchPeopleDensityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __85__RTRoutineManager_fetchPeopleDensityHistoryFromStartDate_endDate_completionHandler___block_invoke;
   v20[3] = &unk_1E80B3F10;
-  v21 = v11;
+  v21 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__RTRoutineManager_fetchPeopleDensityHistoryFromStartDate_endDate_completionHandler___block_invoke_560;
   v15[3] = &unk_1E80B3F38;
-  v16 = v9;
-  v17 = v10;
-  v18 = self;
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  selfCopy = self;
   v19 = v21;
   v12 = v21;
-  v13 = v10;
-  v14 = v9;
+  v13 = endDateCopy;
+  v14 = dateCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v20 taskBlock:v15];
 }
 
@@ -9896,24 +9896,24 @@ uint64_t __85__RTRoutineManager_fetchPeopleDensityHistoryFromStartDate_endDate_c
   return result;
 }
 
-- (void)fetchContactScoresFromContactIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchContactScoresFromContactIDs:(id)ds completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __71__RTRoutineManager_fetchContactScoresFromContactIDs_completionHandler___block_invoke;
   v15[3] = &unk_1E80B3F10;
-  v16 = v8;
+  v16 = handlerCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__RTRoutineManager_fetchContactScoresFromContactIDs_completionHandler___block_invoke_561;
   v11[3] = &unk_1E80B3F60;
-  v12 = v7;
-  v13 = self;
+  v12 = dsCopy;
+  selfCopy = self;
   v14 = v16;
   v9 = v16;
-  v10 = v7;
+  v10 = dsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v15 taskBlock:v11];
 }
 
@@ -9984,10 +9984,10 @@ uint64_t __71__RTRoutineManager_fetchContactScoresFromContactIDs_completionHandl
   return result;
 }
 
-- (void)addElevations:(id)a3 handler:(id)a4
+- (void)addElevations:(id)elevations handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  elevationsCopy = elevations;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityElevation);
@@ -10002,16 +10002,16 @@ uint64_t __71__RTRoutineManager_fetchContactScoresFromContactIDs_completionHandl
   v16[1] = 3221225472;
   v16[2] = __42__RTRoutineManager_addElevations_handler___block_invoke;
   v16[3] = &unk_1E80B3F10;
-  v17 = v8;
+  v17 = handlerCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __42__RTRoutineManager_addElevations_handler___block_invoke_562;
   v12[3] = &unk_1E80B3F60;
-  v13 = v7;
-  v14 = self;
+  v13 = elevationsCopy;
+  selfCopy = self;
   v15 = v17;
   v10 = v17;
-  v11 = v7;
+  v11 = elevationsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v16 taskBlock:v12];
 }
 
@@ -10063,10 +10063,10 @@ void __42__RTRoutineManager_addElevations_handler___block_invoke_2(uint64_t a1, 
   dispatch_async(v4, v7);
 }
 
-- (void)fetchElevationsWithOptions:(id)a3 reply:(id)a4
+- (void)fetchElevationsWithOptions:(id)options reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityElevation);
@@ -10081,16 +10081,16 @@ void __42__RTRoutineManager_addElevations_handler___block_invoke_2(uint64_t a1, 
   v16[1] = 3221225472;
   v16[2] = __53__RTRoutineManager_fetchElevationsWithOptions_reply___block_invoke;
   v16[3] = &unk_1E80B3F10;
-  v17 = v8;
+  v17 = replyCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53__RTRoutineManager_fetchElevationsWithOptions_reply___block_invoke_563;
   v12[3] = &unk_1E80B3F60;
-  v13 = v7;
-  v14 = self;
+  v13 = optionsCopy;
+  selfCopy = self;
   v15 = v17;
   v10 = v17;
-  v11 = v7;
+  v11 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v16 taskBlock:v12];
 }
 
@@ -10162,11 +10162,11 @@ uint64_t __53__RTRoutineManager_fetchElevationsWithOptions_reply___block_invoke_
   return (*(a1[6] + 16))();
 }
 
-- (void)enumerateElevationsWithOptions:(id)a3 reply:(id)a4
+- (void)enumerateElevationsWithOptions:(id)options reply:(id)reply
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityElevation);
@@ -10177,17 +10177,17 @@ uint64_t __53__RTRoutineManager_fetchElevationsWithOptions_reply___block_invoke_
     }
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    v9 = [(RTRoutineManager *)self queue];
+    queue = [(RTRoutineManager *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __57__RTRoutineManager_enumerateElevationsWithOptions_reply___block_invoke;
     block[3] = &unk_1E80B4460;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    dispatch_sync(v9, block);
+    v16 = optionsCopy;
+    v17 = replyCopy;
+    dispatch_sync(queue, block);
   }
 
   else
@@ -10218,12 +10218,12 @@ uint64_t __53__RTRoutineManager_fetchElevationsWithOptions_reply___block_invoke_
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_enumerateElevationsWithOptions:(id)a3 reply:(id)a4
+- (void)_enumerateElevationsWithOptions:(id)options reply:(id)reply
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -10240,15 +10240,15 @@ uint64_t __53__RTRoutineManager_fetchElevationsWithOptions_reply___block_invoke_
   v16[1] = 3221225472;
   v16[2] = __58__RTRoutineManager__enumerateElevationsWithOptions_reply___block_invoke;
   v16[3] = &unk_1E80B3F10;
-  v17 = v8;
+  v17 = replyCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__RTRoutineManager__enumerateElevationsWithOptions_reply___block_invoke_564;
   v13[3] = &unk_1E80B4050;
-  v14 = v7;
+  v14 = optionsCopy;
   v15 = v17;
   v10 = v17;
-  v11 = v7;
+  v11 = optionsCopy;
   [(RTRoutineManager *)self _launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v16 taskBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -10375,10 +10375,10 @@ void __58__RTRoutineManager__enumerateElevationsWithOptions_reply___block_invoke
   }
 }
 
-- (void)fetchBackgroundInertialOdometrySamplesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchBackgroundInertialOdometrySamplesWithOptions:(id)options handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityBackgroundInertialOdometry);
@@ -10393,16 +10393,16 @@ void __58__RTRoutineManager__enumerateElevationsWithOptions_reply___block_invoke
   v16[1] = 3221225472;
   v16[2] = __78__RTRoutineManager_fetchBackgroundInertialOdometrySamplesWithOptions_handler___block_invoke;
   v16[3] = &unk_1E80B3F10;
-  v17 = v8;
+  v17 = handlerCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __78__RTRoutineManager_fetchBackgroundInertialOdometrySamplesWithOptions_handler___block_invoke_568;
   v12[3] = &unk_1E80B3F60;
-  v13 = v7;
-  v14 = self;
+  v13 = optionsCopy;
+  selfCopy = self;
   v15 = v17;
   v10 = v17;
-  v11 = v7;
+  v11 = optionsCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v16 taskBlock:v12];
 }
 
@@ -10475,18 +10475,18 @@ uint64_t __78__RTRoutineManager_fetchBackgroundInertialOdometrySamplesWithOption
   return (*(a1[6] + 16))();
 }
 
-- (void)addBackgroundInertialOdometrySamples:(id)a3 handler:(id)a4
+- (void)addBackgroundInertialOdometrySamples:(id)samples handler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  samplesCopy = samples;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityBackgroundInertialOdometry);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 67174657;
-      v20 = [v7 count];
+      v20 = [samplesCopy count];
       _os_log_debug_impl(&dword_1BF1C4000, v9, OS_LOG_TYPE_DEBUG, "RTRoutineManager: invoked addBackgroundInertialOdometrySamples:handler: with %{private}d samples.", buf, 8u);
     }
   }
@@ -10495,16 +10495,16 @@ uint64_t __78__RTRoutineManager_fetchBackgroundInertialOdometrySamplesWithOption
   v17[1] = 3221225472;
   v17[2] = __65__RTRoutineManager_addBackgroundInertialOdometrySamples_handler___block_invoke;
   v17[3] = &unk_1E80B3F10;
-  v18 = v8;
+  v18 = handlerCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__RTRoutineManager_addBackgroundInertialOdometrySamples_handler___block_invoke_569;
   v13[3] = &unk_1E80B3F60;
-  v14 = v7;
-  v15 = self;
+  v14 = samplesCopy;
+  selfCopy = self;
   v16 = v18;
   v10 = v18;
-  v11 = v7;
+  v11 = samplesCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v17 taskBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -10575,12 +10575,12 @@ uint64_t __65__RTRoutineManager_addBackgroundInertialOdometrySamples_handler___b
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)submitUserCurationForDate:(id)a3 newLabel:(id)a4 handler:(id)a5
+- (void)submitUserCurationForDate:(id)date newLabel:(id)label handler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  labelCopy = label;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityUserCuration);
@@ -10603,19 +10603,19 @@ uint64_t __65__RTRoutineManager_addBackgroundInertialOdometrySamples_handler___b
   v26[3] = &unk_1E80B3EE8;
   v26[4] = self;
   v28 = a2;
-  v27 = v11;
+  v27 = handlerCopy;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __63__RTRoutineManager_submitUserCurationForDate_newLabel_handler___block_invoke_570;
   v20[3] = &unk_1E80B4320;
-  v21 = v9;
-  v22 = v10;
+  v21 = dateCopy;
+  v22 = labelCopy;
   v24 = v27;
   v25 = a2;
-  v23 = self;
+  selfCopy = self;
   v16 = v27;
-  v17 = v10;
-  v18 = v9;
+  v17 = labelCopy;
+  v18 = dateCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v26 taskBlock:v20];
 
   v19 = *MEMORY[0x1E69E9840];
@@ -10710,12 +10710,12 @@ uint64_t __63__RTRoutineManager_submitUserCurationForDate_newLabel_handler___blo
   return result;
 }
 
-- (void)submitUserCurationForVisitDateRange:(id)a3 newLabel:(id)a4 handler:(id)a5
+- (void)submitUserCurationForVisitDateRange:(id)range newLabel:(id)label handler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  rangeCopy = range;
+  labelCopy = label;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityUserCuration);
@@ -10738,19 +10738,19 @@ uint64_t __63__RTRoutineManager_submitUserCurationForDate_newLabel_handler___blo
   v26[3] = &unk_1E80B3EE8;
   v26[4] = self;
   v28 = a2;
-  v27 = v11;
+  v27 = handlerCopy;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __73__RTRoutineManager_submitUserCurationForVisitDateRange_newLabel_handler___block_invoke_571;
   v20[3] = &unk_1E80B4320;
-  v21 = v9;
-  v22 = v10;
+  v21 = rangeCopy;
+  v22 = labelCopy;
   v24 = v27;
   v25 = a2;
-  v23 = self;
+  selfCopy = self;
   v16 = v27;
-  v17 = v10;
-  v18 = v9;
+  v17 = labelCopy;
+  v18 = rangeCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v26 taskBlock:v20];
 
   v19 = *MEMORY[0x1E69E9840];
@@ -10846,13 +10846,13 @@ uint64_t __73__RTRoutineManager_submitUserCurationForVisitDateRange_newLabel_han
   return result;
 }
 
-- (void)correctLabelForCurrentPlace:(id)a3 date:(id)a4 newLabel:(id)a5 handler:(id)a6
+- (void)correctLabelForCurrentPlace:(id)place date:(id)date newLabel:(id)label handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  placeCopy = place;
+  dateCopy = date;
+  labelCopy = label;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityUserCuration);
@@ -10869,19 +10869,19 @@ uint64_t __73__RTRoutineManager_submitUserCurationForVisitDateRange_newLabel_han
     }
   }
 
-  [(RTRoutineManager *)self correctLabelForVisitWithIdentifier:0 entryDate:v12 originalLabel:v11 newLabel:v13 handler:v14];
+  [(RTRoutineManager *)self correctLabelForVisitWithIdentifier:0 entryDate:dateCopy originalLabel:placeCopy newLabel:labelCopy handler:handlerCopy];
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)correctLabelForVisitWithIdentifier:(id)a3 entryDate:(id)a4 originalLabel:(id)a5 newLabel:(id)a6 handler:(id)a7
+- (void)correctLabelForVisitWithIdentifier:(id)identifier entryDate:(id)date originalLabel:(id)label newLabel:(id)newLabel handler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  dateCopy = date;
+  labelCopy = label;
+  newLabelCopy = newLabel;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityUserCuration);
@@ -10904,23 +10904,23 @@ uint64_t __73__RTRoutineManager_submitUserCurationForVisitDateRange_newLabel_han
   v36[3] = &unk_1E80B3EE8;
   v36[4] = self;
   v38 = a2;
-  v37 = v17;
+  v37 = handlerCopy;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __96__RTRoutineManager_correctLabelForVisitWithIdentifier_entryDate_originalLabel_newLabel_handler___block_invoke_572;
   v28[3] = &unk_1E80B47E8;
-  v29 = v13;
-  v30 = v14;
-  v31 = v15;
-  v32 = v16;
+  v29 = identifierCopy;
+  v30 = dateCopy;
+  v31 = labelCopy;
+  v32 = newLabelCopy;
   v34 = v37;
   v35 = a2;
-  v33 = self;
+  selfCopy = self;
   v22 = v37;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
-  v26 = v13;
+  v23 = newLabelCopy;
+  v24 = labelCopy;
+  v25 = dateCopy;
+  v26 = identifierCopy;
   [(RTRoutineManager *)self launchTaskWithSelector:a2 remainingAttempts:3 proxyErrorHandler:v36 taskBlock:v28];
 
   v27 = *MEMORY[0x1E69E9840];
@@ -11018,23 +11018,23 @@ uint64_t __96__RTRoutineManager_correctLabelForVisitWithIdentifier_entryDate_ori
   return result;
 }
 
-- (void)fetchCurrentPredictedLocationsOfInterestLookingBack:(double)a3 lookingAhead:(double)a4 handler:(id)a5
+- (void)fetchCurrentPredictedLocationsOfInterestLookingBack:(double)back lookingAhead:(double)ahead handler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  if (v9)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = [(RTRoutineManager *)self queue];
+    queue = [(RTRoutineManager *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __102__RTRoutineManager_Skyline__fetchCurrentPredictedLocationsOfInterestLookingBack_lookingAhead_handler___block_invoke;
     block[3] = &unk_1E80B4DC0;
     block[4] = self;
     v15 = a2;
-    v14 = v9;
-    v16 = a3;
-    v17 = a4;
-    dispatch_async(v10, block);
+    v14 = handlerCopy;
+    backCopy = back;
+    aheadCopy = ahead;
+    dispatch_async(queue, block);
   }
 
   else
@@ -11073,23 +11073,23 @@ void __102__RTRoutineManager_Skyline__fetchCurrentPredictedLocationsOfInterestLo
   [v4 fetchCurrentPredictedLocationsOfInterestLookingBack:v7 lookingAhead:v5 reply:v6];
 }
 
-- (void)performBluePOIQueryLookingBack:(double)a3 lookingAhead:(double)a4 handler:(id)a5
+- (void)performBluePOIQueryLookingBack:(double)back lookingAhead:(double)ahead handler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  if (v9)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = [(RTRoutineManager *)self queue];
+    queue = [(RTRoutineManager *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __81__RTRoutineManager_Skyline__performBluePOIQueryLookingBack_lookingAhead_handler___block_invoke;
     block[3] = &unk_1E80B4DC0;
     block[4] = self;
     v15 = a2;
-    v14 = v9;
-    v16 = a3;
-    v17 = a4;
-    dispatch_async(v10, block);
+    v14 = handlerCopy;
+    backCopy = back;
+    aheadCopy = ahead;
+    dispatch_async(queue, block);
   }
 
   else

@@ -1,17 +1,17 @@
 @interface EKUIAvailabilityParticipantList
-+ (double)listWidthForCompact:(BOOL)a3 orientation:(int64_t)a4;
-- (EKUIAvailabilityParticipantList)initWithParticipants:(id)a3 viewController:(id)a4;
++ (double)listWidthForCompact:(BOOL)compact orientation:(int64_t)orientation;
+- (EKUIAvailabilityParticipantList)initWithParticipants:(id)participants viewController:(id)controller;
 - (void)layoutSubviews;
-- (void)setBusyParticipants:(id)a3;
+- (void)setBusyParticipants:(id)participants;
 @end
 
 @implementation EKUIAvailabilityParticipantList
 
-- (EKUIAvailabilityParticipantList)initWithParticipants:(id)a3 viewController:(id)a4
+- (EKUIAvailabilityParticipantList)initWithParticipants:(id)participants viewController:(id)controller
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  participantsCopy = participants;
+  controllerCopy = controller;
   v24.receiver = self;
   v24.super_class = EKUIAvailabilityParticipantList;
   v8 = [(EKUIAvailabilityParticipantList *)&v24 init];
@@ -25,7 +25,7 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = v6;
+    v11 = participantsCopy;
     v12 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v12)
     {
@@ -43,7 +43,7 @@
 
           v16 = *(*(&v20 + 1) + 8 * v15);
           v17 = [EKUIParticipantContainer alloc];
-          v18 = [(EKUIParticipantContainer *)v17 initWithParticipant:v16 viewController:v7, v20];
+          v18 = [(EKUIParticipantContainer *)v17 initWithParticipant:v16 viewController:controllerCopy, v20];
           [(NSMutableArray *)v8->_containers addObject:v18];
           [(EKUIAvailabilityParticipantList *)v8 addSubview:v18];
           [(EKUIAvailabilityParticipantList *)v8 setDirectionalLockEnabled:1];
@@ -63,10 +63,10 @@
   return v8;
 }
 
-- (void)setBusyParticipants:(id)a3
+- (void)setBusyParticipants:(id)participants
 {
   v31 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  participantsCopy = participants;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -90,7 +90,7 @@
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v6 = v18;
+        v6 = participantsCopy;
         v7 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v7)
         {
@@ -106,11 +106,11 @@
               }
 
               v10 = *(*(&v21 + 1) + 8 * j);
-              v11 = [v5 participant];
-              v12 = [v11 UUID];
-              v13 = [v10 participant];
-              v14 = [v13 UUID];
-              v15 = [v12 isEqualToString:v14];
+              participant = [v5 participant];
+              uUID = [participant UUID];
+              participant2 = [v10 participant];
+              uUID2 = [participant2 UUID];
+              v15 = [uUID isEqualToString:uUID2];
 
               if (v15)
               {
@@ -165,15 +165,15 @@ void __49__EKUIAvailabilityParticipantList_layoutSubviews__block_invoke(uint64_t
   [v5 setFrame:{0.0, v4}];
 }
 
-+ (double)listWidthForCompact:(BOOL)a3 orientation:(int64_t)a4
++ (double)listWidthForCompact:(BOOL)compact orientation:(int64_t)orientation
 {
   result = 168.0;
-  if ((a4 - 3) < 2)
+  if ((orientation - 3) < 2)
   {
     result = 336.0;
   }
 
-  if (!a3)
+  if (!compact)
   {
     return 240.0;
   }

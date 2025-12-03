@@ -1,31 +1,31 @@
 @interface VTUIProximityView
-- (BOOL)_shouldUsePhoneLandscapeLayoutForSize:(CGSize)a3;
-- (void)updateContainerConstraintsForOrientationChangeToSize:(CGSize)a3;
+- (BOOL)_shouldUsePhoneLandscapeLayoutForSize:(CGSize)size;
+- (void)updateContainerConstraintsForOrientationChangeToSize:(CGSize)size;
 @end
 
 @implementation VTUIProximityView
 
-- (BOOL)_shouldUsePhoneLandscapeLayoutForSize:(CGSize)a3
+- (BOOL)_shouldUsePhoneLandscapeLayoutForSize:(CGSize)size
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 windows];
-  v5 = [v4 firstObject];
-  v6 = [v5 windowScene];
-  v7 = [v6 interfaceOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  windows = [mEMORY[0x277D75128] windows];
+  firstObject = [windows firstObject];
+  windowScene = [firstObject windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
   v8 = +[MGWrapper sharedMGWrapper];
-  LOBYTE(v4) = [v8 isDeviceIPad];
+  LOBYTE(windows) = [v8 isDeviceIPad];
 
-  return ((v7 - 3) < 2) & (v4 ^ 1);
+  return ((interfaceOrientation - 3) < 2) & (windows ^ 1);
 }
 
-- (void)updateContainerConstraintsForOrientationChangeToSize:(CGSize)a3
+- (void)updateContainerConstraintsForOrientationChangeToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = MEMORY[0x277CCAAD0];
-  v7 = [(VTUIProximityView *)self viewConstraints];
-  [v6 deactivateConstraints:v7];
+  viewConstraints = [(VTUIProximityView *)self viewConstraints];
+  [v6 deactivateConstraints:viewConstraints];
 
   [(VTUIProximityView *)self _setupConstraintsToSize:width, height];
 

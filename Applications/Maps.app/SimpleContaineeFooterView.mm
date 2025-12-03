@@ -1,21 +1,21 @@
 @interface SimpleContaineeFooterView
-- (SimpleContaineeFooterView)initWithReuseIdentifier:(id)a3;
-- (void)setText:(id)a3;
+- (SimpleContaineeFooterView)initWithReuseIdentifier:(id)identifier;
+- (void)setText:(id)text;
 @end
 
 @implementation SimpleContaineeFooterView
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   [(UILabel *)self->_label setText:v4];
 }
 
-- (SimpleContaineeFooterView)initWithReuseIdentifier:(id)a3
+- (SimpleContaineeFooterView)initWithReuseIdentifier:(id)identifier
 {
   v21.receiver = self;
   v21.super_class = SimpleContaineeFooterView;
-  v3 = [(SimpleContaineeFooterView *)&v21 initWithReuseIdentifier:a3];
+  v3 = [(SimpleContaineeFooterView *)&v21 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -35,8 +35,8 @@
 
     LODWORD(v9) = 1148846080;
     [(UILabel *)v3->_label setContentCompressionResistancePriority:1 forAxis:v9];
-    v10 = [(SimpleContaineeFooterView *)v3 contentView];
-    [v10 addSubview:v3->_label];
+    contentView = [(SimpleContaineeFooterView *)v3 contentView];
+    [contentView addSubview:v3->_label];
 
     v11 = +[UIBackgroundConfiguration clearConfiguration];
     [(SimpleContaineeFooterView *)v3 setBackgroundConfiguration:v11];
@@ -63,11 +63,11 @@
     }
 
     v15 = v3->_label;
-    v16 = [(SimpleContaineeFooterView *)v3 contentView];
+    contentView2 = [(SimpleContaineeFooterView *)v3 contentView];
     LODWORD(v17) = 1148846080;
-    v18 = [(UILabel *)v15 _maps_constraintsEqualToEdgesOfView:v16 insets:v13 priority:v14, 0.0, v14, v17];
-    v19 = [v18 allConstraints];
-    [NSLayoutConstraint activateConstraints:v19];
+    v18 = [(UILabel *)v15 _maps_constraintsEqualToEdgesOfView:contentView2 insets:v13 priority:v14, 0.0, v14, v17];
+    allConstraints = [v18 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
   }
 
   return v3;

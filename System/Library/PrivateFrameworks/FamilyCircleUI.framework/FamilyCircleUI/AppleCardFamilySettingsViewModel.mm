@@ -10,18 +10,18 @@
 {
   sub_21BB3A2A4(0, &qword_280BD6908, 0x277CCA9A0);
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v4 = self;
-  v5 = [ObjCClassFromMetadata defaultCenter];
-  [v5 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [ObjCClassFromMetadata defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for AppleCardFamilySettingsViewModel();
   [(AppleCardFamilySettingsViewModel *)&v6 dealloc];
 }
 
 - (void)serviceAccountDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_21BC6A178();
 }
 

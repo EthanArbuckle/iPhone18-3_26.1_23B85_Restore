@@ -1,12 +1,12 @@
 @interface TISmartPunctuationOptions
-+ (id)smartPunctuationOptionsForLocale:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (TISmartPunctuationOptions)initWithCoder:(id)a3;
-- (TISmartPunctuationOptions)initWithLocale:(id)a3;
++ (id)smartPunctuationOptionsForLocale:(id)locale;
+- (BOOL)isEqual:(id)equal;
+- (TISmartPunctuationOptions)initWithCoder:(id)coder;
+- (TISmartPunctuationOptions)initWithLocale:(id)locale;
 - (id)description;
 - (unint64_t)hash;
 - (void)_generateDataFromLocale;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TISmartPunctuationOptions
@@ -95,13 +95,13 @@
   v13 = ;
   [(TISmartPunctuationOptions *)self setRightDoubleQuote:v13];
 
-  v14 = [(TISmartPunctuationOptions *)self leftSingleQuote];
-  v15 = [(TISmartPunctuationOptions *)self rightSingleQuote];
-  if ([v14 isEqualToString:v15])
+  leftSingleQuote = [(TISmartPunctuationOptions *)self leftSingleQuote];
+  rightSingleQuote = [(TISmartPunctuationOptions *)self rightSingleQuote];
+  if ([leftSingleQuote isEqualToString:rightSingleQuote])
   {
-    v16 = [(TISmartPunctuationOptions *)self leftDoubleQuote];
-    v17 = [(TISmartPunctuationOptions *)self rightDoubleQuote];
-    -[TISmartPunctuationOptions setUsesDirectionalQuotes:](self, "setUsesDirectionalQuotes:", [v16 isEqualToString:v17] ^ 1);
+    leftDoubleQuote = [(TISmartPunctuationOptions *)self leftDoubleQuote];
+    rightDoubleQuote = [(TISmartPunctuationOptions *)self rightDoubleQuote];
+    -[TISmartPunctuationOptions setUsesDirectionalQuotes:](self, "setUsesDirectionalQuotes:", [leftDoubleQuote isEqualToString:rightDoubleQuote] ^ 1);
   }
 
   else
@@ -110,15 +110,15 @@
   }
 }
 
-- (TISmartPunctuationOptions)initWithCoder:(id)a3
+- (TISmartPunctuationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = TISmartPunctuationOptions;
   v5 = [(TISmartPunctuationOptions *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LocaleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LocaleIdentifier"];
     if (v6)
     {
       v7 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v6];
@@ -126,27 +126,27 @@
       v5->_locale = v7;
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LeftSingleQuote"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LeftSingleQuote"];
     v10 = [v9 copy];
     leftSingleQuote = v5->_leftSingleQuote;
     v5->_leftSingleQuote = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RightSingleQuote"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RightSingleQuote"];
     v13 = [v12 copy];
     rightSingleQuote = v5->_rightSingleQuote;
     v5->_rightSingleQuote = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Apostrophe"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Apostrophe"];
     v16 = [v15 copy];
     apostrophe = v5->_apostrophe;
     v5->_apostrophe = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LeftDoubleQuote"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LeftDoubleQuote"];
     v19 = [v18 copy];
     leftDoubleQuote = v5->_leftDoubleQuote;
     v5->_leftDoubleQuote = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LeftDoubleQuote"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LeftDoubleQuote"];
     v22 = [v21 copy];
     rightDoubleQuote = v5->_rightDoubleQuote;
     v5->_rightDoubleQuote = v22;
@@ -155,32 +155,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(TISmartPunctuationOptions *)self locale];
+  coderCopy = coder;
+  locale = [(TISmartPunctuationOptions *)self locale];
 
-  if (v4)
+  if (locale)
   {
-    v5 = [(TISmartPunctuationOptions *)self locale];
-    v6 = [v5 localeIdentifier];
-    [v12 encodeObject:v6 forKey:@"LocaleIdentifier"];
+    locale2 = [(TISmartPunctuationOptions *)self locale];
+    localeIdentifier = [locale2 localeIdentifier];
+    [coderCopy encodeObject:localeIdentifier forKey:@"LocaleIdentifier"];
   }
 
-  v7 = [(TISmartPunctuationOptions *)self leftSingleQuote];
-  [v12 encodeObject:v7 forKey:@"LeftSingleQuote"];
+  leftSingleQuote = [(TISmartPunctuationOptions *)self leftSingleQuote];
+  [coderCopy encodeObject:leftSingleQuote forKey:@"LeftSingleQuote"];
 
-  v8 = [(TISmartPunctuationOptions *)self rightSingleQuote];
-  [v12 encodeObject:v8 forKey:@"RightSingleQuote"];
+  rightSingleQuote = [(TISmartPunctuationOptions *)self rightSingleQuote];
+  [coderCopy encodeObject:rightSingleQuote forKey:@"RightSingleQuote"];
 
-  v9 = [(TISmartPunctuationOptions *)self apostrophe];
-  [v12 encodeObject:v9 forKey:@"Apostrophe"];
+  apostrophe = [(TISmartPunctuationOptions *)self apostrophe];
+  [coderCopy encodeObject:apostrophe forKey:@"Apostrophe"];
 
-  v10 = [(TISmartPunctuationOptions *)self leftDoubleQuote];
-  [v12 encodeObject:v10 forKey:@"LeftDoubleQuote"];
+  leftDoubleQuote = [(TISmartPunctuationOptions *)self leftDoubleQuote];
+  [coderCopy encodeObject:leftDoubleQuote forKey:@"LeftDoubleQuote"];
 
-  v11 = [(TISmartPunctuationOptions *)self rightDoubleQuote];
-  [v12 encodeObject:v11 forKey:@"LeftDoubleQuote"];
+  rightDoubleQuote = [(TISmartPunctuationOptions *)self rightDoubleQuote];
+  [coderCopy encodeObject:rightDoubleQuote forKey:@"LeftDoubleQuote"];
 }
 
 - (id)description
@@ -189,12 +189,12 @@
   v12.receiver = self;
   v12.super_class = TISmartPunctuationOptions;
   v4 = [(TISmartPunctuationOptions *)&v12 description];
-  v5 = [(TISmartPunctuationOptions *)self leftSingleQuote];
-  v6 = [(TISmartPunctuationOptions *)self rightSingleQuote];
-  v7 = [(TISmartPunctuationOptions *)self apostrophe];
-  v8 = [(TISmartPunctuationOptions *)self leftDoubleQuote];
-  v9 = [(TISmartPunctuationOptions *)self rightDoubleQuote];
-  v10 = [v3 stringWithFormat:@"%@{%@xy%@/x%@y/%@xy%@}", v4, v5, v6, v7, v8, v9];
+  leftSingleQuote = [(TISmartPunctuationOptions *)self leftSingleQuote];
+  rightSingleQuote = [(TISmartPunctuationOptions *)self rightSingleQuote];
+  apostrophe = [(TISmartPunctuationOptions *)self apostrophe];
+  leftDoubleQuote = [(TISmartPunctuationOptions *)self leftDoubleQuote];
+  rightDoubleQuote = [(TISmartPunctuationOptions *)self rightDoubleQuote];
+  v10 = [v3 stringWithFormat:@"%@{%@xy%@/x%@y/%@xy%@}", v4, leftSingleQuote, rightSingleQuote, apostrophe, leftDoubleQuote, rightDoubleQuote];
 
   return v10;
 }
@@ -208,10 +208,10 @@
   return v6 ^ [(NSString *)self->_rightDoubleQuote hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v20 = 1;
   }
@@ -219,12 +219,12 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = MEMORY[0x1E696AEC0], -[TISmartPunctuationOptions leftSingleQuote](self, "leftSingleQuote"), v6 = objc_claimAutoreleasedReturnValue(), -[TISmartPunctuationOptions leftSingleQuote](v4, "leftSingleQuote"), v7 = objc_claimAutoreleasedReturnValue(), LODWORD(v5) = [v5 _string:v6 matchesString:v7], v7, v6, v5) && (v8 = MEMORY[0x1E696AEC0], -[TISmartPunctuationOptions rightSingleQuote](self, "rightSingleQuote"), v9 = objc_claimAutoreleasedReturnValue(), -[TISmartPunctuationOptions rightSingleQuote](v4, "rightSingleQuote"), v10 = objc_claimAutoreleasedReturnValue(), LODWORD(v8) = objc_msgSend(v8, "_string:matchesString:", v9, v10), v10, v9, v8) && (v11 = MEMORY[0x1E696AEC0], -[TISmartPunctuationOptions apostrophe](self, "apostrophe"), v12 = objc_claimAutoreleasedReturnValue(), -[TISmartPunctuationOptions apostrophe](v4, "apostrophe"), v13 = objc_claimAutoreleasedReturnValue(), LODWORD(v11) = objc_msgSend(v11, "_string:matchesString:", v12, v13), v13, v12, v11) && (v14 = MEMORY[0x1E696AEC0], -[TISmartPunctuationOptions leftDoubleQuote](self, "leftDoubleQuote"), v15 = objc_claimAutoreleasedReturnValue(), -[TISmartPunctuationOptions leftDoubleQuote](v4, "leftDoubleQuote"), v16 = objc_claimAutoreleasedReturnValue(), LODWORD(v14) = objc_msgSend(v14, "_string:matchesString:", v15, v16), v16, v15, v14))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = MEMORY[0x1E696AEC0], -[TISmartPunctuationOptions leftSingleQuote](self, "leftSingleQuote"), v6 = objc_claimAutoreleasedReturnValue(), -[TISmartPunctuationOptions leftSingleQuote](equalCopy, "leftSingleQuote"), v7 = objc_claimAutoreleasedReturnValue(), LODWORD(v5) = [v5 _string:v6 matchesString:v7], v7, v6, v5) && (v8 = MEMORY[0x1E696AEC0], -[TISmartPunctuationOptions rightSingleQuote](self, "rightSingleQuote"), v9 = objc_claimAutoreleasedReturnValue(), -[TISmartPunctuationOptions rightSingleQuote](equalCopy, "rightSingleQuote"), v10 = objc_claimAutoreleasedReturnValue(), LODWORD(v8) = objc_msgSend(v8, "_string:matchesString:", v9, v10), v10, v9, v8) && (v11 = MEMORY[0x1E696AEC0], -[TISmartPunctuationOptions apostrophe](self, "apostrophe"), v12 = objc_claimAutoreleasedReturnValue(), -[TISmartPunctuationOptions apostrophe](equalCopy, "apostrophe"), v13 = objc_claimAutoreleasedReturnValue(), LODWORD(v11) = objc_msgSend(v11, "_string:matchesString:", v12, v13), v13, v12, v11) && (v14 = MEMORY[0x1E696AEC0], -[TISmartPunctuationOptions leftDoubleQuote](self, "leftDoubleQuote"), v15 = objc_claimAutoreleasedReturnValue(), -[TISmartPunctuationOptions leftDoubleQuote](equalCopy, "leftDoubleQuote"), v16 = objc_claimAutoreleasedReturnValue(), LODWORD(v14) = objc_msgSend(v14, "_string:matchesString:", v15, v16), v16, v15, v14))
     {
       v17 = MEMORY[0x1E696AEC0];
-      v18 = [(TISmartPunctuationOptions *)self rightDoubleQuote];
-      v19 = [(TISmartPunctuationOptions *)v4 rightDoubleQuote];
-      v20 = [v17 _string:v18 matchesString:v19];
+      rightDoubleQuote = [(TISmartPunctuationOptions *)self rightDoubleQuote];
+      rightDoubleQuote2 = [(TISmartPunctuationOptions *)equalCopy rightDoubleQuote];
+      v20 = [v17 _string:rightDoubleQuote matchesString:rightDoubleQuote2];
     }
 
     else
@@ -236,26 +236,26 @@
   return v20;
 }
 
-- (TISmartPunctuationOptions)initWithLocale:(id)a3
+- (TISmartPunctuationOptions)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v9.receiver = self;
   v9.super_class = TISmartPunctuationOptions;
   v6 = [(TISmartPunctuationOptions *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locale, a3);
+    objc_storeStrong(&v6->_locale, locale);
     [(TISmartPunctuationOptions *)v7 _generateDataFromLocale];
   }
 
   return v7;
 }
 
-+ (id)smartPunctuationOptionsForLocale:(id)a3
++ (id)smartPunctuationOptionsForLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithLocale:v4];
+  localeCopy = locale;
+  v5 = [[self alloc] initWithLocale:localeCopy];
 
   return v5;
 }

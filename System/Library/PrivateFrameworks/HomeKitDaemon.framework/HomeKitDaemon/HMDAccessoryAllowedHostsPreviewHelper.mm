@@ -1,8 +1,8 @@
 @interface HMDAccessoryAllowedHostsPreviewHelper
-+ (id)helperForHome:(id)a3;
++ (id)helperForHome:(id)home;
 - (id)attributeDescriptions;
-- (id)watchedAccessoryIdentifiersForFirewallRuleManager:(id)a3;
-- (void)fetchAllowedHostsForAccessory:(id)a3 completion:(id)a4;
+- (id)watchedAccessoryIdentifiersForFirewallRuleManager:(id)manager;
+- (void)fetchAllowedHostsForAccessory:(id)accessory completion:(id)completion;
 @end
 
 @implementation HMDAccessoryAllowedHostsPreviewHelper
@@ -21,12 +21,12 @@
   return v6;
 }
 
-- (id)watchedAccessoryIdentifiersForFirewallRuleManager:(id)a3
+- (id)watchedAccessoryIdentifiersForFirewallRuleManager:(id)manager
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   WeakRetained = objc_loadWeakRetained(&self->_home);
-  if (WeakRetained && self->_firewallRuleManager == v4)
+  if (WeakRetained && self->_firewallRuleManager == managerCopy)
   {
     os_unfair_lock_lock_with_options();
     v7 = self->_expires;
@@ -56,8 +56,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [WeakRetained accessories];
-    v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    accessories = [WeakRetained accessories];
+    v13 = [accessories countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v13)
     {
       v14 = *v21;
@@ -67,21 +67,21 @@
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(accessories);
           }
 
           v16 = *(*(&v20 + 1) + 8 * i);
           if ([v16 supportsNetworkProtection])
           {
-            v17 = [v16 metadataIdentifier];
-            if (v17)
+            metadataIdentifier = [v16 metadataIdentifier];
+            if (metadataIdentifier)
             {
-              [v11 addObject:v17];
+              [v11 addObject:metadataIdentifier];
             }
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v13 = [accessories countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v13);
@@ -100,19 +100,19 @@
   return v6;
 }
 
-- (void)fetchAllowedHostsForAccessory:(id)a3 completion:(id)a4
+- (void)fetchAllowedHostsForAccessory:(id)accessory completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 metadataIdentifier];
-  if (v8)
+  accessoryCopy = accessory;
+  completionCopy = completion;
+  metadataIdentifier = [accessoryCopy metadataIdentifier];
+  if (metadataIdentifier)
   {
-    v9 = [MEMORY[0x277D0F8D0] sharedPreferences];
-    v10 = [v9 preferenceForKey:@"engraveRulePreviewCacheTimeout"];
-    v11 = [v10 numberValue];
-    v12 = [v11 integerValue];
+    mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+    v10 = [mEMORY[0x277D0F8D0] preferenceForKey:@"engraveRulePreviewCacheTimeout"];
+    numberValue = [v10 numberValue];
+    integerValue = [numberValue integerValue];
 
-    v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v12];
+    v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:integerValue];
     os_unfair_lock_lock_with_options();
     if (!self->_expires || [v13 compare:?] == 1)
     {
@@ -125,16 +125,16 @@
     v16[1] = 3221225472;
     v16[2] = __82__HMDAccessoryAllowedHostsPreviewHelper_fetchAllowedHostsForAccessory_completion___block_invoke;
     v16[3] = &unk_278689358;
-    v18 = v7;
+    v18 = completionCopy;
     v16[4] = self;
-    v17 = v8;
+    v17 = metadataIdentifier;
     [(HMDNetworkRouterFirewallRuleManager *)firewallRuleManager startupForClient:self completion:v16];
   }
 
   else
   {
     v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    (*(v7 + 2))(v7, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 }
 
@@ -177,16 +177,16 @@ void __82__HMDAccessoryAllowedHostsPreviewHelper_fetchAllowedHostsForAccessory_c
   }
 }
 
-+ (id)helperForHome:(id)a3
++ (id)helperForHome:(id)home
 {
-  v3 = a3;
+  homeCopy = home;
   os_unfair_lock_lock_with_options();
-  v4 = objc_getAssociatedObject(v3, &HMDAccessoryAllowedHostsPreviewHelperForHome);
+  v4 = objc_getAssociatedObject(homeCopy, &HMDAccessoryAllowedHostsPreviewHelperForHome);
   if (!v4)
   {
     v4 = [HMDAccessoryAllowedHostsPreviewHelper alloc];
     v5 = +[HMDNetworkRouterFirewallRuleManager sharedInstance];
-    v6 = v3;
+    v6 = homeCopy;
     v7 = v5;
     if (v4)
     {

@@ -2,21 +2,21 @@
 + (double)minimumLandscapePadding;
 + (id)pegasusDefaultMetrics;
 + (id)pegasusDefaultMicroPIPMetrics;
-+ (id)pegasusMetricsForContentType:(int64_t)a3;
++ (id)pegasusMetricsForContentType:(int64_t)type;
 + (id)pegasusQNBacklinkMetrics;
 + (id)pegasusScreenSharingMetrics;
 + (id)pegasusVideoCallMetrics;
-+ (id)systemNotesMetricsForPresentationMode:(int64_t)a3;
-+ (void)microPIPLandscapeSizePreferences:(id *)a3 portraitSizePreferences:(id *)a4 squareSizePreferences:(id *)a5;
-+ (void)videoCallLandscapeSizePreferences:(id *)a3 portraitSizePreferences:(id *)a4 squareSizePreferences:(id *)a5;
-+ (void)videoContentLandscapeSizePreferences:(id *)a3 portraitSizePreferences:(id *)a4 squareSizePreferences:(id *)a5;
++ (id)systemNotesMetricsForPresentationMode:(int64_t)mode;
++ (void)microPIPLandscapeSizePreferences:(id *)preferences portraitSizePreferences:(id *)sizePreferences squareSizePreferences:(id *)squareSizePreferences;
++ (void)videoCallLandscapeSizePreferences:(id *)preferences portraitSizePreferences:(id *)sizePreferences squareSizePreferences:(id *)squareSizePreferences;
++ (void)videoContentLandscapeSizePreferences:(id *)preferences portraitSizePreferences:(id *)sizePreferences squareSizePreferences:(id *)squareSizePreferences;
 - (CGSize)minimumStashedTabSize;
-- (SBPIPContentViewLayoutMetrics)initWithContentTypeIdentifier:(id)a3 padding:(double)a4 paddingWhileStashed:(double)a5 minimumStashedTabSize:(CGSize)a6 defaultCornerRadius:(double)a7 sizePolicy:(id)a8 defaultPosition:(unint64_t)a9 prefersDefaultPosition:(BOOL)a10;
+- (SBPIPContentViewLayoutMetrics)initWithContentTypeIdentifier:(id)identifier padding:(double)padding paddingWhileStashed:(double)stashed minimumStashedTabSize:(CGSize)size defaultCornerRadius:(double)radius sizePolicy:(id)policy defaultPosition:(unint64_t)position prefersDefaultPosition:(BOOL)self0;
 @end
 
 @implementation SBPIPContentViewLayoutMetrics
 
-+ (void)videoContentLandscapeSizePreferences:(id *)a3 portraitSizePreferences:(id *)a4 squareSizePreferences:(id *)a5
++ (void)videoContentLandscapeSizePreferences:(id *)preferences portraitSizePreferences:(id *)sizePreferences squareSizePreferences:(id *)squareSizePreferences
 {
   SBHScreenTypeForCurrentDevice();
   IsMoreSpace = SBHScreenTypeIsMoreSpace();
@@ -27,7 +27,7 @@
   v10 = IsMoreSpace;
   if (videoContentLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences__onceToken == -1)
   {
-    if (!a3)
+    if (!preferences)
     {
       goto LABEL_4;
     }
@@ -36,21 +36,21 @@
   }
 
   dispatch_once(&videoContentLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences__onceToken, block);
-  if (a3)
+  if (preferences)
   {
 LABEL_3:
-    *a3 = videoContentLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____landscapePIPSizePref;
+    *preferences = videoContentLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____landscapePIPSizePref;
   }
 
 LABEL_4:
-  if (a4)
+  if (sizePreferences)
   {
-    *a4 = videoContentLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____portraitPIPSizePref;
+    *sizePreferences = videoContentLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____portraitPIPSizePref;
   }
 
-  if (a5)
+  if (squareSizePreferences)
   {
-    *a5 = videoContentLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____squarePIPSizePref;
+    *squareSizePreferences = videoContentLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____squarePIPSizePref;
   }
 }
 
@@ -207,7 +207,7 @@ LABEL_37:
   videoContentLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____squarePIPSizePref = v30;
 }
 
-+ (void)videoCallLandscapeSizePreferences:(id *)a3 portraitSizePreferences:(id *)a4 squareSizePreferences:(id *)a5
++ (void)videoCallLandscapeSizePreferences:(id *)preferences portraitSizePreferences:(id *)sizePreferences squareSizePreferences:(id *)squareSizePreferences
 {
   SBHScreenTypeForCurrentDevice();
   IsMoreSpace = SBHScreenTypeIsMoreSpace();
@@ -218,7 +218,7 @@ LABEL_37:
   v10 = IsMoreSpace;
   if (videoCallLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences__onceToken == -1)
   {
-    if (!a3)
+    if (!preferences)
     {
       goto LABEL_4;
     }
@@ -227,21 +227,21 @@ LABEL_37:
   }
 
   dispatch_once(&videoCallLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences__onceToken, block);
-  if (a3)
+  if (preferences)
   {
 LABEL_3:
-    *a3 = videoCallLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____landscapePIPSizePref;
+    *preferences = videoCallLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____landscapePIPSizePref;
   }
 
 LABEL_4:
-  if (a4)
+  if (sizePreferences)
   {
-    *a4 = videoCallLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____portraitPIPSizePref;
+    *sizePreferences = videoCallLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____portraitPIPSizePref;
   }
 
-  if (a5)
+  if (squareSizePreferences)
   {
-    *a5 = videoCallLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____squarePIPSizePref;
+    *squareSizePreferences = videoCallLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____squarePIPSizePref;
   }
 }
 
@@ -464,7 +464,7 @@ LABEL_55:
   videoCallLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____squarePIPSizePref = v44;
 }
 
-+ (void)microPIPLandscapeSizePreferences:(id *)a3 portraitSizePreferences:(id *)a4 squareSizePreferences:(id *)a5
++ (void)microPIPLandscapeSizePreferences:(id *)preferences portraitSizePreferences:(id *)sizePreferences squareSizePreferences:(id *)squareSizePreferences
 {
   SBHScreenTypeForCurrentDevice();
   IsMoreSpace = SBHScreenTypeIsMoreSpace();
@@ -475,7 +475,7 @@ LABEL_55:
   v10 = IsMoreSpace;
   if (microPIPLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences__onceToken == -1)
   {
-    if (!a3)
+    if (!preferences)
     {
       goto LABEL_4;
     }
@@ -484,21 +484,21 @@ LABEL_55:
   }
 
   dispatch_once(&microPIPLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences__onceToken, block);
-  if (a3)
+  if (preferences)
   {
 LABEL_3:
-    *a3 = microPIPLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____landscapePIPSizePref;
+    *preferences = microPIPLandscapeSizePreferences_portraitSizePreferences_squareSizePreferences____landscapePIPSizePref;
   }
 
 LABEL_4:
-  if (a4)
+  if (sizePreferences)
   {
-    *a4 = 0;
+    *sizePreferences = 0;
   }
 
-  if (a5)
+  if (squareSizePreferences)
   {
-    *a5 = 0;
+    *squareSizePreferences = 0;
   }
 }
 
@@ -594,7 +594,7 @@ LABEL_21:
   v11 = 0;
   v12 = 0;
   v10 = 0;
-  [a1 videoContentLandscapeSizePreferences:&v12 portraitSizePreferences:&v11 squareSizePreferences:&v10];
+  [self videoContentLandscapeSizePreferences:&v12 portraitSizePreferences:&v11 squareSizePreferences:&v10];
   v2 = v12;
   v3 = v11;
   v4 = v10;
@@ -612,7 +612,7 @@ LABEL_21:
   v11 = 0;
   v12 = 0;
   v10 = 0;
-  [a1 videoCallLandscapeSizePreferences:&v12 portraitSizePreferences:&v11 squareSizePreferences:&v10];
+  [self videoCallLandscapeSizePreferences:&v12 portraitSizePreferences:&v11 squareSizePreferences:&v10];
   v2 = v12;
   v3 = v11;
   v4 = v10;
@@ -630,7 +630,7 @@ LABEL_21:
   v11 = 0;
   v12 = 0;
   v10 = 0;
-  [a1 screenSharingLandscapeSizePreferences:&v12 portraitSizePreferences:&v11 squareSizePreferences:&v10];
+  [self screenSharingLandscapeSizePreferences:&v12 portraitSizePreferences:&v11 squareSizePreferences:&v10];
   v2 = v12;
   v3 = v11;
   v4 = v10;
@@ -648,7 +648,7 @@ LABEL_21:
   v10 = 0;
   v11 = 0;
   v9 = 0;
-  [a1 microPIPLandscapeSizePreferences:&v11 portraitSizePreferences:&v10 squareSizePreferences:&v9];
+  [self microPIPLandscapeSizePreferences:&v11 portraitSizePreferences:&v10 squareSizePreferences:&v9];
   v2 = v11;
   v3 = v10;
   v4 = v9;
@@ -682,31 +682,31 @@ LABEL_21:
   return v7;
 }
 
-+ (id)pegasusMetricsForContentType:(int64_t)a3
++ (id)pegasusMetricsForContentType:(int64_t)type
 {
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 >= 4)
+    if (type >= 4)
     {
       goto LABEL_5;
     }
 
-    v3 = [a1 pegasusDefaultMetrics];
+    pegasusDefaultMetrics = [self pegasusDefaultMetrics];
     goto LABEL_4;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 4:
-      v3 = [a1 pegasusVideoCallMetrics];
+      pegasusDefaultMetrics = [self pegasusVideoCallMetrics];
       goto LABEL_4;
     case 5:
-      v3 = [a1 pegasusScreenSharingMetrics];
+      pegasusDefaultMetrics = [self pegasusScreenSharingMetrics];
       goto LABEL_4;
     case 6:
-      v3 = [a1 pegasusQNBacklinkMetrics];
+      pegasusDefaultMetrics = [self pegasusQNBacklinkMetrics];
 LABEL_4:
-      a2 = v3;
+      a2 = pegasusDefaultMetrics;
       break;
   }
 
@@ -715,29 +715,29 @@ LABEL_5:
   return a2;
 }
 
-- (SBPIPContentViewLayoutMetrics)initWithContentTypeIdentifier:(id)a3 padding:(double)a4 paddingWhileStashed:(double)a5 minimumStashedTabSize:(CGSize)a6 defaultCornerRadius:(double)a7 sizePolicy:(id)a8 defaultPosition:(unint64_t)a9 prefersDefaultPosition:(BOOL)a10
+- (SBPIPContentViewLayoutMetrics)initWithContentTypeIdentifier:(id)identifier padding:(double)padding paddingWhileStashed:(double)stashed minimumStashedTabSize:(CGSize)size defaultCornerRadius:(double)radius sizePolicy:(id)policy defaultPosition:(unint64_t)position prefersDefaultPosition:(BOOL)self0
 {
-  height = a6.height;
-  width = a6.width;
-  v19 = a3;
-  v20 = a8;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  policyCopy = policy;
   v25.receiver = self;
   v25.super_class = SBPIPContentViewLayoutMetrics;
   v21 = [(SBPIPContentViewLayoutMetrics *)&v25 init];
   if (v21)
   {
-    v22 = [v19 copy];
+    v22 = [identifierCopy copy];
     contentTypeIdentifier = v21->_contentTypeIdentifier;
     v21->_contentTypeIdentifier = v22;
 
-    v21->_padding = a4;
-    v21->_paddingWhileStashed = a5;
+    v21->_padding = padding;
+    v21->_paddingWhileStashed = stashed;
     v21->_minimumStashedTabSize.width = width;
     v21->_minimumStashedTabSize.height = height;
-    v21->_defaultCornerRadius = a7;
-    objc_storeStrong(&v21->_sizePolicy, a8);
-    v21->_defaultPosition = a9;
-    v21->_prefersDefaultPosition = a10;
+    v21->_defaultCornerRadius = radius;
+    objc_storeStrong(&v21->_sizePolicy, policy);
+    v21->_defaultPosition = position;
+    v21->_prefersDefaultPosition = defaultPosition;
   }
 
   return v21;
@@ -763,9 +763,9 @@ LABEL_5:
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
     v2 = 0.0;
-    if (![v3 userInterfaceIdiom])
+    if (![currentDevice userInterfaceIdiom])
     {
       if (SBFEffectiveHomeButtonType() == 2)
       {
@@ -791,20 +791,20 @@ LABEL_5:
   return result;
 }
 
-+ (id)systemNotesMetricsForPresentationMode:(int64_t)a3
++ (id)systemNotesMetricsForPresentationMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = @"SystemNotes-Thumbnail";
     v5 = 121.0;
     v4 = 121.0;
   }
 
-  else if (a3)
+  else if (mode)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v9 = SBSSystemNotesPresentationModeDescription();
-    [v8 handleFailureInMethod:a2 object:a1 file:@"SBPIPContentViewLayoutMetrics+SystemNotes.m" lineNumber:73 description:{@"invalid presentationMode %@ received", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBPIPContentViewLayoutMetrics+SystemNotes.m" lineNumber:73 description:{@"invalid presentationMode %@ received", v9}];
 
     v3 = 0;
     v5 = 0.0;

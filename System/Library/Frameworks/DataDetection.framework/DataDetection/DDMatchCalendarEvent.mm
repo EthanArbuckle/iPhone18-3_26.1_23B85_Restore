@@ -1,18 +1,18 @@
 @interface DDMatchCalendarEvent
-- (DDMatchCalendarEvent)initWithDDScannerResult:(id)a3;
+- (DDMatchCalendarEvent)initWithDDScannerResult:(id)result;
 @end
 
 @implementation DDMatchCalendarEvent
 
-- (DDMatchCalendarEvent)initWithDDScannerResult:(id)a3
+- (DDMatchCalendarEvent)initWithDDScannerResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v27.receiver = self;
   v27.super_class = DDMatchCalendarEvent;
-  v5 = [(DDMatch *)&v27 initWithDDScannerResult:v4];
+  v5 = [(DDMatch *)&v27 initWithDDScannerResult:resultCopy];
   if (v5)
   {
-    [v4 coreResult];
+    [resultCopy coreResult];
     v6 = *MEMORY[0x277D04190];
     if ((DDResultHasType() & 1) != 0 || (v7 = *MEMORY[0x277D040A0], DDResultHasType()))
     {
@@ -21,7 +21,7 @@
       v25 = 0;
       v22 = 0;
       v23 = 0;
-      v8 = [v4 extractStartDate:&v25 startTimezone:&v24 endDate:&v23 endTimezone:&v22 allDayRef:&v26 referenceDate:0 referenceTimezone:0];
+      v8 = [resultCopy extractStartDate:&v25 startTimezone:&v24 endDate:&v23 endTimezone:&v22 allDayRef:&v26 referenceDate:0 referenceTimezone:0];
       v9 = v25;
       v20 = v25;
       v10 = v24;
@@ -44,7 +44,7 @@
     {
       v26 = 0;
       v21 = 0;
-      v16 = [v4 dateFromReferenceDate:0 referenceTimezone:0 timezoneRef:&v21 allDayRef:&v26];
+      v16 = [resultCopy dateFromReferenceDate:0 referenceTimezone:0 timezoneRef:&v21 allDayRef:&v26];
       v17 = v21;
       v18 = v21;
       if (v16)

@@ -1,24 +1,24 @@
 @interface CarBasicRouteGeniusModeController
 - (BOOL)wantsNavigationDisplay;
-- (CarBasicRouteGeniusModeController)initWithSuggestion:(id)a3;
+- (CarBasicRouteGeniusModeController)initWithSuggestion:(id)suggestion;
 - (ChromeViewController)chromeViewController;
 - (NSArray)carFocusOrderSequences;
 - (id)personalizedItemSources;
 - (id)routeAnnotationsProvider;
 - (void)_clearAnnotations;
-- (void)_externalDeviceUpdated:(id)a3;
+- (void)_externalDeviceUpdated:(id)updated;
 - (void)_updateForCurrentRoute;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)configureNavigationDisplay:(id)a3;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)configureNavigationDisplay:(id)display;
 - (void)dealloc;
-- (void)didUpdateRouteGenius:(id)a3;
-- (void)frameRouteAnimated:(BOOL)a3;
-- (void)poiShapeLoader:(id)a3 didLoadStartPOIShape:(id)a4 endPOIShapes:(id)a5;
-- (void)recenterCameraOnRouteAnimated:(BOOL)a3;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)setCurrentSuggestion:(id)a3;
-- (void)setNavigationAidedDrivingEnabled:(BOOL)a3;
-- (void)setState:(int64_t)a3;
+- (void)didUpdateRouteGenius:(id)genius;
+- (void)frameRouteAnimated:(BOOL)animated;
+- (void)poiShapeLoader:(id)loader didLoadStartPOIShape:(id)shape endPOIShapes:(id)shapes;
+- (void)recenterCameraOnRouteAnimated:(BOOL)animated;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)setCurrentSuggestion:(id)suggestion;
+- (void)setNavigationAidedDrivingEnabled:(BOOL)enabled;
+- (void)setState:(int64_t)state;
 - (void)updateRouteAnnotations;
 - (void)updateSearchPins;
 @end
@@ -32,36 +32,36 @@
   return WeakRetained;
 }
 
-- (void)didUpdateRouteGenius:(id)a3
+- (void)didUpdateRouteGenius:(id)genius
 {
-  v4 = a3;
+  geniusCopy = genius;
   v5 = sub_100E093E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v15 = 134349314;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2112;
-    v18 = v4;
+    v18 = geniusCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Updating route genius entry: %@", &v15, 0x16u);
   }
 
-  [(CarBasicRouteGeniusModeController *)self setCurrentSuggestion:v4];
+  [(CarBasicRouteGeniusModeController *)self setCurrentSuggestion:geniusCopy];
   [(CarBasicRouteGeniusModeController *)self _updateForCurrentRoute];
-  v6 = [v4 route];
-  if ([v6 isFamiliarRoute])
+  route = [geniusCopy route];
+  if ([route isFamiliarRoute])
   {
-    v7 = [v4 entry];
-    v8 = [v7 uniqueIdentifier];
-    v9 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
-    v10 = [v9 entry];
-    v11 = [v10 uniqueIdentifier];
-    v12 = [v8 isEqualToString:v11];
+    entry = [geniusCopy entry];
+    uniqueIdentifier = [entry uniqueIdentifier];
+    currentSuggestion = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
+    entry2 = [currentSuggestion entry];
+    uniqueIdentifier2 = [entry2 uniqueIdentifier];
+    v12 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [(CarBasicRouteGeniusModeController *)self chromeViewController];
-      v14 = [v13 routeAnnotationsController];
-      [v14 updateRouteGeniusFamiliarRoutes:v4];
+      chromeViewController = [(CarBasicRouteGeniusModeController *)self chromeViewController];
+      routeAnnotationsController = [chromeViewController routeAnnotationsController];
+      [routeAnnotationsController updateRouteGeniusFamiliarRoutes:geniusCopy];
 
       goto LABEL_9;
     }
@@ -71,14 +71,14 @@
   {
   }
 
-  v13 = sub_100E093E0();
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+  chromeViewController = sub_100E093E0();
+  if (os_log_type_enabled(chromeViewController, OS_LOG_TYPE_INFO))
   {
     v15 = 134349314;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2112;
-    v18 = v4;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}p] Not Updating the route genius because the entry is same: %@", &v15, 0x16u);
+    v18 = geniusCopy;
+    _os_log_impl(&_mh_execute_header, chromeViewController, OS_LOG_TYPE_INFO, "[%{public}p] Not Updating the route genius because the entry is same: %@", &v15, 0x16u);
   }
 
 LABEL_9:
@@ -113,37 +113,37 @@ LABEL_9:
   return &__NSArray0__struct;
 }
 
-- (void)setCurrentSuggestion:(id)a3
+- (void)setCurrentSuggestion:(id)suggestion
 {
-  v5 = a3;
-  v6 = [(CarBasicRouteGeniusModeController *)self state];
+  suggestionCopy = suggestion;
+  state = [(CarBasicRouteGeniusModeController *)self state];
   v7 = sub_100E093E0();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6 < 1)
+  if (state < 1)
   {
     if (v8)
     {
-      v11 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
-      v12 = [v11 title];
-      v13 = [v5 entry];
-      v14 = [v13 title];
+      entry = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
+      title = [entry title];
+      entry2 = [suggestionCopy entry];
+      title2 = [entry2 title];
       v19 = 134349571;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2113;
-      v22 = v12;
+      v22 = title;
       v23 = 2113;
-      v24 = v14;
+      v24 = title2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] setting currentCommute destination. _currentCommuteDestination: %{private}@, currentCommuteDestination: %{private}@", &v19, 0x20u);
     }
 
-    objc_storeStrong(&self->_currentSuggestion, a3);
-    v15 = [(CarBasicRouteGeniusModeController *)self chromeViewController];
-    v16 = [v15 isTopContext:self];
+    objc_storeStrong(&self->_currentSuggestion, suggestion);
+    chromeViewController = [(CarBasicRouteGeniusModeController *)self chromeViewController];
+    v16 = [chromeViewController isTopContext:self];
 
     if (v16)
     {
-      v17 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
-      [v17 setNeedsUpdateComponent:@"navigationDisplay" animated:1];
+      carChromeViewController = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
+      [carChromeViewController setNeedsUpdateComponent:@"navigationDisplay" animated:1];
     }
 
     [(CarBasicRouteGeniusModeController *)self _updateForCurrentRoute];
@@ -153,53 +153,53 @@ LABEL_9:
   {
     if (v8)
     {
-      v9 = [(CarBasicRouteGeniusModeController *)self state];
-      if (v9 > 4)
+      state2 = [(CarBasicRouteGeniusModeController *)self state];
+      if (state2 > 4)
       {
         v10 = @"Unknown";
       }
 
       else
       {
-        v10 = off_101655810[v9];
+        v10 = off_101655810[state2];
       }
 
-      v18 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
+      currentSuggestion = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
       v19 = 134349827;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
       v22 = v10;
       v23 = 2113;
-      v24 = v5;
+      v24 = suggestionCopy;
       v25 = 2113;
-      v26 = v18;
+      v26 = currentSuggestion;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] ignoring changed prediction, state=%@ currentCommuteDestination=%{private}@ _currentCommuteDestination=%{private}@", &v19, 0x2Au);
     }
   }
 }
 
-- (void)recenterCameraOnRouteAnimated:(BOOL)a3
+- (void)recenterCameraOnRouteAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(CarBasicRouteGeniusModeController *)self wantsNavigationDisplay])
   {
-    v5 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
-    v6 = [v5 routeGeniusAnnotationsManager];
-    v7 = [v6 destination];
+    carChromeViewController = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
+    routeGeniusAnnotationsManager = [carChromeViewController routeGeniusAnnotationsManager];
+    destination = [routeGeniusAnnotationsManager destination];
 
-    if (v7)
+    if (destination)
     {
       v8 = sub_100E093E0();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v14 = 134349056;
-        v15 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] recentering on route.", &v14, 0xCu);
       }
 
-      v9 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
-      v10 = [v9 routeGeniusAnnotationsManager];
-      [v10 recenterCameraOnRouteAnimated:v3];
+      carChromeViewController2 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
+      routeGeniusAnnotationsManager2 = [carChromeViewController2 routeGeniusAnnotationsManager];
+      [routeGeniusAnnotationsManager2 recenterCameraOnRouteAnimated:animatedCopy];
     }
 
     else
@@ -208,7 +208,7 @@ LABEL_9:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v14 = 136315650;
-        v15 = "[CarBasicRouteGeniusModeController recenterCameraOnRouteAnimated:]";
+        selfCopy2 = "[CarBasicRouteGeniusModeController recenterCameraOnRouteAnimated:]";
         v16 = 2080;
         v17 = "CarBasicRouteGeniusModeController.m";
         v18 = 1024;
@@ -223,42 +223,42 @@ LABEL_9:
         {
           v13 = +[NSThread callStackSymbols];
           v14 = 138412290;
-          v15 = v13;
+          selfCopy2 = v13;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%@", &v14, 0xCu);
         }
       }
 
-      v9 = sub_100E093E0();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      carChromeViewController2 = sub_100E093E0();
+      if (os_log_type_enabled(carChromeViewController2, OS_LOG_TYPE_ERROR))
       {
         v14 = 134349056;
-        v15 = self;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "[%{public}p] new routeGeniusAnnotationsManager.destination is nil. won't be recentering on route.", &v14, 0xCu);
+        selfCopy2 = self;
+        _os_log_impl(&_mh_execute_header, carChromeViewController2, OS_LOG_TYPE_ERROR, "[%{public}p] new routeGeniusAnnotationsManager.destination is nil. won't be recentering on route.", &v14, 0xCu);
       }
     }
   }
 }
 
-- (void)frameRouteAnimated:(BOOL)a3
+- (void)frameRouteAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
-  v6 = [v5 routeGeniusAnnotationsManager];
-  v7 = [v6 destination];
+  animatedCopy = animated;
+  carChromeViewController = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
+  routeGeniusAnnotationsManager = [carChromeViewController routeGeniusAnnotationsManager];
+  destination = [routeGeniusAnnotationsManager destination];
 
-  if (v7)
+  if (destination)
   {
     v8 = sub_100E093E0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v14 = 134349056;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] framing route.", &v14, 0xCu);
     }
 
-    v9 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
-    v10 = [v9 routeGeniusAnnotationsManager];
-    [v10 frameRouteAnimated:v3];
+    carChromeViewController2 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
+    routeGeniusAnnotationsManager2 = [carChromeViewController2 routeGeniusAnnotationsManager];
+    [routeGeniusAnnotationsManager2 frameRouteAnimated:animatedCopy];
   }
 
   else
@@ -267,7 +267,7 @@ LABEL_9:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v14 = 136315650;
-      v15 = "[CarBasicRouteGeniusModeController frameRouteAnimated:]";
+      selfCopy2 = "[CarBasicRouteGeniusModeController frameRouteAnimated:]";
       v16 = 2080;
       v17 = "CarBasicRouteGeniusModeController.m";
       v18 = 1024;
@@ -282,57 +282,57 @@ LABEL_9:
       {
         v13 = +[NSThread callStackSymbols];
         v14 = 138412290;
-        v15 = v13;
+        selfCopy2 = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%@", &v14, 0xCu);
       }
     }
 
-    v9 = sub_100E093E0();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    carChromeViewController2 = sub_100E093E0();
+    if (os_log_type_enabled(carChromeViewController2, OS_LOG_TYPE_ERROR))
     {
       v14 = 134349056;
-      v15 = self;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "[%{public}p] new routeGeniusAnnotationsManager.destination is nil. won't be framing on route.", &v14, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, carChromeViewController2, OS_LOG_TYPE_ERROR, "[%{public}p] new routeGeniusAnnotationsManager.destination is nil. won't be framing on route.", &v14, 0xCu);
     }
   }
 }
 
-- (void)setNavigationAidedDrivingEnabled:(BOOL)a3
+- (void)setNavigationAidedDrivingEnabled:(BOOL)enabled
 {
-  if (self->_navigationAidedDrivingEnabled != a3)
+  if (self->_navigationAidedDrivingEnabled != enabled)
   {
-    self->_navigationAidedDrivingEnabled = a3;
+    self->_navigationAidedDrivingEnabled = enabled;
     [(CarBasicRouteGeniusModeController *)self updateRouteAnnotations];
   }
 }
 
-- (void)_externalDeviceUpdated:(id)a3
+- (void)_externalDeviceUpdated:(id)updated
 {
   v4 = +[MapsExternalDevice sharedInstance];
   -[CarBasicRouteGeniusModeController setNavigationAidedDrivingEnabled:](self, "setNavigationAidedDrivingEnabled:", [v4 isNavigationAidedDrivingEnabled]);
 }
 
-- (void)poiShapeLoader:(id)a3 didLoadStartPOIShape:(id)a4 endPOIShapes:(id)a5
+- (void)poiShapeLoader:(id)loader didLoadStartPOIShape:(id)shape endPOIShapes:(id)shapes
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CarBasicRouteGeniusModeController *)self chromeViewController];
-  v10 = [v9 isCurrentContext:self];
+  shapeCopy = shape;
+  shapesCopy = shapes;
+  chromeViewController = [(CarBasicRouteGeniusModeController *)self chromeViewController];
+  v10 = [chromeViewController isCurrentContext:self];
 
   if (v10)
   {
     v11 = sub_100E093E0();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = v8;
+      v12 = shapesCopy;
       v13 = v12;
       if (v12)
       {
         if ([v12 count])
         {
           v30 = v11;
-          v31 = self;
-          v32 = v7;
+          selfCopy = self;
+          v32 = shapeCopy;
           v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v13 count]);
           v33 = 0u;
           v34 = 0u;
@@ -402,8 +402,8 @@ LABEL_22:
               v27 = [v15 componentsJoinedByString:{@", "}];
               v28 = [NSString stringWithFormat:@"<%p> [%@]", v15, v27];
 
-              self = v31;
-              v7 = v32;
+              self = selfCopy;
+              shapeCopy = v32;
               v11 = v30;
               v13 = v29;
               goto LABEL_25;
@@ -422,9 +422,9 @@ LABEL_22:
 LABEL_25:
 
       *buf = 134349570;
-      v38 = self;
+      selfCopy2 = self;
       v39 = 2112;
-      v40 = v7;
+      v40 = shapeCopy;
       v41 = 2112;
       v42 = v28;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] poiShapeLoader:didLoadStartPOIShape: %@, endPOIShapes: %@", buf, 0x20u);
@@ -436,45 +436,45 @@ LABEL_25:
 
 - (id)routeAnnotationsProvider
 {
-  v2 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
-  v3 = [v2 routeGeniusAnnotationsManager];
+  carChromeViewController = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
+  routeGeniusAnnotationsManager = [carChromeViewController routeGeniusAnnotationsManager];
 
-  return v3;
+  return routeGeniusAnnotationsManager;
 }
 
 - (void)_clearAnnotations
 {
-  v3 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
-  v4 = [v3 routeGeniusAnnotationsManager];
-  [v4 clearAnnotations];
+  carChromeViewController = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
+  routeGeniusAnnotationsManager = [carChromeViewController routeGeniusAnnotationsManager];
+  [routeGeniusAnnotationsManager clearAnnotations];
 
   currentlyDisplayedRoute = self->_currentlyDisplayedRoute;
   self->_currentlyDisplayedRoute = 0;
 
-  v7 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
-  v6 = [v7 searchPinsManager];
-  [v6 clearDirectionsPins];
+  carChromeViewController2 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
+  searchPinsManager = [carChromeViewController2 searchPinsManager];
+  [searchPinsManager clearDirectionsPins];
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100E0A214;
   v6[3] = &unk_101661A90;
   v6[4] = self;
-  v7 = a3;
-  v5 = v7;
-  [a4 addPreparation:v6];
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  [animation addPreparation:v6];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
+  controllerCopy = controller;
+  animationCopy = animation;
+  currentSuggestion = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
 
-  if (v8)
+  if (currentSuggestion)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -485,15 +485,15 @@ LABEL_25:
     v12[1] = 3221225472;
     v12[2] = sub_100E0A7B8;
     v12[3] = &unk_101661A90;
-    v13 = v6;
-    v14 = self;
+    v13 = controllerCopy;
+    selfCopy = self;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100E0A898;
     v10[3] = &unk_101661570;
     v10[4] = self;
     v11 = v13;
-    [v7 addPreparation:v15 animations:v12 completion:v10];
+    [animationCopy addPreparation:v15 animations:v12 completion:v10];
   }
 
   else
@@ -503,13 +503,13 @@ LABEL_25:
   }
 }
 
-- (void)configureNavigationDisplay:(id)a3
+- (void)configureNavigationDisplay:(id)display
 {
-  v4 = a3;
-  [v4 setCameraStyle:4];
-  [v4 setCameraPaused:0];
-  v5 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
-  [v4 setRouteGeniusEntry:v5];
+  displayCopy = display;
+  [displayCopy setCameraStyle:4];
+  [displayCopy setCameraPaused:0];
+  currentSuggestion = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
+  [displayCopy setRouteGeniusEntry:currentSuggestion];
 }
 
 - (BOOL)wantsNavigationDisplay
@@ -517,11 +517,11 @@ LABEL_25:
   v3 = sub_10008B2E8();
   if (v3)
   {
-    v4 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
-    v5 = [v4 defaultMapSettings];
-    v6 = [v5 pitched];
+    carChromeViewController = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
+    defaultMapSettings = [carChromeViewController defaultMapSettings];
+    pitched = [defaultMapSettings pitched];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(v3) = pitched;
   }
 
   return v3;
@@ -529,13 +529,13 @@ LABEL_25:
 
 - (id)personalizedItemSources
 {
-  v2 = [(CarBasicRouteGeniusModeController *)self chromeViewController];
-  v3 = [v2 searchPinsManager];
-  v4 = [v3 routeStartEndItemSource];
+  chromeViewController = [(CarBasicRouteGeniusModeController *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
+  routeStartEndItemSource = [searchPinsManager routeStartEndItemSource];
 
-  if (v4)
+  if (routeStartEndItemSource)
   {
-    v7 = v4;
+    v7 = routeStartEndItemSource;
     v5 = [NSArray arrayWithObjects:&v7 count:1];
   }
 
@@ -550,36 +550,36 @@ LABEL_25:
 - (void)updateRouteAnnotations
 {
   v3 = [MKMapItem alloc];
-  v4 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
-  v5 = [v4 geoMapItem];
-  v6 = [v3 initWithGeoMapItem:v5 isPlaceHolderPlace:0];
-  v7 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
-  v8 = [v7 routeGeniusAnnotationsManager];
-  [v8 setDestination:v6];
+  entry = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
+  geoMapItem = [entry geoMapItem];
+  v6 = [v3 initWithGeoMapItem:geoMapItem isPlaceHolderPlace:0];
+  carChromeViewController = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
+  routeGeniusAnnotationsManager = [carChromeViewController routeGeniusAnnotationsManager];
+  [routeGeniusAnnotationsManager setDestination:v6];
 
-  v9 = [(CarBasicRouteGeniusModeController *)self currentRoute];
-  if (v9)
+  currentRoute = [(CarBasicRouteGeniusModeController *)self currentRoute];
+  if (currentRoute)
   {
-    v10 = [(CarBasicRouteGeniusModeController *)self currentRoute];
-    v11 = [v10 isNavigable];
+    currentRoute2 = [(CarBasicRouteGeniusModeController *)self currentRoute];
+    isNavigable = [currentRoute2 isNavigable];
   }
 
   else
   {
-    v11 = 1;
+    isNavigable = 1;
   }
 
-  v12 = [(CarBasicRouteGeniusModeController *)self navigationAidedDrivingEnabled];
-  v13 = 0;
-  if ((v12 & 1) == 0 && v11)
+  navigationAidedDrivingEnabled = [(CarBasicRouteGeniusModeController *)self navigationAidedDrivingEnabled];
+  currentRoute3 = 0;
+  if ((navigationAidedDrivingEnabled & 1) == 0 && isNavigable)
   {
-    v13 = [(CarBasicRouteGeniusModeController *)self currentRoute];
+    currentRoute3 = [(CarBasicRouteGeniusModeController *)self currentRoute];
   }
 
-  v111 = v13;
-  v14 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
-  v15 = [v14 entry];
-  v16 = [SearchFieldItem searchFieldItemsForRouteInSuggestionsEntry:v15 excludeCurrentLocationOrigin:0];
+  v111 = currentRoute3;
+  currentSuggestion = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
+  entry2 = [currentSuggestion entry];
+  v16 = [SearchFieldItem searchFieldItemsForRouteInSuggestionsEntry:entry2 excludeCurrentLocationOrigin:0];
 
   v110 = v16;
   if (!v16)
@@ -617,13 +617,13 @@ LABEL_25:
     }
   }
 
-  v108 = v11;
+  v108 = isNavigable;
   v21 = sub_100E093E0();
   v22 = v111;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
-    v23 = [v111 waypoints];
-    v24 = sub_100021DB0(v23, &stru_1016557D0);
+    waypoints = [v111 waypoints];
+    v24 = sub_100021DB0(waypoints, &stru_1016557D0);
     *buf = 134349314;
     *&buf[4] = self;
     *&buf[12] = 2112;
@@ -644,7 +644,7 @@ LABEL_25:
     v26 = v25;
     v27 = *v122;
     v28 = GEOMapItemEquivalenceDistanceThreshold;
-    v109 = self;
+    selfCopy = self;
     v112 = *v122;
     do
     {
@@ -658,50 +658,50 @@ LABEL_25:
         }
 
         v30 = *(*(&v121 + 1) + 8 * v29);
-        v31 = [v22 origin];
-        v32 = v31;
-        if (v30 == v31)
+        origin = [v22 origin];
+        v32 = origin;
+        if (v30 == origin)
         {
         }
 
         else
         {
-          v33 = [v30 hasStyleAttributesData];
+          hasStyleAttributesData = [v30 hasStyleAttributesData];
 
-          if ((v33 & 1) == 0)
+          if ((hasStyleAttributesData & 1) == 0)
           {
             v34 = sub_100E093E0();
             if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
             {
-              v35 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
-              v36 = [v30 uniqueID];
+              currentSuggestion2 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
+              uniqueID = [v30 uniqueID];
               *buf = 134349570;
               *&buf[4] = self;
               *&buf[12] = 2112;
-              *&buf[14] = v35;
+              *&buf[14] = currentSuggestion2;
               v126 = 2112;
-              v127 = v36;
+              v127 = uniqueID;
               _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "[%{public}p] Will try to generate style attribute from suggestion %@ for waypoint %@", buf, 0x20u);
             }
 
-            v37 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
-            v38 = [v37 entry];
-            v39 = [v38 type];
+            currentSuggestion3 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
+            entry3 = [currentSuggestion3 entry];
+            type = [entry3 type];
 
             v40 = sub_100E093E0();
             v41 = os_log_type_enabled(v40, OS_LOG_TYPE_INFO);
-            if (v39 > 6)
+            if (type > 6)
             {
-              switch(v39)
+              switch(type)
               {
                 case 7:
                   if (v41)
                   {
-                    v47 = [v30 uniqueID];
+                    uniqueID2 = [v30 uniqueID];
                     *buf = 134349314;
                     *&buf[4] = self;
                     *&buf[12] = 2112;
-                    *&buf[14] = v47;
+                    *&buf[14] = uniqueID2;
                     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "[%{public}p] Using parked car style attributes for waypoint %@", buf, 0x16u);
                   }
 
@@ -710,11 +710,11 @@ LABEL_25:
                 case 19:
                   if (v41)
                   {
-                    v48 = [v30 uniqueID];
+                    uniqueID3 = [v30 uniqueID];
                     *buf = 134349314;
                     *&buf[4] = self;
                     *&buf[12] = 2112;
-                    *&buf[14] = v48;
+                    *&buf[14] = uniqueID3;
                     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "[%{public}p] Using school style attributes for waypoint %@", buf, 0x16u);
                   }
 
@@ -723,11 +723,11 @@ LABEL_25:
                 case 24:
                   if (v41)
                   {
-                    v42 = [v30 uniqueID];
+                    uniqueID4 = [v30 uniqueID];
                     *buf = 134349314;
                     *&buf[4] = self;
                     *&buf[12] = 2112;
-                    *&buf[14] = v42;
+                    *&buf[14] = uniqueID4;
                     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "[%{public}p] Using shared location style attributes for waypoint %@", buf, 0x16u);
                   }
 
@@ -738,33 +738,33 @@ LABEL_25:
 LABEL_52:
               if (v41)
               {
-                v50 = [v30 uniqueID];
+                uniqueID5 = [v30 uniqueID];
                 *buf = 134349314;
                 *&buf[4] = self;
                 *&buf[12] = 2112;
-                *&buf[14] = v50;
+                *&buf[14] = uniqueID5;
                 _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "[%{public}p] Waypoint did not have an explicit style type %@", buf, 0x16u);
               }
 
-              v51 = [v22 destination];
+              destination = [v22 destination];
 
-              if (v30 == v51)
+              if (v30 == destination)
               {
                 v54 = sub_100E093E0();
                 if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
                 {
-                  v55 = [v30 uniqueID];
+                  uniqueID6 = [v30 uniqueID];
                   *buf = 134349314;
                   *&buf[4] = self;
                   *&buf[12] = 2112;
-                  *&buf[14] = v55;
+                  *&buf[14] = uniqueID6;
                   _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_INFO, "[%{public}p] Using entry map item style attributes for waypoint %@", buf, 0x16u);
                 }
 
-                v56 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
-                v57 = [v56 entry];
-                v58 = [v57 geoMapItem];
-                v59 = [v58 _styleAttributes];
+                currentSuggestion4 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
+                entry4 = [currentSuggestion4 entry];
+                geoMapItem2 = [entry4 geoMapItem];
+                _styleAttributes = [geoMapItem2 _styleAttributes];
               }
 
               else
@@ -775,11 +775,11 @@ LABEL_52:
                   v52 = sub_100E093E0();
                   if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
                   {
-                    v53 = [v30 uniqueID];
+                    uniqueID7 = [v30 uniqueID];
                     *buf = 134349314;
                     *&buf[4] = self;
                     *&buf[12] = 2112;
-                    *&buf[14] = v53;
+                    *&buf[14] = uniqueID7;
                     _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_INFO, "[%{public}p] Using EV charger style attributes for waypoint %@", buf, 0x16u);
                   }
 
@@ -807,24 +807,24 @@ LABEL_64:
                     }
 
                     v64 = *(*(&v117 + 1) + 8 * v63);
-                    v65 = [v64 searchResult];
-                    v66 = [v65 mapItem];
-                    v67 = [v66 _geoMapItem];
+                    searchResult = [v64 searchResult];
+                    mapItem = [searchResult mapItem];
+                    _geoMapItem = [mapItem _geoMapItem];
 
-                    v68 = [v30 geoMapItem];
-                    [v67 coordinate];
-                    [v68 coordinate];
+                    geoMapItem3 = [v30 geoMapItem];
+                    [_geoMapItem coordinate];
+                    [geoMapItem3 coordinate];
                     GEOCalculateDistance();
                     if (v69 < v28)
                     {
-                      v70 = [v67 name];
-                      [v68 name];
+                      name = [_geoMapItem name];
+                      [geoMapItem3 name];
                       v116 = v64;
                       v71 = v29;
                       v72 = v61;
                       v73 = v30;
                       v75 = v74 = v62;
-                      v76 = [v70 isEqualToString:v75];
+                      v76 = [name isEqualToString:v75];
 
                       v62 = v74;
                       v30 = v73;
@@ -857,20 +857,20 @@ LABEL_64:
                   }
 
                   v78 = sub_100E093E0();
-                  self = v109;
+                  self = selfCopy;
                   v22 = v111;
                   if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
                   {
-                    v79 = [v30 uniqueID];
+                    uniqueID8 = [v30 uniqueID];
                     *buf = 134349314;
-                    *&buf[4] = v109;
+                    *&buf[4] = selfCopy;
                     *&buf[12] = 2112;
-                    *&buf[14] = v79;
+                    *&buf[14] = uniqueID8;
                     _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_INFO, "[%{public}p] Using matched search field item style attributes for waypoint %@", buf, 0x16u);
                   }
 
-                  v80 = [v77 searchResult];
-                  v59 = [GEOFeatureStyleAttributes styleAttributesForSearchResult:v80];
+                  searchResult2 = [v77 searchResult];
+                  _styleAttributes = [GEOFeatureStyleAttributes styleAttributesForSearchResult:searchResult2];
 
                   goto LABEL_86;
                 }
@@ -879,7 +879,7 @@ LABEL_71:
 
 LABEL_76:
                 v81 = sub_10006D178();
-                self = v109;
+                self = selfCopy;
                 v22 = v111;
                 if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
                 {
@@ -907,35 +907,35 @@ LABEL_76:
                 v84 = sub_100E093E0();
                 if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
                 {
-                  v85 = [v30 uniqueID];
+                  uniqueID9 = [v30 uniqueID];
                   *buf = 134349314;
-                  *&buf[4] = v109;
+                  *&buf[4] = selfCopy;
                   *&buf[12] = 2112;
-                  *&buf[14] = v85;
+                  *&buf[14] = uniqueID9;
                   _os_log_impl(&_mh_execute_header, v84, OS_LOG_TYPE_ERROR, "[%{public}p] Failed to get styleAttributes for waypoint: %@", buf, 0x16u);
                 }
 
                 v43 = +[GEOFeatureStyleAttributes genericMarkerStyleAttributes];
 LABEL_85:
-                v59 = v43;
+                _styleAttributes = v43;
               }
 
 LABEL_86:
-              v44 = [v59 copy];
+              v44 = [_styleAttributes copy];
 
               *buf = xmmword_101212CA0;
               [v44 replaceAttributes:buf count:2];
               [v30 setStyleAttributes:v44];
-              v86 = [v30 mapItemStorage];
+              mapItemStorage = [v30 mapItemStorage];
 
-              if (v86)
+              if (mapItemStorage)
               {
-                v87 = [v30 mapItemStorage];
-                v88 = [v87 userValues];
-                v89 = v88;
-                if (v88)
+                mapItemStorage2 = [v30 mapItemStorage];
+                userValues = [mapItemStorage2 userValues];
+                v89 = userValues;
+                if (userValues)
                 {
-                  v90 = v88;
+                  v90 = userValues;
                 }
 
                 else
@@ -945,13 +945,13 @@ LABEL_86:
 
                 v91 = v90;
 
-                v92 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
-                v93 = [v92 entry];
-                v94 = [v93 poiTitle];
-                [v91 setName:v94];
+                currentSuggestion5 = [(CarBasicRouteGeniusModeController *)self currentSuggestion];
+                entry5 = [currentSuggestion5 entry];
+                poiTitle = [entry5 poiTitle];
+                [v91 setName:poiTitle];
 
-                v95 = [v30 mapItemStorage];
-                [v95 setUserValues:v91];
+                mapItemStorage3 = [v30 mapItemStorage];
+                [mapItemStorage3 setUserValues:v91];
 
                 v22 = v111;
               }
@@ -961,15 +961,15 @@ LABEL_86:
               goto LABEL_92;
             }
 
-            if (v39 == 1)
+            if (type == 1)
             {
               if (v41)
               {
-                v49 = [v30 uniqueID];
+                uniqueID10 = [v30 uniqueID];
                 *buf = 134349314;
                 *&buf[4] = self;
                 *&buf[12] = 2112;
-                *&buf[14] = v49;
+                *&buf[14] = uniqueID10;
                 _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "[%{public}p] Using home style attributes for waypoint %@", buf, 0x16u);
               }
 
@@ -978,18 +978,18 @@ LABEL_86:
 
             else
             {
-              if (v39 != 2)
+              if (type != 2)
               {
                 goto LABEL_52;
               }
 
               if (v41)
               {
-                v46 = [v30 uniqueID];
+                uniqueID11 = [v30 uniqueID];
                 *buf = 134349314;
                 *&buf[4] = self;
                 *&buf[12] = 2112;
-                *&buf[14] = v46;
+                *&buf[14] = uniqueID11;
                 _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "[%{public}p] Using work style attributes for waypoint %@", buf, 0x16u);
               }
 
@@ -1003,11 +1003,11 @@ LABEL_86:
         v44 = sub_100E093E0();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
         {
-          v45 = [v30 uniqueID];
+          uniqueID12 = [v30 uniqueID];
           *buf = 134349314;
           *&buf[4] = self;
           *&buf[12] = 2112;
-          *&buf[14] = v45;
+          *&buf[14] = uniqueID12;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_INFO, "[%{public}p] Skipping waypoint because it's the origin or already has style attributes: %@", buf, 0x16u);
         }
 
@@ -1023,53 +1023,53 @@ LABEL_92:
     while (v26);
   }
 
-  v96 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
-  v97 = [v96 routeGeniusAnnotationsManager];
-  [v97 setComposedRoute:v22];
+  carChromeViewController2 = [(CarBasicRouteGeniusModeController *)self carChromeViewController];
+  routeGeniusAnnotationsManager2 = [carChromeViewController2 routeGeniusAnnotationsManager];
+  [routeGeniusAnnotationsManager2 setComposedRoute:v22];
 
   if (v22)
   {
-    v98 = [(CarBasicRouteGeniusModeController *)self chromeViewController];
-    [v98 captureUserAction:3072];
+    chromeViewController = [(CarBasicRouteGeniusModeController *)self chromeViewController];
+    [chromeViewController captureUserAction:3072];
   }
 
   if (![(CarBasicRouteGeniusModeController *)self wantsNavigationDisplay])
   {
-    v99 = [(CarBasicRouteGeniusModeController *)self currentRoute];
+    currentRoute4 = [(CarBasicRouteGeniusModeController *)self currentRoute];
 
-    if (v99)
+    if (currentRoute4)
     {
       [(CarBasicRouteGeniusModeController *)self recenterCameraOnRouteAnimated:1];
     }
 
     else
     {
-      v100 = [(CarBasicRouteGeniusModeController *)self routeGeniusMapSettings];
-      [v100 applyToMapViewAnimated:1 duration:0 completion:0.0];
+      routeGeniusMapSettings = [(CarBasicRouteGeniusModeController *)self routeGeniusMapSettings];
+      [routeGeniusMapSettings applyToMapViewAnimated:1 duration:0 completion:0.0];
     }
   }
 
   v101 = sub_100E093E0();
   if (os_log_type_enabled(v101, OS_LOG_TYPE_INFO))
   {
-    v102 = [v22 name];
-    v103 = [v22 uniqueRouteID];
-    v104 = [v103 UUIDString];
-    v105 = [v111 pointCount];
+    name2 = [v22 name];
+    uniqueRouteID = [v22 uniqueRouteID];
+    uUIDString = [uniqueRouteID UUIDString];
+    pointCount = [v111 pointCount];
     *buf = 134350082;
     *&buf[4] = self;
     v106 = @"NO";
     *&buf[12] = 2112;
-    *&buf[14] = v102;
+    *&buf[14] = name2;
     if (v108)
     {
       v106 = @"YES";
     }
 
     v126 = 2112;
-    v127 = v104;
+    v127 = uUIDString;
     v128 = 2048;
-    v129 = v105;
+    v129 = pointCount;
     v130 = 2112;
     v131 = v106;
     v107 = v106;
@@ -1081,66 +1081,66 @@ LABEL_92:
 
 - (void)updateSearchPins
 {
-  v3 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
-  v4 = [SearchResult carSearchResultFromDestination:v3];
+  entry = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
+  v4 = [SearchResult carSearchResultFromDestination:entry];
   [(CarBasicRouteGeniusModeController *)self setDestinationPin:v4];
 
   v5 = sub_100E093E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(CarBasicRouteGeniusModeController *)self destinationPin];
+    destinationPin = [(CarBasicRouteGeniusModeController *)self destinationPin];
     v7 = @"updating";
-    if (!v6)
+    if (!destinationPin)
     {
       v7 = @"clearing";
     }
 
     v20 = 134349314;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v7;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] %@ pins.", &v20, 0x16u);
   }
 
-  v8 = [(CarBasicRouteGeniusModeController *)self currentRoute];
-  v9 = v8 != 0;
+  currentRoute = [(CarBasicRouteGeniusModeController *)self currentRoute];
+  v9 = currentRoute != 0;
 
-  v10 = [(CarBasicRouteGeniusModeController *)self chromeViewController];
-  v11 = [v10 searchPinsManager];
-  [v11 setDisableStartPin:v9];
+  chromeViewController = [(CarBasicRouteGeniusModeController *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
+  [searchPinsManager setDisableStartPin:v9];
 
-  v12 = [(CarBasicRouteGeniusModeController *)self chromeViewController];
-  v13 = [v12 searchPinsManager];
-  [v13 setDisableEndPins:v9];
+  chromeViewController2 = [(CarBasicRouteGeniusModeController *)self chromeViewController];
+  searchPinsManager2 = [chromeViewController2 searchPinsManager];
+  [searchPinsManager2 setDisableEndPins:v9];
 
-  v14 = [(CarBasicRouteGeniusModeController *)self destinationPin];
+  destinationPin2 = [(CarBasicRouteGeniusModeController *)self destinationPin];
 
-  v15 = [(CarBasicRouteGeniusModeController *)self chromeViewController];
-  v16 = [v15 searchPinsManager];
-  v17 = v16;
-  if (v14)
+  chromeViewController3 = [(CarBasicRouteGeniusModeController *)self chromeViewController];
+  searchPinsManager3 = [chromeViewController3 searchPinsManager];
+  v17 = searchPinsManager3;
+  if (destinationPin2)
   {
     v18 = +[SearchResult currentLocationSearchResult];
-    v19 = [(CarBasicRouteGeniusModeController *)self destinationPin];
-    [v17 setStartPin:v18 endPin:v19];
+    destinationPin3 = [(CarBasicRouteGeniusModeController *)self destinationPin];
+    [v17 setStartPin:v18 endPin:destinationPin3];
   }
 
   else
   {
-    [v16 clearDirectionsPins];
+    [searchPinsManager3 clearDirectionsPins];
   }
 }
 
 - (void)_updateForCurrentRoute
 {
-  v3 = [(CarBasicRouteGeniusModeController *)self chromeViewController];
-  v4 = [v3 isCurrentContext:self];
+  chromeViewController = [(CarBasicRouteGeniusModeController *)self chromeViewController];
+  v4 = [chromeViewController isCurrentContext:self];
 
   if (v4)
   {
     currentlyDisplayedRoute = self->_currentlyDisplayedRoute;
-    v6 = [(CarBasicRouteGeniusModeController *)self currentRoute];
-    v7 = [(GEOComposedRoute *)currentlyDisplayedRoute _MapsCarPlay_isEqual:v6];
+    currentRoute = [(CarBasicRouteGeniusModeController *)self currentRoute];
+    v7 = [(GEOComposedRoute *)currentlyDisplayedRoute _MapsCarPlay_isEqual:currentRoute];
 
     v8 = sub_100E093E0();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
@@ -1148,31 +1148,31 @@ LABEL_92:
     {
       if (v9)
       {
-        v28 = [(CarBasicRouteGeniusModeController *)self currentRoute];
-        v10 = [v28 name];
-        v27 = [(CarBasicRouteGeniusModeController *)self currentRoute];
-        v11 = [v27 uniqueRouteID];
-        v12 = [v11 UUIDString];
-        v13 = [(CarBasicRouteGeniusModeController *)self currentRoute];
-        v14 = [v13 pointCount];
-        v15 = [(GEOComposedRoute *)self->_currentlyDisplayedRoute name];
-        v16 = [(GEOComposedRoute *)self->_currentlyDisplayedRoute uniqueRouteID];
-        v17 = [v16 UUIDString];
-        v18 = [(GEOComposedRoute *)self->_currentlyDisplayedRoute pointCount];
+        currentRoute2 = [(CarBasicRouteGeniusModeController *)self currentRoute];
+        name = [currentRoute2 name];
+        currentRoute3 = [(CarBasicRouteGeniusModeController *)self currentRoute];
+        uniqueRouteID = [currentRoute3 uniqueRouteID];
+        uUIDString = [uniqueRouteID UUIDString];
+        currentRoute4 = [(CarBasicRouteGeniusModeController *)self currentRoute];
+        pointCount = [currentRoute4 pointCount];
+        name2 = [(GEOComposedRoute *)self->_currentlyDisplayedRoute name];
+        uniqueRouteID2 = [(GEOComposedRoute *)self->_currentlyDisplayedRoute uniqueRouteID];
+        uUIDString2 = [uniqueRouteID2 UUIDString];
+        pointCount2 = [(GEOComposedRoute *)self->_currentlyDisplayedRoute pointCount];
         *buf = 134350594;
-        v30 = self;
+        selfCopy3 = self;
         v31 = 2112;
-        v32 = v10;
+        v32 = name;
         v33 = 2112;
-        v34 = v12;
+        v34 = uUIDString;
         v35 = 2048;
-        v36 = v14;
+        v36 = pointCount;
         v37 = 2112;
-        v38 = v15;
+        pointCount4 = name2;
         v39 = 2112;
-        v40 = v17;
+        v40 = uUIDString2;
         v41 = 2048;
-        v42 = v18;
+        v42 = pointCount2;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] setRoute, new route (name: %@, id: %@, points: %lu) was considered equal to current route (name: %@, id: %@, points: %lu), just recenter instead.", buf, 0x48u);
       }
 
@@ -1183,27 +1183,27 @@ LABEL_92:
     {
       if (v9)
       {
-        v20 = [(GEOComposedRoute *)self->_currentlyDisplayedRoute name];
-        v21 = [(GEOComposedRoute *)self->_currentlyDisplayedRoute pointCount];
-        v22 = [(CarBasicRouteGeniusModeController *)self currentRoute];
-        v23 = [v22 name];
-        v24 = [(CarBasicRouteGeniusModeController *)self currentRoute];
+        name3 = [(GEOComposedRoute *)self->_currentlyDisplayedRoute name];
+        pointCount3 = [(GEOComposedRoute *)self->_currentlyDisplayedRoute pointCount];
+        currentRoute5 = [(CarBasicRouteGeniusModeController *)self currentRoute];
+        name4 = [currentRoute5 name];
+        currentRoute6 = [(CarBasicRouteGeniusModeController *)self currentRoute];
         *buf = 134350082;
-        v30 = self;
+        selfCopy3 = self;
         v31 = 2112;
-        v32 = v20;
+        v32 = name3;
         v33 = 2048;
-        v34 = v21;
+        v34 = pointCount3;
         v35 = 2112;
-        v36 = v23;
+        v36 = name4;
         v37 = 2048;
-        v38 = [v24 pointCount];
+        pointCount4 = [currentRoute6 pointCount];
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] _updateForCurrentRoute route changed, updating pins and route annotations, previous: (%@, points: %lu), new: (%@, points: %lu)", buf, 0x34u);
       }
 
-      v25 = [(CarBasicRouteGeniusModeController *)self currentRoute];
+      currentRoute7 = [(CarBasicRouteGeniusModeController *)self currentRoute];
       v26 = self->_currentlyDisplayedRoute;
-      self->_currentlyDisplayedRoute = v25;
+      self->_currentlyDisplayedRoute = currentRoute7;
 
       [(CarBasicRouteGeniusModeController *)self updateRouteAnnotations];
       [(CarBasicRouteGeniusModeController *)self updateSearchPins];
@@ -1216,17 +1216,17 @@ LABEL_92:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v30 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "[%{public}p] _updateForCurrentRoute route changed, but we are not the current context; ignoring", buf, 0xCu);
     }
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
   }
 }
 
@@ -1236,7 +1236,7 @@ LABEL_92:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -1245,9 +1245,9 @@ LABEL_92:
   [(CarBasicRouteGeniusModeController *)&v4 dealloc];
 }
 
-- (CarBasicRouteGeniusModeController)initWithSuggestion:(id)a3
+- (CarBasicRouteGeniusModeController)initWithSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v10.receiver = self;
   v10.super_class = CarBasicRouteGeniusModeController;
   v6 = [(CarBasicRouteGeniusModeController *)&v10 init];
@@ -1259,12 +1259,12 @@ LABEL_92:
       *buf = 134349314;
       v12 = v6;
       v13 = 2112;
-      v14 = v5;
+      v14 = suggestionCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Initializing with suggestion: %@", buf, 0x16u);
     }
 
     v6->_state = 0;
-    objc_storeStrong(&v6->_currentSuggestion, a3);
+    objc_storeStrong(&v6->_currentSuggestion, suggestion);
     v8 = +[CarRouteGeniusService sharedService];
     [v8 registerObserver:v6];
   }

@@ -1,27 +1,27 @@
 @interface FileWriteStreamAdapter
-- (void)consumeData:(id)a3 withCompletionHandler:(id)a4;
-- (void)finishWithCompletionHandler:(id)a3;
-- (void)prepareWithCompletionHandler:(id)a3;
-- (void)resetWithCompletionHandler:(id)a3;
-- (void)suspendWithCompletionHandler:(id)a3;
-- (void)truncateWithCompletionHandler:(id)a3;
+- (void)consumeData:(id)data withCompletionHandler:(id)handler;
+- (void)finishWithCompletionHandler:(id)handler;
+- (void)prepareWithCompletionHandler:(id)handler;
+- (void)resetWithCompletionHandler:(id)handler;
+- (void)suspendWithCompletionHandler:(id)handler;
+- (void)truncateWithCompletionHandler:(id)handler;
 @end
 
 @implementation FileWriteStreamAdapter
 
-- (void)consumeData:(id)a3 withCompletionHandler:(id)a4
+- (void)consumeData:(id)data withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   verifier = self->_verifier;
   if (verifier)
   {
     v12 = 0;
-    v9 = sub_1002BE584(verifier, v6, &v12);
+    v9 = sub_1002BE584(verifier, dataCopy, &v12);
     v10 = v12;
     if (!v9)
     {
-      v7[2](v7, v10, 0);
+      handlerCopy[2](handlerCopy, v10, 0);
       goto LABEL_9;
     }
   }
@@ -31,25 +31,25 @@
     v10 = 0;
   }
 
-  if (-[NSOutputStream write:maxLength:](self->_outputStream, "write:maxLength:", [v6 bytes], objc_msgSend(v6, "length")) == -1)
+  if (-[NSOutputStream write:maxLength:](self->_outputStream, "write:maxLength:", [dataCopy bytes], objc_msgSend(dataCopy, "length")) == -1)
   {
-    v11 = [(NSOutputStream *)self->_outputStream streamError];
+    streamError = [(NSOutputStream *)self->_outputStream streamError];
   }
 
   else
   {
-    v11 = 0;
-    self->_savedBytes += [v6 length];
+    streamError = 0;
+    self->_savedBytes += [dataCopy length];
   }
 
-  v7[2](v7, v11, 0);
+  handlerCopy[2](handlerCopy, streamError, 0);
 
 LABEL_9:
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   verifier = self->_verifier;
   if (verifier)
   {
@@ -75,12 +75,12 @@ LABEL_9:
   }
 
   [(NSOutputStream *)self->_outputStream close];
-  (v4)[2](v4, v9);
+  (handlerCopy)[2](handlerCopy, v9);
 }
 
-- (void)prepareWithCompletionHandler:(id)a3
+- (void)prepareWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_digest)
   {
     v5 = sub_1002BE07C([DigestVerifier alloc], self->_digest, 0);
@@ -283,22 +283,22 @@ LABEL_23:
   self->_outputStream = v45;
 
   [(NSOutputStream *)self->_outputStream open];
-  v47 = [(NSOutputStream *)self->_outputStream streamError];
-  v4[2](v4, self->_savedBytes, v47);
+  streamError = [(NSOutputStream *)self->_outputStream streamError];
+  handlerCopy[2](handlerCopy, self->_savedBytes, streamError);
 }
 
-- (void)suspendWithCompletionHandler:(id)a3
+- (void)suspendWithCompletionHandler:(id)handler
 {
   outputStream = self->_outputStream;
-  v4 = a3;
+  handlerCopy = handler;
   [(NSOutputStream *)outputStream close];
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)truncateWithCompletionHandler:(id)a3
+- (void)truncateWithCompletionHandler:(id)handler
 {
   outputStream = self->_outputStream;
-  v5 = a3;
+  handlerCopy = handler;
   [(NSOutputStream *)outputStream close];
   v6 = +[NSFileManager defaultManager];
   downloadPath = self->_downloadPath;
@@ -306,15 +306,15 @@ LABEL_23:
   [v6 removeItemAtPath:downloadPath error:&v9];
   v8 = v9;
 
-  v5[2](v5, v8);
+  handlerCopy[2](handlerCopy, v8);
 }
 
-- (void)resetWithCompletionHandler:(id)a3
+- (void)resetWithCompletionHandler:(id)handler
 {
   outputStream = self->_outputStream;
-  v4 = a3;
+  handlerCopy = handler;
   [(NSOutputStream *)outputStream close];
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 @end

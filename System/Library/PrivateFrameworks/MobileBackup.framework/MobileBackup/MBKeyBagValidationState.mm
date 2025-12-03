@@ -1,29 +1,29 @@
 @interface MBKeyBagValidationState
-+ (BOOL)updateKeyBagCountAfterSnapshotCommit:(unint64_t)a3 persona:(id)a4 error:(id *)a5;
-+ (id)stateForPersona:(id)a3;
-- (BOOL)_writeStateToPlist:(id)a3 error:(id *)a4;
-- (BOOL)resetValidationStateWithPersona:(id)a3 error:(id *)a4;
-- (BOOL)shouldValidateKeyBagReferencesOnDate:(id)a3 period:(double)a4;
-- (BOOL)trackRepairedDeviceRecordWithPersona:(id)a3 error:(id *)a4;
-- (BOOL)trackSnapshotCommit:(unint64_t)a3 persona:(id)a4 error:(id *)a5;
-- (BOOL)trackValidationFailureWithInvalidKeyBagCount:(unint64_t)a3 validKeyBagCount:(unint64_t)a4 persona:(id)a5 error:(id *)a6;
-- (BOOL)trackValidationSuccess:(unint64_t)a3 persona:(id)a4 error:(id *)a5;
-- (MBKeyBagValidationState)initWithDictionaryRepresentation:(id)a3;
++ (BOOL)updateKeyBagCountAfterSnapshotCommit:(unint64_t)commit persona:(id)persona error:(id *)error;
++ (id)stateForPersona:(id)persona;
+- (BOOL)_writeStateToPlist:(id)plist error:(id *)error;
+- (BOOL)resetValidationStateWithPersona:(id)persona error:(id *)error;
+- (BOOL)shouldValidateKeyBagReferencesOnDate:(id)date period:(double)period;
+- (BOOL)trackRepairedDeviceRecordWithPersona:(id)persona error:(id *)error;
+- (BOOL)trackSnapshotCommit:(unint64_t)commit persona:(id)persona error:(id *)error;
+- (BOOL)trackValidationFailureWithInvalidKeyBagCount:(unint64_t)count validKeyBagCount:(unint64_t)bagCount persona:(id)persona error:(id *)error;
+- (BOOL)trackValidationSuccess:(unint64_t)success persona:(id)persona error:(id *)error;
+- (MBKeyBagValidationState)initWithDictionaryRepresentation:(id)representation;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation MBKeyBagValidationState
 
-- (MBKeyBagValidationState)initWithDictionaryRepresentation:(id)a3
+- (MBKeyBagValidationState)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v20.receiver = self;
   v20.super_class = MBKeyBagValidationState;
   v5 = [(MBKeyBagValidationState *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"DateOfLastSuccessfulValidation"];
+    v6 = [representationCopy objectForKeyedSubscript:@"DateOfLastSuccessfulValidation"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7 = v6;
@@ -37,59 +37,59 @@
     dateOfLastSuccessfulValidation = v5->_dateOfLastSuccessfulValidation;
     v5->_dateOfLastSuccessfulValidation = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"LastValidationResultKey"];
+    v9 = [representationCopy objectForKeyedSubscript:@"LastValidationResultKey"];
 
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v10 = [v9 unsignedLongLongValue];
+      unsignedLongLongValue = [v9 unsignedLongLongValue];
     }
 
     else
     {
-      v10 = 0;
+      unsignedLongLongValue = 0;
     }
 
-    v5->_lastValidationResult = v10;
-    v11 = [v4 objectForKeyedSubscript:@"LastSeenKeyBagReferenceCount"];
+    v5->_lastValidationResult = unsignedLongLongValue;
+    v11 = [representationCopy objectForKeyedSubscript:@"LastSeenKeyBagReferenceCount"];
 
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v12 = [v11 unsignedLongLongValue];
+      unsignedLongLongValue2 = [v11 unsignedLongLongValue];
     }
 
     else
     {
-      v12 = 0;
+      unsignedLongLongValue2 = 0;
     }
 
-    v5->_lastSeenKeyBagReferenceCount = v12;
-    v13 = [v4 objectForKeyedSubscript:@"ValidKeyBagReferenceCount"];
+    v5->_lastSeenKeyBagReferenceCount = unsignedLongLongValue2;
+    v13 = [representationCopy objectForKeyedSubscript:@"ValidKeyBagReferenceCount"];
 
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v14 = [v13 unsignedLongLongValue];
+      unsignedLongLongValue3 = [v13 unsignedLongLongValue];
     }
 
     else
     {
-      v14 = 0;
+      unsignedLongLongValue3 = 0;
     }
 
-    v5->_validKeyBagReferenceCount = v14;
-    v15 = [v4 objectForKeyedSubscript:@"InvalidKeyBagReferenceCount"];
+    v5->_validKeyBagReferenceCount = unsignedLongLongValue3;
+    v15 = [representationCopy objectForKeyedSubscript:@"InvalidKeyBagReferenceCount"];
 
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v16 = [v15 unsignedLongLongValue];
+      unsignedLongLongValue4 = [v15 unsignedLongLongValue];
     }
 
     else
     {
-      v16 = 0;
+      unsignedLongLongValue4 = 0;
     }
 
-    v5->_invalidKeyBagReferenceCount = v16;
-    v17 = [v4 objectForKeyedSubscript:@"RequiresDeviceRecordRepair"];
+    v5->_invalidKeyBagReferenceCount = unsignedLongLongValue4;
+    v17 = [representationCopy objectForKeyedSubscript:@"RequiresDeviceRecordRepair"];
 
     if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -101,7 +101,7 @@
       v5->_requiresDeviceRecordReferenceRepair = 0;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"RequiresEncryptionKeyRepair"];
+    v18 = [representationCopy objectForKeyedSubscript:@"RequiresEncryptionKeyRepair"];
 
     if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -145,14 +145,14 @@
   return v10;
 }
 
-- (BOOL)shouldValidateKeyBagReferencesOnDate:(id)a3 period:(double)a4
+- (BOOL)shouldValidateKeyBagReferencesOnDate:(id)date period:(double)period
 {
-  v6 = a3;
+  dateCopy = date;
   v7 = self->_dateOfLastSuccessfulValidation;
   if (v7)
   {
-    [v6 timeIntervalSinceDate:v7];
-    if (v8 <= a4)
+    [dateCopy timeIntervalSinceDate:v7];
+    if (v8 <= period)
     {
       if (self->_validKeyBagReferenceCount == self->_lastSeenKeyBagReferenceCount)
       {
@@ -201,7 +201,7 @@
         v19 = 2048;
         v20 = *&v9;
         v21 = 2048;
-        v22 = a4;
+        periodCopy = period;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "=keybag-validation= Should validate keybag refs - last successful validation was on %@ (%.2f < %.2f)", buf, 0x20u);
 LABEL_15:
         _MBLog();
@@ -226,15 +226,15 @@ LABEL_17:
   return v14;
 }
 
-- (BOOL)_writeStateToPlist:(id)a3 error:(id *)a4
+- (BOOL)_writeStateToPlist:(id)plist error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MBKeyBagValidationState *)self dictionaryRepresentation];
-  v8 = [NSPropertyListSerialization dataWithPropertyList:v7 format:200 options:0 error:a4];
+  plistCopy = plist;
+  dictionaryRepresentation = [(MBKeyBagValidationState *)self dictionaryRepresentation];
+  v8 = [NSPropertyListSerialization dataWithPropertyList:dictionaryRepresentation format:200 options:0 error:error];
   if (v8)
   {
-    v9 = [v6 keyBagValidationStatePlistPath];
-    v10 = [v8 writeToFile:v9 options:1 error:a4];
+    keyBagValidationStatePlistPath = [plistCopy keyBagValidationStatePlistPath];
+    v10 = [v8 writeToFile:keyBagValidationStatePlistPath options:1 error:error];
   }
 
   else
@@ -245,9 +245,9 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)resetValidationStateWithPersona:(id)a3 error:(id *)a4
+- (BOOL)resetValidationStateWithPersona:(id)persona error:(id *)error
 {
-  v6 = a3;
+  personaCopy = persona;
   v7 = +[NSDate distantPast];
   dateOfLastSuccessfulValidation = self->_dateOfLastSuccessfulValidation;
   self->_dateOfLastSuccessfulValidation = v7;
@@ -255,7 +255,7 @@ LABEL_17:
   *&self->_requiresDeviceRecordReferenceRepair = 0;
   *&self->_lastValidationResult = 0u;
   *&self->_invalidKeyBagReferenceCount = 0u;
-  v9 = [(MBKeyBagValidationState *)self _writeStateToPlist:v6 error:a4];
+  v9 = [(MBKeyBagValidationState *)self _writeStateToPlist:personaCopy error:error];
 
   if (v9)
   {
@@ -271,9 +271,9 @@ LABEL_17:
   return v9;
 }
 
-- (BOOL)trackValidationSuccess:(unint64_t)a3 persona:(id)a4 error:(id *)a5
+- (BOOL)trackValidationSuccess:(unint64_t)success persona:(id)persona error:(id *)error
 {
-  v8 = a4;
+  personaCopy = persona;
   if (self->_requiresEncryptionKeyRepair)
   {
     __assert_rtn("[MBKeyBagValidationState trackValidationSuccess:persona:error:]", "MBKeyBagValidationState.m", 163, "!_requiresEncryptionKeyRepair");
@@ -284,23 +284,23 @@ LABEL_17:
     __assert_rtn("[MBKeyBagValidationState trackValidationSuccess:persona:error:]", "MBKeyBagValidationState.m", 164, "!_requiresDeviceRecordReferenceRepair");
   }
 
-  v9 = v8;
+  v9 = personaCopy;
   v10 = +[NSDate now];
   dateOfLastSuccessfulValidation = self->_dateOfLastSuccessfulValidation;
   self->_dateOfLastSuccessfulValidation = v10;
 
   self->_lastValidationResult = 1;
-  self->_validKeyBagReferenceCount = a3;
+  self->_validKeyBagReferenceCount = success;
   self->_invalidKeyBagReferenceCount = 0;
-  self->_lastSeenKeyBagReferenceCount = a3;
-  v12 = [(MBKeyBagValidationState *)self _writeStateToPlist:v9 error:a5];
+  self->_lastSeenKeyBagReferenceCount = success;
+  v12 = [(MBKeyBagValidationState *)self _writeStateToPlist:v9 error:error];
   if (v12)
   {
     v13 = MBGetDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v16 = a3;
+      successCopy = success;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "=keybag-validation= Tracked keybag validation success (%llu)", buf, 0xCu);
       _MBLog();
     }
@@ -309,14 +309,14 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)trackValidationFailureWithInvalidKeyBagCount:(unint64_t)a3 validKeyBagCount:(unint64_t)a4 persona:(id)a5 error:(id *)a6
+- (BOOL)trackValidationFailureWithInvalidKeyBagCount:(unint64_t)count validKeyBagCount:(unint64_t)bagCount persona:(id)persona error:(id *)error
 {
   *&self->_requiresDeviceRecordReferenceRepair = 257;
   self->_lastValidationResult = 2;
-  self->_validKeyBagReferenceCount = a4;
-  self->_invalidKeyBagReferenceCount = a3;
-  self->_lastSeenKeyBagReferenceCount = a4 + a3;
-  v6 = [(MBKeyBagValidationState *)self _writeStateToPlist:a5 error:a6];
+  self->_validKeyBagReferenceCount = bagCount;
+  self->_invalidKeyBagReferenceCount = count;
+  self->_lastSeenKeyBagReferenceCount = bagCount + count;
+  v6 = [(MBKeyBagValidationState *)self _writeStateToPlist:persona error:error];
   if (v6)
   {
     v7 = MBGetDefaultLog();
@@ -331,10 +331,10 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)trackRepairedDeviceRecordWithPersona:(id)a3 error:(id *)a4
+- (BOOL)trackRepairedDeviceRecordWithPersona:(id)persona error:(id *)error
 {
   self->_requiresDeviceRecordReferenceRepair = 0;
-  v4 = [(MBKeyBagValidationState *)self _writeStateToPlist:a3 error:a4];
+  v4 = [(MBKeyBagValidationState *)self _writeStateToPlist:persona error:error];
   if (v4)
   {
     v5 = MBGetDefaultLog();
@@ -349,18 +349,18 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)trackSnapshotCommit:(unint64_t)a3 persona:(id)a4 error:(id *)a5
+- (BOOL)trackSnapshotCommit:(unint64_t)commit persona:(id)persona error:(id *)error
 {
-  v8 = a4;
+  personaCopy = persona;
   if (self->_requiresDeviceRecordReferenceRepair)
   {
     __assert_rtn("[MBKeyBagValidationState trackSnapshotCommit:persona:error:]", "MBKeyBagValidationState.m", 201, "!_requiresDeviceRecordReferenceRepair");
   }
 
-  v9 = v8;
+  v9 = personaCopy;
   self->_requiresEncryptionKeyRepair = 0;
-  self->_lastSeenKeyBagReferenceCount = a3;
-  v10 = [(MBKeyBagValidationState *)self _writeStateToPlist:v8 error:a5];
+  self->_lastSeenKeyBagReferenceCount = commit;
+  v10 = [(MBKeyBagValidationState *)self _writeStateToPlist:personaCopy error:error];
   if (v10)
   {
     v11 = MBGetDefaultLog();
@@ -375,13 +375,13 @@ LABEL_17:
   return v10;
 }
 
-+ (BOOL)updateKeyBagCountAfterSnapshotCommit:(unint64_t)a3 persona:(id)a4 error:(id *)a5
++ (BOOL)updateKeyBagCountAfterSnapshotCommit:(unint64_t)commit persona:(id)persona error:(id *)error
 {
-  v7 = a4;
-  v8 = [objc_opt_class() stateForPersona:v7];
-  LOBYTE(a5) = [v8 trackSnapshotCommit:a3 persona:v7 error:a5];
+  personaCopy = persona;
+  v8 = [objc_opt_class() stateForPersona:personaCopy];
+  LOBYTE(error) = [v8 trackSnapshotCommit:commit persona:personaCopy error:error];
 
-  return a5;
+  return error;
 }
 
 - (id)description
@@ -402,16 +402,16 @@ LABEL_17:
   return [NSString stringWithFormat:@"<%s: lastResult=%@(%@) requiresDeviceRecordRepair=%d requiresEncryptionKeyRepair=%d validRefCount=%llu invalidRefCount=%llu refCountAtLastCommit=%llu>", Name, v6, self->_dateOfLastSuccessfulValidation, self->_requiresDeviceRecordReferenceRepair, self->_requiresEncryptionKeyRepair, self->_validKeyBagReferenceCount, self->_invalidKeyBagReferenceCount, self->_lastSeenKeyBagReferenceCount];
 }
 
-+ (id)stateForPersona:(id)a3
++ (id)stateForPersona:(id)persona
 {
-  v3 = [a3 keyBagValidationStatePlistPath];
+  keyBagValidationStatePlistPath = [persona keyBagValidationStatePlistPath];
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:keyBagValidationStatePlistPath];
 
   if (v5)
   {
     v16 = 0;
-    v6 = [NSData dataWithContentsOfFile:v3 options:0 error:&v16];
+    v6 = [NSData dataWithContentsOfFile:keyBagValidationStatePlistPath options:0 error:&v16];
     v7 = v16;
     if (v6)
     {

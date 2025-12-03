@@ -1,23 +1,23 @@
 @interface SRSpeechAlternativeCellView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SRSpeechAlternativeCellView)initWithTitle:(id)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SRSpeechAlternativeCellView)initWithTitle:(id)title;
 - (UIEdgeInsets)edgeInsets;
 - (void)updateConstraints;
 @end
 
 @implementation SRSpeechAlternativeCellView
 
-- (SRSpeechAlternativeCellView)initWithTitle:(id)a3
+- (SRSpeechAlternativeCellView)initWithTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v15.receiver = self;
   v15.super_class = SRSpeechAlternativeCellView;
   v6 = [(SRSpeechAlternativeCellView *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_titleString, a3);
+    objc_storeStrong(&v6->_titleString, title);
     v8 = objc_alloc_init(UIView);
     containerView = v7->_containerView;
     v7->_containerView = v8;
@@ -33,7 +33,7 @@
     v13 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
     [(UILabel *)v12 setFont:v13];
 
-    [(UILabel *)v7->_displayTextLabel setAttributedText:v5];
+    [(UILabel *)v7->_displayTextLabel setAttributedText:titleCopy];
     [(UILabel *)v7->_displayTextLabel setNumberOfLines:0];
     [(UIView *)v7->_containerView addSubview:v7->_displayTextLabel];
     [(SRSpeechAlternativeCellView *)v7 setNeedsUpdateConstraints];
@@ -70,10 +70,10 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SRSpeechAlternativeCellView *)self bounds];
   v10 = x;
   v11 = y;
@@ -81,10 +81,10 @@
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UILabel *)self->_displayTextLabel sizeThatFits:a3.width - (SiriUIPlatterStyle[23] + SiriUIPlatterStyle[25]), 1.79769313e308];
+  width = fits.width;
+  [(UILabel *)self->_displayTextLabel sizeThatFits:fits.width - (SiriUIPlatterStyle[23] + SiriUIPlatterStyle[25]), 1.79769313e308];
   v5 = v4 + SiriUIPlatterStyle[22] + SiriUIPlatterStyle[24];
   v6 = SiriUIPlatterStyle[26];
   if (v5 >= v6)

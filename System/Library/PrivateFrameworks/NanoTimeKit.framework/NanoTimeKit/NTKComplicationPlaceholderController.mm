@@ -1,27 +1,27 @@
 @interface NTKComplicationPlaceholderController
-+ (id)templateForFamily:(int64_t)a3 complication:(id)a4 variant:(id)a5;
++ (id)templateForFamily:(int64_t)family complication:(id)complication variant:(id)variant;
 @end
 
 @implementation NTKComplicationPlaceholderController
 
-+ (id)templateForFamily:(int64_t)a3 complication:(id)a4 variant:(id)a5
++ (id)templateForFamily:(int64_t)family complication:(id)complication variant:(id)variant
 {
   v7 = MEMORY[0x277CBBB10];
-  v8 = a5;
-  v9 = a4;
+  variantCopy = variant;
+  complicationCopy = complication;
   v10 = [v7 fullColorImageProviderWithImageViewClass:objc_opt_class()];
   v11 = objc_opt_new();
-  [v11 setObject:v8 forKeyedSubscript:@"NTKComplicationPlaceholderComplicationVariantKey"];
+  [v11 setObject:variantCopy forKeyedSubscript:@"NTKComplicationPlaceholderComplicationVariantKey"];
 
-  v12 = [v9 appIdentifier];
+  appIdentifier = [complicationCopy appIdentifier];
 
-  if (v12)
+  if (appIdentifier)
   {
-    [v11 setObject:v12 forKeyedSubscript:@"NTKComplicationPlaceholderAppIdentifierKey"];
+    [v11 setObject:appIdentifier forKeyedSubscript:@"NTKComplicationPlaceholderAppIdentifierKey"];
   }
 
   [v10 setMetadata:v11];
-  switch(a3)
+  switch(family)
   {
     case 8:
       v13 = 0x277CBB8B8;

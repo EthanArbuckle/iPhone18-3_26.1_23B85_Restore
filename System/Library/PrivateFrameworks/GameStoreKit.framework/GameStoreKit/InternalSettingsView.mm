@@ -1,26 +1,26 @@
 @interface InternalSettingsView
-- (_TtC12GameStoreKitP33_000593A25936563060AC4864E1E5232D20InternalSettingsView)initWithCoder:(id)a3;
-- (_TtC12GameStoreKitP33_000593A25936563060AC4864E1E5232D20InternalSettingsView)initWithFrame:(CGRect)a3;
-- (void)willMoveToWindow:(id)a3;
+- (_TtC12GameStoreKitP33_000593A25936563060AC4864E1E5232D20InternalSettingsView)initWithCoder:(id)coder;
+- (_TtC12GameStoreKitP33_000593A25936563060AC4864E1E5232D20InternalSettingsView)initWithFrame:(CGRect)frame;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation InternalSettingsView
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = a3;
-  v6 = self;
-  sub_24F7374B4(a3);
+  windowCopy = window;
+  selfCopy = self;
+  sub_24F7374B4(window);
 }
 
-- (_TtC12GameStoreKitP33_000593A25936563060AC4864E1E5232D20InternalSettingsView)initWithCoder:(id)a3
+- (_TtC12GameStoreKitP33_000593A25936563060AC4864E1E5232D20InternalSettingsView)initWithCoder:(id)coder
 {
   result = sub_24F92CA88();
   __break(1u);
   return result;
 }
 
-- (_TtC12GameStoreKitP33_000593A25936563060AC4864E1E5232D20InternalSettingsView)initWithFrame:(CGRect)a3
+- (_TtC12GameStoreKitP33_000593A25936563060AC4864E1E5232D20InternalSettingsView)initWithFrame:(CGRect)frame
 {
   result = sub_24F92CA88();
   __break(1u);

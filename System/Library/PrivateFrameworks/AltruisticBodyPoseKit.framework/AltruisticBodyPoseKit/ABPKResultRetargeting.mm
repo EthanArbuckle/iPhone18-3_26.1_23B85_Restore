@@ -1,14 +1,14 @@
 @interface ABPKResultRetargeting
-- (ABPKResultRetargeting)initWithModelJointTransforms:(id *)a3 localJointTransformsSRT:(const ABPKSRT *)a4 numberOfTransforms:(unint64_t)a5 liftedSkeletonData:(id)a6 identifier:(id)a7;
+- (ABPKResultRetargeting)initWithModelJointTransforms:(id *)transforms localJointTransformsSRT:(const ABPKSRT *)t numberOfTransforms:(unint64_t)ofTransforms liftedSkeletonData:(id)data identifier:(id)identifier;
 - (id).cxx_construct;
 @end
 
 @implementation ABPKResultRetargeting
 
-- (ABPKResultRetargeting)initWithModelJointTransforms:(id *)a3 localJointTransformsSRT:(const ABPKSRT *)a4 numberOfTransforms:(unint64_t)a5 liftedSkeletonData:(id)a6 identifier:(id)a7
+- (ABPKResultRetargeting)initWithModelJointTransforms:(id *)transforms localJointTransformsSRT:(const ABPKSRT *)t numberOfTransforms:(unint64_t)ofTransforms liftedSkeletonData:(id)data identifier:(id)identifier
 {
-  v13 = a6;
-  v14 = a7;
+  dataCopy = data;
+  identifierCopy = identifier;
   v47.receiver = self;
   v47.super_class = ABPKResultRetargeting;
   v15 = [(ABPKResultRetargeting *)&v47 init];
@@ -16,7 +16,7 @@
   {
     v45 = 0uLL;
     v46 = 0;
-    std::vector<simd_float4x4>::__init_with_size[abi:ne200100]<simd_float4x4 const*,simd_float4x4 const*>(&v45, a3, a3 + 64 * a5, a5);
+    std::vector<simd_float4x4>::__init_with_size[abi:ne200100]<simd_float4x4 const*,simd_float4x4 const*>(&v45, transforms, transforms + 64 * ofTransforms, ofTransforms);
     begin = v15->_modelTransforms.__begin_;
     if (begin)
     {
@@ -31,7 +31,7 @@
     v15->_modelTransforms.__cap_ = v46;
     v45 = 0uLL;
     v46 = 0;
-    std::vector<ABPKSRT>::__init_with_size[abi:ne200100]<ABPKSRT const*,ABPKSRT const*>(&v45, a4, a4 + 48 * a5, a5);
+    std::vector<ABPKSRT>::__init_with_size[abi:ne200100]<ABPKSRT const*,ABPKSRT const*>(&v45, t, t + 48 * ofTransforms, ofTransforms);
     p_localTransformsSRT = &v15->_localTransformsSRT;
     v17 = v15->_localTransformsSRT.__begin_;
     if (v17)
@@ -45,8 +45,8 @@
 
     *&v15->_localTransformsSRT.__begin_ = v45;
     v15->_localTransformsSRT.__cap_ = v46;
-    std::vector<simd_float4x4>::resize(&v15->_localTransforms.__begin_, a5);
-    if (a5)
+    std::vector<simd_float4x4>::resize(&v15->_localTransforms.__begin_, ofTransforms);
+    if (ofTransforms)
     {
       v19 = 0;
       v20 = 0;
@@ -79,14 +79,14 @@
         v39[3] = v43;
         v20 += 64;
         v19 += 48;
-        --a5;
+        --ofTransforms;
       }
 
-      while (a5);
+      while (ofTransforms);
     }
 
-    objc_storeStrong(&v15->_liftingResult, a6);
-    objc_storeStrong(&v15->_identifier, a7);
+    objc_storeStrong(&v15->_liftingResult, data);
+    objc_storeStrong(&v15->_identifier, identifier);
   }
 
   return v15;

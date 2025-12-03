@@ -1,15 +1,15 @@
 @interface BSUIVibrancyEffectViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation BSUIVibrancyEffectViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BSUIVibrancyEffectView" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"BSUIVibrancyEffectView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BSUIVibrancyEffectView" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"BSUIVibrancyEffectView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements
@@ -17,19 +17,19 @@
   if ([(BSUIVibrancyEffectViewAccessibility *)self safeBoolForKey:@"isEnabled"])
   {
     v3 = [(BSUIVibrancyEffectViewAccessibility *)self safeUIViewForKey:@"contentView"];
-    v4 = [v3 subviews];
+    subviews = [v3 subviews];
 
-    [v4 enumerateObjectsUsingBlock:&__block_literal_global_0];
+    [subviews enumerateObjectsUsingBlock:&__block_literal_global_0];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = BSUIVibrancyEffectViewAccessibility;
-    v4 = [(BSUIVibrancyEffectViewAccessibility *)&v6 accessibilityElements];
+    subviews = [(BSUIVibrancyEffectViewAccessibility *)&v6 accessibilityElements];
   }
 
-  return v4;
+  return subviews;
 }
 
 @end

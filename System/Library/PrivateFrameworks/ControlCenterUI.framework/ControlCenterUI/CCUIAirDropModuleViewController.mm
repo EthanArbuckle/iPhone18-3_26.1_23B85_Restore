@@ -5,7 +5,7 @@
 - (CCUIConnectivityManager)connectivityManager;
 - (id)_everyoneMenuItemTextKey;
 - (id)_glyphImage;
-- (id)contextMenuPreviewForControlTemplateView:(id)a3;
+- (id)contextMenuPreviewForControlTemplateView:(id)view;
 - (void)_handleButtonTap;
 - (void)_updateAirDropMenuItems;
 - (void)_updateGlyphImages;
@@ -13,8 +13,8 @@
 - (void)startObservingStateChangesIfNecessary;
 - (void)stopObservingStateChangesIfNecessary;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CCUIAirDropModuleViewController
@@ -43,9 +43,9 @@
   v19.receiver = self;
   v19.super_class = CCUIAirDropModuleViewController;
   [(CCUIButtonModuleViewController *)&v19 viewDidLoad];
-  v3 = [(CCUIAirDropModuleViewController *)self _glyphImage];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  v5 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v3 highlightColor:v4 useLightStyle:1];
+  _glyphImage = [(CCUIAirDropModuleViewController *)self _glyphImage];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v5 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:_glyphImage highlightColor:systemBlueColor useLightStyle:1];
   [v5 setUseAutomaticSymbolColors:1];
   v6 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__glyphViewForExpandedConnectivityModuleTapped];
   [v5 addGestureRecognizer:v6];
@@ -53,7 +53,7 @@
   self->_glyphViewForExpandedConnectivityModule = v5;
   v8 = v5;
 
-  [(CCUIButtonModuleViewController *)self setGlyphImage:v3];
+  [(CCUIButtonModuleViewController *)self setGlyphImage:_glyphImage];
   v9 = objc_alloc_init(MEMORY[0x277CFC978]);
   [v9 setCustomGlyphView:v8];
   [v9 setShowsMenuAsPrimaryAction:1];
@@ -66,7 +66,7 @@
 
   [(CCUIButtonModuleViewController *)self setTitle:v13];
   [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setTitle:v13];
-  v14 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v3 highlightColor:v4 useLightStyle:1];
+  v14 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:_glyphImage highlightColor:systemBlueColor useLightStyle:1];
   [v14 setUseIndependentAlpha:1];
   [v14 setDynamicLayoutEnabled:1];
   [v14 setUseAutomaticSymbolColors:1];
@@ -75,29 +75,29 @@
   self->_buttonViewForCollapsedConnectivityModule = v14;
   v16 = v14;
 
-  v17 = [MEMORY[0x277D75348] systemBlueColor];
+  systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
 
-  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:v17];
-  v18 = [(CCUIButtonModuleViewController *)self _templateView];
-  [v18 setContextMenuDelegate:self];
-  [v18 setShowsMenuAsPrimaryAction:1];
+  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:systemBlueColor2];
+  _templateView = [(CCUIButtonModuleViewController *)self _templateView];
+  [_templateView setContextMenuDelegate:self];
+  [_templateView setShowsMenuAsPrimaryAction:1];
   [(CCUIAirDropModuleViewController *)self _updateAirDropMenuItems];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CCUIAirDropModuleViewController;
-  [(CCUIAirDropModuleViewController *)&v4 viewWillAppear:a3];
+  [(CCUIAirDropModuleViewController *)&v4 viewWillAppear:appear];
   [(CCUIAirDropModuleViewController *)self startObservingStateChangesIfNecessary];
   [(CCUIAirDropModuleViewController *)self _updateState];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CCUIAirDropModuleViewController;
-  [(CCUIAirDropModuleViewController *)&v4 viewWillDisappear:a3];
+  [(CCUIAirDropModuleViewController *)&v4 viewWillDisappear:disappear];
   [(CCUIAirDropModuleViewController *)self stopObservingStateChangesIfNecessary];
 }
 
@@ -111,8 +111,8 @@
 
     [(SFAirDropDiscoveryController *)self->_airDropDiscoveryController setDelegate:self];
     [(SFAirDropDiscoveryController *)self->_airDropDiscoveryController setAlertControllerDelegate:self];
-    v5 = [MEMORY[0x277D262A0] sharedConnection];
-    [v5 registerObserver:self];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:self];
 
     self->_observingStateChanges = 1;
   }
@@ -127,26 +127,26 @@
     airDropDiscoveryController = self->_airDropDiscoveryController;
     self->_airDropDiscoveryController = 0;
 
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    [v4 unregisterObserver:self];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] unregisterObserver:self];
 
     self->_observingStateChanges = 0;
   }
 }
 
-- (id)contextMenuPreviewForControlTemplateView:(id)a3
+- (id)contextMenuPreviewForControlTemplateView:(id)view
 {
-  if (self->_templateViewForExpandedConnectivityModule == a3)
+  if (self->_templateViewForExpandedConnectivityModule == view)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = [(CCUIAirDropModuleViewController *)self view];
-    v4 = [v3 superview];
+    view = [(CCUIAirDropModuleViewController *)self view];
+    superview = [view superview];
 
-    v5 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v4];
+    v5 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:superview];
   }
 
   return v5;
@@ -154,14 +154,14 @@
 
 - (void)_updateAirDropMenuItems
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"CCUIAirDropModuleViewController.m" lineNumber:224 description:@"This must be called on the main thread"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CCUIAirDropModuleViewController.m" lineNumber:224 description:@"This must be called on the main thread"];
 }
 
 - (id)_glyphImage
 {
-  v3 = [(CCUIButtonModuleViewController *)self contentMetrics];
-  v4 = [v3 symbolConfiguration];
+  contentMetrics = [(CCUIButtonModuleViewController *)self contentMetrics];
+  symbolConfiguration = [contentMetrics symbolConfiguration];
   if ([(CCUIButtonModuleViewController *)self contentRenderingMode]== 1)
   {
     v5 = 2;
@@ -173,22 +173,22 @@
   }
 
   v6 = [MEMORY[0x277D755D0] configurationWithScale:v5];
-  v7 = [v4 configurationByApplyingConfiguration:v6];
+  v7 = [symbolConfiguration configurationByApplyingConfiguration:v6];
 
   v8 = [MEMORY[0x277D755B8] _systemImageNamed:@"airdrop" withConfiguration:v7];
-  v9 = [v8 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v8 imageFlippedForRightToLeftLayoutDirection];
 
-  return v9;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
 - (void)_updateGlyphImages
 {
-  v5 = [(CCUIAirDropModuleViewController *)self _glyphImage];
-  [(CCUIButtonModuleViewController *)self setGlyphImage:v5];
-  v3 = [(CCUIAirDropModuleViewController *)self buttonViewForCollapsedConnectivityModule];
-  [v3 setGlyphImage:v5];
-  v4 = [(CCUIAirDropModuleViewController *)self glyphViewForExpandedConnectivityModule];
-  [v4 setGlyphImage:v5];
+  _glyphImage = [(CCUIAirDropModuleViewController *)self _glyphImage];
+  [(CCUIButtonModuleViewController *)self setGlyphImage:_glyphImage];
+  buttonViewForCollapsedConnectivityModule = [(CCUIAirDropModuleViewController *)self buttonViewForCollapsedConnectivityModule];
+  [buttonViewForCollapsedConnectivityModule setGlyphImage:_glyphImage];
+  glyphViewForExpandedConnectivityModule = [(CCUIAirDropModuleViewController *)self glyphViewForExpandedConnectivityModule];
+  [glyphViewForExpandedConnectivityModule setGlyphImage:_glyphImage];
 }
 
 - (void)_handleButtonTap
@@ -214,45 +214,45 @@
 
 - (BOOL)_isAirDropRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isAirDropAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isAirDropAllowed = [mEMORY[0x277D262A0] isAirDropAllowed];
 
-  return v3 ^ 1;
+  return isAirDropAllowed ^ 1;
 }
 
 - (BOOL)_isEduModeEnabled
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 isMultiUser];
-  v4 = [v2 currentUser];
-  v5 = [v4 userType];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  isMultiUser = [mEMORY[0x277D77BF8] isMultiUser];
+  currentUser = [mEMORY[0x277D77BF8] currentUser];
+  userType = [currentUser userType];
 
-  if (v5 != 1)
+  if (userType != 1)
   {
-    v3 = 0;
+    isMultiUser = 0;
   }
 
-  return v3;
+  return isMultiUser;
 }
 
 - (void)_updateState
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(CCUIAirDropModuleViewController *)self _isAirDropRestricted];
-  [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setEnabled:!v3];
-  [(CCUIRoundButton *)self->_glyphViewForExpandedConnectivityModule setEnabled:!v3];
-  [(CCUIRoundButton *)self->_buttonViewForCollapsedConnectivityModule setEnabled:!v3];
-  v4 = [(SFAirDropDiscoveryController *)self->_airDropDiscoveryController discoverableMode];
+  _isAirDropRestricted = [(CCUIAirDropModuleViewController *)self _isAirDropRestricted];
+  [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setEnabled:!_isAirDropRestricted];
+  [(CCUIRoundButton *)self->_glyphViewForExpandedConnectivityModule setEnabled:!_isAirDropRestricted];
+  [(CCUIRoundButton *)self->_buttonViewForCollapsedConnectivityModule setEnabled:!_isAirDropRestricted];
+  discoverableMode = [(SFAirDropDiscoveryController *)self->_airDropDiscoveryController discoverableMode];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = v5;
   v7 = @"CONTROL_CENTER_AIRDROP_RECEIVING_OFF_ONE_LINE";
-  if (v4 == 2)
+  if (discoverableMode == 2)
   {
     v7 = @"CONTROL_CENTER_AIRDROP_EVERYONE_ONE_LINE";
   }
 
-  v8 = v4 - 1;
-  if (v4 == 1)
+  v8 = discoverableMode - 1;
+  if (discoverableMode == 1)
   {
     v9 = @"CONTROL_CENTER_AIRDROP_CONTACTS_ONE_LINE";
   }
@@ -271,7 +271,7 @@
   [(CCUIButtonModuleViewController *)self setSelected:v8 < 2];
   [(CCUIRoundButton *)self->_glyphViewForExpandedConnectivityModule setSelected:v8 < 2];
   [(CCUIRoundButton *)self->_buttonViewForCollapsedConnectivityModule setSelected:v8 < 2];
-  [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setShowsMenuAffordance:!v3];
+  [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setShowsMenuAffordance:!_isAirDropRestricted];
   [(CCUIAirDropModuleViewController *)self _updateAirDropMenuItems];
   v11 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))

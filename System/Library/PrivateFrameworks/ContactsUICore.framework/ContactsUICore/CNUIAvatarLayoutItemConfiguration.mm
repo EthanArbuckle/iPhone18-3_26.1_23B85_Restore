@@ -1,13 +1,13 @@
 @interface CNUIAvatarLayoutItemConfiguration
-- (CGRect)itemFrameInContainingBounds:(CGRect)a3 isRTL:(BOOL)a4;
-- (CNUIAvatarLayoutItemConfiguration)initWithSize:(double)a3 x:(double)a4 y:(double)a5 baseSize:(double)a6;
-- (void)animateLayer:(id)a3 to:(CGRect)a4 within:(CGRect)a5 withAvatarIndex:(int64_t)a6;
-- (void)updateLayer:(id)a3 inBounds:(CGRect)a4 atIndex:(int64_t)a5 isRTL:(BOOL)a6 layoutType:(unint64_t)a7;
+- (CGRect)itemFrameInContainingBounds:(CGRect)bounds isRTL:(BOOL)l;
+- (CNUIAvatarLayoutItemConfiguration)initWithSize:(double)size x:(double)x y:(double)y baseSize:(double)baseSize;
+- (void)animateLayer:(id)layer to:(CGRect)to within:(CGRect)within withAvatarIndex:(int64_t)index;
+- (void)updateLayer:(id)layer inBounds:(CGRect)bounds atIndex:(int64_t)index isRTL:(BOOL)l layoutType:(unint64_t)type;
 @end
 
 @implementation CNUIAvatarLayoutItemConfiguration
 
-- (CNUIAvatarLayoutItemConfiguration)initWithSize:(double)a3 x:(double)a4 y:(double)a5 baseSize:(double)a6
+- (CNUIAvatarLayoutItemConfiguration)initWithSize:(double)size x:(double)x y:(double)y baseSize:(double)baseSize
 {
   v14.receiver = self;
   v14.super_class = CNUIAvatarLayoutItemConfiguration;
@@ -15,19 +15,19 @@
   v11 = v10;
   if (v10)
   {
-    v10->_size = a3;
-    v10->_x = a4;
-    v10->_y = a5;
-    v10->_baseSize = a6;
+    v10->_size = size;
+    v10->_x = x;
+    v10->_y = y;
+    v10->_baseSize = baseSize;
     v12 = v10;
   }
 
   return v11;
 }
 
-- (CGRect)itemFrameInContainingBounds:(CGRect)a3 isRTL:(BOOL)a4
+- (CGRect)itemFrameInContainingBounds:(CGRect)bounds isRTL:(BOOL)l
 {
-  if (a3.size.width <= 0.0 || (height = a3.size.height, a3.size.height <= 0.0))
+  if (bounds.size.width <= 0.0 || (height = bounds.size.height, bounds.size.height <= 0.0))
   {
     v17 = *MEMORY[0x1E695F058];
     v20 = *(MEMORY[0x1E695F058] + 8);
@@ -37,10 +37,10 @@
 
   else
   {
-    v5 = a4;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    lCopy = l;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
     [(CNUIAvatarLayoutItemConfiguration *)self size];
     v11 = v10;
     [(CNUIAvatarLayoutItemConfiguration *)self baseSize];
@@ -52,7 +52,7 @@
     v24.size.height = height;
     v15 = CGRectGetMidX(v24) - v14 * 0.5;
     [(CNUIAvatarLayoutItemConfiguration *)self x];
-    if (v5)
+    if (lCopy)
     {
       v16 = -v16;
     }
@@ -77,35 +77,35 @@
   return result;
 }
 
-- (void)updateLayer:(id)a3 inBounds:(CGRect)a4 atIndex:(int64_t)a5 isRTL:(BOOL)a6 layoutType:(unint64_t)a7
+- (void)updateLayer:(id)layer inBounds:(CGRect)bounds atIndex:(int64_t)index isRTL:(BOOL)l layoutType:(unint64_t)type
 {
-  v8 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a3;
-  [(CNUIAvatarLayoutItemConfiguration *)self itemFrameInContainingBounds:v8 isRTL:x, y, width, height];
-  if (a7 == 3)
+  lCopy = l;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layerCopy = layer;
+  [(CNUIAvatarLayoutItemConfiguration *)self itemFrameInContainingBounds:lCopy isRTL:x, y, width, height];
+  if (type == 3)
   {
-    [CNUIAvatarLayoutItemConfiguration animateLayer:"animateLayer:to:within:withAvatarIndex:" to:v15 within:a5 withAvatarIndex:?];
+    [CNUIAvatarLayoutItemConfiguration animateLayer:"animateLayer:to:within:withAvatarIndex:" to:layerCopy within:index withAvatarIndex:?];
   }
 
   else
   {
-    [v15 setFrame:?];
-    [v15 setZPosition:-a5];
+    [layerCopy setFrame:?];
+    [layerCopy setZPosition:-index];
   }
 }
 
-- (void)animateLayer:(id)a3 to:(CGRect)a4 within:(CGRect)a5 withAvatarIndex:(int64_t)a6
+- (void)animateLayer:(id)layer to:(CGRect)to within:(CGRect)within withAvatarIndex:(int64_t)index
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  [v9 frame];
+  width = to.size.width;
+  height = to.size.height;
+  y = to.origin.y;
+  x = to.origin.x;
+  layerCopy = layer;
+  [layerCopy frame];
   if (CGRectIsEmpty(v51))
   {
     v52.origin.x = x;
@@ -117,7 +117,7 @@
     v53.origin.y = y;
     v53.size.width = width;
     v53.size.height = height;
-    [v9 setPosition:{MidX, CGRectGetMidY(v53)}];
+    [layerCopy setPosition:{MidX, CGRectGetMidY(v53)}];
     v11 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"bounds"];
     [v11 setDuration:0.5];
     [v11 setMass:2.0];
@@ -141,7 +141,7 @@
     v19 = [MEMORY[0x1E696B098] valueWithBytes:v48 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
     [v11 setToValue:v19];
 
-    [v9 addAnimation:v11 forKey:@"bounds"];
+    [layerCopy addAnimation:v11 forKey:@"bounds"];
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     v20 = MEMORY[0x1E6979518];
@@ -149,12 +149,12 @@
     v45[1] = 3221225472;
     v45[2] = __76__CNUIAvatarLayoutItemConfiguration_animateLayer_to_within_withAvatarIndex___block_invoke;
     v45[3] = &unk_1E76EA230;
-    v21 = v9;
+    v21 = layerCopy;
     v46 = v21;
-    v47 = a6;
+    indexCopy = index;
     [v20 setCompletionBlock:v45];
     [v21 setFrame:{x, y, width, height}];
-    [v21 setZPosition:-a6];
+    [v21 setZPosition:-index];
     [MEMORY[0x1E6979518] commit];
     v22 = v46;
   }
@@ -168,8 +168,8 @@
     [v11 setDamping:40.0];
     [v11 setInitialVelocity:0.0];
     v23 = MEMORY[0x1E696B098];
-    v24 = [v9 presentationLayer];
-    [v24 position];
+    presentationLayer = [layerCopy presentationLayer];
+    [presentationLayer position];
     v44[0] = v25;
     v44[1] = v26;
     v27 = [v23 valueWithBytes:v44 objCType:"{CGPoint=dd}"];
@@ -190,7 +190,7 @@
     v30 = [v28 valueWithBytes:v43 objCType:"{CGPoint=dd}"];
     [v11 setToValue:v30];
 
-    [v9 addAnimation:v11 forKey:@"position"];
+    [layerCopy addAnimation:v11 forKey:@"position"];
     v22 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"bounds"];
     [v22 setDuration:0.5];
     [v22 setMass:2.0];
@@ -198,8 +198,8 @@
     [v22 setDamping:40.0];
     [v22 setInitialVelocity:0.0];
     v31 = MEMORY[0x1E696B098];
-    v32 = [v9 presentationLayer];
-    [v32 bounds];
+    presentationLayer2 = [layerCopy presentationLayer];
+    [presentationLayer2 bounds];
     v42[0] = v33;
     v42[1] = v34;
     v42[2] = v35;
@@ -214,11 +214,11 @@
     v38 = [MEMORY[0x1E696B098] valueWithBytes:v41 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
     [v22 setToValue:v38];
 
-    [v9 addAnimation:v22 forKey:@"bounds"];
+    [layerCopy addAnimation:v22 forKey:@"bounds"];
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    [v9 setFrame:{x, y, width, height}];
-    [v9 setZPosition:a6];
+    [layerCopy setFrame:{x, y, width, height}];
+    [layerCopy setZPosition:index];
     [MEMORY[0x1E6979518] commit];
   }
 }

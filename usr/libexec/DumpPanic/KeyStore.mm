@@ -1,10 +1,10 @@
 @interface KeyStore
-- (void)RotateKeys:(void *)a3;
+- (void)RotateKeys:(void *)keys;
 @end
 
 @implementation KeyStore
 
-- (void)RotateKeys:(void *)a3
+- (void)RotateKeys:(void *)keys
 {
   if (!self->super.super._singleFileMode)
   {
@@ -27,7 +27,7 @@
       goto LABEL_69;
     }
 
-    v89 = a3;
+    keysCopy = keys;
     v90 = v7;
     v9 = +[NSFileManager defaultManager];
     v10 = [v9 contentsOfDirectoryAtPath:self->super.super._keyStorePath error:0];
@@ -83,21 +83,21 @@
         {
           if (v111 == 1)
           {
-            v22 = [v20 fileCreationDate];
-            if (!v97 || [v95 compare:v22] == 1)
+            fileCreationDate = [v20 fileCreationDate];
+            if (!v97 || [v95 compare:fileCreationDate] == 1)
             {
               v23 = v18;
 
-              v24 = v22;
+              v24 = fileCreationDate;
               v95 = v24;
               v97 = v23;
             }
 
-            if (!v96 || [v93 compare:v22] == -1)
+            if (!v96 || [v93 compare:fileCreationDate] == -1)
             {
               v25 = v18;
 
-              v26 = v22;
+              v26 = fileCreationDate;
               v93 = v26;
               v96 = v25;
             }
@@ -135,11 +135,11 @@
             if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
             {
               v33 = v31;
-              v34 = [v30 localizedDescription];
+              localizedDescription = [v30 localizedDescription];
               v113[0] = v91;
               *&v113[1] = v16;
               LOWORD(v113[3]) = 2112;
-              *(&v113[3] + 2) = v34;
+              *(&v113[3] + 2) = localizedDescription;
               _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Failed to delete file '%@'. Error: %@", v113, 0x16u);
             }
           }
@@ -185,10 +185,10 @@ LABEL_38:
         }
 
         v41 = [(ReadOnlyKeyStore *)self getEccFormat:1];
-        v99 = &v89;
+        v99 = &keysCopy;
         v42 = (32 * v41->var0) | 0x10;
         __chkstk_darwin(v41);
-        v44 = (&v89 - v43);
+        v44 = (&keysCopy - v43);
         v45 = ccrng(0);
         ccecdh_generate_key(v41, v45, v44);
         v46 = 3 * ((cczp_bitlen(v41) + 7) >> 3);
@@ -256,7 +256,7 @@ LABEL_38:
 
         if (v65)
         {
-          if ((v89(v49) & 1) == 0)
+          if ((keysCopy(v49) & 1) == 0)
           {
             v66 = self->super.super._log_handle;
             v51 = v64;
@@ -277,9 +277,9 @@ LABEL_38:
           if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
           {
             v87 = v68;
-            v88 = [v13 localizedDescription];
+            localizedDescription2 = [v13 localizedDescription];
             v111 = 138412290;
-            v112 = v88;
+            v112 = localizedDescription2;
             _os_log_error_impl(&_mh_execute_header, v87, OS_LOG_TYPE_ERROR, "Failed to write to the new key file. Error: %@", &v111, 0xCu);
           }
         }
@@ -322,8 +322,8 @@ LABEL_69:
       v73 = [(ReadOnlyKeyStore *)self getEccFormat:v111];
       v74 = (32 * v73->var0) | 0x10;
       __chkstk_darwin(v73);
-      v76 = &v89 - v75;
-      v77 = ccec_x963_import_priv(&v73->var0, [v72 length], objc_msgSend(v72, "bytes"), (&v89 - v75));
+      v76 = &keysCopy - v75;
+      v77 = ccec_x963_import_priv(&v73->var0, [v72 length], objc_msgSend(v72, "bytes"), (&keysCopy - v75));
       if (v77)
       {
         v78 = v77;
@@ -342,7 +342,7 @@ LABEL_69:
         v81 = [NSMutableData dataWithLength:((cczp_bitlen(v73) + 7) >> 2) | 1];
         ccec_x963_export(0, [v81 mutableBytes], v76);
         cc_clear(24 * v73->var0 + 16, v76);
-        if ((v89(v81) & 1) == 0)
+        if ((keysCopy(v81) & 1) == 0)
         {
           v82 = self->super.super._log_handle;
           if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))

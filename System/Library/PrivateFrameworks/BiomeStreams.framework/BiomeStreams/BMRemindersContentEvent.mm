@@ -1,31 +1,31 @@
 @interface BMRemindersContentEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMRemindersContentEvent)initWithCoder:(id)a3;
-- (BMRemindersContentEvent)initWithProto:(id)a3;
-- (BMRemindersContentEvent)initWithProtoData:(id)a3;
-- (BMRemindersContentEvent)initWithUniqueId:(id)a3 domainId:(id)a4 personaId:(id)a5 absoluteTimestamp:(double)a6 title:(id)a7 notes:(id)a8 isAllDay:(BOOL)a9 completionDateTimestamp:(double)a10 dueDateTimestamp:(double)a11 priority:(int)a12 contentProtection:(id)a13;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMRemindersContentEvent)initWithCoder:(id)coder;
+- (BMRemindersContentEvent)initWithProto:(id)proto;
+- (BMRemindersContentEvent)initWithProtoData:(id)data;
+- (BMRemindersContentEvent)initWithUniqueId:(id)id domainId:(id)domainId personaId:(id)personaId absoluteTimestamp:(double)timestamp title:(id)title notes:(id)notes isAllDay:(BOOL)day completionDateTimestamp:(double)self0 dueDateTimestamp:(double)self1 priority:(int)self2 contentProtection:(id)self3;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMRemindersContentEvent
 
-- (BMRemindersContentEvent)initWithUniqueId:(id)a3 domainId:(id)a4 personaId:(id)a5 absoluteTimestamp:(double)a6 title:(id)a7 notes:(id)a8 isAllDay:(BOOL)a9 completionDateTimestamp:(double)a10 dueDateTimestamp:(double)a11 priority:(int)a12 contentProtection:(id)a13
+- (BMRemindersContentEvent)initWithUniqueId:(id)id domainId:(id)domainId personaId:(id)personaId absoluteTimestamp:(double)timestamp title:(id)title notes:(id)notes isAllDay:(BOOL)day completionDateTimestamp:(double)self0 dueDateTimestamp:(double)self1 priority:(int)self2 contentProtection:(id)self3
 {
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v33 = a7;
-  obj = a8;
-  v25 = a8;
-  v32 = a13;
-  if (!v22)
+  idCopy = id;
+  domainIdCopy = domainId;
+  personaIdCopy = personaId;
+  titleCopy = title;
+  obj = notes;
+  notesCopy = notes;
+  protectionCopy = protection;
+  if (!idCopy)
   {
     [BMRemindersContentEvent initWithUniqueId:a2 domainId:self personaId:? absoluteTimestamp:? title:? notes:? isAllDay:? completionDateTimestamp:? dueDateTimestamp:? priority:? contentProtection:?];
   }
@@ -36,28 +36,28 @@
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_uniqueId, a3);
-    objc_storeStrong(&v27->_domainId, a4);
-    objc_storeStrong(&v27->_personaId, a5);
-    v27->_absoluteTimestamp = a6;
-    objc_storeStrong(&v27->_title, a7);
+    objc_storeStrong(&v26->_uniqueId, id);
+    objc_storeStrong(&v27->_domainId, domainId);
+    objc_storeStrong(&v27->_personaId, personaId);
+    v27->_absoluteTimestamp = timestamp;
+    objc_storeStrong(&v27->_title, title);
     objc_storeStrong(&v27->_notes, obj);
-    v27->_isAllDay = a9;
-    v27->_completionDateTimestamp = a10;
-    v27->_dueDateTimestamp = a11;
-    v27->_priority = a12;
-    objc_storeStrong(&v27->_contentProtection, a13);
+    v27->_isAllDay = day;
+    v27->_completionDateTimestamp = dateTimestamp;
+    v27->_dueDateTimestamp = dueDateTimestamp;
+    v27->_priority = priority;
+    objc_storeStrong(&v27->_contentProtection, protection);
   }
 
   return v27;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -65,7 +65,7 @@
     v8 = __biome_log_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [BMRemindersContentEvent eventWithData:a4 dataVersion:v8];
+      [BMRemindersContentEvent eventWithData:version dataVersion:v8];
     }
 
     v7 = 0;
@@ -76,18 +76,18 @@
 
 - (id)jsonDict
 {
-  v2 = [(BMRemindersContentEvent *)self proto];
-  v3 = [v2 dictionaryRepresentation];
+  proto = [(BMRemindersContentEvent *)self proto];
+  dictionaryRepresentation = [proto dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMRemindersContentEvent *)self jsonDict];
+  jsonDict = [(BMRemindersContentEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -102,70 +102,70 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMRemindersContentEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMRemindersContentEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMRemindersContentEvent)initWithCoder:(id)a3
+- (BMRemindersContentEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMRemindersContentEvent *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMRemindersContentEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMRemindersContentEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMRemindersContentEvent)initWithProto:(id)a3
+- (BMRemindersContentEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasUniqueId]&& [v5 hasAbsoluteTimestamp]&& [v5 hasIsAllDay]&& [v5 hasCompletionDateTimestamp]&& [v5 hasDueDateTimestamp]&& ([v5 hasPriority]& 1) != 0)
       {
-        v23 = [v5 uniqueId];
-        v6 = [v5 domainId];
-        v7 = [v5 personaId];
+        uniqueId = [v5 uniqueId];
+        domainId = [v5 domainId];
+        personaId = [v5 personaId];
         [v5 absoluteTimestamp];
         v9 = v8;
-        v10 = [v5 title];
-        v11 = [v5 notes];
-        v12 = [v5 isAllDay];
+        title = [v5 title];
+        notes = [v5 notes];
+        isAllDay = [v5 isAllDay];
         [v5 completionDateTimestamp];
         v14 = v13;
         [v5 dueDateTimestamp];
         v16 = v15;
-        v17 = [v5 priority];
-        v18 = [v5 contentProtection];
-        LODWORD(v22) = v17;
-        self = [(BMRemindersContentEvent *)self initWithUniqueId:v23 domainId:v6 personaId:v7 absoluteTimestamp:v10 title:v11 notes:v12 isAllDay:v9 completionDateTimestamp:v14 dueDateTimestamp:v16 priority:v22 contentProtection:v18];
+        priority = [v5 priority];
+        contentProtection = [v5 contentProtection];
+        LODWORD(v22) = priority;
+        self = [(BMRemindersContentEvent *)self initWithUniqueId:uniqueId domainId:domainId personaId:personaId absoluteTimestamp:title title:notes notes:isAllDay isAllDay:v9 completionDateTimestamp:v14 dueDateTimestamp:v16 priority:v22 contentProtection:contentProtection];
 
-        v19 = self;
+        selfCopy = self;
 LABEL_17:
 
         goto LABEL_18;
@@ -187,54 +187,54 @@ LABEL_17:
       }
     }
 
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
-  v19 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v19;
+  return selfCopy;
 }
 
-- (BMRemindersContentEvent)initWithProtoData:(id)a3
+- (BMRemindersContentEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBRemindersContentEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBRemindersContentEvent alloc] initWithData:dataCopy];
 
     self = [(BMRemindersContentEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMRemindersContentEvent *)self uniqueId];
-  [v3 setUniqueId:v4];
+  uniqueId = [(BMRemindersContentEvent *)self uniqueId];
+  [v3 setUniqueId:uniqueId];
 
-  v5 = [(BMRemindersContentEvent *)self domainId];
-  [v3 setDomainId:v5];
+  domainId = [(BMRemindersContentEvent *)self domainId];
+  [v3 setDomainId:domainId];
 
-  v6 = [(BMRemindersContentEvent *)self personaId];
-  [v3 setPersonaId:v6];
+  personaId = [(BMRemindersContentEvent *)self personaId];
+  [v3 setPersonaId:personaId];
 
   [(BMRemindersContentEvent *)self absoluteTimestamp];
   [v3 setAbsoluteTimestamp:?];
-  v7 = [(BMRemindersContentEvent *)self title];
-  [v3 setTitle:v7];
+  title = [(BMRemindersContentEvent *)self title];
+  [v3 setTitle:title];
 
-  v8 = [(BMRemindersContentEvent *)self notes];
-  [v3 setNotes:v8];
+  notes = [(BMRemindersContentEvent *)self notes];
+  [v3 setNotes:notes];
 
   [v3 setIsAllDay:{-[BMRemindersContentEvent isAllDay](self, "isAllDay")}];
   [(BMRemindersContentEvent *)self completionDateTimestamp];
@@ -242,8 +242,8 @@ LABEL_18:
   [(BMRemindersContentEvent *)self dueDateTimestamp];
   [v3 setDueDateTimestamp:?];
   [v3 setPriority:{-[BMRemindersContentEvent priority](self, "priority")}];
-  v9 = [(BMRemindersContentEvent *)self contentProtection];
-  [v3 setContentProtection:v9];
+  contentProtection = [(BMRemindersContentEvent *)self contentProtection];
+  [v3 setContentProtection:contentProtection];
 
   return v3;
 }
@@ -257,17 +257,17 @@ LABEL_18:
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMRemindersContentEvent *)self proto];
-    v7 = [v5 proto];
+    v5 = equalCopy;
+    proto = [(BMRemindersContentEvent *)self proto];
+    proto2 = [v5 proto];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [proto isEqual:proto2];
   }
 
   else
@@ -278,12 +278,12 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
   uniqueId = self->_uniqueId;
-  if (a4 && !uniqueId)
+  if (error && !uniqueId)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
   }
 
   return uniqueId != 0;

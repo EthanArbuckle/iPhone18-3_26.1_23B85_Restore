@@ -1,10 +1,10 @@
 @interface ADBinocularDepthWarperMesh
-+ (BOOL)updateWarper:(maps_uv *)a3 source:(id)a4 target:(id)a5;
-+ (double)skew:(__n128)a1;
-+ (void)rectifyCameraPairForLeftCalib:(id)a3 rightCalib:(id)a4 leftRectifiedCameraToPlatformTransform:(id *)a5 rightRectifiedCameraToPlatformTransform:(id *)a6 prioritization:(int64_t)a7;
++ (BOOL)updateWarper:(maps_uv *)warper source:(id)source target:(id)target;
++ (double)skew:(__n128)skew;
++ (void)rectifyCameraPairForLeftCalib:(id)calib rightCalib:(id)rightCalib leftRectifiedCameraToPlatformTransform:(id *)transform rightRectifiedCameraToPlatformTransform:(id *)platformTransform prioritization:(int64_t)prioritization;
 - (ADBinocularDepthWarperMesh)init;
-- (BOOL)updateWithSource:(id)a3 target:(id)a4;
-- (int64_t)undistortColorImage:(__CVBuffer *)a3 undistortedImage:(__CVBuffer *)a4;
+- (BOOL)updateWithSource:(id)source target:(id)target;
+- (int64_t)undistortColorImage:(__CVBuffer *)image undistortedImage:(__CVBuffer *)undistortedImage;
 - (void)dealloc;
 - (void)deallocMemory;
 @end
@@ -76,22 +76,22 @@
   return result;
 }
 
-- (int64_t)undistortColorImage:(__CVBuffer *)a3 undistortedImage:(__CVBuffer *)a4
+- (int64_t)undistortColorImage:(__CVBuffer *)image undistortedImage:(__CVBuffer *)undistortedImage
 {
   v81 = *MEMORY[0x277D85DE8];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  v8 = CVPixelBufferGetPixelFormatType(a4);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(image);
+  v8 = CVPixelBufferGetPixelFormatType(undistortedImage);
   if (v8 == 875704422)
   {
-    CVPixelBufferLockBaseAddress(a4, 0);
-    CVPixelBufferLockBaseAddress(a3, 0);
-    PlaneCount = CVPixelBufferGetPlaneCount(a3);
+    CVPixelBufferLockBaseAddress(undistortedImage, 0);
+    CVPixelBufferLockBaseAddress(image, 0);
+    PlaneCount = CVPixelBufferGetPlaneCount(image);
     v10 = PlaneCount;
     v11 = MEMORY[0x277CBF3A0];
     if (PlaneCount <= 1)
     {
       memset(dest, 0, 32);
-      PixelBufferUtils::asVImageBuffer(a4, 1, *MEMORY[0x277CBF3A0], dest);
+      PixelBufferUtils::asVImageBuffer(undistortedImage, 1, *MEMORY[0x277CBF3A0], dest);
       *color = -32640;
       vImageBufferFill_CbCr8(dest, color, 0);
       goto LABEL_7;
@@ -139,7 +139,7 @@ LABEL_7:
           goto LABEL_70;
         }
 
-        PixelBufferUtils::asVImageBuffer(a3, v14, *v11, &v77);
+        PixelBufferUtils::asVImageBuffer(image, v14, *v11, &v77);
         v21 = &dest[v14];
         v22 = *&v77.width;
         *&v21->data = *&v77.data;
@@ -148,7 +148,7 @@ LABEL_7:
         *&v22 = v11->origin.y;
         width = v11->size.width;
         height = v11->size.height;
-        PixelBufferUtils::asVImageBuffer(a4, v14, *(&v22 - 8), &v77);
+        PixelBufferUtils::asVImageBuffer(undistortedImage, v14, *(&v22 - 8), &v77);
         v30 = &color[32 * v14];
         v31 = *&v77.width;
         *v30 = *&v77.data;
@@ -332,8 +332,8 @@ LABEL_7:
 
         if (++v14 == v76)
         {
-          CVPixelBufferUnlockBaseAddress(a4, 0);
-          CVPixelBufferUnlockBaseAddress(a3, 0);
+          CVPixelBufferUnlockBaseAddress(undistortedImage, 0);
+          CVPixelBufferUnlockBaseAddress(image, 0);
           return 0;
         }
       }
@@ -382,54 +382,54 @@ LABEL_70:
   return -22951;
 }
 
-- (BOOL)updateWithSource:(id)a3 target:(id)a4
+- (BOOL)updateWithSource:(id)source target:(id)target
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  targetCopy = target;
   v8 = objc_alloc(MEMORY[0x277CED0D8]);
-  [v6 intrinsicMatrix];
+  [sourceCopy intrinsicMatrix];
   v62 = v10;
   v64 = v9;
   v60 = v11;
-  [v6 cameraToPlatformTransform];
+  [sourceCopy cameraToPlatformTransform];
   v56 = v13;
   v58 = v12;
   v52 = v15;
   v54 = v14;
-  [v6 pixelSize];
+  [sourceCopy pixelSize];
   v17 = v16;
-  [v6 referenceDimensions];
+  [sourceCopy referenceDimensions];
   v19 = v18;
   v21 = v20;
-  v22 = [v6 distortionModel];
-  v23 = [v22 copyWithZone:0];
+  distortionModel = [sourceCopy distortionModel];
+  v23 = [distortionModel copyWithZone:0];
   LODWORD(v24) = v17;
   v25 = [v8 initWithIntrinsics:v23 cameraToPlatformTransform:v64 pixelSize:v62 referenceDimensions:v60 distortionModel:{v58, v56, v54, v52, v24, v19, v21}];
 
   v26 = objc_alloc(MEMORY[0x277CED0D8]);
-  [v7 intrinsicMatrix];
+  [targetCopy intrinsicMatrix];
   v63 = v28;
   v65 = v27;
   v61 = v29;
-  [v7 cameraToPlatformTransform];
+  [targetCopy cameraToPlatformTransform];
   v57 = v31;
   v59 = v30;
   v53 = v33;
   v55 = v32;
-  [v7 pixelSize];
+  [targetCopy pixelSize];
   v35 = v34;
-  [v7 referenceDimensions];
+  [targetCopy referenceDimensions];
   v37 = v36;
   v39 = v38;
-  v40 = [v7 distortionModel];
-  v41 = [v40 copyWithZone:0];
+  distortionModel2 = [targetCopy distortionModel];
+  v41 = [distortionModel2 copyWithZone:0];
   LODWORD(v42) = v35;
   v43 = [v26 initWithIntrinsics:v41 cameraToPlatformTransform:v65 pixelSize:v63 referenceDimensions:v61 distortionModel:{v59, v57, v55, v53, v42, v37, v39}];
 
-  [v6 referenceDimensions];
+  [sourceCopy referenceDimensions];
   v45 = v44;
-  [v6 referenceDimensions];
-  if (![v25 scale:{v45 * 0.5, v46 * 0.5}] || (objc_msgSend(v7, "referenceDimensions"), v48 = v47, objc_msgSend(v7, "referenceDimensions"), (objc_msgSend(v43, "scale:", v48 * 0.5, v49 * 0.5) & 1) == 0))
+  [sourceCopy referenceDimensions];
+  if (![v25 scale:{v45 * 0.5, v46 * 0.5}] || (objc_msgSend(targetCopy, "referenceDimensions"), v48 = v47, objc_msgSend(targetCopy, "referenceDimensions"), (objc_msgSend(v43, "scale:", v48 * 0.5, v49 * 0.5) & 1) == 0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -441,7 +441,7 @@ LABEL_70:
   }
 
   [(ADBinocularDepthWarperMesh *)self deallocMemory];
-  if (![ADBinocularDepthWarperMesh updateWarper:&self->_undistortMaps source:v6 target:v7]|| ![ADBinocularDepthWarperMesh updateWarper:&self->_undistortHalvedMaps source:v25 target:v43])
+  if (![ADBinocularDepthWarperMesh updateWarper:&self->_undistortMaps source:sourceCopy target:targetCopy]|| ![ADBinocularDepthWarperMesh updateWarper:&self->_undistortHalvedMaps source:v25 target:v43])
   {
     [(ADBinocularDepthWarperMesh *)self deallocMemory];
 LABEL_9:
@@ -455,26 +455,26 @@ LABEL_10:
   return v50;
 }
 
-+ (BOOL)updateWarper:(maps_uv *)a3 source:(id)a4 target:(id)a5
++ (BOOL)updateWarper:(maps_uv *)warper source:(id)source target:(id)target
 {
-  a4;
-  v6 = a5;
-  [v6 referenceDimensions];
-  [v6 referenceDimensions];
+  source;
+  targetCopy = target;
+  [targetCopy referenceDimensions];
+  [targetCopy referenceDimensions];
   operator new[]();
 }
 
-+ (void)rectifyCameraPairForLeftCalib:(id)a3 rightCalib:(id)a4 leftRectifiedCameraToPlatformTransform:(id *)a5 rightRectifiedCameraToPlatformTransform:(id *)a6 prioritization:(int64_t)a7
++ (void)rectifyCameraPairForLeftCalib:(id)calib rightCalib:(id)rightCalib leftRectifiedCameraToPlatformTransform:(id *)transform rightRectifiedCameraToPlatformTransform:(id *)platformTransform prioritization:(int64_t)prioritization
 {
-  v80 = a3;
-  v11 = a4;
-  [v80 cameraToPlatformTransform];
+  calibCopy = calib;
+  rightCalibCopy = rightCalib;
+  [calibCopy cameraToPlatformTransform];
   v79 = v12;
-  [v11 cameraToPlatformTransform];
+  [rightCalibCopy cameraToPlatformTransform];
   v78 = v13;
-  if (a7 == 2)
+  if (prioritization == 2)
   {
-    [v80 cameraToPlatformTransform];
+    [calibCopy cameraToPlatformTransform];
     v14 = v78;
     v15 = v79;
     v16 = vsubq_f32(v78, v79);
@@ -501,7 +501,7 @@ LABEL_10:
 
   else
   {
-    [v11 cameraToPlatformTransform];
+    [rightCalibCopy cameraToPlatformTransform];
     v33 = v32;
     v35 = v34;
     v36 = vsubq_f32(v78, v79);
@@ -568,28 +568,28 @@ LABEL_10:
     v15 = v79;
   }
 
-  *(a5 + 2) = v26.i32[2];
-  *a5 = v26.i64[0];
-  *(a5 + 6) = v27.i32[2];
-  *(a5 + 2) = v27.i64[0];
-  *(a5 + 10) = v30.i32[2];
-  *(a5 + 14) = v15.i32[2];
-  *(a5 + 4) = v30.i64[0];
-  *(a5 + 6) = v15.i64[0];
-  *a6 = v26.i64[0];
-  *(a6 + 2) = v26.i32[2];
-  *(a6 + 2) = v27.i64[0];
-  *(a6 + 6) = v27.i32[2];
-  *(a6 + 4) = v30.i64[0];
-  *(a6 + 10) = v30.i32[2];
-  *(a6 + 6) = v14.i64[0];
-  *(a6 + 14) = v14.i32[2];
+  *(transform + 2) = v26.i32[2];
+  *transform = v26.i64[0];
+  *(transform + 6) = v27.i32[2];
+  *(transform + 2) = v27.i64[0];
+  *(transform + 10) = v30.i32[2];
+  *(transform + 14) = v15.i32[2];
+  *(transform + 4) = v30.i64[0];
+  *(transform + 6) = v15.i64[0];
+  *platformTransform = v26.i64[0];
+  *(platformTransform + 2) = v26.i32[2];
+  *(platformTransform + 2) = v27.i64[0];
+  *(platformTransform + 6) = v27.i32[2];
+  *(platformTransform + 4) = v30.i64[0];
+  *(platformTransform + 10) = v30.i32[2];
+  *(platformTransform + 6) = v14.i64[0];
+  *(platformTransform + 14) = v14.i32[2];
 }
 
-+ (double)skew:(__n128)a1
++ (double)skew:(__n128)skew
 {
   LODWORD(v1) = 0;
-  HIDWORD(v1) = a1.n128_u32[2];
+  HIDWORD(v1) = skew.n128_u32[2];
   return v1;
 }
 

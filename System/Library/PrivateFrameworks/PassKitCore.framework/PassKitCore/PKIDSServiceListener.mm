@@ -1,22 +1,22 @@
 @interface PKIDSServiceListener
-- (PKIDSServiceListener)initWithReferenceObject:(id)a3 onMessageReceived:(id)a4;
+- (PKIDSServiceListener)initWithReferenceObject:(id)object onMessageReceived:(id)received;
 - (id)referenceObject;
 @end
 
 @implementation PKIDSServiceListener
 
-- (PKIDSServiceListener)initWithReferenceObject:(id)a3 onMessageReceived:(id)a4
+- (PKIDSServiceListener)initWithReferenceObject:(id)object onMessageReceived:(id)received
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  receivedCopy = received;
   v13.receiver = self;
   v13.super_class = PKIDSServiceListener;
   v8 = [(PKIDSServiceListener *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_referenceObject, v6);
-    v10 = _Block_copy(v7);
+    objc_storeWeak(&v8->_referenceObject, objectCopy);
+    v10 = _Block_copy(receivedCopy);
     onMessageReceived = v9->_onMessageReceived;
     v9->_onMessageReceived = v10;
   }

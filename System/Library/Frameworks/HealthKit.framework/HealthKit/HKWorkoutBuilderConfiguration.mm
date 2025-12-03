@@ -1,16 +1,16 @@
 @interface HKWorkoutBuilderConfiguration
-- (BOOL)isEqual:(id)a3;
-- (HKWorkoutBuilderConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKWorkoutBuilderConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKWorkoutBuilderConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -18,15 +18,15 @@
   }
 
   device = self->_device;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (device != v6 && (!v6 || ![(HKDevice *)device isEqual:?]))
   {
     goto LABEL_17;
   }
 
-  if (((workoutConfiguration = self->_workoutConfiguration, v8 = v4[3], workoutConfiguration == v8) || v8 && [(HKWorkoutConfiguration *)workoutConfiguration isEqual:?]) && self->_goalType == v4[4] && ((goal = self->_goal, v10 = v4[5], goal == v10) || v10 && [(HKQuantity *)goal isEqual:?]) && self->_shouldCollectWorkoutEvents == *(v4 + 8) && ((associatedSessionUUID = self->_associatedSessionUUID, v12 = v4[6], associatedSessionUUID == v12) || v12 && [(NSUUID *)associatedSessionUUID isEqual:?]))
+  if (((workoutConfiguration = self->_workoutConfiguration, v8 = equalCopy[3], workoutConfiguration == v8) || v8 && [(HKWorkoutConfiguration *)workoutConfiguration isEqual:?]) && self->_goalType == equalCopy[4] && ((goal = self->_goal, v10 = equalCopy[5], goal == v10) || v10 && [(HKQuantity *)goal isEqual:?]) && self->_shouldCollectWorkoutEvents == *(equalCopy + 8) && ((associatedSessionUUID = self->_associatedSessionUUID, v12 = equalCopy[6], associatedSessionUUID == v12) || v12 && [(NSUUID *)associatedSessionUUID isEqual:?]))
   {
-    v13 = self->_requiresRecovery == *(v4 + 9);
+    v13 = self->_requiresRecovery == *(equalCopy + 9);
   }
 
   else
@@ -46,11 +46,11 @@ LABEL_17:
   return v4 ^ goalType ^ [(HKQuantity *)self->_goal hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = HKWorkoutBuilderConfiguration;
-  v4 = [(HKTaskConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(HKTaskConfiguration *)&v7 copyWithZone:zone];
   [v4 setDevice:self->_device];
   [v4 setWorkoutConfiguration:self->_workoutConfiguration];
   [v4 setGoalType:self->_goalType];
@@ -63,51 +63,51 @@ LABEL_17:
   return v4;
 }
 
-- (HKWorkoutBuilderConfiguration)initWithCoder:(id)a3
+- (HKWorkoutBuilderConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HKWorkoutBuilderConfiguration;
-  v5 = [(HKTaskConfiguration *)&v15 initWithCoder:v4];
+  v5 = [(HKTaskConfiguration *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"device"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"device"];
     device = v5->_device;
     v5->_device = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workoutConfig"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workoutConfig"];
     workoutConfiguration = v5->_workoutConfiguration;
     v5->_workoutConfiguration = v8;
 
-    v5->_goalType = [v4 decodeIntegerForKey:@"goalType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"goal"];
+    v5->_goalType = [coderCopy decodeIntegerForKey:@"goalType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"goal"];
     goal = v5->_goal;
     v5->_goal = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associated_session_uuid"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associated_session_uuid"];
     associatedSessionUUID = v5->_associatedSessionUUID;
     v5->_associatedSessionUUID = v12;
 
-    v5->_shouldCollectWorkoutEvents = [v4 decodeBoolForKey:@"should_collect_events"];
-    v5->_requiresRecovery = [v4 decodeBoolForKey:@"requires_recovery"];
+    v5->_shouldCollectWorkoutEvents = [coderCopy decodeBoolForKey:@"should_collect_events"];
+    v5->_requiresRecovery = [coderCopy decodeBoolForKey:@"requires_recovery"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKWorkoutBuilderConfiguration;
-  v4 = a3;
-  [(HKTaskConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_device forKey:{@"device", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_workoutConfiguration forKey:@"workoutConfig"];
-  [v4 encodeInteger:self->_goalType forKey:@"goalType"];
-  [v4 encodeObject:self->_goal forKey:@"goal"];
-  [v4 encodeObject:self->_associatedSessionUUID forKey:@"associated_session_uuid"];
-  [v4 encodeBool:self->_shouldCollectWorkoutEvents forKey:@"should_collect_events"];
-  [v4 encodeBool:self->_requiresRecovery forKey:@"requires_recovery"];
+  coderCopy = coder;
+  [(HKTaskConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_device forKey:{@"device", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_workoutConfiguration forKey:@"workoutConfig"];
+  [coderCopy encodeInteger:self->_goalType forKey:@"goalType"];
+  [coderCopy encodeObject:self->_goal forKey:@"goal"];
+  [coderCopy encodeObject:self->_associatedSessionUUID forKey:@"associated_session_uuid"];
+  [coderCopy encodeBool:self->_shouldCollectWorkoutEvents forKey:@"should_collect_events"];
+  [coderCopy encodeBool:self->_requiresRecovery forKey:@"requires_recovery"];
 }
 
 @end

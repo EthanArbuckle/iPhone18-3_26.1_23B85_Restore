@@ -1,34 +1,34 @@
 @interface CNFRegShadowView
 - (CGRect)cachedBounds;
-- (CNFRegShadowView)initWithFrame:(CGRect)a3 shadowImage:(id)a4;
-- (void)drawRect:(CGRect)a3;
+- (CNFRegShadowView)initWithFrame:(CGRect)frame shadowImage:(id)image;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation CNFRegShadowView
 
-- (CNFRegShadowView)initWithFrame:(CGRect)a3 shadowImage:(id)a4
+- (CNFRegShadowView)initWithFrame:(CGRect)frame shadowImage:(id)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  imageCopy = image;
   v13.receiver = self;
   v13.super_class = CNFRegShadowView;
-  v10 = [(CNFRegShadowView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(CNFRegShadowView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(CNFRegShadowView *)v10 setShadowImage:v9];
+    [(CNFRegShadowView *)height setShadowImage:imageCopy];
     [(CNFRegShadowView *)v11 setOpaque:0];
   }
 
   return v11;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(CNFRegShadowView *)self bounds:a3.origin.x];
+  [(CNFRegShadowView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -47,21 +47,21 @@
     [(CNFRegShadowView *)self setCachedPath:0];
   }
 
-  v16 = [(CNFRegShadowView *)self cachedPath];
+  cachedPath = [(CNFRegShadowView *)self cachedPath];
 
-  if (!v16)
+  if (!cachedPath)
   {
     [(CNFRegShadowView *)self setCachedBounds:v5, v7, v9, v11];
     v17 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:3 byRoundingCorners:v5 cornerRadii:{v7, v9, v11, 10.0, 10.0}];
     [(CNFRegShadowView *)self setCachedPath:v17];
   }
 
-  v18 = [(CNFRegShadowView *)self cachedPath];
-  [v18 addClip];
+  cachedPath2 = [(CNFRegShadowView *)self cachedPath];
+  [cachedPath2 addClip];
 
-  v19 = [(CNFRegShadowView *)self shadowImage];
+  shadowImage = [(CNFRegShadowView *)self shadowImage];
   [(CNFRegShadowView *)self bounds];
-  [v19 drawInRect:?];
+  [shadowImage drawInRect:?];
 }
 
 - (CGRect)cachedBounds

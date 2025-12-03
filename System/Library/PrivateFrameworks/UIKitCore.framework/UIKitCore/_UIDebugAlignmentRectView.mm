@@ -1,19 +1,19 @@
 @interface _UIDebugAlignmentRectView
-- (_UIDebugAlignmentRectView)initWithFrame:(CGRect)a3 baselineOffset:(double)a4;
-- (void)drawRect:(CGRect)a3;
+- (_UIDebugAlignmentRectView)initWithFrame:(CGRect)frame baselineOffset:(double)offset;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _UIDebugAlignmentRectView
 
-- (_UIDebugAlignmentRectView)initWithFrame:(CGRect)a3 baselineOffset:(double)a4
+- (_UIDebugAlignmentRectView)initWithFrame:(CGRect)frame baselineOffset:(double)offset
 {
   v8.receiver = self;
   v8.super_class = _UIDebugAlignmentRectView;
-  v5 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_baselineOffset = a4;
+    v5->_baselineOffset = offset;
     [(UIView *)v5 setAutoresizingMask:18];
     [(UIView *)v6 setUserInteractionEnabled:0];
   }
@@ -21,7 +21,7 @@
   return v6;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   [+[UIColor colorWithRed:green:blue:alpha:](UIColor set:1.0];
   [(UIView *)self bounds];

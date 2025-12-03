@@ -1,17 +1,17 @@
 @interface CKKSZoneStateEntry
-+ (id)contextID:(id)a3 zoneName:(id)a4;
-+ (id)fromDatabase:(id)a3 zoneName:(id)a4 error:(id *)a5;
-+ (id)fromDatabaseRow:(id)a3;
-+ (id)tryFromDatabase:(id)a3 zoneName:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (CKKSZoneStateEntry)initWithContextID:(id)a3 zoneName:(id)a4 zoneCreated:(BOOL)a5 zoneSubscribed:(BOOL)a6 changeToken:(id)a7 moreRecordsInCloudKit:(BOOL)a8 lastFetch:(id)a9 lastScan:(id)a10 lastFixup:(unint64_t)a11 encodedRateLimiter:(id)a12 fetchNewestChangesFirst:(BOOL)a13 initialSyncFinished:(BOOL)a14;
++ (id)contextID:(id)d zoneName:(id)name;
++ (id)fromDatabase:(id)database zoneName:(id)name error:(id *)error;
++ (id)fromDatabaseRow:(id)row;
++ (id)tryFromDatabase:(id)database zoneName:(id)name error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (CKKSZoneStateEntry)initWithContextID:(id)d zoneName:(id)name zoneCreated:(BOOL)created zoneSubscribed:(BOOL)subscribed changeToken:(id)token moreRecordsInCloudKit:(BOOL)kit lastFetch:(id)fetch lastScan:(id)self0 lastFixup:(unint64_t)self1 encodedRateLimiter:(id)self2 fetchNewestChangesFirst:(BOOL)self3 initialSyncFinished:(BOOL)self4;
 - (CKServerChangeToken)getChangeToken;
 - (NSData)encodedRateLimiter;
 - (id)description;
 - (id)sqlValues;
 - (id)whereClauseToFindSelf;
-- (void)setChangeToken:(id)a3;
-- (void)setEncodedRateLimiter:(id)a3;
+- (void)setChangeToken:(id)token;
+- (void)setEncodedRateLimiter:(id)limiter;
 @end
 
 @implementation CKKSZoneStateEntry
@@ -20,11 +20,11 @@
 {
   v33 = objc_alloc_init(NSISO8601DateFormatter);
   v34[0] = @"contextID";
-  v3 = [(CKKSZoneStateEntry *)self contextID];
-  v4 = v3;
-  if (v3)
+  contextID = [(CKKSZoneStateEntry *)self contextID];
+  v4 = contextID;
+  if (contextID)
   {
-    v5 = v3;
+    v5 = contextID;
   }
 
   else
@@ -37,8 +37,8 @@
   v32 = v6;
   v35[0] = v6;
   v34[1] = @"ckzone";
-  v31 = [(CKKSZoneStateEntry *)self ckzone];
-  v35[1] = v31;
+  ckzone = [(CKKSZoneStateEntry *)self ckzone];
+  v35[1] = ckzone;
   v34[2] = @"ckzonecreated";
   v30 = [NSNumber numberWithBool:[(CKKSZoneStateEntry *)self ckzonecreated]];
   v35[2] = v30;
@@ -46,8 +46,8 @@
   v29 = [NSNumber numberWithBool:[(CKKSZoneStateEntry *)self ckzonesubscribed]];
   v35[3] = v29;
   v34[4] = @"changetoken";
-  v7 = [(CKKSZoneStateEntry *)self encodedChangeToken];
-  v8 = [v7 base64EncodedStringWithOptions:0];
+  encodedChangeToken = [(CKKSZoneStateEntry *)self encodedChangeToken];
+  v8 = [encodedChangeToken base64EncodedStringWithOptions:0];
 
   if (v8)
   {
@@ -63,16 +63,16 @@
 
   v35[4] = v10;
   v34[5] = @"lastfetch";
-  v11 = [(CKKSZoneStateEntry *)self lastFetchTime];
-  if (!v11 || (v12 = v11, -[CKKSZoneStateEntry lastFetchTime](self, "lastFetchTime"), v13 = objc_claimAutoreleasedReturnValue(), [v33 stringFromDate:v13], v14 = objc_claimAutoreleasedReturnValue(), v13, v12, !v14))
+  lastFetchTime = [(CKKSZoneStateEntry *)self lastFetchTime];
+  if (!lastFetchTime || (v12 = lastFetchTime, -[CKKSZoneStateEntry lastFetchTime](self, "lastFetchTime"), v13 = objc_claimAutoreleasedReturnValue(), [v33 stringFromDate:v13], v14 = objc_claimAutoreleasedReturnValue(), v13, v12, !v14))
   {
     v14 = +[NSNull null];
   }
 
   v35[5] = v14;
   v34[6] = @"ratelimiter";
-  v15 = [(CKKSZoneStateEntry *)self encodedRateLimiter];
-  v16 = [v15 base64EncodedStringWithOptions:0];
+  encodedRateLimiter = [(CKKSZoneStateEntry *)self encodedRateLimiter];
+  v16 = [encodedRateLimiter base64EncodedStringWithOptions:0];
 
   if (v16)
   {
@@ -94,8 +94,8 @@
   v20 = [NSNumber numberWithBool:[(CKKSZoneStateEntry *)self moreRecordsInCloudKit]];
   v35[8] = v20;
   v34[9] = @"lastscan";
-  v21 = [(CKKSZoneStateEntry *)self lastLocalKeychainScanTime];
-  if (!v21 || (v22 = v21, -[CKKSZoneStateEntry lastLocalKeychainScanTime](self, "lastLocalKeychainScanTime"), v23 = objc_claimAutoreleasedReturnValue(), [v33 stringFromDate:v23], v24 = objc_claimAutoreleasedReturnValue(), v23, v22, !v24))
+  lastLocalKeychainScanTime = [(CKKSZoneStateEntry *)self lastLocalKeychainScanTime];
+  if (!lastLocalKeychainScanTime || (v22 = lastLocalKeychainScanTime, -[CKKSZoneStateEntry lastLocalKeychainScanTime](self, "lastLocalKeychainScanTime"), v23 = objc_claimAutoreleasedReturnValue(), [v33 stringFromDate:v23], v24 = objc_claimAutoreleasedReturnValue(), v23, v22, !v24))
   {
     v24 = +[NSNull null];
   }
@@ -115,11 +115,11 @@
 - (id)whereClauseToFindSelf
 {
   v10[0] = @"contextID";
-  v3 = [(CKKSZoneStateEntry *)self contextID];
-  v4 = v3;
-  if (v3)
+  contextID = [(CKKSZoneStateEntry *)self contextID];
+  v4 = contextID;
+  if (contextID)
   {
-    v5 = v3;
+    v5 = contextID;
   }
 
   else
@@ -131,19 +131,19 @@
 
   v10[1] = @"ckzone";
   v11[0] = v6;
-  v7 = [(CKKSZoneStateEntry *)self ckzone];
-  v11[1] = v7;
+  ckzone = [(CKKSZoneStateEntry *)self ckzone];
+  v11[1] = ckzone;
   v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   return v8;
 }
 
-- (void)setEncodedRateLimiter:(id)a3
+- (void)setEncodedRateLimiter:(id)limiter
 {
-  v6 = a3;
-  if (v6)
+  limiterCopy = limiter;
+  if (limiterCopy)
   {
-    v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v6 error:0];
+    v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:limiterCopy error:0];
     v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
     [(CKKSZoneStateEntry *)self setRateLimiter:v5];
   }
@@ -156,12 +156,12 @@
 
 - (NSData)encodedRateLimiter
 {
-  v3 = [(CKKSZoneStateEntry *)self rateLimiter];
+  rateLimiter = [(CKKSZoneStateEntry *)self rateLimiter];
 
-  if (v3)
+  if (rateLimiter)
   {
-    v4 = [(CKKSZoneStateEntry *)self rateLimiter];
-    v5 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
+    rateLimiter2 = [(CKKSZoneStateEntry *)self rateLimiter];
+    v5 = [NSKeyedArchiver archivedDataWithRootObject:rateLimiter2 requiringSecureCoding:1 error:0];
   }
 
   else
@@ -172,11 +172,11 @@
   return v5;
 }
 
-- (void)setChangeToken:(id)a3
+- (void)setChangeToken:(id)token
 {
-  if (a3)
+  if (token)
   {
-    v4 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+    v4 = [NSKeyedArchiver archivedDataWithRootObject:token requiringSecureCoding:1 error:0];
     [(CKKSZoneStateEntry *)self setEncodedChangeToken:v4];
   }
 
@@ -189,13 +189,13 @@
 
 - (CKServerChangeToken)getChangeToken
 {
-  v3 = [(CKKSZoneStateEntry *)self encodedChangeToken];
+  encodedChangeToken = [(CKKSZoneStateEntry *)self encodedChangeToken];
 
-  if (v3)
+  if (encodedChangeToken)
   {
     v4 = [NSKeyedUnarchiver alloc];
-    v5 = [(CKKSZoneStateEntry *)self encodedChangeToken];
-    v6 = [v4 initForReadingFromData:v5 error:0];
+    encodedChangeToken2 = [(CKKSZoneStateEntry *)self encodedChangeToken];
+    v6 = [v4 initForReadingFromData:encodedChangeToken2 error:0];
 
     v7 = [v6 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
   }
@@ -208,16 +208,16 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(CKKSZoneStateEntry *)self ckzone];
-    v9 = [v7 ckzone];
-    if (![v8 isEqualToString:v9])
+    v7 = equalCopy;
+    ckzone = [(CKKSZoneStateEntry *)self ckzone];
+    ckzone2 = [v7 ckzone];
+    if (![ckzone isEqualToString:ckzone2])
     {
       LOBYTE(v12) = 0;
 LABEL_18:
@@ -225,12 +225,12 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v10 = [(CKKSZoneStateEntry *)self contextID];
-    if (v10 || ([v7 contextID], (v55 = objc_claimAutoreleasedReturnValue()) != 0))
+    contextID = [(CKKSZoneStateEntry *)self contextID];
+    if (contextID || ([v7 contextID], (v55 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v3 = [(CKKSZoneStateEntry *)self contextID];
-      v4 = [v7 contextID];
-      if (![v3 isEqualToString:v4])
+      contextID2 = [(CKKSZoneStateEntry *)self contextID];
+      contextID3 = [v7 contextID];
+      if (![contextID2 isEqualToString:contextID3])
       {
         LOBYTE(v12) = 0;
         goto LABEL_14;
@@ -245,14 +245,14 @@ LABEL_18:
       v11 = 0;
     }
 
-    v13 = [(CKKSZoneStateEntry *)self ckzonecreated];
-    if (v13 != [v7 ckzonecreated] || (v14 = -[CKKSZoneStateEntry ckzonesubscribed](self, "ckzonesubscribed"), v14 != objc_msgSend(v7, "ckzonesubscribed")))
+    ckzonecreated = [(CKKSZoneStateEntry *)self ckzonecreated];
+    if (ckzonecreated != [v7 ckzonecreated] || (v14 = -[CKKSZoneStateEntry ckzonesubscribed](self, "ckzonesubscribed"), v14 != objc_msgSend(v7, "ckzonesubscribed")))
     {
       LOBYTE(v12) = 0;
       if (!v11)
       {
 LABEL_15:
-        if (!v10)
+        if (!contextID)
         {
         }
 
@@ -264,30 +264,30 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v16 = [(CKKSZoneStateEntry *)self encodedChangeToken];
-    if (v16 || ([v7 encodedChangeToken], (v48 = objc_claimAutoreleasedReturnValue()) != 0))
+    encodedChangeToken = [(CKKSZoneStateEntry *)self encodedChangeToken];
+    if (encodedChangeToken || ([v7 encodedChangeToken], (v48 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v53 = v4;
-      v17 = v3;
+      v53 = contextID3;
+      v17 = contextID2;
       v18 = v11;
-      v19 = v16;
-      v20 = [(CKKSZoneStateEntry *)self encodedChangeToken];
-      v51 = [v7 encodedChangeToken];
-      v52 = v20;
-      if (![v20 isEqual:?])
+      v19 = encodedChangeToken;
+      encodedChangeToken2 = [(CKKSZoneStateEntry *)self encodedChangeToken];
+      encodedChangeToken3 = [v7 encodedChangeToken];
+      v52 = encodedChangeToken2;
+      if (![encodedChangeToken2 isEqual:?])
       {
         LOBYTE(v12) = 0;
         v21 = v19;
         v22 = v18;
-        v3 = v17;
-        v4 = v53;
+        contextID2 = v17;
+        contextID3 = v53;
         goto LABEL_29;
       }
 
       v50 = v18;
       v49 = 1;
-      v3 = v17;
-      v4 = v53;
+      contextID2 = v17;
+      contextID3 = v53;
     }
 
     else
@@ -298,8 +298,8 @@ LABEL_14:
       v49 = 0;
     }
 
-    v23 = [(CKKSZoneStateEntry *)self moreRecordsInCloudKit];
-    if (v23 != [v7 moreRecordsInCloudKit])
+    moreRecordsInCloudKit = [(CKKSZoneStateEntry *)self moreRecordsInCloudKit];
+    if (moreRecordsInCloudKit != [v7 moreRecordsInCloudKit])
     {
       LOBYTE(v12) = 0;
       v21 = v19;
@@ -340,10 +340,10 @@ LABEL_30:
     v54 = v21 = v19;
     if (v54 || ([v7 lastFetchTime], (v41 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v24 = [(CKKSZoneStateEntry *)self lastFetchTime];
-      v46 = [v7 lastFetchTime];
-      v47 = v24;
-      if (![v24 isEqualToDate:?])
+      lastFetchTime = [(CKKSZoneStateEntry *)self lastFetchTime];
+      lastFetchTime2 = [v7 lastFetchTime];
+      v47 = lastFetchTime;
+      if (![lastFetchTime isEqualToDate:?])
       {
         LOBYTE(v12) = 0;
         goto LABEL_54;
@@ -358,13 +358,13 @@ LABEL_30:
       v45 = 0;
     }
 
-    v44 = [(CKKSZoneStateEntry *)self rateLimiter];
-    if (v44 || ([v7 rateLimiter], (v39 = objc_claimAutoreleasedReturnValue()) != 0))
+    rateLimiter = [(CKKSZoneStateEntry *)self rateLimiter];
+    if (rateLimiter || ([v7 rateLimiter], (v39 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v25 = [(CKKSZoneStateEntry *)self rateLimiter];
-      v42 = [v7 rateLimiter];
-      v43 = v25;
-      if (![v25 isEqual:?])
+      rateLimiter2 = [(CKKSZoneStateEntry *)self rateLimiter];
+      rateLimiter3 = [v7 rateLimiter];
+      v43 = rateLimiter2;
+      if (![rateLimiter2 isEqual:?])
       {
         LOBYTE(v12) = 0;
         goto LABEL_51;
@@ -381,8 +381,8 @@ LABEL_30:
       v40 = 0;
     }
 
-    v27 = [(CKKSZoneStateEntry *)self lastFixup];
-    if (v27 != [v7 lastFixup])
+    lastFixup = [(CKKSZoneStateEntry *)self lastFixup];
+    if (lastFixup != [v7 lastFixup])
     {
       LOBYTE(v12) = 0;
       v21 = v26;
@@ -398,12 +398,12 @@ LABEL_30:
     v38 = v21 = v26;
     if (v38 || ([v7 lastLocalKeychainScanTime], (v34 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v28 = [(CKKSZoneStateEntry *)self lastLocalKeychainScanTime];
-      v29 = [v7 lastLocalKeychainScanTime];
-      v37 = v28;
-      v30 = v28;
-      v26 = v29;
-      if (![v30 isEqualToDate:v29])
+      lastLocalKeychainScanTime = [(CKKSZoneStateEntry *)self lastLocalKeychainScanTime];
+      lastLocalKeychainScanTime2 = [v7 lastLocalKeychainScanTime];
+      v37 = lastLocalKeychainScanTime;
+      v30 = lastLocalKeychainScanTime;
+      v26 = lastLocalKeychainScanTime2;
+      if (![v30 isEqualToDate:lastLocalKeychainScanTime2])
       {
         LOBYTE(v12) = 0;
         goto LABEL_69;
@@ -420,11 +420,11 @@ LABEL_30:
       v35 = 0;
     }
 
-    v31 = [(CKKSZoneStateEntry *)self fetchNewestChangesFirst];
-    if (v31 == [v7 fetchNewestChangesFirst])
+    fetchNewestChangesFirst = [(CKKSZoneStateEntry *)self fetchNewestChangesFirst];
+    if (fetchNewestChangesFirst == [v7 fetchNewestChangesFirst])
     {
-      v32 = [(CKKSZoneStateEntry *)self initialSyncFinished];
-      v12 = v32 ^ [v7 initialSyncFinished] ^ 1;
+      initialSyncFinished = [(CKKSZoneStateEntry *)self initialSyncFinished];
+      v12 = initialSyncFinished ^ [v7 initialSyncFinished] ^ 1;
       if ((v35 & 1) == 0)
       {
         v21 = v36;
@@ -454,7 +454,7 @@ LABEL_70:
         if ((v40 & 1) == 0)
         {
 LABEL_52:
-          if (v44)
+          if (rateLimiter)
           {
 
             if (!v45)
@@ -506,8 +506,8 @@ LABEL_19:
 
 - (id)description
 {
-  v3 = [(CKKSZoneStateEntry *)self contextID];
-  v4 = [(CKKSZoneStateEntry *)self ckzone];
+  contextID = [(CKKSZoneStateEntry *)self contextID];
+  ckzone = [(CKKSZoneStateEntry *)self ckzone];
   if ([(CKKSZoneStateEntry *)self ckzonecreated])
   {
     v5 = @"YES";
@@ -558,83 +558,83 @@ LABEL_19:
     v9 = @"NO";
   }
 
-  v10 = [NSString stringWithFormat:@"<CKKSZoneStateEntry[%@](%@): created:%@ subscribed:%@ moreRecords:%@ fetchNewestChangesFirst:%@ initialSyncFinished:%@>", v3, v4, v5, v6, v7, v8, v9];
+  v10 = [NSString stringWithFormat:@"<CKKSZoneStateEntry[%@](%@): created:%@ subscribed:%@ moreRecords:%@ fetchNewestChangesFirst:%@ initialSyncFinished:%@>", contextID, ckzone, v5, v6, v7, v8, v9];
 
   return v10;
 }
 
-- (CKKSZoneStateEntry)initWithContextID:(id)a3 zoneName:(id)a4 zoneCreated:(BOOL)a5 zoneSubscribed:(BOOL)a6 changeToken:(id)a7 moreRecordsInCloudKit:(BOOL)a8 lastFetch:(id)a9 lastScan:(id)a10 lastFixup:(unint64_t)a11 encodedRateLimiter:(id)a12 fetchNewestChangesFirst:(BOOL)a13 initialSyncFinished:(BOOL)a14
+- (CKKSZoneStateEntry)initWithContextID:(id)d zoneName:(id)name zoneCreated:(BOOL)created zoneSubscribed:(BOOL)subscribed changeToken:(id)token moreRecordsInCloudKit:(BOOL)kit lastFetch:(id)fetch lastScan:(id)self0 lastFixup:(unint64_t)self1 encodedRateLimiter:(id)self2 fetchNewestChangesFirst:(BOOL)self3 initialSyncFinished:(BOOL)self4
 {
-  v18 = a3;
-  v19 = a4;
-  v29 = a7;
-  v28 = a9;
-  v20 = a10;
-  v21 = a12;
+  dCopy = d;
+  nameCopy = name;
+  tokenCopy = token;
+  fetchCopy = fetch;
+  scanCopy = scan;
+  limiterCopy = limiter;
   v30.receiver = self;
   v30.super_class = CKKSZoneStateEntry;
   v22 = [(CKKSZoneStateEntry *)&v30 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_contextID, a3);
-    objc_storeStrong(&v23->_ckzone, a4);
-    v23->_ckzonecreated = a5;
-    v23->_ckzonesubscribed = a6;
-    objc_storeStrong(&v23->_encodedChangeToken, a7);
-    v23->_moreRecordsInCloudKit = a8;
-    objc_storeStrong(&v23->_lastFetchTime, a9);
-    objc_storeStrong(&v23->_lastLocalKeychainScanTime, a10);
-    v23->_lastFixup = a11;
-    v23->_fetchNewestChangesFirst = a13;
-    v23->_initialSyncFinished = a14;
-    [(CKKSZoneStateEntry *)v23 setEncodedRateLimiter:v21];
+    objc_storeStrong(&v22->_contextID, d);
+    objc_storeStrong(&v23->_ckzone, name);
+    v23->_ckzonecreated = created;
+    v23->_ckzonesubscribed = subscribed;
+    objc_storeStrong(&v23->_encodedChangeToken, token);
+    v23->_moreRecordsInCloudKit = kit;
+    objc_storeStrong(&v23->_lastFetchTime, fetch);
+    objc_storeStrong(&v23->_lastLocalKeychainScanTime, scan);
+    v23->_lastFixup = fixup;
+    v23->_fetchNewestChangesFirst = first;
+    v23->_initialSyncFinished = finished;
+    [(CKKSZoneStateEntry *)v23 setEncodedRateLimiter:limiterCopy];
   }
 
   return v23;
 }
 
-+ (id)fromDatabaseRow:(id)a3
++ (id)fromDatabaseRow:(id)row
 {
-  v3 = a3;
+  rowCopy = row;
   v25 = [CKKSZoneStateEntry alloc];
-  v30 = [v3 objectForKeyedSubscript:@"contextID"];
-  v23 = [v30 asString];
-  v29 = [v3 objectForKeyedSubscript:@"ckzone"];
-  v21 = [v29 asString];
-  v28 = [v3 objectForKeyedSubscript:@"ckzonecreated"];
-  v20 = [v28 asBOOL];
-  v27 = [v3 objectForKeyedSubscript:@"ckzonesubscribed"];
-  v18 = [v27 asBOOL];
-  v24 = [v3 objectForKeyedSubscript:@"changetoken"];
-  v17 = [v24 asBase64DecodedData];
-  v22 = [v3 objectForKeyedSubscript:@"morecoming"];
-  v15 = [v22 asBOOL];
-  v19 = [v3 objectForKeyedSubscript:@"lastfetch"];
-  v4 = [v19 asISO8601Date];
-  v16 = [v3 objectForKeyedSubscript:@"lastscan"];
-  v5 = [v16 asISO8601Date];
-  v6 = [v3 objectForKeyedSubscript:@"lastFixup"];
-  v7 = [v6 asNSInteger];
-  v8 = [v3 objectForKeyedSubscript:@"ratelimiter"];
-  v9 = [v8 asBase64DecodedData];
-  v10 = [v3 objectForKeyedSubscript:@"fetchNewestChangesFirst"];
-  v11 = [v10 asBOOL];
-  v12 = [v3 objectForKeyedSubscript:@"initialSyncFinished"];
+  v30 = [rowCopy objectForKeyedSubscript:@"contextID"];
+  asString = [v30 asString];
+  v29 = [rowCopy objectForKeyedSubscript:@"ckzone"];
+  asString2 = [v29 asString];
+  v28 = [rowCopy objectForKeyedSubscript:@"ckzonecreated"];
+  asBOOL = [v28 asBOOL];
+  v27 = [rowCopy objectForKeyedSubscript:@"ckzonesubscribed"];
+  asBOOL2 = [v27 asBOOL];
+  v24 = [rowCopy objectForKeyedSubscript:@"changetoken"];
+  asBase64DecodedData = [v24 asBase64DecodedData];
+  v22 = [rowCopy objectForKeyedSubscript:@"morecoming"];
+  asBOOL3 = [v22 asBOOL];
+  v19 = [rowCopy objectForKeyedSubscript:@"lastfetch"];
+  asISO8601Date = [v19 asISO8601Date];
+  v16 = [rowCopy objectForKeyedSubscript:@"lastscan"];
+  asISO8601Date2 = [v16 asISO8601Date];
+  v6 = [rowCopy objectForKeyedSubscript:@"lastFixup"];
+  asNSInteger = [v6 asNSInteger];
+  v8 = [rowCopy objectForKeyedSubscript:@"ratelimiter"];
+  asBase64DecodedData2 = [v8 asBase64DecodedData];
+  v10 = [rowCopy objectForKeyedSubscript:@"fetchNewestChangesFirst"];
+  asBOOL4 = [v10 asBOOL];
+  v12 = [rowCopy objectForKeyedSubscript:@"initialSyncFinished"];
 
   BYTE1(v14) = [v12 asBOOL];
-  LOBYTE(v14) = v11;
-  v26 = [(CKKSZoneStateEntry *)v25 initWithContextID:v23 zoneName:v21 zoneCreated:v20 zoneSubscribed:v18 changeToken:v17 moreRecordsInCloudKit:v15 lastFetch:v4 lastScan:v5 lastFixup:v7 encodedRateLimiter:v9 fetchNewestChangesFirst:v14 initialSyncFinished:?];
+  LOBYTE(v14) = asBOOL4;
+  v26 = [(CKKSZoneStateEntry *)v25 initWithContextID:asString zoneName:asString2 zoneCreated:asBOOL zoneSubscribed:asBOOL2 changeToken:asBase64DecodedData moreRecordsInCloudKit:asBOOL3 lastFetch:asISO8601Date lastScan:asISO8601Date2 lastFixup:asNSInteger encodedRateLimiter:asBase64DecodedData2 fetchNewestChangesFirst:v14 initialSyncFinished:?];
 
   return v26;
 }
 
-+ (id)tryFromDatabase:(id)a3 zoneName:(id)a4 error:(id *)a5
++ (id)tryFromDatabase:(id)database zoneName:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  databaseCopy = database;
+  nameCopy = name;
   v21[0] = @"contextID";
-  v10 = v8;
+  v10 = databaseCopy;
   v11 = v10;
   if (v10)
   {
@@ -650,7 +650,7 @@ LABEL_19:
 
   v21[1] = @"ckzone";
   v22[0] = v13;
-  v14 = v9;
+  v14 = nameCopy;
   v15 = v14;
   if (v14)
   {
@@ -666,17 +666,17 @@ LABEL_19:
 
   v22[1] = v17;
   v18 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
-  v19 = [a1 tryFromDatabaseWhere:v18 error:a5];
+  v19 = [self tryFromDatabaseWhere:v18 error:error];
 
   return v19;
 }
 
-+ (id)fromDatabase:(id)a3 zoneName:(id)a4 error:(id *)a5
++ (id)fromDatabase:(id)database zoneName:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  databaseCopy = database;
+  nameCopy = name;
   v21[0] = @"contextID";
-  v10 = v8;
+  v10 = databaseCopy;
   v11 = v10;
   if (v10)
   {
@@ -692,7 +692,7 @@ LABEL_19:
 
   v21[1] = @"ckzone";
   v22[0] = v13;
-  v14 = v9;
+  v14 = nameCopy;
   v15 = v14;
   if (v14)
   {
@@ -708,17 +708,17 @@ LABEL_19:
 
   v22[1] = v17;
   v18 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
-  v19 = [a1 fromDatabaseWhere:v18 error:a5];
+  v19 = [self fromDatabaseWhere:v18 error:error];
 
   return v19;
 }
 
-+ (id)contextID:(id)a3 zoneName:(id)a4
++ (id)contextID:(id)d zoneName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  nameCopy = name;
   v12 = 0;
-  v7 = [CKKSZoneStateEntry tryFromDatabase:v5 zoneName:v6 error:&v12];
+  v7 = [CKKSZoneStateEntry tryFromDatabase:dCopy zoneName:nameCopy error:&v12];
   v8 = v12;
   if (v8)
   {
@@ -726,7 +726,7 @@ LABEL_19:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v14 = v6;
+      v14 = nameCopy;
       v15 = 2112;
       v16 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "error fetching CKState(%@): %@", buf, 0x16u);
@@ -736,7 +736,7 @@ LABEL_19:
   if (!v7)
   {
     LOWORD(v11) = 1;
-    v7 = [[CKKSZoneStateEntry alloc] initWithContextID:v5 zoneName:v6 zoneCreated:0 zoneSubscribed:0 changeToken:0 moreRecordsInCloudKit:0 lastFetch:0 lastScan:0 lastFixup:5 encodedRateLimiter:0 fetchNewestChangesFirst:v11 initialSyncFinished:?];
+    v7 = [[CKKSZoneStateEntry alloc] initWithContextID:dCopy zoneName:nameCopy zoneCreated:0 zoneSubscribed:0 changeToken:0 moreRecordsInCloudKit:0 lastFetch:0 lastScan:0 lastFixup:5 encodedRateLimiter:0 fetchNewestChangesFirst:v11 initialSyncFinished:?];
   }
 
   return v7;

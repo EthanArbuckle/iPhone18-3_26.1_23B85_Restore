@@ -1,26 +1,26 @@
 @interface _TUIAuxiliaryItemHost
 - (TUIHostingController)hostingController;
-- (_TUIAuxiliaryItemHost)initWithIdentifier:(id)a3 hostingController:(id)a4 item:(id)a5;
+- (_TUIAuxiliaryItemHost)initWithIdentifier:(id)identifier hostingController:(id)controller item:(id)item;
 - (void)_updateHost;
 - (void)dealloc;
 @end
 
 @implementation _TUIAuxiliaryItemHost
 
-- (_TUIAuxiliaryItemHost)initWithIdentifier:(id)a3 hostingController:(id)a4 item:(id)a5
+- (_TUIAuxiliaryItemHost)initWithIdentifier:(id)identifier hostingController:(id)controller item:(id)item
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = _TUIAuxiliaryItemHost;
   v12 = [(_TUIAuxiliaryItemHost *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeWeak(&v13->_hostingController, v10);
-    objc_storeStrong(&v13->_item, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeWeak(&v13->_hostingController, controllerCopy);
+    objc_storeStrong(&v13->_item, item);
     WeakRetained = objc_loadWeakRetained(&v13->_hostingController);
     [WeakRetained addProviderObserver:v13 forIdentifier:v13->_identifier];
   }

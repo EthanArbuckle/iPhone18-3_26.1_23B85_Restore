@@ -1,14 +1,14 @@
 @interface MusicStoreFlowScriptCapabilitiesController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (id)hasUserRequestedSubscriptionHidden;
 - (id)isCloudLibraryEnabled;
 - (id)scriptAttributeKeys;
-- (void)disableCloudLibraryWithCompletionFunction:(id)a3;
-- (void)enableCloudLibraryWithMergingFromCloudAllowed:(id)a3 completionFunction:(id)a4;
-- (void)setCloudLibraryEnabled:(id)a3;
-- (void)setHasUserRequestedSubscriptionHidden:(id)a3;
+- (void)disableCloudLibraryWithCompletionFunction:(id)function;
+- (void)enableCloudLibraryWithMergingFromCloudAllowed:(id)allowed completionFunction:(id)function;
+- (void)setCloudLibraryEnabled:(id)enabled;
+- (void)setHasUserRequestedSubscriptionHidden:(id)hidden;
 @end
 
 @implementation MusicStoreFlowScriptCapabilitiesController
@@ -40,25 +40,25 @@
   return *v3;
 }
 
-- (void)setCloudLibraryEnabled:(id)a3
+- (void)setCloudLibraryEnabled:(id)enabled
 {
   v3 = [NSString stringWithFormat:@"%@ is readonly", @"isCloudLibraryEnabled"];
 
   [WebScriptObject throwException:v3];
 }
 
-- (void)setHasUserRequestedSubscriptionHidden:(id)a3
+- (void)setHasUserRequestedSubscriptionHidden:(id)hidden
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [hidden BOOLValue];
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.mobileipod"];
-  if (v3 != [v4 BOOLForKey:@"UserRequestedSubscriptionHidden"])
+  if (bOOLValue != [v4 BOOLForKey:@"UserRequestedSubscriptionHidden"])
   {
-    [v4 setBool:v3 forKey:@"UserRequestedSubscriptionHidden"];
+    [v4 setBool:bOOLValue forKey:@"UserRequestedSubscriptionHidden"];
     [v4 synchronize];
   }
 }
 
-- (void)enableCloudLibraryWithMergingFromCloudAllowed:(id)a3 completionFunction:(id)a4
+- (void)enableCloudLibraryWithMergingFromCloudAllowed:(id)allowed completionFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -71,9 +71,9 @@
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v7 = 0;
-    if (a4 && (isKindOfClass & 1) == 0)
+    if (function && (isKindOfClass & 1) == 0)
     {
-      v7 = [[SUScriptFunction alloc] initWithScriptObject:a4];
+      v7 = [[SUScriptFunction alloc] initWithScriptObject:function];
     }
   }
 
@@ -90,7 +90,7 @@
     v17[0] = &__kCFBooleanTrue;
     v16[0] = MPCloudControllerEnableCloudLibraryOptionStartInitialImport;
     v16[1] = MPCloudControllerEnableCloudLibraryOptionMergeWithCloudLibrary;
-    v17[1] = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 BOOLValue]);
+    v17[1] = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [allowed BOOLValue]);
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000013F4;
@@ -105,7 +105,7 @@
   }
 }
 
-- (void)disableCloudLibraryWithCompletionFunction:(id)a3
+- (void)disableCloudLibraryWithCompletionFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -118,9 +118,9 @@
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v5 = 0;
-    if (a3 && (isKindOfClass & 1) == 0)
+    if (function && (isKindOfClass & 1) == 0)
     {
-      v5 = [[SUScriptFunction alloc] initWithScriptObject:a3];
+      v5 = [[SUScriptFunction alloc] initWithScriptObject:function];
     }
   }
 
@@ -147,27 +147,27 @@
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [qword_100011738 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MusicStoreFlowScriptCapabilitiesController;
-    return objc_msgSendSuper2(&v6, "webScriptNameForKeyName:", a3);
+    return objc_msgSendSuper2(&v6, "webScriptNameForKeyName:", name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
   result = SUWebScriptNameForSelector2();
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MusicStoreFlowScriptCapabilitiesController;
-    return objc_msgSendSuper2(&v6, "webScriptNameForSelector:", a3);
+    return objc_msgSendSuper2(&v6, "webScriptNameForSelector:", selector);
   }
 
   return result;
@@ -177,14 +177,14 @@
 {
   v4.receiver = self;
   v4.super_class = MusicStoreFlowScriptCapabilitiesController;
-  v2 = [(MusicStoreFlowScriptCapabilitiesController *)&v4 scriptAttributeKeys];
-  [v2 addObjectsFromArray:{objc_msgSend(qword_100011738, "allKeys")}];
-  return v2;
+  scriptAttributeKeys = [(MusicStoreFlowScriptCapabilitiesController *)&v4 scriptAttributeKeys];
+  [scriptAttributeKeys addObjectsFromArray:{objc_msgSend(qword_100011738, "allKeys")}];
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100011740 = "enableCloudLibraryWithMergingFromCloudAllowed:completionFunction:";
     *algn_100011748 = @"enableCloudLibrary";

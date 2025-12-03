@@ -1,12 +1,12 @@
 @interface TapbackBlurView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (_TtC7ChatKit15TapbackBlurView)initWithCoder:(id)a3;
-- (_TtC7ChatKit15TapbackBlurView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (_TtC7ChatKit15TapbackBlurView)initWithCoder:(id)coder;
+- (_TtC7ChatKit15TapbackBlurView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TapbackBlurView
 
-- (_TtC7ChatKit15TapbackBlurView)initWithCoder:(id)a3
+- (_TtC7ChatKit15TapbackBlurView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7ChatKit15TapbackBlurView_isBlurEnabled) = 0;
   result = sub_190D58510();
@@ -14,9 +14,9 @@
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_190D56F10();
     v6 = v5;
@@ -28,13 +28,13 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_190B4CA80(v4, v6);
 
   return v8 & 1;
 }
 
-- (_TtC7ChatKit15TapbackBlurView)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit15TapbackBlurView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

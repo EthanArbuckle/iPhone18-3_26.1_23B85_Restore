@@ -1,19 +1,19 @@
 @interface HUICCFooterView
 - (BOOL)isHighlighted;
 - (HACCContentModuleDelegate)delegate;
-- (HUICCFooterView)initWithModule:(unint64_t)a3;
+- (HUICCFooterView)initWithModule:(unint64_t)module;
 - (id)accessibilityLabel;
-- (void)_openSettingsWithURL:(id)a3;
-- (void)footerTapped:(id)a3;
-- (void)setFooterAction:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)_openSettingsWithURL:(id)l;
+- (void)footerTapped:(id)tapped;
+- (void)setFooterAction:(id)action;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 - (void)setupFooterActionIfNecessary;
 @end
 
 @implementation HUICCFooterView
 
-- (HUICCFooterView)initWithModule:(unint64_t)a3
+- (HUICCFooterView)initWithModule:(unint64_t)module
 {
   v54[10] = *MEMORY[0x277D85DE8];
   v53.receiver = self;
@@ -22,10 +22,10 @@
   v5 = v4;
   if (v4)
   {
-    [(HUICCFooterView *)v4 setModule:a3];
-    v6 = [MEMORY[0x277CFC968] _tertiaryView];
+    [(HUICCFooterView *)v4 setModule:module];
+    _tertiaryView = [MEMORY[0x277CFC968] _tertiaryView];
     highlightedBackgroundView = v5->_highlightedBackgroundView;
-    v5->_highlightedBackgroundView = v6;
+    v5->_highlightedBackgroundView = _tertiaryView;
 
     [(UIView *)v5->_highlightedBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v5->_highlightedBackgroundView setAlpha:0.0];
@@ -35,8 +35,8 @@
     v5->_footerLabel = v8;
 
     v10 = v5->_footerLabel;
-    v11 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v10 setTextColor:v11];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v10 setTextColor:whiteColor];
 
     [(UILabel *)v5->_footerLabel setNumberOfLines:0];
     [(UILabel *)v5->_footerLabel setTextAlignment:1];
@@ -44,48 +44,48 @@
     [(UILabel *)v5->_footerLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HUICCFooterView *)v5 addSubview:v5->_footerLabel];
     v43 = MEMORY[0x277CCAAD0];
-    v52 = [(UILabel *)v5->_footerLabel leadingAnchor];
-    v51 = [(HUICCFooterView *)v5 leadingAnchor];
+    leadingAnchor = [(UILabel *)v5->_footerLabel leadingAnchor];
+    leadingAnchor2 = [(HUICCFooterView *)v5 leadingAnchor];
     CCUILayoutGutter();
-    v50 = [v52 constraintEqualToAnchor:v51 constant:?];
+    v50 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v54[0] = v50;
-    v49 = [(UILabel *)v5->_footerLabel trailingAnchor];
-    v48 = [(HUICCFooterView *)v5 trailingAnchor];
+    trailingAnchor = [(UILabel *)v5->_footerLabel trailingAnchor];
+    trailingAnchor2 = [(HUICCFooterView *)v5 trailingAnchor];
     CCUILayoutGutter();
-    v47 = [v49 constraintEqualToAnchor:v48 constant:-v12];
+    v47 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v12];
     v54[1] = v47;
-    v46 = [(UILabel *)v5->_footerLabel topAnchor];
-    v45 = [(HUICCFooterView *)v5 topAnchor];
+    topAnchor = [(UILabel *)v5->_footerLabel topAnchor];
+    topAnchor2 = [(HUICCFooterView *)v5 topAnchor];
     CCUILayoutGutter();
-    v44 = [v46 constraintEqualToAnchor:v45 constant:v13 * 0.25];
+    v44 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v13 * 0.25];
     v54[2] = v44;
-    v42 = [(UILabel *)v5->_footerLabel bottomAnchor];
-    v41 = [(HUICCFooterView *)v5 bottomAnchor];
+    bottomAnchor = [(UILabel *)v5->_footerLabel bottomAnchor];
+    bottomAnchor2 = [(HUICCFooterView *)v5 bottomAnchor];
     CCUILayoutGutter();
-    v40 = [v42 constraintEqualToAnchor:v41 constant:v14 * -0.25];
+    v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v14 * -0.25];
     v54[3] = v40;
-    v39 = [(UILabel *)v5->_footerLabel heightAnchor];
-    v38 = [v39 constraintGreaterThanOrEqualToConstant:52.0];
+    heightAnchor = [(UILabel *)v5->_footerLabel heightAnchor];
+    v38 = [heightAnchor constraintGreaterThanOrEqualToConstant:52.0];
     v54[4] = v38;
-    v37 = [(UILabel *)v5->_footerLabel centerYAnchor];
-    v36 = [(HUICCFooterView *)v5 centerYAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    centerYAnchor = [(UILabel *)v5->_footerLabel centerYAnchor];
+    centerYAnchor2 = [(HUICCFooterView *)v5 centerYAnchor];
+    v35 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v54[5] = v35;
-    v34 = [(UIView *)v5->_highlightedBackgroundView leadingAnchor];
-    v33 = [(HUICCFooterView *)v5 leadingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    leadingAnchor3 = [(UIView *)v5->_highlightedBackgroundView leadingAnchor];
+    leadingAnchor4 = [(HUICCFooterView *)v5 leadingAnchor];
+    v32 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v54[6] = v32;
-    v31 = [(UIView *)v5->_highlightedBackgroundView trailingAnchor];
-    v15 = [(HUICCFooterView *)v5 trailingAnchor];
-    v16 = [v31 constraintEqualToAnchor:v15];
+    trailingAnchor3 = [(UIView *)v5->_highlightedBackgroundView trailingAnchor];
+    trailingAnchor4 = [(HUICCFooterView *)v5 trailingAnchor];
+    v16 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v54[7] = v16;
-    v17 = [(UIView *)v5->_highlightedBackgroundView topAnchor];
-    v18 = [(HUICCFooterView *)v5 topAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    topAnchor3 = [(UIView *)v5->_highlightedBackgroundView topAnchor];
+    topAnchor4 = [(HUICCFooterView *)v5 topAnchor];
+    v19 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v54[8] = v19;
-    v20 = [(UIView *)v5->_highlightedBackgroundView bottomAnchor];
-    v21 = [(HUICCFooterView *)v5 bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    bottomAnchor3 = [(UIView *)v5->_highlightedBackgroundView bottomAnchor];
+    bottomAnchor4 = [(HUICCFooterView *)v5 bottomAnchor];
+    v22 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v54[9] = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:10];
     [v43 activateConstraints:v23];
@@ -94,8 +94,8 @@
     v24 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v5 action:sel_footerTapped_];
     [(HUICCFooterView *)v5 addGestureRecognizer:v24];
     v25 = objc_alloc(MEMORY[0x277D75A10]);
-    v26 = [MEMORY[0x277D76228] lightConfiguration];
-    v27 = [v25 initWithConfiguration:v26 view:v5];
+    lightConfiguration = [MEMORY[0x277D76228] lightConfiguration];
+    v27 = [v25 initWithConfiguration:lightConfiguration view:v5];
     feedbackGenerator = v5->_feedbackGenerator;
     v5->_feedbackGenerator = v27;
 
@@ -108,23 +108,23 @@
 
 - (void)setupFooterActionIfNecessary
 {
-  v3 = [(HUICCFooterView *)self module];
-  if (v3 == 22)
+  module = [(HUICCFooterView *)self module];
+  if (module == 22)
   {
     v4 = @"prefs:root=ACCESSIBILITY&path=HEARING_AID_TITLE";
     goto LABEL_8;
   }
 
-  if (v3 == 33)
+  if (module == 33)
   {
-    v5 = [(HUICCFooterView *)self footerLabel];
+    footerLabel = [(HUICCFooterView *)self footerLabel];
     v6 = paLocString();
-    [v5 setText:v6];
+    [footerLabel setText:v6];
 
     goto LABEL_6;
   }
 
-  if (v3 != 29)
+  if (module != 29)
   {
 LABEL_6:
     v7 = 0;
@@ -163,17 +163,17 @@ void __47__HUICCFooterView_setupFooterActionIfNecessary__block_invoke(uint64_t a
   [WeakRetained _openSettingsWithURL:*(a1 + 32)];
 }
 
-- (void)_openSettingsWithURL:(id)a3
+- (void)_openSettingsWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = dispatch_get_global_queue(25, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__HUICCFooterView__openSettingsWithURL___block_invoke;
   v7[3] = &unk_2796F6CA8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = lCopy;
+  selfCopy = self;
+  v6 = lCopy;
   dispatch_async(v5, v7);
 }
 
@@ -313,76 +313,76 @@ LABEL_18:
   }
 }
 
-- (void)setFooterAction:(id)a3
+- (void)setFooterAction:(id)action
 {
-  objc_storeStrong(&self->_footerAction, a3);
-  v5 = a3;
-  v7 = [(HUICCFooterView *)self footerLabel];
-  v6 = [(UIAction *)self->_footerAction title];
+  objc_storeStrong(&self->_footerAction, action);
+  actionCopy = action;
+  footerLabel = [(HUICCFooterView *)self footerLabel];
+  title = [(UIAction *)self->_footerAction title];
 
-  [v7 setText:v6];
+  [footerLabel setText:title];
 }
 
-- (void)footerTapped:(id)a3
+- (void)footerTapped:(id)tapped
 {
-  v4 = [(HUICCFooterView *)self footerAction];
+  footerAction = [(HUICCFooterView *)self footerAction];
 
-  if (v4)
+  if (footerAction)
   {
-    v5 = [(HUICCFooterView *)self footerAction];
-    [v5 performWithSender:self target:0];
+    footerAction2 = [(HUICCFooterView *)self footerAction];
+    [footerAction2 performWithSender:self target:0];
   }
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = [(HUICCFooterView *)self highlightedBackgroundView];
-  [v2 alpha];
+  highlightedBackgroundView = [(HUICCFooterView *)self highlightedBackgroundView];
+  [highlightedBackgroundView alpha];
   v4 = v3 == 1.0;
 
   return v4;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(HUICCFooterView *)self footerAction];
-  if (v5)
+  highlightedCopy = highlighted;
+  footerAction = [(HUICCFooterView *)self footerAction];
+  if (footerAction)
   {
-    v6 = v5;
-    v7 = [(HUICCFooterView *)self isHighlighted];
+    v6 = footerAction;
+    isHighlighted = [(HUICCFooterView *)self isHighlighted];
 
-    if (v7 != v3)
+    if (isHighlighted != highlightedCopy)
     {
       v8 = 0.0;
-      if (v3)
+      if (highlightedCopy)
       {
-        v9 = [(HUICCFooterView *)self feedbackGenerator];
-        [v9 selectionChanged];
+        feedbackGenerator = [(HUICCFooterView *)self feedbackGenerator];
+        [feedbackGenerator selectionChanged];
 
         v8 = 1.0;
       }
 
-      v10 = [(HUICCFooterView *)self highlightedBackgroundView];
-      [v10 setAlpha:v8];
+      highlightedBackgroundView = [(HUICCFooterView *)self highlightedBackgroundView];
+      [highlightedBackgroundView setAlpha:v8];
     }
   }
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(HUICCFooterView *)self footerLabel];
-  v3 = [v2 accessibilityLabel];
+  footerLabel = [(HUICCFooterView *)self footerLabel];
+  accessibilityLabel = [footerLabel accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
-  v7 = [(HUICCFooterView *)self requiredVisualStyleCategories];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v9 = [v7 containsObject:v8];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(HUICCFooterView *)self requiredVisualStyleCategories];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:category];
+  v9 = [requiredVisualStyleCategories containsObject:v8];
 
   if (v9)
   {
@@ -390,8 +390,8 @@ LABEL_18:
     v10[1] = 3221225472;
     v10[2] = __56__HUICCFooterView_setVisualStylingProvider_forCategory___block_invoke;
     v10[3] = &unk_2796F6CA8;
-    v11 = v6;
-    v12 = self;
+    v11 = providerCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], v10);
   }
 }

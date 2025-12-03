@@ -1,36 +1,36 @@
 @interface PXSmallCollectionLayoutGenerator
-+ (int64_t)maximumNumberOfItemsSupportedForStyle:(unint64_t)a3;
++ (int64_t)maximumNumberOfItemsSupportedForStyle:(unint64_t)style;
 - (CGSize)estimatedSize;
 - (CGSize)size;
-- (PXSmallCollectionLayoutGenerator)initWithMetrics:(id)a3;
-- (PXSmallCollectionLayoutGenerator)initWithNumberOfItems:(int64_t)a3 metrics:(id)a4;
+- (PXSmallCollectionLayoutGenerator)initWithMetrics:(id)metrics;
+- (PXSmallCollectionLayoutGenerator)initWithNumberOfItems:(int64_t)items metrics:(id)metrics;
 - (_PXCornerSpriteIndexes)cornerSpriteIndexes;
 - (unint64_t)keyItemIndex;
-- (void)_fillEquallyRect:(CGRect)a3 numberOfItems:(int64_t)a4 axis:(int64_t)a5 resultHandler:(id)a6;
+- (void)_fillEquallyRect:(CGRect)rect numberOfItems:(int64_t)items axis:(int64_t)axis resultHandler:(id)handler;
 - (void)_prepareIfNeeded;
-- (void)_sliceItemFromRect:(CGRect)a3 itemAspectRatio:(double)a4 axis:(int64_t)a5 sliceHandler:(id)a6 remainderHandler:(id)a7;
+- (void)_sliceItemFromRect:(CGRect)rect itemAspectRatio:(double)ratio axis:(int64_t)axis sliceHandler:(id)handler remainderHandler:(id)remainderHandler;
 - (void)dealloc;
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5;
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind;
 @end
 
 @implementation PXSmallCollectionLayoutGenerator
 
-- (void)_sliceItemFromRect:(CGRect)a3 itemAspectRatio:(double)a4 axis:(int64_t)a5 sliceHandler:(id)a6 remainderHandler:(id)a7
+- (void)_sliceItemFromRect:(CGRect)rect itemAspectRatio:(double)ratio axis:(int64_t)axis sliceHandler:(id)handler remainderHandler:(id)remainderHandler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a6;
-  v17 = a7;
-  switch(a5)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  handlerCopy = handler;
+  remainderHandlerCopy = remainderHandler;
+  switch(axis)
   {
     case 1:
       v26.origin.x = x;
       v26.origin.y = y;
       v26.size.width = width;
       v26.size.height = height;
-      v19 = floor(CGRectGetWidth(v26) / a4);
+      v19 = floor(CGRectGetWidth(v26) / ratio);
       v18 = CGRectMinYEdge;
       break;
     case 2:
@@ -39,11 +39,11 @@
       v25.size.width = width;
       v25.size.height = height;
       v18 = CGRectMinXEdge;
-      v19 = floor(CGRectGetHeight(v25) / a4);
+      v19 = floor(CGRectGetHeight(v25) / ratio);
       break;
     case 0:
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"PXSmallCollectionLayoutGenerator.m" lineNumber:304 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmallCollectionLayoutGenerator.m" lineNumber:304 description:@"Code which should be unreachable has been reached"];
 
       abort();
     default:
@@ -59,33 +59,33 @@
   v27.size.width = width;
   v27.size.height = height;
   CGRectDivide(v27, &slice, &v23, v19, v18);
-  v16[2](v16, slice.origin.x, slice.origin.y, slice.size.width, slice.size.height);
-  v20 = [(PXSmallCollectionLayoutGenerator *)self metrics];
-  [v20 interitemSpacing];
+  handlerCopy[2](handlerCopy, slice.origin.x, slice.origin.y, slice.size.width, slice.size.height);
+  metrics = [(PXSmallCollectionLayoutGenerator *)self metrics];
+  [metrics interitemSpacing];
   CGRectDivide(v23, &slice, &v23, v21, v18);
 
-  v17[2](v17, v23.origin.x, v23.origin.y, v23.size.width, v23.size.height);
+  remainderHandlerCopy[2](remainderHandlerCopy, v23.origin.x, v23.origin.y, v23.size.width, v23.size.height);
 }
 
-- (void)_fillEquallyRect:(CGRect)a3 numberOfItems:(int64_t)a4 axis:(int64_t)a5 resultHandler:(id)a6
+- (void)_fillEquallyRect:(CGRect)rect numberOfItems:(int64_t)items axis:(int64_t)axis resultHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a6;
-  v15 = [(PXSmallCollectionLayoutGenerator *)self metrics];
-  [v15 interitemSpacing];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  handlerCopy = handler;
+  metrics = [(PXSmallCollectionLayoutGenerator *)self metrics];
+  [metrics interitemSpacing];
   v17 = v16;
 
-  switch(a5)
+  switch(axis)
   {
     case 1:
       v25.origin.x = x;
       v25.origin.y = y;
       v25.size.width = width;
       v25.size.height = height;
-      v19 = (v17 + CGRectGetHeight(v25)) / a4 - v17;
+      v19 = (v17 + CGRectGetHeight(v25)) / items - v17;
       v18 = CGRectMinYEdge;
       break;
     case 2:
@@ -94,11 +94,11 @@
       v24.size.width = width;
       v24.size.height = height;
       v18 = CGRectMinXEdge;
-      v19 = (v17 + CGRectGetWidth(v24)) / a4 - v17;
+      v19 = (v17 + CGRectGetWidth(v24)) / items - v17;
       break;
     case 0:
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"PXSmallCollectionLayoutGenerator.m" lineNumber:277 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmallCollectionLayoutGenerator.m" lineNumber:277 description:@"Code which should be unreachable has been reached"];
 
       abort();
     default:
@@ -112,23 +112,23 @@
   remainder.size.width = width;
   remainder.size.height = height;
   memset(&v22, 0, sizeof(v22));
-  if (a4 >= 1)
+  if (items >= 1)
   {
     v20 = 0;
     do
     {
       CGRectDivide(remainder, &v22, &remainder, v19, v18);
-      v14[2](v14, v20, v22.origin.x, v22.origin.y, v22.size.width, v22.size.height);
-      if (a4 != 1)
+      handlerCopy[2](handlerCopy, v20, v22.origin.x, v22.origin.y, v22.size.width, v22.size.height);
+      if (items != 1)
       {
         CGRectDivide(remainder, &v22, &remainder, v17, v18);
       }
 
       ++v20;
-      --a4;
+      --items;
     }
 
-    while (a4);
+    while (items);
   }
 }
 
@@ -269,10 +269,10 @@ uint64_t __58__PXSmallCollectionLayoutGenerator__prepareEditorialStyle__block_in
 {
   if (!self->_isPrepared)
   {
-    v3 = [(PXSmallCollectionLayoutGenerator *)self metrics];
-    v4 = [v3 style];
+    metrics = [(PXSmallCollectionLayoutGenerator *)self metrics];
+    style = [metrics style];
 
-    if (v4 == 2)
+    if (style == 2)
     {
       if ([(PXSmallCollectionLayoutGenerator *)self numberOfItems]!= 2)
       {
@@ -281,9 +281,9 @@ uint64_t __58__PXSmallCollectionLayoutGenerator__prepareEditorialStyle__block_in
       }
     }
 
-    else if (v4 != 1)
+    else if (style != 1)
     {
-      if (!v4)
+      if (!style)
       {
         [(PXSmallCollectionLayoutGenerator *)self _prepareEditorialStyle];
       }
@@ -297,12 +297,12 @@ LABEL_9:
   }
 }
 
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind
 {
-  if (!a5)
+  if (!kind)
   {
-    length = a4.length;
-    [(PXSmallCollectionLayoutGenerator *)self _prepareIfNeeded:a3];
+    length = range.length;
+    [(PXSmallCollectionLayoutGenerator *)self _prepareIfNeeded:geometries];
     if (length)
     {
       v8 = 0;
@@ -314,7 +314,7 @@ LABEL_9:
           v10 = &self->_geometries[v8];
         }
 
-        v11 = &a3[v8];
+        v11 = &geometries[v8];
         v12 = *&v10->var1.y;
         *&v11->var0 = *&v10->var0;
         *&v11->var1.y = v12;
@@ -362,8 +362,8 @@ LABEL_9:
 
 - (CGSize)estimatedSize
 {
-  v2 = [(PXSmallCollectionLayoutGenerator *)self metrics];
-  [v2 referenceSize];
+  metrics = [(PXSmallCollectionLayoutGenerator *)self metrics];
+  [metrics referenceSize];
   v4 = v3;
   v6 = v5;
 
@@ -395,43 +395,43 @@ LABEL_9:
   [(PXSmallCollectionLayoutGenerator *)&v3 dealloc];
 }
 
-- (PXSmallCollectionLayoutGenerator)initWithMetrics:(id)a3
+- (PXSmallCollectionLayoutGenerator)initWithMetrics:(id)metrics
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXSmallCollectionLayoutGenerator.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXSmallCollectionLayoutGenerator initWithMetrics:]"}];
+  metricsCopy = metrics;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmallCollectionLayoutGenerator.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXSmallCollectionLayoutGenerator initWithMetrics:]"}];
 
   abort();
 }
 
-- (PXSmallCollectionLayoutGenerator)initWithNumberOfItems:(int64_t)a3 metrics:(id)a4
+- (PXSmallCollectionLayoutGenerator)initWithNumberOfItems:(int64_t)items metrics:(id)metrics
 {
-  v6 = a4;
+  metricsCopy = metrics;
   v11.receiver = self;
   v11.super_class = PXSmallCollectionLayoutGenerator;
-  v7 = [(PXSmallCollectionLayoutGenerator *)&v11 initWithMetrics:v6];
+  v7 = [(PXSmallCollectionLayoutGenerator *)&v11 initWithMetrics:metricsCopy];
   if (v7)
   {
-    v8 = [objc_opt_class() maximumNumberOfItemsSupportedForStyle:{objc_msgSend(v6, "style")}];
-    if (v8 >= a3)
+    v8 = [objc_opt_class() maximumNumberOfItemsSupportedForStyle:{objc_msgSend(metricsCopy, "style")}];
+    if (v8 >= items)
     {
-      v9 = a3;
+      itemsCopy = items;
     }
 
     else
     {
-      v9 = v8;
+      itemsCopy = v8;
     }
 
-    v7->_numberOfItems = v9;
+    v7->_numberOfItems = itemsCopy;
   }
 
   return v7;
 }
 
-+ (int64_t)maximumNumberOfItemsSupportedForStyle:(unint64_t)a3
++ (int64_t)maximumNumberOfItemsSupportedForStyle:(unint64_t)style
 {
-  if (a3 - 1 < 2)
+  if (style - 1 < 2)
   {
     return 3;
   }

@@ -5,7 +5,7 @@
 + (BOOL)protectedAppsEnabled;
 + (BOOL)shouldUseQuickLookOverrideValueForPPT;
 + (BOOL)supportsQuickLookInSharedWindow;
-+ (BOOL)supportsQuickLookInsteadOfOpen:(id)a3;
++ (BOOL)supportsQuickLookInsteadOfOpen:(id)open;
 + (BOOL)typeToFocusIsSupported;
 + (BOOL)useFIOperations;
 + (DOCFeatureState)contextMenuShowsOpenWithApp;
@@ -92,9 +92,9 @@ uint64_t __24__DOCFeature_tabSidebar__block_invoke()
 + (BOOL)protectedAppsEnabled
 {
   v2 = +[DOCFeature protectedApps];
-  v3 = [v2 isEnabled];
+  isEnabled = [v2 isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
 + (BOOL)_UIPTabInfrastructureEnabled
@@ -109,7 +109,7 @@ uint64_t __24__DOCFeature_tabSidebar__block_invoke()
   else
   {
 
-    return [a1 _docImplementation_uip_isFloatingTabBarEnabled];
+    return [self _docImplementation_uip_isFloatingTabBarEnabled];
   }
 }
 
@@ -879,19 +879,19 @@ void __60__DOCFeature__docImplementation_uip_isFloatingTabBarEnabled__block_invo
 
 + (BOOL)supportsQuickLookInSharedWindow
 {
-  v3 = [a1 quickLookInWindow];
-  if ([v3 isEnabled])
+  quickLookInWindow = [self quickLookInWindow];
+  if ([quickLookInWindow isEnabled])
   {
-    v4 = [a1 quickLookInWindowShared];
-    v5 = [v4 isEnabled];
+    quickLookInWindowShared = [self quickLookInWindowShared];
+    isEnabled = [quickLookInWindowShared isEnabled];
   }
 
   else
   {
-    v5 = 0;
+    isEnabled = 0;
   }
 
-  return v5;
+  return isEnabled;
 }
 
 + (BOOL)shouldUseQuickLookOverrideValueForPPT
@@ -902,10 +902,10 @@ void __60__DOCFeature__docImplementation_uip_isFloatingTabBarEnabled__block_invo
   return v3;
 }
 
-+ (BOOL)supportsQuickLookInsteadOfOpen:(id)a3
++ (BOOL)supportsQuickLookInsteadOfOpen:(id)open
 {
-  v4 = a3;
-  if ([a1 shouldUseQuickLookOverrideValueForPPT])
+  openCopy = open;
+  if ([self shouldUseQuickLookOverrideValueForPPT])
   {
     v5 = docLogHandle;
     if (!docLogHandle)
@@ -920,32 +920,32 @@ void __60__DOCFeature__docImplementation_uip_isFloatingTabBarEnabled__block_invo
       _os_log_impl(&dword_249340000, v5, OS_LOG_TYPE_DEFAULT, "ShouldUseQuickLookOverrideValueForPPT enabled!", v9, 2u);
     }
 
-    v6 = 1;
+    isFilesApp = 1;
   }
 
   else
   {
-    v7 = [a1 quickLookAllDocumentsInFiles];
-    if ([v7 isEnabled])
+    quickLookAllDocumentsInFiles = [self quickLookAllDocumentsInFiles];
+    if ([quickLookAllDocumentsInFiles isEnabled])
     {
-      v6 = [v4 isFilesApp];
+      isFilesApp = [openCopy isFilesApp];
     }
 
     else
     {
-      v6 = 0;
+      isFilesApp = 0;
     }
   }
 
-  return v6;
+  return isFilesApp;
 }
 
 + (BOOL)useFIOperations
 {
   v24[1] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Disable_%@", @"FIOperations"];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 valueForKey:v2];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults valueForKey:v2];
 
   if (!v4)
   {
@@ -954,11 +954,11 @@ void __60__DOCFeature__docImplementation_uip_isFloatingTabBarEnabled__block_invo
 
     if (v4)
     {
-      v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
       v23 = v2;
       v24[0] = v4;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-      [v6 registerDefaults:v7];
+      [standardUserDefaults2 registerDefaults:v7];
     }
   }
 
@@ -966,7 +966,7 @@ void __60__DOCFeature__docImplementation_uip_isFloatingTabBarEnabled__block_invo
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
-  v22 = [useFIOperations_previousEnabledState BOOLValue];
+  bOOLValue = [useFIOperations_previousEnabledState BOOLValue];
   if ([v4 BOOLValue])
   {
     *(v20 + 24) = 0;
@@ -987,9 +987,9 @@ void __60__DOCFeature__docImplementation_uip_isFloatingTabBarEnabled__block_invo
 
   if (!useFIOperations_previousEnabledState || (v8 = [useFIOperations_previousEnabledState BOOLValue], v9 = *(v20 + 24), v9 != v8))
   {
-    v10 = [v4 BOOLValue];
+    bOOLValue2 = [v4 BOOLValue];
     v11 = &stru_285C6EEF8;
-    if (v10)
+    if (bOOLValue2)
     {
       v11 = @" FORCED";
     }

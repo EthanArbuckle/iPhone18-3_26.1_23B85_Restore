@@ -4,19 +4,19 @@
 - (BOOL)wasOfferedIntelligence;
 - (_TtC5Setup25IntelligenceStateProvider)init;
 - (id)stashableNotificationOnboardingDefaults;
-- (void)applyStashedIsIntelligenceEnabled:(BOOL)a3;
-- (void)applyStashedNotificationOnboardingDefaults:(id)a3;
-- (void)isIntelligenceEnabledWithCompletionHandler:(id)a3;
+- (void)applyStashedIsIntelligenceEnabled:(BOOL)enabled;
+- (void)applyStashedNotificationOnboardingDefaults:(id)defaults;
+- (void)isIntelligenceEnabledWithCompletionHandler:(id)handler;
 @end
 
 @implementation IntelligenceStateProvider
 
-- (void)isIntelligenceEnabledWithCompletionHandler:(id)a3
+- (void)isIntelligenceEnabledWithCompletionHandler:(id)handler
 {
   v5 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -32,11 +32,11 @@
   v12[3] = 0;
   v12[4] = &unk_100297310;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_100063A28(0, 0, v7, &unk_1002979A0, v12);
 }
 
-- (void)applyStashedIsIntelligenceEnabled:(BOOL)a3
+- (void)applyStashedIsIntelligenceEnabled:(BOOL)enabled
 {
   type metadata accessor for GMOptIn();
   v3 = static GMOptIn.shared.getter();
@@ -45,7 +45,7 @@
 
 - (BOOL)wasOfferedIntelligence
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000FF68();
   if (v3)
   {
@@ -87,10 +87,10 @@
   return v4;
 }
 
-- (void)applyStashedNotificationOnboardingDefaults:(id)a3
+- (void)applyStashedNotificationOnboardingDefaults:(id)defaults
 {
-  v4 = a3;
-  v8 = self;
+  defaultsCopy = defaults;
+  selfCopy = self;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 
@@ -105,7 +105,7 @@
   v5 = v3[4];
   sub_10000B444(v3, v4);
   v6 = *(v5 + 8);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
   sub_100006410(&qword_1003A0460);
   v9 = type metadata accessor for GenerativeModelsAvailability.Availability.UnavailableInfo.UnavailableReason();

@@ -4,25 +4,25 @@
 - (BOOL)didWin;
 - (BOOL)isMonitoring;
 - (SCDAMonitor)init;
-- (id)_fetchCurrentMyriadDecisionWithWaitTime:(double)a3;
-- (id)_myriadStateToString:(int64_t)a3;
+- (id)_fetchCurrentMyriadDecisionWithWaitTime:(double)time;
+- (id)_myriadStateToString:(int64_t)string;
 - (void)_cancelRepostedMyriadDecisionTimer;
 - (void)_clear;
-- (void)_dequeueBlocksWithSignal:(int64_t)a3;
+- (void)_dequeueBlocksWithSignal:(int64_t)signal;
 - (void)_deregisterFromMyriadEventNotifications;
 - (void)_deregisterFromRepostedDecisionResultsObservers;
-- (void)_enqueueBlock:(id)a3 forReason:(id)a4;
-- (void)_flushCompletions:(BOOL)a3;
+- (void)_enqueueBlock:(id)block forReason:(id)reason;
+- (void)_flushCompletions:(BOOL)completions;
 - (void)_registerForMyriadEvents;
 - (void)_setDecisionIsPending;
 - (void)dealloc;
 - (void)dequeueBlocksWaitingForMyriadDecision;
-- (void)ignoreMyriadEvents:(BOOL)a3;
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5;
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4;
-- (void)startMonitoringWithTimeoutInterval:(double)a3 instanceContext:(id)a4;
+- (void)ignoreMyriadEvents:(BOOL)events;
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to;
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token;
+- (void)startMonitoringWithTimeoutInterval:(double)interval instanceContext:(id)context;
 - (void)stopMonitoring;
-- (void)waitForMyriadDecisionForReason:(id)a3 withCompletion:(id)a4;
+- (void)waitForMyriadDecisionForReason:(id)reason withCompletion:(id)completion;
 @end
 
 @implementation SCDAMonitor
@@ -216,9 +216,9 @@ uint64_t __52__SCDAMonitor_dequeueBlocksWaitingForMyriadDecision__block_invoke(u
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_flushCompletions:(BOOL)a3
+- (void)_flushCompletions:(BOOL)completions
 {
-  if (a3)
+  if (completions)
   {
     v4 = 0;
   }
@@ -255,7 +255,7 @@ uint64_t __52__SCDAMonitor_dequeueBlocksWaitingForMyriadDecision__block_invoke(u
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dequeueBlocksWithSignal:(int64_t)a3
+- (void)_dequeueBlocksWithSignal:(int64_t)signal
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = SCDALogContextCore;
@@ -292,7 +292,7 @@ uint64_t __52__SCDAMonitor_dequeueBlocksWaitingForMyriadDecision__block_invoke(u
             objc_enumerationMutation(v8);
           }
 
-          [*(*(&v14 + 1) + 8 * v12++) invokeWithSignal:{a3, v14}];
+          [*(*(&v14 + 1) + 8 * v12++) invokeWithSignal:{signal, v14}];
         }
 
         while (v10 != v12);
@@ -330,25 +330,25 @@ void *__36__SCDAMonitor__setDecisionIsPending__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  observerCopy = observer;
   v9 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
   {
     v12 = 136315906;
     v13 = "[SCDAMonitor notifyObserver:didChangeStateFrom:to:]";
     v14 = 2048;
-    v15 = v8;
+    v15 = observerCopy;
     v16 = 2048;
-    v17 = a4;
+    fromCopy = from;
     v18 = 2048;
-    v19 = a5;
+    toCopy = to;
     _os_log_impl(&dword_1DA758000, v9, OS_LOG_TYPE_INFO, "%s notifyObserver %p didChangeStateFrom %ld -> %ld", &v12, 0x2Au);
   }
 
-  if (!a4 && self->_repostedWonObserver == v8)
+  if (!from && self->_repostedWonObserver == observerCopy)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.siri.myriad.get.decision", 0, 0, 1u);
@@ -357,17 +357,17 @@ void *__36__SCDAMonitor__setDecisionIsPending__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token
 {
-  v5 = a3;
+  observerCopy = observer;
   myriadMonitorQueue = self->_myriadMonitorQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__SCDAMonitor_notifyObserver_didReceiveNotificationWithToken___block_invoke;
   v8[3] = &unk_1E85D38A0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = observerCopy;
+  selfCopy = self;
+  v7 = observerCopy;
   dispatch_async(myriadMonitorQueue, v8);
 }
 
@@ -502,7 +502,7 @@ LABEL_16:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_fetchCurrentMyriadDecisionWithWaitTime:(double)a3
+- (id)_fetchCurrentMyriadDecisionWithWaitTime:(double)time
 {
   v5 = [SCDAWatchdogTimer alloc];
   myriadMonitorQueue = self->_myriadMonitorQueue;
@@ -511,7 +511,7 @@ LABEL_16:
   v9[2] = __55__SCDAMonitor__fetchCurrentMyriadDecisionWithWaitTime___block_invoke;
   v9[3] = &unk_1E85D3850;
   v9[4] = self;
-  v7 = [(SCDAWatchdogTimer *)v5 initWithTimeoutInterval:myriadMonitorQueue onQueue:v9 timeoutHandler:a3];
+  v7 = [(SCDAWatchdogTimer *)v5 initWithTimeoutInterval:myriadMonitorQueue onQueue:v9 timeoutHandler:time];
 
   return v7;
 }
@@ -537,16 +537,16 @@ void __55__SCDAMonitor__fetchCurrentMyriadDecisionWithWaitTime___block_invoke(ui
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_myriadStateToString:(int64_t)a3
+- (id)_myriadStateToString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E85D38C0[a3];
+    return off_1E85D38C0[string];
   }
 }
 
@@ -640,14 +640,14 @@ _BYTE *__29__SCDAMonitor_stopMonitoring__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)ignoreMyriadEvents:(BOOL)a3
+- (void)ignoreMyriadEvents:(BOOL)events
 {
   myriadMonitorQueue = self->_myriadMonitorQueue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __34__SCDAMonitor_ignoreMyriadEvents___block_invoke;
   v4[3] = &unk_1E85D3828;
-  v5 = a3;
+  eventsCopy = events;
   v4[4] = self;
   dispatch_async(myriadMonitorQueue, v4);
 }
@@ -680,18 +680,18 @@ void __34__SCDAMonitor_ignoreMyriadEvents___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startMonitoringWithTimeoutInterval:(double)a3 instanceContext:(id)a4
+- (void)startMonitoringWithTimeoutInterval:(double)interval instanceContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   myriadMonitorQueue = self->_myriadMonitorQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__SCDAMonitor_startMonitoringWithTimeoutInterval_instanceContext___block_invoke;
   block[3] = &unk_1E85D3800;
-  v12 = a3;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  intervalCopy = interval;
+  v10 = contextCopy;
+  selfCopy = self;
+  v8 = contextCopy;
   dispatch_async(myriadMonitorQueue, block);
 }
 
@@ -732,35 +732,35 @@ void __66__SCDAMonitor_startMonitoringWithTimeoutInterval_instanceContext___bloc
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)waitForMyriadDecisionForReason:(id)a3 withCompletion:(id)a4
+- (void)waitForMyriadDecisionForReason:(id)reason withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   myriadMonitorQueue = self->_myriadMonitorQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__SCDAMonitor_waitForMyriadDecisionForReason_withCompletion___block_invoke;
   block[3] = &unk_1E85D37D8;
-  v12 = v6;
-  v13 = v7;
+  v12 = reasonCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = reasonCopy;
+  v10 = completionCopy;
   dispatch_async(myriadMonitorQueue, block);
 }
 
-- (void)_enqueueBlock:(id)a3 forReason:(id)a4
+- (void)_enqueueBlock:(id)block forReason:(id)reason
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  blockCopy = block;
+  reasonCopy = reason;
+  v8 = reasonCopy;
+  if (blockCopy)
   {
     v9 = @"Unspecified";
-    if (v7)
+    if (reasonCopy)
     {
-      v9 = v7;
+      v9 = reasonCopy;
     }
 
     v10 = v9;
@@ -790,7 +790,7 @@ void __66__SCDAMonitor_startMonitoringWithTimeoutInterval_instanceContext___bloc
       v23[3] = &unk_1E85D37B0;
       v26 = Current;
       v24 = v10;
-      v25 = v6;
+      v25 = blockCopy;
       v21 = [(SCDASafetyBlock *)v20 initWithBlock:v23];
       [(NSMutableArray *)completions addObject:v21];
     }
@@ -813,12 +813,12 @@ void __66__SCDAMonitor_startMonitoringWithTimeoutInterval_instanceContext___bloc
 
       if (self->_ignoreMyriadEvents)
       {
-        (*(v6 + 2))(v6, 1);
+        (*(blockCopy + 2))(blockCopy, 1);
       }
 
       else
       {
-        (*(v6 + 2))(v6, self->_state != 2);
+        (*(blockCopy + 2))(blockCopy, self->_state != 2);
       }
     }
   }

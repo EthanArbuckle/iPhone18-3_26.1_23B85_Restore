@@ -6,16 +6,16 @@
 
 - (void)setNeedsNestedPagingScrollViewUpdate
 {
-  v1 = a1;
+  selfCopy = self;
   v3 = 0;
   do
   {
     v2 = v3;
-    v3 = v1;
+    v3 = selfCopy;
 
-    v1 = [v3 parentViewController];
+    selfCopy = [v3 parentViewController];
 
-    if (!v1)
+    if (!selfCopy)
     {
       break;
     }
@@ -24,7 +24,7 @@
   }
 
   while ((objc_opt_isKindOfClass() & 1) == 0);
-  [v1 _viewControllerNeedsNestedPagingScrollViewUpdate:v3];
+  [selfCopy _viewControllerNeedsNestedPagingScrollViewUpdate:v3];
 }
 
 @end

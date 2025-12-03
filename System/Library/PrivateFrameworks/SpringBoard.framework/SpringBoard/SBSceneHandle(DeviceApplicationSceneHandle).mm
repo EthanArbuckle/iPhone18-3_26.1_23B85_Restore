@@ -6,11 +6,11 @@
 
 - (uint64_t)isEffectivelyForeground
 {
-  v1 = [a1 sceneIfExists];
-  v2 = [v1 settings];
-  v3 = [v2 isForeground];
+  sceneIfExists = [self sceneIfExists];
+  settings = [sceneIfExists settings];
+  isForeground = [settings isForeground];
 
-  return v3;
+  return isForeground;
 }
 
 @end

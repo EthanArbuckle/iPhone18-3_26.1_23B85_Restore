@@ -1,19 +1,19 @@
 @interface TSCEIdentifierFormulaNode
 - (NSString)fullIdentifier;
 - (NSString)lastIdentifierComponent;
-- (TSCEIdentifierFormulaNode)initWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSCEIdentifierFormulaNode)initWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)lastComponentWithWhitespaceAppended;
-- (id)resolveIdentifier:(id)a3 hostTable:(id)a4 baseHostCell:(TSUCellCoord)a5 symbolTable:(void *)a6;
-- (void)addIdentifierComponent:(id)a3;
-- (void)appendToLastComponent:(id)a3;
+- (id)resolveIdentifier:(id)identifier hostTable:(id)table baseHostCell:(TSUCellCoord)cell symbolTable:(void *)symbolTable;
+- (void)addIdentifierComponent:(id)component;
+- (void)appendToLastComponent:(id)component;
 @end
 
 @implementation TSCEIdentifierFormulaNode
 
-- (TSCEIdentifierFormulaNode)initWithIdentifier:(id)a3
+- (TSCEIdentifierFormulaNode)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = TSCEIdentifierFormulaNode;
   v5 = [(TSCEFormulaNode *)&v11 initWithNodeType:21];
@@ -21,13 +21,13 @@
   if (v5)
   {
     v5->_symbol = 0;
-    objc_msgSend_addIdentifierComponent_(v5, v6, v4, v7, v8);
+    objc_msgSend_addIdentifierComponent_(v5, v6, identifierCopy, v7, v8);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x277D85DE8];
   v26.receiver = self;
@@ -74,10 +74,10 @@
   return v4;
 }
 
-- (void)addIdentifierComponent:(id)a3
+- (void)addIdentifierComponent:(id)component
 {
-  v10 = a3;
-  if (v10)
+  componentCopy = component;
+  if (componentCopy)
   {
     components = self->_components;
     if (!components)
@@ -89,7 +89,7 @@
       components = self->_components;
     }
 
-    objc_msgSend_addObject_(components, v4, v10, v5, v6);
+    objc_msgSend_addObject_(components, v4, componentCopy, v5, v6);
   }
 }
 
@@ -173,34 +173,34 @@
   return v20;
 }
 
-- (void)appendToLastComponent:(id)a3
+- (void)appendToLastComponent:(id)component
 {
-  v25 = a3;
+  componentCopy = component;
   v12 = objc_msgSend_count(self->_components, v4, v5, v6, v7);
-  v13 = v25;
-  if (v25)
+  v13 = componentCopy;
+  if (componentCopy)
   {
     v14 = MEMORY[0x277CCACA8];
     v15 = objc_msgSend_lastComponentWithWhitespaceAppended(self, v8, v9, v10, v11);
-    v19 = objc_msgSend_stringWithFormat_(v14, v16, @"%@%@", v17, v18, v15, v25);
+    v19 = objc_msgSend_stringWithFormat_(v14, v16, @"%@%@", v17, v18, v15, componentCopy);
 
     objc_msgSend_replaceObjectAtIndex_withObject_(self->_components, v20, v12 - 1, v19, v21);
     objc_msgSend_setWhitespaceAfter_(self, v22, 0, v23, v24);
 
-    v13 = v25;
+    v13 = componentCopy;
   }
 }
 
-- (id)resolveIdentifier:(id)a3 hostTable:(id)a4 baseHostCell:(TSUCellCoord)a5 symbolTable:(void *)a6
+- (id)resolveIdentifier:(id)identifier hostTable:(id)table baseHostCell:(TSUCellCoord)cell symbolTable:(void *)symbolTable
 {
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  tableCopy = table;
   v16 = objc_msgSend_fullIdentifier(self, v12, v13, v14, v15);
   if (objc_msgSend_componentCount(self, v17, v18, v19, v20) == 1)
   {
     if (v16)
     {
-      v25 = objc_msgSend_documentLocale(v10, v21, v22, v23, v24);
+      v25 = objc_msgSend_documentLocale(identifierCopy, v21, v22, v23, v24);
       MEMORY[0x223D9F8D0](__p, v25);
 
       TSUUnivNumberParser::parseAsNumber(__p, v16);
@@ -226,7 +226,7 @@
       }
     }
 
-    v41 = objc_msgSend_documentLocale(v10, v21, v22, v23, v24);
+    v41 = objc_msgSend_documentLocale(identifierCopy, v21, v22, v23, v24);
     IsTrue = objc_msgSend_localizedStringIsTrue_(v41, v42, v16, v43, v44);
 
     if (IsTrue)
@@ -239,7 +239,7 @@
 
     else
     {
-      v62 = objc_msgSend_documentLocale(v10, v46, v47, v48, v49);
+      v62 = objc_msgSend_documentLocale(identifierCopy, v46, v47, v48, v49);
       IsFalse = objc_msgSend_localizedStringIsFalse_(v62, v63, v16, v64, v65);
 
       if (!IsFalse)
@@ -260,7 +260,7 @@
   }
 
 LABEL_16:
-  v82 = TSCESymbolTable::lookup(a6, v16, 0);
+  v82 = TSCESymbolTable::lookup(symbolTable, v16, 0);
   if (v82)
   {
     v83 = [TSCEVariableFormulaNode alloc];
@@ -279,7 +279,7 @@ LABEL_16:
 LABEL_20:
     v99 = [TSCEReferenceParsingContext alloc];
     v104 = objc_msgSend_identifierComponents(self, v100, v101, v102, v103);
-    v107 = objc_msgSend_initWithContextResolver_components_(v99, v105, v11, v104, v106);
+    v107 = objc_msgSend_initWithContextResolver_components_(v99, v105, tableCopy, v104, v106);
 
     objc_msgSend_setReferenceIsComplete_(v107, v108, 1, v109, v110);
     objc_msgSend_setFilterColons_(v107, v111, 0, v112, v113);
@@ -289,7 +289,7 @@ LABEL_20:
     v127 = objc_msgSend_initWithComponents_aggregateFunction_(v114, v125, v119, v124, v126);
 
     objc_msgSend_setRefPathSplitter_(v107, v128, v127, v129, v130);
-    v135 = objc_msgSend_refParser(v10, v131, v132, v133, v134);
+    v135 = objc_msgSend_refParser(identifierCopy, v131, v132, v133, v134);
     v139 = objc_msgSend_parseAsCategoryRefWithParsingContext_(v135, v136, v107, v137, v138);
 
     v144 = objc_msgSend_groupByUid(v139, v140, v141, v142, v143);
@@ -297,8 +297,8 @@ LABEL_20:
     {
       objc_msgSend_setType_(v139, v145, 11, v146, v147);
       v148 = [TSCECombinedReferenceFormulaNode alloc];
-      v153 = objc_msgSend_tableUID(v11, v149, v150, v151, v152);
-      __p[0] = a5;
+      v153 = objc_msgSend_tableUID(tableCopy, v149, v150, v151, v152);
+      __p[0] = cell;
       __p[1] = v153;
       v333[0] = v154;
       v28 = objc_msgSend_initWithCategoryRef_hostCellRef_(v148, v154, v139, __p, v155);
@@ -313,7 +313,7 @@ LABEL_20:
   }
 
   v157 = [TSCEReferenceParsingContext alloc];
-  v161 = objc_msgSend_initWithContextResolver_(v157, v158, v11, v159, v160);
+  v161 = objc_msgSend_initWithContextResolver_(v157, v158, tableCopy, v159, v160);
   objc_msgSend_setReferenceIsComplete_(v161, v162, 1, v163, v164);
   objc_msgSend_setFilterColons_(v161, v165, 0, v166, v167);
   if (objc_msgSend_componentCount(self, v168, v169, v170, v171) == 3)
@@ -350,7 +350,7 @@ LABEL_36:
   v202 = objc_msgSend_lastIdentifierComponent(self, v198, v199, v200, v201);
   objc_msgSend_setRest_(v161, v203, v202, v204, v205);
 
-  v210 = objc_msgSend_refParser(v10, v206, v207, v208, v209);
+  v210 = objc_msgSend_refParser(identifierCopy, v206, v207, v208, v209);
   v214 = objc_msgSend_parseAsTractRefWithParsingContext_(v210, v211, v161, v212, v213);
 
   v323 = v214;
@@ -365,14 +365,14 @@ LABEL_36:
   {
     if (v223)
     {
-      objc_msgSend_tableInfoForTableUID_withCalcEngine_(TSTTableInfo, v223, 0, v223, v10);
+      objc_msgSend_tableInfoForTableUID_withCalcEngine_(TSTTableInfo, v223, 0, v223, identifierCopy);
       goto LABEL_43;
     }
 
-    v224 = objc_msgSend_tableUID(v11, 0, 0, v225, v226);
+    v224 = objc_msgSend_tableUID(tableCopy, 0, 0, v225, v226);
   }
 
-  objc_msgSend_tableInfoForTableUID_withCalcEngine_(TSTTableInfo, v223, v224, v223, v10);
+  objc_msgSend_tableInfoForTableUID_withCalcEngine_(TSTTableInfo, v223, v224, v223, identifierCopy);
   v321 = LABEL_43:;
   v231 = objc_msgSend_translator(v321, v227, v228, v229, v230);
 
@@ -415,9 +415,9 @@ LABEL_36:
   v326.size = v264;
   if (v320 && TSUCellRect::contains(&v327, &v326))
   {
-    v325._topLeft = objc_msgSend_tableUID(v11, v264, v265, v266, v267);
+    v325._topLeft = objc_msgSend_tableUID(tableCopy, v264, v265, v266, v267);
     v325._bottomRight = v268;
-    objc_msgSend_uidTractWithCalcEngine_hostTableUID_(v320, v268, v10, &v325, v269);
+    objc_msgSend_uidTractWithCalcEngine_hostTableUID_(v320, v268, identifierCopy, &v325, v269);
     if (__p[0])
     {
       __p[1] = __p[0];
@@ -454,7 +454,7 @@ LABEL_36:
     v328.origin = objc_msgSend_tableUID(v320, v272, v273, v274, v275);
     v328.size = v276;
     v280 = objc_msgSend_preserveFlags(v320, v276, v277, v278, v279);
-    v282 = objc_msgSend_initWithCalcEngine_tableUID_uidRange_preserveFlags_(v271, v281, v10, &v328, __p, v280);
+    v282 = objc_msgSend_initWithCalcEngine_tableUID_uidRange_preserveFlags_(v271, v281, identifierCopy, &v328, __p, v280);
   }
 
   else
@@ -469,7 +469,7 @@ LABEL_36:
       if (objc_msgSend_isValid(v293, v294, v295, v296, v297))
       {
         v298 = [TSTUIDRectRef alloc];
-        v283 = objc_msgSend_initWithCalcEngine_viewTractRef_(v298, v299, v10, v293, v300);
+        v283 = objc_msgSend_initWithCalcEngine_viewTractRef_(v298, v299, identifierCopy, v293, v300);
       }
 
       else
@@ -487,14 +487,14 @@ LABEL_36:
     }
 
     v301 = [TSTUIDRectRef alloc];
-    v282 = objc_msgSend_initWithCalcEngine_viewTractRef_(v301, v302, v10, v323, v303);
+    v282 = objc_msgSend_initWithCalcEngine_viewTractRef_(v301, v302, identifierCopy, v323, v303);
   }
 
   v283 = v282;
 LABEL_68:
   v304 = [TSCECombinedReferenceFormulaNode alloc];
-  v309 = objc_msgSend_tableUID(v11, v305, v306, v307, v308);
-  v328.origin = a5;
+  v309 = objc_msgSend_tableUID(tableCopy, v305, v306, v307, v308);
+  v328.origin = cell;
   v328.size = v309;
   v329 = v310;
   v28 = objc_msgSend_initWithUidRectRef_hostCellRef_(v304, v310, v283, &v328, v311);

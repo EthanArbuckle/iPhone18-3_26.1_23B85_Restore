@@ -7,9 +7,9 @@
 - (void)initOperatorDependancies;
 - (void)logEventPointHeap;
 - (void)logEventPointSample;
-- (void)logEventPointSampleForProcessName:(id)a3;
-- (void)logEventPointSmartPLFiredFromAuxilary:(Class)a3 withReason:(id)a4;
-- (void)logEventPointStackShotWithReason:(id)a3;
+- (void)logEventPointSampleForProcessName:(id)name;
+- (void)logEventPointSmartPLFiredFromAuxilary:(Class)auxilary withReason:(id)reason;
+- (void)logEventPointStackShotWithReason:(id)reason;
 - (void)logEventPointVMMap;
 @end
 
@@ -19,11 +19,11 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"SmartTrigger";
-  v3 = [a1 entryEventPointDefinitionSmartTrigger];
+  entryEventPointDefinitionSmartTrigger = [self entryEventPointDefinitionSmartTrigger];
   v8[1] = @"Sample";
-  v9[0] = v3;
-  v4 = [a1 entryEventPointDefinitionSample];
-  v9[1] = v4;
+  v9[0] = entryEventPointDefinitionSmartTrigger;
+  entryEventPointDefinitionSample = [self entryEventPointDefinitionSample];
+  v9[1] = entryEventPointDefinitionSample;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -46,13 +46,13 @@
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"Helper";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
   v12[1] = @"Reason";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_StringFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v13[1] = commonTypeDict_StringFormat2;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -72,17 +72,17 @@
   v18[0] = v2;
   v17[1] = *MEMORY[0x277D3F540];
   v13[0] = @"PID";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v14[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v14[0] = commonTypeDict_IntegerFormat;
   v13[1] = @"ProcessName";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v14[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v14[1] = commonTypeDict_StringFormat;
   v13[2] = @"Sample";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat];
-  v14[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v14[2] = commonTypeDict_StringFormat2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -94,7 +94,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLSmartPLService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -103,7 +103,7 @@
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -119,42 +119,42 @@
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
 {
   v10 = objc_opt_new();
   [v10 startWithOperator:self];
-  v3 = [(PLSmartPLService *)self smartPLHelpers];
+  smartPLHelpers = [(PLSmartPLService *)self smartPLHelpers];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 setObject:v10 forKeyedSubscript:v5];
+  [smartPLHelpers setObject:v10 forKeyedSubscript:v5];
 
   if ([MEMORY[0x277D3F180] BOOLForKey:@"MemoryTrackingEnabled" ifNotSet:0])
   {
     v6 = objc_opt_new();
     [v6 startWithOperator:self];
-    v7 = [(PLSmartPLService *)self smartPLHelpers];
+    smartPLHelpers2 = [(PLSmartPLService *)self smartPLHelpers];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 setObject:v6 forKeyedSubscript:v9];
+    [smartPLHelpers2 setObject:v6 forKeyedSubscript:v9];
   }
 }
 
-- (void)logEventPointSmartPLFiredFromAuxilary:(Class)a3 withReason:(id)a4
+- (void)logEventPointSmartPLFiredFromAuxilary:(Class)auxilary withReason:(id)reason
 {
   v6 = *MEMORY[0x277D3F5E8];
-  v7 = a4;
+  reasonCopy = reason;
   v10 = [(PLOperator *)PLSmartPLService entryKeyForType:v6 andName:@"SmartTrigger"];
   v8 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v10];
-  v9 = NSStringFromClass(a3);
+  v9 = NSStringFromClass(auxilary);
   [v8 setObject:v9 forKeyedSubscript:@"Helper"];
 
-  [v8 setObject:v7 forKeyedSubscript:@"Resason"];
+  [v8 setObject:reasonCopy forKeyedSubscript:@"Resason"];
   [(PLOperator *)self logEntry:v8];
 }
 
@@ -172,9 +172,9 @@
   [(PLSmartPLService *)self logEventPointVMMapForProcessName:@"aggregated"];
 }
 
-- (void)logEventPointStackShotWithReason:(id)a3
+- (void)logEventPointStackShotWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__PLSmartPLService_logEventPointStackShotWithReason___block_invoke;
@@ -191,7 +191,7 @@
     v6 = 0;
     do
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Powerlog: %@ %d of %ld", v4, v6, v5];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Powerlog: %@ %d of %ld", reasonCopy, v6, v5];
       WriteStackshotReport_async();
 
       block[0] = MEMORY[0x277D85DD0];
@@ -233,22 +233,22 @@ uint64_t __53__PLSmartPLService_logEventPointStackShotWithReason___block_invoke_
   [(PLSmartPLService *)self logEventPointSampleForProcessName:@"aggregated"];
 }
 
-- (void)logEventPointSampleForProcessName:(id)a3
+- (void)logEventPointSampleForProcessName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_autoreleasePoolPush();
   v6 = [(PLOperator *)PLSmartPLService entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"Sample"];
   v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6];
-  [v7 setObject:v4 forKeyedSubscript:@"ProcessName"];
+  [v7 setObject:nameCopy forKeyedSubscript:@"ProcessName"];
   v8 = pidFromHint();
   v9 = [MEMORY[0x277CCABB0] numberWithInt:v8];
   [v7 setObject:v9 forKeyedSubscript:@"PID"];
 
   v10 = 0x277D3F000uLL;
-  v11 = [MEMORY[0x277D3F180] debugEnabled];
+  debugEnabled = [MEMORY[0x277D3F180] debugEnabled];
   if (v8 < 2)
   {
-    if (v11)
+    if (debugEnabled)
     {
       v22 = objc_opt_class();
       v46[0] = MEMORY[0x277D85DD0];
@@ -263,12 +263,12 @@ uint64_t __53__PLSmartPLService_logEventPointStackShotWithReason___block_invoke_
 
       if (logEventPointSampleForProcessName__classDebugEnabled_101 == 1)
       {
-        v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"invalid pid (%d) for %@ no sample for you!", v8, v4];
+        nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"invalid pid (%d) for %@ no sample for you!", v8, nameCopy];
         v24 = MEMORY[0x277D3F178];
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLSmartPLService.m"];
-        v26 = [v25 lastPathComponent];
+        lastPathComponent = [v25 lastPathComponent];
         v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSmartPLService logEventPointSampleForProcessName:]"];
-        [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:174];
+        [v24 logMessage:nameCopy fromFile:lastPathComponent fromFunction:v27 fromLineNumber:174];
 
         v28 = PLLogCommon();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -285,7 +285,7 @@ uint64_t __53__PLSmartPLService_logEventPointStackShotWithReason___block_invoke_
 
   else
   {
-    if (v11)
+    if (debugEnabled)
     {
       v12 = objc_opt_class();
       v50[0] = MEMORY[0x277D85DD0];
@@ -301,12 +301,12 @@ uint64_t __53__PLSmartPLService_logEventPointStackShotWithReason___block_invoke_
       if (logEventPointSampleForProcessName__classDebugEnabled == 1)
       {
         v43 = v5;
-        v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"generating sample for %@(%d)", v4, v8];
+        v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"generating sample for %@(%d)", nameCopy, v8];
         v14 = MEMORY[0x277D3F178];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLSmartPLService.m"];
-        v16 = [v15 lastPathComponent];
+        lastPathComponent2 = [v15 lastPathComponent];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSmartPLService logEventPointSampleForProcessName:]"];
-        [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:163];
+        [v14 logMessage:v13 fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:163];
 
         v18 = PLLogCommon();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -345,8 +345,8 @@ uint64_t __53__PLSmartPLService_logEventPointStackShotWithReason___block_invoke_
 
       [v19 sampleForDuration:v20 interval:logEventPointSampleForProcessName__objectForKey_91];
       [v19 stopSampling];
-      v21 = [v19 outputString];
-      [v7 setObject:v21 forKeyedSubscript:@"Sample"];
+      outputString = [v19 outputString];
+      [v7 setObject:outputString forKeyedSubscript:@"Sample"];
     }
 
     else
@@ -367,12 +367,12 @@ uint64_t __53__PLSmartPLService_logEventPointStackShotWithReason___block_invoke_
         if (logEventPointSampleForProcessName__classDebugEnabled_93 == 1)
         {
           v44 = v5;
-          v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"no sampler inited for %@(%d)", v4, v8];
+          v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"no sampler inited for %@(%d)", nameCopy, v8];
           v31 = MEMORY[0x277D3F178];
           v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLSmartPLService.m"];
-          v33 = [v32 lastPathComponent];
+          lastPathComponent3 = [v32 lastPathComponent];
           v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSmartPLService logEventPointSampleForProcessName:]"];
-          [v31 logMessage:v30 fromFile:v33 fromFunction:v34 fromLineNumber:170];
+          [v31 logMessage:v30 fromFile:lastPathComponent3 fromFunction:v34 fromLineNumber:170];
 
           v35 = PLLogCommon();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -408,9 +408,9 @@ uint64_t __53__PLSmartPLService_logEventPointStackShotWithReason___block_invoke_
       v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"Logged!"];
       v38 = MEMORY[0x277D3F178];
       v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLSmartPLService.m"];
-      v40 = [v39 lastPathComponent];
+      lastPathComponent4 = [v39 lastPathComponent];
       v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSmartPLService logEventPointSampleForProcessName:]"];
-      [v38 logMessage:v37 fromFile:v40 fromFunction:v41 fromLineNumber:179];
+      [v38 logMessage:v37 fromFile:lastPathComponent4 fromFunction:v41 fromLineNumber:179];
 
       v42 = PLLogCommon();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))

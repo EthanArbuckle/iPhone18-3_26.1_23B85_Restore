@@ -1,46 +1,46 @@
 @interface Renderer
-- (Renderer)initWithMetalKitView:(id)a3;
-- (void)drawInMTKView:(id)a3;
-- (void)renderEncodedCommands:(id)a3 toCommandBuffer:(id)a4 withView:(id)a5;
-- (void)setDevice:(id)a3;
-- (void)setDisplayTextureEncoder:(id)a3;
+- (Renderer)initWithMetalKitView:(id)view;
+- (void)drawInMTKView:(id)view;
+- (void)renderEncodedCommands:(id)commands toCommandBuffer:(id)buffer withView:(id)view;
+- (void)setDevice:(id)device;
+- (void)setDisplayTextureEncoder:(id)encoder;
 @end
 
 @implementation Renderer
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v9 = a3;
-  v4 = [v9 currentRenderPassDescriptor];
-  if (v4)
+  viewCopy = view;
+  currentRenderPassDescriptor = [viewCopy currentRenderPassDescriptor];
+  if (currentRenderPassDescriptor)
   {
-    v5 = v4;
-    v6 = [v9 currentDrawable];
+    v5 = currentRenderPassDescriptor;
+    currentDrawable = [viewCopy currentDrawable];
 
-    if (v6)
+    if (currentDrawable)
     {
-      v7 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-      [(Renderer *)self renderEncodedCommands:self->_encoder toCommandBuffer:v7 withView:v9];
-      v8 = [v9 currentDrawable];
-      [v7 presentDrawable:v8];
+      commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+      [(Renderer *)self renderEncodedCommands:self->_encoder toCommandBuffer:commandBuffer withView:viewCopy];
+      currentDrawable2 = [viewCopy currentDrawable];
+      [commandBuffer presentDrawable:currentDrawable2];
 
-      [v7 commit];
+      [commandBuffer commit];
     }
   }
 }
 
-- (void)renderEncodedCommands:(id)a3 toCommandBuffer:(id)a4 withView:(id)a5
+- (void)renderEncodedCommands:(id)commands toCommandBuffer:(id)buffer withView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 currentRenderPassDescriptor];
+  commandsCopy = commands;
+  bufferCopy = buffer;
+  viewCopy = view;
+  currentRenderPassDescriptor = [viewCopy currentRenderPassDescriptor];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v12 = [v8 commands];
-  v13 = [v12 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  commands = [commandsCopy commands];
+  v13 = [commands countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v13)
   {
     v14 = v13;
@@ -52,29 +52,29 @@
       {
         if (*v40 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(commands);
         }
 
-        [(GTMTLTextureRenderer *)self->_textureRenderer encodeWaits:*(*(&v39 + 1) + 8 * v16) commandBuffer:v9];
+        [(GTMTLTextureRenderer *)self->_textureRenderer encodeWaits:*(*(&v39 + 1) + 8 * v16) commandBuffer:bufferCopy];
         v16 = v16 + 1;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v14 = [commands countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v14);
   }
 
-  v31 = v11;
-  v32 = v9;
-  v17 = [v9 renderCommandEncoderWithDescriptor:v11];
+  v31 = currentRenderPassDescriptor;
+  v32 = bufferCopy;
+  v17 = [bufferCopy renderCommandEncoderWithDescriptor:currentRenderPassDescriptor];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v33 = v8;
-  obj = [v8 commands];
+  v33 = commandsCopy;
+  obj = [commandsCopy commands];
   v18 = [obj countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v18)
   {
@@ -92,13 +92,13 @@
 
         v22 = *(*(&v35 + 1) + 8 * v21);
         textureRenderer = self->_textureRenderer;
-        v24 = [v10 colorPixelFormat];
-        [v10 drawableSize];
+        colorPixelFormat = [viewCopy colorPixelFormat];
+        [viewCopy drawableSize];
         v26 = v25;
         v28 = v27;
-        v29 = [v10 layer];
-        [v29 contentsScale];
-        [(GTMTLTextureRenderer *)textureRenderer render:v22 withEncoder:v17 withFormat:v24 renderTargetSize:v26 viewContentsScale:v28, v30];
+        layer = [viewCopy layer];
+        [layer contentsScale];
+        [(GTMTLTextureRenderer *)textureRenderer render:v22 withEncoder:v17 withFormat:colorPixelFormat renderTargetSize:v26 viewContentsScale:v28, v30];
 
         v21 = v21 + 1;
       }
@@ -113,47 +113,47 @@
   [v17 endEncoding];
 }
 
-- (void)setDisplayTextureEncoder:(id)a3
+- (void)setDisplayTextureEncoder:(id)encoder
 {
-  v8 = a3;
-  objc_storeStrong(&self->_encoder, a3);
+  encoderCopy = encoder;
+  objc_storeStrong(&self->_encoder, encoder);
   device = self->_device;
-  v6 = [v8 device];
+  device = [encoderCopy device];
 
-  if (device != v6)
+  if (device != device)
   {
-    v7 = [v8 device];
-    [(Renderer *)self setDevice:v7];
+    device2 = [encoderCopy device];
+    [(Renderer *)self setDevice:device2];
   }
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v10 = a3;
-  objc_storeStrong(&self->_device, a3);
+  deviceCopy = device;
+  objc_storeStrong(&self->_device, device);
   device = self->_device;
   if (device)
   {
-    v6 = [(MTLDevice *)device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)device newCommandQueue];
     commandQueue = self->_commandQueue;
-    self->_commandQueue = v6;
+    self->_commandQueue = newCommandQueue;
 
-    v8 = [[GTMTLTextureRenderer alloc] initWithDevice:v10];
+    v8 = [[GTMTLTextureRenderer alloc] initWithDevice:deviceCopy];
     textureRenderer = self->_textureRenderer;
     self->_textureRenderer = v8;
   }
 }
 
-- (Renderer)initWithMetalKitView:(id)a3
+- (Renderer)initWithMetalKitView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = Renderer;
   v5 = [(Renderer *)&v8 init];
   if (v5)
   {
-    v6 = [v4 device];
-    [(Renderer *)v5 setDevice:v6];
+    device = [viewCopy device];
+    [(Renderer *)v5 setDevice:device];
   }
 
   return v5;

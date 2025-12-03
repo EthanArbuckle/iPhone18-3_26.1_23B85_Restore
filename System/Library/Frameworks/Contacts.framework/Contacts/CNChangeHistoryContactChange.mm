@@ -1,60 +1,60 @@
 @interface CNChangeHistoryContactChange
-- (BOOL)isEqual:(id)a3;
-- (CNChangeHistoryContactChange)initWithCoder:(id)a3;
-- (CNChangeHistoryContactChange)initWithIdentifier:(id)a3 changeType:(int64_t)a4 changeAnchor:(id)a5 changeID:(id)a6 externalID:(id)a7 imagesChanged:(id)a8 linkToPersonUUID:(id)a9 personLinkUUID:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (CNChangeHistoryContactChange)initWithCoder:(id)coder;
+- (CNChangeHistoryContactChange)initWithIdentifier:(id)identifier changeType:(int64_t)type changeAnchor:(id)anchor changeID:(id)d externalID:(id)iD imagesChanged:(id)changed linkToPersonUUID:(id)uID personLinkUUID:(id)self0;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNChangeHistoryContactChange
 
-- (CNChangeHistoryContactChange)initWithIdentifier:(id)a3 changeType:(int64_t)a4 changeAnchor:(id)a5 changeID:(id)a6 externalID:(id)a7 imagesChanged:(id)a8 linkToPersonUUID:(id)a9 personLinkUUID:(id)a10
+- (CNChangeHistoryContactChange)initWithIdentifier:(id)identifier changeType:(int64_t)type changeAnchor:(id)anchor changeID:(id)d externalID:(id)iD imagesChanged:(id)changed linkToPersonUUID:(id)uID personLinkUUID:(id)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  identifierCopy = identifier;
+  anchorCopy = anchor;
+  dCopy = d;
+  iDCopy = iD;
+  changedCopy = changed;
+  uIDCopy = uID;
+  uUIDCopy = uUID;
   v42.receiver = self;
   v42.super_class = CNChangeHistoryContactChange;
   v23 = [(CNChangeHistoryContactChange *)&v42 init];
   if (v23)
   {
     v24 = (*(*MEMORY[0x1E6996570] + 16))();
-    if (a4 != 10 || v24)
+    if (type != 10 || v24)
     {
       if (v24)
       {
 LABEL_9:
-        v26 = [(__CFString *)v16 copy];
+        v26 = [(__CFString *)identifierCopy copy];
         contactIdentifier = v23->_contactIdentifier;
         v23->_contactIdentifier = v26;
 
-        v23->_changeType = a4;
-        v28 = [v17 copy];
+        v23->_changeType = type;
+        v28 = [anchorCopy copy];
         changeAnchor = v23->_changeAnchor;
         v23->_changeAnchor = v28;
 
-        v30 = [v18 copy];
+        v30 = [dCopy copy];
         changeID = v23->_changeID;
         v23->_changeID = v30;
 
-        v32 = [v19 copy];
+        v32 = [iDCopy copy];
         externalID = v23->_externalID;
         v23->_externalID = v32;
 
-        v34 = [v20 copy];
+        v34 = [changedCopy copy];
         imagesChanged = v23->_imagesChanged;
         v23->_imagesChanged = v34;
 
-        v36 = [v21 copy];
+        v36 = [uIDCopy copy];
         linkToPersonUUID = v23->_linkToPersonUUID;
         v23->_linkToPersonUUID = v36;
 
-        v38 = [v22 copy];
+        v38 = [uUIDCopy copy];
         personLinkUUID = v23->_personLinkUUID;
         v23->_personLinkUUID = v38;
 
@@ -65,14 +65,14 @@ LABEL_9:
       v25 = +[CNChangeHistory os_log];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
       {
-        [CNChangeHistoryContactChange initWithIdentifier:v18 changeType:a4 changeAnchor:v25 changeID:? externalID:? imagesChanged:? linkToPersonUUID:? personLinkUUID:?];
+        [CNChangeHistoryContactChange initWithIdentifier:dCopy changeType:type changeAnchor:v25 changeID:? externalID:? imagesChanged:? linkToPersonUUID:? personLinkUUID:?];
       }
     }
 
     else
     {
-      v25 = v16;
-      v16 = &stru_1F094DAB0;
+      v25 = identifierCopy;
+      identifierCopy = &stru_1F094DAB0;
     }
 
     goto LABEL_9;
@@ -83,63 +83,63 @@ LABEL_10:
   return v23;
 }
 
-- (CNChangeHistoryContactChange)initWithCoder:(id)a3
+- (CNChangeHistoryContactChange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contactIdentifier"];
-  v6 = [v4 decodeIntegerForKey:@"_changeType"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_changeAnchor"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_changeID"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_externalID"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_imagesChanged"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_linkToPersonUUID"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_personLinkUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contactIdentifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"_changeType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_changeAnchor"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_changeID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_externalID"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imagesChanged"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_linkToPersonUUID"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_personLinkUUID"];
 
   v13 = [(CNChangeHistoryContactChange *)self initWithIdentifier:v5 changeType:v6 changeAnchor:v7 changeID:v8 externalID:v9 imagesChanged:v10 linkToPersonUUID:v11 personLinkUUID:v12];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contactIdentifier = self->_contactIdentifier;
-  v5 = a3;
-  [v5 encodeObject:contactIdentifier forKey:@"_contactIdentifier"];
-  [v5 encodeInteger:self->_changeType forKey:@"_changeType"];
-  [v5 encodeObject:self->_changeAnchor forKey:@"_changeAnchor"];
-  [v5 encodeObject:self->_changeID forKey:@"_changeID"];
-  [v5 encodeObject:self->_externalID forKey:@"_externalID"];
-  [v5 encodeObject:self->_imagesChanged forKey:@"_imagesChanged"];
-  [v5 encodeObject:self->_linkToPersonUUID forKey:@"_linkToPersonUUID"];
-  [v5 encodeObject:self->_personLinkUUID forKey:@"_personLinkUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contactIdentifier forKey:@"_contactIdentifier"];
+  [coderCopy encodeInteger:self->_changeType forKey:@"_changeType"];
+  [coderCopy encodeObject:self->_changeAnchor forKey:@"_changeAnchor"];
+  [coderCopy encodeObject:self->_changeID forKey:@"_changeID"];
+  [coderCopy encodeObject:self->_externalID forKey:@"_externalID"];
+  [coderCopy encodeObject:self->_imagesChanged forKey:@"_imagesChanged"];
+  [coderCopy encodeObject:self->_linkToPersonUUID forKey:@"_linkToPersonUUID"];
+  [coderCopy encodeObject:self->_personLinkUUID forKey:@"_personLinkUUID"];
 }
 
 - (id)description
 {
   v14 = MEMORY[0x1E69966B0];
-  v3 = [(CNChangeHistoryContactChange *)self contactIdentifier];
+  contactIdentifier = [(CNChangeHistoryContactChange *)self contactIdentifier];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CNChangeHistoryContactChange changeType](self, "changeType")}];
-  v5 = [(CNChangeHistoryContactChange *)self changeAnchor];
-  v6 = [(CNChangeHistoryContactChange *)self changeID];
-  v7 = [(CNChangeHistoryContactChange *)self externalID];
-  v8 = [(CNChangeHistoryContactChange *)self imagesChanged];
-  v9 = [(CNChangeHistoryContactChange *)self linkToPersonUUID];
-  v10 = [(CNChangeHistoryContactChange *)self personLinkUUID];
-  v11 = [(CNChangeHistoryContactChange *)self contact];
-  v12 = [v14 descriptionForObject:self withNamesAndObjects:{@"contactIdentifier", v3, @"changeType", v4, @"changeAnchor", v5, @"changeID", v6, @"externalID", v7, @"imagesChanged", v8, @"linkToPersonUUID", v9, @"personLinkUUID", v10, @"contact", v11, 0}];
+  changeAnchor = [(CNChangeHistoryContactChange *)self changeAnchor];
+  changeID = [(CNChangeHistoryContactChange *)self changeID];
+  externalID = [(CNChangeHistoryContactChange *)self externalID];
+  imagesChanged = [(CNChangeHistoryContactChange *)self imagesChanged];
+  linkToPersonUUID = [(CNChangeHistoryContactChange *)self linkToPersonUUID];
+  personLinkUUID = [(CNChangeHistoryContactChange *)self personLinkUUID];
+  contact = [(CNChangeHistoryContactChange *)self contact];
+  v12 = [v14 descriptionForObject:self withNamesAndObjects:{@"contactIdentifier", contactIdentifier, @"changeType", v4, @"changeAnchor", changeAnchor, @"changeID", changeID, @"externalID", externalID, @"imagesChanged", imagesChanged, @"linkToPersonUUID", linkToPersonUUID, @"personLinkUUID", personLinkUUID, @"contact", contact, 0}];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __40__CNChangeHistoryContactChange_isEqual___block_invoke;
   v35[3] = &unk_1E7412228;
   v35[4] = self;
-  v36 = v4;
+  v36 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __40__CNChangeHistoryContactChange_isEqual___block_invoke_2;

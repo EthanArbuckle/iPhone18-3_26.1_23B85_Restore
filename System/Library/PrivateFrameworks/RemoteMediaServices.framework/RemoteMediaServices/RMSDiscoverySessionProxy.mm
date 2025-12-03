@@ -1,14 +1,14 @@
 @interface RMSDiscoverySessionProxy
 - (RMSDiscoverySessionDelegate)delegate;
 - (RMSDiscoverySessionProxy)init;
-- (void)_availableServicesDidUpdateNotification:(id)a3;
-- (void)_handleSessionDidEndNotification:(id)a3;
+- (void)_availableServicesDidUpdateNotification:(id)notification;
+- (void)_handleSessionDidEndNotification:(id)notification;
 - (void)_updateNetworkAvailability;
-- (void)_wifiAvailabilityDidChange:(id)a3;
+- (void)_wifiAvailabilityDidChange:(id)change;
 - (void)beginDiscovery;
 - (void)dealloc;
 - (void)endDiscovery;
-- (void)setPairedNetworkNames:(id)a3;
+- (void)setPairedNetworkNames:(id)names;
 @end
 
 @implementation RMSDiscoverySessionProxy
@@ -25,11 +25,11 @@
     v2->_idsClient = v3;
 
     v2->_wifiAvailable = 1;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__availableServicesDidUpdateNotification_ name:@"RMSIDSClientAvailableServicesDidUpdateNotification" object:0];
-    [v5 addObserver:v2 selector:sel__handleSessionDidEndNotification_ name:@"RMSIDSClientSessionDidEndNotification" object:0];
-    [v5 addObserver:v2 selector:sel__companionAvailabilityDidChange_ name:@"RMSIDSClientCompanionAvailabilityDidChangeNotification" object:0];
-    [v5 addObserver:v2 selector:sel__wifiAvailabilityDidChange_ name:@"RMSIDSClientWifiAvailabilityDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__availableServicesDidUpdateNotification_ name:@"RMSIDSClientAvailableServicesDidUpdateNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleSessionDidEndNotification_ name:@"RMSIDSClientSessionDidEndNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__companionAvailabilityDidChange_ name:@"RMSIDSClientCompanionAvailabilityDidChangeNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__wifiAvailabilityDidChange_ name:@"RMSIDSClientWifiAvailabilityDidChangeNotification" object:0];
     [(RMSDiscoverySessionProxy *)v2 _updateNetworkAvailability];
   }
 
@@ -38,8 +38,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = RMSDiscoverySessionProxy;
@@ -121,10 +121,10 @@ void __42__RMSDiscoverySessionProxy_beginDiscovery__block_invoke_12(uint64_t a1)
   [WeakRetained beginDiscovery];
 }
 
-- (void)setPairedNetworkNames:(id)a3
+- (void)setPairedNetworkNames:(id)names
 {
-  v5 = a3;
-  objc_storeStrong(&self->_pairedNetworkNames, a3);
+  namesCopy = names;
+  objc_storeStrong(&self->_pairedNetworkNames, names);
   if ([(RMSSessionProxy *)self sessionIdentifier])
   {
     [(RMSIDSClient *)self->_idsClient updatePairedNetworkNames:self->_pairedNetworkNames sessionIdentifier:[(RMSSessionProxy *)self sessionIdentifier]];
@@ -153,14 +153,14 @@ void __42__RMSDiscoverySessionProxy_beginDiscovery__block_invoke_12(uint64_t a1)
   [(RMSSessionProxy *)self endHeartbeat];
 }
 
-- (void)_availableServicesDidUpdateNotification:(id)a3
+- (void)_availableServicesDidUpdateNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(RMSSessionProxy *)self sessionMatchesNotification:v4])
+  notificationCopy = notification;
+  if ([(RMSSessionProxy *)self sessionMatchesNotification:notificationCopy])
   {
-    v5 = [v4 userInfo];
-    v6 = [v5 objectForKeyedSubscript:@"RMSIDSClientAvailableServicesNotificationKey"];
+    userInfo = [notificationCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:@"RMSIDSClientAvailableServicesNotificationKey"];
     availableServices = self->_availableServices;
     self->_availableServices = v6;
 
@@ -178,9 +178,9 @@ void __42__RMSDiscoverySessionProxy_beginDiscovery__block_invoke_12(uint64_t a1)
   }
 }
 
-- (void)_handleSessionDidEndNotification:(id)a3
+- (void)_handleSessionDidEndNotification:(id)notification
 {
-  if ([(RMSSessionProxy *)self sessionMatchesNotification:a3])
+  if ([(RMSSessionProxy *)self sessionMatchesNotification:notification])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -206,13 +206,13 @@ uint64_t __61__RMSDiscoverySessionProxy__handleSessionDidEndNotification___block
   return result;
 }
 
-- (void)_wifiAvailabilityDidChange:(id)a3
+- (void)_wifiAvailabilityDidChange:(id)change
 {
-  v6 = a3;
+  changeCopy = change;
   if ([(RMSSessionProxy *)self sessionMatchesNotification:?])
   {
-    v4 = [v6 userInfo];
-    v5 = [v4 objectForKey:@"RMSIDSClientWifiAvailabilityNotificationKey"];
+    userInfo = [changeCopy userInfo];
+    v5 = [userInfo objectForKey:@"RMSIDSClientWifiAvailabilityNotificationKey"];
     self->_wifiAvailable = [v5 BOOLValue];
 
     [(RMSDiscoverySessionProxy *)self _updateNetworkAvailability];

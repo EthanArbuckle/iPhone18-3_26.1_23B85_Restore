@@ -1,10 +1,10 @@
 @interface _DASActivityDurationTracker
 + (id)sharedInstance;
 - (_DASActivityDurationTracker)init;
-- (double)runtimeForActivity:(id)a3 inLastNumDays:(unint64_t)a4;
-- (void)activityCanceled:(id)a3;
-- (void)activityCompleted:(id)a3;
-- (void)addTimeInterval:(double)a3 forActivity:(id)a4;
+- (double)runtimeForActivity:(id)activity inLastNumDays:(unint64_t)days;
+- (void)activityCanceled:(id)canceled;
+- (void)activityCompleted:(id)completed;
+- (void)addTimeInterval:(double)interval forActivity:(id)activity;
 - (void)deleteOldDurations;
 - (void)loadState;
 - (void)saveState;
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_10011AB5C;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B9A0 != -1)
   {
     dispatch_once(&qword_10020B9A0, block);
@@ -165,8 +165,8 @@
     do
     {
       v5 = [(NSArray *)v3 objectAtIndexedSubscript:v4];
-      v6 = [v5 date];
-      [v6 timeIntervalSinceNow];
+      date = [v5 date];
+      [date timeIntervalSinceNow];
       v8 = v7;
 
       if (v8 <= 0xFFFFFFFFFFF573FFLL)
@@ -185,9 +185,9 @@
   self->_dayToDurationsList = v3;
 }
 
-- (void)addTimeInterval:(double)a3 forActivity:(id)a4
+- (void)addTimeInterval:(double)interval forActivity:(id)activity
 {
-  v25 = [a4 name];
+  name = [activity name];
   dayToDurationsList = self->_dayToDurationsList;
   if (!dayToDurationsList)
   {
@@ -201,13 +201,13 @@
     v7 = +[NSMutableArray array];
   }
 
-  v8 = [v7 lastObject];
-  if (v8)
+  lastObject = [v7 lastObject];
+  if (lastObject)
   {
     v9 = +[NSCalendar currentCalendar];
-    v10 = [v8 date];
+    date = [lastObject date];
     v11 = +[NSDate date];
-    v12 = [v9 isDate:v10 inSameDayAsDate:v11];
+    v12 = [v9 isDate:date inSameDayAsDate:v11];
 
     if (v12)
     {
@@ -226,17 +226,17 @@
   v17 = [(_DASActivityDayToDurations *)v14 initWithDate:v15 activityDurations:v16];
 
   [v7 addObject:v17];
-  v8 = v17;
+  lastObject = v17;
 LABEL_9:
-  v18 = [v8 activityDurations];
-  v19 = [v18 mutableCopy];
+  activityDurations = [lastObject activityDurations];
+  v19 = [activityDurations mutableCopy];
 
-  v20 = [v19 objectForKeyedSubscript:v25];
+  v20 = [v19 objectForKeyedSubscript:name];
   [v20 doubleValue];
-  v22 = [NSNumber numberWithInteger:(v21 + a3)];
-  [v19 setObject:v22 forKeyedSubscript:v25];
+  v22 = [NSNumber numberWithInteger:(v21 + interval)];
+  [v19 setObject:v22 forKeyedSubscript:name];
 
-  [v8 setActivityDurations:v19];
+  [lastObject setActivityDurations:v19];
   v23 = [v7 copy];
   v24 = self->_dayToDurationsList;
   self->_dayToDurationsList = v23;
@@ -244,37 +244,37 @@ LABEL_9:
   [(_DASActivityDurationTracker *)self saveState];
 }
 
-- (void)activityCanceled:(id)a3
+- (void)activityCanceled:(id)canceled
 {
-  v4 = a3;
+  canceledCopy = canceled;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10011AE60;
   v7[3] = &unk_1001B56E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = canceledCopy;
+  selfCopy = self;
+  v6 = canceledCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)activityCompleted:(id)a3
+- (void)activityCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10011AF7C;
   v7[3] = &unk_1001B56E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = completedCopy;
+  selfCopy = self;
+  v6 = completedCopy;
   dispatch_sync(queue, v7);
 }
 
-- (double)runtimeForActivity:(id)a3 inLastNumDays:(unint64_t)a4
+- (double)runtimeForActivity:(id)activity inLastNumDays:(unint64_t)days
 {
-  v5 = a3;
+  activityCopy = activity;
   dayToDurationsList = self->_dayToDurationsList;
   v7 = 0.0;
   if (dayToDurationsList)
@@ -288,15 +288,15 @@ LABEL_9:
         do
         {
           v9 = [(NSArray *)self->_dayToDurationsList objectAtIndexedSubscript:v8];
-          v10 = [v9 activityDurations];
-          v11 = [v5 name];
-          v12 = [v10 objectForKeyedSubscript:v11];
+          activityDurations = [v9 activityDurations];
+          name = [activityCopy name];
+          v12 = [activityDurations objectForKeyedSubscript:name];
 
           if (v12)
           {
-            v13 = [v9 activityDurations];
-            v14 = [v5 name];
-            v15 = [v13 objectForKeyedSubscript:v14];
+            activityDurations2 = [v9 activityDurations];
+            name2 = [activityCopy name];
+            v15 = [activityDurations2 objectForKeyedSubscript:name2];
             [v15 doubleValue];
             v17 = v16;
 

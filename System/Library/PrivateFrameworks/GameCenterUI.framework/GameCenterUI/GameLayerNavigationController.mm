@@ -1,10 +1,10 @@
 @interface GameLayerNavigationController
 - (CGSize)preferredContentSize;
-- (_TtC12GameCenterUI29GameLayerNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (_TtC12GameCenterUI29GameLayerNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (void)didTapDone;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -12,7 +12,7 @@
 
 - (CGSize)preferredContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E05D8EC();
   v4 = v3;
 
@@ -25,49 +25,49 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E05DCF8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24E05DDE0(a3);
+  selfCopy = self;
+  sub_24E05DDE0(appear);
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_24E05DE80(v9, v8);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_24E05DE80(selfCopy, viewControllerCopy);
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v13 = sub_24E05E164(v8, v12, v10);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sourceViewControllerCopy = sourceViewController;
+  selfCopy = self;
+  v13 = sub_24E05E164(controllerCopy, v12, sourceViewControllerCopy);
 
   return v13;
 }
 
 - (void)didTapDone
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E05E2E0();
 }
 
-- (_TtC12GameCenterUI29GameLayerNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12GameCenterUI29GameLayerNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_24E347CF8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   GameLayerNavigationController.init(nibName:bundle:)();
 }
 

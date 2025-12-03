@@ -1,8 +1,8 @@
 @interface FPEnumerationSettings
 - (FPEnumerationSettings)init;
-- (FPEnumerationSettings)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FPEnumerationSettings)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPEnumerationSettings
@@ -14,17 +14,17 @@
   v2 = [(FPEnumerationSettings *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DEC8] fp_sortDescriptorByDisplayName];
+    fp_sortDescriptorByDisplayName = [MEMORY[0x1E695DEC8] fp_sortDescriptorByDisplayName];
     sortDescriptors = v2->_sortDescriptors;
-    v2->_sortDescriptors = v3;
+    v2->_sortDescriptors = fp_sortDescriptorByDisplayName;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSArray *)self->_sortDescriptors copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -36,17 +36,17 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sortDescriptors = self->_sortDescriptors;
-  v5 = a3;
-  [v5 encodeObject:sortDescriptors forKey:@"sortDescriptors"];
-  [v5 encodeObject:self->_searchQuery forKey:@"searchQuery"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sortDescriptors forKey:@"sortDescriptors"];
+  [coderCopy encodeObject:self->_searchQuery forKey:@"searchQuery"];
 }
 
-- (FPEnumerationSettings)initWithCoder:(id)a3
+- (FPEnumerationSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = FPEnumerationSettings;
   v5 = [(FPEnumerationSettings *)&v15 init];
@@ -55,12 +55,12 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"sortDescriptors"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"sortDescriptors"];
     sortDescriptors = v5->_sortDescriptors;
     v5->_sortDescriptors = v9;
 
     v11 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"searchQuery"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"searchQuery"];
     searchQuery = v5->_searchQuery;
     v5->_searchQuery = v12;
   }

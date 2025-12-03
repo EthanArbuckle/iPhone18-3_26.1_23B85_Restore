@@ -17,7 +17,7 @@
   v6[5] = a3;
   v6[6] = a4;
   v6[4] = &v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v6];
+  [self enumerateKeysAndObjectsUsingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
   return v4;

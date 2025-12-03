@@ -2,18 +2,18 @@
 + (id)sharedInstance;
 - (DSListenerClientProtocol)lastobserver;
 - (DSMotionStateListenerProxy)init;
-- (void)_addObserver:(id)a3;
+- (void)_addObserver:(id)observer;
 - (void)_clearCache;
-- (void)_removeObserver:(id)a3;
-- (void)_replyWithCachedDataToObserver:(id)a3;
-- (void)failedToStartListenerWithError:(id)a3;
-- (void)receivedData:(id)a3 fromProvider:(id)a4;
+- (void)_removeObserver:(id)observer;
+- (void)_replyWithCachedDataToObserver:(id)observer;
+- (void)failedToStartListenerWithError:(id)error;
+- (void)receivedData:(id)data fromProvider:(id)provider;
 - (void)requestMotionState;
-- (void)startMotionStateListenerWithObserver:(id)a3;
+- (void)startMotionStateListenerWithObserver:(id)observer;
 - (void)startedListener;
-- (void)stopMotionStateListenerWithObserver:(id)a3;
+- (void)stopMotionStateListenerWithObserver:(id)observer;
 - (void)stoppedListener;
-- (void)updateProviders:(id)a3;
+- (void)updateProviders:(id)providers;
 @end
 
 @implementation DSMotionStateListenerProxy
@@ -44,13 +44,13 @@ uint64_t __44__DSMotionStateListenerProxy_sharedInstance__block_invoke()
   v2 = [(DSListener *)&v14 initWithDispatchQueue:0];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     pendingObservers = v2->_pendingObservers;
-    v2->_pendingObservers = v5;
+    v2->_pendingObservers = weakObjectsHashTable2;
 
     v2->_listenerState = 255;
     v7 = objc_alloc_init(DSClientMotionDataOptions);
@@ -76,78 +76,78 @@ uint64_t __44__DSMotionStateListenerProxy_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)startMotionStateListenerWithObserver:(id)a3
+- (void)startMotionStateListenerWithObserver:(id)observer
 {
   *&v20[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(DSMotionStateListenerProxy *)v5 listenerState];
-  if (v6 > 3)
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  listenerState = [(DSMotionStateListenerProxy *)selfCopy listenerState];
+  if (listenerState > 3)
   {
-    if (v6 != 4)
+    if (listenerState != 4)
     {
-      if (v6 == 5)
+      if (listenerState == 5)
       {
         if (objc_opt_respondsToSelector())
         {
-          v16 = [(DSMotionStateListenerProxy *)v5 error];
-          [v4 failedToStartListenerWithError:v16];
+          error = [(DSMotionStateListenerProxy *)selfCopy error];
+          [observerCopy failedToStartListenerWithError:error];
         }
 
         goto LABEL_23;
       }
 
-      if (v6 != 255)
+      if (listenerState != 255)
       {
         goto LABEL_15;
       }
     }
 
-    [(DSMotionStateListenerProxy *)v5 setListenerState:1];
+    [(DSMotionStateListenerProxy *)selfCopy setListenerState:1];
     v11 = +[DSLogging sharedInstance];
-    v12 = [v11 dsLogger];
+    dsLogger = [v11 dsLogger];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
       v20[0] = 255;
       LOWORD(v20[1]) = 1024;
-      *(&v20[1] + 2) = [(DSMotionStateListenerProxy *)v5 listenerState];
-      _os_log_impl(&dword_249027000, v12, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] State updated from %d to %d\n", buf, 0xEu);
+      *(&v20[1] + 2) = [(DSMotionStateListenerProxy *)selfCopy listenerState];
+      _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] State updated from %d to %d\n", buf, 0xEu);
     }
 
-    [(DSMotionStateListenerProxy *)v5 _addObserver:v4];
-    v13 = [(DSMotionStateListenerProxy *)v5 options];
-    v18.receiver = v5;
+    [(DSMotionStateListenerProxy *)selfCopy _addObserver:observerCopy];
+    options = [(DSMotionStateListenerProxy *)selfCopy options];
+    v18.receiver = selfCopy;
     v18.super_class = DSMotionStateListenerProxy;
-    [(DSListener *)&v18 startMotionDataListenerWithOptions:v13];
+    [(DSListener *)&v18 startMotionDataListenerWithOptions:options];
 
     goto LABEL_23;
   }
 
-  if (v6 == 1)
+  if (listenerState == 1)
   {
-    [(DSMotionStateListenerProxy *)v5 _addObserver:v4];
+    [(DSMotionStateListenerProxy *)selfCopy _addObserver:observerCopy];
     goto LABEL_23;
   }
 
-  if (v6 != 2)
+  if (listenerState != 2)
   {
-    if (v6 == 3)
+    if (listenerState == 3)
     {
-      v7 = [(DSMotionStateListenerProxy *)v5 pendingObservers];
-      [v7 addObject:v4];
+      pendingObservers = [(DSMotionStateListenerProxy *)selfCopy pendingObservers];
+      [pendingObservers addObject:observerCopy];
 
       v8 = +[DSLogging sharedInstance];
-      v9 = [v8 dsLogger];
+      dsLogger2 = [v8 dsLogger];
 
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(dsLogger2, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(DSMotionStateListenerProxy *)v5 pendingObservers];
+        pendingObservers2 = [(DSMotionStateListenerProxy *)selfCopy pendingObservers];
         *buf = 134217984;
-        *v20 = [v10 count];
-        _os_log_impl(&dword_249027000, v9, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] adding observer to pending list. Current pending count %lu\n", buf, 0xCu);
+        *v20 = [pendingObservers2 count];
+        _os_log_impl(&dword_249027000, dsLogger2, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] adding observer to pending list. Current pending count %lu\n", buf, 0xCu);
       }
 
 LABEL_7:
@@ -157,73 +157,73 @@ LABEL_7:
 
 LABEL_15:
     v14 = +[DSLogging sharedInstance];
-    v9 = [v14 dsLogger];
+    dsLogger2 = [v14 dsLogger];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger2, OS_LOG_TYPE_DEFAULT))
     {
-      listenerState = v5->_listenerState;
+      listenerState = selfCopy->_listenerState;
       *buf = 67109120;
       v20[0] = listenerState;
-      _os_log_impl(&dword_249027000, v9, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] Invalid listener state %d\n", buf, 8u);
+      _os_log_impl(&dword_249027000, dsLogger2, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] Invalid listener state %d\n", buf, 8u);
     }
 
     goto LABEL_7;
   }
 
-  [(DSMotionStateListenerProxy *)v5 _addObserver:v4];
+  [(DSMotionStateListenerProxy *)selfCopy _addObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v4 startedListener];
+    [observerCopy startedListener];
   }
 
-  [(DSMotionStateListenerProxy *)v5 _replyWithCachedDataToObserver:v4];
+  [(DSMotionStateListenerProxy *)selfCopy _replyWithCachedDataToObserver:observerCopy];
 LABEL_23:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopMotionStateListenerWithObserver:(id)a3
+- (void)stopMotionStateListenerWithObserver:(id)observer
 {
   *&v25[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(DSMotionStateListenerProxy *)v5 observers];
-  v7 = [v6 containsObject:v4];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(DSMotionStateListenerProxy *)selfCopy observers];
+  v7 = [observers containsObject:observerCopy];
 
   if (v7)
   {
-    [(DSMotionStateListenerProxy *)v5 _removeObserver:v4];
-    v8 = [(DSMotionStateListenerProxy *)v5 observers];
-    v9 = [v8 count];
+    [(DSMotionStateListenerProxy *)selfCopy _removeObserver:observerCopy];
+    observers2 = [(DSMotionStateListenerProxy *)selfCopy observers];
+    v9 = [observers2 count];
 
     if (v9)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v4 stoppedListener];
+        [observerCopy stoppedListener];
       }
     }
 
     else
     {
-      v19 = [(DSMotionStateListenerProxy *)v5 listenerState];
-      [(DSMotionStateListenerProxy *)v5 setListenerState:3];
+      listenerState = [(DSMotionStateListenerProxy *)selfCopy listenerState];
+      [(DSMotionStateListenerProxy *)selfCopy setListenerState:3];
       v20 = +[DSLogging sharedInstance];
-      v21 = [v20 dsLogger];
+      dsLogger = [v20 dsLogger];
 
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109376;
-        v25[0] = v19;
+        v25[0] = listenerState;
         LOWORD(v25[1]) = 1024;
-        *(&v25[1] + 2) = [(DSMotionStateListenerProxy *)v5 listenerState];
-        _os_log_impl(&dword_249027000, v21, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] State updated from %d to %d\n", buf, 0xEu);
+        *(&v25[1] + 2) = [(DSMotionStateListenerProxy *)selfCopy listenerState];
+        _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] State updated from %d to %d\n", buf, 0xEu);
       }
 
-      [(DSMotionStateListenerProxy *)v5 setLastobserver:v4];
-      v23.receiver = v5;
+      [(DSMotionStateListenerProxy *)selfCopy setLastobserver:observerCopy];
+      v23.receiver = selfCopy;
       v23.super_class = DSMotionStateListenerProxy;
       [(DSListener *)&v23 stopMotionDataListener];
     }
@@ -232,37 +232,37 @@ LABEL_23:
   else
   {
     v10 = +[DSLogging sharedInstance];
-    v11 = [v10 dsLogger];
+    dsLogger2 = [v10 dsLogger];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_249027000, v11, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] Listener has not called start\n", buf, 2u);
+      _os_log_impl(&dword_249027000, dsLogger2, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] Listener has not called start\n", buf, 2u);
     }
 
-    v12 = [(DSMotionStateListenerProxy *)v5 pendingObservers];
-    v13 = [v12 containsObject:v4];
+    pendingObservers = [(DSMotionStateListenerProxy *)selfCopy pendingObservers];
+    v13 = [pendingObservers containsObject:observerCopy];
 
     if (v13)
     {
-      v14 = [(DSMotionStateListenerProxy *)v5 pendingObservers];
-      [v14 removeObject:v4];
+      pendingObservers2 = [(DSMotionStateListenerProxy *)selfCopy pendingObservers];
+      [pendingObservers2 removeObject:observerCopy];
 
       v15 = +[DSLogging sharedInstance];
-      v16 = [v15 dsLogger];
+      dsLogger3 = [v15 dsLogger];
 
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(dsLogger3, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(DSMotionStateListenerProxy *)v5 pendingObservers];
-        v18 = [v17 count];
+        pendingObservers3 = [(DSMotionStateListenerProxy *)selfCopy pendingObservers];
+        v18 = [pendingObservers3 count];
         *buf = 134217984;
         *v25 = v18;
-        _os_log_impl(&dword_249027000, v16, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] removed listener from pending start list since it called stop. Current pending count %lu\n", buf, 0xCu);
+        _os_log_impl(&dword_249027000, dsLogger3, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] removed listener from pending start list since it called stop. Current pending count %lu\n", buf, 0xCu);
       }
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -270,17 +270,17 @@ LABEL_23:
 - (void)requestMotionState
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DSMotionStateListenerProxy *)v2 cachedData];
-  if (v3 && ([(DSMotionStateListenerProxy *)v2 cachedProvider], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedData = [(DSMotionStateListenerProxy *)selfCopy cachedData];
+  if (cachedData && ([(DSMotionStateListenerProxy *)selfCopy cachedProvider], v4 = objc_claimAutoreleasedReturnValue(), v4, cachedData, v4))
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(DSMotionStateListenerProxy *)v2 observers];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    observers = [(DSMotionStateListenerProxy *)selfCopy observers];
+    v6 = [observers countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -290,19 +290,19 @@ LABEL_23:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(observers);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v10 = [(DSMotionStateListenerProxy *)v2 cachedData];
-            v11 = [(DSMotionStateListenerProxy *)v2 cachedProvider];
-            [v9 receivedData:v10 fromProvider:v11];
+            cachedData2 = [(DSMotionStateListenerProxy *)selfCopy cachedData];
+            cachedProvider = [(DSMotionStateListenerProxy *)selfCopy cachedProvider];
+            [v9 receivedData:cachedData2 fromProvider:cachedProvider];
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v6 = [observers countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v6);
@@ -312,87 +312,87 @@ LABEL_23:
   else
   {
     v12 = +[DSLogging sharedInstance];
-    v5 = [v12 dsLogger];
+    observers = [v12 dsLogger];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(observers, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_249027000, v5, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] No data available\n", buf, 2u);
+      _os_log_impl(&dword_249027000, observers, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] No data available\n", buf, 2u);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (void)stoppedListener
 {
   v34 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DSMotionStateListenerProxy *)v2 listenerState];
-  [(DSMotionStateListenerProxy *)v2 setListenerState:4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  listenerState = [(DSMotionStateListenerProxy *)selfCopy listenerState];
+  [(DSMotionStateListenerProxy *)selfCopy setListenerState:4];
   v4 = +[DSLogging sharedInstance];
-  v5 = [v4 dsLogger];
+  dsLogger = [v4 dsLogger];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    *v33 = v3;
+    *v33 = listenerState;
     *&v33[4] = 1024;
-    *&v33[6] = [(DSMotionStateListenerProxy *)v2 listenerState];
-    _os_log_impl(&dword_249027000, v5, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] State updated from %d to %d\n", buf, 0xEu);
+    *&v33[6] = [(DSMotionStateListenerProxy *)selfCopy listenerState];
+    _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] State updated from %d to %d\n", buf, 0xEu);
   }
 
-  v6 = [(DSMotionStateListenerProxy *)v2 lastobserver];
+  lastobserver = [(DSMotionStateListenerProxy *)selfCopy lastobserver];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(DSMotionStateListenerProxy *)v2 lastobserver];
-    [v8 stoppedListener];
+    lastobserver2 = [(DSMotionStateListenerProxy *)selfCopy lastobserver];
+    [lastobserver2 stoppedListener];
   }
 
-  [(DSMotionStateListenerProxy *)v2 _clearCache];
-  [(DSMotionStateListenerProxy *)v2 setLastobserver:0];
-  v9 = [(DSMotionStateListenerProxy *)v2 pendingObservers];
-  v10 = [v9 count] == 0;
+  [(DSMotionStateListenerProxy *)selfCopy _clearCache];
+  [(DSMotionStateListenerProxy *)selfCopy setLastobserver:0];
+  pendingObservers = [(DSMotionStateListenerProxy *)selfCopy pendingObservers];
+  v10 = [pendingObservers count] == 0;
 
   if (!v10)
   {
     v11 = +[DSLogging sharedInstance];
-    v12 = [v11 dsLogger];
+    dsLogger2 = [v11 dsLogger];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger2, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(DSMotionStateListenerProxy *)v2 pendingObservers];
-      v14 = [v13 count];
+      pendingObservers2 = [(DSMotionStateListenerProxy *)selfCopy pendingObservers];
+      v14 = [pendingObservers2 count];
       *buf = 134217984;
       *v33 = v14;
-      _os_log_impl(&dword_249027000, v12, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] Current pending observer count: %lu. Restarting listener\n", buf, 0xCu);
+      _os_log_impl(&dword_249027000, dsLogger2, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] Current pending observer count: %lu. Restarting listener\n", buf, 0xCu);
     }
 
-    v15 = [(DSMotionStateListenerProxy *)v2 listenerState];
-    [(DSMotionStateListenerProxy *)v2 setListenerState:1];
+    listenerState2 = [(DSMotionStateListenerProxy *)selfCopy listenerState];
+    [(DSMotionStateListenerProxy *)selfCopy setListenerState:1];
     v16 = +[DSLogging sharedInstance];
-    v17 = [v16 dsLogger];
+    dsLogger3 = [v16 dsLogger];
 
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger3, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(DSMotionStateListenerProxy *)v2 listenerState];
+      listenerState3 = [(DSMotionStateListenerProxy *)selfCopy listenerState];
       *buf = 67109376;
-      *v33 = v15;
+      *v33 = listenerState2;
       *&v33[4] = 1024;
-      *&v33[6] = v18;
-      _os_log_impl(&dword_249027000, v17, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] State updated from %d to %d\n", buf, 0xEu);
+      *&v33[6] = listenerState3;
+      _os_log_impl(&dword_249027000, dsLogger3, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] State updated from %d to %d\n", buf, 0xEu);
     }
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v19 = [(DSMotionStateListenerProxy *)v2 pendingObservers];
-    v20 = [v19 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    pendingObservers3 = [(DSMotionStateListenerProxy *)selfCopy pendingObservers];
+    v20 = [pendingObservers3 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v20)
     {
       v21 = *v28;
@@ -403,60 +403,60 @@ LABEL_23:
         {
           if (*v28 != v21)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(pendingObservers3);
           }
 
-          [(DSMotionStateListenerProxy *)v2 _addObserver:*(*(&v27 + 1) + 8 * v22++)];
+          [(DSMotionStateListenerProxy *)selfCopy _addObserver:*(*(&v27 + 1) + 8 * v22++)];
         }
 
         while (v20 != v22);
-        v20 = [v19 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v20 = [pendingObservers3 countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v20);
     }
 
-    v23 = [(DSMotionStateListenerProxy *)v2 pendingObservers];
-    [v23 removeAllObjects];
+    pendingObservers4 = [(DSMotionStateListenerProxy *)selfCopy pendingObservers];
+    [pendingObservers4 removeAllObjects];
 
-    v24 = [(DSMotionStateListenerProxy *)v2 options];
-    v26.receiver = v2;
+    options = [(DSMotionStateListenerProxy *)selfCopy options];
+    v26.receiver = selfCopy;
     v26.super_class = DSMotionStateListenerProxy;
-    [(DSListener *)&v26 startMotionDataListenerWithOptions:v24];
+    [(DSListener *)&v26 startMotionDataListenerWithOptions:options];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)failedToStartListenerWithError:(id)a3
+- (void)failedToStartListenerWithError:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(DSMotionStateListenerProxy *)v5 listenerState];
-  [(DSMotionStateListenerProxy *)v5 setListenerState:5];
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  listenerState = [(DSMotionStateListenerProxy *)selfCopy listenerState];
+  [(DSMotionStateListenerProxy *)selfCopy setListenerState:5];
   v7 = +[DSLogging sharedInstance];
-  v8 = [v7 dsLogger];
+  dsLogger = [v7 dsLogger];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v22 = v6;
+    v22 = listenerState;
     v23 = 1024;
-    v24 = [(DSMotionStateListenerProxy *)v5 listenerState];
-    _os_log_impl(&dword_249027000, v8, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] State updated from %d to %d\n", buf, 0xEu);
+    listenerState2 = [(DSMotionStateListenerProxy *)selfCopy listenerState];
+    _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] State updated from %d to %d\n", buf, 0xEu);
   }
 
-  [(DSMotionStateListenerProxy *)v5 setError:v4];
+  [(DSMotionStateListenerProxy *)selfCopy setError:errorCopy];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(DSMotionStateListenerProxy *)v5 observers];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  observers = [(DSMotionStateListenerProxy *)selfCopy observers];
+  v10 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = *v17;
@@ -467,68 +467,68 @@ LABEL_23:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(observers);
         }
 
         v13 = *(*(&v16 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 failedToStartListenerWithError:v4];
+          [v13 failedToStartListenerWithError:errorCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(DSMotionStateListenerProxy *)v5 observers];
-  [v14 removeAllObjects];
+  observers2 = [(DSMotionStateListenerProxy *)selfCopy observers];
+  [observers2 removeAllObjects];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v15 = *MEMORY[0x277D85DE8];
 }
 
 - (void)startedListener
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DSMotionStateListenerProxy *)v2 listenerState];
-  [(DSMotionStateListenerProxy *)v2 setListenerState:2];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  listenerState = [(DSMotionStateListenerProxy *)selfCopy listenerState];
+  [(DSMotionStateListenerProxy *)selfCopy setListenerState:2];
   v4 = +[DSLogging sharedInstance];
-  v5 = [v4 dsLogger];
+  dsLogger = [v4 dsLogger];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v21 = v3;
+    v21 = listenerState;
     v22 = 1024;
-    v23 = [(DSMotionStateListenerProxy *)v2 listenerState];
-    _os_log_impl(&dword_249027000, v5, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] State updated from %d to %d\n", buf, 0xEu);
+    listenerState2 = [(DSMotionStateListenerProxy *)selfCopy listenerState];
+    _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] State updated from %d to %d\n", buf, 0xEu);
   }
 
   v6 = +[DSLogging sharedInstance];
-  v7 = [v6 dsLogger];
+  dsLogger2 = [v6 dsLogger];
 
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(dsLogger2, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(DSListener *)v2 maxListenerClients];
+    maxListenerClients = [(DSListener *)selfCopy maxListenerClients];
     *buf = 67109120;
-    v21 = v8;
-    _os_log_impl(&dword_249027000, v7, OS_LOG_TYPE_DEFAULT, "max listener clients %u\n", buf, 8u);
+    v21 = maxListenerClients;
+    _os_log_impl(&dword_249027000, dsLogger2, OS_LOG_TYPE_DEFAULT, "max listener clients %u\n", buf, 8u);
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(DSMotionStateListenerProxy *)v2 observers];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  observers = [(DSMotionStateListenerProxy *)selfCopy observers];
+  v10 = [observers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -539,7 +539,7 @@ LABEL_23:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(observers);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
@@ -552,31 +552,31 @@ LABEL_23:
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [observers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedData:(id)a3 fromProvider:(id)a4
+- (void)receivedData:(id)data fromProvider:(id)provider
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  [(DSMotionStateListenerProxy *)v8 setCachedData:v6];
-  [(DSMotionStateListenerProxy *)v8 setCachedProvider:v7];
+  dataCopy = data;
+  providerCopy = provider;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(DSMotionStateListenerProxy *)selfCopy setCachedData:dataCopy];
+  [(DSMotionStateListenerProxy *)selfCopy setCachedProvider:providerCopy];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(DSMotionStateListenerProxy *)v8 observers];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  observers = [(DSMotionStateListenerProxy *)selfCopy observers];
+  v10 = [observers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -587,41 +587,41 @@ LABEL_23:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(observers);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 receivedData:v6 fromProvider:v7];
+          [v13 receivedData:dataCopy fromProvider:providerCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [observers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateProviders:(id)a3
+- (void)updateProviders:(id)providers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  providersCopy = providers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(DSMotionStateListenerProxy *)v5 observers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  observers = [(DSMotionStateListenerProxy *)selfCopy observers];
+  v7 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -632,43 +632,43 @@ LABEL_23:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 updateProviders:v4];
+          [v10 updateProviders:providersCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     listenerCount = self->_listenerCount;
     self->_listenerCount = listenerCount + 1;
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = v6;
+    date = [MEMORY[0x277CBEAA8] date];
+    v7 = date;
     previousIntervalStartTime = self->_previousIntervalStartTime;
     if (listenerCount)
     {
-      [(NSDate *)v6 timeIntervalSinceDate:previousIntervalStartTime];
+      [(NSDate *)date timeIntervalSinceDate:previousIntervalStartTime];
       v10 = v9;
       [(DSListener *)self avgListenerStartInterval];
       [(DSListener *)self setAvgListenerStartInterval:(v10 + v11 * (self->_listenerCount - 2)) / (self->_listenerCount - 1)];
@@ -683,19 +683,19 @@ LABEL_23:
       [(DSListener *)self setMaxListenerClients:self->_listenerCount];
     }
 
-    v13 = [(DSMotionStateListenerProxy *)self observers];
-    [v13 addObject:v4];
+    observers = [(DSMotionStateListenerProxy *)self observers];
+    [observers addObject:observerCopy];
 
     v14 = +[DSLogging sharedInstance];
-    v15 = [v14 dsLogger];
+    dsLogger = [v14 dsLogger];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
     {
       v16 = self->_listenerCount;
       v22[0] = 67109120;
       v22[1] = v16;
       v17 = "[DSListenerProxy] observer added. Current Listener client count %u\n";
-      v18 = v15;
+      v18 = dsLogger;
       v19 = 8;
 LABEL_10:
       _os_log_impl(&dword_249027000, v18, OS_LOG_TYPE_DEFAULT, v17, v22, v19);
@@ -705,13 +705,13 @@ LABEL_10:
   else
   {
     v20 = +[DSLogging sharedInstance];
-    v15 = [v20 dsLogger];
+    dsLogger = [v20 dsLogger];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v22[0]) = 0;
       v17 = "[DSListenerProxy] observer not found\n";
-      v18 = v15;
+      v18 = dsLogger;
       v19 = 2;
       goto LABEL_10;
     }
@@ -720,54 +720,54 @@ LABEL_10:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
   v11 = *MEMORY[0x277D85DE8];
   --self->_listenerCount;
-  v4 = a3;
-  v5 = [(DSMotionStateListenerProxy *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(DSMotionStateListenerProxy *)self observers];
+  [observers removeObject:observerCopy];
 
   v6 = +[DSLogging sharedInstance];
-  v7 = [v6 dsLogger];
+  dsLogger = [v6 dsLogger];
 
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
   {
     listenerCount = self->_listenerCount;
     v10[0] = 67109120;
     v10[1] = listenerCount;
-    _os_log_impl(&dword_249027000, v7, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] observer removed. Current Listener client count %u\n", v10, 8u);
+    _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy] observer removed. Current Listener client count %u\n", v10, 8u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_replyWithCachedDataToObserver:(id)a3
+- (void)_replyWithCachedDataToObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v11.receiver = self;
   v11.super_class = DSMotionStateListenerProxy;
-  v5 = [(DSListener *)&v11 activeProviders];
-  if ([v5 count])
+  activeProviders = [(DSListener *)&v11 activeProviders];
+  if ([activeProviders count])
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 updateProviders:v5];
+      [observerCopy updateProviders:activeProviders];
     }
 
-    v6 = [(DSMotionStateListenerProxy *)self cachedData];
-    if (v6)
+    cachedData = [(DSMotionStateListenerProxy *)self cachedData];
+    if (cachedData)
     {
-      v7 = v6;
-      v8 = [(DSMotionStateListenerProxy *)self cachedProvider];
+      v7 = cachedData;
+      cachedProvider = [(DSMotionStateListenerProxy *)self cachedProvider];
 
-      if (v8)
+      if (cachedProvider)
       {
         if (objc_opt_respondsToSelector())
         {
-          v9 = [(DSMotionStateListenerProxy *)self cachedData];
-          v10 = [(DSMotionStateListenerProxy *)self cachedProvider];
-          [v4 receivedData:v9 fromProvider:v10];
+          cachedData2 = [(DSMotionStateListenerProxy *)self cachedData];
+          cachedProvider2 = [(DSMotionStateListenerProxy *)self cachedProvider];
+          [observerCopy receivedData:cachedData2 fromProvider:cachedProvider2];
         }
       }
     }
@@ -777,12 +777,12 @@ LABEL_10:
 - (void)_clearCache
 {
   v3 = +[DSLogging sharedInstance];
-  v4 = [v3 dsLogger];
+  dsLogger = [v3 dsLogger];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v9 = 0;
-    _os_log_impl(&dword_249027000, v4, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy]  resetting proxy cache\n", v9, 2u);
+    _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSListenerProxy]  resetting proxy cache\n", v9, 2u);
   }
 
   error = self->_error;

@@ -1,83 +1,83 @@
 @interface AccessoryServer
-- (void)accessoryServer:(id)a3 authenticateUUID:(id)a4 token:(id)a5;
-- (void)accessoryServer:(id)a3 confirmUUID:(id)a4 token:(id)a5;
-- (void)accessoryServer:(id)a3 didDiscoverAccessories:(id)a4 transaction:(id)a5 error:(id)a6;
-- (void)accessoryServer:(id)a3 didFinishAuth:(id)a4;
-- (void)accessoryServer:(id)a3 didReceiveBadPasswordThrottleAttemptsWithDelay:(int64_t)a4;
-- (void)accessoryServer:(id)a3 didStopPairingWithError:(id)a4;
-- (void)accessoryServer:(id)a3 didUpdateCategory:(id)a4;
-- (void)accessoryServer:(id)a3 didUpdateHasPairings:(BOOL)a4;
-- (void)accessoryServer:(id)a3 didUpdateName:(id)a4;
-- (void)accessoryServer:(id)a3 didUpdateValuesForCharacteristic:(id)a4 value:(id)a5;
-- (void)accessoryServer:(id)a3 didUpdateValuesForCharacteristics:(id)a4 stateNumber:(id)a5 broadcast:(BOOL)a6;
-- (void)accessoryServer:(id)a3 promptUserForPasswordWithType:(unint64_t)a4;
-- (void)accessoryServer:(id)a3 requestUserPermission:(int64_t)a4 accessoryInfo:(id)a5 error:(id)a6;
-- (void)accessoryServer:(id)a3 updatePairingProgress:(int64_t)a4;
-- (void)accessoryServer:(id)a3 validateCert:(id)a4 model:(id)a5;
-- (void)accessoryServer:(id)a3 validateUUID:(id)a4 token:(id)a5 model:(id)a6;
-- (void)accessoryServerDidUpdateStateNumber:(id)a3;
-- (void)accessoryServerNeedsOwnershipToken:(id)a3;
+- (void)accessoryServer:(id)server authenticateUUID:(id)d token:(id)token;
+- (void)accessoryServer:(id)server confirmUUID:(id)d token:(id)token;
+- (void)accessoryServer:(id)server didDiscoverAccessories:(id)accessories transaction:(id)transaction error:(id)error;
+- (void)accessoryServer:(id)server didFinishAuth:(id)auth;
+- (void)accessoryServer:(id)server didReceiveBadPasswordThrottleAttemptsWithDelay:(int64_t)delay;
+- (void)accessoryServer:(id)server didStopPairingWithError:(id)error;
+- (void)accessoryServer:(id)server didUpdateCategory:(id)category;
+- (void)accessoryServer:(id)server didUpdateHasPairings:(BOOL)pairings;
+- (void)accessoryServer:(id)server didUpdateName:(id)name;
+- (void)accessoryServer:(id)server didUpdateValuesForCharacteristic:(id)characteristic value:(id)value;
+- (void)accessoryServer:(id)server didUpdateValuesForCharacteristics:(id)characteristics stateNumber:(id)number broadcast:(BOOL)broadcast;
+- (void)accessoryServer:(id)server promptUserForPasswordWithType:(unint64_t)type;
+- (void)accessoryServer:(id)server requestUserPermission:(int64_t)permission accessoryInfo:(id)info error:(id)error;
+- (void)accessoryServer:(id)server updatePairingProgress:(int64_t)progress;
+- (void)accessoryServer:(id)server validateCert:(id)cert model:(id)model;
+- (void)accessoryServer:(id)server validateUUID:(id)d token:(id)token model:(id)model;
+- (void)accessoryServerDidUpdateStateNumber:(id)number;
+- (void)accessoryServerNeedsOwnershipToken:(id)token;
 @end
 
 @implementation AccessoryServer
 
-- (void)accessoryServer:(id)a3 promptUserForPasswordWithType:(unint64_t)a4
+- (void)accessoryServer:(id)server promptUserForPasswordWithType:(unint64_t)type
 {
-  v7 = a3;
-  v8 = self;
-  sub_100153470(a3, a4);
+  serverCopy = server;
+  selfCopy = self;
+  sub_100153470(server, type);
 }
 
-- (void)accessoryServer:(id)a3 requestUserPermission:(int64_t)a4 accessoryInfo:(id)a5 error:(id)a6
+- (void)accessoryServer:(id)server requestUserPermission:(int64_t)permission accessoryInfo:(id)info error:(id)error
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = self;
-  v14 = a6;
-  sub_100162EB0(a3, a4);
+  serverCopy = server;
+  infoCopy = info;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100162EB0(server, permission);
 }
 
-- (void)accessoryServer:(id)a3 didReceiveBadPasswordThrottleAttemptsWithDelay:(int64_t)a4
+- (void)accessoryServer:(id)server didReceiveBadPasswordThrottleAttemptsWithDelay:(int64_t)delay
 {
-  v5 = a3;
-  v6 = self;
+  serverCopy = server;
+  selfCopy = self;
   sub_100169790("accessoryServer:didReceiveBadPasswordThrottleAttemptsWithDelay");
 }
 
-- (void)accessoryServer:(id)a3 didStopPairingWithError:(id)a4
+- (void)accessoryServer:(id)server didStopPairingWithError:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_1001543AC(a3, a4);
+  serverCopy = server;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1001543AC(server, error);
 }
 
-- (void)accessoryServer:(id)a3 updatePairingProgress:(int64_t)a4
+- (void)accessoryServer:(id)server updatePairingProgress:(int64_t)progress
 {
-  v5 = a3;
-  v6 = self;
+  serverCopy = server;
+  selfCopy = self;
   sub_100169790("accessoryServer:updatePairingProgress");
 }
 
-- (void)accessoryServer:(id)a3 didDiscoverAccessories:(id)a4 transaction:(id)a5 error:(id)a6
+- (void)accessoryServer:(id)server didDiscoverAccessories:(id)accessories transaction:(id)transaction error:(id)error
 {
-  v8 = a4;
-  if (a4)
+  accessoriesCopy = accessories;
+  if (accessories)
   {
     sub_100095B94(0, &qword_1002A9C40, off_100271C50);
-    v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    accessoriesCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_100163DF8(a3, v8, a6);
+  serverCopy = server;
+  transactionCopy = transaction;
+  errorCopy = error;
+  selfCopy = self;
+  sub_100163DF8(server, accessoriesCopy, error);
 }
 
-- (void)accessoryServer:(id)a3 didUpdateValuesForCharacteristics:(id)a4 stateNumber:(id)a5 broadcast:(BOOL)a6
+- (void)accessoryServer:(id)server didUpdateValuesForCharacteristics:(id)characteristics stateNumber:(id)number broadcast:(BOOL)broadcast
 {
-  if (a4)
+  if (characteristics)
   {
     v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -87,66 +87,66 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = a5;
-  v12 = self;
-  sub_1001655C8(a3, v9);
+  serverCopy = server;
+  numberCopy = number;
+  selfCopy = self;
+  sub_1001655C8(server, v9);
 }
 
-- (void)accessoryServer:(id)a3 didUpdateValuesForCharacteristic:(id)a4 value:(id)a5
+- (void)accessoryServer:(id)server didUpdateValuesForCharacteristic:(id)characteristic value:(id)value
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v15 = self;
+  serverCopy = server;
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  selfCopy = self;
   v12 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
 
-  sub_10015F948(a3, a4, v12, v14);
+  sub_10015F948(server, characteristic, v12, v14);
   sub_1000A0D2C(v12, v14);
 }
 
-- (void)accessoryServer:(id)a3 didUpdateHasPairings:(BOOL)a4
+- (void)accessoryServer:(id)server didUpdateHasPairings:(BOOL)pairings
 {
-  v5 = a3;
-  v6 = self;
+  serverCopy = server;
+  selfCopy = self;
   sub_100169790("accessoryServer:didUpdateHasPairings");
 }
 
-- (void)accessoryServerDidUpdateStateNumber:(id)a3
+- (void)accessoryServerDidUpdateStateNumber:(id)number
 {
-  v4 = a3;
-  v5 = self;
+  numberCopy = number;
+  selfCopy = self;
   sub_100169790("accessoryServerDidUpdateStateNumber");
 }
 
-- (void)accessoryServer:(id)a3 didUpdateCategory:(id)a4
+- (void)accessoryServer:(id)server didUpdateCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  serverCopy = server;
+  categoryCopy = category;
+  selfCopy = self;
   sub_100169790("accessoryServer:didUpdateCategory");
 }
 
-- (void)accessoryServer:(id)a3 didUpdateName:(id)a4
+- (void)accessoryServer:(id)server didUpdateName:(id)name
 {
-  if (a4)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  serverCopy = server;
+  selfCopy = self;
   sub_100169790("accessoryServer:didUpdateName");
 }
 
-- (void)accessoryServer:(id)a3 validateUUID:(id)a4 token:(id)a5 model:(id)a6
+- (void)accessoryServer:(id)server validateUUID:(id)d token:(id)token model:(id)model
 {
   v11 = sub_100095274(&qword_1002A7AF0, &qword_10023C9D0);
   v12 = *(*(v11 - 8) + 64);
   __chkstk_darwin(v11 - 8);
   v14 = &v28 - v13;
-  if (a4)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v15 = type metadata accessor for UUID();
@@ -159,13 +159,13 @@
     (*(*(v16 - 8) + 56))(v14, 1, 1, v16);
   }
 
-  v17 = a3;
-  if (!a5)
+  serverCopy = server;
+  if (!token)
   {
-    v26 = a6;
-    v27 = self;
+    modelCopy = model;
+    selfCopy = self;
     v22 = 0xF000000000000000;
-    if (a6)
+    if (model)
     {
       goto LABEL_6;
     }
@@ -176,13 +176,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v18 = a5;
-  v19 = a6;
-  v20 = self;
-  a5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+  tokenCopy = token;
+  modelCopy2 = model;
+  selfCopy2 = self;
+  token = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v22 = v21;
 
-  if (!a6)
+  if (!model)
   {
     goto LABEL_8;
   }
@@ -192,26 +192,26 @@ LABEL_6:
   v25 = v24;
 
 LABEL_9:
-  sub_100160974(v17, v14, a5, v22, v23, v25);
+  sub_100160974(serverCopy, v14, token, v22, v23, v25);
 
-  sub_1000A452C(a5, v22);
+  sub_1000A452C(token, v22);
 
   sub_100095C84(v14, &qword_1002A7AF0, &qword_10023C9D0);
 }
 
-- (void)accessoryServer:(id)a3 validateCert:(id)a4 model:(id)a5
+- (void)accessoryServer:(id)server validateCert:(id)cert model:(id)model
 {
-  v6 = a4;
-  if (a4)
+  certCopy = cert;
+  if (cert)
   {
-    v8 = a3;
-    v9 = a5;
-    v10 = self;
-    v11 = v6;
-    v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    serverCopy = server;
+    modelCopy = model;
+    selfCopy = self;
+    v11 = certCopy;
+    certCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
 
-    if (!a5)
+    if (!model)
     {
       goto LABEL_5;
     }
@@ -219,11 +219,11 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  v14 = a3;
-  v15 = a5;
-  v16 = self;
+  serverCopy2 = server;
+  modelCopy2 = model;
+  selfCopy2 = self;
   v13 = 0xF000000000000000;
-  if (a5)
+  if (model)
   {
 LABEL_3:
     static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -232,16 +232,16 @@ LABEL_3:
 LABEL_5:
   sub_100169790("accessoryServer:validateCert");
 
-  sub_1000A452C(v6, v13);
+  sub_1000A452C(certCopy, v13);
 }
 
-- (void)accessoryServer:(id)a3 authenticateUUID:(id)a4 token:(id)a5
+- (void)accessoryServer:(id)server authenticateUUID:(id)d token:(id)token
 {
   v9 = sub_100095274(&qword_1002A7AF0, &qword_10023C9D0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  if (a4)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = type metadata accessor for UUID();
@@ -254,34 +254,34 @@ LABEL_5:
     (*(*(v14 - 8) + 56))(v12, 1, 1, v14);
   }
 
-  v15 = a3;
-  if (a5)
+  serverCopy = server;
+  if (token)
   {
-    v16 = a5;
-    v17 = self;
-    a5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    tokenCopy = token;
+    selfCopy = self;
+    token = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v19 = v18;
   }
 
   else
   {
-    v20 = self;
+    selfCopy2 = self;
     v19 = 0xF000000000000000;
   }
 
-  sub_1001694C4(v15);
-  sub_1000A452C(a5, v19);
+  sub_1001694C4(serverCopy);
+  sub_1000A452C(token, v19);
 
   sub_100095C84(v12, &qword_1002A7AF0, &qword_10023C9D0);
 }
 
-- (void)accessoryServer:(id)a3 confirmUUID:(id)a4 token:(id)a5
+- (void)accessoryServer:(id)server confirmUUID:(id)d token:(id)token
 {
   v9 = sub_100095274(&qword_1002A7AF0, &qword_10023C9D0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  if (a4)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = type metadata accessor for UUID();
@@ -294,39 +294,39 @@ LABEL_5:
     (*(*(v14 - 8) + 56))(v12, 1, 1, v14);
   }
 
-  v15 = a3;
-  if (a5)
+  serverCopy = server;
+  if (token)
   {
-    v16 = a5;
-    v17 = self;
-    a5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    tokenCopy = token;
+    selfCopy = self;
+    token = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v19 = v18;
   }
 
   else
   {
-    v20 = self;
+    selfCopy2 = self;
     v19 = 0xF000000000000000;
   }
 
-  sub_100161618(v15, v12, a5, v19);
-  sub_1000A452C(a5, v19);
+  sub_100161618(serverCopy, v12, token, v19);
+  sub_1000A452C(token, v19);
 
   sub_100095C84(v12, &qword_1002A7AF0, &qword_10023C9D0);
 }
 
-- (void)accessoryServer:(id)a3 didFinishAuth:(id)a4
+- (void)accessoryServer:(id)server didFinishAuth:(id)auth
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_100161B78(a3, a4);
+  serverCopy = server;
+  selfCopy = self;
+  authCopy = auth;
+  sub_100161B78(server, auth);
 }
 
-- (void)accessoryServerNeedsOwnershipToken:(id)a3
+- (void)accessoryServerNeedsOwnershipToken:(id)token
 {
-  v4 = a3;
-  v5 = self;
+  tokenCopy = token;
+  selfCopy = self;
   sub_100169790("accessoryServerNeedsOwnershipToken");
 }
 

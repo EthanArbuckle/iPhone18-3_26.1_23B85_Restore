@@ -1,19 +1,19 @@
 @interface ApplicationWorkspaceProgressOperation
-- (ApplicationWorkspaceProgressOperation)initWithApplicationDownloadProgress:(id)a3;
+- (ApplicationWorkspaceProgressOperation)initWithApplicationDownloadProgress:(id)progress;
 - (void)dealloc;
-- (void)runWithCompletionBlock:(id)a3;
+- (void)runWithCompletionBlock:(id)block;
 @end
 
 @implementation ApplicationWorkspaceProgressOperation
 
-- (ApplicationWorkspaceProgressOperation)initWithApplicationDownloadProgress:(id)a3
+- (ApplicationWorkspaceProgressOperation)initWithApplicationDownloadProgress:(id)progress
 {
   v6.receiver = self;
   v6.super_class = ApplicationWorkspaceProgressOperation;
-  v4 = -[ApplicationWorkspaceOperation initWithApplicationHandle:](&v6, "initWithApplicationHandle:", [a3 applicationHandle]);
+  v4 = -[ApplicationWorkspaceOperation initWithApplicationHandle:](&v6, "initWithApplicationHandle:", [progress applicationHandle]);
   if (v4)
   {
-    v4->_applicationProgress = [a3 copy];
+    v4->_applicationProgress = [progress copy];
   }
 
   return v4;
@@ -26,12 +26,12 @@
   [(ApplicationWorkspaceOperation *)&v3 dealloc];
 }
 
-- (void)runWithCompletionBlock:(id)a3
+- (void)runWithCompletionBlock:(id)block
 {
-  v5 = [(ApplicationHandle *)[(ApplicationWorkspaceOperation *)self applicationHandle] bundleID];
-  if (v5)
+  bundleID = [(ApplicationHandle *)[(ApplicationWorkspaceOperation *)self applicationHandle] bundleID];
+  if (bundleID)
   {
-    v6 = [LSApplicationProxy applicationProxyForIdentifier:v5 placeholder:1];
+    v6 = [LSApplicationProxy applicationProxyForIdentifier:bundleID placeholder:1];
     if ([v6 foundBackingBundle])
     {
       v7 = [+[LSApplicationWorkspace defaultWorkspace](LSApplicationWorkspace "defaultWorkspace")];
@@ -41,11 +41,11 @@
     }
   }
 
-  if (a3)
+  if (block)
   {
-    v8 = *(a3 + 2);
+    v8 = *(block + 2);
 
-    v8(a3, 0, 0, 0);
+    v8(block, 0, 0, 0);
   }
 }
 

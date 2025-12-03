@@ -1,14 +1,14 @@
 @interface CSSearchableIndexAsyncProcessor
-- (CSSearchableIndexAsyncProcessor)initWithName:(id)a3;
-- (void)indexSearchableItemsAsync:(id)a3 protectionClass:(id)a4 bundleIdentifier:(id)a5 indexOptions:(int64_t)a6 completion:(id)a7;
+- (CSSearchableIndexAsyncProcessor)initWithName:(id)name;
+- (void)indexSearchableItemsAsync:(id)async protectionClass:(id)class bundleIdentifier:(id)identifier indexOptions:(int64_t)options completion:(id)completion;
 @end
 
 @implementation CSSearchableIndexAsyncProcessor
 
-- (CSSearchableIndexAsyncProcessor)initWithName:(id)a3
+- (CSSearchableIndexAsyncProcessor)initWithName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = CSSearchableIndexAsyncProcessor;
   v6 = [(CSSearchableIndexAsyncProcessor *)&v16 init];
@@ -19,8 +19,8 @@
     v6->_semaphore = v7;
 
     bzero(label, 0x400uLL);
-    __sprintf_chk(label, 0, 0x400uLL, "com.apple.spotlight.indexitems.%s", [v5 UTF8String]);
-    objc_storeStrong(&v6->_processorName, a3);
+    __sprintf_chk(label, 0, 0x400uLL, "com.apple.spotlight.indexitems.%s", [nameCopy UTF8String]);
+    objc_storeStrong(&v6->_processorName, name);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, 5u, 0);
     v11 = dispatch_queue_create(label, v10);
@@ -34,13 +34,13 @@
   return v6;
 }
 
-- (void)indexSearchableItemsAsync:(id)a3 protectionClass:(id)a4 bundleIdentifier:(id)a5 indexOptions:(int64_t)a6 completion:(id)a7
+- (void)indexSearchableItemsAsync:(id)async protectionClass:(id)class bundleIdentifier:(id)identifier indexOptions:(int64_t)options completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  asyncCopy = async;
+  classCopy = class;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_semaphore_wait(self->_semaphore, 0xFFFFFFFFFFFFFFFFLL);
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
@@ -48,10 +48,10 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = self->_processorName;
-      v18 = [(NSString *)v17 UTF8String];
+      uTF8String = [(NSString *)v17 UTF8String];
 
       *buf = 136315138;
-      v32 = v18;
+      v32 = uTF8String;
       _os_log_impl(&dword_231B25000, v16, OS_LOG_TYPE_INFO, "[%s] Submitting async job to index CSSearchableItem", buf, 0xCu);
     }
   }
@@ -62,15 +62,15 @@
   v25[2] = __118__CSSearchableIndexAsyncProcessor_indexSearchableItemsAsync_protectionClass_bundleIdentifier_indexOptions_completion___block_invoke;
   v25[3] = &unk_27893D838;
   v25[4] = self;
-  v26 = v13;
-  v27 = v14;
-  v28 = v12;
-  v29 = v15;
-  v30 = a6;
-  v20 = v15;
-  v21 = v12;
-  v22 = v14;
-  v23 = v13;
+  v26 = classCopy;
+  v27 = identifierCopy;
+  v28 = asyncCopy;
+  v29 = completionCopy;
+  optionsCopy = options;
+  v20 = completionCopy;
+  v21 = asyncCopy;
+  v22 = identifierCopy;
+  v23 = classCopy;
   dispatch_async(serialQueue, v25);
 
   v24 = *MEMORY[0x277D85DE8];

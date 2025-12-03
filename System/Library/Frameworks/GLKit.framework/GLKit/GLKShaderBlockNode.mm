@@ -1,19 +1,19 @@
 @interface GLKShaderBlockNode
-+ (id)copyTreeWithRoot:(id)a3 parent:(id)a4;
-+ (id)copyTreeWithRootButNotSiblings:(id)a3 parent:(id)a4;
-+ (unsigned)nodeCt:(id)a3 nodeCt:(unsigned int *)a4;
-+ (void)buildUnrollNodeArray:(id)a3 array:(id)a4;
-+ (void)insertNode:(id)a3 afterSibling:(id)a4;
-+ (void)printTree:(id)a3;
-+ (void)printTreeVerbose:(id)a3;
-+ (void)setMasksWithRoot:(id)a3 treeRoot:(id)a4 mask:(GLKBigInt_s *)a5;
++ (id)copyTreeWithRoot:(id)root parent:(id)parent;
++ (id)copyTreeWithRootButNotSiblings:(id)siblings parent:(id)parent;
++ (unsigned)nodeCt:(id)ct nodeCt:(unsigned int *)nodeCt;
++ (void)buildUnrollNodeArray:(id)array array:(id)a4;
++ (void)insertNode:(id)node afterSibling:(id)sibling;
++ (void)printTree:(id)tree;
++ (void)printTreeVerbose:(id)verbose;
++ (void)setMasksWithRoot:(id)root treeRoot:(id)treeRoot mask:(GLKBigInt_s *)mask;
 - (GLKBigInt_s)mask;
 - (GLKShaderBlockNode)init;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
 @end
 
 @implementation GLKShaderBlockNode
@@ -39,11 +39,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(GLKShaderBlockNode);
-  v6 = [(GLKShaderBlockNode *)self mask];
-  [(GLKShaderBlockNode *)v5 setMask:v6, v7];
+  mask = [(GLKShaderBlockNode *)self mask];
+  [(GLKShaderBlockNode *)v5 setMask:mask, v7];
   [(GLKShaderBlockNode *)v5 setUnrollCt:[(GLKShaderBlockNode *)self unrollCt]];
   [(GLKShaderBlockNode *)v5 setPropertyClass:[(GLKShaderBlockNode *)self propertyClass]];
   [(GLKShaderBlockNode *)v5 setType:[(GLKShaderBlockNode *)self type]];
@@ -51,7 +51,7 @@
   [(GLKShaderBlockNode *)v5 setIndexedMask:[(GLKShaderBlockNode *)self indexedMask]];
   if ([(GLKShaderBlockNode *)self blockText])
   {
-    [(GLKShaderBlockNode *)v5 setBlockText:[(NSMutableString *)[(GLKShaderBlockNode *)self blockText] mutableCopyWithZone:a3]];
+    [(GLKShaderBlockNode *)v5 setBlockText:[(NSMutableString *)[(GLKShaderBlockNode *)self blockText] mutableCopyWithZone:zone]];
   }
 
   [(GLKShaderBlockNode *)v5 setLoopVar:[(GLKShaderBlockNode *)self loopVar]];
@@ -59,178 +59,178 @@
   return v5;
 }
 
-+ (id)copyTreeWithRoot:(id)a3 parent:(id)a4
++ (id)copyTreeWithRoot:(id)root parent:(id)parent
 {
-  v6 = [a3 copyWithZone:0];
-  [v6 setParent:a4];
-  if ([a3 children])
+  v6 = [root copyWithZone:0];
+  [v6 setParent:parent];
+  if ([root children])
   {
-    [v6 setChildren:{+[GLKShaderBlockNode copyTreeWithRoot:parent:](GLKShaderBlockNode, "copyTreeWithRoot:parent:", objc_msgSend(a3, "children"), v6)}];
+    [v6 setChildren:{+[GLKShaderBlockNode copyTreeWithRoot:parent:](GLKShaderBlockNode, "copyTreeWithRoot:parent:", objc_msgSend(root, "children"), v6)}];
   }
 
-  if ([a3 next])
+  if ([root next])
   {
-    [v6 setNext:{+[GLKShaderBlockNode copyTreeWithRoot:parent:](GLKShaderBlockNode, "copyTreeWithRoot:parent:", objc_msgSend(a3, "next"), a4)}];
-  }
-
-  return v6;
-}
-
-+ (id)copyTreeWithRootButNotSiblings:(id)a3 parent:(id)a4
-{
-  v6 = [a3 copyWithZone:0];
-  [v6 setParent:a4];
-  if ([a3 children])
-  {
-    [v6 setChildren:{+[GLKShaderBlockNode copyTreeWithRoot:parent:](GLKShaderBlockNode, "copyTreeWithRoot:parent:", objc_msgSend(a3, "children"), v6)}];
+    [v6 setNext:{+[GLKShaderBlockNode copyTreeWithRoot:parent:](GLKShaderBlockNode, "copyTreeWithRoot:parent:", objc_msgSend(root, "next"), parent)}];
   }
 
   return v6;
 }
 
-+ (void)setMasksWithRoot:(id)a3 treeRoot:(id)a4 mask:(GLKBigInt_s *)a5
++ (id)copyTreeWithRootButNotSiblings:(id)siblings parent:(id)parent
 {
-  v8 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", [a3 label], a4, objc_msgSend(a3, "index"));
+  v6 = [siblings copyWithZone:0];
+  [v6 setParent:parent];
+  if ([siblings children])
+  {
+    [v6 setChildren:{+[GLKShaderBlockNode copyTreeWithRoot:parent:](GLKShaderBlockNode, "copyTreeWithRoot:parent:", objc_msgSend(siblings, "children"), v6)}];
+  }
+
+  return v6;
+}
+
++ (void)setMasksWithRoot:(id)root treeRoot:(id)treeRoot mask:(GLKBigInt_s *)mask
+{
+  v8 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", [root label], treeRoot, objc_msgSend(root, "index"));
   if (v8 | v9)
   {
-    [a3 setMask:{v8, v9}];
+    [root setMask:{v8, v9}];
   }
 
   else
   {
-    [a3 setMask:{a5->n0, a5->n1}];
-    *a5 *= 2;
+    [root setMask:{mask->n0, mask->n1}];
+    *mask *= 2;
   }
 
-  if ([a3 children])
+  if ([root children])
   {
-    +[GLKShaderBlockNode setMasksWithRoot:treeRoot:mask:](GLKShaderBlockNode, "setMasksWithRoot:treeRoot:mask:", [a3 children], a4, a5);
+    +[GLKShaderBlockNode setMasksWithRoot:treeRoot:mask:](GLKShaderBlockNode, "setMasksWithRoot:treeRoot:mask:", [root children], treeRoot, mask);
   }
 
-  if ([a3 next])
+  if ([root next])
   {
-    v10 = [a3 next];
+    next = [root next];
 
-    [GLKShaderBlockNode setMasksWithRoot:v10 treeRoot:a4 mask:a5];
+    [GLKShaderBlockNode setMasksWithRoot:next treeRoot:treeRoot mask:mask];
   }
 }
 
-+ (void)buildUnrollNodeArray:(id)a3 array:(id)a4
++ (void)buildUnrollNodeArray:(id)array array:(id)a4
 {
-  if ([a3 unrollCt] >= 2)
+  if ([array unrollCt] >= 2)
   {
-    [a4 addObject:a3];
+    [a4 addObject:array];
   }
 
-  if ([a3 children])
+  if ([array children])
   {
-    +[GLKShaderBlockNode buildUnrollNodeArray:array:](GLKShaderBlockNode, "buildUnrollNodeArray:array:", [a3 children], a4);
+    +[GLKShaderBlockNode buildUnrollNodeArray:array:](GLKShaderBlockNode, "buildUnrollNodeArray:array:", [array children], a4);
   }
 
-  if ([a3 next])
+  if ([array next])
   {
-    v6 = [a3 next];
+    next = [array next];
 
-    [GLKShaderBlockNode buildUnrollNodeArray:v6 array:a4];
+    [GLKShaderBlockNode buildUnrollNodeArray:next array:a4];
   }
 }
 
-+ (void)insertNode:(id)a3 afterSibling:(id)a4
++ (void)insertNode:(id)node afterSibling:(id)sibling
 {
-  [a3 setNext:{objc_msgSend(a4, "next")}];
+  [node setNext:{objc_msgSend(sibling, "next")}];
 
-  [a4 setNext:a3];
+  [sibling setNext:node];
 }
 
-+ (unsigned)nodeCt:(id)a3 nodeCt:(unsigned int *)a4
++ (unsigned)nodeCt:(id)ct nodeCt:(unsigned int *)nodeCt
 {
-  ++*a4;
-  if ([a3 children])
+  ++*nodeCt;
+  if ([ct children])
   {
-    +[GLKShaderBlockNode nodeCt:nodeCt:](GLKShaderBlockNode, "nodeCt:nodeCt:", [a3 children], a4);
+    +[GLKShaderBlockNode nodeCt:nodeCt:](GLKShaderBlockNode, "nodeCt:nodeCt:", [ct children], nodeCt);
   }
 
-  if ([a3 next])
+  if ([ct next])
   {
-    +[GLKShaderBlockNode nodeCt:nodeCt:](GLKShaderBlockNode, "nodeCt:nodeCt:", [a3 next], a4);
+    +[GLKShaderBlockNode nodeCt:nodeCt:](GLKShaderBlockNode, "nodeCt:nodeCt:", [ct next], nodeCt);
   }
 
-  return *a4;
+  return *nodeCt;
 }
 
-+ (void)printTree:(id)a3
++ (void)printTree:(id)tree
 {
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if (a3)
+  if (tree)
   {
-    v5 = a3;
+    treeCopy = tree;
     do
     {
-      v5 = [v5 parent];
+      treeCopy = [treeCopy parent];
       [v4 appendString:@"\t"];
     }
 
-    while (v5);
+    while (treeCopy);
   }
 
-  NSLog(&cfstr_PClassDIndexD.isa, a3, v4, [a3 label], objc_msgSend(a3, "propertyClass"), objc_msgSend(a3, "index"));
-  v6 = [a3 children];
-  if (v6)
+  NSLog(&cfstr_PClassDIndexD.isa, tree, v4, [tree label], objc_msgSend(tree, "propertyClass"), objc_msgSend(tree, "index"));
+  children = [tree children];
+  if (children)
   {
-    v7 = v6;
+    next = children;
     do
     {
-      [GLKShaderBlockNode printTree:v7];
-      v7 = [v7 next];
+      [GLKShaderBlockNode printTree:next];
+      next = [next next];
     }
 
-    while (v7);
+    while (next);
   }
 }
 
-+ (void)printTreeVerbose:(id)a3
++ (void)printTreeVerbose:(id)verbose
 {
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if (a3)
+  if (verbose)
   {
-    v5 = a3;
+    verboseCopy = verbose;
     do
     {
-      v5 = [v5 parent];
+      verboseCopy = [verboseCopy parent];
       [v4 appendString:@"\t"];
     }
 
-    while (v5);
+    while (verboseCopy);
   }
 
-  NSLog(&cfstr_PClassDIndexD_0.isa, a3, v4, [a3 label], objc_msgSend(a3, "propertyClass"), objc_msgSend(a3, "index"), objc_msgSend(a3, "blockText"));
-  v6 = [a3 children];
-  if (v6)
+  NSLog(&cfstr_PClassDIndexD_0.isa, verbose, v4, [verbose label], objc_msgSend(verbose, "propertyClass"), objc_msgSend(verbose, "index"), objc_msgSend(verbose, "blockText"));
+  children = [verbose children];
+  if (children)
   {
-    v7 = v6;
+    next = children;
     do
     {
-      [GLKShaderBlockNode printTreeVerbose:v7];
-      v7 = [v7 next];
+      [GLKShaderBlockNode printTreeVerbose:next];
+      next = [next next];
     }
 
-    while (v7);
+    while (next);
   }
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  if ([a4 isEqualToString:@"codeblock"])
+  if ([element isEqualToString:@"codeblock"])
   {
     v11 = objc_alloc_init(GLKShaderBlockNode);
-    v12 = [a7 valueForKey:@"indexedMask"];
+    v12 = [attributes valueForKey:@"indexedMask"];
     if (v12 && [v12 isEqualToString:@"no"])
     {
       [(GLKShaderBlockNode *)v11 setIndexedMask:0];
     }
 
-    -[GLKShaderBlockNode setLabel:](v11, "setLabel:", [a7 valueForKey:@"label"]);
-    v13 = [a7 valueForKey:@"type"];
+    -[GLKShaderBlockNode setLabel:](v11, "setLabel:", [attributes valueForKey:@"label"]);
+    v13 = [attributes valueForKey:@"type"];
     if ([v13 isEqualToString:@"std"])
     {
       v14 = 0;
@@ -253,14 +253,14 @@
 
     [(GLKShaderBlockNode *)v11 setType:v14];
 LABEL_15:
-    v15 = [a7 valueForKey:@"unrollCt"];
+    v15 = [attributes valueForKey:@"unrollCt"];
     if (v15)
     {
       -[GLKShaderBlockNode setUnrollCt:](v11, "setUnrollCt:", [v15 intValue]);
     }
 
-    v16 = [a7 valueForKey:@"class"];
-    -[GLKShaderBlockNode setLoopVar:](v11, "setLoopVar:", [a7 valueForKey:@"loopVar"]);
+    v16 = [attributes valueForKey:@"class"];
+    -[GLKShaderBlockNode setLoopVar:](v11, "setLoopVar:", [attributes valueForKey:@"loopVar"]);
     if ([v16 isEqualToString:@"STATIC_BLOCK"])
     {
       v17 = 21;
@@ -313,7 +313,7 @@ LABEL_32:
           [(GLKShaderBlockNode *)self setChildren:v11];
         }
 
-        [a3 setDelegate:v11];
+        [parser setDelegate:v11];
         return;
       }
 
@@ -324,24 +324,24 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if ([a4 isEqualToString:@"codeblocks"])
+  if ([element isEqualToString:@"codeblocks"])
   {
-    -[GLKShaderBlockNode setLabel:](self, "setLabel:", [a7 valueForKey:@"label"]);
+    -[GLKShaderBlockNode setLabel:](self, "setLabel:", [attributes valueForKey:@"label"]);
     self->_type = 0;
     self->_propertyClass = 21;
   }
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v6 = [a4 UTF8String];
-  v7 = *v6;
-  if (!*v6)
+  uTF8String = [characters UTF8String];
+  v7 = *uTF8String;
+  if (!*uTF8String)
   {
     return;
   }
 
-  v8 = v6 + 1;
+  v8 = uTF8String + 1;
   v9 = MEMORY[0x277D85DE0];
   while ((v7 & 0x80) == 0)
   {
@@ -369,7 +369,7 @@ LABEL_9:
   [(GLKShaderBlockNode *)v11 setLabel:[(GLKShaderBlockNode *)self label]];
   [(GLKShaderBlockNode *)v11 setParent:self];
   [(GLKShaderBlockNode *)v11 setBlockText:objc_alloc_init(MEMORY[0x277CCAB68])];
-  [(NSMutableString *)[(GLKShaderBlockNode *)v11 blockText] appendString:a4];
+  [(NSMutableString *)[(GLKShaderBlockNode *)v11 blockText] appendString:characters];
   children = self->_children;
   if (children)
   {
@@ -410,12 +410,12 @@ LABEL_9:
   {
     do
     {
-      v4 = [(GLKShaderBlockNode *)children next];
+      next = [(GLKShaderBlockNode *)children next];
 
-      children = v4;
+      children = next;
     }
 
-    while (v4);
+    while (next);
   }
 
   v5.receiver = self;

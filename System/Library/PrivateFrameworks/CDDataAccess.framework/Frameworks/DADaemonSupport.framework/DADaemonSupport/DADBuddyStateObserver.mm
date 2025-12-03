@@ -1,18 +1,18 @@
 @interface DADBuddyStateObserver
-- (DADBuddyStateObserver)initWithQueue:(id)a3;
+- (DADBuddyStateObserver)initWithQueue:(id)queue;
 - (void)buddyDidFinish;
 - (void)checkBuddyStatus;
 - (void)createPeriodicPollingTimer;
 - (void)dealloc;
 - (void)start;
-- (void)stopWithAssertQueue:(BOOL)a3;
+- (void)stopWithAssertQueue:(BOOL)queue;
 @end
 
 @implementation DADBuddyStateObserver
 
-- (DADBuddyStateObserver)initWithQueue:(id)a3
+- (DADBuddyStateObserver)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = DADBuddyStateObserver;
   v6 = [(DADBuddyStateObserver *)&v10 init];
@@ -22,7 +22,7 @@
     buddyStatePollingTimer = v6->_buddyStatePollingTimer;
     v6->_buddyStatePollingTimer = 0;
 
-    objc_storeStrong(&v7->_queue, a3);
+    objc_storeStrong(&v7->_queue, queue);
     *&v7->_lock._os_unfair_lock_opaque = 0xFFFFFFFF00000000;
   }
 
@@ -70,14 +70,14 @@
   else
   {
     objc_initWeak(buf, self);
-    v7 = [*MEMORY[0x277D4D9E8] UTF8String];
+    uTF8String = [*MEMORY[0x277D4D9E8] UTF8String];
     queue = self->_queue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __30__DADBuddyStateObserver_start__block_invoke;
     handler[3] = &unk_278D529F0;
     objc_copyWeak(&v13, buf);
-    if (notify_register_dispatch(v7, &self->_notifyToken, queue, handler))
+    if (notify_register_dispatch(uTF8String, &self->_notifyToken, queue, handler))
     {
       v9 = DALoggingwithCategory();
       v10 = *(v4 + 3);
@@ -108,9 +108,9 @@ void __30__DADBuddyStateObserver_start__block_invoke(uint64_t a1)
   [WeakRetained buddyDidFinish];
 }
 
-- (void)stopWithAssertQueue:(BOOL)a3
+- (void)stopWithAssertQueue:(BOOL)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277CF3AF0] + 5);
   if (os_log_type_enabled(v5, v6))
@@ -119,7 +119,7 @@ void __30__DADBuddyStateObserver_start__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2424DF000, v5, v6, "DADBuddyStateObserver: Stop observing buddy finished notification.", buf, 2u);
   }
 
-  if (v3)
+  if (queueCopy)
   {
     dispatch_assert_queue_V2(self->_queue);
   }
@@ -231,18 +231,18 @@ void __51__DADBuddyStateObserver_createPeriodicPollingTimer__block_invoke(uint64
   if ([(DADBuddyStateObserver *)self isRunning])
   {
     [(DADBuddyStateObserver *)self stop];
-    v6 = [(DADBuddyStateObserver *)self buddyDidFinishHandler];
-    (*(v6 + 16))();
+    buddyDidFinishHandler = [(DADBuddyStateObserver *)self buddyDidFinishHandler];
+    (*(buddyDidFinishHandler + 16))();
   }
 
   else
   {
-    v6 = DALoggingwithCategory();
+    buddyDidFinishHandler = DALoggingwithCategory();
     v7 = *(v4 + 3);
-    if (os_log_type_enabled(v6, v7))
+    if (os_log_type_enabled(buddyDidFinishHandler, v7))
     {
       *v8 = 0;
-      _os_log_impl(&dword_2424DF000, v6, v7, "DADBuddyStateObserver: Already stopped. Will skip calling handler.", v8, 2u);
+      _os_log_impl(&dword_2424DF000, buddyDidFinishHandler, v7, "DADBuddyStateObserver: Already stopped. Will skip calling handler.", v8, 2u);
     }
   }
 }

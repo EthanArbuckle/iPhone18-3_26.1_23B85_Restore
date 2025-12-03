@@ -1,15 +1,15 @@
 @interface RAPDirectionsRequestsCheckmarkSection
-- (id)dequeueCellForValue:(id)a3;
+- (id)dequeueCellForValue:(id)value;
 @end
 
 @implementation RAPDirectionsRequestsCheckmarkSection
 
-- (id)dequeueCellForValue:(id)a3
+- (id)dequeueCellForValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = [(RAPTwoLinesMenuTableViewCell *)[RAPRouteHistoryItemTableViewCell alloc] initWithStyle:3 reuseIdentifier:0];
-  v5 = [v3 historyItem];
-  [(RAPRouteHistoryItemTableViewCell *)v4 setHistoryItem:v5];
+  historyItem = [valueCopy historyItem];
+  [(RAPRouteHistoryItemTableViewCell *)v4 setHistoryItem:historyItem];
 
   return v4;
 }

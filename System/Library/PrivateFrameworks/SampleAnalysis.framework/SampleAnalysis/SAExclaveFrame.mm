@@ -1,20 +1,20 @@
 @interface SAExclaveFrame
 - (id)exclave;
-- (id)initCopyingFrame:(id)a3 withParent:(id)a4;
-- (id)initWithExclave:(void *)a1;
+- (id)initCopyingFrame:(id)frame withParent:(id)parent;
+- (id)initWithExclave:(void *)exclave;
 - (void)reset;
 @end
 
 @implementation SAExclaveFrame
 
-- (id)initWithExclave:(void *)a1
+- (id)initWithExclave:(void *)exclave
 {
-  if (!a1)
+  if (!exclave)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = exclave;
   v6.super_class = SAExclaveFrame;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;
@@ -34,15 +34,15 @@
   return WeakRetained;
 }
 
-- (id)initCopyingFrame:(id)a3 withParent:(id)a4
+- (id)initCopyingFrame:(id)frame withParent:(id)parent
 {
   v8.receiver = self;
   v8.super_class = SAExclaveFrame;
-  v5 = [(SAFrame *)&v8 initCopyingFrame:a3 withParent:a4];
+  v5 = [(SAFrame *)&v8 initCopyingFrame:frame withParent:parent];
   if (v5)
   {
-    v6 = [a3 exclave];
-    objc_storeWeak(v5 + 6, v6);
+    exclave = [frame exclave];
+    objc_storeWeak(v5 + 6, exclave);
   }
 
   return v5;

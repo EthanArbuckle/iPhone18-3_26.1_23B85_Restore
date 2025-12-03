@@ -2,19 +2,19 @@
 + (id)sharedManager;
 - (WFAngelSceneManager)init;
 - (void)dealloc;
-- (void)getWindowWithCancellationHandler:(id)a3 completionHandler:(id)a4;
-- (void)remoteAlertScene:(id)a3 handleButtonActions:(id)a4;
+- (void)getWindowWithCancellationHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)remoteAlertScene:(id)scene handleButtonActions:(id)actions;
 - (void)requestSceneDeactivation;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)setActiveWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)setActiveWindow:(id)window;
 @end
 
 @implementation WFAngelSceneManager
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = sub_100001F54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -23,9 +23,9 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s Resetting...", &v7, 0xCu);
   }
 
-  v6 = [(WFAngelSceneManager *)self activeScene];
+  activeScene = [(WFAngelSceneManager *)self activeScene];
 
-  if (v6 == v4)
+  if (activeScene == disconnectCopy)
   {
     [(WFAngelSceneManager *)self setActiveScene:0];
     [(WFAngelSceneManager *)self setActiveWindow:0];
@@ -39,12 +39,12 @@
   self->_displayStatusNotifyToken = -1;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  v11 = sceneCopy;
   if (v11)
   {
     objc_opt_class();
@@ -67,18 +67,18 @@
       v13 = objc_alloc_init(WFAngelSecureViewController);
       v14 = [[WFAngelSecureWindow alloc] initWithWindowScene:v11];
       [(WFAngelSecureWindow *)v14 setRootViewController:v13];
-      v15 = [(WFAngelSecureWindow *)v14 _rootSheetPresentationController];
-      [v15 _setShouldScaleDownBehindDescendantSheets:0];
+      _rootSheetPresentationController = [(WFAngelSecureWindow *)v14 _rootSheetPresentationController];
+      [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
       [(WFAngelSecureWindow *)v14 makeKeyAndVisible];
       [(WFAngelSceneManager *)self setActiveWindow:v14];
       [(WFAngelSceneManager *)self setActiveScene:v11];
-      v16 = [(WFAngelSceneManager *)self windowActivationCompletionHandler];
+      windowActivationCompletionHandler = [(WFAngelSceneManager *)self windowActivationCompletionHandler];
 
-      if (v16)
+      if (windowActivationCompletionHandler)
       {
-        v17 = [(WFAngelSceneManager *)self windowActivationCompletionHandler];
-        (v17)[2](v17, v14, 0);
+        windowActivationCompletionHandler2 = [(WFAngelSceneManager *)self windowActivationCompletionHandler];
+        (windowActivationCompletionHandler2)[2](windowActivationCompletionHandler2, v14, 0);
 
         [(WFAngelSceneManager *)self setWindowActivationCompletionHandler:0];
       }
@@ -86,9 +86,9 @@
   }
 }
 
-- (void)remoteAlertScene:(id)a3 handleButtonActions:(id)a4
+- (void)remoteAlertScene:(id)scene handleButtonActions:(id)actions
 {
-  v5 = [a4 if_compactMap:&stru_100028690];
+  v5 = [actions if_compactMap:&stru_100028690];
   if ([v5 count])
   {
     v6 = sub_100001F54();
@@ -99,42 +99,42 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Home gesture invoked, invoking cancellation handler...", &v9, 0xCu);
     }
 
-    v7 = [(WFAngelSceneManager *)self cancellationHandler];
+    cancellationHandler = [(WFAngelSceneManager *)self cancellationHandler];
 
-    if (v7)
+    if (cancellationHandler)
     {
-      v8 = [(WFAngelSceneManager *)self cancellationHandler];
-      (*(v8 + 16))();
+      cancellationHandler2 = [(WFAngelSceneManager *)self cancellationHandler];
+      (*(cancellationHandler2 + 16))();
     }
 
     else
     {
-      v8 = sub_100001F54();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      cancellationHandler2 = sub_100001F54();
+      if (os_log_type_enabled(cancellationHandler2, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 136315138;
         v10 = "[WFAngelSceneManager remoteAlertScene:handleButtonActions:]";
-        _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Cancellation handler not found...", &v9, 0xCu);
+        _os_log_impl(&_mh_execute_header, cancellationHandler2, OS_LOG_TYPE_DEFAULT, "%s Cancellation handler not found...", &v9, 0xCu);
       }
     }
   }
 }
 
-- (void)setActiveWindow:(id)a3
+- (void)setActiveWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v5 = sub_100001F54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[WFAngelSceneManager setActiveWindow:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = windowCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s Setting active window to %@", &v7, 0x16u);
   }
 
   activeWindow = self->_activeWindow;
-  self->_activeWindow = v4;
+  self->_activeWindow = windowCopy;
 }
 
 - (void)requestSceneDeactivation
@@ -147,10 +147,10 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)getWindowWithCancellationHandler:(id)a3 completionHandler:(id)a4
+- (void)getWindowWithCancellationHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v8 = sub_100001F54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -168,8 +168,8 @@
   v13 = [SBSRemoteAlertHandle newHandleWithDefinition:v11 configurationContext:v12];
   v14 = objc_alloc_init(SBSRemoteAlertActivationContext);
   [v13 activateWithContext:v14];
-  [(WFAngelSceneManager *)self setWindowActivationCompletionHandler:v7];
-  [(WFAngelSceneManager *)self setCancellationHandler:v6];
+  [(WFAngelSceneManager *)self setWindowActivationCompletionHandler:completionHandlerCopy];
+  [(WFAngelSceneManager *)self setCancellationHandler:handlerCopy];
   if (self->_displayStatusNotifyToken == -1)
   {
     objc_initWeak(buf, self);

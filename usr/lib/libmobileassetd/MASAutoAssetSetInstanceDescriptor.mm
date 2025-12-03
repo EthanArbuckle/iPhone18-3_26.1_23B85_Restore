@@ -1,23 +1,23 @@
 @interface MASAutoAssetSetInstanceDescriptor
-+ (id)newServerMessageClasses:(id)a3;
-+ (id)newShimmedFromFramework:(id)a3;
-+ (id)newShimmedToFramework:(id)a3;
++ (id)newServerMessageClasses:(id)classes;
++ (id)newShimmedFromFramework:(id)framework;
++ (id)newShimmedToFramework:(id)framework;
 @end
 
 @implementation MASAutoAssetSetInstanceDescriptor
 
-+ (id)newServerMessageClasses:(id)a3
++ (id)newServerMessageClasses:(id)classes
 {
-  v3 = a3;
-  if (v3)
+  classesCopy = classes;
+  if (classesCopy)
   {
-    v4 = v3;
+    v4 = classesCopy;
     if (__isPlatformVersionAtLeast(2, 17, 0, 0))
     {
-      v4 = v3;
+      v4 = classesCopy;
       if (objc_opt_class())
       {
-        v4 = [v3 setByAddingObject:objc_opt_class()];
+        v4 = [classesCopy setByAddingObject:objc_opt_class()];
       }
 
       if (objc_opt_class())
@@ -37,24 +37,24 @@
   return v4;
 }
 
-+ (id)newShimmedToFramework:(id)a3
++ (id)newShimmedToFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetSetInstanceDescriptor alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetSetInstanceDescriptor alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v6 = [v3 atomicInstanceEntries];
-    v7 = [MASAutoAssetSetAtomicEntry newShimmedArrayToFramework:v6];
+    atomicInstanceEntries = [frameworkCopy atomicInstanceEntries];
+    v7 = [MASAutoAssetSetAtomicEntry newShimmedArrayToFramework:atomicInstanceEntries];
 
     v8 = [MAAutoAssetSetInstanceDescriptor alloc];
-    v9 = [v3 clientDomainName];
-    v10 = [v3 assetSetIdentifier];
-    v11 = [v3 isFullyDownloaded];
-    v12 = [v3 neverBeenLocked];
-    v13 = [v3 downloadUserInitiated];
-    v14 = [v3 downloadedNetworkBytes];
-    v15 = [v3 downloadedFilesystemBytes];
-    LOBYTE(v18) = [v3 stagedPriorToAvailable];
-    v16 = [v8 initForClientDomainName:v9 forAssetSetIdentifier:v10 withAtomicInstanceEntries:v7 withFullyDownloaded:v11 withNeverBeenLocked:v12 withDownloadUserInitiated:v13 withDownloadedNetworkBytes:v14 withDownloadedFilesystemBytes:v15 withStagedPriorToAvailable:v18];
+    clientDomainName = [frameworkCopy clientDomainName];
+    assetSetIdentifier = [frameworkCopy assetSetIdentifier];
+    isFullyDownloaded = [frameworkCopy isFullyDownloaded];
+    neverBeenLocked = [frameworkCopy neverBeenLocked];
+    downloadUserInitiated = [frameworkCopy downloadUserInitiated];
+    downloadedNetworkBytes = [frameworkCopy downloadedNetworkBytes];
+    downloadedFilesystemBytes = [frameworkCopy downloadedFilesystemBytes];
+    LOBYTE(v18) = [frameworkCopy stagedPriorToAvailable];
+    v16 = [v8 initForClientDomainName:clientDomainName forAssetSetIdentifier:assetSetIdentifier withAtomicInstanceEntries:v7 withFullyDownloaded:isFullyDownloaded withNeverBeenLocked:neverBeenLocked withDownloadUserInitiated:downloadUserInitiated withDownloadedNetworkBytes:downloadedNetworkBytes withDownloadedFilesystemBytes:downloadedFilesystemBytes withStagedPriorToAvailable:v18];
   }
 
   else
@@ -65,26 +65,26 @@
   return v16;
 }
 
-+ (id)newShimmedFromFramework:(id)a3
++ (id)newShimmedFromFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetSetInstanceDescriptor alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && objc_opt_class() && (v4 = [MAAutoAssetSetInstanceDescriptor alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v6 = v3;
+    v6 = frameworkCopy;
     v20 = [MANAutoAssetSetInstanceDescriptor alloc];
-    v19 = [v6 clientDomainName];
-    v18 = [v6 assetSetIdentifier];
-    v7 = [v6 atomicInstanceEntries];
-    v8 = [MASAutoAssetSetAtomicEntry newShimmedArrayFromFramework:v7];
-    v9 = [v6 isFullyDownloaded];
-    v10 = [v6 neverBeenLocked];
-    v11 = [v6 downloadUserInitiated];
-    v12 = [v6 downloadedNetworkBytes];
-    v13 = [v6 downloadedFilesystemBytes];
-    v14 = [v6 stagedPriorToAvailable];
+    clientDomainName = [v6 clientDomainName];
+    assetSetIdentifier = [v6 assetSetIdentifier];
+    atomicInstanceEntries = [v6 atomicInstanceEntries];
+    v8 = [MASAutoAssetSetAtomicEntry newShimmedArrayFromFramework:atomicInstanceEntries];
+    isFullyDownloaded = [v6 isFullyDownloaded];
+    neverBeenLocked = [v6 neverBeenLocked];
+    downloadUserInitiated = [v6 downloadUserInitiated];
+    downloadedNetworkBytes = [v6 downloadedNetworkBytes];
+    downloadedFilesystemBytes = [v6 downloadedFilesystemBytes];
+    stagedPriorToAvailable = [v6 stagedPriorToAvailable];
 
-    LOBYTE(v17) = v14;
-    v15 = [(MANAutoAssetSetInstanceDescriptor *)v20 initForClientDomainName:v19 forAssetSetIdentifier:v18 withAtomicInstanceEntries:v8 withFullyDownloaded:v9 withNeverBeenLocked:v10 withDownloadUserInitiated:v11 withDownloadedNetworkBytes:v12 withDownloadedFilesystemBytes:v13 withStagedPriorToAvailable:v17];
+    LOBYTE(v17) = stagedPriorToAvailable;
+    v15 = [(MANAutoAssetSetInstanceDescriptor *)v20 initForClientDomainName:clientDomainName forAssetSetIdentifier:assetSetIdentifier withAtomicInstanceEntries:v8 withFullyDownloaded:isFullyDownloaded withNeverBeenLocked:neverBeenLocked withDownloadUserInitiated:downloadUserInitiated withDownloadedNetworkBytes:downloadedNetworkBytes withDownloadedFilesystemBytes:downloadedFilesystemBytes withStagedPriorToAvailable:v17];
   }
 
   else

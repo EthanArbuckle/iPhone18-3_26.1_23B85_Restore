@@ -1,18 +1,18 @@
 @interface PeerPaymentAccountResolutionControllerModel
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4;
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated;
 @end
 
 @implementation PeerPaymentAccountResolutionControllerModel
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5
+- (void)peerPaymentAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated
 {
-  if (a4)
+  if (viewController)
   {
     swift_getKeyPath();
     swift_getKeyPath();
-    v7 = self;
-    v8 = a4;
+    selfCopy = self;
+    viewControllerCopy = viewController;
     sub_1BE04D8C4();
   }
 
@@ -22,10 +22,10 @@
   }
 }
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1BD4EC7F8();
 }
 

@@ -1,44 +1,44 @@
 @interface _UIStatusBarVoiceControlPillItem
 - (CGSize)pillSize;
 - (_UIStatusBarPillView)pillView;
-- (double)imageOpacityForVoiceControlType:(int64_t)a3;
-- (id)_backgroundColorForVoiceControlType:(int64_t)a3 styleAttributes:(id)a4;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)createDisplayItemForIdentifier:(id)a3;
+- (double)imageOpacityForVoiceControlType:(int64_t)type;
+- (id)_backgroundColorForVoiceControlType:(int64_t)type styleAttributes:(id)attributes;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)createDisplayItemForIdentifier:(id)identifier;
 - (void)_create_pillView;
 @end
 
 @implementation _UIStatusBarVoiceControlPillItem
 
-- (id)createDisplayItemForIdentifier:(id)a3
+- (id)createDisplayItemForIdentifier:(id)identifier
 {
   v24[4] = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = _UIStatusBarVoiceControlPillItem;
-  v19 = [(_UIStatusBarItem *)&v23 createDisplayItemForIdentifier:a3];
+  v19 = [(_UIStatusBarItem *)&v23 createDisplayItemForIdentifier:identifier];
   [(_UIStatusBarVoiceControlPillItem *)self pillSize];
   v5 = v4;
   v7 = v6;
-  v8 = [(_UIStatusBarVoiceControlPillItem *)self pillView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(_UIStatusBarIndicatorItem *)self imageView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v9 setFontStyle:0];
-  [v8 addSubview:v9];
-  [v8 setSubviewForBaselineAlignment:v9];
-  v22 = [v9 centerXAnchor];
-  v21 = [v8 centerXAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  pillView = [(_UIStatusBarVoiceControlPillItem *)self pillView];
+  [pillView setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView = [(_UIStatusBarIndicatorItem *)self imageView];
+  [imageView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [imageView setFontStyle:0];
+  [pillView addSubview:imageView];
+  [pillView setSubviewForBaselineAlignment:imageView];
+  centerXAnchor = [imageView centerXAnchor];
+  centerXAnchor2 = [pillView centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v24[0] = v20;
-  v10 = [v9 centerYAnchor];
-  v11 = [v8 centerYAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  centerYAnchor = [imageView centerYAnchor];
+  centerYAnchor2 = [pillView centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v24[1] = v12;
-  v13 = [v8 widthAnchor];
-  v14 = [v13 constraintEqualToConstant:v5];
+  widthAnchor = [pillView widthAnchor];
+  v14 = [widthAnchor constraintEqualToConstant:v5];
   v24[2] = v14;
-  v15 = [v8 heightAnchor];
-  v16 = [v15 constraintEqualToConstant:v7];
+  heightAnchor = [pillView heightAnchor];
+  v16 = [heightAnchor constraintEqualToConstant:v7];
   v24[3] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
 
@@ -47,32 +47,32 @@
   return v19;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
+  updateCopy = update;
   v15.receiver = self;
   v15.super_class = _UIStatusBarVoiceControlPillItem;
-  v7 = [(_UIStatusBarVoiceControlItem *)&v15 applyUpdate:v6 toDisplayItem:a4];
-  v8 = [v6 data];
-  v9 = [v8 voiceControlEntry];
+  v7 = [(_UIStatusBarVoiceControlItem *)&v15 applyUpdate:updateCopy toDisplayItem:item];
+  data = [updateCopy data];
+  voiceControlEntry = [data voiceControlEntry];
 
-  if (([v6 dataChanged] & 1) != 0 || objc_msgSend(v6, "styleAttributesChanged"))
+  if (([updateCopy dataChanged] & 1) != 0 || objc_msgSend(updateCopy, "styleAttributesChanged"))
   {
-    v10 = [v9 type];
-    v11 = [(_UIStatusBarVoiceControlPillItem *)self pillView];
-    v12 = [v6 styleAttributes];
-    v13 = [(_UIStatusBarVoiceControlPillItem *)self _backgroundColorForVoiceControlType:v10 styleAttributes:v12];
-    [v11 setPillColor:v13];
+    type = [voiceControlEntry type];
+    pillView = [(_UIStatusBarVoiceControlPillItem *)self pillView];
+    styleAttributes = [updateCopy styleAttributes];
+    v13 = [(_UIStatusBarVoiceControlPillItem *)self _backgroundColorForVoiceControlType:type styleAttributes:styleAttributes];
+    [pillView setPillColor:v13];
 
-    [v11 setPulsing:{-[_UIStatusBarVoiceControlPillItem _pulsingForVoiceControlType:](self, "_pulsingForVoiceControlType:", v10)}];
+    [pillView setPulsing:{-[_UIStatusBarVoiceControlPillItem _pulsingForVoiceControlType:](self, "_pulsingForVoiceControlType:", type)}];
   }
 
   return v7;
 }
 
-- (double)imageOpacityForVoiceControlType:(int64_t)a3
+- (double)imageOpacityForVoiceControlType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0.75;
   }
@@ -83,11 +83,11 @@
   return result;
 }
 
-- (id)_backgroundColorForVoiceControlType:(int64_t)a3 styleAttributes:(id)a4
+- (id)_backgroundColorForVoiceControlType:(int64_t)type styleAttributes:(id)attributes
 {
-  v6 = a4;
-  v7 = v6;
-  switch(a3)
+  attributesCopy = attributes;
+  v7 = attributesCopy;
+  switch(type)
   {
     case 2:
       v9 = +[UIColor systemRedColor];
@@ -98,8 +98,8 @@ LABEL_7:
       v4 = v9;
       break;
     case 0:
-      v8 = [v6 imageTintColor];
-      v4 = [v8 colorWithAlphaComponent:0.12];
+      imageTintColor = [attributesCopy imageTintColor];
+      v4 = [imageTintColor colorWithAlphaComponent:0.12];
 
       break;
   }

@@ -1,25 +1,25 @@
 @interface TSTCellUIDList
 + (id)cellUIDList;
-+ (id)cellUIDListFromRange:(const void *)a3;
++ (id)cellUIDListFromRange:(const void *)range;
 - (TSTCellUIDList)init;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromMessage:(const void *)a3 unarchiver:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromMessage:(const void *)message unarchiver:(id)unarchiver;
 - (id)iterator;
-- (id)pruneCellUIDListAgainstTable:(id)a3 behavior:(unint64_t)a4;
-- (id)pruneCellUIDListAgainstTable:(id)a3 behavior:(unint64_t)a4 usingBlock:(id)a5;
+- (id)pruneCellUIDListAgainstTable:(id)table behavior:(unint64_t)behavior;
+- (id)pruneCellUIDListAgainstTable:(id)table behavior:(unint64_t)behavior usingBlock:(id)block;
 - (unint64_t)computeValidCount;
-- (void)addCellRegion:(id)a3 withColumnUIDs:(const void *)a4 rowUIDs:(const void *)a5;
-- (void)addCellUID:(const TSKUIDStructCoord *)a3;
-- (void)addCellUIDRanges:(const void *)a3;
-- (void)addCellUIDs:(void *)a3;
+- (void)addCellRegion:(id)region withColumnUIDs:(const void *)ds rowUIDs:(const void *)iDs;
+- (void)addCellUID:(const TSKUIDStructCoord *)d;
+- (void)addCellUIDRanges:(const void *)ranges;
+- (void)addCellUIDs:(void *)ds;
 - (void)compress;
-- (void)compressUIDIndexListFrom:(const void *)a3 withUIDCount:(unint64_t)a4 to:(void *)a5;
-- (void)enumerateCellUIDsUsingBlock:(id)a3;
-- (void)p_compressUID:(const TSKUIDStruct *)a3 index:(unint64_t)a4 UIDtoIndexMap:(void *)a5 UIDs:(void *)a6 compressedIndexes:(void *)a7 lastSameUIDIndex:(void *)a8;
-- (void)reserve:(unint64_t)a3;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
-- (void)setCompressedColumnIndexes:(const void *)a3;
+- (void)compressUIDIndexListFrom:(const void *)from withUIDCount:(unint64_t)count to:(void *)to;
+- (void)enumerateCellUIDsUsingBlock:(id)block;
+- (void)p_compressUID:(const TSKUIDStruct *)d index:(unint64_t)index UIDtoIndexMap:(void *)map UIDs:(void *)ds compressedIndexes:(void *)indexes lastSameUIDIndex:(void *)dIndex;
+- (void)reserve:(unint64_t)reserve;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
+- (void)setCompressedColumnIndexes:(const void *)indexes;
 @end
 
 @implementation TSTCellUIDList
@@ -31,17 +31,17 @@
   return v2;
 }
 
-+ (id)cellUIDListFromRange:(const void *)a3
++ (id)cellUIDListFromRange:(const void *)range
 {
-  if (((*(a3 + 4) - *(a3 + 3)) >> 4) * ((*(a3 + 1) - *a3) >> 4))
+  if (((*(range + 4) - *(range + 3)) >> 4) * ((*(range + 1) - *range) >> 4))
   {
     v8 = objc_alloc_init(objc_opt_class());
-    v9 = *(a3 + 3);
-    v10 = *(a3 + 4);
+    v9 = *(range + 3);
+    v10 = *(range + 4);
     while (v9 != v10)
     {
-      v11 = *a3;
-      v12 = *(a3 + 1);
+      v11 = *range;
+      v12 = *(range + 1);
       while (v11 != v12)
       {
         v13 = v8[13];
@@ -83,9 +83,9 @@
   return v2;
 }
 
-- (id)initFromMessage:(const void *)a3 unarchiver:(id)a4
+- (id)initFromMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v29.receiver = self;
   v29.super_class = TSTCellUIDList;
   v7 = [(TSTCellUIDList *)&v29 init];
@@ -95,7 +95,7 @@
     uncompressedCellUIDs = v7->_uncompressedCellUIDs;
     v7->_uncompressedCellUIDs = v8;
 
-    sub_22123EA84(&v27, a3 + 48);
+    sub_22123EA84(&v27, message + 48);
     begin = v7->_columnIdList.__begin_;
     if (begin)
     {
@@ -108,7 +108,7 @@
 
     *&v7->_columnIdList.__begin_ = v27;
     v7->_columnIdList.__cap_ = v28;
-    sub_22123EA84(&v27, a3 + 24);
+    sub_22123EA84(&v27, message + 24);
     v11 = v7->_rowIdList.__begin_;
     if (v11)
     {
@@ -121,8 +121,8 @@
 
     *&v7->_rowIdList.__begin_ = v27;
     v7->_rowIdList.__cap_ = v28;
-    sub_221287820(&v7->_columnUIDIndexList.__begin_, *(a3 + 12), (*(a3 + 12) + 4 * *(a3 + 22)), *(a3 + 22));
-    sub_221287820(&v7->_rowUIDIndexList.__begin_, *(a3 + 10), (*(a3 + 10) + 4 * *(a3 + 18)), *(a3 + 18));
+    sub_221287820(&v7->_columnUIDIndexList.__begin_, *(message + 12), (*(message + 12) + 4 * *(message + 22)), *(message + 22));
+    sub_221287820(&v7->_rowUIDIndexList.__begin_, *(message + 10), (*(message + 10) + 4 * *(message + 18)), *(message + 18));
     v17 = v7->_rowIdList.__begin_;
     end = v7->_rowIdList.__end_;
     v19 = v7->_rowUIDIndexList.__begin_;
@@ -146,12 +146,12 @@
       while (v19 != v18);
     }
 
-    if (*(a3 + 16))
+    if (*(message + 16))
     {
       v22 = objc_msgSend_UIDLookupList(v7->_uncompressedCellUIDs, v12, v13, v14, v15);
-      if (*(a3 + 13))
+      if (*(message + 13))
       {
-        v23 = *(a3 + 13);
+        v23 = *(message + 13);
       }
 
       else
@@ -170,25 +170,25 @@
   return v7;
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  objc_msgSend_compress(self, a2, a3, a4, v4);
+  objc_msgSend_compress(self, a2, message, archiver, v4);
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2213C4808;
   v8[3] = &unk_278461DA8;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = message;
   dispatch_sync(queue, v8);
 }
 
-- (void)setCompressedColumnIndexes:(const void *)a3
+- (void)setCompressedColumnIndexes:(const void *)indexes
 {
   p_columnUIDIndexList = &self->_columnUIDIndexList;
-  if (p_columnUIDIndexList != a3)
+  if (p_columnUIDIndexList != indexes)
   {
-    sub_22137BB5C(p_columnUIDIndexList, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 2);
+    sub_22137BB5C(p_columnUIDIndexList, *indexes, *(indexes + 1), (*(indexes + 1) - *indexes) >> 2);
   }
 }
 
@@ -239,7 +239,7 @@ LABEL_9:
   return v7;
 }
 
-- (void)addCellUID:(const TSKUIDStructCoord *)a3
+- (void)addCellUID:(const TSKUIDStructCoord *)d
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -247,11 +247,11 @@ LABEL_9:
   v4[2] = sub_2213C4B6C;
   v4[3] = &unk_278461DA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = d;
   dispatch_barrier_sync(queue, v4);
 }
 
-- (void)reserve:(unint64_t)a3
+- (void)reserve:(unint64_t)reserve
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -259,11 +259,11 @@ LABEL_9:
   v4[2] = sub_2213C4BEC;
   v4[3] = &unk_278461DA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reserve;
   dispatch_barrier_sync(queue, v4);
 }
 
-- (void)addCellUIDs:(void *)a3
+- (void)addCellUIDs:(void *)ds
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -271,11 +271,11 @@ LABEL_9:
   v4[2] = sub_2213C4C6C;
   v4[3] = &unk_278461DA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = ds;
   dispatch_barrier_sync(queue, v4);
 }
 
-- (void)addCellUIDRanges:(const void *)a3
+- (void)addCellUIDRanges:(const void *)ranges
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -283,14 +283,14 @@ LABEL_9:
   v4[2] = sub_2213C4D58;
   v4[3] = &unk_278461DA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = ranges;
   dispatch_barrier_sync(queue, v4);
 }
 
-- (void)addCellRegion:(id)a3 withColumnUIDs:(const void *)a4 rowUIDs:(const void *)a5
+- (void)addCellRegion:(id)region withColumnUIDs:(const void *)ds rowUIDs:(const void *)iDs
 {
-  v8 = a3;
-  v11 = objc_msgSend_regionByIntersectingRange_(v8, v9, 0, ((*(a5 + 1) - *a5) << 28) & 0xFFFFFFFF00000000 | ((*(a4 + 1) - *a4) >> 4), v10);
+  regionCopy = region;
+  v11 = objc_msgSend_regionByIntersectingRange_(regionCopy, v9, 0, ((*(iDs + 1) - *iDs) << 28) & 0xFFFFFFFF00000000 | ((*(ds + 1) - *ds) >> 4), v10);
 
   v16 = objc_msgSend_cellCount(v11, v12, v13, v14, v15);
   queue = self->_queue;
@@ -301,8 +301,8 @@ LABEL_9:
   block[4] = self;
   v20 = v11;
   v21 = v16;
-  v22 = a4;
-  v23 = a5;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v18 = v11;
   dispatch_barrier_sync(queue, block);
 }
@@ -491,26 +491,26 @@ LABEL_9:
   _Block_object_dispose(&v69, 8);
 }
 
-- (void)p_compressUID:(const TSKUIDStruct *)a3 index:(unint64_t)a4 UIDtoIndexMap:(void *)a5 UIDs:(void *)a6 compressedIndexes:(void *)a7 lastSameUIDIndex:(void *)a8
+- (void)p_compressUID:(const TSKUIDStruct *)d index:(unint64_t)index UIDtoIndexMap:(void *)map UIDs:(void *)ds compressedIndexes:(void *)indexes lastSameUIDIndex:(void *)dIndex
 {
-  v14 = sub_22112C8D0(a5, &a3->_lower);
-  if (a5 + 8 == v14)
+  v14 = sub_22112C8D0(map, &d->_lower);
+  if (map + 8 == v14)
   {
-    v16 = *(a6 + 1) - *a6;
-    v39 = a3;
-    *(sub_221335730(a5, &a3->_lower) + 48) = v16 >> 4;
-    v18 = *(a6 + 1);
-    v17 = *(a6 + 2);
+    v16 = *(ds + 1) - *ds;
+    dCopy = d;
+    *(sub_221335730(map, &d->_lower) + 48) = v16 >> 4;
+    v18 = *(ds + 1);
+    v17 = *(ds + 2);
     if (v18 >= v17)
     {
-      v20 = (v18 - *a6) >> 4;
+      v20 = (v18 - *ds) >> 4;
       v21 = v20 + 1;
       if ((v20 + 1) >> 60)
       {
         sub_22107C148();
       }
 
-      v22 = v17 - *a6;
+      v22 = v17 - *ds;
       if (v22 >> 3 > v21)
       {
         v21 = v22 >> 3;
@@ -528,19 +528,19 @@ LABEL_9:
 
       if (v23)
       {
-        sub_221086F74(a6, v23);
+        sub_221086F74(ds, v23);
       }
 
       v24 = (16 * v20);
-      *v24 = *a3;
+      *v24 = *d;
       v19 = 16 * v20 + 16;
-      v25 = *(a6 + 1) - *a6;
+      v25 = *(ds + 1) - *ds;
       v26 = v24 - v25;
-      memcpy(v24 - v25, *a6, v25);
-      v27 = *a6;
-      *a6 = v26;
-      *(a6 + 1) = v19;
-      *(a6 + 2) = 0;
+      memcpy(v24 - v25, *ds, v25);
+      v27 = *ds;
+      *ds = v26;
+      *(ds + 1) = v19;
+      *(ds + 2) = 0;
       if (v27)
       {
         operator delete(v27);
@@ -549,19 +549,19 @@ LABEL_9:
 
     else
     {
-      *v18 = *a3;
+      *v18 = *d;
       v19 = &v18[1];
     }
 
-    *(a6 + 1) = v19;
-    LODWORD(v39) = -(v16 >> 4);
-    sub_2210C47D0(a7, &v39);
-    v29 = *(a8 + 1);
-    v28 = *(a8 + 2);
+    *(ds + 1) = v19;
+    LODWORD(dCopy) = -(v16 >> 4);
+    sub_2210C47D0(indexes, &dCopy);
+    v29 = *(dIndex + 1);
+    v28 = *(dIndex + 2);
     if (v29 >= v28)
     {
-      v31 = *a8;
-      v32 = v29 - *a8;
+      v31 = *dIndex;
+      v32 = v29 - *dIndex;
       v33 = v32 >> 3;
       v34 = (v32 >> 3) + 1;
       if (v34 >> 61)
@@ -584,16 +584,16 @@ LABEL_9:
 
       if (v37)
       {
-        sub_2210874C4(a8, v37);
+        sub_2210874C4(dIndex, v37);
       }
 
-      *(8 * v33) = a4;
+      *(8 * v33) = index;
       v30 = 8 * v33 + 8;
       memcpy(0, v31, v32);
-      v38 = *a8;
-      *a8 = 0;
-      *(a8 + 1) = v30;
-      *(a8 + 2) = 0;
+      v38 = *dIndex;
+      *dIndex = 0;
+      *(dIndex + 1) = v30;
+      *(dIndex + 2) = 0;
       if (v38)
       {
         operator delete(v38);
@@ -602,49 +602,49 @@ LABEL_9:
 
     else
     {
-      *v29 = a4;
+      *v29 = index;
       v30 = (v29 + 1);
     }
 
-    *(a8 + 1) = v30;
+    *(dIndex + 1) = v30;
   }
 
   else
   {
     v15 = v14[6];
-    if (a4 - *(*a8 + 8 * v15) > 0x3E8)
+    if (index - *(*dIndex + 8 * v15) > 0x3E8)
     {
-      LODWORD(v39) = -v15;
+      LODWORD(dCopy) = -v15;
     }
 
     else
     {
-      LODWORD(v39) = a4 - *(*a8 + 8 * v15);
+      LODWORD(dCopy) = index - *(*dIndex + 8 * v15);
     }
 
-    sub_2210C47D0(a7, &v39);
-    *(*a8 + 8 * v15) = a4;
+    sub_2210C47D0(indexes, &dCopy);
+    *(*dIndex + 8 * v15) = index;
   }
 }
 
-- (void)compressUIDIndexListFrom:(const void *)a3 withUIDCount:(unint64_t)a4 to:(void *)a5
+- (void)compressUIDIndexListFrom:(const void *)from withUIDCount:(unint64_t)count to:(void *)to
 {
-  v5 = *a3;
-  v6 = *(a3 + 1);
-  if (*a3 != v6)
+  v5 = *from;
+  v6 = *(from + 1);
+  if (*from != v6)
   {
-    v8 = -a4;
-    v12 = -a4;
+    v8 = -count;
+    v12 = -count;
     do
     {
       v11 = *v5;
       if (v11 == v8)
       {
-        v9 = *(a5 + 1);
+        v9 = *(to + 1);
         v10 = *(v9 - 4);
         if (v10 == v8)
         {
-          sub_2210C47D0(a5, &v12);
+          sub_2210C47D0(to, &v12);
         }
 
         else
@@ -655,7 +655,7 @@ LABEL_9:
 
       else
       {
-        sub_2210C47D0(a5, &v11);
+        sub_2210C47D0(to, &v11);
         v8 = v11;
       }
 
@@ -666,19 +666,19 @@ LABEL_9:
   }
 }
 
-- (id)pruneCellUIDListAgainstTable:(id)a3 behavior:(unint64_t)a4
+- (id)pruneCellUIDListAgainstTable:(id)table behavior:(unint64_t)behavior
 {
-  v4 = objc_msgSend_pruneCellUIDListAgainstTable_behavior_usingBlock_(self, a2, a3, a4, 0);
+  v4 = objc_msgSend_pruneCellUIDListAgainstTable_behavior_usingBlock_(self, a2, table, behavior, 0);
 
   return v4;
 }
 
-- (id)pruneCellUIDListAgainstTable:(id)a3 behavior:(unint64_t)a4 usingBlock:(id)a5
+- (id)pruneCellUIDListAgainstTable:(id)table behavior:(unint64_t)behavior usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  tableCopy = table;
+  blockCopy = block;
   v14 = objc_msgSend_cellUIDList(TSTCellUIDList, v10, v11, v12, v13);
-  if ((objc_msgSend_isEmptyPivot(v8, v15, v16, v17, v18) & 1) == 0)
+  if ((objc_msgSend_isEmptyPivot(tableCopy, v15, v16, v17, v18) & 1) == 0)
   {
     if (objc_msgSend_compressedSize(self, v19, v20, v21, v22))
     {
@@ -690,14 +690,14 @@ LABEL_9:
       v25 = v24;
       v36 = v25;
       objc_msgSend_enumerateCellUIDsUsingBlock_(self, v26, v35, v27, v28);
-      v30 = objc_msgSend_copyByPruningAgainstTable_behavior_usingBlock_(v25, v29, v8, a4, v9);
+      v30 = objc_msgSend_copyByPruningAgainstTable_behavior_usingBlock_(v25, v29, tableCopy, behavior, blockCopy);
       v31 = v14[13];
       v14[13] = v30;
     }
 
     else
     {
-      v32 = objc_msgSend_copyByPruningAgainstTable_behavior_usingBlock_(self->_uncompressedCellUIDs, v23, v8, a4, v9);
+      v32 = objc_msgSend_copyByPruningAgainstTable_behavior_usingBlock_(self->_uncompressedCellUIDs, v23, tableCopy, behavior, blockCopy);
       v33 = v14[13];
       v14[13] = v32;
     }
@@ -706,9 +706,9 @@ LABEL_9:
   return v14;
 }
 
-- (void)enumerateCellUIDsUsingBlock:(id)a3
+- (void)enumerateCellUIDsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = objc_msgSend_iterator(self, v5, v6, v7, v8);
   __p = 0;
   v17 = 0;
@@ -725,7 +725,7 @@ LABEL_2:
     {
       while (1)
       {
-        v4[2](v4, v13, v12, &v15);
+        blockCopy[2](blockCopy, v13, v12, &v15);
         if (v15)
         {
           goto LABEL_9;
@@ -754,7 +754,7 @@ LABEL_9:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSTCellUIDList);
   queue = self->_queue;
@@ -764,7 +764,7 @@ LABEL_9:
   v9[3] = &unk_27845FEF0;
   v6 = v4;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   dispatch_sync(queue, v9);
   v7 = v6;
 

@@ -1,19 +1,19 @@
 @interface SKUIViewControllerContainerCollectionViewCell
-- (SKUIViewControllerContainerCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (SKUIViewControllerContainerCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setManagesViewControllerContainerViewLayout:(BOOL)a3;
-- (void)setMaximumContentWidth:(double)a3;
+- (void)setManagesViewControllerContainerViewLayout:(BOOL)layout;
+- (void)setMaximumContentWidth:(double)width;
 @end
 
 @implementation SKUIViewControllerContainerCollectionViewCell
 
-- (SKUIViewControllerContainerCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIViewControllerContainerCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIViewControllerContainerCollectionViewCell initWithFrame:];
@@ -21,22 +21,22 @@
 
   v15.receiver = self;
   v15.super_class = SKUIViewControllerContainerCollectionViewCell;
-  v8 = [(SKUIViewControllerContainerCollectionViewCell *)&v15 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUIViewControllerContainerCollectionViewCell *)&v15 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v8->_managesViewControllerContainerViewLayout = 1;
-    [(SKUIViewControllerContainerCollectionViewCell *)v8 setPreservesSuperviewLayoutMargins:1];
-    v10 = [(SKUIViewControllerContainerCollectionViewCell *)v9 contentView];
-    [v10 setPreservesSuperviewLayoutMargins:1];
+    height->_managesViewControllerContainerViewLayout = 1;
+    [(SKUIViewControllerContainerCollectionViewCell *)height setPreservesSuperviewLayoutMargins:1];
+    contentView = [(SKUIViewControllerContainerCollectionViewCell *)v9 contentView];
+    [contentView setPreservesSuperviewLayoutMargins:1];
     v11 = [SKUIViewControllerContainerView alloc];
-    [v10 bounds];
+    [contentView bounds];
     v12 = [(SKUIViewControllerContainerView *)v11 initWithFrame:?];
     viewControllerContainerView = v9->_viewControllerContainerView;
     v9->_viewControllerContainerView = v12;
 
     [(SKUIViewControllerContainerView *)v9->_viewControllerContainerView setPreservesSuperviewLayoutMargins:1];
-    [v10 addSubview:v9->_viewControllerContainerView];
+    [contentView addSubview:v9->_viewControllerContainerView];
   }
 
   return v9;
@@ -49,8 +49,8 @@
   [(SKUIViewControllerContainerCollectionViewCell *)&v22 layoutSubviews];
   if (self->_managesViewControllerContainerViewLayout)
   {
-    v3 = [(SKUIViewControllerContainerCollectionViewCell *)self contentView];
-    [v3 bounds];
+    contentView = [(SKUIViewControllerContainerCollectionViewCell *)self contentView];
+    [contentView bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -58,13 +58,13 @@
 
     if (self->_maximumContentWidth > 0.00000011920929)
     {
-      v12 = [(SKUIViewControllerContainerCollectionViewCell *)self traitCollection];
-      [v12 displayScale];
+      traitCollection = [(SKUIViewControllerContainerCollectionViewCell *)self traitCollection];
+      [traitCollection displayScale];
       v14 = v13;
       if (v13 <= 0.00000011920929)
       {
-        v15 = [MEMORY[0x277D759A0] mainScreen];
-        [v15 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         v14 = v16;
       }
 
@@ -85,33 +85,33 @@
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = SKUIViewControllerContainerCollectionViewCell;
-  v4 = a3;
-  [(SKUIViewControllerContainerCollectionViewCell *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 indexPath];
+  attributesCopy = attributes;
+  [(SKUIViewControllerContainerCollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
+  indexPath = [attributesCopy indexPath];
 
   indexPath = self->_indexPath;
-  self->_indexPath = v5;
+  self->_indexPath = indexPath;
 }
 
-- (void)setMaximumContentWidth:(double)a3
+- (void)setMaximumContentWidth:(double)width
 {
-  if (vabdd_f64(self->_maximumContentWidth, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_maximumContentWidth, width) > 0.00000011920929)
   {
-    self->_maximumContentWidth = a3;
+    self->_maximumContentWidth = width;
     [(SKUIViewControllerContainerCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setManagesViewControllerContainerViewLayout:(BOOL)a3
+- (void)setManagesViewControllerContainerViewLayout:(BOOL)layout
 {
-  if (self->_managesViewControllerContainerViewLayout != a3)
+  if (self->_managesViewControllerContainerViewLayout != layout)
   {
-    self->_managesViewControllerContainerViewLayout = a3;
-    if (a3)
+    self->_managesViewControllerContainerViewLayout = layout;
+    if (layout)
     {
       [(SKUIViewControllerContainerCollectionViewCell *)self setNeedsLayout];
     }

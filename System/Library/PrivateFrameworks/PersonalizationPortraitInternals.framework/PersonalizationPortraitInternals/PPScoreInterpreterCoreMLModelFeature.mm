@@ -1,20 +1,20 @@
 @interface PPScoreInterpreterCoreMLModelFeature
-- (PPScoreInterpreterCoreMLModelFeature)initWithFeatureName:(id)a3 multiArraySize:(unint64_t)a4;
+- (PPScoreInterpreterCoreMLModelFeature)initWithFeatureName:(id)name multiArraySize:(unint64_t)size;
 @end
 
 @implementation PPScoreInterpreterCoreMLModelFeature
 
-- (PPScoreInterpreterCoreMLModelFeature)initWithFeatureName:(id)a3 multiArraySize:(unint64_t)a4
+- (PPScoreInterpreterCoreMLModelFeature)initWithFeatureName:(id)name multiArraySize:(unint64_t)size
 {
-  v6 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = PPScoreInterpreterCoreMLModelFeature;
   v7 = [(PPScoreInterpreterCoreMLModelFeature *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_multiArraySize = a4;
-    v9 = [v6 copy];
+    v7->_multiArraySize = size;
+    v9 = [nameCopy copy];
     featureName = v8->_featureName;
     v8->_featureName = v9;
 

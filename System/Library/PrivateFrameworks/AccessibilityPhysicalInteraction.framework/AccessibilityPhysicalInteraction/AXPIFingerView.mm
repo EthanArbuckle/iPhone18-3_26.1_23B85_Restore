@@ -1,24 +1,24 @@
 @interface AXPIFingerView
 + (id)layerClass;
 - (AXPIFingerAppearanceDelegate)appearanceDelegate;
-- (AXPIFingerView)initWithFrame:(CGRect)a3;
-- (AXPIFingerView)initWithFrame:(CGRect)a3 appearanceDelegate:(id)a4;
+- (AXPIFingerView)initWithFrame:(CGRect)frame;
+- (AXPIFingerView)initWithFrame:(CGRect)frame appearanceDelegate:(id)delegate;
 - (BOOL)isSelected;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)_iconScaleForForce:(double)a3;
-- (id)_createProgressLayerWithDuration:(double)a3 inRect:(CGRect)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)_iconScaleForForce:(double)force;
+- (id)_createProgressLayerWithDuration:(double)duration inRect:(CGRect)rect;
 - (id)backdropLayer;
 - (void)_setPathForCurrentShape;
-- (void)animateCircularProgressWithDuration:(double)a3 completion:(id)a4;
-- (void)animateToTapWithDuration:(double)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animateCircularProgressWithDuration:(double)duration completion:(id)completion;
+- (void)animateToTapWithDuration:(double)duration;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)cancelExisingCircularProgressAnimation;
 - (void)dealloc;
-- (void)setForce:(double)a3;
-- (void)setPressed:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3;
-- (void)setShape:(unint64_t)a3;
+- (void)setForce:(double)force;
+- (void)setPressed:(BOOL)pressed animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected;
+- (void)setShape:(unint64_t)shape;
 @end
 
 @implementation AXPIFingerView
@@ -27,15 +27,15 @@
 {
   if (UIAccessibilityIsInvertColorsEnabled())
   {
-    v3 = 0;
+    layer = 0;
   }
 
   else
   {
-    v3 = [(AXPIFingerView *)self layer];
+    layer = [(AXPIFingerView *)self layer];
   }
 
-  return v3;
+  return layer;
 }
 
 + (id)layerClass
@@ -46,160 +46,160 @@
   return v2;
 }
 
-- (AXPIFingerView)initWithFrame:(CGRect)a3
+- (AXPIFingerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = [AXPIFingerView alloc];
   v9 = AXPIDefaultAppearanceForDevice();
-  v10 = [(AXPIFingerView *)v8 initWithFrame:v9 appearanceDelegate:x, y, width, height];
+  height = [(AXPIFingerView *)v8 initWithFrame:v9 appearanceDelegate:x, y, width, height];
 
-  return v10;
+  return height;
 }
 
-- (AXPIFingerView)initWithFrame:(CGRect)a3 appearanceDelegate:(id)a4
+- (AXPIFingerView)initWithFrame:(CGRect)frame appearanceDelegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
   v55.receiver = self;
   v55.super_class = AXPIFingerView;
-  v10 = [(AXPIFingerView *)&v55 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(AXPIFingerView *)&v55 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(AXPIFingerView *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(AXPIFingerView *)height setBackgroundColor:clearColor];
 
-    [(AXPIFingerView *)v10 setClipsToBounds:0];
-    [(AXPIFingerView *)v10 setAppearanceDelegate:v9];
-    v12 = [[AXPIFingerLayer alloc] initWithAppearanceDelegate:v9];
-    v13 = [(AXPIFingerView *)v10 layer];
-    [v13 addSublayer:v12];
+    [(AXPIFingerView *)height setClipsToBounds:0];
+    [(AXPIFingerView *)height setAppearanceDelegate:delegateCopy];
+    v12 = [[AXPIFingerLayer alloc] initWithAppearanceDelegate:delegateCopy];
+    layer = [(AXPIFingerView *)height layer];
+    [layer addSublayer:v12];
 
-    [(AXPIFingerView *)v10 setCursorLayer:v12];
-    v14 = [(AXPIFingerView *)v10 appearanceDelegate];
-    v15 = [v14 showFingerOutlines];
+    [(AXPIFingerView *)height setCursorLayer:v12];
+    appearanceDelegate = [(AXPIFingerView *)height appearanceDelegate];
+    showFingerOutlines = [appearanceDelegate showFingerOutlines];
 
-    if (v15)
+    if (showFingerOutlines)
     {
-      v16 = [MEMORY[0x277CD9F90] layer];
-      v17 = [(AXPIFingerView *)v10 appearanceDelegate];
-      v18 = [v17 strokeOutlineColor];
-      [v16 setStrokeColor:{objc_msgSend(v18, "CGColor")}];
+      layer2 = [MEMORY[0x277CD9F90] layer];
+      appearanceDelegate2 = [(AXPIFingerView *)height appearanceDelegate];
+      strokeOutlineColor = [appearanceDelegate2 strokeOutlineColor];
+      [layer2 setStrokeColor:{objc_msgSend(strokeOutlineColor, "CGColor")}];
 
-      v19 = [MEMORY[0x277D75348] clearColor];
-      [v16 setFillColor:{objc_msgSend(v19, "CGColor")}];
+      clearColor2 = [MEMORY[0x277D75348] clearColor];
+      [layer2 setFillColor:{objc_msgSend(clearColor2, "CGColor")}];
 
-      v20 = [(AXPIFingerView *)v10 appearanceDelegate];
-      [v20 strokeOutlineWidth];
+      appearanceDelegate3 = [(AXPIFingerView *)height appearanceDelegate];
+      [appearanceDelegate3 strokeOutlineWidth];
       v22 = v21;
-      v23 = [(AXPIFingerView *)v10 appearanceDelegate];
-      [v23 strokeWidth];
-      [v16 setLineWidth:v24 + v22 * 2.0];
+      appearanceDelegate4 = [(AXPIFingerView *)height appearanceDelegate];
+      [appearanceDelegate4 strokeWidth];
+      [layer2 setLineWidth:v24 + v22 * 2.0];
 
-      v25 = [(AXPIFingerView *)v10 layer];
-      [v25 addSublayer:v16];
+      layer3 = [(AXPIFingerView *)height layer];
+      [layer3 addSublayer:layer2];
 
-      [(AXPIFingerView *)v10 setOuterStrokeTrackLayer:v16];
-      v26 = [MEMORY[0x277CD9F90] layer];
+      [(AXPIFingerView *)height setOuterStrokeTrackLayer:layer2];
+      layer4 = [MEMORY[0x277CD9F90] layer];
 
-      v27 = [(AXPIFingerView *)v10 appearanceDelegate];
-      v28 = [v27 deselectedStrokeColor];
-      [v26 setStrokeColor:{objc_msgSend(v28, "CGColor")}];
+      appearanceDelegate5 = [(AXPIFingerView *)height appearanceDelegate];
+      deselectedStrokeColor = [appearanceDelegate5 deselectedStrokeColor];
+      [layer4 setStrokeColor:{objc_msgSend(deselectedStrokeColor, "CGColor")}];
 
-      v29 = [MEMORY[0x277D75348] clearColor];
-      [v26 setFillColor:{objc_msgSend(v29, "CGColor")}];
+      clearColor3 = [MEMORY[0x277D75348] clearColor];
+      [layer4 setFillColor:{objc_msgSend(clearColor3, "CGColor")}];
 
-      v30 = [(AXPIFingerView *)v10 appearanceDelegate];
-      [v30 strokeWidth];
-      [v26 setLineWidth:?];
+      appearanceDelegate6 = [(AXPIFingerView *)height appearanceDelegate];
+      [appearanceDelegate6 strokeWidth];
+      [layer4 setLineWidth:?];
 
-      v31 = [(AXPIFingerView *)v10 layer];
-      [v31 addSublayer:v26];
+      layer5 = [(AXPIFingerView *)height layer];
+      [layer5 addSublayer:layer4];
 
-      [(AXPIFingerView *)v10 setOuterStrokeLayer:v26];
+      [(AXPIFingerView *)height setOuterStrokeLayer:layer4];
     }
 
-    v32 = [(AXPIFingerView *)v10 appearanceDelegate];
-    v33 = [v32 showInnerCircle];
+    appearanceDelegate7 = [(AXPIFingerView *)height appearanceDelegate];
+    showInnerCircle = [appearanceDelegate7 showInnerCircle];
 
-    if (v33)
+    if (showInnerCircle)
     {
-      v34 = [(AXPIFingerView *)v10 appearanceDelegate];
-      [v34 fingerInnerCircleInnerRadius];
+      appearanceDelegate8 = [(AXPIFingerView *)height appearanceDelegate];
+      [appearanceDelegate8 fingerInnerCircleInnerRadius];
       v36 = v35;
-      v37 = [(AXPIFingerView *)v10 appearanceDelegate];
-      [v37 innerCircleStrokeWidth];
+      appearanceDelegate9 = [(AXPIFingerView *)height appearanceDelegate];
+      [appearanceDelegate9 innerCircleStrokeWidth];
       v39 = v38 + v36 * 2.0;
 
-      v40 = [(AXPIFingerView *)v10 appearanceDelegate];
-      [v40 fingerInnerCircleInnerRadius];
+      appearanceDelegate10 = [(AXPIFingerView *)height appearanceDelegate];
+      [appearanceDelegate10 fingerInnerCircleInnerRadius];
       v42 = v41;
-      v43 = [(AXPIFingerView *)v10 appearanceDelegate];
-      [v43 innerCircleStrokeWidth];
+      appearanceDelegate11 = [(AXPIFingerView *)height appearanceDelegate];
+      [appearanceDelegate11 innerCircleStrokeWidth];
       v45 = v44 + v42 * 2.0;
 
-      v46 = [MEMORY[0x277CD9F90] layer];
+      layer6 = [MEMORY[0x277CD9F90] layer];
       v47 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{x + (width - v39) * 0.5, y + (height - v45) * 0.5, v39, v45}];
-      [v46 setPath:{objc_msgSend(v47, "CGPath")}];
+      [layer6 setPath:{objc_msgSend(v47, "CGPath")}];
 
-      v48 = [(AXPIFingerView *)v10 appearanceDelegate];
-      v49 = [v48 strokeOutlineColor];
-      [v46 setStrokeColor:{objc_msgSend(v49, "CGColor")}];
+      appearanceDelegate12 = [(AXPIFingerView *)height appearanceDelegate];
+      strokeOutlineColor2 = [appearanceDelegate12 strokeOutlineColor];
+      [layer6 setStrokeColor:{objc_msgSend(strokeOutlineColor2, "CGColor")}];
 
-      v50 = [(AXPIFingerView *)v10 appearanceDelegate];
-      v51 = [v50 deselectedStrokeColor];
-      [v46 setFillColor:{objc_msgSend(v51, "CGColor")}];
+      appearanceDelegate13 = [(AXPIFingerView *)height appearanceDelegate];
+      deselectedStrokeColor2 = [appearanceDelegate13 deselectedStrokeColor];
+      [layer6 setFillColor:{objc_msgSend(deselectedStrokeColor2, "CGColor")}];
 
-      v52 = [(AXPIFingerView *)v10 appearanceDelegate];
-      [v52 innerCircleStrokeWidth];
-      [v46 setLineWidth:?];
+      appearanceDelegate14 = [(AXPIFingerView *)height appearanceDelegate];
+      [appearanceDelegate14 innerCircleStrokeWidth];
+      [layer6 setLineWidth:?];
 
-      [v46 setLineJoin:*MEMORY[0x277CDA7A0]];
-      v53 = [(AXPIFingerView *)v10 layer];
-      [v53 addSublayer:v46];
+      [layer6 setLineJoin:*MEMORY[0x277CDA7A0]];
+      layer7 = [(AXPIFingerView *)height layer];
+      [layer7 addSublayer:layer6];
 
-      [(AXPIFingerView *)v10 setInnerStrokeLayer:v46];
+      [(AXPIFingerView *)height setInnerStrokeLayer:layer6];
     }
 
-    [(AXPIFingerView *)v10 _setPathForCurrentShape];
+    [(AXPIFingerView *)height _setPathForCurrentShape];
   }
 
-  return v10;
+  return height;
 }
 
 - (void)dealloc
 {
-  v3 = [(AXPIFingerView *)self outerStrokeTrackLayer];
-  [v3 removeAllAnimations];
+  outerStrokeTrackLayer = [(AXPIFingerView *)self outerStrokeTrackLayer];
+  [outerStrokeTrackLayer removeAllAnimations];
 
-  v4 = [(AXPIFingerView *)self outerStrokeLayer];
-  [v4 removeAllAnimations];
+  outerStrokeLayer = [(AXPIFingerView *)self outerStrokeLayer];
+  [outerStrokeLayer removeAllAnimations];
 
-  v5 = [(AXPIFingerView *)self innerStrokeLayer];
-  [v5 removeAllAnimations];
+  innerStrokeLayer = [(AXPIFingerView *)self innerStrokeLayer];
+  [innerStrokeLayer removeAllAnimations];
 
-  v6 = [(AXPIFingerView *)self outerStrokeTrackLayer];
-  [v6 removeFromSuperlayer];
+  outerStrokeTrackLayer2 = [(AXPIFingerView *)self outerStrokeTrackLayer];
+  [outerStrokeTrackLayer2 removeFromSuperlayer];
 
-  v7 = [(AXPIFingerView *)self outerStrokeLayer];
-  [v7 removeFromSuperlayer];
+  outerStrokeLayer2 = [(AXPIFingerView *)self outerStrokeLayer];
+  [outerStrokeLayer2 removeFromSuperlayer];
 
-  v8 = [(AXPIFingerView *)self innerStrokeLayer];
-  [v8 removeFromSuperlayer];
+  innerStrokeLayer2 = [(AXPIFingerView *)self innerStrokeLayer];
+  [innerStrokeLayer2 removeFromSuperlayer];
 
   v9.receiver = self;
   v9.super_class = AXPIFingerView;
   [(AXPIFingerView *)&v9 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(AXPIFingerView *)self appearanceDelegate:a3.width];
+  v3 = [(AXPIFingerView *)self appearanceDelegate:fits.width];
   [v3 fingerWidth];
   v5 = v4;
 
@@ -210,12 +210,12 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AXPIFingerView *)self cursorLayer];
-  [v6 outerFrame];
+  y = inside.y;
+  x = inside.x;
+  cursorLayer = [(AXPIFingerView *)self cursorLayer];
+  [cursorLayer outerFrame];
   v9.x = x;
   v9.y = y;
   v7 = CGRectContainsPoint(v10, v9);
@@ -223,131 +223,131 @@
   return v7;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if ([(AXPIFingerView *)self isSelected]!= a3)
+  if ([(AXPIFingerView *)self isSelected]!= selected)
   {
-    v5 = [(AXPIFingerView *)self appearanceDelegate];
-    v6 = v5;
-    if (a3)
+    appearanceDelegate = [(AXPIFingerView *)self appearanceDelegate];
+    v6 = appearanceDelegate;
+    if (selected)
     {
-      [v5 selectedStrokeColor];
+      [appearanceDelegate selectedStrokeColor];
     }
 
     else
     {
-      [v5 deselectedStrokeColor];
+      [appearanceDelegate deselectedStrokeColor];
     }
     v7 = ;
-    v8 = [v7 CGColor];
+    cGColor = [v7 CGColor];
 
-    v9 = [(AXPIFingerView *)self outerStrokeLayer];
-    [v9 setStrokeColor:v8];
+    outerStrokeLayer = [(AXPIFingerView *)self outerStrokeLayer];
+    [outerStrokeLayer setStrokeColor:cGColor];
   }
 }
 
 - (BOOL)isSelected
 {
-  v2 = [(AXPIFingerView *)self cursorLayer];
-  v3 = [v2 isSelected];
+  cursorLayer = [(AXPIFingerView *)self cursorLayer];
+  isSelected = [cursorLayer isSelected];
 
-  return v3;
+  return isSelected;
 }
 
-- (void)setPressed:(BOOL)a3 animated:(BOOL)a4
+- (void)setPressed:(BOOL)pressed animated:(BOOL)animated
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    v5 = a4;
-    self->_pressed = a3;
+    animatedCopy = animated;
+    self->_pressed = pressed;
     [MEMORY[0x277CD9FF0] begin];
-    if (a3)
+    if (pressed)
     {
       v8 = 0.1;
-      if (!v5)
+      if (!animatedCopy)
       {
         v8 = 0.0;
       }
 
       [MEMORY[0x277CD9FF0] setAnimationDuration:v8];
-      v9 = [(AXPIFingerView *)self cursorLayer];
-      [v9 setPressed:1];
+      cursorLayer = [(AXPIFingerView *)self cursorLayer];
+      [cursorLayer setPressed:1];
 
       [MEMORY[0x277CD9FF0] commit];
-      v10 = [(AXPIFingerView *)self appearanceDelegate];
-      v11 = [v10 selectedStrokeColor];
+      appearanceDelegate = [(AXPIFingerView *)self appearanceDelegate];
+      selectedStrokeColor = [appearanceDelegate selectedStrokeColor];
     }
 
     else
     {
       v12 = 0.16;
-      if (!v5)
+      if (!animatedCopy)
       {
         v12 = 0.0;
       }
 
       [MEMORY[0x277CD9FF0] setAnimationDuration:v12];
-      v13 = [(AXPIFingerView *)self cursorLayer];
-      [v13 setPressed:0];
+      cursorLayer2 = [(AXPIFingerView *)self cursorLayer];
+      [cursorLayer2 setPressed:0];
 
       [MEMORY[0x277CD9FF0] commit];
-      v10 = [(AXPIFingerView *)self appearanceDelegate];
-      v11 = [v10 deselectedStrokeColor];
+      appearanceDelegate = [(AXPIFingerView *)self appearanceDelegate];
+      selectedStrokeColor = [appearanceDelegate deselectedStrokeColor];
     }
 
-    v14 = v11;
-    v15 = [v11 CGColor];
+    v14 = selectedStrokeColor;
+    cGColor = [selectedStrokeColor CGColor];
 
-    v16 = [(AXPIFingerView *)self outerStrokeLayer];
-    [v16 setStrokeColor:v15];
+    outerStrokeLayer = [(AXPIFingerView *)self outerStrokeLayer];
+    [outerStrokeLayer setStrokeColor:cGColor];
 
-    v17 = [(AXPIFingerView *)self innerStrokeLayer];
-    [v17 setFillColor:v15];
+    innerStrokeLayer = [(AXPIFingerView *)self innerStrokeLayer];
+    [innerStrokeLayer setFillColor:cGColor];
   }
 }
 
-- (void)setShape:(unint64_t)a3
+- (void)setShape:(unint64_t)shape
 {
-  if (self->_shape != a3)
+  if (self->_shape != shape)
   {
-    self->_shape = a3;
+    self->_shape = shape;
     [(AXPIFingerView *)self _setPathForCurrentShape];
   }
 }
 
-- (void)animateCircularProgressWithDuration:(double)a3 completion:(id)a4
+- (void)animateCircularProgressWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(AXPIFingerView *)self cancelExisingCircularProgressAnimation];
-  [(AXPIFingerView *)self setLastProgressCompletionBlock:v6];
+  [(AXPIFingerView *)self setLastProgressCompletionBlock:completionCopy];
 
-  v7 = [(AXPIFingerView *)self cursorLayer];
-  [v7 outerFrame];
-  v13 = [(AXPIFingerView *)self _createProgressLayerWithDuration:a3 inRect:v8, v9, v10, v11];
+  cursorLayer = [(AXPIFingerView *)self cursorLayer];
+  [cursorLayer outerFrame];
+  v13 = [(AXPIFingerView *)self _createProgressLayerWithDuration:duration inRect:v8, v9, v10, v11];
 
-  v12 = [(AXPIFingerView *)self layer];
-  [v12 addSublayer:v13];
+  layer = [(AXPIFingerView *)self layer];
+  [layer addSublayer:v13];
 
   [(AXPIFingerView *)self setProgressLayer:v13];
 }
 
 - (void)cancelExisingCircularProgressAnimation
 {
-  v3 = [(AXPIFingerView *)self progressLayer];
-  [v3 removeFromSuperlayer];
+  progressLayer = [(AXPIFingerView *)self progressLayer];
+  [progressLayer removeFromSuperlayer];
 
   [(AXPIFingerView *)self setProgressLayer:0];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = [(AXPIFingerView *)self lastProgressCompletionBlock];
+  finishedCopy = finished;
+  lastProgressCompletionBlock = [(AXPIFingerView *)self lastProgressCompletionBlock];
 
-  if (v6)
+  if (lastProgressCompletionBlock)
   {
-    v7 = [(AXPIFingerView *)self lastProgressCompletionBlock];
-    v7[2](v7, v4);
+    lastProgressCompletionBlock2 = [(AXPIFingerView *)self lastProgressCompletionBlock];
+    lastProgressCompletionBlock2[2](lastProgressCompletionBlock2, finishedCopy);
 
     [(AXPIFingerView *)self setLastProgressCompletionBlock:0];
   }
@@ -355,8 +355,8 @@
 
 - (void)_setPathForCurrentShape
 {
-  v3 = [(AXPIFingerView *)self cursorLayer];
-  [v3 outerFrame];
+  cursorLayer = [(AXPIFingerView *)self cursorLayer];
+  [cursorLayer outerFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -368,17 +368,17 @@
   x = v5;
   if (!self->_shape)
   {
-    v16 = [(AXPIFingerView *)self appearanceDelegate];
-    v17 = [v16 showFingerOutlines];
+    appearanceDelegate = [(AXPIFingerView *)self appearanceDelegate];
+    showFingerOutlines = [appearanceDelegate showFingerOutlines];
 
     y = v7;
     width = v9;
     height = v11;
     x = v5;
-    if ((v17 & 1) == 0)
+    if ((showFingerOutlines & 1) == 0)
     {
-      v18 = [(AXPIFingerView *)self appearanceDelegate];
-      [v18 strokeWidth];
+      appearanceDelegate2 = [(AXPIFingerView *)self appearanceDelegate];
+      [appearanceDelegate2 strokeWidth];
       v20 = v19;
 
       v44.origin.x = v5;
@@ -393,17 +393,17 @@
     }
   }
 
-  v21 = [(AXPIFingerView *)self cursorLayer];
+  cursorLayer2 = [(AXPIFingerView *)self cursorLayer];
   v22 = [MEMORY[0x277D75208] bezierPathForFingerShape:self->_shape inRect:0 curveOnly:{x, y, width, height}];
-  [v21 setPath:{objc_msgSend(v22, "CGPath")}];
+  [cursorLayer2 setPath:{objc_msgSend(v22, "CGPath")}];
 
-  v23 = [(AXPIFingerView *)self outerStrokeTrackLayer];
+  outerStrokeTrackLayer = [(AXPIFingerView *)self outerStrokeTrackLayer];
   v24 = [MEMORY[0x277D75208] bezierPathForFingerShape:self->_shape inRect:1 curveOnly:{v5, v7, v9, v11}];
-  [v23 setPath:{objc_msgSend(v24, "CGPath")}];
+  [outerStrokeTrackLayer setPath:{objc_msgSend(v24, "CGPath")}];
 
-  v25 = [(AXPIFingerView *)self outerStrokeLayer];
+  outerStrokeLayer = [(AXPIFingerView *)self outerStrokeLayer];
   v26 = [MEMORY[0x277D75208] bezierPathForFingerShape:self->_shape inRect:1 curveOnly:{v5, v7, v9, v11}];
-  [v25 setPath:{objc_msgSend(v26, "CGPath")}];
+  [outerStrokeLayer setPath:{objc_msgSend(v26, "CGPath")}];
 
   if (self->_shape)
   {
@@ -415,35 +415,35 @@
 
   else
   {
-    v31 = [(AXPIFingerView *)self appearanceDelegate];
-    [v31 fingerInnerCircleInnerRadius];
+    appearanceDelegate3 = [(AXPIFingerView *)self appearanceDelegate];
+    [appearanceDelegate3 fingerInnerCircleInnerRadius];
     v33 = v32;
-    v34 = [(AXPIFingerView *)self appearanceDelegate];
-    [v34 innerCircleStrokeWidth];
+    appearanceDelegate4 = [(AXPIFingerView *)self appearanceDelegate];
+    [appearanceDelegate4 innerCircleStrokeWidth];
     v29 = v35 + v33 * 2.0;
 
-    v36 = [(AXPIFingerView *)self appearanceDelegate];
-    [v36 fingerInnerCircleInnerRadius];
+    appearanceDelegate5 = [(AXPIFingerView *)self appearanceDelegate];
+    [appearanceDelegate5 fingerInnerCircleInnerRadius];
     v38 = v37;
-    v39 = [(AXPIFingerView *)self appearanceDelegate];
-    [v39 innerCircleStrokeWidth];
+    appearanceDelegate6 = [(AXPIFingerView *)self appearanceDelegate];
+    [appearanceDelegate6 innerCircleStrokeWidth];
     v30 = v40 + v38 * 2.0;
 
     v28 = v5 + (v9 - v29) * 0.5;
     v27 = v7 + (v11 - v30) * 0.5;
   }
 
-  v42 = [(AXPIFingerView *)self innerStrokeLayer];
+  innerStrokeLayer = [(AXPIFingerView *)self innerStrokeLayer];
   v41 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{v28, v27, v29, v30}];
-  [v42 setPath:{objc_msgSend(v41, "CGPath")}];
+  [innerStrokeLayer setPath:{objc_msgSend(v41, "CGPath")}];
 }
 
-- (id)_createProgressLayerWithDuration:(double)a3 inRect:(CGRect)a4
+- (id)_createProgressLayerWithDuration:(double)duration inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = objc_alloc_init(MEMORY[0x277CD9F90]);
   v11 = *MEMORY[0x277CBF348];
   v12 = *(MEMORY[0x277CBF348] + 8);
@@ -454,7 +454,7 @@
   [v10 setPath:{objc_msgSend(v14, "CGPath")}];
   [MEMORY[0x277CD9FF0] begin];
   v15 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeEnd"];
-  [v15 setDuration:a3 + -0.100000001];
+  [v15 setDuration:duration + -0.100000001];
   v16 = [MEMORY[0x277CCABB0] numberWithInt:0];
   [v15 setFromValue:v16];
 
@@ -464,38 +464,38 @@
   [v15 setDelegate:self];
   [v10 addAnimation:v15 forKey:@"drawCircleAnimation"];
   [MEMORY[0x277CD9FF0] commit];
-  v18 = [(AXPIFingerView *)self isPressed];
-  v19 = [(AXPIFingerView *)self appearanceDelegate];
-  v20 = v19;
-  if (v18)
+  isPressed = [(AXPIFingerView *)self isPressed];
+  appearanceDelegate = [(AXPIFingerView *)self appearanceDelegate];
+  v20 = appearanceDelegate;
+  if (isPressed)
   {
-    [v19 pressedCircularProgressFillColor];
+    [appearanceDelegate pressedCircularProgressFillColor];
   }
 
   else
   {
-    [v19 circularProgressFillColor];
+    [appearanceDelegate circularProgressFillColor];
   }
   v21 = ;
   [v10 setStrokeColor:{objc_msgSend(v21, "CGColor")}];
 
-  v22 = [MEMORY[0x277D75348] clearColor];
-  [v10 setFillColor:{objc_msgSend(v22, "CGColor")}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v10 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
-  v23 = [(AXPIFingerView *)self appearanceDelegate];
-  [v23 strokeWidth];
+  appearanceDelegate2 = [(AXPIFingerView *)self appearanceDelegate];
+  [appearanceDelegate2 strokeWidth];
   [v10 setLineWidth:?];
 
   [v10 setName:@"holdDurationProgressTrack"];
-  v24 = [(AXPIFingerView *)self window];
-  v25 = [v24 screen];
-  [v25 scale];
+  window = [(AXPIFingerView *)self window];
+  screen = [window screen];
+  [screen scale];
   [v10 setContentsScale:?];
 
-  v26 = [(AXPIFingerView *)self appearanceDelegate];
-  LOBYTE(v25) = [v26 showFingerOutlines];
+  appearanceDelegate3 = [(AXPIFingerView *)self appearanceDelegate];
+  LOBYTE(screen) = [appearanceDelegate3 showFingerOutlines];
 
-  if (v25)
+  if (screen)
   {
     v27 = v10;
   }
@@ -506,33 +506,33 @@
     [v27 setPosition:{v11, v12}];
     [v27 setLineCap:v13];
     [v27 setPath:{objc_msgSend(v14, "CGPath")}];
-    v28 = [MEMORY[0x277D75348] clearColor];
-    [v27 setFillColor:{objc_msgSend(v28, "CGColor")}];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [v27 setFillColor:{objc_msgSend(clearColor2, "CGColor")}];
 
-    v29 = [(AXPIFingerView *)self appearanceDelegate];
-    [v29 strokeWidth];
+    appearanceDelegate4 = [(AXPIFingerView *)self appearanceDelegate];
+    [appearanceDelegate4 strokeWidth];
     [v27 setLineWidth:v30 + 4.0];
 
     [v27 setName:@"holdDurationBaseProgressTrack"];
-    v31 = [(AXPIFingerView *)self window];
-    v32 = [v31 screen];
-    [v32 scale];
+    window2 = [(AXPIFingerView *)self window];
+    screen2 = [window2 screen];
+    [screen2 scale];
     [v27 setContentsScale:?];
 
     [v27 addAnimation:v15 forKey:@"drawCircleAnimation"];
-    v33 = [(AXPIFingerView *)self appearanceDelegate];
-    v34 = [v33 pressedCircularProgressFillColor];
-    v35 = [v34 CGColor];
+    appearanceDelegate5 = [(AXPIFingerView *)self appearanceDelegate];
+    pressedCircularProgressFillColor = [appearanceDelegate5 pressedCircularProgressFillColor];
+    cGColor = [pressedCircularProgressFillColor CGColor];
 
     if ([(AXPIFingerView *)self isPressed])
     {
-      [v27 setStrokeColor:v35];
+      [v27 setStrokeColor:cGColor];
     }
 
     else
     {
-      v36 = [MEMORY[0x277D75348] blackColor];
-      [v27 setStrokeColor:{objc_msgSend(v36, "CGColor")}];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [v27 setStrokeColor:{objc_msgSend(blackColor, "CGColor")}];
     }
 
     [v27 addSublayer:v10];
@@ -541,28 +541,28 @@
   return v27;
 }
 
-- (void)animateToTapWithDuration:(double)a3
+- (void)animateToTapWithDuration:(double)duration
 {
   v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeColor"];
-  v5 = [(AXPIFingerView *)self appearanceDelegate];
-  v6 = [v5 selectedStrokeColor];
-  [v8 setToValue:{objc_msgSend(v6, "CGColor")}];
+  appearanceDelegate = [(AXPIFingerView *)self appearanceDelegate];
+  selectedStrokeColor = [appearanceDelegate selectedStrokeColor];
+  [v8 setToValue:{objc_msgSend(selectedStrokeColor, "CGColor")}];
 
-  [v8 setDuration:a3];
+  [v8 setDuration:duration];
   [v8 setRemovedOnCompletion:1];
-  v7 = [(AXPIFingerView *)self outerStrokeLayer];
-  [v7 addAnimation:v8 forKey:@"AXPIFingerView-SetSelected"];
+  outerStrokeLayer = [(AXPIFingerView *)self outerStrokeLayer];
+  [outerStrokeLayer addAnimation:v8 forKey:@"AXPIFingerView-SetSelected"];
 }
 
-- (double)_iconScaleForForce:(double)a3
+- (double)_iconScaleForForce:(double)force
 {
-  v3 = a3 * 0.001 + 1.0;
+  v3 = force * 0.001 + 1.0;
   if (v3 > 1.5)
   {
     v3 = 1.5;
   }
 
-  if (a3 <= 100.0)
+  if (force <= 100.0)
   {
     return 1.0;
   }
@@ -573,13 +573,13 @@
   }
 }
 
-- (void)setForce:(double)a3
+- (void)setForce:(double)force
 {
-  if (self->_force != a3)
+  if (self->_force != force)
   {
     v10 = v3;
     v11 = v4;
-    self->_force = a3;
+    self->_force = force;
     v6 = *(MEMORY[0x277CBF2C0] + 16);
     *&v9.a = *MEMORY[0x277CBF2C0];
     *&v9.c = v6;

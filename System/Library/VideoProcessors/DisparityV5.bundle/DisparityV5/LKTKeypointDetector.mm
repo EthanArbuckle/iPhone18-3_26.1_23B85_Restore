@@ -1,20 +1,20 @@
 @interface LKTKeypointDetector
-+ (void)_computeScalingFactor:(id)a1 dst_tex:(SEL)a2 scale_xy_inv:(id)a3 coeff:(id)a4;
++ (void)_computeScalingFactor:(id)factor dst_tex:(SEL)dst_tex scale_xy_inv:(id)scale_xy_inv coeff:(id)coeff;
 - (CGSize)aux_size;
 - (CGSize)ref_size;
-- (int)_computeFeaturesDerivativesWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5;
-- (int)_computeFeaturesWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5;
+- (int)_computeFeaturesDerivativesWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex;
+- (int)_computeFeaturesWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex;
 - (int)_computeOpticalFlowBidirectional;
-- (int)_createImagePyramidWithCommandBuffer:(id)a3 in_tex:(id)a4 I_idx:(int)a5;
-- (int)_doSolverWithCommandBuffer:(id)a3 scale:(int)a4 in_uv_tex:(id)a5 in_G0_tex:(id)a6 in_G1_tex:(id)a7 in_C0_tex:(id)a8 in_C1_tex:(id)a9 out_uv_tex:(id)a10 out_w_tex:(id)a11;
-- (int)_downscale2XWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5;
-- (int)_enqueueFlowConsistencyWithCommandBuffer:(id)a3 in_uv0_tex:(id)a4 in_uv1_tex:(id)a5 out_uv_tex:(id)a6;
-- (int)_enqueueKeypointsFromFlowWithCommandBuffer:(id)a3 in_uv_fwd_tex:(id)a4 in_uv_bwd_tex:(id)a5 in_conf_fwd_tex:(id)a6 in_conf_bwd_tex:(id)a7 out_kpt_buf:(id)a8 out_kpt_conf:(id)a9 block_size:(int)a10 bidirectional_error:(float)a11 confidence_radial_weight:(float)a12 confidence_minimum:(float)a13 out_num_keypoints:(unsigned __int16 *)a14;
+- (int)_createImagePyramidWithCommandBuffer:(id)buffer in_tex:(id)in_tex I_idx:(int)i_idx;
+- (int)_doSolverWithCommandBuffer:(id)buffer scale:(int)scale in_uv_tex:(id)in_uv_tex in_G0_tex:(id)g0_tex in_G1_tex:(id)g1_tex in_C0_tex:(id)c0_tex in_C1_tex:(id)c1_tex out_uv_tex:(id)self0 out_w_tex:(id)self1;
+- (int)_downscale2XWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex;
+- (int)_enqueueFlowConsistencyWithCommandBuffer:(id)buffer in_uv0_tex:(id)in_uv0_tex in_uv1_tex:(id)in_uv1_tex out_uv_tex:(id)out_uv_tex;
+- (int)_enqueueKeypointsFromFlowWithCommandBuffer:(id)buffer in_uv_fwd_tex:(id)in_uv_fwd_tex in_uv_bwd_tex:(id)in_uv_bwd_tex in_conf_fwd_tex:(id)in_conf_fwd_tex in_conf_bwd_tex:(id)in_conf_bwd_tex out_kpt_buf:(id)out_kpt_buf out_kpt_conf:(id)out_kpt_conf block_size:(int)self0 bidirectional_error:(float)self1 confidence_radial_weight:(float)self2 confidence_minimum:(float)self3 out_num_keypoints:(unsigned __int16 *)self4;
 - (int)_setupBuffer;
-- (int)_zeroFlowWithCommandBuffer:(id)a3 uv_tex:(id)a4;
-- (int)computeKeypointsFromForwardFlow:(id)a3 backwardFlow:(id)a4 forwardConfidence:(id)a5 backwardConfidence:(id)a6 bidirectionalError:(float)a7 confidenceRadialWeight:(float)a8 confidenceMinimum:(float)a9 blockSize:(int)a10 outNumKeypoints:(unsigned __int16 *)a11;
-- (int)estimateFlowFromReference:(id)a3 target:(id)a4;
-- (void)_initMemory:(int)a3 height:(int)a4 nscales:(int)a5 lastScale:(int)a6;
+- (int)_zeroFlowWithCommandBuffer:(id)buffer uv_tex:(id)uv_tex;
+- (int)computeKeypointsFromForwardFlow:(id)flow backwardFlow:(id)backwardFlow forwardConfidence:(id)confidence backwardConfidence:(id)backwardConfidence bidirectionalError:(float)error confidenceRadialWeight:(float)weight confidenceMinimum:(float)minimum blockSize:(int)self0 outNumKeypoints:(unsigned __int16 *)self1;
+- (int)estimateFlowFromReference:(id)reference target:(id)target;
+- (void)_initMemory:(int)memory height:(int)height nscales:(int)nscales lastScale:(int)scale;
 - (void)_setupPipelines;
 - (void)dealloc;
 - (void)waitUntilCompleted;
@@ -47,53 +47,53 @@
   objc_msgSend_waitUntilCompleted(v32, v24, v25, v26, v27, v28, v29, v30, v31);
 }
 
-- (int)estimateFlowFromReference:(id)a3 target:(id)a4
+- (int)estimateFlowFromReference:(id)reference target:(id)target
 {
   commandQueue = self->_commandQueue;
-  v7 = a4;
-  v8 = a3;
+  targetCopy = target;
+  referenceCopy = reference;
   v17 = objc_msgSend_commandBuffer(commandQueue, v9, v10, v11, v12, v13, v14, v15, v16);
   objc_msgSend_setLabel_(v17, v18, @"LKT::Pyramid", v19, v20, v21, v22, v23, v24);
   objc_msgSend__zeroFlowWithCommandBuffer_uv_tex_(self, v25, v17, self->_uv_bwd_pxbuf[self->_nscales + 1], v26, v27, v28, v29, v30);
   objc_msgSend__zeroFlowWithCommandBuffer_uv_tex_(self, v31, v17, self->_uv_fwd_tex[1][self->_nscales + 9], v32, v33, v34, v35, v36);
-  objc_msgSend__createImagePyramidWithCommandBuffer_in_tex_I_idx_(self, v37, v17, v8, 0, v38, v39, v40, v41);
+  objc_msgSend__createImagePyramidWithCommandBuffer_in_tex_I_idx_(self, v37, v17, referenceCopy, 0, v38, v39, v40, v41);
 
-  objc_msgSend__createImagePyramidWithCommandBuffer_in_tex_I_idx_(self, v42, v17, v7, 1, v43, v44, v45, v46);
+  objc_msgSend__createImagePyramidWithCommandBuffer_in_tex_I_idx_(self, v42, v17, targetCopy, 1, v43, v44, v45, v46);
   objc_msgSend_commit(v17, v47, v48, v49, v50, v51, v52, v53, v54);
 
   objc_msgSend__computeOpticalFlowBidirectional(self, v55, v56, v57, v58, v59, v60, v61, v62);
   return 0;
 }
 
-- (int)computeKeypointsFromForwardFlow:(id)a3 backwardFlow:(id)a4 forwardConfidence:(id)a5 backwardConfidence:(id)a6 bidirectionalError:(float)a7 confidenceRadialWeight:(float)a8 confidenceMinimum:(float)a9 blockSize:(int)a10 outNumKeypoints:(unsigned __int16 *)a11
+- (int)computeKeypointsFromForwardFlow:(id)flow backwardFlow:(id)backwardFlow forwardConfidence:(id)confidence backwardConfidence:(id)backwardConfidence bidirectionalError:(float)error confidenceRadialWeight:(float)weight confidenceMinimum:(float)minimum blockSize:(int)self0 outNumKeypoints:(unsigned __int16 *)self1
 {
   commandQueue = self->_commandQueue;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  backwardConfidenceCopy = backwardConfidence;
+  confidenceCopy = confidence;
+  backwardFlowCopy = backwardFlow;
+  flowCopy = flow;
   v33 = objc_msgSend_commandBuffer(commandQueue, v25, v26, v27, v28, v29, v30, v31, v32);
   objc_msgSend_setLabel_(v33, v34, @"LKT::KeypointsFromFlow", v35, v36, v37, v38, v39, v40);
-  v53 = a10;
-  *&v41 = a8;
-  *&v42 = a9;
-  objc_msgSend__enqueueKeypointsFromFlowWithCommandBuffer_in_uv_fwd_tex_in_uv_bwd_tex_in_conf_fwd_tex_in_conf_bwd_tex_out_kpt_buf_out_kpt_conf_block_size_bidirectional_error_confidence_radial_weight_confidence_minimum_out_num_keypoints_(self, v43, v33, v24, v23, v22, v21, self->_kpt_buf, a7, v41, v42, self->_kpt_confidence, v53, a11);
+  sizeCopy = size;
+  *&v41 = weight;
+  *&v42 = minimum;
+  objc_msgSend__enqueueKeypointsFromFlowWithCommandBuffer_in_uv_fwd_tex_in_uv_bwd_tex_in_conf_fwd_tex_in_conf_bwd_tex_out_kpt_buf_out_kpt_conf_block_size_bidirectional_error_confidence_radial_weight_confidence_minimum_out_num_keypoints_(self, v43, v33, flowCopy, backwardFlowCopy, confidenceCopy, backwardConfidenceCopy, self->_kpt_buf, error, v41, v42, self->_kpt_confidence, sizeCopy, keypoints);
 
   objc_msgSend_commit(v33, v44, v45, v46, v47, v48, v49, v50, v51);
   return 0;
 }
 
-- (void)_initMemory:(int)a3 height:(int)a4 nscales:(int)a5 lastScale:(int)a6
+- (void)_initMemory:(int)memory height:(int)height nscales:(int)nscales lastScale:(int)scale
 {
   v7 = 0;
-  if (a3 >= 8 && a4 >= 8)
+  if (memory >= 8 && height >= 8)
   {
     v7 = 0;
-    v8 = a4;
-    v9 = a3;
+    heightCopy = height;
+    memoryCopy = memory;
     do
     {
-      v10 = (v9 & 1) + v9;
+      v10 = (memoryCopy & 1) + memoryCopy;
       if (v10 / 2 >= 0)
       {
         v11 = (v10 / 2) & 1;
@@ -104,7 +104,7 @@
         v11 = -((v10 / 2) & 1);
       }
 
-      v12 = (v8 & 1) + v8;
+      v12 = (heightCopy & 1) + heightCopy;
       if (v12 / 2 >= 0)
       {
         v13 = (v12 / 2) & 1;
@@ -116,31 +116,31 @@
       }
 
       v14 = v10 + 2 * v11 + 1;
-      v9 = v14 >> 1;
+      memoryCopy = v14 >> 1;
       v15 = v12 + 2 * v13 + 1;
-      v8 = v15 >> 1;
+      heightCopy = v15 >> 1;
       ++v7;
     }
 
     while (v14 >= 16 && v15 > 15);
   }
 
-  self->_ref_size.width = a3;
-  self->_ref_size.height = a4;
-  self->_aux_size.width = a3;
-  self->_aux_size.height = a4;
-  if (a5 >= 0)
+  self->_ref_size.width = memory;
+  self->_ref_size.height = height;
+  self->_aux_size.width = memory;
+  self->_aux_size.height = height;
+  if (nscales >= 0)
   {
-    v17 = a5;
+    nscalesCopy = nscales;
   }
 
   else
   {
-    v17 = v7;
+    nscalesCopy = v7;
   }
 
-  self->_nscales = v17;
-  self->_lastScale = a6;
+  self->_nscales = nscalesCopy;
+  self->_lastScale = scale;
   self->_maxThreadExecutionWidth = 0;
   *&self->_G0_pxbuf = 0u;
   *&self->_C0_pxbuf = 0u;
@@ -169,7 +169,7 @@
 
 - (void)_setupPipelines
 {
-  v2 = self;
+  selfCopy = self;
   v3 = 0;
   v4 = 0;
   computePipelines = self->_computePipelines;
@@ -182,22 +182,22 @@
     v10 = v4;
     v11 = objc_alloc(*(v6 + 248));
     v19 = objc_msgSend_initWithUTF8String_(v11, v12, v7[v3], v13, v14, v15, v16, v17, v18);
-    v28 = objc_msgSend_library(v2->_mtlContext, v20, v21, v22, v23, v24, v25, v26, v27);
+    v28 = objc_msgSend_library(selfCopy->_mtlContext, v20, v21, v22, v23, v24, v25, v26, v27);
     v96 = v19;
     v4 = objc_msgSend_newFunctionWithName_(v28, v29, v19, v30, v31, v32, v33, v34, v35);
 
-    v44 = objc_msgSend_device(v2->_mtlContext, v36, v37, v38, v39, v40, v41, v42, v43);
+    v44 = objc_msgSend_device(selfCopy->_mtlContext, v36, v37, v38, v39, v40, v41, v42, v43);
     v51 = objc_msgSend_newComputePipelineStateWithFunction_error_(v44, v45, v4, 0, v46, v47, v48, v49, v50);
 
     objc_storeStrong(computePipelines, v51);
     v67 = objc_msgSend_threadExecutionWidth(v51, v52, v53, v54, v55, v56, v57, v58, v59);
-    maxThreadExecutionWidth = v2->_maxThreadExecutionWidth;
+    maxThreadExecutionWidth = selfCopy->_maxThreadExecutionWidth;
     if (v67 > maxThreadExecutionWidth)
     {
       maxThreadExecutionWidth = objc_msgSend_threadExecutionWidth(v51, v60, v61, v62, v63, v64, v65, v66, v68);
     }
 
-    v2->_maxThreadExecutionWidth = maxThreadExecutionWidth;
+    selfCopy->_maxThreadExecutionWidth = maxThreadExecutionWidth;
     if (*(v8 + 1880) != -1)
     {
       sub_29576EB00();
@@ -208,7 +208,7 @@
     {
       log = v70;
       v79 = v4;
-      v80 = v2;
+      v80 = selfCopy;
       v81 = v9;
       v82 = v8;
       v83 = v7;
@@ -223,7 +223,7 @@
       v7 = v83;
       v8 = v82;
       v9 = v81;
-      v2 = v80;
+      selfCopy = v80;
       v4 = v79;
       v101 = 1024;
       v102 = v94;
@@ -237,20 +237,20 @@
   while (v3 != 9);
 }
 
-- (int)_createImagePyramidWithCommandBuffer:(id)a3 in_tex:(id)a4 I_idx:(int)a5
+- (int)_createImagePyramidWithCommandBuffer:(id)buffer in_tex:(id)in_tex I_idx:(int)i_idx
 {
-  v8 = a3;
-  v9 = a4;
-  objc_storeStrong(self->_I_tex[a5], a4);
+  bufferCopy = buffer;
+  in_texCopy = in_tex;
+  objc_storeStrong(self->_I_tex[i_idx], in_tex);
   if (self->_nscales >= 2)
   {
-    v10 = &self->_I_tex[a5][1];
+    v10 = &self->_I_tex[i_idx][1];
     v11 = 1;
     do
     {
       v12 = *v10;
       v13 = *(v10 - 1);
-      objc_msgSend__downscale2XWithCommandBuffer_in_tex_out_tex_(self, v14, v8, v13, v12, v15, v16, v17, v18);
+      objc_msgSend__downscale2XWithCommandBuffer_in_tex_out_tex_(self, v14, bufferCopy, v13, v12, v15, v16, v17, v18);
 
       ++v11;
       ++v10;
@@ -262,19 +262,19 @@
   return 0;
 }
 
-- (int)_zeroFlowWithCommandBuffer:(id)a3 uv_tex:(id)a4
+- (int)_zeroFlowWithCommandBuffer:(id)buffer uv_tex:(id)uv_tex
 {
-  v6 = a4;
-  v15 = objc_msgSend_computeCommandEncoder(a3, v7, v8, v9, v10, v11, v12, v13, v14);
+  uv_texCopy = uv_tex;
+  v15 = objc_msgSend_computeCommandEncoder(buffer, v7, v8, v9, v10, v11, v12, v13, v14);
   v23 = v15;
   if (v15)
   {
     objc_msgSend_setComputePipelineState_(v15, v16, self->_computePipelines[0], v17, v18, v19, v20, v21, v22);
-    objc_msgSend_setTexture_atIndex_(v23, v24, v6, 0, v25, v26, v27, v28, v29);
+    objc_msgSend_setTexture_atIndex_(v23, v24, uv_texCopy, 0, v25, v26, v27, v28, v29);
     v38 = objc_msgSend_threadExecutionWidth(self->_computePipelines[0], v30, v31, v32, v33, v34, v35, v36, v37);
     v47 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_computePipelines[0], v39, v40, v41, v42, v43, v44, v45, v46) / v38;
-    v81[0] = objc_msgSend_width(v6, v48, v49, v50, v51, v52, v53, v54, v55);
-    v81[1] = objc_msgSend_height(v6, v56, v57, v58, v59, v60, v61, v62, v63);
+    v81[0] = objc_msgSend_width(uv_texCopy, v48, v49, v50, v51, v52, v53, v54, v55);
+    v81[1] = objc_msgSend_height(uv_texCopy, v56, v57, v58, v59, v60, v61, v62, v63);
     v81[2] = 1;
     v80[0] = v38;
     v80[1] = v47;
@@ -293,21 +293,21 @@
   return v78;
 }
 
-- (int)_downscale2XWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5
+- (int)_downscale2XWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex
 {
-  v8 = a4;
-  v9 = a5;
-  v18 = objc_msgSend_computeCommandEncoder(a3, v10, v11, v12, v13, v14, v15, v16, v17);
+  in_texCopy = in_tex;
+  out_texCopy = out_tex;
+  v18 = objc_msgSend_computeCommandEncoder(buffer, v10, v11, v12, v13, v14, v15, v16, v17);
   v26 = v18;
   if (v18)
   {
     objc_msgSend_setComputePipelineState_(v18, v19, self->_computePipelines[1], v20, v21, v22, v23, v24, v25);
-    objc_msgSend_setTexture_atIndex_(v26, v27, v8, 0, v28, v29, v30, v31, v32);
-    objc_msgSend_setTexture_atIndex_(v26, v33, v9, 1, v34, v35, v36, v37, v38);
+    objc_msgSend_setTexture_atIndex_(v26, v27, in_texCopy, 0, v28, v29, v30, v31, v32);
+    objc_msgSend_setTexture_atIndex_(v26, v33, out_texCopy, 1, v34, v35, v36, v37, v38);
     v47 = objc_msgSend_threadExecutionWidth(self->_computePipelines[1], v39, v40, v41, v42, v43, v44, v45, v46);
     v56 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_computePipelines[1], v48, v49, v50, v51, v52, v53, v54, v55) / v47;
-    v90[0] = objc_msgSend_width(v9, v57, v58, v59, v60, v61, v62, v63, v64);
-    v90[1] = objc_msgSend_height(v9, v65, v66, v67, v68, v69, v70, v71, v72);
+    v90[0] = objc_msgSend_width(out_texCopy, v57, v58, v59, v60, v61, v62, v63, v64);
+    v90[1] = objc_msgSend_height(out_texCopy, v65, v66, v67, v68, v69, v70, v71, v72);
     v90[2] = 1;
     v89[0] = v47;
     v89[1] = v56;
@@ -326,21 +326,21 @@
   return v87;
 }
 
-- (int)_computeFeaturesWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5
+- (int)_computeFeaturesWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex
 {
-  v8 = a4;
-  v9 = a5;
-  v18 = objc_msgSend_computeCommandEncoder(a3, v10, v11, v12, v13, v14, v15, v16, v17);
+  in_texCopy = in_tex;
+  out_texCopy = out_tex;
+  v18 = objc_msgSend_computeCommandEncoder(buffer, v10, v11, v12, v13, v14, v15, v16, v17);
   v26 = v18;
   if (v18)
   {
     objc_msgSend_setComputePipelineState_(v18, v19, self->_computePipelines[2], v20, v21, v22, v23, v24, v25);
-    objc_msgSend_setTexture_atIndex_(v26, v27, v8, 0, v28, v29, v30, v31, v32);
-    objc_msgSend_setTexture_atIndex_(v26, v33, v9, 1, v34, v35, v36, v37, v38);
+    objc_msgSend_setTexture_atIndex_(v26, v27, in_texCopy, 0, v28, v29, v30, v31, v32);
+    objc_msgSend_setTexture_atIndex_(v26, v33, out_texCopy, 1, v34, v35, v36, v37, v38);
     v47 = objc_msgSend_threadExecutionWidth(self->_computePipelines[2], v39, v40, v41, v42, v43, v44, v45, v46);
     v56 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_computePipelines[2], v48, v49, v50, v51, v52, v53, v54, v55) / v47;
-    v90[0] = objc_msgSend_width(v8, v57, v58, v59, v60, v61, v62, v63, v64);
-    v90[1] = objc_msgSend_height(v8, v65, v66, v67, v68, v69, v70, v71, v72);
+    v90[0] = objc_msgSend_width(in_texCopy, v57, v58, v59, v60, v61, v62, v63, v64);
+    v90[1] = objc_msgSend_height(in_texCopy, v65, v66, v67, v68, v69, v70, v71, v72);
     v90[2] = 1;
     v89[0] = v47;
     v89[1] = v56;
@@ -359,21 +359,21 @@
   return v87;
 }
 
-- (int)_computeFeaturesDerivativesWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5
+- (int)_computeFeaturesDerivativesWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex
 {
-  v8 = a4;
-  v9 = a5;
-  v18 = objc_msgSend_computeCommandEncoder(a3, v10, v11, v12, v13, v14, v15, v16, v17);
+  in_texCopy = in_tex;
+  out_texCopy = out_tex;
+  v18 = objc_msgSend_computeCommandEncoder(buffer, v10, v11, v12, v13, v14, v15, v16, v17);
   v26 = v18;
   if (v18)
   {
     objc_msgSend_setComputePipelineState_(v18, v19, self->_computePipelines[3], v20, v21, v22, v23, v24, v25);
-    objc_msgSend_setTexture_atIndex_(v26, v27, v8, 0, v28, v29, v30, v31, v32);
-    objc_msgSend_setTexture_atIndex_(v26, v33, v9, 1, v34, v35, v36, v37, v38);
+    objc_msgSend_setTexture_atIndex_(v26, v27, in_texCopy, 0, v28, v29, v30, v31, v32);
+    objc_msgSend_setTexture_atIndex_(v26, v33, out_texCopy, 1, v34, v35, v36, v37, v38);
     v47 = objc_msgSend_threadExecutionWidth(self->_computePipelines[3], v39, v40, v41, v42, v43, v44, v45, v46);
     v56 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_computePipelines[3], v48, v49, v50, v51, v52, v53, v54, v55) / v47;
-    v90[0] = objc_msgSend_width(v8, v57, v58, v59, v60, v61, v62, v63, v64);
-    v90[1] = objc_msgSend_height(v8, v65, v66, v67, v68, v69, v70, v71, v72);
+    v90[0] = objc_msgSend_width(in_texCopy, v57, v58, v59, v60, v61, v62, v63, v64);
+    v90[1] = objc_msgSend_height(in_texCopy, v65, v66, v67, v68, v69, v70, v71, v72);
     v90[2] = 1;
     v89[0] = v47;
     v89[1] = v56;
@@ -392,28 +392,28 @@
   return v87;
 }
 
-- (int)_doSolverWithCommandBuffer:(id)a3 scale:(int)a4 in_uv_tex:(id)a5 in_G0_tex:(id)a6 in_G1_tex:(id)a7 in_C0_tex:(id)a8 in_C1_tex:(id)a9 out_uv_tex:(id)a10 out_w_tex:(id)a11
+- (int)_doSolverWithCommandBuffer:(id)buffer scale:(int)scale in_uv_tex:(id)in_uv_tex in_G0_tex:(id)g0_tex in_G1_tex:(id)g1_tex in_C0_tex:(id)c0_tex in_C1_tex:(id)c1_tex out_uv_tex:(id)self0 out_w_tex:(id)self1
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v315 = a7;
-  v314 = a8;
-  v19 = v16;
-  v313 = a9;
-  v20 = a10;
-  v21 = a11;
-  v30 = objc_msgSend_width(v20, v22, v23, v24, v25, v26, v27, v28, v29);
-  v39 = objc_msgSend_height(v20, v31, v32, v33, v34, v35, v36, v37, v38);
-  LODWORD(a7) = (v30 + self->_maxThreadExecutionWidth - 1) / self->_maxThreadExecutionWidth * self->_maxThreadExecutionWidth;
+  bufferCopy = buffer;
+  in_uv_texCopy = in_uv_tex;
+  g0_texCopy = g0_tex;
+  g1_texCopy = g1_tex;
+  c0_texCopy = c0_tex;
+  v19 = bufferCopy;
+  c1_texCopy = c1_tex;
+  out_uv_texCopy = out_uv_tex;
+  out_w_texCopy = out_w_tex;
+  v30 = objc_msgSend_width(out_uv_texCopy, v22, v23, v24, v25, v26, v27, v28, v29);
+  v39 = objc_msgSend_height(out_uv_texCopy, v31, v32, v33, v34, v35, v36, v37, v38);
+  LODWORD(g1_tex) = (v30 + self->_maxThreadExecutionWidth - 1) / self->_maxThreadExecutionWidth * self->_maxThreadExecutionWidth;
   v329[0] = 1065353216;
   __asm { FMOV            V0.2S, #1.0 }
 
   v328 = _D0;
-  objc_msgSend__computeScalingFactor_dst_tex_scale_xy_inv_coeff_(LKTKeypointDetector, v46, v17, v20, &v328, v329, v47, v48, *&_D0);
+  objc_msgSend__computeScalingFactor_dst_tex_scale_xy_inv_coeff_(LKTKeypointDetector, v46, in_uv_texCopy, out_uv_texCopy, &v328, v329, v47, v48, *&_D0);
   v322[0] = v30;
   v322[1] = v39;
-  v323 = a7;
+  g1_texCopy2 = g1_tex;
   v324 = v328;
   v325 = 0;
   v45 = v329;
@@ -429,13 +429,13 @@
   }
 
   v65 = v57;
-  v312 = v21;
+  v312 = out_w_texCopy;
   objc_msgSend_setComputePipelineState_(v57, v58, self->_computePipelines[4], v59, v60, v61, v62, v63, v64);
-  objc_msgSend_setTexture_atIndex_(v65, v66, v17, 0, v67, v68, v69, v70, v71);
-  objc_msgSend_setTexture_atIndex_(v65, v72, v18, 1, v73, v74, v75, v76, v77);
-  objc_msgSend_setTexture_atIndex_(v65, v78, v315, 2, v79, v80, v81, v82, v83);
-  objc_msgSend_setTexture_atIndex_(v65, v84, v314, 3, v85, v86, v87, v88, v89);
-  objc_msgSend_setTexture_atIndex_(v65, v90, v313, 4, v91, v92, v93, v94, v95);
+  objc_msgSend_setTexture_atIndex_(v65, v66, in_uv_texCopy, 0, v67, v68, v69, v70, v71);
+  objc_msgSend_setTexture_atIndex_(v65, v72, g0_texCopy, 1, v73, v74, v75, v76, v77);
+  objc_msgSend_setTexture_atIndex_(v65, v78, g1_texCopy, 2, v79, v80, v81, v82, v83);
+  objc_msgSend_setTexture_atIndex_(v65, v84, c0_texCopy, 3, v85, v86, v87, v88, v89);
+  objc_msgSend_setTexture_atIndex_(v65, v90, c1_texCopy, 4, v91, v92, v93, v94, v95);
   objc_msgSend_setBuffer_offset_atIndex_(v65, v96, self->_Adiagb_buf[0], 0, 0, v97, v98, v99, v100);
   objc_msgSend_setBuffer_offset_atIndex_(v65, v101, self->_Ixy_buf[0], 0, 1, v102, v103, v104, v105);
   objc_msgSend_setBuffer_offset_atIndex_(v65, v106, self->_idt_buf, 0, 2, v107, v108, v109, v110);
@@ -458,7 +458,7 @@
     sub_29576EDD0(&v319);
 LABEL_9:
     v310 = v319;
-    v21 = v312;
+    out_w_texCopy = v312;
     goto LABEL_5;
   }
 
@@ -492,15 +492,15 @@ LABEL_9:
   objc_msgSend_setBuffer_offset_atIndex_(v239, v240, self->_Adiagb_buf[1], 0, 0, v241, v242, v243, v244);
   objc_msgSend_setBuffer_offset_atIndex_(v239, v245, self->_Ixy_buf[1], 0, 1, v246, v247, v248, v249);
   objc_msgSend_setBuffer_offset_atIndex_(v239, v250, self->_idt_buf, 0, 2, v251, v252, v253, v254);
-  objc_msgSend_setTexture_atIndex_(v239, v255, v17, 0, v256, v257, v258, v259, v260);
-  objc_msgSend_setTexture_atIndex_(v239, v261, v20, 1, v262, v263, v264, v265, v266);
+  objc_msgSend_setTexture_atIndex_(v239, v255, in_uv_texCopy, 0, v256, v257, v258, v259, v260);
+  objc_msgSend_setTexture_atIndex_(v239, v261, out_uv_texCopy, 1, v262, v263, v264, v265, v266);
   objc_msgSend_setTexture_atIndex_(v239, v267, v312, 2, v268, v269, v270, v271, v272);
   objc_msgSend_setBytes_length_atIndex_(v239, v273, v322, 48, 3, v274, v275, v276, v277);
   v286 = objc_msgSend_threadExecutionWidth(self->_computePipelines[6], v278, v279, v280, v281, v282, v283, v284, v285);
   v295 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_computePipelines[6], v287, v288, v289, v290, v291, v292, v293, v294);
   v319 = v30;
   v320 = v134;
-  v21 = v312;
+  out_w_texCopy = v312;
   v321 = 1;
   v316 = v286;
   v317 = v295 / v286;
@@ -514,24 +514,24 @@ LABEL_5:
   return v310;
 }
 
-- (int)_enqueueFlowConsistencyWithCommandBuffer:(id)a3 in_uv0_tex:(id)a4 in_uv1_tex:(id)a5 out_uv_tex:(id)a6
+- (int)_enqueueFlowConsistencyWithCommandBuffer:(id)buffer in_uv0_tex:(id)in_uv0_tex in_uv1_tex:(id)in_uv1_tex out_uv_tex:(id)out_uv_tex
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  LODWORD(a3) = objc_msgSend_width(v12, v14, v15, v16, v17, v18, v19, v20, v21);
-  v30 = objc_msgSend_height(v12, v22, v23, v24, v25, v26, v27, v28, v29);
+  in_uv0_texCopy = in_uv0_tex;
+  in_uv1_texCopy = in_uv1_tex;
+  out_uv_texCopy = out_uv_tex;
+  bufferCopy = buffer;
+  LODWORD(buffer) = objc_msgSend_width(out_uv_texCopy, v14, v15, v16, v17, v18, v19, v20, v21);
+  v30 = objc_msgSend_height(out_uv_texCopy, v22, v23, v24, v25, v26, v27, v28, v29);
   __asm { FMOV            V0.2S, #1.0 }
 
   v144 = _D0;
   v145 = _D0;
   v143 = 1065353216;
   v142 = 1065353216;
-  objc_msgSend__computeScalingFactor_dst_tex_scale_xy_inv_coeff_(LKTKeypointDetector, v37, v10, v12, &v145, &v143, v38, v39, *&_D0);
-  objc_msgSend__computeScalingFactor_dst_tex_scale_xy_inv_coeff_(LKTKeypointDetector, v40, v11, v12, &v144, &v142, v41, v42, v43);
+  objc_msgSend__computeScalingFactor_dst_tex_scale_xy_inv_coeff_(LKTKeypointDetector, v37, in_uv0_texCopy, out_uv_texCopy, &v145, &v143, v38, v39, *&_D0);
+  objc_msgSend__computeScalingFactor_dst_tex_scale_xy_inv_coeff_(LKTKeypointDetector, v40, in_uv1_texCopy, out_uv_texCopy, &v144, &v142, v41, v42, v43);
   v137 = 0;
-  v136[0] = a3;
+  v136[0] = buffer;
   v136[1] = v30;
   v138 = v145;
   v139 = v144;
@@ -540,19 +540,19 @@ LABEL_5:
   v45 = vld1_dup_f32(&v142);
   v140 = v44;
   v141 = v45;
-  v53 = objc_msgSend_computeCommandEncoder(v13, v46, v47, v48, v49, v50, v51, v52, v44.f32[0]);
+  v53 = objc_msgSend_computeCommandEncoder(bufferCopy, v46, v47, v48, v49, v50, v51, v52, v44.f32[0]);
 
   if (v53)
   {
     objc_msgSend_setComputePipelineState_(v53, v54, self->_computePipelines[7], v55, v56, v57, v58, v59, v60);
-    objc_msgSend_setTexture_atIndex_(v53, v61, v10, 0, v62, v63, v64, v65, v66);
-    objc_msgSend_setTexture_atIndex_(v53, v67, v11, 1, v68, v69, v70, v71, v72);
-    objc_msgSend_setTexture_atIndex_(v53, v73, v12, 2, v74, v75, v76, v77, v78);
+    objc_msgSend_setTexture_atIndex_(v53, v61, in_uv0_texCopy, 0, v62, v63, v64, v65, v66);
+    objc_msgSend_setTexture_atIndex_(v53, v67, in_uv1_texCopy, 1, v68, v69, v70, v71, v72);
+    objc_msgSend_setTexture_atIndex_(v53, v73, out_uv_texCopy, 2, v74, v75, v76, v77, v78);
     objc_msgSend_setBytes_length_atIndex_(v53, v79, v136, 48, 0, v80, v81, v82, v83);
     v92 = objc_msgSend_threadExecutionWidth(self->_computePipelines[7], v84, v85, v86, v87, v88, v89, v90, v91);
     v101 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_computePipelines[7], v93, v94, v95, v96, v97, v98, v99, v100) / v92;
-    v135[0] = objc_msgSend_width(v12, v102, v103, v104, v105, v106, v107, v108, v109);
-    v135[1] = objc_msgSend_height(v12, v110, v111, v112, v113, v114, v115, v116, v117);
+    v135[0] = objc_msgSend_width(out_uv_texCopy, v102, v103, v104, v105, v106, v107, v108, v109);
+    v135[1] = objc_msgSend_height(out_uv_texCopy, v110, v111, v112, v113, v114, v115, v116, v117);
     v135[2] = 1;
     v134[0] = v92;
     v134[1] = v101;
@@ -571,21 +571,21 @@ LABEL_5:
   return v132;
 }
 
-+ (void)_computeScalingFactor:(id)a1 dst_tex:(SEL)a2 scale_xy_inv:(id)a3 coeff:(id)a4
++ (void)_computeScalingFactor:(id)factor dst_tex:(SEL)dst_tex scale_xy_inv:(id)scale_xy_inv coeff:(id)coeff
 {
   v6 = v5;
   v7 = v4;
-  v86 = a3;
-  v9 = a4;
-  v18 = objc_msgSend_width(v9, v10, v11, v12, v13, v14, v15, v16, v17);
-  v27 = objc_msgSend_width(v86, v19, v20, v21, v22, v23, v24, v25, v26);
+  scale_xy_invCopy = scale_xy_inv;
+  coeffCopy = coeff;
+  v18 = objc_msgSend_width(coeffCopy, v10, v11, v12, v13, v14, v15, v16, v17);
+  v27 = objc_msgSend_width(scale_xy_invCopy, v19, v20, v21, v22, v23, v24, v25, v26);
   v28 = v18 / v27;
-  v36 = objc_msgSend_height(v9, v29, v30, v31, v32, v33, v34, v35, v27);
-  *&v52 = v36 / objc_msgSend_height(v86, v37, v38, v39, v40, v41, v42, v43, v44);
+  v36 = objc_msgSend_height(coeffCopy, v29, v30, v31, v32, v33, v34, v35, v27);
+  *&v52 = v36 / objc_msgSend_height(scale_xy_invCopy, v37, v38, v39, v40, v41, v42, v43, v44);
   if (v28 <= 1.5 || *&v52 <= 1.5)
   {
-    v54 = objc_msgSend_width(v9, v45, v46, v47, v48, v49, v50, v51, 1.5, v52);
-    if (v54 != objc_msgSend_width(v86, v55, v56, v57, v58, v59, v60, v61, v62) || (v71 = objc_msgSend_height(v9, v63, v64, v65, v66, v67, v68, v69, v70), v71 != objc_msgSend_height(v86, v72, v73, v74, v75, v76, v77, v78, v79)))
+    v54 = objc_msgSend_width(coeffCopy, v45, v46, v47, v48, v49, v50, v51, 1.5, v52);
+    if (v54 != objc_msgSend_width(scale_xy_invCopy, v55, v56, v57, v58, v59, v60, v61, v62) || (v71 = objc_msgSend_height(coeffCopy, v63, v64, v65, v66, v67, v68, v69, v70), v71 != objc_msgSend_height(scale_xy_invCopy, v72, v73, v74, v75, v76, v77, v78, v79)))
     {
       sub_29576EF68();
     }
@@ -913,16 +913,16 @@ LABEL_16:
 
 - (int)_computeOpticalFlowBidirectional
 {
-  v2 = self;
+  selfCopy = self;
   v3 = self->_nscales - 1;
   uv_fwd_tex = self->_uv_fwd_tex;
   v4 = self->_uv_fwd_tex[0][v3];
-  uv_bwd_tex = v2->_uv_bwd_tex;
-  v5 = v2->_uv_bwd_tex[0][v3];
-  if (v2->_uv_bwd_tex_user_ref)
+  uv_bwd_tex = selfCopy->_uv_bwd_tex;
+  v5 = selfCopy->_uv_bwd_tex[0][v3];
+  if (selfCopy->_uv_bwd_tex_user_ref)
   {
-    nscales = v2->_nscales;
-    if (nscales <= v2->_lastScale)
+    nscales = selfCopy->_nscales;
+    if (nscales <= selfCopy->_lastScale)
     {
       v7 = 0;
       v90 = 0;
@@ -934,21 +934,21 @@ LABEL_16:
       v123 = v4;
       v7 = 0;
       v8 = 0;
-      p_uv_bwd_tex_user_ref = &v2->_uv_bwd_tex_user_ref;
-      v94 = v2->_I_tex[1];
-      I_tex = v2->_I_tex;
-      G1_tex = v2->_G1_tex;
-      G0_tex = v2->_G0_tex;
-      C1_tex = v2->_C1_tex;
-      C0_tex = v2->_C0_tex;
-      p_conf_fwd_tex_user_ref = &v2->_conf_fwd_tex_user_ref;
-      p_uv_fwd_tex_user_ref = &v2->_uv_fwd_tex_user_ref;
-      p_conf_bwd_tex_user_ref = &v2->_conf_bwd_tex_user_ref;
-      v99 = v2->_uv_bwd_tex[1];
-      conf_bwd_tex = v2->_conf_bwd_tex;
-      conf_fwd_tex = v2->_conf_fwd_tex;
+      p_uv_bwd_tex_user_ref = &selfCopy->_uv_bwd_tex_user_ref;
+      v94 = selfCopy->_I_tex[1];
+      I_tex = selfCopy->_I_tex;
+      G1_tex = selfCopy->_G1_tex;
+      G0_tex = selfCopy->_G0_tex;
+      C1_tex = selfCopy->_C1_tex;
+      C0_tex = selfCopy->_C0_tex;
+      p_conf_fwd_tex_user_ref = &selfCopy->_conf_fwd_tex_user_ref;
+      p_uv_fwd_tex_user_ref = &selfCopy->_uv_fwd_tex_user_ref;
+      p_conf_bwd_tex_user_ref = &selfCopy->_conf_bwd_tex_user_ref;
+      v99 = selfCopy->_uv_bwd_tex[1];
+      conf_bwd_tex = selfCopy->_conf_bwd_tex;
+      conf_fwd_tex = selfCopy->_conf_fwd_tex;
       v109 = v3;
-      v110 = v2;
+      v110 = selfCopy;
       v108 = v3;
       do
       {
@@ -956,19 +956,19 @@ LABEL_16:
         v10 = nscales - 1;
         v11 = (*I_tex)[v10];
         v12 = v94[v10];
-        v21 = objc_msgSend_commandBuffer(v2->_commandQueue, v13, v14, v15, v16, v17, v18, v19, v20);
+        v21 = objc_msgSend_commandBuffer(selfCopy->_commandQueue, v13, v14, v15, v16, v17, v18, v19, v20);
 
         v29 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v22, @"LKT:ComputeFlow level %d", v23, v24, v25, v26, v27, v28, v10);
         objc_msgSend_setLabel_(v21, v30, v29, v31, v32, v33, v34, v35, v36);
 
         v97 = v11;
-        objc_msgSend__computeFeaturesWithCommandBuffer_in_tex_out_tex_(v2, v37, v21, v11, G0_tex[v10], v38, v39, v40, v41);
+        objc_msgSend__computeFeaturesWithCommandBuffer_in_tex_out_tex_(selfCopy, v37, v21, v11, G0_tex[v10], v38, v39, v40, v41);
         v96 = v12;
-        objc_msgSend__computeFeaturesWithCommandBuffer_in_tex_out_tex_(v2, v42, v21, v12, G1_tex[v10], v43, v44, v45, v46);
-        objc_msgSend__computeFeaturesDerivativesWithCommandBuffer_in_tex_out_tex_(v2, v47, v21, G0_tex[v10], C0_tex[v10], v48, v49, v50, v51);
+        objc_msgSend__computeFeaturesWithCommandBuffer_in_tex_out_tex_(selfCopy, v42, v21, v12, G1_tex[v10], v43, v44, v45, v46);
+        objc_msgSend__computeFeaturesDerivativesWithCommandBuffer_in_tex_out_tex_(selfCopy, v47, v21, G0_tex[v10], C0_tex[v10], v48, v49, v50, v51);
         v116 = v21;
-        objc_msgSend__computeFeaturesDerivativesWithCommandBuffer_in_tex_out_tex_(v2, v52, v21, G1_tex[v10], C1_tex[v10], v53, v54, v55, v56);
-        nwarpings = v2->_nwarpings;
+        objc_msgSend__computeFeaturesDerivativesWithCommandBuffer_in_tex_out_tex_(selfCopy, v52, v21, G1_tex[v10], C1_tex[v10], v53, v54, v55, v56);
+        nwarpings = selfCopy->_nwarpings;
         v115 = v10;
         if (nwarpings >= 1)
         {
@@ -987,7 +987,7 @@ LABEL_16:
             else
             {
               v67 = v115;
-              v68 = v2->_lastScale == v115;
+              v68 = selfCopy->_lastScale == v115;
             }
 
             v117 = v66;
@@ -1064,7 +1064,7 @@ LABEL_16:
               v123 = v77;
             }
 
-            v2 = v110;
+            selfCopy = v110;
             objc_msgSend__enqueueFlowConsistencyWithCommandBuffer_in_uv0_tex_in_uv1_tex_out_uv_tex_(v110, v79, v116, v77, v70, v71, v80, v81, v82);
             objc_msgSend__doSolverWithCommandBuffer_scale_in_uv_tex_in_G0_tex_in_G1_tex_in_C0_tex_in_C1_tex_out_uv_tex_out_w_tex_(v110, v88, v116, v67, v71, v120, v119, v118, v89, v69, v78, v76);
 
@@ -1082,7 +1082,7 @@ LABEL_16:
         nscales = v115;
       }
 
-      while (v115 > v2->_lastScale);
+      while (v115 > selfCopy->_lastScale);
       v90 = 0;
       v5 = v122;
       v4 = v123;
@@ -1098,25 +1098,25 @@ LABEL_16:
   return v90;
 }
 
-- (int)_enqueueKeypointsFromFlowWithCommandBuffer:(id)a3 in_uv_fwd_tex:(id)a4 in_uv_bwd_tex:(id)a5 in_conf_fwd_tex:(id)a6 in_conf_bwd_tex:(id)a7 out_kpt_buf:(id)a8 out_kpt_conf:(id)a9 block_size:(int)a10 bidirectional_error:(float)a11 confidence_radial_weight:(float)a12 confidence_minimum:(float)a13 out_num_keypoints:(unsigned __int16 *)a14
+- (int)_enqueueKeypointsFromFlowWithCommandBuffer:(id)buffer in_uv_fwd_tex:(id)in_uv_fwd_tex in_uv_bwd_tex:(id)in_uv_bwd_tex in_conf_fwd_tex:(id)in_conf_fwd_tex in_conf_bwd_tex:(id)in_conf_bwd_tex out_kpt_buf:(id)out_kpt_buf out_kpt_conf:(id)out_kpt_conf block_size:(int)self0 bidirectional_error:(float)self1 confidence_radial_weight:(float)self2 confidence_minimum:(float)self3 out_num_keypoints:(unsigned __int16 *)self4
 {
-  v23 = a4;
-  v140 = a5;
-  v141 = a6;
-  v139 = a7;
-  v138 = a8;
-  v137 = a9;
-  v24 = a3;
-  v33 = objc_msgSend_width(v23, v25, v26, v27, v28, v29, v30, v31, v32) / a10;
+  in_uv_fwd_texCopy = in_uv_fwd_tex;
+  in_uv_bwd_texCopy = in_uv_bwd_tex;
+  in_conf_fwd_texCopy = in_conf_fwd_tex;
+  in_conf_bwd_texCopy = in_conf_bwd_tex;
+  out_kpt_bufCopy = out_kpt_buf;
+  out_kpt_confCopy = out_kpt_conf;
+  bufferCopy = buffer;
+  v33 = objc_msgSend_width(in_uv_fwd_texCopy, v25, v26, v27, v28, v29, v30, v31, v32) / block_size;
   v150 = 0;
-  v144 = a10;
+  block_sizeCopy = block_size;
   v145 = v33;
-  v42 = objc_msgSend_height(v23, v34, v35, v36, v37, v38, v39, v40, v41) / a10;
+  v42 = objc_msgSend_height(in_uv_fwd_texCopy, v34, v35, v36, v37, v38, v39, v40, v41) / block_size;
   v146 = v42;
-  v147 = a11;
-  v148 = a12;
-  v149 = LODWORD(a13);
-  v51 = objc_msgSend_computeCommandEncoder(v24, v43, v44, v45, v46, v47, v48, v49, v50);
+  bidirectional_errorCopy = bidirectional_error;
+  confidence_radial_weightCopy = confidence_radial_weight;
+  v149 = LODWORD(confidence_minimum);
+  v51 = objc_msgSend_computeCommandEncoder(bufferCopy, v43, v44, v45, v46, v47, v48, v49, v50);
 
   if (!v51)
   {
@@ -1125,11 +1125,11 @@ LABEL_16:
     sub_29575F6C8();
     v135 = FigSignalErrorAtGM();
 LABEL_7:
-    v78 = v139;
-    v65 = v140;
-    v85 = v23;
-    v92 = v137;
-    v86 = v138;
+    v78 = in_conf_bwd_texCopy;
+    v65 = in_uv_bwd_texCopy;
+    v85 = in_uv_fwd_texCopy;
+    v92 = out_kpt_confCopy;
+    v86 = out_kpt_bufCopy;
     goto LABEL_4;
   }
 
@@ -1140,18 +1140,18 @@ LABEL_7:
   }
 
   objc_msgSend_setComputePipelineState_(v51, v52, self->_computePipelines[8], v53, v54, v55, v56, v57, v58);
-  objc_msgSend_setTexture_atIndex_(v51, v59, v23, 0, v60, v61, v62, v63, v64);
-  v65 = v140;
-  objc_msgSend_setTexture_atIndex_(v51, v66, v140, 1, v67, v68, v69, v70, v71);
-  objc_msgSend_setTexture_atIndex_(v51, v72, v141, 2, v73, v74, v75, v76, v77);
-  v78 = v139;
-  objc_msgSend_setTexture_atIndex_(v51, v79, v139, 3, v80, v81, v82, v83, v84);
-  v85 = v23;
-  v86 = v138;
-  objc_msgSend_setBuffer_offset_atIndex_(v51, v87, v138, 0, 0, v88, v89, v90, v91);
-  v92 = v137;
-  objc_msgSend_setBuffer_offset_atIndex_(v51, v93, v137, 0, 1, v94, v95, v96, v97);
-  objc_msgSend_setBytes_length_atIndex_(v51, v98, &v144, 32, 2, v99, v100, v101, v102);
+  objc_msgSend_setTexture_atIndex_(v51, v59, in_uv_fwd_texCopy, 0, v60, v61, v62, v63, v64);
+  v65 = in_uv_bwd_texCopy;
+  objc_msgSend_setTexture_atIndex_(v51, v66, in_uv_bwd_texCopy, 1, v67, v68, v69, v70, v71);
+  objc_msgSend_setTexture_atIndex_(v51, v72, in_conf_fwd_texCopy, 2, v73, v74, v75, v76, v77);
+  v78 = in_conf_bwd_texCopy;
+  objc_msgSend_setTexture_atIndex_(v51, v79, in_conf_bwd_texCopy, 3, v80, v81, v82, v83, v84);
+  v85 = in_uv_fwd_texCopy;
+  v86 = out_kpt_bufCopy;
+  objc_msgSend_setBuffer_offset_atIndex_(v51, v87, out_kpt_bufCopy, 0, 0, v88, v89, v90, v91);
+  v92 = out_kpt_confCopy;
+  objc_msgSend_setBuffer_offset_atIndex_(v51, v93, out_kpt_confCopy, 0, 1, v94, v95, v96, v97);
+  objc_msgSend_setBytes_length_atIndex_(v51, v98, &block_sizeCopy, 32, 2, v99, v100, v101, v102);
   v111 = objc_msgSend_threadExecutionWidth(self->_computePipelines[8], v103, v104, v105, v106, v107, v108, v109, v110);
   v120 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_computePipelines[8], v112, v113, v114, v115, v116, v117, v118, v119);
   v143[0] = v33;
@@ -1163,7 +1163,7 @@ LABEL_7:
   objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v51, v121, v143, v142, v122, v123, v124, v125, v126);
   objc_msgSend_endEncoding(v51, v127, v128, v129, v130, v131, v132, v133, v134);
   v135 = 0;
-  *a14 = v42 * v33;
+  *out_num_keypoints = v42 * v33;
 LABEL_4:
 
   return v135;

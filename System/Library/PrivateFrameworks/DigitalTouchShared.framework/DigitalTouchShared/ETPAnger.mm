@@ -1,20 +1,20 @@
 @interface ETPAnger
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNormalizedCenterX:(BOOL)a3;
-- (void)setHasNormalizedCenterY:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasNormalizedCenterX:(BOOL)x;
+- (void)setHasNormalizedCenterY:(BOOL)y;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ETPAnger
 
-- (void)setHasNormalizedCenterX:(BOOL)a3
+- (void)setHasNormalizedCenterX:(BOOL)x
 {
-  if (a3)
+  if (x)
   {
     v3 = 2;
   }
@@ -27,9 +27,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasNormalizedCenterY:(BOOL)a3
+- (void)setHasNormalizedCenterY:(BOOL)y
 {
-  if (a3)
+  if (y)
   {
     v3 = 4;
   }
@@ -48,21 +48,21 @@
   v8.receiver = self;
   v8.super_class = ETPAnger;
   v4 = [(ETPAnger *)&v8 description];
-  v5 = [(ETPAnger *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ETPAnger *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     *&v4 = self->_duration;
     v10 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v10 forKey:@"duration"];
+    [dictionary setObject:v10 forKey:@"duration"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -84,41 +84,41 @@ LABEL_3:
 
   *&v4 = self->_normalizedCenterX;
   v11 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v11 forKey:@"normalizedCenterX"];
+  [dictionary setObject:v11 forKey:@"normalizedCenterX"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     *&v4 = self->_normalizedCenterY;
     v6 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v6 forKey:@"normalizedCenterY"];
+    [dictionary setObject:v6 forKey:@"normalizedCenterY"];
   }
 
 LABEL_5:
   delays = self->_delays;
   if (delays)
   {
-    [v3 setObject:delays forKey:@"delays"];
+    [dictionary setObject:delays forKey:@"delays"];
   }
 
   points = self->_points;
   if (points)
   {
-    [v3 setObject:points forKey:@"points"];
+    [dictionary setObject:points forKey:@"points"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -138,31 +138,31 @@ LABEL_3:
   }
 
   PBDataWriterWriteFloatField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
   if (self->_delays)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_points)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 1) == 0)
@@ -200,34 +200,34 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSData *)self->_delays copyWithZone:a3];
+  v8 = [(NSData *)self->_delays copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
-  v10 = [(NSData *)self->_points copyWithZone:a3];
+  v10 = [(NSData *)self->_points copyWithZone:zone];
   v11 = v6[4];
   v6[4] = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_duration != *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_duration != *(equalCopy + 4))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_21:
     v7 = 0;
@@ -236,38 +236,38 @@ LABEL_21:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_normalizedCenterX != *(v4 + 5))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_normalizedCenterX != *(equalCopy + 5))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_normalizedCenterY != *(v4 + 6))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_normalizedCenterY != *(equalCopy + 6))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   delays = self->_delays;
-  if (delays | *(v4 + 1) && ![(NSData *)delays isEqual:?])
+  if (delays | *(equalCopy + 1) && ![(NSData *)delays isEqual:?])
   {
     goto LABEL_21;
   }
 
   points = self->_points;
-  if (points | *(v4 + 4))
+  if (points | *(equalCopy + 4))
   {
     v7 = [(NSData *)points isEqual:?];
   }
@@ -404,15 +404,15 @@ LABEL_22:
   return v20 ^ [(NSData *)self->_points hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if (v5)
   {
-    self->_duration = *(v4 + 4);
+    self->_duration = *(fromCopy + 4);
     *&self->_has |= 1u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -425,32 +425,32 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 40) & 2) == 0)
+  else if ((*(fromCopy + 40) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_normalizedCenterX = *(v4 + 5);
+  self->_normalizedCenterX = *(fromCopy + 5);
   *&self->_has |= 2u;
-  if ((*(v4 + 40) & 4) != 0)
+  if ((*(fromCopy + 40) & 4) != 0)
   {
 LABEL_4:
-    self->_normalizedCenterY = *(v4 + 6);
+    self->_normalizedCenterY = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 
 LABEL_5:
-  v6 = v4;
-  if (*(v4 + 1))
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(ETPAnger *)self setDelays:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ETPAnger *)self setPoints:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

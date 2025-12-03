@@ -1,15 +1,15 @@
 @interface PKSpendingSummaryViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PKSpendingSummaryViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKSpendingSummaryViewController" hasInstanceVariable:@"_scrollView" withType:"UIScrollView"];
-  [v3 validateClass:@"PKSpendingSummaryViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKSpendingSummaryViewController" hasInstanceVariable:@"_scrollView" withType:"UIScrollView"];
+  [validationsCopy validateClass:@"PKSpendingSummaryViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

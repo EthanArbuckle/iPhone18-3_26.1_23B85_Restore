@@ -1,30 +1,30 @@
 @interface _CPCardViewDisappearFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPCardViewDisappearFeedback)init;
-- (_CPCardViewDisappearFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (_CPCardViewDisappearFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPCardViewDisappearFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timestamp = self->_timestamp;
-    if (timestamp == [v4 timestamp])
+    if (timestamp == [equalCopy timestamp])
     {
       cardDisappearEvent = self->_cardDisappearEvent;
-      if (cardDisappearEvent == [v4 cardDisappearEvent])
+      if (cardDisappearEvent == [equalCopy cardDisappearEvent])
       {
-        v7 = [(_CPCardViewDisappearFeedback *)self card];
-        v8 = [v4 card];
-        v9 = v8;
-        if ((v7 != 0) != (v8 == 0))
+        card = [(_CPCardViewDisappearFeedback *)self card];
+        card2 = [equalCopy card];
+        v9 = card2;
+        if ((card != 0) != (card2 == 0))
         {
-          v10 = [(_CPCardViewDisappearFeedback *)self card];
-          if (!v10)
+          card3 = [(_CPCardViewDisappearFeedback *)self card];
+          if (!card3)
           {
 
 LABEL_12:
@@ -32,10 +32,10 @@ LABEL_12:
             goto LABEL_10;
           }
 
-          v11 = v10;
-          v12 = [(_CPCardViewDisappearFeedback *)self card];
-          v13 = [v4 card];
-          v14 = [v12 isEqual:v13];
+          v11 = card3;
+          card4 = [(_CPCardViewDisappearFeedback *)self card];
+          card5 = [equalCopy card];
+          v14 = [card4 isEqual:card5];
 
           if (v14)
           {
@@ -56,9 +56,9 @@ LABEL_10:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(_CPCardViewDisappearFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -71,15 +71,15 @@ LABEL_10:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_CPCardViewDisappearFeedback *)self card];
+  card = [(_CPCardViewDisappearFeedback *)self card];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (card)
   {
-    v8 = [(_CPCardViewDisappearFeedback *)self card];
+    card2 = [(_CPCardViewDisappearFeedback *)self card];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
@@ -97,23 +97,23 @@ LABEL_10:
   return v2;
 }
 
-- (_CPCardViewDisappearFeedback)initWithFacade:(id)a3
+- (_CPCardViewDisappearFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v12.receiver = self;
   v12.super_class = _CPCardViewDisappearFeedback;
   v5 = [(_CPCardViewDisappearFeedback *)&v12 init];
   if (v5)
   {
-    -[_CPCardViewDisappearFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    -[_CPCardViewDisappearFeedback setCardDisappearEvent:](v5, "setCardDisappearEvent:", [v4 cardDisappearEvent]);
-    v6 = [v4 card];
+    -[_CPCardViewDisappearFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    -[_CPCardViewDisappearFeedback setCardDisappearEvent:](v5, "setCardDisappearEvent:", [facadeCopy cardDisappearEvent]);
+    card = [facadeCopy card];
 
-    if (v6)
+    if (card)
     {
       v7 = [_CPCardForFeedback alloc];
-      v8 = [v4 card];
-      v9 = [(_CPCardForFeedback *)v7 initWithFacade:v8];
+      card2 = [facadeCopy card];
+      v9 = [(_CPCardForFeedback *)v7 initWithFacade:card2];
       [(_CPCardViewDisappearFeedback *)v5 setCard:v9];
     }
 

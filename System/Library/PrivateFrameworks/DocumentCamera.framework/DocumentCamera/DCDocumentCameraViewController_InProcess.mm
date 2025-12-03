@@ -1,20 +1,20 @@
 @interface DCDocumentCameraViewController_InProcess
-- (DCDocumentCameraViewController_InProcess)initWithDelegate:(id)a3;
+- (DCDocumentCameraViewController_InProcess)initWithDelegate:(id)delegate;
 - (void)_autoDismiss;
 - (void)didReceiveMemoryWarning;
-- (void)documentCameraController:(id)a3 didFinishWithDocInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6;
-- (void)documentCameraController:(id)a3 didFinishWithImage:(id)a4;
-- (void)documentCameraControllerDidCancel:(id)a3;
-- (void)remoteDocumentCameraController:(id)a3 didFailWithError:(id)a4;
-- (void)remoteDocumentCameraController:(id)a3 didFinishWithInfoCollection:(id)a4;
-- (void)remoteDocumentCameraControllerDidCancel:(id)a3;
+- (void)documentCameraController:(id)controller didFinishWithDocInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user;
+- (void)documentCameraController:(id)controller didFinishWithImage:(id)image;
+- (void)documentCameraControllerDidCancel:(id)cancel;
+- (void)remoteDocumentCameraController:(id)controller didFailWithError:(id)error;
+- (void)remoteDocumentCameraController:(id)controller didFinishWithInfoCollection:(id)collection;
+- (void)remoteDocumentCameraControllerDidCancel:(id)cancel;
 @end
 
 @implementation DCDocumentCameraViewController_InProcess
 
-- (DCDocumentCameraViewController_InProcess)initWithDelegate:(id)a3
+- (DCDocumentCameraViewController_InProcess)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [[ICDocCamImageCache alloc] initWithDataCryptorDelegate:0];
   if (DCDebugInterfaceEnabled())
   {
@@ -40,7 +40,7 @@
   v13 = v9;
   v16.receiver = self;
   v16.super_class = DCDocumentCameraViewController_InProcess;
-  v14 = [(DCDocumentCameraViewController *)&v16 initWithDelegate:v4 childViewController:v9];
+  v14 = [(DCDocumentCameraViewController *)&v16 initWithDelegate:delegateCopy childViewController:v9];
 
   if (v14)
   {
@@ -58,18 +58,18 @@
   [(DCDocumentCameraViewController_InProcess *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)documentCameraController:(id)a3 didFinishWithDocInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6
+- (void)documentCameraController:(id)controller didFinishWithDocInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user
 {
-  v13 = a4;
-  v8 = a5;
-  v9 = [(DCDocumentCameraViewController *)self docCamDelegate];
+  collectionCopy = collection;
+  cacheCopy = cache;
+  docCamDelegate = [(DCDocumentCameraViewController *)self docCamDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [[DCScannedDocument alloc] initWithDocInfoCollection:v13 imageCache:v8];
-    v12 = [(DCDocumentCameraViewController *)self docCamDelegate];
-    [v12 documentCameraViewController:self didFinishWithDocument:v11];
+    v11 = [[DCScannedDocument alloc] initWithDocInfoCollection:collectionCopy imageCache:cacheCopy];
+    docCamDelegate2 = [(DCDocumentCameraViewController *)self docCamDelegate];
+    [docCamDelegate2 documentCameraViewController:self didFinishWithDocument:v11];
   }
 
   else
@@ -78,15 +78,15 @@
   }
 }
 
-- (void)documentCameraController:(id)a3 didFinishWithImage:(id)a4
+- (void)documentCameraController:(id)controller didFinishWithImage:(id)image
 {
-  v5 = [(DCDocumentCameraViewController *)self docCamDelegate:a3];
+  v5 = [(DCDocumentCameraViewController *)self docCamDelegate:controller];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(DCDocumentCameraViewController *)self docCamDelegate];
-    [v7 documentCameraViewControllerDidCancel:self];
+    docCamDelegate = [(DCDocumentCameraViewController *)self docCamDelegate];
+    [docCamDelegate documentCameraViewControllerDidCancel:self];
   }
 
   else
@@ -96,15 +96,15 @@
   }
 }
 
-- (void)documentCameraControllerDidCancel:(id)a3
+- (void)documentCameraControllerDidCancel:(id)cancel
 {
-  v4 = [(DCDocumentCameraViewController *)self docCamDelegate];
+  docCamDelegate = [(DCDocumentCameraViewController *)self docCamDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DCDocumentCameraViewController *)self docCamDelegate];
-    [v6 documentCameraViewControllerDidCancel:self];
+    docCamDelegate2 = [(DCDocumentCameraViewController *)self docCamDelegate];
+    [docCamDelegate2 documentCameraViewControllerDidCancel:self];
   }
 
   else
@@ -114,15 +114,15 @@
   }
 }
 
-- (void)remoteDocumentCameraControllerDidCancel:(id)a3
+- (void)remoteDocumentCameraControllerDidCancel:(id)cancel
 {
-  v4 = [(DCDocumentCameraViewController *)self docCamDelegate];
+  docCamDelegate = [(DCDocumentCameraViewController *)self docCamDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DCDocumentCameraViewController *)self docCamDelegate];
-    [v6 documentCameraViewControllerDidCancel:self];
+    docCamDelegate2 = [(DCDocumentCameraViewController *)self docCamDelegate];
+    [docCamDelegate2 documentCameraViewControllerDidCancel:self];
   }
 
   else
@@ -132,21 +132,21 @@
   }
 }
 
-- (void)remoteDocumentCameraController:(id)a3 didFinishWithInfoCollection:(id)a4
+- (void)remoteDocumentCameraController:(id)controller didFinishWithInfoCollection:(id)collection
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(DCDocumentCameraViewController *)self docCamDelegate];
+  controllerCopy = controller;
+  collectionCopy = collection;
+  docCamDelegate = [(DCDocumentCameraViewController *)self docCamDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = [DCScannedDocument alloc];
-    v10 = [v13 imageCache];
-    v11 = [(DCScannedDocument *)v9 initWithDocInfoCollection:v6 imageCache:v10];
+    imageCache = [controllerCopy imageCache];
+    v11 = [(DCScannedDocument *)v9 initWithDocInfoCollection:collectionCopy imageCache:imageCache];
 
-    v12 = [(DCDocumentCameraViewController *)self docCamDelegate];
-    [v12 documentCameraViewController:self didFinishWithDocument:v11];
+    docCamDelegate2 = [(DCDocumentCameraViewController *)self docCamDelegate];
+    [docCamDelegate2 documentCameraViewController:self didFinishWithDocument:v11];
   }
 
   else
@@ -155,15 +155,15 @@
   }
 }
 
-- (void)remoteDocumentCameraController:(id)a3 didFailWithError:(id)a4
+- (void)remoteDocumentCameraController:(id)controller didFailWithError:(id)error
 {
-  v5 = [(DCDocumentCameraViewController *)self docCamDelegate:a3];
+  v5 = [(DCDocumentCameraViewController *)self docCamDelegate:controller];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(DCDocumentCameraViewController *)self docCamDelegate];
-    [v7 documentCameraViewControllerDidCancel:self];
+    docCamDelegate = [(DCDocumentCameraViewController *)self docCamDelegate];
+    [docCamDelegate documentCameraViewControllerDidCancel:self];
   }
 
   else
@@ -175,8 +175,8 @@
 
 - (void)_autoDismiss
 {
-  v2 = [(DCDocumentCameraViewController_InProcess *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(DCDocumentCameraViewController_InProcess *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface FCAssetsFetchOperation
-- (FCAssetsFetchOperation)initWithAssetHandle:(id)a3;
-- (FCAssetsFetchOperation)initWithAssetHandles:(id)a3;
+- (FCAssetsFetchOperation)initWithAssetHandle:(id)handle;
+- (FCAssetsFetchOperation)initWithAssetHandles:(id)handles;
 - (void)_finish;
 - (void)performOperation;
 @end
@@ -9,23 +9,23 @@
 
 - (void)performOperation
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_assetHandles;
   }
 
   v3 = [(FCAssetsFetchOperation *)self fc_countOfObjectsPassingTest:&__block_literal_global_183];
-  if ([(FCFetchOperation *)v2 cachePolicy]== 3 || (!v2 ? (v4 = 0) : (v4 = v2->_assetHandles), v3 == [(NSArray *)v4 count]))
+  if ([(FCFetchOperation *)selfCopy cachePolicy]== 3 || (!selfCopy ? (v4 = 0) : (v4 = selfCopy->_assetHandles), v3 == [(NSArray *)v4 count]))
   {
-    v5 = [(FCAssetsFetchOperation *)v2 progressHandler];
+    progressHandler = [(FCAssetsFetchOperation *)selfCopy progressHandler];
 
-    if (v5)
+    if (progressHandler)
     {
-      v6 = [(FCAssetsFetchOperation *)v2 progressHandler];
-      if (v2)
+      progressHandler2 = [(FCAssetsFetchOperation *)selfCopy progressHandler];
+      if (selfCopy)
       {
-        assetHandles = v2->_assetHandles;
+        assetHandles = selfCopy->_assetHandles;
       }
 
       else
@@ -36,9 +36,9 @@
       v8 = assetHandles;
       if ([(NSArray *)v8 count])
       {
-        if (v2)
+        if (selfCopy)
         {
-          v10 = v2->_assetHandles;
+          v10 = selfCopy->_assetHandles;
         }
 
         else
@@ -54,10 +54,10 @@
         v9.n128_u64[0] = 1.0;
       }
 
-      v6[2](v6, v9);
+      progressHandler2[2](progressHandler2, v9);
     }
 
-    [(FCAssetsFetchOperation *)&v2->super.super.super.super.isa _finish];
+    [(FCAssetsFetchOperation *)&selfCopy->super.super.super.super.isa _finish];
   }
 
   else
@@ -72,24 +72,24 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __42__FCAssetsFetchOperation_performOperation__block_invoke_2;
     aBlock[3] = &unk_1E7C47A08;
-    aBlock[4] = v2;
+    aBlock[4] = selfCopy;
     v13 = v12;
     v34 = v13;
     v35 = v36;
     v14 = _Block_copy(aBlock);
-    if ([(FCAssetsFetchOperation *)v2 maxConcurrentFetchCount])
+    if ([(FCAssetsFetchOperation *)selfCopy maxConcurrentFetchCount])
     {
       v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v16 = dispatch_queue_create("FCAssetsFetchOperation.serial", v15);
-      if (v2)
+      if (selfCopy)
       {
-        objc_storeStrong(&v2->_serialQueue, v16);
+        objc_storeStrong(&selfCopy->_serialQueue, v16);
       }
 
-      v17 = dispatch_semaphore_create([(FCAssetsFetchOperation *)v2 maxConcurrentFetchCount]);
-      if (v2)
+      v17 = dispatch_semaphore_create([(FCAssetsFetchOperation *)selfCopy maxConcurrentFetchCount]);
+      if (selfCopy)
       {
-        v18 = v2->_assetHandles;
+        v18 = selfCopy->_assetHandles;
       }
 
       else
@@ -103,7 +103,7 @@
       v25[2] = __42__FCAssetsFetchOperation_performOperation__block_invoke_7;
       v25[3] = &unk_1E7C47A58;
       v26 = v11;
-      v27 = v2;
+      v27 = selfCopy;
       v20 = v17;
       v28 = v20;
       v29 = v14;
@@ -112,9 +112,9 @@
 
     else
     {
-      if (v2)
+      if (selfCopy)
       {
-        v21 = v2->_assetHandles;
+        v21 = selfCopy->_assetHandles;
       }
 
       else
@@ -140,18 +140,18 @@
       block[6] = 3221225472;
       block[7] = __42__FCAssetsFetchOperation_performOperation__block_invoke_10;
       block[8] = &unk_1E7C36EA0;
-      block[9] = v2;
-      [(FCAssetsFetchOperation *)&v2->super.super.super.super.isa _finish];
+      block[9] = selfCopy;
+      [(FCAssetsFetchOperation *)&selfCopy->super.super.super.super.isa _finish];
     }
 
     else
     {
-      v23 = FCDispatchQueueForQualityOfService([(FCAssetsFetchOperation *)v2 qualityOfService]);
+      v23 = FCDispatchQueueForQualityOfService([(FCAssetsFetchOperation *)selfCopy qualityOfService]);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __42__FCAssetsFetchOperation_performOperation__block_invoke_11;
       block[3] = &unk_1E7C36EA0;
-      block[4] = v2;
+      block[4] = selfCopy;
       dispatch_group_notify(v11, v23, block);
     }
 
@@ -170,19 +170,19 @@ BOOL __42__FCAssetsFetchOperation_performOperation__block_invoke(uint64_t a1, vo
 - (void)_finish
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v25 = [MEMORY[0x1E695DFA8] set];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v2 = a1[56];
+    v2 = self[56];
     v3 = [v2 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v3)
     {
       v4 = v3;
-      v5 = 0;
+      downloadError = 0;
       v6 = 0;
       v7 = *v28;
       do
@@ -196,15 +196,15 @@ BOOL __42__FCAssetsFetchOperation_performOperation__block_invoke(uint64_t a1, vo
           }
 
           v9 = *(*(&v27 + 1) + 8 * v8);
-          v10 = [v9 dataProvider];
+          dataProvider = [v9 dataProvider];
 
-          if (v10)
+          if (dataProvider)
           {
-            v11 = [a1 interestTokenHandler];
+            interestTokenHandler = [self interestTokenHandler];
 
-            if (v11)
+            if (interestTokenHandler)
             {
-              v12 = [a1 interestTokenHandler];
+              interestTokenHandler2 = [self interestTokenHandler];
               if (v9)
               {
                 v13 = v9[11];
@@ -216,7 +216,7 @@ BOOL __42__FCAssetsFetchOperation_performOperation__block_invoke(uint64_t a1, vo
               }
 
               v14 = v13;
-              (v12)[2](v12, v14);
+              (interestTokenHandler2)[2](interestTokenHandler2, v14);
             }
 
             v6 = 1;
@@ -224,13 +224,13 @@ BOOL __42__FCAssetsFetchOperation_performOperation__block_invoke(uint64_t a1, vo
 
           else
           {
-            v15 = [v9 remoteURL];
-            v16 = [v15 absoluteString];
-            [v25 addObject:v16];
+            remoteURL = [v9 remoteURL];
+            absoluteString = [remoteURL absoluteString];
+            [v25 addObject:absoluteString];
 
-            if (!v5)
+            if (!downloadError)
             {
-              v5 = [v9 downloadError];
+              downloadError = [v9 downloadError];
             }
           }
 
@@ -253,23 +253,23 @@ BOOL __42__FCAssetsFetchOperation_performOperation__block_invoke(uint64_t a1, vo
     else
     {
 
-      v5 = 0;
+      downloadError = 0;
     }
 
-    if ([a1[56] count])
+    if ([self[56] count])
     {
-      v5 = v5;
-      v18 = v5;
-      if (!v5)
+      downloadError = downloadError;
+      v18 = downloadError;
+      if (!downloadError)
       {
-        if ([a1 cachePolicy] == 3)
+        if ([self cachePolicy] == 3)
         {
           [MEMORY[0x1E696ABC0] fc_notCachedErrorWithMissingObjects:v25];
         }
 
         else
         {
-          [MEMORY[0x1E696ABC0] fc_missingAssetErrorWithAssetHandles:a1[56]];
+          [MEMORY[0x1E696ABC0] fc_missingAssetErrorWithAssetHandles:self[56]];
         }
         v18 = ;
       }
@@ -279,9 +279,9 @@ BOOL __42__FCAssetsFetchOperation_performOperation__block_invoke(uint64_t a1, vo
     }
 
 LABEL_26:
-    if (a1[56])
+    if (self[56])
     {
-      v19 = a1[56];
+      v19 = self[56];
     }
 
     else
@@ -290,18 +290,18 @@ LABEL_26:
     }
 
     v20 = [FCFetchOperationResult resultWithStatus:0 fetchedObject:v19 error:0];
-    v21 = [a1 archiveHandler];
+    archiveHandler = [self archiveHandler];
 
-    if (!v21)
+    if (!archiveHandler)
     {
       goto LABEL_38;
     }
 
-    v18 = a1[56];
-    v22 = [a1 maxConcurrentFetchCount];
-    if (v22)
+    v18 = self[56];
+    maxConcurrentFetchCount = [self maxConcurrentFetchCount];
+    if (maxConcurrentFetchCount)
     {
-      v23 = v22;
+      v23 = maxConcurrentFetchCount;
     }
 
     else
@@ -313,27 +313,27 @@ LABEL_26:
     v26[1] = 3221225472;
     v26[2] = __33__FCAssetsFetchOperation__finish__block_invoke;
     v26[3] = &unk_1E7C3C550;
-    v26[4] = a1;
+    v26[4] = self;
     [v18 fc_visitSubarraysWithMaxCount:v23 block:v26];
 LABEL_37:
 
 LABEL_38:
     [v20 setMissingObjectDescriptions:v25];
-    [a1 finishExecutingWithResult:v20];
+    [self finishExecutingWithResult:v20];
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (FCAssetsFetchOperation)initWithAssetHandles:(id)a3
+- (FCAssetsFetchOperation)initWithAssetHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   v9.receiver = self;
   v9.super_class = FCAssetsFetchOperation;
   v5 = [(FCFetchOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlesCopy copy];
     assetHandles = v5->_assetHandles;
     v5->_assetHandles = v6;
   }
@@ -341,14 +341,14 @@ LABEL_38:
   return v5;
 }
 
-- (FCAssetsFetchOperation)initWithAssetHandle:(id)a3
+- (FCAssetsFetchOperation)initWithAssetHandle:(id)handle
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handleCopy = handle;
+  v5 = handleCopy;
+  if (handleCopy)
   {
-    v10[0] = v4;
+    v10[0] = handleCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     v7 = [(FCAssetsFetchOperation *)self initWithAssetHandles:v6];
   }

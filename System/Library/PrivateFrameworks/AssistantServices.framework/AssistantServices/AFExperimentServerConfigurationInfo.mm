@@ -1,15 +1,15 @@
 @interface AFExperimentServerConfigurationInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFExperimentServerConfigurationInfo)initWithBuilder:(id)a3;
-- (AFExperimentServerConfigurationInfo)initWithCoder:(id)a3;
-- (AFExperimentServerConfigurationInfo)initWithConfigurationIdentifier:(id)a3 configurationURL:(id)a4 maxTimeToSync:(double)a5;
-- (AFExperimentServerConfigurationInfo)initWithDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFExperimentServerConfigurationInfo)initWithBuilder:(id)builder;
+- (AFExperimentServerConfigurationInfo)initWithCoder:(id)coder;
+- (AFExperimentServerConfigurationInfo)initWithConfigurationIdentifier:(id)identifier configurationURL:(id)l maxTimeToSync:(double)sync;
+- (AFExperimentServerConfigurationInfo)initWithDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFExperimentServerConfigurationInfo
@@ -38,13 +38,13 @@
   return v8;
 }
 
-- (AFExperimentServerConfigurationInfo)initWithDictionaryRepresentation:(id)a3
+- (AFExperimentServerConfigurationInfo)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"configurationIdentifier"];
+    v6 = [representationCopy objectForKey:@"configurationIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,33 +84,33 @@
     v14 = v13;
 
     self = [(AFExperimentServerConfigurationInfo *)self initWithConfigurationIdentifier:v7 configurationURL:v10 maxTimeToSync:v14];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   configurationIdentifier = self->_configurationIdentifier;
-  v5 = a3;
-  [v5 encodeObject:configurationIdentifier forKey:@"AFExperimentServerConfigurationInfo::configurationIdentifier"];
-  [v5 encodeObject:self->_configurationURL forKey:@"AFExperimentServerConfigurationInfo::configurationURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:configurationIdentifier forKey:@"AFExperimentServerConfigurationInfo::configurationIdentifier"];
+  [coderCopy encodeObject:self->_configurationURL forKey:@"AFExperimentServerConfigurationInfo::configurationURL"];
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_maxTimeToSync];
-  [v5 encodeObject:v6 forKey:@"AFExperimentServerConfigurationInfo::maxTimeToSync"];
+  [coderCopy encodeObject:v6 forKey:@"AFExperimentServerConfigurationInfo::maxTimeToSync"];
 }
 
-- (AFExperimentServerConfigurationInfo)initWithCoder:(id)a3
+- (AFExperimentServerConfigurationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentServerConfigurationInfo::configurationIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentServerConfigurationInfo::configurationURL"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentServerConfigurationInfo::maxTimeToSync"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentServerConfigurationInfo::configurationIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentServerConfigurationInfo::configurationURL"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFExperimentServerConfigurationInfo::maxTimeToSync"];
 
   [v7 doubleValue];
   v9 = v8;
@@ -119,10 +119,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -132,18 +132,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       maxTimeToSync = self->_maxTimeToSync;
       [(AFExperimentServerConfigurationInfo *)v5 maxTimeToSync];
       if (maxTimeToSync == v7)
       {
-        v9 = [(AFExperimentServerConfigurationInfo *)v5 configurationIdentifier];
+        configurationIdentifier = [(AFExperimentServerConfigurationInfo *)v5 configurationIdentifier];
         configurationIdentifier = self->_configurationIdentifier;
-        if (configurationIdentifier == v9 || [(NSString *)configurationIdentifier isEqual:v9])
+        if (configurationIdentifier == configurationIdentifier || [(NSString *)configurationIdentifier isEqual:configurationIdentifier])
         {
-          v11 = [(AFExperimentServerConfigurationInfo *)v5 configurationURL];
+          configurationURL = [(AFExperimentServerConfigurationInfo *)v5 configurationURL];
           configurationURL = self->_configurationURL;
-          v8 = configurationURL == v11 || [(NSURL *)configurationURL isEqual:v11];
+          v8 = configurationURL == configurationURL || [(NSURL *)configurationURL isEqual:configurationURL];
         }
 
         else
@@ -177,7 +177,7 @@
   return v4 ^ v6;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -188,19 +188,19 @@
   return v6;
 }
 
-- (AFExperimentServerConfigurationInfo)initWithConfigurationIdentifier:(id)a3 configurationURL:(id)a4 maxTimeToSync:(double)a5
+- (AFExperimentServerConfigurationInfo)initWithConfigurationIdentifier:(id)identifier configurationURL:(id)l maxTimeToSync:(double)sync
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __102__AFExperimentServerConfigurationInfo_initWithConfigurationIdentifier_configurationURL_maxTimeToSync___block_invoke;
   v14[3] = &unk_1E7346B30;
-  v15 = v8;
-  v16 = v9;
-  v17 = a5;
-  v10 = v9;
-  v11 = v8;
+  v15 = identifierCopy;
+  v16 = lCopy;
+  syncCopy = sync;
+  v10 = lCopy;
+  v11 = identifierCopy;
   v12 = [(AFExperimentServerConfigurationInfo *)self initWithBuilder:v14];
 
   return v12;
@@ -215,26 +215,26 @@ void __102__AFExperimentServerConfigurationInfo_initWithConfigurationIdentifier_
   [v4 setMaxTimeToSync:*(a1 + 48)];
 }
 
-- (AFExperimentServerConfigurationInfo)initWithBuilder:(id)a3
+- (AFExperimentServerConfigurationInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v16.receiver = self;
   v16.super_class = AFExperimentServerConfigurationInfo;
   v5 = [(AFExperimentServerConfigurationInfo *)&v16 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFExperimentServerConfigurationInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFExperimentServerConfigurationInfoMutation *)v7 isDirty])
     {
-      v8 = [(_AFExperimentServerConfigurationInfoMutation *)v7 getConfigurationIdentifier];
-      v9 = [v8 copy];
+      getConfigurationIdentifier = [(_AFExperimentServerConfigurationInfoMutation *)v7 getConfigurationIdentifier];
+      v9 = [getConfigurationIdentifier copy];
       configurationIdentifier = v6->_configurationIdentifier;
       v6->_configurationIdentifier = v9;
 
-      v11 = [(_AFExperimentServerConfigurationInfoMutation *)v7 getConfigurationURL];
-      v12 = [v11 copy];
+      getConfigurationURL = [(_AFExperimentServerConfigurationInfoMutation *)v7 getConfigurationURL];
+      v12 = [getConfigurationURL copy];
       configurationURL = v6->_configurationURL;
       v6->_configurationURL = v12;
 
@@ -246,31 +246,31 @@ void __102__AFExperimentServerConfigurationInfo_initWithConfigurationIdentifier_
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFExperimentServerConfigurationInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFExperimentServerConfigurationInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFExperimentServerConfigurationInfo);
-      v7 = [(_AFExperimentServerConfigurationInfoMutation *)v5 getConfigurationIdentifier];
-      v8 = [v7 copy];
+      getConfigurationIdentifier = [(_AFExperimentServerConfigurationInfoMutation *)v5 getConfigurationIdentifier];
+      v8 = [getConfigurationIdentifier copy];
       configurationIdentifier = v6->_configurationIdentifier;
       v6->_configurationIdentifier = v8;
 
-      v10 = [(_AFExperimentServerConfigurationInfoMutation *)v5 getConfigurationURL];
-      v11 = [v10 copy];
+      getConfigurationURL = [(_AFExperimentServerConfigurationInfoMutation *)v5 getConfigurationURL];
+      v11 = [getConfigurationURL copy];
       configurationURL = v6->_configurationURL;
       v6->_configurationURL = v11;
 

@@ -1,15 +1,15 @@
 @interface CKSendMenuCollectionViewLayoutAccessibility
-- (void)stretchSpringsAttachedToCellsForBoundsChange:(CGRect)a3;
+- (void)stretchSpringsAttachedToCellsForBoundsChange:(CGRect)change;
 @end
 
 @implementation CKSendMenuCollectionViewLayoutAccessibility
 
-- (void)stretchSpringsAttachedToCellsForBoundsChange:(CGRect)a3
+- (void)stretchSpringsAttachedToCellsForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   if (!UIAccessibilityIsVoiceOverRunning())
   {
     v8.receiver = self;

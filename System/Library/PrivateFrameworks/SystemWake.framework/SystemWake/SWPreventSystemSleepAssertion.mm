@@ -1,8 +1,8 @@
 @interface SWPreventSystemSleepAssertion
 + (id)sharedHighPriorityQueue;
 - (BOOL)isActive;
-- (SWPreventSystemSleepAssertion)initWithIdentifier:(id)a3;
-- (void)acquireWithTimeout:(double)a3 handler:(id)a4;
+- (SWPreventSystemSleepAssertion)initWithIdentifier:(id)identifier;
+- (void)acquireWithTimeout:(double)timeout handler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -34,15 +34,15 @@ uint64_t __56__SWPreventSystemSleepAssertion_sharedHighPriorityQueue__block_invo
   return MEMORY[0x2821F96F8]();
 }
 
-- (SWPreventSystemSleepAssertion)initWithIdentifier:(id)a3
+- (SWPreventSystemSleepAssertion)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SWPreventSystemSleepAssertion;
   v5 = [(SWPreventSystemSleepAssertion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -55,15 +55,15 @@ uint64_t __56__SWPreventSystemSleepAssertion_sharedHighPriorityQueue__block_invo
   return v5;
 }
 
-- (void)acquireWithTimeout:(double)a3 handler:(id)a4
+- (void)acquireWithTimeout:(double)timeout handler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   lock_state = self->_lock_state;
   if (lock_state)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"SWPreventSystemSleepAssertion:%p id:%@ state:%u can only be acquired once", self, self->_identifier, lock_state];
+    lock_state = [MEMORY[0x277CCACA8] stringWithFormat:@"SWPreventSystemSleepAssertion:%p id:%@ state:%u can only be acquired once", self, self->_identifier, lock_state];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v13 = NSStringFromSelector(a2);
@@ -74,18 +74,18 @@ uint64_t __56__SWPreventSystemSleepAssertion_sharedHighPriorityQueue__block_invo
       v22 = 2114;
       v23 = v15;
       v24 = 2048;
-      v25 = self;
+      selfCopy = self;
       v26 = 2114;
       v27 = @"SWPreventSystemSleepAssertion.m";
       v28 = 1024;
       v29 = 69;
       v30 = 2114;
-      v31 = v12;
+      v31 = lock_state;
       _os_log_error_impl(&dword_26C657000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
     }
 
-    v16 = v12;
-    [v12 UTF8String];
+    v16 = lock_state;
+    [lock_state UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x26C663080);
@@ -98,10 +98,10 @@ uint64_t __56__SWPreventSystemSleepAssertion_sharedHighPriorityQueue__block_invo
   block[1] = 3221225472;
   block[2] = __60__SWPreventSystemSleepAssertion_acquireWithTimeout_handler___block_invoke;
   block[3] = &unk_279D43308;
-  v19 = a3;
+  timeoutCopy = timeout;
   block[4] = self;
-  v18 = v7;
-  v10 = v7;
+  v18 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(v9, block);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -285,11 +285,11 @@ LABEL_23:
         {
           identifier = self->_identifier;
           *buf = 134218498;
-          v26 = self;
+          selfCopy6 = self;
           v27 = 2114;
           v28 = identifier;
           v29 = 1024;
-          LODWORD(v30) = lock_assertionID;
+          LODWORD(selfCopy4) = lock_assertionID;
           _os_log_debug_impl(&dword_26C657000, v9, OS_LOG_TYPE_DEBUG, "%p power assertion timed out; identifier:%{public}@ id:%d", buf, 0x1Cu);
         }
 
@@ -311,11 +311,11 @@ LABEL_14:
     {
       v14 = self->_identifier;
       *buf = 134218498;
-      v26 = self;
+      selfCopy6 = self;
       v27 = 2114;
       v28 = v14;
       v29 = 1024;
-      LODWORD(v30) = lock_assertionID;
+      LODWORD(selfCopy4) = lock_assertionID;
       _os_log_impl(&dword_26C657000, v9, OS_LOG_TYPE_INFO, "%p will invalidate power assertion; identifier:%{public}@ id:%d", buf, 0x1Cu);
     }
 
@@ -340,7 +340,7 @@ LABEL_14:
 
       v16 = self->_identifier;
       *buf = 134218242;
-      v26 = self;
+      selfCopy6 = self;
       v27 = 2114;
       v28 = v16;
       v13 = "%p already invalidated power assertion identifier:%{public}@";
@@ -356,11 +356,11 @@ LABEL_14:
         v20 = objc_opt_class();
         v21 = NSStringFromClass(v20);
         *buf = 138544642;
-        v26 = v19;
+        selfCopy6 = v19;
         v27 = 2114;
         v28 = v21;
         v29 = 2048;
-        v30 = self;
+        selfCopy4 = self;
         v31 = 2114;
         v32 = @"SWPreventSystemSleepAssertion.m";
         v33 = 1024;
@@ -390,7 +390,7 @@ LABEL_14:
 
       v17 = self->_identifier;
       *buf = 134218242;
-      v26 = self;
+      selfCopy6 = self;
       v27 = 2114;
       v28 = v17;
       v13 = "%p invalidated power assertion before starting acquisition identifier:%{public}@";
@@ -409,7 +409,7 @@ LABEL_15:
 
       v12 = self->_identifier;
       *buf = 134218242;
-      v26 = self;
+      selfCopy6 = self;
       v27 = 2114;
       v28 = v12;
       v13 = "%p invalidated power assertion during acquisition identifier:%{public}@";
@@ -430,7 +430,7 @@ LABEL_16:
   lock_state = self->_lock_state;
   if (lock_state != 3)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"SWPreventSystemSleepAssertion:%p id:%@ state:%u dealloced before invalidation", self, self->_identifier, lock_state];
+    lock_state = [MEMORY[0x277CCACA8] stringWithFormat:@"SWPreventSystemSleepAssertion:%p id:%@ state:%u dealloced before invalidation", self, self->_identifier, lock_state];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v7 = NSStringFromSelector(a2);
@@ -441,18 +441,18 @@ LABEL_16:
       v14 = 2114;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"SWPreventSystemSleepAssertion.m";
       v20 = 1024;
       v21 = 188;
       v22 = 2114;
-      v23 = v6;
+      v23 = lock_state;
       _os_log_error_impl(&dword_26C657000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
     }
 
-    v10 = v6;
-    [v6 UTF8String];
+    v10 = lock_state;
+    [lock_state UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x26C663AA0);

@@ -1,22 +1,22 @@
 @interface MBWiFiPlugin
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4;
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine;
 @end
 
 @implementation MBWiFiPlugin
 
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 restoresPrimaryAccount])
+  policyCopy = policy;
+  engineCopy = engine;
+  if (![engineCopy restoresPrimaryAccount])
   {
     goto LABEL_35;
   }
 
-  v7 = [v6 settingsContext];
-  v8 = [v7 shouldRestoreSystemFiles];
+  settingsContext = [engineCopy settingsContext];
+  shouldRestoreSystemFiles = [settingsContext shouldRestoreSystemFiles];
 
-  if (!v8)
+  if (!shouldRestoreSystemFiles)
   {
     goto LABEL_35;
   }
@@ -29,12 +29,12 @@
     _MBLog();
   }
 
-  v10 = [v6 persona];
-  v11 = [v10 sharedIncompleteRestoreDirectory];
+  persona = [engineCopy persona];
+  sharedIncompleteRestoreDirectory = [persona sharedIncompleteRestoreDirectory];
 
-  v12 = [v11 stringByAppendingPathComponent:@"/var/preferences/SystemConfiguration/com.apple.wifi.plist"];
-  v13 = [v11 stringByAppendingPathComponent:@"/var/preferences/SystemConfiguration/com.apple.wifi-networks.plist"];
-  v14 = [v11 stringByAppendingPathComponent:@"/var/preferences/com.apple.wifi.known-networks.plist"];
+  v12 = [sharedIncompleteRestoreDirectory stringByAppendingPathComponent:@"/var/preferences/SystemConfiguration/com.apple.wifi.plist"];
+  v13 = [sharedIncompleteRestoreDirectory stringByAppendingPathComponent:@"/var/preferences/SystemConfiguration/com.apple.wifi-networks.plist"];
+  v14 = [sharedIncompleteRestoreDirectory stringByAppendingPathComponent:@"/var/preferences/com.apple.wifi.known-networks.plist"];
   v15 = +[NSFileManager defaultManager];
   v16 = [v15 fileExistsAtPath:v12];
 
@@ -76,9 +76,9 @@ LABEL_23:
     {
       if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v21 = [v19 intValue];
+        intValue = [v19 intValue];
         v22 = v14;
-        if (v21 <= 13)
+        if (intValue <= 13)
         {
           if ([v20 BOOLValue])
           {

@@ -1,20 +1,20 @@
 @interface RAPWorkflowLayoutManager
-- (BOOL)_isCorrectionCategory:(id)a3;
-- (BOOL)_isHomeCorrectionsCategory:(id)a3;
-- (BOOL)_isOtherCategory:(id)a3;
-- (BOOL)_isPersonalizedMapsCategory:(id)a3;
-- (BOOL)_isSchoolCorrectionsCategory:(id)a3;
-- (BOOL)_isWorkCorrectionsCategory:(id)a3;
-- (BOOL)_shouldIncludeServerControlledField:(id)a3;
+- (BOOL)_isCorrectionCategory:(id)category;
+- (BOOL)_isHomeCorrectionsCategory:(id)category;
+- (BOOL)_isOtherCategory:(id)category;
+- (BOOL)_isPersonalizedMapsCategory:(id)category;
+- (BOOL)_isSchoolCorrectionsCategory:(id)category;
+- (BOOL)_isWorkCorrectionsCategory:(id)category;
+- (BOOL)_shouldIncludeServerControlledField:(id)field;
 - (NSArray)addPlaceLayoutItems;
 - (NSArray)correctionLayoutItems;
 - (NSArray)otherLayoutItems;
-- (RAPWorkflowLayoutManager)initWithSupportedCategories:(id)a3;
-- (id)_categoryForName:(int)a3;
-- (id)_mergeOriginalItems:(id)a3 withServerOverrideItems:(id)a4 withServerDisabledItemTypes:(id)a5;
+- (RAPWorkflowLayoutManager)initWithSupportedCategories:(id)categories;
+- (id)_categoryForName:(int)name;
+- (id)_mergeOriginalItems:(id)items withServerOverrideItems:(id)overrideItems withServerDisabledItemTypes:(id)types;
 - (id)addIncidentLayoutItems;
 - (void)_initSubcategories;
-- (void)mergeWithServerConfig:(id)a3;
+- (void)mergeWithServerConfig:(id)config;
 @end
 
 @implementation RAPWorkflowLayoutManager
@@ -47,19 +47,19 @@
   return v2;
 }
 
-- (id)_categoryForName:(int)a3
+- (id)_categoryForName:(int)name
 {
   v4 = &off_1016E6AA0;
-  if (a3 > 3)
+  if (name > 3)
   {
-    if (a3 < 7)
+    if (name < 7)
     {
 LABEL_3:
       v4 = &off_1016E69B0;
       goto LABEL_18;
     }
 
-    switch(a3)
+    switch(name)
     {
       case 7:
         v5 = 16;
@@ -77,9 +77,9 @@ LABEL_3:
     goto LABEL_18;
   }
 
-  if (a3 > 1)
+  if (name > 1)
   {
-    if (a3 == 2)
+    if (name == 2)
     {
       v4 = &off_1016E69E0;
     }
@@ -90,9 +90,9 @@ LABEL_3:
     }
   }
 
-  else if (a3)
+  else if (name)
   {
-    if (a3 != 1)
+    if (name != 1)
     {
       goto LABEL_3;
     }
@@ -105,78 +105,78 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)_isOtherCategory:(id)a3
+- (BOOL)_isOtherCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = [NSSet setWithArray:&off_1016ECA10];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:categoryCopy];
 
   return v5;
 }
 
-- (BOOL)_isSchoolCorrectionsCategory:(id)a3
+- (BOOL)_isSchoolCorrectionsCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = [NSSet setWithArray:&off_1016EC9F8];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:categoryCopy];
 
   return v5;
 }
 
-- (BOOL)_isWorkCorrectionsCategory:(id)a3
+- (BOOL)_isWorkCorrectionsCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = [NSSet setWithArray:&off_1016EC9E0];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:categoryCopy];
 
   return v5;
 }
 
-- (BOOL)_isHomeCorrectionsCategory:(id)a3
+- (BOOL)_isHomeCorrectionsCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = [NSSet setWithArray:&off_1016EC9C8];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:categoryCopy];
 
   return v5;
 }
 
-- (BOOL)_isPersonalizedMapsCategory:(id)a3
+- (BOOL)_isPersonalizedMapsCategory:(id)category
 {
-  v4 = a3;
-  if ([(RAPWorkflowLayoutManager *)self _isHomeCorrectionsCategory:v4]|| [(RAPWorkflowLayoutManager *)self _isWorkCorrectionsCategory:v4])
+  categoryCopy = category;
+  if ([(RAPWorkflowLayoutManager *)self _isHomeCorrectionsCategory:categoryCopy]|| [(RAPWorkflowLayoutManager *)self _isWorkCorrectionsCategory:categoryCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [(RAPWorkflowLayoutManager *)self _isSchoolCorrectionsCategory:v4];
+    v5 = [(RAPWorkflowLayoutManager *)self _isSchoolCorrectionsCategory:categoryCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isCorrectionCategory:(id)a3
+- (BOOL)_isCorrectionCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = [NSSet setWithArray:&off_1016EC9B0];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:categoryCopy];
 
   return v5;
 }
 
-- (id)_mergeOriginalItems:(id)a3 withServerOverrideItems:(id)a4 withServerDisabledItemTypes:(id)a5
+- (id)_mergeOriginalItems:(id)items withServerOverrideItems:(id)overrideItems withServerDisabledItemTypes:(id)types
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemsCopy = items;
+  overrideItemsCopy = overrideItems;
+  typesCopy = types;
   v10 = objc_alloc_init(NSMutableDictionary);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v11 = v8;
+  v11 = overrideItemsCopy;
   v12 = [v11 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v12)
   {
@@ -192,8 +192,8 @@ LABEL_18:
         }
 
         v16 = *(*(&v41 + 1) + 8 * i);
-        v17 = [v16 fieldType];
-        [v10 setObject:v16 forKey:v17];
+        fieldType = [v16 fieldType];
+        [v10 setObject:v16 forKey:fieldType];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v41 objects:v46 count:16];
@@ -206,11 +206,11 @@ LABEL_18:
   v39[1] = 3221225472;
   v39[2] = sub_100737B28;
   v39[3] = &unk_101627D50;
-  v33 = v9;
+  v33 = typesCopy;
   v40 = v33;
   v18 = [NSPredicate predicateWithBlock:v39];
-  v34 = v7;
-  v19 = [v7 filteredArrayUsingPredicate:v18];
+  v34 = itemsCopy;
+  v19 = [itemsCopy filteredArrayUsingPredicate:v18];
 
   v37 = 0u;
   v38 = 0u;
@@ -232,18 +232,18 @@ LABEL_18:
         }
 
         v25 = *(*(&v35 + 1) + 8 * j);
-        v26 = [v25 fieldType];
-        v27 = [v10 objectForKey:v26];
+        fieldType2 = [v25 fieldType];
+        v27 = [v10 objectForKey:fieldType2];
 
         if (v27)
         {
-          v28 = [v27 displayText];
-          v29 = [v28 length];
+          displayText = [v27 displayText];
+          v29 = [displayText length];
 
           if (v29)
           {
-            v30 = [v27 displayText];
-            [v25 setDisplayText:v30];
+            displayText2 = [v27 displayText];
+            [v25 setDisplayText:displayText2];
           }
         }
       }
@@ -259,9 +259,9 @@ LABEL_18:
   return v31;
 }
 
-- (void)mergeWithServerConfig:(id)a3
+- (void)mergeWithServerConfig:(id)config
 {
-  v4 = [a3 layoutFields];
+  layoutFields = [config layoutFields];
   v5 = objc_alloc_init(NSMutableArray);
   v33 = objc_alloc_init(NSMutableArray);
   v31 = objc_alloc_init(NSMutableArray);
@@ -270,7 +270,7 @@ LABEL_18:
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v6 = v4;
+  v6 = layoutFields;
   v7 = [v6 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v7)
   {
@@ -288,26 +288,26 @@ LABEL_18:
         v11 = *(*(&v34 + 1) + 8 * i);
         if ([(RAPWorkflowLayoutManager *)self _shouldIncludeServerControlledField:v11])
         {
-          v12 = objc_alloc_init(RAPLayoutItem);
-          v13 = [v11 name];
-          v14 = -[RAPWorkflowLayoutManager _categoryForName:](self, "_categoryForName:", [v13 workflowFieldName]);
-          [(RAPLayoutItem *)v12 setFieldType:v14];
+          name2 = objc_alloc_init(RAPLayoutItem);
+          name = [v11 name];
+          v14 = -[RAPWorkflowLayoutManager _categoryForName:](self, "_categoryForName:", [name workflowFieldName]);
+          [(RAPLayoutItem *)name2 setFieldType:v14];
 
-          v15 = [v11 displayText];
+          displayText = [v11 displayText];
 
-          if (v15)
+          if (displayText)
           {
-            v16 = [v11 displayText];
-            [(RAPLayoutItem *)v12 setDisplayText:v16];
+            displayText2 = [v11 displayText];
+            [(RAPLayoutItem *)name2 setDisplayText:displayText2];
           }
 
-          v17 = [(RAPLayoutItem *)v12 fieldType];
-          v18 = [(RAPWorkflowLayoutManager *)self _isCorrectionCategory:v17];
+          fieldType = [(RAPLayoutItem *)name2 fieldType];
+          v18 = [(RAPWorkflowLayoutManager *)self _isCorrectionCategory:fieldType];
 
           v19 = v5;
-          if (v18 & 1) != 0 || ([(RAPLayoutItem *)v12 fieldType], v20 = objc_claimAutoreleasedReturnValue(), v21 = [(RAPWorkflowLayoutManager *)self _isPersonalizedMapsCategory:v20], v20, v19 = v33, (v21) || ([(RAPLayoutItem *)v12 fieldType], v22 = objc_claimAutoreleasedReturnValue(), v23 = [(RAPWorkflowLayoutManager *)self _isOtherCategory:v22], v22, v19 = v31, v23))
+          if (v18 & 1) != 0 || ([(RAPLayoutItem *)name2 fieldType], v20 = objc_claimAutoreleasedReturnValue(), v21 = [(RAPWorkflowLayoutManager *)self _isPersonalizedMapsCategory:v20], v20, v19 = v33, (v21) || ([(RAPLayoutItem *)name2 fieldType], v22 = objc_claimAutoreleasedReturnValue(), v23 = [(RAPWorkflowLayoutManager *)self _isOtherCategory:v22], v22, v19 = v31, v23))
           {
-            [v19 addObject:v12];
+            [v19 addObject:name2];
           }
         }
 
@@ -318,8 +318,8 @@ LABEL_18:
             continue;
           }
 
-          v12 = [v11 name];
-          v24 = [(RAPWorkflowLayoutManager *)self _categoryForName:[(RAPLayoutItem *)v12 workflowFieldName]];
+          name2 = [v11 name];
+          v24 = [(RAPWorkflowLayoutManager *)self _categoryForName:[(RAPLayoutItem *)name2 workflowFieldName]];
           [v32 addObject:v24];
         }
       }
@@ -343,19 +343,19 @@ LABEL_18:
   self->_otherLayoutItems = v29;
 }
 
-- (BOOL)_shouldIncludeServerControlledField:(id)a3
+- (BOOL)_shouldIncludeServerControlledField:(id)field
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 enabled];
-  v7 = [v4 name];
+  fieldCopy = field;
+  type = [fieldCopy type];
+  enabled = [fieldCopy enabled];
+  name = [fieldCopy name];
 
-  v8 = -[RAPWorkflowLayoutManager _categoryForName:](self, "_categoryForName:", [v7 workflowFieldName]);
+  v8 = -[RAPWorkflowLayoutManager _categoryForName:](self, "_categoryForName:", [name workflowFieldName]);
   v9 = [v8 isEqual:&off_1016E69B0];
 
-  if (v5 == 1)
+  if (type == 1)
   {
-    return v6 & (v9 ^ 1);
+    return enabled & (v9 ^ 1);
   }
 
   else
@@ -445,15 +445,15 @@ LABEL_15:
   }
 }
 
-- (RAPWorkflowLayoutManager)initWithSupportedCategories:(id)a3
+- (RAPWorkflowLayoutManager)initWithSupportedCategories:(id)categories
 {
-  v4 = a3;
+  categoriesCopy = categories;
   v9.receiver = self;
   v9.super_class = RAPWorkflowLayoutManager;
   v5 = [(RAPWorkflowLayoutManager *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [categoriesCopy copy];
     initialCategories = v5->_initialCategories;
     v5->_initialCategories = v6;
 

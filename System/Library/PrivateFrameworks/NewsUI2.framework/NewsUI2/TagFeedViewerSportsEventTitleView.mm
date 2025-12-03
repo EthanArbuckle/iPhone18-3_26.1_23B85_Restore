@@ -10,10 +10,10 @@
   v5.super_class = swift_getObjectType();
   v2 = v5.receiver;
   [(TagFeedViewerSportsEventTitleView *)&v5 layoutSubviews];
-  v3 = [v2 traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  traitCollection = [v2 traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v4 == 2)
+  if (horizontalSizeClass == 2)
   {
     sub_218D623BC();
   }

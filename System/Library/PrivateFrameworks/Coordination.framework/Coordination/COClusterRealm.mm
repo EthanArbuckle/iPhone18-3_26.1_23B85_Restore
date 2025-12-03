@@ -1,29 +1,29 @@
 @interface COClusterRealm
-+ (id)realmWithMediaGroup:(id)a3;
-+ (id)realmWithPredicate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToClusterRealm:(id)a3;
-- (COClusterRealm)initWithCoder:(id)a3;
-- (id)_identifierForGroupResult:(id)a3;
-- (id)_initWithPredicate:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)realmWithMediaGroup:(id)group;
++ (id)realmWithPredicate:(id)predicate;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToClusterRealm:(id)realm;
+- (COClusterRealm)initWithCoder:(id)coder;
+- (id)_identifierForGroupResult:(id)result;
+- (id)_initWithPredicate:(id)predicate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_handleQueryResult:(id)a3 error:(id)a4;
+- (void)_handleQueryResult:(id)result error:(id)error;
 - (void)_invokeUpdateHandler;
-- (void)_setIdentifierLocked:(id)a3;
-- (void)_setUpdateHandlerLocked:(id)a3;
+- (void)_setIdentifierLocked:(id)locked;
+- (void)_setUpdateHandlerLocked:(id)locked;
 - (void)_startQuery;
-- (void)_withLock:(id)a3;
-- (void)activate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)activate:(id)activate;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COClusterRealm
 
-- (id)_initWithPredicate:(id)a3
+- (id)_initWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v12.receiver = self;
   v12.super_class = COClusterRealm;
   v5 = [(COClusterRealm *)&v12 init];
@@ -34,7 +34,7 @@
     identifier = v5->_identifier;
     v5->_identifier = 0;
 
-    v8 = [v4 copy];
+    v8 = [predicateCopy copy];
     predicate = v6->_predicate;
     v6->_predicate = v8;
 
@@ -47,28 +47,28 @@
   return v6;
 }
 
-+ (id)realmWithMediaGroup:(id)a3
++ (id)realmWithMediaGroup:(id)group
 {
-  v4 = [MEMORY[0x277D27448] predicateForGroup:a3];
-  v5 = [[a1 alloc] _initWithPredicate:v4];
+  v4 = [MEMORY[0x277D27448] predicateForGroup:group];
+  v5 = [[self alloc] _initWithPredicate:v4];
 
   return v5;
 }
 
-+ (id)realmWithPredicate:(id)a3
++ (id)realmWithPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithPredicate:v4];
+  predicateCopy = predicate;
+  v5 = [[self alloc] _initWithPredicate:predicateCopy];
 
   return v5;
 }
 
-- (COClusterRealm)initWithCoder:(id)a3
+- (COClusterRealm)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeIntegerForKey:@"version"] == 1)
+  coderCopy = coder;
+  if ([coderCopy decodeIntegerForKey:@"version"] == 1)
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
     [(COClusterRealm *)v5 allowEvaluation];
     if (v5)
     {
@@ -92,19 +92,19 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:1 forKey:@"version"];
-  v5 = [(COClusterRealm *)self predicate];
-  [v4 encodeObject:v5 forKey:@"predicate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:1 forKey:@"version"];
+  predicate = [(COClusterRealm *)self predicate];
+  [coderCopy encodeObject:predicate forKey:@"predicate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(COClusterRealm *)self predicate];
-  v6 = [v4 _initWithPredicate:v5];
+  predicate = [(COClusterRealm *)self predicate];
+  v6 = [v4 _initWithPredicate:predicate];
 
   return v6;
 }
@@ -114,31 +114,31 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(COClusterRealm *)self identifier];
-  v7 = [(COClusterRealm *)self predicate];
-  v8 = [v3 stringWithFormat:@"<%@: %p, id(%@), p(%@)>", v5, self, v6, v7];
+  identifier = [(COClusterRealm *)self identifier];
+  predicate = [(COClusterRealm *)self predicate];
+  v8 = [v3 stringWithFormat:@"<%@: %p, id(%@), p(%@)>", v5, self, identifier, predicate];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(COClusterRealm *)self predicate];
-  v3 = [v2 hash];
+  predicate = [(COClusterRealm *)self predicate];
+  v3 = [predicate hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -161,29 +161,29 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqualToClusterRealm:(id)a3
+- (BOOL)isEqualToClusterRealm:(id)realm
 {
-  v4 = a3;
-  v5 = [(COClusterRealm *)self predicate];
-  v6 = [v4 predicate];
+  realmCopy = realm;
+  predicate = [(COClusterRealm *)self predicate];
+  predicate2 = [realmCopy predicate];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(realmCopy) = [predicate isEqual:predicate2];
+  return realmCopy;
 }
 
-- (void)_setIdentifierLocked:(id)a3
+- (void)_setIdentifierLocked:(id)locked
 {
-  v4 = a3;
+  lockedCopy = locked;
   os_unfair_lock_assert_owner(&self->_lock);
   identifier = self->_identifier;
-  self->_identifier = v4;
+  self->_identifier = lockedCopy;
 }
 
-- (void)_setUpdateHandlerLocked:(id)a3
+- (void)_setUpdateHandlerLocked:(id)locked
 {
-  v4 = a3;
+  lockedCopy = locked;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = MEMORY[0x245D5F6A0](v4);
+  v5 = MEMORY[0x245D5F6A0](lockedCopy);
 
   updateHandler = self->_updateHandler;
   self->_updateHandler = v5;
@@ -191,17 +191,17 @@ LABEL_7:
   self->_updateHandlerInvoked = 0;
 }
 
-- (void)activate:(id)a3
+- (void)activate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   if (+[COFeatureStatus isCOClusterEnabled])
   {
     v5 = MEMORY[0x277D85DD0];
     v6 = 3221225472;
     v7 = __27__COClusterRealm_activate___block_invoke;
     v8 = &unk_278E121C0;
-    v9 = self;
-    v10 = v4;
+    selfCopy = self;
+    v10 = activateCopy;
     [(COClusterRealm *)self _withLock:&v5];
     [(COClusterRealm *)self _startQuery:v5];
   }
@@ -238,13 +238,13 @@ void __27__COClusterRealm_activate___block_invoke(uint64_t a1)
 {
   objc_initWeak(&location, self);
   v3 = MEMORY[0x277D27460];
-  v4 = [(COClusterRealm *)self predicate];
+  predicate = [(COClusterRealm *)self predicate];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__COClusterRealm__startQuery__block_invoke;
   v7[3] = &unk_278E121E8;
   objc_copyWeak(&v8, &location);
-  v5 = [v3 queryWithPredicate:v4 updateHandler:v7];
+  v5 = [v3 queryWithPredicate:predicate updateHandler:v7];
   query = self->_query;
   self->_query = v5;
 
@@ -264,10 +264,10 @@ void __29__COClusterRealm__startQuery__block_invoke(uint64_t a1, void *a2, void 
   }
 }
 
-- (void)_handleQueryResult:(id)a3 error:(id)a4
+- (void)_handleQueryResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -276,10 +276,10 @@ void __29__COClusterRealm__startQuery__block_invoke(uint64_t a1, void *a2, void 
   v11 = 3221225472;
   v12 = __43__COClusterRealm__handleQueryResult_error___block_invoke;
   v13 = &unk_278E12210;
-  v14 = self;
-  v8 = v7;
+  selfCopy = self;
+  v8 = errorCopy;
   v15 = v8;
-  v9 = v6;
+  v9 = resultCopy;
   v16 = v9;
   v17 = &v18;
   [(COClusterRealm *)self _withLock:&v10];
@@ -356,10 +356,10 @@ LABEL_13:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_identifierForGroupResult:(id)a3
+- (id)_identifierForGroupResult:(id)result
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   v5 = *MEMORY[0x277D02998];
   DigestSize = CryptoHashDescriptorGetDigestSize();
   v43 = 0;
@@ -381,13 +381,13 @@ LABEL_13:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [v4 sortedArrayUsingComparator:&__block_literal_global];
+  v7 = [resultCopy sortedArrayUsingComparator:&__block_literal_global];
   v8 = [v7 countByEnumeratingWithState:&v26 objects:v46 count:16];
   if (v8)
   {
     v9 = v8;
-    v25 = v4;
-    v10 = self;
+    v25 = resultCopy;
+    selfCopy = self;
     v11 = 0;
     v12 = *v27;
     do
@@ -399,13 +399,13 @@ LABEL_13:
           objc_enumerationMutation(v7);
         }
 
-        v14 = [*(*(&v26 + 1) + 8 * i) identifier];
-        v15 = [v14 data];
-        if ([v15 length])
+        identifier = [*(*(&v26 + 1) + 8 * i) identifier];
+        data = [identifier data];
+        if ([data length])
         {
           ++v11;
-          [v15 bytes];
-          [v15 length];
+          [data bytes];
+          [data length];
           CryptoHashUpdate();
         }
       }
@@ -415,18 +415,18 @@ LABEL_13:
 
     while (v9);
 
-    self = v10;
-    v4 = v25;
+    self = selfCopy;
+    resultCopy = v25;
     if (v11)
     {
       v16 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:DigestSize];
       [v16 mutableBytes];
       CryptoHashFinal();
       v17 = objc_alloc_init(MEMORY[0x277CCACA8]);
-      v18 = [v16 bytes];
+      bytes = [v16 bytes];
       if (DigestSize)
       {
-        v19 = v18;
+        v19 = bytes;
         do
         {
           v20 = *v19++;
@@ -458,7 +458,7 @@ LABEL_13:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v45 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_244328000, v16, OS_LOG_TYPE_DEFAULT, "%p received empty result, so no identifier", buf, 0xCu);
   }
 
@@ -532,11 +532,11 @@ void __38__COClusterRealm__invokeUpdateHandler__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }

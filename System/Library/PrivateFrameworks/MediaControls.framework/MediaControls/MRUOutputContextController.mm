@@ -1,23 +1,23 @@
 @interface MRUOutputContextController
 - (AVOutputContext)outputContext;
 - (AVOutputDevice)outputDevice;
-- (MRUOutputContextController)initWithOutputContextType:(int64_t)a3;
+- (MRUOutputContextController)initWithOutputContextType:(int64_t)type;
 - (MRUOutputContextControllerDelegate)delegate;
 - (id)associatedOutputContext;
-- (void)_setOutputDevice:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)initializeOutputContextWithCompletion:(id)a3;
-- (void)mediaServicesWereLostNotification:(id)a3;
-- (void)mediaServicesWereResetNotification:(id)a3;
-- (void)outputDeviceChangedNotification:(id)a3;
-- (void)registerNotificationsForOutputContext:(id)a3;
-- (void)setOutputContext:(id)a3;
-- (void)setOutputDevice:(id)a3 completion:(id)a4;
-- (void)unregisterNotificationsForOutputContext:(id)a3;
+- (void)_setOutputDevice:(id)device context:(id)context completion:(id)completion;
+- (void)initializeOutputContextWithCompletion:(id)completion;
+- (void)mediaServicesWereLostNotification:(id)notification;
+- (void)mediaServicesWereResetNotification:(id)notification;
+- (void)outputDeviceChangedNotification:(id)notification;
+- (void)registerNotificationsForOutputContext:(id)context;
+- (void)setOutputContext:(id)context;
+- (void)setOutputDevice:(id)device completion:(id)completion;
+- (void)unregisterNotificationsForOutputContext:(id)context;
 @end
 
 @implementation MRUOutputContextController
 
-- (MRUOutputContextController)initWithOutputContextType:(int64_t)a3
+- (MRUOutputContextController)initWithOutputContextType:(int64_t)type
 {
   v9.receiver = self;
   v9.super_class = MRUOutputContextController;
@@ -25,13 +25,13 @@
   v5 = v4;
   if (v4)
   {
-    v4->_outputContextType = a3;
+    v4->_outputContextType = type;
     v4->_lock._os_unfair_lock_opaque = 0;
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v5 selector:sel_mediaServicesWereLostNotification_ name:*MEMORY[0x1E6958110] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_mediaServicesWereLostNotification_ name:*MEMORY[0x1E6958110] object:0];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v5 selector:sel_mediaServicesWereResetNotification_ name:*MEMORY[0x1E6958128] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel_mediaServicesWereResetNotification_ name:*MEMORY[0x1E6958128] object:0];
 
     [(MRUOutputContextController *)v5 initializeOutputContextWithCompletion:0];
   }
@@ -41,15 +41,15 @@
 
 - (AVOutputDevice)outputDevice
 {
-  v2 = [(MRUOutputContextController *)self outputContext];
-  v3 = [v2 outputDevice];
+  outputContext = [(MRUOutputContextController *)self outputContext];
+  outputDevice = [outputContext outputDevice];
 
-  return v3;
+  return outputDevice;
 }
 
-- (void)setOutputContext:(id)a3
+- (void)setOutputContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
   if (self->_outputContext)
   {
@@ -62,18 +62,18 @@
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
-  objc_storeStrong(&self->_outputContext, a3);
+  objc_storeStrong(&self->_outputContext, context);
   if (self->_outputContext)
   {
     [(MRUOutputContextController *)self registerNotificationsForOutputContext:?];
-    v6 = [(AVOutputContext *)self->_outputContext outputDevice];
+    outputDevice = [(AVOutputContext *)self->_outputContext outputDevice];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __47__MRUOutputContextController_setOutputContext___block_invoke_2;
     v8[3] = &unk_1E76639D0;
     v8[4] = self;
-    v9 = v6;
-    v7 = v6;
+    v9 = outputDevice;
+    v7 = outputDevice;
     dispatch_async(MEMORY[0x1E69E96A0], v8);
   }
 
@@ -101,21 +101,21 @@ void __47__MRUOutputContextController_setOutputContext___block_invoke_2(uint64_t
   return v3;
 }
 
-- (void)setOutputDevice:(id)a3 completion:(id)a4
+- (void)setOutputDevice:(id)device completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<%@:%p>.setOutputDevice", objc_opt_class(), self];
-  v9 = [MEMORY[0x1E695DF00] date];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [v10 UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v12 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v8, v11];
+  v12 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v8, uUIDString];
   v13 = v12;
-  if (v6)
+  if (deviceCopy)
   {
-    [v12 appendFormat:@" for %@", v6];
+    [v12 appendFormat:@" for %@", deviceCopy];
   }
 
   v14 = _MRLogForCategory();
@@ -130,15 +130,15 @@ void __47__MRUOutputContextController_setOutputContext___block_invoke_2(uint64_t
   aBlock[1] = 3221225472;
   aBlock[2] = __57__MRUOutputContextController_setOutputDevice_completion___block_invoke;
   aBlock[3] = &unk_1E7665950;
-  v15 = v6;
+  v15 = deviceCopy;
   v27 = v15;
   v28 = v8;
-  v29 = v11;
-  v30 = v9;
-  v31 = v7;
-  v16 = v7;
-  v17 = v9;
-  v18 = v11;
+  v29 = uUIDString;
+  v30 = date;
+  v31 = completionCopy;
+  v16 = completionCopy;
+  v17 = date;
+  v18 = uUIDString;
   v19 = v8;
   v20 = _Block_copy(aBlock);
   v23[0] = MEMORY[0x1E69E9820];
@@ -322,18 +322,18 @@ uint64_t __57__MRUOutputContextController_setOutputDevice_completion___block_inv
   }
 }
 
-- (void)_setOutputDevice:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_setOutputDevice:(id)device context:(id)context completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 outputDevice];
-  v12 = [v11 isEqual:v8];
+  deviceCopy = device;
+  contextCopy = context;
+  completionCopy = completion;
+  outputDevice = [contextCopy outputDevice];
+  v12 = [outputDevice isEqual:deviceCopy];
 
   if (v12)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -342,11 +342,11 @@ uint64_t __57__MRUOutputContextController_setOutputDevice_completion___block_inv
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
-      v21 = v8;
+      v21 = deviceCopy;
       v22 = 2114;
-      v23 = v9;
+      v23 = contextCopy;
       _os_log_impl(&dword_1A20FC000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ setting output device: %{public}@ for context: %{public}@", buf, 0x20u);
     }
 
@@ -356,9 +356,9 @@ uint64_t __57__MRUOutputContextController_setOutputDevice_completion___block_inv
     v14[2] = __66__MRUOutputContextController__setOutputDevice_context_completion___block_invoke;
     v14[3] = &unk_1E76659A0;
     objc_copyWeak(&v17, buf);
-    v15 = v8;
-    v16 = v10;
-    [v9 setOutputDevice:v15 options:0 completionHandler:v14];
+    v15 = deviceCopy;
+    v16 = completionCopy;
+    [contextCopy setOutputDevice:v15 options:0 completionHandler:v14];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
@@ -427,18 +427,18 @@ void __66__MRUOutputContextController__setOutputDevice_context_completion___bloc
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)outputDeviceChangedNotification:(id)a3
+- (void)outputDeviceChangedNotification:(id)notification
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(MRUOutputContextController *)self outputDevice];
+  outputDevice = [(MRUOutputContextController *)self outputDevice];
   v5 = _MPAVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MRUOutputContextController *)self outputContext];
+    outputContext = [(MRUOutputContextController *)self outputContext];
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = outputContext;
     _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEFAULT, "%@ observed output device changed %@", buf, 0x16u);
   }
 
@@ -447,8 +447,8 @@ void __66__MRUOutputContextController__setOutputDevice_context_completion___bloc
   v8[2] = __62__MRUOutputContextController_outputDeviceChangedNotification___block_invoke;
   v8[3] = &unk_1E76639D0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = outputDevice;
+  v7 = outputDevice;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
@@ -477,32 +477,32 @@ void __62__MRUOutputContextController_outputDeviceChangedNotification___block_in
   return self;
 }
 
-- (void)registerNotificationsForOutputContext:(id)a3
+- (void)registerNotificationsForOutputContext:(id)context
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 addObserver:self selector:sel_outputDeviceChangedNotification_ name:*MEMORY[0x1E69586A8] object:v5];
+  contextCopy = context;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter addObserver:self selector:sel_outputDeviceChangedNotification_ name:*MEMORY[0x1E69586A8] object:contextCopy];
 }
 
-- (void)unregisterNotificationsForOutputContext:(id)a3
+- (void)unregisterNotificationsForOutputContext:(id)context
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x1E69586A8] object:v5];
+  contextCopy = context;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69586A8] object:contextCopy];
 }
 
-- (void)initializeOutputContextWithCompletion:(id)a3
+- (void)initializeOutputContextWithCompletion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MRUOutputContextController *)self outputContext];
-  if (v5)
+  completionCopy = completion;
+  outputContext = [(MRUOutputContextController *)self outputContext];
+  if (outputContext)
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, v5, 0);
+      completionCopy[2](completionCopy, outputContext, 0);
     }
   }
 
@@ -510,11 +510,11 @@ void __62__MRUOutputContextController_outputDeviceChangedNotification___block_in
   {
     outputContextType = self->_outputContextType;
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<%@:%p>.initializeOutputContextWithCompletion", objc_opt_class(), self];
-    v8 = [MEMORY[0x1E695DF00] date];
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    v10 = [v9 UUIDString];
+    date = [MEMORY[0x1E695DF00] date];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v7, v10];
+    v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v7, uUIDString];
     v12 = v11;
     if (outputContextType <= 2)
     {
@@ -536,11 +536,11 @@ void __62__MRUOutputContextController_outputDeviceChangedNotification___block_in
     v37 = outputContextType;
     v22 = v7;
     v33 = v22;
-    v14 = v10;
+    v14 = uUIDString;
     v34 = v14;
-    v23 = v8;
+    v23 = date;
     v35 = v23;
-    v36 = v4;
+    v36 = completionCopy;
     v15 = _Block_copy(aBlock);
     objc_initWeak(&location, self);
     v28[0] = MEMORY[0x1E69E9820];
@@ -873,7 +873,7 @@ void __68__MRUOutputContextController_initializeOutputContextWithCompletion___bl
   }
 }
 
-- (void)mediaServicesWereLostNotification:(id)a3
+- (void)mediaServicesWereLostNotification:(id)notification
 {
   v4 = _MPAVLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -885,7 +885,7 @@ void __68__MRUOutputContextController_initializeOutputContextWithCompletion___bl
   [(MRUOutputContextController *)self setOutputContext:0];
 }
 
-- (void)mediaServicesWereResetNotification:(id)a3
+- (void)mediaServicesWereResetNotification:(id)notification
 {
   v4 = _MPAVLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

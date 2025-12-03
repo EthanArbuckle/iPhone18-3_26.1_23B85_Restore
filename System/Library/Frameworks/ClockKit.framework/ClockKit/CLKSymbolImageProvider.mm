@@ -1,36 +1,36 @@
 @interface CLKSymbolImageProvider
-+ (id)_symbolImageProviderWithSystemName:(id)a3;
-+ (id)symbolImageProviderWithSystemName:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CLKSymbolImageProvider)initWithCoder:(id)a3;
-- (CLKSymbolImageProvider)initWithJSONObjectRepresentation:(id)a3 bundle:(id)a4;
-- (CLKSymbolImageProvider)initWithSystemName:(id)a3;
-- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)a3;
++ (id)_symbolImageProviderWithSystemName:(id)name;
++ (id)symbolImageProviderWithSystemName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (CLKSymbolImageProvider)initWithCoder:(id)coder;
+- (CLKSymbolImageProvider)initWithJSONObjectRepresentation:(id)representation bundle:(id)bundle;
+- (CLKSymbolImageProvider)initWithSystemName:(id)name;
+- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)path;
 - (id)_configuration;
-- (id)_createSymbolImageWithConfiguration:(id)a3;
-- (id)_createSymbolImageWithForeground:(id)a3 background:(id)a4;
-- (id)_initWithSystemName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_createSymbolImageWithConfiguration:(id)configuration;
+- (id)_createSymbolImageWithForeground:(id)foreground background:(id)background;
+- (id)_initWithSystemName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createSymbolImage;
-- (id)createSymbolImageForType:(int64_t)a3 color:(id)a4;
+- (id)createSymbolImageForType:(int64_t)type color:(id)color;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)finalizeWithPointSize:(id)a3 weight:(int64_t)a4 maxSDKSize:(CGSize)a5 maxDeviceSize:(CGSize)a6 cornerRadius:(double)a7;
-- (void)finalizeWithPointSize:(id)a3 weight:(int64_t)a4 maxSDKSize:(CGSize)a5 maxDeviceSize:(CGSize)a6 maskToCircle:(BOOL)a7;
+- (void)encodeWithCoder:(id)coder;
+- (void)finalizeWithPointSize:(id)size weight:(int64_t)weight maxSDKSize:(CGSize)kSize maxDeviceSize:(CGSize)deviceSize cornerRadius:(double)radius;
+- (void)finalizeWithPointSize:(id)size weight:(int64_t)weight maxSDKSize:(CGSize)kSize maxDeviceSize:(CGSize)deviceSize maskToCircle:(BOOL)circle;
 @end
 
 @implementation CLKSymbolImageProvider
 
-- (CLKSymbolImageProvider)initWithSystemName:(id)a3
+- (CLKSymbolImageProvider)initWithSystemName:(id)name
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D755B8] systemImageNamed:v4];
+  nameCopy = name;
+  v5 = [MEMORY[0x277D755B8] systemImageNamed:nameCopy];
   if (!v5)
   {
     v6 = CLKLoggingObjectForDomain(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(CLKSymbolImageProvider *)v4 initWithSystemName:v6];
+      [(CLKSymbolImageProvider *)nameCopy initWithSystemName:v6];
     }
   }
 
@@ -40,7 +40,7 @@
   v7 = [(CLKImageProvider *)&v11 initWithOnePieceImage:v5];
   if (v7)
   {
-    v8 = [v4 copy];
+    v8 = [nameCopy copy];
     systemName = v7->_systemName;
     v7->_systemName = v8;
   }
@@ -48,16 +48,16 @@
   return v7;
 }
 
-- (id)_initWithSystemName:(id)a3
+- (id)_initWithSystemName:(id)name
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D755B8] _systemImageNamed:v4];
+  nameCopy = name;
+  v5 = [MEMORY[0x277D755B8] _systemImageNamed:nameCopy];
   if (!v5)
   {
     v6 = CLKLoggingObjectForDomain(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(CLKSymbolImageProvider *)v4 _initWithSystemName:v6];
+      [(CLKSymbolImageProvider *)nameCopy _initWithSystemName:v6];
     }
   }
 
@@ -67,7 +67,7 @@
   v7 = [(CLKImageProvider *)&v11 initWithOnePieceImage:v5];
   if (v7)
   {
-    v8 = [v4 copy];
+    v8 = [nameCopy copy];
     privateSystemName = v7->_privateSystemName;
     v7->_privateSystemName = v8;
 
@@ -77,90 +77,90 @@
   return v7;
 }
 
-+ (id)symbolImageProviderWithSystemName:(id)a3
++ (id)symbolImageProviderWithSystemName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSystemName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithSystemName:nameCopy];
 
   return v5;
 }
 
-+ (id)_symbolImageProviderWithSystemName:(id)a3
++ (id)_symbolImageProviderWithSystemName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithSystemName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] _initWithSystemName:nameCopy];
 
   return v5;
 }
 
-- (void)finalizeWithPointSize:(id)a3 weight:(int64_t)a4 maxSDKSize:(CGSize)a5 maxDeviceSize:(CGSize)a6 maskToCircle:(BOOL)a7
+- (void)finalizeWithPointSize:(id)size weight:(int64_t)weight maxSDKSize:(CGSize)kSize maxDeviceSize:(CGSize)deviceSize maskToCircle:(BOOL)circle
 {
-  v7 = a7;
-  height = a6.height;
-  width = a6.width;
-  v10 = a5.height;
-  v11 = a5.width;
-  v15 = a3;
+  circleCopy = circle;
+  height = deviceSize.height;
+  width = deviceSize.width;
+  v10 = kSize.height;
+  v11 = kSize.width;
+  sizeCopy = size;
   if (!self->_finalized)
   {
-    v16 = [(CLKSymbolImageProvider *)self createSymbolImage];
-    [(CLKImageProvider *)self setOnePieceImage:v16];
+    createSymbolImage = [(CLKSymbolImageProvider *)self createSymbolImage];
+    [(CLKImageProvider *)self setOnePieceImage:createSymbolImage];
 
     if ([(CLKSymbolImageProvider *)self isTwoPiece])
     {
-      v17 = [MEMORY[0x277D75348] whiteColor];
-      v18 = [(CLKSymbolImageProvider *)self createSymbolImageForType:3 color:v17];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      v18 = [(CLKSymbolImageProvider *)self createSymbolImageForType:3 color:whiteColor];
       [(CLKImageProvider *)self setTwoPieceImageBackground:v18];
 
-      v19 = [MEMORY[0x277D75348] whiteColor];
-      v20 = [(CLKSymbolImageProvider *)self createSymbolImageForType:2 color:v19];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      v20 = [(CLKSymbolImageProvider *)self createSymbolImageForType:2 color:whiteColor2];
       [(CLKImageProvider *)self setTwoPieceImageForeground:v20];
     }
   }
 
   v21.receiver = self;
   v21.super_class = CLKSymbolImageProvider;
-  [(CLKImageProvider *)&v21 finalizeWithMaxSDKSize:v7 maxDeviceSize:v11 maskToCircle:v10, width, height];
+  [(CLKImageProvider *)&v21 finalizeWithMaxSDKSize:circleCopy maxDeviceSize:v11 maskToCircle:v10, width, height];
   if (!self->_finalized)
   {
     self->_finalized = 1;
-    objc_storeStrong(&self->_pointSize, a3);
-    self->_weight = a4;
+    objc_storeStrong(&self->_pointSize, size);
+    self->_weight = weight;
   }
 }
 
-- (void)finalizeWithPointSize:(id)a3 weight:(int64_t)a4 maxSDKSize:(CGSize)a5 maxDeviceSize:(CGSize)a6 cornerRadius:(double)a7
+- (void)finalizeWithPointSize:(id)size weight:(int64_t)weight maxSDKSize:(CGSize)kSize maxDeviceSize:(CGSize)deviceSize cornerRadius:(double)radius
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a5.height;
-  v11 = a5.width;
-  v15 = a3;
+  height = deviceSize.height;
+  width = deviceSize.width;
+  v10 = kSize.height;
+  v11 = kSize.width;
+  sizeCopy = size;
   if (!self->_finalized)
   {
-    v16 = [(CLKSymbolImageProvider *)self createSymbolImage];
-    [(CLKImageProvider *)self setOnePieceImage:v16];
+    createSymbolImage = [(CLKSymbolImageProvider *)self createSymbolImage];
+    [(CLKImageProvider *)self setOnePieceImage:createSymbolImage];
 
     if ([(CLKSymbolImageProvider *)self isTwoPiece])
     {
-      v17 = [MEMORY[0x277D75348] whiteColor];
-      v18 = [(CLKSymbolImageProvider *)self createSymbolImageForType:3 color:v17];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      v18 = [(CLKSymbolImageProvider *)self createSymbolImageForType:3 color:whiteColor];
       [(CLKImageProvider *)self setTwoPieceImageBackground:v18];
 
-      v19 = [MEMORY[0x277D75348] whiteColor];
-      v20 = [(CLKSymbolImageProvider *)self createSymbolImageForType:2 color:v19];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      v20 = [(CLKSymbolImageProvider *)self createSymbolImageForType:2 color:whiteColor2];
       [(CLKImageProvider *)self setTwoPieceImageForeground:v20];
     }
   }
 
   v21.receiver = self;
   v21.super_class = CLKSymbolImageProvider;
-  [(CLKImageProvider *)&v21 finalizeWithMaxSDKSize:v11 maxDeviceSize:v10 cornerRadius:width, height, a7];
+  [(CLKImageProvider *)&v21 finalizeWithMaxSDKSize:v11 maxDeviceSize:v10 cornerRadius:width, height, radius];
   if (!self->_finalized)
   {
     self->_finalized = 1;
-    objc_storeStrong(&self->_pointSize, a3);
-    self->_weight = a4;
+    objc_storeStrong(&self->_pointSize, size);
+    self->_weight = weight;
   }
 }
 
@@ -196,38 +196,38 @@
   return v5;
 }
 
-- (id)_createSymbolImageWithConfiguration:(id)a3
+- (id)_createSymbolImageWithConfiguration:(id)configuration
 {
   privateSystemName = self->_privateSystemName;
   if (privateSystemName)
   {
-    [MEMORY[0x277D755B8] _systemImageNamed:privateSystemName withConfiguration:a3];
+    [MEMORY[0x277D755B8] _systemImageNamed:privateSystemName withConfiguration:configuration];
   }
 
   else
   {
-    [MEMORY[0x277D755B8] systemImageNamed:self->_systemName withConfiguration:a3];
+    [MEMORY[0x277D755B8] systemImageNamed:self->_systemName withConfiguration:configuration];
   }
   v6 = ;
-  v7 = [(CLKImageProvider *)self accessibilityLabel];
-  [v6 setAccessibilityLabel:v7];
+  accessibilityLabel = [(CLKImageProvider *)self accessibilityLabel];
+  [v6 setAccessibilityLabel:accessibilityLabel];
 
   return v6;
 }
 
-- (id)_createSymbolImageWithForeground:(id)a3 background:(id)a4
+- (id)_createSymbolImageWithForeground:(id)foreground background:(id)background
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CLKSymbolImageProvider *)self _configuration];
+  backgroundCopy = background;
+  foregroundCopy = foreground;
+  _configuration = [(CLKSymbolImageProvider *)self _configuration];
   v9 = MEMORY[0x277D755D0];
-  v16[0] = v7;
-  v16[1] = v6;
+  v16[0] = foregroundCopy;
+  v16[1] = backgroundCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   v11 = [v9 configurationWithPaletteColors:v10];
 
-  v12 = [v8 configurationByApplyingConfiguration:v11];
+  v12 = [_configuration configurationByApplyingConfiguration:v11];
 
   v13 = [(CLKSymbolImageProvider *)self _createSymbolImageWithConfiguration:v12];
   [v13 size];
@@ -242,108 +242,108 @@
 
 - (id)createSymbolImage
 {
-  v3 = [(CLKSymbolImageProvider *)self _configuration];
-  v4 = [(CLKSymbolImageProvider *)self _createSymbolImageWithConfiguration:v3];
+  _configuration = [(CLKSymbolImageProvider *)self _configuration];
+  v4 = [(CLKSymbolImageProvider *)self _createSymbolImageWithConfiguration:_configuration];
 
   return v4;
 }
 
-- (id)createSymbolImageForType:(int64_t)a3 color:(id)a4
+- (id)createSymbolImageForType:(int64_t)type color:(id)color
 {
-  v7 = a4;
-  if (a3 > 1)
+  colorCopy = color;
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v8 = [MEMORY[0x277D75348] clearColor];
-      v9 = self;
-      v10 = v7;
-      v11 = v8;
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      selfCopy2 = self;
+      v10 = colorCopy;
+      v11 = clearColor;
     }
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_9;
       }
 
-      v8 = [MEMORY[0x277D75348] clearColor];
-      v9 = self;
-      v10 = v8;
-      v11 = v7;
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      selfCopy2 = self;
+      v10 = clearColor;
+      v11 = colorCopy;
     }
 
-    v4 = [(CLKSymbolImageProvider *)v9 _createSymbolImageWithForeground:v10 background:v11];
+    createSymbolImage = [(CLKSymbolImageProvider *)selfCopy2 _createSymbolImageWithForeground:v10 background:v11];
   }
 
-  else if (a3 <= 1)
+  else if (type <= 1)
   {
-    v4 = [(CLKSymbolImageProvider *)self createSymbolImage];
+    createSymbolImage = [(CLKSymbolImageProvider *)self createSymbolImage];
   }
 
 LABEL_9:
 
-  return v4;
+  return createSymbolImage;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CLKSymbolImageProvider;
-  v4 = a3;
-  [(CLKImageProvider *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_systemName forKey:{@"SystemName", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_privateSystemName forKey:@"PrivateSystemName"];
-  [v4 encodeObject:self->_pointSize forKey:@"PointSize"];
-  [v4 encodeObject:self->_overridePointSize forKey:@"OverridePointSize"];
-  [v4 encodeInteger:self->_weight forKey:@"Weight"];
-  [v4 encodeObject:self->_secondaryTintColor forKey:@"SecondaryTintColor"];
-  [v4 encodeBool:self->_ignoreHierarchicalLayers forKey:@"IgnoreHierarchicalLayers"];
-  [v4 encodeBool:self->_hierarchicalSymbol forKey:@"HierarchicalSymbol"];
+  coderCopy = coder;
+  [(CLKImageProvider *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_systemName forKey:{@"SystemName", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_privateSystemName forKey:@"PrivateSystemName"];
+  [coderCopy encodeObject:self->_pointSize forKey:@"PointSize"];
+  [coderCopy encodeObject:self->_overridePointSize forKey:@"OverridePointSize"];
+  [coderCopy encodeInteger:self->_weight forKey:@"Weight"];
+  [coderCopy encodeObject:self->_secondaryTintColor forKey:@"SecondaryTintColor"];
+  [coderCopy encodeBool:self->_ignoreHierarchicalLayers forKey:@"IgnoreHierarchicalLayers"];
+  [coderCopy encodeBool:self->_hierarchicalSymbol forKey:@"HierarchicalSymbol"];
 }
 
-- (CLKSymbolImageProvider)initWithCoder:(id)a3
+- (CLKSymbolImageProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CLKSymbolImageProvider;
-  v5 = [(CLKImageProvider *)&v17 initWithCoder:v4];
+  v5 = [(CLKImageProvider *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SystemName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SystemName"];
     systemName = v5->_systemName;
     v5->_systemName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivateSystemName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivateSystemName"];
     privateSystemName = v5->_privateSystemName;
     v5->_privateSystemName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PointSize"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PointSize"];
     pointSize = v5->_pointSize;
     v5->_pointSize = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OverridePointSize"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OverridePointSize"];
     overridePointSize = v5->_overridePointSize;
     v5->_overridePointSize = v12;
 
-    v5->_weight = [v4 decodeIntegerForKey:@"Weight"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SecondaryTintColor"];
+    v5->_weight = [coderCopy decodeIntegerForKey:@"Weight"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SecondaryTintColor"];
     secondaryTintColor = v5->_secondaryTintColor;
     v5->_secondaryTintColor = v14;
 
-    v5->_ignoreHierarchicalLayers = [v4 decodeBoolForKey:@"IgnoreHierarchicalLayers"];
-    v5->_hierarchicalSymbol = [v4 decodeBoolForKey:@"HierarchicalSymbol"];
+    v5->_ignoreHierarchicalLayers = [coderCopy decodeBoolForKey:@"IgnoreHierarchicalLayers"];
+    v5->_hierarchicalSymbol = [coderCopy decodeBoolForKey:@"HierarchicalSymbol"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = CLKSymbolImageProvider, [(CLKImageProvider *)&v7 isEqual:v4]) && CLKEqualObjects(self->_systemName, v4[16]) && CLKEqualObjects(self->_privateSystemName, v4[13]) && CLKEqualObjects(self->_pointSize, v4[17]) && CLKEqualObjects(self->_overridePointSize, v4[15]) && self->_weight == v4[18] && CLKEqualObjects(self->_secondaryTintColor, v4[19]) && self->_ignoreHierarchicalLayers == *(v4 + 113);
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = CLKSymbolImageProvider, [(CLKImageProvider *)&v7 isEqual:equalCopy]) && CLKEqualObjects(self->_systemName, equalCopy[16]) && CLKEqualObjects(self->_privateSystemName, equalCopy[13]) && CLKEqualObjects(self->_pointSize, equalCopy[17]) && CLKEqualObjects(self->_overridePointSize, equalCopy[15]) && self->_weight == equalCopy[18] && CLKEqualObjects(self->_secondaryTintColor, equalCopy[19]) && self->_ignoreHierarchicalLayers == *(equalCopy + 113);
 
   return v5;
 }
@@ -364,29 +364,29 @@ LABEL_9:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17.receiver = self;
   v17.super_class = CLKSymbolImageProvider;
   v5 = [(CLKImageProvider *)&v17 copyWithZone:?];
-  v6 = [(NSString *)self->_systemName copyWithZone:a3];
+  v6 = [(NSString *)self->_systemName copyWithZone:zone];
   v7 = v5[16];
   v5[16] = v6;
 
-  v8 = [(NSString *)self->_privateSystemName copyWithZone:a3];
+  v8 = [(NSString *)self->_privateSystemName copyWithZone:zone];
   v9 = v5[13];
   v5[13] = v8;
 
-  v10 = [(NSNumber *)self->_pointSize copyWithZone:a3];
+  v10 = [(NSNumber *)self->_pointSize copyWithZone:zone];
   v11 = v5[17];
   v5[17] = v10;
 
-  v12 = [(NSNumber *)self->_overridePointSize copyWithZone:a3];
+  v12 = [(NSNumber *)self->_overridePointSize copyWithZone:zone];
   v13 = v5[15];
   v5[15] = v12;
 
   v5[18] = self->_weight;
-  v14 = [(UIColor *)self->_secondaryTintColor copyWithZone:a3];
+  v14 = [(UIColor *)self->_secondaryTintColor copyWithZone:zone];
   v15 = v5[19];
   v5[19] = v14;
 
@@ -395,59 +395,59 @@ LABEL_9:
   return v5;
 }
 
-- (CLKSymbolImageProvider)initWithJSONObjectRepresentation:(id)a3 bundle:(id)a4
+- (CLKSymbolImageProvider)initWithJSONObjectRepresentation:(id)representation bundle:(id)bundle
 {
-  v6 = a3;
+  representationCopy = representation;
   v25.receiver = self;
   v25.super_class = CLKSymbolImageProvider;
-  v7 = [(CLKImageProvider *)&v25 initWithJSONObjectRepresentation:v6 bundle:a4];
+  v7 = [(CLKImageProvider *)&v25 initWithJSONObjectRepresentation:representationCopy bundle:bundle];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"SystemName"];
+    v8 = [representationCopy objectForKeyedSubscript:@"SystemName"];
     systemName = v7->_systemName;
     v7->_systemName = v8;
 
-    v10 = [v6 objectForKeyedSubscript:@"PrivateSystemName"];
+    v10 = [representationCopy objectForKeyedSubscript:@"PrivateSystemName"];
     privateSystemName = v7->_privateSystemName;
     v7->_privateSystemName = v10;
 
-    v12 = [v6 objectForKeyedSubscript:@"PointSize"];
+    v12 = [representationCopy objectForKeyedSubscript:@"PointSize"];
     pointSize = v7->_pointSize;
     v7->_pointSize = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"OverridePointSize"];
+    v14 = [representationCopy objectForKeyedSubscript:@"OverridePointSize"];
     overridePointSize = v7->_overridePointSize;
     v7->_overridePointSize = v14;
 
-    v16 = [v6 objectForKeyedSubscript:@"Weight"];
+    v16 = [representationCopy objectForKeyedSubscript:@"Weight"];
     v7->_weight = [v16 integerValue];
 
-    v17 = [v6 objectForKeyedSubscript:@"SecondaryTintColor"];
+    v17 = [representationCopy objectForKeyedSubscript:@"SecondaryTintColor"];
 
     if (v17)
     {
       v18 = objc_alloc(MEMORY[0x277D75348]);
-      v19 = [v6 objectForKeyedSubscript:@"SecondaryTintColor"];
+      v19 = [representationCopy objectForKeyedSubscript:@"SecondaryTintColor"];
       v20 = [v18 initWithJSONObjectRepresentation:v19];
       secondaryTintColor = v7->_secondaryTintColor;
       v7->_secondaryTintColor = v20;
     }
 
-    v22 = [v6 objectForKeyedSubscript:@"IgnoreHierarchicalLayers"];
+    v22 = [representationCopy objectForKeyedSubscript:@"IgnoreHierarchicalLayers"];
     v7->_ignoreHierarchicalLayers = [v22 BOOLValue];
 
-    v23 = [v6 objectForKeyedSubscript:@"HierarchicalSymbol"];
+    v23 = [representationCopy objectForKeyedSubscript:@"HierarchicalSymbol"];
     v7->_hierarchicalSymbol = [v23 BOOLValue];
   }
 
   return v7;
 }
 
-- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)a3
+- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)path
 {
   v16.receiver = self;
   v16.super_class = CLKSymbolImageProvider;
-  v4 = [(CLKImageProvider *)&v16 JSONObjectRepresentationWritingResourcesToBundlePath:a3];
+  v4 = [(CLKImageProvider *)&v16 JSONObjectRepresentationWritingResourcesToBundlePath:path];
   v5 = [v4 mutableCopy];
 
   systemName = self->_systemName;
@@ -480,8 +480,8 @@ LABEL_9:
   secondaryTintColor = self->_secondaryTintColor;
   if (secondaryTintColor)
   {
-    v12 = [(UIColor *)secondaryTintColor JSONObjectRepresentation];
-    [v5 setObject:v12 forKeyedSubscript:@"SecondaryTintColor"];
+    jSONObjectRepresentation = [(UIColor *)secondaryTintColor JSONObjectRepresentation];
+    [v5 setObject:jSONObjectRepresentation forKeyedSubscript:@"SecondaryTintColor"];
   }
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_ignoreHierarchicalLayers];

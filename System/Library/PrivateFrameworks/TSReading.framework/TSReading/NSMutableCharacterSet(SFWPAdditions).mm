@@ -6,7 +6,7 @@
 
 - (void)initWithCharacters:()SFWPAdditions length:
 {
-  v6 = [a1 init];
+  v6 = [self init];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharacters:a3 length:a4];

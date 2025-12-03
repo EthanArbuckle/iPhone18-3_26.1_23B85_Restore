@@ -7,7 +7,7 @@
 - (void)main
 {
   v45 = sub_1001DFF60();
-  v46 = self;
+  selfCopy = self;
   if (self)
   {
     options = self->super._options;
@@ -19,15 +19,15 @@
   }
 
   v4 = options;
-  v5 = [(ASDRequestOptions *)v4 purchases];
+  purchases = [(ASDRequestOptions *)v4 purchases];
 
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 count];
-    if (v46)
+    v7 = [purchases count];
+    if (selfCopy)
     {
-      client = v46->super._client;
+      client = selfCopy->super._client;
     }
 
     else
@@ -36,19 +36,19 @@
     }
 
     v9 = client;
-    v10 = [(XPCClient *)v9 clientID];
+    clientID = [(XPCClient *)v9 clientID];
     *buf = 134218242;
     v58 = v7;
     v59 = 2114;
-    v60 = v10;
+    v60 = clientID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Purchasing %ld app(s) for client: %{public}@", buf, 0x16u);
   }
 
-  if ([v5 count])
+  if ([purchases count])
   {
-    if (v46)
+    if (selfCopy)
     {
-      v11 = v46->super._client;
+      v11 = selfCopy->super._client;
     }
 
     else
@@ -57,14 +57,14 @@
     }
 
     v12 = v11;
-    v13 = [(XPCClient *)v12 clientID];
+    clientID2 = [(XPCClient *)v12 clientID];
 
-    if (v13)
+    if (clientID2)
     {
       v14 = [AMSProcessInfo alloc];
-      if (v46)
+      if (selfCopy)
       {
-        v15 = v46->super._client;
+        v15 = selfCopy->super._client;
       }
 
       else
@@ -73,8 +73,8 @@
       }
 
       v16 = v15;
-      v17 = [(XPCClient *)v16 clientID];
-      v18 = [v14 initWithBundleIdentifier:v17];
+      clientID3 = [(XPCClient *)v16 clientID];
+      v18 = [v14 initWithBundleIdentifier:clientID3];
     }
 
     else
@@ -88,8 +88,8 @@
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v42 = v5;
-    obj = v5;
+    v42 = purchases;
+    obj = purchases;
     v19 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
     if (v19)
     {
@@ -106,9 +106,9 @@
 
           v23 = *(*(&v51 + 1) + 8 * i);
           v24 = [_TtC9appstored6LogKey alloc];
-          v25 = [v23 bundleID];
-          v26 = [v23 itemID];
-          v27 = [(LogKey *)v24 initWithBatchLogKey:0 logCode:@"BUY" externalID:0 bundleID:v25 itemID:v26];
+          bundleID = [v23 bundleID];
+          itemID = [v23 itemID];
+          v27 = [(LogKey *)v24 initWithBatchLogKey:0 logCode:@"BUY" externalID:0 bundleID:bundleID itemID:itemID];
 
           v28 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -127,7 +127,7 @@
           v47[3] = &unk_100525F48;
           v31 = v27;
           v48 = v31;
-          v49 = v46;
+          v49 = selfCopy;
           v32 = v29;
           v50 = v32;
           [v45 processPurchases:v30 failBatchOnError:0 requestToken:v44 withReplyHandler:v47];
@@ -145,7 +145,7 @@
 
             v35 = ASDErrorWithTitleAndMessage();
             v36 = [[ASDPurchaseResponse alloc] initWithError:v35];
-            sub_100389E00(v46, v36);
+            sub_100389E00(selfCopy, v36);
           }
         }
 
@@ -155,15 +155,15 @@
       while (v20);
     }
 
-    v5 = v42;
+    purchases = v42;
   }
 
   v37 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    if (v46)
+    if (selfCopy)
     {
-      v38 = v46->super._client;
+      v38 = selfCopy->super._client;
     }
 
     else
@@ -172,9 +172,9 @@
     }
 
     v39 = v38;
-    v40 = [(XPCClient *)v39 clientID];
+    clientID4 = [(XPCClient *)v39 clientID];
     *buf = 138543362;
-    v58 = v40;
+    v58 = clientID4;
     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Purchasing complete for client: %{public}@", buf, 0xCu);
   }
 }

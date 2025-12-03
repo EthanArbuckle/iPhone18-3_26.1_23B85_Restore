@@ -1,57 +1,57 @@
 @interface UITab
 - (BOOL)_canBeReordered;
 - (BOOL)_hasParent;
-- (BOOL)_isAncestorOfTab:(id)a3;
+- (BOOL)_isAncestorOfTab:(id)tab;
 - (BOOL)_isCustomizable;
 - (BOOL)hasVisiblePlacement;
-- (BOOL)isEqual:(id)a3;
-- (CGRect)_frameInCoordinateSpace:(id)a3 window:(id)a4;
-- (CGRect)_sourceRectForPresentationInWindow:(id)a3;
-- (CGRect)frameInView:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)_frameInCoordinateSpace:(id)space window:(id)window;
+- (CGRect)_sourceRectForPresentationInWindow:(id)window;
+- (CGRect)frameInView:(id)view;
 - (NSArray)_displayedViewControllers;
-- (UITab)initWithTitle:(id)a3 image:(id)a4 identifier:(id)a5 viewControllerProvider:(id)a6;
+- (UITab)initWithTitle:(id)title image:(id)image identifier:(id)identifier viewControllerProvider:(id)provider;
 - (UITabBarController)tabBarController;
 - (UITabBarItem)_linkedTabBarItem;
 - (UITabGroup)managingTabGroup;
 - (UITabGroup)parent;
 - (UIViewController)viewController;
 - (_UITabModel)_tabModel;
-- (id)_descriptionWithRecursion:(BOOL)a3;
+- (id)_descriptionWithRecursion:(BOOL)recursion;
 - (id)_filledVariantImage;
 - (id)_filledVariantSelectedImage;
 - (id)_nearestViewController;
 - (id)_parentGroup;
 - (id)_resolvedSourceItem;
-- (id)_sourceViewForPresentationInWindow:(id)a3;
+- (id)_sourceViewForPresentationInWindow:(id)window;
 - (int64_t)_tabPlacement;
 - (void)_contentDidChange;
 - (void)_customizabilityDidChange;
-- (void)_didChangeTabModel:(id)a3;
+- (void)_didChangeTabModel:(id)model;
 - (void)_resetViewController;
-- (void)_setCompactRepresentation:(id)a3;
-- (void)_setDisplayedViewControllers:(id)a3;
-- (void)_setParent:(id)a3;
-- (void)_setTabModel:(id)a3;
-- (void)_updateDescriptionWithBuilder:(id)a3 recursive:(BOOL)a4;
+- (void)_setCompactRepresentation:(id)representation;
+- (void)_setDisplayedViewControllers:(id)controllers;
+- (void)_setParent:(id)parent;
+- (void)_setTabModel:(id)model;
+- (void)_updateDescriptionWithBuilder:(id)builder recursive:(BOOL)recursive;
 - (void)_updateLinkedTabBarItem;
 - (void)_visibilityDidChange;
-- (void)setAccessibilityAttributedHint:(id)a3;
-- (void)setAccessibilityAttributedLabel:(id)a3;
-- (void)setAccessibilityAttributedValue:(id)a3;
-- (void)setAccessibilityHint:(id)a3;
-- (void)setAccessibilityIdentifier:(id)a3;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAccessibilityValue:(id)a3;
-- (void)setAllowsHiding:(BOOL)a3;
-- (void)setBadgeValue:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setPreferredPlacement:(int64_t)a3;
-- (void)setSelectedImage:(id)a3;
-- (void)setSpringLoaded:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAccessibilityAttributedHint:(id)hint;
+- (void)setAccessibilityAttributedLabel:(id)label;
+- (void)setAccessibilityAttributedValue:(id)value;
+- (void)setAccessibilityHint:(id)hint;
+- (void)setAccessibilityIdentifier:(id)identifier;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAccessibilityValue:(id)value;
+- (void)setAllowsHiding:(BOOL)hiding;
+- (void)setBadgeValue:(id)value;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHidden:(BOOL)hidden;
+- (void)setImage:(id)image;
+- (void)setPreferredPlacement:(int64_t)placement;
+- (void)setSelectedImage:(id)image;
+- (void)setSpringLoaded:(BOOL)loaded;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation UITab
@@ -62,16 +62,16 @@
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    _tabModel = WeakRetained;
   }
 
   else
   {
-    v6 = [(UITab *)self _parentGroup];
-    v5 = [v6 _tabModel];
+    _parentGroup = [(UITab *)self _parentGroup];
+    _tabModel = [_parentGroup _tabModel];
   }
 
-  return v5;
+  return _tabModel;
 }
 
 - (BOOL)_isCustomizable
@@ -86,12 +86,12 @@
 
 - (int64_t)_tabPlacement
 {
-  v3 = [(UITab *)self preferredPlacement];
-  if (os_variant_has_internal_diagnostics() && ([(UITab *)self identifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = _UITabOverridesDefaultPlacement(v6), v6, (v7 & 1) != 0) || !v3)
+  preferredPlacement = [(UITab *)self preferredPlacement];
+  if (os_variant_has_internal_diagnostics() && ([(UITab *)self identifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = _UITabOverridesDefaultPlacement(v6), v6, (v7 & 1) != 0) || !preferredPlacement)
   {
-    v4 = [(UITab *)self _parentGroup];
+    _parentGroup = [(UITab *)self _parentGroup];
 
-    if (v4)
+    if (_parentGroup)
     {
       return 2;
     }
@@ -102,65 +102,65 @@
     }
   }
 
-  return v3;
+  return preferredPlacement;
 }
 
 - (void)_contentDidChange
 {
-  v3 = [(UITab *)self _tabModel];
-  [v3 tabContentDidChange:self];
+  _tabModel = [(UITab *)self _tabModel];
+  [_tabModel tabContentDidChange:self];
 }
 
 - (UITabBarItem)_linkedTabBarItem
 {
-  v2 = [(UITab *)self _existingDisplayedViewController];
-  v3 = [v2 tabBarItem];
+  _existingDisplayedViewController = [(UITab *)self _existingDisplayedViewController];
+  tabBarItem = [_existingDisplayedViewController tabBarItem];
 
-  return v3;
+  return tabBarItem;
 }
 
 - (void)_updateLinkedTabBarItem
 {
-  v3 = [(UITab *)self _linkedTabBarItem];
-  if (v3)
+  _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+  if (_linkedTabBarItem)
   {
-    v15 = v3;
-    v4 = [(UITab *)self title];
-    [v15 setTitle:v4];
+    v15 = _linkedTabBarItem;
+    title = [(UITab *)self title];
+    [v15 setTitle:title];
 
-    v5 = [(UITab *)self _filledVariantImage];
-    [v15 setImage:v5];
+    _filledVariantImage = [(UITab *)self _filledVariantImage];
+    [v15 setImage:_filledVariantImage];
 
-    v6 = [(UITab *)self _filledVariantSelectedImage];
-    [v15 setSelectedImage:v6];
+    _filledVariantSelectedImage = [(UITab *)self _filledVariantSelectedImage];
+    [v15 setSelectedImage:_filledVariantSelectedImage];
 
-    v7 = [(UITab *)self badgeValue];
-    [v15 setBadgeValue:v7];
+    badgeValue = [(UITab *)self badgeValue];
+    [v15 setBadgeValue:badgeValue];
 
     [v15 setEnabled:{-[UITab isEnabled](self, "isEnabled")}];
-    v8 = [(UITab *)self accessibilityIdentifier];
-    [v15 setAccessibilityIdentifier:v8];
+    accessibilityIdentifier = [(UITab *)self accessibilityIdentifier];
+    [v15 setAccessibilityIdentifier:accessibilityIdentifier];
 
-    v9 = [self accessibilityLabel];
-    [v15 setAccessibilityLabel:v9];
+    accessibilityLabel = [self accessibilityLabel];
+    [v15 setAccessibilityLabel:accessibilityLabel];
 
-    v10 = [self accessibilityAttributedLabel];
-    [v15 setAccessibilityAttributedLabel:v10];
+    accessibilityAttributedLabel = [self accessibilityAttributedLabel];
+    [v15 setAccessibilityAttributedLabel:accessibilityAttributedLabel];
 
-    v11 = [self accessibilityValue];
-    [v15 setAccessibilityValue:v11];
+    accessibilityValue = [self accessibilityValue];
+    [v15 setAccessibilityValue:accessibilityValue];
 
-    v12 = [self accessibilityAttributedValue];
-    [v15 setAccessibilityAttributedValue:v12];
+    accessibilityAttributedValue = [self accessibilityAttributedValue];
+    [v15 setAccessibilityAttributedValue:accessibilityAttributedValue];
 
-    v13 = [self accessibilityHint];
-    [v15 setAccessibilityHint:v13];
+    accessibilityHint = [self accessibilityHint];
+    [v15 setAccessibilityHint:accessibilityHint];
 
-    v14 = [self accessibilityAttributedHint];
-    [v15 setAccessibilityAttributedHint:v14];
+    accessibilityAttributedHint = [self accessibilityAttributedHint];
+    [v15 setAccessibilityAttributedHint:accessibilityAttributedHint];
 
     [v15 setSpringLoaded:{-[UITab isSpringLoaded](self, "isSpringLoaded")}];
-    v3 = v15;
+    _linkedTabBarItem = v15;
   }
 }
 
@@ -175,16 +175,16 @@
 
 - (void)_customizabilityDidChange
 {
-  v3 = [(UITab *)self _tabModel];
-  [v3 customizabilityDidChangeForTab:self];
+  _tabModel = [(UITab *)self _tabModel];
+  [_tabModel customizabilityDidChangeForTab:self];
 }
 
 - (UITabBarController)tabBarController
 {
-  v2 = [(UITab *)self _tabModel];
-  v3 = [v2 tabBarController];
+  _tabModel = [(UITab *)self _tabModel];
+  tabBarController = [_tabModel tabBarController];
 
-  return v3;
+  return tabBarController;
 }
 
 - (id)_parentGroup
@@ -207,8 +207,8 @@
 
     if (v7)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"UITab.m" lineNumber:202 description:@"UIViewController cannot be shared between multiple UITab."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITab.m" lineNumber:202 description:@"UIViewController cannot be shared between multiple UITab."];
     }
 
     [(UIViewController *)&self->_viewController->super.super.isa _attachTab:?];
@@ -229,36 +229,36 @@
 
 - (UITabGroup)managingTabGroup
 {
-  v2 = [(UITab *)self parent];
-  v3 = [v2 managingTabGroup];
+  parent = [(UITab *)self parent];
+  managingTabGroup = [parent managingTabGroup];
 
-  return v3;
+  return managingTabGroup;
 }
 
-- (UITab)initWithTitle:(id)a3 image:(id)a4 identifier:(id)a5 viewControllerProvider:(id)a6
+- (UITab)initWithTitle:(id)title image:(id)image identifier:(id)identifier viewControllerProvider:(id)provider
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  titleCopy = title;
+  imageCopy = image;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = UITab;
   v14 = [(UITab *)&v24 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    v17 = [v10 copy];
+    v17 = [titleCopy copy];
     title = v14->_title;
     v14->_title = v17;
 
-    v19 = [v11 copy];
+    v19 = [imageCopy copy];
     image = v14->_image;
     v14->_image = v19;
 
-    v21 = _Block_copy(v13);
+    v21 = _Block_copy(providerCopy);
     viewControllerProvider = v14->_viewControllerProvider;
     v14->_viewControllerProvider = v21;
 
@@ -269,11 +269,11 @@
   return v14;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = self->_title;
-  v6 = v4;
+  v6 = titleCopy;
   v11 = v6;
   if (v5 == v6)
   {
@@ -296,8 +296,8 @@ LABEL_8:
     title = self->_title;
     self->_title = v8;
 
-    v10 = [(UITab *)self _linkedTabBarItem];
-    [v10 setTitle:v11];
+    _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+    [_linkedTabBarItem setTitle:v11];
 
     [(UITab *)self _contentDidChange];
   }
@@ -305,11 +305,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = self->_image;
-  v6 = v4;
+  v6 = imageCopy;
   v12 = v6;
   if (v5 == v6)
   {
@@ -332,9 +332,9 @@ LABEL_8:
     image = self->_image;
     self->_image = v8;
 
-    v10 = [(UITab *)self _linkedTabBarItem];
-    v11 = [(UITab *)self _filledVariantImage];
-    [v10 setImage:v11];
+    _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+    _filledVariantImage = [(UITab *)self _filledVariantImage];
+    [_linkedTabBarItem setImage:_filledVariantImage];
 
     [(UITab *)self _contentDidChange];
   }
@@ -342,11 +342,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSelectedImage:(id)a3
+- (void)setSelectedImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = self->_selectedImage;
-  v6 = v4;
+  v6 = imageCopy;
   v12 = v6;
   if (v5 == v6)
   {
@@ -369,9 +369,9 @@ LABEL_8:
     selectedImage = self->_selectedImage;
     self->_selectedImage = v8;
 
-    v10 = [(UITab *)self _linkedTabBarItem];
-    v11 = [(UITab *)self _filledVariantSelectedImage];
-    [v10 setSelectedImage:v11];
+    _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+    _filledVariantSelectedImage = [(UITab *)self _filledVariantSelectedImage];
+    [_linkedTabBarItem setSelectedImage:_filledVariantSelectedImage];
 
     [(UITab *)self _contentDidChange];
   }
@@ -379,11 +379,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   v5 = self->_subtitle;
-  v6 = v4;
+  v6 = subtitleCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -412,11 +412,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setBadgeValue:(id)a3
+- (void)setBadgeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = self->_badgeValue;
-  v6 = v4;
+  v6 = valueCopy;
   v11 = v6;
   if (v5 == v6)
   {
@@ -439,8 +439,8 @@ LABEL_8:
     badgeValue = self->_badgeValue;
     self->_badgeValue = v8;
 
-    v10 = [(UITab *)self _linkedTabBarItem];
-    [v10 setBadgeValue:v11];
+    _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+    [_linkedTabBarItem setBadgeValue:v11];
 
     [(UITab *)self _contentDidChange];
   }
@@ -448,11 +448,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setPreferredPlacement:(int64_t)a3
+- (void)setPreferredPlacement:(int64_t)placement
 {
-  if (self->_preferredPlacement != a3)
+  if (self->_preferredPlacement != placement)
   {
-    self->_preferredPlacement = a3;
+    self->_preferredPlacement = placement;
     [(UITab *)self _customizabilityDidChange];
 
     [(UITab *)self _contentDidChange];
@@ -474,39 +474,39 @@ LABEL_9:
     return v5 & 1;
   }
 
-  v7 = [(UITab *)self _tabModel];
-  v8 = [v7 customizationStore];
-  v9 = [v8 favoriteOrderContainsTab:self];
+  _tabModel = [(UITab *)self _tabModel];
+  customizationStore = [_tabModel customizationStore];
+  v9 = [customizationStore favoriteOrderContainsTab:self];
 
   return v9;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (self->_hidden != a3)
+  if (self->_hidden != hidden)
   {
-    self->_hidden = a3;
+    self->_hidden = hidden;
     [(UITab *)self _visibilityDidChange];
   }
 }
 
-- (void)setAllowsHiding:(BOOL)a3
+- (void)setAllowsHiding:(BOOL)hiding
 {
-  if (self->_allowsHiding != a3)
+  if (self->_allowsHiding != hiding)
   {
-    self->_allowsHiding = a3;
+    self->_allowsHiding = hiding;
     [(UITab *)self _customizabilityDidChange];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v4 = a3;
-    self->_enabled = a3;
-    v6 = [(UITab *)self _linkedTabBarItem];
-    [v6 setEnabled:v4];
+    enabledCopy = enabled;
+    self->_enabled = enabled;
+    _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+    [_linkedTabBarItem setEnabled:enabledCopy];
 
     [(UITab *)self _contentDidChange];
   }
@@ -518,8 +518,8 @@ LABEL_9:
   if (![(NSArray *)v3 count])
   {
     v4 = MEMORY[0x1E695DEC8];
-    v5 = [(UITab *)self viewController];
-    v6 = [v4 arrayWithObjects:{v5, 0}];
+    viewController = [(UITab *)self viewController];
+    v6 = [v4 arrayWithObjects:{viewController, 0}];
 
     v3 = v6;
   }
@@ -527,17 +527,17 @@ LABEL_9:
   return v3;
 }
 
-- (void)_setDisplayedViewControllers:(id)a3
+- (void)_setDisplayedViewControllers:(id)controllers
 {
-  v4 = a3;
-  if (![v4 count] || objc_msgSend(v4, "count") == 1 && (objc_msgSend(v4, "objectAtIndexedSubscript:", 0), v5 = objc_claimAutoreleasedReturnValue(), -[UITab viewController](self, "viewController"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
+  controllersCopy = controllers;
+  if (![controllersCopy count] || objc_msgSend(controllersCopy, "count") == 1 && (objc_msgSend(controllersCopy, "objectAtIndexedSubscript:", 0), v5 = objc_claimAutoreleasedReturnValue(), -[UITab viewController](self, "viewController"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
   {
 
-    v4 = 0;
+    controllersCopy = 0;
   }
 
   displayedViewControllers = self->_displayedViewControllers;
-  v13 = v4;
+  v13 = controllersCopy;
   v8 = displayedViewControllers;
   if (v13 == v8)
   {
@@ -583,10 +583,10 @@ LABEL_14:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
     goto LABEL_8;
@@ -595,32 +595,32 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UITab *)self preferredPlacement];
-    if (v5 == [(UITab *)v4 preferredPlacement])
+    preferredPlacement = [(UITab *)self preferredPlacement];
+    if (preferredPlacement == [(UITab *)equalCopy preferredPlacement])
     {
-      v6 = [(UITab *)self isHidden];
-      if (v6 == [(UITab *)v4 isHidden])
+      isHidden = [(UITab *)self isHidden];
+      if (isHidden == [(UITab *)equalCopy isHidden])
       {
-        v7 = [(UITab *)self allowsHiding];
-        if (v7 == [(UITab *)v4 allowsHiding])
+        allowsHiding = [(UITab *)self allowsHiding];
+        if (allowsHiding == [(UITab *)equalCopy allowsHiding])
         {
-          v10 = [(UITab *)self identifier];
-          v11 = [(UITab *)v4 identifier];
-          v12 = v10;
-          v13 = v11;
-          v14 = v13;
-          if (v12 == v13)
+          identifier = [(UITab *)self identifier];
+          identifier2 = [(UITab *)equalCopy identifier];
+          badgeValue = identifier;
+          v13 = identifier2;
+          badgeValue2 = v13;
+          if (badgeValue == v13)
           {
           }
 
           else
           {
-            if (!v12 || !v13)
+            if (!badgeValue || !v13)
             {
               goto LABEL_20;
             }
 
-            v15 = [v12 isEqual:v13];
+            v15 = [badgeValue isEqual:v13];
 
             if ((v15 & 1) == 0)
             {
@@ -628,53 +628,53 @@ LABEL_14:
             }
           }
 
-          v16 = [(UITab *)self title];
-          v17 = [(UITab *)v4 title];
-          v12 = v16;
-          v18 = v17;
-          v14 = v18;
-          if (v12 == v18)
+          title = [(UITab *)self title];
+          title2 = [(UITab *)equalCopy title];
+          badgeValue = title;
+          v18 = title2;
+          badgeValue2 = v18;
+          if (badgeValue == v18)
           {
 
 LABEL_23:
-            v20 = [(UITab *)self image];
-            v21 = [(UITab *)v4 image];
-            v22 = _deferringTokenEqualToToken(v20, v21);
+            image = [(UITab *)self image];
+            image2 = [(UITab *)equalCopy image];
+            v22 = _deferringTokenEqualToToken(image, image2);
 
             if (!v22)
             {
               goto LABEL_6;
             }
 
-            v23 = [(UITab *)self selectedImage];
-            v24 = [(UITab *)v4 selectedImage];
-            v25 = _deferringTokenEqualToToken(v23, v24);
+            selectedImage = [(UITab *)self selectedImage];
+            selectedImage2 = [(UITab *)equalCopy selectedImage];
+            v25 = _deferringTokenEqualToToken(selectedImage, selectedImage2);
 
             if (!v25)
             {
               goto LABEL_6;
             }
 
-            v26 = [(UITab *)self subtitle];
-            v27 = [(UITab *)v4 subtitle];
-            v28 = _deferringTokenEqualToToken(v26, v27);
+            subtitle = [(UITab *)self subtitle];
+            subtitle2 = [(UITab *)equalCopy subtitle];
+            v28 = _deferringTokenEqualToToken(subtitle, subtitle2);
 
             if (!v28)
             {
               goto LABEL_6;
             }
 
-            v12 = [(UITab *)self badgeValue];
-            v14 = [(UITab *)v4 badgeValue];
-            v8 = _deferringTokenEqualToToken(v12, v14);
+            badgeValue = [(UITab *)self badgeValue];
+            badgeValue2 = [(UITab *)equalCopy badgeValue];
+            v8 = _deferringTokenEqualToToken(badgeValue, badgeValue2);
 LABEL_21:
 
             goto LABEL_8;
           }
 
-          if (v12 && v18)
+          if (badgeValue && v18)
           {
-            v19 = [v12 isEqual:v18];
+            v19 = [badgeValue isEqual:v18];
 
             if ((v19 & 1) == 0)
             {
@@ -700,11 +700,11 @@ LABEL_8:
   return v8;
 }
 
-- (void)_setCompactRepresentation:(id)a3
+- (void)_setCompactRepresentation:(id)representation
 {
-  v5 = a3;
+  representationCopy = representation;
   v6 = self->__compactRepresentation;
-  v7 = v5;
+  v7 = representationCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -723,29 +723,29 @@ LABEL_8:
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    objc_storeStrong(&self->__compactRepresentation, a3);
+    objc_storeStrong(&self->__compactRepresentation, representation);
     [(UITab *)self _contentDidChange];
   }
 
 LABEL_9:
 }
 
-- (void)setSpringLoaded:(BOOL)a3
+- (void)setSpringLoaded:(BOOL)loaded
 {
-  if (self->_springLoaded != a3)
+  if (self->_springLoaded != loaded)
   {
-    v4 = a3;
-    self->_springLoaded = a3;
-    v5 = [(UITab *)self _linkedTabBarItem];
-    [v5 setSpringLoaded:v4];
+    loadedCopy = loaded;
+    self->_springLoaded = loaded;
+    _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+    [_linkedTabBarItem setSpringLoaded:loadedCopy];
   }
 }
 
-- (void)setAccessibilityIdentifier:(id)a3
+- (void)setAccessibilityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_accessibilityIdentifier;
-  v6 = v4;
+  v6 = identifierCopy;
   v11 = v6;
   if (v5 == v6)
   {
@@ -768,8 +768,8 @@ LABEL_8:
     accessibilityIdentifier = self->_accessibilityIdentifier;
     self->_accessibilityIdentifier = v8;
 
-    v10 = [(UITab *)self _linkedTabBarItem];
-    [v10 setAccessibilityIdentifier:v11];
+    _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+    [_linkedTabBarItem setAccessibilityIdentifier:v11];
 
     [(UITab *)self _contentDidChange];
   }
@@ -777,13 +777,13 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  v4 = a3;
-  v5 = [self accessibilityLabel];
-  v6 = v4;
+  labelCopy = label;
+  accessibilityLabel = [self accessibilityLabel];
+  v6 = labelCopy;
   v7 = v6;
-  if (v5 == v6)
+  if (accessibilityLabel == v6)
   {
     v8 = 1;
   }
@@ -791,17 +791,17 @@ LABEL_9:
   else
   {
     v8 = 0;
-    if (v6 && v5)
+    if (v6 && accessibilityLabel)
     {
-      v8 = [v5 isEqual:v6];
+      v8 = [accessibilityLabel isEqual:v6];
     }
   }
 
   v10.receiver = self;
   v10.super_class = UITab;
   [&v10 setAccessibilityLabel:v7];
-  v9 = [(UITab *)self _linkedTabBarItem];
-  [v9 setAccessibilityLabel:v7];
+  _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+  [_linkedTabBarItem setAccessibilityLabel:v7];
 
   if ((v8 & 1) == 0)
   {
@@ -809,13 +809,13 @@ LABEL_9:
   }
 }
 
-- (void)setAccessibilityAttributedLabel:(id)a3
+- (void)setAccessibilityAttributedLabel:(id)label
 {
-  v4 = a3;
-  v5 = [self accessibilityAttributedLabel];
-  v6 = v4;
+  labelCopy = label;
+  accessibilityAttributedLabel = [self accessibilityAttributedLabel];
+  v6 = labelCopy;
   v7 = v6;
-  if (v5 == v6)
+  if (accessibilityAttributedLabel == v6)
   {
     v8 = 1;
   }
@@ -823,17 +823,17 @@ LABEL_9:
   else
   {
     v8 = 0;
-    if (v6 && v5)
+    if (v6 && accessibilityAttributedLabel)
     {
-      v8 = [v5 isEqual:v6];
+      v8 = [accessibilityAttributedLabel isEqual:v6];
     }
   }
 
   v10.receiver = self;
   v10.super_class = UITab;
   [&v10 setAccessibilityAttributedLabel:v7];
-  v9 = [(UITab *)self _linkedTabBarItem];
-  [v9 setAccessibilityAttributedLabel:v7];
+  _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+  [_linkedTabBarItem setAccessibilityAttributedLabel:v7];
 
   if ((v8 & 1) == 0)
   {
@@ -841,13 +841,13 @@ LABEL_9:
   }
 }
 
-- (void)setAccessibilityValue:(id)a3
+- (void)setAccessibilityValue:(id)value
 {
-  v4 = a3;
-  v5 = [self accessibilityValue];
-  v6 = v4;
+  valueCopy = value;
+  accessibilityValue = [self accessibilityValue];
+  v6 = valueCopy;
   v7 = v6;
-  if (v5 == v6)
+  if (accessibilityValue == v6)
   {
     v8 = 1;
   }
@@ -855,17 +855,17 @@ LABEL_9:
   else
   {
     v8 = 0;
-    if (v6 && v5)
+    if (v6 && accessibilityValue)
     {
-      v8 = [v5 isEqual:v6];
+      v8 = [accessibilityValue isEqual:v6];
     }
   }
 
   v10.receiver = self;
   v10.super_class = UITab;
   [&v10 setAccessibilityValue:v7];
-  v9 = [(UITab *)self _linkedTabBarItem];
-  [v9 setAccessibilityValue:v7];
+  _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+  [_linkedTabBarItem setAccessibilityValue:v7];
 
   if ((v8 & 1) == 0)
   {
@@ -873,13 +873,13 @@ LABEL_9:
   }
 }
 
-- (void)setAccessibilityAttributedValue:(id)a3
+- (void)setAccessibilityAttributedValue:(id)value
 {
-  v4 = a3;
-  v5 = [self accessibilityAttributedValue];
-  v6 = v4;
+  valueCopy = value;
+  accessibilityAttributedValue = [self accessibilityAttributedValue];
+  v6 = valueCopy;
   v7 = v6;
-  if (v5 == v6)
+  if (accessibilityAttributedValue == v6)
   {
     v8 = 1;
   }
@@ -887,17 +887,17 @@ LABEL_9:
   else
   {
     v8 = 0;
-    if (v6 && v5)
+    if (v6 && accessibilityAttributedValue)
     {
-      v8 = [v5 isEqual:v6];
+      v8 = [accessibilityAttributedValue isEqual:v6];
     }
   }
 
   v10.receiver = self;
   v10.super_class = UITab;
   [&v10 setAccessibilityAttributedValue:v7];
-  v9 = [(UITab *)self _linkedTabBarItem];
-  [v9 setAccessibilityAttributedValue:v7];
+  _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+  [_linkedTabBarItem setAccessibilityAttributedValue:v7];
 
   if ((v8 & 1) == 0)
   {
@@ -905,13 +905,13 @@ LABEL_9:
   }
 }
 
-- (void)setAccessibilityHint:(id)a3
+- (void)setAccessibilityHint:(id)hint
 {
-  v4 = a3;
-  v5 = [self accessibilityHint];
-  v6 = v4;
+  hintCopy = hint;
+  accessibilityHint = [self accessibilityHint];
+  v6 = hintCopy;
   v7 = v6;
-  if (v5 == v6)
+  if (accessibilityHint == v6)
   {
     v8 = 1;
   }
@@ -919,17 +919,17 @@ LABEL_9:
   else
   {
     v8 = 0;
-    if (v6 && v5)
+    if (v6 && accessibilityHint)
     {
-      v8 = [v5 isEqual:v6];
+      v8 = [accessibilityHint isEqual:v6];
     }
   }
 
   v10.receiver = self;
   v10.super_class = UITab;
   [&v10 setAccessibilityHint:v7];
-  v9 = [(UITab *)self _linkedTabBarItem];
-  [v9 setAccessibilityHint:v7];
+  _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+  [_linkedTabBarItem setAccessibilityHint:v7];
 
   if ((v8 & 1) == 0)
   {
@@ -937,13 +937,13 @@ LABEL_9:
   }
 }
 
-- (void)setAccessibilityAttributedHint:(id)a3
+- (void)setAccessibilityAttributedHint:(id)hint
 {
-  v4 = a3;
-  v5 = [self accessibilityAttributedHint];
-  v6 = v4;
+  hintCopy = hint;
+  accessibilityAttributedHint = [self accessibilityAttributedHint];
+  v6 = hintCopy;
   v7 = v6;
-  if (v5 == v6)
+  if (accessibilityAttributedHint == v6)
   {
     v8 = 1;
   }
@@ -951,17 +951,17 @@ LABEL_9:
   else
   {
     v8 = 0;
-    if (v6 && v5)
+    if (v6 && accessibilityAttributedHint)
     {
-      v8 = [v5 isEqual:v6];
+      v8 = [accessibilityAttributedHint isEqual:v6];
     }
   }
 
   v10.receiver = self;
   v10.super_class = UITab;
   [&v10 setAccessibilityAttributedHint:v7];
-  v9 = [(UITab *)self _linkedTabBarItem];
-  [v9 setAccessibilityAttributedHint:v7];
+  _linkedTabBarItem = [(UITab *)self _linkedTabBarItem];
+  [_linkedTabBarItem setAccessibilityAttributedHint:v7];
 
   if ((v8 & 1) == 0)
   {
@@ -969,87 +969,87 @@ LABEL_9:
   }
 }
 
-- (id)_descriptionWithRecursion:(BOOL)a3
+- (id)_descriptionWithRecursion:(BOOL)recursion
 {
-  v3 = a3;
+  recursionCopy = recursion;
   v5 = [UIDescriptionBuilder descriptionBuilderWithObject:self];
-  [(UITab *)self _updateDescriptionWithBuilder:v5 recursive:v3];
-  v6 = [v5 string];
+  [(UITab *)self _updateDescriptionWithBuilder:v5 recursive:recursionCopy];
+  string = [v5 string];
 
-  return v6;
+  return string;
 }
 
-- (void)_updateDescriptionWithBuilder:(id)a3 recursive:(BOOL)a4
+- (void)_updateDescriptionWithBuilder:(id)builder recursive:(BOOL)recursive
 {
-  v4 = a4;
-  v29 = a3;
-  v6 = [v29 appendName:@"identifier" object:self->_identifier];
-  v7 = [(UITab *)self title];
-  v8 = [v29 appendName:@"title" object:v7];
+  recursiveCopy = recursive;
+  builderCopy = builder;
+  v6 = [builderCopy appendName:@"identifier" object:self->_identifier];
+  title = [(UITab *)self title];
+  v8 = [builderCopy appendName:@"title" object:title];
 
-  v9 = [(UITab *)self subtitle];
+  subtitle = [(UITab *)self subtitle];
 
-  if (v9)
+  if (subtitle)
   {
-    v10 = [(UITab *)self subtitle];
-    v11 = [v29 appendName:@"subtitle" object:v10];
+    subtitle2 = [(UITab *)self subtitle];
+    v11 = [builderCopy appendName:@"subtitle" object:subtitle2];
   }
 
-  v12 = [(UITab *)self image];
+  image = [(UITab *)self image];
 
-  if (v12)
+  if (image)
   {
-    v13 = [(UITab *)self image];
-    v14 = [v29 appendName:@"image" object:v13 usingLightweightDescription:1];
+    image2 = [(UITab *)self image];
+    v14 = [builderCopy appendName:@"image" object:image2 usingLightweightDescription:1];
   }
 
-  v15 = [(UITab *)self badgeValue];
+  badgeValue = [(UITab *)self badgeValue];
 
-  if (v15)
+  if (badgeValue)
   {
-    v16 = [(UITab *)self badgeValue];
-    v17 = [v29 appendName:@"badgeValue" object:v16];
+    badgeValue2 = [(UITab *)self badgeValue];
+    v17 = [builderCopy appendName:@"badgeValue" object:badgeValue2];
   }
 
-  v18 = [(UITab *)self preferredPlacement];
-  if (v18 > 6)
+  preferredPlacement = [(UITab *)self preferredPlacement];
+  if (preferredPlacement > 6)
   {
     v19 = @"<unknown>";
   }
 
   else
   {
-    v19 = off_1E70FFD70[v18];
+    v19 = off_1E70FFD70[preferredPlacement];
   }
 
-  v20 = [v29 appendName:@"placement" object:v19];
+  v20 = [builderCopy appendName:@"placement" object:v19];
   if (self->_hidden)
   {
-    v21 = [v29 appendName:@"hidden" BOOLValue:1];
+    v21 = [builderCopy appendName:@"hidden" BOOLValue:1];
   }
 
   if (self->_enabled)
   {
-    v22 = [v29 appendName:@"enabled" BOOLValue:1];
+    v22 = [builderCopy appendName:@"enabled" BOOLValue:1];
   }
 
   if (self->_allowsHiding)
   {
-    v23 = [v29 appendName:@"allowsHiding" BOOLValue:1];
+    v23 = [builderCopy appendName:@"allowsHiding" BOOLValue:1];
   }
 
   viewController = self->_viewController;
   if (viewController)
   {
-    v25 = [v29 appendName:@"viewController" object:viewController usingLightweightDescription:1];
+    v25 = [builderCopy appendName:@"viewController" object:viewController usingLightweightDescription:1];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_parent);
 
-  if (WeakRetained && v4)
+  if (WeakRetained && recursiveCopy)
   {
     v27 = objc_loadWeakRetained(&self->_parent);
-    v28 = [v29 appendName:@"parent" object:v27 usingLightweightDescription:1];
+    v28 = [builderCopy appendName:@"parent" object:v27 usingLightweightDescription:1];
   }
 }
 
@@ -1069,22 +1069,22 @@ id __30__UITab__recursiveDescription__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)_setParent:(id)a3
+- (void)_setParent:(id)parent
 {
-  v4 = a3;
-  v6 = [(UITab *)self _tabModel];
-  objc_storeWeak(&self->_parent, v4);
+  parentCopy = parent;
+  _tabModel = [(UITab *)self _tabModel];
+  objc_storeWeak(&self->_parent, parentCopy);
 
-  v5 = [(UITab *)self _tabModel];
-  if (v6 != v5)
+  _tabModel2 = [(UITab *)self _tabModel];
+  if (_tabModel != _tabModel2)
   {
-    [(UITab *)self _didChangeTabModel:v5];
+    [(UITab *)self _didChangeTabModel:_tabModel2];
   }
 }
 
-- (void)_setTabModel:(id)a3
+- (void)_setTabModel:(id)model
 {
-  obj = a3;
+  obj = model;
   WeakRetained = objc_loadWeakRetained(&self->_tabModel);
 
   if (WeakRetained != obj)
@@ -1105,60 +1105,60 @@ id __30__UITab__recursiveDescription__block_invoke(uint64_t a1, void *a2)
 
 - (void)_visibilityDidChange
 {
-  v3 = [(UITab *)self _tabModel];
-  [v3 visibilityDidChangeForTab:self editing:0];
+  _tabModel = [(UITab *)self _tabModel];
+  [_tabModel visibilityDidChangeForTab:self editing:0];
 }
 
 - (BOOL)_hasParent
 {
-  v2 = [(UITab *)self _parentGroup];
-  v3 = v2 != 0;
+  _parentGroup = [(UITab *)self _parentGroup];
+  v3 = _parentGroup != 0;
 
   return v3;
 }
 
-- (BOOL)_isAncestorOfTab:(id)a3
+- (BOOL)_isAncestorOfTab:(id)tab
 {
-  v4 = a3;
-  if (!v4)
+  tabCopy = tab;
+  if (!tabCopy)
   {
     return 0;
   }
 
-  v5 = v4;
+  _parentGroup = tabCopy;
   do
   {
-    v6 = v5;
-    v5 = [(UITab *)v5 _parentGroup];
+    v6 = _parentGroup;
+    _parentGroup = [(UITab *)_parentGroup _parentGroup];
 
-    v7 = v5 == self;
+    v7 = _parentGroup == self;
   }
 
-  while (v5 && v5 != self);
+  while (_parentGroup && _parentGroup != self);
 
   return v7;
 }
 
 - (BOOL)_canBeReordered
 {
-  v2 = self;
-  v3 = [(UITab *)self _parentGroup];
-  LOBYTE(v2) = [v3 _canReorderChild:v2];
+  selfCopy = self;
+  _parentGroup = [(UITab *)self _parentGroup];
+  LOBYTE(selfCopy) = [_parentGroup _canReorderChild:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_didChangeTabModel:(id)a3
+- (void)_didChangeTabModel:(id)model
 {
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
     if ([(UITab *)self allowsHiding])
     {
       v8 = 0;
-      v5 = [v4 customizationStore];
-      v6 = [(UITab *)self identifier];
-      v7 = [v5 isHiddenForTabIdentifier:v6 isCustomized:&v8];
+      customizationStore = [modelCopy customizationStore];
+      identifier = [(UITab *)self identifier];
+      v7 = [customizationStore isHiddenForTabIdentifier:identifier isCustomized:&v8];
 
       if (v8 == 1)
       {
@@ -1168,11 +1168,11 @@ id __30__UITab__recursiveDescription__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (CGRect)frameInView:(id)a3
+- (CGRect)frameInView:(id)view
 {
-  v4 = a3;
-  v5 = [(UITab *)self _resolvedSourceItem];
-  [v5 frameInView:v4];
+  viewCopy = view;
+  _resolvedSourceItem = [(UITab *)self _resolvedSourceItem];
+  [_resolvedSourceItem frameInView:viewCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1191,22 +1191,22 @@ id __30__UITab__recursiveDescription__block_invoke(uint64_t a1, void *a2)
 
 - (id)_resolvedSourceItem
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 _tabModel];
-    v1 = [v2 resolvedPopoverPresentationControllerSourceItemForTab:v1];
+    _tabModel = [self _tabModel];
+    selfCopy = [_tabModel resolvedPopoverPresentationControllerSourceItemForTab:selfCopy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (CGRect)_frameInCoordinateSpace:(id)a3 window:(id)a4
+- (CGRect)_frameInCoordinateSpace:(id)space window:(id)window
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITab *)self _resolvedSourceItem];
-  [v8 _frameInCoordinateSpace:v7 window:v6];
+  windowCopy = window;
+  spaceCopy = space;
+  _resolvedSourceItem = [(UITab *)self _resolvedSourceItem];
+  [_resolvedSourceItem _frameInCoordinateSpace:spaceCopy window:windowCopy];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -1225,26 +1225,26 @@ id __30__UITab__recursiveDescription__block_invoke(uint64_t a1, void *a2)
 
 - (id)_nearestViewController
 {
-  v2 = [(UITab *)self _resolvedSourceItem];
-  v3 = [v2 _nearestViewController];
+  _resolvedSourceItem = [(UITab *)self _resolvedSourceItem];
+  _nearestViewController = [_resolvedSourceItem _nearestViewController];
 
-  return v3;
+  return _nearestViewController;
 }
 
-- (id)_sourceViewForPresentationInWindow:(id)a3
+- (id)_sourceViewForPresentationInWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(UITab *)self _resolvedSourceItem];
-  v6 = [v5 _sourceViewForPresentationInWindow:v4];
+  windowCopy = window;
+  _resolvedSourceItem = [(UITab *)self _resolvedSourceItem];
+  v6 = [_resolvedSourceItem _sourceViewForPresentationInWindow:windowCopy];
 
   return v6;
 }
 
-- (CGRect)_sourceRectForPresentationInWindow:(id)a3
+- (CGRect)_sourceRectForPresentationInWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(UITab *)self _resolvedSourceItem];
-  [v5 _sourceRectForPresentationInWindow:v4];
+  windowCopy = window;
+  _resolvedSourceItem = [(UITab *)self _resolvedSourceItem];
+  [_resolvedSourceItem _sourceRectForPresentationInWindow:windowCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;

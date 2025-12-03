@@ -1,8 +1,8 @@
 @interface __NSLMMarkedTextUnderlineRenderer
 - (double)renderUnderline;
-- (void)_renderUnderlineStartX:(double)a3 endX:(double)a4 yPosition:(double)a5 alphaValue:(double)a6;
+- (void)_renderUnderlineStartX:(double)x endX:(double)endX yPosition:(double)position alphaValue:(double)value;
 - (void)dealloc;
-- (void)processMarkedTextUnderlineStartX:(int)a3 endX:(double)a4 yPosition:(double)a5 underlineColor:(double)a6 selected:;
+- (void)processMarkedTextUnderlineStartX:(int)x endX:(double)endX yPosition:(double)position underlineColor:(double)color selected:;
 @end
 
 @implementation __NSLMMarkedTextUnderlineRenderer
@@ -14,29 +14,29 @@
   [(__NSLMMarkedTextUnderlineRenderer *)&v3 dealloc];
 }
 
-- (void)_renderUnderlineStartX:(double)a3 endX:(double)a4 yPosition:(double)a5 alphaValue:(double)a6
+- (void)_renderUnderlineStartX:(double)x endX:(double)endX yPosition:(double)position alphaValue:(double)value
 {
-  if (a4 > a3)
+  if (endX > x)
   {
-    v9 = a4;
-    v10 = a3;
+    endXCopy = endX;
+    xCopy = x;
     CGContextSaveGState(self->_cgContextRef);
     [(UIColor *)self->_underlineColor set];
-    if (v9 - v10 > 1.0)
+    if (endXCopy - xCopy > 1.0)
     {
-      v10 = v10 + 1.0;
+      xCopy = xCopy + 1.0;
     }
 
-    if (v9 - v10 > 1.0)
+    if (endXCopy - xCopy > 1.0)
     {
-      v9 = v9 + -1.0;
+      endXCopy = endXCopy + -1.0;
     }
 
     CGContextSetLineWidth(self->_cgContextRef, 2.0);
     CGContextSetLineCap(self->_cgContextRef, kCGLineCapRound);
-    CGContextSetAlpha(self->_cgContextRef, a6);
-    CGContextMoveToPoint(self->_cgContextRef, v10, a5);
-    CGContextAddLineToPoint(self->_cgContextRef, v9, a5);
+    CGContextSetAlpha(self->_cgContextRef, value);
+    CGContextMoveToPoint(self->_cgContextRef, xCopy, position);
+    CGContextAddLineToPoint(self->_cgContextRef, endXCopy, position);
     CGContextStrokePath(self->_cgContextRef);
     cgContextRef = self->_cgContextRef;
 
@@ -44,81 +44,81 @@
   }
 }
 
-- (void)processMarkedTextUnderlineStartX:(int)a3 endX:(double)a4 yPosition:(double)a5 underlineColor:(double)a6 selected:
+- (void)processMarkedTextUnderlineStartX:(int)x endX:(double)endX yPosition:(double)position underlineColor:(double)color selected:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if (*(a1 + 24) != 1)
+  if (*(self + 24) != 1)
   {
     goto LABEL_34;
   }
 
-  v13 = *(a1 + 40);
-  v12 = *(a1 + 48);
-  v15 = *(a1 + 56);
-  v14 = *(a1 + 64);
+  v13 = *(self + 40);
+  v12 = *(self + 48);
+  v15 = *(self + 56);
+  v14 = *(self + 64);
   if (v12 > v13)
   {
-    v16 = a3;
+    xCopy = x;
   }
 
   else
   {
-    v16 = 0;
+    xCopy = 0;
   }
 
   if (v14 <= v15)
   {
-    v16 = 1;
+    xCopy = 1;
   }
 
-  if (v16)
+  if (xCopy)
   {
-    v17 = *(a1 + 40);
+    v17 = *(self + 40);
   }
 
   else
   {
-    v17 = *(a1 + 56);
+    v17 = *(self + 56);
   }
 
   v21 = v17;
-  if (v16)
+  if (xCopy)
   {
-    v18 = *(a1 + 48);
+    v18 = *(self + 48);
   }
 
   else
   {
-    v18 = *(a1 + 64);
+    v18 = *(self + 64);
   }
 
-  if (![*(a1 + 16) isEqual:a2] || *(a1 + 32) != a6 || vabdd_f64(a4, v18) > 0.001 && vabdd_f64(a5, v21) > 0.001)
+  if (![*(self + 16) isEqual:a2] || *(self + 32) != color || vabdd_f64(endX, v18) > 0.001 && vabdd_f64(position, v21) > 0.001)
   {
-    [(__NSLMMarkedTextUnderlineRenderer *)a1 renderUnderline];
+    [(__NSLMMarkedTextUnderlineRenderer *)self renderUnderline];
     goto LABEL_34;
   }
 
-  if (!a3)
+  if (!x)
   {
     if (v14 <= v15)
     {
-      *(a1 + 56) = a4;
+      *(self + 56) = endX;
 LABEL_32:
-      *(a1 + 64) = a5;
+      *(self + 64) = position;
       goto LABEL_34;
     }
 
 LABEL_29:
-    if (*(a1 + 56) > a4)
+    if (*(self + 56) > endX)
     {
-      *(a1 + 56) = a4;
+      *(self + 56) = endX;
     }
 
-    if (*(a1 + 64) >= a5)
+    if (*(self + 64) >= position)
     {
       goto LABEL_34;
     }
@@ -128,18 +128,18 @@ LABEL_29:
 
   if (v12 <= v13)
   {
-    *(a1 + 40) = a4;
+    *(self + 40) = endX;
 LABEL_27:
-    *(a1 + 48) = a5;
+    *(self + 48) = position;
     goto LABEL_28;
   }
 
-  if (*(a1 + 40) > a4)
+  if (*(self + 40) > endX)
   {
-    *(a1 + 40) = a4;
+    *(self + 40) = endX;
   }
 
-  if (*(a1 + 48) < a5)
+  if (*(self + 48) < position)
   {
     goto LABEL_27;
   }
@@ -151,45 +151,45 @@ LABEL_28:
   }
 
 LABEL_34:
-  if (a5 > a4 && (*(a1 + 24) & 1) == 0)
+  if (position > endX && (*(self + 24) & 1) == 0)
   {
-    *(a1 + 16) = a2;
-    *(a1 + 32) = a6;
+    *(self + 16) = a2;
+    *(self + 32) = color;
     v19 = 56;
-    if (a3)
+    if (x)
     {
       v19 = 40;
     }
 
     v20 = 64;
-    if (a3)
+    if (x)
     {
       v20 = 48;
     }
 
-    *(a1 + v19) = a4;
-    *(a1 + v20) = a5;
-    *(a1 + 24) = 1;
+    *(self + v19) = endX;
+    *(self + v20) = position;
+    *(self + 24) = 1;
   }
 }
 
 - (double)renderUnderline
 {
-  if (a1 && *(a1 + 24) == 1)
+  if (self && *(self + 24) == 1)
   {
     v2 = 0.35;
-    if (*(a1 + 40) == *(a1 + 48))
+    if (*(self + 40) == *(self + 48))
     {
       v2 = 1.0;
     }
 
-    [a1 _renderUnderlineStartX:*(a1 + 56) endX:*(a1 + 64) yPosition:*(a1 + 32) alphaValue:v2];
-    [a1 _renderUnderlineStartX:*(a1 + 40) endX:*(a1 + 48) yPosition:*(a1 + 32) alphaValue:1.0];
-    *(a1 + 24) = 0;
+    [self _renderUnderlineStartX:*(self + 56) endX:*(self + 64) yPosition:*(self + 32) alphaValue:v2];
+    [self _renderUnderlineStartX:*(self + 40) endX:*(self + 48) yPosition:*(self + 32) alphaValue:1.0];
+    *(self + 24) = 0;
     result = 0.0;
-    *(a1 + 32) = 0u;
-    *(a1 + 48) = 0u;
-    *(a1 + 64) = 0;
+    *(self + 32) = 0u;
+    *(self + 48) = 0u;
+    *(self + 64) = 0;
   }
 
   return result;

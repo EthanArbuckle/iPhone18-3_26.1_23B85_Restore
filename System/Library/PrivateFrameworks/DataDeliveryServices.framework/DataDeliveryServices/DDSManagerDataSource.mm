@@ -1,12 +1,12 @@
 @interface DDSManagerDataSource
-- (id)dateForPreferenceKey:(id)a3;
+- (id)dateForPreferenceKey:(id)key;
 @end
 
 @implementation DDSManagerDataSource
 
-- (id)dateForPreferenceKey:(id)a3
+- (id)dateForPreferenceKey:(id)key
 {
-  v3 = DDSGetPreferenceObjectForKey(a3);
+  v3 = DDSGetPreferenceObjectForKey(key);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

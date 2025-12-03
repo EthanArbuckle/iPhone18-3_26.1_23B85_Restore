@@ -1,149 +1,149 @@
 @interface SpeechModelTrainingConnection
 + (void)initialize;
-- (SpeechModelTrainingConnection)initWithXPCConnection:(id)a3;
-- (id)createDispatchTimerWithInterval:(double)a3 queue:(id)a4 block:(id)a5;
-- (void)_assetForLanguage:(id)a3 completion:(id)a4;
-- (void)buildPhoneticMatchWithLanguage:(id)a3 saveIntermediateFsts:(BOOL)a4 completion:(id)a5;
-- (void)buildSpeechProfileForLanguage:(id)a3;
+- (SpeechModelTrainingConnection)initWithXPCConnection:(id)connection;
+- (id)createDispatchTimerWithInterval:(double)interval queue:(id)queue block:(id)block;
+- (void)_assetForLanguage:(id)language completion:(id)completion;
+- (void)buildPhoneticMatchWithLanguage:(id)language saveIntermediateFsts:(BOOL)fsts completion:(id)completion;
+- (void)buildSpeechProfileForLanguage:(id)language;
 - (void)dealloc;
-- (void)extractBundledOovs:(id)a3 appLmDataFileSandboxExtension:(id)a4 appBundleId:(id)a5 completion:(id)a6;
-- (void)generateAudioWithTexts:(id)a3 language:(id)a4 completion:(id)a5;
-- (void)generateConfusionPairsWithUUID:(id)a3 parameters:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7 recognizedNbest:(id)a8 recognizedText:(id)a9 correctedText:(id)a10 selectedAlternatives:(id)a11 completion:(id)a12;
-- (void)generateConfusionPairsWithUUID:(id)a3 parameters:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7 recognizedTokens:(id)a8 recognizedText:(id)a9 correctedText:(id)a10 selectedAlternatives:(id)a11 completion:(id)a12;
-- (void)recordWordsAndOov:(id)a3 data:(id)a4 vocab:(id)a5;
-- (void)trainAllAppLMWithLanguage:(id)a3;
-- (void)trainAllAppLMWithLanguage:(id)a3 completion:(id)a4;
-- (void)trainAllAppLMWithLanguage:(id)a3 outOf:(id)a4 into:(id)a5 completion:(id)a6;
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmDataFileSandboxExtension:(id)a7;
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmDataFileSandboxExtension:(id)a7 completion:(id)a8;
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmModelFile:(id)a7 appLmDataFileSandboxExtension:(id)a8;
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmModelFile:(id)a7 appLmDataFileSandboxExtension:(id)a8 completion:(id)a9;
-- (void)trainGlobalNNLMwithFidesSessionURL:(id)a3 completion:(id)a4;
-- (void)trainPartialAllAppLMWithLanguage:(id)a3;
-- (void)trainPartialAllAppLMWithLanguage:(id)a3 completion:(id)a4;
-- (void)trainPersonalizedLMWithLanguage:(id)a3 configuration:(id)a4 fides:(BOOL)a5 write:(BOOL)a6 completion:(id)a7;
-- (void)upperCaseString:(id)a3 withReply:(id)a4;
+- (void)extractBundledOovs:(id)oovs appLmDataFileSandboxExtension:(id)extension appBundleId:(id)id completion:(id)completion;
+- (void)generateAudioWithTexts:(id)texts language:(id)language completion:(id)completion;
+- (void)generateConfusionPairsWithUUID:(id)d parameters:(id)parameters language:(id)language task:(id)task samplingRate:(unint64_t)rate recognizedNbest:(id)nbest recognizedText:(id)text correctedText:(id)self0 selectedAlternatives:(id)self1 completion:(id)self2;
+- (void)generateConfusionPairsWithUUID:(id)d parameters:(id)parameters language:(id)language task:(id)task samplingRate:(unint64_t)rate recognizedTokens:(id)tokens recognizedText:(id)text correctedText:(id)self0 selectedAlternatives:(id)self1 completion:(id)self2;
+- (void)recordWordsAndOov:(id)oov data:(id)data vocab:(id)vocab;
+- (void)trainAllAppLMWithLanguage:(id)language;
+- (void)trainAllAppLMWithLanguage:(id)language completion:(id)completion;
+- (void)trainAllAppLMWithLanguage:(id)language outOf:(id)of into:(id)into completion:(id)completion;
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmDataFileSandboxExtension:(id)extension;
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmDataFileSandboxExtension:(id)extension completion:(id)completion;
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmModelFile:(id)modelFile appLmDataFileSandboxExtension:(id)extension;
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmModelFile:(id)modelFile appLmDataFileSandboxExtension:(id)extension completion:(id)completion;
+- (void)trainGlobalNNLMwithFidesSessionURL:(id)l completion:(id)completion;
+- (void)trainPartialAllAppLMWithLanguage:(id)language;
+- (void)trainPartialAllAppLMWithLanguage:(id)language completion:(id)completion;
+- (void)trainPersonalizedLMWithLanguage:(id)language configuration:(id)configuration fides:(BOOL)fides write:(BOOL)write completion:(id)completion;
+- (void)upperCaseString:(id)string withReply:(id)reply;
 @end
 
 @implementation SpeechModelTrainingConnection
 
-- (void)generateConfusionPairsWithUUID:(id)a3 parameters:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7 recognizedTokens:(id)a8 recognizedText:(id)a9 correctedText:(id)a10 selectedAlternatives:(id)a11 completion:(id)a12
+- (void)generateConfusionPairsWithUUID:(id)d parameters:(id)parameters language:(id)language task:(id)task samplingRate:(unint64_t)rate recognizedTokens:(id)tokens recognizedText:(id)text correctedText:(id)self0 selectedAlternatives:(id)self1 completion:(id)self2
 {
-  v33 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
+  dCopy = d;
+  parametersCopy = parameters;
+  languageCopy = language;
+  taskCopy = task;
+  tokensCopy = tokens;
+  textCopy = text;
+  correctedTextCopy = correctedText;
+  alternativesCopy = alternatives;
+  completionCopy = completion;
   v24 = qword_10003FF30;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000E9A4;
   block[3] = &unk_100038FF0;
-  v38 = v19;
-  v39 = v16;
-  v40 = self;
-  v41 = v33;
-  v42 = v17;
-  v43 = v18;
-  v47 = v23;
-  v48 = a7;
-  v44 = v20;
-  v45 = v21;
-  v46 = v22;
-  v36 = v23;
-  v25 = v22;
-  v26 = v21;
-  v27 = v20;
-  v28 = v18;
-  v29 = v17;
-  v30 = v33;
-  v31 = v16;
-  v32 = v19;
+  v38 = tokensCopy;
+  v39 = parametersCopy;
+  selfCopy = self;
+  v41 = dCopy;
+  v42 = languageCopy;
+  v43 = taskCopy;
+  v47 = completionCopy;
+  rateCopy = rate;
+  v44 = textCopy;
+  v45 = correctedTextCopy;
+  v46 = alternativesCopy;
+  v36 = completionCopy;
+  v25 = alternativesCopy;
+  v26 = correctedTextCopy;
+  v27 = textCopy;
+  v28 = taskCopy;
+  v29 = languageCopy;
+  v30 = dCopy;
+  v31 = parametersCopy;
+  v32 = tokensCopy;
   dispatch_async(v24, block);
 }
 
-- (void)generateConfusionPairsWithUUID:(id)a3 parameters:(id)a4 language:(id)a5 task:(id)a6 samplingRate:(unint64_t)a7 recognizedNbest:(id)a8 recognizedText:(id)a9 correctedText:(id)a10 selectedAlternatives:(id)a11 completion:(id)a12
+- (void)generateConfusionPairsWithUUID:(id)d parameters:(id)parameters language:(id)language task:(id)task samplingRate:(unint64_t)rate recognizedNbest:(id)nbest recognizedText:(id)text correctedText:(id)self0 selectedAlternatives:(id)self1 completion:(id)self2
 {
-  v34 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
+  dCopy = d;
+  parametersCopy = parameters;
+  languageCopy = language;
+  taskCopy = task;
+  nbestCopy = nbest;
+  textCopy = text;
+  correctedTextCopy = correctedText;
+  alternativesCopy = alternatives;
+  completionCopy = completion;
   v24 = qword_10003FF30;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000EC84;
   block[3] = &unk_100038FC8;
-  v37 = v16;
-  v38 = v34;
-  v39 = v17;
-  v40 = v18;
-  v41 = v19;
-  v42 = v20;
-  v43 = v21;
-  v44 = v22;
-  v45 = v23;
-  v46 = a7;
-  v25 = v23;
-  v26 = v22;
-  v27 = v21;
-  v28 = v20;
-  v29 = v19;
-  v30 = v18;
-  v31 = v17;
-  v32 = v34;
-  v33 = v16;
+  v37 = parametersCopy;
+  v38 = dCopy;
+  v39 = languageCopy;
+  v40 = taskCopy;
+  v41 = nbestCopy;
+  v42 = textCopy;
+  v43 = correctedTextCopy;
+  v44 = alternativesCopy;
+  v45 = completionCopy;
+  rateCopy = rate;
+  v25 = completionCopy;
+  v26 = alternativesCopy;
+  v27 = correctedTextCopy;
+  v28 = textCopy;
+  v29 = nbestCopy;
+  v30 = taskCopy;
+  v31 = languageCopy;
+  v32 = dCopy;
+  v33 = parametersCopy;
   dispatch_async(v24, block);
 }
 
-- (void)generateAudioWithTexts:(id)a3 language:(id)a4 completion:(id)a5
+- (void)generateAudioWithTexts:(id)texts language:(id)language completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  textsCopy = texts;
+  languageCopy = language;
+  completionCopy = completion;
   v10 = qword_10003FF30;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000F5A4;
   block[3] = &unk_100038F78;
-  v16 = v8;
-  v17 = v9;
-  v15 = v7;
-  v11 = v8;
-  v12 = v7;
-  v13 = v9;
+  v16 = languageCopy;
+  v17 = completionCopy;
+  v15 = textsCopy;
+  v11 = languageCopy;
+  v12 = textsCopy;
+  v13 = completionCopy;
   dispatch_async(v10, block);
 }
 
-- (void)buildPhoneticMatchWithLanguage:(id)a3 saveIntermediateFsts:(BOOL)a4 completion:(id)a5
+- (void)buildPhoneticMatchWithLanguage:(id)language saveIntermediateFsts:(BOOL)fsts completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  languageCopy = language;
+  completionCopy = completion;
   v10 = qword_10003FF30;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000F844;
   v13[3] = &unk_100038F50;
-  v15 = self;
-  v16 = v9;
-  v14 = v8;
-  v17 = a4;
-  v11 = v8;
-  v12 = v9;
+  selfCopy = self;
+  v16 = completionCopy;
+  v14 = languageCopy;
+  fstsCopy = fsts;
+  v11 = languageCopy;
+  v12 = completionCopy;
   dispatch_async(v10, v13);
 }
 
-- (void)buildSpeechProfileForLanguage:(id)a3
+- (void)buildSpeechProfileForLanguage:(id)language
 {
-  v3 = a3;
+  languageCopy = language;
   if (_os_feature_enabled_impl())
   {
     NSLog(@"buildSpeechProfile is unavailable when siri_vocabulary_speech_profile feature flag is enabled.");
@@ -157,19 +157,19 @@
     v7[1] = 3221225472;
     v7[2] = sub_1000117E0;
     v7[3] = &unk_100038F28;
-    v8 = v3;
+    v8 = languageCopy;
     v9 = v4;
     v6 = v4;
     dispatch_async(v5, v7);
   }
 }
 
-- (void)extractBundledOovs:(id)a3 appLmDataFileSandboxExtension:(id)a4 appBundleId:(id)a5 completion:(id)a6
+- (void)extractBundledOovs:(id)oovs appLmDataFileSandboxExtension:(id)extension appBundleId:(id)id completion:(id)completion
 {
-  v10 = a3;
-  v33 = a4;
-  v34 = a5;
-  v11 = a6;
+  oovsCopy = oovs;
+  extensionCopy = extension;
+  idCopy = id;
+  completionCopy = completion;
   v12 = qword_10003FF28;
   if (os_log_type_enabled(qword_10003FF28, OS_LOG_TYPE_INFO))
   {
@@ -181,18 +181,18 @@
   v49[1] = 3221225472;
   v49[2] = sub_100012250;
   v49[3] = &unk_100038EB0;
-  v13 = v11;
+  v13 = completionCopy;
   v50 = v13;
   v14 = objc_retainBlock(v49);
-  v15 = [[_EARAppLmArtifact alloc] initWithPath:v10];
+  v15 = [[_EARAppLmArtifact alloc] initWithPath:oovsCopy];
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 getLocale];
-    v18 = v17;
-    if (v17)
+    getLocale = [v15 getLocale];
+    v18 = getLocale;
+    if (getLocale)
     {
-      v32 = v10;
+      v32 = oovsCopy;
       *&buf = 0;
       *(&buf + 1) = &buf;
       v59 = 0x3032000000;
@@ -211,7 +211,7 @@
       v40 = sub_1000122FC;
       v41 = sub_10001230C;
       v42 = 0;
-      v19 = [v17 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+      v19 = [getLocale stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
       v36[0] = _NSConcreteStackBlock;
       v36[1] = 3221225472;
       v36[2] = sub_100012314;
@@ -249,29 +249,29 @@
           v57 = objc_alloc_init(NSMutableDictionary);
           if ([v25 isValid])
           {
-            v26 = [v25 getProns];
+            getProns = [v25 getProns];
             v35[0] = _NSConcreteStackBlock;
             v35[1] = 3221225472;
             v35[2] = sub_1000123D0;
             v35[3] = &unk_100038ED8;
             v35[4] = &v53;
-            [v26 enumerateObjectsUsingBlock:v35];
+            [getProns enumerateObjectsUsingBlock:v35];
           }
 
           else
           {
-            v26 = qword_10003FF28;
-            if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+            getProns = qword_10003FF28;
+            if (os_log_type_enabled(getProns, OS_LOG_TYPE_INFO))
             {
-              v29 = [v25 validationError];
+              validationError = [v25 validationError];
               *v51 = 138412290;
-              v52 = v29;
-              _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "UaaP: Artifact contained invalid custom prons; skipping. %@", v51, 0xCu);
+              v52 = validationError;
+              _os_log_impl(&_mh_execute_header, getProns, OS_LOG_TYPE_INFO, "UaaP: Artifact contained invalid custom prons; skipping. %@", v51, 0xCu);
             }
           }
 
-          v30 = [v16 loadOovs];
-          if (!v30)
+          loadOovs = [v16 loadOovs];
+          if (!loadOovs)
           {
             v31 = qword_10003FF28;
             if (os_log_type_enabled(qword_10003FF28, OS_LOG_TYPE_INFO))
@@ -280,10 +280,10 @@
               _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "UaaP: Could not get OOVs from artifact", v51, 2u);
             }
 
-            v30 = &__NSArray0__struct;
+            loadOovs = &__NSArray0__struct;
           }
 
-          (v14[2])(v14, v30, *(*(&v53 + 1) + 40), 0);
+          (v14[2])(v14, loadOovs, *(*(&v53 + 1) + 40), 0);
 
           _Block_object_dispose(&v53, 8);
         }
@@ -304,7 +304,7 @@
 
       _Block_object_dispose(&v37, 8);
 
-      v10 = v32;
+      oovsCopy = v32;
       _Block_object_dispose(&v43, 8);
 
       _Block_object_dispose(&buf, 8);
@@ -332,7 +332,7 @@
     if (os_log_type_enabled(qword_10003FF28, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v10;
+      *(&buf + 4) = oovsCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "UaaP: Failed to read app lm artifact at %@", &buf, 0xCu);
     }
 
@@ -341,17 +341,17 @@
   }
 }
 
-- (void)trainPartialAllAppLMWithLanguage:(id)a3 completion:(id)a4
+- (void)trainPartialAllAppLMWithLanguage:(id)language completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  languageCopy = language;
+  completionCopy = completion;
   v7 = [@"pruned" stringByAppendingPathComponent:@"current/lm.arpa"];
-  [(SpeechModelTrainingConnection *)self trainAllAppLMWithLanguage:v8 outOf:v7 into:@"tempAllApp" completion:v6];
+  [(SpeechModelTrainingConnection *)self trainAllAppLMWithLanguage:languageCopy outOf:v7 into:@"tempAllApp" completion:completionCopy];
 }
 
-- (void)trainPartialAllAppLMWithLanguage:(id)a3
+- (void)trainPartialAllAppLMWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = os_transaction_create();
   v6 = [@"pruned" stringByAppendingPathComponent:@"current/lm.arpa"];
   v8[0] = _NSConcreteStackBlock;
@@ -360,159 +360,159 @@
   v8[3] = &unk_100038E88;
   v7 = v5;
   v9 = v7;
-  [(SpeechModelTrainingConnection *)self trainAllAppLMWithLanguage:v4 outOf:v6 into:@"tempAllApp" completion:v8];
+  [(SpeechModelTrainingConnection *)self trainAllAppLMWithLanguage:languageCopy outOf:v6 into:@"tempAllApp" completion:v8];
 }
 
-- (void)trainAllAppLMWithLanguage:(id)a3
+- (void)trainAllAppLMWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100012828;
   v6[3] = &unk_100038E88;
   v7 = os_transaction_create();
   v5 = v7;
-  [(SpeechModelTrainingConnection *)self trainAllAppLMWithLanguage:v4 completion:v6];
+  [(SpeechModelTrainingConnection *)self trainAllAppLMWithLanguage:languageCopy completion:v6];
 }
 
-- (void)trainAllAppLMWithLanguage:(id)a3 completion:(id)a4
+- (void)trainAllAppLMWithLanguage:(id)language completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100012A0C;
   v8[3] = &unk_100038E60;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  languageCopy = language;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = languageCopy;
   [(SpeechModelTrainingConnection *)self trainAllAppLMWithLanguage:v7 outOf:@"current/lm.arpa" into:@"allApp" completion:v8];
 }
 
-- (void)trainAllAppLMWithLanguage:(id)a3 outOf:(id)a4 into:(id)a5 completion:(id)a6
+- (void)trainAllAppLMWithLanguage:(id)language outOf:(id)of into:(id)into completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  languageCopy = language;
+  ofCopy = of;
+  intoCopy = into;
+  completionCopy = completion;
   v14 = qword_10003FF30;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100013294;
   block[3] = &unk_100038DF8;
-  v23 = v11;
-  v24 = v13;
-  v20 = v12;
-  v21 = v10;
-  v22 = self;
-  v15 = v11;
-  v16 = v10;
-  v17 = v12;
-  v18 = v13;
+  v23 = ofCopy;
+  v24 = completionCopy;
+  v20 = intoCopy;
+  v21 = languageCopy;
+  selfCopy = self;
+  v15 = ofCopy;
+  v16 = languageCopy;
+  v17 = intoCopy;
+  v18 = completionCopy;
   dispatch_async(v14, block);
 }
 
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmModelFile:(id)a7 appLmDataFileSandboxExtension:(id)a8 completion:(id)a9
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmModelFile:(id)modelFile appLmDataFileSandboxExtension:(id)extension completion:(id)completion
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
+  languageCopy = language;
+  idCopy = id;
+  fileCopy = file;
+  modelFileCopy = modelFile;
+  completionCopy = completion;
   v18 = qword_10003FF30;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100013DD4;
   v24[3] = &unk_100038DA8;
-  v25 = v13;
-  v26 = self;
-  v27 = v16;
-  v28 = v15;
-  v29 = v14;
-  v30 = v17;
-  v19 = v14;
-  v20 = v15;
-  v21 = v16;
-  v22 = v13;
-  v23 = v17;
+  v25 = languageCopy;
+  selfCopy = self;
+  v27 = modelFileCopy;
+  v28 = fileCopy;
+  v29 = idCopy;
+  v30 = completionCopy;
+  v19 = idCopy;
+  v20 = fileCopy;
+  v21 = modelFileCopy;
+  v22 = languageCopy;
+  v23 = completionCopy;
   dispatch_async(v18, v24);
 }
 
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmModelFile:(id)a7 appLmDataFileSandboxExtension:(id)a8
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmModelFile:(id)modelFile appLmDataFileSandboxExtension:(id)extension
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  languageCopy = language;
+  configurationCopy = configuration;
+  idCopy = id;
+  fileCopy = file;
+  modelFileCopy = modelFile;
+  extensionCopy = extension;
   v19 = os_transaction_create();
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100014BD8;
   v24[3] = &unk_100038D08;
-  v20 = v15;
+  v20 = idCopy;
   v25 = v20;
-  v21 = v13;
+  v21 = languageCopy;
   v26 = v21;
   v27 = v19;
   v22 = v19;
-  [(SpeechModelTrainingConnection *)self trainAppLMWithLanguage:v21 configuration:v14 appBundleId:v20 appLmDataFile:v16 appLmModelFile:v17 appLmDataFileSandboxExtension:v18 completion:v24];
+  [(SpeechModelTrainingConnection *)self trainAppLMWithLanguage:v21 configuration:configurationCopy appBundleId:v20 appLmDataFile:fileCopy appLmModelFile:modelFileCopy appLmDataFileSandboxExtension:extensionCopy completion:v24];
 }
 
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmDataFileSandboxExtension:(id)a7
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmDataFileSandboxExtension:(id)extension
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  languageCopy = language;
+  configurationCopy = configuration;
+  idCopy = id;
+  fileCopy = file;
+  extensionCopy = extension;
   v17 = os_transaction_create();
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100014E98;
   v21[3] = &unk_100038D08;
-  v18 = v14;
+  v18 = idCopy;
   v22 = v18;
-  v19 = v12;
+  v19 = languageCopy;
   v23 = v19;
   v24 = v17;
   v20 = v17;
-  [(SpeechModelTrainingConnection *)self trainAppLMWithLanguage:v19 configuration:v13 appBundleId:v18 appLmDataFile:v15 appLmDataFileSandboxExtension:v16 completion:v21];
+  [(SpeechModelTrainingConnection *)self trainAppLMWithLanguage:v19 configuration:configurationCopy appBundleId:v18 appLmDataFile:fileCopy appLmDataFileSandboxExtension:extensionCopy completion:v21];
 }
 
-- (void)trainAppLMWithLanguage:(id)a3 configuration:(id)a4 appBundleId:(id)a5 appLmDataFile:(id)a6 appLmDataFileSandboxExtension:(id)a7 completion:(id)a8
+- (void)trainAppLMWithLanguage:(id)language configuration:(id)configuration appBundleId:(id)id appLmDataFile:(id)file appLmDataFileSandboxExtension:(id)extension completion:(id)completion
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = sub_100012EE4(v22);
-  v20 = [v19 stringByAppendingPathComponent:v15];
-  v21 = [v20 stringByStandardizingPath];
-  [(SpeechModelTrainingConnection *)self trainAppLMWithLanguage:v22 configuration:v14 appBundleId:v15 appLmDataFile:v16 appLmModelFile:v21 appLmDataFileSandboxExtension:v17 completion:v18];
+  languageCopy = language;
+  configurationCopy = configuration;
+  idCopy = id;
+  fileCopy = file;
+  extensionCopy = extension;
+  completionCopy = completion;
+  v19 = sub_100012EE4(languageCopy);
+  v20 = [v19 stringByAppendingPathComponent:idCopy];
+  stringByStandardizingPath = [v20 stringByStandardizingPath];
+  [(SpeechModelTrainingConnection *)self trainAppLMWithLanguage:languageCopy configuration:configurationCopy appBundleId:idCopy appLmDataFile:fileCopy appLmModelFile:stringByStandardizingPath appLmDataFileSandboxExtension:extensionCopy completion:completionCopy];
 }
 
-- (void)_assetForLanguage:(id)a3 completion:(id)a4
+- (void)_assetForLanguage:(id)language completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  languageCopy = language;
+  completionCopy = completion;
   v7 = qword_10003FF38;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000151F4;
   v10[3] = &unk_100038CE0;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = languageCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = languageCopy;
   dispatch_sync(v7, v10);
 }
 
-- (void)trainGlobalNNLMwithFidesSessionURL:(id)a3 completion:(id)a4
+- (void)trainGlobalNNLMwithFidesSessionURL:(id)l completion:(id)completion
 {
-  v6 = a3;
+  lCopy = l;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -522,51 +522,51 @@
   v23[2] = sub_1000155AC;
   v23[3] = &unk_100038B78;
   v25 = v26;
-  v7 = a4;
-  v24 = v7;
+  completionCopy = completion;
+  v24 = completionCopy;
   v8 = objc_retainBlock(v23);
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100015708;
   v20[3] = &unk_100038BA0;
-  v21 = v7;
+  v21 = completionCopy;
   v22 = v26;
-  v9 = v7;
+  v9 = completionCopy;
   v10 = objc_retainBlock(v20);
   v11 = qword_10003FF30;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100015830;
   v15[3] = &unk_100038CB8;
-  v16 = v6;
-  v17 = self;
+  v16 = lCopy;
+  selfCopy = self;
   v18 = v10;
   v19 = v8;
   v12 = v8;
   v13 = v10;
-  v14 = v6;
+  v14 = lCopy;
   dispatch_async(v11, v15);
 
   _Block_object_dispose(v26, 8);
 }
 
-- (void)recordWordsAndOov:(id)a3 data:(id)a4 vocab:(id)a5
+- (void)recordWordsAndOov:(id)oov data:(id)data vocab:(id)vocab
 {
-  v7 = a3;
-  v32 = a4;
-  v31 = a5;
-  v8 = [v7 objectForKeyedSubscript:@"enableWordRecording"];
+  oovCopy = oov;
+  dataCopy = data;
+  vocabCopy = vocab;
+  v8 = [oovCopy objectForKeyedSubscript:@"enableWordRecording"];
 
   if (v8)
   {
-    v9 = [v7 objectForKeyedSubscript:@"enableWordRecording"];
+    v9 = [oovCopy objectForKeyedSubscript:@"enableWordRecording"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v11 = [v7 objectForKeyedSubscript:@"enableWordRecording"];
-      v12 = [v11 BOOLValue];
+      v11 = [oovCopy objectForKeyedSubscript:@"enableWordRecording"];
+      bOOLValue = [v11 BOOLValue];
 
       goto LABEL_7;
     }
@@ -582,9 +582,9 @@
     }
   }
 
-  v12 = 0;
+  bOOLValue = 0;
 LABEL_7:
-  v14 = [v7 objectForKeyedSubscript:@"language"];
+  v14 = [oovCopy objectForKeyedSubscript:@"language"];
   v15 = v14;
   if (!v14)
   {
@@ -593,10 +593,10 @@ LABEL_7:
 
   v16 = [(__CFString *)v14 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
-  v17 = [v32 wordFrequency];
-  if (v17)
+  wordFrequency = [dataCopy wordFrequency];
+  if (wordFrequency)
   {
-    v18 = v12;
+    v18 = bOOLValue;
   }
 
   else
@@ -633,12 +633,12 @@ LABEL_7:
     v33[3] = &unk_100038B50;
     v24 = v21;
     v34 = v24;
-    v35 = v31;
+    v35 = vocabCopy;
     v25 = v23;
     v36 = v25;
     v26 = v29;
     v37 = v26;
-    [v17 enumerateKeysAndObjectsUsingBlock:v33];
+    [wordFrequency enumerateKeysAndObjectsUsingBlock:v33];
     if ([v25 count])
     {
       v27 = qword_10003FF28;
@@ -653,51 +653,51 @@ LABEL_7:
   }
 }
 
-- (id)createDispatchTimerWithInterval:(double)a3 queue:(id)a4 block:(id)a5
+- (id)createDispatchTimerWithInterval:(double)interval queue:(id)queue block:(id)block
 {
-  v7 = a5;
-  v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, a4);
+  blockCopy = block;
+  v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
   if (v8)
   {
-    v9 = a3 * 1000000000.0;
+    v9 = interval * 1000000000.0;
     v10 = dispatch_time(0, v9);
     dispatch_source_set_timer(v8, v10, v9, 0);
-    dispatch_source_set_event_handler(v8, v7);
+    dispatch_source_set_event_handler(v8, blockCopy);
     dispatch_resume(v8);
   }
 
   return v8;
 }
 
-- (void)trainPersonalizedLMWithLanguage:(id)a3 configuration:(id)a4 fides:(BOOL)a5 write:(BOOL)a6 completion:(id)a7
+- (void)trainPersonalizedLMWithLanguage:(id)language configuration:(id)configuration fides:(BOOL)fides write:(BOOL)write completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  languageCopy = language;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v15 = qword_10003FF30;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000193DC;
   block[3] = &unk_100038B28;
   block[4] = self;
-  v20 = v12;
-  v21 = v13;
-  v22 = v14;
-  v23 = a5;
-  v24 = a6;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
+  v20 = languageCopy;
+  v21 = configurationCopy;
+  v22 = completionCopy;
+  fidesCopy = fides;
+  writeCopy = write;
+  v16 = configurationCopy;
+  v17 = languageCopy;
+  v18 = completionCopy;
   dispatch_async(v15, block);
 }
 
-- (void)upperCaseString:(id)a3 withReply:(id)a4
+- (void)upperCaseString:(id)string withReply:(id)reply
 {
-  v6 = a4;
-  v5 = [a3 uppercaseString];
-  if (v6)
+  replyCopy = reply;
+  uppercaseString = [string uppercaseString];
+  if (replyCopy)
   {
-    v6[2](v6, v5);
+    replyCopy[2](replyCopy, uppercaseString);
   }
 }
 
@@ -709,16 +709,16 @@ LABEL_7:
   [(SpeechModelTrainingConnection *)&v3 dealloc];
 }
 
-- (SpeechModelTrainingConnection)initWithXPCConnection:(id)a3
+- (SpeechModelTrainingConnection)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v18.receiver = self;
   v18.super_class = SpeechModelTrainingConnection;
   v6 = [(SpeechModelTrainingConnection *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = objc_alloc_init(NSMutableArray);
     consumedSandboxExtensions = v7->_consumedSandboxExtensions;
     v7->_consumedSandboxExtensions = v8;
@@ -730,8 +730,8 @@ LABEL_7:
     v15 = &unk_100038A38;
     objc_copyWeak(&v16, &location);
     v10 = objc_retainBlock(&v12);
-    [v5 setInterruptionHandler:{v10, v12, v13, v14, v15}];
-    [v5 setInvalidationHandler:v10];
+    [connectionCopy setInterruptionHandler:{v10, v12, v13, v14, v15}];
+    [connectionCopy setInvalidationHandler:v10];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -742,7 +742,7 @@ LABEL_7:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.speech.speechmodeltraining", "SpeechModelTrainingConnection");
     v3 = qword_10003FF28;

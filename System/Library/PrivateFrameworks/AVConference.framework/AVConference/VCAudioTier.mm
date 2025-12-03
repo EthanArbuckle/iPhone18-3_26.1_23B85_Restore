@@ -1,23 +1,23 @@
 @interface VCAudioTier
-+ (unsigned)redPayloadOverheadBytesWithNumPayloads:(unsigned int)a3;
-+ (unsigned)totalAudioBitrateWithTierConfig:(const tagVCAudioTierConfig *)a3;
-- (BOOL)isEqual:(id)a3;
-- (VCAudioTier)initWithConfig:(const tagVCAudioTierConfig *)a3;
++ (unsigned)redPayloadOverheadBytesWithNumPayloads:(unsigned int)payloads;
++ (unsigned)totalAudioBitrateWithTierConfig:(const tagVCAudioTierConfig *)config;
+- (BOOL)isEqual:(id)equal;
+- (VCAudioTier)initWithConfig:(const tagVCAudioTierConfig *)config;
 - (id)description;
 - (id)dictionary;
-- (void)setUpAssignedPropertiesWithConfig:(const tagVCAudioTierConfig *)a3;
-- (void)setUpCalculatedPropertiesWithConfig:(const tagVCAudioTierConfig *)a3;
+- (void)setUpAssignedPropertiesWithConfig:(const tagVCAudioTierConfig *)config;
+- (void)setUpCalculatedPropertiesWithConfig:(const tagVCAudioTierConfig *)config;
 @end
 
 @implementation VCAudioTier
 
-+ (unsigned)totalAudioBitrateWithTierConfig:(const tagVCAudioTierConfig *)a3
++ (unsigned)totalAudioBitrateWithTierConfig:(const tagVCAudioTierConfig *)config
 {
-  result = a3->var2;
-  var4 = a3->var4;
+  result = config->var2;
+  var4 = config->var4;
   if (var4)
   {
-    var6 = a3->var6;
+    var6 = config->var6;
     v6 = result + result * var4;
     v7 = result + var6 * var4;
     if (var6)
@@ -34,11 +34,11 @@
   return result;
 }
 
-+ (unsigned)redPayloadOverheadBytesWithNumPayloads:(unsigned int)a3
++ (unsigned)redPayloadOverheadBytesWithNumPayloads:(unsigned int)payloads
 {
-  if (a3)
+  if (payloads)
   {
-    return 4 * a3 + 1;
+    return 4 * payloads + 1;
   }
 
   else
@@ -47,17 +47,17 @@
   }
 }
 
-- (void)setUpAssignedPropertiesWithConfig:(const tagVCAudioTierConfig *)a3
+- (void)setUpAssignedPropertiesWithConfig:(const tagVCAudioTierConfig *)config
 {
-  self->audioCodecBitrate = a3->var2;
+  self->audioCodecBitrate = config->var2;
   p_audioCodecBitrate = &self->audioCodecBitrate;
-  self->packetsPerBundle = a3->var3;
-  var4 = a3->var4;
+  self->packetsPerBundle = config->var3;
+  var4 = config->var4;
   self->redNumPayloads = var4;
-  self->payloadConfig = a3->var0;
-  self->_headerSize = a3->var5;
-  var6 = a3->var6;
-  p_var6 = &a3->var6;
+  self->payloadConfig = config->var0;
+  self->_headerSize = config->var5;
+  var6 = config->var6;
+  p_var6 = &config->var6;
   self->_bundlingAppliedByCodec = *(p_var6 - 20);
   v7 = var6 == 0;
   self->_isShortREDEnabled = var6 != 0;
@@ -72,15 +72,15 @@
   }
 }
 
-- (void)setUpCalculatedPropertiesWithConfig:(const tagVCAudioTierConfig *)a3
+- (void)setUpCalculatedPropertiesWithConfig:(const tagVCAudioTierConfig *)config
 {
   v5 = [VCAudioTier totalAudioBitrateWithTierConfig:?];
-  v6 = [VCAudioTier redPayloadOverheadBytesWithNumPayloads:a3->var4];
-  v7 = [a3->var0 inputSampleRate];
-  v8 = [a3->var0 samplesPerFrame];
-  LODWORD(v9) = a3->var3;
-  v10 = v7 / v8 / v9;
-  self->networkBitrate = v5 + vcvtpd_u64_f64(v10 * ((a3->var5 + [a3->var0 bundleHeaderBytes] + v6) * 8.0));
+  v6 = [VCAudioTier redPayloadOverheadBytesWithNumPayloads:config->var4];
+  inputSampleRate = [config->var0 inputSampleRate];
+  samplesPerFrame = [config->var0 samplesPerFrame];
+  LODWORD(v9) = config->var3;
+  v10 = inputSampleRate / samplesPerFrame / v9;
+  self->networkBitrate = v5 + vcvtpd_u64_f64(v10 * ((config->var5 + [config->var0 bundleHeaderBytes] + v6) * 8.0));
   v11 = v5 / v10 * 0.125;
   v12 = vcvtad_u64_f64(v11);
   self->_payloadSize = v12;
@@ -110,10 +110,10 @@
   self->redMaxDelay20ms = packetsPerBundle * redNumPayloads;
 }
 
-- (VCAudioTier)initWithConfig:(const tagVCAudioTierConfig *)a3
+- (VCAudioTier)initWithConfig:(const tagVCAudioTierConfig *)config
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (config)
   {
     v7.receiver = self;
     v7.super_class = VCAudioTier;
@@ -121,8 +121,8 @@
     v5 = v4;
     if (v4)
     {
-      [(VCAudioTier *)v4 setUpAssignedPropertiesWithConfig:a3];
-      [(VCAudioTier *)v5 setUpCalculatedPropertiesWithConfig:a3];
+      [(VCAudioTier *)v4 setUpAssignedPropertiesWithConfig:config];
+      [(VCAudioTier *)v5 setUpCalculatedPropertiesWithConfig:config];
     }
   }
 
@@ -142,7 +142,7 @@
   v10.receiver = self;
   v10.super_class = VCAudioTier;
   v4 = [(VCAudioTier *)&v10 description];
-  v5 = [(VCAudioPayloadConfig *)self->payloadConfig payload];
+  payload = [(VCAudioPayloadConfig *)self->payloadConfig payload];
   if (self->_bundlingAppliedByCodec)
   {
     packetsPerBundle = [(VCAudioPayloadConfig *)self->payloadConfig internalBundleFactor];
@@ -173,7 +173,7 @@
     v8 = "NO";
   }
 
-  return [v3 stringWithFormat:@"{ %@ payload=%d bundle=%d%s audioCodecBitrate=%d redNumPayloads=%d redMaxDelay20ms=%d networkBitrate=%d packetSize=%d payloadSize=%d headerSize=%d redPayloadSize=%u shortREDEnabled=%s }", v4, v5, packetsPerBundle, v7, self->audioCodecBitrate, self->redNumPayloads, self->redMaxDelay20ms, self->networkBitrate, self->_payloadSize + self->_headerSize, self->_payloadSize, self->_headerSize, self->_redPayloadSize, v8];
+  return [v3 stringWithFormat:@"{ %@ payload=%d bundle=%d%s audioCodecBitrate=%d redNumPayloads=%d redMaxDelay20ms=%d networkBitrate=%d packetSize=%d payloadSize=%d headerSize=%d redPayloadSize=%u shortREDEnabled=%s }", v4, payload, packetsPerBundle, v7, self->audioCodecBitrate, self->redNumPayloads, self->redMaxDelay20ms, self->networkBitrate, self->_payloadSize + self->_headerSize, self->_payloadSize, self->_headerSize, self->_redPayloadSize, v8];
 }
 
 - (id)dictionary
@@ -207,7 +207,7 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -216,31 +216,31 @@
   }
 
   networkBitrate = self->networkBitrate;
-  if (networkBitrate != [a3 networkBitrate])
+  if (networkBitrate != [equal networkBitrate])
   {
     return 0;
   }
 
   audioCodecBitrate = self->audioCodecBitrate;
-  if (audioCodecBitrate != [a3 audioCodecBitrate])
+  if (audioCodecBitrate != [equal audioCodecBitrate])
   {
     return 0;
   }
 
   packetsPerBundle = self->packetsPerBundle;
-  if (packetsPerBundle != [a3 packetsPerBundle])
+  if (packetsPerBundle != [equal packetsPerBundle])
   {
     return 0;
   }
 
   redNumPayloads = self->redNumPayloads;
-  if (redNumPayloads != [a3 redNumPayloads])
+  if (redNumPayloads != [equal redNumPayloads])
   {
     return 0;
   }
 
-  v9 = [(VCAudioPayloadConfig *)self->payloadConfig payload];
-  return v9 == [objc_msgSend(a3 "payloadConfig")];
+  payload = [(VCAudioPayloadConfig *)self->payloadConfig payload];
+  return payload == [objc_msgSend(equal "payloadConfig")];
 }
 
 - (void)initWithConfig:(void *)a1 .cold.1(void *a1)

@@ -1,39 +1,39 @@
 @interface ASEProcessingT0
-- (ASEProcessingT0)initWithConfig:(id *)a3 aseProcessing:(id)a4 productType:(unsigned int)a5;
-- (int64_t)processFrameWithInput:(__IOSurface *)a3 Measurement:(id *)a4 Output:(id *)a5;
-- (int64_t)processFrameWithInput:(__IOSurface *)a3 Measurement:(id *)a4 callback:(id)a5;
-- (int64_t)processFrameWithInput:(__IOSurface *)a3 Measurement:(id *)a4 outputData:(id *)a5;
-- (void)DumpOutputHcus:(id)a3;
-- (void)configControlHeader_V2:(aseConfigurationUnitsV2_t *)a3;
+- (ASEProcessingT0)initWithConfig:(id *)config aseProcessing:(id)processing productType:(unsigned int)type;
+- (int64_t)processFrameWithInput:(__IOSurface *)input Measurement:(id *)measurement Output:(id *)output;
+- (int64_t)processFrameWithInput:(__IOSurface *)input Measurement:(id *)measurement callback:(id)callback;
+- (int64_t)processFrameWithInput:(__IOSurface *)input Measurement:(id *)measurement outputData:(id *)data;
+- (void)DumpOutputHcus:(id)hcus;
+- (void)configControlHeader_V2:(aseConfigurationUnitsV2_t *)v2;
 - (void)dealloc;
-- (void)digitalZoomSelectControl_V1:(aseConfigurationUnitsV1_t *)a3;
-- (void)digitalZoomSelectControl_V2:(aseConfigurationUnitsV2_t *)a3;
-- (void)printAseMeasurementOutput:(id *)a3;
-- (void)processPixelWithInput:(__IOSurface *)a3 Measurement:(id *)a4 controlUnit:(aseConfigurationUnitsV2_t *)a5;
-- (void)processPixelWithInput_V1:(__IOSurface *)a3 Measurement:(id *)a4 Output:(aseConfigurationUnitsV1_t *)a5;
-- (void)processPixelWithInput_V2:(__IOSurface *)a3 Measurement:(id *)a4 Output:(aseConfigurationUnitsV2_t *)a5;
-- (void)processPixelWithMeasurement_V1:(__IOSurface *)a3 Measurement:(id *)a4 pixelControl:(aseConfigurationUnitsV1_t *)a5;
-- (void)processPixelWithMeasurement_V2:(__IOSurface *)a3 Measurement:(id *)a4 Output:(aseConfigurationUnitsV2_t *)a5;
-- (void)processPixelWithPixelControl_V1:(__IOSurface *)a3 Output:(aseConfigurationUnitsV1_t *)a4;
-- (void)processPixelWithPixelControl_V2:(__IOSurface *)a3 Output:(aseConfigurationUnitsV2_t *)a4;
+- (void)digitalZoomSelectControl_V1:(aseConfigurationUnitsV1_t *)v1;
+- (void)digitalZoomSelectControl_V2:(aseConfigurationUnitsV2_t *)v2;
+- (void)printAseMeasurementOutput:(id *)output;
+- (void)processPixelWithInput:(__IOSurface *)input Measurement:(id *)measurement controlUnit:(aseConfigurationUnitsV2_t *)unit;
+- (void)processPixelWithInput_V1:(__IOSurface *)v1 Measurement:(id *)measurement Output:(aseConfigurationUnitsV1_t *)output;
+- (void)processPixelWithInput_V2:(__IOSurface *)v2 Measurement:(id *)measurement Output:(aseConfigurationUnitsV2_t *)output;
+- (void)processPixelWithMeasurement_V1:(__IOSurface *)v1 Measurement:(id *)measurement pixelControl:(aseConfigurationUnitsV1_t *)control;
+- (void)processPixelWithMeasurement_V2:(__IOSurface *)v2 Measurement:(id *)measurement Output:(aseConfigurationUnitsV2_t *)output;
+- (void)processPixelWithPixelControl_V1:(__IOSurface *)v1 Output:(aseConfigurationUnitsV1_t *)output;
+- (void)processPixelWithPixelControl_V2:(__IOSurface *)v2 Output:(aseConfigurationUnitsV2_t *)output;
 @end
 
 @implementation ASEProcessingT0
 
-- (ASEProcessingT0)initWithConfig:(id *)a3 aseProcessing:(id)a4 productType:(unsigned int)a5
+- (ASEProcessingT0)initWithConfig:(id *)config aseProcessing:(id)processing productType:(unsigned int)type
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  processingCopy = processing;
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v32 = "[ASEProcessingT0 initWithConfig:aseProcessing:productType:]";
     v33 = 2048;
-    v34 = a3;
+    selfCopy = config;
     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++ %s : config=%p\n", buf, 0x16u);
   }
 
-  if (a3)
+  if (config)
   {
     v28.receiver = self;
     v28.super_class = ASEProcessingT0;
@@ -43,12 +43,12 @@
     {
       *&v9->_aseProcessingType = 0x50000000000;
       v9->_inputHeight = 720;
-      [v8 enhancementStrength];
+      [processingCopy enhancementStrength];
       self->_enhancementStrength = v10;
-      self->_destinationWidth = [v8 destinationWidth];
-      self->_destinationHeight = [v8 destinationHeight];
-      self->_inputType = [v8 inputType];
-      var0 = a3->var0;
+      self->_destinationWidth = [processingCopy destinationWidth];
+      self->_destinationHeight = [processingCopy destinationHeight];
+      self->_inputType = [processingCopy inputType];
+      var0 = config->var0;
       self->_asePlatform = 1668903027;
       self->_aseProcessingVersion = var0;
       *entry = 0;
@@ -57,7 +57,7 @@
       ServiceObject = IOSurfaceAcceleratorCreate();
       if (ServiceObject || (ServiceObject = IOSurfaceAcceleratorGetServiceObject()) != 0)
       {
-        v14 = ServiceObject;
+        intValue = ServiceObject;
       }
 
       else
@@ -67,13 +67,13 @@
         {
           v26 = v25;
           v27 = [v26 objectForKeyedSubscript:@"IOSurfaceAcceleratorASEApiVersion"];
-          v14 = [v27 intValue];
+          intValue = [v27 intValue];
           CFRelease(v26);
         }
 
         else
         {
-          v14 = -536870212;
+          intValue = -536870212;
         }
       }
 
@@ -82,7 +82,7 @@
         *buf = 136315394;
         v32 = "int getASECapability(void)";
         v33 = 1024;
-        LODWORD(v34) = v14;
+        LODWORD(selfCopy) = intValue;
         _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++ %s: ASEApiVer=%d\n", buf, 0x12u);
       }
 
@@ -91,7 +91,7 @@
         CFRelease(cf);
       }
 
-      if (v14 == 2)
+      if (intValue == 2)
       {
         v15 = 1668903028;
       }
@@ -102,20 +102,20 @@
       }
 
       self->_asePlatform = v15;
-      self->_productType = a5;
-      if ((isT1OrNewer(a5) & 1) == 0)
+      self->_productType = type;
+      if ((isT1OrNewer(type) & 1) == 0)
       {
         self->_aseControlUnit = malloc_type_malloc(0x1050uLL, 0x1000040B51FC2CFuLL);
       }
 
-      self->_aseProcessingType = a3->var1;
-      if (a3->var3)
+      self->_aseProcessingType = config->var1;
+      if (config->var3)
       {
-        var2 = a3->var2;
+        var2 = config->var2;
         if (var2)
         {
           self->_inputWidth = var2;
-          self->_inputHeight = a3->var3;
+          self->_inputHeight = config->var3;
         }
       }
 
@@ -154,7 +154,7 @@
       *buf = 136315394;
       v32 = "[ASEProcessingT0 initWithConfig:aseProcessing:productType:]";
       v33 = 2048;
-      v34 = 0;
+      selfCopy = 0;
       _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] %s : config=%p", buf, 0x16u);
     }
   }
@@ -164,7 +164,7 @@
     *buf = 136315394;
     v32 = "[ASEProcessingT0 initWithConfig:aseProcessing:productType:]";
     v33 = 2048;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] -- %s : instance=%p\n", buf, 0x16u);
   }
 
@@ -204,14 +204,14 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)DumpOutputHcus:(id)a3
+- (void)DumpOutputHcus:(id)hcus
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 bytes];
+  hcusCopy = hcus;
+  bytes = [hcusCopy bytes];
   if (dumpOutputHcu)
   {
-    v5 = v4;
+    v5 = bytes;
     if (logLevel >= 3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v6 = *v5;
@@ -427,7 +427,7 @@ LABEL_29:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)processFrameWithInput:(__IOSurface *)a3 Measurement:(id *)a4 Output:(id *)a5
+- (int64_t)processFrameWithInput:(__IOSurface *)input Measurement:(id *)measurement Output:(id *)output
 {
   v25[49] = *MEMORY[0x277D85DE8];
   if (logLevel >= 4)
@@ -437,11 +437,11 @@ LABEL_29:
       LODWORD(v25[0]) = 136315906;
       *(v25 + 4) = "[ASEProcessingT0 processFrameWithInput:Measurement:Output:]";
       WORD2(v25[1]) = 2048;
-      *(&v25[1] + 6) = a3;
+      *(&v25[1] + 6) = input;
       HIWORD(v25[2]) = 2048;
-      v25[3] = a4;
+      v25[3] = measurement;
       LOWORD(v25[4]) = 2048;
-      *(&v25[4] + 2) = a5;
+      *(&v25[4] + 2) = output;
       _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : input=%p, aseMeasurementOutput=%p, aseFrameProcessingControl=%p\n", v25, 0x2Au);
     }
 
@@ -501,7 +501,7 @@ LABEL_29:
     goto LABEL_18;
   }
 
-  if (!a5)
+  if (!output)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -513,9 +513,9 @@ LABEL_19:
     LODWORD(v25[0]) = 136315906;
     *(v25 + 4) = "[ASEProcessingT0 processFrameWithInput:Measurement:Output:]";
     WORD2(v25[1]) = 2048;
-    *(&v25[1] + 6) = a3;
+    *(&v25[1] + 6) = input;
     HIWORD(v25[2]) = 2048;
-    v25[3] = a4;
+    v25[3] = measurement;
     LOWORD(v25[4]) = 2048;
     *(&v25[4] + 2) = 0;
     v18 = MEMORY[0x277D86220];
@@ -551,17 +551,17 @@ LABEL_18:
   *(&v25[2] + 4) = 0u;
   *(v25 + 4) = 0u;
   LODWORD(v25[0]) = 1;
-  if (a4)
+  if (measurement)
   {
-    memcpy(v25, a4, 0x17CuLL);
+    memcpy(v25, measurement, 0x17CuLL);
   }
 
   v21 = &self->_aseControlUnit[self->_numberOfRequestedFrames & 3];
   bzero(v21, 0x414uLL);
   updateConfigsPerFrame();
   ++self->_numberOfRequestedFrames;
-  [(ASEProcessingT0 *)self processPixelWithInput:a3 Measurement:v25 controlUnit:v21];
-  memcpy(a5, &v21->var2, sizeof($CED3C016A32710402726D8BDC2341DB0));
+  [(ASEProcessingT0 *)self processPixelWithInput:input Measurement:v25 controlUnit:v21];
+  memcpy(output, &v21->var2, sizeof($CED3C016A32710402726D8BDC2341DB0));
   ++self->_numberOfProcessedFrames;
   v22 = -18000;
 LABEL_20:
@@ -578,7 +578,7 @@ LABEL_20:
   return v22;
 }
 
-- (int64_t)processFrameWithInput:(__IOSurface *)a3 Measurement:(id *)a4 outputData:(id *)a5
+- (int64_t)processFrameWithInput:(__IOSurface *)input Measurement:(id *)measurement outputData:(id *)data
 {
   v32[49] = *MEMORY[0x277D85DE8];
   v9 = logLevel;
@@ -589,11 +589,11 @@ LABEL_20:
       LODWORD(v32[0]) = 136315906;
       *(v32 + 4) = "[ASEProcessingT0 processFrameWithInput:Measurement:outputData:]";
       WORD2(v32[1]) = 2048;
-      *(&v32[1] + 6) = a3;
+      *(&v32[1] + 6) = input;
       HIWORD(v32[2]) = 2048;
-      v32[3] = a4;
+      v32[3] = measurement;
       LOWORD(v32[4]) = 2048;
-      *(&v32[4] + 2) = a5;
+      *(&v32[4] + 2) = data;
       _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : input=%p, aseMeasurementOutput=%p, aseFrameProcessingControl=%p\n", v32, 0x2Au);
     }
 
@@ -677,7 +677,7 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  if (!a5)
+  if (!data)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -689,9 +689,9 @@ LABEL_24:
     LODWORD(v32[0]) = 136315906;
     *(v32 + 4) = "[ASEProcessingT0 processFrameWithInput:Measurement:outputData:]";
     WORD2(v32[1]) = 2048;
-    *(&v32[1] + 6) = a3;
+    *(&v32[1] + 6) = input;
     HIWORD(v32[2]) = 2048;
-    v32[3] = a4;
+    v32[3] = measurement;
     LOWORD(v32[4]) = 2048;
     *(&v32[4] + 2) = 0;
     v22 = MEMORY[0x277D86220];
@@ -727,20 +727,20 @@ LABEL_23:
   *(&v32[2] + 4) = 0u;
   *(v32 + 4) = 0u;
   LODWORD(v32[0]) = 1;
-  if (a4)
+  if (measurement)
   {
-    memcpy(v32, a4, 0x17CuLL);
+    memcpy(v32, measurement, 0x17CuLL);
   }
 
   v25 = &self->_aseControlUnit[self->_numberOfRequestedFrames & 3];
   bzero(v25, 0x414uLL);
   updateConfigsPerFrame();
   ++self->_numberOfRequestedFrames;
-  [(ASEProcessingT0 *)self processPixelWithInput:a3 Measurement:v32 controlUnit:v25];
+  [(ASEProcessingT0 *)self processPixelWithInput:input Measurement:v32 controlUnit:v25];
   v26 = [MEMORY[0x277CBEA90] dataWithBytes:v25 length:1044];
   [(ASEProcessingT0 *)self DumpOutputHcus:v26];
   v27 = v26;
-  *a5 = v26;
+  *data = v26;
   ++self->_numberOfProcessedFrames;
 
   v28 = -18000;
@@ -761,31 +761,31 @@ LABEL_25:
   return v28;
 }
 
-- (int64_t)processFrameWithInput:(__IOSurface *)a3 Measurement:(id *)a4 callback:(id)a5
+- (int64_t)processFrameWithInput:(__IOSurface *)input Measurement:(id *)measurement callback:(id)callback
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  callbackCopy = callback;
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v9 = MEMORY[0x23EEE0510](v8);
+    v9 = MEMORY[0x23EEE0510](callbackCopy);
     *buf = 136315906;
     *&buf[4] = "[ASEProcessingT0 processFrameWithInput:Measurement:callback:]";
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = input;
     *&buf[22] = 2048;
-    *&buf[24] = a4;
+    *&buf[24] = measurement;
     *&buf[32] = 2048;
     *&buf[34] = v9;
     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : input=%p, aseMeasurementOutput=%p, completionCallback=%p\n", buf, 0x2Au);
   }
 
-  if (v8)
+  if (callbackCopy)
   {
     memset(buf, 0, sizeof(buf));
-    if (a4)
+    if (measurement)
     {
-      var0 = a4->var0;
-      memcpy(buf, &a4->var1, sizeof(buf));
+      var0 = measurement->var0;
+      memcpy(buf, &measurement->var1, sizeof(buf));
     }
 
     else
@@ -793,7 +793,7 @@ LABEL_25:
       var0 = 1;
     }
 
-    v12 = MEMORY[0x23EEE0510](v8);
+    v12 = MEMORY[0x23EEE0510](callbackCopy);
     ++self->_numberOfRequestedFrames;
     scheduleQueue = self->_scheduleQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -801,7 +801,7 @@ LABEL_25:
     block[2] = __62__ASEProcessingT0_processFrameWithInput_Measurement_callback___block_invoke;
     block[3] = &unk_278BCFCE0;
     block[4] = self;
-    v19 = a3;
+    inputCopy = input;
     v20 = var0;
     memcpy(v21, buf, sizeof(v21));
     v18 = v12;
@@ -821,9 +821,9 @@ LABEL_25:
       *&buf[12] = 2048;
       *&buf[14] = -18002;
       *&buf[22] = 2048;
-      *&buf[24] = a3;
+      *&buf[24] = input;
       *&buf[32] = 2048;
-      *&buf[34] = a4;
+      *&buf[34] = measurement;
       *&buf[42] = 2048;
       *&buf[44] = 0;
       _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] %s : bad argument, retVal=%ld, input=%p, aseMeasurementOutput=%p, completionCallback=%p\n", buf, 0x34u);
@@ -863,7 +863,7 @@ void __62__ASEProcessingT0_processFrameWithInput_Measurement_callback___block_in
   dispatch_semaphore_signal(*(*(a1 + 32) + 72));
 }
 
-- (void)processPixelWithInput:(__IOSurface *)a3 Measurement:(id *)a4 controlUnit:(aseConfigurationUnitsV2_t *)a5
+- (void)processPixelWithInput:(__IOSurface *)input Measurement:(id *)measurement controlUnit:(aseConfigurationUnitsV2_t *)unit
 {
   v28 = *MEMORY[0x277D85DE8];
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -871,27 +871,27 @@ void __62__ASEProcessingT0_processFrameWithInput_Measurement_callback___block_in
     v21 = 136315906;
     *v22 = "[ASEProcessingT0 processPixelWithInput:Measurement:controlUnit:]";
     *&v22[8] = 2048;
-    v23 = a3;
+    inputCopy = input;
     v24 = 2048;
-    v25 = a4;
+    measurementCopy = measurement;
     v26 = 2048;
-    v27 = a5;
+    unitCopy = unit;
     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : input=%p, aseMeasurementOutput=%p, aseControlUnit=%p\n", &v21, 0x2Au);
   }
 
-  a5->var2.var0.var0.var0.var0 = self->_aseProcessingVersion;
-  a5->var2.var0.var0.var0.var1 = 556;
-  a5->var1 = 0x2386672616DLL;
+  unit->var2.var0.var0.var0.var0 = self->_aseProcessingVersion;
+  unit->var2.var0.var0.var0.var1 = 556;
+  unit->var1 = 0x2386672616DLL;
   asePlatform = self->_asePlatform;
   if (asePlatform == 1668903028)
   {
-    [(ASEProcessingT0 *)self processPixelWithInput_V2:a3 Measurement:a4 Output:a5];
-    a5->var0 = 0x3AC00000005;
+    [(ASEProcessingT0 *)self processPixelWithInput_V2:input Measurement:measurement Output:unit];
+    unit->var0 = 0x3AC00000005;
     InputType = getInputType(self->_inputType);
-    TransferFunction = getTransferFunction(a3);
+    TransferFunction = getTransferFunction(input);
     if (shouldApplyGraphicSettings(InputType, TransferFunction))
     {
-      a5->var0 = vadd_s32(a5->var0, 0x3000000001);
+      unit->var0 = vadd_s32(unit->var0, 0x3000000001);
     }
 
     if (logLevel >= 3)
@@ -899,8 +899,8 @@ void __62__ASEProcessingT0_processFrameWithInput_Measurement_callback___block_in
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
 LABEL_18:
-        var0 = a5->var0.var0;
-        var1 = a5->var0.var1;
+        var0 = unit->var0.var0;
+        var1 = unit->var0.var1;
         v21 = 67109376;
         *v22 = var0;
         *&v22[4] = 1024;
@@ -945,13 +945,13 @@ LABEL_23:
       goto LABEL_22;
     }
 
-    [(ASEProcessingT0 *)self processPixelWithInput_V1:a3 Measurement:a4 Output:a5];
-    a5->var0 = 0x23800000001;
+    [(ASEProcessingT0 *)self processPixelWithInput_V1:input Measurement:measurement Output:unit];
+    unit->var0 = 0x23800000001;
     v10 = getInputType(self->_inputType);
-    v11 = getTransferFunction(a3);
+    v11 = getTransferFunction(input);
     if (shouldApplyGraphicSettings(v10, v11))
     {
-      a5->var0 = vadd_s32(a5->var0, 0x3000000001);
+      unit->var0 = vadd_s32(unit->var0, 0x3000000001);
     }
 
     if (logLevel >= 3)
@@ -961,7 +961,7 @@ LABEL_23:
         v21 = 134218240;
         *v22 = 556;
         *&v22[8] = 2048;
-        v23 = 48;
+        inputCopy = 48;
         _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] aseFrameProcessingControl->control.size (V1) is %lu, ASELumaBlendConfig is %lu\n", &v21, 0x16u);
       }
 
@@ -981,7 +981,7 @@ LABEL_26:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processPixelWithInput_V1:(__IOSurface *)a3 Measurement:(id *)a4 Output:(aseConfigurationUnitsV1_t *)a5
+- (void)processPixelWithInput_V1:(__IOSurface *)v1 Measurement:(id *)measurement Output:(aseConfigurationUnitsV1_t *)output
 {
   aseProcessingType = self->_aseProcessingType;
   if (aseProcessingType > 7)
@@ -992,9 +992,9 @@ LABEL_26:
   v7 = 1 << aseProcessingType;
   if ((v7 & 0xE6) != 0)
   {
-    a5->var2.var0.var0.var0.var2 = 0;
+    output->var2.var0.var0.var0.var2 = 0;
 
-    [(ASEProcessingT0 *)self processPixelWithPixelControl_V1:a3 Output:a5];
+    [(ASEProcessingT0 *)self processPixelWithPixelControl_V1:v1 Output:output];
     return;
   }
 
@@ -1004,15 +1004,15 @@ LABEL_10:
     [ASEProcessingT0 processPixelWithInput_V1:Measurement:Output:];
   }
 
-  a5->var2.var0.var0.var0.var2 = 1;
+  output->var2.var0.var0.var0.var2 = 1;
 
-  [(ASEProcessingT0 *)self processPixelWithMeasurement_V1:a3 Measurement:a4 pixelControl:?];
+  [(ASEProcessingT0 *)self processPixelWithMeasurement_V1:v1 Measurement:measurement pixelControl:?];
 }
 
-- (void)processPixelWithPixelControl_V1:(__IOSurface *)a3 Output:(aseConfigurationUnitsV1_t *)a4
+- (void)processPixelWithPixelControl_V1:(__IOSurface *)v1 Output:(aseConfigurationUnitsV1_t *)output
 {
   v17 = *MEMORY[0x277D85DE8];
-  p_var3 = &a4->var2.var0.var0.var0.var3;
+  p_var3 = &output->var2.var0.var0.var0.var3;
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
@@ -1022,7 +1022,7 @@ LABEL_10:
     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : pixelControl=%p\n", &v13, 0x16u);
   }
 
-  [(ASEProcessingT0 *)self configControlHeader_V1:a4];
+  [(ASEProcessingT0 *)self configControlHeader_V1:output];
   aseProcessingType = self->_aseProcessingType;
   if (aseProcessingType > 4)
   {
@@ -1056,12 +1056,12 @@ LABEL_20:
     self->_enhancementStrength = *&v7;
   }
 
-  [(ASEProcessingT0 *)self digitalZoomSelectControl_V1:a4, v7];
+  [(ASEProcessingT0 *)self digitalZoomSelectControl_V1:output, v7];
 LABEL_16:
   v11 = unk_27E2BDCC0;
-  *a4->var4.var0 = lumaBlend_FixedSettingGraphics_V1;
-  *a4->var4.var1 = v11;
-  *a4->var4.var2 = xmmword_27E2BDCD0;
+  *output->var4.var0 = lumaBlend_FixedSettingGraphics_V1;
+  *output->var4.var1 = v11;
+  *output->var4.var2 = xmmword_27E2BDCD0;
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315138;
@@ -1072,7 +1072,7 @@ LABEL_16:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)digitalZoomSelectControl_V1:(aseConfigurationUnitsV1_t *)a3
+- (void)digitalZoomSelectControl_V1:(aseConfigurationUnitsV1_t *)v1
 {
   enhancementStrength = self->_enhancementStrength;
   if (enhancementStrength == 0.0)
@@ -1184,14 +1184,14 @@ LABEL_16:
     }
   }
 
-  memcpy(&a3->var2.var0.var0.var0.var3, v5, sizeof(a3->var2.var0.var0.var0.var3));
+  memcpy(&v1->var2.var0.var0.var0.var3, v5, sizeof(v1->var2.var0.var0.var0.var3));
   v7 = unk_27E2BDCF0;
-  *a3->var4.var0 = lumaBlend_FixedSettingDigitalZoom_V1;
-  *a3->var4.var1 = v7;
-  *a3->var4.var2 = xmmword_27E2BDD00;
+  *v1->var4.var0 = lumaBlend_FixedSettingDigitalZoom_V1;
+  *v1->var4.var1 = v7;
+  *v1->var4.var2 = xmmword_27E2BDD00;
 }
 
-- (void)processPixelWithMeasurement_V1:(__IOSurface *)a3 Measurement:(id *)a4 pixelControl:(aseConfigurationUnitsV1_t *)a5
+- (void)processPixelWithMeasurement_V1:(__IOSurface *)v1 Measurement:(id *)measurement pixelControl:(aseConfigurationUnitsV1_t *)control
 {
   *&v22[11] = *MEMORY[0x277D85DE8];
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1199,19 +1199,19 @@ LABEL_16:
     *buf = 136315906;
     v18 = "[ASEProcessingT0 processPixelWithMeasurement_V1:Measurement:pixelControl:]";
     v19 = 2048;
-    *v20 = a3;
+    *v20 = v1;
     *&v20[8] = 2048;
-    *v21 = a4;
+    *v21 = measurement;
     *&v21[8] = 2048;
-    *v22 = a5;
+    *v22 = control;
     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : input=%p, aseMeasurementOutput=%p, aseControlUnit=%p\n", buf, 0x2Au);
   }
 
-  [(ASEProcessingT0 *)self printAseMeasurementOutput:a4];
-  [(ASEProcessingT0 *)self configControlHeader_V1:a5];
+  [(ASEProcessingT0 *)self printAseMeasurementOutput:measurement];
+  [(ASEProcessingT0 *)self configControlHeader_V1:control];
   InputType = getInputType(self->_inputType);
-  TransferFunction = getTransferFunction(a3);
-  calculate_control_setting_V1(a4, a5, self->_inputWidth, self->_inputHeight, self->_numberOfProcessedFrames, &self->_noiseMeterStepSize, &self->_FD_state, &self->_FG_count, &self->_NFG_count, &self->_prev_H1_7, &self->_prev_V1_7, &self->_prev_ratio_2D_1D, self->_productType, self->_destinationWidth, self->_destinationHeight, InputType, TransferFunction);
+  TransferFunction = getTransferFunction(v1);
+  calculate_control_setting_V1(measurement, control, self->_inputWidth, self->_inputHeight, self->_numberOfProcessedFrames, &self->_noiseMeterStepSize, &self->_FD_state, &self->_FG_count, &self->_NFG_count, &self->_prev_H1_7, &self->_prev_V1_7, &self->_prev_ratio_2D_1D, self->_productType, self->_destinationWidth, self->_destinationHeight, InputType, TransferFunction);
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     destinationWidth = self->_destinationWidth;
@@ -1250,7 +1250,7 @@ LABEL_16:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processPixelWithInput_V2:(__IOSurface *)a3 Measurement:(id *)a4 Output:(aseConfigurationUnitsV2_t *)a5
+- (void)processPixelWithInput_V2:(__IOSurface *)v2 Measurement:(id *)measurement Output:(aseConfigurationUnitsV2_t *)output
 {
   aseProcessingType = self->_aseProcessingType;
   if (aseProcessingType > 7)
@@ -1261,9 +1261,9 @@ LABEL_16:
   v7 = 1 << aseProcessingType;
   if ((v7 & 0xE6) != 0)
   {
-    a5->var2.var0.var0.var0.var2 = 0;
+    output->var2.var0.var0.var0.var2 = 0;
 
-    [(ASEProcessingT0 *)self processPixelWithPixelControl_V2:a3 Output:a5];
+    [(ASEProcessingT0 *)self processPixelWithPixelControl_V2:v2 Output:output];
     return;
   }
 
@@ -1273,21 +1273,21 @@ LABEL_10:
     [ASEProcessingT0 processPixelWithInput_V2:Measurement:Output:];
   }
 
-  a5->var2.var0.var0.var0.var2 = 1;
+  output->var2.var0.var0.var0.var2 = 1;
 
-  [(ASEProcessingT0 *)self processPixelWithMeasurement_V2:a3 Measurement:a4 Output:?];
+  [(ASEProcessingT0 *)self processPixelWithMeasurement_V2:v2 Measurement:measurement Output:?];
 }
 
-- (void)configControlHeader_V2:(aseConfigurationUnitsV2_t *)a3
+- (void)configControlHeader_V2:(aseConfigurationUnitsV2_t *)v2
 {
-  a3->var3 = 0x46672616ELL;
-  a3->var5 = 0x146672616FLL;
-  a3->var7 = 0x12066726170;
-  a3->var9 = 0x3C66726171;
-  a3->var11 = 0x3061736573;
+  v2->var3 = 0x46672616ELL;
+  v2->var5 = 0x146672616FLL;
+  v2->var7 = 0x12066726170;
+  v2->var9 = 0x3C66726171;
+  v2->var11 = 0x3061736573;
 }
 
-- (void)processPixelWithPixelControl_V2:(__IOSurface *)a3 Output:(aseConfigurationUnitsV2_t *)a4
+- (void)processPixelWithPixelControl_V2:(__IOSurface *)v2 Output:(aseConfigurationUnitsV2_t *)output
 {
   v19 = *MEMORY[0x277D85DE8];
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1295,27 +1295,27 @@ LABEL_10:
     v15 = 136315394;
     v16 = "[ASEProcessingT0 processPixelWithPixelControl_V2:Output:]";
     v17 = 2048;
-    v18 = a4;
+    outputCopy = output;
     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : aseControlUnit=%p\n", &v15, 0x16u);
   }
 
-  [(ASEProcessingT0 *)self configControlHeader_V2:a4];
+  [(ASEProcessingT0 *)self configControlHeader_V2:output];
   aseProcessingType = self->_aseProcessingType;
   if (aseProcessingType > 4)
   {
     if ((aseProcessingType - 5) < 2 || aseProcessingType == 7)
     {
-      memcpy(&a4->var2.var0.var0.var0.var3, &FixedSettingGraphics_V2, sizeof(a4->var2.var0.var0.var0.var3));
-      a4->var4.var0 = 0;
-      *&a4->var6.var0.var0 = downSample_FixedSettingGraphics_V2;
-      LODWORD(a4->var6.var0.var4) = dword_27E2C6138;
-      memcpy(&a4->var8, &blendLogic_FixedSettingGraphics_V2, sizeof(a4->var8));
+      memcpy(&output->var2.var0.var0.var0.var3, &FixedSettingGraphics_V2, sizeof(output->var2.var0.var0.var0.var3));
+      output->var4.var0 = 0;
+      *&output->var6.var0.var0 = downSample_FixedSettingGraphics_V2;
+      LODWORD(output->var6.var0.var4) = dword_27E2C6138;
+      memcpy(&output->var8, &blendLogic_FixedSettingGraphics_V2, sizeof(output->var8));
       v8 = unk_27E2C626C;
-      *&a4->var10.var0.var0 = objectProtection_FixedSettingGraphics_V2;
-      *&a4->var10.var0.var4 = v8;
-      *&a4->var10.var1.var3 = xmmword_27E2C627C;
-      *&a4->var10.var2.var1 = *(&xmmword_27E2C627C + 12);
-      p_var12 = &a4->var12;
+      *&output->var10.var0.var0 = objectProtection_FixedSettingGraphics_V2;
+      *&output->var10.var0.var4 = v8;
+      *&output->var10.var1.var3 = xmmword_27E2C627C;
+      *&output->var10.var2.var1 = *(&xmmword_27E2C627C + 12);
+      p_var12 = &output->var12;
       v10 = &lumaBlend_FixedSettingGraphics_V2;
 LABEL_15:
       v13 = v10[1];
@@ -1330,17 +1330,17 @@ LABEL_15:
 
   if (aseProcessingType == 1)
   {
-    memcpy(&a4->var2.var0.var0.var0.var3, &FixedSettingLivePhoto_V2, sizeof(a4->var2.var0.var0.var0.var3));
-    a4->var4.var0 = 0;
-    *&a4->var6.var0.var0 = downSample_FixedSettingLivePhoto_V2;
-    LODWORD(a4->var6.var0.var4) = dword_27E2C11D0;
-    memcpy(&a4->var8, &blendLogic_FixedSettingLivePhoto_V2, sizeof(a4->var8));
+    memcpy(&output->var2.var0.var0.var0.var3, &FixedSettingLivePhoto_V2, sizeof(output->var2.var0.var0.var0.var3));
+    output->var4.var0 = 0;
+    *&output->var6.var0.var0 = downSample_FixedSettingLivePhoto_V2;
+    LODWORD(output->var6.var0.var4) = dword_27E2C11D0;
+    memcpy(&output->var8, &blendLogic_FixedSettingLivePhoto_V2, sizeof(output->var8));
     v12 = unk_27E2C1304;
-    *&a4->var10.var0.var0 = objectProtection_FixedSettingLivePhoto_V2;
-    *&a4->var10.var0.var4 = v12;
-    *&a4->var10.var1.var3 = xmmword_27E2C1314;
-    *&a4->var10.var2.var1 = *(&xmmword_27E2C1314 + 12);
-    p_var12 = &a4->var12;
+    *&output->var10.var0.var0 = objectProtection_FixedSettingLivePhoto_V2;
+    *&output->var10.var0.var4 = v12;
+    *&output->var10.var1.var3 = xmmword_27E2C1314;
+    *&output->var10.var2.var1 = *(&xmmword_27E2C1314 + 12);
+    p_var12 = &output->var12;
     v10 = &lumaBlend_FixedSettingLivePhoto_V2;
     goto LABEL_15;
   }
@@ -1358,7 +1358,7 @@ LABEL_20:
     self->_enhancementStrength = *&v6;
   }
 
-  [(ASEProcessingT0 *)self digitalZoomSelectControl_V2:a4, v6];
+  [(ASEProcessingT0 *)self digitalZoomSelectControl_V2:output, v6];
 LABEL_16:
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -1370,7 +1370,7 @@ LABEL_16:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)digitalZoomSelectControl_V2:(aseConfigurationUnitsV2_t *)a3
+- (void)digitalZoomSelectControl_V2:(aseConfigurationUnitsV2_t *)v2
 {
   v22 = *MEMORY[0x277D85DE8];
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1379,28 +1379,28 @@ LABEL_16:
     v16 = 136315650;
     v17 = "[ASEProcessingT0 digitalZoomSelectControl_V2:]";
     v18 = 2048;
-    v19 = a3;
+    v2Copy = v2;
     v20 = 2048;
     v21 = enhancementStrength;
     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : aseControlUnit=%p, strength=%f\n", &v16, 0x20u);
   }
 
-  [(ASEProcessingT0 *)self configControlHeader_V2:a3];
+  [(ASEProcessingT0 *)self configControlHeader_V2:v2];
   v6 = self->_enhancementStrength;
   if (v6 == 0.0)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_NoEnh_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_NoEnh_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C156C;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_NoEnh_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_NoEnh_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_NoEnh_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C156C;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_NoEnh_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_NoEnh_V2;
 LABEL_44:
     v12 = v8[1];
-    *&a3->var10.var0.var0 = *v8;
-    *&a3->var10.var0.var4 = v12;
-    *&a3->var10.var1.var3 = v8[2];
+    *&v2->var10.var0.var0 = *v8;
+    *&v2->var10.var0.var4 = v12;
+    *&v2->var10.var1.var3 = v8[2];
     *&p_var10->var2.var1 = *(v8 + 44);
     goto LABEL_45;
   }
@@ -1408,255 +1408,255 @@ LABEL_44:
   v9 = v6;
   if (v9 <= 0.051)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_005_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_005_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C1908;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_005_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_005_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_005_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C1908;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_005_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_005_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.101)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_010_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_010_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C1CA4;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_010_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_010_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_010_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C1CA4;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_010_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_010_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.151)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_015_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_015_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C2040;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_015_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_015_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_015_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C2040;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_015_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_015_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.201)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_020_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_020_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C23DC;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_020_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_020_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_020_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C23DC;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_020_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_020_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.251)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_025_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_025_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C2778;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_025_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_025_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_025_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C2778;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_025_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_025_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.301)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_030_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_030_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C2B14;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_030_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_030_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_030_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C2B14;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_030_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_030_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.351)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_035_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_035_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C2EB0;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_035_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_035_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_035_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C2EB0;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_035_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_035_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.401)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_040_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_040_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C324C;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_040_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_040_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_040_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C324C;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_040_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_040_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.451)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_045_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_045_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C35E8;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_045_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_045_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_045_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C35E8;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_045_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_045_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.501)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_050_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_050_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C3984;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_050_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_050_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_050_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C3984;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_050_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_050_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.551)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_055_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_055_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C3D20;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_055_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_055_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_055_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C3D20;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_055_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_055_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.601)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_060_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_060_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C40BC;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_060_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_060_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_060_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C40BC;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_060_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_060_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.651)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_065_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_065_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C4458;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_065_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_065_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_065_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C4458;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_065_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_065_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.701)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_070_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_070_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C47F4;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_070_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_070_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_070_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C47F4;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_070_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_070_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.751)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_075_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_075_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C4B90;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_075_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_075_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_075_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C4B90;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_075_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_075_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.801)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_080_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_080_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C4F2C;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_080_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_080_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_080_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C4F2C;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_080_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_080_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.851)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_085_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_085_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C52C8;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_085_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_085_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_085_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C52C8;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_085_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_085_V2;
     goto LABEL_44;
   }
 
   if (v9 <= 0.901)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_090_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
-    *&a3->var6.var0.var0 = downSample_FixedSettingDigitalZoom_090_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C5664;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_090_V2, sizeof(a3->var8));
-    p_var10 = &a3->var10;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_090_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
+    *&v2->var6.var0.var0 = downSample_FixedSettingDigitalZoom_090_V2;
+    LODWORD(v2->var6.var0.var4) = dword_27E2C5664;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_090_V2, sizeof(v2->var8));
+    p_var10 = &v2->var10;
     v8 = &objectProtection_FixedSettingDigitalZoom_090_V2;
     goto LABEL_44;
   }
 
-  p_var6 = &a3->var6;
+  p_var6 = &v2->var6;
   if (v9 <= 0.951)
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_095_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_095_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
     *&p_var6->var0.var0 = downSample_FixedSettingDigitalZoom_095_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C5A00;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_095_V2, sizeof(a3->var8));
+    LODWORD(v2->var6.var0.var4) = dword_27E2C5A00;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_095_V2, sizeof(v2->var8));
     v11 = &objectProtection_FixedSettingDigitalZoom_095_V2;
   }
 
   else
   {
-    memcpy(&a3->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_FullEnh_V2, sizeof(a3->var2.var0.var0.var0.var3));
-    a3->var4.var0 = 0;
+    memcpy(&v2->var2.var0.var0.var0.var3, &FixedSettingDigitalZoom_FullEnh_V2, sizeof(v2->var2.var0.var0.var0.var3));
+    v2->var4.var0 = 0;
     *&p_var6->var0.var0 = downSample_FixedSettingDigitalZoom_FullEnh_V2;
-    LODWORD(a3->var6.var0.var4) = dword_27E2C5D9C;
-    memcpy(&a3->var8, &blendLogic_FixedSettingDigitalZoom_FullEnh_V2, sizeof(a3->var8));
+    LODWORD(v2->var6.var0.var4) = dword_27E2C5D9C;
+    memcpy(&v2->var8, &blendLogic_FixedSettingDigitalZoom_FullEnh_V2, sizeof(v2->var8));
     v11 = &objectProtection_FixedSettingDigitalZoom_FullEnh_V2;
   }
 
   v15 = v11[1];
-  *&a3->var10.var0.var0 = *v11;
-  *&a3->var10.var0.var4 = v15;
-  *&a3->var10.var1.var3 = v11[2];
-  *&a3->var10.var2.var1 = *(v11 + 44);
+  *&v2->var10.var0.var0 = *v11;
+  *&v2->var10.var0.var4 = v15;
+  *&v2->var10.var1.var3 = v11[2];
+  *&v2->var10.var2.var1 = *(v11 + 44);
 LABEL_45:
   v13 = unk_27E2BDD80;
-  *a3->var12.var0 = lumaBlend_FixedSettingDigitalZoom_V2;
-  *a3->var12.var1 = v13;
-  *a3->var12.var2 = xmmword_27E2BDD90;
+  *v2->var12.var0 = lumaBlend_FixedSettingDigitalZoom_V2;
+  *v2->var12.var1 = v13;
+  *v2->var12.var2 = xmmword_27E2BDD90;
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processPixelWithMeasurement_V2:(__IOSurface *)a3 Measurement:(id *)a4 Output:(aseConfigurationUnitsV2_t *)a5
+- (void)processPixelWithMeasurement_V2:(__IOSurface *)v2 Measurement:(id *)measurement Output:(aseConfigurationUnitsV2_t *)output
 {
   *&v22[11] = *MEMORY[0x277D85DE8];
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1664,19 +1664,19 @@ LABEL_45:
     *buf = 136315906;
     v18 = "[ASEProcessingT0 processPixelWithMeasurement_V2:Measurement:Output:]";
     v19 = 2048;
-    *v20 = a3;
+    *v20 = v2;
     *&v20[8] = 2048;
-    *v21 = a4;
+    *v21 = measurement;
     *&v21[8] = 2048;
-    *v22 = a5;
+    *v22 = output;
     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : input=%p, aseMeasurementOutput=%p, aseControlUnit=%p\n", buf, 0x2Au);
   }
 
-  [(ASEProcessingT0 *)self printAseMeasurementOutput:a4];
-  [(ASEProcessingT0 *)self configControlHeader_V2:a5];
+  [(ASEProcessingT0 *)self printAseMeasurementOutput:measurement];
+  [(ASEProcessingT0 *)self configControlHeader_V2:output];
   InputType = getInputType(self->_inputType);
-  TransferFunction = getTransferFunction(a3);
-  calculate_control_setting_V2(a4, a5, self->_inputWidth, self->_inputHeight, self->_numberOfProcessedFrames, &self->_noiseMeterStepSize, &self->_FD_state, &self->_FG_count, &self->_NFG_count, &self->_prev_H1_7, &self->_prev_V1_7, &self->_prev_ratio_2D_1D, self->_productType, self->_destinationWidth, self->_destinationHeight, InputType, TransferFunction);
+  TransferFunction = getTransferFunction(v2);
+  calculate_control_setting_V2(measurement, output, self->_inputWidth, self->_inputHeight, self->_numberOfProcessedFrames, &self->_noiseMeterStepSize, &self->_FD_state, &self->_FG_count, &self->_NFG_count, &self->_prev_H1_7, &self->_prev_V1_7, &self->_prev_ratio_2D_1D, self->_productType, self->_destinationWidth, self->_destinationHeight, InputType, TransferFunction);
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     destinationWidth = self->_destinationWidth;
@@ -1715,7 +1715,7 @@ LABEL_45:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)printAseMeasurementOutput:(id *)a3
+- (void)printAseMeasurementOutput:(id *)output
 {
   v116 = *MEMORY[0x277D85DE8];
   if (logLevel >= 3)
@@ -1732,7 +1732,7 @@ LABEL_45:
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        var0 = a3->var0;
+        var0 = output->var0;
         v102 = 67109120;
         *v103 = var0;
         _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] totalValid = %010d\n", &v102, 8u);
@@ -1742,7 +1742,7 @@ LABEL_45:
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
-          var1 = a3->var1;
+          var1 = output->var1;
           v102 = 67109120;
           *v103 = var1;
           _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] totalValidValue = %010d\n", &v102, 8u);
@@ -1752,7 +1752,7 @@ LABEL_45:
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
-            var2 = a3->var2;
+            var2 = output->var2;
             v102 = 67109120;
             *v103 = var2;
             _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] totalValidActivity = %010d\n", &v102, 8u);
@@ -1762,7 +1762,7 @@ LABEL_45:
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
-              var3 = a3->var3;
+              var3 = output->var3;
               v102 = 67109120;
               *v103 = var3;
               _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] maxAbsH0 = %010d\n", &v102, 8u);
@@ -1772,7 +1772,7 @@ LABEL_45:
             {
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
               {
-                var4 = a3->var4;
+                var4 = output->var4;
                 v102 = 67109120;
                 *v103 = var4;
                 _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] maxAbsH1 = %010d\n", &v102, 8u);
@@ -1782,7 +1782,7 @@ LABEL_45:
               {
                 if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                 {
-                  var5 = a3->var5;
+                  var5 = output->var5;
                   v102 = 67109120;
                   *v103 = var5;
                   _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] maxAbsH2 = %010d\n", &v102, 8u);
@@ -1792,7 +1792,7 @@ LABEL_45:
                 {
                   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                   {
-                    var6 = a3->var6;
+                    var6 = output->var6;
                     v102 = 67109120;
                     *v103 = var6;
                     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] maxAbsV0 = %010d\n", &v102, 8u);
@@ -1802,7 +1802,7 @@ LABEL_45:
                   {
                     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                     {
-                      var7 = a3->var7;
+                      var7 = output->var7;
                       v102 = 67109120;
                       *v103 = var7;
                       _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] maxAbsV1 = %010d\n", &v102, 8u);
@@ -1812,7 +1812,7 @@ LABEL_45:
                     {
                       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                       {
-                        var8 = a3->var8;
+                        var8 = output->var8;
                         v102 = 67109120;
                         *v103 = var8;
                         _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] maxAbsV2 = %010d\n", &v102, 8u);
@@ -1822,7 +1822,7 @@ LABEL_45:
                       {
                         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                         {
-                          var9 = a3->var9;
+                          var9 = output->var9;
                           v102 = 67109120;
                           *v103 = var9;
                           _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] maxAbsHV0 = %010d\n", &v102, 8u);
@@ -1832,7 +1832,7 @@ LABEL_45:
                         {
                           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                           {
-                            var10 = a3->var10;
+                            var10 = output->var10;
                             v102 = 67109120;
                             *v103 = var10;
                             _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] maxAbsHV1 = %010d\n", &v102, 8u);
@@ -1842,7 +1842,7 @@ LABEL_45:
                           {
                             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                             {
-                              var11 = a3->var11;
+                              var11 = output->var11;
                               v102 = 67109120;
                               *v103 = var11;
                               _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] maxAbsHV2 = %010d\n", &v102, 8u);
@@ -1852,7 +1852,7 @@ LABEL_45:
                             {
                               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                               {
-                                var12 = a3->var12;
+                                var12 = output->var12;
                                 v102 = 67109120;
                                 *v103 = var12;
                                 _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] sumAbsHV0 = %010d\n", &v102, 8u);
@@ -1862,7 +1862,7 @@ LABEL_45:
                               {
                                 if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                                 {
-                                  var13 = a3->var13;
+                                  var13 = output->var13;
                                   v102 = 67109120;
                                   *v103 = var13;
                                   _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] sumAbsHV1 = %010d\n", &v102, 8u);
@@ -1872,7 +1872,7 @@ LABEL_45:
                                 {
                                   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                                   {
-                                    var14 = a3->var14;
+                                    var14 = output->var14;
                                     v102 = 67109120;
                                     *v103 = var14;
                                     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] sumAbsHV2 = %010d\n", &v102, 8u);
@@ -1882,14 +1882,14 @@ LABEL_45:
                                   {
                                     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                                     {
-                                      v21 = a3->var15[0];
-                                      v22 = a3->var15[1];
-                                      v23 = a3->var15[2];
-                                      v24 = a3->var15[3];
-                                      v25 = a3->var15[4];
-                                      v26 = a3->var15[5];
-                                      v27 = a3->var15[6];
-                                      v28 = a3->var15[7];
+                                      v21 = output->var15[0];
+                                      v22 = output->var15[1];
+                                      v23 = output->var15[2];
+                                      v24 = output->var15[3];
+                                      v25 = output->var15[4];
+                                      v26 = output->var15[5];
+                                      v27 = output->var15[6];
+                                      v28 = output->var15[7];
                                       v102 = 67110912;
                                       *v103 = v21;
                                       *&v103[4] = 1024;
@@ -1913,14 +1913,14 @@ LABEL_45:
                                     {
                                       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                                       {
-                                        v29 = a3->var16[0];
-                                        v30 = a3->var16[1];
-                                        v31 = a3->var16[2];
-                                        v32 = a3->var16[3];
-                                        v33 = a3->var16[4];
-                                        v34 = a3->var16[5];
-                                        v35 = a3->var16[6];
-                                        v36 = a3->var16[7];
+                                        v29 = output->var16[0];
+                                        v30 = output->var16[1];
+                                        v31 = output->var16[2];
+                                        v32 = output->var16[3];
+                                        v33 = output->var16[4];
+                                        v34 = output->var16[5];
+                                        v35 = output->var16[6];
+                                        v36 = output->var16[7];
                                         v102 = 67110912;
                                         *v103 = v29;
                                         *&v103[4] = 1024;
@@ -1944,14 +1944,14 @@ LABEL_45:
                                       {
                                         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                                         {
-                                          v37 = a3->var17[0];
-                                          v38 = a3->var17[1];
-                                          v39 = a3->var17[2];
-                                          v40 = a3->var17[3];
-                                          v41 = a3->var17[4];
-                                          v42 = a3->var17[5];
-                                          v43 = a3->var17[6];
-                                          v44 = a3->var17[7];
+                                          v37 = output->var17[0];
+                                          v38 = output->var17[1];
+                                          v39 = output->var17[2];
+                                          v40 = output->var17[3];
+                                          v41 = output->var17[4];
+                                          v42 = output->var17[5];
+                                          v43 = output->var17[6];
+                                          v44 = output->var17[7];
                                           v102 = 67110912;
                                           *v103 = v37;
                                           *&v103[4] = 1024;
@@ -1975,14 +1975,14 @@ LABEL_45:
                                         {
                                           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                                           {
-                                            v45 = a3->var18[0];
-                                            v46 = a3->var18[1];
-                                            v47 = a3->var18[2];
-                                            v48 = a3->var18[3];
-                                            v49 = a3->var18[4];
-                                            v50 = a3->var18[5];
-                                            v51 = a3->var18[6];
-                                            v52 = a3->var18[7];
+                                            v45 = output->var18[0];
+                                            v46 = output->var18[1];
+                                            v47 = output->var18[2];
+                                            v48 = output->var18[3];
+                                            v49 = output->var18[4];
+                                            v50 = output->var18[5];
+                                            v51 = output->var18[6];
+                                            v52 = output->var18[7];
                                             v102 = 67110912;
                                             *v103 = v45;
                                             *&v103[4] = 1024;
@@ -2006,14 +2006,14 @@ LABEL_45:
                                           {
                                             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                                             {
-                                              v53 = a3->var19[0];
-                                              v54 = a3->var19[1];
-                                              v55 = a3->var19[2];
-                                              v56 = a3->var19[3];
-                                              v57 = a3->var19[4];
-                                              v58 = a3->var19[5];
-                                              v59 = a3->var19[6];
-                                              v60 = a3->var19[7];
+                                              v53 = output->var19[0];
+                                              v54 = output->var19[1];
+                                              v55 = output->var19[2];
+                                              v56 = output->var19[3];
+                                              v57 = output->var19[4];
+                                              v58 = output->var19[5];
+                                              v59 = output->var19[6];
+                                              v60 = output->var19[7];
                                               v102 = 67110912;
                                               *v103 = v53;
                                               *&v103[4] = 1024;
@@ -2037,14 +2037,14 @@ LABEL_45:
                                             {
                                               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                                               {
-                                                v61 = a3->var19[8];
-                                                v62 = a3->var19[9];
-                                                v63 = a3->var19[10];
-                                                v64 = a3->var19[11];
-                                                v65 = a3->var19[12];
-                                                v66 = a3->var19[13];
-                                                v67 = a3->var19[14];
-                                                v68 = a3->var19[15];
+                                                v61 = output->var19[8];
+                                                v62 = output->var19[9];
+                                                v63 = output->var19[10];
+                                                v64 = output->var19[11];
+                                                v65 = output->var19[12];
+                                                v66 = output->var19[13];
+                                                v67 = output->var19[14];
+                                                v68 = output->var19[15];
                                                 v102 = 67110912;
                                                 *v103 = v61;
                                                 *&v103[4] = 1024;
@@ -2068,14 +2068,14 @@ LABEL_45:
                                               {
                                                 if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                                                 {
-                                                  v69 = a3->var20[0];
-                                                  v70 = a3->var20[1];
-                                                  v71 = a3->var20[2];
-                                                  v72 = a3->var20[3];
-                                                  v73 = a3->var20[4];
-                                                  v74 = a3->var20[5];
-                                                  v75 = a3->var20[6];
-                                                  v76 = a3->var20[7];
+                                                  v69 = output->var20[0];
+                                                  v70 = output->var20[1];
+                                                  v71 = output->var20[2];
+                                                  v72 = output->var20[3];
+                                                  v73 = output->var20[4];
+                                                  v74 = output->var20[5];
+                                                  v75 = output->var20[6];
+                                                  v76 = output->var20[7];
                                                   v102 = 67110912;
                                                   *v103 = v69;
                                                   *&v103[4] = 1024;
@@ -2099,14 +2099,14 @@ LABEL_45:
                                                 {
                                                   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                                                   {
-                                                    v77 = a3->var20[8];
-                                                    v78 = a3->var20[9];
-                                                    v79 = a3->var20[10];
-                                                    v80 = a3->var20[11];
-                                                    v81 = a3->var20[12];
-                                                    v82 = a3->var20[13];
-                                                    v83 = a3->var20[14];
-                                                    v84 = a3->var20[15];
+                                                    v77 = output->var20[8];
+                                                    v78 = output->var20[9];
+                                                    v79 = output->var20[10];
+                                                    v80 = output->var20[11];
+                                                    v81 = output->var20[12];
+                                                    v82 = output->var20[13];
+                                                    v83 = output->var20[14];
+                                                    v84 = output->var20[15];
                                                     v102 = 67110912;
                                                     *v103 = v77;
                                                     *&v103[4] = 1024;
@@ -2130,14 +2130,14 @@ LABEL_45:
                                                   {
                                                     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                                                     {
-                                                      v85 = a3->var21[0];
-                                                      v86 = a3->var21[1];
-                                                      v87 = a3->var21[2];
-                                                      v88 = a3->var21[3];
-                                                      v89 = a3->var21[4];
-                                                      v90 = a3->var21[5];
-                                                      v91 = a3->var21[6];
-                                                      v92 = a3->var21[7];
+                                                      v85 = output->var21[0];
+                                                      v86 = output->var21[1];
+                                                      v87 = output->var21[2];
+                                                      v88 = output->var21[3];
+                                                      v89 = output->var21[4];
+                                                      v90 = output->var21[5];
+                                                      v91 = output->var21[6];
+                                                      v92 = output->var21[7];
                                                       v102 = 67110912;
                                                       *v103 = v85;
                                                       *&v103[4] = 1024;
@@ -2159,14 +2159,14 @@ LABEL_45:
 
                                                     if (logLevel >= 3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                                                     {
-                                                      v93 = a3->var21[8];
-                                                      v94 = a3->var21[9];
-                                                      v95 = a3->var21[10];
-                                                      v96 = a3->var21[11];
-                                                      v97 = a3->var21[12];
-                                                      v98 = a3->var21[13];
-                                                      v99 = a3->var21[14];
-                                                      v100 = a3->var21[15];
+                                                      v93 = output->var21[8];
+                                                      v94 = output->var21[9];
+                                                      v95 = output->var21[10];
+                                                      v96 = output->var21[11];
+                                                      v97 = output->var21[12];
+                                                      v98 = output->var21[13];
+                                                      v99 = output->var21[14];
+                                                      v100 = output->var21[15];
                                                       v102 = 67110912;
                                                       *v103 = v93;
                                                       *&v103[4] = 1024;

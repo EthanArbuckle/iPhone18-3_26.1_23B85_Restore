@@ -1,31 +1,31 @@
 @interface StringConductor
 - (_TtC11MobileTimer15StringConductor)init;
-- (void)registerReplyPublisherWithId:(id)a3 timeOut:(double)a4 completion:(id)a5;
-- (void)send:(id)a3;
+- (void)registerReplyPublisherWithId:(id)id timeOut:(double)out completion:(id)completion;
+- (void)send:(id)send;
 @end
 
 @implementation StringConductor
 
-- (void)registerReplyPublisherWithId:(id)a3 timeOut:(double)a4 completion:(id)a5
+- (void)registerReplyPublisherWithId:(id)id timeOut:(double)out completion:(id)completion
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(completion);
   v7 = sub_1B20A9A74();
   v9 = v8;
   v10 = swift_allocObject();
   *(v10 + 16) = v6;
   v11 = *(&self->super.isa + OBJC_IVAR____TtC11MobileTimer15StringConductor_conductor);
-  v12 = self;
+  selfCopy = self;
   sub_1B209CB40(v7, v9, sub_1B20A083C, v10);
 }
 
-- (void)send:(id)a3
+- (void)send:(id)send
 {
   v4 = sub_1B20A9A74();
   v5 = *(&self->super.isa + OBJC_IVAR____TtC11MobileTimer15StringConductor_conductor);
   v9[0] = v4;
   v9[1] = v6;
   v7 = *(*v5 + 136);
-  v8 = self;
+  selfCopy = self;
   v7(v9);
 }
 

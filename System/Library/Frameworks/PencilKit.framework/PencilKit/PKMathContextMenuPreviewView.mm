@@ -1,6 +1,6 @@
 @interface PKMathContextMenuPreviewView
 + (UIFont)footnoteBoldFont;
-- (PKMathContextMenuPreviewView)initWithImage:(id)a3 label:(id)a4 attributionImage:(id)a5 lastRefreshDate:(id)a6;
+- (PKMathContextMenuPreviewView)initWithImage:(id)image label:(id)label attributionImage:(id)attributionImage lastRefreshDate:(id)date;
 - (double)p_attributionImageHeight;
 - (double)p_layoutSubviews;
 - (void)layoutSubviews;
@@ -8,12 +8,12 @@
 
 @implementation PKMathContextMenuPreviewView
 
-- (PKMathContextMenuPreviewView)initWithImage:(id)a3 label:(id)a4 attributionImage:(id)a5 lastRefreshDate:(id)a6
+- (PKMathContextMenuPreviewView)initWithImage:(id)image label:(id)label attributionImage:(id)attributionImage lastRefreshDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  imageCopy = image;
+  labelCopy = label;
+  attributionImageCopy = attributionImage;
+  dateCopy = date;
   v36.receiver = self;
   v36.super_class = PKMathContextMenuPreviewView;
   v14 = [(PKMathContextMenuPreviewView *)&v36 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -21,9 +21,9 @@
   if (v14)
   {
     [(UIView *)v14 pk_setDefaultCapsuleConfiguration];
-    if (v10)
+    if (imageCopy)
     {
-      v16 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v10];
+      v16 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     }
 
     else
@@ -32,15 +32,15 @@
     }
 
     objc_storeStrong(&v15->_imageView, v16);
-    if (v10)
+    if (imageCopy)
     {
     }
 
-    objc_storeStrong(&v15->_label, a4);
-    [v11 frame];
+    objc_storeStrong(&v15->_label, label);
+    [labelCopy frame];
     v15->_labelSize.width = v17;
     v15->_labelSize.height = v18;
-    if (v13)
+    if (dateCopy)
     {
       v19 = objc_alloc_init(MEMORY[0x1E69DCC10]);
       dateLabel = v15->_dateLabel;
@@ -49,34 +49,34 @@
       v21 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
       [(UILabel *)v15->_dateLabel setFont:v21];
 
-      v22 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [(UILabel *)v15->_dateLabel setTextColor:v22];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [(UILabel *)v15->_dateLabel setTextColor:secondaryLabelColor];
 
       [(UILabel *)v15->_dateLabel setTextAlignment:1];
       [(UILabel *)v15->_dateLabel setNumberOfLines:1];
       v23 = objc_alloc_init(MEMORY[0x1E696AE78]);
-      v24 = [MEMORY[0x1E695DF00] date];
-      [v23 localizedStringForDate:v13 relativeToDate:v24];
-      v25 = v10;
-      v26 = v12;
-      v27 = v13;
-      v29 = v28 = v11;
+      date = [MEMORY[0x1E695DF00] date];
+      [v23 localizedStringForDate:dateCopy relativeToDate:date];
+      v25 = imageCopy;
+      v26 = attributionImageCopy;
+      v27 = dateCopy;
+      v29 = v28 = labelCopy;
       [(UILabel *)v15->_dateLabel setText:v29];
 
-      v11 = v28;
-      v13 = v27;
-      v12 = v26;
-      v10 = v25;
+      labelCopy = v28;
+      dateCopy = v27;
+      attributionImageCopy = v26;
+      imageCopy = v25;
 
       [(UILabel *)v15->_dateLabel sizeToFit];
     }
 
-    if (v12)
+    if (attributionImageCopy)
     {
-      [v12 size];
+      [attributionImageCopy size];
       if (v30 > 0.0)
       {
-        v31 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v12];
+        v31 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:attributionImageCopy];
         attrImageView = v15->_attrImageView;
         v15->_attrImageView = v31;
 
@@ -109,8 +109,8 @@
       [(PKMathContextMenuPreviewView *)v15 addSubview:?];
     }
 
-    v33 = [(PKMathContextMenuPreviewView *)&v15->super.super.super.isa p_layoutSubviews];
-    [(PKMathContextMenuPreviewView *)v15 setFrame:0.0, 0.0, v33, v34];
+    p_layoutSubviews = [(PKMathContextMenuPreviewView *)&v15->super.super.super.isa p_layoutSubviews];
+    [(PKMathContextMenuPreviewView *)v15 setFrame:0.0, 0.0, p_layoutSubviews, v34];
   }
 
   return v15;
@@ -118,7 +118,7 @@
 
 - (double)p_layoutSubviews
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -128,43 +128,43 @@
   v4 = v3;
 
   v5 = v4 * 0.5;
-  v6 = [a1[51] image];
-  [v6 size];
+  image = [self[51] image];
+  [image size];
   v8 = v7;
   v10 = v9;
 
   v11 = MEMORY[0x1E695EFF8];
-  [a1[52] frame];
-  [a1[52] setFrame:?];
-  [a1[54] sizeToFit];
-  v12 = a1[53];
+  [self[52] frame];
+  [self[52] setFrame:?];
+  [self[54] sizeToFit];
+  v12 = self[53];
   if (v12)
   {
-    v13 = [v12 image];
-    [v13 size];
+    image2 = [v12 image];
+    [image2 size];
     v15 = v14;
     v17 = v16;
 
-    v18 = [PKMathContextMenuPreviewView p_attributionImageHeight];
-    [a1[53] setFrame:{0.0, 0.0, v18 * (v15 / v17), v18}];
+    p_attributionImageHeight = [PKMathContextMenuPreviewView p_attributionImageHeight];
+    [self[53] setFrame:{0.0, 0.0, p_attributionImageHeight * (v15 / v17), p_attributionImageHeight}];
   }
 
   v19 = v5 + 4.0;
   v21 = *v11;
   v20 = v11[1];
-  if (a1[51])
+  if (self[51])
   {
-    v22 = a1[53];
+    v22 = self[53];
     if (v22)
     {
-      v23 = a1[54];
+      v23 = self[54];
       [v22 bounds];
       if (v23)
       {
-        [a1[54] bounds];
-        [a1[53] bounds];
+        [self[54] bounds];
+        [self[53] bounds];
         v26 = v25;
-        [a1[54] bounds];
+        [self[54] bounds];
         v28 = v26 + v27 + 96.0;
         if (v10 <= v19 + v19)
         {
@@ -188,12 +188,12 @@
         }
 
         v31 = v29 + 6.0;
-        [a1[53] bounds];
+        [self[53] bounds];
         v33 = v32;
-        [a1[53] bounds];
-        [a1[53] setFrame:{24.0, v31, v33}];
-        [a1[54] bounds];
-        [a1[54] setFrame:{v30 - v34 + -24.0, v31 + -[PKMathContextMenuPreviewView p_attributionImageHeight]() * -0.15, v34, v35}];
+        [self[53] bounds];
+        [self[53] setFrame:{24.0, v31, v33}];
+        [self[54] bounds];
+        [self[54] setFrame:{v30 - v34 + -24.0, v31 + -[PKMathContextMenuPreviewView p_attributionImageHeight]() * -0.15, v34, v35}];
         goto LABEL_40;
       }
 
@@ -229,15 +229,15 @@
         v30 = v24 + 48.0;
       }
 
-      [a1[53] bounds];
+      [self[53] bounds];
       v39 = v47 + 6.0;
-      v45 = a1[53];
+      v45 = self[53];
       v41 = v48;
       goto LABEL_39;
     }
   }
 
-  v36 = a1[52];
+  v36 = self[52];
   if (v36)
   {
     [v36 bounds];
@@ -252,7 +252,7 @@
       v39 = v10 - (v19 + -4.0);
     }
 
-    v40 = a1[51];
+    v40 = self[51];
     v41 = 0.0;
     v42 = (v8 - v38) * 0.5;
     v43 = (v38 - v8) * 0.5;
@@ -289,7 +289,7 @@
       v30 = v37 + 48.0;
     }
 
-    v45 = a1[52];
+    v45 = self[52];
 LABEL_39:
     [v45 setFrame:{v41, v39}];
     goto LABEL_40;
@@ -297,7 +297,7 @@ LABEL_39:
 
   v30 = v8;
 LABEL_40:
-  [a1[51] setFrame:{v21, v20, v8, v10}];
+  [self[51] setFrame:{v21, v20, v8, v10}];
   return v30;
 }
 
@@ -305,8 +305,8 @@ LABEL_40:
 {
   v2 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   v3 = MEMORY[0x1E69DB878];
-  v4 = [v2 fontDescriptor];
-  v5 = [v4 fontDescriptorWithSymbolicTraits:2];
+  fontDescriptor = [v2 fontDescriptor];
+  v5 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
   [v2 pointSize];
   v6 = [v3 fontWithDescriptor:v5 size:?];
 

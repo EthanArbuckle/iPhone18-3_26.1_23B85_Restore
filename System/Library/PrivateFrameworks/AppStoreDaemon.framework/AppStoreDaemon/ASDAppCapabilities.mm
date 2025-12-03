@@ -1,11 +1,11 @@
 @interface ASDAppCapabilities
-+ (BOOL)isCapable:(id)a3;
-+ (BOOL)isCapableOfAction:(int64_t)a3 capabilities:(id)a4;
-+ (BOOL)isCapableOfAction:(int64_t)a3 capability:(id)a4;
++ (BOOL)isCapable:(id)capable;
++ (BOOL)isCapableOfAction:(int64_t)action capabilities:(id)capabilities;
++ (BOOL)isCapableOfAction:(int64_t)action capability:(id)capability;
 + (id)defaultInstance;
 + (id)interface;
 - (ASDAppCapabilities)init;
-- (uint64_t)_isCapable:(uint64_t)a3 method:;
+- (uint64_t)_isCapable:(uint64_t)capable method:;
 @end
 
 @implementation ASDAppCapabilities
@@ -94,39 +94,39 @@ void __26__ASDAppCapabilities_init__block_invoke(uint64_t a1)
   [v2 postNotificationName:@"ASDAppCapabilitiesDidChangeNotification" object:WeakRetained];
 }
 
-+ (BOOL)isCapable:(id)a3
++ (BOOL)isCapable:(id)capable
 {
-  v3 = a3;
+  capableCopy = capable;
   v4 = +[ASDAppCapabilities defaultInstance];
-  v5 = [(ASDAppCapabilities *)v4 _isCapable:v3 method:"+[ASDAppCapabilities isCapable:]"];
+  v5 = [(ASDAppCapabilities *)v4 _isCapable:capableCopy method:"+[ASDAppCapabilities isCapable:]"];
 
   return v5;
 }
 
-- (uint64_t)_isCapable:(uint64_t)a3 method:
+- (uint64_t)_isCapable:(uint64_t)capable method:
 {
   v36 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld-%ld", objc_msgSend(v5, "features"), objc_msgSend(v5, "action")];
-    os_unfair_lock_lock((a1 + 16));
-    v8 = [*(a1 + 8) objectForKeyedSubscript:v7];
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_lock((self + 16));
+    v8 = [*(self + 8) objectForKeyedSubscript:v7];
+    os_unfair_lock_unlock((self + 16));
     if (v8)
     {
-      a1 = ASDLogHandleForCategory(1);
-      if (os_log_type_enabled(a1, OS_LOG_TYPE_DEBUG))
+      self = ASDLogHandleForCategory(1);
+      if (os_log_type_enabled(self, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543618;
         *&buf[4] = v6;
         *&buf[12] = 1026;
         *&buf[14] = [v8 BOOLValue];
-        _os_log_debug_impl(&dword_1B8220000, a1, OS_LOG_TYPE_DEBUG, "Cached value found for %{public}@ - %{public}d", buf, 0x12u);
+        _os_log_debug_impl(&dword_1B8220000, self, OS_LOG_TYPE_DEBUG, "Cached value found for %{public}@ - %{public}d", buf, 0x12u);
       }
 
-      LOBYTE(a1) = [v8 BOOLValue];
+      LOBYTE(self) = [v8 BOOLValue];
     }
 
     else
@@ -165,20 +165,20 @@ void __26__ASDAppCapabilities_init__block_invoke(uint64_t a1)
 
       if (*(*&buf[8] + 40))
       {
-        a1 = ASDLogHandleForCategory(1);
-        if (os_log_type_enabled(a1, OS_LOG_TYPE_ERROR))
+        self = ASDLogHandleForCategory(1);
+        if (os_log_type_enabled(self, OS_LOG_TYPE_ERROR))
         {
           v17 = *(*&buf[8] + 40);
           *v27 = 136446722;
-          *&v27[4] = a3;
+          *&v27[4] = capable;
           v28 = 2114;
           v29 = v6;
           v30 = 2114;
           v31 = v17;
-          _os_log_error_impl(&dword_1B8220000, a1, OS_LOG_TYPE_ERROR, "Error in %{public}s: %{public}@ - %{public}@", v27, 0x20u);
+          _os_log_error_impl(&dword_1B8220000, self, OS_LOG_TYPE_ERROR, "Error in %{public}s: %{public}@ - %{public}@", v27, 0x20u);
         }
 
-        LOBYTE(a1) = 0;
+        LOBYTE(self) = 0;
       }
 
       else
@@ -189,12 +189,12 @@ void __26__ASDAppCapabilities_init__block_invoke(uint64_t a1)
         v18[3] = &unk_1E7CDC0A0;
         v18[4] = &v23;
         [v13 isCapable:v6 withCompletionHandler:v18];
-        os_unfair_lock_lock((a1 + 16));
+        os_unfair_lock_lock((self + 16));
         v14 = [MEMORY[0x1E696AD98] numberWithBool:*(v24 + 24)];
-        [*(a1 + 8) setObject:v14 forKeyedSubscript:v7];
+        [*(self + 8) setObject:v14 forKeyedSubscript:v7];
 
-        os_unfair_lock_unlock((a1 + 16));
-        LOBYTE(a1) = *(v24 + 24);
+        os_unfair_lock_unlock((self + 16));
+        LOBYTE(self) = *(v24 + 24);
       }
 
       _Block_object_dispose(&v23, 8);
@@ -203,28 +203,28 @@ void __26__ASDAppCapabilities_init__block_invoke(uint64_t a1)
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return a1 & 1;
+  return self & 1;
 }
 
-+ (BOOL)isCapableOfAction:(int64_t)a3 capability:(id)a4
++ (BOOL)isCapableOfAction:(int64_t)action capability:(id)capability
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a4;
+  capabilityCopy = capability;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a4;
-  v7 = [v5 arrayWithObjects:&v12 count:1];
-  v8 = [ASDAppCapabilityMetadata metadataWithAction:a3 bundleID:&stru_1F30184F0 capabilities:v7, v12, v13];
+  capabilityCopy2 = capability;
+  v7 = [v5 arrayWithObjects:&capabilityCopy count:1];
+  v8 = [ASDAppCapabilityMetadata metadataWithAction:action bundleID:&stru_1F30184F0 capabilities:v7, capabilityCopy, v13];
 
   v9 = +[ASDAppCapabilities defaultInstance];
-  LOBYTE(a3) = [(ASDAppCapabilities *)v9 _isCapable:v8 method:"+[ASDAppCapabilities isCapableOfAction:capability:]"];
+  LOBYTE(action) = [(ASDAppCapabilities *)v9 _isCapable:v8 method:"+[ASDAppCapabilities isCapableOfAction:capability:]"];
 
   v10 = *MEMORY[0x1E69E9840];
-  return a3;
+  return action;
 }
 
-+ (BOOL)isCapableOfAction:(int64_t)a3 capabilities:(id)a4
++ (BOOL)isCapableOfAction:(int64_t)action capabilities:(id)capabilities
 {
-  v4 = [ASDAppCapabilityMetadata metadataWithAction:a3 bundleID:&stru_1F30184F0 capabilities:a4];
+  v4 = [ASDAppCapabilityMetadata metadataWithAction:action bundleID:&stru_1F30184F0 capabilities:capabilities];
   v5 = +[ASDAppCapabilities defaultInstance];
   v6 = [(ASDAppCapabilities *)v5 _isCapable:v4 method:"+[ASDAppCapabilities isCapableOfAction:capabilities:]"];
 

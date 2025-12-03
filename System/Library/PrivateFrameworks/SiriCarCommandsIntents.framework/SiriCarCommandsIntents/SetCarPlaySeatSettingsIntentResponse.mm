@@ -1,9 +1,9 @@
 @interface SetCarPlaySeatSettingsIntentResponse
 - (SetCarPlaySeatSettingsIntentResponse)init;
-- (SetCarPlaySeatSettingsIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (SetCarPlaySeatSettingsIntentResponse)initWithCoder:(id)a3;
+- (SetCarPlaySeatSettingsIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (SetCarPlaySeatSettingsIntentResponse)initWithCoder:(id)coder;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation SetCarPlaySeatSettingsIntentResponse
@@ -15,22 +15,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   v5 = OBJC_IVAR___SetCarPlaySeatSettingsIntentResponse_code;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = code;
 }
 
-- (SetCarPlaySeatSettingsIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (SetCarPlaySeatSettingsIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v7 = [(SetCarPlaySeatSettingsIntentResponse *)self init];
   v8 = OBJC_IVAR___SetCarPlaySeatSettingsIntentResponse_code;
   swift_beginAccess();
-  *(&v7->super.super.isa + v8) = a3;
+  *(&v7->super.super.isa + v8) = code;
   v9 = v7;
-  [(SetCarPlaySeatSettingsIntentResponse *)v9 setUserActivity:v6];
+  [(SetCarPlaySeatSettingsIntentResponse *)v9 setUserActivity:activityCopy];
 
   return v9;
 }
@@ -43,13 +43,13 @@
   return [(SetCarPlaySeatSettingsIntentResponse *)&v3 init];
 }
 
-- (SetCarPlaySeatSettingsIntentResponse)initWithCoder:(id)a3
+- (SetCarPlaySeatSettingsIntentResponse)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR___SetCarPlaySeatSettingsIntentResponse_code) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for SetCarPlaySeatSettingsIntentResponse();
-  v4 = a3;
-  v5 = [(SetCarPlaySeatSettingsIntentResponse *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SetCarPlaySeatSettingsIntentResponse *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

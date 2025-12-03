@@ -1,23 +1,23 @@
 @interface PKCloudRecordArrayDatabaseZone
-- (PKCloudRecordArrayDatabaseZone)initWithCoder:(id)a3;
-- (PKCloudRecordArrayDatabaseZone)initWithZoneID:(id)a3 databaseIdentifier:(id)a4;
+- (PKCloudRecordArrayDatabaseZone)initWithCoder:(id)coder;
+- (PKCloudRecordArrayDatabaseZone)initWithZoneID:(id)d databaseIdentifier:(id)identifier;
 - (id)allItems;
 - (id)allObjects;
 - (id)allRecordIDs;
 - (id)allRecordNames;
-- (id)allRecordsWithRecordType:(id)a3;
-- (id)descriptionWithDetailedOutput:(BOOL)a3 includeItem:(BOOL)a4;
-- (void)addCloudRecord:(id)a3;
-- (void)applyCloudRecordDatabaseZone:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)allRecordsWithRecordType:(id)type;
+- (id)descriptionWithDetailedOutput:(BOOL)output includeItem:(BOOL)item;
+- (void)addCloudRecord:(id)record;
+- (void)applyCloudRecordDatabaseZone:(id)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudRecordArrayDatabaseZone
 
-- (PKCloudRecordArrayDatabaseZone)initWithZoneID:(id)a3 databaseIdentifier:(id)a4
+- (PKCloudRecordArrayDatabaseZone)initWithZoneID:(id)d databaseIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PKCloudRecordArrayDatabaseZone;
   v9 = [(PKCloudRecordArrayDatabaseZone *)&v13 init];
@@ -27,16 +27,16 @@
     cloudRecordByZoneRecord = v9->_cloudRecordByZoneRecord;
     v9->_cloudRecordByZoneRecord = v10;
 
-    objc_storeStrong(&v9->_zoneID, a3);
-    objc_storeStrong(&v9->_databaseIdentifier, a4);
+    objc_storeStrong(&v9->_zoneID, d);
+    objc_storeStrong(&v9->_databaseIdentifier, identifier);
   }
 
   return v9;
 }
 
-- (PKCloudRecordArrayDatabaseZone)initWithCoder:(id)a3
+- (PKCloudRecordArrayDatabaseZone)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKCloudRecordArrayDatabaseZone;
   v5 = [(PKCloudRecordArrayDatabaseZone *)&v17 init];
@@ -46,15 +46,15 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"cloudRecordByZoneRecord"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"cloudRecordByZoneRecord"];
     cloudRecordByZoneRecord = v5->_cloudRecordByZoneRecord;
     v5->_cloudRecordByZoneRecord = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneID"];
     zoneID = v5->_zoneID;
     v5->_zoneID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"databaseIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"databaseIdentifier"];
     databaseIdentifier = v5->_databaseIdentifier;
     v5->_databaseIdentifier = v14;
   }
@@ -62,16 +62,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cloudRecordByZoneRecord = self->_cloudRecordByZoneRecord;
-  v5 = a3;
-  [v5 encodeObject:cloudRecordByZoneRecord forKey:@"cloudRecordByZoneRecord"];
-  [v5 encodeObject:self->_zoneID forKey:@"zoneID"];
-  [v5 encodeObject:self->_databaseIdentifier forKey:@"databaseIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:cloudRecordByZoneRecord forKey:@"cloudRecordByZoneRecord"];
+  [coderCopy encodeObject:self->_zoneID forKey:@"zoneID"];
+  [coderCopy encodeObject:self->_databaseIdentifier forKey:@"databaseIdentifier"];
 }
 
-- (id)descriptionWithDetailedOutput:(BOOL)a3 includeItem:(BOOL)a4
+- (id)descriptionWithDetailedOutput:(BOOL)output includeItem:(BOOL)item
 {
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v20[0] = 0;
@@ -91,9 +91,9 @@
   v15 = v20;
   v16 = v19;
   v13 = v9;
-  v14 = self;
-  v17 = a3;
-  v18 = a4;
+  selfCopy = self;
+  outputCopy = output;
+  itemCopy = item;
   [(NSMutableDictionary *)cloudRecordByZoneRecord enumerateKeysAndObjectsUsingBlock:v12];
   v10 = [v9 copy];
 
@@ -141,37 +141,37 @@ uint64_t __76__PKCloudRecordArrayDatabaseZone_descriptionWithDetailedOutput_incl
   return [v18 appendString:@"----------------------------\n"];
 }
 
-- (void)addCloudRecord:(id)a3
+- (void)addCloudRecord:(id)record
 {
-  v7 = a3;
-  v4 = [v7 primaryIdentifier];
-  if (v4)
+  recordCopy = record;
+  primaryIdentifier = [recordCopy primaryIdentifier];
+  if (primaryIdentifier)
   {
-    v5 = [(NSMutableDictionary *)self->_cloudRecordByZoneRecord objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_cloudRecordByZoneRecord objectForKey:primaryIdentifier];
     if (v5)
     {
       v6 = v5;
-      [v5 applyCloudRecordObject:v7];
+      [v5 applyCloudRecordObject:recordCopy];
     }
 
     else
     {
-      v6 = v7;
+      v6 = recordCopy;
     }
 
-    [(NSMutableDictionary *)self->_cloudRecordByZoneRecord setObject:v6 forKey:v4];
+    [(NSMutableDictionary *)self->_cloudRecordByZoneRecord setObject:v6 forKey:primaryIdentifier];
   }
 }
 
-- (void)applyCloudRecordDatabaseZone:(id)a3
+- (void)applyCloudRecordDatabaseZone:(id)zone
 {
-  v4 = [a3 cloudRecordByZoneRecord];
+  cloudRecordByZoneRecord = [zone cloudRecordByZoneRecord];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __63__PKCloudRecordArrayDatabaseZone_applyCloudRecordDatabaseZone___block_invoke;
   v5[3] = &unk_1E79D2B80;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [cloudRecordByZoneRecord enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __63__PKCloudRecordArrayDatabaseZone_applyCloudRecordDatabaseZone___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -232,19 +232,19 @@ void __42__PKCloudRecordArrayDatabaseZone_allItems__block_invoke(uint64_t a1, ui
   return v6;
 }
 
-- (id)allRecordsWithRecordType:(id)a3
+- (id)allRecordsWithRecordType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   cloudRecordByZoneRecord = self->_cloudRecordByZoneRecord;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __59__PKCloudRecordArrayDatabaseZone_allRecordsWithRecordType___block_invoke;
   v14 = &unk_1E79D2BA8;
-  v15 = v4;
+  v15 = typeCopy;
   v16 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = typeCopy;
   [(NSMutableDictionary *)cloudRecordByZoneRecord enumerateKeysAndObjectsUsingBlock:&v11];
   v9 = [v7 copy];
 

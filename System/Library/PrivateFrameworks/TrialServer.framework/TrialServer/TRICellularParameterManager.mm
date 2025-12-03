@@ -4,12 +4,12 @@
 - (NSString)carrierCountryIsoCode;
 - (TRICellularParameterManager)init;
 - (id)_dispatchQueueForCarrierInfoGathering;
-- (id)_fetchCarrierBundleIdentifier:(id)a3;
-- (id)_fetchCarrierCountryIsoCode:(id)a3;
+- (id)_fetchCarrierBundleIdentifier:(id)identifier;
+- (id)_fetchCarrierCountryIsoCode:(id)code;
 - (void)_updateSystemInfo;
-- (void)carrierBundleChange:(id)a3;
-- (void)preferredDataSimChanged:(id)a3;
-- (void)subscriberCountryCodeDidChange:(id)a3;
+- (void)carrierBundleChange:(id)change;
+- (void)preferredDataSimChanged:(id)changed;
+- (void)subscriberCountryCodeDidChange:(id)change;
 @end
 
 @implementation TRICellularParameterManager
@@ -24,8 +24,8 @@
   {
     gotLoadHelper_x8__OBJC_CLASS___CoreTelephonyClient(v3);
     v5 = objc_alloc(*(v4 + 1968));
-    v6 = [(TRICellularParameterManager *)v2 _dispatchQueueForCarrierInfoGathering];
-    v7 = [v5 initWithQueue:v6];
+    _dispatchQueueForCarrierInfoGathering = [(TRICellularParameterManager *)v2 _dispatchQueueForCarrierInfoGathering];
+    v7 = [v5 initWithQueue:_dispatchQueueForCarrierInfoGathering];
     telephonyClient = v2->_telephonyClient;
     v2->_telephonyClient = v7;
 
@@ -156,17 +156,17 @@ void __68__TRICellularParameterManager__dispatchQueueForCarrierInfoGathering__bl
   return v3;
 }
 
-- (id)_fetchCarrierBundleIdentifier:(id)a3
+- (id)_fetchCarrierBundleIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     gotLoadHelper_x8__OBJC_CLASS___CTBundle(v5);
     v7 = [objc_alloc(*(v6 + 1568)) initWithBundleType:1];
     telephonyClient = self->_telephonyClient;
     v17 = 0;
-    v9 = [(CoreTelephonyClient *)telephonyClient copyBundleIdentifier:v4 bundleType:v7 error:&v17];
+    v9 = [(CoreTelephonyClient *)telephonyClient copyBundleIdentifier:identifierCopy bundleType:v7 error:&v17];
     v10 = v17;
     v11 = TRILogCategory_ClientFramework();
     v12 = v11;
@@ -218,14 +218,14 @@ void __68__TRICellularParameterManager__dispatchQueueForCarrierInfoGathering__bl
   return v13;
 }
 
-- (id)_fetchCarrierCountryIsoCode:(id)a3
+- (id)_fetchCarrierCountryIsoCode:(id)code
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (code)
   {
     telephonyClient = self->_telephonyClient;
     v17 = 0;
-    v5 = [(CoreTelephonyClient *)telephonyClient copyLastKnownMobileSubscriberCountryCode:a3 error:&v17];
+    v5 = [(CoreTelephonyClient *)telephonyClient copyLastKnownMobileSubscriberCountryCode:code error:&v17];
     v6 = v17;
     if (v5)
     {
@@ -300,9 +300,9 @@ void __68__TRICellularParameterManager__dispatchQueueForCarrierInfoGathering__bl
   return v12;
 }
 
-- (void)preferredDataSimChanged:(id)a3
+- (void)preferredDataSimChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   v6 = TRILogCategory_ClientFramework();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -310,15 +310,15 @@ void __68__TRICellularParameterManager__dispatchQueueForCarrierInfoGathering__bl
     _os_log_impl(&dword_26F567000, v6, OS_LOG_TYPE_DEFAULT, "Received delegate callback: preferredDataSimChanged", buf, 2u);
   }
 
-  objc_storeStrong(&self->_subscriptionContext, a3);
+  objc_storeStrong(&self->_subscriptionContext, changed);
   lock = self->_lock;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __55__TRICellularParameterManager_preferredDataSimChanged___block_invoke;
   v12 = &unk_279DE11A0;
-  v13 = self;
-  v14 = v5;
-  v8 = v5;
+  selfCopy = self;
+  v14 = changedCopy;
+  v8 = changedCopy;
   [(_PASLock *)lock runWithLockAcquired:&v9];
   [(TRICellularParameterManager *)self _updateSystemInfo:v9];
 }
@@ -333,9 +333,9 @@ void __55__TRICellularParameterManager_preferredDataSimChanged___block_invoke(ui
   v4[1] = v5;
 }
 
-- (void)subscriberCountryCodeDidChange:(id)a3
+- (void)subscriberCountryCodeDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v6 = TRILogCategory_ClientFramework();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -343,15 +343,15 @@ void __55__TRICellularParameterManager_preferredDataSimChanged___block_invoke(ui
     _os_log_impl(&dword_26F567000, v6, OS_LOG_TYPE_DEFAULT, "Received delegate callback: subscriberCountryCodeDidChange", buf, 2u);
   }
 
-  objc_storeStrong(&self->_subscriptionContext, a3);
+  objc_storeStrong(&self->_subscriptionContext, change);
   lock = self->_lock;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __62__TRICellularParameterManager_subscriberCountryCodeDidChange___block_invoke;
   v12 = &unk_279DE11A0;
-  v13 = self;
-  v14 = v5;
-  v8 = v5;
+  selfCopy = self;
+  v14 = changeCopy;
+  v8 = changeCopy;
   [(_PASLock *)lock runWithLockAcquired:&v9];
   [(TRICellularParameterManager *)self _updateSystemInfo:v9];
 }
@@ -366,9 +366,9 @@ void __62__TRICellularParameterManager_subscriberCountryCodeDidChange___block_in
   v4[2] = v5;
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v6 = TRILogCategory_ClientFramework();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -376,15 +376,15 @@ void __62__TRICellularParameterManager_subscriberCountryCodeDidChange___block_in
     _os_log_impl(&dword_26F567000, v6, OS_LOG_TYPE_DEFAULT, "Received delegate callback: carrierBundleChange", buf, 2u);
   }
 
-  objc_storeStrong(&self->_subscriptionContext, a3);
+  objc_storeStrong(&self->_subscriptionContext, change);
   lock = self->_lock;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __51__TRICellularParameterManager_carrierBundleChange___block_invoke;
   v12 = &unk_279DE11A0;
-  v13 = self;
-  v14 = v5;
-  v8 = v5;
+  selfCopy = self;
+  v14 = changeCopy;
+  v8 = changeCopy;
   [(_PASLock *)lock runWithLockAcquired:&v9];
   [(TRICellularParameterManager *)self _updateSystemInfo:v9];
 }
@@ -411,14 +411,14 @@ void __51__TRICellularParameterManager_carrierBundleChange___block_invoke(uint64
       _os_log_impl(&dword_26F567000, v2, OS_LOG_TYPE_DEFAULT, "Attempting to update System info due to cellular parameter change", &v11, 2u);
     }
 
-    v3 = [MEMORY[0x277D73660] client];
-    v4 = [TRISystemInfo createSystemInfoWithFactorProvider:v3];
+    client = [MEMORY[0x277D73660] client];
+    v4 = [TRISystemInfo createSystemInfoWithFactorProvider:client];
     v5 = v4;
     if (v4 && ([v4 save] & 1) != 0)
     {
-      v6 = [MEMORY[0x277D737E0] sharedPaths];
-      v7 = [[TRISystemConfiguration alloc] initWithPaths:v6];
-      v8 = [(TRISystemConfiguration *)v7 reloadSystemInfo];
+      mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+      v7 = [[TRISystemConfiguration alloc] initWithPaths:mEMORY[0x277D737E0]];
+      reloadSystemInfo = [(TRISystemConfiguration *)v7 reloadSystemInfo];
 
       v9 = TRILogCategory_ClientFramework();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -430,12 +430,12 @@ void __51__TRICellularParameterManager_carrierBundleChange___block_invoke(uint64
 
     else
     {
-      v6 = TRILogCategory_ClientFramework();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      mEMORY[0x277D737E0] = TRILogCategory_ClientFramework();
+      if (os_log_type_enabled(mEMORY[0x277D737E0], OS_LOG_TYPE_ERROR))
       {
         v11 = 138412290;
         v12 = @"TRICellularParameterManager failed to update system info";
-        _os_log_error_impl(&dword_26F567000, v6, OS_LOG_TYPE_ERROR, "%@", &v11, 0xCu);
+        _os_log_error_impl(&dword_26F567000, mEMORY[0x277D737E0], OS_LOG_TYPE_ERROR, "%@", &v11, 0xCu);
       }
     }
   }

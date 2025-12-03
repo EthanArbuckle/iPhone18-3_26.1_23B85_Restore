@@ -1,31 +1,31 @@
 @interface ICPostToInstagramAction
 - (id)inputContentClasses;
-- (void)appDidResume:(id)a3;
+- (void)appDidResume:(id)resume;
 - (void)dealloc;
-- (void)performActionWithInput:(id)a3 parameters:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7;
-- (void)shareAsALAssetWithItem:(id)a3 caption:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7;
-- (void)shareAsImageFileWithItem:(id)a3 caption:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7;
+- (void)performActionWithInput:(id)input parameters:(id)parameters userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)shareAsALAssetWithItem:(id)item caption:(id)caption userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)shareAsImageFileWithItem:(id)item caption:(id)caption userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler;
 @end
 
 @implementation ICPostToInstagramAction
 
-- (void)shareAsImageFileWithItem:(id)a3 caption:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7
+- (void)shareAsImageFileWithItem:(id)item caption:(id)caption userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
+  captionCopy = caption;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __102__ICPostToInstagramAction_shareAsImageFileWithItem_caption_userInterface_successHandler_errorHandler___block_invoke;
   v17[3] = &unk_1E837B3C8;
   v17[4] = self;
-  v18 = v11;
-  v19 = v13;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v13;
-  [a3 getFileRepresentation:v17 forType:0];
+  v18 = captionCopy;
+  v19 = errorHandlerCopy;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = captionCopy;
+  v16 = errorHandlerCopy;
+  [item getFileRepresentation:v17 forType:0];
 }
 
 void __102__ICPostToInstagramAction_shareAsImageFileWithItem_caption_userInterface_successHandler_errorHandler___block_invoke(uint64_t a1, void *a2)
@@ -96,47 +96,47 @@ uint64_t __102__ICPostToInstagramAction_shareAsImageFileWithItem_caption_userInt
   }
 }
 
-- (void)shareAsALAssetWithItem:(id)a3 caption:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7
+- (void)shareAsALAssetWithItem:(id)item caption:(id)caption userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 asset];
-  v14 = [v13 ALAssetURL];
+  handlerCopy = handler;
+  interfaceCopy = interface;
+  captionCopy = caption;
+  asset = [item asset];
+  aLAssetURL = [asset ALAssetURL];
 
-  v15 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-  v16 = [v15 mutableCopy];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  v16 = [uRLQueryAllowedCharacterSet mutableCopy];
 
   [v16 removeCharactersInString:@"?&="];
   v17 = MEMORY[0x1E695DFF8];
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [v14 absoluteString];
-  v20 = [v19 stringByAddingPercentEncodingWithAllowedCharacters:v16];
-  v21 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:v16];
+  absoluteString = [aLAssetURL absoluteString];
+  v20 = [absoluteString stringByAddingPercentEncodingWithAllowedCharacters:v16];
+  v21 = [captionCopy stringByAddingPercentEncodingWithAllowedCharacters:v16];
   v22 = [v18 stringWithFormat:@"instagram://library?AssetPath=%@&InstagramCaption=%@", v20, v21];
   v23 = [v17 URLWithString:v22];
 
-  v24 = [(objc_class *)getUIPasteboardClass_49609() generalPasteboard];
-  [v24 setString:v12];
+  generalPasteboard = [(objc_class *)getUIPasteboardClass_49609() generalPasteboard];
+  [generalPasteboard setString:captionCopy];
 
-  v25 = [MEMORY[0x1E6996CA8] sharedContext];
+  mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __100__ICPostToInstagramAction_shareAsALAssetWithItem_caption_userInterface_successHandler_errorHandler___block_invoke;
   v27[3] = &unk_1E837F0F0;
-  v28 = v10;
-  v26 = v10;
-  [v25 openURL:v23 withBundleIdentifier:@"com.burbn.instagram" userInterface:v11 completionHandler:v27];
+  v28 = handlerCopy;
+  v26 = handlerCopy;
+  [mEMORY[0x1E6996CA8] openURL:v23 withBundleIdentifier:@"com.burbn.instagram" userInterface:interfaceCopy completionHandler:v27];
 }
 
-- (void)performActionWithInput:(id)a3 parameters:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7
+- (void)performActionWithInput:(id)input parameters:(id)parameters userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  inputCopy = input;
+  parametersCopy = parameters;
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   v31[0] = objc_opt_class();
   v31[1] = objc_opt_class();
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
@@ -144,17 +144,17 @@ uint64_t __102__ICPostToInstagramAction_shareAsImageFileWithItem_caption_userInt
   v24[1] = 3221225472;
   v24[2] = __103__ICPostToInstagramAction_performActionWithInput_parameters_userInterface_successHandler_errorHandler___block_invoke;
   v24[3] = &unk_1E83806C0;
-  v25 = v12;
-  v26 = v13;
-  v27 = self;
-  v28 = v14;
-  v29 = v16;
-  v30 = v15;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v16;
-  v22 = v12;
+  v25 = inputCopy;
+  v26 = parametersCopy;
+  selfCopy = self;
+  v28 = interfaceCopy;
+  v29 = errorHandlerCopy;
+  v30 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = interfaceCopy;
+  v20 = parametersCopy;
+  v21 = errorHandlerCopy;
+  v22 = inputCopy;
   [v22 generateCollectionByCoercingToItemClasses:v17 completionHandler:v24];
 
   v23 = *MEMORY[0x1E69E9840];
@@ -231,20 +231,20 @@ LABEL_11:
   return v2;
 }
 
-- (void)appDidResume:(id)a3
+- (void)appDidResume:(id)resume
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v5 = getUIApplicationWillEnterForegroundNotification();
-  [v4 removeObserver:self name:v5 object:0];
+  [defaultCenter removeObserver:self name:v5 object:0];
 
   [(ICPostToInstagramAction *)self setInstagramRepresentation:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = getUIApplicationWillEnterForegroundNotification();
-  [v3 removeObserver:self name:v4 object:0];
+  [defaultCenter removeObserver:self name:v4 object:0];
 
   v5.receiver = self;
   v5.super_class = ICPostToInstagramAction;

@@ -1,7 +1,7 @@
 @interface CoreDAVMoveTask
 - (id)additionalHeaderValues;
 - (id)description;
-- (void)_callBackToDelegateWithResponses:(id)a3 error:(id)a4;
+- (void)_callBackToDelegateWithResponses:(id)responses error:(id)error;
 - (void)dealloc;
 @end
 
@@ -23,8 +23,8 @@
   v4 = [(CoreDAVCopyOrMoveTask *)&v7 description];
   [v3 appendFormat:@"[%@ ", v4];
 
-  v5 = [(CoreDAVMoveTask *)self previousETag];
-  [v3 appendFormat:@"| Previous ETag: [%@]", v5];
+  previousETag = [(CoreDAVMoveTask *)self previousETag];
+  [v3 appendFormat:@"| Previous ETag: [%@]", previousETag];
 
   [v3 appendFormat:@"]"];
 
@@ -36,29 +36,29 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7.receiver = self;
   v7.super_class = CoreDAVMoveTask;
-  v4 = [(CoreDAVCopyOrMoveTask *)&v7 additionalHeaderValues];
-  [v3 addEntriesFromDictionary:v4];
+  additionalHeaderValues = [(CoreDAVCopyOrMoveTask *)&v7 additionalHeaderValues];
+  [v3 addEntriesFromDictionary:additionalHeaderValues];
 
-  v5 = [(CoreDAVMoveTask *)self previousETag];
-  if (v5)
+  previousETag = [(CoreDAVMoveTask *)self previousETag];
+  if (previousETag)
   {
-    [v3 setObject:v5 forKey:@"If-Match"];
+    [v3 setObject:previousETag forKey:@"If-Match"];
   }
 
   return v3;
 }
 
-- (void)_callBackToDelegateWithResponses:(id)a3 error:(id)a4
+- (void)_callBackToDelegateWithResponses:(id)responses error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(CoreDAVTask *)self delegate];
+  responsesCopy = responses;
+  errorCopy = error;
+  delegate = [(CoreDAVTask *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CoreDAVTask *)self delegate];
-    [v9 moveTask:self parsedResponses:v10 error:v6];
+    delegate2 = [(CoreDAVTask *)self delegate];
+    [delegate2 moveTask:self parsedResponses:responsesCopy error:errorCopy];
 
     [(CoreDAVTask *)self setDelegate:0];
   }

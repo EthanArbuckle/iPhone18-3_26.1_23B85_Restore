@@ -1,37 +1,37 @@
 @interface MKExploreGuidesView
-- (MKExploreGuidesView)initWithExploreGuides:(id)a3 tapHandler:(id)a4;
-- (MKExploreGuidesView)initWithExploreGuidesResponse:(id)a3;
-- (MKExploreGuidesView)initWithExploreGuidesResponse:(id)a3 edgeInsets:(UIEdgeInsets)a4;
+- (MKExploreGuidesView)initWithExploreGuides:(id)guides tapHandler:(id)handler;
+- (MKExploreGuidesView)initWithExploreGuidesResponse:(id)response;
+- (MKExploreGuidesView)initWithExploreGuidesResponse:(id)response edgeInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)defaultInsets;
 - (id)_imageTemplateURL;
 - (id)_subtitle;
 - (id)_title;
 - (void)_commonSetup;
 - (void)_openURL;
-- (void)buttonTouchDown:(id)a3;
-- (void)buttonTouchUp:(id)a3;
-- (void)didSelectExploreGuides:(id)a3;
+- (void)buttonTouchDown:(id)down;
+- (void)buttonTouchUp:(id)up;
+- (void)didSelectExploreGuides:(id)guides;
 - (void)setupConstraints;
 - (void)setupImage;
 - (void)setupSubviews;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
-- (void)updateExploreGuidesResponse:(id)a3;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
+- (void)updateExploreGuidesResponse:(id)response;
 - (void)updateUI;
 - (void)updateUIContent;
 @end
 
 @implementation MKExploreGuidesView
 
-- (void)buttonTouchUp:(id)a3
+- (void)buttonTouchUp:(id)up
 {
-  v3 = a3;
+  upCopy = up;
   v4 = MEMORY[0x1E69DD250];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__MKExploreGuidesView_buttonTouchUp___block_invoke;
   v6[3] = &unk_1E76CDB38;
-  v7 = v3;
-  v5 = v3;
+  v7 = upCopy;
+  v5 = upCopy;
   [v4 animateWithDuration:v6 animations:0.1];
 }
 
@@ -41,16 +41,16 @@ void __37__MKExploreGuidesView_buttonTouchUp___block_invoke(uint64_t a1)
   [*(a1 + 32) setBackgroundColor:v2];
 }
 
-- (void)buttonTouchDown:(id)a3
+- (void)buttonTouchDown:(id)down
 {
-  v3 = a3;
+  downCopy = down;
   v4 = MEMORY[0x1E69DD250];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__MKExploreGuidesView_buttonTouchDown___block_invoke;
   v6[3] = &unk_1E76CDB38;
-  v7 = v3;
-  v5 = v3;
+  v7 = downCopy;
+  v5 = downCopy;
   [v4 animateWithDuration:v6 animations:0.1];
 }
 
@@ -60,107 +60,107 @@ void __39__MKExploreGuidesView_buttonTouchDown___block_invoke(uint64_t a1)
   [*(a1 + 32) setBackgroundColor:v2];
 }
 
-- (void)didSelectExploreGuides:(id)a3
+- (void)didSelectExploreGuides:(id)guides
 {
-  v4 = [(MKExploreGuidesView *)self tapHandler];
+  tapHandler = [(MKExploreGuidesView *)self tapHandler];
 
-  if (v4)
+  if (tapHandler)
   {
-    v6 = [(MKExploreGuidesView *)self tapHandler];
-    v5 = [(MKExploreGuidesView *)self exploreGuide];
-    v6[2](v6, v5);
+    tapHandler2 = [(MKExploreGuidesView *)self tapHandler];
+    exploreGuide = [(MKExploreGuidesView *)self exploreGuide];
+    tapHandler2[2](tapHandler2, exploreGuide);
   }
 }
 
 - (void)setupConstraints
 {
   v75[15] = *MEMORY[0x1E69E9840];
-  v3 = [(MKExploreGuidesView *)self imageView];
-  v4 = [v3 widthAnchor];
-  v5 = [v4 constraintEqualToConstant:92.0];
+  imageView = [(MKExploreGuidesView *)self imageView];
+  widthAnchor = [imageView widthAnchor];
+  v5 = [widthAnchor constraintEqualToConstant:92.0];
 
   LODWORD(v6) = 1144750080;
   v7 = v5;
   v36 = v5;
   [v5 setPriority:v6];
   v48 = MEMORY[0x1E696ACD8];
-  v74 = [(MKExploreGuidesView *)self button];
-  v73 = [v74 leadingAnchor];
-  v72 = [(MKExploreGuidesView *)self leadingAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72 constant:self->_edgeInsets.left];
+  button = [(MKExploreGuidesView *)self button];
+  leadingAnchor = [button leadingAnchor];
+  leadingAnchor2 = [(MKExploreGuidesView *)self leadingAnchor];
+  v71 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:self->_edgeInsets.left];
   v75[0] = v71;
-  v70 = [(MKExploreGuidesView *)self button];
-  v69 = [v70 trailingAnchor];
-  v68 = [(MKExploreGuidesView *)self trailingAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68 constant:-self->_edgeInsets.right];
+  button2 = [(MKExploreGuidesView *)self button];
+  trailingAnchor = [button2 trailingAnchor];
+  trailingAnchor2 = [(MKExploreGuidesView *)self trailingAnchor];
+  v67 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-self->_edgeInsets.right];
   v75[1] = v67;
-  v66 = [(MKExploreGuidesView *)self button];
-  v65 = [v66 topAnchor];
-  v64 = [(MKExploreGuidesView *)self topAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64 constant:self->_edgeInsets.top];
+  button3 = [(MKExploreGuidesView *)self button];
+  topAnchor = [button3 topAnchor];
+  topAnchor2 = [(MKExploreGuidesView *)self topAnchor];
+  v63 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:self->_edgeInsets.top];
   v75[2] = v63;
-  v62 = [(MKExploreGuidesView *)self button];
-  v61 = [v62 bottomAnchor];
-  v60 = [(MKExploreGuidesView *)self bottomAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60 constant:-self->_edgeInsets.bottom];
+  button4 = [(MKExploreGuidesView *)self button];
+  bottomAnchor = [button4 bottomAnchor];
+  bottomAnchor2 = [(MKExploreGuidesView *)self bottomAnchor];
+  v59 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-self->_edgeInsets.bottom];
   v75[3] = v59;
-  v58 = [(MKExploreGuidesView *)self labelsStack];
-  v56 = [v58 leadingAnchor];
-  v57 = [(MKExploreGuidesView *)self button];
-  v55 = [v57 leadingAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55 constant:16.0];
+  labelsStack = [(MKExploreGuidesView *)self labelsStack];
+  leadingAnchor3 = [labelsStack leadingAnchor];
+  button5 = [(MKExploreGuidesView *)self button];
+  leadingAnchor4 = [button5 leadingAnchor];
+  v54 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   v75[4] = v54;
-  v53 = [(MKExploreGuidesView *)self labelsStack];
-  v51 = [v53 centerYAnchor];
-  v52 = [(MKExploreGuidesView *)self button];
-  v50 = [v52 centerYAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  labelsStack2 = [(MKExploreGuidesView *)self labelsStack];
+  centerYAnchor = [labelsStack2 centerYAnchor];
+  button6 = [(MKExploreGuidesView *)self button];
+  centerYAnchor2 = [button6 centerYAnchor];
+  v49 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v75[5] = v49;
-  v47 = [(MKExploreGuidesView *)self labelsStack];
-  v45 = [v47 trailingAnchor];
-  v46 = [(MKExploreGuidesView *)self imageView];
-  v44 = [v46 leadingAnchor];
-  v43 = [v45 constraintLessThanOrEqualToAnchor:v44 constant:-16.0];
+  labelsStack3 = [(MKExploreGuidesView *)self labelsStack];
+  trailingAnchor3 = [labelsStack3 trailingAnchor];
+  imageView2 = [(MKExploreGuidesView *)self imageView];
+  leadingAnchor5 = [imageView2 leadingAnchor];
+  v43 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchor5 constant:-16.0];
   v75[6] = v43;
-  v42 = [(MKExploreGuidesView *)self labelsStack];
-  v40 = [v42 topAnchor];
-  v41 = [(MKExploreGuidesView *)self button];
-  v39 = [v41 topAnchor];
-  v38 = [v40 constraintGreaterThanOrEqualToAnchor:v39 constant:16.0];
+  labelsStack4 = [(MKExploreGuidesView *)self labelsStack];
+  topAnchor3 = [labelsStack4 topAnchor];
+  button7 = [(MKExploreGuidesView *)self button];
+  topAnchor4 = [button7 topAnchor];
+  v38 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:16.0];
   v75[7] = v38;
-  v37 = [(MKExploreGuidesView *)self labelsStack];
-  v34 = [v37 bottomAnchor];
-  v35 = [(MKExploreGuidesView *)self button];
-  v33 = [v35 bottomAnchor];
-  v32 = [v34 constraintLessThanOrEqualToAnchor:v33 constant:-16.0];
+  labelsStack5 = [(MKExploreGuidesView *)self labelsStack];
+  bottomAnchor3 = [labelsStack5 bottomAnchor];
+  button8 = [(MKExploreGuidesView *)self button];
+  bottomAnchor4 = [button8 bottomAnchor];
+  v32 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4 constant:-16.0];
   v75[8] = v32;
-  v31 = [(MKExploreGuidesView *)self imageView];
-  v29 = [v31 trailingAnchor];
-  v30 = [(MKExploreGuidesView *)self button];
-  v28 = [v30 trailingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  imageView3 = [(MKExploreGuidesView *)self imageView];
+  trailingAnchor4 = [imageView3 trailingAnchor];
+  button9 = [(MKExploreGuidesView *)self button];
+  trailingAnchor5 = [button9 trailingAnchor];
+  v27 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v75[9] = v27;
-  v26 = [(MKExploreGuidesView *)self imageView];
-  v24 = [v26 topAnchor];
-  v25 = [(MKExploreGuidesView *)self button];
-  v23 = [v25 topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  imageView4 = [(MKExploreGuidesView *)self imageView];
+  topAnchor5 = [imageView4 topAnchor];
+  button10 = [(MKExploreGuidesView *)self button];
+  topAnchor6 = [button10 topAnchor];
+  v22 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v75[10] = v22;
-  v21 = [(MKExploreGuidesView *)self imageView];
-  v19 = [v21 bottomAnchor];
-  v20 = [(MKExploreGuidesView *)self button];
-  v18 = [v20 bottomAnchor];
-  v8 = [v19 constraintEqualToAnchor:v18];
+  imageView5 = [(MKExploreGuidesView *)self imageView];
+  bottomAnchor5 = [imageView5 bottomAnchor];
+  button11 = [(MKExploreGuidesView *)self button];
+  bottomAnchor6 = [button11 bottomAnchor];
+  v8 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v75[11] = v8;
-  v9 = [(MKExploreGuidesView *)self imageView];
-  v10 = [v9 widthAnchor];
-  v11 = [(MKExploreGuidesView *)self imageView];
-  v12 = [v11 heightAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 multiplier:1.22666667];
+  imageView6 = [(MKExploreGuidesView *)self imageView];
+  widthAnchor2 = [imageView6 widthAnchor];
+  imageView7 = [(MKExploreGuidesView *)self imageView];
+  heightAnchor = [imageView7 heightAnchor];
+  v13 = [widthAnchor2 constraintEqualToAnchor:heightAnchor multiplier:1.22666667];
   v75[12] = v13;
-  v14 = [(MKExploreGuidesView *)self imageView];
-  v15 = [v14 widthAnchor];
-  v16 = [v15 constraintGreaterThanOrEqualToConstant:92.0];
+  imageView8 = [(MKExploreGuidesView *)self imageView];
+  widthAnchor3 = [imageView8 widthAnchor];
+  v16 = [widthAnchor3 constraintGreaterThanOrEqualToConstant:92.0];
   v75[13] = v16;
   v75[14] = v7;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:15];
@@ -173,25 +173,25 @@ void __39__MKExploreGuidesView_buttonTouchDown___block_invoke(uint64_t a1)
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(MKExploreGuidesView *)self setImageView:v4];
 
-  v5 = [(MKExploreGuidesView *)self imageView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView = [(MKExploreGuidesView *)self imageView];
+  [imageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(MKExploreGuidesView *)self imageView];
-  [v6 setAccessibilityIdentifier:@"ExploreGuidesImage"];
+  imageView2 = [(MKExploreGuidesView *)self imageView];
+  [imageView2 setAccessibilityIdentifier:@"ExploreGuidesImage"];
 
-  v7 = [(MKExploreGuidesView *)self imageView];
-  [v7 setContentMode:2];
+  imageView3 = [(MKExploreGuidesView *)self imageView];
+  [imageView3 setContentMode:2];
 
-  v8 = [(MKExploreGuidesView *)self imageView];
+  imageView4 = [(MKExploreGuidesView *)self imageView];
   LODWORD(v9) = 1144750080;
-  [v8 setContentHuggingPriority:0 forAxis:v9];
+  [imageView4 setContentHuggingPriority:0 forAxis:v9];
 
-  v10 = [(MKExploreGuidesView *)self imageView];
+  imageView5 = [(MKExploreGuidesView *)self imageView];
   LODWORD(v11) = 1132068864;
-  [v10 setContentCompressionResistancePriority:0 forAxis:v11];
+  [imageView5 setContentCompressionResistancePriority:0 forAxis:v11];
 
-  v12 = [(MKExploreGuidesView *)self imageView];
-  [(MKExploreGuidesView *)self addSubview:v12];
+  imageView6 = [(MKExploreGuidesView *)self imageView];
+  [(MKExploreGuidesView *)self addSubview:imageView6];
 
   if (MKApplicationLayoutDirectionIsRightToLeft())
   {
@@ -203,18 +203,18 @@ void __39__MKExploreGuidesView_buttonTouchDown___block_invoke(uint64_t a1)
     v13 = 10;
   }
 
-  v14 = [(MKExploreGuidesView *)self traitCollection];
+  traitCollection = [(MKExploreGuidesView *)self traitCollection];
   _UITableViewDefaultSectionCornerRadiusForTraitCollection();
   v16 = v15;
-  v17 = [(MKExploreGuidesView *)self imageView];
-  [v17 _setContinuousCornerRadius:v16];
+  imageView7 = [(MKExploreGuidesView *)self imageView];
+  [imageView7 _setContinuousCornerRadius:v16];
 
-  v18 = [(MKExploreGuidesView *)self imageView];
-  v19 = [v18 layer];
-  [v19 setMaskedCorners:v13];
+  imageView8 = [(MKExploreGuidesView *)self imageView];
+  layer = [imageView8 layer];
+  [layer setMaskedCorners:v13];
 
-  v20 = [(MKExploreGuidesView *)self imageView];
-  [v20 setClipsToBounds:1];
+  imageView9 = [(MKExploreGuidesView *)self imageView];
+  [imageView9 setClipsToBounds:1];
 }
 
 - (void)setupSubviews
@@ -222,94 +222,94 @@ void __39__MKExploreGuidesView_buttonTouchDown___block_invoke(uint64_t a1)
   v3 = [MEMORY[0x1E69DC738] buttonWithType:0];
   [(MKExploreGuidesView *)self setButton:v3];
 
-  v4 = [(MKExploreGuidesView *)self button];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  button = [(MKExploreGuidesView *)self button];
+  [button setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(MKExploreGuidesView *)self traitCollection];
+  traitCollection = [(MKExploreGuidesView *)self traitCollection];
   _UITableViewDefaultSectionCornerRadiusForTraitCollection();
   v7 = v6;
-  v8 = [(MKExploreGuidesView *)self button];
-  [v8 _setContinuousCornerRadius:v7];
+  button2 = [(MKExploreGuidesView *)self button];
+  [button2 _setContinuousCornerRadius:v7];
 
-  v9 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-  v10 = [(MKExploreGuidesView *)self button];
-  [v10 setBackgroundColor:v9];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  button3 = [(MKExploreGuidesView *)self button];
+  [button3 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
-  v11 = [(MKExploreGuidesView *)self button];
-  [v11 addTarget:self action:sel_didSelectExploreGuides_ forControlEvents:0x2000];
+  button4 = [(MKExploreGuidesView *)self button];
+  [button4 addTarget:self action:sel_didSelectExploreGuides_ forControlEvents:0x2000];
 
-  v12 = [(MKExploreGuidesView *)self button];
-  [v12 addTarget:self action:sel_buttonTouchDown_ forControlEvents:17];
+  button5 = [(MKExploreGuidesView *)self button];
+  [button5 addTarget:self action:sel_buttonTouchDown_ forControlEvents:17];
 
-  v13 = [(MKExploreGuidesView *)self button];
-  [v13 addTarget:self action:sel_buttonTouchUp_ forControlEvents:480];
+  button6 = [(MKExploreGuidesView *)self button];
+  [button6 addTarget:self action:sel_buttonTouchUp_ forControlEvents:480];
 
-  v14 = [(MKExploreGuidesView *)self button];
-  [(MKExploreGuidesView *)self addSubview:v14];
+  button7 = [(MKExploreGuidesView *)self button];
+  [(MKExploreGuidesView *)self addSubview:button7];
 
   v15 = objc_alloc(MEMORY[0x1E69DCF90]);
   v16 = [v15 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(MKExploreGuidesView *)self setLabelsStack:v16];
 
-  v17 = [(MKExploreGuidesView *)self labelsStack];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+  labelsStack = [(MKExploreGuidesView *)self labelsStack];
+  [labelsStack setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v18 = [(MKExploreGuidesView *)self labelsStack];
-  [v18 setAxis:1];
+  labelsStack2 = [(MKExploreGuidesView *)self labelsStack];
+  [labelsStack2 setAxis:1];
 
-  v19 = [(MKExploreGuidesView *)self labelsStack];
-  [v19 setDistribution:0];
+  labelsStack3 = [(MKExploreGuidesView *)self labelsStack];
+  [labelsStack3 setDistribution:0];
 
-  v20 = [(MKExploreGuidesView *)self labelsStack];
-  [v20 setAlignment:0];
+  labelsStack4 = [(MKExploreGuidesView *)self labelsStack];
+  [labelsStack4 setAlignment:0];
 
-  v21 = [(MKExploreGuidesView *)self labelsStack];
-  [v21 setUserInteractionEnabled:0];
+  labelsStack5 = [(MKExploreGuidesView *)self labelsStack];
+  [labelsStack5 setUserInteractionEnabled:0];
 
-  v22 = [(MKExploreGuidesView *)self labelsStack];
-  [v22 setAccessibilityIdentifier:@"ExploreGuidesLabelStack"];
+  labelsStack6 = [(MKExploreGuidesView *)self labelsStack];
+  [labelsStack6 setAccessibilityIdentifier:@"ExploreGuidesLabelStack"];
 
-  v23 = [(MKExploreGuidesView *)self labelsStack];
-  [(MKExploreGuidesView *)self addSubview:v23];
+  labelsStack7 = [(MKExploreGuidesView *)self labelsStack];
+  [(MKExploreGuidesView *)self addSubview:labelsStack7];
 
   v36 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [v36 setNumberOfLines:1];
-  v24 = [(MKExploreGuidesView *)self defaultTitleFont];
-  [v36 setFont:v24];
+  defaultTitleFont = [(MKExploreGuidesView *)self defaultTitleFont];
+  [v36 setFont:defaultTitleFont];
 
-  v25 = [MEMORY[0x1E69DC888] labelColor];
-  [v36 setTextColor:v25];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [v36 setTextColor:labelColor];
 
   [v36 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v36 setAccessibilityIdentifier:@"ExploreGuidesTitle"];
   LODWORD(v26) = 1148846080;
   [v36 setContentCompressionResistancePriority:1 forAxis:v26];
   [(MKExploreGuidesView *)self setTitleLabel:v36];
-  v27 = [v36 text];
-  v28 = [(MKExploreGuidesView *)self button];
-  [v28 setAccessibilityLabel:v27];
+  text = [v36 text];
+  button8 = [(MKExploreGuidesView *)self button];
+  [button8 setAccessibilityLabel:text];
 
-  v29 = [(MKExploreGuidesView *)self button];
-  [v29 setAccessibilityIdentifier:@"ExploreGuidesButton"];
+  button9 = [(MKExploreGuidesView *)self button];
+  [button9 setAccessibilityIdentifier:@"ExploreGuidesButton"];
 
-  v30 = [(MKExploreGuidesView *)self labelsStack];
-  [v30 addArrangedSubview:v36];
+  labelsStack8 = [(MKExploreGuidesView *)self labelsStack];
+  [labelsStack8 addArrangedSubview:v36];
 
   v31 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [v31 setNumberOfLines:2];
   LODWORD(v32) = 1148846080;
   [v31 setContentCompressionResistancePriority:1 forAxis:v32];
   [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v33 = [(MKExploreGuidesView *)self defaultSubtitleFont];
-  [v31 setFont:v33];
+  defaultSubtitleFont = [(MKExploreGuidesView *)self defaultSubtitleFont];
+  [v31 setFont:defaultSubtitleFont];
 
-  v34 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v31 setTextColor:v34];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v31 setTextColor:secondaryLabelColor];
 
   [v31 setAccessibilityIdentifier:@"ExploreGuidesSubtitle"];
   [(MKExploreGuidesView *)self setSubtitleLabel:v31];
-  v35 = [(MKExploreGuidesView *)self labelsStack];
-  [v35 addArrangedSubview:v31];
+  labelsStack9 = [(MKExploreGuidesView *)self labelsStack];
+  [labelsStack9 addArrangedSubview:v31];
 
   [(MKExploreGuidesView *)self setupImage];
 }
@@ -317,23 +317,23 @@ void __39__MKExploreGuidesView_buttonTouchDown___block_invoke(uint64_t a1)
 - (id)_imageTemplateURL
 {
   p_exploreGuidesResponse = &self->_exploreGuidesResponse;
-  v4 = [(MKExploreGuidesResponse *)self->_exploreGuidesResponse imageTemplateURL];
-  v5 = [v4 length];
+  imageTemplateURL = [(MKExploreGuidesResponse *)self->_exploreGuidesResponse imageTemplateURL];
+  v5 = [imageTemplateURL length];
 
   if (!v5)
   {
     p_exploreGuidesResponse = &self->_exploreGuide;
   }
 
-  v6 = [*p_exploreGuidesResponse imageTemplateURL];
+  imageTemplateURL2 = [*p_exploreGuidesResponse imageTemplateURL];
 
-  return v6;
+  return imageTemplateURL2;
 }
 
 - (id)_subtitle
 {
-  v3 = [(MKExploreGuidesResponse *)self->_exploreGuidesResponse subtitle];
-  v4 = [v3 length];
+  subtitle = [(MKExploreGuidesResponse *)self->_exploreGuidesResponse subtitle];
+  v4 = [subtitle length];
 
   if (v4)
   {
@@ -351,8 +351,8 @@ void __39__MKExploreGuidesView_buttonTouchDown___block_invoke(uint64_t a1)
 
 - (id)_title
 {
-  v3 = [(MKExploreGuidesResponse *)self->_exploreGuidesResponse title];
-  v4 = [v3 length];
+  title = [(MKExploreGuidesResponse *)self->_exploreGuidesResponse title];
+  v4 = [title length];
 
   if (v4)
   {
@@ -368,14 +368,14 @@ void __39__MKExploreGuidesView_buttonTouchDown___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(MKExploreGuidesView *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = [v5 preferredContentSizeCategory];
+  collectionCopy = collection;
+  traitCollection = [(MKExploreGuidesView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [collectionCopy preferredContentSizeCategory];
 
-  if (v7 != v8)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
 
     [(MKExploreGuidesView *)self updateUI];
@@ -393,52 +393,52 @@ void __39__MKExploreGuidesView_buttonTouchDown___block_invoke(uint64_t a1)
   [(MKExploreGuidesView *)self setDefaultSubtitleFont:v6];
 
   v7 = [objc_alloc(MEMORY[0x1E69DCA40]) initForTextStyle:v3];
-  v8 = [(MKExploreGuidesView *)self defaultTitleFont];
-  v9 = [v7 scaledFontForFont:v8 maximumPointSize:36.0];
+  defaultTitleFont = [(MKExploreGuidesView *)self defaultTitleFont];
+  v9 = [v7 scaledFontForFont:defaultTitleFont maximumPointSize:36.0];
   [(MKExploreGuidesView *)self setMaxSupportedTitleFont:v9];
 
-  v10 = [(MKExploreGuidesView *)self traitCollection];
-  v11 = [v10 preferredContentSizeCategory];
-  v12 = UIContentSizeCategoryCompareToCategory(v11, *MEMORY[0x1E69DDC50]);
+  traitCollection = [(MKExploreGuidesView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v12 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC50]);
 
-  v13 = [(MKExploreGuidesView *)self subtitleLabel];
-  v14 = v13;
+  subtitleLabel = [(MKExploreGuidesView *)self subtitleLabel];
+  v14 = subtitleLabel;
   if (v12 == NSOrderedAscending)
   {
-    [v13 setHidden:0];
+    [subtitleLabel setHidden:0];
 
-    v15 = [(MKExploreGuidesView *)self defaultTitleFont];
-    v16 = [(MKExploreGuidesView *)self titleLabel];
-    [v16 setFont:v15];
+    defaultTitleFont2 = [(MKExploreGuidesView *)self defaultTitleFont];
+    titleLabel = [(MKExploreGuidesView *)self titleLabel];
+    [titleLabel setFont:defaultTitleFont2];
 
-    v18 = [(MKExploreGuidesView *)self defaultSubtitleFont];
+    defaultSubtitleFont = [(MKExploreGuidesView *)self defaultSubtitleFont];
     [(MKExploreGuidesView *)self subtitleLabel];
   }
 
   else
   {
-    [v13 setHidden:1];
+    [subtitleLabel setHidden:1];
 
-    v18 = [(MKExploreGuidesView *)self maxSupportedTitleFont];
+    defaultSubtitleFont = [(MKExploreGuidesView *)self maxSupportedTitleFont];
     [(MKExploreGuidesView *)self titleLabel];
   }
   v17 = ;
-  [v17 setFont:v18];
+  [v17 setFont:defaultSubtitleFont];
 }
 
 - (void)updateUIContent
 {
-  v3 = [(MKExploreGuidesView *)self _title];
-  v4 = [(MKExploreGuidesView *)self titleLabel];
-  [v4 setText:v3];
+  _title = [(MKExploreGuidesView *)self _title];
+  titleLabel = [(MKExploreGuidesView *)self titleLabel];
+  [titleLabel setText:_title];
 
-  v5 = [(MKExploreGuidesView *)self _title];
-  v6 = [(MKExploreGuidesView *)self button];
-  [v6 setAccessibilityLabel:v5];
+  _title2 = [(MKExploreGuidesView *)self _title];
+  button = [(MKExploreGuidesView *)self button];
+  [button setAccessibilityLabel:_title2];
 
-  v7 = [(MKExploreGuidesView *)self _subtitle];
-  v8 = [(MKExploreGuidesView *)self subtitleLabel];
-  [v8 setText:v7];
+  _subtitle = [(MKExploreGuidesView *)self _subtitle];
+  subtitleLabel = [(MKExploreGuidesView *)self subtitleLabel];
+  [subtitleLabel setText:_subtitle];
 
   v9 = +[MKSystemController sharedInstance];
   [v9 screenScale];
@@ -448,8 +448,8 @@ void __39__MKExploreGuidesView_buttonTouchDown___block_invoke(uint64_t a1)
   +[MKExploreGuidesView defaultHeight];
   v14 = v11 * v13;
   v15 = MEMORY[0x1E69A1DA0];
-  v16 = [(MKExploreGuidesView *)self _imageTemplateURL];
-  v17 = [v15 imageURLForSize:v16 imageTemplateURL:{v12, v14}];
+  _imageTemplateURL = [(MKExploreGuidesView *)self _imageTemplateURL];
+  v17 = [v15 imageURLForSize:_imageTemplateURL imageTemplateURL:{v12, v14}];
 
   v18 = +[MKAppImageManager sharedImageManager];
   v19[0] = MEMORY[0x1E69E9820];
@@ -476,15 +476,15 @@ uint64_t __38__MKExploreGuidesView_updateUIContent__block_invoke(uint64_t a1, ui
   return [v2 setImage:v3];
 }
 
-- (void)updateExploreGuidesResponse:(id)a3
+- (void)updateExploreGuidesResponse:(id)response
 {
-  v7 = a3;
+  responseCopy = response;
   if (![(MKExploreGuidesResponse *)self->_exploreGuidesResponse isEqual:?])
   {
-    objc_storeStrong(&self->_exploreGuidesResponse, a3);
-    v5 = [v7 exploreGuides];
+    objc_storeStrong(&self->_exploreGuidesResponse, response);
+    exploreGuides = [responseCopy exploreGuides];
     exploreGuide = self->_exploreGuide;
-    self->_exploreGuide = v5;
+    self->_exploreGuide = exploreGuides;
 
     [(MKExploreGuidesView *)self updateUIContent];
   }
@@ -512,8 +512,8 @@ uint64_t __38__MKExploreGuidesView_updateUIContent__block_invoke(uint64_t a1, ui
 - (void)_commonSetup
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [(MKExploreGuidesView *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(MKExploreGuidesView *)self setBackgroundColor:clearColor];
 
   [(MKExploreGuidesView *)self setClipsToBounds:1];
   [(MKExploreGuidesView *)self setAccessibilityIdentifier:@"ExploreGuidesView"];
@@ -529,27 +529,27 @@ uint64_t __38__MKExploreGuidesView_updateUIContent__block_invoke(uint64_t a1, ui
 - (void)_openURL
 {
   v4 = +[MKSystemController sharedInstance];
-  v3 = [(MKExploreGuidesResponse *)self->_exploreGuidesResponse punchInURL];
-  [v4 openURL:v3 completionHandler:0];
+  punchInURL = [(MKExploreGuidesResponse *)self->_exploreGuidesResponse punchInURL];
+  [v4 openURL:punchInURL completionHandler:0];
 }
 
-- (MKExploreGuidesView)initWithExploreGuidesResponse:(id)a3 edgeInsets:(UIEdgeInsets)a4
+- (MKExploreGuidesView)initWithExploreGuidesResponse:(id)response edgeInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v10 = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  responseCopy = response;
   v24.receiver = self;
   v24.super_class = MKExploreGuidesView;
   v11 = [(MKExploreGuidesView *)&v24 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_exploreGuidesResponse, a3);
-    v13 = [v10 exploreGuides];
+    objc_storeStrong(&v11->_exploreGuidesResponse, response);
+    exploreGuides = [responseCopy exploreGuides];
     exploreGuide = v12->_exploreGuide;
-    v12->_exploreGuide = v13;
+    v12->_exploreGuide = exploreGuides;
 
     v12->_edgeInsets.top = top;
     v12->_edgeInsets.left = left;
@@ -584,27 +584,27 @@ void __64__MKExploreGuidesView_initWithExploreGuidesResponse_edgeInsets___block_
   }
 }
 
-- (MKExploreGuidesView)initWithExploreGuidesResponse:(id)a3
+- (MKExploreGuidesView)initWithExploreGuidesResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(MKExploreGuidesView *)self defaultInsets];
-  v5 = [(MKExploreGuidesView *)self initWithExploreGuidesResponse:v4 edgeInsets:?];
+  v5 = [(MKExploreGuidesView *)self initWithExploreGuidesResponse:responseCopy edgeInsets:?];
 
   return v5;
 }
 
-- (MKExploreGuidesView)initWithExploreGuides:(id)a3 tapHandler:(id)a4
+- (MKExploreGuidesView)initWithExploreGuides:(id)guides tapHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  guidesCopy = guides;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = MKExploreGuidesView;
   v9 = [(MKExploreGuidesView *)&v18 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_exploreGuide, a3);
-    v11 = MEMORY[0x1A58E9F30](v8);
+    objc_storeStrong(&v9->_exploreGuide, guides);
+    v11 = MEMORY[0x1A58E9F30](handlerCopy);
     tapHandler = v10->_tapHandler;
     v10->_tapHandler = v11;
 

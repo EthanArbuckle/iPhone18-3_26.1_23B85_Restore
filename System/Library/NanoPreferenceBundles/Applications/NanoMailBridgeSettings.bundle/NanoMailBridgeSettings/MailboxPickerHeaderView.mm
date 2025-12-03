@@ -29,8 +29,8 @@
     v11 = +[UIColor clearColor];
     [(UILabel *)v10 setBackgroundColor:v11];
 
-    v12 = [(MailboxPickerHeaderView *)v2 contentView];
-    [v12 addSubview:v2->_titleLabel];
+    contentView = [(MailboxPickerHeaderView *)v2 contentView];
+    [contentView addSubview:v2->_titleLabel];
   }
 
   return v2;
@@ -41,9 +41,9 @@
   v18.receiver = self;
   v18.super_class = MailboxPickerHeaderView;
   [(MailboxPickerHeaderView *)&v18 layoutSubviews];
-  v3 = [(UILabel *)self->_titleLabel text];
+  text = [(UILabel *)self->_titleLabel text];
 
-  if (v3)
+  if (text)
   {
     [(UILabel *)self->_titleLabel sizeToFit];
     [(UILabel *)self->_titleLabel frame];
@@ -54,8 +54,8 @@
     v12 = 16.0;
     if ([(MailboxPickerHeaderView *)self mf_prefersRightToLeftInterfaceLayout])
     {
-      v13 = [(MailboxPickerHeaderView *)self contentView];
-      [v13 bounds];
+      contentView = [(MailboxPickerHeaderView *)self contentView];
+      [contentView bounds];
       MaxX = CGRectGetMaxX(v19);
       v20.origin.x = v5;
       v20.origin.y = v7;
@@ -64,8 +64,8 @@
       v12 = MaxX - CGRectGetWidth(v20) + -16.0;
     }
 
-    v15 = [(UILabel *)self->_titleLabel font];
-    [v15 _bodyLeading];
+    font = [(UILabel *)self->_titleLabel font];
+    [font _bodyLeading];
     UIRoundToViewScale();
     v17 = v16 + -4.0;
 

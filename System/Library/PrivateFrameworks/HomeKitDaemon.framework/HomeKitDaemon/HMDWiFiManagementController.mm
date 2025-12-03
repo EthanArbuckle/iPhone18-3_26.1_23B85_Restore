@@ -1,17 +1,17 @@
 @interface HMDWiFiManagementController
 + (id)logCategory;
-+ (id)sharedPSKForNetworkWithSSID:(id)a3;
++ (id)sharedPSKForNetworkWithSSID:(id)d;
 - (HMDHAPAccessory)accessory;
-- (HMDWiFiManagementController)initWithAccessory:(id)a3 wiFiTransportService:(id)a4 workQueue:(id)a5;
+- (HMDWiFiManagementController)initWithAccessory:(id)accessory wiFiTransportService:(id)service workQueue:(id)queue;
 - (id)logIdentifier;
 - (int64_t)capabilities;
-- (void)_accessoryDidBecomeReachable:(id)a3;
+- (void)_accessoryDidBecomeReachable:(id)reachable;
 - (void)_commitConfigurationUpdate;
-- (void)_performWiFiConfigurationControlRequest:(id)a3 withDescription:(id)a4 completion:(id)a5;
-- (void)_reconfigurationCompletedWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)reconfigureWithSSID:(id)a3 PSK:(id)a4 logEvent:(id)a5 completion:(id)a6;
-- (void)safelyReconfigureWithSSID:(id)a3 PSK:(id)a4 verificationCallback:(id)a5 logEvent:(id)a6 completion:(id)a7;
-- (void)timerDidFire:(id)a3;
+- (void)_performWiFiConfigurationControlRequest:(id)request withDescription:(id)description completion:(id)completion;
+- (void)_reconfigurationCompletedWithSuccess:(BOOL)success error:(id)error;
+- (void)reconfigureWithSSID:(id)d PSK:(id)k logEvent:(id)event completion:(id)completion;
+- (void)safelyReconfigureWithSSID:(id)d PSK:(id)k verificationCallback:(id)callback logEvent:(id)event completion:(id)completion;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDWiFiManagementController
@@ -25,23 +25,23 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDWiFiManagementController *)self accessory];
-  v3 = [v2 logIdentifier];
+  accessory = [(HMDWiFiManagementController *)self accessory];
+  logIdentifier = [accessory logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (void)_performWiFiConfigurationControlRequest:(id)a3 withDescription:(id)a4 completion:(id)a5
+- (void)_performWiFiConfigurationControlRequest:(id)request withDescription:(id)description completion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDWiFiManagementController *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  requestCopy = request;
+  descriptionCopy = description;
+  completionCopy = completion;
+  workQueue = [(HMDWiFiManagementController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v12 = [(HMDWiFiManagementController *)self service];
-  v13 = [v12 findCharacteristicWithType:@"0000022D-0000-1000-8000-0026BB765291"];
+  service = [(HMDWiFiManagementController *)self service];
+  v13 = [service findCharacteristicWithType:@"0000022D-0000-1000-8000-0026BB765291"];
 
   if (v13)
   {
@@ -50,20 +50,20 @@
     aBlock[2] = __98__HMDWiFiManagementController__performWiFiConfigurationControlRequest_withDescription_completion___block_invoke;
     aBlock[3] = &unk_2786873B0;
     aBlock[4] = self;
-    v39 = v9;
-    v14 = v9;
+    v39 = descriptionCopy;
+    v14 = descriptionCopy;
     v43 = v14;
-    v15 = v10;
+    v15 = completionCopy;
     v44 = v15;
     v38 = _Block_copy(aBlock);
-    v40 = [(HMDWiFiManagementController *)self accessory];
-    if (v8)
+    accessory = [(HMDWiFiManagementController *)self accessory];
+    if (requestCopy)
     {
       v41 = 0;
-      v16 = [v8 serializeWithError:&v41];
+      v16 = [requestCopy serializeWithError:&v41];
       v17 = v41;
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy = self;
       v20 = HMFGetOSLogHandle();
       v21 = v20;
       if (!v16)
@@ -85,15 +85,15 @@
         {
           v16 = 0;
           v26 = v38;
-          v9 = v39;
+          descriptionCopy = v39;
           goto LABEL_16;
         }
 
-        v23 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-        (*(v15 + 2))(v15, 0, v23);
+        workQueue3 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
+        (*(v15 + 2))(v15, 0, workQueue3);
         v16 = 0;
         v26 = v38;
-        v9 = v39;
+        descriptionCopy = v39;
 LABEL_15:
 
 LABEL_16:
@@ -108,23 +108,23 @@ LABEL_16:
         v49 = 2112;
         v50 = v14;
         v51 = 2112;
-        v52 = v8;
+        v52 = requestCopy;
         _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@Writing Wi-Fi Configuration Control request for %@: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v18);
-      v23 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v13 value:v16 authorizationData:0 type:0];
-      v46 = v23;
+      workQueue3 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v13 value:v16 authorizationData:0 type:0];
+      v46 = workQueue3;
       v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
-      v25 = [(HMDWiFiManagementController *)v19 workQueue];
+      workQueue2 = [(HMDWiFiManagementController *)selfCopy workQueue];
       v26 = v38;
-      [v40 writeCharacteristicValues:v24 source:1220 queue:v25 completionHandler:v38];
+      [accessory writeCharacteristicValues:v24 source:1220 queue:workQueue2 completionHandler:v38];
     }
 
     else
     {
       v32 = objc_autoreleasePoolPush();
-      v33 = self;
+      selfCopy2 = self;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
@@ -140,17 +140,17 @@ LABEL_16:
       v17 = [HMDCharacteristicRequest requestWithCharacteristic:v13];
       v45 = v17;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
-      v23 = [(HMDWiFiManagementController *)v33 workQueue];
+      workQueue3 = [(HMDWiFiManagementController *)selfCopy2 workQueue];
       v26 = v38;
-      [v40 readCharacteristicValues:v16 source:1220 queue:v23 completionHandler:v38];
+      [accessory readCharacteristicValues:v16 source:1220 queue:workQueue3 completionHandler:v38];
     }
 
-    v9 = v39;
+    descriptionCopy = v39;
     goto LABEL_15;
   }
 
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy3 = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
@@ -163,10 +163,10 @@ LABEL_16:
   }
 
   objc_autoreleasePoolPop(v27);
-  if (v10)
+  if (completionCopy)
   {
     v31 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    (*(v10 + 2))(v10, 0, v31);
+    (*(completionCopy + 2))(completionCopy, 0, v31);
   }
 
 LABEL_17:
@@ -308,71 +308,71 @@ LABEL_24:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reconfigurationCompletedWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_reconfigurationCompletedWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v14 = a4;
-  v6 = [(HMDWiFiManagementController *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  successCopy = success;
+  errorCopy = error;
+  workQueue = [(HMDWiFiManagementController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(HMDWiFiManagementController *)self reconfigurationLogEvent];
-  if (v7)
+  reconfigurationLogEvent = [(HMDWiFiManagementController *)self reconfigurationLogEvent];
+  if (reconfigurationLogEvent)
   {
-    if (v4)
+    if (successCopy)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = v14;
-      if (!v14)
+      v8 = errorCopy;
+      if (!errorCopy)
       {
         v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-        [v7 setError:v13];
+        [reconfigurationLogEvent setError:v13];
 
         goto LABEL_6;
       }
     }
 
-    [v7 setError:v8];
+    [reconfigurationLogEvent setError:v8];
 LABEL_6:
     v9 = +[HMDMetricsManager sharedLogEventSubmitter];
-    [v9 submitLogEvent:v7];
+    [v9 submitLogEvent:reconfigurationLogEvent];
 
     [(HMDWiFiManagementController *)self setReconfigurationLogEvent:0];
   }
 
-  v10 = [(HMDWiFiManagementController *)self reconfigurationCompletion];
-  v11 = [(HMDWiFiManagementController *)self notificationCenter];
-  [v11 removeObserver:self];
+  reconfigurationCompletion = [(HMDWiFiManagementController *)self reconfigurationCompletion];
+  notificationCenter = [(HMDWiFiManagementController *)self notificationCenter];
+  [notificationCenter removeObserver:self];
 
-  v12 = [(HMDWiFiManagementController *)self reconfigurationTimeoutTimer];
-  [v12 cancel];
+  reconfigurationTimeoutTimer = [(HMDWiFiManagementController *)self reconfigurationTimeoutTimer];
+  [reconfigurationTimeoutTimer cancel];
 
   [(HMDWiFiManagementController *)self setReconfigurationTimeoutTimer:0];
   [(HMDWiFiManagementController *)self setReconfigurationCookie:0];
   [(HMDWiFiManagementController *)self setReconfigurationVerificationCallback:0];
   [(HMDWiFiManagementController *)self setReconfigurationCompletion:0];
   [(HMDWiFiManagementController *)self setReconfigurationState:0];
-  if (v4)
+  if (successCopy)
   {
-    if (v10)
+    if (reconfigurationCompletion)
     {
-      v10[2](v10, 0);
+      reconfigurationCompletion[2](reconfigurationCompletion, 0);
     }
   }
 
   else
   {
-    completeWithError(v10, v14);
+    completeWithError(reconfigurationCompletion, errorCopy);
   }
 }
 
 - (void)_commitConfigurationUpdate
 {
-  v3 = [(HMDWiFiManagementController *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDWiFiManagementController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMDWiFiManagementController *)self setReconfigurationState:4];
   v4 = makeConfigurationControl(4);
@@ -458,27 +458,27 @@ LABEL_13:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDWiFiManagementController *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HMDWiFiManagementController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDWiFiManagementController *)self reconfigurationTimeoutTimer];
-  if (v6 != v4)
+  reconfigurationTimeoutTimer = [(HMDWiFiManagementController *)self reconfigurationTimeoutTimer];
+  if (reconfigurationTimeoutTimer != fireCopy)
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v7 = [(HMDWiFiManagementController *)self reconfigurationState];
+  reconfigurationState = [(HMDWiFiManagementController *)self reconfigurationState];
 
-  if (v7 == 2)
+  if (reconfigurationState == 2)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -489,8 +489,8 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v8);
-    v6 = [MEMORY[0x277CCA9B8] hmErrorWithCode:100];
-    [(HMDWiFiManagementController *)v9 _reconfigurationCompletedWithSuccess:0 error:v6];
+    reconfigurationTimeoutTimer = [MEMORY[0x277CCA9B8] hmErrorWithCode:100];
+    [(HMDWiFiManagementController *)selfCopy _reconfigurationCompletedWithSuccess:0 error:reconfigurationTimeoutTimer];
     goto LABEL_6;
   }
 
@@ -499,15 +499,15 @@ LABEL_7:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_accessoryDidBecomeReachable:(id)a3
+- (void)_accessoryDidBecomeReachable:(id)reachable
 {
-  v4 = [(HMDWiFiManagementController *)self workQueue];
+  workQueue = [(HMDWiFiManagementController *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__HMDWiFiManagementController__accessoryDidBecomeReachable___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __60__HMDWiFiManagementController__accessoryDidBecomeReachable___block_invoke(uint64_t a1)
@@ -588,30 +588,30 @@ void __60__HMDWiFiManagementController__accessoryDidBecomeReachable___block_invo
   }
 }
 
-- (void)safelyReconfigureWithSSID:(id)a3 PSK:(id)a4 verificationCallback:(id)a5 logEvent:(id)a6 completion:(id)a7
+- (void)safelyReconfigureWithSSID:(id)d PSK:(id)k verificationCallback:(id)callback logEvent:(id)event completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(HMDWiFiManagementController *)self workQueue];
+  dCopy = d;
+  kCopy = k;
+  callbackCopy = callback;
+  eventCopy = event;
+  completionCopy = completion;
+  workQueue = [(HMDWiFiManagementController *)self workQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __102__HMDWiFiManagementController_safelyReconfigureWithSSID_PSK_verificationCallback_logEvent_completion___block_invoke;
   v23[3] = &unk_278676728;
   v23[4] = self;
-  v24 = v12;
-  v27 = v16;
-  v28 = v14;
-  v25 = v15;
-  v26 = v13;
-  v18 = v13;
-  v19 = v15;
-  v20 = v14;
-  v21 = v12;
-  v22 = v16;
-  dispatch_async(v17, v23);
+  v24 = dCopy;
+  v27 = completionCopy;
+  v28 = callbackCopy;
+  v25 = eventCopy;
+  v26 = kCopy;
+  v18 = kCopy;
+  v19 = eventCopy;
+  v20 = callbackCopy;
+  v21 = dCopy;
+  v22 = completionCopy;
+  dispatch_async(workQueue, v23);
 }
 
 void __102__HMDWiFiManagementController_safelyReconfigureWithSSID_PSK_verificationCallback_logEvent_completion___block_invoke(uint64_t a1)
@@ -914,27 +914,27 @@ LABEL_14:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reconfigureWithSSID:(id)a3 PSK:(id)a4 logEvent:(id)a5 completion:(id)a6
+- (void)reconfigureWithSSID:(id)d PSK:(id)k logEvent:(id)event completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDWiFiManagementController *)self workQueue];
+  dCopy = d;
+  kCopy = k;
+  eventCopy = event;
+  completionCopy = completion;
+  workQueue = [(HMDWiFiManagementController *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__HMDWiFiManagementController_reconfigureWithSSID_PSK_logEvent_completion___block_invoke;
   block[3] = &unk_278688978;
-  v22 = v11;
-  v23 = v13;
+  v22 = kCopy;
+  v23 = completionCopy;
   block[4] = self;
-  v20 = v10;
-  v21 = v12;
-  v15 = v11;
-  v16 = v12;
-  v17 = v10;
-  v18 = v13;
-  dispatch_async(v14, block);
+  v20 = dCopy;
+  v21 = eventCopy;
+  v15 = kCopy;
+  v16 = eventCopy;
+  v17 = dCopy;
+  v18 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __75__HMDWiFiManagementController_reconfigureWithSSID_PSK_logEvent_completion___block_invoke(uint64_t a1)
@@ -1076,27 +1076,27 @@ LABEL_5:
 
 - (int64_t)capabilities
 {
-  v2 = [(HMDWiFiManagementController *)self accessory];
-  v3 = [v2 wiFiTransportCapabilities];
-  v4 = [v3 unsignedIntegerValue];
+  accessory = [(HMDWiFiManagementController *)self accessory];
+  wiFiTransportCapabilities = [accessory wiFiTransportCapabilities];
+  unsignedIntegerValue = [wiFiTransportCapabilities unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (HMDWiFiManagementController)initWithAccessory:(id)a3 wiFiTransportService:(id)a4 workQueue:(id)a5
+- (HMDWiFiManagementController)initWithAccessory:(id)accessory wiFiTransportService:(id)service workQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = HMDWiFiManagementController;
   v11 = [(HMDWiFiManagementController *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_accessory, v8);
-    objc_storeStrong(&v12->_service, a4);
-    objc_storeStrong(&v12->_workQueue, a5);
+    objc_storeWeak(&v11->_accessory, accessoryCopy);
+    objc_storeStrong(&v12->_service, service);
+    objc_storeStrong(&v12->_workQueue, queue);
   }
 
   return v12;
@@ -1122,12 +1122,12 @@ void __42__HMDWiFiManagementController_logCategory__block_invoke()
   logCategory__hmf_once_v24_82442 = v1;
 }
 
-+ (id)sharedPSKForNetworkWithSSID:(id)a3
++ (id)sharedPSKForNetworkWithSSID:(id)d
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v24 = @"ssid";
-  v25[0] = v3;
+  v25[0] = dCopy;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
   v5 = WiFiCopyNetworkInfo();
   v6 = v5;
@@ -1149,7 +1149,7 @@ void __42__HMDWiFiManagementController_logCategory__block_invoke()
       *buf = 138543618;
       v19 = v15;
       v20 = 2112;
-      v21 = v3;
+      v21 = dCopy;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_ERROR, "%{public}@No password available for Wi-Fi network '%@", buf, 0x16u);
     }
 
@@ -1168,7 +1168,7 @@ void __42__HMDWiFiManagementController_logCategory__block_invoke()
       *buf = 138543874;
       v19 = v12;
       v20 = 2112;
-      v21 = v3;
+      v21 = dCopy;
       v22 = 2112;
       v23 = v8;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Failed to retrieve Wi-Fi network information for '%@': %@", buf, 0x20u);

@@ -1,17 +1,17 @@
 @interface _SUITimeFormatData
 + (id)_timeFormatDataAccessLock;
-+ (id)_timeLocaleForLocale:(id)a3;
-+ (id)instanceForLocale:(id)a3;
-- (_SUITimeFormatData)initWithLocale:(id)a3;
++ (id)_timeLocaleForLocale:(id)locale;
++ (id)instanceForLocale:(id)locale;
+- (_SUITimeFormatData)initWithLocale:(id)locale;
 @end
 
 @implementation _SUITimeFormatData
 
-+ (id)instanceForLocale:(id)a3
++ (id)instanceForLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [a1 _timeFormatDataAccessLock];
-  [v5 lock];
+  localeCopy = locale;
+  _timeFormatDataAccessLock = [self _timeFormatDataAccessLock];
+  [_timeFormatDataAccessLock lock];
   v6 = qword_100119B00;
   if (!qword_100119B00)
   {
@@ -22,14 +22,14 @@
     v6 = qword_100119B00;
   }
 
-  v9 = [v6 objectForKeyedSubscript:v4];
+  v9 = [v6 objectForKeyedSubscript:localeCopy];
   if (!v9)
   {
-    v9 = [[_SUITimeFormatData alloc] initWithLocale:v4];
-    [qword_100119B00 setObject:v9 forKeyedSubscript:v4];
+    v9 = [[_SUITimeFormatData alloc] initWithLocale:localeCopy];
+    [qword_100119B00 setObject:v9 forKeyedSubscript:localeCopy];
   }
 
-  [v5 unlock];
+  [_timeFormatDataAccessLock unlock];
 
   return v9;
 }
@@ -46,26 +46,26 @@
   return v3;
 }
 
-+ (id)_timeLocaleForLocale:(id)a3
++ (id)_timeLocaleForLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v4 = [NSLocale alloc];
-  v5 = [v3 localeIdentifier];
+  localeIdentifier = [localeCopy localeIdentifier];
 
-  v6 = [v4 initWithLocaleIdentifier:v5];
+  v6 = [v4 initWithLocaleIdentifier:localeIdentifier];
 
   return v6;
 }
 
-- (_SUITimeFormatData)initWithLocale:(id)a3
+- (_SUITimeFormatData)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v34.receiver = self;
   v34.super_class = _SUITimeFormatData;
   v5 = [(_SUITimeFormatData *)&v34 init];
   if (v5)
   {
-    v6 = [objc_opt_class() _timeLocaleForLocale:v4];
+    v6 = [objc_opt_class() _timeLocaleForLocale:localeCopy];
     v7 = [NSDateFormatter dateFormatFromTemplate:@"HHmm" options:0 locale:v6];
     formatHourMin = v5->_formatHourMin;
     v5->_formatHourMin = v7;
@@ -90,8 +90,8 @@
     formatMin = v5->_formatMin;
     v5->_formatMin = v17;
 
-    v19 = [v6 localeIdentifier];
-    v20 = [v19 hasPrefix:@"ee_"];
+    localeIdentifier = [v6 localeIdentifier];
+    v20 = [localeIdentifier hasPrefix:@"ee_"];
 
     if (v20)
     {
@@ -116,14 +116,14 @@
 
     [(NSNumberFormatter *)v5->_singleWidthNumberFormatter setNumberStyle:0];
     [(NSNumberFormatter *)v5->_singleWidthNumberFormatter setPositiveFormat:@"0"];
-    [(NSNumberFormatter *)v5->_singleWidthNumberFormatter setLocale:v4];
+    [(NSNumberFormatter *)v5->_singleWidthNumberFormatter setLocale:localeCopy];
     v27 = objc_alloc_init(NSNumberFormatter);
     doubleWidthNumberFormatter = v5->_doubleWidthNumberFormatter;
     v5->_doubleWidthNumberFormatter = v27;
 
     [(NSNumberFormatter *)v5->_doubleWidthNumberFormatter setNumberStyle:0];
     [(NSNumberFormatter *)v5->_doubleWidthNumberFormatter setPositiveFormat:@"00"];
-    [(NSNumberFormatter *)v5->_doubleWidthNumberFormatter setLocale:v4];
+    [(NSNumberFormatter *)v5->_doubleWidthNumberFormatter setLocale:localeCopy];
     v29 = objc_alloc_init(NSDateComponentsFormatter);
     abbreviatedHourDateFormatter = v5->_abbreviatedHourDateFormatter;
     v5->_abbreviatedHourDateFormatter = v29;

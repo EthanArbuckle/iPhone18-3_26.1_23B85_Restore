@@ -1,19 +1,19 @@
 @interface RSDLocalService
 - ($53DFC3DD9429D54544A2B2B9F14ED761)getTcpOptions;
-- (BOOL)serviceWantsToBeExposedToDevice:(id)a3;
-- (BOOL)setExposePolicy:(id)a3;
-- (RSDLocalService)initWithServiceEntryNamed:(const char *)a3;
-- (RSDLocalService)initWithToken:(unint64_t)a3 name:(char *)a4 event:(id)a5;
+- (BOOL)serviceWantsToBeExposedToDevice:(id)device;
+- (BOOL)setExposePolicy:(id)policy;
+- (RSDLocalService)initWithServiceEntryNamed:(const char *)named;
+- (RSDLocalService)initWithToken:(unint64_t)token name:(char *)name event:(id)event;
 - (id)copyServiceDescription;
 - (void)dealloc;
-- (void)fireDevice:(id)a3 fd:(int)a4;
+- (void)fireDevice:(id)device fd:(int)fd;
 @end
 
 @implementation RSDLocalService
 
-- (RSDLocalService)initWithToken:(unint64_t)a3 name:(char *)a4 event:(id)a5
+- (RSDLocalService)initWithToken:(unint64_t)token name:(char *)name event:(id)event
 {
-  v8 = a5;
+  eventCopy = event;
   v9 = [(RSDLocalService *)self init];
   v10 = v9;
   if (!v9)
@@ -23,9 +23,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  [(RSDLocalService *)v9 setToken:a3];
-  [(RSDLocalService *)v10 setName:strdup(a4)];
-  string = xpc_dictionary_get_string(v8, "RequireEntitlement");
+  [(RSDLocalService *)v9 setToken:token];
+  [(RSDLocalService *)v10 setName:strdup(name)];
+  string = xpc_dictionary_get_string(eventCopy, "RequireEntitlement");
   if (!string)
   {
     if (os_log_type_enabled(qword_1000646E0, OS_LOG_TYPE_ERROR))
@@ -37,7 +37,7 @@ LABEL_12:
   }
 
   [(RSDLocalService *)v10 setEntitlement:strdup(string)];
-  if (![(RSDLocalService *)v10 setExposePolicy:v8])
+  if (![(RSDLocalService *)v10 setExposePolicy:eventCopy])
   {
     if (os_log_type_enabled(qword_1000646E0, OS_LOG_TYPE_ERROR))
     {
@@ -47,7 +47,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v12 = xpc_dictionary_get_value(v8, "ServiceProperties");
+  v12 = xpc_dictionary_get_value(eventCopy, "ServiceProperties");
   v13 = v12;
   if (v12 && xpc_get_type(v12) == &_xpc_type_dictionary)
   {
@@ -64,12 +64,12 @@ LABEL_13:
 {
   *&retstr->var0 = 256;
   *&retstr->var2 = xmmword_100049E10;
-  v5 = [(RSDLocalService *)self properties];
+  properties = [(RSDLocalService *)self properties];
 
-  if (v5)
+  if (properties)
   {
-    v7 = [(RSDLocalService *)self properties];
-    xdict = xpc_dictionary_get_dictionary(v7, "TcpOptions");
+    properties2 = [(RSDLocalService *)self properties];
+    xdict = xpc_dictionary_get_dictionary(properties2, "TcpOptions");
 
     v8 = xdict;
     if (xdict)
@@ -112,13 +112,13 @@ LABEL_13:
   return result;
 }
 
-- (RSDLocalService)initWithServiceEntryNamed:(const char *)a3
+- (RSDLocalService)initWithServiceEntryNamed:(const char *)named
 {
   v4 = [(RSDLocalService *)self init];
-  if (v4 && (v5 = getservbyname(a3, "tcp")) != 0)
+  if (v4 && (v5 = getservbyname(named, "tcp")) != 0)
   {
     [(RSDLocalService *)v4 setLegacy_port:bswap32(LOWORD(v5->s_port)) >> 16];
-    [(RSDLocalService *)v4 setName:strdup(a3)];
+    [(RSDLocalService *)v4 setName:strdup(named)];
     [(RSDLocalService *)v4 setEntitlement:strdup("AppleInternal")];
     keys = "Legacy";
     values = &_xpc_BOOL_true;
@@ -136,48 +136,48 @@ LABEL_13:
   return v7;
 }
 
-- (void)fireDevice:(id)a3 fd:(int)a4
+- (void)fireDevice:(id)device fd:(int)fd
 {
-  v8 = a3;
-  if (a4 == -1)
+  deviceCopy = device;
+  if (fd == -1)
   {
     sub_100038ABC(&v9, v10);
   }
 
   v6 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_fd(v6, "fd", a4);
-  v7 = [v8 copyClientDescriptionWithSensitiveProperties:0];
+  xpc_dictionary_set_fd(v6, "fd", fd);
+  v7 = [deviceCopy copyClientDescriptionWithSensitiveProperties:0];
   xpc_dictionary_set_value(v6, "device", v7);
 
   [(RSDLocalService *)self token];
   xpc_event_publisher_fire();
 }
 
-- (BOOL)serviceWantsToBeExposedToDevice:(id)a3
+- (BOOL)serviceWantsToBeExposedToDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(RSDLocalService *)self limit_load_to_device_types];
-  if (!v5)
+  deviceCopy = device;
+  limit_load_to_device_types = [(RSDLocalService *)self limit_load_to_device_types];
+  if (!limit_load_to_device_types)
   {
     goto LABEL_44;
   }
 
-  v6 = [(RSDLocalService *)self limit_load_to_device_types];
-  v7 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 type]);
-  v8 = [v6 containsObject:v7];
+  limit_load_to_device_types2 = [(RSDLocalService *)self limit_load_to_device_types];
+  v7 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [deviceCopy type]);
+  v8 = [limit_load_to_device_types2 containsObject:v7];
 
   if (v8)
   {
 LABEL_44:
-    v9 = [(RSDLocalService *)self limit_load_from_device_types];
-    if (!v9)
+    limit_load_from_device_types = [(RSDLocalService *)self limit_load_from_device_types];
+    if (!limit_load_from_device_types)
     {
       goto LABEL_10;
     }
 
-    v10 = [(RSDLocalService *)self limit_load_from_device_types];
-    v11 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 type]);
-    v12 = [v10 containsObject:v11];
+    limit_load_from_device_types2 = [(RSDLocalService *)self limit_load_from_device_types];
+    v11 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [deviceCopy type]);
+    v12 = [limit_load_from_device_types2 containsObject:v11];
 
     if ((v12 & 1) == 0)
     {
@@ -280,7 +280,7 @@ LABEL_22:
             }
 
 LABEL_11:
-            v13 = 1;
+            isTrusted = 1;
             goto LABEL_41;
           }
         }
@@ -299,7 +299,7 @@ LABEL_11:
 LABEL_38:
       if (![(RSDLocalService *)self is_exposed_to_untrusted_devices_internal:*v27]|| (os_variant_allows_internal_security_policies() & 1) == 0)
       {
-        v13 = [v4 isTrusted];
+        isTrusted = [deviceCopy isTrusted];
         goto LABEL_41;
       }
 
@@ -307,10 +307,10 @@ LABEL_38:
     }
   }
 
-  v13 = 0;
+  isTrusted = 0;
 LABEL_41:
 
-  return v13;
+  return isTrusted;
 }
 
 - (id)copyServiceDescription
@@ -321,23 +321,23 @@ LABEL_41:
     if (!strcmp([(RSDLocalService *)self entitlement], "None-AppleInternal"))
     {
       xpc_dictionary_set_string(v3, "EntitlementOverride", "None-AppleInternal");
-      v4 = "AppleInternal";
+      entitlement = "AppleInternal";
     }
 
     else
     {
-      v4 = [(RSDLocalService *)self entitlement];
+      entitlement = [(RSDLocalService *)self entitlement];
     }
 
-    xpc_dictionary_set_string(v3, "Entitlement", v4);
+    xpc_dictionary_set_string(v3, "Entitlement", entitlement);
   }
 
-  v5 = [(RSDLocalService *)self properties];
+  properties = [(RSDLocalService *)self properties];
 
-  if (v5)
+  if (properties)
   {
-    v6 = [(RSDLocalService *)self properties];
-    xpc_dictionary_set_value(v3, "Properties", v6);
+    properties2 = [(RSDLocalService *)self properties];
+    xpc_dictionary_set_value(v3, "Properties", properties2);
   }
 
   if ([(RSDLocalService *)self legacy_port])
@@ -353,11 +353,11 @@ LABEL_41:
   return v3;
 }
 
-- (BOOL)setExposePolicy:(id)a3
+- (BOOL)setExposePolicy:(id)policy
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_value(v4, "LimitExposedToDeviceType");
-  v6 = xpc_dictionary_get_value(v4, "LimitExposedFromDeviceType");
+  policyCopy = policy;
+  v5 = xpc_dictionary_get_value(policyCopy, "LimitExposedToDeviceType");
+  v6 = xpc_dictionary_get_value(policyCopy, "LimitExposedFromDeviceType");
   v7 = v6;
   if (v5)
   {
@@ -381,8 +381,8 @@ LABEL_41:
     goto LABEL_23;
   }
 
-  [(RSDLocalService *)self setIs_exposed_to_untrusted_devices_presetup:xpc_dictionary_get_BOOL(v4, "ExposedToUntrustedDevicesPreSetup")];
-  v10 = xpc_dictionary_get_value(v4, "ExposedToUntrustedDevices");
+  [(RSDLocalService *)self setIs_exposed_to_untrusted_devices_presetup:xpc_dictionary_get_BOOL(policyCopy, "ExposedToUntrustedDevicesPreSetup")];
+  v10 = xpc_dictionary_get_value(policyCopy, "ExposedToUntrustedDevices");
   v11 = v10;
   if (v10)
   {

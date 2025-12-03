@@ -1,54 +1,54 @@
 @interface PUEditPluginManager
-+ (id)sharedManagerForMediaType:(unint64_t)a3;
++ (id)sharedManagerForMediaType:(unint64_t)type;
 - (BOOL)hasMarkupPlugin;
 - (BOOL)hasNonMarkupPlugins;
 - (BOOL)hasPlugins;
 - (id)_allowedPluginTypes;
-- (id)_initWithMediaType:(unint64_t)a3;
+- (id)_initWithMediaType:(unint64_t)type;
 - (id)pluginActivities;
 - (id)pluginActivitiesExceptMarkup;
-- (void)_discoveredAvailableExtensions:(id)a3;
+- (void)_discoveredAvailableExtensions:(id)extensions;
 - (void)rediscoverAvailablePlugins;
-- (void)setPlugins:(id)a3;
+- (void)setPlugins:(id)plugins;
 @end
 
 @implementation PUEditPluginManager
 
-- (void)setPlugins:(id)a3
+- (void)setPlugins:(id)plugins
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_plugins != v4)
+  pluginsCopy = plugins;
+  v5 = pluginsCopy;
+  if (self->_plugins != pluginsCopy)
   {
-    v9 = v4;
-    v4 = [(NSArray *)v4 isEqualToArray:?];
+    v9 = pluginsCopy;
+    pluginsCopy = [(NSArray *)pluginsCopy isEqualToArray:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((pluginsCopy & 1) == 0)
     {
       v6 = [(NSArray *)v9 copy];
       plugins = self->_plugins;
       self->_plugins = v6;
 
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 postNotificationName:@"PUEditPluginManagerPluginsDidChangeNotification" object:self userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"PUEditPluginManagerPluginsDidChangeNotification" object:self userInfo:0];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](pluginsCopy, v5);
 }
 
 - (id)pluginActivitiesExceptMarkup
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(PUEditPluginManager *)self plugins];
-  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  plugins = [(PUEditPluginManager *)self plugins];
+  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(plugins, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v2;
+  v4 = plugins;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -87,13 +87,13 @@
 - (id)pluginActivities
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(PUEditPluginManager *)self plugins];
-  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  plugins = [(PUEditPluginManager *)self plugins];
+  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(plugins, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v2;
+  v4 = plugins;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -132,16 +132,16 @@
   return v3;
 }
 
-- (void)_discoveredAvailableExtensions:(id)a3
+- (void)_discoveredAvailableExtensions:(id)extensions
 {
   v47 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  extensionsCopy = extensions;
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(extensionsCopy, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v3;
+  obj = extensionsCopy;
   v5 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v5)
   {
@@ -157,23 +157,23 @@
         }
 
         v9 = *(*(&v41 + 1) + 8 * i);
-        v10 = [v9 _plugIn];
-        v11 = [v10 containingUrl];
+        _plugIn = [v9 _plugIn];
+        containingUrl = [_plugIn containingUrl];
 
-        if (!v11)
+        if (!containingUrl)
         {
           v12 = MEMORY[0x1E695DFF8];
           v13 = MEMORY[0x1E696AEC0];
-          v14 = [MEMORY[0x1E696AFB0] UUID];
-          v15 = [v14 UUIDString];
-          v16 = [v13 stringWithFormat:@"appLessExtension://%@", v15];
-          v11 = [v12 URLWithString:v16];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID UUIDString];
+          v16 = [v13 stringWithFormat:@"appLessExtension://%@", uUIDString];
+          containingUrl = [v12 URLWithString:v16];
         }
 
-        v17 = [v4 objectForKey:v11];
+        v17 = [v4 objectForKey:containingUrl];
         if (!v17 || ([v9 identifier], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "identifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v18, "compare:", v19), v19, v18, v20 == -1))
         {
-          [v4 setObject:v9 forKey:v11];
+          [v4 setObject:v9 forKey:containingUrl];
         }
       }
 
@@ -183,13 +183,13 @@
     while (v6);
   }
 
-  v21 = [v4 allValues];
-  v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v21, "count")}];
+  allValues = [v4 allValues];
+  v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(allValues, "count")}];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v23 = v21;
+  v23 = allValues;
   v24 = [v23 countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v24)
   {
@@ -205,8 +205,8 @@
         }
 
         v28 = *(*(&v37 + 1) + 8 * j);
-        v29 = [v28 identifier];
-        v30 = [PUEditPlugin pu_isMarkupExtensionIdentifier:v29]^ 1;
+        identifier = [v28 identifier];
+        v30 = [PUEditPlugin pu_isMarkupExtensionIdentifier:identifier]^ 1;
 
         v31 = [[PUEditPlugin alloc] initWithExtension:v28 pluginCategoryType:v30];
         [v22 addObject:v31];
@@ -230,15 +230,15 @@
 
 - (void)rediscoverAvailablePlugins
 {
-  v3 = [(PUEditPluginManager *)self _allowedPluginTypes];
+  _allowedPluginTypes = [(PUEditPluginManager *)self _allowedPluginTypes];
   v4 = dispatch_get_global_queue(0, 0);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__PUEditPluginManager_rediscoverAvailablePlugins__block_invoke;
   v6[3] = &unk_1E7B80C38;
   v6[4] = self;
-  v7 = v3;
-  v5 = v3;
+  v7 = _allowedPluginTypes;
+  v5 = _allowedPluginTypes;
   dispatch_async(v4, v6);
 }
 
@@ -355,22 +355,22 @@ uint64_t __49__PUEditPluginManager_rediscoverAvailablePlugins__block_invoke_4(ui
 
 - (id)_allowedPluginTypes
 {
-  v3 = [MEMORY[0x1E696AD50] indexSet];
-  v4 = [(PUEditPluginManager *)self mediaType];
-  v5 = v4;
-  if (v4 - 2 >= 2 && v4 != 0)
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  mediaType = [(PUEditPluginManager *)self mediaType];
+  v5 = mediaType;
+  if (mediaType - 2 >= 2 && mediaType != 0)
   {
-    if (v4 != 1)
+    if (mediaType != 1)
     {
       goto LABEL_8;
     }
 
-    [v3 addIndex:0];
+    [indexSet addIndex:0];
   }
 
-  [v3 addIndex:v5];
+  [indexSet addIndex:v5];
 LABEL_8:
-  v7 = [v3 copy];
+  v7 = [indexSet copy];
 
   return v7;
 }
@@ -378,12 +378,12 @@ LABEL_8:
 - (BOOL)hasMarkupPlugin
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(PUEditPluginManager *)self plugins];
+  plugins = [(PUEditPluginManager *)self plugins];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v19 count:16];
+  v3 = [plugins countByEnumeratingWithState:&v11 objects:v19 count:16];
   if (v3)
   {
     v4 = v3;
@@ -395,13 +395,13 @@ LABEL_8:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(plugins);
         }
 
         v5 |= [*(*(&v11 + 1) + 8 * i) pu_isMarkupExtension];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v19 count:16];
+      v4 = [plugins countByEnumeratingWithState:&v11 objects:v19 count:16];
     }
 
     while (v4);
@@ -422,7 +422,7 @@ LABEL_8:
     }
 
     *buf = 138543618;
-    v16 = v2;
+    v16 = plugins;
     v17 = 2112;
     v18 = v9;
     _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEFAULT, "PUEditPluginManager hasMarkupPlugin: plugins %{public}@ - result: %@", buf, 0x16u);
@@ -434,12 +434,12 @@ LABEL_8:
 - (BOOL)hasNonMarkupPlugins
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(PUEditPluginManager *)self plugins];
+  plugins = [(PUEditPluginManager *)self plugins];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v19 count:16];
+  v3 = [plugins countByEnumeratingWithState:&v11 objects:v19 count:16];
   if (v3)
   {
     v4 = v3;
@@ -451,13 +451,13 @@ LABEL_8:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(plugins);
         }
 
         v5 |= [*(*(&v11 + 1) + 8 * i) pu_isMarkupExtension] ^ 1;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v19 count:16];
+      v4 = [plugins countByEnumeratingWithState:&v11 objects:v19 count:16];
     }
 
     while (v4);
@@ -478,7 +478,7 @@ LABEL_8:
     }
 
     *buf = 138543618;
-    v16 = v2;
+    v16 = plugins;
     v17 = 2112;
     v18 = v9;
     _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEFAULT, "PUEditPluginManager hasNonMarkupPlugins: plugins %{public}@ - result: %@", buf, 0x16u);
@@ -489,37 +489,37 @@ LABEL_8:
 
 - (BOOL)hasPlugins
 {
-  v2 = [(PUEditPluginManager *)self plugins];
-  v3 = [v2 count] != 0;
+  plugins = [(PUEditPluginManager *)self plugins];
+  v3 = [plugins count] != 0;
 
   return v3;
 }
 
-- (id)_initWithMediaType:(unint64_t)a3
+- (id)_initWithMediaType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PUEditPluginManager;
   result = [(PUEditPluginManager *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = type;
   }
 
   return result;
 }
 
-+ (id)sharedManagerForMediaType:(unint64_t)a3
++ (id)sharedManagerForMediaType:(unint64_t)type
 {
   v3 = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __49__PUEditPluginManager_sharedManagerForMediaType___block_invoke_3;
       v7[3] = &__block_descriptor_48_e5_v8__0l;
-      v7[4] = a1;
+      v7[4] = self;
       v7[5] = 2;
       if (sharedManagerForMediaType__onceToken_197 != -1)
       {
@@ -531,7 +531,7 @@ LABEL_8:
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_19;
       }
@@ -540,7 +540,7 @@ LABEL_8:
       v6[1] = 3221225472;
       v6[2] = __49__PUEditPluginManager_sharedManagerForMediaType___block_invoke_4;
       v6[3] = &__block_descriptor_48_e5_v8__0l;
-      v6[4] = a1;
+      v6[4] = self;
       v6[5] = 3;
       if (sharedManagerForMediaType__onceToken_199 != -1)
       {
@@ -551,9 +551,9 @@ LABEL_8:
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_19;
     }
@@ -562,7 +562,7 @@ LABEL_8:
     block[1] = 3221225472;
     block[2] = __49__PUEditPluginManager_sharedManagerForMediaType___block_invoke_2;
     block[3] = &__block_descriptor_48_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     block[5] = 1;
     if (sharedManagerForMediaType__onceToken_195 != -1)
     {
@@ -578,7 +578,7 @@ LABEL_8:
     v9[1] = 3221225472;
     v9[2] = __49__PUEditPluginManager_sharedManagerForMediaType___block_invoke;
     v9[3] = &__block_descriptor_48_e5_v8__0l;
-    v9[4] = a1;
+    v9[4] = self;
     v9[5] = 0;
     if (sharedManagerForMediaType__onceToken != -1)
     {

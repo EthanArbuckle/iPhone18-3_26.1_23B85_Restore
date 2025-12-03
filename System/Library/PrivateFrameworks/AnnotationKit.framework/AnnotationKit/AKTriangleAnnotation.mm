@@ -1,25 +1,25 @@
 @interface AKTriangleAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
-- (AKTriangleAnnotation)initWithCoder:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
+- (AKTriangleAnnotation)initWithCoder:(id)coder;
 - (CGRect)hitTestBounds;
 - (id)displayName;
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKTriangleAnnotation
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"path"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"path"])
   {
     v5 = @"Triangle Shape";
     goto LABEL_6;
   }
 
-  if (([v4 isEqualToString:@"horizontallyFlipped"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"verticallyFlipped"))
+  if (([keyCopy isEqualToString:@"horizontallyFlipped"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"verticallyFlipped"))
   {
     v5 = @"Bounds";
 LABEL_6:
@@ -32,9 +32,9 @@ LABEL_6:
     }
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___AKTriangleAnnotation;
-  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
 LABEL_8:
 
   return v7;
@@ -53,8 +53,8 @@ LABEL_8:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKTriangleAnnotation;
-  v3 = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BAF50];
 
@@ -66,8 +66,8 @@ LABEL_8:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKTriangleAnnotation;
-  v3 = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BAF68];
 
@@ -114,31 +114,31 @@ LABEL_8:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = AKTriangleAnnotation;
-  v4 = a3;
-  [(AKRectangularShapeAnnotation *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AKRectangularShapeAnnotation *)&v8 encodeWithCoder:coderCopy];
   v5 = [(AKTriangleAnnotation *)self path:v8.receiver];
-  v6 = [v5 newCGPathForPlatformBezierPath];
+  newCGPathForPlatformBezierPath = [v5 newCGPathForPlatformBezierPath];
 
-  v7 = [MEMORY[0x277CBEA90] encodeCGPath:v6];
-  [v4 encodeObject:v7 forKey:@"path"];
-  CGPathRelease(v6);
-  [v4 encodeBool:-[AKTriangleAnnotation verticallyFlipped](self forKey:{"verticallyFlipped"), @"verticallyFlipped"}];
-  [v4 encodeBool:-[AKTriangleAnnotation horizontallyFlipped](self forKey:{"horizontallyFlipped"), @"horizontallyFlipped"}];
+  v7 = [MEMORY[0x277CBEA90] encodeCGPath:newCGPathForPlatformBezierPath];
+  [coderCopy encodeObject:v7 forKey:@"path"];
+  CGPathRelease(newCGPathForPlatformBezierPath);
+  [coderCopy encodeBool:-[AKTriangleAnnotation verticallyFlipped](self forKey:{"verticallyFlipped"), @"verticallyFlipped"}];
+  [coderCopy encodeBool:-[AKTriangleAnnotation horizontallyFlipped](self forKey:{"horizontallyFlipped"), @"horizontallyFlipped"}];
 }
 
-- (AKTriangleAnnotation)initWithCoder:(id)a3
+- (AKTriangleAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AKTriangleAnnotation;
-  v5 = [(AKRectangularShapeAnnotation *)&v11 initWithCoder:v4];
+  v5 = [(AKRectangularShapeAnnotation *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     v7 = [MEMORY[0x277CBEA90] newCGPathDecodedFromData:v6];
     if (v7)
     {
@@ -149,14 +149,14 @@ LABEL_8:
       CGPathRelease(v8);
     }
 
-    if ([v4 containsValueForKey:@"verticallyFlipped"])
+    if ([coderCopy containsValueForKey:@"verticallyFlipped"])
     {
-      -[AKTriangleAnnotation setVerticallyFlipped:](v5, "setVerticallyFlipped:", [v4 decodeBoolForKey:@"verticallyFlipped"]);
+      -[AKTriangleAnnotation setVerticallyFlipped:](v5, "setVerticallyFlipped:", [coderCopy decodeBoolForKey:@"verticallyFlipped"]);
     }
 
-    if ([v4 containsValueForKey:@"horizontallyFlipped"])
+    if ([coderCopy containsValueForKey:@"horizontallyFlipped"])
     {
-      -[AKTriangleAnnotation setHorizontallyFlipped:](v5, "setHorizontallyFlipped:", [v4 decodeBoolForKey:@"horizontallyFlipped"]);
+      -[AKTriangleAnnotation setHorizontallyFlipped:](v5, "setHorizontallyFlipped:", [coderCopy decodeBoolForKey:@"horizontallyFlipped"]);
     }
   }
 

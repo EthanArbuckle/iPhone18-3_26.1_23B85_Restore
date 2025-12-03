@@ -1,6 +1,6 @@
 @interface ServerController
 + (id)sharedController;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ServerController)init;
 - (void)start;
 @end
@@ -86,24 +86,24 @@
   [(NSXPCListener *)self->_listener resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = +[CPSClipURL isSupported];
   if (v6)
   {
-    v7 = [[RemoteClient alloc] initWithConnection:v5 appManager:self->_appManager clipMetadataManager:self->_clipMetadataManager];
+    v7 = [[RemoteClient alloc] initWithConnection:connectionCopy appManager:self->_appManager clipMetadataManager:self->_clipMetadataManager];
     v8 = sub_100004064();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v11 = 134218242;
       v12 = v7;
       v13 = 2112;
-      v14 = v5;
+      v14 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Created RemoteClient %p for new connection request %@", &v11, 0x16u);
     }
 
-    [v5 resume];
+    [connectionCopy resume];
   }
 
   else
@@ -111,7 +111,7 @@
     v9 = sub_100004064();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_10000B4C8(v9, v5);
+      sub_10000B4C8(v9, connectionCopy);
     }
   }
 

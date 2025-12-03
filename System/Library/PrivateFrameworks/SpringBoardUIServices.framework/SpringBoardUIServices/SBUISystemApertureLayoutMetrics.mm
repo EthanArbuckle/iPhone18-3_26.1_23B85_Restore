@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __67__SBUISystemApertureLayoutMetrics_sharedInstanceForEmbeddedDisplay__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstanceForEmbeddedDisplay_onceToken != -1)
   {
     dispatch_once(&sharedInstanceForEmbeddedDisplay_onceToken, block);
@@ -47,9 +47,9 @@
 
 - (CGSize)sensorRegionSize
 {
-  v2 = [(SBUISystemApertureLayoutMetrics *)self _screenPixelWidthIsEven];
+  _screenPixelWidthIsEven = [(SBUISystemApertureLayoutMetrics *)self _screenPixelWidthIsEven];
   v3 = 125.0;
-  if (v2)
+  if (_screenPixelWidthIsEven)
   {
     v3 = 125.333333;
   }
@@ -93,16 +93,16 @@
 
 - (double)_minimumScreenEdgeInset
 {
-  v2 = [(SBUISystemApertureLayoutMetrics *)self _effectiveArtworkSubtype];
+  _effectiveArtworkSubtype = [(SBUISystemApertureLayoutMetrics *)self _effectiveArtworkSubtype];
   v3 = 11.3333333;
-  if (v2 <= 2735)
+  if (_effectiveArtworkSubtype <= 2735)
   {
-    if (v2 == 2556)
+    if (_effectiveArtworkSubtype == 2556)
     {
       return v3;
     }
 
-    if (v2 == 2622)
+    if (_effectiveArtworkSubtype == 2622)
     {
       return 14.0;
     }
@@ -117,14 +117,14 @@ LABEL_8:
     return v3;
   }
 
-  if (v2 == 2736)
+  if (_effectiveArtworkSubtype == 2736)
   {
     return 20.0;
   }
 
-  if (v2 != 2796)
+  if (_effectiveArtworkSubtype != 2796)
   {
-    if (v2 == 2868)
+    if (_effectiveArtworkSubtype == 2868)
     {
       return 14.0;
     }
@@ -137,8 +137,8 @@ LABEL_8:
 
 - (double)maximumContinuousCornerRadius
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 _displayCornerRadiusIgnoringZoom];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _displayCornerRadiusIgnoringZoom];
   v5 = v4;
   [(SBUISystemApertureLayoutMetrics *)self _minimumScreenEdgeInset];
   v7 = v5 - v6;
@@ -152,10 +152,10 @@ LABEL_8:
   v4 = v3;
   [(SBUISystemApertureLayoutMetrics *)self sensorRegionSize];
   v6 = (v4 - v5) * 0.5;
-  v7 = [(SBUISystemApertureLayoutMetrics *)self _effectiveArtworkSubtype];
+  _effectiveArtworkSubtype = [(SBUISystemApertureLayoutMetrics *)self _effectiveArtworkSubtype];
   v8 = v6 + 36.0;
   v9 = v4 - v6 + -9.0 + -36.6666667;
-  if (v7 == 2736)
+  if (_effectiveArtworkSubtype == 2736)
   {
     v10 = 4.66666667;
   }
@@ -165,7 +165,7 @@ LABEL_8:
     v10 = 9.0;
   }
 
-  if (v7 == 2736)
+  if (_effectiveArtworkSubtype == 2736)
   {
     v11 = v6 + 36.0;
   }

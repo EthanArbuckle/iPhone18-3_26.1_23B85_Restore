@@ -1,17 +1,17 @@
 @interface HMAudioControl
 - (BOOL)isMuted;
-- (BOOL)mergeFromNewObject:(id)a3;
-- (HMAudioControl)initWithMediaSession:(id)a3;
+- (BOOL)mergeFromNewObject:(id)object;
+- (HMAudioControl)initWithMediaSession:(id)session;
 - (HMAudioControlDelegate)delegate;
 - (HMMediaSession)mediaSession;
 - (NSUUID)uniqueIdentifier;
 - (float)volume;
-- (void)__configureWithContext:(id)a3;
+- (void)__configureWithContext:(id)context;
 - (void)_unconfigure;
-- (void)audioControl:(id)a3 didUpdateMuted:(BOOL)a4;
-- (void)audioControl:(id)a3 didUpdateVolume:(float)a4;
-- (void)setVolume:(float)a3;
-- (void)updateVolume:(float)a3 completionHandler:(id)a4;
+- (void)audioControl:(id)control didUpdateMuted:(BOOL)muted;
+- (void)audioControl:(id)control didUpdateVolume:(float)volume;
+- (void)setVolume:(float)volume;
+- (void)updateVolume:(float)volume completionHandler:(id)handler;
 @end
 
 @implementation HMAudioControl
@@ -216,59 +216,59 @@ uint64_t __38___HMAudioControl_mergeFromNewObject___block_invoke_2(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)audioControl:(id)a3 didUpdateMuted:(BOOL)a4
+- (void)audioControl:(id)control didUpdateMuted:(BOOL)muted
 {
-  v6 = [(HMAudioControl *)self delegate];
+  delegate = [(HMAudioControl *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(HMAudioControl *)self delegate];
-    v9 = [(HMAudioControl *)self audioControl];
-    v10 = [v9 context];
-    v11 = [v10 delegateCaller];
+    delegate2 = [(HMAudioControl *)self delegate];
+    audioControl = [(HMAudioControl *)self audioControl];
+    context = [audioControl context];
+    delegateCaller = [context delegateCaller];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __46__HMAudioControl_audioControl_didUpdateMuted___block_invoke;
     v13[3] = &unk_1E754DC70;
-    v14 = v8;
-    v15 = self;
-    v16 = a4;
-    v12 = v8;
-    [v11 invokeBlock:v13];
+    v14 = delegate2;
+    selfCopy = self;
+    mutedCopy = muted;
+    v12 = delegate2;
+    [delegateCaller invokeBlock:v13];
   }
 }
 
-- (void)audioControl:(id)a3 didUpdateVolume:(float)a4
+- (void)audioControl:(id)control didUpdateVolume:(float)volume
 {
-  v6 = [(HMAudioControl *)self delegate];
+  delegate = [(HMAudioControl *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(HMAudioControl *)self delegate];
-    v9 = [(HMAudioControl *)self audioControl];
-    v10 = [v9 context];
-    v11 = [v10 delegateCaller];
+    delegate2 = [(HMAudioControl *)self delegate];
+    audioControl = [(HMAudioControl *)self audioControl];
+    context = [audioControl context];
+    delegateCaller = [context delegateCaller];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __47__HMAudioControl_audioControl_didUpdateVolume___block_invoke;
     v13[3] = &unk_1E7547B40;
-    v14 = v8;
-    v15 = self;
-    v16 = a4;
-    v12 = v8;
-    [v11 invokeBlock:v13];
+    v14 = delegate2;
+    selfCopy = self;
+    volumeCopy = volume;
+    v12 = delegate2;
+    [delegateCaller invokeBlock:v13];
   }
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -279,9 +279,9 @@ uint64_t __38___HMAudioControl_mergeFromNewObject___block_invoke_2(uint64_t a1)
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMAudioControl *)self audioControl];
-    v8 = [v6 audioControl];
-    v9 = [v7 mergeFromNewObject:v8];
+    audioControl = [(HMAudioControl *)self audioControl];
+    audioControl2 = [v6 audioControl];
+    v9 = [audioControl mergeFromNewObject:audioControl2];
   }
 
   else
@@ -292,14 +292,14 @@ uint64_t __38___HMAudioControl_mergeFromNewObject___block_invoke_2(uint64_t a1)
   return v9;
 }
 
-- (void)updateVolume:(float)a3 completionHandler:(id)a4
+- (void)updateVolume:(float)volume completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v15 = a4;
-  if (a3 < 0.0 || a3 > 1.0)
+  handlerCopy = handler;
+  if (volume < 0.0 || volume > 1.0)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -313,32 +313,32 @@ uint64_t __38___HMAudioControl_mergeFromNewObject___block_invoke_2(uint64_t a1)
     objc_exception_throw(*MEMORY[0x1E695DA20]);
   }
 
-  v7 = [(HMAudioControl *)self audioControl];
-  *&v8 = a3;
-  [v7 updateVolume:v15 completionHandler:v8];
+  audioControl = [(HMAudioControl *)self audioControl];
+  *&v8 = volume;
+  [audioControl updateVolume:handlerCopy completionHandler:v8];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
 - (BOOL)isMuted
 {
-  v2 = [(HMAudioControl *)self audioControl];
-  v3 = [v2 isMuted];
+  audioControl = [(HMAudioControl *)self audioControl];
+  isMuted = [audioControl isMuted];
 
-  return v3;
+  return isMuted;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  v5 = [(HMAudioControl *)self audioControl];
-  *&v4 = a3;
-  [v5 setVolume:v4];
+  audioControl = [(HMAudioControl *)self audioControl];
+  *&v4 = volume;
+  [audioControl setVolume:v4];
 }
 
 - (float)volume
 {
-  v2 = [(HMAudioControl *)self audioControl];
-  [v2 volume];
+  audioControl = [(HMAudioControl *)self audioControl];
+  [audioControl volume];
   v4 = v3;
 
   return v4;
@@ -346,34 +346,34 @@ uint64_t __38___HMAudioControl_mergeFromNewObject___block_invoke_2(uint64_t a1)
 
 - (NSUUID)uniqueIdentifier
 {
-  v2 = [(HMAudioControl *)self audioControl];
-  v3 = [v2 uniqueIdentifier];
+  audioControl = [(HMAudioControl *)self audioControl];
+  uniqueIdentifier = [audioControl uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
 - (void)_unconfigure
 {
-  v2 = [(HMAudioControl *)self audioControl];
-  [v2 _unconfigure];
+  audioControl = [(HMAudioControl *)self audioControl];
+  [audioControl _unconfigure];
 }
 
-- (void)__configureWithContext:(id)a3
+- (void)__configureWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(HMAudioControl *)self audioControl];
-  [v5 __configureWithContext:v4];
+  contextCopy = context;
+  audioControl = [(HMAudioControl *)self audioControl];
+  [audioControl __configureWithContext:contextCopy];
 }
 
-- (HMAudioControl)initWithMediaSession:(id)a3
+- (HMAudioControl)initWithMediaSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = HMAudioControl;
   v5 = [(HMAudioControl *)&v9 init];
   if (v5)
   {
-    v6 = [[_HMAudioControl alloc] initWithMediaSession:v4];
+    v6 = [[_HMAudioControl alloc] initWithMediaSession:sessionCopy];
     audioControl = v5->_audioControl;
     v5->_audioControl = v6;
 

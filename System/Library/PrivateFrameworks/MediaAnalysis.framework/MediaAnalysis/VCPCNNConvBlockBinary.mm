@@ -1,33 +1,33 @@
 @interface VCPCNNConvBlockBinary
-- (VCPCNNConvBlockBinary)initWithParameters:(int)a3 filterNum:(int)a4 convType:(unint64_t)a5 reLU:(BOOL)a6 padding:(BOOL)a7;
-- (int)constructBlock:(id)a3 context:(id)a4;
+- (VCPCNNConvBlockBinary)initWithParameters:(int)parameters filterNum:(int)num convType:(unint64_t)type reLU:(BOOL)u padding:(BOOL)padding;
+- (int)constructBlock:(id)block context:(id)context;
 - (int)fillConvWeightsGPU;
 - (int)forward;
 - (int)gpuForward;
-- (int)readFromDisk:(__sFILE *)a3 quantFactor:(signed __int16)a4;
+- (int)readFromDisk:(__sFILE *)disk quantFactor:(signed __int16)factor;
 - (void)dealloc;
 @end
 
 @implementation VCPCNNConvBlockBinary
 
-- (VCPCNNConvBlockBinary)initWithParameters:(int)a3 filterNum:(int)a4 convType:(unint64_t)a5 reLU:(BOOL)a6 padding:(BOOL)a7
+- (VCPCNNConvBlockBinary)initWithParameters:(int)parameters filterNum:(int)num convType:(unint64_t)type reLU:(BOOL)u padding:(BOOL)padding
 {
-  v7 = a7;
+  paddingCopy = padding;
   v17.receiver = self;
   v17.super_class = VCPCNNConvBlockBinary;
   v12 = [(VCPCNNConvBlockBinary *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    *(&v12->super._executedOnGPU + 3) = a3;
-    v12->_filterSize = a4;
+    *(&v12->super._executedOnGPU + 3) = parameters;
+    v12->_filterSize = num;
     v12->_filterWeightsBinary = 0;
     v12->_filterWeightSize = 1;
     v12->_filterScaling = 0;
     v12->_bias = 0;
-    v12->_padding = v7;
-    v12->_convType = a5;
-    v12->_reLU = a6;
+    v12->_padding = paddingCopy;
+    v12->_convType = type;
+    v12->_reLU = u;
     mpsBinaryConv = v12->_mpsBinaryConv;
     v12->_mpsBinaryConv = 0;
 
@@ -62,18 +62,18 @@
   [(VCPCNNConvBlockBinary *)&v6 dealloc];
 }
 
-- (int)constructBlock:(id)a3 context:(id)a4
+- (int)constructBlock:(id)block context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  blockCopy = block;
+  contextCopy = context;
+  if (contextCopy)
   {
-    objc_storeStrong(&self->super._context, a4);
-    v8 = [VCPCNNData cnnDataWithGPUContext:v7];
+    objc_storeStrong(&self->super._context, context);
+    v8 = [VCPCNNData cnnDataWithGPUContext:contextCopy];
     output = self->super._output;
     self->super._output = v8;
 
-    objc_storeWeak(&self->super._inputSize, v6);
+    objc_storeWeak(&self->super._inputSize, blockCopy);
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     outputSize = self->super._outputSize;
     self->super._outputSize = v10;
@@ -82,7 +82,7 @@
     if (v12)
     {
       v13 = [MEMORY[0x1E696AD98] numberWithInt:self->_filterSize];
-      v40 = v6;
+      v40 = blockCopy;
       [(NSMutableArray *)v12 addObject:v13];
 
       padding = self->_padding;
@@ -116,18 +116,18 @@
       v24 = ;
       [(NSMutableArray *)v20 addObject:v24];
 
-      v6 = v40;
+      blockCopy = v40;
       [(VCPCNNData *)self->super._output setSize:self->super._outputSize];
       v25 = [(VCPCNNData *)self->super._output allocBuffers:self->super._generateOutput];
       if (!v25)
       {
         v28 = objc_loadWeakRetained(&self->super._inputSize);
         v29 = [v28 objectAtIndexedSubscript:0];
-        v30 = [v29 intValue];
-        v31 = v30 + 31;
-        if (v30 < -31)
+        intValue = [v29 intValue];
+        v31 = intValue + 31;
+        if (intValue < -31)
         {
-          v31 = v30 + 62;
+          v31 = intValue + 62;
         }
 
         self->_filterWeightSize = self->_filterSize * (v31 >> 5) * *(&self->super._executedOnGPU + 3) * *(&self->super._executedOnGPU + 3);
@@ -191,7 +191,7 @@
           v25 = -108;
         }
 
-        v6 = v40;
+        blockCopy = v40;
       }
     }
 
@@ -222,14 +222,14 @@
   }
 }
 
-- (int)readFromDisk:(__sFILE *)a3 quantFactor:(signed __int16)a4
+- (int)readFromDisk:(__sFILE *)disk quantFactor:(signed __int16)factor
 {
   if (!self->super._context)
   {
     return 0;
   }
 
-  if (fread(self->_filterWeightsBinary, 4uLL, self->_filterWeightSize, a3) && fread(self->_filterScaling, 4uLL, self->_filterSize, a3) && fread(self->_bias, 4uLL, self->_filterSize, a3))
+  if (fread(self->_filterWeightsBinary, 4uLL, self->_filterWeightSize, disk) && fread(self->_filterScaling, 4uLL, self->_filterSize, disk) && fread(self->_bias, 4uLL, self->_filterSize, disk))
   {
     return [(VCPCNNConvBlockBinary *)self fillConvWeightsGPU];
   }
@@ -241,24 +241,24 @@
 {
   if (!self->super._executedOnGPU || (result = [(VCPCNNData *)self->super._output reallocGPUTemporalBuffers]) == 0)
   {
-    v4 = [(VCPCNNMetalContext *)self->super._context commandBuffer];
-    if (v4)
+    commandBuffer = [(VCPCNNMetalContext *)self->super._context commandBuffer];
+    if (commandBuffer)
     {
-      v5 = v4;
+      v5 = commandBuffer;
       WeakRetained = objc_loadWeakRetained(&self->super._input);
-      v7 = [WeakRetained mpsImg];
-      if (v7)
+      mpsImg = [WeakRetained mpsImg];
+      if (mpsImg)
       {
-        v8 = [(VCPCNNData *)self->super._output mpsImg];
+        mpsImg2 = [(VCPCNNData *)self->super._output mpsImg];
 
-        if (v8)
+        if (mpsImg2)
         {
           mpsBinaryConv = self->_mpsBinaryConv;
-          v10 = [(VCPCNNMetalContext *)self->super._context commandBuffer];
+          commandBuffer2 = [(VCPCNNMetalContext *)self->super._context commandBuffer];
           v11 = objc_loadWeakRetained(&self->super._input);
-          v12 = [v11 mpsImg];
-          v13 = [(VCPCNNData *)self->super._output mpsImg];
-          [(MPSCNNBinaryConvolution *)mpsBinaryConv encodeToCommandBuffer:v10 sourceImage:v12 destinationImage:v13];
+          mpsImg3 = [v11 mpsImg];
+          mpsImg4 = [(VCPCNNData *)self->super._output mpsImg];
+          [(MPSCNNBinaryConvolution *)mpsBinaryConv encodeToCommandBuffer:commandBuffer2 sourceImage:mpsImg3 destinationImage:mpsImg4];
 
           result = 0;
           self->super._executedOnGPU = 1;
@@ -282,22 +282,22 @@
   v3 = *(&self->super._executedOnGPU + 3);
   WeakRetained = objc_loadWeakRetained(&self->super._inputSize);
   v5 = [WeakRetained objectAtIndexedSubscript:0];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
   v7 = [(NSMutableArray *)self->super._outputSize objectAtIndexedSubscript:0];
   LODWORD(v5) = [v7 intValue];
 
-  v8 = [MEMORY[0x1E69748E8] cnnConvolutionDescriptorWithKernelWidth:v3 kernelHeight:v3 inputFeatureChannels:v6 outputFeatureChannels:v5];
+  v8 = [MEMORY[0x1E69748E8] cnnConvolutionDescriptorWithKernelWidth:v3 kernelHeight:v3 inputFeatureChannels:intValue outputFeatureChannels:v5];
   v9 = v8;
   if (v8)
   {
     if (self->_reLU)
     {
-      v10 = [v8 fusedNeuronDescriptor];
-      [v10 setNeuronType:1];
+      fusedNeuronDescriptor = [v8 fusedNeuronDescriptor];
+      [fusedNeuronDescriptor setNeuronType:1];
 
-      v11 = [v9 fusedNeuronDescriptor];
-      [v11 setA:0.0];
+      fusedNeuronDescriptor2 = [v9 fusedNeuronDescriptor];
+      [fusedNeuronDescriptor2 setA:0.0];
     }
 
     [v9 setFeatureChannelsLayout:1];
@@ -306,9 +306,9 @@
     {
       [(MPSCNNBinaryConvolution *)v17 setEdgeMode:0];
       v18 = [(NSMutableArray *)self->super._outputSize objectAtIndexedSubscript:2];
-      v19 = [v18 intValue];
+      intValue2 = [v18 intValue];
       v20 = [(NSMutableArray *)self->super._outputSize objectAtIndexedSubscript:1];
-      v21 = [v20 intValue];
+      intValue3 = [v20 intValue];
 
       if (!self->_padding)
       {
@@ -342,8 +342,8 @@
       v27 = 0;
       v28 = 0;
       v29 = 0;
-      v30 = v19;
-      v31 = v21;
+      v30 = intValue2;
+      v31 = intValue3;
       v32 = 1;
       [(MPSCNNBinaryConvolution *)v25 setClipRect:&v27];
       v23 = 0;

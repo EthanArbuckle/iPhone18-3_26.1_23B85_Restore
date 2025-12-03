@@ -1,66 +1,66 @@
 @interface HKHeartRateSummaryStatistics
-- (BOOL)isEqual:(id)a3;
-- (HKHeartRateSummaryStatistics)initWithCoder:(id)a3;
-- (HKHeartRateSummaryStatistics)initWithDateInterval:(id)a3 numberOfBuckets:(int64_t)a4 sessionUUID:(id)a5;
-- (id)_bucketAtIndex:(int64_t)a3 createdIfNeeded:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (HKHeartRateSummaryStatistics)initWithCoder:(id)coder;
+- (HKHeartRateSummaryStatistics)initWithDateInterval:(id)interval numberOfBuckets:(int64_t)buckets sessionUUID:(id)d;
+- (id)_bucketAtIndex:(int64_t)index createdIfNeeded:(BOOL)needed;
 - (id)_bucketsDescription;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initFromStatistics:(id)a3;
+- (id)initFromStatistics:(id)statistics;
 - (unint64_t)hash;
-- (void)_setHighlightedReadings:(id)a3;
-- (void)addHeartRateInBeatsPerMinute:(double)a3 forTime:(double)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateBucketsWithBlock:(id)a3;
+- (void)_setHighlightedReadings:(id)readings;
+- (void)addHeartRateInBeatsPerMinute:(double)minute forTime:(double)time;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateBucketsWithBlock:(id)block;
 @end
 
 @implementation HKHeartRateSummaryStatistics
 
-- (HKHeartRateSummaryStatistics)initWithDateInterval:(id)a3 numberOfBuckets:(int64_t)a4 sessionUUID:(id)a5
+- (HKHeartRateSummaryStatistics)initWithDateInterval:(id)interval numberOfBuckets:(int64_t)buckets sessionUUID:(id)d
 {
-  v9 = a3;
-  v10 = a5;
+  intervalCopy = interval;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = HKHeartRateSummaryStatistics;
   v11 = [(HKHeartRateSummaryStatistics *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_dateInterval, a3);
-    v12->_numberOfBuckets = a4;
-    objc_storeStrong(&v12->_sessionUUID, a5);
-    v13 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v11->_dateInterval, interval);
+    v12->_numberOfBuckets = buckets;
+    objc_storeStrong(&v12->_sessionUUID, d);
+    array = [MEMORY[0x1E695DF70] array];
     sortedBuckets = v12->_sortedBuckets;
-    v12->_sortedBuckets = v13;
+    v12->_sortedBuckets = array;
   }
 
   return v12;
 }
 
-- (id)initFromStatistics:(id)a3
+- (id)initFromStatistics:(id)statistics
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statisticsCopy = statistics;
   v22.receiver = self;
   v22.super_class = HKHeartRateSummaryStatistics;
   v5 = [(HKHeartRateSummaryStatistics *)&v22 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_dateInterval, v4[2]);
-    v6->_numberOfBuckets = v4[3];
-    v6->_numberOfReadings = v4[4];
-    objc_storeStrong(&v6->_sessionUUID, v4[5]);
-    v7 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v5->_dateInterval, statisticsCopy[2]);
+    v6->_numberOfBuckets = statisticsCopy[3];
+    v6->_numberOfReadings = statisticsCopy[4];
+    objc_storeStrong(&v6->_sessionUUID, statisticsCopy[5]);
+    array = [MEMORY[0x1E695DF70] array];
     sortedBuckets = v6->_sortedBuckets;
-    v6->_sortedBuckets = v7;
+    v6->_sortedBuckets = array;
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v4[1];
+    v9 = statisticsCopy[1];
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v10)
     {
@@ -90,37 +90,37 @@
       while (v11);
     }
 
-    objc_storeStrong(&v6->_highlightedReadings, v4[6]);
+    objc_storeStrong(&v6->_highlightedReadings, statisticsCopy[6]);
   }
 
   v16 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initFromStatistics:self];
 }
 
-- (void)_setHighlightedReadings:(id)a3
+- (void)_setHighlightedReadings:(id)readings
 {
-  v4 = [a3 copy];
+  v4 = [readings copy];
   highlightedReadings = self->_highlightedReadings;
   self->_highlightedReadings = v4;
 
   MEMORY[0x1EEE66BB8](v4, highlightedReadings);
 }
 
-- (void)addHeartRateInBeatsPerMinute:(double)a3 forTime:(double)a4
+- (void)addHeartRateInBeatsPerMinute:(double)minute forTime:(double)time
 {
   v31 = *MEMORY[0x1E69E9840];
-  if ([(NSDateInterval *)self->_dateInterval hk_containsTime:a4])
+  if ([(NSDateInterval *)self->_dateInterval hk_containsTime:time])
   {
-    v7 = [(NSDateInterval *)self->_dateInterval startDate];
-    [v7 timeIntervalSinceReferenceDate];
-    v9 = a4 - v8;
+    startDate = [(NSDateInterval *)self->_dateInterval startDate];
+    [startDate timeIntervalSinceReferenceDate];
+    v9 = time - v8;
 
     v10 = v9 * self->_numberOfBuckets;
     [(NSDateInterval *)self->_dateInterval duration];
@@ -137,7 +137,7 @@
     }
 
     v24 = [(HKHeartRateSummaryStatistics *)self _bucketAtIndex:v14 createdIfNeeded:1];
-    [v24 addHeartRateInBeatsPerMinute:llround(a3)];
+    [v24 addHeartRateInBeatsPerMinute:llround(minute)];
     ++self->_numberOfReadings;
     v15 = *MEMORY[0x1E69E9840];
   }
@@ -152,7 +152,7 @@
       v19 = objc_opt_class();
       v20 = MEMORY[0x1E695DF00];
       v21 = v19;
-      v22 = [v20 dateWithTimeIntervalSinceReferenceDate:a4];
+      v22 = [v20 dateWithTimeIntervalSinceReferenceDate:time];
       dateInterval = self->_dateInterval;
       *buf = 138543874;
       v26 = v19;
@@ -167,11 +167,11 @@
   }
 }
 
-- (void)enumerateBucketsWithBlock:(id)a3
+- (void)enumerateBucketsWithBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(HKHeartRateSummaryStatistics *)a2 enumerateBucketsWithBlock:?];
   }
@@ -195,7 +195,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v5[2](v5, *(*(&v12 + 1) + 8 * i));
+        blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * i));
       }
 
       v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -207,9 +207,9 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_bucketAtIndex:(int64_t)a3 createdIfNeeded:(BOOL)a4
+- (id)_bucketAtIndex:(int64_t)index createdIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v7 = [(NSMutableArray *)self->_sortedBuckets count]- 1;
   if (v7 < 0)
   {
@@ -224,12 +224,12 @@ LABEL_10:
   {
     v9 = (v7 + v8) >> 1;
     v10 = [(NSMutableArray *)self->_sortedBuckets objectAtIndexedSubscript:v9];
-    if ([v10 bucketIndex] == a3)
+    if ([v10 bucketIndex] == index)
     {
       break;
     }
 
-    if ([v10 bucketIndex] >= a3)
+    if ([v10 bucketIndex] >= index)
     {
       v7 = v9 - 1;
     }
@@ -250,9 +250,9 @@ LABEL_10:
   if (!v11)
   {
 LABEL_12:
-    if (v4)
+    if (neededCopy)
     {
-      v11 = [[HKHeartRateSummaryStatisticsBucket alloc] initWithBucketIndex:a3];
+      v11 = [[HKHeartRateSummaryStatisticsBucket alloc] initWithBucketIndex:index];
       [(NSMutableArray *)self->_sortedBuckets insertObject:v11 atIndex:v9];
     }
   }
@@ -260,48 +260,48 @@ LABEL_12:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dateInterval = self->_dateInterval;
-  v5 = a3;
-  [v5 encodeObject:dateInterval forKey:@"DateInterval"];
-  [v5 encodeInteger:self->_numberOfBuckets forKey:@"NumberOfBuckets"];
-  [v5 encodeObject:self->_sortedBuckets forKey:@"SortedBuckets"];
-  [v5 encodeInteger:self->_numberOfReadings forKey:@"NumberOfReadings"];
-  [v5 encodeObject:self->_sessionUUID forKey:@"SessionUUIDKey"];
-  [v5 encodeObject:self->_highlightedReadings forKey:@"HighlightedReadings"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dateInterval forKey:@"DateInterval"];
+  [coderCopy encodeInteger:self->_numberOfBuckets forKey:@"NumberOfBuckets"];
+  [coderCopy encodeObject:self->_sortedBuckets forKey:@"SortedBuckets"];
+  [coderCopy encodeInteger:self->_numberOfReadings forKey:@"NumberOfReadings"];
+  [coderCopy encodeObject:self->_sessionUUID forKey:@"SessionUUIDKey"];
+  [coderCopy encodeObject:self->_highlightedReadings forKey:@"HighlightedReadings"];
 }
 
-- (HKHeartRateSummaryStatistics)initWithCoder:(id)a3
+- (HKHeartRateSummaryStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = HKHeartRateSummaryStatistics;
   v5 = [(HKHeartRateSummaryStatistics *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DateInterval"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DateInterval"];
     dateInterval = v5->_dateInterval;
     v5->_dateInterval = v6;
 
-    v5->_numberOfBuckets = [v4 decodeIntegerForKey:@"NumberOfBuckets"];
+    v5->_numberOfBuckets = [coderCopy decodeIntegerForKey:@"NumberOfBuckets"];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"SortedBuckets"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"SortedBuckets"];
     v12 = [v11 mutableCopy];
     sortedBuckets = v5->_sortedBuckets;
     v5->_sortedBuckets = v12;
 
-    v5->_numberOfReadings = [v4 decodeIntegerForKey:@"NumberOfReadings"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SessionUUIDKey"];
+    v5->_numberOfReadings = [coderCopy decodeIntegerForKey:@"NumberOfReadings"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SessionUUIDKey"];
     sessionUUID = v5->_sessionUUID;
     v5->_sessionUUID = v14;
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"HighlightedReadings"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"HighlightedReadings"];
     highlightedReadings = v5->_highlightedReadings;
     v5->_highlightedReadings = v19;
   }
@@ -314,19 +314,19 @@ LABEL_12:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HKHeartRateSummaryStatistics numberOfReadings](self, "numberOfReadings")}];
-  v6 = [(NSDateInterval *)self->_dateInterval startDate];
-  v7 = [(NSDateInterval *)self->_dateInterval endDate];
-  v8 = [v3 stringWithFormat:@"<%@:%p count:%@ %@ - %@>", v4, self, v5, v6, v7];
+  startDate = [(NSDateInterval *)self->_dateInterval startDate];
+  endDate = [(NSDateInterval *)self->_dateInterval endDate];
+  v8 = [v3 stringWithFormat:@"<%@:%p count:%@ %@ - %@>", v4, self, v5, startDate, endDate];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (self == v7)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
-    LOBYTE(v11) = 1;
+    LOBYTE(sessionUUID3) = 1;
   }
 
   else
@@ -334,55 +334,55 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(HKHeartRateSummaryStatistics *)self dateInterval];
-      v9 = [(HKHeartRateSummaryStatistics *)v7 dateInterval];
-      if (v8 != v9)
+      dateInterval = [(HKHeartRateSummaryStatistics *)self dateInterval];
+      dateInterval2 = [(HKHeartRateSummaryStatistics *)equalCopy dateInterval];
+      if (dateInterval != dateInterval2)
       {
-        v10 = [(HKHeartRateSummaryStatistics *)v7 dateInterval];
-        if (!v10)
+        dateInterval3 = [(HKHeartRateSummaryStatistics *)equalCopy dateInterval];
+        if (!dateInterval3)
         {
-          LOBYTE(v11) = 0;
+          LOBYTE(sessionUUID3) = 0;
           goto LABEL_21;
         }
 
-        v3 = v10;
-        v4 = [(HKHeartRateSummaryStatistics *)self dateInterval];
-        v5 = [(HKHeartRateSummaryStatistics *)v7 dateInterval];
-        if (![v4 isEqual:v5])
+        v3 = dateInterval3;
+        dateInterval4 = [(HKHeartRateSummaryStatistics *)self dateInterval];
+        dateInterval5 = [(HKHeartRateSummaryStatistics *)equalCopy dateInterval];
+        if (![dateInterval4 isEqual:dateInterval5])
         {
-          LOBYTE(v11) = 0;
+          LOBYTE(sessionUUID3) = 0;
           goto LABEL_19;
         }
       }
 
       sortedBuckets = self->_sortedBuckets;
-      v13 = v7->_sortedBuckets;
-      if (sortedBuckets != v13 && (!v13 || ![(NSMutableArray *)sortedBuckets isEqual:?]) || (v14 = [(HKHeartRateSummaryStatistics *)self numberOfReadings], v14 != [(HKHeartRateSummaryStatistics *)v7 numberOfReadings]))
+      v13 = equalCopy->_sortedBuckets;
+      if (sortedBuckets != v13 && (!v13 || ![(NSMutableArray *)sortedBuckets isEqual:?]) || (v14 = [(HKHeartRateSummaryStatistics *)self numberOfReadings], v14 != [(HKHeartRateSummaryStatistics *)equalCopy numberOfReadings]))
       {
-        LOBYTE(v11) = 0;
+        LOBYTE(sessionUUID3) = 0;
         goto LABEL_18;
       }
 
-      v15 = [(HKHeartRateSummaryStatistics *)self sessionUUID];
-      v16 = [(HKHeartRateSummaryStatistics *)v7 sessionUUID];
-      v17 = v16;
-      if (v15 == v16)
+      sessionUUID = [(HKHeartRateSummaryStatistics *)self sessionUUID];
+      sessionUUID2 = [(HKHeartRateSummaryStatistics *)equalCopy sessionUUID];
+      v17 = sessionUUID2;
+      if (sessionUUID == sessionUUID2)
       {
-        v32 = v5;
-        v33 = v4;
-        v30 = v16;
-        v31 = v15;
+        v32 = dateInterval5;
+        v33 = dateInterval4;
+        v30 = sessionUUID2;
+        v31 = sessionUUID;
       }
 
       else
       {
-        v11 = [(HKHeartRateSummaryStatistics *)v7 sessionUUID];
-        if (!v11)
+        sessionUUID3 = [(HKHeartRateSummaryStatistics *)equalCopy sessionUUID];
+        if (!sessionUUID3)
         {
 LABEL_31:
 
 LABEL_18:
-          if (v8 == v9)
+          if (dateInterval == dateInterval2)
           {
 LABEL_21:
 
@@ -394,38 +394,38 @@ LABEL_19:
           goto LABEL_21;
         }
 
-        v32 = v5;
-        v33 = v4;
-        v18 = [(HKHeartRateSummaryStatistics *)self sessionUUID];
-        v19 = [(HKHeartRateSummaryStatistics *)v7 sessionUUID];
-        if (([v18 isEqual:v19] & 1) == 0)
+        v32 = dateInterval5;
+        v33 = dateInterval4;
+        sessionUUID4 = [(HKHeartRateSummaryStatistics *)self sessionUUID];
+        sessionUUID5 = [(HKHeartRateSummaryStatistics *)equalCopy sessionUUID];
+        if (([sessionUUID4 isEqual:sessionUUID5] & 1) == 0)
         {
 
-          LOBYTE(v11) = 0;
+          LOBYTE(sessionUUID3) = 0;
           goto LABEL_34;
         }
 
-        v27 = v19;
-        v28 = v18;
-        v29 = v11;
+        v27 = sessionUUID5;
+        v28 = sessionUUID4;
+        v29 = sessionUUID3;
         v30 = v17;
-        v31 = v15;
+        v31 = sessionUUID;
       }
 
-      v21 = [(HKHeartRateSummaryStatistics *)self highlightedReadings];
-      v22 = [(HKHeartRateSummaryStatistics *)v7 highlightedReadings];
-      LOBYTE(v11) = v21 == v22;
-      if (v21 != v22)
+      highlightedReadings = [(HKHeartRateSummaryStatistics *)self highlightedReadings];
+      highlightedReadings2 = [(HKHeartRateSummaryStatistics *)equalCopy highlightedReadings];
+      LOBYTE(sessionUUID3) = highlightedReadings == highlightedReadings2;
+      if (highlightedReadings != highlightedReadings2)
       {
-        v23 = [(HKHeartRateSummaryStatistics *)v7 highlightedReadings];
-        if (v23)
+        highlightedReadings3 = [(HKHeartRateSummaryStatistics *)equalCopy highlightedReadings];
+        if (highlightedReadings3)
         {
-          v24 = v23;
-          v25 = [(HKHeartRateSummaryStatistics *)self highlightedReadings];
-          v26 = [(HKHeartRateSummaryStatistics *)v7 highlightedReadings];
-          LOBYTE(v11) = [v25 isEqual:v26];
+          v24 = highlightedReadings3;
+          highlightedReadings4 = [(HKHeartRateSummaryStatistics *)self highlightedReadings];
+          highlightedReadings5 = [(HKHeartRateSummaryStatistics *)equalCopy highlightedReadings];
+          LOBYTE(sessionUUID3) = [highlightedReadings4 isEqual:highlightedReadings5];
 
-          v15 = v31;
+          sessionUUID = v31;
           if (v31 != v30)
           {
           }
@@ -435,15 +435,15 @@ LABEL_19:
       }
 
       v17 = v30;
-      v15 = v31;
+      sessionUUID = v31;
       if (v31 == v30)
       {
 LABEL_33:
 
 LABEL_34:
-        v5 = v32;
-        v4 = v33;
-        if (v8 == v9)
+        dateInterval5 = v32;
+        dateInterval4 = v33;
+        if (dateInterval == dateInterval2)
         {
           goto LABEL_21;
         }
@@ -451,42 +451,42 @@ LABEL_34:
         goto LABEL_19;
       }
 
-      v5 = v32;
-      v4 = v33;
+      dateInterval5 = v32;
+      dateInterval4 = v33;
       goto LABEL_31;
     }
 
-    LOBYTE(v11) = 0;
+    LOBYTE(sessionUUID3) = 0;
   }
 
 LABEL_22:
 
-  return v11;
+  return sessionUUID3;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HKHeartRateSummaryStatistics *)self dateInterval];
-  v4 = [v3 hash];
+  dateInterval = [(HKHeartRateSummaryStatistics *)self dateInterval];
+  v4 = [dateInterval hash];
   v5 = [(NSMutableArray *)self->_sortedBuckets hash];
   v6 = v5 ^ v4 ^ [(HKHeartRateSummaryStatistics *)self numberOfReadings];
   v7 = [(NSMutableArray *)self->_sortedBuckets hash];
-  v8 = [(HKHeartRateSummaryStatistics *)self sessionUUID];
-  v9 = v6 ^ v7 ^ [v8 hash];
-  v10 = [(HKHeartRateSummaryStatistics *)self highlightedReadings];
-  v11 = [v10 hash];
+  sessionUUID = [(HKHeartRateSummaryStatistics *)self sessionUUID];
+  v9 = v6 ^ v7 ^ [sessionUUID hash];
+  highlightedReadings = [(HKHeartRateSummaryStatistics *)self highlightedReadings];
+  v11 = [highlightedReadings hash];
 
   return v9 ^ v11;
 }
 
 - (id)_dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__HKHeartRateSummaryStatistics_Testing___dictionaryRepresentation__block_invoke;
   v6[3] = &unk_1E7385448;
-  v4 = v3;
+  v4 = dictionary;
   v7 = v4;
   [(HKHeartRateSummaryStatistics *)self enumerateBucketsWithBlock:v6];
 

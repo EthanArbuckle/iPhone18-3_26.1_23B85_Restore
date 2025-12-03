@@ -1,29 +1,29 @@
 @interface _SBSceneHandleObserverBehavior
-+ (id)behaviorFromObserver:(id)a3;
++ (id)behaviorFromObserver:(id)observer;
 - (SBSceneHandleObserver)observer;
-- (_SBSceneHandleObserverBehavior)initWithObserver:(id)a3;
+- (_SBSceneHandleObserverBehavior)initWithObserver:(id)observer;
 @end
 
 @implementation _SBSceneHandleObserverBehavior
 
-+ (id)behaviorFromObserver:(id)a3
++ (id)behaviorFromObserver:(id)observer
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithObserver:v3];
+  observerCopy = observer;
+  v4 = [objc_alloc(objc_opt_class()) initWithObserver:observerCopy];
 
   return v4;
 }
 
-- (_SBSceneHandleObserverBehavior)initWithObserver:(id)a3
+- (_SBSceneHandleObserverBehavior)initWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v8.receiver = self;
   v8.super_class = _SBSceneHandleObserverBehavior;
   v5 = [(_SBSceneHandleObserverBehavior *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_observer, v4);
+    objc_storeWeak(&v5->_observer, observerCopy);
     v6->_didCreateScene = objc_opt_respondsToSelector() & 1;
     v6->_didDestroyScene = objc_opt_respondsToSelector() & 1;
     v6->_didUpdateContentState = objc_opt_respondsToSelector() & 1;

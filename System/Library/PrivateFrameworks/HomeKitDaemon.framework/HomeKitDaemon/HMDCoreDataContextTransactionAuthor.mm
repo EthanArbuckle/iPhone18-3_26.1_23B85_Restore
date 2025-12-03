@@ -1,9 +1,9 @@
 @interface HMDCoreDataContextTransactionAuthor
-+ (id)contextAuthorWithString:(id)a3;
-+ (id)contextAuthorWithType:(unint64_t)a3;
-+ (id)contextAuthorWithType:(unint64_t)a3 clientIdentifier:(id)a4;
-+ (id)contextAuthorWithType:(unint64_t)a3 clientIdentifier:(id)a4 qualityOfService:(int64_t)a5;
-- (HMDCoreDataContextTransactionAuthor)initWithType:(unint64_t)a3 clientIdentifier:(id)a4 qualityOfService:(int64_t)a5;
++ (id)contextAuthorWithString:(id)string;
++ (id)contextAuthorWithType:(unint64_t)type;
++ (id)contextAuthorWithType:(unint64_t)type clientIdentifier:(id)identifier;
++ (id)contextAuthorWithType:(unint64_t)type clientIdentifier:(id)identifier qualityOfService:(int64_t)service;
+- (HMDCoreDataContextTransactionAuthor)initWithType:(unint64_t)type clientIdentifier:(id)identifier qualityOfService:(int64_t)service;
 - (NSString)string;
 @end
 
@@ -11,39 +11,39 @@
 
 - (NSString)string
 {
-  v3 = [(HMDCoreDataContextTransactionAuthor *)self type];
-  if (v3 - 2 > 9)
+  type = [(HMDCoreDataContextTransactionAuthor *)self type];
+  if (type - 2 > 9)
   {
     v4 = @"HMD.Unknown";
   }
 
   else
   {
-    v4 = off_278681C50[v3 - 2];
+    v4 = off_278681C50[type - 2];
   }
 
   v5 = v4;
-  v6 = [(HMDCoreDataContextTransactionAuthor *)self clientIdentifier];
+  clientIdentifier = [(HMDCoreDataContextTransactionAuthor *)self clientIdentifier];
 
-  if (!v6)
+  if (!clientIdentifier)
   {
     v10 = v5;
     goto LABEL_23;
   }
 
-  v7 = [(HMDCoreDataContextTransactionAuthor *)self qualityOfService];
+  qualityOfService = [(HMDCoreDataContextTransactionAuthor *)self qualityOfService];
   v8 = 0;
   v9 = 0;
-  if (v7 <= 16)
+  if (qualityOfService <= 16)
   {
-    if (v7 == -1)
+    if (qualityOfService == -1)
     {
       v8 = @"defaultQoS";
     }
 
     else
     {
-      if (v7 != 9)
+      if (qualityOfService != 9)
       {
         goto LABEL_18;
       }
@@ -54,7 +54,7 @@
 
   else
   {
-    switch(v7)
+    switch(qualityOfService)
     {
       case 17:
         v8 = @"utilityQoS";
@@ -72,18 +72,18 @@
 
   v9 = 1;
 LABEL_18:
-  v11 = [(HMDCoreDataContextTransactionAuthor *)self qualityOfService];
+  qualityOfService2 = [(HMDCoreDataContextTransactionAuthor *)self qualityOfService];
   v12 = MEMORY[0x277CCACA8];
-  v13 = [(HMDCoreDataContextTransactionAuthor *)self clientIdentifier];
-  v14 = v13;
-  if (!v9 || v11 == -1)
+  clientIdentifier2 = [(HMDCoreDataContextTransactionAuthor *)self clientIdentifier];
+  v14 = clientIdentifier2;
+  if (!v9 || qualityOfService2 == -1)
   {
-    [v12 stringWithFormat:@"%@/%@", v5, v13, v16];
+    [v12 stringWithFormat:@"%@/%@", v5, clientIdentifier2, v16];
   }
 
   else
   {
-    [v12 stringWithFormat:@"%@/%@/%@", v5, v13, v8];
+    [v12 stringWithFormat:@"%@/%@/%@", v5, clientIdentifier2, v8];
   }
   v10 = ;
 
@@ -92,47 +92,47 @@ LABEL_23:
   return v10;
 }
 
-- (HMDCoreDataContextTransactionAuthor)initWithType:(unint64_t)a3 clientIdentifier:(id)a4 qualityOfService:(int64_t)a5
+- (HMDCoreDataContextTransactionAuthor)initWithType:(unint64_t)type clientIdentifier:(id)identifier qualityOfService:(int64_t)service
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = HMDCoreDataContextTransactionAuthor;
   v9 = [(HMDCoreDataContextTransactionAuthor *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    v9->_type = a3;
-    if ([v8 containsString:@"/"])
+    v9->_type = type;
+    if ([identifierCopy containsString:@"/"])
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v8;
+      v11 = identifierCopy;
     }
 
     objc_storeStrong(&v10->_clientIdentifier, v11);
-    v10->_qualityOfService = a5;
+    v10->_qualityOfService = service;
   }
 
   return v10;
 }
 
-+ (id)contextAuthorWithString:(id)a3
++ (id)contextAuthorWithString:(id)string
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy)
   {
-    v6 = [v4 componentsSeparatedByString:@"/"];
+    v6 = [stringCopy componentsSeparatedByString:@"/"];
     if ([v6 count])
     {
       if ([v6 count] >= 4)
       {
         v7 = objc_autoreleasePoolPush();
-        v8 = a1;
+        selfCopy = self;
         v9 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
@@ -151,7 +151,7 @@ LABEL_23:
       v12 = 0;
       if ([v11 hasPrefix:@"HMD."])
       {
-        if ([v11 isEqualToString:@"HMD.v4"])
+        if ([v11 isEqualToString:@"HMD.stringCopy"])
         {
           v12 = 3;
         }
@@ -284,7 +284,7 @@ LABEL_23:
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = a1;
+      selfCopy2 = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -311,25 +311,25 @@ LABEL_23:
   return v13;
 }
 
-+ (id)contextAuthorWithType:(unint64_t)a3 clientIdentifier:(id)a4 qualityOfService:(int64_t)a5
++ (id)contextAuthorWithType:(unint64_t)type clientIdentifier:(id)identifier qualityOfService:(int64_t)service
 {
-  v7 = a4;
-  v8 = [[HMDCoreDataContextTransactionAuthor alloc] initWithType:a3 clientIdentifier:v7 qualityOfService:a5];
+  identifierCopy = identifier;
+  v8 = [[HMDCoreDataContextTransactionAuthor alloc] initWithType:type clientIdentifier:identifierCopy qualityOfService:service];
 
   return v8;
 }
 
-+ (id)contextAuthorWithType:(unint64_t)a3 clientIdentifier:(id)a4
++ (id)contextAuthorWithType:(unint64_t)type clientIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [[HMDCoreDataContextTransactionAuthor alloc] initWithType:a3 clientIdentifier:v5 qualityOfService:-1];
+  identifierCopy = identifier;
+  v6 = [[HMDCoreDataContextTransactionAuthor alloc] initWithType:type clientIdentifier:identifierCopy qualityOfService:-1];
 
   return v6;
 }
 
-+ (id)contextAuthorWithType:(unint64_t)a3
++ (id)contextAuthorWithType:(unint64_t)type
 {
-  v3 = [[HMDCoreDataContextTransactionAuthor alloc] initWithType:a3 clientIdentifier:0 qualityOfService:-1];
+  v3 = [[HMDCoreDataContextTransactionAuthor alloc] initWithType:type clientIdentifier:0 qualityOfService:-1];
 
   return v3;
 }

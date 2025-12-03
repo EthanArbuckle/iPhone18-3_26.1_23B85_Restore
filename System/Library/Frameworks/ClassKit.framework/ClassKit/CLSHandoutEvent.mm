@@ -1,33 +1,33 @@
 @interface CLSHandoutEvent
-- (BOOL)validateObject:(id *)a3;
-- (CLSHandoutEvent)initWithClassID:(id)a3 handoutID:(id)a4 eventType:(int64_t)a5;
-- (CLSHandoutEvent)initWithCoder:(id)a3;
+- (BOOL)validateObject:(id *)object;
+- (CLSHandoutEvent)initWithClassID:(id)d handoutID:(id)iD eventType:(int64_t)type;
+- (CLSHandoutEvent)initWithCoder:(id)coder;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeWithObject:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeWithObject:(id)object;
 @end
 
 @implementation CLSHandoutEvent
 
-- (CLSHandoutEvent)initWithClassID:(id)a3 handoutID:(id)a4 eventType:(int64_t)a5
+- (CLSHandoutEvent)initWithClassID:(id)d handoutID:(id)iD eventType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = CLSHandoutEvent;
-  v11 = [(CLSInsightEvent *)&v14 initWithType:a5];
+  v11 = [(CLSInsightEvent *)&v14 initWithType:type];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_classID, a3);
-    objc_storeStrong(&v12->_handoutID, a4);
+    objc_storeStrong(&v11->_classID, d);
+    objc_storeStrong(&v12->_handoutID, iD);
   }
 
   return v12;
 }
 
-- (BOOL)validateObject:(id *)a3
+- (BOOL)validateObject:(id *)object
 {
   v22.receiver = self;
   v22.super_class = CLSHandoutEvent;
@@ -57,34 +57,34 @@
     v17 = objc_msgSend_localizedStringForKey_value_table_(v15, v16, v10, &stru_284A08768, @"ClassKit");
     v19 = objc_msgSend_stringWithFormat_(v11, v18, v17);
 
-    objc_msgSend_cls_assignError_code_errorObject_description_(MEMORY[0x277CCA9B8], v20, a3, 2, self, v19);
+    objc_msgSend_cls_assignError_code_errorObject_description_(MEMORY[0x277CCA9B8], v20, object, 2, self, v19);
     LOBYTE(v5) = 0;
   }
 
   return v5;
 }
 
-- (CLSHandoutEvent)initWithCoder:(id)a3
+- (CLSHandoutEvent)initWithCoder:(id)coder
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = CLSHandoutEvent;
-  v5 = [(CLSInsightEvent *)&v36 initWithCoder:v4];
+  v5 = [(CLSInsightEvent *)&v36 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"classID");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"classID");
     classID = v5->_classID;
     v5->_classID = v8;
 
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"handoutID");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"handoutID");
     handoutID = v5->_handoutID;
     v5->_handoutID = v12;
 
     v14 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v14, @"dueDate");
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v14, @"dueDate");
     dueDate = v5->_dueDate;
     v5->_dueDate = v16;
 
@@ -93,7 +93,7 @@
     v38[1] = objc_opt_class();
     v20 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v19, v38, 2);
     v22 = objc_msgSend_setWithArray_(v18, v21, v20);
-    v24 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v23, v22, @"recipientIDs");
+    v24 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v23, v22, @"recipientIDs");
     recipientIDs = v5->_recipientIDs;
     v5->_recipientIDs = v24;
 
@@ -102,7 +102,7 @@
     v37[1] = objc_opt_class();
     v28 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v27, v37, 2);
     v30 = objc_msgSend_setWithArray_(v26, v29, v28);
-    v32 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v31, v30, @"attachmentDetails");
+    v32 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v31, v30, @"attachmentDetails");
     attachmentDetails = v5->_attachmentDetails;
     v5->_attachmentDetails = v32;
   }
@@ -111,54 +111,54 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CLSHandoutEvent;
-  v4 = a3;
-  [(CLSInsightEvent *)&v10 encodeWithCoder:v4];
-  objc_msgSend_encodeObject_forKey_(v4, v5, self->_classID, @"classID", v10.receiver, v10.super_class);
-  objc_msgSend_encodeObject_forKey_(v4, v6, self->_handoutID, @"handoutID");
-  objc_msgSend_encodeObject_forKey_(v4, v7, self->_dueDate, @"dueDate");
-  objc_msgSend_encodeObject_forKey_(v4, v8, self->_recipientIDs, @"recipientIDs");
-  objc_msgSend_encodeObject_forKey_(v4, v9, self->_attachmentDetails, @"attachmentDetails");
+  coderCopy = coder;
+  [(CLSInsightEvent *)&v10 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_classID, @"classID", v10.receiver, v10.super_class);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_handoutID, @"handoutID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_dueDate, @"dueDate");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_recipientIDs, @"recipientIDs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_attachmentDetails, @"attachmentDetails");
 }
 
 - (id)dictionaryRepresentation
 {
   v11.receiver = self;
   v11.super_class = CLSHandoutEvent;
-  v3 = [(CLSInsightEvent *)&v11 dictionaryRepresentation];
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v4, self->_classID, @"classID");
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v5, self->_handoutID, @"handoutID");
+  dictionaryRepresentation = [(CLSInsightEvent *)&v11 dictionaryRepresentation];
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v4, self->_classID, @"classID");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v5, self->_handoutID, @"handoutID");
   dueDate = self->_dueDate;
   if (dueDate)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v3, v6, dueDate, @"dueDate");
+    objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v6, dueDate, @"dueDate");
   }
 
   recipientIDs = self->_recipientIDs;
   if (recipientIDs)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v3, v6, recipientIDs, @"recipientIDs");
+    objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v6, recipientIDs, @"recipientIDs");
   }
 
   attachmentDetails = self->_attachmentDetails;
   if (attachmentDetails)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v3, v6, attachmentDetails, @"attachmentDetails");
+    objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v6, attachmentDetails, @"attachmentDetails");
   }
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)mergeWithObject:(id)a3
+- (void)mergeWithObject:(id)object
 {
   v23[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v21.receiver = self;
   v21.super_class = CLSHandoutEvent;
-  [(CLSInsightEvent *)&v21 mergeWithObject:v4];
+  [(CLSInsightEvent *)&v21 mergeWithObject:objectCopy];
   v23[0] = @"classID";
   v23[1] = @"handoutID";
   v23[2] = @"dueDate";
@@ -184,7 +184,7 @@
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = objc_msgSend_valueForKey_(v4, v9, v13, v17);
+        v14 = objc_msgSend_valueForKey_(objectCopy, v9, v13, v17);
         objc_msgSend_setValue_forKey_(self, v15, v14, v13);
       }
 

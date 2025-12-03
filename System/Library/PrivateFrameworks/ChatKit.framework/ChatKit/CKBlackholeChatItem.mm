@@ -1,6 +1,6 @@
 @interface CKBlackholeChatItem
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (id)loadTranscriptText;
 @end
 
@@ -16,22 +16,22 @@
   [v5 replaceCharactersInRange:0 withString:{0, @" "}];
   v6 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
   v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 hawkingWarningIcon];
+  hawkingWarningIcon = [v7 hawkingWarningIcon];
 
-  [v6 setImage:v8];
+  [v6 setImage:hawkingWarningIcon];
   [v6 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
   v9 = +[CKUIBehavior sharedBehaviors];
-  v10 = [v9 transcriptBoldFont];
-  [v10 pointSize];
+  transcriptBoldFont = [v9 transcriptBoldFont];
+  [transcriptBoldFont pointSize];
   v12 = v11;
 
-  [v8 size];
+  [hawkingWarningIcon size];
   v14 = v13;
-  [v8 size];
+  [hawkingWarningIcon size];
   v16 = v12 * (v14 / v15);
   v17 = +[CKUIBehavior sharedBehaviors];
-  v18 = [v17 transcriptBoldFont];
-  [v18 capHeight];
+  transcriptBoldFont2 = [v17 transcriptBoldFont];
+  [transcriptBoldFont2 capHeight];
   v20 = (v19 - v12) * 0.5;
 
   [v6 setBounds:{0.0, v20, v16, v12}];
@@ -39,30 +39,30 @@
   [v5 insertAttributedString:v21 atIndex:0];
 
   v22 = +[CKUIBehavior sharedBehaviors];
-  v23 = [v22 transcriptEmphasizedFontAttributes];
+  transcriptEmphasizedFontAttributes = [v22 transcriptEmphasizedFontAttributes];
 
-  [v5 addAttributes:v23 range:{0, objc_msgSend(v5, "length")}];
+  [v5 addAttributes:transcriptEmphasizedFontAttributes range:{0, objc_msgSend(v5, "length")}];
 
   return v5;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = fits.height;
+  width = fits.width;
+  if (insets)
   {
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 transcriptBoldTextAlignmentInsets];
-    a4->top = v9;
-    a4->left = v10;
-    a4->bottom = v11;
-    a4->right = v12;
+    insets->top = v9;
+    insets->left = v10;
+    insets->bottom = v11;
+    insets->right = v12;
   }
 
   v13 = objc_opt_class();
-  v14 = [(CKChatItem *)self transcriptText];
-  [v13 sizeThatFits:v14 text:{width, height}];
+  transcriptText = [(CKChatItem *)self transcriptText];
+  [v13 sizeThatFits:transcriptText text:{width, height}];
   v16 = v15;
   v18 = v17;
 
@@ -73,9 +73,9 @@
   return result;
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text
 {
-  [a4 boundingRectWithSize:1 options:0 context:{a3.width, a3.height}];
+  [text boundingRectWithSize:1 options:0 context:{fits.width, fits.height}];
   v5 = v4;
   v7 = v6;
   if (CKMainScreenScale_once_67 != -1)

@@ -1,20 +1,20 @@
 @interface CRLImageRepLayerContentsRecipe
-- (CRLImageRepLayerContentsRecipe)initWithImage:(CGImage *)a3 orientation:(int64_t)a4 hasBakedMask:(BOOL)a5;
+- (CRLImageRepLayerContentsRecipe)initWithImage:(CGImage *)image orientation:(int64_t)orientation hasBakedMask:(BOOL)mask;
 - (void)dealloc;
 @end
 
 @implementation CRLImageRepLayerContentsRecipe
 
-- (CRLImageRepLayerContentsRecipe)initWithImage:(CGImage *)a3 orientation:(int64_t)a4 hasBakedMask:(BOOL)a5
+- (CRLImageRepLayerContentsRecipe)initWithImage:(CGImage *)image orientation:(int64_t)orientation hasBakedMask:(BOOL)mask
 {
   v10.receiver = self;
   v10.super_class = CRLImageRepLayerContentsRecipe;
   v8 = [(CRLImageRepLayerContentsRecipe *)&v10 init];
   if (v8)
   {
-    v8->_image = CGImageRetain(a3);
-    v8->_orientation = a4;
-    v8->_hasBakedMask = a5;
+    v8->_image = CGImageRetain(image);
+    v8->_orientation = orientation;
+    v8->_hasBakedMask = mask;
   }
 
   return v8;

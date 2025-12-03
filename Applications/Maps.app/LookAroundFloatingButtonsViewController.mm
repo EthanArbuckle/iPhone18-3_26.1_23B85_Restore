@@ -1,25 +1,25 @@
 @interface LookAroundFloatingButtonsViewController
-- (LookAroundFloatingButtonsViewController)initWithShowsMinimizeButton:(BOOL)a3 groupButtonsIfNeeded:(BOOL)a4;
+- (LookAroundFloatingButtonsViewController)initWithShowsMinimizeButton:(BOOL)button groupButtonsIfNeeded:(BOOL)needed;
 - (LookAroundFloatingButtonsViewControllerDelegate)delegate;
 - (id)optionsMenu;
-- (void)_setAlternateButtonEnabled:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setAlternateButtonEnabled:(BOOL)enabled animated:(BOOL)animated;
 - (void)_setCornerRadii;
-- (void)_setCornerRadiiWithTraitCollection:(id)a3;
+- (void)_setCornerRadiiWithTraitCollection:(id)collection;
 - (void)_setupConstraints;
 - (void)_setupViews;
-- (void)_updateButtonLayoutAnimated:(BOOL)a3;
-- (void)_updateButtonLayoutToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4 animated:(BOOL)a5;
+- (void)_updateButtonLayoutAnimated:(BOOL)animated;
+- (void)_updateButtonLayoutToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator animated:(BOOL)animated;
 - (void)dealloc;
-- (void)didTapButton:(id)a3;
-- (void)didTapDoneButton:(id)a3;
+- (void)didTapButton:(id)button;
+- (void)didTapDoneButton:(id)button;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setHidingLabels:(BOOL)a3;
-- (void)setShowsMinimizedButton:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setHidingLabels:(BOOL)labels;
+- (void)setShowsMinimizedButton:(BOOL)button;
 - (void)updateTheme;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation LookAroundFloatingButtonsViewController
@@ -31,23 +31,23 @@
   return WeakRetained;
 }
 
-- (void)didTapDoneButton:(id)a3
+- (void)didTapDoneButton:(id)button
 {
-  v4 = a3;
-  v5 = [(LookAroundFloatingButtonsViewController *)self delegate];
-  [v5 lookAroundFloatingButtonsViewController:self didTapDoneButton:v4];
+  buttonCopy = button;
+  delegate = [(LookAroundFloatingButtonsViewController *)self delegate];
+  [delegate lookAroundFloatingButtonsViewController:self didTapDoneButton:buttonCopy];
 }
 
-- (void)didTapButton:(id)a3
+- (void)didTapButton:(id)button
 {
-  v6 = a3;
+  buttonCopy = button;
   showsMinimizedButton = self->_showsMinimizedButton;
   if (showsMinimizedButton)
   {
     if ([(LookAroundFloatingButtonsViewController *)self isMinimizedButtonEnabled])
     {
-      v5 = [(LookAroundFloatingButtonsViewController *)self delegate];
-      [v5 lookAroundFloatingButtonsViewController:self didTapMinimizeButton:v6];
+      delegate = [(LookAroundFloatingButtonsViewController *)self delegate];
+      [delegate lookAroundFloatingButtonsViewController:self didTapMinimizeButton:buttonCopy];
 LABEL_8:
 
       goto LABEL_9;
@@ -58,25 +58,25 @@ LABEL_8:
 
   if (!showsMinimizedButton && [(LookAroundFloatingButtonsViewController *)self isMaximizedButtonEnabled])
   {
-    v5 = [(LookAroundFloatingButtonsViewController *)self delegate];
-    [v5 lookAroundFloatingButtonsViewController:self didTapMaximizeButton:v6];
+    delegate = [(LookAroundFloatingButtonsViewController *)self delegate];
+    [delegate lookAroundFloatingButtonsViewController:self didTapMaximizeButton:buttonCopy];
     goto LABEL_8;
   }
 
 LABEL_9:
 }
 
-- (void)_updateButtonLayoutToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4 animated:(BOOL)a5
+- (void)_updateButtonLayoutToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
   if (sub_10000FA08(self) == 5)
   {
     goto LABEL_22;
   }
 
-  v10 = v8;
+  v10 = collectionCopy;
   v11 = v10;
   if (!v10)
   {
@@ -122,7 +122,7 @@ LABEL_16:
   v21[4] = self;
   v22 = v14;
   v16 = objc_retainBlock(v21);
-  if (v9)
+  if (coordinatorCopy)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -134,10 +134,10 @@ LABEL_16:
     v17[2] = sub_100AC1CD0;
     v17[3] = &unk_101654700;
     v18 = v16;
-    [v9 animateAlongsideTransition:v19 completion:v17];
+    [coordinatorCopy animateAlongsideTransition:v19 completion:v17];
   }
 
-  else if (v5)
+  else if (animatedCopy)
   {
     [UIView animateWithDuration:v15 animations:v16 completion:0.25];
   }
@@ -151,12 +151,12 @@ LABEL_16:
 LABEL_22:
 }
 
-- (void)_setCornerRadiiWithTraitCollection:(id)a3
+- (void)_setCornerRadiiWithTraitCollection:(id)collection
 {
-  v19 = a3;
+  collectionCopy = collection;
   if (sub_10000FA08(self) != 5)
   {
-    v8 = v19;
+    v8 = collectionCopy;
     v9 = v8;
     if (v8)
     {
@@ -167,7 +167,7 @@ LABEL_19:
 
         v11 = (0x23u >> v10) | ~self->_groupButtonsIfNeeded;
         v12 = +[UIApplication sharedApplication];
-        v13 = [v12 userInterfaceLayoutDirection];
+        userInterfaceLayoutDirection = [v12 userInterfaceLayoutDirection];
 
         if (_UISolariumEnabled())
         {
@@ -191,7 +191,7 @@ LABEL_19:
           v16 = 5;
         }
 
-        if (v13 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v17 = v15;
         }
@@ -201,7 +201,7 @@ LABEL_19:
           v17 = v16;
         }
 
-        if (v13 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v18 = v16;
         }
@@ -250,15 +250,15 @@ LABEL_32:
 
 - (void)_setCornerRadii
 {
-  v3 = [(LookAroundFloatingButtonsViewController *)self traitCollection];
-  [(LookAroundFloatingButtonsViewController *)self _setCornerRadiiWithTraitCollection:v3];
+  traitCollection = [(LookAroundFloatingButtonsViewController *)self traitCollection];
+  [(LookAroundFloatingButtonsViewController *)self _setCornerRadiiWithTraitCollection:traitCollection];
 }
 
-- (void)_updateButtonLayoutAnimated:(BOOL)a3
+- (void)_updateButtonLayoutAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(LookAroundFloatingButtonsViewController *)self traitCollection];
-  [(LookAroundFloatingButtonsViewController *)self _updateButtonLayoutToTraitCollection:v5 withTransitionCoordinator:0 animated:v3];
+  animatedCopy = animated;
+  traitCollection = [(LookAroundFloatingButtonsViewController *)self traitCollection];
+  [(LookAroundFloatingButtonsViewController *)self _updateButtonLayoutToTraitCollection:traitCollection withTransitionCoordinator:0 animated:animatedCopy];
 }
 
 - (void)_setupConstraints
@@ -268,206 +268,206 @@ LABEL_32:
   alternateButtonBackgroundView = self->_alternateButtonBackgroundView;
   if (v3 == 5)
   {
-    v5 = [(UIVisualEffectView *)alternateButtonBackgroundView trailingAnchor];
-    v6 = [(UIButton *)self->_menuButton trailingAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6];
+    trailingAnchor = [(UIVisualEffectView *)alternateButtonBackgroundView trailingAnchor];
+    trailingAnchor2 = [(UIButton *)self->_menuButton trailingAnchor];
+    v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     menuButtonVisibleConstraint = self->_menuButtonVisibleConstraint;
     self->_menuButtonVisibleConstraint = v7;
 
-    v9 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView trailingAnchor];
-    v10 = [(UIButton *)self->_alternateButton trailingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    trailingAnchor3 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView trailingAnchor];
+    trailingAnchor4 = [(UIButton *)self->_alternateButton trailingAnchor];
+    v11 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     menuButtonHiddenConstraint = self->_menuButtonHiddenConstraint;
     self->_menuButtonHiddenConstraint = v11;
 
-    v13 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView leadingAnchor];
-    v121 = [(LookAroundFloatingButtonsViewController *)self view];
-    v112 = [v121 leadingAnchor];
-    v133 = v13;
-    v115 = [v13 constraintEqualToAnchor:v112];
+    leadingAnchor = [(UIVisualEffectView *)self->_alternateButtonBackgroundView leadingAnchor];
+    view = [(LookAroundFloatingButtonsViewController *)self view];
+    leadingAnchor2 = [view leadingAnchor];
+    v133 = leadingAnchor;
+    v115 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v138[0] = v115;
-    v110 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView topAnchor];
-    v102 = [(LookAroundFloatingButtonsViewController *)self view];
-    v99 = [v102 topAnchor];
-    v108 = [v110 constraintEqualToAnchor:v99];
+    topAnchor = [(UIVisualEffectView *)self->_alternateButtonBackgroundView topAnchor];
+    view2 = [(LookAroundFloatingButtonsViewController *)self view];
+    topAnchor2 = [view2 topAnchor];
+    v108 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v138[1] = v108;
-    v95 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView bottomAnchor];
-    v131 = [(LookAroundFloatingButtonsViewController *)self view];
-    v129 = [v131 bottomAnchor];
-    v87 = [v95 constraintEqualToAnchor:?];
+    bottomAnchor = [(UIVisualEffectView *)self->_alternateButtonBackgroundView bottomAnchor];
+    view3 = [(LookAroundFloatingButtonsViewController *)self view];
+    bottomAnchor2 = [view3 bottomAnchor];
+    v87 = [bottomAnchor constraintEqualToAnchor:?];
     v138[2] = v87;
-    v127 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView heightAnchor];
-    v125 = [v127 constraintEqualToConstant:30.0];
+    heightAnchor = [(UIVisualEffectView *)self->_alternateButtonBackgroundView heightAnchor];
+    v125 = [heightAnchor constraintEqualToConstant:30.0];
     v138[3] = v125;
-    v14 = [(UIButton *)self->_doneButton leadingAnchor];
-    v119 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView leadingAnchor];
-    v123 = v14;
-    v117 = [v14 constraintEqualToAnchor:v119];
+    leadingAnchor3 = [(UIButton *)self->_doneButton leadingAnchor];
+    leadingAnchor4 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView leadingAnchor];
+    v123 = leadingAnchor3;
+    v117 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v138[4] = v117;
-    v104 = [(UIButton *)self->_doneButton centerYAnchor];
-    v106 = [(LookAroundFloatingButtonsViewController *)self view];
-    v100 = [v106 centerYAnchor];
-    v97 = [v104 constraintEqualToAnchor:v100];
+    centerYAnchor = [(UIButton *)self->_doneButton centerYAnchor];
+    view4 = [(LookAroundFloatingButtonsViewController *)self view];
+    centerYAnchor2 = [view4 centerYAnchor];
+    v97 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v138[5] = v97;
-    v93 = [(UIButton *)self->_doneButton heightAnchor];
-    v91 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView heightAnchor];
-    v89 = [v93 constraintEqualToAnchor:v91];
+    heightAnchor2 = [(UIButton *)self->_doneButton heightAnchor];
+    heightAnchor3 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView heightAnchor];
+    v89 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
     v138[6] = v89;
-    v85 = [(UIButton *)self->_alternateButton leadingAnchor];
-    v83 = [(UIButton *)self->_doneButton trailingAnchor];
-    v82 = [v85 constraintEqualToAnchor:v83];
+    leadingAnchor5 = [(UIButton *)self->_alternateButton leadingAnchor];
+    trailingAnchor5 = [(UIButton *)self->_doneButton trailingAnchor];
+    v82 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor5];
     v138[7] = v82;
-    v80 = [(UIButton *)self->_alternateButton centerYAnchor];
-    v81 = [(LookAroundFloatingButtonsViewController *)self view];
-    v79 = [v81 centerYAnchor];
-    v78 = [v80 constraintEqualToAnchor:v79];
+    centerYAnchor3 = [(UIButton *)self->_alternateButton centerYAnchor];
+    view5 = [(LookAroundFloatingButtonsViewController *)self view];
+    centerYAnchor4 = [view5 centerYAnchor];
+    v78 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v138[8] = v78;
-    v77 = [(UIButton *)self->_alternateButton heightAnchor];
-    v76 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView heightAnchor];
-    v75 = [v77 constraintEqualToAnchor:v76];
+    heightAnchor4 = [(UIButton *)self->_alternateButton heightAnchor];
+    heightAnchor5 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView heightAnchor];
+    v75 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
     v138[9] = v75;
-    v74 = [(UIButton *)self->_menuButton leadingAnchor];
-    v73 = [(UIButton *)self->_alternateButton trailingAnchor];
-    v15 = [v74 constraintEqualToAnchor:v73];
+    leadingAnchor6 = [(UIButton *)self->_menuButton leadingAnchor];
+    trailingAnchor6 = [(UIButton *)self->_alternateButton trailingAnchor];
+    v15 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor6];
     v138[10] = v15;
-    v16 = [(UIButton *)self->_menuButton centerYAnchor];
-    v17 = [(LookAroundFloatingButtonsViewController *)self view];
-    v18 = [v17 centerYAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    centerYAnchor5 = [(UIButton *)self->_menuButton centerYAnchor];
+    view6 = [(LookAroundFloatingButtonsViewController *)self view];
+    centerYAnchor6 = [view6 centerYAnchor];
+    v19 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v138[11] = v19;
-    v20 = [(UIButton *)self->_menuButton heightAnchor];
-    v21 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView heightAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    heightAnchor6 = [(UIButton *)self->_menuButton heightAnchor];
+    heightAnchor7 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView heightAnchor];
+    v22 = [heightAnchor6 constraintEqualToAnchor:heightAnchor7];
     v23 = self->_menuButtonHiddenConstraint;
     v138[12] = v22;
     v138[13] = v23;
     v24 = [NSArray arrayWithObjects:v138 count:14];
     [v134 addObjectsFromArray:v24];
 
-    v25 = v87;
-    v26 = v99;
+    trailingAnchor14 = v87;
+    bottomAnchor12 = topAnchor2;
 
-    v27 = v112;
-    v28 = v102;
+    topAnchor11 = leadingAnchor2;
+    bottomAnchor11 = view2;
 
-    v29 = v115;
-    v30 = v121;
+    topAnchor12 = v115;
+    contentView2 = view;
 
-    v31 = v95;
+    leadingAnchor16 = bottomAnchor;
     v32 = v108;
 
-    v33 = v110;
+    v33 = topAnchor;
   }
 
   else
   {
-    v34 = [(UIVisualEffectView *)alternateButtonBackgroundView topAnchor];
-    v35 = [(LookAroundFloatingButtonsViewController *)self view];
-    v36 = [v35 topAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36];
+    topAnchor3 = [(UIVisualEffectView *)alternateButtonBackgroundView topAnchor];
+    view7 = [(LookAroundFloatingButtonsViewController *)self view];
+    topAnchor4 = [view7 topAnchor];
+    v37 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v137[0] = v37;
-    v38 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView bottomAnchor];
-    v39 = [(LookAroundFloatingButtonsViewController *)self view];
-    v40 = [v39 bottomAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40];
+    bottomAnchor3 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView bottomAnchor];
+    view8 = [(LookAroundFloatingButtonsViewController *)self view];
+    bottomAnchor4 = [view8 bottomAnchor];
+    v41 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v137[1] = v41;
     v42 = [NSArray arrayWithObjects:v137 count:2];
     [v134 addObjectsFromArray:v42];
 
-    v43 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView leadingAnchor];
-    v44 = [(LookAroundFloatingButtonsViewController *)self view];
-    v45 = [v44 leadingAnchor];
-    v46 = [v43 constraintGreaterThanOrEqualToAnchor:v45];
+    leadingAnchor7 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView leadingAnchor];
+    view9 = [(LookAroundFloatingButtonsViewController *)self view];
+    leadingAnchor8 = [view9 leadingAnchor];
+    v46 = [leadingAnchor7 constraintGreaterThanOrEqualToAnchor:leadingAnchor8];
     alternateButtonLeadingConstraintGrouped = self->_alternateButtonLeadingConstraintGrouped;
     self->_alternateButtonLeadingConstraintGrouped = v46;
 
     LODWORD(v48) = 1144750080;
     [(NSLayoutConstraint *)self->_alternateButtonLeadingConstraintGrouped setPriority:v48];
-    v49 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView leadingAnchor];
-    v50 = [(LookAroundFloatingButtonsViewController *)self view];
-    v51 = [v50 leadingAnchor];
-    v52 = [v49 constraintEqualToAnchor:v51];
+    leadingAnchor9 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView leadingAnchor];
+    view10 = [(LookAroundFloatingButtonsViewController *)self view];
+    leadingAnchor10 = [view10 leadingAnchor];
+    v52 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     alternateButtonLeadingConstraintSeparated = self->_alternateButtonLeadingConstraintSeparated;
     self->_alternateButtonLeadingConstraintSeparated = v52;
 
-    v54 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView contentView];
-    v132 = [(UIButton *)self->_alternateButton topAnchor];
-    v130 = [v54 topAnchor];
-    v128 = [v132 constraintEqualToAnchor:v130];
+    contentView = [(UIVisualEffectView *)self->_alternateButtonBackgroundView contentView];
+    topAnchor5 = [(UIButton *)self->_alternateButton topAnchor];
+    topAnchor6 = [contentView topAnchor];
+    v128 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v136[0] = v128;
-    v126 = [(UIButton *)self->_alternateButton bottomAnchor];
-    v124 = [v54 bottomAnchor];
-    v122 = [v126 constraintEqualToAnchor:v124];
+    bottomAnchor5 = [(UIButton *)self->_alternateButton bottomAnchor];
+    bottomAnchor6 = [contentView bottomAnchor];
+    v122 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v136[1] = v122;
-    v120 = [(UIButton *)self->_alternateButton leadingAnchor];
-    v118 = [v54 leadingAnchor];
-    v116 = [v120 constraintEqualToAnchor:v118];
+    leadingAnchor11 = [(UIButton *)self->_alternateButton leadingAnchor];
+    leadingAnchor12 = [contentView leadingAnchor];
+    v116 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     v136[2] = v116;
-    v114 = [(UIButton *)self->_alternateButton trailingAnchor];
-    v113 = [(HairlineView *)self->_separator leadingAnchor];
-    v111 = [v114 constraintEqualToAnchor:v113];
+    trailingAnchor7 = [(UIButton *)self->_alternateButton trailingAnchor];
+    leadingAnchor13 = [(HairlineView *)self->_separator leadingAnchor];
+    v111 = [trailingAnchor7 constraintEqualToAnchor:leadingAnchor13];
     v136[3] = v111;
-    v109 = [(HairlineView *)self->_separator topAnchor];
-    v107 = [v54 topAnchor];
-    v105 = [v109 constraintEqualToAnchor:v107];
+    topAnchor7 = [(HairlineView *)self->_separator topAnchor];
+    topAnchor8 = [contentView topAnchor];
+    v105 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
     v136[4] = v105;
-    v103 = [(HairlineView *)self->_separator bottomAnchor];
-    v101 = [v54 bottomAnchor];
-    v98 = [v103 constraintEqualToAnchor:v101];
+    bottomAnchor7 = [(HairlineView *)self->_separator bottomAnchor];
+    bottomAnchor8 = [contentView bottomAnchor];
+    v98 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     v136[5] = v98;
-    v96 = [(HairlineView *)self->_separator trailingAnchor];
-    v133 = v54;
-    v94 = [v54 trailingAnchor];
-    v92 = [v96 constraintEqualToAnchor:v94];
+    trailingAnchor8 = [(HairlineView *)self->_separator trailingAnchor];
+    v133 = contentView;
+    trailingAnchor9 = [contentView trailingAnchor];
+    v92 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
     v136[6] = v92;
-    v88 = [(UIVisualEffectView *)self->_doneButtonBackgroundView topAnchor];
-    v90 = [(LookAroundFloatingButtonsViewController *)self view];
-    v86 = [v90 topAnchor];
-    v84 = [v88 constraintEqualToAnchor:v86];
+    topAnchor9 = [(UIVisualEffectView *)self->_doneButtonBackgroundView topAnchor];
+    view11 = [(LookAroundFloatingButtonsViewController *)self view];
+    topAnchor10 = [view11 topAnchor];
+    v84 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
     v136[7] = v84;
-    v55 = [(UIVisualEffectView *)self->_doneButtonBackgroundView bottomAnchor];
-    v56 = [(LookAroundFloatingButtonsViewController *)self view];
-    v57 = [v56 bottomAnchor];
-    v58 = [v55 constraintEqualToAnchor:v57];
+    bottomAnchor9 = [(UIVisualEffectView *)self->_doneButtonBackgroundView bottomAnchor];
+    view12 = [(LookAroundFloatingButtonsViewController *)self view];
+    bottomAnchor10 = [view12 bottomAnchor];
+    v58 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
     v136[8] = v58;
-    v59 = [(UIVisualEffectView *)self->_doneButtonBackgroundView trailingAnchor];
-    v60 = [(LookAroundFloatingButtonsViewController *)self view];
-    v61 = [v60 trailingAnchor];
-    v62 = [v59 constraintEqualToAnchor:v61];
+    trailingAnchor10 = [(UIVisualEffectView *)self->_doneButtonBackgroundView trailingAnchor];
+    view13 = [(LookAroundFloatingButtonsViewController *)self view];
+    trailingAnchor11 = [view13 trailingAnchor];
+    v62 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
     v136[9] = v62;
     v63 = [NSArray arrayWithObjects:v136 count:10];
     [v134 addObjectsFromArray:v63];
 
-    v64 = [(UIVisualEffectView *)self->_doneButtonBackgroundView leadingAnchor];
-    v65 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView trailingAnchor];
-    v66 = [v64 constraintEqualToAnchor:v65];
+    leadingAnchor14 = [(UIVisualEffectView *)self->_doneButtonBackgroundView leadingAnchor];
+    trailingAnchor12 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView trailingAnchor];
+    v66 = [leadingAnchor14 constraintEqualToAnchor:trailingAnchor12];
     doneButtonLeadingContraintGrouped = self->_doneButtonLeadingContraintGrouped;
     self->_doneButtonLeadingContraintGrouped = v66;
 
-    v68 = [(UIVisualEffectView *)self->_doneButtonBackgroundView leadingAnchor];
-    v69 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView trailingAnchor];
-    v70 = [v68 constraintGreaterThanOrEqualToAnchor:v69];
+    leadingAnchor15 = [(UIVisualEffectView *)self->_doneButtonBackgroundView leadingAnchor];
+    trailingAnchor13 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView trailingAnchor];
+    v70 = [leadingAnchor15 constraintGreaterThanOrEqualToAnchor:trailingAnchor13];
     doneButtonLeadingContraintSeparated = self->_doneButtonLeadingContraintSeparated;
     self->_doneButtonLeadingContraintSeparated = v70;
 
     LODWORD(v72) = 1144750080;
     [(NSLayoutConstraint *)self->_doneButtonLeadingContraintSeparated setPriority:v72];
-    v30 = [(UIVisualEffectView *)self->_doneButtonBackgroundView contentView];
-    v27 = [(UIButton *)self->_doneButton topAnchor];
-    v29 = [v30 topAnchor];
-    v33 = [v27 constraintEqualToAnchor:v29];
+    contentView2 = [(UIVisualEffectView *)self->_doneButtonBackgroundView contentView];
+    topAnchor11 = [(UIButton *)self->_doneButton topAnchor];
+    topAnchor12 = [contentView2 topAnchor];
+    v33 = [topAnchor11 constraintEqualToAnchor:topAnchor12];
     v135[0] = v33;
-    v28 = [(UIButton *)self->_doneButton bottomAnchor];
-    v26 = [v30 bottomAnchor];
-    v32 = [v28 constraintEqualToAnchor:v26];
+    bottomAnchor11 = [(UIButton *)self->_doneButton bottomAnchor];
+    bottomAnchor12 = [contentView2 bottomAnchor];
+    v32 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12];
     v135[1] = v32;
-    v31 = [(UIButton *)self->_doneButton leadingAnchor];
-    v131 = [v30 leadingAnchor];
-    v129 = [v31 constraintEqualToAnchor:?];
-    v135[2] = v129;
-    v25 = [(UIButton *)self->_doneButton trailingAnchor];
-    v127 = [v30 trailingAnchor];
-    v125 = [v25 constraintEqualToAnchor:?];
+    leadingAnchor16 = [(UIButton *)self->_doneButton leadingAnchor];
+    view3 = [contentView2 leadingAnchor];
+    bottomAnchor2 = [leadingAnchor16 constraintEqualToAnchor:?];
+    v135[2] = bottomAnchor2;
+    trailingAnchor14 = [(UIButton *)self->_doneButton trailingAnchor];
+    heightAnchor = [contentView2 trailingAnchor];
+    v125 = [trailingAnchor14 constraintEqualToAnchor:?];
     v135[3] = v125;
     v123 = [NSArray arrayWithObjects:v135 count:4];
     [v134 addObjectsFromArray:?];
@@ -532,8 +532,8 @@ LABEL_32:
 - (void)_setupViews
 {
   v3 = sub_10000FA08(self);
-  v4 = [(LookAroundFloatingButtonsViewController *)self view];
-  [v4 _setTouchInsets:{-10.0, -10.0, -10.0, -10.0}];
+  view = [(LookAroundFloatingButtonsViewController *)self view];
+  [view _setTouchInsets:{-10.0, -10.0, -10.0, -10.0}];
 
   v5 = [UIVisualEffectView alloc];
   v6 = [UIBlurEffect effectWithStyle:7];
@@ -546,8 +546,8 @@ LABEL_32:
   [(UIVisualEffectView *)self->_alternateButtonBackgroundView _setGroupName:v10];
 
   [(UIVisualEffectView *)self->_alternateButtonBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(LookAroundFloatingButtonsViewController *)self view];
-  [v11 addSubview:self->_alternateButtonBackgroundView];
+  view2 = [(LookAroundFloatingButtonsViewController *)self view];
+  [view2 addSubview:self->_alternateButtonBackgroundView];
 
   v12 = [UIButton buttonWithType:0];
   alternateButton = self->_alternateButton;
@@ -624,8 +624,8 @@ LABEL_32:
 
   [(UIButton *)self->_alternateButton addObserver:self forKeyPath:@"highlighted" options:1 context:0];
   [(UIButton *)self->_alternateButton setAccessibilityIdentifier:@"LookAroundFloatingButtonsAlternateButton"];
-  v27 = [(LookAroundFloatingButtonsViewController *)self view];
-  [v27 addSubview:self->_alternateButton];
+  view3 = [(LookAroundFloatingButtonsViewController *)self view];
+  [view3 addSubview:self->_alternateButton];
 
   v28 = objc_opt_new();
   separator = self->_separator;
@@ -634,8 +634,8 @@ LABEL_32:
   [(HairlineView *)self->_separator setTranslatesAutoresizingMaskIntoConstraints:0];
   [(HairlineView *)self->_separator setVertical:1];
   [(HairlineView *)self->_separator setHidden:v3 == 5];
-  v30 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView contentView];
-  [v30 addSubview:self->_separator];
+  contentView = [(UIVisualEffectView *)self->_alternateButtonBackgroundView contentView];
+  [contentView addSubview:self->_separator];
 
   v31 = [UIVisualEffectView alloc];
   v32 = [UIBlurEffect effectWithStyle:7];
@@ -648,8 +648,8 @@ LABEL_32:
   [(UIVisualEffectView *)self->_doneButtonBackgroundView _setGroupName:v36];
 
   [(UIVisualEffectView *)self->_doneButtonBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v37 = [(LookAroundFloatingButtonsViewController *)self view];
-  [v37 addSubview:self->_doneButtonBackgroundView];
+  view4 = [(LookAroundFloatingButtonsViewController *)self view];
+  [view4 addSubview:self->_doneButtonBackgroundView];
 
   v38 = [UIButton buttonWithType:0];
   doneButton = self->_doneButton;
@@ -657,8 +657,8 @@ LABEL_32:
 
   [(UIButton *)self->_doneButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_doneButton addTarget:self action:"didTapDoneButton:" forControlEvents:64];
-  v40 = [(UIButton *)self->_doneButton titleLabel];
-  [DynamicTypeWizard autorefreshLabel:v40 withFontProvider:&stru_101637248];
+  titleLabel = [(UIButton *)self->_doneButton titleLabel];
+  [DynamicTypeWizard autorefreshLabel:titleLabel withFontProvider:&stru_101637248];
 
   v41 = self->_doneButton;
   v42 = objc_opt_new();
@@ -691,8 +691,8 @@ LABEL_32:
 
   [(UIButton *)self->_doneButton addObserver:self forKeyPath:@"highlighted" options:1 context:0];
   [(UIButton *)self->_doneButton setAccessibilityIdentifier:@"LookAroundFloatingButtonsDoneButton"];
-  v50 = [(LookAroundFloatingButtonsViewController *)self view];
-  [v50 addSubview:self->_doneButton];
+  view5 = [(LookAroundFloatingButtonsViewController *)self view];
+  [view5 addSubview:self->_doneButton];
 
   if (v3 == 5)
   {
@@ -717,8 +717,8 @@ LABEL_32:
     [(UIButton *)self->_menuButton addObserver:self forKeyPath:@"highlighted" options:1 context:0];
     [(UIButton *)self->_menuButton setContextMenuInteractionEnabled:1];
     [(UIButton *)self->_menuButton setShowsMenuAsPrimaryAction:1];
-    v58 = [(LookAroundFloatingButtonsViewController *)self optionsMenu];
-    [(UIButton *)self->_menuButton setMenu:v58];
+    optionsMenu = [(LookAroundFloatingButtonsViewController *)self optionsMenu];
+    [(UIButton *)self->_menuButton setMenu:optionsMenu];
 
     [(UIButton *)self->_menuButton setUserInteractionEnabled:self->_showsMinimizedButton];
     v59 = 1.0;
@@ -729,8 +729,8 @@ LABEL_32:
 
     [(UIButton *)self->_menuButton setAlpha:v59];
     [(UIButton *)self->_menuButton setAccessibilityIdentifier:@"LookAroundFloatingButtonsMenuButton"];
-    v60 = [(LookAroundFloatingButtonsViewController *)self view];
-    [v60 addSubview:self->_menuButton];
+    view6 = [(LookAroundFloatingButtonsViewController *)self view];
+    [view6 addSubview:self->_menuButton];
   }
 
   v61 = [UIColor colorWithWhite:1.0 alpha:0.150000006];
@@ -756,8 +756,8 @@ LABEL_32:
       highlightedButtonBackgroundViewColor = 0;
     }
 
-    v4 = [(UIVisualEffectView *)self->_alternateButtonBackgroundView contentView];
-    [v4 setBackgroundColor:highlightedButtonBackgroundViewColor];
+    contentView = [(UIVisualEffectView *)self->_alternateButtonBackgroundView contentView];
+    [contentView setBackgroundColor:highlightedButtonBackgroundViewColor];
 
     if ([(UIButton *)self->_doneButton isHighlighted])
     {
@@ -769,17 +769,17 @@ LABEL_32:
       v5 = 0;
     }
 
-    v6 = [(UIVisualEffectView *)self->_doneButtonBackgroundView contentView];
-    [v6 setBackgroundColor:v5];
+    contentView2 = [(UIVisualEffectView *)self->_doneButtonBackgroundView contentView];
+    [contentView2 setBackgroundColor:v5];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"highlighted"] && (self->_alternateButton == v11 || self->_doneButton == v11 || self->_menuButton == v11))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"highlighted"] && (self->_alternateButton == objectCopy || self->_doneButton == objectCopy || self->_menuButton == objectCopy))
   {
     [(LookAroundFloatingButtonsViewController *)self updateTheme];
   }
@@ -788,40 +788,40 @@ LABEL_32:
   {
     v13.receiver = self;
     v13.super_class = LookAroundFloatingButtonsViewController;
-    [(LookAroundFloatingButtonsViewController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(LookAroundFloatingButtonsViewController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)setHidingLabels:(BOOL)a3
+- (void)setHidingLabels:(BOOL)labels
 {
-  self->_hidingLabels = a3;
-  v4 = [(LookAroundFloatingButtonsViewController *)self optionsMenu];
-  [(UIButton *)self->_menuButton setMenu:v4];
+  self->_hidingLabels = labels;
+  optionsMenu = [(LookAroundFloatingButtonsViewController *)self optionsMenu];
+  [(UIButton *)self->_menuButton setMenu:optionsMenu];
 }
 
-- (void)_setAlternateButtonEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)_setAlternateButtonEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  enabledCopy = enabled;
   [(LookAroundFloatingButtonsViewController *)self loadViewIfNeeded];
-  if (self->_alternateButtonEnabled != v5)
+  if (self->_alternateButtonEnabled != enabledCopy)
   {
-    self->_alternateButtonEnabled = v5;
+    self->_alternateButtonEnabled = enabledCopy;
     v7 = 0.300000012;
     v11 = 3221225472;
     v10 = _NSConcreteStackBlock;
     v12 = sub_100AC3E10;
     v13 = &unk_101661650;
-    if (v5)
+    if (enabledCopy)
     {
       v7 = 1.0;
     }
 
-    v14 = self;
+    selfCopy = self;
     v15 = v7;
     v8 = objc_retainBlock(&v10);
     v9 = v8;
-    if (v4)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:v8 animations:0.25, v10, v11, v12, v13];
     }
@@ -833,15 +833,15 @@ LABEL_32:
   }
 }
 
-- (void)setShowsMinimizedButton:(BOOL)a3
+- (void)setShowsMinimizedButton:(BOOL)button
 {
-  if (self->_showsMinimizedButton != a3)
+  if (self->_showsMinimizedButton != button)
   {
     v12 = v3;
     v13 = v4;
-    v5 = a3;
-    self->_showsMinimizedButton = a3;
-    if (a3)
+    buttonCopy = button;
+    self->_showsMinimizedButton = button;
+    if (button)
     {
       v7 = @"arrow.down.right.and.arrow.up.left";
     }
@@ -862,25 +862,25 @@ LABEL_32:
       v10[2] = sub_100AC3F84;
       v10[3] = &unk_101661AE0;
       v10[4] = self;
-      v11 = v5;
+      v11 = buttonCopy;
       [UIView animateWithDuration:v10 animations:0.2];
-      [(UIButton *)self->_menuButton setUserInteractionEnabled:v5];
-      [(NSLayoutConstraint *)self->_menuButtonHiddenConstraint setActive:v5 ^ 1];
-      [(NSLayoutConstraint *)self->_menuButtonVisibleConstraint setActive:v5];
+      [(UIButton *)self->_menuButton setUserInteractionEnabled:buttonCopy];
+      [(NSLayoutConstraint *)self->_menuButtonHiddenConstraint setActive:buttonCopy ^ 1];
+      [(NSLayoutConstraint *)self->_menuButtonVisibleConstraint setActive:buttonCopy];
     }
 
     [(LookAroundFloatingButtonsViewController *)self _setCornerRadii];
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = LookAroundFloatingButtonsViewController;
-  v6 = a4;
-  v7 = a3;
-  [(LookAroundFloatingButtonsViewController *)&v8 willTransitionToTraitCollection:v7 withTransitionCoordinator:v6];
-  [(LookAroundFloatingButtonsViewController *)self _updateButtonLayoutToTraitCollection:v7 withTransitionCoordinator:v6, v8.receiver, v8.super_class];
+  coordinatorCopy = coordinator;
+  collectionCopy = collection;
+  [(LookAroundFloatingButtonsViewController *)&v8 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
+  [(LookAroundFloatingButtonsViewController *)self _updateButtonLayoutToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy, v8.receiver, v8.super_class];
 }
 
 - (void)viewDidLayoutSubviews
@@ -890,8 +890,8 @@ LABEL_32:
   [(LookAroundFloatingButtonsViewController *)&v4 viewDidLayoutSubviews];
   if (_UISolariumEnabled())
   {
-    v3 = [(LookAroundFloatingButtonsViewController *)self traitCollection];
-    [(LookAroundFloatingButtonsViewController *)self _setCornerRadiiWithTraitCollection:v3];
+    traitCollection = [(LookAroundFloatingButtonsViewController *)self traitCollection];
+    [(LookAroundFloatingButtonsViewController *)self _setCornerRadiiWithTraitCollection:traitCollection];
   }
 }
 
@@ -909,8 +909,8 @@ LABEL_32:
   v3 = [[_LookAroundFloatingButtonsView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(LookAroundFloatingButtonsViewController *)self setView:v3];
 
-  v4 = [(LookAroundFloatingButtonsViewController *)self view];
-  [v4 setAccessibilityIdentifier:@"LookAroundFloatingButtonsView"];
+  view = [(LookAroundFloatingButtonsViewController *)self view];
+  [view setAccessibilityIdentifier:@"LookAroundFloatingButtonsView"];
 }
 
 - (void)dealloc
@@ -922,7 +922,7 @@ LABEL_32:
   [(LookAroundFloatingButtonsViewController *)&v3 dealloc];
 }
 
-- (LookAroundFloatingButtonsViewController)initWithShowsMinimizeButton:(BOOL)a3 groupButtonsIfNeeded:(BOOL)a4
+- (LookAroundFloatingButtonsViewController)initWithShowsMinimizeButton:(BOOL)button groupButtonsIfNeeded:(BOOL)needed
 {
   v7.receiver = self;
   v7.super_class = LookAroundFloatingButtonsViewController;
@@ -930,8 +930,8 @@ LABEL_32:
   if (result)
   {
     result->_alternateButtonEnabled = 1;
-    result->_showsMinimizedButton = a3;
-    result->_groupButtonsIfNeeded = a4;
+    result->_showsMinimizedButton = button;
+    result->_groupButtonsIfNeeded = needed;
   }
 
   return result;

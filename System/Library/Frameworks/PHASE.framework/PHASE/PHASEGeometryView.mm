@@ -1,9 +1,9 @@
 @interface PHASEGeometryView
-+ (void)geometryViewWithObject:(id)a3 index:(unint64_t)a4 callback:(id)a5;
++ (void)geometryViewWithObject:(id)object index:(unint64_t)index callback:(id)callback;
 + (void)geometryViewWithObject:index:callback:;
 - (PHASEEngine)engine;
 - (PHASEGeometryView)init;
-- (PHASEGeometryView)initWithEngine:(id)a3 handle:(Handle64)a4;
+- (PHASEGeometryView)initWithEngine:(id)engine handle:(Handle64)handle;
 @end
 
 @implementation PHASEGeometryView
@@ -15,42 +15,42 @@
   return [(PHASEGeometryView *)&v3 init];
 }
 
-- (PHASEGeometryView)initWithEngine:(id)a3 handle:(Handle64)a4
+- (PHASEGeometryView)initWithEngine:(id)engine handle:(Handle64)handle
 {
-  v6 = a3;
+  engineCopy = engine;
   v9.receiver = self;
   v9.super_class = PHASEGeometryView;
   v7 = [(PHASEGeometryView *)&v9 init];
-  objc_storeWeak(&v7->_engine, v6);
-  v7->_geoShapeHandle = a4;
+  objc_storeWeak(&v7->_engine, engineCopy);
+  v7->_geoShapeHandle = handle;
 
   return v7;
 }
 
-+ (void)geometryViewWithObject:(id)a3 index:(unint64_t)a4 callback:(id)a5
++ (void)geometryViewWithObject:(id)object index:(unint64_t)index callback:(id)callback
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (v7)
+  objectCopy = object;
+  callbackCopy = callback;
+  if (objectCopy)
   {
-    v9 = [v7 engine];
-    if (v9)
+    engine = [objectCopy engine];
+    if (engine)
     {
 
-      v10 = [v7 geoShapeHandles];
-      if ([v10 count] > a4)
+      geoShapeHandles = [objectCopy geoShapeHandles];
+      if ([geoShapeHandles count] > index)
       {
 
-        v11 = [v7 geoShapeHandles];
-        v12 = [v11 objectAtIndexedSubscript:a4];
+        geoShapeHandles2 = [objectCopy geoShapeHandles];
+        v12 = [geoShapeHandles2 objectAtIndexedSubscript:index];
         [v12 unsignedLongLongValue];
 
-        v13 = [v7 engine];
-        v14 = _Block_copy(v8);
-        [v7 engine];
+        engine2 = [objectCopy engine];
+        v14 = _Block_copy(callbackCopy);
+        [objectCopy engine];
         [objc_claimAutoreleasedReturnValue() implementation];
-        v15 = v13;
+        v15 = engine2;
         _Block_copy(v14);
         v16 = 0;
         operator new();
@@ -81,7 +81,7 @@
 
   if (*a2 == 2)
   {
-    v4 = [[PHASEVoxelTreeView alloc] initWithEngine:a1[2] shapeHandle:a1[1] voxelTreeInfo:*a3];
+    v4 = [[PHASEVoxelTreeView alloc] initWithEngine:self[2] shapeHandle:self[1] voxelTreeInfo:*a3];
     goto LABEL_7;
   }
 
@@ -92,12 +92,12 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v4 = [[PHASEMeshView alloc] initWithEngine:a1[2] handle:a1[1]];
+  v4 = [[PHASEMeshView alloc] initWithEngine:self[2] handle:self[1]];
 LABEL_7:
   v5 = v4;
 LABEL_8:
   v6 = v5;
-  (*(a1[3] + 16))();
+  (*(self[3] + 16))();
 }
 
 @end

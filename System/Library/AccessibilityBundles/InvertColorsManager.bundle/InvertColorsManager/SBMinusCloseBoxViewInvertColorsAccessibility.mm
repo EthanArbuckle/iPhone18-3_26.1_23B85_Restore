@@ -1,5 +1,5 @@
 @interface SBMinusCloseBoxViewInvertColorsAccessibility
-- (id)_axViewAncestorIsKindOf:(Class)a3;
+- (id)_axViewAncestorIsKindOf:(Class)of;
 - (void)_accessibilityLoadInvertColors;
 - (void)layoutSubviews;
 @end
@@ -38,12 +38,12 @@
   [(SBMinusCloseBoxViewInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 
-- (id)_axViewAncestorIsKindOf:(Class)a3
+- (id)_axViewAncestorIsKindOf:(Class)of
 {
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (of && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = self;
-    if (v4)
+    selfCopy = self;
+    if (selfCopy)
     {
       do
       {
@@ -52,21 +52,21 @@
           break;
         }
 
-        v5 = [(SBMinusCloseBoxViewInvertColorsAccessibility *)v4 superview];
+        superview = [(SBMinusCloseBoxViewInvertColorsAccessibility *)selfCopy superview];
 
-        v4 = v5;
+        selfCopy = superview;
       }
 
-      while (v5);
+      while (superview);
     }
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

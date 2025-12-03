@@ -5,10 +5,10 @@
 - (NSXPCConnection)clientConnection;
 - (VMClientWrapper)init;
 - (VMClientXPCProtocol)manager;
-- (id)asynchronousServerConnectionWithErrorHandler:(id)a3;
+- (id)asynchronousServerConnectionWithErrorHandler:(id)handler;
 - (void)dealloc;
-- (void)setClientConnection:(id)a3;
-- (void)setPingRetry:(BOOL)a3;
+- (void)setClientConnection:(id)connection;
+- (void)setPingRetry:(BOOL)retry;
 @end
 
 @implementation VMClientWrapper
@@ -20,7 +20,7 @@
     v6.receiver = self;
     v6.super_class = VMClientWrapper;
     self = [(VMClientWrapper *)&v6 init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
@@ -32,10 +32,10 @@
       _os_log_impl(&dword_2721BA000, v4, OS_LOG_TYPE_DEFAULT, "VMD is not available", buf, 2u);
     }
 
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (BOOL)isVMXPCAvailable
@@ -58,56 +58,56 @@ uint64_t __35__VMClientWrapper_isVMXPCAvailable__block_invoke()
 - (NSXPCConnection)clientConnection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  clientConnection = v2->_clientConnection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  clientConnection = selfCopy->_clientConnection;
   if (!clientConnection)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.voicemail.vmd" options:4096];
-    v5 = v2->_clientConnection;
-    v2->_clientConnection = v4;
+    v5 = selfCopy->_clientConnection;
+    selfCopy->_clientConnection = v4;
 
-    v6 = [objc_opt_class() voicemailClientXPCInterface];
-    [(NSXPCConnection *)v2->_clientConnection setExportedInterface:v6];
+    voicemailClientXPCInterface = [objc_opt_class() voicemailClientXPCInterface];
+    [(NSXPCConnection *)selfCopy->_clientConnection setExportedInterface:voicemailClientXPCInterface];
 
-    v7 = [objc_opt_class() voicemailServerXPCInterface];
-    [(NSXPCConnection *)v2->_clientConnection setRemoteObjectInterface:v7];
+    voicemailServerXPCInterface = [objc_opt_class() voicemailServerXPCInterface];
+    [(NSXPCConnection *)selfCopy->_clientConnection setRemoteObjectInterface:voicemailServerXPCInterface];
 
-    v8 = [(VMClientWrapper *)v2 manager];
-    [(NSXPCConnection *)v2->_clientConnection setExportedObject:v8];
+    manager = [(VMClientWrapper *)selfCopy manager];
+    [(NSXPCConnection *)selfCopy->_clientConnection setExportedObject:manager];
 
-    v2->_pingRetry = 0;
+    selfCopy->_pingRetry = 0;
     v9 = vm_framework_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = v2->_clientConnection;
+      v10 = selfCopy->_clientConnection;
       *buf = 138412290;
       v22 = v10;
       _os_log_impl(&dword_2721BA000, v9, OS_LOG_TYPE_DEFAULT, "XPC connection created %@", buf, 0xCu);
     }
 
-    objc_initWeak(buf, v2);
+    objc_initWeak(buf, selfCopy);
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __35__VMClientWrapper_clientConnection__block_invoke;
     v19[3] = &unk_279E3D0E0;
     objc_copyWeak(&v20, buf);
-    [(NSXPCConnection *)v2->_clientConnection setInvalidationHandler:v19];
+    [(NSXPCConnection *)selfCopy->_clientConnection setInvalidationHandler:v19];
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __35__VMClientWrapper_clientConnection__block_invoke_202;
     v17 = &unk_279E3D0E0;
     objc_copyWeak(&v18, buf);
-    [(NSXPCConnection *)v2->_clientConnection setInterruptionHandler:&v14];
-    [(NSXPCConnection *)v2->_clientConnection resume:v14];
+    [(NSXPCConnection *)selfCopy->_clientConnection setInterruptionHandler:&v14];
+    [(NSXPCConnection *)selfCopy->_clientConnection resume:v14];
     objc_destroyWeak(&v18);
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
-    clientConnection = v2->_clientConnection;
+    clientConnection = selfCopy->_clientConnection;
   }
 
   v11 = clientConnection;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -283,17 +283,17 @@ void __46__VMClientWrapper_voicemailServerXPCInterface__block_invoke()
   return WeakRetained;
 }
 
-- (id)asynchronousServerConnectionWithErrorHandler:(id)a3
+- (id)asynchronousServerConnectionWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(VMClientWrapper *)self clientConnection];
+  handlerCopy = handler;
+  clientConnection = [(VMClientWrapper *)self clientConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__VMClientWrapper_asynchronousServerConnectionWithErrorHandler___block_invoke;
   v9[3] = &unk_279E3D078;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [clientConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -413,27 +413,27 @@ void __35__VMClientWrapper_clientConnection__block_invoke_202(uint64_t a1)
   objc_sync_exit(v3);
 }
 
-- (void)setClientConnection:(id)a3
+- (void)setClientConnection:(id)connection
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_clientConnection != v6)
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_clientConnection != connectionCopy)
   {
-    objc_storeStrong(&v5->_clientConnection, a3);
+    objc_storeStrong(&selfCopy->_clientConnection, connection);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setPingRetry:(BOOL)a3
+- (void)setPingRetry:(BOOL)retry
 {
-  v3 = a3;
+  retryCopy = retry;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_pingRetry != v3)
+  if (obj->_pingRetry != retryCopy)
   {
-    obj->_pingRetry = v3;
+    obj->_pingRetry = retryCopy;
   }
 
   objc_sync_exit(obj);

@@ -1,7 +1,7 @@
 @interface AXMDataRegressionModelLinear
-- (double)fitDataWithModelParams:(double *)a3 finalParams:(double *)a4;
+- (double)fitDataWithModelParams:(double *)params finalParams:(double *)finalParams;
 - (id)modelDescription;
-- (id)modelFunctionStringForParameters:(double *)a3 significantFigures:(int)a4;
+- (id)modelFunctionStringForParameters:(double *)parameters significantFigures:(int)figures;
 - (id)partialDerivatives;
 @end
 
@@ -15,7 +15,7 @@
   return v3;
 }
 
-- (double)fitDataWithModelParams:(double *)a3 finalParams:(double *)a4
+- (double)fitDataWithModelParams:(double *)params finalParams:(double *)finalParams
 {
   v6 = [(AXMDataRegressionModel *)self x];
   v7 = [(AXMDataRegressionModel *)self y];
@@ -26,10 +26,10 @@
   v12 = mean(v6, v8);
   v13 = mean(v7, v8);
   v14 = sqrt(v11) * (v9 / sqrt(v10 * v11)) / sqrt(v10);
-  *a4 = v14;
-  a4[1] = v13 - v14 * v12;
+  *finalParams = v14;
+  finalParams[1] = v13 - v14 * v12;
   v15 = malloc_type_malloc(8 * v8, 0x100004000313F17uLL);
-  [(AXMDataRegressionModel *)self getResidualsVector:a4 result:v15];
+  [(AXMDataRegressionModel *)self getResidualsVector:finalParams result:v15];
   if (v8 < 1)
   {
     v21 = 0.0;
@@ -53,30 +53,30 @@
   self->super._error = v21;
   [(AXMDataRegressionModel *)self computeScore];
   self->_rSquared = rsquared(v6, v7, v8);
-  memcpy(self->super._bestFitParameters, a4, 8 * [(AXMDataRegressionModelLinear *)self modelParameterCount]);
+  memcpy(self->super._bestFitParameters, finalParams, 8 * [(AXMDataRegressionModelLinear *)self modelParameterCount]);
   free(v15);
   return v21;
 }
 
 - (id)partialDerivatives
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  [v2 addObject:&__block_literal_global_40_2];
-  [v2 addObject:&__block_literal_global_42_2];
-  v3 = [v2 copy];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:&__block_literal_global_40_2];
+  [array addObject:&__block_literal_global_42_2];
+  v3 = [array copy];
 
   return v3;
 }
 
-- (id)modelFunctionStringForParameters:(double *)a3 significantFigures:(int)a4
+- (id)modelFunctionStringForParameters:(double *)parameters significantFigures:(int)figures
 {
   v6 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v6 setUsesSignificantDigits:1];
-  [v6 setMaximumSignificantDigits:a4];
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:*a3];
+  [v6 setMaximumSignificantDigits:figures];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:*parameters];
   v8 = [v6 stringFromNumber:v7];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3[1]];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:parameters[1]];
   v10 = [v6 stringFromNumber:v9];
 
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"y = %@x + %@", v8, v10];

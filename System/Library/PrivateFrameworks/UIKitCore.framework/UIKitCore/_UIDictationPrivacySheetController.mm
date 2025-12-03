@@ -1,18 +1,18 @@
 @interface _UIDictationPrivacySheetController
-- (_UIDictationPrivacySheetController)initWithType:(int64_t)a3;
+- (_UIDictationPrivacySheetController)initWithType:(int64_t)type;
 - (void)dismiss;
-- (void)setPresentationDelegate:(id)a3;
+- (void)setPresentationDelegate:(id)delegate;
 @end
 
 @implementation _UIDictationPrivacySheetController
 
-- (_UIDictationPrivacySheetController)initWithType:(int64_t)a3
+- (_UIDictationPrivacySheetController)initWithType:(int64_t)type
 {
   v6 = objc_alloc_init(UIViewController);
   if (!v6)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"UIDictationController.m" lineNumber:1323 description:@"Failed to create UIViewController"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDictationController.m" lineNumber:1323 description:@"Failed to create UIViewController"];
   }
 
   v23.receiver = self;
@@ -32,8 +32,8 @@
 
     +[UIDictationUtilities _isUsingLargeFormatDictationUI];
     [(UIViewController *)v7 setModalPresentationStyle:v8];
-    v7->_sheetType = a3;
-    if (a3 == 1)
+    v7->_sheetType = type;
+    if (type == 1)
     {
       v29 = 0;
       v30 = &v29;
@@ -92,9 +92,9 @@
       dataSharingOptInPresenter = v7->_dataSharingOptInPresenter;
       v7->_dataSharingOptInPresenter = v15;
 
-      v17 = [(VTUIDictationDataSharingOptInPresenter *)v7->_dataSharingOptInPresenter dataSharingOptInView];
-      v18 = [(UIViewController *)v6 view];
-      [v18 addSubview:v17];
+      dataSharingOptInView = [(VTUIDictationDataSharingOptInPresenter *)v7->_dataSharingOptInPresenter dataSharingOptInView];
+      view = [(UIViewController *)v6 view];
+      [view addSubview:dataSharingOptInView];
     }
   }
 
@@ -103,21 +103,21 @@
 
 - (void)dismiss
 {
-  v3 = [(_UIDictationPrivacySheetController *)self privacyDelegate];
+  privacyDelegate = [(_UIDictationPrivacySheetController *)self privacyDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_UIDictationPrivacySheetController *)self privacyDelegate];
-    [v5 dictationPrivacySheetControllerDidFinish:self];
+    privacyDelegate2 = [(_UIDictationPrivacySheetController *)self privacyDelegate];
+    [privacyDelegate2 dictationPrivacySheetControllerDidFinish:self];
   }
 }
 
-- (void)setPresentationDelegate:(id)a3
+- (void)setPresentationDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(_UIDictationPrivacySheetController *)self dataSharingOptInPresenter];
-  [v5 setPresentationDelegate:v4];
+  delegateCopy = delegate;
+  dataSharingOptInPresenter = [(_UIDictationPrivacySheetController *)self dataSharingOptInPresenter];
+  [dataSharingOptInPresenter setPresentationDelegate:delegateCopy];
 }
 
 @end

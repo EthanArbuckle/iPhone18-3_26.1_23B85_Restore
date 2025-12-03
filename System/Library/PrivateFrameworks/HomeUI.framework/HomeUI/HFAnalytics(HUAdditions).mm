@@ -19,12 +19,12 @@
       v7 = HFLogForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v73 delegate];
-        v13 = [v74 item];
+        delegate = [v73 delegate];
+        item = [v74 item];
         *buf = 138412546;
-        *&buf[4] = v12;
+        *&buf[4] = delegate;
         *&buf[12] = 2112;
-        *&buf[14] = v13;
+        *&buf[14] = item;
         _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@: User long-pressed item: %@", buf, 0x16u);
       }
 
@@ -33,12 +33,12 @@
       v7 = HFLogForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v73 delegate];
-        v11 = [v74 item];
+        delegate2 = [v73 delegate];
+        item2 = [v74 item];
         *buf = 138412546;
-        *&buf[4] = v10;
+        *&buf[4] = delegate2;
         *&buf[12] = 2112;
-        *&buf[14] = v11;
+        *&buf[14] = item2;
         _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@: User double-tapped item: %@", buf, 0x16u);
       }
 
@@ -47,12 +47,12 @@
       v7 = HFLogForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [v73 delegate];
-        v9 = [v74 item];
+        delegate3 = [v73 delegate];
+        item3 = [v74 item];
         *buf = 138412546;
-        *&buf[4] = v8;
+        *&buf[4] = delegate3;
         *&buf[12] = 2112;
-        *&buf[14] = v9;
+        *&buf[14] = item3;
         _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@: User tapped item: %@", buf, 0x16u);
       }
 
@@ -65,36 +65,36 @@ LABEL_12:
   NSLog(&cfstr_InvalidInterac.isa, v14);
 
 LABEL_14:
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v15 setObject:v16 forKeyedSubscript:*MEMORY[0x277D13528]];
+  [dictionary setObject:v16 forKeyedSubscript:*MEMORY[0x277D13528]];
 
-  v17 = [v74 item];
-  [v15 setObject:v17 forKeyedSubscript:*MEMORY[0x277D13538]];
-  v18 = [v74 sourceViewController];
+  item4 = [v74 item];
+  [dictionary setObject:item4 forKeyedSubscript:*MEMORY[0x277D13538]];
+  sourceViewController = [v74 sourceViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v18 topViewController];
-    v20 = v19;
-    if (v19)
+    topViewController = [sourceViewController topViewController];
+    v20 = topViewController;
+    if (topViewController)
     {
-      v21 = v19;
+      v21 = topViewController;
     }
 
     else
     {
-      v21 = v18;
+      v21 = sourceViewController;
     }
 
     v22 = v21;
 
-    v18 = v22;
+    sourceViewController = v22;
   }
 
-  [v15 setObject:v18 forKeyedSubscript:*MEMORY[0x277D13588]];
+  [dictionary setObject:sourceViewController forKeyedSubscript:*MEMORY[0x277D13588]];
   objc_opt_class();
-  v23 = v18;
+  v23 = sourceViewController;
   if (objc_opt_isKindOfClass())
   {
     v24 = v23;
@@ -123,9 +123,9 @@ LABEL_14:
 
   if (v72)
   {
-    v27 = [v72 context];
-    v28 = [v27 typeDescriptionForAnalytics];
-    [v15 setObject:v28 forKeyedSubscript:*MEMORY[0x277D134F8]];
+    context = [v72 context];
+    typeDescriptionForAnalytics = [context typeDescriptionForAnalytics];
+    [dictionary setObject:typeDescriptionForAnalytics forKeyedSubscript:*MEMORY[0x277D134F8]];
   }
 
   else
@@ -135,27 +135,27 @@ LABEL_14:
       goto LABEL_30;
     }
 
-    v27 = [v71 contextTypeDescriptionForAnalytics];
-    [v15 setObject:v27 forKeyedSubscript:*MEMORY[0x277D134F8]];
+    context = [v71 contextTypeDescriptionForAnalytics];
+    [dictionary setObject:context forKeyedSubscript:*MEMORY[0x277D134F8]];
   }
 
 LABEL_30:
-  v29 = [v74 tappedArea];
-  [v15 setObject:v29 forKeyedSubscript:*MEMORY[0x277D135C0]];
+  tappedArea = [v74 tappedArea];
+  [dictionary setObject:tappedArea forKeyedSubscript:*MEMORY[0x277D135C0]];
 
   v30 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v73, "isEditing")}];
-  [v15 setObject:v30 forKeyedSubscript:*MEMORY[0x277D13530]];
+  [dictionary setObject:v30 forKeyedSubscript:*MEMORY[0x277D13530]];
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
   v82 = __Block_byref_object_copy__19;
   v83 = __Block_byref_object_dispose__19;
-  v31 = [v17 latestResults];
-  v84 = [v31 objectForKeyedSubscript:*MEMORY[0x277D14058]];
+  latestResults = [item4 latestResults];
+  v84 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14058]];
 
   objc_opt_class();
-  v32 = v17;
+  v32 = item4;
   if (objc_opt_isKindOfClass())
   {
     v33 = v32;
@@ -170,18 +170,18 @@ LABEL_30:
 
   if (v34)
   {
-    v35 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v36 = [v35 allHomesFuture];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    allHomesFuture = [mEMORY[0x277D146E8] allHomesFuture];
     v75[0] = MEMORY[0x277D85DD0];
     v75[1] = 3221225472;
     v75[2] = __113__HFAnalytics_HUAdditions__logAndSendTileInteractionEventOfType_withPresentationContext_presentationCoordinator___block_invoke;
     v75[3] = &unk_277DBF740;
     v80 = buf;
     v76 = v32;
-    v77 = v15;
+    v77 = dictionary;
     v78 = v34;
     v79 = v74;
-    v37 = [v36 addCompletionBlock:v75];
+    v37 = [allHomesFuture addCompletionBlock:v75];
 
     v38 = v76;
   }
@@ -205,10 +205,10 @@ LABEL_30:
     if (v70)
     {
       objc_opt_class();
-      v41 = [v70 accessoryRepresentableObject];
+      accessoryRepresentableObject = [v70 accessoryRepresentableObject];
       if (objc_opt_isKindOfClass())
       {
-        v42 = v41;
+        v42 = accessoryRepresentableObject;
       }
 
       else
@@ -219,8 +219,8 @@ LABEL_30:
       v43 = v42;
 
       v44 = MEMORY[0x277CD1650];
-      v45 = [v43 hf_categoryOrPrimaryServiceType];
-      v46 = [v44 hf_getUserFriendlyDescriptionKey:v45];
+      hf_categoryOrPrimaryServiceType = [v43 hf_categoryOrPrimaryServiceType];
+      v46 = [v44 hf_getUserFriendlyDescriptionKey:hf_categoryOrPrimaryServiceType];
 
       if ([v46 length])
       {
@@ -250,11 +250,11 @@ LABEL_30:
     if (v69)
     {
       v54 = MEMORY[0x277CD1D90];
-      v55 = [v69 serviceGroup];
-      v56 = [v55 services];
-      v57 = [v56 firstObject];
-      v58 = [v57 serviceType];
-      v59 = [v54 hf_getUserFriendlyDescriptionKey:v58];
+      serviceGroup = [v69 serviceGroup];
+      services = [serviceGroup services];
+      firstObject = [services firstObject];
+      serviceType = [firstObject serviceType];
+      v59 = [v54 hf_getUserFriendlyDescriptionKey:serviceType];
 
       if ([v59 length])
       {
@@ -267,13 +267,13 @@ LABEL_30:
       }
     }
 
-    [v15 na_safeSetObject:*(*&buf[8] + 40) forKey:*MEMORY[0x277D13540]];
+    [dictionary na_safeSetObject:*(*&buf[8] + 40) forKey:*MEMORY[0x277D13540]];
     v65 = MEMORY[0x277D143E0];
-    v66 = [v74 home];
-    [v65 createAndSendWithData:v15 inHome:v66 presentationContext:v74];
+    home = [v74 home];
+    [v65 createAndSendWithData:dictionary inHome:home presentationContext:v74];
 
-    v67 = [v74 tappedArea];
-    LODWORD(v65) = [v67 isEqual:@"HUTileCellTappableAreaStateToggleButton"];
+    tappedArea2 = [v74 tappedArea];
+    LODWORD(v65) = [tappedArea2 isEqual:@"HUTileCellTappableAreaStateToggleButton"];
 
     if (v65)
     {
@@ -293,8 +293,8 @@ LABEL_30:
   v10 = MEMORY[0x277CBEB38];
   v11 = a5;
   v12 = a3;
-  v13 = [v10 dictionary];
-  [v13 na_safeSetObject:v12 forKey:*MEMORY[0x277D13538]];
+  dictionary = [v10 dictionary];
+  [dictionary na_safeSetObject:v12 forKey:*MEMORY[0x277D13538]];
 
   v14 = v9;
   objc_opt_class();
@@ -311,13 +311,13 @@ LABEL_30:
 
   v17 = v16;
 
-  v18 = v15;
+  topViewController = v15;
   if (v17)
   {
-    v18 = [v17 topViewController];
+    topViewController = [v17 topViewController];
   }
 
-  [v13 na_safeSetObject:v18 forKey:*MEMORY[0x277D13588]];
+  [dictionary na_safeSetObject:topViewController forKey:*MEMORY[0x277D13588]];
   objc_opt_class();
   v28 = v15;
   if (objc_opt_isKindOfClass())
@@ -337,9 +337,9 @@ LABEL_30:
     v21 = MEMORY[0x277CCACA8];
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    v24 = [v20 topic];
-    v25 = [v24 topicNameLocalizationKey];
-    v26 = [v21 stringWithFormat:@"%@-%@", v23, v25];
+    topic = [v20 topic];
+    topicNameLocalizationKey = [topic topicNameLocalizationKey];
+    v26 = [v21 stringWithFormat:@"%@-%@", v23, topicNameLocalizationKey];
   }
 
   else
@@ -347,12 +347,12 @@ LABEL_30:
     v26 = 0;
   }
 
-  [v13 na_safeSetObject:v26 forKey:*MEMORY[0x277D13590]];
+  [dictionary na_safeSetObject:v26 forKey:*MEMORY[0x277D13590]];
   v27 = [MEMORY[0x277CCABB0] numberWithBool:a4];
-  [v13 na_safeSetObject:v27 forKey:*MEMORY[0x277D135A0]];
+  [dictionary na_safeSetObject:v27 forKey:*MEMORY[0x277D135A0]];
 
-  [v13 na_safeSetObject:v11 forKey:*MEMORY[0x277D135A8]];
-  [MEMORY[0x277D143D8] sendEvent:40 withData:v13];
+  [dictionary na_safeSetObject:v11 forKey:*MEMORY[0x277D135A8]];
+  [MEMORY[0x277D143D8] sendEvent:40 withData:dictionary];
 }
 
 + (void)sendBannerInteractionforItem:()HUAdditions tappedBannerItemOverrideClassName:hiddenBannerEvents:
@@ -364,10 +364,10 @@ LABEL_30:
   v11 = objc_opt_new();
   v33 = *MEMORY[0x277D13538];
   [v11 na_safeSetObject:v8 forKey:?];
-  v34 = a1;
+  selfCopy = self;
   v36 = v8;
   v29 = v9;
-  v35 = [a1 _overrideBannerItemClassName:v8 withOverrideClassName:v9];
+  v35 = [self _overrideBannerItemClassName:v8 withOverrideClassName:v9];
   v32 = *MEMORY[0x277D13540];
   [v11 na_safeSetObject:? forKey:?];
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
@@ -405,7 +405,7 @@ LABEL_30:
         v22 = *(*(&v37 + 1) + 8 * v21);
         v23 = objc_opt_new();
         [v23 na_safeSetObject:v22 forKey:v33];
-        v24 = [v34 _overrideBannerItemClassName:v22 withOverrideClassName:0];
+        v24 = [selfCopy _overrideBannerItemClassName:v22 withOverrideClassName:0];
         [v23 na_safeSetObject:v24 forKey:v32];
         [v23 na_safeSetObject:v36 forKey:v19];
         [v23 na_safeSetObject:v35 forKey:v20];
@@ -444,8 +444,8 @@ LABEL_30:
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v5 latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13F68]];
+  latestResults = [v5 latestResults];
+  v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F68]];
 
   if ([v6 length])
   {

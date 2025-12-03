@@ -1,27 +1,27 @@
 @interface CKTranscriptHighlightedMessageScrollContext
-- (CKTranscriptHighlightedMessageScrollContext)initWithMessageGUID:(id)a3 messagePartIndex:(int64_t)a4 viewToAlignWith:(id)a5 allowOverScroll:(BOOL)a6 scrollPosition:(unint64_t)a7;
+- (CKTranscriptHighlightedMessageScrollContext)initWithMessageGUID:(id)d messagePartIndex:(int64_t)index viewToAlignWith:(id)with allowOverScroll:(BOOL)scroll scrollPosition:(unint64_t)position;
 - (UIView)viewToAlignWith;
 @end
 
 @implementation CKTranscriptHighlightedMessageScrollContext
 
-- (CKTranscriptHighlightedMessageScrollContext)initWithMessageGUID:(id)a3 messagePartIndex:(int64_t)a4 viewToAlignWith:(id)a5 allowOverScroll:(BOOL)a6 scrollPosition:(unint64_t)a7
+- (CKTranscriptHighlightedMessageScrollContext)initWithMessageGUID:(id)d messagePartIndex:(int64_t)index viewToAlignWith:(id)with allowOverScroll:(BOOL)scroll scrollPosition:(unint64_t)position
 {
-  v12 = a3;
-  v13 = a5;
+  dCopy = d;
+  withCopy = with;
   v18.receiver = self;
   v18.super_class = CKTranscriptHighlightedMessageScrollContext;
   v14 = [(CKTranscriptHighlightedMessageScrollContext *)&v18 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [dCopy copy];
     messageGUID = v14->_messageGUID;
     v14->_messageGUID = v15;
 
-    v14->_messagePartIndex = a4;
-    objc_storeWeak(&v14->_viewToAlignWith, v13);
-    v14->_allowOverScroll = a6;
-    v14->_scrollPosition = a7;
+    v14->_messagePartIndex = index;
+    objc_storeWeak(&v14->_viewToAlignWith, withCopy);
+    v14->_allowOverScroll = scroll;
+    v14->_scrollPosition = position;
   }
 
   return v14;

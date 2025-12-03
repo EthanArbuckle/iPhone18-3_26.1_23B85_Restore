@@ -1,93 +1,93 @@
 @interface RTPredicateValidator
-+ (BOOL)validatePredicate:(id)a3 allowedKeys:(id)a4 error:(id *)a5;
-- (BOOL)validateWithError:(id *)a3;
-- (RTPredicateValidator)initWithPredicate:(id)a3 allowedKeys:(id)a4;
-- (void)visitPredicateExpression:(id)a3;
++ (BOOL)validatePredicate:(id)predicate allowedKeys:(id)keys error:(id *)error;
+- (BOOL)validateWithError:(id *)error;
+- (RTPredicateValidator)initWithPredicate:(id)predicate allowedKeys:(id)keys;
+- (void)visitPredicateExpression:(id)expression;
 @end
 
 @implementation RTPredicateValidator
 
-+ (BOOL)validatePredicate:(id)a3 allowedKeys:(id)a4 error:(id *)a5
++ (BOOL)validatePredicate:(id)predicate allowedKeys:(id)keys error:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithPredicate:v9 allowedKeys:v8];
+  keysCopy = keys;
+  predicateCopy = predicate;
+  v10 = [[self alloc] initWithPredicate:predicateCopy allowedKeys:keysCopy];
 
   if (v10)
   {
-    LOBYTE(a5) = [v10 validateWithError:a5];
+    LOBYTE(error) = [v10 validateWithError:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     v13 = *MEMORY[0x277CCA450];
     v14[0] = @"Predicate was invalid because it was nil.";
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v11];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v11];
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a5;
+  return error;
 }
 
-- (RTPredicateValidator)initWithPredicate:(id)a3 allowedKeys:(id)a4
+- (RTPredicateValidator)initWithPredicate:(id)predicate allowedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  predicateCopy = predicate;
+  keysCopy = keys;
+  if (predicateCopy)
   {
     v15.receiver = self;
     v15.super_class = RTPredicateValidator;
     v8 = [(RTPredicateValidator *)&v15 init];
     if (v8)
     {
-      v9 = [v6 copy];
+      v9 = [predicateCopy copy];
       predicate = v8->_predicate;
       v8->_predicate = v9;
 
-      if (v7)
+      if (keysCopy)
       {
-        v11 = [MEMORY[0x277CBEB98] setWithArray:v7];
+        v11 = [MEMORY[0x277CBEB98] setWithArray:keysCopy];
         allowedKeys = v8->_allowedKeys;
         v8->_allowedKeys = v11;
       }
     }
 
     self = v8;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
   [(RTPredicateValidator *)self setValidated:1];
-  v5 = [(RTPredicateValidator *)self predicate];
-  if (v5)
+  predicate = [(RTPredicateValidator *)self predicate];
+  if (predicate)
   {
-    v6 = v5;
-    v7 = [(RTPredicateValidator *)self allowedKeys];
+    v6 = predicate;
+    allowedKeys = [(RTPredicateValidator *)self allowedKeys];
 
-    if (v7)
+    if (allowedKeys)
     {
-      v8 = [(RTPredicateValidator *)self predicate];
-      [v8 acceptVisitor:self flags:3];
+      predicate2 = [(RTPredicateValidator *)self predicate];
+      [predicate2 acceptVisitor:self flags:3];
 
-      if (a3)
+      if (error)
       {
-        v9 = [(RTPredicateValidator *)self error];
+        error = [(RTPredicateValidator *)self error];
 
-        if (v9)
+        if (error)
         {
-          *a3 = [(RTPredicateValidator *)self error];
+          *error = [(RTPredicateValidator *)self error];
         }
       }
     }
@@ -96,10 +96,10 @@
   return [(RTPredicateValidator *)self validated];
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  expressionCopy = expression;
   if (![(RTPredicateValidator *)self validated])
   {
     goto LABEL_32;
@@ -107,16 +107,16 @@
 
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
   v29 = [v5 initWithObjects:{*MEMORY[0x277CCA020], *MEMORY[0x277CCA058], *MEMORY[0x277CCA098], *MEMORY[0x277CCA0A0], *MEMORY[0x277CCA0A8], *MEMORY[0x277CCA4B0], *MEMORY[0x277CCA570], *MEMORY[0x277CCA698], *MEMORY[0x277CCA830], *MEMORY[0x277CCA838], *MEMORY[0x277CCA840], 0}];
-  v6 = [v4 expressionType];
-  v28 = v4;
-  if (v6 != 10)
+  expressionType = [expressionCopy expressionType];
+  v28 = expressionCopy;
+  if (expressionType != 10)
   {
-    if (v6 == 4)
+    if (expressionType == 4)
     {
       v21 = MEMORY[0x277CCA9C0];
-      v22 = [v4 function];
-      v23 = [v4 arguments];
-      v24 = [v21 expressionForFunction:v22 arguments:v23];
+      function = [expressionCopy function];
+      arguments = [expressionCopy arguments];
+      v24 = [v21 expressionForFunction:function arguments:arguments];
 
       if (!v24)
       {
@@ -130,13 +130,13 @@
       goto LABEL_31;
     }
 
-    if (v6 != 3)
+    if (expressionType != 3)
     {
       goto LABEL_31;
     }
   }
 
-  v27 = [v4 keyPath];
+  keyPath = [expressionCopy keyPath];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -147,8 +147,8 @@
     goto LABEL_30;
   }
 
-  v7 = [v4 keyPath];
-  v8 = [v7 componentsSeparatedByString:@"."];
+  keyPath2 = [expressionCopy keyPath];
+  v8 = [keyPath2 componentsSeparatedByString:@"."];
 
   v32 = 0u;
   v33 = 0u;
@@ -189,8 +189,8 @@
 
       else
       {
-        v16 = [(RTPredicateValidator *)self allowedKeys];
-        v17 = [v16 containsObject:v14];
+        allowedKeys = [(RTPredicateValidator *)self allowedKeys];
+        v17 = [allowedKeys containsObject:v14];
 
         if ((v17 & 1) == 0)
         {
@@ -228,7 +228,7 @@ LABEL_23:
 LABEL_30:
 LABEL_31:
 
-  v4 = v28;
+  expressionCopy = v28;
 LABEL_32:
 }
 

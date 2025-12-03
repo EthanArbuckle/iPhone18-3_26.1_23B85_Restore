@@ -1,19 +1,19 @@
 @interface CRKIfaddrs
-- (CRKIfaddrs)initWithIfaddrs:(ifaddrs *)a3;
+- (CRKIfaddrs)initWithIfaddrs:(ifaddrs *)ifaddrs;
 - (CRKIfaddrs)next;
 - (NSString)IPAddress;
 @end
 
 @implementation CRKIfaddrs
 
-- (CRKIfaddrs)initWithIfaddrs:(ifaddrs *)a3
+- (CRKIfaddrs)initWithIfaddrs:(ifaddrs *)ifaddrs
 {
   v5.receiver = self;
   v5.super_class = CRKIfaddrs;
   result = [(CRKIfaddrs *)&v5 init];
   if (result)
   {
-    result->mIfaddrs = a3;
+    result->mIfaddrs = ifaddrs;
   }
 
   return result;

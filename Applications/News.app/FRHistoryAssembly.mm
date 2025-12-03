@@ -1,6 +1,6 @@
 @interface FRHistoryAssembly
 - (FRHistoryAssembly)init;
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation FRHistoryAssembly
@@ -12,10 +12,10 @@
   return [(FRHistoryAssembly *)&v3 init];
 }
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v4 = [a3 publicContainer];
-  v3 = [v4 registerProtocol:&OBJC_PROTOCOL___TSClearDataManager factory:&stru_1000C2288];
+  publicContainer = [registry publicContainer];
+  v3 = [publicContainer registerProtocol:&OBJC_PROTOCOL___TSClearDataManager factory:&stru_1000C2288];
 }
 
 @end

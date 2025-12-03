@@ -1,7 +1,7 @@
 @interface AppleHPMUserClientManager
 + (id)sharedInstance;
 - (AppleHPMUserClientManager)init;
-- (id)userClientForRouterID:(unsigned __int8)a3 andRoute:(unint64_t)a4;
+- (id)userClientForRouterID:(unsigned __int8)d andRoute:(unint64_t)route;
 - (int)findUserClients;
 - (void)dealloc;
 @end
@@ -10,16 +10,16 @@
 
 + (id)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!qword_10002B450)
   {
-    v3 = objc_alloc_init(v2);
+    v3 = objc_alloc_init(selfCopy);
     v4 = qword_10002B450;
     qword_10002B450 = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = qword_10002B450;
 
@@ -50,15 +50,15 @@
   [(AppleHPMUserClientManager *)&v3 dealloc];
 }
 
-- (id)userClientForRouterID:(unsigned __int8)a3 andRoute:(unint64_t)a4
+- (id)userClientForRouterID:(unsigned __int8)d andRoute:(unint64_t)route
 {
-  v5 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(AppleHPMUserClientManager *)self userClientSet];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  userClientSet = [(AppleHPMUserClientManager *)self userClientSet];
+  v7 = [userClientSet countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -69,18 +69,18 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(userClientSet);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 routerID] == v5 && objc_msgSend(v11, "routeString") == a4)
+        if ([v11 routerID] == dCopy && objc_msgSend(v11, "routeString") == route)
         {
           v12 = v11;
           goto LABEL_12;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [userClientSet countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;

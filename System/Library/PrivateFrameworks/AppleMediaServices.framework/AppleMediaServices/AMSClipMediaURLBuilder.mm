@@ -1,5 +1,5 @@
 @interface AMSClipMediaURLBuilder
-- (AMSClipMediaURLBuilder)initWithBundleID:(id)a3 bag:(id)a4;
+- (AMSClipMediaURLBuilder)initWithBundleID:(id)d bag:(id)bag;
 - (id)_devicePlatform;
 - (id)_hostPromise;
 - (id)_pathPromise;
@@ -9,18 +9,18 @@
 
 @implementation AMSClipMediaURLBuilder
 
-- (AMSClipMediaURLBuilder)initWithBundleID:(id)a3 bag:(id)a4
+- (AMSClipMediaURLBuilder)initWithBundleID:(id)d bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = AMSClipMediaURLBuilder;
   v9 = [(AMSClipMediaURLBuilder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleID, a3);
-    objc_storeStrong(&v10->_bag, a4);
+    objc_storeStrong(&v9->_bundleID, d);
+    objc_storeStrong(&v10->_bag, bag);
   }
 
   return v10;
@@ -29,12 +29,12 @@
 - (id)build
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  v3 = [(AMSClipMediaURLBuilder *)self _hostPromise];
-  v4 = [(AMSClipMediaURLBuilder *)self _pathPromise];
-  v5 = [(AMSClipMediaURLBuilder *)self _queryPromise];
-  v10[0] = v3;
-  v10[1] = v4;
-  v10[2] = v5;
+  _hostPromise = [(AMSClipMediaURLBuilder *)self _hostPromise];
+  _pathPromise = [(AMSClipMediaURLBuilder *)self _pathPromise];
+  _queryPromise = [(AMSClipMediaURLBuilder *)self _queryPromise];
+  v10[0] = _hostPromise;
+  v10[1] = _pathPromise;
+  v10[2] = _queryPromise;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:3];
   v7 = [AMSPromise promiseWithAll:v6];
 
@@ -81,23 +81,23 @@ id __31__AMSClipMediaURLBuilder_build__block_invoke(uint64_t a1, void *a2)
   v2 = [(AMSClipMediaURLBuilder *)self bag];
   v3 = [v2 URLForKey:@"apps-media-api-host"];
 
-  v4 = [v3 valuePromise];
+  valuePromise = [v3 valuePromise];
 
-  return v4;
+  return valuePromise;
 }
 
 - (id)_pathPromise
 {
   v3 = [(AMSClipMediaURLBuilder *)self bag];
   v4 = [v3 stringForKey:@"countryCode"];
-  v5 = [v4 valuePromise];
+  valuePromise = [v4 valuePromise];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__AMSClipMediaURLBuilder__pathPromise__block_invoke;
   v8[3] = &unk_1E73B4E20;
   v8[4] = self;
-  v6 = [v5 thenWithBlock:v8];
+  v6 = [valuePromise thenWithBlock:v8];
 
   return v6;
 }
@@ -169,14 +169,14 @@ id __38__AMSClipMediaURLBuilder__pathPromise__block_invoke(uint64_t a1, void *a2
 {
   v3 = [(AMSClipMediaURLBuilder *)self bag];
   v4 = [v3 stringForKey:@"language-tag"];
-  v5 = [v4 valuePromise];
+  valuePromise = [v4 valuePromise];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__AMSClipMediaURLBuilder__queryPromise__block_invoke;
   v8[3] = &unk_1E73B4E20;
   v8[4] = self;
-  v6 = [v5 thenWithBlock:v8];
+  v6 = [valuePromise thenWithBlock:v8];
 
   return v6;
 }

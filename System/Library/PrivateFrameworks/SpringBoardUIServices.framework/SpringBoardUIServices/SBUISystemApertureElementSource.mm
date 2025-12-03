@@ -1,15 +1,15 @@
 @interface SBUISystemApertureElementSource
-+ (void)_addSource:(id)a3;
-+ (void)_removeSource:(id)a3;
++ (void)_addSource:(id)source;
++ (void)_removeSource:(id)source;
 - (BOOL)_elementIsInAWindow;
 - (BOOL)_elementRequiresConstraintBasedLayout;
 - (BOOL)_elementSupportsDynamicResizing;
-- (BOOL)_handleSceneResizeAction:(id)a3;
+- (BOOL)_handleSceneResizeAction:(id)action;
 - (BOOL)_isPresentationPossibleAndSceneForeground;
 - (BOOL)_isPresentedAsBannerInsteadOfSystemAperture;
 - (BOOL)_mustHaveUniqueElementIdentity;
-- (BOOL)_performElementUpdateWithActions:(id)a3;
-- (BOOL)_performElementUpdateWithActionsIfPossible:(id)a3;
+- (BOOL)_performElementUpdateWithActions:(id)actions;
+- (BOOL)_performElementUpdateWithActionsIfPossible:(id)possible;
 - (BOOL)isBeingRemoved;
 - (CGRect)anchorFrameForDetachedMinimalView;
 - (CGRect)anchorFrameForLeadingView;
@@ -21,54 +21,54 @@
 - (SBUISystemApertureElementConfiguration)mutableConfiguration;
 - (SBUISystemApertureElementProviding)systemApertureElementViewControllerProvider;
 - (SBUISystemApertureElementSource)init;
-- (SBUISystemApertureElementSource)initWithScene:(id)a3;
+- (SBUISystemApertureElementSource)initWithScene:(id)scene;
 - (UIView)containerView;
 - (UIView)layoutGuideRootView;
 - (UIWindowScene)windowScene;
 - (id)_FBSScene;
-- (id)_constraintsForLayoutMode:(int64_t)a3;
+- (id)_constraintsForLayoutMode:(int64_t)mode;
 - (id)_elementIdentifierIfExists;
 - (id)_sceneSettings;
-- (id)_settingsDiffActionsForScene:(id)a3;
+- (id)_settingsDiffActionsForScene:(id)scene;
 - (id)containerViewController;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)requestAlertingAssertionWithOptions:(unint64_t)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)requestAlertingAssertionWithOptions:(unint64_t)options;
 - (id)succinctDescription;
 - (id)systemApertureElementViewController;
 - (int64_t)layoutMode;
-- (void)_activateConstraintsForActiveLayoutModeIfNeeded:(int64_t)a3;
-- (void)_activateConstraintsForLayoutMode:(int64_t)a3;
-- (void)_animateWithSceneResizeAction:(id)a3;
-- (void)_ensureAccessoryView:(id)a3 hasLayoutFrame:(CGRect)a4;
-- (void)_ensureAccessoryViewLayoutForTransitionWithAnimator:(id)a3;
+- (void)_activateConstraintsForActiveLayoutModeIfNeeded:(int64_t)needed;
+- (void)_activateConstraintsForLayoutMode:(int64_t)mode;
+- (void)_animateWithSceneResizeAction:(id)action;
+- (void)_ensureAccessoryView:(id)view hasLayoutFrame:(CGRect)frame;
+- (void)_ensureAccessoryViewLayoutForTransitionWithAnimator:(id)animator;
 - (void)_ensureElementViewControllerIsInAWindow;
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4;
-- (void)_handleAlertingAction:(id)a3;
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block;
+- (void)_handleAlertingAction:(id)action;
 - (void)_handleClientErrorNonUniqueElementAction;
-- (void)_handleGestureDependencyChange:(id)a3;
-- (void)_handleSecureFlipBookAction:(id)a3;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
-- (void)_sendActionForCommand:(int64_t)a3;
-- (void)_setScene:(id)a3;
+- (void)_handleGestureDependencyChange:(id)change;
+- (void)_handleSecureFlipBookAction:(id)action;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
+- (void)_sendActionForCommand:(int64_t)command;
+- (void)_setScene:(id)scene;
 - (void)_updateElementCanRequestAlertingAssertion;
 - (void)_updateTraitCollectionForElementIfNeeded;
-- (void)_windowDidAttachToContext:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addTransitionContext:(id)a3;
+- (void)_windowDidAttachToContext:(id)context;
+- (void)addObserver:(id)observer;
+- (void)addTransitionContext:(id)context;
 - (void)elementDidDismissMenu;
 - (void)elementWillPresentMenu;
-- (void)registerWithScene:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeTransitionContext:(id)a3;
+- (void)registerWithScene:(id)scene;
+- (void)removeObserver:(id)observer;
+- (void)removeTransitionContext:(id)context;
 - (void)requestTransitionToMaximumSupportedLayoutMode;
 - (void)requestTransitionToPreferredLayoutMode;
-- (void)setElementNeedsLayoutUpdateWithOptions:(unint64_t)a3 coordinatedAnimations:(id)a4;
+- (void)setElementNeedsLayoutUpdateWithOptions:(unint64_t)options coordinatedAnimations:(id)animations;
 - (void)setElementNeedsUpdate;
-- (void)setLastKnownOtherSettings:(id)a3;
-- (void)setPresentationPossible:(BOOL)a3;
-- (void)setSystemApertureElementProvider:(id)a3;
-- (void)setSystemApertureElementViewControllerProvider:(id)a3;
+- (void)setLastKnownOtherSettings:(id)settings;
+- (void)setPresentationPossible:(BOOL)possible;
+- (void)setSystemApertureElementProvider:(id)provider;
+- (void)setSystemApertureElementViewControllerProvider:(id)provider;
 - (void)unregisterFromScene;
 - (void)validateConfiguration;
 @end
@@ -77,11 +77,11 @@
 
 - (BOOL)_isPresentationPossibleAndSceneForeground
 {
-  v3 = [(SBUISystemApertureElementSource *)self _scene];
-  v4 = [v3 activationState];
+  _scene = [(SBUISystemApertureElementSource *)self _scene];
+  activationState = [_scene activationState];
 
   result = [(SBUISystemApertureElementSource *)self isPresentationPossible];
-  if (v4 >= 2)
+  if (activationState >= 2)
   {
     return 0;
   }
@@ -105,7 +105,7 @@
 
 - (BOOL)_elementSupportsDynamicResizing
 {
-  v2 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+  systemApertureElementViewController = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
   v3 = objc_opt_respondsToSelector();
 
   return v3 & 1;
@@ -113,26 +113,26 @@
 
 - (int64_t)layoutMode
 {
-  v2 = [(SBUISystemApertureElementSource *)self _sceneSettings];
-  v3 = [v2 SBUISA_layoutMode];
+  _sceneSettings = [(SBUISystemApertureElementSource *)self _sceneSettings];
+  sBUISA_layoutMode = [_sceneSettings SBUISA_layoutMode];
 
-  return v3;
+  return sBUISA_layoutMode;
 }
 
 - (id)_sceneSettings
 {
-  v2 = [(SBUISystemApertureElementSource *)self _FBSScene];
-  v3 = [v2 settings];
+  _FBSScene = [(SBUISystemApertureElementSource *)self _FBSScene];
+  settings = [_FBSScene settings];
 
-  return v3;
+  return settings;
 }
 
 - (id)_FBSScene
 {
-  v2 = [(SBUISystemApertureElementSource *)self _scene];
-  v3 = [v2 _FBSScene];
+  _scene = [(SBUISystemApertureElementSource *)self _scene];
+  _FBSScene = [_scene _FBSScene];
 
-  return v3;
+  return _FBSScene;
 }
 
 - (id)systemApertureElementViewController
@@ -140,8 +140,8 @@
   WeakRetained = objc_loadWeakRetained(&self->__elementViewController);
   if (!WeakRetained)
   {
-    v4 = [(SBUISystemApertureElementSource *)self systemApertureElementViewControllerProvider];
-    WeakRetained = [v4 systemApertureElementViewController];
+    systemApertureElementViewControllerProvider = [(SBUISystemApertureElementSource *)self systemApertureElementViewControllerProvider];
+    WeakRetained = [systemApertureElementViewControllerProvider systemApertureElementViewController];
 
     objc_storeWeak(&self->__elementViewController, WeakRetained);
   }
@@ -152,7 +152,7 @@
 - (void)_ensureElementViewControllerIsInAWindow
 {
   OUTLINED_FUNCTION_2_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -174,10 +174,10 @@
 
 - (void)_updateTraitCollectionForElementIfNeeded
 {
-  v20 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-  v3 = [v20 traitCollection];
-  v4 = [(SBUISystemApertureElementSource *)self containerViewController];
-  v5 = [v4 overrideTraitCollectionForChildViewController:v20];
+  systemApertureElement = [(SBUISystemApertureElementSource *)self systemApertureElement];
+  traitCollection = [systemApertureElement traitCollection];
+  containerViewController = [(SBUISystemApertureElementSource *)self containerViewController];
+  v5 = [containerViewController overrideTraitCollectionForChildViewController:systemApertureElement];
   v6 = v5;
   if (v5)
   {
@@ -186,51 +186,51 @@
 
   else
   {
-    v7 = v3;
+    v7 = traitCollection;
   }
 
   v8 = v7;
 
-  v9 = [(SBUISystemApertureElementSource *)self containerViewController];
-  v10 = [v9 traitCollection];
+  containerViewController2 = [(SBUISystemApertureElementSource *)self containerViewController];
+  traitCollection2 = [containerViewController2 traitCollection];
 
-  v11 = [v10 sbui_preferredContentSizeCategoryAllowingTraitsForCustomLayoutMode:{-[SBUISystemApertureElementSource layoutMode](self, "layoutMode") == 4}];
-  v12 = [(SBUISystemApertureElementSource *)self _isPresentedAsBannerInsteadOfSystemAperture];
-  v13 = [v3 preferredContentSizeCategory];
+  v11 = [traitCollection2 sbui_preferredContentSizeCategoryAllowingTraitsForCustomLayoutMode:{-[SBUISystemApertureElementSource layoutMode](self, "layoutMode") == 4}];
+  _isPresentedAsBannerInsteadOfSystemAperture = [(SBUISystemApertureElementSource *)self _isPresentedAsBannerInsteadOfSystemAperture];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   if (!BSEqualStrings())
   {
 
     goto LABEL_9;
   }
 
-  if (v12)
+  if (_isPresentedAsBannerInsteadOfSystemAperture)
   {
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v14 = [v3 userInterfaceStyle];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v14 != 2)
+  if (userInterfaceStyle != 2)
   {
 LABEL_9:
-    v13 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:2];
+    preferredContentSizeCategory = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:2];
     if (v8)
     {
       v15 = MEMORY[0x1E695DF70];
       v16 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v11];
       v17 = [v15 arrayWithObjects:{v8, v16, 0}];
 
-      if (!v12)
+      if (!_isPresentedAsBannerInsteadOfSystemAperture)
       {
-        [v17 addObject:v13];
+        [v17 addObject:preferredContentSizeCategory];
       }
 
       v18 = [MEMORY[0x1E69DD1B8] traitCollectionWithTraitsFromCollections:v17];
 
-      v19 = [(SBUISystemApertureElementSource *)self containerViewController];
-      [v19 setOverrideTraitCollection:v18 forChildViewController:v20];
+      containerViewController3 = [(SBUISystemApertureElementSource *)self containerViewController];
+      [containerViewController3 setOverrideTraitCollection:v18 forChildViewController:systemApertureElement];
 
       v8 = v18;
     }
@@ -243,49 +243,49 @@ LABEL_14:
 
 - (id)containerViewController
 {
-  v2 = [(SBUISystemApertureElementSource *)self mutableConfiguration];
-  v3 = [v2 containerViewController];
+  mutableConfiguration = [(SBUISystemApertureElementSource *)self mutableConfiguration];
+  containerViewController = [mutableConfiguration containerViewController];
 
-  return v3;
+  return containerViewController;
 }
 
 - (UIView)layoutGuideRootView
 {
-  v2 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
-  v3 = [v2 viewIfLoaded];
-  v4 = [v3 window];
+  systemApertureElementViewController = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+  viewIfLoaded = [systemApertureElementViewController viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  return v4;
+  return window;
 }
 
 - (BOOL)_elementRequiresConstraintBasedLayout
 {
-  v3 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
-  v4 = [v3 view];
+  systemApertureElementViewController = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+  view = [systemApertureElementViewController view];
 
-  v5 = (![v4 translatesAutoresizingMaskIntoConstraints] || objc_msgSend(objc_opt_class(), "requiresConstraintBasedLayout")) && -[SBUISystemApertureElementSource _elementSupportsDynamicResizing](self, "_elementSupportsDynamicResizing");
+  v5 = (![view translatesAutoresizingMaskIntoConstraints] || objc_msgSend(objc_opt_class(), "requiresConstraintBasedLayout")) && -[SBUISystemApertureElementSource _elementSupportsDynamicResizing](self, "_elementSupportsDynamicResizing");
   return v5;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBUISystemApertureElementSource *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBUISystemApertureElementSource *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (BOOL)_elementIsInAWindow
 {
-  v3 = [(SBUISystemApertureElementSource *)self containerViewController];
-  v4 = [v3 viewIfLoaded];
+  containerViewController = [(SBUISystemApertureElementSource *)self containerViewController];
+  viewIfLoaded = [containerViewController viewIfLoaded];
 
-  v5 = [(SBUISystemApertureElementSource *)self _elementViewController];
-  v6 = [v5 viewIfLoaded];
+  _elementViewController = [(SBUISystemApertureElementSource *)self _elementViewController];
+  viewIfLoaded2 = [_elementViewController viewIfLoaded];
 
-  if ([v6 _isInAWindow])
+  if ([viewIfLoaded2 _isInAWindow])
   {
-    v7 = [v6 isDescendantOfView:v4];
+    v7 = [viewIfLoaded2 isDescendantOfView:viewIfLoaded];
   }
 
   else
@@ -305,57 +305,57 @@ LABEL_14:
 
 - (void)_updateElementCanRequestAlertingAssertion
 {
-  v3 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+  systemApertureElementViewController = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
   if ([(SBUISystemApertureElementSource *)self elementCanRequestAlertingAssertion]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 setCanRequestAlertingAssertion:{-[SBUISystemApertureElementSource elementCanRequestAlertingAssertion](self, "elementCanRequestAlertingAssertion")}];
+    [systemApertureElementViewController setCanRequestAlertingAssertion:{-[SBUISystemApertureElementSource elementCanRequestAlertingAssertion](self, "elementCanRequestAlertingAssertion")}];
   }
 }
 
 - (void)validateConfiguration
 {
-  v2 = [(SBUISystemApertureElementSource *)self mutableConfiguration];
-  [v2 validateConfiguration];
+  mutableConfiguration = [(SBUISystemApertureElementSource *)self mutableConfiguration];
+  [mutableConfiguration validateConfiguration];
 }
 
-+ (void)_addSource:(id)a3
++ (void)_addSource:(id)source
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  sourceCopy = source;
+  v4 = sourceCopy;
+  if (sourceCopy)
   {
-    v9 = v3;
-    v3 = [SBUISystemApertureElementSourceOpenSources containsObject:v3];
+    v9 = sourceCopy;
+    sourceCopy = [SBUISystemApertureElementSourceOpenSources containsObject:sourceCopy];
     v4 = v9;
-    if ((v3 & 1) == 0)
+    if ((sourceCopy & 1) == 0)
     {
       v5 = SBUISystemApertureElementSourceOpenSources;
       if (!SBUISystemApertureElementSourceOpenSources)
       {
-        v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
         v7 = SBUISystemApertureElementSourceOpenSources;
-        SBUISystemApertureElementSourceOpenSources = v6;
+        SBUISystemApertureElementSourceOpenSources = weakObjectsHashTable;
 
         v5 = SBUISystemApertureElementSourceOpenSources;
       }
 
       [v5 addObject:v9];
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 postNotificationName:@"SBUISystemApertureElementSourceDidConnectNotification" object:v9];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"SBUISystemApertureElementSourceDidConnectNotification" object:v9];
 
       v4 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v3, v4);
+  MEMORY[0x1EEE66BB8](sourceCopy, v4);
 }
 
-+ (void)_removeSource:(id)a3
++ (void)_removeSource:(id)source
 {
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
-    [SBUISystemApertureElementSourceOpenSources removeObject:v4];
+    [SBUISystemApertureElementSourceOpenSources removeObject:sourceCopy];
   }
 
   if (![SBUISystemApertureElementSourceOpenSources count])
@@ -365,12 +365,12 @@ LABEL_14:
   }
 }
 
-- (void)setLastKnownOtherSettings:(id)a3
+- (void)setLastKnownOtherSettings:(id)settings
 {
-  v6 = a3;
+  settingsCopy = settings;
   if (([(BSSettings *)self->_lastKnownOtherSettings isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [settingsCopy copy];
     lastKnownOtherSettings = self->_lastKnownOtherSettings;
     self->_lastKnownOtherSettings = v4;
   }
@@ -388,31 +388,31 @@ LABEL_14:
     v2->_animationContext = v3;
 
     [SBUISystemApertureElementSource performSelector:sel__addSource_ withObject:v2 afterDelay:0.0];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__windowDidAttachToContext_ name:*MEMORY[0x1E69DEB08] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__windowDidAttachToContext_ name:*MEMORY[0x1E69DEB08] object:0];
   }
 
   return v2;
 }
 
-- (SBUISystemApertureElementSource)initWithScene:(id)a3
+- (SBUISystemApertureElementSource)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = [(SBUISystemApertureElementSource *)self init];
   if (v5)
   {
-    v6 = [v4 session];
-    v7 = [v6 role];
-    v8 = [v7 isEqualToString:@"SBUISystemApertureSceneSessionRole"];
+    session = [sceneCopy session];
+    role = [session role];
+    v8 = [role isEqualToString:@"SBUISystemApertureSceneSessionRole"];
 
     if ((v8 & 1) == 0)
     {
       [SBUISystemApertureElementSource initWithScene:];
     }
 
-    [(SBUISystemApertureElementSource *)v5 _setScene:v4];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v5 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    [(SBUISystemApertureElementSource *)v5 _setScene:sceneCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v5;
@@ -420,37 +420,37 @@ LABEL_14:
 
 - (NSString)associatedScenePersistenceIdentifier
 {
-  v2 = [(SBUISystemApertureElementSource *)self _FBSScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 SBUISA_associatedScenePersistenceIdentifier];
+  _FBSScene = [(SBUISystemApertureElementSource *)self _FBSScene];
+  clientSettings = [_FBSScene clientSettings];
+  sBUISA_associatedScenePersistenceIdentifier = [clientSettings SBUISA_associatedScenePersistenceIdentifier];
 
-  return v4;
+  return sBUISA_associatedScenePersistenceIdentifier;
 }
 
 - (FBSSceneIdentityToken)identityToken
 {
-  v2 = [(SBUISystemApertureElementSource *)self _FBSScene];
-  v3 = [v2 identityToken];
+  _FBSScene = [(SBUISystemApertureElementSource *)self _FBSScene];
+  identityToken = [_FBSScene identityToken];
 
-  return v3;
+  return identityToken;
 }
 
-- (void)setSystemApertureElementProvider:(id)a3
+- (void)setSystemApertureElementProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if (objc_opt_respondsToSelector())
   {
-    [(SBUISystemApertureElementSource *)self setSystemApertureElementViewControllerProvider:v4];
+    [(SBUISystemApertureElementSource *)self setSystemApertureElementViewControllerProvider:providerCopy];
   }
 }
 
-- (void)setSystemApertureElementViewControllerProvider:(id)a3
+- (void)setSystemApertureElementViewControllerProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_systemApertureElementViewControllerProvider);
 
-  objc_storeWeak(&self->_systemApertureElementViewControllerProvider, v4);
-  if (WeakRetained != v4)
+  objc_storeWeak(&self->_systemApertureElementViewControllerProvider, providerCopy);
+  if (WeakRetained != providerCopy)
   {
 
     [(SBUISystemApertureElementSource *)self setElementNeedsUpdate];
@@ -459,10 +459,10 @@ LABEL_14:
 
 - (UIView)containerView
 {
-  v2 = [(SBUISystemApertureElementSource *)self containerViewController];
-  v3 = [v2 viewIfLoaded];
+  containerViewController = [(SBUISystemApertureElementSource *)self containerViewController];
+  viewIfLoaded = [containerViewController viewIfLoaded];
 
-  return v3;
+  return viewIfLoaded;
 }
 
 - (void)requestTransitionToMaximumSupportedLayoutMode
@@ -482,10 +482,10 @@ LABEL_14:
 
 - (void)requestTransitionToPreferredLayoutMode
 {
-  v3 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
-  v4 = [v3 preferredLayoutMode];
+  systemApertureElementViewController = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+  preferredLayoutMode = [systemApertureElementViewController preferredLayoutMode];
 
-  if (v4 == -1)
+  if (preferredLayoutMode == -1)
   {
     v5 = 3;
   }
@@ -498,11 +498,11 @@ LABEL_14:
   [(SBUISystemApertureElementSource *)self _sendActionForCommand:v5];
 }
 
-- (id)requestAlertingAssertionWithOptions:(unint64_t)a3
+- (id)requestAlertingAssertionWithOptions:(unint64_t)options
 {
   if (!self->_alertingAssertion)
   {
-    v4 = a3;
+    optionsCopy = options;
     if ([(SBUISystemApertureElementSource *)self elementCanRequestAlertingAssertion])
     {
       v5 = [[_SBUISystemApertureAlertingAssertion alloc] initWithElementSource:self];
@@ -530,7 +530,7 @@ LABEL_14:
         self->_alertingAssertionsAwaitingActions = v9;
       }
 
-      [(SBUISystemApertureElementSource *)self _sendActionForCommand:v4 & 1 | 6];
+      [(SBUISystemApertureElementSource *)self _sendActionForCommand:optionsCopy & 1 | 6];
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);
     }
@@ -573,12 +573,12 @@ void __71__SBUISystemApertureElementSource_requestAlertingAssertionWithOptions__
   }
 }
 
-- (void)setPresentationPossible:(BOOL)a3
+- (void)setPresentationPossible:(BOOL)possible
 {
-  if (self->_presentationPossible != a3)
+  if (self->_presentationPossible != possible)
   {
-    self->_presentationPossible = a3;
-    if (a3)
+    self->_presentationPossible = possible;
+    if (possible)
     {
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
@@ -591,8 +591,8 @@ void __71__SBUISystemApertureElementSource_requestAlertingAssertionWithOptions__
 
     else
     {
-      v4 = [(SBUISystemApertureElementSource *)self systemApertureOwnedWindow];
-      [v4 setHidden:1];
+      systemApertureOwnedWindow = [(SBUISystemApertureElementSource *)self systemApertureOwnedWindow];
+      [systemApertureOwnedWindow setHidden:1];
 
       [(SBUISystemApertureElementSource *)self setSystemApertureOwnedWindow:0];
     }
@@ -608,24 +608,24 @@ void __71__SBUISystemApertureElementSource_requestAlertingAssertionWithOptions__
   }
 }
 
-- (void)setElementNeedsLayoutUpdateWithOptions:(unint64_t)a3 coordinatedAnimations:(id)a4
+- (void)setElementNeedsLayoutUpdateWithOptions:(unint64_t)options coordinatedAnimations:(id)animations
 {
-  v4 = a3;
-  v15 = a4;
+  optionsCopy = options;
+  animationsCopy = animations;
   if (![(SBUISystemApertureElementSource *)self _isPresentationPossibleAndSceneForeground]|| ![(SBUISystemApertureElementSource *)self _elementSupportsDynamicResizing])
   {
     [(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext disableSkippingSceneResizeActions];
-    v15[2]();
+    animationsCopy[2]();
     goto LABEL_6;
   }
 
-  v6 = [(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext hasPendingCoordinatedAnimations];
-  v7 = [(SBUISystemApertureElementSource *)self transitionContext];
-  if (v7)
+  hasPendingCoordinatedAnimations = [(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext hasPendingCoordinatedAnimations];
+  transitionContext = [(SBUISystemApertureElementSource *)self transitionContext];
+  if (transitionContext)
   {
-    v8 = [(SBUISystemApertureElementSource *)self transitionContext];
-    v9 = [v8 fromLayoutMode];
-    v10 = v9 == [(SBUISystemApertureElementSource *)self layoutMode];
+    transitionContext2 = [(SBUISystemApertureElementSource *)self transitionContext];
+    fromLayoutMode = [transitionContext2 fromLayoutMode];
+    v10 = fromLayoutMode == [(SBUISystemApertureElementSource *)self layoutMode];
   }
 
   else
@@ -633,14 +633,14 @@ void __71__SBUISystemApertureElementSource_requestAlertingAssertionWithOptions__
     v10 = 1;
   }
 
-  v11 = [(SBUISystemApertureElementSource *)self layoutMode];
-  [(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext addPendingAnimation:v15];
-  if ((v4 & 1) == 0 || ([(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext disableSkippingSceneResizeActions], v11 != 4 || !v10))
+  layoutMode = [(SBUISystemApertureElementSource *)self layoutMode];
+  [(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext addPendingAnimation:animationsCopy];
+  if ((optionsCopy & 1) == 0 || ([(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext disableSkippingSceneResizeActions], layoutMode != 4 || !v10))
   {
-    if (!v6 && ![(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext hasTransientLocalResizeAction])
+    if (!hasPendingCoordinatedAnimations && ![(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext hasTransientLocalResizeAction])
     {
-      v13 = [(SBUISystemApertureElementSource *)self localSceneResizeParameters];
-      v14 = [SBUISystemApertureSceneResizeAction transientLocalResizeSceneActionWithAnimationParameters:v13];
+      localSceneResizeParameters = [(SBUISystemApertureElementSource *)self localSceneResizeParameters];
+      v14 = [SBUISystemApertureSceneResizeAction transientLocalResizeSceneActionWithAnimationParameters:localSceneResizeParameters];
       [(SBUISystemApertureElementSource *)self _handleSceneResizeAction:v14];
       goto LABEL_17;
     }
@@ -651,83 +651,83 @@ LABEL_6:
   }
 
   v12 = MEMORY[0x1E695DFD8];
-  v13 = [[SBUISystemApertureSceneAction alloc] initWithCommand:4];
-  v14 = [v12 setWithObject:v13];
+  localSceneResizeParameters = [[SBUISystemApertureSceneAction alloc] initWithCommand:4];
+  v14 = [v12 setWithObject:localSceneResizeParameters];
   [(SBUISystemApertureElementSource *)self _performElementUpdateWithActions:v14];
 LABEL_17:
 
 LABEL_7:
 }
 
-- (BOOL)_performElementUpdateWithActionsIfPossible:(id)a3
+- (BOOL)_performElementUpdateWithActionsIfPossible:(id)possible
 {
-  v4 = a3;
+  possibleCopy = possible;
   if (![(SBUISystemApertureElementSource *)self isPresentationPossible])
   {
     goto LABEL_7;
   }
 
-  v5 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-  if (!v5 || [(SBUISystemApertureElementSource *)self layoutMode]== -1)
+  systemApertureElement = [(SBUISystemApertureElementSource *)self systemApertureElement];
+  if (!systemApertureElement || [(SBUISystemApertureElementSource *)self layoutMode]== -1)
   {
 
     goto LABEL_7;
   }
 
-  v6 = [(SBUISystemApertureElementSource *)self _scene];
+  _scene = [(SBUISystemApertureElementSource *)self _scene];
 
-  if (!v6)
+  if (!_scene)
   {
 LABEL_7:
     v7 = 0;
     goto LABEL_8;
   }
 
-  v7 = [(SBUISystemApertureElementSource *)self _performElementUpdateWithActions:v4];
+  v7 = [(SBUISystemApertureElementSource *)self _performElementUpdateWithActions:possibleCopy];
 LABEL_8:
 
   return v7;
 }
 
-- (BOOL)_performElementUpdateWithActions:(id)a3
+- (BOOL)_performElementUpdateWithActions:(id)actions
 {
   v93 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionsCopy = actions;
   if ([(SBUISystemApertureElementSource *)self layoutMode]== -1)
   {
     [SBUISystemApertureElementSource _performElementUpdateWithActions:];
   }
 
-  v5 = [(SBUISystemApertureElementSource *)self _scene];
+  _scene = [(SBUISystemApertureElementSource *)self _scene];
 
-  if (!v5)
+  if (!_scene)
   {
     [SBUISystemApertureElementSource _performElementUpdateWithActions:];
   }
 
   [(SBUISystemApertureElementSource *)self _ensureElementViewControllerIsInAWindow];
-  v6 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
-  v7 = [(SBUISystemApertureElementSource *)self mutableConfiguration];
+  systemApertureElementViewController = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+  mutableConfiguration = [(SBUISystemApertureElementSource *)self mutableConfiguration];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v6 elementIdentifier];
-    [v7 setElementIdentifier:v8];
+    elementIdentifier = [systemApertureElementViewController elementIdentifier];
+    [mutableConfiguration setElementIdentifier:elementIdentifier];
   }
 
-  [v7 setContentRole:{objc_msgSend(v6, "contentRole")}];
-  [v7 setPreferredLayoutMode:{objc_msgSend(v6, "preferredLayoutMode")}];
-  [v7 setMaximumLayoutMode:{objc_msgSend(v6, "maximumLayoutMode")}];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 minimumLayoutMode] > 1 || (v9 = objc_msgSend(v6, "minimumLayoutMode"), v9 == objc_msgSend(v6, "maximumLayoutMode"))) && objc_msgSend(v7, "contentRole") == 2)
+  [mutableConfiguration setContentRole:{objc_msgSend(systemApertureElementViewController, "contentRole")}];
+  [mutableConfiguration setPreferredLayoutMode:{objc_msgSend(systemApertureElementViewController, "preferredLayoutMode")}];
+  [mutableConfiguration setMaximumLayoutMode:{objc_msgSend(systemApertureElementViewController, "maximumLayoutMode")}];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([systemApertureElementViewController minimumLayoutMode] > 1 || (v9 = objc_msgSend(systemApertureElementViewController, "minimumLayoutMode"), v9 == objc_msgSend(systemApertureElementViewController, "maximumLayoutMode"))) && objc_msgSend(mutableConfiguration, "contentRole") == 2)
   {
-    v10 = [v6 minimumLayoutMode];
+    minimumLayoutMode = [systemApertureElementViewController minimumLayoutMode];
   }
 
   else
   {
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v6 leadingView];
-      v12 = v11 == 0;
+      leadingView = [systemApertureElementViewController leadingView];
+      v12 = leadingView == 0;
     }
 
     else
@@ -737,8 +737,8 @@ LABEL_8:
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v6 trailingView];
-      v14 = v13 == 0;
+      trailingView = [systemApertureElementViewController trailingView];
+      v14 = trailingView == 0;
     }
 
     else
@@ -748,8 +748,8 @@ LABEL_8:
 
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v6 minimalView];
-      v16 = v15 != 0;
+      minimalView = [systemApertureElementViewController minimalView];
+      v16 = minimalView != 0;
     }
 
     else
@@ -757,142 +757,142 @@ LABEL_8:
       v16 = 0;
     }
 
-    if (v12 || v14 || [v6 maximumLayoutMode] < 3)
+    if (v12 || v14 || [systemApertureElementViewController maximumLayoutMode] < 3)
     {
-      if (v16 && [v6 maximumLayoutMode] == 2)
+      if (v16 && [systemApertureElementViewController maximumLayoutMode] == 2)
       {
-        v10 = 2;
+        minimumLayoutMode = 2;
       }
 
       else
       {
-        v10 = 4 * ([v6 maximumLayoutMode] == 4);
+        minimumLayoutMode = 4 * ([systemApertureElementViewController maximumLayoutMode] == 4);
       }
     }
 
-    else if ([v7 contentRole] == 2 && v16)
+    else if ([mutableConfiguration contentRole] == 2 && v16)
     {
-      v10 = 2;
+      minimumLayoutMode = 2;
     }
 
     else
     {
-      v10 = 3;
+      minimumLayoutMode = 3;
     }
   }
 
-  [v7 setMinimumLayoutMode:v10];
+  [mutableConfiguration setMinimumLayoutMode:minimumLayoutMode];
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v6 preventsInteractiveDismissal];
+    preventsInteractiveDismissal = [systemApertureElementViewController preventsInteractiveDismissal];
   }
 
   else
   {
-    v17 = [v7 contentRole] == 2;
+    preventsInteractiveDismissal = [mutableConfiguration contentRole] == 2;
   }
 
-  [v7 setPreventsInteractiveDismissal:v17];
-  if ([v7 contentRole] == 1 && (objc_opt_respondsToSelector() & 1) != 0)
+  [mutableConfiguration setPreventsInteractiveDismissal:preventsInteractiveDismissal];
+  if ([mutableConfiguration contentRole] == 1 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v18 = [v6 preventsAutomaticDismissal];
+    preventsAutomaticDismissal = [systemApertureElementViewController preventsAutomaticDismissal];
   }
 
   else
   {
-    v18 = 0;
+    preventsAutomaticDismissal = 0;
   }
 
-  [v7 setPreventsAutomaticDismissal:v18];
+  [mutableConfiguration setPreventsAutomaticDismissal:preventsAutomaticDismissal];
   [(SBUISystemApertureElementSource *)self _updateElementCanRequestAlertingAssertion];
-  if ([v7 minimumLayoutMode] != 4)
+  if ([mutableConfiguration minimumLayoutMode] != 4)
   {
     if (objc_opt_respondsToSelector())
     {
-      v19 = [v6 leadingView];
-      [v7 setLeadingView:v19];
+      leadingView2 = [systemApertureElementViewController leadingView];
+      [mutableConfiguration setLeadingView:leadingView2];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v20 = [v6 trailingView];
-      [v7 setTrailingView:v20];
+      trailingView2 = [systemApertureElementViewController trailingView];
+      [mutableConfiguration setTrailingView:trailingView2];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v21 = [v6 minimalView];
-      [v7 setMinimalView:v21];
+      minimalView2 = [systemApertureElementViewController minimalView];
+      [mutableConfiguration setMinimalView:minimalView2];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v22 = [v6 detachedMinimalView];
-      [v7 setDetachedMinimalView:v22];
+      detachedMinimalView = [systemApertureElementViewController detachedMinimalView];
+      [mutableConfiguration setDetachedMinimalView:detachedMinimalView];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v23 = [v6 associatedScenePersistenceIdentifier];
-    [v7 setAssociatedScenePersistenceIdentifier:v23];
+    associatedScenePersistenceIdentifier = [systemApertureElementViewController associatedScenePersistenceIdentifier];
+    [mutableConfiguration setAssociatedScenePersistenceIdentifier:associatedScenePersistenceIdentifier];
   }
 
   else
   {
-    [v7 setAssociatedScenePersistenceIdentifier:0];
+    [mutableConfiguration setAssociatedScenePersistenceIdentifier:0];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v7 setPresentationBehaviors:{objc_msgSend(v6, "presentationBehaviors")}];
+    [mutableConfiguration setPresentationBehaviors:{objc_msgSend(systemApertureElementViewController, "presentationBehaviors")}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v24 = [v6 associatedAppBundleIdentifier];
-    [v7 setAssociatedAppBundleIdentifier:v24];
+    associatedAppBundleIdentifier = [systemApertureElementViewController associatedAppBundleIdentifier];
+    [mutableConfiguration setAssociatedAppBundleIdentifier:associatedAppBundleIdentifier];
 LABEL_53:
 
     goto LABEL_57;
   }
 
-  if (([v7 presentationBehaviors] & 0x1000) == 0 && (objc_opt_respondsToSelector() & 1) == 0)
+  if (([mutableConfiguration presentationBehaviors] & 0x1000) == 0 && (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v24 = [MEMORY[0x1E696AAE8] mainBundle];
-    v62 = [v24 bundleIdentifier];
-    [v7 setAssociatedAppBundleIdentifier:v62];
+    associatedAppBundleIdentifier = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [associatedAppBundleIdentifier bundleIdentifier];
+    [mutableConfiguration setAssociatedAppBundleIdentifier:bundleIdentifier];
 
     goto LABEL_53;
   }
 
-  [v7 setAssociatedAppBundleIdentifier:0];
+  [mutableConfiguration setAssociatedAppBundleIdentifier:0];
 LABEL_57:
   if (objc_opt_respondsToSelector())
   {
-    v25 = [v6 launchURL];
+    launchURL = [systemApertureElementViewController launchURL];
   }
 
   else
   {
-    v25 = 0;
+    launchURL = 0;
   }
 
-  [v7 setLaunchURL:v25];
+  [mutableConfiguration setLaunchURL:launchURL];
   if (objc_opt_respondsToSelector())
   {
-    v26 = [v6 launchAction];
+    launchAction = [systemApertureElementViewController launchAction];
   }
 
   else
   {
-    v26 = 0;
+    launchAction = 0;
   }
 
-  [v7 setLaunchAction:v26];
+  [mutableConfiguration setLaunchAction:launchAction];
   if (objc_opt_respondsToSelector())
   {
-    v27 = [v6 backgroundActivitiesToSuppress];
+    backgroundActivitiesToSuppress = [systemApertureElementViewController backgroundActivitiesToSuppress];
   }
 
   else
@@ -902,75 +902,75 @@ LABEL_57:
       goto LABEL_68;
     }
 
-    v27 = soft_STUIBackgroundActivityIdentifiersForStyleOverrides([v6 statusBarStyleOverridesToSuppress]);
+    backgroundActivitiesToSuppress = soft_STUIBackgroundActivityIdentifiersForStyleOverrides([systemApertureElementViewController statusBarStyleOverridesToSuppress]);
   }
 
-  v28 = v27;
-  [v7 setBackgroundActivitiesToSuppress:v27];
+  v28 = backgroundActivitiesToSuppress;
+  [mutableConfiguration setBackgroundActivitiesToSuppress:backgroundActivitiesToSuppress];
 
 LABEL_68:
   if (objc_opt_respondsToSelector())
   {
-    [v7 setPreferredCustomLayout:{objc_msgSend(v6, "preferredCustomLayout")}];
+    [mutableConfiguration setPreferredCustomLayout:{objc_msgSend(systemApertureElementViewController, "preferredCustomLayout")}];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v6 preferredCustomAspectRatio];
-    [v7 setPreferredCustomAspectRatio:?];
+    [systemApertureElementViewController preferredCustomAspectRatio];
+    [mutableConfiguration setPreferredCustomAspectRatio:?];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v29 = [v6 keyColor];
-    [v7 setKeyColor:v29];
+    keyColor = [systemApertureElementViewController keyColor];
+    [mutableConfiguration setKeyColor:keyColor];
   }
 
-  [v7 setHasMenuPresentation:{-[SBUISystemApertureElementSource elementHasMenuPresentation](self, "elementHasMenuPresentation")}];
-  [v7 setAppliedLayoutMode:{-[SBUISystemApertureElementSource layoutModeAsFarAsClientsAreConcerned](self, "layoutModeAsFarAsClientsAreConcerned")}];
+  [mutableConfiguration setHasMenuPresentation:{-[SBUISystemApertureElementSource elementHasMenuPresentation](self, "elementHasMenuPresentation")}];
+  [mutableConfiguration setAppliedLayoutMode:{-[SBUISystemApertureElementSource layoutModeAsFarAsClientsAreConcerned](self, "layoutModeAsFarAsClientsAreConcerned")}];
   if (objc_opt_respondsToSelector())
   {
-    v30 = [v6 attachedMinimalViewRequiresZeroPadding];
+    attachedMinimalViewRequiresZeroPadding = [systemApertureElementViewController attachedMinimalViewRequiresZeroPadding];
   }
 
   else
   {
-    v30 = 0;
+    attachedMinimalViewRequiresZeroPadding = 0;
   }
 
-  [v7 setAttachedMinimalViewRequiresZeroPadding:v30];
+  [mutableConfiguration setAttachedMinimalViewRequiresZeroPadding:attachedMinimalViewRequiresZeroPadding];
   if (objc_opt_respondsToSelector())
   {
-    v31 = [v6 prefersFixedPortraitOrientation];
+    prefersFixedPortraitOrientation = [systemApertureElementViewController prefersFixedPortraitOrientation];
   }
 
   else
   {
-    v31 = 0;
+    prefersFixedPortraitOrientation = 0;
   }
 
-  [v7 setPrefersFixedPortraitOrientation:v31];
+  [mutableConfiguration setPrefersFixedPortraitOrientation:prefersFixedPortraitOrientation];
   if (_os_feature_enabled_impl())
   {
-    if ([v6 conformsToProtocol:&unk_1F1E1C0C8])
+    if ([systemApertureElementViewController conformsToProtocol:&unk_1F1E1C0C8])
     {
-      v32 = v6;
-      [v7 setIsSecureFlipBookElement:{objc_msgSend(v32, "isSecureFlipBookElement")}];
+      v32 = systemApertureElementViewController;
+      [mutableConfiguration setIsSecureFlipBookElement:{objc_msgSend(v32, "isSecureFlipBookElement")}];
     }
 
-    if ([v6 conformsToProtocol:&unk_1F1E255E0])
+    if ([systemApertureElementViewController conformsToProtocol:&unk_1F1E255E0])
     {
-      v66 = v26;
-      v67 = v25;
-      v68 = self;
-      v33 = v6;
-      v72 = [MEMORY[0x1E695DF70] array];
+      v66 = launchAction;
+      v67 = launchURL;
+      selfCopy = self;
+      v33 = systemApertureElementViewController;
+      array = [MEMORY[0x1E695DF70] array];
       v86 = 0u;
       v87 = 0u;
       v88 = 0u;
       v89 = 0u;
-      v34 = [v33 recordableConfigurations];
-      v35 = [v34 countByEnumeratingWithState:&v86 objects:v92 count:16];
+      recordableConfigurations = [v33 recordableConfigurations];
+      v35 = [recordableConfigurations countByEnumeratingWithState:&v86 objects:v92 count:16];
       if (v35)
       {
         v36 = v35;
@@ -981,33 +981,33 @@ LABEL_68:
           {
             if (*v87 != v37)
             {
-              objc_enumerationMutation(v34);
+              objc_enumerationMutation(recordableConfigurations);
             }
 
             v39 = [[SBUISystemApertureSecureFlipBookClientConfiguration alloc] initWithConfiguration:*(*(&v86 + 1) + 8 * i)];
-            [v72 addObject:v39];
+            [array addObject:v39];
           }
 
-          v36 = [v34 countByEnumeratingWithState:&v86 objects:v92 count:16];
+          v36 = [recordableConfigurations countByEnumeratingWithState:&v86 objects:v92 count:16];
         }
 
         while (v36);
       }
 
-      v40 = [v72 copy];
-      [v7 setRecordableConfigurations:v40];
+      v40 = [array copy];
+      [mutableConfiguration setRecordableConfigurations:v40];
 
-      v71 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       if (objc_opt_respondsToSelector())
       {
-        v63 = v7;
-        v64 = v6;
-        v65 = v4;
+        v63 = mutableConfiguration;
+        v64 = systemApertureElementViewController;
+        v65 = actionsCopy;
         v84 = 0u;
         v85 = 0u;
         v82 = 0u;
         v83 = 0u;
-        obj = v72;
+        obj = array;
         v41 = [obj countByEnumeratingWithState:&v82 objects:v91 count:16];
         if (v41)
         {
@@ -1022,8 +1022,8 @@ LABEL_68:
                 objc_enumerationMutation(obj);
               }
 
-              v44 = [*(*(&v82 + 1) + 8 * j) configurationName];
-              v45 = [MEMORY[0x1E695DF70] array];
+              configurationName = [*(*(&v82 + 1) + 8 * j) configurationName];
+              array2 = [MEMORY[0x1E695DF70] array];
               v78 = 0u;
               v79 = 0u;
               v80 = 0u;
@@ -1043,9 +1043,9 @@ LABEL_68:
                     }
 
                     v50 = *(*(&v78 + 1) + 8 * k);
-                    if ([v33 isSymmetricalForUILayoutDirectionInConfiguration:v44 orientation:{objc_msgSend(v50, "integerValue")}])
+                    if ([v33 isSymmetricalForUILayoutDirectionInConfiguration:configurationName orientation:{objc_msgSend(v50, "integerValue")}])
                     {
-                      [v45 addObject:v50];
+                      [array2 addObject:v50];
                     }
                   }
 
@@ -1055,7 +1055,7 @@ LABEL_68:
                 while (v47);
               }
 
-              [v71 setObject:v45 forKey:v44];
+              [dictionary setObject:array2 forKey:configurationName];
             }
 
             v42 = [obj countByEnumeratingWithState:&v82 objects:v91 count:16];
@@ -1064,41 +1064,41 @@ LABEL_68:
           while (v42);
         }
 
-        v6 = v64;
-        v4 = v65;
-        v7 = v63;
+        systemApertureElementViewController = v64;
+        actionsCopy = v65;
+        mutableConfiguration = v63;
       }
 
-      [v7 setSymmetricalConfigurations:v71];
-      v51 = [v33 isRegisteredForCapture];
-      [v7 setIsRegisteredForCapture:v51];
-      v26 = v66;
-      v25 = v67;
-      if ((v51 & 1) == 0 && [v33 conformsToProtocol:&unk_1F1E25640])
+      [mutableConfiguration setSymmetricalConfigurations:dictionary];
+      isRegisteredForCapture = [v33 isRegisteredForCapture];
+      [mutableConfiguration setIsRegisteredForCapture:isRegisteredForCapture];
+      launchAction = v66;
+      launchURL = v67;
+      if ((isRegisteredForCapture & 1) == 0 && [v33 conformsToProtocol:&unk_1F1E25640])
       {
         v52 = v33;
-        v53 = [v52 preferredConfiguration];
-        [v7 setPreferredConfiguration:v53];
+        preferredConfiguration = [v52 preferredConfiguration];
+        [mutableConfiguration setPreferredConfiguration:preferredConfiguration];
 
-        v54 = [v52 preferredComponentStates];
-        [v7 setPreferredComponentStates:v54];
+        preferredComponentStates = [v52 preferredComponentStates];
+        [mutableConfiguration setPreferredComponentStates:preferredComponentStates];
       }
 
-      self = v68;
+      self = selfCopy;
     }
   }
 
-  [v7 refreshViewSizingPreferences];
+  [mutableConfiguration refreshViewSizingPreferences];
   [(SBUISystemApertureElementSource *)self validateConfiguration];
-  v55 = [v7 otherSceneClientSettingsRepresentation];
-  v56 = [(SBUISystemApertureElementSource *)self lastKnownOtherSettings];
-  v57 = [v56 isEqual:v55];
+  otherSceneClientSettingsRepresentation = [mutableConfiguration otherSceneClientSettingsRepresentation];
+  lastKnownOtherSettings = [(SBUISystemApertureElementSource *)self lastKnownOtherSettings];
+  v57 = [lastKnownOtherSettings isEqual:otherSceneClientSettingsRepresentation];
 
-  if (!v57 || [v4 count])
+  if (!v57 || [actionsCopy count])
   {
-    [(SBUISystemApertureElementSource *)self setLastKnownOtherSettings:v55];
-    v58 = [v4 count];
-    v59 = [(SBUISystemApertureElementSource *)self _FBSScene];
+    [(SBUISystemApertureElementSource *)self setLastKnownOtherSettings:otherSceneClientSettingsRepresentation];
+    v58 = [actionsCopy count];
+    _FBSScene = [(SBUISystemApertureElementSource *)self _FBSScene];
     if (v58)
     {
       v75[0] = MEMORY[0x1E69E9820];
@@ -1106,11 +1106,11 @@ LABEL_68:
       v75[2] = __68__SBUISystemApertureElementSource__performElementUpdateWithActions___block_invoke;
       v75[3] = &unk_1E789FD10;
       v60 = &v76;
-      v76 = v55;
-      v77 = v4;
-      [v59 updateClientSettingsWithTransitionBlock:v75];
+      v76 = otherSceneClientSettingsRepresentation;
+      v77 = actionsCopy;
+      [_FBSScene updateClientSettingsWithTransitionBlock:v75];
 
-      v59 = v77;
+      _FBSScene = v77;
     }
 
     else
@@ -1120,8 +1120,8 @@ LABEL_68:
       v73[2] = __68__SBUISystemApertureElementSource__performElementUpdateWithActions___block_invoke_2;
       v73[3] = &unk_1E789FD38;
       v60 = &v74;
-      v74 = v55;
-      [v59 updateClientSettingsWithBlock:v73];
+      v74 = otherSceneClientSettingsRepresentation;
+      [_FBSScene updateClientSettingsWithBlock:v73];
     }
   }
 
@@ -1188,9 +1188,9 @@ void __68__SBUISystemApertureElementSource__performElementUpdateWithActions___bl
   [v7 applySettings:*(a1 + 32)];
 }
 
-- (void)_handleGestureDependencyChange:(id)a3
+- (void)_handleGestureDependencyChange:(id)change
 {
-  if ([a3 state] == 3)
+  if ([change state] == 3)
   {
 
     [(SBUISystemApertureElementSource *)self _sendActionForCommand:5];
@@ -1199,8 +1199,8 @@ void __68__SBUISystemApertureElementSource__performElementUpdateWithActions___bl
 
 - (CGRect)anchorFrameForLeadingView
 {
-  v2 = [(SBUISystemApertureElementSource *)self _sceneSettings];
-  [v2 SBUISA_resolvedLeadingViewFrame];
+  _sceneSettings = [(SBUISystemApertureElementSource *)self _sceneSettings];
+  [_sceneSettings SBUISA_resolvedLeadingViewFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1219,8 +1219,8 @@ void __68__SBUISystemApertureElementSource__performElementUpdateWithActions___bl
 
 - (CGRect)anchorFrameForTrailingView
 {
-  v2 = [(SBUISystemApertureElementSource *)self _sceneSettings];
-  [v2 SBUISA_resolvedTrailingViewFrame];
+  _sceneSettings = [(SBUISystemApertureElementSource *)self _sceneSettings];
+  [_sceneSettings SBUISA_resolvedTrailingViewFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1239,8 +1239,8 @@ void __68__SBUISystemApertureElementSource__performElementUpdateWithActions___bl
 
 - (CGRect)anchorFrameForMinimalView
 {
-  v2 = [(SBUISystemApertureElementSource *)self _sceneSettings];
-  [v2 SBUISA_resolvedMinimalViewFrame];
+  _sceneSettings = [(SBUISystemApertureElementSource *)self _sceneSettings];
+  [_sceneSettings SBUISA_resolvedMinimalViewFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1259,8 +1259,8 @@ void __68__SBUISystemApertureElementSource__performElementUpdateWithActions___bl
 
 - (CGRect)anchorFrameForDetachedMinimalView
 {
-  v2 = [(SBUISystemApertureElementSource *)self _sceneSettings];
-  [v2 SBUISA_resolvedDetachedMinimalViewFrame];
+  _sceneSettings = [(SBUISystemApertureElementSource *)self _sceneSettings];
+  [_sceneSettings SBUISA_resolvedDetachedMinimalViewFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1277,11 +1277,11 @@ void __68__SBUISystemApertureElementSource__performElementUpdateWithActions___bl
   return result;
 }
 
-- (void)_setScene:(id)a3
+- (void)_setScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = objc_opt_class();
-  v8 = v4;
+  v8 = sceneCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -1323,7 +1323,7 @@ void __56__SBUISystemApertureElementSource__sceneWillInvalidate___block_invoke(u
   [v5 removeObserver:*(a1 + 32)];
 }
 
-- (id)_settingsDiffActionsForScene:(id)a3
+- (id)_settingsDiffActionsForScene:(id)scene
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = self;
@@ -1332,55 +1332,55 @@ void __56__SBUISystemApertureElementSource__sceneWillInvalidate___block_invoke(u
   return v3;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
   v81 = *MEMORY[0x1E69E9840];
-  v11 = a6;
-  v12 = a7;
-  v13 = [a4 settings];
-  v14 = [v13 SBUI_systemApertureDescriptionOfDiffFromSettings:v11];
+  settingsCopy = settings;
+  contextCopy = context;
+  settings = [sScene settings];
+  v14 = [settings SBUI_systemApertureDescriptionOfDiffFromSettings:settingsCopy];
 
   if (v14)
   {
     v15 = SBLogSystemApertureHosting();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(SBUISystemApertureElementSource *)self succinctDescription];
+      succinctDescription = [(SBUISystemApertureElementSource *)self succinctDescription];
       *buf = 138543618;
-      v78 = v16;
+      v78 = succinctDescription;
       v79 = 2114;
       v80 = v14;
       _os_log_impl(&dword_1A9A79000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ received scene settings update with changes: %{public}@", buf, 0x16u);
     }
   }
 
-  v17 = [(SBUISystemApertureElementSource *)self layoutMode];
-  v18 = [v11 SBUISA_layoutMode];
-  if (v18 != [(SBUISystemApertureElementSource *)self layoutMode])
+  layoutMode = [(SBUISystemApertureElementSource *)self layoutMode];
+  sBUISA_layoutMode = [settingsCopy SBUISA_layoutMode];
+  if (sBUISA_layoutMode != [(SBUISystemApertureElementSource *)self layoutMode])
   {
     [(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext disableSkippingSceneResizeActions];
   }
 
-  [(SBUISystemApertureElementSource *)self setPresentationPossible:(v17 - 1) < 0xFFFFFFFFFFFFFFFELL];
-  v19 = [v12 actions];
-  v20 = [v19 bs_firstObjectPassingTest:&__block_literal_global_289];
+  [(SBUISystemApertureElementSource *)self setPresentationPossible:(layoutMode - 1) < 0xFFFFFFFFFFFFFFFELL];
+  actions = [contextCopy actions];
+  v20 = [actions bs_firstObjectPassingTest:&__block_literal_global_289];
 
-  v21 = [v12 actions];
-  v22 = [v21 bs_filter:&__block_literal_global_291];
+  actions2 = [contextCopy actions];
+  v22 = [actions2 bs_filter:&__block_literal_global_291];
 
-  v23 = [v12 actions];
-  v24 = [v23 bs_firstObjectPassingTest:&__block_literal_global_293];
+  actions3 = [contextCopy actions];
+  v24 = [actions3 bs_firstObjectPassingTest:&__block_literal_global_293];
 
-  v25 = [v12 actions];
-  v26 = [v25 bs_firstObjectPassingTest:&__block_literal_global_296];
+  actions4 = [contextCopy actions];
+  v26 = [actions4 bs_firstObjectPassingTest:&__block_literal_global_296];
 
   v68 = v24;
   v69 = v26;
   v67 = v22;
   if (v20 || [v22 count] || v24 || v26)
   {
-    v27 = [v12 actions];
-    v28 = [v27 mutableCopy];
+    actions5 = [contextCopy actions];
+    v28 = [actions5 mutableCopy];
 
     if (v20)
     {
@@ -1402,8 +1402,8 @@ void __56__SBUISystemApertureElementSource__sceneWillInvalidate___block_invoke(u
       [v28 removeObject:v26];
     }
 
-    [v12 setActions:v28];
-    v65 = v12;
+    [contextCopy setActions:v28];
+    v65 = contextCopy;
     v64 = v14;
     v63 = v28;
     if (v20)
@@ -1412,7 +1412,7 @@ void __56__SBUISystemApertureElementSource__sceneWillInvalidate___block_invoke(u
       {
         v66 = [(SBUISystemApertureElementSource *)self _handleSceneResizeAction:v20];
 LABEL_25:
-        v31 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+        systemApertureElement = [(SBUISystemApertureElementSource *)self systemApertureElement];
         v72 = 0u;
         v73 = 0u;
         v74 = 0u;
@@ -1432,32 +1432,32 @@ LABEL_25:
                 objc_enumerationMutation(v32);
               }
 
-              v37 = [*(*(&v72 + 1) + 8 * i) command];
-              if (v37 > 12)
+              command = [*(*(&v72 + 1) + 8 * i) command];
+              if (command > 12)
               {
-                if (v37 == 13)
+                if (command == 13)
                 {
                   if (objc_opt_respondsToSelector())
                   {
-                    [v31 handleCompactOrMinimalViewTapEvent];
+                    [systemApertureElement handleCompactOrMinimalViewTapEvent];
                   }
                 }
 
-                else if (v37 == 14)
+                else if (command == 14)
                 {
                   [(SBUISystemApertureElementSource *)self _handleClientErrorNonUniqueElementAction];
                 }
               }
 
-              else if (v37 == 11)
+              else if (command == 11)
               {
                 if (objc_opt_respondsToSelector())
                 {
-                  [v31 handleCustomViewLongPressEvent];
+                  [systemApertureElement handleCustomViewLongPressEvent];
                 }
               }
 
-              else if (v37 == 12)
+              else if (command == 12)
               {
                 [(SBUISystemApertureElementSource *)self setElementCanRequestAlertingAssertion:1];
                 [(SBUISystemApertureElementSource *)self _updateElementCanRequestAlertingAssertion];
@@ -1482,8 +1482,8 @@ LABEL_25:
           [(SBUISystemApertureElementSource *)self _handleSecureFlipBookAction:?];
         }
 
-        v30 = [(SBUISystemApertureElementSource *)self windowScene];
-        v12 = v65;
+        windowScene = [(SBUISystemApertureElementSource *)self windowScene];
+        contextCopy = v65;
         if (v20 && ![v20 isTransientLocal])
         {
           goto LABEL_51;
@@ -1492,31 +1492,31 @@ LABEL_25:
         goto LABEL_49;
       }
 
-      v29 = [v20 animationParameters];
-      [(SBUISystemApertureElementSource *)self setLocalSceneResizeParameters:v29];
+      animationParameters = [v20 animationParameters];
+      [(SBUISystemApertureElementSource *)self setLocalSceneResizeParameters:animationParameters];
     }
 
     v66 = 0;
     goto LABEL_25;
   }
 
-  v30 = [(SBUISystemApertureElementSource *)self windowScene];
+  windowScene = [(SBUISystemApertureElementSource *)self windowScene];
   v66 = 0;
 LABEL_49:
   if ([(SBUISystemApertureElementSource *)self layoutMode]== 1)
   {
-    v38 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-    v39 = [v38 activeLayoutMode];
+    systemApertureElement2 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+    activeLayoutMode = [systemApertureElement2 activeLayoutMode];
 
-    if (!v39)
+    if (!activeLayoutMode)
     {
-      v41 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-      [v41 loadViewIfNeeded];
+      systemApertureElement3 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+      [systemApertureElement3 loadViewIfNeeded];
 
-      v42 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+      systemApertureElement4 = [(SBUISystemApertureElementSource *)self systemApertureElement];
 LABEL_58:
-      v40 = v42;
-      [v42 setActiveLayoutMode:1];
+      systemApertureElement5 = systemApertureElement4;
+      [systemApertureElement4 setActiveLayoutMode:1];
       goto LABEL_59;
     }
   }
@@ -1524,82 +1524,82 @@ LABEL_58:
 LABEL_51:
   if ([(SBUISystemApertureElementSource *)self layoutMode]== 1)
   {
-    v40 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-    if ([v40 activeLayoutMode] == 1)
+    systemApertureElement5 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+    if ([systemApertureElement5 activeLayoutMode] == 1)
     {
 LABEL_59:
 
       goto LABEL_60;
     }
 
-    if ([v30 activationState] == 2)
+    if ([windowScene activationState] == 2)
     {
 
 LABEL_57:
-      v42 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+      systemApertureElement4 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
       goto LABEL_58;
     }
 
-    v43 = [v30 activationState];
+    activationState = [windowScene activationState];
 
-    if (v43 == -1)
+    if (activationState == -1)
     {
       goto LABEL_57;
     }
   }
 
 LABEL_60:
-  v44 = [(SBUISystemApertureElementSource *)self layoutMode];
-  if ((v44 == 2) == ([v11 SBUISA_layoutMode] != 2) && !v66)
+  layoutMode2 = [(SBUISystemApertureElementSource *)self layoutMode];
+  if ((layoutMode2 == 2) == ([settingsCopy SBUISA_layoutMode] != 2) && !v66)
   {
     v70[0] = MEMORY[0x1E69E9820];
     v70[1] = 3221225472;
     v70[2] = __145__SBUISystemApertureElementSource__performActionsForUIScene_withUpdatedFBSScene_settingsDiff_fromSettings_transitionContext_lifecycleActionType___block_invoke_5;
     v70[3] = &unk_1E789DA60;
     v70[4] = self;
-    v71 = v44 == 2;
+    v71 = layoutMode2 == 2;
     [MEMORY[0x1E69DD250] SBUISA_performWithoutAnimationOrRetargeting:v70];
   }
 
   if (_os_feature_enabled_impl())
   {
-    v45 = [(SBUISystemApertureElementSource *)self _sceneSettings];
-    v46 = [v45 SBUISA_isSecureFlipBookInRecordingMode];
+    _sceneSettings = [(SBUISystemApertureElementSource *)self _sceneSettings];
+    sBUISA_isSecureFlipBookInRecordingMode = [_sceneSettings SBUISA_isSecureFlipBookInRecordingMode];
 
-    if (v46 != [v11 SBUISA_isSecureFlipBookInRecordingMode])
+    if (sBUISA_isSecureFlipBookInRecordingMode != [settingsCopy SBUISA_isSecureFlipBookInRecordingMode])
     {
-      v47 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-      v48 = [v47 conformsToProtocol:&unk_1F1E1C0C8];
+      systemApertureElement6 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+      v48 = [systemApertureElement6 conformsToProtocol:&unk_1F1E1C0C8];
 
       if (v48)
       {
-        v49 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-        [v49 recordingModeChanged:v46];
+        systemApertureElement7 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+        [systemApertureElement7 recordingModeChanged:sBUISA_isSecureFlipBookInRecordingMode];
       }
     }
 
-    v50 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-    v51 = [v50 conformsToProtocol:&unk_1F1E255E0];
+    systemApertureElement8 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+    v51 = [systemApertureElement8 conformsToProtocol:&unk_1F1E255E0];
 
     v24 = v68;
     if (v51)
     {
-      v52 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-      if (([v52 isRegisteredForCapture] & 1) == 0)
+      systemApertureElement9 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+      if (([systemApertureElement9 isRegisteredForCapture] & 1) == 0)
       {
-        v53 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-        v54 = [v53 conformsToProtocol:&unk_1F1E25640];
+        systemApertureElement10 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+        v54 = [systemApertureElement10 conformsToProtocol:&unk_1F1E25640];
 
         if (v54)
         {
-          v55 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-          v56 = [(SBUISystemApertureElementSource *)self _sceneSettings];
-          v57 = [v56 SBUISA_secureFlipBookActiveConfiguration];
+          systemApertureElement11 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+          _sceneSettings2 = [(SBUISystemApertureElementSource *)self _sceneSettings];
+          sBUISA_secureFlipBookActiveConfiguration = [_sceneSettings2 SBUISA_secureFlipBookActiveConfiguration];
           v58 = v20;
-          v59 = v57;
-          if (v57)
+          v59 = sBUISA_secureFlipBookActiveConfiguration;
+          if (sBUISA_secureFlipBookActiveConfiguration)
           {
-            v60 = v57;
+            v60 = sBUISA_secureFlipBookActiveConfiguration;
           }
 
           else
@@ -1607,12 +1607,12 @@ LABEL_60:
             v60 = &stru_1F1D7ED48;
           }
 
-          [v55 setActiveConfiguration:v60];
+          [systemApertureElement11 setActiveConfiguration:v60];
 
           v20 = v58;
-          v61 = [(SBUISystemApertureElementSource *)self _sceneSettings];
-          v62 = [v61 SBUISA_secureFlipBookActiveComponentStates];
-          [v55 setActiveComponentStates:v62];
+          _sceneSettings3 = [(SBUISystemApertureElementSource *)self _sceneSettings];
+          sBUISA_secureFlipBookActiveComponentStates = [_sceneSettings3 SBUISA_secureFlipBookActiveComponentStates];
+          [systemApertureElement11 setActiveComponentStates:sBUISA_secureFlipBookActiveComponentStates];
         }
       }
 
@@ -1672,28 +1672,28 @@ void __145__SBUISystemApertureElementSource__performActionsForUIScene_withUpdate
   }
 }
 
-- (void)addTransitionContext:(id)a3
+- (void)addTransitionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   transitionContexts = self->_transitionContexts;
-  v8 = v4;
+  v8 = contextCopy;
   if (!transitionContexts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_transitionContexts;
-    self->_transitionContexts = v6;
+    self->_transitionContexts = array;
 
-    v4 = v8;
+    contextCopy = v8;
     transitionContexts = self->_transitionContexts;
   }
 
-  [(NSMutableArray *)transitionContexts addObject:v4];
+  [(NSMutableArray *)transitionContexts addObject:contextCopy];
   -[SBUISystemApertureElementSource setLayoutModeAsFarAsClientsAreConcerned:](self, "setLayoutModeAsFarAsClientsAreConcerned:", [v8 fromLayoutMode]);
 }
 
-- (void)removeTransitionContext:(id)a3
+- (void)removeTransitionContext:(id)context
 {
-  [(NSMutableArray *)self->_transitionContexts removeObject:a3];
+  [(NSMutableArray *)self->_transitionContexts removeObject:context];
   [(SBUISystemApertureElementSource *)self setLayoutModeAsFarAsClientsAreConcerned:[(SBUISystemApertureElementSource *)self layoutMode]];
   if (![(NSMutableArray *)self->_transitionContexts count])
   {
@@ -1702,80 +1702,80 @@ void __145__SBUISystemApertureElementSource__performActionsForUIScene_withUpdate
   }
 }
 
-- (void)_activateConstraintsForActiveLayoutModeIfNeeded:(int64_t)a3
+- (void)_activateConstraintsForActiveLayoutModeIfNeeded:(int64_t)needed
 {
   if ([(SBUISystemApertureElementSource *)self isPresentationPossible]&& [(SBUISystemApertureElementSource *)self _elementIsInAWindow]&& [(SBUISystemApertureElementSource *)self _elementRequiresConstraintBasedLayout]&& [(SBUISystemApertureElementSource *)self _elementSupportsDynamicResizing])
   {
 
-    [(SBUISystemApertureElementSource *)self _activateConstraintsForLayoutMode:a3];
+    [(SBUISystemApertureElementSource *)self _activateConstraintsForLayoutMode:needed];
   }
 
   else
   {
-    v5 = [(SBUISystemApertureElementSource *)self _activeConstraintsForLayoutMode];
+    _activeConstraintsForLayoutMode = [(SBUISystemApertureElementSource *)self _activeConstraintsForLayoutMode];
     [(SBUISystemApertureElementSource *)self set_activeConstraintsForLayoutMode:0];
-    if ([v5 count])
+    if ([_activeConstraintsForLayoutMode count])
     {
-      [MEMORY[0x1E696ACD8] deactivateConstraints:v5];
+      [MEMORY[0x1E696ACD8] deactivateConstraints:_activeConstraintsForLayoutMode];
     }
   }
 }
 
-- (void)_activateConstraintsForLayoutMode:(int64_t)a3
+- (void)_activateConstraintsForLayoutMode:(int64_t)mode
 {
-  v15 = [(SBUISystemApertureElementSource *)self _constraintsForLayoutMode:a3];
-  v4 = [(SBUISystemApertureElementSource *)self _activeConstraintsForLayoutMode];
-  v5 = [v15 isEqualToArray:v4];
+  v15 = [(SBUISystemApertureElementSource *)self _constraintsForLayoutMode:mode];
+  _activeConstraintsForLayoutMode = [(SBUISystemApertureElementSource *)self _activeConstraintsForLayoutMode];
+  v5 = [v15 isEqualToArray:_activeConstraintsForLayoutMode];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+    systemApertureElementViewController = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
     [(SBUISystemApertureElementSource *)self _ensureElementViewControllerIsInAWindow];
-    v7 = [v6 minimalView];
+    minimalView = [systemApertureElementViewController minimalView];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v6 detachedMinimalView];
+      detachedMinimalView = [systemApertureElementViewController detachedMinimalView];
     }
 
     else
     {
-      v8 = 0;
+      detachedMinimalView = 0;
     }
 
-    v9 = [v6 leadingView];
-    v10 = [v6 trailingView];
-    v11 = [v6 view];
-    if (v7 && ([v7 isDescendantOfView:v11] & 1) == 0)
+    leadingView = [systemApertureElementViewController leadingView];
+    trailingView = [systemApertureElementViewController trailingView];
+    view = [systemApertureElementViewController view];
+    if (minimalView && ([minimalView isDescendantOfView:view] & 1) == 0)
     {
-      [v11 addSubview:v7];
+      [view addSubview:minimalView];
     }
 
-    if (v8 && ([v8 isDescendantOfView:v11] & 1) == 0)
+    if (detachedMinimalView && ([detachedMinimalView isDescendantOfView:view] & 1) == 0)
     {
-      [v11 addSubview:v8];
+      [view addSubview:detachedMinimalView];
     }
 
-    if (v9 && ([v9 isDescendantOfView:v11] & 1) == 0)
+    if (leadingView && ([leadingView isDescendantOfView:view] & 1) == 0)
     {
-      [v11 addSubview:v9];
+      [view addSubview:leadingView];
     }
 
-    if (v10 && ([v10 isDescendantOfView:v11] & 1) == 0)
+    if (trailingView && ([trailingView isDescendantOfView:view] & 1) == 0)
     {
-      [v11 addSubview:v10];
+      [view addSubview:trailingView];
     }
 
     maximumLeadingViewWidthConstraint = self->__maximumLeadingViewWidthConstraint;
-    [v9 SBUISA_maximumAccessoryViewWidth];
+    [leadingView SBUISA_maximumAccessoryViewWidth];
     [(NSLayoutConstraint *)maximumLeadingViewWidthConstraint setConstant:?];
     maximumTrailingViewWidthConstraint = self->__maximumTrailingViewWidthConstraint;
-    [v10 SBUISA_maximumAccessoryViewWidth];
+    [trailingView SBUISA_maximumAccessoryViewWidth];
     [(NSLayoutConstraint *)maximumTrailingViewWidthConstraint setConstant:?];
-    v14 = [(SBUISystemApertureElementSource *)self _activeConstraintsForLayoutMode];
+    _activeConstraintsForLayoutMode2 = [(SBUISystemApertureElementSource *)self _activeConstraintsForLayoutMode];
     [(SBUISystemApertureElementSource *)self set_activeConstraintsForLayoutMode:0];
-    if ([v14 count])
+    if ([_activeConstraintsForLayoutMode2 count])
     {
-      [MEMORY[0x1E696ACD8] deactivateConstraints:v14];
+      [MEMORY[0x1E696ACD8] deactivateConstraints:_activeConstraintsForLayoutMode2];
     }
 
     if ([v15 count])
@@ -1786,37 +1786,37 @@ void __145__SBUISystemApertureElementSource__performActionsForUIScene_withUpdate
   }
 }
 
-- (id)_constraintsForLayoutMode:(int64_t)a3
+- (id)_constraintsForLayoutMode:(int64_t)mode
 {
-  v4 = self;
+  selfCopy = self;
   v152[12] = *MEMORY[0x1E69E9840];
-  v5 = [(SBUISystemApertureElementSource *)self _elementViewController];
-  v6 = [v5 view];
+  _elementViewController = [(SBUISystemApertureElementSource *)self _elementViewController];
+  view = [_elementViewController view];
 
-  v7 = [(SBUISystemApertureElementSource *)v4 containerViewController];
-  v8 = [v7 view];
+  containerViewController = [(SBUISystemApertureElementSource *)selfCopy containerViewController];
+  view2 = [containerViewController view];
 
-  v9 = [(SBUISystemApertureElementSource *)v4 mutableConfiguration];
-  v10 = [v9 leadingView];
+  mutableConfiguration = [(SBUISystemApertureElementSource *)selfCopy mutableConfiguration];
+  leadingView = [mutableConfiguration leadingView];
 
-  v11 = [(SBUISystemApertureElementSource *)v4 mutableConfiguration];
-  v12 = [v11 minimalView];
+  mutableConfiguration2 = [(SBUISystemApertureElementSource *)selfCopy mutableConfiguration];
+  minimalView = [mutableConfiguration2 minimalView];
 
-  v13 = [(SBUISystemApertureElementSource *)v4 mutableConfiguration];
-  v14 = [v13 detachedMinimalView];
+  mutableConfiguration3 = [(SBUISystemApertureElementSource *)selfCopy mutableConfiguration];
+  detachedMinimalView = [mutableConfiguration3 detachedMinimalView];
 
-  v15 = [(SBUISystemApertureElementSource *)v4 mutableConfiguration];
-  v16 = [v15 trailingView];
+  mutableConfiguration4 = [(SBUISystemApertureElementSource *)selfCopy mutableConfiguration];
+  trailingView = [mutableConfiguration4 trailingView];
 
-  v145 = [v8 SBUISA_systemApertureObstructedAreaLayoutGuide];
-  v17 = [v8 window];
-  v147 = [v17 SBUISA_systemApertureMinimumContentSizeLayoutGuide];
+  sBUISA_systemApertureObstructedAreaLayoutGuide = [view2 SBUISA_systemApertureObstructedAreaLayoutGuide];
+  window = [view2 window];
+  sBUISA_systemApertureMinimumContentSizeLayoutGuide = [window SBUISA_systemApertureMinimumContentSizeLayoutGuide];
 
-  v18 = [v8 window];
-  v146 = [v18 SBUISA_systemApertureMaximumContentSizeLayoutGuide];
+  window2 = [view2 window];
+  sBUISA_systemApertureMaximumContentSizeLayoutGuide = [window2 SBUISA_systemApertureMaximumContentSizeLayoutGuide];
 
-  constraintsByLayoutMode = v4->_constraintsByLayoutMode;
-  v20 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  constraintsByLayoutMode = selfCopy->_constraintsByLayoutMode;
+  v20 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   v21 = [(NSMutableDictionary *)constraintsByLayoutMode objectForKeyedSubscript:v20];
 
   if (v21)
@@ -1824,66 +1824,66 @@ void __145__SBUISystemApertureElementSource__performActionsForUIScene_withUpdate
     goto LABEL_8;
   }
 
-  v136 = v16;
-  v137 = v4;
-  v138 = v14;
-  v139 = v10;
-  v142 = v12;
+  v136 = trailingView;
+  v137 = selfCopy;
+  v138 = detachedMinimalView;
+  v139 = leadingView;
+  v142 = minimalView;
   v143 = MEMORY[0x1E695DF70];
-  v131 = [v6 centerXAnchor];
-  v127 = [v8 centerXAnchor];
-  v123 = [v131 constraintEqualToAnchor:v127];
+  centerXAnchor = [view centerXAnchor];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v123 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v152[0] = v123;
-  v121 = [v6 topAnchor];
-  v135 = v8;
-  v119 = [v8 topAnchor];
-  v117 = [v121 constraintEqualToAnchor:v119];
+  topAnchor = [view topAnchor];
+  v135 = view2;
+  topAnchor2 = [view2 topAnchor];
+  v117 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v152[1] = v117;
-  v115 = [v6 widthAnchor];
-  v113 = [v147 widthAnchor];
-  v111 = [v115 constraintEqualToAnchor:v113];
+  widthAnchor = [view widthAnchor];
+  widthAnchor2 = [sBUISA_systemApertureMinimumContentSizeLayoutGuide widthAnchor];
+  v111 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   LODWORD(v22) = 1.0;
   v109 = [v111 SBUISA_withPriority:v22];
   v152[2] = v109;
-  v107 = [v6 heightAnchor];
-  v105 = [v147 heightAnchor];
-  v103 = [v107 constraintEqualToAnchor:v105];
+  heightAnchor = [view heightAnchor];
+  heightAnchor2 = [sBUISA_systemApertureMinimumContentSizeLayoutGuide heightAnchor];
+  v103 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   LODWORD(v23) = 1.0;
   v101 = [v103 SBUISA_withPriority:v23];
   v152[3] = v101;
-  v99 = [v6 topAnchor];
-  v97 = [v147 topAnchor];
-  v95 = [v99 constraintLessThanOrEqualToAnchor:v97];
+  topAnchor3 = [view topAnchor];
+  topAnchor4 = [sBUISA_systemApertureMinimumContentSizeLayoutGuide topAnchor];
+  v95 = [topAnchor3 constraintLessThanOrEqualToAnchor:topAnchor4];
   v152[4] = v95;
-  v93 = [v6 leadingAnchor];
-  v91 = [v147 leadingAnchor];
-  v90 = [v93 constraintLessThanOrEqualToAnchor:v91];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [sBUISA_systemApertureMinimumContentSizeLayoutGuide leadingAnchor];
+  v90 = [leadingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor2];
   v152[5] = v90;
-  v89 = [v6 bottomAnchor];
-  v88 = [v147 bottomAnchor];
-  v87 = [v89 constraintGreaterThanOrEqualToAnchor:v88];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [sBUISA_systemApertureMinimumContentSizeLayoutGuide bottomAnchor];
+  v87 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
   v152[6] = v87;
-  v86 = [v6 trailingAnchor];
-  v85 = [v147 trailingAnchor];
-  v84 = [v86 constraintGreaterThanOrEqualToAnchor:v85];
+  trailingAnchor = [view trailingAnchor];
+  trailingAnchor2 = [sBUISA_systemApertureMinimumContentSizeLayoutGuide trailingAnchor];
+  v84 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
   v152[7] = v84;
-  v83 = [v6 topAnchor];
-  v82 = [v146 topAnchor];
-  v81 = [v83 constraintGreaterThanOrEqualToAnchor:v82];
+  topAnchor5 = [view topAnchor];
+  topAnchor6 = [sBUISA_systemApertureMaximumContentSizeLayoutGuide topAnchor];
+  v81 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6];
   v152[8] = v81;
-  v24 = [v6 leadingAnchor];
-  v25 = [v146 leadingAnchor];
-  v26 = [v24 constraintGreaterThanOrEqualToAnchor:v25];
+  leadingAnchor3 = [view leadingAnchor];
+  leadingAnchor4 = [sBUISA_systemApertureMaximumContentSizeLayoutGuide leadingAnchor];
+  v26 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
   v152[9] = v26;
-  v27 = [v6 bottomAnchor];
-  v28 = [v146 bottomAnchor];
-  [v27 constraintLessThanOrEqualToAnchor:v28];
-  v29 = v140 = a3;
+  bottomAnchor3 = [view bottomAnchor];
+  bottomAnchor4 = [sBUISA_systemApertureMaximumContentSizeLayoutGuide bottomAnchor];
+  [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
+  v29 = v140 = mode;
   v152[10] = v29;
-  v30 = [v6 trailingAnchor];
-  v31 = [v146 trailingAnchor];
-  [v30 constraintLessThanOrEqualToAnchor:v31];
-  v32 = v141 = v6;
+  trailingAnchor3 = [view trailingAnchor];
+  trailingAnchor4 = [sBUISA_systemApertureMaximumContentSizeLayoutGuide trailingAnchor];
+  [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
+  v32 = v141 = view;
   v152[11] = v32;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v152 count:12];
   v144 = [v143 arrayWithArray:v33];
@@ -1893,141 +1893,141 @@ void __145__SBUISystemApertureElementSource__performActionsForUIScene_withUpdate
   {
     if (v140 == 2)
     {
-      v6 = v141;
-      v12 = v142;
+      view = v141;
+      minimalView = v142;
       if (v142)
       {
-        v133 = [v142 centerXAnchor];
-        v129 = [v141 centerXAnchor];
-        v125 = [v133 constraintEqualToAnchor:v129];
+        centerXAnchor3 = [v142 centerXAnchor];
+        centerXAnchor4 = [v141 centerXAnchor];
+        v125 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
         v150[0] = v125;
-        v65 = [v142 centerYAnchor];
-        v66 = [v141 centerYAnchor];
-        v67 = [v65 constraintEqualToAnchor:v66];
+        centerYAnchor = [v142 centerYAnchor];
+        centerYAnchor2 = [v141 centerYAnchor];
+        v67 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v150[1] = v67;
-        v68 = [v142 leadingAnchor];
-        v69 = [v141 leadingAnchor];
-        v70 = [v68 constraintGreaterThanOrEqualToAnchor:v69];
+        leadingAnchor5 = [v142 leadingAnchor];
+        leadingAnchor6 = [v141 leadingAnchor];
+        v70 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6];
         v150[2] = v70;
-        v71 = [v142 topAnchor];
-        v72 = [v141 topAnchor];
-        v73 = [v71 constraintGreaterThanOrEqualToAnchor:v72];
+        topAnchor7 = [v142 topAnchor];
+        topAnchor8 = [v141 topAnchor];
+        v73 = [topAnchor7 constraintGreaterThanOrEqualToAnchor:topAnchor8];
         v150[3] = v73;
         v74 = [MEMORY[0x1E695DEC8] arrayWithObjects:v150 count:4];
         [v144 addObjectsFromArray:v74];
 
         v34 = v140;
-        v6 = v141;
+        view = v141;
 
-        v12 = v142;
+        minimalView = v142;
       }
 
-      v14 = v138;
-      v10 = v139;
-      if (!v138 || v138 == v12)
+      detachedMinimalView = v138;
+      leadingView = v139;
+      if (!v138 || v138 == minimalView)
       {
         goto LABEL_5;
       }
 
-      v134 = [v138 centerXAnchor];
-      v126 = [v6 centerXAnchor];
-      v130 = [v134 constraintEqualToAnchor:v126];
+      centerXAnchor5 = [v138 centerXAnchor];
+      centerXAnchor6 = [view centerXAnchor];
+      v130 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
       v149[0] = v130;
-      v38 = [v138 centerYAnchor];
-      v39 = [v6 centerYAnchor];
-      v40 = [v38 constraintEqualToAnchor:v39];
+      centerYAnchor3 = [v138 centerYAnchor];
+      centerYAnchor4 = [view centerYAnchor];
+      v40 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v149[1] = v40;
-      v41 = [v138 leadingAnchor];
-      v75 = [v6 leadingAnchor];
-      v76 = [v41 constraintGreaterThanOrEqualToAnchor:v75];
+      leadingAnchor7 = [v138 leadingAnchor];
+      leadingAnchor8 = [view leadingAnchor];
+      v76 = [leadingAnchor7 constraintGreaterThanOrEqualToAnchor:leadingAnchor8];
       v149[2] = v76;
-      v77 = [v138 topAnchor];
-      v78 = [v6 topAnchor];
-      v79 = [v77 constraintGreaterThanOrEqualToAnchor:v78];
+      topAnchor9 = [v138 topAnchor];
+      topAnchor10 = [view topAnchor];
+      v79 = [topAnchor9 constraintGreaterThanOrEqualToAnchor:topAnchor10];
       v149[3] = v79;
       v80 = [MEMORY[0x1E695DEC8] arrayWithObjects:v149 count:4];
       [v144 addObjectsFromArray:v80];
 
       v34 = v140;
-      v6 = v141;
+      view = v141;
 
       v37 = v130;
-      v36 = v126;
+      widthAnchor6 = centerXAnchor6;
 
-      v35 = v134;
+      widthAnchor5 = centerXAnchor5;
     }
 
     else
     {
-      v6 = v141;
-      v12 = v142;
-      v14 = v138;
-      v10 = v139;
+      view = v141;
+      minimalView = v142;
+      detachedMinimalView = v138;
+      leadingView = v139;
       if (v140 != 3 || !v139)
       {
         goto LABEL_5;
       }
 
-      v52 = [v139 widthAnchor];
+      widthAnchor3 = [v139 widthAnchor];
       [v139 SBUISA_maximumAccessoryViewWidth];
-      v53 = [v52 constraintLessThanOrEqualToConstant:?];
+      v53 = [widthAnchor3 constraintLessThanOrEqualToConstant:?];
       maximumLeadingViewWidthConstraint = v137->__maximumLeadingViewWidthConstraint;
       v137->__maximumLeadingViewWidthConstraint = v53;
 
-      v55 = [v136 widthAnchor];
+      widthAnchor4 = [v136 widthAnchor];
       [v136 SBUISA_maximumAccessoryViewWidth];
-      v56 = [v55 constraintLessThanOrEqualToConstant:?];
+      v56 = [widthAnchor4 constraintLessThanOrEqualToConstant:?];
       maximumTrailingViewWidthConstraint = v137->__maximumTrailingViewWidthConstraint;
       v137->__maximumTrailingViewWidthConstraint = v56;
 
-      v132 = [v139 leadingAnchor];
-      v124 = [v141 leadingAnchor];
-      v128 = [v132 constraintGreaterThanOrEqualToAnchor:v124];
+      leadingAnchor9 = [v139 leadingAnchor];
+      leadingAnchor10 = [v141 leadingAnchor];
+      v128 = [leadingAnchor9 constraintGreaterThanOrEqualToAnchor:leadingAnchor10];
       v148[0] = v128;
-      v38 = [v139 topAnchor];
-      v39 = [v141 topAnchor];
-      v40 = [v38 constraintGreaterThanOrEqualToAnchor:v39];
+      centerYAnchor3 = [v139 topAnchor];
+      centerYAnchor4 = [v141 topAnchor];
+      v40 = [centerYAnchor3 constraintGreaterThanOrEqualToAnchor:centerYAnchor4];
       v148[1] = v40;
-      v41 = [v139 centerYAnchor];
-      v122 = [v141 centerYAnchor];
-      v120 = [v41 constraintEqualToAnchor:v122];
+      leadingAnchor7 = [v139 centerYAnchor];
+      centerYAnchor5 = [v141 centerYAnchor];
+      v120 = [leadingAnchor7 constraintEqualToAnchor:centerYAnchor5];
       v148[2] = v120;
-      v118 = [v139 trailingAnchor];
-      v116 = [v145 leadingAnchor];
-      v114 = [v118 constraintLessThanOrEqualToAnchor:v116];
+      trailingAnchor5 = [v139 trailingAnchor];
+      leadingAnchor11 = [sBUISA_systemApertureObstructedAreaLayoutGuide leadingAnchor];
+      v114 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:leadingAnchor11];
       v58 = v137->__maximumLeadingViewWidthConstraint;
       v148[3] = v114;
       v148[4] = v58;
-      v112 = [v136 leadingAnchor];
-      v110 = [v145 trailingAnchor];
-      v108 = [v112 constraintGreaterThanOrEqualToAnchor:v110];
+      leadingAnchor12 = [v136 leadingAnchor];
+      trailingAnchor6 = [sBUISA_systemApertureObstructedAreaLayoutGuide trailingAnchor];
+      v108 = [leadingAnchor12 constraintGreaterThanOrEqualToAnchor:trailingAnchor6];
       v148[5] = v108;
-      v106 = [v136 topAnchor];
-      v104 = [v141 topAnchor];
-      v102 = [v106 constraintGreaterThanOrEqualToAnchor:v104];
+      topAnchor11 = [v136 topAnchor];
+      topAnchor12 = [v141 topAnchor];
+      v102 = [topAnchor11 constraintGreaterThanOrEqualToAnchor:topAnchor12];
       v148[6] = v102;
-      v100 = [v136 centerYAnchor];
-      v98 = [v141 centerYAnchor];
-      v96 = [v100 constraintEqualToAnchor:v98];
+      centerYAnchor6 = [v136 centerYAnchor];
+      centerYAnchor7 = [v141 centerYAnchor];
+      v96 = [centerYAnchor6 constraintEqualToAnchor:centerYAnchor7];
       v148[7] = v96;
-      v94 = [v136 trailingAnchor];
-      v92 = [v141 trailingAnchor];
-      v59 = [v94 constraintLessThanOrEqualToAnchor:v92];
+      trailingAnchor7 = [v136 trailingAnchor];
+      trailingAnchor8 = [v141 trailingAnchor];
+      v59 = [trailingAnchor7 constraintLessThanOrEqualToAnchor:trailingAnchor8];
       v60 = v137->__maximumTrailingViewWidthConstraint;
       v148[8] = v59;
       v148[9] = v60;
-      v61 = [v141 heightAnchor];
-      v62 = [v145 heightAnchor];
-      v63 = [v61 constraintEqualToAnchor:v62];
+      heightAnchor3 = [v141 heightAnchor];
+      heightAnchor4 = [sBUISA_systemApertureObstructedAreaLayoutGuide heightAnchor];
+      v63 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
       v148[10] = v63;
       v64 = [MEMORY[0x1E695DEC8] arrayWithObjects:v148 count:11];
       [v144 addObjectsFromArray:v64];
 
-      v36 = v124;
-      v6 = v141;
+      widthAnchor6 = leadingAnchor10;
+      view = v141;
 
       v37 = v128;
-      v35 = v132;
+      widthAnchor5 = leadingAnchor9;
 
       v34 = v140;
     }
@@ -2035,31 +2035,31 @@ void __145__SBUISystemApertureElementSource__performActionsForUIScene_withUpdate
 
   else
   {
-    v6 = v141;
-    v35 = [v141 widthAnchor];
-    v36 = [v147 widthAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    view = v141;
+    widthAnchor5 = [v141 widthAnchor];
+    widthAnchor6 = [sBUISA_systemApertureMinimumContentSizeLayoutGuide widthAnchor];
+    v37 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
     v151[0] = v37;
-    v38 = [v141 heightAnchor];
-    v39 = [v147 heightAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    centerYAnchor3 = [v141 heightAnchor];
+    centerYAnchor4 = [sBUISA_systemApertureMinimumContentSizeLayoutGuide heightAnchor];
+    v40 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v151[1] = v40;
-    v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v151 count:2];
-    [v144 addObjectsFromArray:v41];
+    leadingAnchor7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v151 count:2];
+    [v144 addObjectsFromArray:leadingAnchor7];
   }
 
-  v14 = v138;
-  v10 = v139;
-  v12 = v142;
+  detachedMinimalView = v138;
+  leadingView = v139;
+  minimalView = v142;
 LABEL_5:
   v21 = [v144 copy];
-  v4 = v137;
+  selfCopy = v137;
   v42 = v137->_constraintsByLayoutMode;
   if (!v42)
   {
-    v43 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v44 = v137->_constraintsByLayoutMode;
-    v137->_constraintsByLayoutMode = v43;
+    v137->_constraintsByLayoutMode = dictionary;
 
     v42 = v137->_constraintsByLayoutMode;
   }
@@ -2067,16 +2067,16 @@ LABEL_5:
   v45 = [MEMORY[0x1E696AD98] numberWithInteger:v34];
   [(NSMutableDictionary *)v42 setObject:v21 forKeyedSubscript:v45];
 
-  v8 = v135;
-  v16 = v136;
+  view2 = v135;
+  trailingView = v136;
 LABEL_8:
-  v46 = [(SBUISystemApertureElementSource *)v4 windowScene];
-  v47 = v46;
-  if (v46)
+  windowScene = [(SBUISystemApertureElementSource *)selfCopy windowScene];
+  v47 = windowScene;
+  if (windowScene)
   {
     v48 = v21;
-    v49 = v147;
-    if ([v46 activationState])
+    v49 = sBUISA_systemApertureMinimumContentSizeLayoutGuide;
+    if ([windowScene activationState])
     {
       if ([v47 activationState] == 1)
       {
@@ -2093,7 +2093,7 @@ LABEL_8:
   else
   {
     v48 = 0;
-    v49 = v147;
+    v49 = sBUISA_systemApertureMinimumContentSizeLayoutGuide;
   }
 
   v50 = v48;
@@ -2101,73 +2101,73 @@ LABEL_8:
   return v48;
 }
 
-- (BOOL)_handleSceneResizeAction:(id)a3
+- (BOOL)_handleSceneResizeAction:(id)action
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext addSceneResizeAction:v4];
+  actionCopy = action;
+  [(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext addSceneResizeAction:actionCopy];
   if ([(SBUISystemApertureElementSource *)self isPresentationPossible])
   {
     [(SBUISystemApertureElementSource *)self _ensureElementViewControllerIsInAWindow];
   }
 
-  v5 = [(SBUISystemApertureElementSource *)self _sceneSettings];
-  v6 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
-  v7 = [v6 view];
+  _sceneSettings = [(SBUISystemApertureElementSource *)self _sceneSettings];
+  systemApertureElementViewController = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+  view = [systemApertureElementViewController view];
 
-  [v7 frame];
+  [view frame];
   UISizeRoundToScale();
   v9 = v8;
   v11 = v10;
-  [v5 SBUISA_containerViewFrame];
+  [_sceneSettings SBUISA_containerViewFrame];
   UISizeRoundToScale();
   v14 = v11 == v13 && v9 == v12;
-  v15 = [v4 animationParameters];
-  v16 = [(SBUISystemApertureElementSource *)self localSceneResizeParameters];
-  v17 = [SBUISystemApertureAnimationParameters areParams:v15 equivalentTo:v16];
+  animationParameters = [actionCopy animationParameters];
+  localSceneResizeParameters = [(SBUISystemApertureElementSource *)self localSceneResizeParameters];
+  v17 = [SBUISystemApertureAnimationParameters areParams:animationParameters equivalentTo:localSceneResizeParameters];
 
-  if (([v4 isTransientLocal] & 1) != 0 || !-[_SBUISystemApertureElementSourceAnimationContext canSkipRemoteSceneResizeActions](self->_animationContext, "canSkipRemoteSceneResizeActions"))
+  if (([actionCopy isTransientLocal] & 1) != 0 || !-[_SBUISystemApertureElementSourceAnimationContext canSkipRemoteSceneResizeActions](self->_animationContext, "canSkipRemoteSceneResizeActions"))
   {
     v31 = 1;
     goto LABEL_27;
   }
 
   v18 = v14 && v17;
-  v19 = [(SBUISystemApertureElementSource *)self mutableConfiguration];
-  v20 = [v19 minimalView];
-  v21 = [v19 detachedMinimalView];
-  v22 = [v19 leadingView];
-  v23 = [v19 trailingView];
+  mutableConfiguration = [(SBUISystemApertureElementSource *)self mutableConfiguration];
+  minimalView = [mutableConfiguration minimalView];
+  detachedMinimalView = [mutableConfiguration detachedMinimalView];
+  leadingView = [mutableConfiguration leadingView];
+  trailingView = [mutableConfiguration trailingView];
   if (v18 == 1)
   {
-    v24 = [(SBUISystemApertureElementSource *)self layoutMode];
-    if (v24 == 3)
+    layoutMode = [(SBUISystemApertureElementSource *)self layoutMode];
+    if (layoutMode == 3)
     {
-      [v22 frame];
+      [leadingView frame];
       v39 = v38;
       v41 = v40;
-      [v5 SBUISA_resolvedLeadingViewFrame];
+      [_sceneSettings SBUISA_resolvedLeadingViewFrame];
       v31 = v41 != v43 || v39 != v42;
-      [v23 frame];
+      [trailingView frame];
       v33 = v44;
       v35 = v45;
-      [v5 SBUISA_resolvedTrailingViewFrame];
+      [_sceneSettings SBUISA_resolvedTrailingViewFrame];
       goto LABEL_22;
     }
 
-    if (v24 == 2)
+    if (layoutMode == 2)
     {
-      [v20 frame];
+      [minimalView frame];
       v26 = v25;
       v28 = v27;
-      [v5 SBUISA_resolvedMinimalViewFrame];
+      [_sceneSettings SBUISA_resolvedMinimalViewFrame];
       v31 = v28 != v30 || v26 != v29;
-      if (v21)
+      if (detachedMinimalView)
       {
-        [v21 frame];
+        [detachedMinimalView frame];
         v33 = v32;
         v35 = v34;
-        [v5 SBUISA_resolvedDetachedMinimalViewFrame];
+        [_sceneSettings SBUISA_resolvedDetachedMinimalViewFrame];
 LABEL_22:
         v46 = v33 != v36;
         if (v35 != v37)
@@ -2191,112 +2191,112 @@ LABEL_22:
   }
 
 LABEL_27:
-  if (([v4 isTransientLocal] & 1) == 0)
+  if (([actionCopy isTransientLocal] & 1) == 0)
   {
     v47 = SBLogSystemApertureHosting();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
-      v48 = [(SBUISystemApertureElementSource *)self succinctDescription];
-      v49 = [(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext canSkipRemoteSceneResizeActions];
+      succinctDescription = [(SBUISystemApertureElementSource *)self succinctDescription];
+      canSkipRemoteSceneResizeActions = [(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext canSkipRemoteSceneResizeActions];
       v51 = 138412802;
-      v52 = v48;
+      v52 = succinctDescription;
       v53 = 1024;
       v54 = v31;
       v55 = 1024;
-      v56 = v49;
+      v56 = canSkipRemoteSceneResizeActions;
       _os_log_impl(&dword_1A9A79000, v47, OS_LOG_TYPE_DEFAULT, "Handling remote resize action for %@ will animate %{BOOL}u animationContext allows skipping: %{BOOL}u", &v51, 0x18u);
     }
   }
 
   if (v31)
   {
-    [(SBUISystemApertureElementSource *)self _animateWithSceneResizeAction:v4];
+    [(SBUISystemApertureElementSource *)self _animateWithSceneResizeAction:actionCopy];
   }
 
   else
   {
-    [(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext removeSceneResizeAction:v4];
+    [(_SBUISystemApertureElementSourceAnimationContext *)self->_animationContext removeSceneResizeAction:actionCopy];
   }
 
   return v31;
 }
 
-- (void)_animateWithSceneResizeAction:(id)a3
+- (void)_animateWithSceneResizeAction:(id)action
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBUISystemApertureElementSource *)self _sceneSettings];
-  v6 = [(SBUISystemApertureElementSource *)self _elementSupportsDynamicResizing];
-  v44 = [(SBUISystemApertureElementSource *)self _elementRequiresConstraintBasedLayout];
-  v7 = [(SBUISystemApertureElementSource *)self mutableConfiguration];
-  v45 = v6;
-  [v7 setShouldDeferViewSizingPreferenceUpdates:v6];
+  actionCopy = action;
+  _sceneSettings = [(SBUISystemApertureElementSource *)self _sceneSettings];
+  _elementSupportsDynamicResizing = [(SBUISystemApertureElementSource *)self _elementSupportsDynamicResizing];
+  _elementRequiresConstraintBasedLayout = [(SBUISystemApertureElementSource *)self _elementRequiresConstraintBasedLayout];
+  mutableConfiguration = [(SBUISystemApertureElementSource *)self mutableConfiguration];
+  v45 = _elementSupportsDynamicResizing;
+  [mutableConfiguration setShouldDeferViewSizingPreferenceUpdates:_elementSupportsDynamicResizing];
 
-  v8 = [(SBUISystemApertureElementSource *)self layoutGuideRootView];
-  v9 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
-  v10 = [v9 view];
+  layoutGuideRootView = [(SBUISystemApertureElementSource *)self layoutGuideRootView];
+  systemApertureElementViewController = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+  view = [systemApertureElementViewController view];
 
-  if ([v4 isTransientLocal])
+  if ([actionCopy isTransientLocal])
   {
     v11 = SBLogSystemApertureHosting();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(SBUISystemApertureElementSource *)self succinctDescription];
+      succinctDescription = [(SBUISystemApertureElementSource *)self succinctDescription];
       *buf = 138412290;
-      v77 = v12;
+      v77 = succinctDescription;
       _os_log_impl(&dword_1A9A79000, v11, OS_LOG_TYPE_DEFAULT, "Performing transient local action for %@", buf, 0xCu);
     }
   }
 
   v13 = [SBUISystemApertureElementSourceAnimator alloc];
-  v14 = [v4 animationParameters];
-  [v10 window];
-  v15 = v40 = v10;
-  v16 = [(SBUISystemApertureElementSourceAnimator *)v13 initWithSettings:v14 window:v15];
+  animationParameters = [actionCopy animationParameters];
+  [view window];
+  v15 = v40 = view;
+  v16 = [(SBUISystemApertureElementSourceAnimator *)v13 initWithSettings:animationParameters window:v15];
 
   v43 = objc_alloc_init(MEMORY[0x1E69DD808]);
   [v43 _setAnimator:v16];
-  v17 = [v4 animationParameters];
-  [v43 _setIsAnimated:{objc_msgSend(v17, "isAnimated")}];
+  animationParameters2 = [actionCopy animationParameters];
+  [v43 _setIsAnimated:{objc_msgSend(animationParameters2, "isAnimated")}];
 
-  v18 = [v43 _transitionCoordinator];
+  _transitionCoordinator = [v43 _transitionCoordinator];
   v19 = objc_alloc_init(SBUISystemApertureElementTransitionContext);
-  v20 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
-  [(SBUISystemApertureElementTransitionContext *)v19 setTransitionCoordinator:v18];
+  systemApertureElementViewController2 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+  [(SBUISystemApertureElementTransitionContext *)v19 setTransitionCoordinator:_transitionCoordinator];
   [(SBUISystemApertureElementTransitionContext *)v19 setFromLayoutMode:[(SBUISystemApertureElementSource *)self layoutModeAsFarAsClientsAreConcerned]];
-  -[SBUISystemApertureElementTransitionContext setUserInitiated:](v19, "setUserInitiated:", [v4 isUserInitiated]);
+  -[SBUISystemApertureElementTransitionContext setUserInitiated:](v19, "setUserInitiated:", [actionCopy isUserInitiated]);
   [(SBUISystemApertureElementSource *)self addTransitionContext:v19];
-  [v5 SBUISA_containerViewFrame];
+  [_sceneSettings SBUISA_containerViewFrame];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [v5 SBUISA_layoutMode];
+  sBUISA_layoutMode = [_sceneSettings SBUISA_layoutMode];
   v64[0] = MEMORY[0x1E69E9820];
   v64[1] = 3221225472;
   v64[2] = __65__SBUISystemApertureElementSource__animateWithSceneResizeAction___block_invoke;
   v64[3] = &unk_1E789FD80;
-  v70 = v29;
-  v30 = v20;
+  v70 = sBUISA_layoutMode;
+  v30 = systemApertureElementViewController2;
   v65 = v30;
-  v66 = self;
-  v67 = v5;
-  v31 = v8;
+  selfCopy = self;
+  v67 = _sceneSettings;
+  v31 = layoutGuideRootView;
   v75 = v45;
   v68 = v31;
-  v69 = v18;
+  v69 = _transitionCoordinator;
   v71 = v22;
   v72 = v24;
   v73 = v26;
   v74 = v28;
-  v42 = v18;
-  v41 = v5;
+  v42 = _transitionCoordinator;
+  v41 = _sceneSettings;
   [(SBUISystemApertureElementSourceAnimator *)v16 addPreflightAction:v64];
   v54[0] = MEMORY[0x1E69E9820];
   v54[1] = 3221225472;
   v54[2] = __65__SBUISystemApertureElementSource__animateWithSceneResizeAction___block_invoke_2;
   v54[3] = &unk_1E789FDA8;
-  v63 = v44;
+  v63 = _elementRequiresConstraintBasedLayout;
   v54[4] = self;
   v58 = v22;
   v59 = v24;
@@ -2305,7 +2305,7 @@ LABEL_27:
   v32 = v30;
   v55 = v32;
   v56 = v40;
-  v62 = v29;
+  v62 = sBUISA_layoutMode;
   v33 = v31;
   v57 = v33;
   v34 = v40;
@@ -2317,7 +2317,7 @@ LABEL_27:
   v50[4] = self;
   v51 = v19;
   v52 = v32;
-  v35 = v4;
+  v35 = actionCopy;
   v53 = v35;
   v36 = v32;
   v37 = v19;
@@ -2564,25 +2564,25 @@ uint64_t __65__SBUISystemApertureElementSource__animateWithSceneResizeAction___b
   return result;
 }
 
-- (void)_ensureAccessoryViewLayoutForTransitionWithAnimator:(id)a3
+- (void)_ensureAccessoryViewLayoutForTransitionWithAnimator:(id)animator
 {
-  v4 = a3;
-  v5 = [(SBUISystemApertureElementSource *)self mutableConfiguration];
-  v6 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-  v7 = [v6 view];
+  animatorCopy = animator;
+  mutableConfiguration = [(SBUISystemApertureElementSource *)self mutableConfiguration];
+  systemApertureElement = [(SBUISystemApertureElementSource *)self systemApertureElement];
+  view = [systemApertureElement view];
 
-  v31 = [v5 minimalView];
-  v8 = [v5 detachedMinimalView];
-  v30 = [v5 leadingView];
-  v9 = [v5 trailingView];
-  if ([v7 effectiveUserInterfaceLayoutDirection])
+  minimalView = [mutableConfiguration minimalView];
+  detachedMinimalView = [mutableConfiguration detachedMinimalView];
+  leadingView = [mutableConfiguration leadingView];
+  trailingView = [mutableConfiguration trailingView];
+  if ([view effectiveUserInterfaceLayoutDirection])
   {
-    [v5 leadingView];
+    [mutableConfiguration leadingView];
   }
 
   else
   {
-    [v5 trailingView];
+    [mutableConfiguration trailingView];
   }
   v10 = ;
   if ([(SBUISystemApertureElementSource *)self _elementSupportsDynamicResizing]&& ![(SBUISystemApertureElementSource *)self _elementRequiresConstraintBasedLayout])
@@ -2592,23 +2592,23 @@ uint64_t __65__SBUISystemApertureElementSource__animateWithSceneResizeAction___b
     v58[2] = __87__SBUISystemApertureElementSource__ensureAccessoryViewLayoutForTransitionWithAnimator___block_invoke;
     v58[3] = &unk_1E789FDF8;
     v58[4] = self;
-    v59 = v7;
+    v59 = view;
     v60 = v10;
-    v29 = v9;
+    v29 = trailingView;
     v11 = MEMORY[0x1AC58E960](v58);
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
     v52[2] = __87__SBUISystemApertureElementSource__ensureAccessoryViewLayoutForTransitionWithAnimator___block_invoke_2;
     v52[3] = &unk_1E789FE20;
     v57 = v11;
-    v12 = v31;
+    v12 = minimalView;
     v53 = v12;
-    v13 = v8;
+    v13 = detachedMinimalView;
     v54 = v13;
     v27 = v10;
-    v14 = v30;
+    v14 = leadingView;
     v55 = v14;
-    v28 = v7;
+    v28 = view;
     v15 = v29;
     v56 = v15;
     v16 = v11;
@@ -2624,13 +2624,13 @@ uint64_t __65__SBUISystemApertureElementSource__animateWithSceneResizeAction___b
     v10 = v27;
     v49 = v18;
     v19 = v15;
-    v7 = v28;
+    view = v28;
     v50 = v19;
     v20 = v17;
-    v9 = v29;
+    trailingView = v29;
     v21 = v20;
     v51 = v20;
-    [v4 addPreAlongsideAnimation:v46];
+    [animatorCopy addPreAlongsideAnimation:v46];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __87__SBUISystemApertureElementSource__ensureAccessoryViewLayoutForTransitionWithAnimator___block_invoke_5;
@@ -2638,7 +2638,7 @@ uint64_t __65__SBUISystemApertureElementSource__animateWithSceneResizeAction___b
     v44[4] = self;
     v45 = v21;
     v22 = v21;
-    [v4 addPostAlongsideAnimation:v44];
+    [animatorCopy addPostAlongsideAnimation:v44];
   }
 
   if (![(SBUISystemApertureElementSource *)self _elementSupportsDynamicResizing])
@@ -2648,10 +2648,10 @@ uint64_t __65__SBUISystemApertureElementSource__animateWithSceneResizeAction___b
     v39[2] = __87__SBUISystemApertureElementSource__ensureAccessoryViewLayoutForTransitionWithAnimator___block_invoke_6;
     v39[3] = &unk_1E789FE98;
     v39[4] = self;
-    v40 = v31;
-    v41 = v8;
-    v42 = v30;
-    v43 = v9;
+    v40 = minimalView;
+    v41 = detachedMinimalView;
+    v42 = leadingView;
+    v43 = trailingView;
     v23 = MEMORY[0x1AC58E960](v39);
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
@@ -2660,7 +2660,7 @@ uint64_t __65__SBUISystemApertureElementSource__animateWithSceneResizeAction___b
     v24 = v23;
     v37[4] = self;
     v38 = v24;
-    [v4 addPreAlongsideAnimation:v37];
+    [animatorCopy addPreAlongsideAnimation:v37];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __87__SBUISystemApertureElementSource__ensureAccessoryViewLayoutForTransitionWithAnimator___block_invoke_8;
@@ -2668,17 +2668,17 @@ uint64_t __65__SBUISystemApertureElementSource__animateWithSceneResizeAction___b
     v35[4] = self;
     v36 = v24;
     v25 = v24;
-    [v4 addPostAlongsideAnimation:v35];
+    [animatorCopy addPostAlongsideAnimation:v35];
   }
 
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __87__SBUISystemApertureElementSource__ensureAccessoryViewLayoutForTransitionWithAnimator___block_invoke_9;
   v32[3] = &unk_1E789DD98;
-  v33 = v8;
-  v34 = self;
-  v26 = v8;
-  [v4 addPreAlongsideAnimation:v32];
+  v33 = detachedMinimalView;
+  selfCopy = self;
+  v26 = detachedMinimalView;
+  [animatorCopy addPreAlongsideAnimation:v32];
 }
 
 void __87__SBUISystemApertureElementSource__ensureAccessoryViewLayoutForTransitionWithAnimator___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -2875,9 +2875,9 @@ uint64_t __87__SBUISystemApertureElementSource__ensureAccessoryViewLayoutForTran
   return [v1 setHidden:v2];
 }
 
-- (void)_handleAlertingAction:(id)a3
+- (void)_handleAlertingAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v6 = [(NSMutableArray *)self->_alertingAssertionsAwaitingActions count];
   alertingAssertionsAwaitingActions = self->_alertingAssertionsAwaitingActions;
   if (v6 < 2)
@@ -2885,20 +2885,20 @@ uint64_t __87__SBUISystemApertureElementSource__ensureAccessoryViewLayoutForTran
     [(NSMutableArray *)alertingAssertionsAwaitingActions removeAllObjects];
     if ([(SBUISystemApertureAssertion *)self->_alertingAssertion isValid])
     {
-      v9 = [(_SBUISystemApertureAlertingAssertion *)self->_alertingAssertion alertingAction];
+      alertingAction = [(_SBUISystemApertureAlertingAssertion *)self->_alertingAssertion alertingAction];
 
-      if (v9)
+      if (alertingAction)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v10 handleFailureInMethod:a2 object:self file:@"SBUISystemApertureElementSource.m" lineNumber:1362 description:{@"Alerting assertion already has an alerting action: %@", self->_alertingAssertion}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SBUISystemApertureElementSource.m" lineNumber:1362 description:{@"Alerting assertion already has an alerting action: %@", self->_alertingAssertion}];
       }
 
-      [(_SBUISystemApertureAlertingAssertion *)self->_alertingAssertion setAlertingAction:v5];
+      [(_SBUISystemApertureAlertingAssertion *)self->_alertingAssertion setAlertingAction:actionCopy];
     }
 
     else
     {
-      [v5 invalidateWithReason:@"no alerting assertion"];
+      [actionCopy invalidateWithReason:@"no alerting assertion"];
     }
   }
 
@@ -2914,26 +2914,26 @@ uint64_t __87__SBUISystemApertureElementSource__ensureAccessoryViewLayoutForTran
   }
 }
 
-- (void)_handleSecureFlipBookAction:(id)a3
+- (void)_handleSecureFlipBookAction:(id)action
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-  if ([v5 conformsToProtocol:&unk_1F1E255E0])
+  actionCopy = action;
+  systemApertureElement = [(SBUISystemApertureElementSource *)self systemApertureElement];
+  if ([systemApertureElement conformsToProtocol:&unk_1F1E255E0])
   {
-    v31 = v5;
-    v6 = v5;
-    v32 = [v4 toState];
-    v7 = [v4 configurationName];
-    v8 = [v4 flipBookName];
-    v33 = [v4 layoutMode];
+    v31 = systemApertureElement;
+    v6 = systemApertureElement;
+    toState = [actionCopy toState];
+    configurationName = [actionCopy configurationName];
+    flipBookName = [actionCopy flipBookName];
+    layoutMode = [actionCopy layoutMode];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v30 = v6;
-    v9 = [v6 recordableConfigurations];
-    v10 = [v9 countByEnumeratingWithState:&v42 objects:v47 count:16];
+    recordableConfigurations = [v6 recordableConfigurations];
+    v10 = [recordableConfigurations countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2944,17 +2944,17 @@ uint64_t __87__SBUISystemApertureElementSource__ensureAccessoryViewLayoutForTran
         {
           if (*v43 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(recordableConfigurations);
           }
 
           v14 = *(*(&v42 + 1) + 8 * i);
-          v15 = [v14 configurationName];
-          v16 = [v15 isEqualToString:v7];
+          configurationName2 = [v14 configurationName];
+          v16 = [configurationName2 isEqualToString:configurationName];
 
           if (v16)
           {
-            v17 = [v14 layoutModesToComponentFlipBookDescriptions];
-            v18 = [v17 objectForKey:v33];
+            layoutModesToComponentFlipBookDescriptions = [v14 layoutModesToComponentFlipBookDescriptions];
+            v18 = [layoutModesToComponentFlipBookDescriptions objectForKey:layoutMode];
 
             v41 = 0u;
             v39 = 0u;
@@ -2966,7 +2966,7 @@ uint64_t __87__SBUISystemApertureElementSource__ensureAccessoryViewLayoutForTran
             {
               v21 = v20;
               v22 = *v39;
-              v29 = v4;
+              v29 = actionCopy;
 LABEL_13:
               v23 = 0;
               while (1)
@@ -2977,8 +2977,8 @@ LABEL_13:
                 }
 
                 v24 = *(*(&v38 + 1) + 8 * v23);
-                v25 = [v24 flipBookName];
-                v26 = [v25 isEqualToString:v8];
+                flipBookName2 = [v24 flipBookName];
+                v26 = [flipBookName2 isEqualToString:flipBookName];
 
                 if (v26)
                 {
@@ -2988,7 +2988,7 @@ LABEL_13:
                 if (v21 == ++v23)
                 {
                   v21 = [v19 countByEnumeratingWithState:&v38 objects:v46 count:16];
-                  v4 = v29;
+                  actionCopy = v29;
                   if (v21)
                   {
                     goto LABEL_13;
@@ -2998,22 +2998,22 @@ LABEL_13:
                 }
               }
 
-              v4 = v29;
-              v27 = [v29 type];
-              if (v27 == 1)
+              actionCopy = v29;
+              type = [v29 type];
+              if (type == 1)
               {
                 v34[0] = MEMORY[0x1E69E9820];
                 v34[1] = 3221225472;
                 v34[2] = __63__SBUISystemApertureElementSource__handleSecureFlipBookAction___block_invoke_2;
                 v34[3] = &unk_1E789DA38;
                 v35 = v29;
-                [v24 transitionToState:v32 completion:v34];
+                [v24 transitionToState:toState completion:v34];
                 v28 = v35;
               }
 
               else
               {
-                if (v27)
+                if (type)
                 {
                   goto LABEL_25;
                 }
@@ -3024,7 +3024,7 @@ LABEL_13:
                 v36[3] = &unk_1E789DD98;
                 v36[4] = v24;
                 v37 = v29;
-                [v24 resetToState:v32 completion:v36];
+                [v24 resetToState:toState completion:v36];
                 v28 = v37;
               }
             }
@@ -3035,7 +3035,7 @@ LABEL_25:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v42 objects:v47 count:16];
+        v11 = [recordableConfigurations countByEnumeratingWithState:&v42 objects:v47 count:16];
         if (v11)
         {
           continue;
@@ -3047,7 +3047,7 @@ LABEL_25:
 
 LABEL_26:
 
-    v5 = v31;
+    systemApertureElement = v31;
   }
 }
 
@@ -3071,52 +3071,52 @@ void __63__SBUISystemApertureElementSource__handleSecureFlipBookAction___block_i
   [*(a1 + 40) markCompleteWithUpdateCaptureBounds:{v14, v16, v18, v20}];
 }
 
-- (void)_ensureAccessoryView:(id)a3 hasLayoutFrame:(CGRect)a4
+- (void)_ensureAccessoryView:(id)view hasLayoutFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
-  v11 = [v10 view];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  systemApertureElementViewController = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+  view = [systemApertureElementViewController view];
 
-  if (([v9 isDescendantOfView:v11] & 1) == 0)
+  if (([viewCopy isDescendantOfView:view] & 1) == 0)
   {
-    [v11 addSubview:v9];
+    [view addSubview:viewCopy];
   }
 
-  [v9 setAlpha:1.0];
-  [v9 setHidden:0];
-  if ([v9 translatesAutoresizingMaskIntoConstraints])
+  [viewCopy setAlpha:1.0];
+  [viewCopy setHidden:0];
+  if ([viewCopy translatesAutoresizingMaskIntoConstraints])
   {
-    v12 = [(SBUISystemApertureElementSource *)self windowScene];
-    v13 = [v12 coordinateSpace];
-    v14 = [v9 superview];
-    [v13 convertRect:v14 toCoordinateSpace:{x, y, width, height}];
+    windowScene = [(SBUISystemApertureElementSource *)self windowScene];
+    coordinateSpace = [windowScene coordinateSpace];
+    superview = [viewCopy superview];
+    [coordinateSpace convertRect:superview toCoordinateSpace:{x, y, width, height}];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
-    [v9 setAutoresizingMask:0];
+    [viewCopy setAutoresizingMask:0];
     v23 = *(MEMORY[0x1E695EFD0] + 16);
     v24[0] = *MEMORY[0x1E695EFD0];
     v24[1] = v23;
     v24[2] = *(MEMORY[0x1E695EFD0] + 32);
-    [v9 setTransform:v24];
-    [v9 setFrame:{v16, v18, v20, v22}];
-    [v9 setNeedsLayout];
+    [viewCopy setTransform:v24];
+    [viewCopy setFrame:{v16, v18, v20, v22}];
+    [viewCopy setNeedsLayout];
   }
 }
 
-- (void)_windowDidAttachToContext:(id)a3
+- (void)_windowDidAttachToContext:(id)context
 {
-  v4 = [a3 object];
-  v5 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-  v6 = [v5 view];
-  v7 = [v6 window];
-  v8 = [v4 isEqual:v7];
+  object = [context object];
+  systemApertureElement = [(SBUISystemApertureElementSource *)self systemApertureElement];
+  view = [systemApertureElement view];
+  window = [view window];
+  v8 = [object isEqual:window];
 
   if (v8)
   {
@@ -3127,7 +3127,7 @@ void __63__SBUISystemApertureElementSource__handleSecureFlipBookAction___block_i
 
 - (BOOL)_isPresentedAsBannerInsteadOfSystemAperture
 {
-  v2 = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
+  systemApertureElementViewController = [(SBUISystemApertureElementSource *)self systemApertureElementViewController];
   if ((SBSIsSystemApertureAvailable() & 1) != 0 || (objc_opt_respondsToSelector() & 1) == 0)
   {
     v4 = 0;
@@ -3135,56 +3135,56 @@ void __63__SBUISystemApertureElementSource__handleSecureFlipBookAction___block_i
 
   else
   {
-    v3 = [v2 associatedAppBundleIdentifier];
-    v4 = [v3 isEqualToString:@"com.apple.ActivityProgress.ActivityProgressUI"];
+    associatedAppBundleIdentifier = [systemApertureElementViewController associatedAppBundleIdentifier];
+    v4 = [associatedAppBundleIdentifier isEqualToString:@"com.apple.ActivityProgress.ActivityProgressUI"];
   }
 
   return v4;
 }
 
-- (void)registerWithScene:(id)a3
+- (void)registerWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   [(SBUISystemApertureElementSource *)self unregisterFromScene];
-  [v4 _registerSceneComponent:self forKey:@"SBUISystemApertureElementSourceKey"];
+  [sceneCopy _registerSceneComponent:self forKey:@"SBUISystemApertureElementSourceKey"];
 }
 
 - (void)unregisterFromScene
 {
-  v2 = [(SBUISystemApertureElementSource *)self _scene];
-  [v2 _unregisterSceneComponentForKey:@"SBUISystemApertureElementSourceKey"];
+  _scene = [(SBUISystemApertureElementSource *)self _scene];
+  [_scene _unregisterSceneComponentForKey:@"SBUISystemApertureElementSourceKey"];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(SBUISystemApertureElementSource *)self _observers];
+    observerCopy = observer;
+    _observers = [(SBUISystemApertureElementSource *)self _observers];
 
-    if (!v5)
+    if (!_observers)
     {
-      v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       observers = self->__observers;
-      self->__observers = v6;
+      self->__observers = weakObjectsHashTable;
     }
 
-    v8 = [(SBUISystemApertureElementSource *)self _observers];
-    [v8 addObject:v4];
+    _observers2 = [(SBUISystemApertureElementSource *)self _observers];
+    [_observers2 addObject:observerCopy];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v8 = a3;
-  if (v8)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v4 = [(SBUISystemApertureElementSource *)self _observers];
-    [v4 removeObject:v8];
+    _observers = [(SBUISystemApertureElementSource *)self _observers];
+    [_observers removeObject:observerCopy];
   }
 
-  v5 = [(SBUISystemApertureElementSource *)self _observers];
-  v6 = [v5 count];
+  _observers2 = [(SBUISystemApertureElementSource *)self _observers];
+  v6 = [_observers2 count];
 
   if (!v6)
   {
@@ -3193,18 +3193,18 @@ void __63__SBUISystemApertureElementSource__handleSecureFlipBookAction___block_i
   }
 }
 
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  blockCopy = block;
   if ([(NSHashTable *)self->__observers count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(SBUISystemApertureElementSource *)self _observers];
-    v7 = [v6 copy];
+    _observers = [(SBUISystemApertureElementSource *)self _observers];
+    v7 = [_observers copy];
 
     v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
@@ -3224,7 +3224,7 @@ void __63__SBUISystemApertureElementSource__handleSecureFlipBookAction___block_i
           v12 = *(*(&v13 + 1) + 8 * v11);
           if (objc_opt_respondsToSelector())
           {
-            v5[2](v5, v12);
+            blockCopy[2](blockCopy, v12);
           }
 
           ++v11;
@@ -3241,10 +3241,10 @@ void __63__SBUISystemApertureElementSource__handleSecureFlipBookAction___block_i
 
 - (BOOL)isBeingRemoved
 {
-  v2 = [(SBUISystemApertureElementSource *)self _sceneSettings];
-  v3 = [v2 SBUISA_isBeingRemoved];
+  _sceneSettings = [(SBUISystemApertureElementSource *)self _sceneSettings];
+  sBUISA_isBeingRemoved = [_sceneSettings SBUISA_isBeingRemoved];
 
-  return v3;
+  return sBUISA_isBeingRemoved;
 }
 
 - (BOOL)_mustHaveUniqueElementIdentity
@@ -3254,46 +3254,46 @@ void __63__SBUISystemApertureElementSource__handleSecureFlipBookAction___block_i
     return 0;
   }
 
-  v3 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-  v4 = v3 != 0;
+  systemApertureElement = [(SBUISystemApertureElementSource *)self systemApertureElement];
+  v4 = systemApertureElement != 0;
 
   return v4;
 }
 
 - (id)_elementIdentifierIfExists
 {
-  v3 = [(SBUISystemApertureElementSource *)self mutableConfiguration];
-  v4 = [v3 elementIdentifier];
+  mutableConfiguration = [(SBUISystemApertureElementSource *)self mutableConfiguration];
+  elementIdentifier = [mutableConfiguration elementIdentifier];
 
-  if (!v4)
+  if (!elementIdentifier)
   {
-    v5 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+    systemApertureElement = [(SBUISystemApertureElementSource *)self systemApertureElement];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(SBUISystemApertureElementSource *)self systemApertureElement];
-      v4 = [v7 elementIdentifier];
+      systemApertureElement2 = [(SBUISystemApertureElementSource *)self systemApertureElement];
+      elementIdentifier = [systemApertureElement2 elementIdentifier];
     }
 
     else
     {
-      v4 = 0;
+      elementIdentifier = 0;
     }
   }
 
-  return v4;
+  return elementIdentifier;
 }
 
 - (void)_handleClientErrorNonUniqueElementAction
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [a1 _elementIdentifierIfExists];
-  v4 = v3;
+  _elementIdentifierIfExists = [self _elementIdentifierIfExists];
+  v4 = _elementIdentifierIfExists;
   v5 = @"Default/Inferred";
-  if (v3)
+  if (_elementIdentifierIfExists)
   {
-    v5 = v3;
+    v5 = _elementIdentifierIfExists;
   }
 
   v6 = 138543362;
@@ -3301,34 +3301,34 @@ void __63__SBUISystemApertureElementSource__handleSecureFlipBookAction___block_i
   _os_log_error_impl(&dword_1A9A79000, a2, OS_LOG_TYPE_ERROR, "*** Client SPI Misuse: Invalid attempt to post two elements in jindo with the same elementIdentifier, << %{public}@ >>. If the elements are functionally equivalent, never post a duplicate element. If they are functionally distinct, talk with SpringBoard about providing a unique elementIdentifier for your functional use case. ***", &v6, 0xCu);
 }
 
-- (void)_sendActionForCommand:(int64_t)a3
+- (void)_sendActionForCommand:(int64_t)command
 {
   v4 = MEMORY[0x1E695DFD8];
-  v6 = [[SBUISystemApertureSceneAction alloc] initWithCommand:a3];
+  v6 = [[SBUISystemApertureSceneAction alloc] initWithCommand:command];
   v5 = [v4 setWithObject:v6];
   [(SBUISystemApertureElementSource *)self _sendActions:v5];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBUISystemApertureElementSource *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBUISystemApertureElementSource *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBUISystemApertureElementSource *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBUISystemApertureElementSource *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__SBUISystemApertureElementSource_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E789DD98;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

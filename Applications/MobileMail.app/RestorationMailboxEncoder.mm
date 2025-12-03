@@ -1,23 +1,23 @@
 @interface RestorationMailboxEncoder
-+ (id)encoderWithLog:(id)a3;
-- (RestorationMailboxEncoder)initWithLog:(id)a3;
-- (id)encodeMailbox:(id)a3;
-- (void)_encodeGenericMailbox:(id)a3 coder:(id)a4;
-- (void)_encodeSmartMailbox:(id)a3 coder:(id)a4;
-- (void)_encodeUnifiedMailbox:(id)a3 coder:(id)a4;
++ (id)encoderWithLog:(id)log;
+- (RestorationMailboxEncoder)initWithLog:(id)log;
+- (id)encodeMailbox:(id)mailbox;
+- (void)_encodeGenericMailbox:(id)mailbox coder:(id)coder;
+- (void)_encodeSmartMailbox:(id)mailbox coder:(id)coder;
+- (void)_encodeUnifiedMailbox:(id)mailbox coder:(id)coder;
 @end
 
 @implementation RestorationMailboxEncoder
 
-+ (id)encoderWithLog:(id)a3
++ (id)encoderWithLog:(id)log
 {
-  v3 = a3;
-  v4 = [[RestorationMailboxEncoder alloc] initWithLog:v3];
+  logCopy = log;
+  v4 = [[RestorationMailboxEncoder alloc] initWithLog:logCopy];
 
   return v4;
 }
 
-- (RestorationMailboxEncoder)initWithLog:(id)a3
+- (RestorationMailboxEncoder)initWithLog:(id)log
 {
   v8.receiver = self;
   v8.super_class = RestorationMailboxEncoder;
@@ -25,9 +25,9 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (log)
     {
-      v4->_log = a3;
+      v4->_log = log;
     }
 
     else
@@ -40,26 +40,26 @@
   return v5;
 }
 
-- (id)encodeMailbox:(id)a3
+- (id)encodeMailbox:(id)mailbox
 {
-  v4 = a3;
-  if (v4)
+  mailboxCopy = mailbox;
+  if (mailboxCopy)
   {
     v5 = [(RestorationMailboxEncoder *)self log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 ef_publicDescription];
+      ef_publicDescription = [mailboxCopy ef_publicDescription];
       v15 = 138543362;
-      v16 = v6;
+      v16 = ef_publicDescription;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "RestorationMailboxEncoder: Encoding mailbox: %{public}@", &v15, 0xCu);
     }
 
     v7 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-    if ([v4 isSmartMailbox] & 1) != 0 || (objc_msgSend(v4, "objectID"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEphemeral"), v8, (v9))
+    if ([mailboxCopy isSmartMailbox] & 1) != 0 || (objc_msgSend(mailboxCopy, "objectID"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEphemeral"), v8, (v9))
     {
-      if ([v4 isSmartMailbox])
+      if ([mailboxCopy isSmartMailbox])
       {
-        v10 = v4;
+        v10 = mailboxCopy;
         if ([v10 smartMailboxType] == 8)
         {
           [(RestorationMailboxEncoder *)self _encodeUnifiedMailbox:v10 coder:v7];
@@ -74,13 +74,13 @@
 
     else
     {
-      [(RestorationMailboxEncoder *)self _encodeGenericMailbox:v4 coder:v7];
+      [(RestorationMailboxEncoder *)self _encodeGenericMailbox:mailboxCopy coder:v7];
     }
 
-    v12 = [v7 encodedData];
-    if ([v12 length])
+    encodedData = [v7 encodedData];
+    if ([encodedData length])
     {
-      v11 = v12;
+      v11 = encodedData;
     }
 
     else
@@ -109,31 +109,31 @@
   return v11;
 }
 
-- (void)_encodeGenericMailbox:(id)a3 coder:(id)a4
+- (void)_encodeGenericMailbox:(id)mailbox coder:(id)coder
 {
-  v6 = a3;
-  v7 = a4;
+  mailboxCopy = mailbox;
+  coderCopy = coder;
   v8 = [(RestorationMailboxEncoder *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [v6 ef_publicDescription];
+    [mailboxCopy ef_publicDescription];
     objc_claimAutoreleasedReturnValue();
     sub_10048CAB8();
   }
 
-  [v7 encodeInteger:1 forKey:@"SerializationType"];
-  v9 = [v6 objectID];
-  [v7 encodeObject:v9 forKey:@"ObjectID"];
+  [coderCopy encodeInteger:1 forKey:@"SerializationType"];
+  objectID = [mailboxCopy objectID];
+  [coderCopy encodeObject:objectID forKey:@"ObjectID"];
 }
 
-- (void)_encodeSmartMailbox:(id)a3 coder:(id)a4
+- (void)_encodeSmartMailbox:(id)mailbox coder:(id)coder
 {
-  v6 = a3;
-  v7 = a4;
+  mailboxCopy = mailbox;
+  coderCopy = coder;
   v8 = [(RestorationMailboxEncoder *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [v6 ef_publicDescription];
+    [mailboxCopy ef_publicDescription];
     objc_claimAutoreleasedReturnValue();
     sub_10048CAFC();
   }
@@ -147,16 +147,16 @@
   v13 = 3221225472;
   v14 = sub_10024416C;
   v15 = &unk_1006565E8;
-  v10 = v6;
+  v10 = mailboxCopy;
   v16 = v10;
   v17 = &v18;
   [v9 enumerateObjectsUsingBlock:&v12];
 
   if (v19[3] && (_MSSourceTypeIsValid() & 1) != 0)
   {
-    [v7 encodeInteger:2 forKey:{@"SerializationType", v12, v13, v14, v15}];
+    [coderCopy encodeInteger:2 forKey:{@"SerializationType", v12, v13, v14, v15}];
     v11 = [NSNumber numberWithUnsignedInteger:v19[3]];
-    [v7 encodeObject:v11 forKey:@"SmartMailboxSourceType"];
+    [coderCopy encodeObject:v11 forKey:@"SmartMailboxSourceType"];
   }
 
   else
@@ -173,22 +173,22 @@
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)_encodeUnifiedMailbox:(id)a3 coder:(id)a4
+- (void)_encodeUnifiedMailbox:(id)mailbox coder:(id)coder
 {
-  v6 = a3;
-  v7 = a4;
+  mailboxCopy = mailbox;
+  coderCopy = coder;
   v8 = [(RestorationMailboxEncoder *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [v6 ef_publicDescription];
+    [mailboxCopy ef_publicDescription];
     objc_claimAutoreleasedReturnValue();
     sub_10048CB98();
   }
 
-  [v7 encodeInteger:3 forKey:@"SerializationType"];
-  [v7 encodeInteger:objc_msgSend(v6 forKey:{"type"), @"UnifiedMailboxType"}];
-  v9 = [v6 name];
-  [v7 encodeObject:v9 forKey:@"UnifiedMailboxName"];
+  [coderCopy encodeInteger:3 forKey:@"SerializationType"];
+  [coderCopy encodeInteger:objc_msgSend(mailboxCopy forKey:{"type"), @"UnifiedMailboxType"}];
+  name = [mailboxCopy name];
+  [coderCopy encodeObject:name forKey:@"UnifiedMailboxName"];
 }
 
 @end

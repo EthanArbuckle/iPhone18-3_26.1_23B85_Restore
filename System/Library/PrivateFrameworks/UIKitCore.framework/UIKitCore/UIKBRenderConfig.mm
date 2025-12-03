@@ -3,26 +3,26 @@
 + (id)animatedConfigLight;
 + (id)clearConfigDarkKeys;
 + (id)clearConfigLightKeys;
-+ (id)clearConfigWithLightKeys:(BOOL)a3;
++ (id)clearConfigWithLightKeys:(BOOL)keys;
 + (id)colorAdaptiveConfigDark;
 + (id)colorAdaptiveConfigLight;
-+ (id)configForAnimatedBackgroundWithLightKeys:(BOOL)a3;
-+ (id)configForAppearance:(int64_t)a3 inputMode:(id)a4 traitEnvironment:(id)a5;
++ (id)configForAnimatedBackgroundWithLightKeys:(BOOL)keys;
++ (id)configForAppearance:(int64_t)appearance inputMode:(id)mode traitEnvironment:(id)environment;
 + (id)darkConfig;
 + (id)defaultConfig;
 + (id)defaultEmojiConfig;
 + (id)lowQualityDarkConfig;
 + (int64_t)_graphicsQuality;
-+ (int64_t)backdropStyleForStyle:(int64_t)a3 quality:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (int64_t)backdropStyleForStyle:(int64_t)style quality:(int64_t)quality;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)imageNameForType:(int)a3;
+- (id)imageNameForType:(int)type;
 - (int64_t)backdropStyle;
 - (int64_t)blurEffectStyle;
 - (int64_t)keyBackdropStyle;
 - (int64_t)variantSelectorBackdropStyle;
-- (void)overrideKeycapWithSymbol:(id)a3 forDisplayType:(int)a4;
+- (void)overrideKeycapWithSymbol:(id)symbol forDisplayType:(int)type;
 @end
 
 @implementation UIKBRenderConfig
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = __43__UIKBRenderConfig_colorAdaptiveConfigDark__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2BD8 != -1)
   {
     dispatch_once(&qword_1ED4A2BD8, block);
@@ -67,7 +67,7 @@ uint64_t __43__UIKBRenderConfig_colorAdaptiveConfigDark__block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __30__UIKBRenderConfig_darkConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2B78 != -1)
   {
     dispatch_once(&qword_1ED4A2B78, block);
@@ -123,7 +123,7 @@ uint64_t __44__UIKBRenderConfig_colorAdaptiveConfigLight__block_invoke(uint64_t 
   block[1] = 3221225472;
   block[2] = __44__UIKBRenderConfig_colorAdaptiveConfigLight__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2BC8 != -1)
   {
     dispatch_once(&qword_1ED4A2BC8, block);
@@ -140,7 +140,7 @@ uint64_t __44__UIKBRenderConfig_colorAdaptiveConfigLight__block_invoke(uint64_t 
   block[1] = 3221225472;
   block[2] = __33__UIKBRenderConfig_defaultConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2B58 != -1)
   {
     dispatch_once(&qword_1ED4A2B58, block);
@@ -241,26 +241,26 @@ void __36__UIKBRenderConfig__graphicsQuality__block_invoke()
     v3 = 2030;
   }
 
-  v4 = [(UIKBRenderConfig *)self forceQuality];
-  if (!v4)
+  forceQuality = [(UIKBRenderConfig *)self forceQuality];
+  if (!forceQuality)
   {
-    v4 = [objc_opt_class() _graphicsQuality];
+    forceQuality = [objc_opt_class() _graphicsQuality];
   }
 
   v5 = objc_opt_class();
 
-  return [v5 backdropStyleForStyle:v3 quality:v4];
+  return [v5 backdropStyleForStyle:v3 quality:forceQuality];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(UIKBRenderConfig *)self lightKeyboard];
-    v21 = v6 == [v5 lightKeyboard] && (v7 = -[UIKBRenderConfig forceQuality](self, "forceQuality"), v7 == objc_msgSend(v5, "forceQuality")) && (-[UIKBRenderConfig blurRadius](self, "blurRadius"), v9 = v8, objc_msgSend(v5, "blurRadius"), v9 == v10) && (-[UIKBRenderConfig blurSaturation](self, "blurSaturation"), v12 = v11, objc_msgSend(v5, "blurSaturation"), v12 == v13) && (-[UIKBRenderConfig keycapOpacity](self, "keycapOpacity"), v15 = v14, objc_msgSend(v5, "keycapOpacity"), v15 == v16) && (-[UIKBRenderConfig lightKeycapOpacity](self, "lightKeycapOpacity"), v18 = v17, objc_msgSend(v5, "lightKeycapOpacity"), v18 == v19) && self->_useEmojiStyles == v5[8] && (v20 = -[UIKBRenderConfig isFloating](self, "isFloating"), v20 == objc_msgSend(v5, "isFloating")) && self->_controlKeyBackgroundName == *(v5 + 9) && self->_activatedKeyplaneSwitchControlKeyBackgroundName == *(v5 + 10) && self->_animatedBackground == v5[27] && self->_colorAdaptiveBackground == v5[28] && self->_usesCompactKeycapsFont == v5[29];
+    v5 = equalCopy;
+    lightKeyboard = [(UIKBRenderConfig *)self lightKeyboard];
+    v21 = lightKeyboard == [v5 lightKeyboard] && (v7 = -[UIKBRenderConfig forceQuality](self, "forceQuality"), v7 == objc_msgSend(v5, "forceQuality")) && (-[UIKBRenderConfig blurRadius](self, "blurRadius"), v9 = v8, objc_msgSend(v5, "blurRadius"), v9 == v10) && (-[UIKBRenderConfig blurSaturation](self, "blurSaturation"), v12 = v11, objc_msgSend(v5, "blurSaturation"), v12 == v13) && (-[UIKBRenderConfig keycapOpacity](self, "keycapOpacity"), v15 = v14, objc_msgSend(v5, "keycapOpacity"), v15 == v16) && (-[UIKBRenderConfig lightKeycapOpacity](self, "lightKeycapOpacity"), v18 = v17, objc_msgSend(v5, "lightKeycapOpacity"), v18 == v19) && self->_useEmojiStyles == v5[8] && (v20 = -[UIKBRenderConfig isFloating](self, "isFloating"), v20 == objc_msgSend(v5, "isFloating")) && self->_controlKeyBackgroundName == *(v5 + 9) && self->_activatedKeyplaneSwitchControlKeyBackgroundName == *(v5 + 10) && self->_animatedBackground == v5[27] && self->_colorAdaptiveBackground == v5[28] && self->_usesCompactKeycapsFont == v5[29];
   }
 
   else
@@ -271,7 +271,7 @@ void __36__UIKBRenderConfig__graphicsQuality__block_invoke()
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UIKBRenderConfig allocWithZone:?]];
   v4->_lightKeyboard = self->_lightKeyboard;
@@ -327,7 +327,7 @@ void __36__UIKBRenderConfig__graphicsQuality__block_invoke()
   block[1] = 3221225472;
   block[2] = __38__UIKBRenderConfig_defaultEmojiConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2B68 != -1)
   {
     dispatch_once(&qword_1ED4A2B68, block);
@@ -336,10 +336,10 @@ void __36__UIKBRenderConfig__graphicsQuality__block_invoke()
   if (_UISolariumEnabled())
   {
     v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v3 = [v2 preferencesActions];
-    v4 = [v3 colorAdaptiveKeyboardEnabled];
+    preferencesActions = [v2 preferencesActions];
+    colorAdaptiveKeyboardEnabled = [preferencesActions colorAdaptiveKeyboardEnabled];
 
-    if (v4)
+    if (colorAdaptiveKeyboardEnabled)
     {
       [qword_1ED4A2B60 setColorAdaptiveBackground:1];
       [qword_1ED4A2B60 setUsesCompactKeycapsFont:1];
@@ -380,7 +380,7 @@ uint64_t __38__UIKBRenderConfig_defaultEmojiConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __40__UIKBRenderConfig_clearConfigLightKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2B88 != -1)
   {
     dispatch_once(&qword_1ED4A2B88, block);
@@ -411,7 +411,7 @@ uint64_t __40__UIKBRenderConfig_clearConfigLightKeys__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__UIKBRenderConfig_clearConfigDarkKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2B98 != -1)
   {
     dispatch_once(&qword_1ED4A2B98, block);
@@ -436,9 +436,9 @@ uint64_t __39__UIKBRenderConfig_clearConfigDarkKeys__block_invoke(uint64_t a1)
   return [v4 setBlurRadius:0.0];
 }
 
-+ (id)clearConfigWithLightKeys:(BOOL)a3
++ (id)clearConfigWithLightKeys:(BOOL)keys
 {
-  if (a3)
+  if (keys)
   {
     +[UIKBRenderConfig clearConfigLightKeys];
   }
@@ -458,7 +458,7 @@ uint64_t __39__UIKBRenderConfig_clearConfigDarkKeys__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__UIKBRenderConfig_animatedConfigLight__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2BA8 != -1)
   {
     dispatch_once(&qword_1ED4A2BA8, block);
@@ -467,10 +467,10 @@ uint64_t __39__UIKBRenderConfig_clearConfigDarkKeys__block_invoke(uint64_t a1)
   if (_UISolariumEnabled())
   {
     v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v3 = [v2 preferencesActions];
-    v4 = [v3 colorAdaptiveKeyboardEnabled];
+    preferencesActions = [v2 preferencesActions];
+    colorAdaptiveKeyboardEnabled = [preferencesActions colorAdaptiveKeyboardEnabled];
 
-    if (v4)
+    if (colorAdaptiveKeyboardEnabled)
     {
       [qword_1ED4A2BA0 setColorAdaptiveBackground:1];
       [qword_1ED4A2BA0 setUsesCompactKeycapsFont:1];
@@ -505,7 +505,7 @@ uint64_t __39__UIKBRenderConfig_animatedConfigLight__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __38__UIKBRenderConfig_animatedConfigDark__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2BB8 != -1)
   {
     dispatch_once(&qword_1ED4A2BB8, block);
@@ -514,10 +514,10 @@ uint64_t __39__UIKBRenderConfig_animatedConfigLight__block_invoke(uint64_t a1)
   if (_UISolariumEnabled())
   {
     v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v3 = [v2 preferencesActions];
-    v4 = [v3 colorAdaptiveKeyboardEnabled];
+    preferencesActions = [v2 preferencesActions];
+    colorAdaptiveKeyboardEnabled = [preferencesActions colorAdaptiveKeyboardEnabled];
 
-    if (v4)
+    if (colorAdaptiveKeyboardEnabled)
     {
       [qword_1ED4A2BB0 setColorAdaptiveBackground:1];
       [qword_1ED4A2BB0 setUsesCompactKeycapsFont:1];
@@ -546,9 +546,9 @@ uint64_t __38__UIKBRenderConfig_animatedConfigDark__block_invoke(uint64_t a1)
   return [v4 setControlKeyBackgroundName:@"UIKBColorWhite_Alpha75"];
 }
 
-+ (id)configForAnimatedBackgroundWithLightKeys:(BOOL)a3
++ (id)configForAnimatedBackgroundWithLightKeys:(BOOL)keys
 {
-  if (a3)
+  if (keys)
   {
     +[UIKBRenderConfig animatedConfigLight];
   }
@@ -568,7 +568,7 @@ uint64_t __38__UIKBRenderConfig_animatedConfigDark__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __40__UIKBRenderConfig_lowQualityDarkConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2BE8 != -1)
   {
     dispatch_once(&qword_1ED4A2BE8, block);
@@ -591,41 +591,41 @@ uint64_t __40__UIKBRenderConfig_lowQualityDarkConfig__block_invoke(uint64_t a1)
   return [v4 setForceQuality:10];
 }
 
-+ (id)configForAppearance:(int64_t)a3 inputMode:(id)a4 traitEnvironment:(id)a5
++ (id)configForAppearance:(int64_t)appearance inputMode:(id)mode traitEnvironment:(id)environment
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  modeCopy = mode;
+  environmentCopy = environment;
+  v10 = environmentCopy;
+  if ((appearance & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v8 identifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hasPrefix:", @"emoji"), v12, v13))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([modeCopy identifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hasPrefix:", @"emoji"), v12, v13))
     {
-      v11 = [a1 defaultEmojiConfig];
+      defaultEmojiConfig = [self defaultEmojiConfig];
     }
 
     else if (_UISolariumEnabled() && (+[UIKeyboardPreferencesController sharedPreferencesController](UIKeyboardPreferencesController, "sharedPreferencesController"), v14 = objc_claimAutoreleasedReturnValue(), [v14 preferencesActions], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "colorAdaptiveKeyboardEnabled"), v15, v14, v16))
     {
-      v11 = [a1 colorAdaptiveConfigLight];
+      defaultEmojiConfig = [self colorAdaptiveConfigLight];
     }
 
     else
     {
-      v11 = [a1 defaultConfig];
+      defaultEmojiConfig = [self defaultConfig];
     }
 
     goto LABEL_20;
   }
 
-  if (a3 == 13)
+  if (appearance == 13)
   {
-    v19 = [v9 traitCollection];
-    v18 = [a1 configForAnimatedBackgroundWithLightKeys:{objc_msgSend(v19, "userInterfaceStyle") != 2}];
+    traitCollection = [environmentCopy traitCollection];
+    v18 = [self configForAnimatedBackgroundWithLightKeys:{objc_msgSend(traitCollection, "userInterfaceStyle") != 2}];
 
-    v20 = [v10 traitCollection];
-    v21 = [v20 accessibilityContrast];
+    traitCollection2 = [v10 traitCollection];
+    accessibilityContrast = [traitCollection2 accessibilityContrast];
 
-    if (v21 == 1)
+    if (accessibilityContrast == 1)
     {
       [v18 setKeycapOpacity:0.93];
       [v18 setLightKeycapOpacity:0.93];
@@ -634,30 +634,30 @@ uint64_t __40__UIKBRenderConfig_lowQualityDarkConfig__block_invoke(uint64_t a1)
 
   else
   {
-    if (a3 != 12)
+    if (appearance != 12)
     {
-      if (a3 == 9)
+      if (appearance == 9)
       {
-        v11 = [a1 lowQualityDarkConfig];
+        defaultEmojiConfig = [self lowQualityDarkConfig];
       }
 
       else if (_UISolariumEnabled() && (+[UIKeyboardPreferencesController sharedPreferencesController](UIKeyboardPreferencesController, "sharedPreferencesController"), v22 = objc_claimAutoreleasedReturnValue(), [v22 preferencesActions], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "colorAdaptiveKeyboardEnabled"), v23, v22, v24))
       {
-        v11 = [a1 colorAdaptiveConfigDark];
+        defaultEmojiConfig = [self colorAdaptiveConfigDark];
       }
 
       else
       {
-        v11 = [a1 darkConfig];
+        defaultEmojiConfig = [self darkConfig];
       }
 
 LABEL_20:
-      v18 = v11;
+      v18 = defaultEmojiConfig;
       goto LABEL_21;
     }
 
-    v17 = [v9 traitCollection];
-    v18 = [a1 clearConfigWithLightKeys:{objc_msgSend(v17, "userInterfaceStyle") == 1}];
+    traitCollection3 = [environmentCopy traitCollection];
+    v18 = [self clearConfigWithLightKeys:{objc_msgSend(traitCollection3, "userInterfaceStyle") == 1}];
   }
 
 LABEL_21:
@@ -665,15 +665,15 @@ LABEL_21:
   {
     if (objc_opt_respondsToSelector())
     {
-      v25 = [v10 insertionPointColor];
-      v26 = [v18 buttonBarVisualProvider];
-      [v26 setTintColor:v25];
+      insertionPointColor = [v10 insertionPointColor];
+      buttonBarVisualProvider = [v18 buttonBarVisualProvider];
+      [buttonBarVisualProvider setTintColor:insertionPointColor];
     }
 
     else
     {
-      v25 = [v18 buttonBarVisualProvider];
-      [v25 setTintColor:0];
+      insertionPointColor = [v18 buttonBarVisualProvider];
+      [insertionPointColor setTintColor:0];
     }
   }
 
@@ -682,16 +682,16 @@ LABEL_21:
   return v27;
 }
 
-+ (int64_t)backdropStyleForStyle:(int64_t)a3 quality:(int64_t)a4
++ (int64_t)backdropStyleForStyle:(int64_t)style quality:(int64_t)quality
 {
-  if (a4 == 10 && a3 == 2030)
+  if (quality == 10 && style == 2030)
   {
     return 2039;
   }
 
   else
   {
-    return a3;
+    return style;
   }
 }
 
@@ -722,14 +722,14 @@ LABEL_21:
 
 - (int64_t)blurEffectStyle
 {
-  v2 = [(UIKBRenderConfig *)self backdropStyle];
+  backdropStyle = [(UIKBRenderConfig *)self backdropStyle];
   v3 = 1000;
-  if (v2 == 3902)
+  if (backdropStyle == 3902)
   {
     v3 = 502;
   }
 
-  if (v2 == 3901)
+  if (backdropStyle == 3901)
   {
     return 501;
   }
@@ -740,19 +740,19 @@ LABEL_21:
   }
 }
 
-- (void)overrideKeycapWithSymbol:(id)a3 forDisplayType:(int)a4
+- (void)overrideKeycapWithSymbol:(id)symbol forDisplayType:(int)type
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&type;
+  symbolCopy = symbol;
   customSymbolImages = self->_customSymbolImages;
-  v11 = v6;
-  if (v6)
+  v11 = symbolCopy;
+  if (symbolCopy)
   {
     if (!customSymbolImages)
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v9 = self->_customSymbolImages;
-      self->_customSymbolImages = v8;
+      self->_customSymbolImages = dictionary;
 
       customSymbolImages = self->_customSymbolImages;
     }
@@ -775,12 +775,12 @@ LABEL_21:
 LABEL_8:
 }
 
-- (id)imageNameForType:(int)a3
+- (id)imageNameForType:(int)type
 {
   customSymbolImages = self->_customSymbolImages;
   if (customSymbolImages)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&type];
     customSymbolImages = [customSymbolImages objectForKey:v4];
   }
 

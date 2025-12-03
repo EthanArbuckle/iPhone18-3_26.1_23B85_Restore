@@ -1,119 +1,119 @@
 @interface DMFApp
-- (BOOL)_proxyIsValidated:(id)a3;
-- (DMFApp)initWithBundleIdentifier:(id)a3 propertyKeys:(id)a4;
-- (id)initWithApplicationRecord:(id)a3 hasUpdateAvailable:(BOOL)a4 propertyKeys:(id)a5;
+- (BOOL)_proxyIsValidated:(id)validated;
+- (DMFApp)initWithBundleIdentifier:(id)identifier propertyKeys:(id)keys;
+- (id)initWithApplicationRecord:(id)record hasUpdateAvailable:(BOOL)available propertyKeys:(id)keys;
 @end
 
 @implementation DMFApp
 
-- (DMFApp)initWithBundleIdentifier:(id)a3 propertyKeys:(id)a4
+- (DMFApp)initWithBundleIdentifier:(id)identifier propertyKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  keysCopy = keys;
   v27.receiver = self;
   v27.super_class = DMFApp;
   v8 = [(DMFApp *)&v27 init];
   if (v8)
   {
     v9 = +[DMDAppController sharedController];
-    if ([v7 containsObject:@"bundleIdentifier"])
+    if ([keysCopy containsObject:@"bundleIdentifier"])
     {
-      [(DMFApp *)v8 setBundleIdentifier:v6];
+      [(DMFApp *)v8 setBundleIdentifier:identifierCopy];
     }
 
-    if ([v7 containsObject:@"installationState"])
+    if ([keysCopy containsObject:@"installationState"])
     {
-      v10 = [DMDAppLifeCycle lifeCycleForBundleIdentifier:v6];
+      v10 = [DMDAppLifeCycle lifeCycleForBundleIdentifier:identifierCopy];
       -[DMFApp setInstallationState:](v8, "setInstallationState:", [v10 currentState]);
     }
 
-    if ([v7 containsObject:@"VPNUUIDString"])
+    if ([keysCopy containsObject:@"VPNUUIDString"])
     {
-      v11 = [v9 VPNUUIDStringForBundleIdentifier:v6];
+      v11 = [v9 VPNUUIDStringForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setVPNUUIDString:v11];
     }
 
-    if ([v7 containsObject:@"cellularSliceUUIDString"])
+    if ([keysCopy containsObject:@"cellularSliceUUIDString"])
     {
-      v12 = [v9 cellularSliceUUIDStringForBundleIdentifier:v6];
+      v12 = [v9 cellularSliceUUIDStringForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setCellularSliceUUIDString:v12];
     }
 
-    if ([v7 containsObject:@"contentFilterUUIDString"])
+    if ([keysCopy containsObject:@"contentFilterUUIDString"])
     {
-      v13 = [v9 contentFilterUUIDStringForBundleIdentifier:v6];
+      v13 = [v9 contentFilterUUIDStringForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setContentFilterUUIDString:v13];
     }
 
-    if ([v7 containsObject:@"DNSProxyUUIDString"])
+    if ([keysCopy containsObject:@"DNSProxyUUIDString"])
     {
-      v14 = [v9 DNSProxyUUIDStringForBundleIdentifier:v6];
+      v14 = [v9 DNSProxyUUIDStringForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setDNSProxyUUIDString:v14];
     }
 
-    if ([v7 containsObject:@"relayUUIDString"])
+    if ([keysCopy containsObject:@"relayUUIDString"])
     {
-      v15 = [v9 relayUUIDStringForBundleIdentifier:v6];
+      v15 = [v9 relayUUIDStringForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setRelayUUIDString:v15];
     }
 
-    if ([v7 containsObject:@"associatedDomains"])
+    if ([keysCopy containsObject:@"associatedDomains"])
     {
-      v16 = [v9 associatedDomainsForBundleIdentifier:v6];
+      v16 = [v9 associatedDomainsForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setAssociatedDomains:v16];
     }
 
-    if ([v7 containsObject:@"associatedDomainsEnableDirectDownloads"])
+    if ([keysCopy containsObject:@"associatedDomainsEnableDirectDownloads"])
     {
-      v17 = [v9 associatedDomainsEnableDirectDownloadsForBundleIdentifier:v6];
+      v17 = [v9 associatedDomainsEnableDirectDownloadsForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setAssociatedDomainsEnableDirectDownloads:v17];
     }
 
-    if ([v7 containsObject:@"removable"])
+    if ([keysCopy containsObject:@"removable"])
     {
-      v18 = [v9 removabilityForBundleIdentifier:v6];
+      v18 = [v9 removabilityForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setRemovable:v18];
     }
 
-    if ([v7 containsObject:@"tapToPayScreenLock"])
+    if ([keysCopy containsObject:@"tapToPayScreenLock"])
     {
-      v19 = [v9 tapToPayScreenLockForBundleIdentifier:v6];
+      v19 = [v9 tapToPayScreenLockForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setTapToPayScreenLock:v19];
     }
 
-    if ([v7 containsObject:@"allowUserToHide"])
+    if ([keysCopy containsObject:@"allowUserToHide"])
     {
-      v20 = [v9 allowUserToHideForBundleIdentifier:v6];
+      v20 = [v9 allowUserToHideForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setAllowUserToHide:v20];
     }
 
-    if ([v7 containsObject:@"allowUserToLock"])
+    if ([keysCopy containsObject:@"allowUserToLock"])
     {
-      v21 = [v9 allowUserToLockForBundleIdentifier:v6];
+      v21 = [v9 allowUserToLockForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setAllowUserToLock:v21];
     }
 
-    if ([v7 containsObject:@"configuration"])
+    if ([keysCopy containsObject:@"configuration"])
     {
-      v22 = [v9 configurationForBundleIdentifier:v6];
+      v22 = [v9 configurationForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setConfiguration:v22];
     }
 
-    if ([v7 containsObject:@"feedback"])
+    if ([keysCopy containsObject:@"feedback"])
     {
-      v23 = [v9 feedbackForBundleIdentifier:v6];
+      v23 = [v9 feedbackForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setFeedback:v23];
     }
 
-    if ([v7 containsObject:@"sourceIdentifier"])
+    if ([keysCopy containsObject:@"sourceIdentifier"])
     {
-      v24 = [v9 sourceIdentifierForBundleIdentifier:v6];
+      v24 = [v9 sourceIdentifierForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setSourceIdentifier:v24];
     }
 
-    if ([v7 containsObject:@"managementInformation"])
+    if ([keysCopy containsObject:@"managementInformation"])
     {
-      v25 = [v9 managementInformationForBundleIdentifier:v6];
+      v25 = [v9 managementInformationForBundleIdentifier:identifierCopy];
       [(DMFApp *)v8 setManagementInformation:v25];
     }
   }
@@ -121,29 +121,29 @@
   return v8;
 }
 
-- (id)initWithApplicationRecord:(id)a3 hasUpdateAvailable:(BOOL)a4 propertyKeys:(id)a5
+- (id)initWithApplicationRecord:(id)record hasUpdateAvailable:(BOOL)available propertyKeys:(id)keys
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 bundleIdentifier];
-  v11 = [(DMFApp *)self initWithBundleIdentifier:v10 propertyKeys:v9];
+  availableCopy = available;
+  recordCopy = record;
+  keysCopy = keys;
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  v11 = [(DMFApp *)self initWithBundleIdentifier:bundleIdentifier propertyKeys:keysCopy];
   if (!v11)
   {
     goto LABEL_65;
   }
 
-  v48 = v6;
-  v12 = [v8 compatibilityObject];
-  if ([v9 containsObject:@"type"])
+  v48 = availableCopy;
+  compatibilityObject = [recordCopy compatibilityObject];
+  if ([keysCopy containsObject:@"type"])
   {
-    v13 = [v12 applicationType];
-    if ([v13 isEqualToString:LSSystemApplicationType])
+    applicationType = [compatibilityObject applicationType];
+    if ([applicationType isEqualToString:LSSystemApplicationType])
     {
       v14 = 1;
     }
 
-    else if ([v13 isEqualToString:LSUserApplicationType])
+    else if ([applicationType isEqualToString:LSUserApplicationType])
     {
       v14 = 2;
     }
@@ -156,66 +156,66 @@
     [(DMFApp *)v11 setType:v14];
   }
 
-  if ([v9 containsObject:@"displayName"])
+  if ([keysCopy containsObject:@"displayName"])
   {
-    v15 = [v12 localizedName];
-    if (v15)
+    localizedName = [compatibilityObject localizedName];
+    if (localizedName)
     {
-      [(DMFApp *)v11 setDisplayName:v15];
+      [(DMFApp *)v11 setDisplayName:localizedName];
     }
 
     else
     {
-      v16 = [v12 itemName];
-      [(DMFApp *)v11 setDisplayName:v16];
+      itemName = [compatibilityObject itemName];
+      [(DMFApp *)v11 setDisplayName:itemName];
     }
   }
 
-  if ([v9 containsObject:@"storeItemIdentifier"])
+  if ([keysCopy containsObject:@"storeItemIdentifier"])
   {
-    v17 = [v12 itemID];
-    [(DMFApp *)v11 setStoreItemIdentifier:v17];
+    itemID = [compatibilityObject itemID];
+    [(DMFApp *)v11 setStoreItemIdentifier:itemID];
   }
 
-  if ([v9 containsObject:@"externalVersionIdentifier"])
+  if ([keysCopy containsObject:@"externalVersionIdentifier"])
   {
-    v18 = [v12 externalVersionIdentifier];
-    [(DMFApp *)v11 setExternalVersionIdentifier:v18];
+    externalVersionIdentifier = [compatibilityObject externalVersionIdentifier];
+    [(DMFApp *)v11 setExternalVersionIdentifier:externalVersionIdentifier];
   }
 
-  if ([v9 containsObject:@"distributorIdentifier"])
+  if ([keysCopy containsObject:@"distributorIdentifier"])
   {
-    v19 = [v8 iTunesMetadata];
-    v20 = [v19 distributorInfo];
-    v21 = [v20 distributorID];
-    [(DMFApp *)v11 setDistributorIdentifier:v21];
+    iTunesMetadata = [recordCopy iTunesMetadata];
+    distributorInfo = [iTunesMetadata distributorInfo];
+    distributorID = [distributorInfo distributorID];
+    [(DMFApp *)v11 setDistributorIdentifier:distributorID];
   }
 
-  if ([v9 containsObject:@"version"])
+  if ([keysCopy containsObject:@"version"])
   {
-    v22 = [v12 bundleVersion];
-    [(DMFApp *)v11 setVersion:v22];
+    bundleVersion = [compatibilityObject bundleVersion];
+    [(DMFApp *)v11 setVersion:bundleVersion];
   }
 
-  if ([v9 containsObject:@"shortVersion"])
+  if ([keysCopy containsObject:@"shortVersion"])
   {
-    v23 = [v12 shortVersionString];
-    [(DMFApp *)v11 setShortVersion:v23];
+    shortVersionString = [compatibilityObject shortVersionString];
+    [(DMFApp *)v11 setShortVersion:shortVersionString];
   }
 
-  v24 = [v9 containsObject:@"staticUsage"];
-  v25 = [v9 containsObject:@"dynamicUsage"];
-  v26 = [v9 containsObject:@"onDemandResourcesUsage"];
-  v27 = [v9 containsObject:@"sharedUsage"];
+  v24 = [keysCopy containsObject:@"staticUsage"];
+  v25 = [keysCopy containsObject:@"dynamicUsage"];
+  v26 = [keysCopy containsObject:@"onDemandResourcesUsage"];
+  v27 = [keysCopy containsObject:@"sharedUsage"];
   v28 = v27;
   if ((v24 & 1) != 0 || (v25 & 1) != 0 || (v26 & 1) != 0 || v27)
   {
-    v29 = [v12 diskUsage];
-    v30 = v29;
+    diskUsage = [compatibilityObject diskUsage];
+    v30 = diskUsage;
     if (v24)
     {
-      v45 = [v29 staticUsage];
-      [(DMFApp *)v11 setStaticUsage:v45];
+      staticUsage = [diskUsage staticUsage];
+      [(DMFApp *)v11 setStaticUsage:staticUsage];
 
       if (!v25)
       {
@@ -234,8 +234,8 @@ LABEL_30:
       goto LABEL_30;
     }
 
-    v46 = [v30 dynamicUsage];
-    [(DMFApp *)v11 setDynamicUsage:v46];
+    dynamicUsage = [v30 dynamicUsage];
+    [(DMFApp *)v11 setDynamicUsage:dynamicUsage];
 
     if (!v26)
     {
@@ -248,15 +248,15 @@ LABEL_33:
       }
 
 LABEL_32:
-      v31 = [v30 sharedUsage];
-      [(DMFApp *)v11 setSharedUsage:v31];
+      sharedUsage = [v30 sharedUsage];
+      [(DMFApp *)v11 setSharedUsage:sharedUsage];
 
       goto LABEL_33;
     }
 
 LABEL_68:
-    v47 = [v30 onDemandResourcesUsage];
-    [(DMFApp *)v11 setOnDemandResourcesUsage:v47];
+    onDemandResourcesUsage = [v30 onDemandResourcesUsage];
+    [(DMFApp *)v11 setOnDemandResourcesUsage:onDemandResourcesUsage];
 
     if (!v28)
     {
@@ -267,16 +267,16 @@ LABEL_68:
   }
 
 LABEL_34:
-  v32 = [v9 containsObject:@"isPlaceholder"];
-  v33 = [v9 containsObject:@"isRestricted"];
+  v32 = [keysCopy containsObject:@"isPlaceholder"];
+  v33 = [keysCopy containsObject:@"isRestricted"];
   v34 = v33;
   if ((v32 & 1) != 0 || v33)
   {
-    v35 = [v12 appState];
-    v36 = v35;
+    appState = [compatibilityObject appState];
+    v36 = appState;
     if (v32)
     {
-      -[DMFApp setIsPlaceholder:](v11, "setIsPlaceholder:", [v35 isPlaceholder]);
+      -[DMFApp setIsPlaceholder:](v11, "setIsPlaceholder:", [appState isPlaceholder]);
     }
 
     if (v34)
@@ -285,16 +285,16 @@ LABEL_34:
     }
   }
 
-  v37 = [v9 containsObject:@"isUserBasedVPP"];
-  v38 = [v9 containsObject:@"isLicenseExpired"];
-  v39 = [v9 containsObject:@"isLicenseRevoked"];
+  v37 = [keysCopy containsObject:@"isUserBasedVPP"];
+  v38 = [keysCopy containsObject:@"isLicenseExpired"];
+  v39 = [keysCopy containsObject:@"isLicenseRevoked"];
   v40 = v39;
   if ((v37 & 1) == 0 && (v38 & 1) == 0 && !v39)
   {
     goto LABEL_48;
   }
 
-  v41 = [SSPurchaseReceipt vppStateFlagsWithProxy:v12];
+  v41 = [SSPurchaseReceipt vppStateFlagsWithProxy:compatibilityObject];
   v42 = v41;
   if (!v37)
   {
@@ -327,43 +327,43 @@ LABEL_47:
   }
 
 LABEL_48:
-  if ([v9 containsObject:@"isDeviceBasedVPP"])
+  if ([keysCopy containsObject:@"isDeviceBasedVPP"])
   {
-    -[DMFApp setIsDeviceBasedVPP:](v11, "setIsDeviceBasedVPP:", [v12 isDeviceBasedVPP]);
+    -[DMFApp setIsDeviceBasedVPP:](v11, "setIsDeviceBasedVPP:", [compatibilityObject isDeviceBasedVPP]);
   }
 
-  if ([v9 containsObject:@"isUPP"])
+  if ([keysCopy containsObject:@"isUPP"])
   {
-    -[DMFApp setIsUPP:](v11, "setIsUPP:", [v12 profileValidated]);
+    -[DMFApp setIsUPP:](v11, "setIsUPP:", [compatibilityObject profileValidated]);
   }
 
-  if ([v9 containsObject:@"isValidated"])
+  if ([keysCopy containsObject:@"isValidated"])
   {
-    [(DMFApp *)v11 setIsValidated:[(DMFApp *)v11 _proxyIsValidated:v12]];
+    [(DMFApp *)v11 setIsValidated:[(DMFApp *)v11 _proxyIsValidated:compatibilityObject]];
   }
 
-  if ([v9 containsObject:@"isAppClip"])
+  if ([keysCopy containsObject:@"isAppClip"])
   {
-    v43 = [v8 appClipMetadata];
-    [(DMFApp *)v11 setIsAppClip:v43 != 0];
+    appClipMetadata = [recordCopy appClipMetadata];
+    [(DMFApp *)v11 setIsAppClip:appClipMetadata != 0];
   }
 
-  if ([v9 containsObject:@"isAppStoreVendable"])
+  if ([keysCopy containsObject:@"isAppStoreVendable"])
   {
-    -[DMFApp setIsAppStoreVendable:](v11, "setIsAppStoreVendable:", [v12 isAppStoreVendable]);
+    -[DMFApp setIsAppStoreVendable:](v11, "setIsAppStoreVendable:", [compatibilityObject isAppStoreVendable]);
   }
 
-  if ([v9 containsObject:@"isBetaApp"])
+  if ([keysCopy containsObject:@"isBetaApp"])
   {
-    -[DMFApp setIsBetaApp:](v11, "setIsBetaApp:", [v12 isBetaApp]);
+    -[DMFApp setIsBetaApp:](v11, "setIsBetaApp:", [compatibilityObject isBetaApp]);
   }
 
-  if ([v9 containsObject:@"isAdHocCodeSigned"])
+  if ([keysCopy containsObject:@"isAdHocCodeSigned"])
   {
-    -[DMFApp setIsAdHocCodeSigned:](v11, "setIsAdHocCodeSigned:", [v12 isAdHocCodeSigned]);
+    -[DMFApp setIsAdHocCodeSigned:](v11, "setIsAdHocCodeSigned:", [compatibilityObject isAdHocCodeSigned]);
   }
 
-  if ([v9 containsObject:@"hasUpdateAvailable"])
+  if ([keysCopy containsObject:@"hasUpdateAvailable"])
   {
     [(DMFApp *)v11 setHasUpdateAvailable:v48];
   }
@@ -372,12 +372,12 @@ LABEL_65:
   return v11;
 }
 
-- (BOOL)_proxyIsValidated:(id)a3
+- (BOOL)_proxyIsValidated:(id)validated
 {
-  v3 = [a3 bundleURL];
-  v4 = [v3 path];
+  bundleURL = [validated bundleURL];
+  path = [bundleURL path];
 
-  if (v4)
+  if (path)
   {
     v5 = MISAppApprovalState();
     if (v5)

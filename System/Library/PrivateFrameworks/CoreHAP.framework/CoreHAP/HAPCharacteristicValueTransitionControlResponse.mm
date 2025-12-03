@@ -1,12 +1,12 @@
 @interface HAPCharacteristicValueTransitionControlResponse
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPCharacteristicValueTransitionControlResponse)init;
-- (HAPCharacteristicValueTransitionControlResponse)initWithValueTransition:(id)a3 transitionState:(id)a4;
+- (HAPCharacteristicValueTransitionControlResponse)initWithValueTransition:(id)transition transitionState:(id)state;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPCharacteristicValueTransitionControlResponse
@@ -14,17 +14,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPCharacteristicValueTransitionControlResponse *)self valueTransition];
-  v5 = [(HAPCharacteristicValueTransitionControlResponse *)self transitionState];
-  v6 = [v3 stringWithFormat:@"<HAPCharacteristicValueTransitionControlResponse valueTransition=%@, transitionState=%@>", v4, v5];
+  valueTransition = [(HAPCharacteristicValueTransitionControlResponse *)self valueTransition];
+  transitionState = [(HAPCharacteristicValueTransitionControlResponse *)self transitionState];
+  v6 = [v3 stringWithFormat:@"<HAPCharacteristicValueTransitionControlResponse valueTransition=%@, transitionState=%@>", valueTransition, transitionState];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPCharacteristicValueTransitionControlResponse *)self valueTransition];
-      v8 = [(HAPCharacteristicValueTransitionControlResponse *)v6 valueTransition];
-      if (v7 != v8)
+      v6 = equalCopy;
+      valueTransition = [(HAPCharacteristicValueTransitionControlResponse *)self valueTransition];
+      valueTransition2 = [(HAPCharacteristicValueTransitionControlResponse *)v6 valueTransition];
+      if (valueTransition != valueTransition2)
       {
-        v9 = [(HAPCharacteristicValueTransitionControlResponse *)self valueTransition];
-        v3 = [(HAPCharacteristicValueTransitionControlResponse *)v6 valueTransition];
-        if (![v9 isEqual:v3])
+        valueTransition3 = [(HAPCharacteristicValueTransitionControlResponse *)self valueTransition];
+        valueTransition4 = [(HAPCharacteristicValueTransitionControlResponse *)v6 valueTransition];
+        if (![valueTransition3 isEqual:valueTransition4])
         {
           v10 = 0;
 LABEL_13:
@@ -50,25 +50,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = valueTransition3;
       }
 
-      v11 = [(HAPCharacteristicValueTransitionControlResponse *)self transitionState];
-      v12 = [(HAPCharacteristicValueTransitionControlResponse *)v6 transitionState];
-      if (v11 == v12)
+      transitionState = [(HAPCharacteristicValueTransitionControlResponse *)self transitionState];
+      transitionState2 = [(HAPCharacteristicValueTransitionControlResponse *)v6 transitionState];
+      if (transitionState == transitionState2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HAPCharacteristicValueTransitionControlResponse *)self transitionState];
-        v14 = [(HAPCharacteristicValueTransitionControlResponse *)v6 transitionState];
-        v10 = [v13 isEqual:v14];
+        transitionState3 = [(HAPCharacteristicValueTransitionControlResponse *)self transitionState];
+        transitionState4 = [(HAPCharacteristicValueTransitionControlResponse *)v6 transitionState];
+        v10 = [transitionState3 isEqual:transitionState4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      valueTransition3 = v16;
+      if (valueTransition == valueTransition2)
       {
         goto LABEL_14;
       }
@@ -84,17 +84,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPCharacteristicValueTransitionControlResponse allocWithZone:a3];
-  v5 = [(HAPCharacteristicValueTransitionControlResponse *)self valueTransition];
-  v6 = [(HAPCharacteristicValueTransitionControlResponse *)self transitionState];
-  v7 = [(HAPCharacteristicValueTransitionControlResponse *)v4 initWithValueTransition:v5 transitionState:v6];
+  v4 = [HAPCharacteristicValueTransitionControlResponse allocWithZone:zone];
+  valueTransition = [(HAPCharacteristicValueTransitionControlResponse *)self valueTransition];
+  transitionState = [(HAPCharacteristicValueTransitionControlResponse *)self transitionState];
+  v7 = [(HAPCharacteristicValueTransitionControlResponse *)v4 initWithValueTransition:valueTransition transitionState:transitionState];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
   v47 = 0u;
@@ -119,18 +119,18 @@ LABEL_15:
   v30 = 0u;
   v28 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPCharacteristicValueTransitionControlResponse *)self valueTransition];
+  valueTransition = [(HAPCharacteristicValueTransitionControlResponse *)self valueTransition];
 
-  if (!v5)
+  if (!valueTransition)
   {
 LABEL_10:
-    v13 = [(HAPCharacteristicValueTransitionControlResponse *)self transitionState];
+    transitionState = [(HAPCharacteristicValueTransitionControlResponse *)self transitionState];
 
-    if (v13)
+    if (transitionState)
     {
-      v14 = [(HAPCharacteristicValueTransitionControlResponse *)self transitionState];
+      transitionState2 = [(HAPCharacteristicValueTransitionControlResponse *)self transitionState];
       v26 = 0;
-      v7 = [v14 serializeWithError:&v26];
+      v7 = [transitionState2 serializeWithError:&v26];
       v8 = v26;
 
       if (v8)
@@ -138,18 +138,18 @@ LABEL_10:
         goto LABEL_12;
       }
 
-      v18 = [v7 bytes];
-      v19 = v18 + [v7 length];
+      bytes = [v7 bytes];
+      v19 = bytes + [v7 length];
       do
       {
-        if ((v19 - v18) >= 255)
+        if ((v19 - bytes) >= 255)
         {
           v20 = 255;
         }
 
         else
         {
-          v20 = v19 - v18;
+          v20 = v19 - bytes;
         }
 
         v21 = TLV8BufferAppend();
@@ -163,7 +163,7 @@ LABEL_10:
           v22 = v20;
         }
 
-        v18 += v22;
+        bytes += v22;
         if (v21)
         {
           v23 = 1;
@@ -171,7 +171,7 @@ LABEL_10:
 
         else
         {
-          v23 = v18 >= v19;
+          v23 = bytes >= v19;
         }
       }
 
@@ -181,11 +181,11 @@ LABEL_10:
       if (v17)
       {
 LABEL_28:
-        if (a3)
+        if (error)
         {
           HMErrorFromOSStatus(v17);
           v8 = 0;
-          *a3 = v16 = 0;
+          *error = v16 = 0;
           goto LABEL_33;
         }
 
@@ -199,26 +199,26 @@ LABEL_28:
     goto LABEL_33;
   }
 
-  v6 = [(HAPCharacteristicValueTransitionControlResponse *)self valueTransition];
+  valueTransition2 = [(HAPCharacteristicValueTransitionControlResponse *)self valueTransition];
   v27 = 0;
-  v7 = [v6 serializeWithError:&v27];
+  v7 = [valueTransition2 serializeWithError:&v27];
   v8 = v27;
 
   if (!v8)
   {
-    v9 = [v7 bytes];
-    v10 = v9 + [v7 length];
+    bytes2 = [v7 bytes];
+    v10 = bytes2 + [v7 length];
     while (1)
     {
-      v11 = (v10 - v9) >= 255 ? 255 : v10 - v9;
+      v11 = (v10 - bytes2) >= 255 ? 255 : v10 - bytes2;
       v12 = TLV8BufferAppend();
       if (v12)
       {
         break;
       }
 
-      v9 += v11;
-      if (v9 >= v10)
+      bytes2 += v11;
+      if (bytes2 >= v10)
       {
 
         goto LABEL_10;
@@ -232,11 +232,11 @@ LABEL_28:
 
 LABEL_12:
 
-  if (a3)
+  if (error)
   {
     v15 = v8;
     v16 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_33;
   }
 
@@ -250,11 +250,11 @@ LABEL_33:
   return v16;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
@@ -270,7 +270,7 @@ LABEL_18:
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = v7 + v8;
+  v12 = bytes + v8;
   while (1)
   {
     v28 = 0;
@@ -280,10 +280,10 @@ LABEL_18:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (a4)
+      if (error)
       {
         HMErrorFromOSStatus(Next);
-        *a4 = v18 = 0;
+        *error = v18 = 0;
         goto LABEL_25;
       }
 
@@ -298,7 +298,7 @@ LABEL_18:
     if (v28 == 2)
     {
       v23 = v11;
-      v14 = HAPTLVParseContiguousTlvs(2, v7, v12, v26, &v23);
+      v14 = HAPTLVParseContiguousTlvs(2, bytes, v12, v26, &v23);
       v15 = v23;
 
       if (v15)
@@ -320,7 +320,7 @@ LABEL_13:
     if (v28 == 1)
     {
       v25 = v11;
-      v14 = HAPTLVParseContiguousTlvs(1, v7, v12, v26, &v25);
+      v14 = HAPTLVParseContiguousTlvs(1, bytes, v12, v26, &v25);
       v15 = v25;
 
       if (!v15)
@@ -338,7 +338,7 @@ LABEL_10:
     }
 
 LABEL_14:
-    v7 = v26[0];
+    bytes = v26[0];
     if (v26[0] >= v12)
     {
       if (!v11)
@@ -359,11 +359,11 @@ LABEL_14:
   }
 
 LABEL_22:
-  if (a4)
+  if (error)
   {
     v20 = v11;
     v18 = 0;
-    *a4 = v11;
+    *error = v11;
     goto LABEL_25;
   }
 
@@ -374,18 +374,18 @@ LABEL_25:
   return v18;
 }
 
-- (HAPCharacteristicValueTransitionControlResponse)initWithValueTransition:(id)a3 transitionState:(id)a4
+- (HAPCharacteristicValueTransitionControlResponse)initWithValueTransition:(id)transition transitionState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  transitionCopy = transition;
+  stateCopy = state;
   v12.receiver = self;
   v12.super_class = HAPCharacteristicValueTransitionControlResponse;
   v9 = [(HAPCharacteristicValueTransitionControlResponse *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_valueTransition, a3);
-    objc_storeStrong(&v10->_transitionState, a4);
+    objc_storeStrong(&v9->_valueTransition, transition);
+    objc_storeStrong(&v10->_transitionState, state);
   }
 
   return v10;
@@ -398,24 +398,24 @@ LABEL_25:
   return [(HAPCharacteristicValueTransitionControlResponse *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPCharacteristicValueTransitionControlResponse);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPCharacteristicValueTransitionControlResponse *)v6 parseFromData:v5 error:&v11];
+    [(HAPCharacteristicValueTransitionControlResponse *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

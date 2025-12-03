@@ -1,47 +1,47 @@
 @interface WFUserNotificationManager
 - (WFUserNotificationManager)init;
 - (id)categoryIdentifiers;
-- (void)addObserver:(id)a3 forCategory:(id)a4;
-- (void)registerCategoriesIfNecessary:(id)a3;
-- (void)removeNotificationsWithIdentifiers:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeStaleNotificationsWithCompletion:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)addObserver:(id)observer forCategory:(id)category;
+- (void)registerCategoriesIfNecessary:(id)necessary;
+- (void)removeNotificationsWithIdentifiers:(id)identifiers;
+- (void)removeObserver:(id)observer;
+- (void)removeStaleNotificationsWithCompletion:(id)completion;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation WFUserNotificationManager
 
-- (void)removeNotificationsWithIdentifiers:(id)a3
+- (void)removeNotificationsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(WFUserNotificationManager *)self notificationCenter];
-  [v5 removeDeliveredNotificationsWithIdentifiers:v4];
+  identifiersCopy = identifiers;
+  notificationCenter = [(WFUserNotificationManager *)self notificationCenter];
+  [notificationCenter removeDeliveredNotificationsWithIdentifiers:identifiersCopy];
 }
 
-- (void)removeStaleNotificationsWithCompletion:(id)a3
+- (void)removeStaleNotificationsWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = getWFUserNotificationManagerLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(WFUserNotificationManager *)self categories];
+    categories = [(WFUserNotificationManager *)self categories];
     *buf = 136315394;
     v13 = "[WFUserNotificationManager removeStaleNotificationsWithCompletion:]";
     v14 = 2114;
-    v15 = v6;
+    v15 = categories;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Attempting to remove stale notifications for categories: %{public}@", buf, 0x16u);
   }
 
-  v7 = [(WFUserNotificationManager *)self notificationCenter];
+  notificationCenter = [(WFUserNotificationManager *)self notificationCenter];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__WFUserNotificationManager_removeStaleNotificationsWithCompletion___block_invoke;
   v10[3] = &unk_2788FE440;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
-  [v7 getDeliveredNotificationsWithCompletionHandler:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  [notificationCenter getDeliveredNotificationsWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -198,36 +198,36 @@ id __68__WFUserNotificationManager_removeStaleNotificationsWithCompletion___bloc
 
 - (id)categoryIdentifiers
 {
-  v2 = [(WFUserNotificationManager *)self categories];
-  v3 = [v2 copy];
+  categories = [(WFUserNotificationManager *)self categories];
+  v3 = [categories copy];
 
   v4 = [v3 if_map:&__block_literal_global_170];
 
   return v4;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  responseCopy = response;
+  handlerCopy = handler;
   v11 = getWFUserNotificationManagerLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v9 notification];
-    v13 = [v12 request];
-    v14 = [v13 content];
-    v15 = [v14 categoryIdentifier];
-    v16 = [(WFUserNotificationManager *)self observers];
+    notification = [responseCopy notification];
+    request = [notification request];
+    content = [request content];
+    categoryIdentifier = [content categoryIdentifier];
+    observers = [(WFUserNotificationManager *)self observers];
     *buf = 136315906;
     v35 = "[WFUserNotificationManager userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]";
     v36 = 2112;
-    v37 = v9;
+    v37 = responseCopy;
     v38 = 2112;
-    v39 = v15;
+    v39 = categoryIdentifier;
     v40 = 2112;
-    v41 = v16;
+    v41 = observers;
     _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_DEFAULT, "%s Notification Manager received a notification response (%@) for category: %@, distributing to observers: %@", buf, 0x2Au);
   }
 
@@ -235,12 +235,12 @@ id __68__WFUserNotificationManager_removeStaleNotificationsWithCompletion___bloc
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v17 = [(WFUserNotificationManager *)self observers];
-  v18 = [v9 notification];
-  v19 = [v18 request];
-  v20 = [v19 content];
-  v21 = [v20 categoryIdentifier];
-  v22 = [v17 objectForKey:v21];
+  observers2 = [(WFUserNotificationManager *)self observers];
+  notification2 = [responseCopy notification];
+  request2 = [notification2 request];
+  content2 = [request2 content];
+  categoryIdentifier2 = [content2 categoryIdentifier];
+  v22 = [observers2 objectForKey:categoryIdentifier2];
 
   v23 = [v22 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v23)
@@ -260,7 +260,7 @@ id __68__WFUserNotificationManager_removeStaleNotificationsWithCompletion___bloc
         v27 = *(*(&v29 + 1) + 8 * v26);
         if (objc_opt_respondsToSelector())
         {
-          [v27 userNotificationCenter:v8 didReceiveNotificationResponse:v9 withCompletionHandler:v10];
+          [v27 userNotificationCenter:centerCopy didReceiveNotificationResponse:responseCopy withCompletionHandler:handlerCopy];
         }
 
         ++v26;
@@ -276,16 +276,16 @@ id __68__WFUserNotificationManager_removeStaleNotificationsWithCompletion___bloc
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(WFUserNotificationManager *)self categories];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  categories = [(WFUserNotificationManager *)self categories];
+  v6 = [categories countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -297,20 +297,20 @@ id __68__WFUserNotificationManager_removeStaleNotificationsWithCompletion___bloc
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(categories);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
-        v11 = [(WFUserNotificationManager *)self observers];
-        v12 = [v10 identifier];
-        v13 = [v11 objectForKey:v12];
+        observers = [(WFUserNotificationManager *)self observers];
+        identifier = [v10 identifier];
+        v13 = [observers objectForKey:identifier];
 
-        [v13 removeObject:v4];
+        [v13 removeObject:observerCopy];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [categories countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -319,46 +319,46 @@ id __68__WFUserNotificationManager_removeStaleNotificationsWithCompletion___bloc
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3 forCategory:(id)a4
+- (void)addObserver:(id)observer forCategory:(id)category
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(WFUserNotificationManager *)self categories];
-  v8 = [v7 containsObject:v6];
+  observerCopy = observer;
+  categoryCopy = category;
+  categories = [(WFUserNotificationManager *)self categories];
+  v8 = [categories containsObject:categoryCopy];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(WFUserNotificationManager *)self categories];
-    [v9 addObject:v6];
+    categories2 = [(WFUserNotificationManager *)self categories];
+    [categories2 addObject:categoryCopy];
   }
 
-  v10 = [(WFUserNotificationManager *)self observers];
-  v11 = [v6 identifier];
-  v12 = [v10 objectForKey:v11];
+  observers = [(WFUserNotificationManager *)self observers];
+  identifier = [categoryCopy identifier];
+  weakObjectsHashTable = [observers objectForKey:identifier];
 
-  if (!v12)
+  if (!weakObjectsHashTable)
   {
-    v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    v13 = [(WFUserNotificationManager *)self observers];
-    v14 = [v6 identifier];
-    [v13 setObject:v12 forKey:v14];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    observers2 = [(WFUserNotificationManager *)self observers];
+    identifier2 = [categoryCopy identifier];
+    [observers2 setObject:weakObjectsHashTable forKey:identifier2];
   }
 
-  [v12 addObject:v15];
+  [weakObjectsHashTable addObject:observerCopy];
 }
 
-- (void)registerCategoriesIfNecessary:(id)a3
+- (void)registerCategoriesIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(WFUserNotificationManager *)self notificationCenter];
+  necessaryCopy = necessary;
+  notificationCenter = [(WFUserNotificationManager *)self notificationCenter];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__WFUserNotificationManager_registerCategoriesIfNecessary___block_invoke;
   v7[3] = &unk_2788FE3D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 getNotificationCategoriesWithCompletionHandler:v7];
+  v8 = necessaryCopy;
+  selfCopy = self;
+  v6 = necessaryCopy;
+  [notificationCenter getNotificationCategoriesWithCompletionHandler:v7];
 }
 
 void __59__WFUserNotificationManager_registerCategoriesIfNecessary___block_invoke(uint64_t a1, void *a2)

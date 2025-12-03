@@ -1,26 +1,26 @@
 @interface AXSpeakServer
-+ (id)requiredEntitlementForProcessingMessageWithIdentifier:(unint64_t)a3;
++ (id)requiredEntitlementForProcessingMessageWithIdentifier:(unint64_t)identifier;
 + (id)sharedInstance;
 - (AXSpeakServer)init;
-- (BOOL)_isAllowedToSpeakForPid:(int)a3;
+- (BOOL)_isAllowedToSpeakForPid:(int)pid;
 - (BOOL)typingFeedbackEnabled;
 - (TTSSpeechManager)speechManager;
-- (id)_massageKeyboardLanguage:(id)a3;
+- (id)_massageKeyboardLanguage:(id)language;
 - (id)_prepareSpeechAction;
-- (id)_processCharacterForPunctuation:(id)a3;
-- (void)_observeNotifications:(BOOL)a3;
+- (id)_processCharacterForPunctuation:(id)punctuation;
+- (void)_observeNotifications:(BOOL)notifications;
 - (void)_observeSpeechAccessibilityPreferenceChanges;
-- (void)_processTypingFeedback:(id)a3;
+- (void)_processTypingFeedback:(id)feedback;
 - (void)_tryObservingNotifications;
-- (void)_updateSpokenLangugage:(id)a3;
+- (void)_updateSpokenLangugage:(id)langugage;
 - (void)dealloc;
-- (void)handleFirstValueChangeWithCompletion:(id)a3;
-- (void)handleTextReplacementOccurred:(id)a3;
-- (void)handleValueChange:(id)a3;
-- (void)processAutocorrectionOutput:(id)a3;
-- (void)processDelayedTypingFeedback:(id)a3;
-- (void)processWordOutput:(id)a3;
-- (void)withFirstResponderOnMainQueue:(id)a3;
+- (void)handleFirstValueChangeWithCompletion:(id)completion;
+- (void)handleTextReplacementOccurred:(id)occurred;
+- (void)handleValueChange:(id)change;
+- (void)processAutocorrectionOutput:(id)output;
+- (void)processDelayedTypingFeedback:(id)feedback;
+- (void)processWordOutput:(id)output;
+- (void)withFirstResponderOnMainQueue:(id)queue;
 @end
 
 @implementation AXSpeakServer
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = sub_1278;
   block[3] = &unk_8338;
-  block[4] = a1;
+  block[4] = self;
   if (qword_CB68 != -1)
   {
     dispatch_once(&qword_CB68, block);
@@ -112,15 +112,15 @@
   v2 = +[AXSettings sharedInstance];
   if ([v2 phoneticFeedbackEnabled] & 1) != 0 || (objc_msgSend(v2, "wordFeedbackEnabled") & 1) != 0 || (objc_msgSend(v2, "letterFeedbackEnabled") & 1) != 0 || (objc_msgSend(v2, "speakCorrectionsEnabled"))
   {
-    v3 = 1;
+    quickTypePredictionFeedbackEnabled = 1;
   }
 
   else
   {
-    v3 = [v2 quickTypePredictionFeedbackEnabled];
+    quickTypePredictionFeedbackEnabled = [v2 quickTypePredictionFeedbackEnabled];
   }
 
-  return v3;
+  return quickTypePredictionFeedbackEnabled;
 }
 
 - (void)_observeSpeechAccessibilityPreferenceChanges
@@ -171,9 +171,9 @@
   [(AXSpeakServer *)&v4 dealloc];
 }
 
-- (void)_observeNotifications:(BOOL)a3
+- (void)_observeNotifications:(BOOL)notifications
 {
-  if (a3)
+  if (notifications)
   {
     objc_initWeak(&location, self);
     v4[0] = _NSConcreteStackBlock;
@@ -194,7 +194,7 @@
   }
 }
 
-- (id)_massageKeyboardLanguage:(id)a3
+- (id)_massageKeyboardLanguage:(id)language
 {
   v4 = AXCLanguageConvertToCanonicalForm();
   if (![(NSArray *)self->_availableLanguages containsObject:v4])
@@ -207,10 +207,10 @@
   return v4;
 }
 
-- (void)_updateSpokenLangugage:(id)a3
+- (void)_updateSpokenLangugage:(id)langugage
 {
-  v4 = a3;
-  v5 = [(AXSpeakServer *)self _massageKeyboardLanguage:v4];
+  langugageCopy = langugage;
+  v5 = [(AXSpeakServer *)self _massageKeyboardLanguage:langugageCopy];
   v6 = AXLogSpeakTyping();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -218,7 +218,7 @@
     *buf = 138412802;
     v11 = currentLanguage;
     v12 = 2112;
-    v13 = v4;
+    v13 = langugageCopy;
     v14 = 2112;
     v15 = v5;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "Updating language: Current: %@ new: %@ [massaged: %@]", buf, 0x20u);
@@ -238,51 +238,51 @@
   }
 }
 
-- (void)handleTextReplacementOccurred:(id)a3
+- (void)handleTextReplacementOccurred:(id)occurred
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1CA4;
   v5[3] = &unk_8400;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  occurredCopy = occurred;
+  selfCopy = self;
+  v4 = occurredCopy;
   [(AXSpeakServer *)self withFirstResponderOnMainQueue:v5];
 }
 
-- (void)withFirstResponderOnMainQueue:(id)a3
+- (void)withFirstResponderOnMainQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(AXSpeakServer *)self operationQueue];
+  queueCopy = queue;
+  operationQueue = [(AXSpeakServer *)self operationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1E7C;
   block[3] = &unk_8478;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = queueCopy;
+  v6 = queueCopy;
+  dispatch_async(operationQueue, block);
 }
 
-- (void)handleFirstValueChangeWithCompletion:(id)a3
+- (void)handleFirstValueChangeWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_2108;
   v4[3] = &unk_84E0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(AXSpeakServer *)v5 withFirstResponderOnMainQueue:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(AXSpeakServer *)selfCopy withFirstResponderOnMainQueue:v4];
 }
 
-- (void)handleValueChange:(id)a3
+- (void)handleValueChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = AXLogSpeakTyping();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v45 = v4;
+    v45 = changeCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Value change %@", buf, 0xCu);
   }
 
@@ -300,54 +300,54 @@
       goto LABEL_20;
     }
 
-    v7 = [(AXSpeakServer *)self responderElement];
-    if (v7)
+    responderElement = [(AXSpeakServer *)self responderElement];
+    if (responderElement)
     {
-      v8 = v7;
-      v9 = [(AXSpeakServer *)self responderElement];
-      v10 = [v9 isValid];
+      v8 = responderElement;
+      responderElement2 = [(AXSpeakServer *)self responderElement];
+      isValid = [responderElement2 isValid];
 
-      if (v10)
+      if (isValid)
       {
-        v11 = [(AXSpeakServer *)self responderElement];
-        v12 = [v11 traits];
-        v13 = kAXSecureTextFieldTrait & ~v12;
+        responderElement3 = [(AXSpeakServer *)self responderElement];
+        traits = [responderElement3 traits];
+        v13 = kAXSecureTextFieldTrait & ~traits;
 
         if (!v13)
         {
           goto LABEL_20;
         }
 
-        v14 = [(AXSpeakServer *)self elementValueText];
-        if ([v14 isAXAttributedString] && objc_msgSend(v14, "hasAttribute:", UIAccessibilityTokenPlaceholder))
+        elementValueText = [(AXSpeakServer *)self elementValueText];
+        if ([elementValueText isAXAttributedString] && objc_msgSend(elementValueText, "hasAttribute:", UIAccessibilityTokenPlaceholder))
         {
 
-          v14 = 0;
+          elementValueText = 0;
         }
 
-        v15 = [(AXSpeakServer *)self responderElement];
-        [v15 updateCache:2006];
+        responderElement4 = [(AXSpeakServer *)self responderElement];
+        [responderElement4 updateCache:2006];
 
-        v16 = [(AXSpeakServer *)self responderElement];
-        v17 = [v16 value];
+        responderElement5 = [(AXSpeakServer *)self responderElement];
+        value = [responderElement5 value];
 
-        v18 = [(AXSpeakServer *)self responderElement];
-        v19 = [v18 selectedTextRange];
+        responderElement6 = [(AXSpeakServer *)self responderElement];
+        selectedTextRange = [responderElement6 selectedTextRange];
         v40 = v20;
-        v41 = v19;
+        v41 = selectedTextRange;
 
         v21 = +[UIKeyboardInputModeController sharedInputModeController];
-        v22 = [v21 currentInputModeInPreference];
-        v23 = [v22 primaryLanguage];
+        currentInputModeInPreference = [v21 currentInputModeInPreference];
+        primaryLanguage = [currentInputModeInPreference primaryLanguage];
 
-        [(AXSpeakServer *)self _updateSpokenLangugage:v23];
-        v24 = [v14 length];
-        v25 = [v17 length];
-        v26 = [(AXSpeakServer *)self responderElement];
-        v27 = [v26 application];
-        v28 = [v27 isDictationListening];
+        [(AXSpeakServer *)self _updateSpokenLangugage:primaryLanguage];
+        v24 = [elementValueText length];
+        v25 = [value length];
+        responderElement7 = [(AXSpeakServer *)self responderElement];
+        application = [responderElement7 application];
+        isDictationListening = [application isDictationListening];
 
-        if (v28)
+        if (isDictationListening)
         {
           v29 = AXLogSpeakTyping();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -369,7 +369,7 @@
           {
             v32 = +[AXFirstResponderValueChangeManager sharedInstance];
             LOBYTE(v39) = 1;
-            v33 = [v32 outputValueChangeForNewValue:v17 oldValue:v14 selectedTextRange:v41 shouldEchoDeletion:v40 isSingleInsert:0 feedbackType:v31 == -1 lastKeyboardKeyPress:CFAbsoluteTimeGetCurrent() shouldOutputSingleCharactersOnly:{1, v39}];
+            v33 = [v32 outputValueChangeForNewValue:value oldValue:elementValueText selectedTextRange:v41 shouldEchoDeletion:v40 isSingleInsert:0 feedbackType:v31 == -1 lastKeyboardKeyPress:CFAbsoluteTimeGetCurrent() shouldOutputSingleCharactersOnly:{1, v39}];
             v34 = [v33 stringByReplacingOccurrencesOfString:@" " withString:&stru_8658];
 
             if (v34 && [v34 length])
@@ -392,7 +392,7 @@
           }
 
           v36 = +[AXFirstResponderValueChangeManager sharedInstance];
-          v37 = [v36 outputValueChangeForNewValue:v17 oldValue:v14 selectedTextRange:v41 shouldEchoDeletion:v40 isSingleInsert:0 feedbackType:v31 == -1 lastKeyboardKeyPress:{CFAbsoluteTimeGetCurrent(), 2}];
+          v37 = [v36 outputValueChangeForNewValue:value oldValue:elementValueText selectedTextRange:v41 shouldEchoDeletion:v40 isSingleInsert:0 feedbackType:v31 == -1 lastKeyboardKeyPress:{CFAbsoluteTimeGetCurrent(), 2}];
           v29 = [v37 stringByReplacingOccurrencesOfString:@" " withString:&stru_8658];
 
           v38 = AXLogSpeakTyping();
@@ -410,7 +410,7 @@
         }
 
 LABEL_36:
-        [(AXSpeakServer *)self setElementValueText:v17];
+        [(AXSpeakServer *)self setElementValueText:value];
 
         goto LABEL_20;
       }
@@ -428,7 +428,7 @@ LABEL_36:
     v42[2] = sub_27C8;
     v42[3] = &unk_83B0;
     v42[4] = self;
-    v43 = v4;
+    v43 = changeCopy;
     [(AXSpeakServer *)self handleFirstValueChangeWithCompletion:v42];
   }
 
@@ -462,53 +462,53 @@ LABEL_20:
   return v3;
 }
 
-- (void)processAutocorrectionOutput:(id)a3
+- (void)processAutocorrectionOutput:(id)output
 {
-  v4 = a3;
-  v5 = [(AXSpeakServer *)self _prepareSpeechAction];
-  [v5 setShouldQueue:1];
-  [v5 setCannotInterrupt:1];
-  v6 = [(AXSpeakServer *)self speechManager];
-  [v6 setSpeechEnabled:1];
+  outputCopy = output;
+  _prepareSpeechAction = [(AXSpeakServer *)self _prepareSpeechAction];
+  [_prepareSpeechAction setShouldQueue:1];
+  [_prepareSpeechAction setCannotInterrupt:1];
+  speechManager = [(AXSpeakServer *)self speechManager];
+  [speechManager setSpeechEnabled:1];
 
-  [v5 setString:v4];
+  [_prepareSpeechAction setString:outputCopy];
   v7 = AXLogSpeakTyping();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = _prepareSpeechAction;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Process autocorrect: %@", &v8, 0xCu);
   }
 
-  [(AXSpeakServer *)self _speakAction:v5 isForResponderElement:1];
+  [(AXSpeakServer *)self _speakAction:_prepareSpeechAction isForResponderElement:1];
 }
 
-- (void)processWordOutput:(id)a3
+- (void)processWordOutput:(id)output
 {
   feedbackDelayTimer = self->_feedbackDelayTimer;
-  v5 = a3;
+  outputCopy = output;
   [(AXDispatchTimer *)feedbackDelayTimer cancel];
-  v6 = [(AXSpeakServer *)self _prepareSpeechAction];
-  v7 = [(AXSpeakServer *)self speechManager];
-  [v7 setSpeechEnabled:1];
+  _prepareSpeechAction = [(AXSpeakServer *)self _prepareSpeechAction];
+  speechManager = [(AXSpeakServer *)self speechManager];
+  [speechManager setSpeechEnabled:1];
 
-  [v6 setString:v5];
+  [_prepareSpeechAction setString:outputCopy];
   v8 = AXLogSpeakTyping();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = _prepareSpeechAction;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Process word: %@", &v9, 0xCu);
   }
 
-  [(AXSpeakServer *)self _speakAction:v6 isForResponderElement:1];
+  [(AXSpeakServer *)self _speakAction:_prepareSpeechAction isForResponderElement:1];
 }
 
-- (id)_processCharacterForPunctuation:(id)a3
+- (id)_processCharacterForPunctuation:(id)punctuation
 {
-  v4 = a3;
-  v5 = [v4 length];
-  v6 = v4;
+  punctuationCopy = punctuation;
+  v5 = [punctuationCopy length];
+  v6 = punctuationCopy;
   v7 = v6;
   if (v5 <= 2)
   {
@@ -528,8 +528,8 @@ LABEL_20:
         goto LABEL_8;
       }
 
-      v9 = [(AXSpeakServer *)self letterPunctuationTable];
-      v10 = [v9 objectForIndex:v8];
+      letterPunctuationTable = [(AXSpeakServer *)self letterPunctuationTable];
+      v10 = [letterPunctuationTable objectForIndex:v8];
 
       if (v10)
       {
@@ -550,52 +550,52 @@ LABEL_8:
   return v7;
 }
 
-- (void)_processTypingFeedback:(id)a3
+- (void)_processTypingFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = [(AXSpeakServer *)self _prepareSpeechAction];
-  v6 = [v5 voiceIdentifier];
-  v7 = [(AXSpeakServer *)self speechManager];
-  [v7 setSpeechEnabled:1];
+  feedbackCopy = feedback;
+  _prepareSpeechAction = [(AXSpeakServer *)self _prepareSpeechAction];
+  voiceIdentifier = [_prepareSpeechAction voiceIdentifier];
+  speechManager = [(AXSpeakServer *)self speechManager];
+  [speechManager setSpeechEnabled:1];
 
-  if ([v4 length])
+  if ([feedbackCopy length])
   {
-    v8 = [(AXSpeakServer *)self _feedbackForCharacter:v4 andVoiceIdentifier:v6];
+    v8 = [(AXSpeakServer *)self _feedbackForCharacter:feedbackCopy andVoiceIdentifier:voiceIdentifier];
     v9 = +[AXLanguageManager sharedInstance];
-    v10 = [v5 language];
-    v11 = [v9 dialectForLanguageID:v10];
+    language = [_prepareSpeechAction language];
+    v11 = [v9 dialectForLanguageID:language];
 
-    if (([v11 canSpeakString:v4] & 1) != 0 || v11 && (objc_msgSend(v11, "speakableCharacters"), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12) || AXLanguageIsSpeakableEmojiString())
+    if (([v11 canSpeakString:feedbackCopy] & 1) != 0 || v11 && (objc_msgSend(v11, "speakableCharacters"), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12) || AXLanguageIsSpeakableEmojiString())
     {
-      v13 = v4;
+      v13 = feedbackCopy;
     }
 
     else
     {
-      v13 = [(AXSpeakServer *)self _processCharacterForPunctuation:v4];
+      v13 = [(AXSpeakServer *)self _processCharacterForPunctuation:feedbackCopy];
     }
 
     v14 = v13;
-    if ([v13 isEqualToString:v4])
+    if ([v13 isEqualToString:feedbackCopy])
     {
-      if ([v4 length] != &dword_0 + 1)
+      if ([feedbackCopy length] != &dword_0 + 1)
       {
 LABEL_12:
         if (_AXSLetterFeedbackEnabled() && _AXSPhoneticFeedbackEnabled())
         {
           if (v8)
           {
-            v17 = [v4 stringByAppendingString:{@", "}];
-            v18 = [v17 stringByAppendingString:v8];
+            v17 = [feedbackCopy stringByAppendingString:{@", "}];
+            iPASpeechPhonemes3 = [v17 stringByAppendingString:v8];
 
-            v19 = [v18 IPASpeechPhonemes];
-            v20 = [v19 length];
+            iPASpeechPhonemes = [iPASpeechPhonemes3 IPASpeechPhonemes];
+            v20 = [iPASpeechPhonemes length];
 
             if (v20)
             {
               v31 = AVSpeechSynthesisIPANotationAttribute;
-              v21 = [v18 IPASpeechPhonemes];
-              v32 = v21;
+              iPASpeechPhonemes2 = [iPASpeechPhonemes3 IPASpeechPhonemes];
+              v32 = iPASpeechPhonemes2;
               v22 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
             }
 
@@ -605,10 +605,10 @@ LABEL_12:
             }
 
             v23 = [NSAttributedString alloc];
-            v24 = v18;
+            v24 = iPASpeechPhonemes3;
 LABEL_28:
             v25 = [v23 initWithString:v24 attributes:v22];
-            [v5 setAttributedString:v25];
+            [_prepareSpeechAction setAttributedString:v25];
 
             goto LABEL_29;
           }
@@ -621,11 +621,11 @@ LABEL_28:
             goto LABEL_29;
           }
 
-          v18 = [v8 IPASpeechPhonemes];
-          if ([v18 length])
+          iPASpeechPhonemes3 = [v8 IPASpeechPhonemes];
+          if ([iPASpeechPhonemes3 length])
           {
             v29 = AVSpeechSynthesisIPANotationAttribute;
-            v30 = v18;
+            v30 = iPASpeechPhonemes3;
             v22 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
           }
 
@@ -639,13 +639,13 @@ LABEL_28:
           goto LABEL_28;
         }
 
-        [v5 setString:v4];
+        [_prepareSpeechAction setString:feedbackCopy];
 LABEL_29:
 
         goto LABEL_30;
       }
 
-      v15 = [TTSSpeechManager literalStringMarkup:v6 string:v4 speakCap:1];
+      v15 = [TTSSpeechManager literalStringMarkup:voiceIdentifier string:feedbackCopy speakCap:1];
     }
 
     else
@@ -655,22 +655,22 @@ LABEL_29:
 
     v16 = v15;
 
-    v4 = v16;
+    feedbackCopy = v16;
     goto LABEL_12;
   }
 
 LABEL_30:
-  v26 = [v5 string];
-  if ([v26 length])
+  string = [_prepareSpeechAction string];
+  if ([string length])
   {
 
 LABEL_33:
-    [(AXSpeakServer *)self _speakAction:v5 isForResponderElement:1];
+    [(AXSpeakServer *)self _speakAction:_prepareSpeechAction isForResponderElement:1];
     goto LABEL_34;
   }
 
-  v27 = [v5 attributedString];
-  v28 = [v27 length];
+  attributedString = [_prepareSpeechAction attributedString];
+  v28 = [attributedString length];
 
   if (v28)
   {
@@ -680,10 +680,10 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)processDelayedTypingFeedback:(id)a3
+- (void)processDelayedTypingFeedback:(id)feedback
 {
-  v4 = a3;
-  if ([v4 length])
+  feedbackCopy = feedback;
+  if ([feedbackCopy length])
   {
     v5 = +[AXSettings sharedInstance];
     [v5 characterFeedbackDelayDuration];
@@ -697,7 +697,7 @@ LABEL_34:
     v9[2] = sub_30B4;
     v9[3] = &unk_8508;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
+    v10 = feedbackCopy;
     [(AXDispatchTimer *)feedbackDelayTimer afterDelay:v9 processBlock:v7];
 
     objc_destroyWeak(&v11);
@@ -705,40 +705,40 @@ LABEL_34:
   }
 }
 
-+ (id)requiredEntitlementForProcessingMessageWithIdentifier:(unint64_t)a3
++ (id)requiredEntitlementForProcessingMessageWithIdentifier:(unint64_t)identifier
 {
-  if (a3 - 3 > 0xC)
+  if (identifier - 3 > 0xC)
   {
     return @"com.apple.accessibility.SpeakTypingServices";
   }
 
   else
   {
-    return qword_8550[a3 - 3];
+    return qword_8550[identifier - 3];
   }
 }
 
-- (BOOL)_isAllowedToSpeakForPid:(int)a3
+- (BOOL)_isAllowedToSpeakForPid:(int)pid
 {
-  v5 = [(AXSpeakServer *)self responderElement];
-  v6 = [v5 pid];
+  responderElement = [(AXSpeakServer *)self responderElement];
+  v6 = [responderElement pid];
 
-  if (v6 == a3)
+  if (v6 == pid)
   {
     return 1;
   }
 
-  v8 = [(AXSpeakServer *)self responderElement];
+  responderElement2 = [(AXSpeakServer *)self responderElement];
 
-  if (!v8)
+  if (!responderElement2)
   {
     return 0;
   }
 
-  v9 = [(AXSpeakServer *)self responderElement];
-  v10 = [v9 remoteParent];
+  responderElement3 = [(AXSpeakServer *)self responderElement];
+  remoteParent = [responderElement3 remoteParent];
 
-  if (!v10)
+  if (!remoteParent)
   {
     return 0;
   }
@@ -746,19 +746,19 @@ LABEL_34:
   v11 = 9;
   while (1)
   {
-    v12 = [v10 pid];
-    v7 = v12 == a3;
-    if (v12 == a3)
+    v12 = [remoteParent pid];
+    v7 = v12 == pid;
+    if (v12 == pid)
     {
       break;
     }
 
-    v13 = [v10 remoteParent];
+    v10RemoteParent = [remoteParent remoteParent];
 
     if (v11-- != 0)
     {
-      v10 = v13;
-      if (v13)
+      remoteParent = v10RemoteParent;
+      if (v10RemoteParent)
       {
         continue;
       }
@@ -767,7 +767,7 @@ LABEL_34:
     goto LABEL_13;
   }
 
-  v13 = v10;
+  v10RemoteParent = remoteParent;
 LABEL_13:
 
   return v7;

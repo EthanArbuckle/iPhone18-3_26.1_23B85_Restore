@@ -2,7 +2,7 @@
 + (id)PersonInference;
 + (id)configurationForPersonInference;
 + (id)storeConfigurationForPersonInference;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)PersonInference
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPersonInference];
+  configurationForPersonInference = [self configurationForPersonInference];
   v3 = +[BMIntelligencePlatformEntityTaggingPersonInference columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"IntelligencePlatform.EntityTagging.PersonInference" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"IntelligencePlatform.EntityTagging.PersonInference" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"IntelligencePlatform.EntityTagging.PersonInference" schema:v9 configuration:configurationForPersonInference];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForPersonInference
 {
-  v3 = [a1 storeConfigurationForPersonInference];
-  v4 = [a1 syncPolicyForPersonInference];
+  storeConfigurationForPersonInference = [self storeConfigurationForPersonInference];
+  syncPolicyForPersonInference = [self syncPolicyForPersonInference];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"0727A6B0-4C16-4D5E-8DBB-7B124550E7B8"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"IntelligencePlatform.EntityTagging.PersonInference" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"IntelligencePlatform.EntityTagging.PersonInference" eventClass:objc_opt_class() storeConfig:storeConfigurationForPersonInference syncPolicy:syncPolicyForPersonInference legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"PersonInference"])
+  if ([name isEqualToString:@"PersonInference"])
   {
-    v4 = [a1 PersonInference];
+    personInference = [self PersonInference];
   }
 
   else
   {
-    v4 = 0;
+    personInference = 0;
   }
 
-  return v4;
+  return personInference;
 }
 
 + (id)validKeyPaths

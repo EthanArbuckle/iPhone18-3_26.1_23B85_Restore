@@ -1,8 +1,8 @@
 @interface CarPlayDiagnosticsExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
-- (id)carPlayAttachmentsForFolder:(id)a3;
-- (id)carPlayLogFolderAttachmentForFolderName:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)carPlayAttachmentsForFolder:(id)folder;
+- (id)carPlayLogFolderAttachmentForFolderName:(id)name;
 - (id)contentOfCarPlayLogsDirectory;
 @end
 
@@ -21,8 +21,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CarPlayDiagnosticsExtension *)self contentOfCarPlayLogsDirectory];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  contentOfCarPlayLogsDirectory = [(CarPlayDiagnosticsExtension *)self contentOfCarPlayLogsDirectory];
+  v5 = [contentOfCarPlayLogsDirectory countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -33,7 +33,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contentOfCarPlayLogsDirectory);
         }
 
         v9 = [(CarPlayDiagnosticsExtension *)self carPlayLogFolderAttachmentForFolderName:*(*(&v12 + 1) + 8 * i)];
@@ -45,7 +45,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v6 = [contentOfCarPlayLogsDirectory countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v6);
@@ -86,11 +86,11 @@ LABEL_6:
   return v5;
 }
 
-- (id)carPlayLogFolderAttachmentForFolderName:(id)a3
+- (id)carPlayLogFolderAttachmentForFolderName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v10 = 0;
-  v4 = [@"/var/mobile/Library/Logs/com.apple.CarPlay" stringByAppendingPathComponent:v3];
+  v4 = [@"/var/mobile/Library/Logs/com.apple.CarPlay" stringByAppendingPathComponent:nameCopy];
   v5 = +[NSFileManager defaultManager];
   v6 = [v5 fileExistsAtPath:v4 isDirectory:&v10];
 
@@ -99,7 +99,7 @@ LABEL_6:
     v7 = [NSURL fileURLWithPath:v4];
     v8 = [DEAttachmentItem attachmentWithPathURL:v7];
 
-    [v8 setDisplayName:v3];
+    [v8 setDisplayName:nameCopy];
     [v8 setShouldCompress:&__kCFBooleanTrue];
   }
 
@@ -111,10 +111,10 @@ LABEL_6:
   return v8;
 }
 
-- (id)carPlayAttachmentsForFolder:(id)a3
+- (id)carPlayAttachmentsForFolder:(id)folder
 {
   v21 = 0;
-  v3 = [@"/var/mobile/Library/Logs/com.apple.CarPlay" stringByAppendingPathComponent:a3];
+  v3 = [@"/var/mobile/Library/Logs/com.apple.CarPlay" stringByAppendingPathComponent:folder];
   v4 = +[NSFileManager defaultManager];
   v5 = [v4 fileExistsAtPath:v3 isDirectory:&v21];
 
@@ -163,9 +163,9 @@ LABEL_6:
   return v8;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
@@ -178,8 +178,8 @@ LABEL_6:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = [(CarPlayDiagnosticsExtension *)self contentOfCarPlayLogsDirectory];
-  v8 = [v7 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  contentOfCarPlayLogsDirectory = [(CarPlayDiagnosticsExtension *)self contentOfCarPlayLogsDirectory];
+  v8 = [contentOfCarPlayLogsDirectory countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (!v8)
   {
     v23 = 0;
@@ -187,9 +187,9 @@ LABEL_6:
   }
 
   v9 = v8;
-  v26 = self;
+  selfCopy = self;
   v27 = v5;
-  v28 = v4;
+  v28 = parametersCopy;
   v29 = 0;
   v10 = *v31;
   v11 = v6;
@@ -199,7 +199,7 @@ LABEL_6:
     {
       if (*v31 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(contentOfCarPlayLogsDirectory);
       }
 
       v13 = *(*(&v30 + 1) + 8 * i);
@@ -226,7 +226,7 @@ LABEL_6:
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v30 objects:v36 count:16];
+    v9 = [contentOfCarPlayLogsDirectory countByEnumeratingWithState:&v30 objects:v36 count:16];
   }
 
   while (v9);
@@ -235,17 +235,17 @@ LABEL_6:
   v23 = v29;
   if (v29)
   {
-    v7 = [(CarPlayDiagnosticsExtension *)v26 carPlayAttachmentsForFolder:v29];
+    contentOfCarPlayLogsDirectory = [(CarPlayDiagnosticsExtension *)selfCopy carPlayAttachmentsForFolder:v29];
     v5 = v27;
-    [v27 addObjectsFromArray:v7];
-    v4 = v28;
+    [v27 addObjectsFromArray:contentOfCarPlayLogsDirectory];
+    parametersCopy = v28;
 LABEL_18:
 
     goto LABEL_20;
   }
 
   v5 = v27;
-  v4 = v28;
+  parametersCopy = v28;
 LABEL_20:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {

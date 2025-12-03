@@ -1,17 +1,17 @@
 @interface SFUIActivityImageProvider
 + (SBSHomeScreenService)homeScreenService;
-+ (id)tintImage:(id)a3 withDescriptorName:(id)a4 userInterfaceStyle:(int64_t)a5;
-+ (id)tintImageDescriptor:(id)a3 withUserInterfaceStyle:(int64_t)a4 forGraphicIcon:(BOOL)a5;
-- (id)_fetchActionImageForActivity:(id)a3 contentSizeCategory:(id)a4 imageSymbolConfiguration:(id)a5;
-- (int)requestImageForActivity:(id)a3 contentSizeCategory:(id)a4 imageSymbolConfiguration:(id)a5 synchronous:(BOOL)a6 resultHandler:(id)a7;
-- (int)requestImageForActivity:(id)a3 contentSizeCategory:(id)a4 userInterfaceStyle:(int64_t)a5 imageSymbolConfiguration:(id)a6 synchronous:(BOOL)a7 resultHandler:(id)a8;
-- (int)requestImageForBundleIdentifier:(id)a3 activityCategory:(int64_t)a4 contentSizeCategory:(id)a5 iconFormat:(int)a6 synchronous:(BOOL)a7 resultHandler:(id)a8;
-- (int)requestImageForBundleIdentifier:(id)a3 activityCategory:(int64_t)a4 contentSizeCategory:(id)a5 userInterfaceStyle:(int64_t)a6 iconFormat:(int)a7 synchronous:(BOOL)a8 resultHandler:(id)a9;
-- (int)requestImageForUTI:(id)a3 activityCategory:(int64_t)a4 contentSizeCategory:(id)a5 userInterfaceStyle:(int64_t)a6 iconFormat:(int)a7 synchronous:(BOOL)a8 resultHandler:(id)a9;
-- (void)_fetchBundleImageForIdentifier:(id)a3 activityCategory:(int64_t)a4 contentSizeCategory:(id)a5 userInterfaceStyle:(int64_t)a6 iconFormat:(int)a7 uti:(id)a8;
-- (void)_fetchImageForActivity:(id)a3 contentSizeCategory:(id)a4 userInterfaceStyle:(int64_t)a5 imageSymbolConfiguration:(id)a6;
-- (void)_handleIconImage:(id)a3 identifier:(id)a4 activityCategory:(int64_t)a5 contentSizeCategory:(id)a6 iconFormat:(int)a7 placeholder:(BOOL)a8 uti:(id)a9;
-- (void)performImageRequest:(id)a3;
++ (id)tintImage:(id)image withDescriptorName:(id)name userInterfaceStyle:(int64_t)style;
++ (id)tintImageDescriptor:(id)descriptor withUserInterfaceStyle:(int64_t)style forGraphicIcon:(BOOL)icon;
+- (id)_fetchActionImageForActivity:(id)activity contentSizeCategory:(id)category imageSymbolConfiguration:(id)configuration;
+- (int)requestImageForActivity:(id)activity contentSizeCategory:(id)category imageSymbolConfiguration:(id)configuration synchronous:(BOOL)synchronous resultHandler:(id)handler;
+- (int)requestImageForActivity:(id)activity contentSizeCategory:(id)category userInterfaceStyle:(int64_t)style imageSymbolConfiguration:(id)configuration synchronous:(BOOL)synchronous resultHandler:(id)handler;
+- (int)requestImageForBundleIdentifier:(id)identifier activityCategory:(int64_t)category contentSizeCategory:(id)sizeCategory iconFormat:(int)format synchronous:(BOOL)synchronous resultHandler:(id)handler;
+- (int)requestImageForBundleIdentifier:(id)identifier activityCategory:(int64_t)category contentSizeCategory:(id)sizeCategory userInterfaceStyle:(int64_t)style iconFormat:(int)format synchronous:(BOOL)synchronous resultHandler:(id)handler;
+- (int)requestImageForUTI:(id)i activityCategory:(int64_t)category contentSizeCategory:(id)sizeCategory userInterfaceStyle:(int64_t)style iconFormat:(int)format synchronous:(BOOL)synchronous resultHandler:(id)handler;
+- (void)_fetchBundleImageForIdentifier:(id)identifier activityCategory:(int64_t)category contentSizeCategory:(id)sizeCategory userInterfaceStyle:(int64_t)style iconFormat:(int)format uti:(id)uti;
+- (void)_fetchImageForActivity:(id)activity contentSizeCategory:(id)category userInterfaceStyle:(int64_t)style imageSymbolConfiguration:(id)configuration;
+- (void)_handleIconImage:(id)image identifier:(id)identifier activityCategory:(int64_t)category contentSizeCategory:(id)sizeCategory iconFormat:(int)format placeholder:(BOOL)placeholder uti:(id)uti;
+- (void)performImageRequest:(id)request;
 @end
 
 @implementation SFUIActivityImageProvider
@@ -35,30 +35,30 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
   homeScreenService_homeScreenService = v0;
 }
 
-+ (id)tintImageDescriptor:(id)a3 withUserInterfaceStyle:(int64_t)a4 forGraphicIcon:(BOOL)a5
++ (id)tintImageDescriptor:(id)descriptor withUserInterfaceStyle:(int64_t)style forGraphicIcon:(BOOL)icon
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = v7;
-  if (v5)
+  iconCopy = icon;
+  descriptorCopy = descriptor;
+  v8 = descriptorCopy;
+  if (iconCopy)
   {
-    [v7 setAppearanceVariant:1];
+    [descriptorCopy setAppearanceVariant:1];
   }
 
-  v9 = [objc_opt_class() homeScreenService];
-  v10 = [v9 homeScreenIconStyleConfiguration];
+  homeScreenService = [objc_opt_class() homeScreenService];
+  homeScreenIconStyleConfiguration = [homeScreenService homeScreenIconStyleConfiguration];
 
-  if (v10)
+  if (homeScreenIconStyleConfiguration)
   {
-    v11 = a4 == 2;
-    [v8 setAppearance:{objc_msgSend(v10, "iconServicesAppearanceUsingDarkInterfaceStyle:", v11)}];
-    [v8 setAppearanceVariant:{objc_msgSend(v10, "iconServicesAppearanceVariantUsingDarkInterfaceStyle:", v11)}];
-    v12 = [v10 tintColor];
-    v13 = [v12 CGColor];
+    v11 = style == 2;
+    [v8 setAppearance:{objc_msgSend(homeScreenIconStyleConfiguration, "iconServicesAppearanceUsingDarkInterfaceStyle:", v11)}];
+    [v8 setAppearanceVariant:{objc_msgSend(homeScreenIconStyleConfiguration, "iconServicesAppearanceVariantUsingDarkInterfaceStyle:", v11)}];
+    tintColor = [homeScreenIconStyleConfiguration tintColor];
+    cGColor = [tintColor CGColor];
 
-    if (v13)
+    if (cGColor)
     {
-      v14 = [objc_alloc(MEMORY[0x1E69A8968]) initWithCGColor:v13];
+      v14 = [objc_alloc(MEMORY[0x1E69A8968]) initWithCGColor:cGColor];
       [v8 setTintColor:v14];
     }
   }
@@ -66,17 +66,17 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
   return v8;
 }
 
-+ (id)tintImage:(id)a3 withDescriptorName:(id)a4 userInterfaceStyle:(int64_t)a5
++ (id)tintImage:(id)image withDescriptorName:(id)name userInterfaceStyle:(int64_t)style
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  imageCopy = image;
+  nameCopy = name;
+  if (imageCopy)
   {
     v9 = objc_alloc(MEMORY[0x1E69A8988]);
-    v10 = [v7 CGImage];
-    [v7 scale];
-    v11 = [v9 initWithCGImage:v10 scale:?];
+    cGImage = [imageCopy CGImage];
+    [imageCopy scale];
+    v11 = [v9 initWithCGImage:cGImage scale:?];
     if (v11)
     {
       v12 = objc_alloc(MEMORY[0x1E69A8A00]);
@@ -84,35 +84,35 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
       v14 = [v12 initWithImages:v13];
 
-      v15 = [MEMORY[0x1E69A8A30] imageDescriptorNamed:v8];
-      v16 = [SFUIActivityImageProvider tintImageDescriptor:v15 withUserInterfaceStyle:a5 forGraphicIcon:0];
+      v15 = [MEMORY[0x1E69A8A30] imageDescriptorNamed:nameCopy];
+      v16 = [SFUIActivityImageProvider tintImageDescriptor:v15 withUserInterfaceStyle:style forGraphicIcon:0];
 
       v17 = [v14 imageForDescriptor:v16];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v19 = 0;
+      placeholder = 0;
       if ((isKindOfClass & 1) == 0)
       {
-        v19 = [v17 placeholder];
+        placeholder = [v17 placeholder];
       }
 
-      if (v17 && !v19 || ([v14 prepareImageForDescriptor:v16], v20 = objc_claimAutoreleasedReturnValue(), v17, (v17 = v20) != 0))
+      if (v17 && !placeholder || ([v14 prepareImageForDescriptor:v16], v20 = objc_claimAutoreleasedReturnValue(), v17, (v17 = v20) != 0))
       {
         v21 = MEMORY[0x1E69DCAB8];
-        v22 = [v17 CGImage];
+        cGImage2 = [v17 CGImage];
         [v17 scale];
-        v23 = [v21 imageWithCGImage:v22 scale:0 orientation:?];
+        v23 = [v21 imageWithCGImage:cGImage2 scale:0 orientation:?];
       }
 
       else
       {
-        v23 = v7;
+        v23 = imageCopy;
       }
     }
 
     else
     {
-      v23 = v7;
+      v23 = imageCopy;
     }
   }
 
@@ -124,39 +124,39 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
   return v23;
 }
 
-- (int)requestImageForBundleIdentifier:(id)a3 activityCategory:(int64_t)a4 contentSizeCategory:(id)a5 iconFormat:(int)a6 synchronous:(BOOL)a7 resultHandler:(id)a8
+- (int)requestImageForBundleIdentifier:(id)identifier activityCategory:(int64_t)category contentSizeCategory:(id)sizeCategory iconFormat:(int)format synchronous:(BOOL)synchronous resultHandler:(id)handler
 {
   v12 = MEMORY[0x1E69DCEB0];
-  v13 = a8;
-  v14 = a5;
-  v15 = a3;
-  v16 = [v12 mainScreen];
-  v17 = [v16 traitCollection];
-  LODWORD(a4) = -[SFUIActivityImageProvider requestImageForBundleIdentifier:activityCategory:contentSizeCategory:userInterfaceStyle:iconFormat:synchronous:resultHandler:](self, "requestImageForBundleIdentifier:activityCategory:contentSizeCategory:userInterfaceStyle:iconFormat:synchronous:resultHandler:", v15, a4, v14, [v17 userInterfaceStyle], 2, 0, v13);
+  handlerCopy = handler;
+  sizeCategoryCopy = sizeCategory;
+  identifierCopy = identifier;
+  mainScreen = [v12 mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  LODWORD(category) = -[SFUIActivityImageProvider requestImageForBundleIdentifier:activityCategory:contentSizeCategory:userInterfaceStyle:iconFormat:synchronous:resultHandler:](self, "requestImageForBundleIdentifier:activityCategory:contentSizeCategory:userInterfaceStyle:iconFormat:synchronous:resultHandler:", identifierCopy, category, sizeCategoryCopy, [traitCollection userInterfaceStyle], 2, 0, handlerCopy);
 
-  return a4;
+  return category;
 }
 
-- (int)requestImageForBundleIdentifier:(id)a3 activityCategory:(int64_t)a4 contentSizeCategory:(id)a5 userInterfaceStyle:(int64_t)a6 iconFormat:(int)a7 synchronous:(BOOL)a8 resultHandler:(id)a9
+- (int)requestImageForBundleIdentifier:(id)identifier activityCategory:(int64_t)category contentSizeCategory:(id)sizeCategory userInterfaceStyle:(int64_t)style iconFormat:(int)format synchronous:(BOOL)synchronous resultHandler:(id)handler
 {
-  v10 = *&a7;
+  v10 = *&format;
   v29 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a5;
-  v17 = a9;
+  identifierCopy = identifier;
+  sizeCategoryCopy = sizeCategory;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v18 = sharing_ui_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v15;
+    v28 = identifierCopy;
     _os_log_impl(&dword_1B9E4B000, v18, OS_LOG_TYPE_DEFAULT, "request image for bundle identifier:%@", buf, 0xCu);
   }
 
-  if ([v15 length])
+  if ([identifierCopy length])
   {
-    v19 = [(SFUIImageProvider *)self imageCache];
-    v20 = [v19 objectForKey:v15];
+    imageCache = [(SFUIImageProvider *)self imageCache];
+    v20 = [imageCache objectForKey:identifierCopy];
 
     if (v20)
     {
@@ -168,15 +168,15 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
         _os_log_impl(&dword_1B9E4B000, v21, OS_LOG_TYPE_DEFAULT, "found cached image:%@", buf, 0xCu);
       }
 
-      (*(v17 + 2))(v17, v20, 0, 0);
-      LODWORD(v22) = 0;
+      (*(handlerCopy + 2))(handlerCopy, v20, 0, 0);
+      LODWORD(nextRequestID) = 0;
     }
 
     else
     {
-      v22 = [(SFUIImageProvider *)self nextRequestID];
-      LOBYTE(v26) = a8;
-      v24 = [[SFUIActivityImageRequest alloc] initWithRequestID:v22 identifier:v15 activityCategory:a4 contentSizeCategory:v16 userInterfaceStyle:a6 iconFormat:v10 synchronous:v26 resultHandler:v17];
+      nextRequestID = [(SFUIImageProvider *)self nextRequestID];
+      LOBYTE(v26) = synchronous;
+      v24 = [[SFUIActivityImageRequest alloc] initWithRequestID:nextRequestID identifier:identifierCopy activityCategory:category contentSizeCategory:sizeCategoryCopy userInterfaceStyle:style iconFormat:v10 synchronous:v26 resultHandler:handlerCopy];
       [(SFUIImageProvider *)self scheduleImageRequest:v24];
     }
   }
@@ -189,33 +189,33 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
       [SFUIActivityImageProvider requestImageForBundleIdentifier:v23 activityCategory:? contentSizeCategory:? userInterfaceStyle:? iconFormat:? synchronous:? resultHandler:?];
     }
 
-    (*(v17 + 2))(v17, 0, 0, 0);
-    LODWORD(v22) = 0;
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
+    LODWORD(nextRequestID) = 0;
   }
 
-  return v22;
+  return nextRequestID;
 }
 
-- (int)requestImageForUTI:(id)a3 activityCategory:(int64_t)a4 contentSizeCategory:(id)a5 userInterfaceStyle:(int64_t)a6 iconFormat:(int)a7 synchronous:(BOOL)a8 resultHandler:(id)a9
+- (int)requestImageForUTI:(id)i activityCategory:(int64_t)category contentSizeCategory:(id)sizeCategory userInterfaceStyle:(int64_t)style iconFormat:(int)format synchronous:(BOOL)synchronous resultHandler:(id)handler
 {
-  v10 = *&a7;
+  v10 = *&format;
   v29 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a5;
-  v17 = a9;
+  iCopy = i;
+  sizeCategoryCopy = sizeCategory;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v18 = sharing_ui_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v15;
+    v28 = iCopy;
     _os_log_impl(&dword_1B9E4B000, v18, OS_LOG_TYPE_DEFAULT, "request image for UTI:%@", buf, 0xCu);
   }
 
-  if ([v15 length])
+  if ([iCopy length])
   {
-    v19 = [(SFUIImageProvider *)self imageCache];
-    v20 = [v19 objectForKey:v15];
+    imageCache = [(SFUIImageProvider *)self imageCache];
+    v20 = [imageCache objectForKey:iCopy];
 
     if (v20)
     {
@@ -227,15 +227,15 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
         _os_log_impl(&dword_1B9E4B000, v21, OS_LOG_TYPE_DEFAULT, "found cached image:%@", buf, 0xCu);
       }
 
-      (*(v17 + 2))(v17, v20, 0, 0);
-      LODWORD(v22) = 0;
+      (*(handlerCopy + 2))(handlerCopy, v20, 0, 0);
+      LODWORD(nextRequestID) = 0;
     }
 
     else
     {
-      v22 = [(SFUIImageProvider *)self nextRequestID];
-      LOBYTE(v26) = a8;
-      v24 = [[SFUIActivityImageRequest alloc] initWithRequestID:v22 uti:v15 activityCategory:a4 contentSizeCategory:v16 userInterfaceStyle:a6 iconFormat:v10 synchronous:v26 resultHandler:v17];
+      nextRequestID = [(SFUIImageProvider *)self nextRequestID];
+      LOBYTE(v26) = synchronous;
+      v24 = [[SFUIActivityImageRequest alloc] initWithRequestID:nextRequestID uti:iCopy activityCategory:category contentSizeCategory:sizeCategoryCopy userInterfaceStyle:style iconFormat:v10 synchronous:v26 resultHandler:handlerCopy];
       [(SFUIImageProvider *)self scheduleImageRequest:v24];
     }
   }
@@ -248,54 +248,54 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
       [SFUIActivityImageProvider requestImageForUTI:v23 activityCategory:? contentSizeCategory:? userInterfaceStyle:? iconFormat:? synchronous:? resultHandler:?];
     }
 
-    (*(v17 + 2))(v17, 0, 0, 0);
-    LODWORD(v22) = 0;
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
+    LODWORD(nextRequestID) = 0;
   }
 
-  return v22;
+  return nextRequestID;
 }
 
-- (int)requestImageForActivity:(id)a3 contentSizeCategory:(id)a4 imageSymbolConfiguration:(id)a5 synchronous:(BOOL)a6 resultHandler:(id)a7
+- (int)requestImageForActivity:(id)activity contentSizeCategory:(id)category imageSymbolConfiguration:(id)configuration synchronous:(BOOL)synchronous resultHandler:(id)handler
 {
   v11 = MEMORY[0x1E69DCEB0];
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v11 mainScreen];
-  v17 = [v16 traitCollection];
-  LODWORD(self) = -[SFUIActivityImageProvider requestImageForActivity:contentSizeCategory:userInterfaceStyle:imageSymbolConfiguration:synchronous:resultHandler:](self, "requestImageForActivity:contentSizeCategory:userInterfaceStyle:imageSymbolConfiguration:synchronous:resultHandler:", v15, v14, [v17 userInterfaceStyle], v13, 0, v12);
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  categoryCopy = category;
+  activityCopy = activity;
+  mainScreen = [v11 mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  LODWORD(self) = -[SFUIActivityImageProvider requestImageForActivity:contentSizeCategory:userInterfaceStyle:imageSymbolConfiguration:synchronous:resultHandler:](self, "requestImageForActivity:contentSizeCategory:userInterfaceStyle:imageSymbolConfiguration:synchronous:resultHandler:", activityCopy, categoryCopy, [traitCollection userInterfaceStyle], configurationCopy, 0, handlerCopy);
 
   return self;
 }
 
-- (int)requestImageForActivity:(id)a3 contentSizeCategory:(id)a4 userInterfaceStyle:(int64_t)a5 imageSymbolConfiguration:(id)a6 synchronous:(BOOL)a7 resultHandler:(id)a8
+- (int)requestImageForActivity:(id)activity contentSizeCategory:(id)category userInterfaceStyle:(int64_t)style imageSymbolConfiguration:(id)configuration synchronous:(BOOL)synchronous resultHandler:(id)handler
 {
-  v9 = a7;
+  synchronousCopy = synchronous;
   v31 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
+  activityCopy = activity;
+  categoryCopy = category;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v14 activityUUID];
-    v19 = [v18 UUIDString];
+    activityUUID = [activityCopy activityUUID];
+    uUIDString = [activityUUID UUIDString];
 
     v20 = sharing_ui_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v28 = v14;
+      v28 = activityCopy;
       v29 = 2112;
-      v30 = v19;
+      v30 = uUIDString;
       _os_log_impl(&dword_1B9E4B000, v20, OS_LOG_TYPE_DEFAULT, "requestImageForActivity:%@ identifier:%@", buf, 0x16u);
     }
 
-    v21 = [(SFUIImageProvider *)self imageCache];
-    v22 = [v21 objectForKey:v19];
+    imageCache = [(SFUIImageProvider *)self imageCache];
+    v22 = [imageCache objectForKey:uUIDString];
 
     if (v22)
     {
@@ -307,97 +307,97 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
         _os_log_impl(&dword_1B9E4B000, v23, OS_LOG_TYPE_DEFAULT, "found cached image:%@", buf, 0xCu);
       }
 
-      (*(v17 + 2))(v17, v22, 0, 0);
-      LODWORD(v24) = 0;
+      (*(handlerCopy + 2))(handlerCopy, v22, 0, 0);
+      LODWORD(nextRequestID) = 0;
     }
 
     else
     {
-      v24 = [(SFUIImageProvider *)self nextRequestID];
-      v25 = [[SFUIActivityImageRequest alloc] initWithRequestID:v24 activity:v14 contentSizeCategory:v15 userInterfaceStyle:a5 imageSymbolConfiguration:v16 synchronous:v9 resultHandler:v17];
+      nextRequestID = [(SFUIImageProvider *)self nextRequestID];
+      v25 = [[SFUIActivityImageRequest alloc] initWithRequestID:nextRequestID activity:activityCopy contentSizeCategory:categoryCopy userInterfaceStyle:style imageSymbolConfiguration:configurationCopy synchronous:synchronousCopy resultHandler:handlerCopy];
       [(SFUIImageProvider *)self scheduleImageRequest:v25];
     }
   }
 
   else
   {
-    v19 = sharing_ui_log();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    uUIDString = sharing_ui_log();
+    if (os_log_type_enabled(uUIDString, OS_LOG_TYPE_ERROR))
     {
-      [SFUIActivityImageProvider requestImageForActivity:v14 contentSizeCategory:v19 userInterfaceStyle:? imageSymbolConfiguration:? synchronous:? resultHandler:?];
+      [SFUIActivityImageProvider requestImageForActivity:activityCopy contentSizeCategory:uUIDString userInterfaceStyle:? imageSymbolConfiguration:? synchronous:? resultHandler:?];
     }
 
-    LODWORD(v24) = 0;
+    LODWORD(nextRequestID) = 0;
   }
 
-  return v24;
+  return nextRequestID;
 }
 
-- (void)performImageRequest:(id)a3
+- (void)performImageRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [(SFUIActivityImageProvider *)a2 performImageRequest:?];
   }
 
-  v14 = v5;
-  v6 = [v14 activity];
+  v14 = requestCopy;
+  activity = [v14 activity];
 
-  if (v6)
+  if (activity)
   {
-    v7 = [v14 activity];
-    v8 = [v14 contentSizeCategory];
-    v9 = [v14 userInterfaceStyle];
-    v10 = [v14 imageSymbolConfiguration];
-    [(SFUIActivityImageProvider *)self _fetchImageForActivity:v7 contentSizeCategory:v8 userInterfaceStyle:v9 imageSymbolConfiguration:v10];
+    activity2 = [v14 activity];
+    contentSizeCategory = [v14 contentSizeCategory];
+    userInterfaceStyle = [v14 userInterfaceStyle];
+    imageSymbolConfiguration = [v14 imageSymbolConfiguration];
+    [(SFUIActivityImageProvider *)self _fetchImageForActivity:activity2 contentSizeCategory:contentSizeCategory userInterfaceStyle:userInterfaceStyle imageSymbolConfiguration:imageSymbolConfiguration];
   }
 
   else
   {
-    v7 = [v14 identifier];
-    v11 = [v14 activityCategory];
-    v8 = [v14 contentSizeCategory];
-    v12 = [v14 userInterfaceStyle];
-    v13 = [v14 iconFormat];
-    v10 = [v14 uti];
-    [(SFUIActivityImageProvider *)self _fetchBundleImageForIdentifier:v7 activityCategory:v11 contentSizeCategory:v8 userInterfaceStyle:v12 iconFormat:v13 uti:v10];
+    activity2 = [v14 identifier];
+    activityCategory = [v14 activityCategory];
+    contentSizeCategory = [v14 contentSizeCategory];
+    userInterfaceStyle2 = [v14 userInterfaceStyle];
+    iconFormat = [v14 iconFormat];
+    imageSymbolConfiguration = [v14 uti];
+    [(SFUIActivityImageProvider *)self _fetchBundleImageForIdentifier:activity2 activityCategory:activityCategory contentSizeCategory:contentSizeCategory userInterfaceStyle:userInterfaceStyle2 iconFormat:iconFormat uti:imageSymbolConfiguration];
   }
 }
 
-- (void)_fetchBundleImageForIdentifier:(id)a3 activityCategory:(int64_t)a4 contentSizeCategory:(id)a5 userInterfaceStyle:(int64_t)a6 iconFormat:(int)a7 uti:(id)a8
+- (void)_fetchBundleImageForIdentifier:(id)identifier activityCategory:(int64_t)category contentSizeCategory:(id)sizeCategory userInterfaceStyle:(int64_t)style iconFormat:(int)format uti:(id)uti
 {
-  v9 = *&a7;
+  v9 = *&format;
   v48 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v38 = a5;
-  v14 = a8;
+  identifierCopy = identifier;
+  sizeCategoryCopy = sizeCategory;
+  utiCopy = uti;
   v15 = sharing_ui_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = @"UTI";
     *buf = 138413058;
-    if (!v14)
+    if (!utiCopy)
     {
       v16 = @"bundle identifier";
     }
 
     v41 = v16;
-    if (v14)
+    if (utiCopy)
     {
-      v17 = v14;
+      v17 = utiCopy;
     }
 
     else
     {
-      v17 = v13;
+      v17 = identifierCopy;
     }
 
     v42 = 2112;
     v43 = v17;
     v44 = 2048;
-    v45 = a4;
+    categoryCopy = category;
     v46 = 2048;
     v47 = v9;
     _os_log_impl(&dword_1B9E4B000, v15, OS_LOG_TYPE_DEFAULT, "fetch bundle image for %@:%@ activityCategory:%ld iconFormat:%ld", buf, 0x2Au);
@@ -405,8 +405,8 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
 
   v18 = objc_alloc_init(MEMORY[0x1E69A8A48]);
   [(__CFString *)v18 setSymbolSize:3];
-  v19 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v19 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   [(__CFString *)v18 setScale:?];
 
   v20 = MEMORY[0x1E69A8AA0];
@@ -417,26 +417,26 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
 
   v21 = *v20;
   v22 = [MEMORY[0x1E69A8A30] imageDescriptorNamed:v21];
-  [v22 setTemplateVariant:a4 == 0];
+  [v22 setTemplateVariant:category == 0];
   [v22 setDrawBorder:v9 == 0];
-  v23 = [objc_opt_class() tintImageDescriptor:v22 withUserInterfaceStyle:a6 forGraphicIcon:v14 != 0];
+  v23 = [objc_opt_class() tintImageDescriptor:v22 withUserInterfaceStyle:style forGraphicIcon:utiCopy != 0];
 
   v24 = objc_alloc(MEMORY[0x1E69A8A00]);
-  if (v14)
+  if (utiCopy)
   {
-    v25 = [v24 initWithType:v14];
+    v25 = [v24 initWithType:utiCopy];
   }
 
   else
   {
-    v25 = [v24 initWithBundleIdentifier:v13];
+    v25 = [v24 initWithBundleIdentifier:identifierCopy];
   }
 
   v26 = v25;
   v27 = sharing_ui_log();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4)
+    if (category)
     {
       v28 = v23;
     }
@@ -451,7 +451,7 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
     _os_log_impl(&dword_1B9E4B000, v27, OS_LOG_TYPE_DEFAULT, "fetching fast image with descriptor:%@", buf, 0xCu);
   }
 
-  else if (a4)
+  else if (category)
   {
     v28 = v23;
   }
@@ -463,7 +463,7 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
 
   v29 = [v26 imageForDescriptor:v28];
   v30 = v29;
-  if (!a4 && !v29)
+  if (!category && !v29)
   {
     v31 = sharing_ui_log();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -479,30 +479,30 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v32 = 0;
+    placeholder = 0;
   }
 
   else
   {
-    v32 = [v30 placeholder];
+    placeholder = [v30 placeholder];
   }
 
-  if (a4)
+  if (category)
   {
     v33 = 0;
   }
 
   else
   {
-    v33 = v32;
+    v33 = placeholder;
   }
 
   if (v30 && (v33 & 1) == 0)
   {
-    [(SFUIActivityImageProvider *)self _handleIconImage:v30 identifier:v13 activityCategory:a4 contentSizeCategory:v38 iconFormat:v9 placeholder:v32 uti:v14];
+    [(SFUIActivityImageProvider *)self _handleIconImage:v30 identifier:identifierCopy activityCategory:category contentSizeCategory:sizeCategoryCopy iconFormat:v9 placeholder:placeholder uti:utiCopy];
   }
 
-  if ((v30 == 0) | v32 & 1)
+  if ((v30 == 0) | placeholder & 1)
   {
     v34 = sharing_ui_log();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -514,53 +514,53 @@ void __46__SFUIActivityImageProvider_homeScreenService__block_invoke()
 
     v35 = [v26 prepareImageForDescriptor:v23];
 
-    v36 = a4;
-    v37 = v38;
-    [(SFUIActivityImageProvider *)self _handleIconImage:v35 identifier:v13 activityCategory:v36 contentSizeCategory:v38 iconFormat:v9 placeholder:0 uti:v14];
+    categoryCopy2 = category;
+    v37 = sizeCategoryCopy;
+    [(SFUIActivityImageProvider *)self _handleIconImage:v35 identifier:identifierCopy activityCategory:categoryCopy2 contentSizeCategory:sizeCategoryCopy iconFormat:v9 placeholder:0 uti:utiCopy];
     v30 = v35;
   }
 
   else
   {
-    v37 = v38;
+    v37 = sizeCategoryCopy;
   }
 }
 
-- (void)_fetchImageForActivity:(id)a3 contentSizeCategory:(id)a4 userInterfaceStyle:(int64_t)a5 imageSymbolConfiguration:(id)a6
+- (void)_fetchImageForActivity:(id)activity contentSizeCategory:(id)category userInterfaceStyle:(int64_t)style imageSymbolConfiguration:(id)configuration
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 activityUUID];
-  v14 = [v13 UUIDString];
+  activityCopy = activity;
+  categoryCopy = category;
+  configurationCopy = configuration;
+  activityUUID = [activityCopy activityUUID];
+  uUIDString = [activityUUID UUIDString];
 
   v15 = sharing_ui_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [SFUIActivityImageProvider _fetchImageForActivity:v10 contentSizeCategory:v14 userInterfaceStyle:v15 imageSymbolConfiguration:?];
+    [SFUIActivityImageProvider _fetchImageForActivity:activityCopy contentSizeCategory:uUIDString userInterfaceStyle:v15 imageSymbolConfiguration:?];
   }
 
-  [v10 setUserInterfaceStyle:a5];
-  v16 = [objc_opt_class() activityCategory];
+  [activityCopy setUserInterfaceStyle:style];
+  activityCategory = [objc_opt_class() activityCategory];
   if (objc_opt_respondsToSelector())
   {
-    v16 = [v10 activityCategory];
+    activityCategory = [activityCopy activityCategory];
   }
 
-  if (v16)
+  if (activityCategory)
   {
-    [v10 _activityImage];
+    [activityCopy _activityImage];
   }
 
   else
   {
-    [(SFUIActivityImageProvider *)self _fetchActionImageForActivity:v10 contentSizeCategory:v11 imageSymbolConfiguration:v12];
+    [(SFUIActivityImageProvider *)self _fetchActionImageForActivity:activityCopy contentSizeCategory:categoryCopy imageSymbolConfiguration:configurationCopy];
   }
   v17 = ;
   objc_initWeak(&location, self);
   objc_copyWeak(&v20, &location);
   v18 = v17;
-  v19 = v14;
+  v19 = uUIDString;
   sf_dispatch_on_main_queue();
 
   objc_destroyWeak(&v20);
@@ -573,81 +573,81 @@ void __116__SFUIActivityImageProvider__fetchImageForActivity_contentSizeCategory
   [WeakRetained deliverImage:*(a1 + 32) identifier:*(a1 + 40) placeholder:0 error:0];
 }
 
-- (id)_fetchActionImageForActivity:(id)a3 contentSizeCategory:(id)a4 imageSymbolConfiguration:(id)a5
+- (id)_fetchActionImageForActivity:(id)activity contentSizeCategory:(id)category imageSymbolConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 _systemImageName];
+  activityCopy = activity;
+  categoryCopy = category;
+  configurationCopy = configuration;
+  _systemImageName = [activityCopy _systemImageName];
 
-  if (v10)
+  if (_systemImageName)
   {
     v11 = MEMORY[0x1E69DCAB8];
-    v12 = [v7 _systemImageName];
-    v13 = [v11 _systemImageNamed:v12];
-    v14 = [v13 imageByApplyingSymbolConfiguration:v9];
+    _systemImageName2 = [activityCopy _systemImageName];
+    v13 = [v11 _systemImageNamed:_systemImageName2];
+    activityImage2 = [v13 imageByApplyingSymbolConfiguration:configurationCopy];
 
 LABEL_3:
     goto LABEL_6;
   }
 
-  v15 = [v7 activityImage];
-  v16 = [v15 symbolConfiguration];
+  activityImage = [activityCopy activityImage];
+  symbolConfiguration = [activityImage symbolConfiguration];
 
-  if (!v16)
+  if (!symbolConfiguration)
   {
-    if ([v7 _wantsOriginalImageColor])
+    if ([activityCopy _wantsOriginalImageColor])
     {
       v18 = MEMORY[0x1E69CD9E8];
-      v12 = [v7 _activityImage];
-      [v18 _actionImageForActionRepresentationImage:v12 contentSizeCategory:v8 monochrome:0];
+      _systemImageName2 = [activityCopy _activityImage];
+      [v18 _actionImageForActionRepresentationImage:_systemImageName2 contentSizeCategory:categoryCopy monochrome:0];
     }
 
     else
     {
-      [v7 setContentSizeCategory:v8];
-      v12 = [v7 _actionImage];
-      [v12 imageWithRenderingMode:2];
+      [activityCopy setContentSizeCategory:categoryCopy];
+      _systemImageName2 = [activityCopy _actionImage];
+      [_systemImageName2 imageWithRenderingMode:2];
     }
-    v14 = ;
+    activityImage2 = ;
     goto LABEL_3;
   }
 
-  v14 = [v7 activityImage];
+  activityImage2 = [activityCopy activityImage];
 LABEL_6:
 
-  return v14;
+  return activityImage2;
 }
 
-- (void)_handleIconImage:(id)a3 identifier:(id)a4 activityCategory:(int64_t)a5 contentSizeCategory:(id)a6 iconFormat:(int)a7 placeholder:(BOOL)a8 uti:(id)a9
+- (void)_handleIconImage:(id)image identifier:(id)identifier activityCategory:(int64_t)category contentSizeCategory:(id)sizeCategory iconFormat:(int)format placeholder:(BOOL)placeholder uti:(id)uti
 {
   v41 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a9;
+  imageCopy = image;
+  identifierCopy = identifier;
+  sizeCategoryCopy = sizeCategory;
+  utiCopy = uti;
   v18 = sharing_ui_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v14 CGImage];
+    cGImage = [imageCopy CGImage];
     *buf = 138413314;
     v20 = @"UTI";
-    v32 = v14;
+    v32 = imageCopy;
     v33 = 2048;
-    if (!v17)
+    if (!utiCopy)
     {
       v20 = @"bundleIdentifier";
     }
 
-    v34 = v19;
-    if (v17)
+    v34 = cGImage;
+    if (utiCopy)
     {
-      v21 = v17;
+      v21 = utiCopy;
     }
 
     else
     {
-      v21 = v15;
+      v21 = identifierCopy;
     }
 
     v35 = 2112;
@@ -655,25 +655,25 @@ LABEL_6:
     v37 = 2112;
     v38 = v21;
     v39 = 2048;
-    v40 = a5;
+    categoryCopy = category;
     _os_log_impl(&dword_1B9E4B000, v18, OS_LOG_TYPE_DEFAULT, "handle icon image:%@ CGImage:%p %@:%@ activityCategory:%ld", buf, 0x34u);
   }
 
   v22 = MEMORY[0x1E69DCAB8];
-  v23 = [v14 CGImage];
-  [v14 scale];
-  v24 = [v22 imageWithCGImage:v23 scale:0 orientation:?];
-  if (!a5)
+  cGImage2 = [imageCopy CGImage];
+  [imageCopy scale];
+  v24 = [v22 imageWithCGImage:cGImage2 scale:0 orientation:?];
+  if (!category)
   {
     v25 = sharing_ui_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v32 = v14;
+      v32 = imageCopy;
       _os_log_impl(&dword_1B9E4B000, v25, OS_LOG_TYPE_DEFAULT, "render action image for image:%@", buf, 0xCu);
     }
 
-    v26 = [MEMORY[0x1E69CD9E8] _actionImageForActionRepresentationImage:v24 contentSizeCategory:v16];
+    v26 = [MEMORY[0x1E69CD9E8] _actionImageForActionRepresentationImage:v24 contentSizeCategory:sizeCategoryCopy];
 
     v24 = [v26 imageWithRenderingMode:2];
   }
@@ -681,8 +681,8 @@ LABEL_6:
   objc_initWeak(buf, self);
   objc_copyWeak(&v29, buf);
   v27 = v24;
-  v28 = v15;
-  v30 = a8;
+  v28 = identifierCopy;
+  placeholderCopy = placeholder;
   sf_dispatch_on_main_queue();
 
   objc_destroyWeak(&v29);

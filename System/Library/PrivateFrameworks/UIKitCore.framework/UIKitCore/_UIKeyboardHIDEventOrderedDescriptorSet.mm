@@ -1,30 +1,30 @@
 @interface _UIKeyboardHIDEventOrderedDescriptorSet
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)events;
 - (void)_eventsByDescriptor;
 - (void)_orderedDescriptors;
-- (void)addEvent:(void *)a1;
+- (void)addEvent:(void *)event;
 - (void)removeAllEvents;
-- (void)removeEvent:(void *)a1;
+- (void)removeEvent:(void *)event;
 @end
 
 @implementation _UIKeyboardHIDEventOrderedDescriptorSet
 
 - (id)events
 {
-  v1 = a1;
+  selfCopy = self;
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if ([a1[2] count])
+    if ([self[2] count])
     {
       v2 = objc_opt_new();
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v3 = [(_UIKeyboardHIDEventOrderedDescriptorSet *)v1 _orderedDescriptors];
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      _orderedDescriptors = [(_UIKeyboardHIDEventOrderedDescriptorSet *)selfCopy _orderedDescriptors];
+      v4 = [_orderedDescriptors countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         v5 = v4;
@@ -35,12 +35,12 @@
           {
             if (*v13 != v6)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(_orderedDescriptors);
             }
 
             v8 = *(*(&v12 + 1) + 8 * i);
-            v9 = [(_UIKeyboardHIDEventOrderedDescriptorSet *)v1 _eventsByDescriptor];
-            v10 = [v9 objectForKey:{v8, v12}];
+            _eventsByDescriptor = [(_UIKeyboardHIDEventOrderedDescriptorSet *)selfCopy _eventsByDescriptor];
+            v10 = [_eventsByDescriptor objectForKey:{v8, v12}];
 
             if (v10)
             {
@@ -48,81 +48,81 @@
             }
           }
 
-          v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v5 = [_orderedDescriptors countByEnumeratingWithState:&v12 objects:v16 count:16];
         }
 
         while (v5);
       }
 
-      v1 = [v2 copy];
+      selfCopy = [v2 copy];
     }
 
     else
     {
-      v1 = MEMORY[0x1E695E0F0];
+      selfCopy = MEMORY[0x1E695E0F0];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)removeAllEvents
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(_UIKeyboardHIDEventOrderedDescriptorSet *)a1 _orderedDescriptors];
-    [v2 removeAllObjects];
+    _orderedDescriptors = [(_UIKeyboardHIDEventOrderedDescriptorSet *)self _orderedDescriptors];
+    [_orderedDescriptors removeAllObjects];
 
-    v3 = [(_UIKeyboardHIDEventOrderedDescriptorSet *)a1 _eventsByDescriptor];
-    [v3 removeAllObjects];
+    _eventsByDescriptor = [(_UIKeyboardHIDEventOrderedDescriptorSet *)self _eventsByDescriptor];
+    [_eventsByDescriptor removeAllObjects];
   }
 }
 
 - (void)_eventsByDescriptor
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[2];
+    selfCopy = self;
+    v3 = self[2];
     if (!v3)
     {
       v4 = objc_opt_new();
-      v5 = v2[2];
-      v2[2] = v4;
+      v5 = selfCopy[2];
+      selfCopy[2] = v4;
 
-      v3 = v2[2];
+      v3 = selfCopy[2];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_orderedDescriptors
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[1];
+    selfCopy = self;
+    v3 = self[1];
     if (!v3)
     {
       v4 = objc_opt_new();
-      v5 = v2[1];
-      v2[1] = v4;
+      v5 = selfCopy[1];
+      selfCopy[1] = v4;
 
-      v3 = v2[1];
+      v3 = selfCopy[1];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_UIKeyboardHIDEventOrderedDescriptorSet allocWithZone:?]];
   if (v4)
@@ -139,10 +139,10 @@
   return v4;
 }
 
-- (void)addEvent:(void *)a1
+- (void)addEvent:(void *)event
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (event)
   {
     if (IOHIDEventGetType() == 3)
     {
@@ -150,11 +150,11 @@
       if (v4)
       {
         v9 = v4;
-        v5 = [(_UIKeyboardHIDEventOrderedDescriptorSet *)a1 _orderedDescriptors];
-        [v5 addObject:v9];
+        _orderedDescriptors = [(_UIKeyboardHIDEventOrderedDescriptorSet *)event _orderedDescriptors];
+        [_orderedDescriptors addObject:v9];
 
-        v6 = [(_UIKeyboardHIDEventOrderedDescriptorSet *)a1 _eventsByDescriptor];
-        [v6 setObject:a2 forKey:v9];
+        _eventsByDescriptor = [(_UIKeyboardHIDEventOrderedDescriptorSet *)event _eventsByDescriptor];
+        [_eventsByDescriptor setObject:a2 forKey:v9];
 
         v4 = v9;
       }
@@ -194,19 +194,19 @@
   }
 }
 
-- (void)removeEvent:(void *)a1
+- (void)removeEvent:(void *)event
 {
-  if (a1)
+  if (event)
   {
     v3 = [_UIKeyboardHIDEventDescriptor descriptorWithEvent:a2];
     if (v3)
     {
       v6 = v3;
-      v4 = [(_UIKeyboardHIDEventOrderedDescriptorSet *)a1 _orderedDescriptors];
-      [v4 removeObject:v6];
+      _orderedDescriptors = [(_UIKeyboardHIDEventOrderedDescriptorSet *)event _orderedDescriptors];
+      [_orderedDescriptors removeObject:v6];
 
-      v5 = [(_UIKeyboardHIDEventOrderedDescriptorSet *)a1 _eventsByDescriptor];
-      [v5 removeObjectForKey:v6];
+      _eventsByDescriptor = [(_UIKeyboardHIDEventOrderedDescriptorSet *)event _eventsByDescriptor];
+      [_eventsByDescriptor removeObjectForKey:v6];
 
       v3 = v6;
     }

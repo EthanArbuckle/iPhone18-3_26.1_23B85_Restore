@@ -1,5 +1,5 @@
 @interface RCPlatterMinimalAndromedaWaveformView
-- (void)_appendSlices:(unint64_t)a3;
+- (void)_appendSlices:(unint64_t)slices;
 - (void)updateSlicesAndFrames;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)updateSlicesAndFrames
 {
-  v3 = [(RCPlatterMinimalWaveformView *)self numberOfSlices];
-  v4 = [(RCPlatterWaveformView *)self activeSliceQueue];
-  v5 = [v4 count];
+  numberOfSlices = [(RCPlatterMinimalWaveformView *)self numberOfSlices];
+  activeSliceQueue = [(RCPlatterWaveformView *)self activeSliceQueue];
+  v5 = [activeSliceQueue count];
 
-  if (v3 == v5)
+  if (numberOfSlices == v5)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
@@ -24,50 +24,50 @@
   else
   {
 
-    [(RCPlatterMinimalAndromedaWaveformView *)self _appendSlices:v3 - v5];
+    [(RCPlatterMinimalAndromedaWaveformView *)self _appendSlices:numberOfSlices - v5];
   }
 }
 
-- (void)_appendSlices:(unint64_t)a3
+- (void)_appendSlices:(unint64_t)slices
 {
-  if (a3)
+  if (slices)
   {
-    v4 = a3;
+    slicesCopy = slices;
     do
     {
       [(RCPlatterWaveformView *)self appendSliceWithType:0];
-      --v4;
+      --slicesCopy;
     }
 
-    while (v4);
+    while (slicesCopy);
   }
 
-  v5 = [(RCPlatterMinimalAndromedaWaveformView *)self _genericAmplitudes];
-  v6 = [(RCPlatterWaveformView *)self activeSliceQueue];
-  v7 = [v6 count];
-  v8 = [v5 count];
+  _genericAmplitudes = [(RCPlatterMinimalAndromedaWaveformView *)self _genericAmplitudes];
+  activeSliceQueue = [(RCPlatterWaveformView *)self activeSliceQueue];
+  v7 = [activeSliceQueue count];
+  v8 = [_genericAmplitudes count];
 
   if (v7 == v8)
   {
-    v9 = [(RCPlatterWaveformView *)self activeSliceQueue];
-    v10 = [v9 count];
+    activeSliceQueue2 = [(RCPlatterWaveformView *)self activeSliceQueue];
+    v10 = [activeSliceQueue2 count];
 
     if (v10)
     {
       v11 = 0;
       do
       {
-        v12 = [(RCPlatterWaveformView *)self activeSliceQueue];
-        v13 = [v12 objectAtIndexedSubscript:v11];
+        activeSliceQueue3 = [(RCPlatterWaveformView *)self activeSliceQueue];
+        v13 = [activeSliceQueue3 objectAtIndexedSubscript:v11];
 
-        v14 = [v5 objectAtIndexedSubscript:v11];
+        v14 = [_genericAmplitudes objectAtIndexedSubscript:v11];
         [v14 floatValue];
         [v13 setAmplitude:v15];
         [v13 setAmplitudeNeedsUpdate:0];
 
         ++v11;
-        v16 = [(RCPlatterWaveformView *)self activeSliceQueue];
-        v17 = [v16 count];
+        activeSliceQueue4 = [(RCPlatterWaveformView *)self activeSliceQueue];
+        v17 = [activeSliceQueue4 count];
       }
 
       while (v11 < v17);

@@ -1,57 +1,57 @@
 @interface TrustedPeersHelperPeerState
-- (TrustedPeersHelperPeerState)initWithCoder:(id)a3;
-- (TrustedPeersHelperPeerState)initWithPeerID:(id)a3 isPreapproved:(BOOL)a4 status:(unint64_t)a5 memberChanges:(BOOL)a6 unknownMachineIDs:(BOOL)a7 osVersion:(id)a8 walrus:(id)a9 webAccess:(id)a10;
+- (TrustedPeersHelperPeerState)initWithCoder:(id)coder;
+- (TrustedPeersHelperPeerState)initWithPeerID:(id)d isPreapproved:(BOOL)preapproved status:(unint64_t)status memberChanges:(BOOL)changes unknownMachineIDs:(BOOL)ds osVersion:(id)version walrus:(id)walrus webAccess:(id)self0;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TrustedPeersHelperPeerState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TrustedPeersHelperPeerState *)self peerID];
-  [v4 encodeObject:v5 forKey:@"peerID"];
+  coderCopy = coder;
+  peerID = [(TrustedPeersHelperPeerState *)self peerID];
+  [coderCopy encodeObject:peerID forKey:@"peerID"];
 
-  [v4 encodeBool:-[TrustedPeersHelperPeerState identityIsPreapproved](self forKey:{"identityIsPreapproved"), @"identityIsPreapproved"}];
-  [v4 encodeInt64:-[TrustedPeersHelperPeerState peerStatus](self forKey:{"peerStatus"), @"peerStatus"}];
-  [v4 encodeInt64:-[TrustedPeersHelperPeerState memberChanges](self forKey:{"memberChanges"), @"memberChanges"}];
-  [v4 encodeInt64:-[TrustedPeersHelperPeerState unknownMachineIDsPresent](self forKey:{"unknownMachineIDsPresent"), @"unknownMachineIDs"}];
-  v6 = [(TrustedPeersHelperPeerState *)self osVersion];
-  [v4 encodeObject:v6 forKey:@"osVersion"];
+  [coderCopy encodeBool:-[TrustedPeersHelperPeerState identityIsPreapproved](self forKey:{"identityIsPreapproved"), @"identityIsPreapproved"}];
+  [coderCopy encodeInt64:-[TrustedPeersHelperPeerState peerStatus](self forKey:{"peerStatus"), @"peerStatus"}];
+  [coderCopy encodeInt64:-[TrustedPeersHelperPeerState memberChanges](self forKey:{"memberChanges"), @"memberChanges"}];
+  [coderCopy encodeInt64:-[TrustedPeersHelperPeerState unknownMachineIDsPresent](self forKey:{"unknownMachineIDsPresent"), @"unknownMachineIDs"}];
+  osVersion = [(TrustedPeersHelperPeerState *)self osVersion];
+  [coderCopy encodeObject:osVersion forKey:@"osVersion"];
 
-  v7 = [(TrustedPeersHelperPeerState *)self walrus];
-  [v4 encodeObject:v7 forKey:@"walrus"];
+  walrus = [(TrustedPeersHelperPeerState *)self walrus];
+  [coderCopy encodeObject:walrus forKey:@"walrus"];
 
-  v8 = [(TrustedPeersHelperPeerState *)self webAccess];
-  [v4 encodeObject:v8 forKey:@"webAccess"];
+  webAccess = [(TrustedPeersHelperPeerState *)self webAccess];
+  [coderCopy encodeObject:webAccess forKey:@"webAccess"];
 }
 
-- (TrustedPeersHelperPeerState)initWithCoder:(id)a3
+- (TrustedPeersHelperPeerState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = TrustedPeersHelperPeerState;
   v5 = [(TrustedPeersHelperPeerState *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerID"];
     peerID = v5->_peerID;
     v5->_peerID = v6;
 
-    v5->_identityIsPreapproved = [v4 decodeBoolForKey:@"identityIsPreapproved"];
-    v5->_peerStatus = [v4 decodeInt64ForKey:@"peerStatus"];
-    v5->_memberChanges = [v4 decodeInt64ForKey:@"memberChanges"] != 0;
-    v5->_unknownMachineIDsPresent = [v4 decodeInt64ForKey:@"unknownMachineIDs"] != 0;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"osVersion"];
+    v5->_identityIsPreapproved = [coderCopy decodeBoolForKey:@"identityIsPreapproved"];
+    v5->_peerStatus = [coderCopy decodeInt64ForKey:@"peerStatus"];
+    v5->_memberChanges = [coderCopy decodeInt64ForKey:@"memberChanges"] != 0;
+    v5->_unknownMachineIDsPresent = [coderCopy decodeInt64ForKey:@"unknownMachineIDs"] != 0;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"osVersion"];
     osVersion = v5->_osVersion;
     v5->_osVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"walrus"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"walrus"];
     walrus = v5->_walrus;
     v5->_walrus = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"webAccess"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"webAccess"];
     webAccess = v5->_webAccess;
     v5->_webAccess = v12;
   }
@@ -61,8 +61,8 @@
 
 - (id)description
 {
-  v3 = [(TrustedPeersHelperPeerState *)self peerID];
-  v4 = [(TrustedPeersHelperPeerState *)self identityIsPreapproved];
+  peerID = [(TrustedPeersHelperPeerState *)self peerID];
+  identityIsPreapproved = [(TrustedPeersHelperPeerState *)self identityIsPreapproved];
   [(TrustedPeersHelperPeerState *)self peerStatus];
   v5 = TPPeerStatusToString();
   if ([(TrustedPeersHelperPeerState *)self memberChanges])
@@ -85,11 +85,11 @@
     v7 = @"NO";
   }
 
-  v8 = [(TrustedPeersHelperPeerState *)self osVersion];
-  v9 = v8;
-  if (v8)
+  osVersion = [(TrustedPeersHelperPeerState *)self osVersion];
+  v9 = osVersion;
+  if (osVersion)
   {
-    v10 = v8;
+    v10 = osVersion;
   }
 
   else
@@ -97,33 +97,33 @@
     v10 = @"unknown";
   }
 
-  v11 = [(TrustedPeersHelperPeerState *)self walrus];
-  v12 = [(TrustedPeersHelperPeerState *)self webAccess];
-  v13 = [NSString stringWithFormat:@"<TPHPeerState: %@ preapproved:%d status:%@ memberChanges: %@ unk. mIDs: %@ osVersion: %@ walrus: %@ webAccess: %@>", v3, v4, v5, v6, v7, v10, v11, v12];
+  walrus = [(TrustedPeersHelperPeerState *)self walrus];
+  webAccess = [(TrustedPeersHelperPeerState *)self webAccess];
+  v13 = [NSString stringWithFormat:@"<TPHPeerState: %@ preapproved:%d status:%@ memberChanges: %@ unk. mIDs: %@ osVersion: %@ walrus: %@ webAccess: %@>", peerID, identityIsPreapproved, v5, v6, v7, v10, walrus, webAccess];
 
   return v13;
 }
 
-- (TrustedPeersHelperPeerState)initWithPeerID:(id)a3 isPreapproved:(BOOL)a4 status:(unint64_t)a5 memberChanges:(BOOL)a6 unknownMachineIDs:(BOOL)a7 osVersion:(id)a8 walrus:(id)a9 webAccess:(id)a10
+- (TrustedPeersHelperPeerState)initWithPeerID:(id)d isPreapproved:(BOOL)preapproved status:(unint64_t)status memberChanges:(BOOL)changes unknownMachineIDs:(BOOL)ds osVersion:(id)version walrus:(id)walrus webAccess:(id)self0
 {
-  v23 = a3;
-  v15 = a8;
-  v16 = a9;
-  v17 = a10;
+  dCopy = d;
+  versionCopy = version;
+  walrusCopy = walrus;
+  accessCopy = access;
   v24.receiver = self;
   v24.super_class = TrustedPeersHelperPeerState;
   v18 = [(TrustedPeersHelperPeerState *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_peerID, a3);
-    v19->_identityIsPreapproved = a4;
-    v19->_peerStatus = a5;
-    v19->_memberChanges = a6;
-    v19->_unknownMachineIDsPresent = a7;
-    objc_storeStrong(&v19->_osVersion, a8);
-    objc_storeStrong(&v19->_walrus, a9);
-    objc_storeStrong(&v19->_webAccess, a10);
+    objc_storeStrong(&v18->_peerID, d);
+    v19->_identityIsPreapproved = preapproved;
+    v19->_peerStatus = status;
+    v19->_memberChanges = changes;
+    v19->_unknownMachineIDsPresent = ds;
+    objc_storeStrong(&v19->_osVersion, version);
+    objc_storeStrong(&v19->_walrus, walrus);
+    objc_storeStrong(&v19->_webAccess, access);
   }
 
   return v19;

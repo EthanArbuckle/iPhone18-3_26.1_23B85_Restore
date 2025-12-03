@@ -1,9 +1,9 @@
 @interface MockEligibilitySupport
 - (NSURL)databaseDir;
 - (_TtC13transparencyd22MockEligibilitySupport)init;
-- (id)eligibilityContainerPathAndReturnError:(id *)a3;
-- (void)checkiCloudAnalyticsWithCompletionHandler:(id)a3;
-- (void)setDatabaseDir:(id)a3;
+- (id)eligibilityContainerPathAndReturnError:(id *)error;
+- (void)checkiCloudAnalyticsWithCompletionHandler:(id)handler;
+- (void)setDatabaseDir:(id)dir;
 @end
 
 @implementation MockEligibilitySupport
@@ -32,13 +32,13 @@
   return v11;
 }
 
-- (void)setDatabaseDir:(id)a3
+- (void)setDatabaseDir:(id)dir
 {
   v5 = sub_100095820(&qword_100382DC0, &unk_1002D5BC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (dir)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for URL();
@@ -53,7 +53,7 @@
 
   v11 = OBJC_IVAR____TtC13transparencyd22MockEligibilitySupport_databaseDir;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1000EB698(v8, self + v11);
   swift_endAccess();
 }
@@ -69,13 +69,13 @@
   return [(MockEligibilitySupport *)&v6 init];
 }
 
-- (void)checkiCloudAnalyticsWithCompletionHandler:(id)a3
+- (void)checkiCloudAnalyticsWithCompletionHandler:(id)handler
 {
   v5 = sub_100095820(&qword_100383170, &qword_1002D78E0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -91,23 +91,23 @@
   v13[3] = 0;
   v13[4] = &unk_1002D7900;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1000EAE9C(0, 0, v8, &unk_1002D7910, v13);
 }
 
-- (id)eligibilityContainerPathAndReturnError:(id *)a3
+- (id)eligibilityContainerPathAndReturnError:(id *)error
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   __chkstk_darwin(v4);
   v8 = &v18 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = self;
+  selfCopy = self;
   v10 = sub_1000EB5A8(8);
   v12 = v11;
   v13 = Data.base64EncodedString(options:)(0);
   sub_1000956CC(v10, v12);
-  (*((swift_isaMask & *v9) + 0x98))(v13._countAndFlagsBits, v13._object);
+  (*((swift_isaMask & *selfCopy) + 0x98))(v13._countAndFlagsBits, v13._object);
 
   URL._bridgeToObjectiveC()(v14);
   v16 = v15;

@@ -1,5 +1,5 @@
 @interface PXGExposureBlurEffect
-- (PXGExposureBlurEffect)initWithEntityManager:(id)a3;
+- (PXGExposureBlurEffect)initWithEntityManager:(id)manager;
 - (id)kernel;
 @end
 
@@ -27,11 +27,11 @@
   return v8;
 }
 
-- (PXGExposureBlurEffect)initWithEntityManager:(id)a3
+- (PXGExposureBlurEffect)initWithEntityManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PXGExposureBlurEffect;
-  result = [(PXGEffect *)&v4 initWithEntityManager:a3];
+  result = [(PXGEffect *)&v4 initWithEntityManager:manager];
   if (result)
   {
     result->_radius = 20.0;

@@ -1,16 +1,16 @@
 @interface FMDBAADataSource
-- (BOOL)passcodeActivationUnlockCertificateRequest:(id *)a3 withValidityInMins:(int64_t)a4 refKey:(__SecKey *)a5 error:(id *)a6;
-- (void)activationLockCertificatesWithRequest:(id)a3 completion:(id)a4;
+- (BOOL)passcodeActivationUnlockCertificateRequest:(id *)request withValidityInMins:(int64_t)mins refKey:(__SecKey *)key error:(id *)error;
+- (void)activationLockCertificatesWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation FMDBAADataSource
 
-- (BOOL)passcodeActivationUnlockCertificateRequest:(id *)a3 withValidityInMins:(int64_t)a4 refKey:(__SecKey *)a5 error:(id *)a6
+- (BOOL)passcodeActivationUnlockCertificateRequest:(id *)request withValidityInMins:(int64_t)mins refKey:(__SecKey *)key error:(id *)error
 {
   v20[0] = &off_10000FA18;
   v19[0] = kMAOptionsBAASCRTAttestation;
   v19[1] = kMAOptionsBAAValidity;
-  v9 = [NSNumber numberWithInteger:a4];
+  v9 = [NSNumber numberWithInteger:mins];
   v20[1] = v9;
   v19[2] = kMAOptionsBAAOIDSToInclude;
   v18 = kMAOptionsBAAOIDUCRTDeviceIdentifiers;
@@ -28,39 +28,39 @@
       sub_1000042DC(v13, v14);
     }
 
-    if (a6)
+    if (error)
     {
       v15 = v13;
-      *a6 = v13;
+      *error = v13;
     }
   }
 
-  if (a3)
+  if (request)
   {
     v16 = v12;
-    *a3 = v12;
+    *request = v12;
   }
 
-  if (a5)
+  if (key)
   {
-    *a5 = 0;
+    *key = 0;
   }
 
   return v13 != 0;
 }
 
-- (void)activationLockCertificatesWithRequest:(id)a3 completion:(id)a4
+- (void)activationLockCertificatesWithRequest:(id)request completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v16[0] = kMAOptionsBAAValidity;
-  v6 = a3;
-  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 validityInMinutes]);
+  requestCopy = request;
+  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [requestCopy validityInMinutes]);
   v17[0] = v7;
   v16[1] = kMAOptionsBAASCRTAttestation;
-  v8 = [v6 useSCRT];
+  useSCRT = [requestCopy useSCRT];
 
   v9 = &off_10000FA30;
-  if (v8)
+  if (useSCRT)
   {
     v9 = &off_10000FA18;
   }
@@ -73,8 +73,8 @@
   v11 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:3];
 
   v12 = dispatch_get_global_queue(0, 0);
-  v14 = v5;
-  v13 = v5;
+  v14 = completionCopy;
+  v13 = completionCopy;
   DeviceIdentityIssueClientCertificateWithCompletion();
 }
 

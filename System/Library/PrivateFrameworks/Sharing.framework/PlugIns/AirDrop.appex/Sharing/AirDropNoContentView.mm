@@ -1,18 +1,18 @@
 @interface AirDropNoContentView
-- (AirDropNoContentView)initWithFrame:(CGRect)a3;
+- (AirDropNoContentView)initWithFrame:(CGRect)frame;
 - (AirDropNoContentViewDelegate)delegate;
 - (void)actionButtonTapped;
-- (void)setViewType:(unint64_t)a3;
+- (void)setViewType:(unint64_t)type;
 - (void)setupConstraints;
 @end
 
 @implementation AirDropNoContentView
 
-- (AirDropNoContentView)initWithFrame:(CGRect)a3
+- (AirDropNoContentView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = AirDropNoContentView;
-  v3 = [(AirDropNoContentView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AirDropNoContentView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILabel);
@@ -44,19 +44,19 @@
     [v11 addTarget:v3 action:"actionButtonTapped" forControlEvents:64];
     v13 = [UIFontDescriptor defaultFontDescriptorWithTextStyle:UIFontTextStyleBody addingSymbolicTraits:0x8000 options:0];
     v14 = [UIFont fontWithDescriptor:v13 size:0.0];
-    v15 = [v11 titleLabel];
-    [v15 setFont:v14];
+    titleLabel = [v11 titleLabel];
+    [titleLabel setFont:v14];
 
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(AirDropNoContentView *)v3 setActionButton:v11];
-    v16 = [(AirDropNoContentView *)v3 titleLabel];
-    [(AirDropNoContentView *)v3 addSubview:v16];
+    titleLabel2 = [(AirDropNoContentView *)v3 titleLabel];
+    [(AirDropNoContentView *)v3 addSubview:titleLabel2];
 
-    v17 = [(AirDropNoContentView *)v3 subtitleLabel];
-    [(AirDropNoContentView *)v3 addSubview:v17];
+    subtitleLabel = [(AirDropNoContentView *)v3 subtitleLabel];
+    [(AirDropNoContentView *)v3 addSubview:subtitleLabel];
 
-    v18 = [(AirDropNoContentView *)v3 actionButton];
-    [(AirDropNoContentView *)v3 addSubview:v18];
+    actionButton = [(AirDropNoContentView *)v3 actionButton];
+    [(AirDropNoContentView *)v3 addSubview:actionButton];
 
     [(AirDropNoContentView *)v3 setupConstraints];
   }
@@ -67,83 +67,83 @@
 - (void)setupConstraints
 {
   v42 = objc_opt_new();
-  v3 = [(AirDropNoContentView *)self leadingAnchor];
-  v4 = [(AirDropNoContentView *)self titleLabel];
-  v5 = [v4 leadingAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  leadingAnchor = [(AirDropNoContentView *)self leadingAnchor];
+  titleLabel = [(AirDropNoContentView *)self titleLabel];
+  leadingAnchor2 = [titleLabel leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v42 addObject:v6];
 
-  v7 = [(AirDropNoContentView *)self trailingAnchor];
-  v8 = [(AirDropNoContentView *)self titleLabel];
-  v9 = [v8 trailingAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  trailingAnchor = [(AirDropNoContentView *)self trailingAnchor];
+  titleLabel2 = [(AirDropNoContentView *)self titleLabel];
+  trailingAnchor2 = [titleLabel2 trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v42 addObject:v10];
 
-  v11 = [(AirDropNoContentView *)self topAnchor];
-  v12 = [(AirDropNoContentView *)self titleLabel];
-  v13 = [v12 topAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  topAnchor = [(AirDropNoContentView *)self topAnchor];
+  titleLabel3 = [(AirDropNoContentView *)self titleLabel];
+  topAnchor2 = [titleLabel3 topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v42 addObject:v14];
 
-  v15 = [(AirDropNoContentView *)self leadingAnchor];
-  v16 = [(AirDropNoContentView *)self subtitleLabel];
-  v17 = [v16 leadingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  leadingAnchor3 = [(AirDropNoContentView *)self leadingAnchor];
+  subtitleLabel = [(AirDropNoContentView *)self subtitleLabel];
+  leadingAnchor4 = [subtitleLabel leadingAnchor];
+  v18 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v42 addObject:v18];
 
-  v19 = [(AirDropNoContentView *)self trailingAnchor];
-  v20 = [(AirDropNoContentView *)self subtitleLabel];
-  v21 = [v20 trailingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  trailingAnchor3 = [(AirDropNoContentView *)self trailingAnchor];
+  subtitleLabel2 = [(AirDropNoContentView *)self subtitleLabel];
+  trailingAnchor4 = [subtitleLabel2 trailingAnchor];
+  v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v42 addObject:v22];
 
-  v23 = [(AirDropNoContentView *)self titleLabel];
-  v24 = [v23 lastBaselineAnchor];
-  v25 = [(AirDropNoContentView *)self subtitleLabel];
-  v26 = [v25 firstBaselineAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:-26.0];
+  titleLabel4 = [(AirDropNoContentView *)self titleLabel];
+  lastBaselineAnchor = [titleLabel4 lastBaselineAnchor];
+  subtitleLabel3 = [(AirDropNoContentView *)self subtitleLabel];
+  firstBaselineAnchor = [subtitleLabel3 firstBaselineAnchor];
+  v27 = [lastBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor constant:-26.0];
   [v42 addObject:v27];
 
-  v28 = [(AirDropNoContentView *)self titleLabel];
-  v29 = [v28 centerXAnchor];
-  v30 = [(AirDropNoContentView *)self actionButton];
-  v31 = [v30 centerXAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
+  titleLabel5 = [(AirDropNoContentView *)self titleLabel];
+  centerXAnchor = [titleLabel5 centerXAnchor];
+  actionButton = [(AirDropNoContentView *)self actionButton];
+  centerXAnchor2 = [actionButton centerXAnchor];
+  v32 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v42 addObject:v32];
 
-  v33 = [(AirDropNoContentView *)self subtitleLabel];
-  v34 = [v33 lastBaselineAnchor];
-  v35 = [(AirDropNoContentView *)self actionButton];
-  v36 = [v35 firstBaselineAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36 constant:-44.0];
+  subtitleLabel4 = [(AirDropNoContentView *)self subtitleLabel];
+  lastBaselineAnchor2 = [subtitleLabel4 lastBaselineAnchor];
+  actionButton2 = [(AirDropNoContentView *)self actionButton];
+  firstBaselineAnchor2 = [actionButton2 firstBaselineAnchor];
+  v37 = [lastBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor2 constant:-44.0];
   [v42 addObject:v37];
 
-  v38 = [(AirDropNoContentView *)self bottomAnchor];
-  v39 = [(AirDropNoContentView *)self actionButton];
-  v40 = [v39 bottomAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
+  bottomAnchor = [(AirDropNoContentView *)self bottomAnchor];
+  actionButton3 = [(AirDropNoContentView *)self actionButton];
+  bottomAnchor2 = [actionButton3 bottomAnchor];
+  v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v42 addObject:v41];
 
   [NSLayoutConstraint activateConstraints:v42];
 }
 
-- (void)setViewType:(unint64_t)a3
+- (void)setViewType:(unint64_t)type
 {
-  self->_viewType = a3;
-  if (a3 > 7)
+  self->_viewType = type;
+  if (type > 7)
   {
     v6 = 0;
   }
 
   else
   {
-    v4 = off_10002D3B0[a3];
+    v4 = off_10002D3B0[type];
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:v4 value:&stru_10002D8A8 table:0];
   }
 
-  v7 = [(AirDropNoContentView *)self titleLabel];
-  [v7 setText:v6];
+  titleLabel = [(AirDropNoContentView *)self titleLabel];
+  [titleLabel setText:v6];
 
   viewType = self->_viewType;
   if (viewType > 7)
@@ -158,10 +158,10 @@
     v11 = [v10 localizedStringForKey:v9 value:&stru_10002D8A8 table:0];
   }
 
-  v12 = [(AirDropNoContentView *)self subtitleLabel];
-  [v12 setText:v11];
+  subtitleLabel = [(AirDropNoContentView *)self subtitleLabel];
+  [subtitleLabel setText:v11];
 
-  v17 = [(AirDropNoContentView *)self actionButton];
+  actionButton = [(AirDropNoContentView *)self actionButton];
   v13 = self->_viewType - 1;
   if (v13 > 6)
   {
@@ -175,13 +175,13 @@
     v16 = [v15 localizedStringForKey:v14 value:&stru_10002D8A8 table:0];
   }
 
-  [v17 setTitle:v16 forState:0];
+  [actionButton setTitle:v16 forState:0];
 }
 
 - (void)actionButtonTapped
 {
-  v3 = [(AirDropNoContentView *)self delegate];
-  [v3 noContentViewActionTriggered:self];
+  delegate = [(AirDropNoContentView *)self delegate];
+  [delegate noContentViewActionTriggered:self];
 }
 
 - (AirDropNoContentViewDelegate)delegate

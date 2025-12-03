@@ -1,33 +1,33 @@
 @interface PUPickerAssetMediaTypeFilter
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValidFilter;
-- (PUPickerAssetMediaTypeFilter)initWithCoder:(id)a3;
-- (PUPickerAssetMediaTypeFilter)initWithMediaType:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PUPickerAssetMediaTypeFilter)initWithCoder:(id)coder;
+- (PUPickerAssetMediaTypeFilter)initWithMediaType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)generatedAssetPredicate;
 - (unint64_t)generatedPossibleAssetTypes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUPickerAssetMediaTypeFilter
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:{-[PUPickerAssetMediaTypeFilter mediaType](self, "mediaType")}];
-  [v5 encodeObject:v6 forKey:@"PUPickerAssetMediaTypeFilterDictionaryMediaTypeKey"];
+  [coderCopy encodeObject:v6 forKey:@"PUPickerAssetMediaTypeFilterDictionaryMediaTypeKey"];
 }
 
-- (PUPickerAssetMediaTypeFilter)initWithCoder:(id)a3
+- (PUPickerAssetMediaTypeFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PUPickerAssetMediaTypeFilter;
   v5 = [(PUPickerAssetMediaTypeFilter *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PUPickerAssetMediaTypeFilterDictionaryMediaTypeKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PUPickerAssetMediaTypeFilterDictionaryMediaTypeKey"];
     v5->_mediaType = [v6 integerValue];
   }
 
@@ -46,24 +46,24 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PUPickerAssetMediaTypeFilter alloc];
-  v5 = [(PUPickerAssetMediaTypeFilter *)self mediaType];
+  mediaType = [(PUPickerAssetMediaTypeFilter *)self mediaType];
 
-  return [(PUPickerAssetMediaTypeFilter *)v4 initWithMediaType:v5];
+  return [(PUPickerAssetMediaTypeFilter *)v4 initWithMediaType:mediaType];
 }
 
 - (unint64_t)generatedPossibleAssetTypes
 {
-  v2 = [(PUPickerAssetMediaTypeFilter *)self mediaType];
+  mediaType = [(PUPickerAssetMediaTypeFilter *)self mediaType];
   v3 = 5118;
-  if (v2 != 1)
+  if (mediaType != 1)
   {
     v3 = 0;
   }
 
-  if (v2 == 2)
+  if (mediaType == 2)
   {
     return 130048;
   }
@@ -93,11 +93,11 @@
 - (BOOL)isValidFilter
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [(PUPickerAssetMediaTypeFilter *)self mediaType];
-  v3 = v2 - 1;
-  if ((v2 - 1) >= 3)
+  mediaType = [(PUPickerAssetMediaTypeFilter *)self mediaType];
+  v3 = mediaType - 1;
+  if ((mediaType - 1) >= 3)
   {
-    v4 = v2;
+    v4 = mediaType;
     v5 = PLPickerGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
@@ -112,10 +112,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
     goto LABEL_8;
@@ -128,14 +128,14 @@
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = objc_opt_class();
   if (v5)
   {
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(PUPickerAssetMediaTypeFilter *)self mediaType];
-      v8 = v7 == [(PUPickerAssetMediaTypeFilter *)v5 mediaType];
+      mediaType = [(PUPickerAssetMediaTypeFilter *)self mediaType];
+      v8 = mediaType == [(PUPickerAssetMediaTypeFilter *)v5 mediaType];
 
 LABEL_8:
       return v8;
@@ -159,7 +159,7 @@ LABEL_8:
   return [(PUPickerAssetMediaTypeFilter *)v12 initWithMediaType:v13, v14];
 }
 
-- (PUPickerAssetMediaTypeFilter)initWithMediaType:(int64_t)a3
+- (PUPickerAssetMediaTypeFilter)initWithMediaType:(int64_t)type
 {
   v9.receiver = self;
   v9.super_class = PUPickerAssetMediaTypeFilter;
@@ -167,7 +167,7 @@ LABEL_8:
   v5 = v4;
   if (v4)
   {
-    v4->_mediaType = a3;
+    v4->_mediaType = type;
   }
 
   if ([(PUPickerAssetMediaTypeFilter *)v4 isValidFilter])

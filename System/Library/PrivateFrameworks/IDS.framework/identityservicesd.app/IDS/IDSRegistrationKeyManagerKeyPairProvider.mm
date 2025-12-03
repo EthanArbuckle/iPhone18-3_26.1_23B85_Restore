@@ -1,15 +1,15 @@
 @interface IDSRegistrationKeyManagerKeyPairProvider
-- (void)copyRegistrationKeyPairForIdentifier:(id)a3 publicKey:(__SecKey *)a4 privateKey:(__SecKey *)a5 keyPairSignature:(id *)a6 isMigratedSignature:(BOOL *)a7 isUpgradePending:(BOOL *)a8;
+- (void)copyRegistrationKeyPairForIdentifier:(id)identifier publicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey keyPairSignature:(id *)signature isMigratedSignature:(BOOL *)migratedSignature isUpgradePending:(BOOL *)pending;
 @end
 
 @implementation IDSRegistrationKeyManagerKeyPairProvider
 
-- (void)copyRegistrationKeyPairForIdentifier:(id)a3 publicKey:(__SecKey *)a4 privateKey:(__SecKey *)a5 keyPairSignature:(id *)a6 isMigratedSignature:(BOOL *)a7 isUpgradePending:(BOOL *)a8
+- (void)copyRegistrationKeyPairForIdentifier:(id)identifier publicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey keyPairSignature:(id *)signature isMigratedSignature:(BOOL *)migratedSignature isUpgradePending:(BOOL *)pending
 {
   _IDSAppleRegistrationCopyKeyPair();
-  if (a6)
+  if (signature)
   {
-    *a6 = 0;
+    *signature = 0;
   }
 }
 

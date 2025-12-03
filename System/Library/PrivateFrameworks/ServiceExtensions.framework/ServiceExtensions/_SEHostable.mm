@@ -1,6 +1,6 @@
 @interface _SEHostable
-+ (id)createHostableWithError:(id *)a3;
-+ (id)createHostableWithOptions:(id)a3 error:(id *)a4;
++ (id)createHostableWithError:(id *)error;
++ (id)createHostableWithOptions:(id)options error:(id *)error;
 - (CALayer)layer;
 - (_SEHostable)init;
 - (void)dealloc;
@@ -11,9 +11,9 @@
 
 - (CALayer)layer
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____SEHostable__context) layer];
+  layer = [*(&self->super.isa + OBJC_IVAR____SEHostable__context) layer];
 
-  return v2;
+  return layer;
 }
 
 - (_SEHostable)init
@@ -23,14 +23,14 @@
   return result;
 }
 
-+ (id)createHostableWithError:(id *)a3
++ (id)createHostableWithError:(id *)error
 {
   v3 = sub_26574F574();
 
   return v3;
 }
 
-+ (id)createHostableWithOptions:(id)a3 error:(id *)a4
++ (id)createHostableWithOptions:(id)options error:(id *)error
 {
   sub_265750188();
   v4 = sub_26574F39C();
@@ -49,10 +49,10 @@
 - (void)invalidate
 {
   v2 = *(&self->super.isa + OBJC_IVAR____SEHostable__invalidationSignal);
-  v3 = self;
+  selfCopy = self;
   if ([v2 signal])
   {
-    [*(&v3->super.isa + OBJC_IVAR____SEHostable__context) invalidate];
+    [*(&selfCopy->super.isa + OBJC_IVAR____SEHostable__context) invalidate];
   }
 }
 

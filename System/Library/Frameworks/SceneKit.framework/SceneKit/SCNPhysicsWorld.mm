@@ -1,55 +1,55 @@
 @interface SCNPhysicsWorld
 - (BOOL)_isDefault;
 - (BOOL)_needsRedraw;
-- (BOOL)parseSpecialKey:(id)a3 withPath:(id)a4 intoDestination:(id *)a5;
+- (BOOL)parseSpecialKey:(id)key withPath:(id)path intoDestination:(id *)destination;
 - (NSArray)allBehaviors;
 - (NSArray)contactTestBetweenBody:(SCNPhysicsBody *)bodyA andBody:(SCNPhysicsBody *)bodyB options:(NSDictionary *)options;
 - (NSArray)contactTestWithBody:(SCNPhysicsBody *)body options:(NSDictionary *)options;
 - (NSArray)convexSweepTestWithShape:(SCNPhysicsShape *)shape fromTransform:(SCNMatrix4 *)from toTransform:(SCNMatrix4 *)to options:(NSDictionary *)options;
 - (NSArray)rayTestWithSegmentFromPoint:(SCNVector3)origin toPoint:(SCNVector3)dest options:(NSDictionary *)options;
-- (SCNPhysicsWorld)initWithCoder:(id)a3;
-- (SCNPhysicsWorld)initWithScene:(id)a3;
+- (SCNPhysicsWorld)initWithCoder:(id)coder;
+- (SCNPhysicsWorld)initWithScene:(id)scene;
 - (SCNVector3)gravity;
 - (btVehicleRaycaster)_defaultVehicleRayCaster;
-- (id)_findFieldAttachedToNode:(id)a3;
+- (id)_findFieldAttachedToNode:(id)node;
 - (id)_physicsContact;
-- (id)_rayTestWithSegmentFromPoint:(btVector3)a3 toPoint:(btVector3)a4 options:(id)a5;
+- (id)_rayTestWithSegmentFromPoint:(btVector3)point toPoint:(btVector3)toPoint options:(id)options;
 - (id)removeBehavior_unsafe:(id *)result;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)_addFieldToWorld:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
+- (void)_addFieldToWorld:(id)world;
 - (void)_allowGhostObjects;
 - (void)_createDynamicWorldIfNeeded;
-- (void)_customEncodingOfSCNPhysicsWorld:(id)a3;
-- (void)_didDecodeSCNPhysicsWorld:(id)a3;
-- (void)_drawDebugInAuthoringEnvironment:(void *)a3;
-- (void)_postCommandWithBlock:(id)a3;
-- (void)_preTick:(double)a3;
-- (void)_removeFieldFromWorld:(id)a3;
+- (void)_customEncodingOfSCNPhysicsWorld:(id)world;
+- (void)_didDecodeSCNPhysicsWorld:(id)world;
+- (void)_drawDebugInAuthoringEnvironment:(void *)environment;
+- (void)_postCommandWithBlock:(id)block;
+- (void)_preTick:(double)tick;
+- (void)_removeFieldFromWorld:(id)world;
 - (void)_reset;
-- (void)_step:(double)a3;
+- (void)_step:(double)_step;
 - (void)_updatePhysicsFieldsTransforms;
 - (void)addBehavior:(SCNPhysicsBehavior *)behavior;
-- (void)addPhysicsBody:(id)a3 nodeRef:(__C3DNode *)a4 colGroup:(unint64_t)a5 colMask:(unint64_t)a6 colTest:(unint64_t)a7;
+- (void)addPhysicsBody:(id)body nodeRef:(__C3DNode *)ref colGroup:(unint64_t)group colMask:(unint64_t)mask colTest:(unint64_t)test;
 - (void)commonInit;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateBodiesUsingBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateBodiesUsingBlock:(id)block;
 - (void)removeAllBehaviors;
 - (void)removeBehavior:(SCNPhysicsBehavior *)behavior;
-- (void)removePhysicsBody:(id)a3 handle:(void *)a4;
+- (void)removePhysicsBody:(id)body handle:(void *)handle;
 - (void)sceneWillDie;
 - (void)setContactDelegate:(id)contactDelegate;
 - (void)setGravity:(SCNVector3)gravity;
-- (void)setScale:(double)a3;
+- (void)setScale:(double)scale;
 - (void)updateCollisionPairs;
 - (void)wakeUpAllBodies;
 @end
 
 @implementation SCNPhysicsWorld
 
-- (void)_preTick:(double)a3
+- (void)_preTick:(double)tick
 {
-  self->_elapsedTime = self->_elapsedTime + a3;
+  self->_elapsedTime = self->_elapsedTime + tick;
   if (self->_hasActiveFields)
   {
     btAlignedObjectArray<btRigidBody *>::btAlignedObjectArray(&v13, self->_world + 320);
@@ -136,7 +136,7 @@
   self->_bodies = objc_alloc_init(MEMORY[0x277CBEB58]);
 }
 
-- (SCNPhysicsWorld)initWithScene:(id)a3
+- (SCNPhysicsWorld)initWithScene:(id)scene
 {
   v12.receiver = self;
   v12.super_class = SCNPhysicsWorld;
@@ -151,7 +151,7 @@
 
     *&v5->_speed = _Q0;
     v5->_timeStep = 0.0166666667;
-    v5->_scene = a3;
+    v5->_scene = scene;
   }
 
   return v5;
@@ -216,10 +216,10 @@
             objc_enumerationMutation(bodies);
           }
 
-          v14 = [*(*(&v26 + 1) + 8 * j) _handle];
-          if (v14)
+          _handle = [*(*(&v26 + 1) + 8 * j) _handle];
+          if (_handle)
           {
-            (*(*self->_world + 184))(self->_world, v14);
+            (*(*self->_world + 184))(self->_world, _handle);
           }
         }
 
@@ -374,23 +374,23 @@ uint64_t __30__SCNPhysicsWorld_setGravity___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __28__SCNPhysicsWorld_setScale___block_invoke;
     v8[3] = &unk_2782FB7D0;
     v8[4] = self;
-    *&v8[5] = a3;
+    *&v8[5] = scale;
     [(SCNPhysicsWorld *)self _postCommandWithBlock:v8];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __28__SCNPhysicsWorld_setScale___block_invoke_2;
     v7[3] = &__block_descriptor_40_e28_v24__0__SCNPhysicsBody_8_B16l;
-    *&v7[4] = a3;
+    *&v7[4] = scale;
     [(SCNPhysicsWorld *)self enumerateBodiesUsingBlock:v7];
     debugDrawer = self->_debugDrawer;
     if (debugDrawer)
@@ -522,9 +522,9 @@ uint64_t __41__SCNPhysicsWorld_removeBehavior_unsafe___block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)parseSpecialKey:(id)a3 withPath:(id)a4 intoDestination:(id *)a5
+- (BOOL)parseSpecialKey:(id)key withPath:(id)path intoDestination:(id *)destination
 {
-  v8 = [a3 rangeOfString:{@"[", a4}];
+  v8 = [key rangeOfString:{@"[", path}];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -532,13 +532,13 @@ uint64_t __41__SCNPhysicsWorld_removeBehavior_unsafe___block_invoke(uint64_t a1)
 
   v9 = v8;
   v10 = v8 + 1;
-  if (v8 + 1 >= [a3 length])
+  if (v8 + 1 >= [key length])
   {
     return 0;
   }
 
-  v11 = [a3 substringToIndex:v9];
-  v12 = [a3 substringFromIndex:v10];
+  v11 = [key substringToIndex:v9];
+  v12 = [key substringFromIndex:v10];
   v13 = [v12 rangeOfString:@"]"];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -552,21 +552,21 @@ uint64_t __41__SCNPhysicsWorld_removeBehavior_unsafe___block_invoke(uint64_t a1)
     return 0;
   }
 
-  *a5 = [v15 objectAtIndex:v14];
+  *destination = [v15 objectAtIndex:v14];
   return 1;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v7 = 0;
-  if ([(SCNPhysicsWorld *)self parseSpecialKey:a3 withPath:a3 intoDestination:&v7])
+  if ([(SCNPhysicsWorld *)self parseSpecialKey:key withPath:key intoDestination:&v7])
   {
     return v7;
   }
 
   v6.receiver = self;
   v6.super_class = SCNPhysicsWorld;
-  return [(SCNPhysicsWorld *)&v6 valueForUndefinedKey:a3];
+  return [(SCNPhysicsWorld *)&v6 valueForUndefinedKey:key];
 }
 
 - (NSArray)allBehaviors
@@ -599,18 +599,18 @@ uint64_t __41__SCNPhysicsWorld_removeBehavior_unsafe___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)_rayTestWithSegmentFromPoint:(btVector3)a3 toPoint:(btVector3)a4 options:(id)a5
+- (id)_rayTestWithSegmentFromPoint:(btVector3)point toPoint:(btVector3)toPoint options:(id)options
 {
   v7 = v6;
   v8 = v5;
-  v11 = [-[SCNPhysicsWorld scene](self scene];
-  if (!v11 || !self->_world)
+  scene = [-[SCNPhysicsWorld scene](self scene];
+  if (!scene || !self->_world)
   {
     return 0;
   }
 
-  v12 = v11;
-  btC3DRayResultCallback::btC3DRayResultCallback(v25, a5, v8);
+  v12 = scene;
+  btC3DRayResultCallback::btC3DRayResultCallback(v25, options, v8);
   v13 = [v7 objectForKey:@"backfaceCulling"];
   if (!v13 || [v13 BOOLValue])
   {
@@ -632,17 +632,17 @@ uint64_t __41__SCNPhysicsWorld_removeBehavior_unsafe___block_invoke(uint64_t a1)
   v16 = [v7 objectForKey:@"collisionBitMask"];
   if (v16)
   {
-    v17 = [v16 unsignedIntegerValue];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
   }
 
   else
   {
-    v17 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  v25[4] = v17;
+  v25[4] = unsignedIntegerValue;
   C3DSceneLock(v12);
-  (*(*self->_world + 64))(self->_world, a5, v8, v25);
+  (*(*self->_world + 64))(self->_world, options, v8, v25);
   C3DSceneUnlock(v12);
   if (v27 == 2)
   {
@@ -729,25 +729,25 @@ LABEL_22:
       v12 = [(NSDictionary *)options objectForKey:@"collisionBitMask"];
       if (v12)
       {
-        v13 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
       }
 
       else
       {
-        v13 = -1;
+        unsignedIntegerValue = -1;
       }
 
       v17 = &unk_282DC5810;
       v18 = xmmword_21C281170;
       v19 = xmmword_21C27F640;
-      v20 = v13;
+      v20 = unsignedIntegerValue;
       v21 = 0;
       C3DSceneLock(v11);
-      v14 = [(SCNPhysicsBody *)bodyA _handle];
-      v15 = [(SCNPhysicsBody *)bodyB _handle];
-      if (v14 && v15)
+      _handle = [(SCNPhysicsBody *)bodyA _handle];
+      _handle2 = [(SCNPhysicsBody *)bodyB _handle];
+      if (_handle && _handle2)
       {
-        btCollisionWorld::contactPairTest(self->_world, v14, v15, &v17);
+        btCollisionWorld::contactPairTest(self->_world, _handle, _handle2, &v17);
       }
 
       C3DSceneUnlock(v11);
@@ -783,24 +783,24 @@ LABEL_22:
       v10 = [(NSDictionary *)options objectForKey:@"collisionBitMask"];
       if (v10)
       {
-        v11 = [v10 unsignedIntegerValue];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
       }
 
       else
       {
-        v11 = -1;
+        unsignedIntegerValue = -1;
       }
 
       v14 = &unk_282DC5810;
       v15 = xmmword_21C281170;
       v16 = xmmword_21C27F640;
-      v17 = v11;
+      v17 = unsignedIntegerValue;
       v18 = 0;
       C3DSceneLock(v9);
-      v12 = [(SCNPhysicsBody *)body _handle];
-      if (v12)
+      _handle = [(SCNPhysicsBody *)body _handle];
+      if (_handle)
       {
-        btCollisionWorld::contactTest(self->_world, v12, &v14);
+        btCollisionWorld::contactTest(self->_world, _handle, &v14);
       }
 
       C3DSceneUnlock(v9);
@@ -852,12 +852,12 @@ LABEL_22:
     v17 = [(NSDictionary *)options objectForKey:@"collisionBitMask"];
     if (v17)
     {
-      v18 = [v17 unsignedIntegerValue];
+      unsignedIntegerValue = [v17 unsignedIntegerValue];
     }
 
     else
     {
-      v18 = -1;
+      unsignedIntegerValue = -1;
     }
 
     v19 = [(NSDictionary *)options objectForKey:@"results"];
@@ -872,10 +872,10 @@ LABEL_22:
     }
 
     C3DSceneLock(v13);
-    v21 = [(SCNPhysicsShape *)shape _handle];
-    if (v21)
+    _handle = [(SCNPhysicsShape *)shape _handle];
+    if (_handle)
     {
-      if (v21->var1 > 19)
+      if (_handle->var1 > 19)
       {
         v41 = scn_default_log();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -934,7 +934,7 @@ LABEL_22:
         *(&v45 + 1) = LODWORD(v39);
         v49 = 1.0;
         v50 = 1;
-        v51 = v18;
+        v51 = unsignedIntegerValue;
         v52 = 0;
         v53 = v47;
         v54 = v45;
@@ -942,7 +942,7 @@ LABEL_22:
         v59 = 0;
         v48 = &unk_282DC5840;
         v55 = v20;
-        btCollisionWorld::convexSweepTest(self->_world, v21, v46, v44, &v48, v16);
+        btCollisionWorld::convexSweepTest(self->_world, _handle, v46, v44, &v48, v16);
         if (v49 < 1.0)
         {
           if (v20 == 2)
@@ -1018,7 +1018,7 @@ uint64_t __39__SCNPhysicsWorld_updateCollisionPairs__block_invoke(uint64_t a1)
   return world & 1;
 }
 
-- (void)enumerateBodiesUsingBlock:(id)a3
+- (void)enumerateBodiesUsingBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -1042,7 +1042,7 @@ LABEL_3:
         objc_enumerationMutation(bodies);
       }
 
-      (*(a3 + 2))(a3, *(*(&v10 + 1) + 8 * v9), &v14);
+      (*(block + 2))(block, *(*(&v10 + 1) + 8 * v9), &v14);
       if (v14)
       {
         break;
@@ -1110,7 +1110,7 @@ LABEL_3:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_findFieldAttachedToNode:(id)a3
+- (id)_findFieldAttachedToNode:(id)node
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -1136,7 +1136,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 _owner] == a3)
+    if ([v9 _owner] == node)
     {
       return v9;
     }
@@ -1154,7 +1154,7 @@ LABEL_3:
   }
 }
 
-- (void)_addFieldToWorld:(id)a3
+- (void)_addFieldToWorld:(id)world
 {
   fields = self->_fields;
   if (!fields)
@@ -1163,22 +1163,22 @@ LABEL_3:
     self->_fields = fields;
   }
 
-  [(NSMutableArray *)fields addObject:a3];
-  [a3 _setWorld:self];
-  v6 = [a3 _handle];
-  if (v6)
+  [(NSMutableArray *)fields addObject:world];
+  [world _setWorld:self];
+  _handle = [world _handle];
+  if (_handle)
   {
 
-    c3dAether::addField(&self->_aether, v6);
+    c3dAether::addField(&self->_aether, _handle);
   }
 }
 
-- (void)_removeFieldFromWorld:(id)a3
+- (void)_removeFieldFromWorld:(id)world
 {
   [(NSMutableArray *)self->_fields removeObject:?];
-  v5 = [a3 _handle];
+  _handle = [world _handle];
 
-  c3dAether::removeField(&self->_aether, v5);
+  c3dAether::removeField(&self->_aether, _handle);
 }
 
 - (void)_updatePhysicsFieldsTransforms
@@ -1207,7 +1207,7 @@ LABEL_3:
         v8 = *(*(&v20 + 1) + 8 * i);
         self->_hasActiveFields |= [v8 isActive];
         v9 = [objc_msgSend(v8 "_owner")];
-        v10 = [v8 _handle];
+        _handle = [v8 _handle];
         WorldMatrix = C3DNodeGetWorldMatrix(v9);
         C3DMatrix4x4Invert(WorldMatrix, &v19);
         v12 = WorldMatrix[1];
@@ -1217,15 +1217,15 @@ LABEL_3:
         v16 = v19.columns[1];
         v17 = v19.columns[2];
         v18 = v19.columns[3];
-        v10[1] = *WorldMatrix;
-        v10[2] = v12;
-        v10[3] = v13;
-        v10[4] = v14;
-        v10[5] = v15;
-        v10[6] = v16;
-        v10[7] = v17;
-        v10[8] = v18;
-        (*(*v10 + 40))(v10);
+        _handle[1] = *WorldMatrix;
+        _handle[2] = v12;
+        _handle[3] = v13;
+        _handle[4] = v14;
+        _handle[5] = v15;
+        _handle[6] = v16;
+        _handle[7] = v17;
+        _handle[8] = v18;
+        (*(*_handle + 40))(_handle);
       }
 
       v5 = [(NSMutableArray *)fields countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -1235,7 +1235,7 @@ LABEL_3:
   }
 }
 
-- (void)_step:(double)a3
+- (void)_step:(double)_step
 {
   v21 = *MEMORY[0x277D85DE8];
   world = self->_world;
@@ -1243,8 +1243,8 @@ LABEL_3:
   {
     timeStep = self->_timeStep;
     speed = self->_speed;
-    a3 = speed * a3;
-    *&a3 = a3;
+    _step = speed * _step;
+    *&_step = _step;
     *&speed = speed * ((1.0 / timeStep) / 15.0);
     v7 = vcvtps_s32_f32(*&speed);
     if (v7 <= 1)
@@ -1261,13 +1261,13 @@ LABEL_3:
     if (!self->_firstSimulationDone)
     {
       self->_firstSimulationDone = 1;
-      if (timeStep >= *&a3)
+      if (timeStep >= *&_step)
       {
-        *&a3 = timeStep;
+        *&_step = timeStep;
       }
     }
 
-    (*(*world + 104))(world, v8, *&a3);
+    (*(*world + 104))(world, v8, *&_step);
     if (objc_loadWeak(&self->_contactDelegate))
     {
       btC3DCollisionDispatcher::dispatchContactsToDelegate(v9);
@@ -1341,22 +1341,22 @@ LABEL_3:
   }
 }
 
-- (void)_postCommandWithBlock:(id)a3
+- (void)_postCommandWithBlock:(id)block
 {
-  v5 = [(SCNScene *)self->_scene sceneRef];
+  sceneRef = [(SCNScene *)self->_scene sceneRef];
   scene = self->_scene;
 
-  [SCNTransaction postCommandWithContext:v5 object:scene applyBlock:a3];
+  [SCNTransaction postCommandWithContext:sceneRef object:scene applyBlock:block];
 }
 
-- (void)_drawDebugInAuthoringEnvironment:(void *)a3
+- (void)_drawDebugInAuthoringEnvironment:(void *)environment
 {
   if (self->_world)
   {
     debugDrawer = self->_debugDrawer;
     if (debugDrawer)
     {
-      debugDrawer->var3 = a3;
+      debugDrawer->var3 = environment;
       (*(*self->_world + 32))(self->_world, self->_debugDrawer);
       (*(*self->_world + 48))(self->_world);
       (*(*self->_world + 32))(self->_world, 0);
@@ -1365,31 +1365,31 @@ LABEL_3:
   }
 }
 
-- (void)addPhysicsBody:(id)a3 nodeRef:(__C3DNode *)a4 colGroup:(unint64_t)a5 colMask:(unint64_t)a6 colTest:(unint64_t)a7
+- (void)addPhysicsBody:(id)body nodeRef:(__C3DNode *)ref colGroup:(unint64_t)group colMask:(unint64_t)mask colTest:(unint64_t)test
 {
-  v13 = [(SCNPhysicsWorld *)self _handle];
-  if (v13)
+  _handle = [(SCNPhysicsWorld *)self _handle];
+  if (_handle)
   {
-    v14 = v13;
-    [a3 centerOfMassOffset];
+    v14 = _handle;
+    [body centerOfMassOffset];
     v16.n128_u32[1] = v15;
     v16.n128_u32[2] = v17;
-    C3DPhysicsWorldAddBodyToWorld(v14, [a3 _handle], a4, a5, a6, a7, v16);
+    C3DPhysicsWorldAddBodyToWorld(v14, [body _handle], ref, group, mask, test, v16);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_bodies addObject:a3];
+  [(NSMutableSet *)self->_bodies addObject:body];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removePhysicsBody:(id)a3 handle:(void *)a4
+- (void)removePhysicsBody:(id)body handle:(void *)handle
 {
   v18 = *MEMORY[0x277D85DE8];
   world = self->_world;
   if (world)
   {
-    (*(*world + 184))(world, a4);
+    (*(*world + 184))(world, handle);
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -1413,7 +1413,7 @@ LABEL_3:
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        if ([v12 hasReferenceToPhysicsBody:a3])
+        if ([v12 hasReferenceToPhysicsBody:body])
         {
           [(SCNPhysicsWorld *)&self->super.isa removeBehavior_unsafe:v12];
         }
@@ -1425,23 +1425,23 @@ LABEL_3:
     while (v9);
   }
 
-  [(NSMutableSet *)self->_bodies removeObject:a3];
+  [(NSMutableSet *)self->_bodies removeObject:body];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_customEncodingOfSCNPhysicsWorld:(id)a3
+- (void)_customEncodingOfSCNPhysicsWorld:(id)world
 {
   behaviors = self->_behaviors;
   if (behaviors)
   {
-    [a3 encodeObject:behaviors forKey:@"behaviors"];
+    [world encodeObject:behaviors forKey:@"behaviors"];
   }
 }
 
-- (void)_didDecodeSCNPhysicsWorld:(id)a3
+- (void)_didDecodeSCNPhysicsWorld:(id)world
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"behaviors"];
+  v4 = [world scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"behaviors"];
   [SCNTransaction setImmediateMode:0];
   v11 = 0u;
   v12 = 0u;
@@ -1473,24 +1473,24 @@ LABEL_3:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(SCNPhysicsWorld *)self _customEncodingOfSCNPhysicsWorld:?];
   scene = self->_scene;
   if (scene)
   {
-    [a3 encodeObject:scene forKey:@"scene"];
+    [coder encodeObject:scene forKey:@"scene"];
   }
 
-  SCNEncodeVector3(a3, @"gravity", self->_gravity.x, self->_gravity.y, self->_gravity.z);
-  [a3 encodeDouble:@"speed" forKey:self->_speed];
-  [a3 encodeDouble:@"scale" forKey:self->_scale];
+  SCNEncodeVector3(coder, @"gravity", self->_gravity.x, self->_gravity.y, self->_gravity.z);
+  [coder encodeDouble:@"speed" forKey:self->_speed];
+  [coder encodeDouble:@"scale" forKey:self->_scale];
   timeStep = self->_timeStep;
 
-  [a3 encodeDouble:@"timeStep" forKey:timeStep];
+  [coder encodeDouble:@"timeStep" forKey:timeStep];
 }
 
-- (SCNPhysicsWorld)initWithCoder:(id)a3
+- (SCNPhysicsWorld)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = SCNPhysicsWorld;
@@ -1499,17 +1499,17 @@ LABEL_3:
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [(SCNPhysicsWorld *)v4 _customDecodingOfSCNPhysicsWorld:a3];
-    -[SCNPhysicsWorld setScene:](v4, "setScene:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"scene"]);
-    *&v6 = SCNDecodeVector3(a3, @"gravity");
+    [(SCNPhysicsWorld *)v4 _customDecodingOfSCNPhysicsWorld:coder];
+    -[SCNPhysicsWorld setScene:](v4, "setScene:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"scene"]);
+    *&v6 = SCNDecodeVector3(coder, @"gravity");
     [(SCNPhysicsWorld *)v4 setGravity:v6];
-    [a3 decodeDoubleForKey:@"speed"];
+    [coder decodeDoubleForKey:@"speed"];
     [(SCNPhysicsWorld *)v4 setSpeed:?];
-    [a3 decodeDoubleForKey:@"scale"];
+    [coder decodeDoubleForKey:@"scale"];
     [(SCNPhysicsWorld *)v4 setScale:?];
-    [a3 decodeDoubleForKey:@"timeStep"];
+    [coder decodeDoubleForKey:@"timeStep"];
     [(SCNPhysicsWorld *)v4 setTimeStep:?];
-    [(SCNPhysicsWorld *)v4 _didDecodeSCNPhysicsWorld:a3];
+    [(SCNPhysicsWorld *)v4 _didDecodeSCNPhysicsWorld:coder];
     [SCNTransaction setImmediateMode:v5];
   }
 

@@ -1,12 +1,12 @@
 @interface LargeDayNavigationViewCellFactory
-- (id)createCellWithFrame:(CGRect)a3;
+- (id)createCellWithFrame:(CGRect)frame;
 @end
 
 @implementation LargeDayNavigationViewCellFactory
 
-- (id)createCellWithFrame:(CGRect)a3
+- (id)createCellWithFrame:(CGRect)frame
 {
-  v3 = [[LargeDayNavigationViewCell alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [[LargeDayNavigationViewCell alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(LargeDayNavigationViewCell *)v3 setUsesRoundedRectInsteadOfCircle:EKUIUsesRoundedRectsInsteadOfCircles()];
 
   return v3;

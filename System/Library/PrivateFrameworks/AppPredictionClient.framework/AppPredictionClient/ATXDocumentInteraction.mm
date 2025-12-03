@@ -1,23 +1,23 @@
 @interface ATXDocumentInteraction
-- (ATXDocumentInteraction)initWithCoder:(id)a3;
-- (ATXDocumentInteraction)initWithType:(unint64_t)a3 fileIdentity:(id)a4 contentTypeIdentifier:(id)a5 appIdentity:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXDocumentInteraction:(id)a3;
+- (ATXDocumentInteraction)initWithCoder:(id)coder;
+- (ATXDocumentInteraction)initWithType:(unint64_t)type fileIdentity:(id)identity contentTypeIdentifier:(id)identifier appIdentity:(id)appIdentity;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXDocumentInteraction:(id)interaction;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXDocumentInteraction
 
-- (ATXDocumentInteraction)initWithType:(unint64_t)a3 fileIdentity:(id)a4 contentTypeIdentifier:(id)a5 appIdentity:(id)a6
+- (ATXDocumentInteraction)initWithType:(unint64_t)type fileIdentity:(id)identity contentTypeIdentifier:(id)identifier appIdentity:(id)appIdentity
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v11)
+  identityCopy = identity;
+  identifierCopy = identifier;
+  appIdentityCopy = appIdentity;
+  v14 = appIdentityCopy;
+  if (identityCopy)
   {
-    if (v13)
+    if (appIdentityCopy)
     {
       goto LABEL_3;
     }
@@ -40,12 +40,12 @@ LABEL_3:
   v16 = v15;
   if (v15)
   {
-    v15->_type = a3;
-    v17 = [v11 copy];
+    v15->_type = type;
+    v17 = [identityCopy copy];
     fileIdentity = v16->_fileIdentity;
     v16->_fileIdentity = v17;
 
-    v19 = [v12 copy];
+    v19 = [identifierCopy copy];
     contentTypeIdentifier = v16->_contentTypeIdentifier;
     v16->_contentTypeIdentifier = v19;
 
@@ -65,34 +65,34 @@ LABEL_3:
   return [(ATXAppIdentity *)self->_appIdentity hash]- v5 + 32 * v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXDocumentInteraction *)self isEqualToATXDocumentInteraction:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXDocumentInteraction *)self isEqualToATXDocumentInteraction:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXDocumentInteraction:(id)a3
+- (BOOL)isEqualToATXDocumentInteraction:(id)interaction
 {
-  v4 = a3;
-  if (self->_type != v4[1])
+  interactionCopy = interaction;
+  if (self->_type != interactionCopy[1])
   {
     goto LABEL_8;
   }
 
   v5 = self->_fileIdentity;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == interactionCopy[2])
   {
   }
 
@@ -108,7 +108,7 @@ LABEL_3:
 
   v8 = self->_contentTypeIdentifier;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == interactionCopy[3])
   {
   }
 
@@ -126,7 +126,7 @@ LABEL_8:
 
   v12 = self->_appIdentity;
   v13 = v12;
-  if (v12 == v4[4])
+  if (v12 == interactionCopy[4])
   {
     v11 = 1;
   }
@@ -140,23 +140,23 @@ LABEL_14:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"ATXDocumentInteractionCodingKeyType"];
-  [v5 encodeObject:self->_fileIdentity forKey:@"ATXDocumentInteractionCodingKeyFileIdentity"];
-  [v5 encodeObject:self->_contentTypeIdentifier forKey:@"ATXDocumentInteractionCodingKeyContentTypeIdentifier"];
-  [v5 encodeObject:self->_appIdentity forKey:@"ATXDocumentInteractionCodingKeyAppIdentity"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"ATXDocumentInteractionCodingKeyType"];
+  [coderCopy encodeObject:self->_fileIdentity forKey:@"ATXDocumentInteractionCodingKeyFileIdentity"];
+  [coderCopy encodeObject:self->_contentTypeIdentifier forKey:@"ATXDocumentInteractionCodingKeyContentTypeIdentifier"];
+  [coderCopy encodeObject:self->_appIdentity forKey:@"ATXDocumentInteractionCodingKeyAppIdentity"];
 }
 
-- (ATXDocumentInteraction)initWithCoder:(id)a3
+- (ATXDocumentInteraction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"ATXDocumentInteractionCodingKeyType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ATXDocumentInteractionCodingKeyFileIdentity"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ATXDocumentInteractionCodingKeyContentTypeIdentifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ATXDocumentInteractionCodingKeyAppIdentity"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"ATXDocumentInteractionCodingKeyType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ATXDocumentInteractionCodingKeyFileIdentity"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ATXDocumentInteractionCodingKeyContentTypeIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ATXDocumentInteractionCodingKeyAppIdentity"];
 
   v9 = [(ATXDocumentInteraction *)self initWithType:v5 fileIdentity:v6 contentTypeIdentifier:v7 appIdentity:v8];
   return v9;

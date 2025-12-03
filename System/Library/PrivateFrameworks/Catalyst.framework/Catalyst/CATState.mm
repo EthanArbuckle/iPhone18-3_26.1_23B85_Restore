@@ -1,40 +1,40 @@
 @interface CATState
 + (id)new;
 - (CATState)init;
-- (CATState)initWithName:(id)a3;
+- (CATState)initWithName:(id)name;
 - (SEL)enterAction;
 - (SEL)exitAction;
 - (id)description;
-- (void)addTransitionToState:(id)a3 triggeringEvent:(id)a4 action:(SEL)a5;
-- (void)setEnterAction:(SEL)a3;
-- (void)setExitAction:(SEL)a3;
+- (void)addTransitionToState:(id)state triggeringEvent:(id)event action:(SEL)action;
+- (void)setEnterAction:(SEL)action;
+- (void)setExitAction:(SEL)action;
 @end
 
 @implementation CATState
 
 + (id)new
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CATState.m" lineNumber:23 description:{@"%@ cannot call %@", a1, v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATState.m" lineNumber:23 description:{@"%@ cannot call %@", self, v5}];
 
   return 0;
 }
 
 - (CATState)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CATState.m" lineNumber:30 description:{@"%@ cannot call %@", v5, v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATState.m" lineNumber:30 description:{@"%@ cannot call %@", v5, v6}];
 
   return 0;
 }
 
-- (CATState)initWithName:(id)a3
+- (CATState)initWithName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
     [(CATState *)a2 initWithName:?];
   }
@@ -44,7 +44,7 @@
   v6 = [(CATState *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [nameCopy copy];
     name = v6->_name;
     v6->_name = v7;
 
@@ -60,30 +60,30 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CATState *)self name];
-  v6 = [v3 stringWithFormat:@"<%@: %p { name = %@ }>", v4, self, v5];
+  name = [(CATState *)self name];
+  v6 = [v3 stringWithFormat:@"<%@: %p { name = %@ }>", v4, self, name];
 
   return v6;
 }
 
-- (void)addTransitionToState:(id)a3 triggeringEvent:(id)a4 action:(SEL)a5
+- (void)addTransitionToState:(id)state triggeringEvent:(id)event action:(SEL)action
 {
-  v12 = a3;
-  v9 = a4;
-  if (!v9)
+  stateCopy = state;
+  eventCopy = event;
+  if (!eventCopy)
   {
     [CATState addTransitionToState:a2 triggeringEvent:self action:?];
   }
 
-  v10 = [(NSMutableDictionary *)self->mTransitionByTriggeringEvent objectForKeyedSubscript:v9];
+  v10 = [(NSMutableDictionary *)self->mTransitionByTriggeringEvent objectForKeyedSubscript:eventCopy];
 
   if (v10)
   {
-    [CATState addTransitionToState:a2 triggeringEvent:self action:v9];
+    [CATState addTransitionToState:a2 triggeringEvent:self action:eventCopy];
   }
 
-  v11 = [[CATTransition alloc] initWithState:v12 action:a5];
-  [(NSMutableDictionary *)self->mTransitionByTriggeringEvent setObject:v11 forKeyedSubscript:v9];
+  v11 = [[CATTransition alloc] initWithState:stateCopy action:action];
+  [(NSMutableDictionary *)self->mTransitionByTriggeringEvent setObject:v11 forKeyedSubscript:eventCopy];
 }
 
 - (SEL)enterAction
@@ -99,19 +99,19 @@
   }
 }
 
-- (void)setEnterAction:(SEL)a3
+- (void)setEnterAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_enterAction = v3;
+  self->_enterAction = actionCopy;
 }
 
 - (SEL)exitAction
@@ -127,19 +127,19 @@
   }
 }
 
-- (void)setExitAction:(SEL)a3
+- (void)setExitAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_exitAction = v3;
+  self->_exitAction = actionCopy;
 }
 
 - (void)initWithName:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

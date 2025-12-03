@@ -1,29 +1,29 @@
 @interface HKWristDetectionSettingDataSource
-- (HKWristDetectionSettingDataSource)initWithWristDetectionSettingManager:(id)a3;
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4;
+- (HKWristDetectionSettingDataSource)initWithWristDetectionSettingManager:(id)manager;
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle;
 @end
 
 @implementation HKWristDetectionSettingDataSource
 
-- (HKWristDetectionSettingDataSource)initWithWristDetectionSettingManager:(id)a3
+- (HKWristDetectionSettingDataSource)initWithWristDetectionSettingManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = HKWristDetectionSettingDataSource;
   v6 = [(HKObserverBridge *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wristDetectionSettingManager, a3);
+    objc_storeStrong(&v6->_wristDetectionSettingManager, manager);
   }
 
   return v7;
 }
 
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle
 {
-  v5 = a4;
-  v6 = [[_HKWristDetectionSettingManagerObserverBridge alloc] initWithHandle:v5];
+  handleCopy = handle;
+  v6 = [[_HKWristDetectionSettingManagerObserverBridge alloc] initWithHandle:handleCopy];
 
   [(HKWristDetectionSettingManager *)self->_wristDetectionSettingManager registerObserver:v6];
 

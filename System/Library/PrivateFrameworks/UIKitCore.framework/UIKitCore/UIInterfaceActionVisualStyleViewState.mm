@@ -1,58 +1,58 @@
 @interface UIInterfaceActionVisualStyleViewState
-- (BOOL)_stateEqualToVisualStyleViewState:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (UIInterfaceActionVisualStyleViewState)initWithPropertiesFromTopLevelView:(id)a3;
-- (id)copyWithScreen:(id)a3;
-- (id)copyWithTraitCollection:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_stateEqualToVisualStyleViewState:(id)state;
+- (BOOL)isEqual:(id)equal;
+- (UIInterfaceActionVisualStyleViewState)initWithPropertiesFromTopLevelView:(id)view;
+- (id)copyWithScreen:(id)screen;
+- (id)copyWithTraitCollection:(id)collection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_collectStateFromScreen:(id)a3;
-- (void)_collectStateFromView:(id)a3;
-- (void)_collectStateFromVisualStyleViewState:(id)a3;
+- (void)_collectStateFromScreen:(id)screen;
+- (void)_collectStateFromView:(id)view;
+- (void)_collectStateFromVisualStyleViewState:(id)state;
 @end
 
 @implementation UIInterfaceActionVisualStyleViewState
 
-- (UIInterfaceActionVisualStyleViewState)initWithPropertiesFromTopLevelView:(id)a3
+- (UIInterfaceActionVisualStyleViewState)initWithPropertiesFromTopLevelView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = UIInterfaceActionVisualStyleViewState;
   v5 = [(UIInterfaceActionVisualStyleViewState *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (viewCopy)
     {
-      [(UIInterfaceActionVisualStyleViewState *)v5 _collectStateFromView:v4];
+      [(UIInterfaceActionVisualStyleViewState *)v5 _collectStateFromView:viewCopy];
     }
 
     else
     {
-      v7 = [objc_opt_self() mainScreen];
-      [(UIInterfaceActionVisualStyleViewState *)v6 _collectStateFromScreen:v7];
+      mainScreen = [objc_opt_self() mainScreen];
+      [(UIInterfaceActionVisualStyleViewState *)v6 _collectStateFromScreen:mainScreen];
     }
   }
 
   return v6;
 }
 
-- (id)copyWithTraitCollection:(id)a3
+- (id)copyWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = [(UIInterfaceActionVisualStyleViewState *)self copy];
   v6 = v5[1];
-  v5[1] = v4;
+  v5[1] = collectionCopy;
 
   return v5;
 }
 
-- (id)copyWithScreen:(id)a3
+- (id)copyWithScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v5 = [(UIInterfaceActionVisualStyleViewState *)self copy];
   v6 = v5[2];
-  v5[2] = v4;
+  v5[2] = screenCopy;
 
   return v5;
 }
@@ -68,97 +68,97 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 _collectStateFromVisualStyleViewState:self];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(UIInterfaceActionVisualStyleViewState *)self _stateEqualToVisualStyleViewState:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(UIInterfaceActionVisualStyleViewState *)self _stateEqualToVisualStyleViewState:equalCopy];
 
   return v5;
 }
 
-- (void)_collectStateFromView:(id)a3
+- (void)_collectStateFromView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 window];
-  v6 = [v5 screen];
-  v7 = v6;
-  if (v6)
+  viewCopy = view;
+  window = [viewCopy window];
+  screen = [window screen];
+  v7 = screen;
+  if (screen)
   {
-    v8 = v6;
+    mainScreen = screen;
   }
 
   else
   {
-    v8 = [objc_opt_self() mainScreen];
+    mainScreen = [objc_opt_self() mainScreen];
   }
 
   screen = self->_screen;
-  self->_screen = v8;
+  self->_screen = mainScreen;
 
-  v10 = [v4 traitCollection];
+  traitCollection = [viewCopy traitCollection];
   traitCollection = self->_traitCollection;
-  self->_traitCollection = v10;
+  self->_traitCollection = traitCollection;
 
-  v12 = [v4 tintColor];
+  tintColor = [viewCopy tintColor];
 
   tintColor = self->_tintColor;
-  self->_tintColor = v12;
+  self->_tintColor = tintColor;
 }
 
-- (void)_collectStateFromScreen:(id)a3
+- (void)_collectStateFromScreen:(id)screen
 {
-  v4 = [objc_opt_self() mainScreen];
+  mainScreen = [objc_opt_self() mainScreen];
   screen = self->_screen;
-  self->_screen = v4;
+  self->_screen = mainScreen;
 
-  v6 = [(UIScreen *)self->_screen traitCollection];
+  traitCollection = [(UIScreen *)self->_screen traitCollection];
   traitCollection = self->_traitCollection;
-  self->_traitCollection = v6;
+  self->_traitCollection = traitCollection;
 
   v8 = +[UIColor systemBlueColor];
   tintColor = self->_tintColor;
   self->_tintColor = v8;
 }
 
-- (void)_collectStateFromVisualStyleViewState:(id)a3
+- (void)_collectStateFromVisualStyleViewState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 screen];
+  stateCopy = state;
+  screen = [stateCopy screen];
   screen = self->_screen;
-  self->_screen = v5;
+  self->_screen = screen;
 
-  v7 = [v4 traitCollection];
+  traitCollection = [stateCopy traitCollection];
   traitCollection = self->_traitCollection;
-  self->_traitCollection = v7;
+  self->_traitCollection = traitCollection;
 
-  v9 = [v4 tintColor];
+  tintColor = [stateCopy tintColor];
 
   tintColor = self->_tintColor;
-  self->_tintColor = v9;
+  self->_tintColor = tintColor;
 }
 
-- (BOOL)_stateEqualToVisualStyleViewState:(id)a3
+- (BOOL)_stateEqualToVisualStyleViewState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   screen = self->_screen;
-  v6 = [v4 screen];
-  if ([(UIScreen *)screen isEqual:v6])
+  screen = [stateCopy screen];
+  if ([(UIScreen *)screen isEqual:screen])
   {
     traitCollection = self->_traitCollection;
-    v8 = [v4 traitCollection];
-    if ([(UITraitCollection *)traitCollection isEqual:v8])
+    traitCollection = [stateCopy traitCollection];
+    if ([(UITraitCollection *)traitCollection isEqual:traitCollection])
     {
       tintColor = self->_tintColor;
-      v10 = [v4 tintColor];
-      v11 = [(UIColor *)tintColor isEqual:v10];
+      tintColor = [stateCopy tintColor];
+      v11 = [(UIColor *)tintColor isEqual:tintColor];
     }
 
     else

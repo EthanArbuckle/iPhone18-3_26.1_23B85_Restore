@@ -1,30 +1,30 @@
 @interface PhotosStoryDiagnosticsExtension
 + (BOOL)isAppleInternal;
-+ (id)descriptionForFilename:(id)a3 withJsonArray:(id)a4;
-+ (id)displayNameForFilename:(id)a3 withJsonArray:(id)a4;
-+ (id)subtitleForFilename:(id)a3 withJsonArray:(id)a4;
-- (BOOL)repositoryIsEmpty:(id)a3 fileManager:(id)a4;
-- (id)annotatedAttachmentsForParameters:(id)a3;
++ (id)descriptionForFilename:(id)filename withJsonArray:(id)array;
++ (id)displayNameForFilename:(id)filename withJsonArray:(id)array;
++ (id)subtitleForFilename:(id)filename withJsonArray:(id)array;
+- (BOOL)repositoryIsEmpty:(id)empty fileManager:(id)manager;
+- (id)annotatedAttachmentsForParameters:(id)parameters;
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
-- (id)descriptionStringsByFileWithRepositoryURL:(id)a3;
-- (id)diagnosticAttachmentsForMemoryLocalIdentifier:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)descriptionStringsByFileWithRepositoryURL:(id)l;
+- (id)diagnosticAttachmentsForMemoryLocalIdentifier:(id)identifier;
 - (id)getStoryDiagnosticsPath;
 - (id)internalFullDiagnostics;
-- (id)memoryDiagnosticsRepositoryPathForMemoryLocalIdentifier:(id)a3;
+- (id)memoryDiagnosticsRepositoryPathForMemoryLocalIdentifier:(id)identifier;
 @end
 
 @implementation PhotosStoryDiagnosticsExtension
 
-- (BOOL)repositoryIsEmpty:(id)a3 fileManager:(id)a4
+- (BOOL)repositoryIsEmpty:(id)empty fileManager:(id)manager
 {
   v13 = NSURLIsDirectoryKey;
-  v5 = a4;
-  v6 = a3;
+  managerCopy = manager;
+  emptyCopy = empty;
   v7 = 1;
   v8 = [NSArray arrayWithObjects:&v13 count:1];
   v12 = 0;
-  v9 = [v5 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:v8 options:4 error:&v12];
+  v9 = [managerCopy contentsOfDirectoryAtURL:emptyCopy includingPropertiesForKeys:v8 options:4 error:&v12];
 
   v10 = v12;
   if (!v10)
@@ -35,14 +35,14 @@
   return v7;
 }
 
-- (id)memoryDiagnosticsRepositoryPathForMemoryLocalIdentifier:(id)a3
+- (id)memoryDiagnosticsRepositoryPathForMemoryLocalIdentifier:(id)identifier
 {
-  v28 = a3;
-  v4 = [(PhotosStoryDiagnosticsExtension *)self getStoryDiagnosticsPath];
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  getStoryDiagnosticsPath = [(PhotosStoryDiagnosticsExtension *)self getStoryDiagnosticsPath];
+  v5 = getStoryDiagnosticsPath;
+  if (getStoryDiagnosticsPath)
   {
-    v6 = [v4 stringByAppendingPathComponent:PNStoryDiagnosticsIndexFileName];
+    v6 = [getStoryDiagnosticsPath stringByAppendingPathComponent:PNStoryDiagnosticsIndexFileName];
     v7 = [[NSData alloc] initWithContentsOfFile:v6];
     if (v7)
     {
@@ -59,12 +59,12 @@
         v26 = v6;
         v27 = v5;
         v11 = v8;
-        v12 = [v11 allKeys];
+        allKeys = [v11 allKeys];
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v13 = [v12 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v13 = [allKeys countByEnumeratingWithState:&v29 objects:v34 count:16];
         if (v13)
         {
           v14 = v13;
@@ -76,14 +76,14 @@
             {
               if (*v30 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(allKeys);
               }
 
               v17 = *(*(&v29 + 1) + 8 * i);
               v18 = [v11 objectForKeyedSubscript:{v17, v23, v24, v25, v26}];
               v19 = [v18 objectForKeyedSubscript:@"generatedMemoryIdentifiers"];
               v20 = v19;
-              if (v19 && [v19 count] && objc_msgSend(v20, "containsObject:", v28))
+              if (v19 && [v19 count] && objc_msgSend(v20, "containsObject:", identifierCopy))
               {
                 v21 = [v27 stringByAppendingPathComponent:v17];
 
@@ -91,7 +91,7 @@
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v29 objects:v34 count:16];
+            v14 = [allKeys countByEnumeratingWithState:&v29 objects:v34 count:16];
           }
 
           while (v14);
@@ -137,16 +137,16 @@
   return v10;
 }
 
-- (id)descriptionStringsByFileWithRepositoryURL:(id)a3
+- (id)descriptionStringsByFileWithRepositoryURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [v3 URLByAppendingPathComponent:PNNonInternalDiagnosticsStringDescriptionsFileName];
+  v5 = [lCopy URLByAppendingPathComponent:PNNonInternalDiagnosticsStringDescriptionsFileName];
 
   if (v5)
   {
-    v6 = [v5 path];
-    v7 = [NSData dataWithContentsOfFile:v6];
+    path = [v5 path];
+    v7 = [NSData dataWithContentsOfFile:path];
 
     if (v7)
     {
@@ -164,9 +164,9 @@
   return v4;
 }
 
-- (id)diagnosticAttachmentsForMemoryLocalIdentifier:(id)a3
+- (id)diagnosticAttachmentsForMemoryLocalIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 136315138;
@@ -174,10 +174,10 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
-  v5 = [(PhotosStoryDiagnosticsExtension *)self memoryDiagnosticsRepositoryPathForMemoryLocalIdentifier:v4];
+  v5 = [(PhotosStoryDiagnosticsExtension *)self memoryDiagnosticsRepositoryPathForMemoryLocalIdentifier:identifierCopy];
   if (v5)
   {
-    v34 = v4;
+    v34 = identifierCopy;
     v38 = objc_alloc_init(NSMutableArray);
     v33 = v5;
     v6 = [[NSURL alloc] initWithString:v5];
@@ -217,18 +217,18 @@
           }
 
           v17 = *(*(&v41 + 1) + 8 * v16);
-          v18 = [v17 path];
-          v19 = [v18 containsString:v15];
+          path = [v17 path];
+          v19 = [path containsString:v15];
 
           if ((v19 & 1) == 0)
           {
-            v20 = [v17 lastPathComponent];
-            v21 = [PhotosStoryDiagnosticsExtension displayNameForFilename:v20 withJsonArray:v11];
+            lastPathComponent = [v17 lastPathComponent];
+            v21 = [PhotosStoryDiagnosticsExtension displayNameForFilename:lastPathComponent withJsonArray:v11];
             if (v21)
             {
-              v22 = [PhotosStoryDiagnosticsExtension descriptionForFilename:v20 withJsonArray:v11];
+              v22 = [PhotosStoryDiagnosticsExtension descriptionForFilename:lastPathComponent withJsonArray:v11];
               v23 = v11;
-              v24 = [PhotosStoryDiagnosticsExtension subtitleForFilename:v20 withJsonArray:v11];
+              v24 = [PhotosStoryDiagnosticsExtension subtitleForFilename:lastPathComponent withJsonArray:v11];
               v25 = v24;
               if (v24)
               {
@@ -282,7 +282,7 @@
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                v47 = v20;
+                v47 = lastPathComponent;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "No display name for %@", buf, 0xCu);
               }
 
@@ -307,7 +307,7 @@
 
     v29 = v38;
     v5 = v33;
-    v4 = v34;
+    identifierCopy = v34;
   }
 
   else
@@ -315,7 +315,7 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v47 = v4;
+      v47 = identifierCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "No repository path for given memory local identifier: %@", buf, 0xCu);
     }
 
@@ -335,10 +335,10 @@
   }
 
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(PhotosStoryDiagnosticsExtension *)self getStoryDiagnosticsPath];
-  if (v4)
+  getStoryDiagnosticsPath = [(PhotosStoryDiagnosticsExtension *)self getStoryDiagnosticsPath];
+  if (getStoryDiagnosticsPath)
   {
-    v5 = [[NSURL alloc] initWithString:v4];
+    v5 = [[NSURL alloc] initWithString:getStoryDiagnosticsPath];
     v6 = objc_alloc_init(NSFileManager);
     v19 = NSURLIsDirectoryKey;
     v7 = [NSArray arrayWithObjects:&v19 count:1];
@@ -362,7 +362,7 @@
       v11 = v3;
       v17 = v11;
       [v8 enumerateObjectsUsingBlock:v15];
-      v12 = [v4 stringByAppendingPathComponent:PNStoryDiagnosticsIndexFileName];
+      v12 = [getStoryDiagnosticsPath stringByAppendingPathComponent:PNStoryDiagnosticsIndexFileName];
       v13 = [DEAttachmentItem attachmentWithPath:v12];
       [v11 addObject:v13];
       v10 = v11;
@@ -383,9 +383,9 @@
   return v10;
 }
 
-- (id)annotatedAttachmentsForParameters:(id)a3
+- (id)annotatedAttachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 136315138;
@@ -393,7 +393,7 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
-  v5 = [(PhotosStoryDiagnosticsExtension *)self attachmentsForParameters:v4];
+  v5 = [(PhotosStoryDiagnosticsExtension *)self attachmentsForParameters:parametersCopy];
   v6 = [DEAnnotatedGroup alloc];
   v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu items", [v5 count]);
   v8 = [v6 initWithDisplayName:@"Memory Movie Details" localizedDescription:v7 iconType:0 additionalInfo:0 attachmentItems:v5];
@@ -409,9 +409,9 @@
   return v8;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 136315138;
@@ -432,22 +432,22 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = parametersCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Parameters received: %@", buf, 0xCu);
     }
 
-    v11 = [v4 objectForKeyedSubscript:PNStoryDiagnosticsExtensionParameterName];
-    v12 = [v11 firstObject];
+    v11 = [parametersCopy objectForKeyedSubscript:PNStoryDiagnosticsExtensionParameterName];
+    firstObject = [v11 firstObject];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v18 = v12;
+      v18 = firstObject;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "MemoryLocalIdentifier extracted: %@", buf, 0xCu);
     }
 
-    if (v12)
+    if (firstObject)
     {
-      v13 = [(PhotosStoryDiagnosticsExtension *)self diagnosticAttachmentsForMemoryLocalIdentifier:v12];
+      v13 = [(PhotosStoryDiagnosticsExtension *)self diagnosticAttachmentsForMemoryLocalIdentifier:firstObject];
       [v10 addObjectsFromArray:v13];
     }
 
@@ -459,8 +459,8 @@
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "No attachment retrieved, falling back to full story diagnostics", buf, 2u);
       }
 
-      v14 = [(PhotosStoryDiagnosticsExtension *)self internalFullDiagnostics];
-      [v10 addObjectsFromArray:v14];
+      internalFullDiagnostics = [(PhotosStoryDiagnosticsExtension *)self internalFullDiagnostics];
+      [v10 addObjectsFromArray:internalFullDiagnostics];
     }
   }
 
@@ -500,8 +500,8 @@
     v8 = objc_alloc_init(NSMutableArray);
     if (+[PhotosStoryDiagnosticsExtension isAppleInternal])
     {
-      v9 = [(PhotosStoryDiagnosticsExtension *)self internalFullDiagnostics];
-      [v8 addObjectsFromArray:v9];
+      internalFullDiagnostics = [(PhotosStoryDiagnosticsExtension *)self internalFullDiagnostics];
+      [v8 addObjectsFromArray:internalFullDiagnostics];
     }
   }
 
@@ -534,14 +534,14 @@
   return v3;
 }
 
-+ (id)subtitleForFilename:(id)a3 withJsonArray:(id)a4
++ (id)subtitleForFilename:(id)filename withJsonArray:(id)array
 {
-  v5 = a3;
+  filenameCopy = filename;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a4;
+  obj = array;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v6)
   {
@@ -563,10 +563,10 @@
 
       v10 = *(*(&v17 + 1) + 8 * i);
       v11 = [v10 objectForKey:{@"fileName", v15}];
-      if ([v11 isEqualToString:v5])
+      if ([v11 isEqualToString:filenameCopy])
       {
-        v12 = [v10 allKeys];
-        v13 = [v12 containsObject:@"subtitle"];
+        allKeys = [v10 allKeys];
+        v13 = [allKeys containsObject:@"subtitle"];
 
         if (!v13)
         {
@@ -587,14 +587,14 @@ LABEL_14:
   return v15;
 }
 
-+ (id)descriptionForFilename:(id)a3 withJsonArray:(id)a4
++ (id)descriptionForFilename:(id)filename withJsonArray:(id)array
 {
-  v5 = a3;
+  filenameCopy = filename;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a4;
+  obj = array;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v6)
   {
@@ -616,10 +616,10 @@ LABEL_14:
 
       v10 = *(*(&v17 + 1) + 8 * i);
       v11 = [v10 objectForKey:{@"fileName", v15}];
-      if ([v11 isEqualToString:v5])
+      if ([v11 isEqualToString:filenameCopy])
       {
-        v12 = [v10 allKeys];
-        v13 = [v12 containsObject:@"description"];
+        allKeys = [v10 allKeys];
+        v13 = [allKeys containsObject:@"description"];
 
         if (!v13)
         {
@@ -640,17 +640,17 @@ LABEL_14:
   return v15;
 }
 
-+ (id)displayNameForFilename:(id)a3 withJsonArray:(id)a4
++ (id)displayNameForFilename:(id)filename withJsonArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  filenameCopy = filename;
+  arrayCopy = array;
+  v7 = filenameCopy;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v6;
-  v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  obj = arrayCopy;
+  v8 = [arrayCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   v17 = v7;
   if (v8)
   {
@@ -670,8 +670,8 @@ LABEL_14:
         v13 = [v12 objectForKey:{@"fileName", v17}];
         if ([v13 isEqualToString:v7])
         {
-          v14 = [v12 allKeys];
-          v15 = [v14 containsObject:@"title"];
+          allKeys = [v12 allKeys];
+          v15 = [allKeys containsObject:@"title"];
 
           if (!v15)
           {

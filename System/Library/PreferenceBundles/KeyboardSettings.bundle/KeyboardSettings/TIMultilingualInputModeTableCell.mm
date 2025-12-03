@@ -1,26 +1,26 @@
 @interface TIMultilingualInputModeTableCell
 - (BOOL)hasDownloadableAssets;
-- (TIMultilingualInputModeTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (TIMultilingualInputModeTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)subtitle;
 - (id)title;
 - (void)addDownloadIcon;
 - (void)dealloc;
-- (void)downloadButtonPressed:(id)a3 withEvent:(id)a4;
+- (void)downloadButtonPressed:(id)pressed withEvent:(id)event;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateLabels;
 @end
 
 @implementation TIMultilingualInputModeTableCell
 
-- (TIMultilingualInputModeTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (TIMultilingualInputModeTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = TIMultilingualInputModeTableCell;
-  v6 = [(TIMultilingualInputModeTableCell *)&v8 initWithStyle:a3 reuseIdentifier:a4 specifier:?];
+  v6 = [(TIMultilingualInputModeTableCell *)&v8 initWithStyle:style reuseIdentifier:identifier specifier:?];
   if (v6)
   {
-    -[TIMultilingualInputModeTableCell setInputModes:](v6, "setInputModes:", [a5 propertyForKey:PSValueKey]);
+    -[TIMultilingualInputModeTableCell setInputModes:](v6, "setInputModes:", [specifier propertyForKey:PSValueKey]);
     [(TIMultilingualInputModeTableCell *)v6 updateLabels];
   }
 
@@ -34,12 +34,12 @@
   [(TIMultilingualInputModeTableCell *)&v3 dealloc];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v5.receiver = self;
   v5.super_class = TIMultilingualInputModeTableCell;
   [(TIMultilingualInputModeTableCell *)&v5 refreshCellContentsWithSpecifier:?];
-  -[TIMultilingualInputModeTableCell setInputModes:](self, "setInputModes:", [a3 propertyForKey:PSValueKey]);
+  -[TIMultilingualInputModeTableCell setInputModes:](self, "setInputModes:", [specifier propertyForKey:PSValueKey]);
   [(TIMultilingualInputModeTableCell *)self updateLabels];
 }
 
@@ -65,9 +65,9 @@
 
 - (id)title
 {
-  v2 = [(TIMultilingualInputModeTableCell *)self inputModes];
+  inputModes = [(TIMultilingualInputModeTableCell *)self inputModes];
 
-  return TIUIGetLocalizedConcatenatedLanguageNamesForInputModes(v2);
+  return TIUIGetLocalizedConcatenatedLanguageNamesForInputModes(inputModes);
 }
 
 - (id)subtitle
@@ -93,8 +93,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(TIMultilingualInputModeTableCell *)self inputModes];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  inputModes = [(TIMultilingualInputModeTableCell *)self inputModes];
+  v3 = [(NSArray *)inputModes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -105,7 +105,7 @@ LABEL_3:
     {
       if (*v9 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(inputModes);
       }
 
       v3 = [+[TIInputModeAssetStatusManager sharedManager](TIInputModeAssetStatusManager "sharedManager")];
@@ -116,7 +116,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v3 = [(NSArray *)v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v3 = [(NSArray *)inputModes countByEnumeratingWithState:&v8 objects:v12 count:16];
         v4 = v3;
         if (v3)
         {
@@ -142,9 +142,9 @@ LABEL_3:
   }
 }
 
-- (void)downloadButtonPressed:(id)a3 withEvent:(id)a4
+- (void)downloadButtonPressed:(id)pressed withEvent:(id)event
 {
-  v4 = [(NSArray *)[(TIMultilingualInputModeTableCell *)self inputModes:a3] copy];
+  v4 = [(NSArray *)[(TIMultilingualInputModeTableCell *)self inputModes:pressed] copy];
   v5 = +[TIInputModeAssetStatusManager sharedManager];
   v14 = 0u;
   v15 = 0u;

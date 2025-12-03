@@ -1,21 +1,21 @@
 @interface PXMemoriesAction
-- (PXMemoriesAction)initWithMemories:(id)a3;
-- (void)performMemoryChanges:(id)a3 completionHandler:(id)a4;
+- (PXMemoriesAction)initWithMemories:(id)memories;
+- (void)performMemoryChanges:(id)changes completionHandler:(id)handler;
 @end
 
 @implementation PXMemoriesAction
 
-- (void)performMemoryChanges:(id)a3 completionHandler:(id)a4
+- (void)performMemoryChanges:(id)changes completionHandler:(id)handler
 {
-  v6 = a3;
+  changesCopy = changes;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__PXMemoriesAction_performMemoryChanges_completionHandler___block_invoke;
   v8[3] = &unk_1E774C2F0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(PXPhotosAction *)self performChanges:v8 completionHandler:a4];
+  v9 = changesCopy;
+  v7 = changesCopy;
+  [(PXPhotosAction *)self performChanges:v8 completionHandler:handler];
 }
 
 void __59__PXMemoriesAction_performMemoryChanges_completionHandler___block_invoke(uint64_t a1)
@@ -54,35 +54,35 @@ void __59__PXMemoriesAction_performMemoryChanges_completionHandler___block_invok
   }
 }
 
-- (PXMemoriesAction)initWithMemories:(id)a3
+- (PXMemoriesAction)initWithMemories:(id)memories
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  memoriesCopy = memories;
+  firstObject = [memoriesCopy firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    v7 = [v5 photoLibrary];
+    photoLibrary = [firstObject photoLibrary];
     v13.receiver = self;
     v13.super_class = PXMemoriesAction;
-    v8 = [(PXPhotosAction *)&v13 initWithPhotoLibrary:v7];
+    v8 = [(PXPhotosAction *)&v13 initWithPhotoLibrary:photoLibrary];
 
     if (v8)
     {
-      v9 = [v4 copy];
+      v9 = [memoriesCopy copy];
       collections = v8->_collections;
       v8->_collections = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MonthViewOccurrence
 + (double)occurrenceHeight;
 + (double)verticalSpaceBetweenOccurrences;
-+ (id)_blendColor:(id)a3 withColor:(id)a4 alpha:(double)a5;
++ (id)_blendColor:(id)color withColor:(id)withColor alpha:(double)alpha;
 + (id)compactHourFont;
 + (id)compactTextFont;
 + (id)hourFont;
@@ -12,68 +12,68 @@
 - (BOOL)drawsTimeAtBottom;
 - (BOOL)drawsTimeString;
 - (BOOL)isNarrow;
-- (BOOL)isPointInSymbol:(CGPoint)a3;
+- (BOOL)isPointInSymbol:(CGPoint)symbol;
 - (BOOL)selected;
 - (BOOL)textWraps;
-- (CGPoint)_offsetForDotInFrame:(CGRect)a3 withDot:(id)a4;
-- (CGPoint)_pointForDotInFrame:(CGRect)a3 withDot:(id)a4;
-- (CGRect)intersectingRect:(CGRect)a3;
-- (CGRect)isPointInView:(CGPoint)a3;
+- (CGPoint)_offsetForDotInFrame:(CGRect)frame withDot:(id)dot;
+- (CGPoint)_pointForDotInFrame:(CGRect)frame withDot:(id)dot;
+- (CGRect)intersectingRect:(CGRect)rect;
+- (CGRect)isPointInView:(CGPoint)view;
 - (CGRect)occFrame;
-- (CGRect)textFrameForFrame:(CGRect)a3;
-- (CGRect)timeFrameForFrame:(CGRect)a3;
-- (MonthViewOccurrence)initWithFrame:(CGRect)a3 occurrence:(id)a4 forDayRange:(_NSRange)a5 isProposedTime:(BOOL)a6 isCompact:(BOOL)a7 isLargeCompact:(BOOL)a8 isMultiDay:(BOOL)a9;
+- (CGRect)textFrameForFrame:(CGRect)frame;
+- (CGRect)timeFrameForFrame:(CGRect)frame;
+- (MonthViewOccurrence)initWithFrame:(CGRect)frame occurrence:(id)occurrence forDayRange:(_NSRange)range isProposedTime:(BOOL)time isCompact:(BOOL)compact isLargeCompact:(BOOL)largeCompact isMultiDay:(BOOL)day;
 - (MonthViewOccurrence)parent;
-- (UIEdgeInsets)_backgroundInsetsIgnoringSplitEdges:(BOOL)a3;
+- (UIEdgeInsets)_backgroundInsetsIgnoringSplitEdges:(BOOL)edges;
 - (UIEdgeInsets)_textInsets;
 - (UIEdgeInsets)backgroundInsets;
 - (_NSRange)dayRange;
 - (double)attributedTitleHeight;
 - (double)backgroundAlpha;
-- (double)lineHeightAdjustmentOffsetY:(id)a3;
+- (double)lineHeightAdjustmentOffsetY:(id)y;
 - (double)radius;
 - (double)startTime;
-- (double)widthDrawingTime:(id)a3 textRect:(CGRect)a4;
+- (double)widthDrawingTime:(id)time textRect:(CGRect)rect;
 - (id)_strikeColor;
 - (id)_timeColor;
-- (id)_timeString:(id)a3;
+- (id)_timeString:(id)string;
 - (id)_titleColor;
 - (id)attributedTime;
 - (id)attributedTitle;
 - (id)attributedTitleForLabel;
 - (id)attributedTitleForWrappingLabel;
-- (id)attributedTitleWithParagraphStyle:(id)a3;
+- (id)attributedTitleWithParagraphStyle:(id)style;
 - (id)backgroundImage;
 - (id)description;
 - (id)pillImage;
 - (unint64_t)backGroundCornerMask;
-- (unint64_t)gapBetweenBlock:(id)a3;
-- (void)_drawBackgroundInFrame:(CGRect)a3;
-- (void)_drawInFrame:(CGRect)a3 traitCollection:(id)a4;
-- (void)_drawString:(id)a3 inTextRect:(CGRect)a4 withTrailingFade:(BOOL)a5;
-- (void)_updateColorsForUserInterfaceStyle:(int64_t)a3;
+- (unint64_t)gapBetweenBlock:(id)block;
+- (void)_drawBackgroundInFrame:(CGRect)frame;
+- (void)_drawInFrame:(CGRect)frame traitCollection:(id)collection;
+- (void)_drawString:(id)string inTextRect:(CGRect)rect withTrailingFade:(BOOL)fade;
+- (void)_updateColorsForUserInterfaceStyle:(int64_t)style;
 - (void)_updateDotImage;
 - (void)_updateDotImageView;
 - (void)_updateFadeDirection;
 - (void)_updateFadeVisibility;
 - (void)_updateFadeWidth;
 - (void)_updateOccurrenceBackgroundParameters;
-- (void)_updateOccurrenceWithForce:(BOOL)a3;
+- (void)_updateOccurrenceWithForce:(BOOL)force;
 - (void)_updateSubviewsIfNeeded;
 - (void)_updateTimeStrings;
-- (void)addFadeMaskForRect:(CGRect)a3 leftSide:(BOOL)a4 start:(double)a5 end:(double)a6 withContext:(CGContext *)a7;
-- (void)addSegmentWithFrame:(CGRect)a3 splitLeftEdge:(BOOL)a4 splitRightEdge:(BOOL)a5 fadeLeftEdge:(BOOL)a6 fadeRightEdge:(BOOL)a7;
+- (void)addFadeMaskForRect:(CGRect)rect leftSide:(BOOL)side start:(double)start end:(double)end withContext:(CGContext *)context;
+- (void)addSegmentWithFrame:(CGRect)frame splitLeftEdge:(BOOL)edge splitRightEdge:(BOOL)rightEdge fadeLeftEdge:(BOOL)leftEdge fadeRightEdge:(BOOL)fadeRightEdge;
 - (void)loadViewsIfNeeded;
 - (void)relayoutSubviews;
-- (void)setAlpha:(double)a3;
-- (void)setDrawBackgroundWithLayer:(BOOL)a3;
-- (void)setDrawsTimeString:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setOccurrence:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSplitLeftEdge:(BOOL)a3 splitRightEdge:(BOOL)a4;
-- (void)updateBackgroundWithEdgeInsets:(UIEdgeInsets)a3 color:(id)a4 alpha:(double)a5 cornerMask:(unint64_t)a6;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setDrawBackgroundWithLayer:(BOOL)layer;
+- (void)setDrawsTimeString:(BOOL)string;
+- (void)setFrame:(CGRect)frame;
+- (void)setOccurrence:(id)occurrence;
+- (void)setSelected:(BOOL)selected;
+- (void)setSplitLeftEdge:(BOOL)edge splitRightEdge:(BOOL)rightEdge;
+- (void)updateBackgroundWithEdgeInsets:(UIEdgeInsets)insets color:(id)color alpha:(double)alpha cornerMask:(unint64_t)mask;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation MonthViewOccurrence
@@ -273,10 +273,10 @@ LABEL_8:
   }
 
   v7 = +[UITraitCollection currentTraitCollection];
-  v8 = [v7 userInterfaceStyle];
+  userInterfaceStyle = [v7 userInterfaceStyle];
 
   v9 = self->_cachedTitleColors;
-  v10 = [NSNumber numberWithInteger:v8];
+  v10 = [NSNumber numberWithInteger:userInterfaceStyle];
   v11 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v10];
 
   if (!v11)
@@ -285,7 +285,7 @@ LABEL_8:
     if (v11)
     {
       v12 = self->_cachedTitleColors;
-      v13 = [NSNumber numberWithInteger:v8];
+      v13 = [NSNumber numberWithInteger:userInterfaceStyle];
       [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v13];
     }
   }
@@ -334,10 +334,10 @@ LABEL_18:
   }
 
   v7 = +[UITraitCollection currentTraitCollection];
-  v8 = [v7 userInterfaceStyle];
+  userInterfaceStyle = [v7 userInterfaceStyle];
 
   v9 = self->_cachedTimeColors;
-  v10 = [NSNumber numberWithInteger:v8];
+  v10 = [NSNumber numberWithInteger:userInterfaceStyle];
   v11 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v10];
 
   if (!v11)
@@ -346,7 +346,7 @@ LABEL_18:
     if (v11)
     {
       v12 = self->_cachedTimeColors;
-      v13 = [NSNumber numberWithInteger:v8];
+      v13 = [NSNumber numberWithInteger:userInterfaceStyle];
       [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v13];
     }
   }
@@ -377,25 +377,25 @@ LABEL_20:
   return v3;
 }
 
-- (MonthViewOccurrence)initWithFrame:(CGRect)a3 occurrence:(id)a4 forDayRange:(_NSRange)a5 isProposedTime:(BOOL)a6 isCompact:(BOOL)a7 isLargeCompact:(BOOL)a8 isMultiDay:(BOOL)a9
+- (MonthViewOccurrence)initWithFrame:(CGRect)frame occurrence:(id)occurrence forDayRange:(_NSRange)range isProposedTime:(BOOL)time isCompact:(BOOL)compact isLargeCompact:(BOOL)largeCompact isMultiDay:(BOOL)day
 {
-  v10 = a7;
-  length = a5.length;
-  location = a5.location;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v19 = a4;
+  compactCopy = compact;
+  length = range.length;
+  location = range.location;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  occurrenceCopy = occurrence;
   v49.receiver = self;
   v49.super_class = MonthViewOccurrence;
-  v20 = [(MonthViewOccurrence *)&v49 initWithFrame:x, y, width, height];
-  v21 = v20;
-  if (v20)
+  height = [(MonthViewOccurrence *)&v49 initWithFrame:x, y, width, height];
+  v21 = height;
+  if (height)
   {
-    v20->_dayRange.location = location;
-    v20->_dayRange.length = length;
-    if (a9)
+    height->_dayRange.location = location;
+    height->_dayRange.length = length;
+    if (day)
     {
       v22 = 2;
     }
@@ -405,10 +405,10 @@ LABEL_20:
       v22 = 0;
     }
 
-    *(v20 + 56) = *(v20 + 56) & 0xFD | v22;
-    v20->_cachedEndRange = v20->_dayRange.location + v20->_dayRange.length - 1;
-    v20->_isProposedTime = a6;
-    if (v10)
+    *(height + 56) = *(height + 56) & 0xFD | v22;
+    height->_cachedEndRange = height->_dayRange.location + height->_dayRange.length - 1;
+    height->_isProposedTime = time;
+    if (compactCopy)
     {
       +[MonthViewOccurrence compactTextFont];
     }
@@ -420,16 +420,16 @@ LABEL_20:
     v23 = ;
     objc_storeStrong(&v21->_font, v23);
 
-    v21->_compact = v10;
-    v21->_largeCompact = a8;
+    v21->_compact = compactCopy;
+    v21->_largeCompact = largeCompact;
     v21->_cachedTitleColorsLock._os_unfair_lock_opaque = 0;
     v21->_cachedTimeColorsLock._os_unfair_lock_opaque = 0;
     v21->_cachedTitleHeightsLock._os_unfair_lock_opaque = 0;
     if ((CUIKCurrentLocaleRequiresIndianLanguageAdjustments() & 1) == 0)
     {
-      v24 = [v19 title];
+      title = [occurrenceCopy title];
       v25 = +[CUIKOROccurrenceState tallCharacterSetCache];
-      v26 = [v24 rangeOfCharacterFromSet:v25];
+      v26 = [title rangeOfCharacterFromSet:v25];
 
       if (v26 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -439,7 +439,7 @@ LABEL_20:
       }
     }
 
-    [(MonthViewOccurrence *)v21 setOccurrence:v19];
+    [(MonthViewOccurrence *)v21 setOccurrence:occurrenceCopy];
     v29 = objc_alloc_init(CALayer);
     glowLayer = v21->_glowLayer;
     v21->_glowLayer = v29;
@@ -454,12 +454,12 @@ LABEL_20:
     [(CALayer *)v21->_glowLayer setShadowRadius:6.0];
     LODWORD(v33) = 1032805417;
     [(CALayer *)v21->_glowLayer setShadowOpacity:v33];
-    v34 = [(MonthViewOccurrence *)v21 layer];
-    [v34 addSublayer:v21->_glowLayer];
+    layer = [(MonthViewOccurrence *)v21 layer];
+    [layer addSublayer:v21->_glowLayer];
 
-    v47 = [(MonthViewOccurrence *)v21 layer];
-    [v47 setValue:&__kCFBooleanTrue forKeyPath:@"separatedOptions.enableContext"];
-    [v47 setNeedsDisplay];
+    layer2 = [(MonthViewOccurrence *)v21 layer];
+    [layer2 setValue:&__kCFBooleanTrue forKeyPath:@"separatedOptions.enableContext"];
+    [layer2 setNeedsDisplay];
     v35 = objc_alloc_init(CAGradientLayer);
     gradientLayer = v21->_gradientLayer;
     v21->_gradientLayer = v35;
@@ -471,7 +471,7 @@ LABEL_20:
     v39 = [v38 colorWithAlphaComponent:1.0];
     v50[1] = [v39 CGColor];
     +[UIColor whiteColor];
-    v40 = v48 = v19;
+    v40 = v48 = occurrenceCopy;
     v41 = [v40 colorWithAlphaComponent:0.0];
     v50[2] = [v41 CGColor];
     v42 = +[UIColor whiteColor];
@@ -480,7 +480,7 @@ LABEL_20:
     v44 = [NSArray arrayWithObjects:v50 count:4];
     [(CAGradientLayer *)v21->_gradientLayer setColors:v44];
 
-    v19 = v48;
+    occurrenceCopy = v48;
     v21->_occAlpha = 1.0;
   }
 
@@ -494,10 +494,10 @@ LABEL_20:
     v10.receiver = self;
     v10.super_class = MonthViewOccurrence;
     v3 = [(MonthViewOccurrence *)&v10 description];
-    v4 = [(EKEvent *)self->_occurrence title];
-    v5 = [(EKEvent *)self->_occurrence startCalendarDate];
-    v6 = [(EKEvent *)self->_occurrence endCalendarDate];
-    v7 = [NSString stringWithFormat:@"%@ '%@' %@ to %@", v3, v4, v5, v6];
+    title = [(EKEvent *)self->_occurrence title];
+    startCalendarDate = [(EKEvent *)self->_occurrence startCalendarDate];
+    endCalendarDate = [(EKEvent *)self->_occurrence endCalendarDate];
+    v7 = [NSString stringWithFormat:@"%@ '%@' %@ to %@", v3, title, startCalendarDate, endCalendarDate];
   }
 
   else
@@ -527,16 +527,16 @@ LABEL_20:
       self->_dotImageView = v7;
 
       v9 = *(self + 56);
-      v10 = [(MonthViewOccurrence *)self occurrence];
-      v11 = v10;
+      occurrence = [(MonthViewOccurrence *)self occurrence];
+      v11 = occurrence;
       if ((v9 & 0x20) != 0)
       {
-        [v10 CUIK_symbolColor];
+        [occurrence CUIK_symbolColor];
       }
 
       else
       {
-        [v10 CUIK_disabledSymbolColor];
+        [occurrence CUIK_disabledSymbolColor];
       }
       v12 = ;
 
@@ -575,9 +575,9 @@ LABEL_20:
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  if (a3)
+  if (superview)
   {
     [(MonthViewOccurrence *)self _updateOccurrenceWithForce:0];
     [(MonthViewOccurrence *)self loadViewsIfNeeded];
@@ -586,15 +586,15 @@ LABEL_20:
   }
 }
 
-- (id)attributedTitleWithParagraphStyle:(id)a3
+- (id)attributedTitleWithParagraphStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = objc_opt_new();
   [v5 setObject:self->_font forKeyedSubscript:NSFontAttributeName];
-  [v5 setObject:v4 forKeyedSubscript:NSParagraphStyleAttributeName];
+  [v5 setObject:styleCopy forKeyedSubscript:NSParagraphStyleAttributeName];
 
-  v6 = [(MonthViewOccurrence *)self _titleColor];
-  [v5 setObject:v6 forKeyedSubscript:NSForegroundColorAttributeName];
+  _titleColor = [(MonthViewOccurrence *)self _titleColor];
+  [v5 setObject:_titleColor forKeyedSubscript:NSForegroundColorAttributeName];
 
   if ((self->_invitationType - 3) <= 1)
   {
@@ -602,8 +602,8 @@ LABEL_20:
   }
 
   v7 = [NSAttributedString alloc];
-  v8 = [(MonthViewOccurrence *)self occurrenceString];
-  v9 = [v7 initWithString:v8 attributes:v5];
+  occurrenceString = [(MonthViewOccurrence *)self occurrenceString];
+  v9 = [v7 initWithString:occurrenceString attributes:v5];
 
   return v9;
 }
@@ -618,16 +618,16 @@ LABEL_20:
     self->_cachedTitleHeights = v3;
   }
 
-  v5 = [(MonthViewOccurrence *)self occurrenceString];
-  v6 = [(MonthViewOccurrence *)self textWraps];
+  occurrenceString = [(MonthViewOccurrence *)self occurrenceString];
+  textWraps = [(MonthViewOccurrence *)self textWraps];
   [(UIFont *)self->_font pointSize];
-  v8 = [NSString stringWithFormat:@"%@ %b %f", v5, v6, v7];
+  v8 = [NSString stringWithFormat:@"%@ %b %f", occurrenceString, textWraps, v7];
 
   v9 = [(NSMutableDictionary *)self->_cachedTitleHeights objectForKeyedSubscript:v8];
   if (!v9)
   {
-    v10 = [(MonthViewOccurrence *)self attributedTitle];
-    [v10 size];
+    attributedTitle = [(MonthViewOccurrence *)self attributedTitle];
+    [attributedTitle size];
     v9 = [NSNumber numberWithDouble:v11];
 
     if (v9)
@@ -691,8 +691,8 @@ LABEL_20:
 - (id)attributedTime
 {
   v3 = objc_opt_new();
-  v4 = [(MonthViewOccurrence *)self _timeColor];
-  [v3 setObject:v4 forKeyedSubscript:NSForegroundColorAttributeName];
+  _timeColor = [(MonthViewOccurrence *)self _timeColor];
+  [v3 setObject:_timeColor forKeyedSubscript:NSForegroundColorAttributeName];
 
   if (self->_compact)
   {
@@ -707,8 +707,8 @@ LABEL_20:
   [v3 setObject:v5 forKeyedSubscript:NSFontAttributeName];
 
   v6 = [NSAttributedString alloc];
-  v7 = [(MonthViewOccurrence *)self timeString];
-  v8 = [v6 initWithString:v7 attributes:v3];
+  timeString = [(MonthViewOccurrence *)self timeString];
+  v8 = [v6 initWithString:timeString attributes:v3];
 
   return v8;
 }
@@ -731,16 +731,16 @@ LABEL_20:
   }
 
   v4 = +[UITraitCollection currentTraitCollection];
-  v5 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v4 userInterfaceStyle];
 
-  if (v5 == 1)
+  if (userInterfaceStyle == 1)
   {
     v6 = @"Light";
   }
 
   else
   {
-    if (v5 != 2)
+    if (userInterfaceStyle != 2)
     {
       goto LABEL_11;
     }
@@ -832,16 +832,16 @@ LABEL_11:
   }
 
   v7 = +[UITraitCollection currentTraitCollection];
-  v8 = [v7 userInterfaceStyle];
+  userInterfaceStyle = [v7 userInterfaceStyle];
 
-  if (v8 == 1)
+  if (userInterfaceStyle == 1)
   {
     v9 = @"Light";
   }
 
   else
   {
-    if (v8 != 2)
+    if (userInterfaceStyle != 2)
     {
       goto LABEL_15;
     }
@@ -957,47 +957,47 @@ LABEL_29:
 LABEL_37:
   if (CalInterfaceIsLeftToRight())
   {
-    v32 = v12;
+    imageFlippedForRightToLeftLayoutDirection = v12;
   }
 
   else
   {
-    v32 = [v12 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v12 imageFlippedForRightToLeftLayoutDirection];
   }
 
-  v33 = v32;
+  v33 = imageFlippedForRightToLeftLayoutDirection;
 
   return v33;
 }
 
-+ (id)_blendColor:(id)a3 withColor:(id)a4 alpha:(double)a5
++ (id)_blendColor:(id)color withColor:(id)withColor alpha:(double)alpha
 {
-  v7 = 1.0 - a5;
-  v8 = a4;
-  v9 = a3;
-  [v9 redComponent];
+  v7 = 1.0 - alpha;
+  withColorCopy = withColor;
+  colorCopy = color;
+  [colorCopy redComponent];
   v11 = v10;
-  [v8 redComponent];
-  v13 = v7 * v12 + a5 * v11;
-  [v9 greenComponent];
+  [withColorCopy redComponent];
+  v13 = v7 * v12 + alpha * v11;
+  [colorCopy greenComponent];
   v15 = v14;
-  [v8 greenComponent];
-  v17 = v7 * v16 + a5 * v15;
-  [v9 blueComponent];
+  [withColorCopy greenComponent];
+  v17 = v7 * v16 + alpha * v15;
+  [colorCopy blueComponent];
   v19 = v18;
 
-  [v8 blueComponent];
+  [withColorCopy blueComponent];
   v21 = v20;
 
-  return [UIColor colorWithRed:v13 green:v17 blue:v7 * v21 + a5 * v19 alpha:1.0];
+  return [UIColor colorWithRed:v13 green:v17 blue:v7 * v21 + alpha * v19 alpha:1.0];
 }
 
-- (void)_drawBackgroundInFrame:(CGRect)a3
+- (void)_drawBackgroundInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (self->_splitLeftEdge)
   {
     splitRightEdge = self->_splitRightEdge;
@@ -1064,9 +1064,9 @@ LABEL_37:
 LABEL_20:
   if ([(MonthViewOccurrence *)self _showBackground])
   {
-    v14 = [(MonthViewOccurrence *)self backgroundImage];
+    backgroundImage = [(MonthViewOccurrence *)self backgroundImage];
     [(MonthViewOccurrence *)self backgroundAlpha];
-    [v14 drawInRect:0 blendMode:x alpha:{y, width, height, v15}];
+    [backgroundImage drawInRect:0 blendMode:x alpha:{y, width, height, v15}];
   }
 
   if (v10)
@@ -1160,21 +1160,21 @@ LABEL_20:
 
     v43 = [UIBezierPath bezierPathWithRoundedRect:v24 cornerRadius:v31, v34, v38, v41];
     [v43 addClip];
-    v42 = [(MonthViewOccurrence *)self pillImage];
-    [v42 drawInRect:0 blendMode:v24 alpha:{v31, v34, v38, 1.0}];
+    pillImage = [(MonthViewOccurrence *)self pillImage];
+    [pillImage drawInRect:0 blendMode:v24 alpha:{v31, v34, v38, 1.0}];
 
     CGContextRestoreGState(CurrentContext);
   }
 }
 
-- (double)lineHeightAdjustmentOffsetY:(id)a3
+- (double)lineHeightAdjustmentOffsetY:(id)y
 {
   font = self->_font;
-  v4 = a3;
+  yCopy = y;
   [(UIFont *)font ascender];
   CalCeilToScreenScale();
   v6 = v5;
-  [v4 ascender];
+  [yCopy ascender];
 
   CalCeilToScreenScale();
   return v6 - v7;
@@ -1190,10 +1190,10 @@ LABEL_20:
   return result;
 }
 
-- (UIEdgeInsets)_backgroundInsetsIgnoringSplitEdges:(BOOL)a3
+- (UIEdgeInsets)_backgroundInsetsIgnoringSplitEdges:(BOOL)edges
 {
   bottom = UIEdgeInsetsZero.bottom;
-  if (a3)
+  if (edges)
   {
     if (self->_compact)
     {
@@ -1285,13 +1285,13 @@ LABEL_20:
   return result;
 }
 
-- (CGPoint)_offsetForDotInFrame:(CGRect)a3 withDot:(id)a4
+- (CGPoint)_offsetForDotInFrame:(CGRect)frame withDot:(id)dot
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  dotCopy = dot;
   IsLeftToRight = CalInterfaceIsLeftToRight();
   [(MonthViewOccurrence *)self backgroundInsets];
   if (IsLeftToRight)
@@ -1304,7 +1304,7 @@ LABEL_20:
     v13 = v12;
   }
 
-  [v9 size];
+  [dotCopy size];
   v15 = v14;
   if ((CalInterfaceIsLeftToRight() & 1) == 0)
   {
@@ -1313,7 +1313,7 @@ LABEL_20:
     v21.size.width = width;
     v21.size.height = height;
     v16 = CGRectGetWidth(v21);
-    [v9 size];
+    [dotCopy size];
     v13 = v16 - v17 - v13;
   }
 
@@ -1324,9 +1324,9 @@ LABEL_20:
   return result;
 }
 
-- (CGPoint)_pointForDotInFrame:(CGRect)a3 withDot:(id)a4
+- (CGPoint)_pointForDotInFrame:(CGRect)frame withDot:(id)dot
 {
-  [(MonthViewOccurrence *)self _offsetForDotInFrame:a4 withDot:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MonthViewOccurrence *)self _offsetForDotInFrame:dot withDot:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   CalRoundPointToScreenScale();
   result.y = v5;
@@ -1455,23 +1455,23 @@ LABEL_20:
   return result;
 }
 
-- (id)_timeString:(id)a3
+- (id)_timeString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 date];
+  stringCopy = string;
+  date = [stringCopy date];
   v5 = +[NSTimeZone calendarTimeZone];
-  v6 = [EKCalendarDate calendarDateWithDate:v4 timeZone:v5];
+  v6 = [EKCalendarDate calendarDateWithDate:date timeZone:v5];
 
   if ((CUIKShow24Hours() & 1) != 0 || [v6 hour] != 12 || objc_msgSend(v6, "minute"))
   {
-    v7 = [v3 date];
+    date2 = [stringCopy date];
     v8 = CUIKStringForTime();
   }
 
   else
   {
-    v7 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [v7 localizedStringForKey:@"Noon" value:&stru_1002133B8 table:0];
+    date2 = [NSBundle bundleForClass:objc_opt_class()];
+    v8 = [date2 localizedStringForKey:@"Noon" value:&stru_1002133B8 table:0];
   }
 
   v9 = v8;
@@ -1479,18 +1479,18 @@ LABEL_20:
   return v9;
 }
 
-- (double)widthDrawingTime:(id)a3 textRect:(CGRect)a4
+- (double)widthDrawingTime:(id)time textRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(MonthViewOccurrence *)self _timeColor];
-  [v10 set];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  timeCopy = time;
+  _timeColor = [(MonthViewOccurrence *)self _timeColor];
+  [_timeColor set];
 
-  v11 = [(MonthViewOccurrence *)self hourFont];
-  [(MonthViewOccurrence *)self lineHeightAdjustmentOffsetY:v11];
+  hourFont = [(MonthViewOccurrence *)self hourFont];
+  [(MonthViewOccurrence *)self lineHeightAdjustmentOffsetY:hourFont];
   CalRoundToScreenScale();
   v13 = v12;
   CalCeilToScreenScale();
@@ -1505,7 +1505,7 @@ LABEL_20:
     v16 = 0;
   }
 
-  [v9 _legacy_drawInRect:v11 withFont:2 lineBreakMode:v16 alignment:{x, v13, width, v15}];
+  [timeCopy _legacy_drawInRect:hourFont withFont:2 lineBreakMode:v16 alignment:{x, v13, width, v15}];
   v18 = v17;
 
   v19 = x;
@@ -1530,8 +1530,8 @@ LABEL_20:
     v26.size.width = v18;
     v26.size.height = v15;
     CGRectGetMaxX(v26);
-    v20 = [(MonthViewOccurrence *)self _strikeColor];
-    [v20 set];
+    _strikeColor = [(MonthViewOccurrence *)self _strikeColor];
+    [_strikeColor set];
 
     v27.origin.x = x;
     v27.origin.y = y;
@@ -1548,12 +1548,12 @@ LABEL_20:
   return v22;
 }
 
-- (void)setDrawsTimeString:(BOOL)a3
+- (void)setDrawsTimeString:(BOOL)string
 {
   v3 = *(self + 72);
-  if (((((v3 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 2) == 0) ^ string) & 1) == 0)
   {
-    if (a3)
+    if (string)
     {
       v4 = 2;
     }
@@ -1581,13 +1581,13 @@ LABEL_20:
   }
 }
 
-- (void)addFadeMaskForRect:(CGRect)a3 leftSide:(BOOL)a4 start:(double)a5 end:(double)a6 withContext:(CGContext *)a7
+- (void)addFadeMaskForRect:(CGRect)rect leftSide:(BOOL)side start:(double)start end:(double)end withContext:(CGContext *)context
 {
-  v8 = a4;
-  height = a3.size.height;
-  endPoint = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  sideCopy = side;
+  height = rect.size.height;
+  endPoint = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   DeviceGray = CGColorSpaceCreateDeviceGray();
   v13 = CGBitmapContextCreate(0, endPoint, height, 8uLL, 0, DeviceGray, 0);
   v14 = [UIColor colorWithWhite:1.0 alpha:1.0];
@@ -1598,15 +1598,15 @@ LABEL_20:
   v38[3] = [v15 CGColor];
   v16 = [NSArray arrayWithObjects:v38 count:4];
   locations = 0.0;
-  v17.f64[0] = a5;
-  v17.f64[1] = a6;
+  v17.f64[0] = start;
+  v17.f64[1] = end;
   v18 = vdivq_f64(v17, vdupq_lane_s64(*&endPoint, 0));
   __asm { FMOV            V1.2D, #1.0 }
 
   v36 = vsubq_f64(_Q1, v18);
   v37 = 0x3FF0000000000000;
   v24 = CGGradientCreateWithColors(DeviceGray, v16, &locations);
-  if (v8)
+  if (sideCopy)
   {
     v25 = CGPointZero.x;
     v26 = CGPointZero.y;
@@ -1631,24 +1631,24 @@ LABEL_20:
   CGColorSpaceRelease(DeviceGray);
   Image = CGBitmapContextCreateImage(v13);
   CGContextRelease(v13);
-  CGContextSaveGState(a7);
+  CGContextSaveGState(context);
   v39.origin.x = x;
   v39.origin.y = y;
   v39.size.width = endPoint;
   v39.size.height = height;
-  CGContextClipToMask(a7, v39, Image);
+  CGContextClipToMask(context, v39, Image);
   CGImageRelease(Image);
 }
 
-- (void)_drawString:(id)a3 inTextRect:(CGRect)a4 withTrailingFade:(BOOL)a5
+- (void)_drawString:(id)string inTextRect:(CGRect)rect withTrailingFade:(BOOL)fade
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a3;
-  [v18 boundingRectWithSize:1 options:0 context:{1.79769313e308, height}];
+  fadeCopy = fade;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  stringCopy = string;
+  [stringCopy boundingRectWithSize:1 options:0 context:{1.79769313e308, height}];
   v12 = v11;
   v13 = self->_occFrame.origin.y;
   v14 = self->_occFrame.size.height;
@@ -1662,32 +1662,32 @@ LABEL_20:
     v15 = x + width - v12;
   }
 
-  if (v5 && v12 > width || [(MonthViewOccurrence *)self fadeLeftEdge])
+  if (fadeCopy && v12 > width || [(MonthViewOccurrence *)self fadeLeftEdge])
   {
     CurrentContext = UIGraphicsGetCurrentContext();
     [(MonthViewOccurrence *)self addFadeMaskForRect:CalInterfaceIsLeftToRight() ^ 1 leftSide:CurrentContext start:x end:v13 withContext:width, v14, 14.0, 2.0];
-    [v18 drawAtPoint:{v15, y}];
+    [stringCopy drawAtPoint:{v15, y}];
     CGContextRestoreGState(CurrentContext);
   }
 
   else if (self->_compact)
   {
-    [v18 drawAtPoint:{v15, y}];
+    [stringCopy drawAtPoint:{v15, y}];
   }
 
   else
   {
-    [v18 size];
-    [v18 drawInRect:{x, v13 + v14 * 0.5 - v17 * 0.5, width, v14}];
+    [stringCopy size];
+    [stringCopy drawInRect:{x, v13 + v14 * 0.5 - v17 * 0.5, width, v14}];
   }
 }
 
-- (CGRect)textFrameForFrame:(CGRect)a3
+- (CGRect)textFrameForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (self->_compact)
   {
     +[MonthViewOccurrence occurrenceHeight];
@@ -1704,8 +1704,8 @@ LABEL_20:
   v15 = v14;
   if ([(EKEvent *)self->_occurrence isAllDay]|| (v19 = v9 + v13, self->_compact) && ![(MonthViewOccurrence *)self textWraps])
   {
-    v16 = [(MonthViewOccurrence *)self attributedTitle];
-    [v16 size];
+    attributedTitle = [(MonthViewOccurrence *)self attributedTitle];
+    [attributedTitle size];
 
     CalRoundToScreenScale();
     v9 = v17;
@@ -1750,12 +1750,12 @@ LABEL_20:
   return result;
 }
 
-- (CGRect)timeFrameForFrame:(CGRect)a3
+- (CGRect)timeFrameForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MonthViewOccurrence *)self _textInsets];
   v8 = x + v7;
   v11 = width - (v7 + v10);
@@ -1774,21 +1774,21 @@ LABEL_20:
   return result;
 }
 
-- (void)_drawInFrame:(CGRect)a3 traitCollection:(id)a4
+- (void)_drawInFrame:(CGRect)frame traitCollection:(id)collection
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  collectionCopy = collection;
   [(MonthViewOccurrence *)self _updateOccurrenceWithForce:0];
   v10 = +[UITraitCollection currentTraitCollection];
-  [UITraitCollection setCurrentTraitCollection:v9];
-  v11 = [v9 userInterfaceStyle];
-  if (v11 != self->_lastUserInterfaceStyle)
+  [UITraitCollection setCurrentTraitCollection:collectionCopy];
+  userInterfaceStyle = [collectionCopy userInterfaceStyle];
+  if (userInterfaceStyle != self->_lastUserInterfaceStyle)
   {
-    self->_lastUserInterfaceStyle = v11;
-    [(MonthViewOccurrence *)self _updateColorsForUserInterfaceStyle:v11];
+    self->_lastUserInterfaceStyle = userInterfaceStyle;
+    [(MonthViewOccurrence *)self _updateColorsForUserInterfaceStyle:userInterfaceStyle];
     [(MonthViewOccurrence *)self _updateDotImage];
   }
 
@@ -1815,8 +1815,8 @@ LABEL_20:
 
   [(MonthViewOccurrence *)self backgroundInsets];
   [(MonthViewOccurrence *)self _drawBackgroundInFrame:x + v17, y + v14, width - (v17 + v15), height - (v14 + v16)];
-  v18 = [(MonthViewOccurrence *)self isNarrow];
-  v19 = v18;
+  isNarrow = [(MonthViewOccurrence *)self isNarrow];
+  v19 = isNarrow;
   dotImage = self->_dotImage;
   if (!dotImage)
   {
@@ -1825,13 +1825,13 @@ LABEL_20:
 
   if (*(self + 56))
   {
-    if ((self->_splitLeftEdge | v18))
+    if ((self->_splitLeftEdge | isNarrow))
     {
       goto LABEL_18;
     }
   }
 
-  else if (v18)
+  else if (isNarrow)
   {
     goto LABEL_34;
   }
@@ -1851,8 +1851,8 @@ LABEL_18:
       v54 = v28;
       if (self->_endTimeString)
       {
-        v29 = [(MonthViewOccurrence *)self endTimeString];
-        [(MonthViewOccurrence *)self widthDrawingTime:v29 textRect:v22, v24, v26, v28];
+        endTimeString = [(MonthViewOccurrence *)self endTimeString];
+        [(MonthViewOccurrence *)self widthDrawingTime:endTimeString textRect:v22, v24, v26, v28];
         v31 = v30;
 
         v26 = v26 - v31;
@@ -1874,14 +1874,14 @@ LABEL_18:
           v39 = v38;
           [EKUILargeTextUtilities contentSizeCategoryScaledValueForDefaultValue:0 shouldScaleForSmallerSizes:1.0];
           v41 = v35 + v40;
-          v42 = [(MonthViewOccurrence *)self attributedTime];
-          [(MonthViewOccurrence *)self _drawString:v42 inTextRect:1 withTrailingFade:v33, v41, v37, v39];
+          attributedTime = [(MonthViewOccurrence *)self attributedTime];
+          [(MonthViewOccurrence *)self _drawString:attributedTime inTextRect:1 withTrailingFade:v33, v41, v37, v39];
         }
 
         else
         {
-          v43 = [(MonthViewOccurrence *)self timeString];
-          [(MonthViewOccurrence *)self widthDrawingTime:v43 textRect:v22, v24, v26, v54];
+          timeString = [(MonthViewOccurrence *)self timeString];
+          [(MonthViewOccurrence *)self widthDrawingTime:timeString textRect:v22, v24, v26, v54];
           v45 = v44;
 
           v26 = v26 - v45;
@@ -1898,15 +1898,15 @@ LABEL_18:
       }
     }
 
-    v46 = [(MonthViewOccurrence *)self attributedTitle];
+    attributedTitle = [(MonthViewOccurrence *)self attributedTitle];
     if ([(MonthViewOccurrence *)self textWraps])
     {
-      [v46 drawWithRect:33 options:0 context:{v22, v24, v26, v28}];
+      [attributedTitle drawWithRect:33 options:0 context:{v22, v24, v26, v28}];
     }
 
     else
     {
-      [(MonthViewOccurrence *)self _drawString:v46 inTextRect:self->_compact withTrailingFade:v22, v24, v26, v28];
+      [(MonthViewOccurrence *)self _drawString:attributedTitle inTextRect:self->_compact withTrailingFade:v22, v24, v26, v28];
     }
   }
 
@@ -1935,7 +1935,7 @@ LABEL_34:
 
           v53 = *(*(&v55 + 1) + 8 * i);
           [v53 occFrame];
-          [v53 _drawInFrame:v9 traitCollection:?];
+          [v53 _drawInFrame:collectionCopy traitCollection:?];
         }
 
         v50 = [(NSMutableArray *)v48 countByEnumeratingWithState:&v55 objects:v59 count:16];
@@ -1953,17 +1953,17 @@ LABEL_34:
   [UITraitCollection setCurrentTraitCollection:v10];
 }
 
-- (void)_updateOccurrenceWithForce:(BOOL)a3
+- (void)_updateOccurrenceWithForce:(BOOL)force
 {
-  v5 = [(MonthViewOccurrence *)self occurrence];
-  if (v5 && (a3 || !self->_updateOccurrenceHasBeenCalled))
+  occurrence = [(MonthViewOccurrence *)self occurrence];
+  if (occurrence && (force || !self->_updateOccurrenceHasBeenCalled))
   {
-    v11 = v5;
+    v11 = occurrence;
     [(MonthViewOccurrence *)self _updateOccurrenceBackgroundParameters];
     [(MonthViewOccurrence *)self _updateColorsForUserInterfaceStyle:self->_lastUserInterfaceStyle];
     [(MonthViewOccurrence *)self _updateDotImage];
-    v6 = [(EKEvent *)self->_occurrence title];
-    if (v6)
+    title = [(EKEvent *)self->_occurrence title];
+    if (title)
     {
       v7 = CUIKDisplayedTitleForEvent();
       occurrenceString = self->_occurrenceString;
@@ -1982,7 +1982,7 @@ LABEL_34:
     [(MonthViewOccurrence *)self _updateSubviewsIfNeeded];
     self->_updateOccurrenceHasBeenCalled = 1;
 
-    v5 = v11;
+    occurrence = v11;
   }
 }
 
@@ -1992,8 +1992,8 @@ LABEL_34:
   {
     if ([(MonthViewOccurrence *)self _showBackground])
     {
-      v3 = [(MonthViewOccurrence *)self backgroundImage];
-      [(UIImageView *)self->_backgroundImageView setImage:v3];
+      backgroundImage = [(MonthViewOccurrence *)self backgroundImage];
+      [(UIImageView *)self->_backgroundImageView setImage:backgroundImage];
     }
 
     else
@@ -2002,23 +2002,23 @@ LABEL_34:
     }
 
     [(UIImageView *)self->_backgroundImageView setClipsToBounds:1];
-    v4 = [(MonthViewOccurrence *)self backGroundCornerMask];
-    v5 = [(UIImageView *)self->_backgroundImageView layer];
-    [v5 setMaskedCorners:v4];
+    backGroundCornerMask = [(MonthViewOccurrence *)self backGroundCornerMask];
+    layer = [(UIImageView *)self->_backgroundImageView layer];
+    [layer setMaskedCorners:backGroundCornerMask];
 
     [(MonthViewOccurrence *)self backgroundAlpha];
     [(UIImageView *)self->_backgroundImageView setAlpha:?];
     [(MonthViewOccurrence *)self _updateDotImageView];
-    v6 = [(MonthViewOccurrence *)self attributedTitleForLabel];
-    [(TrailingFadeLabel *)self->_titleLabel setAttributedText:v6];
+    attributedTitleForLabel = [(MonthViewOccurrence *)self attributedTitleForLabel];
+    [(TrailingFadeLabel *)self->_titleLabel setAttributedText:attributedTitleForLabel];
 
-    v7 = [(MonthViewOccurrence *)self attributedTitleForWrappingLabel];
-    [(UILabel *)self->_wrappingTitleLabel setAttributedText:v7];
+    attributedTitleForWrappingLabel = [(MonthViewOccurrence *)self attributedTitleForWrappingLabel];
+    [(UILabel *)self->_wrappingTitleLabel setAttributedText:attributedTitleForWrappingLabel];
 
     if (self->_timeString)
     {
-      v8 = [(MonthViewOccurrence *)self attributedTime];
-      [(UILabel *)self->_timeLabel setAttributedText:v8];
+      attributedTime = [(MonthViewOccurrence *)self attributedTime];
+      [(UILabel *)self->_timeLabel setAttributedText:attributedTime];
     }
   }
 }
@@ -2048,45 +2048,45 @@ LABEL_34:
 
 - (BOOL)isNarrow
 {
-  v3 = [(MonthViewOccurrence *)self compact];
-  if (v3)
+  compact = [(MonthViewOccurrence *)self compact];
+  if (compact)
   {
     height = self->_occFrame.size.height;
     +[MonthViewOccurrence occurrenceHeight];
-    LOBYTE(v3) = height < v5;
+    LOBYTE(compact) = height < v5;
   }
 
-  return v3;
+  return compact;
 }
 
 - (BOOL)textWraps
 {
-  v3 = [(MonthViewOccurrence *)self compact];
-  if (v3)
+  compact = [(MonthViewOccurrence *)self compact];
+  if (compact)
   {
     height = self->_occFrame.size.height;
     +[MonthViewOccurrence occurrenceHeight];
-    LOBYTE(v3) = height > v5 + v5;
+    LOBYTE(compact) = height > v5 + v5;
   }
 
-  return v3;
+  return compact;
 }
 
 - (BOOL)drawsTimeAtBottom
 {
-  v3 = [(MonthViewOccurrence *)self compact];
-  if (v3)
+  compact = [(MonthViewOccurrence *)self compact];
+  if (compact)
   {
-    v3 = [(MonthViewOccurrence *)self textWraps];
-    if (v3)
+    compact = [(MonthViewOccurrence *)self textWraps];
+    if (compact)
     {
       height = self->_occFrame.size.height;
       +[MonthViewOccurrence occurrenceHeight];
-      LOBYTE(v3) = height > v5 * 2.5;
+      LOBYTE(compact) = height > v5 * 2.5;
     }
   }
 
-  return v3;
+  return compact;
 }
 
 - (double)radius
@@ -2107,9 +2107,9 @@ LABEL_34:
   [(MonthViewOccurrence *)self frame];
   if (v3 != 0.0)
   {
-    v4 = [(MonthViewOccurrence *)self occurrence];
+    occurrence = [(MonthViewOccurrence *)self occurrence];
 
-    if (v4)
+    if (occurrence)
     {
       p_wrappingTitleLabel = &self->_wrappingTitleLabel;
       [(UILabel *)self->_wrappingTitleLabel alpha];
@@ -2140,9 +2140,9 @@ LABEL_34:
 
         v11 = 0.0;
         [*p_titleLabel setAlpha:0.0];
-        v14 = [(MonthViewOccurrence *)self drawsTimeAtBottom];
+        drawsTimeAtBottom = [(MonthViewOccurrence *)self drawsTimeAtBottom];
         p_timeLabel = &self->_timeLabel;
-        if (v14)
+        if (drawsTimeAtBottom)
         {
           v11 = 1.0;
         }
@@ -2167,8 +2167,8 @@ LABEL_34:
       [(UIImageView *)self->_backgroundImageView setFrame:v16, 0.0, v20];
       [(MonthViewOccurrence *)self radius];
       v22 = v21;
-      v23 = [(UIImageView *)self->_backgroundImageView layer];
-      [v23 setCornerRadius:v22];
+      layer = [(UIImageView *)self->_backgroundImageView layer];
+      [layer setCornerRadius:v22];
 
       [(MonthViewOccurrence *)self bounds];
       [(UIView *)self->_backgroundView setFrame:?];
@@ -2182,9 +2182,9 @@ LABEL_34:
       [(UIImageView *)self->_dotImageView setCenter:v29, v27 + v30 * 0.5];
       v31 = (*(self + 56) & 1) != 0 && self->_splitLeftEdge;
       [(UIImageView *)self->_dotImageView setHidden:v31];
-      v32 = [(MonthViewOccurrence *)self occurrenceString];
+      occurrenceString = [(MonthViewOccurrence *)self occurrenceString];
 
-      if (v32)
+      if (occurrenceString)
       {
         [(MonthViewOccurrence *)self bounds];
         [(MonthViewOccurrence *)self textFrameForFrame:?];
@@ -2334,8 +2334,8 @@ LABEL_34:
     gradientLayer = 0;
   }
 
-  v4 = [(MonthViewOccurrence *)self layer];
-  [v4 setMask:gradientLayer];
+  layer = [(MonthViewOccurrence *)self layer];
+  [layer setMask:gradientLayer];
 }
 
 - (unint64_t)backGroundCornerMask
@@ -2385,15 +2385,15 @@ LABEL_8:
   result = 1.0;
   if ((*(self + 72) & 1) == 0)
   {
-    v4 = [(MonthViewOccurrence *)self isNarrow];
+    isNarrow = [(MonthViewOccurrence *)self isNarrow];
     result = 0.25;
-    if (v4)
+    if (isNarrow)
     {
-      v5 = [(MonthViewOccurrence *)self traitCollection];
-      v6 = [v5 userInterfaceStyle];
+      traitCollection = [(MonthViewOccurrence *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
       result = 0.699999988;
-      if (v6 != 2)
+      if (userInterfaceStyle != 2)
       {
         return 0.5;
       }
@@ -2403,13 +2403,13 @@ LABEL_8:
   return result;
 }
 
-- (void)setDrawBackgroundWithLayer:(BOOL)a3
+- (void)setDrawBackgroundWithLayer:(BOOL)layer
 {
-  if (self->_drawBackgroundWithLayer != a3)
+  if (self->_drawBackgroundWithLayer != layer)
   {
-    v4 = a3;
-    self->_drawBackgroundWithLayer = a3;
-    if (a3)
+    layerCopy = layer;
+    self->_drawBackgroundWithLayer = layer;
+    if (layer)
     {
       v6 = objc_opt_new();
       backgroundView = self->_backgroundView;
@@ -2427,44 +2427,44 @@ LABEL_8:
 
     v9 = *p_backgroundImageView;
 
-    [(UIImageView *)v9 setHidden:v4];
+    [(UIImageView *)v9 setHidden:layerCopy];
   }
 }
 
-- (void)updateBackgroundWithEdgeInsets:(UIEdgeInsets)a3 color:(id)a4 alpha:(double)a5 cornerMask:(unint64_t)a6
+- (void)updateBackgroundWithEdgeInsets:(UIEdgeInsets)insets color:(id)color alpha:(double)alpha cornerMask:(unint64_t)mask
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v13 = a4;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  colorCopy = color;
   [(MonthViewOccurrence *)self bounds];
   [(UIView *)self->_backgroundView setFrame:left + v14, top + v15, v16 - (left + right), v17 - (top + bottom)];
-  [(UIView *)self->_backgroundView setBackgroundColor:v13];
+  [(UIView *)self->_backgroundView setBackgroundColor:colorCopy];
 
-  [(UIView *)self->_backgroundView setAlpha:a5];
+  [(UIView *)self->_backgroundView setAlpha:alpha];
   [(UIView *)self->_backgroundView setClipsToBounds:1];
-  v18 = [(UIView *)self->_backgroundView layer];
-  [v18 setMaskedCorners:a6];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setMaskedCorners:mask];
 
   [(MonthViewOccurrence *)self radius];
   v20 = v19;
-  v21 = [(UIView *)self->_backgroundView layer];
-  [v21 setCornerRadius:v20];
+  layer2 = [(UIView *)self->_backgroundView layer];
+  [layer2 setCornerRadius:v20];
 }
 
 - (void)_updateOccurrenceBackgroundParameters
 {
-  v3 = [(MonthViewOccurrence *)self occurrence];
+  occurrence = [(MonthViewOccurrence *)self occurrence];
   self->_invitationType = 0;
-  v7 = v3;
+  v7 = occurrence;
   v4 = CUIKEventParticipantStatusForDisplay();
   if ((v4 - 1) >= 3)
   {
-    v5 = [(MonthViewOccurrence *)self occurrence];
-    v6 = [v5 status];
+    occurrence2 = [(MonthViewOccurrence *)self occurrence];
+    status = [occurrence2 status];
 
-    if (v6 != 3)
+    if (status != 3)
     {
       goto LABEL_5;
     }
@@ -2491,14 +2491,14 @@ LABEL_5:
 
   else
   {
-    v4 = [(MonthViewOccurrence *)self occurrence];
-    v5 = [v4 image];
+    occurrence = [(MonthViewOccurrence *)self occurrence];
+    image = [occurrence image];
 
-    if (v5 && [v5 type] == 1)
+    if (image && [image type] == 1)
     {
       v6 = +[CUIKSemiConstantCache sharedInstance];
-      v7 = [v5 name];
-      v8 = [v6 symbolImage:v7 forFont:self->_font];
+      name = [image name];
+      v8 = [v6 symbolImage:name forFont:self->_font];
       v9 = self->_dotImage;
       self->_dotImage = v8;
 
@@ -2512,9 +2512,9 @@ LABEL_5:
     else
     {
       v14 = *(self + 56);
-      v15 = [(MonthViewOccurrence *)self occurrence];
-      v16 = [(MonthViewOccurrence *)self occurrence];
-      v17 = [v15 CUIK_symbolName:{objc_msgSend(v16, "isAllDay")}];
+      occurrence2 = [(MonthViewOccurrence *)self occurrence];
+      occurrence3 = [(MonthViewOccurrence *)self occurrence];
+      v17 = [occurrence2 CUIK_symbolName:{objc_msgSend(occurrence3, "isAllDay")}];
 
       if ((v14 & 8) != 0)
       {
@@ -2526,16 +2526,16 @@ LABEL_5:
         else
         {
           v24 = *(self + 56);
-          v25 = [(MonthViewOccurrence *)self occurrence];
-          v26 = v25;
+          occurrence4 = [(MonthViewOccurrence *)self occurrence];
+          v26 = occurrence4;
           if ((v24 & 0x20) != 0)
           {
-            [v25 CUIK_symbolColor];
+            [occurrence4 CUIK_symbolColor];
           }
 
           else
           {
-            [v25 CUIK_disabledSymbolColor];
+            [occurrence4 CUIK_disabledSymbolColor];
           }
           v28 = ;
         }
@@ -2553,18 +2553,18 @@ LABEL_5:
 
       else if (v17 && self->_color)
       {
-        v18 = [(MonthViewOccurrence *)self occurrence];
-        [v18 status];
+        occurrence5 = [(MonthViewOccurrence *)self occurrence];
+        [occurrence5 status];
 
-        v19 = [(MonthViewOccurrence *)self occurrence];
+        occurrence6 = [(MonthViewOccurrence *)self occurrence];
         CUIKEventDisplaysAsDeclined();
 
-        v20 = [(MonthViewOccurrence *)self traitCollection];
-        [v20 userInterfaceStyle];
-        v21 = [(MonthViewOccurrence *)self occurrence];
-        [v21 needsResponse];
-        v22 = [(MonthViewOccurrence *)self occurrence];
-        [v22 isReminderIntegrationEvent];
+        traitCollection = [(MonthViewOccurrence *)self traitCollection];
+        [traitCollection userInterfaceStyle];
+        occurrence7 = [(MonthViewOccurrence *)self occurrence];
+        [occurrence7 needsResponse];
+        occurrence8 = [(MonthViewOccurrence *)self occurrence];
+        [occurrence8 isReminderIntegrationEvent];
         v23 = CUIKColorBarColor();
 
         if (*(self + 72))
@@ -2619,7 +2619,7 @@ LABEL_5:
 
   if ([(MonthViewOccurrence *)self isSingleDay])
   {
-    v11 = [(EKEvent *)self->_occurrence startCalendarDate];
+    startCalendarDate = [(EKEvent *)self->_occurrence startCalendarDate];
     v5 = [(MonthViewOccurrence *)self _timeString:?];
     v6 = self->_timeString;
     self->_timeString = v5;
@@ -2632,22 +2632,22 @@ LABEL_5:
       return;
     }
 
-    v11 = [NSBundle bundleForClass:objc_opt_class()];
-    v6 = [v11 localizedStringForKey:@"ends %@" value:&stru_1002133B8 table:0];
-    v7 = [(EKEvent *)self->_occurrence endCalendarDate];
-    v8 = [(MonthViewOccurrence *)self _timeString:v7];
+    startCalendarDate = [NSBundle bundleForClass:objc_opt_class()];
+    v6 = [startCalendarDate localizedStringForKey:@"ends %@" value:&stru_1002133B8 table:0];
+    endCalendarDate = [(EKEvent *)self->_occurrence endCalendarDate];
+    v8 = [(MonthViewOccurrence *)self _timeString:endCalendarDate];
     v9 = [NSString localizedStringWithFormat:v6, v8];
     v10 = self->_endTimeString;
     self->_endTimeString = v9;
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4 = *(self + 72);
-  if ((v4 & 1) != a3)
+  if ((v4 & 1) != selected)
   {
-    *(self + 72) = v4 & 0xFE | a3;
+    *(self + 72) = v4 & 0xFE | selected;
     [(MonthViewOccurrence *)self _updateColorsForUserInterfaceStyle:self->_lastUserInterfaceStyle];
 
     [(MonthViewOccurrence *)self _updateDotImage];
@@ -2664,12 +2664,12 @@ LABEL_5:
   }
 
   v4 = objc_loadWeakRetained(&self->_parent);
-  v5 = [v4 selected];
+  selected = [v4 selected];
 
-  return v5;
+  return selected;
 }
 
-- (void)_updateColorsForUserInterfaceStyle:(int64_t)a3
+- (void)_updateColorsForUserInterfaceStyle:(int64_t)style
 {
   v4 = self->_occurrence;
   v8 = v4;
@@ -2687,14 +2687,14 @@ LABEL_8:
   {
     if ((*(self + 56) & 8) != 0)
     {
-      v5 = CUIKIntegrationEventBackgroundColor();
+      calendar = CUIKIntegrationEventBackgroundColor();
       v7 = CUIKAdjustedColorForColor();
     }
 
     else
     {
-      v5 = [(EKEvent *)v4 calendar];
-      v6 = [v5 displayColor];
+      calendar = [(EKEvent *)v4 calendar];
+      displayColor = [calendar displayColor];
       v7 = CUIKAdjustedColorForColor();
     }
 
@@ -2710,14 +2710,14 @@ LABEL_8:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_occFrame = &self->_occFrame;
-  if (!CGRectEqualToRect(a3, self->_occFrame))
+  if (!CGRectEqualToRect(frame, self->_occFrame))
   {
     v9 = p_occFrame->size.height;
     if (width == p_occFrame->size.width && height == v9)
@@ -2759,8 +2759,8 @@ LABEL_8:
             p_occFrame->origin.y = y;
             p_occFrame->size.width = width;
             p_occFrame->size.height = height;
-            v14 = [(MonthViewOccurrence *)self backgroundImage];
-            [(UIImageView *)self->_backgroundImageView setImage:v14];
+            backgroundImage = [(MonthViewOccurrence *)self backgroundImage];
+            [(UIImageView *)self->_backgroundImageView setImage:backgroundImage];
 
             [(MonthViewOccurrence *)self backgroundAlpha];
             [(UIImageView *)self->_backgroundImageView setAlpha:?];
@@ -2772,8 +2772,8 @@ LABEL_8:
       p_occFrame->origin.y = y;
       p_occFrame->size.width = width;
       p_occFrame->size.height = height;
-      v15 = [(MonthViewOccurrence *)self layer];
-      [v15 setFrame:{x, y, width, height}];
+      layer = [(MonthViewOccurrence *)self layer];
+      [layer setFrame:{x, y, width, height}];
 
       v16 = self->_glowLayer;
       [(MonthViewOccurrence *)self bounds];
@@ -2797,24 +2797,24 @@ LABEL_8:
   return result;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  self->_occAlpha = a3;
+  self->_occAlpha = alpha;
   v3.receiver = self;
   v3.super_class = MonthViewOccurrence;
   [(MonthViewOccurrence *)&v3 setAlpha:?];
 }
 
-- (void)setOccurrence:(id)a3
+- (void)setOccurrence:(id)occurrence
 {
-  v5 = a3;
-  if (self->_occurrence != v5)
+  occurrenceCopy = occurrence;
+  if (self->_occurrence != occurrenceCopy)
   {
-    v19 = v5;
-    objc_storeStrong(&self->_occurrence, a3);
+    v19 = occurrenceCopy;
+    objc_storeStrong(&self->_occurrence, occurrence);
     *(self + 56) = *(self + 56) & 0xFE | [(EKEvent *)v19 isAllDay];
-    v6 = [(EKEvent *)v19 calendar];
-    *(self + 56) = *(self + 56) & 0xFB | (4 * ([v6 type] == 4));
+    calendar = [(EKEvent *)v19 calendar];
+    *(self + 56) = *(self + 56) & 0xFB | (4 * ([calendar type] == 4));
 
     if ([(EKEvent *)v19 isReminderIntegrationEvent])
     {
@@ -2827,9 +2827,9 @@ LABEL_8:
     }
 
     *(self + 56) = *(self + 56) & 0xF7 | v7;
-    v8 = [(EKEvent *)v19 completed];
+    completed = [(EKEvent *)v19 completed];
     v9 = 0;
-    if (v8)
+    if (completed)
     {
       v10 = 16;
     }
@@ -2854,8 +2854,8 @@ LABEL_8:
     }
 
     *(self + 56) = *(self + 56) & 0xDF | v9;
-    v11 = [(EKEvent *)v19 calendar];
-    if ([v11 isHolidayCalendar])
+    calendar2 = [(EKEvent *)v19 calendar];
+    if ([calendar2 isHolidayCalendar])
     {
       v12 = 64;
     }
@@ -2867,17 +2867,17 @@ LABEL_8:
 
     *(self + 56) = *(self + 56) & 0xBF | v12;
 
-    v5 = v19;
+    occurrenceCopy = v19;
     if ((*(self + 56) & 4) == 0)
     {
-      v13 = [(EKEvent *)v19 calendar];
-      v14 = [v13 source];
-      v15 = [v14 appGroupIdentifier];
-      if ([v15 isEqualToString:EKSourceBirthdaysAppGroupID])
+      calendar3 = [(EKEvent *)v19 calendar];
+      source = [calendar3 source];
+      appGroupIdentifier = [source appGroupIdentifier];
+      if ([appGroupIdentifier isEqualToString:EKSourceBirthdaysAppGroupID])
       {
-        v16 = [(EKEvent *)v19 calendar];
-        v17 = [v16 externalID];
-        if ([v17 isEqualToString:EKBirthdayCalendarExternalIdentifier])
+        calendar4 = [(EKEvent *)v19 calendar];
+        externalID = [calendar4 externalID];
+        if ([externalID isEqualToString:EKBirthdayCalendarExternalIdentifier])
         {
           v18 = 4;
         }
@@ -2895,32 +2895,32 @@ LABEL_8:
         *(self + 56) &= ~4u;
       }
 
-      v5 = v19;
+      occurrenceCopy = v19;
     }
   }
 }
 
-- (void)setSplitLeftEdge:(BOOL)a3 splitRightEdge:(BOOL)a4
+- (void)setSplitLeftEdge:(BOOL)edge splitRightEdge:(BOOL)rightEdge
 {
   splitRightEdge = self->_splitRightEdge;
-  self->_splitLeftEdge = a3;
-  self->_splitRightEdge = a4;
-  if (splitRightEdge != a4)
+  self->_splitLeftEdge = edge;
+  self->_splitRightEdge = rightEdge;
+  if (splitRightEdge != rightEdge)
   {
     [(MonthViewOccurrence *)self _updateTimeStrings];
   }
 }
 
-- (unint64_t)gapBetweenBlock:(id)a3
+- (unint64_t)gapBetweenBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MonthViewOccurrence *)self startRange];
-  if (v5 <= [(MonthViewOccurrence *)v4 endRange])
+  blockCopy = block;
+  startRange = [(MonthViewOccurrence *)self startRange];
+  if (startRange <= [(MonthViewOccurrence *)blockCopy endRange])
   {
-    v7 = [(MonthViewOccurrence *)v4 startRange];
-    v8 = [(MonthViewOccurrence *)self endRange];
-    v6 = v4;
-    if (v7 <= v8)
+    startRange2 = [(MonthViewOccurrence *)blockCopy startRange];
+    endRange = [(MonthViewOccurrence *)self endRange];
+    selfCopy = blockCopy;
+    if (startRange2 <= endRange)
     {
       v10 = -1;
       goto LABEL_6;
@@ -2929,12 +2929,12 @@ LABEL_8:
 
   else
   {
-    v6 = self;
-    self = v4;
+    selfCopy = self;
+    self = blockCopy;
   }
 
-  v9 = [(MonthViewOccurrence *)v6 startRange];
-  v10 = v9 - [(MonthViewOccurrence *)self endRange];
+  startRange3 = [(MonthViewOccurrence *)selfCopy startRange];
+  v10 = startRange3 - [(MonthViewOccurrence *)self endRange];
 LABEL_6:
 
   return v10;
@@ -2942,36 +2942,36 @@ LABEL_6:
 
 - (double)startTime
 {
-  v2 = [(MonthViewOccurrence *)self occurrence];
-  v3 = [v2 startDate];
-  [v3 timeIntervalSinceReferenceDate];
+  occurrence = [(MonthViewOccurrence *)self occurrence];
+  startDate = [occurrence startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addSegmentWithFrame:(CGRect)a3 splitLeftEdge:(BOOL)a4 splitRightEdge:(BOOL)a5 fadeLeftEdge:(BOOL)a6 fadeRightEdge:(BOOL)a7
+- (void)addSegmentWithFrame:(CGRect)frame splitLeftEdge:(BOOL)edge splitRightEdge:(BOOL)rightEdge fadeLeftEdge:(BOOL)leftEdge fadeRightEdge:(BOOL)fadeRightEdge
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  fadeRightEdgeCopy = fadeRightEdge;
+  leftEdgeCopy = leftEdge;
+  rightEdgeCopy = rightEdge;
+  edgeCopy = edge;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (self->_subOccurrences)
   {
     v16 = [MonthViewOccurrence alloc];
-    v17 = [(MonthViewOccurrence *)self occurrence];
-    v20 = [(MonthViewOccurrence *)v16 initWithFrame:v17 occurrence:self->_dayRange.location forDayRange:self->_dayRange.length isCompact:[(MonthViewOccurrence *)self compact] isLargeCompact:[(MonthViewOccurrence *)self largeCompact] isMultiDay:(*(self + 56) >> 1) & 1, x, y, width, height];
+    occurrence = [(MonthViewOccurrence *)self occurrence];
+    height = [(MonthViewOccurrence *)v16 initWithFrame:occurrence occurrence:self->_dayRange.location forDayRange:self->_dayRange.length isCompact:[(MonthViewOccurrence *)self compact] isLargeCompact:[(MonthViewOccurrence *)self largeCompact] isMultiDay:(*(self + 56) >> 1) & 1, x, y, width, height];
 
-    [(MonthViewOccurrence *)v20 setParent:self];
-    [(MonthViewOccurrence *)v20 setHidden:[(MonthViewOccurrence *)self hidden]];
-    [(MonthViewOccurrence *)v20 setSplitLeftEdge:v10 splitRightEdge:v9];
-    [(MonthViewOccurrence *)v20 setFadeLeftEdge:v8];
-    [(MonthViewOccurrence *)v20 setFadeRightEdge:v7];
-    [(NSMutableArray *)self->_subOccurrences addObject:v20];
+    [(MonthViewOccurrence *)height setParent:self];
+    [(MonthViewOccurrence *)height setHidden:[(MonthViewOccurrence *)self hidden]];
+    [(MonthViewOccurrence *)height setSplitLeftEdge:edgeCopy splitRightEdge:rightEdgeCopy];
+    [(MonthViewOccurrence *)height setFadeLeftEdge:leftEdgeCopy];
+    [(MonthViewOccurrence *)height setFadeRightEdge:fadeRightEdgeCopy];
+    [(NSMutableArray *)self->_subOccurrences addObject:height];
   }
 
   else
@@ -2981,20 +2981,20 @@ LABEL_6:
     self->_subOccurrences = v18;
 
     [(MonthViewOccurrence *)self setFrame:x, y, width, height];
-    self->_splitLeftEdge = v10;
-    self->_splitRightEdge = v9;
-    [(MonthViewOccurrence *)self setFadeLeftEdge:v8];
+    self->_splitLeftEdge = edgeCopy;
+    self->_splitRightEdge = rightEdgeCopy;
+    [(MonthViewOccurrence *)self setFadeLeftEdge:leftEdgeCopy];
 
-    [(MonthViewOccurrence *)self setFadeRightEdge:v7];
+    [(MonthViewOccurrence *)self setFadeRightEdge:fadeRightEdgeCopy];
   }
 }
 
-- (CGRect)intersectingRect:(CGRect)a3
+- (CGRect)intersectingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(MonthViewOccurrence *)self frame];
   v45.origin.x = v8;
   v45.origin.y = v9;
@@ -3089,10 +3089,10 @@ LABEL_15:
   return result;
 }
 
-- (CGRect)isPointInView:(CGPoint)a3
+- (CGRect)isPointInView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = view.y;
+  x = view.x;
   [(MonthViewOccurrence *)self frame];
   v27 = x;
   v28 = y;
@@ -3179,14 +3179,14 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)isPointInSymbol:(CGPoint)a3
+- (BOOL)isPointInSymbol:(CGPoint)symbol
 {
   if (!self->_dotImage)
   {
     return 0;
   }
 
-  x = a3.x;
+  x = symbol.x;
   [(MonthViewOccurrence *)self _pointForDotInFrame:self->_occFrame.origin.x withDot:self->_occFrame.origin.y, self->_occFrame.size.width, self->_occFrame.size.height];
   v6 = v5;
   if (!CalInterfaceIsLeftToRight())

@@ -1,45 +1,45 @@
 @interface NSComparisonPredicate
-- (BOOL)getRightKeyPath:(id *)a3 orRightContstantValue:(id *)a4 error:(id *)a5;
-- (BOOL)pd_containsKeyPath:(id)a3;
-- (id)leftKeyPath:(id *)a3;
-- (id)pd_filterSubpredicatesForKeyPath:(id)a3;
-- (void)_populateKeypathValueMap:(id)a3;
+- (BOOL)getRightKeyPath:(id *)path orRightContstantValue:(id *)value error:(id *)error;
+- (BOOL)pd_containsKeyPath:(id)path;
+- (id)leftKeyPath:(id *)path;
+- (id)pd_filterSubpredicatesForKeyPath:(id)path;
+- (void)_populateKeypathValueMap:(id)map;
 @end
 
 @implementation NSComparisonPredicate
 
-- (id)leftKeyPath:(id *)a3
+- (id)leftKeyPath:(id *)path
 {
-  v5 = [(NSComparisonPredicate *)self leftExpression];
-  v6 = [v5 keyPath];
-  v7 = v6;
-  if (!v6 || [v6 containsString:@"."])
+  leftExpression = [(NSComparisonPredicate *)self leftExpression];
+  keyPath = [leftExpression keyPath];
+  v7 = keyPath;
+  if (!keyPath || [keyPath containsString:@"."])
   {
-    [NSError cls_assignError:a3 code:2 format:@"Expected simple key in left side of comparison expression: %@", self];
+    [NSError cls_assignError:path code:2 format:@"Expected simple key in left side of comparison expression: %@", self];
   }
 
   return v7;
 }
 
-- (BOOL)getRightKeyPath:(id *)a3 orRightContstantValue:(id *)a4 error:(id *)a5
+- (BOOL)getRightKeyPath:(id *)path orRightContstantValue:(id *)value error:(id *)error
 {
-  v9 = [(NSComparisonPredicate *)self rightExpression];
-  v10 = [v9 expressionType];
-  if (v10)
+  rightExpression = [(NSComparisonPredicate *)self rightExpression];
+  expressionType = [rightExpression expressionType];
+  if (expressionType)
   {
-    if (v10 == 3)
+    if (expressionType == 3)
     {
-      v11 = [v9 keyPath];
-      v12 = [v11 containsString:@"."];
+      keyPath = [rightExpression keyPath];
+      v12 = [keyPath containsString:@"."];
       if (v12)
       {
-        [NSError cls_assignError:a5 code:2 format:@"Expected constant values or simple keys in right side of comparison expression: %@", self];
+        [NSError cls_assignError:error code:2 format:@"Expected constant values or simple keys in right side of comparison expression: %@", self];
       }
 
-      else if (a3)
+      else if (path)
       {
-        v17 = v11;
-        *a3 = v11;
+        v17 = keyPath;
+        *path = keyPath;
       }
 
       v16 = v12 ^ 1;
@@ -47,27 +47,27 @@
 
     else
     {
-      [NSError cls_assignError:a5 code:2 format:@"Expected constant values or simple keys in right side of comparison expression: %@", self];
+      [NSError cls_assignError:error code:2 format:@"Expected constant values or simple keys in right side of comparison expression: %@", self];
       v16 = 0;
     }
   }
 
   else
   {
-    v13 = [v9 constantValue];
-    v14 = v13;
-    if (a4)
+    constantValue = [rightExpression constantValue];
+    v14 = constantValue;
+    if (value)
     {
-      if (v13)
+      if (constantValue)
       {
-        v15 = v13;
-        *a4 = v14;
+        v15 = constantValue;
+        *value = v14;
       }
 
       else
       {
         v18 = +[NSNull null];
-        *a4 = v18;
+        *value = v18;
       }
     }
 
@@ -77,41 +77,41 @@
   return v16;
 }
 
-- (void)_populateKeypathValueMap:(id)a3
+- (void)_populateKeypathValueMap:(id)map
 {
-  v8 = a3;
-  v4 = [(NSComparisonPredicate *)self leftExpression];
-  v5 = [(NSComparisonPredicate *)self rightExpression];
-  if (![v5 expressionType] || objc_msgSend(v4, "expressionType") == 3)
+  mapCopy = map;
+  leftExpression = [(NSComparisonPredicate *)self leftExpression];
+  rightExpression = [(NSComparisonPredicate *)self rightExpression];
+  if (![rightExpression expressionType] || objc_msgSend(leftExpression, "expressionType") == 3)
   {
-    v6 = [v5 constantValue];
-    v7 = [v4 keyPath];
-    [v8 setObject:v6 forKey:v7];
+    constantValue = [rightExpression constantValue];
+    keyPath = [leftExpression keyPath];
+    [mapCopy setObject:constantValue forKey:keyPath];
   }
 }
 
-- (id)pd_filterSubpredicatesForKeyPath:(id)a3
+- (id)pd_filterSubpredicatesForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSComparisonPredicate *)self leftExpression];
-  if ([v5 expressionType] == 3)
+  pathCopy = path;
+  leftExpression = [(NSComparisonPredicate *)self leftExpression];
+  if ([leftExpression expressionType] == 3)
   {
-    v6 = [v5 keyPath];
-    if (!(v4 | v6))
+    keyPath = [leftExpression keyPath];
+    if (!(pathCopy | keyPath))
     {
 LABEL_3:
-      v7 = 0;
-      v8 = v5;
+      selfCopy = 0;
+      rightExpression = leftExpression;
       goto LABEL_18;
     }
 
-    v9 = v6;
-    v10 = [v5 keyPath];
-    v11 = v10;
-    if (v4 && v10)
+    v9 = keyPath;
+    keyPath2 = [leftExpression keyPath];
+    v11 = keyPath2;
+    if (pathCopy && keyPath2)
     {
-      v12 = [v5 keyPath];
-      v13 = [v12 isEqualToString:v4];
+      keyPath3 = [leftExpression keyPath];
+      v13 = [keyPath3 isEqualToString:pathCopy];
 
       if (v13)
       {
@@ -124,25 +124,25 @@ LABEL_3:
     }
   }
 
-  v8 = [(NSComparisonPredicate *)self rightExpression];
+  rightExpression = [(NSComparisonPredicate *)self rightExpression];
 
-  if ([v8 expressionType] == 3)
+  if ([rightExpression expressionType] == 3)
   {
-    v14 = [v8 keyPath];
-    if (!(v4 | v14))
+    keyPath4 = [rightExpression keyPath];
+    if (!(pathCopy | keyPath4))
     {
 LABEL_11:
-      v7 = 0;
+      selfCopy = 0;
       goto LABEL_18;
     }
 
-    v15 = v14;
-    v16 = [v8 keyPath];
-    v17 = v16;
-    if (v4 && v16)
+    v15 = keyPath4;
+    keyPath5 = [rightExpression keyPath];
+    v17 = keyPath5;
+    if (pathCopy && keyPath5)
     {
-      v18 = [v8 keyPath];
-      v19 = [v18 isEqualToString:v4];
+      keyPath6 = [rightExpression keyPath];
+      v19 = [keyPath6 isEqualToString:pathCopy];
 
       if (v19)
       {
@@ -155,34 +155,34 @@ LABEL_11:
     }
   }
 
-  v7 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)pd_containsKeyPath:(id)a3
+- (BOOL)pd_containsKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSComparisonPredicate *)self leftExpression];
-  if ([v5 expressionType] == 3)
+  pathCopy = path;
+  leftExpression = [(NSComparisonPredicate *)self leftExpression];
+  if ([leftExpression expressionType] == 3)
   {
-    v6 = [v5 keyPath];
-    if (!(v4 | v6))
+    keyPath = [leftExpression keyPath];
+    if (!(pathCopy | keyPath))
     {
 LABEL_3:
       v7 = 1;
-      v8 = v5;
+      rightExpression = leftExpression;
       goto LABEL_18;
     }
 
-    v9 = v6;
-    v10 = [v5 keyPath];
-    v11 = v10;
-    if (v4 && v10)
+    v9 = keyPath;
+    keyPath2 = [leftExpression keyPath];
+    v11 = keyPath2;
+    if (pathCopy && keyPath2)
     {
-      v12 = [v5 keyPath];
-      v13 = [v12 isEqualToString:v4];
+      keyPath3 = [leftExpression keyPath];
+      v13 = [keyPath3 isEqualToString:pathCopy];
 
       if (v13)
       {
@@ -195,20 +195,20 @@ LABEL_3:
     }
   }
 
-  v8 = [(NSComparisonPredicate *)self rightExpression];
+  rightExpression = [(NSComparisonPredicate *)self rightExpression];
 
-  if ([v8 expressionType] == 3)
+  if ([rightExpression expressionType] == 3)
   {
-    v14 = [v8 keyPath];
-    if (v4 | v14)
+    keyPath4 = [rightExpression keyPath];
+    if (pathCopy | keyPath4)
     {
-      v15 = [v8 keyPath];
-      v16 = v15;
+      keyPath5 = [rightExpression keyPath];
+      v16 = keyPath5;
       v7 = 0;
-      if (v4 && v15)
+      if (pathCopy && keyPath5)
       {
-        v17 = [v8 keyPath];
-        v7 = [v17 isEqualToString:v4];
+        keyPath6 = [rightExpression keyPath];
+        v7 = [keyPath6 isEqualToString:pathCopy];
       }
     }
 

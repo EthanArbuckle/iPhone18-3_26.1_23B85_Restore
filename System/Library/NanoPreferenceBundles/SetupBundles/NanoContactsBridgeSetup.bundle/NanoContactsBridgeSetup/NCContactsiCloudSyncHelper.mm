@@ -28,11 +28,11 @@
 - (BOOL)primaryiCloudAccountCardDAVEnabled
 {
   v2 = objc_opt_new();
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = v3;
-  if (v3)
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  v4 = aa_primaryAppleAccount;
+  if (aa_primaryAppleAccount)
   {
-    v5 = [v3 isEnabledForDataclass:ACAccountDataclassContacts];
+    v5 = [aa_primaryAppleAccount isEnabledForDataclass:ACAccountDataclassContacts];
   }
 
   else
@@ -72,11 +72,11 @@
   }
 
   v4 = objc_opt_new();
-  v5 = [v4 aa_primaryAppleAccount];
-  v6 = v5;
-  if (v5)
+  aa_primaryAppleAccount = [v4 aa_primaryAppleAccount];
+  v6 = aa_primaryAppleAccount;
+  if (aa_primaryAppleAccount)
   {
-    [v5 setEnabled:1 forDataclass:ACAccountDataclassContacts];
+    [aa_primaryAppleAccount setEnabled:1 forDataclass:ACAccountDataclassContacts];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_2978;
@@ -87,18 +87,18 @@
     v8 = objc_alloc_init(NCCNDataclassActionParameters);
     [(NCCNDataclassActionParameters *)v8 setAccount:v6];
     [(NCCNDataclassActionParameters *)v8 setChildAccounts:v7];
-    v9 = [(NCContactsiCloudSyncHelper *)self implementation];
-    [(NCCNDataclassActionParameters *)v8 setImplementation:v9];
+    implementation = [(NCContactsiCloudSyncHelper *)self implementation];
+    [(NCCNDataclassActionParameters *)v8 setImplementation:implementation];
 
-    v10 = [(NCContactsiCloudSyncHelper *)self isLocalSourceEmpty];
+    isLocalSourceEmpty = [(NCContactsiCloudSyncHelper *)self isLocalSourceEmpty];
     v11 = off_1C250;
-    if (!v10)
+    if (!isLocalSourceEmpty)
     {
       v11 = &off_1C258;
     }
 
     v12 = [objc_alloc(*v11) initWithParameters:v8];
-    v13 = [v12 perform];
+    perform = [v12 perform];
     v14 = NCABISH_Accounts_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -108,9 +108,9 @@
       v21 = 1024;
       v22 = 1;
       v23 = 1024;
-      v24 = v13;
+      v24 = perform;
       v25 = 1024;
-      v26 = v10;
+      v26 = isLocalSourceEmpty;
       v27 = 2114;
       v28 = v15;
       v16 = v15;
@@ -130,10 +130,10 @@
 
 - (BOOL)isLocalSourceEmpty
 {
-  v2 = [(NCContactsiCloudSyncHelper *)self implementation];
-  v3 = [v2 isLocalContainerEmpty];
+  implementation = [(NCContactsiCloudSyncHelper *)self implementation];
+  isLocalContainerEmpty = [implementation isLocalContainerEmpty];
 
-  return v3;
+  return isLocalContainerEmpty;
 }
 
 @end

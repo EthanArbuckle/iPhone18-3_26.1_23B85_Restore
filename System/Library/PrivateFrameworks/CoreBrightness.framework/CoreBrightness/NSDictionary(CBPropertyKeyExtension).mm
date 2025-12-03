@@ -16,7 +16,7 @@
   v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:a4];
   if (v5)
   {
-    v8 = [a1 initWithObjectsAndKeys:{v5, @"Display", a3, @"String", 0}];
+    v8 = [self initWithObjectsAndKeys:{v5, @"Display", a3, @"String", 0}];
   }
 
   else
@@ -33,7 +33,7 @@
   v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:a4];
   if (v6)
   {
-    v10 = [a1 initWithObjectsAndKeys:{v6, @"Display", a3, @"String", a5, @"Parameter", 0}];
+    v10 = [self initWithObjectsAndKeys:{v6, @"Display", a3, @"String", a5, @"Parameter", 0}];
   }
 
   else
@@ -47,12 +47,12 @@
 
 - (uint64_t)initWithPropertyKey:()CBPropertyKeyExtension
 {
-  v6 = a1;
+  selfCopy = self;
   v5 = a2;
   v4 = a3;
   if (a3)
   {
-    return [v6 initWithObjectsAndKeys:{v4, @"String", 0}];
+    return [selfCopy initWithObjectsAndKeys:{v4, @"String", 0}];
   }
 
   else
@@ -66,7 +66,7 @@
   v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:a4];
   if (v5)
   {
-    v8 = [a1 initWithObjectsAndKeys:{v5, @"Category", a3, @"String", 0}];
+    v8 = [self initWithObjectsAndKeys:{v5, @"Category", a3, @"String", 0}];
   }
 
   else
@@ -81,7 +81,7 @@
 - (uint64_t)getKeyDisplayID
 {
   v3 = 0;
-  v2 = [a1 objectForKey:@"Display"];
+  v2 = [self objectForKey:@"Display"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -94,7 +94,7 @@
 - (uint64_t)getKeyCategory
 {
   v3 = 0;
-  v2 = [a1 objectForKey:@"Category"];
+  v2 = [self objectForKey:@"Category"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -109,7 +109,7 @@
   v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:a4];
   if (v5)
   {
-    v8 = [a1 initWithObjectsAndKeys:{v5, @"Keyboard", a3, @"String", 0}];
+    v8 = [self initWithObjectsAndKeys:{v5, @"Keyboard", a3, @"String", 0}];
   }
 
   else
@@ -124,7 +124,7 @@
 - (uint64_t)getKeyKeyboardID
 {
   v3 = 0;
-  v2 = [a1 objectForKey:@"Keyboard"];
+  v2 = [self objectForKey:@"Keyboard"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

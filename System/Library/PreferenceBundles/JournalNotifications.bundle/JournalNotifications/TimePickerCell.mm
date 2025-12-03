@@ -1,20 +1,20 @@
 @interface TimePickerCell
 - (NSString)accessibilityLabel;
-- (_TtC20JournalNotifications14TimePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC20JournalNotifications14TimePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (_TtC20JournalNotifications14TimePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC20JournalNotifications14TimePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)controlValue;
 - (id)newControl;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setValue:(id)a3;
-- (void)willResignActive:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setValue:(id)value;
+- (void)willResignActive:(id)active;
 @end
 
 @implementation TimePickerCell
 
-- (_TtC20JournalNotifications14TimePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC20JournalNotifications14TimePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_C5484();
     v9 = v8;
@@ -26,16 +26,16 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  sub_7EC38(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  sub_7EC38(style, v7, v9, specifier);
   return result;
 }
 
-- (_TtC20JournalNotifications14TimePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC20JournalNotifications14TimePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_C5484();
+    identifier = sub_C5484();
     v6 = v5;
   }
 
@@ -44,7 +44,7 @@
     v6 = 0;
   }
 
-  return sub_7F204(a3, a4, v6);
+  return sub_7F204(style, identifier, v6);
 }
 
 - (id)newControl
@@ -63,13 +63,13 @@
   v7 = &v15 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v5);
   v9 = &v15 - v8;
-  v10 = self;
-  result = [(TimePickerCell *)v10 control];
+  selfCopy = self;
+  result = [(TimePickerCell *)selfCopy control];
   if (result)
   {
     v12 = result;
     objc_opt_self();
-    v13 = [swift_dynamicCastObjCClassUnconditional() date];
+    date = [swift_dynamicCastObjCClassUnconditional() date];
 
     sub_C3C64();
     (*(v4 + 16))(v7, v9, v3);
@@ -87,11 +87,11 @@
   return result;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_C5E44();
     swift_unknownObjectRelease();
@@ -100,7 +100,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_7F6D8(v6);
@@ -108,24 +108,24 @@
   sub_C060(v6, &qword_104818);
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for TimePickerCell();
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = v6.receiver;
-  [(TimePickerCell *)&v6 refreshCellContentsWithSpecifier:v4];
+  [(TimePickerCell *)&v6 refreshCellContentsWithSpecifier:specifierCopy];
   [v5 setNeedsUpdateConfiguration];
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_C4DA4();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_C4D94();
-  v8 = self;
+  selfCopy = self;
   sub_7F92C(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -136,10 +136,10 @@
   v7.receiver = self;
   v7.super_class = type metadata accessor for TimePickerCell();
   v2 = v7.receiver;
-  v3 = [(TimePickerCell *)&v7 accessibilityLabel];
-  if (v3 || (v3 = [*&v2[OBJC_IVAR____TtC20JournalNotifications14TimePickerCell_listContentView] accessibilityLabel]) != 0)
+  accessibilityLabel = [(TimePickerCell *)&v7 accessibilityLabel];
+  if (accessibilityLabel || (accessibilityLabel = [*&v2[OBJC_IVAR____TtC20JournalNotifications14TimePickerCell_listContentView] accessibilityLabel]) != 0)
   {
-    v4 = v3;
+    v4 = accessibilityLabel;
     sub_C5484();
 
     v5 = sub_C5444();
@@ -154,25 +154,25 @@
   return v5;
 }
 
-- (void)willResignActive:(id)a3
+- (void)willResignActive:(id)active
 {
   v4 = sub_C35A4();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_C3574();
-  v8 = self;
-  v9 = [(TimePickerCell *)v8 control];
-  if (v9)
+  selfCopy = self;
+  control = [(TimePickerCell *)selfCopy control];
+  if (control)
   {
-    v10 = v9;
+    v10 = control;
     objc_opt_self();
     [swift_dynamicCastObjCClassUnconditional() setDatePickerMode:1];
 
-    v11 = [(TimePickerCell *)v8 control];
-    if (v11)
+    control2 = [(TimePickerCell *)selfCopy control];
+    if (control2)
     {
-      v12 = v11;
+      v12 = control2;
       objc_opt_self();
       [swift_dynamicCastObjCClassUnconditional() setDatePickerMode:0];
 

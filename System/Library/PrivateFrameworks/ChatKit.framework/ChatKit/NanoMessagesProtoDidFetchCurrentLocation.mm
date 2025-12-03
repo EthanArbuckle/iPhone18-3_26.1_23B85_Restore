@@ -1,27 +1,27 @@
 @interface NanoMessagesProtoDidFetchCurrentLocation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasLocationCourse:(BOOL)a3;
-- (void)setHasLocationHorizontalAccuracy:(BOOL)a3;
-- (void)setHasLocationLatitude:(BOOL)a3;
-- (void)setHasLocationLongitude:(BOOL)a3;
-- (void)setHasLocationSpeed:(BOOL)a3;
-- (void)setHasLocationTimestamp:(BOOL)a3;
-- (void)setHasLocationVerticalAccuracy:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasLocationCourse:(BOOL)course;
+- (void)setHasLocationHorizontalAccuracy:(BOOL)accuracy;
+- (void)setHasLocationLatitude:(BOOL)latitude;
+- (void)setHasLocationLongitude:(BOOL)longitude;
+- (void)setHasLocationSpeed:(BOOL)speed;
+- (void)setHasLocationTimestamp:(BOOL)timestamp;
+- (void)setHasLocationVerticalAccuracy:(BOOL)accuracy;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NanoMessagesProtoDidFetchCurrentLocation
 
-- (void)setHasLocationLatitude:(BOOL)a3
+- (void)setHasLocationLatitude:(BOOL)latitude
 {
-  if (a3)
+  if (latitude)
   {
     v3 = 8;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasLocationLongitude:(BOOL)a3
+- (void)setHasLocationLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 16;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasLocationHorizontalAccuracy:(BOOL)a3
+- (void)setHasLocationHorizontalAccuracy:(BOOL)accuracy
 {
-  if (a3)
+  if (accuracy)
   {
     v3 = 4;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasLocationVerticalAccuracy:(BOOL)a3
+- (void)setHasLocationVerticalAccuracy:(BOOL)accuracy
 {
-  if (a3)
+  if (accuracy)
   {
     v3 = 128;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasLocationCourse:(BOOL)a3
+- (void)setHasLocationCourse:(BOOL)course
 {
-  if (a3)
+  if (course)
   {
     v3 = 2;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasLocationSpeed:(BOOL)a3
+- (void)setHasLocationSpeed:(BOOL)speed
 {
-  if (a3)
+  if (speed)
   {
     v3 = 32;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasLocationTimestamp:(BOOL)a3
+- (void)setHasLocationTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 64;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 256;
   }
@@ -144,8 +144,8 @@
   v7.receiver = self;
   v7.super_class = NanoMessagesProtoDidFetchCurrentLocation;
   v3 = [(NanoMessagesProtoDidFetchCurrentLocation *)&v7 description];
-  v4 = [(NanoMessagesProtoDidFetchCurrentLocation *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NanoMessagesProtoDidFetchCurrentLocation *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -293,16 +293,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v15 = v4;
+  v15 = toCopy;
   if ((has & 8) != 0)
   {
     locationLatitude = self->_locationLatitude;
     PBDataWriterWriteDoubleField();
-    v4 = v15;
+    toCopy = v15;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -323,7 +323,7 @@ LABEL_3:
 
   locationLongitude = self->_locationLongitude;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -339,7 +339,7 @@ LABEL_4:
 LABEL_18:
   locationAltitude = self->_locationAltitude;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -355,7 +355,7 @@ LABEL_5:
 LABEL_19:
   locationHorizontalAccuracy = self->_locationHorizontalAccuracy;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -371,7 +371,7 @@ LABEL_6:
 LABEL_20:
   locationVerticalAccuracy = self->_locationVerticalAccuracy;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -387,7 +387,7 @@ LABEL_7:
 LABEL_21:
   locationCourse = self->_locationCourse;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -403,7 +403,7 @@ LABEL_8:
 LABEL_22:
   locationSpeed = self->_locationSpeed;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -419,31 +419,31 @@ LABEL_9:
 LABEL_23:
   locationTimestamp = self->_locationTimestamp;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_10:
     errorCode = self->_errorCode;
     PBDataWriterWriteInt32Field();
-    v4 = v15;
+    toCopy = v15;
   }
 
 LABEL_11:
   if (self->_errorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v15;
+    toCopy = v15;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[4] = *&self->_locationLatitude;
-    *(v4 + 44) |= 8u;
+    toCopy[4] = *&self->_locationLatitude;
+    *(toCopy + 44) |= 8u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -462,8 +462,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = *&self->_locationLongitude;
-  *(v4 + 44) |= 0x10u;
+  toCopy[5] = *&self->_locationLongitude;
+  *(toCopy + 44) |= 0x10u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -477,8 +477,8 @@ LABEL_4:
   }
 
 LABEL_18:
-  v4[1] = *&self->_locationAltitude;
-  *(v4 + 44) |= 1u;
+  toCopy[1] = *&self->_locationAltitude;
+  *(toCopy + 44) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -492,8 +492,8 @@ LABEL_5:
   }
 
 LABEL_19:
-  v4[3] = *&self->_locationHorizontalAccuracy;
-  *(v4 + 44) |= 4u;
+  toCopy[3] = *&self->_locationHorizontalAccuracy;
+  *(toCopy + 44) |= 4u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -507,8 +507,8 @@ LABEL_6:
   }
 
 LABEL_20:
-  v4[8] = *&self->_locationVerticalAccuracy;
-  *(v4 + 44) |= 0x80u;
+  toCopy[8] = *&self->_locationVerticalAccuracy;
+  *(toCopy + 44) |= 0x80u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -522,8 +522,8 @@ LABEL_7:
   }
 
 LABEL_21:
-  v4[2] = *&self->_locationCourse;
-  *(v4 + 44) |= 2u;
+  toCopy[2] = *&self->_locationCourse;
+  *(toCopy + 44) |= 2u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -537,8 +537,8 @@ LABEL_8:
   }
 
 LABEL_22:
-  v4[6] = *&self->_locationSpeed;
-  *(v4 + 44) |= 0x20u;
+  toCopy[6] = *&self->_locationSpeed;
+  *(toCopy + 44) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -552,27 +552,27 @@ LABEL_9:
   }
 
 LABEL_23:
-  v4[7] = *&self->_locationTimestamp;
-  *(v4 + 44) |= 0x40u;
+  toCopy[7] = *&self->_locationTimestamp;
+  *(toCopy + 44) |= 0x40u;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_10:
-    *(v4 + 18) = self->_errorCode;
-    *(v4 + 44) |= 0x100u;
+    *(toCopy + 18) = self->_errorCode;
+    *(toCopy + 44) |= 0x100u;
   }
 
 LABEL_11:
   if (self->_errorDomain)
   {
-    v6 = v4;
-    [v4 setErrorDomain:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setErrorDomain:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -697,26 +697,26 @@ LABEL_10:
   }
 
 LABEL_11:
-  v8 = [(NSString *)self->_errorDomain copyWithZone:a3];
+  v8 = [(NSString *)self->_errorDomain copyWithZone:zone];
   v9 = v6[10];
   v6[10] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_49;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_locationLatitude != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_locationLatitude != *(equalCopy + 4))
     {
       goto LABEL_49;
     }
@@ -731,7 +731,7 @@ LABEL_49:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_locationLongitude != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_locationLongitude != *(equalCopy + 5))
     {
       goto LABEL_49;
     }
@@ -744,7 +744,7 @@ LABEL_49:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_locationAltitude != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_locationAltitude != *(equalCopy + 1))
     {
       goto LABEL_49;
     }
@@ -757,7 +757,7 @@ LABEL_49:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_locationHorizontalAccuracy != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_locationHorizontalAccuracy != *(equalCopy + 3))
     {
       goto LABEL_49;
     }
@@ -770,7 +770,7 @@ LABEL_49:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_locationVerticalAccuracy != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_locationVerticalAccuracy != *(equalCopy + 8))
     {
       goto LABEL_49;
     }
@@ -783,7 +783,7 @@ LABEL_49:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_locationCourse != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_locationCourse != *(equalCopy + 2))
     {
       goto LABEL_49;
     }
@@ -796,7 +796,7 @@ LABEL_49:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_locationSpeed != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_locationSpeed != *(equalCopy + 6))
     {
       goto LABEL_49;
     }
@@ -809,7 +809,7 @@ LABEL_49:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_locationTimestamp != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_locationTimestamp != *(equalCopy + 7))
     {
       goto LABEL_49;
     }
@@ -822,19 +822,19 @@ LABEL_49:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 44) & 0x100) == 0 || self->_errorCode != *(v4 + 18))
+    if ((*(equalCopy + 44) & 0x100) == 0 || self->_errorCode != *(equalCopy + 18))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 44) & 0x100) != 0)
+  else if ((*(equalCopy + 44) & 0x100) != 0)
   {
     goto LABEL_49;
   }
 
   errorDomain = self->_errorDomain;
-  if (errorDomain | *(v4 + 10))
+  if (errorDomain | *(equalCopy + 10))
   {
     v8 = [(NSString *)errorDomain isEqual:?];
   }
@@ -1136,15 +1136,15 @@ LABEL_50:
   return v13 ^ v9 ^ v17 ^ v21 ^ v25 ^ v29 ^ v33 ^ v37 ^ v41 ^ [(NSString *)self->_errorDomain hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) != 0)
   {
-    self->_locationLatitude = *(v4 + 4);
+    self->_locationLatitude = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -1162,9 +1162,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_locationLongitude = *(v4 + 5);
+  self->_locationLongitude = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 1) == 0)
   {
 LABEL_4:
@@ -1177,9 +1177,9 @@ LABEL_4:
   }
 
 LABEL_18:
-  self->_locationAltitude = *(v4 + 1);
+  self->_locationAltitude = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -1192,9 +1192,9 @@ LABEL_5:
   }
 
 LABEL_19:
-  self->_locationHorizontalAccuracy = *(v4 + 3);
+  self->_locationHorizontalAccuracy = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x80) == 0)
   {
 LABEL_6:
@@ -1207,9 +1207,9 @@ LABEL_6:
   }
 
 LABEL_20:
-  self->_locationVerticalAccuracy = *(v4 + 8);
+  self->_locationVerticalAccuracy = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) == 0)
   {
 LABEL_7:
@@ -1222,9 +1222,9 @@ LABEL_7:
   }
 
 LABEL_21:
-  self->_locationCourse = *(v4 + 2);
+  self->_locationCourse = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x20) == 0)
   {
 LABEL_8:
@@ -1237,9 +1237,9 @@ LABEL_8:
   }
 
 LABEL_22:
-  self->_locationSpeed = *(v4 + 6);
+  self->_locationSpeed = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x40) == 0)
   {
 LABEL_9:
@@ -1252,21 +1252,21 @@ LABEL_9:
   }
 
 LABEL_23:
-  self->_locationTimestamp = *(v4 + 7);
+  self->_locationTimestamp = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 44) & 0x100) != 0)
+  if ((*(fromCopy + 44) & 0x100) != 0)
   {
 LABEL_10:
-    self->_errorCode = *(v4 + 18);
+    self->_errorCode = *(fromCopy + 18);
     *&self->_has |= 0x100u;
   }
 
 LABEL_11:
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(NanoMessagesProtoDidFetchCurrentLocation *)self setErrorDomain:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

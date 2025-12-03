@@ -1,21 +1,21 @@
 @interface PTAssetFSDNetworkInputReader
-- (BOOL)_readRGBABufferFromFile:(id)a3 to:(__CVBuffer *)a4;
-- (PTAssetFSDNetworkInputReader)initWithURL:(id)a3;
+- (BOOL)_readRGBABufferFromFile:(id)file to:(__CVBuffer *)to;
+- (PTAssetFSDNetworkInputReader)initWithURL:(id)l;
 - (id)copyNextFrame;
 @end
 
 @implementation PTAssetFSDNetworkInputReader
 
-- (PTAssetFSDNetworkInputReader)initWithURL:(id)a3
+- (PTAssetFSDNetworkInputReader)initWithURL:(id)l
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = PTAssetFSDNetworkInputReader;
   v6 = [(PTAssetFSDNetworkInputReader *)&v14 init];
-  if (v6 && ([MEMORY[0x277CCAA00] defaultManager], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "path"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "fileExistsAtPath:isDirectory:", v8, 0), v8, v7, v9))
+  if (v6 && ([MEMORY[0x277CCAA00] defaultManager], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(lCopy, "path"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "fileExistsAtPath:isDirectory:", v8, 0), v8, v7, v9))
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v6->_frameIndex = 0;
     v10 = *MEMORY[0x277CC4D60];
     v15[0] = *MEMORY[0x277CC4DE8];
@@ -36,10 +36,10 @@
   return v12;
 }
 
-- (BOOL)_readRGBABufferFromFile:(id)a3 to:(__CVBuffer *)a4
+- (BOOL)_readRGBABufferFromFile:(id)file to:(__CVBuffer *)to
 {
-  v5 = a3;
-  if (!a4)
+  fileCopy = file;
+  if (!to)
   {
     v15 = _PTLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -50,9 +50,9 @@
     goto LABEL_10;
   }
 
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  v8 = fopen([v5 UTF8String], "r");
+  Width = CVPixelBufferGetWidth(to);
+  Height = CVPixelBufferGetHeight(to);
+  v8 = fopen([fileCopy UTF8String], "r");
   if (!v8)
   {
     v15 = _PTLogSystem();
@@ -65,13 +65,13 @@
   }
 
   v9 = v8;
-  CVPixelBufferLockBaseAddress(a4, 0);
-  BaseAddress = CVPixelBufferGetBaseAddress(a4);
+  CVPixelBufferLockBaseAddress(to, 0);
+  BaseAddress = CVPixelBufferGetBaseAddress(to);
   v11 = Width * Height;
   v12 = 8 * Width * Height;
   v13 = 1;
   v14 = fread(BaseAddress, 1uLL, v12, v9);
-  CVPixelBufferUnlockBaseAddress(a4, 0);
+  CVPixelBufferUnlockBaseAddress(to, 0);
   fclose(v9);
   if (v14 != 8 * v11)
   {
@@ -92,20 +92,20 @@ LABEL_10:
 - (id)copyNextFrame
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSURL *)self->_url path];
-  v5 = [v3 stringWithFormat:@"%@/Undistorted/%08i_rectifiedReference.RGhA", v4, self->_frameIndex];
+  path = [(NSURL *)self->_url path];
+  v5 = [v3 stringWithFormat:@"%@/Undistorted/%08i_rectifiedReference.RGhA", path, self->_frameIndex];
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(NSURL *)self->_url path];
-  v8 = [v6 stringWithFormat:@"%@/Undistorted/%08i_rectifiedAuxiliaryPadded.RGhA", v7, self->_frameIndex];
+  path2 = [(NSURL *)self->_url path];
+  v8 = [v6 stringWithFormat:@"%@/Undistorted/%08i_rectifiedAuxiliaryPadded.RGhA", path2, self->_frameIndex];
 
-  LODWORD(v7) = [(PTAssetFSDNetworkInputReader *)self _readRGBABufferFromFile:v5 to:self->_refBuffer];
+  LODWORD(path2) = [(PTAssetFSDNetworkInputReader *)self _readRGBABufferFromFile:v5 to:self->_refBuffer];
   v9 = [(PTAssetFSDNetworkInputReader *)self _readRGBABufferFromFile:v8 to:self->_auxBuffer];
-  if (v7 && v9)
+  if (path2 && v9)
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(NSURL *)self->_url path];
-    v12 = [v10 stringWithFormat:@"%@/Inputs/%08i_options.metadata.plist", v11, self->_frameIndex];
+    path3 = [(NSURL *)self->_url path];
+    v12 = [v10 stringWithFormat:@"%@/Inputs/%08i_options.metadata.plist", path3, self->_frameIndex];
 
     v13 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithFileAtPath:v12];
     v14 = v13;

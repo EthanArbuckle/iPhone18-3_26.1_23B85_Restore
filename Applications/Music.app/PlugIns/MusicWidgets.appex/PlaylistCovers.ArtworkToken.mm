@@ -1,14 +1,14 @@
 @interface PlaylistCovers.ArtworkToken
 - (_TtCO9MusicCore14PlaylistCovers12ArtworkToken)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (id)stringRepresentation;
 @end
 
 @implementation PlaylistCovers.ArtworkToken
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   PlaylistCovers.ArtworkToken.copy(with:)(v6);
 
   sub_10000C8CC(v6, v6[3]);
@@ -19,7 +19,7 @@
 
 - (id)stringRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   object = PlaylistCovers.ArtworkToken.stringRepresentation()().value._object;
 
   if (object)

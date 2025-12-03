@@ -2,24 +2,24 @@
 + (NSArray)dateAttributes;
 + (NSString)dateQueryString;
 + (OS_os_log)log;
-+ (id)dateForSuggestionResult:(id)a3;
-+ (id)documentsSuggesterWithBundleID:(id)a3 messageRepository:(id)a4 senderQueryManager:(id)a5;
-+ (id)linksSuggesterWithBundleID:(id)a3 messageRepository:(id)a4 senderQueryManager:(id)a5;
-+ (id)suggestionResultsSortedByDate:(id)a3;
-- (MUISearchResultsSuggester)initWithBundleID:(id)a3 messageRepository:(id)a4 senderQueryManager:(id)a5 configuration:(id)a6;
++ (id)dateForSuggestionResult:(id)result;
++ (id)documentsSuggesterWithBundleID:(id)d messageRepository:(id)repository senderQueryManager:(id)manager;
++ (id)linksSuggesterWithBundleID:(id)d messageRepository:(id)repository senderQueryManager:(id)manager;
++ (id)suggestionResultsSortedByDate:(id)date;
+- (MUISearchResultsSuggester)initWithBundleID:(id)d messageRepository:(id)repository senderQueryManager:(id)manager configuration:(id)configuration;
 - (NSArray)categories;
 - (NSString)logIdentifier;
 @end
 
 @implementation MUISearchResultsSuggester
 
-+ (id)documentsSuggesterWithBundleID:(id)a3 messageRepository:(id)a4 senderQueryManager:(id)a5
++ (id)documentsSuggesterWithBundleID:(id)d messageRepository:(id)repository senderQueryManager:(id)manager
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  managerCopy = manager;
+  repositoryCopy = repository;
+  dCopy = d;
   v11 = objc_alloc_init(_MUISearchResultsSuggesterDocumentsConfiguration);
-  v12 = [[a1 alloc] initWithBundleID:v10 messageRepository:v9 senderQueryManager:v8 configuration:v11];
+  v12 = [[self alloc] initWithBundleID:dCopy messageRepository:repositoryCopy senderQueryManager:managerCopy configuration:v11];
 
   return v12;
 }
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __32__MUISearchResultsSuggester_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_16 != -1)
   {
     dispatch_once(&log_onceToken_16, block);
@@ -50,22 +50,22 @@ void __32__MUISearchResultsSuggester_log__block_invoke(uint64_t a1)
   log_log_16 = v2;
 }
 
-- (MUISearchResultsSuggester)initWithBundleID:(id)a3 messageRepository:(id)a4 senderQueryManager:(id)a5 configuration:(id)a6
+- (MUISearchResultsSuggester)initWithBundleID:(id)d messageRepository:(id)repository senderQueryManager:(id)manager configuration:(id)configuration
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  repositoryCopy = repository;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = MUISearchResultsSuggester;
   v15 = [(MUISearchResultsSuggester *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_bundleID, a3);
-    objc_storeStrong(&v16->_messageRepository, a4);
-    objc_storeStrong(&v16->_senderQueryManager, a5);
-    objc_storeStrong(&v16->_configuration, a6);
+    objc_storeStrong(&v15->_bundleID, d);
+    objc_storeStrong(&v16->_messageRepository, repository);
+    objc_storeStrong(&v16->_senderQueryManager, manager);
+    objc_storeStrong(&v16->_configuration, configuration);
   }
 
   return v16;
@@ -87,8 +87,8 @@ void __32__MUISearchResultsSuggester_log__block_invoke(uint64_t a1)
 
 + (NSString)dateQueryString
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
-  v3 = [v2 dateByAddingTimeInterval:-1209600.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v3 = [date dateByAddingTimeInterval:-1209600.0];
   [v3 timeIntervalSinceReferenceDate];
   v5 = v4;
 
@@ -104,11 +104,11 @@ void __32__MUISearchResultsSuggester_log__block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (id)dateForSuggestionResult:(id)a3
++ (id)dateForSuggestionResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 searchableItem];
-  v5 = [v4 attributeSet];
+  resultCopy = result;
+  searchableItem = [resultCopy searchableItem];
+  attributeSet = [searchableItem attributeSet];
 
   v13 = 0;
   v14 = &v13;
@@ -122,7 +122,7 @@ void __32__MUISearchResultsSuggester_log__block_invoke(uint64_t a1)
   v10[2] = __59__MUISearchResultsSuggester_Date__dateForSuggestionResult___block_invoke;
   v10[3] = &unk_27818AFE0;
   v12 = &v13;
-  v7 = v5;
+  v7 = attributeSet;
   v11 = v7;
   [v6 enumerateObjectsUsingBlock:v10];
 
@@ -162,11 +162,11 @@ uint64_t __59__MUISearchResultsSuggester_Date__dateForSuggestionResult___block_i
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-+ (id)suggestionResultsSortedByDate:(id)a3
++ (id)suggestionResultsSortedByDate:(id)date
 {
-  v3 = [a3 ef_partition:&__block_literal_global_33];
-  v4 = [v3 second];
-  v5 = [v4 count];
+  v3 = [date ef_partition:&__block_literal_global_33];
+  second = [v3 second];
+  v5 = [second count];
 
   if (v5)
   {
@@ -177,8 +177,8 @@ uint64_t __59__MUISearchResultsSuggester_Date__dateForSuggestionResult___block_i
     }
   }
 
-  v7 = [v3 first];
-  v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_115];
+  first = [v3 first];
+  v8 = [first sortedArrayUsingComparator:&__block_literal_global_115];
 
   return v8;
 }
@@ -210,13 +210,13 @@ uint64_t __65__MUISearchResultsSuggester_Date__suggestionResultsSortedByDate___b
   return v8;
 }
 
-+ (id)linksSuggesterWithBundleID:(id)a3 messageRepository:(id)a4 senderQueryManager:(id)a5
++ (id)linksSuggesterWithBundleID:(id)d messageRepository:(id)repository senderQueryManager:(id)manager
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  managerCopy = manager;
+  repositoryCopy = repository;
+  dCopy = d;
   v11 = objc_alloc_init(_MUISearchResultsSuggesterRichLinksConfiguration);
-  v12 = [[a1 alloc] initWithBundleID:v10 messageRepository:v9 senderQueryManager:v8 configuration:v11];
+  v12 = [[self alloc] initWithBundleID:dCopy messageRepository:repositoryCopy senderQueryManager:managerCopy configuration:v11];
 
   return v12;
 }

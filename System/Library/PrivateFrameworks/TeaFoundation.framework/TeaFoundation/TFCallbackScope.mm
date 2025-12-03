@@ -1,20 +1,20 @@
 @interface TFCallbackScope
-- (TFCallbackScope)initWithScope:(unint64_t)a3 names:(id)a4;
+- (TFCallbackScope)initWithScope:(unint64_t)scope names:(id)names;
 @end
 
 @implementation TFCallbackScope
 
-- (TFCallbackScope)initWithScope:(unint64_t)a3 names:(id)a4
+- (TFCallbackScope)initWithScope:(unint64_t)scope names:(id)names
 {
-  v7 = a4;
+  namesCopy = names;
   v11.receiver = self;
   v11.super_class = TFCallbackScope;
   v8 = [(TFCallbackScope *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_scope = a3;
-    objc_storeStrong(&v8->_names, a4);
+    v8->_scope = scope;
+    objc_storeStrong(&v8->_names, names);
   }
 
   return v9;

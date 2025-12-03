@@ -1,18 +1,18 @@
 @interface BKLibraryBookshelfController
-+ (id)libraryViewControllerWithIdentifier:(id)a3;
-+ (id)setupBookshelfWithConfig:(id)a3;
-+ (id)supplementalContentPDFPickerWithPlaylistID:(id)a3 fromActionMenu:(BOOL)a4;
++ (id)libraryViewControllerWithIdentifier:(id)identifier;
++ (id)setupBookshelfWithConfig:(id)config;
++ (id)supplementalContentPDFPickerWithPlaylistID:(id)d fromActionMenu:(BOOL)menu;
 @end
 
 @implementation BKLibraryBookshelfController
 
-+ (id)setupBookshelfWithConfig:(id)a3
++ (id)setupBookshelfWithConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   kdebug_trace();
-  v4 = [v3 collection];
-  v5 = v4;
-  if (v4 && ([v4 isDefaultCollection] & 1) == 0)
+  collection = [configCopy collection];
+  v5 = collection;
+  if (collection && ([collection isDefaultCollection] & 1) == 0)
   {
     v75 = [v5 isSeriesCollection] ^ 1;
   }
@@ -24,185 +24,185 @@
 
   v6 = objc_alloc_init(BKLibraryBookshelfCollectionViewController);
   [(BKLibraryBookshelfCollectionViewController *)v6 setCollection:v5];
-  v7 = [v3 collectionID];
-  [(BKLibraryBookshelfCollectionViewController *)v6 setCollectionID:v7];
+  collectionID = [configCopy collectionID];
+  [(BKLibraryBookshelfCollectionViewController *)v6 setCollectionID:collectionID];
 
   v76 = objc_alloc_init(BKLibraryActionHandler);
   [(BKLibraryActionHandler *)v76 setBookshelfCVC:v6];
   v8 = objc_alloc_init(BKLibraryBookshelfSupplementaryDataSource);
-  v9 = [v3 sortControlConfig];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setSortControlConfig:v9];
+  sortControlConfig = [configCopy sortControlConfig];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setSortControlConfig:sortControlConfig];
 
   if (v5)
   {
-    v10 = [v5 resolvedSortMode];
+    resolvedSortMode = [v5 resolvedSortMode];
   }
 
   else
   {
-    v10 = [v3 initialSortMode];
+    resolvedSortMode = [configCopy initialSortMode];
   }
 
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setSortMode:v10];
-  -[BKLibraryBookshelfSupplementaryDataSource setViewMode:](v8, "setViewMode:", [v3 initialViewMode]);
-  -[BKLibraryBookshelfSupplementaryDataSource setCanChangeViewMode:](v8, "setCanChangeViewMode:", [v3 canChangeViewMode]);
-  v11 = [v3 readingListButtonText];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setReadingListButtonText:v11];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setSortMode:resolvedSortMode];
+  -[BKLibraryBookshelfSupplementaryDataSource setViewMode:](v8, "setViewMode:", [configCopy initialViewMode]);
+  -[BKLibraryBookshelfSupplementaryDataSource setCanChangeViewMode:](v8, "setCanChangeViewMode:", [configCopy canChangeViewMode]);
+  readingListButtonText = [configCopy readingListButtonText];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setReadingListButtonText:readingListButtonText];
 
-  v12 = [v3 collection];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCollection:v12];
+  collection2 = [configCopy collection];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCollection:collection2];
 
-  v13 = [v3 viewTitle];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCollectionTitle:v13];
+  viewTitle = [configCopy viewTitle];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCollectionTitle:viewTitle];
 
-  v14 = [v3 viewDescription];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCollectionDescription:v14];
+  viewDescription = [configCopy viewDescription];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCollectionDescription:viewDescription];
 
-  v15 = [v3 collectionDescriptionPlaceholderText];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCollectionDescriptionPlaceHolder:v15];
+  collectionDescriptionPlaceholderText = [configCopy collectionDescriptionPlaceholderText];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCollectionDescriptionPlaceHolder:collectionDescriptionPlaceholderText];
 
-  v16 = [v3 seriesID];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setSeriesID:v16];
+  seriesID = [configCopy seriesID];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setSeriesID:seriesID];
 
-  v17 = [v3 noBooksDescription];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setNoBooksDescription:v17];
+  noBooksDescription = [configCopy noBooksDescription];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setNoBooksDescription:noBooksDescription];
 
-  v18 = [v3 noBooksDescriptionHeader];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setNoBooksDescriptionHeader:v18];
+  noBooksDescriptionHeader = [configCopy noBooksDescriptionHeader];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setNoBooksDescriptionHeader:noBooksDescriptionHeader];
 
-  v19 = [v3 cloudDownloadImageName];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCloudDownloadImageName:v19];
+  cloudDownloadImageName = [configCopy cloudDownloadImageName];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCloudDownloadImageName:cloudDownloadImageName];
 
-  v20 = [v3 cloudUploadingImageName];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCloudUploadingImageName:v20];
+  cloudUploadingImageName = [configCopy cloudUploadingImageName];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCloudUploadingImageName:cloudUploadingImageName];
 
-  v21 = [v3 cloudErrorImageName];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCloudErrorImageName:v21];
+  cloudErrorImageName = [configCopy cloudErrorImageName];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setCloudErrorImageName:cloudErrorImageName];
 
-  v22 = [v3 actionMenuImageName];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setActionMenuImageName:v22];
+  actionMenuImageName = [configCopy actionMenuImageName];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setActionMenuImageName:actionMenuImageName];
 
-  v23 = [v3 reviewBackgroundName];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setReviewBackgroundName:v23];
+  reviewBackgroundName = [configCopy reviewBackgroundName];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setReviewBackgroundName:reviewBackgroundName];
 
-  v24 = [v3 dragBarName];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setDragBarName:v24];
+  dragBarName = [configCopy dragBarName];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setDragBarName:dragBarName];
 
-  v25 = [v3 selectedCheckmarkName];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setSelectedCheckmarkName:v25];
+  selectedCheckmarkName = [configCopy selectedCheckmarkName];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setSelectedCheckmarkName:selectedCheckmarkName];
 
-  v26 = [v3 unselectedCheckmarkName];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setUnselectedCheckmarkName:v26];
+  unselectedCheckmarkName = [configCopy unselectedCheckmarkName];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setUnselectedCheckmarkName:unselectedCheckmarkName];
 
-  v27 = [v3 infoBarDownloading];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarDownloading:v27];
+  infoBarDownloading = [configCopy infoBarDownloading];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarDownloading:infoBarDownloading];
 
-  v28 = [v3 infoBarDownloadWaiting];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarDownloadWaiting:v28];
+  infoBarDownloadWaiting = [configCopy infoBarDownloadWaiting];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarDownloadWaiting:infoBarDownloadWaiting];
 
-  v29 = [v3 infoBarDownloadPaused];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarDownloadPaused:v29];
+  infoBarDownloadPaused = [configCopy infoBarDownloadPaused];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarDownloadPaused:infoBarDownloadPaused];
 
-  v30 = [v3 infoBarNew];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarNew:v30];
+  infoBarNew = [configCopy infoBarNew];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarNew:infoBarNew];
 
-  v31 = [v3 infoBarNext];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarNext:v31];
+  infoBarNext = [configCopy infoBarNext];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarNext:infoBarNext];
 
-  v32 = [v3 infoBarProof];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarProof:v32];
+  infoBarProof = [configCopy infoBarProof];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarProof:infoBarProof];
 
-  v33 = [v3 infoBarPreOrderable];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarPreOrderable:v33];
+  infoBarPreOrderable = [configCopy infoBarPreOrderable];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarPreOrderable:infoBarPreOrderable];
 
-  v34 = [v3 infoBarPreOrdered];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarPreOrdered:v34];
+  infoBarPreOrdered = [configCopy infoBarPreOrdered];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarPreOrdered:infoBarPreOrdered];
 
-  v35 = [v3 infoBarSample];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarSample:v35];
+  infoBarSample = [configCopy infoBarSample];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarSample:infoBarSample];
 
-  v36 = [v3 infoBarBuy];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarBuy:v36];
+  infoBarBuy = [configCopy infoBarBuy];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarBuy:infoBarBuy];
 
-  v37 = [v3 infoExpectedDateString];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoExpectedDateString:v37];
+  infoExpectedDateString = [configCopy infoExpectedDateString];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoExpectedDateString:infoExpectedDateString];
 
-  v38 = [v3 moreText];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setMoreText:v38];
+  moreText = [configCopy moreText];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setMoreText:moreText];
 
-  v39 = [v3 infoBarAudiobookImageName];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarAudiobookImageName:v39];
+  infoBarAudiobookImageName = [configCopy infoBarAudiobookImageName];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setInfoBarAudiobookImageName:infoBarAudiobookImageName];
 
-  -[BKLibraryBookshelfSupplementaryDataSource setHideTopSeparatorLine:](v8, "setHideTopSeparatorLine:", [v3 hideTopSeparatorLine]);
-  -[BKLibraryBookshelfSupplementaryDataSource setShowCancelNavigationBarItem:](v8, "setShowCancelNavigationBarItem:", [v3 showCancelNavigationBarItem]);
-  v40 = [v3 supplementalContentPDFTitle];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setSupplementalContentPDFPickerTitle:v40];
+  -[BKLibraryBookshelfSupplementaryDataSource setHideTopSeparatorLine:](v8, "setHideTopSeparatorLine:", [configCopy hideTopSeparatorLine]);
+  -[BKLibraryBookshelfSupplementaryDataSource setShowCancelNavigationBarItem:](v8, "setShowCancelNavigationBarItem:", [configCopy showCancelNavigationBarItem]);
+  supplementalContentPDFTitle = [configCopy supplementalContentPDFTitle];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setSupplementalContentPDFPickerTitle:supplementalContentPDFTitle];
 
-  -[BKLibraryBookshelfSupplementaryDataSource setSupplementalContentPDFPicker:](v8, "setSupplementalContentPDFPicker:", [v3 supplementalContentPDFPicker]);
-  v41 = [v3 supplementalContentStorePlaylistID];
-  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setSupplementalContentStorePlaylistID:v41];
+  -[BKLibraryBookshelfSupplementaryDataSource setSupplementalContentPDFPicker:](v8, "setSupplementalContentPDFPicker:", [configCopy supplementalContentPDFPicker]);
+  supplementalContentStorePlaylistID = [configCopy supplementalContentStorePlaylistID];
+  [(BKLibraryBookshelfSupplementaryDataSource *)v8 setSupplementalContentStorePlaylistID:supplementalContentStorePlaylistID];
 
-  -[BKLibraryBookshelfSupplementaryDataSource setFromActionMenu:](v8, "setFromActionMenu:", [v3 fromActionMenu]);
+  -[BKLibraryBookshelfSupplementaryDataSource setFromActionMenu:](v8, "setFromActionMenu:", [configCopy fromActionMenu]);
   v42 = [BKLibraryBookshelfBooksDataSource alloc];
-  v43 = [(BKLibraryBookshelfSupplementaryDataSource *)v8 seriesID];
-  v44 = [v3 providesReviewData];
-  v45 = [v3 providesProductInfoData];
-  v46 = [v3 productInfoFilter];
-  v47 = [(BKLibraryBookshelfBooksDataSource *)v42 initWithSortModeProvider:v8 isSeries:v43 != 0 providesReviewData:v44 providesProductInfoData:v45 productInfoFilter:v46];
+  seriesID2 = [(BKLibraryBookshelfSupplementaryDataSource *)v8 seriesID];
+  providesReviewData = [configCopy providesReviewData];
+  providesProductInfoData = [configCopy providesProductInfoData];
+  productInfoFilter = [configCopy productInfoFilter];
+  v47 = [(BKLibraryBookshelfBooksDataSource *)v42 initWithSortModeProvider:v8 isSeries:seriesID2 != 0 providesReviewData:providesReviewData providesProductInfoData:providesProductInfoData productInfoFilter:productInfoFilter];
 
   v48 = objc_alloc_init(BKLibraryBookshelfLayout);
   [(BKLibraryBookshelfCollectionViewController *)v6 setLayout:v48];
 
-  v49 = [v3 includeCollectionInfo];
-  v50 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
-  [v50 setIncludeCollectionInfo:v49];
+  includeCollectionInfo = [configCopy includeCollectionInfo];
+  layout = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
+  [layout setIncludeCollectionInfo:includeCollectionInfo];
 
-  v51 = [v3 supportsReadingListsButton];
-  v52 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
-  [v52 setSupportsReadingListsButton:v51];
+  supportsReadingListsButton = [configCopy supportsReadingListsButton];
+  layout2 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
+  [layout2 setSupportsReadingListsButton:supportsReadingListsButton];
 
-  v53 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
-  [v53 setEditableCollection:v75];
+  layout3 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
+  [layout3 setEditableCollection:v75];
 
-  v54 = [v3 stackedSortControl];
-  v55 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
-  [v55 setWantsStackedSortControl:v54];
+  stackedSortControl = [configCopy stackedSortControl];
+  layout4 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
+  [layout4 setWantsStackedSortControl:stackedSortControl];
 
-  v56 = [v3 showsSortControl];
-  v57 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
-  [v57 setWantsSortControl:v56];
+  showsSortControl = [configCopy showsSortControl];
+  layout5 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
+  [layout5 setWantsSortControl:showsSortControl];
 
   v58 = [(BKLibraryBookshelfSupplementaryDataSource *)v8 sortMode]== 6;
-  v59 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
-  [v59 setReorderableCollection:v58];
+  layout6 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
+  [layout6 setReorderableCollection:v58];
 
-  v60 = [v3 collectionType];
-  v61 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
-  [v61 setCollectionType:v60];
+  collectionType = [configCopy collectionType];
+  layout7 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
+  [layout7 setCollectionType:collectionType];
 
-  v62 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
-  [v62 setDelegate:v6];
+  layout8 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
+  [layout8 setDelegate:v6];
 
   v63 = [[BKLibraryBookshelfMetrics alloc] initWithObserver:v6];
-  v64 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
-  [v64 setMetrics:v63];
+  layout9 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
+  [layout9 setMetrics:v63];
 
-  v65 = [(BKLibraryBookshelfSupplementaryDataSource *)v8 viewMode];
-  v66 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
-  [v66 setViewMode:v65];
+  viewMode = [(BKLibraryBookshelfSupplementaryDataSource *)v8 viewMode];
+  layout10 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
+  [layout10 setViewMode:viewMode];
 
   v67 = [[BKLibraryDataSourceAdaptor alloc] initWithBooksDataSource:v47 supplementaryDataSource:v8];
   [(BKLibraryBookshelfCollectionViewController *)v6 setDataSourceAdaptor:v67];
 
-  v68 = [(BKLibraryBookshelfCollectionViewController *)v6 dataSourceAdaptor];
-  [v68 setActionHandler:v76];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)v6 dataSourceAdaptor];
+  [dataSourceAdaptor setActionHandler:v76];
 
-  v69 = [(BKLibraryBookshelfCollectionViewController *)v6 dataSourceAdaptor];
-  [v69 setCoverEffectsEnvironment:v6];
+  dataSourceAdaptor2 = [(BKLibraryBookshelfCollectionViewController *)v6 dataSourceAdaptor];
+  [dataSourceAdaptor2 setCoverEffectsEnvironment:v6];
 
-  v70 = [(BKLibraryBookshelfCollectionViewController *)v6 dataSourceAdaptor];
-  v71 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
-  [v71 setMeasuring:v70];
+  dataSourceAdaptor3 = [(BKLibraryBookshelfCollectionViewController *)v6 dataSourceAdaptor];
+  layout11 = [(BKLibraryBookshelfCollectionViewController *)v6 layout];
+  [layout11 setMeasuring:dataSourceAdaptor3];
 
   v72 = [[BKLibraryBookshelfDragDelegate alloc] initWithBookDataSource:v47];
   [(BKLibraryBookshelfCollectionViewController *)v6 setDragDelegate:v72];
@@ -213,9 +213,9 @@
   return v6;
 }
 
-+ (id)libraryViewControllerWithIdentifier:(id)a3
++ (id)libraryViewControllerWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   kdebug_trace();
   v4 = +[BKRootBarItemsProvider LibraryAllIdentifier];
   v43[0] = v4;
@@ -234,10 +234,10 @@
   v44[4] = kBKCollectionDefaultIDDownloaded;
   v9 = [NSDictionary dictionaryWithObjects:v44 forKeys:v43 count:5];
 
-  if (v3)
+  if (identifierCopy)
   {
-    v10 = [v9 objectForKeyedSubscript:v3];
-    v11 = [BKRootBarItemsProvider customCollectionIDFromItemIdentifier:v3];
+    v10 = [v9 objectForKeyedSubscript:identifierCopy];
+    v11 = [BKRootBarItemsProvider customCollectionIDFromItemIdentifier:identifierCopy];
   }
 
   else
@@ -262,10 +262,10 @@
   if (v13)
   {
     v14 = [BKLibraryManager defaultManager:v13];
-    v15 = [v14 collectionController];
+    collectionController = [v14 collectionController];
     v16 = +[BKLibraryManager defaultManager];
-    v17 = [v16 uiChildContext];
-    v13 = [v15 mutableCollectionWithCollectionID:v13 inManagedObjectContext:v17 error:0];
+    uiChildContext = [v16 uiChildContext];
+    v13 = [collectionController mutableCollectionWithCollectionID:v13 inManagedObjectContext:uiChildContext error:0];
 
     v18 = [[BKLibraryBookshelfLibraryCollectionViewConfiguration alloc] initWithCollection:v13];
   }
@@ -306,7 +306,7 @@
         }
 
         v28 = *(*(&v36 + 1) + 8 * i);
-        if ([v3 isEqualToString:v28])
+        if ([identifierCopy isEqualToString:v28])
         {
           v29 = objc_alloc_init([v23 objectForKeyedSubscript:v28]);
 
@@ -347,8 +347,8 @@ LABEL_20:
 
   if (v13)
   {
-    v31 = [(BKLibraryBookshelfLibraryCollectionViewConfiguration *)v18 viewTitle];
-    [v30 setTitle:v31];
+    viewTitle = [(BKLibraryBookshelfLibraryCollectionViewConfiguration *)v18 viewTitle];
+    [v30 setTitle:viewTitle];
   }
 
 LABEL_26:
@@ -357,20 +357,20 @@ LABEL_26:
   return v30;
 }
 
-+ (id)supplementalContentPDFPickerWithPlaylistID:(id)a3 fromActionMenu:(BOOL)a4
++ (id)supplementalContentPDFPickerWithPlaylistID:(id)d fromActionMenu:(BOOL)menu
 {
-  v4 = a4;
-  v6 = a3;
+  menuCopy = menu;
+  dCopy = d;
   kdebug_trace();
   v7 = kBKCollectionDefaultIDPDFs;
   v8 = +[BKLibraryManager defaultManager];
-  v9 = [v8 collectionController];
+  collectionController = [v8 collectionController];
   v10 = +[BKLibraryManager defaultManager];
-  v11 = [v10 uiChildContext];
-  v12 = [v9 mutableCollectionWithCollectionID:v7 inManagedObjectContext:v11 error:0];
+  uiChildContext = [v10 uiChildContext];
+  v12 = [collectionController mutableCollectionWithCollectionID:v7 inManagedObjectContext:uiChildContext error:0];
 
-  v13 = [[BKLibraryBookshelfSupplementalPDFPickerCollectionViewConfiguration alloc] initWithCollection:v12 storePlaylistID:v6 fromActionMenu:v4];
-  v14 = [a1 setupBookshelfWithConfig:v13];
+  v13 = [[BKLibraryBookshelfSupplementalPDFPickerCollectionViewConfiguration alloc] initWithCollection:v12 storePlaylistID:dCopy fromActionMenu:menuCopy];
+  v14 = [self setupBookshelfWithConfig:v13];
   v15 = [[UINavigationController alloc] initWithRootViewController:v14];
   kdebug_trace();
 

@@ -1,18 +1,18 @@
 @interface CLSBusinessCacheUpdater
-- (CLSBusinessCacheUpdater)initWithBusinessCategoryCache:(id)a3;
-- (id)_resolvedBusinessMUIDs:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (id)enrichedBusinessItemsByMuidsForBusinessItems:(id)a3 progressBlock:(id)a4;
-- (id)enrichedBusinessItemsByMuidsForMuids:(id)a3 progressBlock:(id)a4;
+- (CLSBusinessCacheUpdater)initWithBusinessCategoryCache:(id)cache;
+- (id)_resolvedBusinessMUIDs:(id)ds progressBlock:(id)block error:(id *)error;
+- (id)enrichedBusinessItemsByMuidsForBusinessItems:(id)items progressBlock:(id)block;
+- (id)enrichedBusinessItemsByMuidsForMuids:(id)muids progressBlock:(id)block;
 @end
 
 @implementation CLSBusinessCacheUpdater
 
-- (id)_resolvedBusinessMUIDs:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (id)_resolvedBusinessMUIDs:(id)ds progressBlock:(id)block error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = _Block_copy(v9);
+  dsCopy = ds;
+  blockCopy = block;
+  v10 = _Block_copy(blockCopy);
   v11 = v10;
   v45 = 0;
   v46 = &v45;
@@ -31,24 +31,24 @@
 
   else
   {
-    v14 = [v8 count];
+    v14 = [dsCopy count];
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_3839];
-    v29 = [v8 filteredArrayUsingPredicate:v15];
+    v29 = [dsCopy filteredArrayUsingPredicate:v15];
 
     if ([v29 count] != v14)
     {
       v16 = +[CLSLogging sharedLogging];
-      v17 = [v16 loggingConnection];
+      loggingConnection = [v16 loggingConnection];
 
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
         LOWORD(buf) = 0;
-        _os_log_impl(&dword_22F907000, v17, OS_LOG_TYPE_INFO, "Removed invalid muids from business item muids to resolve", &buf, 2u);
+        _os_log_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_INFO, "Removed invalid muids from business item muids to resolve", &buf, 2u);
       }
     }
 
-    v18 = a5;
-    v19 = v9;
+    errorCopy = error;
+    v19 = blockCopy;
     v20 = dispatch_block_create(0, &__block_literal_global_21);
     buf = 0;
     p_buf = &buf;
@@ -84,10 +84,10 @@
     v33 = v26;
     [(CLSGeoMapQueryHelper *)v22 launchQueryWithCancellerBlock:v36 completionBlock:v31];
     dispatch_block_wait(v26, 0xFFFFFFFFFFFFFFFFLL);
-    v9 = v19;
-    if (v18)
+    blockCopy = v19;
+    if (errorCopy)
     {
-      *v18 = p_buf[5];
+      *errorCopy = p_buf[5];
     }
 
     if (v11 && (v30 = 0, (*(v24 + 2))(v24, &v30, 1.0), v27 = *(v46 + 24) | v30, *(v46 + 24) = v27, (v27 & 1) != 0))
@@ -110,7 +110,7 @@
     _Block_object_dispose(&v39, 8);
     _Block_object_dispose(&buf, 8);
 
-    v8 = v29;
+    dsCopy = v29;
   }
 
   _Block_object_dispose(&v45, 8);
@@ -199,24 +199,24 @@ BOOL __70__CLSBusinessCacheUpdater__resolvedBusinessMUIDs_progressBlock_error___
   return [CLSLocationOfInterest isValidMuid:v2];
 }
 
-- (id)enrichedBusinessItemsByMuidsForMuids:(id)a3 progressBlock:(id)a4
+- (id)enrichedBusinessItemsByMuidsForMuids:(id)muids progressBlock:(id)block
 {
   v79 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = _Block_copy(v7);
+  muidsCopy = muids;
+  blockCopy = block;
+  v8 = _Block_copy(blockCopy);
   v66 = 0;
   v67 = &v66;
   v68 = 0x2020000000;
   v69 = 0;
-  v38 = v7;
+  v38 = blockCopy;
   v39 = v8;
   if (!v8 || (LOBYTE(v58) = 0, (*(v8 + 2))(v8, &v58, 0.0), v9 = *(v67 + 24) | v58, *(v67 + 24) = v9, (v9 & 1) == 0))
   {
-    v37 = [v6 count];
-    v11 = [(CLSBusinessCategoryCache *)self->_businessCategoryCache businessItemsForMuids:v6];
-    v12 = [v6 mutableCopy];
-    v35 = self;
+    v37 = [muidsCopy count];
+    v11 = [(CLSBusinessCategoryCache *)self->_businessCategoryCache businessItemsForMuids:muidsCopy];
+    v12 = [muidsCopy mutableCopy];
+    selfCopy = self;
     v13 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v37];
     v64 = 0u;
     v65 = 0u;
@@ -300,14 +300,14 @@ BOOL __70__CLSBusinessCacheUpdater__resolvedBusinessMUIDs_progressBlock_error___
     v52 = 0x3FC999999999999ALL;
     v50 = &v58;
     v47 = v39;
-    aBlock[4] = v35;
+    aBlock[4] = selfCopy;
     v23 = v22;
     v53 = 1.0 / v21 * 0.8;
     v45 = v23;
     v51 = &v54;
     v46 = v13;
     v24 = _Block_copy(aBlock);
-    v36 = v6;
+    v36 = muidsCopy;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
@@ -339,7 +339,7 @@ LABEL_23:
 
         if (*(v67 + 24) == 1)
         {
-          v6 = v36;
+          muidsCopy = v36;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             *v75 = 67109120;
@@ -364,7 +364,7 @@ LABEL_23:
       }
     }
 
-    v6 = v36;
+    muidsCopy = v36;
     if ([v23 count] && (v55[3] & 1) == 0)
     {
       v24[2](v24);
@@ -518,18 +518,18 @@ uint64_t __78__CLSBusinessCacheUpdater_enrichedBusinessItemsByMuidsForMuids_prog
   return result;
 }
 
-- (id)enrichedBusinessItemsByMuidsForBusinessItems:(id)a3 progressBlock:(id)a4
+- (id)enrichedBusinessItemsByMuidsForBusinessItems:(id)items progressBlock:(id)block
 {
   v88 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v5 = a4;
-  v6 = _Block_copy(v5);
+  itemsCopy = items;
+  blockCopy = block;
+  v6 = _Block_copy(blockCopy);
   v7 = v6;
   v78 = 0;
   v79 = &v78;
   v80 = 0x2020000000;
   v81 = 0;
-  v44 = v5;
+  v44 = blockCopy;
   if (v6 && (LOBYTE(v70) = 0, (*(v6 + 2))(v6, &v70, 0.0), v8 = *(v79 + 24) | v70, *(v79 + 24) = v8, (v8 & 1) != 0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -547,7 +547,7 @@ uint64_t __78__CLSBusinessCacheUpdater_enrichedBusinessItemsByMuidsForMuids_prog
     v11 = MEMORY[0x277D86220];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v12 = [v46 count];
+      v12 = [itemsCopy count];
       LODWORD(buf) = 134217984;
       *(&buf + 4) = v12;
       _os_log_impl(&dword_22F907000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "[CLSBusinessCacheUpdater] Starting to enrich:%lu business items by MUID", &buf, 0xCu);
@@ -555,7 +555,7 @@ uint64_t __78__CLSBusinessCacheUpdater_enrichedBusinessItemsByMuidsForMuids_prog
 
     v45 = v7;
 
-    v13 = [v46 count];
+    v13 = [itemsCopy count];
     v50 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v13];
     v43 = v13;
     v47 = [MEMORY[0x277CBEB18] arrayWithCapacity:v13];
@@ -563,7 +563,7 @@ uint64_t __78__CLSBusinessCacheUpdater_enrichedBusinessItemsByMuidsForMuids_prog
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v14 = v46;
+    v14 = itemsCopy;
     v15 = [v14 countByEnumeratingWithState:&v74 objects:v87 count:16];
     if (v15)
     {
@@ -579,7 +579,7 @@ uint64_t __78__CLSBusinessCacheUpdater_enrichedBusinessItemsByMuidsForMuids_prog
           }
 
           v19 = *(*(&v74 + 1) + 8 * i);
-          v20 = [v19 muid];
+          muid = [v19 muid];
           if ([v19 isEnriched])
           {
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -588,16 +588,16 @@ uint64_t __78__CLSBusinessCacheUpdater_enrichedBusinessItemsByMuidsForMuids_prog
               _os_log_debug_impl(&dword_22F907000, v16, OS_LOG_TYPE_DEBUG, "[CLSBusinessCacheUpdater] Finished enriching business item", &buf, 2u);
             }
 
-            v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v20];
+            v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:muid];
             [v50 setObject:v19 forKeyedSubscript:v21];
           }
 
           else
           {
-            v21 = [(CLSBusinessCategoryCache *)self->_businessCategoryCache businessItemsForMuid:v20];
-            v22 = [v21 isEnriched];
+            v21 = [(CLSBusinessCategoryCache *)self->_businessCategoryCache businessItemsForMuid:muid];
+            isEnriched = [v21 isEnriched];
             v23 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
-            if (v22)
+            if (isEnriched)
             {
               if (v23)
               {
@@ -605,7 +605,7 @@ uint64_t __78__CLSBusinessCacheUpdater_enrichedBusinessItemsByMuidsForMuids_prog
                 _os_log_debug_impl(&dword_22F907000, v16, OS_LOG_TYPE_DEBUG, "[CLSBusinessCacheUpdater] Finished enriching business item from cache", &buf, 2u);
               }
 
-              v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v20];
+              v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:muid];
               [v50 setObject:v21 forKeyedSubscript:v24];
             }
 
@@ -863,16 +863,16 @@ uint64_t __86__CLSBusinessCacheUpdater_enrichedBusinessItemsByMuidsForBusinessIt
   return result;
 }
 
-- (CLSBusinessCacheUpdater)initWithBusinessCategoryCache:(id)a3
+- (CLSBusinessCacheUpdater)initWithBusinessCategoryCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v9.receiver = self;
   v9.super_class = CLSBusinessCacheUpdater;
   v6 = [(CLSBusinessCacheUpdater *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_businessCategoryCache, a3);
+    objc_storeStrong(&v6->_businessCategoryCache, cache);
   }
 
   return v7;

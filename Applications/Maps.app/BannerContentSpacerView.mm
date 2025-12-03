@@ -1,5 +1,5 @@
 @interface BannerContentSpacerView
-- (BannerContentSpacerView)initWithFrame:(CGRect)a3;
+- (BannerContentSpacerView)initWithFrame:(CGRect)frame;
 - (id)accessibilityIdentifier;
 @end
 
@@ -12,11 +12,11 @@
   return NSStringFromClass(v2);
 }
 
-- (BannerContentSpacerView)initWithFrame:(CGRect)a3
+- (BannerContentSpacerView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = BannerContentSpacerView;
-  result = [(BannerContentSpacerView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(BannerContentSpacerView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_axis = -1;

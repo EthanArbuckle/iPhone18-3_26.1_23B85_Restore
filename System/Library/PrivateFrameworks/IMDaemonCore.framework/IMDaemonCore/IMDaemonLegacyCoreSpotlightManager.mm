@@ -1,8 +1,8 @@
 @interface IMDaemonLegacyCoreSpotlightManager
-- (BOOL)_deviceConditionsAllowsSpotlightIndexingForActivity:(id)a3;
+- (BOOL)_deviceConditionsAllowsSpotlightIndexingForActivity:(id)activity;
 - (id)_newSpotlightBatchIndexingXPCCriteria;
 - (int64_t)_indexReason;
-- (void)_indexNextBatchIfNecessaryForActivity:(id)a3;
+- (void)_indexNextBatchIfNecessaryForActivity:(id)activity;
 - (void)_reindexPaused;
 - (void)_reindexResumed;
 - (void)_setReindexReason;
@@ -14,27 +14,27 @@
 
 - (void)_reindexResumed
 {
-  v2 = [MEMORY[0x277D18F10] sharedNotifier];
+  mEMORY[0x277D18F10] = [MEMORY[0x277D18F10] sharedNotifier];
 
-  if (v2)
+  if (mEMORY[0x277D18F10])
   {
     v4 = +[IMDaemonCoreSpotlightUtilities currentClientState];
-    v3 = [MEMORY[0x277D18F10] sharedNotifier];
+    mEMORY[0x277D18F10]2 = [MEMORY[0x277D18F10] sharedNotifier];
     [MEMORY[0x277D1A978] reindexReason];
-    [v3 reindexResumedWithState:v4 reason:IMCoreSpotlightIndexReasonFromReindexReason()];
+    [mEMORY[0x277D18F10]2 reindexResumedWithState:v4 reason:IMCoreSpotlightIndexReasonFromReindexReason()];
   }
 }
 
 - (void)_reindexPaused
 {
-  v2 = [MEMORY[0x277D18F10] sharedNotifier];
+  mEMORY[0x277D18F10] = [MEMORY[0x277D18F10] sharedNotifier];
 
-  if (v2)
+  if (mEMORY[0x277D18F10])
   {
     v4 = +[IMDaemonCoreSpotlightUtilities currentClientState];
-    v3 = [MEMORY[0x277D18F10] sharedNotifier];
+    mEMORY[0x277D18F10]2 = [MEMORY[0x277D18F10] sharedNotifier];
     [MEMORY[0x277D1A978] reindexReason];
-    [v3 reindexPausedWithState:v4 reason:IMCoreSpotlightIndexReasonFromReindexReason()];
+    [mEMORY[0x277D18F10]2 reindexPausedWithState:v4 reason:IMCoreSpotlightIndexReasonFromReindexReason()];
   }
 }
 
@@ -72,7 +72,7 @@
   v5 = objc_alloc_init(IMDSpotlightDaemonClient);
   [(IMDaemonLegacyCoreSpotlightManager *)self setIndexingDelegate:v5];
 
-  v6 = [(IMDaemonLegacyCoreSpotlightManager *)self indexingDelegate];
+  indexingDelegate = [(IMDaemonLegacyCoreSpotlightManager *)self indexingDelegate];
   SpotlightDaemonClientRegister();
 
   if (IMOSLoggingEnabled())
@@ -113,26 +113,26 @@
   xpc_dictionary_set_BOOL(v3, *MEMORY[0x277D86360], 1);
   xpc_dictionary_set_BOOL(v3, *MEMORY[0x277D863A0], 1);
   xpc_dictionary_set_BOOL(v3, *MEMORY[0x277D86380], 1);
-  v4 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v5 = [v4 isIntensiveSpotlightCPUEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntensiveSpotlightCPUEnabled = [mEMORY[0x277D1A9B8] isIntensiveSpotlightCPUEnabled];
 
-  if (v5)
+  if (isIntensiveSpotlightCPUEnabled)
   {
     xpc_dictionary_set_BOOL(v3, *MEMORY[0x277D86248], 1);
   }
 
-  v6 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v7 = [v6 isIntensiveSpotlightMemoryEnabled];
+  mEMORY[0x277D1A9B8]2 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntensiveSpotlightMemoryEnabled = [mEMORY[0x277D1A9B8]2 isIntensiveSpotlightMemoryEnabled];
 
-  if (v7)
+  if (isIntensiveSpotlightMemoryEnabled)
   {
     xpc_dictionary_set_BOOL(v3, *MEMORY[0x277D862E0], 1);
   }
 
-  v8 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v9 = [v8 isIntensiveSpotlightDiskEnabled];
+  mEMORY[0x277D1A9B8]3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntensiveSpotlightDiskEnabled = [mEMORY[0x277D1A9B8]3 isIntensiveSpotlightDiskEnabled];
 
-  if (v9)
+  if (isIntensiveSpotlightDiskEnabled)
   {
     xpc_dictionary_set_BOOL(v3, *MEMORY[0x277D86258], 1);
   }
@@ -140,10 +140,10 @@
   return v3;
 }
 
-- (void)_indexNextBatchIfNecessaryForActivity:(id)a3
+- (void)_indexNextBatchIfNecessaryForActivity:(id)activity
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -161,9 +161,9 @@
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [MEMORY[0x277D1A978] skipIndexing];
+        skipIndexing = [MEMORY[0x277D1A978] skipIndexing];
         v8 = @"NO";
-        if (v7)
+        if (skipIndexing)
         {
           v8 = @"YES";
         }
@@ -194,23 +194,23 @@
     v14[2] = sub_22B535EA4;
     v14[3] = &unk_278702FA0;
     v14[4] = self;
-    v15 = v4;
+    v15 = activityCopy;
     dispatch_group_notify(v11, v12, v14);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_deviceConditionsAllowsSpotlightIndexingForActivity:(id)a3
+- (BOOL)_deviceConditionsAllowsSpotlightIndexingForActivity:(id)activity
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  activityCopy = activity;
+  if (!activityCopy)
   {
     goto LABEL_9;
   }
 
-  v5 = [(IMDaemonLegacyCoreSpotlightManager *)self _shouldDeferXPCActivity:v4];
+  v5 = [(IMDaemonLegacyCoreSpotlightManager *)self _shouldDeferXPCActivity:activityCopy];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -235,10 +235,10 @@
     goto LABEL_9;
   }
 
-  v13 = [MEMORY[0x277CCAC38] processInfo];
-  v14 = [v13 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  if (v14)
+  if (isLowPowerModeEnabled)
   {
     if (IMOSLoggingEnabled())
     {
@@ -287,7 +287,7 @@ LABEL_9:
     }
   }
 
-  if (![(IMDaemonLegacyCoreSpotlightManager *)self _deferXPCActivity:v4]&& IMOSLoggingEnabled())
+  if (![(IMDaemonLegacyCoreSpotlightManager *)self _deferXPCActivity:activityCopy]&& IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))

@@ -1,40 +1,40 @@
 @interface HKPopulationNormsAxisView
-- (HKPopulationNormsAxisView)initWithOrientation:(int64_t)a3 axisLabels:(id)a4;
+- (HKPopulationNormsAxisView)initWithOrientation:(int64_t)orientation axisLabels:(id)labels;
 - (double)minorDimensionSize;
 - (void)layoutSubviews;
 @end
 
 @implementation HKPopulationNormsAxisView
 
-- (HKPopulationNormsAxisView)initWithOrientation:(int64_t)a3 axisLabels:(id)a4
+- (HKPopulationNormsAxisView)initWithOrientation:(int64_t)orientation axisLabels:(id)labels
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  labelsCopy = labels;
   v22.receiver = self;
   v22.super_class = HKPopulationNormsAxisView;
   v9 = [(HKPopulationNormsAxisView *)&v22 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v10 = v9;
   if (v9)
   {
-    v9->_orientation = a3;
-    objc_storeStrong(&v9->_axisLabelValues, a4);
+    v9->_orientation = orientation;
+    objc_storeStrong(&v9->_axisLabelValues, labels);
     if (!v10->_orientation && [(NSArray *)v10->_axisLabelValues count]<= 1)
     {
       [HKPopulationNormsAxisView initWithOrientation:a2 axisLabels:v10];
     }
 
-    v11 = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
+    hk_chartAxisLabelFont = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
     v23 = *MEMORY[0x1E69DB648];
-    v24[0] = v11;
+    v24[0] = hk_chartAxisLabelFont;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     axisLabelAttributes = v10->_axisLabelAttributes;
     v10->_axisLabelAttributes = v12;
 
-    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(labelsCopy, "count")}];
     axisLabelViews = v10->_axisLabelViews;
     v10->_axisLabelViews = v14;
 
-    if ([v8 count])
+    if ([labelsCopy count])
     {
       v16 = 0;
       do
@@ -43,9 +43,9 @@
         v18 = [(NSArray *)v10->_axisLabelValues objectAtIndexedSubscript:v16];
         v19 = [(_HKPopulationNormsAxisLabelView *)v17 initWithLabel:v18];
 
-        [(_HKPopulationNormsAxisLabelView *)v19 setFont:v11];
-        v20 = [MEMORY[0x1E69DC888] hk_chartAxisLabelColor];
-        [(_HKPopulationNormsAxisLabelView *)v19 setTextColor:v20];
+        [(_HKPopulationNormsAxisLabelView *)v19 setFont:hk_chartAxisLabelFont];
+        hk_chartAxisLabelColor = [MEMORY[0x1E69DC888] hk_chartAxisLabelColor];
+        [(_HKPopulationNormsAxisLabelView *)v19 setTextColor:hk_chartAxisLabelColor];
 
         [(HKPopulationNormsAxisView *)v10 addSubview:v19];
         [(NSMutableArray *)v10->_axisLabelViews addObject:v19];
@@ -53,7 +53,7 @@
         ++v16;
       }
 
-      while ([v8 count] > v16);
+      while ([labelsCopy count] > v16);
     }
   }
 
@@ -66,12 +66,12 @@
   v21.super_class = HKPopulationNormsAxisView;
   [(HKPopulationNormsAxisView *)&v21 layoutSubviews];
   orientation = self->_orientation;
-  v4 = [(HKPopulationNormsAxisView *)self layer];
-  [v4 frame];
+  layer = [(HKPopulationNormsAxisView *)self layer];
+  [layer frame];
   Height = CGRectGetHeight(v22);
 
-  v6 = [(HKPopulationNormsAxisView *)self layer];
-  [v6 frame];
+  layer2 = [(HKPopulationNormsAxisView *)self layer];
+  [layer2 frame];
   Width = CGRectGetWidth(v23);
 
   if (!orientation)
@@ -88,9 +88,9 @@
     {
       v11 = [(NSMutableArray *)self->_axisLabelViews objectAtIndexedSubscript:v9];
       v12 = v10 * v9;
-      v13 = [v11 axisLabel];
-      v14 = [v13 stringRepresentation];
-      [v14 sizeWithAttributes:self->_axisLabelAttributes];
+      axisLabel = [v11 axisLabel];
+      stringRepresentation = [axisLabel stringRepresentation];
+      [stringRepresentation sizeWithAttributes:self->_axisLabelAttributes];
       v16 = v15;
       v18 = v17;
 
@@ -129,9 +129,9 @@
   do
   {
     v6 = [(NSMutableArray *)self->_axisLabelViews objectAtIndexedSubscript:v4];
-    v7 = [v6 axisLabel];
-    v8 = [v7 stringRepresentation];
-    [v8 sizeWithAttributes:self->_axisLabelAttributes];
+    axisLabel = [v6 axisLabel];
+    stringRepresentation = [axisLabel stringRepresentation];
+    [stringRepresentation sizeWithAttributes:self->_axisLabelAttributes];
     v10 = v9;
     v12 = v11;
 

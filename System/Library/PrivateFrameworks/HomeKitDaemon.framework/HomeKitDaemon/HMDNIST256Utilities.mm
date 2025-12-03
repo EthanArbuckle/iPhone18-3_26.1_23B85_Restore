@@ -1,22 +1,22 @@
 @interface HMDNIST256Utilities
 + (id)createNIST256KeyPair;
-+ (id)identifier16BytesForKey:(id)a3;
-+ (id)identifier8BytesForKey:(id)a3;
-+ (id)privateKeyFromKeyPairExternalRepresentation:(id)a3;
-+ (id)publicKeyExternalRepresentationFromKeyPairExternalRepresentation:(id)a3;
-+ (id)publicKeyFromKeyPairExternalRepresentation:(id)a3;
++ (id)identifier16BytesForKey:(id)key;
++ (id)identifier8BytesForKey:(id)key;
++ (id)privateKeyFromKeyPairExternalRepresentation:(id)representation;
++ (id)publicKeyExternalRepresentationFromKeyPairExternalRepresentation:(id)representation;
++ (id)publicKeyFromKeyPairExternalRepresentation:(id)representation;
 @end
 
 @implementation HMDNIST256Utilities
 
-+ (id)identifier8BytesForKey:(id)a3
++ (id)identifier8BytesForKey:(id)key
 {
   v10 = *MEMORY[0x277D85DE8];
   memset(&v8, 0, sizeof(v8));
-  v3 = a3;
+  keyCopy = key;
   CC_SHA256_Init(&v8);
   v4 = [MEMORY[0x277CBEB28] dataWithBytes:"key-identifier" length:{14, *v8.count, *&v8.hash[2], *&v8.hash[6], *&v8.wbuf[2], *&v8.wbuf[6], *&v8.wbuf[10], *&v8.wbuf[14]}];
-  [v4 appendData:v3];
+  [v4 appendData:keyCopy];
 
   CC_SHA256_Update(&v8, [v4 bytes], objc_msgSend(v4, "length"));
   CC_SHA256_Final(md, &v8);
@@ -27,14 +27,14 @@
   return v5;
 }
 
-+ (id)identifier16BytesForKey:(id)a3
++ (id)identifier16BytesForKey:(id)key
 {
   v10 = *MEMORY[0x277D85DE8];
   memset(&v8, 0, sizeof(v8));
-  v3 = a3;
+  keyCopy = key;
   CC_SHA256_Init(&v8);
   v4 = [MEMORY[0x277CBEB28] dataWithBytes:"key-identifier" length:{14, *v8.count, *&v8.hash[2], *&v8.hash[6], *&v8.wbuf[2], *&v8.wbuf[6], *&v8.wbuf[10], *&v8.wbuf[14]}];
-  [v4 appendData:v3];
+  [v4 appendData:keyCopy];
 
   CC_SHA256_Update(&v8, [v4 bytes], objc_msgSend(v4, "length"));
   CC_SHA256_Final(md, &v8);
@@ -45,13 +45,13 @@
   return v5;
 }
 
-+ (id)privateKeyFromKeyPairExternalRepresentation:(id)a3
++ (id)privateKeyFromKeyPairExternalRepresentation:(id)representation
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length] == 97)
+  representationCopy = representation;
+  if ([representationCopy length] == 97)
   {
-    v4 = [v3 subdataWithRange:{65, 32}];
+    v4 = [representationCopy subdataWithRange:{65, 32}];
   }
 
   else
@@ -64,7 +64,7 @@
       v10 = 138543618;
       v11 = v7;
       v12 = 2048;
-      v13 = [v3 length];
+      v13 = [representationCopy length];
       _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_ERROR, "%{public}@Unexpected NIST256 key pair external representation length %lu", &v10, 0x16u);
     }
 
@@ -77,13 +77,13 @@
   return v4;
 }
 
-+ (id)publicKeyFromKeyPairExternalRepresentation:(id)a3
++ (id)publicKeyFromKeyPairExternalRepresentation:(id)representation
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length] == 97)
+  representationCopy = representation;
+  if ([representationCopy length] == 97)
   {
-    v4 = [v3 subdataWithRange:{1, 64}];
+    v4 = [representationCopy subdataWithRange:{1, 64}];
   }
 
   else
@@ -96,7 +96,7 @@
       v10 = 138543618;
       v11 = v7;
       v12 = 2048;
-      v13 = [v3 length];
+      v13 = [representationCopy length];
       _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_ERROR, "%{public}@Unexpected NIST256 key pair external representation length %lu", &v10, 0x16u);
     }
 
@@ -109,13 +109,13 @@
   return v4;
 }
 
-+ (id)publicKeyExternalRepresentationFromKeyPairExternalRepresentation:(id)a3
++ (id)publicKeyExternalRepresentationFromKeyPairExternalRepresentation:(id)representation
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length] == 97)
+  representationCopy = representation;
+  if ([representationCopy length] == 97)
   {
-    v4 = [v3 subdataWithRange:{0, 65}];
+    v4 = [representationCopy subdataWithRange:{0, 65}];
   }
 
   else
@@ -128,7 +128,7 @@
       v10 = 138543618;
       v11 = v7;
       v12 = 2048;
-      v13 = [v3 length];
+      v13 = [representationCopy length];
       _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_ERROR, "%{public}@Unexpected NIST256 key pair external representation length %lu", &v10, 0x16u);
     }
 

@@ -1,7 +1,7 @@
 @interface ABPKGestureDetectionResult
 - (ABPKGestureDetectionResult)init;
-- (int)overlayResultOnImage:(__CVBuffer *)a3 withResult:(__CVBuffer *)a4 withColor:;
-- (void)set2dSkeleton:(id)a3 isPoseValid:(BOOL)a4 trackingId:(unsigned int)a5 gestureTypes:(id)a6;
+- (int)overlayResultOnImage:(__CVBuffer *)image withResult:(__CVBuffer *)result withColor:;
+- (void)set2dSkeleton:(id)skeleton isPoseValid:(BOOL)valid trackingId:(unsigned int)id gestureTypes:(id)types;
 @end
 
 @implementation ABPKGestureDetectionResult
@@ -20,21 +20,21 @@
   return v2;
 }
 
-- (void)set2dSkeleton:(id)a3 isPoseValid:(BOOL)a4 trackingId:(unsigned int)a5 gestureTypes:(id)a6
+- (void)set2dSkeleton:(id)skeleton isPoseValid:(BOOL)valid trackingId:(unsigned int)id gestureTypes:(id)types
 {
-  v10 = a3;
-  v11 = a6;
+  skeletonCopy = skeleton;
+  typesCopy = types;
   skeleton2D = self->_skeleton2D;
-  self->_skeleton2D = v10;
-  v14 = v10;
+  self->_skeleton2D = skeletonCopy;
+  v14 = skeletonCopy;
 
-  self->_isPoseValid = a4;
-  self->_trackingId = a5;
+  self->_isPoseValid = valid;
+  self->_trackingId = id;
   gestureTypes = self->_gestureTypes;
-  self->_gestureTypes = v11;
+  self->_gestureTypes = typesCopy;
 }
 
-- (int)overlayResultOnImage:(__CVBuffer *)a3 withResult:(__CVBuffer *)a4 withColor:
+- (int)overlayResultOnImage:(__CVBuffer *)image withResult:(__CVBuffer *)result withColor:
 {
   v13 = v4;
   v8 = __ABPKLogSharedInstance();
@@ -44,7 +44,7 @@
     _os_log_impl(&dword_23EDDC000, v8, OS_LOG_TYPE_DEBUG, " Overlaying Gesture-Detection results on image ", buf, 2u);
   }
 
-  if (!a4)
+  if (!result)
   {
     v9 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -58,7 +58,7 @@
   if (skeleton2D)
   {
     [(ABPK2dSkeleton *)skeleton2D printData];
-    return [(ABPK2dSkeleton *)self->_skeleton2D overlaySkeletonOnImage:a3 withResult:a4 withColor:v13];
+    return [(ABPK2dSkeleton *)self->_skeleton2D overlaySkeletonOnImage:image withResult:result withColor:v13];
   }
 
   else

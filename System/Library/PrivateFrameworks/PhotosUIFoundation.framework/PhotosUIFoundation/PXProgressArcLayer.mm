@@ -1,53 +1,53 @@
 @interface PXProgressArcLayer
 - (PXProgressArcLayer)init;
-- (void)drawInContext:(CGContext *)a3;
-- (void)setEndAngle:(double)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setRadius:(double)a3;
-- (void)setStartAngle:(double)a3;
+- (void)drawInContext:(CGContext *)context;
+- (void)setEndAngle:(double)angle;
+- (void)setLineWidth:(double)width;
+- (void)setRadius:(double)radius;
+- (void)setStartAngle:(double)angle;
 @end
 
 @implementation PXProgressArcLayer
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
-  if (self->_lineWidth != a3)
+  if (self->_lineWidth != width)
   {
-    self->_lineWidth = a3;
+    self->_lineWidth = width;
     [(PXProgressArcLayer *)self setNeedsDisplay];
   }
 }
 
-- (void)setEndAngle:(double)a3
+- (void)setEndAngle:(double)angle
 {
-  if (self->_endAngle != a3)
+  if (self->_endAngle != angle)
   {
-    self->_endAngle = a3;
+    self->_endAngle = angle;
     [(PXProgressArcLayer *)self setNeedsDisplay];
   }
 }
 
-- (void)setStartAngle:(double)a3
+- (void)setStartAngle:(double)angle
 {
-  if (self->_startAngle != a3)
+  if (self->_startAngle != angle)
   {
-    self->_startAngle = a3;
+    self->_startAngle = angle;
     [(PXProgressArcLayer *)self setNeedsDisplay];
   }
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
-  if (self->_radius != a3)
+  if (self->_radius != radius)
   {
-    self->_radius = a3;
+    self->_radius = radius;
     [(PXProgressArcLayer *)self setNeedsDisplay];
   }
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   [(PXProgressArcLayer *)self bounds];
   x = v24.origin.x;
   y = v24.origin.y;
@@ -79,22 +79,22 @@
   *&aBlock[8] = v12;
   *&aBlock[9] = MidX;
   *&aBlock[10] = MidY;
-  aBlock[11] = a3;
+  aBlock[11] = context;
   v18 = _Block_copy(aBlock);
   v18[2](v14);
   (v18[2])(v18, v16);
-  CGContextSetLineWidth(a3, v12);
-  CGContextAddArc(a3, MidX, MidY, v17, v14, v16, 0);
-  v19 = [MEMORY[0x1E69DC888] whiteColor];
-  CGContextSetStrokeColorWithColor(a3, [v19 CGColor]);
+  CGContextSetLineWidth(context, v12);
+  CGContextAddArc(context, MidX, MidY, v17, v14, v16, 0);
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  CGContextSetStrokeColorWithColor(context, [whiteColor CGColor]);
 
-  CGContextStrokePath(a3);
-  CGContextAddArc(a3, MidX, MidY, v17, v16, v14 + 6.28318531, 0);
+  CGContextStrokePath(context);
+  CGContextAddArc(context, MidX, MidY, v17, v16, v14 + 6.28318531, 0);
   v20 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.600000024];
-  CGContextSetStrokeColorWithColor(a3, [v20 CGColor]);
+  CGContextSetStrokeColorWithColor(context, [v20 CGColor]);
 
-  CGContextStrokePath(a3);
-  CGContextRestoreGState(a3);
+  CGContextStrokePath(context);
+  CGContextRestoreGState(context);
 }
 
 void __36__PXProgressArcLayer_drawInContext___block_invoke(uint64_t a1, CGFloat a2)

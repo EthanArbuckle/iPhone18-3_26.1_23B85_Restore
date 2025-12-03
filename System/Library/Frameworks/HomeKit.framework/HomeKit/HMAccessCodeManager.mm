@@ -1,44 +1,44 @@
 @interface HMAccessCodeManager
-+ (BOOL)doesAccessCode:(id)a3 conflictWithExistingAccessCodes:(id)a4;
++ (BOOL)doesAccessCode:(id)code conflictWithExistingAccessCodes:(id)codes;
 + (HMAccessCodeConstraints)accessCodeConstraints;
-+ (id)_createAccessCodeWithLength:(int64_t)a3;
-+ (id)accessCodeManagerUUIDFromHomeUUID:(id)a3;
-+ (id)convertPotentialUniqueIdentifier:(id)a3 toUUIDForUserInHome:(id)a4 flow:(id)a5;
-+ (id)generateAccessCodeValueFromConstraints:(id)a3 accessoryAccessCodes:(id)a4 homeAccessCodes:(id)a5;
++ (id)_createAccessCodeWithLength:(int64_t)length;
++ (id)accessCodeManagerUUIDFromHomeUUID:(id)d;
++ (id)convertPotentialUniqueIdentifier:(id)identifier toUUIDForUserInHome:(id)home flow:(id)flow;
++ (id)generateAccessCodeValueFromConstraints:(id)constraints accessoryAccessCodes:(id)codes homeAccessCodes:(id)accessCodes;
 + (id)logCategory;
-+ (int64_t)_accessCodeLengthFromLowerBound:(int64_t)a3 upperBound:(int64_t)a4;
-+ (int64_t)greatestLowerBoundForAccessCodeLengthFromConstraints:(id)a3;
-+ (int64_t)leastUpperBoundForAccessCodeLengthFromConstraints:(id)a3;
-- (HMAccessCodeManager)initWithHome:(id)a3;
-- (HMAccessCodeManager)initWithHome:(id)a3 context:(id)a4 UUID:(id)a5 notificationCenter:(id)a6;
++ (int64_t)_accessCodeLengthFromLowerBound:(int64_t)bound upperBound:(int64_t)upperBound;
++ (int64_t)greatestLowerBoundForAccessCodeLengthFromConstraints:(id)constraints;
++ (int64_t)leastUpperBoundForAccessCodeLengthFromConstraints:(id)constraints;
+- (HMAccessCodeManager)initWithHome:(id)home;
+- (HMAccessCodeManager)initWithHome:(id)home context:(id)context UUID:(id)d notificationCenter:(id)center;
 - (HMHome)home;
 - (NSArray)accessoriesSupportingAccessCodes;
 - (id)logIdentifier;
-- (void)_sendMessageWithName:(id)a3 payload:(id)a4 responseHandler:(id)a5;
-- (void)_subscribeWithFlow:(id)a3;
-- (void)_unsubscribeWithFlow:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_sendMessageWithName:(id)name payload:(id)payload responseHandler:(id)handler;
+- (void)_subscribeWithFlow:(id)flow;
+- (void)_unsubscribeWithFlow:(id)flow;
+- (void)addObserver:(id)observer;
 - (void)configure;
-- (void)fetchAccessCodeConstraintsFromAccessories:(id)a3 completion:(id)a4;
-- (void)fetchAccessCodesFromAccessories:(id)a3 completion:(id)a4;
-- (void)fetchCachedAccessoryAccessCodesWithCompletion:(id)a3;
-- (void)fetchHomeAccessCodesWithCompletion:(id)a3;
-- (void)generateAccessCodeForUser:(id)a3 completion:(id)a4;
-- (void)handleDaemonReconnectedNotification:(id)a3;
-- (void)handleDidAddAccessoryAccessCodesMessage:(id)a3;
-- (void)handleDidAddHomeAccessCodesMessage:(id)a3;
-- (void)handleDidRemoveAccessoryAccessCodesMessage:(id)a3;
-- (void)handleDidRemoveHomeAccessCodesMessage:(id)a3;
-- (void)handleDidUpdateAccessoryAccessCodesMessage:(id)a3;
-- (void)handleDidUpdateHomeAccessCodesMessage:(id)a3;
-- (void)removeHomeAccessCodeWithValue:(id)a3 completion:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)removeSimpleLabelAccessCode:(id)a3 completion:(id)a4;
-- (void)resetAccessoryAccessCodesWithValueMatchingHomeAccessCode:(id)a3 completion:(id)a4;
-- (void)setAccessCode:(id)a3 forUser:(id)a4 completion:(id)a5;
-- (void)setAccessCode:(id)a3 forUserWithUUID:(id)a4 completion:(id)a5;
-- (void)setUserInformation:(id)a3 forHomeAccessCodeWithValue:(id)a4 completion:(id)a5;
-- (void)submitAccessCodeModificationRequests:(id)a3 completion:(id)a4;
+- (void)fetchAccessCodeConstraintsFromAccessories:(id)accessories completion:(id)completion;
+- (void)fetchAccessCodesFromAccessories:(id)accessories completion:(id)completion;
+- (void)fetchCachedAccessoryAccessCodesWithCompletion:(id)completion;
+- (void)fetchHomeAccessCodesWithCompletion:(id)completion;
+- (void)generateAccessCodeForUser:(id)user completion:(id)completion;
+- (void)handleDaemonReconnectedNotification:(id)notification;
+- (void)handleDidAddAccessoryAccessCodesMessage:(id)message;
+- (void)handleDidAddHomeAccessCodesMessage:(id)message;
+- (void)handleDidRemoveAccessoryAccessCodesMessage:(id)message;
+- (void)handleDidRemoveHomeAccessCodesMessage:(id)message;
+- (void)handleDidUpdateAccessoryAccessCodesMessage:(id)message;
+- (void)handleDidUpdateHomeAccessCodesMessage:(id)message;
+- (void)removeHomeAccessCodeWithValue:(id)value completion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)removeSimpleLabelAccessCode:(id)code completion:(id)completion;
+- (void)resetAccessoryAccessCodesWithValueMatchingHomeAccessCode:(id)code completion:(id)completion;
+- (void)setAccessCode:(id)code forUser:(id)user completion:(id)completion;
+- (void)setAccessCode:(id)code forUserWithUUID:(id)d completion:(id)completion;
+- (void)setUserInformation:(id)information forHomeAccessCodeWithValue:(id)value completion:(id)completion;
+- (void)submitAccessCodeModificationRequests:(id)requests completion:(id)completion;
 - (void)unconfigure;
 @end
 
@@ -53,27 +53,27 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMAccessCodeManager *)self UUID];
-  v3 = [v2 UUIDString];
+  uUID = [(HMAccessCodeManager *)self UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)_unsubscribeWithFlow:(id)a3
+- (void)_unsubscribeWithFlow:(id)flow
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  flowCopy = flow;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v16 = v8;
     v17 = 2112;
-    v18 = v9;
+    v18 = uUID;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Unsubscribing", buf, 0x16u);
   }
 
@@ -82,26 +82,26 @@
   v10 = HMFEncodedRootObject();
   v14 = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-  [(HMAccessCodeManager *)v6 _sendMessageWithName:@"HMAccessCodeManagerUnsubscribeMessage" payload:v11 responseHandler:0, v13];
+  [(HMAccessCodeManager *)selfCopy _sendMessageWithName:@"HMAccessCodeManagerUnsubscribeMessage" payload:v11 responseHandler:0, v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_subscribeWithFlow:(id)a3
+- (void)_subscribeWithFlow:(id)flow
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  flowCopy = flow;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v16 = v8;
     v17 = 2112;
-    v18 = v9;
+    v18 = uUID;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Subscribing", buf, 0x16u);
   }
 
@@ -110,101 +110,101 @@
   v10 = HMFEncodedRootObject();
   v14 = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-  [(HMAccessCodeManager *)v6 _sendMessageWithName:@"HMAccessCodeManagerSubscribeMessage" payload:v11 responseHandler:0, v13];
+  [(HMAccessCodeManager *)selfCopy _sendMessageWithName:@"HMAccessCodeManagerSubscribeMessage" payload:v11 responseHandler:0, v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendMessageWithName:(id)a3 payload:(id)a4 responseHandler:(id)a5
+- (void)_sendMessageWithName:(id)name payload:(id)payload responseHandler:(id)handler
 {
   v8 = MEMORY[0x1E69A2A00];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  payloadCopy = payload;
+  nameCopy = name;
   v12 = [v8 alloc];
-  v13 = [(HMAccessCodeManager *)self messageTargetUUID];
-  v17 = [v12 initWithTarget:v13];
+  messageTargetUUID = [(HMAccessCodeManager *)self messageTargetUUID];
+  v17 = [v12 initWithTarget:messageTargetUUID];
 
-  v14 = [MEMORY[0x1E69A2A10] messageWithName:v11 destination:v17 payload:v10];
+  v14 = [MEMORY[0x1E69A2A10] messageWithName:nameCopy destination:v17 payload:payloadCopy];
 
-  [v14 setResponseHandler:v9];
-  v15 = [(HMAccessCodeManager *)self context];
-  v16 = [v15 messageDispatcher];
-  [v16 sendMessage:v14];
+  [v14 setResponseHandler:handlerCopy];
+  context = [(HMAccessCodeManager *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v14];
 }
 
-- (void)handleDidRemoveHomeAccessCodesMessage:(id)a3
+- (void)handleDidRemoveHomeAccessCodesMessage:(id)message
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 flow];
+  messageCopy = message;
+  flow = [messageCopy flow];
   v41[0] = objc_opt_class();
   v41[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
-  v7 = [v4 unarchivedObjectForKey:@"HMAccessCodeManagerMessageKeyHomeAccessCodeValues" ofClasses:v6];
+  v7 = [messageCopy unarchivedObjectForKey:@"HMAccessCodeManagerMessageKeyHomeAccessCodeValues" ofClasses:v6];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v5 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v36 = v11;
     v37 = 2112;
-    v38 = v12;
+    v38 = uUID;
     v39 = 2112;
     v40 = v7;
     _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling didRemoveHomeAccessCodesMessage with homeAccessCodeValues: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMAccessCodeManager *)v9 home];
-  v14 = v13;
-  if (v13)
+  home = [(HMAccessCodeManager *)selfCopy home];
+  v14 = home;
+  if (home)
   {
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __61__HMAccessCodeManager_handleDidRemoveHomeAccessCodesMessage___block_invoke;
     v33[3] = &unk_1E7547EA0;
-    v34 = v13;
+    v34 = home;
     v15 = [v7 na_map:v33];
     os_unfair_lock_lock_with_options();
-    v16 = [(HMAccessCodeManager *)v9 observers];
-    v17 = [v16 allObjects];
+    observers = [(HMAccessCodeManager *)selfCopy observers];
+    allObjects = [observers allObjects];
 
-    os_unfair_lock_unlock(&v9->_lock.lock);
-    v18 = [(HMAccessCodeManager *)v9 context];
-    v19 = [v18 delegateCaller];
+    os_unfair_lock_unlock(&selfCopy->_lock.lock);
+    context = [(HMAccessCodeManager *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __61__HMAccessCodeManager_handleDidRemoveHomeAccessCodesMessage___block_invoke_2;
     v28[3] = &unk_1E754DE30;
-    v29 = v17;
-    v30 = v9;
-    v31 = v5;
+    v29 = allObjects;
+    v30 = selfCopy;
+    v31 = flow;
     v32 = v15;
     v20 = v15;
-    v21 = v17;
-    [v19 invokeBlock:v28];
+    v21 = allObjects;
+    [delegateCaller invokeBlock:v28];
 
-    [v4 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v9;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v5 UUID];
+      uUID2 = [flow UUID];
       *buf = 138543874;
       v36 = v25;
       v37 = 2112;
-      v38 = v26;
+      v38 = uUID2;
       v39 = 2112;
       v40 = v7;
       _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in handleDidRemoveHomeAccessCodesMessage for homeAccessCodeValues: %@", buf, 0x20u);
@@ -289,78 +289,78 @@ void __61__HMAccessCodeManager_handleDidRemoveHomeAccessCodesMessage___block_inv
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDidUpdateHomeAccessCodesMessage:(id)a3
+- (void)handleDidUpdateHomeAccessCodesMessage:(id)message
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 flow];
+  messageCopy = message;
+  flow = [messageCopy flow];
   v41[0] = objc_opt_class();
   v41[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
-  v7 = [v4 unarchivedObjectForKey:@"HMAccessCodeManagerMessageKeyHomeAccessCodeValues" ofClasses:v6];
+  v7 = [messageCopy unarchivedObjectForKey:@"HMAccessCodeManagerMessageKeyHomeAccessCodeValues" ofClasses:v6];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v5 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v36 = v11;
     v37 = 2112;
-    v38 = v12;
+    v38 = uUID;
     v39 = 2112;
     v40 = v7;
     _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling didUpdateHomeAccessCodesMessage with homeAccessCodeValues: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMAccessCodeManager *)v9 home];
-  v14 = v13;
-  if (v13)
+  home = [(HMAccessCodeManager *)selfCopy home];
+  v14 = home;
+  if (home)
   {
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __61__HMAccessCodeManager_handleDidUpdateHomeAccessCodesMessage___block_invoke;
     v33[3] = &unk_1E7547EA0;
-    v34 = v13;
+    v34 = home;
     v15 = [v7 na_map:v33];
     os_unfair_lock_lock_with_options();
-    v16 = [(HMAccessCodeManager *)v9 observers];
-    v17 = [v16 allObjects];
+    observers = [(HMAccessCodeManager *)selfCopy observers];
+    allObjects = [observers allObjects];
 
-    os_unfair_lock_unlock(&v9->_lock.lock);
-    v18 = [(HMAccessCodeManager *)v9 context];
-    v19 = [v18 delegateCaller];
+    os_unfair_lock_unlock(&selfCopy->_lock.lock);
+    context = [(HMAccessCodeManager *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __61__HMAccessCodeManager_handleDidUpdateHomeAccessCodesMessage___block_invoke_2;
     v28[3] = &unk_1E754DE30;
-    v29 = v17;
-    v30 = v9;
-    v31 = v5;
+    v29 = allObjects;
+    v30 = selfCopy;
+    v31 = flow;
     v32 = v15;
     v20 = v15;
-    v21 = v17;
-    [v19 invokeBlock:v28];
+    v21 = allObjects;
+    [delegateCaller invokeBlock:v28];
 
-    [v4 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v9;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v5 UUID];
+      uUID2 = [flow UUID];
       *buf = 138543874;
       v36 = v25;
       v37 = 2112;
-      v38 = v26;
+      v38 = uUID2;
       v39 = 2112;
       v40 = v7;
       _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in handleDidUpdateHomeAccessCodesMessage for homeAccessCodeValues: %@", buf, 0x20u);
@@ -445,78 +445,78 @@ void __61__HMAccessCodeManager_handleDidUpdateHomeAccessCodesMessage___block_inv
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDidAddHomeAccessCodesMessage:(id)a3
+- (void)handleDidAddHomeAccessCodesMessage:(id)message
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 flow];
+  messageCopy = message;
+  flow = [messageCopy flow];
   v41[0] = objc_opt_class();
   v41[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
-  v7 = [v4 unarchivedObjectForKey:@"HMAccessCodeManagerMessageKeyHomeAccessCodeValues" ofClasses:v6];
+  v7 = [messageCopy unarchivedObjectForKey:@"HMAccessCodeManagerMessageKeyHomeAccessCodeValues" ofClasses:v6];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v5 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v36 = v11;
     v37 = 2112;
-    v38 = v12;
+    v38 = uUID;
     v39 = 2112;
     v40 = v7;
     _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling didAddHomeAccessCodesMessage with homeAccessCodeValues: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMAccessCodeManager *)v9 home];
-  v14 = v13;
-  if (v13)
+  home = [(HMAccessCodeManager *)selfCopy home];
+  v14 = home;
+  if (home)
   {
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __58__HMAccessCodeManager_handleDidAddHomeAccessCodesMessage___block_invoke;
     v33[3] = &unk_1E7547EA0;
-    v34 = v13;
+    v34 = home;
     v15 = [v7 na_map:v33];
     os_unfair_lock_lock_with_options();
-    v16 = [(HMAccessCodeManager *)v9 observers];
-    v17 = [v16 allObjects];
+    observers = [(HMAccessCodeManager *)selfCopy observers];
+    allObjects = [observers allObjects];
 
-    os_unfair_lock_unlock(&v9->_lock.lock);
-    v18 = [(HMAccessCodeManager *)v9 context];
-    v19 = [v18 delegateCaller];
+    os_unfair_lock_unlock(&selfCopy->_lock.lock);
+    context = [(HMAccessCodeManager *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __58__HMAccessCodeManager_handleDidAddHomeAccessCodesMessage___block_invoke_2;
     v28[3] = &unk_1E754DE30;
-    v29 = v17;
-    v30 = v9;
-    v31 = v5;
+    v29 = allObjects;
+    v30 = selfCopy;
+    v31 = flow;
     v32 = v15;
     v20 = v15;
-    v21 = v17;
-    [v19 invokeBlock:v28];
+    v21 = allObjects;
+    [delegateCaller invokeBlock:v28];
 
-    [v4 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v9;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v5 UUID];
+      uUID2 = [flow UUID];
       *buf = 138543874;
       v36 = v25;
       v37 = 2112;
-      v38 = v26;
+      v38 = uUID2;
       v39 = 2112;
       v40 = v7;
       _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in handleDidAddHomeAccessCodesMessage for homeAccessCodeValues: %@", buf, 0x20u);
@@ -601,81 +601,81 @@ void __58__HMAccessCodeManager_handleDidAddHomeAccessCodesMessage___block_invoke
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDidRemoveAccessoryAccessCodesMessage:(id)a3
+- (void)handleDidRemoveAccessoryAccessCodesMessage:(id)message
 {
   v44[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v28 = [v4 flow];
+  messageCopy = message;
+  flow = [messageCopy flow];
   v44[0] = objc_opt_class();
   v44[1] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
-  v6 = [v4 unarchivedObjectForKey:@"HMAccessCodeManagerMessageKeyAccessoryAccessCodeValues" ofClasses:v5];
+  v6 = [messageCopy unarchivedObjectForKey:@"HMAccessCodeManagerMessageKeyAccessoryAccessCodeValues" ofClasses:v5];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v28 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v39 = v10;
     v40 = 2112;
-    v41 = v11;
+    v41 = uUID;
     v42 = 2112;
     v43 = v6;
     _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling didRemoveAccessoryAccessCodesMessage with accessoryAccessCodeValues: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [(HMAccessCodeManager *)v8 home];
-  v13 = v12;
-  if (v12)
+  home = [(HMAccessCodeManager *)selfCopy home];
+  v13 = home;
+  if (home)
   {
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __66__HMAccessCodeManager_handleDidRemoveAccessoryAccessCodesMessage___block_invoke;
     v34[3] = &unk_1E7547EF0;
-    v35 = v12;
-    v36 = v8;
-    v14 = v28;
+    v35 = home;
+    v36 = selfCopy;
+    v14 = flow;
     v37 = v14;
     v15 = [v6 na_map:v34];
     os_unfair_lock_lock_with_options();
-    v16 = [(HMAccessCodeManager *)v8 observers];
-    v17 = [v16 allObjects];
+    observers = [(HMAccessCodeManager *)selfCopy observers];
+    allObjects = [observers allObjects];
 
-    os_unfair_lock_unlock(&v8->_lock.lock);
-    v18 = [(HMAccessCodeManager *)v8 context];
-    v19 = [v18 delegateCaller];
+    os_unfair_lock_unlock(&selfCopy->_lock.lock);
+    context = [(HMAccessCodeManager *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __66__HMAccessCodeManager_handleDidRemoveAccessoryAccessCodesMessage___block_invoke_193;
     v29[3] = &unk_1E754DE30;
-    v30 = v17;
-    v31 = v8;
+    v30 = allObjects;
+    v31 = selfCopy;
     v32 = v14;
     v33 = v15;
     v20 = v15;
-    v21 = v17;
-    [v19 invokeBlock:v29];
+    v21 = allObjects;
+    [delegateCaller invokeBlock:v29];
 
-    [v4 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v8;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v28 UUID];
+      uUID2 = [flow UUID];
       *buf = 138543874;
       v39 = v25;
       v40 = 2112;
-      v41 = v26;
+      v41 = uUID2;
       v42 = 2112;
       v43 = v6;
       _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in handleDidRemoveAccessoryAccessCodesMessage for accessoryAccessCodeValues: %@", buf, 0x20u);
@@ -801,81 +801,81 @@ void __66__HMAccessCodeManager_handleDidRemoveAccessoryAccessCodesMessage___bloc
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDidUpdateAccessoryAccessCodesMessage:(id)a3
+- (void)handleDidUpdateAccessoryAccessCodesMessage:(id)message
 {
   v44[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v28 = [v4 flow];
+  messageCopy = message;
+  flow = [messageCopy flow];
   v44[0] = objc_opt_class();
   v44[1] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
-  v6 = [v4 unarchivedObjectForKey:@"HMAccessCodeManagerMessageKeyAccessoryAccessCodeValues" ofClasses:v5];
+  v6 = [messageCopy unarchivedObjectForKey:@"HMAccessCodeManagerMessageKeyAccessoryAccessCodeValues" ofClasses:v5];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v28 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v39 = v10;
     v40 = 2112;
-    v41 = v11;
+    v41 = uUID;
     v42 = 2112;
     v43 = v6;
     _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling didUpdateAccessoryAccessCodesMessage with accessoryAccessCodeValues: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [(HMAccessCodeManager *)v8 home];
-  v13 = v12;
-  if (v12)
+  home = [(HMAccessCodeManager *)selfCopy home];
+  v13 = home;
+  if (home)
   {
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __66__HMAccessCodeManager_handleDidUpdateAccessoryAccessCodesMessage___block_invoke;
     v34[3] = &unk_1E7547EF0;
-    v35 = v12;
-    v36 = v8;
-    v14 = v28;
+    v35 = home;
+    v36 = selfCopy;
+    v14 = flow;
     v37 = v14;
     v15 = [v6 na_map:v34];
     os_unfair_lock_lock_with_options();
-    v16 = [(HMAccessCodeManager *)v8 observers];
-    v17 = [v16 allObjects];
+    observers = [(HMAccessCodeManager *)selfCopy observers];
+    allObjects = [observers allObjects];
 
-    os_unfair_lock_unlock(&v8->_lock.lock);
-    v18 = [(HMAccessCodeManager *)v8 context];
-    v19 = [v18 delegateCaller];
+    os_unfair_lock_unlock(&selfCopy->_lock.lock);
+    context = [(HMAccessCodeManager *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __66__HMAccessCodeManager_handleDidUpdateAccessoryAccessCodesMessage___block_invoke_190;
     v29[3] = &unk_1E754DE30;
-    v30 = v17;
-    v31 = v8;
+    v30 = allObjects;
+    v31 = selfCopy;
     v32 = v14;
     v33 = v15;
     v20 = v15;
-    v21 = v17;
-    [v19 invokeBlock:v29];
+    v21 = allObjects;
+    [delegateCaller invokeBlock:v29];
 
-    [v4 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v8;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v28 UUID];
+      uUID2 = [flow UUID];
       *buf = 138543874;
       v39 = v25;
       v40 = 2112;
-      v41 = v26;
+      v41 = uUID2;
       v42 = 2112;
       v43 = v6;
       _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in handleDidUpdateAccessoryAccessCodesMessage for accessoryAccessCodeValues: %@", buf, 0x20u);
@@ -1001,81 +1001,81 @@ void __66__HMAccessCodeManager_handleDidUpdateAccessoryAccessCodesMessage___bloc
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDidAddAccessoryAccessCodesMessage:(id)a3
+- (void)handleDidAddAccessoryAccessCodesMessage:(id)message
 {
   v44[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v28 = [v4 flow];
+  messageCopy = message;
+  flow = [messageCopy flow];
   v44[0] = objc_opt_class();
   v44[1] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
-  v6 = [v4 unarchivedObjectForKey:@"HMAccessCodeManagerMessageKeyAccessoryAccessCodeValues" ofClasses:v5];
+  v6 = [messageCopy unarchivedObjectForKey:@"HMAccessCodeManagerMessageKeyAccessoryAccessCodeValues" ofClasses:v5];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v28 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v39 = v10;
     v40 = 2112;
-    v41 = v11;
+    v41 = uUID;
     v42 = 2112;
     v43 = v6;
     _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling didAddAccessoryAccessCodesMessage with accessoryAccessCodeValues: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [(HMAccessCodeManager *)v8 home];
-  v13 = v12;
-  if (v12)
+  home = [(HMAccessCodeManager *)selfCopy home];
+  v13 = home;
+  if (home)
   {
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __63__HMAccessCodeManager_handleDidAddAccessoryAccessCodesMessage___block_invoke;
     v34[3] = &unk_1E7547EF0;
-    v35 = v12;
-    v36 = v8;
-    v14 = v28;
+    v35 = home;
+    v36 = selfCopy;
+    v14 = flow;
     v37 = v14;
     v15 = [v6 na_map:v34];
     os_unfair_lock_lock_with_options();
-    v16 = [(HMAccessCodeManager *)v8 observers];
-    v17 = [v16 allObjects];
+    observers = [(HMAccessCodeManager *)selfCopy observers];
+    allObjects = [observers allObjects];
 
-    os_unfair_lock_unlock(&v8->_lock.lock);
-    v18 = [(HMAccessCodeManager *)v8 context];
-    v19 = [v18 delegateCaller];
+    os_unfair_lock_unlock(&selfCopy->_lock.lock);
+    context = [(HMAccessCodeManager *)selfCopy context];
+    delegateCaller = [context delegateCaller];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __63__HMAccessCodeManager_handleDidAddAccessoryAccessCodesMessage___block_invoke_187;
     v29[3] = &unk_1E754DE30;
-    v30 = v17;
-    v31 = v8;
+    v30 = allObjects;
+    v31 = selfCopy;
     v32 = v14;
     v33 = v15;
     v20 = v15;
-    v21 = v17;
-    [v19 invokeBlock:v29];
+    v21 = allObjects;
+    [delegateCaller invokeBlock:v29];
 
-    [v4 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v8;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v28 UUID];
+      uUID2 = [flow UUID];
       *buf = 138543874;
       v39 = v25;
       v40 = 2112;
-      v41 = v26;
+      v41 = uUID2;
       v42 = 2112;
       v43 = v6;
       _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in handleDidAddAccessoryAccessCodesMessage for accessoryAccessCodeValues: %@", buf, 0x20u);
@@ -1201,64 +1201,64 @@ void __63__HMAccessCodeManager_handleDidAddAccessoryAccessCodesMessage___block_i
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDaemonReconnectedNotification:(id)a3
+- (void)handleDaemonReconnectedNotification:(id)notification
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  notificationCopy = notification;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 UUID];
+    uUID = [internalOnlyInitializer UUID];
     v14 = 138543618;
     v15 = v9;
     v16 = 2112;
-    v17 = v10;
+    v17 = uUID;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Handling daemon reconnected notification by reconnecting to daemon if necessary", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   os_unfair_lock_lock_with_options();
-  v11 = [(HMAccessCodeManager *)v7 observers];
-  v12 = [v11 count] == 0;
+  observers = [(HMAccessCodeManager *)selfCopy observers];
+  v12 = [observers count] == 0;
 
-  os_unfair_lock_unlock(&v7->_lock.lock);
+  os_unfair_lock_unlock(&selfCopy->_lock.lock);
   if (!v12)
   {
-    [(HMAccessCodeManager *)v7 _subscribeWithFlow:v5];
+    [(HMAccessCodeManager *)selfCopy _subscribeWithFlow:internalOnlyInitializer];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCachedAccessoryAccessCodesWithCompletion:(id)a3
+- (void)fetchCachedAccessoryAccessCodesWithCompletion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  completionCopy = completion;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138543618;
     v42 = v9;
     v43 = 2112;
-    v44 = v10;
+    v44 = uUID;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Fetching cached accessory access codes", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  if (!v4)
+  if (!completionCopy)
   {
     v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessCodeManager fetchCachedAccessoryAccessCodesWithCompletion:]", @"completion"];
     v30 = objc_autoreleasePoolPush();
-    v31 = v7;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
@@ -1275,14 +1275,14 @@ void __63__HMAccessCodeManager_handleDidAddAccessoryAccessCodesMessage___block_i
     objc_exception_throw(v34);
   }
 
-  v11 = [(HMAccessCodeManager *)v7 context];
+  context = [(HMAccessCodeManager *)selfCopy context];
 
-  if (v11)
+  if (context)
   {
-    v12 = [(HMAccessCodeManager *)v7 home];
-    if (v12)
+    home = [(HMAccessCodeManager *)selfCopy home];
+    if (home)
     {
-      v13 = v12;
+      v13 = home;
       v39 = *MEMORY[0x1E69A29A8];
       v14 = HMFEncodedRootObject();
       v40 = v14;
@@ -1291,33 +1291,33 @@ void __63__HMAccessCodeManager_handleDidAddAccessoryAccessCodesMessage___block_i
       v35[1] = 3221225472;
       v35[2] = __69__HMAccessCodeManager_fetchCachedAccessoryAccessCodesWithCompletion___block_invoke;
       v35[3] = &unk_1E754D030;
-      v35[4] = v7;
-      v36 = v5;
-      v38 = v4;
+      v35[4] = selfCopy;
+      v36 = internalOnlyInitializer;
+      v38 = completionCopy;
       v16 = v13;
       v37 = v16;
-      [(HMAccessCodeManager *)v7 _sendMessageWithName:@"HMAccessCodeManagerFetchCachedAccessCodesMessage" payload:v15 responseHandler:v35];
+      [(HMAccessCodeManager *)selfCopy _sendMessageWithName:@"HMAccessCodeManagerFetchCachedAccessCodesMessage" payload:v15 responseHandler:v35];
     }
 
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = v7;
+      v23 = selfCopy;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v25 = HMFGetLogIdentifier();
-        v26 = [v5 UUID];
+        uUID2 = [internalOnlyInitializer UUID];
         *buf = 138543618;
         v42 = v25;
         v43 = 2112;
-        v44 = v26;
+        v44 = uUID2;
         _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in fetchCachedAccessoryAccessCodesWithCompletion", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v22);
       v27 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      (*(v4 + 2))(v4, 0, v27);
+      (*(completionCopy + 2))(completionCopy, 0, v27);
 
       v16 = 0;
     }
@@ -1326,16 +1326,16 @@ void __63__HMAccessCodeManager_handleDidAddAccessoryAccessCodesMessage___block_i
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v7;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [v5 UUID];
+      uUID3 = [internalOnlyInitializer UUID];
       *buf = 138543874;
       v42 = v20;
       v43 = 2112;
-      v44 = v21;
+      v44 = uUID3;
       v45 = 2080;
       v46 = "[HMAccessCodeManager fetchCachedAccessoryAccessCodesWithCompletion:]";
       _os_log_impl(&dword_19BB39000, v19, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Nil context, invoking completion - %s", buf, 0x20u);
@@ -1343,7 +1343,7 @@ void __63__HMAccessCodeManager_handleDidAddAccessoryAccessCodesMessage___block_i
 
     objc_autoreleasePoolPop(v17);
     v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 
   v28 = *MEMORY[0x1E69E9840];
@@ -1529,34 +1529,34 @@ uint64_t __69__HMAccessCodeManager_fetchCachedAccessoryAccessCodesWithCompletion
   return result;
 }
 
-- (void)resetAccessoryAccessCodesWithValueMatchingHomeAccessCode:(id)a3 completion:(id)a4
+- (void)resetAccessoryAccessCodesWithValueMatchingHomeAccessCode:(id)code completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  codeCopy = code;
+  completionCopy = completion;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138543874;
     v45 = v12;
     v46 = 2112;
-    v47 = v13;
+    v47 = uUID;
     v48 = 2112;
-    v49 = v6;
+    v49 = codeCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Resetting accessory access codes with value matching home access code: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  if (!v7)
+  if (!completionCopy)
   {
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessCodeManager resetAccessoryAccessCodesWithValueMatchingHomeAccessCode:completion:]", @"completion"];
     v32 = objc_autoreleasePoolPush();
-    v33 = v10;
+    v33 = selfCopy;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -1573,16 +1573,16 @@ uint64_t __69__HMAccessCodeManager_fetchCachedAccessoryAccessCodesWithCompletion
     objc_exception_throw(v36);
   }
 
-  v14 = [(HMAccessCodeManager *)v10 context];
+  context = [(HMAccessCodeManager *)selfCopy context];
 
-  if (v14)
+  if (context)
   {
-    v15 = [(HMAccessCodeManager *)v10 home];
-    if (v15)
+    home = [(HMAccessCodeManager *)selfCopy home];
+    if (home)
     {
-      v16 = [v6 createHomeAccessCodeValue];
+      createHomeAccessCodeValue = [codeCopy createHomeAccessCodeValue];
       v42[0] = @"HMAccessCodeManagerMessageKeyHomeAccessCodeValue";
-      v17 = encodeRootObject(v16);
+      v17 = encodeRootObject(createHomeAccessCodeValue);
       v43[0] = v17;
       v42[1] = *MEMORY[0x1E69A29A8];
       v18 = HMFEncodedRootObject();
@@ -1593,59 +1593,59 @@ uint64_t __69__HMAccessCodeManager_fetchCachedAccessoryAccessCodesWithCompletion
       v37[1] = 3221225472;
       v37[2] = __91__HMAccessCodeManager_resetAccessoryAccessCodesWithValueMatchingHomeAccessCode_completion___block_invoke;
       v37[3] = &unk_1E754B6C8;
-      v37[4] = v10;
-      v38 = v8;
-      v39 = v6;
-      v41 = v7;
-      v40 = v15;
-      [(HMAccessCodeManager *)v10 _sendMessageWithName:@"HMAccessCodeManagerResetAccessoryAccessCodesMessage" payload:v19 responseHandler:v37];
+      v37[4] = selfCopy;
+      v38 = internalOnlyInitializer;
+      v39 = codeCopy;
+      v41 = completionCopy;
+      v40 = home;
+      [(HMAccessCodeManager *)selfCopy _sendMessageWithName:@"HMAccessCodeManagerResetAccessoryAccessCodesMessage" payload:v19 responseHandler:v37];
     }
 
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = v10;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v8 UUID];
+        uUID2 = [internalOnlyInitializer UUID];
         *buf = 138543874;
         v45 = v28;
         v46 = 2112;
-        v47 = v29;
+        v47 = uUID2;
         v48 = 2112;
-        v49 = v6;
+        v49 = codeCopy;
         _os_log_impl(&dword_19BB39000, v27, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in resetAccessoryAccessCodesWithValueMatchingHomeAccessCode for access code: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v25);
-      v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      (*(v7 + 2))(v7, 0, v16);
+      createHomeAccessCodeValue = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+      (*(completionCopy + 2))(completionCopy, 0, createHomeAccessCodeValue);
     }
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v10;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v8 UUID];
+      uUID3 = [internalOnlyInitializer UUID];
       *buf = 138543874;
       v45 = v23;
       v46 = 2112;
-      v47 = v24;
+      v47 = uUID3;
       v48 = 2080;
       v49 = "[HMAccessCodeManager resetAccessoryAccessCodesWithValueMatchingHomeAccessCode:completion:]";
       _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Nil context, invoking completion - %s", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v20);
-    v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, 0, v15);
+    home = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(completionCopy + 2))(completionCopy, 0, home);
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -1834,37 +1834,37 @@ uint64_t __91__HMAccessCodeManager_resetAccessoryAccessCodesWithValueMatchingHom
   return result;
 }
 
-- (void)setAccessCode:(id)a3 forUserWithUUID:(id)a4 completion:(id)a5
+- (void)setAccessCode:(id)code forUserWithUUID:(id)d completion:(id)completion
 {
   v66 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  codeCopy = code;
+  dCopy = d;
+  completionCopy = completion;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138544130;
     v59 = v15;
     v60 = 2112;
-    v61 = v16;
+    v61 = uUID;
     v62 = 2112;
-    v63 = v8;
+    v63 = codeCopy;
     v64 = 2112;
-    v65 = v9;
+    v65 = dCopy;
     _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Setting access code: %@ for user identifier: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v12);
-  if (!v10)
+  if (!completionCopy)
   {
     v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessCodeManager setAccessCode:forUserWithUUID:completion:]", @"completion"];
     v44 = objc_autoreleasePoolPush();
-    v45 = v13;
+    v45 = selfCopy;
     v46 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
@@ -1881,27 +1881,27 @@ uint64_t __91__HMAccessCodeManager_resetAccessoryAccessCodesWithValueMatchingHom
     objc_exception_throw(v48);
   }
 
-  v17 = [(HMAccessCodeManager *)v13 context];
+  context = [(HMAccessCodeManager *)selfCopy context];
 
-  if (v17)
+  if (context)
   {
-    v18 = [(HMAccessCodeManager *)v13 home];
-    if (v18)
+    home = [(HMAccessCodeManager *)selfCopy home];
+    if (home)
     {
-      v49 = v9;
-      v50 = v8;
-      v19 = [HMAccessCodeManager convertPotentialUniqueIdentifier:v9 toUUIDForUserInHome:v18 flow:v11];
+      v49 = dCopy;
+      v50 = codeCopy;
+      v19 = [HMAccessCodeManager convertPotentialUniqueIdentifier:dCopy toUUIDForUserInHome:home flow:internalOnlyInitializer];
       v20 = objc_autoreleasePoolPush();
-      v21 = v13;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v23 = HMFGetLogIdentifier();
-        v24 = [v11 UUID];
+        uUID2 = [internalOnlyInitializer UUID];
         *buf = 138543874;
         v59 = v23;
         v60 = 2112;
-        v61 = v24;
+        v61 = uUID2;
         v62 = 2112;
         v63 = v19;
         _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] User UUID: %@", buf, 0x20u);
@@ -1910,41 +1910,41 @@ uint64_t __91__HMAccessCodeManager_resetAccessoryAccessCodesWithValueMatchingHom
       objc_autoreleasePoolPop(v20);
       v25 = MEMORY[0x1E695DF90];
       v56[0] = @"HMAccessCodeManagerMessageKeyUserUUIDString";
-      v26 = [v19 UUIDString];
-      v57[0] = v26;
+      uUIDString = [v19 UUIDString];
+      v57[0] = uUIDString;
       v56[1] = *MEMORY[0x1E69A29A8];
       v27 = HMFEncodedRootObject();
       v57[1] = v27;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:2];
       v29 = [v25 dictionaryWithDictionary:v28];
 
-      v8 = v50;
+      codeCopy = v50;
       [v29 setObject:v50 forKeyedSubscript:@"HMAccessCodeManagerMessageKeyAccessCodeString"];
       v51[0] = MEMORY[0x1E69E9820];
       v51[1] = 3221225472;
       v51[2] = __64__HMAccessCodeManager_setAccessCode_forUserWithUUID_completion___block_invoke;
       v51[3] = &unk_1E754B6C8;
       v51[4] = v21;
-      v52 = v11;
+      v52 = internalOnlyInitializer;
       v53 = v19;
-      v55 = v10;
-      v54 = v18;
+      v55 = completionCopy;
+      v54 = home;
       v30 = v19;
       [(HMAccessCodeManager *)v21 _sendMessageWithName:@"HMAccessCodeManagerSetAccessCodeForUserMessage" payload:v29 responseHandler:v51];
 
-      v9 = v49;
+      dCopy = v49;
     }
 
     else
     {
       v36 = objc_autoreleasePoolPush();
-      v37 = v13;
+      v37 = selfCopy;
       v38 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
         v39 = HMFGetLogIdentifier();
-        [v11 UUID];
-        v41 = v40 = v8;
+        [internalOnlyInitializer UUID];
+        v41 = v40 = codeCopy;
         *buf = 138543874;
         v59 = v39;
         v60 = 2112;
@@ -1953,36 +1953,36 @@ uint64_t __91__HMAccessCodeManager_resetAccessoryAccessCodesWithValueMatchingHom
         v63 = v40;
         _os_log_impl(&dword_19BB39000, v38, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in setAccessCode for access code: %@", buf, 0x20u);
 
-        v8 = v40;
+        codeCopy = v40;
       }
 
       objc_autoreleasePoolPop(v36);
       v29 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      (*(v10 + 2))(v10, 0, v29);
+      (*(completionCopy + 2))(completionCopy, 0, v29);
     }
   }
 
   else
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = v13;
+    v32 = selfCopy;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       v34 = HMFGetLogIdentifier();
-      v35 = [v11 UUID];
+      uUID3 = [internalOnlyInitializer UUID];
       *buf = 138543874;
       v59 = v34;
       v60 = 2112;
-      v61 = v35;
+      v61 = uUID3;
       v62 = 2080;
       v63 = "[HMAccessCodeManager setAccessCode:forUserWithUUID:completion:]";
       _os_log_impl(&dword_19BB39000, v33, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Nil context, invoking completion - %s", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v31);
-    v18 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v10 + 2))(v10, 0, v18);
+    home = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(completionCopy + 2))(completionCopy, 0, home);
   }
 
   v42 = *MEMORY[0x1E69E9840];
@@ -2174,42 +2174,42 @@ uint64_t __64__HMAccessCodeManager_setAccessCode_forUserWithUUID_completion___bl
   return result;
 }
 
-- (void)setAccessCode:(id)a3 forUser:(id)a4 completion:(id)a5
+- (void)setAccessCode:(id)code forUser:(id)user completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 uuid];
-  [(HMAccessCodeManager *)self setAccessCode:v9 forUserWithUUID:v10 completion:v8];
+  completionCopy = completion;
+  codeCopy = code;
+  uuid = [user uuid];
+  [(HMAccessCodeManager *)self setAccessCode:codeCopy forUserWithUUID:uuid completion:completionCopy];
 }
 
-- (void)generateAccessCodeForUser:(id)a3 completion:(id)a4
+- (void)generateAccessCodeForUser:(id)user completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  userCopy = user;
+  completionCopy = completion;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138543874;
     v45 = v12;
     v46 = 2112;
-    v47 = v13;
+    v47 = uUID;
     v48 = 2112;
-    v49 = v6;
+    v49 = userCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Generating new access code for user: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  if (!v7)
+  if (!completionCopy)
   {
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessCodeManager generateAccessCodeForUser:completion:]", @"completion"];
     v32 = objc_autoreleasePoolPush();
-    v33 = v10;
+    v33 = selfCopy;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -2226,17 +2226,17 @@ uint64_t __64__HMAccessCodeManager_setAccessCode_forUserWithUUID_completion___bl
     objc_exception_throw(v36);
   }
 
-  v14 = [(HMAccessCodeManager *)v10 context];
+  context = [(HMAccessCodeManager *)selfCopy context];
 
-  if (v14)
+  if (context)
   {
-    v15 = [(HMAccessCodeManager *)v10 home];
-    if (v15)
+    home = [(HMAccessCodeManager *)selfCopy home];
+    if (home)
     {
       v42[0] = @"HMAccessCodeManagerMessageKeyUserUUIDString";
-      v16 = [v6 uuid];
-      v17 = [v16 UUIDString];
-      v43[0] = v17;
+      uuid = [userCopy uuid];
+      uUIDString = [uuid UUIDString];
+      v43[0] = uUIDString;
       v42[1] = *MEMORY[0x1E69A29A8];
       v18 = HMFEncodedRootObject();
       v43[1] = v18;
@@ -2246,59 +2246,59 @@ uint64_t __64__HMAccessCodeManager_setAccessCode_forUserWithUUID_completion___bl
       v37[1] = 3221225472;
       v37[2] = __60__HMAccessCodeManager_generateAccessCodeForUser_completion___block_invoke;
       v37[3] = &unk_1E754B6C8;
-      v37[4] = v10;
-      v38 = v8;
-      v39 = v6;
-      v41 = v7;
-      v40 = v15;
-      [(HMAccessCodeManager *)v10 _sendMessageWithName:@"HMAccessCodeManagerGenerateNewUserAccessCodeMessage" payload:v19 responseHandler:v37];
+      v37[4] = selfCopy;
+      v38 = internalOnlyInitializer;
+      v39 = userCopy;
+      v41 = completionCopy;
+      v40 = home;
+      [(HMAccessCodeManager *)selfCopy _sendMessageWithName:@"HMAccessCodeManagerGenerateNewUserAccessCodeMessage" payload:v19 responseHandler:v37];
     }
 
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = v10;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v8 UUID];
+        uUID2 = [internalOnlyInitializer UUID];
         *buf = 138543874;
         v45 = v28;
         v46 = 2112;
-        v47 = v29;
+        v47 = uUID2;
         v48 = 2112;
-        v49 = v6;
+        v49 = userCopy;
         _os_log_impl(&dword_19BB39000, v27, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in generateAccessCodeForUser for user: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v25);
       v19 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      (*(v7 + 2))(v7, 0, v19);
+      (*(completionCopy + 2))(completionCopy, 0, v19);
     }
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v10;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v8 UUID];
+      uUID3 = [internalOnlyInitializer UUID];
       *buf = 138543874;
       v45 = v23;
       v46 = 2112;
-      v47 = v24;
+      v47 = uUID3;
       v48 = 2080;
       v49 = "[HMAccessCodeManager generateAccessCodeForUser:completion:]";
       _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Nil context, invoking completion - %s", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v20);
-    v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, 0, v15);
+    home = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(completionCopy + 2))(completionCopy, 0, home);
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -2487,34 +2487,34 @@ uint64_t __60__HMAccessCodeManager_generateAccessCodeForUser_completion___block_
   return result;
 }
 
-- (void)submitAccessCodeModificationRequests:(id)a3 completion:(id)a4
+- (void)submitAccessCodeModificationRequests:(id)requests completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  requestsCopy = requests;
+  completionCopy = completion;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138543874;
     v45 = v12;
     v46 = 2112;
-    v47 = v13;
+    v47 = uUID;
     v48 = 2112;
-    v49 = v6;
+    v49 = requestsCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Submitting access code modification requests: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  if (!v7)
+  if (!completionCopy)
   {
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessCodeManager submitAccessCodeModificationRequests:completion:]", @"completion"];
     v32 = objc_autoreleasePoolPush();
-    v33 = v10;
+    v33 = selfCopy;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -2531,14 +2531,14 @@ uint64_t __60__HMAccessCodeManager_generateAccessCodeForUser_completion___block_
     objc_exception_throw(v36);
   }
 
-  v14 = [(HMAccessCodeManager *)v10 context];
+  context = [(HMAccessCodeManager *)selfCopy context];
 
-  if (v14)
+  if (context)
   {
-    v15 = [(HMAccessCodeManager *)v10 home];
-    if (v15)
+    home = [(HMAccessCodeManager *)selfCopy home];
+    if (home)
     {
-      v16 = [HMAccessCodeManager valueObjectsForAccessCodeModificationRequests:v6 home:v15];
+      v16 = [HMAccessCodeManager valueObjectsForAccessCodeModificationRequests:requestsCopy home:home];
       v42[0] = @"HMAccessCodeManagerMessageKeyAccessCodeModificationRequests";
       v17 = encodeRootObject(v16);
       v43[0] = v17;
@@ -2551,59 +2551,59 @@ uint64_t __60__HMAccessCodeManager_generateAccessCodeForUser_completion___block_
       v37[1] = 3221225472;
       v37[2] = __71__HMAccessCodeManager_submitAccessCodeModificationRequests_completion___block_invoke;
       v37[3] = &unk_1E754B6C8;
-      v37[4] = v10;
-      v38 = v8;
-      v39 = v6;
-      v41 = v7;
-      v40 = v15;
-      [(HMAccessCodeManager *)v10 _sendMessageWithName:@"HMAccessCodeManagerSubmitAccessCodeModificationRequestsMessage" payload:v19 responseHandler:v37];
+      v37[4] = selfCopy;
+      v38 = internalOnlyInitializer;
+      v39 = requestsCopy;
+      v41 = completionCopy;
+      v40 = home;
+      [(HMAccessCodeManager *)selfCopy _sendMessageWithName:@"HMAccessCodeManagerSubmitAccessCodeModificationRequestsMessage" payload:v19 responseHandler:v37];
     }
 
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = v10;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v8 UUID];
+        uUID2 = [internalOnlyInitializer UUID];
         *buf = 138543874;
         v45 = v28;
         v46 = 2112;
-        v47 = v29;
+        v47 = uUID2;
         v48 = 2112;
-        v49 = v6;
+        v49 = requestsCopy;
         _os_log_impl(&dword_19BB39000, v27, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in submitAccessCodeModificationRequests for modification requests: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v25);
       v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      (*(v7 + 2))(v7, 0, v16);
+      (*(completionCopy + 2))(completionCopy, 0, v16);
     }
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v10;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v8 UUID];
+      uUID3 = [internalOnlyInitializer UUID];
       *buf = 138543874;
       v45 = v23;
       v46 = 2112;
-      v47 = v24;
+      v47 = uUID3;
       v48 = 2080;
       v49 = "[HMAccessCodeManager submitAccessCodeModificationRequests:completion:]";
       _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Nil context, invoking completion - %s", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v20);
-    v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, 0, v15);
+    home = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(completionCopy + 2))(completionCopy, 0, home);
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -2792,32 +2792,32 @@ uint64_t __71__HMAccessCodeManager_submitAccessCodeModificationRequests_completi
   return result;
 }
 
-- (void)removeSimpleLabelAccessCode:(id)a3 completion:(id)a4
+- (void)removeSimpleLabelAccessCode:(id)code completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  codeCopy = code;
+  completionCopy = completion;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138543618;
     v43 = v12;
     v44 = 2112;
-    v45 = v13;
+    v45 = uUID;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Removing simple label access code", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  if (!v7)
+  if (!completionCopy)
   {
     v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessCodeManager removeSimpleLabelAccessCode:completion:]", @"completion"];
     v31 = objc_autoreleasePoolPush();
-    v32 = v10;
+    v32 = selfCopy;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -2834,14 +2834,14 @@ uint64_t __71__HMAccessCodeManager_submitAccessCodeModificationRequests_completi
     objc_exception_throw(v35);
   }
 
-  v14 = [(HMAccessCodeManager *)v10 context];
+  context = [(HMAccessCodeManager *)selfCopy context];
 
-  if (v14)
+  if (context)
   {
-    v15 = [(HMAccessCodeManager *)v10 home];
-    if (v15)
+    home = [(HMAccessCodeManager *)selfCopy home];
+    if (home)
     {
-      v41[0] = v6;
+      v41[0] = codeCopy;
       v16 = *MEMORY[0x1E69A29A8];
       v40[0] = @"HMAccessCodeManagerMessageKeyAccessCodeString";
       v40[1] = v16;
@@ -2853,56 +2853,56 @@ uint64_t __71__HMAccessCodeManager_submitAccessCodeModificationRequests_completi
       v36[1] = 3221225472;
       v36[2] = __62__HMAccessCodeManager_removeSimpleLabelAccessCode_completion___block_invoke;
       v36[3] = &unk_1E754D030;
-      v36[4] = v10;
-      v37 = v8;
-      v39 = v7;
-      v38 = v15;
-      [(HMAccessCodeManager *)v10 _sendMessageWithName:@"HMAccessCodeManagerRemoveSimpleLabelAccessCodeMessage" payload:v18 responseHandler:v36];
+      v36[4] = selfCopy;
+      v37 = internalOnlyInitializer;
+      v39 = completionCopy;
+      v38 = home;
+      [(HMAccessCodeManager *)selfCopy _sendMessageWithName:@"HMAccessCodeManagerRemoveSimpleLabelAccessCodeMessage" payload:v18 responseHandler:v36];
     }
 
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = v10;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         v27 = HMFGetLogIdentifier();
-        v28 = [v8 UUID];
+        uUID2 = [internalOnlyInitializer UUID];
         *buf = 138543618;
         v43 = v27;
         v44 = 2112;
-        v45 = v28;
+        v45 = uUID2;
         _os_log_impl(&dword_19BB39000, v26, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in removeSimpleLabelAccessCode", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v24);
       v18 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      (*(v7 + 2))(v7, 0, v18);
+      (*(completionCopy + 2))(completionCopy, 0, v18);
     }
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v10;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v8 UUID];
+      uUID3 = [internalOnlyInitializer UUID];
       *buf = 138543874;
       v43 = v22;
       v44 = 2112;
-      v45 = v23;
+      v45 = uUID3;
       v46 = 2080;
       v47 = "[HMAccessCodeManager removeSimpleLabelAccessCode:completion:]";
       _os_log_impl(&dword_19BB39000, v21, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Nil context, invoking completion - %s", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v19);
-    v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, 0, v15);
+    home = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(completionCopy + 2))(completionCopy, 0, home);
   }
 
   v29 = *MEMORY[0x1E69E9840];
@@ -3088,16 +3088,16 @@ uint64_t __62__HMAccessCodeManager_removeSimpleLabelAccessCode_completion___bloc
   return result;
 }
 
-- (void)removeHomeAccessCodeWithValue:(id)a3 completion:(id)a4
+- (void)removeHomeAccessCodeWithValue:(id)value completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  valueCopy = value;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessCodeManager removeHomeAccessCodeWithValue:completion:]", @"completion"];
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -3114,14 +3114,14 @@ uint64_t __62__HMAccessCodeManager_removeSimpleLabelAccessCode_completion___bloc
     objc_exception_throw(v24);
   }
 
-  v8 = v7;
-  v9 = [(HMAccessCodeManager *)self context];
+  v8 = completionCopy;
+  context = [(HMAccessCodeManager *)self context];
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy2 = self;
   v12 = HMFGetOSLogHandle();
   v13 = v12;
-  if (v9)
+  if (context)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -3132,13 +3132,13 @@ uint64_t __62__HMAccessCodeManager_removeSimpleLabelAccessCode_completion___bloc
     }
 
     objc_autoreleasePoolPop(v10);
-    v15 = [v6 stringValue];
+    stringValue = [valueCopy stringValue];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __64__HMAccessCodeManager_removeHomeAccessCodeWithValue_completion___block_invoke;
     v25[3] = &unk_1E754DDD8;
     v26 = v8;
-    [(HMAccessCodeManager *)v11 removeSimpleLabelAccessCode:v15 completion:v25];
+    [(HMAccessCodeManager *)selfCopy2 removeSimpleLabelAccessCode:stringValue completion:v25];
 
     v16 = v26;
   }
@@ -3163,35 +3163,35 @@ uint64_t __62__HMAccessCodeManager_removeSimpleLabelAccessCode_completion___bloc
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUserInformation:(id)a3 forHomeAccessCodeWithValue:(id)a4 completion:(id)a5
+- (void)setUserInformation:(id)information forHomeAccessCodeWithValue:(id)value completion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  informationCopy = information;
+  valueCopy = value;
+  completionCopy = completion;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138543874;
     v49 = v15;
     v50 = 2112;
-    v51 = v16;
+    v51 = uUID;
     v52 = 2112;
-    v53 = v8;
+    v53 = informationCopy;
     _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Setting user information: %@, for home access code", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v12);
-  if (!v10)
+  if (!completionCopy)
   {
     v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessCodeManager setUserInformation:forHomeAccessCodeWithValue:completion:]", @"completion"];
     v37 = objc_autoreleasePoolPush();
-    v38 = v13;
+    v38 = selfCopy;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
@@ -3208,20 +3208,20 @@ uint64_t __62__HMAccessCodeManager_removeSimpleLabelAccessCode_completion___bloc
     objc_exception_throw(v41);
   }
 
-  v17 = [(HMAccessCodeManager *)v13 context];
+  context = [(HMAccessCodeManager *)selfCopy context];
 
-  if (v17)
+  if (context)
   {
-    v18 = [v8 removedUserInfo];
+    removedUserInfo = [informationCopy removedUserInfo];
 
-    if (!v18)
+    if (!removedUserInfo)
     {
-      v30 = [v8 createAccessCodeUserInformationValue];
+      createAccessCodeUserInformationValue = [informationCopy createAccessCodeUserInformationValue];
       v46[0] = @"HMAccessCodeManagerMessageKeyUserInformationValue";
-      v31 = encodeRootObject(v30);
+      v31 = encodeRootObject(createAccessCodeUserInformationValue);
       v47[0] = v31;
       v46[1] = @"HMAccessCodeManagerMessageKeyAccessCodeValue";
-      v32 = encodeRootObject(v9);
+      v32 = encodeRootObject(valueCopy);
       v47[1] = v32;
       v46[2] = *MEMORY[0x1E69A29A8];
       v33 = HMFEncodedRootObject();
@@ -3231,26 +3231,26 @@ uint64_t __62__HMAccessCodeManager_removeSimpleLabelAccessCode_completion___bloc
       v42[1] = 3221225472;
       v42[2] = __80__HMAccessCodeManager_setUserInformation_forHomeAccessCodeWithValue_completion___block_invoke;
       v42[3] = &unk_1E754D030;
-      v42[4] = v13;
-      v43 = v11;
-      v44 = v8;
-      v45 = v10;
-      [(HMAccessCodeManager *)v13 _sendMessageWithName:@"HMAccessCodeManagerSetUserInformationMessage" payload:v34 responseHandler:v42];
+      v42[4] = selfCopy;
+      v43 = internalOnlyInitializer;
+      v44 = informationCopy;
+      v45 = completionCopy;
+      [(HMAccessCodeManager *)selfCopy _sendMessageWithName:@"HMAccessCodeManagerSetUserInformationMessage" payload:v34 responseHandler:v42];
 
       goto LABEL_14;
     }
 
     v19 = objc_autoreleasePoolPush();
-    v20 = v13;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v11 UUID];
+      uUID2 = [internalOnlyInitializer UUID];
       *buf = 138543618;
       v49 = v22;
       v50 = 2112;
-      v51 = v23;
+      v51 = uUID2;
       _os_log_impl(&dword_19BB39000, v21, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Caller passed userInformation with a removedUserInfo, which is not allowed. Returning an error.", buf, 0x16u);
     }
 
@@ -3262,7 +3262,7 @@ uint64_t __62__HMAccessCodeManager_removeSimpleLabelAccessCode_completion___bloc
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = v13;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -3279,8 +3279,8 @@ uint64_t __62__HMAccessCodeManager_removeSimpleLabelAccessCode_completion___bloc
     v25 = 12;
   }
 
-  v30 = [v24 hmErrorWithCode:v25];
-  (*(v10 + 2))(v10, v30);
+  createAccessCodeUserInformationValue = [v24 hmErrorWithCode:v25];
+  (*(completionCopy + 2))(completionCopy, createAccessCodeUserInformationValue);
 LABEL_14:
 
   v35 = *MEMORY[0x1E69E9840];
@@ -3330,31 +3330,31 @@ void __80__HMAccessCodeManager_setUserInformation_forHomeAccessCodeWithValue_com
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHomeAccessCodesWithCompletion:(id)a3
+- (void)fetchHomeAccessCodesWithCompletion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  completionCopy = completion;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138543618;
     v42 = v9;
     v43 = 2112;
-    v44 = v10;
+    v44 = uUID;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Fetching home access codes", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  if (!v4)
+  if (!completionCopy)
   {
     v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessCodeManager fetchHomeAccessCodesWithCompletion:]", @"completion"];
     v30 = objc_autoreleasePoolPush();
-    v31 = v7;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
@@ -3371,14 +3371,14 @@ void __80__HMAccessCodeManager_setUserInformation_forHomeAccessCodeWithValue_com
     objc_exception_throw(v34);
   }
 
-  v11 = [(HMAccessCodeManager *)v7 context];
+  context = [(HMAccessCodeManager *)selfCopy context];
 
-  if (v11)
+  if (context)
   {
-    v12 = [(HMAccessCodeManager *)v7 home];
-    if (v12)
+    home = [(HMAccessCodeManager *)selfCopy home];
+    if (home)
     {
-      v13 = v12;
+      v13 = home;
       v39 = *MEMORY[0x1E69A29A8];
       v14 = HMFEncodedRootObject();
       v40 = v14;
@@ -3387,33 +3387,33 @@ void __80__HMAccessCodeManager_setUserInformation_forHomeAccessCodeWithValue_com
       v35[1] = 3221225472;
       v35[2] = __58__HMAccessCodeManager_fetchHomeAccessCodesWithCompletion___block_invoke;
       v35[3] = &unk_1E754D030;
-      v35[4] = v7;
-      v36 = v5;
-      v38 = v4;
+      v35[4] = selfCopy;
+      v36 = internalOnlyInitializer;
+      v38 = completionCopy;
       v16 = v13;
       v37 = v16;
-      [(HMAccessCodeManager *)v7 _sendMessageWithName:@"HMAccessCodeManagerFetchHomeAccessCodesMessage" payload:v15 responseHandler:v35];
+      [(HMAccessCodeManager *)selfCopy _sendMessageWithName:@"HMAccessCodeManagerFetchHomeAccessCodesMessage" payload:v15 responseHandler:v35];
     }
 
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = v7;
+      v23 = selfCopy;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v25 = HMFGetLogIdentifier();
-        v26 = [v5 UUID];
+        uUID2 = [internalOnlyInitializer UUID];
         *buf = 138543618;
         v42 = v25;
         v43 = 2112;
-        v44 = v26;
+        v44 = uUID2;
         _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in fetchHomeAccessCodesWithCompletion", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v22);
       v27 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      (*(v4 + 2))(v4, 0, v27);
+      (*(completionCopy + 2))(completionCopy, 0, v27);
 
       v16 = 0;
     }
@@ -3422,16 +3422,16 @@ void __80__HMAccessCodeManager_setUserInformation_forHomeAccessCodeWithValue_com
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v7;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [v5 UUID];
+      uUID3 = [internalOnlyInitializer UUID];
       *buf = 138543874;
       v42 = v20;
       v43 = 2112;
-      v44 = v21;
+      v44 = uUID3;
       v45 = 2080;
       v46 = "[HMAccessCodeManager fetchHomeAccessCodesWithCompletion:]";
       _os_log_impl(&dword_19BB39000, v19, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Nil context, invoking completion - %s", buf, 0x20u);
@@ -3439,7 +3439,7 @@ void __80__HMAccessCodeManager_setUserInformation_forHomeAccessCodeWithValue_com
 
     objc_autoreleasePoolPop(v17);
     v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 
   v28 = *MEMORY[0x1E69E9840];
@@ -3579,34 +3579,34 @@ uint64_t __58__HMAccessCodeManager_fetchHomeAccessCodesWithCompletion___block_in
   return result;
 }
 
-- (void)fetchAccessCodeConstraintsFromAccessories:(id)a3 completion:(id)a4
+- (void)fetchAccessCodeConstraintsFromAccessories:(id)accessories completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  accessoriesCopy = accessories;
+  completionCopy = completion;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138543874;
     v45 = v12;
     v46 = 2112;
-    v47 = v13;
+    v47 = uUID;
     v48 = 2112;
-    v49 = v6;
+    v49 = accessoriesCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Fetching access code constraints from accessories: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  if (!v7)
+  if (!completionCopy)
   {
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessCodeManager fetchAccessCodeConstraintsFromAccessories:completion:]", @"completion"];
     v32 = objc_autoreleasePoolPush();
-    v33 = v10;
+    v33 = selfCopy;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -3623,14 +3623,14 @@ uint64_t __58__HMAccessCodeManager_fetchHomeAccessCodesWithCompletion___block_in
     objc_exception_throw(v36);
   }
 
-  v14 = [(HMAccessCodeManager *)v10 context];
+  context = [(HMAccessCodeManager *)selfCopy context];
 
-  if (v14)
+  if (context)
   {
-    v15 = [(HMAccessCodeManager *)v10 home];
-    if (v15)
+    home = [(HMAccessCodeManager *)selfCopy home];
+    if (home)
     {
-      v16 = [v6 na_map:&__block_literal_global_147];
+      v16 = [accessoriesCopy na_map:&__block_literal_global_147];
       v42[0] = @"HMAccessCodeManagerMessageKeyAccessoryUUIDs";
       v17 = encodeRootObject(v16);
       v43[0] = v17;
@@ -3643,59 +3643,59 @@ uint64_t __58__HMAccessCodeManager_fetchHomeAccessCodesWithCompletion___block_in
       v37[1] = 3221225472;
       v37[2] = __76__HMAccessCodeManager_fetchAccessCodeConstraintsFromAccessories_completion___block_invoke_2;
       v37[3] = &unk_1E754B6C8;
-      v37[4] = v10;
-      v38 = v8;
-      v39 = v6;
-      v41 = v7;
-      v40 = v15;
-      [(HMAccessCodeManager *)v10 _sendMessageWithName:@"HMAccessCodeManagerFetchAccessCodeConstraintsMessage" payload:v19 responseHandler:v37];
+      v37[4] = selfCopy;
+      v38 = internalOnlyInitializer;
+      v39 = accessoriesCopy;
+      v41 = completionCopy;
+      v40 = home;
+      [(HMAccessCodeManager *)selfCopy _sendMessageWithName:@"HMAccessCodeManagerFetchAccessCodeConstraintsMessage" payload:v19 responseHandler:v37];
     }
 
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = v10;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v8 UUID];
+        uUID2 = [internalOnlyInitializer UUID];
         *buf = 138543874;
         v45 = v28;
         v46 = 2112;
-        v47 = v29;
+        v47 = uUID2;
         v48 = 2112;
-        v49 = v6;
+        v49 = accessoriesCopy;
         _os_log_impl(&dword_19BB39000, v27, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in fetchAccessCodeConstraintsFromAccessories for accessories: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v25);
       v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      (*(v7 + 2))(v7, 0, v16);
+      (*(completionCopy + 2))(completionCopy, 0, v16);
     }
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v10;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v8 UUID];
+      uUID3 = [internalOnlyInitializer UUID];
       *buf = 138543874;
       v45 = v23;
       v46 = 2112;
-      v47 = v24;
+      v47 = uUID3;
       v48 = 2080;
       v49 = "[HMAccessCodeManager fetchAccessCodeConstraintsFromAccessories:completion:]";
       _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Nil context, invoking completion - %s", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v20);
-    v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, 0, v15);
+    home = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(completionCopy + 2))(completionCopy, 0, home);
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -3838,34 +3838,34 @@ uint64_t __76__HMAccessCodeManager_fetchAccessCodeConstraintsFromAccessories_com
   return result;
 }
 
-- (void)fetchAccessCodesFromAccessories:(id)a3 completion:(id)a4
+- (void)fetchAccessCodesFromAccessories:(id)accessories completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  accessoriesCopy = accessories;
+  completionCopy = completion;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138543874;
     v45 = v12;
     v46 = 2112;
-    v47 = v13;
+    v47 = uUID;
     v48 = 2112;
-    v49 = v6;
+    v49 = accessoriesCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Fetching access codes from accessories: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  if (!v7)
+  if (!completionCopy)
   {
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessCodeManager fetchAccessCodesFromAccessories:completion:]", @"completion"];
     v32 = objc_autoreleasePoolPush();
-    v33 = v10;
+    v33 = selfCopy;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -3882,14 +3882,14 @@ uint64_t __76__HMAccessCodeManager_fetchAccessCodeConstraintsFromAccessories_com
     objc_exception_throw(v36);
   }
 
-  v14 = [(HMAccessCodeManager *)v10 context];
+  context = [(HMAccessCodeManager *)selfCopy context];
 
-  if (v14)
+  if (context)
   {
-    v15 = [(HMAccessCodeManager *)v10 home];
-    if (v15)
+    home = [(HMAccessCodeManager *)selfCopy home];
+    if (home)
     {
-      v16 = [v6 na_map:&__block_literal_global_134];
+      v16 = [accessoriesCopy na_map:&__block_literal_global_134];
       v42[0] = @"HMAccessCodeManagerMessageKeyAccessoryUUIDs";
       v17 = encodeRootObject(v16);
       v43[0] = v17;
@@ -3902,59 +3902,59 @@ uint64_t __76__HMAccessCodeManager_fetchAccessCodeConstraintsFromAccessories_com
       v37[1] = 3221225472;
       v37[2] = __66__HMAccessCodeManager_fetchAccessCodesFromAccessories_completion___block_invoke_2;
       v37[3] = &unk_1E754B6C8;
-      v37[4] = v10;
-      v38 = v8;
-      v39 = v6;
-      v41 = v7;
-      v40 = v15;
-      [(HMAccessCodeManager *)v10 _sendMessageWithName:@"HMAccessCodeManagerFetchAccessCodesMessage" payload:v19 responseHandler:v37];
+      v37[4] = selfCopy;
+      v38 = internalOnlyInitializer;
+      v39 = accessoriesCopy;
+      v41 = completionCopy;
+      v40 = home;
+      [(HMAccessCodeManager *)selfCopy _sendMessageWithName:@"HMAccessCodeManagerFetchAccessCodesMessage" payload:v19 responseHandler:v37];
     }
 
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = v10;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v8 UUID];
+        uUID2 = [internalOnlyInitializer UUID];
         *buf = 138543874;
         v45 = v28;
         v46 = 2112;
-        v47 = v29;
+        v47 = uUID2;
         v48 = 2112;
-        v49 = v6;
+        v49 = accessoriesCopy;
         _os_log_impl(&dword_19BB39000, v27, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Home reference was nil in fetchAccessCodesFromAccessories for accessories: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v25);
       v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      (*(v7 + 2))(v7, 0, v16);
+      (*(completionCopy + 2))(completionCopy, 0, v16);
     }
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v10;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v8 UUID];
+      uUID3 = [internalOnlyInitializer UUID];
       *buf = 138543874;
       v45 = v23;
       v46 = 2112;
-      v47 = v24;
+      v47 = uUID3;
       v48 = 2080;
       v49 = "[HMAccessCodeManager fetchAccessCodesFromAccessories:completion:]";
       _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Nil context, invoking completion - %s", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v20);
-    v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, 0, v15);
+    home = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(completionCopy + 2))(completionCopy, 0, home);
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -4160,12 +4160,12 @@ uint64_t __66__HMAccessCodeManager_fetchAccessCodesFromAccessories_completion___
 
 - (NSArray)accessoriesSupportingAccessCodes
 {
-  v2 = [(HMAccessCodeManager *)self home];
-  v3 = v2;
-  if (v2)
+  home = [(HMAccessCodeManager *)self home];
+  v3 = home;
+  if (home)
   {
-    v4 = [v2 accessories];
-    v5 = [v4 na_filter:&__block_literal_global_122];
+    accessories = [home accessories];
+    v5 = [accessories na_filter:&__block_literal_global_122];
   }
 
   else
@@ -4176,37 +4176,37 @@ uint64_t __66__HMAccessCodeManager_fetchAccessCodesFromAccessories_completion___
   return v5;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  observerCopy = observer;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 UUID];
+    uUID = [internalOnlyInitializer UUID];
     v18 = 138543874;
     v19 = v9;
     v20 = 2112;
-    v21 = v10;
+    v21 = uUID;
     v22 = 2112;
-    v23 = v4;
+    v23 = observerCopy;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Removing observer: %@", &v18, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
   os_unfair_lock_lock_with_options();
-  v11 = [(HMAccessCodeManager *)v7 observers];
-  v12 = [v11 count];
+  observers = [(HMAccessCodeManager *)selfCopy observers];
+  v12 = [observers count];
 
-  v13 = [(HMAccessCodeManager *)v7 observers];
-  [v13 removeObject:v4];
+  observers2 = [(HMAccessCodeManager *)selfCopy observers];
+  [observers2 removeObject:observerCopy];
 
-  v14 = [(HMAccessCodeManager *)v7 observers];
-  if ([v14 count])
+  observers3 = [(HMAccessCodeManager *)selfCopy observers];
+  if ([observers3 count])
   {
     v15 = 0;
   }
@@ -4218,48 +4218,48 @@ uint64_t __66__HMAccessCodeManager_fetchAccessCodesFromAccessories_completion___
 
   v16 = v15;
 
-  os_unfair_lock_unlock(&v7->_lock.lock);
+  os_unfair_lock_unlock(&selfCopy->_lock.lock);
   if (v16)
   {
-    [(HMAccessCodeManager *)v7 _unsubscribeWithFlow:v5];
+    [(HMAccessCodeManager *)selfCopy _unsubscribeWithFlow:internalOnlyInitializer];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  observerCopy = observer;
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 UUID];
+    uUID = [internalOnlyInitializer UUID];
     v15 = 138543874;
     v16 = v9;
     v17 = 2112;
-    v18 = v10;
+    v18 = uUID;
     v19 = 2112;
-    v20 = v4;
+    v20 = observerCopy;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Adding observer: %@", &v15, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
   os_unfair_lock_lock_with_options();
-  v11 = [(HMAccessCodeManager *)v7 observers];
-  v12 = [v11 count];
+  observers = [(HMAccessCodeManager *)selfCopy observers];
+  v12 = [observers count];
 
-  v13 = [(HMAccessCodeManager *)v7 observers];
-  [v13 addObject:v4];
+  observers2 = [(HMAccessCodeManager *)selfCopy observers];
+  [observers2 addObject:observerCopy];
 
-  os_unfair_lock_unlock(&v7->_lock.lock);
+  os_unfair_lock_unlock(&selfCopy->_lock.lock);
   if (!v12)
   {
-    [(HMAccessCodeManager *)v7 _subscribeWithFlow:v5];
+    [(HMAccessCodeManager *)selfCopy _subscribeWithFlow:internalOnlyInitializer];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -4270,7 +4270,7 @@ uint64_t __66__HMAccessCodeManager_fetchAccessCodesFromAccessories_completion___
   v17 = *MEMORY[0x1E69E9840];
   context = self->_context;
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = v6;
   if (context)
@@ -4284,13 +4284,13 @@ uint64_t __66__HMAccessCodeManager_fetchAccessCodesFromAccessories_completion___
     }
 
     objc_autoreleasePoolPop(v4);
-    [(HMAccessCodeManager *)v5 setHome:0];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 removeObserver:v5];
+    [(HMAccessCodeManager *)selfCopy setHome:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:selfCopy];
 
-    v10 = [(HMAccessCodeManager *)v5 context];
-    v11 = [v10 messageDispatcher];
-    [v11 deregisterReceiver:v5];
+    context = [(HMAccessCodeManager *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher deregisterReceiver:selfCopy];
 
     v12 = self->_context;
     self->_context = 0;
@@ -4315,86 +4315,86 @@ uint64_t __66__HMAccessCodeManager_fetchAccessCodesFromAccessories_completion___
 - (void)configure
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
+  internalOnlyInitializer = [MEMORY[0x1E69A29D8] internalOnlyInitializer];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = HMFGetLogIdentifier();
-    v8 = [v3 UUID];
+    uUID = [internalOnlyInitializer UUID];
     v23 = 138543618;
     v24 = v7;
     v25 = 2112;
-    v26 = v8;
+    v26 = uUID;
     _os_log_impl(&dword_19BB39000, v6, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Configuring access code manager", &v23, 0x16u);
   }
 
   objc_autoreleasePoolPop(v4);
-  v9 = [(HMAccessCodeManager *)v5 context];
-  v10 = [v9 messageDispatcher];
-  [v10 registerForMessage:@"HMAccessCodeManagerDidAddAccessoryAccessCodesMessage" receiver:v5 selector:sel_handleDidAddAccessoryAccessCodesMessage_];
+  context = [(HMAccessCodeManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher registerForMessage:@"HMAccessCodeManagerDidAddAccessoryAccessCodesMessage" receiver:selfCopy selector:sel_handleDidAddAccessoryAccessCodesMessage_];
 
-  v11 = [(HMAccessCodeManager *)v5 context];
-  v12 = [v11 messageDispatcher];
-  [v12 registerForMessage:@"HMAccessCodeManagerDidUpdateAccessoryAccessCodesMessage" receiver:v5 selector:sel_handleDidUpdateAccessoryAccessCodesMessage_];
+  context2 = [(HMAccessCodeManager *)selfCopy context];
+  messageDispatcher2 = [context2 messageDispatcher];
+  [messageDispatcher2 registerForMessage:@"HMAccessCodeManagerDidUpdateAccessoryAccessCodesMessage" receiver:selfCopy selector:sel_handleDidUpdateAccessoryAccessCodesMessage_];
 
-  v13 = [(HMAccessCodeManager *)v5 context];
-  v14 = [v13 messageDispatcher];
-  [v14 registerForMessage:@"HMAccessCodeManagerDidRemoveAccessoryAccessCodesMessage" receiver:v5 selector:sel_handleDidRemoveAccessoryAccessCodesMessage_];
+  context3 = [(HMAccessCodeManager *)selfCopy context];
+  messageDispatcher3 = [context3 messageDispatcher];
+  [messageDispatcher3 registerForMessage:@"HMAccessCodeManagerDidRemoveAccessoryAccessCodesMessage" receiver:selfCopy selector:sel_handleDidRemoveAccessoryAccessCodesMessage_];
 
-  v15 = [(HMAccessCodeManager *)v5 context];
-  v16 = [v15 messageDispatcher];
-  [v16 registerForMessage:@"HMAccessCodeManagerDidAddHomeAccessCodesMessage" receiver:v5 selector:sel_handleDidAddHomeAccessCodesMessage_];
+  context4 = [(HMAccessCodeManager *)selfCopy context];
+  messageDispatcher4 = [context4 messageDispatcher];
+  [messageDispatcher4 registerForMessage:@"HMAccessCodeManagerDidAddHomeAccessCodesMessage" receiver:selfCopy selector:sel_handleDidAddHomeAccessCodesMessage_];
 
-  v17 = [(HMAccessCodeManager *)v5 context];
-  v18 = [v17 messageDispatcher];
-  [v18 registerForMessage:@"HMAccessCodeManagerDidUpdateHomeAccessCodesMessage" receiver:v5 selector:sel_handleDidUpdateHomeAccessCodesMessage_];
+  context5 = [(HMAccessCodeManager *)selfCopy context];
+  messageDispatcher5 = [context5 messageDispatcher];
+  [messageDispatcher5 registerForMessage:@"HMAccessCodeManagerDidUpdateHomeAccessCodesMessage" receiver:selfCopy selector:sel_handleDidUpdateHomeAccessCodesMessage_];
 
-  v19 = [(HMAccessCodeManager *)v5 context];
-  v20 = [v19 messageDispatcher];
-  [v20 registerForMessage:@"HMAccessCodeManagerDidRemoveHomeAccessCodesMessage" receiver:v5 selector:sel_handleDidRemoveHomeAccessCodesMessage_];
+  context6 = [(HMAccessCodeManager *)selfCopy context];
+  messageDispatcher6 = [context6 messageDispatcher];
+  [messageDispatcher6 registerForMessage:@"HMAccessCodeManagerDidRemoveHomeAccessCodesMessage" receiver:selfCopy selector:sel_handleDidRemoveHomeAccessCodesMessage_];
 
-  v21 = [(HMAccessCodeManager *)v5 notificationCenter];
-  [v21 addObserver:v5 selector:sel_handleDaemonReconnectedNotification_ name:@"HMDaemonReconnectedNotification" object:0];
+  notificationCenter = [(HMAccessCodeManager *)selfCopy notificationCenter];
+  [notificationCenter addObserver:selfCopy selector:sel_handleDaemonReconnectedNotification_ name:@"HMDaemonReconnectedNotification" object:0];
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (HMAccessCodeManager)initWithHome:(id)a3 context:(id)a4 UUID:(id)a5 notificationCenter:(id)a6
+- (HMAccessCodeManager)initWithHome:(id)home context:(id)context UUID:(id)d notificationCenter:(id)center
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  homeCopy = home;
+  contextCopy = context;
+  dCopy = d;
+  centerCopy = center;
   v19.receiver = self;
   v19.super_class = HMAccessCodeManager;
   v14 = [(HMAccessCodeManager *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_home, v10);
-    objc_storeStrong(&v15->_context, a4);
-    objc_storeStrong(&v15->_UUID, a5);
-    objc_storeStrong(&v15->_notificationCenter, a6);
-    v16 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeWeak(&v14->_home, homeCopy);
+    objc_storeStrong(&v15->_context, context);
+    objc_storeStrong(&v15->_UUID, d);
+    objc_storeStrong(&v15->_notificationCenter, center);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v15->_observers;
-    v15->_observers = v16;
+    v15->_observers = weakObjectsHashTable;
   }
 
   return v15;
 }
 
-- (HMAccessCodeManager)initWithHome:(id)a3
+- (HMAccessCodeManager)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_opt_class();
-  v6 = [v4 uuid];
-  v7 = [v5 accessCodeManagerUUIDFromHomeUUID:v6];
+  uuid = [homeCopy uuid];
+  v7 = [v5 accessCodeManagerUUIDFromHomeUUID:uuid];
 
-  v8 = [v4 context];
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  v10 = [(HMAccessCodeManager *)self initWithHome:v4 context:v8 UUID:v7 notificationCenter:v9];
+  context = [homeCopy context];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v10 = [(HMAccessCodeManager *)self initWithHome:homeCopy context:context UUID:v7 notificationCenter:defaultCenter];
 
   return v10;
 }
@@ -4421,44 +4421,44 @@ uint64_t __34__HMAccessCodeManager_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)convertPotentialUniqueIdentifier:(id)a3 toUUIDForUserInHome:(id)a4 flow:(id)a5
++ (id)convertPotentialUniqueIdentifier:(id)identifier toUUIDForUserInHome:(id)home flow:(id)flow
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 users];
-  v12 = [v9 currentUser];
-  v13 = [v11 arrayByAddingObject:v12];
+  identifierCopy = identifier;
+  homeCopy = home;
+  flowCopy = flow;
+  users = [homeCopy users];
+  currentUser = [homeCopy currentUser];
+  v13 = [users arrayByAddingObject:currentUser];
 
   v14 = objc_autoreleasePoolPush();
-  v15 = a1;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
     v17 = v31 = v13;
-    [v10 UUID];
-    v18 = v32 = v10;
-    v19 = [v9 currentUser];
-    [v19 uuid];
+    [flowCopy UUID];
+    v18 = v32 = flowCopy;
+    currentUser2 = [homeCopy currentUser];
+    [currentUser2 uuid];
     v20 = v30 = v14;
-    v21 = [v9 currentUser];
-    v22 = [v21 uniqueIdentifier];
+    currentUser3 = [homeCopy currentUser];
+    uniqueIdentifier = [currentUser3 uniqueIdentifier];
     *buf = 138544386;
     v36 = v17;
     v37 = 2112;
     v38 = v18;
     v39 = 2112;
-    v40 = v8;
+    v40 = identifierCopy;
     v41 = 2112;
     v42 = v20;
     v43 = 2112;
-    v44 = v22;
+    v44 = uniqueIdentifier;
     _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] convertPotentialUniqueIdentifier: %@ where current user has uuid %@ and uniqueIdentifier %@", buf, 0x34u);
 
     v14 = v30;
-    v10 = v32;
+    flowCopy = v32;
 
     v13 = v31;
   }
@@ -4468,14 +4468,14 @@ uint64_t __34__HMAccessCodeManager_logCategory__block_invoke()
   v33[1] = 3221225472;
   v33[2] = __81__HMAccessCodeManager_convertPotentialUniqueIdentifier_toUUIDForUserInHome_flow___block_invoke;
   v33[3] = &unk_1E754A178;
-  v34 = v8;
-  v23 = v8;
+  v34 = identifierCopy;
+  v23 = identifierCopy;
   v24 = [v13 na_firstObjectPassingTest:v33];
-  v25 = [v24 uuid];
+  uuid = [v24 uuid];
 
-  if (v25)
+  if (uuid)
   {
-    v26 = v25;
+    v26 = uuid;
   }
 
   else
@@ -4567,15 +4567,15 @@ LABEL_17:
   return v12;
 }
 
-+ (id)accessCodeManagerUUIDFromHomeUUID:(id)a3
++ (id)accessCodeManagerUUIDFromHomeUUID:(id)d
 {
   v3 = MEMORY[0x1E696AFB0];
-  v4 = a3;
+  dCopy = d;
   v5 = [[v3 alloc] initWithUUIDString:@"5B1683C8-EAFC-436F-9DBD-1A08AD6E62D3"];
   v6 = MEMORY[0x1E696AFB0];
-  v7 = [v4 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v8 = [v7 dataUsingEncoding:4];
+  v8 = [uUIDString dataUsingEncoding:4];
   v9 = [v6 hmf_UUIDWithNamespace:v5 data:v8];
 
   return v9;
@@ -4588,16 +4588,16 @@ LABEL_17:
   return v2;
 }
 
-+ (id)_createAccessCodeWithLength:(int64_t)a3
++ (id)_createAccessCodeWithLength:(int64_t)length
 {
   v20 = *MEMORY[0x1E69E9840];
   v13 = 0;
-  v5 = HMGenerateDecimalDigitPasswordWithLength(a3, &v13);
+  v5 = HMGenerateDecimalDigitPasswordWithLength(length, &v13);
   v6 = v13;
   if (!v5)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -4605,7 +4605,7 @@ LABEL_17:
       *buf = 138543874;
       v15 = v10;
       v16 = 2048;
-      v17 = a3;
+      lengthCopy = length;
       v18 = 2112;
       v19 = v6;
       _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_ERROR, "%{public}@Failed to generate access code with length: %ld, error: %@", buf, 0x20u);
@@ -4619,38 +4619,38 @@ LABEL_17:
   return v5;
 }
 
-+ (int64_t)_accessCodeLengthFromLowerBound:(int64_t)a3 upperBound:(int64_t)a4
++ (int64_t)_accessCodeLengthFromLowerBound:(int64_t)bound upperBound:(int64_t)upperBound
 {
-  if (a3 > a4)
+  if (bound > upperBound)
   {
     return -1;
   }
 
-  if (a3 <= 6 && a4 > 5)
+  if (bound <= 6 && upperBound > 5)
   {
     return 6;
   }
 
-  if (a3 <= 4 && a4 > 3)
+  if (bound <= 4 && upperBound > 3)
   {
     return 4;
   }
 
-  if (a3 <= 3)
+  if (bound <= 3)
   {
     return -1;
   }
 
-  return a3;
+  return bound;
 }
 
-+ (int64_t)greatestLowerBoundForAccessCodeLengthFromConstraints:(id)a3
++ (int64_t)greatestLowerBoundForAccessCodeLengthFromConstraints:(id)constraints
 {
-  v3 = [a3 na_map:&__block_literal_global_101];
+  v3 = [constraints na_map:&__block_literal_global_101];
   v4 = [v3 valueForKeyPath:@"@max.self"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 uint64_t __76__HMAccessCodeManager_greatestLowerBoundForAccessCodeLengthFromConstraints___block_invoke(uint64_t a1, void *a2)
@@ -4661,13 +4661,13 @@ uint64_t __76__HMAccessCodeManager_greatestLowerBoundForAccessCodeLengthFromCons
   return [v2 numberWithInteger:v3];
 }
 
-+ (int64_t)leastUpperBoundForAccessCodeLengthFromConstraints:(id)a3
++ (int64_t)leastUpperBoundForAccessCodeLengthFromConstraints:(id)constraints
 {
-  v3 = [a3 na_map:&__block_literal_global_16184];
+  v3 = [constraints na_map:&__block_literal_global_16184];
   v4 = [v3 valueForKeyPath:@"@min.self"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 uint64_t __73__HMAccessCodeManager_leastUpperBoundForAccessCodeLengthFromConstraints___block_invoke(uint64_t a1, void *a2)
@@ -4678,18 +4678,18 @@ uint64_t __73__HMAccessCodeManager_leastUpperBoundForAccessCodeLengthFromConstra
   return [v2 numberWithInteger:v3];
 }
 
-+ (id)generateAccessCodeValueFromConstraints:(id)a3 accessoryAccessCodes:(id)a4 homeAccessCodes:(id)a5
++ (id)generateAccessCodeValueFromConstraints:(id)constraints accessoryAccessCodes:(id)codes homeAccessCodes:(id)accessCodes
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DFA8] setWithArray:a4];
+  constraintsCopy = constraints;
+  accessCodesCopy = accessCodes;
+  v10 = [MEMORY[0x1E695DFA8] setWithArray:codes];
   v11 = v10;
-  if (v9)
+  if (accessCodesCopy)
   {
-    [v10 addObjectsFromArray:v9];
+    [v10 addObjectsFromArray:accessCodesCopy];
   }
 
-  v12 = [a1 _accessCodeLengthFromLowerBound:objc_msgSend(a1 upperBound:{"greatestLowerBoundForAccessCodeLengthFromConstraints:", v8), objc_msgSend(a1, "leastUpperBoundForAccessCodeLengthFromConstraints:", v8)}];
+  v12 = [self _accessCodeLengthFromLowerBound:objc_msgSend(self upperBound:{"greatestLowerBoundForAccessCodeLengthFromConstraints:", constraintsCopy), objc_msgSend(self, "leastUpperBoundForAccessCodeLengthFromConstraints:", constraintsCopy)}];
   if (v12 == -1)
   {
     v17 = 0;
@@ -4703,7 +4703,7 @@ uint64_t __73__HMAccessCodeManager_leastUpperBoundForAccessCodeLengthFromConstra
     while (1)
     {
       v16 = v14;
-      v14 = [a1 _createAccessCodeWithLength:v13];
+      v14 = [self _createAccessCodeWithLength:v13];
 
       if (v14)
       {
@@ -4727,18 +4727,18 @@ LABEL_11:
   return v17;
 }
 
-+ (BOOL)doesAccessCode:(id)a3 conflictWithExistingAccessCodes:(id)a4
++ (BOOL)doesAccessCode:(id)code conflictWithExistingAccessCodes:(id)codes
 {
-  v5 = a3;
+  codeCopy = code;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__HMAccessCodeManager_doesAccessCode_conflictWithExistingAccessCodes___block_invoke;
   v8[3] = &unk_1E7548550;
-  v9 = v5;
-  v6 = v5;
-  LOBYTE(a4) = [a4 na_any:v8];
+  v9 = codeCopy;
+  v6 = codeCopy;
+  LOBYTE(codes) = [codes na_any:v8];
 
-  return a4;
+  return codes;
 }
 
 uint64_t __70__HMAccessCodeManager_doesAccessCode_conflictWithExistingAccessCodes___block_invoke(uint64_t a1, void *a2)

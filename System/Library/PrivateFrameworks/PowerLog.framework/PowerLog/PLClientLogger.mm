@@ -2,10 +2,10 @@
 + (BOOL)isMessageOnDeviceDisabled;
 + (id)sharedInstance;
 - (PLClientLogger)init;
-- (id)cacheForKey:(id)a3;
-- (id)xpcConnectionWithClientID:(signed __int16)a3 withKey:(id)a4 withPayload:(id)a5;
-- (int)batchSizeForClientID:(signed __int16)a3;
-- (int)shouldLogNowForClientID:(signed __int16)a3 withKey:(id)a4 withPayload:(id)a5 withFilterInterval:(double)a6;
+- (id)cacheForKey:(id)key;
+- (id)xpcConnectionWithClientID:(signed __int16)d withKey:(id)key withPayload:(id)payload;
+- (int)batchSizeForClientID:(signed __int16)d;
+- (int)shouldLogNowForClientID:(signed __int16)d withKey:(id)key withPayload:(id)payload withFilterInterval:(double)interval;
 - (void)batchTasksCacheFlush;
 - (void)clearBatchedTaskCache;
 - (void)clearBatchedTaskCachePPS;
@@ -45,9 +45,9 @@
   v9[2] = *MEMORY[0x1E69E9840];
   objc_sync_enter(@"___BatchCacheSync___");
   v8[0] = @"PLXPCBatchedMessage";
-  v3 = [(PLClientLogger *)self batchedTaskCache];
+  batchedTaskCache = [(PLClientLogger *)self batchedTaskCache];
   v8[1] = @"PLXPCBatchedMessageDropCounts";
-  v9[0] = v3;
+  v9[0] = batchedTaskCache;
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[PLClientLogger batchedDropMessageCount](self, "batchedDropMessageCount")}];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
@@ -65,8 +65,8 @@
   v8[1] = *MEMORY[0x1E69E9840];
   objc_sync_enter(@"___BatchCacheSync___");
   v7 = @"PLXPCBatchedMessage";
-  v3 = [(PLClientLogger *)self dynamicCache];
-  v8[0] = v3;
+  dynamicCache = [(PLClientLogger *)self dynamicCache];
+  v8[0] = dynamicCache;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   v5 = [(PLClientLogger *)self buildMessageForClientID:110 withKey:@"PPSBatchedMessages" withPayload:v4];
@@ -94,12 +94,12 @@
   [(PLClientLogger *)self setDynamicCache:v3];
 
   v4 = objc_opt_new();
-  v5 = [(PLClientLogger *)self dynamicCache];
-  [v5 setObject:v4 forKeyedSubscript:@"kPLDefault"];
+  dynamicCache = [(PLClientLogger *)self dynamicCache];
+  [dynamicCache setObject:v4 forKeyedSubscript:@"kPLDefault"];
 
   v6 = objc_opt_new();
-  v7 = [(PLClientLogger *)self dynamicCache];
-  [v7 setObject:v6 forKeyedSubscript:@"kPLCuratedBatchingListCache"];
+  dynamicCache2 = [(PLClientLogger *)self dynamicCache];
+  [dynamicCache2 setObject:v6 forKeyedSubscript:@"kPLCuratedBatchingListCache"];
 
   objc_sync_exit(@"___BatchCacheSync___");
 }
@@ -166,10 +166,10 @@ void __32__PLClientLogger_sharedInstance__block_invoke()
     batchFlushQueue = v3->_batchFlushQueue;
     v3->_batchFlushQueue = v12;
 
-    v14 = [MEMORY[0x1E696AE30] processInfo];
-    v15 = [v14 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
     processName = v3->_processName;
-    v3->_processName = v15;
+    v3->_processName = processName;
 
     v17 = objc_opt_new();
     permissionCache = v3->_permissionCache;
@@ -224,8 +224,8 @@ void __32__PLClientLogger_sharedInstance__block_invoke()
     v3->_xpcConnectionHelperQueue = v39;
 
     out_token = -1;
-    v41 = [(PLClientLogger *)v3 workQueue];
-    LODWORD(v38) = notify_register_dispatch("com.apple.powerlog.state_changed", &out_token, v41, &__block_literal_global_131);
+    workQueue = [(PLClientLogger *)v3 workQueue];
+    LODWORD(v38) = notify_register_dispatch("com.apple.powerlog.state_changed", &out_token, workQueue, &__block_literal_global_131);
 
     if (v38 && [(PLClientLogger *)v3 clientDebug])
     {
@@ -238,11 +238,11 @@ void __32__PLClientLogger_sharedInstance__block_invoke()
 
     v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.ProcessName.%@", @"com.apple.powerlog.state_changed", v3->_processName];
     v52 = -1;
-    v44 = [v43 UTF8String];
-    v45 = [(PLClientLogger *)v3 workQueue];
-    LODWORD(v44) = notify_register_dispatch(v44, &v52, v45, &__block_literal_global_141);
+    uTF8String = [v43 UTF8String];
+    workQueue2 = [(PLClientLogger *)v3 workQueue];
+    LODWORD(uTF8String) = notify_register_dispatch(uTF8String, &v52, workQueue2, &__block_literal_global_141);
 
-    if (v44 && [(PLClientLogger *)v3 clientDebug])
+    if (uTF8String && [(PLClientLogger *)v3 clientDebug])
     {
       v46 = PLLogClientLogging();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -252,8 +252,8 @@ void __32__PLClientLogger_sharedInstance__block_invoke()
     }
 
     v51 = -1;
-    v47 = [(PLClientLogger *)v3 workQueue];
-    v48 = notify_register_dispatch("com.apple.powerlog.clientPermissionState", &v51, v47, &__block_literal_global_145);
+    workQueue3 = [(PLClientLogger *)v3 workQueue];
+    v48 = notify_register_dispatch("com.apple.powerlog.clientPermissionState", &v51, workQueue3, &__block_literal_global_145);
 
     if (v48 && [(PLClientLogger *)v3 clientDebug])
     {
@@ -289,10 +289,10 @@ void __22__PLClientLogger_init__block_invoke_143()
 - (void)logStateCaches
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [a1 processName];
-  v3 = [a1 permissionCache];
-  v4 = [a1 pendingTaskCache];
-  v5 = [a1 dynamicCache];
+  processName = [self processName];
+  permissionCache = [self permissionCache];
+  pendingTaskCache = [self pendingTaskCache];
+  dynamicCache = [self dynamicCache];
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_8_0(&dword_1BACB7000, v6, v7, "State:%@ ***\npermissionCache=%@\n\npendingTaskCache=%@\n\nbatchedTaskCachePPS=%@\n", v8, v9, v10, v11, v13);
 
@@ -339,13 +339,13 @@ void __63__PLClientLogger_cachedPermissionForClientID_withKey_withType___block_i
   [v0 powerlogStateChanged];
 }
 
-- (int)batchSizeForClientID:(signed __int16)a3
+- (int)batchSizeForClientID:(signed __int16)d
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__PLClientLogger_batchSizeForClientID___block_invoke;
   block[3] = &__block_descriptor_34_e5_v8__0l;
-  v5 = a3;
+  dCopy = d;
   if (batchSizeForClientID__onceToken != -1)
   {
     dispatch_once(&batchSizeForClientID__onceToken, block);
@@ -362,22 +362,22 @@ void __63__PLClientLogger_cachedPermissionForClientID_withKey_withType___block_i
   }
 }
 
-- (id)cacheForKey:(id)a3
+- (id)cacheForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_sync_enter(@"___BatchCacheSync___");
-  v5 = [(PLClientLogger *)self curatedBatchingList];
-  v6 = [v5 containsObject:v4];
+  curatedBatchingList = [(PLClientLogger *)self curatedBatchingList];
+  v6 = [curatedBatchingList containsObject:keyCopy];
 
-  v7 = [(PLClientLogger *)self dynamicCache];
+  dynamicCache = [(PLClientLogger *)self dynamicCache];
   if (v6)
   {
-    [v7 objectForKeyedSubscript:@"kPLCuratedBatchingListCache"];
+    [dynamicCache objectForKeyedSubscript:@"kPLCuratedBatchingListCache"];
   }
 
   else
   {
-    [v7 objectForKeyedSubscript:@"kPLDefault"];
+    [dynamicCache objectForKeyedSubscript:@"kPLDefault"];
   }
   v8 = ;
 
@@ -386,19 +386,19 @@ void __63__PLClientLogger_cachedPermissionForClientID_withKey_withType___block_i
   return v8;
 }
 
-- (id)xpcConnectionWithClientID:(signed __int16)a3 withKey:(id)a4 withPayload:(id)a5
+- (id)xpcConnectionWithClientID:(signed __int16)d withKey:(id)key withPayload:(id)payload
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ((v6 & 0xFFFFFFFD) == 0x30 || [(PLClientLogger *)self talkToPowerlogHelper])
+  dCopy = d;
+  keyCopy = key;
+  payloadCopy = payload;
+  if ((dCopy & 0xFFFFFFFD) == 0x30 || [(PLClientLogger *)self talkToPowerlogHelper])
   {
     p_xpcConnectionHelper = &self->_xpcConnectionHelper;
     xpcConnectionHelper = self->_xpcConnectionHelper;
-    v12 = [(PLClientLogger *)self clientDebug];
+    clientDebug = [(PLClientLogger *)self clientDebug];
     if (xpcConnectionHelper)
     {
-      if (v12)
+      if (clientDebug)
       {
         v13 = PLLogClientLogging();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -412,7 +412,7 @@ LABEL_33:
 
     else
     {
-      if (v12)
+      if (clientDebug)
       {
         v14 = PLLogClientLogging();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -431,9 +431,9 @@ LABEL_33:
       handler[2] = __64__PLClientLogger_xpcConnectionWithClientID_withKey_withPayload___block_invoke;
       handler[3] = &unk_1E7F18C68;
       handler[4] = self;
-      v41 = v6;
-      v39 = v8;
-      v40 = v9;
+      v41 = dCopy;
+      v39 = keyCopy;
+      v40 = payloadCopy;
       xpc_connection_set_event_handler(v17, handler);
       xpc_connection_activate(self->_xpcConnectionHelper);
       if ([(PLClientLogger *)self clientDebug])
@@ -451,10 +451,10 @@ LABEL_33:
   {
     p_xpcConnectionHelper = &self->_xpcConnection;
     xpcConnection = self->_xpcConnection;
-    v20 = [(PLClientLogger *)self clientDebug];
+    clientDebug2 = [(PLClientLogger *)self clientDebug];
     if (xpcConnection)
     {
-      if (v20)
+      if (clientDebug2)
       {
         v21 = PLLogClientLogging();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -466,7 +466,7 @@ LABEL_33:
 
     else
     {
-      if (v20)
+      if (clientDebug2)
       {
         v22 = PLLogClientLogging();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -484,10 +484,10 @@ LABEL_33:
       v31 = 3221225472;
       v32 = __64__PLClientLogger_xpcConnectionWithClientID_withKey_withPayload___block_invoke_190;
       v33 = &unk_1E7F18C68;
-      v34 = self;
-      v37 = v6;
-      v35 = v8;
-      v36 = v9;
+      selfCopy = self;
+      v37 = dCopy;
+      v35 = keyCopy;
+      v36 = payloadCopy;
       xpc_connection_set_event_handler(v25, &v30);
       xpc_connection_activate(self->_xpcConnection);
       if ([(PLClientLogger *)self clientDebug:v30])
@@ -749,27 +749,27 @@ LABEL_31:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (int)shouldLogNowForClientID:(signed __int16)a3 withKey:(id)a4 withPayload:(id)a5 withFilterInterval:(double)a6
+- (int)shouldLogNowForClientID:(signed __int16)d withKey:(id)key withPayload:(id)payload withFilterInterval:(double)interval
 {
-  v44 = a3;
+  dCopy = d;
   v54 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF00] date];
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d_%@", v44, v9];
+  keyCopy = key;
+  payloadCopy = payload;
+  date = [MEMORY[0x1E695DF00] date];
+  keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d_%@", dCopy, keyCopy];
   objc_sync_enter(@"___sFilterByIntervalBufferSync___");
-  v13 = [(PLClientLogger *)self eventFilterSaved];
-  v14 = [v13 objectForKeyedSubscript:v12];
+  eventFilterSaved = [(PLClientLogger *)self eventFilterSaved];
+  v14 = [eventFilterSaved objectForKeyedSubscript:keyCopy];
 
   if (!v14)
   {
     v15 = objc_opt_new();
-    v16 = [(PLClientLogger *)self eventFilterSaved];
-    [v16 setObject:v15 forKeyedSubscript:v12];
+    eventFilterSaved2 = [(PLClientLogger *)self eventFilterSaved];
+    [eventFilterSaved2 setObject:v15 forKeyedSubscript:keyCopy];
   }
 
-  v17 = [(PLClientLogger *)self eventFilterSaved];
-  v18 = [v17 objectForKeyedSubscript:v12];
+  eventFilterSaved3 = [(PLClientLogger *)self eventFilterSaved];
+  v18 = [eventFilterSaved3 objectForKeyedSubscript:keyCopy];
   v19 = [v18 objectForKeyedSubscript:@"lastEventDate"];
 
   if ([(PLClientLogger *)self clientDebug])
@@ -778,19 +778,19 @@ LABEL_31:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       *buf = 67109890;
-      v47 = v44;
+      v47 = dCopy;
       v48 = 2112;
-      v49 = v9;
+      v49 = keyCopy;
       v50 = 2112;
-      v51 = v11;
+      v51 = date;
       v52 = 2112;
-      v53 = v10;
+      v53 = payloadCopy;
       _os_log_debug_impl(&dword_1BACB7000, v20, OS_LOG_TYPE_DEBUG, "shouldLogNowForClientID: (PLLogRegisteredEventFilterByInterval) Check(%d, %@ at %@) - %@\n", buf, 0x26u);
     }
 
     if (!v19)
     {
-      if (v10)
+      if (payloadCopy)
       {
         goto LABEL_20;
       }
@@ -802,11 +802,11 @@ LABEL_24:
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
         {
           *buf = 67109890;
-          v47 = v44;
+          v47 = dCopy;
           v48 = 2112;
-          v49 = v9;
+          v49 = keyCopy;
           v50 = 2112;
-          v51 = v11;
+          v51 = date;
           v52 = 2112;
           v53 = 0;
           _os_log_debug_impl(&dword_1BACB7000, v36, OS_LOG_TYPE_DEBUG, "(PLLogRegisteredEventFilterByInterval) Drop invalid(%d, %@ at %@) - %@\n", buf, 0x26u);
@@ -835,23 +835,23 @@ LABEL_24:
     v23 = PLLogClientLogging();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      [v11 timeIntervalSinceDate:v19];
-      [PLClientLogger shouldLogNowForClientID:v45 withKey:v23 withPayload:v24 withFilterInterval:a6];
+      [date timeIntervalSinceDate:v19];
+      [PLClientLogger shouldLogNowForClientID:v45 withKey:v23 withPayload:v24 withFilterInterval:interval];
     }
   }
 
-  if (!v10)
+  if (!payloadCopy)
   {
     goto LABEL_24;
   }
 
   if (v19)
   {
-    [v11 timeIntervalSinceDate:v19];
-    if (v25 < a6)
+    [date timeIntervalSinceDate:v19];
+    if (v25 < interval)
     {
-      v26 = [(PLClientLogger *)self eventFilterSaved];
-      v27 = [v26 objectForKeyedSubscript:v12];
+      eventFilterSaved4 = [(PLClientLogger *)self eventFilterSaved];
+      v27 = [eventFilterSaved4 objectForKeyedSubscript:keyCopy];
       v28 = [v27 objectForKeyedSubscript:@"bufferedEventDictionary"];
 
       if (v28)
@@ -861,16 +861,16 @@ LABEL_24:
 
       else
       {
-        v37 = [(PLClientLogger *)self eventFilterSaved];
-        v38 = [v37 objectForKeyedSubscript:v12];
-        [v38 setObject:v11 forKeyedSubscript:@"bufferedEventDate"];
+        eventFilterSaved5 = [(PLClientLogger *)self eventFilterSaved];
+        v38 = [eventFilterSaved5 objectForKeyedSubscript:keyCopy];
+        [v38 setObject:date forKeyedSubscript:@"bufferedEventDate"];
 
         v29 = 1;
       }
 
-      v39 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v10 copyItems:1];
-      v40 = [(PLClientLogger *)self eventFilterSaved];
-      v41 = [v40 objectForKeyedSubscript:v12];
+      v39 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:payloadCopy copyItems:1];
+      eventFilterSaved6 = [(PLClientLogger *)self eventFilterSaved];
+      v41 = [eventFilterSaved6 objectForKeyedSubscript:keyCopy];
       [v41 setObject:v39 forKeyedSubscript:@"bufferedEventDictionary"];
 
       if ([(PLClientLogger *)self clientDebug])
@@ -879,13 +879,13 @@ LABEL_24:
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
         {
           *buf = 67109890;
-          v47 = v44;
+          v47 = dCopy;
           v48 = 2112;
-          v49 = v9;
+          v49 = keyCopy;
           v50 = 2112;
-          v51 = v11;
+          v51 = date;
           v52 = 2112;
-          v53 = v10;
+          v53 = payloadCopy;
           _os_log_debug_impl(&dword_1BACB7000, v36, OS_LOG_TYPE_DEBUG, "(PLLogRegisteredEventFilterByInterval) Buffer(%d, %@ at %@) - %@\n", buf, 0x26u);
         }
 
@@ -899,16 +899,16 @@ LABEL_34:
   }
 
 LABEL_20:
-  v30 = [(PLClientLogger *)self eventFilterSaved];
-  v31 = [v30 objectForKeyedSubscript:v12];
-  [v31 setObject:v11 forKeyedSubscript:@"lastEventDate"];
+  eventFilterSaved7 = [(PLClientLogger *)self eventFilterSaved];
+  v31 = [eventFilterSaved7 objectForKeyedSubscript:keyCopy];
+  [v31 setObject:date forKeyedSubscript:@"lastEventDate"];
 
-  v32 = [(PLClientLogger *)self eventFilterSaved];
-  v33 = [v32 objectForKeyedSubscript:v12];
+  eventFilterSaved8 = [(PLClientLogger *)self eventFilterSaved];
+  v33 = [eventFilterSaved8 objectForKeyedSubscript:keyCopy];
   [v33 removeObjectForKey:@"bufferedEventDictionary"];
 
-  v34 = [(PLClientLogger *)self eventFilterSaved];
-  v35 = [v34 objectForKeyedSubscript:v12];
+  eventFilterSaved9 = [(PLClientLogger *)self eventFilterSaved];
+  v35 = [eventFilterSaved9 objectForKeyedSubscript:keyCopy];
   [v35 removeObjectForKey:@"bufferedEventDate"];
 
   if ([(PLClientLogger *)self clientDebug])
@@ -917,13 +917,13 @@ LABEL_20:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
     {
       *buf = 67109890;
-      v47 = v44;
+      v47 = dCopy;
       v48 = 2112;
-      v49 = v9;
+      v49 = keyCopy;
       v50 = 2112;
-      v51 = v11;
+      v51 = date;
       v52 = 2112;
-      v53 = v10;
+      v53 = payloadCopy;
       _os_log_debug_impl(&dword_1BACB7000, v36, OS_LOG_TYPE_DEBUG, "(PLLogRegisteredEventFilterByInterval)  Log(%d, %@ at %@) - %@\n", buf, 0x26u);
     }
 

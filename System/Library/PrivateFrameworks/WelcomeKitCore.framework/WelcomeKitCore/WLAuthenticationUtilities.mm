@@ -1,37 +1,37 @@
 @interface WLAuthenticationUtilities
-+ (id)dataFromPEMFormattedData:(id)a3;
-+ (id)hashWithString:(id)a3;
-+ (id)pemFormattedCertificateData:(id)a3;
-+ (void)_appendBase64Data:(id)a3 toString:(id)a4;
-+ (void)generateSelfSignedCertificateWithOrganization:(id)a3 commonName:(id)a4 completion:(id)a5;
++ (id)dataFromPEMFormattedData:(id)data;
++ (id)hashWithString:(id)string;
++ (id)pemFormattedCertificateData:(id)data;
++ (void)_appendBase64Data:(id)data toString:(id)string;
++ (void)generateSelfSignedCertificateWithOrganization:(id)organization commonName:(id)name completion:(id)completion;
 @end
 
 @implementation WLAuthenticationUtilities
 
-+ (id)hashWithString:(id)a3
++ (id)hashWithString:(id)string
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   CC_SHA1([v3 bytes], objc_msgSend(v3, "length"), md);
-  v4 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   for (i = 0; i != 20; ++i)
   {
-    [v4 appendFormat:@"%02x", md[i]];
+    [string appendFormat:@"%02x", md[i]];
   }
 
-  v6 = [v4 copy];
+  v6 = [string copy];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-+ (void)generateSelfSignedCertificateWithOrganization:(id)a3 commonName:(id)a4 completion:(id)a5
++ (void)generateSelfSignedCertificateWithOrganization:(id)organization commonName:(id)name completion:(id)completion
 {
   values[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  organizationCopy = organization;
+  nameCopy = name;
+  completionCopy = completion;
   v10 = MEMORY[0x277CBEAC0];
   v11 = *MEMORY[0x277CDC060];
   v12 = *MEMORY[0x277CDC028];
@@ -41,9 +41,9 @@
   RandomKey = SecKeyCreateRandomKey(v14, 0);
   v16 = SecKeyCopyPublicKey(RandomKey);
   values[0] = *MEMORY[0x277CDC458];
-  values[1] = v7;
+  values[1] = organizationCopy;
   v27[0] = *MEMORY[0x277CDC448];
-  v27[1] = v8;
+  v27[1] = nameCopy;
   v17 = *MEMORY[0x277CBECE8];
   v24 = CFArrayCreate(*MEMORY[0x277CBECE8], values, 2, 0);
   v23 = CFArrayCreate(v17, v27, 2, 0);
@@ -81,42 +81,42 @@
     CFRelease(v24);
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, SelfSignedCertificate, v16, RandomKey);
+    completionCopy[2](completionCopy, SelfSignedCertificate, v16, RandomKey);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)pemFormattedCertificateData:(id)a3
++ (id)pemFormattedCertificateData:(id)data
 {
   v4 = MEMORY[0x277CCAB68];
-  v5 = a3;
-  v6 = [v4 string];
-  [v6 appendString:@"-----BEGIN CERTIFICATE-----\n"];
-  [a1 _appendBase64Data:v5 toString:v6];
+  dataCopy = data;
+  string = [v4 string];
+  [string appendString:@"-----BEGIN CERTIFICATE-----\n"];
+  [self _appendBase64Data:dataCopy toString:string];
 
-  [v6 appendString:@"\n-----END CERTIFICATE-----\n"];
-  v7 = [v6 dataUsingEncoding:4];
+  [string appendString:@"\n-----END CERTIFICATE-----\n"];
+  v7 = [string dataUsingEncoding:4];
 
   return v7;
 }
 
-+ (void)_appendBase64Data:(id)a3 toString:(id)a4
++ (void)_appendBase64Data:(id)data toString:(id)string
 {
-  v5 = a4;
-  v6 = [a3 base64EncodedStringWithOptions:33];
-  [v5 appendString:v6];
+  stringCopy = string;
+  v6 = [data base64EncodedStringWithOptions:33];
+  [stringCopy appendString:v6];
 }
 
-+ (id)dataFromPEMFormattedData:(id)a3
++ (id)dataFromPEMFormattedData:(id)data
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:4];
+  dataCopy = data;
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
   v5 = [v4 componentsSeparatedByString:@"\n"];
-  v6 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(v3, "length")}];
+  v6 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(dataCopy, "length")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;

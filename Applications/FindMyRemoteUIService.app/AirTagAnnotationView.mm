@@ -1,7 +1,7 @@
 @interface AirTagAnnotationView
 + (Class)calloutViewClass;
-- (_TtC21FindMyRemoteUIService20AirTagAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (_TtC21FindMyRemoteUIService20AirTagAnnotationView)initWithCoder:(id)a3;
+- (_TtC21FindMyRemoteUIService20AirTagAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (_TtC21FindMyRemoteUIService20AirTagAnnotationView)initWithCoder:(id)coder;
 - (id)_balloonImage;
 @end
 
@@ -14,9 +14,9 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC21FindMyRemoteUIService20AirTagAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_TtC21FindMyRemoteUIService20AirTagAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     swift_unknownObjectRetain();
@@ -31,18 +31,18 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for AirTagAnnotationView();
-  v7 = [(AirTagAnnotationView *)&v9 initWithAnnotation:a3 reuseIdentifier:v6];
+  v7 = [(AirTagAnnotationView *)&v9 initWithAnnotation:annotation reuseIdentifier:v6];
 
   swift_unknownObjectRelease();
   return v7;
 }
 
-- (_TtC21FindMyRemoteUIService20AirTagAnnotationView)initWithCoder:(id)a3
+- (_TtC21FindMyRemoteUIService20AirTagAnnotationView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AirTagAnnotationView();
-  v4 = a3;
-  v5 = [(AirTagAnnotationView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AirTagAnnotationView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -53,8 +53,8 @@
 
 - (id)_balloonImage
 {
-  v2 = self;
-  if ([(AirTagAnnotationView *)v2 annotation])
+  selfCopy = self;
+  if ([(AirTagAnnotationView *)selfCopy annotation])
   {
     type metadata accessor for AirTagMapAnnotation();
     v3 = swift_dynamicCastClass();

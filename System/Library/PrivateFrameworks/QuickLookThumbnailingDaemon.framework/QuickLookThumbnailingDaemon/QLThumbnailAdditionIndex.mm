@@ -1,48 +1,48 @@
 @interface QLThumbnailAdditionIndex
 + (id)sharedInstance;
 + (void)registerCleanupXPCActivity;
-+ (void)setUpCleanupXPCActivitySynchronously:(BOOL)a3;
-- (BOOL)addThumbnailForURL:(id)a3 lastHitDate:(id)a4 size:(unint64_t)a5;
-- (BOOL)addThumbnailForURL:(id)a3 size:(unint64_t)a4;
-- (BOOL)dispatchSyncOnDatabaseQueue:(id)a3;
-- (BOOL)hasThumbnailForURL:(id)a3 updateLastHitDate:(BOOL)a4 andSize:(unint64_t)a5;
++ (void)setUpCleanupXPCActivitySynchronously:(BOOL)synchronously;
+- (BOOL)addThumbnailForURL:(id)l lastHitDate:(id)date size:(unint64_t)size;
+- (BOOL)addThumbnailForURL:(id)l size:(unint64_t)size;
+- (BOOL)dispatchSyncOnDatabaseQueue:(id)queue;
+- (BOOL)hasThumbnailForURL:(id)l updateLastHitDate:(BOOL)date andSize:(unint64_t)size;
 - (BOOL)open;
-- (BOOL)removeDatabaseAtURL:(id)a3 error:(id *)a4;
-- (BOOL)removeThumbnailForURL:(id)a3;
-- (BOOL)updateFileSize:(unint64_t)a3 ofThumbnailForURL:(id)a4;
-- (BOOL)updateLastHitDate:(id)a3 ofThumbnailForURL:(id)a4;
+- (BOOL)removeDatabaseAtURL:(id)l error:(id *)error;
+- (BOOL)removeThumbnailForURL:(id)l;
+- (BOOL)updateFileSize:(unint64_t)size ofThumbnailForURL:(id)l;
+- (BOOL)updateLastHitDate:(id)date ofThumbnailForURL:(id)l;
 - (QLThumbnailAdditionIndex)init;
-- (QLThumbnailAdditionIndex)initWithURL:(id)a3;
+- (QLThumbnailAdditionIndex)initWithURL:(id)l;
 - (id)allEntries;
-- (id)batchOfEntriesStartingAt:(unint64_t)a3 endingAt:(unint64_t *)a4;
+- (id)batchOfEntriesStartingAt:(unint64_t)at endingAt:(unint64_t *)endingAt;
 - (id)entriesEnumerator;
 - (id)initForTesting;
-- (id)makeDatabaseAtURL:(id)a3 error:(id *)a4;
-- (id)openDatabaseAtURL:(id)a3 error:(id *)a4;
-- (id)upgradeDatabaseIfNeeded:(id)a3 error:(id *)a4;
-- (id)volumeRestrictionForMountPoint:(id)a3;
-- (id)whereClauseForURL:(id)a3;
+- (id)makeDatabaseAtURL:(id)l error:(id *)error;
+- (id)openDatabaseAtURL:(id)l error:(id *)error;
+- (id)upgradeDatabaseIfNeeded:(id)needed error:(id *)error;
+- (id)volumeRestrictionForMountPoint:(id)point;
+- (id)whereClauseForURL:(id)l;
 - (int)deviceForHomeDirectory;
-- (int64_t)purgeOnMountPoint:(id)a3 withUrgency:(int)a4 beforeDate:(id)a5;
-- (int64_t)purgeableSpaceOnMountPoint:(id)a3 withUrgency:(int)a4 beforeDate:(id)a5;
+- (int64_t)purgeOnMountPoint:(id)point withUrgency:(int)urgency beforeDate:(id)date;
+- (int64_t)purgeableSpaceOnMountPoint:(id)point withUrgency:(int)urgency beforeDate:(id)date;
 - (void)_cleanUpAfterClose;
-- (void)_closeDatabaseOnItsQueue:(id)a3;
-- (void)_resetDatabaseOnItsQueue:(id)a3;
-- (void)addThumbnailForURLWrapper:(id)a3 size:(unint64_t)a4 completion:(id)a5;
-- (void)cleanUpBatchOfEntries:(id)a3;
+- (void)_closeDatabaseOnItsQueue:(id)queue;
+- (void)_resetDatabaseOnItsQueue:(id)queue;
+- (void)addThumbnailForURLWrapper:(id)wrapper size:(unint64_t)size completion:(id)completion;
+- (void)cleanUpBatchOfEntries:(id)entries;
 - (void)close;
-- (void)enumerateCacheEntriesWithHandler:(id)a3;
+- (void)enumerateCacheEntriesWithHandler:(id)handler;
 - (void)flush;
-- (void)logError:(id)a3 onDB:(id)a4 statement:(id)a5;
+- (void)logError:(id)error onDB:(id)b statement:(id)statement;
 - (void)open;
 - (void)performDatabaseMaintenance;
 - (void)removeAllAdditions;
-- (void)removeEntriesFromDatabase:(id)a3;
-- (void)removeThumbnailForURL:(id)a3 completion:(id)a4;
-- (void)retrieveAllAdditions:(id)a3;
-- (void)setUpDatabase:(id)a3;
-- (void)updateFileSize:(unint64_t)a3 ofThumbnailForURL:(id)a4 completion:(id)a5;
-- (void)updateLastHitDate:(id)a3 ofThumbnailForURL:(id)a4 completion:(id)a5;
+- (void)removeEntriesFromDatabase:(id)database;
+- (void)removeThumbnailForURL:(id)l completion:(id)completion;
+- (void)retrieveAllAdditions:(id)additions;
+- (void)setUpDatabase:(id)database;
+- (void)updateFileSize:(unint64_t)size ofThumbnailForURL:(id)l completion:(id)completion;
+- (void)updateLastHitDate:(id)date ofThumbnailForURL:(id)l completion:(id)completion;
 @end
 
 @implementation QLThumbnailAdditionIndex
@@ -54,7 +54,7 @@
   handler[1] = 3221225472;
   handler[2] = __54__QLThumbnailAdditionIndex_registerCleanupXPCActivity__block_invoke;
   handler[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  handler[4] = a1;
+  handler[4] = self;
   xpc_activity_register("com.apple.quicklook.cloudThumbnailDatabaseCleanup", v2, handler);
 }
 
@@ -67,14 +67,14 @@ void __54__QLThumbnailAdditionIndex_registerCleanupXPCActivity__block_invoke(uin
   }
 }
 
-+ (void)setUpCleanupXPCActivitySynchronously:(BOOL)a3
++ (void)setUpCleanupXPCActivitySynchronously:(BOOL)synchronously
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __65__QLThumbnailAdditionIndex_setUpCleanupXPCActivitySynchronously___block_invoke;
   v3[3] = &__block_descriptor_41_e5_v8__0l;
-  v4 = a3;
-  v3[4] = a1;
+  synchronouslyCopy = synchronously;
+  v3[4] = self;
   if (setUpCleanupXPCActivitySynchronously__once != -1)
   {
     dispatch_once(&setUpCleanupXPCActivitySynchronously__once, v3);
@@ -108,7 +108,7 @@ void __65__QLThumbnailAdditionIndex_setUpCleanupXPCActivitySynchronously___block
   block[1] = 3221225472;
   block[2] = __42__QLThumbnailAdditionIndex_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once_0 != -1)
   {
     dispatch_once(&sharedInstance_once_0, block);
@@ -136,16 +136,16 @@ uint64_t __42__QLThumbnailAdditionIndex_sharedInstance__block_invoke(uint64_t re
   return result;
 }
 
-- (QLThumbnailAdditionIndex)initWithURL:(id)a3
+- (QLThumbnailAdditionIndex)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = QLThumbnailAdditionIndex;
   v6 = [(QLThumbnailAdditionIndex *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v7->_exitsOnCorruption = 1;
   }
 
@@ -154,9 +154,9 @@ uint64_t __42__QLThumbnailAdditionIndex_sharedInstance__block_invoke(uint64_t re
 
 - (BOOL)open
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_db)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_db)
   {
     v3 = _log_2();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -167,17 +167,17 @@ uint64_t __42__QLThumbnailAdditionIndex_sharedInstance__block_invoke(uint64_t re
 
   else
   {
-    url = v2->_url;
+    url = selfCopy->_url;
     v7 = 0;
-    v5 = [(QLThumbnailAdditionIndex *)v2 openDatabaseAtURL:url error:&v7];
+    v5 = [(QLThumbnailAdditionIndex *)selfCopy openDatabaseAtURL:url error:&v7];
     v3 = v7;
     if (v5)
     {
-      objc_storeStrong(&v2->_db, v5);
+      objc_storeStrong(&selfCopy->_db, v5);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return 1;
 }
 
@@ -192,11 +192,11 @@ uint64_t __42__QLThumbnailAdditionIndex_sharedInstance__block_invoke(uint64_t re
   }
 }
 
-- (void)_closeDatabaseOnItsQueue:(id)a3
+- (void)_closeDatabaseOnItsQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9 = 0;
-  v5 = [(PQLConnection *)v4 close:&v9];
+  v5 = [(PQLConnection *)queueCopy close:&v9];
   v6 = v9;
   if ((v5 & 1) == 0)
   {
@@ -208,41 +208,41 @@ uint64_t __42__QLThumbnailAdditionIndex_sharedInstance__block_invoke(uint64_t re
   }
 
   db = self->_db;
-  if (db == v4)
+  if (db == queueCopy)
   {
     self->_db = 0;
   }
 }
 
-- (BOOL)dispatchSyncOnDatabaseQueue:(id)a3
+- (BOOL)dispatchSyncOnDatabaseQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = self->_db;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 1;
-  v6 = [(PQLConnection *)v5 serialQueue];
+  serialQueue = [(PQLConnection *)v5 serialQueue];
 
-  if (v6)
+  if (serialQueue)
   {
-    v7 = [(PQLConnection *)v5 serialQueue];
+    serialQueue2 = [(PQLConnection *)v5 serialQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __56__QLThumbnailAdditionIndex_dispatchSyncOnDatabaseQueue___block_invoke;
     v10[3] = &unk_279ADDC38;
     v11 = v5;
-    v12 = self;
+    selfCopy = self;
     v14 = &v15;
-    v13 = v4;
-    dispatch_sync(v7, v10);
+    v13 = queueCopy;
+    dispatch_sync(serialQueue2, v10);
 
     v8 = *(v16 + 24);
   }
 
   else
   {
-    v4[2](v4);
+    queueCopy[2](queueCopy);
     v8 = 1;
   }
 
@@ -296,18 +296,18 @@ void __33__QLThumbnailAdditionIndex_flush__block_invoke(uint64_t a1)
   [v1 flush];
 }
 
-- (void)setUpDatabase:(id)a3
+- (void)setUpDatabase:(id)database
 {
-  v4 = a3;
-  [v4 useSerialQueue];
-  v5 = [v4 serialQueue];
+  databaseCopy = database;
+  [databaseCopy useSerialQueue];
+  serialQueue = [databaseCopy serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__QLThumbnailAdditionIndex_setUpDatabase___block_invoke;
   block[3] = &unk_279ADD0F8;
-  v6 = v4;
+  v6 = databaseCopy;
   v23 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(serialQueue, block);
 
   dbWatcher = self->_dbWatcher;
   if (dbWatcher)
@@ -318,9 +318,9 @@ void __33__QLThumbnailAdditionIndex_flush__block_invoke(uint64_t a1)
   }
 
   v9 = [v6 url];
-  v10 = [v9 fileSystemRepresentation];
+  fileSystemRepresentation = [v9 fileSystemRepresentation];
 
-  LODWORD(v9) = open(v10, 32772);
+  LODWORD(v9) = open(fileSystemRepresentation, 32772);
   v11 = dispatch_source_create(MEMORY[0x277D85D48], v9, 1uLL, 0);
   v12 = self->_dbWatcher;
   self->_dbWatcher = v11;
@@ -374,22 +374,22 @@ void __42__QLThumbnailAdditionIndex_setUpDatabase___block_invoke_5(uint64_t a1)
   [WeakRetained _resetDatabaseOnItsQueue:*(a1 + 32)];
 }
 
-- (id)upgradeDatabaseIfNeeded:(id)a3 error:(id *)a4
+- (id)upgradeDatabaseIfNeeded:(id)needed error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  neededCopy = needed;
   v6 = _log_2();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [QLThumbnailAdditionIndex upgradeDatabaseIfNeeded:error:];
   }
 
-  v7 = [v5 userVersion];
-  v29 = v7;
-  if (v7)
+  userVersion = [neededCopy userVersion];
+  v29 = userVersion;
+  if (userVersion)
   {
-    v8 = [v7 unsignedIntValue];
-    if (v8 <= 2)
+    unsignedIntValue = [userVersion unsignedIntValue];
+    if (unsignedIntValue <= 2)
     {
       *&v9 = 67109376;
       v28 = v9;
@@ -399,9 +399,9 @@ void __42__QLThumbnailAdditionIndex_setUpDatabase___block_invoke_5(uint64_t a1)
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           *buf = v28;
-          if (v8)
+          if (unsignedIntValue)
           {
-            v25 = v8 + 1;
+            v25 = unsignedIntValue + 1;
           }
 
           else
@@ -409,7 +409,7 @@ void __42__QLThumbnailAdditionIndex_setUpDatabase___block_invoke_5(uint64_t a1)
             v25 = 0;
           }
 
-          *&buf[4] = v8;
+          *&buf[4] = unsignedIntValue;
           LOWORD(v37) = 1024;
           *(&v37 + 2) = v25;
           _os_log_debug_impl(&dword_2615D3000, v19, OS_LOG_TYPE_DEBUG, "migrating database from version %d to %d", buf, 0xEu);
@@ -425,39 +425,39 @@ void __42__QLThumbnailAdditionIndex_setUpDatabase___block_invoke_5(uint64_t a1)
         v30[1] = 3221225472;
         v30[2] = __58__QLThumbnailAdditionIndex_upgradeDatabaseIfNeeded_error___block_invoke;
         v30[3] = &unk_279ADDCA8;
-        v31 = v8;
+        v31 = unsignedIntValue;
         v30[4] = buf;
-        v11 = [v5 performWithFlags:10 action:v30];
-        if (a4)
+        v11 = [neededCopy performWithFlags:10 action:v30];
+        if (error)
         {
           v20 = *(v37 + 5);
           if (v20)
           {
-            *a4 = v20;
+            *error = v20;
           }
         }
 
-        v21 = [v5 userVersion];
-        v22 = v8 + 1 == [v21 unsignedIntValue];
+        userVersion2 = [neededCopy userVersion];
+        v22 = unsignedIntValue + 1 == [userVersion2 unsignedIntValue];
 
         if (!v22)
         {
           v23 = _log_2();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
-            v26 = [v5 userVersion];
-            v27 = [v26 unsignedIntValue];
+            userVersion3 = [neededCopy userVersion];
+            unsignedIntValue2 = [userVersion3 unsignedIntValue];
             *v32 = v28;
-            v33 = v27;
+            v33 = unsignedIntValue2;
             v34 = 1024;
-            v35 = v8 + 1;
+            v35 = unsignedIntValue + 1;
             _os_log_error_impl(&dword_2615D3000, v23, OS_LOG_TYPE_ERROR, "database is at version %u instead of %d", v32, 0xEu);
           }
         }
 
         _Block_object_dispose(buf, 8);
 
-        if (v8 < 2)
+        if (unsignedIntValue < 2)
         {
           v24 = v11;
         }
@@ -467,7 +467,7 @@ void __42__QLThumbnailAdditionIndex_setUpDatabase___block_invoke_5(uint64_t a1)
           v24 = 0;
         }
 
-        ++v8;
+        ++unsignedIntValue;
       }
 
       while ((v24 & 1) != 0);
@@ -484,10 +484,10 @@ void __42__QLThumbnailAdditionIndex_setUpDatabase___block_invoke_5(uint64_t a1)
       v11 = 1;
     }
 
-    v12 = [v5 userVersion];
-    v13 = [v12 unsignedIntValue];
+    userVersion4 = [neededCopy userVersion];
+    unsignedIntValue3 = [userVersion4 unsignedIntValue];
     v14 = v11 ^ 1;
-    if (v13 > 2)
+    if (unsignedIntValue3 > 2)
     {
       v14 = 1;
     }
@@ -499,29 +499,29 @@ void __42__QLThumbnailAdditionIndex_setUpDatabase___block_invoke_5(uint64_t a1)
 
     if ((v11 & 1) == 0)
     {
-      [v5 close:0];
+      [neededCopy close:0];
 
-      v5 = 0;
+      neededCopy = 0;
     }
 
-    v5 = v5;
-    v15 = v5;
+    neededCopy = neededCopy;
+    v15 = neededCopy;
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [v5 lastError];
+      *error = [neededCopy lastError];
     }
 
     v16 = _log_2();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [QLThumbnailAdditionIndex upgradeDatabaseIfNeeded:v5 error:?];
+      [QLThumbnailAdditionIndex upgradeDatabaseIfNeeded:neededCopy error:?];
     }
 
-    [v5 close:0];
+    [neededCopy close:0];
     v15 = 0;
   }
 
@@ -551,24 +551,24 @@ uint64_t __58__QLThumbnailAdditionIndex_upgradeDatabaseIfNeeded_error___block_in
   return v6;
 }
 
-- (void)logError:(id)a3 onDB:(id)a4 statement:(id)a5
+- (void)logError:(id)error onDB:(id)b statement:(id)statement
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  errorCopy = error;
+  bCopy = b;
+  statementCopy = statement;
   v10 = _log_2();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
-  if (v9)
+  if (statementCopy)
   {
     if (v11)
     {
       v13 = 138412802;
-      v14 = v9;
+      v14 = statementCopy;
       v15 = 2112;
-      v16 = v8;
+      v16 = bCopy;
       v17 = 2112;
-      v18 = v7;
+      v18 = errorCopy;
       _os_log_error_impl(&dword_2615D3000, v10, OS_LOG_TYPE_ERROR, "Sqlite request %@ failed on %@ with error [%@]", &v13, 0x20u);
     }
   }
@@ -581,19 +581,19 @@ uint64_t __58__QLThumbnailAdditionIndex_upgradeDatabaseIfNeeded_error___block_in
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)makeDatabaseAtURL:(id)a3 error:(id *)a4
+- (id)makeDatabaseAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = _log_2();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [QLThumbnailAdditionIndex makeDatabaseAtURL:error:];
   }
 
-  if ([v6 checkResourceIsReachableAndReturnError:0])
+  if ([lCopy checkResourceIsReachableAndReturnError:0])
   {
 LABEL_7:
-    v8 = objc_alloc_init(MEMORY[0x277D82C00]);
+    uRLByDeletingLastPathComponent = objc_alloc_init(MEMORY[0x277D82C00]);
     v20[0] = 0;
     v20[1] = v20;
     v20[2] = 0x2020000000;
@@ -604,9 +604,9 @@ LABEL_7:
     v19[3] = &unk_279ADDCD0;
     v19[4] = self;
     v19[5] = v20;
-    [v8 setSqliteErrorHandler:v19];
-    [v8 setLabel:@"Quick Look cloud thumbnails cache"];
-    if (([v8 openAtURL:v6 sharedCache:0 error:a4] & 1) == 0)
+    [uRLByDeletingLastPathComponent setSqliteErrorHandler:v19];
+    [uRLByDeletingLastPathComponent setLabel:@"Quick Look cloud thumbnails cache"];
+    if (([uRLByDeletingLastPathComponent openAtURL:lCopy sharedCache:0 error:error] & 1) == 0)
     {
       v12 = _log_2();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -617,33 +617,33 @@ LABEL_7:
       goto LABEL_18;
     }
 
-    if ([v8 setupPragmas])
+    if ([uRLByDeletingLastPathComponent setupPragmas])
     {
-      [v8 setSynchronousMode:1];
-      v11 = [v8 lastError];
+      [uRLByDeletingLastPathComponent setSynchronousMode:1];
+      lastError = [uRLByDeletingLastPathComponent lastError];
 
-      if (!v11)
+      if (!lastError)
       {
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __52__QLThumbnailAdditionIndex_makeDatabaseAtURL_error___block_invoke_15;
         v18[3] = &unk_279ADDCF8;
         v18[4] = self;
-        [v8 setSqliteErrorHandler:v18];
+        [uRLByDeletingLastPathComponent setSqliteErrorHandler:v18];
         v17 = _log_2();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
           [QLThumbnailAdditionIndex makeDatabaseAtURL:error:];
         }
 
-        v14 = v8;
+        v14 = uRLByDeletingLastPathComponent;
         goto LABEL_19;
       }
 
-      if (!a4)
+      if (!error)
       {
 LABEL_18:
-        [v8 close:0];
+        [uRLByDeletingLastPathComponent close:0];
         v14 = 0;
 LABEL_19:
         _Block_object_dispose(v20, 8);
@@ -653,20 +653,20 @@ LABEL_19:
 
     else
     {
-      v13 = [v8 lastError];
+      lastError2 = [uRLByDeletingLastPathComponent lastError];
 
-      if (!a4 || !v13)
+      if (!error || !lastError2)
       {
         goto LABEL_18;
       }
     }
 
-    *a4 = [v8 lastError];
+    *error = [uRLByDeletingLastPathComponent lastError];
     goto LABEL_18;
   }
 
-  v8 = [v6 URLByDeletingLastPathComponent];
-  if ([v8 checkResourceIsReachableAndReturnError:0] & 1) != 0 || (objc_msgSend(MEMORY[0x277CCAA00], "defaultManager"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v8, 0, 0, a4), v9, (v10))
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  if ([uRLByDeletingLastPathComponent checkResourceIsReachableAndReturnError:0] & 1) != 0 || (objc_msgSend(MEMORY[0x277CCAA00], "defaultManager"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", uRLByDeletingLastPathComponent, 0, 0, error), v9, (v10))
   {
 
     goto LABEL_7;
@@ -694,47 +694,47 @@ void __52__QLThumbnailAdditionIndex_makeDatabaseAtURL_error___block_invoke(uint6
   *(*(*(a1 + 40) + 8) + 24) = v9;
 }
 
-- (BOOL)removeDatabaseAtURL:(id)a3 error:(id *)a4
+- (BOOL)removeDatabaseAtURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x277CBEBC0];
-  v6 = a3;
-  v7 = [v6 path];
-  v8 = [v7 stringByAppendingString:@"-wal"];
+  lCopy = l;
+  path = [lCopy path];
+  v8 = [path stringByAppendingString:@"-wal"];
   v9 = [v5 fileURLWithPath:v8];
 
   v10 = MEMORY[0x277CBEBC0];
-  v11 = [v6 path];
-  v12 = [v11 stringByAppendingString:@"-shm"];
+  path2 = [lCopy path];
+  v12 = [path2 stringByAppendingString:@"-shm"];
   v13 = [v10 fileURLWithPath:v12];
 
   v14 = MEMORY[0x277CBEBC0];
-  v15 = [v6 path];
-  v16 = [v15 stringByAppendingString:@"-journal"];
+  path3 = [lCopy path];
+  v16 = [path3 stringByAppendingString:@"-journal"];
   v17 = [v14 fileURLWithPath:v16];
 
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  v19 = [v18 removeItemAtURL:v6 error:a4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v19 = [defaultManager removeItemAtURL:lCopy error:error];
 
   if (v19)
   {
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
-    [v20 removeItemAtURL:v9 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 removeItemAtURL:v9 error:0];
 
-    v21 = [MEMORY[0x277CCAA00] defaultManager];
-    [v21 removeItemAtURL:v13 error:0];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager3 removeItemAtURL:v13 error:0];
 
-    v22 = [MEMORY[0x277CCAA00] defaultManager];
-    [v22 removeItemAtURL:v17 error:0];
+    defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager4 removeItemAtURL:v17 error:0];
   }
 
   return v19;
 }
 
-- (id)openDatabaseAtURL:(id)a3 error:(id *)a4
+- (id)openDatabaseAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v30 = 0;
-  v7 = [(QLThumbnailAdditionIndex *)self makeDatabaseAtURL:v6 error:&v30];
+  v7 = [(QLThumbnailAdditionIndex *)self makeDatabaseAtURL:lCopy error:&v30];
   v8 = v30;
   if (v7)
   {
@@ -747,8 +747,8 @@ void __52__QLThumbnailAdditionIndex_makeDatabaseAtURL_error___block_invoke(uint6
     [QLThumbnailAdditionIndex openDatabaseAtURL:error:];
   }
 
-  v10 = [v8 code];
-  if (v10 > 0x1A || ((1 << v10) & 0x5000800) == 0)
+  code = [v8 code];
+  if (code > 0x1A || ((1 << code) & 0x5000800) == 0)
   {
     goto LABEL_27;
   }
@@ -760,7 +760,7 @@ void __52__QLThumbnailAdditionIndex_makeDatabaseAtURL_error___block_invoke(uint6
   }
 
   v29 = v8;
-  v13 = [(QLThumbnailAdditionIndex *)self removeDatabaseAtURL:v6 error:&v29];
+  v13 = [(QLThumbnailAdditionIndex *)self removeDatabaseAtURL:lCopy error:&v29];
   v14 = v29;
 
   if (!v13)
@@ -773,7 +773,7 @@ void __52__QLThumbnailAdditionIndex_makeDatabaseAtURL_error___block_invoke(uint6
   }
 
   v28 = v14;
-  v7 = [(QLThumbnailAdditionIndex *)self makeDatabaseAtURL:v6 error:&v28];
+  v7 = [(QLThumbnailAdditionIndex *)self makeDatabaseAtURL:lCopy error:&v28];
   v8 = v28;
 
   if (v7)
@@ -810,10 +810,10 @@ LABEL_15:
         [QLThumbnailAdditionIndex openDatabaseAtURL:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v21 = v17;
-        *a4 = v17;
+        *error = v17;
       }
     }
 
@@ -825,11 +825,11 @@ LABEL_15:
   {
 LABEL_27:
     v17 = v8;
-    if (a4)
+    if (error)
     {
       v23 = v8;
       v16 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -922,53 +922,53 @@ void __54__QLThumbnailAdditionIndex__neuterAutoRollbackHandler__block_invoke(uin
   }
 }
 
-- (void)_resetDatabaseOnItsQueue:(id)a3
+- (void)_resetDatabaseOnItsQueue:(id)queue
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = _log_2();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     [QLThumbnailAdditionIndex _resetDatabaseOnItsQueue:];
   }
 
-  [v4 dbHandle];
+  [queueCopy dbHandle];
   v7 = _sqlite3_db_truncate();
   if (v7)
   {
     v8 = _log_2();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      url = v5->_url;
+      url = selfCopy->_url;
       v13 = 138412802;
       v14 = url;
       v15 = 1024;
       v16 = v7;
       v17 = 2080;
-      v18 = sqlite3_errmsg([v4 dbHandle]);
+      v18 = sqlite3_errmsg([queueCopy dbHandle]);
       _os_log_error_impl(&dword_2615D3000, v8, OS_LOG_TYPE_ERROR, "Failed to truncate database at %@: %d (%s)", &v13, 0x1Cu);
     }
   }
 
-  [(QLThumbnailAdditionIndex *)v5 _neuterAutoRollbackHandler];
-  [(QLThumbnailAdditionIndex *)v5 _closeDatabaseOnItsQueue:v4];
-  [(QLThumbnailAdditionIndex *)v5 _cleanUpAfterClose];
+  [(QLThumbnailAdditionIndex *)selfCopy _neuterAutoRollbackHandler];
+  [(QLThumbnailAdditionIndex *)selfCopy _closeDatabaseOnItsQueue:queueCopy];
+  [(QLThumbnailAdditionIndex *)selfCopy _cleanUpAfterClose];
   v9 = _log_2();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [QLThumbnailAdditionIndex _resetDatabaseOnItsQueue:];
   }
 
-  v10 = [(QLThumbnailAdditionIndex *)v5 openDatabaseAtURL:v5->_url error:0];
+  v10 = [(QLThumbnailAdditionIndex *)selfCopy openDatabaseAtURL:selfCopy->_url error:0];
 
   if (v10)
   {
-    objc_storeStrong(&v5->_db, v10);
+    objc_storeStrong(&selfCopy->_db, v10);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -1009,16 +1009,16 @@ LABEL_6:
 
 - (QLThumbnailAdditionIndex)init
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = QLTGetDefaultCacheLocation();
   v5 = [v4 stringByAppendingPathComponent:@"cloudthumbnails.db"];
 
   v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
-  if (([v3 fileExistsAtPath:v5] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:v5] & 1) == 0)
   {
-    v7 = [v3 URLForDirectory:14 inDomain:1 appropriateForURL:0 create:0 error:0];
+    v7 = [defaultManager URLForDirectory:14 inDomain:1 appropriateForURL:0 create:0 error:0];
     v8 = [v7 URLByAppendingPathComponent:@"Quick Look/cloudthumbnails.db" isDirectory:0];
-    [v3 moveItemAtURL:v8 toURL:v6 error:0];
+    [defaultManager moveItemAtURL:v8 toURL:v6 error:0];
   }
 
   v9 = [(QLThumbnailAdditionIndex *)self initWithURL:v6];
@@ -1026,14 +1026,14 @@ LABEL_6:
   return v9;
 }
 
-- (id)whereClauseForURL:(id)a3
+- (id)whereClauseForURL:(id)l
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v8 = 0;
   v9[0] = 0;
   v9[1] = 0;
-  if ([v3 qlt_getDocumentIdentifier:&v8] && objc_msgSend(v3, "qlt_getVolumeUUID:", v9))
+  if ([lCopy qlt_getDocumentIdentifier:&v8] && objc_msgSend(lCopy, "qlt_getVolumeUUID:", v9))
   {
     v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v9 length:16];
     v5 = [MEMORY[0x277D82C08] formatInjection:{@"docid = %u AND vol_uuid = %@", v8, v4}];
@@ -1049,10 +1049,10 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)hasThumbnailForURL:(id)a3 updateLastHitDate:(BOOL)a4 andSize:(unint64_t)a5
+- (BOOL)hasThumbnailForURL:(id)l updateLastHitDate:(BOOL)date andSize:(unint64_t)size
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  lCopy = l;
   if (!self->_db)
   {
     [(QLThumbnailAdditionIndex *)self open];
@@ -1072,11 +1072,11 @@ LABEL_6:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = lCopy;
     _os_log_impl(&dword_2615D3000, v9, OS_LOG_TYPE_INFO, "Looking for thumbnail for URL %@", &buf, 0xCu);
   }
 
-  v10 = [(QLThumbnailAdditionIndex *)self whereClauseForURL:v8];
+  v10 = [(QLThumbnailAdditionIndex *)self whereClauseForURL:lCopy];
   v11 = v10;
   if (!v10)
   {
@@ -1097,9 +1097,9 @@ LABEL_9:
   v11 = v10;
   v16 = v11;
   p_buf = &buf;
-  v19 = a5;
-  v20 = a4;
-  v17 = v8;
+  sizeCopy = size;
+  dateCopy = date;
+  v17 = lCopy;
   [(QLThumbnailAdditionIndex *)self dispatchSyncOnDatabaseQueue:v15];
   v12 = *(*(&buf + 1) + 24);
 
@@ -1183,9 +1183,9 @@ void __73__QLThumbnailAdditionIndex_hasThumbnailForURL_updateLastHitDate_andSize
   [v5 execute:{@"UPDATE thumbnails SET last_seen_path=%@ %@ %@ WHERE %@", v6, v7, v4, *(a1 + 48)}];
 }
 
-- (BOOL)updateFileSize:(unint64_t)a3 ofThumbnailForURL:(id)a4
+- (BOOL)updateFileSize:(unint64_t)size ofThumbnailForURL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   if (!self->_db)
   {
     [(QLThumbnailAdditionIndex *)self open];
@@ -1207,7 +1207,7 @@ void __73__QLThumbnailAdditionIndex_hasThumbnailForURL_updateLastHitDate_andSize
     [QLThumbnailAdditionIndex updateFileSize:ofThumbnailForURL:];
   }
 
-  v8 = [(QLThumbnailAdditionIndex *)self whereClauseForURL:v6];
+  v8 = [(QLThumbnailAdditionIndex *)self whereClauseForURL:lCopy];
   v9 = v8;
   if (!v8)
   {
@@ -1225,7 +1225,7 @@ LABEL_9:
   v12[2] = __61__QLThumbnailAdditionIndex_updateFileSize_ofThumbnailForURL___block_invoke;
   v12[3] = &unk_279ADDDB8;
   v14 = &v16;
-  v15 = a3;
+  sizeCopy = size;
   v12[4] = self;
   v9 = v8;
   v13 = v9;
@@ -1245,11 +1245,11 @@ void __61__QLThumbnailAdditionIndex_updateFileSize_ofThumbnailForURL___block_inv
   *(*(*(a1 + 48) + 8) + 24) = [v3 execute:{@"UPDATE thumbnails SET size=%llu WHERE %@", v2, *(a1 + 40)}];
 }
 
-- (BOOL)updateLastHitDate:(id)a3 ofThumbnailForURL:(id)a4
+- (BOOL)updateLastHitDate:(id)date ofThumbnailForURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  lCopy = l;
   if (!self->_db)
   {
     [(QLThumbnailAdditionIndex *)self open];
@@ -1269,11 +1269,11 @@ void __61__QLThumbnailAdditionIndex_updateFileSize_ofThumbnailForURL___block_inv
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = lCopy;
     _os_log_impl(&dword_2615D3000, v8, OS_LOG_TYPE_INFO, "Updating file size for thumbnail for URL %@", &buf, 0xCu);
   }
 
-  v9 = [(QLThumbnailAdditionIndex *)self whereClauseForURL:v7];
+  v9 = [(QLThumbnailAdditionIndex *)self whereClauseForURL:lCopy];
   if (!v9)
   {
 LABEL_9:
@@ -1291,7 +1291,7 @@ LABEL_9:
   v13[3] = &unk_279ADDDE0;
   p_buf = &buf;
   v13[4] = self;
-  v14 = v6;
+  v14 = dateCopy;
   v9 = v9;
   v15 = v9;
   [(QLThumbnailAdditionIndex *)self dispatchSyncOnDatabaseQueue:v13];
@@ -1321,10 +1321,10 @@ void __64__QLThumbnailAdditionIndex_updateLastHitDate_ofThumbnailForURL___block_
   *(v4 + 24) = v5;
 }
 
-- (BOOL)removeThumbnailForURL:(id)a3
+- (BOOL)removeThumbnailForURL:(id)l
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   if (!self->_db)
   {
     [(QLThumbnailAdditionIndex *)self open];
@@ -1344,11 +1344,11 @@ void __64__QLThumbnailAdditionIndex_updateLastHitDate_ofThumbnailForURL___block_
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = lCopy;
     _os_log_impl(&dword_2615D3000, v5, OS_LOG_TYPE_INFO, "Removing thumbnail for URL %@", &buf, 0xCu);
   }
 
-  v6 = [(QLThumbnailAdditionIndex *)self whereClauseForURL:v4];
+  v6 = [(QLThumbnailAdditionIndex *)self whereClauseForURL:lCopy];
   v7 = v6;
   if (!v6)
   {
@@ -1385,32 +1385,32 @@ void __50__QLThumbnailAdditionIndex_removeThumbnailForURL___block_invoke(uint64_
   *(*(*(a1 + 48) + 8) + 24) = [v2 execute:{@"DELETE FROM thumbnails WHERE %@", *(a1 + 40)}];
 }
 
-- (BOOL)addThumbnailForURL:(id)a3 lastHitDate:(id)a4 size:(unint64_t)a5
+- (BOOL)addThumbnailForURL:(id)l lastHitDate:(id)date size:(unint64_t)size
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  dateCopy = date;
   if (self->_db || ([(QLThumbnailAdditionIndex *)self open], self->_db))
   {
     v10 = _log_2();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       buf.st_dev = 138412290;
-      *&buf.st_mode = v8;
+      *&buf.st_mode = lCopy;
       _os_log_impl(&dword_2615D3000, v10, OS_LOG_TYPE_INFO, "Adding thumbnail for URL %@", &buf, 0xCu);
     }
 
     v29 = 0;
     v31[0] = 0;
     v31[1] = 0;
-    if ([v8 qlt_getDocumentIdentifier:&v29])
+    if ([lCopy qlt_getDocumentIdentifier:&v29])
     {
-      if ([v8 qlt_getVolumeUUID:v31])
+      if ([lCopy qlt_getVolumeUUID:v31])
       {
         v11 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v31 length:16 freeWhenDone:0];
         memset(&buf, 0, sizeof(buf));
-        v12 = v8;
-        stat([v8 fileSystemRepresentation], &buf);
+        v12 = lCopy;
+        stat([lCopy fileSystemRepresentation], &buf);
         v25 = 0;
         v26 = &v25;
         v27 = 0x2020000000;
@@ -1424,9 +1424,9 @@ void __50__QLThumbnailAdditionIndex_removeThumbnailForURL___block_invoke(uint64_
         v24 = v29;
         v13 = v11;
         v19 = v13;
-        v20 = v9;
-        v21 = v8;
-        v23 = a5;
+        v20 = dateCopy;
+        v21 = lCopy;
+        sizeCopy = size;
         [(QLThumbnailAdditionIndex *)self dispatchSyncOnDatabaseQueue:v18];
         v14 = *(v26 + 24);
 
@@ -1479,14 +1479,14 @@ void __64__QLThumbnailAdditionIndex_addThumbnailForURL_lastHitDate_size___block_
   *(*(*(a1 + 64) + 8) + 24) = [v6 execute:{@"INSERT OR REPLACE INTO thumbnails(docid, vol_uuid, last_hit_date, last_seen_path, size) VALUES (%u, %@, %@, %@, %llu)", v4, v2, v3, v5, *(a1 + 72)}];
 }
 
-- (BOOL)addThumbnailForURL:(id)a3 size:(unint64_t)a4
+- (BOOL)addThumbnailForURL:(id)l size:(unint64_t)size
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
-  v8 = [v6 date];
-  LOBYTE(a4) = [(QLThumbnailAdditionIndex *)self addThumbnailForURL:v7 lastHitDate:v8 size:a4];
+  lCopy = l;
+  date = [v6 date];
+  LOBYTE(size) = [(QLThumbnailAdditionIndex *)self addThumbnailForURL:lCopy lastHitDate:date size:size];
 
-  return a4;
+  return size;
 }
 
 - (id)entriesEnumerator
@@ -1512,16 +1512,16 @@ void __64__QLThumbnailAdditionIndex_addThumbnailForURL_lastHitDate_size___block_
   return v5;
 }
 
-- (void)enumerateCacheEntriesWithHandler:(id)a3
+- (void)enumerateCacheEntriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__QLThumbnailAdditionIndex_enumerateCacheEntriesWithHandler___block_invoke;
   v6[3] = &unk_279ADD550;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(QLThumbnailAdditionIndex *)self dispatchSyncOnDatabaseQueue:v6];
 }
 
@@ -1567,13 +1567,13 @@ void __61__QLThumbnailAdditionIndex_enumerateCacheEntriesWithHandler___block_inv
 {
   if (self->_db || ([(QLThumbnailAdditionIndex *)self open], self->_db))
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __38__QLThumbnailAdditionIndex_allEntries__block_invoke;
     v9[3] = &unk_279ADD200;
     v9[4] = self;
-    v4 = v3;
+    v4 = array;
     v10 = v4;
     [(QLThumbnailAdditionIndex *)self dispatchSyncOnDatabaseQueue:v9];
     v5 = v10;
@@ -1632,7 +1632,7 @@ void __38__QLThumbnailAdditionIndex_allEntries__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)batchOfEntriesStartingAt:(unint64_t)a3 endingAt:(unint64_t *)a4
+- (id)batchOfEntriesStartingAt:(unint64_t)at endingAt:(unint64_t *)endingAt
 {
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:50];
   v12[0] = MEMORY[0x277D85DD0];
@@ -1640,10 +1640,10 @@ void __38__QLThumbnailAdditionIndex_allEntries__block_invoke(uint64_t a1)
   v12[2] = __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_invoke;
   v12[3] = &unk_279ADDE58;
   v12[4] = self;
-  v14 = a3;
+  atCopy = at;
   v8 = v7;
   v13 = v8;
-  v15 = a4;
+  endingAtCopy = endingAt;
   [(QLThumbnailAdditionIndex *)self dispatchSyncOnDatabaseQueue:v12];
   v9 = v13;
   v10 = v8;
@@ -1725,12 +1725,12 @@ void __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_in
 - (void)removeAllAdditions
 {
   v27 = *MEMORY[0x277D85DE8];
-  v2 = [(QLThumbnailAdditionIndex *)self allEntries];
+  allEntries = [(QLThumbnailAdditionIndex *)self allEntries];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v3 = [allEntries countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v3)
   {
     v5 = v3;
@@ -1743,14 +1743,14 @@ void __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_in
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allEntries);
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
         v9 = MEMORY[0x277CDAAC0];
-        v10 = [v8 lastSeenURL];
+        lastSeenURL = [v8 lastSeenURL];
         v17 = 0;
-        v11 = [v9 removeAdditionsOnURL:v10 error:&v17];
+        v11 = [v9 removeAdditionsOnURL:lastSeenURL error:&v17];
         v12 = v17;
 
         if ((v11 & 1) == 0)
@@ -1758,9 +1758,9 @@ void __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_in
           v13 = _log_2();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
-            v14 = [v8 lastSeenURL];
+            lastSeenURL2 = [v8 lastSeenURL];
             *buf = v16;
-            v23 = v14;
+            v23 = lastSeenURL2;
             v24 = 2112;
             v25 = v12;
             _os_log_error_impl(&dword_2615D3000, v13, OS_LOG_TYPE_ERROR, "Could not remove addition on %@: %@", buf, 0x16u);
@@ -1768,7 +1768,7 @@ void __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_in
         }
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v5 = [allEntries countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v5);
@@ -1781,8 +1781,8 @@ void __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_in
 {
   v2 = NSHomeDirectory();
   memset(&v7, 0, sizeof(v7));
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = stat([v3 fileSystemRepresentationWithPath:v2], &v7);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = stat([defaultManager fileSystemRepresentationWithPath:v2], &v7);
 
   if (v4)
   {
@@ -1797,15 +1797,15 @@ void __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_in
   return st_dev;
 }
 
-- (void)removeEntriesFromDatabase:(id)a3
+- (void)removeEntriesFromDatabase:(id)database
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  databaseCopy = database;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [databaseCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1816,17 +1816,17 @@ void __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_in
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(databaseCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         db = self->_db;
-        v11 = [v9 documentID];
-        v12 = [v9 vol_uuid];
-        [(PQLConnection *)db execute:@"DELETE FROM thumbnails WHERE docid = %llu AND vol_uuid = %@", v11, v12];
+        documentID = [v9 documentID];
+        vol_uuid = [v9 vol_uuid];
+        [(PQLConnection *)db execute:@"DELETE FROM thumbnails WHERE docid = %llu AND vol_uuid = %@", documentID, vol_uuid];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [databaseCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1835,25 +1835,25 @@ void __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_in
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanUpBatchOfEntries:(id)a3
+- (void)cleanUpBatchOfEntries:(id)entries
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entriesCopy = entries;
   v5 = _log_2();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v60 = [v4 count];
+    v60 = [entriesCopy count];
     _os_log_impl(&dword_2615D3000, v5, OS_LOG_TYPE_INFO, "[db maintenance] updating %llu entries", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
-  v38 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v7 = v4;
+  v7 = entriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v45 objects:v63 count:16];
   if (v8)
   {
@@ -1862,7 +1862,7 @@ void __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_in
     v12 = 0x277CBE000uLL;
     *&v9 = 134219010;
     v35 = v9;
-    v39 = v6;
+    v39 = array;
     do
     {
       v13 = 0;
@@ -1874,10 +1874,10 @@ void __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_in
         }
 
         v14 = *(*(&v45 + 1) + 8 * v13);
-        v15 = [(QLThumbnailAdditionIndex *)self deviceForHomeDirectory];
-        if ((v15 & 0x80000000) == 0)
+        deviceForHomeDirectory = [(QLThumbnailAdditionIndex *)self deviceForHomeDirectory];
+        if ((deviceForHomeDirectory & 0x80000000) == 0)
         {
-          v16 = v15;
+          v16 = deviceForHomeDirectory;
           [v14 documentID];
           v17 = GSLibraryResolveDocumentId2();
           if (v17)
@@ -1898,7 +1898,7 @@ void __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_in
                 [(QLThumbnailAdditionIndex *)v57 cleanUpBatchOfEntries:v14, &v58, v19];
               }
 
-              [v6 addObject:v14];
+              [array addObject:v14];
               goto LABEL_32;
             }
 
@@ -1920,8 +1920,8 @@ void __62__QLThumbnailAdditionIndex_batchOfEntriesStartingAt_endingAt___block_in
             }
 
             v21 = [*(v12 + 3008) fileURLWithFileSystemRepresentation:buf isDirectory:(v43.st_mode & 0xF000) == 0x4000 relativeToURL:0];
-            v23 = [v14 lastSeenURL];
-            if ([v21 isEqual:v23])
+            lastSeenURL = [v14 lastSeenURL];
+            if ([v21 isEqual:lastSeenURL])
             {
               v24 = [v14 size];
 
@@ -1932,13 +1932,13 @@ LABEL_27:
                 v26 = _log_2();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
                 {
-                  v36 = [v14 documentID];
-                  v37 = [v14 lastSeenURL];
+                  documentID = [v14 documentID];
+                  lastSeenURL2 = [v14 lastSeenURL];
                   v28 = [v14 size];
                   *v49 = v35;
-                  *v50 = v36;
+                  *v50 = documentID;
                   *&v50[8] = 2112;
-                  *&v50[10] = v37;
+                  *&v50[10] = lastSeenURL2;
                   v51 = 2112;
                   v52 = v21;
                   v53 = 2048;
@@ -1950,10 +1950,10 @@ LABEL_27:
 
                 [v14 setLastSeenURL:v21];
                 [v14 setSize:v25];
-                [v38 addObject:v14];
+                [array2 addObject:v14];
               }
 
-              v6 = v39;
+              array = v39;
 LABEL_31:
 
               v12 = 0x277CBE000;
@@ -1970,17 +1970,17 @@ LABEL_32:
             v20 = _log_2();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
             {
-              v27 = [v14 lastSeenURL];
+              lastSeenURL3 = [v14 lastSeenURL];
               *buf = 138412546;
               v60 = v14;
               v61 = 2112;
-              v62 = v27;
+              v62 = lastSeenURL3;
               _os_log_error_impl(&dword_2615D3000, v20, OS_LOG_TYPE_ERROR, "Should delete %@ (lastSeenURL: %@)", buf, 0x16u);
 
-              v6 = v39;
+              array = v39;
             }
 
-            [v6 addObject:v14];
+            [array addObject:v14];
           }
         }
 
@@ -1998,8 +1998,8 @@ LABEL_33:
   v29 = _log_2();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
-    v30 = [v6 count];
-    v31 = [v38 count];
+    v30 = [array count];
+    v31 = [array2 count];
     *buf = 134218240;
     v60 = v30;
     v61 = 2048;
@@ -2012,10 +2012,10 @@ LABEL_33:
   v40[2] = __50__QLThumbnailAdditionIndex_cleanUpBatchOfEntries___block_invoke;
   v40[3] = &unk_279ADD2A0;
   v40[4] = self;
-  v41 = v6;
-  v42 = v38;
-  v32 = v38;
-  v33 = v6;
+  v41 = array;
+  v42 = array2;
+  v32 = array2;
+  v33 = array;
   [(QLThumbnailAdditionIndex *)self dispatchSyncOnDatabaseQueue:v40];
 
   v34 = *MEMORY[0x277D85DE8];
@@ -2071,86 +2071,86 @@ void __50__QLThumbnailAdditionIndex_cleanUpBatchOfEntries___block_invoke(uint64_
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)updateFileSize:(unint64_t)a3 ofThumbnailForURL:(id)a4 completion:(id)a5
+- (void)updateFileSize:(unint64_t)size ofThumbnailForURL:(id)l completion:(id)completion
 {
-  v10 = a5;
-  v8 = [(QLThumbnailAdditionIndex *)self updateFileSize:a3 ofThumbnailForURL:a4];
-  v9 = v10;
-  if (v10)
+  completionCopy = completion;
+  v8 = [(QLThumbnailAdditionIndex *)self updateFileSize:size ofThumbnailForURL:l];
+  v9 = completionCopy;
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, v8);
-    v9 = v10;
+    (*(completionCopy + 2))(completionCopy, v8);
+    v9 = completionCopy;
   }
 }
 
-- (void)updateLastHitDate:(id)a3 ofThumbnailForURL:(id)a4 completion:(id)a5
+- (void)updateLastHitDate:(id)date ofThumbnailForURL:(id)l completion:(id)completion
 {
-  v10 = a5;
-  v8 = [(QLThumbnailAdditionIndex *)self updateLastHitDate:a3 ofThumbnailForURL:a4];
-  v9 = v10;
-  if (v10)
+  completionCopy = completion;
+  v8 = [(QLThumbnailAdditionIndex *)self updateLastHitDate:date ofThumbnailForURL:l];
+  v9 = completionCopy;
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, v8);
-    v9 = v10;
+    (*(completionCopy + 2))(completionCopy, v8);
+    v9 = completionCopy;
   }
 }
 
-- (void)removeThumbnailForURL:(id)a3 completion:(id)a4
+- (void)removeThumbnailForURL:(id)l completion:(id)completion
 {
-  v8 = a4;
-  v6 = [(QLThumbnailAdditionIndex *)self removeThumbnailForURL:a3];
-  v7 = v8;
-  if (v8)
+  completionCopy = completion;
+  v6 = [(QLThumbnailAdditionIndex *)self removeThumbnailForURL:l];
+  v7 = completionCopy;
+  if (completionCopy)
   {
-    (*(v8 + 2))(v8, v6);
-    v7 = v8;
+    (*(completionCopy + 2))(completionCopy, v6);
+    v7 = completionCopy;
   }
 }
 
-- (void)addThumbnailForURLWrapper:(id)a3 size:(unint64_t)a4 completion:(id)a5
+- (void)addThumbnailForURLWrapper:(id)wrapper size:(unint64_t)size completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 url];
-  v11 = [v10 startAccessingSecurityScopedResource];
-  if ((v11 & 1) == 0)
+  wrapperCopy = wrapper;
+  completionCopy = completion;
+  v10 = [wrapperCopy url];
+  startAccessingSecurityScopedResource = [v10 startAccessingSecurityScopedResource];
+  if ((startAccessingSecurityScopedResource & 1) == 0)
   {
     v12 = _log_2();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [QLThumbnailAdditionIndex hasThumbnailForURLWrapper:v8 updateLastHitDate:? andSize:? completion:?];
+      [QLThumbnailAdditionIndex hasThumbnailForURLWrapper:wrapperCopy updateLastHitDate:? andSize:? completion:?];
     }
   }
 
-  v13 = [(QLThumbnailAdditionIndex *)self addThumbnailForURL:v10 size:a4];
-  if (v9)
+  v13 = [(QLThumbnailAdditionIndex *)self addThumbnailForURL:v10 size:size];
+  if (completionCopy)
   {
-    v9[2](v9, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
-  if (v11)
+  if (startAccessingSecurityScopedResource)
   {
     [v10 stopAccessingSecurityScopedResource];
   }
 }
 
-- (void)retrieveAllAdditions:(id)a3
+- (void)retrieveAllAdditions:(id)additions
 {
-  if (a3)
+  if (additions)
   {
-    v5 = a3;
-    v6 = [(QLThumbnailAdditionIndex *)self allEntries];
-    (*(a3 + 2))(v5, v6);
+    additionsCopy = additions;
+    allEntries = [(QLThumbnailAdditionIndex *)self allEntries];
+    (*(additions + 2))(additionsCopy, allEntries);
   }
 }
 
-- (id)volumeRestrictionForMountPoint:(id)a3
+- (id)volumeRestrictionForMountPoint:(id)point
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v7[0] = 0;
   v7[1] = 0;
   v3 = 0;
-  if ([a3 qlt_getVolumeUUID:v7])
+  if ([point qlt_getVolumeUUID:v7])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v7 length:16];
     v3 = [MEMORY[0x277D82C08] formatInjection:{@"AND vol_uuid = %@", v4}];
@@ -2161,32 +2161,32 @@ void __50__QLThumbnailAdditionIndex_cleanUpBatchOfEntries___block_invoke(uint64_
   return v3;
 }
 
-- (int64_t)purgeableSpaceOnMountPoint:(id)a3 withUrgency:(int)a4 beforeDate:(id)a5
+- (int64_t)purgeableSpaceOnMountPoint:(id)point withUrgency:(int)urgency beforeDate:(id)date
 {
-  v7 = a3;
-  v8 = a5;
+  pointCopy = point;
+  dateCopy = date;
   if (self->_db || ([(QLThumbnailAdditionIndex *)self open], self->_db))
   {
-    v9 = [(QLThumbnailAdditionIndex *)self volumeRestrictionForMountPoint:v7];
+    v9 = [(QLThumbnailAdditionIndex *)self volumeRestrictionForMountPoint:pointCopy];
     v22 = 0;
     v23 = &v22;
     v24 = 0x3032000000;
     v25 = __Block_byref_object_copy__4;
     v26 = __Block_byref_object_dispose__4;
     v27 = 0;
-    v10 = [(PQLConnection *)self->_db serialQueue];
+    serialQueue = [(PQLConnection *)self->_db serialQueue];
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __91__QLThumbnailAdditionIndex_CacheDelete__purgeableSpaceOnMountPoint_withUrgency_beforeDate___block_invoke;
     v17 = &unk_279ADDDE0;
     v21 = &v22;
-    v18 = self;
-    v19 = v8;
+    selfCopy = self;
+    v19 = dateCopy;
     v11 = v9;
     v20 = v11;
-    dispatch_sync(v10, &v14);
+    dispatch_sync(serialQueue, &v14);
 
-    v12 = [v23[5] longLongValue];
+    longLongValue = [v23[5] longLongValue];
     _Block_object_dispose(&v22, 8);
   }
 
@@ -2198,10 +2198,10 @@ void __50__QLThumbnailAdditionIndex_cleanUpBatchOfEntries___block_invoke(uint64_
       [QLThumbnailAdditionIndex(CacheDelete) purgeableSpaceOnMountPoint:v11 withUrgency:? beforeDate:?];
     }
 
-    v12 = 0;
+    longLongValue = 0;
   }
 
-  return v12;
+  return longLongValue;
 }
 
 void __91__QLThumbnailAdditionIndex_CacheDelete__purgeableSpaceOnMountPoint_withUrgency_beforeDate___block_invoke(uint64_t a1)
@@ -2213,11 +2213,11 @@ void __91__QLThumbnailAdditionIndex_CacheDelete__purgeableSpaceOnMountPoint_with
   *(v3 + 40) = v2;
 }
 
-- (int64_t)purgeOnMountPoint:(id)a3 withUrgency:(int)a4 beforeDate:(id)a5
+- (int64_t)purgeOnMountPoint:(id)point withUrgency:(int)urgency beforeDate:(id)date
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  pointCopy = point;
+  dateCopy = date;
   v9 = _log_2();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -2230,26 +2230,26 @@ void __91__QLThumbnailAdditionIndex_CacheDelete__purgeableSpaceOnMountPoint_with
     sPurgeCancelled = 0;
     v50 = 0;
     v10 = 0;
-    if ([v7 qlt_getDeviceIdentifier:&v50] && (v50 & 0x80000000) == 0)
+    if ([pointCopy qlt_getDeviceIdentifier:&v50] && (v50 & 0x80000000) == 0)
     {
-      v36 = v7;
-      v11 = [(QLThumbnailAdditionIndex *)self volumeRestrictionForMountPoint:v7];
-      v12 = [MEMORY[0x277CBEB18] array];
-      v13 = [(PQLConnection *)self->_db serialQueue];
+      v36 = pointCopy;
+      v11 = [(QLThumbnailAdditionIndex *)self volumeRestrictionForMountPoint:pointCopy];
+      array = [MEMORY[0x277CBEB18] array];
+      serialQueue = [(PQLConnection *)self->_db serialQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __82__QLThumbnailAdditionIndex_CacheDelete__purgeOnMountPoint_withUrgency_beforeDate___block_invoke;
       block[3] = &unk_279ADDEA8;
-      v34 = self;
-      v35 = v8;
+      selfCopy = self;
+      v35 = dateCopy;
       block[4] = self;
-      v46 = v8;
+      v46 = dateCopy;
       v33 = v11;
       v47 = v33;
       v49 = v50;
-      v14 = v12;
+      v14 = array;
       v48 = v14;
-      dispatch_sync(v13, block);
+      dispatch_sync(serialQueue, block);
 
       v15 = _log_2();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -2283,9 +2283,9 @@ void __91__QLThumbnailAdditionIndex_CacheDelete__purgeableSpaceOnMountPoint_with
             v21 = *(*(&v41 + 1) + 8 * i);
             v22 = objc_autoreleasePoolPush();
             v23 = MEMORY[0x277CDAAC0];
-            v24 = [v21 lastSeenURL];
+            lastSeenURL = [v21 lastSeenURL];
             v40 = 0;
-            LODWORD(v23) = [v23 _removeAdditionsOnURLDirectly:v24 error:&v40];
+            LODWORD(v23) = [v23 _removeAdditionsOnURLDirectly:lastSeenURL error:&v40];
             v25 = v40;
 
             if (v23)
@@ -2298,9 +2298,9 @@ void __91__QLThumbnailAdditionIndex_CacheDelete__purgeableSpaceOnMountPoint_with
               v26 = _log_2();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
               {
-                v27 = [v21 lastSeenURL];
+                lastSeenURL2 = [v21 lastSeenURL];
                 *buf = 138412546;
-                v52 = v27;
+                v52 = lastSeenURL2;
                 v53 = 2112;
                 v54 = v25;
                 _os_log_error_impl(&dword_2615D3000, v26, OS_LOG_TYPE_ERROR, "#CacheDelete Not removing addition on %@; encountered error %@", buf, 0x16u);
@@ -2321,18 +2321,18 @@ void __91__QLThumbnailAdditionIndex_CacheDelete__purgeableSpaceOnMountPoint_with
         v10 = 0;
       }
 
-      v28 = [(PQLConnection *)v34->_db serialQueue];
+      serialQueue2 = [(PQLConnection *)selfCopy->_db serialQueue];
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __82__QLThumbnailAdditionIndex_CacheDelete__purgeOnMountPoint_withUrgency_beforeDate___block_invoke_14;
       v38[3] = &unk_279ADD200;
-      v38[4] = v34;
+      v38[4] = selfCopy;
       v39 = obj;
       v29 = obj;
-      dispatch_sync(v28, v38);
+      dispatch_sync(serialQueue2, v38);
 
-      v8 = v35;
-      v7 = v36;
+      dateCopy = v35;
+      pointCopy = v36;
     }
   }
 

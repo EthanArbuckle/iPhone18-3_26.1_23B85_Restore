@@ -1,93 +1,93 @@
 @interface HMDHH2Migrator
-+ (BOOL)shouldIgnoreModel:(id)a3;
-+ (id)arrayByRemovingElementsInArray:(id)a3 fromArray:(id)a4;
-+ (id)auditedHomeAccessCodeModelsFromModels:(id)a3 userAccessCodeModelsAndInvites:(id)a4;
-+ (id)auditedUserAccessCodeModelsAndInvitesFromModels:(id)a3;
++ (BOOL)shouldIgnoreModel:(id)model;
++ (id)arrayByRemovingElementsInArray:(id)array fromArray:(id)fromArray;
++ (id)auditedHomeAccessCodeModelsFromModels:(id)models userAccessCodeModelsAndInvites:(id)invites;
++ (id)auditedUserAccessCodeModelsAndInvitesFromModels:(id)models;
 + (id)logCategory;
-+ (id)userAccessCodeFromModel:(id)a3;
-+ (int64_t)compareUserAccessCodeInModel:(id)a3 withModel:(id)a4;
-- (BOOL)_performMigrationFromTestDirectoryUsingHH2ControllerKey:(id)a3;
-- (BOOL)_saveAndResetWithContext:(id)a3 errorMessage:(id)a4;
-- (BOOL)_startMigratingHomeDataFromLocation:(id)a3 usingHH2PairingKey:(id)a4;
-- (BOOL)didCoreDataPushAllModelsToCloudKit:(id)a3 previousToken:(id)a4 cloudStore:(id)a5;
-- (BOOL)fetchAndMigrateCameraSettingsFromAccessory:(id)a3 fromLocalZone:(id)a4 managedObjectContext:(id)a5;
-- (BOOL)fetchAndMigrateCompositeSettingsFromAccessory:(id)a3 fromLocalZone:(id)a4 managedObjectContext:(id)a5;
++ (id)userAccessCodeFromModel:(id)model;
++ (int64_t)compareUserAccessCodeInModel:(id)model withModel:(id)withModel;
+- (BOOL)_performMigrationFromTestDirectoryUsingHH2ControllerKey:(id)key;
+- (BOOL)_saveAndResetWithContext:(id)context errorMessage:(id)message;
+- (BOOL)_startMigratingHomeDataFromLocation:(id)location usingHH2PairingKey:(id)key;
+- (BOOL)didCoreDataPushAllModelsToCloudKit:(id)kit previousToken:(id)token cloudStore:(id)store;
+- (BOOL)fetchAndMigrateCameraSettingsFromAccessory:(id)accessory fromLocalZone:(id)zone managedObjectContext:(id)context;
+- (BOOL)fetchAndMigrateCompositeSettingsFromAccessory:(id)accessory fromLocalZone:(id)zone managedObjectContext:(id)context;
 - (BOOL)handlePostMigration;
-- (BOOL)makeSureToCreateHH2SentinelZoneWithError:(id *)a3;
-- (BOOL)migrateAccessoryV5Models:(id)a3 fromLocalZone:(id)a4 forHome:(id)a5 owner:(id)a6;
-- (BOOL)migrateCameraProfileSettingModel:(id)a3 accessory:(id)a4 managedObjectContext:(id)a5;
-- (BOOL)migrateCompositeAccessorySettingModel:(id)a3 accessory:(id)a4 managedObjectContext:(id)a5;
-- (BOOL)migrateHome:(id)a3 primaryHomeUUID:(id)a4 managedObjectContext:(id)a5 hh2ControllerKey:(id)a6;
-- (BOOL)migrateHomeData:(id)a3 managedObjectContext:(id)a4 hh2ControllerKey:(id)a5;
-- (BOOL)migrateHomeManager:(id)a3 managedObjectContext:(id)a4 hh2ControllerKey:(id)a5;
-- (BOOL)migrateHomePersonModelsForHomeUUID:(id)a3 localZone:(id)a4 managedObjectContext:(id)a5;
-- (BOOL)migrateHomeToCoreData:(id)a3 primaryHomeUUID:(id)a4 managedObjectContext:(id)a5 hh2ControllerKey:(id)a6;
-- (BOOL)migrateMediaContentProfileAccessControl:(id)a3 forOwnerUser:(id)a4 fromLocalZone:(id)a5;
-- (BOOL)migratePersonFaceCropModelsForLocalZone:(id)a3;
-- (BOOL)migratePhotosPersonManagerSettingsFromLocalZone:(id)a3 owner:(id)a4 managedObjectContext:(id)a5;
-- (BOOL)migrateUserListeningHistoryControl:(id)a3 forOwnerUser:(id)a4 fromLocalZone:(id)a5;
-- (BOOL)migrateUserSettingsToCoreData:(id)a3 forUser:(id)a4 fromLocalZone:(id)a5;
-- (BOOL)migrateV5Models:(id)a3 forHome:(id)a4;
-- (BOOL)migrateV5PersonDataForHome:(id)a3 managedObjectContext:(id)a4;
-- (BOOL)populateAndSaveCDModelsFrom:(id)a3 managedObjectContext:(id)a4 hh2ControllerKey:(id)a5 tag:(id)a6;
-- (BOOL)rollAccessoryKeysToHH2:(id)a3 hh2ControllerKey:(id)a4;
-- (BOOL)saveUserSettingsToCoreData:(id)a3 forUser:(id)a4 privateSettingsMap:(id)a5;
-- (BOOL)scheduleAccessoryKeyMigration:(id)a3 oldPairingIdentity:(id)a4 hh2PairingIdentity:(id)a5;
-- (BOOL)startMigratingHomeDataFromLocation:(id)a3;
-- (BOOL)startMigrationFromLocation:(id)a3;
+- (BOOL)makeSureToCreateHH2SentinelZoneWithError:(id *)error;
+- (BOOL)migrateAccessoryV5Models:(id)models fromLocalZone:(id)zone forHome:(id)home owner:(id)owner;
+- (BOOL)migrateCameraProfileSettingModel:(id)model accessory:(id)accessory managedObjectContext:(id)context;
+- (BOOL)migrateCompositeAccessorySettingModel:(id)model accessory:(id)accessory managedObjectContext:(id)context;
+- (BOOL)migrateHome:(id)home primaryHomeUUID:(id)d managedObjectContext:(id)context hh2ControllerKey:(id)key;
+- (BOOL)migrateHomeData:(id)data managedObjectContext:(id)context hh2ControllerKey:(id)key;
+- (BOOL)migrateHomeManager:(id)manager managedObjectContext:(id)context hh2ControllerKey:(id)key;
+- (BOOL)migrateHomePersonModelsForHomeUUID:(id)d localZone:(id)zone managedObjectContext:(id)context;
+- (BOOL)migrateHomeToCoreData:(id)data primaryHomeUUID:(id)d managedObjectContext:(id)context hh2ControllerKey:(id)key;
+- (BOOL)migrateMediaContentProfileAccessControl:(id)control forOwnerUser:(id)user fromLocalZone:(id)zone;
+- (BOOL)migratePersonFaceCropModelsForLocalZone:(id)zone;
+- (BOOL)migratePhotosPersonManagerSettingsFromLocalZone:(id)zone owner:(id)owner managedObjectContext:(id)context;
+- (BOOL)migrateUserListeningHistoryControl:(id)control forOwnerUser:(id)user fromLocalZone:(id)zone;
+- (BOOL)migrateUserSettingsToCoreData:(id)data forUser:(id)user fromLocalZone:(id)zone;
+- (BOOL)migrateV5Models:(id)models forHome:(id)home;
+- (BOOL)migrateV5PersonDataForHome:(id)home managedObjectContext:(id)context;
+- (BOOL)populateAndSaveCDModelsFrom:(id)from managedObjectContext:(id)context hh2ControllerKey:(id)key tag:(id)tag;
+- (BOOL)rollAccessoryKeysToHH2:(id)h2 hh2ControllerKey:(id)key;
+- (BOOL)saveUserSettingsToCoreData:(id)data forUser:(id)user privateSettingsMap:(id)map;
+- (BOOL)scheduleAccessoryKeyMigration:(id)migration oldPairingIdentity:(id)identity hh2PairingIdentity:(id)pairingIdentity;
+- (BOOL)startMigratingHomeDataFromLocation:(id)location;
+- (BOOL)startMigrationFromLocation:(id)location;
 - (BOOL)startMigrationIfNeeded;
-- (BOOL)waitForCDToExportModelsToCloudKit:(id)a3;
-- (BOOL)waitForCloudKitSyncForProcessingResult:(id)a3 error:(id *)a4;
+- (BOOL)waitForCDToExportModelsToCloudKit:(id)kit;
+- (BOOL)waitForCloudKitSyncForProcessingResult:(id)result error:(id *)error;
 - (BOOL)waitForCloudTransformToRun;
 - (BOOL)waitForFirstImportToFinish;
-- (BOOL)waitForStartupForCloudZone:(id)a3;
+- (BOOL)waitForStartupForCloudZone:(id)zone;
 - (BOOL)waitForV5UpdatesToSyncToCloudKit;
 - (HMDHH2Migrator)init;
-- (HMDHH2Migrator)initWithMigratorRecord:(id)a3 hh2FrameworkSwitch:(id)a4 coreData:(id)a5 cloudTransform:(id)a6 backgroundOperationManager:(id)a7 defaultDatabase:(id)a8 cameraClipsDatabase:(id)a9 cloudkitReachabilitySource:(id)a10;
-- (id)_auditAccessCodesByRemovingIllegalDuplicatesFromModels:(id)a3;
-- (id)allObjectIDsFromTransactions:(id)a3 cloudStoreIdentifier:(id)a4;
-- (id)backingStoreObjectsForAccountsAndDevices:(id)a3;
-- (id)findAndRemoveAllModelsWithInvalidAccessCodes:(id)a3;
-- (id)makeListOfArchivesToMigrate:(id)a3;
-- (id)openZoneWithName:(id)a3 inDatabase:(id)a4;
-- (id)privateZoneForOwnerUser:(id)a3;
-- (id)sharedZoneForOwnerUser:(id)a3;
-- (void)_createResidentModelsDuringMigrationForAppleMediaAccessory:(id)a3 context:(id)a4;
-- (void)_fixUpHomeWithoutOwner:(id)a3 withHH2ControllerKey:(id)a4 context:(id)a5;
-- (void)_fixupAccessoryWithNoInitialValues:(id)a3;
-- (void)_fixupAccessoryWithNoRoom:(id)a3 coreDataModelObject:(id)a4;
-- (void)_fixupActionSetInvalidName:(id)a3 context:(id)a4;
-- (void)_fixupActionSetUnlocalizedName:(id)a3;
-- (void)_fixupAppleMediaAccessory:(id)a3 context:(id)a4;
-- (void)_fixupAssistantAccessControlForUserModel:(id)a3;
-- (void)_fixupCharacteristicEventTriggerInvalidService:(id)a3 context:(id)a4;
-- (void)_fixupCharacteristicWriteActionWithInvalidService:(id)a3 context:(id)a4;
-- (void)_fixupGuestAccessCodeWithInvalidLabel:(id)a3 context:(id)a4;
-- (void)_fixupHomeInvalidName:(id)a3 context:(id)a4;
-- (void)_fixupHomeManagerPairingIdentity:(id)a3 withHH2ControllerKey:(id)a4 context:(id)a5;
-- (void)_fixupInvalidCharacteristicFormat:(id)a3 context:(id)a4;
-- (void)_fixupOutgoingInvitationModel:(id)a3;
-- (void)_fixupSoftwareUpdateModelWithNoAccessory:(id)a3 coreDataModelObject:(id)a4;
-- (void)_fixupTriggerInvalidName:(id)a3 context:(id)a4;
-- (void)_fixupUserAccessCodeWithInvalidValue:(id)a3 context:(id)a4;
-- (void)_fixupUserAuthorizationDataForUserModel:(id)a3;
-- (void)_fixupUserPairingIdentity:(id)a3 withHH2ControllerKey:(id)a4 context:(id)a5;
-- (void)_fixupUserUUID:(id)a3;
-- (void)_updatePairingIdentityForHome:(id)a3 withHH2ControllerKey:(id)a4 context:(id)a5;
+- (HMDHH2Migrator)initWithMigratorRecord:(id)record hh2FrameworkSwitch:(id)switch coreData:(id)data cloudTransform:(id)transform backgroundOperationManager:(id)manager defaultDatabase:(id)database cameraClipsDatabase:(id)clipsDatabase cloudkitReachabilitySource:(id)self0;
+- (id)_auditAccessCodesByRemovingIllegalDuplicatesFromModels:(id)models;
+- (id)allObjectIDsFromTransactions:(id)transactions cloudStoreIdentifier:(id)identifier;
+- (id)backingStoreObjectsForAccountsAndDevices:(id)devices;
+- (id)findAndRemoveAllModelsWithInvalidAccessCodes:(id)codes;
+- (id)makeListOfArchivesToMigrate:(id)migrate;
+- (id)openZoneWithName:(id)name inDatabase:(id)database;
+- (id)privateZoneForOwnerUser:(id)user;
+- (id)sharedZoneForOwnerUser:(id)user;
+- (void)_createResidentModelsDuringMigrationForAppleMediaAccessory:(id)accessory context:(id)context;
+- (void)_fixUpHomeWithoutOwner:(id)owner withHH2ControllerKey:(id)key context:(id)context;
+- (void)_fixupAccessoryWithNoInitialValues:(id)values;
+- (void)_fixupAccessoryWithNoRoom:(id)room coreDataModelObject:(id)object;
+- (void)_fixupActionSetInvalidName:(id)name context:(id)context;
+- (void)_fixupActionSetUnlocalizedName:(id)name;
+- (void)_fixupAppleMediaAccessory:(id)accessory context:(id)context;
+- (void)_fixupAssistantAccessControlForUserModel:(id)model;
+- (void)_fixupCharacteristicEventTriggerInvalidService:(id)service context:(id)context;
+- (void)_fixupCharacteristicWriteActionWithInvalidService:(id)service context:(id)context;
+- (void)_fixupGuestAccessCodeWithInvalidLabel:(id)label context:(id)context;
+- (void)_fixupHomeInvalidName:(id)name context:(id)context;
+- (void)_fixupHomeManagerPairingIdentity:(id)identity withHH2ControllerKey:(id)key context:(id)context;
+- (void)_fixupInvalidCharacteristicFormat:(id)format context:(id)context;
+- (void)_fixupOutgoingInvitationModel:(id)model;
+- (void)_fixupSoftwareUpdateModelWithNoAccessory:(id)accessory coreDataModelObject:(id)object;
+- (void)_fixupTriggerInvalidName:(id)name context:(id)context;
+- (void)_fixupUserAccessCodeWithInvalidValue:(id)value context:(id)context;
+- (void)_fixupUserAuthorizationDataForUserModel:(id)model;
+- (void)_fixupUserPairingIdentity:(id)identity withHH2ControllerKey:(id)key context:(id)context;
+- (void)_fixupUserUUID:(id)d;
+- (void)_updatePairingIdentityForHome:(id)home withHH2ControllerKey:(id)key context:(id)context;
 - (void)dealloc;
-- (void)fixupModelForMigration:(id)a3 backingStoreModelObject:(id)a4 hh2ControllerKey:(id)a5;
-- (void)fixupPreviousFailedMigrationModelsWithHomeData:(id)a3 managedObjectContext:(id)a4;
+- (void)fixupModelForMigration:(id)migration backingStoreModelObject:(id)object hh2ControllerKey:(id)key;
+- (void)fixupPreviousFailedMigrationModelsWithHomeData:(id)data managedObjectContext:(id)context;
 - (void)revertChangesPerformedDuringMigration;
-- (void)submitABCEventForFailedMigrationWithReason:(unint64_t)a3 withError:(id)a4;
+- (void)submitABCEventForFailedMigrationWithReason:(unint64_t)reason withError:(id)error;
 @end
 
 @implementation HMDHH2Migrator
 
-- (id)makeListOfArchivesToMigrate:(id)a3
+- (id)makeListOfArchivesToMigrate:(id)migrate
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  migrateCopy = migrate;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = *MEMORY[0x277CBE868];
   v27[0] = *MEMORY[0x277CBE8E8];
   v27[1] = v6;
@@ -97,7 +97,7 @@
   v25[2] = __46__HMDHH2Migrator_makeListOfArchivesToMigrate___block_invoke;
   v25[3] = &unk_278682C78;
   v25[4] = self;
-  v8 = [v5 enumeratorAtURL:v4 includingPropertiesForKeys:v7 options:0 errorHandler:v25];
+  v8 = [defaultManager enumeratorAtURL:migrateCopy includingPropertiesForKeys:v7 options:0 errorHandler:v25];
 
   v9 = [MEMORY[0x277CBEB58] set];
   v21 = 0u;
@@ -120,8 +120,8 @@
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 pathExtension];
-        v17 = [v16 isEqual:@"sqlite"];
+        pathExtension = [v15 pathExtension];
+        v17 = [pathExtension isEqual:@"sqlite"];
 
         if (v17)
         {
@@ -166,12 +166,12 @@ uint64_t __46__HMDHH2Migrator_makeListOfArchivesToMigrate___block_invoke(uint64_
   return 1;
 }
 
-- (BOOL)_performMigrationFromTestDirectoryUsingHH2ControllerKey:(id)a3
+- (BOOL)_performMigrationFromTestDirectoryUsingHH2ControllerKey:(id)key
 {
   v59 = *MEMORY[0x277D85DE8];
-  v41 = a3;
+  keyCopy = key;
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -191,17 +191,17 @@ uint64_t __46__HMDHH2Migrator_makeListOfArchivesToMigrate___block_invoke(uint64_
 
   if (isInternalBuild())
   {
-    v11 = [MEMORY[0x277CFEC78] systemStore];
+    systemStore = [MEMORY[0x277CFEC78] systemStore];
     v50 = 0;
-    v12 = [v11 getOrCreateLocalPairingIdentity:&v50];
+    v12 = [systemStore getOrCreateLocalPairingIdentity:&v50];
     v39 = v50;
 
     v13 = v12 != 0;
     if (v12)
     {
-      v14 = [(HMDHH2Migrator *)v5 makeListOfArchivesToMigrate:v40];
+      v14 = [(HMDHH2Migrator *)selfCopy makeListOfArchivesToMigrate:v40];
       v15 = objc_autoreleasePoolPush();
-      v16 = v5;
+      v16 = selfCopy;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
@@ -224,7 +224,7 @@ uint64_t __46__HMDHH2Migrator_makeListOfArchivesToMigrate___block_invoke(uint64_
       v42[2] = __74__HMDHH2Migrator__performMigrationFromTestDirectoryUsingHH2ControllerKey___block_invoke;
       v42[3] = &unk_278682C50;
       v42[4] = v16;
-      v43 = v41;
+      v43 = keyCopy;
       v45 = &v46;
       v20 = v19;
       v44 = v20;
@@ -250,8 +250,8 @@ uint64_t __46__HMDHH2Migrator_makeListOfArchivesToMigrate___block_invoke(uint64_
       }
 
       objc_autoreleasePoolPop(v22);
-      v28 = [(HMDHH2Migrator *)v23 migratorRecord];
-      [v28 finishMigration];
+      migratorRecord = [(HMDHH2Migrator *)v23 migratorRecord];
+      [migratorRecord finishMigration];
 
       _Block_object_dispose(&v46, 8);
     }
@@ -259,7 +259,7 @@ uint64_t __46__HMDHH2Migrator_makeListOfArchivesToMigrate___block_invoke(uint64_
     else
     {
       v33 = objc_autoreleasePoolPush();
-      v34 = v5;
+      v34 = selfCopy;
       v35 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
@@ -278,7 +278,7 @@ uint64_t __46__HMDHH2Migrator_makeListOfArchivesToMigrate___block_invoke(uint64_
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = v5;
+    v30 = selfCopy;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -361,20 +361,20 @@ void __74__HMDHH2Migrator__performMigrationFromTestDirectoryUsingHH2ControllerKe
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitABCEventForFailedMigrationWithReason:(unint64_t)a3 withError:(id)a4
+- (void)submitABCEventForFailedMigrationWithReason:(unint64_t)reason withError:(id)error
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277D0F8E0] processInfo];
+  errorCopy = error;
+  processInfo = [MEMORY[0x277D0F8E0] processInfo];
   v8 = objc_alloc(MEMORY[0x277D6AFC8]);
   v9 = dispatch_get_global_queue(2, 0);
   v10 = [v8 initWithQueue:v9];
 
-  v11 = [v7 name];
-  v12 = [v10 signatureWithDomain:@"HomeKit" type:@"CoreData" subType:@"Migration" detectedProcess:v11 triggerThresholdValues:0];
+  name = [processInfo name];
+  v12 = [v10 signatureWithDomain:@"HomeKit" type:@"CoreData" subType:@"Migration" detectedProcess:name triggerThresholdValues:0];
 
-  v13 = a3 - 1;
-  if (a3 - 1 > 8)
+  v13 = reason - 1;
+  if (reason - 1 > 8)
   {
     v14 = @"Unknown";
   }
@@ -387,17 +387,17 @@ void __74__HMDHH2Migrator__performMigrationFromTestDirectoryUsingHH2ControllerKe
   v15 = v14;
   [v12 setObject:v15 forKeyedSubscript:*MEMORY[0x277D6B1F0]];
 
-  if (v6)
+  if (errorCopy)
   {
-    v16 = [v6 description];
+    v16 = [errorCopy description];
     [v12 setObject:v16 forKeyedSubscript:*MEMORY[0x277D6B1B8]];
   }
 
-  v17 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "identifier")}];
+  v17 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(processInfo, "identifier")}];
   [v12 setObject:v17 forKeyedSubscript:*MEMORY[0x277D6B1E0]];
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -412,14 +412,14 @@ void __74__HMDHH2Migrator__performMigrationFromTestDirectoryUsingHH2ControllerKe
   objc_autoreleasePoolPop(v18);
   v22 = dispatch_group_create();
   dispatch_group_enter(v22);
-  v23 = [MEMORY[0x277CBEAA8] date];
-  [v23 timeIntervalSinceDate:v19->_migrationStartTime];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:selfCopy->_migrationStartTime];
   v25 = v24;
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __71__HMDHH2Migrator_submitABCEventForFailedMigrationWithReason_withError___block_invoke;
   v58[3] = &unk_278682C28;
-  v58[4] = v19;
+  v58[4] = selfCopy;
   v26 = v22;
   v59 = v26;
   v27 = [v10 snapshotWithSignature:v12 duration:0 event:0 payload:v58 reply:v25];
@@ -427,23 +427,23 @@ void __74__HMDHH2Migrator__performMigrationFromTestDirectoryUsingHH2ControllerKe
   if ((v27 & 1) == 0)
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = v19;
+    v29 = selfCopy;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v56 = v6;
+      v56 = errorCopy;
       v31 = v13;
       v32 = v10;
-      v34 = v33 = v7;
+      v34 = v33 = processInfo;
       *buf = 138543362;
       v61 = v34;
       _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_ERROR, "%{public}@Unable to submit ABC event", buf, 0xCu);
 
-      v7 = v33;
+      processInfo = v33;
       v10 = v32;
       v13 = v31;
-      v6 = v56;
+      errorCopy = v56;
     }
 
     objc_autoreleasePoolPop(v28);
@@ -453,25 +453,25 @@ void __74__HMDHH2Migrator__performMigrationFromTestDirectoryUsingHH2ControllerKe
   if (dispatch_group_wait(v26, v35))
   {
     v36 = objc_autoreleasePoolPush();
-    v37 = v19;
+    v37 = selfCopy;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
       v57 = v26;
       v39 = v12;
-      v40 = v6;
+      v40 = errorCopy;
       v41 = v13;
       v42 = v10;
-      v44 = v43 = v7;
+      v44 = v43 = processInfo;
       *buf = 138543362;
       v61 = v44;
       _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_ERROR, "%{public}@Timed out waiting for ABC event submission to finish", buf, 0xCu);
 
-      v7 = v43;
+      processInfo = v43;
       v10 = v42;
       v13 = v41;
-      v6 = v40;
+      errorCopy = v40;
       v12 = v39;
       v26 = v57;
     }
@@ -480,7 +480,7 @@ void __74__HMDHH2Migrator__performMigrationFromTestDirectoryUsingHH2ControllerKe
   }
 
   v45 = objc_autoreleasePoolPush();
-  v46 = v19;
+  v46 = selfCopy;
   v47 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
   {
@@ -488,7 +488,7 @@ void __74__HMDHH2Migrator__performMigrationFromTestDirectoryUsingHH2ControllerKe
     *buf = 138543618;
     v61 = v48;
     v62 = 2112;
-    v63 = v6;
+    v63 = errorCopy;
     _os_log_impl(&dword_229538000, v47, OS_LOG_TYPE_INFO, "%{public}@Migration to HH2 failed with error: %@", buf, 0x16u);
   }
 
@@ -516,7 +516,7 @@ void __74__HMDHH2Migrator__performMigrationFromTestDirectoryUsingHH2ControllerKe
   }
 
   v54 = v53;
-  [HMDHH2MigrationStateLogger recordMigrationFailedWithError:v6 withReason:v54];
+  [HMDHH2MigrationStateLogger recordMigrationFailedWithError:errorCopy withReason:v54];
 
   v55 = *MEMORY[0x277D85DE8];
 }
@@ -547,13 +547,13 @@ void __71__HMDHH2Migrator_submitABCEventForFailedMigrationWithReason_withError__
 - (BOOL)waitForFirstImportToFinish
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHH2Migrator *)self migratorRecord];
-  if ([v3 migrateFromTestDirectory])
+  migratorRecord = [(HMDHH2Migrator *)self migratorRecord];
+  if ([migratorRecord migrateFromTestDirectory])
   {
 
 LABEL_4:
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -568,22 +568,22 @@ LABEL_4:
     goto LABEL_12;
   }
 
-  v4 = [(HMDHH2Migrator *)self migratorRecord];
-  v5 = [v4 dryRun];
+  migratorRecord2 = [(HMDHH2Migrator *)self migratorRecord];
+  dryRun = [migratorRecord2 dryRun];
 
-  if (v5)
+  if (dryRun)
   {
     goto LABEL_4;
   }
 
   v20 = 0;
   v21 = 0;
-  v11 = [(HMDHH2Migrator *)self coreData];
-  v12 = [v11 firstCloudKitImportFuture];
-  v10 = [v12 waitForResult:&v20 orError:&v21 withTimeout:900.0];
+  coreData = [(HMDHH2Migrator *)self coreData];
+  firstCloudKitImportFuture = [coreData firstCloudKitImportFuture];
+  v10 = [firstCloudKitImportFuture waitForResult:&v20 orError:&v21 withTimeout:900.0];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy2 = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -601,7 +601,7 @@ LABEL_4:
   objc_autoreleasePoolPop(v13);
   if ((v10 & 1) == 0)
   {
-    [(HMDHH2Migrator *)v14 submitABCEventForFailedMigrationWithReason:3 withError:v21];
+    [(HMDHH2Migrator *)selfCopy2 submitABCEventForFailedMigrationWithReason:3 withError:v21];
   }
 
 LABEL_12:
@@ -609,12 +609,12 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)migratePersonFaceCropModelsForLocalZone:(id)a3
+- (BOOL)migratePersonFaceCropModelsForLocalZone:(id)zone
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  zoneCopy = zone;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -622,29 +622,29 @@ LABEL_12:
     *buf = 138543618;
     v23 = v8;
     v24 = 2112;
-    v25 = v4;
+    v25 = zoneCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Migrating person face crop models for local zone: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   v9 = [MEMORY[0x277CBEB58] set];
-  v10 = [v4 queryModelsOfType:objc_opt_class()];
+  v10 = [zoneCopy queryModelsOfType:objc_opt_class()];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __58__HMDHH2Migrator_migratePersonFaceCropModelsForLocalZone___block_invoke;
   v18[3] = &unk_278682C00;
   v11 = v9;
   v19 = v11;
-  v12 = v4;
+  v12 = zoneCopy;
   v20 = v12;
-  v21 = v6;
+  v21 = selfCopy;
   [v10 enumerateObjectsUsingBlock:v18];
   if ([v11 count])
   {
     v13 = [MEMORY[0x277D17108] optionsWithLabel:@"Migrate face crop models to HH2"];
     v14 = [v12 updateModels:v11 options:v13];
-    v15 = [(HMDHH2Migrator *)v6 v5ModelUpdateFutures];
-    [v15 addObject:v14];
+    v5ModelUpdateFutures = [(HMDHH2Migrator *)selfCopy v5ModelUpdateFutures];
+    [v5ModelUpdateFutures addObject:v14];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -676,14 +676,14 @@ void __58__HMDHH2Migrator_migratePersonFaceCropModelsForLocalZone___block_invoke
   }
 }
 
-- (BOOL)migrateHomePersonModelsForHomeUUID:(id)a3 localZone:(id)a4 managedObjectContext:(id)a5
+- (BOOL)migrateHomePersonModelsForHomeUUID:(id)d localZone:(id)zone managedObjectContext:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  zoneCopy = zone;
+  contextCopy = context;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -691,7 +691,7 @@ void __58__HMDHH2Migrator_migratePersonFaceCropModelsForLocalZone___block_invoke
     *buf = 138543618;
     *&buf[4] = v14;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = zoneCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Migrating home person models for local zone: %@", buf, 0x16u);
   }
 
@@ -700,15 +700,15 @@ void __58__HMDHH2Migrator_migratePersonFaceCropModelsForLocalZone___block_invoke
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v27 = 1;
-  v15 = [v9 queryModelsOfType:objc_opt_class()];
+  v15 = [zoneCopy queryModelsOfType:objc_opt_class()];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __84__HMDHH2Migrator_migrateHomePersonModelsForHomeUUID_localZone_managedObjectContext___block_invoke;
   v21[3] = &unk_278682BD8;
-  v16 = v10;
+  v16 = contextCopy;
   v22 = v16;
-  v23 = v12;
-  v17 = v8;
+  v23 = selfCopy;
+  v17 = dCopy;
   v24 = v17;
   v25 = buf;
   [v15 enumerateObjectsUsingBlock:v21];
@@ -827,22 +827,22 @@ void __84__HMDHH2Migrator_migrateHomePersonModelsForHomeUUID_localZone_managedOb
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)migrateV5PersonDataForHome:(id)a3 managedObjectContext:(id)a4
+- (BOOL)migrateV5PersonDataForHome:(id)home managedObjectContext:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 personManagerZoneUUID];
-  if (v8)
+  homeCopy = home;
+  contextCopy = context;
+  personManagerZoneUUID = [homeCopy personManagerZoneUUID];
+  if (personManagerZoneUUID)
   {
-    v9 = [HMDHomePersonManager zoneNameForZoneUUID:v8];
-    v10 = [(HMDHH2Migrator *)self cameraClipsDatabase];
-    v11 = [(HMDHH2Migrator *)self openZoneWithName:v9 inDatabase:v10];
+    v9 = [HMDHomePersonManager zoneNameForZoneUUID:personManagerZoneUUID];
+    cameraClipsDatabase = [(HMDHH2Migrator *)self cameraClipsDatabase];
+    v11 = [(HMDHH2Migrator *)self openZoneWithName:v9 inDatabase:cameraClipsDatabase];
 
     v12 = objc_autoreleasePoolPush();
     if (!v11)
     {
-      v20 = self;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -850,15 +850,15 @@ void __84__HMDHH2Migrator_migrateHomePersonModelsForHomeUUID_localZone_managedOb
         v30 = 138543618;
         v31 = v22;
         v32 = 2112;
-        v33 = v6;
+        v33 = homeCopy;
         _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to open home person manager zone for home: %@", &v30, 0x16u);
       }
 
       goto LABEL_18;
     }
 
-    v13 = [v6 uuid];
-    v14 = [(HMDHH2Migrator *)self migrateHomePersonModelsForHomeUUID:v13 localZone:v11 managedObjectContext:v7];
+    uuid = [homeCopy uuid];
+    v14 = [(HMDHH2Migrator *)self migrateHomePersonModelsForHomeUUID:uuid localZone:v11 managedObjectContext:contextCopy];
 
     if (v14)
     {
@@ -874,7 +874,7 @@ LABEL_19:
       }
 
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy3 = self;
       v25 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -885,14 +885,14 @@ LABEL_19:
       v30 = 138543618;
       v31 = v26;
       v32 = 2112;
-      v33 = v6;
+      v33 = homeCopy;
       v27 = "%{public}@Failed to migrate person face crop models for home: %@";
     }
 
     else
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy3 = self;
       v25 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -908,7 +908,7 @@ LABEL_18:
       v30 = 138543618;
       v31 = v26;
       v32 = 2112;
-      v33 = v6;
+      v33 = homeCopy;
       v27 = "%{public}@Failed to migrate home person models for home: %@";
     }
 
@@ -918,7 +918,7 @@ LABEL_18:
   }
 
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy4 = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
@@ -936,14 +936,14 @@ LABEL_20:
   return v15;
 }
 
-- (BOOL)migrateCameraProfileSettingModel:(id)a3 accessory:(id)a4 managedObjectContext:(id)a5
+- (BOOL)migrateCameraProfileSettingModel:(id)model accessory:(id)accessory managedObjectContext:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  accessoryCopy = accessory;
+  contextCopy = context;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -951,9 +951,9 @@ LABEL_20:
     *buf = 138543874;
     *&buf[4] = v14;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = accessoryCopy;
     *&buf[22] = 2112;
-    v28 = v8;
+    v28 = modelCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Found camera profile setting model on accessory : [%@], [%@]", buf, 0x20u);
   }
 
@@ -966,13 +966,13 @@ LABEL_20:
   v21[1] = 3221225472;
   v21[2] = __82__HMDHH2Migrator_migrateCameraProfileSettingModel_accessory_managedObjectContext___block_invoke;
   v21[3] = &unk_278689D98;
-  v15 = v9;
+  v15 = accessoryCopy;
   v22 = v15;
-  v16 = v10;
+  v16 = contextCopy;
   v23 = v16;
-  v24 = v12;
+  v24 = selfCopy;
   v26 = buf;
-  v17 = v8;
+  v17 = modelCopy;
   v25 = v17;
   [v16 performBlockAndWait:v21];
   v18 = *(*&buf[8] + 24);
@@ -1054,17 +1054,17 @@ void __82__HMDHH2Migrator_migrateCameraProfileSettingModel_accessory_managedObje
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)fetchAndMigrateCameraSettingsFromAccessory:(id)a3 fromLocalZone:(id)a4 managedObjectContext:(id)a5
+- (BOOL)fetchAndMigrateCameraSettingsFromAccessory:(id)accessory fromLocalZone:(id)zone managedObjectContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  zoneCopy = zone;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 1;
-  v11 = [v8 uuid];
-  v12 = [v9 queryModelsWithParentModelID:v11 ofType:objc_opt_class()];
+  uuid = [accessoryCopy uuid];
+  v12 = [zoneCopy queryModelsWithParentModelID:uuid ofType:objc_opt_class()];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -1072,15 +1072,15 @@ void __82__HMDHH2Migrator_migrateCameraProfileSettingModel_accessory_managedObje
   v16[3] = &unk_278682B88;
   v19 = &v20;
   v16[4] = self;
-  v13 = v8;
+  v13 = accessoryCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = contextCopy;
   v18 = v14;
   [v12 enumerateObjectsUsingBlock:v16];
-  LOBYTE(v10) = *(v21 + 24);
+  LOBYTE(contextCopy) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return v10;
+  return contextCopy;
 }
 
 uint64_t __96__HMDHH2Migrator_fetchAndMigrateCameraSettingsFromAccessory_fromLocalZone_managedObjectContext___block_invoke(uint64_t a1, uint64_t a2, _BYTE *a3)
@@ -1095,23 +1095,23 @@ uint64_t __96__HMDHH2Migrator_fetchAndMigrateCameraSettingsFromAccessory_fromLoc
   return result;
 }
 
-- (BOOL)migrateCompositeAccessorySettingModel:(id)a3 accessory:(id)a4 managedObjectContext:(id)a5
+- (BOOL)migrateCompositeAccessorySettingModel:(id)model accessory:(id)accessory managedObjectContext:(id)context
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  accessoryCopy = accessory;
+  contextCopy = context;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v8 debugDescription];
+    v15 = [modelCopy debugDescription];
     *buf = 138543874;
     *&buf[4] = v14;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = accessoryCopy;
     *&buf[22] = 2112;
     v29 = v15;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Found composite accessory setting model on accessory : [%@], [%@]", buf, 0x20u);
@@ -1126,13 +1126,13 @@ uint64_t __96__HMDHH2Migrator_fetchAndMigrateCameraSettingsFromAccessory_fromLoc
   v22[1] = 3221225472;
   v22[2] = __87__HMDHH2Migrator_migrateCompositeAccessorySettingModel_accessory_managedObjectContext___block_invoke;
   v22[3] = &unk_278689D98;
-  v16 = v9;
+  v16 = accessoryCopy;
   v23 = v16;
-  v17 = v10;
+  v17 = contextCopy;
   v24 = v17;
-  v25 = v12;
+  v25 = selfCopy;
   v27 = buf;
-  v18 = v8;
+  v18 = modelCopy;
   v26 = v18;
   [v17 performBlockAndWait:v22];
   v19 = *(*&buf[8] + 24);
@@ -1266,17 +1266,17 @@ void __87__HMDHH2Migrator_migrateCompositeAccessorySettingModel_accessory_manage
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)fetchAndMigrateCompositeSettingsFromAccessory:(id)a3 fromLocalZone:(id)a4 managedObjectContext:(id)a5
+- (BOOL)fetchAndMigrateCompositeSettingsFromAccessory:(id)accessory fromLocalZone:(id)zone managedObjectContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  zoneCopy = zone;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 1;
-  v11 = [v8 uuid];
-  v12 = [v9 queryModelsWithParentModelID:v11 ofType:objc_opt_class()];
+  uuid = [accessoryCopy uuid];
+  v12 = [zoneCopy queryModelsWithParentModelID:uuid ofType:objc_opt_class()];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -1284,15 +1284,15 @@ void __87__HMDHH2Migrator_migrateCompositeAccessorySettingModel_accessory_manage
   v16[3] = &unk_278682B60;
   v19 = &v20;
   v16[4] = self;
-  v13 = v8;
+  v13 = accessoryCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = contextCopy;
   v18 = v14;
   [v12 enumerateObjectsUsingBlock:v16];
-  LOBYTE(v10) = *(v21 + 24);
+  LOBYTE(contextCopy) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return v10;
+  return contextCopy;
 }
 
 uint64_t __99__HMDHH2Migrator_fetchAndMigrateCompositeSettingsFromAccessory_fromLocalZone_managedObjectContext___block_invoke(uint64_t a1, uint64_t a2, _BYTE *a3)
@@ -1307,14 +1307,14 @@ uint64_t __99__HMDHH2Migrator_fetchAndMigrateCompositeSettingsFromAccessory_from
   return result;
 }
 
-- (BOOL)migratePhotosPersonManagerSettingsFromLocalZone:(id)a3 owner:(id)a4 managedObjectContext:(id)a5
+- (BOOL)migratePhotosPersonManagerSettingsFromLocalZone:(id)zone owner:(id)owner managedObjectContext:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  zoneCopy = zone;
+  ownerCopy = owner;
+  contextCopy = context;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1322,9 +1322,9 @@ uint64_t __99__HMDHH2Migrator_fetchAndMigrateCompositeSettingsFromAccessory_from
     *buf = 138543874;
     *&buf[4] = v14;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = ownerCopy;
     *&buf[22] = 2112;
-    v27 = v8;
+    v27 = zoneCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Migrating person manager settings for user: %@, localZone: %@", buf, 0x20u);
   }
 
@@ -1333,16 +1333,16 @@ uint64_t __99__HMDHH2Migrator_fetchAndMigrateCompositeSettingsFromAccessory_from
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   LOBYTE(v27) = 1;
-  v15 = [v8 queryModelsOfType:objc_opt_class()];
+  v15 = [zoneCopy queryModelsOfType:objc_opt_class()];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __93__HMDHH2Migrator_migratePhotosPersonManagerSettingsFromLocalZone_owner_managedObjectContext___block_invoke;
   v21[3] = &unk_278682B38;
-  v16 = v9;
+  v16 = ownerCopy;
   v22 = v16;
-  v17 = v10;
+  v17 = contextCopy;
   v23 = v17;
-  v24 = v12;
+  v24 = selfCopy;
   v25 = buf;
   [v15 enumerateObjectsUsingBlock:v21];
   v18 = *(*&buf[8] + 24);
@@ -1415,15 +1415,15 @@ void __93__HMDHH2Migrator_migratePhotosPersonManagerSettingsFromLocalZone_owner_
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)migrateAccessoryV5Models:(id)a3 fromLocalZone:(id)a4 forHome:(id)a5 owner:(id)a6
+- (BOOL)migrateAccessoryV5Models:(id)models fromLocalZone:(id)zone forHome:(id)home owner:(id)owner
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modelsCopy = models;
+  zoneCopy = zone;
+  homeCopy = home;
+  ownerCopy = owner;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -1431,7 +1431,7 @@ void __93__HMDHH2Migrator_migratePhotosPersonManagerSettingsFromLocalZone_owner_
     *buf = 138543618;
     *&buf[4] = v17;
     *&buf[12] = 2112;
-    *&buf[14] = v12;
+    *&buf[14] = homeCopy;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Will look for all the V5 models and migrate them for home : %@", buf, 0x16u);
   }
 
@@ -1440,18 +1440,18 @@ void __93__HMDHH2Migrator_migratePhotosPersonManagerSettingsFromLocalZone_owner_
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v29 = 1;
-  v18 = [v12 accessories];
+  accessories = [homeCopy accessories];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __71__HMDHH2Migrator_migrateAccessoryV5Models_fromLocalZone_forHome_owner___block_invoke;
   v24[3] = &unk_278682B10;
-  v24[4] = v15;
-  v19 = v12;
+  v24[4] = selfCopy;
+  v19 = homeCopy;
   v25 = v19;
   v27 = buf;
-  v20 = v10;
+  v20 = modelsCopy;
   v26 = v20;
-  [v18 hmf_enumerateWithAutoreleasePoolUsingBlock:v24];
+  [accessories hmf_enumerateWithAutoreleasePoolUsingBlock:v24];
 
   v21 = *(*&buf[8] + 24);
   _Block_object_dispose(buf, 8);
@@ -1539,14 +1539,14 @@ LABEL_11:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)saveUserSettingsToCoreData:(id)a3 forUser:(id)a4 privateSettingsMap:(id)a5
+- (BOOL)saveUserSettingsToCoreData:(id)data forUser:(id)user privateSettingsMap:(id)map
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  userCopy = user;
+  mapCopy = map;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1554,7 +1554,7 @@ LABEL_11:
     *buf = 138543618;
     *&buf[4] = v14;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = mapCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@User Settings : %@", buf, 0x16u);
   }
 
@@ -1567,17 +1567,17 @@ LABEL_11:
   v27[1] = 3221225472;
   v27[2] = __72__HMDHH2Migrator_saveUserSettingsToCoreData_forUser_privateSettingsMap___block_invoke;
   v27[3] = &unk_278689D98;
-  v15 = v9;
+  v15 = userCopy;
   v28 = v15;
-  v16 = v8;
+  v16 = dataCopy;
   v29 = v16;
-  v30 = v12;
-  v17 = v10;
+  v30 = selfCopy;
+  v17 = mapCopy;
   v31 = v17;
   v32 = buf;
   [v16 performBlockAndWait:v27];
   v18 = objc_autoreleasePoolPush();
-  v19 = v12;
+  v19 = selfCopy;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -1746,14 +1746,14 @@ void __72__HMDHH2Migrator_saveUserSettingsToCoreData_forUser_privateSettingsMap_
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)migrateUserSettingsToCoreData:(id)a3 forUser:(id)a4 fromLocalZone:(id)a5
+- (BOOL)migrateUserSettingsToCoreData:(id)data forUser:(id)user fromLocalZone:(id)zone
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  userCopy = user;
+  zoneCopy = zone;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1761,26 +1761,26 @@ void __72__HMDHH2Migrator_saveUserSettingsToCoreData_forUser_privateSettingsMap_
     v25 = 138543874;
     v26 = v14;
     v27 = 2112;
-    v28 = v9;
+    v28 = userCopy;
     v29 = 2112;
-    v30 = v10;
+    v30 = zoneCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Going to migrate user settings for user [%@] from local zone: [%@]", &v25, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [v9 uuid];
-  v16 = [HMDUser getSettingsUsingPreOrderTraversal:v10 rootUUID:v15 keyPath:&stru_283CF9D50];
+  uuid = [userCopy uuid];
+  v16 = [HMDUser getSettingsUsingPreOrderTraversal:zoneCopy rootUUID:uuid keyPath:&stru_283CF9D50];
 
   v17 = [v16 count];
   v18 = objc_autoreleasePoolPush();
   if (v17)
   {
-    v19 = [(HMDHH2Migrator *)v12 saveUserSettingsToCoreData:v8 forUser:v9 privateSettingsMap:v16];
+    v19 = [(HMDHH2Migrator *)selfCopy saveUserSettingsToCoreData:dataCopy forUser:userCopy privateSettingsMap:v16];
   }
 
   else
   {
-    v20 = v12;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -1788,7 +1788,7 @@ void __72__HMDHH2Migrator_saveUserSettingsToCoreData_forUser_privateSettingsMap_
       v25 = 138543618;
       v26 = v22;
       v27 = 2112;
-      v28 = v9;
+      v28 = userCopy;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@Did not find any settings model for user : %@", &v25, 0x16u);
     }
 
@@ -1801,27 +1801,27 @@ void __72__HMDHH2Migrator_saveUserSettingsToCoreData_forUser_privateSettingsMap_
   return v19;
 }
 
-- (BOOL)migrateUserListeningHistoryControl:(id)a3 forOwnerUser:(id)a4 fromLocalZone:(id)a5
+- (BOOL)migrateUserListeningHistoryControl:(id)control forOwnerUser:(id)user fromLocalZone:(id)zone
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controlCopy = control;
+  userCopy = user;
+  zoneCopy = zone;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = 1;
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [v10 queryModelsOfType:objc_opt_class()];
+  array = [MEMORY[0x277CBEB18] array];
+  v12 = [zoneCopy queryModelsOfType:objc_opt_class()];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __80__HMDHH2Migrator_migrateUserListeningHistoryControl_forOwnerUser_fromLocalZone___block_invoke;
   v30[3] = &unk_278682AC0;
-  v13 = v11;
+  v13 = array;
   v31 = v13;
   [v12 enumerateObjectsUsingBlock:v30];
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -1838,11 +1838,11 @@ void __72__HMDHH2Migrator_saveUserSettingsToCoreData_forUser_privateSettingsMap_
   v24[1] = 3221225472;
   v24[2] = __80__HMDHH2Migrator_migrateUserListeningHistoryControl_forOwnerUser_fromLocalZone___block_invoke_201;
   v24[3] = &unk_278689D98;
-  v18 = v9;
+  v18 = userCopy;
   v25 = v18;
-  v19 = v8;
+  v19 = controlCopy;
   v26 = v19;
-  v27 = v15;
+  v27 = selfCopy;
   v29 = &v32;
   v20 = v13;
   v28 = v20;
@@ -1998,33 +1998,33 @@ void __80__HMDHH2Migrator_migrateUserListeningHistoryControl_forOwnerUser_fromLo
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)migrateMediaContentProfileAccessControl:(id)a3 forOwnerUser:(id)a4 fromLocalZone:(id)a5
+- (BOOL)migrateMediaContentProfileAccessControl:(id)control forOwnerUser:(id)user fromLocalZone:(id)zone
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controlCopy = control;
+  userCopy = user;
+  zoneCopy = zone;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 1;
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [v10 queryModelsOfType:objc_opt_class()];
+  array = [MEMORY[0x277CBEB18] array];
+  v12 = [zoneCopy queryModelsOfType:objc_opt_class()];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __85__HMDHH2Migrator_migrateMediaContentProfileAccessControl_forOwnerUser_fromLocalZone___block_invoke;
   v24[3] = &unk_278682A98;
-  v13 = v11;
+  v13 = array;
   v25 = v13;
   [v12 enumerateObjectsUsingBlock:v24];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __85__HMDHH2Migrator_migrateMediaContentProfileAccessControl_forOwnerUser_fromLocalZone___block_invoke_2;
   v18[3] = &unk_278689D98;
-  v14 = v9;
+  v14 = userCopy;
   v19 = v14;
-  v15 = v8;
+  v15 = controlCopy;
   v20 = v15;
-  v21 = self;
+  selfCopy = self;
   v23 = &v26;
   v16 = v13;
   v22 = v16;
@@ -2179,13 +2179,13 @@ void __85__HMDHH2Migrator_migrateMediaContentProfileAccessControl_forOwnerUser_f
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)migrateV5Models:(id)a3 forHome:(id)a4
+- (BOOL)migrateV5Models:(id)models forHome:(id)home
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modelsCopy = models;
+  homeCopy = home;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -2193,19 +2193,19 @@ void __85__HMDHH2Migrator_migrateMediaContentProfileAccessControl_forOwnerUser_f
     v35 = 138543618;
     v36 = v11;
     v37 = 2112;
-    v38 = v7;
+    v38 = homeCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Starting migration for V5 models for home : %@", &v35, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v7 owner];
-  if (v12)
+  owner = [homeCopy owner];
+  if (owner)
   {
-    v13 = [(HMDHH2Migrator *)v9 privateZoneForOwnerUser:v12];
+    v13 = [(HMDHH2Migrator *)selfCopy privateZoneForOwnerUser:owner];
     if (!v13)
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = v9;
+      v22 = selfCopy;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -2213,7 +2213,7 @@ void __85__HMDHH2Migrator_migrateMediaContentProfileAccessControl_forOwnerUser_f
         v35 = 138543618;
         v36 = v24;
         v37 = 2112;
-        v38 = v12;
+        v38 = owner;
         _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Failed to migrate V5 models: could not get private zone for owner user: %@", &v35, 0x16u);
       }
 
@@ -2222,11 +2222,11 @@ void __85__HMDHH2Migrator_migrateMediaContentProfileAccessControl_forOwnerUser_f
       goto LABEL_41;
     }
 
-    v14 = [(HMDHH2Migrator *)v9 sharedZoneForOwnerUser:v12];
+    v14 = [(HMDHH2Migrator *)selfCopy sharedZoneForOwnerUser:owner];
     v15 = objc_autoreleasePoolPush();
     if (!v14)
     {
-      v25 = v9;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -2234,38 +2234,38 @@ void __85__HMDHH2Migrator_migrateMediaContentProfileAccessControl_forOwnerUser_f
         v35 = 138543618;
         v36 = v27;
         v37 = 2112;
-        v38 = v12;
+        v38 = owner;
         _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_ERROR, "%{public}@Failed to migrate V5 models: could not get shared zone for owner user: %@", &v35, 0x16u);
       }
 
       goto LABEL_39;
     }
 
-    if ([(HMDHH2Migrator *)v9 migrateUserSettingsToCoreData:v6 forUser:v12 fromLocalZone:v13])
+    if ([(HMDHH2Migrator *)selfCopy migrateUserSettingsToCoreData:modelsCopy forUser:owner fromLocalZone:v13])
     {
       objc_autoreleasePoolPop(v15);
       v15 = objc_autoreleasePoolPush();
-      if ([(HMDHH2Migrator *)v9 migrateUserSettingsToCoreData:v6 forUser:v12 fromLocalZone:v14])
+      if ([(HMDHH2Migrator *)selfCopy migrateUserSettingsToCoreData:modelsCopy forUser:owner fromLocalZone:v14])
       {
         objc_autoreleasePoolPop(v15);
         v15 = objc_autoreleasePoolPush();
-        if ([(HMDHH2Migrator *)v9 migrateMediaContentProfileAccessControl:v6 forOwnerUser:v12 fromLocalZone:v14])
+        if ([(HMDHH2Migrator *)selfCopy migrateMediaContentProfileAccessControl:modelsCopy forOwnerUser:owner fromLocalZone:v14])
         {
           objc_autoreleasePoolPop(v15);
           v15 = objc_autoreleasePoolPush();
-          if ([(HMDHH2Migrator *)v9 migrateUserListeningHistoryControl:v6 forOwnerUser:v12 fromLocalZone:v14])
+          if ([(HMDHH2Migrator *)selfCopy migrateUserListeningHistoryControl:modelsCopy forOwnerUser:owner fromLocalZone:v14])
           {
             objc_autoreleasePoolPop(v15);
             v15 = objc_autoreleasePoolPush();
-            if ([(HMDHH2Migrator *)v9 migratePhotosPersonManagerSettingsFromLocalZone:v14 owner:v12 managedObjectContext:v6])
+            if ([(HMDHH2Migrator *)selfCopy migratePhotosPersonManagerSettingsFromLocalZone:v14 owner:owner managedObjectContext:modelsCopy])
             {
               objc_autoreleasePoolPop(v15);
               v15 = objc_autoreleasePoolPush();
-              if ([(HMDHH2Migrator *)v9 migrateAccessoryV5Models:v6 fromLocalZone:v13 forHome:v7 owner:v12])
+              if ([(HMDHH2Migrator *)selfCopy migrateAccessoryV5Models:modelsCopy fromLocalZone:v13 forHome:homeCopy owner:owner])
               {
                 objc_autoreleasePoolPop(v15);
                 v15 = objc_autoreleasePoolPush();
-                if ([(HMDHH2Migrator *)v9 migrateV5PersonDataForHome:v7 managedObjectContext:v6])
+                if ([(HMDHH2Migrator *)selfCopy migrateV5PersonDataForHome:homeCopy managedObjectContext:modelsCopy])
                 {
                   v16 = 1;
 LABEL_40:
@@ -2276,7 +2276,7 @@ LABEL_41:
                 }
 
                 v28 = objc_autoreleasePoolPush();
-                v29 = v9;
+                v29 = selfCopy;
                 v30 = HMFGetOSLogHandle();
                 if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
                 {
@@ -2287,7 +2287,7 @@ LABEL_41:
               }
 
               v28 = objc_autoreleasePoolPush();
-              v29 = v9;
+              v29 = selfCopy;
               v30 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
               {
@@ -2296,7 +2296,7 @@ LABEL_36:
                 v35 = 138543618;
                 v36 = v31;
                 v37 = 2112;
-                v38 = v12;
+                v38 = owner;
                 v32 = "%{public}@Failed to migrate V5 models: unable to migrate accessory settings for owner user: %@";
                 goto LABEL_37;
               }
@@ -2310,7 +2310,7 @@ LABEL_39:
             }
 
             v28 = objc_autoreleasePoolPush();
-            v29 = v9;
+            v29 = selfCopy;
             v30 = HMFGetOSLogHandle();
             if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
             {
@@ -2321,14 +2321,14 @@ LABEL_39:
             v35 = 138543618;
             v36 = v31;
             v37 = 2112;
-            v38 = v12;
+            v38 = owner;
             v32 = "%{public}@Failed to migrate V5 models: unable to migrate photos person manager settings for owner user: %@";
           }
 
           else
           {
             v28 = objc_autoreleasePoolPush();
-            v29 = v9;
+            v29 = selfCopy;
             v30 = HMFGetOSLogHandle();
             if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
             {
@@ -2339,7 +2339,7 @@ LABEL_39:
             v35 = 138543618;
             v36 = v31;
             v37 = 2112;
-            v38 = v12;
+            v38 = owner;
             v32 = "%{public}@Failed to migrate V5 models: unable to migrate listening history control for owner user: %@";
           }
         }
@@ -2347,7 +2347,7 @@ LABEL_39:
         else
         {
           v28 = objc_autoreleasePoolPush();
-          v29 = v9;
+          v29 = selfCopy;
           v30 = HMFGetOSLogHandle();
           if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
@@ -2358,7 +2358,7 @@ LABEL_39:
           v35 = 138543618;
           v36 = v31;
           v37 = 2112;
-          v38 = v12;
+          v38 = owner;
           v32 = "%{public}@Failed to migrate V5 models: unable to migrate media content profile access control for owner user: %@";
         }
       }
@@ -2366,7 +2366,7 @@ LABEL_39:
       else
       {
         v28 = objc_autoreleasePoolPush();
-        v29 = v9;
+        v29 = selfCopy;
         v30 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
@@ -2377,7 +2377,7 @@ LABEL_39:
         v35 = 138543618;
         v36 = v31;
         v37 = 2112;
-        v38 = v12;
+        v38 = owner;
         v32 = "%{public}@Failed to migrate V5 models: unable to migrate shared settings for owner user: %@";
       }
     }
@@ -2385,7 +2385,7 @@ LABEL_39:
     else
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = v9;
+      v29 = selfCopy;
       v30 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -2396,7 +2396,7 @@ LABEL_39:
       v35 = 138543618;
       v36 = v31;
       v37 = 2112;
-      v38 = v12;
+      v38 = owner;
       v32 = "%{public}@Failed to migrate V5 models: unable to migrate private settings for owner user: %@";
     }
 
@@ -2407,7 +2407,7 @@ LABEL_37:
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = v9;
+  v18 = selfCopy;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
@@ -2415,7 +2415,7 @@ LABEL_37:
     v35 = 138543618;
     v36 = v20;
     v37 = 2112;
-    v38 = v7;
+    v38 = homeCopy;
     _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Failed to migrate V5 models: owner user was not found for home: %@", &v35, 0x16u);
   }
 
@@ -2427,21 +2427,21 @@ LABEL_42:
   return v16;
 }
 
-- (id)sharedZoneForOwnerUser:(id)a3
+- (id)sharedZoneForOwnerUser:(id)user
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isOwner])
+  userCopy = user;
+  if ([userCopy isOwner])
   {
-    v5 = [v4 sharedZoneName];
-    v6 = [(HMDHH2Migrator *)self defaultDatabase];
-    v7 = [(HMDHH2Migrator *)self openZoneWithName:v5 inDatabase:v6];
+    sharedZoneName = [userCopy sharedZoneName];
+    defaultDatabase = [(HMDHH2Migrator *)self defaultDatabase];
+    v7 = [(HMDHH2Migrator *)self openZoneWithName:sharedZoneName inDatabase:defaultDatabase];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -2449,7 +2449,7 @@ LABEL_42:
       v14 = 138543618;
       v15 = v11;
       v16 = 2112;
-      v17 = v4;
+      v17 = userCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Not going to open shared zone for user : %@ as it is not an owner", &v14, 0x16u);
     }
 
@@ -2462,21 +2462,21 @@ LABEL_42:
   return v7;
 }
 
-- (id)privateZoneForOwnerUser:(id)a3
+- (id)privateZoneForOwnerUser:(id)user
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isOwner])
+  userCopy = user;
+  if ([userCopy isOwner])
   {
-    v5 = [v4 privateZoneName];
-    v6 = [(HMDHH2Migrator *)self defaultDatabase];
-    v7 = [(HMDHH2Migrator *)self openZoneWithName:v5 inDatabase:v6];
+    privateZoneName = [userCopy privateZoneName];
+    defaultDatabase = [(HMDHH2Migrator *)self defaultDatabase];
+    v7 = [(HMDHH2Migrator *)self openZoneWithName:privateZoneName inDatabase:defaultDatabase];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -2484,7 +2484,7 @@ LABEL_42:
       v14 = 138543618;
       v15 = v11;
       v16 = 2112;
-      v17 = v4;
+      v17 = userCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Not going to open zone for user: %@ as it is not an owner", &v14, 0x16u);
     }
 
@@ -2497,13 +2497,13 @@ LABEL_42:
   return v7;
 }
 
-- (id)openZoneWithName:(id)a3 inDatabase:(id)a4
+- (id)openZoneWithName:(id)name inDatabase:(id)database
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  databaseCopy = database;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -2511,27 +2511,27 @@ LABEL_42:
     *buf = 138543618;
     v28 = v11;
     v29 = 2112;
-    v30 = v6;
+    v30 = nameCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Opening zone with name: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
   v12 = objc_alloc_init(MEMORY[0x277D170E8]);
   v26 = 0;
-  v13 = [v7 privateZonesWithName:v6 configuration:v12 delegate:0 error:&v26];
+  v13 = [databaseCopy privateZonesWithName:nameCopy configuration:v12 delegate:0 error:&v26];
   v14 = v26;
   if (v13)
   {
-    v15 = [(HMDHH2Migrator *)v9 openedZones];
-    [v15 addObject:v13];
+    openedZones = [(HMDHH2Migrator *)selfCopy openedZones];
+    [openedZones addObject:v13];
 
-    v16 = [v13 localZone];
-    [v16 startUp];
-    v17 = [v13 cloudZone];
-    [(HMDHH2Migrator *)v9 waitForStartupForCloudZone:v17];
+    localZone = [v13 localZone];
+    [localZone startUp];
+    cloudZone = [v13 cloudZone];
+    [(HMDHH2Migrator *)selfCopy waitForStartupForCloudZone:cloudZone];
 
     v18 = objc_autoreleasePoolPush();
-    v19 = v9;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -2539,7 +2539,7 @@ LABEL_42:
       *buf = 138543618;
       v28 = v21;
       v29 = 2112;
-      v30 = v16;
+      v30 = localZone;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@Successfully opened local zone [%@]", buf, 0x16u);
     }
   }
@@ -2547,7 +2547,7 @@ LABEL_42:
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v22 = v9;
+    v22 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -2555,59 +2555,59 @@ LABEL_42:
       *buf = 138543874;
       v28 = v23;
       v29 = 2112;
-      v30 = v6;
+      v30 = nameCopy;
       v31 = 2112;
       v32 = v14;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed to open zone with name %@: %@", buf, 0x20u);
     }
 
-    v16 = 0;
+    localZone = 0;
   }
 
   objc_autoreleasePoolPop(v18);
   v24 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return localZone;
 }
 
-- (id)backingStoreObjectsForAccountsAndDevices:(id)a3
+- (id)backingStoreObjectsForAccountsAndDevices:(id)devices
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [v4 account];
+  devicesCopy = devices;
+  array = [MEMORY[0x277CBEB18] array];
+  account = [devicesCopy account];
 
-  if (v6)
+  if (account)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 account];
+      account2 = [devicesCopy account];
       *buf = 138543618;
       v23 = v10;
       v24 = 2112;
-      v25 = v11;
+      v25 = account2;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Getting bso objects for account : %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
-    v12 = [v4 account];
-    v13 = [v12 backingStoreObjectsWithChangeType:1 version:4];
-    [v5 addObjectsFromArray:v13];
+    account3 = [devicesCopy account];
+    v13 = [account3 backingStoreObjectsWithChangeType:1 version:4];
+    [array addObjectsFromArray:v13];
   }
 
-  v14 = [v4 remoteAccounts];
+  remoteAccounts = [devicesCopy remoteAccounts];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __59__HMDHH2Migrator_backingStoreObjectsForAccountsAndDevices___block_invoke;
   v20[3] = &unk_278682A70;
   v20[4] = self;
-  v15 = v5;
+  v15 = array;
   v21 = v15;
-  [v14 hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
+  [remoteAccounts hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
 
   v16 = v21;
   v17 = v15;
@@ -2641,16 +2641,16 @@ void __59__HMDHH2Migrator_backingStoreObjectsForAccountsAndDevices___block_invok
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)makeSureToCreateHH2SentinelZoneWithError:(id *)a3
+- (BOOL)makeSureToCreateHH2SentinelZoneWithError:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDHH2Migrator *)self hh2FrameworkSwitch];
-  v6 = [v5 checkExistenceOfHH2SentinelZone];
+  hh2FrameworkSwitch = [(HMDHH2Migrator *)self hh2FrameworkSwitch];
+  checkExistenceOfHH2SentinelZone = [hh2FrameworkSwitch checkExistenceOfHH2SentinelZone];
 
-  if (v6)
+  if (checkExistenceOfHH2SentinelZone)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -2666,8 +2666,8 @@ void __59__HMDHH2Migrator_backingStoreObjectsForAccountsAndDevices___block_invok
 
   else
   {
-    v12 = [(HMDHH2Migrator *)self hh2FrameworkSwitch];
-    v13 = [v12 waitForHH2SentinelZoneToBeCreated:a3 error:1.2e11];
+    hh2FrameworkSwitch2 = [(HMDHH2Migrator *)self hh2FrameworkSwitch];
+    v13 = [hh2FrameworkSwitch2 waitForHH2SentinelZoneToBeCreated:error error:1.2e11];
 
     if (v13)
     {
@@ -2678,7 +2678,7 @@ void __59__HMDHH2Migrator_backingStoreObjectsForAccountsAndDevices___block_invok
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy2 = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -2701,7 +2701,7 @@ void __59__HMDHH2Migrator_backingStoreObjectsForAccountsAndDevices___block_invok
 {
   v45 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2712,13 +2712,13 @@ void __59__HMDHH2Migrator_backingStoreObjectsForAccountsAndDevices___block_invok
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDHH2Migrator *)v4 migratorRecord];
-  v8 = [v7 forceMigrationFailureForTesting];
+  migratorRecord = [(HMDHH2Migrator *)selfCopy migratorRecord];
+  forceMigrationFailureForTesting = [migratorRecord forceMigrationFailureForTesting];
 
-  if (v8)
+  if (forceMigrationFailureForTesting)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = v4;
+    v10 = selfCopy;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -2738,18 +2738,18 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v14 = [(HMDHH2Migrator *)v4 migratorRecord];
-  v15 = [v14 dryRun];
+  migratorRecord2 = [(HMDHH2Migrator *)selfCopy migratorRecord];
+  dryRun = [migratorRecord2 dryRun];
 
-  if (!v15)
+  if (!dryRun)
   {
-    v21 = [(HMDHH2Migrator *)v4 hh2FrameworkSwitch];
-    v22 = [v21 waitForHH2SentinelZoneToBeFetchedFromCloud];
+    hh2FrameworkSwitch = [(HMDHH2Migrator *)selfCopy hh2FrameworkSwitch];
+    waitForHH2SentinelZoneToBeFetchedFromCloud = [hh2FrameworkSwitch waitForHH2SentinelZoneToBeFetchedFromCloud];
 
-    if ((v22 & 1) == 0)
+    if ((waitForHH2SentinelZoneToBeFetchedFromCloud & 1) == 0)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = v4;
+      v10 = selfCopy;
       v11 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -2766,17 +2766,17 @@ LABEL_10:
     }
 
     v42 = 0;
-    v23 = [(HMDHH2Migrator *)v4 makeSureToCreateHH2SentinelZoneWithError:&v42];
+    v23 = [(HMDHH2Migrator *)selfCopy makeSureToCreateHH2SentinelZoneWithError:&v42];
     v24 = v42;
     if (v23)
     {
-      v25 = [(HMDHH2Migrator *)v4 migratorRecord];
-      v26 = [v25 migrateFromTestDirectory];
+      migratorRecord3 = [(HMDHH2Migrator *)selfCopy migratorRecord];
+      migrateFromTestDirectory = [migratorRecord3 migrateFromTestDirectory];
 
-      if (v26 & 1) != 0 || (-[HMDHH2Migrator migratorRecord](v4, "migratorRecord"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 finishMigration], v27, (v28))
+      if (migrateFromTestDirectory & 1) != 0 || (-[HMDHH2Migrator migratorRecord](selfCopy, "migratorRecord"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 finishMigration], v27, (v28))
       {
         v29 = objc_autoreleasePoolPush();
-        v30 = v4;
+        v30 = selfCopy;
         v31 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
         {
@@ -2793,7 +2793,7 @@ LABEL_10:
       }
 
       v38 = objc_autoreleasePoolPush();
-      v39 = v4;
+      v39 = selfCopy;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
@@ -2809,7 +2809,7 @@ LABEL_10:
     else
     {
       v33 = objc_autoreleasePoolPush();
-      v34 = v4;
+      v34 = selfCopy;
       v35 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
@@ -2831,7 +2831,7 @@ LABEL_26:
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = v4;
+  v10 = selfCopy;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -2855,7 +2855,7 @@ LABEL_12:
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2866,45 +2866,45 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDHH2Migrator *)v4 backgroundOpsManager];
-  v8 = [(HMDHH2Migrator *)v4 scheduledKeyRollOperationsDuringMigration];
+  backgroundOpsManager = [(HMDHH2Migrator *)selfCopy backgroundOpsManager];
+  scheduledKeyRollOperationsDuringMigration = [(HMDHH2Migrator *)selfCopy scheduledKeyRollOperationsDuringMigration];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__HMDHH2Migrator_revertChangesPerformedDuringMigration__block_invoke;
   v12[3] = &unk_278688118;
-  v13 = v7;
-  v9 = v7;
-  [v8 hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
+  v13 = backgroundOpsManager;
+  v9 = backgroundOpsManager;
+  [scheduledKeyRollOperationsDuringMigration hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
 
-  v10 = [(HMDHH2Migrator *)v4 scheduledKeyRollOperationsDuringMigration];
-  [v10 removeAllObjects];
+  scheduledKeyRollOperationsDuringMigration2 = [(HMDHH2Migrator *)selfCopy scheduledKeyRollOperationsDuringMigration];
+  [scheduledKeyRollOperationsDuringMigration2 removeAllObjects];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)scheduleAccessoryKeyMigration:(id)a3 oldPairingIdentity:(id)a4 hh2PairingIdentity:(id)a5
+- (BOOL)scheduleAccessoryKeyMigration:(id)migration oldPairingIdentity:(id)identity hh2PairingIdentity:(id)pairingIdentity
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  migrationCopy = migration;
+  identityCopy = identity;
+  pairingIdentityCopy = pairingIdentity;
+  if (!migrationCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_38;
   }
 
-  v11 = v10;
-  v12 = [v8 identifier];
+  v11 = pairingIdentityCopy;
+  identifier = [migrationCopy identifier];
 
-  if (!v12)
+  if (!identifier)
   {
 LABEL_38:
     _HMFPreconditionFailure();
     goto LABEL_39;
   }
 
-  if (!v9)
+  if (!identityCopy)
   {
 LABEL_39:
     _HMFPreconditionFailure();
@@ -2920,11 +2920,11 @@ LABEL_40:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v13 = [(HMDHH2Migrator *)self backgroundOpsManager];
-    if (!v13)
+    backgroundOpsManager = [(HMDHH2Migrator *)self backgroundOpsManager];
+    if (!backgroundOpsManager)
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
@@ -2939,7 +2939,7 @@ LABEL_40:
       goto LABEL_35;
     }
 
-    v14 = v8;
+    v14 = migrationCopy;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
@@ -2971,15 +2971,15 @@ LABEL_40:
 
     if (isKindOfClass)
     {
-      v22 = [v18 identifier];
+      identifier2 = [v18 identifier];
 
-      if (v22)
+      if (identifier2)
       {
-        v23 = [(HMDHH2Migrator *)self scheduledKeyRollOperationsDuringMigration];
-        v24 = [v18 uuid];
-        [v23 addObject:v24];
+        scheduledKeyRollOperationsDuringMigration = [(HMDHH2Migrator *)self scheduledKeyRollOperationsDuringMigration];
+        uuid = [v18 uuid];
+        [scheduledKeyRollOperationsDuringMigration addObject:uuid];
 
-        v25 = [v13 scheduleHH2KeyRollForAccessory:v18 previousIdentity:v9 newIdentity:v11];
+        v25 = [backgroundOpsManager scheduleHH2KeyRollForAccessory:v18 previousIdentity:identityCopy newIdentity:v11];
 LABEL_26:
         v30 = v25;
 LABEL_34:
@@ -2989,7 +2989,7 @@ LABEL_35:
       }
 
       v38 = objc_autoreleasePoolPush();
-      v39 = self;
+      selfCopy4 = self;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
@@ -3011,7 +3011,7 @@ LABEL_32:
       if ((v19 & 1) == 0)
       {
         v38 = objc_autoreleasePoolPush();
-        v39 = self;
+        selfCopy4 = self;
         v40 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
@@ -3029,20 +3029,20 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      v35 = [v18 identifier];
+      identifier3 = [v18 identifier];
 
-      if (v35)
+      if (identifier3)
       {
-        v36 = [(HMDHH2Migrator *)self scheduledKeyRollOperationsDuringMigration];
-        v37 = [v18 uuid];
-        [v36 addObject:v37];
+        scheduledKeyRollOperationsDuringMigration2 = [(HMDHH2Migrator *)self scheduledKeyRollOperationsDuringMigration];
+        uuid2 = [v18 uuid];
+        [scheduledKeyRollOperationsDuringMigration2 addObject:uuid2];
 
-        v25 = [v13 scheduleHH2KeyRollForAirPlayAccessory:v18 previousIdentity:v9 newIdentity:v11];
+        v25 = [backgroundOpsManager scheduleHH2KeyRollForAirPlayAccessory:v18 previousIdentity:identityCopy newIdentity:v11];
         goto LABEL_26;
       }
 
       v38 = objc_autoreleasePoolPush();
-      v39 = self;
+      selfCopy4 = self;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
@@ -3058,7 +3058,7 @@ LABEL_33:
   }
 
   v31 = objc_autoreleasePoolPush();
-  v32 = self;
+  selfCopy5 = self;
   v33 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
   {
@@ -3066,7 +3066,7 @@ LABEL_33:
     *buf = 138543618;
     v48 = v34;
     v49 = 2112;
-    v50 = v8;
+    v50 = migrationCopy;
     _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_INFO, "%{public}@Not Scheduling key roll operation for Non-HAP and Non-AirPlay accessory : %@", buf, 0x16u);
   }
 
@@ -3078,49 +3078,49 @@ LABEL_36:
   return v30;
 }
 
-- (BOOL)rollAccessoryKeysToHH2:(id)a3 hh2ControllerKey:(id)a4
+- (BOOL)rollAccessoryKeysToHH2:(id)h2 hh2ControllerKey:(id)key
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accessories];
-  if (v8 && ([v6 accessories], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, v10))
+  h2Copy = h2;
+  keyCopy = key;
+  accessories = [h2Copy accessories];
+  if (accessories && ([h2Copy accessories], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, accessories, v10))
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v6 accessories];
+      accessories2 = [h2Copy accessories];
       *buf = 138543618;
       *&buf[4] = v14;
       *&buf[12] = 2048;
-      *&buf[14] = [v15 count];
+      *&buf[14] = [accessories2 count];
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Scheduling accessory key-roll for [%lu] accessories", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
     v16 = objc_alloc(MEMORY[0x277CFEC20]);
-    v17 = [v7 identifier];
-    v18 = [v7 publicKey];
-    v19 = [v16 initWithIdentifier:v17 publicKey:v18 privateKey:0 permissions:1];
+    identifier = [keyCopy identifier];
+    publicKey = [keyCopy publicKey];
+    v19 = [v16 initWithIdentifier:identifier publicKey:publicKey privateKey:0 permissions:1];
 
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v34 = 1;
-    v20 = [v6 accessories];
+    accessories3 = [h2Copy accessories];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __58__HMDHH2Migrator_rollAccessoryKeysToHH2_hh2ControllerKey___block_invoke;
     v29[3] = &unk_278682B10;
     v32 = buf;
-    v29[4] = v12;
-    v30 = v6;
+    v29[4] = selfCopy;
+    v30 = h2Copy;
     v21 = v19;
     v31 = v21;
-    [v20 hmf_enumerateWithAutoreleasePoolUsingBlock:v29];
+    [accessories3 hmf_enumerateWithAutoreleasePoolUsingBlock:v29];
 
     v22 = *(*&buf[8] + 24);
     _Block_object_dispose(buf, 8);
@@ -3129,7 +3129,7 @@ LABEL_36:
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy2 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
@@ -3137,7 +3137,7 @@ LABEL_36:
       *buf = 138543618;
       *&buf[4] = v26;
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = h2Copy;
       _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_INFO, "%{public}@[%@] does not have any accessories in it. Skipping key-roll.", buf, 0x16u);
     }
 
@@ -3186,13 +3186,13 @@ void __58__HMDHH2Migrator_rollAccessoryKeysToHH2_hh2ControllerKey___block_invoke
 - (BOOL)waitForV5UpdatesToSyncToCloudKit
 {
   v38 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDHH2Migrator *)self migratorRecord];
-  if ([v2 migrateFromTestDirectory])
+  migratorRecord = [(HMDHH2Migrator *)self migratorRecord];
+  if ([migratorRecord migrateFromTestDirectory])
   {
 
 LABEL_4:
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -3206,10 +3206,10 @@ LABEL_4:
     goto LABEL_19;
   }
 
-  v3 = [(HMDHH2Migrator *)self migratorRecord];
-  v4 = [v3 dryRun];
+  migratorRecord2 = [(HMDHH2Migrator *)self migratorRecord];
+  dryRun = [migratorRecord2 dryRun];
 
-  if (v4)
+  if (dryRun)
   {
     goto LABEL_4;
   }
@@ -3223,8 +3223,8 @@ LABEL_4:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = [(HMDHH2Migrator *)self v5ModelUpdateFutures];
-  v11 = [v10 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  v5ModelUpdateFutures = [(HMDHH2Migrator *)self v5ModelUpdateFutures];
+  v11 = [v5ModelUpdateFutures countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v11)
   {
     v12 = *v29;
@@ -3235,7 +3235,7 @@ LABEL_4:
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(v5ModelUpdateFutures);
         }
 
         v14 = *(*(&v28 + 1) + 8 * v13);
@@ -3253,7 +3253,7 @@ LABEL_4:
       }
 
       while (v11 != v13);
-      v11 = [v10 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v11 = [v5ModelUpdateFutures countByEnumeratingWithState:&v28 objects:v34 count:16];
     }
 
     while (v11);
@@ -3263,7 +3263,7 @@ LABEL_4:
   if (dispatch_group_wait(v9, v16))
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -3275,7 +3275,7 @@ LABEL_4:
 
     objc_autoreleasePoolPop(v17);
     v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:8];
-    [(HMDHH2Migrator *)v18 submitABCEventForFailedMigrationWithReason:5 withError:v21];
+    [(HMDHH2Migrator *)selfCopy2 submitABCEventForFailedMigrationWithReason:5 withError:v21];
   }
 
   _Block_object_dispose(&buf, 8);
@@ -3373,31 +3373,31 @@ LABEL_12:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)waitForCloudKitSyncForProcessingResult:(id)a3 error:(id *)a4
+- (BOOL)waitForCloudKitSyncForProcessingResult:(id)result error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  resultCopy = result;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
   v7 = dispatch_semaphore_create(0);
-  v8 = [v6 mirrorOutputResult];
+  mirrorOutputResult = [resultCopy mirrorOutputResult];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __63__HMDHH2Migrator_waitForCloudKitSyncForProcessingResult_error___block_invoke;
   v21[3] = &unk_278682A20;
   v23 = &v25;
-  v24 = a4;
+  errorCopy = error;
   v9 = v7;
   v22 = v9;
-  v10 = [v8 addCompletionBlock:v21];
+  v10 = [mirrorOutputResult addCompletionBlock:v21];
 
   v11 = dispatch_time(0, 60000000000);
   if (dispatch_semaphore_wait(v9, v11))
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -3405,16 +3405,16 @@ LABEL_12:
       *buf = 138543618;
       v30 = v15;
       v31 = 2112;
-      v32 = v6;
+      v32 = resultCopy;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_ERROR, "%{public}@Timed out waiting for CloudKit sync for %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    if (a4)
+    if (error)
     {
       v16 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:13];
-      v17 = *a4;
-      *a4 = v16;
+      v17 = *error;
+      *error = v16;
     }
   }
 
@@ -3446,30 +3446,30 @@ void __63__HMDHH2Migrator_waitForCloudKitSyncForProcessingResult_error___block_i
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)waitForStartupForCloudZone:(id)a3
+- (BOOL)waitForStartupForCloudZone:(id)zone
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 zoneID];
+  zoneCopy = zone;
+  zoneID = [zoneCopy zoneID];
   v6 = dispatch_semaphore_create(0);
-  v7 = [v4 startUp];
+  startUp = [zoneCopy startUp];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __45__HMDHH2Migrator_waitForStartupForCloudZone___block_invoke;
   v19[3] = &unk_2786879C0;
   v19[4] = self;
-  v8 = v5;
+  v8 = zoneID;
   v20 = v8;
   v9 = v6;
   v21 = v9;
-  v10 = [v7 addCompletionBlock:v19];
+  v10 = [startUp addCompletionBlock:v19];
 
   v11 = dispatch_time(0, 60000000000);
   v12 = dispatch_semaphore_wait(v9, v11);
   if (v12)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -3537,22 +3537,22 @@ void __45__HMDHH2Migrator_waitForStartupForCloudZone___block_invoke(uint64_t a1,
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allObjectIDsFromTransactions:(id)a3 cloudStoreIdentifier:(id)a4
+- (id)allObjectIDsFromTransactions:(id)transactions cloudStoreIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = MEMORY[0x277CBEB58];
-  v8 = a3;
+  transactionsCopy = transactions;
   v9 = [v7 set];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__HMDHH2Migrator_allObjectIDsFromTransactions_cloudStoreIdentifier___block_invoke;
   v14[3] = &unk_2786829F8;
-  v15 = v6;
-  v16 = self;
+  v15 = identifierCopy;
+  selfCopy = self;
   v17 = v9;
   v10 = v9;
-  v11 = v6;
-  [v8 hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
+  v11 = identifierCopy;
+  [transactionsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
 
   v12 = [v10 copy];
 
@@ -3641,14 +3641,14 @@ void __68__HMDHH2Migrator_allObjectIDsFromTransactions_cloudStoreIdentifier___bl
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)didCoreDataPushAllModelsToCloudKit:(id)a3 previousToken:(id)a4 cloudStore:(id)a5
+- (BOOL)didCoreDataPushAllModelsToCloudKit:(id)kit previousToken:(id)token cloudStore:(id)store
 {
   v72[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  kitCopy = kit;
+  tokenCopy = token;
+  storeCopy = store;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -3656,26 +3656,26 @@ void __68__HMDHH2Migrator_allObjectIDsFromTransactions_cloudStoreIdentifier___bl
     *buf = 138543618;
     *&buf[4] = v14;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = tokenCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Going to execute history change request using token : %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [MEMORY[0x277CBE4B0] fetchHistoryAfterToken:v9];
-  v72[0] = v10;
+  v15 = [MEMORY[0x277CBE4B0] fetchHistoryAfterToken:tokenCopy];
+  v72[0] = storeCopy;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:1];
   [v15 setAffectedStores:v16];
 
   v63 = 0;
-  v17 = [v8 executeRequest:v15 error:&v63];
+  v17 = [kitCopy executeRequest:v15 error:&v63];
   v58 = v63;
   if (v17)
   {
-    v18 = [v17 result];
-    if (![v18 count])
+    result = [v17 result];
+    if (![result count])
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = v12;
+      v35 = selfCopy;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
@@ -3690,13 +3690,13 @@ void __68__HMDHH2Migrator_allObjectIDsFromTransactions_cloudStoreIdentifier___bl
       goto LABEL_26;
     }
 
-    v19 = [v10 identifier];
-    v57 = [(HMDHH2Migrator *)v12 allObjectIDsFromTransactions:v18 cloudStoreIdentifier:v19];
+    identifier = [storeCopy identifier];
+    v57 = [(HMDHH2Migrator *)selfCopy allObjectIDsFromTransactions:result cloudStoreIdentifier:identifier];
 
     if (![v57 count])
     {
       v38 = objc_autoreleasePoolPush();
-      v39 = v12;
+      v39 = selfCopy;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
@@ -3712,9 +3712,9 @@ void __68__HMDHH2Migrator_allObjectIDsFromTransactions_cloudStoreIdentifier___bl
     }
 
     v20 = [HMDHH2CoreDataCloudKitMirroringObserver alloc];
-    v21 = [(HMDHH2Migrator *)v12 coreData];
-    v22 = [v10 identifier];
-    v23 = [(HMDHH2CoreDataCloudKitMirroringObserver *)v20 initWithObjectIds:v57 coreData:v21 storeIdentifier:v22];
+    coreData = [(HMDHH2Migrator *)selfCopy coreData];
+    identifier2 = [storeCopy identifier];
+    v23 = [(HMDHH2CoreDataCloudKitMirroringObserver *)v20 initWithObjectIds:v57 coreData:coreData storeIdentifier:identifier2];
 
     v24 = dispatch_group_create();
     dispatch_group_enter(v24);
@@ -3738,7 +3738,7 @@ void __68__HMDHH2Migrator_allObjectIDsFromTransactions_cloudStoreIdentifier___bl
     if (dispatch_group_wait(group, v25))
     {
       context = objc_autoreleasePoolPush();
-      v26 = v12;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
@@ -3756,7 +3756,7 @@ void __68__HMDHH2Migrator_allObjectIDsFromTransactions_cloudStoreIdentifier___bl
     {
       v42 = *(*&buf[8] + 40) == 0;
       contexta = objc_autoreleasePoolPush();
-      v43 = v12;
+      v43 = selfCopy;
       if (v42)
       {
         v50 = HMFGetOSLogHandle();
@@ -3794,7 +3794,7 @@ void __68__HMDHH2Migrator_allObjectIDsFromTransactions_cloudStoreIdentifier___bl
       objc_autoreleasePoolPop(contexta);
     }
 
-    [(HMDHH2Migrator *)v12 submitABCEventForFailedMigrationWithReason:4 withError:*(*&buf[8] + 40)];
+    [(HMDHH2Migrator *)selfCopy submitABCEventForFailedMigrationWithReason:4 withError:*(*&buf[8] + 40)];
     v33 = 0;
 LABEL_24:
 
@@ -3806,7 +3806,7 @@ LABEL_26:
   }
 
   v29 = objc_autoreleasePoolPush();
-  v30 = v12;
+  v30 = selfCopy;
   v31 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
   {
@@ -3814,7 +3814,7 @@ LABEL_26:
     *buf = 138543874;
     *&buf[4] = v32;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = tokenCopy;
     *&buf[22] = 2112;
     v69 = v58;
     _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch history for cloud store with token %@: %@", buf, 0x20u);
@@ -3839,8 +3839,8 @@ void __78__HMDHH2Migrator_didCoreDataPushAllModelsToCloudKit_previousToken_cloud
 - (BOOL)waitForCloudTransformToRun
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHH2Migrator *)self cloudTransform];
-  if (v3)
+  cloudTransform = [(HMDHH2Migrator *)self cloudTransform];
+  if (cloudTransform)
   {
     *&v33 = 0;
     *(&v33 + 1) = &v33;
@@ -3856,7 +3856,7 @@ void __78__HMDHH2Migrator_didCoreDataPushAllModelsToCloudKit_previousToken_cloud
     v25[2] = __44__HMDHH2Migrator_waitForCloudTransformToRun__block_invoke;
     v25[3] = &unk_278689D20;
     v25[4] = self;
-    v26 = v3;
+    v26 = cloudTransform;
     v28 = &v33;
     v6 = v4;
     v27 = v6;
@@ -3866,7 +3866,7 @@ void __78__HMDHH2Migrator_didCoreDataPushAllModelsToCloudKit_previousToken_cloud
     if (dispatch_group_wait(v6, v7))
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -3881,7 +3881,7 @@ void __78__HMDHH2Migrator_didCoreDataPushAllModelsToCloudKit_previousToken_cloud
     {
       v17 = *(*(&v33 + 1) + 40) == 0;
       v8 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy2 = self;
       if (v17)
       {
         v23 = HMFGetOSLogHandle();
@@ -3920,7 +3920,7 @@ LABEL_12:
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy3 = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
@@ -3977,12 +3977,12 @@ void __44__HMDHH2Migrator_waitForCloudTransformToRun__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)waitForCDToExportModelsToCloudKit:(id)a3
+- (BOOL)waitForCDToExportModelsToCloudKit:(id)kit
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  kitCopy = kit;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -3990,20 +3990,20 @@ void __44__HMDHH2Migrator_waitForCloudTransformToRun__block_invoke(uint64_t a1)
     *buf = 138543618;
     *&buf[4] = v8;
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = kitCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Starting to wait for CD to export models to CK : history token before migration began : %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if ([(HMDHH2Migrator *)v6 waitForCloudTransformToRun])
+  if ([(HMDHH2Migrator *)selfCopy waitForCloudTransformToRun])
   {
-    v9 = [(HMDHH2Migrator *)v6 migratorRecord];
-    if ([v9 migrateFromTestDirectory])
+    migratorRecord = [(HMDHH2Migrator *)selfCopy migratorRecord];
+    if ([migratorRecord migrateFromTestDirectory])
     {
 
 LABEL_10:
       v17 = objc_autoreleasePoolPush();
-      v18 = v6;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -4018,10 +4018,10 @@ LABEL_10:
       goto LABEL_18;
     }
 
-    v15 = [(HMDHH2Migrator *)v6 migratorRecord];
-    v16 = [v15 dryRun];
+    migratorRecord2 = [(HMDHH2Migrator *)selfCopy migratorRecord];
+    dryRun = [migratorRecord2 dryRun];
 
-    if (v16)
+    if (dryRun)
     {
       goto LABEL_10;
     }
@@ -4030,24 +4030,24 @@ LABEL_10:
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v37 = 0;
-    v21 = [(HMDHH2Migrator *)v6 coreData];
-    v22 = [v21 newManagedObjectContext];
+    coreData = [(HMDHH2Migrator *)selfCopy coreData];
+    newManagedObjectContext = [coreData newManagedObjectContext];
 
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __52__HMDHH2Migrator_waitForCDToExportModelsToCloudKit___block_invoke;
     v30[3] = &unk_278689D20;
     v33 = buf;
-    v30[4] = v6;
-    v23 = v22;
+    v30[4] = selfCopy;
+    v23 = newManagedObjectContext;
     v31 = v23;
-    v32 = v4;
+    v32 = kitCopy;
     [v23 performBlockAndWait:v30];
     v14 = *(*&buf[8] + 24);
     if ((v14 & 1) == 0)
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = v6;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -4066,7 +4066,7 @@ LABEL_10:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = v6;
+    v11 = selfCopy;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -4100,54 +4100,54 @@ uint64_t __52__HMDHH2Migrator_waitForCDToExportModelsToCloudKit___block_invoke(v
   return [v7 reset];
 }
 
-- (void)_fixupOutgoingInvitationModel:(id)a3
+- (void)_fixupOutgoingInvitationModel:(id)model
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 inviteeUserID];
+  modelCopy = model;
+  inviteeUserID = [modelCopy inviteeUserID];
 
-  if (!v5)
+  if (!inviteeUserID)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [v4 modelID];
+      modelID = [modelCopy modelID];
       v13 = 138543618;
       v14 = v9;
       v15 = 2112;
-      v16 = v10;
+      v16 = modelID;
       _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Fixup: Dropping outgoing invitation with nil inviteeUserID: %@", &v13, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v11 = [v4 managedObjectContext];
-    [v11 deleteObject:v4];
+    managedObjectContext = [modelCopy managedObjectContext];
+    [managedObjectContext deleteObject:modelCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupAssistantAccessControlForUserModel:(id)a3
+- (void)_fixupAssistantAccessControlForUserModel:(id)model
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 managedObjectContext];
-  v6 = [v4 home];
-  v7 = [(HMDHH2Migrator *)self homeData];
-  v8 = [v6 modelID];
-  v9 = [v7 homeWithUUID:v8];
-  v10 = [v4 modelID];
-  v11 = [v9 userWithUUID:v10];
+  modelCopy = model;
+  managedObjectContext = [modelCopy managedObjectContext];
+  home = [modelCopy home];
+  homeData = [(HMDHH2Migrator *)self homeData];
+  modelID = [home modelID];
+  v9 = [homeData homeWithUUID:modelID];
+  modelID2 = [modelCopy modelID];
+  v11 = [v9 userWithUUID:modelID2];
 
-  v12 = [v11 assistantAccessControl];
-  v13 = v12;
-  if (v12)
+  assistantAccessControl = [v11 assistantAccessControl];
+  v13 = assistantAccessControl;
+  if (assistantAccessControl)
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v12, "areActivityNotificationsEnabledForPersonalRequests")}];
-    [v4 setActivityNotificationsEnabledForPersonalRequests:v14];
+    v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(assistantAccessControl, "areActivityNotificationsEnabledForPersonalRequests")}];
+    [modelCopy setActivityNotificationsEnabledForPersonalRequests:v14];
 
     *&v40 = 0;
     *(&v40 + 1) = &v40;
@@ -4155,34 +4155,34 @@ uint64_t __52__HMDHH2Migrator_waitForCDToExportModelsToCloudKit___block_invoke(v
     v42 = __Block_byref_object_copy__231211;
     v43 = __Block_byref_object_dispose__231212;
     v15 = MEMORY[0x277CBEB58];
-    v16 = [v13 accessories];
-    v44 = [v15 setWithCapacity:{objc_msgSend(v16, "count")}];
+    accessories = [v13 accessories];
+    v44 = [v15 setWithCapacity:{objc_msgSend(accessories, "count")}];
 
-    v17 = [v13 accessories];
+    accessories2 = [v13 accessories];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __59__HMDHH2Migrator__fixupAssistantAccessControlForUserModel___block_invoke;
     v30[3] = &unk_2786829A8;
-    v31 = v5;
-    v32 = self;
+    v31 = managedObjectContext;
+    selfCopy = self;
     v33 = &v40;
-    [v17 hmf_enumerateWithAutoreleasePoolUsingBlock:v30];
+    [accessories2 hmf_enumerateWithAutoreleasePoolUsingBlock:v30];
 
     v18 = [*(*(&v40 + 1) + 40) copy];
-    [v4 setAccessoriesWithPersonalRequestsEnabled_:v18];
+    [modelCopy setAccessoriesWithPersonalRequestsEnabled_:v18];
 
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v4 activityNotificationsEnabledForPersonalRequests];
+      activityNotificationsEnabledForPersonalRequests = [modelCopy activityNotificationsEnabledForPersonalRequests];
       v24 = *(*(&v40 + 1) + 40);
       *buf = 138543874;
       v35 = v22;
       v36 = 2112;
-      v37 = v23;
+      v37 = activityNotificationsEnabledForPersonalRequests;
       v38 = 2112;
       v39 = v24;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@FixUp: Migrated owner's assistant access control activityNotificationsEnabled=%@, accessories=%@", buf, 0x20u);
@@ -4195,7 +4195,7 @@ uint64_t __52__HMDHH2Migrator_waitForCDToExportModelsToCloudKit___block_invoke(v
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy3 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
@@ -4248,18 +4248,18 @@ void __59__HMDHH2Migrator__fixupAssistantAccessControlForUserModel___block_invok
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupSoftwareUpdateModelWithNoAccessory:(id)a3 coreDataModelObject:(id)a4
+- (void)_fixupSoftwareUpdateModelWithNoAccessory:(id)accessory coreDataModelObject:(id)object
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 accessory];
+  accessoryCopy = accessory;
+  objectCopy = object;
+  accessory = [objectCopy accessory];
 
-  if (!v8)
+  if (!accessory)
   {
-    v9 = HMDCastIfManagedObjectBSORepresentable(v7);
+    v9 = HMDCastIfManagedObjectBSORepresentable(objectCopy);
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
     if (v9)
@@ -4267,31 +4267,31 @@ void __59__HMDHH2Migrator__fixupAssistantAccessControlForUserModel___block_invok
       if (v13)
       {
         v14 = HMFGetLogIdentifier();
-        v15 = [v9 hmd_parentModelID];
+        hmd_parentModelID = [v9 hmd_parentModelID];
         v32 = 138543874;
         v33 = v14;
         v34 = 2112;
         v35 = v9;
         v36 = 2112;
-        v37 = v15;
+        v37 = hmd_parentModelID;
         _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@FixUP: Looks like [%@] does not have accessory associated with it. Going to find the accessory with model id: %@", &v32, 0x20u);
       }
 
       objc_autoreleasePoolPop(v10);
-      v16 = [v9 hmd_parentModelID];
-      v17 = [(_MKFModel *)_MKFAccessory modelWithModelID:v16 context:v6];
+      hmd_parentModelID2 = [v9 hmd_parentModelID];
+      v17 = [(_MKFModel *)_MKFAccessory modelWithModelID:hmd_parentModelID2 context:accessoryCopy];
 
       if (v17)
       {
-        [v7 setAccessory:v17];
+        [objectCopy setAccessory:v17];
         v18 = objc_autoreleasePoolPush();
-        v19 = v11;
+        v19 = selfCopy;
         v20 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
           v21 = HMFGetLogIdentifier();
           v22 = [v17 debugDescription];
-          v23 = [v7 debugDescription];
+          v23 = [objectCopy debugDescription];
           v32 = 138543874;
           v33 = v21;
           v34 = 2112;
@@ -4307,21 +4307,21 @@ void __59__HMDHH2Migrator__fixupAssistantAccessControlForUserModel___block_invok
       else
       {
         v26 = objc_autoreleasePoolPush();
-        v27 = v11;
+        v27 = selfCopy;
         v28 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
           v29 = HMFGetLogIdentifier();
-          v30 = [v9 hmd_parentModelID];
+          hmd_parentModelID3 = [v9 hmd_parentModelID];
           v32 = 138543618;
           v33 = v29;
           v34 = 2112;
-          v35 = v30;
+          v35 = hmd_parentModelID3;
           _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_ERROR, "%{public}@Unable to find the _MKFAccessory with modelID : %@ for software update model.", &v32, 0x16u);
         }
 
         objc_autoreleasePoolPop(v26);
-        [v6 deleteObject:v7];
+        [accessoryCopy deleteObject:objectCopy];
       }
     }
 
@@ -4330,7 +4330,7 @@ void __59__HMDHH2Migrator__fixupAssistantAccessControlForUserModel___block_invok
       if (v13)
       {
         v24 = HMFGetLogIdentifier();
-        v25 = [v7 debugDescription];
+        v25 = [objectCopy debugDescription];
         v32 = 138543618;
         v33 = v24;
         v34 = 2112;
@@ -4339,19 +4339,19 @@ void __59__HMDHH2Migrator__fixupAssistantAccessControlForUserModel___block_invok
       }
 
       objc_autoreleasePoolPop(v10);
-      [v6 deleteObject:v7];
+      [accessoryCopy deleteObject:objectCopy];
     }
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupAccessoryWithNoInitialValues:(id)a3
+- (void)_fixupAccessoryWithNoInitialValues:(id)values
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 initialManufacturer];
-  if (v5)
+  valuesCopy = values;
+  initialManufacturer = [valuesCopy initialManufacturer];
+  if (initialManufacturer)
   {
 
 LABEL_3:
@@ -4359,58 +4359,58 @@ LABEL_3:
     goto LABEL_8;
   }
 
-  v7 = [v4 manufacturer];
+  manufacturer = [valuesCopy manufacturer];
 
-  if (!v7)
+  if (!manufacturer)
   {
     goto LABEL_3;
   }
 
-  v8 = [v4 manufacturer];
-  [v4 setInitialManufacturer:v8];
+  manufacturer2 = [valuesCopy manufacturer];
+  [valuesCopy setInitialManufacturer:manufacturer2];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v4 manufacturer];
+    manufacturer3 = [valuesCopy manufacturer];
     v36 = 138543618;
     v37 = v12;
     v38 = 2112;
-    v39 = v13;
+    v39 = manufacturer3;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@FixUP: updated initialManufacturer to [%@]", &v36, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
   v6 = 1;
 LABEL_8:
-  v14 = [v4 initialModel];
-  if (v14)
+  initialModel = [valuesCopy initialModel];
+  if (initialModel)
   {
   }
 
   else
   {
-    v15 = [v4 model];
+    model = [valuesCopy model];
 
-    if (v15)
+    if (model)
     {
-      v16 = [v4 model];
-      [v4 setInitialModel:v16];
+      model2 = [valuesCopy model];
+      [valuesCopy setInitialModel:model2];
 
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy2 = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [v4 model];
+        model3 = [valuesCopy model];
         v36 = 138543618;
         v37 = v20;
         v38 = 2112;
-        v39 = v21;
+        v39 = model3;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@FixUP: updated initialModel to [%@]", &v36, 0x16u);
       }
 
@@ -4419,16 +4419,16 @@ LABEL_8:
     }
   }
 
-  v22 = [v4 initialCategoryIdentifier];
-  if ([v22 unsignedIntValue])
+  initialCategoryIdentifier = [valuesCopy initialCategoryIdentifier];
+  if ([initialCategoryIdentifier unsignedIntValue])
   {
 
     goto LABEL_16;
   }
 
-  v23 = [v4 accessoryCategory];
+  accessoryCategory = [valuesCopy accessoryCategory];
 
-  if (!v23)
+  if (!accessoryCategory)
   {
 LABEL_16:
     if (!v6)
@@ -4439,32 +4439,32 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  v24 = [v4 accessoryCategory];
-  [v4 setInitialCategoryIdentifier:v24];
+  accessoryCategory2 = [valuesCopy accessoryCategory];
+  [valuesCopy setInitialCategoryIdentifier:accessoryCategory2];
 
   v25 = objc_autoreleasePoolPush();
-  v26 = self;
+  selfCopy3 = self;
   v27 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
     v28 = HMFGetLogIdentifier();
-    v29 = [v4 accessoryCategory];
+    accessoryCategory3 = [valuesCopy accessoryCategory];
     v36 = 138543618;
     v37 = v28;
     v38 = 2112;
-    v39 = v29;
+    v39 = accessoryCategory3;
     _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_INFO, "%{public}@FixUP: updated initialCategoryIdentifier to [%@]", &v36, 0x16u);
   }
 
   objc_autoreleasePoolPop(v25);
 LABEL_22:
   v30 = objc_autoreleasePoolPush();
-  v31 = self;
+  selfCopy4 = self;
   v32 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
   {
     v33 = HMFGetLogIdentifier();
-    v34 = [v4 debugDescription];
+    v34 = [valuesCopy debugDescription];
     v36 = 138543618;
     v37 = v33;
     v38 = 2112;
@@ -4478,17 +4478,17 @@ LABEL_25:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupAccessoryWithNoRoom:(id)a3 coreDataModelObject:(id)a4
+- (void)_fixupAccessoryWithNoRoom:(id)room coreDataModelObject:(id)object
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 room];
+  roomCopy = room;
+  objectCopy = object;
+  room = [objectCopy room];
 
-  if (!v8)
+  if (!room)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -4496,34 +4496,34 @@ LABEL_25:
       v25 = 138543618;
       v26 = v12;
       v27 = 2112;
-      v28 = v7;
+      v28 = objectCopy;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@FixUP: Looks like [%@] does not have room associated with it. Going to put this accessory to default room", &v25, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = [v7 home];
-    v14 = [v13 defaultRoom];
+    home = [objectCopy home];
+    defaultRoom = [home defaultRoom];
 
-    if (v14)
+    if (defaultRoom)
     {
-      v15 = [v7 home];
-      v16 = [v15 defaultRoom];
-      [v7 setRoom:v16];
+      home2 = [objectCopy home];
+      defaultRoom2 = [home2 defaultRoom];
+      [objectCopy setRoom:defaultRoom2];
 
       v17 = objc_autoreleasePoolPush();
-      v18 = v10;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [v7 home];
-        v22 = [v21 defaultRoom];
+        home3 = [objectCopy home];
+        defaultRoom3 = [home3 defaultRoom];
         v25 = 138543874;
         v26 = v20;
         v27 = 2112;
-        v28 = v7;
+        v28 = objectCopy;
         v29 = 2112;
-        v30 = v22;
+        v30 = defaultRoom3;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@FixUP: added accessory: [%@] to default room : [%@]", &v25, 0x20u);
 
 LABEL_9:
@@ -4533,16 +4533,16 @@ LABEL_9:
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v23 = v10;
+      v23 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [v7 home];
+        home3 = [objectCopy home];
         v25 = 138543618;
         v26 = v20;
         v27 = 2112;
-        v28 = v21;
+        v28 = home3;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@This is not good. Looks like we do not have default room in the home : %@", &v25, 0x16u);
         goto LABEL_9;
       }
@@ -4554,17 +4554,17 @@ LABEL_9:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createResidentModelsDuringMigrationForAppleMediaAccessory:(id)a3 context:(id)a4
+- (void)_createResidentModelsDuringMigrationForAppleMediaAccessory:(id)accessory context:(id)context
 {
   v73 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 home];
-  if (!v9)
+  accessoryCopy = accessory;
+  contextCopy = context;
+  v8 = accessoryCopy;
+  home = [v8 home];
+  if (!home)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -4581,13 +4581,13 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = [v8 resident];
+  resident = [v8 resident];
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy2 = self;
   v13 = HMFGetOSLogHandle();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
-  if (v10)
+  if (resident)
   {
     if (v14)
     {
@@ -4619,34 +4619,34 @@ LABEL_9:
 
   objc_autoreleasePoolPop(v11);
   v67 = 0;
-  v25 = [v8 modelID];
-  v26 = [v25 UUIDString];
-  v68 = v26;
+  modelID = [v8 modelID];
+  uUIDString = [modelID UUIDString];
+  v68 = uUIDString;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v68 count:1];
 
   v28 = MEMORY[0x277CCAD78];
-  v29 = [v9 modelID];
+  modelID2 = [home modelID];
   v66 = v27;
-  v30 = [v28 hm_deriveUUIDFromBaseUUID:v29 withSalts:v27];
+  v30 = [v28 hm_deriveUUIDFromBaseUUID:modelID2 withSalts:v27];
 
   v65 = v30;
-  v31 = [v9 materializeOrCreateResidentsRelationWithModelID:v30 createdNew:&v67];
+  v31 = [home materializeOrCreateResidentsRelationWithModelID:v30 createdNew:&v67];
   [v31 setAppleMediaAccessory:v8];
-  v32 = [(HMDHH2Migrator *)v12 homeData];
-  v33 = [v9 modelID];
-  v34 = [v32 homeWithUUID:v33];
-  v35 = [v8 modelID];
-  v36 = [v34 accessoryWithUUID:v35];
+  homeData = [(HMDHH2Migrator *)selfCopy2 homeData];
+  modelID3 = [home modelID];
+  v34 = [homeData homeWithUUID:modelID3];
+  modelID4 = [v8 modelID];
+  v36 = [v34 accessoryWithUUID:modelID4];
 
   v64 = v36;
-  v37 = [v36 name];
-  [v31 setName:v37];
+  name = [v36 name];
+  [v31 setName:name];
 
-  v38 = [(HMDHH2Migrator *)v12 homeData];
-  v39 = [v9 modelID];
-  v40 = [v38 homeWithUUID:v39];
-  v41 = [v8 modelID];
-  v42 = [v40 accessoryWithUUID:v41];
+  homeData2 = [(HMDHH2Migrator *)selfCopy2 homeData];
+  modelID5 = [home modelID];
+  v40 = [homeData2 homeWithUUID:modelID5];
+  modelID6 = [v8 modelID];
+  v42 = [v40 accessoryWithUUID:modelID6];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4661,15 +4661,15 @@ LABEL_9:
 
   v44 = v43;
 
-  v45 = [v44 deviceForDirectMessaging];
-  if (v45)
+  deviceForDirectMessaging = [v44 deviceForDirectMessaging];
+  if (deviceForDirectMessaging)
   {
-    v46 = [v31 idsIdentifier];
+    idsIdentifier = [v31 idsIdentifier];
 
-    if (!v46)
+    if (!idsIdentifier)
     {
       v47 = objc_autoreleasePoolPush();
-      v48 = v12;
+      v48 = selfCopy2;
       v49 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
@@ -4688,34 +4688,34 @@ LABEL_9:
       }
 
       objc_autoreleasePoolPop(v47);
-      v52 = [v45 idsIdentifier];
-      [v31 setIdsIdentifier:v52];
+      idsIdentifier2 = [deviceForDirectMessaging idsIdentifier];
+      [v31 setIdsIdentifier:idsIdentifier2];
     }
 
-    v53 = [v31 idsDestination];
+    idsDestination = [v31 idsDestination];
 
-    if (!v53)
+    if (!idsDestination)
     {
       v54 = objc_autoreleasePoolPush();
-      v55 = v12;
+      v55 = selfCopy2;
       v56 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
         HMFGetLogIdentifier();
         v57 = v63 = v54;
-        v58 = [v31 modelID];
+        modelID7 = [v31 modelID];
         *buf = 138543618;
         v70 = v57;
         v71 = 2112;
-        v72 = v58;
+        v72 = modelID7;
         _os_log_impl(&dword_229538000, v56, OS_LOG_TYPE_DEFAULT, "%{public}@Adding ids destination to MKFResident/%@ in fixup", buf, 0x16u);
 
         v54 = v63;
       }
 
       objc_autoreleasePoolPop(v54);
-      v59 = [v45 globalDestination];
-      [v31 setIdsDestination:v59];
+      globalDestination = [deviceForDirectMessaging globalDestination];
+      [v31 setIdsDestination:globalDestination];
     }
   }
 
@@ -4723,20 +4723,20 @@ LABEL_25:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupAppleMediaAccessory:(id)a3 context:(id)a4
+- (void)_fixupAppleMediaAccessory:(id)accessory context:(id)context
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 home];
-  if (v9)
+  accessoryCopy = accessory;
+  contextCopy = context;
+  v8 = accessoryCopy;
+  home = [v8 home];
+  if (home)
   {
-    v10 = [(HMDHH2Migrator *)self homeData];
-    v11 = [v9 modelID];
-    v12 = [v10 homeWithUUID:v11];
-    v13 = [v8 modelID];
-    v14 = [v12 accessoryWithUUID:v13];
+    homeData = [(HMDHH2Migrator *)self homeData];
+    modelID = [home modelID];
+    v12 = [homeData homeWithUUID:modelID];
+    modelID2 = [v8 modelID];
+    v14 = [v12 accessoryWithUUID:modelID2];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -4751,15 +4751,15 @@ LABEL_25:
 
     v16 = v15;
 
-    v17 = [v16 deviceForDirectMessaging];
-    if (v17)
+    deviceForDirectMessaging = [v16 deviceForDirectMessaging];
+    if (deviceForDirectMessaging)
     {
-      v18 = [v8 idsIdentifier];
+      idsIdentifier = [v8 idsIdentifier];
 
-      if (!v18)
+      if (!idsIdentifier)
       {
         v19 = objc_autoreleasePoolPush();
-        v20 = self;
+        selfCopy = self;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
@@ -4776,31 +4776,31 @@ LABEL_25:
         }
 
         objc_autoreleasePoolPop(v19);
-        v24 = [v17 idsIdentifier];
-        [v8 setIdsIdentifier:v24];
+        idsIdentifier2 = [deviceForDirectMessaging idsIdentifier];
+        [v8 setIdsIdentifier:idsIdentifier2];
       }
 
-      v25 = [v8 idsDestination];
+      idsDestination = [v8 idsDestination];
 
-      if (!v25)
+      if (!idsDestination)
       {
         v26 = objc_autoreleasePoolPush();
-        v27 = self;
+        selfCopy2 = self;
         v28 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
           v29 = HMFGetLogIdentifier();
-          v30 = [v8 modelID];
+          modelID3 = [v8 modelID];
           *buf = 138543618;
           v40 = v29;
           v41 = 2112;
-          v42 = v30;
+          v42 = modelID3;
           _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@Adding ids destination to _MKFAppleMediaAccessory/%@ in fixup", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v26);
-        v31 = [v17 globalDestination];
-        [v8 setIdsDestination:v31];
+        globalDestination = [deviceForDirectMessaging globalDestination];
+        [v8 setIdsDestination:globalDestination];
       }
     }
   }
@@ -4808,7 +4808,7 @@ LABEL_25:
   else
   {
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy3 = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -4827,13 +4827,13 @@ LABEL_25:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupCharacteristicEventTriggerInvalidService:(id)a3 context:(id)a4
+- (void)_fixupCharacteristicEventTriggerInvalidService:(id)service context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v24 = v6;
-  [v6 events];
+  serviceCopy = service;
+  contextCopy = context;
+  v24 = serviceCopy;
+  [serviceCopy events];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -4869,17 +4869,17 @@ LABEL_25:
 
         if (v15)
         {
-          v16 = [v15 service];
+          service = [v15 service];
 
-          if (!v16)
+          if (!service)
           {
             v17 = objc_autoreleasePoolPush();
-            v18 = self;
+            selfCopy = self;
             v19 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
             {
               HMFGetLogIdentifier();
-              v20 = v7;
+              v20 = contextCopy;
               v22 = v21 = self;
               *buf = 138543618;
               v31 = v22;
@@ -4888,12 +4888,12 @@ LABEL_25:
               _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@FixUp: deleting characteristicEvent: %@ as it has no associated service", buf, 0x16u);
 
               self = v21;
-              v7 = v20;
+              contextCopy = v20;
               v8 = v25;
             }
 
             objc_autoreleasePoolPop(v17);
-            [v7 deleteObject:v15];
+            [contextCopy deleteObject:v15];
           }
         }
       }
@@ -4907,30 +4907,30 @@ LABEL_25:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupCharacteristicWriteActionWithInvalidService:(id)a3 context:(id)a4
+- (void)_fixupCharacteristicWriteActionWithInvalidService:(id)service context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  contextCopy = context;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v24 = v6;
-  v8 = [v6 actions];
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  v24 = serviceCopy;
+  actions = [serviceCopy actions];
+  v9 = [actions countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v27;
-    v25 = v8;
+    v25 = actions;
     do
     {
       for (i = 0; i != v10; ++i)
       {
         if (*v27 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(actions);
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
@@ -4949,17 +4949,17 @@ LABEL_25:
 
         if (v15)
         {
-          v16 = [v15 service];
+          service = [v15 service];
 
-          if (!v16)
+          if (!service)
           {
             v17 = objc_autoreleasePoolPush();
-            v18 = self;
+            selfCopy = self;
             v19 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
             {
               HMFGetLogIdentifier();
-              v20 = v7;
+              v20 = contextCopy;
               v22 = v21 = self;
               *buf = 138543618;
               v31 = v22;
@@ -4968,17 +4968,17 @@ LABEL_25:
               _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@FixUp: deleting characteristicWriteAction: %@ as it has no associated service", buf, 0x16u);
 
               self = v21;
-              v7 = v20;
-              v8 = v25;
+              contextCopy = v20;
+              actions = v25;
             }
 
             objc_autoreleasePoolPop(v17);
-            [v7 deleteObject:v15];
+            [contextCopy deleteObject:v15];
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v10 = [actions countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v10);
@@ -4987,20 +4987,20 @@ LABEL_25:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupActionSetUnlocalizedName:(id)a3
+- (void)_fixupActionSetUnlocalizedName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 type];
+  nameCopy = name;
+  name = [nameCopy name];
+  type = [nameCopy type];
   v7 = +[HMDHome getBuiltinActionSets];
-  v8 = [v7 hmf_stringForKey:v6];
-  if ([v8 isEqual:v5])
+  v8 = [v7 hmf_stringForKey:type];
+  if ([v8 isEqual:name])
   {
     v9 = HMDLocalizedStringForKey(v8);
-    [v4 setName:v9];
+    [nameCopy setName:v9];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -5008,7 +5008,7 @@ LABEL_25:
       v15 = 138543874;
       v16 = v13;
       v17 = 2112;
-      v18 = v5;
+      v18 = name;
       v19 = 2112;
       v20 = v9;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@FixUp: found action set with unlocalized name, updating name from: %@ to: %@", &v15, 0x20u);
@@ -5020,25 +5020,25 @@ LABEL_25:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupActionSetInvalidName:(id)a3 context:(id)a4
+- (void)_fixupActionSetInvalidName:(id)name context:(id)context
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 name];
-  v9 = v8;
-  if (!v8 || ![(__CFString *)v8 length])
+  nameCopy = name;
+  contextCopy = context;
+  name = [nameCopy name];
+  v9 = name;
+  if (!name || ![(__CFString *)name length])
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = HMDLocalizedStringForKey(@"ACTION_SET_FALLBACK_NAME");
     v27 = 0;
-    v12 = [v10 localizedStringWithValidatedFormat:v11 validFormatSpecifiers:@"%ld" error:&v27, _fixupActionSetInvalidName_context__fixedUpActionSetNameCounter];
+    _fixupActionSetInvalidName_context__fixedUpActionSetNameCounter = [v10 localizedStringWithValidatedFormat:v11 validFormatSpecifiers:@"%ld" error:&v27, _fixupActionSetInvalidName_context__fixedUpActionSetNameCounter];
     v13 = v27;
 
-    v14 = v12;
-    if (!v12)
+    v14 = _fixupActionSetInvalidName_context__fixedUpActionSetNameCounter;
+    if (!_fixupActionSetInvalidName_context__fixedUpActionSetNameCounter)
     {
-      v26 = v7;
+      v26 = contextCopy;
       v15 = objc_autoreleasePoolPush();
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -5060,26 +5060,26 @@ LABEL_25:
 
       objc_autoreleasePoolPop(v15);
       v14 = @"ACTION_SET_FALLBACK_NAME";
-      v7 = v26;
+      contextCopy = v26;
     }
 
     v18 = v14;
 
-    [v6 setName:v18];
+    [nameCopy setName:v18];
     ++_fixupActionSetInvalidName_context__fixedUpActionSetNameCounter;
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v6 name];
+      name2 = [nameCopy name];
       *buf = 138543874;
       v29 = v22;
       v30 = 2112;
       v31 = v9;
       v32 = 2112;
-      v33 = v23;
+      v33 = name2;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@FixUp: found action set with invalid name, updating name from: %@ to: %@", buf, 0x20u);
     }
 
@@ -5089,26 +5089,26 @@ LABEL_25:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupTriggerInvalidName:(id)a3 context:(id)a4
+- (void)_fixupTriggerInvalidName:(id)name context:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 name];
-  v10 = v9;
-  if (!v9 || ![(__CFString *)v9 length])
+  nameCopy = name;
+  contextCopy = context;
+  v8 = nameCopy;
+  name = [v8 name];
+  v10 = name;
+  if (!name || ![(__CFString *)name length])
   {
     v11 = MEMORY[0x277CCACA8];
     v12 = HMDLocalizedStringForKey(@"TRIGGER_FALLBACK_NAME");
     v28 = 0;
-    v13 = [v11 localizedStringWithValidatedFormat:v12 validFormatSpecifiers:@"%ld" error:&v28, _fixupTriggerInvalidName_context__fixedUpTriggerNameCounter];
+    _fixupTriggerInvalidName_context__fixedUpTriggerNameCounter = [v11 localizedStringWithValidatedFormat:v12 validFormatSpecifiers:@"%ld" error:&v28, _fixupTriggerInvalidName_context__fixedUpTriggerNameCounter];
     v14 = v28;
 
-    v15 = v13;
-    if (!v13)
+    v15 = _fixupTriggerInvalidName_context__fixedUpTriggerNameCounter;
+    if (!_fixupTriggerInvalidName_context__fixedUpTriggerNameCounter)
     {
-      v27 = v7;
+      v27 = contextCopy;
       v16 = objc_autoreleasePoolPush();
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -5130,7 +5130,7 @@ LABEL_25:
 
       objc_autoreleasePoolPop(v16);
       v15 = @"TRIGGER_FALLBACK_NAME";
-      v7 = v27;
+      contextCopy = v27;
     }
 
     v19 = v15;
@@ -5138,18 +5138,18 @@ LABEL_25:
     [v8 setName:v19];
     ++_fixupTriggerInvalidName_context__fixedUpTriggerNameCounter;
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v8 name];
+      name2 = [v8 name];
       *buf = 138543874;
       v30 = v23;
       v31 = 2112;
       v32 = v10;
       v33 = 2112;
-      v34 = v24;
+      v34 = name2;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@FixUp: found trigger with invalid name, updating name from: %@ to: %@", buf, 0x20u);
     }
 
@@ -5159,40 +5159,40 @@ LABEL_25:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupUserAuthorizationDataForUserModel:(id)a3
+- (void)_fixupUserAuthorizationDataForUserModel:(id)model
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isOwner])
+  modelCopy = model;
+  if ([modelCopy isOwner])
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v6 = [(HMDHH2Migrator *)self homeData];
-    v7 = [v6 homes];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    homeData = [(HMDHH2Migrator *)self homeData];
+    homes = [homeData homes];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __58__HMDHH2Migrator__fixupUserAuthorizationDataForUserModel___block_invoke;
     v17[3] = &unk_278682980;
-    v8 = v5;
+    v8 = dictionary;
     v18 = v8;
-    [v7 na_each:v17];
+    [homes na_each:v17];
 
     v9 = [v8 copy];
-    [v4 setOwnerCharacteristicAuthorizationData:v9];
+    [modelCopy setOwnerCharacteristicAuthorizationData:v9];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
       v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
-      v15 = [v4 ownerCharacteristicAuthorizationData];
+      ownerCharacteristicAuthorizationData = [modelCopy ownerCharacteristicAuthorizationData];
       *buf = 138543874;
       v20 = v13;
       v21 = 2112;
       v22 = v14;
       v23 = 2112;
-      v24 = v15;
+      v24 = ownerCharacteristicAuthorizationData;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@FixUp: Updating %@ user's characteristics authorization data to %@", buf, 0x20u);
     }
 
@@ -5272,18 +5272,18 @@ void __58__HMDHH2Migrator__fixupUserAuthorizationDataForUserModel___block_invoke
   }
 }
 
-- (void)_fixupInvalidCharacteristicFormat:(id)a3 context:(id)a4
+- (void)_fixupInvalidCharacteristicFormat:(id)format context:(id)context
 {
-  v6 = a4;
-  v7 = [a3 characteristics];
+  contextCopy = context;
+  characteristics = [format characteristics];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invoke;
   v9[3] = &unk_2786828E0;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
+  v10 = contextCopy;
+  v8 = contextCopy;
+  [characteristics hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
 }
 
 void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invoke(uint64_t a1, void *a2)
@@ -5315,18 +5315,18 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupUserAccessCodeWithInvalidValue:(id)a3 context:(id)a4
+- (void)_fixupUserAccessCodeWithInvalidValue:(id)value context:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 accessCode];
+  valueCopy = value;
+  contextCopy = context;
+  v8 = valueCopy;
+  accessCode = [v8 accessCode];
 
-  if (!v9)
+  if (!accessCode)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -5340,23 +5340,23 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
     }
 
     objc_autoreleasePoolPop(v10);
-    [v7 deleteObject:v8];
+    [contextCopy deleteObject:v8];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupGuestAccessCodeWithInvalidLabel:(id)a3 context:(id)a4
+- (void)_fixupGuestAccessCodeWithInvalidLabel:(id)label context:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 label];
-  if (!v9 || (v10 = v9, [v8 label], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "length"), v11, v10, !v12))
+  labelCopy = label;
+  contextCopy = context;
+  v8 = labelCopy;
+  label = [v8 label];
+  if (!label || (v10 = label, [v8 label], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "length"), v11, v10, !v12))
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -5370,48 +5370,48 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
     }
 
     objc_autoreleasePoolPop(v13);
-    [v7 deleteObject:v8];
+    [contextCopy deleteObject:v8];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupHomeManagerPairingIdentity:(id)a3 withHH2ControllerKey:(id)a4 context:(id)a5
+- (void)_fixupHomeManagerPairingIdentity:(id)identity withHH2ControllerKey:(id)key context:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  identityCopy = identity;
+  keyCopy = key;
+  contextCopy = context;
+  v11 = identityCopy;
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 controllerKeyIdentifier];
+    controllerKeyIdentifier = [v11 controllerKeyIdentifier];
     v24 = 138543618;
     v25 = v15;
     v26 = 2112;
-    v27 = v16;
+    v27 = controllerKeyIdentifier;
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@FixUp: Current controller key identifier for the home manager is %@", &v24, 0x16u);
   }
 
   objc_autoreleasePoolPop(v12);
-  v17 = [v9 identifier];
-  [v11 setControllerKeyIdentifier:v17];
+  identifier = [keyCopy identifier];
+  [v11 setControllerKeyIdentifier:identifier];
 
   v18 = objc_autoreleasePoolPush();
-  v19 = v13;
+  v19 = selfCopy;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     v21 = HMFGetLogIdentifier();
-    v22 = [v11 controllerKeyIdentifier];
+    controllerKeyIdentifier2 = [v11 controllerKeyIdentifier];
     v24 = 138543618;
     v25 = v21;
     v26 = 2112;
-    v27 = v22;
+    v27 = controllerKeyIdentifier2;
     _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@FixUp: Updating the controller key identifier for the Home Manager to %@", &v24, 0x16u);
   }
 
@@ -5419,53 +5419,53 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupUserPairingIdentity:(id)a3 withHH2ControllerKey:(id)a4 context:(id)a5
+- (void)_fixupUserPairingIdentity:(id)identity withHH2ControllerKey:(id)key context:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 privilege];
-  v12 = [v11 intValue];
+  identityCopy = identity;
+  keyCopy = key;
+  contextCopy = context;
+  privilege = [identityCopy privilege];
+  intValue = [privilege intValue];
 
-  if (v12 == 3)
+  if (intValue == 3)
   {
-    v13 = [(HMDHH2Migrator *)self homeData];
-    v14 = [v13 account];
+    homeData = [(HMDHH2Migrator *)self homeData];
+    account = [homeData account];
 
-    if (v14)
+    if (account)
     {
-      v15 = [(HMDHH2Migrator *)self homeData];
-      v16 = [v15 account];
-      v17 = [v16 identifier];
-      [v8 setAccountIdentifier:v17];
+      homeData2 = [(HMDHH2Migrator *)self homeData];
+      account2 = [homeData2 account];
+      identifier = [account2 identifier];
+      [identityCopy setAccountIdentifier:identifier];
 
-      v18 = [(HMDHH2Migrator *)self homeData];
-      v19 = [v18 primaryAccountHandle];
-      if (v19)
+      homeData3 = [(HMDHH2Migrator *)self homeData];
+      primaryAccountHandle = [homeData3 primaryAccountHandle];
+      if (primaryAccountHandle)
       {
-        [v8 setAccountHandle:v19];
+        [identityCopy setAccountHandle:primaryAccountHandle];
       }
 
       else
       {
-        v20 = [v14 primaryHandle];
-        [v8 setAccountHandle:v20];
+        primaryHandle = [account primaryHandle];
+        [identityCopy setAccountHandle:primaryHandle];
       }
     }
 
-    [v8 setPairingIdentity:v9];
+    [identityCopy setPairingIdentity:keyCopy];
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       v24 = HMFGetLogIdentifier();
-      v25 = [v8 pairingIdentity];
+      pairingIdentity = [identityCopy pairingIdentity];
       v27 = 138543618;
       v28 = v24;
       v29 = 2112;
-      v30 = v25;
+      v30 = pairingIdentity;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_INFO, "%{public}@FixUp: Updating owner's pairing identity : %@", &v27, 0x16u);
     }
 
@@ -5475,28 +5475,28 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updatePairingIdentityForHome:(id)a3 withHH2ControllerKey:(id)a4 context:(id)a5
+- (void)_updatePairingIdentityForHome:(id)home withHH2ControllerKey:(id)key context:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
-  v12 = [v9 publicKey];
-  v13 = [v12 data];
-  [v11 setOwnerPublicKey:v13];
+  homeCopy = home;
+  keyCopy = key;
+  contextCopy = context;
+  v11 = homeCopy;
+  publicKey = [keyCopy publicKey];
+  data = [publicKey data];
+  [v11 setOwnerPublicKey:data];
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v11 ownerPublicKey];
+    ownerPublicKey = [v11 ownerPublicKey];
     v20 = 138543618;
     v21 = v17;
     v22 = 2112;
-    v23 = v18;
+    v23 = ownerPublicKey;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@FixUp: Updated the home owner's public key to %@", &v20, 0x16u);
   }
 
@@ -5504,26 +5504,26 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupHomeInvalidName:(id)a3 context:(id)a4
+- (void)_fixupHomeInvalidName:(id)name context:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 name];
-  v10 = v9;
-  if (!v9 || ![(__CFString *)v9 length])
+  nameCopy = name;
+  contextCopy = context;
+  v8 = nameCopy;
+  name = [v8 name];
+  v10 = name;
+  if (!name || ![(__CFString *)name length])
   {
     v11 = MEMORY[0x277CCACA8];
     v12 = HMDLocalizedStringForKey(@"HOME_FALLBACK_NAME");
     v28 = 0;
-    v13 = [v11 localizedStringWithValidatedFormat:v12 validFormatSpecifiers:@"%ld" error:&v28, _fixupHomeInvalidName_context__fixedUpHomeNameCounter];
+    _fixupHomeInvalidName_context__fixedUpHomeNameCounter = [v11 localizedStringWithValidatedFormat:v12 validFormatSpecifiers:@"%ld" error:&v28, _fixupHomeInvalidName_context__fixedUpHomeNameCounter];
     v14 = v28;
 
-    v15 = v13;
-    if (!v13)
+    v15 = _fixupHomeInvalidName_context__fixedUpHomeNameCounter;
+    if (!_fixupHomeInvalidName_context__fixedUpHomeNameCounter)
     {
-      v27 = v7;
+      v27 = contextCopy;
       v16 = objc_autoreleasePoolPush();
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -5545,7 +5545,7 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
 
       objc_autoreleasePoolPop(v16);
       v15 = @"HOME_FALLBACK_NAME";
-      v7 = v27;
+      contextCopy = v27;
     }
 
     v19 = v15;
@@ -5553,18 +5553,18 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
     [v8 setName:v19];
     ++_fixupHomeInvalidName_context__fixedUpHomeNameCounter;
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v8 name];
+      name2 = [v8 name];
       *buf = 138543874;
       v30 = v23;
       v31 = 2112;
       v32 = v10;
       v33 = 2112;
-      v34 = v24;
+      v34 = name2;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@FixUp: found home with invalid name, updating name from: %@ to: %@", buf, 0x20u);
     }
 
@@ -5574,19 +5574,19 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixUpHomeWithoutOwner:(id)a3 withHH2ControllerKey:(id)a4 context:(id)a5
+- (void)_fixUpHomeWithoutOwner:(id)owner withHH2ControllerKey:(id)key context:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
-  v12 = [v11 owner];
+  ownerCopy = owner;
+  keyCopy = key;
+  contextCopy = context;
+  v11 = ownerCopy;
+  owner = [v11 owner];
 
-  if (!v12)
+  if (!owner)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -5597,11 +5597,11 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
     }
 
     objc_autoreleasePoolPop(v13);
-    v17 = [[_MKFUser alloc] initWithContext:v10];
-    v18 = [MEMORY[0x277CCAD78] UUID];
-    [(_MKFUser *)v17 setModelID:v18];
+    v17 = [[_MKFUser alloc] initWithContext:contextCopy];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(_MKFUser *)v17 setModelID:uUID];
 
-    [(_MKFUser *)v17 setPairingIdentity:v9];
+    [(_MKFUser *)v17 setPairingIdentity:keyCopy];
     [(_MKFUser *)v17 setPrivilege:&unk_283E74798];
     [v11 setOwner:v17];
     [(_MKFUser *)v17 setHome:v11];
@@ -5611,29 +5611,29 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fixupModelForMigration:(id)a3 backingStoreModelObject:(id)a4 hh2ControllerKey:(id)a5
+- (void)fixupModelForMigration:(id)migration backingStoreModelObject:(id)object hh2ControllerKey:(id)key
 {
   v113 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 managedObject];
-  v12 = [v11 entity];
+  migrationCopy = migration;
+  objectCopy = object;
+  keyCopy = key;
+  managedObject = [objectCopy managedObject];
+  entity = [managedObject entity];
   v13 = +[_MKFHome entity];
-  v14 = [v12 isKindOfEntity:v13];
+  v14 = [entity isKindOfEntity:v13];
 
   p_cache = &OBJC_METACLASS___HMDAccessCodeManagerUtilities.cache;
   if (v14)
   {
-    [(HMDHH2Migrator *)self _updatePairingIdentityForHome:v11 withHH2ControllerKey:v10 context:v8];
-    [(HMDHH2Migrator *)self _fixUpHomeWithoutOwner:v11 withHH2ControllerKey:v10 context:v8];
-    [(HMDHH2Migrator *)self _fixupHomeInvalidName:v11 context:v8];
-    v16 = v11;
-    v17 = v8;
+    [(HMDHH2Migrator *)self _updatePairingIdentityForHome:managedObject withHH2ControllerKey:keyCopy context:migrationCopy];
+    [(HMDHH2Migrator *)self _fixUpHomeWithoutOwner:managedObject withHH2ControllerKey:keyCopy context:migrationCopy];
+    [(HMDHH2Migrator *)self _fixupHomeInvalidName:managedObject context:migrationCopy];
+    v16 = managedObject;
+    v17 = migrationCopy;
     if (self)
     {
       v103 = v16;
-      v104 = v10;
+      v104 = keyCopy;
       v101 = v16;
       v102 = v17;
       v18 = v17;
@@ -5642,26 +5642,26 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
       v20 = v106;
       if (v19)
       {
-        v21 = [v19 appDataDictionary];
-        if (v21)
+        appDataDictionary = [v19 appDataDictionary];
+        if (appDataDictionary)
         {
-          v22 = [HMDHome didHomeAppOnboardHindsightWithAppData:v21];
+          v22 = [HMDHome didHomeAppOnboardHindsightWithAppData:appDataDictionary];
         }
 
         else
         {
           context = objc_autoreleasePoolPush();
-          v27 = self;
+          selfCopy = self;
           v28 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
           {
             HMFGetLogIdentifier();
-            v29 = v99 = v9;
+            v29 = v99 = objectCopy;
             *buf = 138543362;
             v108 = v29;
             _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_DEBUG, "%{public}@Home manager doesn't have app data", buf, 0xCu);
 
-            v9 = v99;
+            objectCopy = v99;
           }
 
           objc_autoreleasePoolPop(context);
@@ -5673,19 +5673,19 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
       else
       {
         v23 = objc_autoreleasePoolPush();
-        v24 = self;
+        selfCopy2 = self;
         v25 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
           HMFGetLogIdentifier();
-          v26 = v98 = v9;
+          v26 = v98 = objectCopy;
           *buf = 138543618;
           v108 = v26;
           v109 = 2114;
           v110 = v20;
           _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_ERROR, "%{public}@Unable to find home manager: %{public}@", buf, 0x16u);
 
-          v9 = v98;
+          objectCopy = v98;
         }
 
         objc_autoreleasePoolPop(v23);
@@ -5694,7 +5694,7 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
       }
 
       v30 = objc_autoreleasePoolPush();
-      v31 = self;
+      selfCopy3 = self;
       v32 = HMFGetOSLogHandle();
       v33 = os_log_type_enabled(v32, OS_LOG_TYPE_INFO);
       if (v22)
@@ -5731,194 +5731,194 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
       }
 
       v16 = v103;
-      v10 = v104;
+      keyCopy = v104;
       v17 = v102;
     }
   }
 
-  v37 = [v11 entity];
+  entity2 = [managedObject entity];
   v38 = +[_MKFUser entity];
-  v39 = [v37 isKindOfEntity:v38];
+  v39 = [entity2 isKindOfEntity:v38];
 
   if (v39)
   {
-    v40 = v11;
-    v41 = [v40 privilege];
-    v42 = [v41 intValue];
+    v40 = managedObject;
+    privilege = [v40 privilege];
+    intValue = [privilege intValue];
 
-    if (v42 == 3)
+    if (intValue == 3)
     {
-      [(HMDHH2Migrator *)self _fixupUserPairingIdentity:v40 withHH2ControllerKey:v10 context:v8];
+      [(HMDHH2Migrator *)self _fixupUserPairingIdentity:v40 withHH2ControllerKey:keyCopy context:migrationCopy];
       [(HMDHH2Migrator *)self _fixupAssistantAccessControlForUserModel:v40];
       [(HMDHH2Migrator *)self _fixupUserAuthorizationDataForUserModel:v40];
     }
   }
 
-  v43 = [v11 entity];
+  entity3 = [managedObject entity];
   v44 = +[_MKFOutgoingInvitation entity];
-  v45 = [v43 isKindOfEntity:v44];
+  v45 = [entity3 isKindOfEntity:v44];
 
   if (v45)
   {
-    [(HMDHH2Migrator *)self _fixupOutgoingInvitationModel:v11];
+    [(HMDHH2Migrator *)self _fixupOutgoingInvitationModel:managedObject];
   }
 
-  v46 = [v11 entity];
-  v47 = [p_cache + 343 entity];
-  v48 = [v46 isKindOfEntity:v47];
+  entity4 = [managedObject entity];
+  entity5 = [p_cache + 343 entity];
+  v48 = [entity4 isKindOfEntity:entity5];
 
   if (v48)
   {
-    [(HMDHH2Migrator *)self _fixupHomeManagerPairingIdentity:v11 withHH2ControllerKey:v10 context:v8];
+    [(HMDHH2Migrator *)self _fixupHomeManagerPairingIdentity:managedObject withHH2ControllerKey:keyCopy context:migrationCopy];
   }
 
-  v49 = [v11 entity];
+  entity6 = [managedObject entity];
   v50 = +[_MKFAppleMediaAccessory entity];
-  v51 = [v49 isKindOfEntity:v50];
+  v51 = [entity6 isKindOfEntity:v50];
 
   if (v51)
   {
-    [(HMDHH2Migrator *)self _fixupAppleMediaAccessory:v11 context:v8];
-    [(HMDHH2Migrator *)self _createResidentModelsDuringMigrationForAppleMediaAccessory:v11 context:v8];
+    [(HMDHH2Migrator *)self _fixupAppleMediaAccessory:managedObject context:migrationCopy];
+    [(HMDHH2Migrator *)self _createResidentModelsDuringMigrationForAppleMediaAccessory:managedObject context:migrationCopy];
   }
 
-  v52 = [v11 entity];
+  entity7 = [managedObject entity];
   v53 = +[_MKFAccessory entity];
-  v54 = [v52 isKindOfEntity:v53];
+  v54 = [entity7 isKindOfEntity:v53];
 
   if (v54)
   {
-    [(HMDHH2Migrator *)self _fixupAccessoryWithNoRoom:v8 coreDataModelObject:v11];
-    [(HMDHH2Migrator *)self _fixupAccessoryWithNoInitialValues:v11];
+    [(HMDHH2Migrator *)self _fixupAccessoryWithNoRoom:migrationCopy coreDataModelObject:managedObject];
+    [(HMDHH2Migrator *)self _fixupAccessoryWithNoInitialValues:managedObject];
   }
 
-  v55 = [v11 entity];
+  entity8 = [managedObject entity];
   v56 = +[_MKFSoftwareUpdate entity];
-  v57 = [v55 isKindOfEntity:v56];
+  v57 = [entity8 isKindOfEntity:v56];
 
   if (v57)
   {
-    [(HMDHH2Migrator *)self _fixupSoftwareUpdateModelWithNoAccessory:v8 coreDataModelObject:v11];
+    [(HMDHH2Migrator *)self _fixupSoftwareUpdateModelWithNoAccessory:migrationCopy coreDataModelObject:managedObject];
   }
 
-  v58 = [v11 entity];
+  entity9 = [managedObject entity];
   v59 = +[_MKFGuestAccessCode entity];
-  v60 = [v58 isKindOfEntity:v59];
+  v60 = [entity9 isKindOfEntity:v59];
 
   if (v60)
   {
     v61 = MEMORY[0x277CCAD78];
-    v62 = v11;
-    v63 = [v61 UUID];
-    [v62 setHh2ModelID:v63];
+    v62 = managedObject;
+    uUID = [v61 UUID];
+    [v62 setHh2ModelID:uUID];
 
-    [(HMDHH2Migrator *)self _fixupGuestAccessCodeWithInvalidLabel:v62 context:v8];
+    [(HMDHH2Migrator *)self _fixupGuestAccessCodeWithInvalidLabel:v62 context:migrationCopy];
   }
 
-  v64 = [v11 entity];
+  entity10 = [managedObject entity];
   v65 = +[_MKFRemovedUserAccessCode entity];
-  v66 = [v64 isKindOfEntity:v65];
+  v66 = [entity10 isKindOfEntity:v65];
 
   if (v66)
   {
     v67 = MEMORY[0x277CCAD78];
-    v68 = v11;
-    v69 = [v67 UUID];
-    [v68 setHh2ModelID:v69];
+    v68 = managedObject;
+    uUID2 = [v67 UUID];
+    [v68 setHh2ModelID:uUID2];
   }
 
-  v70 = [v11 entity];
+  entity11 = [managedObject entity];
   v71 = +[_MKFApplicationData entity];
-  v72 = [v70 isKindOfEntity:v71];
+  v72 = [entity11 isKindOfEntity:v71];
 
   if (v72)
   {
-    v73 = v11;
+    v73 = managedObject;
     if (([v73 hasValidContainer] & 1) == 0)
     {
       v74 = objc_autoreleasePoolPush();
-      v75 = self;
+      selfCopy4 = self;
       v76 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v77 = v100 = v9;
+        v77 = v100 = objectCopy;
         [v73 debugDescription];
-        v78 = v105 = v10;
-        v79 = [v73 appDataDictionary];
+        v78 = v105 = keyCopy;
+        appDataDictionary2 = [v73 appDataDictionary];
         *buf = 138543874;
         v108 = v77;
         v109 = 2112;
         v110 = v78;
         v111 = 2112;
-        v112 = v79;
+        v112 = appDataDictionary2;
         _os_log_impl(&dword_229538000, v76, OS_LOG_TYPE_INFO, "%{public}@FixUp : Deleting app data [%@] as it is not associated with any container : %@", buf, 0x20u);
 
-        v10 = v105;
-        v9 = v100;
+        keyCopy = v105;
+        objectCopy = v100;
       }
 
       objc_autoreleasePoolPop(v74);
-      [v8 deleteObject:v73];
+      [migrationCopy deleteObject:v73];
     }
   }
 
-  v80 = [v11 entity];
+  entity12 = [managedObject entity];
   v81 = +[_MKFUserAccessCode entity];
-  v82 = [v80 isKindOfEntity:v81];
+  v82 = [entity12 isKindOfEntity:v81];
 
   if (v82)
   {
-    [(HMDHH2Migrator *)self _fixupUserAccessCodeWithInvalidValue:v11 context:v8];
+    [(HMDHH2Migrator *)self _fixupUserAccessCodeWithInvalidValue:managedObject context:migrationCopy];
   }
 
-  v83 = [v11 entity];
+  entity13 = [managedObject entity];
   v84 = +[_MKFService entity];
-  v85 = [v83 isKindOfEntity:v84];
+  v85 = [entity13 isKindOfEntity:v84];
 
   if (v85)
   {
-    [(HMDHH2Migrator *)self _fixupInvalidCharacteristicFormat:v11 context:v8];
+    [(HMDHH2Migrator *)self _fixupInvalidCharacteristicFormat:managedObject context:migrationCopy];
   }
 
-  v86 = [v11 entity];
+  entity14 = [managedObject entity];
   v87 = +[_MKFTrigger entity];
-  v88 = [v86 isKindOfEntity:v87];
+  v88 = [entity14 isKindOfEntity:v87];
 
   if (v88)
   {
-    [(HMDHH2Migrator *)self _fixupTriggerInvalidName:v11 context:v8];
+    [(HMDHH2Migrator *)self _fixupTriggerInvalidName:managedObject context:migrationCopy];
   }
 
-  v89 = [v11 entity];
+  entity15 = [managedObject entity];
   v90 = +[_MKFActionSet entity];
-  v91 = [v89 isKindOfEntity:v90];
+  v91 = [entity15 isKindOfEntity:v90];
 
   if (v91)
   {
-    v92 = v11;
-    [(HMDHH2Migrator *)self _fixupActionSetInvalidName:v92 context:v8];
+    v92 = managedObject;
+    [(HMDHH2Migrator *)self _fixupActionSetInvalidName:v92 context:migrationCopy];
     [(HMDHH2Migrator *)self _fixupActionSetUnlocalizedName:v92];
-    [(HMDHH2Migrator *)self _fixupCharacteristicWriteActionWithInvalidService:v92 context:v8];
+    [(HMDHH2Migrator *)self _fixupCharacteristicWriteActionWithInvalidService:v92 context:migrationCopy];
   }
 
-  v93 = [v11 entity];
+  entity16 = [managedObject entity];
   v94 = +[_MKFEventTrigger entity];
-  v95 = [v93 isKindOfEntity:v94];
+  v95 = [entity16 isKindOfEntity:v94];
 
   if (v95)
   {
-    [(HMDHH2Migrator *)self _fixupCharacteristicEventTriggerInvalidService:v11 context:v8];
+    [(HMDHH2Migrator *)self _fixupCharacteristicEventTriggerInvalidService:managedObject context:migrationCopy];
   }
 
   v96 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fixupPreviousFailedMigrationModelsWithHomeData:(id)a3 managedObjectContext:(id)a4
+- (void)fixupPreviousFailedMigrationModelsWithHomeData:(id)data managedObjectContext:(id)context
 {
   v40 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v6 = a4;
+  dataCopy = data;
+  contextCopy = context;
   context = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x277CBEB58] set];
   v8 = [MEMORY[0x277CBEB58] set];
@@ -5926,8 +5926,8 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = [v26 homes];
-  v10 = [v9 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  homes = [dataCopy homes];
+  v10 = [homes countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v10)
   {
     v11 = *v34;
@@ -5937,19 +5937,19 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
       {
         if (*v34 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(homes);
         }
 
         v13 = *(*(&v33 + 1) + 8 * i);
-        v14 = [v13 uuid];
-        [v7 addObject:v14];
+        uuid = [v13 uuid];
+        [v7 addObject:uuid];
 
-        v15 = [v13 owner];
-        v16 = [v15 uuid];
-        [v8 addObject:v16];
+        owner = [v13 owner];
+        uuid2 = [owner uuid];
+        [v8 addObject:uuid2];
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v10 = [homes countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v10);
@@ -5957,12 +5957,12 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
 
   v17 = +[_MKFHome fetchRequest];
   v32 = 0;
-  v18 = [v6 executeFetchRequest:v17 error:&v32];
+  v18 = [contextCopy executeFetchRequest:v17 error:&v32];
   v19 = v32;
   if (v19)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -5988,13 +5988,13 @@ void __60__HMDHH2Migrator__fixupInvalidCharacteristicFormat_context___block_invo
     v27[2] = __86__HMDHH2Migrator_fixupPreviousFailedMigrationModelsWithHomeData_managedObjectContext___block_invoke;
     v27[3] = &unk_2786828B8;
     v28 = v7;
-    v30 = self;
+    selfCopy2 = self;
     v31 = buf;
     v29 = v8;
     [v18 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
     if (*(*&buf[8] + 24) == 1)
     {
-      [(HMDHH2Migrator *)self _saveAndResetWithContext:v6 errorMessage:@"Failed to save fixed up for previous failed migration models prior to re-attempting migration"];
+      [(HMDHH2Migrator *)self _saveAndResetWithContext:contextCopy errorMessage:@"Failed to save fixed up for previous failed migration models prior to re-attempting migration"];
     }
 
     _Block_object_dispose(buf, 8);
@@ -6060,18 +6060,18 @@ void __86__HMDHH2Migrator_fixupPreviousFailedMigrationModelsWithHomeData_managed
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_saveAndResetWithContext:(id)a3 errorMessage:(id)a4
+- (BOOL)_saveAndResetWithContext:(id)context errorMessage:(id)message
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  messageCopy = message;
   v16 = 0;
-  v8 = [v6 hmd_saveWithTransactionAuthor:7 error:&v16];
+  v8 = [contextCopy hmd_saveWithTransactionAuthor:7 error:&v16];
   v9 = v16;
   if ((v8 & 1) == 0)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -6079,42 +6079,42 @@ void __86__HMDHH2Migrator_fixupPreviousFailedMigrationModelsWithHomeData_managed
       *buf = 138543874;
       v18 = v13;
       v19 = 2112;
-      v20 = v7;
+      v20 = messageCopy;
       v21 = 2112;
       v22 = v9;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@%@, Save Error: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v10);
-    [(HMDHH2Migrator *)v11 submitABCEventForFailedMigrationWithReason:1 withError:v9];
+    [(HMDHH2Migrator *)selfCopy submitABCEventForFailedMigrationWithReason:1 withError:v9];
   }
 
-  [v6 reset];
+  [contextCopy reset];
 
   v14 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (BOOL)populateAndSaveCDModelsFrom:(id)a3 managedObjectContext:(id)a4 hh2ControllerKey:(id)a5 tag:(id)a6
+- (BOOL)populateAndSaveCDModelsFrom:(id)from managedObjectContext:(id)context hh2ControllerKey:(id)key tag:(id)tag
 {
   v61 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v41 = a5;
-  v12 = a6;
+  fromCopy = from;
+  contextCopy = context;
+  keyCopy = key;
+  tagCopy = tag;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(fromCopy, "count")}];
     *buf = 138543874;
     *&buf[4] = v16;
     *&buf[12] = 2112;
     *&buf[14] = v17;
     *&buf[22] = 2112;
-    v58 = v12;
+    v58 = tagCopy;
     _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Migrating [%@] models for %@", buf, 0x20u);
   }
 
@@ -6129,15 +6129,15 @@ void __86__HMDHH2Migrator_fixupPreviousFailedMigrationModelsWithHomeData_managed
   v49[1] = 3221225472;
   v49[2] = __88__HMDHH2Migrator_populateAndSaveCDModelsFrom_managedObjectContext_hh2ControllerKey_tag___block_invoke;
   v49[3] = &unk_278682840;
-  v18 = v11;
-  v51 = v14;
+  v18 = contextCopy;
+  v51 = selfCopy;
   v52 = buf;
   v50 = v18;
-  [v10 hmf_enumerateWithAutoreleasePoolUsingBlock:v49];
+  [fromCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v49];
   if (*(*&buf[8] + 40))
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v14;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -6157,22 +6157,22 @@ void __86__HMDHH2Migrator_fixupPreviousFailedMigrationModelsWithHomeData_managed
 
   else
   {
-    v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+    v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(fromCopy, "count")}];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __88__HMDHH2Migrator_populateAndSaveCDModelsFrom_managedObjectContext_hh2ControllerKey_tag___block_invoke_99;
     v45[3] = &unk_278682868;
-    v45[4] = v14;
+    v45[4] = selfCopy;
     v48 = buf;
     v26 = v18;
     v46 = v26;
     v27 = v25;
     v47 = v27;
-    [v10 hmf_enumerateWithAutoreleasePoolUsingBlock:v45];
+    [fromCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v45];
     if (*(*&buf[8] + 40))
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = v14;
+      v29 = selfCopy;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -6196,13 +6196,13 @@ void __86__HMDHH2Migrator_fixupPreviousFailedMigrationModelsWithHomeData_managed
       v42[1] = 3221225472;
       v42[2] = __88__HMDHH2Migrator_populateAndSaveCDModelsFrom_managedObjectContext_hh2ControllerKey_tag___block_invoke_103;
       v42[3] = &unk_278682890;
-      v42[4] = v14;
+      v42[4] = selfCopy;
       v33 = v26;
       v43 = v33;
-      v44 = v41;
+      v44 = keyCopy;
       [v27 hmf_enumerateWithAutoreleasePoolUsingBlock:v42];
       v34 = objc_autoreleasePoolPush();
-      v35 = v14;
+      v35 = selfCopy;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
@@ -6210,13 +6210,13 @@ void __86__HMDHH2Migrator_fixupPreviousFailedMigrationModelsWithHomeData_managed
         *v53 = 138543618;
         v54 = v37;
         v55 = 2112;
-        v56 = v12;
+        v56 = tagCopy;
         _os_log_impl(&dword_229538000, v36, OS_LOG_TYPE_INFO, "%{public}@Going to save all CD models for the [%@] to the working store", v53, 0x16u);
       }
 
       objc_autoreleasePoolPop(v34);
-      v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to save during migrating %@", v12];
-      v24 = [(HMDHH2Migrator *)v35 _saveAndResetWithContext:v33 errorMessage:v38];
+      tagCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to save during migrating %@", tagCopy];
+      v24 = [(HMDHH2Migrator *)v35 _saveAndResetWithContext:v33 errorMessage:tagCopy];
     }
   }
 
@@ -6376,13 +6376,13 @@ void __88__HMDHH2Migrator_populateAndSaveCDModelsFrom_managedObjectContext_hh2Co
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findAndRemoveAllModelsWithInvalidAccessCodes:(id)a3
+- (id)findAndRemoveAllModelsWithInvalidAccessCodes:(id)codes
 {
-  v3 = a3;
-  v4 = [v3 na_map:&__block_literal_global_72_231330];
+  codesCopy = codes;
+  v4 = [codesCopy na_map:&__block_literal_global_72_231330];
   v5 = [v4 na_dictionaryWithKeyGenerator:&__block_literal_global_75_231331];
 
-  v6 = [v3 na_map:&__block_literal_global_78_231332];
+  v6 = [codesCopy na_map:&__block_literal_global_78_231332];
   v7 = [v6 na_dictionaryWithKeyGenerator:&__block_literal_global_81_231333];
 
   v12[0] = MEMORY[0x277D85DD0];
@@ -6393,7 +6393,7 @@ void __88__HMDHH2Migrator_populateAndSaveCDModelsFrom_managedObjectContext_hh2Co
   v14 = v5;
   v8 = v5;
   v9 = v7;
-  v10 = [v3 na_map:v12];
+  v10 = [codesCopy na_map:v12];
 
   return v10;
 }
@@ -6506,15 +6506,15 @@ void *__63__HMDHH2Migrator_findAndRemoveAllModelsWithInvalidAccessCodes___block_
   return v3;
 }
 
-- (id)_auditAccessCodesByRemovingIllegalDuplicatesFromModels:(id)a3
+- (id)_auditAccessCodesByRemovingIllegalDuplicatesFromModels:(id)models
 {
-  v4 = a3;
+  modelsCopy = models;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __73__HMDHH2Migrator__auditAccessCodesByRemovingIllegalDuplicatesFromModels___block_invoke;
   v16[3] = &unk_278682680;
-  v17 = v4;
-  v5 = v4;
+  v17 = modelsCopy;
+  v5 = modelsCopy;
   v6 = [v5 na_map:v16];
   v7 = [v5 na_map:&__block_literal_global_69_231349];
   v8 = [objc_opt_class() auditedHomeAccessCodeModelsFromModels:v7 userAccessCodeModelsAndInvites:v6];
@@ -6624,15 +6624,15 @@ uint64_t __73__HMDHH2Migrator__auditAccessCodesByRemovingIllegalDuplicatesFromMo
   return v5;
 }
 
-- (BOOL)migrateHomeToCoreData:(id)a3 primaryHomeUUID:(id)a4 managedObjectContext:(id)a5 hh2ControllerKey:(id)a6
+- (BOOL)migrateHomeToCoreData:(id)data primaryHomeUUID:(id)d managedObjectContext:(id)context hh2ControllerKey:(id)key
 {
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
+  keyCopy = key;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -6640,80 +6640,80 @@ uint64_t __73__HMDHH2Migrator__auditAccessCodesByRemovingIllegalDuplicatesFromMo
     *buf = 138543618;
     v43 = v17;
     v44 = 2112;
-    v45 = v10;
+    v45 = dataCopy;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Starting migration for home : %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
-  v18 = [MEMORY[0x277CBEB18] array];
-  v19 = [v10 uuid];
+  array = [MEMORY[0x277CBEB18] array];
+  uuid = [dataCopy uuid];
   v20 = HMFEqualObjects();
 
   if ((v20 & 1) == 0)
   {
-    v41 = v13;
+    v41 = keyCopy;
     v21 = objc_autoreleasePoolPush();
-    v22 = v15;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
-      v24 = v40 = v11;
-      v25 = [v10 name];
-      v26 = [v10 uuid];
+      v24 = v40 = dCopy;
+      name = [dataCopy name];
+      uuid2 = [dataCopy uuid];
       *buf = 138543874;
       v43 = v24;
       v44 = 2112;
-      v45 = v25;
+      v45 = name;
       v46 = 2112;
-      v47 = v26;
+      v47 = uuid2;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_INFO, "%{public}@Adding HMDHomeManagerHomeModel for %@/%@", buf, 0x20u);
 
-      v11 = v40;
+      dCopy = v40;
     }
 
     objc_autoreleasePoolPop(v21);
     v27 = objc_opt_class();
-    v28 = [v10 uuid];
-    v29 = [v27 modelForHomeUUID:v28];
+    uuid3 = [dataCopy uuid];
+    v29 = [v27 modelForHomeUUID:uuid3];
 
     [v29 setObjectChangeType:1];
-    [v18 addObject:v29];
+    [array addObject:v29];
 
-    v13 = v41;
+    keyCopy = v41;
   }
 
-  v30 = [v10 backingStoreObjects:4 hh2Migration:1];
-  [v18 addObjectsFromArray:v30];
+  v30 = [dataCopy backingStoreObjects:4 hh2Migration:1];
+  [array addObjectsFromArray:v30];
 
-  v31 = [v10 uuid];
-  v32 = HMDWorkingContextNameForHomeUUID(v31);
-  [v12 setName:v32];
+  uuid4 = [dataCopy uuid];
+  v32 = HMDWorkingContextNameForHomeUUID(uuid4);
+  [contextCopy setName:v32];
 
   v33 = objc_autoreleasePoolPush();
-  v34 = [objc_opt_class() modelsByDroppingEmptyStringAccessCodesOnModels:v18];
-  v35 = [(HMDHH2Migrator *)v15 _auditAccessCodesByRemovingIllegalDuplicatesFromModels:v34];
+  v34 = [objc_opt_class() modelsByDroppingEmptyStringAccessCodesOnModels:array];
+  v35 = [(HMDHH2Migrator *)selfCopy _auditAccessCodesByRemovingIllegalDuplicatesFromModels:v34];
 
   objc_autoreleasePoolPop(v33);
-  v36 = [v10 name];
-  v37 = [(HMDHH2Migrator *)v15 populateAndSaveCDModelsFrom:v35 managedObjectContext:v12 hh2ControllerKey:v13 tag:v36];
+  name2 = [dataCopy name];
+  v37 = [(HMDHH2Migrator *)selfCopy populateAndSaveCDModelsFrom:v35 managedObjectContext:contextCopy hh2ControllerKey:keyCopy tag:name2];
 
   v38 = *MEMORY[0x277D85DE8];
   return v37;
 }
 
-- (BOOL)migrateHome:(id)a3 primaryHomeUUID:(id)a4 managedObjectContext:(id)a5 hh2ControllerKey:(id)a6
+- (BOOL)migrateHome:(id)home primaryHomeUUID:(id)d managedObjectContext:(id)context hh2ControllerKey:(id)key
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 isOwnerUser];
+  homeCopy = home;
+  dCopy = d;
+  contextCopy = context;
+  keyCopy = key;
+  isOwnerUser = [homeCopy isOwnerUser];
   v15 = objc_autoreleasePoolPush();
-  if ((v14 & 1) == 0)
+  if ((isOwnerUser & 1) == 0)
   {
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -6721,7 +6721,7 @@ uint64_t __73__HMDHH2Migrator__auditAccessCodesByRemovingIllegalDuplicatesFromMo
       v33 = 138543618;
       v34 = v24;
       v35 = 2112;
-      v36 = v10;
+      v36 = homeCopy;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@Not migrating home [%@] as it is not owned by the current user.", &v33, 0x16u);
     }
 
@@ -6729,10 +6729,10 @@ uint64_t __73__HMDHH2Migrator__auditAccessCodesByRemovingIllegalDuplicatesFromMo
   }
 
   v16 = objc_autoreleasePoolPush();
-  if (![(HMDHH2Migrator *)self migrateHomeToCoreData:v10 primaryHomeUUID:v11 managedObjectContext:v12 hh2ControllerKey:v13])
+  if (![(HMDHH2Migrator *)self migrateHomeToCoreData:homeCopy primaryHomeUUID:dCopy managedObjectContext:contextCopy hh2ControllerKey:keyCopy])
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy5 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -6754,10 +6754,10 @@ LABEL_17:
 
   objc_autoreleasePoolPop(v16);
   v16 = objc_autoreleasePoolPush();
-  if (![(HMDHH2Migrator *)self migrateV5Models:v12 forHome:v10])
+  if (![(HMDHH2Migrator *)self migrateV5Models:contextCopy forHome:homeCopy])
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy5 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -6772,13 +6772,13 @@ LABEL_17:
   }
 
   objc_autoreleasePoolPop(v16);
-  v17 = [(HMDHH2Migrator *)self migratorRecord];
-  v18 = [v17 shouldSkipKeyRollOperations];
+  migratorRecord = [(HMDHH2Migrator *)self migratorRecord];
+  shouldSkipKeyRollOperations = [migratorRecord shouldSkipKeyRollOperations];
 
   v16 = objc_autoreleasePoolPush();
-  if (v18)
+  if (shouldSkipKeyRollOperations)
   {
-    v19 = self;
+    selfCopy4 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -6791,10 +6791,10 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  if (![(HMDHH2Migrator *)self rollAccessoryKeysToHH2:v10 hh2ControllerKey:v13])
+  if (![(HMDHH2Migrator *)self rollAccessoryKeysToHH2:homeCopy hh2ControllerKey:keyCopy])
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy5 = self;
     v28 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -6819,24 +6819,24 @@ LABEL_18:
   return v25;
 }
 
-- (BOOL)migrateHomeManager:(id)a3 managedObjectContext:(id)a4 hh2ControllerKey:(id)a5
+- (BOOL)migrateHomeManager:(id)manager managedObjectContext:(id)context hh2ControllerKey:(id)key
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  contextCopy = context;
+  keyCopy = key;
   v10 = objc_autoreleasePoolPush();
-  v11 = [v7 primaryHomeUUID];
-  if (v11)
+  primaryHomeUUID = [managerCopy primaryHomeUUID];
+  if (primaryHomeUUID)
   {
-    v12 = [v7 homes];
-    v13 = [v12 hmf_firstObjectWithUUID:v11];
+    homes = [managerCopy homes];
+    v13 = [homes hmf_firstObjectWithUUID:primaryHomeUUID];
 
     if (([v13 isOwnerUser] & 1) == 0)
     {
       v32 = v10;
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -6846,28 +6846,28 @@ LABEL_18:
         *buf = 138543874;
         v35 = v17;
         v36 = 2112;
-        v37 = v11;
+        v37 = primaryHomeUUID;
         v38 = 2112;
         v39 = v18;
         _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Skipping migrating primary home setting %@, primaryHome.isOwnerUser = %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v14);
-      v11 = 0;
+      primaryHomeUUID = 0;
       v10 = v32;
     }
   }
 
   v19 = objc_opt_class();
-  v20 = [v7 cloudZones];
-  v21 = [v7 applicationData];
-  v22 = [v19 getAllBackingStoreObjects:4 primaryHomeUUID:v11 cloudZone:v20 appData:v21];
+  cloudZones = [managerCopy cloudZones];
+  applicationData = [managerCopy applicationData];
+  v22 = [v19 getAllBackingStoreObjects:4 primaryHomeUUID:primaryHomeUUID cloudZone:cloudZones appData:applicationData];
 
-  if (v11)
+  if (primaryHomeUUID)
   {
     v23 = v10;
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy2 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
@@ -6875,48 +6875,48 @@ LABEL_18:
       *buf = 138543618;
       v35 = v27;
       v36 = 2112;
-      v37 = v11;
+      v37 = primaryHomeUUID;
       _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Adding primary HMDHomeManagerHomeModel %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v24);
-    v28 = [objc_opt_class() modelForHomeUUID:v11];
+    v28 = [objc_opt_class() modelForHomeUUID:primaryHomeUUID];
     [v28 setObjectChangeType:1];
     [v22 addObject:v28];
 
     v10 = v23;
   }
 
-  [v8 setName:{@"HomeManager", v32}];
-  v29 = [(HMDHH2Migrator *)self populateAndSaveCDModelsFrom:v22 managedObjectContext:v8 hh2ControllerKey:v9 tag:@"Home Manager"];
+  [contextCopy setName:{@"HomeManager", v32}];
+  v29 = [(HMDHH2Migrator *)self populateAndSaveCDModelsFrom:v22 managedObjectContext:contextCopy hh2ControllerKey:keyCopy tag:@"Home Manager"];
 
   objc_autoreleasePoolPop(v10);
   v30 = *MEMORY[0x277D85DE8];
   return v29;
 }
 
-- (BOOL)migrateHomeData:(id)a3 managedObjectContext:(id)a4 hh2ControllerKey:(id)a5
+- (BOOL)migrateHomeData:(id)data managedObjectContext:(id)context hh2ControllerKey:(id)key
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(HMDHH2Migrator *)self setHomeData:v8];
+  dataCopy = data;
+  contextCopy = context;
+  keyCopy = key;
+  [(HMDHH2Migrator *)self setHomeData:dataCopy];
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 0;
-  v11 = [(HMDHH2Migrator *)self migrateHomeManager:v8 managedObjectContext:v9 hh2ControllerKey:v10];
+  v11 = [(HMDHH2Migrator *)self migrateHomeManager:dataCopy managedObjectContext:contextCopy hh2ControllerKey:keyCopy];
   *(v38 + 24) = v11;
   if (v11)
   {
-    v12 = [v8 homes];
-    v13 = [v12 count] == 0;
+    homes = [dataCopy homes];
+    v13 = [homes count] == 0;
 
     if (v13)
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
@@ -6932,31 +6932,31 @@ LABEL_18:
 
     else
     {
-      v14 = [(HMDHH2Migrator *)self migratorRecord];
-      v15 = [v14 isAutoMigration];
+      migratorRecord = [(HMDHH2Migrator *)self migratorRecord];
+      isAutoMigration = [migratorRecord isAutoMigration];
 
-      if ((v15 & 1) == 0)
+      if ((isAutoMigration & 1) == 0)
       {
-        [(HMDHH2Migrator *)self _fixupUserUUID:v8];
+        [(HMDHH2Migrator *)self _fixupUserUUID:dataCopy];
       }
 
-      v16 = [v8 homes];
+      homes2 = [dataCopy homes];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __72__HMDHH2Migrator_migrateHomeData_managedObjectContext_hh2ControllerKey___block_invoke;
       v32[3] = &unk_278682610;
       v36 = &v37;
       v32[4] = self;
-      v33 = v8;
-      v34 = v9;
-      v35 = v10;
-      [v16 hmf_enumerateWithAutoreleasePoolUsingBlock:v32];
+      v33 = dataCopy;
+      v34 = contextCopy;
+      v35 = keyCopy;
+      [homes2 hmf_enumerateWithAutoreleasePoolUsingBlock:v32];
 
       v17 = *(v38 + 24);
       if ((v17 & 1) == 0)
       {
         v18 = objc_autoreleasePoolPush();
-        v19 = self;
+        selfCopy2 = self;
         v20 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
@@ -6974,7 +6974,7 @@ LABEL_18:
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy3 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -7024,17 +7024,17 @@ void __72__HMDHH2Migrator_migrateHomeData_managedObjectContext_hh2ControllerKey_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fixupUserUUID:(id)a3
+- (void)_fixupUserUUID:(id)d
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 homes];
-  v6 = [v5 count];
+  dCopy = d;
+  homes = [dCopy homes];
+  v6 = [homes count];
 
   if (v6 != 1)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -7045,9 +7045,9 @@ void __72__HMDHH2Migrator_migrateHomeData_managedObjectContext_hh2ControllerKey_
     }
 
     objc_autoreleasePoolPop(v7);
-    v38 = v4;
-    v11 = [v4 homes];
-    v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_231375];
+    v38 = dCopy;
+    homes2 = [dCopy homes];
+    v12 = [homes2 sortedArrayUsingComparator:&__block_literal_global_231375];
 
     v13 = [MEMORY[0x277CBEB58] set];
     v43 = 0u;
@@ -7077,32 +7077,32 @@ void __72__HMDHH2Migrator_migrateHomeData_managedObjectContext_hh2ControllerKey_
           v19 = *(*(&v43 + 1) + 8 * v18);
           if ([v19 isOwnerUser])
           {
-            v20 = [v19 owner];
-            v21 = [v20 uuid];
-            v22 = [v13 containsObject:v21];
+            owner = [v19 owner];
+            uuid = [owner uuid];
+            v22 = [v13 containsObject:uuid];
 
             if (v22)
             {
-              v23 = [v19 uuid];
-              v24 = [v20 pairingIdentity];
-              v25 = [HMDUser UUIDWithUserID:0 forHomeIdentifier:v23 uuid:0 pairingIdentity:v24];
+              uuid2 = [v19 uuid];
+              pairingIdentity = [owner pairingIdentity];
+              uUID = [HMDUser UUIDWithUserID:0 forHomeIdentifier:uuid2 uuid:0 pairingIdentity:pairingIdentity];
 
-              if ([v13 containsObject:v25])
+              if ([v13 containsObject:uUID])
               {
-                v26 = [v20 userID];
-                v27 = [v19 uuid];
-                v28 = [HMDUser UUIDWithUserID:v26 forHomeIdentifier:v27 uuid:0 pairingIdentity:0];
+                userID = [owner userID];
+                uuid3 = [v19 uuid];
+                v28 = [HMDUser UUIDWithUserID:userID forHomeIdentifier:uuid3 uuid:0 pairingIdentity:0];
 
                 if ([v13 containsObject:v28])
                 {
-                  v25 = [MEMORY[0x277CCAD78] UUID];
+                  uUID = [MEMORY[0x277CCAD78] UUID];
 
                   v29 = @"random";
                 }
 
                 else
                 {
-                  v25 = v28;
+                  uUID = v28;
                   v29 = @"userID";
                 }
               }
@@ -7113,13 +7113,13 @@ void __72__HMDHH2Migrator_migrateHomeData_managedObjectContext_hh2ControllerKey_
               }
 
               v30 = objc_autoreleasePoolPush();
-              v31 = v8;
+              v31 = selfCopy;
               v32 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
               {
                 v33 = HMFGetLogIdentifier();
-                [v20 uuid];
-                v35 = v34 = v8;
+                [owner uuid];
+                v35 = v34 = selfCopy;
                 *buf = 138544130;
                 v48 = v33;
                 v49 = 2112;
@@ -7127,23 +7127,23 @@ void __72__HMDHH2Migrator_migrateHomeData_managedObjectContext_hh2ControllerKey_
                 v51 = 2112;
                 v52 = v29;
                 v53 = 2112;
-                v54 = v25;
+                v54 = uUID;
                 _os_log_impl(&dword_229538000, v32, OS_LOG_TYPE_INFO, "%{public}@Detected duplicate user UUID %@, forcing this user to use new %@ UUID %@", buf, 0x2Au);
 
-                v8 = v34;
+                selfCopy = v34;
                 v13 = v39;
               }
 
               objc_autoreleasePoolPop(v30);
-              [v20 setUUID:v25];
+              [owner setUUID:uUID];
 
               v17 = v40;
               v14 = v41;
               v16 = v42;
             }
 
-            v36 = [v20 uuid];
-            [v13 addObject:v36];
+            uuid4 = [owner uuid];
+            [v13 addObject:uuid4];
           }
 
           ++v18;
@@ -7156,7 +7156,7 @@ void __72__HMDHH2Migrator_migrateHomeData_managedObjectContext_hh2ControllerKey_
       while (v16);
     }
 
-    v4 = v38;
+    dCopy = v38;
   }
 
   v37 = *MEMORY[0x277D85DE8];
@@ -7229,13 +7229,13 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)_startMigratingHomeDataFromLocation:(id)a3 usingHH2PairingKey:(id)a4
+- (BOOL)_startMigratingHomeDataFromLocation:(id)location usingHH2PairingKey:(id)key
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  keyCopy = key;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -7243,7 +7243,7 @@ LABEL_5:
     *buf = 138543618;
     *&buf[4] = v11;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = keyCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@HH2 pairing identity : %@", buf, 0x16u);
   }
 
@@ -7252,12 +7252,12 @@ LABEL_5:
   v53 = 0;
   v12 = objc_autoreleasePoolPush();
   v52 = 0;
-  v13 = [HMDMainDriver loadHomeDataFromLocalStore:&v52 fromLocation:v6 decryptionFailed:&v53 forHH2Migration:1];
+  v13 = [HMDMainDriver loadHomeDataFromLocalStore:&v52 fromLocation:locationCopy decryptionFailed:&v53 forHH2Migration:1];
   v14 = v52;
   if (v13)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v9;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
@@ -7280,7 +7280,7 @@ LABEL_5:
   if ((v53 & 1) != 0 || !v14)
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = v9;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
@@ -7293,44 +7293,44 @@ LABEL_5:
 
   else
   {
-    v19 = [(HMDHH2Migrator *)v9 backgroundOpsManager];
-    [v19 removeAllOperationsBeforeStartingHH2Migration];
+    backgroundOpsManager = [(HMDHH2Migrator *)selfCopy backgroundOpsManager];
+    [backgroundOpsManager removeAllOperationsBeforeStartingHH2Migration];
 
-    if ([(HMDHH2Migrator *)v9 waitForFirstImportToFinish])
+    if ([(HMDHH2Migrator *)selfCopy waitForFirstImportToFinish])
     {
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
       v58 = 0;
-      v20 = [(HMDHH2Migrator *)v9 coreData];
-      v21 = [v20 coordinator];
-      v22 = [(HMDHH2Migrator *)v9 coreData];
-      v23 = [v22 cloudPrivateStore];
-      v56 = v23;
+      coreData = [(HMDHH2Migrator *)selfCopy coreData];
+      coordinator = [coreData coordinator];
+      coreData2 = [(HMDHH2Migrator *)selfCopy coreData];
+      cloudPrivateStore = [coreData2 cloudPrivateStore];
+      v56 = cloudPrivateStore;
       v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
-      v25 = [v21 currentPersistentHistoryTokenFromStores:v24];
+      v25 = [coordinator currentPersistentHistoryTokenFromStores:v24];
 
-      v26 = [(HMDHH2Migrator *)v9 coreData];
-      v27 = [v26 newManagedObjectContext];
+      coreData3 = [(HMDHH2Migrator *)selfCopy coreData];
+      newManagedObjectContext = [coreData3 newManagedObjectContext];
 
       v47[0] = MEMORY[0x277D85DD0];
       v47[1] = 3221225472;
       v47[2] = __73__HMDHH2Migrator__startMigratingHomeDataFromLocation_usingHH2PairingKey___block_invoke;
       v47[3] = &unk_278689D98;
-      v47[4] = v9;
+      v47[4] = selfCopy;
       v48 = v14;
-      v28 = v27;
+      v28 = newManagedObjectContext;
       v49 = v28;
       v51 = buf;
-      v50 = v7;
+      v50 = keyCopy;
       [v28 performBlockAndWait:v47];
       if (*(*&buf[8] + 24))
       {
-        if ([(HMDHH2Migrator *)v9 waitForCDToExportModelsToCloudKit:v25])
+        if ([(HMDHH2Migrator *)selfCopy waitForCDToExportModelsToCloudKit:v25])
         {
-          if ([(HMDHH2Migrator *)v9 waitForV5UpdatesToSyncToCloudKit])
+          if ([(HMDHH2Migrator *)selfCopy waitForV5UpdatesToSyncToCloudKit])
           {
-            if ([(HMDHH2Migrator *)v9 handlePostMigration])
+            if ([(HMDHH2Migrator *)selfCopy handlePostMigration])
             {
               v29 = 1;
 LABEL_32:
@@ -7340,7 +7340,7 @@ LABEL_32:
             }
 
             v37 = objc_autoreleasePoolPush();
-            v45 = v9;
+            v45 = selfCopy;
             v39 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
             {
@@ -7354,7 +7354,7 @@ LABEL_32:
           else
           {
             v37 = objc_autoreleasePoolPush();
-            v43 = v9;
+            v43 = selfCopy;
             v39 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
             {
@@ -7369,7 +7369,7 @@ LABEL_32:
         else
         {
           v37 = objc_autoreleasePoolPush();
-          v41 = v9;
+          v41 = selfCopy;
           v39 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
           {
@@ -7384,7 +7384,7 @@ LABEL_32:
       else
       {
         v37 = objc_autoreleasePoolPush();
-        v38 = v9;
+        v38 = selfCopy;
         v39 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
@@ -7401,7 +7401,7 @@ LABEL_32:
     }
 
     v30 = objc_autoreleasePoolPush();
-    v31 = v9;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
@@ -7430,14 +7430,14 @@ uint64_t __73__HMDHH2Migrator__startMigratingHomeDataFromLocation_usingHH2Pairin
   return [v2 reset];
 }
 
-- (BOOL)startMigratingHomeDataFromLocation:(id)a3
+- (BOOL)startMigratingHomeDataFromLocation:(id)location
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CFEC78] systemStore];
+  locationCopy = location;
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
   v25 = 0;
   v26 = 0;
-  v6 = [v5 getOrCreateHH2ControllerKey:&v26 secretKey:0 keyPair:0 username:&v25];
+  v6 = [systemStore getOrCreateHH2ControllerKey:&v26 secretKey:0 keyPair:0 username:&v25];
   v7 = v26;
   v8 = v25;
 
@@ -7454,7 +7454,7 @@ uint64_t __73__HMDHH2Migrator__startMigratingHomeDataFromLocation_usingHH2Pairin
   if (v9 || v8 == 0)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
@@ -7472,19 +7472,19 @@ uint64_t __73__HMDHH2Migrator__startMigratingHomeDataFromLocation_usingHH2Pairin
   {
     v16 = [objc_alloc(MEMORY[0x277D0F8B0]) initWithPairingKeyData:v7];
     v17 = [objc_alloc(MEMORY[0x277CFEC20]) initWithIdentifier:v8 publicKey:v16 privateKey:0 permissions:1];
-    v18 = [(HMDHH2Migrator *)self migratorRecord];
-    v19 = [v18 migrateFromTestDirectory];
+    migratorRecord = [(HMDHH2Migrator *)self migratorRecord];
+    migrateFromTestDirectory = [migratorRecord migrateFromTestDirectory];
 
     v20 = objc_autoreleasePoolPush();
     v21 = v20;
-    if (v19)
+    if (migrateFromTestDirectory)
     {
       v22 = [(HMDHH2Migrator *)self _performMigrationFromTestDirectoryUsingHH2ControllerKey:v17];
     }
 
     else
     {
-      v22 = [(HMDHH2Migrator *)self _startMigratingHomeDataFromLocation:v4 usingHH2PairingKey:v17];
+      v22 = [(HMDHH2Migrator *)self _startMigratingHomeDataFromLocation:locationCopy usingHH2PairingKey:v17];
     }
 
     v15 = v22;
@@ -7495,19 +7495,19 @@ uint64_t __73__HMDHH2Migrator__startMigratingHomeDataFromLocation_usingHH2Pairin
   return v15;
 }
 
-- (BOOL)startMigrationFromLocation:(id)a3
+- (BOOL)startMigrationFromLocation:(id)location
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationCopy = location;
   v5 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"HH2 Migration" parent:0 options:1];
   [v5 begin];
   v6 = v5;
   v45 = v6;
-  v7 = [(HMDHH2Migrator *)self migratorRecord];
-  v8 = [v7 isMigrationInProgress];
+  migratorRecord = [(HMDHH2Migrator *)self migratorRecord];
+  isMigrationInProgress = [migratorRecord isMigrationInProgress];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
-  if ((v8 & 1) == 0)
+  selfCopy = self;
+  if ((isMigrationInProgress & 1) == 0)
   {
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -7529,15 +7529,15 @@ uint64_t __73__HMDHH2Migrator__startMigratingHomeDataFromLocation_usingHH2Pairin
     *buf = 138543618;
     v47 = v12;
     v48 = 2112;
-    v49 = v7;
+    v49 = migratorRecord;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Current device is the designated migrator : [%@]", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  if (([v7 beginMigration] & 1) == 0)
+  if (([migratorRecord beginMigration] & 1) == 0)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = v10;
+    v24 = selfCopy;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
@@ -7551,19 +7551,19 @@ uint64_t __73__HMDHH2Migrator__startMigratingHomeDataFromLocation_usingHH2Pairin
     v27 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2718];
     [HMDHH2MigratorRecord recordMigrationFailureWithError:v27];
 
-    v28 = [(HMDHH2Migrator *)v24 hh2FrameworkSwitch];
-    [v28 switchBackToHH1AndRelaunchDueToHH2MigrationFailed];
+    hh2FrameworkSwitch = [(HMDHH2Migrator *)v24 hh2FrameworkSwitch];
+    [hh2FrameworkSwitch switchBackToHH1AndRelaunchDueToHH2MigrationFailed];
 
-    [v7 finishMigration];
+    [migratorRecord finishMigration];
 LABEL_16:
     v29 = 0;
     v30 = 1;
     goto LABEL_28;
   }
 
-  v13 = [(HMDHH2Migrator *)v10 cloudkitReachabilitySource];
+  cloudkitReachabilitySource = [(HMDHH2Migrator *)selfCopy cloudkitReachabilitySource];
   v44 = 0;
-  v14 = [v13 areCloudKitServersReachableWithError:&v44];
+  v14 = [cloudkitReachabilitySource areCloudKitServersReachableWithError:&v44];
   v15 = v44;
 
   if (v14 != 1)
@@ -7571,7 +7571,7 @@ LABEL_16:
     if (v14)
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = v10;
+      v32 = selfCopy;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -7589,7 +7589,7 @@ LABEL_16:
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = v10;
+      v17 = selfCopy;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -7609,11 +7609,11 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (![(HMDHH2Migrator *)v10 startMigratingHomeDataFromLocation:v4])
+  if (![(HMDHH2Migrator *)selfCopy startMigratingHomeDataFromLocation:locationCopy])
   {
-    [(HMDHH2Migrator *)v10 revertChangesPerformedDuringMigration];
+    [(HMDHH2Migrator *)selfCopy revertChangesPerformedDuringMigration];
     v35 = objc_autoreleasePoolPush();
-    v36 = v10;
+    v36 = selfCopy;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
@@ -7621,7 +7621,7 @@ LABEL_26:
       *buf = 138543618;
       v47 = v38;
       v48 = 2112;
-      v49 = v7;
+      v49 = migratorRecord;
       _os_log_impl(&dword_229538000, v37, OS_LOG_TYPE_ERROR, "%{public}@Could not finish HH2 migration successfully. Will try again. [%@]", buf, 0x16u);
     }
 
@@ -7638,13 +7638,13 @@ LABEL_28:
   __HMFActivityScopeLeave();
   if (v29)
   {
-    v39 = [(HMDHH2Migrator *)v10 migratorRecord];
-    v40 = [v39 isAutoMigration];
+    migratorRecord2 = [(HMDHH2Migrator *)selfCopy migratorRecord];
+    isAutoMigration = [migratorRecord2 isAutoMigration];
 
-    if (v40)
+    if (isAutoMigration)
     {
-      v41 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v41 setBool:1 forKey:@"HMDHH2AutoMigrationSuccesKey"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults setBool:1 forKey:@"HMDHH2AutoMigrationSuccesKey"];
     }
 
     v30 = 1;
@@ -7656,23 +7656,23 @@ LABEL_28:
 
 - (BOOL)startMigrationIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(HMDHH2Migrator *)self queue];
+  queue = [(HMDHH2Migrator *)self queue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__HMDHH2Migrator_startMigrationIfNeeded__block_invoke;
   v5[3] = &unk_27868A688;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_async_and_wait(v3, v5);
+  dispatch_async_and_wait(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __40__HMDHH2Migrator_startMigrationIfNeeded__block_invoke(uint64_t a1)
@@ -7700,13 +7700,13 @@ uint64_t __40__HMDHH2Migrator_startMigrationIfNeeded__block_invoke(uint64_t a1)
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v7 timeIntervalSinceDate:v4->_migrationStartTime];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:selfCopy->_migrationStartTime];
     *buf = 138543618;
     v12 = v6;
     v13 = 2048;
@@ -7715,30 +7715,30 @@ uint64_t __40__HMDHH2Migrator_startMigrationIfNeeded__block_invoke(uint64_t a1)
   }
 
   objc_autoreleasePoolPop(v3);
-  v10.receiver = v4;
+  v10.receiver = selfCopy;
   v10.super_class = HMDHH2Migrator;
   [(HMDHH2Migrator *)&v10 dealloc];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHH2Migrator)initWithMigratorRecord:(id)a3 hh2FrameworkSwitch:(id)a4 coreData:(id)a5 cloudTransform:(id)a6 backgroundOperationManager:(id)a7 defaultDatabase:(id)a8 cameraClipsDatabase:(id)a9 cloudkitReachabilitySource:(id)a10
+- (HMDHH2Migrator)initWithMigratorRecord:(id)record hh2FrameworkSwitch:(id)switch coreData:(id)data cloudTransform:(id)transform backgroundOperationManager:(id)manager defaultDatabase:(id)database cameraClipsDatabase:(id)clipsDatabase cloudkitReachabilitySource:(id)self0
 {
-  v39 = a3;
-  v38 = a4;
-  v37 = a5;
-  v36 = a6;
-  v35 = a7;
-  v34 = a8;
-  v33 = a9;
-  v17 = a10;
+  recordCopy = record;
+  switchCopy = switch;
+  dataCopy = data;
+  transformCopy = transform;
+  managerCopy = manager;
+  databaseCopy = database;
+  clipsDatabaseCopy = clipsDatabase;
+  sourceCopy = source;
   v40.receiver = self;
   v40.super_class = HMDHH2Migrator;
   v18 = [(HMDHH2Migrator *)&v40 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_migratorRecord, a3);
-    objc_storeStrong(&v19->_hh2FrameworkSwitch, a4);
+    objc_storeStrong(&v18->_migratorRecord, record);
+    objc_storeStrong(&v19->_hh2FrameworkSwitch, switch);
     v20 = [MEMORY[0x277CBEB58] set];
     scheduledKeyRollOperationsDuringMigration = v19->_scheduledKeyRollOperationsDuringMigration;
     v19->_scheduledKeyRollOperationsDuringMigration = v20;
@@ -7751,15 +7751,15 @@ uint64_t __40__HMDHH2Migrator_startMigrationIfNeeded__block_invoke(uint64_t a1)
     openedZones = v19->_openedZones;
     v19->_openedZones = v24;
 
-    objc_storeStrong(&v19->_coreData, a5);
-    objc_storeStrong(&v19->_cloudTransform, a6);
-    objc_storeStrong(&v19->_backgroundOpsManager, a7);
-    objc_storeStrong(&v19->_defaultDatabase, a8);
-    objc_storeStrong(&v19->_cameraClipsDatabase, a9);
-    objc_storeStrong(&v19->_cloudkitReachabilitySource, a10);
-    v26 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(&v19->_coreData, data);
+    objc_storeStrong(&v19->_cloudTransform, transform);
+    objc_storeStrong(&v19->_backgroundOpsManager, manager);
+    objc_storeStrong(&v19->_defaultDatabase, database);
+    objc_storeStrong(&v19->_cameraClipsDatabase, clipsDatabase);
+    objc_storeStrong(&v19->_cloudkitReachabilitySource, source);
+    date = [MEMORY[0x277CBEAA8] date];
     migrationStartTime = v19->_migrationStartTime;
-    v19->_migrationStartTime = v26;
+    v19->_migrationStartTime = date;
 
     v28 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v29 = dispatch_queue_attr_make_with_qos_class(v28, QOS_CLASS_USER_INITIATED, 0);
@@ -7806,11 +7806,11 @@ void __29__HMDHH2Migrator_logCategory__block_invoke()
   logCategory__hmf_once_v170 = v1;
 }
 
-+ (BOOL)shouldIgnoreModel:(id)a3
++ (BOOL)shouldIgnoreModel:(id)model
 {
   v10[12] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB58];
-  v4 = a3;
+  modelCopy = model;
   v10[0] = objc_opt_class();
   v10[1] = objc_opt_class();
   v10[2] = objc_opt_class();
@@ -7827,22 +7827,22 @@ void __29__HMDHH2Migrator_logCategory__block_invoke()
   v6 = [v3 setWithArray:v5];
 
   v7 = objc_opt_class();
-  LOBYTE(v4) = [v6 containsObject:v7];
+  LOBYTE(modelCopy) = [v6 containsObject:v7];
 
   v8 = *MEMORY[0x277D85DE8];
-  return v4;
+  return modelCopy;
 }
 
-+ (id)arrayByRemovingElementsInArray:(id)a3 fromArray:(id)a4
++ (id)arrayByRemovingElementsInArray:(id)array fromArray:(id)fromArray
 {
-  v5 = a3;
+  arrayCopy = array;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__HMDHH2Migrator_arrayByRemovingElementsInArray_fromArray___block_invoke;
   v9[3] = &unk_278682818;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a4 na_map:v9];
+  v10 = arrayCopy;
+  v6 = arrayCopy;
+  v7 = [fromArray na_map:v9];
 
   return v7;
 }
@@ -7863,19 +7863,19 @@ id __59__HMDHH2Migrator_arrayByRemovingElementsInArray_fromArray___block_invoke(
   return v4;
 }
 
-+ (id)auditedUserAccessCodeModelsAndInvitesFromModels:(id)a3
++ (id)auditedUserAccessCodeModelsAndInvitesFromModels:(id)models
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__HMDHH2Migrator_auditedUserAccessCodeModelsAndInvitesFromModels___block_invoke;
   v8[3] = &__block_descriptor_40_e67_q24__0__HMDBackingStoreModelObject_8__HMDBackingStoreModelObject_16l;
-  v8[4] = a1;
-  v4 = [a3 sortedArrayUsingComparator:v8];
+  v8[4] = self;
+  v4 = [models sortedArrayUsingComparator:v8];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__HMDHH2Migrator_auditedUserAccessCodeModelsAndInvitesFromModels___block_invoke_2;
   v7[3] = &__block_descriptor_40_e57___NSArray_24__0__HMDBackingStoreModelObject_8__NSArray_16l;
-  v7[4] = a1;
+  v7[4] = self;
   v5 = [v4 na_reduceWithInitialValue:MEMORY[0x277CBEBF8] reducer:v7];
 
   return v5;
@@ -7997,20 +7997,20 @@ id __66__HMDHH2Migrator_auditedUserAccessCodeModelsAndInvitesFromModels___block_
   return v4;
 }
 
-+ (int64_t)compareUserAccessCodeInModel:(id)a3 withModel:(id)a4
++ (int64_t)compareUserAccessCodeInModel:(id)model withModel:(id)withModel
 {
-  v5 = a3;
-  v6 = a4;
+  modelCopy = model;
+  withModelCopy = withModel;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v5 && (isKindOfClass & 1) != 0)
+  if (modelCopy && (isKindOfClass & 1) != 0)
   {
     v8 = -1;
   }
 
   else
   {
-    v9 = v6;
+    v9 = withModelCopy;
     objc_opt_class();
     v10 = objc_opt_isKindOfClass();
 
@@ -8022,12 +8022,12 @@ id __66__HMDHH2Migrator_auditedUserAccessCodeModelsAndInvitesFromModels___block_
     else
     {
       v11 = v9;
-      v12 = [v5 user];
-      v13 = [v12 objectForKeyedSubscript:@"userID"];
+      user = [modelCopy user];
+      v13 = [user objectForKeyedSubscript:@"userID"];
 
-      v14 = [v11 user];
+      user2 = [v11 user];
 
-      v15 = [v14 objectForKeyedSubscript:@"userID"];
+      v15 = [user2 objectForKeyedSubscript:@"userID"];
 
       v8 = [v13 compare:v15];
     }
@@ -8036,13 +8036,13 @@ id __66__HMDHH2Migrator_auditedUserAccessCodeModelsAndInvitesFromModels___block_
   return v8;
 }
 
-+ (id)userAccessCodeFromModel:(id)a3
++ (id)userAccessCodeFromModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = modelCopy;
   }
 
   else
@@ -8051,7 +8051,7 @@ id __66__HMDHH2Migrator_auditedUserAccessCodeModelsAndInvitesFromModels___block_
   }
 
   v5 = v4;
-  v6 = v3;
+  v6 = modelCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -8067,15 +8067,15 @@ id __66__HMDHH2Migrator_auditedUserAccessCodeModelsAndInvitesFromModels___block_
 
   if (v5)
   {
-    v9 = [v5 value];
+    value = [v5 value];
 LABEL_11:
-    v10 = v9;
+    v10 = value;
     goto LABEL_12;
   }
 
   if (v8)
   {
-    v9 = [v8 accessCode];
+    value = [v8 accessCode];
     goto LABEL_11;
   }
 
@@ -8085,17 +8085,17 @@ LABEL_12:
   return v10;
 }
 
-+ (id)auditedHomeAccessCodeModelsFromModels:(id)a3 userAccessCodeModelsAndInvites:(id)a4
++ (id)auditedHomeAccessCodeModelsFromModels:(id)models userAccessCodeModelsAndInvites:(id)invites
 {
-  v6 = a4;
-  v7 = [a3 sortedArrayUsingSelector:sel_uuid];
+  invitesCopy = invites;
+  v7 = [models sortedArrayUsingSelector:sel_uuid];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __87__HMDHH2Migrator_auditedHomeAccessCodeModelsFromModels_userAccessCodeModelsAndInvites___block_invoke;
   v11[3] = &unk_2786827B0;
-  v12 = v6;
-  v13 = a1;
-  v8 = v6;
+  v12 = invitesCopy;
+  selfCopy = self;
+  v8 = invitesCopy;
   v9 = [v7 na_reduceWithInitialValue:MEMORY[0x277CBEBF8] reducer:v11];
 
   return v9;

@@ -1,34 +1,34 @@
 @interface IDSHomeKitCloudRelayConsentTokensMessage
 - (id)additionalMessageHeaders;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSHomeKitCloudRelayConsentTokensMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = IDSHomeKitCloudRelayConsentTokensMessage;
-  v4 = [(IDSHomeKitCloudRelayConsentTokensMessage *)&v12 copyWithZone:a3];
-  v5 = [(IDSHomeKitCloudRelayConsentTokensMessage *)self subService];
-  [v4 setSubService:v5];
+  v4 = [(IDSHomeKitCloudRelayConsentTokensMessage *)&v12 copyWithZone:zone];
+  subService = [(IDSHomeKitCloudRelayConsentTokensMessage *)self subService];
+  [v4 setSubService:subService];
 
-  v6 = [(IDSHomeKitCloudRelayConsentTokensMessage *)self serviceUserID];
-  [v4 setServiceUserID:v6];
+  serviceUserID = [(IDSHomeKitCloudRelayConsentTokensMessage *)self serviceUserID];
+  [v4 setServiceUserID:serviceUserID];
 
-  v7 = [(IDSHomeKitCloudRelayConsentTokensMessage *)self accessoryIDs];
-  [v4 setAccessoryIDs:v7];
+  accessoryIDs = [(IDSHomeKitCloudRelayConsentTokensMessage *)self accessoryIDs];
+  [v4 setAccessoryIDs:accessoryIDs];
 
-  v8 = [(IDSHomeKitCloudRelayConsentTokensMessage *)self adminID];
-  [v4 setAdminID:v8];
+  adminID = [(IDSHomeKitCloudRelayConsentTokensMessage *)self adminID];
+  [v4 setAdminID:adminID];
 
-  v9 = [(IDSHomeKitCloudRelayConsentTokensMessage *)self expiry];
-  [v4 setExpiry:v9];
+  expiry = [(IDSHomeKitCloudRelayConsentTokensMessage *)self expiry];
+  [v4 setExpiry:expiry];
 
-  v10 = [(IDSHomeKitCloudRelayConsentTokensMessage *)self responseConsentTokens];
-  [v4 setResponseConsentTokens:v10];
+  responseConsentTokens = [(IDSHomeKitCloudRelayConsentTokensMessage *)self responseConsentTokens];
+  [v4 setResponseConsentTokens:responseConsentTokens];
 
   return v4;
 }
@@ -37,18 +37,18 @@
 {
   v8.receiver = self;
   v8.super_class = IDSHomeKitCloudRelayConsentTokensMessage;
-  v3 = [(IDSHomeKitCloudRelayConsentTokensMessage *)&v8 additionalMessageHeaders];
-  Mutable = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSHomeKitCloudRelayConsentTokensMessage *)&v8 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSHomeKitCloudRelayConsentTokensMessage *)self subService];
-  if (v5)
+  subService = [(IDSHomeKitCloudRelayConsentTokensMessage *)self subService];
+  if (subService)
   {
-    CFDictionarySetValue(Mutable, @"x-id-sub-service", v5);
+    CFDictionarySetValue(Mutable, @"x-id-sub-service", subService);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -56,10 +56,10 @@
     sub_10092BEB0();
   }
 
-  v6 = [(IDSHomeKitCloudRelayConsentTokensMessage *)self serviceUserID];
-  if (v6)
+  serviceUserID = [(IDSHomeKitCloudRelayConsentTokensMessage *)self serviceUserID];
+  if (serviceUserID)
   {
-    CFDictionarySetValue(Mutable, @"x-service-user-id", v6);
+    CFDictionarySetValue(Mutable, @"x-service-user-id", serviceUserID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -73,10 +73,10 @@
 - (id)messageBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSHomeKitCloudRelayConsentTokensMessage *)self accessoryIDs];
-  if (v4)
+  accessoryIDs = [(IDSHomeKitCloudRelayConsentTokensMessage *)self accessoryIDs];
+  if (accessoryIDs)
   {
-    CFDictionarySetValue(v3, @"accessory-ids", v4);
+    CFDictionarySetValue(v3, @"accessory-ids", accessoryIDs);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -84,10 +84,10 @@
     sub_10092C9F0();
   }
 
-  v5 = [(IDSHomeKitCloudRelayConsentTokensMessage *)self adminID];
-  if (v5)
+  adminID = [(IDSHomeKitCloudRelayConsentTokensMessage *)self adminID];
+  if (adminID)
   {
-    CFDictionarySetValue(v3, @"admin-id", v5);
+    CFDictionarySetValue(v3, @"admin-id", adminID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -95,18 +95,18 @@
     sub_10092CA78();
   }
 
-  v6 = [(IDSHomeKitCloudRelayConsentTokensMessage *)self expiry];
-  if (v6)
+  expiry = [(IDSHomeKitCloudRelayConsentTokensMessage *)self expiry];
+  if (expiry)
   {
-    CFDictionarySetValue(v3, @"expiry", v6);
+    CFDictionarySetValue(v3, @"expiry", expiry);
   }
 
   return v3;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = [a3 _arrayForKey:@"consent-tokens"];
+  v4 = [dictionary _arrayForKey:@"consent-tokens"];
   v5 = v4;
   if (v4)
   {

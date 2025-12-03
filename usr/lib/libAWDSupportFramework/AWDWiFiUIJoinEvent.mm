@@ -1,16 +1,16 @@
 @interface AWDWiFiUIJoinEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSectionCounts:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addSectionCounts:(id)counts;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasError:(BOOL)a3;
-- (void)setHasSecurityType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasError:(BOOL)error;
+- (void)setHasSecurityType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiUIJoinEvent
@@ -25,9 +25,9 @@
   [(AWDWiFiUIJoinEvent *)&v3 dealloc];
 }
 
-- (void)setHasSecurityType:(BOOL)a3
+- (void)setHasSecurityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 2;
   }
@@ -55,7 +55,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSectionCounts:(id)a3
+- (void)addSectionCounts:(id)counts
 {
   sectionCounts = self->_sectionCounts;
   if (!sectionCounts)
@@ -64,7 +64,7 @@
     self->_sectionCounts = sectionCounts;
   }
 
-  [(NSMutableArray *)sectionCounts addObject:a3];
+  [(NSMutableArray *)sectionCounts addObject:counts];
 }
 
 - (id)description
@@ -77,34 +77,34 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   process = self->_process;
   if (process)
   {
-    [v3 setObject:process forKey:@"process"];
+    [dictionary setObject:process forKey:@"process"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_securityType), @"securityType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_securityType), @"securityType"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_error), @"error"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_error), @"error"}];
   }
 
   section = self->_section;
   if (section)
   {
-    [v3 setObject:section forKey:@"section"];
+    [dictionary setObject:section forKey:@"section"];
   }
 
   if ([(NSMutableArray *)self->_sectionCounts count])
@@ -138,14 +138,14 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"sectionCounts"];
+    [dictionary setObject:v7 forKey:@"sectionCounts"];
   }
 
   v13 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -210,57 +210,57 @@
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 52) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 52) |= 1u;
   }
 
   if (self->_process)
   {
-    [a3 setProcess:?];
+    [to setProcess:?];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 12) = self->_securityType;
-    *(a3 + 52) |= 4u;
+    *(to + 12) = self->_securityType;
+    *(to + 52) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 4) = self->_error;
-    *(a3 + 52) |= 2u;
+    *(to + 4) = self->_error;
+    *(to + 52) |= 2u;
   }
 
   if (self->_section)
   {
-    [a3 setSection:?];
+    [to setSection:?];
   }
 
   if ([(AWDWiFiUIJoinEvent *)self sectionCountsCount])
   {
-    [a3 clearSectionCounts];
-    v6 = [(AWDWiFiUIJoinEvent *)self sectionCountsCount];
-    if (v6)
+    [to clearSectionCounts];
+    sectionCountsCount = [(AWDWiFiUIJoinEvent *)self sectionCountsCount];
+    if (sectionCountsCount)
     {
-      v7 = v6;
+      v7 = sectionCountsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addSectionCounts:{-[AWDWiFiUIJoinEvent sectionCountsAtIndex:](self, "sectionCountsAtIndex:", i)}];
+        [to addSectionCounts:{-[AWDWiFiUIJoinEvent sectionCountsAtIndex:](self, "sectionCountsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -268,7 +268,7 @@
     *(v5 + 52) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_process copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_process copyWithZone:zone];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -283,7 +283,7 @@
     *(v6 + 52) |= 2u;
   }
 
-  *(v6 + 32) = [(NSString *)self->_section copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_section copyWithZone:zone];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -303,7 +303,7 @@
           objc_enumerationMutation(sectionCounts);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addSectionCounts:v13];
       }
 
@@ -317,22 +317,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 52);
+    v7 = *(equal + 52);
     if (has)
     {
-      if ((*(a3 + 52) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 52) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(a3 + 52))
+    else if (*(equal + 52))
     {
 LABEL_24:
       LOBYTE(v5) = 0;
@@ -340,7 +340,7 @@ LABEL_24:
     }
 
     process = self->_process;
-    if (process | *(a3 + 3))
+    if (process | *(equal + 3))
     {
       v5 = [(NSString *)process isEqual:?];
       if (!v5)
@@ -351,38 +351,38 @@ LABEL_24:
       has = self->_has;
     }
 
-    v9 = *(a3 + 52);
+    v9 = *(equal + 52);
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 52) & 4) == 0 || self->_securityType != *(a3 + 12))
+      if ((*(equal + 52) & 4) == 0 || self->_securityType != *(equal + 12))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 52) & 4) != 0)
+    else if ((*(equal + 52) & 4) != 0)
     {
       goto LABEL_24;
     }
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 52) & 2) == 0 || self->_error != *(a3 + 4))
+      if ((*(equal + 52) & 2) == 0 || self->_error != *(equal + 4))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 52) & 2) != 0)
+    else if ((*(equal + 52) & 2) != 0)
     {
       goto LABEL_24;
     }
 
     section = self->_section;
-    if (!(section | *(a3 + 4)) || (v5 = [(NSString *)section isEqual:?]) != 0)
+    if (!(section | *(equal + 4)) || (v5 = [(NSString *)section isEqual:?]) != 0)
     {
       sectionCounts = self->_sectionCounts;
-      if (sectionCounts | *(a3 + 5))
+      if (sectionCounts | *(equal + 5))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)sectionCounts isEqual:?];
@@ -437,35 +437,35 @@ LABEL_9:
   return v7 ^ [(NSMutableArray *)self->_sectionCounts hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 52))
+  if (*(from + 52))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDWiFiUIJoinEvent *)self setProcess:?];
   }
 
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 4) != 0)
   {
-    self->_securityType = *(a3 + 12);
+    self->_securityType = *(from + 12);
     *&self->_has |= 4u;
-    v5 = *(a3 + 52);
+    v5 = *(from + 52);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_error = *(a3 + 4);
+    self->_error = *(from + 4);
     *&self->_has |= 2u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDWiFiUIJoinEvent *)self setSection:?];
   }
@@ -474,7 +474,7 @@ LABEL_9:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(a3 + 5);
+  v6 = *(from + 5);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

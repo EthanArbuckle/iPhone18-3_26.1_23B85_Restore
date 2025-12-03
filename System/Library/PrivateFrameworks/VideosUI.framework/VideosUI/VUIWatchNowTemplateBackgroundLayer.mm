@@ -1,16 +1,16 @@
 @interface VUIWatchNowTemplateBackgroundLayer
-- (VUIWatchNowTemplateBackgroundLayer)initWithRect:(CGRect)a3 withStyle:(int64_t)a4;
-- (void)drawInContext:(CGContext *)a3;
+- (VUIWatchNowTemplateBackgroundLayer)initWithRect:(CGRect)rect withStyle:(int64_t)style;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation VUIWatchNowTemplateBackgroundLayer
 
-- (VUIWatchNowTemplateBackgroundLayer)initWithRect:(CGRect)a3 withStyle:(int64_t)a4
+- (VUIWatchNowTemplateBackgroundLayer)initWithRect:(CGRect)rect withStyle:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12.receiver = self;
   v12.super_class = VUIWatchNowTemplateBackgroundLayer;
   v9 = [(VUIWatchNowTemplateBackgroundLayer *)&v12 init];
@@ -19,13 +19,13 @@
   {
     [(VUIWatchNowTemplateBackgroundLayer *)v9 setNeedsDisplay];
     [(VUIWatchNowTemplateBackgroundLayer *)v10 setFrame:x, y, width, height];
-    v10->_uiStyle = a4;
+    v10->_uiStyle = style;
   }
 
   return v10;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v19 = *MEMORY[0x1E69E9840];
   v15 = xmmword_1E42979E8;
@@ -58,7 +58,7 @@
   v21.y = 0.0;
   v20.x = MidX;
   v21.x = MidX;
-  CGContextDrawRadialGradient(a3, v8, v20, 0.0, v21, v10, 2u);
+  CGContextDrawRadialGradient(context, v8, v20, 0.0, v21, v10, 2u);
   CGGradientRelease(v8);
 }
 

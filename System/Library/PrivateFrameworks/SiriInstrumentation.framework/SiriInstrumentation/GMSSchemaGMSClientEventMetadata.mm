@@ -1,25 +1,25 @@
 @interface GMSSchemaGMSClientEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (GMSSchemaGMSClientEventMetadata)initWithDictionary:(id)a3;
-- (GMSSchemaGMSClientEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GMSSchemaGMSClientEventMetadata)initWithDictionary:(id)dictionary;
+- (GMSSchemaGMSClientEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GMSSchemaGMSClientEventMetadata
 
-- (GMSSchemaGMSClientEventMetadata)initWithDictionary:(id)a3
+- (GMSSchemaGMSClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = GMSSchemaGMSClientEventMetadata;
   v5 = [(GMSSchemaGMSClientEventMetadata *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"gmsId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"gmsId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (GMSSchemaGMSClientEventMetadata)initWithJSON:(id)a3
+- (GMSSchemaGMSClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GMSSchemaGMSClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GMSSchemaGMSClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GMSSchemaGMSClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_gmsId)
   {
-    v4 = [(GMSSchemaGMSClientEventMetadata *)self gmsId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    gmsId = [(GMSSchemaGMSClientEventMetadata *)self gmsId];
+    dictionaryRepresentation = [gmsId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"gmsId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"gmsId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"gmsId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"gmsId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(GMSSchemaGMSClientEventMetadata *)self gmsId];
-    v6 = [v4 gmsId];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    gmsId = [(GMSSchemaGMSClientEventMetadata *)self gmsId];
+    gmsId2 = [equalCopy gmsId];
+    v7 = gmsId2;
+    if ((gmsId != 0) != (gmsId2 == 0))
     {
-      v8 = [(GMSSchemaGMSClientEventMetadata *)self gmsId];
-      if (!v8)
+      gmsId3 = [(GMSSchemaGMSClientEventMetadata *)self gmsId];
+      if (!gmsId3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(GMSSchemaGMSClientEventMetadata *)self gmsId];
-      v11 = [v4 gmsId];
-      v12 = [v10 isEqual:v11];
+      v9 = gmsId3;
+      gmsId4 = [(GMSSchemaGMSClientEventMetadata *)self gmsId];
+      gmsId5 = [equalCopy gmsId];
+      v12 = [gmsId4 isEqual:gmsId5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(GMSSchemaGMSClientEventMetadata *)self gmsId];
+  toCopy = to;
+  gmsId = [(GMSSchemaGMSClientEventMetadata *)self gmsId];
 
-  if (v4)
+  if (gmsId)
   {
-    v5 = [(GMSSchemaGMSClientEventMetadata *)self gmsId];
+    gmsId2 = [(GMSSchemaGMSClientEventMetadata *)self gmsId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = GMSSchemaGMSClientEventMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(GMSSchemaGMSClientEventMetadata *)self gmsId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(GMSSchemaGMSClientEventMetadata *)self deleteGmsId];
   }

@@ -1,51 +1,51 @@
 @interface MTLDebugTexture
-- (BOOL)evaluateSloppyUsage:(unint64_t)a3;
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 buffer:(id)a5 offset:(unint64_t)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8 descriptor:(id)a9;
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 buffer:(id)a5 offset:(unint64_t)a6 bytesPerRow:(unint64_t)a7 descriptor:(id)a8;
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 placementSparsePageSize:(int64_t)a5;
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 plane:(unint64_t)a5;
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 texture:(id)a5;
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 texture:(id)a5 pixelFormat:(unint64_t)a6;
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 texture:(id)a5 pixelFormat:(unint64_t)a6 textureType:(unint64_t)a7 levels:(_NSRange)a8 slices:(_NSRange)a9;
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 heap:(id)a4 device:(id)a5;
+- (BOOL)evaluateSloppyUsage:(unint64_t)usage;
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device buffer:(id)buffer offset:(unint64_t)offset bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image descriptor:(id)descriptor;
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device buffer:(id)buffer offset:(unint64_t)offset bytesPerRow:(unint64_t)row descriptor:(id)descriptor;
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device placementSparsePageSize:(int64_t)size;
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device plane:(unint64_t)plane;
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device texture:(id)a5;
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device texture:(id)a5 pixelFormat:(unint64_t)format;
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device texture:(id)a5 pixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices;
+- (MTLDebugTexture)initWithBaseTexture:(id)texture heap:(id)heap device:(id)device;
 - (id).cxx_construct;
-- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 level:(unint64_t)a5 slice:(unint64_t)a6;
-- (id)newTextureViewWithDescriptor:(id)a3;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 resourceIndex:(unint64_t)a7;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7 resourceIndex:(unint64_t)a8;
+- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type level:(unint64_t)level slice:(unint64_t)slice;
+- (id)newTextureViewWithDescriptor:(id)descriptor;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format resourceIndex:(unint64_t)index;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices resourceIndex:(unint64_t)index;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle resourceIndex:(unint64_t)index;
 - (uint64_t)dealloc;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
-- (void)addUsedRenderTarget:(unint64_t)a3 slices:(_NSRange)a4;
+- (unint64_t)setPurgeableState:(unint64_t)state;
+- (void)addUsedRenderTarget:(unint64_t)target slices:(_NSRange)slices;
 - (void)dealloc;
-- (void)getBytes:(void *)a3 bytesPerRow:(unint64_t)a4 bytesPerImage:(unint64_t)a5 fromRegion:(id *)a6 mipmapLevel:(unint64_t)a7 slice:(unint64_t)a8;
-- (void)getBytes:(void *)a3 bytesPerRow:(unint64_t)a4 fromRegion:(id *)a5 mipmapLevel:(unint64_t)a6;
+- (void)getBytes:(void *)bytes bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image fromRegion:(id *)region mipmapLevel:(unint64_t)level slice:(unint64_t)slice;
+- (void)getBytes:(void *)bytes bytesPerRow:(unint64_t)row fromRegion:(id *)region mipmapLevel:(unint64_t)level;
 - (void)makeAliasable;
-- (void)removeUsedRenderTarget:(unint64_t)a3 slices:(_NSRange)a4;
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 slice:(unint64_t)a5 withBytes:(const void *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8;
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 withBytes:(const void *)a5 bytesPerRow:(unint64_t)a6;
+- (void)removeUsedRenderTarget:(unint64_t)target slices:(_NSRange)slices;
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level slice:(unint64_t)slice withBytes:(const void *)bytes bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image;
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level withBytes:(const void *)bytes bytesPerRow:(unint64_t)row;
 @end
 
 @implementation MTLDebugTexture
 
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 buffer:(id)a5 offset:(unint64_t)a6 bytesPerRow:(unint64_t)a7 descriptor:(id)a8
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device buffer:(id)buffer offset:(unint64_t)offset bytesPerRow:(unint64_t)row descriptor:(id)descriptor
 {
   v20.receiver = self;
   v20.super_class = MTLDebugTexture;
-  v13 = [(MTLToolsTexture *)&v20 initWithBaseObject:a3 parent:a4 buffer:a5];
+  v13 = [(MTLToolsTexture *)&v20 initWithBaseObject:texture parent:device buffer:buffer];
   if (v13)
   {
-    *(v13 + 33) = [[MTLDebugResource alloc] initWithBaseObject:a3];
-    v14 = [a3 cpuCacheMode];
-    *(v13 + 5) = v14 | (16 * [a3 storageMode]);
+    *(v13 + 33) = [[MTLDebugResource alloc] initWithBaseObject:texture];
+    cpuCacheMode = [texture cpuCacheMode];
+    *(v13 + 5) = cpuCacheMode | (16 * [texture storageMode]);
     *(v13 + 17) = 0;
-    *(v13 + 34) = a6;
-    *(v13 + 35) = a7;
+    *(v13 + 34) = offset;
+    *(v13 + 35) = row;
     *(v13 + 36) = 0;
     atomic_store(0, v13 + 36);
     v13[148] = 0;
-    [a4 originalObject];
-    [a3 pixelFormat];
+    [device originalObject];
+    [texture pixelFormat];
     MTLPixelFormatGetInfoForDevice();
     *(v13 + 15) = v19;
     *(v13 + 88) = v17;
@@ -53,30 +53,30 @@
     *(v13 + 72) = v16;
     v13[256] = 0;
     std::__hash_table<std::__hash_value_type<SubView,unsigned long>,std::__unordered_map_hasher<SubView,std::__hash_value_type<SubView,unsigned long>,SubView::hash_t,SubView::equal_t,true>,std::__unordered_map_equal<SubView,std::__hash_value_type<SubView,unsigned long>,SubView::equal_t,SubView::hash_t,true>,std::allocator<std::__hash_value_type<SubView,unsigned long>>>::__assign_unique<std::pair<SubView const,unsigned long> const*>(v13 + 27, 0, 0);
-    *(v13 + 38) = [a8 placementSparsePageSize];
+    *(v13 + 38) = [descriptor placementSparsePageSize];
   }
 
   return v13;
 }
 
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 buffer:(id)a5 offset:(unint64_t)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8 descriptor:(id)a9
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device buffer:(id)buffer offset:(unint64_t)offset bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image descriptor:(id)descriptor
 {
   v22.receiver = self;
   v22.super_class = MTLDebugTexture;
-  v14 = [(MTLToolsTexture *)&v22 initWithBaseObject:a3 parent:a4 buffer:a5];
+  v14 = [(MTLToolsTexture *)&v22 initWithBaseObject:texture parent:device buffer:buffer];
   if (v14)
   {
-    *(v14 + 33) = [[MTLDebugResource alloc] initWithBaseObject:a3];
-    v16 = [a3 cpuCacheMode];
-    *(v14 + 5) = v16 | (16 * [a3 storageMode]);
+    *(v14 + 33) = [[MTLDebugResource alloc] initWithBaseObject:texture];
+    cpuCacheMode = [texture cpuCacheMode];
+    *(v14 + 5) = cpuCacheMode | (16 * [texture storageMode]);
     *(v14 + 17) = 0;
-    *(v14 + 34) = a6;
-    *(v14 + 35) = a7;
-    *(v14 + 36) = a8;
+    *(v14 + 34) = offset;
+    *(v14 + 35) = row;
+    *(v14 + 36) = image;
     atomic_store(0, v14 + 36);
     v14[148] = 0;
-    [a4 originalObject];
-    [a3 pixelFormat];
+    [device originalObject];
+    [texture pixelFormat];
     MTLPixelFormatGetInfoForDevice();
     *(v14 + 15) = v21;
     *(v14 + 88) = v19;
@@ -84,28 +84,28 @@
     *(v14 + 72) = v18;
     v14[256] = 1;
     std::__hash_table<std::__hash_value_type<SubView,unsigned long>,std::__unordered_map_hasher<SubView,std::__hash_value_type<SubView,unsigned long>,SubView::hash_t,SubView::equal_t,true>,std::__unordered_map_equal<SubView,std::__hash_value_type<SubView,unsigned long>,SubView::equal_t,SubView::hash_t,true>,std::allocator<std::__hash_value_type<SubView,unsigned long>>>::__assign_unique<std::pair<SubView const,unsigned long> const*>(v14 + 27, 0, 0);
-    *(v14 + 38) = [a9 placementSparsePageSize];
+    *(v14 + 38) = [descriptor placementSparsePageSize];
   }
 
   return v14;
 }
 
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 plane:(unint64_t)a5
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device plane:(unint64_t)plane
 {
   v15.receiver = self;
   v15.super_class = MTLDebugTexture;
   v8 = [MTLToolsResource initWithBaseObject:sel_initWithBaseObject_parent_ parent:?];
   if (v8)
   {
-    *(v8 + 33) = [[MTLDebugResource alloc] initWithBaseObject:a3];
-    v9 = [a3 cpuCacheMode];
-    *(v8 + 5) = v9 | (16 * [a3 storageMode]);
+    *(v8 + 33) = [[MTLDebugResource alloc] initWithBaseObject:texture];
+    cpuCacheMode = [texture cpuCacheMode];
+    *(v8 + 5) = cpuCacheMode | (16 * [texture storageMode]);
     *(v8 + 17) = 0;
-    *(v8 + 37) = a5;
+    *(v8 + 37) = plane;
     atomic_store(0, v8 + 36);
     v8[148] = 0;
-    [a4 originalObject];
-    [a3 pixelFormat];
+    [device originalObject];
+    [texture pixelFormat];
     MTLPixelFormatGetInfoForDevice();
     *(v8 + 15) = v14;
     *(v8 + 88) = v12;
@@ -117,22 +117,22 @@
   return v8;
 }
 
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 heap:(id)a4 device:(id)a5
+- (MTLDebugTexture)initWithBaseTexture:(id)texture heap:(id)heap device:(id)device
 {
   v14.receiver = self;
   v14.super_class = MTLDebugTexture;
-  v7 = [(MTLToolsResource *)&v14 initWithBaseObject:a3 parent:a4 heap:a4];
+  v7 = [(MTLToolsResource *)&v14 initWithBaseObject:texture parent:heap heap:heap];
   if (v7)
   {
-    *(v7 + 33) = [[MTLDebugResource alloc] initWithBaseObject:a3];
-    v8 = [a3 cpuCacheMode];
-    *(v7 + 5) = v8 | (16 * [a3 storageMode]);
+    *(v7 + 33) = [[MTLDebugResource alloc] initWithBaseObject:texture];
+    cpuCacheMode = [texture cpuCacheMode];
+    *(v7 + 5) = cpuCacheMode | (16 * [texture storageMode]);
     *(v7 + 17) = 0;
     *(v7 + 37) = 0;
     atomic_store(0, v7 + 36);
     v7[148] = 0;
-    [a5 originalObject];
-    [a3 pixelFormat];
+    [device originalObject];
+    [texture pixelFormat];
     MTLPixelFormatGetInfoForDevice();
     *(v7 + 15) = v13;
     *(v7 + 88) = v11;
@@ -144,49 +144,49 @@
   return v7;
 }
 
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 placementSparsePageSize:(int64_t)a5
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device placementSparsePageSize:(int64_t)size
 {
   v15.receiver = self;
   v15.super_class = MTLDebugTexture;
   v8 = [MTLToolsResource initWithBaseObject:sel_initWithBaseObject_parent_ parent:?];
   if (v8)
   {
-    *(v8 + 33) = [[MTLDebugResource alloc] initWithBaseObject:a3];
-    v9 = [a3 cpuCacheMode];
-    *(v8 + 5) = v9 | (16 * [a3 storageMode]);
+    *(v8 + 33) = [[MTLDebugResource alloc] initWithBaseObject:texture];
+    cpuCacheMode = [texture cpuCacheMode];
+    *(v8 + 5) = cpuCacheMode | (16 * [texture storageMode]);
     *(v8 + 17) = 0;
     *(v8 + 37) = 0;
     atomic_store(0, v8 + 36);
     v8[148] = 0;
-    [a4 originalObject];
-    [a3 pixelFormat];
+    [device originalObject];
+    [texture pixelFormat];
     MTLPixelFormatGetInfoForDevice();
     *(v8 + 15) = v14;
     *(v8 + 88) = v12;
     *(v8 + 104) = v13;
     *(v8 + 72) = v11;
-    *(v8 + 38) = a5;
+    *(v8 + 38) = size;
     std::__hash_table<std::__hash_value_type<SubView,unsigned long>,std::__unordered_map_hasher<SubView,std::__hash_value_type<SubView,unsigned long>,SubView::hash_t,SubView::equal_t,true>,std::__unordered_map_equal<SubView,std::__hash_value_type<SubView,unsigned long>,SubView::equal_t,SubView::hash_t,true>,std::allocator<std::__hash_value_type<SubView,unsigned long>>>::__assign_unique<std::pair<SubView const,unsigned long> const*>(v8 + 27, 0, 0);
   }
 
   return v8;
 }
 
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 texture:(id)a5
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device texture:(id)a5
 {
   v14.receiver = self;
   v14.super_class = MTLDebugTexture;
-  v7 = [(MTLToolsTexture *)&v14 initWithBaseObject:a3 parent:a4 parentTexture:a5];
+  v7 = [(MTLToolsTexture *)&v14 initWithBaseObject:texture parent:device parentTexture:a5];
   if (v7)
   {
-    *(v7 + 33) = [[MTLDebugResource alloc] initWithBaseObject:a3];
+    *(v7 + 33) = [[MTLDebugResource alloc] initWithBaseObject:texture];
     atomic_store(0, v7 + 36);
     v7[148] = 0;
-    v8 = [a3 cpuCacheMode];
-    *(v7 + 5) = v8 | (16 * [a3 storageMode]);
+    cpuCacheMode = [texture cpuCacheMode];
+    *(v7 + 5) = cpuCacheMode | (16 * [texture storageMode]);
     *(v7 + 17) = 0;
-    [a4 originalObject];
-    [a3 pixelFormat];
+    [device originalObject];
+    [texture pixelFormat];
     MTLPixelFormatGetInfoForDevice();
     *(v7 + 15) = v13;
     *(v7 + 88) = v11;
@@ -198,38 +198,38 @@
   return v7;
 }
 
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 texture:(id)a5 pixelFormat:(unint64_t)a6
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device texture:(id)a5 pixelFormat:(unint64_t)format
 {
-  v8 = [(MTLDebugTexture *)self initWithBaseTexture:a3 device:a4 texture:a5, a6];
-  if (v8)
+  format = [(MTLDebugTexture *)self initWithBaseTexture:texture device:device texture:a5, format];
+  if (format)
   {
-    [a4 originalObject];
-    [a3 pixelFormat];
+    [device originalObject];
+    [texture pixelFormat];
     MTLPixelFormatGetInfoForDevice();
-    *(v8 + 15) = v13;
-    *(v8 + 88) = v11;
-    *(v8 + 104) = v12;
-    *(v8 + 72) = v10;
+    *(format + 15) = v13;
+    *(format + 88) = v11;
+    *(format + 104) = v12;
+    *(format + 72) = v10;
   }
 
-  return v8;
+  return format;
 }
 
-- (MTLDebugTexture)initWithBaseTexture:(id)a3 device:(id)a4 texture:(id)a5 pixelFormat:(unint64_t)a6 textureType:(unint64_t)a7 levels:(_NSRange)a8 slices:(_NSRange)a9
+- (MTLDebugTexture)initWithBaseTexture:(id)texture device:(id)device texture:(id)a5 pixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices
 {
-  v11 = [(MTLDebugTexture *)self initWithBaseTexture:a3 device:a4 texture:a5, a6, a7];
-  if (v11)
+  type = [(MTLDebugTexture *)self initWithBaseTexture:texture device:device texture:a5, format, type];
+  if (type)
   {
-    [a4 originalObject];
-    [a3 pixelFormat];
+    [device originalObject];
+    [texture pixelFormat];
     MTLPixelFormatGetInfoForDevice();
-    *(v11 + 15) = v16;
-    *(v11 + 88) = v14;
-    *(v11 + 104) = v15;
-    *(v11 + 72) = v13;
+    *(type + 15) = v16;
+    *(type + 88) = v14;
+    *(type + 104) = v15;
+    *(type + 72) = v13;
   }
 
-  return v11;
+  return type;
 }
 
 - (void)dealloc
@@ -270,97 +270,97 @@
 
   if (![-[MTLToolsObject baseObject](self "baseObject")])
   {
-    v3 = [(MTLToolsObject *)self baseObject];
+    baseObject = [(MTLToolsObject *)self baseObject];
 
-    [v3 makeAliasable];
+    [baseObject makeAliasable];
   }
 }
 
-- (BOOL)evaluateSloppyUsage:(unint64_t)a3
+- (BOOL)evaluateSloppyUsage:(unint64_t)usage
 {
-  v5 = [(MTLToolsTexture *)self usage];
-  v6 = ([(MTLToolsTexture *)self usage]& 0x10000) == 0 || (a3 & 2) == 0;
-  v7 = v5 | 2;
+  usage = [(MTLToolsTexture *)self usage];
+  v6 = ([(MTLToolsTexture *)self usage]& 0x10000) == 0 || (usage & 2) == 0;
+  v7 = usage | 2;
   if (v6)
   {
-    v7 = v5;
+    v7 = usage;
   }
 
-  return (v7 & 0x17) == a3;
+  return (v7 & 0x17) == usage;
 }
 
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 slice:(unint64_t)a5 withBytes:(const void *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level slice:(unint64_t)slice withBytes:(const void *)bytes bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image
 {
-  *v18 = *&a3->var0.var0;
-  *&v18[16] = a3->var0.var2;
-  var1 = a3->var1;
-  _validateReplaceRegion(self, v18, &var1, a5, a4, a6, a7, 1, a8, v17);
+  *v18 = *&region->var0.var0;
+  *&v18[16] = region->var0.var2;
+  var1 = region->var1;
+  _validateReplaceRegion(self, v18, &var1, slice, level, bytes, row, 1, image, v17);
   [(MTLToolsResource *)self validateCPUWriteable];
-  v15 = [(MTLToolsObject *)self baseObject];
-  v16 = *&a3->var0.var2;
-  *v18 = *&a3->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v16 = *&region->var0.var2;
+  *v18 = *&region->var0.var0;
   *&v18[16] = v16;
-  v19 = *&a3->var1.var1;
-  [v15 replaceRegion:v18 mipmapLevel:a4 slice:a5 withBytes:a6 bytesPerRow:a7 bytesPerImage:a8];
+  v19 = *&region->var1.var1;
+  [baseObject replaceRegion:v18 mipmapLevel:level slice:slice withBytes:bytes bytesPerRow:row bytesPerImage:image];
 }
 
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 withBytes:(const void *)a5 bytesPerRow:(unint64_t)a6
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level withBytes:(const void *)bytes bytesPerRow:(unint64_t)row
 {
-  *v14 = *&a3->var0.var0;
-  *&v14[16] = a3->var0.var2;
-  var1 = a3->var1;
-  _validateReplaceRegion(self, v14, &var1, 0, a4, a5, a6, 0, 0, v13);
+  *v14 = *&region->var0.var0;
+  *&v14[16] = region->var0.var2;
+  var1 = region->var1;
+  _validateReplaceRegion(self, v14, &var1, 0, level, bytes, row, 0, 0, v13);
   [(MTLToolsResource *)self validateCPUWriteable];
-  v11 = [(MTLToolsObject *)self baseObject];
-  v12 = *&a3->var0.var2;
-  *v14 = *&a3->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v12 = *&region->var0.var2;
+  *v14 = *&region->var0.var0;
   *&v14[16] = v12;
-  v15 = *&a3->var1.var1;
-  [v11 replaceRegion:v14 mipmapLevel:a4 withBytes:a5 bytesPerRow:a6];
+  v15 = *&region->var1.var1;
+  [baseObject replaceRegion:v14 mipmapLevel:level withBytes:bytes bytesPerRow:row];
 }
 
-- (void)getBytes:(void *)a3 bytesPerRow:(unint64_t)a4 bytesPerImage:(unint64_t)a5 fromRegion:(id *)a6 mipmapLevel:(unint64_t)a7 slice:(unint64_t)a8
+- (void)getBytes:(void *)bytes bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image fromRegion:(id *)region mipmapLevel:(unint64_t)level slice:(unint64_t)slice
 {
-  *v18 = *&a6->var0.var0;
-  *&v18[16] = a6->var0.var2;
-  var1 = a6->var1;
-  _validateGetBytes(self, v18, &var1, a8, a7, a3, a4, 1, a5, v17);
+  *v18 = *&region->var0.var0;
+  *&v18[16] = region->var0.var2;
+  var1 = region->var1;
+  _validateGetBytes(self, v18, &var1, slice, level, bytes, row, 1, image, v17);
   [(MTLToolsResource *)self validateCPUReadable];
-  v15 = [(MTLToolsObject *)self baseObject];
-  v16 = *&a6->var0.var2;
-  *v18 = *&a6->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v16 = *&region->var0.var2;
+  *v18 = *&region->var0.var0;
   *&v18[16] = v16;
-  v19 = *&a6->var1.var1;
-  [v15 getBytes:a3 bytesPerRow:a4 bytesPerImage:a5 fromRegion:v18 mipmapLevel:a7 slice:a8];
+  v19 = *&region->var1.var1;
+  [baseObject getBytes:bytes bytesPerRow:row bytesPerImage:image fromRegion:v18 mipmapLevel:level slice:slice];
 }
 
-- (void)getBytes:(void *)a3 bytesPerRow:(unint64_t)a4 fromRegion:(id *)a5 mipmapLevel:(unint64_t)a6
+- (void)getBytes:(void *)bytes bytesPerRow:(unint64_t)row fromRegion:(id *)region mipmapLevel:(unint64_t)level
 {
-  *v14 = *&a5->var0.var0;
-  *&v14[16] = a5->var0.var2;
-  var1 = a5->var1;
-  _validateGetBytes(self, v14, &var1, 0, a6, a3, a4, 0, 0, v13);
+  *v14 = *&region->var0.var0;
+  *&v14[16] = region->var0.var2;
+  var1 = region->var1;
+  _validateGetBytes(self, v14, &var1, 0, level, bytes, row, 0, 0, v13);
   [(MTLToolsResource *)self validateCPUReadable];
-  v11 = [(MTLToolsObject *)self baseObject];
-  v12 = *&a5->var0.var2;
-  *v14 = *&a5->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v12 = *&region->var0.var2;
+  *v14 = *&region->var0.var0;
   *&v14[16] = v12;
-  v15 = *&a5->var1.var1;
-  [v11 getBytes:a3 bytesPerRow:a4 fromRegion:v14 mipmapLevel:a6];
+  v15 = *&region->var1.var1;
+  [baseObject getBytes:bytes bytesPerRow:row fromRegion:v14 mipmapLevel:level];
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newTextureViewWithPixelFormat:(unint64_t)format resourceIndex:(unint64_t)index
 {
-  _validateTextureView(self, a3, [(MTLToolsTexture *)self textureType]);
-  v7 = [(MTLToolsObject *)self baseObject];
-  if (a4)
+  _validateTextureView(self, format, [(MTLToolsTexture *)self textureType]);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  if (index)
   {
-    v8 = [v7 newTextureViewWithPixelFormat:a3 resourceIndex:a4];
+    v8 = [baseObject newTextureViewWithPixelFormat:format resourceIndex:index];
   }
 
   else
   {
-    v8 = [v7 newTextureViewWithPixelFormat:a3];
+    v8 = [baseObject newTextureViewWithPixelFormat:format];
   }
 
   v9 = v8;
@@ -369,77 +369,77 @@
     return 0;
   }
 
-  v10 = [[MTLDebugTexture alloc] initWithBaseTexture:v8 device:[(MTLToolsObject *)self device] texture:self pixelFormat:a3];
+  v10 = [[MTLDebugTexture alloc] initWithBaseTexture:v8 device:[(MTLToolsObject *)self device] texture:self pixelFormat:format];
 
   return v10;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 resourceIndex:(unint64_t)a7
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices resourceIndex:(unint64_t)index
 {
-  length = a6.length;
-  location = a6.location;
-  v9 = a5.length;
-  v10 = a5.location;
-  _validateTextureView(self, a3, a4);
-  v14 = [(MTLToolsObject *)self baseObject];
-  if (a7)
+  length = slices.length;
+  location = slices.location;
+  v9 = levels.length;
+  v10 = levels.location;
+  _validateTextureView(self, format, type);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  if (index)
   {
-    v15 = [v14 newTextureViewWithPixelFormat:a3 textureType:a4 levels:v10 slices:v9 resourceIndex:location, length, a7];
+    index = [baseObject newTextureViewWithPixelFormat:format textureType:type levels:v10 slices:v9 resourceIndex:location, length, index];
   }
 
   else
   {
-    v15 = [v14 newTextureViewWithPixelFormat:a3 textureType:a4 levels:v10 slices:v9, location, length];
+    index = [baseObject newTextureViewWithPixelFormat:format textureType:type levels:v10 slices:v9, location, length];
   }
 
-  v16 = v15;
-  if (!v15)
+  v16 = index;
+  if (!index)
   {
     return 0;
   }
 
-  v17 = [[MTLDebugTexture alloc] initWithBaseTexture:v15 device:[(MTLToolsObject *)self device] texture:self pixelFormat:a3 textureType:a4 levels:v10 slices:v9, location, length];
+  v17 = [[MTLDebugTexture alloc] initWithBaseTexture:index device:[(MTLToolsObject *)self device] texture:self pixelFormat:format textureType:type levels:v10 slices:v9, location, length];
 
   return v17;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7 resourceIndex:(unint64_t)a8
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle resourceIndex:(unint64_t)index
 {
-  length = a6.length;
-  location = a6.location;
-  v10 = a5.length;
-  v11 = a5.location;
-  _validateTextureView(self, a3, a4);
-  v15 = [(MTLToolsObject *)self baseObject];
-  if (a8)
+  length = slices.length;
+  location = slices.location;
+  v10 = levels.length;
+  v11 = levels.location;
+  _validateTextureView(self, format, type);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  if (index)
   {
-    v16 = [v15 newTextureViewWithPixelFormat:a3 textureType:a4 levels:v11 slices:v10 swizzle:location resourceIndex:length, *&a7, a8];
+    index = [baseObject newTextureViewWithPixelFormat:format textureType:type levels:v11 slices:v10 swizzle:location resourceIndex:length, *&swizzle, index];
   }
 
   else
   {
-    v16 = [v15 newTextureViewWithPixelFormat:a3 textureType:a4 levels:v11 slices:v10 swizzle:location, length, *&a7];
+    index = [baseObject newTextureViewWithPixelFormat:format textureType:type levels:v11 slices:v10 swizzle:location, length, *&swizzle];
   }
 
-  v17 = v16;
-  if (!v16)
+  v17 = index;
+  if (!index)
   {
     return 0;
   }
 
-  v18 = [[MTLDebugTexture alloc] initWithBaseTexture:v16 device:[(MTLToolsObject *)self device] texture:self pixelFormat:a3 textureType:a4 levels:v11 slices:v10, location, length];
+  v18 = [[MTLDebugTexture alloc] initWithBaseTexture:index device:[(MTLToolsObject *)self device] texture:self pixelFormat:format textureType:type levels:v11 slices:v10, location, length];
 
   return v18;
 }
 
-- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 level:(unint64_t)a5 slice:(unint64_t)a6
+- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type level:(unint64_t)level slice:(unint64_t)slice
 {
-  _validateTextureView(self, a3, a4);
+  _validateTextureView(self, format, type);
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v12 = result;
-    v13 = [[MTLDebugTexture alloc] initWithBaseTexture:result device:[(MTLToolsObject *)self device] texture:self pixelFormat:a3 textureType:a4 levels:a5 slices:1, a6, 1];
+    v13 = [[MTLDebugTexture alloc] initWithBaseTexture:result device:[(MTLToolsObject *)self device] texture:self pixelFormat:format textureType:type levels:level slices:1, slice, 1];
 
     return v13;
   }
@@ -447,24 +447,24 @@
   return result;
 }
 
-- (id)newTextureViewWithDescriptor:(id)a3
+- (id)newTextureViewWithDescriptor:(id)descriptor
 {
-  _validateTextureView(self, [a3 pixelFormat], objc_msgSend(a3, "textureType"));
+  _validateTextureView(self, [descriptor pixelFormat], objc_msgSend(descriptor, "textureType"));
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  v5 = [(MTLToolsTexture *)self writeAccessPattern];
-  v6 = [a3 writeAccessPattern];
-  if (v5 != v6 && ![(MTLToolsTexture *)self allowGPUOptimizedContents])
+  writeAccessPattern = [(MTLToolsTexture *)self writeAccessPattern];
+  writeAccessPattern2 = [descriptor writeAccessPattern];
+  if (writeAccessPattern != writeAccessPattern2 && ![(MTLToolsTexture *)self allowGPUOptimizedContents])
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a3 writeAccessPattern] == 2 && -[MTLToolsTexture usage](self, "usage") == 4)
+  if ([descriptor writeAccessPattern] == 2 && -[MTLToolsTexture usage](self, "usage") == 4)
   {
     _MTLMessageContextPush_();
   }
 
-  if (v5 != v6 && ([(MTLToolsTexture *)self compressionFeedback]& 2) != 0)
+  if (writeAccessPattern != writeAccessPattern2 && ([(MTLToolsTexture *)self compressionFeedback]& 2) != 0)
   {
     _MTLMessageContextPush_();
   }
@@ -478,18 +478,18 @@
 
   v8 = v7;
   v9 = [MTLDebugTexture alloc];
-  v10 = [(MTLToolsObject *)self device];
-  v11 = [a3 pixelFormat];
-  v12 = [a3 textureType];
-  v13 = [a3 levels];
+  device = [(MTLToolsObject *)self device];
+  pixelFormat = [descriptor pixelFormat];
+  textureType = [descriptor textureType];
+  levels = [descriptor levels];
   v15 = v14;
-  v16 = [a3 slices];
-  v18 = [(MTLDebugTexture *)v9 initWithBaseTexture:v8 device:v10 texture:self pixelFormat:v11 textureType:v12 levels:v13 slices:v15, v16, v17];
+  slices = [descriptor slices];
+  v18 = [(MTLDebugTexture *)v9 initWithBaseTexture:v8 device:device texture:self pixelFormat:pixelFormat textureType:textureType levels:levels slices:v15, slices, v17];
 
   return v18;
 }
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   [(MTLToolsObject *)self device:0];
   _MTLMessageContextBegin_();
@@ -498,9 +498,9 @@
     _MTLMessageContextPush_();
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
       if (atomic_load(self + 36))
       {
@@ -515,32 +515,32 @@
   return [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)addUsedRenderTarget:(unint64_t)a3 slices:(_NSRange)a4
+- (void)addUsedRenderTarget:(unint64_t)target slices:(_NSRange)slices
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = self;
-  v8 = [(MTLToolsTexture *)self parentTexture];
-  if (v8)
+  length = slices.length;
+  location = slices.location;
+  selfCopy = self;
+  parentTexture = [(MTLToolsTexture *)self parentTexture];
+  if (parentTexture)
   {
     do
     {
-      v9 = v8;
-      a3 += [(MTLToolsTexture *)v7 parentRelativeLevel];
-      location += [(MTLToolsTexture *)v7 parentRelativeSlice];
-      v8 = [v9 parentTexture];
-      v7 = v9;
+      v9 = parentTexture;
+      target += [(MTLToolsTexture *)selfCopy parentRelativeLevel];
+      location += [(MTLToolsTexture *)selfCopy parentRelativeSlice];
+      parentTexture = [v9 parentTexture];
+      selfCopy = v9;
     }
 
-    while (v8);
+    while (parentTexture);
   }
 
   else
   {
-    v9 = v7;
+    v9 = selfCopy;
   }
 
-  v11[0] = a3;
+  v11[0] = target;
   v11[1] = location;
   v11[2] = length;
   std::mutex::lock((v9 + 152));
@@ -558,32 +558,32 @@
   std::mutex::unlock((v9 + 152));
 }
 
-- (void)removeUsedRenderTarget:(unint64_t)a3 slices:(_NSRange)a4
+- (void)removeUsedRenderTarget:(unint64_t)target slices:(_NSRange)slices
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = self;
-  v8 = [(MTLToolsTexture *)self parentTexture];
-  if (v8)
+  length = slices.length;
+  location = slices.location;
+  selfCopy = self;
+  parentTexture = [(MTLToolsTexture *)self parentTexture];
+  if (parentTexture)
   {
     do
     {
-      v9 = v8;
-      a3 += [(MTLToolsTexture *)v7 parentRelativeLevel];
-      location += [(MTLToolsTexture *)v7 parentRelativeSlice];
-      v8 = [v9 parentTexture];
-      v7 = v9;
+      v9 = parentTexture;
+      target += [(MTLToolsTexture *)selfCopy parentRelativeLevel];
+      location += [(MTLToolsTexture *)selfCopy parentRelativeSlice];
+      parentTexture = [v9 parentTexture];
+      selfCopy = v9;
     }
 
-    while (v8);
+    while (parentTexture);
   }
 
   else
   {
-    v9 = v7;
+    v9 = selfCopy;
   }
 
-  v12[0] = a3;
+  v12[0] = target;
   v12[1] = location;
   v12[2] = length;
   std::mutex::lock((v9 + 152));
@@ -616,7 +616,7 @@
 
 - (uint64_t)dealloc
 {
-  [a1 usage];
+  [self usage];
   v4 = *a2;
   return MTLReportFailure();
 }

@@ -1,12 +1,12 @@
 @interface BRCAccountWaitOperation
-- (BRCAccountWaitOperation)initWithCKContainer:(id)a3;
+- (BRCAccountWaitOperation)initWithCKContainer:(id)container;
 - (id)createActivity;
-- (id)descriptionForCKAccountStatus:(int64_t)a3 dumpContext:(id)a4;
-- (id)subclassableDescriptionWithContext:(id)a3;
+- (id)descriptionForCKAccountStatus:(int64_t)status dumpContext:(id)context;
+- (id)subclassableDescriptionWithContext:(id)context;
 - (void)_accountChangeHandler;
 - (void)cancel;
 - (void)dealloc;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 - (void)resumeIfNecessary;
 - (void)start;
@@ -14,16 +14,16 @@
 
 @implementation BRCAccountWaitOperation
 
-- (BRCAccountWaitOperation)initWithCKContainer:(id)a3
+- (BRCAccountWaitOperation)initWithCKContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v46.receiver = self;
   v46.super_class = BRCAccountWaitOperation;
   v6 = [(_BRCOperation *)&v46 initWithName:@"account-waiter"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ckContainer, a3);
+    objc_storeStrong(&v6->_ckContainer, container);
     v8 = [BRCUserDefaults defaultsForMangledID:0];
     v9 = [BRCConstantThrottle alloc];
     [v8 accountWaiterErrorRetryBackoff];
@@ -32,8 +32,8 @@
     v7->_throttle = v10;
 
     [(_BRCOperation *)v7 setOperationFailureThrottle:v7->_throttle];
-    v12 = [(_BRCOperation *)v7 callbackQueue];
-    v13 = dispatch_source_create(MEMORY[0x277D85CE8], 0, 0, v12);
+    callbackQueue = [(_BRCOperation *)v7 callbackQueue];
+    v13 = dispatch_source_create(MEMORY[0x277D85CE8], 0, 0, callbackQueue);
     source = v7->_source;
     v7->_source = v13;
 
@@ -146,39 +146,39 @@ void __47__BRCAccountWaitOperation_initWithCKContainer___block_invoke_3(uint64_t
   return v2;
 }
 
-- (id)descriptionForCKAccountStatus:(int64_t)a3 dumpContext:(id)a4
+- (id)descriptionForCKAccountStatus:(int64_t)status dumpContext:(id)context
 {
-  v5 = a4;
-  if (a3 <= 1)
+  contextCopy = context;
+  if (status <= 1)
   {
-    if (!a3)
+    if (!status)
     {
       v6 = @"unavailable";
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (status == 1)
     {
-      v7 = [BRCDumpContext highlightedString:@"available" type:7 context:v5];
+      v7 = [BRCDumpContext highlightedString:@"available" type:7 context:contextCopy];
       goto LABEL_14;
     }
 
     goto LABEL_12;
   }
 
-  if (a3 == 2)
+  if (status == 2)
   {
     v6 = @"restricted";
     goto LABEL_13;
   }
 
-  if (a3 == 3)
+  if (status == 3)
   {
     v6 = @"no account";
     goto LABEL_13;
   }
 
-  if (a3 != 4)
+  if (status != 4)
   {
 LABEL_12:
     v6 = @"unhandled account status";
@@ -187,20 +187,20 @@ LABEL_12:
 
   v6 = @"temporarily unavailable";
 LABEL_13:
-  v7 = [BRCDumpContext stringFromErrorString:v6 context:v5];
+  v7 = [BRCDumpContext stringFromErrorString:v6 context:contextCopy];
 LABEL_14:
   v8 = v7;
 
   return v8;
 }
 
-- (id)subclassableDescriptionWithContext:(id)a3
+- (id)subclassableDescriptionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(BRCAccountWaitOperation *)v5 descriptionForCKAccountStatus:v5->_lastAccountStatus dumpContext:v4];
-  objc_sync_exit(v5);
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(BRCAccountWaitOperation *)selfCopy descriptionForCKAccountStatus:selfCopy->_lastAccountStatus dumpContext:contextCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -238,7 +238,7 @@ LABEL_14:
 - (void)_accountChangeHandler
 {
   v5 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_4(&dword_223E7A000, v2, v3, "[DEBUG] ┣%llx waiting for account status%@");
   v4 = *MEMORY[0x277D85DE8];
@@ -412,8 +412,8 @@ LABEL_10:
 
 - (void)start
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__accountDidChange name:*MEMORY[0x277CBBF00] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__accountDidChange name:*MEMORY[0x277CBBF00] object:0];
 
   v4.receiver = self;
   v4.super_class = BRCAccountWaitOperation;
@@ -422,29 +422,29 @@ LABEL_10:
 
 - (void)main
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_resumed = 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_resumed = 1;
+  objc_sync_exit(selfCopy);
 
-  dispatch_source_merge_data(v2->_source, 1uLL);
-  source = v2->_source;
+  dispatch_source_merge_data(selfCopy->_source, 1uLL);
+  source = selfCopy->_source;
 
   dispatch_resume(source);
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   refetchPacer = self->_refetchPacer;
-  v7 = a4;
-  v8 = a3;
+  errorCopy = error;
+  resultCopy = result;
   br_pacer_cancel();
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 removeObserver:self name:*MEMORY[0x277CBBF00] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBBF00] object:0];
 
   v10.receiver = self;
   v10.super_class = BRCAccountWaitOperation;
-  [(_BRCOperation *)&v10 finishWithResult:v8 error:v7];
+  [(_BRCOperation *)&v10 finishWithResult:resultCopy error:errorCopy];
 }
 
 void __47__BRCAccountWaitOperation_initWithCKContainer___block_invoke_3_cold_1()

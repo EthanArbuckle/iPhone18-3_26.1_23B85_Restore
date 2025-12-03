@@ -1,10 +1,10 @@
 @interface AddDataViewControllerProvider
-- (id)addDataViewControllerForDisplayType:(id)a3;
+- (id)addDataViewControllerForDisplayType:(id)type;
 @end
 
 @implementation AddDataViewControllerProvider
 
-- (id)addDataViewControllerForDisplayType:(id)a3
+- (id)addDataViewControllerForDisplayType:(id)type
 {
   v5 = sub_1BA4A1728();
   v6 = *(v5 - 8);
@@ -12,13 +12,13 @@
   v8 = &v16 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9 = *self->healthStore;
   v10 = objc_opt_self();
-  v11 = a3;
+  typeCopy = type;
 
-  v12 = [v10 sharedInstanceForHealthStore_];
+  sharedInstanceForHealthStore_ = [v10 sharedInstanceForHealthStore_];
   sub_1BA4A1718();
   v13 = sub_1BA4A16B8();
   (*(v6 + 8))(v8, v5);
-  v14 = [v11 wd:v9 addDataViewControllerWithHealthStore:v12 healthToolBox:v13 initialStartDate:?];
+  v14 = [typeCopy wd:v9 addDataViewControllerWithHealthStore:sharedInstanceForHealthStore_ healthToolBox:v13 initialStartDate:?];
 
   return v14;
 }

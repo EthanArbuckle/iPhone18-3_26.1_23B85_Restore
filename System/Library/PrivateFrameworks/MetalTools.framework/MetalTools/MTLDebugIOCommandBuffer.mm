@@ -1,42 +1,42 @@
 @interface MTLDebugIOCommandBuffer
-- (void)addCompletedHandler:(id)a3;
+- (void)addCompletedHandler:(id)handler;
 - (void)commit;
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4;
-- (void)encodeWaitForEvent:(id)a3 value:(unint64_t)a4;
-- (void)internalValidateEvent:(id)a3;
-- (void)internalValidateLoadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 sourceHandle:(id)a6 sourceHandleOffset:(unint64_t)a7;
-- (void)internalValidateLoadBytes:(void *)a3 size:(unint64_t)a4 sourceHandle:(id)a5 sourceHandleOffset:(unint64_t)a6;
-- (void)internalValidateLoadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 sourceBytesPerRow:(unint64_t)a7 sourceBytesPerImage:(unint64_t)a8 destinationOrigin:(id *)a9 sourceHandle:(id)a10 sourceHandleOffset:(unint64_t)a11;
-- (void)loadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 handle:(id)a6 handleOffset:(unint64_t)a7;
-- (void)loadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 sourceHandle:(id)a6 sourceHandleOffset:(unint64_t)a7;
-- (void)loadBytes:(void *)a3 size:(unint64_t)a4 sourceHandle:(id)a5 sourceHandleOffset:(unint64_t)a6;
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8 dstOrigin:(id *)a9 handle:(id)a10 handleOffset:(unint64_t)a11;
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 sourceBytesPerRow:(unint64_t)a7 sourceBytesPerImage:(unint64_t)a8 destinationOrigin:(id *)a9 sourceHandle:(id)a10 sourceHandleOffset:(unint64_t)a11;
-- (void)signalEvent:(id)a3 value:(unint64_t)a4;
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value;
+- (void)encodeWaitForEvent:(id)event value:(unint64_t)value;
+- (void)internalValidateEvent:(id)event;
+- (void)internalValidateLoadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)handleOffset;
+- (void)internalValidateLoadBytes:(void *)bytes size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)offset;
+- (void)internalValidateLoadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image destinationOrigin:(id *)origin sourceHandle:(id)self0 sourceHandleOffset:(unint64_t)self1;
+- (void)loadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size handle:(id)handle handleOffset:(unint64_t)handleOffset;
+- (void)loadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)handleOffset;
+- (void)loadBytes:(void *)bytes size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)offset;
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image dstOrigin:(id *)origin handle:(id)self0 handleOffset:(unint64_t)self1;
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image destinationOrigin:(id *)origin sourceHandle:(id)self0 sourceHandleOffset:(unint64_t)self1;
+- (void)signalEvent:(id)event value:(unint64_t)value;
 - (void)tryCancel;
-- (void)waitForEvent:(id)a3 value:(unint64_t)a4;
+- (void)waitForEvent:(id)event value:(unint64_t)value;
 @end
 
 @implementation MTLDebugIOCommandBuffer
 
-- (void)internalValidateEvent:(id)a3
+- (void)internalValidateEvent:(id)event
 {
   [(MTLToolsObject *)self device:0];
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!event)
   {
     goto LABEL_7;
   }
 
-  if (([a3 conformsToProtocol:&unk_2842374C0] & 1) == 0)
+  if (([event conformsToProtocol:&unk_2842374C0] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a3 conformsToProtocol:&unk_2842374C0])
+  if ([event conformsToProtocol:&unk_2842374C0])
   {
     v5 = *&self->MTLToolsIOCommandBuffer_opaque[24];
-    if (v5 != [a3 device])
+    if (v5 != [event device])
     {
 LABEL_7:
       _MTLMessageContextPush_();
@@ -46,64 +46,64 @@ LABEL_7:
   _MTLMessageContextEnd();
 }
 
-- (void)addCompletedHandler:(id)a3
+- (void)addCompletedHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
     [MTLDebugIOCommandBuffer addCompletedHandler:];
   }
 
   v5.receiver = self;
   v5.super_class = MTLDebugIOCommandBuffer;
-  [(MTLToolsIOCommandBuffer *)&v5 addCompletedHandler:a3];
+  [(MTLToolsIOCommandBuffer *)&v5 addCompletedHandler:handler];
 }
 
-- (void)encodeWaitForEvent:(id)a3 value:(unint64_t)a4
+- (void)encodeWaitForEvent:(id)event value:(unint64_t)value
 {
   [(MTLDebugIOCommandBuffer *)self internalValidateEvent:?];
   v7.receiver = self;
   v7.super_class = MTLDebugIOCommandBuffer;
-  [(MTLToolsIOCommandBuffer *)&v7 encodeWaitForEvent:a3 value:a4];
+  [(MTLToolsIOCommandBuffer *)&v7 encodeWaitForEvent:event value:value];
 }
 
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value
 {
   [(MTLDebugIOCommandBuffer *)self internalValidateEvent:?];
   v7.receiver = self;
   v7.super_class = MTLDebugIOCommandBuffer;
-  [(MTLToolsIOCommandBuffer *)&v7 encodeSignalEvent:a3 value:a4];
+  [(MTLToolsIOCommandBuffer *)&v7 encodeSignalEvent:event value:value];
 }
 
-- (void)waitForEvent:(id)a3 value:(unint64_t)a4
+- (void)waitForEvent:(id)event value:(unint64_t)value
 {
   [(MTLDebugIOCommandBuffer *)self internalValidateEvent:?];
   v7.receiver = self;
   v7.super_class = MTLDebugIOCommandBuffer;
-  [(MTLToolsIOCommandBuffer *)&v7 encodeWaitForEvent:a3 value:a4];
+  [(MTLToolsIOCommandBuffer *)&v7 encodeWaitForEvent:event value:value];
 }
 
-- (void)signalEvent:(id)a3 value:(unint64_t)a4
+- (void)signalEvent:(id)event value:(unint64_t)value
 {
   [(MTLDebugIOCommandBuffer *)self internalValidateEvent:?];
   v7.receiver = self;
   v7.super_class = MTLDebugIOCommandBuffer;
-  [(MTLToolsIOCommandBuffer *)&v7 encodeSignalEvent:a3 value:a4];
+  [(MTLToolsIOCommandBuffer *)&v7 encodeSignalEvent:event value:value];
 }
 
-- (void)internalValidateLoadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 sourceHandle:(id)a6 sourceHandleOffset:(unint64_t)a7
+- (void)internalValidateLoadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)handleOffset
 {
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if (a3)
+  if (buffer)
   {
-    if (([a3 conformsToProtocol:&unk_284222E68] & 1) == 0)
+    if (([buffer conformsToProtocol:&unk_284222E68] & 1) == 0)
     {
       _MTLMessageContextPush_();
     }
 
-    if (![a3 conformsToProtocol:&unk_284222E68] || (v13 = *&self->MTLToolsIOCommandBuffer_opaque[24], v13 == objc_msgSend(a3, "device")))
+    if (![buffer conformsToProtocol:&unk_284222E68] || (v13 = *&self->MTLToolsIOCommandBuffer_opaque[24], v13 == objc_msgSend(buffer, "device")))
     {
-      if (a6)
+      if (handle)
       {
         goto LABEL_7;
       }
@@ -115,37 +115,37 @@ LABEL_22:
   }
 
   _MTLMessageContextPush_();
-  if (!a6)
+  if (!handle)
   {
     goto LABEL_22;
   }
 
 LABEL_7:
-  if (([a6 conformsToProtocol:&unk_284245020] & 1) == 0)
+  if (([handle conformsToProtocol:&unk_284245020] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a6 conformsToProtocol:&unk_284245020])
+  if ([handle conformsToProtocol:&unk_284245020])
   {
     v14 = *&self->MTLToolsIOCommandBuffer_opaque[24];
-    if (v14 != [a6 device])
+    if (v14 != [handle device])
     {
       goto LABEL_22;
     }
   }
 
 LABEL_11:
-  if (a5 + a4 > [objc_msgSend(a3 "baseObject")])
+  if (size + offset > [objc_msgSend(buffer "baseObject")])
   {
     [MTLDebugIOCommandBuffer internalValidateLoadBuffer:offset:size:sourceHandle:sourceHandleOffset:];
-    if (a5)
+    if (size)
     {
       goto LABEL_13;
     }
   }
 
-  else if (a5)
+  else if (size)
   {
     goto LABEL_13;
   }
@@ -153,27 +153,27 @@ LABEL_11:
   v15 = 0;
   _MTLMessageContextPush_();
 LABEL_13:
-  if ([objc_msgSend(a6 baseObject] < a7)
+  if ([objc_msgSend(handle baseObject] < handleOffset)
   {
     [MTLDebugIOCommandBuffer internalValidateLoadBuffer:offset:size:sourceHandle:sourceHandleOffset:];
   }
 
-  if (a7 + a5 > [objc_msgSend(a6 "baseObject")])
+  if (handleOffset + size > [objc_msgSend(handle "baseObject")])
   {
-    [objc_msgSend(a6 "baseObject")];
+    [objc_msgSend(handle "baseObject")];
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
 }
 
-- (void)internalValidateLoadBytes:(void *)a3 size:(unint64_t)a4 sourceHandle:(id)a5 sourceHandleOffset:(unint64_t)a6
+- (void)internalValidateLoadBytes:(void *)bytes size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)offset
 {
   [(MTLToolsObject *)self device];
   _MTLMessageContextBegin_();
-  if (a3)
+  if (bytes)
   {
-    if (!a5)
+    if (!handle)
     {
       goto LABEL_14;
     }
@@ -182,25 +182,25 @@ LABEL_13:
   else
   {
     _MTLMessageContextPush_();
-    if (!a5)
+    if (!handle)
     {
       goto LABEL_14;
     }
   }
 
-  if (([a5 conformsToProtocol:&unk_284245020] & 1) == 0)
+  if (([handle conformsToProtocol:&unk_284245020] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a5 conformsToProtocol:&unk_284245020])
+  if ([handle conformsToProtocol:&unk_284245020])
   {
     v11 = *&self->MTLToolsIOCommandBuffer_opaque[24];
-    if (v11 != [a5 device])
+    if (v11 != [handle device])
     {
 LABEL_14:
       _MTLMessageContextPush_();
-      if (a4)
+      if (size)
       {
         goto LABEL_8;
       }
@@ -209,7 +209,7 @@ LABEL_14:
     }
   }
 
-  if (a4)
+  if (size)
   {
     goto LABEL_8;
   }
@@ -218,58 +218,58 @@ LABEL_15:
   v12 = 0;
   _MTLMessageContextPush_();
 LABEL_8:
-  if ([objc_msgSend(a5 baseObject] < a6)
+  if ([objc_msgSend(handle baseObject] < offset)
   {
     [MTLDebugIOCommandBuffer internalValidateLoadBuffer:offset:size:sourceHandle:sourceHandleOffset:];
   }
 
-  if (a6 + a4 > [objc_msgSend(a5 "baseObject")])
+  if (offset + size > [objc_msgSend(handle "baseObject")])
   {
-    [objc_msgSend(a5 "baseObject")];
+    [objc_msgSend(handle "baseObject")];
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
 }
 
-- (void)loadBytes:(void *)a3 size:(unint64_t)a4 sourceHandle:(id)a5 sourceHandleOffset:(unint64_t)a6
+- (void)loadBytes:(void *)bytes size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)offset
 {
   [MTLDebugIOCommandBuffer internalValidateLoadBytes:"internalValidateLoadBytes:size:sourceHandle:sourceHandleOffset:" size:? sourceHandle:? sourceHandleOffset:?];
   v11.receiver = self;
   v11.super_class = MTLDebugIOCommandBuffer;
-  [(MTLToolsIOCommandBuffer *)&v11 loadBytes:a3 size:a4 sourceHandle:a5 sourceHandleOffset:a6];
+  [(MTLToolsIOCommandBuffer *)&v11 loadBytes:bytes size:size sourceHandle:handle sourceHandleOffset:offset];
 }
 
-- (void)loadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 handle:(id)a6 handleOffset:(unint64_t)a7
+- (void)loadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size handle:(id)handle handleOffset:(unint64_t)handleOffset
 {
   [MTLDebugIOCommandBuffer internalValidateLoadBuffer:"internalValidateLoadBuffer:offset:size:sourceHandle:sourceHandleOffset:" offset:? size:? sourceHandle:? sourceHandleOffset:?];
   v13.receiver = self;
   v13.super_class = MTLDebugIOCommandBuffer;
-  [(MTLToolsIOCommandBuffer *)&v13 loadBuffer:a3 offset:a4 size:a5 sourceHandle:a6 sourceHandleOffset:a7];
+  [(MTLToolsIOCommandBuffer *)&v13 loadBuffer:buffer offset:offset size:size sourceHandle:handle sourceHandleOffset:handleOffset];
 }
 
-- (void)loadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 sourceHandle:(id)a6 sourceHandleOffset:(unint64_t)a7
+- (void)loadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)handleOffset
 {
   [MTLDebugIOCommandBuffer internalValidateLoadBuffer:"internalValidateLoadBuffer:offset:size:sourceHandle:sourceHandleOffset:" offset:? size:? sourceHandle:? sourceHandleOffset:?];
   v13.receiver = self;
   v13.super_class = MTLDebugIOCommandBuffer;
-  [(MTLToolsIOCommandBuffer *)&v13 loadBuffer:a3 offset:a4 size:a5 sourceHandle:a6 sourceHandleOffset:a7];
+  [(MTLToolsIOCommandBuffer *)&v13 loadBuffer:buffer offset:offset size:size sourceHandle:handle sourceHandleOffset:handleOffset];
 }
 
-- (void)internalValidateLoadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 sourceBytesPerRow:(unint64_t)a7 sourceBytesPerImage:(unint64_t)a8 destinationOrigin:(id *)a9 sourceHandle:(id)a10 sourceHandleOffset:(unint64_t)a11
+- (void)internalValidateLoadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image destinationOrigin:(id *)origin sourceHandle:(id)self0 sourceHandleOffset:(unint64_t)self1
 {
-  [(MTLToolsObject *)self device:a3];
+  [(MTLToolsObject *)self device:texture];
   _MTLMessageContextBegin_();
-  if (a3)
+  if (texture)
   {
-    if (([a3 conformsToProtocol:&unk_28423C818] & 1) == 0)
+    if (([texture conformsToProtocol:&unk_28423C818] & 1) == 0)
     {
       _MTLMessageContextPush_();
     }
 
-    if (![a3 conformsToProtocol:&unk_28423C818] || (v16 = *&self->MTLToolsIOCommandBuffer_opaque[24], v16 == objc_msgSend(a3, "device")))
+    if (![texture conformsToProtocol:&unk_28423C818] || (v16 = *&self->MTLToolsIOCommandBuffer_opaque[24], v16 == objc_msgSend(texture, "device")))
     {
-      if (a10)
+      if (handle)
       {
         goto LABEL_7;
       }
@@ -281,100 +281,100 @@ LABEL_58:
   }
 
   _MTLMessageContextPush_();
-  if (!a10)
+  if (!handle)
   {
     goto LABEL_58;
   }
 
 LABEL_7:
-  if (([a10 conformsToProtocol:&unk_284245020] & 1) == 0)
+  if (([handle conformsToProtocol:&unk_284245020] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a10 conformsToProtocol:&unk_284245020])
+  if ([handle conformsToProtocol:&unk_284245020])
   {
     v17 = *&self->MTLToolsIOCommandBuffer_opaque[24];
-    if (v17 != [a10 device])
+    if (v17 != [handle device])
     {
       _MTLMessageContextPush_();
     }
 
-    if ([a3 storageMode] == 3)
+    if ([texture storageMode] == 3)
     {
       goto LABEL_58;
     }
   }
 
 LABEL_13:
-  if (!(a6->var1 * a6->var0 * a6->var2))
+  if (!(size->var1 * size->var0 * size->var2))
   {
-    var2 = a6->var2;
+    var2 = size->var2;
     v31 = 0;
-    var0 = a6->var0;
-    var1 = a6->var1;
+    var0 = size->var0;
+    var1 = size->var1;
     _MTLMessageContextPush_();
   }
 
-  if ([objc_msgSend(a10 baseObject] < a11)
+  if ([objc_msgSend(handle baseObject] < offset)
   {
     [MTLDebugIOCommandBuffer internalValidateLoadBuffer:offset:size:sourceHandle:sourceHandleOffset:];
   }
 
-  if ([a3 isFramebufferOnly])
+  if ([texture isFramebufferOnly])
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a3 mipmapLevelCount] <= a5)
+  if ([texture mipmapLevelCount] <= level)
   {
-    v24 = a5;
-    v27 = [a3 mipmapLevelCount];
+    levelCopy = level;
+    mipmapLevelCount = [texture mipmapLevelCount];
     _MTLMessageContextPush_();
   }
 
-  v18 = [a3 numFaces];
-  if ([a3 arrayLength] * v18 <= a4)
+  numFaces = [texture numFaces];
+  if ([texture arrayLength] * numFaces <= slice)
   {
     [MTLDebugIOCommandBuffer internalValidateLoadTexture:slice:level:size:sourceBytesPerRow:sourceBytesPerImage:destinationOrigin:sourceHandle:sourceHandleOffset:];
   }
 
-  v19 = (a3 + 72);
+  v19 = (texture + 72);
   v20 = *&self->MTLToolsIOCommandBuffer_opaque[24];
-  [a3 pixelFormat];
-  [a3 width];
-  [a3 height];
-  [a3 depth];
-  [a3 sampleCount];
+  [texture pixelFormat];
+  [texture width];
+  [texture height];
+  [texture depth];
+  [texture sampleCount];
   MTLGetTextureLevelInfoForDevice();
-  v38 = *a9;
-  v36 = *&a6->var0;
-  v37 = a6->var2;
-  v32 = *(a3 + 72);
-  v33 = *(a3 + 88);
-  v34 = *(a3 + 104);
-  v35 = *(a3 + 15);
+  v38 = *origin;
+  v36 = *&size->var0;
+  v37 = size->var2;
+  v32 = *(texture + 72);
+  v33 = *(texture + 88);
+  v34 = *(texture + 104);
+  v35 = *(texture + 15);
   _MTLAdjustMTLSize();
-  v21 = a9->var0;
-  if ((*(a3 + 81) & 4) != 0)
+  v21 = origin->var0;
+  if ((*(texture + 81) & 4) != 0)
   {
     if (v21)
     {
-      v25 = a9->var0;
+      v25 = origin->var0;
       v28 = 0;
       _MTLMessageContextPush_();
     }
 
-    if (a9->var1)
+    if (origin->var1)
     {
-      v25 = a9->var1;
+      v25 = origin->var1;
       v28 = 0;
       _MTLMessageContextPush_();
     }
 
-    if (a9->var2)
+    if (origin->var2)
     {
-      v25 = a9->var2;
+      v25 = origin->var2;
       v28 = 0;
       goto LABEL_56;
     }
@@ -382,7 +382,7 @@ LABEL_13:
 
   else
   {
-    v22 = a6->var0 + v21;
+    v22 = size->var0 + v21;
     if (v22)
     {
       v25 = v22;
@@ -390,81 +390,81 @@ LABEL_13:
       _MTLMessageContextPush_();
     }
 
-    if (a6->var1 + a9->var1)
+    if (size->var1 + origin->var1)
     {
-      v25 = a6->var1 + a9->var1;
+      v25 = size->var1 + origin->var1;
       v28 = 0;
       _MTLMessageContextPush_();
     }
 
-    if (a6->var2 + a9->var2)
+    if (size->var2 + origin->var2)
     {
-      v25 = a6->var2 + a9->var2;
+      v25 = size->var2 + origin->var2;
       v28 = 0;
 LABEL_56:
       _MTLMessageContextPush_();
     }
   }
 
-  if ((*(a3 + 81) & 4) != 0)
+  if ((*(texture + 81) & 4) != 0)
   {
-    if (a9->var0 % *(a3 + 13))
+    if (origin->var0 % *(texture + 13))
     {
       v28 = *v19;
-      v30 = *(a3 + 13);
-      v25 = a9->var0;
+      v30 = *(texture + 13);
+      v25 = origin->var0;
       _MTLMessageContextPush_();
     }
 
-    if (a9->var1 % *(a3 + 14))
+    if (origin->var1 % *(texture + 14))
     {
       v28 = *v19;
-      v30 = *(a3 + 14);
-      v25 = a9->var1;
+      v30 = *(texture + 14);
+      v25 = origin->var1;
       _MTLMessageContextPush_();
     }
 
-    if (a9->var2 % *(a3 + 15))
+    if (origin->var2 % *(texture + 15))
     {
       v28 = *v19;
-      v30 = *(a3 + 15);
-      v25 = a9->var2;
+      v30 = *(texture + 15);
+      v25 = origin->var2;
       _MTLMessageContextPush_();
     }
 
-    if (0uLL % *(a3 + 13))
+    if (0uLL % *(texture + 13))
     {
       v28 = *v19;
-      v30 = *(a3 + 13);
+      v30 = *(texture + 13);
       v25 = 0;
       _MTLMessageContextPush_();
     }
 
-    if (0uLL % *(a3 + 14))
+    if (0uLL % *(texture + 14))
     {
       v28 = *v19;
-      v30 = *(a3 + 14);
+      v30 = *(texture + 14);
       v25 = 0;
       _MTLMessageContextPush_();
     }
 
-    if (0uLL % *(a3 + 15))
+    if (0uLL % *(texture + 15))
     {
       v28 = *v19;
-      v30 = *(a3 + 15);
+      v30 = *(texture + 15);
       v25 = 0;
       _MTLMessageContextPush_();
     }
   }
 
-  if ((*(a3 + 81) & 4) != 0)
+  if ((*(texture + 81) & 4) != 0)
   {
-    if (*(a3 + 15) != 1)
+    if (*(texture + 15) != 1)
     {
       _MTLMessageContextPush_();
     }
 
-    if ([a3 textureType] == 9)
+    if ([texture textureType] == 9)
     {
       _MTLMessageContextPush_();
     }
@@ -473,28 +473,28 @@ LABEL_56:
   _MTLMessageContextEnd();
 }
 
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8 dstOrigin:(id *)a9 handle:(id)a10 handleOffset:(unint64_t)a11
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image dstOrigin:(id *)origin handle:(id)self0 handleOffset:(unint64_t)self1
 {
-  v20 = *a6;
-  v19 = *a9;
-  [MTLDebugIOCommandBuffer internalValidateLoadTexture:"internalValidateLoadTexture:slice:level:size:sourceBytesPerRow:sourceBytesPerImage:destinationOrigin:sourceHandle:sourceHandleOffset:" slice:a3 level:a4 size:a5 sourceBytesPerRow:&v20 sourceBytesPerImage:&v19 destinationOrigin:a10 sourceHandle:a11 sourceHandleOffset:?];
-  v20 = *a6;
-  v19 = *a9;
+  v20 = *size;
+  v19 = *origin;
+  [MTLDebugIOCommandBuffer internalValidateLoadTexture:"internalValidateLoadTexture:slice:level:size:sourceBytesPerRow:sourceBytesPerImage:destinationOrigin:sourceHandle:sourceHandleOffset:" slice:texture level:slice size:level sourceBytesPerRow:&v20 sourceBytesPerImage:&v19 destinationOrigin:handle sourceHandle:offset sourceHandleOffset:?];
+  v20 = *size;
+  v19 = *origin;
   v18.receiver = self;
   v18.super_class = MTLDebugIOCommandBuffer;
-  [(MTLToolsIOCommandBuffer *)&v18 loadTexture:a3 slice:a4 level:a5 size:&v20 sourceBytesPerRow:a7 sourceBytesPerImage:a8 destinationOrigin:&v19 sourceHandle:a10 sourceHandleOffset:a11];
+  [(MTLToolsIOCommandBuffer *)&v18 loadTexture:texture slice:slice level:level size:&v20 sourceBytesPerRow:row sourceBytesPerImage:image destinationOrigin:&v19 sourceHandle:handle sourceHandleOffset:offset];
 }
 
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 sourceBytesPerRow:(unint64_t)a7 sourceBytesPerImage:(unint64_t)a8 destinationOrigin:(id *)a9 sourceHandle:(id)a10 sourceHandleOffset:(unint64_t)a11
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image destinationOrigin:(id *)origin sourceHandle:(id)self0 sourceHandleOffset:(unint64_t)self1
 {
-  v20 = *a6;
-  v19 = *a9;
-  [MTLDebugIOCommandBuffer internalValidateLoadTexture:"internalValidateLoadTexture:slice:level:size:sourceBytesPerRow:sourceBytesPerImage:destinationOrigin:sourceHandle:sourceHandleOffset:" slice:a3 level:a4 size:a5 sourceBytesPerRow:&v20 sourceBytesPerImage:&v19 destinationOrigin:a10 sourceHandle:a11 sourceHandleOffset:?];
-  v20 = *a6;
-  v19 = *a9;
+  v20 = *size;
+  v19 = *origin;
+  [MTLDebugIOCommandBuffer internalValidateLoadTexture:"internalValidateLoadTexture:slice:level:size:sourceBytesPerRow:sourceBytesPerImage:destinationOrigin:sourceHandle:sourceHandleOffset:" slice:texture level:slice size:level sourceBytesPerRow:&v20 sourceBytesPerImage:&v19 destinationOrigin:handle sourceHandle:offset sourceHandleOffset:?];
+  v20 = *size;
+  v19 = *origin;
   v18.receiver = self;
   v18.super_class = MTLDebugIOCommandBuffer;
-  [(MTLToolsIOCommandBuffer *)&v18 loadTexture:a3 slice:a4 level:a5 size:&v20 sourceBytesPerRow:a7 sourceBytesPerImage:a8 destinationOrigin:&v19 sourceHandle:a10 sourceHandleOffset:a11];
+  [(MTLToolsIOCommandBuffer *)&v18 loadTexture:texture slice:slice level:level size:&v20 sourceBytesPerRow:row sourceBytesPerImage:image destinationOrigin:&v19 sourceHandle:handle sourceHandleOffset:offset];
 }
 
 - (void)commit

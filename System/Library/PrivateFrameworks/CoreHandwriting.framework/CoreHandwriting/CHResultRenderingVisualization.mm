@@ -1,17 +1,17 @@
 @interface CHResultRenderingVisualization
-- (BOOL)shouldRenderStrokeGroupResult:(id)a3;
-- (CGRect)dirtyRectForStrokeGroup:(id)a3;
-- (CHResultRenderingVisualization)initWithRecognitionSession:(id)a3;
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5;
+- (BOOL)shouldRenderStrokeGroupResult:(id)result;
+- (CGRect)dirtyRectForStrokeGroup:(id)group;
+- (CHResultRenderingVisualization)initWithRecognitionSession:(id)session;
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds;
 @end
 
 @implementation CHResultRenderingVisualization
 
-- (CHResultRenderingVisualization)initWithRecognitionSession:(id)a3
+- (CHResultRenderingVisualization)initWithRecognitionSession:(id)session
 {
   v12.receiver = self;
   v12.super_class = CHResultRenderingVisualization;
-  v8 = [(CHVisualization *)&v12 initWithRecognitionSession:a3];
+  v8 = [(CHVisualization *)&v12 initWithRecognitionSession:session];
   if (v8)
   {
     v9 = objc_msgSend_array(MEMORY[0x1E695DF70], v3, v4, v5, v6, v7);
@@ -22,11 +22,11 @@
   return v8;
 }
 
-- (CGRect)dirtyRectForStrokeGroup:(id)a3
+- (CGRect)dirtyRectForStrokeGroup:(id)group
 {
   v9.receiver = self;
   v9.super_class = CHResultRenderingVisualization;
-  [(CHStrokeGroupBasedVisualization *)&v9 dirtyRectForStrokeGroup:a3];
+  [(CHStrokeGroupBasedVisualization *)&v9 dirtyRectForStrokeGroup:group];
   v6 = v5 + 60.0;
   v8 = v7 + -60.0;
   result.size.height = v6;
@@ -36,12 +36,12 @@
   return result;
 }
 
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds
 {
   v142 = *MEMORY[0x1E69E9840];
   v139.receiver = self;
   v139.super_class = CHResultRenderingVisualization;
-  [(CHStrokeGroupBasedVisualization *)&v139 drawVisualizationInRect:a3.origin.x context:a3.origin.y viewBounds:a3.size.width, a3.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  [(CHStrokeGroupBasedVisualization *)&v139 drawVisualizationInRect:rect.origin.x context:rect.origin.y viewBounds:rect.size.width, rect.size.height, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v132 = objc_msgSend_resultDrawn(self, v6, v7, v8, v9, v10);
   v16 = objc_msgSend_strokeGroupingResult(v132, v11, v12, v13, v14, v15);
   objc_msgSend_removeAllObjects(self->_renderedResults, v17, v18, v19, v20, v21);
@@ -103,13 +103,13 @@
           height = v144.size.height;
           DeviceRGB = CGColorSpaceCreateDeviceRGB();
           v79 = CGColorCreate(DeviceRGB, dbl_1839D0060);
-          CGContextSetStrokeColorWithColor(a4, v79);
-          CGContextSetLineWidth(a4, 1.0);
+          CGContextSetStrokeColorWithColor(context, v79);
+          CGContextSetLineWidth(context, 1.0);
           v145.origin.x = x;
           v145.origin.y = y;
           v145.size.width = width;
           v145.size.height = height;
-          CGContextStrokeRect(a4, v145);
+          CGContextStrokeRect(context, v145);
           CGColorRelease(v79);
           CGColorSpaceRelease(DeviceRGB);
           v146.origin.x = x;
@@ -152,16 +152,16 @@ LABEL_6:
   }
 }
 
-- (BOOL)shouldRenderStrokeGroupResult:(id)a3
+- (BOOL)shouldRenderStrokeGroupResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = objc_opt_class();
-  v11 = objc_msgSend_classification(v4, v6, v7, v8, v9, v10);
+  v11 = objc_msgSend_classification(resultCopy, v6, v7, v8, v9, v10);
   if (objc_msgSend_isStrokeClassificationTextOrMath_(v5, v12, v11, v13, v14, v15))
   {
     v21 = objc_msgSend_activeStrokeGroupAncestorIdentifiers(self, v16, v17, v18, v19, v20);
     v22 = MEMORY[0x1E696AD98];
-    v28 = objc_msgSend_ancestorIdentifier(v4, v23, v24, v25, v26, v27);
+    v28 = objc_msgSend_ancestorIdentifier(resultCopy, v23, v24, v25, v26, v27);
     v33 = objc_msgSend_numberWithInteger_(v22, v29, v28, v30, v31, v32);
     LOBYTE(v22) = objc_msgSend_containsObject_(v21, v34, v33, v35, v36, v37);
 

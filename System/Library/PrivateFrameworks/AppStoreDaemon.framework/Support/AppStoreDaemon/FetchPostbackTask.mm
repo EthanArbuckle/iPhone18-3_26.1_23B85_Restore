@@ -8,29 +8,29 @@
 {
   if (self->_appAdamID)
   {
-    v2 = self;
+    selfCopy2 = self;
     v3 = self->_params;
-    if (!v2->_requestEncoder)
+    if (!selfCopy2->_requestEncoder)
     {
       v4 = objc_alloc_init(AMSURLRequestEncoder);
-      requestEncoder = v2->_requestEncoder;
-      v2->_requestEncoder = v4;
+      requestEncoder = selfCopy2->_requestEncoder;
+      selfCopy2->_requestEncoder = v4;
 
-      v6 = v2->_requestEncoder;
+      v6 = selfCopy2->_requestEncoder;
       v7 = +[BagService appstoredService];
-      v8 = [v7 amsBag];
-      [(AMSURLRequestEncoder *)v6 setBag:v8];
+      amsBag = [v7 amsBag];
+      [(AMSURLRequestEncoder *)v6 setBag:amsBag];
 
-      v2 = self;
+      selfCopy2 = self;
       [(AMSURLRequestEncoder *)self->_requestEncoder setAccount:self->_account];
       [(AMSURLRequestEncoder *)self->_requestEncoder setRequestEncoding:3];
     }
 
-    [(NSMutableDictionary *)v2->_paramsDict setObject:v3 forKeyedSubscript:@"ad-networks"];
-    fetchPostbackInfoURL = v2->_fetchPostbackInfoURL;
+    [(NSMutableDictionary *)selfCopy2->_paramsDict setObject:v3 forKeyedSubscript:@"ad-networks"];
+    fetchPostbackInfoURL = selfCopy2->_fetchPostbackInfoURL;
     if (fetchPostbackInfoURL)
     {
-      v10 = [(AMSURLRequestEncoder *)v2->_requestEncoder requestWithMethod:4 URL:fetchPostbackInfoURL parameters:v2->_paramsDict];
+      v10 = [(AMSURLRequestEncoder *)selfCopy2->_requestEncoder requestWithMethod:4 URL:fetchPostbackInfoURL parameters:selfCopy2->_paramsDict];
       *v42 = 0;
       v38 = [v10 resultWithError:v42];
       v11 = *v42;
@@ -64,8 +64,8 @@
       responseStatusCode = self->_responseStatusCode;
       self->_responseStatusCode = v15;
 
-      v33 = [v36 object];
-      v17 = [v33 objectForKeyedSubscript:@"ad-networks"];
+      object = [v36 object];
+      v17 = [object objectForKeyedSubscript:@"ad-networks"];
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
@@ -88,8 +88,8 @@
             v21 = *(*(&v52 + 1) + 8 * v20);
             v22 = [v21 objectForKeyedSubscript:@"status"];
             v23 = [v21 objectForKeyedSubscript:@"error"];
-            v24 = [v22 lowercaseString];
-            if (([v24 isEqualToString:@"ok"] & 1) != 0 || !objc_msgSend(v24, "isEqualToString:", @"error"))
+            lowercaseString = [v22 lowercaseString];
+            if (([lowercaseString isEqualToString:@"ok"] & 1) != 0 || !objc_msgSend(lowercaseString, "isEqualToString:", @"error"))
             {
               v26 = 0;
             }

@@ -13,7 +13,7 @@
   v8[3] = &unk_2783AC6B0;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 indexOfObjectPassingTest:v8];
+  v6 = [self indexOfObjectPassingTest:v8];
 
   return v6;
 }

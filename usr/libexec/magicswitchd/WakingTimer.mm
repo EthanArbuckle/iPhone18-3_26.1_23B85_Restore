@@ -1,5 +1,5 @@
 @interface WakingTimer
-- (WakingTimer)initWithIdentifier:(id)a3 delay:(double)a4 gracePeriod:(double)a5 handlerBlock:(id)a6;
+- (WakingTimer)initWithIdentifier:(id)identifier delay:(double)delay gracePeriod:(double)period handlerBlock:(id)block;
 - (void)dealloc;
 - (void)fireTimer;
 - (void)invalidate;
@@ -7,20 +7,20 @@
 
 @implementation WakingTimer
 
-- (WakingTimer)initWithIdentifier:(id)a3 delay:(double)a4 gracePeriod:(double)a5 handlerBlock:(id)a6
+- (WakingTimer)initWithIdentifier:(id)identifier delay:(double)delay gracePeriod:(double)period handlerBlock:(id)block
 {
-  v11 = a3;
-  v12 = a6;
+  identifierCopy = identifier;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = WakingTimer;
   v13 = [(WakingTimer *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a3);
-    v14->_delay = a4;
-    v14->_gracePeriod = a5;
-    v15 = objc_retainBlock(v12);
+    objc_storeStrong(&v13->_identifier, identifier);
+    v14->_delay = delay;
+    v14->_gracePeriod = period;
+    v15 = objc_retainBlock(blockCopy);
     handlerBlock = v14->_handlerBlock;
     v14->_handlerBlock = v15;
 

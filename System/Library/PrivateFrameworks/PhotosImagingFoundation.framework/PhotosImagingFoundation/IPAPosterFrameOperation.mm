@@ -1,23 +1,23 @@
 @interface IPAPosterFrameOperation
-- (BOOL)isEqualToOperation:(id)a3;
-- (IPAPosterFrameOperation)initWithFrameTime:(id *)a3;
-- (IPAPosterFrameOperation)initWithOperation:(id)a3;
-- (IPAPosterFrameOperation)initWithSettingsDictionary:(id)a3;
+- (BOOL)isEqualToOperation:(id)operation;
+- (IPAPosterFrameOperation)initWithFrameTime:(id *)time;
+- (IPAPosterFrameOperation)initWithOperation:(id)operation;
+- (IPAPosterFrameOperation)initWithSettingsDictionary:(id)dictionary;
 - (id)debugDescription;
 - (id)settingsDictionary;
 @end
 
 @implementation IPAPosterFrameOperation
 
-- (BOOL)isEqualToOperation:(id)a3
+- (BOOL)isEqualToOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     time1 = self->_frameTime;
-    v5 = *(v4 + 8);
-    v8.epoch = *(v4 + 3);
+    v5 = *(operationCopy + 8);
+    v8.epoch = *(operationCopy + 3);
     *&v8.value = v5;
     v6 = CMTimeCompare(&time1, &v8) == 0;
   }
@@ -63,15 +63,15 @@
   return v5;
 }
 
-- (IPAPosterFrameOperation)initWithSettingsDictionary:(id)a3
+- (IPAPosterFrameOperation)initWithSettingsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = IPAPosterFrameOperation;
   v5 = [(IPAEditOperation *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"frameTime"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"frameTime"];
 
     CMTimeMakeFromDictionary(&v9, v6);
     v7 = *&v9.value;
@@ -82,40 +82,40 @@
   return v5;
 }
 
-- (IPAPosterFrameOperation)initWithOperation:(id)a3
+- (IPAPosterFrameOperation)initWithOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v9.receiver = self;
   v9.super_class = IPAPosterFrameOperation;
-  v5 = [(IPAEditOperation *)&v9 initWithOperation:v4];
+  v5 = [(IPAEditOperation *)&v9 initWithOperation:operationCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = *(v4 + 3);
-    *(v5 + 8) = *(v4 + 8);
+    v7 = *(operationCopy + 3);
+    *(v5 + 8) = *(operationCopy + 8);
     *(v5 + 3) = v7;
   }
 
   return v6;
 }
 
-- (IPAPosterFrameOperation)initWithFrameTime:(id *)a3
+- (IPAPosterFrameOperation)initWithFrameTime:(id *)time
 {
-  v3 = self;
-  if (a3->var2)
+  selfCopy = self;
+  if (time->var2)
   {
     v9.receiver = self;
     v9.super_class = IPAPosterFrameOperation;
     v6 = [(IPAEditOperation *)&v9 init];
     if (v6)
     {
-      var3 = a3->var3;
-      *(v6 + 8) = *&a3->var0;
+      var3 = time->var3;
+      *(v6 + 8) = *&time->var0;
       *(v6 + 3) = var3;
     }
 
-    v3 = v6;
-    v4 = v3;
+    selfCopy = v6;
+    v4 = selfCopy;
   }
 
   else

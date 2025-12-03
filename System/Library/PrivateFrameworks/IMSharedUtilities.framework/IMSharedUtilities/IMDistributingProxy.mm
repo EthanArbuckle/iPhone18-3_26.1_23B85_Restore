@@ -1,26 +1,26 @@
 @interface IMDistributingProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (IMDistributingProxy)initWithTargets:(id)a3 targetQueue:(id)a4 asynchronous:(BOOL)a5 filterBlock:(id)a6;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (IMDistributingProxy)initWithTargets:(id)targets targetQueue:(id)queue asynchronous:(BOOL)asynchronous filterBlock:(id)block;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation IMDistributingProxy
 
-- (IMDistributingProxy)initWithTargets:(id)a3 targetQueue:(id)a4 asynchronous:(BOOL)a5 filterBlock:(id)a6
+- (IMDistributingProxy)initWithTargets:(id)targets targetQueue:(id)queue asynchronous:(BOOL)asynchronous filterBlock:(id)block
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [a3 copy];
+  queueCopy = queue;
+  blockCopy = block;
+  v12 = [targets copy];
   targets = self->_targets;
   self->_targets = v12;
 
   targetQueue = self->_targetQueue;
-  self->_targetQueue = v10;
-  v15 = v10;
+  self->_targetQueue = queueCopy;
+  v15 = queueCopy;
 
-  self->_asynchronous = a5;
-  v16 = [v11 copy];
+  self->_asynchronous = asynchronous;
+  v16 = [blockCopy copy];
 
   filterBlock = self->_filterBlock;
   self->_filterBlock = v16;
@@ -28,7 +28,7 @@
   return self;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -72,15 +72,15 @@ LABEL_11:
   return v8;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(IMDistributingProxy *)self targets];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  targets = [(IMDistributingProxy *)self targets];
+  v5 = [targets countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -91,10 +91,10 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(targets);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) methodSignatureForSelector:a3];
+        v9 = [*(*(&v12 + 1) + 8 * i) methodSignatureForSelector:selector];
         if (v9)
         {
           v10 = v9;
@@ -102,7 +102,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [targets countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -118,38 +118,38 @@ LABEL_11:
   return v10;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [(IMDistributingProxy *)self targetQueue];
+  invocationCopy = invocation;
+  targetQueue = [(IMDistributingProxy *)self targetQueue];
 
-  if (v5)
+  if (targetQueue)
   {
     if ([(IMDistributingProxy *)self isAsynchronous])
     {
-      [v4 retainArguments];
-      v6 = [(IMDistributingProxy *)self targetQueue];
+      [invocationCopy retainArguments];
+      targetQueue2 = [(IMDistributingProxy *)self targetQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = sub_1A8629720;
       block[3] = &unk_1E78260F0;
       block[4] = self;
-      v12 = v4;
-      dispatch_async(v6, block);
+      v12 = invocationCopy;
+      dispatch_async(targetQueue2, block);
 
       v7 = v12;
     }
 
     else
     {
-      v8 = [(IMDistributingProxy *)self targetQueue];
+      targetQueue3 = [(IMDistributingProxy *)self targetQueue];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = sub_1A8629930;
       v9[3] = &unk_1E78260F0;
       v9[4] = self;
-      v10 = v4;
-      dispatch_sync(v8, v9);
+      v10 = invocationCopy;
+      dispatch_sync(targetQueue3, v9);
 
       v7 = v10;
     }
@@ -157,7 +157,7 @@ LABEL_11:
 
   else
   {
-    sub_1A862972C(self, v4);
+    sub_1A862972C(self, invocationCopy);
   }
 }
 

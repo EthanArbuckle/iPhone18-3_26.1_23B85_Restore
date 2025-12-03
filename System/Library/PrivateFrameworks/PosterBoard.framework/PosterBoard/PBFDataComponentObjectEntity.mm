@@ -1,17 +1,17 @@
 @interface PBFDataComponentObjectEntity
-- (PBFDataComponentObjectEntity)initWithComponent:(id)a3 object:(id)a4 context:(id)a5;
+- (PBFDataComponentObjectEntity)initWithComponent:(id)component object:(id)object context:(id)context;
 - (id)description;
 - (id)determineRefreshState;
 @end
 
 @implementation PBFDataComponentObjectEntity
 
-- (PBFDataComponentObjectEntity)initWithComponent:(id)a3 object:(id)a4 context:(id)a5
+- (PBFDataComponentObjectEntity)initWithComponent:(id)component object:(id)object context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v10;
+  componentCopy = component;
+  objectCopy = object;
+  contextCopy = context;
+  v13 = componentCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v13)
   {
@@ -23,12 +23,12 @@
     [PBFDataComponentObjectEntity initWithComponent:a2 object:? context:?];
   }
 
-  if (!v11)
+  if (!objectCopy)
   {
     [PBFDataComponentObjectEntity initWithComponent:a2 object:? context:?];
   }
 
-  v14 = v12;
+  v14 = contextCopy;
   NSClassFromString(&cfstr_Pbfdatarefresh.isa);
   if (!v14)
   {
@@ -46,9 +46,9 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_component, a3);
-    objc_storeStrong(&v16->_object, a4);
-    objc_storeStrong(&v16->_context, a5);
+    objc_storeStrong(&v15->_component, component);
+    objc_storeStrong(&v16->_object, object);
+    objc_storeStrong(&v16->_context, context);
   }
 
   return v16;
@@ -59,30 +59,30 @@
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_component withName:@"component"];
   v5 = [v3 appendObject:self->_object withName:@"object"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (id)determineRefreshState
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = self->_object;
-    v4 = [(PBFDataComponentObjectEntity *)self context];
-    v5 = [v3 determineRefreshStateWithContext:v4];
+    lastRefreshDate = self->_object;
+    context = [(PBFDataComponentObjectEntity *)self context];
+    v5 = [lastRefreshDate determineRefreshStateWithContext:context];
     goto LABEL_9;
   }
 
-  v6 = [(PBFDataComponentObjectEntity *)self context];
-  v4 = [v6 now];
+  context2 = [(PBFDataComponentObjectEntity *)self context];
+  context = [context2 now];
 
-  v7 = [(PBFDataComponentObjectEntity *)self context];
-  v3 = [v7 lastRefreshDate];
+  context3 = [(PBFDataComponentObjectEntity *)self context];
+  lastRefreshDate = [context3 lastRefreshDate];
 
-  v8 = [(PBFDataComponentObjectEntity *)self context];
-  v9 = [v8 component];
-  updated = PBFDefaultUpdateIntervalForDataComponent(v9);
+  context4 = [(PBFDataComponentObjectEntity *)self context];
+  component = [context4 component];
+  updated = PBFDefaultUpdateIntervalForDataComponent(component);
 
   if (updated == 1.79769313e308)
   {
@@ -92,7 +92,7 @@
 
   else
   {
-    [v4 timeIntervalSinceDate:v3];
+    [context timeIntervalSinceDate:lastRefreshDate];
     v14 = v13;
     v11 = [PBFDataRefreshState alloc];
     if (v14 > updated)

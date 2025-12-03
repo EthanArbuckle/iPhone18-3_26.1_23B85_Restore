@@ -1,6 +1,6 @@
 @interface CAWindowServerRamper
-- (CAWindowServerRamper)initWithDisplay:(id)a3;
-- (void)rampCallback:(id)a3;
+- (CAWindowServerRamper)initWithDisplay:(id)display;
+- (void)rampCallback:(id)callback;
 - (void)runRamp;
 @end
 
@@ -9,15 +9,15 @@
 - (void)runRamp
 {
   [(CAWindowServerRamper *)self setLink:[CADisplayLink displayLinkWithDisplay:[(CAWindowServerRamper *)self cadisplay] target:self selector:sel_rampCallback_]];
-  v3 = [(CAWindowServerRamper *)self link];
-  v4 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [(CADisplayLink *)v3 addToRunLoop:v4 forMode:*MEMORY[0x1E695D918]];
-  v5 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  link = [(CAWindowServerRamper *)self link];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [(CADisplayLink *)link addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695D918]];
+  currentRunLoop2 = [MEMORY[0x1E695DFD0] currentRunLoop];
 
-  [v5 run];
+  [currentRunLoop2 run];
 }
 
-- (void)rampCallback:(id)a3
+- (void)rampCallback:(id)callback
 {
   v5 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
@@ -33,7 +33,7 @@
   }
 }
 
-- (CAWindowServerRamper)initWithDisplay:(id)a3
+- (CAWindowServerRamper)initWithDisplay:(id)display
 {
   v20 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -42,7 +42,7 @@
   v5 = v4;
   if (v4)
   {
-    [(CAWindowServerRamper *)v4 setDisplay:a3];
+    [(CAWindowServerRamper *)v4 setDisplay:display];
     v6 = +[CADisplay displays];
     v16 = 0u;
     v17 = 0u;
@@ -63,8 +63,8 @@
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 displayId];
-          if (v12 == [a3 displayId])
+          displayId = [v11 displayId];
+          if (displayId == [display displayId])
           {
             [(CAWindowServerRamper *)v5 setCadisplay:v11];
             goto LABEL_12;

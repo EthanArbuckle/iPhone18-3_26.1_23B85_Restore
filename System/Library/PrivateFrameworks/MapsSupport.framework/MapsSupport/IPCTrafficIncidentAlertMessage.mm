@@ -1,32 +1,32 @@
 @interface IPCTrafficIncidentAlertMessage
-- (IPCTrafficIncidentAlertMessage)initWithDictionary:(id)a3;
+- (IPCTrafficIncidentAlertMessage)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryValue;
 @end
 
 @implementation IPCTrafficIncidentAlertMessage
 
-- (IPCTrafficIncidentAlertMessage)initWithDictionary:(id)a3
+- (IPCTrafficIncidentAlertMessage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = IPCTrafficIncidentAlertMessage;
-  v5 = [(IPCMessageObject *)&v12 initWithDictionary:v4];
+  v5 = [(IPCMessageObject *)&v12 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"kIPCTrafficIncidentAlertMessageTypeKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"kIPCTrafficIncidentAlertMessageTypeKey"];
     -[IPCTrafficIncidentAlertMessage setType:](v5, "setType:", [v6 unsignedIntegerValue]);
 
-    v7 = [v4 objectForKeyedSubscript:@"kIPCTrafficIncidentAlertMessageTitleKey"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"kIPCTrafficIncidentAlertMessageTitleKey"];
     [(IPCTrafficIncidentAlertMessage *)v5 setTitle:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"kIPCTrafficIncidentAlertMessageSubtitleKey"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"kIPCTrafficIncidentAlertMessageSubtitleKey"];
     [(IPCTrafficIncidentAlertMessage *)v5 setSubtitle:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"kIPCTrafficIncidentAlertMessageIdentifierKey"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"kIPCTrafficIncidentAlertMessageIdentifierKey"];
     [(IPCTrafficIncidentAlertMessage *)v5 setIdentifier:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"kIPCTrafficIncidentAlertMessageIncidentKey"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"kIPCTrafficIncidentAlertMessageIncidentKey"];
     [(IPCTrafficIncidentAlertMessage *)v5 setIncident:v10];
   }
 
@@ -37,26 +37,26 @@
 {
   v16.receiver = self;
   v16.super_class = IPCTrafficIncidentAlertMessage;
-  v3 = [(IPCMessageObject *)&v16 dictionaryValue];
-  v4 = [v3 mutableCopy];
+  dictionaryValue = [(IPCMessageObject *)&v16 dictionaryValue];
+  v4 = [dictionaryValue mutableCopy];
 
   v5 = [NSNumber numberWithUnsignedInteger:[(IPCTrafficIncidentAlertMessage *)self type]];
   [v4 setObject:v5 forKeyedSubscript:@"kIPCTrafficIncidentAlertMessageTypeKey"];
 
-  v6 = [(IPCTrafficIncidentAlertMessage *)self title];
-  v7 = [v6 copy];
+  title = [(IPCTrafficIncidentAlertMessage *)self title];
+  v7 = [title copy];
   [v4 setObject:v7 forKeyedSubscript:@"kIPCTrafficIncidentAlertMessageTitleKey"];
 
-  v8 = [(IPCTrafficIncidentAlertMessage *)self subtitle];
-  v9 = [v8 copy];
+  subtitle = [(IPCTrafficIncidentAlertMessage *)self subtitle];
+  v9 = [subtitle copy];
   [v4 setObject:v9 forKeyedSubscript:@"kIPCTrafficIncidentAlertMessageSubtitleKey"];
 
-  v10 = [(IPCTrafficIncidentAlertMessage *)self identifier];
-  v11 = [v10 copy];
+  identifier = [(IPCTrafficIncidentAlertMessage *)self identifier];
+  v11 = [identifier copy];
   [v4 setObject:v11 forKeyedSubscript:@"kIPCTrafficIncidentAlertMessageIdentifierKey"];
 
-  v12 = [(IPCTrafficIncidentAlertMessage *)self incident];
-  v13 = [v12 copy];
+  incident = [(IPCTrafficIncidentAlertMessage *)self incident];
+  v13 = [incident copy];
   [v4 setObject:v13 forKeyedSubscript:@"kIPCTrafficIncidentAlertMessageIncidentKey"];
 
   v14 = [v4 copy];
@@ -70,11 +70,11 @@
   v11.super_class = IPCTrafficIncidentAlertMessage;
   v3 = [(IPCTrafficIncidentAlertMessage *)&v11 description];
   v4 = [NSNumber numberWithUnsignedInteger:[(IPCTrafficIncidentAlertMessage *)self type]];
-  v5 = [(IPCTrafficIncidentAlertMessage *)self title];
-  v6 = [(IPCTrafficIncidentAlertMessage *)self subtitle];
-  v7 = [(IPCTrafficIncidentAlertMessage *)self identifier];
-  v8 = [(IPCTrafficIncidentAlertMessage *)self incident];
-  v9 = [NSString stringWithFormat:@"%@             type : {%@}             title : {%@}             subtitle : {%@}             identifier : {%@}             incident : {%@}", v3, v4, v5, v6, v7, v8];
+  title = [(IPCTrafficIncidentAlertMessage *)self title];
+  subtitle = [(IPCTrafficIncidentAlertMessage *)self subtitle];
+  identifier = [(IPCTrafficIncidentAlertMessage *)self identifier];
+  incident = [(IPCTrafficIncidentAlertMessage *)self incident];
+  v9 = [NSString stringWithFormat:@"%@             type : {%@}             title : {%@}             subtitle : {%@}             identifier : {%@}             incident : {%@}", v3, v4, title, subtitle, identifier, incident];
 
   return v9;
 }

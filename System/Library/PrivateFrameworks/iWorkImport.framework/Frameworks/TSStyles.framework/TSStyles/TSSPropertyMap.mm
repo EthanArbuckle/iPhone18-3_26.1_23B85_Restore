@@ -1,66 +1,66 @@
 @interface TSSPropertyMap
-+ (TSSPropertyMap)propertyMapWithDictionary:(id)a3;
-+ (TSSPropertyMap)propertyMapWithPropertyMap:(id)a3;
++ (TSSPropertyMap)propertyMapWithDictionary:(id)dictionary;
++ (TSSPropertyMap)propertyMapWithPropertyMap:(id)map;
 + (id)propertyMap;
-- (BOOL)containsAnyPropertyInProperties:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsAnyPropertyInProperties:(id)properties;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)allKeys;
 - (NSString)description;
 - (TSSPropertyMap)init;
-- (TSSPropertyMap)initWithPropertyMap:(id)a3;
-- (TSSPropertyMap)propertyMapWithProperties:(id)a3;
+- (TSSPropertyMap)initWithPropertyMap:(id)map;
+- (TSSPropertyMap)propertyMapWithProperties:(id)properties;
 - (TSSPropertySet)allProperties;
 - (_NSRange)propertyRange;
-- (double)doubleValueForProperty:(int)a3;
-- (float)floatValueForProperty:(int)a3;
-- (id)boxedObjectForProperty:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)diff:(id)a3;
-- (id)diffOnlyDifferences:(id)a3;
-- (id)objectForProperty:(int)a3;
+- (double)doubleValueForProperty:(int)property;
+- (float)floatValueForProperty:(int)property;
+- (id)boxedObjectForProperty:(int)property;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)diff:(id)diff;
+- (id)diffOnlyDifferences:(id)differences;
+- (id)objectForProperty:(int)property;
 - (id)old_description;
-- (id)propertyMapByAddingValuesFromPropertyMap:(id)a3;
-- (id)propertyMapByRemovingValuesForProperties:(id)a3;
-- (id)propertyMapByRemovingValuesFromPropertyMap:(id)a3;
-- (int)intValueForProperty:(int)a3;
+- (id)propertyMapByAddingValuesFromPropertyMap:(id)map;
+- (id)propertyMapByRemovingValuesForProperties:(id)properties;
+- (id)propertyMapByRemovingValuesFromPropertyMap:(id)map;
+- (int)intValueForProperty:(int)property;
 - (unint64_t)count;
-- (void)addValuesFromPropertyMap:(id)a3;
+- (void)addValuesFromPropertyMap:(id)map;
 - (void)dealloc;
-- (void)enumerateDataPropertiesUsingBlock:(id)a3;
-- (void)enumeratePropertiesAndObjectsUsingBlock:(id)a3;
-- (void)filterWithProperties:(id)a3;
-- (void)minusPropertyMap:(id)a3;
-- (void)p_getAllKeys:(int *)a3;
-- (void)removeValueForProperty:(int)a3;
-- (void)removeValuesForProperties:(id)a3;
-- (void)removeValuesFromPropertyMap:(id)a3;
+- (void)enumerateDataPropertiesUsingBlock:(id)block;
+- (void)enumeratePropertiesAndObjectsUsingBlock:(id)block;
+- (void)filterWithProperties:(id)properties;
+- (void)minusPropertyMap:(id)map;
+- (void)p_getAllKeys:(int *)keys;
+- (void)removeValueForProperty:(int)property;
+- (void)removeValuesForProperties:(id)properties;
+- (void)removeValuesFromPropertyMap:(id)map;
 @end
 
 @implementation TSSPropertyMap
 
 + (id)propertyMap
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (TSSPropertyMap)propertyMapWithPropertyMap:(id)a3
++ (TSSPropertyMap)propertyMapWithPropertyMap:(id)map
 {
-  v3 = objc_msgSend_copy(a3, a2, a3);
+  v3 = objc_msgSend_copy(map, a2, map);
 
   return v3;
 }
 
-+ (TSSPropertyMap)propertyMapWithDictionary:(id)a3
++ (TSSPropertyMap)propertyMapWithDictionary:(id)dictionary
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276CAFA74;
   v7[3] = &unk_27A6EEF00;
   v7[4] = v4;
-  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(a3, v5, v7);
+  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(dictionary, v5, v7);
   return v4;
 }
 
@@ -84,16 +84,16 @@
   return v2;
 }
 
-- (TSSPropertyMap)initWithPropertyMap:(id)a3
+- (TSSPropertyMap)initWithPropertyMap:(id)map
 {
   v8.receiver = self;
   v8.super_class = TSSPropertyMap;
   v4 = [(TSSPropertyMap *)&v8 init];
   if (v4)
   {
-    if (a3)
+    if (map)
     {
-      v5 = sub_276CAFBC4(*(a3 + 1));
+      v5 = sub_276CAFBC4(*(map + 1));
       v4->mStore = v5;
       if (!v5)
       {
@@ -126,10 +126,10 @@
   [(TSSPropertyMap *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   if (v7)
   {
     v8 = sub_276CAFBC4(self->mStore);
@@ -144,7 +144,7 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -269,7 +269,7 @@
   }
 }
 
-- (void)p_getAllKeys:(int *)a3
+- (void)p_getAllKeys:(int *)keys
 {
   mStore = self->mStore;
   if (mStore)
@@ -282,7 +282,7 @@
       v7 = 1;
       do
       {
-        a3[v5] = *(v6 + 16 * v5 + 8);
+        keys[v5] = *(v6 + 16 * v5 + 8);
         v5 = v7;
       }
 
@@ -307,26 +307,26 @@
   return objc_msgSend_stringWithFormat_(v3, v12, @"(%@*)%p {\n%@\n}", v5, self, v11);
 }
 
-- (void)enumeratePropertiesAndObjectsUsingBlock:(id)a3
+- (void)enumeratePropertiesAndObjectsUsingBlock:(id)block
 {
-  v5 = objc_msgSend_allProperties(self, a2, a3);
+  v5 = objc_msgSend_allProperties(self, a2, block);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276CB0700;
   v7[3] = &unk_27A6EEF28;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = block;
   objc_msgSend_enumeratePropertiesUsingBlock_(v5, v6, v7);
 }
 
-- (void)enumerateDataPropertiesUsingBlock:(id)a3
+- (void)enumerateDataPropertiesUsingBlock:(id)block
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_276CB0A58;
   v3[3] = &unk_27A6EEF50;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = block;
   objc_msgSend_enumeratePropertiesAndObjectsUsingBlock_(self, a2, v3);
 }
 
@@ -349,9 +349,9 @@
   return objc_msgSend_tsu_stringByExpandingTableFormatting(v8, v9, v10);
 }
 
-- (id)boxedObjectForProperty:(int)a3
+- (id)boxedObjectForProperty:(int)property
 {
-  result = sub_276CB3BF4(self->mStore, a3);
+  result = sub_276CB3BF4(self->mStore, property);
   if (result)
   {
 
@@ -361,9 +361,9 @@
   return result;
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
-  result = sub_276CB3BF4(self->mStore, a3);
+  result = sub_276CB3BF4(self->mStore, property);
   if (result)
   {
 
@@ -373,9 +373,9 @@
   return result;
 }
 
-- (int)intValueForProperty:(int)a3
+- (int)intValueForProperty:(int)property
 {
-  v3 = sub_276CB3BF4(self->mStore, a3);
+  v3 = sub_276CB3BF4(self->mStore, property);
   if (!v3)
   {
     return 0x80000000;
@@ -384,9 +384,9 @@
   return sub_276CB3034(v3, v4);
 }
 
-- (float)floatValueForProperty:(int)a3
+- (float)floatValueForProperty:(int)property
 {
-  v3 = sub_276CB3BF4(self->mStore, a3);
+  v3 = sub_276CB3BF4(self->mStore, property);
   if (!v3)
   {
     return INFINITY;
@@ -395,9 +395,9 @@
   return sub_276CB3210(v3, v4, v5);
 }
 
-- (double)doubleValueForProperty:(int)a3
+- (double)doubleValueForProperty:(int)property
 {
-  v3 = sub_276CB3BF4(self->mStore, a3);
+  v3 = sub_276CB3BF4(self->mStore, property);
   if (!v3)
   {
     return INFINITY;
@@ -406,23 +406,23 @@
   return sub_276CB33F0(v3, v4);
 }
 
-- (void)addValuesFromPropertyMap:(id)a3
+- (void)addValuesFromPropertyMap:(id)map
 {
-  if (a3)
+  if (map)
   {
-    sub_276CB172C(self->mStore, *(a3 + 1));
+    sub_276CB172C(self->mStore, *(map + 1));
   }
 }
 
-- (void)removeValuesFromPropertyMap:(id)a3
+- (void)removeValuesFromPropertyMap:(id)map
 {
-  if (a3)
+  if (map)
   {
-    sub_276CB1914(self->mStore, *(a3 + 1), v3);
+    sub_276CB1914(self->mStore, *(map + 1), v3);
   }
 }
 
-- (BOOL)containsAnyPropertyInProperties:(id)a3
+- (BOOL)containsAnyPropertyInProperties:(id)properties
 {
   v6 = 0;
   v7 = &v6;
@@ -434,7 +434,7 @@
   v5[3] = &unk_27A6EEFC0;
   v5[4] = self;
   v5[5] = &v6;
-  objc_msgSend_enumeratePropertiesUsingBlock_(a3, a2, v5);
+  objc_msgSend_enumeratePropertiesUsingBlock_(properties, a2, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -460,17 +460,17 @@
   return result;
 }
 
-- (void)removeValueForProperty:(int)a3
+- (void)removeValueForProperty:(int)property
 {
   mStore = self->mStore;
-  v4 = a3;
-  sub_276CB1E1C(mStore, &v4, 1uLL);
+  propertyCopy = property;
+  sub_276CB1E1C(mStore, &propertyCopy, 1uLL);
 }
 
-- (void)removeValuesForProperties:(id)a3
+- (void)removeValuesForProperties:(id)properties
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_count(a3, a2, a3);
+  v5 = objc_msgSend_count(properties, a2, properties);
   if (v5)
   {
     v7 = v5;
@@ -498,7 +498,7 @@
     v10[3] = &unk_27A6EEFE8;
     v10[4] = v11;
     v10[5] = v8;
-    objc_msgSend_enumeratePropertiesUsingBlock_(a3, v6, v10);
+    objc_msgSend_enumeratePropertiesUsingBlock_(properties, v6, v10);
     sub_276CB1E1C(self->mStore, v8, v7);
     if (v8 != v12)
     {
@@ -512,7 +512,7 @@ LABEL_9:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)filterWithProperties:(id)a3
+- (void)filterWithProperties:(id)properties
 {
   v5 = objc_autoreleasePoolPush();
   v8 = objc_msgSend_allProperties(self, v6, v7);
@@ -520,83 +520,83 @@ LABEL_9:
   v10[1] = 3221225472;
   v10[2] = sub_276CB2060;
   v10[3] = &unk_27A6EF010;
-  v10[4] = a3;
+  v10[4] = properties;
   v10[5] = self;
   objc_msgSend_enumeratePropertiesUsingBlock_(v8, v9, v10);
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)minusPropertyMap:(id)a3
+- (void)minusPropertyMap:(id)map
 {
-  if (a3)
+  if (map)
   {
-    sub_276CB1914(self->mStore, *(a3 + 1), v3);
+    sub_276CB1914(self->mStore, *(map + 1), v3);
   }
 }
 
-- (id)diff:(id)a3
+- (id)diff:(id)diff
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = TSUObjectReferenceDescription();
   v7 = TSUObjectReferenceDescription();
-  v8 = sub_276CB2148(self->mStore, *(a3 + 1), 1);
+  v8 = sub_276CB2148(self->mStore, *(diff + 1), 1);
   return objc_msgSend_stringWithFormat_(v5, v9, @"\nDiff %@ vs. %@:\n%@\n", v6, v7, v8);
 }
 
-- (id)diffOnlyDifferences:(id)a3
+- (id)diffOnlyDifferences:(id)differences
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = TSUObjectReferenceDescription();
   v7 = TSUObjectReferenceDescription();
-  v8 = sub_276CB2148(self->mStore, *(a3 + 1), 0);
+  v8 = sub_276CB2148(self->mStore, *(differences + 1), 0);
   return objc_msgSend_stringWithFormat_(v5, v9, @"\nDiff %@ vs. %@:\n%@\n", v6, v7, v8);
 }
 
-- (id)propertyMapByAddingValuesFromPropertyMap:(id)a3
+- (id)propertyMapByAddingValuesFromPropertyMap:(id)map
 {
-  v4 = objc_msgSend_copy(self, a2, a3);
+  v4 = objc_msgSend_copy(self, a2, map);
   v6 = v4;
-  if (a3)
+  if (map)
   {
-    objc_msgSend_addValuesFromPropertyMap_(v4, v5, a3);
+    objc_msgSend_addValuesFromPropertyMap_(v4, v5, map);
   }
 
   return v6;
 }
 
-- (id)propertyMapByRemovingValuesFromPropertyMap:(id)a3
+- (id)propertyMapByRemovingValuesFromPropertyMap:(id)map
 {
-  v4 = objc_msgSend_copy(self, a2, a3);
+  v4 = objc_msgSend_copy(self, a2, map);
   v6 = v4;
-  if (a3)
+  if (map)
   {
-    objc_msgSend_removeValuesFromPropertyMap_(v4, v5, a3);
+    objc_msgSend_removeValuesFromPropertyMap_(v4, v5, map);
   }
 
   return v6;
 }
 
-- (id)propertyMapByRemovingValuesForProperties:(id)a3
+- (id)propertyMapByRemovingValuesForProperties:(id)properties
 {
-  v4 = objc_msgSend_copy(self, a2, a3);
+  v4 = objc_msgSend_copy(self, a2, properties);
   v6 = v4;
-  if (a3)
+  if (properties)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = sub_276CB26A8;
     v8[3] = &unk_27A6EF038;
     v8[4] = v4;
-    objc_msgSend_enumeratePropertiesUsingBlock_(a3, v5, v8);
+    objc_msgSend_enumeratePropertiesUsingBlock_(properties, v5, v8);
   }
 
   return v6;
 }
 
-- (TSSPropertyMap)propertyMapWithProperties:(id)a3
+- (TSSPropertyMap)propertyMapWithProperties:(id)properties
 {
-  v4 = objc_msgSend_copy(self, a2, a3);
-  objc_msgSend_filterWithProperties_(v4, v5, a3);
+  v4 = objc_msgSend_copy(self, a2, properties);
+  objc_msgSend_filterWithProperties_(v4, v5, properties);
   return v4;
 }
 

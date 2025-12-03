@@ -1,10 +1,10 @@
 @interface IXAppInstallCoordinator
-- (void)updateProgress:(double)a3;
+- (void)updateProgress:(double)progress;
 @end
 
 @implementation IXAppInstallCoordinator
 
-- (void)updateProgress:(double)a3
+- (void)updateProgress:(double)progress
 {
   if ([(IXAppInstallCoordinator *)self conformsToProtocol:&OBJC_PROTOCOL___IXCoordinatorWithUserDataPromise])
   {
@@ -12,7 +12,7 @@
     if (v5)
     {
       v6 = v5;
-      [v5 setPercentComplete:a3];
+      [v5 setPercentComplete:progress];
       v5 = v6;
     }
   }

@@ -1,5 +1,5 @@
 @interface SBDeviceApplicationSceneViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityMarkupView;
 - (void)viewDidLoad;
@@ -7,11 +7,11 @@
 
 @implementation SBDeviceApplicationSceneViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBDeviceApplicationSceneViewController" hasInstanceVariable:@"_activeOverlayViewProviders" withType:"NSMutableArray"];
-  [v3 validateClass:@"SBDeviceApplicationSceneOverlayViewProvider" hasInstanceMethod:@"_realOverlayViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneViewController" hasInstanceVariable:@"_activeOverlayViewProviders" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneOverlayViewProvider" hasInstanceMethod:@"_realOverlayViewController" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -35,17 +35,17 @@
   LOBYTE(location) = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
+  view = [v3 view];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
+  objc_initWeak(&from, view);
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __79__SBDeviceApplicationSceneViewControllerAccessibility__accessibilityMarkupView__block_invoke;
   v5[3] = &unk_29F2FBC80;
   objc_copyWeak(&v6, &from);
   objc_copyWeak(&v7, &location);
-  [v4 _setAccessibilityElementsBlock:v5];
+  [view _setAccessibilityElementsBlock:v5];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&from);

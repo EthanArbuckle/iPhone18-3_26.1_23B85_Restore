@@ -1,5 +1,5 @@
 @interface HMDCompositeSettingsControllerManagerOnboardingLogEvent
-- (HMDCompositeSettingsControllerManagerOnboardingLogEvent)initWithError:(id)a3 siriEndpointCertificationReason:(int64_t)a4;
+- (HMDCompositeSettingsControllerManagerOnboardingLogEvent)initWithError:(id)error siriEndpointCertificationReason:(int64_t)reason;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -18,9 +18,9 @@
   return v3;
 }
 
-- (HMDCompositeSettingsControllerManagerOnboardingLogEvent)initWithError:(id)a3 siriEndpointCertificationReason:(int64_t)a4
+- (HMDCompositeSettingsControllerManagerOnboardingLogEvent)initWithError:(id)error siriEndpointCertificationReason:(int64_t)reason
 {
-  v6 = a3;
+  errorCopy = error;
   v11.receiver = self;
   v11.super_class = HMDCompositeSettingsControllerManagerOnboardingLogEvent;
   v7 = [(HMMLogEvent *)&v11 init];
@@ -29,8 +29,8 @@
   {
     v10.receiver = v7;
     v10.super_class = HMDCompositeSettingsControllerManagerOnboardingLogEvent;
-    [(HMMLogEvent *)&v10 setError:v6];
-    v8->_siriEndpointCertificationReason = a4;
+    [(HMMLogEvent *)&v10 setError:errorCopy];
+    v8->_siriEndpointCertificationReason = reason;
   }
 
   return v8;

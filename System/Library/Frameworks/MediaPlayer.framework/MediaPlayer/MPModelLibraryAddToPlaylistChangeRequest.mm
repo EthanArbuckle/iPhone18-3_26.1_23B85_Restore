@@ -1,23 +1,23 @@
 @interface MPModelLibraryAddToPlaylistChangeRequest
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation MPModelLibraryAddToPlaylistChangeRequest
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MPModelLibraryAddToPlaylistChangeRequestOperation);
   [(MPModelLibraryAddToPlaylistChangeRequestOperation *)v5 setRequest:self];
-  [(MPModelLibraryAddToPlaylistChangeRequestOperation *)v5 setResponseHandler:v4];
+  [(MPModelLibraryAddToPlaylistChangeRequestOperation *)v5 setResponseHandler:handlerCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {

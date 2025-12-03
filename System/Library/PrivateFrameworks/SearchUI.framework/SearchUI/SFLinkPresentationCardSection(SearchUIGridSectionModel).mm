@@ -12,7 +12,7 @@
   result = [MEMORY[0x1E69D9240] isSiri];
   if ((result & 1) == 0)
   {
-    v3.receiver = a1;
+    v3.receiver = self;
     v3.super_class = &off_1F56744B0;
     return objc_msgSendSuper2(&v3, sel_searchUIGridSectionModel_interItemSpacing, 0.0);
   }
@@ -27,7 +27,7 @@
     return 0;
   }
 
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &off_1F56744B0;
   return objc_msgSendSuper2(&v3, sel_searchUIGridSectionModel_useEstimatedHeight);
 }
@@ -36,7 +36,7 @@
 {
   if ([MEMORY[0x1E69D9240] isSiri])
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &off_1F56744B0;
     v5 = objc_msgSendSuper2(&v7, sel_searchUIGridSectionModel_heightDimensionWithColumnCount_, a3);
   }
@@ -54,7 +54,7 @@
   v4 = a3;
   if ([MEMORY[0x1E69D9240] isSiri])
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &off_1F56744B0;
     objc_msgSendSuper2(&v8, sel_searchUIGridSectionModel_groupInsetFor_, v4);
     v6 = v5;

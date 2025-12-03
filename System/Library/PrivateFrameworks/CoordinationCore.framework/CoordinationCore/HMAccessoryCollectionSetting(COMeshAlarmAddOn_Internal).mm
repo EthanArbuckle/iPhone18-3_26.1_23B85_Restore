@@ -27,10 +27,10 @@
   v6[1] = 3221225472;
   v6[2] = __79__HMAccessoryCollectionSetting_COMeshAlarmAddOn_Internal__co_enqueueOperation___block_invoke;
   v6[3] = &unk_278E156B0;
-  v6[4] = a1;
+  v6[4] = self;
   v7 = v4;
   v5 = v4;
-  [a1 co_withLock:v6];
+  [self co_withLock:v6];
 }
 
 - (void)co_flushQueue
@@ -40,7 +40,7 @@
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = a1;
+    *(&buf + 4) = self;
     _os_log_impl(&dword_244378000, v2, OS_LOG_TYPE_DEFAULT, "%p performing coalesced writes", &buf, 0xCu);
   }
 
@@ -54,16 +54,16 @@
   v11[1] = 3221225472;
   v11[2] = __72__HMAccessoryCollectionSetting_COMeshAlarmAddOn_Internal__co_flushQueue__block_invoke;
   v11[3] = &unk_278E15638;
-  v11[4] = a1;
+  v11[4] = self;
   v11[5] = &buf;
-  [a1 co_withLock:v11];
-  v3 = [a1 co_mappedAlarms];
+  [self co_withLock:v11];
+  co_mappedAlarms = [self co_mappedAlarms];
   v4 = *(*(&buf + 1) + 40);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__HMAccessoryCollectionSetting_COMeshAlarmAddOn_Internal__co_flushQueue__block_invoke_2;
   v9[3] = &unk_278E16130;
-  v5 = v3;
+  v5 = co_mappedAlarms;
   v10 = v5;
   v6 = [v4 indexesOfObjectsPassingTest:v9];
   [*(*(&buf + 1) + 40) removeObjectsAtIndexes:v6];
@@ -71,9 +71,9 @@
   v8[1] = 3221225472;
   v8[2] = __72__HMAccessoryCollectionSetting_COMeshAlarmAddOn_Internal__co_flushQueue__block_invoke_3;
   v8[3] = &unk_278E16158;
-  v8[4] = a1;
+  v8[4] = self;
   v8[5] = &buf;
-  [a1 co_setMappedAlarms:v5 completionHandler:v8];
+  [self co_setMappedAlarms:v5 completionHandler:v8];
 
   _Block_object_dispose(&buf, 8);
   v7 = *MEMORY[0x277D85DE8];
@@ -91,9 +91,9 @@
   v3[1] = 3221225472;
   v3[2] = __73__HMAccessoryCollectionSetting_COMeshAlarmAddOn_Internal__co_cachedWrite__block_invoke;
   v3[3] = &unk_278E15638;
-  v3[4] = a1;
+  v3[4] = self;
   v3[5] = &v4;
-  [a1 co_withLock:v3];
+  [self co_withLock:v3];
   v1 = v5[5];
   _Block_object_dispose(&v4, 8);
 
@@ -107,37 +107,37 @@
   v6[1] = 3221225472;
   v6[2] = __77__HMAccessoryCollectionSetting_COMeshAlarmAddOn_Internal__co_setCachedWrite___block_invoke;
   v6[3] = &unk_278E156B0;
-  v6[4] = a1;
+  v6[4] = self;
   v7 = v4;
   v5 = v4;
-  [a1 co_withLock:v6];
+  [self co_withLock:v6];
 }
 
 - (id)co_mappedAlarms
 {
   v29 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v3 = [a1 co_cachedWrite];
-  if (v3)
+  co_cachedWrite = [self co_cachedWrite];
+  if (co_cachedWrite)
   {
-    v4 = v3;
+    value = co_cachedWrite;
     v5 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(HMAccessoryCollectionSetting(COMeshAlarmAddOn_Internal) *)a1 co_mappedAlarms:v5];
+      [(HMAccessoryCollectionSetting(COMeshAlarmAddOn_Internal) *)self co_mappedAlarms:v5];
     }
   }
 
   else
   {
-    v4 = [a1 value];
+    value = [self value];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = v4;
+  v12 = value;
   v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
@@ -152,14 +152,14 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v24 + 1) + 8 * i) co_alarm];
-        v18 = v17;
-        if (v17)
+        co_alarm = [*(*(&v24 + 1) + 8 * i) co_alarm];
+        v18 = co_alarm;
+        if (co_alarm)
         {
-          v19 = [v17 alarmID];
-          v20 = [v2 objectForKey:v19];
+          alarmID = [co_alarm alarmID];
+          v20 = [v2 objectForKey:alarmID];
           v21 = [v18 COPreferredAlarm:v20];
-          [v2 setObject:v21 forKey:v19];
+          [v2 setObject:v21 forKey:alarmID];
         }
       }
 
@@ -184,8 +184,8 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = [v6 allValues];
-  v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_0];
+  allValues = [v6 allValues];
+  v10 = [allValues sortedArrayUsingComparator:&__block_literal_global_0];
 
   v11 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v11)
@@ -214,17 +214,17 @@
     while (v11);
   }
 
-  v15 = [a1 value];
-  v16 = v15;
+  value = [self value];
+  v16 = value;
   v17 = MEMORY[0x277CBEBF8];
-  if (v15)
+  if (value)
   {
-    v17 = v15;
+    v17 = value;
   }
 
   v18 = v17;
 
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v19 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -238,7 +238,7 @@
   objc_copyWeak(v28, &location);
   v22 = v7;
   v27 = v22;
-  [a1 replaceItems:v20 withItems:v21 completionHandler:v24];
+  [self replaceItems:v20 withItems:v21 completionHandler:v24];
 
   objc_destroyWeak(v28);
   objc_destroyWeak(&location);

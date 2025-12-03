@@ -1,45 +1,45 @@
 @interface CHPrincipalLineDetector
-+ ($196E0A09E4C4E138EEBEC6372622051A)fixPrincipalLinesOrientation:(SEL)a3 useAltString:(id)a4 skipAmbiguousCharacters:(BOOL)a5;
-+ ($196E0A09E4C4E138EEBEC6372622051A)fixPrincipalLinesPosition:(SEL)a3 useAltString:(id)a4 skipAmbiguousCharacters:(BOOL)a5;
-+ ($196E0A09E4C4E138EEBEC6372622051A)flipPrincipalLine:(SEL)a3 points:(id *)a4 string:(const void *)a5 outWasFlipped:(id)a6;
-+ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesForPoints:(SEL)a3 writtenAlphaShape:(const void *)a4 imgPointsAndPrincipalLines:(const void *)a5 shouldCancel:(const void *)a6;
-+ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesFromPrincipalLinePoints:(SEL)a3 points:(id)a4;
-+ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesFromTokens:(SEL)a3 strokes:(id)a4 strokePoints:(id)a5 orientation:(const void *)a6 useAltString:(double)a7;
-+ ($196E0A09E4C4E138EEBEC6372622051A)refinedPrincipalLinesForTextLine:(SEL)a3 points:(id)a4 alphaShape:(const void *)a5 renderedTextPointsAndLines:(const void *)a6 useAltString:(PointsAndPrincipalLines *)a7 shouldCancel:(BOOL)a8;
-+ (CGSize)estimatedRenderedTextSize:(id)a3 fullDeformValue:(double)a4 ascenderDeformValue:(double)a5 descenderDeformValue:(double)a6;
-+ (double)estimatedLeadingForPrincipalLines:(id *)a3 transcription:(id)a4;
-+ (double)principalLinesFitScore:(id *)a3 points:(const void *)a4 transcription:(id)a5;
-+ (double)textLineFitScore:(id)a3 useAltString:(BOOL)a4;
++ ($196E0A09E4C4E138EEBEC6372622051A)fixPrincipalLinesOrientation:(SEL)orientation useAltString:(id)string skipAmbiguousCharacters:(BOOL)characters;
++ ($196E0A09E4C4E138EEBEC6372622051A)fixPrincipalLinesPosition:(SEL)position useAltString:(id)string skipAmbiguousCharacters:(BOOL)characters;
++ ($196E0A09E4C4E138EEBEC6372622051A)flipPrincipalLine:(SEL)line points:(id *)points string:(const void *)string outWasFlipped:(id)flipped;
++ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesForPoints:(SEL)points writtenAlphaShape:(const void *)shape imgPointsAndPrincipalLines:(const void *)lines shouldCancel:(const void *)cancel;
++ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesFromPrincipalLinePoints:(SEL)points points:(id)a4;
++ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesFromTokens:(SEL)tokens strokes:(id)strokes strokePoints:(id)points orientation:(const void *)orientation useAltString:(double)string;
++ ($196E0A09E4C4E138EEBEC6372622051A)refinedPrincipalLinesForTextLine:(SEL)line points:(id)points alphaShape:(const void *)shape renderedTextPointsAndLines:(const void *)lines useAltString:(PointsAndPrincipalLines *)string shouldCancel:(BOOL)cancel;
++ (CGSize)estimatedRenderedTextSize:(id)size fullDeformValue:(double)value ascenderDeformValue:(double)deformValue descenderDeformValue:(double)descenderDeformValue;
++ (double)estimatedLeadingForPrincipalLines:(id *)lines transcription:(id)transcription;
++ (double)principalLinesFitScore:(id *)score points:(const void *)points transcription:(id)transcription;
++ (double)textLineFitScore:(id)score useAltString:(BOOL)string;
 + (id)charactersForRendering;
-+ (id)checkAvailableInterceptsForString:(id)a3 skipAmbiguousCharacters:(BOOL)a4;
-+ (id)principalLineInterceptsForPrincipalPoints:(id)a3 orientation:(double)a4;
-+ (id)principalLineInterceptsForString:(id)a3 skipAmbiguousCharacters:(BOOL)a4 strokes:(id)a5 strokePoints:(const void *)a6 orientation:(double)a7 medianFallbackThreshold:(double)a8;
-+ (id)principalLinePointsForString:(id)a3 skipAmbiguousCharacters:(BOOL)a4 strokes:(id)a5 strokePoints:(const void *)a6 orientation:(double)a7 medianFallbackThreshold:(double)a8;
-+ (id)stringForRendering:(id)a3 useAltChars:(BOOL)a4;
-+ (void)getDeformValuesForTextLine:(id)a3 useAltString:(BOOL)a4 outfullDeform:(double *)a5 outAscenderDeform:(double *)a6 outDescenderDeform:(double *)a7;
++ (id)checkAvailableInterceptsForString:(id)string skipAmbiguousCharacters:(BOOL)characters;
++ (id)principalLineInterceptsForPrincipalPoints:(id)points orientation:(double)orientation;
++ (id)principalLineInterceptsForString:(id)string skipAmbiguousCharacters:(BOOL)characters strokes:(id)strokes strokePoints:(const void *)points orientation:(double)orientation medianFallbackThreshold:(double)threshold;
++ (id)principalLinePointsForString:(id)string skipAmbiguousCharacters:(BOOL)characters strokes:(id)strokes strokePoints:(const void *)points orientation:(double)orientation medianFallbackThreshold:(double)threshold;
++ (id)stringForRendering:(id)rendering useAltChars:(BOOL)chars;
++ (void)getDeformValuesForTextLine:(id)line useAltString:(BOOL)string outfullDeform:(double *)deform outAscenderDeform:(double *)ascenderDeform outDescenderDeform:(double *)descenderDeform;
 @end
 
 @implementation CHPrincipalLineDetector
 
-+ (double)estimatedLeadingForPrincipalLines:(id *)a3 transcription:(id)a4
++ (double)estimatedLeadingForPrincipalLines:(id *)lines transcription:(id)transcription
 {
-  v5 = a4;
-  hasDescender = objc_msgSend_hasDescender(v5, v6, v7, v8, v9, v10);
-  hasAscender = objc_msgSend_hasAscender(v5, v12, v13, v14, v15, v16);
+  transcriptionCopy = transcription;
+  hasDescender = objc_msgSend_hasDescender(transcriptionCopy, v6, v7, v8, v9, v10);
+  hasAscender = objc_msgSend_hasAscender(transcriptionCopy, v12, v13, v14, v15, v16);
   if ((hasDescender & hasAscender) != 1)
   {
     if (hasAscender)
     {
-      x = a3->var1.var0.x;
-      y = a3->var1.var0.y;
-      v29 = a3->var3.var0.x;
-      v30 = a3->var3.var0.y;
+      x = lines->var1.var0.x;
+      y = lines->var1.var0.y;
+      v29 = lines->var3.var0.x;
+      v30 = lines->var3.var0.y;
       if (x == v29 && y == v30)
       {
-        v32 = a3->var1.var1.x;
-        v33 = a3->var1.var1.y;
-        v34 = a3->var3.var1.x;
-        v35 = a3->var3.var1.y;
+        v32 = lines->var1.var1.x;
+        v33 = lines->var1.var1.y;
+        v34 = lines->var3.var1.x;
+        v35 = lines->var3.var1.y;
         v36 = 0.0;
         if (v32 == v34 && v33 == v35)
         {
@@ -49,10 +49,10 @@
 
       else
       {
-        v32 = a3->var1.var1.x;
-        v33 = a3->var1.var1.y;
-        v34 = a3->var3.var1.x;
-        v35 = a3->var3.var1.y;
+        v32 = lines->var1.var1.x;
+        v33 = lines->var1.var1.y;
+        v34 = lines->var3.var1.x;
+        v35 = lines->var3.var1.y;
       }
     }
 
@@ -60,16 +60,16 @@
     {
       if (!hasDescender)
       {
-        v50 = a3->var1.var0.x;
-        v51 = a3->var1.var0.y;
-        v52 = a3->var2.var0.x;
-        v53 = a3->var2.var0.y;
+        v50 = lines->var1.var0.x;
+        v51 = lines->var1.var0.y;
+        v52 = lines->var2.var0.x;
+        v53 = lines->var2.var0.y;
         if (v50 == v52 && v51 == v53)
         {
-          v55 = a3->var1.var1.x;
-          v56 = a3->var1.var1.y;
-          v57 = a3->var2.var1.x;
-          v58 = a3->var2.var1.y;
+          v55 = lines->var1.var1.x;
+          v56 = lines->var1.var1.y;
+          v57 = lines->var2.var1.x;
+          v58 = lines->var2.var1.y;
           if (v55 == v57)
           {
             v36 = 0.0;
@@ -82,16 +82,16 @@
 
         else
         {
-          v55 = a3->var1.var1.x;
-          v56 = a3->var1.var1.y;
-          v57 = a3->var2.var1.x;
-          v58 = a3->var2.var1.y;
+          v55 = lines->var1.var1.x;
+          v56 = lines->var1.var1.y;
+          v57 = lines->var2.var1.x;
+          v58 = lines->var2.var1.y;
         }
 
         v59 = (v56 - v51) / (v55 - v50);
         v60 = (v58 - v53) / (v57 - v52);
         v61 = v53 - v60 * v52;
-        v62 = a3->var1.var0.x;
+        v62 = lines->var1.var0.x;
         if (v59 != 0.0)
         {
           v62 = (v51 - -1.0 / v59 * v50 - v61) / (v60 - -1.0 / v59);
@@ -104,16 +104,16 @@ LABEL_41:
         goto LABEL_42;
       }
 
-      x = a3->var0.var0.x;
-      y = a3->var0.var0.y;
-      v29 = a3->var2.var0.x;
-      v30 = a3->var2.var0.y;
-      if (a3->var0.var0.x == v29 && y == v30)
+      x = lines->var0.var0.x;
+      y = lines->var0.var0.y;
+      v29 = lines->var2.var0.x;
+      v30 = lines->var2.var0.y;
+      if (lines->var0.var0.x == v29 && y == v30)
       {
-        v32 = a3->var0.var1.x;
-        v33 = a3->var0.var1.y;
-        v34 = a3->var2.var1.x;
-        v35 = a3->var2.var1.y;
+        v32 = lines->var0.var1.x;
+        v33 = lines->var0.var1.y;
+        v34 = lines->var2.var1.x;
+        v35 = lines->var2.var1.y;
         if (v32 == v34)
         {
           v36 = 0.0;
@@ -126,10 +126,10 @@ LABEL_41:
 
       else
       {
-        v32 = a3->var0.var1.x;
-        v33 = a3->var0.var1.y;
-        v34 = a3->var2.var1.x;
-        v35 = a3->var2.var1.y;
+        v32 = lines->var0.var1.x;
+        v33 = lines->var0.var1.y;
+        v34 = lines->var2.var1.x;
+        v35 = lines->var2.var1.y;
       }
     }
 
@@ -147,16 +147,16 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  v18 = a3->var0.var0.x;
-  v19 = a3->var0.var0.y;
-  v20 = a3->var3.var0.x;
-  v21 = a3->var3.var0.y;
-  if (a3->var0.var0.x == v20 && v19 == v21)
+  v18 = lines->var0.var0.x;
+  v19 = lines->var0.var0.y;
+  v20 = lines->var3.var0.x;
+  v21 = lines->var3.var0.y;
+  if (lines->var0.var0.x == v20 && v19 == v21)
   {
-    v23 = a3->var0.var1.x;
-    v24 = a3->var0.var1.y;
-    v25 = a3->var3.var1.x;
-    v26 = a3->var3.var1.y;
+    v23 = lines->var0.var1.x;
+    v24 = lines->var0.var1.y;
+    v25 = lines->var3.var1.x;
+    v26 = lines->var3.var1.y;
     v36 = 0.0;
     if (v23 == v25 && v24 == v26)
     {
@@ -166,16 +166,16 @@ LABEL_41:
 
   else
   {
-    v23 = a3->var0.var1.x;
-    v24 = a3->var0.var1.y;
-    v25 = a3->var3.var1.x;
-    v26 = a3->var3.var1.y;
+    v23 = lines->var0.var1.x;
+    v24 = lines->var0.var1.y;
+    v25 = lines->var3.var1.x;
+    v26 = lines->var3.var1.y;
   }
 
   v38 = (v24 - v19) / (v23 - v18);
   v39 = (v26 - v21) / (v25 - v20);
   v40 = v21 - v39 * v20;
-  v41 = a3->var0.var0.x;
+  v41 = lines->var0.var0.x;
   if (v38 != 0.0)
   {
     v41 = (v19 - -1.0 / v38 * v18 - v40) / (v39 - -1.0 / v38);
@@ -188,7 +188,7 @@ LABEL_42:
   return v63;
 }
 
-+ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesFromPrincipalLinePoints:(SEL)a3 points:(id)a4
++ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesFromPrincipalLinePoints:(SEL)points points:(id)a4
 {
   v262 = *MEMORY[0x1E69E9840];
   v7 = a4;
@@ -827,14 +827,14 @@ LABEL_118:
   return result;
 }
 
-+ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesForPoints:(SEL)a3 writtenAlphaShape:(const void *)a4 imgPointsAndPrincipalLines:(const void *)a5 shouldCancel:(const void *)a6
++ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesForPoints:(SEL)points writtenAlphaShape:(const void *)shape imgPointsAndPrincipalLines:(const void *)lines shouldCancel:(const void *)cancel
 {
   v23 = *MEMORY[0x1E69E9840];
   v10 = a7;
   v19 = 0;
   v20 = 0;
   v21 = 0;
-  v11 = *(a4 + 1) - *a4;
+  v11 = *(shape + 1) - *shape;
   if (v11)
   {
     if ((v11 & 0x8000000000000000) == 0)
@@ -848,10 +848,10 @@ LABEL_118:
   v17 = xmmword_1839CE920;
   v18 = xmmword_1839CE920;
   sub_1838CD6B0(&v19, v16);
-  v12 = *(a5 + 1);
-  if (v12 != *a5)
+  v12 = *(lines + 1);
+  if (v12 != *lines)
   {
-    if (((v12 - *a5) & 0x8000000000000000) == 0)
+    if (((v12 - *lines) & 0x8000000000000000) == 0)
     {
       operator new();
     }
@@ -896,19 +896,19 @@ LABEL_118:
   return result;
 }
 
-+ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesFromTokens:(SEL)a3 strokes:(id)a4 strokePoints:(id)a5 orientation:(const void *)a6 useAltString:(double)a7
++ ($196E0A09E4C4E138EEBEC6372622051A)principalLinesFromTokens:(SEL)tokens strokes:(id)strokes strokePoints:(id)points orientation:(const void *)orientation useAltString:(double)string
 {
   v8 = a8;
   v283 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v259 = a5;
-  v18 = tan(-a7);
+  strokesCopy = strokes;
+  pointsCopy = points;
+  v18 = tan(-string);
   v279 = 0;
   __dst = 0;
   v281 = 0;
-  v19 = *a6;
-  v260 = a6;
-  if (*(a6 + 1) == *a6)
+  v19 = *orientation;
+  orientationCopy = orientation;
+  if (*(orientation + 1) == *orientation)
   {
     goto LABEL_20;
   }
@@ -919,11 +919,11 @@ LABEL_118:
   {
     sub_18374A63C(&v279, __dst, *(v19 + v20), *(v19 + v20 + 8), (*(v19 + v20 + 8) - *(v19 + v20)) >> 4);
     ++v21;
-    v19 = *v260;
+    v19 = *orientationCopy;
     v20 += 24;
   }
 
-  while (v21 < 0xAAAAAAAAAAAAAAABLL * ((v260[1] - *v260) >> 3));
+  while (v21 < 0xAAAAAAAAAAAAAAABLL * ((orientationCopy[1] - *orientationCopy) >> 3));
   if (v279 == __dst)
   {
 LABEL_20:
@@ -988,7 +988,7 @@ LABEL_20:
     while (v29);
   }
 
-  v258 = objc_msgSend_array(MEMORY[0x1E695DF70], v13, v14, v15, v16, v17, v12);
+  v258 = objc_msgSend_array(MEMORY[0x1E695DF70], v13, v14, v15, v16, v17, strokesCopy);
   v256 = objc_msgSend_array(MEMORY[0x1E695DF70], v34, v35, v36, v37, v38);
   v255 = objc_msgSend_array(MEMORY[0x1E695DF70], v39, v40, v41, v42, v43);
   v257 = objc_msgSend_array(MEMORY[0x1E695DF70], v44, v45, v46, v47, v48);
@@ -996,7 +996,7 @@ LABEL_20:
   v278 = 0u;
   v275 = 0u;
   v276 = 0u;
-  obj = v12;
+  obj = strokesCopy;
   v51 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v49, &v275, v282, 16, v50);
   if (v51)
   {
@@ -1023,7 +1023,7 @@ LABEL_20:
         if ((v82 & 1) == 0)
         {
           v93 = objc_msgSend_strokeIndexes(v54, v88, v89, v90, v91, v92);
-          v98 = objc_msgSend_objectsAtIndexes_(v259, v94, v93, v95, v96, v97);
+          v98 = objc_msgSend_objectsAtIndexes_(pointsCopy, v94, v93, v95, v96, v97);
 
           v262.x = 0.0;
           *&v262.y = &v262;
@@ -1044,14 +1044,14 @@ LABEL_20:
           v270[2] = sub_1837449A4;
           v270[3] = &unk_1E6DDD348;
           v270[5] = &v271;
-          v270[6] = v260;
+          v270[6] = orientationCopy;
           v270[4] = &v262;
           objc_msgSend_enumerateIndexesUsingBlock_(v104, v105, v270, v106, v107, v108);
 
           if (v272[3])
           {
             v109 = objc_opt_class();
-            v111 = objc_msgSend_principalLineInterceptsForString_skipAmbiguousCharacters_strokes_strokePoints_orientation_medianFallbackThreshold_(v109, v110, v65, 1, v98, *&v262.y + 48, a7, 0.0);
+            v111 = objc_msgSend_principalLineInterceptsForString_skipAmbiguousCharacters_strokes_strokePoints_orientation_medianFallbackThreshold_(v109, v110, v65, 1, v98, *&v262.y + 48, string, 0.0);
             v116 = objc_msgSend_objectAtIndexedSubscript_(v111, v112, 0, v113, v114, v115);
             objc_msgSend_addObjectsFromArray_(v258, v117, v116, v118, v119, v120);
 
@@ -1204,25 +1204,25 @@ LABEL_20:
   return result;
 }
 
-+ ($196E0A09E4C4E138EEBEC6372622051A)refinedPrincipalLinesForTextLine:(SEL)a3 points:(id)a4 alphaShape:(const void *)a5 renderedTextPointsAndLines:(const void *)a6 useAltString:(PointsAndPrincipalLines *)a7 shouldCancel:(BOOL)a8
++ ($196E0A09E4C4E138EEBEC6372622051A)refinedPrincipalLinesForTextLine:(SEL)line points:(id)points alphaShape:(const void *)shape renderedTextPointsAndLines:(const void *)lines useAltString:(PointsAndPrincipalLines *)string shouldCancel:(BOOL)cancel
 {
-  v175 = a8;
-  v164 = a5;
-  v165 = a6;
+  cancelCopy = cancel;
+  shapeCopy = shape;
+  linesCopy = lines;
   v201 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  pointsCopy = points;
   v167 = a9;
-  v172 = v10;
+  v172 = pointsCopy;
   v11 = objc_opt_class();
-  v17 = objc_msgSend_string(v10, v12, v13, v14, v15, v16);
-  v166 = objc_msgSend_stringForRendering_useAltChars_(v11, v18, v17, v175, v19, v20);
+  v17 = objc_msgSend_string(pointsCopy, v12, v13, v14, v15, v16);
+  v166 = objc_msgSend_stringForRendering_useAltChars_(v11, v18, v17, cancelCopy, v19, v20);
 
   v197 = 0.0;
   v198 = 0.0;
   v196 = 0.0;
   v21 = objc_opt_class();
-  objc_msgSend_getDeformValuesForTextLine_useAltString_outfullDeform_outAscenderDeform_outDescenderDeform_(v21, v22, v10, v175, &v198, &v197, &v196);
-  v168 = objc_msgSend_tokenDistanceSizes_(v10, v23, 0, v24, v25, v26);
+  objc_msgSend_getDeformValuesForTextLine_useAltString_outfullDeform_outAscenderDeform_outDescenderDeform_(v21, v22, pointsCopy, cancelCopy, &v198, &v197, &v196);
+  v168 = objc_msgSend_tokenDistanceSizes_(pointsCopy, v23, 0, v24, v25, v26);
   v171 = v166;
   v176 = v171;
   if (!objc_msgSend_count(v168, v27, v28, v29, v30, v31))
@@ -1233,14 +1233,14 @@ LABEL_20:
   v36 = objc_opt_class();
   objc_msgSend_estimatedRenderedTextSize_fullDeformValue_ascenderDeformValue_descenderDeformValue_(v36, v37, v171, v38, v39, v40, v198, v197, v196);
   v42 = v41;
-  objc_msgSend_orientation(v10, v43, v44, v45, v46, v47);
+  objc_msgSend_orientation(pointsCopy, v43, v44, v45, v46, v47);
   v54 = tan(v48);
-  if (!v10)
+  if (!pointsCopy)
   {
     goto LABEL_16;
   }
 
-  objc_msgSend_points(v10, v49, v50, v51, v52, v53);
+  objc_msgSend_points(pointsCopy, v49, v50, v51, v52, v53);
   v55 = __p[1] - __p[0];
   if (__p[1] != __p[0])
   {
@@ -1288,7 +1288,7 @@ LABEL_15:
   operator delete(__p[0]);
   v61 = v59 - v58;
 LABEL_17:
-  v177 = objc_msgSend_array(MEMORY[0x1E695DF70], v49, v50, v51, v52, v53, v164, v165);
+  v177 = objc_msgSend_array(MEMORY[0x1E695DF70], v49, v50, v51, v52, v53, shapeCopy, linesCopy);
   v194 = 0u;
   v195 = 0u;
   v192 = 0u;
@@ -1345,7 +1345,7 @@ LABEL_17:
         v116 = objc_msgSend_stringByTrimmingCharactersInSet_(v105, v112, v111, v113, v114, v115);
 
         v117 = objc_opt_class();
-        v121 = objc_msgSend_stringForRendering_useAltChars_(v117, v118, v116, v175, v119, v120);
+        v121 = objc_msgSend_stringForRendering_useAltChars_(v117, v118, v116, cancelCopy, v119, v120);
         objc_msgSend_appendString_(v176, v122, v121, v123, v124, v125);
         if (v103 < objc_msgSend_count(v177, v126, v127, v128, v129, v130))
         {
@@ -1375,32 +1375,32 @@ LABEL_17:
   }
 
 LABEL_37:
-  if (a7->var0.__end_ == a7->var0.__begin_ || (objc_msgSend_isEqualToString_(v176, v32, v171, v33, v34, v35) & 1) == 0)
+  if (string->var0.__end_ == string->var0.__begin_ || (objc_msgSend_isEqualToString_(v176, v32, v171, v33, v34, v35) & 1) == 0)
   {
     sub_1838CCD64(v176, 100, __p);
-    begin = a7->var0.__begin_;
-    if (a7->var0.__begin_)
+    begin = string->var0.__begin_;
+    if (string->var0.__begin_)
     {
-      a7->var0.__end_ = begin;
+      string->var0.__end_ = begin;
       operator delete(begin);
-      a7->var0.__begin_ = 0;
-      a7->var0.__end_ = 0;
-      a7->var0.__cap_ = 0;
+      string->var0.__begin_ = 0;
+      string->var0.__end_ = 0;
+      string->var0.__cap_ = 0;
     }
 
-    *&a7->var0.__begin_ = *__p;
-    a7->var0.__cap_ = v179;
-    a7->var1.var2.var0 = v184;
-    a7->var1.var2.var1 = v185;
-    a7->var1.var3.var0 = v186;
-    a7->var1.var3.var1 = v187;
-    a7->var1.var0.var0 = v180;
-    a7->var1.var0.var1 = v181;
-    a7->var1.var1.var0 = v182;
-    a7->var1.var1.var1 = v183;
+    *&string->var0.__begin_ = *__p;
+    string->var0.__cap_ = v179;
+    string->var1.var2.var0 = v184;
+    string->var1.var2.var1 = v185;
+    string->var1.var3.var0 = v186;
+    string->var1.var3.var1 = v187;
+    string->var1.var0.var0 = v180;
+    string->var1.var0.var1 = v181;
+    string->var1.var1.var0 = v182;
+    string->var1.var1.var1 = v183;
   }
 
-  sub_1838C3F04(a7, __p);
+  sub_1838C3F04(string, __p);
   retstr->var3.var0 = 0u;
   retstr->var3.var1 = 0u;
   retstr->var2.var0 = 0u;
@@ -1429,7 +1429,7 @@ LABEL_37:
     goto LABEL_44;
   }
 
-  objc_msgSend_principalLinesForPoints_writtenAlphaShape_imgPointsAndPrincipalLines_shouldCancel_(v160, v161, v164, v165, __p, v167);
+  objc_msgSend_principalLinesForPoints_writtenAlphaShape_imgPointsAndPrincipalLines_shouldCancel_(v160, v161, shapeCopy, linesCopy, __p, v167);
   v162 = __p[0];
   if (__p[0])
   {
@@ -1443,12 +1443,12 @@ LABEL_45:
   return result;
 }
 
-+ (id)checkAvailableInterceptsForString:(id)a3 skipAmbiguousCharacters:(BOOL)a4
++ (id)checkAvailableInterceptsForString:(id)string skipAmbiguousCharacters:(BOOL)characters
 {
   v203 = *MEMORY[0x1E69E9840];
-  v182 = a3;
+  stringCopy = string;
   v10 = objc_msgSend_whitespaceAndNewlineCharacterSet(MEMORY[0x1E696AB08], v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_componentsSeparatedByCharactersInSet_(v182, v11, v10, v12, v13, v14);
+  v15 = objc_msgSend_componentsSeparatedByCharactersInSet_(stringCopy, v11, v10, v12, v13, v14);
 
   v199 = 0u;
   v200 = 0u;
@@ -1468,7 +1468,7 @@ LABEL_45:
   v24 = *v198;
   v183 = *v198;
   v25 = 0;
-  if (!a4)
+  if (!characters)
   {
     v196 = 0;
     v26 = 0;
@@ -1692,12 +1692,12 @@ LABEL_47:
   return v180;
 }
 
-+ ($196E0A09E4C4E138EEBEC6372622051A)flipPrincipalLine:(SEL)a3 points:(id *)a4 string:(const void *)a5 outWasFlipped:(id)a6
++ ($196E0A09E4C4E138EEBEC6372622051A)flipPrincipalLine:(SEL)line points:(id *)points string:(const void *)string outWasFlipped:(id)flipped
 {
-  v11 = a6;
-  y = a4->var1.var0.y;
-  v18 = atan2(a4->var1.var1.y - y, a4->var1.var1.x - a4->var1.var0.x);
-  if (v18 <= 2.2 && y >= a4->var2.var0.y)
+  flippedCopy = flipped;
+  y = points->var1.var0.y;
+  v18 = atan2(points->var1.var1.y - y, points->var1.var1.x - points->var1.var0.x);
+  if (v18 <= 2.2 && y >= points->var2.var0.y)
   {
     v52 = 0;
     if (!a7)
@@ -1708,8 +1708,8 @@ LABEL_47:
     goto LABEL_32;
   }
 
-  hasAscender = objc_msgSend_hasAscender(v11, v13, v14, v15, v16, v17);
-  hasDescender = objc_msgSend_hasDescender(v11, v20, v21, v22, v23, v24);
+  hasAscender = objc_msgSend_hasAscender(flippedCopy, v13, v14, v15, v16, v17);
+  hasDescender = objc_msgSend_hasDescender(flippedCopy, v20, v21, v22, v23, v24);
   v26 = v18 + -3.1415;
   if (v18 <= 2.2)
   {
@@ -1717,9 +1717,9 @@ LABEL_47:
   }
 
   v27 = tan(v26);
-  v28 = *(a5 + 1);
-  v29 = *a5;
-  if (v28 == *a5)
+  v28 = *(string + 1);
+  v29 = *string;
+  if (v28 == *string)
   {
     v33 = -1.79769313e308;
     v32 = 1.79769313e308;
@@ -1727,7 +1727,7 @@ LABEL_47:
 
   else
   {
-    v30 = (v28 - *a5) >> 4;
+    v30 = (v28 - *string) >> 4;
     if (v30 <= 1)
     {
       v30 = 1;
@@ -1789,7 +1789,7 @@ LABEL_47:
     while (v29 != v28);
   }
 
-  v41 = vabdd_f64(a4->var3.var0.y - a4->var3.var0.x * v27, a4->var2.var0.y - a4->var2.var0.x * v27);
+  v41 = vabdd_f64(points->var3.var0.y - points->var3.var0.x * v27, points->var2.var0.y - points->var2.var0.x * v27);
   v42 = v32 + v41;
   v43 = v32 - v41;
   if (hasAscender)
@@ -1798,7 +1798,7 @@ LABEL_47:
     v32 = v42;
   }
 
-  v44 = vabdd_f64(a4->var0.var0.y - a4->var0.var0.x * v27, a4->var1.var0.y - a4->var1.var0.x * v27);
+  v44 = vabdd_f64(points->var0.var0.y - points->var0.var0.x * v27, points->var1.var0.y - points->var1.var0.x * v27);
   v45 = v33 - v44;
   v46 = v33 + v44;
   if (!hasDescender)
@@ -1813,36 +1813,36 @@ LABEL_47:
     v47 = v36;
   }
 
-  a4->var0.var0.x = v35;
-  a4->var0.var0.y = v33 + v35 * v27;
-  a4->var0.var1.x = v47;
-  a4->var0.var1.y = v33 + v47 * v27;
-  a4->var1.var0.x = v35;
-  a4->var1.var0.y = v45 + v35 * v27;
-  a4->var1.var1.x = v47;
-  a4->var1.var1.y = v45 + v47 * v27;
-  a4->var2.var0.x = v35;
-  a4->var2.var0.y = v32 + v35 * v27;
-  a4->var2.var1.x = v47;
-  a4->var2.var1.y = v32 + v47 * v27;
-  a4->var3.var0.x = v35;
-  a4->var3.var0.y = v43 + v35 * v27;
-  a4->var3.var1.x = v47;
-  a4->var3.var1.y = v43 + v47 * v27;
-  sub_1838CD8C4(&a4->var0.var0.x, a5, v58);
+  points->var0.var0.x = v35;
+  points->var0.var0.y = v33 + v35 * v27;
+  points->var0.var1.x = v47;
+  points->var0.var1.y = v33 + v47 * v27;
+  points->var1.var0.x = v35;
+  points->var1.var0.y = v45 + v35 * v27;
+  points->var1.var1.x = v47;
+  points->var1.var1.y = v45 + v47 * v27;
+  points->var2.var0.x = v35;
+  points->var2.var0.y = v32 + v35 * v27;
+  points->var2.var1.x = v47;
+  points->var2.var1.y = v32 + v47 * v27;
+  points->var3.var0.x = v35;
+  points->var3.var0.y = v43 + v35 * v27;
+  points->var3.var1.x = v47;
+  points->var3.var1.y = v43 + v47 * v27;
+  sub_1838CD8C4(&points->var0.var0.x, string, v58);
   v48 = v58[5];
-  a4->var2.var0 = v58[4];
-  a4->var2.var1 = v48;
+  points->var2.var0 = v58[4];
+  points->var2.var1 = v48;
   v49 = v58[7];
-  a4->var3.var0 = v58[6];
-  a4->var3.var1 = v49;
+  points->var3.var0 = v58[6];
+  points->var3.var1 = v49;
   v50 = v58[1];
-  a4->var0.var0 = v58[0];
-  a4->var0.var1 = v50;
+  points->var0.var0 = v58[0];
+  points->var0.var1 = v50;
   v51 = v58[3];
   v52 = 1;
-  a4->var1.var0 = v58[2];
-  a4->var1.var1 = v51;
+  points->var1.var0 = v58[2];
+  points->var1.var1 = v51;
   if (a7)
   {
 LABEL_32:
@@ -1850,40 +1850,40 @@ LABEL_32:
   }
 
 LABEL_33:
-  var1 = a4->var2.var1;
-  retstr->var2.var0 = a4->var2.var0;
+  var1 = points->var2.var1;
+  retstr->var2.var0 = points->var2.var0;
   retstr->var2.var1 = var1;
-  v54 = a4->var3.var1;
-  retstr->var3.var0 = a4->var3.var0;
+  v54 = points->var3.var1;
+  retstr->var3.var0 = points->var3.var0;
   retstr->var3.var1 = v54;
-  v55 = a4->var0.var1;
-  retstr->var0.var0 = a4->var0.var0;
+  v55 = points->var0.var1;
+  retstr->var0.var0 = points->var0.var0;
   retstr->var0.var1 = v55;
-  v56 = a4->var1.var1;
-  retstr->var1.var0 = a4->var1.var0;
+  v56 = points->var1.var1;
+  retstr->var1.var0 = points->var1.var0;
   retstr->var1.var1 = v56;
 
   return result;
 }
 
-+ ($196E0A09E4C4E138EEBEC6372622051A)fixPrincipalLinesOrientation:(SEL)a3 useAltString:(id)a4 skipAmbiguousCharacters:(BOOL)a5
++ ($196E0A09E4C4E138EEBEC6372622051A)fixPrincipalLinesOrientation:(SEL)orientation useAltString:(id)string skipAmbiguousCharacters:(BOOL)characters
 {
   v388 = a6;
-  v391 = a5;
+  charactersCopy = characters;
   v415 = *MEMORY[0x1E69E9840];
-  v384 = a4;
+  stringCopy = string;
   v6 = objc_opt_class();
-  v12 = objc_msgSend_string(v384, v7, v8, v9, v10, v11);
-  v383 = objc_msgSend_stringForRendering_useAltChars_(v6, v13, v12, v391, v14, v15);
+  v12 = objc_msgSend_string(stringCopy, v7, v8, v9, v10, v11);
+  v383 = objc_msgSend_stringForRendering_useAltChars_(v6, v13, v12, charactersCopy, v14, v15);
 
   v21 = objc_msgSend_ch_smallCharacterSet(MEMORY[0x1E696AB08], v16, v17, v18, v19, v20);
   LOBYTE(v6) = sub_1837A4F0C(v383, v21);
 
   if ((v6 & 1) == 0 && objc_msgSend_length(v383, v22, v23, v24, v25, v26))
   {
-    objc_msgSend_orientation(v384, v22, v23, v24, v25, v26);
+    objc_msgSend_orientation(stringCopy, v22, v23, v24, v25, v26);
     v28 = v27;
-    objc_msgSend_orientation(v384, v29, v30, v31, v32, v33);
+    objc_msgSend_orientation(stringCopy, v29, v30, v31, v32, v33);
     v40 = tan(v34);
     retstr->var3.var0 = 0u;
     retstr->var3.var1 = 0u;
@@ -1893,22 +1893,22 @@ LABEL_33:
     retstr->var1.var1 = 0u;
     retstr->var0.var0 = 0u;
     retstr->var0.var1 = 0u;
-    if (v384)
+    if (stringCopy)
     {
-      objc_msgSend_principalLines(v384, v35, v36, v37, v38, v39);
+      objc_msgSend_principalLines(stringCopy, v35, v36, v37, v38, v39);
     }
 
     v386 = objc_msgSend_array(MEMORY[0x1E695DF70], v35, v36, v37, v38, v39);
     v390 = objc_msgSend_array(MEMORY[0x1E695DF70], v41, v42, v43, v44, v45);
     v387 = objc_msgSend_array(MEMORY[0x1E695DF70], v46, v47, v48, v49, v50);
-    if (!v384)
+    if (!stringCopy)
     {
       v59 = 0.0;
       v63 = 0.0;
       goto LABEL_20;
     }
 
-    objc_msgSend_points(v384, v51, v52, v53, v54, v55);
+    objc_msgSend_points(stringCopy, v51, v52, v53, v54, v55);
     v56 = __p[1] - __p[0];
     if (__p[1] == __p[0])
     {
@@ -1956,7 +1956,7 @@ LABEL_33:
 LABEL_20:
     x = retstr->var2.var0.x;
     y = retstr->var2.var0.y;
-    v66 = objc_msgSend_splitIntoTokens(v384, v51, v52, v53, v54, v55);
+    v66 = objc_msgSend_splitIntoTokens(stringCopy, v51, v52, v53, v54, v55);
     v412 = 0u;
     v413 = 0u;
     v410 = 0u;
@@ -1982,7 +1982,7 @@ LABEL_20:
           v76 = *(*(&v410 + 1) + 8 * i);
           v77 = objc_opt_class();
           v83 = objc_msgSend_string(v76, v78, v79, v80, v81, v82);
-          v87 = objc_msgSend_stringForRendering_useAltChars_(v77, v84, v83, v391, v85, v86);
+          v87 = objc_msgSend_stringForRendering_useAltChars_(v77, v84, v83, charactersCopy, v85, v86);
 
           v93 = objc_msgSend_ch_smallCharacterSet(MEMORY[0x1E696AB08], v88, v89, v90, v91, v92);
           v98 = objc_msgSend_indexesOfCharacters_(v87, v94, v93, v95, v96, v97);
@@ -2377,12 +2377,12 @@ LABEL_100:
       retstr->var1.var0 = v402;
       retstr->var1.var1 = v323;
       v324 = [CHTransformedTextLine alloc];
-      v330 = objc_msgSend_textStrokes(v384, v325, v326, v327, v328, v329);
-      v341 = objc_msgSend_tokens(v384, v331, v332, v333, v334, v335);
-      if (v384)
+      v330 = objc_msgSend_textStrokes(stringCopy, v325, v326, v327, v328, v329);
+      v341 = objc_msgSend_tokens(stringCopy, v331, v332, v333, v334, v335);
+      if (stringCopy)
       {
-        objc_msgSend_points(v384, v336, v337, v338, v339, v340);
-        objc_msgSend_strokePoints(v384, v342, v343, v344, v345, v346);
+        objc_msgSend_points(stringCopy, v336, v337, v338, v339, v340);
+        objc_msgSend_strokePoints(stringCopy, v342, v343, v344, v345, v346);
       }
 
       else
@@ -2395,8 +2395,8 @@ LABEL_100:
         v395 = 0;
       }
 
-      v347 = objc_msgSend_locale(v384, v336, v337, v338, v339, v340);
-      v353 = objc_msgSend_strokeClassification(v384, v348, v349, v350, v351, v352);
+      v347 = objc_msgSend_locale(stringCopy, v336, v337, v338, v339, v340);
+      v353 = objc_msgSend_strokeClassification(stringCopy, v348, v349, v350, v351, v352);
       var1 = retstr->var2.var1;
       var0 = retstr->var2.var0;
       v405 = var1;
@@ -2409,7 +2409,7 @@ LABEL_100:
       v357 = retstr->var1.var1;
       v402 = retstr->var1.var0;
       v403 = v357;
-      v363 = objc_msgSend_principalPoints(v384, v358, v359, v360, v361, v362);
+      v363 = objc_msgSend_principalPoints(stringCopy, v358, v359, v360, v361, v362);
       v364 = *(MEMORY[0x1E695EFD0] + 16);
       v392[0] = *MEMORY[0x1E695EFD0];
       v392[1] = v364;
@@ -2455,7 +2455,7 @@ LABEL_100:
       v373 = objc_opt_class();
       if (v373)
       {
-        objc_msgSend_fixPrincipalLinesPosition_useAltString_skipAmbiguousCharacters_(v373, v374, v366, v391, v388, v375);
+        objc_msgSend_fixPrincipalLinesPosition_useAltString_skipAmbiguousCharacters_(v373, v374, v366, charactersCopy, v388, v375);
       }
 
       else
@@ -2490,7 +2490,7 @@ LABEL_102:
     v305 = objc_opt_class();
     if (v305)
     {
-      objc_msgSend_fixPrincipalLinesPosition_useAltString_skipAmbiguousCharacters_(v305, v306, v384, v391, v388, v307);
+      objc_msgSend_fixPrincipalLinesPosition_useAltString_skipAmbiguousCharacters_(v305, v306, stringCopy, charactersCopy, v388, v307);
     }
 
     else
@@ -2522,9 +2522,9 @@ LABEL_123:
     goto LABEL_124;
   }
 
-  if (v384)
+  if (stringCopy)
   {
-    objc_msgSend_principalLines(v384, v22, v23, v24, v25, v26);
+    objc_msgSend_principalLines(stringCopy, v22, v23, v24, v25, v26);
   }
 
   else
@@ -2544,22 +2544,22 @@ LABEL_124:
   return result;
 }
 
-+ ($196E0A09E4C4E138EEBEC6372622051A)fixPrincipalLinesPosition:(SEL)a3 useAltString:(id)a4 skipAmbiguousCharacters:(BOOL)a5
++ ($196E0A09E4C4E138EEBEC6372622051A)fixPrincipalLinesPosition:(SEL)position useAltString:(id)string skipAmbiguousCharacters:(BOOL)characters
 {
   v568 = a6;
-  v573 = a5;
+  charactersCopy = characters;
   v610 = *MEMORY[0x1E69E9840];
-  v575 = a4;
+  stringCopy = string;
   v6 = objc_opt_class();
-  v12 = objc_msgSend_string(v575, v7, v8, v9, v10, v11);
-  v576 = objc_msgSend_stringForRendering_useAltChars_(v6, v13, v12, v573, v14, v15);
+  v12 = objc_msgSend_string(stringCopy, v7, v8, v9, v10, v11);
+  v576 = objc_msgSend_stringForRendering_useAltChars_(v6, v13, v12, charactersCopy, v14, v15);
 
   v21 = objc_msgSend_ch_smallCharacterSet(MEMORY[0x1E696AB08], v16, v17, v18, v19, v20);
   LOBYTE(v6) = sub_1837A4F0C(v576, v21);
 
   if ((v6 & 1) != 0 || !objc_msgSend_length(v576, v22, v23, v24, v25, v26))
   {
-    if (!v575)
+    if (!stringCopy)
     {
 LABEL_24:
       retstr->var3.var0 = 0u;
@@ -2574,11 +2574,11 @@ LABEL_24:
     }
 
 LABEL_15:
-    objc_msgSend_principalLines(v575, v22, v23, v24, v25, v26);
+    objc_msgSend_principalLines(stringCopy, v22, v23, v24, v25, v26);
     goto LABEL_25;
   }
 
-  objc_msgSend_orientation(v575, v22, v23, v24, v25, v26);
+  objc_msgSend_orientation(stringCopy, v22, v23, v24, v25, v26);
   v28 = tan(v27);
   v589 = 0u;
   v590 = 0u;
@@ -2588,13 +2588,13 @@ LABEL_15:
   v586 = 0u;
   v583 = 0u;
   v584 = 0u;
-  if (!v575)
+  if (!stringCopy)
   {
     goto LABEL_23;
   }
 
-  objc_msgSend_principalLines(v575, v22, v23, v24, v25, v26);
-  objc_msgSend_points(v575, v29, v30, v31, v32, v33);
+  objc_msgSend_principalLines(stringCopy, v22, v23, v24, v25, v26);
+  objc_msgSend_points(stringCopy, v29, v30, v31, v32, v33);
   v34 = *&__p.y - *&__p.x;
   if (*&__p.y == *&__p.x)
   {
@@ -2643,7 +2643,7 @@ LABEL_15:
   if (v37 == 1.79769313e308 || v38 == -1.79769313e308)
   {
 LABEL_23:
-    if (!v575)
+    if (!stringCopy)
     {
       goto LABEL_24;
     }
@@ -2667,7 +2667,7 @@ LABEL_23:
   v92 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v87, v88, v89, v90, v91, *(&v583 + 1) + *&v583 * v28);
   objc_msgSend_addObject_(v560, v93, v92, v94, v95, v96);
 
-  objc_msgSend_splitIntoTokens(v575, v97, v98, v99, v100, v101);
+  objc_msgSend_splitIntoTokens(stringCopy, v97, v98, v99, v100, v101);
   v581 = 0u;
   v582 = 0u;
   v579 = 0u;
@@ -2691,7 +2691,7 @@ LABEL_23:
         v106 = objc_opt_class();
         v112 = objc_msgSend_string(v105, v107, v108, v109, v110, v111);
         v565 = v105;
-        v571 = objc_msgSend_stringForRendering_useAltChars_(v106, v113, v112, v573, v114, v115);
+        v571 = objc_msgSend_stringForRendering_useAltChars_(v106, v113, v112, charactersCopy, v114, v115);
 
         v121 = objc_msgSend_ch_smallCharacterSet(MEMORY[0x1E696AB08], v116, v117, v118, v119, v120);
         v126 = objc_msgSend_indexesOfCharacters_(v571, v122, v121, v123, v124, v125);
@@ -3066,7 +3066,7 @@ LABEL_76:
   retstr->var0.var0.y = v546 + v549 * v548;
   retstr->var0.var1.x = v550;
   retstr->var0.var1.y = v546 + v550 * v548;
-  objc_msgSend_points(v575, v537, v538, v539, v540, v541);
+  objc_msgSend_points(stringCopy, v537, v538, v539, v540, v541);
   sub_1838CD8C4(&retstr->var0.var0.x, v601, &__p.x);
   v551 = v607;
   retstr->var2.var0 = v606;
@@ -3090,12 +3090,12 @@ LABEL_25:
   return result;
 }
 
-+ (double)textLineFitScore:(id)a3 useAltString:(BOOL)a4
++ (double)textLineFitScore:(id)score useAltString:(BOOL)string
 {
-  v4 = a4;
+  stringCopy = string;
   v62 = *MEMORY[0x1E69E9840];
-  v52 = a3;
-  objc_msgSend_splitIntoTokens(v52, v5, v6, v7, v8, v9);
+  scoreCopy = score;
+  objc_msgSend_splitIntoTokens(scoreCopy, v5, v6, v7, v8, v9);
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
@@ -3117,7 +3117,7 @@ LABEL_25:
         v17 = *(*(&v57 + 1) + 8 * i);
         v18 = objc_opt_class();
         v24 = objc_msgSend_string(v17, v19, v20, v21, v22, v23);
-        v28 = objc_msgSend_stringForRendering_useAltChars_(v18, v25, v24, v4, v26, v27);
+        v28 = objc_msgSend_stringForRendering_useAltChars_(v18, v25, v24, stringCopy, v26, v27);
 
         v34 = objc_opt_class();
         if (v17)
@@ -3156,39 +3156,39 @@ LABEL_25:
     v15 = 0.0;
   }
 
-  objc_msgSend_lineHeight(v52, v44, v45, v46, v47, v48);
+  objc_msgSend_lineHeight(scoreCopy, v44, v45, v46, v47, v48);
   v50 = v49;
 
   return v15 / v50;
 }
 
-+ (double)principalLinesFitScore:(id *)a3 points:(const void *)a4 transcription:(id)a5
++ (double)principalLinesFitScore:(id *)score points:(const void *)points transcription:(id)transcription
 {
-  v12 = a5;
-  x = a3->var0.var0.x;
-  y = a3->var0.var0.y;
-  v15 = a3->var1.var0.x;
-  v16 = a3->var2.var0.x;
-  v17 = a3->var3.var0.x;
+  transcriptionCopy = transcription;
+  x = score->var0.var0.x;
+  y = score->var0.var0.y;
+  v15 = score->var1.var0.x;
+  v16 = score->var2.var0.x;
+  v17 = score->var3.var0.x;
   v18 = *MEMORY[0x1E695EFF8];
   v19 = *(MEMORY[0x1E695EFF8] + 8);
-  if (a3->var0.var0.x == *MEMORY[0x1E695EFF8] && y == v19)
+  if (score->var0.var0.x == *MEMORY[0x1E695EFF8] && y == v19)
   {
-    x = a3->var1.var0.y;
-    y = a3->var1.var1.x;
-    v21 = a3->var0.var1.x == v18 && a3->var0.var1.y == v19;
+    x = score->var1.var0.y;
+    y = score->var1.var1.x;
+    v21 = score->var0.var1.x == v18 && score->var0.var1.y == v19;
     v22 = v21 && v15 == v18;
     v23 = v22 && x == v19;
     v24 = v23 && y == v18;
-    v25 = v24 && a3->var1.var1.y == v19;
+    v25 = v24 && score->var1.var1.y == v19;
     v26 = v25 && v16 == v18;
-    v27 = v26 && a3->var2.var0.y == v19;
-    v28 = v27 && a3->var2.var1.x == v18;
-    v29 = v28 && a3->var2.var1.y == v19;
+    v27 = v26 && score->var2.var0.y == v19;
+    v28 = v27 && score->var2.var1.x == v18;
+    v29 = v28 && score->var2.var1.y == v19;
     v30 = v29 && v17 == v18;
-    v31 = v30 && a3->var3.var0.y == v19;
-    v32 = v31 && a3->var3.var1.x == v18;
-    if (v32 && a3->var3.var1.y == v19)
+    v31 = v30 && score->var3.var0.y == v19;
+    v32 = v31 && score->var3.var1.x == v18;
+    if (v32 && score->var3.var1.y == v19)
     {
       v57 = 1.79769313e308;
       goto LABEL_82;
@@ -3196,30 +3196,30 @@ LABEL_25:
   }
 
   v34 = objc_msgSend_ch_smallCharacterSet(MEMORY[0x1E696AB08], v7, v8, v9, v10, v11, v17, v18, v19, v16, v15, x, y);
-  v39 = objc_msgSend_indexesOfCharacters_(v12, v35, v34, v36, v37, v38);
+  v39 = objc_msgSend_indexesOfCharacters_(transcriptionCopy, v35, v34, v36, v37, v38);
   v45 = objc_msgSend_count(v39, v40, v41, v42, v43, v44);
-  v51 = objc_msgSend_length(v12, v46, v47, v48, v49, v50);
+  v51 = objc_msgSend_length(transcriptionCopy, v46, v47, v48, v49, v50);
 
   v57 = 0.0;
   if (v45 != v51)
   {
-    var1 = a3->var2.var1;
-    var0 = a3->var2.var0;
+    var1 = score->var2.var1;
+    var0 = score->var2.var0;
     v125 = var1;
-    v59 = a3->var1.var1;
-    v122 = a3->var1.var0;
+    v59 = score->var1.var1;
+    v122 = score->var1.var0;
     v123 = v59;
-    v60 = objc_msgSend_ascendersCount(v12, v52, v53, v54, v55, v56);
-    if (objc_msgSend_countCharacters(v12, v61, v62, v63, v64, v65) <= v60)
+    v60 = objc_msgSend_ascendersCount(transcriptionCopy, v52, v53, v54, v55, v56);
+    if (objc_msgSend_countCharacters(transcriptionCopy, v61, v62, v63, v64, v65) <= v60)
     {
-      v66 = a3->var3.var1;
-      var0 = a3->var3.var0;
+      v66 = score->var3.var1;
+      var0 = score->var3.var0;
       v125 = v66;
     }
 
-    v67 = atan2(a3->var1.var1.y - a3->var1.var0.y, a3->var1.var1.x - a3->var1.var0.x);
+    v67 = atan2(score->var1.var1.y - score->var1.var0.y, score->var1.var1.x - score->var1.var0.x);
     v68 = tan(v67);
-    v74 = objc_msgSend_countCharacters(v12, v69, v70, v71, v72, v73);
+    v74 = objc_msgSend_countCharacters(transcriptionCopy, v69, v70, v71, v72, v73);
     v80 = v74;
     if (v74)
     {
@@ -3229,7 +3229,7 @@ LABEL_25:
       do
       {
         v84 = v122.x + v81++ * v83;
-        sub_1838C3B48(a4, &v120, v68, v84, v82 + v84 * v68, v122.x + v81 * v83, v82 + (v122.x + v81 * v83) * v68);
+        sub_1838C3B48(points, &v120, v68, v84, v82 + v84 * v68, v122.x + v81 * v83, v82 + (v122.x + v81 * v83) * v68);
         v85 = v120;
         if (v121 != v120)
         {
@@ -3249,16 +3249,16 @@ LABEL_68:
           continue;
         }
 
-        v89 = a3->var0.var0.x;
-        v90 = a3->var0.var0.y;
-        v91 = a3->var3.var0.x;
-        v92 = a3->var3.var0.y;
-        if (a3->var0.var0.x == v91 && v90 == v92)
+        v89 = score->var0.var0.x;
+        v90 = score->var0.var0.y;
+        v91 = score->var3.var0.x;
+        v92 = score->var3.var0.y;
+        if (score->var0.var0.x == v91 && v90 == v92)
         {
-          v94 = a3->var0.var1.x;
-          v95 = a3->var0.var1.y;
-          v96 = a3->var3.var1.x;
-          v97 = a3->var3.var1.y;
+          v94 = score->var0.var1.x;
+          v95 = score->var0.var1.y;
+          v96 = score->var3.var1.x;
+          v97 = score->var3.var1.y;
           v98 = 0.0;
           if (v94 == v96 && v95 == v97)
           {
@@ -3268,16 +3268,16 @@ LABEL_68:
 
         else
         {
-          v94 = a3->var0.var1.x;
-          v95 = a3->var0.var1.y;
-          v96 = a3->var3.var1.x;
-          v97 = a3->var3.var1.y;
+          v94 = score->var0.var1.x;
+          v95 = score->var0.var1.y;
+          v96 = score->var3.var1.x;
+          v97 = score->var3.var1.y;
         }
 
         v100 = (v95 - v90) / (v94 - v89);
         v101 = (v97 - v92) / (v96 - v91);
         v102 = v92 - v101 * v91;
-        v103 = a3->var0.var0.x;
+        v103 = score->var0.var0.x;
         if (v100 != 0.0)
         {
           v103 = (v90 - -1.0 / v100 * v89 - v102) / (v101 - -1.0 / v100);
@@ -3295,9 +3295,9 @@ LABEL_67:
       while (v80 != v81);
     }
 
-    hasAscender = objc_msgSend_hasAscender(v12, v75, v76, v77, v78, v79);
-    hasDescender = objc_msgSend_hasDescender(v12, v105, v106, v107, v108, v109);
-    v111 = *(a4 + 1) - *a4;
+    hasAscender = objc_msgSend_hasAscender(transcriptionCopy, v75, v76, v77, v78, v79);
+    hasDescender = objc_msgSend_hasDescender(transcriptionCopy, v105, v106, v107, v108, v109);
+    v111 = *(points + 1) - *points;
     if (v111)
     {
       v112 = v111 >> 4;
@@ -3306,7 +3306,7 @@ LABEL_67:
         v112 = 1;
       }
 
-      v113 = (*a4 + 8);
+      v113 = (*points + 8);
       v114 = 1.79769313e308;
       v115 = -1.79769313e308;
       do
@@ -3342,7 +3342,7 @@ LABEL_67:
 LABEL_80:
         if ((hasDescender & 1) == 0)
         {
-          v118 = a3->var1.var0.y - a3->var1.var0.x * v68 - v115;
+          v118 = score->var1.var0.y - score->var1.var0.x * v68 - v115;
           v57 = v57 + v118 * v118;
         }
 
@@ -3350,7 +3350,7 @@ LABEL_80:
       }
     }
 
-    v117 = a3->var2.var0.y - a3->var2.var0.x * v68 - v114;
+    v117 = score->var2.var0.y - score->var2.var0.x * v68 - v114;
     v57 = v57 + v117 * v117;
     goto LABEL_80;
   }
@@ -3360,12 +3360,12 @@ LABEL_82:
   return v57;
 }
 
-+ (id)principalLinePointsForString:(id)a3 skipAmbiguousCharacters:(BOOL)a4 strokes:(id)a5 strokePoints:(const void *)a6 orientation:(double)a7 medianFallbackThreshold:(double)a8
++ (id)principalLinePointsForString:(id)string skipAmbiguousCharacters:(BOOL)characters strokes:(id)strokes strokePoints:(const void *)points orientation:(double)orientation medianFallbackThreshold:(double)threshold
 {
-  v300 = a4;
+  charactersCopy = characters;
   v311[4] = *MEMORY[0x1E69E9840];
-  v303 = a3;
-  v301 = a5;
+  stringCopy = string;
+  strokesCopy = strokes;
   v15 = objc_msgSend_array(MEMORY[0x1E695DF70], v10, v11, v12, v13, v14);
   v311[0] = v15;
   v21 = objc_msgSend_array(MEMORY[0x1E695DF70], v16, v17, v18, v19, v20);
@@ -3377,13 +3377,13 @@ LABEL_82:
   v297 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v34, v311, 4, v35, v36);
 
   v292 = objc_msgSend_array(MEMORY[0x1E695DF70], v37, v38, v39, v40, v41);
-  v42 = tan(a7);
-  v48 = objc_msgSend_countCharacters(v303, v43, v44, v45, v46, v47);
+  v42 = tan(orientation);
+  v48 = objc_msgSend_countCharacters(stringCopy, v43, v44, v45, v46, v47);
   v308 = 0;
   __dst = 0;
   v310 = 0;
-  v49 = *a6;
-  if (*(a6 + 1) == *a6)
+  v49 = *points;
+  if (*(points + 1) == *points)
   {
     v52 = 0;
     v53 = 0;
@@ -3403,11 +3403,11 @@ LABEL_26:
   {
     sub_18374A63C(&v308, __dst, *(v49 + v50), *(v49 + v50 + 8), (*(v49 + v50 + 8) - *(v49 + v50)) >> 4);
     ++v51;
-    v49 = *a6;
+    v49 = *points;
     v50 += 24;
   }
 
-  while (v51 < 0xAAAAAAAAAAAAAAABLL * ((*(a6 + 1) - *a6) >> 3));
+  while (v51 < 0xAAAAAAAAAAAAAAABLL * ((*(points + 1) - *points) >> 3));
   v52 = v308;
   v53 = __dst;
   if (v308 == __dst)
@@ -3516,7 +3516,7 @@ LABEL_27:
 
   v286 = v52;
   v298 = fmin(v54 - v55, v57 - v56) / 5.0;
-  sub_1838C36D8(v301, a6, &v306, a7, v298, v298, v55, v71, v69, v70);
+  sub_1838C36D8(strokesCopy, points, &v306, orientation, v298, v298, v55, v71, v69, v70);
   v83 = v306;
   if (v307 == v306)
   {
@@ -3580,12 +3580,12 @@ LABEL_33:
 
   while (v85);
 LABEL_44:
-  hasAscender = objc_msgSend_hasAscender(v303, v76, v77, v78, v79, v80, v81, v82, v286);
-  hasDescender = objc_msgSend_hasDescender(v303, v94, v95, v96, v97, v98);
-  hasMaxHeightOfXHeight = objc_msgSend_hasMaxHeightOfXHeight(v303, v100, v101, v102, v103, v104);
-  if (v300)
+  hasAscender = objc_msgSend_hasAscender(stringCopy, v76, v77, v78, v79, v80, v81, v82, v286);
+  hasDescender = objc_msgSend_hasDescender(stringCopy, v94, v95, v96, v97, v98);
+  hasMaxHeightOfXHeight = objc_msgSend_hasMaxHeightOfXHeight(stringCopy, v100, v101, v102, v103, v104);
+  if (charactersCopy)
   {
-    hasAmbiguousCharacter = objc_msgSend_hasAmbiguousCharacter(v303, v105, v106, v107, v108, v109);
+    hasAmbiguousCharacter = objc_msgSend_hasAmbiguousCharacter(stringCopy, v105, v106, v107, v108, v109);
     v112 = v88 + v87 * v42;
     v113 = v89 + v90 * v42;
     if ((hasDescender & hasAscender) != 1)
@@ -3703,13 +3703,13 @@ LABEL_57:
         v158 = 0;
       }
 
-      v159 = objc_msgSend_substringWithComposedCharacterRange_(v303, v154, v158, fmin(v296, (v151 + 2)) - v158 + 1, v155, v156);
+      v159 = objc_msgSend_substringWithComposedCharacterRange_(stringCopy, v154, v158, fmin(v296, (v151 + 2)) - v158 + 1, v155, v156);
       v165 = objc_msgSend_countCharacters(v159, v160, v161, v162, v163, v164);
       v171 = objc_msgSend_ascendersCount(v159, v166, v167, v168, v169, v170);
       v177 = objc_msgSend_hasAscender(v159, v172, v173, v174, v175, v176);
       v183 = objc_msgSend_hasDescender(v159, v178, v179, v180, v181, v182);
       v194 = objc_msgSend_hasMaxHeightOfXHeight(v159, v184, v185, v186, v187, v188);
-      if (v300)
+      if (charactersCopy)
       {
         v195 = objc_msgSend_hasAmbiguousCharacter(v159, v189, v190, v191, v192, v193);
       }
@@ -3733,7 +3733,7 @@ LABEL_57:
         v199 = 1.95;
       }
 
-      sub_1838C36D8(v301, a6, &__p, a7, v298, v298, v198, v152 + v198 * v299, v198 + v153 * v199, v152 + (v198 + v153 * v199) * v299);
+      sub_1838C36D8(strokesCopy, points, &__p, orientation, v298, v298, v198, v152 + v198 * v299, v198 + v153 * v199, v152 + (v198 + v153 * v199) * v299);
       v205 = __p;
       if (v305 == __p)
       {
@@ -3789,7 +3789,7 @@ LABEL_57:
         break;
       }
 
-      if (a8 != 0.0 && v227 > a8)
+      if (threshold != 0.0 && v227 > threshold)
       {
         v229 = sub_1837A9A94(v213, v212, v205, v200, v201, v202, v203, v204);
         objc_msgSend_addObject_(v292, v240, v229, v241, v242, v243);
@@ -3857,12 +3857,12 @@ LABEL_108:
   return v284;
 }
 
-+ (id)principalLineInterceptsForString:(id)a3 skipAmbiguousCharacters:(BOOL)a4 strokes:(id)a5 strokePoints:(const void *)a6 orientation:(double)a7 medianFallbackThreshold:(double)a8
++ (id)principalLineInterceptsForString:(id)string skipAmbiguousCharacters:(BOOL)characters strokes:(id)strokes strokePoints:(const void *)points orientation:(double)orientation medianFallbackThreshold:(double)threshold
 {
-  v12 = a4;
+  charactersCopy = characters;
   v90[4] = *MEMORY[0x1E69E9840];
-  v81 = a3;
-  v82 = a5;
+  stringCopy = string;
+  strokesCopy = strokes;
   v18 = objc_msgSend_array(MEMORY[0x1E695DF70], v13, v14, v15, v16, v17);
   v90[0] = v18;
   v24 = objc_msgSend_array(MEMORY[0x1E695DF70], v19, v20, v21, v22, v23);
@@ -3873,9 +3873,9 @@ LABEL_108:
   v90[3] = v36;
   v40 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v37, v90, 4, v38, v39);
 
-  v41 = tan(a7);
+  v41 = tan(orientation);
   v42 = objc_opt_class();
-  v83 = objc_msgSend_principalLinePointsForString_skipAmbiguousCharacters_strokes_strokePoints_orientation_medianFallbackThreshold_(v42, v43, v81, v12, v82, a6, a7, a8);
+  v83 = objc_msgSend_principalLinePointsForString_skipAmbiguousCharacters_strokes_strokePoints_orientation_medianFallbackThreshold_(v42, v43, stringCopy, charactersCopy, strokesCopy, points, orientation, threshold);
   v49 = 0;
   v50 = MEMORY[0x1E695EFF8];
 LABEL_2:
@@ -3940,10 +3940,10 @@ LABEL_14:
   return v40;
 }
 
-+ (id)principalLineInterceptsForPrincipalPoints:(id)a3 orientation:(double)a4
++ (id)principalLineInterceptsForPrincipalPoints:(id)points orientation:(double)orientation
 {
   v78[4] = *MEMORY[0x1E69E9840];
-  v71 = a3;
+  pointsCopy = points;
   v10 = objc_msgSend_array(MEMORY[0x1E695DF70], v5, v6, v7, v8, v9);
   v78[0] = v10;
   v16 = objc_msgSend_array(MEMORY[0x1E695DF70], v11, v12, v13, v14, v15);
@@ -3954,17 +3954,17 @@ LABEL_14:
   v78[3] = v28;
   v32 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v29, v78, 4, v30, v31);
 
-  v38 = tan(a4);
+  v38 = tan(orientation);
   v39 = 0;
   v40 = MEMORY[0x1E695EFF8];
 LABEL_2:
-  if (v39 < objc_msgSend_count(v71, v33, v34, v35, v36, v37))
+  if (v39 < objc_msgSend_count(pointsCopy, v33, v34, v35, v36, v37))
   {
     v74 = 0u;
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v45 = objc_msgSend_objectAtIndexedSubscript_(v71, v41, v39, v42, v43, v44);
+    v45 = objc_msgSend_objectAtIndexedSubscript_(pointsCopy, v41, v39, v42, v43, v44);
     v48 = objc_msgSend_countByEnumeratingWithState_objects_count_(v45, v46, &v72, v77, 16, v47);
     if (!v48)
     {
@@ -4035,11 +4035,11 @@ LABEL_14:
   return v3;
 }
 
-+ (id)stringForRendering:(id)a3 useAltChars:(BOOL)a4
++ (id)stringForRendering:(id)rendering useAltChars:(BOOL)chars
 {
-  v4 = a4;
+  charsCopy = chars;
   v67 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  renderingCopy = rendering;
   v6 = objc_opt_class();
   objc_msgSend_charactersForRendering(v6, v7, v8, v9, v10, v11);
   v63 = 0u;
@@ -4047,11 +4047,11 @@ LABEL_14:
   v61 = 0u;
   v12 = v62 = 0u;
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v61, v66, 16, v14);
-  v20 = v5;
+  v20 = renderingCopy;
   if (v19)
   {
     v21 = *v62;
-    v20 = v5;
+    v20 = renderingCopy;
     do
     {
       v22 = 0;
@@ -4078,7 +4078,7 @@ LABEL_14:
     while (v19);
   }
 
-  if (v4)
+  if (charsCopy)
   {
     objc_msgSend_alternativeCharacterForms(MEMORY[0x1E696AEC0], v29, v30, v31, v32, v33);
     v59 = 0u;
@@ -4122,21 +4122,21 @@ LABEL_14:
   return v55;
 }
 
-+ (CGSize)estimatedRenderedTextSize:(id)a3 fullDeformValue:(double)a4 ascenderDeformValue:(double)a5 descenderDeformValue:(double)a6
++ (CGSize)estimatedRenderedTextSize:(id)size fullDeformValue:(double)value ascenderDeformValue:(double)deformValue descenderDeformValue:(double)descenderDeformValue
 {
-  v9 = a3;
-  hasDescender = objc_msgSend_hasDescender(v9, v10, v11, v12, v13, v14);
-  hasAscender = objc_msgSend_hasAscender(v9, v16, v17, v18, v19, v20);
-  v22 = sub_1838CBE4C(v9, 100);
-  v23 = a4 * 52.5;
+  sizeCopy = size;
+  hasDescender = objc_msgSend_hasDescender(sizeCopy, v10, v11, v12, v13, v14);
+  hasAscender = objc_msgSend_hasAscender(sizeCopy, v16, v17, v18, v19, v20);
+  v22 = sub_1838CBE4C(sizeCopy, 100);
+  v23 = value * 52.5;
   if (hasAscender)
   {
-    v23 = a4 * 52.5 + a4 * 18.5 * a5 + a4 * 18.5;
+    v23 = value * 52.5 + value * 18.5 * deformValue + value * 18.5;
   }
 
   if (hasDescender)
   {
-    v24 = a4 * 17.0 * a6 + a4 * 17.0 + v23;
+    v24 = value * 17.0 * descenderDeformValue + value * 17.0 + v23;
   }
 
   else
@@ -4153,21 +4153,21 @@ LABEL_14:
   return result;
 }
 
-+ (void)getDeformValuesForTextLine:(id)a3 useAltString:(BOOL)a4 outfullDeform:(double *)a5 outAscenderDeform:(double *)a6 outDescenderDeform:(double *)a7
++ (void)getDeformValuesForTextLine:(id)line useAltString:(BOOL)string outfullDeform:(double *)deform outAscenderDeform:(double *)ascenderDeform outDescenderDeform:(double *)descenderDeform
 {
-  v7 = a4;
+  stringCopy = string;
   v341 = *MEMORY[0x1E69E9840];
-  v317 = a3;
+  lineCopy = line;
   v319 = objc_msgSend_array(MEMORY[0x1E695DF70], v8, v9, v10, v11, v12);
   v318 = objc_msgSend_array(MEMORY[0x1E695DF70], v13, v14, v15, v16, v17);
   v320 = objc_msgSend_array(MEMORY[0x1E695DF70], v18, v19, v20, v21, v22);
-  v28 = objc_msgSend_string(v317, v23, v24, v25, v26, v27);
-  v34 = objc_msgSend_string(v317, v29, v30, v31, v32, v33);
+  v28 = objc_msgSend_string(lineCopy, v23, v24, v25, v26, v27);
+  v34 = objc_msgSend_string(lineCopy, v29, v30, v31, v32, v33);
   v40 = objc_msgSend_uppercaseString(v34, v35, v36, v37, v38, v39);
   if (objc_msgSend_isEqualToString_(v28, v41, v40, v42, v43, v44))
   {
-    v50 = objc_msgSend_string(v317, v45, v46, v47, v48, v49);
-    v56 = objc_msgSend_string(v317, v51, v52, v53, v54, v55);
+    v50 = objc_msgSend_string(lineCopy, v45, v46, v47, v48, v49);
+    v56 = objc_msgSend_string(lineCopy, v51, v52, v53, v54, v55);
     v62 = objc_msgSend_lowercaseString(v56, v57, v58, v59, v60, v61);
     isEqualToString = objc_msgSend_isEqualToString_(v50, v63, v62, v64, v65, v66);
   }
@@ -4178,10 +4178,10 @@ LABEL_14:
   }
 
   v68 = objc_opt_class();
-  v74 = objc_msgSend_locale(v317, v69, v70, v71, v72, v73);
+  v74 = objc_msgSend_locale(lineCopy, v69, v70, v71, v72, v73);
   shouldDeformRenderedAscendersDescenders = objc_msgSend_shouldDeformRenderedAscendersDescenders_(v68, v75, v74, v76, v77, v78);
 
-  objc_msgSend_splitIntoTokens(v317, v80, v81, v82, v83, v84);
+  objc_msgSend_splitIntoTokens(lineCopy, v80, v81, v82, v83, v84);
   v338 = 0u;
   v339 = 0u;
   v336 = 0u;
@@ -4207,7 +4207,7 @@ LABEL_14:
       v90 = *(*(&v336 + 1) + 8 * v89);
       v91 = objc_opt_class();
       v97 = objc_msgSend_string(v90, v92, v93, v94, v95, v96);
-      v101 = objc_msgSend_stringForRendering_useAltChars_(v91, v98, v97, v7, v99, v100);
+      v101 = objc_msgSend_stringForRendering_useAltChars_(v91, v98, v97, stringCopy, v99, v100);
 
       v107 = objc_msgSend_ch_smallCharacterSet(MEMORY[0x1E696AB08], v102, v103, v104, v105, v106);
       v112 = objc_msgSend_indexesOfCharacters_(v101, v108, v107, v109, v110, v111);
@@ -4407,8 +4407,8 @@ LABEL_48:
     v311 = v310;
 
     v312 = v311;
-    v313 = a5;
-    if (a5)
+    deformCopy2 = deform;
+    if (deform)
     {
       goto LABEL_56;
     }
@@ -4417,22 +4417,22 @@ LABEL_48:
   else
   {
     v312 = 1.0;
-    v313 = a5;
-    if (a5)
+    deformCopy2 = deform;
+    if (deform)
     {
 LABEL_56:
-      *v313 = v312;
+      *deformCopy2 = v312;
     }
   }
 
-  if (a6)
+  if (ascenderDeform)
   {
-    *a6 = fmax(v285, -0.5);
+    *ascenderDeform = fmax(v285, -0.5);
   }
 
-  if (a7)
+  if (descenderDeform)
   {
-    *a7 = fmax(v299, -0.5);
+    *descenderDeform = fmax(v299, -0.5);
   }
 }
 

@@ -1,11 +1,11 @@
 @interface IMPollOption
 - (IMPollOption)init;
-- (IMPollOption)initWithOptionIdentifier:(id)a3 pollText:(id)a4 attributedPollText:(id)a5;
+- (IMPollOption)initWithOptionIdentifier:(id)identifier pollText:(id)text attributedPollText:(id)pollText;
 @end
 
 @implementation IMPollOption
 
-- (IMPollOption)initWithOptionIdentifier:(id)a3 pollText:(id)a4 attributedPollText:(id)a5
+- (IMPollOption)initWithOptionIdentifier:(id)identifier pollText:(id)text attributedPollText:(id)pollText
 {
   v7 = sub_1A84E5DBC();
   v9 = v8;
@@ -16,10 +16,10 @@
   v12 = (self + OBJC_IVAR___IMPollOption_pollText);
   *v12 = v10;
   v12[1] = v13;
-  *(self + OBJC_IVAR___IMPollOption_attributedPollText) = a5;
+  *(self + OBJC_IVAR___IMPollOption_attributedPollText) = pollText;
   v16.receiver = self;
   v16.super_class = IMPollOption;
-  v14 = a5;
+  pollTextCopy = pollText;
   return [(IMPollOption *)&v16 init];
 }
 

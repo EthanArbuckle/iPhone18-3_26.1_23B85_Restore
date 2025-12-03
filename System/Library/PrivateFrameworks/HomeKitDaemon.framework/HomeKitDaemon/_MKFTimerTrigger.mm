@@ -1,6 +1,6 @@
 @interface _MKFTimerTrigger
 + (NSPredicate)homeRelation;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFTimerTriggerDatabaseID)databaseID;
 - (void)awakeFromFetch;
 @end
@@ -19,38 +19,38 @@
   v13.receiver = self;
   v13.super_class = _MKFTimerTrigger;
   [(_MKFTimerTrigger *)&v13 awakeFromFetch];
-  v3 = [(_MKFTimerTrigger *)self recurrenceDays];
-  if (!v3)
+  recurrenceDays = [(_MKFTimerTrigger *)self recurrenceDays];
+  if (!recurrenceDays)
   {
-    v4 = [(_MKFTimerTrigger *)self recurrences];
+    recurrences = [(_MKFTimerTrigger *)self recurrences];
 
-    if (!v4)
+    if (!recurrences)
     {
       goto LABEL_5;
     }
 
     v5 = MEMORY[0x277CCABB0];
-    v3 = [(_MKFTimerTrigger *)self recurrences];
-    v6 = [v3 decodeArrayOfDateComponents];
+    recurrenceDays = [(_MKFTimerTrigger *)self recurrences];
+    decodeArrayOfDateComponents = [recurrenceDays decodeArrayOfDateComponents];
     v7 = [v5 numberWithUnsignedInteger:HMDaysOfTheWeekFromDateComponents()];
     [(_MKFTimerTrigger *)self setPrimitiveValue:v7 forKey:@"recurrenceDays"];
   }
 
 LABEL_5:
-  v8 = [(_MKFTimerTrigger *)self significantEventOffsetSeconds];
-  if (!v8)
+  significantEventOffsetSeconds = [(_MKFTimerTrigger *)self significantEventOffsetSeconds];
+  if (!significantEventOffsetSeconds)
   {
-    v9 = [(_MKFTimerTrigger *)self significantEventOffset];
+    significantEventOffset = [(_MKFTimerTrigger *)self significantEventOffset];
 
-    if (!v9)
+    if (!significantEventOffset)
     {
       return;
     }
 
     v10 = MEMORY[0x277CCABB0];
-    v8 = [(_MKFTimerTrigger *)self significantEventOffset];
-    v11 = [v8 decodeDateComponents];
-    v12 = [v10 numberWithInteger:{HMDTimeOffsetFromDateComponents(v11, 0)}];
+    significantEventOffsetSeconds = [(_MKFTimerTrigger *)self significantEventOffset];
+    decodeDateComponents = [significantEventOffsetSeconds decodeDateComponents];
+    v12 = [v10 numberWithInteger:{HMDTimeOffsetFromDateComponents(decodeDateComponents, 0)}];
     [(_MKFTimerTrigger *)self setPrimitiveValue:v12 forKey:@"significantEventOffsetSeconds"];
   }
 }
@@ -67,9 +67,9 @@ LABEL_5:
   return v3;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

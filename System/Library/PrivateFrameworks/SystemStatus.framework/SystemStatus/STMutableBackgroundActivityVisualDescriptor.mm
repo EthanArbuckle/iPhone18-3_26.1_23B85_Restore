@@ -1,27 +1,27 @@
 @interface STMutableBackgroundActivityVisualDescriptor
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setBackgroundColorRepresentation:(id)a3;
-- (void)setCrossfadableActivities:(id)a3;
-- (void)setFontSizeAdjustment:(double)a3;
-- (void)setImageName:(id)a3;
-- (void)setPackageName:(id)a3;
-- (void)setPreferredContinuousAnimationName:(id)a3;
-- (void)setPreferredVisualEffectName:(id)a3;
-- (void)setPrefersToKeepContentVisible:(BOOL)a3;
-- (void)setPrefersToSuppressDefaultUserInteractionHandler:(BOOL)a3;
-- (void)setPrefersToSuppressPulse:(BOOL)a3;
-- (void)setSystemImageName:(id)a3;
-- (void)setTextLabel:(id)a3;
-- (void)setVerticalOffsetInPixels:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setBackgroundColorRepresentation:(id)representation;
+- (void)setCrossfadableActivities:(id)activities;
+- (void)setFontSizeAdjustment:(double)adjustment;
+- (void)setImageName:(id)name;
+- (void)setPackageName:(id)name;
+- (void)setPreferredContinuousAnimationName:(id)name;
+- (void)setPreferredVisualEffectName:(id)name;
+- (void)setPrefersToKeepContentVisible:(BOOL)visible;
+- (void)setPrefersToSuppressDefaultUserInteractionHandler:(BOOL)handler;
+- (void)setPrefersToSuppressPulse:(BOOL)pulse;
+- (void)setSystemImageName:(id)name;
+- (void)setTextLabel:(id)label;
+- (void)setVerticalOffsetInPixels:(double)pixels;
 @end
 
 @implementation STMutableBackgroundActivityVisualDescriptor
 
-- (void)setSystemImageName:(id)a3
+- (void)setSystemImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   systemImageName = self->super._systemImageName;
-  v8 = v4;
+  v8 = nameCopy;
   if ((BSEqualObjects() & 1) == 0)
   {
     v6 = [v8 copy];
@@ -30,11 +30,11 @@
   }
 }
 
-- (void)setImageName:(id)a3
+- (void)setImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   imageName = self->super._imageName;
-  v8 = v4;
+  v8 = nameCopy;
   if ((BSEqualObjects() & 1) == 0)
   {
     v6 = [v8 copy];
@@ -43,11 +43,11 @@
   }
 }
 
-- (void)setPackageName:(id)a3
+- (void)setPackageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   packageName = self->super._packageName;
-  v8 = v4;
+  v8 = nameCopy;
   if ((BSEqualObjects() & 1) == 0)
   {
     v6 = [v8 copy];
@@ -56,11 +56,11 @@
   }
 }
 
-- (void)setTextLabel:(id)a3
+- (void)setTextLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   textLabel = self->super._textLabel;
-  v8 = v4;
+  v8 = labelCopy;
   if ((BSEqualObjects() & 1) == 0)
   {
     v6 = [v8 copy];
@@ -69,52 +69,52 @@
   }
 }
 
-- (void)setBackgroundColorRepresentation:(id)a3
+- (void)setBackgroundColorRepresentation:(id)representation
 {
-  v5 = a3;
+  representationCopy = representation;
   backgroundColorRepresentation = self->super._backgroundColorRepresentation;
   p_backgroundColorRepresentation = &self->super._backgroundColorRepresentation;
-  v8 = v5;
+  v8 = representationCopy;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(p_backgroundColorRepresentation, a3);
+    objc_storeStrong(p_backgroundColorRepresentation, representation);
   }
 }
 
-- (void)setVerticalOffsetInPixels:(double)a3
+- (void)setVerticalOffsetInPixels:(double)pixels
 {
-  if (self->super._verticalOffsetInPixels != a3)
+  if (self->super._verticalOffsetInPixels != pixels)
   {
-    self->super._verticalOffsetInPixels = a3;
+    self->super._verticalOffsetInPixels = pixels;
   }
 }
 
-- (void)setFontSizeAdjustment:(double)a3
+- (void)setFontSizeAdjustment:(double)adjustment
 {
-  if (self->super._fontSizeAdjustment != a3)
+  if (self->super._fontSizeAdjustment != adjustment)
   {
-    self->super._fontSizeAdjustment = a3;
+    self->super._fontSizeAdjustment = adjustment;
   }
 }
 
-- (void)setPrefersToKeepContentVisible:(BOOL)a3
+- (void)setPrefersToKeepContentVisible:(BOOL)visible
 {
-  if (self->super._prefersToKeepContentVisible != a3)
+  if (self->super._prefersToKeepContentVisible != visible)
   {
-    self->super._prefersToKeepContentVisible = a3;
+    self->super._prefersToKeepContentVisible = visible;
   }
 }
 
-- (void)setPreferredVisualEffectName:(id)a3
+- (void)setPreferredVisualEffectName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v4 = @"none";
+    nameCopy = @"none";
   }
 
   preferredVisualEffectName = self->super._preferredVisualEffectName;
-  v8 = v4;
+  v8 = nameCopy;
   if ((BSEqualObjects() & 1) == 0)
   {
     v6 = [(__CFString *)v8 copy];
@@ -123,16 +123,16 @@
   }
 }
 
-- (void)setPreferredContinuousAnimationName:(id)a3
+- (void)setPreferredContinuousAnimationName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v4 = @"pulseBackground";
+    nameCopy = @"pulseBackground";
   }
 
   preferredContinuousAnimationName = self->super._preferredContinuousAnimationName;
-  v8 = v4;
+  v8 = nameCopy;
   if ((BSEqualObjects() & 1) == 0)
   {
     v6 = [(__CFString *)v8 copy];
@@ -141,19 +141,19 @@
   }
 }
 
-- (void)setPrefersToSuppressDefaultUserInteractionHandler:(BOOL)a3
+- (void)setPrefersToSuppressDefaultUserInteractionHandler:(BOOL)handler
 {
-  if (self->super._prefersToSuppressDefaultUserInteractionHandler != a3)
+  if (self->super._prefersToSuppressDefaultUserInteractionHandler != handler)
   {
-    self->super._prefersToSuppressDefaultUserInteractionHandler = a3;
+    self->super._prefersToSuppressDefaultUserInteractionHandler = handler;
   }
 }
 
-- (void)setCrossfadableActivities:(id)a3
+- (void)setCrossfadableActivities:(id)activities
 {
-  v4 = a3;
+  activitiesCopy = activities;
   crossfadableActivities = self->super._crossfadableActivities;
-  v8 = v4;
+  v8 = activitiesCopy;
   if ((BSEqualObjects() & 1) == 0)
   {
     v6 = [v8 copy];
@@ -162,13 +162,13 @@
   }
 }
 
-- (void)setPrefersToSuppressPulse:(BOOL)a3
+- (void)setPrefersToSuppressPulse:(BOOL)pulse
 {
   v4 = STBackgroundActivityContinuousAnimationNone;
-  if (!a3)
+  if (!pulse)
   {
-    v5 = [(STBackgroundActivityVisualDescriptor *)self preferredContinuousAnimationName];
-    v6 = [v5 isEqual:@"none"];
+    preferredContinuousAnimationName = [(STBackgroundActivityVisualDescriptor *)self preferredContinuousAnimationName];
+    v6 = [preferredContinuousAnimationName isEqual:@"none"];
 
     if (!v6)
     {
@@ -183,7 +183,7 @@
   [(STMutableBackgroundActivityVisualDescriptor *)self setPreferredContinuousAnimationName:v7];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   _copyValuesFromDescriptorToDescriptor(self, v4);

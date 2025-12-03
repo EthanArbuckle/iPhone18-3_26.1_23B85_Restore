@@ -1,28 +1,28 @@
 @interface VUIActionOpenWebLink
-- (VUIActionOpenWebLink)initWithContextData:(id)a3 appContext:(id)a4;
+- (VUIActionOpenWebLink)initWithContextData:(id)data appContext:(id)context;
 - (VUIAppContext)appContext;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIActionOpenWebLink
 
-- (VUIActionOpenWebLink)initWithContextData:(id)a3 appContext:(id)a4
+- (VUIActionOpenWebLink)initWithContextData:(id)data appContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = VUIActionOpenWebLink;
   v9 = [(VUIActionOpenWebLink *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contextData, a3);
-    objc_storeWeak(&v10->_appContext, v8);
-    v11 = [v7 vui_stringForKey:@"webUrl"];
+    objc_storeStrong(&v9->_contextData, data);
+    objc_storeWeak(&v10->_appContext, contextCopy);
+    v11 = [dataCopy vui_stringForKey:@"webUrl"];
     webUrl = v10->_webUrl;
     v10->_webUrl = v11;
 
-    v13 = [v7 vui_dictionaryForKey:@"metrics"];
+    v13 = [dataCopy vui_dictionaryForKey:@"metrics"];
     metrics = v10->_metrics;
     v10->_metrics = v13;
   }
@@ -30,11 +30,11 @@
   return v10;
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  responderCopy = responder;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_appContext);
   v9 = WeakRetained;
   webUrl = self->_webUrl;
@@ -77,8 +77,8 @@
       v19[2] = __69__VUIActionOpenWebLink_performWithTargetResponder_completionHandler___block_invoke;
       v19[3] = &unk_1E872DE58;
       objc_copyWeak(&v21, &location);
-      v20 = v7;
-      [(VUIActionAppPunchout *)v18 performWithTargetResponder:v6 completionHandler:v19];
+      v20 = handlerCopy;
+      [(VUIActionAppPunchout *)v18 performWithTargetResponder:responderCopy completionHandler:v19];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);

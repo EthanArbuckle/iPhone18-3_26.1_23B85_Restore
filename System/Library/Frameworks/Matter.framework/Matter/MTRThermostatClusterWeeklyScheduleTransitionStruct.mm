@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterWeeklyScheduleTransitionStruct
 - (MTRThermostatClusterWeeklyScheduleTransitionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterWeeklyScheduleTransitionStruct);
-  v5 = [(MTRThermostatClusterWeeklyScheduleTransitionStruct *)self transitionTime];
-  [(MTRThermostatClusterWeeklyScheduleTransitionStruct *)v4 setTransitionTime:v5];
+  transitionTime = [(MTRThermostatClusterWeeklyScheduleTransitionStruct *)self transitionTime];
+  [(MTRThermostatClusterWeeklyScheduleTransitionStruct *)v4 setTransitionTime:transitionTime];
 
-  v6 = [(MTRThermostatClusterWeeklyScheduleTransitionStruct *)self heatSetpoint];
-  [(MTRThermostatClusterWeeklyScheduleTransitionStruct *)v4 setHeatSetpoint:v6];
+  heatSetpoint = [(MTRThermostatClusterWeeklyScheduleTransitionStruct *)self heatSetpoint];
+  [(MTRThermostatClusterWeeklyScheduleTransitionStruct *)v4 setHeatSetpoint:heatSetpoint];
 
-  v7 = [(MTRThermostatClusterWeeklyScheduleTransitionStruct *)self coolSetpoint];
-  [(MTRThermostatClusterWeeklyScheduleTransitionStruct *)v4 setCoolSetpoint:v7];
+  coolSetpoint = [(MTRThermostatClusterWeeklyScheduleTransitionStruct *)self coolSetpoint];
+  [(MTRThermostatClusterWeeklyScheduleTransitionStruct *)v4 setCoolSetpoint:coolSetpoint];
 
   return v4;
 }

@@ -1,56 +1,56 @@
 @interface NWOutboundMessage
-- (NWOutboundMessage)initWithContent:(id)a3;
+- (NWOutboundMessage)initWithContent:(id)content;
 - (double)relativePriority;
 - (unint64_t)expirationMilliseconds;
-- (void)addAntecedent:(id)a3;
-- (void)setExpirationMilliseconds:(unint64_t)a3;
-- (void)setRelativePriority:(double)a3;
+- (void)addAntecedent:(id)antecedent;
+- (void)setExpirationMilliseconds:(unint64_t)milliseconds;
+- (void)setRelativePriority:(double)priority;
 @end
 
 @implementation NWOutboundMessage
 
-- (void)addAntecedent:(id)a3
+- (void)addAntecedent:(id)antecedent
 {
-  v4 = a3;
+  antecedentCopy = antecedent;
   context = [(NWMessage *)self internalContext];
-  v5 = [v4 internalContext];
+  internalContext = [antecedentCopy internalContext];
 
-  nw_content_context_set_antecedent(context, v5);
+  nw_content_context_set_antecedent(context, internalContext);
 }
 
-- (void)setRelativePriority:(double)a3
+- (void)setRelativePriority:(double)priority
 {
-  v4 = [(NWMessage *)self internalContext];
-  nw_content_context_set_relative_priority(v4, a3);
+  internalContext = [(NWMessage *)self internalContext];
+  nw_content_context_set_relative_priority(internalContext, priority);
 }
 
 - (double)relativePriority
 {
-  v2 = [(NWMessage *)self internalContext];
-  relative_priority = nw_content_context_get_relative_priority(v2);
+  internalContext = [(NWMessage *)self internalContext];
+  relative_priority = nw_content_context_get_relative_priority(internalContext);
 
   return relative_priority;
 }
 
-- (void)setExpirationMilliseconds:(unint64_t)a3
+- (void)setExpirationMilliseconds:(unint64_t)milliseconds
 {
-  v4 = [(NWMessage *)self internalContext];
-  nw_content_context_set_expiration_milliseconds(v4, a3);
+  internalContext = [(NWMessage *)self internalContext];
+  nw_content_context_set_expiration_milliseconds(internalContext, milliseconds);
 }
 
 - (unint64_t)expirationMilliseconds
 {
-  v2 = [(NWMessage *)self internalContext];
-  expiration_milliseconds = nw_content_context_get_expiration_milliseconds(v2);
+  internalContext = [(NWMessage *)self internalContext];
+  expiration_milliseconds = nw_content_context_get_expiration_milliseconds(internalContext);
 
   return expiration_milliseconds;
 }
 
-- (NWOutboundMessage)initWithContent:(id)a3
+- (NWOutboundMessage)initWithContent:(id)content
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  contentCopy = content;
+  if (contentCopy)
   {
     v24.receiver = self;
     v24.super_class = NWOutboundMessage;
@@ -58,18 +58,18 @@
     if (v5)
     {
       self = v5;
-      v6 = [v4 _createDispatchData];
-      [(NWMessage *)self setInternalContent:v6];
+      _createDispatchData = [contentCopy _createDispatchData];
+      [(NWMessage *)self setInternalContent:_createDispatchData];
 
       v7 = nw_content_context_create("NWMessage");
       [(NWMessage *)self setInternalContext:v7];
 
-      v8 = [(NWMessage *)self internalContext];
+      selfCopy = [(NWMessage *)self internalContext];
 
-      if (v8)
+      if (selfCopy)
       {
         self = self;
-        v8 = self;
+        selfCopy = self;
       }
 
       goto LABEL_5;
@@ -151,7 +151,7 @@ LABEL_39:
     }
 
     self = 0;
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_5;
   }
 
@@ -232,10 +232,10 @@ LABEL_32:
     free(v11);
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_5:
 
-  return v8;
+  return selfCopy;
 }
 
 @end

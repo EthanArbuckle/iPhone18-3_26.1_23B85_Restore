@@ -1,28 +1,28 @@
 @interface PanicReportValidator
-+ (id)ValidatorWithURL:(id)a3;
++ (id)ValidatorWithURL:(id)l;
 - (BOOL)validate;
-- (BOOL)validate_ext_paniclog:(id)a3 key:(id)a4;
-- (BOOL)validate_key:(id)a3 inDict:(id)a4 withValue:(id)a5;
-- (BOOL)validate_key_in_log:(id)a3 present:(BOOL)a4;
-- (BOOL)validate_key_in_log:(id)a3 withValue:(id)a4;
-- (BOOL)validate_key_in_prologue:(id)a3 present:(BOOL)a4;
-- (BOOL)validate_key_in_prologue:(id)a3 withValue:(id)a4;
-- (BOOL)validate_keys:(id)a3 expected:(id)a4;
+- (BOOL)validate_ext_paniclog:(id)validate_ext_paniclog key:(id)key;
+- (BOOL)validate_key:(id)validate_key inDict:(id)dict withValue:(id)value;
+- (BOOL)validate_key_in_log:(id)validate_key_in_log present:(BOOL)present;
+- (BOOL)validate_key_in_log:(id)validate_key_in_log withValue:(id)value;
+- (BOOL)validate_key_in_prologue:(id)validate_key_in_prologue present:(BOOL)present;
+- (BOOL)validate_key_in_prologue:(id)validate_key_in_prologue withValue:(id)value;
+- (BOOL)validate_keys:(id)validate_keys expected:(id)expected;
 - (id)get_paniclog_json;
 - (id)get_prologue_json;
-- (id)withURL:(id)a3;
+- (id)withURL:(id)l;
 @end
 
 @implementation PanicReportValidator
 
 - (BOOL)validate
 {
-  v3 = [(PanicReportValidator *)self sourcePath];
-  NSLog(@"validating panic report: %@", v3);
+  sourcePath = [(PanicReportValidator *)self sourcePath];
+  NSLog(@"validating panic report: %@", sourcePath);
 
-  v4 = [(PanicReportValidator *)self sourcePath];
-  v5 = [v4 path];
-  v6 = [NSData dataWithContentsOfFile:v5];
+  sourcePath2 = [(PanicReportValidator *)self sourcePath];
+  path = [sourcePath2 path];
+  v6 = [NSData dataWithContentsOfFile:path];
 
   v7 = [@"\n" dataUsingEncoding:4];
   v8 = [v6 rangeOfData:v7 options:0 range:{0, objc_msgSend(v6, "length")}];
@@ -63,20 +63,20 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)validate_ext_paniclog:(id)a3 key:(id)a4
+- (BOOL)validate_ext_paniclog:(id)validate_ext_paniclog key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PanicReportValidator *)self get_paniclog_json];
-  v9 = v8;
-  if (v8)
+  validate_ext_paniclogCopy = validate_ext_paniclog;
+  keyCopy = key;
+  get_paniclog_json = [(PanicReportValidator *)self get_paniclog_json];
+  v9 = get_paniclog_json;
+  if (get_paniclog_json)
   {
-    v10 = [v8 valueForKey:@"ExtensiblePaniclog"];
+    v10 = [get_paniclog_json valueForKey:@"ExtensiblePaniclog"];
     v11 = v10;
-    if (v7)
+    if (keyCopy)
     {
-      v12 = [v10 valueForKey:v7];
-      v13 = [v6 valueForKey:v7];
+      v12 = [v10 valueForKey:keyCopy];
+      v13 = [validate_ext_paniclogCopy valueForKey:keyCopy];
       v14 = [v12 count];
       if (v14 == [v13 count])
       {
@@ -115,7 +115,7 @@ LABEL_11:
 
     else
     {
-      v18 = [v10 isEqualToDictionary:v6];
+      v18 = [v10 isEqualToDictionary:validate_ext_paniclogCopy];
     }
   }
 
@@ -127,14 +127,14 @@ LABEL_11:
   return v18;
 }
 
-- (BOOL)validate_key_in_prologue:(id)a3 withValue:(id)a4
+- (BOOL)validate_key_in_prologue:(id)validate_key_in_prologue withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PanicReportValidator *)self get_prologue_json];
-  if (v8)
+  validate_key_in_prologueCopy = validate_key_in_prologue;
+  valueCopy = value;
+  get_prologue_json = [(PanicReportValidator *)self get_prologue_json];
+  if (get_prologue_json)
   {
-    v9 = [(PanicReportValidator *)self validate_key:v6 inDict:v8 withValue:v7];
+    v9 = [(PanicReportValidator *)self validate_key:validate_key_in_prologueCopy inDict:get_prologue_json withValue:valueCopy];
   }
 
   else
@@ -145,16 +145,16 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)validate_key_in_prologue:(id)a3 present:(BOOL)a4
+- (BOOL)validate_key_in_prologue:(id)validate_key_in_prologue present:(BOOL)present
 {
-  v6 = a3;
-  v7 = [(PanicReportValidator *)self get_prologue_json];
-  v8 = v7;
-  if (v7)
+  validate_key_in_prologueCopy = validate_key_in_prologue;
+  get_prologue_json = [(PanicReportValidator *)self get_prologue_json];
+  v8 = get_prologue_json;
+  if (get_prologue_json)
   {
-    v9 = [v7 objectForKey:v6];
+    v9 = [get_prologue_json objectForKey:validate_key_in_prologueCopy];
 
-    v10 = (v9 == 0) ^ a4;
+    v10 = (v9 == 0) ^ present;
   }
 
   else
@@ -165,14 +165,14 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)validate_key_in_log:(id)a3 withValue:(id)a4
+- (BOOL)validate_key_in_log:(id)validate_key_in_log withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PanicReportValidator *)self get_paniclog_json];
-  if (v8)
+  validate_key_in_logCopy = validate_key_in_log;
+  valueCopy = value;
+  get_paniclog_json = [(PanicReportValidator *)self get_paniclog_json];
+  if (get_paniclog_json)
   {
-    v9 = [(PanicReportValidator *)self validate_key:v6 inDict:v8 withValue:v7];
+    v9 = [(PanicReportValidator *)self validate_key:validate_key_in_logCopy inDict:get_paniclog_json withValue:valueCopy];
   }
 
   else
@@ -183,16 +183,16 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)validate_key_in_log:(id)a3 present:(BOOL)a4
+- (BOOL)validate_key_in_log:(id)validate_key_in_log present:(BOOL)present
 {
-  v6 = a3;
-  v7 = [(PanicReportValidator *)self get_paniclog_json];
-  v8 = v7;
-  if (v7)
+  validate_key_in_logCopy = validate_key_in_log;
+  get_paniclog_json = [(PanicReportValidator *)self get_paniclog_json];
+  v8 = get_paniclog_json;
+  if (get_paniclog_json)
   {
-    v9 = [v7 objectForKey:v6];
+    v9 = [get_paniclog_json objectForKey:validate_key_in_logCopy];
 
-    v10 = (v9 == 0) ^ a4;
+    v10 = (v9 == 0) ^ present;
   }
 
   else
@@ -205,9 +205,9 @@ LABEL_11:
 
 - (id)get_prologue_json
 {
-  v2 = [(PanicReportValidator *)self sourcePath];
-  v3 = [v2 path];
-  v4 = [NSData dataWithContentsOfFile:v3];
+  sourcePath = [(PanicReportValidator *)self sourcePath];
+  path = [sourcePath path];
+  v4 = [NSData dataWithContentsOfFile:path];
 
   v5 = [@"\n" dataUsingEncoding:4];
   v6 = [v4 rangeOfData:v5 options:0 range:{0, objc_msgSend(v4, "length")}];
@@ -233,9 +233,9 @@ LABEL_11:
 
 - (id)get_paniclog_json
 {
-  v2 = [(PanicReportValidator *)self sourcePath];
-  v3 = [v2 path];
-  v4 = [NSData dataWithContentsOfFile:v3];
+  sourcePath = [(PanicReportValidator *)self sourcePath];
+  path = [sourcePath path];
+  v4 = [NSData dataWithContentsOfFile:path];
 
   v5 = [@"\n" dataUsingEncoding:4];
   v6 = [v4 rangeOfData:v5 options:0 range:{0, objc_msgSend(v4, "length")}];
@@ -259,39 +259,39 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)validate_key:(id)a3 inDict:(id)a4 withValue:(id)a5
+- (BOOL)validate_key:(id)validate_key inDict:(id)dict withValue:(id)value
 {
-  v7 = a5;
-  if (a4)
+  valueCopy = value;
+  if (dict)
   {
-    v8 = [a4 objectForKey:a3];
+    v8 = [dict objectForKey:validate_key];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 stringValue];
+      stringValue = [v8 stringValue];
     }
 
     else
     {
-      v9 = v8;
+      stringValue = v8;
     }
 
-    v10 = v9;
-    LOBYTE(a4) = [v9 isEqualToString:v7];
+    v10 = stringValue;
+    LOBYTE(dict) = [stringValue isEqualToString:valueCopy];
   }
 
-  return a4;
+  return dict;
 }
 
-- (BOOL)validate_keys:(id)a3 expected:(id)a4
+- (BOOL)validate_keys:(id)validate_keys expected:(id)expected
 {
-  v5 = a4;
-  v6 = [a3 allKeys];
+  expectedCopy = expected;
+  allKeys = [validate_keys allKeys];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = expectedCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -307,7 +307,7 @@ LABEL_11:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (([v6 containsObject:v12] & 1) == 0)
+        if (([allKeys containsObject:v12] & 1) == 0)
         {
           NSLog(@"missing key: %@", v12);
           v13 = 0;
@@ -331,12 +331,12 @@ LABEL_11:
   return v13;
 }
 
-- (id)withURL:(id)a3
+- (id)withURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = v4;
+    v5 = lCopy;
 
     [(PanicReportValidator *)self setSourcePath:v5];
     return self;
@@ -352,11 +352,11 @@ LABEL_11:
   return result;
 }
 
-+ (id)ValidatorWithURL:(id)a3
++ (id)ValidatorWithURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = [PanicReportValidator alloc];
-  v5 = [(PanicReportValidator *)v4 withURL:v3];
+  v5 = [(PanicReportValidator *)v4 withURL:lCopy];
 
   return v5;
 }

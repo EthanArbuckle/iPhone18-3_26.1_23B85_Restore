@@ -1,34 +1,34 @@
 @interface MFComposeActivityHandoffOperation
-+ (id)receivingOperationWithInputStream:(id)a3 outputStream:(id)a4;
-+ (id)sendingOperationWithDraftData:(id)a3 inputStream:(id)a4 outputStream:(id)a5;
-- (MFComposeActivityHandoffOperation)initWithInputStream:(id)a3 outputStream:(id)a4;
++ (id)receivingOperationWithInputStream:(id)stream outputStream:(id)outputStream;
++ (id)sendingOperationWithDraftData:(id)data inputStream:(id)stream outputStream:(id)outputStream;
+- (MFComposeActivityHandoffOperation)initWithInputStream:(id)stream outputStream:(id)outputStream;
 - (MFComposeActivityHandoffOperationDelegate)delegate;
-- (void)_checkInHandoffStream:(id)a3;
-- (void)_commonHandoffStreamInitializationWithStream:(id)a3;
+- (void)_checkInHandoffStream:(id)stream;
+- (void)_commonHandoffStreamInitializationWithStream:(id)stream;
 - (void)_complete;
 - (void)_didFinishTransferringHandoffPayload;
 - (void)_failedToTransferHandoffPayload;
 - (void)_finishReceivingHandoffDataAndCloseStream;
-- (void)_handleErrorCode:(unint64_t)a3 logString:(id)a4;
-- (void)_receivingDataStream:(id)a3 handleEvent:(unint64_t)a4;
-- (void)_receivingMessageStream:(id)a3 handleEvent:(unint64_t)a4;
-- (void)_sendingDataStream:(id)a3 handleEvent:(unint64_t)a4;
-- (void)_sendingMessageStream:(id)a3 handleEvent:(unint64_t)a4;
-- (void)_setExecuting:(BOOL)a3;
-- (void)_setFinished:(BOOL)a3;
+- (void)_handleErrorCode:(unint64_t)code logString:(id)string;
+- (void)_receivingDataStream:(id)stream handleEvent:(unint64_t)event;
+- (void)_receivingMessageStream:(id)stream handleEvent:(unint64_t)event;
+- (void)_sendingDataStream:(id)stream handleEvent:(unint64_t)event;
+- (void)_sendingMessageStream:(id)stream handleEvent:(unint64_t)event;
+- (void)_setExecuting:(BOOL)executing;
+- (void)_setFinished:(BOOL)finished;
 - (void)_startHandoffStreams;
 - (void)dealloc;
 - (void)start;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation MFComposeActivityHandoffOperation
 
-+ (id)receivingOperationWithInputStream:(id)a3 outputStream:(id)a4
++ (id)receivingOperationWithInputStream:(id)stream outputStream:(id)outputStream
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[a1 alloc] initWithInputStream:v6 outputStream:v7];
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
+  v8 = [[self alloc] initWithInputStream:streamCopy outputStream:outputStreamCopy];
   v9 = v8;
   if (v8)
   {
@@ -38,26 +38,26 @@
   return v9;
 }
 
-+ (id)sendingOperationWithDraftData:(id)a3 inputStream:(id)a4 outputStream:(id)a5
++ (id)sendingOperationWithDraftData:(id)data inputStream:(id)stream outputStream:(id)outputStream
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithInputStream:v9 outputStream:v10];
+  dataCopy = data;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
+  v11 = [[self alloc] initWithInputStream:streamCopy outputStream:outputStreamCopy];
   v12 = v11;
   if (v11)
   {
     [v11 setTransmissionType:2];
-    [v12 setDraftData:v8];
+    [v12 setDraftData:dataCopy];
   }
 
   return v12;
 }
 
-- (MFComposeActivityHandoffOperation)initWithInputStream:(id)a3 outputStream:(id)a4
+- (MFComposeActivityHandoffOperation)initWithInputStream:(id)stream outputStream:(id)outputStream
 {
-  v7 = a3;
-  v8 = a4;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
   v14.receiver = self;
   v14.super_class = MFComposeActivityHandoffOperation;
   v9 = [(MFComposeActivityHandoffOperation *)&v14 init];
@@ -65,8 +65,8 @@
   if (v9)
   {
     v9->_draftDataByteIndex = 0;
-    objc_storeStrong(&v9->_inputStream, a3);
-    objc_storeStrong(&v10->_outputStream, a4);
+    objc_storeStrong(&v9->_inputStream, stream);
+    objc_storeStrong(&v10->_outputStream, outputStream);
     v10->_transmissionType = 0;
     v11 = dispatch_queue_create("Activity Handoff Stream Handler", 0);
     streamHandlerQueue = v10->_streamHandlerQueue;
@@ -101,18 +101,18 @@
   }
 }
 
-- (void)_setExecuting:(BOOL)a3
+- (void)_setExecuting:(BOOL)executing
 {
   [(MFComposeActivityHandoffOperation *)self willChangeValueForKey:@"isExecuting"];
-  self->_executing = a3;
+  self->_executing = executing;
 
   [(MFComposeActivityHandoffOperation *)self didChangeValueForKey:@"isExecuting"];
 }
 
-- (void)_setFinished:(BOOL)a3
+- (void)_setFinished:(BOOL)finished
 {
   [(MFComposeActivityHandoffOperation *)self willChangeValueForKey:@"isFinished"];
-  self->_finished = a3;
+  self->_finished = finished;
 
   [(MFComposeActivityHandoffOperation *)self didChangeValueForKey:@"isFinished"];
 }
@@ -137,14 +137,14 @@
   [(MFComposeActivityHandoffOperation *)self _commonHandoffStreamInitializationWithStream:outputStream];
 }
 
-- (void)_handleErrorCode:(unint64_t)a3 logString:(id)a4
+- (void)_handleErrorCode:(unint64_t)code logString:(id)string
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  stringCopy = string;
+  if (stringCopy)
   {
     v15 = &v18;
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v6 arguments:&v18];
+    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:stringCopy arguments:&v18];
   }
 
   else
@@ -155,16 +155,16 @@
   v8 = MFLogGeneral();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(MFComposeActivityHandoffOperation *)v7 _handleErrorCode:a3 logString:v8];
+    [(MFComposeActivityHandoffOperation *)v7 _handleErrorCode:code logString:v8];
   }
 
-  if (a3 >= 0x64)
+  if (code >= 0x64)
   {
     v9 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E696A578];
     v17[0] = v7;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    v11 = [v9 errorWithDomain:@"MFActivityHandoffOperationError" code:a3 userInfo:v10];
+    v11 = [v9 errorWithDomain:@"MFActivityHandoffOperationError" code:code userInfo:v10];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -183,18 +183,18 @@ void __64__MFComposeActivityHandoffOperation__handleErrorCode_logString___block_
   [v2 activityHandoffOperation:*(a1 + 32) didFailWithError:*(a1 + 40)];
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
+  streamCopy = stream;
   streamHandlerQueue = self->_streamHandlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__MFComposeActivityHandoffOperation_stream_handleEvent___block_invoke;
   block[3] = &unk_1E806C548;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = streamCopy;
+  eventCopy = event;
+  v8 = streamCopy;
   dispatch_async(streamHandlerQueue, block);
 }
 
@@ -273,28 +273,28 @@ void __68__MFComposeActivityHandoffOperation__failedToTransferHandoffPayload__bl
   [v2 activityHandoffOperation:*(a1 + 32) didFinishSendingDataWithResult:2];
 }
 
-- (void)_receivingMessageStream:(id)a3 handleEvent:(unint64_t)a4
+- (void)_receivingMessageStream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  if (a4 == 8)
+  streamCopy = stream;
+  if (event == 8)
   {
-    v8 = v6;
-    v7 = [v6 streamError];
-    [(MFComposeActivityHandoffOperation *)self _handleErrorCode:3 logString:@"Receiving Message Channel had error: %@", v7];
+    v8 = streamCopy;
+    streamError = [streamCopy streamError];
+    [(MFComposeActivityHandoffOperation *)self _handleErrorCode:3 logString:@"Receiving Message Channel had error: %@", streamError];
 
-    v6 = v8;
+    streamCopy = v8;
   }
 }
 
-- (void)_sendingMessageStream:(id)a3 handleEvent:(unint64_t)a4
+- (void)_sendingMessageStream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  v7 = v6;
-  switch(a4)
+  streamCopy = stream;
+  v7 = streamCopy;
+  switch(event)
   {
     case 8uLL:
-      v10 = [v6 streamError];
-      [(MFComposeActivityHandoffOperation *)self _handleErrorCode:3 logString:@"Sending Message Channel had error: %@", v10];
+      streamError = [streamCopy streamError];
+      [(MFComposeActivityHandoffOperation *)self _handleErrorCode:3 logString:@"Sending Message Channel had error: %@", streamError];
 
       break;
     case 2uLL:
@@ -330,9 +330,9 @@ void __68__MFComposeActivityHandoffOperation__failedToTransferHandoffPayload__bl
   }
 }
 
-- (void)_receivingDataStream:(id)a3 handleEvent:(unint64_t)a4
+- (void)_receivingDataStream:(id)stream handleEvent:(unint64_t)event
 {
-  v4 = MEMORY[0x1EEE9AC00](self, a2, a3, a4);
+  v4 = MEMORY[0x1EEE9AC00](self, a2, stream, event);
   v6 = v5;
   v7 = v4;
   v25 = *MEMORY[0x1E69E9840];
@@ -349,8 +349,8 @@ void __68__MFComposeActivityHandoffOperation__failedToTransferHandoffPayload__bl
           v10 = [*(v7 + 264) read:__b maxLength:0x8000];
           if (v10)
           {
-            v11 = *(v7 + 280);
-            [v11 appendBytes:__b length:v10];
+            streamError2 = *(v7 + 280);
+            [streamError2 appendBytes:__b length:v10];
             *(v7 + 296) += v10;
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
@@ -358,12 +358,12 @@ void __68__MFComposeActivityHandoffOperation__failedToTransferHandoffPayload__bl
             block[3] = &unk_1E806C570;
             block[4] = v7;
             dispatch_async(MEMORY[0x1E69E96A0], block);
-            if ([v11 length] >= *(v7 + 304))
+            if ([streamError2 length] >= *(v7 + 304))
             {
               v12 = MFLogGeneral();
               if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
               {
-                -[MFComposeActivityHandoffOperation _receivingDataStream:handleEvent:].cold.2(buf, [v11 length], v12);
+                -[MFComposeActivityHandoffOperation _receivingDataStream:handleEvent:].cold.2(buf, [streamError2 length], v12);
               }
 
               [v7 _finishReceivingHandoffDataAndCloseStream];
@@ -372,13 +372,13 @@ void __68__MFComposeActivityHandoffOperation__failedToTransferHandoffPayload__bl
             goto LABEL_25;
           }
 
-          v19 = [*(v7 + 264) streamError];
-          v20 = v19 == 0;
+          streamError = [*(v7 + 264) streamError];
+          v20 = streamError == 0;
 
           if (!v20)
           {
-            v11 = [*(v7 + 264) streamError];
-            [v7 _handleErrorCode:102 logString:{@"Failed to read bytes from input stream! %@", v11}];
+            streamError2 = [*(v7 + 264) streamError];
+            [v7 _handleErrorCode:102 logString:{@"Failed to read bytes from input stream! %@", streamError2}];
 LABEL_25:
 
             goto LABEL_30;
@@ -438,8 +438,8 @@ LABEL_14:
 
   if (v6 == 8)
   {
-    v14 = [*(v7 + 264) streamError];
-    [v7 _handleErrorCode:102 logString:{@"Data receiving stream had an error: %@", v14}];
+    streamError3 = [*(v7 + 264) streamError];
+    [v7 _handleErrorCode:102 logString:{@"Data receiving stream had an error: %@", streamError3}];
 
     goto LABEL_30;
   }
@@ -464,20 +464,20 @@ void __70__MFComposeActivityHandoffOperation__receivingDataStream_handleEvent___
   [v2 activityHandoffOperationReceivedBytes:*(a1 + 32)];
 }
 
-- (void)_sendingDataStream:(id)a3 handleEvent:(unint64_t)a4
+- (void)_sendingDataStream:(id)stream handleEvent:(unint64_t)event
 {
   v23 = *MEMORY[0x1E69E9840];
   if ([(NSData *)self->_draftData length])
   {
-    if (a4 > 7)
+    if (event > 7)
     {
-      if (a4 == 8)
+      if (event == 8)
       {
-        v21 = [(NSOutputStream *)self->_outputStream streamError];
-        [(MFComposeActivityHandoffOperation *)self _handleErrorCode:104 logString:@"Output stream had an error: %@", v21];
+        streamError = [(NSOutputStream *)self->_outputStream streamError];
+        [(MFComposeActivityHandoffOperation *)self _handleErrorCode:104 logString:@"Output stream had an error: %@", streamError];
       }
 
-      else if (a4 == 16)
+      else if (event == 16)
       {
         outputStream = self->_outputStream;
 
@@ -485,7 +485,7 @@ void __70__MFComposeActivityHandoffOperation__receivingDataStream_handleEvent___
       }
     }
 
-    else if (a4 == 1)
+    else if (event == 1)
     {
       v16 = MFLogGeneral();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -494,7 +494,7 @@ void __70__MFComposeActivityHandoffOperation__receivingDataStream_handleEvent___
       }
     }
 
-    else if (a4 == 4)
+    else if (event == 4)
     {
       v6 = [(NSData *)self->_draftData length];
       v10 = v6;
@@ -556,8 +556,8 @@ void __70__MFComposeActivityHandoffOperation__receivingDataStream_handleEvent___
 {
   if (pthread_main_np())
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MFActivityHandoffOperation.m" lineNumber:395 description:@"Current thread is main"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFActivityHandoffOperation.m" lineNumber:395 description:@"Current thread is main"];
   }
 
   inputStream = self->_inputStream;
@@ -592,26 +592,26 @@ void __78__MFComposeActivityHandoffOperation__finishReceivingHandoffDataAndClose
   [v2 activityHandoffOperation:*(a1 + 32) didFinishReceivingData:*(*(a1 + 32) + 280)];
 }
 
-- (void)_commonHandoffStreamInitializationWithStream:(id)a3
+- (void)_commonHandoffStreamInitializationWithStream:(id)stream
 {
-  v5 = a3;
-  [v5 setDelegate:self];
-  v4 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v5 scheduleInRunLoop:v4 forMode:*MEMORY[0x1E695D918]];
+  streamCopy = stream;
+  [streamCopy setDelegate:self];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [streamCopy scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x1E695D918]];
 
-  [v5 open];
+  [streamCopy open];
 }
 
-- (void)_checkInHandoffStream:(id)a3
+- (void)_checkInHandoffStream:(id)stream
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_outputStream == v4)
+  streamCopy = stream;
+  v5 = streamCopy;
+  if (self->_outputStream == streamCopy)
   {
     self->_doneWithOutputStream = 1;
   }
 
-  else if (self->_inputStream == v4)
+  else if (self->_inputStream == streamCopy)
   {
     self->_doneWithInputStream = 1;
   }
@@ -636,8 +636,8 @@ void __78__MFComposeActivityHandoffOperation__finishReceivingHandoffDataAndClose
 
       [(NSInputStream *)self->_inputStream close];
       inputStream = self->_inputStream;
-      v11 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [(NSInputStream *)inputStream removeFromRunLoop:v11 forMode:*v6];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [(NSInputStream *)inputStream removeFromRunLoop:mainRunLoop forMode:*v6];
 
       v12 = self->_inputStream;
       self->_inputStream = 0;
@@ -660,8 +660,8 @@ void __78__MFComposeActivityHandoffOperation__finishReceivingHandoffDataAndClose
 
       [(NSOutputStream *)self->_outputStream close];
       outputStream = self->_outputStream;
-      v17 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [(NSOutputStream *)outputStream removeFromRunLoop:v17 forMode:*v6];
+      mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [(NSOutputStream *)outputStream removeFromRunLoop:mainRunLoop2 forMode:*v6];
 
       v18 = self->_outputStream;
       self->_outputStream = 0;

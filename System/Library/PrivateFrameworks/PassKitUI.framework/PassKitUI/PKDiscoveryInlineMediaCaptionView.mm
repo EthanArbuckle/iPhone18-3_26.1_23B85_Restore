@@ -1,14 +1,14 @@
 @interface PKDiscoveryInlineMediaCaptionView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDiscoveryInlineMediaCaptionView)initWithCaptionText:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDiscoveryInlineMediaCaptionView)initWithCaptionText:(id)text;
 - (void)layoutSubviews;
 @end
 
 @implementation PKDiscoveryInlineMediaCaptionView
 
-- (PKDiscoveryInlineMediaCaptionView)initWithCaptionText:(id)a3
+- (PKDiscoveryInlineMediaCaptionView)initWithCaptionText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v20.receiver = self;
   v20.super_class = PKDiscoveryInlineMediaCaptionView;
   v6 = *MEMORY[0x1E695F058];
@@ -18,26 +18,26 @@
   v10 = [(PKDiscoveryShelfView *)&v20 initWithFrame:*MEMORY[0x1E695F058], v7, v8, v9];
   if (v10)
   {
-    v11 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(PKDiscoveryInlineMediaCaptionView *)v10 setBackgroundColor:v11];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(PKDiscoveryInlineMediaCaptionView *)v10 setBackgroundColor:secondarySystemBackgroundColor];
 
     v12 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], 0);
-    objc_storeStrong(&v10->_captionText, a3);
+    objc_storeStrong(&v10->_captionText, text);
     v13 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v6, v7, v8, v9}];
     captionLabel = v10->_captionLabel;
     v10->_captionLabel = v13;
 
     v15 = v10->_captionLabel;
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v15 setBackgroundColor:v16];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v15 setBackgroundColor:clearColor];
 
     [(UILabel *)v10->_captionLabel setFont:v12];
     v17 = v10->_captionLabel;
-    v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v17 setTextColor:v18];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v17 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v10->_captionLabel setNumberOfLines:0];
-    [(UILabel *)v10->_captionLabel setText:v5];
+    [(UILabel *)v10->_captionLabel setText:textCopy];
     [(PKDiscoveryInlineMediaCaptionView *)v10 addSubview:v10->_captionLabel];
   }
 
@@ -58,10 +58,10 @@
   [(UILabel *)self->_captionLabel setFrame:v4 + v14, v6 + v11, v8 - (v14 + v12), v10 - (v11 + v13)];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v21[1] = *MEMORY[0x1E69E9840];
   [(PKDiscoveryShelfView *)self contentInsets];
   v8 = width - (v6 + v7);

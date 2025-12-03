@@ -1,7 +1,7 @@
 @interface AMDBookScorer.Event
 - (NSDictionary)engagementData;
 - (_TtCC5Books13AMDBookScorerP33_CD21F26B56464019284D998852D0D3665Event)init;
-- (void)setEngagementData:(id)a3;
+- (void)setEngagementData:(id)data;
 @end
 
 @implementation AMDBookScorer.Event
@@ -22,9 +22,9 @@
   return v2.super.isa;
 }
 
-- (void)setEngagementData:(id)a3
+- (void)setEngagementData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = sub_1007A2044();
   }

@@ -1,115 +1,115 @@
 @interface MSPublishStreamsProtocol
-- (BOOL)_insertInfoAboutAsset:(id)a3 intoDictionary:(id)a4 outError:(id *)a5;
-- (MSPublishStreamsProtocol)initWithPersonID:(id)a3 baseURL:(id)a4;
-- (id)_metadataDictForAsset:(id)a3 outError:(id *)a4;
-- (id)_metadataDictForAssetCollection:(id)a3 outError:(id *)a4;
-- (id)_missingAssetFieldErrorWithFieldName:(id)a3;
+- (BOOL)_insertInfoAboutAsset:(id)asset intoDictionary:(id)dictionary outError:(id *)error;
+- (MSPublishStreamsProtocol)initWithPersonID:(id)d baseURL:(id)l;
+- (id)_metadataDictForAsset:(id)asset outError:(id *)error;
+- (id)_metadataDictForAssetCollection:(id)collection outError:(id *)error;
+- (id)_missingAssetFieldErrorWithFieldName:(id)name;
 - (id)delegate;
-- (void)_coreProtocolDidFailAuthenticationError:(id)a3;
-- (void)_coreProtocolDidFinishResponse:(id)a3 error:(id)a4;
-- (void)_coreProtocolDidFinishUCResults:(id)a3 error:(id)a4;
+- (void)_coreProtocolDidFailAuthenticationError:(id)error;
+- (void)_coreProtocolDidFinishResponse:(id)response error:(id)error;
+- (void)_coreProtocolDidFinishUCResults:(id)results error:(id)error;
 - (void)_resetConnectionVariables;
 - (void)abort;
 - (void)dealloc;
-- (void)sendMetadataForAssetCollections:(id)a3;
-- (void)sendUploadCompleteForAssetCollections:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)sendMetadataForAssetCollections:(id)collections;
+- (void)sendUploadCompleteForAssetCollections:(id)collections;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MSPublishStreamsProtocol
 
-- (void)_coreProtocolDidFinishUCResults:(id)a3 error:(id)a4
+- (void)_coreProtocolDidFinishUCResults:(id)results error:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  resultsCopy = results;
+  errorCopy = error;
+  if (errorCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v10 = objc_opt_class();
     v11 = v10;
-    v12 = [(MSStreamsProtocol *)self personID];
-    v13 = [v7 MSVerboseDescription];
+    personID = [(MSStreamsProtocol *)self personID];
+    mSVerboseDescription = [errorCopy MSVerboseDescription];
     v14 = 138543874;
     v15 = v10;
     v16 = 2112;
-    v17 = v12;
+    v17 = personID;
     v18 = 2114;
-    v19 = v13;
+    v19 = mSVerboseDescription;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Upload complete connection has failed. Error: %{public}@", &v14, 0x20u);
   }
 
-  v8 = [(MSPublishStreamsProtocol *)self delegate];
-  [v8 publishStreamsProtocol:self didFinishSendingUploadCompleteError:v7];
+  delegate = [(MSPublishStreamsProtocol *)self delegate];
+  [delegate publishStreamsProtocol:self didFinishSendingUploadCompleteError:errorCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_coreProtocolDidFailAuthenticationError:(id)a3
+- (void)_coreProtocolDidFailAuthenticationError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(MSStreamsProtocol *)self personID];
-    v10 = [v4 MSVerboseDescription];
+    personID = [(MSStreamsProtocol *)self personID];
+    mSVerboseDescription = [errorCopy MSVerboseDescription];
     v11 = 138543874;
     v12 = v7;
     v13 = 2112;
-    v14 = v9;
+    v14 = personID;
     v15 = 2114;
-    v16 = v10;
+    v16 = mSVerboseDescription;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Failed authentication. Error: %{public}@", &v11, 0x20u);
   }
 
   [(MSPublishStreamsProtocol *)self _resetConnectionVariables];
-  v5 = [(MSPublishStreamsProtocol *)self delegate];
-  [v5 publishStreamsProtocol:self didReceiveAuthenticationError:v4];
+  delegate = [(MSPublishStreamsProtocol *)self delegate];
+  [delegate publishStreamsProtocol:self didReceiveAuthenticationError:errorCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_coreProtocolDidFinishResponse:(id)a3 error:(id)a4
+- (void)_coreProtocolDidFinishResponse:(id)response error:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  responseCopy = response;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       v15 = v14;
-      v16 = [(MSStreamsProtocol *)self personID];
-      v17 = [v7 MSVerboseDescription];
+      personID = [(MSStreamsProtocol *)self personID];
+      mSVerboseDescription = [errorCopy MSVerboseDescription];
       v18 = 138543874;
       v19 = v14;
       v20 = 2112;
-      v21 = v16;
+      v21 = personID;
       v22 = 2114;
-      v23 = v17;
+      v23 = mSVerboseDescription;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Put connection has failed. Error: %{public}@", &v18, 0x20u);
     }
 
     [(MSPublishStreamsProtocol *)self _resetConnectionVariables];
-    v8 = [(MSPublishStreamsProtocol *)self delegate];
-    v9 = v8;
-    v10 = self;
-    v11 = v6;
-    v12 = v7;
+    delegate = [(MSPublishStreamsProtocol *)self delegate];
+    v9 = delegate;
+    selfCopy2 = self;
+    v11 = responseCopy;
+    v12 = errorCopy;
   }
 
   else
   {
-    v8 = [(MSPublishStreamsProtocol *)self delegate];
-    v9 = v8;
-    v10 = self;
-    v11 = v6;
+    delegate = [(MSPublishStreamsProtocol *)self delegate];
+    v9 = delegate;
+    selfCopy2 = self;
+    v11 = responseCopy;
     v12 = 0;
   }
 
-  [v8 publishStreamsProtocol:v10 didFinishUploadingMetadataResponse:v11 error:v12];
+  [delegate publishStreamsProtocol:selfCopy2 didFinishUploadingMetadataResponse:v11 error:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -121,28 +121,28 @@
   MSSPCCancelHTTPTransaction(&self->_UCContext);
 }
 
-- (void)sendUploadCompleteForAssetCollections:(id)a3
+- (void)sendUploadCompleteForAssetCollections:(id)collections
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectionsCopy = collections;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(MSStreamsProtocol *)self personID];
+    personID = [(MSStreamsProtocol *)self personID];
     *buf = 138543618;
     v24 = v5;
     v25 = 2112;
-    v26 = v7;
+    v26 = personID;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Sending upload complete...", buf, 0x16u);
   }
 
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(collectionsCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v4;
+  v9 = collectionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -175,35 +175,35 @@
   }
 
   [(MSStreamsProtocol *)self _refreshAuthTokenForContext:&self->_UCContext];
-  v15 = [(MSStreamsProtocol *)self uploadCompleteURL];
+  uploadCompleteURL = [(MSStreamsProtocol *)self uploadCompleteURL];
   v16 = MSPURLConnectionProperties();
-  MSPSPCUCSendUploadCompleteAsync(&self->_UCContext._super.owner, v15, v16, v8);
+  MSPSPCUCSendUploadCompleteAsync(&self->_UCContext._super.owner, uploadCompleteURL, v16, v8);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMetadataForAssetCollections:(id)a3
+- (void)sendMetadataForAssetCollections:(id)collections
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectionsCopy = collections;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(MSStreamsProtocol *)self personID];
+    personID = [(MSStreamsProtocol *)self personID];
     *buf = 138543618;
     v53 = v5;
     v54 = 2112;
-    v55 = v7;
+    v55 = personID;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Sending metadata to Streams server...", buf, 0x16u);
   }
 
-  theArray = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  theArray = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(collectionsCopy, "count")}];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v8 = v4;
+  v8 = collectionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v48 objects:v59 count:16];
   if (v9)
   {
@@ -224,37 +224,37 @@
         }
 
         v14 = *(*(&v48 + 1) + 8 * v13);
-        v15 = [*(v11 + 2872) dictionary];
-        v16 = [v14 masterAsset];
+        dictionary = [*(v11 + 2872) dictionary];
+        masterAsset = [v14 masterAsset];
 
-        if (v16)
+        if (masterAsset)
         {
-          v17 = [v14 masterAsset];
-          v18 = [(MSPublishStreamsProtocol *)self _metadataDictForAsset:v17 outError:0];
+          masterAsset2 = [v14 masterAsset];
+          v18 = [(MSPublishStreamsProtocol *)self _metadataDictForAsset:masterAsset2 outError:0];
 
           if (!v18)
           {
             goto LABEL_28;
           }
 
-          [v15 setObject:v18 forKey:@"masterAsset"];
+          [dictionary setObject:v18 forKey:@"masterAsset"];
         }
 
-        v19 = [v14 derivedAssets];
-        v20 = [v19 count];
+        derivedAssets = [v14 derivedAssets];
+        v20 = [derivedAssets count];
 
         if (v20)
         {
           v21 = MEMORY[0x277CBEB18];
-          v22 = [v14 derivedAssets];
-          v23 = [v21 arrayWithCapacity:{objc_msgSend(v22, "count")}];
+          derivedAssets2 = [v14 derivedAssets];
+          v23 = [v21 arrayWithCapacity:{objc_msgSend(derivedAssets2, "count")}];
 
           v46 = 0u;
           v47 = 0u;
           v44 = 0u;
           v45 = 0u;
-          v24 = [v14 derivedAssets];
-          v25 = [v24 countByEnumeratingWithState:&v44 objects:v58 count:16];
+          derivedAssets3 = [v14 derivedAssets];
+          v25 = [derivedAssets3 countByEnumeratingWithState:&v44 objects:v58 count:16];
           if (v25)
           {
             v26 = v25;
@@ -266,7 +266,7 @@
               {
                 if (*v45 != v27)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(derivedAssets3);
                 }
 
                 v29 = [(MSPublishStreamsProtocol *)self _metadataDictForAsset:*(*(&v44 + 1) + 8 * v28) outError:0];
@@ -279,7 +279,7 @@
               }
 
               while (v26 != v28);
-              v26 = [v24 countByEnumeratingWithState:&v44 objects:v58 count:16];
+              v26 = [derivedAssets3 countByEnumeratingWithState:&v44 objects:v58 count:16];
             }
 
             while (v26);
@@ -287,7 +287,7 @@
 
           if ([v23 count])
           {
-            [v15 setObject:v23 forKey:@"derivedAssets"];
+            [dictionary setObject:v23 forKey:@"derivedAssets"];
           }
 
           v12 = v40;
@@ -296,21 +296,21 @@
           v10 = v42;
         }
 
-        [(__CFArray *)theArray addObject:v15];
-        v30 = [v14 fileName];
+        [(__CFArray *)theArray addObject:dictionary];
+        fileName = [v14 fileName];
 
-        if (v30)
+        if (fileName)
         {
-          v31 = [v14 fileName];
-          [v15 setObject:v31 forKey:@"fileName"];
+          fileName2 = [v14 fileName];
+          [dictionary setObject:fileName2 forKey:@"fileName"];
         }
 
-        v32 = [v14 assetCollectionID];
+        assetCollectionID = [v14 assetCollectionID];
 
-        if (v32)
+        if (assetCollectionID)
         {
-          v33 = [v14 assetCollectionID];
-          [v15 setObject:v33 forKey:@"collId"];
+          assetCollectionID2 = [v14 assetCollectionID];
+          [dictionary setObject:assetCollectionID2 forKey:@"collId"];
         }
 
 LABEL_28:
@@ -329,69 +329,69 @@ LABEL_28:
   {
     v37 = objc_opt_class();
     v38 = v37;
-    v39 = [(MSStreamsProtocol *)self personID];
+    personID2 = [(MSStreamsProtocol *)self personID];
     *buf = 138543874;
     v53 = v37;
     v54 = 2112;
-    v55 = v39;
+    v55 = personID2;
     v56 = 2114;
     v57 = theArray;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ Sending metadata for asset collections: %{public}@", buf, 0x20u);
   }
 
   [(MSStreamsProtocol *)self _refreshAuthTokenForContext:&self->_context];
-  v34 = [(MSStreamsProtocol *)self putURL];
+  putURL = [(MSStreamsProtocol *)self putURL];
   v35 = MSPURLConnectionProperties();
-  MSPSPCSendMetadataAsync(&self->_context._super.owner, v34, v35, theArray);
+  MSPSPCSendMetadataAsync(&self->_context._super.owner, putURL, v35, theArray);
 
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_metadataDictForAssetCollection:(id)a3 outError:(id *)a4
+- (id)_metadataDictForAssetCollection:(id)collection outError:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 assetCollectionID];
+  collectionCopy = collection;
+  assetCollectionID = [collectionCopy assetCollectionID];
 
-  if (v7)
+  if (assetCollectionID)
   {
-    v7 = [v6 masterAsset];
+    assetCollectionID = [collectionCopy masterAsset];
 
-    if (v7)
+    if (assetCollectionID)
     {
-      v7 = [MEMORY[0x277CBEB38] dictionary];
-      v8 = [v6 assetCollectionID];
-      [v7 setObject:v8 forKey:@"collId"];
+      assetCollectionID = [MEMORY[0x277CBEB38] dictionary];
+      assetCollectionID2 = [collectionCopy assetCollectionID];
+      [assetCollectionID setObject:assetCollectionID2 forKey:@"collId"];
 
-      v9 = [v6 fileName];
+      fileName = [collectionCopy fileName];
 
-      if (v9)
+      if (fileName)
       {
-        v10 = [v6 fileName];
-        [v7 setObject:v10 forKey:@"fileName"];
+        fileName2 = [collectionCopy fileName];
+        [assetCollectionID setObject:fileName2 forKey:@"fileName"];
       }
 
-      v11 = [v6 masterAsset];
+      masterAsset = [collectionCopy masterAsset];
       v39 = 0;
-      v12 = [(MSPublishStreamsProtocol *)self _metadataDictForAsset:v11 outError:&v39];
-      v13 = v39;
+      v12 = [(MSPublishStreamsProtocol *)self _metadataDictForAsset:masterAsset outError:&v39];
+      derivedAssets = v39;
 
-      if (!v13)
+      if (!derivedAssets)
       {
-        [v7 setObject:v12 forKey:@"masterAsset"];
-        v13 = [v6 derivedAssets];
+        [assetCollectionID setObject:v12 forKey:@"masterAsset"];
+        derivedAssets = [collectionCopy derivedAssets];
 
-        if (v13)
+        if (derivedAssets)
         {
           v32 = v12;
-          v33 = a4;
-          v14 = [MEMORY[0x277CBEB18] array];
+          errorCopy = error;
+          array = [MEMORY[0x277CBEB18] array];
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v15 = [v6 derivedAssets];
-          v16 = [v15 countByEnumeratingWithState:&v35 objects:v48 count:16];
+          derivedAssets2 = [collectionCopy derivedAssets];
+          v16 = [derivedAssets2 countByEnumeratingWithState:&v35 objects:v48 count:16];
           if (v16)
           {
             v17 = v16;
@@ -402,7 +402,7 @@ LABEL_28:
               {
                 if (*v36 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(derivedAssets2);
                 }
 
                 v20 = *(*(&v35 + 1) + 8 * i);
@@ -411,15 +411,15 @@ LABEL_28:
                 v22 = v34;
                 if (v22)
                 {
-                  v13 = v22;
+                  derivedAssets = v22;
 
                   goto LABEL_23;
                 }
 
-                [v14 addObject:v21];
+                [array addObject:v21];
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v35 objects:v48 count:16];
+              v17 = [derivedAssets2 countByEnumeratingWithState:&v35 objects:v48 count:16];
               if (v17)
               {
                 continue;
@@ -429,16 +429,16 @@ LABEL_28:
             }
           }
 
-          [v7 setObject:v14 forKey:@"derivedAssets"];
-          v13 = 0;
+          [assetCollectionID setObject:array forKey:@"derivedAssets"];
+          derivedAssets = 0;
 LABEL_23:
 
           v12 = v32;
-          a4 = v33;
+          error = errorCopy;
         }
       }
 
-      if (!v13)
+      if (!derivedAssets)
       {
         goto LABEL_25;
       }
@@ -454,11 +454,11 @@ LABEL_23:
     v23 = @"assetCollectionID";
   }
 
-  v13 = [(MSPublishStreamsProtocol *)self _missingAssetFieldErrorWithFieldName:v23];
-  if (!v13)
+  derivedAssets = [(MSPublishStreamsProtocol *)self _missingAssetFieldErrorWithFieldName:v23];
+  if (!derivedAssets)
   {
 LABEL_25:
-    v25 = v7;
+    v25 = assetCollectionID;
     goto LABEL_28;
   }
 
@@ -467,30 +467,30 @@ LABEL_19:
   {
     v26 = objc_opt_class();
     v27 = v26;
-    v28 = [(MSStreamsProtocol *)self personID];
-    v29 = [v13 MSVerboseDescription];
+    personID = [(MSStreamsProtocol *)self personID];
+    mSVerboseDescription = [derivedAssets MSVerboseDescription];
     *buf = 138544130;
     v41 = v26;
     v42 = 2112;
-    v43 = v28;
+    v43 = personID;
     v44 = 2114;
-    v45 = v6;
+    v45 = collectionCopy;
     v46 = 2114;
-    v47 = v29;
+    v47 = mSVerboseDescription;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Rejecting asset collection %{public}@\nReason: %{public}@", buf, 0x2Au);
 
-    if (a4)
+    if (error)
     {
       goto LABEL_21;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
 LABEL_21:
-    v24 = v13;
+    v24 = derivedAssets;
     v25 = 0;
-    *a4 = v13;
+    *error = derivedAssets;
     goto LABEL_28;
   }
 
@@ -502,118 +502,118 @@ LABEL_28:
   return v25;
 }
 
-- (id)_metadataDictForAsset:(id)a3 outError:(id *)a4
+- (id)_metadataDictForAsset:(id)asset outError:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 fileHash];
+  assetCopy = asset;
+  fileHash = [assetCopy fileHash];
 
-  if (v7)
+  if (fileHash)
   {
-    v7 = [v6 type];
+    fileHash = [assetCopy type];
 
-    if (v7)
+    if (fileHash)
     {
-      v8 = [v6 metadata];
-      v9 = [v8 objectForKey:@"MSAssetMetadataPixelWidth"];
-      v10 = [v8 objectForKey:@"MSAssetMetadataPixelHeight"];
+      metadata = [assetCopy metadata];
+      v9 = [metadata objectForKey:@"MSAssetMetadataPixelWidth"];
+      v10 = [metadata objectForKey:@"MSAssetMetadataPixelHeight"];
       v11 = v10;
       if (v9)
       {
         if (v10)
         {
-          v7 = [MEMORY[0x277CBEB38] dictionary];
-          v12 = [v6 fileHash];
-          [v7 setObject:v12 forKey:@"fileHash"];
+          fileHash = [MEMORY[0x277CBEB38] dictionary];
+          fileHash2 = [assetCopy fileHash];
+          [fileHash setObject:fileHash2 forKey:@"fileHash"];
 
-          v13 = [v6 type];
-          [v7 setObject:v13 forKey:@"type"];
+          type = [assetCopy type];
+          [fileHash setObject:type forKey:@"type"];
 
-          v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v6, "protocolFileSize")}];
-          [v7 setObject:v14 forKey:@"protocolFileSize"];
+          v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(assetCopy, "protocolFileSize")}];
+          [fileHash setObject:v14 forKey:@"protocolFileSize"];
 
-          v15 = [v6 MMCSReceipt];
-          if (v15)
+          mMCSReceipt = [assetCopy MMCSReceipt];
+          if (mMCSReceipt)
           {
-            [v7 setObject:v15 forKey:@"MMCSReceipt"];
+            [fileHash setObject:mMCSReceipt forKey:@"MMCSReceipt"];
           }
 
-          v16 = [MEMORY[0x277CBEB38] dictionary];
-          [v16 setObject:v9 forKey:@"pixelWidth"];
-          [v16 setObject:v11 forKey:@"pixelHeight"];
-          v17 = [v8 objectForKey:@"MSAssetMetadataFileSize"];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:v9 forKey:@"pixelWidth"];
+          [dictionary setObject:v11 forKey:@"pixelHeight"];
+          v17 = [metadata objectForKey:@"MSAssetMetadataFileSize"];
           if (v17)
           {
-            [v16 setObject:v17 forKey:@"fileSize"];
+            [dictionary setObject:v17 forKey:@"fileSize"];
           }
 
-          v18 = [v8 objectForKey:@"MSAssetMetadataSHA1HashKey"];
+          v18 = [metadata objectForKey:@"MSAssetMetadataSHA1HashKey"];
           if (v18)
           {
-            [v16 setObject:v18 forKey:@"SHA1"];
+            [dictionary setObject:v18 forKey:@"SHA1"];
           }
 
-          v19 = [v8 objectForKey:@"MSAssetMetadataDateContentModified"];
+          v19 = [metadata objectForKey:@"MSAssetMetadataDateContentModified"];
           if (v19)
           {
-            [v16 setObject:v19 forKey:@"dateContentModified"];
+            [dictionary setObject:v19 forKey:@"dateContentModified"];
           }
 
-          v20 = [v8 objectForKey:@"MSAssetMetadataDateContentCreated"];
+          v20 = [metadata objectForKey:@"MSAssetMetadataDateContentCreated"];
           if (v20)
           {
-            [v16 setObject:v20 forKey:@"dateContentCreated"];
+            [dictionary setObject:v20 forKey:@"dateContentCreated"];
           }
 
-          v21 = [v8 objectForKey:@"MSAssetMetadataSourceLibraryID"];
+          v21 = [metadata objectForKey:@"MSAssetMetadataSourceLibraryID"];
           if (v21)
           {
-            [v16 setObject:v21 forKey:@"sourceLibraryID"];
+            [dictionary setObject:v21 forKey:@"sourceLibraryID"];
           }
 
-          v22 = [v8 objectForKey:@"MSAssetMetadataSourceItemID"];
+          v22 = [metadata objectForKey:@"MSAssetMetadataSourceItemID"];
           if (v22)
           {
-            [v16 setObject:v22 forKey:@"sourceItemID"];
+            [dictionary setObject:v22 forKey:@"sourceItemID"];
           }
 
-          v23 = [v8 objectForKey:@"MSAssetMetadataSourceContainerTypeKey"];
+          v23 = [metadata objectForKey:@"MSAssetMetadataSourceContainerTypeKey"];
           if (v23)
           {
-            [v16 setObject:v23 forKey:@"sourceContainerType"];
+            [dictionary setObject:v23 forKey:@"sourceContainerType"];
           }
 
-          v24 = [v8 objectForKey:@"MSAssetMetadataSourceContainerIDKey"];
+          v24 = [metadata objectForKey:@"MSAssetMetadataSourceContainerIDKey"];
           if (v24)
           {
-            [v16 setObject:v24 forKey:@"sourceContainerID"];
+            [dictionary setObject:v24 forKey:@"sourceContainerID"];
           }
 
-          v25 = [v8 objectForKey:@"MSAssetMetadataSourceContainerDisplayNameKey"];
+          v25 = [metadata objectForKey:@"MSAssetMetadataSourceContainerDisplayNameKey"];
           if (v25)
           {
-            [v16 setObject:v25 forKey:@"sourceContainerDisplayName"];
+            [dictionary setObject:v25 forKey:@"sourceContainerDisplayName"];
           }
 
-          v26 = [v8 objectForKey:@"MSAssetMetadataDeviceDisplayNameKey"];
+          v26 = [metadata objectForKey:@"MSAssetMetadataDeviceDisplayNameKey"];
           if (v26)
           {
-            [v16 setObject:v26 forKey:@"deviceDisplayName"];
+            [dictionary setObject:v26 forKey:@"deviceDisplayName"];
           }
 
-          v27 = [v8 objectForKey:@"MSAssetMetadataRasterToDisplayRotationAngleKey"];
+          v27 = [metadata objectForKey:@"MSAssetMetadataRasterToDisplayRotationAngleKey"];
           if (v27)
           {
-            [v16 setObject:v27 forKey:@"rasterToDisplayRotationAngle"];
+            [dictionary setObject:v27 forKey:@"rasterToDisplayRotationAngle"];
           }
 
-          v28 = [v8 objectForKey:@"MSAssetMetadataSourceiCloudPhotoLibraryEnabledKey"];
+          v28 = [metadata objectForKey:@"MSAssetMetadataSourceiCloudPhotoLibraryEnabledKey"];
           if (v28)
           {
-            [v16 setObject:v28 forKey:@"sourceiCloudPhotoLibraryEnabled"];
+            [dictionary setObject:v28 forKey:@"sourceiCloudPhotoLibraryEnabled"];
           }
 
-          [v7 setObject:v16 forKey:@"metadata"];
+          [fileHash setObject:dictionary forKey:@"metadata"];
           v29 = 0;
 LABEL_41:
 
@@ -634,7 +634,7 @@ LABEL_41:
       }
 
       v29 = [(MSPublishStreamsProtocol *)self _missingAssetFieldErrorWithFieldName:v33];
-      v7 = 0;
+      fileHash = 0;
       goto LABEL_41;
     }
 
@@ -650,7 +650,7 @@ LABEL_41:
   if (!v29)
   {
 LABEL_42:
-    v32 = v7;
+    v32 = fileHash;
     goto LABEL_45;
   }
 
@@ -659,30 +659,30 @@ LABEL_35:
   {
     v34 = objc_opt_class();
     v35 = v34;
-    v36 = [(MSStreamsProtocol *)self personID];
-    v37 = [v29 MSVerboseDescription];
+    personID = [(MSStreamsProtocol *)self personID];
+    mSVerboseDescription = [v29 MSVerboseDescription];
     v40 = 138544130;
     v41 = v34;
     v42 = 2112;
-    v43 = v36;
+    v43 = personID;
     v44 = 2114;
-    v45 = v6;
+    v45 = assetCopy;
     v46 = 2114;
-    v47 = v37;
+    v47 = mSVerboseDescription;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Rejecting asset %{public}@\nReason: %{public}@", &v40, 0x2Au);
 
-    if (a4)
+    if (error)
     {
       goto LABEL_37;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
 LABEL_37:
     v31 = v29;
     v32 = 0;
-    *a4 = v29;
+    *error = v29;
     goto LABEL_45;
   }
 
@@ -701,41 +701,41 @@ LABEL_45:
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_insertInfoAboutAsset:(id)a3 intoDictionary:(id)a4 outError:(id *)a5
+- (BOOL)_insertInfoAboutAsset:(id)asset intoDictionary:(id)dictionary outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 fileHash];
+  assetCopy = asset;
+  dictionaryCopy = dictionary;
+  fileHash = [assetCopy fileHash];
 
-  if (v10)
+  if (fileHash)
   {
-    v11 = [v8 type];
+    type = [assetCopy type];
 
-    if (v11)
+    if (type)
     {
-      v12 = [v8 metadata];
-      v13 = [v12 objectForKey:@"MSAssetMetadataPixelWidth"];
-      v14 = [v12 objectForKey:@"MSAssetMetadataPixelHeight"];
+      metadata = [assetCopy metadata];
+      v13 = [metadata objectForKey:@"MSAssetMetadataPixelWidth"];
+      v14 = [metadata objectForKey:@"MSAssetMetadataPixelHeight"];
       v15 = v14;
       if (v13)
       {
         if (v14)
         {
-          v16 = [v8 fileHash];
-          v17 = [v16 MSHexString];
-          [v9 setObject:v17 forKey:@"fingerprint"];
+          fileHash2 = [assetCopy fileHash];
+          mSHexString = [fileHash2 MSHexString];
+          [dictionaryCopy setObject:mSHexString forKey:@"fingerprint"];
 
-          v18 = [v8 type];
-          [v9 setObject:v18 forKey:@"type"];
+          type2 = [assetCopy type];
+          [dictionaryCopy setObject:type2 forKey:@"type"];
 
-          v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", objc_msgSend(v8, "protocolFileSize")];
-          [v9 setObject:v19 forKey:@"size"];
+          v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", objc_msgSend(assetCopy, "protocolFileSize")];
+          [dictionaryCopy setObject:v19 forKey:@"size"];
 
           v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v13, "unsignedLongValue")];
-          [v9 setObject:v20 forKey:@"width"];
+          [dictionaryCopy setObject:v20 forKey:@"width"];
 
           v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v15, "unsignedLongValue")];
-          [v9 setObject:v21 forKey:@"height"];
+          [dictionaryCopy setObject:v21 forKey:@"height"];
 
           v22 = 0;
           goto LABEL_13;
@@ -752,7 +752,7 @@ LABEL_45:
       v22 = [(MSPublishStreamsProtocol *)self _missingAssetFieldErrorWithFieldName:v24];
 LABEL_13:
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -769,7 +769,7 @@ LABEL_13:
   }
 
   v22 = [(MSPublishStreamsProtocol *)self _missingAssetFieldErrorWithFieldName:v23];
-  if (!a5)
+  if (!error)
   {
     goto LABEL_16;
   }
@@ -778,7 +778,7 @@ LABEL_14:
   if (v22)
   {
     v25 = v22;
-    *a5 = v22;
+    *error = v22;
   }
 
 LABEL_16:
@@ -786,15 +786,15 @@ LABEL_16:
   return v22 == 0;
 }
 
-- (id)_missingAssetFieldErrorWithFieldName:(id)a3
+- (id)_missingAssetFieldErrorWithFieldName:(id)name
 {
   v3 = MEMORY[0x277CCA9B8];
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  nameCopy = name;
   v6 = MSCFCopyLocalizedString(@"ERROR_PUT_CONNECTION_MISSING_ASSET_FIELD_P_FIELD");
-  v7 = [v4 stringWithFormat:v6, v5];
+  nameCopy = [v4 stringWithFormat:v6, nameCopy];
 
-  v8 = [v3 MSErrorWithDomain:@"MSStreamsPutConnectionErrorDomain" code:5 description:v7];
+  v8 = [v3 MSErrorWithDomain:@"MSStreamsPutConnectionErrorDomain" code:5 description:nameCopy];
 
   return v8;
 }
@@ -808,17 +808,17 @@ LABEL_16:
   [(MSPublishStreamsProtocol *)&v4 dealloc];
 }
 
-- (MSPublishStreamsProtocol)initWithPersonID:(id)a3 baseURL:(id)a4
+- (MSPublishStreamsProtocol)initWithPersonID:(id)d baseURL:(id)l
 {
-  v6 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = MSPublishStreamsProtocol;
-  v7 = [(MSStreamsProtocol *)&v11 initWithPersonID:v6 baseURL:a4];
+  v7 = [(MSStreamsProtocol *)&v11 initWithPersonID:dCopy baseURL:l];
   v8 = v7;
   if (v7)
   {
     v7->_context._super.owner = v7;
-    v9 = v6;
+    v9 = dCopy;
     v8->_context._super.personID = v9;
     v8->_context._super.deviceInfo = [(MSStreamsProtocol *)v8 deviceInfoDict];
     v8->_context._super.connectionTimeout = 0.0;
@@ -838,20 +838,20 @@ LABEL_16:
   return v8;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3.receiver = self;
   v3.super_class = MSPublishStreamsProtocol;
-  [(MSStreamsProtocol *)&v3 setDelegate:a3];
+  [(MSStreamsProtocol *)&v3 setDelegate:delegate];
 }
 
 - (id)delegate
 {
   v4.receiver = self;
   v4.super_class = MSPublishStreamsProtocol;
-  v2 = [(MSStreamsProtocol *)&v4 delegate];
+  delegate = [(MSStreamsProtocol *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
 @end

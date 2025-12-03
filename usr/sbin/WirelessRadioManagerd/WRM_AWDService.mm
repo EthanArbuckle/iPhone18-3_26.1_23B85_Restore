@@ -2,7 +2,7 @@
 + (BOOL)checkSignificanLocationEnablementStatus;
 + (void)clearConnectivityContextBiome;
 - (WRM_AWDService)init;
-- (id)convetDataLqmToString:(int)a3;
+- (id)convetDataLqmToString:(int)string;
 - (void)dealloc;
 - (void)listenRTLocationsOfInterestDidClearNotification;
 - (void)submitDataLinkPreferenceaMetrics;
@@ -10,7 +10,7 @@
 - (void)submitMericStreaming;
 - (void)submitMetricWiFiCallingEnd;
 - (void)submitMetricsFaceTimeHandover;
-- (void)submitProximityMetrics:(BOOL)a3;
+- (void)submitProximityMetrics:(BOOL)metrics;
 @end
 
 @implementation WRM_AWDService
@@ -25,12 +25,12 @@
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 getWatchAssociated];
+      getWatchAssociated = [v4 getWatchAssociated];
     }
 
     else
     {
-      v6 = 0;
+      getWatchAssociated = 0;
     }
 
     [WCM_Logging logLevel:25 message:@"Submitted CA metric WiFiCallingEnd"];
@@ -38,7 +38,7 @@
     v7[1] = 3221225472;
     v7[2] = sub_100015EC8;
     v7[3] = &unk_100242590;
-    v8 = v6;
+    v8 = getWatchAssociated;
     v7[4] = v5;
     v7[5] = v3;
     [WRM_CAInterface sendCAEventLazy:@"com.apple.Telephony.wrmWiFiCallingEnd" payloadBuilder:v7];
@@ -178,7 +178,7 @@
   }
 }
 
-- (void)submitProximityMetrics:(BOOL)a3
+- (void)submitProximityMetrics:(BOOL)metrics
 {
   v5 = [+[WRM_MetricsService getSingleton](WRM_MetricsService "getSingleton")];
   if (v5)
@@ -197,7 +197,7 @@
     v10[4] = v6;
     v10[5] = v9;
     v11 = v7;
-    v12 = a3;
+    metricsCopy = metrics;
     [WRM_CAInterface sendCAEventLazy:@"com.apple.Telephony.wrmLinkStateChange" payloadBuilder:v10];
   }
 
@@ -360,11 +360,11 @@
   }
 }
 
-- (id)convetDataLqmToString:(int)a3
+- (id)convetDataLqmToString:(int)string
 {
-  if (a3 > 19)
+  if (string > 19)
   {
-    switch(a3)
+    switch(string)
     {
       case 20:
         return @"MinViable";
@@ -379,9 +379,9 @@
 
   else
   {
-    if (a3 != -2)
+    if (string != -2)
     {
-      if (a3 == 10)
+      if (string == 10)
       {
         return @"Bad";
       }

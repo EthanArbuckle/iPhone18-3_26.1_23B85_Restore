@@ -1,11 +1,11 @@
 @interface BCSNotificationServiceConnection
 - (NSXPCConnection)serviceConnection;
-- (void)cancelNotificationsForCodeType:(int64_t)a3;
+- (void)cancelNotificationsForCodeType:(int64_t)type;
 - (void)dealloc;
-- (void)didReceiveNotificationResponse:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)startNFCReaderWithDelegate:(id)a3 errorHandler:(id)a4;
-- (void)stopNFCReaderWithErrorHandler:(id)a3;
+- (void)didReceiveNotificationResponse:(id)response;
+- (void)setInterruptionHandler:(id)handler;
+- (void)startNFCReaderWithDelegate:(id)delegate errorHandler:(id)handler;
+- (void)stopNFCReaderWithErrorHandler:(id)handler;
 @end
 
 @implementation BCSNotificationServiceConnection
@@ -18,11 +18,11 @@ void __118__BCSNotificationServiceConnection_notifyParsedCodeWithData_codePayloa
   }
 }
 
-- (void)cancelNotificationsForCodeType:(int64_t)a3
+- (void)cancelNotificationsForCodeType:(int64_t)type
 {
-  v5 = [(BCSNotificationServiceConnection *)self serviceConnection];
-  v4 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
-  [v4 cancelNotificationsForCodeType:a3];
+  serviceConnection = [(BCSNotificationServiceConnection *)self serviceConnection];
+  v4 = [serviceConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
+  [v4 cancelNotificationsForCodeType:type];
 }
 
 void __67__BCSNotificationServiceConnection_cancelNotificationsForCodeType___block_invoke(uint64_t a1, void *a2)
@@ -33,12 +33,12 @@ void __67__BCSNotificationServiceConnection_cancelNotificationsForCodeType___blo
   }
 }
 
-- (void)didReceiveNotificationResponse:(id)a3
+- (void)didReceiveNotificationResponse:(id)response
 {
-  v4 = a3;
-  v6 = [(BCSNotificationServiceConnection *)self serviceConnection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
-  [v5 didReceiveNotificationResponse:v4];
+  responseCopy = response;
+  serviceConnection = [(BCSNotificationServiceConnection *)self serviceConnection];
+  v5 = [serviceConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
+  [v5 didReceiveNotificationResponse:responseCopy];
 }
 
 void __67__BCSNotificationServiceConnection_didReceiveNotificationResponse___block_invoke(uint64_t a1, void *a2)
@@ -49,19 +49,19 @@ void __67__BCSNotificationServiceConnection_didReceiveNotificationResponse___blo
   }
 }
 
-- (void)startNFCReaderWithDelegate:(id)a3 errorHandler:(id)a4
+- (void)startNFCReaderWithDelegate:(id)delegate errorHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BCSNotificationServiceConnection *)self serviceConnection];
+  handlerCopy = handler;
+  delegateCopy = delegate;
+  serviceConnection = [(BCSNotificationServiceConnection *)self serviceConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__BCSNotificationServiceConnection_startNFCReaderWithDelegate_errorHandler___block_invoke;
   v11[3] = &unk_278CFED28;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
-  [v10 startNFCReaderWithDelegate:v7];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [serviceConnection remoteObjectProxyWithErrorHandler:v11];
+  [v10 startNFCReaderWithDelegate:delegateCopy];
 }
 
 void __76__BCSNotificationServiceConnection_startNFCReaderWithDelegate_errorHandler___block_invoke(uint64_t a1, void *a2)
@@ -79,17 +79,17 @@ void __76__BCSNotificationServiceConnection_startNFCReaderWithDelegate_errorHand
   }
 }
 
-- (void)stopNFCReaderWithErrorHandler:(id)a3
+- (void)stopNFCReaderWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BCSNotificationServiceConnection *)self serviceConnection];
+  handlerCopy = handler;
+  serviceConnection = [(BCSNotificationServiceConnection *)self serviceConnection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__BCSNotificationServiceConnection_stopNFCReaderWithErrorHandler___block_invoke;
   v8[3] = &unk_278CFED28;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [serviceConnection remoteObjectProxyWithErrorHandler:v8];
   [v7 stopNFCReader];
 }
 
@@ -116,14 +116,14 @@ void __66__BCSNotificationServiceConnection_stopNFCReaderWithErrorHandler___bloc
   [(BCSNotificationServiceConnection *)&v3 dealloc];
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   v4 = MEMORY[0x245CF4600]();
   interruptionHandler = self->_interruptionHandler;
   self->_interruptionHandler = v4;
 
-  [(NSXPCConnection *)self->_serviceConnection setInterruptionHandler:v6];
+  [(NSXPCConnection *)self->_serviceConnection setInterruptionHandler:handlerCopy];
 }
 
 - (NSXPCConnection)serviceConnection

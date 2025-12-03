@@ -1,5 +1,5 @@
 @interface NTKFaceState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC32NTKEsterbrookFaceBundleCompanion12NTKFaceState)init;
 @end
@@ -8,7 +8,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BE3219C();
 
   v3 = sub_23BE32898();
@@ -16,11 +16,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_23BE32AB8();
     swift_unknownObjectRelease();
@@ -29,7 +29,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_23BE322AC(v8);

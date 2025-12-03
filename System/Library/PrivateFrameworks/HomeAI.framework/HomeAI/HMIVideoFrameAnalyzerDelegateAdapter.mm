@@ -1,33 +1,33 @@
 @interface HMIVideoFrameAnalyzerDelegateAdapter
-- (void)frameAnalyzer:(id)a3 didAnalyzeFrame:(id)a4;
-- (void)frameAnalyzer:(id)a3 didProduceAnalysisStateUpdate:(id)a4;
+- (void)frameAnalyzer:(id)analyzer didAnalyzeFrame:(id)frame;
+- (void)frameAnalyzer:(id)analyzer didProduceAnalysisStateUpdate:(id)update;
 @end
 
 @implementation HMIVideoFrameAnalyzerDelegateAdapter
 
-- (void)frameAnalyzer:(id)a3 didAnalyzeFrame:(id)a4
+- (void)frameAnalyzer:(id)analyzer didAnalyzeFrame:(id)frame
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMIVideoFrameAnalyzerDelegateAdapter *)self frameAnalyzerDidAnalyzeFrame];
+  analyzerCopy = analyzer;
+  frameCopy = frame;
+  frameAnalyzerDidAnalyzeFrame = [(HMIVideoFrameAnalyzerDelegateAdapter *)self frameAnalyzerDidAnalyzeFrame];
 
-  if (v7)
+  if (frameAnalyzerDidAnalyzeFrame)
   {
-    v8 = [(HMIVideoFrameAnalyzerDelegateAdapter *)self frameAnalyzerDidAnalyzeFrame];
-    (v8)[2](v8, v9, v6);
+    frameAnalyzerDidAnalyzeFrame2 = [(HMIVideoFrameAnalyzerDelegateAdapter *)self frameAnalyzerDidAnalyzeFrame];
+    (frameAnalyzerDidAnalyzeFrame2)[2](frameAnalyzerDidAnalyzeFrame2, analyzerCopy, frameCopy);
   }
 }
 
-- (void)frameAnalyzer:(id)a3 didProduceAnalysisStateUpdate:(id)a4
+- (void)frameAnalyzer:(id)analyzer didProduceAnalysisStateUpdate:(id)update
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMIVideoFrameAnalyzerDelegateAdapter *)self frameAnalyzerDidProduceAnalysisStateUpdate];
+  analyzerCopy = analyzer;
+  updateCopy = update;
+  frameAnalyzerDidProduceAnalysisStateUpdate = [(HMIVideoFrameAnalyzerDelegateAdapter *)self frameAnalyzerDidProduceAnalysisStateUpdate];
 
-  if (v7)
+  if (frameAnalyzerDidProduceAnalysisStateUpdate)
   {
-    v8 = [(HMIVideoFrameAnalyzerDelegateAdapter *)self frameAnalyzerDidProduceAnalysisStateUpdate];
-    (v8)[2](v8, v9, v6);
+    frameAnalyzerDidProduceAnalysisStateUpdate2 = [(HMIVideoFrameAnalyzerDelegateAdapter *)self frameAnalyzerDidProduceAnalysisStateUpdate];
+    (frameAnalyzerDidProduceAnalysisStateUpdate2)[2](frameAnalyzerDidProduceAnalysisStateUpdate2, analyzerCopy, updateCopy);
   }
 }
 

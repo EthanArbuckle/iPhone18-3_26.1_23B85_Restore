@@ -1,6 +1,6 @@
 @interface FKExtractedOrderSuggestionsBannerProvider
 + (UIImage)walletLogo;
-+ (id)makePreviewControllerWithMessageID:(id)a3 orderNumber:(id)a4 completion:(id)a5;
++ (id)makePreviewControllerWithMessageID:(id)d orderNumber:(id)number completion:(id)completion;
 - (FKExtractedOrderSuggestionsBannerProvider)init;
 @end
 
@@ -26,7 +26,7 @@
   return v2;
 }
 
-+ (id)makePreviewControllerWithMessageID:(id)a3 orderNumber:(id)a4 completion:(id)a5
++ (id)makePreviewControllerWithMessageID:(id)d orderNumber:(id)number completion:(id)completion
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -36,7 +36,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(completion);
   sub_23875EA80();
   sub_23875EA80();
   *(swift_allocObject() + 16) = v6;

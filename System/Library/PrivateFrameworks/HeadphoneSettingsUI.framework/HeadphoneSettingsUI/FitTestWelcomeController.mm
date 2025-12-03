@@ -1,6 +1,6 @@
 @interface FitTestWelcomeController
-- (_TtC19HeadphoneSettingsUI24FitTestWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC19HeadphoneSettingsUI24FitTestWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC19HeadphoneSettingsUI24FitTestWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC19HeadphoneSettingsUI24FitTestWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)viewDidLoad;
 @end
 
@@ -13,23 +13,23 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (_TtC19HeadphoneSettingsUI24FitTestWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC19HeadphoneSettingsUI24FitTestWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  MEMORY[0x1E69E5928](a5);
+  MEMORY[0x1E69E5928](title);
+  MEMORY[0x1E69E5928](text);
+  MEMORY[0x1E69E5928](name);
   sub_1AC30A92C();
-  if (a4)
+  if (text)
   {
     sub_1AC30A92C();
-    MEMORY[0x1E69E5920](a4);
+    MEMORY[0x1E69E5920](text);
   }
 
-  if (a5)
+  if (name)
   {
     sub_1AC30A92C();
     v8 = v6;
-    MEMORY[0x1E69E5920](a5);
+    MEMORY[0x1E69E5920](name);
     v7 = v8;
   }
 
@@ -41,17 +41,17 @@
   sub_1AC2DBE58(v7);
 }
 
-- (_TtC19HeadphoneSettingsUI24FitTestWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC19HeadphoneSettingsUI24FitTestWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  MEMORY[0x1E69E5928](a5);
+  MEMORY[0x1E69E5928](title);
+  MEMORY[0x1E69E5928](text);
+  MEMORY[0x1E69E5928](icon);
   sub_1AC30A92C();
-  if (a4)
+  if (text)
   {
     sub_1AC30A92C();
     v8 = v6;
-    MEMORY[0x1E69E5920](a4);
+    MEMORY[0x1E69E5920](text);
     v7 = v8;
   }
 

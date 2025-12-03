@@ -1,118 +1,118 @@
 @interface GKTurnBasedMatchInternal
-- (void)updateWithCacheObject:(id)a3;
+- (void)updateWithCacheObject:(id)object;
 @end
 
 @implementation GKTurnBasedMatchInternal
 
-- (void)updateWithCacheObject:(id)a3
+- (void)updateWithCacheObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v5, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v6 = +[NSThread callStackSymbols];
     v7 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKTurnBasedMatchInternal(Cache) updateWithCacheObject:]", v6];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/GKInternalRepresentation+Cache.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKTurnBasedMatchInternal(Cache) updateWithCacheObject:]", [v9 UTF8String], 297);
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKTurnBasedMatchInternal(Cache) updateWithCacheObject:]", [lastPathComponent UTF8String], 297);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v10];
   }
 
-  v11 = [v4 managedObjectContext];
-  v12 = [v4 sessionID];
-  [(GKTurnBasedMatchInternal *)self setMatchID:v12];
+  managedObjectContext = [objectCopy managedObjectContext];
+  sessionID = [objectCopy sessionID];
+  [(GKTurnBasedMatchInternal *)self setMatchID:sessionID];
 
-  v13 = [v4 status];
-  [(GKTurnBasedMatchInternal *)self setStatus:v13];
+  status = [objectCopy status];
+  [(GKTurnBasedMatchInternal *)self setStatus:status];
 
-  v14 = [v4 creationDate];
-  [(GKTurnBasedMatchInternal *)self setCreationDate:v14];
+  creationDate = [objectCopy creationDate];
+  [(GKTurnBasedMatchInternal *)self setCreationDate:creationDate];
 
-  v15 = [v4 lastTurnDate];
-  [(GKTurnBasedMatchInternal *)self setLastTurnDate:v15];
+  lastTurnDate = [objectCopy lastTurnDate];
+  [(GKTurnBasedMatchInternal *)self setLastTurnDate:lastTurnDate];
 
-  v16 = [v4 message];
-  [(GKTurnBasedMatchInternal *)self setMessage:v16];
+  message = [objectCopy message];
+  [(GKTurnBasedMatchInternal *)self setMessage:message];
 
-  v17 = [v4 localizableMessage];
-  v18 = [NSPropertyListSerialization _gkTypesafePropertyListWithData:v17 withClass:objc_opt_class()];
+  localizableMessage = [objectCopy localizableMessage];
+  v18 = [NSPropertyListSerialization _gkTypesafePropertyListWithData:localizableMessage withClass:objc_opt_class()];
   [(GKTurnBasedMatchInternal *)self setLocalizableMessage:v18];
 
-  v19 = [v4 reason];
-  [(GKTurnBasedMatchInternal *)self setReason:v19];
+  reason = [objectCopy reason];
+  [(GKTurnBasedMatchInternal *)self setReason:reason];
 
-  -[GKTurnBasedMatchInternal setMinPlayers:](self, "setMinPlayers:", [v4 minPlayers]);
-  -[GKTurnBasedMatchInternal setMaxPlayers:](self, "setMaxPlayers:", [v4 maxPlayers]);
-  v20 = [v4 deletionDate];
-  [(GKTurnBasedMatchInternal *)self setDeletionDate:v20];
+  -[GKTurnBasedMatchInternal setMinPlayers:](self, "setMinPlayers:", [objectCopy minPlayers]);
+  -[GKTurnBasedMatchInternal setMaxPlayers:](self, "setMaxPlayers:", [objectCopy maxPlayers]);
+  deletionDate = [objectCopy deletionDate];
+  [(GKTurnBasedMatchInternal *)self setDeletionDate:deletionDate];
 
-  -[GKTurnBasedMatchInternal setCurrentParticipant:](self, "setCurrentParticipant:", [v4 currentParticipant]);
-  -[GKTurnBasedMatchInternal setTurnNumber:](self, "setTurnNumber:", [v4 turnNumber]);
-  v21 = [v4 lastTurnPlayerID];
-  [(GKTurnBasedMatchInternal *)self setLastTurnPlayerID:v21];
+  -[GKTurnBasedMatchInternal setCurrentParticipant:](self, "setCurrentParticipant:", [objectCopy currentParticipant]);
+  -[GKTurnBasedMatchInternal setTurnNumber:](self, "setTurnNumber:", [objectCopy turnNumber]);
+  lastTurnPlayerID = [objectCopy lastTurnPlayerID];
+  [(GKTurnBasedMatchInternal *)self setLastTurnPlayerID:lastTurnPlayerID];
 
-  v22 = [v4 gameData];
-  [(GKTurnBasedMatchInternal *)self setMatchData:v22];
+  gameData = [objectCopy gameData];
+  [(GKTurnBasedMatchInternal *)self setMatchData:gameData];
 
-  v23 = [v4 matchDataVersion];
-  [(GKTurnBasedMatchInternal *)self setMatchDataVersion:v23];
+  matchDataVersion = [objectCopy matchDataVersion];
+  [(GKTurnBasedMatchInternal *)self setMatchDataVersion:matchDataVersion];
 
-  v24 = [v4 bundleID];
-  [(GKTurnBasedMatchInternal *)self setBundleID:v24];
+  bundleID = [objectCopy bundleID];
+  [(GKTurnBasedMatchInternal *)self setBundleID:bundleID];
 
-  v25 = [v4 bundleVersion];
-  [(GKTurnBasedMatchInternal *)self setBundleVersion:v25];
+  bundleVersion = [objectCopy bundleVersion];
+  [(GKTurnBasedMatchInternal *)self setBundleVersion:bundleVersion];
 
-  v26 = [v4 shortBundleVersion];
-  [(GKTurnBasedMatchInternal *)self setShortBundleVersion:v26];
+  shortBundleVersion = [objectCopy shortBundleVersion];
+  [(GKTurnBasedMatchInternal *)self setShortBundleVersion:shortBundleVersion];
 
-  v27 = [v4 participants];
+  participants = [objectCopy participants];
   v28 = [[NSMutableSet alloc] initWithCapacity:0];
-  v29 = [v4 currentPlayerID];
+  currentPlayerID = [objectCopy currentPlayerID];
 
-  if (v29)
+  if (currentPlayerID)
   {
-    v30 = [v4 currentPlayerID];
-    [v28 addObject:v30];
+    currentPlayerID2 = [objectCopy currentPlayerID];
+    [v28 addObject:currentPlayerID2];
   }
 
-  v31 = [v27 _gkValuesForKeyPath:@"playerID"];
+  v31 = [participants _gkValuesForKeyPath:@"playerID"];
   [v28 addObjectsFromArray:v31];
 
-  v32 = [v27 _gkValuesForKeyPath:@"invitedBy"];
+  v32 = [participants _gkValuesForKeyPath:@"invitedBy"];
   [v28 addObjectsFromArray:v32];
 
-  v33 = [v28 allObjects];
-  v48 = v11;
-  v34 = [GKPlayerProfileCacheObject playerProfilesWithPlayerIDs:v33 inManagedObjectContext:v11];
+  allObjects = [v28 allObjects];
+  v48 = managedObjectContext;
+  v34 = [GKPlayerProfileCacheObject playerProfilesWithPlayerIDs:allObjects inManagedObjectContext:managedObjectContext];
 
   v35 = [v34 _gkValuesForKeyPath:@"internalRepresentation"];
   v36 = [v35 _gkMapDictionaryWithKeyPath:@"playerID"];
-  v37 = [v4 currentPlayerID];
-  v38 = [v37 length];
+  currentPlayerID3 = [objectCopy currentPlayerID];
+  v38 = [currentPlayerID3 length];
 
   if (v38)
   {
-    v39 = [v4 currentPlayerID];
-    v40 = [v36 objectForKeyedSubscript:v39];
+    currentPlayerID4 = [objectCopy currentPlayerID];
+    v40 = [v36 objectForKeyedSubscript:currentPlayerID4];
     [(GKTurnBasedMatchInternal *)self setCurrentPlayer:v40];
   }
 
-  v41 = [v4 participants];
-  v42 = [v41 array];
+  participants2 = [objectCopy participants];
+  array = [participants2 array];
   v49[0] = _NSConcreteStackBlock;
   v49[1] = 3221225472;
   v49[2] = sub_100161ED8;
   v49[3] = &unk_100369218;
   v50 = v36;
   v43 = v36;
-  v44 = [v42 _gkMapWithBlock:v49];
+  v44 = [array _gkMapWithBlock:v49];
   [(GKTurnBasedMatchInternal *)self setParticipants:v44];
 
-  v45 = [v4 exchanges];
-  v46 = [v45 array];
-  v47 = [v46 _gkMapWithBlock:&stru_100369258];
+  exchanges = [objectCopy exchanges];
+  array2 = [exchanges array];
+  v47 = [array2 _gkMapWithBlock:&stru_100369258];
   [(GKTurnBasedMatchInternal *)self setExchanges:v47];
 }
 

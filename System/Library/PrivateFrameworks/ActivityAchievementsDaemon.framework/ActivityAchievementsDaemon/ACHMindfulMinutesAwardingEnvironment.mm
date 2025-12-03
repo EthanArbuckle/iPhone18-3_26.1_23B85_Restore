@@ -1,47 +1,47 @@
 @interface ACHMindfulMinutesAwardingEnvironment
 - (ACHAwardsWorkoutClient)workoutClient;
-- (ACHMindfulMinutesAwardingEnvironment)initWithHealthStore:(id)a3 workoutClient:(id)a4 calendar:(id)a5 currentDate:(id)a6;
+- (ACHMindfulMinutesAwardingEnvironment)initWithHealthStore:(id)store workoutClient:(id)client calendar:(id)calendar currentDate:(id)date;
 - (HKHealthStore)healthStore;
 - (double)numberOfMindfulMinutesInCurrentMonth;
 - (double)todayMindfulMinutesValue;
 - (id)_dayDateIntervalForCurrentDate;
 - (id)_monthDateIntervalForCurrentDate;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (void)logValues;
 @end
 
 @implementation ACHMindfulMinutesAwardingEnvironment
 
-- (ACHMindfulMinutesAwardingEnvironment)initWithHealthStore:(id)a3 workoutClient:(id)a4 calendar:(id)a5 currentDate:(id)a6
+- (ACHMindfulMinutesAwardingEnvironment)initWithHealthStore:(id)store workoutClient:(id)client calendar:(id)calendar currentDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  storeCopy = store;
+  clientCopy = client;
+  calendarCopy = calendar;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = ACHMindfulMinutesAwardingEnvironment;
   v14 = [(ACHMindfulMinutesAwardingEnvironment *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_calendar, a5);
-    objc_storeWeak(&v15->_healthStore, v10);
-    objc_storeStrong(&v15->_currentDate, a6);
-    objc_storeWeak(&v15->_workoutClient, v11);
+    objc_storeStrong(&v14->_calendar, calendar);
+    objc_storeWeak(&v15->_healthStore, storeCopy);
+    objc_storeStrong(&v15->_currentDate, date);
+    objc_storeWeak(&v15->_workoutClient, clientCopy);
   }
 
   return v15;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v4 = ACHLogAwardEngine();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v3;
+    v8 = keyCopy;
     _os_log_impl(&dword_221DDC000, v4, OS_LOG_TYPE_DEFAULT, "[ACHMindfulMinutesAwardingEnvironment] Mindful Minutes awarding environment asked for key it doesn't support: %{public}@", &v7, 0xCu);
   }
 
@@ -52,10 +52,10 @@
 - (double)todayMindfulMinutesValue
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(ACHMindfulMinutesAwardingEnvironment *)self _dayDateIntervalForCurrentDate];
+  _dayDateIntervalForCurrentDate = [(ACHMindfulMinutesAwardingEnvironment *)self _dayDateIntervalForCurrentDate];
   WeakRetained = objc_loadWeakRetained(&self->_workoutClient);
   v14 = 0;
-  v5 = [WeakRetained mindfulMinutesForForDateInterval:v3 error:&v14];
+  v5 = [WeakRetained mindfulMinutesForForDateInterval:_dayDateIntervalForCurrentDate error:&v14];
   v6 = v14;
 
   if (v6)
@@ -70,8 +70,8 @@
     }
   }
 
-  v9 = [MEMORY[0x277CCDAB0] minuteUnit];
-  [v5 doubleValueForUnit:v9];
+  minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
+  [v5 doubleValueForUnit:minuteUnit];
   v11 = v10;
 
   v12 = *MEMORY[0x277D85DE8];
@@ -81,10 +81,10 @@
 - (double)numberOfMindfulMinutesInCurrentMonth
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(ACHMindfulMinutesAwardingEnvironment *)self _monthDateIntervalForCurrentDate];
+  _monthDateIntervalForCurrentDate = [(ACHMindfulMinutesAwardingEnvironment *)self _monthDateIntervalForCurrentDate];
   WeakRetained = objc_loadWeakRetained(&self->_workoutClient);
   v14 = 0;
-  v5 = [WeakRetained mindfulMinutesForForDateInterval:v3 error:&v14];
+  v5 = [WeakRetained mindfulMinutesForForDateInterval:_monthDateIntervalForCurrentDate error:&v14];
   v6 = v14;
 
   if (v6)
@@ -99,8 +99,8 @@
     }
   }
 
-  v9 = [MEMORY[0x277CCDAB0] minuteUnit];
-  [v5 doubleValueForUnit:v9];
+  minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
+  [v5 doubleValueForUnit:minuteUnit];
   v11 = v10;
 
   v12 = *MEMORY[0x277D85DE8];

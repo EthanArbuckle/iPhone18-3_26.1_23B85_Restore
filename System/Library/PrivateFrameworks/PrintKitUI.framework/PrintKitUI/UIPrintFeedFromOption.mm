@@ -2,14 +2,14 @@
 - (BOOL)shouldShow;
 - (NSArray)trays;
 - (NSMutableArray)trayNames;
-- (UIPrintFeedFromOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
-- (id)capitalizeFirstLetter:(id)a3;
+- (UIPrintFeedFromOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
+- (id)capitalizeFirstLetter:(id)letter;
 - (id)createPrintOptionTableViewCell;
 - (id)summaryString;
 - (void)currentPrinterChanged;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)trayActionSelected:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)trayActionSelected:(id)selected;
 - (void)updateFromPrintInfo;
 @end
 
@@ -17,22 +17,22 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  [v3 removeObserver:self forKeyPath:0x2871AF250];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF250];
 
-  v4 = [(UIPrintOption *)self printInfo];
-  [v4 removeObserver:self forKeyPath:0x2871AF150];
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  [printInfo2 removeObserver:self forKeyPath:0x2871AF150];
 
   v5.receiver = self;
   v5.super_class = UIPrintFeedFromOption;
   [(UIPrintFeedFromOption *)&v5 dealloc];
 }
 
-- (UIPrintFeedFromOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintFeedFromOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = UIPrintFeedFromOption;
-  v4 = [(UIPrintOption *)&v10 initWithPrintInfo:a3 printPanelViewController:a4];
+  v4 = [(UIPrintOption *)&v10 initWithPrintInfo:info printPanelViewController:controller];
   if (v4)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -40,11 +40,11 @@
     [(UIPrintOption *)v4 setTitle:v6];
 
     [(UIPrintFeedFromOption *)v4 currentPrinterChanged];
-    v7 = [(UIPrintOption *)v4 printInfo];
-    [v7 addObserver:v4 forKeyPath:0x2871AF250 options:0 context:0];
+    printInfo = [(UIPrintOption *)v4 printInfo];
+    [printInfo addObserver:v4 forKeyPath:0x2871AF250 options:0 context:0];
 
-    v8 = [(UIPrintOption *)v4 printInfo];
-    [v8 addObserver:v4 forKeyPath:0x2871AF150 options:0 context:0];
+    printInfo2 = [(UIPrintOption *)v4 printInfo];
+    [printInfo2 addObserver:v4 forKeyPath:0x2871AF150 options:0 context:0];
 
     [(UIPrintFeedFromOption *)v4 updateFromPrintInfo];
   }
@@ -52,16 +52,16 @@
   return v4;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
+  pathCopy = path;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__UIPrintFeedFromOption_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v9[3] = &unk_279A9BF78;
-  v10 = v7;
-  v11 = self;
-  v8 = v7;
+  v10 = pathCopy;
+  selfCopy = self;
+  v8 = pathCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 
@@ -84,23 +84,23 @@ uint64_t __72__UIPrintFeedFromOption_observeValueForKeyPath_ofObject_change_cont
 
 - (void)updateFromPrintInfo
 {
-  v2 = self;
+  selfCopy = self;
   v45 = *MEMORY[0x277D85DE8];
   if ([(UIPrintFeedFromOption *)self shouldShow])
   {
-    v3 = [(UIPrintFeedFromOption *)v2 summaryString];
-    [(UIPrintOption *)v2 setSummary:v3];
+    summaryString = [(UIPrintFeedFromOption *)selfCopy summaryString];
+    [(UIPrintOption *)selfCopy setSummary:summaryString];
 
-    v4 = [(UIPrintOption *)v2 printInfo];
-    v5 = [v4 inputSlot];
+    printInfo = [(UIPrintOption *)selfCopy printInfo];
+    inputSlot = [printInfo inputSlot];
 
-    if (v5)
+    if (inputSlot)
     {
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      obj = [(UIPrintFeedFromOption *)v2 trays];
+      obj = [(UIPrintFeedFromOption *)selfCopy trays];
       v6 = [obj countByEnumeratingWithState:&v38 objects:v44 count:16];
       if (v6)
       {
@@ -117,26 +117,26 @@ uint64_t __72__UIPrintFeedFromOption_observeValueForKeyPath_ofObject_change_cont
             }
 
             v11 = *(*(&v38 + 1) + 8 * i);
-            v12 = [v11 allKeys];
-            v13 = [v12 containsObject:v9];
+            allKeys = [v11 allKeys];
+            v13 = [allKeys containsObject:v9];
 
             if (v13)
             {
               v14 = [v11 objectForKey:v9];
-              v15 = v2;
-              v16 = [(UIPrintOption *)v2 printInfo];
-              v17 = [v16 inputSlot];
-              v18 = [v14 isEqualToString:v17];
+              v15 = selfCopy;
+              printInfo2 = [(UIPrintOption *)selfCopy printInfo];
+              inputSlot2 = [printInfo2 inputSlot];
+              v18 = [v14 isEqualToString:inputSlot2];
 
               if (v18)
               {
-                v2 = v15;
+                selfCopy = v15;
                 [(UIPrintFeedFromOption *)v15 setSelectedTray:v11];
 
                 goto LABEL_16;
               }
 
-              v2 = v15;
+              selfCopy = v15;
             }
           }
 
@@ -155,25 +155,25 @@ LABEL_16:
 
     else
     {
-      [(UIPrintFeedFromOption *)v2 setSelectedTray:0];
+      [(UIPrintFeedFromOption *)selfCopy setSelectedTray:0];
     }
 
-    v19 = [(UIPrintFeedFromOption *)v2 selectedTray];
+    selectedTray = [(UIPrintFeedFromOption *)selfCopy selectedTray];
 
-    if (v19)
+    if (selectedTray)
     {
-      v20 = [(UIPrintFeedFromOption *)v2 trayActions];
-      v21 = [(UIPrintFeedFromOption *)v2 trays];
-      v22 = [(UIPrintFeedFromOption *)v2 selectedTray];
-      v19 = [v20 objectAtIndex:{objc_msgSend(v21, "indexOfObject:", v22)}];
+      trayActions = [(UIPrintFeedFromOption *)selfCopy trayActions];
+      trays = [(UIPrintFeedFromOption *)selfCopy trays];
+      selectedTray2 = [(UIPrintFeedFromOption *)selfCopy selectedTray];
+      selectedTray = [trayActions objectAtIndex:{objc_msgSend(trays, "indexOfObject:", selectedTray2)}];
     }
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v23 = [(UIPrintFeedFromOption *)v2 trayActions];
-    v24 = [v23 countByEnumeratingWithState:&v34 objects:v43 count:16];
+    trayActions2 = [(UIPrintFeedFromOption *)selfCopy trayActions];
+    v24 = [trayActions2 countByEnumeratingWithState:&v34 objects:v43 count:16];
     if (v24)
     {
       v25 = v24;
@@ -184,30 +184,30 @@ LABEL_16:
         {
           if (*v35 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(trayActions2);
           }
 
-          [*(*(&v34 + 1) + 8 * j) setState:v19 == *(*(&v34 + 1) + 8 * j)];
+          [*(*(&v34 + 1) + 8 * j) setState:selectedTray == *(*(&v34 + 1) + 8 * j)];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v34 objects:v43 count:16];
+        v25 = [trayActions2 countByEnumeratingWithState:&v34 objects:v43 count:16];
       }
 
       while (v25);
     }
 
-    v28 = [(UIPrintOption *)v2 tableViewCell];
-    if (v28)
+    tableViewCell = [(UIPrintOption *)selfCopy tableViewCell];
+    if (tableViewCell)
     {
-      v29 = [(UIPrintFeedFromOption *)v2 trayActions];
-      v30 = [v29 count];
+      trayActions3 = [(UIPrintFeedFromOption *)selfCopy trayActions];
+      v30 = [trayActions3 count];
 
       if (v30)
       {
-        v31 = [(UIPrintFeedFromOption *)v2 trayActions];
-        v42 = v31;
+        trayActions4 = [(UIPrintFeedFromOption *)selfCopy trayActions];
+        v42 = trayActions4;
         v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v42 count:1];
-        [v28 setPopupActions:v32];
+        [tableViewCell setPopupActions:v32];
       }
     }
   }
@@ -225,11 +225,11 @@ LABEL_16:
 
 - (BOOL)shouldShow
 {
-  v3 = [(UIPrintFeedFromOption *)self trays];
-  if (v3)
+  trays = [(UIPrintFeedFromOption *)self trays];
+  if (trays)
   {
-    v4 = [(UIPrintFeedFromOption *)self trays];
-    v5 = [v4 count] != 0;
+    trays2 = [(UIPrintFeedFromOption *)self trays];
+    v5 = [trays2 count] != 0;
   }
 
   else
@@ -240,48 +240,48 @@ LABEL_16:
   return v5;
 }
 
-- (void)trayActionSelected:(id)a3
+- (void)trayActionSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(UIPrintFeedFromOption *)self trayActions];
-  v6 = [v5 indexOfObject:v4];
+  selectedCopy = selected;
+  trayActions = [(UIPrintFeedFromOption *)self trayActions];
+  v6 = [trayActions indexOfObject:selectedCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(UIPrintFeedFromOption *)self trays];
-    v8 = [v7 objectAtIndex:v6];
+    trays = [(UIPrintFeedFromOption *)self trays];
+    v8 = [trays objectAtIndex:v6];
     [(UIPrintFeedFromOption *)self setSelectedTray:v8];
 
-    v11 = [(UIPrintFeedFromOption *)self selectedTray];
-    v9 = [v11 objectForKey:*MEMORY[0x277D41130]];
-    v10 = [(UIPrintOption *)self printInfo];
-    [v10 setInputSlot:v9];
+    selectedTray = [(UIPrintFeedFromOption *)self selectedTray];
+    v9 = [selectedTray objectForKey:*MEMORY[0x277D41130]];
+    printInfo = [(UIPrintOption *)self printInfo];
+    [printInfo setInputSlot:v9];
   }
 }
 
 - (id)createPrintOptionTableViewCell
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintOption *)self printPanelViewController];
-  v4 = [v3 printOptionsTableView];
-  v17 = [v4 dequeueReusableCellWithIdentifier:@"UIPrintOptionPopupCell"];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  printOptionsTableView = [printPanelViewController printOptionsTableView];
+  v17 = [printOptionsTableView dequeueReusableCellWithIdentifier:@"UIPrintOptionPopupCell"];
 
   [(UIPrintOption *)self setTableViewCell:v17];
-  v5 = [(UIPrintOption *)self title];
-  v6 = [v17 textLabel];
-  [v6 setText:v5];
+  title = [(UIPrintOption *)self title];
+  textLabel = [v17 textLabel];
+  [textLabel setText:title];
 
   [v17 setSelectionStyle:0];
-  v7 = [MEMORY[0x277CBEB18] array];
-  [(UIPrintFeedFromOption *)self setTrayActions:v7];
+  array = [MEMORY[0x277CBEB18] array];
+  [(UIPrintFeedFromOption *)self setTrayActions:array];
 
   objc_initWeak(&location, self);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(UIPrintFeedFromOption *)self trayNames];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  trayNames = [(UIPrintFeedFromOption *)self trayNames];
+  v9 = [trayNames countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v9)
   {
     v10 = *v21;
@@ -291,7 +291,7 @@ LABEL_16:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(trayNames);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -302,13 +302,13 @@ LABEL_16:
         v18[3] = &unk_279A9C688;
         objc_copyWeak(&v19, &location);
         v14 = [v13 actionWithTitle:v12 image:0 identifier:0 handler:v18];
-        v15 = [(UIPrintFeedFromOption *)self trayActions];
-        [v15 addObject:v14];
+        trayActions = [(UIPrintFeedFromOption *)self trayActions];
+        [trayActions addObject:v14];
 
         objc_destroyWeak(&v19);
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v9 = [trayNames countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v9);
@@ -331,28 +331,28 @@ void __55__UIPrintFeedFromOption_createPrintOptionTableViewCell__block_invoke(ui
 {
   if (!self->_trays)
   {
-    v3 = [(UIPrintOption *)self printInfo];
-    v4 = [v3 currentPrinter];
-    v5 = [v4 printerInfoDict];
+    printInfo = [(UIPrintOption *)self printInfo];
+    currentPrinter = [printInfo currentPrinter];
+    printerInfoDict = [currentPrinter printerInfoDict];
 
-    if (v5)
+    if (printerInfoDict)
     {
-      v6 = [(UIPrintOption *)self printInfo];
-      v7 = [v6 currentPrinter];
-      v8 = [v7 supportedTrays];
+      printInfo2 = [(UIPrintOption *)self printInfo];
+      currentPrinter2 = [printInfo2 currentPrinter];
+      supportedTrays = [currentPrinter2 supportedTrays];
 
-      if (!v8 || [v8 count] < 2)
+      if (!supportedTrays || [supportedTrays count] < 2)
       {
         goto LABEL_9;
       }
 
-      if ([v8 count] == 2)
+      if ([supportedTrays count] == 2)
       {
-        v9 = [v8 objectAtIndex:0];
+        v9 = [supportedTrays objectAtIndex:0];
         v10 = *MEMORY[0x277D41130];
         v11 = [v9 objectForKey:*MEMORY[0x277D41130]];
 
-        v12 = [v8 objectAtIndex:1];
+        v12 = [supportedTrays objectAtIndex:1];
         v13 = [v12 objectForKey:v10];
 
         if ([v11 isEqual:@"auto"])
@@ -384,7 +384,7 @@ LABEL_10:
         }
       }
 
-      v15 = [MEMORY[0x277CBEB18] arrayWithArray:v8];
+      v15 = [MEMORY[0x277CBEB18] arrayWithArray:supportedTrays];
       [v15 sortUsingFunction:compareTrayNames context:0];
       goto LABEL_10;
     }
@@ -398,30 +398,30 @@ LABEL_14:
 
 - (NSMutableArray)trayNames
 {
-  v2 = self;
+  selfCopy = self;
   v29 = *MEMORY[0x277D85DE8];
   if (!self->_trayNames)
   {
-    v5 = [(UIPrintFeedFromOption *)self trays];
-    if (v5)
+    trays = [(UIPrintFeedFromOption *)self trays];
+    if (trays)
     {
-      v6 = v5;
-      v7 = [(UIPrintFeedFromOption *)v2 trays];
-      v8 = [v7 count];
+      v6 = trays;
+      trays2 = [(UIPrintFeedFromOption *)selfCopy trays];
+      v8 = [trays2 count];
 
       if (v8)
       {
         v9 = MEMORY[0x277CBEB18];
-        v10 = [(UIPrintFeedFromOption *)v2 trays];
-        v11 = [v9 arrayWithCapacity:{objc_msgSend(v10, "count")}];
+        trays3 = [(UIPrintFeedFromOption *)selfCopy trays];
+        v11 = [v9 arrayWithCapacity:{objc_msgSend(trays3, "count")}];
 
         v26 = 0u;
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v23 = v2;
-        v12 = [(UIPrintFeedFromOption *)v2 trays];
-        v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v23 = selfCopy;
+        trays4 = [(UIPrintFeedFromOption *)selfCopy trays];
+        v13 = [trays4 countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v13)
         {
           v14 = v13;
@@ -433,7 +433,7 @@ LABEL_14:
             {
               if (*v25 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(trays4);
               }
 
               v18 = [*(*(&v24 + 1) + 8 * i) objectForKey:v16];
@@ -457,42 +457,42 @@ LABEL_14:
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+            v14 = [trays4 countByEnumeratingWithState:&v24 objects:v28 count:16];
           }
 
           while (v14);
         }
 
-        v2 = v23;
+        selfCopy = v23;
         trayNames = v23->_trayNames;
         v23->_trayNames = v11;
       }
     }
   }
 
-  v3 = v2->_trayNames;
+  v3 = selfCopy->_trayNames;
 
   return v3;
 }
 
-- (id)capitalizeFirstLetter:(id)a3
+- (id)capitalizeFirstLetter:(id)letter
 {
-  v3 = [a3 lowercaseString];
-  v4 = [v3 substringToIndex:1];
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringByReplacingCharactersInRange:0 withString:{1, v5}];
+  lowercaseString = [letter lowercaseString];
+  v4 = [lowercaseString substringToIndex:1];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [lowercaseString stringByReplacingCharactersInRange:0 withString:{1, uppercaseString}];
 
   return v6;
 }
 
 - (id)summaryString
 {
-  v3 = [(UIPrintFeedFromOption *)self selectedTray];
+  selectedTray = [(UIPrintFeedFromOption *)self selectedTray];
 
-  if (v3 && (-[UIPrintFeedFromOption trays](self, "trays"), v4 = objc_claimAutoreleasedReturnValue(), -[UIPrintFeedFromOption selectedTray](self, "selectedTray"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 indexOfObject:v5], v5, v4, v6))
+  if (selectedTray && (-[UIPrintFeedFromOption trays](self, "trays"), v4 = objc_claimAutoreleasedReturnValue(), -[UIPrintFeedFromOption selectedTray](self, "selectedTray"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 indexOfObject:v5], v5, v4, v6))
   {
-    v7 = [(UIPrintFeedFromOption *)self trayNames];
-    v8 = [v7 objectAtIndex:v6];
+    trayNames = [(UIPrintFeedFromOption *)self trayNames];
+    v8 = [trayNames objectAtIndex:v6];
 
     v9 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];

@@ -1,12 +1,12 @@
 @interface LocalizationTestViewController
-- (_TtC8AppStore30LocalizationTestViewController)initWithCoder:(id)a3;
-- (_TtC8AppStore30LocalizationTestViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8AppStore30LocalizationTestViewController)initWithCoder:(id)coder;
+- (_TtC8AppStore30LocalizationTestViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation LocalizationTestViewController
 
-- (_TtC8AppStore30LocalizationTestViewController)initWithCoder:(id)a3
+- (_TtC8AppStore30LocalizationTestViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -15,11 +15,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004A799C();
 }
 
-- (_TtC8AppStore30LocalizationTestViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8AppStore30LocalizationTestViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

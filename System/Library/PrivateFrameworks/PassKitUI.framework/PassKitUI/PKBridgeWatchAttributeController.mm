@@ -8,11 +8,11 @@
 + (int64_t)heroWatchSize
 {
   v2 = MEMORY[0x1E69B7D88];
-  v3 = [a1 _watchAttributeController];
-  v4 = [v2 sizeFromInternalSize:{objc_msgSend(v3, "size")}];
+  _watchAttributeController = [self _watchAttributeController];
+  v4 = [v2 sizeFromInternalSize:{objc_msgSend(_watchAttributeController, "size")}];
 
   v5 = PKHeroWatchSizeOverride();
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
   if (v4 - 2 >= 3)
   {
@@ -24,24 +24,24 @@
     v7 = v4;
   }
 
-  if ((v6 - 1) >= 4)
+  if ((integerValue - 1) >= 4)
   {
     return v7;
   }
 
   else
   {
-    return v6;
+    return integerValue;
   }
 }
 
 + (id)_watchAttributeController
 {
-  v2 = [MEMORY[0x1E69B7D88] sharedDeviceController];
+  mEMORY[0x1E69B7D88] = [MEMORY[0x1E69B7D88] sharedDeviceController];
   v3 = PKPairedOrPairingDevice();
-  [v2 setDevice:v3];
+  [mEMORY[0x1E69B7D88] setDevice:v3];
 
-  return v2;
+  return mEMORY[0x1E69B7D88];
 }
 
 @end

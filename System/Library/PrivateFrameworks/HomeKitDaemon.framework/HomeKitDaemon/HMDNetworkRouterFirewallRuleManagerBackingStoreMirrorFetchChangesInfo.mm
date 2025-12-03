@@ -1,25 +1,25 @@
 @interface HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInfo
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInfo)initWithActivity:(id)a3 options:(id)a4 databaseChangeToken:(id)a5 promise:(id)a6 xpcActivity:(id)a7 database:(id)a8 useAnonymousRequests:(BOOL)a9 recordIDs:(id)a10 lastSynchronizedRecordIDs:(id)a11;
-- (void)__cleanupMirroredZones:(id)a3 cloudZones:(id)a4 result:(id)a5 error:(id)a6;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInfo)initWithActivity:(id)activity options:(id)options databaseChangeToken:(id)token promise:(id)promise xpcActivity:(id)xpcActivity database:(id)database useAnonymousRequests:(BOOL)requests recordIDs:(id)self0 lastSynchronizedRecordIDs:(id)self1;
+- (void)__cleanupMirroredZones:(id)zones cloudZones:(id)cloudZones result:(id)result error:(id)error;
+- (void)finishWithResult:(id)result error:(id)error;
 @end
 
 @implementation HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInfo
 
-- (void)__cleanupMirroredZones:(id)a3 cloudZones:(id)a4 result:(id)a5 error:(id)a6
+- (void)__cleanupMirroredZones:(id)zones cloudZones:(id)cloudZones result:(id)result error:(id)error
 {
   v71 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v48 = a5;
-  v47 = a6;
-  v49 = v11;
-  v52 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v11, "count") + objc_msgSend(v10, "count")}];
+  zonesCopy = zones;
+  cloudZonesCopy = cloudZones;
+  resultCopy = result;
+  errorCopy = error;
+  v49 = cloudZonesCopy;
+  v52 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(cloudZonesCopy, "count") + objc_msgSend(zonesCopy, "count")}];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v10;
+  obj = zonesCopy;
   v12 = [obj countByEnumeratingWithState:&v61 objects:v70 count:16];
   if (v12)
   {
@@ -36,11 +36,11 @@
         }
 
         v17 = *(*(&v61 + 1) + 8 * i);
-        v18 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreFetchHelper *)self activity];
-        [v18 markWithFormat:v15, v17];
+        activity = [(HMDNetworkRouterFirewallRuleManagerBackingStoreFetchHelper *)self activity];
+        [activity markWithFormat:v15, v17];
 
         v19 = objc_autoreleasePoolPush();
-        v20 = self;
+        selfCopy = self;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
@@ -58,8 +58,8 @@
         }
 
         objc_autoreleasePoolPop(v19);
-        v25 = [v17 shutdown];
-        [v52 addObject:v25];
+        shutdown = [v17 shutdown];
+        [v52 addObject:shutdown];
       }
 
       v13 = [obj countByEnumeratingWithState:&v61 objects:v70 count:16];
@@ -89,11 +89,11 @@
         }
 
         v31 = *(*(&v57 + 1) + 8 * j);
-        v32 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreFetchHelper *)self activity];
-        [v32 markWithFormat:v29, v31];
+        activity2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreFetchHelper *)self activity];
+        [activity2 markWithFormat:v29, v31];
 
         v33 = objc_autoreleasePoolPush();
-        v34 = self;
+        selfCopy2 = self;
         v35 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
@@ -109,8 +109,8 @@
         }
 
         objc_autoreleasePoolPop(v33);
-        v38 = [v31 shutdown];
-        [v52 addObject:v38];
+        shutdown2 = [v31 shutdown];
+        [v52 addObject:shutdown2];
       }
 
       v27 = [v50 countByEnumeratingWithState:&v57 objects:v65 count:16];
@@ -120,8 +120,8 @@
   }
 
   v39 = MEMORY[0x277D2C900];
-  v40 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-  v41 = [v39 combineAllFutures:v52 ignoringErrors:1 scheduler:v40];
+  globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+  v41 = [v39 combineAllFutures:v52 ignoringErrors:1 scheduler:globalAsyncScheduler];
 
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
@@ -129,10 +129,10 @@
   v53[3] = &unk_278689438;
   v53[4] = self;
   v54 = v50;
-  v55 = v48;
-  v56 = v47;
-  v42 = v47;
-  v43 = v48;
+  v55 = resultCopy;
+  v56 = errorCopy;
+  v42 = errorCopy;
+  v43 = resultCopy;
   v44 = v50;
   v45 = [v41 addSuccessBlock:v53];
 
@@ -201,21 +201,21 @@ void __120__HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInf
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEB18] array];
+  resultCopy = result;
+  errorCopy = error;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInfo *)self zoneInfoMap];
-  v10 = [v9 allValues];
+  zoneInfoMap = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInfo *)self zoneInfoMap];
+  allValues = [zoneInfoMap allValues];
 
-  v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v11 = [allValues countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
     v12 = v11;
@@ -226,100 +226,100 @@ void __120__HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInf
       {
         if (*v27 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues);
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v15 mirroredLocalZone];
+        mirroredLocalZone = [v15 mirroredLocalZone];
 
-        if (v16)
+        if (mirroredLocalZone)
         {
-          v17 = [v15 mirroredLocalZone];
-          [v7 addObject:v17];
+          mirroredLocalZone2 = [v15 mirroredLocalZone];
+          [array addObject:mirroredLocalZone2];
 
           [v15 setMirroredLocalZone:0];
         }
 
         else
         {
-          v18 = [v15 cloudZone];
+          cloudZone = [v15 cloudZone];
 
-          if (!v18)
+          if (!cloudZone)
           {
             continue;
           }
 
-          v19 = [v15 cloudZone];
-          [v8 addObject:v19];
+          cloudZone2 = [v15 cloudZone];
+          [array2 addObject:cloudZone2];
         }
 
         [v15 setCloudZone:0];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v12);
   }
 
-  if ([v7 count] || objc_msgSend(v8, "count"))
+  if ([array count] || objc_msgSend(array2, "count"))
   {
-    v20 = [v7 copy];
-    v21 = [v8 copy];
-    v22 = v24;
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInfo *)self __cleanupMirroredZones:v20 cloudZones:v21 result:v24 error:v6];
+    v20 = [array copy];
+    v21 = [array2 copy];
+    v22 = resultCopy;
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInfo *)self __cleanupMirroredZones:v20 cloudZones:v21 result:resultCopy error:errorCopy];
   }
 
   else
   {
     v25.receiver = self;
     v25.super_class = HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInfo;
-    v22 = v24;
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreFetchHelper *)&v25 finishWithResult:v24 error:v6];
+    v22 = resultCopy;
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreFetchHelper *)&v25 finishWithResult:resultCopy error:errorCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInfo)initWithActivity:(id)a3 options:(id)a4 databaseChangeToken:(id)a5 promise:(id)a6 xpcActivity:(id)a7 database:(id)a8 useAnonymousRequests:(BOOL)a9 recordIDs:(id)a10 lastSynchronizedRecordIDs:(id)a11
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInfo)initWithActivity:(id)activity options:(id)options databaseChangeToken:(id)token promise:(id)promise xpcActivity:(id)xpcActivity database:(id)database useAnonymousRequests:(BOOL)requests recordIDs:(id)self0 lastSynchronizedRecordIDs:(id)self1
 {
   v76 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  obj = a5;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a10;
-  v23 = a11;
-  v24 = [a8 container];
+  activityCopy = activity;
+  optionsCopy = options;
+  obj = token;
+  tokenCopy = token;
+  promiseCopy = promise;
+  xpcActivityCopy = xpcActivity;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  container = [database container];
   v73.receiver = self;
   v73.super_class = HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInfo;
-  v64 = v20;
-  v25 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreFetchHelper *)&v73 initWithActivity:v17 options:v18 container:v24 useAnonymousRequests:a9 promise:v20];
+  v64 = promiseCopy;
+  v25 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreFetchHelper *)&v73 initWithActivity:activityCopy options:optionsCopy container:container useAnonymousRequests:requests promise:promiseCopy];
 
   if (v25)
   {
-    v63 = v23;
-    v59 = v19;
-    v60 = v18;
-    v61 = v17;
-    if (v21)
+    v63 = iDsCopy;
+    v59 = tokenCopy;
+    v60 = optionsCopy;
+    v61 = activityCopy;
+    if (xpcActivityCopy)
     {
-      v26 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreFetchHelper *)v25 operationGroup];
-      v27 = [v26 defaultConfiguration];
-      [v27 setXpcActivity:v21];
+      operationGroup = [(HMDNetworkRouterFirewallRuleManagerBackingStoreFetchHelper *)v25 operationGroup];
+      defaultConfiguration = [operationGroup defaultConfiguration];
+      [defaultConfiguration setXpcActivity:xpcActivityCopy];
     }
 
     v57 = v25;
-    v58 = v21;
-    v28 = [MEMORY[0x277CBEB38] dictionary];
+    v58 = xpcActivityCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v56 = v22;
-    v29 = v22;
+    v56 = dsCopy;
+    v29 = dsCopy;
     v30 = [v29 countByEnumeratingWithState:&v69 objects:v75 count:16];
     if (v30)
     {
@@ -335,16 +335,16 @@ void __120__HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInf
           }
 
           v34 = *(*(&v69 + 1) + 8 * i);
-          v35 = [v34 zoneID];
-          v36 = [v28 objectForKeyedSubscript:v35];
+          zoneID = [v34 zoneID];
+          v36 = [dictionary objectForKeyedSubscript:zoneID];
           if (!v36)
           {
-            v36 = [[HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorZoneInfo alloc] initWithZoneID:v35];
-            [v28 setObject:v36 forKeyedSubscript:v35];
+            v36 = [[HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorZoneInfo alloc] initWithZoneID:zoneID];
+            [dictionary setObject:v36 forKeyedSubscript:zoneID];
           }
 
-          v37 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorZoneInfo *)v36 recordIDs];
-          [v37 addObject:v34];
+          recordIDs = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorZoneInfo *)v36 recordIDs];
+          [recordIDs addObject:v34];
         }
 
         v31 = [v29 countByEnumeratingWithState:&v69 objects:v75 count:16];
@@ -354,7 +354,7 @@ void __120__HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInf
     }
 
     v38 = [v29 mutableCopy];
-    [v38 minusSet:v23];
+    [v38 minusSet:iDsCopy];
     v39 = [v38 count];
     if (v39)
     {
@@ -377,8 +377,8 @@ void __120__HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInf
               objc_enumerationMutation(v40);
             }
 
-            v45 = [*(*(&v65 + 1) + 8 * j) zoneID];
-            v46 = [v28 objectForKeyedSubscript:v45];
+            zoneID2 = [*(*(&v65 + 1) + 8 * j) zoneID];
+            v46 = [dictionary objectForKeyedSubscript:zoneID2];
             [v46 forceRefresh];
           }
 
@@ -388,7 +388,7 @@ void __120__HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInf
         while (v42);
       }
 
-      v23 = v63;
+      iDsCopy = v63;
     }
 
     v47 = [v29 copy];
@@ -396,7 +396,7 @@ void __120__HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInf
     requestedRecordIDs = v57->_requestedRecordIDs;
     v57->_requestedRecordIDs = v47;
 
-    v49 = [v28 copy];
+    v49 = [dictionary copy];
     zoneInfoMap = v57->_zoneInfoMap;
     v57->_zoneInfoMap = v49;
 
@@ -409,11 +409,11 @@ void __120__HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorFetchChangesInf
     v57->_zonesHaveChanged = v39 != 0;
     v53 = v57;
 
-    v18 = v60;
-    v17 = v61;
-    v21 = v58;
-    v19 = v59;
-    v22 = v56;
+    optionsCopy = v60;
+    activityCopy = v61;
+    xpcActivityCopy = v58;
+    tokenCopy = v59;
+    dsCopy = v56;
   }
 
   v54 = *MEMORY[0x277D85DE8];

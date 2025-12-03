@@ -9,8 +9,8 @@
 - (CGRect)_loopRect;
 - (CGRect)_videoRect;
 - (void)becomeReusable;
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4;
-- (void)drawRect:(CGRect)a3;
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation AEGridOverlayView
@@ -22,9 +22,9 @@
   [(AEGridOverlayView *)self setHidden:1];
 }
 
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data
 {
-  [(AEGridOverlayView *)self _setOverlayConfiguration:a4];
+  [(AEGridOverlayView *)self _setOverlayConfiguration:data];
 
   [(AEGridOverlayView *)self setNeedsDisplay];
 }
@@ -71,22 +71,22 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v10 = [(AEGridOverlayView *)self overlayConfiguration:a3.origin.x];
-  v4 = [v10 showCloudDecoration];
-  v5 = [v10 showVideoDecoration];
-  v6 = [v10 showLoopDecoration];
-  if (v4)
+  v10 = [(AEGridOverlayView *)self overlayConfiguration:rect.origin.x];
+  showCloudDecoration = [v10 showCloudDecoration];
+  showVideoDecoration = [v10 showVideoDecoration];
+  showLoopDecoration = [v10 showLoopDecoration];
+  if (showCloudDecoration)
   {
-    v8 = [objc_opt_class() cloudBadge];
+    cloudBadge = [objc_opt_class() cloudBadge];
     [(AEGridOverlayView *)self _cloudRect];
-    [v8 drawInRect:?];
+    [cloudBadge drawInRect:?];
 
-    if (!v5)
+    if (!showVideoDecoration)
     {
 LABEL_3:
-      if (!v6)
+      if (!showLoopDecoration)
       {
         goto LABEL_5;
       }
@@ -95,21 +95,21 @@ LABEL_3:
     }
   }
 
-  else if (!v5)
+  else if (!showVideoDecoration)
   {
     goto LABEL_3;
   }
 
-  v9 = [objc_opt_class() videoBadge];
+  videoBadge = [objc_opt_class() videoBadge];
   [(AEGridOverlayView *)self _videoRect];
-  [v9 drawInRect:?];
+  [videoBadge drawInRect:?];
 
-  if (v6)
+  if (showLoopDecoration)
   {
 LABEL_4:
-    v7 = [objc_opt_class() loopBadge];
+    loopBadge = [objc_opt_class() loopBadge];
     [(AEGridOverlayView *)self _loopRect];
-    [v7 drawInRect:?];
+    [loopBadge drawInRect:?];
   }
 
 LABEL_5:
@@ -122,8 +122,8 @@ LABEL_5:
   v2 = [(AEGridOverlayView *)&v6 init];
   if (v2)
   {
-    v3 = [objc_opt_class() gradientShadow];
-    v4 = [MEMORY[0x277D75348] colorWithPatternImage:v3];
+    gradientShadow = [objc_opt_class() gradientShadow];
+    v4 = [MEMORY[0x277D75348] colorWithPatternImage:gradientShadow];
     [(AEGridOverlayView *)v2 setBackgroundColor:v4];
   }
 
@@ -220,7 +220,7 @@ void __35__AEGridOverlayView_gradientShadow__block_invoke()
   block[1] = 3221225472;
   block[2] = __42__AEGridOverlayView_gridOverlayLayoutInfo__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (gridOverlayLayoutInfo_onceToken != -1)
   {
     dispatch_once(&gridOverlayLayoutInfo_onceToken, block);

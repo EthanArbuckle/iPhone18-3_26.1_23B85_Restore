@@ -1,24 +1,24 @@
 @interface PRIconListLayoutProvider
-- (PRIconListLayoutProvider)initWithGridSize:(SBHIconGridSize)a3;
-- (id)layoutForIconLocation:(id)a3;
+- (PRIconListLayoutProvider)initWithGridSize:(SBHIconGridSize)size;
+- (id)layoutForIconLocation:(id)location;
 @end
 
 @implementation PRIconListLayoutProvider
 
-- (PRIconListLayoutProvider)initWithGridSize:(SBHIconGridSize)a3
+- (PRIconListLayoutProvider)initWithGridSize:(SBHIconGridSize)size
 {
   v5.receiver = self;
   v5.super_class = PRIconListLayoutProvider;
   result = [(PRIconListLayoutProvider *)&v5 init];
   if (result)
   {
-    result->_gridSize = a3;
+    result->_gridSize = size;
   }
 
   return result;
 }
 
-- (id)layoutForIconLocation:(id)a3
+- (id)layoutForIconLocation:(id)location
 {
   v3 = [[_PRIconListLayout alloc] initWithGridSize:*&self->_gridSize];
 

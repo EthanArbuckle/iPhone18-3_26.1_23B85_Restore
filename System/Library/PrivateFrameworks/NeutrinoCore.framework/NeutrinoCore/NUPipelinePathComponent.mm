@@ -1,14 +1,14 @@
 @interface NUPipelinePathComponent
-+ (id)componentWithName:(id)a3;
-+ (id)componentsFromString:(id)a3;
++ (id)componentWithName:(id)name;
++ (id)componentsFromString:(id)string;
 + (id)currentComponent;
 + (id)rootComponent;
-+ (id)stringWithComponents:(id)a3;
++ (id)stringWithComponents:(id)components;
 + (id)superComponent;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPathComponent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPathComponent:(id)component;
 - (NUPipelinePathComponent)init;
-- (NUPipelinePathComponent)initWithType:(int64_t)a3 name:(id)a4;
+- (NUPipelinePathComponent)initWithType:(int64_t)type name:(id)name;
 - (id)debugDescription;
 @end
 
@@ -18,32 +18,32 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUPipelinePathComponent *)self type];
-  if (v5 > 2)
+  type = [(NUPipelinePathComponent *)self type];
+  if (type > 2)
   {
     v6 = @"root";
   }
 
   else
   {
-    v6 = off_1E8109E60[v5];
+    v6 = off_1E8109E60[type];
   }
 
-  v7 = [(NUPipelinePathComponent *)self name];
-  v8 = [v3 stringWithFormat:@"<%@:%p type:%@ name:'%@'>", v4, self, v6, v7];
+  name = [(NUPipelinePathComponent *)self name];
+  v8 = [v3 stringWithFormat:@"<%@:%p type:%@ name:'%@'>", v4, self, v6, name];
 
   return v8;
 }
 
-- (BOOL)isEqualToPathComponent:(id)a3
+- (BOOL)isEqualToPathComponent:(id)component
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == [(NUPipelinePathComponent *)self type])
+  componentCopy = component;
+  type = [componentCopy type];
+  if (type == [(NUPipelinePathComponent *)self type])
   {
-    v6 = [v4 name];
-    v7 = [(NUPipelinePathComponent *)self name];
-    v8 = [v6 isEqualToString:v7];
+    name = [componentCopy name];
+    name2 = [(NUPipelinePathComponent *)self name];
+    v8 = [name isEqualToString:name2];
   }
 
   else
@@ -54,20 +54,20 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUPipelinePathComponent *)self isEqualToPathComponent:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUPipelinePathComponent *)self isEqualToPathComponent:equalCopy];
 
   return v5;
 }
 
-- (NUPipelinePathComponent)initWithType:(int64_t)a3 name:(id)a4
+- (NUPipelinePathComponent)initWithType:(int64_t)type name:(id)name
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (!v6)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v12 = NUAssertLogger_5769();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -88,8 +88,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v19;
         v31 = 2114;
@@ -100,8 +100,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -110,11 +110,11 @@
     _NUAssertFailHandler("[NUPipelinePathComponent initWithType:name:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 231, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "name != nil");
   }
 
-  v7 = v6;
+  v7 = nameCopy;
   v28.receiver = self;
   v28.super_class = NUPipelinePathComponent;
   v8 = [(NUPipelinePathComponent *)&v28 init];
-  v8->_type = a3;
+  v8->_type = type;
   v9 = [v7 copy];
   name = v8->_name;
   v8->_name = v9;
@@ -168,8 +168,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -185,8 +185,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -202,11 +202,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUPipelinePathComponent init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 227, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-+ (id)stringWithComponents:(id)a3
++ (id)stringWithComponents:(id)components
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  componentsCopy = components;
+  if (!componentsCopy)
   {
     v8 = NUAssertLogger_5769();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -227,8 +227,8 @@ LABEL_14:
         v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v15;
         v26 = 2114;
@@ -239,8 +239,8 @@ LABEL_14:
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -249,18 +249,18 @@ LABEL_14:
     _NUAssertFailHandler("+[NUPipelinePathComponent stringWithComponents:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 219, @"Invalid parameter not satisfying: %s", v20, v21, v22, v23, "components != nil");
   }
 
-  v4 = v3;
+  v4 = componentsCopy;
   v5 = PFMap();
   v6 = [MEMORY[0x1E696AEC0] pathWithComponents:v5];
 
   return v6;
 }
 
-+ (id)componentsFromString:(id)a3
++ (id)componentsFromString:(id)string
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  stringCopy = string;
+  if (!stringCopy)
   {
     v8 = NUAssertLogger_5769();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -281,8 +281,8 @@ LABEL_14:
         v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v15;
         v26 = 2114;
@@ -293,8 +293,8 @@ LABEL_14:
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -303,58 +303,58 @@ LABEL_14:
     _NUAssertFailHandler("+[NUPipelinePathComponent componentsFromString:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 211, @"Invalid parameter not satisfying: %s", v20, v21, v22, v23, "string != nil");
   }
 
-  v4 = v3;
-  v5 = [v3 pathComponents];
+  v4 = stringCopy;
+  pathComponents = [stringCopy pathComponents];
   v6 = PFMap();
 
   return v6;
 }
 
-+ (id)componentWithName:(id)a3
++ (id)componentWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"."])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"."])
   {
-    v5 = [a1 currentComponent];
+    currentComponent = [self currentComponent];
   }
 
-  else if ([v4 isEqualToString:@".."])
+  else if ([nameCopy isEqualToString:@".."])
   {
-    v5 = [a1 superComponent];
+    currentComponent = [self superComponent];
   }
 
-  else if ([v4 isEqualToString:@"/"])
+  else if ([nameCopy isEqualToString:@"/"])
   {
-    v5 = [a1 rootComponent];
+    currentComponent = [self rootComponent];
   }
 
   else
   {
-    v5 = [[a1 alloc] initWithType:0 name:v4];
+    currentComponent = [[self alloc] initWithType:0 name:nameCopy];
   }
 
-  v6 = v5;
+  v6 = currentComponent;
 
   return v6;
 }
 
 + (id)currentComponent
 {
-  v2 = [[a1 alloc] initWithType:1 name:@"."];
+  v2 = [[self alloc] initWithType:1 name:@"."];
 
   return v2;
 }
 
 + (id)superComponent
 {
-  v2 = [[a1 alloc] initWithType:2 name:@".."];
+  v2 = [[self alloc] initWithType:2 name:@".."];
 
   return v2;
 }
 
 + (id)rootComponent
 {
-  v2 = [[a1 alloc] initWithType:3 name:@"/"];
+  v2 = [[self alloc] initWithType:3 name:@"/"];
 
   return v2;
 }

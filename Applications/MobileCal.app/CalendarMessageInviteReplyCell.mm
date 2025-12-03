@@ -7,18 +7,18 @@
 
 - (id)titleStrings
 {
-  v3 = [(CalendarMessageCell *)self notification];
-  v4 = [v3 title];
-  if (v4)
+  notification = [(CalendarMessageCell *)self notification];
+  title = [notification title];
+  if (title)
   {
-    v5 = [(CalendarMessageCell *)self notification];
-    [v5 title];
+    notification2 = [(CalendarMessageCell *)self notification];
+    [notification2 title];
   }
 
   else
   {
-    v5 = [NSBundle bundleForClass:objc_opt_class()];
-    [v5 localizedStringForKey:@"Shared Calendar" value:&stru_1002133B8 table:0];
+    notification2 = [NSBundle bundleForClass:objc_opt_class()];
+    [notification2 localizedStringForKey:@"Shared Calendar" value:&stru_1002133B8 table:0];
   }
   v6 = ;
 
@@ -33,8 +33,8 @@
 
 - (id)bodyStringDict
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  v3 = [v2 descriptionStrings:CUIKCalendarNoboDescriptionProfile];
+  notification = [(CalendarMessageCell *)self notification];
+  v3 = [notification descriptionStrings:CUIKCalendarNoboDescriptionProfile];
 
   return v3;
 }

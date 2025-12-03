@@ -1,43 +1,43 @@
 @interface SBHWidgetSearchController
-- (SBHWidgetSearchController)initWithAddWidgetSheetStyle:(unint64_t)a3 placeholderText:(id)a4;
+- (SBHWidgetSearchController)initWithAddWidgetSheetStyle:(unint64_t)style placeholderText:(id)text;
 - (double)grabberTopSpacing;
 - (id)_textFieldFont;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)_setupSearchBar;
 - (void)_setupTextFieldMetrics;
-- (void)_setupTextFieldWithPlaceholderText:(id)a3;
+- (void)_setupTextFieldWithPlaceholderText:(id)text;
 - (void)dealloc;
-- (void)setAlwaysShowBarBackground:(BOOL)a3;
-- (void)setApplicationCellIncludesGalleryListView:(BOOL)a3;
-- (void)setShouldInsetContentForGrabber:(BOOL)a3;
-- (void)setWidthDefiningGridSizeClass:(id)a3;
-- (void)updateSearchBarBackgroundForScrollDistance:(double)a3 forClient:(id)a4;
-- (void)updateSearchBarContentInsetsWithWidth:(double)a3;
+- (void)setAlwaysShowBarBackground:(BOOL)background;
+- (void)setApplicationCellIncludesGalleryListView:(BOOL)view;
+- (void)setShouldInsetContentForGrabber:(BOOL)grabber;
+- (void)setWidthDefiningGridSizeClass:(id)class;
+- (void)updateSearchBarBackgroundForScrollDistance:(double)distance forClient:(id)client;
+- (void)updateSearchBarContentInsetsWithWidth:(double)width;
 @end
 
 @implementation SBHWidgetSearchController
 
-- (SBHWidgetSearchController)initWithAddWidgetSheetStyle:(unint64_t)a3 placeholderText:(id)a4
+- (SBHWidgetSearchController)initWithAddWidgetSheetStyle:(unint64_t)style placeholderText:(id)text
 {
-  v6 = a4;
+  textCopy = text;
   v13.receiver = self;
   v13.super_class = SBHWidgetSearchController;
   v7 = [(SBHWidgetSearchController *)&v13 initWithSearchResultsController:0];
   v8 = v7;
   if (v7)
   {
-    v7->_addWidgetSheetStyle = a3;
-    v9 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    v7->_addWidgetSheetStyle = style;
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     scrollProgressByClient = v8->_scrollProgressByClient;
-    v8->_scrollProgressByClient = v9;
+    v8->_scrollProgressByClient = weakToStrongObjectsMapTable;
 
     v8->_shouldInsetContentForGrabber = 1;
     [(SBHWidgetSearchController *)v8 _setupTextFieldMetrics];
     [(SBHWidgetSearchController *)v8 _setupSearchBar];
-    [(SBHWidgetSearchController *)v8 _setupTextFieldWithPlaceholderText:v6];
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v8 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    [(SBHWidgetSearchController *)v8 _setupTextFieldWithPlaceholderText:textCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v8;
@@ -45,8 +45,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = SBHWidgetSearchController;
@@ -55,10 +55,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(SBHWidgetSearchController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(SBHWidgetSearchController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if ([(SBHWidgetSearchController *)self addWidgetSheetStyle]== 1 || v4 == 1)
+  if ([(SBHWidgetSearchController *)self addWidgetSheetStyle]== 1 || userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -69,12 +69,12 @@
   }
 }
 
-- (void)setAlwaysShowBarBackground:(BOOL)a3
+- (void)setAlwaysShowBarBackground:(BOOL)background
 {
-  if (self->_alwaysShowBarBackground != a3)
+  if (self->_alwaysShowBarBackground != background)
   {
-    self->_alwaysShowBarBackground = a3;
-    if (a3)
+    self->_alwaysShowBarBackground = background;
+    if (background)
     {
       searchBarBackgroundView = self->_searchBarBackgroundView;
       v5 = objc_opt_class();
@@ -99,67 +99,67 @@
 
       v8 = v7;
 
-      v9 = [(UIView *)v8 topItem];
+      topItem = [(UIView *)v8 topItem];
 
-      [v9 _setManualScrollEdgeAppearanceProgress:1.0];
+      [topItem _setManualScrollEdgeAppearanceProgress:1.0];
     }
   }
 }
 
-- (void)setShouldInsetContentForGrabber:(BOOL)a3
+- (void)setShouldInsetContentForGrabber:(BOOL)grabber
 {
-  if (self->_shouldInsetContentForGrabber != a3)
+  if (self->_shouldInsetContentForGrabber != grabber)
   {
-    self->_shouldInsetContentForGrabber = a3;
-    v6 = [(SBHWidgetSearchController *)self view];
-    [v6 bounds];
+    self->_shouldInsetContentForGrabber = grabber;
+    view = [(SBHWidgetSearchController *)self view];
+    [view bounds];
     [(SBHWidgetSearchController *)self updateSearchBarContentInsetsWithWidth:v5];
   }
 }
 
-- (void)setApplicationCellIncludesGalleryListView:(BOOL)a3
+- (void)setApplicationCellIncludesGalleryListView:(BOOL)view
 {
-  if (self->_applicationCellIncludesGalleryListView != a3)
+  if (self->_applicationCellIncludesGalleryListView != view)
   {
-    self->_applicationCellIncludesGalleryListView = a3;
+    self->_applicationCellIncludesGalleryListView = view;
     [(SBHWidgetSearchController *)self _setupTextFieldMetrics];
-    v6 = [(SBHWidgetSearchController *)self view];
-    [v6 bounds];
+    view = [(SBHWidgetSearchController *)self view];
+    [view bounds];
     [(SBHWidgetSearchController *)self updateSearchBarContentInsetsWithWidth:v5];
   }
 }
 
-- (void)setWidthDefiningGridSizeClass:(id)a3
+- (void)setWidthDefiningGridSizeClass:(id)class
 {
-  v4 = a3;
+  classCopy = class;
   widthDefiningGridSizeClass = self->_widthDefiningGridSizeClass;
-  if (widthDefiningGridSizeClass != v4)
+  if (widthDefiningGridSizeClass != classCopy)
   {
-    v10 = v4;
-    widthDefiningGridSizeClass = [(NSString *)widthDefiningGridSizeClass isEqualToString:v4];
-    v4 = v10;
+    v10 = classCopy;
+    widthDefiningGridSizeClass = [(NSString *)widthDefiningGridSizeClass isEqualToString:classCopy];
+    classCopy = v10;
     if ((widthDefiningGridSizeClass & 1) == 0)
     {
       v6 = [(NSString *)v10 copy];
       v7 = self->_widthDefiningGridSizeClass;
       self->_widthDefiningGridSizeClass = v6;
 
-      v8 = [(SBHWidgetSearchController *)self view];
-      [v8 bounds];
+      view = [(SBHWidgetSearchController *)self view];
+      [view bounds];
       [(SBHWidgetSearchController *)self updateSearchBarContentInsetsWithWidth:v9];
 
-      v4 = v10;
+      classCopy = v10;
     }
   }
 
-  MEMORY[0x1EEE66BB8](widthDefiningGridSizeClass, v4);
+  MEMORY[0x1EEE66BB8](widthDefiningGridSizeClass, classCopy);
 }
 
 - (void)_setupTextFieldMetrics
 {
-  v3 = [(SBHWidgetSearchController *)self addWidgetSheetStyle];
+  addWidgetSheetStyle = [(SBHWidgetSearchController *)self addWidgetSheetStyle];
   v4 = 6.0;
-  if (v3 == 1)
+  if (addWidgetSheetStyle == 1)
   {
     v4 = 0.0;
     v5 = 21.0;
@@ -185,86 +185,86 @@
 
 - (void)_setupSearchBar
 {
-  v8 = [(SBHWidgetSearchController *)self searchBar];
-  [v8 setDrawsBackground:0];
-  [v8 setCenterPlaceholder:1];
-  [v8 _setDisableDictationButton:1];
+  searchBar = [(SBHWidgetSearchController *)self searchBar];
+  [searchBar setDrawsBackground:0];
+  [searchBar setCenterPlaceholder:1];
+  [searchBar _setDisableDictationButton:1];
   v2 = MEMORY[0x1E69DDA98];
-  v3 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
   v4 = 10.0;
-  if (v3 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v4 = 0.0;
   }
 
-  [v8 setPositionAdjustment:0 forSearchBarIcon:{v4, 0.0}];
-  v5 = [*v2 userInterfaceLayoutDirection];
+  [searchBar setPositionAdjustment:0 forSearchBarIcon:{v4, 0.0}];
+  userInterfaceLayoutDirection2 = [*v2 userInterfaceLayoutDirection];
   v6 = -10.0;
-  if (v5 == 1)
+  if (userInterfaceLayoutDirection2 == 1)
   {
     v6 = 0.0;
   }
 
-  [v8 setPositionAdjustment:1 forSearchBarIcon:{v6, 0.0}];
-  v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v8 setTintColor:v7];
+  [searchBar setPositionAdjustment:1 forSearchBarIcon:{v6, 0.0}];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [searchBar setTintColor:secondaryLabelColor];
 
-  [v8 setAutoresizingMask:34];
+  [searchBar setAutoresizingMask:34];
 }
 
-- (void)_setupTextFieldWithPlaceholderText:(id)a3
+- (void)_setupTextFieldWithPlaceholderText:(id)text
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHWidgetSearchController *)self searchBar];
-  v6 = [v5 searchTextField];
-  v7 = [(SBHWidgetSearchController *)self _textFieldFont];
-  [v6 setFont:v7];
+  textCopy = text;
+  searchBar = [(SBHWidgetSearchController *)self searchBar];
+  searchTextField = [searchBar searchTextField];
+  _textFieldFont = [(SBHWidgetSearchController *)self _textFieldFont];
+  [searchTextField setFont:_textFieldFont];
 
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 _setBackgroundFillColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [searchTextField _setBackgroundFillColor:clearColor];
 
-  v9 = [MEMORY[0x1E69DC888] labelColor];
-  [v6 setTextColor:v9];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [searchTextField setTextColor:labelColor];
 
-  v10 = [v6 leftView];
-  v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v10 setTintColor:v11];
+  leftView = [searchTextField leftView];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [leftView setTintColor:secondaryLabelColor];
 
   v12 = objc_alloc(MEMORY[0x1E696AAB0]);
   v16 = *MEMORY[0x1E69DB650];
-  v13 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v17[0] = v13;
+  secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v17[0] = secondaryLabelColor2;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  v15 = [v12 initWithString:v4 attributes:v14];
+  v15 = [v12 initWithString:textCopy attributes:v14];
 
-  [v6 setAttributedPlaceholder:v15];
+  [searchTextField setAttributedPlaceholder:v15];
 }
 
-- (void)updateSearchBarBackgroundForScrollDistance:(double)a3 forClient:(id)a4
+- (void)updateSearchBarBackgroundForScrollDistance:(double)distance forClient:(id)client
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  clientCopy = client;
   if (!self->_alwaysShowBarBackground)
   {
     scrollProgressByClient = self->_scrollProgressByClient;
-    if (a3 == 2.22507386e-308)
+    if (distance == 2.22507386e-308)
     {
-      [(NSMapTable *)self->_scrollProgressByClient removeObjectForKey:v6];
+      [(NSMapTable *)self->_scrollProgressByClient removeObjectForKey:clientCopy];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-      [(NSMapTable *)scrollProgressByClient setObject:v8 forKey:v6];
+      v8 = [MEMORY[0x1E696AD98] numberWithDouble:distance];
+      [(NSMapTable *)scrollProgressByClient setObject:v8 forKey:clientCopy];
     }
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [(NSMapTable *)self->_scrollProgressByClient objectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    objectEnumerator = [(NSMapTable *)self->_scrollProgressByClient objectEnumerator];
+    v10 = [objectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -275,17 +275,17 @@
         {
           if (*v22 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [*(*(&v21 + 1) + 8 * i) doubleValue];
-          if (a3 < v14)
+          if (distance < v14)
           {
-            a3 = v14;
+            distance = v14;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v11 = [objectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v11);
@@ -314,17 +314,17 @@
 
     v19 = v18;
 
-    v20 = [(UIView *)v19 topItem];
+    topItem = [(UIView *)v19 topItem];
 
-    [v20 _setManualScrollEdgeAppearanceProgress:{fmin(fmax(a3 * 0.0625, 0.0), 1.0)}];
+    [topItem _setManualScrollEdgeAppearanceProgress:{fmin(fmax(distance * 0.0625, 0.0), 1.0)}];
   }
 }
 
-- (void)updateSearchBarContentInsetsWithWidth:(double)a3
+- (void)updateSearchBarContentInsetsWithWidth:(double)width
 {
   if ([(SBHWidgetSearchController *)self addWidgetSheetStyle]!= 1)
   {
-    v22 = [(SBHWidgetSearchController *)self searchBar];
+    searchBar = [(SBHWidgetSearchController *)self searchBar];
     v5 = objc_alloc_init(SBHDefaultIconListLayoutProvider);
     v6 = [(SBHDefaultIconListLayoutProvider *)v5 layoutForIconLocation:@"SBIconLocationRoot"];
     v7 = v6;
@@ -366,7 +366,7 @@ LABEL_8:
       }
     }
 
-    v14 = (a3 - v9) * 0.5;
+    v14 = (width - v9) * 0.5;
     [(SBHWidgetSearchController *)self textFieldExtraHeight];
     v16 = v15;
     [(SBHWidgetSearchController *)self textFieldToWidgetsSpacing];
@@ -399,15 +399,15 @@ LABEL_8:
       v18 = v16 + v18;
     }
 
-    [v22 setContentInset:{v19, v14, v18, v14}];
+    [searchBar setContentInset:{v19, v14, v18, v14}];
   }
 }
 
 - (double)grabberTopSpacing
 {
-  v3 = [(SBHWidgetSearchController *)self searchBar];
-  v4 = [v3 searchTextField];
-  [v4 frame];
+  searchBar = [(SBHWidgetSearchController *)self searchBar];
+  searchTextField = [searchBar searchTextField];
+  [searchTextField frame];
   MinY = CGRectGetMinY(v9);
   [(SBHWidgetSearchController *)self textFieldExtraHeight];
   v7 = v6;
@@ -422,9 +422,9 @@ LABEL_8:
 
 - (id)_textFieldFont
 {
-  v2 = [(SBHWidgetSearchController *)self addWidgetSheetStyle];
+  addWidgetSheetStyle = [(SBHWidgetSearchController *)self addWidgetSheetStyle];
   v3 = MEMORY[0x1E69DDCF8];
-  if (v2 != 1)
+  if (addWidgetSheetStyle != 1)
   {
     v3 = MEMORY[0x1E69DDDC8];
   }
@@ -435,12 +435,12 @@ LABEL_8:
   return [v5 preferredFontForTextStyle:v4];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
-  v6 = [(SBHWidgetSearchController *)self searchBar];
-  v4 = [v6 searchTextField];
-  v5 = [(SBHWidgetSearchController *)self _textFieldFont];
-  [v4 setFont:v5];
+  searchBar = [(SBHWidgetSearchController *)self searchBar];
+  searchTextField = [searchBar searchTextField];
+  _textFieldFont = [(SBHWidgetSearchController *)self _textFieldFont];
+  [searchTextField setFont:_textFieldFont];
 }
 
 @end

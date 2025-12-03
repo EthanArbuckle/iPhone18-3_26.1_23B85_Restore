@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_CPLPrompting
 + (void)_resetICPLPrompt;
 + (void)_setLastWelcomedDBVersion;
-+ (void)shouldRepromptUserIfNeededWithPathManager:(id)a3;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
++ (void)shouldRepromptUserIfNeededWithPathManager:(id)manager;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_CPLPrompting
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v6 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
   v7 = [(PLModelMigrationActionCore *)self startingSchemaVersion]- 11000;
@@ -15,8 +15,8 @@
   v9 = v8;
   if (v7 > 0x2D)
   {
-    v10 = [(PLModelMigrationActionCore *)self pathManager];
-    [v9 shouldRepromptUserIfNeededWithPathManager:v10];
+    pathManager = [(PLModelMigrationActionCore *)self pathManager];
+    [v9 shouldRepromptUserIfNeededWithPathManager:pathManager];
   }
 
   else
@@ -26,9 +26,9 @@
 
   [v6 setCompletedUnitCount:{objc_msgSend(v6, "completedUnitCount") + 1}];
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;
@@ -55,7 +55,7 @@
     CFPreferencesSetAppValue(@"iCloudPhotoLibraryHasBeenEnabledAccountIdentifiers", 0, @"com.apple.mobileslideshow");
   }
 
-  [a1 _setLastWelcomedDBVersion];
+  [self _setLastWelcomedDBVersion];
 }
 
 + (void)_setLastWelcomedDBVersion
@@ -66,10 +66,10 @@
   CFPreferencesAppSynchronize(@"com.apple.mobileslideshow");
 }
 
-+ (void)shouldRepromptUserIfNeededWithPathManager:(id)a3
++ (void)shouldRepromptUserIfNeededWithPathManager:(id)manager
 {
-  v4 = a3;
-  if ([v4 isSystemPhotoLibraryPathManager])
+  managerCopy = manager;
+  if ([managerCopy isSystemPhotoLibraryPathManager])
   {
     v5 = PLMigrationGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -78,17 +78,17 @@
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "Resetting iCPL prompt if needed", v8, 2u);
     }
 
-    v6 = [v4 libraryURL];
-    v7 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(v6);
+    libraryURL = [managerCopy libraryURL];
+    v7 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(libraryURL);
 
     if (v7)
     {
-      [a1 _setLastWelcomedDBVersion];
+      [self _setLastWelcomedDBVersion];
     }
 
     else
     {
-      [a1 _resetICPLPrompt];
+      [self _resetICPLPrompt];
     }
   }
 }

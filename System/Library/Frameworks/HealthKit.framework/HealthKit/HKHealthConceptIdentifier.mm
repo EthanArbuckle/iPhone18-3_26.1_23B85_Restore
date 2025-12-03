@@ -1,12 +1,12 @@
 @interface HKHealthConceptIdentifier
-+ (id)baseConceptIdentifierWithSemanticIdentifierString:(id)a3;
-+ (id)medicationConceptIdentifierWithSemanticIdentifierString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)baseConceptIdentifierWithSemanticIdentifierString:(id)string;
++ (id)medicationConceptIdentifierWithSemanticIdentifierString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (HKHealthConceptIdentifier)init;
-- (HKHealthConceptIdentifier)initWithCoder:(id)a3;
-- (HKHealthConceptIdentifier)initWithDomain:(id)a3 underlyingIdentifier:(id)a4;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKHealthConceptIdentifier)initWithCoder:(id)coder;
+- (HKHealthConceptIdentifier)initWithDomain:(id)domain underlyingIdentifier:(id)identifier;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKHealthConceptIdentifier
@@ -21,14 +21,14 @@
   return 0;
 }
 
-- (HKHealthConceptIdentifier)initWithDomain:(id)a3 underlyingIdentifier:(id)a4
+- (HKHealthConceptIdentifier)initWithDomain:(id)domain underlyingIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  domainCopy = domain;
+  identifierCopy = identifier;
+  v10 = identifierCopy;
+  if (domainCopy)
   {
-    if (v9)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -51,39 +51,39 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_domain, a3);
-    objc_storeStrong(&v12->_underlyingIdentifier, a4);
+    objc_storeStrong(&v11->_domain, domain);
+    objc_storeStrong(&v12->_underlyingIdentifier, identifier);
   }
 
   return v12;
 }
 
-+ (id)baseConceptIdentifierWithSemanticIdentifierString:(id)a3
++ (id)baseConceptIdentifierWithSemanticIdentifierString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [HKHealthConceptIdentifier alloc];
-  v5 = [v3 hk_SHA256Hash];
+  hk_SHA256Hash = [stringCopy hk_SHA256Hash];
 
-  v6 = [(HKHealthConceptIdentifier *)v4 initWithDomain:@"HKHealthConceptDomainBase" underlyingIdentifier:v5];
+  v6 = [(HKHealthConceptIdentifier *)v4 initWithDomain:@"HKHealthConceptDomainBase" underlyingIdentifier:hk_SHA256Hash];
 
   return v6;
 }
 
-+ (id)medicationConceptIdentifierWithSemanticIdentifierString:(id)a3
++ (id)medicationConceptIdentifierWithSemanticIdentifierString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [HKHealthConceptIdentifier alloc];
-  v5 = [v3 hk_SHA256Hash];
+  hk_SHA256Hash = [stringCopy hk_SHA256Hash];
 
-  v6 = [(HKHealthConceptIdentifier *)v4 initWithDomain:@"HKHealthConceptDomainMedication" underlyingIdentifier:v5];
+  v6 = [(HKHealthConceptIdentifier *)v4 initWithDomain:@"HKHealthConceptDomainMedication" underlyingIdentifier:hk_SHA256Hash];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -93,26 +93,26 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       domain = self->_domain;
-      v7 = [(HKHealthConceptIdentifier *)v5 domain];
-      v8 = v7;
-      if (domain == v7)
+      domain = [(HKHealthConceptIdentifier *)v5 domain];
+      v8 = domain;
+      if (domain == domain)
       {
       }
 
       else
       {
-        v9 = [(HKHealthConceptIdentifier *)v5 domain];
-        if (!v9)
+        domain2 = [(HKHealthConceptIdentifier *)v5 domain];
+        if (!domain2)
         {
           goto LABEL_14;
         }
 
-        v10 = v9;
+        v10 = domain2;
         v11 = self->_domain;
-        v12 = [(HKHealthConceptIdentifier *)v5 domain];
-        LODWORD(v11) = [(NSString *)v11 isEqual:v12];
+        domain3 = [(HKHealthConceptIdentifier *)v5 domain];
+        LODWORD(v11) = [(NSString *)v11 isEqual:domain3];
 
         if (!v11)
         {
@@ -121,9 +121,9 @@ LABEL_3:
       }
 
       underlyingIdentifier = self->_underlyingIdentifier;
-      v15 = [(HKHealthConceptIdentifier *)v5 underlyingIdentifier];
-      v8 = v15;
-      if (underlyingIdentifier == v15)
+      underlyingIdentifier = [(HKHealthConceptIdentifier *)v5 underlyingIdentifier];
+      v8 = underlyingIdentifier;
+      if (underlyingIdentifier == underlyingIdentifier)
       {
 
 LABEL_17:
@@ -131,13 +131,13 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v16 = [(HKHealthConceptIdentifier *)v5 underlyingIdentifier];
-      if (v16)
+      underlyingIdentifier2 = [(HKHealthConceptIdentifier *)v5 underlyingIdentifier];
+      if (underlyingIdentifier2)
       {
-        v17 = v16;
+        v17 = underlyingIdentifier2;
         v18 = self->_underlyingIdentifier;
-        v19 = [(HKHealthConceptIdentifier *)v5 underlyingIdentifier];
-        LOBYTE(v18) = [(NSString *)v18 isEqual:v19];
+        underlyingIdentifier3 = [(HKHealthConceptIdentifier *)v5 underlyingIdentifier];
+        LOBYTE(v18) = [(NSString *)v18 isEqual:underlyingIdentifier3];
 
         if (v18)
         {
@@ -164,45 +164,45 @@ LABEL_19:
   return v13;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (self == v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  compareCopy = compare;
+  if (self == compareCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v8 = 0;
   }
 
   else
   {
-    v5 = v4;
+    v5 = compareCopy;
     domain = self->_domain;
-    v7 = [(HKHealthConceptIdentifier *)v5 domain];
-    v8 = [(NSString *)domain compare:v7];
+    domain = [(HKHealthConceptIdentifier *)v5 domain];
+    v8 = [(NSString *)domain compare:domain];
 
     if (!v8)
     {
       underlyingIdentifier = self->_underlyingIdentifier;
-      v10 = [(HKHealthConceptIdentifier *)v5 underlyingIdentifier];
-      v8 = [(NSString *)underlyingIdentifier compare:v10];
+      underlyingIdentifier = [(HKHealthConceptIdentifier *)v5 underlyingIdentifier];
+      v8 = [(NSString *)underlyingIdentifier compare:underlyingIdentifier];
     }
   }
 
   return v8;
 }
 
-- (HKHealthConceptIdentifier)initWithCoder:(id)a3
+- (HKHealthConceptIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKHealthConceptIdentifier;
   v5 = [(HKHealthConceptIdentifier *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DomainKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DomainKey"];
     domain = v5->_domain;
     v5->_domain = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UnderlyingIdentifierKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UnderlyingIdentifierKey"];
     underlyingIdentifier = v5->_underlyingIdentifier;
     v5->_underlyingIdentifier = v8;
   }
@@ -210,12 +210,12 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   domain = self->_domain;
-  v5 = a3;
-  [v5 encodeObject:domain forKey:@"DomainKey"];
-  [v5 encodeObject:self->_underlyingIdentifier forKey:@"UnderlyingIdentifierKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:domain forKey:@"DomainKey"];
+  [coderCopy encodeObject:self->_underlyingIdentifier forKey:@"UnderlyingIdentifierKey"];
 }
 
 - (void)initWithDomain:(uint64_t)a1 underlyingIdentifier:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

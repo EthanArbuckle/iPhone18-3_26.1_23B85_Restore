@@ -1,14 +1,14 @@
 @interface NowPlayingTabController
-- (void)encodeRestorableStateWithCoder:(id)a3;
+- (void)encodeRestorableStateWithCoder:(id)coder;
 @end
 
 @implementation NowPlayingTabController
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  NowPlayingTabController.encodeRestorableState(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  NowPlayingTabController.encodeRestorableState(with:)(coderCopy);
 }
 
 @end

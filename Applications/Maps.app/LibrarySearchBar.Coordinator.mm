@@ -1,42 +1,42 @@
 @interface LibrarySearchBar.Coordinator
-- (BOOL)textFieldShouldClear:(id)a3;
+- (BOOL)textFieldShouldClear:(id)clear;
 - (_TtCV4Maps16LibrarySearchBar11Coordinator)init;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchBarTextDidEndEditing:(id)editing;
 @end
 
 @implementation LibrarySearchBar.Coordinator
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   sub_1000CE6B8(&unk_10191EF28);
   Binding.wrappedValue.setter();
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_1000CE6B8(&qword_10191D8E0);
   Binding.wrappedValue.setter();
-  sub_1003C92D8(v4);
+  sub_1003C92D8(editingCopy);
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  [v4 resignFirstResponder];
-  sub_1003C92D8(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  [editingCopy resignFirstResponder];
+  sub_1003C92D8(editingCopy);
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003C957C(v4);
+  clearCopy = clear;
+  selfCopy = self;
+  sub_1003C957C(clearCopy);
 
   return 0;
 }

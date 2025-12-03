@@ -9,8 +9,8 @@
 
 - (uint64_t)isInternal
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"internal"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"internal"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -25,8 +25,8 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 + (id)internalMessageWithName:()InternalMessages destination:messagePayload:

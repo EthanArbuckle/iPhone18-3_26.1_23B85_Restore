@@ -1,7 +1,7 @@
 @interface _PXFeedInlinePlaybackRecord
 - (_PXFeedInlinePlaybackController)inlinePlaybackController;
-- (_PXFeedInlinePlaybackRecord)initWithDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5;
-- (void)setDesiredPlayState:(int64_t)a3;
+- (_PXFeedInlinePlaybackRecord)initWithDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference;
+- (void)setDesiredPlayState:(int64_t)state;
 @end
 
 @implementation _PXFeedInlinePlaybackRecord
@@ -13,22 +13,22 @@
   return WeakRetained;
 }
 
-- (void)setDesiredPlayState:(int64_t)a3
+- (void)setDesiredPlayState:(int64_t)state
 {
-  v5 = [(_PXFeedInlinePlaybackRecord *)self inlinePlaybackController];
-  [v5 _playbackRecord:self setDesiredPlayState:a3];
+  inlinePlaybackController = [(_PXFeedInlinePlaybackRecord *)self inlinePlaybackController];
+  [inlinePlaybackController _playbackRecord:self setDesiredPlayState:state];
 }
 
-- (_PXFeedInlinePlaybackRecord)initWithDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5
+- (_PXFeedInlinePlaybackRecord)initWithDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference
 {
-  v8 = a3;
+  assetCopy = asset;
   v12.receiver = self;
   v12.super_class = _PXFeedInlinePlaybackRecord;
-  v9 = [(PXGridInlinePlaybackRecord *)&v12 initWithDisplayAsset:v8 mediaProvider:a4 geometryReference:a5];
+  v9 = [(PXGridInlinePlaybackRecord *)&v12 initWithDisplayAsset:assetCopy mediaProvider:provider geometryReference:reference];
   v10 = v9;
   if (v9)
   {
-    PXUpdateInlinePlaybackRecordForPhotoKit(v9, v8);
+    PXUpdateInlinePlaybackRecordForPhotoKit(v9, assetCopy);
   }
 
   return v10;

@@ -1,24 +1,24 @@
 @interface DBPassengerDisplayRootViewController
-- (_TtC9DashBoard36DBPassengerDisplayRootViewController)initWithEnvironment:(id)a3 workspaceIdentifier:(id)a4;
-- (_TtC9DashBoard36DBPassengerDisplayRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9DashBoard36DBPassengerDisplayRootViewController)initWithEnvironment:(id)environment workspaceIdentifier:(id)identifier;
+- (_TtC9DashBoard36DBPassengerDisplayRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)invalidate;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation DBPassengerDisplayRootViewController
 
-- (_TtC9DashBoard36DBPassengerDisplayRootViewController)initWithEnvironment:(id)a3 workspaceIdentifier:(id)a4
+- (_TtC9DashBoard36DBPassengerDisplayRootViewController)initWithEnvironment:(id)environment workspaceIdentifier:(id)identifier
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = sub_2482C537C(a3, v6);
+  identifierCopy = identifier;
+  v7 = sub_2482C537C(environment, identifierCopy);
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (_TtC9DashBoard36DBPassengerDisplayRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9DashBoard36DBPassengerDisplayRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -27,19 +27,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DBPassengerDisplayRootViewController.viewDidLoad()();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  DBPassengerDisplayRootViewController.viewIsAppearing(_:)(a3);
+  selfCopy = self;
+  DBPassengerDisplayRootViewController.viewIsAppearing(_:)(appearing);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   DBPassengerDisplayRootViewController.invalidate()();
 }
 

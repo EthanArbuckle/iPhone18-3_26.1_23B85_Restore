@@ -1,24 +1,24 @@
 @interface TVPMediaItemProductPlacementInfo
-- (TVPMediaItemProductPlacementInfo)initWithLocalizedProductPlacementInfoString:(id)a3 duration:(id)a4 andImageURLStringFormat:(id)a5;
+- (TVPMediaItemProductPlacementInfo)initWithLocalizedProductPlacementInfoString:(id)string duration:(id)duration andImageURLStringFormat:(id)format;
 - (id)description;
 @end
 
 @implementation TVPMediaItemProductPlacementInfo
 
-- (TVPMediaItemProductPlacementInfo)initWithLocalizedProductPlacementInfoString:(id)a3 duration:(id)a4 andImageURLStringFormat:(id)a5
+- (TVPMediaItemProductPlacementInfo)initWithLocalizedProductPlacementInfoString:(id)string duration:(id)duration andImageURLStringFormat:(id)format
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stringCopy = string;
+  durationCopy = duration;
+  formatCopy = format;
   v15.receiver = self;
   v15.super_class = TVPMediaItemProductPlacementInfo;
   v12 = [(TVPMediaItemProductPlacementInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_localizedInfoString, a3);
-    objc_storeStrong(&v13->_duration, a4);
-    objc_storeStrong(&v13->_imageUrlStringFormat, a5);
+    objc_storeStrong(&v12->_localizedInfoString, string);
+    objc_storeStrong(&v13->_duration, duration);
+    objc_storeStrong(&v13->_imageUrlStringFormat, format);
   }
 
   return v13;
@@ -27,12 +27,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(TVPMediaItemProductPlacementInfo *)self localizedInfoString];
-  v5 = [(TVPMediaItemProductPlacementInfo *)self duration];
-  [v5 doubleValue];
+  localizedInfoString = [(TVPMediaItemProductPlacementInfo *)self localizedInfoString];
+  duration = [(TVPMediaItemProductPlacementInfo *)self duration];
+  [duration doubleValue];
   v7 = v6;
-  v8 = [(TVPMediaItemProductPlacementInfo *)self imageUrlStringFormat];
-  v9 = [v3 stringWithFormat:@"infoString - %@, duration - %f, urlString - %@", v4, v7, v8];
+  imageUrlStringFormat = [(TVPMediaItemProductPlacementInfo *)self imageUrlStringFormat];
+  v9 = [v3 stringWithFormat:@"infoString - %@, duration - %f, urlString - %@", localizedInfoString, v7, imageUrlStringFormat];
 
   return v9;
 }

@@ -1,16 +1,16 @@
 @interface LACDTOEnvironmentProviderFactory
-+ (id)environmentProviderWithLocationProvider:(id)a3 featureController:(id)a4 ratchetStateProvider:(id)a5 lostModeController:(id)a6;
++ (id)environmentProviderWithLocationProvider:(id)provider featureController:(id)controller ratchetStateProvider:(id)stateProvider lostModeController:(id)modeController;
 @end
 
 @implementation LACDTOEnvironmentProviderFactory
 
-+ (id)environmentProviderWithLocationProvider:(id)a3 featureController:(id)a4 ratchetStateProvider:(id)a5 lostModeController:(id)a6
++ (id)environmentProviderWithLocationProvider:(id)provider featureController:(id)controller ratchetStateProvider:(id)stateProvider lostModeController:(id)modeController
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[_TtC23LocalAuthenticationCore25LACDTOEnvironmentProvider alloc] initWithLocationProvider:v12 featureController:v11 ratchetStateProvider:v10 lostModeController:v9];
+  modeControllerCopy = modeController;
+  stateProviderCopy = stateProvider;
+  controllerCopy = controller;
+  providerCopy = provider;
+  v13 = [[_TtC23LocalAuthenticationCore25LACDTOEnvironmentProvider alloc] initWithLocationProvider:providerCopy featureController:controllerCopy ratchetStateProvider:stateProviderCopy lostModeController:modeControllerCopy];
 
   return v13;
 }

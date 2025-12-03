@@ -1,13 +1,13 @@
 @interface IMBDefaultSectionHeader
-- (_TtC8Business23IMBDefaultSectionHeader)initWithCoder:(id)a3;
-- (_TtC8Business23IMBDefaultSectionHeader)initWithReuseIdentifier:(id)a3;
+- (_TtC8Business23IMBDefaultSectionHeader)initWithCoder:(id)coder;
+- (_TtC8Business23IMBDefaultSectionHeader)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation IMBDefaultSectionHeader
 
-- (_TtC8Business23IMBDefaultSectionHeader)initWithReuseIdentifier:(id)a3
+- (_TtC8Business23IMBDefaultSectionHeader)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = sub_1000AC06C();
   }
@@ -21,7 +21,7 @@
   return sub_10008C6EC(v3, v4);
 }
 
-- (_TtC8Business23IMBDefaultSectionHeader)initWithCoder:(id)a3
+- (_TtC8Business23IMBDefaultSectionHeader)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8Business23IMBDefaultSectionHeader_headerLabel;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];

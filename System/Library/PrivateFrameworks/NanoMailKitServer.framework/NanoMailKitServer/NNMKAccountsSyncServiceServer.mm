@@ -1,104 +1,104 @@
 @interface NNMKAccountsSyncServiceServer
-- (NNMKAccountsSyncServiceServer)initWithQueue:(id)a3;
+- (NNMKAccountsSyncServiceServer)initWithQueue:(id)queue;
 - (NNMKAccountsSyncServiceServerDelegate)delegate;
-- (id)addOrUpdateAccount:(id)a3;
-- (id)deleteAccount:(id)a3;
-- (id)requestWatchAccountsStatus:(id)a3;
-- (id)sendInitialAccountsSync:(id)a3;
-- (id)sendStandaloneAccountIdentity:(id)a3;
-- (id)syncVIPList:(id)a3;
-- (void)failedSendingProtobufWithIDSIdentifier:(id)a3 errorCode:(int64_t)a4;
-- (void)readProtobufData:(id)a3 type:(unint64_t)a4;
-- (void)successfullySentProtobufWithIDSIdentifier:(id)a3;
+- (id)addOrUpdateAccount:(id)account;
+- (id)deleteAccount:(id)account;
+- (id)requestWatchAccountsStatus:(id)status;
+- (id)sendInitialAccountsSync:(id)sync;
+- (id)sendStandaloneAccountIdentity:(id)identity;
+- (id)syncVIPList:(id)list;
+- (void)failedSendingProtobufWithIDSIdentifier:(id)identifier errorCode:(int64_t)code;
+- (void)readProtobufData:(id)data type:(unint64_t)type;
+- (void)successfullySentProtobufWithIDSIdentifier:(id)identifier;
 @end
 
 @implementation NNMKAccountsSyncServiceServer
 
-- (NNMKAccountsSyncServiceServer)initWithQueue:(id)a3
+- (NNMKAccountsSyncServiceServer)initWithQueue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = NNMKAccountsSyncServiceServer;
-  return [(NNMKSyncServiceEndpoint *)&v4 initWithIDSServiceName:@"com.apple.private.alloy.mail.sync.accounts" queue:a3];
+  return [(NNMKSyncServiceEndpoint *)&v4 initWithIDSServiceName:@"com.apple.private.alloy.mail.sync.accounts" queue:queue];
 }
 
-- (id)addOrUpdateAccount:(id)a3
+- (id)addOrUpdateAccount:(id)account
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:1 priority:200 timeoutCategory:1 allowCloudDelivery:1];
+  data = [account data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:1 priority:200 timeoutCategory:1 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (id)deleteAccount:(id)a3
+- (id)deleteAccount:(id)account
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:2 priority:200 timeoutCategory:0 allowCloudDelivery:1];
+  data = [account data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:2 priority:200 timeoutCategory:0 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (id)sendInitialAccountsSync:(id)a3
+- (id)sendInitialAccountsSync:(id)sync
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:3 priority:200 timeoutCategory:0 allowCloudDelivery:1];
+  data = [sync data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:3 priority:200 timeoutCategory:0 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (id)sendStandaloneAccountIdentity:(id)a3
+- (id)sendStandaloneAccountIdentity:(id)identity
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:4 priority:200 timeout:1 allowCloudDelivery:60.0];
+  data = [identity data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:4 priority:200 timeout:1 allowCloudDelivery:60.0];
 
   return v5;
 }
 
-- (id)requestWatchAccountsStatus:(id)a3
+- (id)requestWatchAccountsStatus:(id)status
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:5 priority:200 timeout:1 allowCloudDelivery:60.0];
+  data = [status data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:5 priority:200 timeout:1 allowCloudDelivery:60.0];
 
   return v5;
 }
 
-- (id)syncVIPList:(id)a3
+- (id)syncVIPList:(id)list
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:6 priority:200 timeoutCategory:1 allowCloudDelivery:1];
+  data = [list data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:6 priority:200 timeoutCategory:1 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (void)successfullySentProtobufWithIDSIdentifier:(id)a3
+- (void)successfullySentProtobufWithIDSIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained accountsSyncServiceServer:self didSendProtobufSuccessfullyWithIDSIdentifier:v4];
+  [WeakRetained accountsSyncServiceServer:self didSendProtobufSuccessfullyWithIDSIdentifier:identifierCopy];
 }
 
-- (void)failedSendingProtobufWithIDSIdentifier:(id)a3 errorCode:(int64_t)a4
+- (void)failedSendingProtobufWithIDSIdentifier:(id)identifier errorCode:(int64_t)code
 {
-  v6 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained accountsSyncServiceServer:self didFailSendingProtobufWithIDSIdentifier:v6 errorCode:a4];
+  [WeakRetained accountsSyncServiceServer:self didFailSendingProtobufWithIDSIdentifier:identifierCopy errorCode:code];
 }
 
-- (void)readProtobufData:(id)a3 type:(unint64_t)a4
+- (void)readProtobufData:(id)data type:(unint64_t)type
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (type == 2)
   {
-    v22 = self;
-    v9 = [[NNMKProtoAccountAuthenticationStatus alloc] initWithData:v6];
+    selfCopy = self;
+    v9 = [[NNMKProtoAccountAuthenticationStatus alloc] initWithData:dataCopy];
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v21 = v9;
-    v10 = [(NNMKProtoAccountAuthenticationStatus *)v9 accountsStatus];
-    v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    accountsStatus = [(NNMKProtoAccountAuthenticationStatus *)v9 accountsStatus];
+    v11 = [accountsStatus countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v11)
     {
       v12 = v11;
@@ -109,16 +109,16 @@
         {
           if (*v26 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(accountsStatus);
           }
 
           v15 = *(*(&v25 + 1) + 8 * i);
-          v16 = [v15 accountId];
+          accountId = [v15 accountId];
 
-          if (v16)
+          if (accountId)
           {
-            v17 = [v15 accountId];
-            [v8 setObject:v15 forKeyedSubscript:v17];
+            accountId2 = [v15 accountId];
+            [v8 setObject:v15 forKeyedSubscript:accountId2];
           }
 
           else
@@ -131,23 +131,23 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v12 = [accountsStatus countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v12);
     }
 
-    WeakRetained = objc_loadWeakRetained(&v22->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
     v7 = v21;
     [(NNMKProtoAccountSourceType *)v21 requestTime];
-    [WeakRetained accountsSyncServiceServer:v22 didReceivedAccountAuthenticationStatus:v8 requestTime:?];
+    [WeakRetained accountsSyncServiceServer:selfCopy didReceivedAccountAuthenticationStatus:v8 requestTime:?];
 
     goto LABEL_16;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v7 = [[NNMKProtoAccountSourceType alloc] initWithData:v6];
+    v7 = [[NNMKProtoAccountSourceType alloc] initWithData:dataCopy];
     v8 = objc_loadWeakRetained(&self->_delegate);
     [v8 accountsSyncServiceServer:self didChangeAccountSourceType:v7];
 LABEL_16:

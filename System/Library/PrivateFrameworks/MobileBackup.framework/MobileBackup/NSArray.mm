@@ -1,47 +1,47 @@
 @interface NSArray
-- (void)mb_enumerateFirstAndLastNObjects:(int64_t)a3 fromIndex:(int64_t)a4 block:(id)a5;
+- (void)mb_enumerateFirstAndLastNObjects:(int64_t)objects fromIndex:(int64_t)index block:(id)block;
 @end
 
 @implementation NSArray
 
-- (void)mb_enumerateFirstAndLastNObjects:(int64_t)a3 fromIndex:(int64_t)a4 block:(id)a5
+- (void)mb_enumerateFirstAndLastNObjects:(int64_t)objects fromIndex:(int64_t)index block:(id)block
 {
-  v14 = a5;
+  blockCopy = block;
   v8 = [(NSArray *)self count];
   v9 = v8;
-  if (a3 >= 1 && v8 > a4)
+  if (objects >= 1 && v8 > index)
   {
     v10 = 1;
     do
     {
-      v11 = [(NSArray *)self objectAtIndexedSubscript:a4];
-      v14[2](v14, v11, a4);
+      v11 = [(NSArray *)self objectAtIndexedSubscript:index];
+      blockCopy[2](blockCopy, v11, index);
 
-      if (++a4 >= v9)
+      if (++index >= v9)
       {
         break;
       }
     }
 
-    while (v10++ < a3);
+    while (v10++ < objects);
   }
 
-  if (a4 <= v9 - a3)
+  if (index <= v9 - objects)
   {
-    a4 = v9 - a3;
+    index = v9 - objects;
   }
 
-  if (a4 < v9)
+  if (index < v9)
   {
     do
     {
-      v13 = [(NSArray *)self objectAtIndexedSubscript:a4];
-      v14[2](v14, v13, a4);
+      v13 = [(NSArray *)self objectAtIndexedSubscript:index];
+      blockCopy[2](blockCopy, v13, index);
 
-      ++a4;
+      ++index;
     }
 
-    while (v9 != a4);
+    while (v9 != index);
   }
 }
 

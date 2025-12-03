@@ -1,13 +1,13 @@
 @interface ATXLocationManagerState
-+ (id)merge:(id)a3 with:(id)a4;
++ (id)merge:(id)merge with:(id)with;
 - (ATXLocationManagerState)init;
-- (ATXLocationManagerState)initWithCoder:(id)a3;
+- (ATXLocationManagerState)initWithCoder:(id)coder;
 - (CLLocation)gymLOI;
 - (CLLocation)homeLOI;
 - (CLLocation)schoolLOI;
 - (CLLocation)workLOI;
-- (void)encodeWithCoder:(id)a3;
-- (void)expirePreviousLOIBefore:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)expirePreviousLOIBefore:(id)before;
 @end
 
 @implementation ATXLocationManagerState
@@ -32,9 +32,9 @@
     predictedExitTimes = v3->_predictedExitTimes;
     v3->_predictedExitTimes = 0;
 
-    v8 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     lastUpdateDate = v3->_lastUpdateDate;
-    v3->_lastUpdateDate = v8;
+    v3->_lastUpdateDate = distantPast;
 
     v10 = objc_opt_new();
     locationsOfInterest = v3->_locationsOfInterest;
@@ -44,40 +44,40 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   currentLOI = self->_currentLOI;
-  v5 = a3;
-  [v5 encodeObject:currentLOI forKey:@"currentLOI"];
-  [v5 encodeObject:self->_previousLOI forKey:@"previousLOI"];
-  [v5 encodeObject:self->_lastUpdateDate forKey:@"lastUpdateDate"];
-  [v5 encodeObject:self->_predictedNextLOIs forKey:@"predictedNextLOIs"];
-  [v5 encodeObject:self->_predictedExitTimes forKey:@"predictedExitTimes"];
-  [v5 encodeObject:self->_locationsOfInterest forKey:@"locationsOfInterest"];
+  coderCopy = coder;
+  [coderCopy encodeObject:currentLOI forKey:@"currentLOI"];
+  [coderCopy encodeObject:self->_previousLOI forKey:@"previousLOI"];
+  [coderCopy encodeObject:self->_lastUpdateDate forKey:@"lastUpdateDate"];
+  [coderCopy encodeObject:self->_predictedNextLOIs forKey:@"predictedNextLOIs"];
+  [coderCopy encodeObject:self->_predictedExitTimes forKey:@"predictedExitTimes"];
+  [coderCopy encodeObject:self->_locationsOfInterest forKey:@"locationsOfInterest"];
 }
 
-- (ATXLocationManagerState)initWithCoder:(id)a3
+- (ATXLocationManagerState)initWithCoder:(id)coder
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = ATXLocationManagerState;
   v5 = [(ATXLocationManagerState *)&v28 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentLOI"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentLOI"];
     currentLOI = v5->_currentLOI;
     v5->_currentLOI = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousLOI"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousLOI"];
     previousLOI = v5->_previousLOI;
     v5->_previousLOI = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdateDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdateDate"];
     lastUpdateDate = v5->_lastUpdateDate;
     v5->_lastUpdateDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationsOfInterest"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationsOfInterest"];
     locationsOfInterest = v5->_locationsOfInterest;
     v5->_locationsOfInterest = v12;
 
@@ -100,11 +100,11 @@
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
     v21 = [v19 setWithArray:v20];
 
-    v22 = [v4 decodeObjectOfClasses:v18 forKey:@"predictedNextLOIs"];
+    v22 = [coderCopy decodeObjectOfClasses:v18 forKey:@"predictedNextLOIs"];
     predictedNextLOIs = v5->_predictedNextLOIs;
     v5->_predictedNextLOIs = v22;
 
-    v24 = [v4 decodeObjectOfClasses:v21 forKey:@"predictedExitTimes"];
+    v24 = [coderCopy decodeObjectOfClasses:v21 forKey:@"predictedExitTimes"];
     predictedExitTimes = v5->_predictedExitTimes;
     v5->_predictedExitTimes = v24;
   }
@@ -113,35 +113,35 @@
   return v5;
 }
 
-+ (id)merge:(id)a3 with:(id)a4
++ (id)merge:(id)merge with:(id)with
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 lastUpdateDate];
-  v8 = [v6 lastUpdateDate];
-  v9 = [v7 earlierDate:v8];
-  v10 = [v6 lastUpdateDate];
-  v11 = [v9 isEqualToDate:v10];
+  mergeCopy = merge;
+  withCopy = with;
+  lastUpdateDate = [mergeCopy lastUpdateDate];
+  lastUpdateDate2 = [withCopy lastUpdateDate];
+  v9 = [lastUpdateDate earlierDate:lastUpdateDate2];
+  lastUpdateDate3 = [withCopy lastUpdateDate];
+  v11 = [v9 isEqualToDate:lastUpdateDate3];
 
   if (v11)
   {
-    v12 = v5;
+    v12 = mergeCopy;
   }
 
   else
   {
-    v12 = v6;
+    v12 = withCopy;
   }
 
   if (v11)
   {
-    v13 = v6;
+    v13 = withCopy;
   }
 
   else
   {
-    v13 = v5;
+    v13 = mergeCopy;
   }
 
   v52 = v13;
@@ -160,28 +160,28 @@
   v50 = v14;
   v58 = v50;
   v51 = MEMORY[0x2666EC640](v57);
-  v15 = [v52 previousLOI];
-  (v51)[2](v51, v15);
+  previousLOI = [v52 previousLOI];
+  (v51)[2](v51, previousLOI);
 
-  v16 = [v52 currentLOI];
-  (v51)[2](v51, v16);
+  currentLOI = [v52 currentLOI];
+  (v51)[2](v51, currentLOI);
 
-  v17 = [v12 previousLOI];
-  (v51)[2](v51, v17);
+  previousLOI2 = [v12 previousLOI];
+  (v51)[2](v51, previousLOI2);
 
-  v18 = [v12 currentLOI];
-  (v51)[2](v51, v18);
+  currentLOI2 = [v12 currentLOI];
+  (v51)[2](v51, currentLOI2);
 
   v19 = objc_opt_new();
   if ([v50 count])
   {
-    v20 = [v12 currentLOI];
-    v21 = v20 == 0;
+    currentLOI3 = [v12 currentLOI];
+    v21 = currentLOI3 == 0;
 
     if (!v21)
     {
-      v22 = [v50 lastObject];
-      [v19 setCurrentLOI:v22];
+      lastObject = [v50 lastObject];
+      [v19 setCurrentLOI:lastObject];
 
       [v50 removeLastObject];
     }
@@ -189,13 +189,13 @@
 
   if ([v50 count])
   {
-    v23 = [v50 lastObject];
-    [v19 setPreviousLOI:v23];
+    lastObject2 = [v50 lastObject];
+    [v19 setPreviousLOI:lastObject2];
   }
 
-  v24 = [v12 predictedNextLOIs];
+  predictedNextLOIs = [v12 predictedNextLOIs];
 
-  if (v24)
+  if (predictedNextLOIs)
   {
     [v12 predictedNextLOIs];
   }
@@ -207,9 +207,9 @@
   v25 = ;
   [v19 setPredictedNextLOIs:v25];
 
-  v26 = [v12 predictedExitTimes];
+  predictedExitTimes = [v12 predictedExitTimes];
 
-  if (v26)
+  if (predictedExitTimes)
   {
     [v12 predictedExitTimes];
   }
@@ -244,8 +244,8 @@
         }
 
         v32 = *(*(&v53 + 1) + 8 * i);
-        v33 = [v12 locationsOfInterest];
-        v34 = [v33 valueForKey:v32];
+        locationsOfInterest = [v12 locationsOfInterest];
+        v34 = [locationsOfInterest valueForKey:v32];
 
         [v19 locationsOfInterest];
         if (v34)
@@ -268,16 +268,16 @@
     while (v29);
   }
 
-  v38 = [v19 currentLOI];
-  v39 = [v52 currentLOI];
-  if (v38 != v39)
+  currentLOI4 = [v19 currentLOI];
+  currentLOI5 = [v52 currentLOI];
+  if (currentLOI4 != currentLOI5)
   {
     goto LABEL_35;
   }
 
-  v40 = [v19 previousLOI];
-  v41 = [v52 previousLOI];
-  if (v40 != v41)
+  previousLOI3 = [v19 previousLOI];
+  previousLOI4 = [v52 previousLOI];
+  if (previousLOI3 != previousLOI4)
   {
 LABEL_34:
 
@@ -285,28 +285,28 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v42 = [v19 predictedNextLOIs];
-  v43 = [v52 predictedNextLOIs];
-  if (!arraysAreEqual(v42, v43))
+  predictedNextLOIs2 = [v19 predictedNextLOIs];
+  predictedNextLOIs3 = [v52 predictedNextLOIs];
+  if (!arraysAreEqual(predictedNextLOIs2, predictedNextLOIs3))
   {
 
     goto LABEL_34;
   }
 
-  v49 = [v19 predictedExitTimes];
-  v44 = [v52 predictedExitTimes];
-  v45 = arraysAreEqual(v49, v44);
+  predictedExitTimes2 = [v19 predictedExitTimes];
+  predictedExitTimes3 = [v52 predictedExitTimes];
+  v45 = arraysAreEqual(predictedExitTimes2, predictedExitTimes3);
 
   if (v45)
   {
-    v46 = [v52 lastUpdateDate];
-    [v19 setLastUpdateDate:v46];
+    lastUpdateDate4 = [v52 lastUpdateDate];
+    [v19 setLastUpdateDate:lastUpdateDate4];
     goto LABEL_37;
   }
 
 LABEL_36:
-  v46 = [v12 lastUpdateDate];
-  [v19 setLastUpdateDate:v46];
+  lastUpdateDate4 = [v12 lastUpdateDate];
+  [v19 setLastUpdateDate:lastUpdateDate4];
 LABEL_37:
 
   _Block_object_dispose(v60, 8);
@@ -338,9 +338,9 @@ void __38__ATXLocationManagerState_merge_with___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)expirePreviousLOIBefore:(id)a3
+- (void)expirePreviousLOIBefore:(id)before
 {
-  v4 = [(NSDate *)self->_lastUpdateDate earlierDate:a3];
+  v4 = [(NSDate *)self->_lastUpdateDate earlierDate:before];
   v5 = [v4 isEqualToDate:self->_lastUpdateDate];
 
   if (v5)

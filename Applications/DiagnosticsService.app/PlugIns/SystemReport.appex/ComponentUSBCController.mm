@@ -1,12 +1,12 @@
 @interface ComponentUSBCController
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentUSBCController
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v10 = a3;
+  attributesCopy = attributes;
   v3 = [DAComponentUtil getIORegistryName:@"AppleHPMDeviceHALType4" property:@"UUID" optionalKey:0];
   if (v3 || ([DAComponentUtil getIORegistryName:@"AppleHPMDeviceHALType3" property:@"UUID" optionalKey:0], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -24,7 +24,7 @@
     if (!v8)
     {
       v9 = +[NSNull null];
-      [v10 setObject:v9 forKeyedSubscript:@"UUID"];
+      [attributesCopy setObject:v9 forKeyedSubscript:@"UUID"];
 
       v5 = 0;
       goto LABEL_5;
@@ -33,7 +33,7 @@
     v5 = v8;
     v6 = @"UUID";
 LABEL_4:
-    [v10 setObject:v5 forKeyedSubscript:v6];
+    [attributesCopy setObject:v5 forKeyedSubscript:v6];
 LABEL_5:
   }
 }

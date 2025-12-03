@@ -1,52 +1,52 @@
 @interface TransparencyNetworkRequest
-- (TransparencyNetworkRequest)initWithRequest:(id)a3;
-- (TransparencyNetworkRequest)initWithURL:(id)a3 data:(id)a4 timeout:(double)a5 httpMethod:(unint64_t)a6 uuid:(id)a7;
-- (id)createGETRequestForURL:(id)a3 timeout:(double)a4 additionalHeaders:(id)a5 error:(id *)a6;
-- (id)initGETWithURL:(id)a3;
-- (id)initPOSTWithURL:(id)a3 data:(id)a4 uuid:(id)a5;
-- (id)initPUSHWithURL:(id)a3 data:(id)a4 uuid:(id)a5;
-- (void)createRequestForURL:(id)a3 timeout:(double)a4 contents:(id)a5 additionalHeaders:(id)a6 completionHandler:(id)a7;
+- (TransparencyNetworkRequest)initWithRequest:(id)request;
+- (TransparencyNetworkRequest)initWithURL:(id)l data:(id)data timeout:(double)timeout httpMethod:(unint64_t)method uuid:(id)uuid;
+- (id)createGETRequestForURL:(id)l timeout:(double)timeout additionalHeaders:(id)headers error:(id *)error;
+- (id)initGETWithURL:(id)l;
+- (id)initPOSTWithURL:(id)l data:(id)data uuid:(id)uuid;
+- (id)initPUSHWithURL:(id)l data:(id)data uuid:(id)uuid;
+- (void)createRequestForURL:(id)l timeout:(double)timeout contents:(id)contents additionalHeaders:(id)headers completionHandler:(id)handler;
 @end
 
 @implementation TransparencyNetworkRequest
 
-- (id)initGETWithURL:(id)a3
+- (id)initGETWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   +[TransparencySettings defaultNetworkTimeout];
-  v5 = [(TransparencyNetworkRequest *)self initWithURL:v4 data:0 timeout:0 httpMethod:0 uuid:?];
+  v5 = [(TransparencyNetworkRequest *)self initWithURL:lCopy data:0 timeout:0 httpMethod:0 uuid:?];
 
   return v5;
 }
 
-- (id)initPOSTWithURL:(id)a3 data:(id)a4 uuid:(id)a5
+- (id)initPOSTWithURL:(id)l data:(id)data uuid:(id)uuid
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  uuidCopy = uuid;
+  dataCopy = data;
+  lCopy = l;
   +[TransparencySettings defaultNetworkTimeout];
-  v11 = [(TransparencyNetworkRequest *)self initWithURL:v10 data:v9 timeout:1 httpMethod:v8 uuid:?];
+  v11 = [(TransparencyNetworkRequest *)self initWithURL:lCopy data:dataCopy timeout:1 httpMethod:uuidCopy uuid:?];
 
   return v11;
 }
 
-- (id)initPUSHWithURL:(id)a3 data:(id)a4 uuid:(id)a5
+- (id)initPUSHWithURL:(id)l data:(id)data uuid:(id)uuid
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  uuidCopy = uuid;
+  dataCopy = data;
+  lCopy = l;
   +[TransparencySettings defaultNetworkTimeout];
-  v11 = [(TransparencyNetworkRequest *)self initWithURL:v10 data:v9 timeout:2 httpMethod:v8 uuid:?];
+  v11 = [(TransparencyNetworkRequest *)self initWithURL:lCopy data:dataCopy timeout:2 httpMethod:uuidCopy uuid:?];
 
   return v11;
 }
 
-- (TransparencyNetworkRequest)initWithURL:(id)a3 data:(id)a4 timeout:(double)a5 httpMethod:(unint64_t)a6 uuid:(id)a7
+- (TransparencyNetworkRequest)initWithURL:(id)l data:(id)data timeout:(double)timeout httpMethod:(unint64_t)method uuid:(id)uuid
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (v12 && (v13 || !a6))
+  lCopy = l;
+  dataCopy = data;
+  uuidCopy = uuid;
+  if (lCopy && (dataCopy || !method))
   {
     v19.receiver = self;
     v19.super_class = TransparencyNetworkRequest;
@@ -54,51 +54,51 @@
     v17 = v16;
     if (v16)
     {
-      [(TransparencyNetworkRequest *)v16 setUrl:v12];
-      [(TransparencyNetworkRequest *)v17 setData:v13];
-      [(TransparencyNetworkRequest *)v17 setTimeout:a5];
+      [(TransparencyNetworkRequest *)v16 setUrl:lCopy];
+      [(TransparencyNetworkRequest *)v17 setData:dataCopy];
+      [(TransparencyNetworkRequest *)v17 setTimeout:timeout];
       [(TransparencyNetworkRequest *)v17 setAuthenticated:0];
-      [(TransparencyNetworkRequest *)v17 setHttpMethod:a6];
-      [(TransparencyNetworkRequest *)v17 setUuid:v14];
+      [(TransparencyNetworkRequest *)v17 setHttpMethod:method];
+      [(TransparencyNetworkRequest *)v17 setUuid:uuidCopy];
     }
 
     self = v17;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (TransparencyNetworkRequest)initWithRequest:(id)a3
+- (TransparencyNetworkRequest)initWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 URL];
-  v6 = [v4 HTTPBody];
-  v7 = [v4 HTTPMethod];
-  v8 = [v7 isEqualToString:@"GET"];
+  requestCopy = request;
+  v5 = [requestCopy URL];
+  hTTPBody = [requestCopy HTTPBody];
+  hTTPMethod = [requestCopy HTTPMethod];
+  v8 = [hTTPMethod isEqualToString:@"GET"];
 
   if (v8)
   {
     self = [(TransparencyNetworkRequest *)self initGETWithURL:v5];
 LABEL_15:
-    v17 = [v4 allHTTPHeaderFields];
-    [(TransparencyNetworkRequest *)self setAdditionalHeaders:v17];
+    allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
+    [(TransparencyNetworkRequest *)self setAdditionalHeaders:allHTTPHeaderFields];
 
-    v15 = self;
+    selfCopy = self;
     goto LABEL_16;
   }
 
-  v9 = [v4 HTTPMethod];
-  v10 = [v9 isEqualToString:@"POST"];
+  hTTPMethod2 = [requestCopy HTTPMethod];
+  v10 = [hTTPMethod2 isEqualToString:@"POST"];
 
   if (v10)
   {
-    v11 = [v4 valueForHTTPHeaderField:off_100152398];
+    v11 = [requestCopy valueForHTTPHeaderField:off_100152398];
     if (v11)
     {
       v12 = [[NSUUID alloc] initWithUUIDString:v11];
@@ -109,19 +109,19 @@ LABEL_15:
       v12 = 0;
     }
 
-    v16 = [(TransparencyNetworkRequest *)self initPOSTWithURL:v5 data:v6 uuid:v12];
+    v16 = [(TransparencyNetworkRequest *)self initPOSTWithURL:v5 data:hTTPBody uuid:v12];
 LABEL_14:
     self = v16;
 
     goto LABEL_15;
   }
 
-  v13 = [v4 HTTPMethod];
-  v14 = [v13 isEqualToString:@"PUSH"];
+  hTTPMethod3 = [requestCopy HTTPMethod];
+  v14 = [hTTPMethod3 isEqualToString:@"PUSH"];
 
   if (v14)
   {
-    v11 = [v4 valueForHTTPHeaderField:off_100152398];
+    v11 = [requestCopy valueForHTTPHeaderField:off_100152398];
     if (v11)
     {
       v12 = [[NSUUID alloc] initWithUUIDString:v11];
@@ -132,25 +132,25 @@ LABEL_14:
       v12 = 0;
     }
 
-    v16 = [(TransparencyNetworkRequest *)self initPUSHWithURL:v5 data:v6 uuid:v12];
+    v16 = [(TransparencyNetworkRequest *)self initPUSHWithURL:v5 data:hTTPBody uuid:v12];
     goto LABEL_14;
   }
 
-  v15 = 0;
+  selfCopy = 0;
 LABEL_16:
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)createRequestForURL:(id)a3 timeout:(double)a4 contents:(id)a5 additionalHeaders:(id)a6 completionHandler:(id)a7
+- (void)createRequestForURL:(id)l timeout:(double)timeout contents:(id)contents additionalHeaders:(id)headers completionHandler:(id)handler
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [NSMutableURLRequest requestWithURL:a3];
-  v16 = [(TransparencyNetworkRequest *)self uuid];
-  v17 = [v16 UUIDString];
-  [v15 setValue:v17 forHTTPHeaderField:off_100152398];
+  contentsCopy = contents;
+  headersCopy = headers;
+  handlerCopy = handler;
+  v15 = [NSMutableURLRequest requestWithURL:l];
+  uuid = [(TransparencyNetworkRequest *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [v15 setValue:uUIDString forHTTPHeaderField:off_100152398];
 
   v18 = ProtocolVersion_EnumDescriptor();
   v19 = [v18 textFormatNameForValue:kTransparencyProtocolVersion];
@@ -159,16 +159,16 @@ LABEL_16:
   v20 = +[TransparencySettings transparencyVersionStr];
   [v15 setValue:v20 forHTTPHeaderField:off_1001523B8];
 
-  [v15 setHTTPBody:v12];
-  v21 = [(TransparencyNetworkRequest *)self httpMethod];
-  if (v21 == 1)
+  [v15 setHTTPBody:contentsCopy];
+  httpMethod = [(TransparencyNetworkRequest *)self httpMethod];
+  if (httpMethod == 1)
   {
     v22 = @"POST";
   }
 
   else
   {
-    if (v21 != 2)
+    if (httpMethod != 2)
     {
       goto LABEL_6;
     }
@@ -182,7 +182,7 @@ LABEL_6:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v23 = v13;
+  v23 = headersCopy;
   v24 = [v23 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v24)
   {
@@ -214,24 +214,24 @@ LABEL_6:
     [v15 setValue:v30 forHTTPHeaderField:off_1001523B0];
   }
 
-  if (a4 != 0.0)
+  if (timeout != 0.0)
   {
-    [v15 setTimeoutInterval:a4];
+    [v15 setTimeoutInterval:timeout];
   }
 
-  v14[2](v14, v15, 0);
+  handlerCopy[2](handlerCopy, v15, 0);
 }
 
-- (id)createGETRequestForURL:(id)a3 timeout:(double)a4 additionalHeaders:(id)a5 error:(id *)a6
+- (id)createGETRequestForURL:(id)l timeout:(double)timeout additionalHeaders:(id)headers error:(id *)error
 {
-  v8 = a5;
-  v9 = [NSMutableURLRequest requestWithURL:a3];
+  headersCopy = headers;
+  v9 = [NSMutableURLRequest requestWithURL:l];
   [v9 setHTTPMethod:@"GET"];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v8;
+  v10 = headersCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -263,9 +263,9 @@ LABEL_6:
     [v9 setValue:v17 forHTTPHeaderField:off_1001523B0];
   }
 
-  if (a4 != 0.0)
+  if (timeout != 0.0)
   {
-    [v9 setTimeoutInterval:a4];
+    [v9 setTimeoutInterval:timeout];
   }
 
   return v9;

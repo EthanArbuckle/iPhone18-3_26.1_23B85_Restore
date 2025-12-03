@@ -1,37 +1,37 @@
 @interface TransitLineContext
 - (BOOL)chromeDidClearMapSelection;
-- (BOOL)chromeDidSelectTransitLineMarker:(id)a3;
-- (BOOL)isShowingLineWithIdentifier:(id)a3;
-- (BOOL)isShowingLineWithLabelMarker:(id)a3;
+- (BOOL)chromeDidSelectTransitLineMarker:(id)marker;
+- (BOOL)isShowingLineWithIdentifier:(id)identifier;
+- (BOOL)isShowingLineWithLabelMarker:(id)marker;
 - (GEOMapServiceTraits)loadingTraits;
 - (GEOTransitLineItem)lineItem;
 - (_TtC4Maps18TransitLineContext)init;
-- (_TtC4Maps18TransitLineContext)initWithLabelMarker:(id)a3 preferredLayout:(unint64_t)a4;
+- (_TtC4Maps18TransitLineContext)initWithLabelMarker:(id)marker preferredLayout:(unint64_t)layout;
 - (id)desiredCards;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)lineCardViewController:(id)a3 displayMapRegion:(id)a4;
-- (void)lineCardViewController:(id)a3 doDirectionItem:(id)a4;
-- (void)lineCardViewController:(id)a3 openURL:(id)a4;
-- (void)lineCardViewController:(id)a3 selectMapItem:(id)a4;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)lineCardViewController:(id)controller displayMapRegion:(id)region;
+- (void)lineCardViewController:(id)controller doDirectionItem:(id)item;
+- (void)lineCardViewController:(id)controller openURL:(id)l;
+- (void)lineCardViewController:(id)controller selectMapItem:(id)item;
 - (void)prepareLineCardViewControllerForFirstUse;
-- (void)selectLineFor:(id)a3 zoomToMapRegion:(BOOL)a4;
-- (void)selectLineWithLine:(id)a3 zoomToMapRegion:(BOOL)a4;
-- (void)setChromeViewController:(id)a3;
-- (void)setDisambiguationViewController:(id)a3;
-- (void)setLabelMarker:(id)a3;
-- (void)setLineCardViewController:(id)a3;
-- (void)setLineItem:(id)a3;
+- (void)selectLineFor:(id)for zoomToMapRegion:(BOOL)region;
+- (void)selectLineWithLine:(id)line zoomToMapRegion:(BOOL)region;
+- (void)setChromeViewController:(id)controller;
+- (void)setDisambiguationViewController:(id)controller;
+- (void)setLabelMarker:(id)marker;
+- (void)setLineCardViewController:(id)controller;
+- (void)setLineItem:(id)item;
 @end
 
 @implementation TransitLineContext
 
-- (BOOL)chromeDidSelectTransitLineMarker:(id)a3
+- (BOOL)chromeDidSelectTransitLineMarker:(id)marker
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1002931EC(v4);
+  markerCopy = marker;
+  selfCopy = self;
+  LOBYTE(self) = sub_1002931EC(markerCopy);
 
   return self & 1;
 }
@@ -41,76 +41,76 @@
   v2 = *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_chromeViewController);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = v2;
-    LODWORD(v2) = [v4 isTopContext:v3];
+    LODWORD(v2) = [v4 isTopContext:selfCopy];
     if (v2)
     {
-      [v4 popContext:v3 animated:1 completion:0];
+      [v4 popContext:selfCopy animated:1 completion:0];
     }
   }
 
   return v2;
 }
 
-- (void)lineCardViewController:(id)a3 doDirectionItem:(id)a4
+- (void)lineCardViewController:(id)controller doDirectionItem:(id)item
 {
-  v9 = self;
-  v5 = a4;
-  v6 = [(TransitLineContext *)v9 iosBasedChromeViewController];
-  if (v6)
+  selfCopy = self;
+  itemCopy = item;
+  iosBasedChromeViewController = [(TransitLineContext *)selfCopy iosBasedChromeViewController];
+  if (iosBasedChromeViewController)
   {
-    v7 = v6;
-    v8 = [v6 appCoordinator];
+    v7 = iosBasedChromeViewController;
+    appCoordinator = [iosBasedChromeViewController appCoordinator];
 
-    if (v8)
+    if (appCoordinator)
     {
-      [v8 enterRoutePlanningWithDirectionItem:v5 allowToPromptEditing:1 withUserInfo:0];
+      [appCoordinator enterRoutePlanningWithDirectionItem:itemCopy allowToPromptEditing:1 withUserInfo:0];
     }
   }
 }
 
-- (void)lineCardViewController:(id)a3 selectMapItem:(id)a4
+- (void)lineCardViewController:(id)controller selectMapItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002A2D54(a4);
+  controllerCopy = controller;
+  itemCopy = item;
+  selfCopy = self;
+  sub_1002A2D54(item);
 }
 
-- (void)lineCardViewController:(id)a3 displayMapRegion:(id)a4
+- (void)lineCardViewController:(id)controller displayMapRegion:(id)region
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_chromeViewController);
   if (v4)
   {
-    v7 = a3;
-    v11 = self;
-    v8 = a4;
-    v9 = [v4 mapCameraController];
-    if (v9)
+    controllerCopy = controller;
+    selfCopy = self;
+    regionCopy = region;
+    mapCameraController = [v4 mapCameraController];
+    if (mapCameraController)
     {
-      if (!v8)
+      if (!regionCopy)
       {
         __break(1u);
         return;
       }
 
-      v10 = v9;
-      [(TransitLineContext *)v9 displayMapRegion:v8 animated:1 completion:0];
+      v10 = mapCameraController;
+      [(TransitLineContext *)mapCameraController displayMapRegion:regionCopy animated:1 completion:0];
 
-      v7 = v8;
-      v8 = v11;
-      v11 = v10;
+      controllerCopy = regionCopy;
+      regionCopy = selfCopy;
+      selfCopy = v10;
     }
   }
 }
 
-- (void)lineCardViewController:(id)a3 openURL:(id)a4
+- (void)lineCardViewController:(id)controller openURL:(id)l
 {
   v7 = sub_1000CE6B8(&unk_101909B00);
   __chkstk_darwin(v7 - 8);
   v9 = &v14 - v8;
-  if (a4)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = type metadata accessor for URL();
@@ -123,18 +123,18 @@
     (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   }
 
-  v12 = a3;
-  v13 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1002A2EAC(v9);
 
   sub_1000FA5D4(v9);
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_chromeViewController);
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_chromeViewController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_chromeViewController) = controller;
+  controllerCopy = controller;
 }
 
 - (GEOTransitLineItem)lineItem
@@ -144,91 +144,91 @@
   return v2;
 }
 
-- (void)setLineItem:(id)a3
+- (void)setLineItem:(id)item
 {
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_lineItem) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_lineItem) = item;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setLabelMarker:(id)a3
+- (void)setLabelMarker:(id)marker
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_labelMarker);
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_labelMarker) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_labelMarker) = marker;
+  markerCopy = marker;
 }
 
-- (void)setLineCardViewController:(id)a3
+- (void)setLineCardViewController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_lineCardViewController);
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_lineCardViewController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_lineCardViewController) = controller;
+  controllerCopy = controller;
 }
 
-- (_TtC4Maps18TransitLineContext)initWithLabelMarker:(id)a3 preferredLayout:(unint64_t)a4
+- (_TtC4Maps18TransitLineContext)initWithLabelMarker:(id)marker preferredLayout:(unint64_t)layout
 {
-  v4 = a3;
-  v5 = sub_10032F840(v4);
+  markerCopy = marker;
+  v5 = sub_10032F840(markerCopy);
 
   return v5;
 }
 
-- (BOOL)isShowingLineWithLabelMarker:(id)a3
+- (BOOL)isShowingLineWithLabelMarker:(id)marker
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_10032DA00(v4);
+  markerCopy = marker;
+  selfCopy = self;
+  LOBYTE(self) = sub_10032DA00(markerCopy);
 
   return self & 1;
 }
 
-- (BOOL)isShowingLineWithIdentifier:(id)a3
+- (BOOL)isShowingLineWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_10032DC10(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  LOBYTE(self) = sub_10032DC10(identifierCopy);
 
   return self & 1;
 }
 
 - (GEOMapServiceTraits)loadingTraits
 {
-  v2 = self;
+  selfCopy = self;
   sub_10032DDDC();
   v4 = v3;
 
   return v4;
 }
 
-- (void)selectLineFor:(id)a3 zoomToMapRegion:(BOOL)a4
+- (void)selectLineFor:(id)for zoomToMapRegion:(BOOL)region
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_10032DF04(v6, v4);
+  regionCopy = region;
+  forCopy = for;
+  selfCopy = self;
+  sub_10032DF04(forCopy, regionCopy);
 }
 
-- (void)selectLineWithLine:(id)a3 zoomToMapRegion:(BOOL)a4
+- (void)selectLineWithLine:(id)line zoomToMapRegion:(BOOL)region
 {
-  v4 = a4;
+  regionCopy = region;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10032EBF4(a3, v4);
+  selfCopy = self;
+  sub_10032EBF4(line, regionCopy);
   swift_unknownObjectRelease();
 }
 
 - (void)prepareLineCardViewControllerForFirstUse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10032F450();
 }
 
-- (void)setDisambiguationViewController:(id)a3
+- (void)setDisambiguationViewController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_disambiguationViewController);
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_disambiguationViewController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_disambiguationViewController) = controller;
+  controllerCopy = controller;
 }
 
 - (_TtC4Maps18TransitLineContext)init
@@ -240,7 +240,7 @@
 
 - (id)desiredCards
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100332220();
 
   if (v3)
@@ -257,7 +257,7 @@
   return v4.super.isa;
 }
 
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v6 = swift_allocObject();
   *(v6 + 16) = self;
@@ -268,18 +268,18 @@
   v10[2] = sub_100039C64;
   v10[3] = &unk_101611CD0;
   v7 = _Block_copy(v10);
-  v8 = self;
-  v9 = a4;
+  selfCopy = self;
+  animationCopy = animation;
 
-  [v9 addPreparation:v7];
+  [animationCopy addPreparation:v7];
 
   _Block_release(v7);
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v7 = swift_allocObject();
-  *(v7 + 16) = a3;
+  *(v7 + 16) = controller;
   *(v7 + 24) = self;
   v14[4] = sub_1003327E8;
   v14[5] = v7;
@@ -288,22 +288,22 @@
   v14[2] = sub_100039C64;
   v14[3] = &unk_101611C80;
   v8 = _Block_copy(v14);
-  v9 = a3;
-  v10 = self;
-  v11 = v9;
-  v12 = v10;
-  v13 = a4;
+  controllerCopy = controller;
+  selfCopy = self;
+  v11 = controllerCopy;
+  v12 = selfCopy;
+  animationCopy = animation;
 
-  [v13 addPreparation:v8];
+  [animationCopy addPreparation:v8];
 
   _Block_release(v8);
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -312,22 +312,22 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7 = *(&self->super.isa + OBJC_IVAR____TtC4Maps18TransitLineContext_chromeViewController);
   if (v7)
   {
-    v8 = v7;
-    if ([(TransitLineContext *)v8 isTopContext:self])
+    selfCopy3 = v7;
+    if ([(TransitLineContext *)selfCopy3 isTopContext:self])
     {
-      [(TransitLineContext *)v8 popContext:self animated:1 completion:0];
+      [(TransitLineContext *)selfCopy3 popContext:self animated:1 completion:0];
     }
   }
 
   else
   {
-    v8 = self;
+    selfCopy3 = self;
   }
 
   sub_1000DB2F4(v9);

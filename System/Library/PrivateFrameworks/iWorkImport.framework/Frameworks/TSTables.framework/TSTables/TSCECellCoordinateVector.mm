@@ -1,10 +1,10 @@
 @interface TSCECellCoordinateVector
 - (TSCECellCoordinateVector)init;
-- (TSCECellCoordinateVector)initWithArchive:(const void *)a3;
+- (TSCECellCoordinateVector)initWithArchive:(const void *)archive;
 - (id).cxx_construct;
 - (unordered_set<TSUCellCoord,)cellCoordinatesSet;
-- (void)addCellCoordinate:(TSUCellCoord)a3;
-- (void)saveToArchive:(void *)a3;
+- (void)addCellCoordinate:(TSUCellCoord)coordinate;
+- (void)saveToArchive:(void *)archive;
 @end
 
 @implementation TSCECellCoordinateVector
@@ -40,7 +40,7 @@
   return self;
 }
 
-- (void)addCellCoordinate:(TSUCellCoord)a3
+- (void)addCellCoordinate:(TSUCellCoord)coordinate
 {
   dispatch_semaphore_wait(self->_sem, 0xFFFFFFFFFFFFFFFFLL);
   end = self->_cellCoordinates.__end_;
@@ -77,7 +77,7 @@
     }
 
     v13 = (8 * v9);
-    *v13 = a3;
+    *v13 = coordinate;
     v7 = (8 * v9 + 8);
     v14 = self->_cellCoordinates.__begin_;
     v15 = (self->_cellCoordinates.__end_ - v14);
@@ -95,7 +95,7 @@
 
   else
   {
-    *end = a3;
+    *end = coordinate;
     v7 = end + 1;
   }
 
@@ -105,18 +105,18 @@
   dispatch_semaphore_signal(sem);
 }
 
-- (TSCECellCoordinateVector)initWithArchive:(const void *)a3
+- (TSCECellCoordinateVector)initWithArchive:(const void *)archive
 {
-  v6 = objc_msgSend_init(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_init(self, a2, archive, v3, v4);
   if (v6)
   {
-    v7 = *(a3 + 6);
+    v7 = *(archive + 6);
     if (v7 >= 1)
     {
       v8 = 8;
       do
       {
-        v9 = sub_2212697C0(*(*(a3 + 4) + v8));
+        v9 = sub_2212697C0(*(*(archive + 4) + v8));
         objc_msgSend_addCellCoordinate_(v6, v10, v9, v11, v12);
         v8 += 8;
         --v7;
@@ -129,7 +129,7 @@
   return v6;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   begin = self->_cellCoordinates.__begin_;
   end = self->_cellCoordinates.__end_;
@@ -137,20 +137,20 @@
   {
     while (1)
     {
-      v6 = *(a3 + 4);
+      v6 = *(archive + 4);
       if (!v6)
       {
         goto LABEL_7;
       }
 
-      v7 = *(a3 + 6);
+      v7 = *(archive + 6);
       v8 = *v6;
       if (v7 >= *v6)
       {
         break;
       }
 
-      *(a3 + 6) = v7 + 1;
+      *(archive + 6) = v7 + 1;
       v9 = *&v6[2 * v7 + 2];
 LABEL_9:
       sub_221269820(begin++, v9);
@@ -160,19 +160,19 @@ LABEL_9:
       }
     }
 
-    if (v8 == *(a3 + 7))
+    if (v8 == *(archive + 7))
     {
 LABEL_7:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-      v6 = *(a3 + 4);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 16));
+      v6 = *(archive + 4);
       v8 = *v6;
     }
 
     *v6 = v8 + 1;
-    v9 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellCoordinateArchive>(*(a3 + 2));
-    v10 = *(a3 + 6);
-    v11 = *(a3 + 4) + 8 * v10;
-    *(a3 + 6) = v10 + 1;
+    v9 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellCoordinateArchive>(*(archive + 2));
+    v10 = *(archive + 6);
+    v11 = *(archive + 4) + 8 * v10;
+    *(archive + 6) = v10 + 1;
     *(v11 + 8) = v9;
     goto LABEL_9;
   }

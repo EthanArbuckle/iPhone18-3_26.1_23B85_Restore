@@ -1,14 +1,14 @@
 @interface SCProcessUtility
-+ (id)listAllRunningProcesses:(id)a3;
-+ (id)listOfProcessesMatchingSameParentPid:(int)a3 withProcessList:(id)a4;
++ (id)listAllRunningProcesses:(id)processes;
++ (id)listOfProcessesMatchingSameParentPid:(int)pid withProcessList:(id)list;
 + (int)avcdProcessId;
 + (int)csdProcessId;
-+ (int)parentProcessIdForProcessId:(int)a3;
++ (int)parentProcessIdForProcessId:(int)id;
 @end
 
 @implementation SCProcessUtility
 
-+ (int)parentProcessIdForProcessId:(int)a3
++ (int)parentProcessIdForProcessId:(int)id
 {
   if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -23,7 +23,7 @@
   v8 = 648;
   *v17 = 0xE00000001;
   v18 = 1;
-  v19 = a3;
+  idCopy = id;
   v4 = sysctl(v17, 4u, buf, &v8, 0, 0);
   if (v8)
   {
@@ -54,19 +54,19 @@
     v13 = 1024;
     v14 = v6;
     v15 = 1024;
-    v16 = a3;
+    idCopy2 = id;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d parentPid=%d for processId=%d", v9, 0x1Eu);
   }
 
   return v6;
 }
 
-+ (id)listOfProcessesMatchingSameParentPid:(int)a3 withProcessList:(id)a4
++ (id)listOfProcessesMatchingSameParentPid:(int)pid withProcessList:(id)list
 {
-  v5 = a4;
-  if (!v5)
+  listCopy = list;
+  if (!listCopy)
   {
-    v5 = [SCProcessUtility listAllRunningProcesses:0];
+    listCopy = [SCProcessUtility listAllRunningProcesses:0];
   }
 
   v6 = +[NSMutableArray array];
@@ -74,7 +74,7 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = listCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -90,7 +90,7 @@
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if (+[SCProcessUtility parentProcessIdForProcessId:](SCProcessUtility, "parentProcessIdForProcessId:", [v12 intValue]) == a3)
+        if (+[SCProcessUtility parentProcessIdForProcessId:](SCProcessUtility, "parentProcessIdForProcessId:", [v12 intValue]) == pid)
         {
           [v6 addObject:v12];
         }
@@ -105,9 +105,9 @@
   return v6;
 }
 
-+ (id)listAllRunningProcesses:(id)a3
++ (id)listAllRunningProcesses:(id)processes
 {
-  v3 = a3;
+  processesCopy = processes;
   if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -185,20 +185,20 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v3)
+  if (!processesCopy)
   {
-    v14 = [NSNumber numberWithInt:v9];
-    [v4 addObject:v14];
+    stringByDeletingPathExtension = [NSNumber numberWithInt:v9];
+    [v4 addObject:stringByDeletingPathExtension];
     goto LABEL_18;
   }
 
   v11 = [NSString stringWithCString:v10 + 4 encoding:4];
   [v11 lastPathComponent];
-  v13 = v12 = v3;
-  v14 = [v13 stringByDeletingPathExtension];
+  v13 = v12 = processesCopy;
+  stringByDeletingPathExtension = [v13 stringByDeletingPathExtension];
 
-  v3 = v12;
-  if (![v14 isEqualToString:v12])
+  processesCopy = v12;
+  if (![stringByDeletingPathExtension isEqualToString:v12])
   {
     v4 = v18;
 LABEL_18:
@@ -234,16 +234,16 @@ LABEL_25:
   v2 = [SCProcessUtility listAllRunningProcesses:@"avconferenced"];
   if ([v2 count])
   {
-    v3 = [v2 firstObject];
-    v4 = [v3 unsignedIntValue];
+    firstObject = [v2 firstObject];
+    unsignedIntValue = [firstObject unsignedIntValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 + (int)csdProcessId
@@ -251,16 +251,16 @@ LABEL_25:
   v2 = [SCProcessUtility listAllRunningProcesses:@"callservicesd"];
   if ([v2 count])
   {
-    v3 = [v2 firstObject];
-    v4 = [v3 unsignedIntValue];
+    firstObject = [v2 firstObject];
+    unsignedIntValue = [firstObject unsignedIntValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 @end

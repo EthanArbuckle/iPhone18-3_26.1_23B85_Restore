@@ -1,14 +1,14 @@
 @interface TSCEFormulasForUndoForOwnerKind
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addFormula:(id)a3 atCellRef:(const TSCECellRef *)a4;
-- (void)foreachFormula:(id)a3;
+- (void)addFormula:(id)formula atCellRef:(const TSCECellRef *)ref;
+- (void)foreachFormula:(id)formula;
 @end
 
 @implementation TSCEFormulasForUndoForOwnerKind
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = v4;
@@ -26,16 +26,16 @@
   return v5;
 }
 
-- (void)addFormula:(id)a3 atCellRef:(const TSCECellRef *)a4
+- (void)addFormula:(id)formula atCellRef:(const TSCECellRef *)ref
 {
-  v7 = a3;
-  v10 = *&a4->coordinate & 0xFFFFFFFFFFFFLL;
-  tableUID = a4->_tableUID;
-  if (v7)
+  formulaCopy = formula;
+  v10 = *&ref->coordinate & 0xFFFFFFFFFFFFLL;
+  tableUID = ref->_tableUID;
+  if (formulaCopy)
   {
     v9._lower = &v10;
     v8 = sub_221485B74(&self->_formulas.__table_.__bucket_list_.__ptr_, &v10);
-    objc_storeStrong(v8 + 5, a3);
+    objc_storeStrong(v8 + 5, formula);
   }
 
   else if (!sub_221244B44(&self->_formulas.__table_.__bucket_list_.__ptr_, &v10))
@@ -43,14 +43,14 @@
     sub_2214858FC(&self->_nonFormulaCells.__table_.__bucket_list_.__ptr_, &v10);
   }
 
-  v9 = a4->_tableUID;
+  v9 = ref->_tableUID;
   sub_2211D6484(&self->_formulaOwnerUIDs.__table_.__bucket_list_.__ptr_, &v9);
 }
 
-- (void)foreachFormula:(id)a3
+- (void)foreachFormula:(id)formula
 {
   p_first_node = &self->_nonFormulaCells.__table_.__first_node_;
-  for (i = a3; ; i[2](i, 0, &p_first_node[2]))
+  for (i = formula; ; i[2](i, 0, &p_first_node[2]))
   {
     p_first_node = p_first_node->__next_;
     if (!p_first_node)

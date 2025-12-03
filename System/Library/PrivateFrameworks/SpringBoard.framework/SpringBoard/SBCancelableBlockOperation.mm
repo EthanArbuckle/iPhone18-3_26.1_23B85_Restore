@@ -1,6 +1,6 @@
 @interface SBCancelableBlockOperation
 - (SBCancelableBlockOperation)init;
-- (void)addBlock:(id)a3;
+- (void)addBlock:(id)block;
 - (void)main;
 @end
 
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (void)addBlock:(id)a3
+- (void)addBlock:(id)block
 {
-  v7 = a3;
+  blockCopy = block;
   if (([(SBCancelableBlockOperation *)self isExecuting]& 1) != 0 || [(SBCancelableBlockOperation *)self isFinished])
   {
     v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Block added after operation started or finished." userInfo:0];
@@ -31,7 +31,7 @@
   }
 
   blocks = self->_blocks;
-  v5 = MEMORY[0x223D6F7F0](v7);
+  v5 = MEMORY[0x223D6F7F0](blockCopy);
   [(NSMutableArray *)blocks addObject:v5];
 }
 

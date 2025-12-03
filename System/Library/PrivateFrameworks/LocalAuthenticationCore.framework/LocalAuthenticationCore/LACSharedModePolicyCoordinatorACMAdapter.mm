@@ -1,54 +1,54 @@
 @interface LACSharedModePolicyCoordinatorACMAdapter
-- (LACSharedModePolicyCoordinatorACMAdapter)initWithReplyQueue:(id)a3 storageRequestFactory:(id)a4 storage:(id)a5;
-- (void)updatePolicyEvaluationWithTraits:(int64_t)a3 completion:(id)a4;
+- (LACSharedModePolicyCoordinatorACMAdapter)initWithReplyQueue:(id)queue storageRequestFactory:(id)factory storage:(id)storage;
+- (void)updatePolicyEvaluationWithTraits:(int64_t)traits completion:(id)completion;
 @end
 
 @implementation LACSharedModePolicyCoordinatorACMAdapter
 
-- (LACSharedModePolicyCoordinatorACMAdapter)initWithReplyQueue:(id)a3 storageRequestFactory:(id)a4 storage:(id)a5
+- (LACSharedModePolicyCoordinatorACMAdapter)initWithReplyQueue:(id)queue storageRequestFactory:(id)factory storage:(id)storage
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  factoryCopy = factory;
+  storageCopy = storage;
   v15.receiver = self;
   v15.super_class = LACSharedModePolicyCoordinatorACMAdapter;
   v12 = [(LACSharedModePolicyCoordinatorACMAdapter *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_replyQueue, a3);
-    objc_storeStrong(&v13->_requestFactory, a4);
-    objc_storeStrong(&v13->_storage, a5);
+    objc_storeStrong(&v12->_replyQueue, queue);
+    objc_storeStrong(&v13->_requestFactory, factory);
+    objc_storeStrong(&v13->_storage, storage);
   }
 
   return v13;
 }
 
-- (void)updatePolicyEvaluationWithTraits:(int64_t)a3 completion:(id)a4
+- (void)updatePolicyEvaluationWithTraits:(int64_t)traits completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = LACLogSharedMode();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromLACSharedModePolicyTraits(a3);
+    v8 = NSStringFromLACSharedModePolicyTraits(traits);
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&dword_1B0233000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ will set traits = [%{public}@]", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(LACSharedModePolicyCoordinatorACMStorageRequestFactory *)self->_requestFactory requestWithPolicyTraits:a3];
+  v9 = [(LACSharedModePolicyCoordinatorACMStorageRequestFactory *)self->_requestFactory requestWithPolicyTraits:traits];
   storage = self->_storage;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88__LACSharedModePolicyCoordinatorACMAdapter_updatePolicyEvaluationWithTraits_completion___block_invoke;
   v13[3] = &unk_1E7A96518;
   objc_copyWeak(v15, buf);
-  v15[1] = a3;
-  v11 = v6;
+  v15[1] = traits;
+  v11 = completionCopy;
   v14 = v11;
   [(LACSharedModePolicyCoordinatorACMStorage *)storage performRequest:v9 completion:v13];
 

@@ -1,18 +1,18 @@
 @interface MFPBlurEffect
-- (MFPBlurEffect)initWithRadius:(float)a3 expandEdge:(BOOL)a4;
+- (MFPBlurEffect)initWithRadius:(float)radius expandEdge:(BOOL)edge;
 @end
 
 @implementation MFPBlurEffect
 
-- (MFPBlurEffect)initWithRadius:(float)a3 expandEdge:(BOOL)a4
+- (MFPBlurEffect)initWithRadius:(float)radius expandEdge:(BOOL)edge
 {
   v7.receiver = self;
   v7.super_class = MFPBlurEffect;
   result = [(MFPBlurEffect *)&v7 init];
   if (result)
   {
-    result->mRadius = a3;
-    result->mExpandEdge = a4;
+    result->mRadius = radius;
+    result->mExpandEdge = edge;
   }
 
   return result;

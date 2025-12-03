@@ -1,7 +1,7 @@
 @interface MSPContact
 + (id)properties;
-+ (id)shortName:(id)a3;
-+ (void)contactWithAccountIdentifier:(id)a3 completion:(id)a4;
++ (id)shortName:(id)name;
++ (void)contactWithAccountIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation MSPContact
@@ -50,11 +50,11 @@ void __24__MSPContact_properties__block_invoke()
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)contactWithAccountIdentifier:(id)a3 completion:(id)a4
++ (void)contactWithAccountIdentifier:(id)identifier completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -67,17 +67,17 @@ void __24__MSPContact_properties__block_invoke()
   v11 = [v9 initWithKeysToFetch:v10];
 
   [v11 setSortOrder:1];
-  v12 = [v6 containsString:@"@"];
+  v12 = [identifierCopy containsString:@"@"];
   v13 = MEMORY[0x277CBDA58];
   if (v12)
   {
-    v14 = [MEMORY[0x277CBDA58] predicateForContactMatchingEmailAddress:v6];
+    v14 = [MEMORY[0x277CBDA58] predicateForContactMatchingEmailAddress:identifierCopy];
     [v11 setPredicate:v14];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v6];
+    v14 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:identifierCopy];
     v15 = [v13 predicateForContactsMatchingPhoneNumber:v14];
     [v11 setPredicate:v15];
   }
@@ -101,7 +101,7 @@ void __24__MSPContact_properties__block_invoke()
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v18 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -112,9 +112,9 @@ void __24__MSPContact_properties__block_invoke()
       _os_log_impl(&dword_25813A000, v18, OS_LOG_TYPE_INFO, "contactWithAddress contact %@", buf, 0xCu);
     }
 
-    v20 = [a1 shortName:v26[5]];
-    v21 = [v26[5] identifier];
-    v7[2](v7, v20, v21);
+    v20 = [self shortName:v26[5]];
+    identifier = [v26[5] identifier];
+    completionCopy[2](completionCopy, v20, identifier);
   }
 
   _Block_object_dispose(&v25, 8);
@@ -133,11 +133,11 @@ void __54__MSPContact_contactWithAccountIdentifier_completion___block_invoke(uin
   }
 }
 
-+ (id)shortName:(id)a3
++ (id)shortName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v4 = [MEMORY[0x277CBDA78] stringFromContact:a3 style:1000];
+    v4 = [MEMORY[0x277CBDA78] stringFromContact:name style:1000];
   }
 
   else

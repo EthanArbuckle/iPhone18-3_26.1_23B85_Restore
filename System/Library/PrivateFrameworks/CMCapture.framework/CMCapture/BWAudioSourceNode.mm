@@ -1,25 +1,25 @@
 @interface BWAudioSourceNode
-+ (id)audioSourceNodeWithAttributes:(id)a3 sessionPreset:(id)a4 clock:(OpaqueCMClock *)a5 doConfigureAudio:(BOOL)a6 doMixWithOthers:(BOOL)a7 doAllowHQBluetoothRecording:(BOOL)a8 audioSession:(id)a9 isAppAudioSession:(BOOL)a10 doEndInterruption:(BOOL)a11 audioSessionIsProxy:(BOOL)a12 audioIsPlayingToBuiltinSpeaker:(BOOL)a13 audioSessionActivatedByBWGraph:(BOOL)a14 clientAuditToken:(id *)a15 clientSDKVersionToken:(unint64_t)a16 clientOSVersionSupportsDecoupledIO:(BOOL)a17 clientAudioClockDeviceUID:(id)a18 preferredIOBufferDuration:(id)a19 audioCaptureConnectionConfigurations:(id)a20 isConfiguredForContinuityCapture:(BOOL)a21 isAudioOnlyRecordingSession:(BOOL)a22 remoteIOOutputFormat:(id)a23 outErr:(int *)a24;
++ (id)audioSourceNodeWithAttributes:(id)attributes sessionPreset:(id)preset clock:(OpaqueCMClock *)clock doConfigureAudio:(BOOL)audio doMixWithOthers:(BOOL)others doAllowHQBluetoothRecording:(BOOL)recording audioSession:(id)session isAppAudioSession:(BOOL)self0 doEndInterruption:(BOOL)self1 audioSessionIsProxy:(BOOL)self2 audioIsPlayingToBuiltinSpeaker:(BOOL)self3 audioSessionActivatedByBWGraph:(BOOL)self4 clientAuditToken:(id *)self5 clientSDKVersionToken:(unint64_t)self6 clientOSVersionSupportsDecoupledIO:(BOOL)self7 clientAudioClockDeviceUID:(id)self8 preferredIOBufferDuration:(id)self9 audioCaptureConnectionConfigurations:(id)configurations isConfiguredForContinuityCapture:(BOOL)capture isAudioOnlyRecordingSession:(BOOL)recordingSession remoteIOOutputFormat:(id)format outErr:(int *)err;
 + (void)initialize;
 - (BOOL)mixWithOthersActive;
-- (BOOL)start:(id *)a3;
-- (BOOL)stop:(id *)a3;
-- (CMSampleBufferRef)_createSampleBufferForTimestampedAudioBufferList:(int)a3 audioBufferIndex:;
+- (BOOL)start:(id *)start;
+- (BOOL)stop:(id *)stop;
+- (CMSampleBufferRef)_createSampleBufferForTimestampedAudioBufferList:(int)list audioBufferIndex:;
 - (NSArray)audioLevels;
-- (char)_initWithAttributes:(uint64_t)a3 sessionPreset:(const void *)a4 clock:(char)a5 doConfigureAudio:(char)a6 doMixWithOthers:(char)a7 doAllowHQBluetoothRecording:(void *)a8 audioSession:(unsigned __int8)a9 isAppAudioSession:(char)a10 doEndInterruption:(unsigned __int8)a11 audioSessionIsProxy:(unsigned __int8)a12 audioIsPlayingToBuiltinSpeaker:(unsigned __int8)a13 audioSessionActivatedByBWGraph:(_OWORD *)a14 clientAuditToken:(uint64_t)a15 clientSDKVersionToken:(char)a16 clientOSVersionSupportsDecoupledIO:(void *)a17 clientAudioClockDeviceUID:(void *)a18 preferredIOBufferDuration:(void *)a19 audioCaptureConnectionConfigurations:(char)a20 isConfiguredForContinuityCapture:(unsigned __int8)a21 isAudioOnlyRecordingSession:(void *)a22 remoteIOOutputFormat:(int *)a23 outErr:;
-- (double)_desiredSampleRate:(uint64_t)a1;
-- (id)_copyAudioSessionMXProperty:(_DWORD *)a3 err:;
-- (id)messageDispatchQueueForOutput:(id)a3;
-- (id)outputForMicSourcePosition:(int)a3;
-- (uint64_t)_configureAudioSessionWithDefaultHardwareSampleRate:(double)a3 didCallDoNotNotifyOtherSessionsOnNextInactive:;
-- (uint64_t)_deactivateAudioSessionIfNecessary:(uint64_t)a1;
+- (char)_initWithAttributes:(uint64_t)attributes sessionPreset:(const void *)preset clock:(char)clock doConfigureAudio:(char)audio doMixWithOthers:(char)others doAllowHQBluetoothRecording:(void *)recording audioSession:(unsigned __int8)session isAppAudioSession:(char)self0 doEndInterruption:(unsigned __int8)self1 audioSessionIsProxy:(unsigned __int8)self2 audioIsPlayingToBuiltinSpeaker:(unsigned __int8)self3 audioSessionActivatedByBWGraph:(_OWORD *)self4 clientAuditToken:(uint64_t)self5 clientSDKVersionToken:(char)self6 clientOSVersionSupportsDecoupledIO:(void *)self7 clientAudioClockDeviceUID:(void *)self8 preferredIOBufferDuration:(void *)self9 audioCaptureConnectionConfigurations:(char)configurations isConfiguredForContinuityCapture:(unsigned __int8)capture isAudioOnlyRecordingSession:(void *)recordingSession remoteIOOutputFormat:(int *)format outErr:;
+- (double)_desiredSampleRate:(uint64_t)rate;
+- (id)_copyAudioSessionMXProperty:(_DWORD *)property err:;
+- (id)messageDispatchQueueForOutput:(id)output;
+- (id)outputForMicSourcePosition:(int)position;
+- (uint64_t)_configureAudioSessionWithDefaultHardwareSampleRate:(double)rate didCallDoNotNotifyOtherSessionsOnNextInactive:;
+- (uint64_t)_deactivateAudioSessionIfNecessary:(uint64_t)necessary;
 - (uint64_t)_generatePullBuffers;
-- (uint64_t)_getAudioDevicePullFrames:(uint64_t)a1;
+- (uint64_t)_getAudioDevicePullFrames:(uint64_t)frames;
 - (uint64_t)_selectMicForCurrentAudioRoute;
-- (uint64_t)_setAudioSessionAudioModeAndSelectMic:(uint64_t)a1;
-- (uint64_t)_setAudioSessionBatchedMXProperties:(uint64_t)a1;
-- (uint64_t)_setAudioSessionMXPropertyWithKey:(uint64_t)a3 value:;
-- (uint64_t)_setVADCameraParametersWithDirection:(uint64_t)a3 zoomFactor:(float)a4 forTime:;
+- (uint64_t)_setAudioSessionAudioModeAndSelectMic:(uint64_t)mic;
+- (uint64_t)_setAudioSessionBatchedMXProperties:(uint64_t)properties;
+- (uint64_t)_setAudioSessionMXPropertyWithKey:(uint64_t)key value:;
+- (uint64_t)_setVADCameraParametersWithDirection:(uint64_t)direction zoomFactor:(float)factor forTime:;
 - (uint64_t)_setupAudioUnit;
 - (uint64_t)_setupPrepareToRecordStateWithFlags:(uint64_t)result;
 - (uint64_t)_updatePullFormatDescription;
@@ -28,26 +28,26 @@
 - (void)_generateSilenceIfNeeded;
 - (void)_signalAndClearStartGroup;
 - (void)_updateMXSessionAudioMode;
-- (void)_updateStereoAudioCapturePairedCameraZoomFactorAndStartTimer:(uint64_t)a1;
+- (void)_updateStereoAudioCapturePairedCameraZoomFactorAndStartTimer:(uint64_t)timer;
 - (void)dealloc;
 - (void)makeCurrentConfigurationLive;
 - (void)makeOutputsLiveIfNeeded;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)prepareToStartRecordingWithOrientation:(int)a3 recordingSettingsID:(int64_t)a4 prefersNoInterruptionsByRingtonesAndAlerts:(BOOL)a5 completionHandler:(id)a6;
+- (void)prepareToStartRecordingWithOrientation:(int)orientation recordingSettingsID:(int64_t)d prefersNoInterruptionsByRingtonesAndAlerts:(BOOL)alerts completionHandler:(id)handler;
 - (void)setAudioCaptureMode:(int)audioCaptureMode;
-- (void)setLevelMeteringEnabled:(BOOL)a3;
-- (void)setStereoAudioCapturePairedCameraZoomFactor:(float)a3;
+- (void)setLevelMeteringEnabled:(BOOL)enabled;
+- (void)setStereoAudioCapturePairedCameraZoomFactor:(float)factor;
 - (void)unprepareForRecording;
-- (void)updateStereoAudioCapturePairedCameraBaseFieldOfView:(float)a3 zoomFactor:(float)a4;
-- (void)updateWithAudioSession:(id)a3 clientAuditToken:(id *)a4;
-- (void)zoomCommandHandler:(id)a3 didApplyZoomFactor:(float)a4 zoomFactorWithoutFudge:(float)a5 targetZoomFactor:(float)a6 rampComplete:(BOOL)a7 rampCommandID:(int)a8;
+- (void)updateStereoAudioCapturePairedCameraBaseFieldOfView:(float)view zoomFactor:(float)factor;
+- (void)updateWithAudioSession:(id)session clientAuditToken:(id *)token;
+- (void)zoomCommandHandler:(id)handler didApplyZoomFactor:(float)factor zoomFactorWithoutFudge:(float)fudge targetZoomFactor:(float)zoomFactor rampComplete:(BOOL)complete rampCommandID:(int)d;
 @end
 
 @implementation BWAudioSourceNode
 
 - (uint64_t)_setupAudioUnit
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -59,7 +59,7 @@
   v68 = 0u;
   v69 = 0u;
   v66 = 0;
-  v67 = 0;
+  selfCopy = 0;
   v2 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -67,7 +67,7 @@
     kdebug_trace();
   }
 
-  v3 = *(a1 + 320);
+  v3 = *(self + 320);
   inDesc.componentType = 1635086197;
   inDesc.componentSubType = v3;
   *&inDesc.componentManufacturer = 1634758764;
@@ -83,10 +83,10 @@
       v8 = OUTLINED_FUNCTION_22_23();
       AudioComponentInstanceDispose(v8);
       v7 = 312;
-      *(a1 + 312) = 0;
+      *(self + 312) = 0;
     }
 
-    Property = AudioComponentInstanceNew(v5, (a1 + v7));
+    Property = AudioComponentInstanceNew(v5, (self + v7));
     if (Property)
     {
       goto LABEL_31;
@@ -100,9 +100,9 @@
       goto LABEL_31;
     }
 
-    if (*(a1 + 248))
+    if (*(self + 248))
     {
-      v15 = *(a1 + 160);
+      v15 = *(self + 160);
       if (v15)
       {
         PrimaryAudioSessionIDForAuditToken = [v15 opaqueSessionID];
@@ -114,7 +114,7 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      if (*(a1 + 197))
+      if (*(self + 197))
       {
         PrimaryAudioSessionIDForAuditToken = AudioSessionGetPrimaryAudioSessionIDForAuditToken();
         goto LABEL_14;
@@ -156,24 +156,24 @@ LABEL_15:
 
           DWORD2(v69) = v34 * HIDWORD(v69);
           LODWORD(v69) = v34 * HIDWORD(v69);
-          if (*(a1 + 160))
+          if (*(self + 160))
           {
             OUTLINED_FUNCTION_33();
             if (v36)
             {
-              *&v68 = [(BWAudioSourceNode *)a1 _desiredSampleRate:?];
-              if (*(a1 + 160))
+              *&v68 = [(BWAudioSourceNode *)self _desiredSampleRate:?];
+              if (*(self + 160))
               {
-                v58 = [FigWeakReference weakReferenceToObject:a1];
-                v59 = [MEMORY[0x1E696AD88] defaultCenter];
+                v58 = [FigWeakReference weakReferenceToObject:self];
+                defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
                 v60 = *MEMORY[0x1E698D6D0];
-                v61 = *(a1 + 160);
+                v61 = *(self + 160);
                 v62[0] = MEMORY[0x1E69E9820];
                 v62[1] = 3221225472;
                 v62[2] = __36__BWAudioSourceNode__setupAudioUnit__block_invoke;
                 v62[3] = &unk_1E798FC90;
                 v62[4] = v58;
-                [v59 addObserverForName:v60 object:v61 queue:0 usingBlock:v62];
+                [defaultCenter addObserverForName:v60 object:v61 queue:0 usingBlock:v62];
               }
             }
 
@@ -189,11 +189,11 @@ LABEL_15:
           Property = AudioUnitSetProperty(v38, v39, v40, v41, v42, 0x28u);
           if (!Property)
           {
-            v43 = *(a1 + 296);
+            v43 = *(self + 296);
             if (v43)
             {
               CFRelease(v43);
-              *(a1 + 296) = 0;
+              *(self + 296) = 0;
             }
 
             OUTLINED_FUNCTION_19_0();
@@ -202,11 +202,11 @@ LABEL_15:
             {
               for (i = 0; i != 24; i += 8)
               {
-                [*(a1 + 128 + i) setFormat:+[BWAudioFormat formatWithAudioFormatDescription:](BWAudioFormat, "formatWithAudioFormatDescription:", *(a1 + 296))];
+                [*(self + 128 + i) setFormat:+[BWAudioFormat formatWithAudioFormatDescription:](BWAudioFormat, "formatWithAudioFormatDescription:", *(self + 296))];
               }
 
               v66 = asn_audioUnitRenderProc;
-              v67 = a1;
+              selfCopy = self;
               OUTLINED_FUNCTION_22_23();
               OUTLINED_FUNCTION_100();
               Property = AudioUnitSetProperty(v51, v52, v53, v54, v55, 0x10u);
@@ -248,17 +248,17 @@ void __36__BWAudioSourceNode__setupAudioUnit__block_invoke(uint64_t a1)
 
 - (void)_activeAudioRouteDidChangeHandler
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_autoreleasePoolPush();
-    v3 = [*(a1 + 160) currentRoute];
+    currentRoute = [*(self + 160) currentRoute];
     v27 = 0;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v4 = [v3 inputs];
-    v5 = [v4 countByEnumeratingWithState:&v23 objects:v22 count:16];
+    inputs = [currentRoute inputs];
+    v5 = [inputs countByEnumeratingWithState:&v23 objects:v22 count:16];
     if (v5)
     {
       v6 = v5;
@@ -270,7 +270,7 @@ void __36__BWAudioSourceNode__setupAudioUnit__block_invoke(uint64_t a1)
         {
           if (*v24 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(inputs);
           }
 
           if ([objc_msgSend(*(*(&v23 + 1) + 8 * i) "portType")])
@@ -280,7 +280,7 @@ void __36__BWAudioSourceNode__setupAudioUnit__block_invoke(uint64_t a1)
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v23 objects:v22 count:16];
+        v6 = [inputs countByEnumeratingWithState:&v23 objects:v22 count:16];
         if (v6)
         {
           continue;
@@ -296,8 +296,8 @@ LABEL_12:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v11 = [v3 outputs];
-    v12 = [v11 countByEnumeratingWithState:&v18 objects:v17 count:16];
+    outputs = [currentRoute outputs];
+    v12 = [outputs countByEnumeratingWithState:&v18 objects:v17 count:16];
     if (v12)
     {
       v13 = v12;
@@ -309,7 +309,7 @@ LABEL_14:
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(outputs);
         }
 
         if ([objc_msgSend(*(*(&v18 + 1) + 8 * v16) "portType")])
@@ -319,7 +319,7 @@ LABEL_14:
 
         if (v13 == ++v16)
         {
-          v13 = [v11 countByEnumeratingWithState:&v18 objects:v17 count:16];
+          v13 = [outputs countByEnumeratingWithState:&v18 objects:v17 count:16];
           if (v13)
           {
             goto LABEL_14;
@@ -334,14 +334,14 @@ LABEL_14:
         goto LABEL_25;
       }
 
-      [*(a1 + 160) overrideOutputAudioPort:1936747378 error:&v27];
+      [*(self + 160) overrideOutputAudioPort:1936747378 error:&v27];
       [v27 code];
     }
 
     else
     {
 LABEL_25:
-      [(BWAudioSourceNode *)a1 _selectMicForCurrentAudioRoute];
+      [(BWAudioSourceNode *)self _selectMicForCurrentAudioRoute];
     }
 
     objc_autoreleasePoolPop(v2);
@@ -350,7 +350,7 @@ LABEL_25:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -391,14 +391,14 @@ uint64_t __49__BWAudioSourceNode_makeCurrentConfigurationLive__block_invoke(uint
   return result;
 }
 
-- (id)messageDispatchQueueForOutput:(id)a3
+- (id)messageDispatchQueueForOutput:(id)output
 {
   v3 = self->_generateSamplesDispatchQueue;
 
   return v3;
 }
 
-- (BOOL)start:(id *)a3
+- (BOOL)start:(id *)start
 {
   v5 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -422,10 +422,10 @@ uint64_t __49__BWAudioSourceNode_makeCurrentConfigurationLive__block_invoke(uint
   if (self->_audioSessionIsProxy)
   {
     [BWAudioSourceNode start:];
-    v16 = -12782;
+    code = -12782;
     v30 = 1;
 LABEL_125:
-    v29 = a3;
+    startCopy7 = start;
     goto LABEL_49;
   }
 
@@ -487,10 +487,10 @@ LABEL_102:
     updated = [(BWAudioSourceNode *)self _updatePullFormatDescription];
     if (updated)
     {
-      v16 = updated;
+      code = updated;
       v30 = 1;
 LABEL_138:
-      v29 = a3;
+      startCopy7 = start;
       goto LABEL_48;
     }
 
@@ -556,7 +556,7 @@ LABEL_105:
           goto LABEL_70;
         }
 
-        v16 = v67;
+        code = v67;
         if (self->_audioSession && !self->_isAppAudioSession)
         {
           v78 = MEMORY[0x1E695E110];
@@ -578,13 +578,13 @@ LABEL_105:
           v70 = v69 & 0xFFFFFFFE;
         }
 
-        v29 = a3;
+        startCopy7 = start;
         if (v70)
         {
           LODWORD(time.value) = 136315394;
           *(&time.value + 4) = "[BWAudioSourceNode start:]";
           LOWORD(time.flags) = 1024;
-          *(&time.flags + 2) = v16;
+          *(&time.flags + 2) = code;
           LODWORD(v88) = 18;
           p_time = &time;
           _os_log_send_and_compose_impl();
@@ -597,14 +597,14 @@ LABEL_105:
 
       [BWAudioSourceNode start:];
       v30 = 0;
-      v16 = -12780;
+      code = -12780;
       goto LABEL_138;
     }
 
     v72 = [(BWAudioSourceNode *)self _setAudioSessionMXPropertyWithKey:MEMORY[0x1E695E118] value:?];
     if (v72)
     {
-      v16 = v72;
+      code = v72;
       v74 = MEMORY[0x1E695FF58];
       LODWORD(v103) = 0;
       type[0] = OS_LOG_TYPE_DEFAULT;
@@ -634,7 +634,7 @@ LABEL_105:
         goto LABEL_105;
       }
 
-      v16 = v73;
+      code = v73;
       v74 = MEMORY[0x1E695FF58];
       LODWORD(v103) = 0;
       type[0] = OS_LOG_TYPE_DEFAULT;
@@ -659,7 +659,7 @@ LABEL_105:
     LODWORD(time.value) = 136315394;
     *(&time.value + 4) = "[BWAudioSourceNode start:]";
     LOWORD(time.flags) = 1024;
-    *(&time.flags + 2) = v16;
+    *(&time.flags + 2) = code;
     LODWORD(v88) = 18;
     p_time = &time;
     _os_log_send_and_compose_impl();
@@ -670,11 +670,11 @@ LABEL_145:
     goto LABEL_125;
   }
 
-  v13 = [(AVAudioSession *)v12 isActive];
-  v14 = v13;
+  isActive = [(AVAudioSession *)v12 isActive];
+  v14 = isActive;
   if (!self->_clientAudioClockDeviceUID)
   {
-    if (v13)
+    if (isActive)
     {
       if (self->_audioSession && dword_1ED844430)
       {
@@ -750,8 +750,8 @@ LABEL_32:
 
       v103 = 0;
       [(AVAudioSession *)v21 setActive:1 error:&v103, p_time, v88, 280];
-      v16 = [v103 code];
-      if (v16)
+      code = [v103 code];
+      if (code)
       {
         LODWORD(v103) = 0;
         type[0] = OS_LOG_TYPE_DEFAULT;
@@ -772,13 +772,13 @@ LABEL_32:
           LODWORD(time.value) = 136315394;
           *(&time.value + 4) = "[BWAudioSourceNode start:]";
           LOWORD(time.flags) = 1024;
-          *(&time.flags + 2) = v16;
+          *(&time.flags + 2) = code;
           LODWORD(v88) = 18;
           p_time = &time;
           _os_log_send_and_compose_impl();
         }
 
-        v29 = a3;
+        startCopy7 = start;
         fig_log_call_emit_and_clean_up_after_send_and_compose();
         goto LABEL_47;
       }
@@ -827,9 +827,9 @@ LABEL_32:
           v55 = [(BWAudioSourceNode *)self _setAudioSessionMXPropertyWithKey:v47 value:?];
           if (v55)
           {
-            v16 = v55;
+            code = v55;
             [BWAudioSourceNode start:];
-            v29 = a3;
+            startCopy7 = start;
 LABEL_47:
             v30 = 1;
 LABEL_48:
@@ -846,13 +846,13 @@ LABEL_48:
 
   v103 = 0;
   v15 = [(AVAudioSession *)self->_audioSession setActive:0 error:&v103];
-  v16 = [v103 code];
-  if (!v16 && v15)
+  code = [v103 code];
+  if (!code && v15)
   {
     v17 = [(BWAudioSourceNode *)self _setAudioSessionMXPropertyWithKey:self->_clientAudioClockDeviceUID value:?];
     if (v17)
     {
-      v16 = v17;
+      code = v17;
       v88 = v3;
       LODWORD(p_time) = v17;
       FigDebugAssert3();
@@ -875,13 +875,13 @@ LABEL_48:
         LODWORD(time.value) = 136315394;
         *(&time.value + 4) = "[BWAudioSourceNode start:]";
         LOWORD(time.flags) = 1024;
-        *(&time.flags + 2) = v16;
+        *(&time.flags + 2) = code;
         LODWORD(v88) = 18;
         p_time = &time;
         _os_log_send_and_compose_impl();
       }
 
-      v29 = a3;
+      startCopy7 = start;
       v30 = 1;
       fig_log_call_emit_and_clean_up_after_send_and_compose();
       goto LABEL_48;
@@ -920,18 +920,18 @@ LABEL_48:
     HIWORD(time.epoch) = 1024;
     v98 = v15;
     v99 = 1024;
-    v100 = v16;
+    v100 = code;
     LODWORD(v88) = 34;
     p_time = &time;
     _os_log_send_and_compose_impl();
   }
 
-  v29 = a3;
+  startCopy7 = start;
   v30 = 1;
   fig_log_call_emit_and_clean_up_after_send_and_compose();
   v6 = 1;
   v5 = v79;
-  if (!v16)
+  if (!code)
   {
     goto LABEL_69;
   }
@@ -1018,7 +1018,7 @@ LABEL_64:
     }
   }
 
-  if (!v29)
+  if (!startCopy7)
   {
     v6 = 0;
     if (!v30)
@@ -1030,7 +1030,7 @@ LABEL_64:
   }
 
   v6 = 0;
-  *v29 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v16 userInfo:0];
+  *startCopy7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:code userInfo:0];
   if (v30)
   {
 LABEL_69:
@@ -1166,7 +1166,7 @@ void *__44__BWAudioSourceNode_makeOutputsLiveIfNeeded__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)stop:(id *)a3
+- (BOOL)stop:(id *)stop
 {
   v4 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -1286,21 +1286,21 @@ void __26__BWAudioSourceNode_stop___block_invoke_2(uint64_t a1)
   }
 }
 
-+ (id)audioSourceNodeWithAttributes:(id)a3 sessionPreset:(id)a4 clock:(OpaqueCMClock *)a5 doConfigureAudio:(BOOL)a6 doMixWithOthers:(BOOL)a7 doAllowHQBluetoothRecording:(BOOL)a8 audioSession:(id)a9 isAppAudioSession:(BOOL)a10 doEndInterruption:(BOOL)a11 audioSessionIsProxy:(BOOL)a12 audioIsPlayingToBuiltinSpeaker:(BOOL)a13 audioSessionActivatedByBWGraph:(BOOL)a14 clientAuditToken:(id *)a15 clientSDKVersionToken:(unint64_t)a16 clientOSVersionSupportsDecoupledIO:(BOOL)a17 clientAudioClockDeviceUID:(id)a18 preferredIOBufferDuration:(id)a19 audioCaptureConnectionConfigurations:(id)a20 isConfiguredForContinuityCapture:(BOOL)a21 isAudioOnlyRecordingSession:(BOOL)a22 remoteIOOutputFormat:(id)a23 outErr:(int *)a24
++ (id)audioSourceNodeWithAttributes:(id)attributes sessionPreset:(id)preset clock:(OpaqueCMClock *)clock doConfigureAudio:(BOOL)audio doMixWithOthers:(BOOL)others doAllowHQBluetoothRecording:(BOOL)recording audioSession:(id)session isAppAudioSession:(BOOL)self0 doEndInterruption:(BOOL)self1 audioSessionIsProxy:(BOOL)self2 audioIsPlayingToBuiltinSpeaker:(BOOL)self3 audioSessionActivatedByBWGraph:(BOOL)self4 clientAuditToken:(id *)self5 clientSDKVersionToken:(unint64_t)self6 clientOSVersionSupportsDecoupledIO:(BOOL)self7 clientAudioClockDeviceUID:(id)self8 preferredIOBufferDuration:(id)self9 audioCaptureConnectionConfigurations:(id)configurations isConfiguredForContinuityCapture:(BOOL)capture isAudioOnlyRecordingSession:(BOOL)recordingSession remoteIOOutputFormat:(id)format outErr:(int *)err
 {
   v24 = [BWAudioSourceNode alloc];
-  v25 = *&a15->var0[4];
-  v34[0] = *a15->var0;
+  v25 = *&token->var0[4];
+  v34[0] = *token->var0;
   v34[1] = v25;
-  v26 = [(BWAudioSourceNode *)v24 _initWithAttributes:a3 sessionPreset:a4 clock:a5 doConfigureAudio:a6 doMixWithOthers:a7 doAllowHQBluetoothRecording:a8 audioSession:a9 isAppAudioSession:a10 doEndInterruption:a11 audioSessionIsProxy:a12 audioIsPlayingToBuiltinSpeaker:a13 audioSessionActivatedByBWGraph:a14 clientAuditToken:v34 clientSDKVersionToken:a16 clientOSVersionSupportsDecoupledIO:a17 clientAudioClockDeviceUID:a18 preferredIOBufferDuration:a19 audioCaptureConnectionConfigurations:a20 isConfiguredForContinuityCapture:a21 isAudioOnlyRecordingSession:a22 remoteIOOutputFormat:a23 outErr:a24];
+  v26 = [(BWAudioSourceNode *)v24 _initWithAttributes:attributes sessionPreset:preset clock:clock doConfigureAudio:audio doMixWithOthers:others doAllowHQBluetoothRecording:recording audioSession:session isAppAudioSession:audioSession doEndInterruption:interruption audioSessionIsProxy:proxy audioIsPlayingToBuiltinSpeaker:speaker audioSessionActivatedByBWGraph:graph clientAuditToken:v34 clientSDKVersionToken:versionToken clientOSVersionSupportsDecoupledIO:o clientAudioClockDeviceUID:d preferredIOBufferDuration:duration audioCaptureConnectionConfigurations:configurations isConfiguredForContinuityCapture:capture isAudioOnlyRecordingSession:recordingSession remoteIOOutputFormat:format outErr:err];
 
   return v26;
 }
 
-- (void)setLevelMeteringEnabled:(BOOL)a3
+- (void)setLevelMeteringEnabled:(BOOL)enabled
 {
-  self->_levelMeteringEnabled = a3;
-  inData = a3;
+  self->_levelMeteringEnabled = enabled;
+  inData = enabled;
   if (AudioUnitSetProperty(self->_audioUnit, 0x766u, 1u, 1u, &inData, 4u))
   {
     self->_levelMeteringEnabled = 0;
@@ -1361,7 +1361,7 @@ void __26__BWAudioSourceNode_stop___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)updateWithAudioSession:(id)a3 clientAuditToken:(id *)a4
+- (void)updateWithAudioSession:(id)session clientAuditToken:(id *)token
 {
   if (self->_streamStarted)
   {
@@ -1379,15 +1379,15 @@ void __26__BWAudioSourceNode_stop___block_invoke_2(uint64_t a1)
 
   else
   {
-    v9 = *&a4->var0[4];
-    *self->_clientAuditToken.val = *a4->var0;
+    v9 = *&token->var0[4];
+    *self->_clientAuditToken.val = *token->var0;
     *&self->_clientAuditToken.val[4] = v9;
-    v10 = *&a4->var0[4];
-    v11[0] = *a4->var0;
+    v10 = *&token->var0[4];
+    v11[0] = *token->var0;
     v11[1] = v10;
     self->_clientPID = FigCaptureGetPIDFromAuditToken(v11);
 
-    self->_audioSession = a3;
+    self->_audioSession = session;
     self->_audioSessionIsProxy = 0;
     *&v11[0] = 0;
     if (FigAudioSessionClockCreateForAVAudioSession())
@@ -1402,34 +1402,34 @@ void __26__BWAudioSourceNode_stop___block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)outputForMicSourcePosition:(int)a3
+- (id)outputForMicSourcePosition:(int)position
 {
-  if (a3 > 2)
+  if (position > 2)
   {
     return 0;
   }
 
   else
   {
-    return self->_outputsByMicSourcePosition[a3];
+    return self->_outputsByMicSourcePosition[position];
   }
 }
 
-- (void)setStereoAudioCapturePairedCameraZoomFactor:(float)a3
+- (void)setStereoAudioCapturePairedCameraZoomFactor:(float)factor
 {
   if (!self->_streamStarted)
   {
-    self->_stereoAudioCapturePairedCameraZoomFactor = a3;
-    self->_nextZoomFactor = a3;
+    self->_stereoAudioCapturePairedCameraZoomFactor = factor;
+    self->_nextZoomFactor = factor;
   }
 }
 
-- (void)updateStereoAudioCapturePairedCameraBaseFieldOfView:(float)a3 zoomFactor:(float)a4
+- (void)updateStereoAudioCapturePairedCameraBaseFieldOfView:(float)view zoomFactor:(float)factor
 {
   os_unfair_lock_lock(&self->_zoomLock);
   stereoAudioCapturePairedCameraBaseFieldOfView = self->_stereoAudioCapturePairedCameraBaseFieldOfView;
   stereoAudioCapturePairedCameraZoomFactor = self->_stereoAudioCapturePairedCameraZoomFactor;
-  if (stereoAudioCapturePairedCameraBaseFieldOfView == a3 && stereoAudioCapturePairedCameraZoomFactor == a4)
+  if (stereoAudioCapturePairedCameraBaseFieldOfView == view && stereoAudioCapturePairedCameraZoomFactor == factor)
   {
 
     os_unfair_lock_unlock(&self->_zoomLock);
@@ -1437,9 +1437,9 @@ void __26__BWAudioSourceNode_stop___block_invoke_2(uint64_t a1)
 
   else
   {
-    self->_stereoAudioCapturePairedCameraZoomFactor = (stereoAudioCapturePairedCameraBaseFieldOfView / a3) * stereoAudioCapturePairedCameraZoomFactor;
-    self->_stereoAudioCapturePairedCameraBaseFieldOfView = a3;
-    self->_nextZoomFactor = a4;
+    self->_stereoAudioCapturePairedCameraZoomFactor = (stereoAudioCapturePairedCameraBaseFieldOfView / view) * stereoAudioCapturePairedCameraZoomFactor;
+    self->_stereoAudioCapturePairedCameraBaseFieldOfView = view;
+    self->_nextZoomFactor = factor;
     os_unfair_lock_unlock(&self->_zoomLock);
     zoomHandlerQueue = self->_zoomHandlerQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1451,10 +1451,10 @@ void __26__BWAudioSourceNode_stop___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)zoomCommandHandler:(id)a3 didApplyZoomFactor:(float)a4 zoomFactorWithoutFudge:(float)a5 targetZoomFactor:(float)a6 rampComplete:(BOOL)a7 rampCommandID:(int)a8
+- (void)zoomCommandHandler:(id)handler didApplyZoomFactor:(float)factor zoomFactorWithoutFudge:(float)fudge targetZoomFactor:(float)zoomFactor rampComplete:(BOOL)complete rampCommandID:(int)d
 {
   os_unfair_lock_lock(&self->_zoomLock);
-  self->_nextZoomFactor = a4;
+  self->_nextZoomFactor = factor;
   os_unfair_lock_unlock(&self->_zoomLock);
   zoomHandlerQueue = self->_zoomHandlerQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1465,14 +1465,14 @@ void __26__BWAudioSourceNode_stop___block_invoke_2(uint64_t a1)
   dispatch_async(zoomHandlerQueue, block);
 }
 
-- (void)prepareToStartRecordingWithOrientation:(int)a3 recordingSettingsID:(int64_t)a4 prefersNoInterruptionsByRingtonesAndAlerts:(BOOL)a5 completionHandler:(id)a6
+- (void)prepareToStartRecordingWithOrientation:(int)orientation recordingSettingsID:(int64_t)d prefersNoInterruptionsByRingtonesAndAlerts:(BOOL)alerts completionHandler:(id)handler
 {
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
-  v16 = a5;
-  self->_prefersNoInterruptionsByRingtonesAndAlerts = a5;
-  if (a5 || FigCFEqual())
+  alertsCopy = alerts;
+  self->_prefersNoInterruptionsByRingtonesAndAlerts = alerts;
+  if (alerts || FigCFEqual())
   {
     [(BWAudioSourceNode *)self _setupPrepareToRecordStateWithFlags:?];
     audioSessionSetRecordingRelatedPropertyQueue = self->_audioSessionSetRecordingRelatedPropertyQueue;
@@ -1480,11 +1480,11 @@ void __26__BWAudioSourceNode_stop___block_invoke_2(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __141__BWAudioSourceNode_prepareToStartRecordingWithOrientation_recordingSettingsID_prefersNoInterruptionsByRingtonesAndAlerts_completionHandler___block_invoke;
     block[3] = &unk_1E799B928;
-    v14 = a3;
+    orientationCopy = orientation;
     block[4] = self;
-    block[5] = a6;
+    block[5] = handler;
     block[6] = v15;
-    block[7] = a4;
+    block[7] = d;
     v11 = block;
   }
 
@@ -1501,8 +1501,8 @@ void __26__BWAudioSourceNode_stop___block_invoke_2(uint64_t a1)
     v12[1] = 3221225472;
     v12[2] = __141__BWAudioSourceNode_prepareToStartRecordingWithOrientation_recordingSettingsID_prefersNoInterruptionsByRingtonesAndAlerts_completionHandler___block_invoke_2;
     v12[3] = &unk_1E79903B8;
-    v12[4] = a6;
-    v12[5] = a4;
+    v12[4] = handler;
+    v12[5] = d;
     v11 = v12;
   }
 
@@ -1665,26 +1665,26 @@ uint64_t __42__BWAudioSourceNode_unprepareForRecording__block_invoke(uint64_t a1
   return result;
 }
 
-- (uint64_t)_setAudioSessionAudioModeAndSelectMic:(uint64_t)a1
+- (uint64_t)_setAudioSessionAudioModeAndSelectMic:(uint64_t)mic
 {
-  if (a1)
+  if (mic)
   {
-    if (*(a1 + 160))
+    if (*(mic + 160))
     {
-      [(BWAudioSourceNode *)a1 _updateMXSessionAudioMode];
-      v4 = [(BWAudioSourceNode *)a1 _desiredSampleRate:?];
-      [(BWAudioSourceNode *)a1 _configureAudioSessionWithDefaultHardwareSampleRate:a2 didCallDoNotNotifyOtherSessionsOnNextInactive:v4];
+      [(BWAudioSourceNode *)mic _updateMXSessionAudioMode];
+      v4 = [(BWAudioSourceNode *)mic _desiredSampleRate:?];
+      [(BWAudioSourceNode *)mic _configureAudioSessionWithDefaultHardwareSampleRate:a2 didCallDoNotNotifyOtherSessionsOnNextInactive:v4];
     }
 
-    [(BWAudioSourceNode *)a1 _selectMicForCurrentAudioRoute];
+    [(BWAudioSourceNode *)mic _selectMicForCurrentAudioRoute];
   }
 
   return 0;
 }
 
-- (uint64_t)_setAudioSessionMXPropertyWithKey:(uint64_t)a3 value:
+- (uint64_t)_setAudioSessionMXPropertyWithKey:(uint64_t)key value:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -1697,8 +1697,8 @@ uint64_t __42__BWAudioSourceNode_unprepareForRecording__block_invoke(uint64_t a1
   }
 
   v9 = 0;
-  [*(a1 + 160) setMXSessionProperty:a2 value:a3 error:&v9];
-  v7 = [v9 code];
+  [*(self + 160) setMXSessionProperty:a2 value:key error:&v9];
+  code = [v9 code];
   OUTLINED_FUNCTION_18();
   if (v6)
   {
@@ -1706,7 +1706,7 @@ uint64_t __42__BWAudioSourceNode_unprepareForRecording__block_invoke(uint64_t a1
     kdebug_trace();
   }
 
-  return v7;
+  return code;
 }
 
 - (uint64_t)_updatePullFormatDescription
@@ -1819,7 +1819,7 @@ uint64_t __42__BWAudioSourceNode_unprepareForRecording__block_invoke(uint64_t a1
       if (*(v1 + 160))
       {
         v156 = [(BWAudioSourceNode *)v1 _copyAudioSessionMXProperty:v229 err:?];
-        v30 = [v156 intValue];
+        intValue = [v156 intValue];
 
         if (dword_1ED844430)
         {
@@ -1832,7 +1832,7 @@ uint64_t __42__BWAudioSourceNode_unprepareForRecording__block_invoke(uint64_t a1
             *__s1 = 136315394;
             *&__s1[4] = "[BWAudioSourceNode _updatePullFormatDescription]";
             *&__s1[12] = 1024;
-            *&__s1[14] = v30;
+            *&__s1[14] = intValue;
             OUTLINED_FUNCTION_3_89();
             OUTLINED_FUNCTION_4_80();
             _os_log_send_and_compose_impl();
@@ -1864,10 +1864,10 @@ uint64_t __42__BWAudioSourceNode_unprepareForRecording__block_invoke(uint64_t a1
 
       else
       {
-        v30 = 0;
+        intValue = 0;
       }
 
-      if (*&__s2[28] != v30)
+      if (*&__s2[28] != intValue)
       {
         if (dword_1ED844430)
         {
@@ -1880,7 +1880,7 @@ uint64_t __42__BWAudioSourceNode_unprepareForRecording__block_invoke(uint64_t a1
             *__s1 = 136315650;
             OUTLINED_FUNCTION_9_54();
             *&__s1[18] = v40;
-            *&__s1[20] = v30;
+            *&__s1[20] = intValue;
             OUTLINED_FUNCTION_3_89();
             OUTLINED_FUNCTION_4_80();
             _os_log_send_and_compose_impl();
@@ -1891,8 +1891,8 @@ uint64_t __42__BWAudioSourceNode_unprepareForRecording__block_invoke(uint64_t a1
           OUTLINED_FUNCTION_13_0();
         }
 
-        *&__s2[24] = (*&__s2[32] >> 3) * v30;
-        *&__s2[28] = v30;
+        *&__s2[24] = (*&__s2[32] >> 3) * intValue;
+        *&__s2[28] = intValue;
         *&__s2[16] = *&__s2[24];
         v10 = 1;
       }
@@ -1962,11 +1962,11 @@ LABEL_34:
     v41 = -346533888;
     if ([OUTLINED_FUNCTION_47_12() streamDescription])
     {
-      v42 = [OUTLINED_FUNCTION_47_12() streamDescription];
+      streamDescription = [OUTLINED_FUNCTION_47_12() streamDescription];
       v2 = 0;
-      v43 = *(v42 + 32);
-      v44 = *(v42 + 16);
-      *__s2 = *v42;
+      v43 = *(streamDescription + 32);
+      v44 = *(streamDescription + 16);
+      *__s2 = *streamDescription;
       *&__s2[16] = v44;
       *&__s2[32] = v43;
     }
@@ -2518,13 +2518,13 @@ LABEL_151:
 
 - (void)_generateSilenceIfNeeded
 {
-  if (a1 && (*(a1 + 648) & 1) == 0 && *(a1 + 448) == 1 && (*(a1 + 449) & 1) == 0)
+  if (self && (*(self + 648) & 1) == 0 && *(self + 448) == 1 && (*(self + 449) & 1) == 0)
   {
     v2 = objc_autoreleasePoolPush();
-    if (*(a1 + 512) == atomic_fetch_add((a1 + 488), 0))
+    if (*(self + 512) == atomic_fetch_add((self + 488), 0))
     {
       contexta = v2;
-      StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(*(a1 + 296));
+      StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(*(self + 296));
       memset(&v65, 0, sizeof(v65));
       OUTLINED_FUNCTION_30_13();
       CMTimeMake(&v65, v4, v5);
@@ -2533,7 +2533,7 @@ LABEL_151:
       v7 = AudioConvertHostTimeToNanos(CurrentHostTime);
       CMTimeMake(&time, v7, 1000000000);
       HostTimeClock = CMClockGetHostTimeClock();
-      CMSyncConvertTime(&v64, &time, HostTimeClock, *(a1 + 280));
+      CMSyncConvertTime(&v64, &time, HostTimeClock, *(self + 280));
       OUTLINED_FUNCTION_30_13();
       v62 = v64;
       CMTimeConvertScale(&time, &v62, v9, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
@@ -2543,21 +2543,21 @@ LABEL_151:
       CMTimeSubtract(v12, v10, v11);
       v64 = time;
       memset(&time, 0, sizeof(time));
-      *&v62.value = *(a1 + 528);
+      *&v62.value = *(self + 528);
       OUTLINED_FUNCTION_23_22();
       CMTimeAdd(v15, v13, v14);
       if (OUTLINED_FUNCTION_29_17(time.epoch, v24, contexta, v32, v34, v36, v40, v44, v47, v50, v53, v57, v59, v60, time.value, *&time.timescale, v62.epoch) <= 0)
       {
         while (1)
         {
-          *(a1 + 560) = *(a1 + 304);
-          if ((StreamBasicDescription->mFormatFlags & 0x20) != 0 && *(a1 + 588) == 6)
+          *(self + 560) = *(self + 304);
+          if ((StreamBasicDescription->mFormatFlags & 0x20) != 0 && *(self + 588) == 6)
           {
             break;
           }
 
-          v19 = [(BWAudioSourceNode *)a1 _createSampleBufferForTimestampedAudioBufferList:0 audioBufferIndex:?];
-          [*(a1 + 16) emitSampleBuffer:v19];
+          v19 = [(BWAudioSourceNode *)self _createSampleBufferForTimestampedAudioBufferList:0 audioBufferIndex:?];
+          [*(self + 16) emitSampleBuffer:v19];
           NumSamples = CMSampleBufferGetNumSamples(v19);
           if (v19)
           {
@@ -2565,14 +2565,14 @@ LABEL_151:
           }
 
 LABEL_20:
-          *(a1 + 496) += NumSamples;
+          *(self + 496) += NumSamples;
           memset(&v62, 0, sizeof(v62));
           OUTLINED_FUNCTION_30_13();
           CMTimeMake(&v62, v20, v21);
-          OUTLINED_FUNCTION_55_13(v62.epoch, v25, context, v62.value, *&v62.timescale, v37, v41, *(a1 + 528), *(a1 + 536), *(a1 + 544), v54, *v58);
-          *(a1 + 528) = *v58;
-          *(a1 + 544) = *&v58[16];
-          OUTLINED_FUNCTION_49_11(a1 + 528);
+          OUTLINED_FUNCTION_55_13(v62.epoch, v25, context, v62.value, *&v62.timescale, v37, v41, *(self + 528), *(self + 536), *(self + 544), v54, *v58);
+          *(self + 528) = *v58;
+          *(self + 544) = *&v58[16];
+          OUTLINED_FUNCTION_49_11(self + 528);
           OUTLINED_FUNCTION_55_13(v65.epoch, v26, contextb, v65.value, *&v65.timescale, v38, v42, v45, v48, v51, v55, *v58);
           time = *v58;
           if (OUTLINED_FUNCTION_29_17(*&v58[16], v27, contextc, v33, v35, v39, v43, v46, v49, v52, v56, *v58, *&v58[16], v61, *v58, *&v58[8], v62.epoch) >= 1)
@@ -2585,10 +2585,10 @@ LABEL_20:
         NumSamples = 0;
         while (1)
         {
-          if (*(a1 + 128 + 8 * v16))
+          if (*(self + 128 + 8 * v16))
           {
-            v18 = [(BWAudioSourceNode *)a1 _createSampleBufferForTimestampedAudioBufferList:v16 audioBufferIndex:?];
-            [*(a1 + 128 + 8 * v16) emitSampleBuffer:v18];
+            v18 = [(BWAudioSourceNode *)self _createSampleBufferForTimestampedAudioBufferList:v16 audioBufferIndex:?];
+            [*(self + 128 + 8 * v16) emitSampleBuffer:v18];
             if (NumSamples)
             {
               if (!v18)
@@ -2628,9 +2628,9 @@ LABEL_21:
   }
 }
 
-- (void)_updateStereoAudioCapturePairedCameraZoomFactorAndStartTimer:(uint64_t)a1
+- (void)_updateStereoAudioCapturePairedCameraZoomFactorAndStartTimer:(uint64_t)timer
 {
-  if (a1)
+  if (timer)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -2639,21 +2639,21 @@ LABEL_21:
       FigDebugAssert3();
     }
 
-    if (BWAudioCaptureModeIsSpatial(*(a1 + 588)))
+    if (BWAudioCaptureModeIsSpatial(*(timer + 588)))
     {
       OUTLINED_FUNCTION_33();
       if (v4)
       {
-        if (!*(a1 + 632))
+        if (!*(timer + 632))
         {
           UpTimeNanoseconds = FigGetUpTimeNanoseconds();
           v6 = dispatch_time(0, 0);
-          if (UpTimeNanoseconds >= *(a1 + 624))
+          if (UpTimeNanoseconds >= *(timer + 624))
           {
-            os_unfair_lock_lock((a1 + 644));
-            v9 = *(a1 + 640);
-            os_unfair_lock_unlock((a1 + 644));
-            [(BWAudioSourceNode *)a1 _setVADCameraParametersWithDirection:UpTimeNanoseconds zoomFactor:v9 forTime:?];
+            os_unfair_lock_lock((timer + 644));
+            v9 = *(timer + 640);
+            os_unfair_lock_unlock((timer + 644));
+            [(BWAudioSourceNode *)timer _setVADCameraParametersWithDirection:UpTimeNanoseconds zoomFactor:v9 forTime:?];
             if (!a2)
             {
               return;
@@ -2665,17 +2665,17 @@ LABEL_21:
             return;
           }
 
-          v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, *(a1 + 608));
-          *(a1 + 632) = v7;
+          v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, *(timer + 608));
+          *(timer + 632) = v7;
           handler[0] = MEMORY[0x1E69E9820];
           handler[1] = 3221225472;
           handler[2] = __82__BWAudioSourceNode__updateStereoAudioCapturePairedCameraZoomFactorAndStartTimer___block_invoke;
           handler[3] = &unk_1E798F870;
-          handler[4] = a1;
+          handler[4] = timer;
           dispatch_source_set_event_handler(v7, handler);
-          v8 = dispatch_time(v6, *(a1 + 624) - UpTimeNanoseconds);
+          v8 = dispatch_time(v6, *(timer + 624) - UpTimeNanoseconds);
           OUTLINED_FUNCTION_53_10(v8);
-          dispatch_resume(*(a1 + 632));
+          dispatch_resume(*(timer + 632));
         }
       }
     }
@@ -2684,90 +2684,90 @@ LABEL_21:
 
 - (void)_signalAndClearStartGroup
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 652));
-    v2 = *(a1 + 656);
+    os_unfair_lock_lock((self + 652));
+    v2 = *(self + 656);
     if (v2)
     {
       dispatch_group_leave(v2);
 
-      *(a1 + 656) = 0;
+      *(self + 656) = 0;
     }
 
-    os_unfair_lock_unlock((a1 + 652));
+    os_unfair_lock_unlock((self + 652));
   }
 }
 
-- (char)_initWithAttributes:(uint64_t)a3 sessionPreset:(const void *)a4 clock:(char)a5 doConfigureAudio:(char)a6 doMixWithOthers:(char)a7 doAllowHQBluetoothRecording:(void *)a8 audioSession:(unsigned __int8)a9 isAppAudioSession:(char)a10 doEndInterruption:(unsigned __int8)a11 audioSessionIsProxy:(unsigned __int8)a12 audioIsPlayingToBuiltinSpeaker:(unsigned __int8)a13 audioSessionActivatedByBWGraph:(_OWORD *)a14 clientAuditToken:(uint64_t)a15 clientSDKVersionToken:(char)a16 clientOSVersionSupportsDecoupledIO:(void *)a17 clientAudioClockDeviceUID:(void *)a18 preferredIOBufferDuration:(void *)a19 audioCaptureConnectionConfigurations:(char)a20 isConfiguredForContinuityCapture:(unsigned __int8)a21 isAudioOnlyRecordingSession:(void *)a22 remoteIOOutputFormat:(int *)a23 outErr:
+- (char)_initWithAttributes:(uint64_t)attributes sessionPreset:(const void *)preset clock:(char)clock doConfigureAudio:(char)audio doMixWithOthers:(char)others doAllowHQBluetoothRecording:(void *)recording audioSession:(unsigned __int8)session isAppAudioSession:(char)self0 doEndInterruption:(unsigned __int8)self1 audioSessionIsProxy:(unsigned __int8)self2 audioIsPlayingToBuiltinSpeaker:(unsigned __int8)self3 audioSessionActivatedByBWGraph:(_OWORD *)self4 clientAuditToken:(uint64_t)self5 clientSDKVersionToken:(char)self6 clientOSVersionSupportsDecoupledIO:(void *)self7 clientAudioClockDeviceUID:(void *)self8 preferredIOBufferDuration:(void *)self9 audioCaptureConnectionConfigurations:(char)configurations isConfiguredForContinuityCapture:(unsigned __int8)capture isAudioOnlyRecordingSession:(void *)recordingSession remoteIOOutputFormat:(int *)format outErr:
 {
-  v24 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (a4)
+    if (preset)
     {
-      v97.receiver = a1;
+      v97.receiver = self;
       v97.super_class = BWAudioSourceNode;
-      v24 = objc_msgSendSuper2(&v97, sel_init);
-      if (!v24)
+      selfCopy = objc_msgSendSuper2(&v97, sel_init);
+      if (!selfCopy)
       {
-        return v24;
+        return selfCopy;
       }
 
       v72 = v23;
-      v33 = a22;
-      v76 = a18;
-      v75 = a17;
-      v74 = a14;
-      HIDWORD(v73) = a12;
-      *(v24 + 35) = CFRetain(a4);
-      *(v24 + 72) = 0;
-      *(v24 + 113) = 1;
-      *(v24 + 19) = [objc_msgSend(a2 objectForKeyedSubscript:{@"AudioSettingsForPresetsMap", "objectForKeyedSubscript:", a3}];
-      v24[194] = a20;
-      v24[648] = 0;
-      if (v24[648] == 1 && dword_1ED844430)
+      recordingSessionCopy3 = recordingSession;
+      dCopy = d;
+      oCopy = o;
+      graphCopy = graph;
+      HIDWORD(v73) = proxy;
+      *(selfCopy + 35) = CFRetain(preset);
+      *(selfCopy + 72) = 0;
+      *(selfCopy + 113) = 1;
+      *(selfCopy + 19) = [objc_msgSend(a2 objectForKeyedSubscript:{@"AudioSettingsForPresetsMap", "objectForKeyedSubscript:", attributes}];
+      selfCopy[194] = configurations;
+      selfCopy[648] = 0;
+      if (selfCopy[648] == 1 && dword_1ED844430)
       {
-        v71 = a22;
+        recordingSessionCopy2 = recordingSession;
         v96 = 0;
         v95 = 0;
         os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
         os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
         fig_log_call_emit_and_clean_up_after_send_and_compose();
-        v33 = a22;
+        recordingSessionCopy3 = recordingSession;
       }
 
-      v35 = a13;
-      v24[649] = a12;
-      if (a8)
+      speakerCopy2 = speaker;
+      selfCopy[649] = proxy;
+      if (recording)
       {
-        LODWORD(v71) = a21;
-        LODWORD(v70) = a9;
-        HIDWORD(v70) = a11;
-        HIDWORD(v73) = a13;
-        *(v24 + 20) = a8;
-        v24[198] = a5;
-        v24[199] = a6;
-        v24[200] = a7;
-        v24[196] = a10;
-        v24[197] = a9;
-        v24[192] = a11;
+        LODWORD(recordingSessionCopy2) = capture;
+        LODWORD(v70) = session;
+        HIDWORD(v70) = interruption;
+        HIDWORD(v73) = speaker;
+        *(selfCopy + 20) = recording;
+        selfCopy[198] = clock;
+        selfCopy[199] = audio;
+        selfCopy[200] = others;
+        selfCopy[196] = audioSession;
+        selfCopy[197] = session;
+        selfCopy[192] = interruption;
         OUTLINED_FUNCTION_33();
         if (v36)
         {
-          *(v24 + 21) = CFRetain(*MEMORY[0x1E69AF828]);
+          *(selfCopy + 21) = CFRetain(*MEMORY[0x1E69AF828]);
           v37 = [objc_msgSend(a2 objectForKeyedSubscript:{@"PrefersDecoupledIO", "BOOLValue"}];
-          v35 = a13;
+          speakerCopy2 = speaker;
           if (v37)
           {
-            if (a16)
+            if (versionToken)
             {
               OUTLINED_FUNCTION_33();
               if (v36)
               {
-                if ((v24[194] & 1) == 0)
+                if ((selfCopy[194] & 1) == 0)
                 {
-                  v24[176] = 1;
+                  selfCopy[176] = 1;
                 }
               }
             }
@@ -2775,29 +2775,29 @@ LABEL_21:
         }
       }
 
-      v24[195] = v35;
-      v38 = a14[1];
-      *(v24 + 216) = *a14;
-      *(v24 + 232) = v38;
-      v39 = *(v24 + 232);
-      v94[0] = *(v24 + 216);
+      selfCopy[195] = speakerCopy2;
+      v38 = graph[1];
+      *(selfCopy + 216) = *graph;
+      *(selfCopy + 232) = v38;
+      v39 = *(selfCopy + 232);
+      v94[0] = *(selfCopy + 216);
       v94[1] = v39;
-      *(v24 + 62) = FigCaptureGetPIDFromAuditToken(v94);
-      *(v24 + 32) = a15;
-      *(v24 + 33) = a17;
-      *(v24 + 34) = a18;
-      v24[650] = a21;
-      v40 = v33;
+      *(selfCopy + 62) = FigCaptureGetPIDFromAuditToken(v94);
+      *(selfCopy + 32) = token;
+      *(selfCopy + 33) = o;
+      *(selfCopy + 34) = d;
+      selfCopy[650] = capture;
+      builtInMicrophoneRequiredSampleRate = recordingSessionCopy3;
       v48 = 0;
-      *(v24 + 83) = v40;
-      *(v24 + 80) = 1919512419;
-      *(v24 + 26) = 0;
+      *(selfCopy + 83) = builtInMicrophoneRequiredSampleRate;
+      *(selfCopy + 80) = 1919512419;
+      *(selfCopy + 26) = 0;
       do
       {
-        v40 = OUTLINED_FUNCTION_60_1(v40, v41, v42, v43, v44, v45, v46, v47, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, 0);
-        if (v40)
+        builtInMicrophoneRequiredSampleRate = OUTLINED_FUNCTION_60_1(builtInMicrophoneRequiredSampleRate, v41, v42, v43, v44, v45, v46, v47, v67, v68, v69, v70, recordingSessionCopy2, v72, v73, graphCopy, oCopy, dCopy, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, 0);
+        if (builtInMicrophoneRequiredSampleRate)
         {
-          v49 = v40;
+          v49 = builtInMicrophoneRequiredSampleRate;
           v50 = MEMORY[0];
           while (2)
           {
@@ -2806,7 +2806,7 @@ LABEL_21:
             {
               if (MEMORY[0] != v50)
               {
-                objc_enumerationMutation(a19);
+                objc_enumerationMutation(duration);
               }
 
               v52 = *(8 * v51);
@@ -2817,15 +2817,15 @@ LABEL_21:
                 isKindOfClass = [v52 builtInMicrophonePosition];
                 if (v48 == isKindOfClass)
                 {
-                  v61 = [[BWNodeOutput alloc] initWithMediaType:1936684398 node:v24];
-                  *&v24[8 * v48 + 128] = v61;
-                  [v24 addOutput:v61];
+                  v61 = [[BWNodeOutput alloc] initWithMediaType:1936684398 node:selfCopy];
+                  *&selfCopy[8 * v48 + 128] = v61;
+                  [selfCopy addOutput:v61];
 
-                  v40 = [v52 builtInMicrophoneRequiredSampleRate];
-                  if (v62 > *(v24 + 26))
+                  builtInMicrophoneRequiredSampleRate = [v52 builtInMicrophoneRequiredSampleRate];
+                  if (v62 > *(selfCopy + 26))
                   {
-                    v40 = [v52 builtInMicrophoneRequiredSampleRate];
-                    *(v24 + 26) = v63;
+                    builtInMicrophoneRequiredSampleRate = [v52 builtInMicrophoneRequiredSampleRate];
+                    *(selfCopy + 26) = v63;
                   }
 
                   goto LABEL_30;
@@ -2836,9 +2836,9 @@ LABEL_21:
             }
 
             while (v49 != v51);
-            v40 = OUTLINED_FUNCTION_60_1(isKindOfClass, v54, v55, v56, v57, v58, v59, v60, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93);
-            v49 = v40;
-            if (v40)
+            builtInMicrophoneRequiredSampleRate = OUTLINED_FUNCTION_60_1(isKindOfClass, v54, v55, v56, v57, v58, v59, v60, v67, v68, v69, v70, recordingSessionCopy2, v72, v73, graphCopy, oCopy, dCopy, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93);
+            v49 = builtInMicrophoneRequiredSampleRate;
+            if (builtInMicrophoneRequiredSampleRate)
             {
               continue;
             }
@@ -2852,23 +2852,23 @@ LABEL_30:
       }
 
       while (v48 != 3);
-      *(v24 + 55) = FigDispatchQueueCreateWithPriority();
-      *(v24 + 76) = FigDispatchQueueCreateWithPriority();
-      *(v24 + 161) = 0;
-      *(v24 + 77) = 100000000;
-      [v24 setSupportsLiveReconfiguration:1];
-      [v24 setSupportsPrepareWhileRunning:1];
-      v64 = [(BWAudioSourceNode *)v24 _setupAudioUnit];
-      if (!v64)
+      *(selfCopy + 55) = FigDispatchQueueCreateWithPriority();
+      *(selfCopy + 76) = FigDispatchQueueCreateWithPriority();
+      *(selfCopy + 161) = 0;
+      *(selfCopy + 77) = 100000000;
+      [selfCopy setSupportsLiveReconfiguration:1];
+      [selfCopy setSupportsPrepareWhileRunning:1];
+      _setupAudioUnit = [(BWAudioSourceNode *)selfCopy _setupAudioUnit];
+      if (!_setupAudioUnit)
       {
-        *(v24 + 163) = 0;
+        *(selfCopy + 163) = 0;
         v65 = dispatch_group_create();
-        *(v24 + 82) = v65;
+        *(selfCopy + 82) = v65;
         dispatch_group_enter(v65);
-        return v24;
+        return selfCopy;
       }
 
-      v66 = v64;
+      v66 = _setupAudioUnit;
       OUTLINED_FUNCTION_1_5();
       FigDebugAssert3();
     }
@@ -2880,23 +2880,23 @@ LABEL_30:
       v66 = -12780;
     }
 
-    if (a23)
+    if (format)
     {
-      *a23 = v66;
+      *format = v66;
     }
 
     return 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
   if (self->_configuresSession && self->_audioSession)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x1E698D6D0] object:self->_audioSession];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E698D6D0] object:self->_audioSession];
   }
 
   MXSessionAudioMode = self->_MXSessionAudioMode;
@@ -2943,9 +2943,9 @@ LABEL_30:
   [(BWNode *)&v9 dealloc];
 }
 
-- (id)_copyAudioSessionMXProperty:(_DWORD *)a3 err:
+- (id)_copyAudioSessionMXProperty:(_DWORD *)property err:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -2958,21 +2958,21 @@ LABEL_30:
   }
 
   v11 = 0;
-  v7 = [*(a1 + 160) getMXSessionProperty:a2 error:&v11];
+  v7 = [*(self + 160) getMXSessionProperty:a2 error:&v11];
   if (v11)
   {
-    v8 = [v11 code];
+    code = [v11 code];
   }
 
   else
   {
-    v8 = 0;
+    code = 0;
   }
 
   v9 = v7;
-  if (a3)
+  if (property)
   {
-    *a3 = v8;
+    *property = code;
   }
 
   OUTLINED_FUNCTION_18();
@@ -2993,7 +2993,7 @@ LABEL_30:
   return 0;
 }
 
-- (uint64_t)_setVADCameraParametersWithDirection:(uint64_t)a3 zoomFactor:(float)a4 forTime:
+- (uint64_t)_setVADCameraParametersWithDirection:(uint64_t)direction zoomFactor:(float)factor forTime:
 {
   if (result)
   {
@@ -3008,14 +3008,14 @@ LABEL_30:
 
     if ((*(v7 + 194) & 1) == 0)
     {
-      if (a4 < 1.0)
+      if (factor < 1.0)
       {
-        a4 = 1.0;
+        factor = 1.0;
       }
 
-      if (a2 != -1 || a4 != *(v7 + 600))
+      if (a2 != -1 || factor != *(v7 + 600))
       {
-        *&v8 = *(v7 + 596) / a4;
+        *&v8 = *(v7 + 596) / factor;
         v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
         if ((a2 & 0x80000000) != 0)
         {
@@ -3034,11 +3034,11 @@ LABEL_30:
         result = [(BWAudioSourceNode *)v7 _setAudioSessionMXPropertyWithKey:v14 value:?];
         if (!result)
         {
-          *(v7 + 600) = a4;
+          *(v7 + 600) = factor;
         }
       }
 
-      *(v7 + 624) = *(v7 + 616) + a3;
+      *(v7 + 624) = *(v7 + 616) + direction;
     }
   }
 
@@ -3053,16 +3053,16 @@ uint64_t __82__BWAudioSourceNode__updateStereoAudioCapturePairedCameraZoomFactor
   return [(BWAudioSourceNode *)v2 _updateStereoAudioCapturePairedCameraZoomFactorAndStartTimer:?];
 }
 
-- (double)_desiredSampleRate:(uint64_t)a1
+- (double)_desiredSampleRate:(uint64_t)rate
 {
-  if (!a1)
+  if (!rate)
   {
     return 0.0;
   }
 
-  v3 = *(a1 + 208);
+  v3 = *(rate + 208);
   result = fmax(v3, 0.0);
-  if (*(a1 + 194))
+  if (*(rate + 194))
   {
     result = 48000.0;
   }
@@ -3074,7 +3074,7 @@ uint64_t __82__BWAudioSourceNode__updateStereoAudioCapturePairedCameraZoomFactor
 
   else
   {
-    v5 = *(a1 + 194);
+    v5 = *(rate + 194);
   }
 
   if (result == 0.0)
@@ -3090,9 +3090,9 @@ uint64_t __82__BWAudioSourceNode__updateStereoAudioCapturePairedCameraZoomFactor
   return result;
 }
 
-- (uint64_t)_setAudioSessionBatchedMXProperties:(uint64_t)a1
+- (uint64_t)_setAudioSessionBatchedMXProperties:(uint64_t)properties
 {
-  if (!a1)
+  if (!properties)
   {
     return 0;
   }
@@ -3104,7 +3104,7 @@ uint64_t __82__BWAudioSourceNode__updateStereoAudioCapturePairedCameraZoomFactor
   }
 
   v35[0] = 0;
-  [*(a1 + 160) setMXProperties:a2 propertyErrors:v35];
+  [*(properties + 160) setMXProperties:a2 propertyErrors:v35];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -3126,8 +3126,8 @@ uint64_t __82__BWAudioSourceNode__updateStereoAudioCapturePairedCameraZoomFactor
         }
 
         v8 = *(*(&v31 + 1) + 8 * i);
-        v9 = [objc_msgSend(v8 allKeys];
-        v10 = [objc_msgSend(v8 objectForKeyedSubscript:{v9), "integerValue"}];
+        allKeys = [objc_msgSend(v8 allKeys];
+        v10 = [objc_msgSend(v8 objectForKeyedSubscript:{allKeys), "integerValue"}];
         if (v10)
         {
           v29 = 0;
@@ -3146,11 +3146,11 @@ uint64_t __82__BWAudioSourceNode__updateStereoAudioCapturePairedCameraZoomFactor
 
           if (v13)
           {
-            v14 = [a2 objectForKeyedSubscript:v9];
+            v14 = [a2 objectForKeyedSubscript:allKeys];
             v20 = 136315906;
             v21 = "[BWAudioSourceNode _setAudioSessionBatchedMXProperties:]";
             v22 = 2112;
-            v23 = v9;
+            v23 = allKeys;
             v24 = 2112;
             v25 = v14;
             v26 = 1024;
@@ -3202,12 +3202,12 @@ uint64_t __82__BWAudioSourceNode__updateStereoAudioCapturePairedCameraZoomFactor
   }
 
   v15 = 0;
-  v3 = [*(v1 + 160) availableInputs];
-  if ([v3 count])
+  availableInputs = [*(v1 + 160) availableInputs];
+  if ([availableInputs count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
-    v5 = [v4 portType];
-    v6 = [v5 isEqualToString:*MEMORY[0x1E698D668]];
+    v4 = [availableInputs objectAtIndexedSubscript:0];
+    portType = [v4 portType];
+    v6 = [portType isEqualToString:*MEMORY[0x1E698D668]];
     if (v4)
     {
       if (v6)
@@ -3232,10 +3232,10 @@ uint64_t __82__BWAudioSourceNode__updateStereoAudioCapturePairedCameraZoomFactor
         }
 
         v7 = [(BWAudioSourceNode *)v1 _copyAudioSessionMXProperty:&v15 err:?];
-        v8 = [v7 bw_builtInMicRouteDictionary];
-        if (v8)
+        bw_builtInMicRouteDictionary = [v7 bw_builtInMicRouteDictionary];
+        if (bw_builtInMicRouteDictionary)
         {
-          v9 = v8;
+          v9 = bw_builtInMicRouteDictionary;
           if (*(v1 + 144))
           {
             if ([v1 isAudioPlayingToBuiltinSpeaker])
@@ -3302,9 +3302,9 @@ LABEL_25:
   return v15;
 }
 
-- (uint64_t)_configureAudioSessionWithDefaultHardwareSampleRate:(double)a3 didCallDoNotNotifyOtherSessionsOnNextInactive:
+- (uint64_t)_configureAudioSessionWithDefaultHardwareSampleRate:(double)rate didCallDoNotNotifyOtherSessionsOnNextInactive:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -3317,21 +3317,21 @@ LABEL_25:
   }
 
   v30 = 0;
-  v6 = *(a1 + 176);
-  [(BWAudioSourceNode *)a1 _deactivateAudioSessionIfNecessary:a2];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setObject:@"PlayAndRecord" forKeyedSubscript:*MEMORY[0x1E69AFCC0]];
-  [v7 setObject:*(a1 + 168) forKeyedSubscript:*MEMORY[0x1E69AFCE8]];
-  [v7 setObject:@"Speaker" forKeyedSubscript:*MEMORY[0x1E69AFD70]];
-  v8 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  [objc_msgSend(v8 attributeForKey:{*MEMORY[0x1E69AEB30]), "count"}];
-  if ((*(a1 + 584) & 1) != 0 || ((OUTLINED_FUNCTION_33(), v10) ? (v10 = v9 == 0) : (v10 = 0), v10))
+  v6 = *(self + 176);
+  [(BWAudioSourceNode *)self _deactivateAudioSessionIfNecessary:a2];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"PlayAndRecord" forKeyedSubscript:*MEMORY[0x1E69AFCC0]];
+  [dictionary setObject:*(self + 168) forKeyedSubscript:*MEMORY[0x1E69AFCE8]];
+  [dictionary setObject:@"Speaker" forKeyedSubscript:*MEMORY[0x1E69AFD70]];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  [objc_msgSend(mEMORY[0x1E69AED10] attributeForKey:{*MEMORY[0x1E69AEB30]), "count"}];
+  if ((*(self + 584) & 1) != 0 || ((OUTLINED_FUNCTION_33(), v10) ? (v10 = v9 == 0) : (v10 = 0), v10))
   {
-    [v7 setObject:&unk_1F2246360 forKeyedSubscript:*MEMORY[0x1E69B0020]];
+    [dictionary setObject:&unk_1F2246360 forKeyedSubscript:*MEMORY[0x1E69B0020]];
   }
 
-  [(BWAudioSourceNode *)a1 _setAudioSessionBatchedMXProperties:v7];
-  if (-[BWAudioSourceNode _setAudioSessionMXPropertyWithKey:value:](a1, *MEMORY[0x1E69B02B8], [MEMORY[0x1E696AD98] numberWithBool:*(a1 + 200)]))
+  [(BWAudioSourceNode *)self _setAudioSessionBatchedMXProperties:dictionary];
+  if (-[BWAudioSourceNode _setAudioSessionMXPropertyWithKey:value:](self, *MEMORY[0x1E69B02B8], [MEMORY[0x1E696AD98] numberWithBool:*(self + 200)]))
   {
     OUTLINED_FUNCTION_1_5();
     goto LABEL_49;
@@ -3339,12 +3339,12 @@ LABEL_25:
 
   if (v6 && ([OUTLINED_FUNCTION_24_20() preferDecoupledIO:1 error:&v30], !objc_msgSend(v30, "code")))
   {
-    [OUTLINED_FUNCTION_24_20() setPreferredInputSampleRate:&v30 error:a3];
+    [OUTLINED_FUNCTION_24_20() setPreferredInputSampleRate:&v30 error:rate];
   }
 
   else
   {
-    [OUTLINED_FUNCTION_24_20() setPreferredOutputSampleRate:&v30 error:a3];
+    [OUTLINED_FUNCTION_24_20() setPreferredOutputSampleRate:&v30 error:rate];
   }
 
   [v30 code];
@@ -3354,12 +3354,12 @@ LABEL_25:
     goto LABEL_48;
   }
 
-  v11 = *(a1 + 272);
+  v11 = *(self + 272);
   if (v11)
   {
-    v12 = *(a1 + 160);
+    v12 = *(self + 160);
     [v11 doubleValue];
-    [v12 setPreferredIOBufferFrameSize:(v13 * a3) error:&v30];
+    [v12 setPreferredIOBufferFrameSize:(v13 * rate) error:&v30];
     if ([v30 code])
     {
       goto LABEL_48;
@@ -3372,9 +3372,9 @@ LABEL_25:
     goto LABEL_23;
   }
 
-  v14 = [MEMORY[0x1E69AED10] sharedInstance];
-  v15 = [objc_msgSend(a1 "graph")];
-  [v14 setAttribute:v15 forKey:*MEMORY[0x1E69AE9E0] error:&v30];
+  mEMORY[0x1E69AED10]2 = [MEMORY[0x1E69AED10] sharedInstance];
+  v15 = [objc_msgSend(self "graph")];
+  [mEMORY[0x1E69AED10]2 setAttribute:v15 forKey:*MEMORY[0x1E69AE9E0] error:&v30];
   if ([v30 code])
   {
 LABEL_48:
@@ -3382,43 +3382,43 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if ([(BWAudioSourceNode *)a1 _setAudioSessionMXPropertyWithKey:MEMORY[0x1E695E118] value:?])
+  if ([(BWAudioSourceNode *)self _setAudioSessionMXPropertyWithKey:MEMORY[0x1E695E118] value:?])
   {
     goto LABEL_45;
   }
 
 LABEL_23:
-  if ([(BWAudioSourceNode *)a1 _setAudioSessionMXPropertyWithKey:0 value:?])
+  if ([(BWAudioSourceNode *)self _setAudioSessionMXPropertyWithKey:0 value:?])
   {
 LABEL_45:
     OUTLINED_FUNCTION_1_5();
     goto LABEL_49;
   }
 
-  if (BWAudioCaptureModeIsSpatial(*(a1 + 588)))
+  if (BWAudioCaptureModeIsSpatial(*(self + 588)))
   {
-    v16 = *(a1 + 144) == 0;
-    os_unfair_lock_lock((a1 + 644));
-    v17 = *(a1 + 640);
-    os_unfair_lock_unlock((a1 + 644));
-    v18 = *(a1 + 608);
+    v16 = *(self + 144) == 0;
+    os_unfair_lock_lock((self + 644));
+    v17 = *(self + 640);
+    os_unfair_lock_unlock((self + 644));
+    v18 = *(self + 608);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampleRate_didCallDoNotNotifyOtherSessionsOnNextInactive___block_invoke;
     block[3] = &unk_1E7990178;
-    block[4] = a1;
+    block[4] = self;
     v28 = v16;
     v29 = v17;
     dispatch_async(v18, block);
     goto LABEL_28;
   }
 
-  if (!FigCFEqual() || (*(a1 + 194) & 1) != 0)
+  if (!FigCFEqual() || (*(self + 194) & 1) != 0)
   {
     goto LABEL_28;
   }
 
-  v20 = *(a1 + 128);
+  v20 = *(self + 128);
   v10 = v20 == 0;
   v21 = v20 != 0;
   if (v10)
@@ -3431,22 +3431,22 @@ LABEL_45:
     v22 = 3;
   }
 
-  if (*(a1 + 136))
+  if (*(self + 136))
   {
     v21 = v22;
   }
 
-  v23 = *(a1 + 144) ? v21 | 4 : v21;
+  v23 = *(self + 144) ? v21 | 4 : v21;
   v25[0] = @"camera mics";
   v26[0] = [MEMORY[0x1E696AD98] numberWithInt:v23];
   v25[1] = @"camera wind suppression";
-  v26[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(a1 + 592)];
+  v26[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(self + 592)];
   v25[2] = @"camera real time dynamics";
-  v26[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(a1 + 593) ^ 1u];
+  v26[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(self + 593) ^ 1u];
   v25[3] = @"camera capture is audio only";
-  v26[3] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(a1 + 650)];
+  v26[3] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(self + 650)];
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:4];
-  if (![(BWAudioSourceNode *)a1 _setAudioSessionMXPropertyWithKey:v24 value:?])
+  if (![(BWAudioSourceNode *)self _setAudioSessionMXPropertyWithKey:v24 value:?])
   {
     goto LABEL_28;
   }
@@ -3465,13 +3465,13 @@ LABEL_28:
   return 0;
 }
 
-- (uint64_t)_deactivateAudioSessionIfNecessary:(uint64_t)a1
+- (uint64_t)_deactivateAudioSessionIfNecessary:(uint64_t)necessary
 {
-  if (a1 && [*(a1 + 160) isActive] && (objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_24_20(), "category"), "isEqualToString:", *MEMORY[0x1E698D510]) & 1) == 0)
+  if (necessary && [*(necessary + 160) isActive] && (objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_24_20(), "category"), "isEqualToString:", *MEMORY[0x1E698D510]) & 1) == 0)
   {
-    if ((*(a1 + 196) & 1) == 0)
+    if ((*(necessary + 196) & 1) == 0)
     {
-      [(BWAudioSourceNode *)a1 _setAudioSessionMXPropertyWithKey:MEMORY[0x1E695E118] value:?];
+      [(BWAudioSourceNode *)necessary _setAudioSessionMXPropertyWithKey:MEMORY[0x1E695E118] value:?];
       *a2 = 1;
     }
 
@@ -3494,15 +3494,15 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
 
 - (void)_updateMXSessionAudioMode
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 588);
+    v1 = *(self + 588);
     if (v1 == 6)
     {
       v2 = MEMORY[0x1E69AF8B0];
     }
 
-    else if (*(a1 + 584) == 1)
+    else if (*(self + 584) == 1)
     {
       v2 = MEMORY[0x1E69AF870];
     }
@@ -3517,7 +3517,7 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
       v2 = MEMORY[0x1E69AF920];
     }
 
-    else if (*(a1 + 594) == 1)
+    else if (*(self + 594) == 1)
     {
       v2 = MEMORY[0x1E69AF978];
     }
@@ -3543,8 +3543,8 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
     }
 
     v3 = *v2;
-    v4 = *(a1 + 168);
-    *(a1 + 168) = v3;
+    v4 = *(self + 168);
+    *(self + 168) = v3;
     if (v3)
     {
       CFRetain(v3);
@@ -3558,9 +3558,9 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
   }
 }
 
-- (uint64_t)_getAudioDevicePullFrames:(uint64_t)a1
+- (uint64_t)_getAudioDevicePullFrames:(uint64_t)frames
 {
-  if (!a1)
+  if (!frames)
   {
     return 0;
   }
@@ -3569,7 +3569,7 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
   v8 = 0;
   if (a2)
   {
-    v5 = [(BWAudioSourceNode *)a1 _copyAudioSessionMXProperty:&v8 err:?];
+    v5 = [(BWAudioSourceNode *)frames _copyAudioSessionMXProperty:&v8 err:?];
     v6 = v5;
     if (v8)
     {
@@ -3592,21 +3592,21 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
 
 - (uint64_t)_generatePullBuffers
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  TimestampedAudioBufferListQueueReleaseAndClear((a1 + 336));
-  TimestampedAudioBufferListQueueReleaseAndClear((a1 + 344));
-  v2 = *(a1 + 328);
+  TimestampedAudioBufferListQueueReleaseAndClear((self + 336));
+  TimestampedAudioBufferListQueueReleaseAndClear((self + 344));
+  v2 = *(self + 328);
   if (v2)
   {
     CFRelease(v2);
-    *(a1 + 328) = 0;
+    *(self + 328) = 0;
   }
 
-  StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(*(a1 + 296));
+  StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(*(self + 296));
   if (StreamBasicDescription->mSampleRate <= 0.0)
   {
     v4 = 0;
@@ -3614,7 +3614,7 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
 
   else
   {
-    v4 = *(a1 + 304);
+    v4 = *(self + 304);
     if (v4)
     {
       v4 = (StreamBasicDescription->mSampleRate / v4);
@@ -3676,7 +3676,7 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
   while (1)
   {
     v17 = TimestampedAudioBufferListNew(v6, mChannelsPerFrame, v16, StreamBasicDescription->mBytesPerFrame << 12);
-    v18 = CMSimpleQueueEnqueue(*(a1 + 336), v17);
+    v18 = CMSimpleQueueEnqueue(*(self + 336), v17);
     if (v18)
     {
       break;
@@ -3685,13 +3685,13 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
     if (!--v5)
     {
       v19 = 0;
-      *(a1 + 352) = 0;
+      *(self + 352) = 0;
       v20 = *MEMORY[0x1E6960C70];
       v21 = *(MEMORY[0x1E6960C70] + 16);
-      *(a1 + 376) = v21;
-      *(a1 + 360) = v20;
-      *(a1 + 408) = v20;
-      *(a1 + 424) = v21;
+      *(self + 376) = v21;
+      *(self + 360) = v20;
+      *(self + 408) = v20;
+      *(self + 424) = v21;
       return v19;
     }
   }
@@ -3701,7 +3701,7 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
   return v19;
 }
 
-- (CMSampleBufferRef)_createSampleBufferForTimestampedAudioBufferList:(int)a3 audioBufferIndex:
+- (CMSampleBufferRef)_createSampleBufferForTimestampedAudioBufferList:(int)list audioBufferIndex:
 {
   if (result)
   {
@@ -3758,7 +3758,7 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
         {
           v24 = 0;
           v25 = v8->mBytesPerFrame >> 1;
-          v26 = *(*(a2 + 48) + 16 * a3 + 16);
+          v26 = *(*(a2 + 48) + 16 * list + 16);
           v27 = &dataPointerOut[v10];
           do
           {
@@ -3798,7 +3798,7 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
 
         else
         {
-          memcpy(&dataPointerOut[v10], *(*(a2 + 48) + 16 * a3 + 16), v11);
+          memcpy(&dataPointerOut[v10], *(*(a2 + 48) + 16 * list + 16), v11);
         }
       }
 
@@ -3850,17 +3850,17 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
 
 - (void)_generateSamples
 {
-  if (a1 && (*(a1 + 449) & 1) == 0)
+  if (self && (*(self + 449) & 1) == 0)
   {
     context = objc_autoreleasePoolPush();
-    StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(*(a1 + 296));
+    StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(*(self + 296));
     mFormatFlags = StreamBasicDescription->mFormatFlags;
-    v5 = *(a1 + 496);
-    *(a1 + 496) = 0;
+    v5 = *(self + 496);
+    *(self + 496) = 0;
       ;
     }
 
-    v6 = CMSimpleQueueDequeue(*(a1 + 344));
+    v6 = CMSimpleQueueDequeue(*(self + 344));
     if (v6)
     {
       v8 = v6;
@@ -3945,14 +3945,14 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
           }
         }
 
-        if ((mFormatFlags & 0x20) != 0 && *(a1 + 588) == 6)
+        if ((mFormatFlags & 0x20) != 0 && *(self + 588) == 6)
         {
           for (i = 0; i != 3; ++i)
           {
-            if (*(a1 + 128 + 8 * i))
+            if (*(self + 128 + 8 * i))
             {
-              v21 = [(BWAudioSourceNode *)a1 _createSampleBufferForTimestampedAudioBufferList:v8 audioBufferIndex:i];
-              [*(a1 + 128 + 8 * i) emitSampleBuffer:v21];
+              v21 = [(BWAudioSourceNode *)self _createSampleBufferForTimestampedAudioBufferList:v8 audioBufferIndex:i];
+              [*(self + 128 + 8 * i) emitSampleBuffer:v21];
               if (v21)
               {
                 CFRelease(v21);
@@ -3963,26 +3963,26 @@ uint64_t __119__BWAudioSourceNode__configureAudioSessionWithDefaultHardwareSampl
 
         else
         {
-          v22 = [(BWAudioSourceNode *)a1 _createSampleBufferForTimestampedAudioBufferList:v8 audioBufferIndex:0];
-          [*(a1 + 16) emitSampleBuffer:v22];
+          v22 = [(BWAudioSourceNode *)self _createSampleBufferForTimestampedAudioBufferList:v8 audioBufferIndex:0];
+          [*(self + 16) emitSampleBuffer:v22];
           if (v22)
           {
             CFRelease(v22);
           }
         }
 
-        v23 = a1 + v9[1009];
+        v23 = self + v9[1009];
         *(v23 + 8) = *(v8 + 1);
         OUTLINED_FUNCTION_30_13();
         CMTimeMake(&lhs, v24, v25);
         OUTLINED_FUNCTION_57_12(v37.epoch, v27, v28, v29, context, v31, *(&v31 + 1), v37.value, *&v37.timescale, v32, v33, rhs.value);
         *(v23 + 24) = rhs;
-        v1 = *(a1 + 480);
+        v1 = *(self + 480);
         v26 = dispatch_time(0, ((2 * v8[5]) / StreamBasicDescription->mSampleRate * 1000000000.0));
         dispatch_source_set_timer(v1, v26, 0xFFFFFFFFFFFFFFFFLL, 0);
         TimestampedAudioBufferListReset(v8);
-        CMSimpleQueueEnqueue(*(a1 + 336), v8);
-        v8 = CMSimpleQueueDequeue(*(a1 + 344));
+        CMSimpleQueueEnqueue(*(self + 336), v8);
+        v8 = CMSimpleQueueDequeue(*(self + 344));
         v5 = 0;
       }
 

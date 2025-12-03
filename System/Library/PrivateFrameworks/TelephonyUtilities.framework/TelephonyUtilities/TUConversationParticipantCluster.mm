@@ -1,69 +1,69 @@
 @interface TUConversationParticipantCluster
-+ (id)UUIDFromURLComponents:(id)a3 namePrefix:(id)a4;
-+ (id)participantClusterFromURLComponents:(id)a3 namePrefix:(id)a4;
-+ (id)queryItemName:(id)a3 prefix:(id)a4;
-+ (int64_t)typeFromURLComponents:(id)a3 namePrefix:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToParticipantCluster:(id)a3;
-- (TUConversationParticipantCluster)initWithCoder:(id)a3;
-- (TUConversationParticipantCluster)initWithUUID:(id)a3 type:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)UUIDFromURLComponents:(id)components namePrefix:(id)prefix;
++ (id)participantClusterFromURLComponents:(id)components namePrefix:(id)prefix;
++ (id)queryItemName:(id)name prefix:(id)prefix;
++ (int64_t)typeFromURLComponents:(id)components namePrefix:(id)prefix;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToParticipantCluster:(id)cluster;
+- (TUConversationParticipantCluster)initWithCoder:(id)coder;
+- (TUConversationParticipantCluster)initWithUUID:(id)d type:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)queryItemsWithNamePrefix:(id)a3;
-- (id)typeQueryItemWithNamePrefix:(id)a3;
-- (id)uuidQueryItemWithNamePrefix:(id)a3;
+- (id)queryItemsWithNamePrefix:(id)prefix;
+- (id)typeQueryItemWithNamePrefix:(id)prefix;
+- (id)uuidQueryItemWithNamePrefix:(id)prefix;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUConversationParticipantCluster
 
-- (TUConversationParticipantCluster)initWithUUID:(id)a3 type:(int64_t)a4
+- (TUConversationParticipantCluster)initWithUUID:(id)d type:(int64_t)type
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = TUConversationParticipantCluster;
   v8 = [(TUConversationParticipantCluster *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_UUID, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_UUID, d);
+    v9->_type = type;
   }
 
   return v9;
 }
 
-- (TUConversationParticipantCluster)initWithCoder:(id)a3
+- (TUConversationParticipantCluster)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_UUID);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
   v8 = NSStringFromSelector(sel_type);
-  v9 = [v4 decodeIntegerForKey:v8];
+  v9 = [coderCopy decodeIntegerForKey:v8];
 
   v10 = [(TUConversationParticipantCluster *)self initWithUUID:v7 type:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUConversationParticipantCluster *)self UUID];
+  coderCopy = coder;
+  uUID = [(TUConversationParticipantCluster *)self UUID];
   v6 = NSStringFromSelector(sel_UUID);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:uUID forKey:v6];
 
-  v7 = [(TUConversationParticipantCluster *)self type];
+  type = [(TUConversationParticipantCluster *)self type];
   v8 = NSStringFromSelector(sel_type);
-  [v4 encodeInteger:v7 forKey:v8];
+  [coderCopy encodeInteger:type forKey:v8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TUConversationParticipantCluster allocWithZone:a3];
-  v5 = [(TUConversationParticipantCluster *)self UUID];
-  v6 = [(TUConversationParticipantCluster *)v4 initWithUUID:v5 type:[(TUConversationParticipantCluster *)self type]];
+  v4 = [TUConversationParticipantCluster allocWithZone:zone];
+  uUID = [(TUConversationParticipantCluster *)self UUID];
+  v6 = [(TUConversationParticipantCluster *)v4 initWithUUID:uUID type:[(TUConversationParticipantCluster *)self type]];
 
   return v6;
 }
@@ -71,8 +71,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUConversationParticipantCluster *)self UUID];
-  [v3 appendFormat:@" UUID=%@", v4];
+  uUID = [(TUConversationParticipantCluster *)self UUID];
+  [v3 appendFormat:@" UUID=%@", uUID];
 
   [v3 appendFormat:@" type=%zd", -[TUConversationParticipantCluster type](self, "type")];
   [v3 appendString:@">"];
@@ -83,18 +83,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TUConversationParticipantCluster *)self UUID];
-  v4 = [v3 hash];
+  uUID = [(TUConversationParticipantCluster *)self UUID];
+  v4 = [uUID hash];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[TUConversationParticipantCluster type](self, "type")}];
   v6 = [v5 hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -102,21 +102,21 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationParticipantCluster *)self isEqualToParticipantCluster:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationParticipantCluster *)self isEqualToParticipantCluster:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToParticipantCluster:(id)a3
+- (BOOL)isEqualToParticipantCluster:(id)cluster
 {
-  v4 = a3;
-  v5 = [(TUConversationParticipantCluster *)self UUID];
-  v6 = [v4 UUID];
-  if ([v5 isEqual:v6])
+  clusterCopy = cluster;
+  uUID = [(TUConversationParticipantCluster *)self UUID];
+  uUID2 = [clusterCopy UUID];
+  if ([uUID isEqual:uUID2])
   {
-    v7 = [(TUConversationParticipantCluster *)self type];
-    v8 = v7 == [v4 type];
+    type = [(TUConversationParticipantCluster *)self type];
+    v8 = type == [clusterCopy type];
   }
 
   else
@@ -127,14 +127,14 @@
   return v8;
 }
 
-+ (id)participantClusterFromURLComponents:(id)a3 namePrefix:(id)a4
++ (id)participantClusterFromURLComponents:(id)components namePrefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 UUIDFromURLComponents:v6 namePrefix:v7];
+  componentsCopy = components;
+  prefixCopy = prefix;
+  v8 = [self UUIDFromURLComponents:componentsCopy namePrefix:prefixCopy];
   if (v8)
   {
-    v9 = -[TUConversationParticipantCluster initWithUUID:type:]([TUConversationParticipantCluster alloc], "initWithUUID:type:", v8, [a1 typeFromURLComponents:v6 namePrefix:v7]);
+    v9 = -[TUConversationParticipantCluster initWithUUID:type:]([TUConversationParticipantCluster alloc], "initWithUUID:type:", v8, [self typeFromURLComponents:componentsCopy namePrefix:prefixCopy]);
   }
 
   else
@@ -145,78 +145,78 @@
   return v9;
 }
 
-+ (id)UUIDFromURLComponents:(id)a3 namePrefix:(id)a4
++ (id)UUIDFromURLComponents:(id)components namePrefix:(id)prefix
 {
-  v5 = a4;
-  v6 = a3;
+  prefixCopy = prefix;
+  componentsCopy = components;
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(sel_UUID);
-  v9 = [v7 queryItemName:v8 prefix:v5];
+  v9 = [v7 queryItemName:v8 prefix:prefixCopy];
 
-  v10 = [v6 firstQueryItemWithName:v9];
+  v10 = [componentsCopy firstQueryItemWithName:v9];
 
-  v11 = [v10 value];
+  value = [v10 value];
 
-  if (v11)
+  if (value)
   {
     v12 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v13 = [v10 value];
-    v11 = [v12 initWithUUIDString:v13];
+    value2 = [v10 value];
+    value = [v12 initWithUUIDString:value2];
   }
 
-  return v11;
+  return value;
 }
 
-+ (id)queryItemName:(id)a3 prefix:(id)a4
++ (id)queryItemName:(id)name prefix:(id)prefix
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  nameCopy = name;
+  v6 = nameCopy;
+  if (prefix)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", a4, v5];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", prefix, nameCopy];
   }
 
   else
   {
-    v7 = v5;
+    nameCopy = nameCopy;
   }
 
-  v8 = v7;
+  v8 = nameCopy;
 
   return v8;
 }
 
-+ (int64_t)typeFromURLComponents:(id)a3 namePrefix:(id)a4
++ (int64_t)typeFromURLComponents:(id)components namePrefix:(id)prefix
 {
-  v5 = a4;
-  v6 = a3;
+  prefixCopy = prefix;
+  componentsCopy = components;
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(sel_type);
-  v9 = [v7 queryItemName:v8 prefix:v5];
+  v9 = [v7 queryItemName:v8 prefix:prefixCopy];
 
-  v10 = [v6 firstQueryItemWithName:v9];
+  v10 = [componentsCopy firstQueryItemWithName:v9];
 
   if (v10)
   {
-    v11 = [v10 value];
-    v12 = [v11 integerValue];
+    value = [v10 value];
+    integerValue = [value integerValue];
   }
 
   else
   {
-    v12 = 0;
+    integerValue = 0;
   }
 
-  return v12;
+  return integerValue;
 }
 
-- (id)queryItemsWithNamePrefix:(id)a3
+- (id)queryItemsWithNamePrefix:(id)prefix
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUConversationParticipantCluster *)self uuidQueryItemWithNamePrefix:v4];
+  prefixCopy = prefix;
+  v5 = [(TUConversationParticipantCluster *)self uuidQueryItemWithNamePrefix:prefixCopy];
   v10[0] = v5;
-  v6 = [(TUConversationParticipantCluster *)self typeQueryItemWithNamePrefix:v4];
+  v6 = [(TUConversationParticipantCluster *)self typeQueryItemWithNamePrefix:prefixCopy];
 
   v10[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
@@ -226,27 +226,27 @@
   return v7;
 }
 
-- (id)uuidQueryItemWithNamePrefix:(id)a3
+- (id)uuidQueryItemWithNamePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_UUID);
-  v7 = [v5 queryItemName:v6 prefix:v4];
+  v7 = [v5 queryItemName:v6 prefix:prefixCopy];
 
   v8 = objc_alloc(MEMORY[0x1E696AF60]);
-  v9 = [(TUConversationParticipantCluster *)self UUID];
-  v10 = [v9 UUIDString];
-  v11 = [v8 initWithName:v7 value:v10];
+  uUID = [(TUConversationParticipantCluster *)self UUID];
+  uUIDString = [uUID UUIDString];
+  v11 = [v8 initWithName:v7 value:uUIDString];
 
   return v11;
 }
 
-- (id)typeQueryItemWithNamePrefix:(id)a3
+- (id)typeQueryItemWithNamePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_type);
-  v7 = [v5 queryItemName:v6 prefix:v4];
+  v7 = [v5 queryItemName:v6 prefix:prefixCopy];
 
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", -[TUConversationParticipantCluster type](self, "type")];
   v9 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:v7 value:v8];

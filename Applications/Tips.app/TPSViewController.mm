@@ -1,13 +1,13 @@
 @interface TPSViewController
 - (TPSKVOManager)KVOManager;
 - (TPSViewController)init;
-- (TPSViewController)initWithCoder:(id)a3;
-- (TPSViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TPSViewController)initWithCoder:(id)coder;
+- (TPSViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)commonInit;
 - (void)dealloc;
 - (void)removeErrorView;
-- (void)setLoading:(BOOL)a3;
-- (void)showErrorView:(id)a3;
+- (void)setLoading:(BOOL)loading;
+- (void)showErrorView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -17,8 +17,8 @@
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   v3 = +[TPSNetworkPathMonitor sharedMonitor];
-  v4 = [(TPSViewController *)self networkMonitorToken];
-  [v3 removeObserverForKey:v4];
+  networkMonitorToken = [(TPSViewController *)self networkMonitorToken];
+  [v3 removeObserverForKey:networkMonitorToken];
 
   v5.receiver = self;
   v5.super_class = TPSViewController;
@@ -59,11 +59,11 @@
   return v3;
 }
 
-- (TPSViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TPSViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = TPSViewController;
-  v4 = [(TPSViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(TPSViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -73,11 +73,11 @@
   return v5;
 }
 
-- (TPSViewController)initWithCoder:(id)a3
+- (TPSViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TPSViewController;
-  v3 = [(TPSViewController *)&v6 initWithCoder:a3];
+  v3 = [(TPSViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -93,8 +93,8 @@
   v5.super_class = TPSViewController;
   [(TPSViewController *)&v5 viewDidLoad];
   v3 = +[TPSAppearance defaultBackgroundColor];
-  v4 = [(TPSViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(TPSViewController *)self view];
+  [view setBackgroundColor:v3];
 }
 
 - (TPSKVOManager)KVOManager
@@ -112,41 +112,41 @@
   return KVOManager;
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (self->_loading != a3)
+  if (self->_loading != loading)
   {
-    self->_loading = a3;
+    self->_loading = loading;
     loadingView = self->_loadingView;
-    if (a3)
+    if (loading)
     {
       if (!loadingView)
       {
-        v5 = [(TPSViewController *)self view];
+        view = [(TPSViewController *)self view];
         v6 = objc_alloc_init(TPSLoadingView);
         v7 = self->_loadingView;
         self->_loadingView = v6;
 
         [(TPSLoadingView *)self->_loadingView setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v5 addSubview:self->_loadingView];
-        v8 = [(TPSLoadingView *)self->_loadingView topAnchor];
-        v9 = [v5 topAnchor];
-        v10 = [v8 constraintEqualToAnchor:v9];
+        [view addSubview:self->_loadingView];
+        topAnchor = [(TPSLoadingView *)self->_loadingView topAnchor];
+        topAnchor2 = [view topAnchor];
+        v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
         [v10 setActive:1];
 
-        v11 = [(TPSLoadingView *)self->_loadingView bottomAnchor];
-        v12 = [v5 bottomAnchor];
-        v13 = [v11 constraintEqualToAnchor:v12];
+        bottomAnchor = [(TPSLoadingView *)self->_loadingView bottomAnchor];
+        bottomAnchor2 = [view bottomAnchor];
+        v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         [v13 setActive:1];
 
-        v14 = [(TPSLoadingView *)self->_loadingView leadingAnchor];
-        v15 = [v5 leadingAnchor];
-        v16 = [v14 constraintEqualToAnchor:v15];
+        leadingAnchor = [(TPSLoadingView *)self->_loadingView leadingAnchor];
+        leadingAnchor2 = [view leadingAnchor];
+        v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         [v16 setActive:1];
 
-        v17 = [(TPSLoadingView *)self->_loadingView trailingAnchor];
-        v18 = [v5 trailingAnchor];
-        v19 = [v17 constraintEqualToAnchor:v18];
+        trailingAnchor = [(TPSLoadingView *)self->_loadingView trailingAnchor];
+        trailingAnchor2 = [view trailingAnchor];
+        v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         [v19 setActive:1];
       }
 
@@ -162,30 +162,30 @@
   }
 }
 
-- (void)showErrorView:(id)a3
+- (void)showErrorView:(id)view
 {
   if (!self->_contentMessageViewController)
   {
-    v4 = a3;
-    v19 = [[ContentMessageViewModel alloc] initWithError:v4];
+    viewCopy = view;
+    v19 = [[ContentMessageViewModel alloc] initWithError:viewCopy];
 
     v5 = [[ContentMessageViewController alloc] initWithContentMessageViewModel:v19];
     contentMessageViewController = self->_contentMessageViewController;
     self->_contentMessageViewController = v5;
 
     [(TPSViewController *)self addChildViewController:self->_contentMessageViewController];
-    v7 = [(TPSViewController *)self view];
-    [v7 bounds];
+    view = [(TPSViewController *)self view];
+    [view bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(ContentMessageViewController *)self->_contentMessageViewController view];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    view2 = [(ContentMessageViewController *)self->_contentMessageViewController view];
+    [view2 setFrame:{v9, v11, v13, v15}];
 
-    v17 = [(TPSViewController *)self view];
-    v18 = [(ContentMessageViewController *)self->_contentMessageViewController view];
-    [v17 addSubview:v18];
+    view3 = [(TPSViewController *)self view];
+    view4 = [(ContentMessageViewController *)self->_contentMessageViewController view];
+    [view3 addSubview:view4];
 
     [(ContentMessageViewController *)self->_contentMessageViewController didMoveToParentViewController:self];
   }
@@ -193,8 +193,8 @@
 
 - (void)removeErrorView
 {
-  v3 = [(ContentMessageViewController *)self->_contentMessageViewController view];
-  [v3 removeFromSuperview];
+  view = [(ContentMessageViewController *)self->_contentMessageViewController view];
+  [view removeFromSuperview];
 
   [(ContentMessageViewController *)self->_contentMessageViewController willMoveToParentViewController:0];
   [(ContentMessageViewController *)self->_contentMessageViewController removeFromParentViewController];

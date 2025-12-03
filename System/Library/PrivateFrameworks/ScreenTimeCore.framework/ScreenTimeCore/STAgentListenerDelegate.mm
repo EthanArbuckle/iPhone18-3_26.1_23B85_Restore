@@ -1,38 +1,38 @@
 @interface STAgentListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (STAgentListenerDelegate)initWithAgentServer:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (STAgentListenerDelegate)initWithAgentServer:(id)server;
 @end
 
 @implementation STAgentListenerDelegate
 
-- (STAgentListenerDelegate)initWithAgentServer:(id)a3
+- (STAgentListenerDelegate)initWithAgentServer:(id)server
 {
-  v5 = a3;
+  serverCopy = server;
   v9.receiver = self;
   v9.super_class = STAgentListenerDelegate;
   v6 = [(STAgentListenerDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_agentServer, a3);
+    objc_storeStrong(&v6->_agentServer, server);
   }
 
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = [v6 serviceName];
+  connectionCopy = connection;
+  serviceName = [connectionCopy serviceName];
   v8 = +[STLog screentime];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100110EBC(v7, v6, v8);
+    sub_100110EBC(serviceName, connectionCopy, v8);
   }
 
-  if ([v7 isEqualToString:STMachServiceNameScreenTimePrivate])
+  if ([serviceName isEqualToString:STMachServiceNameScreenTimePrivate])
   {
-    v9 = [v6 valueForEntitlement:STEntitlementScreenTimePrivate];
+    v9 = [connectionCopy valueForEntitlement:STEntitlementScreenTimePrivate];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && ([v9 BOOLValue])
     {
@@ -56,22 +56,22 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (![v7 isEqualToString:STMachServiceNameScreenTime])
+  if (![serviceName isEqualToString:STMachServiceNameScreenTime])
   {
-    if (([v7 isEqualToString:STMachServiceNameContacts] & 1) == 0)
+    if (([serviceName isEqualToString:STMachServiceNameContacts] & 1) == 0)
     {
-      sub_100110F5C(a2, self, v7);
+      sub_100110F5C(a2, self, serviceName);
     }
 
-    v9 = [v6 valueForEntitlement:@"com.apple.private.contacts"];
+    v9 = [connectionCopy valueForEntitlement:@"com.apple.private.contacts"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || ([v9 BOOLValue] & 1) == 0)
     {
-      v12 = [v6 valueForEntitlement:@"com.apple.private.contactsui"];
+      v12 = [connectionCopy valueForEntitlement:@"com.apple.private.contactsui"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0 || ([v12 BOOLValue] & 1) == 0)
       {
-        v13 = [v6 valueForEntitlement:STEntitlementScreenTimePrivate];
+        v13 = [connectionCopy valueForEntitlement:STEntitlementScreenTimePrivate];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || ([v13 BOOLValue] & 1) == 0)
         {
@@ -96,11 +96,11 @@ LABEL_25:
 
   v9 = +[STScreenTimeAgentConnection newInterface];
 LABEL_26:
-  [v6 setExportedInterface:v9];
-  v15 = [(STAgentListenerDelegate *)self agentServer];
-  [v6 setExportedObject:v15];
+  [connectionCopy setExportedInterface:v9];
+  agentServer = [(STAgentListenerDelegate *)self agentServer];
+  [connectionCopy setExportedObject:agentServer];
 
-  [v6 resume];
+  [connectionCopy resume];
   v16 = 1;
 LABEL_31:
 

@@ -15,7 +15,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ParticipantViewLabelContainerView.intrinsicContentSize.getter();
   v5 = v4;
 

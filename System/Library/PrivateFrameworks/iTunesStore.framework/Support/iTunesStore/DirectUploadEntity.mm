@@ -1,76 +1,76 @@
 @interface DirectUploadEntity
-+ (id)newEntityValuesWithMediaSocialAttachment:(id)a3;
++ (id)newEntityValuesWithMediaSocialAttachment:(id)attachment;
 - (BOOL)deleteFromDatabase;
 - (MediaSocialPostEntity)postEntity;
 - (NSArray)artists;
-- (id)insertEntitiesForArtists:(id)a3 withProperties:(id)a4;
-- (int64_t)setFailedWithError:(id)a3;
+- (id)insertEntitiesForArtists:(id)artists withProperties:(id)properties;
+- (int64_t)setFailedWithError:(id)error;
 - (void)deleteAssetFile;
 - (void)resetStatusProperties;
-- (void)setProcessingWithResponse:(id)a3;
+- (void)setProcessingWithResponse:(id)response;
 @end
 
 @implementation DirectUploadEntity
 
-+ (id)newEntityValuesWithMediaSocialAttachment:(id)a3
++ (id)newEntityValuesWithMediaSocialAttachment:(id)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 albumIdentifier];
-  if (v5)
+  albumIdentifier = [attachmentCopy albumIdentifier];
+  if (albumIdentifier)
   {
-    [v4 setObject:v5 forKey:@"album_id"];
+    [v4 setObject:albumIdentifier forKey:@"album_id"];
   }
 
-  v6 = [v3 assetURL];
+  assetURL = [attachmentCopy assetURL];
 
-  if (v6)
+  if (assetURL)
   {
-    [v4 setObject:v6 forKey:@"asset_url"];
+    [v4 setObject:assetURL forKey:@"asset_url"];
   }
 
-  v7 = [v3 attachmentDescription];
+  attachmentDescription = [attachmentCopy attachmentDescription];
 
-  if (v7)
+  if (attachmentDescription)
   {
-    [v4 setObject:v7 forKey:@"description"];
+    [v4 setObject:attachmentDescription forKey:@"description"];
   }
 
-  v8 = [v3 categoryName];
+  categoryName = [attachmentCopy categoryName];
 
-  if (v8)
+  if (categoryName)
   {
-    [v4 setObject:v8 forKey:@"category_name"];
+    [v4 setObject:categoryName forKey:@"category_name"];
   }
 
-  v9 = [v3 subtitle];
+  subtitle = [attachmentCopy subtitle];
 
-  if (v9)
+  if (subtitle)
   {
-    [v4 setObject:v9 forKey:@"subtitle"];
+    [v4 setObject:subtitle forKey:@"subtitle"];
   }
 
-  v10 = [v3 title];
+  title = [attachmentCopy title];
 
-  if (v10)
+  if (title)
   {
-    [v4 setObject:v10 forKey:@"title"];
+    [v4 setObject:title forKey:@"title"];
   }
 
-  v11 = [v3 UTI];
+  v11 = [attachmentCopy UTI];
 
   if (v11)
   {
     [v4 setObject:v11 forKey:@"uti"];
   }
 
-  v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 deletesAssetWhenFinished]);
+  v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [attachmentCopy deletesAssetWhenFinished]);
   [v4 setObject:v12 forKey:@"owns_asset"];
 
-  v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isExplicitContent]);
+  v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [attachmentCopy isExplicitContent]);
   [v4 setObject:v13 forKey:@"is_explicit"];
 
-  [v3 previewFrameTimestamp];
+  [attachmentCopy previewFrameTimestamp];
   v14 = [NSNumber numberWithDouble:?];
   [v4 setObject:v14 forKey:@"preview_frame_time"];
 
@@ -84,10 +84,10 @@
   v15[0] = @"artist_id";
   v15[1] = @"name";
   v4 = [SSSQLiteComparisonPredicate predicateWithProperty:@"upload_id" equalToLongLong:[(DirectUploadEntity *)self persistentID]];
-  v5 = [(DirectUploadEntity *)self database];
+  database = [(DirectUploadEntity *)self database];
   v14 = @"order_index";
   v6 = [NSArray arrayWithObjects:&v14 count:1];
-  v7 = [DirectUploadArtistEntity queryWithDatabase:v5 predicate:v4 orderingProperties:v6];
+  v7 = [DirectUploadArtistEntity queryWithDatabase:database predicate:v4 orderingProperties:v6];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -150,19 +150,19 @@ LABEL_19:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 &= 2u;
     }
@@ -187,7 +187,7 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v11 = [NSString stringWithCString:v14 encoding:4, &v18, v16];
+      oSLogObject = [NSString stringWithCString:v14 encoding:4, &v18, v16];
       free(v14);
       SSFileLog();
     }
@@ -201,10 +201,10 @@ LABEL_21:
   }
 }
 
-- (id)insertEntitiesForArtists:(id)a3 withProperties:(id)a4
+- (id)insertEntitiesForArtists:(id)artists withProperties:(id)properties
 {
-  v6 = a4;
-  v7 = a3;
+  propertiesCopy = properties;
+  artistsCopy = artists;
   v8 = +[NSMutableArray array];
   v9 = [[NSNumber alloc] initWithLongLong:{-[DirectUploadEntity persistentID](self, "persistentID")}];
   [(DirectUploadEntity *)self database];
@@ -213,13 +213,13 @@ LABEL_21:
   v17[2] = sub_1001842F4;
   v17[3] = &unk_10032A6A8;
   v18 = v9;
-  v20 = v19 = v6;
+  v20 = v19 = propertiesCopy;
   v10 = v8;
   v21 = v10;
   v11 = v20;
-  v12 = v6;
+  v12 = propertiesCopy;
   v13 = v9;
-  [v7 enumerateObjectsUsingBlock:v17];
+  [artistsCopy enumerateObjectsUsingBlock:v17];
 
   v14 = v21;
   v15 = v10;
@@ -230,13 +230,13 @@ LABEL_21:
 - (MediaSocialPostEntity)postEntity
 {
   v3 = [(DirectUploadEntity *)self valueForProperty:@"post_id"];
-  v4 = [v3 longLongValue];
+  longLongValue = [v3 longLongValue];
 
-  if (v4)
+  if (longLongValue)
   {
     v5 = [MediaSocialPostEntity alloc];
-    v6 = [(DirectUploadEntity *)self database];
-    v7 = [(MediaSocialPostEntity *)v5 initWithPersistentID:v4 inDatabase:v6];
+    database = [(DirectUploadEntity *)self database];
+    v7 = [(MediaSocialPostEntity *)v5 initWithPersistentID:longLongValue inDatabase:database];
   }
 
   else
@@ -258,33 +258,33 @@ LABEL_21:
   [(DirectUploadEntity *)self setValuesWithDictionary:v3];
 }
 
-- (int64_t)setFailedWithError:(id)a3
+- (int64_t)setFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_alloc_init(NSMutableDictionary);
   [v5 setObject:&off_10034C018 forKey:@"state"];
   v6 = [(DirectUploadEntity *)self valueForProperty:@"failure_count"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  v8 = [NSNumber numberWithInteger:v7 + 1];
+  v8 = [NSNumber numberWithInteger:integerValue + 1];
   [v5 setObject:v8 forKey:@"failure_count"];
 
-  if (v4)
+  if (errorCopy)
   {
-    v9 = [v4 domain];
-    if (v9)
+    domain = [errorCopy domain];
+    if (domain)
     {
-      [v5 setObject:v9 forKey:@"error_domain"];
+      [v5 setObject:domain forKey:@"error_domain"];
     }
 
-    v10 = [v4 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
 
-    if (v10)
+    if (localizedDescription)
     {
-      [v5 setObject:v10 forKey:@"error_message"];
+      [v5 setObject:localizedDescription forKey:@"error_message"];
     }
 
-    v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
+    v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [v5 setObject:v11 forKey:@"error_code"];
   }
 
@@ -296,24 +296,24 @@ LABEL_21:
 
   [(DirectUploadEntity *)self setValuesWithDictionary:v5];
 
-  return (v7 + 1);
+  return (integerValue + 1);
 }
 
-- (void)setProcessingWithResponse:(id)a3
+- (void)setProcessingWithResponse:(id)response
 {
-  v10 = a3;
+  responseCopy = response;
   v4 = objc_alloc_init(NSMutableDictionary);
   [v4 setObject:&off_10034C048 forKey:@"state"];
-  v5 = [v10 assetToken];
-  if (v5)
+  assetToken = [responseCopy assetToken];
+  if (assetToken)
   {
-    [v4 setObject:v5 forKey:@"asset_token"];
+    [v4 setObject:assetToken forKey:@"asset_token"];
   }
 
-  v6 = [v10 assetTokenType];
-  if (v6)
+  assetTokenType = [responseCopy assetTokenType];
+  if (assetTokenType)
   {
-    [v4 setObject:v6 forKey:@"asset_token_type"];
+    [v4 setObject:assetTokenType forKey:@"asset_token_type"];
   }
 
   v7 = [NSNumber alloc];
@@ -327,18 +327,18 @@ LABEL_21:
 
 - (BOOL)deleteFromDatabase
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [SSSQLiteComparisonPredicate predicateWithProperty:@"upload_id" equalToLongLong:[(DirectUploadEntity *)self persistentID]];
-  v4 = [(DirectUploadEntity *)v2 database];
-  v5 = [DirectUploadArtistEntity queryWithDatabase:v4 predicate:v3];
+  database = [(DirectUploadEntity *)selfCopy database];
+  v5 = [DirectUploadArtistEntity queryWithDatabase:database predicate:v3];
 
   [v5 deleteAllEntities];
-  [(DirectUploadEntity *)v2 deleteAssetFile];
-  v7.receiver = v2;
+  [(DirectUploadEntity *)selfCopy deleteAssetFile];
+  v7.receiver = selfCopy;
   v7.super_class = DirectUploadEntity;
-  LOBYTE(v2) = [(DirectUploadEntity *)&v7 deleteFromDatabase];
+  LOBYTE(selfCopy) = [(DirectUploadEntity *)&v7 deleteFromDatabase];
 
-  return v2;
+  return selfCopy;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface PKFeatureApplication
-- (BOOL)hasSufficientOTBForInstallmentConfiguration:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasSufficientOTBForInstallmentConfiguration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
 - (NSData)authenticationSignaturePayload;
-- (PKFeatureApplication)initWithCoder:(id)a3;
-- (PKFeatureApplication)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKFeatureApplication)initWithCoder:(id)coder;
+- (PKFeatureApplication)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFeatureApplication
 
-- (PKFeatureApplication)initWithDictionary:(id)a3
+- (PKFeatureApplication)initWithDictionary:(id)dictionary
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v47.receiver = self;
   v47.super_class = PKFeatureApplication;
   v5 = [(PKFeatureApplication *)&v47 init];
@@ -26,7 +26,7 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v6 = [v4 PKStringForKey:@"applicationIdentifier"];
+  v6 = [dictionaryCopy PKStringForKey:@"applicationIdentifier"];
   applicationIdentifier = v5->_applicationIdentifier;
   v5->_applicationIdentifier = v6;
 
@@ -46,7 +46,7 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v8 = [v4 PKURLForKey:@"applicationBaseURL"];
+  v8 = [dictionaryCopy PKURLForKey:@"applicationBaseURL"];
   applicationBaseURL = v5->_applicationBaseURL;
   v5->_applicationBaseURL = v8;
 
@@ -63,7 +63,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v10 = [v4 PKStringForKey:@"featureIdentifier"];
+  v10 = [dictionaryCopy PKStringForKey:@"featureIdentifier"];
   v11 = PKFeatureIdentifierFromString(v10);
   v5->_feature = v11;
   if (!v11)
@@ -79,7 +79,7 @@ LABEL_32:
     goto LABEL_31;
   }
 
-  v12 = [v4 PKStringForKey:@"applicationType"];
+  v12 = [dictionaryCopy PKStringForKey:@"applicationType"];
   v13 = PKFeatureApplicationTypeFromString(v12);
   v5->_applicationType = v13;
   if (!v13)
@@ -96,11 +96,11 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v14 = [v4 PKStringForKey:@"updateUserInfoSubType"];
+  v14 = [dictionaryCopy PKStringForKey:@"updateUserInfoSubType"];
   v5->_updateUserInfoSubType = PKFeatureApplicationUpdateUserInfoSubTypeFromString(v14);
-  v15 = [v4 PKStringForKey:@"applicationState"];
+  v15 = [dictionaryCopy PKStringForKey:@"applicationState"];
   v5->_applicationState = PKFeatureApplicationStateFromString(v15);
-  v16 = [v4 PKStringForKey:@"applicationStateReason"];
+  v16 = [dictionaryCopy PKStringForKey:@"applicationStateReason"];
   v5->_applicationStateReason = PKFeatureApplicationStateReasonFromString(v16);
   applicationState = v5->_applicationState;
   if (applicationState)
@@ -108,8 +108,8 @@ LABEL_31:
     v18 = v5->_applicationState;
     if (applicationState == 6)
     {
-      v19 = [v4 PKDictionaryForKey:@"offerDetails"];
-      if (v19 || ([v4 PKDictionaryForKey:@"offer"], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+      v19 = [dictionaryCopy PKDictionaryForKey:@"offerDetails"];
+      if (v19 || ([dictionaryCopy PKDictionaryForKey:@"offer"], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v20 = v19;
         v21 = [[PKFeatureApplicationOfferDetails alloc] initWithDictionary:v19];
@@ -122,7 +122,7 @@ LABEL_31:
 
     if (v18 == 7)
     {
-      v23 = [v4 PKDictionaryForKey:@"declineDetails"];
+      v23 = [dictionaryCopy PKDictionaryForKey:@"declineDetails"];
       if (v23)
       {
         v24 = [[PKFeatureApplicationDeclineDetails alloc] initWithDictionary:v23];
@@ -131,33 +131,33 @@ LABEL_31:
       }
     }
 
-    v26 = [v4 PKStringForKey:@"applicationTermsIdentifier"];
+    v26 = [dictionaryCopy PKStringForKey:@"applicationTermsIdentifier"];
     applicationTermsIdentifier = v5->_applicationTermsIdentifier;
     v5->_applicationTermsIdentifier = v26;
 
-    v28 = [v4 PKDateForKey:@"lastUpdated"];
+    v28 = [dictionaryCopy PKDateForKey:@"lastUpdated"];
     lastUpdated = v5->_lastUpdated;
     v5->_lastUpdated = v28;
 
-    v30 = [v4 PKStringForKey:@"businessChatIdentifier"];
+    v30 = [dictionaryCopy PKStringForKey:@"businessChatIdentifier"];
     businessChatIdentifier = v5->_businessChatIdentifier;
     v5->_businessChatIdentifier = v30;
 
-    v32 = [v4 PKStringForKey:@"coreIDVServiceProviderName"];
+    v32 = [dictionaryCopy PKStringForKey:@"coreIDVServiceProviderName"];
     coreIDVServiceProviderName = v5->_coreIDVServiceProviderName;
     v5->_coreIDVServiceProviderName = v32;
 
-    v34 = [v4 PKStringForKey:@"accountIdentifier"];
+    v34 = [dictionaryCopy PKStringForKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v34;
 
-    v36 = [v4 PKStringForKey:@"referenceIdentifier"];
+    v36 = [dictionaryCopy PKStringForKey:@"referenceIdentifier"];
     referenceIdentifier = v5->_referenceIdentifier;
     v5->_referenceIdentifier = v36;
 
     if (v5->_applicationType == 2)
     {
-      v38 = [v4 PKDictionaryForKey:@"invitationDetails"];
+      v38 = [dictionaryCopy PKDictionaryForKey:@"invitationDetails"];
       if (v38)
       {
         v39 = [[PKFeatureApplicationInvitationDetails alloc] initWithDictionary:v38];
@@ -166,7 +166,7 @@ LABEL_31:
       }
     }
 
-    v41 = [v4 PKStringForKey:@"preliminaryAssessmentIdentifier"];
+    v41 = [dictionaryCopy PKStringForKey:@"preliminaryAssessmentIdentifier"];
     preliminaryAssessmentIdentifier = v5->_preliminaryAssessmentIdentifier;
     v5->_preliminaryAssessmentIdentifier = v41;
   }
@@ -193,15 +193,15 @@ LABEL_38:
   return v45;
 }
 
-- (BOOL)hasSufficientOTBForInstallmentConfiguration:(id)a3
+- (BOOL)hasSufficientOTBForInstallmentConfiguration:(id)configuration
 {
-  v4 = [a3 openToBuyThresholdAmount];
-  v5 = [(PKFeatureApplicationOfferDetails *)self->_applicationOfferDetails creditLimit];
-  v6 = v5;
+  openToBuyThresholdAmount = [configuration openToBuyThresholdAmount];
+  creditLimit = [(PKFeatureApplicationOfferDetails *)self->_applicationOfferDetails creditLimit];
+  v6 = creditLimit;
   v7 = 0;
-  if (v4 && v5)
+  if (openToBuyThresholdAmount && creditLimit)
   {
-    v7 = [v5 compare:v4] != -1;
+    v7 = [creditLimit compare:openToBuyThresholdAmount] != -1;
   }
 
   return v7;
@@ -212,8 +212,8 @@ LABEL_38:
   if (self->_applicationType == 2)
   {
     v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v4 = [(PKFeatureApplicationInvitationDetails *)self->_invitationDetails accountUserAltDSID];
-    [v3 appendString:v4];
+    accountUserAltDSID = [(PKFeatureApplicationInvitationDetails *)self->_invitationDetails accountUserAltDSID];
+    [v3 appendString:accountUserAltDSID];
 
     v5 = PKAccountAccessLevelToString([(PKFeatureApplicationInvitationDetails *)self->_invitationDetails accountUserAccessLevel]);
     [v3 appendString:v5];
@@ -224,76 +224,76 @@ LABEL_38:
     }
 
     v6 = [v3 dataUsingEncoding:4];
-    v7 = [v6 SHA256Hash];
+    sHA256Hash = [v6 SHA256Hash];
   }
 
   else
   {
-    v7 = 0;
+    sHA256Hash = 0;
   }
 
-  return v7;
+  return sHA256Hash;
 }
 
-- (PKFeatureApplication)initWithCoder:(id)a3
+- (PKFeatureApplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = PKFeatureApplication;
   v5 = [(PKFeatureApplication *)&v31 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationBaseURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationBaseURL"];
     applicationBaseURL = v5->_applicationBaseURL;
     v5->_applicationBaseURL = v8;
 
-    v5->_feature = [v4 decodeIntegerForKey:@"feature"];
-    v5->_applicationType = [v4 decodeIntegerForKey:@"applicationType"];
-    v5->_updateUserInfoSubType = [v4 decodeIntegerForKey:@"updateUserInfoSubType"];
-    v5->_applicationState = [v4 decodeIntegerForKey:@"applicationState"];
-    v5->_applicationStateReason = [v4 decodeIntegerForKey:@"applicationStateReason"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationTermsIdentifier"];
+    v5->_feature = [coderCopy decodeIntegerForKey:@"feature"];
+    v5->_applicationType = [coderCopy decodeIntegerForKey:@"applicationType"];
+    v5->_updateUserInfoSubType = [coderCopy decodeIntegerForKey:@"updateUserInfoSubType"];
+    v5->_applicationState = [coderCopy decodeIntegerForKey:@"applicationState"];
+    v5->_applicationStateReason = [coderCopy decodeIntegerForKey:@"applicationStateReason"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationTermsIdentifier"];
     applicationTermsIdentifier = v5->_applicationTermsIdentifier;
     v5->_applicationTermsIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationOfferDetails"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationOfferDetails"];
     applicationOfferDetails = v5->_applicationOfferDetails;
     v5->_applicationOfferDetails = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"declineDetails"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"declineDetails"];
     declineDetails = v5->_declineDetails;
     v5->_declineDetails = v14;
 
-    v5->_applicationStateDirty = [v4 decodeBoolForKey:@"applicationStateDirty"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
+    v5->_applicationStateDirty = [coderCopy decodeBoolForKey:@"applicationStateDirty"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
     lastUpdated = v5->_lastUpdated;
     v5->_lastUpdated = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"businessChatIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"businessChatIdentifier"];
     businessChatIdentifier = v5->_businessChatIdentifier;
     v5->_businessChatIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coreIDVServiceProviderName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coreIDVServiceProviderName"];
     coreIDVServiceProviderName = v5->_coreIDVServiceProviderName;
     v5->_coreIDVServiceProviderName = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceIdentifier"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceIdentifier"];
     referenceIdentifier = v5->_referenceIdentifier;
     v5->_referenceIdentifier = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitationDetails"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invitationDetails"];
     invitationDetails = v5->_invitationDetails;
     v5->_invitationDetails = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preliminaryAssessmentIdentifier"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preliminaryAssessmentIdentifier"];
     preliminaryAssessmentIdentifier = v5->_preliminaryAssessmentIdentifier;
     v5->_preliminaryAssessmentIdentifier = v28;
   }
@@ -301,28 +301,28 @@ LABEL_38:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   applicationIdentifier = self->_applicationIdentifier;
-  v5 = a3;
-  [v5 encodeObject:applicationIdentifier forKey:@"applicationIdentifier"];
-  [v5 encodeObject:self->_applicationBaseURL forKey:@"applicationBaseURL"];
-  [v5 encodeInteger:self->_applicationState forKey:@"applicationState"];
-  [v5 encodeInteger:self->_applicationType forKey:@"applicationType"];
-  [v5 encodeInteger:self->_updateUserInfoSubType forKey:@"updateUserInfoSubType"];
-  [v5 encodeInteger:self->_feature forKey:@"feature"];
-  [v5 encodeInteger:self->_applicationStateReason forKey:@"applicationStateReason"];
-  [v5 encodeObject:self->_applicationTermsIdentifier forKey:@"applicationTermsIdentifier"];
-  [v5 encodeObject:self->_applicationOfferDetails forKey:@"applicationOfferDetails"];
-  [v5 encodeObject:self->_declineDetails forKey:@"declineDetails"];
-  [v5 encodeBool:self->_applicationStateDirty forKey:@"applicationStateDirty"];
-  [v5 encodeObject:self->_lastUpdated forKey:@"lastUpdated"];
-  [v5 encodeObject:self->_businessChatIdentifier forKey:@"businessChatIdentifier"];
-  [v5 encodeObject:self->_coreIDVServiceProviderName forKey:@"coreIDVServiceProviderName"];
-  [v5 encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v5 encodeObject:self->_referenceIdentifier forKey:@"referenceIdentifier"];
-  [v5 encodeObject:self->_invitationDetails forKey:@"invitationDetails"];
-  [v5 encodeObject:self->_preliminaryAssessmentIdentifier forKey:@"preliminaryAssessmentIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:applicationIdentifier forKey:@"applicationIdentifier"];
+  [coderCopy encodeObject:self->_applicationBaseURL forKey:@"applicationBaseURL"];
+  [coderCopy encodeInteger:self->_applicationState forKey:@"applicationState"];
+  [coderCopy encodeInteger:self->_applicationType forKey:@"applicationType"];
+  [coderCopy encodeInteger:self->_updateUserInfoSubType forKey:@"updateUserInfoSubType"];
+  [coderCopy encodeInteger:self->_feature forKey:@"feature"];
+  [coderCopy encodeInteger:self->_applicationStateReason forKey:@"applicationStateReason"];
+  [coderCopy encodeObject:self->_applicationTermsIdentifier forKey:@"applicationTermsIdentifier"];
+  [coderCopy encodeObject:self->_applicationOfferDetails forKey:@"applicationOfferDetails"];
+  [coderCopy encodeObject:self->_declineDetails forKey:@"declineDetails"];
+  [coderCopy encodeBool:self->_applicationStateDirty forKey:@"applicationStateDirty"];
+  [coderCopy encodeObject:self->_lastUpdated forKey:@"lastUpdated"];
+  [coderCopy encodeObject:self->_businessChatIdentifier forKey:@"businessChatIdentifier"];
+  [coderCopy encodeObject:self->_coreIDVServiceProviderName forKey:@"coreIDVServiceProviderName"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeObject:self->_referenceIdentifier forKey:@"referenceIdentifier"];
+  [coderCopy encodeObject:self->_invitationDetails forKey:@"invitationDetails"];
+  [coderCopy encodeObject:self->_preliminaryAssessmentIdentifier forKey:@"preliminaryAssessmentIdentifier"];
 }
 
 - (id)description
@@ -385,9 +385,9 @@ LABEL_38:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -395,7 +395,7 @@ LABEL_38:
   }
 
   applicationIdentifier = self->_applicationIdentifier;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (applicationIdentifier && v6)
   {
     if (([(NSString *)applicationIdentifier isEqual:?]& 1) == 0)
@@ -410,7 +410,7 @@ LABEL_38:
   }
 
   applicationBaseURL = self->_applicationBaseURL;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (applicationBaseURL && v8)
   {
     if (([(NSURL *)applicationBaseURL isEqual:?]& 1) == 0)
@@ -424,13 +424,13 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (self->_feature != v4[4])
+  if (self->_feature != equalCopy[4])
   {
     goto LABEL_39;
   }
 
   applicationOfferDetails = self->_applicationOfferDetails;
-  v10 = v4[10];
+  v10 = equalCopy[10];
   if (applicationOfferDetails && v10)
   {
     if (![(PKFeatureApplicationOfferDetails *)applicationOfferDetails isEqual:?])
@@ -445,7 +445,7 @@ LABEL_38:
   }
 
   declineDetails = self->_declineDetails;
-  v12 = v4[11];
+  v12 = equalCopy[11];
   if (declineDetails && v12)
   {
     if (![(PKFeatureApplicationDeclineDetails *)declineDetails isEqual:?])
@@ -459,12 +459,12 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (self->_applicationState != v4[8] || self->_applicationType != v4[5] || self->_updateUserInfoSubType != v4[7] || self->_applicationStateReason != v4[9])
+  if (self->_applicationState != equalCopy[8] || self->_applicationType != equalCopy[5] || self->_updateUserInfoSubType != equalCopy[7] || self->_applicationStateReason != equalCopy[9])
   {
     goto LABEL_39;
   }
 
-  v13 = v4[12];
+  v13 = equalCopy[12];
   v14 = self->_applicationTermsIdentifier;
   v15 = v13;
   v16 = v15;
@@ -488,13 +488,13 @@ LABEL_38:
     }
   }
 
-  if (self->_applicationStateDirty != *(v4 + 8))
+  if (self->_applicationStateDirty != *(equalCopy + 8))
   {
     goto LABEL_39;
   }
 
   lastUpdated = self->_lastUpdated;
-  v19 = v4[13];
+  v19 = equalCopy[13];
   if (lastUpdated && v19)
   {
     if (([(NSDate *)lastUpdated isEqual:?]& 1) == 0)
@@ -508,7 +508,7 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v21 = v4[14];
+  v21 = equalCopy[14];
   v14 = self->_businessChatIdentifier;
   v22 = v21;
   v16 = v22;
@@ -534,7 +534,7 @@ LABEL_72:
 
 LABEL_47:
   coreIDVServiceProviderName = self->_coreIDVServiceProviderName;
-  v24 = v4[15];
+  v24 = equalCopy[15];
   if (coreIDVServiceProviderName && v24)
   {
     if (([(NSString *)coreIDVServiceProviderName isEqual:?]& 1) == 0)
@@ -549,7 +549,7 @@ LABEL_47:
   }
 
   accountIdentifier = self->_accountIdentifier;
-  v26 = v4[16];
+  v26 = equalCopy[16];
   if (accountIdentifier && v26)
   {
     if (([(NSString *)accountIdentifier isEqual:?]& 1) == 0)
@@ -564,7 +564,7 @@ LABEL_47:
   }
 
   referenceIdentifier = self->_referenceIdentifier;
-  v28 = v4[6];
+  v28 = equalCopy[6];
   if (referenceIdentifier && v28)
   {
     if (([(NSString *)referenceIdentifier isEqual:?]& 1) == 0)
@@ -579,14 +579,14 @@ LABEL_47:
   }
 
   invitationDetails = self->_invitationDetails;
-  v30 = v4[17];
+  v30 = equalCopy[17];
   if (invitationDetails && v30)
   {
     if ([(PKFeatureApplicationInvitationDetails *)invitationDetails isEqual:?])
     {
 LABEL_67:
       preliminaryAssessmentIdentifier = self->_preliminaryAssessmentIdentifier;
-      v32 = v4[18];
+      v32 = equalCopy[18];
       v14 = preliminaryAssessmentIdentifier;
       v33 = v32;
       v16 = v33;
@@ -622,20 +622,20 @@ LABEL_40:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_applicationIdentifier];
-  [v3 safelyAddObject:self->_applicationOfferDetails];
-  [v3 safelyAddObject:self->_declineDetails];
-  [v3 safelyAddObject:self->_applicationBaseURL];
-  [v3 safelyAddObject:self->_applicationTermsIdentifier];
-  [v3 safelyAddObject:self->_lastUpdated];
-  [v3 safelyAddObject:self->_businessChatIdentifier];
-  [v3 safelyAddObject:self->_coreIDVServiceProviderName];
-  [v3 safelyAddObject:self->_accountIdentifier];
-  [v3 safelyAddObject:self->_referenceIdentifier];
-  [v3 safelyAddObject:self->_invitationDetails];
-  [v3 safelyAddObject:self->_preliminaryAssessmentIdentifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_applicationIdentifier];
+  [array safelyAddObject:self->_applicationOfferDetails];
+  [array safelyAddObject:self->_declineDetails];
+  [array safelyAddObject:self->_applicationBaseURL];
+  [array safelyAddObject:self->_applicationTermsIdentifier];
+  [array safelyAddObject:self->_lastUpdated];
+  [array safelyAddObject:self->_businessChatIdentifier];
+  [array safelyAddObject:self->_coreIDVServiceProviderName];
+  [array safelyAddObject:self->_accountIdentifier];
+  [array safelyAddObject:self->_referenceIdentifier];
+  [array safelyAddObject:self->_invitationDetails];
+  [array safelyAddObject:self->_preliminaryAssessmentIdentifier];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_applicationState - v4 + 32 * v4;
   v6 = self->_applicationStateReason - v5 + 32 * v5;
   v7 = self->_feature - v6 + 32 * v6;
@@ -646,30 +646,30 @@ LABEL_40:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKFeatureApplication allocWithZone:](PKFeatureApplication init];
-  v6 = [(NSString *)self->_applicationIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_applicationIdentifier copyWithZone:zone];
   applicationIdentifier = v5->_applicationIdentifier;
   v5->_applicationIdentifier = v6;
 
-  v8 = [(PKFeatureApplicationOfferDetails *)self->_applicationOfferDetails copyWithZone:a3];
+  v8 = [(PKFeatureApplicationOfferDetails *)self->_applicationOfferDetails copyWithZone:zone];
   applicationOfferDetails = v5->_applicationOfferDetails;
   v5->_applicationOfferDetails = v8;
 
-  v10 = [(PKFeatureApplicationDeclineDetails *)self->_declineDetails copyWithZone:a3];
+  v10 = [(PKFeatureApplicationDeclineDetails *)self->_declineDetails copyWithZone:zone];
   declineDetails = v5->_declineDetails;
   v5->_declineDetails = v10;
 
-  v12 = [(NSURL *)self->_applicationBaseURL copyWithZone:a3];
+  v12 = [(NSURL *)self->_applicationBaseURL copyWithZone:zone];
   applicationBaseURL = v5->_applicationBaseURL;
   v5->_applicationBaseURL = v12;
 
-  v14 = [(NSString *)self->_applicationTermsIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_applicationTermsIdentifier copyWithZone:zone];
   applicationTermsIdentifier = v5->_applicationTermsIdentifier;
   v5->_applicationTermsIdentifier = v14;
 
-  v16 = [(NSDate *)self->_lastUpdated copyWithZone:a3];
+  v16 = [(NSDate *)self->_lastUpdated copyWithZone:zone];
   lastUpdated = v5->_lastUpdated;
   v5->_lastUpdated = v16;
 
@@ -681,19 +681,19 @@ LABEL_40:
   objc_storeStrong(&v5->_coreIDVServiceProviderName, self->_coreIDVServiceProviderName);
   v5->_updateUserInfoSubType = self->_updateUserInfoSubType;
   v5->_applicationType = self->_applicationType;
-  v18 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v18 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   accountIdentifier = v5->_accountIdentifier;
   v5->_accountIdentifier = v18;
 
-  v20 = [(NSString *)self->_referenceIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_referenceIdentifier copyWithZone:zone];
   referenceIdentifier = v5->_referenceIdentifier;
   v5->_referenceIdentifier = v20;
 
-  v22 = [(PKFeatureApplicationInvitationDetails *)self->_invitationDetails copyWithZone:a3];
+  v22 = [(PKFeatureApplicationInvitationDetails *)self->_invitationDetails copyWithZone:zone];
   invitationDetails = v5->_invitationDetails;
   v5->_invitationDetails = v22;
 
-  v24 = [(NSString *)self->_preliminaryAssessmentIdentifier copyWithZone:a3];
+  v24 = [(NSString *)self->_preliminaryAssessmentIdentifier copyWithZone:zone];
   preliminaryAssessmentIdentifier = v5->_preliminaryAssessmentIdentifier;
   v5->_preliminaryAssessmentIdentifier = v24;
 

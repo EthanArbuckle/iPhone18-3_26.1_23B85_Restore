@@ -1,32 +1,32 @@
 @interface EKEventTimeDetector
-+ (id)dateResultsFromString:(id)a3 referenceDate:(id)a4;
-+ (id)resultDictionaryForString:(id)a3 referenceDate:(id)a4;
-+ (id)resultDictionaryForString:(id)a3 referenceDate:(id)a4 ignoreDurationForApproximateTime:(BOOL)a5;
-+ (id)stripRanges:(id)a3 fromString:(id)a4;
++ (id)dateResultsFromString:(id)string referenceDate:(id)date;
++ (id)resultDictionaryForString:(id)string referenceDate:(id)date;
++ (id)resultDictionaryForString:(id)string referenceDate:(id)date ignoreDurationForApproximateTime:(BOOL)time;
++ (id)stripRanges:(id)ranges fromString:(id)string;
 @end
 
 @implementation EKEventTimeDetector
 
-+ (id)resultDictionaryForString:(id)a3 referenceDate:(id)a4
++ (id)resultDictionaryForString:(id)string referenceDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() resultDictionaryForString:v6 referenceDate:v5 ignoreDurationForApproximateTime:0];
+  dateCopy = date;
+  stringCopy = string;
+  v7 = [objc_opt_class() resultDictionaryForString:stringCopy referenceDate:dateCopy ignoreDurationForApproximateTime:0];
 
   return v7;
 }
 
-+ (id)resultDictionaryForString:(id)a3 referenceDate:(id)a4 ignoreDurationForApproximateTime:(BOOL)a5
++ (id)resultDictionaryForString:(id)string referenceDate:(id)date ignoreDurationForApproximateTime:(BOOL)time
 {
-  v81 = a5;
+  timeCopy = time;
   v121 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  dateCopy = date;
   [MEMORY[0x1E695DF70] array];
-  v85 = v84 = a1;
-  v86 = v7;
-  v9 = [objc_opt_class() dateResultsFromString:v7 referenceDate:v8];
-  v87 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v85 = v84 = self;
+  v86 = stringCopy;
+  v9 = [objc_opt_class() dateResultsFromString:stringCopy referenceDate:dateCopy];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
@@ -47,10 +47,10 @@
           objc_enumerationMutation(v10);
         }
 
-        if (v8)
+        if (dateCopy)
         {
-          v16 = [*(*(&v112 + 1) + 8 * i) date];
-          v17 = [v16 isSameDayAsDate:v8 inCalendar:v87];
+          date = [*(*(&v112 + 1) + 8 * i) date];
+          v17 = [date isSameDayAsDate:dateCopy inCalendar:currentCalendar];
 
           if (!v17)
           {
@@ -76,11 +76,11 @@
 LABEL_12:
 
   v82 = v12;
-  v83 = v8;
+  v83 = dateCopy;
   if (![v12 count])
   {
     v21 = 0;
-    v39 = 0;
+    date2 = 0;
     v40 = 0;
     v41 = 0;
     v42 = 0;
@@ -189,11 +189,11 @@ LABEL_21:
             v31 = *(*(&v104 + 1) + 8 * v30);
             if (v24 != v31)
             {
-              v32 = [v24 range];
+              range = [v24 range];
               v34 = v33;
               v124.location = [v31 range];
               v124.length = v35;
-              v123.location = v32;
+              v123.location = range;
               v123.length = v34;
               if (NSIntersectionRange(v123, v124).length)
               {
@@ -228,13 +228,13 @@ LABEL_28:
         v22 = v90;
       }
 
-      v36 = [v24 timeZone];
+      timeZone = [v24 timeZone];
 
-      if (v36)
+      if (timeZone)
       {
-        v37 = [v24 timeZone];
+        timeZone2 = [v24 timeZone];
 
-        v21 = v37;
+        v21 = timeZone2;
       }
 
       ++v23;
@@ -253,11 +253,11 @@ LABEL_28:
   }
 
 LABEL_51:
-  v39 = [v38 date];
+  date2 = [v38 date];
   [v38 duration];
   v54 = v53;
   v91 = rangesSafeToRemove(v38);
-  v55 = [v38 timeIsApproximate];
+  timeIsApproximate = [v38 timeIsApproximate];
   v89 = v38;
   if ([v38 timeIsSignificant])
   {
@@ -273,7 +273,7 @@ LABEL_70:
     goto LABEL_70;
   }
 
-  v93 = v55;
+  timeIsApproximate2 = timeIsApproximate;
   v95 = v21;
   v98 = 0u;
   v99 = 0u;
@@ -307,15 +307,15 @@ LABEL_70:
             [v65 duration];
             v54 = v66;
             v67 = MEMORY[0x1E695DF00];
-            v68 = [v65 date];
-            v69 = [v67 dateWithDatePartFromDate:v39 timePartFromDate:v68 inCalendar:v87];
+            date3 = [v65 date];
+            v69 = [v67 dateWithDatePartFromDate:date2 timePartFromDate:date3 inCalendar:currentCalendar];
 
             v70 = rangesSafeToRemove(v65);
 
-            v93 = [v65 timeIsApproximate];
+            timeIsApproximate2 = [v65 timeIsApproximate];
             v56 = 1;
             v44 = v70;
-            v39 = v69;
+            date2 = v69;
             v60 = v65;
           }
         }
@@ -335,15 +335,15 @@ LABEL_70:
   }
 
   v21 = v95;
-  v55 = v93;
+  timeIsApproximate = timeIsApproximate2;
 LABEL_73:
 
-  if (v39)
+  if (date2)
   {
-    if (v81)
+    if (timeCopy)
     {
-      v71 = v55;
-      if (![v83 isSameDayAsDate:v39 inCalendar:0])
+      v71 = timeIsApproximate;
+      if (![v83 isSameDayAsDate:date2 inCalendar:0])
       {
         v71 = 0;
         v43 = 0;
@@ -368,7 +368,7 @@ LABEL_82:
             else
             {
               v41 = 1;
-              v74 = [v73 dateByAddingDays:1 inCalendar:v87];
+              v74 = [v73 dateByAddingDays:1 inCalendar:currentCalendar];
 
               v42 = [v74 dateByAddingTimeInterval:-1.0];
             }
@@ -378,7 +378,7 @@ LABEL_82:
         }
 
 LABEL_81:
-        v72 = [v43 dateRemovingTimeComponentsInCalendar:v87];
+        v72 = [v43 dateRemovingTimeComponentsInCalendar:currentCalendar];
 
         v43 = v72;
         goto LABEL_82;
@@ -390,7 +390,7 @@ LABEL_81:
       v71 = 0;
     }
 
-    v43 = v39;
+    v43 = date2;
     [v85 addObjectsFromArray:v91];
     [v85 addObjectsFromArray:v44];
     if (v56)
@@ -405,7 +405,7 @@ LABEL_81:
   v42 = 0;
   v43 = 0;
 LABEL_87:
-  v40 = v55;
+  v40 = timeIsApproximate;
 LABEL_88:
   v75 = objc_opt_new();
   v76 = [v84 stripRanges:v85 fromString:v86];
@@ -431,12 +431,12 @@ LABEL_88:
   return v75;
 }
 
-+ (id)dateResultsFromString:(id)a3 referenceDate:(id)a4
++ (id)dateResultsFromString:(id)string referenceDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([v5 length])
+  stringCopy = string;
+  dateCopy = date;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([stringCopy length])
   {
     if (dateResultsFromString_referenceDate__onceToken != -1)
     {
@@ -448,16 +448,16 @@ LABEL_88:
     block[1] = 3221225472;
     block[2] = __59__EKEventTimeDetector_dateResultsFromString_referenceDate___block_invoke_2;
     block[3] = &unk_1E77FD7C8;
-    v14 = v5;
-    v15 = v6;
-    v9 = v7;
+    v14 = stringCopy;
+    v15 = dateCopy;
+    v9 = array;
     v16 = v9;
     dispatch_sync(v8, block);
     v10 = v16;
     v11 = v9;
   }
 
-  return v7;
+  return array;
 }
 
 uint64_t __59__EKEventTimeDetector_dateResultsFromString_referenceDate___block_invoke()
@@ -529,12 +529,12 @@ void __59__EKEventTimeDetector_dateResultsFromString_referenceDate___block_invok
   }
 }
 
-+ (id)stripRanges:(id)a3 fromString:(id)a4
++ (id)stripRanges:(id)ranges fromString:(id)string
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  stringCopy = string;
   v6 = MEMORY[0x1E695DF70];
-  v7 = [a3 sortedArrayUsingComparator:&__block_literal_global_24];
+  v7 = [ranges sortedArrayUsingComparator:&__block_literal_global_24];
   v8 = [v6 arrayWithArray:v7];
 
   if ([v8 count] && objc_msgSend(v8, "count") != 1)
@@ -543,23 +543,23 @@ void __59__EKEventTimeDetector_dateResultsFromString_referenceDate___block_invok
     do
     {
       v10 = [v8 objectAtIndexedSubscript:v9];
-      v11 = [v10 rangeValue];
+      rangeValue = [v10 rangeValue];
       v13 = v12;
 
       v14 = [v8 objectAtIndexedSubscript:v9 + 1];
-      v15 = [v14 rangeValue];
+      rangeValue2 = [v14 rangeValue];
       v17 = v16;
 
-      v45.location = v11;
+      v45.location = rangeValue;
       v45.length = v13;
-      v47.location = v15;
+      v47.location = rangeValue2;
       v47.length = v17;
       if (NSIntersectionRange(v45, v47).length)
       {
         v18 = MEMORY[0x1E696B098];
-        v46.location = v11;
+        v46.location = rangeValue;
         v46.length = v13;
-        v48.location = v15;
+        v48.location = rangeValue2;
         v48.length = v17;
         v19 = NSUnionRange(v46, v48);
         v20 = [v18 valueWithRange:{v19.location, v19.length}];
@@ -583,12 +583,12 @@ void __59__EKEventTimeDetector_dateResultsFromString_referenceDate___block_invok
   v39 = 0u;
   v21 = v8;
   v22 = [v21 countByEnumeratingWithState:&v38 objects:v42 count:16];
-  v23 = v5;
+  v23 = stringCopy;
   if (v22)
   {
     v24 = v22;
     v25 = *v39;
-    v23 = v5;
+    v23 = stringCopy;
     do
     {
       v26 = 0;
@@ -600,8 +600,8 @@ void __59__EKEventTimeDetector_dateResultsFromString_referenceDate___block_invok
           objc_enumerationMutation(v21);
         }
 
-        v28 = [*(*(&v38 + 1) + 8 * v26) rangeValue];
-        v23 = [v27 stringByReplacingCharactersInRange:v28 withString:{v29, &stru_1F1B49D68}];
+        rangeValue3 = [*(*(&v38 + 1) + 8 * v26) rangeValue];
+        v23 = [v27 stringByReplacingCharactersInRange:rangeValue3 withString:{v29, &stru_1F1B49D68}];
 
         ++v26;
         v27 = v23;
@@ -616,8 +616,8 @@ void __59__EKEventTimeDetector_dateResultsFromString_referenceDate___block_invok
 
   if ([v21 count])
   {
-    v30 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v31 = [v23 componentsSeparatedByCharactersInSet:v30];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v31 = [v23 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v32 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF != ''"];
     v33 = [v31 filteredArrayUsingPredicate:v32];
@@ -631,7 +631,7 @@ void __59__EKEventTimeDetector_dateResultsFromString_referenceDate___block_invok
 
     else
     {
-      v35 = v5;
+      v35 = stringCopy;
     }
 
     v23 = v35;

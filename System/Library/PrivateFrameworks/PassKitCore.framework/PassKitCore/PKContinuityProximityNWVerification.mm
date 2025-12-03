@@ -1,6 +1,6 @@
 @interface PKContinuityProximityNWVerification
 - (PKContinuityProximityNWVerification)init;
-- (PKContinuityProximityNWVerification)initWithDictionary:(id)a3;
+- (PKContinuityProximityNWVerification)initWithDictionary:(id)dictionary;
 - (id)_dictionaryRepresentation;
 @end
 
@@ -13,7 +13,7 @@
   return [(PKContinuityProximityVerification *)&v3 initWithType:2];
 }
 
-- (PKContinuityProximityNWVerification)initWithDictionary:(id)a3
+- (PKContinuityProximityNWVerification)initWithDictionary:(id)dictionary
 {
   v4.receiver = self;
   v4.super_class = PKContinuityProximityNWVerification;
@@ -24,9 +24,9 @@
 {
   v4.receiver = self;
   v4.super_class = PKContinuityProximityNWVerification;
-  v2 = [(PKContinuityProximityVerification *)&v4 _dictionaryRepresentation];
+  _dictionaryRepresentation = [(PKContinuityProximityVerification *)&v4 _dictionaryRepresentation];
 
-  return v2;
+  return _dictionaryRepresentation;
 }
 
 @end

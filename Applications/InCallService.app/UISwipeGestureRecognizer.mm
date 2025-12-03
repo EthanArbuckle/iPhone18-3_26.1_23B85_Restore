@@ -1,50 +1,50 @@
 @interface UISwipeGestureRecognizer
-+ (void)addSwipeGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5;
-+ (void)addSwipeGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5 direction:(unint64_t)a6;
-+ (void)addSwipeGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5 direction:(unint64_t)a6 touchCount:(unint64_t)a7;
-+ (void)addSwipeGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5 touchCount:(unint64_t)a6;
++ (void)addSwipeGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action;
++ (void)addSwipeGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action direction:(unint64_t)direction;
++ (void)addSwipeGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action direction:(unint64_t)direction touchCount:(unint64_t)count;
++ (void)addSwipeGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action touchCount:(unint64_t)count;
 @end
 
 @implementation UISwipeGestureRecognizer
 
-+ (void)addSwipeGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5
++ (void)addSwipeGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[UISwipeGestureRecognizer alloc] initWithTarget:v7 action:a5];
+  targetCopy = target;
+  viewCopy = view;
+  v9 = [[UISwipeGestureRecognizer alloc] initWithTarget:targetCopy action:action];
 
-  [v8 addGestureRecognizer:v9];
+  [viewCopy addGestureRecognizer:v9];
 }
 
-+ (void)addSwipeGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5 direction:(unint64_t)a6
++ (void)addSwipeGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action direction:(unint64_t)direction
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [[UISwipeGestureRecognizer alloc] initWithTarget:v9 action:a5];
+  targetCopy = target;
+  viewCopy = view;
+  v11 = [[UISwipeGestureRecognizer alloc] initWithTarget:targetCopy action:action];
 
-  [v11 setDirection:a6];
-  [v10 addGestureRecognizer:v11];
+  [v11 setDirection:direction];
+  [viewCopy addGestureRecognizer:v11];
 }
 
-+ (void)addSwipeGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5 touchCount:(unint64_t)a6
++ (void)addSwipeGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action touchCount:(unint64_t)count
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [[UISwipeGestureRecognizer alloc] initWithTarget:v9 action:a5];
+  targetCopy = target;
+  viewCopy = view;
+  v11 = [[UISwipeGestureRecognizer alloc] initWithTarget:targetCopy action:action];
 
-  [v11 setNumberOfTouchesRequired:a6];
-  [v10 addGestureRecognizer:v11];
+  [v11 setNumberOfTouchesRequired:count];
+  [viewCopy addGestureRecognizer:v11];
 }
 
-+ (void)addSwipeGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5 direction:(unint64_t)a6 touchCount:(unint64_t)a7
++ (void)addSwipeGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action direction:(unint64_t)direction touchCount:(unint64_t)count
 {
-  v11 = a4;
-  v12 = a3;
-  v13 = [[UISwipeGestureRecognizer alloc] initWithTarget:v11 action:a5];
+  targetCopy = target;
+  viewCopy = view;
+  v13 = [[UISwipeGestureRecognizer alloc] initWithTarget:targetCopy action:action];
 
-  [v13 setDirection:a6];
-  [v13 setNumberOfTouchesRequired:a7];
-  [v12 addGestureRecognizer:v13];
+  [v13 setDirection:direction];
+  [v13 setNumberOfTouchesRequired:count];
+  [viewCopy addGestureRecognizer:v13];
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface KTVerifyConsistencyOperation
-- (BOOL)downloadConsistencyProofRequest:(id)a3 lastVerifiedRevision:(id)a4 application:(id)a5 error:(id *)a6;
-- (BOOL)verifyConsistency:(id)a3 error:(id *)a4;
-- (KTVerifyConsistencyOperation)initWithDependencies:(id)a3 opId:(id)a4;
+- (BOOL)downloadConsistencyProofRequest:(id)request lastVerifiedRevision:(id)revision application:(id)application error:(id *)error;
+- (BOOL)verifyConsistency:(id)consistency error:(id *)error;
+- (KTVerifyConsistencyOperation)initWithDependencies:(id)dependencies opId:(id)id;
 - (void)groupStart;
 @end
 
 @implementation KTVerifyConsistencyOperation
 
-- (KTVerifyConsistencyOperation)initWithDependencies:(id)a3 opId:(id)a4
+- (KTVerifyConsistencyOperation)initWithDependencies:(id)dependencies opId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  dependenciesCopy = dependencies;
+  idCopy = id;
   v17.receiver = self;
   v17.super_class = KTVerifyConsistencyOperation;
   v9 = [(KTGroupOperation *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deps, a3);
-    [(KTVerifyConsistencyOperation *)v10 setBackgroundOpId:v8];
+    objc_storeStrong(&v9->_deps, dependencies);
+    [(KTVerifyConsistencyOperation *)v10 setBackgroundOpId:idCopy];
     v11 = +[NSMutableDictionary dictionary];
     [(KTVerifyConsistencyOperation *)v10 setErrors:v11];
 
@@ -58,14 +58,14 @@
   v5 = objc_alloc_init(NSOperation);
   [(KTVerifyConsistencyOperation *)self setFinishedOp:v5];
 
-  v6 = [(KTVerifyConsistencyOperation *)self finishedOp];
-  [(KTGroupOperation *)self dependOnBeforeGroupFinished:v6];
+  finishedOp = [(KTVerifyConsistencyOperation *)self finishedOp];
+  [(KTGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
   v26 = 0;
-  LOBYTE(v6) = [(KTVerifyConsistencyOperation *)self verifyConsistency:kKTApplicationIdentifierIDS error:&v26];
+  LOBYTE(finishedOp) = [(KTVerifyConsistencyOperation *)self verifyConsistency:kKTApplicationIdentifierIDS error:&v26];
   v7 = v26;
   v8 = v7;
-  if ((v6 & 1) == 0)
+  if ((finishedOp & 1) == 0)
   {
     if (v7)
     {
@@ -173,48 +173,48 @@
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "VerifyConsistency: waiting for fetches to finish validating", buf, 2u);
   }
 
-  v20 = [(KTVerifyConsistencyOperation *)self fetchGroup];
-  v21 = [(KTVerifyConsistencyOperation *)self fetchQueue];
+  fetchGroup = [(KTVerifyConsistencyOperation *)self fetchGroup];
+  fetchQueue = [(KTVerifyConsistencyOperation *)self fetchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000107A8;
   block[3] = &unk_100316FE0;
   block[4] = self;
-  dispatch_group_notify(v20, v21, block);
+  dispatch_group_notify(fetchGroup, fetchQueue, block);
 }
 
-- (BOOL)verifyConsistency:(id)a3 error:(id *)a4
+- (BOOL)verifyConsistency:(id)consistency error:(id *)error
 {
-  v6 = a3;
-  v7 = [(KTVerifyConsistencyOperation *)self deps];
-  v8 = [v7 publicKeyStore];
-  v9 = [v8 applicationPublicKeyStore:v6];
+  consistencyCopy = consistency;
+  deps = [(KTVerifyConsistencyOperation *)self deps];
+  publicKeyStore = [deps publicKeyStore];
+  v9 = [publicKeyStore applicationPublicKeyStore:consistencyCopy];
 
-  v10 = [v9 patLogBeginningMs];
-  if ([v6 isEqual:kKTApplicationIdentifierTLT])
+  patLogBeginningMs = [v9 patLogBeginningMs];
+  if ([consistencyCopy isEqual:kKTApplicationIdentifierTLT])
   {
-    v11 = [(KTVerifyConsistencyOperation *)self deps];
-    v12 = [v11 publicKeyStore];
-    v13 = [v12 tltKeyStore];
+    deps2 = [(KTVerifyConsistencyOperation *)self deps];
+    publicKeyStore2 = [deps2 publicKeyStore];
+    tltKeyStore = [publicKeyStore2 tltKeyStore];
 
-    v10 = [v13 tltLogBeginningMs];
-    v9 = v13;
+    patLogBeginningMs = [tltKeyStore tltLogBeginningMs];
+    v9 = tltKeyStore;
   }
 
-  v14 = [(KTVerifyConsistencyOperation *)self deps];
-  v15 = [v14 dataStore];
+  deps3 = [(KTVerifyConsistencyOperation *)self deps];
+  dataStore = [deps3 dataStore];
   v57 = 0;
-  v16 = [v15 latestConsistencyVerifiedTreeHeadRevision:v6 logBeginMs:v10 error:&v57];
+  v16 = [dataStore latestConsistencyVerifiedTreeHeadRevision:consistencyCopy logBeginMs:patLogBeginningMs error:&v57];
   v17 = v57;
 
   v50 = v16;
   if (v16)
   {
-    v49 = a4;
-    v18 = [(KTVerifyConsistencyOperation *)self deps];
-    v19 = [v18 dataStore];
+    errorCopy = error;
+    deps4 = [(KTVerifyConsistencyOperation *)self deps];
+    dataStore2 = [deps4 dataStore];
     v56 = v17;
-    v20 = [v19 unverifiedRevisions:v6 isMapHead:0 inclusion:0 logBeginMs:v10 error:&v56];
+    v20 = [dataStore2 unverifiedRevisions:consistencyCopy isMapHead:0 inclusion:0 logBeginMs:patLogBeginningMs error:&v56];
     v21 = v56;
 
     if (v20 && [v20 count])
@@ -224,10 +224,10 @@
       if ([v22 count] && (!objc_msgSend(v22, "containsObject:", v50) || objc_msgSend(v22, "count") > 1))
       {
         [v22 sortUsingSelector:"compare:"];
-        v29 = [(KTVerifyConsistencyOperation *)self deps];
-        v30 = [v29 logClient];
+        deps5 = [(KTVerifyConsistencyOperation *)self deps];
+        logClient = [deps5 logClient];
         v47 = v22;
-        v31 = +[KTContext chunkArray:chunkSize:](KTContext, "chunkArray:chunkSize:", v22, [v30 consistencyMaxProofs]);
+        v31 = +[KTContext chunkArray:chunkSize:](KTContext, "chunkArray:chunkSize:", v22, [logClient consistencyMaxProofs]);
 
         if (qword_10038BB90 != -1)
         {
@@ -241,7 +241,7 @@
           v33 = v32;
           v34 = [v31 count];
           *buf = 138543874;
-          v60 = v6;
+          v60 = consistencyCopy;
           v61 = 2114;
           v62 = v22;
           v63 = 2048;
@@ -249,7 +249,7 @@
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "fetching consistency proof for %{public}@ %{public}@ in %lu chunks", buf, 0x20u);
         }
 
-        v35 = v6;
+        v35 = consistencyCopy;
         v54 = 0u;
         v55 = 0u;
         v52 = 0u;
@@ -279,13 +279,13 @@
               if ((v43 & 1) == 0)
               {
                 v24 = 0;
-                if (v49)
+                if (errorCopy)
                 {
                   if (v21)
                   {
                     v44 = v21;
                     v24 = 0;
-                    *v49 = v21;
+                    *errorCopy = v21;
                   }
                 }
               }
@@ -302,7 +302,7 @@
           v24 = 1;
         }
 
-        v6 = v35;
+        consistencyCopy = v35;
         v20 = v46;
         v22 = v47;
       }
@@ -337,17 +337,17 @@
       if (os_log_type_enabled(qword_10038BB98, OS_LOG_TYPE_INFO))
       {
         *buf = 138543618;
-        v60 = v6;
+        v60 = consistencyCopy;
         v61 = 2112;
         v62 = v21;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "failed to get consistency unverified STH revisions for %{public}@: %@", buf, 0x16u);
       }
 
-      if (v49)
+      if (errorCopy)
       {
         v26 = v21;
         v24 = 0;
-        *v49 = v21;
+        *errorCopy = v21;
       }
 
       else
@@ -380,17 +380,17 @@
     if (os_log_type_enabled(qword_10038BB98, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v60 = v6;
+      v60 = consistencyCopy;
       v61 = 2112;
       v62 = v17;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "failed to get latest verified STH revision for %{public}@: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v28 = v17;
       v24 = 0;
-      *a4 = v17;
+      *error = v17;
     }
 
     else
@@ -403,19 +403,19 @@ LABEL_27:
   return v24 & 1;
 }
 
-- (BOOL)downloadConsistencyProofRequest:(id)a3 lastVerifiedRevision:(id)a4 application:(id)a5 error:(id *)a6
+- (BOOL)downloadConsistencyProofRequest:(id)request lastVerifiedRevision:(id)revision application:(id)application error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [NSMutableArray arrayWithArray:v10];
-  if (([v13 containsObject:v11] & 1) == 0)
+  requestCopy = request;
+  revisionCopy = revision;
+  applicationCopy = application;
+  v13 = [NSMutableArray arrayWithArray:requestCopy];
+  if (([v13 containsObject:revisionCopy] & 1) == 0)
   {
-    [v13 addObject:v11];
+    [v13 addObject:revisionCopy];
     [v13 sortUsingSelector:"compare:"];
   }
 
-  v14 = [TransparencyRPCRequestBuilder buildConsistencyProofRequest:v12 revisions:v13 error:a6];
+  v14 = [TransparencyRPCRequestBuilder buildConsistencyProofRequest:applicationCopy revisions:v13 error:error];
   if (v14)
   {
     *buf = 0;
@@ -424,28 +424,28 @@ LABEL_27:
     v40 = sub_1000117C8;
     v41 = sub_1000117D8;
     v42 = 0;
-    v15 = [(KTVerifyConsistencyOperation *)self fetchGroup];
-    dispatch_group_enter(v15);
+    fetchGroup = [(KTVerifyConsistencyOperation *)self fetchGroup];
+    dispatch_group_enter(fetchGroup);
 
-    v16 = [(KTVerifyConsistencyOperation *)self deps];
-    v17 = [v16 dataStore];
+    deps = [(KTVerifyConsistencyOperation *)self deps];
+    dataStore = [deps dataStore];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_1000117E0;
     v31[3] = &unk_1003170C8;
     v31[4] = self;
-    v18 = v12;
+    v18 = applicationCopy;
     v32 = v18;
-    v33 = v11;
-    v34 = v10;
+    v33 = revisionCopy;
+    v34 = requestCopy;
     v19 = v13;
     v35 = v19;
     v36 = buf;
-    [v17 performBlockAndWaitWithMoc:v31];
+    [dataStore performBlockAndWaitWithMoc:v31];
 
     objc_initWeak(&location, self);
-    v20 = [(KTVerifyConsistencyOperation *)self deps];
-    v21 = [v20 logClient];
+    deps2 = [(KTVerifyConsistencyOperation *)self deps];
+    logClient = [deps2 logClient];
     v22 = *(v38 + 5);
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
@@ -455,7 +455,7 @@ LABEL_27:
     v26 = v18;
     v28 = buf;
     v27 = v19;
-    [v21 fetchConsistencyProof:v14 uuid:v22 completionHandler:v25];
+    [logClient fetchConsistencyProof:v14 uuid:v22 completionHandler:v25];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&location);

@@ -2,37 +2,37 @@
 + (id)userInteractiveDaemonController;
 + (id)weakSharedInstance;
 - (NSString)description;
-- (REMXPCDaemonController)initWithStoreContainerToken:(id)a3 userInteractive:(BOOL)a4;
+- (REMXPCDaemonController)initWithStoreContainerToken:(id)token userInteractive:(BOOL)interactive;
 - (REMXPCDaemonControllerAutoCategorizationActivityObserver)autoCategorizationActivityObserver;
 - (REMXPCDaemonControllerCloudKitNetworkActivityDelegate)cloudKitNetworkActivityDelegate;
-- (id)_resolveAndCachePerformerWithResolver:(id)a3 reason:(id)a4 errorHandler:(id)a5;
-- (id)_resolvePerformerWithResolver:(id)a3 reason:(id)a4 errorHandler:(id)a5;
-- (id)_syncPerformerWithResolver:(id)a3 reason:(id)a4 errorHandler:(id)a5;
+- (id)_resolveAndCachePerformerWithResolver:(id)resolver reason:(id)reason errorHandler:(id)handler;
+- (id)_resolvePerformerWithResolver:(id)resolver reason:(id)reason errorHandler:(id)handler;
+- (id)_syncPerformerWithResolver:(id)resolver reason:(id)reason errorHandler:(id)handler;
 - (id)_xpcConnectionReconnectingIfNecessary;
-- (id)syncChangeTrackingPerformerWithReason:(id)a3 errorHandler:(id)a4;
-- (id)syncDebugPerformerWithReason:(id)a3 errorHandler:(id)a4;
-- (id)syncIndexingPerformerWithReason:(id)a3 errorHandler:(id)a4;
-- (id)syncStorePerformerWithReason:(id)a3 errorHandler:(id)a4;
-- (id)syncSyncInterfacePerformerWithReason:(id)a3 errorHandler:(id)a4;
-- (void)_asyncPerformerWithResolver:(id)a3 reason:(id)a4 loadHandler:(id)a5 errorHandler:(id)a6;
-- (void)_asyncResolveAndCachePerformerWithResolver:(id)a3 reason:(id)a4 completion:(id)a5;
-- (void)_asyncResolvePerformerWithResolver:(id)a3 reason:(id)a4 completion:(id)a5;
+- (id)syncChangeTrackingPerformerWithReason:(id)reason errorHandler:(id)handler;
+- (id)syncDebugPerformerWithReason:(id)reason errorHandler:(id)handler;
+- (id)syncIndexingPerformerWithReason:(id)reason errorHandler:(id)handler;
+- (id)syncStorePerformerWithReason:(id)reason errorHandler:(id)handler;
+- (id)syncSyncInterfacePerformerWithReason:(id)reason errorHandler:(id)handler;
+- (void)_asyncPerformerWithResolver:(id)resolver reason:(id)reason loadHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)_asyncResolveAndCachePerformerWithResolver:(id)resolver reason:(id)reason completion:(id)completion;
+- (void)_asyncResolvePerformerWithResolver:(id)resolver reason:(id)reason completion:(id)completion;
 - (void)_xpcConnectionDidInvalidate;
-- (void)asyncDebugPerformerWithReason:(id)a3 loadHandler:(id)a4 errorHandler:(id)a5;
-- (void)asyncIndexingPerformerWithReason:(id)a3 loadHandler:(id)a4 errorHandler:(id)a5;
-- (void)asyncStorePerformerWithReason:(id)a3 loadHandler:(id)a4 errorHandler:(id)a5;
-- (void)asyncSyncInterfacePerformerWithReason:(id)a3 loadHandler:(id)a4 errorHandler:(id)a5;
+- (void)asyncDebugPerformerWithReason:(id)reason loadHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)asyncIndexingPerformerWithReason:(id)reason loadHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)asyncStorePerformerWithReason:(id)reason loadHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)asyncSyncInterfacePerformerWithReason:(id)reason loadHandler:(id)handler errorHandler:(id)errorHandler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setAutoCategorizationActivityObserver:(id)a3;
-- (void)setCloudKitNetworkActivityDelegate:(id)a3;
+- (void)setAutoCategorizationActivityObserver:(id)observer;
+- (void)setCloudKitNetworkActivityDelegate:(id)delegate;
 @end
 
 @implementation REMXPCDaemonController
 
 + (id)userInteractiveDaemonController
 {
-  v2 = [[a1 alloc] initWithStoreContainerToken:0 userInteractive:1];
+  v2 = [[self alloc] initWithStoreContainerToken:0 userInteractive:1];
 
   return v2;
 }
@@ -77,9 +77,9 @@
   v11 = __Block_byref_object_dispose__8;
   v12 = 0;
   os_unfair_lock_lock(&self->_ivarLock);
-  v3 = [(REMXPCDaemonController *)self xpcConnection];
+  xpcConnection = [(REMXPCDaemonController *)self xpcConnection];
   v4 = v8[5];
-  v8[5] = v3;
+  v8[5] = xpcConnection;
 
   os_unfair_lock_unlock(&self->_ivarLock);
   v5 = v8[5];
@@ -137,8 +137,8 @@ void __63__REMXPCDaemonController__xpcConnectionReconnectingIfNecessary__block_i
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMXPCDaemonController *)self serviceName];
-  v6 = [v3 stringWithFormat:@"<%@: %p serviceName:%@>", v4, self, v5];
+  serviceName = [(REMXPCDaemonController *)self serviceName];
+  v6 = [v3 stringWithFormat:@"<%@: %p serviceName:%@>", v4, self, serviceName];
 
   return v6;
 }
@@ -167,8 +167,8 @@ void __63__REMXPCDaemonController__xpcConnectionReconnectingIfNecessary__block_i
     _os_log_impl(&dword_19A0DB000, v3, OS_LOG_TYPE_DEFAULT, "REMXPCDaemonController invalidate", v5, 2u);
   }
 
-  v4 = [(REMXPCDaemonController *)self xpcConnection];
-  [v4 invalidate];
+  xpcConnection = [(REMXPCDaemonController *)self xpcConnection];
+  [xpcConnection invalidate];
 }
 
 void __63__REMXPCDaemonController__xpcConnectionReconnectingIfNecessary__block_invoke_2_28(uint64_t a1)
@@ -195,25 +195,25 @@ void __63__REMXPCDaemonController__xpcConnectionReconnectingIfNecessary__block_i
   }
 }
 
-- (REMXPCDaemonController)initWithStoreContainerToken:(id)a3 userInteractive:(BOOL)a4
+- (REMXPCDaemonController)initWithStoreContainerToken:(id)token userInteractive:(BOOL)interactive
 {
-  v4 = a4;
+  interactiveCopy = interactive;
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  tokenCopy = token;
   v19.receiver = self;
   v19.super_class = REMXPCDaemonController;
   v8 = [(REMXPCDaemonController *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_storeContainerToken, a3);
+    objc_storeStrong(&v8->_storeContainerToken, token);
     v9->_ivarLock._os_unfair_lock_opaque = 0;
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     l_performersByName = v9->_l_performersByName;
     v9->_l_performersByName = v10;
 
     v12 = REMDaemonMachServiceName_userInteractive;
-    if (!v4)
+    if (!interactiveCopy)
     {
       v12 = REMDaemonMachServiceName;
     }
@@ -221,7 +221,7 @@ void __63__REMXPCDaemonController__xpcConnectionReconnectingIfNecessary__block_i
     v13 = *v12;
     v14 = *v12;
     objc_storeStrong(&v9->_serviceName, v13);
-    v15 = [(REMXPCDaemonController *)v9 _xpcConnectionReconnectingIfNecessary];
+    _xpcConnectionReconnectingIfNecessary = [(REMXPCDaemonController *)v9 _xpcConnectionReconnectingIfNecessary];
   }
 
   v16 = +[REMLog xpc];
@@ -236,17 +236,17 @@ void __63__REMXPCDaemonController__xpcConnectionReconnectingIfNecessary__block_i
   return v9;
 }
 
-- (void)setCloudKitNetworkActivityDelegate:(id)a3
+- (void)setCloudKitNetworkActivityDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_ivarLock);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__REMXPCDaemonController_setCloudKitNetworkActivityDelegate___block_invoke;
   v6[3] = &unk_1E7508448;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = delegateCopy;
+  v5 = delegateCopy;
   __61__REMXPCDaemonController_setCloudKitNetworkActivityDelegate___block_invoke(v6);
   os_unfair_lock_unlock(&self->_ivarLock);
 }
@@ -264,17 +264,17 @@ void __61__REMXPCDaemonController_setCloudKitNetworkActivityDelegate___block_inv
   objc_storeWeak((*(a1 + 32) + 16), *(a1 + 40));
 }
 
-- (void)setAutoCategorizationActivityObserver:(id)a3
+- (void)setAutoCategorizationActivityObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_ivarLock);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__REMXPCDaemonController_setAutoCategorizationActivityObserver___block_invoke;
   v6[3] = &unk_1E7508448;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   __64__REMXPCDaemonController_setAutoCategorizationActivityObserver___block_invoke(v6);
   os_unfair_lock_unlock(&self->_ivarLock);
 }
@@ -292,119 +292,119 @@ void __64__REMXPCDaemonController_setAutoCategorizationActivityObserver___block_
   objc_storeWeak((*(a1 + 32) + 24), *(a1 + 40));
 }
 
-- (id)syncChangeTrackingPerformerWithReason:(id)a3 errorHandler:(id)a4
+- (id)syncChangeTrackingPerformerWithReason:(id)reason errorHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  reasonCopy = reason;
   v8 = [REMXPCDaemonControllerPerformerResolver_changeTracking alloc];
-  v9 = [(REMXPCDaemonController *)self storeContainerToken];
-  v10 = [(REMXPCDaemonControllerPerformerResolver_changeTracking *)v8 initWithStoreContainerToken:v9];
-  v11 = [(REMXPCDaemonController *)self _syncPerformerWithResolver:v10 reason:v7 errorHandler:v6];
+  storeContainerToken = [(REMXPCDaemonController *)self storeContainerToken];
+  v10 = [(REMXPCDaemonControllerPerformerResolver_changeTracking *)v8 initWithStoreContainerToken:storeContainerToken];
+  v11 = [(REMXPCDaemonController *)self _syncPerformerWithResolver:v10 reason:reasonCopy errorHandler:handlerCopy];
 
   return v11;
 }
 
-- (void)asyncDebugPerformerWithReason:(id)a3 loadHandler:(id)a4 errorHandler:(id)a5
+- (void)asyncDebugPerformerWithReason:(id)reason loadHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorHandlerCopy = errorHandler;
+  handlerCopy = handler;
+  reasonCopy = reason;
   v11 = [REMXPCDaemonControllerPerformerResolver_debug alloc];
-  v13 = [(REMXPCDaemonController *)self storeContainerToken];
-  v12 = [(REMXPCDaemonControllerPerformerResolver_debug *)v11 initWithStoreContainerToken:v13];
-  [(REMXPCDaemonController *)self _asyncPerformerWithResolver:v12 reason:v10 loadHandler:v9 errorHandler:v8];
+  storeContainerToken = [(REMXPCDaemonController *)self storeContainerToken];
+  v12 = [(REMXPCDaemonControllerPerformerResolver_debug *)v11 initWithStoreContainerToken:storeContainerToken];
+  [(REMXPCDaemonController *)self _asyncPerformerWithResolver:v12 reason:reasonCopy loadHandler:handlerCopy errorHandler:errorHandlerCopy];
 }
 
-- (id)syncDebugPerformerWithReason:(id)a3 errorHandler:(id)a4
+- (id)syncDebugPerformerWithReason:(id)reason errorHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  reasonCopy = reason;
   v8 = [REMXPCDaemonControllerPerformerResolver_debug alloc];
-  v9 = [(REMXPCDaemonController *)self storeContainerToken];
-  v10 = [(REMXPCDaemonControllerPerformerResolver_debug *)v8 initWithStoreContainerToken:v9];
-  v11 = [(REMXPCDaemonController *)self _syncPerformerWithResolver:v10 reason:v7 errorHandler:v6];
+  storeContainerToken = [(REMXPCDaemonController *)self storeContainerToken];
+  v10 = [(REMXPCDaemonControllerPerformerResolver_debug *)v8 initWithStoreContainerToken:storeContainerToken];
+  v11 = [(REMXPCDaemonController *)self _syncPerformerWithResolver:v10 reason:reasonCopy errorHandler:handlerCopy];
 
   return v11;
 }
 
-- (id)syncStorePerformerWithReason:(id)a3 errorHandler:(id)a4
+- (id)syncStorePerformerWithReason:(id)reason errorHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  reasonCopy = reason;
   v8 = [REMXPCDaemonControllerPerformerResolver_store alloc];
-  v9 = [(REMXPCDaemonController *)self storeContainerToken];
-  v10 = [(REMXPCDaemonControllerPerformerResolver_store *)v8 initWithStoreContainerToken:v9];
-  v11 = [(REMXPCDaemonController *)self _syncPerformerWithResolver:v10 reason:v7 errorHandler:v6];
+  storeContainerToken = [(REMXPCDaemonController *)self storeContainerToken];
+  v10 = [(REMXPCDaemonControllerPerformerResolver_store *)v8 initWithStoreContainerToken:storeContainerToken];
+  v11 = [(REMXPCDaemonController *)self _syncPerformerWithResolver:v10 reason:reasonCopy errorHandler:handlerCopy];
 
   return v11;
 }
 
-- (void)asyncStorePerformerWithReason:(id)a3 loadHandler:(id)a4 errorHandler:(id)a5
+- (void)asyncStorePerformerWithReason:(id)reason loadHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorHandlerCopy = errorHandler;
+  handlerCopy = handler;
+  reasonCopy = reason;
   v11 = [REMXPCDaemonControllerPerformerResolver_store alloc];
-  v13 = [(REMXPCDaemonController *)self storeContainerToken];
-  v12 = [(REMXPCDaemonControllerPerformerResolver_store *)v11 initWithStoreContainerToken:v13];
-  [(REMXPCDaemonController *)self _asyncPerformerWithResolver:v12 reason:v10 loadHandler:v9 errorHandler:v8];
+  storeContainerToken = [(REMXPCDaemonController *)self storeContainerToken];
+  v12 = [(REMXPCDaemonControllerPerformerResolver_store *)v11 initWithStoreContainerToken:storeContainerToken];
+  [(REMXPCDaemonController *)self _asyncPerformerWithResolver:v12 reason:reasonCopy loadHandler:handlerCopy errorHandler:errorHandlerCopy];
 }
 
-- (id)syncSyncInterfacePerformerWithReason:(id)a3 errorHandler:(id)a4
+- (id)syncSyncInterfacePerformerWithReason:(id)reason errorHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  reasonCopy = reason;
   v8 = objc_alloc_init(REMXPCDaemonControllerPerformerResolver_sync);
-  v9 = [(REMXPCDaemonController *)self _syncPerformerWithResolver:v8 reason:v7 errorHandler:v6];
+  v9 = [(REMXPCDaemonController *)self _syncPerformerWithResolver:v8 reason:reasonCopy errorHandler:handlerCopy];
 
   return v9;
 }
 
-- (void)asyncSyncInterfacePerformerWithReason:(id)a3 loadHandler:(id)a4 errorHandler:(id)a5
+- (void)asyncSyncInterfacePerformerWithReason:(id)reason loadHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorHandlerCopy = errorHandler;
+  handlerCopy = handler;
+  reasonCopy = reason;
   v11 = objc_alloc_init(REMXPCDaemonControllerPerformerResolver_sync);
-  [(REMXPCDaemonController *)self _asyncPerformerWithResolver:v11 reason:v10 loadHandler:v9 errorHandler:v8];
+  [(REMXPCDaemonController *)self _asyncPerformerWithResolver:v11 reason:reasonCopy loadHandler:handlerCopy errorHandler:errorHandlerCopy];
 }
 
-- (id)syncIndexingPerformerWithReason:(id)a3 errorHandler:(id)a4
+- (id)syncIndexingPerformerWithReason:(id)reason errorHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  reasonCopy = reason;
   v8 = objc_alloc_init(REMXPCDaemonControllerPerformerResolver_indexing);
-  v9 = [(REMXPCDaemonController *)self _syncPerformerWithResolver:v8 reason:v7 errorHandler:v6];
+  v9 = [(REMXPCDaemonController *)self _syncPerformerWithResolver:v8 reason:reasonCopy errorHandler:handlerCopy];
 
   return v9;
 }
 
-- (void)asyncIndexingPerformerWithReason:(id)a3 loadHandler:(id)a4 errorHandler:(id)a5
+- (void)asyncIndexingPerformerWithReason:(id)reason loadHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorHandlerCopy = errorHandler;
+  handlerCopy = handler;
+  reasonCopy = reason;
   v11 = objc_alloc_init(REMXPCDaemonControllerPerformerResolver_indexing);
-  [(REMXPCDaemonController *)self _asyncPerformerWithResolver:v11 reason:v10 loadHandler:v9 errorHandler:v8];
+  [(REMXPCDaemonController *)self _asyncPerformerWithResolver:v11 reason:reasonCopy loadHandler:handlerCopy errorHandler:errorHandlerCopy];
 }
 
-- (id)_syncPerformerWithResolver:(id)a3 reason:(id)a4 errorHandler:(id)a5
+- (id)_syncPerformerWithResolver:(id)resolver reason:(id)reason errorHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 name];
-  v12 = [(REMXPCDaemonController *)self _resolveAndCachePerformerWithResolver:v10 reason:v9 errorHandler:v8];
+  handlerCopy = handler;
+  reasonCopy = reason;
+  resolverCopy = resolver;
+  name = [resolverCopy name];
+  v12 = [(REMXPCDaemonController *)self _resolveAndCachePerformerWithResolver:resolverCopy reason:reasonCopy errorHandler:handlerCopy];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __73__REMXPCDaemonController__syncPerformerWithResolver_reason_errorHandler___block_invoke;
   v17[3] = &unk_1E7507EE8;
-  v18 = v11;
-  v19 = self;
-  v20 = v8;
-  v13 = v8;
-  v14 = v11;
+  v18 = name;
+  selfCopy = self;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = name;
   v15 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v17];
 
   return v15;
@@ -439,25 +439,25 @@ void __73__REMXPCDaemonController__syncPerformerWithResolver_reason_errorHandler
   [v2 setObject:0 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)_asyncPerformerWithResolver:(id)a3 reason:(id)a4 loadHandler:(id)a5 errorHandler:(id)a6
+- (void)_asyncPerformerWithResolver:(id)resolver reason:(id)reason loadHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 name];
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
+  reasonCopy = reason;
+  resolverCopy = resolver;
+  name = [resolverCopy name];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __86__REMXPCDaemonController__asyncPerformerWithResolver_reason_loadHandler_errorHandler___block_invoke;
   v18[3] = &unk_1E7509150;
-  v19 = v14;
-  v20 = self;
-  v21 = v11;
-  v22 = v10;
-  v15 = v10;
-  v16 = v11;
-  v17 = v14;
-  [(REMXPCDaemonController *)self _asyncResolveAndCachePerformerWithResolver:v13 reason:v12 completion:v18];
+  v19 = name;
+  selfCopy = self;
+  v21 = errorHandlerCopy;
+  v22 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = errorHandlerCopy;
+  v17 = name;
+  [(REMXPCDaemonController *)self _asyncResolveAndCachePerformerWithResolver:resolverCopy reason:reasonCopy completion:v18];
 }
 
 void __86__REMXPCDaemonController__asyncPerformerWithResolver_reason_loadHandler_errorHandler___block_invoke(uint64_t a1, void *a2)
@@ -514,12 +514,12 @@ void __86__REMXPCDaemonController__asyncPerformerWithResolver_reason_loadHandler
   [v2 setObject:0 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (id)_resolveAndCachePerformerWithResolver:(id)a3 reason:(id)a4 errorHandler:(id)a5
+- (id)_resolveAndCachePerformerWithResolver:(id)resolver reason:(id)reason errorHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 name];
+  resolverCopy = resolver;
+  reasonCopy = reason;
+  handlerCopy = handler;
+  name = [resolverCopy name];
   v28 = 0;
   v29[0] = &v28;
   v29[1] = 0x3032000000;
@@ -533,7 +533,7 @@ void __86__REMXPCDaemonController__asyncPerformerWithResolver_reason_loadHandler
   v25[3] = &unk_1E7509178;
   v27 = &v28;
   v25[4] = self;
-  v12 = v11;
+  v12 = name;
   v26 = v12;
   __84__REMXPCDaemonController__resolveAndCachePerformerWithResolver_reason_errorHandler___block_invoke(v25);
   os_unfair_lock_unlock(&self->_ivarLock);
@@ -557,9 +557,9 @@ void __86__REMXPCDaemonController__asyncPerformerWithResolver_reason_loadHandler
     v21[3] = &unk_1E7507EE8;
     v15 = v12;
     v22 = v15;
-    v23 = self;
-    v24 = v10;
-    v14 = [(REMXPCDaemonController *)self _resolvePerformerWithResolver:v8 reason:v9 errorHandler:v21];
+    selfCopy = self;
+    v24 = handlerCopy;
+    v14 = [(REMXPCDaemonController *)self _resolvePerformerWithResolver:resolverCopy reason:reasonCopy errorHandler:v21];
     if (v14)
     {
       os_unfair_lock_lock(&self->_ivarLock);
@@ -626,13 +626,13 @@ void __84__REMXPCDaemonController__resolveAndCachePerformerWithResolver_reason_e
   [v3 setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)_asyncResolveAndCachePerformerWithResolver:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)_asyncResolveAndCachePerformerWithResolver:(id)resolver reason:(id)reason completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 name];
+  resolverCopy = resolver;
+  reasonCopy = reason;
+  completionCopy = completion;
+  name = [resolverCopy name];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -646,7 +646,7 @@ void __84__REMXPCDaemonController__resolveAndCachePerformerWithResolver_reason_e
   v19[3] = &unk_1E7509178;
   v21 = &v22;
   v19[4] = self;
-  v12 = v11;
+  v12 = name;
   v20 = v12;
   __87__REMXPCDaemonController__asyncResolveAndCachePerformerWithResolver_reason_completion___block_invoke(v19);
   os_unfair_lock_unlock(&self->_ivarLock);
@@ -660,13 +660,13 @@ void __84__REMXPCDaemonController__resolveAndCachePerformerWithResolver_reason_e
       *buf = 138543874;
       v29 = v12;
       v30 = 2114;
-      v31 = v9;
+      v31 = reasonCopy;
       v32 = 2112;
       v33 = v15;
       _os_log_debug_impl(&dword_19A0DB000, v13, OS_LOG_TYPE_DEBUG, "Returning existing performer {name: %{public}@, reason: %{public}@, performer: %@}", buf, 0x20u);
     }
 
-    v10[2](v10, v23[5], 0);
+    completionCopy[2](completionCopy, v23[5], 0);
   }
 
   else
@@ -677,8 +677,8 @@ void __84__REMXPCDaemonController__resolveAndCachePerformerWithResolver_reason_e
     v16[3] = &unk_1E75091C8;
     v16[4] = self;
     v17 = v12;
-    v18 = v10;
-    [(REMXPCDaemonController *)self _asyncResolvePerformerWithResolver:v8 reason:v9 completion:v16];
+    v18 = completionCopy;
+    [(REMXPCDaemonController *)self _asyncResolvePerformerWithResolver:resolverCopy reason:reasonCopy completion:v16];
   }
 
   _Block_object_dispose(&v22, 8);
@@ -743,33 +743,33 @@ void __87__REMXPCDaemonController__asyncResolveAndCachePerformerWithResolver_rea
   [v2 setObject:0 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)_asyncResolvePerformerWithResolver:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)_asyncResolvePerformerWithResolver:(id)resolver reason:(id)reason completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 name];
+  reasonCopy = reason;
+  completionCopy = completion;
+  resolverCopy = resolver;
+  name = [resolverCopy name];
   v12 = +[REMLog xpc];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v27 = v11;
+    v27 = name;
     v28 = 2114;
-    v29 = v8;
+    v29 = reasonCopy;
     _os_log_impl(&dword_19A0DB000, v12, OS_LOG_TYPE_DEFAULT, "Cache-miss getting performer. Resolving async {name: %{public}@, reason: %{public}@}", buf, 0x16u);
   }
 
-  v13 = [(REMXPCDaemonController *)self _xpcConnectionReconnectingIfNecessary];
+  _xpcConnectionReconnectingIfNecessary = [(REMXPCDaemonController *)self _xpcConnectionReconnectingIfNecessary];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __79__REMXPCDaemonController__asyncResolvePerformerWithResolver_reason_completion___block_invoke;
   v23[3] = &unk_1E7507D30;
-  v14 = v11;
+  v14 = name;
   v24 = v14;
-  v15 = v9;
+  v15 = completionCopy;
   v25 = v15;
-  v16 = [v13 remoteObjectProxyWithErrorHandler:v23];
+  v16 = [_xpcConnectionReconnectingIfNecessary remoteObjectProxyWithErrorHandler:v23];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -779,7 +779,7 @@ void __87__REMXPCDaemonController__asyncResolveAndCachePerformerWithResolver_rea
   v22 = v15;
   v17 = v15;
   v18 = v14;
-  [v10 resolveWithDaemon:v16 reason:v8 completion:v20];
+  [resolverCopy resolveWithDaemon:v16 reason:reasonCopy completion:v20];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -833,33 +833,33 @@ void __79__REMXPCDaemonController__asyncResolvePerformerWithResolver_reason_comp
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_resolvePerformerWithResolver:(id)a3 reason:(id)a4 errorHandler:(id)a5
+- (id)_resolvePerformerWithResolver:(id)resolver reason:(id)reason errorHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 name];
+  resolverCopy = resolver;
+  reasonCopy = reason;
+  handlerCopy = handler;
+  name = [resolverCopy name];
   v12 = +[REMLog xpc];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v11;
+    *&buf[4] = name;
     *&buf[12] = 2114;
-    *&buf[14] = v9;
+    *&buf[14] = reasonCopy;
     _os_log_impl(&dword_19A0DB000, v12, OS_LOG_TYPE_DEFAULT, "Cache-miss getting performer. Resolving sync {name: %{public}@, reason: %{public}@}", buf, 0x16u);
   }
 
-  v13 = [(REMXPCDaemonController *)self _xpcConnectionReconnectingIfNecessary];
+  _xpcConnectionReconnectingIfNecessary = [(REMXPCDaemonController *)self _xpcConnectionReconnectingIfNecessary];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __76__REMXPCDaemonController__resolvePerformerWithResolver_reason_errorHandler___block_invoke;
   v26[3] = &unk_1E7507D30;
-  v14 = v11;
+  v14 = name;
   v27 = v14;
-  v15 = v10;
+  v15 = handlerCopy;
   v28 = v15;
-  v16 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v26];
+  v16 = [_xpcConnectionReconnectingIfNecessary synchronousRemoteObjectProxyWithErrorHandler:v26];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -876,7 +876,7 @@ void __79__REMXPCDaemonController__asyncResolvePerformerWithResolver_reason_comp
   v25 = buf;
   v18 = v15;
   v24 = v18;
-  [v8 resolveWithDaemon:v16 reason:v9 completion:v22];
+  [resolverCopy resolveWithDaemon:v16 reason:reasonCopy completion:v22];
   v19 = *(*&buf[8] + 40);
 
   _Block_object_dispose(buf, 8);
@@ -981,12 +981,12 @@ uint64_t __63__REMXPCDaemonController__xpcConnectionReconnectingIfNecessary__blo
 
 - (void)_xpcConnectionDidInvalidate
 {
-  v3 = [(REMXPCDaemonController *)self cloudKitNetworkActivityDelegate];
-  [v3 cloudKitNetworkActivityDidChange:&unk_1F0D99AD8];
+  cloudKitNetworkActivityDelegate = [(REMXPCDaemonController *)self cloudKitNetworkActivityDelegate];
+  [cloudKitNetworkActivityDelegate cloudKitNetworkActivityDidChange:&unk_1F0D99AD8];
 
   v5 = objc_alloc_init(REMAutoCategorizationActivity);
-  v4 = [(REMXPCDaemonController *)self autoCategorizationActivityObserver];
-  [v4 autoCategorizationActivityDidChange:v5];
+  autoCategorizationActivityObserver = [(REMXPCDaemonController *)self autoCategorizationActivityObserver];
+  [autoCategorizationActivityObserver autoCategorizationActivityDidChange:v5];
 }
 
 - (REMXPCDaemonControllerAutoCategorizationActivityObserver)autoCategorizationActivityObserver

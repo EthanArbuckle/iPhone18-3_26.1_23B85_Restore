@@ -1,31 +1,31 @@
 @interface HUCameraRecordingOptionsItem
-- (HUCameraRecordingOptionsItem)initWithCameraProfiles:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUCameraRecordingOptionsItem)initWithCameraProfiles:(id)profiles;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUCameraRecordingOptionsItem
 
-- (HUCameraRecordingOptionsItem)initWithCameraProfiles:(id)a3
+- (HUCameraRecordingOptionsItem)initWithCameraProfiles:(id)profiles
 {
-  v5 = a3;
+  profilesCopy = profiles;
   v9.receiver = self;
   v9.super_class = HUCameraRecordingOptionsItem;
   v6 = [(HFStaticItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cameraProfiles, a3);
+    objc_storeStrong(&v6->_cameraProfiles, profiles);
   }
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v18[3] = *MEMORY[0x277D85DE8];
   v4 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsCameraStreamingAndRecordingItemDisplayTitle", @"HUServiceDetailsCameraStreamingAndRecordingItemDisplayTitle", 1);
-  v5 = [(HUCameraRecordingOptionsItem *)self cameraProfiles];
-  v6 = [v5 na_any:&__block_literal_global_213];
+  cameraProfiles = [(HUCameraRecordingOptionsItem *)self cameraProfiles];
+  v6 = [cameraProfiles na_any:&__block_literal_global_213];
 
   v7 = MEMORY[0x277CBEB38];
   v8 = *MEMORY[0x277D13FB8];
@@ -40,8 +40,8 @@
   v18[0] = v4;
   v18[1] = v9;
   v17[2] = *MEMORY[0x277D13DA8];
-  v10 = [(HUCameraRecordingOptionsItem *)self cameraProfiles];
-  v18[2] = v10;
+  cameraProfiles2 = [(HUCameraRecordingOptionsItem *)self cameraProfiles];
+  v18[2] = cameraProfiles2;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
   v12 = [v7 dictionaryWithDictionary:v11];
 

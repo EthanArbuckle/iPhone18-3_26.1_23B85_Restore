@@ -5,21 +5,21 @@
 - (RWIProtocolDOMVideoPlaybackQuality)quality;
 - (RWIProtocolDOMViewportSize)viewport;
 - (double)devicePixelRatio;
-- (void)setAudio:(id)a3;
-- (void)setDevicePixelRatio:(double)a3;
-- (void)setQuality:(id)a3;
-- (void)setSource:(id)a3;
-- (void)setVideo:(id)a3;
-- (void)setViewport:(id)a3;
+- (void)setAudio:(id)audio;
+- (void)setDevicePixelRatio:(double)ratio;
+- (void)setQuality:(id)quality;
+- (void)setSource:(id)source;
+- (void)setVideo:(id)video;
+- (void)setViewport:(id)viewport;
 @end
 
 @implementation RWIProtocolDOMMediaStats
 
-- (void)setAudio:(id)a3
+- (void)setAudio:(id)audio
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"audio"];
+  [(RWIProtocolJSONObject *)&v3 setObject:audio forKey:@"audio"];
 }
 
 - (RWIProtocolDOMAudioMediaStats)audio
@@ -77,11 +77,11 @@
   return v7;
 }
 
-- (void)setVideo:(id)a3
+- (void)setVideo:(id)video
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"video"];
+  [(RWIProtocolJSONObject *)&v3 setObject:video forKey:@"video"];
 }
 
 - (RWIProtocolDOMVideoMediaStats)video
@@ -139,11 +139,11 @@
   return v7;
 }
 
-- (void)setDevicePixelRatio:(double)a3
+- (void)setDevicePixelRatio:(double)ratio
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"devicePixelRatio" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"devicePixelRatio" forKey:ratio];
 }
 
 - (double)devicePixelRatio
@@ -154,11 +154,11 @@
   return result;
 }
 
-- (void)setViewport:(id)a3
+- (void)setViewport:(id)viewport
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"viewport"];
+  [(RWIProtocolJSONObject *)&v3 setObject:viewport forKey:@"viewport"];
 }
 
 - (RWIProtocolDOMViewportSize)viewport
@@ -216,11 +216,11 @@
   return v7;
 }
 
-- (void)setQuality:(id)a3
+- (void)setQuality:(id)quality
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"quality"];
+  [(RWIProtocolJSONObject *)&v3 setObject:quality forKey:@"quality"];
 }
 
 - (RWIProtocolDOMVideoPlaybackQuality)quality
@@ -278,11 +278,11 @@
   return v7;
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"source"];
+  [(RWIProtocolJSONObject *)&v3 setString:source forKey:@"source"];
 }
 
 - (NSString)source

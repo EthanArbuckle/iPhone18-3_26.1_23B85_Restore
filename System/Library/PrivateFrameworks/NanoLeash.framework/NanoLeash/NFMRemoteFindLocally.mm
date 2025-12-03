@@ -1,27 +1,27 @@
 @interface NFMRemoteFindLocally
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NFMRemoteFindLocally)init;
 - (unsigned)_behaviorModeOverride;
 - (void)_cleanUpSession;
 - (void)_initializeSessionIfNeeded;
 - (void)_startPhoneRangingSession;
-- (void)_tellPhoneToPlaySoundWithBehavior:(unsigned __int16)a3;
-- (void)didPlaySound:(id)a3;
-- (void)didPlaySoundAndFlashLED:(id)a3;
-- (void)handleSendSharedConfiguration:(id)a3;
-- (void)handleSharedConfigurationResponse:(id)a3;
-- (void)handleStopPhoneRanging:(id)a3;
+- (void)_tellPhoneToPlaySoundWithBehavior:(unsigned __int16)behavior;
+- (void)didPlaySound:(id)sound;
+- (void)didPlaySoundAndFlashLED:(id)d;
+- (void)handleSendSharedConfiguration:(id)configuration;
+- (void)handleSharedConfigurationResponse:(id)response;
+- (void)handleStopPhoneRanging:(id)ranging;
 - (void)pingMyWatchCapabilityDidChange;
 - (void)playNearbySoundOnPhone;
-- (void)playSound:(id)a3;
-- (void)playSoundAndFlash:(id)a3;
+- (void)playSound:(id)sound;
+- (void)playSoundAndFlash:(id)flash;
 - (void)playSoundAndFlashRemotely;
 - (void)playSoundRemotely;
-- (void)session:(id)a3 didGenerateShareableConfigurationData:(id)a4 forObject:(id)a5;
-- (void)session:(id)a3 didInvalidateWithError:(id)a4;
-- (void)session:(id)a3 didRemoveNearbyObjects:(id)a4 withReason:(int64_t)a5;
-- (void)sessionSuspensionEnded:(id)a3;
-- (void)sessionWasSuspended:(id)a3;
+- (void)session:(id)session didGenerateShareableConfigurationData:(id)data forObject:(id)object;
+- (void)session:(id)session didInvalidateWithError:(id)error;
+- (void)session:(id)session didRemoveNearbyObjects:(id)objects withReason:(int64_t)reason;
+- (void)sessionSuspensionEnded:(id)ended;
+- (void)sessionWasSuspended:(id)suspended;
 - (void)startRangingOnPhone;
 - (void)stopRangingOnPhone;
 @end
@@ -97,43 +97,43 @@
   return v4;
 }
 
-- (void)playSoundAndFlash:(id)a3
+- (void)playSoundAndFlash:(id)flash
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100001B98;
   v5[3] = &unk_10000C3E0;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  flashCopy = flash;
+  selfCopy = self;
+  v4 = flashCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)playSound:(id)a3
+- (void)playSound:(id)sound
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100001ED8;
   v5[3] = &unk_10000C3E0;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  soundCopy = sound;
+  selfCopy = self;
+  v4 = soundCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)didPlaySound:(id)a3
+- (void)didPlaySound:(id)sound
 {
-  v4 = a3;
+  soundCopy = sound;
   v5 = [NFMProtoDidPlaySoundResponse alloc];
-  v6 = [v4 data];
-  v7 = [v5 initWithData:v6];
+  data = [soundCopy data];
+  v7 = [v5 initWithData:data];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(NSMutableDictionary *)self->_localConnections allValues];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [(NSMutableDictionary *)self->_localConnections allValues];
+  v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -145,36 +145,36 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
-        v13 = [*(*(&v14 + 1) + 8 * v12) remoteObjectProxy];
-        [v13 playedSound:{objc_msgSend(v7, "didPlay")}];
+        remoteObjectProxy = [*(*(&v14 + 1) + 8 * v12) remoteObjectProxy];
+        [remoteObjectProxy playedSound:{objc_msgSend(v7, "didPlay")}];
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)didPlaySoundAndFlashLED:(id)a3
+- (void)didPlaySoundAndFlashLED:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [NFMProtoDidPlaySoundAndFlashLEDResponse alloc];
-  v6 = [v4 data];
-  v7 = [v5 initWithData:v6];
+  data = [dCopy data];
+  v7 = [v5 initWithData:data];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(NSMutableDictionary *)self->_localConnections allValues];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [(NSMutableDictionary *)self->_localConnections allValues];
+  v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -186,26 +186,26 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
-        v13 = [*(*(&v14 + 1) + 8 * v12) remoteObjectProxy];
-        [v13 playedSoundAndLED:{objc_msgSend(v7, "didPlay")}];
+        remoteObjectProxy = [*(*(&v14 + 1) + 8 * v12) remoteObjectProxy];
+        [remoteObjectProxy playedSoundAndLED:{objc_msgSend(v7, "didPlay")}];
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)handleSendSharedConfiguration:(id)a3
+- (void)handleSendSharedConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = nfm_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -217,19 +217,19 @@
   }
 
   v6 = [NFMProtoSendSharedConfiguration alloc];
-  v7 = [v4 data];
+  data = [configurationCopy data];
 
-  v8 = [v6 initWithData:v7];
-  v9 = [v8 sharedConfiguration];
-  [(NFMRemoteFindLocally *)self setSharedConfigData:v9];
+  v8 = [v6 initWithData:data];
+  sharedConfiguration = [v8 sharedConfiguration];
+  [(NFMRemoteFindLocally *)self setSharedConfigData:sharedConfiguration];
 
   [(NFMRemoteFindLocally *)self _initializeSessionIfNeeded];
   [(NFMRemoteFindLocally *)self _startRangingSession];
 }
 
-- (void)handleSharedConfigurationResponse:(id)a3
+- (void)handleSharedConfigurationResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = nfm_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -241,19 +241,19 @@
   }
 
   v6 = [NFMProtoSendSharedConfiguration alloc];
-  v7 = [v4 data];
+  data = [responseCopy data];
 
-  v8 = [v6 initWithData:v7];
-  v9 = [v8 sharedConfiguration];
-  v10 = [(NFMRemoteFindLocally *)self session];
-  v11 = [v10 findingNotifier];
-  v12 = [(NFMRemoteFindLocally *)self token];
-  [v11 notifyDiscoveredNearbyObjectWithToken:v12 sharedConfigurationData:v9];
+  v8 = [v6 initWithData:data];
+  sharedConfiguration = [v8 sharedConfiguration];
+  session = [(NFMRemoteFindLocally *)self session];
+  findingNotifier = [session findingNotifier];
+  token = [(NFMRemoteFindLocally *)self token];
+  [findingNotifier notifyDiscoveredNearbyObjectWithToken:token sharedConfigurationData:sharedConfiguration];
 }
 
-- (void)handleStopPhoneRanging:(id)a3
+- (void)handleStopPhoneRanging:(id)ranging
 {
-  v4 = a3;
+  rangingCopy = ranging;
   v5 = nfm_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -276,10 +276,10 @@
   objc_destroyWeak(&buf);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = nfm_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -290,26 +290,26 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "########### %d %s", buf, 0x12u);
   }
 
-  v9 = [v7 valueForEntitlement:NFMFindLocalDeviceEntitlementName];
+  v9 = [connectionCopy valueForEntitlement:NFMFindLocalDeviceEntitlementName];
   objc_initWeak(&location, self);
   *buf = 0;
   *&v21 = buf;
   *(&v21 + 1) = 0x3032000000;
   v22 = sub_100002EC0;
   v23 = sub_100002ED0;
-  v24 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 processIdentifier]);
+  v24 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [connectionCopy processIdentifier]);
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v9 BOOLValue])
   {
-    v10 = [(NFMRemoteFindLocally *)self serialQueue];
+    serialQueue = [(NFMRemoteFindLocally *)self serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100002ED8;
     block[3] = &unk_10000C4D0;
-    v15 = v7;
-    v16 = self;
+    v15 = connectionCopy;
+    selfCopy = self;
     objc_copyWeak(&v18, &location);
     v17 = buf;
-    dispatch_async(v10, block);
+    dispatch_async(serialQueue, block);
 
     objc_destroyWeak(&v18);
     v11 = v15;
@@ -378,7 +378,7 @@
   [(NFMRemoteFindLocally *)self _tellPhoneToPlaySoundWithBehavior:3];
 }
 
-- (void)_tellPhoneToPlaySoundWithBehavior:(unsigned __int16)a3
+- (void)_tellPhoneToPlaySoundWithBehavior:(unsigned __int16)behavior
 {
   v5 = nfm_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -390,14 +390,14 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%d %s", buf, 0x12u);
   }
 
-  v6 = [(NFMRemoteFindLocally *)self serialQueue];
+  serialQueue = [(NFMRemoteFindLocally *)self serialQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100003864;
   v7[3] = &unk_10000C4F8;
-  v8 = a3;
+  behaviorCopy = behavior;
   v7[4] = self;
-  dispatch_async(v6, v7);
+  dispatch_async(serialQueue, v7);
 }
 
 - (unsigned)_behaviorModeOverride
@@ -428,13 +428,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%d %s", buf, 0x12u);
   }
 
-  v4 = [(NFMRemoteFindLocally *)self serialQueue];
+  serialQueue = [(NFMRemoteFindLocally *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003AD8;
   block[3] = &unk_10000C520;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(serialQueue, block);
 }
 
 - (void)stopRangingOnPhone
@@ -449,18 +449,18 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%d %s", buf, 0x12u);
   }
 
-  v4 = [(NFMRemoteFindLocally *)self serialQueue];
+  serialQueue = [(NFMRemoteFindLocally *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003C34;
   block[3] = &unk_10000C520;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)session:(id)a3 didGenerateShareableConfigurationData:(id)a4 forObject:(id)a5
+- (void)session:(id)session didGenerateShareableConfigurationData:(id)data forObject:(id)object
 {
-  v6 = a4;
+  dataCopy = data;
   v7 = nfm_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -471,18 +471,18 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%d %s", buf, 0x12u);
   }
 
-  v8 = [(NFMRemoteFindLocally *)self serialQueue];
+  serialQueue = [(NFMRemoteFindLocally *)self serialQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100003E5C;
   v10[3] = &unk_10000C3E0;
-  v11 = v6;
-  v12 = self;
-  v9 = v6;
-  dispatch_async(v8, v10);
+  v11 = dataCopy;
+  selfCopy = self;
+  v9 = dataCopy;
+  dispatch_async(serialQueue, v10);
 }
 
-- (void)session:(id)a3 didRemoveNearbyObjects:(id)a4 withReason:(int64_t)a5
+- (void)session:(id)session didRemoveNearbyObjects:(id)objects withReason:(int64_t)reason
 {
   v6 = nfm_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -497,7 +497,7 @@
   [(NFMRemoteFindLocally *)self _cleanUpSession];
 }
 
-- (void)sessionWasSuspended:(id)a3
+- (void)sessionWasSuspended:(id)suspended
 {
   v3 = nfm_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -510,7 +510,7 @@
   }
 }
 
-- (void)sessionSuspensionEnded:(id)a3
+- (void)sessionSuspensionEnded:(id)ended
 {
   v4 = nfm_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -525,7 +525,7 @@
   [(NFMRemoteFindLocally *)self _startRangingSession];
 }
 
-- (void)session:(id)a3 didInvalidateWithError:(id)a4
+- (void)session:(id)session didInvalidateWithError:(id)error
 {
   v5 = nfm_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -556,9 +556,9 @@
 
 - (void)_initializeSessionIfNeeded
 {
-  v3 = [(NFMRemoteFindLocally *)self session];
+  session = [(NFMRemoteFindLocally *)self session];
 
-  if (!v3)
+  if (!session)
   {
     v4 = nfm_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -571,12 +571,12 @@
     [(NFMRemoteFindLocally *)self setSession:v5];
   }
 
-  v6 = [(NFMRemoteFindLocally *)self session];
-  [v6 setDelegate:self];
+  session2 = [(NFMRemoteFindLocally *)self session];
+  [session2 setDelegate:self];
 
-  v7 = [(NFMRemoteFindLocally *)self serialQueue];
-  v8 = [(NFMRemoteFindLocally *)self session];
-  [v8 setDelegateQueue:v7];
+  serialQueue = [(NFMRemoteFindLocally *)self serialQueue];
+  session3 = [(NFMRemoteFindLocally *)self session];
+  [session3 setDelegateQueue:serialQueue];
 }
 
 - (void)_cleanUpSession
@@ -591,8 +591,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%d %s", v5, 0x12u);
   }
 
-  v4 = [(NFMRemoteFindLocally *)self session];
-  [v4 invalidate];
+  session = [(NFMRemoteFindLocally *)self session];
+  [session invalidate];
 
   [(NFMRemoteFindLocally *)self setSession:0];
 }

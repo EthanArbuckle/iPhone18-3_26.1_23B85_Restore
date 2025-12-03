@@ -1,28 +1,28 @@
 @interface TSCEFunctionsInUse
-- (TSCEFunctionsInUse)initWithCalcEngine:(id)a3;
+- (TSCEFunctionsInUse)initWithCalcEngine:(id)engine;
 - (id).cxx_construct;
 - (id)description;
 - (vector<TSCEFunctionIndex,)functionsUsed;
-- (void)addFunctionUsesInFormula:(id)a3 atCellRef:(const TSCECellRef *)a4 outContainsVolatileFunction:(BOOL *)a5;
-- (void)addUseOfFunctions:(const void *)a3 atCellRef:(const TSCECellRef *)a4;
+- (void)addFunctionUsesInFormula:(id)formula atCellRef:(const TSCECellRef *)ref outContainsVolatileFunction:(BOOL *)function;
+- (void)addUseOfFunctions:(const void *)functions atCellRef:(const TSCECellRef *)ref;
 - (void)dealloc;
-- (void)dirtyCellsUsingFunction:(unsigned __int16)a3;
-- (void)resetCellsUsingFunction:(unsigned __int16)a3;
+- (void)dirtyCellsUsingFunction:(unsigned __int16)function;
+- (void)resetCellsUsingFunction:(unsigned __int16)function;
 @end
 
 @implementation TSCEFunctionsInUse
 
-- (TSCEFunctionsInUse)initWithCalcEngine:(id)a3
+- (TSCEFunctionsInUse)initWithCalcEngine:(id)engine
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  engineCopy = engine;
   v9.receiver = self;
   v9.super_class = TSCEFunctionsInUse;
   v6 = [(TSCEFunctionsInUse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_calcEngine, a3);
+    objc_storeStrong(&v6->_calcEngine, engine);
     pthread_mutexattr_init(&v10);
     pthread_mutexattr_settype(&v10, 0);
     pthread_mutex_init(&v7->_mutex, &v10);
@@ -125,15 +125,15 @@
   return self;
 }
 
-- (void)addUseOfFunctions:(const void *)a3 atCellRef:(const TSCECellRef *)a4
+- (void)addUseOfFunctions:(const void *)functions atCellRef:(const TSCECellRef *)ref
 {
-  if (*&a4->coordinate != 0x7FFFFFFF && (*&a4->coordinate & 0xFFFF00000000) != 0x7FFF00000000 && *&a4->_tableUID != 0 && *(a3 + 3) != 0)
+  if (*&ref->coordinate != 0x7FFFFFFF && (*&ref->coordinate & 0xFFFF00000000) != 0x7FFF00000000 && *&ref->_tableUID != 0 && *(functions + 3) != 0)
   {
-    v10 = objc_msgSend_calcEngine(self, a2, a3, a4, v4);
+    v10 = objc_msgSend_calcEngine(self, a2, functions, ref, v4);
     v15 = objc_msgSend_dependencyTracker(v10, v11, v12, v13, v14);
 
     pthread_mutex_lock(&self->_mutex);
-    for (i = *(a3 + 2); i; i = *i)
+    for (i = *(functions + 2); i; i = *i)
     {
       v18 = *(i + 8);
       if (!sub_2210C3024(&self->_cellRefsUsingFunction.__table_.__bucket_list_.__ptr_, &v18))
@@ -145,7 +145,7 @@
       v17 = sub_22115DBD8(&self->_cellRefsUsingFunction.__table_.__bucket_list_.__ptr_, &v18)[3];
       if (v17)
       {
-        TSCEReferenceSet::insertRef(v17, a4);
+        TSCEReferenceSet::insertRef(v17, ref);
       }
     }
 
@@ -153,11 +153,11 @@
   }
 }
 
-- (void)addFunctionUsesInFormula:(id)a3 atCellRef:(const TSCECellRef *)a4 outContainsVolatileFunction:(BOOL *)a5
+- (void)addFunctionUsesInFormula:(id)formula atCellRef:(const TSCECellRef *)ref outContainsVolatileFunction:(BOOL *)function
 {
-  v8 = a3;
-  TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v29, 0, a4);
-  v13 = objc_msgSend_const_astNodeArray(v8, v9, v10, v11, v12);
+  formulaCopy = formula;
+  TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v29, 0, ref);
+  v13 = objc_msgSend_const_astNodeArray(formulaCopy, v9, v10, v11, v12);
   sub_22115D634(v27, v13, &v29);
   TSCEASTStreamIterator::rewrite(v27, v14, v15, v16, v17);
   v26 = 154;
@@ -172,21 +172,21 @@
     v20 = sub_2210C3024(v28, &v22) != 0;
   }
 
-  *a5 = v20;
-  objc_msgSend_addUseOfFunctions_atCellRef_(self, v18, v28, a4, v19);
+  *function = v20;
+  objc_msgSend_addUseOfFunctions_atCellRef_(self, v18, v28, ref, v19);
   v27[0] = &unk_2834A22D0;
   sub_2210BDEC0(v28);
   TSCEASTStreamIterator::~TSCEASTStreamIterator(v27, v21);
 }
 
-- (void)dirtyCellsUsingFunction:(unsigned __int16)a3
+- (void)dirtyCellsUsingFunction:(unsigned __int16)function
 {
-  v21 = a3;
+  functionCopy = function;
   pthread_mutex_lock(&self->_mutex);
-  if (sub_2210C3024(&self->_cellRefsUsingFunction.__table_.__bucket_list_.__ptr_, &v21))
+  if (sub_2210C3024(&self->_cellRefsUsingFunction.__table_.__bucket_list_.__ptr_, &functionCopy))
   {
-    v22 = &v21;
-    v4 = sub_22115DBD8(&self->_cellRefsUsingFunction.__table_.__bucket_list_.__ptr_, &v21)[3];
+    v22 = &functionCopy;
+    v4 = sub_22115DBD8(&self->_cellRefsUsingFunction.__table_.__bucket_list_.__ptr_, &functionCopy)[3];
     if (v4)
     {
       v5 = [TSCEReferenceSetWrapper alloc];
@@ -200,14 +200,14 @@
   pthread_mutex_unlock(&self->_mutex);
 }
 
-- (void)resetCellsUsingFunction:(unsigned __int16)a3
+- (void)resetCellsUsingFunction:(unsigned __int16)function
 {
-  v13 = a3;
+  functionCopy = function;
   pthread_mutex_lock(&self->_mutex);
-  if (sub_2210C3024(&self->_cellRefsUsingFunction.__table_.__bucket_list_.__ptr_, &v13))
+  if (sub_2210C3024(&self->_cellRefsUsingFunction.__table_.__bucket_list_.__ptr_, &functionCopy))
   {
-    v14 = &v13;
-    v8 = sub_22115DBD8(&self->_cellRefsUsingFunction.__table_.__bucket_list_.__ptr_, &v13)[3];
+    v14 = &functionCopy;
+    v8 = sub_22115DBD8(&self->_cellRefsUsingFunction.__table_.__bucket_list_.__ptr_, &functionCopy)[3];
     if (v8)
     {
       v9 = objc_msgSend_upgradingFormulasMinion(self->_calcEngine, v4, v5, v6, v7);

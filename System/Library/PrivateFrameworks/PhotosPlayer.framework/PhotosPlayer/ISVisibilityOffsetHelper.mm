@@ -1,11 +1,11 @@
 @interface ISVisibilityOffsetHelper
 - (CGPoint)_targetContentOffset;
-- (CGRect)boundsForView:(id)a3 inScrollView:(id)a4;
-- (CGRect)visibleRectForScrollView:(id)a3;
-- (ISVisibilityRange)_visibilityRangeForRect:(CGRect)a3;
+- (CGRect)boundsForView:(id)view inScrollView:(id)scrollView;
+- (CGRect)visibleRectForScrollView:(id)view;
+- (ISVisibilityRange)_visibilityRangeForRect:(CGRect)rect;
 - (void)_updateDirectionIfNeeded;
-- (void)computeVisibilityOffsetsInScrollView:(id)a3 withTargetContentOffset:(CGPoint)a4 usingBlock:(id)a5;
-- (void)getVisibility:(BOOL *)a3 offset:(double *)a4 targetVisibilityOffset:(double *)a5 forView:(id)a6;
+- (void)computeVisibilityOffsetsInScrollView:(id)view withTargetContentOffset:(CGPoint)offset usingBlock:(id)block;
+- (void)getVisibility:(BOOL *)visibility offset:(double *)offset targetVisibilityOffset:(double *)visibilityOffset forView:(id)view;
 @end
 
 @implementation ISVisibilityOffsetHelper
@@ -19,16 +19,16 @@
   return result;
 }
 
-- (void)getVisibility:(BOOL *)a3 offset:(double *)a4 targetVisibilityOffset:(double *)a5 forView:(id)a6
+- (void)getVisibility:(BOOL *)visibility offset:(double *)offset targetVisibilityOffset:(double *)visibilityOffset forView:(id)view
 {
-  v10 = a6;
-  v11 = [(ISVisibilityOffsetHelper *)self _scrollView];
-  if (![v10 isDescendantOfView:v11])
+  viewCopy = view;
+  _scrollView = [(ISVisibilityOffsetHelper *)self _scrollView];
+  if (![viewCopy isDescendantOfView:_scrollView])
   {
     v38 = 0;
     v41 = 0.0;
     v40 = 0.0;
-    if (!a3)
+    if (!visibility)
     {
       goto LABEL_6;
     }
@@ -36,7 +36,7 @@
     goto LABEL_5;
   }
 
-  [(ISVisibilityOffsetHelper *)self visibleRectForScrollView:v11];
+  [(ISVisibilityOffsetHelper *)self visibleRectForScrollView:_scrollView];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -50,7 +50,7 @@
   [(ISVisibilityOffsetHelper *)self _visibilityRangeForRect:v21, v23, v17, v19];
   v44 = v27;
   v45 = v26;
-  [(ISVisibilityOffsetHelper *)self boundsForView:v10 inScrollView:v11];
+  [(ISVisibilityOffsetHelper *)self boundsForView:viewCopy inScrollView:_scrollView];
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -78,21 +78,21 @@
   v40 = v39[2](v47, v46);
   v41 = (v39[2])(v39, v45, v44);
 
-  if (a3)
+  if (visibility)
   {
 LABEL_5:
-    *a3 = v38;
+    *visibility = v38;
   }
 
 LABEL_6:
-  if (a4)
+  if (offset)
   {
-    *a4 = v40;
+    *offset = v40;
   }
 
-  if (a5)
+  if (visibilityOffset)
   {
-    *a5 = v41;
+    *visibilityOffset = v41;
   }
 }
 
@@ -105,7 +105,7 @@ uint64_t __80__ISVisibilityOffsetHelper_getVisibility_offset_targetVisibilityOff
   return result;
 }
 
-- (CGRect)boundsForView:(id)a3 inScrollView:(id)a4
+- (CGRect)boundsForView:(id)view inScrollView:(id)scrollView
 {
   v4 = *MEMORY[0x277CBF3A0];
   v5 = *(MEMORY[0x277CBF3A0] + 8);
@@ -118,7 +118,7 @@ uint64_t __80__ISVisibilityOffsetHelper_getVisibility_offset_targetVisibilityOff
   return result;
 }
 
-- (CGRect)visibleRectForScrollView:(id)a3
+- (CGRect)visibleRectForScrollView:(id)view
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -131,17 +131,17 @@ uint64_t __80__ISVisibilityOffsetHelper_getVisibility_offset_targetVisibilityOff
   return result;
 }
 
-- (ISVisibilityRange)_visibilityRangeForRect:(CGRect)a3
+- (ISVisibilityRange)_visibilityRangeForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(ISVisibilityOffsetHelper *)self direction];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  direction = [(ISVisibilityOffsetHelper *)self direction];
   v8 = 0.0;
-  if (v7 > 3)
+  if (direction > 3)
   {
-    if (v7 == 4)
+    if (direction == 4)
     {
       v20.origin.x = x;
       v20.origin.y = y;
@@ -158,7 +158,7 @@ uint64_t __80__ISVisibilityOffsetHelper_getVisibility_offset_targetVisibilityOff
     else
     {
       MinY = 0.0;
-      if (v7 != 5)
+      if (direction != 5)
       {
         goto LABEL_12;
       }
@@ -179,7 +179,7 @@ uint64_t __80__ISVisibilityOffsetHelper_getVisibility_offset_targetVisibilityOff
     goto LABEL_12;
   }
 
-  if (v7 == 2)
+  if (direction == 2)
   {
     v18.origin.x = x;
     v18.origin.y = y;
@@ -195,7 +195,7 @@ uint64_t __80__ISVisibilityOffsetHelper_getVisibility_offset_targetVisibilityOff
   }
 
   MinY = 0.0;
-  if (v7 == 3)
+  if (direction == 3)
   {
     v14.origin.x = x;
     v14.origin.y = y;
@@ -222,10 +222,10 @@ LABEL_12:
 {
   if ([(ISVisibilityOffsetHelper *)self direction]== 1)
   {
-    v7 = [(ISVisibilityOffsetHelper *)self _scrollView];
-    [v7 contentSize];
+    _scrollView = [(ISVisibilityOffsetHelper *)self _scrollView];
+    [_scrollView contentSize];
     v4 = v3;
-    [v7 bounds];
+    [_scrollView bounds];
     if (v4 >= v5)
     {
       v6 = 2;
@@ -240,15 +240,15 @@ LABEL_12:
   }
 }
 
-- (void)computeVisibilityOffsetsInScrollView:(id)a3 withTargetContentOffset:(CGPoint)a4 usingBlock:(id)a5
+- (void)computeVisibilityOffsetsInScrollView:(id)view withTargetContentOffset:(CGPoint)offset usingBlock:(id)block
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
-  [(ISVisibilityOffsetHelper *)self _setScrollView:a3];
+  y = offset.y;
+  x = offset.x;
+  blockCopy = block;
+  [(ISVisibilityOffsetHelper *)self _setScrollView:view];
   [(ISVisibilityOffsetHelper *)self _setTargetContentOffset:x, y];
   [(ISVisibilityOffsetHelper *)self _updateDirectionIfNeeded];
-  v9[2](v9, self);
+  blockCopy[2](blockCopy, self);
 
   [(ISVisibilityOffsetHelper *)self _setScrollView:0];
 }

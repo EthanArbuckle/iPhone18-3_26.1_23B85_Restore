@@ -1,88 +1,88 @@
 @interface NotificationCell
-- (BOOL)isAnnounceEnabledForSectionInfo:(id)a3;
+- (BOOL)isAnnounceEnabledForSectionInfo:(id)info;
 - (id)getLazyIcon;
 - (void)dealloc;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setAppIcon:(id)a3;
-- (void)setAppName:(id)a3;
-- (void)setNotificationTypes:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setAppIcon:(id)icon;
+- (void)setAppName:(id)name;
+- (void)setNotificationTypes:(id)types;
 @end
 
 @implementation NotificationCell
 
 - (id)getLazyIcon
 {
-  v3 = [(NotificationCell *)self specifier];
-  v4 = [v3 propertyForKey:@"BBSECTION_INFO_KEY"];
+  specifier = [(NotificationCell *)self specifier];
+  v4 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
-  v5 = [v4 nc_settingsIconImage];
-  if (!v5)
+  nc_settingsIconImage = [v4 nc_settingsIconImage];
+  if (!nc_settingsIconImage)
   {
     v7.receiver = self;
     v7.super_class = NotificationCell;
-    v5 = [(NotificationCell *)&v7 getLazyIcon];
+    nc_settingsIconImage = [(NotificationCell *)&v7 getLazyIcon];
   }
 
-  return v5;
+  return nc_settingsIconImage;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v104 = a3;
-  v110 = [v104 propertyForKey:@"BBSECTION_INFO_KEY"];
-  v3 = [v104 propertyForKey:PSIconUTTypeIdentifierKey];
+  specifierCopy = specifier;
+  v110 = [specifierCopy propertyForKey:@"BBSECTION_INFO_KEY"];
+  v3 = [specifierCopy propertyForKey:PSIconUTTypeIdentifierKey];
 
   if (!v3)
   {
-    v4 = [v110 icon];
-    v5 = [v4 _bestVariantForFormat:1];
+    icon = [v110 icon];
+    v5 = [icon _bestVariantForFormat:1];
 
-    v6 = [v5 applicationIdentifier];
-    if (![v6 length])
+    applicationIdentifier = [v5 applicationIdentifier];
+    if (![applicationIdentifier length])
     {
-      v7 = [v110 sectionID];
-      v8 = [v7 copy];
+      sectionID = [v110 sectionID];
+      v8 = [sectionID copy];
 
-      v6 = v8;
+      applicationIdentifier = v8;
     }
 
-    [v104 setProperty:v6 forKey:PSLazyIconAppID];
-    v9 = [v104 propertyForKey:kWantsIcon];
-    [v104 setProperty:v9 forKey:PSLazyIconLoading];
+    [specifierCopy setProperty:applicationIdentifier forKey:PSLazyIconAppID];
+    v9 = [specifierCopy propertyForKey:kWantsIcon];
+    [specifierCopy setProperty:v9 forKey:PSLazyIconLoading];
   }
 
   v142.receiver = self;
   v142.super_class = NotificationCell;
-  [(NotificationCell *)&v142 refreshCellContentsWithSpecifier:v104];
+  [(NotificationCell *)&v142 refreshCellContentsWithSpecifier:specifierCopy];
   v105 = +[NSMutableArray array];
-  v103 = [v110 allowsNotifications];
-  v10 = [v110 lockScreenSetting];
-  v122 = v10 == &dword_0 + 2;
-  v11 = [v110 notificationCenterSetting];
-  v121 = v11 == &dword_0 + 2;
-  v12 = [v110 carPlaySetting];
-  v124 = v12 == &dword_0 + 2;
-  v13 = [v110 remoteNotificationsSetting];
-  v125 = v13 == &dword_0 + 2;
+  allowsNotifications = [v110 allowsNotifications];
+  lockScreenSetting = [v110 lockScreenSetting];
+  v122 = lockScreenSetting == &dword_0 + 2;
+  notificationCenterSetting = [v110 notificationCenterSetting];
+  v121 = notificationCenterSetting == &dword_0 + 2;
+  carPlaySetting = [v110 carPlaySetting];
+  v124 = carPlaySetting == &dword_0 + 2;
+  remoteNotificationsSetting = [v110 remoteNotificationsSetting];
+  v125 = remoteNotificationsSetting == &dword_0 + 2;
   v128 = [(NotificationCell *)self isAnnounceEnabledForSectionInfo:v110];
-  v14 = [v110 criticalAlertSetting];
-  v126 = v14 == &dword_0 + 2;
-  v119 = [v110 isDeliveredQuietly];
-  if (v103)
+  criticalAlertSetting = [v110 criticalAlertSetting];
+  v126 = criticalAlertSetting == &dword_0 + 2;
+  isDeliveredQuietly = [v110 isDeliveredQuietly];
+  if (allowsNotifications)
   {
-    v15 = [v110 suppressedSettings];
-    v16 = [v110 pushSettings];
-    v129 = [v110 alertType];
-    v17 = [v110 sectionID];
-    v18 = [TLAlert bb_toneLibraryAlertTypeForSectionID:v17];
+    suppressedSettings = [v110 suppressedSettings];
+    pushSettings = [v110 pushSettings];
+    alertType = [v110 alertType];
+    sectionID2 = [v110 sectionID];
+    v18 = [TLAlert bb_toneLibraryAlertTypeForSectionID:sectionID2];
 
     if (v18)
     {
       v19 = +[TLToneManager sharedToneManager];
-      v20 = [v110 subsectionID];
-      v127 = [v19 currentToneIdentifierForAlertType:v18 topic:v20];
+      subsectionID = [v110 subsectionID];
+      v127 = [v19 currentToneIdentifierForAlertType:v18 topic:subsectionID];
 
-      v16 &= 0xFFFFFFED;
+      pushSettings &= 0xFFFFFFED;
       if (v127)
       {
         v21 = [v127 isEqualToString:TLToneIdentifierNone];
@@ -92,14 +92,14 @@
           v22 = 0;
         }
 
-        v16 |= v22;
+        pushSettings |= v22;
       }
 
       if (MGGetBoolAnswer())
       {
         v23 = +[TLVibrationManager sharedVibrationManager];
-        v24 = [v110 subsectionID];
-        v25 = [v23 currentVibrationIdentifierForAlertType:v18 topic:v24];
+        subsectionID2 = [v110 subsectionID];
+        v25 = [v23 currentVibrationIdentifierForAlertType:v18 topic:subsectionID2];
 
         if (v25)
         {
@@ -123,48 +123,48 @@
       LOBYTE(v26) = 0;
     }
 
-    v29 = v16 & 0xFFFFFFF6;
-    if ((v15 & 0x2000) == 0)
+    v29 = pushSettings & 0xFFFFFFF6;
+    if ((suppressedSettings & 0x2000) == 0)
     {
-      v29 = v16;
+      v29 = pushSettings;
     }
 
-    if ((v15 & 0x4000) != 0)
+    if ((suppressedSettings & 0x4000) != 0)
     {
       v29 &= 0xFFFFFFED;
     }
 
-    v30 = v129;
-    if ((v15 & 0x20) != 0)
+    v30 = alertType;
+    if ((suppressedSettings & 0x20) != 0)
     {
       v30 = 0;
     }
 
     v118 = v30;
-    if ((v15 & 0x20) != 0)
+    if ((suppressedSettings & 0x20) != 0)
     {
       v29 &= 0xFFFFFFDB;
     }
 
     v123 = v29;
-    v32 = (v15 & 2) == 0 && v10 == &dword_0 + 2;
-    v34 = (v15 & 1) == 0 && v11 == &dword_0 + 2;
+    v32 = (suppressedSettings & 2) == 0 && lockScreenSetting == &dword_0 + 2;
+    v34 = (suppressedSettings & 1) == 0 && notificationCenterSetting == &dword_0 + 2;
     v121 = v34;
     v122 = v32;
-    v36 = (v15 & 0x80) == 0 && v12 == &dword_0 + 2;
-    v38 = (*&v15 & 0x10000) == 0 && v13 == &dword_0 + 2;
+    v36 = (suppressedSettings & 0x80) == 0 && carPlaySetting == &dword_0 + 2;
+    v38 = (*&suppressedSettings & 0x10000) == 0 && remoteNotificationsSetting == &dword_0 + 2;
     v124 = v36;
     v125 = v38;
     v140 = 0u;
     v141 = 0u;
-    v40 = (v15 & 0x100) == 0 && v14 == &dword_0 + 2;
+    v40 = (suppressedSettings & 0x100) == 0 && criticalAlertSetting == &dword_0 + 2;
     v126 = v40;
     v138 = 0uLL;
     v139 = 0uLL;
     obj = [v110 subsections];
     v130 = [obj countByEnumeratingWithState:&v138 objects:v143 count:16];
-    v120 = ((v15 & 0x4000) == 0) & v26;
-    v128 = ((v15 & 0x400) == 0) & v128;
+    v120 = ((suppressedSettings & 0x4000) == 0) & v26;
+    v128 = ((suppressedSettings & 0x400) == 0) & v128;
     if (v130)
     {
       v117 = *v139;
@@ -182,26 +182,26 @@
           v42 = *(*(&v138 + 1) + 8 * i);
           if ([v42 allowsNotifications])
           {
-            v43 = [v42 suppressedSettings];
-            v44 = [v42 pushSettings];
-            v116 = [v42 alertType];
-            v115 = [v42 lockScreenSetting];
-            v114 = [v42 notificationCenterSetting];
-            v113 = [v42 carPlaySetting];
-            v112 = [v42 remoteNotificationsSetting];
+            suppressedSettings2 = [v42 suppressedSettings];
+            pushSettings2 = [v42 pushSettings];
+            alertType2 = [v42 alertType];
+            lockScreenSetting2 = [v42 lockScreenSetting];
+            notificationCenterSetting2 = [v42 notificationCenterSetting];
+            carPlaySetting2 = [v42 carPlaySetting];
+            remoteNotificationsSetting2 = [v42 remoteNotificationsSetting];
             v45 = [(NotificationCell *)self isAnnounceEnabledForSectionInfo:v42];
-            v46 = [v42 criticalAlertSetting];
-            v111 = [v42 isDeliveredQuietly];
-            v47 = [v110 sectionID];
-            v48 = [TLAlert bb_toneLibraryAlertTypeForSectionID:v47];
+            criticalAlertSetting2 = [v42 criticalAlertSetting];
+            isDeliveredQuietly2 = [v42 isDeliveredQuietly];
+            sectionID3 = [v110 sectionID];
+            v48 = [TLAlert bb_toneLibraryAlertTypeForSectionID:sectionID3];
 
             if (v48)
             {
               v49 = +[TLToneManager sharedToneManager];
-              v50 = [v42 subsectionID];
-              v51 = [v49 currentToneIdentifierForAlertType:v48 topic:v50];
+              subsectionID3 = [v42 subsectionID];
+              v51 = [v49 currentToneIdentifierForAlertType:v48 topic:subsectionID3];
 
-              v44 &= 0xFFFFFFED;
+              pushSettings2 &= 0xFFFFFFED;
               if (v51)
               {
                 v52 = [v51 isEqualToString:v107];
@@ -211,14 +211,14 @@
                   v53 = 0;
                 }
 
-                v44 |= v53;
+                pushSettings2 |= v53;
               }
 
               if (MGGetBoolAnswer())
               {
                 v54 = +[TLVibrationManager sharedVibrationManager];
-                v55 = [v42 subsectionID];
-                v56 = [v54 currentVibrationIdentifierForAlertType:v48 topic:v55];
+                subsectionID4 = [v42 subsectionID];
+                v56 = [v54 currentVibrationIdentifierForAlertType:v48 topic:subsectionID4];
 
                 if (v56)
                 {
@@ -242,42 +242,42 @@
               LOBYTE(v57) = 0;
             }
 
-            v58 = v44 & 0xFFFFFFF6;
-            if ((v43 & 0x2000) == 0)
+            v58 = pushSettings2 & 0xFFFFFFF6;
+            if ((suppressedSettings2 & 0x2000) == 0)
             {
-              v58 = v44;
+              v58 = pushSettings2;
             }
 
-            if ((v43 & 0x4000) != 0)
+            if ((suppressedSettings2 & 0x4000) != 0)
             {
               v58 &= 0xFFFFFFED;
             }
 
-            if ((v43 & 0x20) != 0)
+            if ((suppressedSettings2 & 0x20) != 0)
             {
               v58 &= 0xFFFFFFDB;
             }
 
-            v59 = v116;
-            if ((v43 & 0x20) != 0)
+            v59 = alertType2;
+            if ((suppressedSettings2 & 0x20) != 0)
             {
               v59 = 0;
             }
 
-            v61 = (v43 & 2) == 0 && v115 == &dword_0 + 2;
-            v63 = (v43 & 1) == 0 && v114 == &dword_0 + 2;
-            v65 = (v43 & 0x80) == 0 && v113 == &dword_0 + 2;
-            v67 = (*&v43 & 0x10000) == 0 && v112 == &dword_0 + 2;
-            v69 = (v43 & 0x100) == 0 && v46 == &dword_0 + 2;
+            v61 = (suppressedSettings2 & 2) == 0 && lockScreenSetting2 == &dword_0 + 2;
+            v63 = (suppressedSettings2 & 1) == 0 && notificationCenterSetting2 == &dword_0 + 2;
+            v65 = (suppressedSettings2 & 0x80) == 0 && carPlaySetting2 == &dword_0 + 2;
+            v67 = (*&suppressedSettings2 & 0x10000) == 0 && remoteNotificationsSetting2 == &dword_0 + 2;
+            v69 = (suppressedSettings2 & 0x100) == 0 && criticalAlertSetting2 == &dword_0 + 2;
             v123 |= v58;
             v122 |= v61;
             v121 |= v63;
             v124 |= v65;
             v125 |= v67;
-            v128 |= ((v43 & 0x400) == 0) & v45;
+            v128 |= ((suppressedSettings2 & 0x400) == 0) & v45;
             v126 |= v69;
-            v120 |= ((v43 & 0x6000) == 0) & v57;
-            v119 |= v111;
+            v120 |= ((suppressedSettings2 & 0x6000) == 0) & v57;
+            isDeliveredQuietly |= isDeliveredQuietly2;
             v70 = v118;
             if (v118 <= v59)
             {
@@ -307,11 +307,11 @@
   }
 
   v71 = +[NCSettingsGatewayController sharedInstance];
-  v72 = [v71 effectiveGlobalScheduledDeliverySetting];
+  effectiveGlobalScheduledDeliverySetting = [v71 effectiveGlobalScheduledDeliverySetting];
 
-  if (v72 == &dword_0 + 2)
+  if (effectiveGlobalScheduledDeliverySetting == &dword_0 + 2)
   {
-    v73 = v103;
+    v73 = allowsNotifications;
   }
 
   else
@@ -345,7 +345,7 @@
     [v105 addObject:v80];
   }
 
-  if (v72 != &dword_0 + 2)
+  if (effectiveGlobalScheduledDeliverySetting != &dword_0 + 2)
   {
     v81 = v123;
     if ((v123 & 4) != 0 && v27)
@@ -418,11 +418,11 @@
     v91 = 0;
   }
 
-  v92 = [v110 sectionID];
-  if ([v92 isEqualToString:@"com.apple.mobilemail"])
+  sectionID4 = [v110 sectionID];
+  if ([sectionID4 isEqualToString:@"com.apple.mobilemail"])
   {
-    v93 = [v110 subsections];
-    v94 = [v93 count] == 0;
+    subsections = [v110 subsections];
+    v94 = [subsections count] == 0;
   }
 
   else
@@ -439,7 +439,7 @@
 
   if (![v105 count])
   {
-    if (v119)
+    if (isDeliveredQuietly)
     {
       v97 = @"DELIVER_QUIETLY";
 LABEL_159:
@@ -450,7 +450,7 @@ LABEL_159:
       goto LABEL_160;
     }
 
-    if ((!v103 || ((v121 | v122 | v90 | v91 | v128 | v126 | v94) & 1) == 0) && v110)
+    if ((!allowsNotifications || ((v121 | v122 | v90 | v91 | v128 | v126 | v94) & 1) == 0) && v110)
     {
       v97 = @"OFF";
       goto LABEL_159;
@@ -472,57 +472,57 @@ LABEL_160:
   [(NotificationCell *)&v3 dealloc];
 }
 
-- (void)setAppIcon:(id)a3
+- (void)setAppIcon:(id)icon
 {
-  v5 = a3;
+  iconCopy = icon;
   appIcon = self->_appIcon;
-  if (appIcon != v5)
+  if (appIcon != iconCopy)
   {
-    v8 = v5;
+    v8 = iconCopy;
     [(UIImageView *)appIcon removeFromSuperview];
-    objc_storeStrong(&self->_appIcon, a3);
-    v7 = [(NotificationCell *)self contentView];
-    [v7 addSubview:self->_appIcon];
+    objc_storeStrong(&self->_appIcon, icon);
+    contentView = [(NotificationCell *)self contentView];
+    [contentView addSubview:self->_appIcon];
 
     appIcon = [(NotificationCell *)self setNeedsLayout];
-    v5 = v8;
+    iconCopy = v8;
   }
 
-  _objc_release_x1(appIcon, v5);
+  _objc_release_x1(appIcon, iconCopy);
 }
 
-- (void)setAppName:(id)a3
+- (void)setAppName:(id)name
 {
-  v4 = a3;
-  v5 = [(NotificationCell *)self textLabel];
-  [v5 setText:v4];
+  nameCopy = name;
+  textLabel = [(NotificationCell *)self textLabel];
+  [textLabel setText:nameCopy];
 }
 
-- (void)setNotificationTypes:(id)a3
+- (void)setNotificationTypes:(id)types
 {
-  v4 = a3;
-  v5 = [(NotificationCell *)self detailTextLabel];
-  [v5 setText:v4];
+  typesCopy = types;
+  detailTextLabel = [(NotificationCell *)self detailTextLabel];
+  [detailTextLabel setText:typesCopy];
 }
 
-- (BOOL)isAnnounceEnabledForSectionInfo:(id)a3
+- (BOOL)isAnnounceEnabledForSectionInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = +[NCSettingsGatewayController sharedInstance];
-  v5 = [v4 effectiveGlobalAnnounceSetting];
+  effectiveGlobalAnnounceSetting = [v4 effectiveGlobalAnnounceSetting];
 
-  v6 = [v3 announceSetting];
-  if (v5 == &dword_0 + 2 && v6 >= 2)
+  announceSetting = [infoCopy announceSetting];
+  if (effectiveGlobalAnnounceSetting == &dword_0 + 2 && announceSetting >= 2)
   {
-    v9 = v6;
+    v9 = announceSetting;
     v10 = +[NCSettingsGatewayController sharedInstance];
-    v8 = [v10 effectiveGlobalScheduledDeliverySetting] != &dword_0 + 2 || objc_msgSend(v3, "scheduledDeliverySetting") != &dword_0 + 2 || objc_msgSend(v3, "timeSensitiveSetting") == &dword_0 + 2 || objc_msgSend(v3, "directMessagesSetting") == &dword_0 + 2;
+    v8 = [v10 effectiveGlobalScheduledDeliverySetting] != &dword_0 + 2 || objc_msgSend(infoCopy, "scheduledDeliverySetting") != &dword_0 + 2 || objc_msgSend(infoCopy, "timeSensitiveSetting") == &dword_0 + 2 || objc_msgSend(infoCopy, "directMessagesSetting") == &dword_0 + 2;
 
     if (v8 && v9 == &dword_0 + 2)
     {
-      v11 = [v3 timeSensitiveSetting];
-      v12 = [v3 scheduledDeliverySetting] != &dword_0 + 2 && objc_msgSend(v3, "directMessagesSetting") || objc_msgSend(v3, "scheduledDeliverySetting") == &dword_0 + 2 && objc_msgSend(v3, "directMessagesSetting") == &dword_0 + 2;
-      LOBYTE(v8) = v11 == &dword_0 + 2 || v12;
+      timeSensitiveSetting = [infoCopy timeSensitiveSetting];
+      v12 = [infoCopy scheduledDeliverySetting] != &dword_0 + 2 && objc_msgSend(infoCopy, "directMessagesSetting") || objc_msgSend(infoCopy, "scheduledDeliverySetting") == &dword_0 + 2 && objc_msgSend(infoCopy, "directMessagesSetting") == &dword_0 + 2;
+      LOBYTE(v8) = timeSensitiveSetting == &dword_0 + 2 || v12;
     }
   }
 

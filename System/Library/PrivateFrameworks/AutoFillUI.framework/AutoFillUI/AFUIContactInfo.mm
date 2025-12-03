@@ -1,205 +1,205 @@
 @interface AFUIContactInfo
-+ (id)symbolNameForLabel:(id)a3;
-- (AFUIContactInfo)initWithLabel:(id)a3;
++ (id)symbolNameForLabel:(id)label;
+- (AFUIContactInfo)initWithLabel:(id)label;
 - (id)customInfoFromContactInfo;
-- (id)propertyForTextContentType:(id)a3;
-- (id)subtitleTextForAutoFillContext:(id)a3;
+- (id)propertyForTextContentType:(id)type;
+- (id)subtitleTextForAutoFillContext:(id)context;
 - (id)titleText;
 @end
 
 @implementation AFUIContactInfo
 
-- (AFUIContactInfo)initWithLabel:(id)a3
+- (AFUIContactInfo)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v8.receiver = self;
   v8.super_class = AFUIContactInfo;
   v5 = [(AFUIContactInfo *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AFUIContactInfo *)v5 setLabel:v4];
+    [(AFUIContactInfo *)v5 setLabel:labelCopy];
   }
 
   return v6;
 }
 
-- (id)propertyForTextContentType:(id)a3
+- (id)propertyForTextContentType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x1E698E108]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E108]])
   {
-    v5 = [(AFUIContactInfo *)self nameString];
+    nameString = [(AFUIContactInfo *)self nameString];
 LABEL_59:
-    v6 = v5;
+    v6 = nameString;
     goto LABEL_60;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E0E8]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E0E8]])
   {
-    v5 = [(AFUIContactInfo *)self givenNameString];
+    nameString = [(AFUIContactInfo *)self givenNameString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E0D8]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E0D8]])
   {
-    v5 = [(AFUIContactInfo *)self familyNameString];
+    nameString = [(AFUIContactInfo *)self familyNameString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E100]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E100]])
   {
-    v5 = [(AFUIContactInfo *)self middleNameString];
+    nameString = [(AFUIContactInfo *)self middleNameString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E110]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E110]])
   {
-    v5 = [(AFUIContactInfo *)self namePrefixString];
+    nameString = [(AFUIContactInfo *)self namePrefixString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E118]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E118]])
   {
-    v5 = [(AFUIContactInfo *)self nameSuffixString];
+    nameString = [(AFUIContactInfo *)self nameSuffixString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E128]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E128]])
   {
-    v5 = [(AFUIContactInfo *)self nicknameString];
+    nameString = [(AFUIContactInfo *)self nicknameString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E0F0]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E0F0]])
   {
-    v5 = [(AFUIContactInfo *)self jobTitleString];
+    nameString = [(AFUIContactInfo *)self jobTitleString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E140]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E140]])
   {
-    v5 = [(AFUIContactInfo *)self organizationNameString];
+    nameString = [(AFUIContactInfo *)self organizationNameString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E048]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E048]])
   {
-    v5 = [(AFUIContactInfo *)self birthdateString];
+    nameString = [(AFUIContactInfo *)self birthdateString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E050]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E050]])
   {
-    v5 = [(AFUIContactInfo *)self birthdateDayString];
+    nameString = [(AFUIContactInfo *)self birthdateDayString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E058]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E058]])
   {
-    v5 = [(AFUIContactInfo *)self birthdateMonthString];
+    nameString = [(AFUIContactInfo *)self birthdateMonthString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E060]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E060]])
   {
-    v5 = [(AFUIContactInfo *)self birthdateYearString];
+    nameString = [(AFUIContactInfo *)self birthdateYearString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E0E0]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E0E0]])
   {
-    v5 = [(AFUIContactInfo *)self fullStreetAddressString];
+    nameString = [(AFUIContactInfo *)self fullStreetAddressString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E158]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E158]])
   {
-    v5 = [(AFUIContactInfo *)self streetAddressLine1String];
+    nameString = [(AFUIContactInfo *)self streetAddressLine1String];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E160]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E160]])
   {
-    v5 = [(AFUIContactInfo *)self streetAddressLine2String];
+    nameString = [(AFUIContactInfo *)self streetAddressLine2String];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E030]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E030]])
   {
-    v5 = [(AFUIContactInfo *)self cityString];
+    nameString = [(AFUIContactInfo *)self cityString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E040]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E040]])
   {
-    v5 = [(AFUIContactInfo *)self stateString];
+    nameString = [(AFUIContactInfo *)self stateString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E168]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E168]])
   {
-    v5 = [(AFUIContactInfo *)self sublocalityString];
+    nameString = [(AFUIContactInfo *)self sublocalityString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E078]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E078]])
   {
-    v5 = [(AFUIContactInfo *)self countryString];
+    nameString = [(AFUIContactInfo *)self countryString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E150]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E150]])
   {
-    v5 = [(AFUIContactInfo *)self postalCodeString];
+    nameString = [(AFUIContactInfo *)self postalCodeString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E198]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E198]])
   {
-    v5 = [(AFUIContactInfo *)self phoneString];
+    nameString = [(AFUIContactInfo *)self phoneString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E190]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E190]])
   {
-    v5 = [(AFUIContactInfo *)self phoneNationalNumberString];
+    nameString = [(AFUIContactInfo *)self phoneNationalNumberString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E178]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E178]])
   {
-    v5 = [(AFUIContactInfo *)self phoneCountryCodeString];
+    nameString = [(AFUIContactInfo *)self phoneCountryCodeString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E170]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E170]])
   {
-    v5 = [(AFUIContactInfo *)self phoneAreaCodeString];
+    nameString = [(AFUIContactInfo *)self phoneAreaCodeString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E188]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E188]])
   {
-    v5 = [(AFUIContactInfo *)self phoneLocalNumberString];
+    nameString = [(AFUIContactInfo *)self phoneLocalNumberString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E180]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E180]])
   {
-    v5 = [(AFUIContactInfo *)self phoneExtensionString];
+    nameString = [(AFUIContactInfo *)self phoneExtensionString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E0D0]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E0D0]])
   {
-    v5 = [(AFUIContactInfo *)self emailString];
+    nameString = [(AFUIContactInfo *)self emailString];
     goto LABEL_59;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E698E1A0]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E698E1A0]])
   {
-    v5 = [(AFUIContactInfo *)self urlString];
+    nameString = [(AFUIContactInfo *)self urlString];
     goto LABEL_59;
   }
 
@@ -212,236 +212,236 @@ LABEL_60:
 - (id)customInfoFromContactInfo
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(AFUIContactInfo *)self nameString];
+  nameString = [(AFUIContactInfo *)self nameString];
 
-  if (v4)
+  if (nameString)
   {
-    v5 = [(AFUIContactInfo *)self nameString];
-    [v3 setObject:v5 forKey:*MEMORY[0x1E698E108]];
+    nameString2 = [(AFUIContactInfo *)self nameString];
+    [v3 setObject:nameString2 forKey:*MEMORY[0x1E698E108]];
   }
 
-  v6 = [(AFUIContactInfo *)self givenNameString];
+  givenNameString = [(AFUIContactInfo *)self givenNameString];
 
-  if (v6)
+  if (givenNameString)
   {
-    v7 = [(AFUIContactInfo *)self givenNameString];
-    [v3 setObject:v7 forKey:*MEMORY[0x1E698E0E8]];
+    givenNameString2 = [(AFUIContactInfo *)self givenNameString];
+    [v3 setObject:givenNameString2 forKey:*MEMORY[0x1E698E0E8]];
   }
 
-  v8 = [(AFUIContactInfo *)self familyNameString];
+  familyNameString = [(AFUIContactInfo *)self familyNameString];
 
-  if (v8)
+  if (familyNameString)
   {
-    v9 = [(AFUIContactInfo *)self familyNameString];
-    [v3 setObject:v9 forKey:*MEMORY[0x1E698E0D8]];
+    familyNameString2 = [(AFUIContactInfo *)self familyNameString];
+    [v3 setObject:familyNameString2 forKey:*MEMORY[0x1E698E0D8]];
   }
 
-  v10 = [(AFUIContactInfo *)self middleNameString];
+  middleNameString = [(AFUIContactInfo *)self middleNameString];
 
-  if (v10)
+  if (middleNameString)
   {
-    v11 = [(AFUIContactInfo *)self middleNameString];
-    [v3 setObject:v11 forKey:*MEMORY[0x1E698E100]];
+    middleNameString2 = [(AFUIContactInfo *)self middleNameString];
+    [v3 setObject:middleNameString2 forKey:*MEMORY[0x1E698E100]];
   }
 
-  v12 = [(AFUIContactInfo *)self namePrefixString];
+  namePrefixString = [(AFUIContactInfo *)self namePrefixString];
 
-  if (v12)
+  if (namePrefixString)
   {
-    v13 = [(AFUIContactInfo *)self namePrefixString];
-    [v3 setObject:v13 forKey:*MEMORY[0x1E698E110]];
+    namePrefixString2 = [(AFUIContactInfo *)self namePrefixString];
+    [v3 setObject:namePrefixString2 forKey:*MEMORY[0x1E698E110]];
   }
 
-  v14 = [(AFUIContactInfo *)self nameSuffixString];
+  nameSuffixString = [(AFUIContactInfo *)self nameSuffixString];
 
-  if (v14)
+  if (nameSuffixString)
   {
-    v15 = [(AFUIContactInfo *)self nameSuffixString];
-    [v3 setObject:v15 forKey:*MEMORY[0x1E698E118]];
+    nameSuffixString2 = [(AFUIContactInfo *)self nameSuffixString];
+    [v3 setObject:nameSuffixString2 forKey:*MEMORY[0x1E698E118]];
   }
 
-  v16 = [(AFUIContactInfo *)self nicknameString];
+  nicknameString = [(AFUIContactInfo *)self nicknameString];
 
-  if (v16)
+  if (nicknameString)
   {
-    v17 = [(AFUIContactInfo *)self nicknameString];
-    [v3 setObject:v17 forKey:*MEMORY[0x1E698E128]];
+    nicknameString2 = [(AFUIContactInfo *)self nicknameString];
+    [v3 setObject:nicknameString2 forKey:*MEMORY[0x1E698E128]];
   }
 
-  v18 = [(AFUIContactInfo *)self jobTitleString];
+  jobTitleString = [(AFUIContactInfo *)self jobTitleString];
 
-  if (v18)
+  if (jobTitleString)
   {
-    v19 = [(AFUIContactInfo *)self jobTitleString];
-    [v3 setObject:v19 forKey:*MEMORY[0x1E698E0F0]];
+    jobTitleString2 = [(AFUIContactInfo *)self jobTitleString];
+    [v3 setObject:jobTitleString2 forKey:*MEMORY[0x1E698E0F0]];
   }
 
-  v20 = [(AFUIContactInfo *)self organizationNameString];
+  organizationNameString = [(AFUIContactInfo *)self organizationNameString];
 
-  if (v20)
+  if (organizationNameString)
   {
-    v21 = [(AFUIContactInfo *)self organizationNameString];
-    [v3 setObject:v21 forKey:*MEMORY[0x1E698E140]];
+    organizationNameString2 = [(AFUIContactInfo *)self organizationNameString];
+    [v3 setObject:organizationNameString2 forKey:*MEMORY[0x1E698E140]];
   }
 
-  v22 = [(AFUIContactInfo *)self birthdateString];
+  birthdateString = [(AFUIContactInfo *)self birthdateString];
 
-  if (v22)
+  if (birthdateString)
   {
-    v23 = [(AFUIContactInfo *)self birthdateString];
-    [v3 setObject:v23 forKey:*MEMORY[0x1E698E048]];
+    birthdateString2 = [(AFUIContactInfo *)self birthdateString];
+    [v3 setObject:birthdateString2 forKey:*MEMORY[0x1E698E048]];
   }
 
-  v24 = [(AFUIContactInfo *)self birthdateDayString];
+  birthdateDayString = [(AFUIContactInfo *)self birthdateDayString];
 
-  if (v24)
+  if (birthdateDayString)
   {
-    v25 = [(AFUIContactInfo *)self birthdateDayString];
-    [v3 setObject:v25 forKey:*MEMORY[0x1E698E050]];
+    birthdateDayString2 = [(AFUIContactInfo *)self birthdateDayString];
+    [v3 setObject:birthdateDayString2 forKey:*MEMORY[0x1E698E050]];
   }
 
-  v26 = [(AFUIContactInfo *)self birthdateMonthString];
+  birthdateMonthString = [(AFUIContactInfo *)self birthdateMonthString];
 
-  if (v26)
+  if (birthdateMonthString)
   {
-    v27 = [(AFUIContactInfo *)self birthdateMonthString];
-    [v3 setObject:v27 forKey:*MEMORY[0x1E698E058]];
+    birthdateMonthString2 = [(AFUIContactInfo *)self birthdateMonthString];
+    [v3 setObject:birthdateMonthString2 forKey:*MEMORY[0x1E698E058]];
   }
 
-  v28 = [(AFUIContactInfo *)self birthdateYearString];
+  birthdateYearString = [(AFUIContactInfo *)self birthdateYearString];
 
-  if (v28)
+  if (birthdateYearString)
   {
-    v29 = [(AFUIContactInfo *)self birthdateYearString];
-    [v3 setObject:v29 forKey:*MEMORY[0x1E698E060]];
+    birthdateYearString2 = [(AFUIContactInfo *)self birthdateYearString];
+    [v3 setObject:birthdateYearString2 forKey:*MEMORY[0x1E698E060]];
   }
 
-  v30 = [(AFUIContactInfo *)self fullStreetAddressString];
+  fullStreetAddressString = [(AFUIContactInfo *)self fullStreetAddressString];
 
-  if (v30)
+  if (fullStreetAddressString)
   {
-    v31 = [(AFUIContactInfo *)self fullStreetAddressString];
-    [v3 setObject:v31 forKey:*MEMORY[0x1E698E0E0]];
+    fullStreetAddressString2 = [(AFUIContactInfo *)self fullStreetAddressString];
+    [v3 setObject:fullStreetAddressString2 forKey:*MEMORY[0x1E698E0E0]];
   }
 
-  v32 = [(AFUIContactInfo *)self streetAddressLine1String];
+  streetAddressLine1String = [(AFUIContactInfo *)self streetAddressLine1String];
 
-  if (v32)
+  if (streetAddressLine1String)
   {
-    v33 = [(AFUIContactInfo *)self streetAddressLine1String];
-    [v3 setObject:v33 forKey:*MEMORY[0x1E698E158]];
+    streetAddressLine1String2 = [(AFUIContactInfo *)self streetAddressLine1String];
+    [v3 setObject:streetAddressLine1String2 forKey:*MEMORY[0x1E698E158]];
   }
 
-  v34 = [(AFUIContactInfo *)self streetAddressLine2String];
+  streetAddressLine2String = [(AFUIContactInfo *)self streetAddressLine2String];
 
-  if (v34)
+  if (streetAddressLine2String)
   {
-    v35 = [(AFUIContactInfo *)self streetAddressLine2String];
-    [v3 setObject:v35 forKey:*MEMORY[0x1E698E160]];
+    streetAddressLine2String2 = [(AFUIContactInfo *)self streetAddressLine2String];
+    [v3 setObject:streetAddressLine2String2 forKey:*MEMORY[0x1E698E160]];
   }
 
-  v36 = [(AFUIContactInfo *)self cityString];
+  cityString = [(AFUIContactInfo *)self cityString];
 
-  if (v36)
+  if (cityString)
   {
-    v37 = [(AFUIContactInfo *)self cityString];
-    [v3 setObject:v37 forKey:*MEMORY[0x1E698E030]];
+    cityString2 = [(AFUIContactInfo *)self cityString];
+    [v3 setObject:cityString2 forKey:*MEMORY[0x1E698E030]];
   }
 
-  v38 = [(AFUIContactInfo *)self stateString];
+  stateString = [(AFUIContactInfo *)self stateString];
 
-  if (v38)
+  if (stateString)
   {
-    v39 = [(AFUIContactInfo *)self stateString];
-    [v3 setObject:v39 forKey:*MEMORY[0x1E698E040]];
+    stateString2 = [(AFUIContactInfo *)self stateString];
+    [v3 setObject:stateString2 forKey:*MEMORY[0x1E698E040]];
   }
 
-  v40 = [(AFUIContactInfo *)self sublocalityString];
+  sublocalityString = [(AFUIContactInfo *)self sublocalityString];
 
-  if (v40)
+  if (sublocalityString)
   {
-    v41 = [(AFUIContactInfo *)self sublocalityString];
-    [v3 setObject:v41 forKey:*MEMORY[0x1E698E168]];
+    sublocalityString2 = [(AFUIContactInfo *)self sublocalityString];
+    [v3 setObject:sublocalityString2 forKey:*MEMORY[0x1E698E168]];
   }
 
-  v42 = [(AFUIContactInfo *)self countryString];
+  countryString = [(AFUIContactInfo *)self countryString];
 
-  if (v42)
+  if (countryString)
   {
-    v43 = [(AFUIContactInfo *)self countryString];
-    [v3 setObject:v43 forKey:*MEMORY[0x1E698E078]];
+    countryString2 = [(AFUIContactInfo *)self countryString];
+    [v3 setObject:countryString2 forKey:*MEMORY[0x1E698E078]];
   }
 
-  v44 = [(AFUIContactInfo *)self postalCodeString];
+  postalCodeString = [(AFUIContactInfo *)self postalCodeString];
 
-  if (v44)
+  if (postalCodeString)
   {
-    v45 = [(AFUIContactInfo *)self postalCodeString];
-    [v3 setObject:v45 forKey:*MEMORY[0x1E698E150]];
+    postalCodeString2 = [(AFUIContactInfo *)self postalCodeString];
+    [v3 setObject:postalCodeString2 forKey:*MEMORY[0x1E698E150]];
   }
 
-  v46 = [(AFUIContactInfo *)self phoneString];
+  phoneString = [(AFUIContactInfo *)self phoneString];
 
-  if (v46)
+  if (phoneString)
   {
-    v47 = [(AFUIContactInfo *)self phoneString];
-    [v3 setObject:v47 forKey:*MEMORY[0x1E698E198]];
+    phoneString2 = [(AFUIContactInfo *)self phoneString];
+    [v3 setObject:phoneString2 forKey:*MEMORY[0x1E698E198]];
   }
 
-  v48 = [(AFUIContactInfo *)self phoneNationalNumberString];
+  phoneNationalNumberString = [(AFUIContactInfo *)self phoneNationalNumberString];
 
-  if (v48)
+  if (phoneNationalNumberString)
   {
-    v49 = [(AFUIContactInfo *)self phoneNationalNumberString];
-    [v3 setObject:v49 forKey:*MEMORY[0x1E698E190]];
+    phoneNationalNumberString2 = [(AFUIContactInfo *)self phoneNationalNumberString];
+    [v3 setObject:phoneNationalNumberString2 forKey:*MEMORY[0x1E698E190]];
   }
 
-  v50 = [(AFUIContactInfo *)self phoneCountryCodeString];
+  phoneCountryCodeString = [(AFUIContactInfo *)self phoneCountryCodeString];
 
-  if (v50)
+  if (phoneCountryCodeString)
   {
-    v51 = [(AFUIContactInfo *)self phoneCountryCodeString];
-    [v3 setObject:v51 forKey:*MEMORY[0x1E698E178]];
+    phoneCountryCodeString2 = [(AFUIContactInfo *)self phoneCountryCodeString];
+    [v3 setObject:phoneCountryCodeString2 forKey:*MEMORY[0x1E698E178]];
   }
 
-  v52 = [(AFUIContactInfo *)self phoneAreaCodeString];
+  phoneAreaCodeString = [(AFUIContactInfo *)self phoneAreaCodeString];
 
-  if (v52)
+  if (phoneAreaCodeString)
   {
-    v53 = [(AFUIContactInfo *)self phoneAreaCodeString];
-    [v3 setObject:v53 forKey:*MEMORY[0x1E698E170]];
+    phoneAreaCodeString2 = [(AFUIContactInfo *)self phoneAreaCodeString];
+    [v3 setObject:phoneAreaCodeString2 forKey:*MEMORY[0x1E698E170]];
   }
 
-  v54 = [(AFUIContactInfo *)self phoneLocalNumberString];
+  phoneLocalNumberString = [(AFUIContactInfo *)self phoneLocalNumberString];
 
-  if (v54)
+  if (phoneLocalNumberString)
   {
-    v55 = [(AFUIContactInfo *)self phoneLocalNumberString];
-    [v3 setObject:v55 forKey:*MEMORY[0x1E698E188]];
+    phoneLocalNumberString2 = [(AFUIContactInfo *)self phoneLocalNumberString];
+    [v3 setObject:phoneLocalNumberString2 forKey:*MEMORY[0x1E698E188]];
   }
 
-  v56 = [(AFUIContactInfo *)self phoneExtensionString];
+  phoneExtensionString = [(AFUIContactInfo *)self phoneExtensionString];
 
-  if (v56)
+  if (phoneExtensionString)
   {
-    v57 = [(AFUIContactInfo *)self phoneExtensionString];
-    [v3 setObject:v57 forKey:*MEMORY[0x1E698E180]];
+    phoneExtensionString2 = [(AFUIContactInfo *)self phoneExtensionString];
+    [v3 setObject:phoneExtensionString2 forKey:*MEMORY[0x1E698E180]];
   }
 
-  v58 = [(AFUIContactInfo *)self emailString];
+  emailString = [(AFUIContactInfo *)self emailString];
 
-  if (v58)
+  if (emailString)
   {
-    v59 = [(AFUIContactInfo *)self emailString];
-    [v3 setObject:v59 forKey:*MEMORY[0x1E698E0D0]];
+    emailString2 = [(AFUIContactInfo *)self emailString];
+    [v3 setObject:emailString2 forKey:*MEMORY[0x1E698E0D0]];
   }
 
-  v60 = [(AFUIContactInfo *)self urlString];
+  urlString = [(AFUIContactInfo *)self urlString];
 
-  if (v60)
+  if (urlString)
   {
-    v61 = [(AFUIContactInfo *)self urlString];
-    [v3 setObject:v61 forKey:*MEMORY[0x1E698E1A0]];
+    urlString2 = [(AFUIContactInfo *)self urlString];
+    [v3 setObject:urlString2 forKey:*MEMORY[0x1E698E1A0]];
   }
 
   return v3;
@@ -449,30 +449,30 @@ LABEL_60:
 
 - (id)titleText
 {
-  v3 = [(AFUIContactInfo *)self label];
-  v4 = [v3 length];
+  label = [(AFUIContactInfo *)self label];
+  v4 = [label length];
 
   if (v4)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(AFUIContactInfo *)self nameString];
-    v7 = [(AFUIContactInfo *)self label];
-    v8 = [v5 stringWithFormat:@"%@ - %@", v6, v7];
+    nameString = [(AFUIContactInfo *)self nameString];
+    label2 = [(AFUIContactInfo *)self label];
+    nameString2 = [v5 stringWithFormat:@"%@ - %@", nameString, label2];
   }
 
   else
   {
-    v8 = [(AFUIContactInfo *)self nameString];
+    nameString2 = [(AFUIContactInfo *)self nameString];
   }
 
-  return v8;
+  return nameString2;
 }
 
-- (id)subtitleTextForAutoFillContext:(id)a3
+- (id)subtitleTextForAutoFillContext:(id)context
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  contextCopy = context;
+  array = [MEMORY[0x1E695DF70] array];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -494,14 +494,14 @@ LABEL_60:
         }
 
         v11 = *(*(&v37 + 1) + 8 * i);
-        v12 = [v3 objectForKey:v11];
+        v12 = [contextCopy objectForKey:v11];
         if (v12 && AFTextContentTypeIsInNameSet(v11))
         {
-          v13 = [v4 containsObject:@"Name"];
+          v13 = [array containsObject:@"Name"];
 
           if ((v13 & 1) == 0)
           {
-            v14 = v4;
+            v14 = array;
             v15 = @"Name";
 LABEL_27:
             [v14 addObject:v15];
@@ -513,14 +513,14 @@ LABEL_27:
         {
         }
 
-        v16 = [v3 objectForKey:v11];
+        v16 = [contextCopy objectForKey:v11];
         if (v16 && AFTextContentTypeIsInPhoneSet(v11))
         {
-          v17 = [v4 containsObject:@"Phone"];
+          v17 = [array containsObject:@"Phone"];
 
           if ((v17 & 1) == 0)
           {
-            v14 = v4;
+            v14 = array;
             v15 = @"Phone";
             goto LABEL_27;
           }
@@ -530,14 +530,14 @@ LABEL_27:
         {
         }
 
-        v18 = [v3 objectForKey:v11];
+        v18 = [contextCopy objectForKey:v11];
         if (v18 && [v11 isEqualToString:v9])
         {
-          v19 = [v4 containsObject:@"Email"];
+          v19 = [array containsObject:@"Email"];
 
           if ((v19 & 1) == 0)
           {
-            v14 = v4;
+            v14 = array;
             v15 = @"Email";
             goto LABEL_27;
           }
@@ -547,18 +547,18 @@ LABEL_27:
         {
         }
 
-        v20 = [v3 objectForKey:v11];
+        v20 = [contextCopy objectForKey:v11];
         if (!v20 || !AFTextContentTypeIsInContactSet(v11) || (AFTextContentTypeIsInBirthdaySet(v11) & 1) != 0)
         {
 
           continue;
         }
 
-        v21 = [v4 containsObject:@"Address"];
+        v21 = [array containsObject:@"Address"];
 
         if ((v21 & 1) == 0)
         {
-          v14 = v4;
+          v14 = array;
           v15 = @"Address";
           goto LABEL_27;
         }
@@ -570,12 +570,12 @@ LABEL_27:
     while (v7);
   }
 
-  v22 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v4;
+  obj = array;
   v23 = [obj countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v23)
   {
@@ -594,12 +594,12 @@ LABEL_27:
         v28 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
         v29 = [v28 localizedStringForKey:v27 value:&stru_1F4E9A028 table:@"Localizable"];
 
-        if ([v22 length])
+        if ([string length])
         {
-          [v22 appendString:{@", "}];
+          [string appendString:{@", "}];
         }
 
-        [v22 appendString:v29];
+        [string appendString:v29];
       }
 
       v24 = [obj countByEnumeratingWithState:&v33 objects:v41 count:16];
@@ -610,19 +610,19 @@ LABEL_27:
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return v22;
+  return string;
 }
 
-+ (id)symbolNameForLabel:(id)a3
++ (id)symbolNameForLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 localizedCaseInsensitiveCompare:@"Home"])
+  labelCopy = label;
+  if ([labelCopy localizedCaseInsensitiveCompare:@"Home"])
   {
-    if ([v3 localizedCaseInsensitiveCompare:@"Work"])
+    if ([labelCopy localizedCaseInsensitiveCompare:@"Work"])
     {
-      if ([v3 localizedCaseInsensitiveCompare:@"Phone"])
+      if ([labelCopy localizedCaseInsensitiveCompare:@"Phone"])
       {
-        if ([v3 localizedCaseInsensitiveCompare:@"Mobile"])
+        if ([labelCopy localizedCaseInsensitiveCompare:@"Mobile"])
         {
           v4 = @"person.text.rectangle";
         }

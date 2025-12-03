@@ -1,12 +1,12 @@
 @interface NTKParmesanSwatchTimeLabel
-- (NTKParmesanSwatchTimeLabel)initWithCoder:(id)a3;
+- (NTKParmesanSwatchTimeLabel)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)prepareForSwatchWithLayout:(id)a3 typeface:(int64_t)a4 complicationVisibility:(unint64_t)a5 palette:(id)a6 numerals:(unint64_t)a7 device:(id)a8;
+- (void)prepareForSwatchWithLayout:(id)layout typeface:(int64_t)typeface complicationVisibility:(unint64_t)visibility palette:(id)palette numerals:(unint64_t)numerals device:(id)device;
 @end
 
 @implementation NTKParmesanSwatchTimeLabel
 
-- (NTKParmesanSwatchTimeLabel)initWithCoder:(id)a3
+- (NTKParmesanSwatchTimeLabel)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___NTKParmesanSwatchTimeLabel_alignment) = 0;
   v3 = self + OBJC_IVAR___NTKParmesanSwatchTimeLabel_timeRect;
@@ -22,17 +22,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BFC2240();
 }
 
-- (void)prepareForSwatchWithLayout:(id)a3 typeface:(int64_t)a4 complicationVisibility:(unint64_t)a5 palette:(id)a6 numerals:(unint64_t)a7 device:(id)a8
+- (void)prepareForSwatchWithLayout:(id)layout typeface:(int64_t)typeface complicationVisibility:(unint64_t)visibility palette:(id)palette numerals:(unint64_t)numerals device:(id)device
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
-  v17 = self;
-  sub_23BFC2654(v14, a4, a5, a7, v16);
+  layoutCopy = layout;
+  paletteCopy = palette;
+  deviceCopy = device;
+  selfCopy = self;
+  sub_23BFC2654(layoutCopy, typeface, visibility, numerals, deviceCopy);
 }
 
 @end

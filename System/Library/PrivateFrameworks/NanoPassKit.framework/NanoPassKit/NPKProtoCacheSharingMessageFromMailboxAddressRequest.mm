@@ -1,11 +1,11 @@
 @interface NPKProtoCacheSharingMessageFromMailboxAddressRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoCacheSharingMessageFromMailboxAddressRequest
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoCacheSharingMessageFromMailboxAddressRequest;
   v4 = [(NPKProtoCacheSharingMessageFromMailboxAddressRequest *)&v8 description];
-  v5 = [(NPKProtoCacheSharingMessageFromMailboxAddressRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoCacheSharingMessageFromMailboxAddressRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   mailboxAddress = self->_mailboxAddress;
   if (mailboxAddress)
   {
-    [v3 setObject:mailboxAddress forKey:@"mailboxAddress"];
+    [dictionary setObject:mailboxAddress forKey:@"mailboxAddress"];
   }
 
   sharingMessageData = self->_sharingMessageData;
@@ -41,15 +41,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_mailboxAddress)
   {
     [NPKProtoCacheSharingMessageFromMailboxAddressRequest writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_sharingMessageData)
   {
@@ -59,35 +59,35 @@
   PBDataWriterWriteDataField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   mailboxAddress = self->_mailboxAddress;
-  v5 = a3;
-  [v5 setMailboxAddress:mailboxAddress];
-  [v5 setSharingMessageData:self->_sharingMessageData];
+  toCopy = to;
+  [toCopy setMailboxAddress:mailboxAddress];
+  [toCopy setSharingMessageData:self->_sharingMessageData];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_mailboxAddress copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_mailboxAddress copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_sharingMessageData copyWithZone:a3];
+  v8 = [(NSData *)self->_sharingMessageData copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((mailboxAddress = self->_mailboxAddress, !(mailboxAddress | v4[1])) || -[NSString isEqual:](mailboxAddress, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((mailboxAddress = self->_mailboxAddress, !(mailboxAddress | equalCopy[1])) || -[NSString isEqual:](mailboxAddress, "isEqual:")))
   {
     sharingMessageData = self->_sharingMessageData;
-    if (sharingMessageData | v4[2])
+    if (sharingMessageData | equalCopy[2])
     {
       v7 = [(NSData *)sharingMessageData isEqual:?];
     }
@@ -106,20 +106,20 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(NPKProtoCacheSharingMessageFromMailboxAddressRequest *)self setMailboxAddress:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoCacheSharingMessageFromMailboxAddressRequest *)self setSharingMessageData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

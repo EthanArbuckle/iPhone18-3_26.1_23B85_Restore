@@ -1,26 +1,26 @@
 @interface MTL4ToolsArgumentTable
-- (MTL4ToolsArgumentTable)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTL4ToolsArgumentTable)initWithBaseObject:(id)object parent:(id)parent;
 - (NSString)label;
 - (unint64_t)bufferBindingCount;
 - (unint64_t)samplerBindingCount;
 - (unint64_t)textureBindingCount;
 - (void)dealloc;
-- (void)getBufferBindings:(MTLResourceID *)a3 bindingCount:(unint64_t)a4;
-- (void)getTextureBindings:(MTLResourceID *)a3 bindingCount:(unint64_t)a4;
-- (void)setAddress:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setAddress:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setResource:(MTLResourceID)a3 atBufferIndex:(unint64_t)a4;
-- (void)setSamplerState:(MTLResourceID)a3 atIndex:(unint64_t)a4;
-- (void)setTexture:(MTLResourceID)a3 atIndex:(unint64_t)a4;
+- (void)getBufferBindings:(MTLResourceID *)bindings bindingCount:(unint64_t)count;
+- (void)getTextureBindings:(MTLResourceID *)bindings bindingCount:(unint64_t)count;
+- (void)setAddress:(unint64_t)address atIndex:(unint64_t)index;
+- (void)setAddress:(unint64_t)address attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setResource:(MTLResourceID)resource atBufferIndex:(unint64_t)index;
+- (void)setSamplerState:(MTLResourceID)state atIndex:(unint64_t)index;
+- (void)setTexture:(MTLResourceID)texture atIndex:(unint64_t)index;
 @end
 
 @implementation MTL4ToolsArgumentTable
 
-- (MTL4ToolsArgumentTable)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTL4ToolsArgumentTable)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTL4ToolsArgumentTable;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:object parent:parent];
 }
 
 - (void)dealloc
@@ -30,81 +30,81 @@
   [(MTLToolsObject *)&v2 dealloc];
 }
 
-- (void)setAddress:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setAddress:(unint64_t)address atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setAddress:a3 atIndex:a4];
+  [baseObject setAddress:address atIndex:index];
 }
 
-- (void)setAddress:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setAddress:(unint64_t)address attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 setAddress:a3 attributeStride:a4 atIndex:a5];
+  [baseObject setAddress:address attributeStride:stride atIndex:index];
 }
 
-- (void)setResource:(MTLResourceID)a3 atBufferIndex:(unint64_t)a4
+- (void)setResource:(MTLResourceID)resource atBufferIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setResource:a3._impl atBufferIndex:a4];
+  [baseObject setResource:resource._impl atBufferIndex:index];
 }
 
-- (void)setTexture:(MTLResourceID)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(MTLResourceID)texture atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setTexture:a3._impl atIndex:a4];
+  [baseObject setTexture:texture._impl atIndex:index];
 }
 
-- (void)setSamplerState:(MTLResourceID)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(MTLResourceID)state atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setSamplerState:a3._impl atIndex:a4];
+  [baseObject setSamplerState:state._impl atIndex:index];
 }
 
 - (unint64_t)bufferBindingCount
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 bufferBindingCount];
+  return [baseObject bufferBindingCount];
 }
 
 - (unint64_t)textureBindingCount
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 textureBindingCount];
+  return [baseObject textureBindingCount];
 }
 
 - (unint64_t)samplerBindingCount
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 samplerBindingCount];
+  return [baseObject samplerBindingCount];
 }
 
-- (void)getBufferBindings:(MTLResourceID *)a3 bindingCount:(unint64_t)a4
+- (void)getBufferBindings:(MTLResourceID *)bindings bindingCount:(unint64_t)count
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 getBufferBindings:a3 bindingCount:a4];
+  [baseObject getBufferBindings:bindings bindingCount:count];
 }
 
-- (void)getTextureBindings:(MTLResourceID *)a3 bindingCount:(unint64_t)a4
+- (void)getTextureBindings:(MTLResourceID *)bindings bindingCount:(unint64_t)count
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 getTextureBindings:a3 bindingCount:a4];
+  [baseObject getTextureBindings:bindings bindingCount:count];
 }
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
 @end

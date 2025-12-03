@@ -1,7 +1,7 @@
 @interface MTTimerCache
 - (BOOL)_isUpdateNeeded;
-- (MTTimerCache)initWithUpdateBlock:(id)a3;
-- (void)_withLock:(id)a3;
+- (MTTimerCache)initWithUpdateBlock:(id)block;
+- (void)_withLock:(id)lock;
 - (void)markNeedsUpdate;
 @end
 
@@ -25,23 +25,23 @@
   return v2;
 }
 
-- (MTTimerCache)initWithUpdateBlock:(id)a3
+- (MTTimerCache)initWithUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = MTTimerCache;
   v5 = [(MTTimerCache *)&v12 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     orderedTimers = v5->_orderedTimers;
-    v5->_orderedTimers = v6;
+    v5->_orderedTimers = array;
 
     nextTimer = v5->_nextTimer;
     v5->_nextTimer = 0;
 
     v5->_needsUpdate = 1;
-    v9 = [v4 copy];
+    v9 = [blockCopy copy];
     updateBlock = v5->_updateBlock;
     v5->_updateBlock = v9;
 
@@ -51,11 +51,11 @@
   return v5;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_cacheLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }

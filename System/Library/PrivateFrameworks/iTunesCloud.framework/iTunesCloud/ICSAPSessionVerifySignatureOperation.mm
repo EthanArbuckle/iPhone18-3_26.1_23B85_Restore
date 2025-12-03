@@ -1,30 +1,30 @@
 @interface ICSAPSessionVerifySignatureOperation
-- (void)executeWithSAPContext:(id)a3;
-- (void)finishWithSAPContextPreparationError:(id)a3;
+- (void)executeWithSAPContext:(id)context;
+- (void)finishWithSAPContextPreparationError:(id)error;
 @end
 
 @implementation ICSAPSessionVerifySignatureOperation
 
-- (void)finishWithSAPContextPreparationError:(id)a3
+- (void)finishWithSAPContextPreparationError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   responseHandler = self->_responseHandler;
-  v6 = v4;
+  v6 = errorCopy;
   if (responseHandler)
   {
-    responseHandler[2](responseHandler, 0, v4);
-    v4 = v6;
+    responseHandler[2](responseHandler, 0, errorCopy);
+    errorCopy = v6;
   }
 
-  [(ICSAPSessionAbstractOperation *)self finishWithError:v4];
+  [(ICSAPSessionAbstractOperation *)self finishWithError:errorCopy];
 }
 
-- (void)executeWithSAPContext:(id)a3
+- (void)executeWithSAPContext:(id)context
 {
   signatureData = self->_signatureData;
   data = self->_data;
   v11 = 0;
-  v7 = [a3 processResponseWithSignatureData:signatureData data:data error:&v11];
+  v7 = [context processResponseWithSignatureData:signatureData data:data error:&v11];
   v8 = v11;
   v9 = v8;
   if ((v7 & 1) == 0 && !v8)

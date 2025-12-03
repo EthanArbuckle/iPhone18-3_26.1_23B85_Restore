@@ -6,28 +6,28 @@
 - (UIKeyboardMediaControllerDelegate)delegate;
 - (void)_didInsertMedia;
 - (void)_didPresentCard;
-- (void)_displayiMessageAppWithID:(id)a3;
-- (void)_embedRecentlyUsedMediaViewInView:(id)a3 animated:(BOOL)a4;
+- (void)_displayiMessageAppWithID:(id)d;
+- (void)_embedRecentlyUsedMediaViewInView:(id)view animated:(BOOL)animated;
 - (void)_instantiateCardFromViewService;
-- (void)_instantiateViewServiceRecentlyUsedMediaWithCompletionHandler:(id)a3;
-- (void)_keyboardDidChangeFrame:(id)a3;
+- (void)_instantiateViewServiceRecentlyUsedMediaWithCompletionHandler:(id)handler;
+- (void)_keyboardDidChangeFrame:(id)frame;
 - (void)_presentiMessageApp;
 - (void)_setRecentlyUsedMediaViewControllerHostBundleID;
 - (void)_tearDownRemoteViews;
 - (void)dismissCardAnimated;
 - (void)dismissCardIfNeeded;
-- (void)draggedStickerToPoint:(CGPoint)a3;
-- (void)handleStickerSuggestionWithTISticker:(id)a3;
-- (void)pasteImageAtFileHandle:(id)a3;
-- (void)prefetchRecentsViewControllerWithCompletion:(id)a3;
+- (void)draggedStickerToPoint:(CGPoint)point;
+- (void)handleStickerSuggestionWithTISticker:(id)sticker;
+- (void)pasteImageAtFileHandle:(id)handle;
+- (void)prefetchRecentsViewControllerWithCompletion:(id)completion;
 - (void)presentCard;
 - (void)releaseRecentlyUsedMediaViewIfNeeded;
-- (void)remoteHandlesRecentsStickerDonationWithCompletionHandler:(id)a3;
-- (void)requestInsertionPointCompletion:(id)a3;
-- (void)showRecentlyUsedMediaInView:(id)a3;
-- (void)stageSticker:(id)a3;
-- (void)stageStickerWithFileHandle:(id)a3 url:(id)a4 accessibilityLabel:(id)a5;
-- (void)stageStickerWithIdentifier:(id)a3 representations:(id)a4 name:(id)a5 externalURI:(id)a6 accessibilityLabel:(id)a7;
+- (void)remoteHandlesRecentsStickerDonationWithCompletionHandler:(id)handler;
+- (void)requestInsertionPointCompletion:(id)completion;
+- (void)showRecentlyUsedMediaInView:(id)view;
+- (void)stageSticker:(id)sticker;
+- (void)stageStickerWithFileHandle:(id)handle url:(id)url accessibilityLabel:(id)label;
+- (void)stageStickerWithIdentifier:(id)identifier representations:(id)representations name:(id)name externalURI:(id)i accessibilityLabel:(id)label;
 @end
 
 @implementation UIKeyboardMediaController
@@ -56,8 +56,8 @@ void __58__UIKeyboardMediaController_sharedKeyboardMediaController__block_invoke
   if (recentlyUsedMediaViewController)
   {
     [(UIViewController *)recentlyUsedMediaViewController willMoveToParentViewController:0];
-    v4 = [(UIViewController *)self->_recentlyUsedMediaViewController view];
-    [v4 removeFromSuperview];
+    view = [(UIViewController *)self->_recentlyUsedMediaViewController view];
+    [view removeFromSuperview];
 
     [(UIViewController *)self->_recentlyUsedMediaViewController removeFromParentViewController];
     v5 = self->_recentlyUsedMediaViewController;
@@ -71,7 +71,7 @@ void __58__UIKeyboardMediaController_sharedKeyboardMediaController__block_invoke
   block[1] = 3221225472;
   block[2] = __58__UIKeyboardMediaController_sharedKeyboardMediaController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49DC00 != -1)
   {
     dispatch_once(&qword_1ED49DC00, block);
@@ -108,17 +108,17 @@ void __58__UIKeyboardMediaController_sharedKeyboardMediaController__block_invoke
   return v2;
 }
 
-- (void)handleStickerSuggestionWithTISticker:(id)a3
+- (void)handleStickerSuggestionWithTISticker:(id)sticker
 {
   v68 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v44 = [MEMORY[0x1E695DF70] array];
+  stickerCopy = sticker;
+  array = [MEMORY[0x1E695DF70] array];
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v3 = [v40 representations];
-  v4 = [v3 countByEnumeratingWithState:&v58 objects:v67 count:16];
+  representations = [stickerCopy representations];
+  v4 = [representations countByEnumeratingWithState:&v58 objects:v67 count:16];
   if (v4)
   {
     v5 = *v59;
@@ -129,65 +129,65 @@ void __58__UIKeyboardMediaController_sharedKeyboardMediaController__block_invoke
       {
         if (*v59 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(representations);
         }
 
         v7 = *(*(&v58 + 1) + 8 * v6);
         v8 = objc_alloc_init(_UIStickerRepresentation);
-        v9 = [v7 data];
-        [(_UIStickerRepresentation *)v8 setData:v9];
+        data = [v7 data];
+        [(_UIStickerRepresentation *)v8 setData:data];
 
         v10 = [v7 uti];
-        v11 = [v10 identifier];
-        [(_UIStickerRepresentation *)v8 setType:v11];
+        identifier = [v10 identifier];
+        [(_UIStickerRepresentation *)v8 setType:identifier];
 
-        v12 = [v7 role];
-        [(_UIStickerRepresentation *)v8 setRole:v12];
+        role = [v7 role];
+        [(_UIStickerRepresentation *)v8 setRole:role];
 
         [v7 size];
         [(_UIStickerRepresentation *)v8 setSize:?];
-        [v44 addObject:v8];
+        [array addObject:v8];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v58 objects:v67 count:16];
+      v4 = [representations countByEnumeratingWithState:&v58 objects:v67 count:16];
     }
 
     while (v4);
   }
 
   v43 = objc_opt_new();
-  v13 = [v40 identifier];
-  v14 = [v13 UUIDString];
-  [v43 setIdentifier:v14];
+  identifier2 = [stickerCopy identifier];
+  uUIDString = [identifier2 UUIDString];
+  [v43 setIdentifier:uUIDString];
 
-  [v43 setRepresentations:v44];
-  v15 = [v40 name];
-  [v43 setName:v15];
+  [v43 setRepresentations:array];
+  name = [stickerCopy name];
+  [v43 setName:name];
 
-  v16 = [v40 externalURI];
-  [v43 setExternalURI:v16];
+  externalURI = [stickerCopy externalURI];
+  [v43 setExternalURI:externalURI];
 
-  v17 = [v40 accessibilityLabel];
-  [v43 setAccessibilityLabel:v17];
+  accessibilityLabel = [stickerCopy accessibilityLabel];
+  [v43 setAccessibilityLabel:accessibilityLabel];
 
-  v18 = [v40 metadata];
-  [v43 setMetadata:v18];
+  metadata = [stickerCopy metadata];
+  [v43 setMetadata:metadata];
 
-  v19 = [v40 searchText];
-  [v43 setSearchText:v19];
+  searchText = [stickerCopy searchText];
+  [v43 setSearchText:searchText];
 
-  v20 = [v40 accessibilityName];
-  [v43 setAccessibilityName:v20];
+  accessibilityName = [stickerCopy accessibilityName];
+  [v43 setAccessibilityName:accessibilityName];
 
-  v21 = [v40 attributionInfo];
-  [v43 setAttributionInfo:v21];
+  attributionInfo = [stickerCopy attributionInfo];
+  [v43 setAttributionInfo:attributionInfo];
 
-  [v43 setEffectType:{objc_msgSend(v40, "effectType")}];
-  v22 = [v40 metadata];
-  [v43 setMetadata:v22];
+  [v43 setEffectType:{objc_msgSend(stickerCopy, "effectType")}];
+  metadata2 = [stickerCopy metadata];
+  [v43 setMetadata:metadata2];
 
   v62 = 0;
   v63 = &v62;
@@ -207,7 +207,7 @@ void __58__UIKeyboardMediaController_sharedKeyboardMediaController__block_invoke
 
   v24 = v23;
   _Block_object_dispose(&v62, 8);
-  v42 = [v23 effectWithType:{objc_msgSend(v40, "effectType")}];
+  v42 = [v23 effectWithType:{objc_msgSend(stickerCopy, "effectType")}];
   if ([v42 type])
   {
     v56 = 0u;
@@ -231,8 +231,8 @@ void __58__UIKeyboardMediaController_sharedKeyboardMediaController__block_invoke
 
           v28 = *(*(&v54 + 1) + 8 * v27);
           v29 = dispatch_semaphore_create(0);
-          v30 = [v28 data];
-          ImageFromData = _UIStickerCreateImageFromData(v30);
+          data2 = [v28 data];
+          ImageFromData = _UIStickerCreateImageFromData(data2);
 
           v32 = [[UIImage alloc] initWithCGImage:ImageFromData];
           CGImageRelease(ImageFromData);
@@ -251,10 +251,10 @@ void __58__UIKeyboardMediaController_sharedKeyboardMediaController__block_invoke
           v46 = v33;
           [v42 applyToImage:v32 completion:v45];
           dispatch_semaphore_wait(v33, 0xFFFFFFFFFFFFFFFFLL);
-          v34 = [*(v49 + 40) CGImage];
-          v35 = [v28 type];
-          v36 = [v43 metadata];
-          v37 = _UIStickerDataFromImageWithMetadata(v34, v35, v36);
+          cGImage = [*(v49 + 40) CGImage];
+          type = [v28 type];
+          metadata3 = [v43 metadata];
+          v37 = _UIStickerDataFromImageWithMetadata(cGImage, type, metadata3);
 
           [v28 setData:v37];
           _Block_object_dispose(&v48, 8);
@@ -294,49 +294,49 @@ void __66__UIKeyboardMediaController_handleStickerSuggestionWithTISticker___bloc
   return [(UIKeyboardMediaController *)self recentsViewWillBeVisible];
 }
 
-- (void)_embedRecentlyUsedMediaViewInView:(id)a3 animated:(BOOL)a4
+- (void)_embedRecentlyUsedMediaViewInView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UIViewController *)self->_recentlyUsedMediaViewController parentViewController];
+  animatedCopy = animated;
+  viewCopy = view;
+  parentViewController = [(UIViewController *)self->_recentlyUsedMediaViewController parentViewController];
 
-  if (v7)
+  if (parentViewController)
   {
-    v8 = [(UIViewController *)self->_recentlyUsedMediaViewController view];
-    [v8 removeFromSuperview];
+    view = [(UIViewController *)self->_recentlyUsedMediaViewController view];
+    [view removeFromSuperview];
 
     [(UIViewController *)self->_recentlyUsedMediaViewController removeFromParentViewController];
   }
 
-  v9 = [v6 _viewControllerForAncestor];
-  [v9 addChildViewController:self->_recentlyUsedMediaViewController];
-  v10 = [(UIViewController *)self->_recentlyUsedMediaViewController view];
-  [v6 bounds];
-  [v10 setFrame:?];
-  if (v4)
+  _viewControllerForAncestor = [viewCopy _viewControllerForAncestor];
+  [_viewControllerForAncestor addChildViewController:self->_recentlyUsedMediaViewController];
+  view2 = [(UIViewController *)self->_recentlyUsedMediaViewController view];
+  [viewCopy bounds];
+  [view2 setFrame:?];
+  if (animatedCopy)
   {
-    [v10 setAlpha:0.0];
-    [v6 addSubview:v10];
-    [(UIViewController *)self->_recentlyUsedMediaViewController didMoveToParentViewController:v9];
+    [view2 setAlpha:0.0];
+    [viewCopy addSubview:view2];
+    [(UIViewController *)self->_recentlyUsedMediaViewController didMoveToParentViewController:_viewControllerForAncestor];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __72__UIKeyboardMediaController__embedRecentlyUsedMediaViewInView_animated___block_invoke;
     v11[3] = &unk_1E70F3590;
-    v12 = v10;
+    v12 = view2;
     [UIView animateWithDuration:v11 animations:0.15];
   }
 
   else
   {
-    [v6 addSubview:v10];
-    [(UIViewController *)self->_recentlyUsedMediaViewController didMoveToParentViewController:v9];
+    [viewCopy addSubview:view2];
+    [(UIViewController *)self->_recentlyUsedMediaViewController didMoveToParentViewController:_viewControllerForAncestor];
   }
 }
 
-- (void)showRecentlyUsedMediaInView:(id)a3
+- (void)showRecentlyUsedMediaInView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
+  viewCopy = view;
+  v5 = viewCopy;
   if (self->_recentlyUsedMediaViewController)
   {
     objc_opt_class();
@@ -350,14 +350,14 @@ void __66__UIKeyboardMediaController_handleStickerSuggestionWithTISticker___bloc
 
   else
   {
-    objc_storeWeak(&self->_targetViewAwaitingRecents, v4);
+    objc_storeWeak(&self->_targetViewAwaitingRecents, viewCopy);
     [(UIKeyboardMediaController *)self _instantiateViewServiceRecentlyUsedMediaWithCompletionHandler:0];
   }
 }
 
-- (void)prefetchRecentsViewControllerWithCompletion:(id)a3
+- (void)prefetchRecentsViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
@@ -367,7 +367,7 @@ void __66__UIKeyboardMediaController_handleStickerSuggestionWithTISticker___bloc
   aBlock[2] = __73__UIKeyboardMediaController_prefetchRecentsViewControllerWithCompletion___block_invoke;
   aBlock[3] = &unk_1E70FCF18;
   v13 = v14;
-  v5 = v4;
+  v5 = completionCopy;
   v12 = v5;
   v6 = _Block_copy(aBlock);
   [(UIKeyboardMediaController *)self _instantiateViewServiceRecentlyUsedMediaWithCompletionHandler:v6];
@@ -399,9 +399,9 @@ uint64_t __73__UIKeyboardMediaController_prefetchRecentsViewControllerWithComple
   return result;
 }
 
-- (void)_instantiateViewServiceRecentlyUsedMediaWithCompletionHandler:(id)a3
+- (void)_instantiateViewServiceRecentlyUsedMediaWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_hasRequestedRecentlyUsedMediaViewController)
   {
     self->_hasRequestedRecentlyUsedMediaViewController = 1;
@@ -418,7 +418,7 @@ uint64_t __73__UIKeyboardMediaController_prefetchRecentsViewControllerWithComple
     v8[2] = __91__UIKeyboardMediaController__instantiateViewServiceRecentlyUsedMediaWithCompletionHandler___block_invoke;
     v8[3] = &unk_1E7107448;
     v8[4] = self;
-    v9 = v4;
+    v9 = handlerCopy;
     v6 = [UIKeyboardMediaServiceRemoteViewController requestInlineViewControllerWithConnectionHandler:v8];
     recentlyUsedMediaViewControllerRequest = self->_recentlyUsedMediaViewControllerRequest;
     self->_recentlyUsedMediaViewControllerRequest = v6;
@@ -516,41 +516,41 @@ void __48__UIKeyboardMediaController_dismissCardIfNeeded__block_invoke(uint64_t 
   }
 }
 
-- (void)_keyboardDidChangeFrame:(id)a3
+- (void)_keyboardDidChangeFrame:(id)frame
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(UIViewController *)self->_remoteCardViewController serviceViewControllerProxy];
+    serviceViewControllerProxy = [(UIViewController *)self->_remoteCardViewController serviceViewControllerProxy];
     if (objc_opt_respondsToSelector())
     {
       v4 = +[UIKeyboard activeKeyboard];
       +[UIKeyboard sizeForInterfaceOrientation:](UIKeyboard, "sizeForInterfaceOrientation:", [v4 interfaceOrientation]);
       v6 = v5;
 
-      [v7 updateCompactCardHeight:v6];
+      [serviceViewControllerProxy updateCompactCardHeight:v6];
     }
   }
 }
 
-- (void)_displayiMessageAppWithID:(id)a3
+- (void)_displayiMessageAppWithID:(id)d
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   if (+[UIKeyboard isKeyboardProcess])
   {
     v4 = +[UIKeyboardImpl activeInstance];
-    v5 = [v4 inputSystemSourceSession];
+    inputSystemSourceSession = [v4 inputSystemSourceSession];
 
     v12 = *MEMORY[0x1E69D9878];
-    v13[0] = v3;
+    v13[0] = dCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v7 = [v6 mutableCopy];
-    v8 = [v5 textOperations];
-    v9 = [v8 keyboardOutput];
-    [v9 setCustomInfo:v7];
+    textOperations = [inputSystemSourceSession textOperations];
+    keyboardOutput = [textOperations keyboardOutput];
+    [keyboardOutput setCustomInfo:v7];
 
-    [v5 flushOperations];
+    [inputSystemSourceSession flushOperations];
   }
 
   else
@@ -559,9 +559,9 @@ void __48__UIKeyboardMediaController_dismissCardIfNeeded__block_invoke(uint64_t 
     v10[1] = 3221225472;
     v10[2] = __55__UIKeyboardMediaController__displayiMessageAppWithID___block_invoke;
     v10[3] = &unk_1E70F3590;
-    v11 = v3;
+    v11 = dCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v10);
-    v5 = v11;
+    inputSystemSourceSession = v11;
   }
 }
 
@@ -618,15 +618,15 @@ void __55__UIKeyboardMediaController__displayiMessageAppWithID___block_invoke(ui
 {
   if (!self->_remoteCardViewControllerRequest)
   {
-    v3 = [(UIViewController *)self->_remoteCardViewController parentViewController];
+    parentViewController = [(UIViewController *)self->_remoteCardViewController parentViewController];
 
-    if (!v3)
+    if (!parentViewController)
     {
-      v4 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v4 addObserver:self selector:sel_dismissCardAnimated name:@"UIKeyboardPrivateInteractiveDismissalDidBeginNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_dismissCardAnimated name:@"UIKeyboardPrivateInteractiveDismissalDidBeginNotification" object:0];
 
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 addObserver:self selector:sel__keyboardDidChangeFrame_ name:@"UIKeyboardDidChangeFrameNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__keyboardDidChangeFrame_ name:@"UIKeyboardDidChangeFrameNotification" object:0];
 
       v11 = +[UIKeyboard keyboardBundleIdentifier];
       if ([v11 isEqualToString:@"com.apple.MobileSMS"] && (+[UITextInputPayloadController sharedInstance](UITextInputPayloadController, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "supportsStickerTapbackPayload"), v6, (v7 & 1) == 0))
@@ -660,16 +660,16 @@ void __55__UIKeyboardMediaController__displayiMessageAppWithID___block_invoke(ui
 
 - (void)dismissCardAnimated
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIKeyboardPrivateInteractiveDismissalDidBeginNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIKeyboardPrivateInteractiveDismissalDidBeginNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"UIKeyboardDidChangeFrameNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"UIKeyboardDidChangeFrameNotification" object:0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UIViewController *)self->_remoteCardViewController serviceViewControllerProxy];
+    serviceViewControllerProxy = [(UIViewController *)self->_remoteCardViewController serviceViewControllerProxy];
     if (objc_opt_respondsToSelector())
     {
       v6[0] = MEMORY[0x1E69E9820];
@@ -677,7 +677,7 @@ void __55__UIKeyboardMediaController__displayiMessageAppWithID___block_invoke(ui
       v6[2] = __48__UIKeyboardMediaController_dismissCardAnimated__block_invoke;
       v6[3] = &unk_1E70F3590;
       v6[4] = self;
-      [v5 animateCardHiddenWithCompletion:v6];
+      [serviceViewControllerProxy animateCardHiddenWithCompletion:v6];
     }
   }
 }
@@ -756,26 +756,26 @@ void __60__UIKeyboardMediaController__instantiateCardFromViewService__block_invo
 
 - (void)_didPresentCard
 {
-  v3 = [(UIKeyboardMediaController *)self delegate];
+  delegate = [(UIKeyboardMediaController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UIKeyboardMediaController *)self delegate];
-    [v5 didPresentCardForKeyboardMediaController:self];
+    delegate2 = [(UIKeyboardMediaController *)self delegate];
+    [delegate2 didPresentCardForKeyboardMediaController:self];
   }
 }
 
-- (void)pasteImageAtFileHandle:(id)a3
+- (void)pasteImageAtFileHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__UIKeyboardMediaController_pasteImageAtFileHandle___block_invoke;
   v6[3] = &unk_1E70F35B8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = handleCopy;
+  selfCopy = self;
+  v5 = handleCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -882,22 +882,22 @@ void __52__UIKeyboardMediaController_pasteImageAtFileHandle___block_invoke_6()
   [v0 _clearPinnedItemProviders];
 }
 
-- (void)stageStickerWithFileHandle:(id)a3 url:(id)a4 accessibilityLabel:(id)a5
+- (void)stageStickerWithFileHandle:(id)handle url:(id)url accessibilityLabel:(id)label
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  urlCopy = url;
+  labelCopy = label;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__UIKeyboardMediaController_stageStickerWithFileHandle_url_accessibilityLabel___block_invoke;
   v14[3] = &unk_1E70F6B40;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v18 = self;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = handleCopy;
+  v16 = urlCopy;
+  v17 = labelCopy;
+  selfCopy = self;
+  v11 = labelCopy;
+  v12 = urlCopy;
+  v13 = handleCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
@@ -956,49 +956,49 @@ LABEL_6:
   [v12 pasteImageAtFileHandle:v13];
 }
 
-- (void)stageSticker:(id)a3
+- (void)stageSticker:(id)sticker
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stickerCopy = sticker;
   v5 = _UIKBMediaLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [stickerCopy identifier];
     v8 = 138412290;
-    v9 = v6;
+    v9 = identifier;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "UIKeyboardMediaController: Staging sticker with identifier %@", &v8, 0xCu);
   }
 
   v7 = +[UIKeyboardImpl activeInstance];
-  [v7 insertSticker:v4];
+  [v7 insertSticker:stickerCopy];
 
   [(UIKeyboardMediaController *)self _didInsertMedia];
 }
 
-- (void)stageStickerWithIdentifier:(id)a3 representations:(id)a4 name:(id)a5 externalURI:(id)a6 accessibilityLabel:(id)a7
+- (void)stageStickerWithIdentifier:(id)identifier representations:(id)representations name:(id)name externalURI:(id)i accessibilityLabel:(id)label
 {
   v22 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
+  identifierCopy = identifier;
+  labelCopy = label;
+  iCopy = i;
+  nameCopy = name;
+  representationsCopy = representations;
   v17 = _UIKBMediaLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412290;
-    v21 = v12;
+    v21 = identifierCopy;
     _os_log_impl(&dword_188A29000, v17, OS_LOG_TYPE_DEFAULT, "UIKeyboardMediaController: Staging sticker using old protocol with identifier %@", &v20, 0xCu);
   }
 
   v18 = objc_opt_new();
-  [v18 setIdentifier:v12];
-  [v18 setRepresentations:v16];
+  [v18 setIdentifier:identifierCopy];
+  [v18 setRepresentations:representationsCopy];
 
-  [v18 setName:v15];
-  [v18 setExternalURI:v14];
+  [v18 setName:nameCopy];
+  [v18 setExternalURI:iCopy];
 
-  [v18 setAccessibilityLabel:v13];
+  [v18 setAccessibilityLabel:labelCopy];
   v19 = +[UIKeyboardImpl activeInstance];
   [v19 insertSticker:v18];
 
@@ -1017,39 +1017,39 @@ LABEL_6:
   }
 }
 
-- (void)remoteHandlesRecentsStickerDonationWithCompletionHandler:(id)a3
+- (void)remoteHandlesRecentsStickerDonationWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v4 = a3;
-    v4[2](v4, [(UIKeyboardMediaController *)self _stickerIsSupportedPayload]^ 1);
+    handlerCopy = handler;
+    handlerCopy[2](handlerCopy, [(UIKeyboardMediaController *)self _stickerIsSupportedPayload]^ 1);
   }
 }
 
 - (BOOL)_stickerIsSupportedPayload
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 inputDelegateManager];
-  v4 = [v3 keyboardStateDelegate];
-  v5 = [v4 keyboardState];
-  v6 = [v5 supportedPayloadIds];
+  inputDelegateManager = [v2 inputDelegateManager];
+  keyboardStateDelegate = [inputDelegateManager keyboardStateDelegate];
+  keyboardState = [keyboardStateDelegate keyboardState];
+  supportedPayloadIds = [keyboardState supportedPayloadIds];
 
-  LOBYTE(v2) = [v6 containsObject:@"com.apple.messages.stageSticker"];
+  LOBYTE(v2) = [supportedPayloadIds containsObject:@"com.apple.messages.stageSticker"];
   return v2;
 }
 
-- (void)requestInsertionPointCompletion:(id)a3
+- (void)requestInsertionPointCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __61__UIKeyboardMediaController_requestInsertionPointCompletion___block_invoke;
     v6[3] = &unk_1E70F37C0;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v6);
   }
 }
@@ -1095,13 +1095,13 @@ void __61__UIKeyboardMediaController_requestInsertionPointCompletion___block_inv
   (*(*(a1 + 40) + 16))(v19, v21);
 }
 
-- (void)draggedStickerToPoint:(CGPoint)a3
+- (void)draggedStickerToPoint:(CGPoint)point
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__UIKeyboardMediaController_draggedStickerToPoint___block_invoke;
   block[3] = &unk_1E70F6848;
-  v4 = a3;
+  pointCopy = point;
   block[4] = self;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }

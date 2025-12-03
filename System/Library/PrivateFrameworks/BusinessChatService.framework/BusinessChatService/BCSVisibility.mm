@@ -1,12 +1,12 @@
 @interface BCSVisibility
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCSVisibility
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = BCSVisibility;
   v4 = [(BCSVisibility *)&v8 description];
-  v5 = [(BCSVisibility *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BCSVisibility *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   language = self->_language;
   if (language)
   {
-    [v3 setObject:language forKey:@"language"];
+    [dictionary setObject:language forKey:@"language"];
   }
 
   country = self->_country;
@@ -48,61 +48,61 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_language)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_country)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     ratio = self->_ratio;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_language)
   {
-    [v4 setLanguage:?];
-    v4 = v5;
+    [toCopy setLanguage:?];
+    toCopy = v5;
   }
 
   if (self->_country)
   {
     [v5 setCountry:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_ratio;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = *&self->_ratio;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_language copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_language copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_country copyWithZone:a3];
+  v8 = [(NSString *)self->_country copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
@@ -115,16 +115,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   language = self->_language;
-  if (language | *(v4 + 3))
+  if (language | *(equalCopy + 3))
   {
     if (![(NSString *)language isEqual:?])
     {
@@ -133,7 +133,7 @@
   }
 
   country = self->_country;
-  if (country | *(v4 + 2))
+  if (country | *(equalCopy + 2))
   {
     if (![(NSString *)country isEqual:?])
     {
@@ -141,10 +141,10 @@
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_ratio == *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_ratio == *(equalCopy + 1))
     {
       v7 = 1;
       goto LABEL_11;
@@ -199,25 +199,25 @@ LABEL_11:
   return v4 ^ v3 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(BCSVisibility *)self setLanguage:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BCSVisibility *)self setCountry:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
-    self->_ratio = v4[1];
+    self->_ratio = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

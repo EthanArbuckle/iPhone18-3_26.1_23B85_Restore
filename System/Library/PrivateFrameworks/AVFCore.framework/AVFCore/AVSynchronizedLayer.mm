@@ -5,10 +5,10 @@
 - (AVSynchronizedLayer)init;
 - (BOOL)_isVisible;
 - (id)_popAllOldPlayerItems;
-- (void)_removeSelfFromPlayerItem:(id)a3;
+- (void)_removeSelfFromPlayerItem:(id)item;
 - (void)_updatePlayerItemState;
 - (void)dealloc;
-- (void)layerDidBecomeVisible:(BOOL)a3;
+- (void)layerDidBecomeVisible:(BOOL)visible;
 - (void)setPlayerItem:(AVPlayerItem *)playerItem;
 @end
 
@@ -16,7 +16,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -139,11 +139,11 @@ uint64_t __44__AVSynchronizedLayer__popAllOldPlayerItems__block_invoke(uint64_t 
   return [v2 removeAllObjects];
 }
 
-- (void)_removeSelfFromPlayerItem:(id)a3
+- (void)_removeSelfFromPlayerItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    [a3 _removeSyncLayer:self];
+    [item _removeSyncLayer:self];
 
     [(AVSynchronizedLayer *)self setInheritsTiming:1];
   }
@@ -243,7 +243,7 @@ void *__37__AVSynchronizedLayer_setPlayerItem___block_invoke(void *result)
   return result;
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
   ivarAccessQueue = self->_syncLayer->ivarAccessQueue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -251,7 +251,7 @@ void *__37__AVSynchronizedLayer_setPlayerItem___block_invoke(void *result)
   v6[2] = __45__AVSynchronizedLayer_layerDidBecomeVisible___block_invoke;
   v6[3] = &unk_1E7460E40;
   v6[4] = self;
-  v7 = a3;
+  visibleCopy = visible;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v6);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

@@ -1,8 +1,8 @@
 @interface BankConnectAccountsProvider
-+ (id)makeProviderWithPrimaryAccountIdentifier:(id)a3;
++ (id)makeProviderWithPrimaryAccountIdentifier:(id)identifier;
 - (FKBankConnectAccountsProviderDelegate)delegate;
 - (_TtC10FinanceKit27BankConnectAccountsProvider)init;
-- (void)accountAndReconsentStatusWithCompletion:(id)a3;
+- (void)accountAndReconsentStatusWithCompletion:(id)completion;
 - (void)dealloc;
 @end
 
@@ -20,7 +20,7 @@
 {
   if (*(self + OBJC_IVAR____TtC10FinanceKit27BankConnectAccountsProvider_remoteChangeNotificationTask))
   {
-    v3 = self;
+    selfCopy = self;
 
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB991110);
     sub_1B7800E68();
@@ -28,7 +28,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -36,7 +36,7 @@
   [(BankConnectAccountsProvider *)&v5 dealloc];
 }
 
-+ (id)makeProviderWithPrimaryAccountIdentifier:(id)a3
++ (id)makeProviderWithPrimaryAccountIdentifier:(id)identifier
 {
   v3 = sub_1B7800868();
   v5 = sub_1B7522B98(v3, v4);
@@ -44,12 +44,12 @@
   return v5;
 }
 
-- (void)accountAndReconsentStatusWithCompletion:(id)a3
+- (void)accountAndReconsentStatusWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB99C280);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -65,7 +65,7 @@
   v12[3] = 0;
   v12[4] = &unk_1B780BB50;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1B77E494C(0, 0, v7, &unk_1B780D8F0, v12);
 }
 

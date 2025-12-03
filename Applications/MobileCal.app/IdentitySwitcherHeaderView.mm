@@ -1,17 +1,17 @@
 @interface IdentitySwitcherHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (IdentitySwitcherHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (IdentitySwitcherHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation IdentitySwitcherHeaderView
 
-- (IdentitySwitcherHeaderView)initWithFrame:(CGRect)a3
+- (IdentitySwitcherHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v19.receiver = self;
   v19.super_class = IdentitySwitcherHeaderView;
   v7 = [(IdentitySwitcherHeaderView *)&v19 initWithFrame:?];
@@ -77,10 +77,10 @@
   [(UIView *)separator setFrame:0.0, MaxY - v20, v8, v20];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UIFont *)self->_font _scaledValueForValue:52.0, a3.height];
+  width = fits.width;
+  [(UIFont *)self->_font _scaledValueForValue:52.0, fits.height];
   v5 = v4;
   v6 = width;
   result.height = v5;

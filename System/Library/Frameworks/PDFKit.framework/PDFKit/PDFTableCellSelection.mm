@@ -1,26 +1,26 @@
 @interface PDFTableCellSelection
-- (BOOL)isPointInHandle:(CGPoint)a3 whichHandle:(int64_t *)a4;
+- (BOOL)isPointInHandle:(CGPoint)handle whichHandle:(int64_t *)whichHandle;
 - (CGPoint)startPoint;
 - (CGRect)selectionRect;
-- (PDFTableCellSelection)initWithTable:(CGPDFPageLayoutTable *)a3 onPage:(id)a4;
+- (PDFTableCellSelection)initWithTable:(CGPDFPageLayoutTable *)table onPage:(id)page;
 - (void)dealloc;
-- (void)setTable:(CGPDFPageLayoutTable *)a3;
+- (void)setTable:(CGPDFPageLayoutTable *)table;
 @end
 
 @implementation PDFTableCellSelection
 
-- (PDFTableCellSelection)initWithTable:(CGPDFPageLayoutTable *)a3 onPage:(id)a4
+- (PDFTableCellSelection)initWithTable:(CGPDFPageLayoutTable *)table onPage:(id)page
 {
-  v7 = a4;
+  pageCopy = page;
   v11.receiver = self;
   v11.super_class = PDFTableCellSelection;
   v8 = [(PDFTableCellSelection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_table = a3;
-    CFRetain(a3);
-    objc_storeStrong(&v9->_page, a4);
+    v8->_table = table;
+    CFRetain(table);
+    objc_storeStrong(&v9->_page, page);
     v9->_startCellIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
@@ -40,33 +40,33 @@
   [(PDFTableCellSelection *)&v4 dealloc];
 }
 
-- (void)setTable:(CGPDFPageLayoutTable *)a3
+- (void)setTable:(CGPDFPageLayoutTable *)table
 {
   table = self->_table;
-  if (table != a3)
+  if (table != table)
   {
     if (table)
     {
       CFRelease(table);
     }
 
-    self->_table = a3;
-    if (a3)
+    self->_table = table;
+    if (table)
     {
 
-      CFRetain(a3);
+      CFRetain(table);
     }
   }
 }
 
 - (CGRect)selectionRect
 {
-  v3 = [(PDFTableCellSelection *)self selection];
+  selection = [(PDFTableCellSelection *)self selection];
 
-  if (v3)
+  if (selection)
   {
-    v4 = [(PDFTableCellSelection *)self selection];
-    [v4 tableCellSelectionRect];
+    selection2 = [(PDFTableCellSelection *)self selection];
+    [selection2 tableCellSelectionRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -92,10 +92,10 @@
   return result;
 }
 
-- (BOOL)isPointInHandle:(CGPoint)a3 whichHandle:(int64_t *)a4
+- (BOOL)isPointInHandle:(CGPoint)handle whichHandle:(int64_t *)whichHandle
 {
-  y = a3.y;
-  x = a3.x;
+  y = handle.y;
+  x = handle.x;
   [(PDFTableCellSelection *)self selectionRect];
   v7 = v18.origin.x;
   v8 = v18.origin.y;
@@ -120,7 +120,7 @@
   if (hypot(x - MinX, y - MaxY) <= 3.0)
   {
     LOBYTE(v14) = 1;
-    if (a4)
+    if (whichHandle)
     {
       v15 = 1;
       goto LABEL_6;
@@ -130,11 +130,11 @@
   else
   {
     v14 = hypot(x - MaxX, y - MinY) <= 3.0;
-    if (a4)
+    if (whichHandle)
     {
       v15 = 2 * v14;
 LABEL_6:
-      *a4 = v15;
+      *whichHandle = v15;
     }
   }
 

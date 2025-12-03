@@ -1,20 +1,20 @@
 @interface SHSRingSilentFooter
 + (id)newImageView;
 + (id)newTextView;
-- (SHSRingSilentFooter)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4;
+- (SHSRingSilentFooter)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view;
 @end
 
 @implementation SHSRingSilentFooter
 
 + (id)newTextView
 {
-  v2 = [MEMORY[0x277D3FA48] appearance];
-  v3 = [v2 altTextColor];
-  v4 = v3;
-  if (v3)
+  appearance = [MEMORY[0x277D3FA48] appearance];
+  altTextColor = [appearance altTextColor];
+  v4 = altTextColor;
+  if (altTextColor)
   {
-    v5 = v3;
+    v5 = altTextColor;
   }
 
   else
@@ -27,8 +27,8 @@
   v7 = objc_alloc_init(MEMORY[0x277D75C40]);
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 setTextColor:v6];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [v7 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
   v9 = PreferencesTableViewFooterFont();
   [v7 setFont:v9];
@@ -37,8 +37,8 @@
   [v7 setEditable:0];
   [v7 setSelectable:1];
   [v7 setScrollEnabled:0];
-  v10 = [v7 textContainer];
-  [v10 setLineFragmentPadding:0.0];
+  textContainer = [v7 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   [v7 setTextContainerInset:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
   [v7 _setInteractiveTextSelectionDisabled:1];
@@ -55,49 +55,49 @@
   LODWORD(v4) = 1148846080;
   [v2 setContentCompressionResistancePriority:1 forAxis:v4];
   [v2 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [v2 widthAnchor];
-  v6 = [v5 constraintEqualToConstant:40.0];
+  widthAnchor = [v2 widthAnchor];
+  v6 = [widthAnchor constraintEqualToConstant:40.0];
   [v6 setActive:1];
 
   return v2;
 }
 
-- (SHSRingSilentFooter)initWithSpecifier:(id)a3
+- (SHSRingSilentFooter)initWithSpecifier:(id)specifier
 {
-  v3 = [(SHSRingSilentFooter *)self initWithFrame:a3, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  v3 = [(SHSRingSilentFooter *)self initWithFrame:specifier, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SHSRingSilentFooter *)v3 contentView];
-    v6 = [v5 layoutMarginsGuide];
+    contentView = [(SHSRingSilentFooter *)v3 contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
 
     v7 = [MEMORY[0x277D755D0] configurationWithPointSize:5 weight:28.0];
     v8 = objc_opt_new();
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v8 setAxis:1];
-    v9 = [(SHSRingSilentFooter *)v4 contentView];
-    [v9 addSubview:v8];
+    contentView2 = [(SHSRingSilentFooter *)v4 contentView];
+    [contentView2 addSubview:v8];
 
-    v10 = [v8 topAnchor];
-    [v6 topAnchor];
+    topAnchor = [v8 topAnchor];
+    [layoutMarginsGuide topAnchor];
     v11 = v47 = v4;
-    v12 = [v10 constraintEqualToAnchor:v11];
+    v12 = [topAnchor constraintEqualToAnchor:v11];
     [v12 setActive:1];
 
-    v13 = [v8 leadingAnchor];
-    v14 = [v6 leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    leadingAnchor = [v8 leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v15 setActive:1];
 
-    v16 = [v8 trailingAnchor];
-    v46 = v6;
-    v17 = [v6 trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    trailingAnchor = [v8 trailingAnchor];
+    v46 = layoutMarginsGuide;
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v18 setActive:1];
 
-    v19 = [v8 bottomAnchor];
-    v20 = [v6 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    bottomAnchor = [v8 bottomAnchor];
+    bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v21 setActive:1];
 
     v22 = objc_opt_new();
@@ -107,8 +107,8 @@
     [v8 setCustomSpacing:v22 afterView:18.0];
     v41 = v7;
     v23 = [MEMORY[0x277D755B8] systemImageNamed:@"bell.fill" withConfiguration:v7];
-    v24 = [MEMORY[0x277D75348] labelColor];
-    v45 = [v23 imageWithTintColor:v24 renderingMode:1];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    v45 = [v23 imageWithTintColor:labelColor renderingMode:1];
 
     v44 = +[SHSRingSilentFooter newImageView];
     [v44 setImage:v45];
@@ -120,8 +120,8 @@
     [v22 addArrangedSubview:v25];
     v43 = +[SHSRingSilentFooter newTextView];
     v26 = SHS_LocalizedStringForSounds(@"RING_MODE");
-    v27 = [v26 localizedUppercaseString];
-    [v43 setText:v27];
+    localizedUppercaseString = [v26 localizedUppercaseString];
+    [v43 setText:localizedUppercaseString];
 
     [v25 addArrangedSubview:v43];
     [v25 setCustomSpacing:v43 afterView:5.0];
@@ -135,8 +135,8 @@
     [v29 setAxis:0];
     [v8 addArrangedSubview:v29];
     v30 = [MEMORY[0x277D755B8] systemImageNamed:@"bell.slash.fill" withConfiguration:v7];
-    v31 = [MEMORY[0x277D75348] labelColor];
-    v32 = [v30 imageWithTintColor:v31 renderingMode:1];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
+    v32 = [v30 imageWithTintColor:labelColor2 renderingMode:1];
 
     v33 = +[SHSRingSilentFooter newImageView];
     [v33 setImage:v32];
@@ -148,8 +148,8 @@
     [v29 addArrangedSubview:v34];
     v35 = +[SHSRingSilentFooter newTextView];
     v36 = SHS_LocalizedStringForSounds(@"SILENT_MODE");
-    v37 = [v36 localizedUppercaseString];
-    [v35 setText:v37];
+    localizedUppercaseString2 = [v36 localizedUppercaseString];
+    [v35 setText:localizedUppercaseString2];
 
     [v34 addArrangedSubview:v35];
     [v34 setCustomSpacing:v35 afterView:5.0];
@@ -164,26 +164,26 @@
   return v4;
 }
 
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   v7 = *(MEMORY[0x277D76C78] + 8);
-  v8 = [(SHSRingSilentFooter *)self superview];
+  superview = [(SHSRingSilentFooter *)self superview];
 
-  if (!v8)
+  if (!superview)
   {
     [(SHSRingSilentFooter *)self layoutMargins];
     v12 = v11;
     v14 = v13;
-    [v6 layoutMargins];
+    [viewCopy layoutMargins];
     v16 = v15;
-    [v6 layoutMargins];
+    [viewCopy layoutMargins];
     [(SHSRingSilentFooter *)self setLayoutMargins:v12, v16, v14];
   }
 
   LODWORD(v9) = 1148846080;
   LODWORD(v10) = 1112014848;
-  [(SHSRingSilentFooter *)self systemLayoutSizeFittingSize:a3 withHorizontalFittingPriority:v7 verticalFittingPriority:v9, v10];
+  [(SHSRingSilentFooter *)self systemLayoutSizeFittingSize:width withHorizontalFittingPriority:v7 verticalFittingPriority:v9, v10];
   v18 = v17;
 
   return v18;

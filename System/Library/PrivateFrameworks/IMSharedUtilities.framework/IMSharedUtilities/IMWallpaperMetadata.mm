@@ -1,28 +1,28 @@
 @interface IMWallpaperMetadata
-+ (id)wallpaperExtensionIdentifierFromType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (IMWallpaperMetadata)initWithCoder:(id)a3;
-- (IMWallpaperMetadata)initWithDictionaryRepresentation:(id)a3;
-- (IMWallpaperMetadata)initWithFontName:(id)a3 fontSize:(double)a4 fontWeight:(double)a5 fontColor:(id)a6 isVertical:(BOOL)a7 type:(id)a8 backgroundColor:(id)a9;
++ (id)wallpaperExtensionIdentifierFromType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (IMWallpaperMetadata)initWithCoder:(id)coder;
+- (IMWallpaperMetadata)initWithDictionaryRepresentation:(id)representation;
+- (IMWallpaperMetadata)initWithFontName:(id)name fontSize:(double)size fontWeight:(double)weight fontColor:(id)color isVertical:(BOOL)vertical type:(id)type backgroundColor:(id)backgroundColor;
 - (NSDictionary)backgroundColor;
 - (NSDictionary)fontColor;
 @end
 
 @implementation IMWallpaperMetadata
 
-- (IMWallpaperMetadata)initWithFontName:(id)a3 fontSize:(double)a4 fontWeight:(double)a5 fontColor:(id)a6 isVertical:(BOOL)a7 type:(id)a8 backgroundColor:(id)a9
+- (IMWallpaperMetadata)initWithFontName:(id)name fontSize:(double)size fontWeight:(double)weight fontColor:(id)color isVertical:(BOOL)vertical type:(id)type backgroundColor:(id)backgroundColor
 {
-  v11 = a7;
-  v16 = a3;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
+  verticalCopy = vertical;
+  nameCopy = name;
+  colorCopy = color;
+  typeCopy = type;
+  backgroundColorCopy = backgroundColor;
   v24.receiver = self;
   v24.super_class = IMWallpaperMetadata;
   v20 = [(IMWallpaperMetadata *)&v24 init];
   if (v20)
   {
-    v21 = [[IMWallpaperMetadata_Impl alloc] initWithFontName:v16 fontSize:v17 fontWeight:v11 fontColor:v18 isVertical:v19 type:a4 backgroundColor:a5];
+    v21 = [[IMWallpaperMetadata_Impl alloc] initWithFontName:nameCopy fontSize:colorCopy fontWeight:verticalCopy fontColor:typeCopy isVertical:backgroundColorCopy type:size backgroundColor:weight];
     swiftImpl = v20->swiftImpl;
     v20->swiftImpl = v21;
   }
@@ -30,15 +30,15 @@
   return v20;
 }
 
-- (IMWallpaperMetadata)initWithDictionaryRepresentation:(id)a3
+- (IMWallpaperMetadata)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = IMWallpaperMetadata;
   v5 = [(IMWallpaperMetadata *)&v9 init];
   if (v5)
   {
-    v6 = [[IMWallpaperMetadata_Impl alloc] initWithDictionaryRepresentation:v4];
+    v6 = [[IMWallpaperMetadata_Impl alloc] initWithDictionaryRepresentation:representationCopy];
     swiftImpl = v5->swiftImpl;
     v5->swiftImpl = v6;
   }
@@ -46,15 +46,15 @@
   return v5;
 }
 
-- (IMWallpaperMetadata)initWithCoder:(id)a3
+- (IMWallpaperMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = IMWallpaperMetadata;
   v5 = [(IMWallpaperMetadata *)&v9 init];
   if (v5)
   {
-    v6 = [[IMWallpaperMetadata_Impl alloc] initWithCoder:v4];
+    v6 = [[IMWallpaperMetadata_Impl alloc] initWithCoder:coderCopy];
     swiftImpl = v5->swiftImpl;
     v5->swiftImpl = v6;
   }
@@ -64,48 +64,48 @@
 
 - (NSDictionary)fontColor
 {
-  v2 = [(IMWallpaperMetadata_Impl *)self->swiftImpl fontColor];
-  v3 = [v2 dictionaryRepresentation];
+  fontColor = [(IMWallpaperMetadata_Impl *)self->swiftImpl fontColor];
+  dictionaryRepresentation = [fontColor dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (NSDictionary)backgroundColor
 {
-  v2 = [(IMWallpaperMetadata_Impl *)self->swiftImpl backgroundColor];
-  v3 = [v2 dictionaryRepresentation];
+  backgroundColor = [(IMWallpaperMetadata_Impl *)self->swiftImpl backgroundColor];
+  dictionaryRepresentation = [backgroundColor dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-+ (id)wallpaperExtensionIdentifierFromType:(int64_t)a3
++ (id)wallpaperExtensionIdentifierFromType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return &stru_1F1BB91F0;
   }
 
   else
   {
-    return off_1E7826E60[a3];
+    return off_1E7826E60[type];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(IMWallpaperMetadata *)self fontName];
-    v9 = [v7 fontName];
-    v10 = [v8 isEqualToString:v9];
+    v7 = equalCopy;
+    fontName = [(IMWallpaperMetadata *)self fontName];
+    fontName2 = [v7 fontName];
+    v10 = [fontName isEqualToString:fontName2];
     if ((v10 & 1) == 0)
     {
-      v3 = [(IMWallpaperMetadata *)self fontName];
-      v4 = [v7 fontName];
-      if (v3 != v4)
+      fontName3 = [(IMWallpaperMetadata *)self fontName];
+      fontName4 = [v7 fontName];
+      if (fontName3 != fontName4)
       {
         v11 = 0;
         goto LABEL_15;
@@ -122,37 +122,37 @@
       [v7 fontWeight];
       if (v16 == v17)
       {
-        v18 = [(IMWallpaperMetadata *)self isVertical];
-        if (v18 == [v7 isVertical])
+        isVertical = [(IMWallpaperMetadata *)self isVertical];
+        if (isVertical == [v7 isVertical])
         {
-          v19 = [(IMWallpaperMetadata *)self type];
-          v20 = [v7 type];
-          if ([v19 isEqualToString:v20])
+          type = [(IMWallpaperMetadata *)self type];
+          type2 = [v7 type];
+          if ([type isEqualToString:type2])
           {
-            v35 = v20;
-            v21 = [(IMWallpaperMetadata *)self backgroundColor];
+            v35 = type2;
+            backgroundColor = [(IMWallpaperMetadata *)self backgroundColor];
             [v7 backgroundColor];
-            v34 = v36 = v21;
-            v33 = [v21 isEqualToDictionary:?];
+            v34 = v36 = backgroundColor;
+            v33 = [backgroundColor isEqualToDictionary:?];
             if ((v33 & 1) == 0)
             {
-              v22 = [(IMWallpaperMetadata *)self backgroundColor];
-              v23 = [v7 backgroundColor];
-              v31 = v22;
-              if (v22 != v23)
+              backgroundColor2 = [(IMWallpaperMetadata *)self backgroundColor];
+              backgroundColor3 = [v7 backgroundColor];
+              v31 = backgroundColor2;
+              if (backgroundColor2 != backgroundColor3)
               {
                 v11 = 0;
                 v24 = v35;
                 goto LABEL_23;
               }
 
-              v30 = v23;
+              v30 = backgroundColor3;
             }
 
-            v32 = v19;
-            v26 = [(IMWallpaperMetadata *)self fontColor];
-            v27 = [v7 fontColor];
-            if ([v26 isEqualToDictionary:v27])
+            v32 = type;
+            fontColor = [(IMWallpaperMetadata *)self fontColor];
+            fontColor2 = [v7 fontColor];
+            if ([fontColor isEqualToDictionary:fontColor2])
             {
 
               v11 = 1;
@@ -160,14 +160,14 @@
 
             else
             {
-              v29 = [(IMWallpaperMetadata *)self fontColor];
-              v28 = [v7 fontColor];
-              v11 = v29 == v28;
+              fontColor3 = [(IMWallpaperMetadata *)self fontColor];
+              fontColor4 = [v7 fontColor];
+              v11 = fontColor3 == fontColor4;
             }
 
-            v19 = v32;
+            type = v32;
             v24 = v35;
-            v23 = v30;
+            backgroundColor3 = v30;
             if (v33)
             {
 LABEL_24:

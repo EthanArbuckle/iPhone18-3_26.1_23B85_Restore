@@ -1,30 +1,30 @@
 @interface MIDIUMPEndpointManager
 + (MIDIUMPEndpointManager)sharedInstance;
-- (BOOL)postNotificationName:(id)a3 endpoint:(id)a4 functionBlock:(id)a5;
-- (BOOL)removeEndpoint:(unsigned int)a3;
-- (BOOL)removeFunctionBlock:(unsigned int)a3;
+- (BOOL)postNotificationName:(id)name endpoint:(id)endpoint functionBlock:(id)block;
+- (BOOL)removeEndpoint:(unsigned int)endpoint;
+- (BOOL)removeFunctionBlock:(unsigned int)block;
 - (MIDIUMPEndpointManager)init;
 - (NSArray)UMPEndpoints;
-- (id)findEndpoint:(unsigned int)a3;
-- (id)findFunctionBlock:(unsigned int)a3;
-- (void)addEndpoint:(id)a3;
-- (void)addFunctionBlock:(id)a3;
-- (void)updateEndpoint:(unsigned int)a3 description:(id)a4;
-- (void)updateFunctionBlock:(unsigned int)a3 description:(id)a4;
+- (id)findEndpoint:(unsigned int)endpoint;
+- (id)findFunctionBlock:(unsigned int)block;
+- (void)addEndpoint:(id)endpoint;
+- (void)addFunctionBlock:(id)block;
+- (void)updateEndpoint:(unsigned int)endpoint description:(id)description;
+- (void)updateFunctionBlock:(unsigned int)block description:(id)description;
 @end
 
 @implementation MIDIUMPEndpointManager
 
-- (void)updateEndpoint:(unsigned int)a3 description:(id)a4
+- (void)updateEndpoint:(unsigned int)endpoint description:(id)description
 {
-  v4 = *&a3;
-  v9 = a4;
+  v4 = *&endpoint;
+  descriptionCopy = description;
   os_unfair_lock_lock(&self->mMutex.m_lock);
   v6 = [(MIDIUMPEndpointManager *)self findEndpoint:v4];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 deserialize:v9];
+    v8 = [v6 deserialize:descriptionCopy];
     os_unfair_lock_unlock(&self->mMutex.m_lock);
     if (v8)
     {
@@ -38,9 +38,9 @@
   }
 }
 
-- (BOOL)removeEndpoint:(unsigned int)a3
+- (BOOL)removeEndpoint:(unsigned int)endpoint
 {
-  v3 = *&a3;
+  v3 = *&endpoint;
   os_unfair_lock_lock(&self->mMutex.m_lock);
   v5 = [(MIDIUMPEndpointManager *)self findEndpoint:v3];
   if (v5)
@@ -58,12 +58,12 @@
   return v5 != 0;
 }
 
-- (void)addEndpoint:(id)a3
+- (void)addEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   os_unfair_lock_lock(&self->mMutex.m_lock);
-  [v5 isMine];
-  v4 = -[MIDIUMPEndpointManager findEndpoint:](self, "findEndpoint:", [v5 objectRef]);
+  [endpointCopy isMine];
+  v4 = -[MIDIUMPEndpointManager findEndpoint:](self, "findEndpoint:", [endpointCopy objectRef]);
 
   if (v4)
   {
@@ -72,13 +72,13 @@
 
   else
   {
-    [(NSMutableArray *)self->_endpoints addObject:v5];
+    [(NSMutableArray *)self->_endpoints addObject:endpointCopy];
     os_unfair_lock_unlock(&self->mMutex.m_lock);
-    [(MIDIUMPEndpointManager *)self postNotificationName:@"MIDIUMPEndpointWasAddedNotification" endpoint:v5 functionBlock:0];
+    [(MIDIUMPEndpointManager *)self postNotificationName:@"MIDIUMPEndpointWasAddedNotification" endpoint:endpointCopy functionBlock:0];
   }
 }
 
-- (id)findEndpoint:(unsigned int)a3
+- (id)findEndpoint:(unsigned int)endpoint
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -100,7 +100,7 @@
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        if ([v8 objectRef] == a3)
+        if ([v8 objectRef] == endpoint)
         {
           v9 = v8;
           goto LABEL_11;
@@ -123,21 +123,21 @@ LABEL_11:
   return v9;
 }
 
-- (void)updateFunctionBlock:(unsigned int)a3 description:(id)a4
+- (void)updateFunctionBlock:(unsigned int)block description:(id)description
 {
-  v4 = *&a3;
-  v10 = a4;
+  v4 = *&block;
+  descriptionCopy = description;
   os_unfair_lock_lock(&self->mMutex.m_lock);
   v6 = [(MIDIUMPEndpointManager *)self findFunctionBlock:v4];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 deserialize:v10];
+    v8 = [v6 deserialize:descriptionCopy];
     os_unfair_lock_unlock(&self->mMutex.m_lock);
     if (v8)
     {
-      v9 = [v7 UMPEndpoint];
-      [(MIDIUMPEndpointManager *)self postNotificationName:@"MIDIUMPFunctionBlockWasUpdatedNotification" endpoint:v9 functionBlock:v7];
+      uMPEndpoint = [v7 UMPEndpoint];
+      [(MIDIUMPEndpointManager *)self postNotificationName:@"MIDIUMPFunctionBlockWasUpdatedNotification" endpoint:uMPEndpoint functionBlock:v7];
     }
   }
 
@@ -147,9 +147,9 @@ LABEL_11:
   }
 }
 
-- (BOOL)removeFunctionBlock:(unsigned int)a3
+- (BOOL)removeFunctionBlock:(unsigned int)block
 {
-  v3 = *&a3;
+  v3 = *&block;
   os_unfair_lock_lock(&self->mMutex.m_lock);
   v5 = [(MIDIUMPEndpointManager *)self findFunctionBlock:v3];
   if (v5)
@@ -161,22 +161,22 @@ LABEL_11:
   return v5 != 0;
 }
 
-- (void)addFunctionBlock:(id)a3
+- (void)addFunctionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->mMutex.m_lock);
-  [v5 isMine];
-  v4 = -[MIDIUMPEndpointManager findFunctionBlock:](self, "findFunctionBlock:", [v5 objectRef]);
+  [blockCopy isMine];
+  v4 = -[MIDIUMPEndpointManager findFunctionBlock:](self, "findFunctionBlock:", [blockCopy objectRef]);
 
   if (!v4)
   {
-    [(NSMutableArray *)self->_functionBlocks addObject:v5];
+    [(NSMutableArray *)self->_functionBlocks addObject:blockCopy];
   }
 
   os_unfair_lock_unlock(&self->mMutex.m_lock);
 }
 
-- (id)findFunctionBlock:(unsigned int)a3
+- (id)findFunctionBlock:(unsigned int)block
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -198,7 +198,7 @@ LABEL_11:
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        if ([v8 objectRef] == a3)
+        if ([v8 objectRef] == block)
         {
           v9 = v8;
           goto LABEL_11;
@@ -221,30 +221,30 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)postNotificationName:(id)a3 endpoint:(id)a4 functionBlock:(id)a5
+- (BOOL)postNotificationName:(id)name endpoint:(id)endpoint functionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 | v10)
+  nameCopy = name;
+  endpointCopy = endpoint;
+  blockCopy = block;
+  if (endpointCopy | blockCopy)
   {
     v11 = objc_opt_new();
     v12 = v11;
-    if (v9)
+    if (endpointCopy)
     {
-      [v11 setValue:v9 forKey:@"MIDIUMPEndpointObjectKey"];
+      [v11 setValue:endpointCopy forKey:@"MIDIUMPEndpointObjectKey"];
     }
 
-    if (v10)
+    if (blockCopy)
     {
-      [v12 setValue:v10 forKey:@"MIDIUMPFunctionBlockObjectKey"];
+      [v12 setValue:blockCopy forKey:@"MIDIUMPFunctionBlockObjectKey"];
     }
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 postNotificationName:v8 object:self userInfo:v12];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:nameCopy object:self userInfo:v12];
   }
 
-  return (v9 | v10) != 0;
+  return (endpointCopy | blockCopy) != 0;
 }
 
 - (NSArray)UMPEndpoints

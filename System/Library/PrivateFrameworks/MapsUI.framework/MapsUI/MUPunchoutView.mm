@@ -1,54 +1,54 @@
 @interface MUPunchoutView
 - (CGSize)intrinsicContentSize;
-- (MUPunchoutView)initWithFrame:(CGRect)a3;
+- (MUPunchoutView)initWithFrame:(CGRect)frame;
 - (id)_attributedStringFromSymbol;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateAppearance;
-- (void)_updateLabelsWithAlpha:(double)a3;
+- (void)_updateLabelsWithAlpha:(double)alpha;
 - (void)beginAnimatingActivityIndicator;
-- (void)endAnimatingActivityIndicatorWithError:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)endAnimatingActivityIndicatorWithError:(id)error;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUPunchoutView
 
 - (void)_updateAppearance
 {
-  v3 = [(MUPunchoutView *)self _attributedStringFromSymbol];
-  [(MULabelViewProtocol *)self->_moreOnLabel setAttributedText:v3];
+  _attributedStringFromSymbol = [(MUPunchoutView *)self _attributedStringFromSymbol];
+  [(MULabelViewProtocol *)self->_moreOnLabel setAttributedText:_attributedStringFromSymbol];
 
-  v4 = [(MUPunchoutViewModel *)self->_viewModel punchoutText];
-  [(UILabel *)self->_vendorNameLabel setText:v4];
+  punchoutText = [(MUPunchoutViewModel *)self->_viewModel punchoutText];
+  [(UILabel *)self->_vendorNameLabel setText:punchoutText];
 
-  v5 = [(MUPunchoutViewModel *)self->_viewModel menu];
-  [(UIButton *)self->_menuButton setMenu:v5];
+  menu = [(MUPunchoutViewModel *)self->_viewModel menu];
+  [(UIButton *)self->_menuButton setMenu:menu];
 
-  v6 = [(MUPunchoutViewModel *)self->_viewModel menu];
-  [(UIButton *)self->_menuButton setHidden:v6 == 0];
+  menu2 = [(MUPunchoutViewModel *)self->_viewModel menu];
+  [(UIButton *)self->_menuButton setHidden:menu2 == 0];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_viewModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_viewModel, model);
     [(MUPunchoutView *)self _updateAppearance];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
-- (void)_updateLabelsWithAlpha:(double)a3
+- (void)_updateLabelsWithAlpha:(double)alpha
 {
   [(MULabelViewProtocol *)self->_moreOnLabel setAlpha:?];
   vendorNameLabel = self->_vendorNameLabel;
 
-  [(UILabel *)vendorNameLabel setAlpha:a3];
+  [(UILabel *)vendorNameLabel setAlpha:alpha];
 }
 
-- (void)endAnimatingActivityIndicatorWithError:(id)a3
+- (void)endAnimatingActivityIndicatorWithError:(id)error
 {
   [(UIActivityIndicatorView *)self->_spinner stopAnimating];
   [(UIActivityIndicatorView *)self->_spinner removeFromSuperview];
@@ -63,13 +63,13 @@
   [(MUPunchoutView *)self addSubview:self->_spinner];
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-  v5 = [(MUPunchoutView *)self centerXAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  centerXAnchor = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+  centerXAnchor2 = [(MUPunchoutView *)self centerXAnchor];
+  v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v12[0] = v6;
-  v7 = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
-  v8 = [(MUPunchoutView *)self centerYAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  centerYAnchor = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
+  centerYAnchor2 = [(MUPunchoutView *)self centerYAnchor];
+  v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v12[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
   [v3 activateConstraints:v10];
@@ -89,20 +89,20 @@
 - (id)_attributedStringFromSymbol
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MUPunchoutViewModel *)self->_viewModel symbolName];
-  v4 = [v3 length];
+  symbolName = [(MUPunchoutViewModel *)self->_viewModel symbolName];
+  v4 = [symbolName length];
 
   if (v4)
   {
-    v5 = [(MUPunchoutViewModel *)self->_viewModel symbolName];
+    symbolName2 = [(MUPunchoutViewModel *)self->_viewModel symbolName];
   }
 
   else
   {
-    v5 = @"arrow.up.forward.fill";
+    symbolName2 = @"arrow.up.forward.fill";
   }
 
-  v6 = [MEMORY[0x1E69DCAB8] _mapsui_systemImageNamed:v5];
+  v6 = [MEMORY[0x1E69DCAB8] _mapsui_systemImageNamed:symbolName2];
   v7 = [v6 imageWithRenderingMode:2];
 
   v8 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
@@ -130,53 +130,53 @@
   v42 = [[MUEdgeLayout alloc] initWithItem:self->_menuButton container:self];
   v45[0] = v42;
   v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
-  v41 = [(UILayoutGuide *)self->_layoutGuide centerYAnchor];
-  v40 = [(MUPunchoutView *)self centerYAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  centerYAnchor = [(UILayoutGuide *)self->_layoutGuide centerYAnchor];
+  centerYAnchor2 = [(MUPunchoutView *)self centerYAnchor];
+  v39 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v44[0] = v39;
-  v38 = [(UILayoutGuide *)self->_layoutGuide leadingAnchor];
-  v37 = [(MUPunchoutView *)self leadingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37 constant:16.0];
+  leadingAnchor = [(UILayoutGuide *)self->_layoutGuide leadingAnchor];
+  leadingAnchor2 = [(MUPunchoutView *)self leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v44[1] = v36;
-  v35 = [(UILayoutGuide *)self->_layoutGuide trailingAnchor];
-  v34 = [(MUPunchoutView *)self trailingAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34 constant:-16.0];
+  trailingAnchor = [(UILayoutGuide *)self->_layoutGuide trailingAnchor];
+  trailingAnchor2 = [(MUPunchoutView *)self trailingAnchor];
+  v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v44[2] = v33;
-  v32 = [(UILayoutGuide *)self->_layoutGuide topAnchor];
-  v31 = [(MUPunchoutView *)self topAnchor];
-  v29 = [v32 constraintGreaterThanOrEqualToAnchor:v31];
+  topAnchor = [(UILayoutGuide *)self->_layoutGuide topAnchor];
+  topAnchor2 = [(MUPunchoutView *)self topAnchor];
+  v29 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v44[3] = v29;
-  v28 = [(UILayoutGuide *)self->_layoutGuide bottomAnchor];
-  v27 = [(MUPunchoutView *)self bottomAnchor];
-  v26 = [v28 constraintLessThanOrEqualToAnchor:v27];
+  bottomAnchor = [(UILayoutGuide *)self->_layoutGuide bottomAnchor];
+  bottomAnchor2 = [(MUPunchoutView *)self bottomAnchor];
+  v26 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v44[4] = v26;
-  v25 = [(MULabelViewProtocol *)self->_moreOnLabel leadingAnchor];
-  v24 = [(UILayoutGuide *)self->_layoutGuide leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  leadingAnchor3 = [(MULabelViewProtocol *)self->_moreOnLabel leadingAnchor];
+  leadingAnchor4 = [(UILayoutGuide *)self->_layoutGuide leadingAnchor];
+  v23 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v44[5] = v23;
-  v22 = [(MULabelViewProtocol *)self->_moreOnLabel topAnchor];
-  v21 = [(UILayoutGuide *)self->_layoutGuide topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  topAnchor3 = [(MULabelViewProtocol *)self->_moreOnLabel topAnchor];
+  topAnchor4 = [(UILayoutGuide *)self->_layoutGuide topAnchor];
+  v20 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v44[6] = v20;
-  v19 = [(MULabelViewProtocol *)self->_moreOnLabel trailingAnchor];
-  v18 = [(UILayoutGuide *)self->_layoutGuide trailingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  trailingAnchor3 = [(MULabelViewProtocol *)self->_moreOnLabel trailingAnchor];
+  trailingAnchor4 = [(UILayoutGuide *)self->_layoutGuide trailingAnchor];
+  v17 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v44[7] = v17;
-  v16 = [(MULabelViewProtocol *)self->_moreOnLabel bottomAnchor];
-  v15 = [(UILabel *)self->_vendorNameLabel topAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15 constant:-5.0];
+  bottomAnchor3 = [(MULabelViewProtocol *)self->_moreOnLabel bottomAnchor];
+  topAnchor5 = [(UILabel *)self->_vendorNameLabel topAnchor];
+  v14 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5 constant:-5.0];
   v44[8] = v14;
-  v3 = [(UILabel *)self->_vendorNameLabel leadingAnchor];
-  v4 = [(MULabelViewProtocol *)self->_moreOnLabel leadingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  leadingAnchor5 = [(UILabel *)self->_vendorNameLabel leadingAnchor];
+  leadingAnchor6 = [(MULabelViewProtocol *)self->_moreOnLabel leadingAnchor];
+  v5 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v44[9] = v5;
-  v6 = [(UILabel *)self->_vendorNameLabel trailingAnchor];
-  v7 = [(MULabelViewProtocol *)self->_moreOnLabel trailingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  trailingAnchor5 = [(UILabel *)self->_vendorNameLabel trailingAnchor];
+  trailingAnchor6 = [(MULabelViewProtocol *)self->_moreOnLabel trailingAnchor];
+  v8 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v44[10] = v8;
-  v9 = [(UILabel *)self->_vendorNameLabel bottomAnchor];
-  v10 = [(UILayoutGuide *)self->_layoutGuide bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor4 = [(UILabel *)self->_vendorNameLabel bottomAnchor];
+  bottomAnchor5 = [(UILayoutGuide *)self->_layoutGuide bottomAnchor];
+  v11 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v44[11] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:12];
   [v30 _mapsui_activateLayouts:v43 constraints:v12];
@@ -197,9 +197,9 @@
   [(MULabelViewProtocol *)self->_moreOnLabel setTextAlignment:1];
   [(MULabelViewProtocol *)self->_moreOnLabel setAccessibilityIdentifier:@"ActionLabel"];
   [(MUPunchoutView *)self addSubview:self->_moreOnLabel];
-  v6 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
+  _mapsui_defaultLabel = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
   vendorNameLabel = self->_vendorNameLabel;
-  self->_vendorNameLabel = v6;
+  self->_vendorNameLabel = _mapsui_defaultLabel;
 
   [(UILabel *)self->_vendorNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_vendorNameLabel setAdjustsFontForContentSizeCategory:1];
@@ -242,11 +242,11 @@
   [(MUPunchoutView *)self addSubview:v19];
 }
 
-- (MUPunchoutView)initWithFrame:(CGRect)a3
+- (MUPunchoutView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUPunchoutView;
-  v3 = [(MUPunchoutView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPunchoutView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

@@ -1,43 +1,43 @@
 @interface MOVStreamWriterStatePrepareCancelling
-- (id)criticalErrorOccurred:(id)a3 context:(id)a4;
-- (id)finishRecording:(id)a3;
-- (id)nextFinishStep:(id)a3;
-- (id)prepareFinished:(id)a3;
-- (id)prepareRecording:(id)a3;
+- (id)criticalErrorOccurred:(id)occurred context:(id)context;
+- (id)finishRecording:(id)recording;
+- (id)nextFinishStep:(id)step;
+- (id)prepareFinished:(id)finished;
+- (id)prepareRecording:(id)recording;
 @end
 
 @implementation MOVStreamWriterStatePrepareCancelling
 
-- (id)criticalErrorOccurred:(id)a3 context:(id)a4
+- (id)criticalErrorOccurred:(id)occurred context:(id)context
 {
-  [a4 setCriticalError:a3];
+  [context setCriticalError:occurred];
   v4 = objc_opt_new();
 
   return v4;
 }
 
-- (id)finishRecording:(id)a3
+- (id)finishRecording:(id)recording
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)nextFinishStep:(id)a3
+- (id)nextFinishStep:(id)step
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)prepareFinished:(id)a3
+- (id)prepareFinished:(id)finished
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)prepareRecording:(id)a3
+- (id)prepareRecording:(id)recording
 {
   v3 = objc_opt_new();
 

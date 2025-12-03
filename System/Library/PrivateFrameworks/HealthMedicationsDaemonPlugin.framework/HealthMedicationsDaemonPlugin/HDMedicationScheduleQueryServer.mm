@@ -1,22 +1,22 @@
 @interface HDMedicationScheduleQueryServer
-- (HDMedicationScheduleQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDMedicationScheduleQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
 @end
 
 @implementation HDMedicationScheduleQueryServer
 
-- (HDMedicationScheduleQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDMedicationScheduleQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = HDMedicationScheduleQueryServer;
-  v11 = [(HDQueryServer *)&v15 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v15 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v11->_limit = [v10 limit];
-    v12 = [v10 sortDescriptors];
+    v11->_limit = [configurationCopy limit];
+    sortDescriptors = [configurationCopy sortDescriptors];
     sortDescriptors = v11->_sortDescriptors;
-    v11->_sortDescriptors = v12;
+    v11->_sortDescriptors = sortDescriptors;
   }
 
   return v11;
@@ -27,25 +27,25 @@
   v22.receiver = self;
   v22.super_class = HDMedicationScheduleQueryServer;
   [(HDQueryServer *)&v22 _queue_start];
-  v3 = [(HDQueryServer *)self queryUUID];
-  v4 = [(HDQueryServer *)self clientProxy];
-  v5 = [v4 remoteObjectProxy];
+  queryUUID = [(HDQueryServer *)self queryUUID];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(HDQueryServer *)self profile];
-  v8 = [v7 healthMedicationsProfileExtension];
-  v9 = [v8 medicationScheduleManager];
+  profile = [(HDQueryServer *)self profile];
+  healthMedicationsProfileExtension = [profile healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
   sortDescriptors = self->_sortDescriptors;
   if (sortDescriptors)
   {
     v21 = 0;
-    v11 = [v9 orderingTermsForSortDescriptors:sortDescriptors error:&v21];
+    v11 = [medicationScheduleManager orderingTermsForSortDescriptors:sortDescriptors error:&v21];
     v12 = v21;
     v13 = v12;
     if (!v11)
     {
-      [v5 client_deliverError:v12 forQuery:v3];
+      [remoteObjectProxy client_deliverError:v12 forQuery:queryUUID];
       v17 = 0;
       goto LABEL_10;
     }
@@ -66,16 +66,16 @@
   v18[3] = &unk_2796CD720;
   v15 = v6;
   v19 = v15;
-  v16 = [v9 enumerateMedicationSchedulesWithPredicate:0 limit:limit orderingTerms:v13 error:&v20 enumerationHandler:v18];
+  v16 = [medicationScheduleManager enumerateMedicationSchedulesWithPredicate:0 limit:limit orderingTerms:v13 error:&v20 enumerationHandler:v18];
   v17 = v20;
   if (v16)
   {
-    [v5 client_deliverSchedules:v15 queryUUID:v3];
+    [remoteObjectProxy client_deliverSchedules:v15 queryUUID:queryUUID];
   }
 
   else
   {
-    [v5 client_deliverError:v17 forQuery:v3];
+    [remoteObjectProxy client_deliverError:v17 forQuery:queryUUID];
   }
 
 LABEL_10:

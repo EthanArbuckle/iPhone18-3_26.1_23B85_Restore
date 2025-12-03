@@ -1,21 +1,21 @@
 @interface FARegisterPushTokenOperation
-- (FARegisterPushTokenOperation)initWithNetworkService:(id)a3 pushToken:(id)a4;
+- (FARegisterPushTokenOperation)initWithNetworkService:(id)service pushToken:(id)token;
 - (id)pushTokenString;
 - (id)registerToken;
 @end
 
 @implementation FARegisterPushTokenOperation
 
-- (FARegisterPushTokenOperation)initWithNetworkService:(id)a3 pushToken:(id)a4
+- (FARegisterPushTokenOperation)initWithNetworkService:(id)service pushToken:(id)token
 {
-  v7 = a4;
+  tokenCopy = token;
   v11.receiver = self;
   v11.super_class = FARegisterPushTokenOperation;
-  v8 = [(FANetworkClient *)&v11 initWithNetworkService:a3];
+  v8 = [(FANetworkClient *)&v11 initWithNetworkService:service];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_pushToken, a4);
+    objc_storeStrong(&v8->_pushToken, token);
   }
 
   return v9;
@@ -41,38 +41,38 @@
   }
 
   free(v5);
-  v8 = [v3 lowercaseString];
+  lowercaseString = [v3 lowercaseString];
 
-  return v8;
+  return lowercaseString;
 }
 
 - (id)registerToken
 {
-  v3 = [(FANetworkClient *)self networkService];
-  v4 = [v3 ensureDeviceUnlockedSinceBoot];
-  v5 = [v4 then];
+  networkService = [(FANetworkClient *)self networkService];
+  ensureDeviceUnlockedSinceBoot = [networkService ensureDeviceUnlockedSinceBoot];
+  then = [ensureDeviceUnlockedSinceBoot then];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100021BD8;
   v16[3] = &unk_1000A5F78;
   v16[4] = self;
-  v6 = (v5)[2](v5, v16);
-  v7 = [v6 then];
+  v6 = (then)[2](then, v16);
+  then2 = [v6 then];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100021C28;
   v15[3] = &unk_1000A6770;
   v15[4] = self;
-  v8 = (v7)[2](v7, v15);
-  v9 = [v8 then];
+  v8 = (then2)[2](then2, v15);
+  then3 = [v8 then];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100021CF8;
   v14[3] = &unk_1000A67C0;
   v14[4] = self;
-  v10 = (v9)[2](v9, v14);
-  v11 = [v10 then];
-  v12 = (v11)[2](v11, &stru_1000A75C8);
+  v10 = (then3)[2](then3, v14);
+  then4 = [v10 then];
+  v12 = (then4)[2](then4, &stru_1000A75C8);
 
   return v12;
 }

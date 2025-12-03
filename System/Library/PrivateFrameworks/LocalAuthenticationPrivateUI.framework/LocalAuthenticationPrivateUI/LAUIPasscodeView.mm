@@ -1,41 +1,41 @@
 @interface LAUIPasscodeView
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (LAUIPasscodeView)initWithContext:(id)a3 shouldPresentUI:(BOOL)a4;
-- (void)_appDidBecomeActive:(id)a3;
-- (void)_prepareHostedSceneWithCompletion:(id)a3;
+- (LAUIPasscodeView)initWithContext:(id)context shouldPresentUI:(BOOL)i;
+- (void)_appDidBecomeActive:(id)active;
+- (void)_prepareHostedSceneWithCompletion:(id)completion;
 - (void)_prepareRemoteUI;
-- (void)_prepareRemoteViewServiceWithCompletion:(id)a3;
+- (void)_prepareRemoteViewServiceWithCompletion:(id)completion;
 - (void)_presentRemoteView;
 - (void)_startRemoteView;
-- (void)_toggleEditingShouldStart:(BOOL)a3;
+- (void)_toggleEditingShouldStart:(BOOL)start;
 - (void)dealloc;
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5;
+- (void)event:(int64_t)event params:(id)params reply:(id)reply;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation LAUIPasscodeView
 
-- (LAUIPasscodeView)initWithContext:(id)a3 shouldPresentUI:(BOOL)a4
+- (LAUIPasscodeView)initWithContext:(id)context shouldPresentUI:(BOOL)i
 {
-  v6 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = LAUIPasscodeView;
   v7 = [(LAUIPasscodeView *)&v13 initWithNibName:0 bundle:0];
   v8 = v7;
   if (v7)
   {
-    v9 = objc_storeWeak(&v7->_context, v6);
-    v10 = [v6 uiDelegate];
-    objc_storeWeak(&v8->_originalDelegate, v10);
+    v9 = objc_storeWeak(&v7->_context, contextCopy);
+    uiDelegate = [contextCopy uiDelegate];
+    objc_storeWeak(&v8->_originalDelegate, uiDelegate);
 
     WeakRetained = objc_loadWeakRetained(&v8->_context);
     [WeakRetained setUiDelegate:v8];
 
     v8->_shouldBecomeFirstResponder = 1;
-    v8->_shouldPresentUI = a4;
+    v8->_shouldPresentUI = i;
     [(LAUIPasscodeView *)v8 _prepareRemoteUI];
   }
 
@@ -44,8 +44,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_originalDelegate);
   v5 = objc_loadWeakRetained(&self->_context);
@@ -62,22 +62,22 @@
   [(LAUIPasscodeView *)self setView:v3];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = LAUIPasscodeView;
-  [(LAUIPasscodeView *)&v4 viewDidAppear:a3];
+  [(LAUIPasscodeView *)&v4 viewDidAppear:appear];
   if (self->_shouldBecomeFirstResponder)
   {
     [(LAUIPasscodeView *)self _toggleEditingShouldStart:1];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = LAUIPasscodeView;
-  [(LAUIPasscodeView *)&v4 viewWillDisappear:a3];
+  [(LAUIPasscodeView *)&v4 viewWillDisappear:disappear];
   [(LAUIPasscodeView *)self _toggleEditingShouldStart:0];
 }
 
@@ -85,44 +85,44 @@
 {
   v5.receiver = self;
   v5.super_class = LAUIPasscodeView;
-  v3 = [(LAUIPasscodeView *)&v5 becomeFirstResponder];
+  becomeFirstResponder = [(LAUIPasscodeView *)&v5 becomeFirstResponder];
   self->_shouldBecomeFirstResponder = 1;
   [(LAUIPasscodeView *)self _toggleEditingShouldStart:1];
-  return (self->_remoteVC != 0) & v3;
+  return (self->_remoteVC != 0) & becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
   v5.receiver = self;
   v5.super_class = LAUIPasscodeView;
-  v3 = [(LAUIPasscodeView *)&v5 resignFirstResponder];
+  resignFirstResponder = [(LAUIPasscodeView *)&v5 resignFirstResponder];
   self->_shouldBecomeFirstResponder = 0;
   [(LAUIPasscodeView *)self _toggleEditingShouldStart:0];
-  return (self->_remoteVC != 0) & v3;
+  return (self->_remoteVC != 0) & resignFirstResponder;
 }
 
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5
+- (void)event:(int64_t)event params:(id)params reply:(id)reply
 {
-  v15 = a4;
-  v8 = a5;
+  paramsCopy = params;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_originalDelegate);
 
   if (WeakRetained)
   {
     v10 = objc_loadWeakRetained(&self->_originalDelegate);
-    [v10 event:a3 params:v15 reply:v8];
+    [v10 event:event params:paramsCopy reply:replyCopy];
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
-    v11 = [v15 objectForKeyedSubscript:&unk_28682F738];
+    v11 = [paramsCopy objectForKeyedSubscript:&unk_28682F738];
     if (v11)
     {
       v12 = v11;
-      v13 = [v15 objectForKeyedSubscript:&unk_28682F738];
-      v14 = [v13 BOOLValue];
+      v13 = [paramsCopy objectForKeyedSubscript:&unk_28682F738];
+      bOOLValue = [v13 BOOLValue];
 
-      if (v14)
+      if (bOOLValue)
       {
         self->_shouldPresentUI = 1;
         [(LAUIPasscodeView *)self _presentRemoteView];
@@ -142,10 +142,10 @@
     v9[3] = &unk_279821528;
     objc_copyWeak(&v10, &location);
     v3 = MEMORY[0x259C5AE60](v9);
-    v4 = [MEMORY[0x277D24068] sharedInstance];
-    v5 = [v4 featureFlagLaunchAngelEnabled];
+    mEMORY[0x277D24068] = [MEMORY[0x277D24068] sharedInstance];
+    featureFlagLaunchAngelEnabled = [mEMORY[0x277D24068] featureFlagLaunchAngelEnabled];
 
-    if (v5)
+    if (featureFlagLaunchAngelEnabled)
     {
       v6 = v8;
       v8[0] = MEMORY[0x277D85DD0];
@@ -196,16 +196,16 @@ void __36__LAUIPasscodeView__prepareRemoteUI__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)_prepareRemoteViewServiceWithCompletion:(id)a3
+- (void)_prepareRemoteViewServiceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__LAUIPasscodeView__prepareRemoteViewServiceWithCompletion___block_invoke;
   v7[3] = &unk_279821578;
   objc_copyWeak(&v9, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v8 = v5;
   v6 = [_PasscodeEmbeddedRemoteViewControllerHost requestViewController:@"PasscodeEmbeddedRemoteViewController" fromServiceWithBundleIdentifier:@"com.apple.CoreAuthUI" connectionHandler:v7];
 
@@ -244,9 +244,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_prepareHostedSceneWithCompletion:(id)a3
+- (void)_prepareHostedSceneWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277D241F8]);
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
@@ -255,7 +255,7 @@ LABEL_7:
   v6[3] = &unk_2798215A0;
   objc_copyWeak(&v7, &location);
   [v5 prepareRemoteSceneWithCompletion:v6];
-  v4[2](v4, v5, 0);
+  completionCopy[2](completionCopy, v5, 0);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -293,10 +293,10 @@ void __54__LAUIPasscodeView__prepareHostedSceneWithCompletion___block_invoke(uin
     {
       if (self->_remoteVC)
       {
-        v3 = [(LAUIPasscodeView *)self view];
-        v4 = [v3 subviews];
-        v5 = [(LACPasscodeUIService *)self->_remoteVC view];
-        v6 = [v4 containsObject:v5];
+        view = [(LAUIPasscodeView *)self view];
+        subviews = [view subviews];
+        view2 = [(LACPasscodeUIService *)self->_remoteVC view];
+        v6 = [subviews containsObject:view2];
 
         if ((v6 & 1) == 0)
         {
@@ -306,49 +306,49 @@ void __54__LAUIPasscodeView__prepareHostedSceneWithCompletion___block_invoke(uin
             _os_log_impl(&dword_2560E6000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Presenting remote UI", buf, 2u);
           }
 
-          v7 = [(LAUIPasscodeView *)self view];
-          v8 = [(LACPasscodeUIService *)self->_remoteVC view];
-          [v7 addSubview:v8];
+          view3 = [(LAUIPasscodeView *)self view];
+          view4 = [(LACPasscodeUIService *)self->_remoteVC view];
+          [view3 addSubview:view4];
 
-          v9 = [(LACPasscodeUIService *)self->_remoteVC view];
-          [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+          view5 = [(LACPasscodeUIService *)self->_remoteVC view];
+          [view5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-          v10 = [(LACPasscodeUIService *)self->_remoteVC view];
-          v11 = [v10 topAnchor];
-          v12 = [(LAUIPasscodeView *)self view];
-          v13 = [v12 topAnchor];
-          v14 = [v11 constraintEqualToAnchor:v13];
+          view6 = [(LACPasscodeUIService *)self->_remoteVC view];
+          topAnchor = [view6 topAnchor];
+          view7 = [(LAUIPasscodeView *)self view];
+          topAnchor2 = [view7 topAnchor];
+          v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
           [v14 setActive:1];
 
-          v15 = [(LACPasscodeUIService *)self->_remoteVC view];
-          v16 = [v15 bottomAnchor];
-          v17 = [(LAUIPasscodeView *)self view];
-          v18 = [v17 bottomAnchor];
-          v19 = [v16 constraintEqualToAnchor:v18];
+          view8 = [(LACPasscodeUIService *)self->_remoteVC view];
+          bottomAnchor = [view8 bottomAnchor];
+          view9 = [(LAUIPasscodeView *)self view];
+          bottomAnchor2 = [view9 bottomAnchor];
+          v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
           [v19 setActive:1];
 
-          v20 = [(LACPasscodeUIService *)self->_remoteVC view];
-          v21 = [v20 leadingAnchor];
-          v22 = [(LAUIPasscodeView *)self view];
-          v23 = [v22 leadingAnchor];
-          v24 = [v21 constraintEqualToAnchor:v23];
+          view10 = [(LACPasscodeUIService *)self->_remoteVC view];
+          leadingAnchor = [view10 leadingAnchor];
+          view11 = [(LAUIPasscodeView *)self view];
+          leadingAnchor2 = [view11 leadingAnchor];
+          v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
           [v24 setActive:1];
 
-          v25 = [(LACPasscodeUIService *)self->_remoteVC view];
-          v26 = [v25 trailingAnchor];
-          v27 = [(LAUIPasscodeView *)self view];
-          v28 = [v27 trailingAnchor];
-          v29 = [v26 constraintEqualToAnchor:v28];
+          view12 = [(LACPasscodeUIService *)self->_remoteVC view];
+          trailingAnchor = [view12 trailingAnchor];
+          view13 = [(LAUIPasscodeView *)self view];
+          trailingAnchor2 = [view13 trailingAnchor];
+          v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
           [v29 setActive:1];
 
           [(LAUIPasscodeView *)self addChildViewController:self->_remoteVC];
           [(LACPasscodeUIService *)self->_remoteVC didMoveToParentViewController:self];
           [(LAUIPasscodeView *)self _startRemoteView];
-          v30 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v30 addObserver:self selector:sel__appDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter addObserver:self selector:sel__appDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
 
-          v31 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v31 addObserver:self selector:sel__appDidBecomeInactive_ name:*MEMORY[0x277D76768] object:0];
+          defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter2 addObserver:self selector:sel__appDidBecomeInactive_ name:*MEMORY[0x277D76768] object:0];
         }
       }
     }
@@ -385,8 +385,8 @@ void __38__LAUIPasscodeView__presentRemoteView__block_invoke(uint64_t a1)
   {
     remoteVC = self->_remoteVC;
     WeakRetained = objc_loadWeakRetained(&self->_context);
-    v6 = [WeakRetained externalizedContext];
-    [(LACPasscodeUIService *)remoteVC setContext:v6];
+    externalizedContext = [WeakRetained externalizedContext];
+    [(LACPasscodeUIService *)remoteVC setContext:externalizedContext];
 
     shouldBecomeFirstResponder = self->_shouldBecomeFirstResponder;
 
@@ -394,12 +394,12 @@ void __38__LAUIPasscodeView__presentRemoteView__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_toggleEditingShouldStart:(BOOL)a3
+- (void)_toggleEditingShouldStart:(BOOL)start
 {
   if (self->_isRemoteVCPrepared)
   {
     remoteVC = self->_remoteVC;
-    if (a3)
+    if (start)
     {
       [(LACPasscodeUIService *)remoteVC startEditing];
     }
@@ -411,7 +411,7 @@ void __38__LAUIPasscodeView__presentRemoteView__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_appDidBecomeActive:(id)a3
+- (void)_appDidBecomeActive:(id)active
 {
   if (self->_shouldBecomeFirstResponder)
   {

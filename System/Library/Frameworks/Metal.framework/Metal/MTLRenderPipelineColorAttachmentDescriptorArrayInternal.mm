@@ -1,10 +1,10 @@
 @interface MTLRenderPipelineColorAttachmentDescriptorArrayInternal
-- (BOOL)isEqual:(id)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (uint64_t)reset;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4;
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript;
 @end
 
 @implementation MTLRenderPipelineColorAttachmentDescriptorArrayInternal
@@ -38,9 +38,9 @@
   return _MTLHashState(v6, 0x40uLL);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -54,12 +54,12 @@
     v20 = v7;
     v21 = v8;
     ClassName = object_getClassName(self);
-    if (ClassName == object_getClassName(a3))
+    if (ClassName == object_getClassName(equal))
     {
       v13 = 0;
       do
       {
-        v12 = -[MTLRenderPipelineColorAttachmentDescriptorInternal isEqual:](self->_descriptors[v13], "isEqual:", [a3 objectAtIndexedSubscript:{v13, v16, v17, v18, v19, v20, v21}]);
+        v12 = -[MTLRenderPipelineColorAttachmentDescriptorInternal isEqual:](self->_descriptors[v13], "isEqual:", [equal objectAtIndexedSubscript:{v13, v16, v17, v18, v19, v20, v21}]);
       }
 
       while (v12 && v13++ != 7);
@@ -74,38 +74,38 @@
   return v12;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  if (a3 >= 8)
+  if (subscript >= 8)
   {
     [MTLRenderPipelineColorAttachmentDescriptorArrayInternal objectAtIndexedSubscript:];
   }
 
   descriptors = self->_descriptors;
-  result = descriptors[a3];
+  result = descriptors[subscript];
   if (!result)
   {
     result = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptorInternal);
     v7 = 0;
-    atomic_compare_exchange_strong(&descriptors[a3], &v7, result);
+    atomic_compare_exchange_strong(&descriptors[subscript], &v7, result);
     if (v7)
     {
 
-      return descriptors[a3];
+      return descriptors[subscript];
     }
 
     else
     {
-      descriptors[a3] = result;
+      descriptors[subscript] = result;
     }
   }
 
   return result;
 }
 
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript
 {
-  if (a3)
+  if (object)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -115,19 +115,19 @@
     }
   }
 
-  if (a4 >= 8)
+  if (subscript >= 8)
   {
     [MTLRenderPipelineColorAttachmentDescriptorArrayInternal setObject:atIndexedSubscript:];
   }
 
   descriptors = self->_descriptors;
-  v16 = descriptors[a4];
-  if (a3)
+  v16 = descriptors[subscript];
+  if (object)
   {
-    if (v16 != a3)
+    if (v16 != object)
     {
-      v18 = descriptors[a4];
-      descriptors[a4] = [a3 copy];
+      v18 = descriptors[subscript];
+      descriptors[subscript] = [object copy];
     }
   }
 

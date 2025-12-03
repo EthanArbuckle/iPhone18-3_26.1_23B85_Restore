@@ -1,28 +1,28 @@
 @interface _UITextCursorAssertion
 - (NSString)description;
 - (UITextCursorAssertionController)controller;
-- (id)_initWithReason:(id)a3 options:(unint64_t)a4 controller:(id)a5 userInfo:(id)a6;
+- (id)_initWithReason:(id)reason options:(unint64_t)options controller:(id)controller userInfo:(id)info;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation _UITextCursorAssertion
 
-- (id)_initWithReason:(id)a3 options:(unint64_t)a4 controller:(id)a5 userInfo:(id)a6
+- (id)_initWithReason:(id)reason options:(unint64_t)options controller:(id)controller userInfo:(id)info
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  reasonCopy = reason;
+  controllerCopy = controller;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = _UITextCursorAssertion;
   v14 = [(_UITextCursorAssertion *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_reason, a3);
-    v15->_options = a4;
-    objc_storeWeak(&v15->_controller, v12);
-    objc_storeStrong(&v15->_userInfo, a6);
+    objc_storeStrong(&v14->_reason, reason);
+    v15->_options = options;
+    objc_storeWeak(&v15->_controller, controllerCopy);
+    objc_storeStrong(&v15->_userInfo, info);
   }
 
   return v15;

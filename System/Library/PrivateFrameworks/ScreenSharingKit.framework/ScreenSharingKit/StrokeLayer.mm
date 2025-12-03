@@ -1,6 +1,6 @@
 @interface StrokeLayer
 - (_TtC16ScreenSharingKit11StrokeLayer)init;
-- (_TtC16ScreenSharingKit11StrokeLayer)initWithLayer:(id)a3;
+- (_TtC16ScreenSharingKit11StrokeLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_264B3DB7C();
 }
 
@@ -27,7 +27,7 @@
   return [(StrokeLayer *)&v4 init];
 }
 
-- (_TtC16ScreenSharingKit11StrokeLayer)initWithLayer:(id)a3
+- (_TtC16ScreenSharingKit11StrokeLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_264B41664();

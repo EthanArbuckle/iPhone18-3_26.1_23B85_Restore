@@ -1,23 +1,23 @@
 @interface _HKXMLExtractorSpecification
-- (BOOL)matchesElementStack:(id)a3;
-- (_HKXMLExtractorSpecification)initWithSpecificationString:(id)a3;
+- (BOOL)matchesElementStack:(id)stack;
+- (_HKXMLExtractorSpecification)initWithSpecificationString:(id)string;
 @end
 
 @implementation _HKXMLExtractorSpecification
 
-- (_HKXMLExtractorSpecification)initWithSpecificationString:(id)a3
+- (_HKXMLExtractorSpecification)initWithSpecificationString:(id)string
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  stringCopy = string;
   v27.receiver = self;
   v27.super_class = _HKXMLExtractorSpecification;
   v6 = [(_HKXMLExtractorSpecification *)&v27 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_specificationString, a3);
-    v8 = [MEMORY[0x1E696AB08] hk_forwardSlashCharacterSet];
-    v9 = [v5 componentsSeparatedByCharactersInSet:v8];
+    objc_storeStrong(&v6->_specificationString, string);
+    hk_forwardSlashCharacterSet = [MEMORY[0x1E696AB08] hk_forwardSlashCharacterSet];
+    v9 = [stringCopy componentsSeparatedByCharactersInSet:hk_forwardSlashCharacterSet];
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v23 = 0u;
     v24 = 0u;
@@ -63,10 +63,10 @@
   return v7;
 }
 
-- (BOOL)matchesElementStack:(id)a3
+- (BOOL)matchesElementStack:(id)stack
 {
-  v4 = a3;
-  v5 = [v4 count];
+  stackCopy = stack;
+  v5 = [stackCopy count];
   if (v5 == [(NSArray *)self->_specificationElements count])
   {
     v6 = v5 - 1;
@@ -81,7 +81,7 @@
       do
       {
         v8 = [(NSArray *)self->_specificationElements objectAtIndexedSubscript:v7];
-        v9 = [v4 objectAtIndexedSubscript:v7];
+        v9 = [stackCopy objectAtIndexedSubscript:v7];
         v10 = [v8 matchesElement:v9];
 
         if (v10)

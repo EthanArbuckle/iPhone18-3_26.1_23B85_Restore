@@ -1,8 +1,8 @@
 @interface MTPreferences
-+ (BOOL)_copyUserDefaultToSharedContainer:(id)a3 synchronize:(BOOL)a4;
++ (BOOL)_copyUserDefaultToSharedContainer:(id)container synchronize:(BOOL)synchronize;
 + (BOOL)copySettingsToSharedContainer;
-+ (id)defaultSettings:(id)a3;
-+ (void)moveUserDefaultToSharedContainer:(id)a3;
++ (id)defaultSettings:(id)settings;
++ (void)moveUserDefaultToSharedContainer:(id)container;
 + (void)registerDefaults;
 @end
 
@@ -12,10 +12,10 @@
 {
   if (+[PFClientUtil isPodcastsApp])
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v3 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-    v4 = [a1 defaultSettings:v3];
-    [v5 registerDefaults:v4];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+    v4 = [self defaultSettings:_applePodcastsFoundationSharedUserDefaults];
+    [standardUserDefaults registerDefaults:v4];
   }
 }
 
@@ -24,15 +24,15 @@
   v21 = *MEMORY[0x1E69E9840];
   if (+[PFClientUtil isPodcastsApp](PFClientUtil, "isPodcastsApp") && ([MEMORY[0x1E695E000] settingsAppWritesDirectlyToSharedUserDefaults] & 1) == 0)
   {
-    v4 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-    v5 = [a1 defaultSettings:v4];
-    v6 = [v5 allKeys];
+    _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+    v5 = [self defaultSettings:_applePodcastsFoundationSharedUserDefaults];
+    allKeys = [v5 allKeys];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v6;
+    v7 = allKeys;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -48,7 +48,7 @@
             objc_enumerationMutation(v7);
           }
 
-          v10 |= [a1 _copyUserDefaultToSharedContainer:*(*(&v16 + 1) + 8 * i) synchronize:{0, v16}];
+          v10 |= [self _copyUserDefaultToSharedContainer:*(*(&v16 + 1) + 8 * i) synchronize:{0, v16}];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -58,41 +58,41 @@
 
       if ((v10 & 1) == 0)
       {
-        v3 = 0;
+        synchronize = 0;
         goto LABEL_16;
       }
 
-      v13 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-      v3 = [v13 synchronize];
+      _applePodcastsFoundationSharedUserDefaults2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+      synchronize = [_applePodcastsFoundationSharedUserDefaults2 synchronize];
     }
 
     else
     {
-      v3 = 0;
-      v13 = v7;
+      synchronize = 0;
+      _applePodcastsFoundationSharedUserDefaults2 = v7;
     }
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  v3 = 0;
+  synchronize = 0;
 LABEL_17:
   v14 = *MEMORY[0x1E69E9840];
-  return v3;
+  return synchronize;
 }
 
-+ (void)moveUserDefaultToSharedContainer:(id)a3
++ (void)moveUserDefaultToSharedContainer:(id)container
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 objectForKey:v3];
+  containerCopy = container;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults objectForKey:containerCopy];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-    v7 = [v6 objectForKey:v3];
+    _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+    v7 = [_applePodcastsFoundationSharedUserDefaults objectForKey:containerCopy];
 
     if (v7)
     {
@@ -100,7 +100,7 @@ LABEL_17:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412802;
-        v17 = v3;
+        v17 = containerCopy;
         v18 = 2112;
         v19 = v5;
         v20 = 2112;
@@ -109,39 +109,39 @@ LABEL_17:
       }
     }
 
-    v9 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-    [v9 setObject:v5 forKey:v3];
+    _applePodcastsFoundationSharedUserDefaults2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+    [_applePodcastsFoundationSharedUserDefaults2 setObject:v5 forKey:containerCopy];
 
-    v10 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-    [v10 synchronize];
+    _applePodcastsFoundationSharedUserDefaults3 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+    [_applePodcastsFoundationSharedUserDefaults3 synchronize];
 
-    v11 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-    v12 = [v11 objectForKey:v3];
+    _applePodcastsFoundationSharedUserDefaults4 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+    v12 = [_applePodcastsFoundationSharedUserDefaults4 objectForKey:containerCopy];
 
     if ([v12 isEqual:v5])
     {
-      v13 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v13 removeObjectForKey:v3];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults2 removeObjectForKey:containerCopy];
 
-      v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v14 synchronize];
+      standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults3 synchronize];
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)defaultSettings:(id)a3
++ (id)defaultSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __33__MTPreferences_defaultSettings___block_invoke;
   v10[3] = &unk_1E856B590;
-  v11 = v4;
-  v12 = a1;
+  v11 = settingsCopy;
+  selfCopy = self;
   v5 = defaultSettings__onceToken;
-  v6 = v4;
+  v6 = settingsCopy;
   if (v5 != -1)
   {
     dispatch_once(&defaultSettings__onceToken, v10);
@@ -208,15 +208,15 @@ void __33__MTPreferences_defaultSettings___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)_copyUserDefaultToSharedContainer:(id)a3 synchronize:(BOOL)a4
++ (BOOL)_copyUserDefaultToSharedContainer:(id)container synchronize:(BOOL)synchronize
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v7 = [v6 objectForKey:v5];
+  synchronizeCopy = synchronize;
+  containerCopy = container;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v7 = [standardUserDefaults objectForKey:containerCopy];
 
-  v8 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  v9 = [v8 objectForKey:v5];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  v9 = [_applePodcastsFoundationSharedUserDefaults objectForKey:containerCopy];
 
   if (v7 == v9 || ([v7 isEqual:v9] & 1) != 0)
   {
@@ -225,13 +225,13 @@ void __33__MTPreferences_defaultSettings___block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-    [v11 setObject:v7 forKey:v5];
+    _applePodcastsFoundationSharedUserDefaults2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+    [_applePodcastsFoundationSharedUserDefaults2 setObject:v7 forKey:containerCopy];
 
-    if (v4)
+    if (synchronizeCopy)
     {
-      v12 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-      [v12 synchronize];
+      _applePodcastsFoundationSharedUserDefaults3 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+      [_applePodcastsFoundationSharedUserDefaults3 synchronize];
     }
 
     v10 = 1;

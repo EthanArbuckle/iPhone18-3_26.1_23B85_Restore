@@ -1,32 +1,32 @@
 @interface THWKeynoteShowRep
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)handleGesture:(id)a3;
-- (BOOL)kpfPlayer:(id)a3 handleURL:(id)a4;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)handleGesture:(id)gesture;
+- (BOOL)kpfPlayer:(id)player handleURL:(id)l;
 - (NSArray)supportedGestureKinds;
-- (THWKeynoteShowRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (id)p_documentNavigatorFromNotification:(id)a3;
-- (void)addAdditionalChildLayersToArray:(id)a3;
+- (THWKeynoteShowRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (id)p_documentNavigatorFromNotification:(id)notification;
+- (void)addAdditionalChildLayersToArray:(id)array;
 - (void)dealloc;
-- (void)handleNotificationVantageDidChange:(id)a3;
-- (void)handleNotificationVantageWillChange:(id)a3;
-- (void)p_handleSwipeGesture:(id)a3;
+- (void)handleNotificationVantageDidChange:(id)change;
+- (void)handleNotificationVantageWillChange:(id)change;
+- (void)p_handleSwipeGesture:(id)gesture;
 - (void)playPreparedShow;
-- (void)replaceContentsFromRep:(id)a3;
+- (void)replaceContentsFromRep:(id)rep;
 - (void)stopShow;
 - (void)updateFromLayout;
 - (void)wasAddedToParent;
 - (void)willBeRemoved;
 - (void)willBeRemovedFromParent;
-- (void)willReplaceContentsFromRep:(id)a3;
+- (void)willReplaceContentsFromRep:(id)rep;
 @end
 
 @implementation THWKeynoteShowRep
 
-- (THWKeynoteShowRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWKeynoteShowRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v7.receiver = self;
   v7.super_class = THWKeynoteShowRep;
-  v4 = [(THWKeynoteShowRep *)&v7 initWithLayout:a3 canvas:a4];
+  v4 = [(THWKeynoteShowRep *)&v7 initWithLayout:layout canvas:canvas];
   v5 = v4;
   if (v4)
   {
@@ -79,16 +79,16 @@
   }
 
   [(KPFPlayerControllerProtocol *)[(THWKeynoteShowRep *)self kpfPlayer] playPreparedShow];
-  v3 = [(THWKeynoteShowRep *)self currentAbsolutePageIndex];
+  currentAbsolutePageIndex = [(THWKeynoteShowRep *)self currentAbsolutePageIndex];
 
-  [(THWKeynoteShowRep *)self setPlayingOnAbsolutePageIndex:v3];
+  [(THWKeynoteShowRep *)self setPlayingOnAbsolutePageIndex:currentAbsolutePageIndex];
 }
 
 - (void)stopShow
 {
-  v2 = [(THWKeynoteShowRep *)self kpfPlayer];
+  kpfPlayer = [(THWKeynoteShowRep *)self kpfPlayer];
 
-  [(KPFPlayerControllerProtocol *)v2 endshow];
+  [(KPFPlayerControllerProtocol *)kpfPlayer endshow];
 }
 
 - (void)wasAddedToParent
@@ -148,7 +148,7 @@
   }
 }
 
-- (void)willReplaceContentsFromRep:(id)a3
+- (void)willReplaceContentsFromRep:(id)rep
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -172,7 +172,7 @@
   }
 }
 
-- (void)replaceContentsFromRep:(id)a3
+- (void)replaceContentsFromRep:(id)rep
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -192,7 +192,7 @@
   }
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
   if (self->_ownsShow)
   {
@@ -218,11 +218,11 @@
       TSDCenterOfRect();
       [(CALayer *)[(THWKeynoteShowRep *)self showLayer] setPosition:v20, v21];
       CATransform3DMakeScale(&v24, v19, v19, 1.0);
-      v22 = [(THWKeynoteShowRep *)self showLayer];
+      showLayer = [(THWKeynoteShowRep *)self showLayer];
       v23 = v24;
-      [(CALayer *)v22 setTransform:&v23];
+      [(CALayer *)showLayer setTransform:&v23];
       +[CATransaction commit];
-      [a3 addObject:{-[THWKeynoteShowRep showLayer](self, "showLayer")}];
+      [array addObject:{-[THWKeynoteShowRep showLayer](self, "showLayer")}];
       if ([(KPFPlayerControllerProtocol *)[(THWKeynoteShowRep *)self kpfPlayer] isTransitioningToStop])
       {
         [(KPFPlayerControllerProtocol *)[(THWKeynoteShowRep *)self kpfPlayer] prepareWithEndShowHandler:0];
@@ -231,11 +231,11 @@
   }
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
   if (self->_ownsShow)
   {
-    [a3 boundsLocationForICC:{-[THWKeynoteShowRep interactiveCanvasController](self, "interactiveCanvasController")}];
+    [gesture boundsLocationForICC:{-[THWKeynoteShowRep interactiveCanvasController](self, "interactiveCanvasController")}];
     -[CALayer convertPoint:fromLayer:](self->_showLayer, "convertPoint:fromLayer:", [objc_msgSend(-[THWKeynoteShowRep interactiveCanvasController](self "interactiveCanvasController")], v5, v6);
     v8 = v7;
     v10 = v9;
@@ -245,7 +245,7 @@
     v11 = CGRectContainsPoint(v18, v17);
     if (v11)
     {
-      LOBYTE(v11) = TSUSupportsTextInteraction() && (v12 = [a3 gestureKind], v12 == TSWPImmediatePress) || (v13 = objc_msgSend(a3, "gestureKind"), v13 == TSWPImmediateSingleTap) || (v14 = objc_msgSend(a3, "gestureKind"), v14 == TSWPImmediateDoubleTap) || (v15 = objc_msgSend(a3, "gestureKind"), v15 == TSWPDoubleTapAndTouch);
+      LOBYTE(v11) = TSUSupportsTextInteraction() && (v12 = [gesture gestureKind], v12 == TSWPImmediatePress) || (v13 = objc_msgSend(gesture, "gestureKind"), v13 == TSWPImmediateSingleTap) || (v14 = objc_msgSend(gesture, "gestureKind"), v14 == TSWPImmediateDoubleTap) || (v15 = objc_msgSend(gesture, "gestureKind"), v15 == TSWPDoubleTapAndTouch);
     }
   }
 
@@ -257,25 +257,25 @@
   return v11;
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
   if (!self->_ownsShow)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [a3 gestureKind];
+  gestureKind = [gesture gestureKind];
   v6 = TSWPImmediateSingleTap;
-  if (v5 != TSWPImmediateSingleTap)
+  if (gestureKind != TSWPImmediateSingleTap)
   {
-    v7 = [a3 gestureKind];
-    if (v7 != TSWPImmediateDoubleTap)
+    gestureKind2 = [gesture gestureKind];
+    if (gestureKind2 != TSWPImmediateDoubleTap)
     {
-      v8 = [a3 gestureKind];
-      if (v8 != TSWPDoubleTapAndTouch)
+      gestureKind3 = [gesture gestureKind];
+      if (gestureKind3 != TSWPDoubleTapAndTouch)
       {
-        v9 = [a3 gestureKind];
-        if (v9 != TSWPImmediatePress)
+        gestureKind4 = [gesture gestureKind];
+        if (gestureKind4 != TSWPImmediatePress)
         {
           [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
         }
@@ -283,17 +283,17 @@
     }
   }
 
-  if ([a3 gestureKind] == v6 || (v10 = objc_msgSend(a3, "gestureKind"), v10 == TSWPImmediateDoubleTap) || (v11 = objc_msgSend(a3, "gestureKind"), v11 == TSWPDoubleTapAndTouch) || (v12 = objc_msgSend(a3, "gestureKind"), v12 == TSWPImmediatePress))
+  if ([gesture gestureKind] == v6 || (v10 = objc_msgSend(gesture, "gestureKind"), v10 == TSWPImmediateDoubleTap) || (v11 = objc_msgSend(gesture, "gestureKind"), v11 == TSWPDoubleTapAndTouch) || (v12 = objc_msgSend(gesture, "gestureKind"), v12 == TSWPImmediatePress))
   {
-    if ([a3 gestureState] == 3)
+    if ([gesture gestureState] == 3)
     {
-      [a3 boundsLocationForICC:{-[THWKeynoteShowRep interactiveCanvasController](self, "interactiveCanvasController")}];
+      [gesture boundsLocationForICC:{-[THWKeynoteShowRep interactiveCanvasController](self, "interactiveCanvasController")}];
       -[CALayer convertPoint:fromLayer:](self->_showLayer, "convertPoint:fromLayer:", [objc_msgSend(-[THWKeynoteShowRep interactiveCanvasController](self "interactiveCanvasController")], v13, v14);
       if (([(KPFPlayerControllerProtocol *)self->_kpfPlayer handleTouchAtLocation:?]& 1) == 0)
       {
-        v15 = [(KPFPlayerControllerProtocol *)self->_kpfPlayer transportControlCloneCanGotoNext];
+        transportControlCloneCanGotoNext = [(KPFPlayerControllerProtocol *)self->_kpfPlayer transportControlCloneCanGotoNext];
         kpfPlayer = self->_kpfPlayer;
-        if (v15)
+        if (transportControlCloneCanGotoNext)
         {
           [(KPFPlayerControllerProtocol *)kpfPlayer transportControlCloneGotoNext];
         }
@@ -309,9 +309,9 @@
   return 1;
 }
 
-- (BOOL)kpfPlayer:(id)a3 handleURL:(id)a4
+- (BOOL)kpfPlayer:(id)player handleURL:(id)l
 {
-  if ([(THWKeynoteShowRep *)self kpfPlayer]!= a3)
+  if ([(THWKeynoteShowRep *)self kpfPlayer]!= player)
   {
     return 0;
   }
@@ -319,17 +319,17 @@
   [(THWKeynoteShowRep *)self parentRep];
   v7 = TSUProtocolCast();
 
-  return [v7 keynoteShowRep:self handleURL:a4];
+  return [v7 keynoteShowRep:self handleURL:l];
 }
 
-- (id)p_documentNavigatorFromNotification:(id)a3
+- (id)p_documentNavigatorFromNotification:(id)notification
 {
   objc_opt_class();
-  [a3 object];
+  [notification object];
   result = TSUDynamicCast();
   if (!result)
   {
-    [a3 object];
+    [notification object];
     v5 = TSUProtocolCast();
 
     return [v5 documentNavigator];
@@ -338,11 +338,11 @@
   return result;
 }
 
-- (void)handleNotificationVantageWillChange:(id)a3
+- (void)handleNotificationVantageWillChange:(id)change
 {
   if (self->_ownsShow)
   {
-    v4 = [objc_msgSend(a3 "userInfo")];
+    v4 = [objc_msgSend(change "userInfo")];
     if (([v4 isEqualToString:@"THVantageChangeReasonBookOpen"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"THVantageChangeReasonScrolling") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"THVantageChangeReasonNavigation") & 1) == 0)
     {
       kpfPlayer = self->_kpfPlayer;
@@ -352,12 +352,12 @@
   }
 }
 
-- (void)handleNotificationVantageDidChange:(id)a3
+- (void)handleNotificationVantageDidChange:(id)change
 {
   if (self->_ownsShow)
   {
-    v5 = [objc_msgSend(a3 "userInfo")];
-    v6 = [-[THWKeynoteShowRep p_documentNavigatorFromNotification:](self p_documentNavigatorFromNotification:{a3), "currentAbsolutePageIndex"}];
+    v5 = [objc_msgSend(change "userInfo")];
+    v6 = [-[THWKeynoteShowRep p_documentNavigatorFromNotification:](self p_documentNavigatorFromNotification:{change), "currentAbsolutePageIndex"}];
     if ([v5 isEqualToString:@"THVantageChangeReasonScrolling"])
     {
       v7 = v6 != self->_currentAbsolutePageIndex;
@@ -375,7 +375,7 @@
       {
         [(KPFPlayerControllerProtocol *)self->_kpfPlayer pauseMediaPlayback];
         [(KPFPlayerControllerProtocol *)self->_kpfPlayer pauseBackgroundSoundtrack];
-        v9 = self;
+        selfCopy2 = self;
         v10 = 1;
       }
 
@@ -388,11 +388,11 @@
 
         [(KPFPlayerControllerProtocol *)self->_kpfPlayer resumeMediaPlayback];
         [(KPFPlayerControllerProtocol *)self->_kpfPlayer resumeBackgroundSoundtrack];
-        v9 = self;
+        selfCopy2 = self;
         v10 = 0;
       }
 
-      [(THWKeynoteShowRep *)v9 setWasStoppedByScrolling:v10];
+      [(THWKeynoteShowRep *)selfCopy2 setWasStoppedByScrolling:v10];
     }
 
     else if (([v5 isEqualToString:@"THVantageChangeReasonBookOpen"] & 1) == 0)
@@ -404,16 +404,16 @@
   }
 }
 
-- (void)p_handleSwipeGesture:(id)a3
+- (void)p_handleSwipeGesture:(id)gesture
 {
-  if ([(THWKeynoteShowRep *)self swipeLeftGR]== a3)
+  if ([(THWKeynoteShowRep *)self swipeLeftGR]== gesture)
   {
     kpfPlayer = self->_kpfPlayer;
 
     [(KPFPlayerControllerProtocol *)kpfPlayer gotoNextEvent];
   }
 
-  else if ([(THWKeynoteShowRep *)self swipeRightGR]== a3)
+  else if ([(THWKeynoteShowRep *)self swipeRightGR]== gesture)
   {
     v6 = self->_kpfPlayer;
 

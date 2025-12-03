@@ -1,8 +1,8 @@
 @interface MLMediaTypeCountedSet
 - (id).cxx_construct;
 - (id)description;
-- (void)addMediaType:(unsigned int)a3 count:(unint64_t)a4;
-- (void)enumerateMediaTypesWithBlock:(id)a3;
+- (void)addMediaType:(unsigned int)type count:(unint64_t)count;
+- (void)enumerateMediaTypesWithBlock:(id)block;
 @end
 
 @implementation MLMediaTypeCountedSet
@@ -15,9 +15,9 @@
   return self;
 }
 
-- (void)enumerateMediaTypesWithBlock:(id)a3
+- (void)enumerateMediaTypesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(MLMediaTypeCountedSet *)self count])
   {
     begin_node = self->_map.__tree_.__begin_node_;
@@ -27,7 +27,7 @@
       do
       {
         v10 = 0;
-        v4[2](v4, LODWORD(begin_node[4].__left_), begin_node[5].__left_, &v10);
+        blockCopy[2](blockCopy, LODWORD(begin_node[4].__left_), begin_node[5].__left_, &v10);
         if (v10)
         {
           break;
@@ -65,7 +65,7 @@
   }
 }
 
-- (void)addMediaType:(unsigned int)a3 count:(unint64_t)a4
+- (void)addMediaType:(unsigned int)type count:(unint64_t)count
 {
   left = self->_map.__tree_.__end_node_.__left_;
   if (!left)
@@ -80,7 +80,7 @@ LABEL_7:
     {
       v5 = left;
       v6 = *(left + 8);
-      if (v6 <= a3)
+      if (v6 <= type)
       {
         break;
       }
@@ -92,7 +92,7 @@ LABEL_7:
       }
     }
 
-    if (v6 >= a3)
+    if (v6 >= type)
     {
       break;
     }
@@ -104,7 +104,7 @@ LABEL_7:
     }
   }
 
-  v5[5] = v5[5] + a4;
+  v5[5] = v5[5] + count;
 }
 
 - (id)description

@@ -1,15 +1,15 @@
 @interface PIPhotosPipelineFactory
-+ (id)buildPhotosPipelineWithDescriptor:(id)a3 error:(id *)a4;
++ (id)buildPhotosPipelineWithDescriptor:(id)descriptor error:(id *)error;
 - (PIPhotosPipelineFactory)init;
 @end
 
 @implementation PIPhotosPipelineFactory
 
-+ (id)buildPhotosPipelineWithDescriptor:(id)a3 error:(id *)a4
++ (id)buildPhotosPipelineWithDescriptor:(id)descriptor error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
     v10 = NUAssertLogger_28537();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -20,7 +20,7 @@
       _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v12 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v14 = NUAssertLogger_28537();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
@@ -28,11 +28,11 @@
     {
       if (v15)
       {
-        v23 = dispatch_get_specific(*v12);
+        v23 = dispatch_get_specific(*callStackSymbols);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v12 = [v24 callStackSymbols];
-        v26 = [v12 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v23;
         v34 = 2114;
@@ -43,10 +43,10 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v33 = v12;
+      v33 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -54,7 +54,7 @@
     goto LABEL_22;
   }
 
-  if (!a4)
+  if (!error)
   {
     v17 = NUAssertLogger_28537();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -65,7 +65,7 @@
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v12 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v19 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v14 = NUAssertLogger_28537();
     v20 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
@@ -73,8 +73,8 @@
     {
       if (v20)
       {
-        v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v22 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v33 = v22;
         _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -86,11 +86,11 @@
 LABEL_22:
     if (v20)
     {
-      v27 = dispatch_get_specific(*v12);
+      v27 = dispatch_get_specific(*callStackSymbols);
       v28 = MEMORY[0x1E696AF00];
       v29 = v27;
-      v30 = [v28 callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v28 callStackSymbols];
+      v31 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v33 = v27;
       v34 = 2114;
@@ -103,11 +103,11 @@ LABEL_24:
     _NUAssertFailHandler();
   }
 
-  v6 = v5;
-  v7 = [PIPhotosPipelineBuilder pipelineBuilderWithDescriptor:v5 error:a4];
+  v6 = descriptorCopy;
+  v7 = [PIPhotosPipelineBuilder pipelineBuilderWithDescriptor:descriptorCopy error:error];
   if (v7)
   {
-    v8 = [MEMORY[0x1E69B3BD0] buildPipelineWithBuilder:v7 error:a4];
+    v8 = [MEMORY[0x1E69B3BD0] buildPipelineWithBuilder:v7 error:error];
   }
 
   else
@@ -159,8 +159,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -187,8 +187,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

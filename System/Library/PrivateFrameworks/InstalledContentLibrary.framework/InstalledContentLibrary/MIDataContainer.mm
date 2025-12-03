@@ -1,40 +1,40 @@
 @interface MIDataContainer
-+ (id)dataContainerForExecutableBundle:(id)a3 forPersona:(id)a4 createIfNeeded:(BOOL)a5 temporary:(BOOL)a6 created:(BOOL *)a7 error:(id *)a8;
++ (id)dataContainerForExecutableBundle:(id)bundle forPersona:(id)persona createIfNeeded:(BOOL)needed temporary:(BOOL)temporary created:(BOOL *)created error:(id *)error;
 - (id)_oldCompatiblityLinkDestination;
 - (int)contentProtectionClass;
-- (void)makeSymlinkToBundleInContainerIfNeeded:(id)a3;
-- (void)setContentProtectionClass:(int)a3;
+- (void)makeSymlinkToBundleInContainerIfNeeded:(id)needed;
+- (void)setContentProtectionClass:(int)class;
 @end
 
 @implementation MIDataContainer
 
-+ (id)dataContainerForExecutableBundle:(id)a3 forPersona:(id)a4 createIfNeeded:(BOOL)a5 temporary:(BOOL)a6 created:(BOOL *)a7 error:(id *)a8
++ (id)dataContainerForExecutableBundle:(id)bundle forPersona:(id)persona createIfNeeded:(BOOL)needed temporary:(BOOL)temporary created:(BOOL *)created error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = [v13 dataContainerContentClass];
-  if (v15)
+  temporaryCopy = temporary;
+  neededCopy = needed;
+  bundleCopy = bundle;
+  personaCopy = persona;
+  dataContainerContentClass = [bundleCopy dataContainerContentClass];
+  if (dataContainerContentClass)
   {
-    v17 = v15;
-    if (v10)
+    v17 = dataContainerContentClass;
+    if (temporaryCopy)
     {
-      if (a7)
+      if (created)
       {
-        *a7 = 1;
+        *created = 1;
       }
 
       v18 = objc_opt_class();
-      v19 = [v13 identifier];
-      v20 = [v18 tempContainerWithIdentifier:v19 forPersona:v14 ofContentClass:v17 error:a8];
+      identifier = [bundleCopy identifier];
+      v20 = [v18 tempContainerWithIdentifier:identifier forPersona:personaCopy ofContentClass:v17 error:error];
     }
 
     else
     {
       v24 = objc_opt_class();
-      v19 = [v13 identifier];
-      v20 = [v24 containerWithIdentifier:v19 forPersona:v14 ofContentClass:v17 createIfNeeded:v11 created:a7 error:a8];
+      identifier = [bundleCopy identifier];
+      v20 = [v24 containerWithIdentifier:identifier forPersona:personaCopy ofContentClass:v17 createIfNeeded:neededCopy created:created error:error];
     }
 
     v23 = v20;
@@ -42,13 +42,13 @@
 
   else
   {
-    v21 = _CreateAndLogError("+[MIDataContainer dataContainerForExecutableBundle:forPersona:createIfNeeded:temporary:created:error:]", 39, @"MIInstallerErrorDomain", 4, 0, 0, @"Can't get data container for bundle %@", v16, v13);
-    v19 = v21;
-    if (a8)
+    v21 = _CreateAndLogError("+[MIDataContainer dataContainerForExecutableBundle:forPersona:createIfNeeded:temporary:created:error:]", 39, @"MIInstallerErrorDomain", 4, 0, 0, @"Can't get data container for bundle %@", v16, bundleCopy);
+    identifier = v21;
+    if (error)
     {
       v22 = v21;
       v23 = 0;
-      *a8 = v19;
+      *error = identifier;
     }
 
     else
@@ -91,7 +91,7 @@
   return result;
 }
 
-- (void)setContentProtectionClass:(int)a3
+- (void)setContentProtectionClass:(int)class
 {
   v5 = [MEMORY[0x1E696AD98] numberWithInt:?];
   v9 = 0;
@@ -100,12 +100,12 @@
 
   if (v6)
   {
-    self->_contentProtectionClass = a3;
+    self->_contentProtectionClass = class;
   }
 
   else if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v8 = [(MIContainer *)self identifier];
+    identifier = [(MIContainer *)self identifier];
     MOLogWrite();
   }
 }
@@ -123,26 +123,26 @@
 
     if (v6)
     {
-      v7 = [(MIContainer *)self containerURL];
-      v8 = [v7 URLByAppendingPathComponent:v5 isDirectory:1];
+      containerURL = [(MIContainer *)self containerURL];
+      containerURL2 = [containerURL URLByAppendingPathComponent:v5 isDirectory:1];
 
       v9 = +[MIFileManager defaultManager];
       v18 = v4;
-      v10 = [v9 destinationOfSymbolicLinkAtURL:v8 error:&v18];
+      v10 = [v9 destinationOfSymbolicLinkAtURL:containerURL2 error:&v18];
       v11 = v18;
 
       if (!v10)
       {
-        v12 = [v11 domain];
-        if (![v12 isEqualToString:*MEMORY[0x1E696A798]])
+        domain = [v11 domain];
+        if (![domain isEqualToString:*MEMORY[0x1E696A798]])
         {
 
           goto LABEL_24;
         }
 
-        v13 = [v11 code];
+        code = [v11 code];
 
-        if (v13 != 2)
+        if (code != 2)
         {
 LABEL_24:
           if (gLogHandle && *(gLogHandle + 44) < 3)
@@ -150,7 +150,7 @@ LABEL_24:
             goto LABEL_18;
           }
 
-          v16 = [v8 path];
+          path = [containerURL2 path];
           MOLogWrite();
           goto LABEL_17;
         }
@@ -163,12 +163,12 @@ LABEL_18:
     }
   }
 
-  v14 = [v4 domain];
-  if ([v14 isEqualToString:@"MIContainerManagerErrorDomain"])
+  domain2 = [v4 domain];
+  if ([domain2 isEqualToString:@"MIContainerManagerErrorDomain"])
   {
-    v15 = [v4 code];
+    code2 = [v4 code];
 
-    if (v15 == 24)
+    if (code2 == 24)
     {
       goto LABEL_19;
     }
@@ -180,8 +180,8 @@ LABEL_18:
 
   if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v8 = [(MIContainer *)self containerURL];
-    v16 = [v8 path];
+    containerURL2 = [(MIContainer *)self containerURL];
+    path = [containerURL2 path];
     MOLogWrite();
     v10 = 0;
     v11 = v4;
@@ -197,16 +197,16 @@ LABEL_20:
   return v10;
 }
 
-- (void)makeSymlinkToBundleInContainerIfNeeded:(id)a3
+- (void)makeSymlinkToBundleInContainerIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [v4 bundle];
-  if (v5)
+  neededCopy = needed;
+  bundle = [neededCopy bundle];
+  if (bundle)
   {
-    v6 = [v4 compatibilityLinkDestination];
-    v7 = [(MIDataContainer *)self _oldCompatiblityLinkDestination];
-    v8 = v7;
-    if (!(v6 | v7))
+    compatibilityLinkDestination = [neededCopy compatibilityLinkDestination];
+    _oldCompatiblityLinkDestination = [(MIDataContainer *)self _oldCompatiblityLinkDestination];
+    v8 = _oldCompatiblityLinkDestination;
+    if (!(compatibilityLinkDestination | _oldCompatiblityLinkDestination))
     {
       if (!gLogHandle || *(gLogHandle + 44) < 7)
       {
@@ -222,9 +222,9 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    if (v6 && v7)
+    if (compatibilityLinkDestination && _oldCompatiblityLinkDestination)
     {
-      if ([v6 isEqual:v7])
+      if ([compatibilityLinkDestination isEqual:_oldCompatiblityLinkDestination])
       {
         if (!gLogHandle || *(gLogHandle + 44) < 7)
         {
@@ -235,22 +235,22 @@ LABEL_46:
       }
     }
 
-    else if (!v7)
+    else if (!_oldCompatiblityLinkDestination)
     {
       v9 = 0;
-      if (!v6)
+      if (!compatibilityLinkDestination)
       {
         goto LABEL_46;
       }
 
 LABEL_33:
-      v17 = [(MIContainer *)self containerURL:v28];
-      v18 = [v6 lastPathComponent];
-      v19 = [v17 URLByAppendingPathComponent:v18 isDirectory:1];
+      v17 = [(MIContainer *)self containerURL:selfCopy];
+      lastPathComponent = [compatibilityLinkDestination lastPathComponent];
+      v19 = [v17 URLByAppendingPathComponent:lastPathComponent isDirectory:1];
 
       if (gLogHandle && *(gLogHandle + 44) >= 7)
       {
-        v29 = [v19 path];
+        path = [v19 path];
         MOLogWrite();
       }
 
@@ -259,14 +259,14 @@ LABEL_33:
 
       v21 = +[MIFileManager defaultManager];
       v33 = v9;
-      v22 = [v21 createSymbolicLinkAtURL:v19 withDestinationURL:v6 error:&v33];
+      v22 = [v21 createSymbolicLinkAtURL:v19 withDestinationURL:compatibilityLinkDestination error:&v33];
       v23 = v33;
 
       if (v22)
       {
-        v24 = [v6 lastPathComponent];
+        lastPathComponent2 = [compatibilityLinkDestination lastPathComponent];
         v32 = v23;
-        v25 = [(MIContainer *)self setInfoValue:v24 forKey:@"com.apple.MobileInstallation.WorkaroundBundleSymlinkName" error:&v32];
+        v25 = [(MIContainer *)self setInfoValue:lastPathComponent2 forKey:@"com.apple.MobileInstallation.WorkaroundBundleSymlinkName" error:&v32];
         v26 = v32;
 
         if (!v25 && (!gLogHandle || *(gLogHandle + 44) >= 3))
@@ -279,8 +279,8 @@ LABEL_33:
 
       else if (!gLogHandle || *(gLogHandle + 44) >= 3)
       {
-        v27 = [v19 path];
-        v31 = [v6 path];
+        path2 = [v19 path];
+        path3 = [compatibilityLinkDestination path];
         MOLogWrite();
       }
 
@@ -288,13 +288,13 @@ LABEL_33:
       goto LABEL_46;
     }
 
-    v10 = [(MIContainer *)self containerURL];
-    v11 = [v8 lastPathComponent];
-    v12 = [v10 URLByAppendingPathComponent:v11 isDirectory:1];
+    containerURL = [(MIContainer *)self containerURL];
+    lastPathComponent3 = [v8 lastPathComponent];
+    v12 = [containerURL URLByAppendingPathComponent:lastPathComponent3 isDirectory:1];
 
     if (gLogHandle && *(gLogHandle + 44) >= 7)
     {
-      v28 = [v12 path];
+      selfCopy = [v12 path];
       MOLogWrite();
     }
 
@@ -305,12 +305,12 @@ LABEL_33:
 
     if ((v14 & 1) == 0 && (!gLogHandle || *(gLogHandle + 44) >= 3))
     {
-      v28 = [v12 path];
+      selfCopy = [v12 path];
       v30 = v15;
       MOLogWrite();
     }
 
-    if (v6)
+    if (compatibilityLinkDestination)
     {
       v9 = v15;
     }
@@ -323,13 +323,13 @@ LABEL_33:
 
       if (!v16 && (!gLogHandle || *(gLogHandle + 44) >= 3))
       {
-        v28 = self;
+        selfCopy = self;
         v30 = v9;
         MOLogWrite();
       }
     }
 
-    if (!v6)
+    if (!compatibilityLinkDestination)
     {
       goto LABEL_46;
     }

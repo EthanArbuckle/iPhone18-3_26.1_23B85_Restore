@@ -1,17 +1,17 @@
 @interface SFBarButtonGroupContainer
 - (NSDictionary)buttonIdentifiers;
-- (SFBarButtonGroupContainer)initWithCoder:(id)a3;
-- (SFBarButtonGroupContainer)initWithConfiguration:(id)a3;
-- (SFBarButtonGroupContainer)initWithFrame:(CGRect)a3;
+- (SFBarButtonGroupContainer)initWithCoder:(id)coder;
+- (SFBarButtonGroupContainer)initWithConfiguration:(id)configuration;
+- (SFBarButtonGroupContainer)initWithFrame:(CGRect)frame;
 - (_SFBarRegistrationToken)barRegistration;
 - (double)totalWidth;
-- (id)popoverSourceInfoForBarItem:(int64_t)a3;
+- (id)popoverSourceInfoForBarItem:(int64_t)item;
 - (int64_t)_itemDistribution;
-- (void)_setItemDistribution:(int64_t)a3;
-- (void)animateLinkImage:(CGImage *)a3 fromRect:(CGRect)a4 inView:(id)a5 toBarItem:(int64_t)a6 afterDestinationLayerBouncesBlock:(id)a7;
-- (void)didSetBarItem:(int64_t)a3 barButtonItem:(id)a4;
-- (void)setButtonIdentifiers:(id)a3;
-- (void)setItems:(id)a3 animated:(BOOL)a4;
+- (void)_setItemDistribution:(int64_t)distribution;
+- (void)animateLinkImage:(CGImage *)image fromRect:(CGRect)rect inView:(id)view toBarItem:(int64_t)item afterDestinationLayerBouncesBlock:(id)block;
+- (void)didSetBarItem:(int64_t)item barButtonItem:(id)buttonItem;
+- (void)setButtonIdentifiers:(id)identifiers;
+- (void)setItems:(id)items animated:(BOOL)animated;
 @end
 
 @implementation SFBarButtonGroupContainer
@@ -27,7 +27,7 @@
   return v2;
 }
 
-- (void)setButtonIdentifiers:(id)a3
+- (void)setButtonIdentifiers:(id)identifiers
 {
   sub_1D47A42A4(0, &qword_1EC7DF018);
   sub_1D47A42A4(0, &qword_1EC7DF020);
@@ -35,7 +35,7 @@
   *(self + OBJC_IVAR___SFBarButtonGroupContainer_buttonIdentifiers) = sub_1D47BF260();
 }
 
-- (SFBarButtonGroupContainer)initWithCoder:(id)a3
+- (SFBarButtonGroupContainer)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69E7CC0];
   *(self + OBJC_IVAR___SFBarButtonGroupContainer_barButtonItems) = MEMORY[0x1E69E7CC0];
@@ -47,10 +47,10 @@
   return result;
 }
 
-- (SFBarButtonGroupContainer)initWithConfiguration:(id)a3
+- (SFBarButtonGroupContainer)initWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = sub_1D47A96A4(v3);
+  configurationCopy = configuration;
+  v4 = sub_1D47A96A4(configurationCopy);
 
   return v4;
 }
@@ -60,7 +60,7 @@
   v3 = OBJC_IVAR___SFBarButtonGroupContainer_barButtonItems;
   swift_beginAccess();
   v4 = *(*(self + v3) + 16);
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1D47A4B78();
   v7 = sub_1D47A58B0();
 
@@ -75,48 +75,48 @@
 
 - (int64_t)_itemDistribution
 {
-  v2 = self;
-  v3 = [(SFBarButtonGroupContainer *)v2 containerStackView];
-  v4 = [(UIStackView *)v3 distribution];
+  selfCopy = self;
+  containerStackView = [(SFBarButtonGroupContainer *)selfCopy containerStackView];
+  distribution = [(UIStackView *)containerStackView distribution];
 
-  return v4;
+  return distribution;
 }
 
-- (void)_setItemDistribution:(int64_t)a3
+- (void)_setItemDistribution:(int64_t)distribution
 {
-  v5 = self;
-  v4 = [(SFBarButtonGroupContainer *)v5 containerStackView];
-  [(UIStackView *)v4 setDistribution:a3];
+  selfCopy = self;
+  containerStackView = [(SFBarButtonGroupContainer *)selfCopy containerStackView];
+  [(UIStackView *)containerStackView setDistribution:distribution];
 }
 
-- (void)setItems:(id)a3 animated:(BOOL)a4
+- (void)setItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (a3)
+  animatedCopy = animated;
+  itemsCopy = items;
+  if (items)
   {
     sub_1D47A42A4(0, &qword_1EC7DF018);
-    v5 = sub_1D47BF2F0();
+    itemsCopy = sub_1D47BF2F0();
   }
 
-  v7 = self;
-  sub_1D47A5A9C(v5, v4);
+  selfCopy = self;
+  sub_1D47A5A9C(itemsCopy, animatedCopy);
 }
 
-- (void)didSetBarItem:(int64_t)a3 barButtonItem:(id)a4
+- (void)didSetBarItem:(int64_t)item barButtonItem:(id)buttonItem
 {
-  v5 = a4;
-  v6 = self;
-  sub_1D47A97FC(v5);
+  buttonItemCopy = buttonItem;
+  selfCopy = self;
+  sub_1D47A97FC(buttonItemCopy);
 }
 
-- (void)animateLinkImage:(CGImage *)a3 fromRect:(CGRect)a4 inView:(id)a5 toBarItem:(int64_t)a6 afterDestinationLayerBouncesBlock:(id)a7
+- (void)animateLinkImage:(CGImage *)image fromRect:(CGRect)rect inView:(id)view toBarItem:(int64_t)item afterDestinationLayerBouncesBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = _Block_copy(a7);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v15 = _Block_copy(block);
   if (v15)
   {
     v16 = swift_allocObject();
@@ -129,17 +129,17 @@
     v16 = 0;
   }
 
-  v17 = a3;
-  v18 = a5;
-  v19 = self;
-  sub_1D47A7190(v17, v18, a6, v15, v16, x, y, width, height);
+  imageCopy = image;
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D47A7190(imageCopy, viewCopy, item, v15, v16, x, y, width, height);
   sub_1D47A965C(v15);
 }
 
-- (id)popoverSourceInfoForBarItem:(int64_t)a3
+- (id)popoverSourceInfoForBarItem:(int64_t)item
 {
-  v4 = self;
-  v5 = sub_1D47A74B4(a3);
+  selfCopy = self;
+  v5 = sub_1D47A74B4(item);
 
   return v5;
 }
@@ -151,7 +151,7 @@
   return Strong;
 }
 
-- (SFBarButtonGroupContainer)initWithFrame:(CGRect)a3
+- (SFBarButtonGroupContainer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

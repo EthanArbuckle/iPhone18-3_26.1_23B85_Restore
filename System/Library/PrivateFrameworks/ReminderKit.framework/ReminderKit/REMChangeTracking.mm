@@ -1,22 +1,22 @@
 @interface REMChangeTracking
 + (id)defaultTransactionAuthorKeysToExclude;
 + (id)internalTransactionAuthorKeysToExclude;
-+ (id)lastTransactionTimestampWithManagedObjectContext:(id)a3 affectedStores:(id)a4;
-- (REMChangeTracking)initWithClientID:(id)a3 daemonController:(id)a4;
-- (REMChangeTracking)initWithClientID:(id)a3 daemonController:(id)a4 transactionAuthorKeysToExclude:(id)a5;
-- (id)currentChangeTokenForAccountTypes:(int64_t)a3 error:(id *)a4;
-- (id)currentChangeTokenForAllAccountsWithError:(id *)a3;
-- (id)currentChangeTokenWithError:(id *)a3;
-- (id)earliestChangeTokenWithError:(id *)a3;
-- (id)fetchAuxiliaryChangeInfosOfType:(Class)a3 withChangeObject:(id)a4 error:(id *)a5;
-- (id)fetchHistoryAfterDate:(id)a3 error:(id *)a4;
-- (id)fetchHistoryAfterToken:(id)a3 error:(id *)a4;
-- (id)getTrackingStateWithError:(id *)a3;
-- (id)persistenceStoreIDForAccountID:(id)a3 error:(id *)a4;
-- (void)_performChangeTrackingWithReason:(id)a3 block:(id)a4 xpcErrorHandler:(id)a5;
-- (void)deleteHistoryBeforeDate:(id)a3 error:(id *)a4;
-- (void)deleteHistoryBeforeToken:(id)a3 error:(id *)a4;
-- (void)saveTrackingState:(id)a3 error:(id *)a4;
++ (id)lastTransactionTimestampWithManagedObjectContext:(id)context affectedStores:(id)stores;
+- (REMChangeTracking)initWithClientID:(id)d daemonController:(id)controller;
+- (REMChangeTracking)initWithClientID:(id)d daemonController:(id)controller transactionAuthorKeysToExclude:(id)exclude;
+- (id)currentChangeTokenForAccountTypes:(int64_t)types error:(id *)error;
+- (id)currentChangeTokenForAllAccountsWithError:(id *)error;
+- (id)currentChangeTokenWithError:(id *)error;
+- (id)earliestChangeTokenWithError:(id *)error;
+- (id)fetchAuxiliaryChangeInfosOfType:(Class)type withChangeObject:(id)object error:(id *)error;
+- (id)fetchHistoryAfterDate:(id)date error:(id *)error;
+- (id)fetchHistoryAfterToken:(id)token error:(id *)error;
+- (id)getTrackingStateWithError:(id *)error;
+- (id)persistenceStoreIDForAccountID:(id)d error:(id *)error;
+- (void)_performChangeTrackingWithReason:(id)reason block:(id)block xpcErrorHandler:(id)handler;
+- (void)deleteHistoryBeforeDate:(id)date error:(id *)error;
+- (void)deleteHistoryBeforeToken:(id)token error:(id *)error;
+- (void)saveTrackingState:(id)state error:(id *)error;
 @end
 
 @implementation REMChangeTracking
@@ -63,10 +63,10 @@ void __58__REMChangeTracking_defaultTransactionAuthorKeysToExclude__block_invoke
   defaultTransactionAuthorKeysToExclude_defaultAuthorsToExclude = v1;
 }
 
-+ (id)lastTransactionTimestampWithManagedObjectContext:(id)a3 affectedStores:(id)a4
++ (id)lastTransactionTimestampWithManagedObjectContext:(id)context affectedStores:(id)stores
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  storesCopy = stores;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -77,18 +77,18 @@ void __58__REMChangeTracking_defaultTransactionAuthorKeysToExclude__block_invoke
   v14[1] = 3221225472;
   v14[2] = __85__REMChangeTracking_lastTransactionTimestampWithManagedObjectContext_affectedStores___block_invoke;
   v14[3] = &unk_1E7508780;
-  v7 = v5;
+  v7 = contextCopy;
   v15 = v7;
-  v8 = v6;
+  v8 = storesCopy;
   v16 = v8;
   v17 = &v18;
   [v7 performBlockAndWait:v14];
   v9 = v19[5];
   if (!v9)
   {
-    v10 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     v11 = v19[5];
-    v19[5] = v10;
+    v19[5] = distantPast;
 
     v9 = v19[5];
   }
@@ -159,30 +159,30 @@ void __85__REMChangeTracking_lastTransactionTimestampWithManagedObjectContext_af
   }
 }
 
-- (REMChangeTracking)initWithClientID:(id)a3 daemonController:(id)a4
+- (REMChangeTracking)initWithClientID:(id)d daemonController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() defaultTransactionAuthorKeysToExclude];
-  v9 = [(REMChangeTracking *)self initWithClientID:v7 daemonController:v6 transactionAuthorKeysToExclude:v8];
+  controllerCopy = controller;
+  dCopy = d;
+  defaultTransactionAuthorKeysToExclude = [objc_opt_class() defaultTransactionAuthorKeysToExclude];
+  v9 = [(REMChangeTracking *)self initWithClientID:dCopy daemonController:controllerCopy transactionAuthorKeysToExclude:defaultTransactionAuthorKeysToExclude];
 
   return v9;
 }
 
-- (REMChangeTracking)initWithClientID:(id)a3 daemonController:(id)a4 transactionAuthorKeysToExclude:(id)a5
+- (REMChangeTracking)initWithClientID:(id)d daemonController:(id)controller transactionAuthorKeysToExclude:(id)exclude
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  controllerCopy = controller;
+  excludeCopy = exclude;
   v16.receiver = self;
   v16.super_class = REMChangeTracking;
   v12 = [(REMChangeTracking *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_changeTrackingClientID, a3);
-    objc_storeStrong(&v13->_daemonController, a4);
-    objc_storeStrong(&v13->_transactionAuthorKeysToExclude, a5);
+    objc_storeStrong(&v12->_changeTrackingClientID, d);
+    objc_storeStrong(&v13->_daemonController, controller);
+    objc_storeStrong(&v13->_transactionAuthorKeysToExclude, exclude);
     entityNames = v13->_entityNames;
     v13->_entityNames = 0;
     v13->_transactionFetchLimit = 0;
@@ -191,7 +191,7 @@ void __85__REMChangeTracking_lastTransactionTimestampWithManagedObjectContext_af
   return v13;
 }
 
-- (id)currentChangeTokenForAllAccountsWithError:(id *)a3
+- (id)currentChangeTokenForAllAccountsWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -217,9 +217,9 @@ void __85__REMChangeTracking_lastTransactionTimestampWithManagedObjectContext_af
   v6[3] = &unk_1E7507AE0;
   v6[4] = &v8;
   [(REMChangeTracking *)self _performChangeTrackingWithReason:@"currentChangeTokenForAllAccounts" block:v7 xpcErrorHandler:v6];
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v4 = v15[5];
@@ -261,7 +261,7 @@ void __63__REMChangeTracking_currentChangeTokenForAllAccountsWithError___block_i
   }
 }
 
-- (id)currentChangeTokenForAccountTypes:(int64_t)a3 error:(id *)a4
+- (id)currentChangeTokenForAccountTypes:(int64_t)types error:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -280,7 +280,7 @@ void __63__REMChangeTracking_currentChangeTokenForAllAccountsWithError___block_i
   v8[2] = __61__REMChangeTracking_currentChangeTokenForAccountTypes_error___block_invoke;
   v8[3] = &unk_1E7508820;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = types;
   v8[4] = &v15;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -288,9 +288,9 @@ void __63__REMChangeTracking_currentChangeTokenForAllAccountsWithError___block_i
   v7[3] = &unk_1E7507AE0;
   v7[4] = &v9;
   [(REMChangeTracking *)self _performChangeTrackingWithReason:@"currentChangeTokenForAccountTypes" block:v8 xpcErrorHandler:v7];
-  if (a4)
+  if (error)
   {
-    *a4 = v10[5];
+    *error = v10[5];
   }
 
   v5 = v16[5];
@@ -339,11 +339,11 @@ void __61__REMChangeTracking_currentChangeTokenForAccountTypes_error___block_inv
   }
 }
 
-- (id)currentChangeTokenWithError:(id *)a3
+- (id)currentChangeTokenWithError:(id *)error
 {
   v5 = objc_opt_class();
-  v6 = [(REMChangeTracking *)self changeTrackingClientID];
-  v7 = REMCheckedDynamicCast(v5, v6);
+  changeTrackingClientID = [(REMChangeTracking *)self changeTrackingClientID];
+  v7 = REMCheckedDynamicCast(v5, changeTrackingClientID);
 
   v22 = 0;
   v23 = &v22;
@@ -371,9 +371,9 @@ void __61__REMChangeTracking_currentChangeTokenForAccountTypes_error___block_inv
   v11[3] = &unk_1E7507AE0;
   v11[4] = &v16;
   [(REMChangeTracking *)self _performChangeTrackingWithReason:@"currentChangeToken" block:v12 xpcErrorHandler:v11];
-  if (a3)
+  if (error)
   {
-    *a3 = v17[5];
+    *error = v17[5];
   }
 
   v9 = v23[5];
@@ -425,11 +425,11 @@ void __49__REMChangeTracking_currentChangeTokenWithError___block_invoke_2(uint64
   }
 }
 
-- (id)earliestChangeTokenWithError:(id *)a3
+- (id)earliestChangeTokenWithError:(id *)error
 {
   v5 = objc_opt_class();
-  v6 = [(REMChangeTracking *)self changeTrackingClientID];
-  v7 = REMCheckedDynamicCast(v5, v6);
+  changeTrackingClientID = [(REMChangeTracking *)self changeTrackingClientID];
+  v7 = REMCheckedDynamicCast(v5, changeTrackingClientID);
 
   v22 = 0;
   v23 = &v22;
@@ -457,9 +457,9 @@ void __49__REMChangeTracking_currentChangeTokenWithError___block_invoke_2(uint64
   v11[3] = &unk_1E7507AE0;
   v11[4] = &v16;
   [(REMChangeTracking *)self _performChangeTrackingWithReason:@"earliestChangeToken" block:v12 xpcErrorHandler:v11];
-  if (a3)
+  if (error)
   {
-    *a3 = v17[5];
+    *error = v17[5];
   }
 
   v9 = v23[5];
@@ -511,7 +511,7 @@ void __50__REMChangeTracking_earliestChangeTokenWithError___block_invoke_2(uint6
   }
 }
 
-- (id)getTrackingStateWithError:(id *)a3
+- (id)getTrackingStateWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -538,9 +538,9 @@ void __50__REMChangeTracking_earliestChangeTokenWithError___block_invoke_2(uint6
   v6[3] = &unk_1E7507AE0;
   v6[4] = &v8;
   [(REMChangeTracking *)self _performChangeTrackingWithReason:@"getTrackingState" block:v7 xpcErrorHandler:v6];
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v4 = v15[5];
@@ -578,9 +578,9 @@ void __47__REMChangeTracking_getTrackingStateWithError___block_invoke_2(uint64_t
   *(v9 + 40) = v6;
 }
 
-- (void)saveTrackingState:(id)a3 error:(id *)a4
+- (void)saveTrackingState:(id)state error:(id *)error
 {
-  v6 = a3;
+  stateCopy = state;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -591,9 +591,9 @@ void __47__REMChangeTracking_getTrackingStateWithError___block_invoke_2(uint64_t
   v9[1] = 3221225472;
   v9[2] = __45__REMChangeTracking_saveTrackingState_error___block_invoke;
   v9[3] = &unk_1E75088C0;
-  v7 = v6;
+  v7 = stateCopy;
   v10 = v7;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -601,9 +601,9 @@ void __47__REMChangeTracking_getTrackingStateWithError___block_invoke_2(uint64_t
   v8[3] = &unk_1E7507AE0;
   v8[4] = &v13;
   [(REMChangeTracking *)self _performChangeTrackingWithReason:@"saveTrackingState" block:v9 xpcErrorHandler:v8];
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   _Block_object_dispose(&v13, 8);
@@ -623,9 +623,9 @@ void __45__REMChangeTracking_saveTrackingState_error___block_invoke(void *a1, vo
   [v5 saveTrackingState:v3 withClientID:v6 completionHandler:v7];
 }
 
-- (id)fetchHistoryAfterToken:(id)a3 error:(id *)a4
+- (id)fetchHistoryAfterToken:(id)token error:(id *)error
 {
-  v6 = a3;
+  tokenCopy = token;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -638,27 +638,27 @@ void __45__REMChangeTracking_saveTrackingState_error___block_invoke(void *a1, vo
   v29 = __Block_byref_object_copy__5;
   v30 = __Block_byref_object_dispose__5;
   v31 = 0;
-  v7 = [(REMChangeTracking *)self entityNames];
-  if ([v7 count])
+  entityNames = [(REMChangeTracking *)self entityNames];
+  if ([entityNames count])
   {
-    v8 = 0;
+    transactionFetchLimit = 0;
   }
 
   else
   {
-    v8 = [(REMChangeTracking *)self transactionFetchLimit];
+    transactionFetchLimit = [(REMChangeTracking *)self transactionFetchLimit];
   }
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __50__REMChangeTracking_fetchHistoryAfterToken_error___block_invoke;
   v20[3] = &unk_1E7508910;
-  v9 = v6;
+  v9 = tokenCopy;
   v21 = v9;
-  v22 = self;
+  selfCopy = self;
   v23 = &v32;
   v24 = &v26;
-  v25 = v8;
+  v25 = transactionFetchLimit;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __50__REMChangeTracking_fetchHistoryAfterToken_error___block_invoke_3;
@@ -666,9 +666,9 @@ void __45__REMChangeTracking_saveTrackingState_error___block_invoke(void *a1, vo
   v19[4] = &v26;
   [(REMChangeTracking *)self _performChangeTrackingWithReason:@"fetchHistoryAfterToken" block:v20 xpcErrorHandler:v19];
   v10 = v33[5];
-  v11 = [(REMChangeTracking *)self transactionAuthorKeysToExclude];
-  v12 = [v11 allObjects];
-  [v10 consolidateAndFilterChangesWithTransactionAuthors:v12 isExclusion:1];
+  transactionAuthorKeysToExclude = [(REMChangeTracking *)self transactionAuthorKeysToExclude];
+  allObjects = [transactionAuthorKeysToExclude allObjects];
+  [v10 consolidateAndFilterChangesWithTransactionAuthors:allObjects isExclusion:1];
 
   if (!v33[5])
   {
@@ -688,9 +688,9 @@ void __45__REMChangeTracking_saveTrackingState_error___block_invoke(void *a1, vo
     v33[5] = v13;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v27[5];
+    *error = v27[5];
   }
 
   v15 = v33[5];
@@ -741,9 +741,9 @@ void __50__REMChangeTracking_fetchHistoryAfterToken_error___block_invoke_2(uint6
   *(v9 + 40) = v6;
 }
 
-- (id)fetchHistoryAfterDate:(id)a3 error:(id *)a4
+- (id)fetchHistoryAfterDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -756,27 +756,27 @@ void __50__REMChangeTracking_fetchHistoryAfterToken_error___block_invoke_2(uint6
   v29 = __Block_byref_object_copy__5;
   v30 = __Block_byref_object_dispose__5;
   v31 = 0;
-  v7 = [(REMChangeTracking *)self entityNames];
-  if ([v7 count])
+  entityNames = [(REMChangeTracking *)self entityNames];
+  if ([entityNames count])
   {
-    v8 = 0;
+    transactionFetchLimit = 0;
   }
 
   else
   {
-    v8 = [(REMChangeTracking *)self transactionFetchLimit];
+    transactionFetchLimit = [(REMChangeTracking *)self transactionFetchLimit];
   }
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __49__REMChangeTracking_fetchHistoryAfterDate_error___block_invoke;
   v20[3] = &unk_1E7508910;
-  v9 = v6;
+  v9 = dateCopy;
   v21 = v9;
-  v22 = self;
+  selfCopy = self;
   v23 = &v32;
   v24 = &v26;
-  v25 = v8;
+  v25 = transactionFetchLimit;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __49__REMChangeTracking_fetchHistoryAfterDate_error___block_invoke_3;
@@ -784,9 +784,9 @@ void __50__REMChangeTracking_fetchHistoryAfterToken_error___block_invoke_2(uint6
   v19[4] = &v26;
   [(REMChangeTracking *)self _performChangeTrackingWithReason:@"fetchHistoryAfterDate" block:v20 xpcErrorHandler:v19];
   v10 = v33[5];
-  v11 = [(REMChangeTracking *)self transactionAuthorKeysToExclude];
-  v12 = [v11 allObjects];
-  [v10 consolidateAndFilterChangesWithTransactionAuthors:v12 isExclusion:1];
+  transactionAuthorKeysToExclude = [(REMChangeTracking *)self transactionAuthorKeysToExclude];
+  allObjects = [transactionAuthorKeysToExclude allObjects];
+  [v10 consolidateAndFilterChangesWithTransactionAuthors:allObjects isExclusion:1];
 
   if (!v33[5])
   {
@@ -806,9 +806,9 @@ void __50__REMChangeTracking_fetchHistoryAfterToken_error___block_invoke_2(uint6
     v33[5] = v13;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v27[5];
+    *error = v27[5];
   }
 
   v15 = v33[5];
@@ -859,9 +859,9 @@ void __49__REMChangeTracking_fetchHistoryAfterDate_error___block_invoke_2(uint64
   *(v9 + 40) = v6;
 }
 
-- (void)deleteHistoryBeforeToken:(id)a3 error:(id *)a4
+- (void)deleteHistoryBeforeToken:(id)token error:(id *)error
 {
-  v6 = a3;
+  tokenCopy = token;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -872,7 +872,7 @@ void __49__REMChangeTracking_fetchHistoryAfterDate_error___block_invoke_2(uint64
   v9[1] = 3221225472;
   v9[2] = __52__REMChangeTracking_deleteHistoryBeforeToken_error___block_invoke;
   v9[3] = &unk_1E7508938;
-  v7 = v6;
+  v7 = tokenCopy;
   v10 = v7;
   v11 = &v12;
   v8[0] = MEMORY[0x1E69E9820];
@@ -881,9 +881,9 @@ void __49__REMChangeTracking_fetchHistoryAfterDate_error___block_invoke_2(uint64
   v8[3] = &unk_1E7507AE0;
   v8[4] = &v12;
   [(REMChangeTracking *)self _performChangeTrackingWithReason:@"deleteHistoryBeforeToken" block:v9 xpcErrorHandler:v8];
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   _Block_object_dispose(&v12, 8);
@@ -900,9 +900,9 @@ uint64_t __52__REMChangeTracking_deleteHistoryBeforeToken_error___block_invoke(u
   return [a2 deleteHistoryBeforeToken:v2 completionHandler:v4];
 }
 
-- (void)deleteHistoryBeforeDate:(id)a3 error:(id *)a4
+- (void)deleteHistoryBeforeDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -913,7 +913,7 @@ uint64_t __52__REMChangeTracking_deleteHistoryBeforeToken_error___block_invoke(u
   v9[1] = 3221225472;
   v9[2] = __51__REMChangeTracking_deleteHistoryBeforeDate_error___block_invoke;
   v9[3] = &unk_1E7508938;
-  v7 = v6;
+  v7 = dateCopy;
   v10 = v7;
   v11 = &v12;
   v8[0] = MEMORY[0x1E69E9820];
@@ -922,9 +922,9 @@ uint64_t __52__REMChangeTracking_deleteHistoryBeforeToken_error___block_invoke(u
   v8[3] = &unk_1E7507AE0;
   v8[4] = &v12;
   [(REMChangeTracking *)self _performChangeTrackingWithReason:@"deleteHistoryBeforeDate" block:v9 xpcErrorHandler:v8];
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   _Block_object_dispose(&v12, 8);
@@ -941,9 +941,9 @@ uint64_t __51__REMChangeTracking_deleteHistoryBeforeDate_error___block_invoke(ui
   return [a2 deleteHistoryBeforeDate:v2 completionHandler:v4];
 }
 
-- (id)persistenceStoreIDForAccountID:(id)a3 error:(id *)a4
+- (id)persistenceStoreIDForAccountID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -956,14 +956,14 @@ uint64_t __51__REMChangeTracking_deleteHistoryBeforeDate_error___block_invoke(ui
   v17 = __Block_byref_object_copy__5;
   v18 = __Block_byref_object_dispose__5;
   v19 = 0;
-  v7 = [(REMChangeTracking *)self daemonController];
+  daemonController = [(REMChangeTracking *)self daemonController];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__REMChangeTracking_persistenceStoreIDForAccountID_error___block_invoke;
   v13[3] = &unk_1E7507BF0;
   v13[4] = self;
   v13[5] = &v14;
-  v8 = [v7 syncDebugPerformerWithReason:@"persistenceStoreID" errorHandler:v13];
+  v8 = [daemonController syncDebugPerformerWithReason:@"persistenceStoreID" errorHandler:v13];
 
   if (!v15[5])
   {
@@ -978,12 +978,12 @@ uint64_t __51__REMChangeTracking_deleteHistoryBeforeDate_error___block_invoke(ui
     v12[2] = __58__REMChangeTracking_persistenceStoreIDForAccountID_error___block_invoke_54;
     v12[3] = &unk_1E7508960;
     v12[4] = &v20;
-    [v8 persistenceStoreIDForAccountID:v6 completion:v12];
+    [v8 persistenceStoreIDForAccountID:dCopy completion:v12];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v9 = v21[5];
@@ -1008,27 +1008,27 @@ void __58__REMChangeTracking_persistenceStoreIDForAccountID_error___block_invoke
   *(v5 + 40) = v3;
 }
 
-- (void)_performChangeTrackingWithReason:(id)a3 block:(id)a4 xpcErrorHandler:(id)a5
+- (void)_performChangeTrackingWithReason:(id)reason block:(id)block xpcErrorHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reasonCopy = reason;
+  blockCopy = block;
+  handlerCopy = handler;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__5;
   v22 = __Block_byref_object_dispose__5;
   v23 = 0;
-  v11 = [(REMChangeTracking *)self daemonController];
+  daemonController = [(REMChangeTracking *)self daemonController];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__REMChangeTracking__performChangeTrackingWithReason_block_xpcErrorHandler___block_invoke;
   v15[3] = &unk_1E7508988;
   v15[4] = self;
-  v12 = v10;
+  v12 = handlerCopy;
   v16 = v12;
   v17 = &v18;
-  v13 = [v11 syncChangeTrackingPerformerWithReason:v8 errorHandler:v15];
+  v13 = [daemonController syncChangeTrackingPerformerWithReason:reasonCopy errorHandler:v15];
 
   if (!v19[5])
   {
@@ -1038,7 +1038,7 @@ void __58__REMChangeTracking_persistenceStoreIDForAccountID_error___block_invoke
       [REMChangeTracking _performChangeTrackingWithReason:v14 block:? xpcErrorHandler:?];
     }
 
-    v9[2](v9, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   _Block_object_dispose(&v18, 8);
@@ -1059,28 +1059,28 @@ void __76__REMChangeTracking__performChangeTrackingWithReason_block_xpcErrorHand
   *(v5 + 40) = v3;
 }
 
-- (id)fetchAuxiliaryChangeInfosOfType:(Class)a3 withChangeObject:(id)a4 error:(id *)a5
+- (id)fetchAuxiliaryChangeInfosOfType:(Class)type withChangeObject:(id)object error:(id *)error
 {
-  v51 = self;
+  selfCopy = self;
   v104 = *MEMORY[0x1E69E9840];
-  v55 = a4;
-  v65 = [MEMORY[0x1E695DF70] array];
-  v66 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [MEMORY[0x1E695DEC8] arrayWithObject:v55];
-  if ([v55 isCoalesced])
+  objectCopy = object;
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = [MEMORY[0x1E695DEC8] arrayWithObject:objectCopy];
+  if ([objectCopy isCoalesced])
   {
-    v6 = [v55 coalescedChanges];
-    if (!v6)
+    coalescedChanges = [objectCopy coalescedChanges];
+    if (!coalescedChanges)
     {
       [REMChangeTracking(REMAuxiliaryChangeInfoAdditions) fetchAuxiliaryChangeInfosOfType:withChangeObject:error:];
     }
 
-    v7 = [v5 arrayByAddingObjectsFromArray:{v6, v51}];
+    v7 = [v5 arrayByAddingObjectsFromArray:{coalescedChanges, selfCopy}];
 
     v5 = v7;
   }
 
-  v8 = [(objc_class *)a3 cdEntityName];
+  cdEntityName = [(objc_class *)type cdEntityName];
   v89 = 0u;
   v90 = 0u;
   v87 = 0u;
@@ -1103,14 +1103,14 @@ void __76__REMChangeTracking__performChangeTrackingWithReason_block_xpcErrorHand
         }
 
         v63 = v9;
-        v11 = [*(*(&v87 + 1) + 8 * v9) transaction];
-        v12 = [v11 changes];
+        transaction = [*(*(&v87 + 1) + 8 * v9) transaction];
+        changes = [transaction changes];
 
         v85 = 0u;
         v86 = 0u;
         v83 = 0u;
         v84 = 0u;
-        v13 = v12;
+        v13 = changes;
         v14 = [v13 countByEnumeratingWithState:&v83 objects:v102 count:16];
         if (v14)
         {
@@ -1128,20 +1128,20 @@ void __76__REMChangeTracking__performChangeTrackingWithReason_block_xpcErrorHand
               v17 = *(*(&v83 + 1) + 8 * v16);
               if (![v17 changeType])
               {
-                v18 = [v17 changedObjectID];
-                if (v18)
+                changedObjectID = [v17 changedObjectID];
+                if (changedObjectID)
                 {
-                  v19 = [v17 changedObjectID];
-                  v20 = [v19 entityName];
-                  v21 = [v20 isEqual:v8];
+                  changedObjectID2 = [v17 changedObjectID];
+                  entityName = [changedObjectID2 entityName];
+                  v21 = [entityName isEqual:cdEntityName];
 
                   if (v21)
                   {
-                    v22 = [v17 changedObjectID];
-                    [v65 addObject:v22];
+                    changedObjectID3 = [v17 changedObjectID];
+                    [array addObject:changedObjectID3];
 
-                    v23 = [v17 changedObjectID];
-                    [v66 setObject:v17 forKey:v23];
+                    changedObjectID4 = [v17 changedObjectID];
+                    [dictionary setObject:v17 forKey:changedObjectID4];
                   }
                 }
               }
@@ -1167,8 +1167,8 @@ void __76__REMChangeTracking__performChangeTrackingWithReason_block_xpcErrorHand
     while (v61);
   }
 
-  v25 = [REMAuxiliaryChangeInfoFetchResult auxiliaryChangeInfoFetchResultOfType:a3];
-  v26 = [v65 count] == 0;
+  v25 = [REMAuxiliaryChangeInfoFetchResult auxiliaryChangeInfoFetchResultOfType:type];
+  v26 = [array count] == 0;
   v27 = +[REMLog changeTracking];
   v28 = os_log_type_enabled(v27, OS_LOG_TYPE_INFO);
   if (v26)
@@ -1176,7 +1176,7 @@ void __76__REMChangeTracking__performChangeTrackingWithReason_block_xpcErrorHand
     if (v28)
     {
       *buf = 138412290;
-      *&buf[4] = v55;
+      *&buf[4] = objectCopy;
       _os_log_impl(&dword_19A0DB000, v27, OS_LOG_TYPE_INFO, "No auxiliary change info object IDs found with change object {changeObject: %@}", buf, 0xCu);
     }
 
@@ -1188,9 +1188,9 @@ void __76__REMChangeTracking__performChangeTrackingWithReason_block_xpcErrorHand
     if (v28)
     {
       *buf = 138543618;
-      *&buf[4] = v65;
+      *&buf[4] = array;
       *&buf[12] = 2112;
-      *&buf[14] = v55;
+      *&buf[14] = objectCopy;
       _os_log_impl(&dword_19A0DB000, v27, OS_LOG_TYPE_INFO, "Auxiliary change info object IDs to fetch {objectIDs: %{public}@, changeObject: %@}", buf, 0x16u);
     }
 
@@ -1210,7 +1210,7 @@ void __76__REMChangeTracking__performChangeTrackingWithReason_block_xpcErrorHand
     v73[1] = 3221225472;
     v73[2] = __109__REMChangeTracking_REMAuxiliaryChangeInfoAdditions__fetchAuxiliaryChangeInfosOfType_withChangeObject_error___block_invoke;
     v73[3] = &unk_1E7508870;
-    v29 = v65;
+    v29 = array;
     v74 = v29;
     v75 = buf;
     v76 = &v77;
@@ -1226,11 +1226,11 @@ void __76__REMChangeTracking__performChangeTrackingWithReason_block_xpcErrorHand
       v31 = v25;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v50 = [v78[5] localizedDescription];
+        localizedDescription = [v78[5] localizedDescription];
         *v92 = 138543874;
-        v93 = v50;
+        v93 = localizedDescription;
         v94 = 2112;
-        v95 = v55;
+        v95 = objectCopy;
         v96 = 2114;
         v97 = v29;
         _os_log_error_impl(&dword_19A0DB000, v30, OS_LOG_TYPE_ERROR, "Daemon returned error for auxiliary change info fetch with {error: %{public}@, changeObject: %@, auxChgInfoIds: %{public}@}", v92, 0x20u);
@@ -1265,7 +1265,7 @@ void __76__REMChangeTracking__performChangeTrackingWithReason_block_xpcErrorHand
             }
 
             v37 = *(*(&v68 + 1) + 8 * i);
-            v38 = [v66 objectForKeyedSubscript:{v37, v53}];
+            v38 = [dictionary objectForKeyedSubscript:{v37, v53}];
             if (!v38)
             {
               v46 = +[REMLog changeTracking];
@@ -1288,14 +1288,14 @@ void __76__REMChangeTracking__performChangeTrackingWithReason_block_xpcErrorHand
               v43 = +[REMLog changeTracking];
               if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
               {
-                v44 = [v42 localizedDescription];
+                localizedDescription2 = [v42 localizedDescription];
                 *v92 = v53;
                 v93 = v38;
                 v94 = 2114;
                 v95 = v37;
                 v96 = 2114;
-                v97 = v44;
-                v45 = v44;
+                v97 = localizedDescription2;
+                v45 = localizedDescription2;
                 _os_log_error_impl(&dword_19A0DB000, v43, OS_LOG_TYPE_ERROR, "Failed to decode one of the change infos data for {changeObject: %@, objectID: %{public}@, decodeError: %{public}@}", v92, 0x20u);
               }
 
@@ -1318,9 +1318,9 @@ void __76__REMChangeTracking__performChangeTrackingWithReason_block_xpcErrorHand
       v32 = v57;
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v78[5];
+      *error = v78[5];
     }
 
     v33 = v64;

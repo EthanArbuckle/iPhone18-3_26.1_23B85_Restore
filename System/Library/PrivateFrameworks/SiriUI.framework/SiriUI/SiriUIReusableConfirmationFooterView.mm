@@ -1,23 +1,23 @@
 @interface SiriUIReusableConfirmationFooterView
 + (double)defaultHeight;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriUIReusableConfirmationFooterView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriUIReusableConfirmationFooterView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)edgeInsets;
 - (double)defaultAmbientHeight;
 - (id)snippetViewController;
 - (void)beginProgressAnimation;
 - (void)layoutSubviews;
-- (void)setConfirmationOptions:(id)a3;
-- (void)setSnippetViewController:(id)a3;
+- (void)setConfirmationOptions:(id)options;
+- (void)setSnippetViewController:(id)controller;
 @end
 
 @implementation SiriUIReusableConfirmationFooterView
 
-- (SiriUIReusableConfirmationFooterView)initWithFrame:(CGRect)a3
+- (SiriUIReusableConfirmationFooterView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = SiriUIReusableConfirmationFooterView;
-  v3 = [(SiriUIReusableConfirmationFooterView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUIReusableConfirmationFooterView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [SiriUIContentButton buttonWithRole:0];
@@ -50,8 +50,8 @@
 {
   [MEMORY[0x277D74300] siriui_preferredDynamicBodySize];
   v3 = v2 + -18.0;
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = ceil(v3 + 76.0);
   if (v6 >= 2.0)
   {
@@ -70,8 +70,8 @@
 {
   [MEMORY[0x277D74300] siriui_preferredDynamicBodySize];
   v3 = v2 + -18.0;
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = ceil(v3 + 66.0);
   if (v6 >= 2.0)
   {
@@ -86,9 +86,9 @@
   return v7;
 }
 
-- (void)setSnippetViewController:(id)a3
+- (void)setSnippetViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_snippetViewController);
 
   v5 = obj;
@@ -96,43 +96,43 @@
   {
     objc_storeWeak(&self->_snippetViewController, obj);
     cancelButton = self->_cancelButton;
-    v7 = [(SiriUIReusableConfirmationFooterView *)self snippetViewController];
-    -[SiriUIContentButton setUsePlatterStyle:](cancelButton, "setUsePlatterStyle:", [v7 usePlatterStyle]);
+    snippetViewController = [(SiriUIReusableConfirmationFooterView *)self snippetViewController];
+    -[SiriUIContentButton setUsePlatterStyle:](cancelButton, "setUsePlatterStyle:", [snippetViewController usePlatterStyle]);
 
     confirmButton = self->_confirmButton;
-    v9 = [(SiriUIReusableConfirmationFooterView *)self snippetViewController];
-    -[SiriUIContentButton setUsePlatterStyle:](confirmButton, "setUsePlatterStyle:", [v9 usePlatterStyle]);
+    snippetViewController2 = [(SiriUIReusableConfirmationFooterView *)self snippetViewController];
+    -[SiriUIContentButton setUsePlatterStyle:](confirmButton, "setUsePlatterStyle:", [snippetViewController2 usePlatterStyle]);
 
     verticalKeyline = self->_verticalKeyline;
-    v11 = [MEMORY[0x277D75348] siriui_platterKeylineColor];
-    [(SiriUIKeyline *)verticalKeyline setCustomBackgroundColor:v11];
+    siriui_platterKeylineColor = [MEMORY[0x277D75348] siriui_platterKeylineColor];
+    [(SiriUIKeyline *)verticalKeyline setCustomBackgroundColor:siriui_platterKeylineColor];
 
     v5 = obj;
   }
 }
 
-- (void)setConfirmationOptions:(id)a3
+- (void)setConfirmationOptions:(id)options
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_confirmationOptions, a3);
+  optionsCopy = options;
+  objc_storeStrong(&self->_confirmationOptions, options);
   confirmButton = self->_confirmButton;
-  v7 = [v5 confirmText];
-  [(SiriUIContentButton *)confirmButton setTitle:v7 forState:0];
+  confirmText = [optionsCopy confirmText];
+  [(SiriUIContentButton *)confirmButton setTitle:confirmText forState:0];
 
   cancelButton = self->_cancelButton;
-  v9 = [v5 denyText];
-  [(SiriUIContentButton *)cancelButton setTitle:v9 forState:0];
+  denyText = [optionsCopy denyText];
+  [(SiriUIContentButton *)cancelButton setTitle:denyText forState:0];
 
-  v33 = self;
+  selfCopy = self;
   [(SiriUIContentButton *)self->_cancelButton setRole:2];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v31 = v5;
-  v10 = [v5 allConfirmationOptions];
-  v11 = [v10 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  v31 = optionsCopy;
+  allConfirmationOptions = [optionsCopy allConfirmationOptions];
+  v11 = [allConfirmationOptions countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (!v11)
   {
     v13 = 0;
@@ -151,12 +151,12 @@
     {
       if (*v35 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(allConfirmationOptions);
       }
 
       v18 = *(*(&v34 + 1) + 8 * i);
-      v19 = [v18 type];
-      v20 = [v19 isEqualToString:v15];
+      type = [v18 type];
+      v20 = [type isEqualToString:v15];
 
       if (v20)
       {
@@ -175,8 +175,8 @@
 
         v22 = v18;
 
-        v23 = [v22 buttonRole];
-        v24 = [v23 isEqualToString:v16];
+        buttonRole = [v22 buttonRole];
+        v24 = [buttonRole isEqualToString:v16];
 
         if (v24)
         {
@@ -184,14 +184,14 @@
           goto LABEL_14;
         }
 
-        v26 = [v22 buttonRole];
-        v27 = [v26 isEqualToString:v32];
+        buttonRole2 = [v22 buttonRole];
+        v27 = [buttonRole2 isEqualToString:v32];
 
         if (v27)
         {
           v25 = 3;
 LABEL_14:
-          [(SiriUIContentButton *)v33->_confirmButton setRole:v25];
+          [(SiriUIContentButton *)selfCopy->_confirmButton setRole:v25];
         }
 
         v13 = v22;
@@ -199,26 +199,26 @@ LABEL_14:
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v34 objects:v42 count:16];
+    v12 = [allConfirmationOptions countByEnumeratingWithState:&v34 objects:v42 count:16];
   }
 
   while (v12);
 LABEL_20:
 
-  v28 = [v13 automaticConfirmationThreshold];
+  automaticConfirmationThreshold = [v13 automaticConfirmationThreshold];
 
-  if (v28)
+  if (automaticConfirmationThreshold)
   {
-    v29 = [v13 automaticConfirmationThreshold];
-    [v29 doubleValue];
-    v33->_automaticConfirmationThreshold = v30;
+    automaticConfirmationThreshold2 = [v13 automaticConfirmationThreshold];
+    [automaticConfirmationThreshold2 doubleValue];
+    selfCopy->_automaticConfirmationThreshold = v30;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(SiriUIReusableConfirmationFooterView *)self traitCollection:a3.width];
+  width = fits.width;
+  v5 = [(SiriUIReusableConfirmationFooterView *)self traitCollection:fits.width];
   if ([v5 isAmbientPresented])
   {
     [(SiriUIReusableConfirmationFooterView *)self defaultAmbientHeight];
@@ -243,9 +243,9 @@ LABEL_20:
   v28.receiver = self;
   v28.super_class = SiriUIReusableConfirmationFooterView;
   [(SiriUIReusableConfirmationFooterView *)&v28 layoutSubviews];
-  v3 = [(SiriUIReusableConfirmationFooterView *)self semanticContentAttribute];
-  v4 = [(SiriUIReusableConfirmationFooterView *)self traitCollection];
-  if ([v4 isAmbientPresented])
+  semanticContentAttribute = [(SiriUIReusableConfirmationFooterView *)self semanticContentAttribute];
+  traitCollection = [(SiriUIReusableConfirmationFooterView *)self traitCollection];
+  if ([traitCollection isAmbientPresented])
   {
     [(SiriUIReusableConfirmationFooterView *)self defaultAmbientHeight];
   }
@@ -277,7 +277,7 @@ LABEL_20:
   v24 = v22 + v23;
   [(SiriUIReusableConfirmationFooterView *)self edgeInsets];
   v26 = v25;
-  if (v3 == 4)
+  if (semanticContentAttribute == 4)
   {
     v27 = v24;
   }
@@ -287,7 +287,7 @@ LABEL_20:
     v27 = v20;
   }
 
-  if (v3 != 4)
+  if (semanticContentAttribute != 4)
   {
     v20 = v24;
   }

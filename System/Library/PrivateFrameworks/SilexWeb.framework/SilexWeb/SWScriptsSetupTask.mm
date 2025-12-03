@@ -1,20 +1,20 @@
 @interface SWScriptsSetupTask
-- (SWScriptsSetupTask)initWithScriptsManager:(id)a3;
+- (SWScriptsSetupTask)initWithScriptsManager:(id)manager;
 - (void)performSetup;
 @end
 
 @implementation SWScriptsSetupTask
 
-- (SWScriptsSetupTask)initWithScriptsManager:(id)a3
+- (SWScriptsSetupTask)initWithScriptsManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SWScriptsSetupTask;
   v6 = [(SWScriptsSetupTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scriptsManager, a3);
+    objc_storeStrong(&v6->_scriptsManager, manager);
   }
 
   return v7;
@@ -23,8 +23,8 @@
 - (void)performSetup
 {
   v4 = objc_alloc_init(SWSetupScript);
-  v3 = [(SWScriptsSetupTask *)self scriptsManager];
-  [v3 addScript:v4];
+  scriptsManager = [(SWScriptsSetupTask *)self scriptsManager];
+  [scriptsManager addScript:v4];
 }
 
 @end

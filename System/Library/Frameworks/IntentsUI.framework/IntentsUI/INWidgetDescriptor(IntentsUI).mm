@@ -6,14 +6,14 @@
 
 - (double)preferredSize
 {
-  v1 = [a1 preferredSizeClass];
-  if (v1 > 4)
+  preferredSizeClass = [self preferredSizeClass];
+  if (preferredSizeClass > 4)
   {
     return 360.0;
   }
 
-  result = dbl_22CA489C0[v1];
-  v3 = qword_22CA489E8[v1];
+  result = dbl_22CA489C0[preferredSizeClass];
+  v3 = qword_22CA489E8[preferredSizeClass];
   return result;
 }
 

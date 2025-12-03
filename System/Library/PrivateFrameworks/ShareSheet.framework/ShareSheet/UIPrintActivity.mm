@@ -1,13 +1,13 @@
 @interface UIPrintActivity
 + (unint64_t)_xpcAttributes;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (UIPrintInteractionController)printInteractionController;
 - (id)_embeddedActivityViewController;
 - (id)activityTitle;
-- (id)printInteractionControllerWindowForPresentation:(id)a3;
-- (void)activityDidFinish:(BOOL)a3;
+- (id)printInteractionControllerWindowForPresentation:(id)presentation;
+- (void)activityDidFinish:(BOOL)finish;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation UIPrintActivity
@@ -34,10 +34,10 @@
   return v3;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   if (![MEMORY[0x1E69C5A18] isPrintingAvailable] || (_UIActivityItemTypes() & 0x40) != 0)
   {
     LOBYTE(v4) = 0;
@@ -54,7 +54,7 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v6 = v3;
+    v6 = itemsCopy;
     v4 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
@@ -99,17 +99,17 @@ LABEL_21:
   return v4;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
   v39 = 0;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v34 objects:v41 count:16];
   if (!v7)
   {
@@ -131,23 +131,23 @@ LABEL_21:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [(UIPrintActivity *)self printInteractionController];
-        [v12 setPrintPageRenderer:v11];
+        printInteractionController = [(UIPrintActivity *)self printInteractionController];
+        [printInteractionController setPrintPageRenderer:v11];
 LABEL_13:
 
-        v5 = 0;
+        array = 0;
         goto LABEL_14;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [(UIPrintActivity *)self printInteractionController];
-        [v12 setPrintFormatter:v11];
+        printInteractionController = [(UIPrintActivity *)self printInteractionController];
+        [printInteractionController setPrintFormatter:v11];
         goto LABEL_13;
       }
 
-      ScanForPrintingItems(v11, v5, &v39 + 1, &v39, &v38);
+      ScanForPrintingItems(v11, array, &v39 + 1, &v39, &v38);
     }
 
     v8 = [v6 countByEnumeratingWithState:&v34 objects:v41 count:16];
@@ -161,24 +161,24 @@ LABEL_13:
 
 LABEL_14:
 
-  if ([v5 count] >= 2)
+  if ([array count] >= 2)
   {
-    v13 = [(UIPrintActivity *)self printInteractionController];
-    [v13 setPrintingItems:v5];
+    printInteractionController2 = [(UIPrintActivity *)self printInteractionController];
+    [printInteractionController2 setPrintingItems:array];
     goto LABEL_18;
   }
 
-  if ([v5 count] == 1)
+  if ([array count] == 1)
   {
-    v13 = [v5 lastObject];
-    v14 = [(UIPrintActivity *)self printInteractionController];
-    [v14 setPrintingItem:v13];
+    printInteractionController2 = [array lastObject];
+    printInteractionController3 = [(UIPrintActivity *)self printInteractionController];
+    [printInteractionController3 setPrintingItem:printInteractionController2];
 
 LABEL_18:
   }
 
-  v15 = [(UIPrintActivity *)self printInteractionController];
-  [v15 setPrintInfo:0];
+  printInteractionController4 = [(UIPrintActivity *)self printInteractionController];
+  [printInteractionController4 setPrintInfo:0];
 
   v32 = 0u;
   v33 = 0u;
@@ -203,8 +203,8 @@ LABEL_18:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = [(UIPrintActivity *)self printInteractionController];
-          [v22 setPrintInfo:v21];
+          printInteractionController5 = [(UIPrintActivity *)self printInteractionController];
+          [printInteractionController5 setPrintInfo:v21];
         }
       }
 
@@ -214,11 +214,11 @@ LABEL_18:
     while (v18);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v23 = [(UIPrintActivity *)self printInteractionController];
-    v24 = [v23 printInfo];
-    if (v24 || HIBYTE(v39) != 1)
+    printInteractionController6 = [(UIPrintActivity *)self printInteractionController];
+    printInfo = [printInteractionController6 printInfo];
+    if (printInfo || HIBYTE(v39) != 1)
     {
 LABEL_33:
     }
@@ -229,69 +229,69 @@ LABEL_33:
 
       if ((v25 & 1) == 0)
       {
-        v23 = [MEMORY[0x1E69C5A10] printInfo];
-        [v23 setOutputType:1];
-        v24 = [(UIPrintActivity *)self printInteractionController];
-        [v24 setPrintInfo:v23];
+        printInteractionController6 = [MEMORY[0x1E69C5A10] printInfo];
+        [printInteractionController6 setOutputType:1];
+        printInfo = [(UIPrintActivity *)self printInteractionController];
+        [printInfo setPrintInfo:printInteractionController6];
         goto LABEL_33;
       }
     }
   }
 
-  v26 = [(UIPrintActivity *)self printInteractionController];
-  [v26 setShowsPaperSelectionForLoadedPapers:1];
+  printInteractionController7 = [(UIPrintActivity *)self printInteractionController];
+  [printInteractionController7 setShowsPaperSelectionForLoadedPapers:1];
 
-  v27 = [(UIPrintActivity *)self isContentManaged];
-  v28 = [(UIPrintActivity *)self printInteractionController];
-  [v28 setIsContentManaged:v27];
+  isContentManaged = [(UIPrintActivity *)self isContentManaged];
+  printInteractionController8 = [(UIPrintActivity *)self printInteractionController];
+  [printInteractionController8 setIsContentManaged:isContentManaged];
 
-  v29 = [(UIPrintActivity *)self printInteractionController];
-  [v29 setPrintActivityDelegate:self];
+  printInteractionController9 = [(UIPrintActivity *)self printInteractionController];
+  [printInteractionController9 setPrintActivityDelegate:self];
 }
 
 - (id)_embeddedActivityViewController
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  if (![v3 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if (![currentDevice userInterfaceIdiom])
   {
 
     goto LABEL_13;
   }
 
-  v4 = [(UIPrintActivity *)self printInteractionController];
-  v5 = [v4 _canShowPreview];
+  printInteractionController = [(UIPrintActivity *)self printInteractionController];
+  _canShowPreview = [printInteractionController _canShowPreview];
 
-  if (v5)
+  if (_canShowPreview)
   {
 LABEL_13:
     v15 = 0;
     goto LABEL_14;
   }
 
-  v6 = [(UIPrintActivity *)self printInteractionController];
-  v7 = [v6 printPageRenderer];
-  if (!v7)
+  printInteractionController2 = [(UIPrintActivity *)self printInteractionController];
+  printPageRenderer = [printInteractionController2 printPageRenderer];
+  if (!printPageRenderer)
   {
-    v7 = [(UIPrintActivity *)self printInteractionController];
-    v8 = [v7 printFormatter];
-    if (v8)
+    printPageRenderer = [(UIPrintActivity *)self printInteractionController];
+    printFormatter = [printPageRenderer printFormatter];
+    if (printFormatter)
     {
 LABEL_7:
 
       goto LABEL_8;
     }
 
-    v8 = [(UIPrintActivity *)self printInteractionController];
-    v9 = [v8 printingItem];
-    if (v9)
+    printFormatter = [(UIPrintActivity *)self printInteractionController];
+    printingItem = [printFormatter printingItem];
+    if (printingItem)
     {
 
       goto LABEL_7;
     }
 
-    v17 = [(UIPrintActivity *)self printInteractionController];
-    v18 = [v17 printingItems];
-    v19 = [v18 count];
+    printInteractionController3 = [(UIPrintActivity *)self printInteractionController];
+    printingItems = [printInteractionController3 printingItems];
+    v19 = [printingItems count];
 
     if (v19)
     {
@@ -313,13 +313,13 @@ LABEL_9:
   if (!wrapperViewController)
   {
     v11 = [UIPrintActivityWrapperNavigationController alloc];
-    v12 = [(UIPrintActivity *)self printInteractionController];
+    printInteractionController4 = [(UIPrintActivity *)self printInteractionController];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __50__UIPrintActivity__embeddedActivityViewController__block_invoke;
     v20[3] = &unk_1E71FADB0;
     v20[4] = self;
-    v13 = [(UIPrintActivityWrapperNavigationController *)v11 initWithPrintInteractionController:v12 completion:v20];
+    v13 = [(UIPrintActivityWrapperNavigationController *)v11 initWithPrintInteractionController:printInteractionController4 completion:v20];
     v14 = self->_wrapperViewController;
     self->_wrapperViewController = v13;
 
@@ -334,44 +334,44 @@ LABEL_14:
 
 - (void)performActivity
 {
-  v3 = [(UIPrintActivity *)self printInteractionController];
-  v4 = [v3 printPageRenderer];
-  if (v4)
+  printInteractionController = [(UIPrintActivity *)self printInteractionController];
+  printPageRenderer = [printInteractionController printPageRenderer];
+  if (printPageRenderer)
   {
     goto LABEL_6;
   }
 
-  v4 = [(UIPrintActivity *)self printInteractionController];
-  v5 = [v4 printFormatter];
-  if (v5)
+  printPageRenderer = [(UIPrintActivity *)self printInteractionController];
+  printFormatter = [printPageRenderer printFormatter];
+  if (printFormatter)
   {
 LABEL_5:
 
 LABEL_6:
 LABEL_7:
-    v7 = [(UIPrintActivity *)self printInteractionController];
-    v8 = [(UIWindow *)self->_windowHoldingActivityViewController windowScene];
+    printInteractionController2 = [(UIPrintActivity *)self printInteractionController];
+    windowScene = [(UIWindow *)self->_windowHoldingActivityViewController windowScene];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __34__UIPrintActivity_performActivity__block_invoke;
     v12[3] = &unk_1E71FAD88;
     v12[4] = self;
-    [v7 _presentAnimated:1 hostingScene:v8 completionHandler:v12];
+    [printInteractionController2 _presentAnimated:1 hostingScene:windowScene completionHandler:v12];
 
     return;
   }
 
-  v5 = [(UIPrintActivity *)self printInteractionController];
-  v6 = [v5 printingItem];
-  if (v6)
+  printFormatter = [(UIPrintActivity *)self printInteractionController];
+  printingItem = [printFormatter printingItem];
+  if (printingItem)
   {
 
     goto LABEL_5;
   }
 
-  v9 = [(UIPrintActivity *)self printInteractionController];
-  v10 = [v9 printingItems];
-  v11 = [v10 count];
+  printInteractionController3 = [(UIPrintActivity *)self printInteractionController];
+  printingItems = [printInteractionController3 printingItems];
+  v11 = [printingItems count];
 
   if (v11)
   {
@@ -396,36 +396,36 @@ LABEL_7:
   return printInteractionController;
 }
 
-- (void)activityDidFinish:(BOOL)a3
+- (void)activityDidFinish:(BOOL)finish
 {
   v4.receiver = self;
   v4.super_class = UIPrintActivity;
-  [(UIActivity *)&v4 activityDidFinish:a3];
+  [(UIActivity *)&v4 activityDidFinish:finish];
   [(UIPrintActivity *)self setWrapperViewController:0];
 }
 
-- (id)printInteractionControllerWindowForPresentation:(id)a3
+- (id)printInteractionControllerWindowForPresentation:(id)presentation
 {
-  v4 = [(UIPrintActivity *)self windowHoldingActivityViewController];
-  if (v4)
+  windowHoldingActivityViewController = [(UIPrintActivity *)self windowHoldingActivityViewController];
+  if (windowHoldingActivityViewController)
   {
-    v5 = v4;
-    v6 = [(UIPrintActivity *)self windowHoldingActivityViewController];
+    v5 = windowHoldingActivityViewController;
+    windowHoldingActivityViewController2 = [(UIPrintActivity *)self windowHoldingActivityViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v4 = [(UIPrintActivity *)self windowHoldingActivityViewController];
+      windowHoldingActivityViewController = [(UIPrintActivity *)self windowHoldingActivityViewController];
     }
 
     else
     {
-      v4 = 0;
+      windowHoldingActivityViewController = 0;
     }
   }
 
-  return v4;
+  return windowHoldingActivityViewController;
 }
 
 @end

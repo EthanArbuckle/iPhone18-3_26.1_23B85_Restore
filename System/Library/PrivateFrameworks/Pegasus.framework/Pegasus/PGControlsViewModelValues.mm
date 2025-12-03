@@ -1,57 +1,57 @@
 @interface PGControlsViewModelValues
-- (BOOL)_BOOLForKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_BOOLForKey:(id)key;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPrerollActive;
-- (PGControlsViewModelValues)initWithDictionaryRepresentation:(id)a3;
+- (PGControlsViewModelValues)initWithDictionaryRepresentation:(id)representation;
 - (UIColor)prerollTintColor;
-- (id)_objectForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)_integerForKey:(id)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (id)_objectForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)_integerForKey:(id)key;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation PGControlsViewModelValues
 
-- (PGControlsViewModelValues)initWithDictionaryRepresentation:(id)a3
+- (PGControlsViewModelValues)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v11.receiver = self;
   v11.super_class = PGControlsViewModelValues;
   v5 = [(PGControlsViewModelValues *)&v11 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [representationCopy mutableCopy];
     v7 = v6;
     if (v6)
     {
-      v8 = v6;
+      dictionary = v6;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     dictionaryRepresentation = v5->_dictionaryRepresentation;
-    v5->_dictionaryRepresentation = v8;
+    v5->_dictionaryRepresentation = dictionary;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(PGControlsViewModelValues *)self dictionaryRepresentation];
-  v6 = [v4 initWithDictionaryRepresentation:v5];
+  dictionaryRepresentation = [(PGControlsViewModelValues *)self dictionaryRepresentation];
+  v6 = [v4 initWithDictionaryRepresentation:dictionaryRepresentation];
 
   return v6;
 }
 
 - (BOOL)isPrerollActive
 {
-  v2 = [(PGControlsViewModelValues *)self prerollAttributes];
-  v3 = v2 != 0;
+  prerollAttributes = [(PGControlsViewModelValues *)self prerollAttributes];
+  v3 = prerollAttributes != 0;
 
   return v3;
 }
@@ -60,20 +60,20 @@
 {
   if ([(PGControlsViewModelValues *)self isPrerollActive])
   {
-    v3 = [(PGControlsViewModelValues *)self prerollAttributes];
-    v4 = [v3 preferredTintColor];
-    v5 = v4;
-    if (v4)
+    prerollAttributes = [(PGControlsViewModelValues *)self prerollAttributes];
+    preferredTintColor = [prerollAttributes preferredTintColor];
+    v5 = preferredTintColor;
+    if (preferredTintColor)
     {
-      v6 = v4;
+      defaultPrerollTintColor = preferredTintColor;
     }
 
     else
     {
-      v6 = [objc_opt_class() defaultPrerollTintColor];
+      defaultPrerollTintColor = [objc_opt_class() defaultPrerollTintColor];
     }
 
-    v7 = v6;
+    v7 = defaultPrerollTintColor;
   }
 
   else
@@ -84,52 +84,52 @@
   return v7;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(PGControlsViewModelValues *)self dictionaryRepresentation];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  valueCopy = value;
+  keyCopy = key;
+  dictionaryRepresentation = [(PGControlsViewModelValues *)self dictionaryRepresentation];
+  v8 = [dictionaryRepresentation objectForKeyedSubscript:keyCopy];
 
-  if (v10 | v8 && ([v8 isEqual:v10] & 1) == 0)
+  if (valueCopy | v8 && ([v8 isEqual:valueCopy] & 1) == 0)
   {
-    v9 = [(PGControlsViewModelValues *)self dictionaryRepresentation];
-    [v9 setObject:v10 forKeyedSubscript:v6];
+    dictionaryRepresentation2 = [(PGControlsViewModelValues *)self dictionaryRepresentation];
+    [dictionaryRepresentation2 setObject:valueCopy forKeyedSubscript:keyCopy];
   }
 }
 
-- (BOOL)_BOOLForKey:(id)a3
+- (BOOL)_BOOLForKey:(id)key
 {
-  v3 = [(PGControlsViewModelValues *)self _objectForKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(PGControlsViewModelValues *)self _objectForKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (int64_t)_integerForKey:(id)a3
+- (int64_t)_integerForKey:(id)key
 {
-  v3 = [(PGControlsViewModelValues *)self _objectForKey:a3];
-  v4 = [v3 integerValue];
+  v3 = [(PGControlsViewModelValues *)self _objectForKey:key];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (id)_objectForKey:(id)a3
+- (id)_objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PGControlsViewModelValues *)self dictionaryRepresentation];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  dictionaryRepresentation = [(PGControlsViewModelValues *)self dictionaryRepresentation];
+  v6 = [dictionaryRepresentation objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -138,10 +138,10 @@
   }
 
   v6 = v5;
-  v7 = [(PGControlsViewModelValues *)self dictionaryRepresentation];
-  v8 = [v6 dictionaryRepresentation];
+  dictionaryRepresentation = [(PGControlsViewModelValues *)self dictionaryRepresentation];
+  dictionaryRepresentation2 = [v6 dictionaryRepresentation];
 
-  LOBYTE(v6) = [v7 isEqual:v8];
+  LOBYTE(v6) = [dictionaryRepresentation isEqual:dictionaryRepresentation2];
   return v6;
 }
 

@@ -1,7 +1,7 @@
 @interface CAMDrawerSharedLibraryButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
-- (id)_axLabelForSharedLibraryMode:(int64_t)a3;
+- (id)_axLabelForSharedLibraryMode:(int64_t)mode;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (void)layoutSubviews;
@@ -9,17 +9,17 @@
 
 @implementation CAMDrawerSharedLibraryButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMDrawerSharedLibraryButton" hasInstanceMethod:@"sharedLibraryMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMDrawerSharedLibraryButton" hasInstanceMethod:@"setSharedLibraryMode:animated:" withFullSignature:{"v", "q", "B", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerSharedLibraryButton" isKindOfClass:@"CAMControlDrawerButton"];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerSharedLibraryButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMDrawerSharedLibraryButton" hasInstanceMethod:@"sharedLibraryMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMDrawerSharedLibraryButton" hasInstanceMethod:@"setSharedLibraryMode:animated:" withFullSignature:{"v", "q", "B", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerSharedLibraryButton" isKindOfClass:@"CAMControlDrawerButton"];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerSharedLibraryButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
 }
 
 - (BOOL)accessibilityActivate
@@ -48,16 +48,16 @@ void __66__CAMDrawerSharedLibraryButtonAccessibility_accessibilityActivate__bloc
   [v1 sendActionsForControlEvents:4096];
 }
 
-- (id)_axLabelForSharedLibraryMode:(int64_t)a3
+- (id)_axLabelForSharedLibraryMode:(int64_t)mode
 {
-  if (a3 > 5)
+  if (mode > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityCameraUILocalizedString(off_29F2ACDE8[a3]);
+    v4 = accessibilityCameraUILocalizedString(off_29F2ACDE8[mode]);
   }
 
   return v4;
